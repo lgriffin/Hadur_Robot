@@ -186,10 +186,13 @@ public class EnergySteps {
 
     @When("the strategy is evaluated")
     public void the_strategy_is_evaluated() {
-        // Read enemy energy from SharedState since the step runs in MovementSteps
+        if (gun == null) {
+            gun = new Gun();
+            gun.init(800.0, 600.0);
+        }
         enemyEnergy = SharedState.enemyEnergy;
         myEnergy = SharedState.myEnergy;
-        enemyDistance = 350; // default mid-range
+        enemyDistance = 350;
         calculatedPower = gun.smartFirePower(enemyDistance, myEnergy, enemyEnergy);
     }
 
@@ -243,7 +246,7 @@ public class EnergySteps {
         // Damage is calculated by Robocode Rules
     }
 
-    @Then("the damage dealt should be: {int} * power + {int} * max\\({int}, power - {int}) = {double}")
+    @Then("the damage dealt should be: {int} * power + {int} * max\\({int}, power - {int}\\) = {double}")
     public void the_damage_dealt_should_be(int baseMult, int bonusMult, int zero, int threshold, double expected) {
         double damage = baseMult * calculatedPower + bonusMult * Math.max(zero, calculatedPower - threshold);
         assertEquals(expected, damage, 0.001,

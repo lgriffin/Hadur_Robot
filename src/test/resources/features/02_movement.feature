@@ -19,8 +19,8 @@ Feature: Movement System - Wave Surfing
 
   Scenario: Distinguish bullet fire from wall collision energy loss
     Given the enemy has 80.0 energy
-    When the next scan shows enemy energy at 79.5
-    Then the energy drop of 0.5 should be ignored
+    When the next scan shows enemy energy at 76.5
+    Then the energy drop of 3.5 should be ignored
     # Because bullet power must be between 0.1 and 3.0
 
   Scenario: Detect low-power bullet fire

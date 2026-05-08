@@ -143,9 +143,12 @@ public class ArchitectureSteps {
 
     @And("subsystems should not hold a reference back to the main robot class")
     public void subsystems_should_not_hold_reference_back() {
-        // Subsystems receive the robot as a parameter, not as a stored field
-        // (except during method calls). They don't store a Hadur reference.
-        // They accept AdvancedRobot, not Hadur specifically.
+        try {
+            if (radarClass == null) radarClass = Class.forName("hadur117.radar.Radar");
+            if (gunClass == null) gunClass = Class.forName("hadur117.gun.Gun");
+        } catch (ClassNotFoundException e) {
+            fail("Required class not found: " + e.getMessage());
+        }
         try {
             for (Field f : radarClass.getDeclaredFields()) {
                 assertNotEquals("Hadur", f.getType().getSimpleName(),
@@ -201,7 +204,7 @@ public class ArchitectureSteps {
         assertTrue(true, "Melee mode uses minimumRisk.doMinimumRisk");
     }
 
-    @And("Gun should use circular/linear prediction")
+    @And("Gun should use circular\\/linear prediction")
     public void hadur_gun_should_use_circular_linear() {
         assertTrue(true, "Melee mode uses gun.onScannedRobotMelee with circular prediction");
     }
@@ -404,7 +407,7 @@ public class ArchitectureSteps {
         assertTrue(true, "Gun extracts these from robot and ScannedRobotEvent");
     }
 
-    @And("it should return: desired gun turn angle, recommended fire power, and fire/hold decision")
+    @And("it should return: desired gun turn angle, recommended fire power, and fire\\/hold decision")
     public void gun_should_return_aim_and_power() {
         assertTrue(true, "Gun sets gun turn, fire power, and fires via robot methods");
     }
@@ -465,7 +468,7 @@ public class ArchitectureSteps {
         }
     }
 
-    @And("all files should be located under src/main/java/hadur117/")
+    @And("all files should be located under src\\/main\\/java\\/hadur117\\/")
     public void all_files_should_be_located_in_src() {
         assertTrue(true, "Files located in src/main/java/hadur117/");
     }
@@ -539,11 +542,12 @@ public class ArchitectureSteps {
     private String resolveClassName(String shortName) {
         return switch (shortName) {
             case "Hadur" -> "hadur117.Hadur";
-            case "HadurRadar" -> "hadur117.radar.Radar";
-            case "HadurGun" -> "hadur117.gun.Gun";
-            case "HadurMovement" -> "hadur117.movement.WaveSurfer";
-            case "HadurBrain" -> "hadur117.intel.Brain";
-            case "HadurMeleeTargetSelector" -> "hadur117.intel.MeleeTargetSelector";
+            case "Radar" -> "hadur117.radar.Radar";
+            case "Gun" -> "hadur117.gun.Gun";
+            case "WaveSurfer" -> "hadur117.movement.WaveSurfer";
+            case "MinimumRiskMovement" -> "hadur117.movement.MinimumRiskMovement";
+            case "Brain" -> "hadur117.intel.Brain";
+            case "MeleeTargetSelector" -> "hadur117.intel.MeleeTargetSelector";
             default -> "hadur117." + shortName;
         };
     }

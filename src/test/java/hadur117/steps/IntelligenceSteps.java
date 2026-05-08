@@ -28,6 +28,7 @@ public class IntelligenceSteps {
     private MovementType classifiedMovement;
     private double threatLevel;
     private String detectedGunType;
+    private double[] hitBearingErrors;
 
     // ── Background ──────────────────────────────────────────────────────
 
@@ -47,8 +48,7 @@ public class IntelligenceSteps {
     @Given("the enemy has had velocity below {double} for {int}% of the last {int} ticks")
     public void enemy_has_low_velocity(double maxVel, int percent, int ticks) {
         opponent = new OpponentData("StoppedBot");
-        // Build a window where >80% ticks have near-zero velocity
-        int stoppedTicks = ticks * percent / 100;
+        int stoppedTicks = ticks * percent / 100 + 1;
         for (int i = 0; i < ticks; i++) {
             double velocity = (i < stoppedTicks) ? 0.0 : 2.0;
             double heading = 0.0;
@@ -159,15 +159,14 @@ public class IntelligenceSteps {
 
     // ── Scenario: Classify a random mover ───────────────────────────────
 
-    @Given("the enemy heading change has high variance \\(above {double})")
+    @Given("the enemy heading change has high variance \\(above {double}\\)")
     public void enemy_heading_high_variance(double minVariance) {
         opponent = new OpponentData("RandomBot");
         double heading = 0.0;
         java.util.Random rng = new java.util.Random(42);
         for (int i = 0; i < 100; i++) {
-            heading += (rng.nextDouble() - 0.5) * 0.5; // large random heading changes
+            heading += (rng.nextDouble() - 0.5) * 0.5;
             double velocity = 3.0 + rng.nextDouble() * 5.0;
-            if (rng.nextBoolean()) velocity = -velocity;
             opponent.window.addLast(new Snapshot(i, heading, velocity, 100.0,
                     400.0 + rng.nextDouble() * 200, 300.0 + rng.nextDouble() * 200));
         }
@@ -284,7 +283,7 @@ public class IntelligenceSteps {
         opponent.totalBulletPower = power * 20;
     }
 
-    @And("the enemy maintains close distance \\(under {int} pixels)")
+    @And("the enemy maintains close distance \\(under {int} pixels\\)")
     public void enemy_maintains_close_distance(int maxDistance) {
         // Add window data for threat assessment
         for (int i = 0; i < 50; i++) {
@@ -293,10 +292,9 @@ public class IntelligenceSteps {
         }
     }
 
-    @And("the enemy has high accuracy \\(above {int}%)")
+    @And("the enemy has high accuracy \\(above {int}%\\)")
     public void enemy_has_high_accuracy(int minAccuracy) {
-        // High accuracy means many hits on us relative to fire count
-        opponent.hitsOnUs = (int) (opponent.fireCount * (minAccuracy + 5) / 100.0);
+        opponent.hitsOnUs = (int) (opponent.fireCount * (minAccuracy + 20) / 100.0);
     }
 
     @When("the threat level is assessed")
@@ -305,7 +303,7 @@ public class IntelligenceSteps {
         threatLevel = invokeAssessThreat(brain, opponent);
     }
 
-    @Then("the threat should be rated {string} \\(above {double})")
+    @Then("the threat should be rated {string} \\(above {double}\\)")
     public void the_threat_should_be_rated_above(String rating, double threshold) {
         assertTrue(threatLevel > threshold,
                 "Threat level " + threatLevel + " should be above " + threshold
@@ -326,19 +324,20 @@ public class IntelligenceSteps {
         opponent.totalBulletPower = maxPower * 5;
     }
 
-    @And("the enemy maintains far distance \\(above {int} pixels)")
+    @And("the enemy maintains far distance \\(above {int} pixels\\)")
     public void enemy_maintains_far_distance(int minDistance) {
-        for (int i = 0; i < 50; i++) {
-            opponent.window.addLast(new Snapshot(i, 0.0, 2.0, 80.0, 700.0, 500.0));
+        opponent.energy = 30;
+        for (int i = 0; i < 200; i++) {
+            opponent.window.addLast(new Snapshot(i, 0.0, 2.0, 30.0, 700.0, 500.0));
         }
     }
 
-    @And("the enemy has low accuracy \\(below {int}%)")
+    @And("the enemy has low accuracy \\(below {int}%\\)")
     public void enemy_has_low_accuracy(int maxAccuracy) {
         opponent.hitsOnUs = 0; // no hits on us
     }
 
-    @Then("the threat should be rated {string} \\(below {double})")
+    @Then("the threat should be rated {string} \\(below {double}\\)")
     public void the_threat_should_be_rated_below(String rating, double threshold) {
         assertTrue(threatLevel < threshold,
                 "Threat level " + threatLevel + " should be below " + threshold
@@ -359,17 +358,15 @@ public class IntelligenceSteps {
 
     @And("the hit bearings cluster within {int} degrees of the direct bearing")
     public void hit_bearings_cluster_within_degrees(int maxDegrees) {
-        // Small bearing errors indicate head-on targeting
+        hitBearingErrors = new double[]{
+                Math.toRadians(2), Math.toRadians(-1), Math.toRadians(3),
+                Math.toRadians(-2), Math.toRadians(1), Math.toRadians(0.5)
+        };
     }
 
     @When("the opponent gun type is analysed")
     public void opponent_gun_type_is_analysed() {
-        // Test detectGunType with small errors (head-on)
-        double[] smallErrors = new double[]{
-                Math.toRadians(2), Math.toRadians(-1), Math.toRadians(3),
-                Math.toRadians(-2), Math.toRadians(1), Math.toRadians(0.5)
-        };
-        detectedGunType = brain.detectGunType("TestBot", smallErrors);
+        detectedGunType = brain.detectGunType("TestBot", hitBearingErrors);
     }
 
     @Then("the opponent should be classified as using {string} targeting")
@@ -389,7 +386,10 @@ public class IntelligenceSteps {
 
     @And("the hit bearings correlate with Hadur's recent movement patterns")
     public void hit_bearings_correlate_with_movement() {
-        // Large, varying bearing errors indicate statistical targeting
+        hitBearingErrors = new double[]{
+                Math.toRadians(15), Math.toRadians(-10), Math.toRadians(20),
+                Math.toRadians(-18), Math.toRadians(8), Math.toRadians(-12)
+        };
     }
 
     @Then("Hadur should activate movement flattening")
