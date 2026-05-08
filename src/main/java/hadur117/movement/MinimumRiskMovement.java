@@ -40,7 +40,7 @@ public class MinimumRiskMovement {
         if (destination != null && myPos.distance(destination) < 20)
             destination = null;
 
-        if (destination == null || time - destTime > 30) {
+        if (destination == null || time - destTime > 10) {
             destination = findSafestPoint(myPos, robot, brain);
             destTime = time;
         }
@@ -54,9 +54,9 @@ public class MinimumRiskMovement {
         double bestRisk = Double.MAX_VALUE;
         Point2D.Double bestPoint = null;
 
-        for (int i = 0; i < 24; i++) {
-            double angle = i * (2 * Math.PI / 24);
-            for (double dist = 100; dist <= 250; dist += 75) {
+        for (int i = 0; i < 36; i++) {
+            double angle = i * (2 * Math.PI / 36);
+            for (double dist = 80; dist <= 260; dist += 60) {
                 double px = myPos.x + dist * Math.sin(angle);
                 double py = myPos.y + dist * Math.cos(angle);
                 if (!fieldRect.contains(px, py)) continue;
@@ -75,6 +75,7 @@ public class MinimumRiskMovement {
     private double calculateRisk(Point2D.Double point, Point2D.Double myPos,
                                   AdvancedRobot robot, Brain brain) {
         double risk = 0;
+        int nearbyCount = 0;
 
         for (OpponentData od : brain.getAllOpponents()) {
             if (od.energy <= 0 || robot.getTime() - od.lastScanTick > 30) continue;
@@ -84,7 +85,8 @@ public class MinimumRiskMovement {
 
             double enemyRisk = od.energy / (dist * dist);
             enemyRisk *= (0.5 + od.threatLevel);
-            if (dist < 200) enemyRisk *= 2.0;
+            if (dist < 150) enemyRisk *= 3.0;
+            else if (dist < 250) enemyRisk *= 1.5;
 
             double lateralAngle = Math.abs(Math.sin(
                     Math.atan2(od.x - point.x, od.y - point.y)
@@ -92,20 +94,23 @@ public class MinimumRiskMovement {
             enemyRisk *= (1.1 - 0.5 * lateralAngle);
 
             risk += enemyRisk;
+            if (dist < 300) nearbyCount++;
         }
+
+        if (nearbyCount >= 2) risk *= 1.0 + 0.3 * nearbyCount;
 
         double wallDist = Math.min(
                 Math.min(point.x - WALL_MARGIN, fieldWidth - WALL_MARGIN - point.x),
                 Math.min(point.y - WALL_MARGIN, fieldHeight - WALL_MARGIN - point.y));
-        if (wallDist < 60) risk += 0.5 / Math.max(wallDist, 1);
+        if (wallDist < 80) risk += 1.0 / Math.max(wallDist, 1);
 
         double cornerDist = Math.min(
                 Math.min(point.distance(0, 0), point.distance(fieldWidth, 0)),
                 Math.min(point.distance(0, fieldHeight),
                          point.distance(fieldWidth, fieldHeight)));
-        if (cornerDist < 150) risk += 0.3 / Math.max(cornerDist, 1);
+        if (cornerDist < 200) risk += 0.5 / Math.max(cornerDist, 1);
 
-        if (myPos.distance(point) < 50) risk += 0.1;
+        if (myPos.distance(point) < 50) risk += 0.5;
 
         return risk;
     }

@@ -38,6 +38,12 @@ class TargetProfileTest {
         void defaultOurAccuracy() {
             assertEquals(0.15, TargetProfile.BALANCED_DEFAULT.ourAccuracy, 1e-9);
         }
+
+        @Test
+        @DisplayName("default shotsFiredAt is 0")
+        void defaultShotsFiredAt() {
+            assertEquals(0, TargetProfile.BALANCED_DEFAULT.shotsFiredAt);
+        }
     }
 
     @Nested
@@ -48,11 +54,12 @@ class TargetProfileTest {
         @DisplayName("stores all fields correctly")
         void storesFields() {
             TargetProfile p = new TargetProfile(
-                    MovementType.CIRCULAR, "LINEAR", 1.1, 0.25);
+                    MovementType.CIRCULAR, "LINEAR", 1.1, 0.25, 12);
             assertEquals(MovementType.CIRCULAR, p.movementType);
             assertEquals("LINEAR", p.gunType);
             assertEquals(1.1, p.firePowerMult, 1e-9);
             assertEquals(0.25, p.ourAccuracy, 1e-9);
+            assertEquals(12, p.shotsFiredAt);
         }
 
         @Test

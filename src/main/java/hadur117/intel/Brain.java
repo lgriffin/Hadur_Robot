@@ -170,7 +170,7 @@ public class Brain {
         double acc = od.shotsFiredAt >= 5
                 ? (double) od.shotsHitOn / od.shotsFiredAt : 0.15;
 
-        return new TargetProfile(mt, gunType, mult, acc);
+        return new TargetProfile(mt, gunType, mult, acc, od.shotsFiredAt);
     }
 
     private String deriveGunType(OpponentData od) {
@@ -191,7 +191,7 @@ public class Brain {
             case CIRCULAR:    mult = 1.0; break;
             case OSCILLATING: mult = 0.9; break;
             case RANDOM:      mult = 0.9; break;
-            case WAVE_SURFER: mult = 0.7; break;
+            case WAVE_SURFER: mult = 0.6; break;
             default:          mult = 1.0; break;
         }
 

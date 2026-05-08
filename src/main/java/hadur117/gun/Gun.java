@@ -43,7 +43,7 @@ public class Gun {
 
     private static final int MIN_GUN_WAVES = 20;
     private static final int GUN_SWITCH_MARGIN = 2;
-    private static final int MIN_WAVES_BETWEEN_SWITCH = 15;
+    private static final int MIN_WAVES_BETWEEN_SWITCH = 25;
 
     private static final int PATTERN_HISTORY = 1000;
     private static final int PATTERN_MIN_MATCH = 5;
@@ -121,7 +121,8 @@ public class Gun {
 
         updateWaves(enemyPos, robot.getTime());
 
-        double firePower = smartFirePower(enemyDist, robot.getEnergy(), e.getEnergy());
+        double firePower = smartFirePower(enemyDist, robot.getEnergy(), e.getEnergy(),
+                profile.ourAccuracy, profile.shotsFiredAt);
         firePower = Math.max(0.1, Math.min(3.0, firePower * profile.firePowerMult));
         if (firePower < 0.1) {
             prevEnemyVelocity = enemyVel;
@@ -136,6 +137,10 @@ public class Gun {
         int bestBin = bestGFBin(segStats);
         double gfAngle = absBearing + enemyLatDir * mea
                 * ((double) (bestBin - GF_CENTER) / GF_CENTER);
+
+        if (profile.movementType == MovementType.WAVE_SURFER) {
+            gfAngle += (Math.random() - 0.5) * 0.8 * mea;
+        }
 
         double patternAngle = patternPrediction(myPos, enemyPos, enemyHeading,
                 enemyVel, bulletSpeed);
@@ -204,7 +209,8 @@ public class Gun {
 
         if (!scannedName.equals(targetName)) return false;
 
-        double firePower = smartFirePower(e.getDistance(), robot.getEnergy(), e.getEnergy());
+        double firePower = smartFirePower(e.getDistance(), robot.getEnergy(), e.getEnergy(),
+                profile.ourAccuracy, profile.shotsFiredAt);
         firePower = Math.max(0.1, Math.min(3.0, firePower * profile.firePowerMult));
         if (firePower < 0.1) return false;
 
@@ -319,7 +325,9 @@ public class Gun {
             if (vgHits[g] > bestHits) { bestHits = vgHits[g]; best = g; }
         }
         if (best != activeGun) {
-            if (bestHits - vgHits[activeGun] < GUN_SWITCH_MARGIN) return activeGun;
+            int activeHits = vgHits[activeGun] + 1;
+            int dynamicMargin = Math.max(GUN_SWITCH_MARGIN, waveCount / 15);
+            if (bestHits - activeHits < dynamicMargin) return activeGun;
             if (waveCount - lastGunSwitchWave < MIN_WAVES_BETWEEN_SWITCH) return activeGun;
             lastGunSwitchWave = waveCount;
         }
@@ -464,6 +472,17 @@ public class Gun {
         return Math.max(0.1, Math.min(3.0, power));
     }
 
+    public double smartFirePower(double distance, double myEnergy,
+                                  double enemyEnergy, double perOpponentAccuracy,
+                                  int perOpponentShotsFired) {
+        double power = smartFirePower(distance, myEnergy, enemyEnergy);
+        if (perOpponentShotsFired >= 8) {
+            if (perOpponentAccuracy < 0.05) power = Math.min(power, 0.3);
+            else if (perOpponentAccuracy < 0.10) power = Math.min(power, 0.5);
+        }
+        return Math.max(0.1, power);
+    }
+
     // ── Utilities ───────────────────────────────────────────────────────
 
     private GunWave createWave(Point2D.Double pos, long time, double bulletSpeed,
@@ -511,7 +530,7 @@ public class Gun {
             case STOPPED:     return GUN_HEADON;
             case LINEAR:      return GUN_LINEAR;
             case CIRCULAR:    return GUN_CIRCULAR;
-            case WAVE_SURFER: return GUN_PATTERN;
+            case WAVE_SURFER: return GUN_GF;
             default:          return GUN_GF;
         }
     }
