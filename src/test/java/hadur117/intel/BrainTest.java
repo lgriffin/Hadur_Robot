@@ -989,6 +989,17 @@ class BrainTest {
         }
 
         @Test
+        @DisplayName("firePowerMult base value is 0.7 for RANDOM opponent")
+        void randomBaseMultiplier() {
+            ScannedRobotEvent e = mockEvent("RandBot", 0, 200, 0, 5, 100);
+            brain.update(e, 400, 300, 0, 1);
+            OpponentData od = brain.getOpponent("RandBot");
+            od.movementType = MovementType.RANDOM;
+            TargetProfile p = brain.getProfile("RandBot");
+            assertEquals(0.7, p.firePowerMult, 1e-9);
+        }
+
+        @Test
         @DisplayName("firePowerMult is clamped to [0.5, 1.5]")
         void multiplierClamped() {
             ScannedRobotEvent e = mockEvent("Bot1", 0, 200, 0, 0, 100);
