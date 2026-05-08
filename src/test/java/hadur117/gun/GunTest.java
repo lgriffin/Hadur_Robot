@@ -477,6 +477,97 @@ class GunTest {
         }
     }
 
+    // ── applyMeleeCap ──────────────────────────────────────────────────
+
+    @Nested
+    @DisplayName("applyMeleeCap()")
+    class MeleeCapTests {
+
+        @Test
+        @DisplayName("caps at 0.5 when 4 opponents alive")
+        void capsAt05With4Opponents() {
+            assertEquals(0.5, gun.applyMeleeCap(3.0, 4), 1e-9);
+        }
+
+        @Test
+        @DisplayName("caps at 0.5 when 5 opponents alive")
+        void capsAt05With5Opponents() {
+            assertEquals(0.5, gun.applyMeleeCap(2.0, 5), 1e-9);
+        }
+
+        @Test
+        @DisplayName("caps at 1.0 when exactly 3 opponents alive")
+        void capsAt10With3Opponents() {
+            assertEquals(1.0, gun.applyMeleeCap(3.0, 3), 1e-9);
+        }
+
+        @Test
+        @DisplayName("no cap when 2 opponents alive")
+        void noCapWith2Opponents() {
+            assertEquals(3.0, gun.applyMeleeCap(3.0, 2), 1e-9);
+        }
+
+        @Test
+        @DisplayName("no cap when 1 opponent alive")
+        void noCapWith1Opponent() {
+            assertEquals(2.5, gun.applyMeleeCap(2.5, 1), 1e-9);
+        }
+
+        @Test
+        @DisplayName("does not increase power already below 4-opponent cap")
+        void doesNotIncreaseLowPowerWith4() {
+            assertEquals(0.3, gun.applyMeleeCap(0.3, 4), 1e-9);
+        }
+
+        @Test
+        @DisplayName("does not increase power already below 3-opponent cap")
+        void doesNotIncreaseLowPowerWith3() {
+            assertEquals(0.3, gun.applyMeleeCap(0.3, 3), 1e-9);
+        }
+    }
+
+    // ── per-opponent accuracy tiers (5-param smartFirePower) ─────────
+
+    @Nested
+    @DisplayName("smartFirePower() per-opponent accuracy tiers")
+    class PerOpponentAccuracy {
+
+        @Test
+        @DisplayName("caps at 0.3 when perOpponentAccuracy < 5% with 8+ shots")
+        void veryLowAccuracy() {
+            double power = gun.smartFirePower(100, 100, 100, 0.04, 10);
+            assertEquals(0.3, power, 1e-9);
+        }
+
+        @Test
+        @DisplayName("caps at 0.5 when perOpponentAccuracy 5-10% with 8+ shots")
+        void lowAccuracy() {
+            double power = gun.smartFirePower(100, 100, 100, 0.08, 10);
+            assertEquals(0.5, power, 1e-9);
+        }
+
+        @Test
+        @DisplayName("caps at 0.8 when perOpponentAccuracy 10-15% with 8+ shots")
+        void mediumAccuracy() {
+            double power = gun.smartFirePower(100, 100, 100, 0.12, 10);
+            assertEquals(0.8, power, 1e-9);
+        }
+
+        @Test
+        @DisplayName("no per-opponent cap when accuracy >= 15%")
+        void goodAccuracy() {
+            double power = gun.smartFirePower(100, 100, 100, 0.16, 10);
+            assertEquals(3.0, power, 1e-9);
+        }
+
+        @Test
+        @DisplayName("no per-opponent cap when fewer than 8 shots fired")
+        void tooFewShots() {
+            double power = gun.smartFirePower(100, 100, 100, 0.02, 7);
+            assertEquals(3.0, power, 1e-9);
+        }
+    }
+
     // ── lastFirePower ─────────────────────────────────────────────────
 
     @Test

@@ -99,6 +99,13 @@ public class MinimumRiskMovement {
 
         if (nearbyCount >= 2) risk *= 1.0 + 0.3 * nearbyCount;
 
+        double myEnergy = robot.getEnergy();
+        if (myEnergy < 15) {
+            risk *= 2.5;
+        } else if (myEnergy < 30) {
+            risk *= 1.5;
+        }
+
         double wallDist = Math.min(
                 Math.min(point.x - WALL_MARGIN, fieldWidth - WALL_MARGIN - point.x),
                 Math.min(point.y - WALL_MARGIN, fieldHeight - WALL_MARGIN - point.y));

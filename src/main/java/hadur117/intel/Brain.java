@@ -190,7 +190,7 @@ public class Brain {
             case LINEAR:      mult = 1.1; break;
             case CIRCULAR:    mult = 1.0; break;
             case OSCILLATING: mult = 0.9; break;
-            case RANDOM:      mult = 0.9; break;
+            case RANDOM:      mult = 0.7; break;
             case WAVE_SURFER: mult = 0.6; break;
             default:          mult = 1.0; break;
         }

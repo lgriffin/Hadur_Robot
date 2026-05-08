@@ -140,6 +140,8 @@ public class Gun {
 
         if (profile.movementType == MovementType.WAVE_SURFER) {
             gfAngle += (Math.random() - 0.5) * 0.8 * mea;
+        } else if (profile.movementType == MovementType.RANDOM) {
+            gfAngle += (Math.random() - 0.5) * 0.4 * mea;
         }
 
         double patternAngle = patternPrediction(myPos, enemyPos, enemyHeading,
@@ -212,6 +214,7 @@ public class Gun {
         double firePower = smartFirePower(e.getDistance(), robot.getEnergy(), e.getEnergy(),
                 profile.ourAccuracy, profile.shotsFiredAt);
         firePower = Math.max(0.1, Math.min(3.0, firePower * profile.firePowerMult));
+        firePower = applyMeleeCap(firePower, robot.getOthers());
         if (firePower < 0.1) return false;
 
         double bulletSpeed = Rules.getBulletSpeed(firePower);
@@ -479,8 +482,18 @@ public class Gun {
         if (perOpponentShotsFired >= 8) {
             if (perOpponentAccuracy < 0.05) power = Math.min(power, 0.3);
             else if (perOpponentAccuracy < 0.10) power = Math.min(power, 0.5);
+            else if (perOpponentAccuracy < 0.15) power = Math.min(power, 0.8);
         }
         return Math.max(0.1, power);
+    }
+
+    double applyMeleeCap(double firePower, int aliveCount) {
+        if (aliveCount >= 4) {
+            firePower = Math.min(firePower, 0.5);
+        } else if (aliveCount >= 3) {
+            firePower = Math.min(firePower, 1.0);
+        }
+        return firePower;
     }
 
     // ── Utilities ───────────────────────────────────────────────────────
