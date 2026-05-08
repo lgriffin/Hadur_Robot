@@ -113,6 +113,62 @@ class OpponentDataTest {
         assertEquals(0.0, od.velocity, 1e-9);
     }
 
+    // ── Profile tracking defaults ─────────────────────────────────────
+
+    @Test
+    @DisplayName("default shotsFiredAt is 0")
+    void defaultShotsFiredAt() {
+        assertEquals(0, od.shotsFiredAt);
+    }
+
+    @Test
+    @DisplayName("default shotsHitOn is 0")
+    void defaultShotsHitOn() {
+        assertEquals(0, od.shotsHitOn);
+    }
+
+    @Test
+    @DisplayName("hitBearingErrors list is initially empty")
+    void hitBearingErrorsEmpty() {
+        assertNotNull(od.hitBearingErrors);
+        assertTrue(od.hitBearingErrors.isEmpty());
+    }
+
+    @Test
+    @DisplayName("default prevRoundMovementType is UNKNOWN")
+    void defaultPrevRoundMovementType() {
+        assertEquals(MovementType.UNKNOWN, od.prevRoundMovementType);
+    }
+
+    @Test
+    @DisplayName("shotsFiredAt is mutable")
+    void shotsFiredAtMutable() {
+        od.shotsFiredAt = 10;
+        assertEquals(10, od.shotsFiredAt);
+    }
+
+    @Test
+    @DisplayName("shotsHitOn is mutable")
+    void shotsHitOnMutable() {
+        od.shotsHitOn = 5;
+        assertEquals(5, od.shotsHitOn);
+    }
+
+    @Test
+    @DisplayName("hitBearingErrors can be added")
+    void hitBearingErrorsAddable() {
+        od.hitBearingErrors.add(0.05);
+        od.hitBearingErrors.add(-0.03);
+        assertEquals(2, od.hitBearingErrors.size());
+    }
+
+    @Test
+    @DisplayName("prevRoundMovementType is mutable")
+    void prevRoundMovementTypeMutable() {
+        od.prevRoundMovementType = MovementType.CIRCULAR;
+        assertEquals(MovementType.CIRCULAR, od.prevRoundMovementType);
+    }
+
     // ── Collections ────────────────────────────────────────────────────
 
     @Test

@@ -1,5 +1,7 @@
 package hadur117.gun;
 
+import hadur117.intel.TargetProfile;
+import hadur117.model.MovementType;
 import robocode.*;
 import robocode.util.Utils;
 import java.awt.geom.*;
@@ -53,8 +55,10 @@ public class Gun {
     private final int[] vgHits = new int[NUM_GUNS];
 
     private int activeGun = GUN_GF;
+    private int recommendedGun = GUN_GF;
     private int shotsFired = 0;
     private int shotsHit = 0;
+    private double lastFirePower = 0;
 
     private double prevEnemyVelocity = 0;
     private double prevEnemyHeading = 0;
@@ -72,7 +76,9 @@ public class Gun {
         this.bfHeight = bfHeight;
     }
 
-    public void onScannedRobot(AdvancedRobot robot, ScannedRobotEvent e) {
+    public boolean onScannedRobot(AdvancedRobot robot, ScannedRobotEvent e,
+                                    TargetProfile profile) {
+        recommendedGun = gunForMovementType(profile.movementType);
         Point2D.Double myPos = new Point2D.Double(robot.getX(), robot.getY());
         double absBearing = robot.getHeadingRadians() + e.getBearingRadians();
         double enemyDist = e.getDistance();
@@ -109,10 +115,11 @@ public class Gun {
         updateWaves(enemyPos, robot.getTime());
 
         double firePower = smartFirePower(enemyDist, robot.getEnergy(), e.getEnergy());
+        firePower = Math.max(0.1, Math.min(3.0, firePower * profile.firePowerMult));
         if (firePower < 0.1) {
             prevEnemyVelocity = enemyVel;
             prevEnemyHeading = enemyHeading;
-            return;
+            return false;
         }
 
         double bulletSpeed = Rules.getBulletSpeed(firePower);
@@ -145,10 +152,13 @@ public class Gun {
         robot.setTurnGunRightRadians(Utils.normalRelativeAngle(
                 aimAngle - robot.getGunHeadingRadians()));
 
+        boolean fired = false;
         if (robot.getGunHeat() == 0 && robot.getEnergy() > 0.1) {
+            lastFirePower = firePower;
             Bullet b = robot.setFireBullet(firePower);
             if (b != null) {
                 shotsFired++;
+                fired = true;
                 waves.add(createWave(myPos, robot.getTime(), bulletSpeed,
                         absBearing, mea, segStats, distSeg, velSeg, latvelSeg,
                         accelSeg, wallSeg, true,
@@ -165,10 +175,12 @@ public class Gun {
 
         prevEnemyVelocity = enemyVel;
         prevEnemyHeading = enemyHeading;
+        return fired;
     }
 
     public boolean onScannedRobotMelee(AdvancedRobot robot, ScannedRobotEvent e,
-                                        String targetName, String scannedName) {
+                                        String targetName, String scannedName,
+                                        TargetProfile profile) {
         double[] prev = meleeState.computeIfAbsent(scannedName, k -> new double[]{0, 0});
 
         Point2D.Double myPos = new Point2D.Double(robot.getX(), robot.getY());
@@ -186,6 +198,7 @@ public class Gun {
         if (!scannedName.equals(targetName)) return false;
 
         double firePower = smartFirePower(e.getDistance(), robot.getEnergy(), e.getEnergy());
+        firePower = Math.max(0.1, Math.min(3.0, firePower * profile.firePowerMult));
         if (firePower < 0.1) return false;
 
         double bulletSpeed = Rules.getBulletSpeed(firePower);
@@ -196,12 +209,11 @@ public class Gun {
         double headOnAngle = absBearing;
 
         double aimAngle;
-        if (Math.abs(turnRate) > 0.01) {
-            aimAngle = circAngle;
-        } else if (Math.abs(enemyVel) > 0.5) {
-            aimAngle = linAngle;
-        } else {
-            aimAngle = headOnAngle;
+        switch (profile.movementType) {
+            case STOPPED:  aimAngle = headOnAngle; break;
+            case LINEAR:   aimAngle = linAngle; break;
+            case CIRCULAR: aimAngle = circAngle; break;
+            default:       aimAngle = circAngle; break;
         }
 
         robot.setTurnGunRightRadians(Utils.normalRelativeAngle(
@@ -211,6 +223,7 @@ public class Gun {
             double gunErr = Math.abs(Utils.normalRelativeAngle(
                     robot.getGunHeadingRadians() - aimAngle));
             if (gunErr < Math.toRadians(3)) {
+                lastFirePower = firePower;
                 Bullet b = robot.setFireBullet(firePower);
                 if (b != null) {
                     shotsFired++;
@@ -227,6 +240,7 @@ public class Gun {
 
     public void onBulletHit(BulletHitEvent e) { shotsHit++; }
     public void onBulletMissed(BulletMissedEvent e) {}
+    public double getLastFirePower() { return lastFirePower; }
 
     public int getShotsFired() { return shotsFired; }
     public int getShotsHit() { return shotsHit; }
@@ -290,7 +304,7 @@ public class Gun {
     }
 
     private int selectBestGun() {
-        if (vgResults.size() < 5) return GUN_GF;
+        if (vgResults.size() < 10) return recommendedGun;
         int best = GUN_GF;
         int bestHits = vgHits[GUN_GF];
         for (int g = 1; g < NUM_GUNS; g++) {
@@ -474,5 +488,15 @@ public class Gun {
 
     private static double clampD(double val, double min, double max) {
         return Math.max(min, Math.min(max, val));
+    }
+
+    private static int gunForMovementType(MovementType mt) {
+        switch (mt) {
+            case STOPPED:     return GUN_HEADON;
+            case LINEAR:      return GUN_LINEAR;
+            case CIRCULAR:    return GUN_CIRCULAR;
+            case WAVE_SURFER: return GUN_PATTERN;
+            default:          return GUN_GF;
+        }
     }
 }

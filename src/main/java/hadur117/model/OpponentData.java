@@ -31,6 +31,11 @@ public class OpponentData {
     public double damageReceived = 0;
     public int hitsOnUs = 0;
 
+    public int shotsFiredAt = 0;
+    public int shotsHitOn = 0;
+    public final List<Double> hitBearingErrors = new ArrayList<>();
+    public MovementType prevRoundMovementType = MovementType.UNKNOWN;
+
     public final LinkedList<Snapshot> window = new LinkedList<>();
 
     public OpponentData(String name) {

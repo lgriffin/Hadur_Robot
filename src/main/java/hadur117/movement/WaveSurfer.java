@@ -95,6 +95,10 @@ public class WaveSurfer {
     }
 
     public void doSurfing(AdvancedRobot robot) {
+        doSurfing(robot, "UNKNOWN");
+    }
+
+    public void doSurfing(AdvancedRobot robot, String opponentGunType) {
         Point2D.Double myPos = new Point2D.Double(robot.getX(), robot.getY());
 
         for (EnemyWave w : waves) w.distanceTraveled += w.bulletSpeed;
@@ -105,23 +109,32 @@ public class WaveSurfer {
 
         EnemyWave wave2 = secondClosestWave(myPos, wave1);
 
-        double dangerCW = evaluateDanger(robot, -1, wave1, wave2);
-        double dangerCCW = evaluateDanger(robot, 1, wave1, wave2);
+        double dangerCW = evaluateDanger(robot, -1, wave1, wave2, opponentGunType);
+        double dangerCCW = evaluateDanger(robot, 1, wave1, wave2, opponentGunType);
 
         goDirection(robot, dangerCW < dangerCCW ? -1 : 1, wave1);
     }
 
     private double evaluateDanger(AdvancedRobot robot, int direction,
-                                   EnemyWave wave1, EnemyWave wave2) {
+                                   EnemyWave wave1, EnemyWave wave2,
+                                   String opponentGunType) {
         Point2D.Double pred = predictPosition(robot, direction, wave1);
         int bin = getGFBin(wave1, pred);
         double[] stats = dangerStats[wave1.distSeg][wave1.velSeg][wave1.accelSeg];
         double danger = smoothDanger(stats, bin);
 
+        double flatWeight;
+        switch (opponentGunType) {
+            case "HEAD_ON":    flatWeight = 0.1; break;
+            case "LINEAR":     flatWeight = 0.2; break;
+            case "STATISTICAL": flatWeight = 0.4; break;
+            default:           flatWeight = 0.3; break;
+        }
+
         if (totalWavesPassed > 20 && totalHitsTaken > 0) {
             double hitRate = (double) totalHitsTaken / totalWavesPassed;
             if (hitRate > 0.09) {
-                danger += moveProfile[clampBin(bin)] * 0.3;
+                danger += moveProfile[clampBin(bin)] * flatWeight;
             }
         }
 
@@ -163,6 +176,8 @@ public class WaveSurfer {
     }
 
     public int getRoundHitsTaken() { return roundHitsTaken; }
+    public static int getTotalHitsTaken() { return totalHitsTaken; }
+    public static int getTotalWavesPassed() { return totalWavesPassed; }
 
     // ── Private helpers ─────────────────────────────────────────────────
 
