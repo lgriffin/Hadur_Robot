@@ -200,7 +200,7 @@ public class MovementSteps {
 
     // ── Scenario: Movement prediction uses accurate physics ─────────────
 
-    @Given("Hadur is at position \\({int}, {int}) with velocity {int} and heading {int} degrees")
+    @Given("Hadur is at position \\({int}, {int}\\) with velocity {int} and heading {int} degrees")
     public void hadur_at_position_with_velocity_and_heading(int x, int y, int vel, int heading) {
         when(robot.getX()).thenReturn((double) x);
         when(robot.getY()).thenReturn((double) y);
@@ -265,7 +265,7 @@ public class MovementSteps {
         assertEquals(1, seg, "300 pixels should map to segment 1 (medium-close)");
     }
 
-    @And("the segment boundaries should be close \\(<{int}), medium \\({int}-{int}), and far \\(>{int})")
+    @And("the segment boundaries should be close \\(<{int}\\), medium \\({int}-{int}\\), and far \\(>{int}\\)")
     public void segment_boundaries_should_be(int closeBound, int medLow, int medHigh, int farBound) {
         // Verify the actual segment boundaries used in WaveSurfer
         assertEquals(0, distSegHelper(150), "< 200 should be segment 0 (close)");
@@ -324,7 +324,7 @@ public class MovementSteps {
         assertTrue(true, "Adjacent bins get reduced weights");
     }
 
-    @And("the smoothing kernel should use weights \\[{double}, {double}, {double}, {double}, {double}]")
+    @And("the smoothing kernel should use weights [{double}, {double}, {double}, {double}, {double}]")
     public void smoothing_kernel_weights(double w1, double w2, double w3, double w4, double w5) {
         // WaveSurfer.logHit and smoothDanger both use:
         // |i|==2 -> 0.25, |i|==1 -> 0.5, i==0 -> 1.0

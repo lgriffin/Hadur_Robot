@@ -60,6 +60,8 @@ public class Gun {
     private double prevEnemyHeading = 0;
     private double enemyLatDir = 1.0;
 
+    private final Map<String, double[]> meleeState = new HashMap<>();
+
     private final double[] headingHist = new double[PATTERN_HISTORY];
     private final double[] velocityHist = new double[PATTERN_HISTORY];
     private int histIndex = 0;
@@ -165,9 +167,9 @@ public class Gun {
         prevEnemyHeading = enemyHeading;
     }
 
-    public void onScannedRobotMelee(AdvancedRobot robot, ScannedRobotEvent e,
-                                     String targetName, String scannedName) {
-        if (!scannedName.equals(targetName)) return;
+    public boolean onScannedRobotMelee(AdvancedRobot robot, ScannedRobotEvent e,
+                                        String targetName, String scannedName) {
+        double[] prev = meleeState.computeIfAbsent(scannedName, k -> new double[]{0, 0});
 
         Point2D.Double myPos = new Point2D.Double(robot.getX(), robot.getY());
         double absBearing = robot.getHeadingRadians() + e.getBearingRadians();
@@ -175,29 +177,52 @@ public class Gun {
 
         double enemyVel = e.getVelocity();
         double enemyHeading = e.getHeadingRadians();
-        double turnRate = Utils.normalRelativeAngle(enemyHeading - prevEnemyHeading);
+        double turnRate = prev[1] != 0
+                ? Utils.normalRelativeAngle(enemyHeading - prev[1]) : 0;
+
+        prev[0] = enemyVel;
+        prev[1] = enemyHeading;
+
+        if (!scannedName.equals(targetName)) return false;
 
         double firePower = smartFirePower(e.getDistance(), robot.getEnergy(), e.getEnergy());
-        if (firePower < 0.1) {
-            prevEnemyVelocity = enemyVel;
-            prevEnemyHeading = enemyHeading;
-            return;
-        }
+        if (firePower < 0.1) return false;
 
         double bulletSpeed = Rules.getBulletSpeed(firePower);
-        double aimAngle = circularPrediction(myPos, enemyPos, enemyHeading,
+        double circAngle = circularPrediction(myPos, enemyPos, enemyHeading,
                 enemyVel, turnRate, bulletSpeed);
+        double linAngle = linearPrediction(myPos, enemyPos, enemyHeading,
+                enemyVel, bulletSpeed);
+        double headOnAngle = absBearing;
+
+        double aimAngle;
+        if (Math.abs(turnRate) > 0.01) {
+            aimAngle = circAngle;
+        } else if (Math.abs(enemyVel) > 0.5) {
+            aimAngle = linAngle;
+        } else {
+            aimAngle = headOnAngle;
+        }
 
         robot.setTurnGunRightRadians(Utils.normalRelativeAngle(
                 aimAngle - robot.getGunHeadingRadians()));
 
         if (robot.getGunHeat() == 0 && robot.getEnergy() > 0.1) {
-            Bullet b = robot.setFireBullet(firePower);
-            if (b != null) shotsFired++;
+            double gunErr = Math.abs(Utils.normalRelativeAngle(
+                    robot.getGunHeadingRadians() - aimAngle));
+            if (gunErr < Math.toRadians(3)) {
+                Bullet b = robot.setFireBullet(firePower);
+                if (b != null) {
+                    shotsFired++;
+                    return true;
+                }
+            }
         }
+        return false;
+    }
 
-        prevEnemyVelocity = enemyVel;
-        prevEnemyHeading = enemyHeading;
+    public void clearMeleeState() {
+        meleeState.clear();
     }
 
     public void onBulletHit(BulletHitEvent e) { shotsHit++; }

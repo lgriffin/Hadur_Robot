@@ -76,7 +76,7 @@ Feature: Targeting System - Virtual Gun Array
     When the maximum escape angle is calculated
     Then it should use the formula: asin(8.0 / bulletSpeed)
     And the bullet speed should be: 20 - 3 * 2.0 = 14.0
-    And the maximum escape angle should be approximately 0.571 radians
+    And the maximum escape angle should be approximately 0.608 radians
 
   Scenario: Apply rolling decay to old observations
     Given the GuessFactor stats have 200 recorded observations

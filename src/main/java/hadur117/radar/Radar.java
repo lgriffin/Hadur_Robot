@@ -38,12 +38,6 @@ public class Radar {
         robot.setTurnRadarRightRadians(radarTurn * 1.9);
     }
 
-    public void doMeleeRadarWithGunLock(AdvancedRobot robot, Brain brain,
-                                         double gunHeat) {
-        if (gunHeat > 0 && gunHeat < 0.3) return;
-        doMeleeRadar(robot, brain);
-    }
-
     public void spinRadar(AdvancedRobot robot) {
         robot.setTurnRadarRightRadians(Double.POSITIVE_INFINITY);
     }

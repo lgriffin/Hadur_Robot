@@ -63,6 +63,11 @@ public class Hadur extends AdvancedRobot {
         waveSurfer.init(bfW, bfH);
         minimumRisk.init(bfW, bfH);
 
+        brain.resetRound();
+        targetSelector.resetRound();
+        radar.resetRound();
+        gun.clearMeleeState();
+
         battleMode = getOthers() > 1 ? BattleMode.MELEE : BattleMode.DUEL;
         brain.setBattleMode(getOthers());
 
@@ -106,7 +111,7 @@ public class Hadur extends AdvancedRobot {
             return;
         }
 
-        radar.doMeleeRadarWithGunLock(this, brain, getGunHeat());
+        radar.spinRadar(this);
         minimumRisk.doMinimumRisk(this, brain);
     }
 
@@ -128,9 +133,9 @@ public class Hadur extends AdvancedRobot {
         } else {
             String target = targetSelector.selectTarget(this, brain);
             if (target != null) {
-                gun.onScannedRobotMelee(this, e, target, e.getName());
+                boolean fired = gun.onScannedRobotMelee(this, e, target, e.getName());
+                if (fired) brain.recordOurFire(getTime());
             }
-            radar.doMeleeRadar(this, brain);
         }
     }
 

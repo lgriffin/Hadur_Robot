@@ -13,7 +13,7 @@ import robocode.util.Utils;
  */
 public class MeleeTargetSelector {
 
-    private static final double HYSTERESIS = 0.90;
+    private static final double HYSTERESIS = 0.80;
     private String currentTarget;
     private long lastSwitchTime = -1;
 
@@ -35,8 +35,8 @@ public class MeleeTargetSelector {
             double angle = Math.atan2(od.x - myX, od.y - myY);
             double gunTurn = Math.abs(Utils.normalRelativeAngle(angle - gunHeading));
 
-            double score = od.energy * 1.5 + dist * 0.15
-                         + Math.toDegrees(gunTurn) * 0.8;
+            double score = od.energy * 0.8 + dist * 0.5
+                         + Math.toDegrees(gunTurn) * 0.3;
 
             if (od.energy == 0) score = -1000;
 

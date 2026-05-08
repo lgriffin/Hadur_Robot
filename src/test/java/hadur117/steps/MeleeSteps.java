@@ -49,6 +49,7 @@ public class MeleeSteps {
         when(robot.getTime()).thenReturn(10L);
 
         brain = new Brain();
+        clearStaticOpponents();
         targetSelector = new MeleeTargetSelector();
         minimumRisk = new MinimumRiskMovement();
         minimumRisk.init(800.0, 600.0);
@@ -73,7 +74,7 @@ public class MeleeSteps {
 
     // ── Scenario: Detect 1v1 battle mode ────────────────────────────────
 
-    @Given("there are exactly {int} robots in the battle \\(Hadur and one enemy)")
+    @Given("there are exactly {int} robots in the battle \\(Hadur and one enemy\\)")
     public void there_are_exactly_robots_in_battle(int total) {
         robotCount = total;
         brain.setBattleMode(total - 1);
@@ -255,17 +256,17 @@ public class MeleeSteps {
 
     // ── Scenario: Move away from clusters of enemies ────────────────────
 
-    @Given("enemy A is at position \\({int}, {int})")
+    @Given("enemy A is at position \\({int}, {int}\\)")
     public void enemy_a_at_position(int x, int y) {
         addOpponent("EnemyA", 80, x, y);
     }
 
-    @And("enemy B is at position \\({int}, {int})")
+    @And("enemy B is at position \\({int}, {int}\\)")
     public void enemy_b_at_position(int x, int y) {
         addOpponent("EnemyB", 80, x, y);
     }
 
-    @And("enemy C is at position \\({int}, {int})")
+    @And("enemy C is at position \\({int}, {int}\\)")
     public void enemy_c_at_position(int x, int y) {
         addOpponent("EnemyC", 80, x, y);
     }
@@ -276,7 +277,7 @@ public class MeleeSteps {
         // using energy / distance^2
     }
 
-    @Then("the combined repulsion from A and B should be strong \\(they are close together and to Hadur)")
+    @Then("the combined repulsion from A and B should be strong \\(they are close together and to Hadur\\)")
     public void combined_repulsion_should_be_strong() {
         // A(200,200) and B(250,230) are close to each other and close to Hadur(400,300)
         // Their combined risk is high due to proximity
@@ -302,7 +303,7 @@ public class MeleeSteps {
 
     // ── Scenario: Apply wall repulsion force ────────────────────────────
 
-    @Given("Hadur is at position \\({int}, {int})")
+    @Given("Hadur is at position \\({int}, {int}\\)")
     public void hadur_at_position(int x, int y) {
         when(robot.getX()).thenReturn((double) x);
         when(robot.getY()).thenReturn((double) y);
@@ -458,7 +459,7 @@ public class MeleeSteps {
         assertTrue(hasAngle, "Scoring should include gun angle");
     }
 
-    @And("opponent A should be the highest priority target \\(low energy, close range)")
+    @And("opponent A should be the highest priority target \\(low energy, close range\\)")
     public void opponent_a_should_be_highest_priority() {
         assertNotNull(selectedTarget, "A target should be selected");
         // OpponentA: energy=20, distance=200
@@ -560,7 +561,7 @@ public class MeleeSteps {
         // In melee, onScannedRobotMelee uses circularPrediction
     }
 
-    @Then("the primary gun should be circular prediction \\(fast, good enough)")
+    @Then("the primary gun should be circular prediction \\(fast, good enough\\)")
     public void primary_gun_should_be_circular() {
         // onScannedRobotMelee uses circularPrediction directly
         assertTrue(true, "Melee mode uses circularPrediction as primary gun");
@@ -571,7 +572,7 @@ public class MeleeSteps {
         assertTrue(true, "circularPrediction falls back to head-on if no convergence");
     }
 
-    @And("the full virtual gun array should NOT be used \\(too computationally expensive for melee)")
+    @And("the full virtual gun array should NOT be used \\(too computationally expensive for melee\\)")
     public void full_vga_should_not_be_used() {
         // onScannedRobotMelee does NOT compute all 5 gun angles
         // It only computes circularPrediction
@@ -668,6 +669,11 @@ public class MeleeSteps {
         addOpponent("LowB", 25, 600, 400);
     }
 
+    @Given("Hadur has the highest energy")
+    public void hadur_has_the_highest_energy() {
+        when(robot.getEnergy()).thenReturn(80.0);
+    }
+
     @Then("Hadur should reduce unnecessary aggression")
     public void hadur_should_reduce_unnecessary_aggression() {
         // TODO: @Pending -- aggression modulation not explicitly implemented
@@ -757,6 +763,19 @@ public class MeleeSteps {
     }
 
     // ── Helpers ─────────────────────────────────────────────────────────
+
+    private void clearStaticOpponents() {
+        try {
+            java.lang.reflect.Field field = Brain.class.getDeclaredField("opponents");
+            field.setAccessible(true);
+            @SuppressWarnings("unchecked")
+            java.util.Map<String, OpponentData> opponents =
+                    (java.util.Map<String, OpponentData>) field.get(null);
+            opponents.clear();
+        } catch (Exception e) {
+            fail("Failed to clear opponents via reflection: " + e.getMessage());
+        }
+    }
 
     private void addOpponent(String name, double energy, double x, double y) {
         OpponentData od = new OpponentData(name);

@@ -45,18 +45,18 @@ public class StrategySteps {
 
     // ── Scenario: Detect battle mode at startup ─────────────────────────
 
-    @When("Hadur's run\\() method executes")
+    @When("Hadur's run\\(\\) method executes")
     public void hadur_run_method_executes() {
         // Mode detection happens at startup
     }
 
-    @Then("Hadur should query getOthers\\() to count opponents")
+    @Then("Hadur should query getOthers\\(\\) to count opponents")
     public void hadur_should_query_get_others() {
         // Hadur.run() calls getOthers() to determine mode
         assertTrue(true, "getOthers() is called in run()");
     }
 
-    @And("if getOthers\\() equals {int} the mode should be {string}")
+    @And("if getOthers\\(\\) equals {int} the mode should be {string}")
     public void if_get_others_equals_mode_should_be(int others, String mode) {
         brain.setBattleMode(others);
         BattleMode expected = BattleMode.valueOf(mode);
@@ -64,7 +64,7 @@ public class StrategySteps {
                 "With " + others + " opponents, mode should be " + mode);
     }
 
-    @And("if getOthers\\() is greater than {int} the mode should be {string}")
+    @And("if getOthers\\(\\) is greater than {int} the mode should be {string}")
     public void if_get_others_greater_than_mode_should_be(int threshold, String mode) {
         brain.setBattleMode(threshold + 1);
         BattleMode expected = BattleMode.valueOf(mode);
@@ -280,7 +280,7 @@ public class StrategySteps {
         firePower = gun.smartFirePower(350, 60.0, 25.0);
     }
 
-    @Then("the base power should reflect the distance \\(approximately {double})")
+    @Then("the base power should reflect the distance \\(approximately {double}\\)")
     public void the_base_power_should_reflect_distance(double expected) {
         // At 350px, the distance-based default is 2.0 (range 250-400)
         assertTrue(firePower > 0, "Fire power should be positive");
@@ -436,7 +436,7 @@ public class StrategySteps {
         // printAggregateSummary in Hadur
     }
 
-    @Then("it should include win/loss ratio across all rounds")
+    @Then("it should include win\\/loss ratio across all rounds")
     public void it_should_include_win_loss_ratio() {
         assertTrue(true, "Win rate is calculated as roundsWon/roundsPlayed");
     }
@@ -451,7 +451,7 @@ public class StrategySteps {
         assertTrue(true, "Damage dealt vs wall damage is tracked");
     }
 
-    @And("it should identify performance trends \\(IMPROVING, STABLE, DECLINING)")
+    @And("it should identify performance trends \\(IMPROVING, STABLE, DECLINING\\)")
     public void it_should_identify_performance_trends() {
         // TODO: @Pending -- trend analysis not yet implemented
         assertTrue(true, "Performance trend analysis is a future enhancement");

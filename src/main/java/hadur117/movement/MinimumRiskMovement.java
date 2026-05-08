@@ -77,12 +77,13 @@ public class MinimumRiskMovement {
         double risk = 0;
 
         for (OpponentData od : brain.getAllOpponents()) {
-            if (od.energy <= 0 || robot.getTime() - od.lastScanTick > 50) continue;
+            if (od.energy <= 0 || robot.getTime() - od.lastScanTick > 30) continue;
 
             double dist = point.distance(od.x, od.y);
             if (dist < 1) dist = 1;
 
             double enemyRisk = od.energy / (dist * dist);
+            enemyRisk *= (0.5 + od.threatLevel);
             if (dist < 200) enemyRisk *= 2.0;
 
             double lateralAngle = Math.abs(Math.sin(

@@ -277,7 +277,7 @@ public class TargetingSteps {
         maxEscapeAngle = Math.asin(8.0 / bulletSpeed);
     }
 
-    @Then("it should use the formula: asin\\({double} / bulletSpeed)")
+    @Then("it should use the formula: asin\\({double} \\/ bulletSpeed\\)")
     public void it_should_use_the_formula(double maxBotSpeed) {
         assertEquals(8.0, maxBotSpeed, 0.001, "Max bot speed is 8.0");
         double calculated = Math.asin(maxBotSpeed / bulletSpeed);
