@@ -49,6 +49,7 @@ public class MeleeSteps {
         when(robot.getTime()).thenReturn(10L);
 
         brain = new Brain();
+        clearStaticOpponents();
         targetSelector = new MeleeTargetSelector();
         minimumRisk = new MinimumRiskMovement();
         minimumRisk.init(800.0, 600.0);
@@ -762,6 +763,19 @@ public class MeleeSteps {
     }
 
     // ── Helpers ─────────────────────────────────────────────────────────
+
+    private void clearStaticOpponents() {
+        try {
+            java.lang.reflect.Field field = Brain.class.getDeclaredField("opponents");
+            field.setAccessible(true);
+            @SuppressWarnings("unchecked")
+            java.util.Map<String, OpponentData> opponents =
+                    (java.util.Map<String, OpponentData>) field.get(null);
+            opponents.clear();
+        } catch (Exception e) {
+            fail("Failed to clear opponents via reflection: " + e.getMessage());
+        }
+    }
 
     private void addOpponent(String name, double energy, double x, double y) {
         OpponentData od = new OpponentData(name);
