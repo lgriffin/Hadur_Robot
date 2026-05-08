@@ -15,15 +15,18 @@ public class TargetProfile {
     public final String gunType;
     public final double firePowerMult;
     public final double ourAccuracy;
+    public final int shotsFiredAt;
 
     public static final TargetProfile BALANCED_DEFAULT =
-            new TargetProfile(MovementType.UNKNOWN, "UNKNOWN", 1.0, 0.15);
+            new TargetProfile(MovementType.UNKNOWN, "UNKNOWN", 1.0, 0.15, 0);
 
     public TargetProfile(MovementType movementType, String gunType,
-                          double firePowerMult, double ourAccuracy) {
+                          double firePowerMult, double ourAccuracy,
+                          int shotsFiredAt) {
         this.movementType = movementType;
         this.gunType = gunType;
         this.firePowerMult = firePowerMult;
         this.ourAccuracy = ourAccuracy;
+        this.shotsFiredAt = shotsFiredAt;
     }
 }
