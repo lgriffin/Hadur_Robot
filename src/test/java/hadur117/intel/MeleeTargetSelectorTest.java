@@ -145,24 +145,46 @@ class MeleeTargetSelectorTest {
     class HysteresisTests {
 
         @Test
-        @DisplayName("keeps current target when new target is only marginally better")
-        void keepsCurrentTarget() {
+        @DisplayName("keeps current target when switch cooldown not elapsed")
+        void keepsCurrentDuringCooldown() {
             setupRobot(400, 300, 10, 0);
-            // First selection picks Bot1
-            OpponentData bot1 = makeOpponent("Bot1", 50, 500, 300, 8); // dist=100
+            OpponentData bot1 = makeOpponent("Bot1", 50, 500, 300, 8);
             when(brain.getAllOpponents()).thenReturn(Collections.singleton(bot1));
             when(brain.getOpponent("Bot1")).thenReturn(bot1);
             selector.selectTarget(robot, brain);
             assertEquals("Bot1", selector.getCurrentTarget());
 
-            // Second selection: Bot2 is slightly closer but hysteresis keeps Bot1
-            // Bot1 at dist=100, Bot2 at dist=95
-            // If bestDist(95) > currentDist(100) * 0.90 (=90) => 95 > 90 => keep Bot1
-            setupRobot(400, 300, 11, 0);
-            OpponentData bot2 = makeOpponent("Bot2", 50, 495, 300, 10); // dist=95
+            // Only 5 ticks later — within MIN_SWITCH_INTERVAL (30)
+            setupRobot(400, 300, 15, 0);
+            OpponentData bot2 = makeOpponent("Bot2", 10, 410, 300, 14);
+            bot1.lastScanTick = 14;
             when(brain.getAllOpponents()).thenReturn(Arrays.asList(bot1, bot2));
             when(brain.getOpponent("Bot1")).thenReturn(bot1);
             when(brain.getOpponent("Bot2")).thenReturn(bot2);
+            when(brain.getOurAccuracy("Bot2")).thenReturn(0.15);
+            selector.selectTarget(robot, brain);
+            assertEquals("Bot1", selector.getCurrentTarget());
+        }
+
+        @Test
+        @DisplayName("keeps current target when new score is only marginally better")
+        void keepsCurrentWhenMarginal() {
+            setupRobot(400, 300, 10, 0);
+            OpponentData bot1 = makeOpponent("Bot1", 50, 500, 300, 8);
+            when(brain.getAllOpponents()).thenReturn(Collections.singleton(bot1));
+            when(brain.getOpponent("Bot1")).thenReturn(bot1);
+            selector.selectTarget(robot, brain);
+
+            // 50 ticks later (past cooldown), Bot2 slightly better
+            setupRobot(400, 300, 60, 0);
+            OpponentData bot2 = makeOpponent("Bot2", 48, 495, 300, 58);
+            bot1.lastScanTick = 58;
+            when(brain.getAllOpponents()).thenReturn(Arrays.asList(bot1, bot2));
+            when(brain.getOpponent("Bot1")).thenReturn(bot1);
+            when(brain.getOpponent("Bot2")).thenReturn(bot2);
+            when(brain.getOurAccuracy("Bot1")).thenReturn(0.15);
+            when(brain.getOurAccuracy("Bot2")).thenReturn(0.15);
+            // Scores are very similar — hysteresis keeps Bot1
             selector.selectTarget(robot, brain);
             assertEquals("Bot1", selector.getCurrentTarget());
         }
@@ -171,23 +193,22 @@ class MeleeTargetSelectorTest {
         @DisplayName("switches target when new target is significantly better")
         void switchesWhenSignificantlyBetter() {
             setupRobot(400, 300, 10, 0);
-            // First pick Bot1 at dist=300
-            OpponentData bot1 = makeOpponent("Bot1", 50, 700, 300, 8);
+            OpponentData bot1 = makeOpponent("Bot1", 80, 700, 300, 8);
             when(brain.getAllOpponents()).thenReturn(Collections.singleton(bot1));
             when(brain.getOpponent("Bot1")).thenReturn(bot1);
             selector.selectTarget(robot, brain);
             assertEquals("Bot1", selector.getCurrentTarget());
 
-            // Bot2 much closer (dist=50), energy much lower
-            // Score for Bot2 will be much lower than Bot1
-            setupRobot(400, 300, 11, 0);
-            OpponentData bot2 = makeOpponent("Bot2", 10, 450, 300, 10); // dist=50
-            bot1.lastScanTick = 10; // keep Bot1 fresh too
+            // 50 ticks later (past cooldown), Bot2 much closer with less energy
+            setupRobot(400, 300, 60, 0);
+            OpponentData bot2 = makeOpponent("Bot2", 10, 420, 300, 58);
+            bot1.lastScanTick = 58;
             when(brain.getAllOpponents()).thenReturn(Arrays.asList(bot1, bot2));
             when(brain.getOpponent("Bot1")).thenReturn(bot1);
             when(brain.getOpponent("Bot2")).thenReturn(bot2);
-            // Bot2 dist=50, Bot1 dist=300 => bestDist(50) < currentDist(300)*0.90(=270)
-            // => switch to Bot2
+            when(brain.getOurAccuracy("Bot1")).thenReturn(0.15);
+            when(brain.getOurAccuracy("Bot2")).thenReturn(0.15);
+            // Bot2 score much lower than Bot1 => switch
             selector.selectTarget(robot, brain);
             assertEquals("Bot2", selector.getCurrentTarget());
         }
@@ -201,13 +222,14 @@ class MeleeTargetSelectorTest {
             when(brain.getOpponent("Bot1")).thenReturn(bot1);
             selector.selectTarget(robot, brain);
 
-            // Bot1 dies, Bot2 is new
+            // Bot1 dies — no cooldown or hysteresis applies
             setupRobot(400, 300, 11, 0);
             bot1.energy = 0;
             OpponentData bot2 = makeOpponent("Bot2", 80, 600, 400, 10);
             when(brain.getAllOpponents()).thenReturn(Arrays.asList(bot1, bot2));
             when(brain.getOpponent("Bot1")).thenReturn(bot1);
             when(brain.getOpponent("Bot2")).thenReturn(bot2);
+            when(brain.getOurAccuracy("Bot2")).thenReturn(0.15);
             selector.selectTarget(robot, brain);
             assertEquals("Bot2", selector.getCurrentTarget());
         }

@@ -78,7 +78,9 @@ public class Hadur extends AdvancedRobot {
 
         if (getRoundNum() == 0) {
             try {
-                java.io.File logFile = getDataFile("hadur_battle.log");
+                String timestamp = new java.text.SimpleDateFormat("yyyyMMdd_HHmmss")
+                        .format(new java.util.Date());
+                java.io.File logFile = getDataFile("hadur_battle_" + timestamp + ".log");
                 out.println("[Hadur] Log file: " + logFile.getAbsolutePath());
                 BattleLogger.init(new RobocodeFileOutputStream(logFile));
             } catch (IOException e) {

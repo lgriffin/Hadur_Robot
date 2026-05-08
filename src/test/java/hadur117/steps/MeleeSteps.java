@@ -521,7 +521,7 @@ public class MeleeSteps {
 
     @When("the target selector evaluates")
     public void the_target_selector_evaluates() {
-        when(robot.getTime()).thenReturn(15L);
+        when(robot.getTime()).thenReturn(50L);
         selectedTarget = targetSelector.selectTarget(robot, brain);
     }
 

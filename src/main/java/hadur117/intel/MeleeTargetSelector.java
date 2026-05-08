@@ -13,7 +13,8 @@ import robocode.util.Utils;
  */
 public class MeleeTargetSelector {
 
-    private static final double HYSTERESIS = 0.80;
+    private static final double HYSTERESIS = 0.75;
+    private static final int MIN_SWITCH_INTERVAL = 30;
     private String currentTarget;
     private long lastSwitchTime = -1;
 
@@ -30,19 +31,7 @@ public class MeleeTargetSelector {
             if (od.energy <= 0) continue;
             if (time - od.lastScanTick > 50) continue;
 
-            double dist = Math.sqrt((od.x - myX) * (od.x - myX)
-                                   + (od.y - myY) * (od.y - myY));
-            double angle = Math.atan2(od.x - myX, od.y - myY);
-            double gunTurn = Math.abs(Utils.normalRelativeAngle(angle - gunHeading));
-
-            double score = od.energy * 0.8 + dist * 0.5
-                         + Math.toDegrees(gunTurn) * 0.3;
-
-            double acc = brain.getOurAccuracy(od.name);
-            if (acc > 0.20) score *= 0.7;
-            else if (acc < 0.05 && od.shotsFiredAt > 10) score *= 1.4;
-
-            if (od.energy == 0) score = -1000;
+            double score = scoreOpponent(od, myX, myY, gunHeading, brain);
 
             if (score < bestScore) {
                 bestScore = score;
@@ -53,17 +42,15 @@ public class MeleeTargetSelector {
         if (currentTarget != null && bestTarget != null
                 && !bestTarget.equals(currentTarget)) {
             OpponentData current = brain.getOpponent(currentTarget);
-            if (current != null && current.energy > 0
-                    && time - current.lastScanTick < 50) {
-                double currentDist = Math.sqrt(
-                        (current.x - myX) * (current.x - myX)
-                      + (current.y - myY) * (current.y - myY));
-                OpponentData best = brain.getOpponent(bestTarget);
-                if (best != null) {
-                    double bestDist = Math.sqrt(
-                            (best.x - myX) * (best.x - myX)
-                          + (best.y - myY) * (best.y - myY));
-                    if (bestDist > currentDist * HYSTERESIS) {
+            boolean currentViable = current != null && current.energy > 0
+                    && time - current.lastScanTick < 50;
+            if (currentViable) {
+                if (time - lastSwitchTime < MIN_SWITCH_INTERVAL) {
+                    bestTarget = currentTarget;
+                } else {
+                    double currentScore = scoreOpponent(current, myX, myY,
+                            gunHeading, brain);
+                    if (bestScore > currentScore * HYSTERESIS) {
                         bestTarget = currentTarget;
                     }
                 }
@@ -76,6 +63,23 @@ public class MeleeTargetSelector {
         }
 
         return currentTarget;
+    }
+
+    private double scoreOpponent(OpponentData od, double myX, double myY,
+                                  double gunHeading, Brain brain) {
+        double dist = Math.sqrt((od.x - myX) * (od.x - myX)
+                               + (od.y - myY) * (od.y - myY));
+        double angle = Math.atan2(od.x - myX, od.y - myY);
+        double gunTurn = Math.abs(Utils.normalRelativeAngle(angle - gunHeading));
+
+        double score = od.energy * 0.8 + dist * 0.5
+                     + Math.toDegrees(gunTurn) * 0.3;
+
+        double acc = brain.getOurAccuracy(od.name);
+        if (acc > 0.20) score *= 0.7;
+        else if (acc < 0.05 && od.shotsFiredAt > 10) score *= 1.4;
+
+        return score;
     }
 
     public void onRobotDeath(String name) {
