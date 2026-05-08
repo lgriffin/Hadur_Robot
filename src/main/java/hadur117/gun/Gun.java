@@ -30,7 +30,7 @@ public class Gun {
     private static final int SEG_WALL = 3;
 
     private static final double DECAY = 0.95;
-    private static final int VG_WINDOW = 30;
+    private static final int VG_WINDOW = 60;
     private static final double BOT_WIDTH = 18.0;
     private static final double WALL_THRESHOLD = 120.0;
 
@@ -40,6 +40,10 @@ public class Gun {
     private static final int GUN_LINEAR = 3;
     private static final int GUN_HEADON = 4;
     private static final int NUM_GUNS = 5;
+
+    private static final int MIN_GUN_WAVES = 20;
+    private static final int GUN_SWITCH_MARGIN = 2;
+    private static final int MIN_WAVES_BETWEEN_SWITCH = 15;
 
     private static final int PATTERN_HISTORY = 1000;
     private static final int PATTERN_MIN_MATCH = 5;
@@ -59,6 +63,9 @@ public class Gun {
     private int shotsFired = 0;
     private int shotsHit = 0;
     private double lastFirePower = 0;
+
+    private int waveCount = 0;
+    private int lastGunSwitchWave = 0;
 
     private double prevEnemyVelocity = 0;
     private double prevEnemyHeading = 0;
@@ -297,6 +304,7 @@ public class Gun {
                     for (int g = 0; g < NUM_GUNS; g++)
                         if (old[g]) vgHits[g]--;
                 }
+                waveCount++;
 
                 it.remove();
             }
@@ -304,11 +312,16 @@ public class Gun {
     }
 
     private int selectBestGun() {
-        if (vgResults.size() < 10) return recommendedGun;
+        if (waveCount < MIN_GUN_WAVES) return recommendedGun;
         int best = GUN_GF;
         int bestHits = vgHits[GUN_GF];
         for (int g = 1; g < NUM_GUNS; g++) {
             if (vgHits[g] > bestHits) { bestHits = vgHits[g]; best = g; }
+        }
+        if (best != activeGun) {
+            if (bestHits - vgHits[activeGun] < GUN_SWITCH_MARGIN) return activeGun;
+            if (waveCount - lastGunSwitchWave < MIN_WAVES_BETWEEN_SWITCH) return activeGun;
+            lastGunSwitchWave = waveCount;
         }
         return best;
     }
@@ -423,6 +436,7 @@ public class Gun {
 
     public double smartFirePower(double distance, double myEnergy, double enemyEnergy) {
         if (myEnergy < 0.2) return 0.0;
+        if (myEnergy < 1.0 && distance > 200) return 0.0;
         if (enemyEnergy <= 4.0 && myEnergy > 30.0 && distance < 300) {
             return Math.min(3.0, Math.max(0.1, enemyEnergy / 4.0 + 0.1));
         }
@@ -434,13 +448,15 @@ public class Gun {
         else if (distance < 600) power = 1.5;
         else                     power = 1.0;
 
-        if (myEnergy < 10)       power = Math.min(power, 0.5);
+        if (myEnergy < 5)        power = Math.min(power, 0.3);
+        else if (myEnergy < 10)  power = Math.min(power, 0.5);
         else if (myEnergy < 20)  power = Math.min(power, 1.0);
         else if (myEnergy < 35)  power = Math.min(power, 1.5);
 
         if (enemyEnergy > myEnergy + 30) power = Math.min(power, 1.5);
 
-        if (shotsFired > 15 && getAccuracy() < 0.12) power = Math.min(power, 0.8);
+        if (shotsFired > 8 && getAccuracy() < 0.10) power = Math.min(power, 0.5);
+        else if (shotsFired > 12 && getAccuracy() < 0.12) power = Math.min(power, 0.8);
         else if (shotsFired > 10 && getAccuracy() < 0.18) power = Math.min(power, 1.2);
 
         if (distance > 200) power = Math.min(power, myEnergy / 4.0);
