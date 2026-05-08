@@ -141,6 +141,22 @@ class WaveSurferTest {
         assertEquals(864.0, rect.height, 1e-9);
     }
 
+    // ── Static accessors ─────────────────────────────────────────────
+
+    @Test
+    @DisplayName("getTotalHitsTaken returns static field value")
+    void totalHitsTaken() {
+        int hits = WaveSurfer.getTotalHitsTaken();
+        assertTrue(hits >= 0);
+    }
+
+    @Test
+    @DisplayName("getTotalWavesPassed returns static field value")
+    void totalWavesPassed() {
+        int waves = WaveSurfer.getTotalWavesPassed();
+        assertTrue(waves >= 0);
+    }
+
     // ── Constants ──────────────────────────────────────────────────────
 
     @Test

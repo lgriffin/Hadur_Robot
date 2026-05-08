@@ -443,6 +443,14 @@ class GunTest {
         }
     }
 
+    // ── lastFirePower ─────────────────────────────────────────────────
+
+    @Test
+    @DisplayName("getLastFirePower returns 0 initially")
+    void lastFirePowerInitial() {
+        assertEquals(0.0, gun.getLastFirePower(), 1e-9);
+    }
+
     // ── init ───────────────────────────────────────────────────────────
 
     @Test

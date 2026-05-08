@@ -4,6 +4,7 @@ import hadur117.model.BattleMode;
 import hadur117.model.MovementType;
 import hadur117.model.OpponentData;
 import hadur117.model.Snapshot;
+import hadur117.intel.TargetProfile;
 import robocode.ScannedRobotEvent;
 import java.util.*;
 
@@ -122,6 +123,8 @@ public class Brain {
     public void resetRound() {
         ourFireTicks.clear();
         for (OpponentData od : opponents.values()) {
+            od.prevRoundMovementType = od.movementType;
+            od.movementType = MovementType.UNKNOWN;
             od.window.clear();
             od.lastEnergy = -1;
             od.lastScanTick = -1;
@@ -129,6 +132,76 @@ public class Brain {
             od.totalBulletPower = 0;
             od.fireTicks.clear();
         }
+    }
+
+    // ── Opponent Profiling ────────────────────────────────────────────────
+
+    public void recordShotFiredAt(String name) {
+        OpponentData od = opponents.get(name);
+        if (od != null) od.shotsFiredAt++;
+    }
+
+    public void recordShotHitOn(String name) {
+        OpponentData od = opponents.get(name);
+        if (od != null) od.shotsHitOn++;
+    }
+
+    public void recordHitBearingError(String name, double error) {
+        OpponentData od = opponents.get(name);
+        if (od != null) od.hitBearingErrors.add(error);
+    }
+
+    public double getOurAccuracy(String name) {
+        OpponentData od = opponents.get(name);
+        if (od == null || od.shotsFiredAt < 5) return 0.15;
+        return (double) od.shotsHitOn / od.shotsFiredAt;
+    }
+
+    public TargetProfile getProfile(String name) {
+        OpponentData od = opponents.get(name);
+        if (od == null) return TargetProfile.BALANCED_DEFAULT;
+
+        MovementType mt = od.movementType;
+        if (mt == MovementType.UNKNOWN && od.prevRoundMovementType != MovementType.UNKNOWN)
+            mt = od.prevRoundMovementType;
+
+        String gunType = deriveGunType(od);
+        double mult = getFirePowerMultiplier(od, mt);
+        double acc = od.shotsFiredAt >= 5
+                ? (double) od.shotsHitOn / od.shotsFiredAt : 0.15;
+
+        return new TargetProfile(mt, gunType, mult, acc);
+    }
+
+    private String deriveGunType(OpponentData od) {
+        if (od.hitBearingErrors.size() < 5) return "UNKNOWN";
+        double sumAbs = 0;
+        for (double e : od.hitBearingErrors) sumAbs += Math.abs(e);
+        double avg = sumAbs / od.hitBearingErrors.size();
+        if (avg < Math.toRadians(5)) return "HEAD_ON";
+        if (avg < Math.toRadians(15)) return "LINEAR";
+        return "STATISTICAL";
+    }
+
+    private double getFirePowerMultiplier(OpponentData od, MovementType mt) {
+        double mult;
+        switch (mt) {
+            case STOPPED:     mult = 1.3; break;
+            case LINEAR:      mult = 1.1; break;
+            case CIRCULAR:    mult = 1.0; break;
+            case OSCILLATING: mult = 0.9; break;
+            case RANDOM:      mult = 0.9; break;
+            case WAVE_SURFER: mult = 0.7; break;
+            default:          mult = 1.0; break;
+        }
+
+        if (od.shotsFiredAt >= 10) {
+            double acc = (double) od.shotsHitOn / od.shotsFiredAt;
+            if (acc > 0.25) mult *= 1.2;
+            else if (acc < 0.10) mult *= 0.7;
+        }
+
+        return clamp(mult, 0.5, 1.5);
     }
 
     // ── Classification ──────────────────────────────────────────────────

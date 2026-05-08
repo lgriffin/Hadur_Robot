@@ -445,8 +445,8 @@ public class MeleeSteps {
         List<Map<String, String>> factors = table.asMaps(String.class, String.class);
         assertTrue(factors.size() >= 3, "Should consider at least 3 factors");
 
-        // Verify the scoring formula weights match
-        // score = energy * 1.5 + dist * 0.15 + gunTurnDeg * 0.8
+        // Verify the scoring formula considers these factors
+        // score = energy * 0.8 + dist * 0.5 + gunTurnDeg * 0.3
         boolean hasEnergy = false, hasDistance = false, hasAngle = false;
         for (Map<String, String> factor : factors) {
             String name = factor.get("Factor");
@@ -463,7 +463,7 @@ public class MeleeSteps {
     public void opponent_a_should_be_highest_priority() {
         assertNotNull(selectedTarget, "A target should be selected");
         // OpponentA: energy=20, distance=200
-        // Score = 20*1.5 + 200*0.15 + gunTurn*0.8 = 30 + 30 + gun = ~60+
+        // Score = 20*0.8 + 200*0.5 + gunTurn*0.3 = 16 + 100 + gun
         // This should be lowest score (best target) since low energy and close
         assertEquals("OpponentA", selectedTarget,
                 "OpponentA (low energy, close range) should be selected but got: " + selectedTarget);
@@ -527,8 +527,8 @@ public class MeleeSteps {
 
     @Then("the target should switch to opponent C")
     public void target_should_switch_to_c() {
-        // SwitchC: energy=15, dist=150 -> score = 15*1.5 + 150*0.15 + gun = 22.5 + 22.5 + gun
-        // SwitchB: energy=60, dist=400 -> score = 60*1.5 + 400*0.15 + gun = 90 + 60 + gun
+        // SwitchC: energy=15, dist=150 -> score = 15*0.8 + 150*0.5 + gun = 12 + 75 + gun
+        // SwitchB: energy=60, dist=400 -> score = 60*0.8 + 400*0.5 + gun = 48 + 200 + gun
         // SwitchC should have much lower score
         assertEquals("SwitchC", selectedTarget,
                 "Should switch to closer, weaker target C but got: " + selectedTarget);

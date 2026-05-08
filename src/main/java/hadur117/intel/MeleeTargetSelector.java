@@ -38,6 +38,10 @@ public class MeleeTargetSelector {
             double score = od.energy * 0.8 + dist * 0.5
                          + Math.toDegrees(gunTurn) * 0.3;
 
+            double acc = brain.getOurAccuracy(od.name);
+            if (acc > 0.20) score *= 0.7;
+            else if (acc < 0.05 && od.shotsFiredAt > 10) score *= 1.4;
+
             if (od.energy == 0) score = -1000;
 
             if (score < bestScore) {

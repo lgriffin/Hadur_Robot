@@ -54,6 +54,7 @@ Five guns compete in a rolling 30-wave window:
 ```
 hadur117/
 |-- Hadur.java                       Main robot (orchestrator)
+|-- BattleLogger.java                Buffered file logger for diagnostics
 |-- model/
 |   |-- BattleMode.java              Enum: DUEL, MELEE
 |   |-- MovementType.java            Enum: 7 movement classifications
@@ -152,6 +153,54 @@ mvn site
 
 Generates a full project site including Javadoc, JaCoCo coverage, and dependency information at `target/site/index.html`.
 
+## Battle Logging
+
+Hadur writes detailed battle diagnostics to a log file for post-battle analysis. The log is written to the Robocode data directory via `getDataFile()` / `RobocodeFileOutputStream`, the only file I/O path permitted by Robocode's security sandbox.
+
+**Log location:** `<robocode>/robots/.data/hadur117.Hadur/hadur_battle.log` (or wherever Robocode resolves the robot's data directory — the exact path is printed to the robot console at round 0).
+
+**Design:** A `BattleLogger` singleton buffers all log lines in a `StringBuilder` during ticks (zero I/O cost) and flushes to disk only at round boundaries. Before initialization, all logging methods are safe no-ops.
+
+### What's logged
+
+| Event | When | Example |
+|-------|------|---------|
+| Round start | Each round | Mode, opponent count |
+| Fire events | Every shot | Tick, target, power, active gun |
+| Target switches | Melee target changes | Old target, new target |
+| Mode transitions | MELEE to DUEL | Tick of transition |
+| Opponent profiles | Round end | Movement type, gun type, threat, accuracy, fire power multiplier |
+| Gun stats | Round end | Active gun, shots fired/hit, accuracy |
+| Wave surfer stats | Round end (duel) | Hits taken (round/total), waves passed |
+| Round result | Round end | WIN/LOSS, energy, accuracy, win rate |
+| Aggregate summary | Final round | Overall wins, accuracy, wall hits/damage |
+
+### Sample output
+
+```
+================================================================================
+  HADUR BATTLE LOG - Round 0
+  Mode: DUEL | Opponents: 1
+================================================================================
+
+[FIRE] tick=12 target=sample.Tracker power=2.50 gun=GuessFactor
+[FIRE] tick=26 target=sample.Tracker power=2.00 gun=PatternMatch
+
+--- Gun ---
+  Active: PatternMatch | Shots: 14/3 (21.4%)
+
+--- Wave Surfer ---
+  Hits This Round: 2 | Total Hits: 2 | Total Waves: 12
+  sample.Tracker
+    Movement: LINEAR | Gun: HEAD_ON | Threat: 0.42
+    Our Accuracy: 18.2% | Fire Power Mult: 1.10x
+
+--- Round 0: WIN ---
+  Energy: 62.4 | Accuracy: 21.4%
+  Win Rate: 100.0% (1/1)
+================================================================================
+```
+
 ## Deploying to Robocode
 
 1. Build the JAR:
@@ -171,7 +220,7 @@ Hadur_Robot/
 |-- repo/                            Project-local Maven repo (robocode-api)
 |-- src/
 |   |-- main/
-|   |   |-- java/hadur117/           Robot source code (12 files)
+|   |   |-- java/hadur117/           Robot source code (13 files)
 |   |   +-- resources/hadur117/      Hadur.properties
 |   +-- test/
 |       |-- java/hadur117/           Unit tests + Cucumber runner

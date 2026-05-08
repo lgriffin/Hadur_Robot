@@ -1,14 +1,18 @@
 package hadur117;
 
 import hadur117.model.BattleMode;
+import hadur117.model.OpponentData;
 import hadur117.intel.Brain;
 import hadur117.intel.MeleeTargetSelector;
+import hadur117.intel.TargetProfile;
 import hadur117.gun.Gun;
 import hadur117.movement.WaveSurfer;
 import hadur117.movement.MinimumRiskMovement;
 import hadur117.radar.Radar;
 import robocode.*;
+import robocode.util.Utils;
 import java.awt.Color;
+import java.io.IOException;
 
 /**
  * Main robot class — orchestrates radar, gun, movement, and intelligence subsystems.
@@ -33,6 +37,7 @@ public class Hadur extends AdvancedRobot {
     private BattleMode battleMode = BattleMode.DUEL;
     private boolean enemyDetected = false;
     private int scanTimer = 0;
+    private String duelOpponentName;
 
     private int wallHits = 0;
     private double wallDamage = 0;
@@ -71,7 +76,16 @@ public class Hadur extends AdvancedRobot {
         battleMode = getOthers() > 1 ? BattleMode.MELEE : BattleMode.DUEL;
         brain.setBattleMode(getOthers());
 
-        out.println("=== HADUR - God of War === Mode: " + battleMode);
+        if (getRoundNum() == 0) {
+            try {
+                java.io.File logFile = getDataFile("hadur_battle.log");
+                out.println("[Hadur] Log file: " + logFile.getAbsolutePath());
+                BattleLogger.init(new RobocodeFileOutputStream(logFile));
+            } catch (IOException e) {
+                out.println("[Hadur] Failed to init logger: " + e.getMessage());
+            }
+        }
+        BattleLogger.logRoundStart(getRoundNum(), battleMode.name(), getOthers());
 
         do {
             scanTimer++;
@@ -95,15 +109,19 @@ public class Hadur extends AdvancedRobot {
             }
         }
         if (enemyDetected) {
-            waveSurfer.doSurfing(this);
+            String gunType = "UNKNOWN";
+            if (duelOpponentName != null) {
+                gunType = brain.getProfile(duelOpponentName).gunType;
+            }
+            waveSurfer.doSurfing(this, gunType);
         }
     }
 
     private void runMeleeTick() {
         if (getOthers() == 1 && battleMode == BattleMode.MELEE) {
+            BattleLogger.logModeTransition(getTime(), "MELEE", "DUEL");
             battleMode = BattleMode.DUEL;
             brain.setBattleMode(1);
-            out.println(">> Transition to DUEL mode");
         }
 
         if (battleMode == BattleMode.DUEL) {
@@ -124,23 +142,41 @@ public class Hadur extends AdvancedRobot {
         brain.update(e, getX(), getY(), getHeadingRadians(), getTime());
 
         if (battleMode == BattleMode.DUEL) {
-            gun.onScannedRobot(this, e);
+            duelOpponentName = e.getName();
+            TargetProfile profile = brain.getProfile(e.getName());
+            boolean fired = gun.onScannedRobot(this, e, profile);
+            if (fired) {
+                brain.recordOurFire(getTime());
+                brain.recordShotFiredAt(e.getName());
+                BattleLogger.logFire(getTime(), e.getName(),
+                        gun.getLastFirePower(), gun.getActiveGunName());
+            }
             waveSurfer.onScannedRobot(this, e);
             radar.doDuelRadar(this,
                     getHeadingRadians() + e.getBearingRadians());
-
-            if (getGunHeat() == 0) brain.recordOurFire(getTime());
         } else {
+            String oldTarget = targetSelector.getCurrentTarget();
             String target = targetSelector.selectTarget(this, brain);
+            if (target != null && !target.equals(oldTarget) && oldTarget != null) {
+                BattleLogger.logTargetSwitch(getTime(), oldTarget, target);
+            }
             if (target != null) {
-                boolean fired = gun.onScannedRobotMelee(this, e, target, e.getName());
-                if (fired) brain.recordOurFire(getTime());
+                TargetProfile profile = brain.getProfile(target);
+                boolean fired = gun.onScannedRobotMelee(this, e, target,
+                        e.getName(), profile);
+                if (fired) {
+                    brain.recordOurFire(getTime());
+                    brain.recordShotFiredAt(target);
+                    BattleLogger.logFire(getTime(), target,
+                            gun.getLastFirePower(), gun.getActiveGunName());
+                }
             }
         }
     }
 
     public void onBulletHit(BulletHitEvent e) {
         gun.onBulletHit(e);
+        brain.recordShotHitOn(e.getName());
         brain.recordDamageDealt(e.getName(),
                 Rules.getBulletDamage(e.getBullet().getPower()));
     }
@@ -155,6 +191,16 @@ public class Hadur extends AdvancedRobot {
         }
         brain.recordDamageReceived(e.getName(),
                 Rules.getBulletDamage(e.getBullet().getPower()));
+
+        OpponentData attacker = brain.getOpponent(e.getName());
+        if (attacker != null && attacker.lastScanTick >= 0) {
+            double directBearing = Math.atan2(
+                    getX() - attacker.x, getY() - attacker.y);
+            double bulletHeading = e.getHeadingRadians();
+            double error = Utils.normalRelativeAngle(
+                    bulletHeading - directBearing);
+            brain.recordHitBearingError(e.getName(), error);
+        }
     }
 
     public void onHitWall(HitWallEvent e) {
@@ -168,9 +214,9 @@ public class Hadur extends AdvancedRobot {
         targetSelector.onRobotDeath(e.getName());
 
         if (getOthers() == 1 && battleMode == BattleMode.MELEE) {
+            BattleLogger.logModeTransition(getTime(), "MELEE", "DUEL");
             battleMode = BattleMode.DUEL;
             brain.setBattleMode(1);
-            out.println(">> Transition to DUEL mode");
         }
     }
 
@@ -190,31 +236,31 @@ public class Hadur extends AdvancedRobot {
     // ── Analytics ───────────────────────────────────────────────────────
 
     private void printRoundSummary(String result) {
-        double accuracy = gun.getAccuracy();
-        double winRate = roundsPlayed > 0 ? (roundsWon * 100.0 / roundsPlayed) : 0;
+        BattleLogger.logGunSelection(gun.getActiveGunName(),
+                gun.getShotsFired(), gun.getShotsHit(), gun.getAccuracy());
 
-        out.println("");
-        out.println("=== HADUR ROUND " + getRoundNum() + " === " + result);
-        out.println("Accuracy: " + String.format("%.1f%%", accuracy * 100)
-                + " | Shots: " + gun.getShotsFired() + "/" + gun.getShotsHit());
-        out.println("Gun: " + gun.getActiveGunName() + " | Wall Hits: " + wallHits);
-        out.println("Win Rate: " + String.format("%.1f%%", winRate)
-                + " (" + roundsWon + "/" + roundsPlayed + ")");
-        out.println("========================");
+        if (battleMode == BattleMode.DUEL) {
+            BattleLogger.logWaveSurferStats(waveSurfer.getRoundHitsTaken(),
+                    WaveSurfer.getTotalHitsTaken(), WaveSurfer.getTotalWavesPassed());
+        }
+
+        for (OpponentData od : brain.getAllOpponents()) {
+            TargetProfile profile = brain.getProfile(od.name);
+            BattleLogger.logOpponentProfile(od.name,
+                    profile.movementType.name(), profile.gunType,
+                    od.threatLevel, profile.ourAccuracy, profile.firePowerMult);
+        }
+
+        double winRate = roundsPlayed > 0 ? (roundsWon * 100.0 / roundsPlayed) : 0;
+        BattleLogger.logRoundEnd(getRoundNum(), result, getEnergy(),
+                gun.getAccuracy(), winRate, roundsWon, roundsPlayed);
+        BattleLogger.flush();
     }
 
     private void printAggregateSummary() {
         double winRate = roundsPlayed > 0 ? (roundsWon * 100.0 / roundsPlayed) : 0;
-
-        out.println("");
-        out.println("============================================");
-        out.println("  HADUR - BATTLE AGGREGATE");
-        out.println("============================================");
-        out.println("Rounds: " + roundsPlayed + " | Wins: " + roundsWon
-                + " | Win Rate: " + String.format("%.1f%%", winRate));
-        out.println("Accuracy: " + String.format("%.1f%%", gun.getAccuracy() * 100));
-        out.println("Wall Hits: " + wallHits
-                + " (Damage: " + String.format("%.1f", wallDamage) + ")");
-        out.println("============================================");
+        BattleLogger.logAggregate(roundsPlayed, roundsWon, winRate,
+                gun.getAccuracy(), wallHits, wallDamage);
+        BattleLogger.destroy();
     }
 }

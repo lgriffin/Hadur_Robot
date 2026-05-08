@@ -772,4 +772,262 @@ class BrainTest {
     void getUnknownOpponent() {
         assertNull(brain.getOpponent("NonExistent"));
     }
+
+    // ── Shot tracking ──────────────────────────────────────────────────
+
+    @Nested
+    @DisplayName("shot tracking (recordShotFiredAt / recordShotHitOn)")
+    class ShotTrackingTests {
+
+        @Test
+        @DisplayName("recordShotFiredAt increments shotsFiredAt")
+        void recordShotFiredAt() {
+            ScannedRobotEvent e = mockEvent("Bot1", 0, 200, 0, 0, 100);
+            brain.update(e, 400, 300, 0, 1);
+            brain.recordShotFiredAt("Bot1");
+            brain.recordShotFiredAt("Bot1");
+            assertEquals(2, brain.getOpponent("Bot1").shotsFiredAt);
+        }
+
+        @Test
+        @DisplayName("recordShotHitOn increments shotsHitOn")
+        void recordShotHitOn() {
+            ScannedRobotEvent e = mockEvent("Bot1", 0, 200, 0, 0, 100);
+            brain.update(e, 400, 300, 0, 1);
+            brain.recordShotHitOn("Bot1");
+            assertEquals(1, brain.getOpponent("Bot1").shotsHitOn);
+        }
+
+        @Test
+        @DisplayName("recordShotFiredAt on unknown opponent does nothing")
+        void firedAtUnknown() {
+            brain.recordShotFiredAt("Ghost");
+            assertNull(brain.getOpponent("Ghost"));
+        }
+
+        @Test
+        @DisplayName("recordShotHitOn on unknown opponent does nothing")
+        void hitOnUnknown() {
+            brain.recordShotHitOn("Ghost");
+            assertNull(brain.getOpponent("Ghost"));
+        }
+    }
+
+    // ── Hit bearing error tracking ─────────────────────────────────────
+
+    @Nested
+    @DisplayName("recordHitBearingError()")
+    class HitBearingErrorTests {
+
+        @Test
+        @DisplayName("records bearing error")
+        void recordsBearingError() {
+            ScannedRobotEvent e = mockEvent("Bot1", 0, 200, 0, 0, 100);
+            brain.update(e, 400, 300, 0, 1);
+            brain.recordHitBearingError("Bot1", 0.05);
+            brain.recordHitBearingError("Bot1", -0.03);
+            assertEquals(2, brain.getOpponent("Bot1").hitBearingErrors.size());
+        }
+
+        @Test
+        @DisplayName("on unknown opponent does nothing")
+        void unknownOpponent() {
+            brain.recordHitBearingError("Ghost", 0.1);
+            assertNull(brain.getOpponent("Ghost"));
+        }
+    }
+
+    // ── getOurAccuracy ─────────────────────────────────────────────────
+
+    @Nested
+    @DisplayName("getOurAccuracy()")
+    class OurAccuracyTests {
+
+        @Test
+        @DisplayName("returns 0.15 default when fewer than 5 shots")
+        void defaultAccuracy() {
+            ScannedRobotEvent e = mockEvent("Bot1", 0, 200, 0, 0, 100);
+            brain.update(e, 400, 300, 0, 1);
+            brain.recordShotFiredAt("Bot1");
+            assertEquals(0.15, brain.getOurAccuracy("Bot1"), 1e-9);
+        }
+
+        @Test
+        @DisplayName("returns 0.15 for unknown opponent")
+        void unknownOpponent() {
+            assertEquals(0.15, brain.getOurAccuracy("Ghost"), 1e-9);
+        }
+
+        @Test
+        @DisplayName("returns actual ratio when 5+ shots fired")
+        void actualRatio() {
+            ScannedRobotEvent e = mockEvent("Bot1", 0, 200, 0, 0, 100);
+            brain.update(e, 400, 300, 0, 1);
+            for (int i = 0; i < 10; i++) brain.recordShotFiredAt("Bot1");
+            for (int i = 0; i < 3; i++) brain.recordShotHitOn("Bot1");
+            assertEquals(0.3, brain.getOurAccuracy("Bot1"), 1e-9);
+        }
+    }
+
+    // ── getProfile ─────────────────────────────────────────────────────
+
+    @Nested
+    @DisplayName("getProfile()")
+    class ProfileTests {
+
+        @Test
+        @DisplayName("returns BALANCED_DEFAULT for unknown opponent")
+        void unknownOpponent() {
+            TargetProfile p = brain.getProfile("Ghost");
+            assertSame(TargetProfile.BALANCED_DEFAULT, p);
+        }
+
+        @Test
+        @DisplayName("returns profile with current movementType")
+        void usesCurrentMovementType() {
+            for (int i = 0; i < 40; i++) {
+                ScannedRobotEvent e = mockEvent("Bot1", 0.0, 200.0, 1.0, 0.0, 100.0);
+                brain.update(e, 400, 300, 0.0, i);
+            }
+            TargetProfile p = brain.getProfile("Bot1");
+            assertEquals(MovementType.STOPPED, p.movementType);
+        }
+
+        @Test
+        @DisplayName("falls back to prevRoundMovementType when current is UNKNOWN")
+        void fallbackToPrevRound() {
+            for (int i = 0; i < 40; i++) {
+                ScannedRobotEvent e = mockEvent("Bot1", 0.0, 200.0, 1.0, 0.0, 100.0);
+                brain.update(e, 400, 300, 0.0, i);
+            }
+            assertEquals(MovementType.STOPPED,
+                    brain.getOpponent("Bot1").movementType);
+            brain.resetRound();
+            assertEquals(MovementType.UNKNOWN,
+                    brain.getOpponent("Bot1").movementType);
+            TargetProfile p = brain.getProfile("Bot1");
+            assertEquals(MovementType.STOPPED, p.movementType);
+        }
+
+        @Test
+        @DisplayName("derives HEAD_ON gun type from small bearing errors")
+        void derivesHeadOnGunType() {
+            ScannedRobotEvent e = mockEvent("Bot1", 0, 200, 0, 0, 100);
+            brain.update(e, 400, 300, 0, 1);
+            for (int i = 0; i < 6; i++)
+                brain.recordHitBearingError("Bot1", Math.toRadians(2));
+            TargetProfile p = brain.getProfile("Bot1");
+            assertEquals("HEAD_ON", p.gunType);
+        }
+
+        @Test
+        @DisplayName("derives STATISTICAL gun type from large bearing errors")
+        void derivesStatisticalGunType() {
+            ScannedRobotEvent e = mockEvent("Bot1", 0, 200, 0, 0, 100);
+            brain.update(e, 400, 300, 0, 1);
+            for (int i = 0; i < 6; i++)
+                brain.recordHitBearingError("Bot1", Math.toRadians(20));
+            TargetProfile p = brain.getProfile("Bot1");
+            assertEquals("STATISTICAL", p.gunType);
+        }
+
+        @Test
+        @DisplayName("derives LINEAR gun type from moderate bearing errors")
+        void derivesLinearGunType() {
+            ScannedRobotEvent e = mockEvent("Bot1", 0, 200, 0, 0, 100);
+            brain.update(e, 400, 300, 0, 1);
+            for (int i = 0; i < 6; i++)
+                brain.recordHitBearingError("Bot1", Math.toRadians(10));
+            TargetProfile p = brain.getProfile("Bot1");
+            assertEquals("LINEAR", p.gunType);
+        }
+
+        @Test
+        @DisplayName("returns UNKNOWN gun type with fewer than 5 bearing errors")
+        void unknownGunTypeInsufficient() {
+            ScannedRobotEvent e = mockEvent("Bot1", 0, 200, 0, 0, 100);
+            brain.update(e, 400, 300, 0, 1);
+            brain.recordHitBearingError("Bot1", 0.01);
+            TargetProfile p = brain.getProfile("Bot1");
+            assertEquals("UNKNOWN", p.gunType);
+        }
+
+        @Test
+        @DisplayName("firePowerMult is higher for STOPPED opponents")
+        void stoppedMultiplier() {
+            for (int i = 0; i < 40; i++) {
+                ScannedRobotEvent e = mockEvent("Bot1", 0.0, 200.0, 1.0, 0.0, 100.0);
+                brain.update(e, 400, 300, 0.0, i);
+            }
+            TargetProfile p = brain.getProfile("Bot1");
+            assertTrue(p.firePowerMult >= 1.3,
+                    "STOPPED multiplier should be >= 1.3, was " + p.firePowerMult);
+        }
+
+        @Test
+        @DisplayName("firePowerMult adjusted up when accuracy > 25%")
+        void highAccuracyBoost() {
+            ScannedRobotEvent e = mockEvent("Bot1", 0, 200, 0, 0, 100);
+            brain.update(e, 400, 300, 0, 1);
+            for (int i = 0; i < 20; i++) brain.recordShotFiredAt("Bot1");
+            for (int i = 0; i < 8; i++) brain.recordShotHitOn("Bot1");
+            TargetProfile p = brain.getProfile("Bot1");
+            assertTrue(p.firePowerMult > 1.0,
+                    "High accuracy should boost multiplier, was " + p.firePowerMult);
+        }
+
+        @Test
+        @DisplayName("firePowerMult adjusted down when accuracy < 10% with 10+ shots")
+        void lowAccuracyReduction() {
+            ScannedRobotEvent e = mockEvent("Bot1", 0, 200, 0, 0, 100);
+            brain.update(e, 400, 300, 0, 1);
+            for (int i = 0; i < 20; i++) brain.recordShotFiredAt("Bot1");
+            brain.recordShotHitOn("Bot1");
+            TargetProfile p = brain.getProfile("Bot1");
+            assertTrue(p.firePowerMult < 1.0,
+                    "Low accuracy should reduce multiplier, was " + p.firePowerMult);
+        }
+
+        @Test
+        @DisplayName("firePowerMult is clamped to [0.5, 1.5]")
+        void multiplierClamped() {
+            ScannedRobotEvent e = mockEvent("Bot1", 0, 200, 0, 0, 100);
+            brain.update(e, 400, 300, 0, 1);
+            TargetProfile p = brain.getProfile("Bot1");
+            assertTrue(p.firePowerMult >= 0.5 && p.firePowerMult <= 1.5,
+                    "Multiplier should be in [0.5, 1.5], was " + p.firePowerMult);
+        }
+    }
+
+    // ── resetRound prevRoundMovementType ────────────────────────────────
+
+    @Test
+    @DisplayName("resetRound snapshots prevRoundMovementType")
+    void resetRoundSnapshotsPrevMovementType() {
+        for (int i = 0; i < 40; i++) {
+            ScannedRobotEvent e = mockEvent("Bot1", 0.0, 200.0, 1.0, 0.0, 100.0);
+            brain.update(e, 400, 300, 0.0, i);
+        }
+        assertEquals(MovementType.STOPPED,
+                brain.getOpponent("Bot1").movementType);
+        brain.resetRound();
+        assertEquals(MovementType.STOPPED,
+                brain.getOpponent("Bot1").prevRoundMovementType);
+        assertEquals(MovementType.UNKNOWN,
+                brain.getOpponent("Bot1").movementType);
+    }
+
+    // ── Shot tracking persists across rounds ───────────────────────────
+
+    @Test
+    @DisplayName("shotsFiredAt and shotsHitOn persist across resetRound")
+    void shotTrackingPersists() {
+        ScannedRobotEvent e = mockEvent("Bot1", 0, 200, 0, 0, 100);
+        brain.update(e, 400, 300, 0, 1);
+        brain.recordShotFiredAt("Bot1");
+        brain.recordShotHitOn("Bot1");
+        brain.resetRound();
+        assertEquals(1, brain.getOpponent("Bot1").shotsFiredAt);
+        assertEquals(1, brain.getOpponent("Bot1").shotsHitOn);
+    }
 }
