@@ -53,6 +53,19 @@ class BattleLoggerTest {
         }
 
         @Test
+        @DisplayName("init with enabled=false makes all methods no-ops")
+        void disabledLogging() {
+            BattleLogger.destroy();
+            ByteArrayOutputStream capture = new ByteArrayOutputStream();
+            BattleLogger.init(capture, false);
+            BattleLogger.logRoundStart(0, "DUEL", 1);
+            BattleLogger.logFire(10, "Enemy", 2.0, "GuessFactor");
+            BattleLogger.logTargetSwitch(20, "A", "B");
+            BattleLogger.flush();
+            assertEquals(0, capture.size());
+        }
+
+        @Test
         @DisplayName("re-init flushes and closes previous stream")
         void reInitFlushesPrevious() {
             BattleLogger.logFire(10, "Enemy", 2.0, "GuessFactor");
