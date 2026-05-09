@@ -77,14 +77,31 @@ public class Hadur extends AdvancedRobot {
         brain.setBattleMode(getOthers());
 
         if (getRoundNum() == 0) {
+            boolean loggingEnabled = false;
             try {
-                String timestamp = new java.text.SimpleDateFormat("yyyyMMdd_HHmmss")
-                        .format(new java.util.Date());
-                java.io.File logFile = getDataFile("hadur_battle_" + timestamp + ".log");
-                out.println("[Hadur] Log file: " + logFile.getAbsolutePath());
-                BattleLogger.init(new RobocodeFileOutputStream(logFile));
-            } catch (IOException e) {
-                out.println("[Hadur] Failed to init logger: " + e.getMessage());
+                java.util.Properties props = new java.util.Properties();
+                java.io.InputStream is = getClass().getResourceAsStream("Hadur.properties");
+                if (is != null) {
+                    props.load(is);
+                    is.close();
+                    loggingEnabled = Boolean.parseBoolean(
+                            props.getProperty("logging.enabled", "false"));
+                }
+            } catch (Exception ignored) {
+            }
+
+            if (loggingEnabled) {
+                try {
+                    String timestamp = new java.text.SimpleDateFormat("yyyyMMdd_HHmmss")
+                            .format(new java.util.Date());
+                    java.io.File logFile = getDataFile("hadur_battle_" + timestamp + ".log");
+                    out.println("[Hadur] Log file: " + logFile.getAbsolutePath());
+                    BattleLogger.init(new RobocodeFileOutputStream(logFile), true);
+                } catch (IOException e) {
+                    out.println("[Hadur] Failed to init logger: " + e.getMessage());
+                }
+            } else {
+                BattleLogger.init(null, false);
             }
         }
         BattleLogger.logRoundStart(getRoundNum(), battleMode.name(), getOthers());

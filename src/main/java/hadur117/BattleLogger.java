@@ -22,11 +22,15 @@ public class BattleLogger {
     }
 
     public static void init(OutputStream stream) {
+        init(stream, true);
+    }
+
+    public static void init(OutputStream stream, boolean enabled) {
         if (instance != null) {
             instance.flush();
             try { instance.stream.close(); } catch (IOException ignored) {}
         }
-        instance = new BattleLogger(stream);
+        instance = enabled ? new BattleLogger(stream) : null;
     }
 
     public static void destroy() {
