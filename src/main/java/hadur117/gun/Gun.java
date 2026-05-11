@@ -167,6 +167,18 @@ public class Gun {
 
         boolean fired = false;
         if (robot.getGunHeat() == 0 && robot.getEnergy() > 0.1) {
+            double gunErr = Math.abs(Utils.normalRelativeAngle(
+                    robot.getGunHeadingRadians() - aimAngle));
+            if (gunErr >= Math.toRadians(3)) {
+                waves.add(createWave(myPos, robot.getTime(), bulletSpeed,
+                        absBearing, mea, segStats, distSeg, velSeg, latvelSeg,
+                        accelSeg, wallSeg, false,
+                        new double[]{gfAngle, patternAngle, circularAngle,
+                                     linearAngle, headOnAngle}));
+                prevEnemyVelocity = enemyVel;
+                prevEnemyHeading = enemyHeading;
+                return false;
+            }
             lastFirePower = firePower;
             Bullet b = robot.setFireBullet(firePower);
             if (b != null) {
