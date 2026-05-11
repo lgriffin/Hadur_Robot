@@ -5,18 +5,19 @@ import org.junit.jupiter.api.*;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.PrintStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("BattleLogger")
 class BattleLoggerTest {
 
-    private ByteArrayOutputStream out;
+    private ByteArrayOutputStream rawOut;
 
     @BeforeEach
     void setUp() {
-        out = new ByteArrayOutputStream();
-        BattleLogger.init(out);
+        rawOut = new ByteArrayOutputStream();
+        BattleLogger.init(rawOut);
     }
 
     @AfterEach
@@ -32,9 +33,9 @@ class BattleLoggerTest {
         @DisplayName("log methods are no-ops before init")
         void noOpBeforeInit() {
             BattleLogger.destroy();
-            ByteArrayOutputStream capture = new ByteArrayOutputStream();
             BattleLogger.logRoundStart(0, "DUEL", 1);
             BattleLogger.flush();
+            ByteArrayOutputStream capture = new ByteArrayOutputStream();
             assertEquals(0, capture.size());
         }
 
@@ -59,7 +60,7 @@ class BattleLoggerTest {
             ByteArrayOutputStream newOut = new ByteArrayOutputStream();
             BattleLogger.init(newOut);
 
-            String flushed = out.toString();
+            String flushed = rawOut.toString();
             assertTrue(flushed.contains("[FIRE]"));
 
             BattleLogger.logFire(20, "Other", 1.5, "Linear");
@@ -78,7 +79,7 @@ class BattleLoggerTest {
         @DisplayName("log methods buffer without writing to stream")
         void buffersWithoutWriting() {
             BattleLogger.logFire(10, "Target", 2.5, "GuessFactor");
-            assertEquals(0, out.size());
+            assertEquals(0, rawOut.size());
         }
 
         @Test
@@ -86,7 +87,7 @@ class BattleLoggerTest {
         void flushWritesToStream() {
             BattleLogger.logFire(10, "Target", 2.5, "GuessFactor");
             BattleLogger.flush();
-            assertTrue(out.size() > 0);
+            assertTrue(rawOut.size() > 0);
         }
 
         @Test
@@ -94,16 +95,46 @@ class BattleLoggerTest {
         void flushClearsBuffer() {
             BattleLogger.logFire(10, "Target", 2.5, "GuessFactor");
             BattleLogger.flush();
-            int sizeAfterFirst = out.size();
+            int sizeAfterFirst = rawOut.size();
             BattleLogger.flush();
-            assertEquals(sizeAfterFirst, out.size());
+            assertEquals(sizeAfterFirst, rawOut.size());
         }
 
         @Test
         @DisplayName("empty flush writes nothing")
         void emptyFlush() {
             BattleLogger.flush();
-            assertEquals(0, out.size());
+            assertEquals(0, rawOut.size());
+        }
+    }
+
+    @Nested
+    @DisplayName("Console output")
+    class ConsoleTests {
+
+        @Test
+        @DisplayName("console receives flushed content when provided")
+        void consoleReceivesContent() {
+            ByteArrayOutputStream consoleRaw = new ByteArrayOutputStream();
+            PrintStream console = new PrintStream(consoleRaw);
+            ByteArrayOutputStream fileStream = new ByteArrayOutputStream();
+            BattleLogger.init(fileStream, console);
+
+            BattleLogger.logFire(1, "Bot", 1.0, "Linear");
+            BattleLogger.flush();
+
+            assertTrue(consoleRaw.toString().contains("[FIRE]"));
+            assertTrue(fileStream.toString().contains("[FIRE]"));
+        }
+
+        @Test
+        @DisplayName("null console does not throw")
+        void nullConsole() {
+            ByteArrayOutputStream fileStream = new ByteArrayOutputStream();
+            BattleLogger.init(fileStream, null);
+            BattleLogger.logFire(1, "Bot", 1.0, "Linear");
+            assertDoesNotThrow(BattleLogger::flush);
+            assertTrue(fileStream.toString().contains("[FIRE]"));
         }
     }
 
@@ -116,7 +147,7 @@ class BattleLoggerTest {
         void roundStart() {
             BattleLogger.logRoundStart(3, "MELEE", 4);
             BattleLogger.flush();
-            String output = out.toString();
+            String output = rawOut.toString();
             assertTrue(output.contains("Round 3"));
             assertTrue(output.contains("MELEE"));
             assertTrue(output.contains("Opponents: 4"));
@@ -127,7 +158,7 @@ class BattleLoggerTest {
         void fire() {
             BattleLogger.logFire(42, "sample.Tracker", 2.50, "PatternMatch");
             BattleLogger.flush();
-            String output = out.toString();
+            String output = rawOut.toString();
             assertTrue(output.contains("[FIRE]"));
             assertTrue(output.contains("tick=42"));
             assertTrue(output.contains("sample.Tracker"));
@@ -140,7 +171,7 @@ class BattleLoggerTest {
         void targetSwitch() {
             BattleLogger.logTargetSwitch(55, "OldBot", "NewBot");
             BattleLogger.flush();
-            String output = out.toString();
+            String output = rawOut.toString();
             assertTrue(output.contains("[TARGET]"));
             assertTrue(output.contains("tick=55"));
             assertTrue(output.contains("OldBot"));
@@ -152,7 +183,7 @@ class BattleLoggerTest {
         void modeTransition() {
             BattleLogger.logModeTransition(100, "MELEE", "DUEL");
             BattleLogger.flush();
-            String output = out.toString();
+            String output = rawOut.toString();
             assertTrue(output.contains("[MODE]"));
             assertTrue(output.contains("tick=100"));
             assertTrue(output.contains("MELEE"));
@@ -165,7 +196,7 @@ class BattleLoggerTest {
             BattleLogger.logOpponentProfile("sample.Fire", "LINEAR",
                     "HEAD_ON", 0.42, 0.182, 1.1);
             BattleLogger.flush();
-            String output = out.toString();
+            String output = rawOut.toString();
             assertTrue(output.contains("sample.Fire"));
             assertTrue(output.contains("LINEAR"));
             assertTrue(output.contains("HEAD_ON"));
@@ -179,7 +210,7 @@ class BattleLoggerTest {
         void gunSelection() {
             BattleLogger.logGunSelection("GuessFactor", 14, 3, 0.214);
             BattleLogger.flush();
-            String output = out.toString();
+            String output = rawOut.toString();
             assertTrue(output.contains("GuessFactor"));
             assertTrue(output.contains("14"));
             assertTrue(output.contains("21.4%"));
@@ -190,7 +221,7 @@ class BattleLoggerTest {
         void waveSurferStats() {
             BattleLogger.logWaveSurferStats(2, 5, 30);
             BattleLogger.flush();
-            String output = out.toString();
+            String output = rawOut.toString();
             assertTrue(output.contains("Wave Surfer"));
             assertTrue(output.contains("2"));
             assertTrue(output.contains("5"));
@@ -202,7 +233,7 @@ class BattleLoggerTest {
         void roundEnd() {
             BattleLogger.logRoundEnd(0, "WIN", 62.4, 0.214, 100.0, 1, 1);
             BattleLogger.flush();
-            String output = out.toString();
+            String output = rawOut.toString();
             assertTrue(output.contains("Round 0"));
             assertTrue(output.contains("WIN"));
             assertTrue(output.contains("62.4"));
@@ -215,7 +246,7 @@ class BattleLoggerTest {
         void aggregate() {
             BattleLogger.logAggregate(10, 7, 70.0, 0.192, 3, 4.5);
             BattleLogger.flush();
-            String output = out.toString();
+            String output = rawOut.toString();
             assertTrue(output.contains("AGGREGATE"));
             assertTrue(output.contains("10"));
             assertTrue(output.contains("7"));
@@ -234,7 +265,7 @@ class BattleLoggerTest {
         void destroyFlushes() {
             BattleLogger.logFire(10, "Bot", 1.0, "Linear");
             BattleLogger.destroy();
-            String output = out.toString();
+            String output = rawOut.toString();
             assertTrue(output.contains("[FIRE]"));
         }
 
@@ -242,10 +273,10 @@ class BattleLoggerTest {
         @DisplayName("log methods are no-ops after destroy")
         void noOpAfterDestroy() {
             BattleLogger.destroy();
-            int sizeAfterDestroy = out.size();
+            int sizeAfterDestroy = rawOut.size();
             BattleLogger.logFire(10, "Bot", 1.0, "Linear");
             BattleLogger.flush();
-            assertEquals(sizeAfterDestroy, out.size());
+            assertEquals(sizeAfterDestroy, rawOut.size());
         }
     }
 

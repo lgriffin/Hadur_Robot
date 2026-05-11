@@ -15,18 +15,24 @@ public class BattleLogger {
     private static BattleLogger instance;
 
     private final OutputStream stream;
+    private final java.io.PrintStream console;
     private final StringBuilder buffer = new StringBuilder(4096);
 
-    private BattleLogger(OutputStream stream) {
+    private BattleLogger(OutputStream stream, java.io.PrintStream console) {
         this.stream = stream;
+        this.console = console;
     }
 
     public static void init(OutputStream stream) {
+        init(stream, null);
+    }
+
+    public static void init(OutputStream stream, java.io.PrintStream console) {
         if (instance != null) {
             instance.flush();
             try { instance.stream.close(); } catch (IOException ignored) {}
         }
-        instance = new BattleLogger(stream);
+        instance = new BattleLogger(stream, console);
     }
 
     public static void destroy() {
@@ -121,8 +127,12 @@ public class BattleLogger {
 
     private void doFlush() {
         if (buffer.length() == 0) return;
+        String content = buffer.toString();
+        if (console != null) {
+            console.print(content);
+        }
         try {
-            stream.write(buffer.toString().getBytes());
+            stream.write(content.getBytes());
             stream.flush();
         } catch (IOException ignored) {
         }
