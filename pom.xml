@@ -182,18 +182,79 @@
                 </configuration>
             </plugin>
 
-            <!-- JAR packaging -->
+            <!-- JAR packaging (RoboRumble naming: package.BotName_version.jar) -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>3.4.2</version>
                 <configuration>
+                    <finalName>hadur117.Hadur_${project.version}</finalName>
                     <archive>
                         <manifest>
                             <mainClass>hadur117.Hadur</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
+            </plugin>
+
+            <!-- ProGuard obfuscation -->
+            <plugin>
+                <groupId>com.github.wvengen</groupId>
+                <artifactId>proguard-maven-plugin</artifactId>
+                <version>2.6.1</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>proguard</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <proguardVersion>7.6.1</proguardVersion>
+                    <injar>${project.build.finalName}.jar</injar>
+                    <outjar>${project.build.finalName}.jar</outjar>
+                    <obfuscate>true</obfuscate>
+                    <options>
+                        <option>-keep public class hadur117.Hadur {
+                            public void run();
+                            public void onScannedRobot(robocode.ScannedRobotEvent);
+                            public void onBulletHit(robocode.BulletHitEvent);
+                            public void onBulletMissed(robocode.BulletMissedEvent);
+                            public void onHitByBullet(robocode.HitByBulletEvent);
+                            public void onHitWall(robocode.HitWallEvent);
+                            public void onRobotDeath(robocode.RobotDeathEvent);
+                            public void onWin(robocode.WinEvent);
+                            public void onDeath(robocode.DeathEvent);
+                        }</option>
+                        <option>-keepclassmembers enum * {
+                            public static **[] values();
+                            public static ** valueOf(java.lang.String);
+                        }</option>
+                        <option>-dontwarn robocode.**</option>
+                        <option>-adaptresourcefilenames</option>
+                        <option>-allowaccessmodification</option>
+                        <option>-repackageclasses ''</option>
+                        <option>-dontshrink</option>
+                        <option>-dontoptimize</option>
+                    </options>
+                    <libs>
+                        <lib>${java.home}/jmods/java.base.jmod</lib>
+                        <lib>${java.home}/jmods/java.desktop.jmod</lib>
+                    </libs>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.guardsquare</groupId>
+                        <artifactId>proguard-base</artifactId>
+                        <version>7.6.1</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>com.guardsquare</groupId>
+                        <artifactId>proguard-core</artifactId>
+                        <version>9.1.7</version>
+                    </dependency>
+                </dependencies>
             </plugin>
         </plugins>
     </build>

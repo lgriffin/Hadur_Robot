@@ -54,6 +54,17 @@ class BattleLoggerTest {
         }
 
         @Test
+        @DisplayName("init with null console still writes to stream")
+        void nullConsoleWritesToStream() {
+            BattleLogger.destroy();
+            ByteArrayOutputStream capture = new ByteArrayOutputStream();
+            BattleLogger.init(capture, null);
+            BattleLogger.logFire(10, "Enemy", 2.0, "GuessFactor");
+            BattleLogger.flush();
+            assertTrue(capture.toString().contains("[FIRE]"));
+        }
+
+        @Test
         @DisplayName("re-init flushes and closes previous stream")
         void reInitFlushesPrevious() {
             BattleLogger.logFire(10, "Enemy", 2.0, "GuessFactor");
