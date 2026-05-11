@@ -13,6 +13,9 @@ import robocode.*;
 import robocode.util.Utils;
 import java.awt.Color;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintStream;
+import java.util.Properties;
 
 /**
  * Main robot class — orchestrates radar, gun, movement, and intelligence subsystems.
@@ -77,32 +80,7 @@ public class Hadur extends AdvancedRobot {
         brain.setBattleMode(getOthers());
 
         if (getRoundNum() == 0) {
-            boolean loggingEnabled = false;
-            try {
-                java.util.Properties props = new java.util.Properties();
-                java.io.InputStream is = getClass().getResourceAsStream("Hadur.properties");
-                if (is != null) {
-                    props.load(is);
-                    is.close();
-                    loggingEnabled = Boolean.parseBoolean(
-                            props.getProperty("logging.enabled", "false"));
-                }
-            } catch (Exception ignored) {
-            }
-
-            if (loggingEnabled) {
-                try {
-                    String timestamp = new java.text.SimpleDateFormat("yyyyMMdd_HHmmss")
-                            .format(new java.util.Date());
-                    java.io.File logFile = getDataFile("hadur_battle_" + timestamp + ".log");
-                    out.println("[Hadur] Log file: " + logFile.getAbsolutePath());
-                    BattleLogger.init(new RobocodeFileOutputStream(logFile), true);
-                } catch (IOException e) {
-                    out.println("[Hadur] Failed to init logger: " + e.getMessage());
-                }
-            } else {
-                BattleLogger.init(null, false);
-            }
+            initLogger();
         }
         BattleLogger.logRoundStart(getRoundNum(), battleMode.name(), getOthers());
 
@@ -250,6 +228,48 @@ public class Hadur extends AdvancedRobot {
         roundsPlayed++;
         printRoundSummary("LOSS");
         if (getRoundNum() == getNumRounds() - 1) printAggregateSummary();
+    }
+
+    // ── Logger ──────────────────────────────────────────────────────────
+
+    private void initLogger() {
+        boolean loggingEnabled = false;
+        boolean consoleEnabled = false;
+        try {
+            Properties props = new Properties();
+            InputStream is = getClass().getResourceAsStream("Hadur.properties");
+            if (is != null) {
+                props.load(is);
+                is.close();
+                loggingEnabled = Boolean.parseBoolean(
+                        props.getProperty("logging.enabled", "false"));
+                consoleEnabled = Boolean.parseBoolean(
+                        props.getProperty("logging.console.enabled", "false"));
+            }
+        } catch (Exception ignored) {}
+
+        if (loggingEnabled) {
+            try {
+                java.io.File dataDir = getDataFile("hadur_battle.log").getParentFile();
+                if (dataDir != null && dataDir.exists()) {
+                    java.io.File[] old = dataDir.listFiles(
+                            (d, n) -> n.startsWith("hadur_battle") && n.endsWith(".log"));
+                    if (old != null) {
+                        for (java.io.File f : old) f.delete();
+                    }
+                }
+                String timestamp = new java.text.SimpleDateFormat("yyyyMMdd_HHmmss")
+                        .format(new java.util.Date());
+                java.io.File logFile = getDataFile("hadur_battle_" + timestamp + ".log");
+                out.println("[Hadur] Log file: " + logFile.getAbsolutePath());
+                PrintStream console = consoleEnabled ? out : null;
+                BattleLogger.init(new RobocodeFileOutputStream(logFile), console);
+            } catch (IOException e) {
+                out.println("[Hadur] Failed to init logger: " + e.getMessage());
+            }
+        } else {
+            out.println("[Hadur] Logging disabled via Hadur.properties");
+        }
     }
 
     // ── Analytics ───────────────────────────────────────────────────────
