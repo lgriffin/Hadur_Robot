@@ -21,8 +21,8 @@ Feature: Energy Management
       | 100      | 80.0   | 3.0   |
       | 200      | 80.0   | 2.5   |
       | 350      | 80.0   | 2.0   |
-      | 500      | 80.0   | 1.0   |
-      | 700      | 80.0   | 0.8   |
+      | 500      | 80.0   | 1.5   |
+      | 700      | 80.0   | 1.0   |
 
   Scenario: Finishing move at close range
     Given the enemy has less than 4.0 energy remaining
@@ -39,12 +39,12 @@ Feature: Energy Management
     Then the power should not exceed 1.0
     And Hadur should never fire if it would reduce energy below 0.1
 
-  Scenario: Reduce power when accuracy is poor
+  Scenario: Fire power scales with distance not accuracy
     Given Hadur's rolling accuracy over the last 30 shots is below 15%
     And the enemy is at distance 400 pixels
     When fire power is calculated
-    Then the power should be reduced by at least 30% from the distance-based default
-    And this reduction should help conserve energy during inaccurate phases
+    Then the power should reflect the distance band
+    And energy conservation relies on distance and energy caps
 
   # --- Energy Conservation ---
 

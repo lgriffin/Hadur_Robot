@@ -190,18 +190,18 @@ public class Brain {
             case LINEAR:      mult = 1.1; break;
             case CIRCULAR:    mult = 1.0; break;
             case OSCILLATING: mult = 0.9; break;
-            case RANDOM:      mult = 0.7; break;
-            case WAVE_SURFER: mult = 0.5; break;
+            case RANDOM:      mult = 0.8; break;
+            case WAVE_SURFER: mult = 1.0; break;
             default:          mult = 1.0; break;
         }
 
-        if (od.shotsFiredAt >= 10) {
+        if (od.shotsFiredAt >= 15) {
             double acc = (double) od.shotsHitOn / od.shotsFiredAt;
             if (acc > 0.25) mult *= 1.2;
-            else if (acc < 0.10) mult *= 0.7;
+            else if (acc < 0.05) mult *= 0.8;
         }
 
-        return clamp(mult, 0.5, 1.5);
+        return clamp(mult, 0.7, 1.5);
     }
 
     // ── Classification ──────────────────────────────────────────────────

@@ -977,36 +977,35 @@ class BrainTest {
         }
 
         @Test
-        @DisplayName("firePowerMult adjusted down when accuracy < 10% with 10+ shots")
+        @DisplayName("firePowerMult adjusted down when accuracy < 5% with 15+ shots")
         void lowAccuracyReduction() {
             ScannedRobotEvent e = mockEvent("Bot1", 0, 200, 0, 0, 100);
             brain.update(e, 400, 300, 0, 1);
             for (int i = 0; i < 20; i++) brain.recordShotFiredAt("Bot1");
-            brain.recordShotHitOn("Bot1");
             TargetProfile p = brain.getProfile("Bot1");
             assertTrue(p.firePowerMult < 1.0,
-                    "Low accuracy should reduce multiplier, was " + p.firePowerMult);
+                    "Very low accuracy should reduce multiplier, was " + p.firePowerMult);
         }
 
         @Test
-        @DisplayName("firePowerMult base value is 0.7 for RANDOM opponent")
+        @DisplayName("firePowerMult base value is 0.8 for RANDOM opponent")
         void randomBaseMultiplier() {
             ScannedRobotEvent e = mockEvent("RandBot", 0, 200, 0, 5, 100);
             brain.update(e, 400, 300, 0, 1);
             OpponentData od = brain.getOpponent("RandBot");
             od.movementType = MovementType.RANDOM;
             TargetProfile p = brain.getProfile("RandBot");
-            assertEquals(0.7, p.firePowerMult, 1e-9);
+            assertEquals(0.8, p.firePowerMult, 1e-9);
         }
 
         @Test
-        @DisplayName("firePowerMult is clamped to [0.5, 1.5]")
+        @DisplayName("firePowerMult is clamped to [0.7, 1.5]")
         void multiplierClamped() {
             ScannedRobotEvent e = mockEvent("Bot1", 0, 200, 0, 0, 100);
             brain.update(e, 400, 300, 0, 1);
             TargetProfile p = brain.getProfile("Bot1");
-            assertTrue(p.firePowerMult >= 0.5 && p.firePowerMult <= 1.5,
-                    "Multiplier should be in [0.5, 1.5], was " + p.firePowerMult);
+            assertTrue(p.firePowerMult >= 0.7 && p.firePowerMult <= 1.5,
+                    "Multiplier should be in [0.7, 1.5], was " + p.firePowerMult);
         }
     }
 

@@ -62,27 +62,27 @@ class GunTest {
         }
 
         @Test
-        @DisplayName("distance exactly 400 returns 1.0")
+        @DisplayName("distance exactly 400 returns 1.5")
         void boundary400() {
-            assertEquals(1.0, gun.smartFirePower(400, 100, 100), 1e-9);
+            assertEquals(1.5, gun.smartFirePower(400, 100, 100), 1e-9);
         }
 
         @Test
-        @DisplayName("distance 500 returns 1.0")
+        @DisplayName("distance 500 returns 1.5")
         void dist500() {
-            assertEquals(1.0, gun.smartFirePower(500, 100, 100), 1e-9);
+            assertEquals(1.5, gun.smartFirePower(500, 100, 100), 1e-9);
         }
 
         @Test
-        @DisplayName("distance exactly 600 returns 0.8")
+        @DisplayName("distance exactly 600 returns 1.0")
         void boundary600() {
-            assertEquals(0.8, gun.smartFirePower(600, 100, 100), 1e-9);
+            assertEquals(1.0, gun.smartFirePower(600, 100, 100), 1e-9);
         }
 
         @Test
-        @DisplayName("distance 800 returns 0.8")
+        @DisplayName("distance 800 returns 1.0")
         void dist800() {
-            assertEquals(0.8, gun.smartFirePower(800, 100, 100), 1e-9);
+            assertEquals(1.0, gun.smartFirePower(800, 100, 100), 1e-9);
         }
     }
 
@@ -197,132 +197,67 @@ class GunTest {
     class EnergyConservation {
 
         @Test
-        @DisplayName("caps at 0.3 when myEnergy < 5")
-        void capsAt03() {
-            // dist=100 => base 3.0, myE=4 => cap 0.3
-            double power = gun.smartFirePower(100, 4, 100);
-            assertEquals(0.3, power, 1e-9);
-        }
-
-        @Test
-        @DisplayName("caps at 0.5 when myEnergy < 10 and >= 5")
+        @DisplayName("caps at 0.5 when myEnergy < 5")
         void capsAt05() {
-            // dist=100 => base 3.0, myE=5 => cap 0.5 (5 is NOT < 5)
-            double power = gun.smartFirePower(100, 5, 100);
+            // dist=100 => base 3.0, myE=4, enemyE=4 => cap 0.5
+            double power = gun.smartFirePower(100, 4, 4);
             assertEquals(0.5, power, 1e-9);
         }
 
         @Test
-        @DisplayName("caps at 1.0 when myEnergy < 20 and >= 10")
+        @DisplayName("caps at 1.0 when myEnergy < 15 and >= 5")
         void capsAt10() {
-            // dist=100 => base 3.0, myE=15 => cap 1.0
-            // Use enemyE=15 to avoid energy-disadvantage cap
-            double power = gun.smartFirePower(100, 15, 15);
+            // dist=100 => base 3.0, myE=10, enemyE=10 => cap 1.0
+            double power = gun.smartFirePower(100, 10, 10);
             assertEquals(1.0, power, 1e-9);
         }
 
         @Test
-        @DisplayName("caps at 1.5 when myEnergy < 35 and >= 20")
+        @DisplayName("caps at 1.5 when myEnergy < 30 and >= 15")
         void capsAt15() {
-            // dist=100 => base 3.0, myE=25 => cap 1.5
-            // Use enemyE=25 to avoid energy-disadvantage cap
+            // dist=100 => base 3.0, myE=25, enemyE=25 => cap 1.5
             double power = gun.smartFirePower(100, 25, 25);
             assertEquals(1.5, power, 1e-9);
         }
 
         @Test
-        @DisplayName("no cap when myEnergy >= 35 and no enemy advantage")
+        @DisplayName("no cap when myEnergy >= 30")
         void noCap() {
-            // dist=100 => base 3.0, myE=50, enemyE=50 => no conservation cap, no enemy advantage
+            // dist=100 => base 3.0, myE=50, enemyE=50 => no caps
             double power = gun.smartFirePower(100, 50, 50);
             assertEquals(3.0, power, 1e-9);
         }
 
         @Test
-        @DisplayName("caps at 1.5 when enemy has 30+ more energy")
-        void enemyMuchStronger() {
-            // dist=100 => base 3.0, myE=50, enemyE=81 (81>50+30)
-            // energy advantage cap: min(3.0, 1.5) = 1.5
-            double power = gun.smartFirePower(100, 50, 81);
-            assertEquals(1.5, power, 1e-9);
-        }
-
-        @Test
-        @DisplayName("no energy advantage cap when enemy has exactly 30 more")
-        void enemyExactly30More() {
-            // enemyE = myE + 30 = 80, which is NOT > myE+30
-            double power = gun.smartFirePower(100, 50, 80);
-            assertEquals(3.0, power, 1e-9);
+        @DisplayName("caps at 0.8 when at severe energy disadvantage")
+        void severeDisadvantage() {
+            // myE=20, enemyE=100 => myE < enemyE*0.3 (20<30) => cap 0.8
+            // base 3.0 (dist=100), myE<30 => cap 1.5, then cap 0.8
+            double power = gun.smartFirePower(100, 20, 100);
+            assertEquals(0.8, power, 1e-9);
         }
     }
 
-    // ── smartFirePower: accuracy penalty ───────────────────────────────
+    // ── smartFirePower: no accuracy penalty ──────────────────────────────
 
     @Nested
-    @DisplayName("smartFirePower() accuracy penalty")
-    class AccuracyPenalty {
+    @DisplayName("smartFirePower() no accuracy penalty")
+    class NoAccuracyPenalty {
 
         @Test
-        @DisplayName("caps at 0.5 when >8 shots and <10% accuracy")
-        void veryLowAccuracyCap() throws Exception {
-            setShotsFired(10);
-            setShotsHit(0); // 0% accuracy
-            // 10>8 && 0%<10% => cap 0.5
-            double power = gun.smartFirePower(100, 100, 100);
-            assertEquals(0.5, power, 1e-9);
-        }
-
-        @Test
-        @DisplayName("caps at 0.8 when >12 shots and <12% accuracy but >= 10%")
-        void lowAccuracyCap() throws Exception {
-            setShotsFired(15);
-            setShotsHit(1); // 6.7% < 10% → first bracket catches it
-            // 15>8 && 6.7%<10% => cap 0.5
-            double power = gun.smartFirePower(100, 100, 100);
-            assertEquals(0.5, power, 1e-9);
-        }
-
-        @Test
-        @DisplayName("caps at 0.8 when >12 shots and accuracy between 10-12%")
-        void lowAccuracySecondBracket() throws Exception {
-            setShotsFired(15);
-            setShotsHit(1); // 6.7% triggers first bracket at 0.5
-            // To test second bracket: need accuracy >= 10% but < 12%
-            // 15 shots, 1 hit = 6.7%, still first bracket
-            // Let's use 13 shots, 1 hit = 7.7% — first bracket
-            // For second bracket test: use acc >= 10% but < 12%
-            setShotsFired(20);
-            setShotsHit(2); // 10% — NOT < 10%, falls to second
-            // 20>12 && 10%<12% => cap 0.8
-            double power = gun.smartFirePower(100, 100, 100);
-            assertEquals(0.8, power, 1e-9);
-        }
-
-        @Test
-        @DisplayName("caps at 1.0 when >10 shots and <18% accuracy")
-        void mediumAccuracyCap() throws Exception {
-            setShotsFired(12);
-            setShotsHit(2); // 16.7% accuracy
-            // 12>8 && 16.7%<10%? NO. 12>12? NO. 12>15? NO.
-            // 12>10 && 16.7%<18% => cap 1.0
-            double power = gun.smartFirePower(100, 100, 100);
-            assertEquals(1.0, power, 1e-9);
-        }
-
-        @Test
-        @DisplayName("no accuracy cap when shots <= 8")
-        void noCapFewShots() throws Exception {
-            setShotsFired(8);
-            setShotsHit(0); // 0% accuracy but 8 is NOT > 8
+        @DisplayName("no cap even with 0% accuracy after many shots")
+        void noCapZeroAccuracy() throws Exception {
+            setShotsFired(50);
+            setShotsHit(0);
             double power = gun.smartFirePower(100, 100, 100);
             assertEquals(3.0, power, 1e-9);
         }
 
         @Test
-        @DisplayName("no accuracy cap when accuracy >= 18%")
-        void noCapGoodAccuracy() throws Exception {
+        @DisplayName("no cap with low accuracy")
+        void noCapLowAccuracy() throws Exception {
             setShotsFired(20);
-            setShotsHit(4); // 20% accuracy
+            setShotsHit(1);
             double power = gun.smartFirePower(100, 100, 100);
             assertEquals(3.0, power, 1e-9);
         }
@@ -356,23 +291,23 @@ class GunTest {
         @Test
         @DisplayName("myEnergy/4 cap at distance > 200")
         void myEnergyCap() {
-            // dist=300, myE=4, enemyE=100
-            // base: 2.0, myE < 5 => cap 0.3
-            // dist>200: min(0.3, 4/4)=min(0.3, 1.0)=0.3
-            // min(0.3, max(0.1, 100/4+0.2))=min(0.3, 25.2)=0.3
-            double power = gun.smartFirePower(300, 4, 100);
-            assertEquals(0.3, power, 1e-9);
+            // dist=300, myE=4, enemyE=4
+            // base: 2.0, myE < 5 => cap 0.5
+            // dist>200: min(0.5, 4/4)=min(0.5, 1.0)=0.5
+            // min(0.5, max(0.1, 4/4+0.2))=min(0.5, 1.2)=0.5
+            double power = gun.smartFirePower(300, 4, 4);
+            assertEquals(0.5, power, 1e-9);
         }
 
         @Test
         @DisplayName("myEnergy/4 cap does not apply at distance <= 200")
         void noMyCapCloseRange() {
-            // dist=100 (<=200), myE=2 => base 3.0
-            // energy conservation: myE<5 => cap 0.3
+            // dist=100 (<=200), myE=2, enemyE=2 => base 3.0
+            // energy conservation: myE<5 => cap 0.5
             // no myEnergy/4 cap since dist <= 200
-            // min(0.3, max(0.1, 100/4+0.2))=min(0.3, 25.2)=0.3
-            double power = gun.smartFirePower(100, 2, 100);
-            assertEquals(0.3, power, 1e-9);
+            // min(0.5, max(0.1, 2/4+0.2))=min(0.5, 0.7)=0.5
+            double power = gun.smartFirePower(100, 2, 2);
+            assertEquals(0.5, power, 1e-9);
         }
     }
 
@@ -528,45 +463,18 @@ class GunTest {
         }
     }
 
-    // ── per-opponent accuracy tiers (5-param smartFirePower) ─────────
+    // ── per-opponent smartFirePower (5-param passthrough) ─────────────
 
     @Nested
-    @DisplayName("smartFirePower() per-opponent accuracy tiers")
-    class PerOpponentAccuracy {
+    @DisplayName("smartFirePower() per-opponent passthrough")
+    class PerOpponentPassthrough {
 
         @Test
-        @DisplayName("caps at 0.3 when perOpponentAccuracy < 5% with 8+ shots")
-        void veryLowAccuracy() {
-            double power = gun.smartFirePower(100, 100, 100, 0.04, 10);
-            assertEquals(0.3, power, 1e-9);
-        }
-
-        @Test
-        @DisplayName("caps at 0.5 when perOpponentAccuracy 5-10% with 8+ shots")
-        void lowAccuracy() {
-            double power = gun.smartFirePower(100, 100, 100, 0.08, 10);
-            assertEquals(0.5, power, 1e-9);
-        }
-
-        @Test
-        @DisplayName("caps at 0.8 when perOpponentAccuracy 10-15% with 8+ shots")
-        void mediumAccuracy() {
-            double power = gun.smartFirePower(100, 100, 100, 0.12, 10);
-            assertEquals(0.8, power, 1e-9);
-        }
-
-        @Test
-        @DisplayName("no per-opponent cap when accuracy >= 15%")
-        void goodAccuracy() {
-            double power = gun.smartFirePower(100, 100, 100, 0.16, 10);
-            assertEquals(3.0, power, 1e-9);
-        }
-
-        @Test
-        @DisplayName("no per-opponent cap when fewer than 8 shots fired")
-        void tooFewShots() {
-            double power = gun.smartFirePower(100, 100, 100, 0.02, 7);
-            assertEquals(3.0, power, 1e-9);
+        @DisplayName("delegates to base smartFirePower regardless of accuracy")
+        void passthrough() {
+            double base = gun.smartFirePower(100, 100, 100);
+            double perOpp = gun.smartFirePower(100, 100, 100, 0.02, 50);
+            assertEquals(base, perOpp, 1e-9);
         }
     }
 

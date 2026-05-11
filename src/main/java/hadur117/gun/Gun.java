@@ -72,6 +72,7 @@ public class Gun {
     private double enemyLatDir = 1.0;
 
     private MovementType currentMovementType = MovementType.RANDOM;
+    private boolean duelMode = false;
 
     private final Map<String, double[]> meleeState = new HashMap<>();
 
@@ -89,6 +90,7 @@ public class Gun {
                                     TargetProfile profile) {
         recommendedGun = gunForMovementType(profile.movementType);
         currentMovementType = profile.movementType;
+        duelMode = true;
         Point2D.Double myPos = new Point2D.Double(robot.getX(), robot.getY());
         double absBearing = robot.getHeadingRadians() + e.getBearingRadians();
         double enemyDist = e.getDistance();
@@ -140,12 +142,6 @@ public class Gun {
         int bestBin = bestGFBin(segStats);
         double gfAngle = absBearing + enemyLatDir * mea
                 * ((double) (bestBin - GF_CENTER) / GF_CENTER);
-
-        if (profile.movementType == MovementType.WAVE_SURFER) {
-            gfAngle += (Math.random() - 0.5) * 0.8 * mea;
-        } else if (profile.movementType == MovementType.RANDOM) {
-            gfAngle += (Math.random() - 0.5) * 0.4 * mea;
-        }
 
         double patternAngle = patternPrediction(myPos, enemyPos, enemyHeading,
                 enemyVel, bulletSpeed);
@@ -324,7 +320,8 @@ public class Gun {
     }
 
     private int selectBestGun() {
-        if (waveCount < MIN_GUN_WAVES) return recommendedGun;
+        if (duelMode) return GUN_GF;
+        if (waveCount < MIN_GUN_WAVES) return GUN_GF;
 
         int[] adjustedHits = new int[NUM_GUNS];
         System.arraycopy(vgHits, 0, adjustedHits, 0, NUM_GUNS);
@@ -466,21 +463,14 @@ public class Gun {
         if (distance < 150)      power = 3.0;
         else if (distance < 250) power = 2.5;
         else if (distance < 400) power = 2.0;
-        else if (distance < 600) power = 1.0;
-        else                     power = 0.8;
+        else if (distance < 600) power = 1.5;
+        else                     power = 1.0;
 
-        if (myEnergy < 5)        power = Math.min(power, 0.3);
-        else if (myEnergy < 10)  power = Math.min(power, 0.5);
-        else if (myEnergy < 20)  power = Math.min(power, 1.0);
-        else if (myEnergy < 35)  power = Math.min(power, 1.5);
+        if (myEnergy < 5)        power = Math.min(power, 0.5);
+        else if (myEnergy < 15)  power = Math.min(power, 1.0);
+        else if (myEnergy < 30)  power = Math.min(power, 1.5);
 
-        if (myEnergy < enemyEnergy * 0.6) power = Math.min(power, 0.5);
-        else if (enemyEnergy > myEnergy + 30) power = Math.min(power, 1.5);
-
-        if (shotsFired > 8 && getAccuracy() < 0.10) power = Math.min(power, 0.5);
-        else if (shotsFired > 12 && getAccuracy() < 0.12) power = Math.min(power, 0.8);
-        else if (shotsFired > 15 && getAccuracy() < 0.15) power = Math.min(power, 0.6);
-        else if (shotsFired > 10 && getAccuracy() < 0.18) power = Math.min(power, 1.0);
+        if (myEnergy < enemyEnergy * 0.3) power = Math.min(power, 0.8);
 
         if (distance > 200) power = Math.min(power, myEnergy / 4.0);
         power = Math.min(power, Math.max(0.1, enemyEnergy / 4.0 + 0.2));
@@ -490,13 +480,7 @@ public class Gun {
     public double smartFirePower(double distance, double myEnergy,
                                   double enemyEnergy, double perOpponentAccuracy,
                                   int perOpponentShotsFired) {
-        double power = smartFirePower(distance, myEnergy, enemyEnergy);
-        if (perOpponentShotsFired >= 8) {
-            if (perOpponentAccuracy < 0.05) power = Math.min(power, 0.3);
-            else if (perOpponentAccuracy < 0.10) power = Math.min(power, 0.5);
-            else if (perOpponentAccuracy < 0.15) power = Math.min(power, 0.8);
-        }
-        return Math.max(0.1, power);
+        return smartFirePower(distance, myEnergy, enemyEnergy);
     }
 
     double applyMeleeCap(double firePower, int aliveCount) {
