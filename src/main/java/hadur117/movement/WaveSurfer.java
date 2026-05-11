@@ -43,6 +43,7 @@ public class WaveSurfer {
     private Point2D.Double enemyLocation;
     private int orbitDirection = 1;
     private double lateralVelocity;
+    private double prevLateralVelocity = 0;
     private int roundHitsTaken = 0;
 
     public WaveSurfer() {
@@ -87,10 +88,13 @@ public class WaveSurfer {
             w.lateralDirection = orbitDirection;
             w.distSeg = distSeg(myPos.distance(enemyLocation));
             w.velSeg = velSeg(Math.abs(lateralVelocity));
-            w.accelSeg = 2;
+            double absLat = Math.abs(lateralVelocity);
+            double absPrevLat = Math.abs(prevLateralVelocity);
+            w.accelSeg = absLat > absPrevLat ? 2 : (absLat < absPrevLat ? 0 : 1);
             waves.add(w);
         }
         lastEnemyEnergy = e.getEnergy();
+        prevLateralVelocity = lateralVelocity;
         pruneWaves(robot);
     }
 
@@ -133,7 +137,7 @@ public class WaveSurfer {
 
         if (totalWavesPassed > 20 && totalHitsTaken > 0) {
             double hitRate = (double) totalHitsTaken / totalWavesPassed;
-            if (hitRate > 0.09) {
+            if (hitRate > 0.06) {
                 danger += moveProfile[clampBin(bin)] * flatWeight;
             }
         }
@@ -183,16 +187,9 @@ public class WaveSurfer {
 
     private double smoothDanger(double[] stats, int bin) {
         bin = clampBin(bin);
-        double danger = 0;
-        for (int i = -2; i <= 2; i++) {
-            int idx = bin + i;
-            if (idx >= 0 && idx < BINS) {
-                double w = 1.0;
-                if (Math.abs(i) == 1) w = 0.5;
-                else if (Math.abs(i) == 2) w = 0.25;
-                danger += stats[idx] * w;
-            }
-        }
+        double danger = stats[bin];
+        if (bin > 0) danger += stats[bin - 1] * 0.5;
+        if (bin < BINS - 1) danger += stats[bin + 1] * 0.5;
         return danger;
     }
 
@@ -208,15 +205,9 @@ public class WaveSurfer {
     private void logHit(EnemyWave wave, Point2D.Double hitPos) {
         int bin = clampBin(getGFBin(wave, hitPos));
         double[] stats = dangerStats[wave.distSeg][wave.velSeg][wave.accelSeg];
-        for (int i = -2; i <= 2; i++) {
-            int idx = bin + i;
-            if (idx >= 0 && idx < BINS) {
-                double w = 1.0;
-                if (Math.abs(i) == 1) w = 0.5;
-                else if (Math.abs(i) == 2) w = 0.25;
-                stats[idx] += w;
-            }
-        }
+        stats[bin] += 1.0;
+        if (bin > 0) stats[bin - 1] += 0.5;
+        if (bin < BINS - 1) stats[bin + 1] += 0.5;
         moveProfile[clampBin(bin)] += 1.0;
     }
 

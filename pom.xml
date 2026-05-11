@@ -85,6 +85,7 @@
     </dependencies>
 
     <build>
+        <finalName>hadur117.Hadur_${project.version}</finalName>
         <plugins>
             <!-- Compiler -->
             <plugin>
@@ -188,7 +189,6 @@
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>3.4.2</version>
                 <configuration>
-                    <finalName>hadur117.Hadur_${project.version}</finalName>
                     <archive>
                         <manifest>
                             <mainClass>hadur117.Hadur</mainClass>

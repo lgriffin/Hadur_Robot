@@ -41,9 +41,9 @@ public class Gun {
     private static final int GUN_HEADON = 4;
     private static final int NUM_GUNS = 5;
 
-    private static final int MIN_GUN_WAVES = 20;
+    private static final int MIN_GUN_WAVES = 35;
     private static final int GUN_SWITCH_MARGIN = 2;
-    private static final int MIN_WAVES_BETWEEN_SWITCH = 25;
+    private static final int MIN_WAVES_BETWEEN_SWITCH = 40;
 
     private static final int PATTERN_HISTORY = 1000;
     private static final int PATTERN_MIN_MATCH = 5;
@@ -71,6 +71,8 @@ public class Gun {
     private double prevEnemyHeading = 0;
     private double enemyLatDir = 1.0;
 
+    private MovementType currentMovementType = MovementType.RANDOM;
+
     private final Map<String, double[]> meleeState = new HashMap<>();
 
     private final double[] headingHist = new double[PATTERN_HISTORY];
@@ -86,6 +88,7 @@ public class Gun {
     public boolean onScannedRobot(AdvancedRobot robot, ScannedRobotEvent e,
                                     TargetProfile profile) {
         recommendedGun = gunForMovementType(profile.movementType);
+        currentMovementType = profile.movementType;
         Point2D.Double myPos = new Point2D.Double(robot.getX(), robot.getY());
         double absBearing = robot.getHeadingRadians() + e.getBearingRadians();
         double enemyDist = e.getDistance();
@@ -322,14 +325,21 @@ public class Gun {
 
     private int selectBestGun() {
         if (waveCount < MIN_GUN_WAVES) return recommendedGun;
+
+        int[] adjustedHits = new int[NUM_GUNS];
+        System.arraycopy(vgHits, 0, adjustedHits, 0, NUM_GUNS);
+        if (currentMovementType == MovementType.WAVE_SURFER) {
+            adjustedHits[GUN_GF] += 5;
+        }
+
         int best = GUN_GF;
-        int bestHits = vgHits[GUN_GF];
+        int bestHits = adjustedHits[GUN_GF];
         for (int g = 1; g < NUM_GUNS; g++) {
-            if (vgHits[g] > bestHits) { bestHits = vgHits[g]; best = g; }
+            if (adjustedHits[g] > bestHits) { bestHits = adjustedHits[g]; best = g; }
         }
         if (best != activeGun) {
-            int activeHits = vgHits[activeGun] + 1;
-            int dynamicMargin = Math.max(GUN_SWITCH_MARGIN, waveCount / 15);
+            int activeHits = adjustedHits[activeGun] + 3;
+            int dynamicMargin = Math.max(GUN_SWITCH_MARGIN, waveCount / 25);
             if (bestHits - activeHits < dynamicMargin) return activeGun;
             if (waveCount - lastGunSwitchWave < MIN_WAVES_BETWEEN_SWITCH) return activeGun;
             lastGunSwitchWave = waveCount;
@@ -456,19 +466,21 @@ public class Gun {
         if (distance < 150)      power = 3.0;
         else if (distance < 250) power = 2.5;
         else if (distance < 400) power = 2.0;
-        else if (distance < 600) power = 1.5;
-        else                     power = 1.0;
+        else if (distance < 600) power = 1.0;
+        else                     power = 0.8;
 
         if (myEnergy < 5)        power = Math.min(power, 0.3);
         else if (myEnergy < 10)  power = Math.min(power, 0.5);
         else if (myEnergy < 20)  power = Math.min(power, 1.0);
         else if (myEnergy < 35)  power = Math.min(power, 1.5);
 
-        if (enemyEnergy > myEnergy + 30) power = Math.min(power, 1.5);
+        if (myEnergy < enemyEnergy * 0.6) power = Math.min(power, 0.5);
+        else if (enemyEnergy > myEnergy + 30) power = Math.min(power, 1.5);
 
         if (shotsFired > 8 && getAccuracy() < 0.10) power = Math.min(power, 0.5);
         else if (shotsFired > 12 && getAccuracy() < 0.12) power = Math.min(power, 0.8);
-        else if (shotsFired > 10 && getAccuracy() < 0.18) power = Math.min(power, 1.2);
+        else if (shotsFired > 15 && getAccuracy() < 0.15) power = Math.min(power, 0.6);
+        else if (shotsFired > 10 && getAccuracy() < 0.18) power = Math.min(power, 1.0);
 
         if (distance > 200) power = Math.min(power, myEnergy / 4.0);
         power = Math.min(power, Math.max(0.1, enemyEnergy / 4.0 + 0.2));

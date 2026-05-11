@@ -21,8 +21,8 @@ Feature: Energy Management
       | 100      | 80.0   | 3.0   |
       | 200      | 80.0   | 2.5   |
       | 350      | 80.0   | 2.0   |
-      | 500      | 80.0   | 1.5   |
-      | 700      | 80.0   | 1.0   |
+      | 500      | 80.0   | 1.0   |
+      | 700      | 80.0   | 0.8   |
 
   Scenario: Finishing move at close range
     Given the enemy has less than 4.0 energy remaining

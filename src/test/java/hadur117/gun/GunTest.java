@@ -62,27 +62,27 @@ class GunTest {
         }
 
         @Test
-        @DisplayName("distance exactly 400 returns 1.5")
+        @DisplayName("distance exactly 400 returns 1.0")
         void boundary400() {
-            assertEquals(1.5, gun.smartFirePower(400, 100, 100), 1e-9);
+            assertEquals(1.0, gun.smartFirePower(400, 100, 100), 1e-9);
         }
 
         @Test
-        @DisplayName("distance 500 returns 1.5")
+        @DisplayName("distance 500 returns 1.0")
         void dist500() {
-            assertEquals(1.5, gun.smartFirePower(500, 100, 100), 1e-9);
+            assertEquals(1.0, gun.smartFirePower(500, 100, 100), 1e-9);
         }
 
         @Test
-        @DisplayName("distance exactly 600 returns 1.0")
+        @DisplayName("distance exactly 600 returns 0.8")
         void boundary600() {
-            assertEquals(1.0, gun.smartFirePower(600, 100, 100), 1e-9);
+            assertEquals(0.8, gun.smartFirePower(600, 100, 100), 1e-9);
         }
 
         @Test
-        @DisplayName("distance 800 returns 1.0")
+        @DisplayName("distance 800 returns 0.8")
         void dist800() {
-            assertEquals(1.0, gun.smartFirePower(800, 100, 100), 1e-9);
+            assertEquals(0.8, gun.smartFirePower(800, 100, 100), 1e-9);
         }
     }
 
@@ -216,7 +216,8 @@ class GunTest {
         @DisplayName("caps at 1.0 when myEnergy < 20 and >= 10")
         void capsAt10() {
             // dist=100 => base 3.0, myE=15 => cap 1.0
-            double power = gun.smartFirePower(100, 15, 100);
+            // Use enemyE=15 to avoid energy-disadvantage cap
+            double power = gun.smartFirePower(100, 15, 15);
             assertEquals(1.0, power, 1e-9);
         }
 
@@ -224,7 +225,8 @@ class GunTest {
         @DisplayName("caps at 1.5 when myEnergy < 35 and >= 20")
         void capsAt15() {
             // dist=100 => base 3.0, myE=25 => cap 1.5
-            double power = gun.smartFirePower(100, 25, 100);
+            // Use enemyE=25 to avoid energy-disadvantage cap
+            double power = gun.smartFirePower(100, 25, 25);
             assertEquals(1.5, power, 1e-9);
         }
 
@@ -297,14 +299,14 @@ class GunTest {
         }
 
         @Test
-        @DisplayName("caps at 1.2 when >10 shots and <18% accuracy")
+        @DisplayName("caps at 1.0 when >10 shots and <18% accuracy")
         void mediumAccuracyCap() throws Exception {
             setShotsFired(12);
             setShotsHit(2); // 16.7% accuracy
-            // 12>8 && 16.7%<10%? NO. 12>12? NO.
-            // 12>10 && 16.7%<18% => cap 1.2
+            // 12>8 && 16.7%<10%? NO. 12>12? NO. 12>15? NO.
+            // 12>10 && 16.7%<18% => cap 1.0
             double power = gun.smartFirePower(100, 100, 100);
-            assertEquals(1.2, power, 1e-9);
+            assertEquals(1.0, power, 1e-9);
         }
 
         @Test
