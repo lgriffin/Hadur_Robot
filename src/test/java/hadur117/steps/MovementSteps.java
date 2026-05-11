@@ -320,19 +320,17 @@ public class MovementSteps {
 
     @And("adjacent bins should receive smoothed contributions")
     public void adjacent_bins_receive_smoothed_contributions() {
-        // +/-1 gets 0.5, +/-2 gets 0.25
+        // +/-1 gets 0.5
         assertTrue(true, "Adjacent bins get reduced weights");
     }
 
-    @And("the smoothing kernel should use weights [{double}, {double}, {double}, {double}, {double}]")
-    public void smoothing_kernel_weights(double w1, double w2, double w3, double w4, double w5) {
+    @And("the smoothing kernel should use weights [{double}, {double}, {double}]")
+    public void smoothing_kernel_weights(double w1, double w2, double w3) {
         // WaveSurfer.logHit and smoothDanger both use:
-        // |i|==2 -> 0.25, |i|==1 -> 0.5, i==0 -> 1.0
-        assertEquals(0.25, w1, 0.001, "Weight at -2 should be 0.25");
-        assertEquals(0.5, w2, 0.001, "Weight at -1 should be 0.5");
-        assertEquals(1.0, w3, 0.001, "Weight at 0 should be 1.0");
-        assertEquals(0.5, w4, 0.001, "Weight at +1 should be 0.5");
-        assertEquals(0.25, w5, 0.001, "Weight at +2 should be 0.25");
+        // |i|==1 -> 0.5, i==0 -> 1.0
+        assertEquals(0.5, w1, 0.001, "Weight at -1 should be 0.5");
+        assertEquals(1.0, w2, 0.001, "Weight at 0 should be 1.0");
+        assertEquals(0.5, w3, 0.001, "Weight at +1 should be 0.5");
     }
 
     // ── Scenario: Activate movement flattening after sustained hits ─────
@@ -345,14 +343,14 @@ public class MovementSteps {
 
     @And("the hit threshold for flattening is {int}")
     public void hit_threshold_for_flattening(int threshold) {
-        // Flattening activates when hitRate > 0.09
-        // With 8 hits and some waves passed, if hitRate > 9% the flattener turns on.
+        // Flattening activates when hitRate > 0.06
+        // With 8 hits and some waves passed, if hitRate > 6% the flattener turns on.
         assertTrue(true, "Flattener threshold is configurable based on hit rate");
     }
 
     @Then("the movement should blend surfing danger with visit-count flattening")
     public void movement_should_blend_surfing_with_flattening() {
-        // evaluateDanger adds moveProfile[bin] * 0.3 when hitRate > 0.09
+        // evaluateDanger adds moveProfile[bin] * flatWeight when hitRate > 0.06
         double flatteningWeight = 0.3;
         assertTrue(flatteningWeight > 0 && flatteningWeight < 1.0,
                 "Flattening weight " + flatteningWeight + " blends into danger calculation");

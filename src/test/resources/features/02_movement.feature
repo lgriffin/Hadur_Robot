@@ -81,7 +81,7 @@ Feature: Movement System - Wave Surfing
     When the danger stats are updated
     Then the hit should be recorded at the primary bin
     And adjacent bins should receive smoothed contributions
-    And the smoothing kernel should use weights [0.25, 0.5, 1.0, 0.5, 0.25]
+    And the smoothing kernel should use weights [0.5, 1.0, 0.5]
 
   # --- Profile Flattening ---
 

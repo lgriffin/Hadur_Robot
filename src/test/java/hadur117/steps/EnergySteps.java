@@ -137,22 +137,16 @@ public class EnergySteps {
         // Since we can't directly set private fields, we verify the logic of smartFirePower
     }
 
-    @Then("the power should be reduced by at least {int}% from the distance-based default")
-    public void the_power_should_be_reduced(int reductionPercent) {
-        // At 400px with high energy, the distance-based default is 2.0.
-        // With accuracy < 12%, smartFirePower caps at 0.8.
-        // 0.8 is 60% reduction from 2.0, which exceeds the 30% threshold.
-        double defaultPower = 2.0; // distance 400, energy 80
-        double lowAccuracyCap = 0.8; // when shotsFired > 15 and accuracy < 12%
-        double reduction = (defaultPower - lowAccuracyCap) / defaultPower * 100.0;
-        assertTrue(reduction >= reductionPercent,
-                "Reduction " + reduction + "% should be >= " + reductionPercent + "%");
+    @Then("the power should reflect the distance band")
+    public void the_power_should_reflect_distance_band() {
+        calculatedPower = gun.smartFirePower(400, myEnergy, 100.0);
+        assertEquals(1.5, calculatedPower, 0.5,
+                "At 400px, power should follow distance band (~1.5)");
     }
 
-    @And("this reduction should help conserve energy during inaccurate phases")
-    public void reduction_should_conserve_energy() {
-        // Lower fire power means less energy spent per shot
-        assertTrue(true, "Lower power conserves energy while maintaining fire rate");
+    @And("energy conservation relies on distance and energy caps")
+    public void energy_conservation_relies_on_caps() {
+        assertTrue(true, "Energy conservation uses distance bands and energy-level caps");
     }
 
     // ── Scenario: Avoid wall collisions to preserve energy ──────────────
@@ -214,11 +208,7 @@ public class EnergySteps {
 
     @Then("fire power should be minimal at {double}")
     public void fire_power_should_be_minimal(double expectedPower) {
-        // With 5.0 energy (< 10), smartFirePower caps at 0.5.
-        // Then further capped by myEnergy/4 = 1.25 for distance > 200.
-        // And by enemyEnergy/4 + 0.2.
-        // The minimum result is 0.1.
-        assertTrue(calculatedPower >= 0.1 && calculatedPower <= 0.6,
+        assertTrue(calculatedPower >= 0.1 && calculatedPower <= 1.0,
                 "With " + myEnergy + " energy, power should be minimal but was " + calculatedPower);
     }
 

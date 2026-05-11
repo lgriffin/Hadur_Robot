@@ -98,12 +98,10 @@ public class Hadur extends AdvancedRobot {
     }
 
     private void runDuelTick() {
-        if (!enemyDetected || scanTimer > 2) {
+        if (!enemyDetected) {
             radar.spinRadar(this);
-            if (!enemyDetected) {
-                setAhead(100);
-                setTurnRight(10);
-            }
+            setAhead(100);
+            setTurnRight(10);
         }
         if (enemyDetected) {
             String gunType = "UNKNOWN";
@@ -250,14 +248,6 @@ public class Hadur extends AdvancedRobot {
 
         if (loggingEnabled) {
             try {
-                java.io.File dataDir = getDataFile("hadur_battle.log").getParentFile();
-                if (dataDir != null && dataDir.exists()) {
-                    java.io.File[] old = dataDir.listFiles(
-                            (d, n) -> n.startsWith("hadur_battle") && n.endsWith(".log"));
-                    if (old != null) {
-                        for (java.io.File f : old) f.delete();
-                    }
-                }
                 String timestamp = new java.text.SimpleDateFormat("yyyyMMdd_HHmmss")
                         .format(new java.util.Date());
                 java.io.File logFile = getDataFile("hadur_battle_" + timestamp + ".log");

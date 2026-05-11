@@ -41,9 +41,9 @@ public class Gun {
     private static final int GUN_HEADON = 4;
     private static final int NUM_GUNS = 5;
 
-    private static final int MIN_GUN_WAVES = 20;
+    private static final int MIN_GUN_WAVES = 35;
     private static final int GUN_SWITCH_MARGIN = 2;
-    private static final int MIN_WAVES_BETWEEN_SWITCH = 25;
+    private static final int MIN_WAVES_BETWEEN_SWITCH = 40;
 
     private static final int PATTERN_HISTORY = 1000;
     private static final int PATTERN_MIN_MATCH = 5;
@@ -71,6 +71,9 @@ public class Gun {
     private double prevEnemyHeading = 0;
     private double enemyLatDir = 1.0;
 
+    private MovementType currentMovementType = MovementType.RANDOM;
+    private boolean duelMode = false;
+
     private final Map<String, double[]> meleeState = new HashMap<>();
 
     private final double[] headingHist = new double[PATTERN_HISTORY];
@@ -86,6 +89,8 @@ public class Gun {
     public boolean onScannedRobot(AdvancedRobot robot, ScannedRobotEvent e,
                                     TargetProfile profile) {
         recommendedGun = gunForMovementType(profile.movementType);
+        currentMovementType = profile.movementType;
+        duelMode = true;
         Point2D.Double myPos = new Point2D.Double(robot.getX(), robot.getY());
         double absBearing = robot.getHeadingRadians() + e.getBearingRadians();
         double enemyDist = e.getDistance();
@@ -138,12 +143,6 @@ public class Gun {
         double gfAngle = absBearing + enemyLatDir * mea
                 * ((double) (bestBin - GF_CENTER) / GF_CENTER);
 
-        if (profile.movementType == MovementType.WAVE_SURFER) {
-            gfAngle += (Math.random() - 0.5) * 0.8 * mea;
-        } else if (profile.movementType == MovementType.RANDOM) {
-            gfAngle += (Math.random() - 0.5) * 0.4 * mea;
-        }
-
         double patternAngle = patternPrediction(myPos, enemyPos, enemyHeading,
                 enemyVel, bulletSpeed);
         double circularAngle = circularPrediction(myPos, enemyPos, enemyHeading,
@@ -168,6 +167,18 @@ public class Gun {
 
         boolean fired = false;
         if (robot.getGunHeat() == 0 && robot.getEnergy() > 0.1) {
+            double gunErr = Math.abs(Utils.normalRelativeAngle(
+                    robot.getGunHeadingRadians() - aimAngle));
+            if (gunErr >= Math.toRadians(3)) {
+                waves.add(createWave(myPos, robot.getTime(), bulletSpeed,
+                        absBearing, mea, segStats, distSeg, velSeg, latvelSeg,
+                        accelSeg, wallSeg, false,
+                        new double[]{gfAngle, patternAngle, circularAngle,
+                                     linearAngle, headOnAngle}));
+                prevEnemyVelocity = enemyVel;
+                prevEnemyHeading = enemyHeading;
+                return false;
+            }
             lastFirePower = firePower;
             Bullet b = robot.setFireBullet(firePower);
             if (b != null) {
@@ -321,15 +332,23 @@ public class Gun {
     }
 
     private int selectBestGun() {
-        if (waveCount < MIN_GUN_WAVES) return recommendedGun;
+        if (duelMode) return GUN_GF;
+        if (waveCount < MIN_GUN_WAVES) return GUN_GF;
+
+        int[] adjustedHits = new int[NUM_GUNS];
+        System.arraycopy(vgHits, 0, adjustedHits, 0, NUM_GUNS);
+        if (currentMovementType == MovementType.WAVE_SURFER) {
+            adjustedHits[GUN_GF] += 5;
+        }
+
         int best = GUN_GF;
-        int bestHits = vgHits[GUN_GF];
+        int bestHits = adjustedHits[GUN_GF];
         for (int g = 1; g < NUM_GUNS; g++) {
-            if (vgHits[g] > bestHits) { bestHits = vgHits[g]; best = g; }
+            if (adjustedHits[g] > bestHits) { bestHits = adjustedHits[g]; best = g; }
         }
         if (best != activeGun) {
-            int activeHits = vgHits[activeGun] + 1;
-            int dynamicMargin = Math.max(GUN_SWITCH_MARGIN, waveCount / 15);
+            int activeHits = adjustedHits[activeGun] + 3;
+            int dynamicMargin = Math.max(GUN_SWITCH_MARGIN, waveCount / 25);
             if (bestHits - activeHits < dynamicMargin) return activeGun;
             if (waveCount - lastGunSwitchWave < MIN_WAVES_BETWEEN_SWITCH) return activeGun;
             lastGunSwitchWave = waveCount;
@@ -459,16 +478,11 @@ public class Gun {
         else if (distance < 600) power = 1.5;
         else                     power = 1.0;
 
-        if (myEnergy < 5)        power = Math.min(power, 0.3);
-        else if (myEnergy < 10)  power = Math.min(power, 0.5);
-        else if (myEnergy < 20)  power = Math.min(power, 1.0);
-        else if (myEnergy < 35)  power = Math.min(power, 1.5);
+        if (myEnergy < 5)        power = Math.min(power, 0.5);
+        else if (myEnergy < 15)  power = Math.min(power, 1.0);
+        else if (myEnergy < 30)  power = Math.min(power, 1.5);
 
-        if (enemyEnergy > myEnergy + 30) power = Math.min(power, 1.5);
-
-        if (shotsFired > 8 && getAccuracy() < 0.10) power = Math.min(power, 0.5);
-        else if (shotsFired > 12 && getAccuracy() < 0.12) power = Math.min(power, 0.8);
-        else if (shotsFired > 10 && getAccuracy() < 0.18) power = Math.min(power, 1.2);
+        if (myEnergy < enemyEnergy * 0.3) power = Math.min(power, 0.8);
 
         if (distance > 200) power = Math.min(power, myEnergy / 4.0);
         power = Math.min(power, Math.max(0.1, enemyEnergy / 4.0 + 0.2));
@@ -478,13 +492,7 @@ public class Gun {
     public double smartFirePower(double distance, double myEnergy,
                                   double enemyEnergy, double perOpponentAccuracy,
                                   int perOpponentShotsFired) {
-        double power = smartFirePower(distance, myEnergy, enemyEnergy);
-        if (perOpponentShotsFired >= 8) {
-            if (perOpponentAccuracy < 0.05) power = Math.min(power, 0.3);
-            else if (perOpponentAccuracy < 0.10) power = Math.min(power, 0.5);
-            else if (perOpponentAccuracy < 0.15) power = Math.min(power, 0.8);
-        }
-        return Math.max(0.1, power);
+        return smartFirePower(distance, myEnergy, enemyEnergy);
     }
 
     double applyMeleeCap(double firePower, int aliveCount) {

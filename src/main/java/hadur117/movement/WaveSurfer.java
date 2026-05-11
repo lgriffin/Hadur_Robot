@@ -43,6 +43,7 @@ public class WaveSurfer {
     private Point2D.Double enemyLocation;
     private int orbitDirection = 1;
     private double lateralVelocity;
+    private double prevLateralVelocity = 0;
     private int roundHitsTaken = 0;
 
     public WaveSurfer() {
@@ -87,10 +88,13 @@ public class WaveSurfer {
             w.lateralDirection = orbitDirection;
             w.distSeg = distSeg(myPos.distance(enemyLocation));
             w.velSeg = velSeg(Math.abs(lateralVelocity));
-            w.accelSeg = 2;
+            double absLat = Math.abs(lateralVelocity);
+            double absPrevLat = Math.abs(prevLateralVelocity);
+            w.accelSeg = absLat > absPrevLat ? 2 : (absLat < absPrevLat ? 0 : 1);
             waves.add(w);
         }
         lastEnemyEnergy = e.getEnergy();
+        prevLateralVelocity = lateralVelocity;
         pruneWaves(robot);
     }
 
@@ -123,17 +127,24 @@ public class WaveSurfer {
         double[] stats = dangerStats[wave1.distSeg][wave1.velSeg][wave1.accelSeg];
         double danger = smoothDanger(stats, bin);
 
+        double predDist = pred.distance(wave1.fireLocation);
+        double currentDist = new Point2D.Double(robot.getX(), robot.getY())
+                .distance(wave1.fireLocation);
+        if (predDist < currentDist * 0.85) {
+            danger *= 1.3;
+        }
+
         double flatWeight;
         switch (opponentGunType) {
             case "HEAD_ON":    flatWeight = 0.1; break;
             case "LINEAR":     flatWeight = 0.2; break;
-            case "STATISTICAL": flatWeight = 0.4; break;
-            default:           flatWeight = 0.3; break;
+            case "STATISTICAL": flatWeight = 0.6; break;
+            default:           flatWeight = 0.5; break;
         }
 
-        if (totalWavesPassed > 20 && totalHitsTaken > 0) {
+        if (totalWavesPassed > 15 && totalHitsTaken > 0) {
             double hitRate = (double) totalHitsTaken / totalWavesPassed;
-            if (hitRate > 0.09) {
+            if (hitRate > 0.06) {
                 danger += moveProfile[clampBin(bin)] * flatWeight;
             }
         }
@@ -160,8 +171,9 @@ public class WaveSurfer {
             EnemyWave hitWave = null;
             double closest = Double.MAX_VALUE;
             for (EnemyWave w : waves) {
-                double d = Math.abs(w.distanceTraveled - myPos.distance(w.fireLocation));
-                if (d < closest) { closest = d; hitWave = w; }
+                double tti = Math.abs(
+                        (myPos.distance(w.fireLocation) - w.distanceTraveled) / w.bulletSpeed);
+                if (tti < closest) { closest = tti; hitWave = w; }
             }
             if (hitWave != null) {
                 logHit(hitWave, myPos);
@@ -183,16 +195,9 @@ public class WaveSurfer {
 
     private double smoothDanger(double[] stats, int bin) {
         bin = clampBin(bin);
-        double danger = 0;
-        for (int i = -2; i <= 2; i++) {
-            int idx = bin + i;
-            if (idx >= 0 && idx < BINS) {
-                double w = 1.0;
-                if (Math.abs(i) == 1) w = 0.5;
-                else if (Math.abs(i) == 2) w = 0.25;
-                danger += stats[idx] * w;
-            }
-        }
+        double danger = stats[bin];
+        if (bin > 0) danger += stats[bin - 1] * 0.5;
+        if (bin < BINS - 1) danger += stats[bin + 1] * 0.5;
         return danger;
     }
 
@@ -208,15 +213,9 @@ public class WaveSurfer {
     private void logHit(EnemyWave wave, Point2D.Double hitPos) {
         int bin = clampBin(getGFBin(wave, hitPos));
         double[] stats = dangerStats[wave.distSeg][wave.velSeg][wave.accelSeg];
-        for (int i = -2; i <= 2; i++) {
-            int idx = bin + i;
-            if (idx >= 0 && idx < BINS) {
-                double w = 1.0;
-                if (Math.abs(i) == 1) w = 0.5;
-                else if (Math.abs(i) == 2) w = 0.25;
-                stats[idx] += w;
-            }
-        }
+        stats[bin] += 1.0;
+        if (bin > 0) stats[bin - 1] += 0.5;
+        if (bin < BINS - 1) stats[bin + 1] += 0.5;
         moveProfile[clampBin(bin)] += 1.0;
     }
 
@@ -235,6 +234,7 @@ public class WaveSurfer {
         } else {
             ahead = 100;
         }
+
         robot.setTurnRightRadians(delta);
         robot.setAhead(ahead);
         robot.setMaxVelocity(MAX_VELOCITY);
@@ -370,7 +370,7 @@ public class WaveSurfer {
             EnemyWave w = it.next();
             if (w.distanceTraveled > me.distance(w.fireLocation) + 50) {
                 totalWavesPassed++;
-                moveProfile[clampBin(getGFBin(w, me))] += 0.1;
+                moveProfile[clampBin(getGFBin(w, me))] += 0.2;
                 it.remove();
             }
         }
