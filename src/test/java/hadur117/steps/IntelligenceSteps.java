@@ -256,13 +256,13 @@ public class IntelligenceSteps {
         // smartFirePower produces different values based on distance, energy, accuracy
         Gun gun = new Gun();
         gun.init(800.0, 600.0);
-        double p1 = gun.smartFirePower(150, 80, 50);
+        double p1 = gun.smartFirePower(100, 80, 50);
         double p2 = gun.smartFirePower(500, 80, 50);
-        double p3 = gun.smartFirePower(700, 80, 50);
-        assertTrue(p1 >= min && p1 <= max, "Power at 150px: " + p1);
+        double p3 = gun.smartFirePower(100, 5, 50);
+        assertTrue(p1 >= min && p1 <= max, "Power at 100px: " + p1);
         assertTrue(p2 >= min && p2 <= max, "Power at 500px: " + p2);
-        assertTrue(p3 >= min && p3 <= max, "Power at 700px: " + p3);
-        assertTrue(p1 != p2 || p2 != p3, "Powers should vary by distance");
+        assertTrue(p3 >= min && p3 <= max, "Power at 100px low energy: " + p3);
+        assertTrue(p1 != p2 || p2 != p3, "Powers should vary by distance/energy");
     }
 
     @And("bullet speed variation should degrade the enemy's wave timing")

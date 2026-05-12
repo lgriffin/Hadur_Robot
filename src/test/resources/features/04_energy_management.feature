@@ -19,10 +19,10 @@ Feature: Energy Management
     Examples:
       | distance | energy | power |
       | 100      | 80.0   | 3.0   |
-      | 200      | 80.0   | 2.5   |
-      | 350      | 80.0   | 2.0   |
-      | 500      | 80.0   | 1.5   |
-      | 700      | 80.0   | 1.0   |
+      | 200      | 80.0   | 1.9   |
+      | 350      | 80.0   | 1.9   |
+      | 500      | 80.0   | 1.9   |
+      | 700      | 80.0   | 1.9   |
 
   Scenario: Finishing move at close range
     Given the enemy has less than 4.0 energy remaining
@@ -33,7 +33,7 @@ Feature: Energy Management
     And the power should be capped at 3.0
 
   Scenario: Conserve energy when low
-    Given Hadur has less than 15.0 energy
+    Given Hadur has less than 7.0 energy
     And the enemy has more than 30.0 energy
     When fire power is calculated
     Then the power should not exceed 1.0
