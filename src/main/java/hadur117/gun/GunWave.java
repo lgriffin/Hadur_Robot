@@ -16,7 +16,8 @@ public class GunWave {
     public double latDir;
     public double mea;
     public double[] stats;
-    public int distSeg, velSeg, latvelSeg, accelSeg, wallSeg;
+    public int distSeg, latvelSeg, wallSeg, accelSeg;
     public boolean realBullet;
     public double[] aimAngles;
+    public double[] features;
 }

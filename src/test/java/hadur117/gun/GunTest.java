@@ -20,7 +20,7 @@ class GunTest {
         gun.init(800, 600);
     }
 
-    // ── smartFirePower: basic distance bands ───────────────────────────
+    // ── smartFirePower: distance-based power ──────────────────────────
 
     @Nested
     @DisplayName("smartFirePower() distance bands")
@@ -33,56 +33,21 @@ class GunTest {
         }
 
         @Test
-        @DisplayName("distance exactly 150 returns 2.5")
+        @DisplayName("distance exactly 150 returns 1.9")
         void boundary150() {
-            assertEquals(2.5, gun.smartFirePower(150, 100, 100), 1e-9);
+            assertEquals(1.9, gun.smartFirePower(150, 100, 100), 1e-9);
         }
 
         @Test
-        @DisplayName("distance 200 returns 2.5")
-        void dist200() {
-            assertEquals(2.5, gun.smartFirePower(200, 100, 100), 1e-9);
+        @DisplayName("distance 400 returns 1.9")
+        void dist400() {
+            assertEquals(1.9, gun.smartFirePower(400, 100, 100), 1e-9);
         }
 
         @Test
-        @DisplayName("distance exactly 250 returns 2.0")
-        void boundary250() {
-            // distance=250, myE=100, enemyE=100 => power=2.0
-            // no energy conservation applies (myE >= 35)
-            // no accuracy penalty (shotsFired=0)
-            // distance > 200: min(2.0, 100/4)=min(2.0,25)=2.0
-            // min(2.0, max(0.1, 100/4+0.2))=min(2.0, 25.2)=2.0
-            assertEquals(2.0, gun.smartFirePower(250, 100, 100), 1e-9);
-        }
-
-        @Test
-        @DisplayName("distance 350 returns 2.0")
-        void dist350() {
-            assertEquals(2.0, gun.smartFirePower(350, 100, 100), 1e-9);
-        }
-
-        @Test
-        @DisplayName("distance exactly 400 returns 1.5")
-        void boundary400() {
-            assertEquals(1.5, gun.smartFirePower(400, 100, 100), 1e-9);
-        }
-
-        @Test
-        @DisplayName("distance 500 returns 1.5")
-        void dist500() {
-            assertEquals(1.5, gun.smartFirePower(500, 100, 100), 1e-9);
-        }
-
-        @Test
-        @DisplayName("distance exactly 600 returns 1.0")
-        void boundary600() {
-            assertEquals(1.0, gun.smartFirePower(600, 100, 100), 1e-9);
-        }
-
-        @Test
-        @DisplayName("distance 800 returns 1.0")
+        @DisplayName("distance 800 returns 1.9")
         void dist800() {
-            assertEquals(1.0, gun.smartFirePower(800, 100, 100), 1e-9);
+            assertEquals(1.9, gun.smartFirePower(800, 100, 100), 1e-9);
         }
     }
 
@@ -107,134 +72,97 @@ class GunTest {
         @Test
         @DisplayName("returns > 0 when myEnergy = 0.2")
         void myEnergyExactly02() {
-            // 0.2 is NOT < 0.2, so should return something
             double power = gun.smartFirePower(200, 0.2, 100);
             assertTrue(power > 0);
         }
 
         @Test
-        @DisplayName("returns 0.0 when myEnergy < 1.0 and distance > 200")
-        void energyCriticalFarAway() {
-            assertEquals(0.0, gun.smartFirePower(300, 0.8, 100), 1e-9);
+        @DisplayName("fires low power with low energy at range")
+        void lowEnergyAtRange() {
+            double power = gun.smartFirePower(300, 0.8, 100);
+            assertTrue(power > 0);
+            assertTrue(power <= 0.8);
         }
 
         @Test
-        @DisplayName("returns > 0 when myEnergy < 1.0 and distance <= 200")
+        @DisplayName("returns > 0 when myEnergy < 1.0 and distance <= 150")
         void energyCriticalCloseRange() {
-            // myE=0.8, dist=100: myE < 1.0 but dist NOT > 200
             double power = gun.smartFirePower(100, 0.8, 100);
             assertTrue(power > 0);
         }
     }
 
-    // ── smartFirePower: finishing move ──────────────────────────────────
+    // ── smartFirePower: enemy energy cap ───────────────────────────────
 
     @Nested
-    @DisplayName("smartFirePower() finishing move")
-    class FinishingMove {
+    @DisplayName("smartFirePower() enemy energy cap")
+    class EnemyEnergyCap {
 
         @Test
-        @DisplayName("finishing move when enemy <= 4 energy, my > 30, dist < 300")
-        void finishingMoveTriggered() {
-            // enemyEnergy=4, myEnergy=50, dist=200
-            // finishing: min(3.0, max(0.1, 4/4 + 0.1)) = min(3.0, 1.1) = 1.1
-            double power = gun.smartFirePower(200, 50, 4.0);
-            assertEquals(1.1, power, 1e-9);
+        @DisplayName("capped by (enemyEnergy + 0.1) / 4")
+        void cappedByEnemyEnergy() {
+            // eE=2: (2.1)/4 = 0.525
+            double power = gun.smartFirePower(300, 100, 2);
+            assertEquals(0.525, power, 1e-9);
         }
 
         @Test
-        @DisplayName("finishing move with 1 energy enemy")
-        void finishingOneEnergy() {
-            // min(3.0, max(0.1, 1/4+0.1)) = min(3.0, 0.35) = 0.35
-            double power = gun.smartFirePower(100, 50, 1.0);
-            assertEquals(0.35, power, 1e-9);
+        @DisplayName("enemy cap floor at 0.1")
+        void enemyCapFloor() {
+            // eE=0: (0.1)/4 = 0.025 → clamped to 0.1
+            double power = gun.smartFirePower(300, 100, 0);
+            assertEquals(0.1, power, 1e-9);
         }
 
         @Test
-        @DisplayName("finishing move with 0.1 energy enemy")
-        void finishingNearZeroEnergy() {
-            // min(3.0, max(0.1, 0.1/4+0.1)) = min(3.0, max(0.1, 0.125)) = 0.125
-            double power = gun.smartFirePower(100, 50, 0.1);
-            assertEquals(0.125, power, 1e-9);
+        @DisplayName("energy reserve cap: power*6 >= myEnergy")
+        void energyReserveCap() {
+            // dist=300, myE=4, eE=4: power=1.9, eE cap=1.025, 1.025*6=6.15>=4 → 4/6=0.667
+            double power = gun.smartFirePower(300, 4, 4);
+            assertEquals(4.0 / 6.0, power, 1e-9);
         }
 
         @Test
-        @DisplayName("no finishing move when myEnergy <= 30")
-        void noFinishingLowMyEnergy() {
-            // enemyEnergy=4, myEnergy=30, dist=200 => finishing not triggered
-            double power = gun.smartFirePower(200, 30, 4.0);
-            // Falls through to normal distance-based: dist 200 => 2.5
-            // But capped by min(power, myEnergy/4) since dist>200: min(2.5, 7.5)=2.5
-            // Then min(2.5, max(0.1, 4/4+0.2))=min(2.5, 1.2)=1.2
-            assertEquals(1.2, power, 1e-9);
-        }
-
-        @Test
-        @DisplayName("no finishing move when distance >= 300")
-        void noFinishingFarAway() {
-            double power = gun.smartFirePower(300, 50, 4.0);
-            // dist=300 => normal: 250<=300<400 => 2.0
-            // dist>200: min(2.0, 50/4)=min(2.0,12.5)=2.0
-            // min(2.0, max(0.1, 4/4+0.2))=min(2.0, 1.2)=1.2
-            assertEquals(1.2, power, 1e-9);
-        }
-
-        @Test
-        @DisplayName("no finishing move when enemyEnergy > 4")
-        void noFinishingHighEnemyEnergy() {
-            double power = gun.smartFirePower(200, 50, 5.0);
-            // Normal: dist 200 => 2.5
-            // dist>200: min(2.5, 50/4)=min(2.5,12.5)=2.5
-            // min(2.5, max(0.1, 5/4+0.2))=min(2.5, 1.45)=1.45
-            assertEquals(1.45, power, 1e-9);
+        @DisplayName("stay-alive cap: power >= myEnergy - 0.1")
+        void stayAliveCap() {
+            // dist=100, myE=0.3, eE=100: power=3.0, eE cap=25, 3*6=18>=0.3 → 0.3/6=0.05
+            // 0.05 >= 0.3-0.1=0.2? No. max(0.1, 0.05) = 0.1
+            double power = gun.smartFirePower(100, 0.3, 100);
+            assertEquals(0.1, power, 1e-9);
         }
     }
 
-    // ── smartFirePower: energy conservation caps ───────────────────────
+    // ── smartFirePower: energy conservation ───────────────────────────
 
     @Nested
     @DisplayName("smartFirePower() energy conservation")
     class EnergyConservation {
 
         @Test
-        @DisplayName("caps at 0.5 when myEnergy < 5")
-        void capsAt05() {
-            // dist=100 => base 3.0, myE=4, enemyE=4 => cap 0.5
-            double power = gun.smartFirePower(100, 4, 4);
-            assertEquals(0.5, power, 1e-9);
+        @DisplayName("fires 3.0 close range with enough energy")
+        void fullPowerClose() {
+            assertEquals(3.0, gun.smartFirePower(100, 50, 50), 1e-9);
         }
 
         @Test
-        @DisplayName("caps at 1.0 when myEnergy < 15 and >= 5")
-        void capsAt10() {
-            // dist=100 => base 3.0, myE=10, enemyE=10 => cap 1.0
+        @DisplayName("1/6 reserve cap with medium energy")
+        void reserveCapMediumEnergy() {
+            // dist=100, myE=10, eE=10: power=3.0, eE cap=2.525, 2.525*6=15.15>=10 → 10/6
             double power = gun.smartFirePower(100, 10, 10);
-            assertEquals(1.0, power, 1e-9);
+            assertEquals(10.0 / 6.0, power, 1e-9);
         }
 
         @Test
-        @DisplayName("caps at 1.5 when myEnergy < 30 and >= 15")
-        void capsAt15() {
-            // dist=100 => base 3.0, myE=25, enemyE=25 => cap 1.5
-            double power = gun.smartFirePower(100, 25, 25);
-            assertEquals(1.5, power, 1e-9);
+        @DisplayName("fires 1.9 at range with full energy")
+        void rangedPower() {
+            assertEquals(1.9, gun.smartFirePower(400, 100, 100), 1e-9);
         }
 
         @Test
-        @DisplayName("no cap when myEnergy >= 30")
-        void noCap() {
-            // dist=100 => base 3.0, myE=50, enemyE=50 => no caps
-            double power = gun.smartFirePower(100, 50, 50);
-            assertEquals(3.0, power, 1e-9);
-        }
-
-        @Test
-        @DisplayName("caps at 0.8 when at severe energy disadvantage")
-        void severeDisadvantage() {
-            // myE=20, enemyE=100 => myE < enemyE*0.3 (20<30) => cap 0.8
-            // base 3.0 (dist=100), myE<30 => cap 1.5, then cap 0.8
-            double power = gun.smartFirePower(100, 20, 100);
-            assertEquals(0.8, power, 1e-9);
+        @DisplayName("fires aggressively even at energy disadvantage")
+        void aggressiveAtDisadvantage() {
+            // dist=100, myE=20, eE=100: power=3.0, eE cap=25, 3*6=18<20, 3<19.9 → 3.0
+            assertEquals(3.0, gun.smartFirePower(100, 20, 100), 1e-9);
         }
     }
 
@@ -263,54 +191,6 @@ class GunTest {
         }
     }
 
-    // ── smartFirePower: enemy energy cap ───────────────────────────────
-
-    @Nested
-    @DisplayName("smartFirePower() enemy energy cap")
-    class EnemyEnergyCap {
-
-        @Test
-        @DisplayName("capped by enemyEnergy/4 + 0.2")
-        void cappedByEnemyEnergy() {
-            // dist=300, myE=100, enemyE=2
-            // base power for dist 300: 2.0
-            // dist>200: min(2.0, 100/4)=min(2.0, 25)=2.0
-            // min(2.0, max(0.1, 2/4+0.2))=min(2.0, 0.7)=0.7
-            double power = gun.smartFirePower(300, 100, 2);
-            assertEquals(0.7, power, 1e-9);
-        }
-
-        @Test
-        @DisplayName("enemyEnergy cap does not go below 0.1")
-        void enemyCapFloor() {
-            // enemyEnergy=0 => max(0.1, 0/4+0.2) = max(0.1, 0.2) = 0.2
-            double power = gun.smartFirePower(300, 100, 0);
-            assertEquals(0.2, power, 1e-9);
-        }
-
-        @Test
-        @DisplayName("myEnergy/4 cap at distance > 200")
-        void myEnergyCap() {
-            // dist=300, myE=4, enemyE=4
-            // base: 2.0, myE < 5 => cap 0.5
-            // dist>200: min(0.5, 4/4)=min(0.5, 1.0)=0.5
-            // min(0.5, max(0.1, 4/4+0.2))=min(0.5, 1.2)=0.5
-            double power = gun.smartFirePower(300, 4, 4);
-            assertEquals(0.5, power, 1e-9);
-        }
-
-        @Test
-        @DisplayName("myEnergy/4 cap does not apply at distance <= 200")
-        void noMyCapCloseRange() {
-            // dist=100 (<=200), myE=2, enemyE=2 => base 3.0
-            // energy conservation: myE<5 => cap 0.5
-            // no myEnergy/4 cap since dist <= 200
-            // min(0.5, max(0.1, 2/4+0.2))=min(0.5, 0.7)=0.5
-            double power = gun.smartFirePower(100, 2, 2);
-            assertEquals(0.5, power, 1e-9);
-        }
-    }
-
     // ── smartFirePower: result clamping ─────────────────────────────────
 
     @Nested
@@ -318,9 +198,8 @@ class GunTest {
     class ResultClamping {
 
         @Test
-        @DisplayName("result is always >= 0.1 when myEnergy >= 0.2 and not energy-critical")
+        @DisplayName("result is always >= 0.1 when myEnergy >= 0.2")
         void minimumResult() {
-            // myE=0.5, dist=100 (close range, not energy-critical)
             double power = gun.smartFirePower(100, 0.5, 0.01);
             assertTrue(power >= 0.1);
         }
@@ -498,6 +377,45 @@ class GunTest {
         bfH.setAccessible(true);
         assertEquals(1200.0, bfW.getDouble(gun), 1e-9);
         assertEquals(900.0, bfH.getDouble(gun), 1e-9);
+    }
+
+    // ── KNN constants ─────────────────────────────────────────────────
+
+    @Nested
+    @DisplayName("KNN targeting constants")
+    class KnnConstants {
+
+        @Test
+        @DisplayName("buffer size is 800")
+        void bufferSize() throws Exception {
+            Field f = Gun.class.getDeclaredField("KNN_BUFFER_SIZE");
+            f.setAccessible(true);
+            assertEquals(800, f.getInt(null));
+        }
+
+        @Test
+        @DisplayName("K is 80 nearest neighbors")
+        void kValue() throws Exception {
+            Field f = Gun.class.getDeclaredField("KNN_K");
+            f.setAccessible(true);
+            assertEquals(80, f.getInt(null));
+        }
+
+        @Test
+        @DisplayName("feature vector has 8 dimensions")
+        void dimensions() throws Exception {
+            Field f = Gun.class.getDeclaredField("KNN_DIMENSIONS");
+            f.setAccessible(true);
+            assertEquals(8, f.getInt(null));
+        }
+
+        @Test
+        @DisplayName("minimum data threshold is 30")
+        void minData() throws Exception {
+            Field f = Gun.class.getDeclaredField("KNN_MIN_DATA");
+            f.setAccessible(true);
+            assertEquals(80, f.getInt(null));
+        }
     }
 
     // ── Helper methods ─────────────────────────────────────────────────

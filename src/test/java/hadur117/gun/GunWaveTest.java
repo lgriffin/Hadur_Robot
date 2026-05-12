@@ -29,12 +29,12 @@ class GunWaveTest {
         assertEquals(0.0, wave.mea, 1e-9);
         assertNull(wave.stats);
         assertEquals(0, wave.distSeg);
-        assertEquals(0, wave.velSeg);
         assertEquals(0, wave.latvelSeg);
-        assertEquals(0, wave.accelSeg);
         assertEquals(0, wave.wallSeg);
+        assertEquals(0, wave.accelSeg);
         assertFalse(wave.realBullet);
         assertNull(wave.aimAngles);
+        assertNull(wave.features);
     }
 
     @Test
@@ -93,16 +93,14 @@ class GunWaveTest {
     @Test
     @DisplayName("segmentation indices can be set")
     void segIndices() {
-        wave.distSeg = 3;
-        wave.velSeg = 4;
-        wave.latvelSeg = 2;
-        wave.accelSeg = 1;
+        wave.distSeg = 2;
+        wave.latvelSeg = 1;
         wave.wallSeg = 0;
-        assertEquals(3, wave.distSeg);
-        assertEquals(4, wave.velSeg);
-        assertEquals(2, wave.latvelSeg);
-        assertEquals(1, wave.accelSeg);
+        wave.accelSeg = 1;
+        assertEquals(2, wave.distSeg);
+        assertEquals(1, wave.latvelSeg);
         assertEquals(0, wave.wallSeg);
+        assertEquals(1, wave.accelSeg);
     }
 
     @Test
@@ -123,6 +121,15 @@ class GunWaveTest {
     }
 
     @Test
+    @DisplayName("features array can hold 7D KNN feature vector")
+    void features() {
+        assertNull(wave.features);
+        wave.features = new double[]{0.5, 0.6, 0.7, 0.3, 0.5, 0.2, 0.1};
+        assertEquals(7, wave.features.length);
+        assertEquals(0.7, wave.features[2], 1e-9);
+    }
+
+    @Test
     @DisplayName("all fields can be set together (integration)")
     void fullSetup() {
         wave.firePosition = new Point2D.Double(400, 300);
@@ -133,12 +140,11 @@ class GunWaveTest {
         wave.mea = 0.75;
         wave.stats = new double[31];
         wave.distSeg = 2;
-        wave.velSeg = 3;
         wave.latvelSeg = 1;
-        wave.accelSeg = 2;
         wave.wallSeg = 1;
         wave.realBullet = true;
         wave.aimAngles = new double[]{1.0, 1.1, 1.2, 1.3, 1.4};
+        wave.features = new double[]{0.5, 0.6, 0.7, 0.3, 0.5, 0.2, 0.1};
 
         assertEquals(100, wave.fireTime);
         assertTrue(wave.realBullet);

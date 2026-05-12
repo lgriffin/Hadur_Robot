@@ -23,11 +23,10 @@ public class Gun {
     private static final int GF_BINS = 31;
     private static final int GF_CENTER = GF_BINS / 2;
 
-    private static final int SEG_DIST = 5;
-    private static final int SEG_VEL = 5;
-    private static final int SEG_LATVEL = 5;
+    private static final int SEG_DIST = 3;
+    private static final int SEG_LATVEL = 3;
+    private static final int SEG_WALL = 2;
     private static final int SEG_ACCEL = 3;
-    private static final int SEG_WALL = 3;
 
     private static final double DECAY = 0.95;
     private static final int VG_WINDOW = 60;
@@ -39,7 +38,8 @@ public class Gun {
     private static final int GUN_CIRCULAR = 2;
     private static final int GUN_LINEAR = 3;
     private static final int GUN_HEADON = 4;
-    private static final int NUM_GUNS = 5;
+    private static final int GUN_KNN = 5;
+    private static final int NUM_GUNS = 6;
 
     private static final int MIN_GUN_WAVES = 35;
     private static final int GUN_SWITCH_MARGIN = 2;
@@ -49,10 +49,21 @@ public class Gun {
     private static final int PATTERN_MIN_MATCH = 5;
     private static final int PATTERN_MAX_MATCH = 30;
 
+    private static final int KNN_BUFFER_SIZE = 800;
+    private static final int KNN_K = 80;
+    private static final int KNN_DIMENSIONS = 8;
+    private static final int KNN_MIN_DATA = 80;
+    private static final double[] FEATURE_WEIGHTS = {4, 3, 3, 2, 4, 4, 3, 3};
+
     private double bfWidth, bfHeight;
 
-    private static double[][][][][][] gfStats =
-            new double[SEG_DIST][SEG_VEL][SEG_LATVEL][SEG_ACCEL][SEG_WALL][GF_BINS];
+    private static double[][][][][] gfStats =
+            new double[SEG_DIST][SEG_LATVEL][SEG_WALL][SEG_ACCEL][GF_BINS];
+
+    private static final double[][] knnFeatures = new double[KNN_BUFFER_SIZE][KNN_DIMENSIONS];
+    private static final double[] knnGFs = new double[KNN_BUFFER_SIZE];
+    private static int knnSize = 0;
+    private static int knnIndex = 0;
 
     private final ArrayList<GunWave> waves = new ArrayList<>();
     private final LinkedList<boolean[]> vgResults = new LinkedList<>();
@@ -70,6 +81,9 @@ public class Gun {
     private double prevEnemyVelocity = 0;
     private double prevEnemyHeading = 0;
     private double enemyLatDir = 1.0;
+
+    private static int velocityChangeTime = 0;
+    private static double prevAbsVel = 0;
 
     private MovementType currentMovementType = MovementType.RANDOM;
     private boolean duelMode = false;
@@ -105,19 +119,15 @@ public class Gun {
         if (latVel > 0) enemyLatDir = 1.0;
         else if (latVel < 0) enemyLatDir = -1.0;
 
-        double accelDelta = absVel - Math.abs(prevEnemyVelocity);
-        int accelSeg = accelDelta > 0.5 ? 0 : (accelDelta < -0.5 ? 1 : 2);
-
         double turnRate = Utils.normalRelativeAngle(enemyHeading - prevEnemyHeading);
 
         double edgeDist = Math.min(
                 Math.min(enemyPos.x - BOT_WIDTH, bfWidth - enemyPos.x - BOT_WIDTH),
                 Math.min(enemyPos.y - BOT_WIDTH, bfHeight - enemyPos.y - BOT_WIDTH));
-        int wallSeg = edgeDist < 80 ? 0 : (edgeDist < WALL_THRESHOLD ? 1 : 2);
+        int wallSeg = edgeDist < 100 ? 0 : 1;
 
-        int distSeg = Math.min(SEG_DIST - 1, (int) (enemyDist / 180.0));
-        int velSeg = Math.min(SEG_VEL - 1, (int) (absVel / 2.0));
-        int latvelSeg = Math.min(SEG_LATVEL - 1, (int) (absLatVel / 2.0));
+        int distSeg = enemyDist < 300 ? 0 : (enemyDist < 600 ? 1 : 2);
+        int latvelSeg = absLatVel < 3 ? 0 : (absLatVel < 6 ? 1 : 2);
 
         headingHist[histIndex] = turnRate;
         velocityHist[histIndex] = enemyVel;
@@ -126,9 +136,24 @@ public class Gun {
 
         updateWaves(enemyPos, robot.getTime());
 
+        double accel = Math.abs(enemyVel) - Math.abs(prevEnemyVelocity);
+        int accelSeg = accel < -0.5 ? 0 : (accel > 0.5 ? 2 : 1);
+
+        double curAbsVel = Math.abs(enemyVel);
+        if (Math.abs(curAbsVel - prevAbsVel) > 0.5
+                || (enemyVel > 0) != (prevEnemyVelocity > 0) && prevEnemyVelocity != 0) {
+            velocityChangeTime = 0;
+        } else {
+            velocityChangeTime++;
+        }
+        prevAbsVel = curAbsVel;
+
+        double relHeading = enemyHeading - absBearing;
+        double[] features = computeFeatures(enemyDist, latVel, enemyVel, accel,
+                enemyPos, enemyHeading, relHeading);
+
         double firePower = smartFirePower(enemyDist, robot.getEnergy(), e.getEnergy(),
                 profile.ourAccuracy, profile.shotsFiredAt);
-        firePower = Math.max(0.1, Math.min(3.0, firePower * profile.firePowerMult));
         if (firePower < 0.1) {
             prevEnemyVelocity = enemyVel;
             prevEnemyHeading = enemyHeading;
@@ -138,10 +163,17 @@ public class Gun {
         double bulletSpeed = Rules.getBulletSpeed(firePower);
         double mea = maxEscapeAngle(bulletSpeed);
 
-        double[] segStats = gfStats[distSeg][velSeg][latvelSeg][accelSeg][wallSeg];
-        int bestBin = bestGFBin(segStats);
+        double[] segStats = gfStats[distSeg][latvelSeg][wallSeg][accelSeg];
+        int gfBin = bestGFBin(segStats);
         double gfAngle = absBearing + enemyLatDir * mea
-                * ((double) (bestBin - GF_CENTER) / GF_CENTER);
+                * ((double) (gfBin - GF_CENTER) / GF_CENTER);
+
+        double knnAngle = gfAngle;
+        if (knnSize >= KNN_MIN_DATA) {
+            int knnBin = knnBestBin(features);
+            knnAngle = absBearing + enemyLatDir * mea
+                    * ((double) (knnBin - GF_CENTER) / GF_CENTER);
+        }
 
         double patternAngle = patternPrediction(myPos, enemyPos, enemyHeading,
                 enemyVel, bulletSpeed);
@@ -159,6 +191,7 @@ public class Gun {
             case GUN_CIRCULAR: aimAngle = circularAngle; break;
             case GUN_LINEAR:   aimAngle = linearAngle;   break;
             case GUN_HEADON:   aimAngle = headOnAngle;   break;
+            case GUN_KNN:      aimAngle = knnAngle;      break;
             default:           aimAngle = gfAngle;       break;
         }
 
@@ -166,36 +199,27 @@ public class Gun {
                 aimAngle - robot.getGunHeadingRadians()));
 
         boolean fired = false;
-        if (robot.getGunHeat() == 0 && robot.getEnergy() > 0.1) {
-            double gunErr = Math.abs(Utils.normalRelativeAngle(
-                    robot.getGunHeadingRadians() - aimAngle));
-            if (gunErr >= Math.toRadians(3)) {
-                waves.add(createWave(myPos, robot.getTime(), bulletSpeed,
-                        absBearing, mea, segStats, distSeg, velSeg, latvelSeg,
-                        accelSeg, wallSeg, false,
-                        new double[]{gfAngle, patternAngle, circularAngle,
-                                     linearAngle, headOnAngle}));
-                prevEnemyVelocity = enemyVel;
-                prevEnemyHeading = enemyHeading;
-                return false;
-            }
+        if (robot.getGunHeat() == 0 && robot.getEnergy() > 0.1
+                && Math.abs(robot.getGunTurnRemainingRadians()) < Math.toRadians(18)) {
             lastFirePower = firePower;
             Bullet b = robot.setFireBullet(firePower);
             if (b != null) {
                 shotsFired++;
                 fired = true;
                 waves.add(createWave(myPos, robot.getTime(), bulletSpeed,
-                        absBearing, mea, segStats, distSeg, velSeg, latvelSeg,
-                        accelSeg, wallSeg, true,
+                        absBearing, mea, segStats, distSeg, latvelSeg,
+                        wallSeg, accelSeg, true,
                         new double[]{gfAngle, patternAngle, circularAngle,
-                                     linearAngle, headOnAngle}));
+                                     linearAngle, headOnAngle, knnAngle},
+                        features));
             }
         } else {
             waves.add(createWave(myPos, robot.getTime(), bulletSpeed,
-                    absBearing, mea, segStats, distSeg, velSeg, latvelSeg,
-                    accelSeg, wallSeg, false,
+                    absBearing, mea, segStats, distSeg, latvelSeg,
+                    wallSeg, accelSeg, false,
                     new double[]{gfAngle, patternAngle, circularAngle,
-                                 linearAngle, headOnAngle}));
+                                 linearAngle, headOnAngle, knnAngle},
+                    features));
         }
 
         prevEnemyVelocity = enemyVel;
@@ -282,6 +306,7 @@ public class Gun {
             case GUN_CIRCULAR: return "Circular";
             case GUN_LINEAR: return "Linear";
             case GUN_HEADON: return "HeadOn";
+            case GUN_KNN: return "KNN";
             default: return "Unknown";
         }
     }
@@ -304,10 +329,13 @@ public class Gun {
                 int bin = clamp((int) Math.round(gf * GF_CENTER + GF_CENTER),
                                 0, GF_BINS - 1);
 
-                double[] stats = gfStats[w.distSeg][w.velSeg][w.latvelSeg]
-                                        [w.accelSeg][w.wallSeg];
+                double[] stats = gfStats[w.distSeg][w.latvelSeg][w.wallSeg][w.accelSeg];
                 for (int i = 0; i < GF_BINS; i++) stats[i] *= DECAY;
                 stats[bin] += 1.0;
+
+                if (w.features != null) {
+                    knnRecord(w.features, gf);
+                }
 
                 boolean[] gunHits = new boolean[NUM_GUNS];
                 for (int g = 0; g < NUM_GUNS; g++) {
@@ -366,6 +394,79 @@ public class Gun {
             if (v > bestVal) { bestVal = v; best = i; }
         }
         return best;
+    }
+
+    private double[] computeFeatures(double dist, double latVel, double vel,
+                                      double accel, Point2D.Double enemyPos,
+                                      double enemyHeading, double relHeading) {
+        double estBulletSpeed = 20.0 - 3.0 * 1.9;
+        double timeToTarget = dist / estBulletSpeed;
+        double[] f = new double[KNN_DIMENSIONS];
+        f[0] = Math.min(91, timeToTarget) / 91.0;
+        double latSign = (latVel >= 0) ? 1.0 : -1.0;
+        f[1] = (latSign * Math.abs(latVel) + 0.1) / 8.1;
+        f[2] = Math.sin(relHeading);
+        f[3] = (Math.cos(relHeading) + 1.0) / 2.0;
+        f[4] = (accel + 2.0) / 4.0;
+        f[5] = wallDistance(enemyPos.x, enemyPos.y, enemyHeading) / 800.0;
+        f[6] = wallDistance(enemyPos.x, enemyPos.y, enemyHeading + Math.PI) / 800.0;
+        f[7] = Math.min(1.0, (double) velocityChangeTime / Math.max(1, timeToTarget));
+        return f;
+    }
+
+    private double wallDistance(double x, double y, double heading) {
+        double sinH = Math.sin(heading);
+        double cosH = Math.cos(heading);
+        double dist = Double.MAX_VALUE;
+        if (cosH > 0.001) dist = Math.min(dist, (bfHeight - BOT_WIDTH - y) / cosH);
+        if (cosH < -0.001) dist = Math.min(dist, (BOT_WIDTH - y) / cosH);
+        if (sinH > 0.001) dist = Math.min(dist, (bfWidth - BOT_WIDTH - x) / sinH);
+        if (sinH < -0.001) dist = Math.min(dist, (BOT_WIDTH - x) / sinH);
+        return Math.max(0, dist);
+    }
+
+    private static void knnRecord(double[] features, double gf) {
+        System.arraycopy(features, 0, knnFeatures[knnIndex], 0, KNN_DIMENSIONS);
+        knnGFs[knnIndex] = gf;
+        knnIndex = (knnIndex + 1) % KNN_BUFFER_SIZE;
+        if (knnSize < KNN_BUFFER_SIZE) knnSize++;
+    }
+
+    private int knnBestBin(double[] features) {
+        double[] dists = new double[KNN_K];
+        int[] indices = new int[KNN_K];
+        Arrays.fill(dists, Double.MAX_VALUE);
+
+        for (int i = 0; i < knnSize; i++) {
+            double d = 0;
+            for (int j = 0; j < KNN_DIMENSIONS; j++) {
+                double diff = (features[j] - knnFeatures[i][j]) * FEATURE_WEIGHTS[j];
+                d += diff * diff;
+            }
+            if (d < dists[KNN_K - 1]) {
+                int pos = KNN_K - 1;
+                while (pos > 0 && d < dists[pos - 1]) {
+                    dists[pos] = dists[pos - 1];
+                    indices[pos] = indices[pos - 1];
+                    pos--;
+                }
+                dists[pos] = d;
+                indices[pos] = i;
+            }
+        }
+
+        double[] gfDist = new double[GF_BINS];
+        int neighbors = Math.min(KNN_K, knnSize);
+        for (int i = 0; i < neighbors; i++) {
+            if (dists[i] >= Double.MAX_VALUE) break;
+            double weight = 1.0 / (Math.sqrt(dists[i]) + 0.001);
+            double gf = knnGFs[indices[i]];
+            int bin = clamp((int) Math.round(gf * GF_CENTER + GF_CENTER),
+                            0, GF_BINS - 1);
+            gfDist[bin] += weight;
+        }
+
+        return bestGFBin(gfDist);
     }
 
     // ── Pattern matching ────────────────────────────────────────────────
@@ -466,26 +567,13 @@ public class Gun {
 
     public double smartFirePower(double distance, double myEnergy, double enemyEnergy) {
         if (myEnergy < 0.2) return 0.0;
-        if (myEnergy < 1.0 && distance > 200) return 0.0;
-        if (enemyEnergy <= 4.0 && myEnergy > 30.0 && distance < 300) {
-            return Math.min(3.0, Math.max(0.1, enemyEnergy / 4.0 + 0.1));
-        }
 
-        double power;
-        if (distance < 150)      power = 3.0;
-        else if (distance < 250) power = 2.5;
-        else if (distance < 400) power = 2.0;
-        else if (distance < 600) power = 1.5;
-        else                     power = 1.0;
+        double power = distance < 150 ? 3.0 : 1.9;
 
-        if (myEnergy < 5)        power = Math.min(power, 0.5);
-        else if (myEnergy < 15)  power = Math.min(power, 1.0);
-        else if (myEnergy < 30)  power = Math.min(power, 1.5);
+        power = Math.min(power, (enemyEnergy + 0.1) / 4.0);
+        if (power * 6.0 >= myEnergy) power = myEnergy / 6.0;
+        if (power >= myEnergy - 0.1) power = myEnergy - 0.1;
 
-        if (myEnergy < enemyEnergy * 0.3) power = Math.min(power, 0.8);
-
-        if (distance > 200) power = Math.min(power, myEnergy / 4.0);
-        power = Math.min(power, Math.max(0.1, enemyEnergy / 4.0 + 0.2));
         return Math.max(0.1, Math.min(3.0, power));
     }
 
@@ -508,9 +596,9 @@ public class Gun {
 
     private GunWave createWave(Point2D.Double pos, long time, double bulletSpeed,
                                 double absBearing, double mea, double[] stats,
-                                int distSeg, int velSeg, int latvelSeg,
-                                int accelSeg, int wallSeg, boolean real,
-                                double[] aimAngles) {
+                                int distSeg, int latvelSeg, int wallSeg,
+                                int accelSeg, boolean real, double[] aimAngles,
+                                double[] features) {
         GunWave w = new GunWave();
         w.firePosition = pos;
         w.fireTime = time;
@@ -520,12 +608,12 @@ public class Gun {
         w.mea = mea;
         w.stats = stats;
         w.distSeg = distSeg;
-        w.velSeg = velSeg;
         w.latvelSeg = latvelSeg;
-        w.accelSeg = accelSeg;
         w.wallSeg = wallSeg;
+        w.accelSeg = accelSeg;
         w.realBullet = real;
         w.aimAngles = aimAngles;
+        w.features = features;
         return w;
     }
 

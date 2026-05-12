@@ -943,6 +943,21 @@ class BrainTest {
         }
 
         @Test
+        @DisplayName("derives STATISTICAL gun type from high hit rate with moderate bearing errors")
+        void derivesStatisticalFromHitRate() {
+            ScannedRobotEvent e = mockEvent("Bot1", 0, 200, 0, 0, 100);
+            brain.update(e, 400, 300, 0, 1);
+            OpponentData od = brain.getOpponent("Bot1");
+            od.hitsOnUs = 7;
+            od.fireCount = 20;
+            for (int i = 0; i < 6; i++)
+                brain.recordHitBearingError("Bot1", Math.toRadians(10));
+            TargetProfile p = brain.getProfile("Bot1");
+            assertEquals("STATISTICAL", p.gunType,
+                    "High hit rate (35%) with moderate bearing errors should be STATISTICAL");
+        }
+
+        @Test
         @DisplayName("returns UNKNOWN gun type with fewer than 5 bearing errors")
         void unknownGunTypeInsufficient() {
             ScannedRobotEvent e = mockEvent("Bot1", 0, 200, 0, 0, 100);

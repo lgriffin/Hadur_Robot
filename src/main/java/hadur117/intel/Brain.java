@@ -179,6 +179,8 @@ public class Brain {
         for (double e : od.hitBearingErrors) sumAbs += Math.abs(e);
         double avg = sumAbs / od.hitBearingErrors.size();
         if (avg < Math.toRadians(5)) return "HEAD_ON";
+        if (od.hitsOnUs >= 5 && od.fireCount > 0
+                && (double) od.hitsOnUs / od.fireCount > 0.15) return "STATISTICAL";
         if (avg < Math.toRadians(15)) return "LINEAR";
         return "STATISTICAL";
     }

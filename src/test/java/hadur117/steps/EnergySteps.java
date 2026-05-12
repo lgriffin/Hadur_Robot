@@ -83,10 +83,7 @@ public class EnergySteps {
     @Then("the power should be the exact amount needed to destroy the enemy")
     public void power_should_be_exact_amount_to_destroy() {
         calculatedPower = gun.smartFirePower(enemyDistance, myEnergy, enemyEnergy);
-        // Finishing move formula: min(3.0, max(0.1, enemyEnergy / 4.0 + 0.1))
-        // Damage for power p: 4*p + 2*max(0, p-1)
-        // At p = enemyEnergy/4 + 0.1, this ensures kill
-        double finishPower = Math.min(3.0, Math.max(0.1, enemyEnergy / 4.0 + 0.1));
+        double finishPower = Math.min(3.0, Math.max(0.1, (enemyEnergy + 0.1) / 4.0));
         assertEquals(finishPower, calculatedPower, 0.01,
                 "Finishing power should destroy enemy with " + enemyEnergy + " energy");
     }
@@ -140,8 +137,8 @@ public class EnergySteps {
     @Then("the power should reflect the distance band")
     public void the_power_should_reflect_distance_band() {
         calculatedPower = gun.smartFirePower(400, myEnergy, 100.0);
-        assertEquals(1.5, calculatedPower, 0.5,
-                "At 400px, power should follow distance band (~1.5)");
+        assertEquals(1.9, calculatedPower, 0.5,
+                "At 400px, power should follow distance band (~1.9)");
     }
 
     @And("energy conservation relies on distance and energy caps")
