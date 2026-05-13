@@ -48,6 +48,8 @@ public class Hadur extends AdvancedRobot {
     static int roundsPlayed = 0;
     static int roundsWon = 0;
 
+    private static java.io.File logFile;
+
     public void run() {
         setBodyColor(new Color(139, 0, 0));
         setGunColor(new Color(218, 165, 32));
@@ -79,9 +81,7 @@ public class Hadur extends AdvancedRobot {
         battleMode = getOthers() > 1 ? BattleMode.MELEE : BattleMode.DUEL;
         brain.setBattleMode(getOthers());
 
-        if (getRoundNum() == 0) {
-            initLogger();
-        }
+        initLogger();
         BattleLogger.logRoundStart(getRoundNum(), battleMode.name(), getOthers());
 
         do {
@@ -145,6 +145,8 @@ public class Hadur extends AdvancedRobot {
                 brain.recordShotFiredAt(e.getName());
                 BattleLogger.logFire(getTime(), e.getName(),
                         gun.getLastFirePower(), gun.getActiveGunName());
+                waveSurfer.addBullet(getX(), getY(), getGunHeadingRadians(),
+                        gun.getLastFirePower(), getTime());
             }
             waveSurfer.onScannedRobot(this, e);
             radar.doDuelRadar(this,
@@ -248,16 +250,18 @@ public class Hadur extends AdvancedRobot {
 
         if (loggingEnabled) {
             try {
-                String timestamp = new java.text.SimpleDateFormat("yyyyMMdd_HHmmss")
-                        .format(new java.util.Date());
-                java.io.File logFile = getDataFile("hadur_battle_" + timestamp + ".log");
-                out.println("[Hadur] Log file: " + logFile.getAbsolutePath());
+                if (logFile == null) {
+                    String timestamp = new java.text.SimpleDateFormat("yyyyMMdd_HHmmss")
+                            .format(new java.util.Date());
+                    logFile = getDataFile("hadur_battle_" + timestamp + ".log");
+                    out.println("[Hadur] Log file: " + logFile.getAbsolutePath());
+                }
                 PrintStream console = consoleEnabled ? out : null;
-                BattleLogger.init(new RobocodeFileOutputStream(logFile), console);
+                BattleLogger.init(new RobocodeFileOutputStream(logFile.getAbsolutePath(), true), console);
             } catch (IOException e) {
                 out.println("[Hadur] Failed to init logger: " + e.getMessage());
             }
-        } else {
+        } else if (getRoundNum() == 0) {
             out.println("[Hadur] Logging disabled via Hadur.properties");
         }
     }

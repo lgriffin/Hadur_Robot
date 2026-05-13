@@ -33,21 +33,21 @@ class GunTest {
         }
 
         @Test
-        @DisplayName("distance exactly 150 returns 1.9")
+        @DisplayName("distance exactly 150 returns 1.5 (default rolling accuracy)")
         void boundary150() {
-            assertEquals(1.9, gun.smartFirePower(150, 100, 100), 1e-9);
+            assertEquals(1.5, gun.smartFirePower(150, 100, 100), 1e-9);
         }
 
         @Test
-        @DisplayName("distance 400 returns 1.9")
+        @DisplayName("distance 400 returns 1.5 (default rolling accuracy)")
         void dist400() {
-            assertEquals(1.9, gun.smartFirePower(400, 100, 100), 1e-9);
+            assertEquals(1.5, gun.smartFirePower(400, 100, 100), 1e-9);
         }
 
         @Test
-        @DisplayName("distance 800 returns 1.9")
+        @DisplayName("distance 800 returns 1.5 (default rolling accuracy)")
         void dist800() {
-            assertEquals(1.9, gun.smartFirePower(800, 100, 100), 1e-9);
+            assertEquals(1.5, gun.smartFirePower(800, 100, 100), 1e-9);
         }
     }
 
@@ -153,9 +153,9 @@ class GunTest {
         }
 
         @Test
-        @DisplayName("fires 1.9 at range with full energy")
+        @DisplayName("fires 1.5 at range with default rolling accuracy")
         void rangedPower() {
-            assertEquals(1.9, gun.smartFirePower(400, 100, 100), 1e-9);
+            assertEquals(1.5, gun.smartFirePower(400, 100, 100), 1e-9);
         }
 
         @Test
@@ -342,18 +342,37 @@ class GunTest {
         }
     }
 
-    // ── per-opponent smartFirePower (5-param passthrough) ─────────────
+    // ── Rolling accuracy power scaling ─────────────────────────────────
 
     @Nested
-    @DisplayName("smartFirePower() per-opponent passthrough")
-    class PerOpponentPassthrough {
+    @DisplayName("smartFirePower() rolling accuracy scaling")
+    class RollingAccuracyScaling {
 
         @Test
-        @DisplayName("delegates to base smartFirePower regardless of accuracy")
-        void passthrough() {
-            double base = gun.smartFirePower(100, 100, 100);
-            double perOpp = gun.smartFirePower(100, 100, 100, 0.02, 50);
-            assertEquals(base, perOpp, 1e-9);
+        @DisplayName("default rolling accuracy is 0.15")
+        void defaultRollingAccuracy() {
+            assertEquals(0.15, gun.getRollingAccuracy(), 1e-9);
+        }
+
+        @Test
+        @DisplayName("low rolling accuracy gives 1.0 power at range")
+        void lowRollingAccGivesLowPower() throws Exception {
+            setRollingAccuracy(0, 30);
+            assertEquals(1.0, gun.smartFirePower(400, 100, 100), 1e-9);
+        }
+
+        @Test
+        @DisplayName("high rolling accuracy gives 1.9 power at range")
+        void highRollingAccGivesHighPower() throws Exception {
+            setRollingAccuracy(6, 30);
+            assertEquals(1.9, gun.smartFirePower(400, 100, 100), 1e-9);
+        }
+
+        @Test
+        @DisplayName("close range always 3.0 regardless of accuracy")
+        void closeRangeIgnoresAccuracy() throws Exception {
+            setRollingAccuracy(0, 30);
+            assertEquals(3.0, gun.smartFirePower(100, 100, 100), 1e-9);
         }
     }
 
@@ -386,27 +405,19 @@ class GunTest {
     class KnnConstants {
 
         @Test
-        @DisplayName("buffer size is 800")
+        @DisplayName("buffer size is 2000")
         void bufferSize() throws Exception {
             Field f = Gun.class.getDeclaredField("KNN_BUFFER_SIZE");
             f.setAccessible(true);
-            assertEquals(800, f.getInt(null));
+            assertEquals(2000, f.getInt(null));
         }
 
         @Test
-        @DisplayName("K is 80 nearest neighbors")
-        void kValue() throws Exception {
-            Field f = Gun.class.getDeclaredField("KNN_K");
-            f.setAccessible(true);
-            assertEquals(80, f.getInt(null));
-        }
-
-        @Test
-        @DisplayName("feature vector has 8 dimensions")
+        @DisplayName("feature vector has 13 dimensions")
         void dimensions() throws Exception {
             Field f = Gun.class.getDeclaredField("KNN_DIMENSIONS");
             f.setAccessible(true);
-            assertEquals(8, f.getInt(null));
+            assertEquals(13, f.getInt(null));
         }
 
         @Test
@@ -414,7 +425,7 @@ class GunTest {
         void minData() throws Exception {
             Field f = Gun.class.getDeclaredField("KNN_MIN_DATA");
             f.setAccessible(true);
-            assertEquals(80, f.getInt(null));
+            assertEquals(30, f.getInt(null));
         }
     }
 
@@ -436,5 +447,15 @@ class GunTest {
         Field f = Gun.class.getDeclaredField("activeGun");
         f.setAccessible(true);
         f.setInt(gun, idx);
+    }
+
+    private void setRollingAccuracy(int hits, int total) throws Exception {
+        Field hitsField = Gun.class.getDeclaredField("rollingHits");
+        hitsField.setAccessible(true);
+        boolean[] arr = (boolean[]) hitsField.get(gun);
+        for (int i = 0; i < total; i++) arr[i] = i < hits;
+        Field sizeField = Gun.class.getDeclaredField("rollingSize");
+        sizeField.setAccessible(true);
+        sizeField.setInt(gun, total);
     }
 }
