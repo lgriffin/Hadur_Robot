@@ -145,6 +145,8 @@ public class Hadur extends AdvancedRobot {
                 brain.recordShotFiredAt(e.getName());
                 BattleLogger.logFire(getTime(), e.getName(),
                         gun.getLastFirePower(), gun.getActiveGunName());
+                waveSurfer.addBullet(getX(), getY(), getGunHeadingRadians(),
+                        gun.getLastFirePower(), getTime());
             }
             waveSurfer.onScannedRobot(this, e);
             radar.doDuelRadar(this,

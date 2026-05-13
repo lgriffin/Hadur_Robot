@@ -26,32 +26,33 @@ class WaveSurferTest {
     void constructorSetsCenterBinMinimum() throws Exception {
         Field statsField = WaveSurfer.class.getDeclaredField("dangerStats");
         statsField.setAccessible(true);
-        double[][][][] stats = (double[][][][]) statsField.get(null);
+        double[][][][][][] stats = (double[][][][][][]) statsField.get(null);
 
-        // CENTER_BIN = (47-1)/2 = 23
         int centerBin = 23;
-        for (int d = 0; d < 5; d++) {
-            for (int v = 0; v < 5; v++) {
-                for (int a = 0; a < 3; a++) {
-                    assertTrue(stats[d][v][a][centerBin] >= 0.001,
-                            "dangerStats[" + d + "][" + v + "][" + a + "][" + centerBin
-                                    + "] should be >= 0.001 but was " + stats[d][v][a][centerBin]);
-                }
-            }
-        }
+        for (int d = 0; d < 5; d++)
+            for (int v = 0; v < 5; v++)
+                for (int a = 0; a < 3; a++)
+                    for (int w = 0; w < 2; w++)
+                        for (int t = 0; t < 3; t++)
+                            assertTrue(stats[d][v][a][w][t][centerBin] >= 0.001,
+                                    "dangerStats[" + d + "][" + v + "][" + a + "]["
+                                            + w + "][" + t + "][" + centerBin
+                                            + "] should be >= 0.001");
     }
 
     @Test
-    @DisplayName("dangerStats dimensions are [5][5][3][47]")
+    @DisplayName("dangerStats dimensions are [5][5][3][2][3][47]")
     void dangerStatsDimensions() throws Exception {
         Field statsField = WaveSurfer.class.getDeclaredField("dangerStats");
         statsField.setAccessible(true);
-        double[][][][] stats = (double[][][][]) statsField.get(null);
+        double[][][][][][] stats = (double[][][][][][]) statsField.get(null);
 
         assertEquals(5, stats.length);
         assertEquals(5, stats[0].length);
         assertEquals(3, stats[0][0].length);
-        assertEquals(47, stats[0][0][0].length);
+        assertEquals(2, stats[0][0][0].length);
+        assertEquals(3, stats[0][0][0][0].length);
+        assertEquals(47, stats[0][0][0][0][0].length);
     }
 
     // ── init ───────────────────────────────────────────────────────────
@@ -181,5 +182,93 @@ class WaveSurferTest {
         Field stickField = WaveSurfer.class.getDeclaredField("STICK");
         stickField.setAccessible(true);
         assertEquals(160.0, stickField.getDouble(null), 1e-9);
+    }
+
+    // ── Bullet shadows ────────────────────────────────────────────────
+
+    @Test
+    @DisplayName("addBullet stores bullet in ourBullets list")
+    void addBulletStoresBullet() throws Exception {
+        surfer.init(800, 600);
+        surfer.addBullet(400, 300, Math.PI, 2.0, 10);
+
+        java.util.ArrayList<?> bullets = getOurBullets();
+        assertEquals(1, bullets.size());
+    }
+
+    @Test
+    @DisplayName("addBullet computes bullet speed as 20 - 3*power")
+    void addBulletSpeed() throws Exception {
+        surfer.init(800, 600);
+        surfer.addBullet(400, 300, 0.0, 3.0, 10);
+
+        java.util.ArrayList<?> bullets = getOurBullets();
+        Object bullet = bullets.get(0);
+        Field speedField = bullet.getClass().getDeclaredField("bulletSpeed");
+        speedField.setAccessible(true);
+        assertEquals(11.0, speedField.getDouble(bullet), 1e-9);
+    }
+
+    @Test
+    @DisplayName("init clears ourBullets list")
+    void initClearsOurBullets() throws Exception {
+        surfer.init(800, 600);
+        surfer.addBullet(400, 300, 0.0, 2.0, 10);
+        assertEquals(1, getOurBullets().size());
+
+        surfer.init(800, 600);
+        assertEquals(0, getOurBullets().size());
+    }
+
+    @Test
+    @DisplayName("getShadowBin returns valid bin for head-on intersection")
+    void shadowBinHeadOnIntersection() throws Exception {
+        surfer.init(800, 600);
+        surfer.addBullet(400, 300, 0.0, 2.0, 0);
+
+        WaveSurfer.OurBullet bullet = (WaveSurfer.OurBullet) getOurBullets().get(0);
+
+        EnemyWave wave = new EnemyWave();
+        wave.fireLocation = new java.awt.geom.Point2D.Double(400, 500);
+        wave.fireTime = 0;
+        wave.bulletSpeed = 14.0;
+        wave.directAngle = Math.atan2(400.0 - 400.0, 300.0 - 500.0);
+        wave.lateralDirection = 1;
+
+        int bin = surfer.getShadowBin(bullet, wave);
+        assertTrue(bin >= 0 && bin < 47, "shadow bin should be valid: " + bin);
+    }
+
+    @Test
+    @DisplayName("prune removes out-of-bounds bullets")
+    void pruneRemovesOutOfBounds() throws Exception {
+        surfer.init(800, 600);
+        surfer.addBullet(400, 590, 0.0, 1.0, 0);
+
+        java.lang.reflect.Method prune = WaveSurfer.class.getDeclaredMethod("pruneOurBullets", long.class);
+        prune.setAccessible(true);
+        prune.invoke(surfer, 100L);
+
+        assertEquals(0, getOurBullets().size());
+    }
+
+    @Test
+    @DisplayName("prune keeps in-bounds bullets")
+    void pruneKeepsInBounds() throws Exception {
+        surfer.init(800, 600);
+        surfer.addBullet(400, 300, 0.0, 3.0, 0);
+
+        java.lang.reflect.Method prune = WaveSurfer.class.getDeclaredMethod("pruneOurBullets", long.class);
+        prune.setAccessible(true);
+        prune.invoke(surfer, 2L);
+
+        assertEquals(1, getOurBullets().size());
+    }
+
+    @SuppressWarnings("unchecked")
+    private java.util.ArrayList<?> getOurBullets() throws Exception {
+        Field f = WaveSurfer.class.getDeclaredField("ourBullets");
+        f.setAccessible(true);
+        return (java.util.ArrayList<?>) f.get(surfer);
     }
 }

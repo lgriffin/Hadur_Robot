@@ -30,7 +30,7 @@ public class WaveSurfer {
     private static final int CENTER_BIN = (BINS - 1) / 2;
     private static final double STICK = 160.0;
 
-    private static double[][][][] dangerStats = new double[5][5][3][BINS];
+    private static double[][][][][][] dangerStats = new double[5][5][3][2][3][BINS];
     private static double[] moveProfile = new double[BINS];
     private static int totalHitsTaken = 0;
     private static int totalWavesPassed = 0;
@@ -39,19 +39,29 @@ public class WaveSurfer {
     private Rectangle2D.Double fieldRect;
 
     private final ArrayList<EnemyWave> waves = new ArrayList<>();
+    private final ArrayList<OurBullet> ourBullets = new ArrayList<>();
     private double lastEnemyEnergy = 100.0;
     private Point2D.Double enemyLocation;
     private int orbitDirection = 1;
     private double lateralVelocity;
     private double prevLateralVelocity = 0;
     private int roundHitsTaken = 0;
+    private static int velChangeTimer = 0;
+    private static double prevAbsLatVel = 0;
+    private int prevSurfDirection = 0;
+    private double enemyGunHeat = 3.0;
+    private static double avgEnemyBulletPower = 1.5;
+    private static int enemyFireCount = 0;
+    private static double enemyFirePowerSum = 0;
 
     public WaveSurfer() {
         for (int d = 0; d < 5; d++)
             for (int v = 0; v < 5; v++)
                 for (int a = 0; a < 3; a++)
-                    dangerStats[d][v][a][CENTER_BIN] =
-                            Math.max(dangerStats[d][v][a][CENTER_BIN], 0.001);
+                    for (int w = 0; w < 2; w++)
+                        for (int t = 0; t < 3; t++)
+                            dangerStats[d][v][a][w][t][CENTER_BIN] =
+                                    Math.max(dangerStats[d][v][a][w][t][CENTER_BIN], 0.001);
     }
 
     public void init(double bfWidth, double bfHeight) {
@@ -61,6 +71,7 @@ public class WaveSurfer {
                 bfWidth - 2 * WALL_MARGIN, bfHeight - 2 * WALL_MARGIN);
         lastEnemyEnergy = 100.0;
         waves.clear();
+        ourBullets.clear();
         roundHitsTaken = 0;
     }
 
@@ -74,9 +85,30 @@ public class WaveSurfer {
         if (lateralVelocity != 0)
             orbitDirection = lateralVelocity > 0 ? 1 : -1;
 
+        double absLat = Math.abs(lateralVelocity);
+        if (Math.abs(absLat - prevAbsLatVel) > 0.5) {
+            velChangeTimer = 0;
+        } else {
+            velChangeTimer++;
+        }
+        prevAbsLatVel = absLat;
+
+        double wallDist = Math.min(
+                Math.min(myPos.x - WALL_MARGIN, fieldWidth - myPos.x - WALL_MARGIN),
+                Math.min(myPos.y - WALL_MARGIN, fieldHeight - myPos.y - WALL_MARGIN));
+        int wallSeg = wallDist < 120 ? 0 : 1;
+        int velChangeSeg = velChangeTimer <= 5 ? 0 : (velChangeTimer <= 20 ? 1 : 2);
+
         double energyDelta = lastEnemyEnergy - e.getEnergy();
         if (energyDelta > 0.09 && energyDelta <= 3.01) {
             double bulletSpeed = 20.0 - 3.0 * energyDelta;
+
+            removeVirtualWaves();
+
+            enemyFireCount++;
+            enemyFirePowerSum += energyDelta;
+            avgEnemyBulletPower = enemyFirePowerSum / enemyFireCount;
+            enemyGunHeat = 1.0 + energyDelta / 5.0;
 
             EnemyWave w = new EnemyWave();
             w.fireLocation = new Point2D.Double(enemyLocation.x, enemyLocation.y);
@@ -87,11 +119,36 @@ public class WaveSurfer {
             w.distanceTraveled = bulletSpeed;
             w.lateralDirection = orbitDirection;
             w.distSeg = distSeg(myPos.distance(enemyLocation));
-            w.velSeg = velSeg(Math.abs(lateralVelocity));
-            double absLat = Math.abs(lateralVelocity);
+            w.velSeg = velSeg(absLat);
             double absPrevLat = Math.abs(prevLateralVelocity);
             w.accelSeg = absLat > absPrevLat ? 2 : (absLat < absPrevLat ? 0 : 1);
+            w.wallSeg = wallSeg;
+            w.velChangeTimeSeg = velChangeSeg;
             waves.add(w);
+        } else {
+            enemyGunHeat = Math.max(0, enemyGunHeat - 0.1);
+            if (enemyGunHeat <= 0 && !hasVirtualWave()) {
+                double vPower = avgEnemyBulletPower;
+                double vBulletSpeed = 20.0 - 3.0 * vPower;
+
+                EnemyWave vw = new EnemyWave();
+                vw.fireLocation = new Point2D.Double(enemyLocation.x, enemyLocation.y);
+                vw.fireTime = robot.getTime() - 1;
+                vw.bulletSpeed = vBulletSpeed;
+                vw.directAngle = Math.atan2(myPos.x - enemyLocation.x,
+                                             myPos.y - enemyLocation.y);
+                vw.distanceTraveled = vBulletSpeed;
+                vw.lateralDirection = orbitDirection;
+                vw.distSeg = distSeg(myPos.distance(enemyLocation));
+                vw.velSeg = velSeg(absLat);
+                double absPrevLat = Math.abs(prevLateralVelocity);
+                vw.accelSeg = absLat > absPrevLat ? 2 : (absLat < absPrevLat ? 0 : 1);
+                vw.wallSeg = wallSeg;
+                vw.velChangeTimeSeg = velChangeSeg;
+                vw.virtual = true;
+                vw.dangerWeight = 0.5;
+                waves.add(vw);
+            }
         }
         lastEnemyEnergy = e.getEnergy();
         prevLateralVelocity = lateralVelocity;
@@ -107,6 +164,7 @@ public class WaveSurfer {
 
         for (EnemyWave w : waves) w.distanceTraveled += w.bulletSpeed;
         pruneWaves(robot);
+        pruneOurBullets(robot.getTime());
 
         EnemyWave wave1 = closestWave(myPos);
         if (wave1 == null) { defaultOrbit(robot); return; }
@@ -116,7 +174,11 @@ public class WaveSurfer {
         double dangerCW = evaluateDanger(robot, -1, wave1, wave2, opponentGunType);
         double dangerCCW = evaluateDanger(robot, 1, wave1, wave2, opponentGunType);
 
-        goDirection(robot, dangerCW < dangerCCW ? -1 : 1, wave1);
+        if (prevSurfDirection == -1) dangerCW *= 0.95;
+        else if (prevSurfDirection == 1) dangerCCW *= 0.95;
+        int direction = dangerCW < dangerCCW ? -1 : 1;
+        prevSurfDirection = direction;
+        goDirection(robot, direction, wave1);
     }
 
     private double evaluateDanger(AdvancedRobot robot, int direction,
@@ -124,8 +186,9 @@ public class WaveSurfer {
                                    String opponentGunType) {
         Point2D.Double pred = predictPosition(robot, direction, wave1);
         int bin = getGFBin(wave1, pred);
-        double[] stats = dangerStats[wave1.distSeg][wave1.velSeg][wave1.accelSeg];
-        double danger = smoothDanger(stats, bin);
+        double[] stats = dangerStats[wave1.distSeg][wave1.velSeg][wave1.accelSeg]
+                                    [wave1.wallSeg][wave1.velChangeTimeSeg];
+        double danger = smoothDanger(stats, bin) * wave1.dangerWeight;
 
         double predDist = pred.distance(wave1.fireLocation);
         double currentDist = new Point2D.Double(robot.getX(), robot.getY())
@@ -134,17 +197,24 @@ public class WaveSurfer {
             danger *= 1.3;
         }
 
-        double flatWeight;
-        switch (opponentGunType) {
-            case "HEAD_ON":    flatWeight = 0.1; break;
-            case "LINEAR":     flatWeight = 0.2; break;
-            case "STATISTICAL": flatWeight = 0.6; break;
-            default:           flatWeight = 0.5; break;
+        double shadowMultiplier = 1.0;
+        for (OurBullet bullet : ourBullets) {
+            int shadowBin = getShadowBin(bullet, wave1);
+            if (shadowBin >= 0 && Math.abs(bin - shadowBin) <= 1) {
+                shadowMultiplier = Math.min(shadowMultiplier, 0.5);
+            }
         }
+        danger *= shadowMultiplier;
 
-        if (totalWavesPassed > 15 && totalHitsTaken > 0) {
+        if (totalWavesPassed > 10 && totalHitsTaken > 0) {
             double hitRate = (double) totalHitsTaken / totalWavesPassed;
-            if (hitRate > 0.06) {
+            if (hitRate > 0.05) {
+                double flatWeight = Math.min(0.8, hitRate * 8);
+                switch (opponentGunType) {
+                    case "HEAD_ON":    flatWeight *= 0.2; break;
+                    case "LINEAR":     flatWeight *= 0.4; break;
+                    case "STATISTICAL": flatWeight *= 1.0; break;
+                }
                 danger += moveProfile[clampBin(bin)] * flatWeight;
             }
         }
@@ -153,8 +223,9 @@ public class WaveSurfer {
             Point2D.Double pred2 = predictPositionFrom(pred, robot.getHeadingRadians(),
                     robot.getVelocity(), direction, wave2);
             int bin2 = getGFBin(wave2, pred2);
-            double[] stats2 = dangerStats[wave2.distSeg][wave2.velSeg][wave2.accelSeg];
-            danger += smoothDanger(stats2, bin2) * 0.35;
+            double[] stats2 = dangerStats[wave2.distSeg][wave2.velSeg][wave2.accelSeg]
+                                        [wave2.wallSeg][wave2.velChangeTimeSeg];
+            danger += smoothDanger(stats2, bin2) * 0.35 * wave2.dangerWeight;
         }
 
         return danger;
@@ -166,14 +237,18 @@ public class WaveSurfer {
         roundHitsTaken++;
         totalHitsTaken++;
 
+        double hitBulletSpeed = Rules.getBulletSpeed(e.getBullet().getPower());
         Point2D.Double myPos = new Point2D.Double(robot.getX(), robot.getY());
         if (!waves.isEmpty()) {
             EnemyWave hitWave = null;
-            double closest = Double.MAX_VALUE;
+            double bestMatch = Double.MAX_VALUE;
             for (EnemyWave w : waves) {
+                if (w.virtual) continue;
                 double tti = Math.abs(
                         (myPos.distance(w.fireLocation) - w.distanceTraveled) / w.bulletSpeed);
-                if (tti < closest) { closest = tti; hitWave = w; }
+                double speedErr = Math.abs(w.bulletSpeed - hitBulletSpeed);
+                double score = tti + speedErr * 10;
+                if (score < bestMatch) { bestMatch = score; hitWave = w; }
             }
             if (hitWave != null) {
                 logHit(hitWave, myPos);
@@ -212,7 +287,8 @@ public class WaveSurfer {
 
     private void logHit(EnemyWave wave, Point2D.Double hitPos) {
         int bin = clampBin(getGFBin(wave, hitPos));
-        double[] stats = dangerStats[wave.distSeg][wave.velSeg][wave.accelSeg];
+        double[] stats = dangerStats[wave.distSeg][wave.velSeg][wave.accelSeg]
+                                    [wave.wallSeg][wave.velChangeTimeSeg];
         stats[bin] += 1.0;
         if (bin > 0) stats[bin - 1] += 0.5;
         if (bin < BINS - 1) stats[bin + 1] += 0.5;
@@ -371,6 +447,7 @@ public class WaveSurfer {
             if (w.distanceTraveled > me.distance(w.fireLocation) + 50) {
                 totalWavesPassed++;
                 moveProfile[clampBin(getGFBin(w, me))] += 0.2;
+                decayStats(w);
                 it.remove();
             }
         }
@@ -397,6 +474,23 @@ public class WaveSurfer {
         return best;
     }
 
+    private void removeVirtualWaves() {
+        waves.removeIf(w -> w.virtual);
+    }
+
+    private boolean hasVirtualWave() {
+        for (EnemyWave w : waves) {
+            if (w.virtual) return true;
+        }
+        return false;
+    }
+
+    private static void decayStats(EnemyWave w) {
+        double[] stats = dangerStats[w.distSeg][w.velSeg][w.accelSeg]
+                                    [w.wallSeg][w.velChangeTimeSeg];
+        for (int i = 0; i < BINS; i++) stats[i] *= 0.995;
+    }
+
     private static int distSeg(double distance) {
         if (distance < 200) return 0;
         if (distance < 350) return 1;
@@ -420,5 +514,72 @@ public class WaveSurfer {
 
     private static double clamp(double val, double min, double max) {
         return Math.max(min, Math.min(max, val));
+    }
+
+    // ── Bullet shadows ─────────────────────────────────────────────────
+
+    public void addBullet(double x, double y, double gunHeading, double firePower, long fireTime) {
+        OurBullet b = new OurBullet();
+        b.firePosition = new Point2D.Double(x, y);
+        b.heading = gunHeading;
+        b.bulletSpeed = 20.0 - 3.0 * firePower;
+        b.fireTime = fireTime;
+        ourBullets.add(b);
+    }
+
+    int getShadowBin(OurBullet bullet, EnemyWave wave) {
+        double dx = bullet.firePosition.x - wave.fireLocation.x;
+        double dy = bullet.firePosition.y - wave.fireLocation.y;
+        double bvx = Math.sin(bullet.heading) * bullet.bulletSpeed;
+        double bvy = Math.cos(bullet.heading) * bullet.bulletSpeed;
+        double ws = wave.bulletSpeed;
+        long dt = bullet.fireTime - wave.fireTime;
+
+        double a = bvx * bvx + bvy * bvy - ws * ws;
+        double b = 2.0 * (dx * bvx + dy * bvy - ws * ws * dt);
+        double c = dx * dx + dy * dy - ws * ws * dt * dt;
+
+        double u;
+        if (Math.abs(a) < 1e-10) {
+            if (Math.abs(b) < 1e-10) return -1;
+            u = -c / b;
+            if (u <= 0) return -1;
+        } else {
+            double disc = b * b - 4.0 * a * c;
+            if (disc < 0) return -1;
+
+            double sqrtDisc = Math.sqrt(disc);
+            double u1 = (-b - sqrtDisc) / (2.0 * a);
+            double u2 = (-b + sqrtDisc) / (2.0 * a);
+
+            u = -1;
+            if (u1 > 0) u = u1;
+            else if (u2 > 0) u = u2;
+            if (u < 0) return -1;
+        }
+
+        double hitX = bullet.firePosition.x + bvx * u;
+        double hitY = bullet.firePosition.y + bvy * u;
+
+        if (hitX < 0 || hitX > fieldWidth || hitY < 0 || hitY > fieldHeight) return -1;
+
+        return getGFBin(wave, new Point2D.Double(hitX, hitY));
+    }
+
+    private void pruneOurBullets(long currentTime) {
+        ourBullets.removeIf(b -> {
+            double elapsed = currentTime - b.fireTime;
+            double dist = b.bulletSpeed * elapsed;
+            double bx = b.firePosition.x + Math.sin(b.heading) * dist;
+            double by = b.firePosition.y + Math.cos(b.heading) * dist;
+            return bx < 0 || bx > fieldWidth || by < 0 || by > fieldHeight;
+        });
+    }
+
+    static class OurBullet {
+        Point2D.Double firePosition;
+        double heading;
+        double bulletSpeed;
+        long fireTime;
     }
 }

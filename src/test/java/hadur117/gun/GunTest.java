@@ -33,7 +33,7 @@ class GunTest {
         }
 
         @Test
-        @DisplayName("distance exactly 150 returns 1.9")
+        @DisplayName("distance exactly 150 returns 1.9 (range band)")
         void boundary150() {
             assertEquals(1.9, gun.smartFirePower(150, 100, 100), 1e-9);
         }
@@ -345,14 +345,22 @@ class GunTest {
     // ── per-opponent smartFirePower (5-param passthrough) ─────────────
 
     @Nested
-    @DisplayName("smartFirePower() per-opponent passthrough")
-    class PerOpponentPassthrough {
+    @DisplayName("smartFirePower() per-opponent accuracy scaling")
+    class PerOpponentAccuracy {
 
         @Test
-        @DisplayName("delegates to base smartFirePower regardless of accuracy")
-        void passthrough() {
+        @DisplayName("reduces power with low accuracy after sufficient shots")
+        void lowAccuracyReducesPower() {
             double base = gun.smartFirePower(100, 100, 100);
-            double perOpp = gun.smartFirePower(100, 100, 100, 0.02, 50);
+            double low = gun.smartFirePower(100, 100, 100, 0.02, 50);
+            assertTrue(low < base);
+        }
+
+        @Test
+        @DisplayName("no adjustment with insufficient shots")
+        void noAdjustmentFewShots() {
+            double base = gun.smartFirePower(100, 100, 100);
+            double perOpp = gun.smartFirePower(100, 100, 100, 0.02, 10);
             assertEquals(base, perOpp, 1e-9);
         }
     }
@@ -386,27 +394,19 @@ class GunTest {
     class KnnConstants {
 
         @Test
-        @DisplayName("buffer size is 800")
+        @DisplayName("buffer size is 2000")
         void bufferSize() throws Exception {
             Field f = Gun.class.getDeclaredField("KNN_BUFFER_SIZE");
             f.setAccessible(true);
-            assertEquals(800, f.getInt(null));
+            assertEquals(2000, f.getInt(null));
         }
 
         @Test
-        @DisplayName("K is 80 nearest neighbors")
-        void kValue() throws Exception {
-            Field f = Gun.class.getDeclaredField("KNN_K");
-            f.setAccessible(true);
-            assertEquals(80, f.getInt(null));
-        }
-
-        @Test
-        @DisplayName("feature vector has 8 dimensions")
+        @DisplayName("feature vector has 13 dimensions")
         void dimensions() throws Exception {
             Field f = Gun.class.getDeclaredField("KNN_DIMENSIONS");
             f.setAccessible(true);
-            assertEquals(8, f.getInt(null));
+            assertEquals(13, f.getInt(null));
         }
 
         @Test
@@ -414,7 +414,7 @@ class GunTest {
         void minData() throws Exception {
             Field f = Gun.class.getDeclaredField("KNN_MIN_DATA");
             f.setAccessible(true);
-            assertEquals(80, f.getInt(null));
+            assertEquals(30, f.getInt(null));
         }
     }
 
