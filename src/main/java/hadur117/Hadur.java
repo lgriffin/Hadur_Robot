@@ -26,7 +26,7 @@ import java.util.Properties;
  * win tracking are maintained here for analytics output.</p>
  *
  * @author lgriffin
- * @version 1.17
+ * @version 1.20
  */
 public class Hadur extends AdvancedRobot {
 
@@ -275,6 +275,7 @@ public class Hadur extends AdvancedRobot {
         if (battleMode == BattleMode.DUEL) {
             BattleLogger.logWaveSurferStats(waveSurfer.getRoundHitsTaken(),
                     WaveSurfer.getTotalHitsTaken(), WaveSurfer.getTotalWavesPassed());
+            BattleLogger.logDangerModelWeights(WaveSurfer.getDangerModelWeights());
         }
 
         for (OpponentData od : brain.getAllOpponents()) {

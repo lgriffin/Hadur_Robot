@@ -33,21 +33,22 @@ class GunTest {
         }
 
         @Test
-        @DisplayName("distance exactly 150 returns 1.5 (default rolling accuracy)")
+        @DisplayName("distance exactly 150 returns 1.9 (even energy ratio)")
         void boundary150() {
-            assertEquals(1.5, gun.smartFirePower(150, 100, 100), 1e-9);
+            assertEquals(1.9, gun.smartFirePower(150, 100, 100), 1e-9);
         }
 
         @Test
-        @DisplayName("distance 400 returns 1.5 (default rolling accuracy)")
+        @DisplayName("distance 400 returns 1.9 (even energy ratio)")
         void dist400() {
-            assertEquals(1.5, gun.smartFirePower(400, 100, 100), 1e-9);
+            assertEquals(1.9, gun.smartFirePower(400, 100, 100), 1e-9);
         }
 
         @Test
-        @DisplayName("distance 800 returns 1.5 (default rolling accuracy)")
+        @DisplayName("distance 800 applies distance scaling (even energy ratio)")
         void dist800() {
-            assertEquals(1.5, gun.smartFirePower(800, 100, 100), 1e-9);
+            double power = gun.smartFirePower(800, 100, 100);
+            assertEquals(1.14, power, 1e-9);
         }
     }
 
@@ -117,7 +118,7 @@ class GunTest {
         @Test
         @DisplayName("energy reserve cap: power*6 >= myEnergy")
         void energyReserveCap() {
-            // dist=300, myE=4, eE=4: power=1.9, eE cap=1.025, 1.025*6=6.15>=4 → 4/6=0.667
+            // dist=300, myE=4, eE=4: ratio=1.0→1.9, kill→1.0, eE cap=1.025, 1.0*6>=4 → 4/6
             double power = gun.smartFirePower(300, 4, 4);
             assertEquals(4.0 / 6.0, power, 1e-9);
         }
@@ -153,9 +154,9 @@ class GunTest {
         }
 
         @Test
-        @DisplayName("fires 1.5 at range with default rolling accuracy")
+        @DisplayName("fires 1.9 at range with even energy ratio")
         void rangedPower() {
-            assertEquals(1.5, gun.smartFirePower(400, 100, 100), 1e-9);
+            assertEquals(1.9, gun.smartFirePower(400, 100, 100), 1e-9);
         }
 
         @Test
@@ -342,37 +343,34 @@ class GunTest {
         }
     }
 
-    // ── Rolling accuracy power scaling ─────────────────────────────────
+    // ── Energy ratio power scaling ──────────────────────────────────────
 
     @Nested
-    @DisplayName("smartFirePower() rolling accuracy scaling")
-    class RollingAccuracyScaling {
+    @DisplayName("smartFirePower() energy ratio scaling")
+    class EnergyRatioScaling {
 
         @Test
-        @DisplayName("default rolling accuracy is 0.15")
-        void defaultRollingAccuracy() {
-            assertEquals(0.15, gun.getRollingAccuracy(), 1e-9);
+        @DisplayName("energy advantage (ratio >= 2.0) gives 2.5 at range")
+        void energyAdvantageGivesHighPower() {
+            assertEquals(2.5, gun.smartFirePower(400, 200, 50), 1e-9);
         }
 
         @Test
-        @DisplayName("low rolling accuracy gives 1.0 power at range")
-        void lowRollingAccGivesLowPower() throws Exception {
-            setRollingAccuracy(0, 30);
-            assertEquals(1.0, gun.smartFirePower(400, 100, 100), 1e-9);
-        }
-
-        @Test
-        @DisplayName("high rolling accuracy gives 1.9 power at range")
-        void highRollingAccGivesHighPower() throws Exception {
-            setRollingAccuracy(6, 30);
+        @DisplayName("even energy (ratio 1.0) gives 1.9 at range")
+        void evenEnergyGivesModeratePower() {
             assertEquals(1.9, gun.smartFirePower(400, 100, 100), 1e-9);
         }
 
         @Test
-        @DisplayName("close range always 3.0 regardless of accuracy")
-        void closeRangeIgnoresAccuracy() throws Exception {
-            setRollingAccuracy(0, 30);
-            assertEquals(3.0, gun.smartFirePower(100, 100, 100), 1e-9);
+        @DisplayName("energy disadvantage (ratio < 0.5) gives 1.0 at range")
+        void energyDisadvantageGivesLowPower() {
+            assertEquals(1.0, gun.smartFirePower(400, 30, 100), 1e-9);
+        }
+
+        @Test
+        @DisplayName("close range always 3.0 regardless of energy ratio")
+        void closeRangeIgnoresRatio() {
+            assertEquals(3.0, gun.smartFirePower(100, 30, 100), 1e-9);
         }
     }
 
@@ -449,13 +447,4 @@ class GunTest {
         f.setInt(gun, idx);
     }
 
-    private void setRollingAccuracy(int hits, int total) throws Exception {
-        Field hitsField = Gun.class.getDeclaredField("rollingHits");
-        hitsField.setAccessible(true);
-        boolean[] arr = (boolean[]) hitsField.get(gun);
-        for (int i = 0; i < total; i++) arr[i] = i < hits;
-        Field sizeField = Gun.class.getDeclaredField("rollingSize");
-        sizeField.setAccessible(true);
-        sizeField.setInt(gun, total);
-    }
 }

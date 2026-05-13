@@ -81,11 +81,6 @@ public class Gun {
     private int shotsHit = 0;
     private double lastFirePower = 0;
 
-    private static final int ROLLING_WINDOW = 30;
-    private final boolean[] rollingHits = new boolean[ROLLING_WINDOW];
-    private int rollingIndex = 0;
-    private int rollingSize = 0;
-
     private int waveCount = 0;
     private int lastGunSwitchWave = 0;
 
@@ -222,7 +217,7 @@ public class Gun {
             int knnBin = knnBestBin(features);
             knnAngle = absBearing + enemyLatDir * mea
                     * ((double) (knnBin - GF_CENTER) / GF_CENTER);
-            int asBin = knnBestBin(features, ANTISURFER_WEIGHTS);
+            int asBin = antiSurferMultiScale(features);
             antiSurferAngle = absBearing + enemyLatDir * mea
                     * ((double) (asBin - GF_CENTER) / GF_CENTER);
         }
@@ -344,8 +339,8 @@ public class Gun {
         meleeState.clear();
     }
 
-    public void onBulletHit(BulletHitEvent e) { shotsHit++; recordRollingShot(true); }
-    public void onBulletMissed(BulletMissedEvent e) { recordRollingShot(false); }
+    public void onBulletHit(BulletHitEvent e) { shotsHit++; }
+    public void onBulletMissed(BulletMissedEvent e) { }
     public double getLastFirePower() { return lastFirePower; }
 
     public int getShotsFired() { return shotsFired; }
@@ -477,7 +472,7 @@ public class Gun {
         f[8] = Math.min(1.0, directionChangeTime / Math.max(1.0, bft));
         f[9] = latVel8 / 8.0;
         f[10] = latVel32 / 8.0;
-        f[11] = 0;
+        f[11] = Math.abs(latVel8) / (Math.abs(latVel32) + 0.001);
         f[12] = Math.min(distLast10, 80) / 80.0;
         return f;
     }
@@ -505,7 +500,11 @@ public class Gun {
     }
 
     private int knnBestBin(double[] features, double[] weights) {
-        int k = Math.max(10, (int) Math.sqrt(knnSize));
+        return bestGFBin(knnGFDistribution(features, weights, knnSize));
+    }
+
+    private double[] knnGFDistribution(double[] features, double[] weights, int maxK) {
+        int k = Math.min(Math.max(10, (int) Math.sqrt(knnSize)), maxK);
         double[] dists = new double[k];
         int[] indices = new int[k];
         Arrays.fill(dists, Double.MAX_VALUE);
@@ -539,7 +538,20 @@ public class Gun {
             gfDist[bin] += weight;
         }
 
-        return bestGFBin(gfDist);
+        return gfDist;
+    }
+
+    private int antiSurferMultiScale(double[] features) {
+        int[] scales = {125, 400, 1500, knnSize};
+        double[] combined = new double[GF_BINS];
+        for (int scale : scales) {
+            int k = Math.min(scale, knnSize);
+            if (k < KNN_MIN_DATA) continue;
+            double[] dist = knnGFDistribution(features, ANTISURFER_WEIGHTS, k);
+            double w = 1.0 / Math.sqrt(k);
+            for (int i = 0; i < GF_BINS; i++) combined[i] += dist[i] * w;
+        }
+        return bestGFBin(combined);
     }
 
     // ── Pattern matching ────────────────────────────────────────────────
@@ -647,20 +659,27 @@ public class Gun {
                                   int perOpponentShotsFired) {
         if (myEnergy < 0.2) return 0.0;
 
-        double rollingAcc = getRollingAccuracy();
+        double ratio = myEnergy / Math.max(0.1, enemyEnergy);
         double power;
         if (distance < 150) {
             power = 3.0;
-        } else if (rollingAcc > 0.18) {
+        } else if (ratio >= 2.0) {
+            power = 2.5;
+        } else if (ratio >= 1.0) {
             power = 1.9;
-        } else if (rollingAcc > 0.10) {
+        } else if (ratio >= 0.5) {
             power = 1.5;
         } else {
             power = 1.0;
         }
 
-        if (myEnergy < 7) power *= 0.5;
-        else if (myEnergy < 20) power *= 0.7;
+        if (distance > 400) {
+            double distFactor = Math.max(0.6, 1.0 - (distance - 400) / 1000.0);
+            power *= distFactor;
+        }
+        if (perOpponentShotsFired >= 30 && perOpponentAccuracy < 0.08 && distance > 300) {
+            power = Math.min(power, 1.0);
+        }
 
         double killPower = (enemyEnergy + 2) / 6.0;
         if (enemyEnergy <= 4 * power && killPower >= 0.1) {
@@ -756,21 +775,9 @@ public class Gun {
             case STOPPED:     return GUN_HEADON;
             case LINEAR:      return GUN_LINEAR;
             case CIRCULAR:    return GUN_CIRCULAR;
-            case WAVE_SURFER: return GUN_GF;
+            case WAVE_SURFER: return GUN_PATTERN;
             default:          return GUN_GF;
         }
     }
 
-    private void recordRollingShot(boolean hit) {
-        rollingHits[rollingIndex] = hit;
-        rollingIndex = (rollingIndex + 1) % ROLLING_WINDOW;
-        if (rollingSize < ROLLING_WINDOW) rollingSize++;
-    }
-
-    double getRollingAccuracy() {
-        if (rollingSize == 0) return 0.15;
-        int hits = 0;
-        for (int i = 0; i < rollingSize; i++) if (rollingHits[i]) hits++;
-        return (double) hits / rollingSize;
-    }
 }

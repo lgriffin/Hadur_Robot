@@ -22,8 +22,6 @@ public class EnergySteps {
     private double enemyEnergy;
     private double enemyDistance;
     private double calculatedPower;
-    private double rollingAccuracy;
-
     // ── Background ──────────────────────────────────────────────────────
 
     @And("Hadur starts with {double} energy")
@@ -124,26 +122,18 @@ public class EnergySteps {
                 "Should return 0.0 when energy (" + veryLowEnergy + ") < 0.2");
     }
 
-    // ── Scenario: Reduce power when accuracy is poor ────────────────────
-
-    @Given("Hadur's rolling accuracy over the last {int} shots is below {int}%")
-    public void hadur_accuracy_below_threshold(int shots, int percentage) {
-        rollingAccuracy = percentage / 100.0;
-        // Create a gun instance that simulates poor accuracy
-        // We need to set up shotsFired and shotsHit to produce the desired accuracy
-        // Since we can't directly set private fields, we verify the logic of smartFirePower
-    }
+    // ── Scenario: Fire power adapts to energy disadvantage ────────────────
 
     @Then("the power should be reduced to conserve energy")
     public void the_power_should_be_reduced_to_conserve_energy() {
-        calculatedPower = gun.smartFirePower(400, myEnergy, 100.0);
+        calculatedPower = gun.smartFirePower(enemyDistance, myEnergy, 100.0);
         assertTrue(calculatedPower <= 1.5,
-                "At 400px with low accuracy, power should be reduced (got " + calculatedPower + ")");
+                "With energy disadvantage, power should be reduced (got " + calculatedPower + ")");
     }
 
-    @And("energy conservation relies on distance and energy caps")
+    @And("energy conservation relies on energy ratio and caps")
     public void energy_conservation_relies_on_caps() {
-        assertTrue(true, "Energy conservation uses distance bands and energy-level caps");
+        assertTrue(true, "Energy conservation uses energy ratio and caps");
     }
 
     // ── Scenario: Avoid wall collisions to preserve energy ──────────────

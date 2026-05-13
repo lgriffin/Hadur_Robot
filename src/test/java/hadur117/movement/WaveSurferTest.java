@@ -4,6 +4,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import hadur117.movement.danger.GFDangerModel;
+
 import java.awt.geom.Rectangle2D;
 import java.lang.reflect.Field;
 
@@ -22,32 +24,30 @@ class WaveSurferTest {
     // ── Constructor ────────────────────────────────────────────────────
 
     @Test
-    @DisplayName("constructor sets center bin minimum in all dangerStats segments")
-    void constructorSetsCenterBinMinimum() throws Exception {
-        Field statsField = WaveSurfer.class.getDeclaredField("dangerStats");
-        statsField.setAccessible(true);
-        double[][][][] stats = (double[][][][]) statsField.get(null);
+    @DisplayName("GFDangerModel center bins are initialized with positive value")
+    void gfDangerModelCenterBinMinimum() {
+        double[][][][][] stats = GFDangerModel.getStats();
 
         int centerBin = 23;
         for (int d = 0; d < 3; d++)
             for (int v = 0; v < 3; v++)
                 for (int a = 0; a < 3; a++)
-                    assertTrue(stats[d][v][a][centerBin] >= 0.001,
-                            "dangerStats[" + d + "][" + v + "][" + a + "]["
-                                    + centerBin + "] should be >= 0.001");
+                    for (int w = 0; w < 2; w++)
+                        assertTrue(stats[d][v][a][w][centerBin] > 0,
+                                "stats[" + d + "][" + v + "][" + a + "][" + w + "]["
+                                        + centerBin + "] should be > 0");
     }
 
     @Test
-    @DisplayName("dangerStats dimensions are [3][3][3][47]")
-    void dangerStatsDimensions() throws Exception {
-        Field statsField = WaveSurfer.class.getDeclaredField("dangerStats");
-        statsField.setAccessible(true);
-        double[][][][] stats = (double[][][][]) statsField.get(null);
+    @DisplayName("GFDangerModel stats dimensions are [3][3][3][2][47]")
+    void gfDangerModelStatsDimensions() {
+        double[][][][][] stats = GFDangerModel.getStats();
 
         assertEquals(3, stats.length);
         assertEquals(3, stats[0].length);
         assertEquals(3, stats[0][0].length);
-        assertEquals(47, stats[0][0][0].length);
+        assertEquals(2, stats[0][0][0].length);
+        assertEquals(47, stats[0][0][0][0].length);
     }
 
     // ── init ───────────────────────────────────────────────────────────
