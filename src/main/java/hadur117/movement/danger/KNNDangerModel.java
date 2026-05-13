@@ -16,7 +16,7 @@ public class KNNDangerModel implements DangerModel {
     private static int size = 0;
     private static int index = 0;
 
-    private double avgDanger = 0.1;
+    private double avgDanger = 0.02;
     private int hitCount = 0;
 
     @Override
@@ -86,6 +86,11 @@ public class KNNDangerModel implements DangerModel {
             gfDist[b] += w;
             if (b > 0) gfDist[b - 1] += w * 0.5;
             if (b < BINS - 1) gfDist[b + 1] += w * 0.5;
+        }
+        double sum = 0;
+        for (int i = 0; i < BINS; i++) sum += gfDist[i];
+        if (sum > 0) {
+            for (int i = 0; i < BINS; i++) gfDist[i] /= sum;
         }
         return gfDist;
     }

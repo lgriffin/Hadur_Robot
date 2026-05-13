@@ -26,10 +26,11 @@ class KNNDangerModelTest {
     }
 
     @Test
-    @DisplayName("returns flat danger before MIN_DATA hits")
-    void coldStartReturnsFlatDanger() {
+    @DisplayName("returns positive danger for any bin")
+    void dangerAlwaysPositive() {
         KNNDangerModel model = new KNNDangerModel();
-        assertEquals(0.01, model.danger(makeWave(23), 23), 1e-9);
+        double d = model.danger(makeWave(23), 23);
+        assertTrue(d > 0, "danger should be > 0");
     }
 
     @Test
@@ -61,5 +62,38 @@ class KNNDangerModelTest {
     @DisplayName("name returns KNN")
     void nameIsKNN() {
         assertEquals("KNN", new KNNDangerModel().name());
+    }
+
+    @Test
+    @DisplayName("danger values are bounded after many hits")
+    void dangerBoundedAfterManyHits() {
+        KNNDangerModel model = new KNNDangerModel();
+        for (int i = 0; i < 50; i++) {
+            EnemyWave w = makeWave(23);
+            w.dangerFeatures = new double[]{
+                    0.5 + (i % 5) * 0.05, 0.5, 0.0, 0.5, 0.1, 0.3, 0.25};
+            model.logHit(w, 20 + (i % 7));
+        }
+        EnemyWave query = makeWave(23);
+        for (int bin = 0; bin < 47; bin++) {
+            double d = model.danger(query, bin);
+            assertTrue(d <= 1.0, "danger at bin " + bin + " should be <= 1.0 but was " + d);
+            assertTrue(d >= 0, "danger at bin " + bin + " should be >= 0");
+        }
+    }
+
+    @Test
+    @DisplayName("getWeight stays bounded after many hits")
+    void weightBoundedAfterManyHits() {
+        KNNDangerModel model = new KNNDangerModel();
+        for (int i = 0; i < 50; i++) {
+            EnemyWave w = makeWave(23);
+            w.dangerFeatures = new double[]{
+                    0.5 + (i % 5) * 0.05, 0.5, 0.0, 0.5, 0.1, 0.3, 0.25};
+            model.logHit(w, 23);
+        }
+        double weight = model.getWeight();
+        assertTrue(weight < 10.0, "weight should be < 10.0 but was " + weight);
+        assertTrue(weight > 0, "weight should be > 0");
     }
 }

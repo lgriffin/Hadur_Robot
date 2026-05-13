@@ -472,7 +472,7 @@ public class Gun {
         f[8] = Math.min(1.0, directionChangeTime / Math.max(1.0, bft));
         f[9] = latVel8 / 8.0;
         f[10] = latVel32 / 8.0;
-        f[11] = 0;
+        f[11] = Math.abs(latVel8) / (Math.abs(latVel32) + 0.001);
         f[12] = Math.min(distLast10, 80) / 80.0;
         return f;
     }
@@ -671,6 +671,14 @@ public class Gun {
             power = 1.5;
         } else {
             power = 1.0;
+        }
+
+        if (distance > 400) {
+            double distFactor = Math.max(0.6, 1.0 - (distance - 400) / 1000.0);
+            power *= distFactor;
+        }
+        if (perOpponentShotsFired >= 30 && perOpponentAccuracy < 0.08 && distance > 300) {
+            power = Math.min(power, 1.0);
         }
 
         double killPower = (enemyEnergy + 2) / 6.0;

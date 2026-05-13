@@ -45,9 +45,10 @@ class GunTest {
         }
 
         @Test
-        @DisplayName("distance 800 returns 1.9 (even energy ratio)")
+        @DisplayName("distance 800 applies distance scaling (even energy ratio)")
         void dist800() {
-            assertEquals(1.9, gun.smartFirePower(800, 100, 100), 1e-9);
+            double power = gun.smartFirePower(800, 100, 100);
+            assertEquals(1.14, power, 1e-9);
         }
     }
 

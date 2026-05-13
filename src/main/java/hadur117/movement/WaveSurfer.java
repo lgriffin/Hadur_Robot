@@ -31,6 +31,7 @@ public class WaveSurfer {
     private static final int BINS = 47;
     private static final int CENTER_BIN = (BINS - 1) / 2;
     private static final double STICK = 160.0;
+    private static final double PROFILE_DECAY = 0.993;
 
     private static final DangerEnsemble dangerEnsemble = new DangerEnsemble(
             Arrays.asList(new GFDangerModel(), new HeadOnDangerModel(),
@@ -103,33 +104,8 @@ public class WaveSurfer {
             avgEnemyBulletPower = enemyFirePowerSum / enemyFireCount;
             enemyGunHeat = 1.0 + energyDelta / 5.0;
 
-            EnemyWave w = new EnemyWave();
-            w.fireLocation = new Point2D.Double(enemyLocation.x, enemyLocation.y);
-            w.fireTime = robot.getTime() - 1;
-            w.bulletSpeed = bulletSpeed;
-            w.directAngle = Math.atan2(myPos.x - enemyLocation.x,
-                                        myPos.y - enemyLocation.y);
-            w.distanceTraveled = bulletSpeed;
-            w.lateralDirection = orbitDirection;
-            w.distSeg = distSeg(myPos.distance(enemyLocation));
-            w.velSeg = velSeg(absLat);
-            double absPrevLat = Math.abs(prevLateralVelocity);
-            w.accelSeg = absLat > absPrevLat ? 2 : (absLat < absPrevLat ? 0 : 1);
-            double wallDist = Math.min(
-                    Math.min(myPos.x - WALL_MARGIN, fieldWidth - myPos.x - WALL_MARGIN),
-                    Math.min(myPos.y - WALL_MARGIN, fieldHeight - myPos.y - WALL_MARGIN));
-            w.wallSeg = wallDist < 100 ? 0 : 1;
-            w.myLateralVelocity = lateralVelocity;
-            w.myTurnRate = Utils.normalRelativeAngle(robot.getHeadingRadians() - prevHeading);
-            w.myAdvancingVelocity = myVel * Math.cos(robot.getHeadingRadians() - absBearing);
-            double dist = myPos.distance(enemyLocation);
-            w.dangerFeatures = new double[]{
-                    dist / 800.0, absLat / 8.0,
-                    (absLat - Math.abs(prevLateralVelocity)) / 2.0,
-                    wallDist / 200.0, velChangeTimer / 100.0,
-                    dist / (bulletSpeed * 50.0),
-                    w.myAdvancingVelocity / 8.0
-            };
+            EnemyWave w = buildWave(myPos, enemyLocation, robot, bulletSpeed,
+                    absLat, absBearing);
             waves.add(w);
         } else {
             enemyGunHeat = Math.max(0, enemyGunHeat - 0.1);
@@ -137,33 +113,8 @@ public class WaveSurfer {
                 double vPower = avgEnemyBulletPower;
                 double vBulletSpeed = 20.0 - 3.0 * vPower;
 
-                EnemyWave vw = new EnemyWave();
-                vw.fireLocation = new Point2D.Double(enemyLocation.x, enemyLocation.y);
-                vw.fireTime = robot.getTime() - 1;
-                vw.bulletSpeed = vBulletSpeed;
-                vw.directAngle = Math.atan2(myPos.x - enemyLocation.x,
-                                             myPos.y - enemyLocation.y);
-                vw.distanceTraveled = vBulletSpeed;
-                vw.lateralDirection = orbitDirection;
-                vw.distSeg = distSeg(myPos.distance(enemyLocation));
-                vw.velSeg = velSeg(absLat);
-                double absPrevLat = Math.abs(prevLateralVelocity);
-                vw.accelSeg = absLat > absPrevLat ? 2 : (absLat < absPrevLat ? 0 : 1);
-                double vWallDist = Math.min(
-                        Math.min(myPos.x - WALL_MARGIN, fieldWidth - myPos.x - WALL_MARGIN),
-                        Math.min(myPos.y - WALL_MARGIN, fieldHeight - myPos.y - WALL_MARGIN));
-                vw.wallSeg = vWallDist < 100 ? 0 : 1;
-                vw.myLateralVelocity = lateralVelocity;
-                vw.myTurnRate = Utils.normalRelativeAngle(robot.getHeadingRadians() - prevHeading);
-                vw.myAdvancingVelocity = myVel * Math.cos(robot.getHeadingRadians() - absBearing);
-                double vDist = myPos.distance(enemyLocation);
-                vw.dangerFeatures = new double[]{
-                        vDist / 800.0, absLat / 8.0,
-                        (absLat - Math.abs(prevLateralVelocity)) / 2.0,
-                        vWallDist / 200.0, velChangeTimer / 100.0,
-                        vDist / (vBulletSpeed * 50.0),
-                        vw.myAdvancingVelocity / 8.0
-                };
+                EnemyWave vw = buildWave(myPos, enemyLocation, robot, vBulletSpeed,
+                        absLat, absBearing);
                 vw.virtual = true;
                 vw.dangerWeight = 0.2;
                 waves.add(vw);
@@ -201,6 +152,39 @@ public class WaveSurfer {
         goDirection(robot, direction, wave1);
     }
 
+    private EnemyWave buildWave(Point2D.Double myPos, Point2D.Double enemyLoc,
+                                AdvancedRobot robot, double bulletSpeed,
+                                double absLat, double absBearing) {
+        EnemyWave w = new EnemyWave();
+        w.fireLocation = new Point2D.Double(enemyLoc.x, enemyLoc.y);
+        w.fireTime = robot.getTime() - 1;
+        w.bulletSpeed = bulletSpeed;
+        w.directAngle = Math.atan2(myPos.x - enemyLoc.x, myPos.y - enemyLoc.y);
+        w.distanceTraveled = bulletSpeed;
+        w.lateralDirection = orbitDirection;
+        w.distSeg = distSeg(myPos.distance(enemyLoc));
+        w.velSeg = velSeg(absLat);
+        double absPrevLat = Math.abs(prevLateralVelocity);
+        w.accelSeg = absLat > absPrevLat ? 2 : (absLat < absPrevLat ? 0 : 1);
+        double wallDist = Math.min(
+                Math.min(myPos.x - WALL_MARGIN, fieldWidth - myPos.x - WALL_MARGIN),
+                Math.min(myPos.y - WALL_MARGIN, fieldHeight - myPos.y - WALL_MARGIN));
+        w.wallSeg = wallDist < 100 ? 0 : 1;
+        w.myLateralVelocity = lateralVelocity;
+        w.myTurnRate = Utils.normalRelativeAngle(robot.getHeadingRadians() - prevHeading);
+        double myVel = robot.getVelocity();
+        w.myAdvancingVelocity = myVel * Math.cos(robot.getHeadingRadians() - absBearing);
+        double dist = myPos.distance(enemyLoc);
+        w.dangerFeatures = new double[]{
+                dist / 800.0, absLat / 8.0,
+                (absLat - absPrevLat) / 2.0,
+                wallDist / 200.0, velChangeTimer / 100.0,
+                dist / (bulletSpeed * 50.0),
+                w.myAdvancingVelocity / 8.0
+        };
+        return w;
+    }
+
     private double evaluateDanger(AdvancedRobot robot, int direction,
                                    EnemyWave wave1, EnemyWave wave2,
                                    String opponentGunType) {
@@ -215,7 +199,9 @@ public class WaveSurfer {
         danger *= wave1.dangerWeight;
 
         double predDist = pred.distance(wave1.fireLocation);
-        double desiredDist = 650.0;
+        double hitRate = totalWavesPassed > 20
+                ? (double) totalHitsTaken / totalWavesPassed : 0.07;
+        double desiredDist = hitRate > 0.10 ? 550.0 : 700.0;
         double distancingDanger = Math.pow(2.5, desiredDist / Math.max(100, predDist)) / 2.5;
         danger *= distancingDanger;
 
@@ -234,7 +220,6 @@ public class WaveSurfer {
         danger *= shadowMultiplier;
 
         if (totalWavesPassed > 10 && totalHitsTaken > 0) {
-            double hitRate = (double) totalHitsTaken / totalWavesPassed;
             if (hitRate > 0.059) {
                 double flatProfile = 0;
                 for (int b = range[0]; b <= range[1]; b++)
@@ -246,7 +231,8 @@ public class WaveSurfer {
                     case "HEAD_ON":    flatWeight *= 0.2; break;
                     case "LINEAR":     flatWeight *= 0.4; break;
                 }
-                danger = 0.50 * danger + flatWeight * flatProfile + 0.075;
+                double tickDanger = 0.075 * (1.0 + hitRate * 5);
+                danger = 0.50 * danger + flatWeight * flatProfile + tickDanger;
             }
         }
 
@@ -321,7 +307,8 @@ public class WaveSurfer {
         Point2D.Double myPos = new Point2D.Double(robot.getX(), robot.getY());
         double angleToWave = Math.atan2(wave.fireLocation.x - myPos.x,
                                          wave.fireLocation.y - myPos.y);
-        double desired = wallSmooth(myPos, angleToWave + direction * (Math.PI / 2), direction);
+        double stick = adaptiveStick(wave.bulletSpeed);
+        double desired = wallSmooth(myPos, angleToWave + direction * (Math.PI / 2), direction, stick);
 
         double heading = robot.getHeadingRadians();
         double delta = Utils.normalRelativeAngle(desired - heading);
@@ -369,11 +356,12 @@ public class WaveSurfer {
         double predVel = robot.getVelocity();
         double predHeading = robot.getHeadingRadians();
 
+        double stick = adaptiveStick(wave.bulletSpeed);
         for (int ticks = 0; ticks < 500; ticks++) {
             double angleToWave = Math.atan2(wave.fireLocation.x - predX,
                                              wave.fireLocation.y - predY);
             double desired = wallSmooth(new Point2D.Double(predX, predY),
-                    angleToWave + direction * (Math.PI / 2), direction);
+                    angleToWave + direction * (Math.PI / 2), direction, stick);
 
             double delta = Utils.normalRelativeAngle(desired - predHeading);
             int moveSign;
@@ -406,12 +394,13 @@ public class WaveSurfer {
                                                 int direction, EnemyWave wave) {
         double predX = startPos.x, predY = startPos.y;
         double predVel = velocity, predHeading = heading;
+        double stick2 = adaptiveStick(wave.bulletSpeed);
 
         for (int ticks = 0; ticks < 200; ticks++) {
             double angleToWave = Math.atan2(wave.fireLocation.x - predX,
                                              wave.fireLocation.y - predY);
             double desired = wallSmooth(new Point2D.Double(predX, predY),
-                    angleToWave + direction * (Math.PI / 2), direction);
+                    angleToWave + direction * (Math.PI / 2), direction, stick2);
 
             double delta = Utils.normalRelativeAngle(desired - predHeading);
             int moveSign;
@@ -452,13 +441,21 @@ public class WaveSurfer {
     }
 
     private double wallSmooth(Point2D.Double pos, double angle, int direction) {
+        return wallSmooth(pos, angle, direction, STICK);
+    }
+
+    private double wallSmooth(Point2D.Double pos, double angle, int direction, double stick) {
         for (int i = 0; i < 200; i++) {
-            double testX = pos.x + Math.sin(angle) * STICK;
-            double testY = pos.y + Math.cos(angle) * STICK;
+            double testX = pos.x + Math.sin(angle) * stick;
+            double testY = pos.y + Math.cos(angle) * stick;
             if (fieldRect.contains(testX, testY)) return angle;
             angle += direction * 0.05;
         }
         return angle;
+    }
+
+    private static double adaptiveStick(double bulletSpeed) {
+        return Math.max(100, Math.min(200, bulletSpeed * 12));
     }
 
     private void pruneWaves(AdvancedRobot robot) {
@@ -468,6 +465,7 @@ public class WaveSurfer {
             EnemyWave w = it.next();
             if (w.distanceTraveled > me.distance(w.fireLocation) + 50) {
                 totalWavesPassed++;
+                for (int i = 0; i < BINS; i++) moveProfile[i] *= PROFILE_DECAY;
                 moveProfile[clampBin(getGFBin(w, me))] += 0.2;
                 decayStats(w);
                 it.remove();
