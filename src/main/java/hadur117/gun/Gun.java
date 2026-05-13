@@ -81,11 +81,6 @@ public class Gun {
     private int shotsHit = 0;
     private double lastFirePower = 0;
 
-    private static final int ROLLING_WINDOW = 30;
-    private final boolean[] rollingHits = new boolean[ROLLING_WINDOW];
-    private int rollingIndex = 0;
-    private int rollingSize = 0;
-
     private int waveCount = 0;
     private int lastGunSwitchWave = 0;
 
@@ -344,8 +339,8 @@ public class Gun {
         meleeState.clear();
     }
 
-    public void onBulletHit(BulletHitEvent e) { shotsHit++; recordRollingShot(true); }
-    public void onBulletMissed(BulletMissedEvent e) { recordRollingShot(false); }
+    public void onBulletHit(BulletHitEvent e) { shotsHit++; }
+    public void onBulletMissed(BulletMissedEvent e) { }
     public double getLastFirePower() { return lastFirePower; }
 
     public int getShotsFired() { return shotsFired; }
@@ -418,14 +413,18 @@ public class Gun {
     }
 
     private int selectBestGun() {
-        if (waveCount < MIN_GUN_WAVES) return GUN_GF;
+        if (waveCount < MIN_GUN_WAVES) return recommendedGun;
 
         double[] adjusted = new double[NUM_GUNS];
         System.arraycopy(vgScores, 0, adjusted, 0, NUM_GUNS);
 
         int[] candidates;
         if (duelMode) {
-            candidates = new int[]{GUN_GF, GUN_KNN, GUN_ANTISURFER};
+            if (currentMovementType == MovementType.WAVE_SURFER) {
+                candidates = new int[]{GUN_PATTERN, GUN_KNN, GUN_ANTISURFER};
+            } else {
+                candidates = new int[]{GUN_GF, GUN_KNN, GUN_ANTISURFER};
+            }
         } else {
             candidates = new int[]{GUN_GF, GUN_PATTERN, GUN_CIRCULAR,
                     GUN_LINEAR, GUN_HEADON, GUN_KNN, GUN_ANTISURFER};
@@ -647,20 +646,19 @@ public class Gun {
                                   int perOpponentShotsFired) {
         if (myEnergy < 0.2) return 0.0;
 
-        double rollingAcc = getRollingAccuracy();
+        double ratio = myEnergy / Math.max(0.1, enemyEnergy);
         double power;
         if (distance < 150) {
             power = 3.0;
-        } else if (rollingAcc > 0.18) {
+        } else if (ratio >= 2.0) {
+            power = 2.5;
+        } else if (ratio >= 1.0) {
             power = 1.9;
-        } else if (rollingAcc > 0.10) {
+        } else if (ratio >= 0.5) {
             power = 1.5;
         } else {
             power = 1.0;
         }
-
-        if (myEnergy < 7) power *= 0.5;
-        else if (myEnergy < 20) power *= 0.7;
 
         double killPower = (enemyEnergy + 2) / 6.0;
         if (enemyEnergy <= 4 * power && killPower >= 0.1) {
@@ -756,21 +754,9 @@ public class Gun {
             case STOPPED:     return GUN_HEADON;
             case LINEAR:      return GUN_LINEAR;
             case CIRCULAR:    return GUN_CIRCULAR;
-            case WAVE_SURFER: return GUN_GF;
+            case WAVE_SURFER: return GUN_PATTERN;
             default:          return GUN_GF;
         }
     }
 
-    private void recordRollingShot(boolean hit) {
-        rollingHits[rollingIndex] = hit;
-        rollingIndex = (rollingIndex + 1) % ROLLING_WINDOW;
-        if (rollingSize < ROLLING_WINDOW) rollingSize++;
-    }
-
-    double getRollingAccuracy() {
-        if (rollingSize == 0) return 0.15;
-        int hits = 0;
-        for (int i = 0; i < rollingSize; i++) if (rollingHits[i]) hits++;
-        return (double) hits / rollingSize;
-    }
 }

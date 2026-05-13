@@ -39,12 +39,12 @@ Feature: Energy Management
     Then the power should not exceed 1.0
     And Hadur should never fire if it would reduce energy below 0.1
 
-  Scenario: Fire power adapts to rolling accuracy
-    Given Hadur's rolling accuracy over the last 30 shots is below 15%
+  Scenario: Fire power adapts to energy disadvantage
+    Given Hadur has 60.0 energy
     And the enemy is at distance 400 pixels
     When fire power is calculated
     Then the power should be reduced to conserve energy
-    And energy conservation relies on distance and energy caps
+    And energy conservation relies on energy ratio and caps
 
   # --- Energy Conservation ---
 

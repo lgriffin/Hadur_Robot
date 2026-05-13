@@ -26,7 +26,7 @@ import java.util.Properties;
  * win tracking are maintained here for analytics output.</p>
  *
  * @author lgriffin
- * @version 1.17
+ * @version 1.18
  */
 public class Hadur extends AdvancedRobot {
 

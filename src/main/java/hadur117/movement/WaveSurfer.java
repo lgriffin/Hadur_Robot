@@ -30,7 +30,7 @@ public class WaveSurfer {
     private static final int CENTER_BIN = (BINS - 1) / 2;
     private static final double STICK = 160.0;
 
-    private static double[][][][] dangerStats = new double[3][3][3][BINS];
+    private static double[][][][][] dangerStats = new double[3][3][3][2][BINS];
     private static double[] moveProfile = new double[BINS];
     private static int totalHitsTaken = 0;
     private static int totalWavesPassed = 0;
@@ -58,8 +58,9 @@ public class WaveSurfer {
         for (int d = 0; d < 3; d++)
             for (int v = 0; v < 3; v++)
                 for (int a = 0; a < 3; a++)
-                    dangerStats[d][v][a][CENTER_BIN] =
-                            Math.max(dangerStats[d][v][a][CENTER_BIN], 0.001);
+                    for (int w = 0; w < 2; w++)
+                        dangerStats[d][v][a][w][CENTER_BIN] =
+                                Math.max(dangerStats[d][v][a][w][CENTER_BIN], 0.001);
     }
 
     public void init(double bfWidth, double bfHeight) {
@@ -114,6 +115,10 @@ public class WaveSurfer {
             w.velSeg = velSeg(absLat);
             double absPrevLat = Math.abs(prevLateralVelocity);
             w.accelSeg = absLat > absPrevLat ? 2 : (absLat < absPrevLat ? 0 : 1);
+            double wallDist = Math.min(
+                    Math.min(myPos.x - WALL_MARGIN, fieldWidth - myPos.x - WALL_MARGIN),
+                    Math.min(myPos.y - WALL_MARGIN, fieldHeight - myPos.y - WALL_MARGIN));
+            w.wallSeg = wallDist < 100 ? 0 : 1;
             waves.add(w);
         } else {
             enemyGunHeat = Math.max(0, enemyGunHeat - 0.1);
@@ -133,6 +138,10 @@ public class WaveSurfer {
                 vw.velSeg = velSeg(absLat);
                 double absPrevLat = Math.abs(prevLateralVelocity);
                 vw.accelSeg = absLat > absPrevLat ? 2 : (absLat < absPrevLat ? 0 : 1);
+                double vWallDist = Math.min(
+                        Math.min(myPos.x - WALL_MARGIN, fieldWidth - myPos.x - WALL_MARGIN),
+                        Math.min(myPos.y - WALL_MARGIN, fieldHeight - myPos.y - WALL_MARGIN));
+                vw.wallSeg = vWallDist < 100 ? 0 : 1;
                 vw.virtual = true;
                 vw.dangerWeight = 0.5;
                 waves.add(vw);
@@ -174,7 +183,7 @@ public class WaveSurfer {
                                    String opponentGunType) {
         Point2D.Double pred = predictPosition(robot, direction, wave1);
         int bin = getGFBin(wave1, pred);
-        double[] stats = dangerStats[wave1.distSeg][wave1.velSeg][wave1.accelSeg];
+        double[] stats = dangerStats[wave1.distSeg][wave1.velSeg][wave1.accelSeg][wave1.wallSeg];
         double danger = smoothDanger(stats, bin) * wave1.dangerWeight;
 
         double predDist = pred.distance(wave1.fireLocation);
@@ -193,10 +202,10 @@ public class WaveSurfer {
         }
         danger *= shadowMultiplier;
 
-        if (totalWavesPassed > 10 && totalHitsTaken > 0) {
+        if (totalWavesPassed > 5 && totalHitsTaken > 0) {
             double hitRate = (double) totalHitsTaken / totalWavesPassed;
-            if (hitRate > 0.05) {
-                double flatWeight = Math.min(0.8, hitRate * 8);
+            if (hitRate > 0.03) {
+                double flatWeight = Math.min(1.2, hitRate * 12);
                 switch (opponentGunType) {
                     case "HEAD_ON":    flatWeight *= 0.2; break;
                     case "LINEAR":     flatWeight *= 0.4; break;
@@ -210,7 +219,7 @@ public class WaveSurfer {
             Point2D.Double pred2 = predictPositionFrom(pred, robot.getHeadingRadians(),
                     robot.getVelocity(), direction, wave2);
             int bin2 = getGFBin(wave2, pred2);
-            double[] stats2 = dangerStats[wave2.distSeg][wave2.velSeg][wave2.accelSeg];
+            double[] stats2 = dangerStats[wave2.distSeg][wave2.velSeg][wave2.accelSeg][wave2.wallSeg];
             danger += smoothDanger(stats2, bin2) * 0.35 * wave2.dangerWeight;
         }
 
@@ -273,7 +282,7 @@ public class WaveSurfer {
 
     private void logHit(EnemyWave wave, Point2D.Double hitPos) {
         int bin = clampBin(getGFBin(wave, hitPos));
-        double[] stats = dangerStats[wave.distSeg][wave.velSeg][wave.accelSeg];
+        double[] stats = dangerStats[wave.distSeg][wave.velSeg][wave.accelSeg][wave.wallSeg];
         stats[bin] += 1.0;
         if (bin > 0) stats[bin - 1] += 0.5;
         if (bin < BINS - 1) stats[bin + 1] += 0.5;
@@ -471,8 +480,8 @@ public class WaveSurfer {
     }
 
     private static void decayStats(EnemyWave w) {
-        double[] stats = dangerStats[w.distSeg][w.velSeg][w.accelSeg];
-        for (int i = 0; i < BINS; i++) stats[i] *= 0.995;
+        double[] stats = dangerStats[w.distSeg][w.velSeg][w.accelSeg][w.wallSeg];
+        for (int i = 0; i < BINS; i++) stats[i] *= 0.85;
     }
 
     private static int distSeg(double distance) {
