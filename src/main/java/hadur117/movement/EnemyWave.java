@@ -18,4 +18,9 @@ public class EnemyWave {
     public int distSeg, velSeg, accelSeg, wallSeg;
     public boolean virtual;
     public double dangerWeight = 1.0;
+
+    public double myLateralVelocity;
+    public double myTurnRate;
+    public double myAdvancingVelocity;
+    public double[] dangerFeatures;
 }

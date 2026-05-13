@@ -5,6 +5,8 @@ import robocode.util.Utils;
 import java.awt.geom.*;
 import java.util.*;
 
+import hadur117.movement.danger.*;
+
 /**
  * True wave surfing movement for duel mode.
  *
@@ -30,7 +32,10 @@ public class WaveSurfer {
     private static final int CENTER_BIN = (BINS - 1) / 2;
     private static final double STICK = 160.0;
 
-    private static double[][][][][] dangerStats = new double[3][3][3][2][BINS];
+    private static final DangerEnsemble dangerEnsemble = new DangerEnsemble(
+            Arrays.asList(new GFDangerModel(), new HeadOnDangerModel(),
+                    new LinearDangerModel(), new CircularDangerModel(),
+                    new KNNDangerModel()));
     private static double[] moveProfile = new double[BINS];
     private static int totalHitsTaken = 0;
     private static int totalWavesPassed = 0;
@@ -48,6 +53,7 @@ public class WaveSurfer {
     private int roundHitsTaken = 0;
     private static int velChangeTimer = 0;
     private static double prevAbsLatVel = 0;
+    private double prevHeading = 0;
     private int prevSurfDirection = 0;
     private double enemyGunHeat = 3.0;
     private static double avgEnemyBulletPower = 1.5;
@@ -55,12 +61,6 @@ public class WaveSurfer {
     private static double enemyFirePowerSum = 0;
 
     public WaveSurfer() {
-        for (int d = 0; d < 3; d++)
-            for (int v = 0; v < 3; v++)
-                for (int a = 0; a < 3; a++)
-                    for (int w = 0; w < 2; w++)
-                        dangerStats[d][v][a][w][CENTER_BIN] =
-                                Math.max(dangerStats[d][v][a][w][CENTER_BIN], 0.001);
     }
 
     public void init(double bfWidth, double bfHeight) {
@@ -119,6 +119,17 @@ public class WaveSurfer {
                     Math.min(myPos.x - WALL_MARGIN, fieldWidth - myPos.x - WALL_MARGIN),
                     Math.min(myPos.y - WALL_MARGIN, fieldHeight - myPos.y - WALL_MARGIN));
             w.wallSeg = wallDist < 100 ? 0 : 1;
+            w.myLateralVelocity = lateralVelocity;
+            w.myTurnRate = Utils.normalRelativeAngle(robot.getHeadingRadians() - prevHeading);
+            w.myAdvancingVelocity = myVel * Math.cos(robot.getHeadingRadians() - absBearing);
+            double dist = myPos.distance(enemyLocation);
+            w.dangerFeatures = new double[]{
+                    dist / 800.0, absLat / 8.0,
+                    (absLat - Math.abs(prevLateralVelocity)) / 2.0,
+                    wallDist / 200.0, velChangeTimer / 100.0,
+                    dist / (bulletSpeed * 50.0),
+                    w.myAdvancingVelocity / 8.0
+            };
             waves.add(w);
         } else {
             enemyGunHeat = Math.max(0, enemyGunHeat - 0.1);
@@ -142,13 +153,25 @@ public class WaveSurfer {
                         Math.min(myPos.x - WALL_MARGIN, fieldWidth - myPos.x - WALL_MARGIN),
                         Math.min(myPos.y - WALL_MARGIN, fieldHeight - myPos.y - WALL_MARGIN));
                 vw.wallSeg = vWallDist < 100 ? 0 : 1;
+                vw.myLateralVelocity = lateralVelocity;
+                vw.myTurnRate = Utils.normalRelativeAngle(robot.getHeadingRadians() - prevHeading);
+                vw.myAdvancingVelocity = myVel * Math.cos(robot.getHeadingRadians() - absBearing);
+                double vDist = myPos.distance(enemyLocation);
+                vw.dangerFeatures = new double[]{
+                        vDist / 800.0, absLat / 8.0,
+                        (absLat - Math.abs(prevLateralVelocity)) / 2.0,
+                        vWallDist / 200.0, velChangeTimer / 100.0,
+                        vDist / (vBulletSpeed * 50.0),
+                        vw.myAdvancingVelocity / 8.0
+                };
                 vw.virtual = true;
-                vw.dangerWeight = 0.5;
+                vw.dangerWeight = 0.2;
                 waves.add(vw);
             }
         }
         lastEnemyEnergy = e.getEnergy();
         prevLateralVelocity = lateralVelocity;
+        prevHeading = robot.getHeadingRadians();
         pruneWaves(robot);
     }
 
@@ -182,45 +205,61 @@ public class WaveSurfer {
                                    EnemyWave wave1, EnemyWave wave2,
                                    String opponentGunType) {
         Point2D.Double pred = predictPosition(robot, direction, wave1);
-        int bin = getGFBin(wave1, pred);
-        double[] stats = dangerStats[wave1.distSeg][wave1.velSeg][wave1.accelSeg][wave1.wallSeg];
-        double danger = smoothDanger(stats, bin) * wave1.dangerWeight;
+
+        int[] range = getGFBinRange(wave1, pred);
+        double danger = 0;
+        for (int b = range[0]; b <= range[1]; b++) {
+            danger += dangerEnsemble.blendedDanger(wave1, b);
+        }
+        danger /= (range[1] - range[0] + 1);
+        danger *= wave1.dangerWeight;
 
         double predDist = pred.distance(wave1.fireLocation);
-        double currentDist = new Point2D.Double(robot.getX(), robot.getY())
-                .distance(wave1.fireLocation);
-        if (predDist < currentDist * 0.85) {
-            danger *= 1.3;
-        }
+        double desiredDist = 650.0;
+        double distancingDanger = Math.pow(2.5, desiredDist / Math.max(100, predDist)) / 2.5;
+        danger *= distancingDanger;
 
         double shadowMultiplier = 1.0;
         for (OurBullet bullet : ourBullets) {
             int shadowBin = getShadowBin(bullet, wave1);
-            if (shadowBin >= 0 && Math.abs(bin - shadowBin) <= 1) {
-                shadowMultiplier = Math.min(shadowMultiplier, 0.5);
+            if (shadowBin >= 0) {
+                for (int b = range[0]; b <= range[1]; b++) {
+                    if (Math.abs(b - shadowBin) <= 1) {
+                        shadowMultiplier = Math.min(shadowMultiplier, 0.5);
+                        break;
+                    }
+                }
             }
         }
         danger *= shadowMultiplier;
 
-        if (totalWavesPassed > 5 && totalHitsTaken > 0) {
+        if (totalWavesPassed > 10 && totalHitsTaken > 0) {
             double hitRate = (double) totalHitsTaken / totalWavesPassed;
-            if (hitRate > 0.03) {
-                double flatWeight = Math.min(1.2, hitRate * 12);
+            if (hitRate > 0.059) {
+                double flatProfile = 0;
+                for (int b = range[0]; b <= range[1]; b++)
+                    flatProfile += moveProfile[clampBin(b)];
+                flatProfile /= (range[1] - range[0] + 1);
+
+                double flatWeight = 0.35;
                 switch (opponentGunType) {
                     case "HEAD_ON":    flatWeight *= 0.2; break;
                     case "LINEAR":     flatWeight *= 0.4; break;
-                    case "STATISTICAL": flatWeight *= 1.0; break;
                 }
-                danger += moveProfile[clampBin(bin)] * flatWeight;
+                danger = 0.50 * danger + flatWeight * flatProfile + 0.075;
             }
         }
 
         if (wave2 != null) {
             Point2D.Double pred2 = predictPositionFrom(pred, robot.getHeadingRadians(),
                     robot.getVelocity(), direction, wave2);
-            int bin2 = getGFBin(wave2, pred2);
-            double[] stats2 = dangerStats[wave2.distSeg][wave2.velSeg][wave2.accelSeg][wave2.wallSeg];
-            danger += smoothDanger(stats2, bin2) * 0.35 * wave2.dangerWeight;
+            int[] range2 = getGFBinRange(wave2, pred2);
+            double danger2 = 0;
+            for (int b = range2[0]; b <= range2[1]; b++) {
+                danger2 += dangerEnsemble.blendedDanger(wave2, b);
+            }
+            danger2 /= (range2[1] - range2[0] + 1);
+            danger += danger2 * 0.35 * wave2.dangerWeight;
         }
 
         return danger;
@@ -263,14 +302,6 @@ public class WaveSurfer {
 
     // ── Private helpers ─────────────────────────────────────────────────
 
-    private double smoothDanger(double[] stats, int bin) {
-        bin = clampBin(bin);
-        double danger = stats[bin];
-        if (bin > 0) danger += stats[bin - 1] * 0.5;
-        if (bin < BINS - 1) danger += stats[bin + 1] * 0.5;
-        return danger;
-    }
-
     private int getGFBin(EnemyWave wave, Point2D.Double pos) {
         double offset = Math.atan2(pos.x - wave.fireLocation.x,
                                     pos.y - wave.fireLocation.y)
@@ -282,10 +313,7 @@ public class WaveSurfer {
 
     private void logHit(EnemyWave wave, Point2D.Double hitPos) {
         int bin = clampBin(getGFBin(wave, hitPos));
-        double[] stats = dangerStats[wave.distSeg][wave.velSeg][wave.accelSeg][wave.wallSeg];
-        stats[bin] += 1.0;
-        if (bin > 0) stats[bin - 1] += 0.5;
-        if (bin < BINS - 1) stats[bin + 1] += 0.5;
+        dangerEnsemble.logHitAll(wave, bin);
         moveProfile[clampBin(bin)] += 1.0;
     }
 
@@ -480,8 +508,7 @@ public class WaveSurfer {
     }
 
     private static void decayStats(EnemyWave w) {
-        double[] stats = dangerStats[w.distSeg][w.velSeg][w.accelSeg][w.wallSeg];
-        for (int i = 0; i < BINS; i++) stats[i] *= 0.85;
+        dangerEnsemble.decayAll(w);
     }
 
     private static int distSeg(double distance) {
@@ -492,6 +519,15 @@ public class WaveSurfer {
 
     private static int velSeg(double absVel) {
         return Math.min((int) (absVel / 3.0), 2);
+    }
+
+    private int[] getGFBinRange(EnemyWave wave, Point2D.Double botCenter) {
+        double dist = botCenter.distance(wave.fireLocation);
+        double angularWidth = Math.atan2(18.0 * Math.sqrt(2), Math.max(1, dist));
+        double mea = Math.asin(MAX_VELOCITY / wave.bulletSpeed);
+        int halfBins = Math.max(0, (int) Math.ceil(angularWidth / mea * CENTER_BIN));
+        int centerBin = getGFBin(wave, botCenter);
+        return new int[]{clampBin(centerBin - halfBins), clampBin(centerBin + halfBins)};
     }
 
     private static int clampBin(int bin) {
@@ -505,6 +541,10 @@ public class WaveSurfer {
 
     private static double clamp(double val, double min, double max) {
         return Math.max(min, Math.min(max, val));
+    }
+
+    public static java.util.Map<String, Double> getDangerModelWeights() {
+        return dangerEnsemble.getWeights();
     }
 
     // ── Bullet shadows ─────────────────────────────────────────────────

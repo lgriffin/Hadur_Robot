@@ -217,7 +217,7 @@ public class Gun {
             int knnBin = knnBestBin(features);
             knnAngle = absBearing + enemyLatDir * mea
                     * ((double) (knnBin - GF_CENTER) / GF_CENTER);
-            int asBin = knnBestBin(features, ANTISURFER_WEIGHTS);
+            int asBin = antiSurferMultiScale(features);
             antiSurferAngle = absBearing + enemyLatDir * mea
                     * ((double) (asBin - GF_CENTER) / GF_CENTER);
         }
@@ -413,18 +413,14 @@ public class Gun {
     }
 
     private int selectBestGun() {
-        if (waveCount < MIN_GUN_WAVES) return recommendedGun;
+        if (waveCount < MIN_GUN_WAVES) return GUN_GF;
 
         double[] adjusted = new double[NUM_GUNS];
         System.arraycopy(vgScores, 0, adjusted, 0, NUM_GUNS);
 
         int[] candidates;
         if (duelMode) {
-            if (currentMovementType == MovementType.WAVE_SURFER) {
-                candidates = new int[]{GUN_PATTERN, GUN_KNN, GUN_ANTISURFER};
-            } else {
-                candidates = new int[]{GUN_GF, GUN_KNN, GUN_ANTISURFER};
-            }
+            candidates = new int[]{GUN_GF, GUN_KNN, GUN_ANTISURFER};
         } else {
             candidates = new int[]{GUN_GF, GUN_PATTERN, GUN_CIRCULAR,
                     GUN_LINEAR, GUN_HEADON, GUN_KNN, GUN_ANTISURFER};
@@ -504,7 +500,11 @@ public class Gun {
     }
 
     private int knnBestBin(double[] features, double[] weights) {
-        int k = Math.max(10, (int) Math.sqrt(knnSize));
+        return bestGFBin(knnGFDistribution(features, weights, knnSize));
+    }
+
+    private double[] knnGFDistribution(double[] features, double[] weights, int maxK) {
+        int k = Math.min(Math.max(10, (int) Math.sqrt(knnSize)), maxK);
         double[] dists = new double[k];
         int[] indices = new int[k];
         Arrays.fill(dists, Double.MAX_VALUE);
@@ -538,7 +538,20 @@ public class Gun {
             gfDist[bin] += weight;
         }
 
-        return bestGFBin(gfDist);
+        return gfDist;
+    }
+
+    private int antiSurferMultiScale(double[] features) {
+        int[] scales = {125, 400, 1500, knnSize};
+        double[] combined = new double[GF_BINS];
+        for (int scale : scales) {
+            int k = Math.min(scale, knnSize);
+            if (k < KNN_MIN_DATA) continue;
+            double[] dist = knnGFDistribution(features, ANTISURFER_WEIGHTS, k);
+            double w = 1.0 / Math.sqrt(k);
+            for (int i = 0; i < GF_BINS; i++) combined[i] += dist[i] * w;
+        }
+        return bestGFBin(combined);
     }
 
     // ── Pattern matching ────────────────────────────────────────────────

@@ -99,6 +99,14 @@ public class BattleLogger {
                 roundHits, totalHits, totalWaves));
     }
 
+    public static void logDangerModelWeights(java.util.Map<String, Double> weights) {
+        if (instance == null) return;
+        instance.buffer.append(String.format("%n--- Danger Models ---%n"));
+        for (java.util.Map.Entry<String, Double> e : weights.entrySet()) {
+            instance.buffer.append(String.format("  %s: %.6f%n", e.getKey(), e.getValue()));
+        }
+    }
+
     public static void logRoundEnd(int round, String result, double energy,
                                     double accuracy, double winRate,
                                     int won, int played) {
