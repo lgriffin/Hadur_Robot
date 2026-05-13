@@ -33,21 +33,21 @@ class GunTest {
         }
 
         @Test
-        @DisplayName("distance exactly 150 returns 1.9 (range band)")
+        @DisplayName("distance exactly 150 returns 1.5 (default rolling accuracy)")
         void boundary150() {
-            assertEquals(1.9, gun.smartFirePower(150, 100, 100), 1e-9);
+            assertEquals(1.5, gun.smartFirePower(150, 100, 100), 1e-9);
         }
 
         @Test
-        @DisplayName("distance 400 returns 1.9")
+        @DisplayName("distance 400 returns 1.5 (default rolling accuracy)")
         void dist400() {
-            assertEquals(1.9, gun.smartFirePower(400, 100, 100), 1e-9);
+            assertEquals(1.5, gun.smartFirePower(400, 100, 100), 1e-9);
         }
 
         @Test
-        @DisplayName("distance 800 returns 1.9")
+        @DisplayName("distance 800 returns 1.5 (default rolling accuracy)")
         void dist800() {
-            assertEquals(1.9, gun.smartFirePower(800, 100, 100), 1e-9);
+            assertEquals(1.5, gun.smartFirePower(800, 100, 100), 1e-9);
         }
     }
 
@@ -153,9 +153,9 @@ class GunTest {
         }
 
         @Test
-        @DisplayName("fires 1.9 at range with full energy")
+        @DisplayName("fires 1.5 at range with default rolling accuracy")
         void rangedPower() {
-            assertEquals(1.9, gun.smartFirePower(400, 100, 100), 1e-9);
+            assertEquals(1.5, gun.smartFirePower(400, 100, 100), 1e-9);
         }
 
         @Test
@@ -342,26 +342,37 @@ class GunTest {
         }
     }
 
-    // ── per-opponent smartFirePower (5-param passthrough) ─────────────
+    // ── Rolling accuracy power scaling ─────────────────────────────────
 
     @Nested
-    @DisplayName("smartFirePower() per-opponent accuracy scaling")
-    class PerOpponentAccuracy {
+    @DisplayName("smartFirePower() rolling accuracy scaling")
+    class RollingAccuracyScaling {
 
         @Test
-        @DisplayName("reduces power with low accuracy after sufficient shots")
-        void lowAccuracyReducesPower() {
-            double base = gun.smartFirePower(100, 100, 100);
-            double low = gun.smartFirePower(100, 100, 100, 0.02, 50);
-            assertTrue(low < base);
+        @DisplayName("default rolling accuracy is 0.15")
+        void defaultRollingAccuracy() {
+            assertEquals(0.15, gun.getRollingAccuracy(), 1e-9);
         }
 
         @Test
-        @DisplayName("no adjustment with insufficient shots")
-        void noAdjustmentFewShots() {
-            double base = gun.smartFirePower(100, 100, 100);
-            double perOpp = gun.smartFirePower(100, 100, 100, 0.02, 10);
-            assertEquals(base, perOpp, 1e-9);
+        @DisplayName("low rolling accuracy gives 1.0 power at range")
+        void lowRollingAccGivesLowPower() throws Exception {
+            setRollingAccuracy(0, 30);
+            assertEquals(1.0, gun.smartFirePower(400, 100, 100), 1e-9);
+        }
+
+        @Test
+        @DisplayName("high rolling accuracy gives 1.9 power at range")
+        void highRollingAccGivesHighPower() throws Exception {
+            setRollingAccuracy(6, 30);
+            assertEquals(1.9, gun.smartFirePower(400, 100, 100), 1e-9);
+        }
+
+        @Test
+        @DisplayName("close range always 3.0 regardless of accuracy")
+        void closeRangeIgnoresAccuracy() throws Exception {
+            setRollingAccuracy(0, 30);
+            assertEquals(3.0, gun.smartFirePower(100, 100, 100), 1e-9);
         }
     }
 
@@ -436,5 +447,15 @@ class GunTest {
         Field f = Gun.class.getDeclaredField("activeGun");
         f.setAccessible(true);
         f.setInt(gun, idx);
+    }
+
+    private void setRollingAccuracy(int hits, int total) throws Exception {
+        Field hitsField = Gun.class.getDeclaredField("rollingHits");
+        hitsField.setAccessible(true);
+        boolean[] arr = (boolean[]) hitsField.get(gun);
+        for (int i = 0; i < total; i++) arr[i] = i < hits;
+        Field sizeField = Gun.class.getDeclaredField("rollingSize");
+        sizeField.setAccessible(true);
+        sizeField.setInt(gun, total);
     }
 }

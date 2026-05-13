@@ -26,33 +26,28 @@ class WaveSurferTest {
     void constructorSetsCenterBinMinimum() throws Exception {
         Field statsField = WaveSurfer.class.getDeclaredField("dangerStats");
         statsField.setAccessible(true);
-        double[][][][][][] stats = (double[][][][][][]) statsField.get(null);
+        double[][][][] stats = (double[][][][]) statsField.get(null);
 
         int centerBin = 23;
-        for (int d = 0; d < 5; d++)
-            for (int v = 0; v < 5; v++)
+        for (int d = 0; d < 3; d++)
+            for (int v = 0; v < 3; v++)
                 for (int a = 0; a < 3; a++)
-                    for (int w = 0; w < 2; w++)
-                        for (int t = 0; t < 3; t++)
-                            assertTrue(stats[d][v][a][w][t][centerBin] >= 0.001,
-                                    "dangerStats[" + d + "][" + v + "][" + a + "]["
-                                            + w + "][" + t + "][" + centerBin
-                                            + "] should be >= 0.001");
+                    assertTrue(stats[d][v][a][centerBin] >= 0.001,
+                            "dangerStats[" + d + "][" + v + "][" + a + "]["
+                                    + centerBin + "] should be >= 0.001");
     }
 
     @Test
-    @DisplayName("dangerStats dimensions are [5][5][3][2][3][47]")
+    @DisplayName("dangerStats dimensions are [3][3][3][47]")
     void dangerStatsDimensions() throws Exception {
         Field statsField = WaveSurfer.class.getDeclaredField("dangerStats");
         statsField.setAccessible(true);
-        double[][][][][][] stats = (double[][][][][][]) statsField.get(null);
+        double[][][][] stats = (double[][][][]) statsField.get(null);
 
-        assertEquals(5, stats.length);
-        assertEquals(5, stats[0].length);
+        assertEquals(3, stats.length);
+        assertEquals(3, stats[0].length);
         assertEquals(3, stats[0][0].length);
-        assertEquals(2, stats[0][0][0].length);
-        assertEquals(3, stats[0][0][0][0].length);
-        assertEquals(47, stats[0][0][0][0][0].length);
+        assertEquals(47, stats[0][0][0].length);
     }
 
     // ── init ───────────────────────────────────────────────────────────

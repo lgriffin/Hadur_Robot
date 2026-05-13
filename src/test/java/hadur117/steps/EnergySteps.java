@@ -134,11 +134,11 @@ public class EnergySteps {
         // Since we can't directly set private fields, we verify the logic of smartFirePower
     }
 
-    @Then("the power should reflect the distance band")
-    public void the_power_should_reflect_distance_band() {
+    @Then("the power should be reduced to conserve energy")
+    public void the_power_should_be_reduced_to_conserve_energy() {
         calculatedPower = gun.smartFirePower(400, myEnergy, 100.0);
-        assertEquals(1.9, calculatedPower, 0.5,
-                "At 400px, power should follow distance band (~1.9)");
+        assertTrue(calculatedPower <= 1.5,
+                "At 400px with low accuracy, power should be reduced (got " + calculatedPower + ")");
     }
 
     @And("energy conservation relies on distance and energy caps")

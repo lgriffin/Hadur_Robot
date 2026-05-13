@@ -19,10 +19,10 @@ Feature: Energy Management
     Examples:
       | distance | energy | power |
       | 100      | 80.0   | 3.0   |
-      | 200      | 80.0   | 1.9   |
-      | 350      | 80.0   | 1.9   |
-      | 500      | 80.0   | 1.9   |
-      | 700      | 80.0   | 1.9   |
+      | 200      | 80.0   | 1.5   |
+      | 350      | 80.0   | 1.5   |
+      | 500      | 80.0   | 1.5   |
+      | 700      | 80.0   | 1.5   |
 
   Scenario: Finishing move at close range
     Given the enemy has less than 4.0 energy remaining
@@ -39,11 +39,11 @@ Feature: Energy Management
     Then the power should not exceed 1.0
     And Hadur should never fire if it would reduce energy below 0.1
 
-  Scenario: Fire power scales with distance not accuracy
+  Scenario: Fire power adapts to rolling accuracy
     Given Hadur's rolling accuracy over the last 30 shots is below 15%
     And the enemy is at distance 400 pixels
     When fire power is calculated
-    Then the power should reflect the distance band
+    Then the power should be reduced to conserve energy
     And energy conservation relies on distance and energy caps
 
   # --- Energy Conservation ---
