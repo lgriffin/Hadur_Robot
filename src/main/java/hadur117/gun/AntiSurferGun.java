@@ -23,7 +23,8 @@ public class AntiSurferGun {
         return "Anti-Surfer Gun";
     }
 
-    public double aim(Wave w, Map<String, KnnView<TimestampedFiringAngle>> views) {
+    public double aim(Wave w, Map<String, KnnView<TimestampedFiringAngle>> views,
+                      Point2D.Double myNextLocation, long currentTime) {
         List<KdTree.Entry<TimestampedFiringAngle>> allNeighbors = null;
         double[] neighborWeights = null;
 
@@ -51,39 +52,41 @@ public class AntiSurferGun {
 
         if (allNeighbors == null || allNeighbors.isEmpty()) return w.absBearing;
 
+        double nextAbsBearing = DiaUtils.absoluteBearing(myNextLocation, w.targetLocation);
         int numScans = allNeighbors.size();
-        Double[] firingAngles = new Double[numScans];
+        double[] firingAngles = new double[numScans];
+        boolean[] valid = new boolean[numScans];
 
         for (int i = 0; i < numScans; i++) {
             TimestampedFiringAngle tfa = allNeighbors.get(i).value;
             if (is1v1) {
                 double gf = tfa.guessFactor;
-                firingAngles[i] = Utils.normalRelativeAngle(
-                    gf * w.orbitDirection * w.preciseEscapeAngle(gf >= 0));
+                firingAngles[i] = gf * w.orbitDirection * w.preciseEscapeAngle(gf >= 0);
+                valid[i] = true;
             } else {
-                Point2D.Double projected =
-                    w.projectLocationFromDisplacementVector(tfa.displacementVector);
+                Point2D.Double projected = w.projectLocationBlind(
+                    myNextLocation, tfa.displacementVector, currentTime);
                 if (battleField.rectangle.contains(projected)) {
                     firingAngles[i] = Utils.normalRelativeAngle(
-                        w.firingAngleFromTargetLocation(projected) - w.absBearing);
+                        DiaUtils.absoluteBearing(myNextLocation, projected) - nextAbsBearing);
+                    valid[i] = true;
                 }
             }
         }
 
-        Double bestAngle = null;
+        double bestAngle = 0;
         double bestDensity = Double.NEGATIVE_INFINITY;
         double bandwidth = 2.0 * DiaUtils.botWidthAimAngle(
-            w.sourceLocation.distance(w.targetLocation));
+            myNextLocation.distance(w.targetLocation));
         double[] testAngles = DiaUtils.generateFiringAngles(FIRING_ANGLES, w.maxEscapeAngle());
 
         for (int x = 0; x < FIRING_ANGLES; x++) {
             double xAngle = testAngles[x];
             double density = 0;
             for (int y = 0; y < numScans; y++) {
-                if (firingAngles[y] != null) {
-                    double ux = (xAngle - firingAngles[y]) / bandwidth;
-                    density += Math.exp(-0.5 * ux * ux) * neighborWeights[y];
-                }
+                if (!valid[y]) continue;
+                double ux = (xAngle - firingAngles[y]) / bandwidth;
+                density += Math.exp(-0.5 * ux * ux) * neighborWeights[y];
             }
             if (density > bestDensity) {
                 bestAngle = xAngle;
@@ -91,8 +94,7 @@ public class AntiSurferGun {
             }
         }
 
-        if (bestAngle == null) return w.absBearing;
-        return Utils.normalAbsoluteAngle(w.absBearing + bestAngle);
+        return Utils.normalAbsoluteAngle(nextAbsBearing + bestAngle);
     }
 
     public List<KnnView<TimestampedFiringAngle>> createViews() {
