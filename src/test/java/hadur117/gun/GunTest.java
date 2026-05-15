@@ -403,11 +403,11 @@ class GunTest {
     class KnnConstants {
 
         @Test
-        @DisplayName("buffer size is 2000")
+        @DisplayName("buffer size is 5000")
         void bufferSize() throws Exception {
             Field f = Gun.class.getDeclaredField("KNN_BUFFER_SIZE");
             f.setAccessible(true);
-            assertEquals(2000, f.getInt(null));
+            assertEquals(5000, f.getInt(null));
         }
 
         @Test
