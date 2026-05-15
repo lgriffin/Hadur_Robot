@@ -53,7 +53,7 @@ public class Gun {
     private static final int PATTERN_MIN_MATCH = 5;
     private static final int PATTERN_MAX_MATCH = 30;
 
-    private static final int KNN_BUFFER_SIZE = 2000;
+    private static final int KNN_BUFFER_SIZE = 5000;
     private static final int KNN_DIMENSIONS = 13;
     private static final int KNN_MIN_DATA = 30;
     private static final double[] FEATURE_WEIGHTS =
@@ -462,7 +462,7 @@ public class Gun {
                                       double distLast10) {
         double[] f = new double[KNN_DIMENSIONS];
         f[0] = Math.min(91, bft) / 91.0;
-        f[1] = latVel / 8.0;
+        f[1] = Math.abs(latVel) / 8.0;
         f[2] = advVel / 8.0;
         f[3] = Math.min(dist, 900) / 900.0;
         f[4] = (accel + 2.0) / 4.0;
@@ -470,8 +470,8 @@ public class Gun {
         f[6] = revWallMEA;
         f[7] = Math.min(1.0, velocityChangeTime / Math.max(1.0, bft));
         f[8] = Math.min(1.0, directionChangeTime / Math.max(1.0, bft));
-        f[9] = latVel8 / 8.0;
-        f[10] = latVel32 / 8.0;
+        f[9] = Math.abs(latVel8) / 8.0;
+        f[10] = Math.abs(latVel32) / 8.0;
         f[11] = Math.abs(latVel8) / (Math.abs(latVel32) + 0.001);
         f[12] = Math.min(distLast10, 80) / 80.0;
         return f;
