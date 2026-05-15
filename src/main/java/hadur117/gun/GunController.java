@@ -49,30 +49,32 @@ public class GunController {
         });
     }
 
-    public double aim(Wave w) {
+    public double aim(Wave w, Point2D.Double myNextLocation, long currentTime) {
         Map<String, KnnView<TimestampedFiringAngle>> views = getOrCreateViews(w.botName);
         KnnView<TimestampedFiringAngle> mainView = views.get(MainGun.viewName());
 
         if (mainView.size() < DATA_THRESHOLD) {
-            return w.absBearing;
+            return DiaUtils.absoluteBearing(myNextLocation, w.targetLocation);
         }
 
         if (is1v1) {
             GunStats mStats = mainGunStats.computeIfAbsent(w.botName, k -> new GunStats());
             GunStats aStats = antiSurferStats.computeIfAbsent(w.botName, k -> new GunStats());
             if (aStats.gunRating() > mStats.gunRating()) {
-                return antiSurferGun.aim(w, views);
+                return antiSurferGun.aim(w, views, myNextLocation, currentTime);
             }
         }
-        return mainGun.aim(w, mainView);
+        return mainGun.aim(w, mainView, myNextLocation, currentTime);
     }
 
-    public void fireVirtualBullets(Wave w) {
+    public void fireVirtualBullets(Wave w, Point2D.Double myNextLocation,
+                                    long currentTime) {
         if (!is1v1) return;
 
         Map<String, KnnView<TimestampedFiringAngle>> views = getOrCreateViews(w.botName);
-        double mainAngle = mainGun.aim(w, views.get(MainGun.viewName()));
-        double asAngle = antiSurferGun.aim(w, views);
+        double mainAngle = mainGun.aim(w, views.get(MainGun.viewName()),
+            myNextLocation, currentTime);
+        double asAngle = antiSurferGun.aim(w, views, myNextLocation, currentTime);
         virtualBullets.put(w, new double[]{mainAngle, asAngle});
 
         mainGunStats.computeIfAbsent(w.botName, k -> new GunStats());

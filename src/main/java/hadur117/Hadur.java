@@ -97,29 +97,29 @@ public class Hadur extends AdvancedRobot {
     }
 
     private void aimAndFire() {
-        fireIfGunTurned(aimedBulletPower);
+        Point2D.Double myNext = predictor.nextLocation(currentRobotState());
+        fireIfGunTurned(aimedBulletPower, myNext);
 
         aimedBulletPower = lastGunWave.bulletPower();
         double aimAngle;
-        Point2D.Double myNext = predictor.nextLocation(currentRobotState());
 
         if (lastGunWave.targetEnergy == 0 || ticksUntilGunCool() > 3) {
             aimAngle = DiaUtils.absoluteBearing(myNext, lastGunWave.targetLocation);
         } else {
-            aimAngle = gunController.aim(lastGunWave);
+            aimAngle = gunController.aim(lastGunWave, myNext, getTime());
         }
 
         setTurnGunRightRadians(Utils.normalRelativeAngle(
             aimAngle - getGunHeadingRadians()));
     }
 
-    private void fireIfGunTurned(double bulletPower) {
-        if (getGunHeat() == 0 && getGunTurnRemaining() == 0
+    private void fireIfGunTurned(double bulletPower, Point2D.Double myNext) {
+        if (getGunHeat() == 0 && Math.abs(getGunTurnRemaining()) < 0.05
                 && getEnergy() > bulletPower && lastGunWave != null) {
             Bullet bullet = setFireBullet(bulletPower);
             if (bullet != null) {
                 lastGunWave.firingWave = true;
-                gunController.fireVirtualBullets(lastGunWave);
+                gunController.fireVirtualBullets(lastGunWave, myNext, getTime());
                 lastRealBulletFireTime = getTime();
             }
         }
