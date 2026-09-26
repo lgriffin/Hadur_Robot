@@ -107,6 +107,29 @@ Every strategic claim is backed by a requirement, a test that proves it and a be
 
 At S2 the build runs 121 core and 8 bench tests, none skipped, and all 3 S2 requirements are covered. GitHub Actions runs `mvn verify` on every push.
 
+## Release 2.1: fight melee too
+
+The Hadur 2 plan is a duelist, and S7 was to cut melee. To enter the MeleeRumble (10-robot
+free-for-alls, 1000x1000), 2.1 ports the 1.x melee brain into the core instead. It runs
+while two or more opponents are alive (MELEE-1). The radar sweeps toward whichever
+opponent was scanned longest ago (MELEE-3). Movement goes to the least risky nearby point,
+where risk means opponents' energy over distance squared, walls, corners, crossfire and
+few escape routes (MELEE-4). The target is the cheapest kill the gun can reach quickly
+(MELEE-5), hit with circular or linear aim (MELEE-6), and stale targets are not fired on
+(MELEE-7). Hadur stays out of fights between two others (MELEE-8). When one opponent is
+left, the duel takes over from a clean slate (MELEE-2). The jar also drops to Java 11 so
+every rumble client can load it (REL-1).
+
+| Melee bench (35 rounds, 1000x1000) | Hadur's mean place of 10 | Score share |
+| --- | --- | --- |
+| 9 sample bots, 3 battles | 1.0 | 23.0% |
+| 9 established melee bots, 5 battles | 4.4 | 10.1% |
+| 9 strong bots (Diamond, Shadow, ScalarR, ...), 3 battles | 5.7 | 8.6% |
+
+Against real melee bots Hadur is mid-field: it survives reasonably but does about half the
+bullet damage of the leaders, because its melee gun does not learn. A learning melee gun
+and shot dodging in the melee mover are the obvious next bets.
+
 ## What comes next
 
 The next stages turn accurate perception into score, starting with memory. The remaining 20 requirements are spread over S3 to S6 (6, 6, 4 and 4).
