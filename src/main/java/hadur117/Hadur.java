@@ -1,6 +1,11 @@
 package hadur117;
 
 import hadur117.gun.GunController;
+import hadur117.melee.BattleMode;
+import hadur117.melee.EnemyInfo;
+import hadur117.melee.MeleeController;
+import hadur117.melee.OpponentStats;
+import hadur117.melee.OpponentStatsBook;
 import hadur117.move.MoveController;
 import hadur117.move.SurfMover;
 import hadur117.utils.*;
@@ -19,6 +24,7 @@ public class Hadur extends AdvancedRobot {
     private static WaveManager gunWaveManager;
     private static RobotStateLog myStateLog;
     private static RobotStateLog enemyStateLog;
+    private static MeleeController melee;
     private static int roundsWon, roundsPlayed;
 
     private Wave lastGunWave;
@@ -33,6 +39,8 @@ public class Hadur extends AdvancedRobot {
     private boolean firstScan;
     private double aimedBulletPower;
     private long lastRealBulletFireTime;
+    private BattleMode mode;
+    private MeleeController.Command lastMeleeCommand;
 
     @Override
     public void run() {
@@ -49,7 +57,10 @@ public class Hadur extends AdvancedRobot {
         setAdjustRadarForGunTurn(true);
 
         while (true) {
-            if (is1v1() && lastGunWave != null) {
+            updateMode();
+            if (mode == BattleMode.MELEE) {
+                meleeTick();
+            } else if (lastGunWave != null) {
                 aimAndFire();
                 moveController.checkWaves(getTime(), myLocation());
                 surfMover.move(this, currentRobotState(), moveController,
@@ -71,6 +82,7 @@ public class Hadur extends AdvancedRobot {
             gunWaveManager = new WaveManager();
             myStateLog = new RobotStateLog();
             enemyStateLog = new RobotStateLog();
+            melee = new MeleeController(battleField);
         }
     }
 
@@ -81,6 +93,7 @@ public class Hadur extends AdvancedRobot {
         gunWaveManager.initRound();
         myStateLog.clear();
         enemyStateLog.clear();
+        melee.newRound();
 
         lastGunWave = null;
         lastEnemyLocation = null;
@@ -94,6 +107,54 @@ public class Hadur extends AdvancedRobot {
         firstScan = true;
         aimedBulletPower = 1.9;
         lastRealBulletFireTime = 0;
+        mode = null;
+        lastMeleeCommand = null;
+    }
+
+    /** Switches between melee and duel as opponents are eliminated. */
+    private void updateMode() {
+        BattleMode newMode = BattleMode.fromOthers(getOthers());
+        if (mode == BattleMode.MELEE && newMode == BattleMode.DUEL) {
+            // Duel tracking starts fresh from the survivor's next scan.
+            firstScan = true;
+            lastGunWave = null;
+            enemyStateLog.clear();
+            setMaxVelocity(Rules.MAX_VELOCITY);
+        }
+        mode = newMode;
+    }
+
+    private void meleeTick() {
+        myStateLog.addState(currentRobotState());
+
+        MeleeController.Command previous = lastMeleeCommand;
+        if (previous != null && previous.firePower > 0 && getGunHeat() == 0
+                && Math.abs(getGunTurnRemaining()) < 0.05
+                && getEnergy() > previous.firePower) {
+            setFire(previous.firePower);
+        }
+
+        MeleeController.Command c = melee.tick(new MeleeController.Situation(
+            myLocation(), getGunHeadingRadians(), getRadarHeadingRadians(),
+            getEnergy(), getTime(), getOthers()));
+        setTurnRadarRightRadians(c.radarTurn);
+        setTurnGunRightRadians(c.gunTurn);
+        if (c.destination != null) goTo(c.destination);
+        lastMeleeCommand = c;
+    }
+
+    private void goTo(Point2D.Double destination) {
+        double angle = DiaUtils.absoluteBearing(myLocation(), destination);
+        double turn = Utils.normalRelativeAngle(angle - getHeadingRadians());
+        double distance = myLocation().distance(destination);
+        if (Math.abs(turn) > Math.PI / 2) {
+            turn = Utils.normalRelativeAngle(turn + Math.PI);
+            distance = -distance;
+        }
+        setTurnRightRadians(turn);
+        // Slow down for sharp turns so the robot doesn't swing wide.
+        setMaxVelocity(Math.abs(turn) > Math.PI / 4 ? 4.0 : Rules.MAX_VELOCITY);
+        setAhead(distance);
     }
 
     private void aimAndFire() {
@@ -131,6 +192,13 @@ public class Hadur extends AdvancedRobot {
         double absBearing = Utils.normalAbsoluteAngle(
             getHeadingRadians() + e.getBearingRadians());
         Point2D.Double enemyPos = DiaUtils.project(myPos, absBearing, e.getDistance());
+
+        EnemyInfo info = melee.tracker.onScan(e.getName(), enemyPos, e.getEnergy(),
+            e.getHeadingRadians(), e.getVelocity(), getTime());
+        OpponentStatsBook.get(e.getName()).recordScan(
+            e.getDistance(), e.getVelocity(), info.turnRate());
+        if (BattleMode.fromOthers(getOthers()) == BattleMode.MELEE) return;
+
         lastEnemyLocation = enemyPos;
 
         double enemyVel = e.getVelocity();
@@ -223,7 +291,15 @@ public class Hadur extends AdvancedRobot {
     }
 
     @Override
+    public void onBulletHit(BulletHitEvent e) {
+        double damage = Rules.getBulletDamage(e.getBullet().getPower());
+        melee.tracker.onBulletHit(e.getName(), damage);
+        OpponentStatsBook.get(e.getName()).recordDamageDealt(damage);
+    }
+
+    @Override
     public void onHitByBullet(HitByBulletEvent e) {
+        recordHitOnMe(e);
         Point2D.Double bulletLoc = new Point2D.Double(
             e.getBullet().getX(), e.getBullet().getY());
         Wave hitWave = moveController.findBulletWave(
@@ -247,7 +323,30 @@ public class Hadur extends AdvancedRobot {
     }
 
     @Override
-    public void onRobotDeath(RobotDeathEvent e) {}
+    public void onRobotDeath(RobotDeathEvent e) {
+        melee.onRobotDeath(e.getName());
+    }
+
+    /** Logs the hit and whether the shooter aimed head-on or led its shot. */
+    private void recordHitOnMe(HitByBulletEvent e) {
+        OpponentStats stats = OpponentStatsBook.get(e.getName());
+        double damage = Rules.getBulletDamage(e.getPower());
+        EnemyInfo shooter = melee.tracker.get(e.getName());
+        if (shooter == null) {
+            stats.recordDamageReceived(damage, Double.NaN, 0);
+            return;
+        }
+        double distance = shooter.location.distance(myLocation());
+        long flight = Math.round(distance / Rules.getBulletSpeed(e.getPower()));
+        RobotState atFire = myStateLog.getState(getTime() - flight);
+        if (atFire == null) {
+            stats.recordDamageReceived(damage, Double.NaN, 0);
+            return;
+        }
+        double headOn = DiaUtils.absoluteBearing(shooter.location, atFire.location);
+        stats.recordDamageReceived(damage, e.getHeadingRadians() - headOn,
+            DiaUtils.botWidthAimAngle(distance));
+    }
 
     @Override
     public void onWin(WinEvent e) {
@@ -263,10 +362,6 @@ public class Hadur extends AdvancedRobot {
     @Override
     public void onSkippedTurn(SkippedTurnEvent e) {
         out.println("WARNING: Turn skipped at " + e.getTime());
-    }
-
-    private boolean is1v1() {
-        return getOthers() <= 1;
     }
 
     private Point2D.Double myLocation() {

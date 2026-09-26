@@ -37,11 +37,12 @@ Five guns compete in a rolling 30-wave window:
 - Threat assessment: 35% accuracy + 25% energy + 20% aggression + 20% bullet power
 - Multi-round persistence via static fields
 
-### Minimum Risk Movement (Melee)
-- Evaluates 24 directions x 3 distances (100/175/250px) every 30 ticks
-- Risk per point: `sum(energy / distance^2)` across all enemies
-- Penalties for close range (<200px), walls (<60px), corners (<150px), staying in place
-- Lateral-angle bonus rewards perpendicular positioning
+### Melee (`hadur117.melee`)
+- **Radar**: full sweep until every opponent is seen, then always turns toward the stalest one; each opponent is re-scanned at least every 8 ticks and marked stale after 20
+- **Minimum-risk movement**: scores 36 directions x 3 distances each tick. Opponents repel by `energy / distance^2` (x3 inside 200px, discounted when stale); walls repel sharply inside 50px; corners, crossfire between two opponents and points with few escape routes are penalised
+- **Targeting**: picks the target by energy, then distance and gun turn, with threat counted only when Hadur is low; keeps its target unless a clearly better one is within a 4-tick gun swing. Circular prediction, linear when the turn rate is unknown
+- **Posture**: lets two fighting opponents wear each other down (keep clear, conserve power), keeps a low profile when leading a crowded melee, and turns aggressive against the weaker of the last two, cutting off its escape
+- **Opponent stats** (damage dealt/received, movement type, gun type, average distance) persist across rounds
 
 ### Smart Fire Power
 - Distance-based scaling: 3.0 (close) down to 1.0 (far)

@@ -178,19 +178,7 @@ public class GunController {
 
     private double calculateMeleeBulletPower(double distance, double myEnergy,
                                               double enemyEnergy, int enemiesAlive) {
-        double bulletPower = 2.999;
-        if (enemiesAlive <= 3) bulletPower = 1.999;
-        if (enemiesAlive <= 5 && distance > 500.0) bulletPower = 1.499;
-        if ((myEnergy < enemyEnergy && enemiesAlive <= 5 && distance > 300.0)
-                || distance > 700.0) {
-            bulletPower = 0.999;
-        }
-        if (myEnergy < 20.0 && myEnergy < enemyEnergy) {
-            bulletPower = Math.min(bulletPower, 2.0 - (20.0 - myEnergy) / 11.0);
-        }
-        bulletPower = Math.max(bulletPower, 0.1);
-        bulletPower = Math.min(bulletPower, myEnergy);
-        return bulletPower;
+        return hadur117.melee.MeleeGun.basePower(distance, myEnergy, enemyEnergy, enemiesAlive);
     }
 
     public String bestGunLabel(String botName) {
