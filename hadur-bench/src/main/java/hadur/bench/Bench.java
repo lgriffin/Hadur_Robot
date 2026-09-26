@@ -3,6 +3,7 @@ package hadur.bench;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.time.LocalDateTime;
@@ -12,6 +13,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.jar.JarEntry;
 import java.util.jar.JarOutputStream;
 import java.util.stream.Stream;
+import java.util.zip.GZIPOutputStream;
 
 /**
  * Runs Hadur against the reference set and writes a score-share report.
@@ -29,6 +31,9 @@ import java.util.stream.Stream;
  * <li>{@code --robot-jar FILE} the robot jar (../hadur-robot/target/hadur2.Hadur_2.0.jar),
  *     or {@code --robot-classes DIR} to jar a compiled class tree instead;
  *     {@code --robot NAME} as Robocode lists it ("hadur2.Hadur 2.0").</li>
+ * <li>{@code --record DIR} capture replay fixtures instead: runs the recorder robot
+ *     (../hadur-robot/target/hadur-robot-2.0-SNAPSHOT-recorder.jar) with Robocode's
+ *     security off and writes one gzipped transcript per opponent to DIR (CORE-2).</li>
  * <li>{@code --only TEXT} run opponents whose name contains TEXT,
  *     {@code --out DIR} working directory (work/&lt;mode&gt;-&lt;time&gt;),
  *     {@code --report FILE} also copy the report there.</li>
@@ -52,6 +57,8 @@ public final class Bench {
     private final Path home;
     private final String robot;
     private final boolean warm;
+    /** Where replay fixtures go, or null when not recording. */
+    private final Path record;
     private final int rounds, runs, width, height;
 
     private Bench(Map<String, String> opts) {
@@ -64,6 +71,11 @@ public final class Bench {
         String[] field = opts.getOrDefault("field", "800x600").split("x");
         this.width = Integer.parseInt(field[0]);
         this.height = Integer.parseInt(field[1]);
+        this.record = opts.containsKey("record") ? Path.of(opts.get("record")).toAbsolutePath() : null;
+        if (record != null) {
+            opts.putIfAbsent("robot", "hadur2.HadurRecorder 2.0");
+            opts.putIfAbsent("robot-jar", "../hadur-robot/target/hadur-robot-2.0-SNAPSHOT-recorder.jar");
+        }
         this.robot = opts.getOrDefault("robot", "hadur2.Hadur 2.0");
         String stamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss"));
         this.out = Path.of(opts.getOrDefault("out",
@@ -123,6 +135,12 @@ public final class Bench {
         cmd.add(Path.of(System.getProperty("java.home"), "bin", "java").toString());
         cmd.addAll(JVM_FLAGS);
         cmd.add("-DRANDOMSEED=" + seed);
+        Path transcript = dir.resolve("transcript.txt");
+        if (record != null) {
+            // The recorder writes its transcript straight to disk.
+            cmd.add("-DNOSECURITY=true");
+            cmd.add("-Dhadur.record=" + transcript);
+        }
         cmd.add("-cp");
         cmd.add(classpath());
         cmd.add(BattleRunner.class.getName());
@@ -136,11 +154,21 @@ public final class Bench {
             p.destroyForcibly();
             return BattleResult.parse(BattleResult.failed("timed out"));
         }
+        if (record != null && Files.exists(transcript)) saveFixture(o, seed, transcript);
         Path result = dir.resolve("result.csv");
         if (!Files.exists(result)) {
             return BattleResult.parse(BattleResult.failed("no result; exit " + p.exitValue()));
         }
         return BattleResult.parse(Files.readAllLines(result).get(1));
+    }
+
+    private void saveFixture(Opponent o, int seed, Path transcript) throws IOException {
+        Files.createDirectories(record);
+        Path fixture = record.resolve(o.slug() + (runs > 1 ? "-" + seed : "") + ".txt.gz");
+        try (OutputStream gz = new GZIPOutputStream(Files.newOutputStream(fixture))) {
+            Files.copy(transcript, gz);
+        }
+        System.out.println("  fixture " + fixture);
     }
 
     private String classpath() throws IOException {

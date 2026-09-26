@@ -93,6 +93,12 @@
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>3.5.2</version>
                     <configuration>
+                        <includes>
+                            <include>**/*Test.java</include>
+                            <include>**/*Tests.java</include>
+                            <!-- jqwik property classes -->
+                            <include>**/*Properties.java</include>
+                        </includes>
                         <systemPropertyVariables>
                             <hadur.stage>${hadur.stage}</hadur.stage>
                             <hadur.root>${maven.multiModuleProjectDirectory}</hadur.root>

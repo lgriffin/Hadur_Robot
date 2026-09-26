@@ -127,6 +127,11 @@ public class WaveManager {
         }
     }
 
+    /** Per-wave state logs held; one per active wave at most (RES-2). */
+    int stateLogCount() {
+        return stateLogs.size();
+    }
+
     public int size() {
         return waves.size();
     }

@@ -4,7 +4,8 @@ import java.util.List;
 
 /**
  * Everything the core sees in one tick: the robot's own state and the events that
- * arrived with it. Immutable, so a battle is just a list of these.
+ * arrived with it. Immutable, so a battle is just a list of these. Angles are radians
+ * (headings absolute, 0 = north, clockwise), as from the engine's {@code ...Radians()} getters.
  */
 public record BotInput(long time, int round, double x, double y, double heading,
                        double velocity, double energy, double gunHeat,

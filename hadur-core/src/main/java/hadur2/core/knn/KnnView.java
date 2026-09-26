@@ -8,8 +8,6 @@ import java.util.*;
 
 public class KnnView<T> {
 
-    private static int nameIndex = 0;
-
     public double weight;
     public DistanceFormula formula;
     public int kSize;
@@ -48,7 +46,7 @@ public class KnnView<T> {
         this.paddedHitThreshold = 0.0;
         this.maxDataPoints = 0;
         this.decayRate = 0.0;
-        this.name = "view-" + nameIndex++;
+        this.name = "view";
         this.initTree();
         this.cachedNeighbors = new HashMap<>();
     }

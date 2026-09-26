@@ -135,11 +135,18 @@ public final class HadurCore {
 
     private void aimAndFire(BotInput in, BotOrders.Builder orders) {
         Point2D.Double myNext = predictor.nextLocation(currentState(in));
-        fireIfGunTurned(in, orders, aimedBulletPower, myNext);
+        // In 1.20, setFireBullet heated the gun at once (the engine's proxy adds the new
+        // shot's heat to getGunHeat()), so the aim below saw the hot gun.
+        double gunHeat = in.gunHeat();
+        if (fireIfGunTurned(in, orders, aimedBulletPower, myNext)) {
+            double firedPower = Math.min(in.energy(), Math.min(
+                Math.max(aimedBulletPower, Rules.MIN_BULLET_POWER), Rules.MAX_BULLET_POWER));
+            gunHeat += Rules.getGunHeat(firedPower);
+        }
 
         aimedBulletPower = lastGunWave.bulletPower();
         double aimAngle;
-        if (lastGunWave.targetEnergy == 0 || ticksUntilGunCool(in) > 3) {
+        if (lastGunWave.targetEnergy == 0 || ticksUntilGunCool(gunHeat, in) > 3) {
             aimAngle = DiaUtils.absoluteBearing(myNext, lastGunWave.targetLocation);
         } else {
             aimAngle = gunController.aim(lastGunWave, myNext, in.time());
@@ -147,16 +154,21 @@ public final class HadurCore {
         orders.turnGunRight(Angles.normalRelativeAngle(aimAngle - in.gunHeading()));
     }
 
-    private void fireIfGunTurned(BotInput in, BotOrders.Builder orders, double bulletPower,
-                                 Point2D.Double myNext) {
-        if (in.gunHeat() == 0 && Math.abs(in.gunTurnRemaining()) < 0.05
+    /** Fires if the gun is cool and on target; returns whether it fired. */
+    private boolean fireIfGunTurned(BotInput in, BotOrders.Builder orders, double bulletPower,
+                                    Point2D.Double myNext) {
+        // 1.20 compared getGunTurnRemaining(), which is in degrees, with 0.05, so the gun
+        // has to be within 0.05 degrees. Kept exactly as it was; S1 changes no behaviour.
+        if (in.gunHeat() == 0 && Math.abs(Math.toDegrees(in.gunTurnRemaining())) < 0.05
                 && in.energy() > bulletPower && lastGunWave != null) {
             orders.fire(bulletPower);
             lastGunWave.firingWave = true;
             gunController.fireVirtualBullets(lastGunWave, myNext, in.time());
             lastRealBulletFireTime = in.time();
             stats.shotsFired++;
+            return true;
         }
+        return false;
     }
 
     private void onScan(BotInput in, BotEvent.Scan e, BotOrders.Builder orders) {
@@ -285,8 +297,8 @@ public final class HadurCore {
         telemetry.emit("WARNING: Turn skipped at " + in.time());
     }
 
-    private long ticksUntilGunCool(BotInput in) {
-        return Math.round(Math.ceil(in.gunHeat() / in.gunCoolingRate()));
+    private static long ticksUntilGunCool(double gunHeat, BotInput in) {
+        return Math.round(Math.ceil(gunHeat / in.gunCoolingRate()));
     }
 
     private static RobotState currentState(BotInput in) {

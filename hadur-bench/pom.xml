@@ -52,6 +52,11 @@
             <artifactId>robocode.samples</artifactId>
             <version>${robocode.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -71,6 +76,7 @@
                         </goals>
                         <configuration>
                             <outputFile>${project.build.directory}/classpath.txt</outputFile>
+                            <includeScope>runtime</includeScope>
                         </configuration>
                     </execution>
                     <execution>

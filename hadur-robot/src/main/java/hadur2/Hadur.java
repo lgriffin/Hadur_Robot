@@ -36,9 +36,11 @@ public class Hadur extends AdvancedRobot {
             core = new HadurCore(getBattleFieldWidth(), getBattleFieldHeight(), getOthers(),
                 line -> console.println(line));
             guard = new Guard(core::tick, core::recover, line -> console.println(line));
+            battleStarted(getBattleFieldWidth(), getBattleFieldHeight(), getOthers());
         }
         core.newRound(getRoundNum());
         guard.newRound();
+        roundStarted(getRoundNum());
 
         setBodyColor(new Color(139, 0, 0));
         setGunColor(new Color(218, 165, 32));
@@ -50,10 +52,22 @@ public class Hadur extends AdvancedRobot {
         setAdjustRadarForGunTurn(true);
 
         while (true) {
-            apply(guard.tick(input()));
+            BotInput in = input();
+            BotOrders orders = guard.tick(in);
+            ticked(in, orders);
+            apply(orders);
             execute();
         }
     }
+
+    // Hooks for the bench's recorder, which captures replay fixtures (CORE-2).
+    // The robot itself does nothing in them.
+
+    protected void battleStarted(double width, double height, int enemies) {}
+
+    protected void roundStarted(int round) {}
+
+    protected void ticked(BotInput in, BotOrders orders) {}
 
     private BotInput input() {
         BotInput in = new BotInput(getTime(), getRoundNum(), getX(), getY(),

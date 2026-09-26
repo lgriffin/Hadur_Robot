@@ -92,7 +92,7 @@ public class LogHarvester extends BattleAdaptor {
     }
 
     /** Reads Hadur's own R and FAULT records so the report can show them (RES-5). */
-    private void readRecord(String line) {
+    void readRecord(String line) {
         if (line.startsWith("FAULT,")) {
             faultRecords++;
         } else if (line.startsWith("R,")) {

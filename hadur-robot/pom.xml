@@ -41,7 +41,26 @@
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>3.6.0</version>
                 <executions>
+                    <!-- Runs first, while the main artifact still holds the recorder. -->
                     <execution>
+                        <id>recorder</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <shadedArtifactAttached>true</shadedArtifactAttached>
+                            <shadedClassifierName>recorder</shadedClassifierName>
+                            <artifactSet>
+                                <includes>
+                                    <include>com.lgriffin:hadur-core</include>
+                                </includes>
+                            </artifactSet>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>robot</id>
                         <phase>package</phase>
                         <goals>
                             <goal>shade</goal>
@@ -53,6 +72,14 @@
                                     <include>com.lgriffin:hadur-core</include>
                                 </includes>
                             </artifactSet>
+                            <filters>
+                                <filter>
+                                    <artifact>com.lgriffin:hadur-robot</artifact>
+                                    <excludes>
+                                        <exclude>hadur2/HadurRecorder*</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
                         </configuration>
                     </execution>
                 </executions>
