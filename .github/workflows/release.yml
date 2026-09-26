@@ -1,0 +1,37 @@
+name: release
+
+# Pushing a tag like v2.1 builds the robot, checks the jar matches the tag, and publishes a
+# GitHub release with the jar attached. The release asset URL is a direct download, which
+# is what RoboRumble participant lists need.
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+      - name: Build and test
+        run: mvn -B verify
+      - name: Check the jar name and version match the tag
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          jar="hadur-robot/target/hadur2.Hadur_${version}.jar"
+          test -f "$jar" || { echo "missing $jar"; exit 1; }
+          unzip -p "$jar" hadur2/Hadur.properties | grep -qx "robot.version=${version}" \
+            || { echo "robot.version in $jar is not ${version}"; exit 1; }
+          echo "JAR=$jar" >> "$GITHUB_ENV"
+      - name: Publish the release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ${{ env.JAR }}
+          body_path: docs/releases/${{ github.ref_name }}.md

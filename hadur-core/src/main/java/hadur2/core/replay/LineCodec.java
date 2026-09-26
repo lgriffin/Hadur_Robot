@@ -68,24 +68,33 @@ public final class LineCodec {
     }
 
     static String encode(BotEvent e) {
-        if (e instanceof BotEvent.Scan s) {
+        if (e instanceof BotEvent.Scan) {
+            BotEvent.Scan s = (BotEvent.Scan) e;
             return join("S", esc(s.name()), s.bearing(), s.distance(), s.energy(), s.heading(),
                 s.velocity());
-        } else if (e instanceof BotEvent.HitByBullet h) {
+        } else if (e instanceof BotEvent.HitByBullet) {
+            BotEvent.HitByBullet h = (BotEvent.HitByBullet) e;
             return join("H", esc(h.name()), h.power(), h.x(), h.y(), h.heading());
-        } else if (e instanceof BotEvent.BulletHit b) {
+        } else if (e instanceof BotEvent.BulletHit) {
+            BotEvent.BulletHit b = (BotEvent.BulletHit) e;
             return join("B", esc(b.name()), b.power(), b.energy());
-        } else if (e instanceof BotEvent.BulletHitBullet b) {
+        } else if (e instanceof BotEvent.BulletHitBullet) {
+            BotEvent.BulletHitBullet b = (BotEvent.BulletHitBullet) e;
             return join("X", b.power(), b.x(), b.y(), b.enemyPower());
-        } else if (e instanceof BotEvent.BulletMissed m) {
+        } else if (e instanceof BotEvent.BulletMissed) {
+            BotEvent.BulletMissed m = (BotEvent.BulletMissed) e;
             return join("M", m.power());
-        } else if (e instanceof BotEvent.HitWall w) {
+        } else if (e instanceof BotEvent.HitWall) {
+            BotEvent.HitWall w = (BotEvent.HitWall) e;
             return join("W", w.bearing());
-        } else if (e instanceof BotEvent.HitRobot r) {
+        } else if (e instanceof BotEvent.HitRobot) {
+            BotEvent.HitRobot r = (BotEvent.HitRobot) e;
             return join("R", esc(r.name()), r.bearing(), r.energy(), r.myFault());
-        } else if (e instanceof BotEvent.RobotDeath d) {
+        } else if (e instanceof BotEvent.RobotDeath) {
+            BotEvent.RobotDeath d = (BotEvent.RobotDeath) e;
             return join("D", esc(d.name()));
-        } else if (e instanceof BotEvent.SkippedTurn s) {
+        } else if (e instanceof BotEvent.SkippedTurn) {
+            BotEvent.SkippedTurn s = (BotEvent.SkippedTurn) e;
             return join("K", s.skippedTime());
         }
         throw new IllegalArgumentException("Unknown event " + e);
@@ -93,19 +102,19 @@ public final class LineCodec {
 
     static BotEvent decodeEvent(String s) {
         String[] f = s.split(":", -1);
-        return switch (f[0]) {
-            case "S" -> new BotEvent.Scan(unesc(f[1]), d(f[2]), d(f[3]), d(f[4]), d(f[5]), d(f[6]));
-            case "H" -> new BotEvent.HitByBullet(unesc(f[1]), d(f[2]), d(f[3]), d(f[4]), d(f[5]));
-            case "B" -> new BotEvent.BulletHit(unesc(f[1]), d(f[2]), d(f[3]));
-            case "X" -> new BotEvent.BulletHitBullet(d(f[1]), d(f[2]), d(f[3]), d(f[4]));
-            case "M" -> new BotEvent.BulletMissed(d(f[1]));
-            case "W" -> new BotEvent.HitWall(d(f[1]));
-            case "R" -> new BotEvent.HitRobot(unesc(f[1]), d(f[2]), d(f[3]),
+        switch (f[0]) {
+            case "S": return new BotEvent.Scan(unesc(f[1]), d(f[2]), d(f[3]), d(f[4]), d(f[5]), d(f[6]));
+            case "H": return new BotEvent.HitByBullet(unesc(f[1]), d(f[2]), d(f[3]), d(f[4]), d(f[5]));
+            case "B": return new BotEvent.BulletHit(unesc(f[1]), d(f[2]), d(f[3]));
+            case "X": return new BotEvent.BulletHitBullet(d(f[1]), d(f[2]), d(f[3]), d(f[4]));
+            case "M": return new BotEvent.BulletMissed(d(f[1]));
+            case "W": return new BotEvent.HitWall(d(f[1]));
+            case "R": return new BotEvent.HitRobot(unesc(f[1]), d(f[2]), d(f[3]),
                 Boolean.parseBoolean(f[4]));
-            case "D" -> new BotEvent.RobotDeath(unesc(f[1]));
-            case "K" -> new BotEvent.SkippedTurn(Long.parseLong(f[1]));
-            default -> throw new IllegalArgumentException("Unknown event " + s);
-        };
+            case "D": return new BotEvent.RobotDeath(unesc(f[1]));
+            case "K": return new BotEvent.SkippedTurn(Long.parseLong(f[1]));
+            default: throw new IllegalArgumentException("Unknown event " + s);
+        }
     }
 
     private static String join(String type, Object... fields) {

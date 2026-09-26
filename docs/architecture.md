@@ -17,6 +17,7 @@ graph LR
         C[HadurCore]
         GC[gun]
         MC[move]
+        ML[melee]
         M[model / physics / knn]
         T[port.Telemetry]
     end
@@ -24,6 +25,8 @@ graph LR
     A -- BotInput --> G
     G --> C
     C --> GC & MC
+    C --> ML
+    ML --> M
     GC & MC --> M
     C -- BotOrders --> G
     G -- BotOrders --> A
@@ -38,7 +41,7 @@ Robocode runs a robot's event handlers inside `execute()`, then returns to `run(
 adapter mirrors that exactly:
 
 1. Handlers (`onScannedRobot`, `onHitByBullet`, ...) turn each engine event into a
-   `BotEvent` record and queue it, in the engine's own priority order.
+   `BotEvent` value and queue it, in the engine's own priority order.
 2. The loop builds a `BotInput`: the robot's state from the getters plus the queued events.
 3. `Guard.tick(input)` calls `HadurCore.tick(input)`, which handles the events first and
    then runs the main loop body, as 1.20 did.
@@ -49,12 +52,12 @@ adapter mirrors that exactly:
 The core and guard are static in the adapter, so learning survives from round to round
 (Robocode creates a new robot object each round).
 
-## Ports and records
+## Ports and values
 
 | Type | Direction | What |
 |---|---|---|
 | `model.BotInput` | in | time, round, own position, heading, velocity, energy, gun and radar state, others, events |
-| `model.BotEvent` | in | sealed: `Scan`, `HitByBullet`, `BulletHit`, `BulletHitBullet`, `BulletMissed`, `HitWall`, `HitRobot`, `RobotDeath`, `SkippedTurn` |
+| `model.BotEvent` | in | a closed set: `Scan`, `HitByBullet`, `BulletHit`, `BulletHitBullet`, `BulletMissed`, `HitWall`, `HitRobot`, `RobotDeath`, `SkippedTurn` |
 | `model.BotOrders` | out | body turn, ahead, max velocity, gun turn, radar turn, fire power |
 | `port.Telemetry` | out | one line record at a time (`V`, `B`, `R`, `FAULT`, `EW`) |
 
@@ -65,12 +68,13 @@ Later stages add `ProfileStore` (S3) and `Clock` (S6) ports.
 | Package | Holds |
 |---|---|
 | `hadur2.core` | `HadurCore` (the brain), `Guard` (RES-1), `RoundStats` (RES-5) |
-| `model` | the port records, robot states and their logs, waves and the wave manager |
+| `model` | the port values, robot states and their logs, waves and the wave manager |
 | `ledger` | `EnergyLedger`: explains the enemy's energy changes between scans so only bullet spending becomes a wave (WAVE-1, WAVE-2) |
 | `physics` | `Angles` and `Rules` (bit-identical to Robocode's), battle field, movement prediction |
 | `knn` | KD-tree and KNN views |
 | `gun` | main KNN gun, anti-surfer gun, gun selection |
 | `move` | wave-surfing movement and its danger formulas |
+| `melee` | the melee brain (MELEE-1..8): opponent tracker, sweep radar, minimum-risk mover, target selector, circular gun, posture strategy, battle-long opponent stats |
 | `replay` | the line codec and replay driver for recorded battles (CORE-2) |
 | `port` | outbound interfaces |
 
@@ -78,7 +82,23 @@ ArchUnit enforces the boundary on every build: no `robocode.*` in the core, only
 `java.lang`, `java.util` and `java.awt.geom`; no randomness, threads, reflection, I/O or
 clock; no mutable static fields; model, physics and ports never depend on gun, movement
 or replay; gun and movement never depend on each other; the ledger depends only on
-physics, so nothing but the engine's rules decides which drops become waves.
+physics, so nothing but the engine's rules decides which drops become waves; melee depends
+only on the model and physics, and no duel package depends on melee.
+
+## Melee and duel
+
+`HadurCore` picks the brain each tick from the number of opponents alive (MELEE-1). With two
+or more, every scan, hit and death goes to `melee.MeleeController`, which returns the radar
+sweep, a destination and the aim; the duel's waves, ledger and guns are not fed. When the
+count drops to one, the core forgets its duel tracking and lifts the melee speed limit
+(MELEE-2), and the duel machinery starts from the survivor's next scan. A 1v1 battle never
+enters melee, so the duel's replay fixtures are unchanged.
+
+## Java version
+
+The shipped classes (core and adapter) are compiled for Java 11 (REL-1), because RoboRumble
+clients run whatever Java their owners installed. Records, sealed types and pattern
+matching are therefore not used in main code; tests and the bench use Java 17.
 
 ## Faults
 

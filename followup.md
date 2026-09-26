@@ -2,6 +2,24 @@
 
 Open items from the Hadur 2 stages, newest stage first.
 
+## Release 2.1 (melee)
+
+- **Melee is mid-field against real melee bots.** Hadur wins almost every round against
+  nine sample bots, but against nine established MeleeRumble bots it places around the
+  middle (see docs/bench/melee-2.1-classic.md): its bullet damage is about half of the
+  leaders' (abc.Tron, rz.Aleph). The gun is plain circular/linear with no learning; a
+  melee-aware KNN or play-it-forward gun and energy-drop shot dodging in the mover are the
+  obvious next steps.
+- **The plan's S7 says "cut melee".** 2.1 keeps melee on purpose for the MeleeRumble. When
+  S7 comes round, decide whether melee stays in the core or moves to its own robot.
+- **Opponent stats are not used for much.** `OpponentStats` classifies movement and gun
+  type, but only the damage a robot has done to Hadur feeds a decision (the target
+  selector, when Hadur is low). Profiles in S3 could feed them.
+- **No per-tick budget in melee.** The mover scores 108 points against every opponent each
+  tick; cheap at 10 robots, but the S6 tick budget (TIME-1/2) should cover melee too.
+- **The melee bench reports places and score share only.** It does not collect Hadur's
+  R records per battle as the 1v1 bench does.
+
 ## S2
 
 - **Unseen shots.** A shot fired while Hadur is disabled, or just before a round ends,

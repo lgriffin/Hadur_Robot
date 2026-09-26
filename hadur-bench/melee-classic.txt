@@ -1,0 +1,12 @@
+# Melee set: nine established MeleeRumble bots of the mid field, all at once with Hadur.
+# Jars from https://robocode-archive.strangeautomata.com/robots/<jar>; put them in opponents/.
+# Run with --set melee-classic.txt --melee true --field 1000x1000
+abc.Tron 2.02 | melee | abc.Tron_2.02.jar
+kawigi.sbf.FloodMini 1.4 | melee | kawigi.sbf.FloodMini_1.4.jar
+rz.Aleph 0.34 | melee | rz.Aleph_0.34.jar
+mue.Ascendant 1.2.27 | melee | mue.Ascendant_1.2.27.jar
+dmp.micro.Aurora 1.41 | melee | dmp.micro.Aurora_1.41.jar
+cx.mini.Cigaret 1.31 | melee | cx.mini.Cigaret_1.31.jar
+kawigi.mini.Coriantumr 1.1 | melee | kawigi.mini.Coriantumr_1.1.jar
+pedersen.Ugluk 1.0 | melee | pedersen.Ugluk_1.0.jar
+cjm.Chomsky 1.5 | melee | cjm.Chomsky_1.5.jar

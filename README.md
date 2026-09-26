@@ -1,7 +1,12 @@
 # Hadur 2
 
-**Hadur** (the Hungarian god of war) is a 1v1 [Robocode](https://robocode.sourceforge.io/) robot:
-wave surfing, KNN guns with an anti-surfer array, and a core that has no idea it is inside Robocode.
+**Hadur** (the Hungarian god of war) is a [Robocode](https://robocode.sourceforge.io/) robot:
+wave surfing and KNN guns with an anti-surfer array one on one, minimum-risk movement and a
+circular gun in melee, and a core that has no idea it is inside Robocode.
+
+**Release 2.1** is the MeleeRumble entry: the Hadur 2 duelist (S0 to S2) with the 1.x melee
+brain folded into the core. See [the release](https://github.com/lgriffin/Hadur_Robot/releases/tag/v2.1)
+and [how to enter it](docs/meleerumble-submission.md).
 
 Hadur 2 is being rebuilt in stages (S0 to S7) from the "Hadur 2: a duelist that remembers"
 plan. Every stage is gated by the bench, and every requirement in
@@ -18,11 +23,12 @@ that prove it.
 | S5 | Aggressive | |
 | S6 | Unhittable, plus the tick budget | |
 | S7 | Cut melee, rewrite the docs | |
+| 2.1 | Melee brain in the core (MELEE-1..8), Java 11 target (REL-1) | released ([samples](docs/bench/melee-2.1-samples.md), [classic](docs/bench/melee-2.1-classic.md), [strong](docs/bench/melee-2.1-strong.md)) |
 
 ## Layout
 
 ```
-hadur-core/    the brain: physics, waves, KNN, guns, movement. Plain Java, no Robocode.
+hadur-core/    the brain: physics, waves, KNN, guns, movement, melee. Plain Java, no Robocode.
 hadur-robot/   the Robocode adapter (hadur2.Hadur): events in, orders out.
 hadur-bench/   headless battles, the bench report, and the replay recorder.
 docs/          requirements, architecture, bench reports.
@@ -33,13 +39,14 @@ See [docs/architecture.md](docs/architecture.md) for how the pieces fit, and [do
 
 ## Build and test
 
-Java 17 or later, Maven 3.9.
+Java 17 or later, Maven 3.9. The robot itself is compiled for Java 11 so every RoboRumble
+client can load it (REL-1).
 
 ```sh
 mvn verify                  # all modules: tests, traceability, robot jar
 ```
 
-The robot jar is `hadur-robot/target/hadur2.Hadur_2.0.jar`; drop it into a Robocode
+The robot jar is `hadur-robot/target/hadur2.Hadur_2.1.jar`; drop it into a Robocode
 `robots/` directory. The core is bundled inside it.
 
 hadur-core's tests are layered:
@@ -61,6 +68,12 @@ cd hadur-bench
 mvn exec:java -Dexec.args="--mode cold --rounds 35 --seeds 5"
 ```
 
+For a 10-robot melee, as in the MeleeRumble:
+
+```sh
+mvn exec:java -Dexec.args="--set melee-samples.txt --melee true --field 1000x1000 --seeds 3"
+```
+
 Details in [hadur-bench/README.md](hadur-bench/README.md). Put third-party opponents such
 as `abc.Shadow_3.83c.jar` in `hadur-bench/opponents/` (not committed).
 
@@ -76,6 +89,7 @@ Hadur prints line records to its console, which the bench collects:
 
 ## History
 
-Hadur 1.x (up to 1.20) was a dual-mode duel and melee robot. Its melee work is parked on
-the `claude/project-thread-3j7vn4` branch for a possible separate melee robot; its old
-feature files are kept in [docs/legacy-features](docs/legacy-features).
+Hadur 1.x (up to 1.20) was a dual-mode duel and melee robot. Hadur 2 started as a pure
+duelist; for the MeleeRumble, release 2.1 ported the 1.x melee work (from the
+`claude/project-thread-3j7vn4` branch) into the core's `melee` package. The old feature
+files are kept in [docs/legacy-features](docs/legacy-features).
