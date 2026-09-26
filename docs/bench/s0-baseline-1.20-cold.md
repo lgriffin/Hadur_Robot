@@ -17,5 +17,5 @@ Turn times are wall-clock per engine turn (both robots plus the engine), measure
 ## Notes (S0)
 
 - Only the Robocode sample bots are in this run; they are sanity checks, and 1.20 wins 874 of 875 rounds. Shadow and the tier reference bots are missing because this environment can't download them.
-- **The zero-skipped-turns gate already fails on 1.20:** 8 skipped turns across 25 battles (8,750 rounds' worth of turns ≈ 1 per 1,100 rounds), with single-turn spikes up to 22 ms.
+- **The zero-skipped-turns gate already fails on 1.20:** 8 skipped turns across 25 battles (875 rounds, so about 1 per 110 rounds), with single-turn spikes up to 22 ms.
 - Battles are seeded, and a seeded battle reproduces exactly when no turn is skipped. A skipped turn changes what the robot does, so two runs of the same seed can differ once skips happen. That is why this table differs slightly from an earlier run with the same seeds.
