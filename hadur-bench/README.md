@@ -59,8 +59,8 @@ records, so every fault and degradation counter the core keeps reaches the repor
 The wave fidelity table (S2) scores the enemy waves Hadur inferred (its `EW` records)
 against the bullets the enemy really fired (the engine's bullet ids). A wave matches a
 real bullet in the same round within 3 ticks and 0.15 power. "Unseen" shots were fired
-while either robot was disabled, so no scan could reveal them, and are left out of the
-real-shot count. "False waves" are inferred waves with no real bullet behind them;
+while either robot was disabled and matched no wave; they are left out of the real-shot
+count. (A disabled robot is still scanned, so such a shot is often seen, and then counts.) "False waves" are inferred waves with no real bullet behind them;
 "ledger phantoms" are drops 1.20 would have read as shots that the ledger explained away.
 
 ## Replay fixtures

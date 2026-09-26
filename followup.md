@@ -4,9 +4,9 @@ Open items from the Hadur 2 stages, newest stage first.
 
 ## S2
 
-- **Unseen shots.** A shot the enemy fires while Hadur is disabled, or its last shot that
-  leaves it at 0 energy, never shows in a scan. The bench counts these apart ("Unseen");
-  they cannot be dodged, so they are not a ledger gap.
+- **Unseen shots.** A shot fired while Hadur is disabled, or just before a round ends,
+  never shows in a scan. The bench counts unmatched shots from those moments apart
+  ("Unseen"). Against Shadow, 33 other shots (0.3%) were missed; not yet examined.
 - **Hidden shots are counted but not reported.** `RoundStats.hiddenShots` and
   `radarReacquired` stay out of the `R` record so its format is unchanged; add them when
   the record next changes (S3 adds profile fields).

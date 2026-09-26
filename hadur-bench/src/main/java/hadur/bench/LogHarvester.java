@@ -49,7 +49,6 @@ public class LogHarvester extends BattleAdaptor {
     /** Enemy bullets as the engine saw them, and the waves Hadur inferred (S2 wave fidelity). */
     private final List<double[]> enemyShots = new ArrayList<>();
     private final List<double[]> inferredWaves = new ArrayList<>();
-    private int unseenShots;
     private final Set<Integer> enemyBulletIds = new HashSet<>();
     private double ourHitRateSum, theirHitRateSum;
 
@@ -147,13 +146,10 @@ public class LogHarvester extends BattleAdaptor {
             first = false;
             String owner = bullet.getOwnerIndex() == me.getRobotIndex() ? "H" : "E";
             if (owner.equals("E") && enemyBulletIds.add(bullet.getBulletId())) {
-                // A shot fired while Hadur is disabled, or one that leaves the enemy
-                // disabled, can never show up in a scan, so it is counted apart.
-                if (me.getEnergy() <= 0 || enemy.getEnergy() <= 0) {
-                    unseenShots++;
-                } else {
-                    enemyShots.add(new double[] {round, turn, bullet.getPower()});
-                }
+                // {round, turn, power, disabled}: disabled marks a shot fired while either
+                // robot was disabled, which a scan may never reveal.
+                enemyShots.add(new double[] {round, turn, bullet.getPower(),
+                    me.getEnergy() <= 0 || enemy.getEnergy() <= 0 ? 1 : 0});
                 spawns.append("F,").append(round).append(',').append(turn).append(",E,")
                     .append(f(bullet.getPower())).append('\n');
             }
@@ -188,14 +184,23 @@ public class LogHarvester extends BattleAdaptor {
         return phantomWaves;
     }
 
-    /** Enemy bullets fired while Hadur or the enemy was disabled, which no scan can reveal. */
+    /**
+     * Enemy bullets fired while Hadur or the enemy was disabled that no inferred wave
+     * matched: a disabled robot is still scanned, so some of these are seen, but a shot
+     * fired while Hadur is disabled, or just before a round ends, cannot be.
+     */
     public int unseenShots() {
-        return unseenShots;
+        boolean[] matched = WaveMatcher.matchedShots(enemyShots, inferredWaves);
+        int unseen = 0;
+        for (int i = 0; i < matched.length; i++) {
+            if (!matched[i] && enemyShots.get(i)[3] == 1) unseen++;
+        }
+        return unseen;
     }
 
-    /** Enemy bullets the engine fired that a scan could reveal, from the ground truth. */
+    /** Enemy bullets the engine fired, from the ground truth, less the unseen ones. */
     public int enemyShots() {
-        return enemyShots.size();
+        return enemyShots.size() - unseenShots();
     }
 
     /** Enemy waves Hadur inferred (EW records). */

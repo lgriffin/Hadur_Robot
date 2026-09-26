@@ -17,8 +17,14 @@ final class WaveMatcher {
 
     /** How many inferred waves pair with a distinct real shot. */
     static int match(List<double[]> shots, List<double[]> waves) {
-        boolean[] used = new boolean[shots.size()];
         int matched = 0;
+        for (boolean m : matchedShots(shots, waves)) if (m) matched++;
+        return matched;
+    }
+
+    /** Which real shots an inferred wave pairs with, by index into {@code shots}. */
+    static boolean[] matchedShots(List<double[]> shots, List<double[]> waves) {
+        boolean[] used = new boolean[shots.size()];
         for (double[] w : waves) {
             int best = -1;
             double bestGap = Double.MAX_VALUE;
@@ -31,11 +37,8 @@ final class WaveMatcher {
                     bestGap = gap;
                 }
             }
-            if (best >= 0) {
-                used[best] = true;
-                matched++;
-            }
+            if (best >= 0) used[best] = true;
         }
-        return matched;
+        return used;
     }
 }

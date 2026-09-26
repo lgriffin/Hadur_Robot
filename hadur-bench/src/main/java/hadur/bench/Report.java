@@ -59,8 +59,8 @@ final class Report {
          .append("How well Hadur's inferred enemy waves match the bullets the enemy really fired "
             + "(from the engine's ground truth). A found wave matches a real bullet within "
             + WaveMatcher.TICK_WINDOW + " ticks and " + WaveMatcher.POWER_TOLERANCE
-            + " power. Real shots leave out the unseen ones, fired while either robot was disabled, "
-            + "which no scan can reveal. Ledger phantoms are energy drops the ledger explained away that 1.20 "
+            + " power. Real shots leave out the unseen ones: shots fired while either robot was "
+            + "disabled that no wave matched. Ledger phantoms are energy drops the ledger explained away that 1.20 "
             + "would have read as shots (WAVE-1).\n\n")
          .append("| Opponent | Real shots | Unseen | Waves found | Matched | Missed | False waves | Ledger phantoms |\n")
          .append("|---|---|---|---|---|---|---|---|\n");
