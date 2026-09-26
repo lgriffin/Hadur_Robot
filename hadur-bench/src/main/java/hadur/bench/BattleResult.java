@@ -1,0 +1,86 @@
+package hadur.bench;
+
+import robocode.BattleResults;
+
+/** One battle's outcome from Hadur's point of view, as a CSV row. */
+public final class BattleResult {
+
+    public static final String HEADER = "ok,rounds,score,theirScore,firsts,survival,theirSurvival,"
+        + "bulletDamage,theirBulletDamage,skippedTurns,turns,turnP50Ms,turnP95Ms,turnMaxMs,errors";
+
+    public boolean ok;
+    public int rounds, firsts, skippedTurns, turns;
+    public double score, theirScore, survival, theirSurvival, bulletDamage, theirBulletDamage;
+    public double turnP50Ms, turnP95Ms, turnMaxMs;
+    public String errors = "";
+
+    static BattleResult of(BattleResults us, BattleResults them, int rounds,
+                           LogHarvester h, String errors) {
+        BattleResult r = new BattleResult();
+        r.ok = true;
+        r.rounds = rounds;
+        r.score = us.getScore();
+        r.theirScore = them.getScore();
+        r.firsts = us.getFirsts();
+        r.survival = us.getSurvival();
+        r.theirSurvival = them.getSurvival();
+        r.bulletDamage = us.getBulletDamage();
+        r.theirBulletDamage = them.getBulletDamage();
+        r.skippedTurns = h.skippedTurns();
+        r.turns = h.turns();
+        r.turnP50Ms = h.turnMillisPercentile(0.50);
+        r.turnP95Ms = h.turnMillisPercentile(0.95);
+        r.turnMaxMs = h.turnMillisPercentile(1.0);
+        r.errors = errors.trim();
+        return r;
+    }
+
+    static String failed(String why) {
+        return "false,0,0,0,0,0,0,0,0,0,0,0,0,0," + sanitize(why);
+    }
+
+    String toCsv() {
+        return String.join(",", String.valueOf(ok), String.valueOf(rounds), num(score),
+            num(theirScore), String.valueOf(firsts), num(survival), num(theirSurvival),
+            num(bulletDamage), num(theirBulletDamage), String.valueOf(skippedTurns),
+            String.valueOf(turns), num(turnP50Ms), num(turnP95Ms), num(turnMaxMs),
+            sanitize(errors));
+    }
+
+    static BattleResult parse(String line) {
+        String[] f = line.split(",", 15);
+        BattleResult r = new BattleResult();
+        r.ok = Boolean.parseBoolean(f[0]);
+        r.rounds = Integer.parseInt(f[1]);
+        r.score = Double.parseDouble(f[2]);
+        r.theirScore = Double.parseDouble(f[3]);
+        r.firsts = Integer.parseInt(f[4]);
+        r.survival = Double.parseDouble(f[5]);
+        r.theirSurvival = Double.parseDouble(f[6]);
+        r.bulletDamage = Double.parseDouble(f[7]);
+        r.theirBulletDamage = Double.parseDouble(f[8]);
+        r.skippedTurns = Integer.parseInt(f[9]);
+        r.turns = Integer.parseInt(f[10]);
+        r.turnP50Ms = Double.parseDouble(f[11]);
+        r.turnP95Ms = Double.parseDouble(f[12]);
+        r.turnMaxMs = Double.parseDouble(f[13]);
+        r.errors = f.length > 14 ? f[14] : "";
+        return r;
+    }
+
+    double scoreShare() { return share(score, theirScore); }
+    double survivalShare() { return share(survival, theirSurvival); }
+    double bulletDamageShare() { return share(bulletDamage, theirBulletDamage); }
+
+    private static double share(double a, double b) {
+        return a + b == 0 ? 0.5 : a / (a + b);
+    }
+
+    private static String num(double d) {
+        return String.format(java.util.Locale.ROOT, "%.3f", d);
+    }
+
+    private static String sanitize(String s) {
+        return s.replace(',', ';').replace('\n', ' ');
+    }
+}
