@@ -79,6 +79,21 @@ class EnergyLedgerProperties {
     }
 
     @Property
+    @Tag("WAVE-1")
+    void wallHitsAtAnyReachableImpactSpeedAreExplained(
+            @ForAll @DoubleRange(min = -8, max = 8) double lastSeen,
+            @ForAll @IntRange(min = -2, max = 1) int step,
+            @ForAll @DoubleRange(min = 30, max = 100) double energy) {
+        double impact = Math.min(Math.abs(lastSeen) + step, Rules.MAX_VELOCITY);
+        Assume.that(impact > 0);
+        EnergyLedger ledger = new EnergyLedger(800, 600);
+        ledger.newRound();
+        ledger.scan(energy, lastSeen, 782, 300);
+        EnergyLedger.Reading r = ledger.scan(energy - Rules.getWallHitDamage(impact), 0, 782, 300);
+        assertFalse(r.shot(), () -> "phantom wave from " + r);
+    }
+
+    @Property
     @Tag("WAVE-2")
     void onlyDropsInsideTheBulletRangeAreShots(@ForAll @DoubleRange(min = -5, max = 20) double drop) {
         boolean inRange = drop >= Rules.MIN_BULLET_POWER - 1e-6 && drop <= Rules.MAX_BULLET_POWER + 1e-6;

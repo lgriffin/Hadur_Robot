@@ -79,8 +79,9 @@ public final class EnergyLedger {
             return Reading.FIRST;
         }
         double raw = lastEnergy - energy;
-        double wall = collisionDamage == 0 ? wallDamage(lastVelocity, velocity, x, y) : 0;
-        double corrected = raw - ourDamage + theirRefund - collisionDamage - wall;
+        double explained = raw - ourDamage + theirRefund - collisionDamage;
+        double wall = collisionDamage == 0 ? wallDamage(explained, lastVelocity, velocity, x, y) : 0;
+        double corrected = explained - wall;
         boolean rawShot = isShot(raw);
         boolean shot = isShot(corrected);
         remember(energy, velocity);
@@ -99,14 +100,31 @@ public final class EnergyLedger {
     }
 
     /**
-     * Damage from a wall hit since the last scan, or 0. A robot can brake by at most 2 per
-     * tick; stopping dead from faster than that, next to a wall, means it hit the wall.
+     * Damage from a wall hit since the last scan, or 0. {@code unexplained} is the drop
+     * left after the other corrections.
+     *
+     * <p>A robot can brake by at most 2 per tick, so stopping dead next to a wall means it
+     * hit the wall, unless it was already slow enough to brake. The engine applies the
+     * tick's acceleration before it checks walls, so the speed at impact is anywhere from
+     * one faster (still accelerating) to two slower (braking) than the last scan showed,
+     * and the damage differs by 0.5 per step. The speed whose damage explains the whole
+     * drop is taken: that step is far likelier than a 0.5 shot fired as the enemy struck
+     * the wall. Otherwise the last scanned speed is used.</p>
      */
-    double wallDamage(double previousVelocity, double velocity, double x, double y) {
-        if (velocity != 0 || Math.abs(previousVelocity) <= Rules.DECELERATION) return 0;
+    double wallDamage(double unexplained, double previousVelocity, double velocity,
+                      double x, double y) {
+        if (velocity != 0 || previousVelocity == 0) return 0;
         boolean nearWall = x <= WALL_MARGIN || y <= WALL_MARGIN
             || x >= fieldWidth - WALL_MARGIN || y >= fieldHeight - WALL_MARGIN;
-        return nearWall ? Rules.getWallHitDamage(previousVelocity) : 0;
+        if (!nearWall) return 0;
+        double speed = Math.abs(previousVelocity);
+        for (double step = Rules.ACCELERATION; step >= -Rules.DECELERATION; step--) {
+            double impact = Math.min(speed + step, Rules.MAX_VELOCITY);
+            if (impact <= 0) continue;
+            double damage = Rules.getWallHitDamage(impact);
+            if (damage > 0 && Math.abs(unexplained - damage) < EPSILON) return damage;
+        }
+        return speed > Rules.DECELERATION ? Rules.getWallHitDamage(speed) : 0;
     }
 
     private void remember(double energy, double velocity) {

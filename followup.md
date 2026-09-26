@@ -10,9 +10,12 @@ Open items from the Hadur 2 stages, newest stage first.
 - **Hidden shots are counted but not reported.** `RoundStats.hiddenShots` and
   `radarReacquired` stay out of the `R` record so its format is unchanged; add them when
   the record next changes (S3 adds profile fields).
-- **Wall-hit inference is a heuristic.** A stop from above 2 px/tick within 19 px of a wall
-  is taken as a wall hit. An enemy that brakes hard exactly at a wall in the same tick it
-  fires would have its shot read 1-3 energy low; the Shadow diagnostic showed none.
+- **Wall-hit inference is a heuristic.** A dead stop within 19 px of a wall is taken as a
+  wall hit, at whichever impact speed (one faster to two slower than last scanned) explains
+  the whole drop. A shot fired in the same tick the enemy hits a wall is read against the
+  last scanned speed, so it can be off by 0.5 per speed step; the first cold bench showed
+  that the impact speed matters (Crazy accelerates into walls), the second whether any
+  such shots remain.
 - **The robot jar must be rebuilt, not reused.** The robot shade overwrites the plain jar,
   so the jar plugin now forces a rebuild each package; without it, a second `package`
   without `clean` produced a recorder jar with no recorder in it.

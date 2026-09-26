@@ -105,6 +105,26 @@ class EnergyLedgerTest {
             assertTrue(r.phantom());
         }
 
+        @ParameterizedTest(name = "last seen at {0}, struck at {1}")
+        @org.junit.jupiter.params.provider.CsvSource({"-3, 4", "2, 3", "5, 3", "8, 8", "7.5, 8"})
+        @DisplayName("a wall hit is explained at any speed the enemy could reach that tick")
+        void wallHitAtImpactSpeed(double lastSeen, double impact) {
+            ledger.scan(100, lastSeen, MID_X, MID_Y);
+            double wall = Rules.getWallHitDamage(impact);
+            EnergyLedger.Reading r = ledger.scan(100 - wall, 0, MID_X, 582);
+            assertEquals(wall, r.wallDamage(), DELTA);
+            assertFalse(r.shot());
+        }
+
+        @Test
+        @DisplayName("a shot fired as the enemy hits a wall is still found")
+        void shotAtWall() {
+            double wall = Rules.getWallHitDamage(8);
+            EnergyLedger.Reading r = ledger.scan(100 - wall - 1.7, 0, 18, MID_Y);
+            assertTrue(r.shot());
+            assertEquals(1.7, r.corrected(), DELTA);
+        }
+
         @Test
         @DisplayName("stopping dead in open field is not a wall hit")
         void openFieldStop() {
