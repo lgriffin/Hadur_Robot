@@ -1,12 +1,14 @@
 package hadur2.core;
 
 import hadur2.core.gun.GunController;
+import hadur2.core.ledger.EnergyLedger;
 import hadur2.core.model.*;
 import hadur2.core.move.MoveController;
 import hadur2.core.move.SurfMover;
 import hadur2.core.physics.*;
 import hadur2.core.port.Telemetry;
 import java.awt.geom.Point2D;
+import java.util.Locale;
 
 /**
  * Hadur's brain. One instance lives for a whole battle; {@link #tick} turns each
@@ -27,6 +29,7 @@ public final class HadurCore {
     private final WaveManager gunWaveManager;
     private final RobotStateLog myStateLog;
     private final RobotStateLog enemyStateLog;
+    private final EnergyLedger ledger;
     private final Telemetry telemetry;
 
     private int round;
@@ -34,16 +37,16 @@ public final class HadurCore {
     private Wave lastGunWave;
     private Point2D.Double lastEnemyLocation;
     private double lastEnemyEnergy;
-    private double prevEnemyEnergy;
     private int enemyVelocitySign;
     private int myVelocitySign;
     private double prevEnemyVelocity;
     private double prevMyVelocity;
     private long enemyVchangeTime;
     private long myVchangeTime;
-    private boolean firstScan;
     private double aimedBulletPower;
     private long lastRealBulletFireTime;
+    private long lastScanTime;
+    private double lastEnemyAbsBearing;
     private boolean announced;
 
     public HadurCore(double fieldWidth, double fieldHeight, int enemiesTotal, Telemetry telemetry) {
@@ -55,6 +58,7 @@ public final class HadurCore {
         this.gunWaveManager = new WaveManager();
         this.myStateLog = new RobotStateLog();
         this.enemyStateLog = new RobotStateLog();
+        this.ledger = new EnergyLedger(fieldWidth, fieldHeight);
         this.telemetry = telemetry;
         telemetry.emit("V,1");
     }
@@ -82,20 +86,21 @@ public final class HadurCore {
     }
 
     private void resetRoundState() {
+        ledger.newRound();
         myStateLog.clear();
         enemyStateLog.clear();
         lastGunWave = null;
         lastEnemyLocation = null;
-        prevEnemyEnergy = 100;
         enemyVelocitySign = 1;
         myVelocitySign = 1;
         prevEnemyVelocity = 0;
         prevMyVelocity = 0;
         enemyVchangeTime = 0;
         myVchangeTime = 0;
-        firstScan = true;
         aimedBulletPower = 1.9;
         lastRealBulletFireTime = 0;
+        lastScanTime = 0;
+        lastEnemyAbsBearing = 0;
     }
 
     public RoundStats stats() {
@@ -108,7 +113,8 @@ public final class HadurCore {
             if (e instanceof BotEvent.Scan s) onScan(in, s, orders);
             else if (e instanceof BotEvent.HitByBullet h) onHitByBullet(in, h);
             else if (e instanceof BotEvent.BulletHitBullet b) onBulletHitBullet(in, b);
-            else if (e instanceof BotEvent.BulletHit b) stats.shotsHit++;
+            else if (e instanceof BotEvent.BulletHit b) onBulletHit(b);
+            else if (e instanceof BotEvent.HitRobot r) ledger.robotsCollided();
             else if (e instanceof BotEvent.SkippedTurn s) onSkippedTurn(in);
         }
 
@@ -116,6 +122,7 @@ public final class HadurCore {
             aimAndFire(in, orders);
             moveController.checkWaves(in.time(), in.location());
             surfMover.move(orders, currentState(in), moveController, lastEnemyLocation, 2);
+            if (in.time() - lastScanTime > 1) reacquire(in, orders);
         } else {
             orders.turnRadarRight(Double.POSITIVE_INFINITY);
         }
@@ -171,10 +178,24 @@ public final class HadurCore {
         return false;
     }
 
+    /**
+     * RADAR-1: the lock only turns the radar when a scan arrives, so a missed scan (after a
+     * skipped turn, say) could leave it still for the rest of the round, blind to every
+     * shot. Sweep toward where the enemy was last seen until a scan comes back.
+     */
+    private void reacquire(BotInput in, BotOrders.Builder orders) {
+        double toEnemy = Angles.normalRelativeAngle(lastEnemyAbsBearing - in.radarHeading());
+        orders.turnRadarRight(toEnemy < 0 ? Double.NEGATIVE_INFINITY : Double.POSITIVE_INFINITY);
+        stats.radarReacquired++;
+    }
+
     private void onScan(BotInput in, BotEvent.Scan e, BotOrders.Builder orders) {
         long time = in.time();
         Point2D.Double myPos = in.location();
         double absBearing = Angles.normalAbsoluteAngle(in.heading() + e.bearing());
+        long previousScanTime = lastScanTime;
+        lastScanTime = time;
+        lastEnemyAbsBearing = absBearing;
         Point2D.Double enemyPos = DiaUtils.project(myPos, absBearing, e.distance());
         lastEnemyLocation = enemyPos;
         lastEnemyEnergy = e.energy();
@@ -258,24 +279,33 @@ public final class HadurCore {
         moveWave.setWallDistances();
         moveController.addWave(moveWave);
 
-        if (!firstScan) {
-            double energyDelta = prevEnemyEnergy - e.energy();
-            if (energyDelta >= 0.1 && energyDelta <= 3.0) {
-                moveController.updateFiringWave(time, energyDelta);
-                stats.enemyShotsDetected++;
-            }
+        // WAVE-1, WAVE-2: only the part of the drop the ledger can't explain is a shot.
+        EnergyLedger.Reading reading = ledger.scan(time, e.energy(), enemyVel, enemyPos.x, enemyPos.y);
+        if (reading.phantom()) stats.phantomWaves++;
+        if (reading.hidden()) stats.hiddenShots++;
+        if (reading.shot()) {
+            long fireTime = moveController.updateFiringWave(previousScanTime, time,
+                reading.corrected());
+            stats.enemyShotsDetected++;
+            telemetry.emit(String.format(Locale.ROOT,
+                "EW,%d,%d,%d,%d,%.4f,%.4f,%.4f,%.1f", round, time, fireTime, fireTime,
+                reading.raw(), reading.corrected(), reading.corrected(), e.distance()));
         }
 
         orders.turnRadarRight(Angles.normalRelativeAngle(absBearing - in.radarHeading()) * 2.0);
 
         prevEnemyVelocity = enemyVel;
         prevMyVelocity = myVel;
-        prevEnemyEnergy = e.energy();
-        firstScan = false;
+    }
+
+    private void onBulletHit(BotEvent.BulletHit e) {
+        stats.shotsHit++;
+        ledger.ourBulletHit(e.power());
     }
 
     private void onHitByBullet(BotInput in, BotEvent.HitByBullet e) {
         stats.hitsTaken++;
+        ledger.enemyBulletHitUs(e.power());
         Point2D.Double bulletLoc = new Point2D.Double(e.x(), e.y());
         Wave hitWave = moveController.findBulletWave(bulletLoc, in.time(), e.name(), e.power());
         if (hitWave != null) {

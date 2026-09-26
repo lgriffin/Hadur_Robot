@@ -27,8 +27,10 @@ class RoundStatsTest {
         s.skippedTurns = 5;
         s.faults = 6;
         s.computationLevel = 7;
+        s.radarReacquired = 8;
+        s.hiddenShots = 9;
         String[] f = s.toRecord(2, 900, "win", 55.5, 0).split(",");
-        assertEquals(14, f.length);
+        assertEquals(16, f.length);
         assertEquals("R", f[0]);
         assertEquals("2", f[1]);
         assertEquals("900", f[2]);
@@ -41,6 +43,8 @@ class RoundStatsTest {
         assertEquals("5", f[11], "skipped turns");
         assertEquals("6", f[12], "faults");
         assertEquals("7", f[13], "computation level");
+        assertEquals("8", f[14], "radar reacquire ticks");
+        assertEquals("9", f[15], "hidden shots");
     }
 
     @Test

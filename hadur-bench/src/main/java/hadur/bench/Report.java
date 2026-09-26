@@ -55,6 +55,33 @@ final class Report {
                 faultRounds == 0 ? "0" : faults + " in " + faultRounds + " round(s)", p95, max,
                 failed > 0 ? " " + failed + " battle(s) failed" : ""));
         }
+        b.append("\n## Wave fidelity\n\n")
+         .append("How well Hadur's inferred enemy waves match the bullets the enemy really fired "
+            + "(from the engine's ground truth). A found wave matches a real bullet within "
+            + WaveMatcher.TICK_WINDOW + " ticks and " + WaveMatcher.POWER_TOLERANCE
+            + " power. Real shots leave out the unseen ones: shots fired while either robot was "
+            + "disabled that no wave matched. Hidden shots are ones the ledger found that the raw "
+            + "drop hid (WAVE-1); radar reacquire counts the ticks the radar spent sweeping for a "
+            + "lost enemy (RADAR-1). Ledger phantoms are energy drops the ledger explained away that 1.20 "
+            + "would have read as shots (WAVE-1).\n\n")
+         .append("| Opponent | Real shots | Unseen | Waves found | Matched | Missed | False waves | Ledger phantoms | Hidden shots | Radar reacquire ticks |\n")
+         .append("|---|---|---|---|---|---|---|---|---|---|\n");
+        for (Map.Entry<Opponent, List<BattleResult>> e : results.entrySet()) {
+            int shots = 0, unseen = 0, found = 0, matched = 0, phantoms = 0, hidden = 0, radar = 0;
+            for (BattleResult r : e.getValue()) {
+                if (!r.ok) continue;
+                shots += r.enemyShots;
+                unseen += r.unseenShots;
+                found += r.inferredWaves;
+                matched += r.matchedWaves;
+                phantoms += r.phantomWaves;
+                hidden += r.hiddenShots;
+                radar += r.radarReacquired;
+            }
+            b.append(String.format(Locale.ROOT, "| %s | %d | %d | %d | %s | %s | %s | %d | %d | %d |%n",
+                e.getKey().name, shots, unseen, found, pct(matched, shots), pct(shots - matched, shots),
+                pct(found - matched, found), phantoms, hidden, radar));
+        }
         if (warm) {
             b.append("\n## Learning curve (score share by battle)\n\n| Opponent |");
             for (int i = 1; i <= runs; i++) b.append(" ").append(i).append(" |");
@@ -74,5 +101,9 @@ final class Report {
             + "Hit rates and faults come from Hadur's own R and FAULT records (RES-5); hit rates are "
             + "per-round means, and \"-\" means the robot wrote no R records.\n");
         return b.toString();
+    }
+
+    private static String pct(int part, int whole) {
+        return whole == 0 ? "-" : String.format(Locale.ROOT, "%d (%.1f%%)", part, 100.0 * part / whole);
     }
 }

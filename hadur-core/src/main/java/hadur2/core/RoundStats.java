@@ -15,8 +15,15 @@ public final class RoundStats {
     public int hitsTaken;
     public int faults;
     public int skippedTurns;
-    /** Energy drops read as shots that the S2 ledger will show were not; 0 until S2. */
+    /**
+     * Energy drops 1.20 would have read as shots that the energy ledger explained as hits,
+     * refunds, wall or collision damage (WAVE-1). Each one was a wave that did not exist.
+     */
     public int phantomWaves;
+    /** Ticks the radar spent sweeping to find the enemy again after a missed scan (RADAR-1). */
+    public int radarReacquired;
+    /** Shots the ledger found that the raw drop hid (for example, fired in a tick we hit them). */
+    public int hiddenShots;
     /** Tick-budget computation level; 0 (full) until S6. */
     public int computationLevel;
 
@@ -30,15 +37,16 @@ public final class RoundStats {
 
     /**
      * The round-end record: {@code R,round,tick,result,ourEnergy,enemyEnergy,ourHitRate,
-     * ourMargin,theirHitRate,theirMargin,phantomWaves,skippedTurns,faults,computationLevel}.
+     * ourMargin,theirHitRate,theirMargin,phantomWaves,skippedTurns,faults,computationLevel,
+     * radarReacquired,hiddenShots}. Fields are only ever appended, so older readers still work.
      */
     public String toRecord(int round, long tick, String result, double ourEnergy,
                            double enemyEnergy) {
-        return String.format(Locale.ROOT, "R,%d,%d,%s,%.2f,%.2f,%.4f,%.4f,%.4f,%.4f,%d,%d,%d,%d",
+        return String.format(Locale.ROOT, "R,%d,%d,%s,%.2f,%.2f,%.4f,%.4f,%.4f,%.4f,%d,%d,%d,%d,%d,%d",
             round, tick, result, ourEnergy, enemyEnergy,
             ourHitRate(), margin(ourHitRate(), shotsFired),
             theirHitRate(), margin(theirHitRate(), enemyShotsDetected),
-            phantomWaves, skippedTurns, faults, computationLevel);
+            phantomWaves, skippedTurns, faults, computationLevel, radarReacquired, hiddenShots);
     }
 
     private static double margin(double p, int n) {

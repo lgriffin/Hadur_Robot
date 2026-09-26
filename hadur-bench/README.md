@@ -42,9 +42,11 @@ The command exits non-zero if any battle fails.
 Each battle directory under `work/…/battles/` holds:
 
 - `result.csv`: scores, survival, bullet damage for both robots, skipped turns, turn times,
-  and what Hadur's own `R` and `FAULT` records said (hit rates, faults).
+  what Hadur's own `R` and `FAULT` records said (hit rates, faults), and the wave
+  fidelity counts below.
 - `hadur.log`: everything Hadur printed, as `round,turn,line`.
-- `truth.log.gz`: one `T,round,turn,…` record per turn with both robots' true x, y,
+- `truth.log.gz`: one `F,round,turn,E,power` record for each enemy bullet as it spawns, and
+  one `T,round,turn,…` record per turn with both robots' true x, y,
   heading, velocity, energy and every live bullet as `owner:x:y:heading:power`
   (owner `H` is Hadur, `E` the enemy). The first line is `V,1`.
 - `engine.log`: the engine's own output.
@@ -53,6 +55,13 @@ Each battle directory under `work/…/battles/` holds:
 
 The report's hit-rate and fault columns come from Hadur's `R` (round end) and `FAULT`
 records, so every fault and degradation counter the core keeps reaches the report (RES-5).
+
+The wave fidelity table (S2) scores the enemy waves Hadur inferred (its `EW` records)
+against the bullets the enemy really fired (the engine's bullet ids). A wave matches a
+real bullet in the same round within 3 ticks and 0.15 power. "Unseen" shots were fired
+while either robot was disabled and matched no wave; they are left out of the real-shot
+count. (A disabled robot is still scanned, so such a shot is often seen, and then counts.) "False waves" are inferred waves with no real bullet behind them;
+"ledger phantoms" are drops 1.20 would have read as shots that the ledger explained away.
 
 ## Replay fixtures
 

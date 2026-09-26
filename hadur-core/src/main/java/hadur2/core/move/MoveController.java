@@ -160,15 +160,24 @@ public class MoveController {
         waveManager.addWave(w);
     }
 
-    public void updateFiringWave(long currentTime, double bulletPower) {
-        long fireTime = currentTime - 1;
-        Wave w = waveManager.getWaveByFireTime(fireTime);
-        if (w != null) {
-            w.firingWave = true;
-            w.setBulletPower(bulletPower);
-            lastBulletPower = bulletPower;
-            lastBulletFireTime = fireTime;
+    /**
+     * Marks the wave the enemy fired as a real bullet of {@code bulletPower}. The shot was
+     * fired between the previous scan and the tick before this one; after missed scans the
+     * latest wave in that span stands in for it. Returns the fire time of the wave marked,
+     * or {@code currentTime - 1} when no wave exists.
+     */
+    public long updateFiringWave(long previousScanTime, long currentTime, double bulletPower) {
+        for (long fireTime = currentTime - 1; fireTime >= previousScanTime; fireTime--) {
+            Wave w = waveManager.getWaveByFireTime(fireTime);
+            if (w != null) {
+                w.firingWave = true;
+                w.setBulletPower(bulletPower);
+                lastBulletPower = bulletPower;
+                lastBulletFireTime = fireTime;
+                return fireTime;
+            }
         }
+        return currentTime - 1;
     }
 
     public Wave findSurfableWave(int surfIndex, RobotState myState) {

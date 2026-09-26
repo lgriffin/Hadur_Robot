@@ -33,12 +33,17 @@ class RequirementsTraceabilityTest {
     static final Pattern ROW = Pattern.compile(
         "^\\|\\s*([A-Z]+-\\d+)\\s*\\|[^|]*\\|[^|]*\\|\\s*(S\\d)\\s*\\|\\s*$");
     static final Pattern JAVA_TAG = Pattern.compile("@Tag\\(\"([A-Z]+-\\d+)\"\\)");
+    // Split so this file's own source doesn't match them.
+    static final String JQWIK_PROPERTY = "import net.jqwik.api." + "Property;";
+    static final String JUNIT_TAG = "import org.junit.jupiter.api." + "Tag;";
     static final Pattern FEATURE_TAG = Pattern.compile("@([A-Z]+-\\d+)\\b");
 
     static Path root;
     static String stage;
     static Map<String, String> requirements;
     static Map<String, Set<String>> coverage;
+    /** jqwik test files that tag with JUnit's {@code @Tag}, which makes jqwik skip them. */
+    static List<String> junitTaggedProperties;
 
     @BeforeAll
     static void scan() throws IOException {
@@ -46,6 +51,7 @@ class RequirementsTraceabilityTest {
         stage = System.getProperty("hadur.stage", "S1");
         requirements = readRequirements(root.resolve("docs/requirements.md"));
         coverage = new TreeMap<>();
+        junitTaggedProperties = new ArrayList<>();
         for (Path module : List.of(root.resolve("hadur-core"), root.resolve("hadur-robot"),
                 root.resolve("hadur-bench"))) {
             Path tests = module.resolve("src/test");
@@ -53,7 +59,13 @@ class RequirementsTraceabilityTest {
             try (Stream<Path> files = Files.walk(tests)) {
                 for (Path f : (Iterable<Path>) files::iterator) {
                     String name = f.getFileName().toString();
-                    if (name.endsWith(".java")) collect(f, JAVA_TAG);
+                    if (name.endsWith(".java")) {
+                        collect(f, JAVA_TAG);
+                        String src = read(f);
+                        if (src.contains(JQWIK_PROPERTY) && src.contains(JUNIT_TAG)) {
+                            junitTaggedProperties.add(root.relativize(f).toString());
+                        }
+                    }
                     else if (name.endsWith(".feature")) collectFeature(f);
                 }
             }
@@ -78,6 +90,15 @@ class RequirementsTraceabilityTest {
         unknown.removeAll(requirements.keySet());
         assertTrue(unknown.isEmpty(), "Tags with no requirement: " + unknown + " in "
             + unknown.stream().map(coverage::get).toList());
+    }
+
+    @Test
+    @DisplayName("jqwik tests tag with jqwik's @Tag, so the tagged tests actually run")
+    void jqwikTestsUseJqwikTags() {
+        // jqwik skips a @Property carrying JUnit's @Tag instead of failing it, and this
+        // check reads tags from source, so such a test would count as coverage unrun.
+        assertTrue(junitTaggedProperties.isEmpty(),
+            "Use net.jqwik.api.Tag in " + junitTaggedProperties);
     }
 
     @Test

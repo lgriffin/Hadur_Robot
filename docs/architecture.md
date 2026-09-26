@@ -56,7 +56,7 @@ The core and guard are static in the adapter, so learning survives from round to
 | `model.BotInput` | in | time, round, own position, heading, velocity, energy, gun and radar state, others, events |
 | `model.BotEvent` | in | sealed: `Scan`, `HitByBullet`, `BulletHit`, `BulletHitBullet`, `BulletMissed`, `HitWall`, `HitRobot`, `RobotDeath`, `SkippedTurn` |
 | `model.BotOrders` | out | body turn, ahead, max velocity, gun turn, radar turn, fire power |
-| `port.Telemetry` | out | one line record at a time (`V`, `B`, `R`, `FAULT`) |
+| `port.Telemetry` | out | one line record at a time (`V`, `B`, `R`, `FAULT`, `EW`) |
 
 Later stages add `ProfileStore` (S3) and `Clock` (S6) ports.
 
@@ -66,6 +66,7 @@ Later stages add `ProfileStore` (S3) and `Clock` (S6) ports.
 |---|---|
 | `hadur2.core` | `HadurCore` (the brain), `Guard` (RES-1), `RoundStats` (RES-5) |
 | `model` | the port records, robot states and their logs, waves and the wave manager |
+| `ledger` | `EnergyLedger`: explains the enemy's energy changes between scans so only bullet spending becomes a wave (WAVE-1, WAVE-2) |
 | `physics` | `Angles` and `Rules` (bit-identical to Robocode's), battle field, movement prediction |
 | `knn` | KD-tree and KNN views |
 | `gun` | main KNN gun, anti-surfer gun, gun selection |
@@ -76,7 +77,8 @@ Later stages add `ProfileStore` (S3) and `Clock` (S6) ports.
 ArchUnit enforces the boundary on every build: no `robocode.*` in the core, only JDK
 `java.lang`, `java.util` and `java.awt.geom`; no randomness, threads, reflection, I/O or
 clock; no mutable static fields; model, physics and ports never depend on gun, movement
-or replay; gun and movement never depend on each other.
+or replay; gun and movement never depend on each other; the ledger depends only on
+physics, so nothing but the engine's rules decides which drops become waves.
 
 ## Faults
 

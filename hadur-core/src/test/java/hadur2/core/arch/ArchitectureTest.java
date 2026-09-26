@@ -126,6 +126,17 @@ public class ArchitectureTest {
     }
 
     @Test
+    @DisplayName("the energy ledger is pure bookkeeping on the engine's rules")
+    void ledgerIsLeaf() {
+        // WAVE-1: the ledger explains energy with the engine's rules alone, so gun,
+        // movement or the core's other state can't leak into which drops become waves.
+        noClasses().that().resideInAPackage("hadur2.core.ledger..")
+            .should().dependOnClassesThat().resideOutsideOfPackages("hadur2.core.ledger..",
+                "hadur2.core.physics..", "java..")
+            .check(core);
+    }
+
+    @Test
     @DisplayName("gun and movement are independent of each other")
     void gunAndMoveIndependent() {
         slices().matching("hadur2.core.(gun|move)..").should().notDependOnEachOther().check(core);
