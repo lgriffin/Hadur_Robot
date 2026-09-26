@@ -1,11 +1,20 @@
 name: release
 
-# Pushing a tag like v2.1 builds the robot, checks the jar matches the tag, and publishes a
-# GitHub release with the jar attached. The release asset URL is a direct download, which
-# is what RoboRumble participant lists need.
+# Pushing a tag like v2.1, or running this workflow by hand with a version, builds the
+# robot, checks the jar matches the version, and publishes a GitHub release (tagging the
+# commit if needed) with the jar attached. The release asset URL is a direct download,
+# which is what RoboRumble participant lists need.
 on:
   push:
     tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release, e.g. 2.1 (tags v2.1)'
+        required: true
+
+env:
+  TAG: ${{ github.event_name == 'workflow_dispatch' && format('v{0}', inputs.version) || github.ref_name }}
 
 permissions:
   contents: write
@@ -24,7 +33,7 @@ jobs:
         run: mvn -B verify
       - name: Check the jar name and version match the tag
         run: |
-          version="${GITHUB_REF_NAME#v}"
+          version="${TAG#v}"
           jar="hadur-robot/target/hadur2.Hadur_${version}.jar"
           test -f "$jar" || { echo "missing $jar"; exit 1; }
           unzip -p "$jar" hadur2/Hadur.properties | grep -qx "robot.version=${version}" \
@@ -33,5 +42,8 @@ jobs:
       - name: Publish the release
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ env.TAG }}
+          target_commitish: ${{ github.sha }}
+          name: Hadur ${{ env.TAG }}
           files: ${{ env.JAR }}
-          body_path: docs/releases/${{ github.ref_name }}.md
+          body_path: docs/releases/${{ env.TAG }}.md
