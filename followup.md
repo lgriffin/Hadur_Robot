@@ -2,6 +2,21 @@
 
 Open items from the Hadur 2 stages, newest stage first.
 
+## S2
+
+- **Unseen shots.** A shot the enemy fires while Hadur is disabled, or its last shot that
+  leaves it at 0 energy, never shows in a scan. The bench counts these apart ("Unseen");
+  they cannot be dodged, so they are not a ledger gap.
+- **Hidden shots are counted but not reported.** `RoundStats.hiddenShots` and
+  `radarReacquired` stay out of the `R` record so its format is unchanged; add them when
+  the record next changes (S3 adds profile fields).
+- **Wall-hit inference is a heuristic.** A stop from above 2 px/tick within 19 px of a wall
+  is taken as a wall hit. An enemy that brakes hard exactly at a wall in the same tick it
+  fires would have its shot read 1-3 energy low; the Shadow diagnostic showed none.
+- **The robot jar must be rebuilt, not reused.** The robot shade overwrites the plain jar,
+  so the jar plugin now forces a rebuild each package; without it, a second `package`
+  without `clean` produced a recorder jar with no recorder in it.
+
 ## S1
 
 - **ProGuard dropped.** 1.x shrank the robot jar with ProGuard; 2.0 ships the shaded jar

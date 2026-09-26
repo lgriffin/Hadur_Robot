@@ -35,6 +35,16 @@
         <!-- RoboRumble naming: package.BotName_version.jar -->
         <finalName>hadur2.Hadur_2.0</finalName>
         <plugins>
+            <!-- Always rebuild the plain jar: the robot shade below overwrites it in place, so a
+                 jar left "up to date" from the last build would feed the recorder shade a jar
+                 that no longer holds the recorder. -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <forceCreation>true</forceCreation>
+                </configuration>
+            </plugin>
             <!-- The robot jar carries the core inside it; Robocode loads one jar per robot. -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

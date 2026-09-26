@@ -31,7 +31,7 @@
         <!-- The API the robot is built against; vendored in repo/. -->
         <robocode.api.version>1.9.3.0</robocode.api.version>
         <!-- Requirements from docs/requirements.md up to this stage must be covered by a test. -->
-        <hadur.stage>S1</hadur.stage>
+        <hadur.stage>S2</hadur.stage>
     </properties>
 
     <repositories>

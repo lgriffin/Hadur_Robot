@@ -7,7 +7,11 @@ import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.Locale;
 import java.util.zip.GZIPOutputStream;
 import robocode.control.events.BattleAdaptor;
@@ -24,7 +28,8 @@ import robocode.control.snapshot.ITurnSnapshot;
  * <ul>
  * <li>{@code hadur.log}: every line Hadur printed, prefixed with round and turn.</li>
  * <li>{@code truth.log.gz}: one {@code T} record per turn with both robots' true state and
- *     every live bullet, in the artifact's line format.</li>
+ *     every live bullet, in the artifact's line format, and an {@code F,round,turn,E,power}
+ *     record when an enemy bullet first appears.</li>
  * </ul>
  *
  * <p>Also measures wall-clock time per turn and counts skipped turns reported in Hadur's
@@ -40,7 +45,12 @@ public class LogHarvester extends BattleAdaptor {
     private long[] turnNanos = new long[4096];
     private int turns;
     private int skippedTurns;
-    private int roundRecords, faults, faultRecords;
+    private int roundRecords, faults, faultRecords, phantomWaves;
+    /** Enemy bullets as the engine saw them, and the waves Hadur inferred (S2 wave fidelity). */
+    private final List<double[]> enemyShots = new ArrayList<>();
+    private final List<double[]> inferredWaves = new ArrayList<>();
+    private int unseenShots;
+    private final Set<Integer> enemyBulletIds = new HashSet<>();
     private double ourHitRateSum, theirHitRateSum;
 
     public LogHarvester(Path dir, String us) throws IOException {
@@ -54,6 +64,7 @@ public class LogHarvester extends BattleAdaptor {
     @Override
     public void onRoundStarted(RoundStartedEvent e) {
         round = e.getRound();
+        enemyBulletIds.clear();
         lastTurnNanos = System.nanoTime();
     }
 
@@ -95,6 +106,16 @@ public class LogHarvester extends BattleAdaptor {
     void readRecord(String line) {
         if (line.startsWith("FAULT,")) {
             faultRecords++;
+        } else if (line.startsWith("EW,")) {
+            // EW,round,tick,waveId,fireTick,rawDrop,correctedDrop,power,distance
+            String[] f = line.split(",");
+            if (f.length < 8) return;
+            try {
+                inferredWaves.add(new double[] {Integer.parseInt(f[1]), Long.parseLong(f[4]),
+                    Double.parseDouble(f[7])});
+            } catch (NumberFormatException ignored) {
+                // A malformed record is left out of the fidelity count.
+            }
         } else if (line.startsWith("R,")) {
             String[] f = line.split(",");
             if (f.length < 14) return;
@@ -102,6 +123,7 @@ public class LogHarvester extends BattleAdaptor {
                 ourHitRateSum += Double.parseDouble(f[6]);
                 theirHitRateSum += Double.parseDouble(f[8]);
                 faults += Integer.parseInt(f[12]);
+                phantomWaves += Integer.parseInt(f[10]);
                 roundRecords++;
             } catch (NumberFormatException ignored) {
                 // A malformed record is left out of the averages.
@@ -111,6 +133,7 @@ public class LogHarvester extends BattleAdaptor {
 
     private void writeTruth(ITurnSnapshot snap, IRobotSnapshot me, IRobotSnapshot enemy,
                             int turn) throws IOException {
+        StringBuilder spawns = new StringBuilder();
         StringBuilder b = new StringBuilder("T,").append(round).append(',').append(turn);
         appendRobot(b, me);
         appendRobot(b, enemy);
@@ -123,11 +146,23 @@ public class LogHarvester extends BattleAdaptor {
             if (!first) b.append(' ');
             first = false;
             String owner = bullet.getOwnerIndex() == me.getRobotIndex() ? "H" : "E";
+            if (owner.equals("E") && enemyBulletIds.add(bullet.getBulletId())) {
+                // A shot fired while Hadur is disabled, or one that leaves the enemy
+                // disabled, can never show up in a scan, so it is counted apart.
+                if (me.getEnergy() <= 0 || enemy.getEnergy() <= 0) {
+                    unseenShots++;
+                } else {
+                    enemyShots.add(new double[] {round, turn, bullet.getPower()});
+                }
+                spawns.append("F,").append(round).append(',').append(turn).append(",E,")
+                    .append(f(bullet.getPower())).append('\n');
+            }
             b.append(owner).append(':').append(f(bullet.getX())).append(':')
              .append(f(bullet.getY())).append(':').append(f(bullet.getHeading())).append(':')
              .append(f(bullet.getPower()));
         }
         truthLog.write(b.append('\n').toString());
+        truthLog.write(spawns.toString());
     }
 
     private static void appendRobot(StringBuilder b, IRobotSnapshot r) {
@@ -146,6 +181,35 @@ public class LogHarvester extends BattleAdaptor {
 
     public int skippedTurns() {
         return skippedTurns;
+    }
+
+    /** Ledger phantom waves Hadur reported in its R records. */
+    public int phantomWaves() {
+        return phantomWaves;
+    }
+
+    /** Enemy bullets fired while Hadur or the enemy was disabled, which no scan can reveal. */
+    public int unseenShots() {
+        return unseenShots;
+    }
+
+    /** Enemy bullets the engine fired that a scan could reveal, from the ground truth. */
+    public int enemyShots() {
+        return enemyShots.size();
+    }
+
+    /** Enemy waves Hadur inferred (EW records). */
+    public int inferredWaves() {
+        return inferredWaves.size();
+    }
+
+    /**
+     * Inferred waves that match a real enemy bullet: same round, fired within
+     * {@link WaveMatcher#TICK_WINDOW} turns of the inferred fire tick, and a power within
+     * {@link WaveMatcher#POWER_TOLERANCE}.
+     */
+    public int matchedWaves() {
+        return WaveMatcher.match(enemyShots, inferredWaves);
     }
 
     /** Rounds that ended with an R record. */

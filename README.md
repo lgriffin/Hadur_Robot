@@ -11,8 +11,8 @@ that prove it.
 | Stage | What | State |
 |---|---|---|
 | S0 | Headless bench and 1.20 baseline | done ([baseline](docs/bench/s0-baseline-1.20-cold.md)) |
-| S1 | Hexagonal extraction: core, adapter, guard, replay | this branch ([bench](docs/bench/s1-2.0-cold.md)) |
-| S2 | Energy ledger | |
+| S1 | Hexagonal extraction: core, adapter, guard, replay | done ([bench](docs/bench/s1-2.0-cold.md)) |
+| S2 | Energy ledger, radar reacquire | this branch ([bench](docs/bench/s2-2.0-cold.md)) |
 | S3 | Opponent memory | |
 | S4 | Recognise and adapt | |
 | S5 | Aggressive | |
@@ -47,11 +47,11 @@ hadur-core's tests are layered:
 | Layer | Where | Covers |
 |---|---|---|
 | Architecture | `arch/ArchitectureTest` (ArchUnit) | CORE-1 no Robocode in the core; RES-6 no randomness, threads, reflection, I/O or clock; no mutable statics |
-| Properties | `*Properties` (jqwik) | the core's angle and rule helpers equal the engine's, bit for bit; the replay codec round-trips |
-| Unit | `GuardTest`, `RoundStatsTest`, `ResourceBoundsTest` | RES-1 safe orders on a fault; RES-5 counters in the round record; RES-2 bounded growth |
+| Properties | `*Properties` (jqwik) | the core's angle and rule helpers equal the engine's, bit for bit; the replay codec round-trips; WAVE-1/2 the ledger recovers the exact shot power under any mix of hits, refunds, collisions and wall damage, and never turns an explained drop into a wave |
+| Unit | `GuardTest`, `RoundStatsTest`, `ResourceBoundsTest`, `ledger/EnergyLedgerTest`, `RadarReacquireTest` | RES-1 safe orders on a fault; RES-5 counters in the round record; RES-2 bounded growth; WAVE-1/2 each correction and the [0.1, 3.0] bounds; RADAR-1 the sweep after a missed scan |
 | Replay | `replay/ReplayTest` | CORE-2: real recorded battles against every reference opponent replay to the live robot's exact orders |
 | Behaviour | `features/*.feature` (Cucumber) | one feature per EARS group; each scenario is tagged `@<ID>` |
-| Traceability | `trace/RequirementsTraceabilityTest` | fails if any requirement due by `hadur.stage` has no test, or a tag names no requirement; writes `target/requirements-coverage.md` |
+| Traceability | `trace/RequirementsTraceabilityTest` | fails if any requirement due by `hadur.stage` has no test, a tag names no requirement, or a jqwik test uses JUnit's `@Tag` (jqwik would skip it); writes `target/requirements-coverage.md` |
 
 ## Bench
 
@@ -72,6 +72,7 @@ Hadur prints line records to its console, which the bench collects:
 - `B,round,tick,...,name,...`: the opponent, on first scan.
 - `R,round,tick,result,ourEnergy,enemyEnergy,ourHitRate,ourMargin,theirHitRate,theirMargin,phantomWaves,skippedTurns,faults,computationLevel`: once per round.
 - `FAULT,round,tick,exception`: the first time in a round the guard has to cover for the core.
+- `EW,round,tick,waveId,fireTick,rawDrop,correctedDrop,power,distance`: each enemy wave the energy ledger infers (S2). `rawDrop` is what 1.20 would have used; `correctedDrop` is after taking out our hits, their refunds, collisions and wall damage.
 
 ## History
 
