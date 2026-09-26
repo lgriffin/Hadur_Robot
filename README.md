@@ -12,7 +12,7 @@ that prove it.
 |---|---|---|
 | S0 | Headless bench and 1.20 baseline | done ([baseline](docs/bench/s0-baseline-1.20-cold.md)) |
 | S1 | Hexagonal extraction: core, adapter, guard, replay | done ([bench](docs/bench/s1-2.0-cold.md)) |
-| S2 | Energy ledger, radar reacquire | this branch ([bench](docs/bench/s2-2.0-cold.md)) |
+| S2 | Energy ledger, radar reacquire | done ([bench](docs/bench/s2-2.0-cold.md)) |
 | S3 | Opponent memory | |
 | S4 | Recognise and adapt | |
 | S5 | Aggressive | |
@@ -29,7 +29,7 @@ docs/          requirements, architecture, bench reports.
 repo/          the vendored Robocode 1.9.3.0 API jar.
 ```
 
-See [docs/architecture.md](docs/architecture.md) for how the pieces fit.
+See [docs/architecture.md](docs/architecture.md) for how the pieces fit, and [docs/strategy-evolution.md](docs/strategy-evolution.md) for how the strategy has evolved stage by stage.
 
 ## Build and test
 
