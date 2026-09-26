@@ -1,0 +1,11 @@
+# Bench reference set: one opponent per line.
+#   <robot name as Robocode lists it> | <role> | <jar file in opponents/, or - for bundled samples>
+# Roles: sanity (sample bots), headline, T0..T3 (tier ground truth, chosen in S0 by
+# their measured hit rate on Hadur 1.20).
+sample.SpinBot | sanity | -
+sample.Tracker | sanity | -
+sample.Crazy | sanity | -
+sample.Walls | sanity | -
+sample.RamFire | sanity | -
+# Headline opponent. Drop the jar into opponents/ and uncomment.
+# abc.Shadow 3.83c | headline | abc.Shadow_3.83c.jar
