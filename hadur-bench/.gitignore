@@ -1,3 +1,4 @@
 target/
 work/
 opponents/*.jar
+work-*.log

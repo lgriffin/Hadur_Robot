@@ -82,7 +82,8 @@ public class LogHarvester extends BattleAdaptor {
         if (out == null || out.isEmpty()) return;
         for (String line : out.split("\\R")) {
             if (line.isEmpty()) continue;
-            if (line.contains("skipped turn") || line.contains("Turn skipped")) skippedTurns++;
+            // The engine announces each skipped turn as "SYSTEM: <robot> skipped turn <n>".
+            if (line.startsWith("SYSTEM:") && line.contains("skipped turn")) skippedTurns++;
             hadurLog.write(round + "," + turn + "," + line + "\n");
         }
     }
