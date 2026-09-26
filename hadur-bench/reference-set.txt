@@ -8,4 +8,4 @@ sample.Crazy | sanity | -
 sample.Walls | sanity | -
 sample.RamFire | sanity | -
 # Headline opponent. Drop the jar into opponents/ and uncomment.
-# abc.Shadow 3.83c | headline | abc.Shadow_3.83c.jar
+abc.Shadow 3.83c | headline | abc.Shadow_3.83c.jar
