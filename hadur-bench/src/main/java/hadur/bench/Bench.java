@@ -92,7 +92,7 @@ public final class Bench {
     }
 
     private int run() throws Exception {
-        List<Opponent> opponents = Opponent.load(benchDir.resolve("reference-set.txt"));
+        List<Opponent> opponents = Opponent.load(benchDir.resolve(opts.getOrDefault("set", "reference-set.txt")));
         String only = opts.get("only");
         if (only != null) opponents.removeIf(o -> !o.name.contains(only));
         installRobots(opponents);
