@@ -60,12 +60,14 @@ final class Report {
             + "(from the engine's ground truth). A found wave matches a real bullet within "
             + WaveMatcher.TICK_WINDOW + " ticks and " + WaveMatcher.POWER_TOLERANCE
             + " power. Real shots leave out the unseen ones: shots fired while either robot was "
-            + "disabled that no wave matched. Ledger phantoms are energy drops the ledger explained away that 1.20 "
+            + "disabled that no wave matched. Hidden shots are ones the ledger found that the raw "
+            + "drop hid (WAVE-1); radar reacquire counts the ticks the radar spent sweeping for a "
+            + "lost enemy (RADAR-1). Ledger phantoms are energy drops the ledger explained away that 1.20 "
             + "would have read as shots (WAVE-1).\n\n")
-         .append("| Opponent | Real shots | Unseen | Waves found | Matched | Missed | False waves | Ledger phantoms |\n")
-         .append("|---|---|---|---|---|---|---|---|\n");
+         .append("| Opponent | Real shots | Unseen | Waves found | Matched | Missed | False waves | Ledger phantoms | Hidden shots | Radar reacquire ticks |\n")
+         .append("|---|---|---|---|---|---|---|---|---|---|\n");
         for (Map.Entry<Opponent, List<BattleResult>> e : results.entrySet()) {
-            int shots = 0, unseen = 0, found = 0, matched = 0, phantoms = 0;
+            int shots = 0, unseen = 0, found = 0, matched = 0, phantoms = 0, hidden = 0, radar = 0;
             for (BattleResult r : e.getValue()) {
                 if (!r.ok) continue;
                 shots += r.enemyShots;
@@ -73,10 +75,12 @@ final class Report {
                 found += r.inferredWaves;
                 matched += r.matchedWaves;
                 phantoms += r.phantomWaves;
+                hidden += r.hiddenShots;
+                radar += r.radarReacquired;
             }
-            b.append(String.format(Locale.ROOT, "| %s | %d | %d | %d | %s | %s | %s | %d |%n",
+            b.append(String.format(Locale.ROOT, "| %s | %d | %d | %d | %s | %s | %s | %d | %d | %d |%n",
                 e.getKey().name, shots, unseen, found, pct(matched, shots), pct(shots - matched, shots),
-                pct(found - matched, found), phantoms));
+                pct(found - matched, found), phantoms, hidden, radar));
         }
         if (warm) {
             b.append("\n## Learning curve (score share by battle)\n\n| Opponent |");

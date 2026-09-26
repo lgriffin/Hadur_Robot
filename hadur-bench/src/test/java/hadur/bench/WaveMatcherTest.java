@@ -29,4 +29,22 @@ class WaveMatcherTest {
         assertEquals(1, WaveMatcher.match(shots,
             List.of(new double[] {0, 10, 1.0}, new double[] {0, 10, 1.0})));
     }
+
+    @Test
+    @DisplayName("overlapping windows still find every pairing (maximum matching, not greedy)")
+    void maximumMatching() {
+        // The first wave (fire tick 9, expects turn 10) could take either shot; the second
+        // (fire tick 12, expects turn 13) can only take the shot at turn 10.
+        List<double[]> shots = List.of(new double[] {0, 8, 2.0, 0}, new double[] {0, 10, 2.0, 0});
+        List<double[]> waves = List.of(new double[] {0, 9, 2.0}, new double[] {0, 12, 2.0});
+        assertEquals(2, WaveMatcher.match(shots, waves));
+    }
+
+    @Test
+    @DisplayName("the count does not depend on the order of the waves")
+    void orderIndependent() {
+        List<double[]> shots = List.of(new double[] {0, 8, 2.0, 0}, new double[] {0, 10, 2.0, 0});
+        List<double[]> waves = List.of(new double[] {0, 12, 2.0}, new double[] {0, 9, 2.0});
+        assertEquals(2, WaveMatcher.match(shots, waves));
+    }
 }

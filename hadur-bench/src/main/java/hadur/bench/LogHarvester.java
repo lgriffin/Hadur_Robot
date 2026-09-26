@@ -49,6 +49,8 @@ public class LogHarvester extends BattleAdaptor {
     /** Enemy bullets as the engine saw them, and the waves Hadur inferred (S2 wave fidelity). */
     private final List<double[]> enemyShots = new ArrayList<>();
     private final List<double[]> inferredWaves = new ArrayList<>();
+    private int radarReacquired;
+    private int hiddenShots;
     private final Set<Integer> enemyBulletIds = new HashSet<>();
     private double ourHitRateSum, theirHitRateSum;
 
@@ -123,6 +125,10 @@ public class LogHarvester extends BattleAdaptor {
                 theirHitRateSum += Double.parseDouble(f[8]);
                 faults += Integer.parseInt(f[12]);
                 phantomWaves += Integer.parseInt(f[10]);
+                if (f.length >= 16) {
+                    radarReacquired += Integer.parseInt(f[14]);
+                    hiddenShots += Integer.parseInt(f[15]);
+                }
                 roundRecords++;
             } catch (NumberFormatException ignored) {
                 // A malformed record is left out of the averages.
@@ -201,6 +207,16 @@ public class LogHarvester extends BattleAdaptor {
     /** Enemy bullets the engine fired, from the ground truth, less the unseen ones. */
     public int enemyShots() {
         return enemyShots.size() - unseenShots();
+    }
+
+    /** Ticks Hadur's radar spent sweeping for a lost enemy (RADAR-1), from its R records. */
+    public int radarReacquired() {
+        return radarReacquired;
+    }
+
+    /** Shots the ledger found that the raw energy drop hid (WAVE-1), from its R records. */
+    public int hiddenShots() {
+        return hiddenShots;
     }
 
     /** Enemy waves Hadur inferred (EW records). */

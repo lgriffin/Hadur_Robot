@@ -8,7 +8,7 @@ public final class BattleResult {
     public static final String HEADER = "ok,rounds,score,theirScore,firsts,survival,theirSurvival,"
         + "bulletDamage,theirBulletDamage,skippedTurns,turns,turnP50Ms,turnP95Ms,turnMaxMs,"
         + "roundRecords,faults,faultRecords,ourHitRate,theirHitRate,"
-        + "phantomWaves,enemyShots,unseenShots,inferredWaves,matchedWaves,errors";
+        + "phantomWaves,enemyShots,unseenShots,inferredWaves,matchedWaves,radarReacquired,hiddenShots,errors";
 
     public boolean ok;
     public int rounds, firsts, skippedTurns, turns;
@@ -17,6 +17,8 @@ public final class BattleResult {
     public double ourHitRate = Double.NaN, theirHitRate = Double.NaN;
     /** Wave fidelity (S2): ledger phantoms, real enemy shots a scan could reveal, unseen shots, inferred waves, and matches. */
     public int phantomWaves, enemyShots, unseenShots, inferredWaves, matchedWaves;
+    /** Radar reacquire ticks (RADAR-1) and hidden shots (WAVE-1), from Hadur's R records. */
+    public int radarReacquired, hiddenShots;
     public double score, theirScore, survival, theirSurvival, bulletDamage, theirBulletDamage;
     public double turnP50Ms, turnP95Ms, turnMaxMs;
     public String errors = "";
@@ -48,12 +50,14 @@ public final class BattleResult {
         r.unseenShots = h.unseenShots();
         r.inferredWaves = h.inferredWaves();
         r.matchedWaves = h.matchedWaves();
+        r.radarReacquired = h.radarReacquired();
+        r.hiddenShots = h.hiddenShots();
         r.errors = errors.trim();
         return r;
     }
 
     static String failed(String why) {
-        return "false,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NaN,NaN,0,0,0,0,0," + sanitize(why);
+        return "false,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NaN,NaN,0,0,0,0,0,0,0," + sanitize(why);
     }
 
     String toCsv() {
@@ -65,11 +69,12 @@ public final class BattleResult {
             num(ourHitRate), num(theirHitRate), String.valueOf(phantomWaves),
             String.valueOf(enemyShots), String.valueOf(unseenShots),
             String.valueOf(inferredWaves),
-            String.valueOf(matchedWaves), sanitize(errors));
+            String.valueOf(matchedWaves), String.valueOf(radarReacquired),
+            String.valueOf(hiddenShots), sanitize(errors));
     }
 
     static BattleResult parse(String line) {
-        String[] f = line.split(",", 25);
+        String[] f = line.split(",", 27);
         BattleResult r = new BattleResult();
         r.ok = Boolean.parseBoolean(f[0]);
         r.rounds = Integer.parseInt(f[1]);
@@ -95,7 +100,9 @@ public final class BattleResult {
         r.unseenShots = Integer.parseInt(f[21]);
         r.inferredWaves = Integer.parseInt(f[22]);
         r.matchedWaves = Integer.parseInt(f[23]);
-        r.errors = f.length > 24 ? f[24] : "";
+        r.radarReacquired = Integer.parseInt(f[24]);
+        r.hiddenShots = Integer.parseInt(f[25]);
+        r.errors = f.length > 26 ? f[26] : "";
         return r;
     }
 

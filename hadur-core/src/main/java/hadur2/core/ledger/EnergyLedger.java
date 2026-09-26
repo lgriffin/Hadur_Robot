@@ -1,6 +1,7 @@
 package hadur2.core.ledger;
 
 import hadur2.core.physics.Rules;
+import java.util.Arrays;
 
 /**
  * Explains the enemy's energy changes between two scans, so that only a drop the enemy
@@ -36,6 +37,7 @@ public final class EnergyLedger {
     private boolean seen;
     private double lastEnergy;
     private double lastVelocity;
+    private long lastTime;
     private double ourDamage;
     private double theirRefund;
     private double collisionDamage;
@@ -69,22 +71,24 @@ public final class EnergyLedger {
     }
 
     /**
-     * Reads the enemy's energy from a scan. The enemy is at ({@code x}, {@code y}) moving at
-     * {@code velocity}.
+     * Reads the enemy's energy from a scan at {@code time}. The enemy is at ({@code x},
+     * {@code y}) moving at {@code velocity}.
      */
-    public Reading scan(double energy, double velocity, double x, double y) {
+    public Reading scan(long time, double energy, double velocity, double x, double y) {
         if (!seen) {
             seen = true;
-            remember(energy, velocity);
+            remember(time, energy, velocity);
             return Reading.FIRST;
         }
+        long elapsed = Math.max(1, time - lastTime);
         double raw = lastEnergy - energy;
         double explained = raw - ourDamage + theirRefund - collisionDamage;
-        double wall = collisionDamage == 0 ? wallDamage(explained, lastVelocity, velocity, x, y) : 0;
+        double wall = collisionDamage == 0
+            ? wallDamage(explained, lastVelocity, velocity, x, y, elapsed) : 0;
         double corrected = explained - wall;
         boolean rawShot = isShot(raw);
         boolean shot = isShot(corrected);
-        remember(energy, velocity);
+        remember(time, energy, velocity);
         return new Reading(raw, corrected, wall, shot, rawShot && !shot, shot && !rawShot);
     }
 
@@ -100,34 +104,64 @@ public final class EnergyLedger {
     }
 
     /**
-     * Damage from a wall hit since the last scan, or 0. {@code unexplained} is the drop
-     * left after the other corrections.
+     * Damage from a wall hit since the last scan, {@code elapsed} ticks ago, or 0.
+     * {@code unexplained} is the drop left after the other corrections.
      *
-     * <p>A robot can brake by at most 2 per tick, so stopping dead next to a wall means it
-     * hit the wall, unless it was already slow enough to brake. The engine applies the
-     * tick's acceleration before it checks walls, so the speed at impact is anywhere from
-     * one faster (still accelerating) to two slower (braking) than the last scan showed,
-     * and the damage differs by 0.5 per step. The speed whose damage explains the whole
-     * drop is taken: that step is far likelier than a 0.5 shot fired as the enemy struck
-     * the wall. Otherwise the last scanned speed is used.</p>
+     * <p>A robot brakes by at most 2 per tick, so stopping dead next to a wall means it hit
+     * the wall unless it could have braked in the time since the last scan. The engine
+     * applies each tick's acceleration before it checks walls, so the speed at impact is
+     * anywhere from {@code elapsed} faster to {@code 2 × elapsed} slower than last scanned,
+     * and the damage differs by 0.5 per step. Energy alone can't always say which, so, in
+     * order:</p>
+     * <ol>
+     * <li>a speed whose damage explains the whole drop is taken (no shot): that step is far
+     *     likelier than a shot of exactly that power fired as the enemy struck the wall;</li>
+     * <li>if the enemy could have braked legally over a scan gap, no wall hit is assumed;</li>
+     * <li>otherwise the speed nearest the scanned one that leaves a legal bullet power is
+     *     taken, so a shot fired at the wall still becomes a wave, if possibly 0.5 off.</li>
+     * </ol>
      */
     double wallDamage(double unexplained, double previousVelocity, double velocity,
-                      double x, double y) {
+                      double x, double y, long elapsed) {
         if (velocity != 0 || previousVelocity == 0) return 0;
         boolean nearWall = x <= WALL_MARGIN || y <= WALL_MARGIN
             || x >= fieldWidth - WALL_MARGIN || y >= fieldHeight - WALL_MARGIN;
         if (!nearWall) return 0;
         double speed = Math.abs(previousVelocity);
-        for (double step = Rules.ACCELERATION; step >= -Rules.DECELERATION; step--) {
-            double impact = Math.min(speed + step, Rules.MAX_VELOCITY);
-            if (impact <= 0) continue;
+        boolean couldBrake = speed <= Rules.DECELERATION * elapsed;
+        if (couldBrake && elapsed > 1) return 0;
+        double[] impacts = impactSpeeds(speed, elapsed);
+        for (double impact : impacts) {
             double damage = Rules.getWallHitDamage(impact);
             if (damage > 0 && Math.abs(unexplained - damage) < EPSILON) return damage;
         }
-        return speed > Rules.DECELERATION ? Rules.getWallHitDamage(speed) : 0;
+        if (couldBrake) return 0;
+        for (double impact : impacts) {
+            double damage = Rules.getWallHitDamage(impact);
+            if (isShot(unexplained - damage)) return damage;
+        }
+        return Rules.getWallHitDamage(speed);
     }
 
-    private void remember(double energy, double velocity) {
+    /**
+     * Speeds the enemy could have struck the wall at, nearest the scanned {@code speed}
+     * first: {@code elapsed} ticks of acceleration by 1 or braking by 2 each.
+     */
+    static double[] impactSpeeds(double speed, long elapsed) {
+        long up = elapsed;
+        long down = 2 * elapsed;
+        double[] out = new double[(int) (up + down + 1)];
+        int n = 0;
+        out[n++] = speed;
+        for (long step = 1; step <= Math.max(up, down); step++) {
+            if (step <= up) out[n++] = Math.min(speed + step * Rules.ACCELERATION, Rules.MAX_VELOCITY);
+            if (step <= down && speed - step > 0) out[n++] = speed - step;
+        }
+        return Arrays.copyOf(out, n);
+    }
+
+    private void remember(long time, double energy, double velocity) {
+        lastTime = time;
         lastEnergy = energy;
         lastVelocity = velocity;
         ourDamage = 0;

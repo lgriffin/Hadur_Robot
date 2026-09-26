@@ -70,7 +70,7 @@ Hadur prints line records to its console, which the bench collects:
 
 - `V,1`: format version, once per battle.
 - `B,round,tick,...,name,...`: the opponent, on first scan.
-- `R,round,tick,result,ourEnergy,enemyEnergy,ourHitRate,ourMargin,theirHitRate,theirMargin,phantomWaves,skippedTurns,faults,computationLevel`: once per round.
+- `R,round,tick,result,ourEnergy,enemyEnergy,ourHitRate,ourMargin,theirHitRate,theirMargin,phantomWaves,skippedTurns,faults,computationLevel,radarReacquired,hiddenShots`: once per round. Fields are only ever appended.
 - `FAULT,round,tick,exception`: the first time in a round the guard has to cover for the core.
 - `EW,round,tick,waveId,fireTick,rawDrop,correctedDrop,power,distance`: each enemy wave the energy ledger infers (S2). `rawDrop` is what 1.20 would have used; `correctedDrop` is after taking out our hits, their refunds, collisions and wall damage.
 

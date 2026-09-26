@@ -26,7 +26,7 @@ class TelemetryReportTest {
         h.readRecord("V,1");
         h.readRecord("R,0,500,win,80.00,0.00,0.2000,0.1000,0.1000,0.1000,0,1,0,0");
         h.readRecord("FAULT,1,33,IllegalStateException:boom");
-        h.readRecord("R,1,700,loss,0.00,20.00,0.4000,0.1000,0.3000,0.1000,0,0,12,0");
+        h.readRecord("R,1,700,loss,0.00,20.00,0.4000,0.1000,0.3000,0.1000,0,0,12,0,7,2");
         h.readRecord("R,broken");
         h.close();
         assertEquals(2, h.roundRecords());
@@ -34,6 +34,8 @@ class TelemetryReportTest {
         assertEquals(1, h.faultRecords());
         assertEquals(0.3, h.ourHitRate(), 1e-9);
         assertEquals(0.2, h.theirHitRate(), 1e-9);
+        assertEquals(7, h.radarReacquired(), "radar reacquire ticks, from the newer 16-field R");
+        assertEquals(2, h.hiddenShots());
     }
 
     @Test
@@ -46,6 +48,8 @@ class TelemetryReportTest {
         assertEquals(r.roundRecords, back.roundRecords);
         assertEquals(r.ourHitRate, back.ourHitRate, 1e-3);
         assertEquals(r.theirHitRate, back.theirHitRate, 1e-3);
+        assertEquals(r.radarReacquired, back.radarReacquired);
+        assertEquals(r.hiddenShots, back.hiddenShots);
         assertEquals("a; b", back.errors);
         assertEquals(BattleResult.HEADER.split(",").length, r.toCsv().split(",").length);
     }
@@ -67,6 +71,7 @@ class TelemetryReportTest {
         assertTrue(report.contains("| Faults |"), report);
         assertTrue(report.contains("| 12 in 1 round(s) |"), report);
         assertTrue(report.contains("Our hit rate"), report);
+        assertTrue(report.contains("| 0 | 4 | 5 |"), "phantoms, hidden shots, radar reacquire: " + report);
     }
 
     static BattleResult sample() {
@@ -81,6 +86,8 @@ class TelemetryReportTest {
         r.faultRecords = 1;
         r.ourHitRate = 0.18;
         r.theirHitRate = 0.09;
+        r.radarReacquired = 5;
+        r.hiddenShots = 4;
         r.errors = "a, b";
         return r;
     }

@@ -1,5 +1,6 @@
 package hadur.bench;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -22,23 +23,39 @@ final class WaveMatcher {
         return matched;
     }
 
-    /** Which real shots an inferred wave pairs with, by index into {@code shots}. */
+    /**
+     * Which real shots an inferred wave pairs with, by index into {@code shots}: a maximum
+     * one-to-one matching (augmenting paths), so the count does not depend on the order the
+     * waves are listed in when their windows overlap.
+     */
     static boolean[] matchedShots(List<double[]> shots, List<double[]> waves) {
-        boolean[] used = new boolean[shots.size()];
-        for (double[] w : waves) {
-            int best = -1;
-            double bestGap = Double.MAX_VALUE;
-            for (int i = 0; i < shots.size(); i++) {
-                double[] s = shots.get(i);
-                if (used[i] || s[0] != w[0]) continue;
-                double gap = Math.abs(s[1] - (w[1] + 1));
-                if (gap <= TICK_WINDOW && Math.abs(s[2] - w[2]) <= POWER_TOLERANCE && gap < bestGap) {
-                    best = i;
-                    bestGap = gap;
-                }
-            }
-            if (best >= 0) used[best] = true;
+        int[] waveOfShot = new int[shots.size()];
+        Arrays.fill(waveOfShot, -1);
+        for (int w = 0; w < waves.size(); w++) {
+            augment(w, shots, waves, waveOfShot, new boolean[shots.size()]);
         }
-        return used;
+        boolean[] matched = new boolean[shots.size()];
+        for (int i = 0; i < matched.length; i++) matched[i] = waveOfShot[i] >= 0;
+        return matched;
+    }
+
+    private static boolean augment(int w, List<double[]> shots, List<double[]> waves,
+                                   int[] waveOfShot, boolean[] visited) {
+        double[] wave = waves.get(w);
+        for (int i = 0; i < shots.size(); i++) {
+            if (visited[i] || !compatible(shots.get(i), wave)) continue;
+            visited[i] = true;
+            if (waveOfShot[i] < 0 || augment(waveOfShot[i], shots, waves, waveOfShot, visited)) {
+                waveOfShot[i] = w;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    static boolean compatible(double[] shot, double[] wave) {
+        return shot[0] == wave[0]
+            && Math.abs(shot[1] - (wave[1] + 1)) <= TICK_WINDOW
+            && Math.abs(shot[2] - wave[2]) <= POWER_TOLERANCE;
     }
 }

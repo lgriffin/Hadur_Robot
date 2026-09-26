@@ -19,6 +19,14 @@ import net.jqwik.api.constraints.IntRange;
  */
 class EnergyLedgerProperties {
 
+    private long tick;
+
+    /** Scans on the next tick, as the radar does while it holds the lock. */
+    private EnergyLedger.Reading next(EnergyLedger l, double energy, double velocity,
+                                      double x, double y) {
+        return l.scan(++tick, energy, velocity, x, y);
+    }
+
     private static double power(int tenths) {
         return tenths / 10.0;
     }
@@ -34,7 +42,7 @@ class EnergyLedgerProperties {
             @ForAll @DoubleRange(min = 20, max = 100) double energy) {
         EnergyLedger ledger = new EnergyLedger(800, 600);
         ledger.newRound();
-        ledger.scan(energy, 8, 400, 300);
+        next(ledger, energy, 8, 400, 300);
         double after = energy - power(shotTenths);
         for (int i = 0; i < ourHits; i++) {
             ledger.ourBulletHit(power(ourPowerTenths));
@@ -44,7 +52,7 @@ class EnergyLedgerProperties {
             ledger.enemyBulletHitUs(power(theirPowerTenths));
             after += Rules.getBulletHitBonus(power(theirPowerTenths));
         }
-        EnergyLedger.Reading r = ledger.scan(after, 8, 400, 300);
+        EnergyLedger.Reading r = next(ledger, after, 8, 400, 300);
         assertTrue(r.shot());
         assertEquals(power(shotTenths), r.corrected(), 1e-9);
     }
@@ -61,7 +69,7 @@ class EnergyLedgerProperties {
         EnergyLedger ledger = new EnergyLedger(800, 600);
         ledger.newRound();
         double x = atWall ? 18 : 400;
-        ledger.scan(energy, speedBefore, x, 300);
+        next(ledger, energy, speedBefore, x, 300);
         double after = energy;
         for (int i = 0; i < ourHits; i++) {
             ledger.ourBulletHit(power(ourPowerTenths));
@@ -74,7 +82,7 @@ class EnergyLedgerProperties {
         boolean wallHit = !collided && atWall && Math.abs(speedBefore) > Rules.DECELERATION;
         if (wallHit) after -= Rules.getWallHitDamage(speedBefore);
         Assume.that(after > 0);
-        EnergyLedger.Reading r = ledger.scan(after, wallHit ? 0 : speedBefore, x, 300);
+        EnergyLedger.Reading r = next(ledger, after, wallHit ? 0 : speedBefore, x, 300);
         assertFalse(r.shot(), () -> "phantom wave from " + r);
     }
 
@@ -88,8 +96,8 @@ class EnergyLedgerProperties {
         Assume.that(impact > 0);
         EnergyLedger ledger = new EnergyLedger(800, 600);
         ledger.newRound();
-        ledger.scan(energy, lastSeen, 782, 300);
-        EnergyLedger.Reading r = ledger.scan(energy - Rules.getWallHitDamage(impact), 0, 782, 300);
+        next(ledger, energy, lastSeen, 782, 300);
+        EnergyLedger.Reading r = next(ledger, energy - Rules.getWallHitDamage(impact), 0, 782, 300);
         assertFalse(r.shot(), () -> "phantom wave from " + r);
     }
 

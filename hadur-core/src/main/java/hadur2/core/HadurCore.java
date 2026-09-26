@@ -193,6 +193,7 @@ public final class HadurCore {
         long time = in.time();
         Point2D.Double myPos = in.location();
         double absBearing = Angles.normalAbsoluteAngle(in.heading() + e.bearing());
+        long previousScanTime = lastScanTime;
         lastScanTime = time;
         lastEnemyAbsBearing = absBearing;
         Point2D.Double enemyPos = DiaUtils.project(myPos, absBearing, e.distance());
@@ -279,12 +280,12 @@ public final class HadurCore {
         moveController.addWave(moveWave);
 
         // WAVE-1, WAVE-2: only the part of the drop the ledger can't explain is a shot.
-        EnergyLedger.Reading reading = ledger.scan(e.energy(), enemyVel, enemyPos.x, enemyPos.y);
+        EnergyLedger.Reading reading = ledger.scan(time, e.energy(), enemyVel, enemyPos.x, enemyPos.y);
         if (reading.phantom()) stats.phantomWaves++;
         if (reading.hidden()) stats.hiddenShots++;
         if (reading.shot()) {
-            long fireTime = time - 1;
-            moveController.updateFiringWave(time, reading.corrected());
+            long fireTime = moveController.updateFiringWave(previousScanTime, time,
+                reading.corrected());
             stats.enemyShotsDetected++;
             telemetry.emit(String.format(Locale.ROOT,
                 "EW,%d,%d,%d,%d,%.4f,%.4f,%.4f,%.1f", round, time, fireTime, fireTime,

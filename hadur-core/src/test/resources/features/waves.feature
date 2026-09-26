@@ -30,6 +30,13 @@ Feature: Enemy waves
     Then no enemy wave is recorded
     And 1 phantom wave is counted
 
+  @WAVE-1 @RADAR-1
+  Scenario: A shot seen after missed scans is surfed from the last scan before the gap
+    When 2 ticks pass without a scan
+    And the next scan shows the enemy at 98 energy
+    Then one enemy wave of power 2.0 is recorded
+    And that wave was fired on tick 1, the last scan before the gap
+
   @WAVE-2
   Scenario Outline: Only drops a bullet could cost become waves
     When the next scan shows the enemy at <energy> energy

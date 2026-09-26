@@ -85,6 +85,11 @@ public class WaveSteps {
         assertEquals(List.of(), waves());
     }
 
+    @Then("that wave was fired on tick {int}, the last scan before the gap")
+    public void firedOn(int tick) {
+        assertEquals(String.valueOf(tick), waves().get(0).split(",")[4]);
+    }
+
     @Then("{int} enemy waves are recorded")
     public void wavesRecorded(int count) {
         assertEquals(count, waves().size(), () -> waves().toString());
