@@ -1,0 +1,13 @@
+# RoboRumble 1v1 top 10 (rumble.robowiki.net rankings, 2026-09-26), in rank order.
+# Jars from https://robocode-archive.strangeautomata.com/robots/<jar>; put them in opponents/.
+#   <robot name as Robocode lists it> | <role> | <jar file in opponents/>
+kc.mega.BeepBoop 2.0 | rumble-1 | kc.mega.BeepBoop_2.0.jar
+jk.mega.DrussGT 3.1.16 | rumble-2 | jk.mega.DrussGT_3.1.16.jar
+oog.mega.saguaro.Saguaro 1.0 | rumble-3 | oog.mega.saguaro.Saguaro_1.0.jar
+aaa.r.ScalarR 0.005h.053-noshield | rumble-4 | aaa.r.ScalarR_0.005h.053-noshield.jar
+voidious.Diamond 1.8.22 | rumble-5 | voidious.Diamond_1.8.22.jar
+cb.fire.Firestarter 2.0f | rumble-6 | cb.fire.Firestarter_2.0f.jar
+dsekercioglu.mega.Raven 3.56j8 | rumble-7 | dsekercioglu.mega.Raven_3.56j8.jar
+xander.cat.XanderCat 12.9 | rumble-8 | xander.cat.XanderCat_12.9.jar
+lxx.Tomcat 3.68 | rumble-9 | lxx.Tomcat_3.68.jar
+rsalesc.mega.Knight 0.6.28 | rumble-10 | rsalesc.mega.Knight_0.6.28.jar

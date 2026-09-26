@@ -26,6 +26,7 @@ mvn exec:java -Dexec.args="--mode cold --rounds 35 --seeds 5"
 | `--robot-classes DIR` | | jar a compiled class tree instead, e.g. an older Hadur |
 | `--robot NAME` | hadur2.Hadur 2.0 | the robot's name as Robocode lists it |
 | `--record DIR` | | capture replay fixtures instead (see below) |
+| `--set FILE` | reference-set.txt | the opponent list, e.g. `roborumble-top10.txt` |
 | `--only TEXT` | | run only opponents whose name contains TEXT |
 | `--out DIR` | work/&lt;mode&gt;-&lt;time&gt; | working directory (Robocode home, logs) |
 | `--report FILE` | | also write the report there, e.g. `../docs/bench/…` |
@@ -34,7 +35,7 @@ The command exits non-zero if any battle fails.
 
 ## Opponents
 
-`reference-set.txt` lists them. Sample bots ship with the engine. Other bots go in
+`reference-set.txt` lists them. `roborumble-top10.txt` lists the RoboRumble top 10 (run it with `--set roborumble-top10.txt`); it is kept apart so CI and the replay fixtures stay on the reference set. Sample bots ship with the engine. Other bots go in
 `opponents/` as jars (not committed) and are listed with their jar name.
 
 ## Output
