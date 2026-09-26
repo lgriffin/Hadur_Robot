@@ -19,6 +19,11 @@ env:
 permissions:
   contents: write
 
+# One release run per tag at a time, so the tag check below can't race another run.
+concurrency:
+  group: release-${{ github.event_name == 'workflow_dispatch' && format('v{0}', inputs.version) || github.ref_name }}
+  cancel-in-progress: false
+
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -39,6 +44,17 @@ jobs:
           unzip -p "$jar" hadur2/Hadur.properties | grep -qx "robot.version=${version}" \
             || { echo "robot.version in $jar is not ${version}"; exit 1; }
           echo "JAR=$jar" >> "$GITHUB_ENV"
+      - name: Check an existing tag points at this commit
+        run: |
+          # A manual run for a version that is already tagged must build that tag's commit,
+          # or the release would carry a jar from different source. Annotated tags list
+          # their commit on the ^{} line.
+          target=$(git ls-remote --tags origin "refs/tags/${TAG}*" | awk -v t="refs/tags/${TAG}" \
+            '$2 == t "^{}" { peeled = $1 } $2 == t { plain = $1 } END { print (peeled ? peeled : plain) }')
+          if [ -n "$target" ] && [ "$target" != "$GITHUB_SHA" ]; then
+            echo "${TAG} already points at ${target}, not ${GITHUB_SHA}; run the workflow on that commit."
+            exit 1
+          fi
       - name: Publish the release
         uses: softprops/action-gh-release@v2
         with:
