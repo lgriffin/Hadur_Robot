@@ -21,11 +21,12 @@ final class Report {
             width, height, System.getProperty("java.version"),
             Runtime.getRuntime().availableProcessors(), cpuConstant));
         b.append("Shares are Hadur's fraction of the two robots' total, mean ± 95% interval over battles.\n\n");
-        b.append("| Opponent | Role | Score share | Survival share | Bullet-damage share | Rounds won | Skipped turns | Turn p95 / max (ms) |\n");
-        b.append("|---|---|---|---|---|---|---|---|\n");
+        b.append("| Opponent | Role | Score share | Survival share | Bullet-damage share | Rounds won | Our hit rate | Their hit rate | Skipped turns | Faults | Turn p95 / max (ms) |\n");
+        b.append("|---|---|---|---|---|---|---|---|---|---|---|\n");
         for (Map.Entry<Opponent, List<BattleResult>> e : results.entrySet()) {
             List<Double> score = new ArrayList<>(), surv = new ArrayList<>(), dmg = new ArrayList<>();
-            int won = 0, played = 0, skipped = 0, failed = 0;
+            List<Double> ourHr = new ArrayList<>(), theirHr = new ArrayList<>();
+            int won = 0, played = 0, skipped = 0, failed = 0, faults = 0, faultRounds = 0;
             double p95 = 0, max = 0;
             for (BattleResult r : e.getValue()) {
                 if (!r.ok) {
@@ -38,12 +39,20 @@ final class Report {
                 won += r.firsts;
                 played += r.rounds;
                 skipped += r.skippedTurns;
+                faults += r.faults;
+                faultRounds += r.faultRecords;
+                if (!Double.isNaN(r.ourHitRate)) ourHr.add(r.ourHitRate);
+                if (!Double.isNaN(r.theirHitRate)) theirHr.add(r.theirHitRate);
                 p95 = Math.max(p95, r.turnP95Ms);
                 max = Math.max(max, r.turnMaxMs);
             }
-            b.append(String.format(Locale.ROOT, "| %s | %s | %s | %s | %s | %d / %d | %d | %.2f / %.1f |%s%n",
+            b.append(String.format(Locale.ROOT,
+                "| %s | %s | %s | %s | %s | %d / %d | %s | %s | %d | %s | %.2f / %.1f |%s%n",
                 e.getKey().name, e.getKey().role, Stats.of(score).percent(),
-                Stats.of(surv).percent(), Stats.of(dmg).percent(), won, played, skipped, p95, max,
+                Stats.of(surv).percent(), Stats.of(dmg).percent(), won, played,
+                ourHr.isEmpty() ? "-" : Stats.of(ourHr).percent(),
+                theirHr.isEmpty() ? "-" : Stats.of(theirHr).percent(), skipped,
+                faultRounds == 0 ? "0" : faults + " in " + faultRounds + " round(s)", p95, max,
                 failed > 0 ? " " + failed + " battle(s) failed" : ""));
         }
         if (warm) {
@@ -61,7 +70,9 @@ final class Report {
             }
         }
         b.append("\nTurn times are wall-clock per engine turn (both robots plus the engine), "
-            + "measured by the harness. Skipped turns are counted from Hadur's console output.\n");
+            + "measured by the harness. Skipped turns are counted from the engine's messages in Hadur's console. "
+            + "Hit rates and faults come from Hadur's own R and FAULT records (RES-5); hit rates are "
+            + "per-round means, and \"-\" means the robot wrote no R records.\n");
         return b.toString();
     }
 }

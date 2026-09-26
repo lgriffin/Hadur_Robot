@@ -1,442 +1,102 @@
-# Hadur v1.17 Architecture
+# Hadur 2 architecture
 
-Hadur is a dual-mode competitive Robocode robot that automatically switches between
-specialised 1v1 (duel) and free-for-all (melee) strategies based on the number of
-opponents. This document describes the subsystem architecture, class relationships,
-and runtime control flow.
-
-## Subsystem Overview
-
-The robot is organised into five subsystems, each responsible for a single concern.
-The main `Hadur` class orchestrates them, routing events and selecting the correct
-mode-specific behaviour each tick.
+Hadur 2 is hexagonal: the strategy lives in a core that only sees plain values, and a
+thin adapter connects it to Robocode. That split is what makes the rest of the plan
+testable: the core can be replayed, fuzzed and fault-injected without an engine.
 
 ```mermaid
-graph TB
-    subgraph Orchestrator
-        H[Hadur<br><i>extends AdvancedRobot</i>]
+graph LR
+    subgraph Robocode
+        E[Engine]
     end
-
-    subgraph Intelligence
-        B[Brain<br><i>opponent tracking &<br>classification</i>]
-        TS[MeleeTargetSelector<br><i>melee target scoring</i>]
+    subgraph hadur-robot
+        A[hadur2.Hadur<br><i>adapter</i>]
     end
-
-    subgraph Radar
-        R[Radar<br><i>duel lock / melee spin</i>]
+    subgraph hadur-core
+        G[Guard]
+        C[HadurCore]
+        GC[gun]
+        MC[move]
+        M[model / physics / knn]
+        T[port.Telemetry]
     end
-
-    subgraph Targeting
-        G[Gun<br><i>5-gun virtual array</i>]
-        GW[GunWave<br><i>virtual bullet wave</i>]
-    end
-
-    subgraph Movement
-        WS[WaveSurfer<br><i>duel dodge movement</i>]
-        MR[MinimumRiskMovement<br><i>melee risk pathfinding</i>]
-        EW[EnemyWave<br><i>incoming bullet wave</i>]
-    end
-
-    subgraph Model
-        OD[OpponentData]
-        SN[Snapshot]
-        BM[BattleMode]
-        MT[MovementType]
-    end
-
-    H --> R
-    H --> G
-    H --> WS
-    H --> MR
-    H --> B
-    H --> TS
-
-    G --> GW
-    WS --> EW
-    B --> OD
-    B --> SN
-    B --> MT
-    B --> BM
-    TS --> B
-    TS --> OD
-    MR --> B
-    MR --> OD
-    R --> B
-    OD --> SN
-    OD --> MT
+    E -- events, getters --> A
+    A -- BotInput --> G
+    G --> C
+    C --> GC & MC
+    GC & MC --> M
+    C -- BotOrders --> G
+    G -- BotOrders --> A
+    A -- setters, execute --> E
+    C -. line records .-> T
+    T -. console .-> A
 ```
 
-## Class Diagram
+## The tick
 
-Key fields and methods for each class. Static fields that persist across rounds are
-marked with `$`.
+Robocode runs a robot's event handlers inside `execute()`, then returns to `run()`. The
+adapter mirrors that exactly:
 
-```mermaid
-classDiagram
-    class Hadur {
-        -Radar radar
-        -Gun gun
-        -WaveSurfer waveSurfer
-        -MinimumRiskMovement minimumRisk
-        -Brain brain
-        -MeleeTargetSelector targetSelector
-        -BattleMode battleMode
-        +run()
-        +onScannedRobot(e)
-        +onBulletHit(e)
-        +onHitByBullet(e)
-        +onRobotDeath(e)
-        -runDuelTick()
-        -runMeleeTick()
-    }
+1. Handlers (`onScannedRobot`, `onHitByBullet`, ...) turn each engine event into a
+   `BotEvent` record and queue it, in the engine's own priority order.
+2. The loop builds a `BotInput`: the robot's state from the getters plus the queued events.
+3. `Guard.tick(input)` calls `HadurCore.tick(input)`, which handles the events first and
+   then runs the main loop body, as 1.20 did.
+4. The adapter applies the returned `BotOrders`. A `NaN` field means "leave the previous
+   setting", the same as not calling that setter; a fire power of 0 means hold fire.
+5. `execute()`.
 
-    class Brain {
-        -Map~String,OpponentData~ opponents$
-        -List~Long~ ourFireTicks
-        -BattleMode battleMode
-        +update(e, myX, myY, heading, time)
-        +recordOurFire(tick)
-        +recordDamageDealt(name, dmg)
-        +recordDamageReceived(name, dmg)
-        +getOpponent(name) OpponentData
-        +getAllOpponents() Collection
-        +getStalestOpponent(time) OpponentData
-        +getAliveCount(time) int
-        +removeOpponent(name)
-        +resetRound()
-        +detectGunType(name, errors) String
-        -classify(od) MovementType
-        -assessThreat(od) double
-        -detectWaveSurfer(od, ticks, revs) bool
-    }
+The core and guard are static in the adapter, so learning survives from round to round
+(Robocode creates a new robot object each round).
 
-    class MeleeTargetSelector {
-        -double HYSTERESIS = 0.80
-        -String currentTarget
-        +selectTarget(robot, brain) String
-        +onRobotDeath(name)
-        +resetRound()
-    }
+## Ports and records
 
-    class Gun {
-        -double[][][][][][] gfStats$
-        -ArrayList~GunWave~ waves
-        -LinkedList~boolean[]~ vgResults
-        -int[] vgHits
-        -int activeGun
-        -Map~String,double[]~ meleeState
-        -double[] headingHist
-        -double[] velocityHist
-        +init(bfW, bfH)
-        +onScannedRobot(robot, e)
-        +onScannedRobotMelee(robot, e, target, scanned) bool
-        +clearMeleeState()
-        +smartFirePower(dist, myE, enemyE) double
-        +getAccuracy() double
-        -circularPrediction() double
-        -linearPrediction() double
-        -patternPrediction() double
-        -updateWaves(enemyPos, time)
-        -selectBestGun() int
-    }
+| Type | Direction | What |
+|---|---|---|
+| `model.BotInput` | in | time, round, own position, heading, velocity, energy, gun and radar state, others, events |
+| `model.BotEvent` | in | sealed: `Scan`, `HitByBullet`, `BulletHit`, `BulletHitBullet`, `BulletMissed`, `HitWall`, `HitRobot`, `RobotDeath`, `SkippedTurn` |
+| `model.BotOrders` | out | body turn, ahead, max velocity, gun turn, radar turn, fire power |
+| `port.Telemetry` | out | one line record at a time (`V`, `B`, `R`, `FAULT`) |
 
-    class GunWave {
-        +Point2D firePosition
-        +long fireTime
-        +double bulletSpeed
-        +double absBearing
-        +double latDir
-        +double mea
-        +double[] aimAngles
-        +int distSeg, velSeg, latvelSeg
-        +int accelSeg, wallSeg
-        +boolean realBullet
-    }
+Later stages add `ProfileStore` (S3) and `Clock` (S6) ports.
 
-    class Radar {
-        -boolean lockAcquired
-        +doDuelRadar(robot, absBearing)
-        +doMeleeRadar(robot, brain)
-        +spinRadar(robot)
-        +resetRound()
-    }
+## Packages in the core
 
-    class WaveSurfer {
-        -double[][][][] dangerStats$
-        -double[] moveProfile$
-        -int totalHitsTaken$
-        -ArrayList~EnemyWave~ waves
-        -double lastEnemyEnergy
-        -int orbitDirection
-        +init(bfW, bfH)
-        +onScannedRobot(robot, e)
-        +doSurfing(robot)
-        +onHitByBullet(robot, e)
-        -evaluateDanger(robot, dir, w1, w2) double
-        -predictPosition(robot, dir, wave) Point2D
-        -wallSmooth(pos, angle, dir) double
-    }
+| Package | Holds |
+|---|---|
+| `hadur2.core` | `HadurCore` (the brain), `Guard` (RES-1), `RoundStats` (RES-5) |
+| `model` | the port records, robot states and their logs, waves and the wave manager |
+| `physics` | `Angles` and `Rules` (bit-identical to Robocode's), battle field, movement prediction |
+| `knn` | KD-tree and KNN views |
+| `gun` | main KNN gun, anti-surfer gun, gun selection |
+| `move` | wave-surfing movement and its danger formulas |
+| `replay` | the line codec and replay driver for recorded battles (CORE-2) |
+| `port` | outbound interfaces |
 
-    class EnemyWave {
-        +Point2D fireLocation
-        +long fireTime
-        +double bulletSpeed
-        +double directAngle
-        +int lateralDirection
-        +int distSeg, velSeg, accelSeg
-    }
+ArchUnit enforces the boundary on every build: no `robocode.*` in the core, only JDK
+`java.lang`, `java.util` and `java.awt.geom`; no randomness, threads, reflection, I/O or
+clock; no mutable static fields; model, physics and ports never depend on gun, movement
+or replay; gun and movement never depend on each other.
 
-    class MinimumRiskMovement {
-        -double fieldWidth, fieldHeight
-        -Point2D destination
-        -long destTime
-        +init(bfW, bfH)
-        +doMinimumRisk(robot, brain)
-        -findSafestPoint(myPos, robot, brain) Point2D
-        -calculateRisk(point, myPos, robot, brain) double
-        -navigateTo(robot, dest)
-    }
+## Faults
 
-    class OpponentData {
-        +String name
-        +MovementType movementType
-        +double threatLevel
-        +double x, y
-        +double heading, velocity
-        +double energy
-        +long lastScanTick
-        +int fireCount, hitsOnUs
-        +double damageDealt, damageReceived
-        +LinkedList~Snapshot~ window
-    }
+`Guard` wraps every core call. If the core throws, or returns nothing, the guard counts the
+fault, writes one `FAULT` record for the round, and returns safe orders for that tick:
+full speed, hold fire, body side-on to the enemy's last bearing in the current direction of
+travel, radar locked on that bearing (or sweeping if the enemy was never seen). On the next
+scan it asks the core to drop its transient round state (waves, logs) and carry on with
+everything it has learned.
 
-    class Snapshot {
-        +long tick
-        +double heading
-        +double velocity
-        +double energy
-        +double x, y
-    }
+## Determinism
 
-    class BattleMode {
-        <<enumeration>>
-        DUEL
-        MELEE
-    }
+Given the same inputs, the core issues the same orders (CORE-2). The ArchUnit rules keep out
+the usual sources of drift, the 1.20 code's `Math.random` view names and a global view
+counter were removed, and the replay tests check the property end to end against battles
+recorded from the real robot in the real engine.
 
-    class MovementType {
-        <<enumeration>>
-        STOPPED
-        LINEAR
-        CIRCULAR
-        OSCILLATING
-        RANDOM
-        WAVE_SURFER
-        UNKNOWN
-    }
+## Bounded growth
 
-    Hadur --> Radar
-    Hadur --> Gun
-    Hadur --> WaveSurfer
-    Hadur --> MinimumRiskMovement
-    Hadur --> Brain
-    Hadur --> MeleeTargetSelector
-    Hadur --> BattleMode
-    Gun --> GunWave
-    WaveSurfer --> EnemyWave
-    Brain --> OpponentData
-    Brain --> Snapshot
-    Brain --> MovementType
-    Brain --> BattleMode
-    MeleeTargetSelector --> Brain
-    MeleeTargetSelector --> OpponentData
-    MinimumRiskMovement --> Brain
-    MinimumRiskMovement --> OpponentData
-    Radar --> Brain
-    OpponentData --> Snapshot
-    OpponentData --> MovementType
-```
-
-## Duel Mode Flow
-
-In 1v1 battles, Hadur uses a tight radar lock, wave surfing for dodging, and a
-five-gun virtual gun array for targeting. The radar locks onto the single opponent
-with a 2x-overshoot technique. The gun fires virtual waves from all five prediction
-methods and selects the one with the best rolling hit rate.
-
-```mermaid
-sequenceDiagram
-    participant RC as Robocode Engine
-    participant H as Hadur
-    participant R as Radar
-    participant B as Brain
-    participant G as Gun
-    participant WS as WaveSurfer
-
-    Note over H: run() loop begins
-
-    H->>R: spinRadar() [initial search]
-    RC-->>H: onScannedRobot(e)
-    H->>B: update(e, myX, myY, heading, time)
-    B->>B: classify(od) + assessThreat(od)
-    H->>G: onScannedRobot(robot, e)
-
-    Note over G: Compute 5 aim angles
-    G->>G: guessFactor(segmented stats)
-    G->>G: patternPrediction()
-    G->>G: circularPrediction()
-    G->>G: linearPrediction()
-    G->>G: headOnAngle = absBearing
-    G->>G: selectBestGun() [rolling 30-wave window]
-    G->>RC: setTurnGunRight + setFireBullet
-    G->>G: createWave() [virtual + real]
-
-    H->>WS: onScannedRobot(robot, e)
-    Note over WS: Detect enemy fire via energy drop
-    WS->>WS: create EnemyWave if drop in [0.09, 3.01]
-    H->>R: doDuelRadar(absBearing) [2x overshoot lock]
-
-    Note over H: Main tick
-    H->>WS: doSurfing(robot)
-    WS->>WS: closestWave() + secondClosestWave()
-    WS->>WS: evaluateDanger(CW) vs evaluateDanger(CCW)
-    WS->>WS: predictPosition() with wall smoothing
-    WS->>RC: setTurnRight + setAhead [dodge]
-
-    H->>RC: execute()
-```
-
-## Melee Mode Flow
-
-In free-for-all battles (3+ robots), Hadur switches to a spinning radar for full
-coverage, minimum-risk movement to avoid crossfire, and a simplified multi-prediction
-gun aimed at the highest-priority target. The target selector scores opponents by
-a weighted sum of energy, distance, and gun-turn angle.
-
-```mermaid
-sequenceDiagram
-    participant RC as Robocode Engine
-    participant H as Hadur
-    participant R as Radar
-    participant B as Brain
-    participant TS as TargetSelector
-    participant G as Gun
-    participant MR as MinRiskMovement
-
-    Note over H: run() — getOthers() > 1 → MELEE
-
-    H->>R: spinRadar() [continuous 360° sweep]
-    H->>MR: doMinimumRisk(robot, brain)
-    MR->>B: getAllOpponents()
-    MR->>MR: findSafestPoint() [24 dirs × 3 dists]
-    MR->>MR: calculateRisk() per opponent<br>[energy/dist² × threatLevel]
-    MR->>RC: setTurnRight + setAhead
-
-    H->>RC: execute()
-
-    RC-->>H: onScannedRobot(e) [opponent A]
-    H->>B: update(e, ...)
-    B->>B: classify + assessThreat
-    H->>TS: selectTarget(robot, brain)
-    TS->>TS: score = energy×0.8 + dist×0.5 + gunTurn×0.3
-    TS-->>H: targetName
-
-    H->>G: onScannedRobotMelee(robot, e, target, scanned)
-    G->>G: store per-opponent [prevVel, prevHeading]
-
-    alt scannedName == targetName
-        G->>G: circularPrediction / linearPrediction / headOn
-        G->>RC: setTurnGunRight
-        G->>RC: setFireBullet [if gun aimed within 3°]
-        G-->>H: return true [fired]
-        H->>B: recordOurFire(time)
-    else scannedName != targetName
-        G-->>H: return false [not target]
-    end
-
-    RC-->>H: onScannedRobot(e) [opponent B]
-    Note over H: repeat — radar keeps spinning
-
-    Note over H: When getOthers() == 1
-    H->>H: battleMode = DUEL
-    H->>B: setBattleMode(1)
-    Note over H: Switch to duel flow
-```
-
-## Data Flow — Intelligence Pipeline
-
-The Brain maintains a sliding window of 100 snapshots per opponent and uses
-statistical analysis to classify movement patterns and assess threat levels.
-This intelligence feeds into both movement (risk weighting) and target selection.
-
-```mermaid
-flowchart LR
-    subgraph Input
-        SE[ScannedRobotEvent]
-    end
-
-    subgraph Brain
-        UP[update]
-        FD[Fire Detection<br><i>energy drop 0.09–3.01</i>]
-        SW[Sliding Window<br><i>100 snapshots</i>]
-        CL[classify]
-        AT[assessThreat]
-    end
-
-    subgraph Classification
-        WV[WAVE_SURFER<br><i>reversals correlate<br>with our fire ticks</i>]
-        LI[LINEAR<br><i>avgHC &lt; 0.03<br>revRate &lt; 0.04</i>]
-        OS[OSCILLATING<br><i>revRate &ge; 0.06</i>]
-        CI[CIRCULAR<br><i>avgHC &ge; 0.03<br>low variance</i>]
-        RA[RANDOM<br><i>cv &ge; 0.8 or<br>stdHC &gt; 0.04</i>]
-        ST[STOPPED<br><i>&gt;80% stationary</i>]
-    end
-
-    subgraph Threat ["Threat Score (0–1)"]
-        ACC[Accuracy 35%]
-        ENE[Energy 25%]
-        AGG[Aggression 20%]
-        POW[Bullet Power 20%]
-    end
-
-    subgraph Consumers
-        MR[MinimumRiskMovement<br><i>risk × (0.5 + threat)</i>]
-        MTS[MeleeTargetSelector<br><i>energy × 0.8 + dist × 0.5</i>]
-        GUN[Gun<br><i>fire power selection</i>]
-    end
-
-    SE --> UP
-    UP --> FD
-    UP --> SW
-    SW --> CL
-    SW --> AT
-    CL --> WV
-    CL --> LI
-    CL --> OS
-    CL --> CI
-    CL --> RA
-    CL --> ST
-    AT --> ACC
-    AT --> ENE
-    AT --> AGG
-    AT --> POW
-
-    CL --> |movementType| MTS
-    AT --> |threatLevel| MR
-    AT --> |threatLevel| MTS
-    FD --> |fireCount| GUN
-```
-
-## Static Persistence Across Rounds
-
-Several data structures use `static` fields to accumulate learning across rounds
-within the same battle. This allows the robot to improve targeting and movement
-as it observes more of each opponent's behaviour.
-
-| Class | Field | Shape | Purpose |
-|-------|-------|-------|---------|
-| `Brain` | `opponents` | `Map<String, OpponentData>` | Per-opponent tracking, classification, threat |
-| `Gun` | `gfStats` | `double[5][5][5][3][3][31]` | GuessFactor hit bins segmented by distance, velocity, lateral velocity, acceleration, wall proximity |
-| `WaveSurfer` | `dangerStats` | `double[5][5][3][47]` | Danger bins segmented by distance, velocity, acceleration |
-| `WaveSurfer` | `moveProfile` | `double[47]` | Visit-count profile for movement flattening |
-| `Hadur` | `roundsPlayed/Won` | `int` | Win rate tracking |
+Everything that grows during a battle is capped (RES-2): robot state logs keep the latest
+5,000 states, KNN views without their own limit keep 50,000 points, and the wave manager
+drops a wave's state log when the wave breaks. Other collections are cleared each round or
+keyed by opponent name.
