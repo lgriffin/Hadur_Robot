@@ -5,276 +5,106 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.lgriffin</groupId>
-    <artifactId>hadur</artifactId>
-    <version>1.20</version>
-    <packaging>jar</packaging>
+    <artifactId>hadur-parent</artifactId>
+    <version>2.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
 
-    <name>Hadur Robot</name>
-    <description>Dual-mode competitive Robocode robot with wave surfing, virtual gun array, and opponent intelligence.</description>
-    <url>https://github.com/lgriffin/robocode</url>
+    <name>Hadur 2</name>
+    <description>A 1v1 Robocode robot with a hexagonal core: the domain never imports robocode.*</description>
+    <url>https://github.com/lgriffin/Hadur_Robot</url>
+
+    <modules>
+        <module>hadur-core</module>
+        <module>hadur-robot</module>
+        <module>hadur-bench</module>
+    </modules>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
+        <maven.compiler.release>17</maven.compiler.release>
         <junit.version>5.11.4</junit.version>
+        <junit.platform.version>1.11.4</junit.platform.version>
         <cucumber.version>7.20.1</cucumber.version>
-        <mockito.version>5.14.2</mockito.version>
+        <archunit.version>1.3.0</archunit.version>
+        <jqwik.version>1.9.2</jqwik.version>
         <jacoco.version>0.8.12</jacoco.version>
+        <!-- The API the robot is built against; vendored in repo/. -->
+        <robocode.api.version>1.9.3.0</robocode.api.version>
+        <!-- Requirements from docs/requirements.md up to this stage must be covered by a test. -->
+        <hadur.stage>S1</hadur.stage>
     </properties>
 
     <repositories>
         <repository>
             <id>project-local</id>
-            <url>file://${project.basedir}/repo</url>
+            <url>file://${maven.multiModuleProjectDirectory}/repo</url>
         </repository>
     </repositories>
 
-    <dependencies>
-        <!-- Robocode API (provided at runtime by the Robocode engine) -->
-        <dependency>
-            <groupId>net.sf.robocode</groupId>
-            <artifactId>robocode-api</artifactId>
-            <version>1.9.3.0</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <!-- JUnit 5 -->
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <version>${junit.version}</version>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- Cucumber BDD -->
-        <dependency>
-            <groupId>io.cucumber</groupId>
-            <artifactId>cucumber-java</artifactId>
-            <version>${cucumber.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.cucumber</groupId>
-            <artifactId>cucumber-junit-platform-engine</artifactId>
-            <version>${cucumber.version}</version>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- Mockito -->
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-            <version>${mockito.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-junit-jupiter</artifactId>
-            <version>${mockito.version}</version>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- JUnit Platform Launcher (for Cucumber with Failsafe) -->
-        <dependency>
-            <groupId>org.junit.platform</groupId>
-            <artifactId>junit-platform-launcher</artifactId>
-            <version>1.11.4</version>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.lgriffin</groupId>
+                <artifactId>hadur-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>net.sf.robocode</groupId>
+                <artifactId>robocode-api</artifactId>
+                <version>${robocode.api.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.junit</groupId>
+                <artifactId>junit-bom</artifactId>
+                <version>${junit.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>io.cucumber</groupId>
+                <artifactId>cucumber-bom</artifactId>
+                <version>${cucumber.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.tngtech.archunit</groupId>
+                <artifactId>archunit-junit5</artifactId>
+                <version>${archunit.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>net.jqwik</groupId>
+                <artifactId>jqwik</artifactId>
+                <version>${jqwik.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <build>
-        <finalName>hadur117.Hadur_${project.version}</finalName>
-        <plugins>
-            <!-- Compiler -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.13.0</version>
-                <configuration>
-                    <source>17</source>
-                    <target>17</target>
-                </configuration>
-            </plugin>
-
-            <!-- Unit tests -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.5.2</version>
-                <configuration>
-                    <excludes>
-                        <exclude>**/*IT.java</exclude>
-                    </excludes>
-                    <excludedGroups>integration</excludedGroups>
-                    <properties>
-                        <configurationParameters>
-                            cucumber.plugin=pretty
-                            junit.jupiter.extensions.autodetection.enabled=false
-                        </configurationParameters>
-                    </properties>
-                </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.junit.jupiter</groupId>
-                        <artifactId>junit-jupiter-engine</artifactId>
-                        <version>${junit.version}</version>
-                    </dependency>
-                </dependencies>
-            </plugin>
-
-            <!-- Integration tests (Cucumber) -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-failsafe-plugin</artifactId>
-                <version>3.5.2</version>
-                <configuration>
-                    <useModulePath>false</useModulePath>
-                    <properties>
-                        <configurationParameters>
-                            cucumber.glue=hadur117.steps
-                            cucumber.features=classpath:features
-                            cucumber.plugin=pretty
-                        </configurationParameters>
-                    </properties>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>integration-test</goal>
-                            <goal>verify</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <!-- Code coverage -->
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <version>${jacoco.version}</version>
-                <executions>
-                    <execution>
-                        <id>prepare-agent</id>
-                        <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>report</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <!-- Javadoc -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.11.2</version>
-                <configuration>
-                    <source>17</source>
-                    <doclint>none</doclint>
-                    <quiet>true</quiet>
-                </configuration>
-            </plugin>
-
-            <!-- JAR packaging (RoboRumble naming: package.BotName_version.jar) -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>3.4.2</version>
-                <configuration>
-                    <excludes>
-                        <exclude>**/*.log</exclude>
-                        <exclude>**/*.data/**</exclude>
-                    </excludes>
-                    <archive>
-                        <manifest>
-                            <mainClass>hadur117.Hadur</mainClass>
-                        </manifest>
-                    </archive>
-                </configuration>
-            </plugin>
-
-            <!-- ProGuard obfuscation -->
-            <plugin>
-                <groupId>com.github.wvengen</groupId>
-                <artifactId>proguard-maven-plugin</artifactId>
-                <version>2.6.1</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>proguard</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <proguardVersion>7.6.1</proguardVersion>
-                    <injar>${project.build.finalName}.jar</injar>
-                    <outjar>${project.build.finalName}.jar</outjar>
-                    <obfuscate>true</obfuscate>
-                    <options>
-                        <option>-keep public class hadur117.Hadur {
-                            public void run();
-                            public void onScannedRobot(robocode.ScannedRobotEvent);
-                            public void onBulletHit(robocode.BulletHitEvent);
-                            public void onBulletMissed(robocode.BulletMissedEvent);
-                            public void onHitByBullet(robocode.HitByBulletEvent);
-                            public void onHitWall(robocode.HitWallEvent);
-                            public void onRobotDeath(robocode.RobotDeathEvent);
-                            public void onWin(robocode.WinEvent);
-                            public void onDeath(robocode.DeathEvent);
-                        }</option>
-                        <option>-keepclassmembers enum * {
-                            public static **[] values();
-                            public static ** valueOf(java.lang.String);
-                        }</option>
-                        <option>-dontwarn robocode.**</option>
-                        <option>-adaptresourcefilenames</option>
-                        <option>-allowaccessmodification</option>
-                        <option>-repackageclasses ''</option>
-                        <option>-dontshrink</option>
-                        <option>-dontoptimize</option>
-                    </options>
-                    <libs>
-                        <lib>${java.home}/jmods/java.base.jmod</lib>
-                        <lib>${java.home}/jmods/java.desktop.jmod</lib>
-                    </libs>
-                </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>com.guardsquare</groupId>
-                        <artifactId>proguard-base</artifactId>
-                        <version>7.6.1</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>com.guardsquare</groupId>
-                        <artifactId>proguard-core</artifactId>
-                        <version>9.1.7</version>
-                    </dependency>
-                </dependencies>
-            </plugin>
-        </plugins>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.13.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>3.5.2</version>
+                    <configuration>
+                        <systemPropertyVariables>
+                            <hadur.stage>${hadur.stage}</hadur.stage>
+                            <hadur.root>${maven.multiModuleProjectDirectory}</hadur.root>
+                        </systemPropertyVariables>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <version>${jacoco.version}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
-
-    <reporting>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.11.2</version>
-            </plugin>
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <version>${jacoco.version}</version>
-            </plugin>
-        </plugins>
-    </reporting>
 </project>

@@ -1,0 +1,299 @@
+package hadur2.core;
+
+import hadur2.core.gun.GunController;
+import hadur2.core.model.*;
+import hadur2.core.move.MoveController;
+import hadur2.core.move.SurfMover;
+import hadur2.core.physics.*;
+import hadur2.core.port.Telemetry;
+import java.awt.geom.Point2D;
+
+/**
+ * Hadur's brain. One instance lives for a whole battle; {@link #tick} turns each
+ * {@link BotInput} into {@link BotOrders}. It never touches the Robocode API (CORE-1) and
+ * holds no randomness, threads, reflection or I/O (RES-6), so the same inputs always
+ * give the same orders (CORE-2).
+ *
+ * <p>Per tick it handles the tick's events first, then runs the main loop body, the same
+ * order in which Robocode runs event handlers and then {@code run()}.</p>
+ */
+public final class HadurCore {
+
+    private final BattleField battleField;
+    private final MovementPredictor predictor;
+    private final GunController gunController;
+    private final MoveController moveController;
+    private final SurfMover surfMover;
+    private final WaveManager gunWaveManager;
+    private final RobotStateLog myStateLog;
+    private final RobotStateLog enemyStateLog;
+    private final Telemetry telemetry;
+
+    private int round;
+    private RoundStats stats = new RoundStats();
+    private Wave lastGunWave;
+    private Point2D.Double lastEnemyLocation;
+    private double lastEnemyEnergy;
+    private double prevEnemyEnergy;
+    private int enemyVelocitySign;
+    private int myVelocitySign;
+    private double prevEnemyVelocity;
+    private double prevMyVelocity;
+    private long enemyVchangeTime;
+    private long myVchangeTime;
+    private boolean firstScan;
+    private double aimedBulletPower;
+    private long lastRealBulletFireTime;
+    private boolean announced;
+
+    public HadurCore(double fieldWidth, double fieldHeight, int enemiesTotal, Telemetry telemetry) {
+        this.battleField = new BattleField(fieldWidth, fieldHeight);
+        this.predictor = new MovementPredictor(battleField);
+        this.gunController = new GunController(battleField, enemiesTotal);
+        this.moveController = new MoveController(battleField, predictor);
+        this.surfMover = new SurfMover(battleField, predictor);
+        this.gunWaveManager = new WaveManager();
+        this.myStateLog = new RobotStateLog();
+        this.enemyStateLog = new RobotStateLog();
+        this.telemetry = telemetry;
+        telemetry.emit("V,1");
+    }
+
+    public void newRound(int round) {
+        this.round = round;
+        this.stats = new RoundStats();
+        gunController.initRound();
+        moveController.initRound();
+        surfMover.initRound();
+        gunWaveManager.initRound();
+        resetRoundState();
+    }
+
+    /**
+     * Forgets this round's transient state (waves, logs, the last scan) but keeps
+     * everything learned. Used after a fault, so a bad state can't fault every tick.
+     */
+    public void recover() {
+        gunController.initRound();
+        moveController.initRound();
+        surfMover.initRound();
+        gunWaveManager.initRound();
+        resetRoundState();
+    }
+
+    private void resetRoundState() {
+        myStateLog.clear();
+        enemyStateLog.clear();
+        lastGunWave = null;
+        lastEnemyLocation = null;
+        prevEnemyEnergy = 100;
+        enemyVelocitySign = 1;
+        myVelocitySign = 1;
+        prevEnemyVelocity = 0;
+        prevMyVelocity = 0;
+        enemyVchangeTime = 0;
+        myVchangeTime = 0;
+        firstScan = true;
+        aimedBulletPower = 1.9;
+        lastRealBulletFireTime = 0;
+    }
+
+    public RoundStats stats() {
+        return stats;
+    }
+
+    public BotOrders tick(BotInput in) {
+        BotOrders.Builder orders = BotOrders.builder();
+        for (BotEvent e : in.events()) {
+            if (e instanceof BotEvent.Scan s) onScan(in, s, orders);
+            else if (e instanceof BotEvent.HitByBullet h) onHitByBullet(in, h);
+            else if (e instanceof BotEvent.BulletHitBullet b) onBulletHitBullet(in, b);
+            else if (e instanceof BotEvent.BulletHit b) stats.shotsHit++;
+            else if (e instanceof BotEvent.SkippedTurn s) onSkippedTurn(in);
+        }
+
+        if (in.others() <= 1 && lastGunWave != null) {
+            aimAndFire(in, orders);
+            moveController.checkWaves(in.time(), in.location());
+            surfMover.move(orders, currentState(in), moveController, lastEnemyLocation, 2);
+        } else {
+            orders.turnRadarRight(Double.POSITIVE_INFINITY);
+        }
+        return orders.build();
+    }
+
+    /**
+     * Emits the round-end record and returns this round's statistics. {@code result} is
+     * {@code win}, {@code loss} or {@code draw}; {@code faults} is the number of ticks the
+     * {@link Guard} had to cover for this round.
+     */
+    public RoundStats roundEnded(long tick, String result, double myEnergy, int faults) {
+        stats.faults = faults;
+        telemetry.emit(stats.toRecord(round, tick, result, myEnergy, lastEnemyEnergy));
+        return stats;
+    }
+
+    private void aimAndFire(BotInput in, BotOrders.Builder orders) {
+        Point2D.Double myNext = predictor.nextLocation(currentState(in));
+        fireIfGunTurned(in, orders, aimedBulletPower, myNext);
+
+        aimedBulletPower = lastGunWave.bulletPower();
+        double aimAngle;
+        if (lastGunWave.targetEnergy == 0 || ticksUntilGunCool(in) > 3) {
+            aimAngle = DiaUtils.absoluteBearing(myNext, lastGunWave.targetLocation);
+        } else {
+            aimAngle = gunController.aim(lastGunWave, myNext, in.time());
+        }
+        orders.turnGunRight(Angles.normalRelativeAngle(aimAngle - in.gunHeading()));
+    }
+
+    private void fireIfGunTurned(BotInput in, BotOrders.Builder orders, double bulletPower,
+                                 Point2D.Double myNext) {
+        if (in.gunHeat() == 0 && Math.abs(in.gunTurnRemaining()) < 0.05
+                && in.energy() > bulletPower && lastGunWave != null) {
+            orders.fire(bulletPower);
+            lastGunWave.firingWave = true;
+            gunController.fireVirtualBullets(lastGunWave, myNext, in.time());
+            lastRealBulletFireTime = in.time();
+            stats.shotsFired++;
+        }
+    }
+
+    private void onScan(BotInput in, BotEvent.Scan e, BotOrders.Builder orders) {
+        long time = in.time();
+        Point2D.Double myPos = in.location();
+        double absBearing = Angles.normalAbsoluteAngle(in.heading() + e.bearing());
+        Point2D.Double enemyPos = DiaUtils.project(myPos, absBearing, e.distance());
+        lastEnemyLocation = enemyPos;
+        lastEnemyEnergy = e.energy();
+        if (!announced) {
+            // Opponent memory arrives in S3; for now B records the name only.
+            telemetry.emit("B," + round + "," + time + ",-," + e.name() + "," + e.name()
+                + ",0,-,0,0," + stats.computationLevel);
+            announced = true;
+        }
+
+        double enemyVel = e.velocity();
+        double enemyHead = e.heading();
+        double myVel = in.velocity();
+        double myHead = in.heading();
+
+        RobotState myState = RobotState.newBuilder()
+            .setLocation(myPos).setHeading(myHead)
+            .setVelocity(myVel).setTime(time).build();
+        myStateLog.addState(myState);
+
+        RobotState enemyState = RobotState.newBuilder()
+            .setLocation(enemyPos).setHeading(enemyHead)
+            .setVelocity(enemyVel).setTime(time).build();
+        enemyStateLog.addState(enemyState);
+
+        if (enemyVel != 0) enemyVelocitySign = enemyVel > 0 ? 1 : -1;
+        if (myVel != 0) myVelocitySign = myVel > 0 ? 1 : -1;
+
+        double enemyAccel = DiaUtils.accel(enemyVel, prevEnemyVelocity);
+        double myAccel = DiaUtils.accel(myVel, prevMyVelocity);
+
+        if (Math.abs(enemyVel - prevEnemyVelocity) > 0.5) enemyVchangeTime = 0;
+        else enemyVchangeTime++;
+        if (Math.abs(myVel - prevMyVelocity) > 0.5) myVchangeTime = 0;
+        else myVchangeTime++;
+
+        double eDl8 = enemyStateLog.getDisplacementDistance(enemyPos, time, 8);
+        double eDl20 = enemyStateLog.getDisplacementDistance(enemyPos, time, 20);
+        double eDl40 = enemyStateLog.getDisplacementDistance(enemyPos, time, 40);
+        double mDl8 = myStateLog.getDisplacementDistance(myPos, time, 8);
+        double mDl20 = myStateLog.getDisplacementDistance(myPos, time, 20);
+        double mDl40 = myStateLog.getDisplacementDistance(myPos, time, 40);
+
+        double bulletPower = gunController.calculateBulletPower(
+            e.distance(), in.energy(), e.energy(), in.others());
+
+        lastGunWave = new Wave(e.name(), myPos, enemyPos,
+            round, time, bulletPower,
+            enemyHead, enemyVel, enemyVelocitySign,
+            battleField, predictor);
+        lastGunWave.setAccel(enemyAccel)
+            .setDistance(e.distance())
+            .setVchangeTime(enemyVchangeTime)
+            .setDistanceLast8Ticks(eDl8)
+            .setDistanceLast20Ticks(eDl20)
+            .setDistanceLast40Ticks(eDl40)
+            .setTargetEnergy(e.energy())
+            .setSourceEnergy(in.energy())
+            .setGunHeat(in.gunHeat())
+            .setEnemiesAlive(in.others())
+            .setLastBulletFiredTime(lastRealBulletFireTime);
+        lastGunWave.setWallDistances();
+        gunWaveManager.addWave(lastGunWave);
+
+        gunWaveManager.checkActiveWaves(time, enemyState,
+            (w, bs) -> gunController.onWaveBreak(w, bs));
+
+        double guessPower = moveController.guessBulletPower();
+        Wave moveWave = new Wave(e.name(), enemyPos, myPos,
+            round, time, guessPower,
+            myHead, myVel, myVelocitySign,
+            battleField, predictor);
+        moveWave.setAccel(myAccel)
+            .setDistance(e.distance())
+            .setVchangeTime(myVchangeTime)
+            .setDistanceLast8Ticks(mDl8)
+            .setDistanceLast20Ticks(mDl20)
+            .setDistanceLast40Ticks(mDl40)
+            .setTargetEnergy(in.energy())
+            .setSourceEnergy(e.energy());
+        moveWave.setWallDistances();
+        moveController.addWave(moveWave);
+
+        if (!firstScan) {
+            double energyDelta = prevEnemyEnergy - e.energy();
+            if (energyDelta >= 0.1 && energyDelta <= 3.0) {
+                moveController.updateFiringWave(time, energyDelta);
+                stats.enemyShotsDetected++;
+            }
+        }
+
+        orders.turnRadarRight(Angles.normalRelativeAngle(absBearing - in.radarHeading()) * 2.0);
+
+        prevEnemyVelocity = enemyVel;
+        prevMyVelocity = myVel;
+        prevEnemyEnergy = e.energy();
+        firstScan = false;
+    }
+
+    private void onHitByBullet(BotInput in, BotEvent.HitByBullet e) {
+        stats.hitsTaken++;
+        Point2D.Double bulletLoc = new Point2D.Double(e.x(), e.y());
+        Wave hitWave = moveController.findBulletWave(bulletLoc, in.time(), e.name(), e.power());
+        if (hitWave != null) {
+            hitWave.hitByBullet = true;
+            moveController.logBulletHit(hitWave, bulletLoc, round, in.time());
+        }
+    }
+
+    private void onBulletHitBullet(BotInput in, BotEvent.BulletHitBullet e) {
+        Point2D.Double hitLoc = new Point2D.Double(e.x(), e.y());
+        Wave hitWave = moveController.findBulletWave(hitLoc, in.time(), null, e.enemyPower());
+        if (hitWave != null) {
+            hitWave.bulletHitBullet = true;
+        }
+    }
+
+    private void onSkippedTurn(BotInput in) {
+        stats.skippedTurns++;
+        telemetry.emit("WARNING: Turn skipped at " + in.time());
+    }
+
+    private long ticksUntilGunCool(BotInput in) {
+        return Math.round(Math.ceil(in.gunHeat() / in.gunCoolingRate()));
+    }
+
+    private static RobotState currentState(BotInput in) {
+        return RobotState.newBuilder()
+            .setLocation(in.location())
+            .setHeading(in.heading())
+            .setVelocity(in.velocity())
+            .setTime(in.time()).build();
+    }
+}

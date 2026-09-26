@@ -40,6 +40,8 @@ public class LogHarvester extends BattleAdaptor {
     private long[] turnNanos = new long[4096];
     private int turns;
     private int skippedTurns;
+    private int roundRecords, faults, faultRecords;
+    private double ourHitRateSum, theirHitRateSum;
 
     public LogHarvester(Path dir, String us) throws IOException {
         this.us = us;
@@ -84,7 +86,26 @@ public class LogHarvester extends BattleAdaptor {
             if (line.isEmpty()) continue;
             // The engine announces each skipped turn as "SYSTEM: <robot> skipped turn <n>".
             if (line.startsWith("SYSTEM:") && line.contains("skipped turn")) skippedTurns++;
+            readRecord(line);
             hadurLog.write(round + "," + turn + "," + line + "\n");
+        }
+    }
+
+    /** Reads Hadur's own R and FAULT records so the report can show them (RES-5). */
+    private void readRecord(String line) {
+        if (line.startsWith("FAULT,")) {
+            faultRecords++;
+        } else if (line.startsWith("R,")) {
+            String[] f = line.split(",");
+            if (f.length < 14) return;
+            try {
+                ourHitRateSum += Double.parseDouble(f[6]);
+                theirHitRateSum += Double.parseDouble(f[8]);
+                faults += Integer.parseInt(f[12]);
+                roundRecords++;
+            } catch (NumberFormatException ignored) {
+                // A malformed record is left out of the averages.
+            }
         }
     }
 
@@ -125,6 +146,30 @@ public class LogHarvester extends BattleAdaptor {
 
     public int skippedTurns() {
         return skippedTurns;
+    }
+
+    /** Rounds that ended with an R record. */
+    public int roundRecords() {
+        return roundRecords;
+    }
+
+    /** Ticks the guard covered for a failing core, summed over R records. */
+    public int faults() {
+        return faults;
+    }
+
+    /** FAULT records: at most one per round. */
+    public int faultRecords() {
+        return faultRecords;
+    }
+
+    /** Mean of the per-round hit rates Hadur reported, or NaN with no R records. */
+    public double ourHitRate() {
+        return roundRecords == 0 ? Double.NaN : ourHitRateSum / roundRecords;
+    }
+
+    public double theirHitRate() {
+        return roundRecords == 0 ? Double.NaN : theirHitRateSum / roundRecords;
     }
 
     /** Wall-clock milliseconds per turn at percentile {@code p} (1.0 = max). */

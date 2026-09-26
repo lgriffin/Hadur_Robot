@@ -26,8 +26,9 @@ import java.util.stream.Stream;
  *     warm keeps it across {@code --battles} consecutive battles per opponent.</li>
  * <li>{@code --rounds N} rounds per battle (35), {@code --seeds N} battles per opponent in
  *     cold mode (5), {@code --battles N} in warm mode (5), {@code --field WxH} (800x600).</li>
- * <li>{@code --robot-classes DIR} compiled robot (../target/classes),
- *     {@code --robot NAME} as Robocode lists it ("hadur117.Hadur 1.20").</li>
+ * <li>{@code --robot-jar FILE} the robot jar (../hadur-robot/target/hadur2.Hadur_2.0.jar),
+ *     or {@code --robot-classes DIR} to jar a compiled class tree instead;
+ *     {@code --robot NAME} as Robocode lists it ("hadur2.Hadur 2.0").</li>
  * <li>{@code --only TEXT} run opponents whose name contains TEXT,
  *     {@code --out DIR} working directory (work/&lt;mode&gt;-&lt;time&gt;),
  *     {@code --report FILE} also copy the report there.</li>
@@ -63,7 +64,7 @@ public final class Bench {
         String[] field = opts.getOrDefault("field", "800x600").split("x");
         this.width = Integer.parseInt(field[0]);
         this.height = Integer.parseInt(field[1]);
-        this.robot = opts.getOrDefault("robot", "hadur117.Hadur 1.20");
+        this.robot = opts.getOrDefault("robot", "hadur2.Hadur 2.0");
         String stamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss"));
         this.out = Path.of(opts.getOrDefault("out",
             "work/" + (warm ? "warm" : "cold") + "-" + stamp)).toAbsolutePath();
@@ -152,12 +153,22 @@ public final class Bench {
     private void installRobots(List<Opponent> opponents) throws IOException {
         Path robots = home.resolve("robots");
         Files.createDirectories(robots);
-        Path classes = Path.of(opts.getOrDefault("robot-classes", "../target/classes")).toAbsolutePath();
-        if (!Files.isDirectory(classes)) {
-            throw new IllegalStateException("No compiled robot at " + classes + "; run mvn compile first");
-        }
         String[] parts = robot.split(" ");
-        jar(classes, robots.resolve(parts[0] + "_" + parts[1] + ".jar"));
+        Path target = robots.resolve(parts[0] + "_" + parts[1] + ".jar");
+        if (opts.containsKey("robot-classes")) {
+            Path classes = Path.of(opts.get("robot-classes")).toAbsolutePath();
+            if (!Files.isDirectory(classes)) {
+                throw new IllegalStateException("No compiled robot at " + classes);
+            }
+            jar(classes, target);
+        } else {
+            Path jar = Path.of(opts.getOrDefault("robot-jar",
+                "../hadur-robot/target/hadur2.Hadur_2.0.jar")).toAbsolutePath();
+            if (!Files.isRegularFile(jar)) {
+                throw new IllegalStateException("No robot jar at " + jar + "; run mvn package first");
+            }
+            Files.copy(jar, target, StandardCopyOption.REPLACE_EXISTING);
+        }
 
         try (Stream<Path> samples = Files.list(benchDir.resolve("target/samples"))) {
             for (Path s : (Iterable<Path>) samples::iterator) {

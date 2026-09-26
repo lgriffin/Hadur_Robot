@@ -6,10 +6,14 @@ import robocode.BattleResults;
 public final class BattleResult {
 
     public static final String HEADER = "ok,rounds,score,theirScore,firsts,survival,theirSurvival,"
-        + "bulletDamage,theirBulletDamage,skippedTurns,turns,turnP50Ms,turnP95Ms,turnMaxMs,errors";
+        + "bulletDamage,theirBulletDamage,skippedTurns,turns,turnP50Ms,turnP95Ms,turnMaxMs,"
+        + "roundRecords,faults,faultRecords,ourHitRate,theirHitRate,errors";
 
     public boolean ok;
     public int rounds, firsts, skippedTurns, turns;
+    /** From Hadur's own telemetry (RES-5). Hit rates are NaN when no R record was seen. */
+    public int roundRecords, faults, faultRecords;
+    public double ourHitRate = Double.NaN, theirHitRate = Double.NaN;
     public double score, theirScore, survival, theirSurvival, bulletDamage, theirBulletDamage;
     public double turnP50Ms, turnP95Ms, turnMaxMs;
     public String errors = "";
@@ -31,12 +35,17 @@ public final class BattleResult {
         r.turnP50Ms = h.turnMillisPercentile(0.50);
         r.turnP95Ms = h.turnMillisPercentile(0.95);
         r.turnMaxMs = h.turnMillisPercentile(1.0);
+        r.roundRecords = h.roundRecords();
+        r.faults = h.faults();
+        r.faultRecords = h.faultRecords();
+        r.ourHitRate = h.ourHitRate();
+        r.theirHitRate = h.theirHitRate();
         r.errors = errors.trim();
         return r;
     }
 
     static String failed(String why) {
-        return "false,0,0,0,0,0,0,0,0,0,0,0,0,0," + sanitize(why);
+        return "false,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NaN,NaN," + sanitize(why);
     }
 
     String toCsv() {
@@ -44,11 +53,12 @@ public final class BattleResult {
             num(theirScore), String.valueOf(firsts), num(survival), num(theirSurvival),
             num(bulletDamage), num(theirBulletDamage), String.valueOf(skippedTurns),
             String.valueOf(turns), num(turnP50Ms), num(turnP95Ms), num(turnMaxMs),
-            sanitize(errors));
+            String.valueOf(roundRecords), String.valueOf(faults), String.valueOf(faultRecords),
+            num(ourHitRate), num(theirHitRate), sanitize(errors));
     }
 
     static BattleResult parse(String line) {
-        String[] f = line.split(",", 15);
+        String[] f = line.split(",", 20);
         BattleResult r = new BattleResult();
         r.ok = Boolean.parseBoolean(f[0]);
         r.rounds = Integer.parseInt(f[1]);
@@ -64,7 +74,12 @@ public final class BattleResult {
         r.turnP50Ms = Double.parseDouble(f[11]);
         r.turnP95Ms = Double.parseDouble(f[12]);
         r.turnMaxMs = Double.parseDouble(f[13]);
-        r.errors = f.length > 14 ? f[14] : "";
+        r.roundRecords = Integer.parseInt(f[14]);
+        r.faults = Integer.parseInt(f[15]);
+        r.faultRecords = Integer.parseInt(f[16]);
+        r.ourHitRate = Double.parseDouble(f[17]);
+        r.theirHitRate = Double.parseDouble(f[18]);
+        r.errors = f.length > 19 ? f[19] : "";
         return r;
     }
 

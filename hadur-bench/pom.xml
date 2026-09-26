@@ -4,17 +4,19 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.lgriffin</groupId>
+    <parent>
+        <groupId>com.lgriffin</groupId>
+        <artifactId>hadur-parent</artifactId>
+        <version>2.0-SNAPSHOT</version>
+    </parent>
+
     <artifactId>hadur-bench</artifactId>
-    <version>1.0</version>
     <packaging>jar</packaging>
 
     <name>Hadur Bench</name>
     <description>Headless Robocode battles for measuring Hadur: cold and warm runs, seeded, with console and ground-truth logs.</description>
 
     <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.release>17</maven.compiler.release>
         <!-- The full engine, from Maven Central. Robots compiled against the 1.9.3.0 API run on it. -->
         <robocode.version>1.9.5.6</robocode.version>
     </properties>
