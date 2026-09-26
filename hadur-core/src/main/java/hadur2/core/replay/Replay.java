@@ -19,7 +19,56 @@ import java.util.List;
 public final class Replay {
 
     /** One replayed tick: what the live robot issued and what the replay produced. */
-    public record Tick(int line, BotInput input, BotOrders recorded, BotOrders replayed) {}
+    public static final class Tick {
+        private final int line;
+        private final BotInput input;
+        private final BotOrders recorded;
+        private final BotOrders replayed;
+
+        public Tick(int line, BotInput input, BotOrders recorded, BotOrders replayed) {
+            this.line = line;
+            this.input = input;
+            this.recorded = recorded;
+            this.replayed = replayed;
+        }
+
+        public int line() {
+            return line;
+        }
+
+        public BotInput input() {
+            return input;
+        }
+
+        public BotOrders recorded() {
+            return recorded;
+        }
+
+        public BotOrders replayed() {
+            return replayed;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof Tick)) return false;
+            Tick that = (Tick) o;
+            return line == that.line
+                && java.util.Objects.equals(input, that.input)
+                && java.util.Objects.equals(recorded, that.recorded)
+                && java.util.Objects.equals(replayed, that.replayed);
+        }
+
+        @Override
+        public int hashCode() {
+            return java.util.Objects.hash(line, input, recorded, replayed);
+        }
+
+        @Override
+        public String toString() {
+            return "Tick[line=" + line + ", input=" + input + ", recorded=" + recorded + ", replayed=" + replayed + "]";
+        }
+    }
 
     private Replay() {}
 

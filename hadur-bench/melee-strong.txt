@@ -1,0 +1,12 @@
+# Melee set: top-end bots that also play melee, mixed with established melee bots.
+# Jars from https://robocode-archive.strangeautomata.com/robots/<jar>; put them in opponents/.
+# Run with --set melee-strong.txt --melee true --field 1000x1000
+aaa.r.ScalarR 0.005h.053-noshield | melee | aaa.r.ScalarR_0.005h.053-noshield.jar
+voidious.Diamond 1.8.22 | melee | voidious.Diamond_1.8.22.jar
+abc.Shadow 3.83c | melee | abc.Shadow_3.83c.jar
+jk.mega.DrussGT 3.1.16 | melee | jk.mega.DrussGT_3.1.16.jar
+ags.Midboss 1s | melee | ags.Midboss_1s.jar
+abc.Tron 2.02 | melee | abc.Tron_2.02.jar
+kawigi.sbf.FloodMini 1.4 | melee | kawigi.sbf.FloodMini_1.4.jar
+mue.Ascendant 1.2.27 | melee | mue.Ascendant_1.2.27.jar
+pedersen.Ugluk 1.0 | melee | pedersen.Ugluk_1.0.jar

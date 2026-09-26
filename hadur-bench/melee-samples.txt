@@ -1,0 +1,11 @@
+# Melee set: nine opponents fight Hadur at once, as in a 10-robot MeleeRumble battle.
+# Run with --set melee-samples.txt --melee true --field 1000x1000
+sample.SpinBot | melee | -
+sample.Tracker | melee | -
+sample.Crazy | melee | -
+sample.Walls | melee | -
+sample.RamFire | melee | -
+sample.Fire | melee | -
+sample.Corners | melee | -
+sample.TrackFire | melee | -
+sample.VelociRobot | melee | -

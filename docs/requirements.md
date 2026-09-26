@@ -27,6 +27,15 @@ EARS requirements from the Hadur 2 technical direction. This file is the source 
 | END-2 | State | While enemy energy is 0, movement shall drive directly at the enemy. | S5 |
 | TIME-1 | Unwanted | If the previous tick exceeded 70% of the tick allowance, then the core shall reduce its computation level for the next tick. | S6 |
 | TIME-2 | Event | When a skipped-turn event is received, the core shall drop one computation level for the remainder of the round and record it. | S6 |
+| MELEE-1 | State | While two or more opponents are alive, the core shall drive the robot with the melee subsystems (sweep radar, minimum-risk movement, melee gun) instead of the duel subsystems. | S2 |
+| MELEE-2 | Event | When the number of opponents alive falls from two or more to one, the core shall discard its duel tracking and restore full speed before handling that tick's scans. | S2 |
+| MELEE-3 | State | While in melee, the radar shall sweep the full circle until every living opponent has been scanned, then keep turning toward the opponent scanned longest ago. | S2 |
+| MELEE-4 | State | While in melee, movement shall head for the candidate point of least risk, where risk grows with each opponent's energy over distance squared, near walls and corners, between two opponents, and with fewer escape routes. | S2 |
+| MELEE-5 | State | While in melee, the gun shall target the opponent with the lowest score of energy, distance and gun turn, and shall switch from a living current target only when another scores at least 20% lower and the gun can reach it within 4 ticks. | S2 |
+| MELEE-6 | Ubiquitous | The melee gun shall aim with circular prediction, fall back to linear prediction while the target's turn rate is unknown, and fire no more power than needed to kill the target. | S2 |
+| MELEE-7 | Unwanted | If the melee target's last scan is more than 5 ticks old, then the core shall not fire at it. | S2 |
+| MELEE-8 | State | While two opponents within 300 px of each other, and further from us than from each other, are both losing energy to others, the strategy shall keep clear of their fight and halve fire power. | S2 |
+| REL-1 | Ubiquitous | The robot jar shall contain only class files that a Java 11 runtime can load, so that every RoboRumble client can run it. | S2 |
 | RES-1 | Unwanted | If the core throws on any tick, then the adapter shall issue the safe order set for that tick and record the fault. | S1 |
 | RES-2 | Ubiquitous | The core shall bound every data structure that grows during a battle. | S1 |
 | RES-3 | Ubiquitous | The store shall write a profile to a temporary file and rename it, so that an interrupted write leaves the previous profile intact. | S3 |
@@ -35,3 +44,6 @@ EARS requirements from the Hadur 2 technical direction. This file is the source 
 | RES-6 | Ubiquitous | The core shall contain no use of unseeded randomness, threads, reflection, or file I/O. | S1 |
 
 Stage is where the requirement is first implemented; see the stage plan S0–S7.
+
+The MELEE group is outside the original 1v1 plan. It was added for release 2.1, which enters
+the MeleeRumble, alongside S2; the melee code is the 1.x melee work ported into the core.

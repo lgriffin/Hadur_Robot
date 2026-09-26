@@ -2,6 +2,8 @@ package hadur2.core;
 
 import hadur2.core.gun.GunController;
 import hadur2.core.ledger.EnergyLedger;
+import hadur2.core.melee.BattleMode;
+import hadur2.core.melee.MeleeController;
 import hadur2.core.model.*;
 import hadur2.core.move.MoveController;
 import hadur2.core.move.SurfMover;
@@ -18,6 +20,9 @@ import java.util.Locale;
  *
  * <p>Per tick it handles the tick's events first, then runs the main loop body, the same
  * order in which Robocode runs event handlers and then {@code run()}.</p>
+ *
+ * <p>While two or more opponents are alive the {@link MeleeController} drives (MELEE-1);
+ * once one is left, the duel machinery below takes over from a clean slate (MELEE-2).</p>
  */
 public final class HadurCore {
 
@@ -31,6 +36,7 @@ public final class HadurCore {
     private final RobotStateLog enemyStateLog;
     private final EnergyLedger ledger;
     private final Telemetry telemetry;
+    private final MeleeController melee;
 
     private int round;
     private RoundStats stats = new RoundStats();
@@ -48,6 +54,8 @@ public final class HadurCore {
     private long lastScanTime;
     private double lastEnemyAbsBearing;
     private boolean announced;
+    private boolean inMelee;
+    private MeleeController.Command lastMeleeCommand;
 
     public HadurCore(double fieldWidth, double fieldHeight, int enemiesTotal, Telemetry telemetry) {
         this.battleField = new BattleField(fieldWidth, fieldHeight);
@@ -60,6 +68,7 @@ public final class HadurCore {
         this.enemyStateLog = new RobotStateLog();
         this.ledger = new EnergyLedger(fieldWidth, fieldHeight);
         this.telemetry = telemetry;
+        this.melee = new MeleeController(battleField);
         telemetry.emit("V,1");
     }
 
@@ -86,6 +95,14 @@ public final class HadurCore {
     }
 
     private void resetRoundState() {
+        melee.newRound();
+        inMelee = false;
+        lastMeleeCommand = null;
+        resetDuelTracking();
+    }
+
+    /** Forgets the duel's view of the enemy, at a round's start and when a melee ends. */
+    private void resetDuelTracking() {
         ledger.newRound();
         myStateLog.clear();
         enemyStateLog.clear();
@@ -109,16 +126,28 @@ public final class HadurCore {
 
     public BotOrders tick(BotInput in) {
         BotOrders.Builder orders = BotOrders.builder();
+        // MELEE-1: melee while more than one opponent is alive, a duel otherwise.
+        boolean melee = BattleMode.fromOthers(in.others()) == BattleMode.MELEE;
+        if (inMelee && !melee) {
+            // MELEE-2: the survivor was never tracked as a duel opponent; start fresh.
+            resetDuelTracking();
+            orders.maxVelocity(Rules.MAX_VELOCITY);
+        }
+        inMelee = melee;
+
         for (BotEvent e : in.events()) {
-            if (e instanceof BotEvent.Scan s) onScan(in, s, orders);
-            else if (e instanceof BotEvent.HitByBullet h) onHitByBullet(in, h);
-            else if (e instanceof BotEvent.BulletHitBullet b) onBulletHitBullet(in, b);
-            else if (e instanceof BotEvent.BulletHit b) onBulletHit(b);
-            else if (e instanceof BotEvent.HitRobot r) ledger.robotsCollided();
-            else if (e instanceof BotEvent.SkippedTurn s) onSkippedTurn(in);
+            if (e instanceof BotEvent.Scan) onScan(in, (BotEvent.Scan) e, orders);
+            else if (e instanceof BotEvent.HitByBullet) onHitByBullet(in, (BotEvent.HitByBullet) e);
+            else if (e instanceof BotEvent.BulletHitBullet) onBulletHitBullet(in, (BotEvent.BulletHitBullet) e);
+            else if (e instanceof BotEvent.BulletHit) onBulletHit((BotEvent.BulletHit) e);
+            else if (e instanceof BotEvent.HitRobot) ledger.robotsCollided();
+            else if (e instanceof BotEvent.RobotDeath) this.melee.onRobotDeath(((BotEvent.RobotDeath) e).name());
+            else if (e instanceof BotEvent.SkippedTurn) onSkippedTurn(in);
         }
 
-        if (in.others() <= 1 && lastGunWave != null) {
+        if (melee) {
+            meleeTick(in, orders);
+        } else if (lastGunWave != null) {
             aimAndFire(in, orders);
             moveController.checkWaves(in.time(), in.location());
             surfMover.move(orders, currentState(in), moveController, lastEnemyLocation, 2);
@@ -127,6 +156,44 @@ public final class HadurCore {
             orders.turnRadarRight(Double.POSITIVE_INFINITY);
         }
         return orders.build();
+    }
+
+    /**
+     * MELEE-3..8: one tick of melee. The shot aimed last tick goes out first if the gun got
+     * there, as in 1.x; then the melee brain picks the radar sweep, destination and aim.
+     */
+    private void meleeTick(BotInput in, BotOrders.Builder orders) {
+        MeleeController.Command previous = lastMeleeCommand;
+        if (previous != null && previous.firePower > 0 && in.gunHeat() == 0
+                && Math.abs(Math.toDegrees(in.gunTurnRemaining())) < 0.05
+                && in.energy() > previous.firePower) {
+            orders.fire(previous.firePower);
+            stats.shotsFired++;
+        }
+
+        MeleeController.Command c = melee.tick(new MeleeController.Situation(
+            in.location(), in.gunHeading(), in.radarHeading(), in.energy(), in.time(),
+            in.others()));
+        orders.turnRadarRight(c.radarTurn);
+        orders.turnGunRight(c.gunTurn);
+        if (c.destination != null) goTo(in, c.destination, orders);
+        lastMeleeCommand = c;
+    }
+
+    /** Drives toward {@code destination}, backwards if that is the shorter turn. */
+    private static void goTo(BotInput in, Point2D.Double destination, BotOrders.Builder orders) {
+        Point2D.Double me = in.location();
+        double turn = Angles.normalRelativeAngle(
+            DiaUtils.absoluteBearing(me, destination) - in.heading());
+        double distance = me.distance(destination);
+        if (Math.abs(turn) > Math.PI / 2) {
+            turn = Angles.normalRelativeAngle(turn + Math.PI);
+            distance = -distance;
+        }
+        orders.turnRight(turn);
+        // Slow down for sharp turns so the robot doesn't swing wide.
+        orders.maxVelocity(Math.abs(turn) > Math.PI / 4 ? 4.0 : Rules.MAX_VELOCITY);
+        orders.ahead(distance);
     }
 
     /**
@@ -193,10 +260,12 @@ public final class HadurCore {
         long time = in.time();
         Point2D.Double myPos = in.location();
         double absBearing = Angles.normalAbsoluteAngle(in.heading() + e.bearing());
+        Point2D.Double enemyPos = DiaUtils.project(myPos, absBearing, e.distance());
+        melee.onScan(e.name(), enemyPos, e.distance(), e.energy(), e.heading(), e.velocity(), time);
+        if (inMelee) return;
         long previousScanTime = lastScanTime;
         lastScanTime = time;
         lastEnemyAbsBearing = absBearing;
-        Point2D.Double enemyPos = DiaUtils.project(myPos, absBearing, e.distance());
         lastEnemyLocation = enemyPos;
         lastEnemyEnergy = e.energy();
         if (!announced) {
@@ -300,12 +369,14 @@ public final class HadurCore {
 
     private void onBulletHit(BotEvent.BulletHit e) {
         stats.shotsHit++;
+        melee.onBulletHit(e.name(), e.power());
         ledger.ourBulletHit(e.power());
     }
 
     private void onHitByBullet(BotInput in, BotEvent.HitByBullet e) {
         stats.hitsTaken++;
         ledger.enemyBulletHitUs(e.power());
+        melee.onHitByBullet(e.name(), e.power(), e.heading(), in.location(), in.time());
         Point2D.Double bulletLoc = new Point2D.Double(e.x(), e.y());
         Wave hitWave = moveController.findBulletWave(bulletLoc, in.time(), e.name(), e.power());
         if (hitWave != null) {

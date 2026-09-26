@@ -21,7 +21,10 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.release>17</maven.compiler.release>
+        <!-- The shipped robot targets Java 11 so it loads on every RoboRumble client; tests,
+             and the bench, which never ship, use 17. -->
+        <maven.compiler.release>11</maven.compiler.release>
+        <maven.compiler.testRelease>17</maven.compiler.testRelease>
         <junit.version>5.11.4</junit.version>
         <junit.platform.version>1.11.4</junit.platform.version>
         <cucumber.version>7.20.1</cucumber.version>

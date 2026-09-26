@@ -19,6 +19,8 @@
     <properties>
         <!-- The full engine, from Maven Central. Robots compiled against the 1.9.3.0 API run on it. -->
         <robocode.version>1.9.5.6</robocode.version>
+        <!-- The bench never ships, so it keeps Java 17. -->
+        <maven.compiler.release>17</maven.compiler.release>
     </properties>
 
     <dependencies>

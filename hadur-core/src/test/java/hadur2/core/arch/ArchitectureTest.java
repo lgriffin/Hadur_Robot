@@ -141,4 +141,21 @@ public class ArchitectureTest {
     void gunAndMoveIndependent() {
         slices().matching("hadur2.core.(gun|move)..").should().notDependOnEachOther().check(core);
     }
+
+    @Test
+    @Tag("MELEE-1")
+    @DisplayName("MELEE-1: melee is a separate brain beside the duel's gun and movement")
+    void meleeIsSeparateFromDuel() {
+        // The melee brain runs instead of the duel subsystems, so it needs only the model and
+        // the engine's physics; and the duel code must not reach into it.
+        noClasses().that().resideInAPackage("hadur2.core.melee..")
+            .should().dependOnClassesThat().resideOutsideOfPackages("hadur2.core.melee..",
+                "hadur2.core.physics..", "hadur2.core.model..", "java..")
+            .check(core);
+        noClasses().that().resideInAnyPackage("hadur2.core.gun..", "hadur2.core.move..",
+                "hadur2.core.knn..", "hadur2.core.ledger..", "hadur2.core.model..",
+                "hadur2.core.physics..")
+            .should().dependOnClassesThat().resideInAPackage("hadur2.core.melee..")
+            .check(core);
+    }
 }

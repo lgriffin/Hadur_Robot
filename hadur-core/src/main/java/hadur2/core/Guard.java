@@ -44,7 +44,7 @@ public final class Guard {
     public BotOrders tick(BotInput in) {
         BotEvent.Scan scan = null;
         for (BotEvent e : in.events()) {
-            if (e instanceof BotEvent.Scan s) scan = s;
+            if (e instanceof BotEvent.Scan) scan = (BotEvent.Scan) e;
         }
         if (scan != null) {
             lastEnemyAbsBearing = Angles.normalAbsoluteAngle(in.heading() + scan.bearing());

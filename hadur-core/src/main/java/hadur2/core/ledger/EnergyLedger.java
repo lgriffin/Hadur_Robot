@@ -26,8 +26,69 @@ public final class EnergyLedger {
     static final double WALL_MARGIN = 18 + 1.0;
 
     /** One scan's reading. {@code corrected} is the part of the drop spent on a bullet. */
-    public record Reading(double raw, double corrected, double wallDamage, boolean shot,
-                          boolean phantom, boolean hidden) {
+    public static final class Reading {
+        private final double raw;
+        private final double corrected;
+        private final double wallDamage;
+        private final boolean shot;
+        private final boolean phantom;
+        private final boolean hidden;
+
+        public Reading(double raw, double corrected, double wallDamage, boolean shot, boolean phantom, boolean hidden) {
+            this.raw = raw;
+            this.corrected = corrected;
+            this.wallDamage = wallDamage;
+            this.shot = shot;
+            this.phantom = phantom;
+            this.hidden = hidden;
+        }
+
+        public double raw() {
+            return raw;
+        }
+
+        public double corrected() {
+            return corrected;
+        }
+
+        public double wallDamage() {
+            return wallDamage;
+        }
+
+        public boolean shot() {
+            return shot;
+        }
+
+        public boolean phantom() {
+            return phantom;
+        }
+
+        public boolean hidden() {
+            return hidden;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof Reading)) return false;
+            Reading that = (Reading) o;
+            return Double.compare(raw, that.raw) == 0
+                && Double.compare(corrected, that.corrected) == 0
+                && Double.compare(wallDamage, that.wallDamage) == 0
+                && shot == that.shot
+                && phantom == that.phantom
+                && hidden == that.hidden;
+        }
+
+        @Override
+        public int hashCode() {
+            return java.util.Objects.hash(raw, corrected, wallDamage, shot, phantom, hidden);
+        }
+
+        @Override
+        public String toString() {
+            return "Reading[raw=" + raw + ", corrected=" + corrected + ", wallDamage=" + wallDamage + ", shot=" + shot + ", phantom=" + phantom + ", hidden=" + hidden + "]";
+        }
 
         static final Reading FIRST = new Reading(0, 0, 0, false, false, false);
     }
