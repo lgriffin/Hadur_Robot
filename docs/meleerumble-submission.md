@@ -9,7 +9,8 @@ the robot's name and version, a comma, and a URL that downloads the jar directly
 ## 1. Get the jar
 
 Download `hadur2.Hadur_2.1.jar` from the
-[v2.1 GitHub release](https://github.com/lgriffin/Hadur_Robot/releases/tag/v2.1), or build
+[v2.1 GitHub release](https://github.com/lgriffin/Hadur_Robot/releases/tag/v2.1) (signed in to
+GitHub), or build
 it with `mvn verify` (it lands in `hadur-robot/target/`). Keep the file name exactly as it
 is: rumble clients expect `<package>.<Robot>_<version>.jar`.
 
@@ -29,9 +30,10 @@ is: rumble clients expect `<package>.<Robot>_<version>.jar`.
    away, with no Drive preview page. (Files this small never get Drive's virus-scan
    warning page, which would break the download for rumble clients.)
 
-The GitHub release asset URL is also a direct download and never expires, so it works as
-an alternative to Drive:
+The repository is private, so the GitHub release's download link only works for you, not
+for rumble clients: use the Drive link. (If the repository is ever made public,
 `https://github.com/lgriffin/Hadur_Robot/releases/download/v2.1/hadur2.Hadur_2.1.jar`
+becomes a direct download that never expires.)
 
 ## 3. Add the entry on the robowiki
 
