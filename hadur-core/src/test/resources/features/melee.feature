@@ -12,7 +12,7 @@ Feature: Melee
     Then it keeps sweeping the radar
     And it drives toward a destination
 
-  @GATE-1 @MELEE-6
+  @GATE-1 @MGUN-3
   Scenario: A fresh target is shot at
     When it scans opponents at bearings 0, 120 and 240 degrees, 300 px away, every tick for 5 ticks
     Then it fires within those ticks

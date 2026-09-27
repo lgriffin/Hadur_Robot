@@ -261,6 +261,8 @@ public final class MeleeReport {
         int vetoes = 0, maxGap = 0, n = 0;
         int sensed = 0, sweepGap = 0, sweepOver = 0, gapOver = 0;
         long dropped = 0;
+        int waved = 0;
+        long wavesSent = 0, wavesResolved = 0, virtualHits = 0;
         for (Battle b : battles) {
             for (String[] m : b.records) {
                 if (m.length < 11) continue;
@@ -281,6 +283,12 @@ public final class MeleeReport {
                     if (Integer.parseInt(m[8]) > SWEEP_GATE) gapOver++;
                     dropped += Long.parseLong(m[12]);
                 }
+                if (m.length >= 16) {
+                    waved++;
+                    wavesSent += Long.parseLong(m[13]);
+                    wavesResolved += Long.parseLong(m[14]);
+                    virtualHits += Long.parseLong(m[15]);
+                }
             }
         }
         if (n == 0) return;
@@ -293,6 +301,12 @@ public final class MeleeReport {
                 + "were alive %d ticks (%d rounds over %d); rounds whose longest gap at any count was over "
                 + "%d: %d; robots dropped as dead without a death event: %d.%n",
                 sensed, sweepGap, sweepOver, SWEEP_GATE, SWEEP_GATE, gapOver, dropped));
+        }
+        if (waved > 0) {
+            r.append(String.format(Locale.ROOT, "%nTargeting waves (%d rounds): %d sent, %d reached their "
+                + "opponent, %d virtual hits (%.1f%% of those reached).%n",
+                waved, wavesSent, wavesResolved, virtualHits,
+                wavesResolved == 0 ? 0.0 : 100.0 * virtualHits / wavesResolved));
         }
     }
 

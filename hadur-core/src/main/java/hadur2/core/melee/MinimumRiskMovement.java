@@ -94,15 +94,24 @@ public class MinimumRiskMovement {
     static final double FINISH_RANGE = 550.0;
 
     private static final double UNIT = 100.0 * 100.0;
-    /** A robot's top speed, and the most drift an unseen opponent's position is given. */
+    /**
+     * A robot's top speed, and the most drift an unseen opponent's position is given beyond
+     * the usual {@link #SWEEP_TICKS} between scans, which every position shares.
+     */
     static final double MAX_SPEED = 8.0;
     static final double MAX_DRIFT = 400.0;
-    /** Opponents scanned longer ago than one sweep do not cap the ring. */
-    static final long CAP_MAX_AGE = 8;
+    static final long SWEEP_TICKS = 10;
+    /** Opponents whose data has gone stale do not cap the ring. */
+    static final long CAP_MAX_AGE = EnemyInfo.STALE_TICKS;
     /** The ring never shrinks below a robot's width, so Hadur can always move. */
     static final double MIN_RING = 36.0;
-    /** Points along the way to a candidate where the virtual bullets are checked. */
-    static final int ROUTE_SAMPLES = 4;
+    /**
+     * Points along the way to a candidate where the virtual bullets are checked. Only the
+     * destination: four points along the route cost about 4 APS on the reference field
+     * (docs/bench/m4-gates.md), mostly in time, and the destination is re-scored every tick
+     * as Hadur moves, so a bullet crossing the route is dodged on the way.
+     */
+    static final int ROUTE_SAMPLES = 1;
 
     /** What the movement sees this tick. */
     public static final class View {
@@ -123,7 +132,7 @@ public class MinimumRiskMovement {
             this.now = now;
             this.others = others;
             this.enemies = enemies;
-            this.bullets = bullets;
+            this.bullets = relevant(bullets, me, now);
             this.plan = plan;
             this.nearestOther = new double[enemies.size()];
             for (int i = 0; i < enemies.size(); i++) {
@@ -133,7 +142,7 @@ public class MinimumRiskMovement {
                     // A neighbour unseen for a while may have moved away: take it as far as it
                     // could be, so an old position never hides Hadur being the closest.
                     EnemyInfo o = enemies.get(j);
-                    double drift = Math.min(MAX_DRIFT, MAX_SPEED * Math.max(0, o.age(now)));
+                    double drift = Math.min(MAX_DRIFT, MAX_SPEED * Math.max(0, o.age(now) - SWEEP_TICKS));
                     best = Math.min(best, enemies.get(i).location.distance(o.location) + drift);
                 }
                 nearestOther[i] = best;
@@ -336,6 +345,22 @@ public class MinimumRiskMovement {
      * the uncertainty of the shot's fire tick, is a hit. Each bullet counts once, at its
      * nearest point, weighted by its damage; nearer misses count for less (MMOVE-3).
      */
+    /**
+     * The bullets that can come near any candidate: every candidate and every point on the way
+     * to it is within {@link #RING_MAX} of Hadur, so a bullet that stays further than that
+     * plus three hit radii from Hadur until the furthest candidate is reached adds nothing
+     * worth the time it takes to score (TIME-1).
+     */
+    static List<VirtualBullet> relevant(List<VirtualBullet> bullets, Point2D.Double me, long now) {
+        List<VirtualBullet> out = new ArrayList<>(bullets.size());
+        double horizon = now + RING_MAX / TRAVEL_SPEED + HIT_WINDOW;
+        for (VirtualBullet b : bullets) {
+            double to = horizon + b.shot.window;
+            if (b.closestApproach(me, now, to) <= RING_MAX + 3 * HIT_RADIUS) out.add(b);
+        }
+        return out;
+    }
+
     public static double bulletRisk(Point2D.Double p, Point2D.Double me,
                                     List<VirtualBullet> bullets, long now) {
         if (bullets.isEmpty()) return 0;

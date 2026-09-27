@@ -110,7 +110,7 @@ data directory through `RobocodeFileOutputStream`.
 | `gun` | main KNN gun, anti-surfer gun, gun selection |
 | `move` | wave-surfing movement and its danger formulas; our bullets in flight and the shadows they cast (MOVE-1); go-to surfing |
 | `posture` | the melee extension's gate (GATE-1..5): `PostureGate` (melee or duel, failing closed), `DuelFocus` (the one opponent the duel fights while several are alive) and `SentryFence` (the sentry border as a wall for the duel's movement) |
-| `melee` | the melee brain (MELEE-2..8, MRADAR, MSENSE): battlefield model with shot detection, sweep radar, minimum-risk movement with virtual bullets, target selector, circular gun, posture strategy, battle-long opponent stats |
+| `melee` | the melee brain (MELEE-2..8, MRADAR, MSENSE): battlefield model with shot detection, sweep radar, minimum-risk movement with virtual bullets, field gun with a play-it-forward history per opponent, energy table, targeting waves, posture strategy, battle-long opponent stats |
 | `memory` | opponent memory (MEM-1..5, RES-3): lineage keys, the profile, its binary codec, the round folder and the library that loads, saves and evicts; estimates with margins of error, the tiers and the seed layout |
 | `adapt` | recognise and adapt (ADAPT-1..3, DIAL-1..2, RES-4): the opening book, the seed loader and the seed trust |
 | `policy` | aggressive (DIST-1, POW-1, POW-2, END-1, END-2): rolling hit-rate windows, the distance controller, the power policy, the endgame states and the enemy gun-heat estimate; unhittable (MOVE-2, TIME-1, TIME-2): the movement flavour and the tick budget |
@@ -193,18 +193,37 @@ that to 10 or 11.
 ### Melee movement
 
 `melee.MinimumRiskMovement` scores 160 candidate points each tick (32 angles on 5 rings of
-100 to 300 px, capped at 0.8 of the distance to the nearest opponent scanned within a sweep,
+100 to 300 px, capped at 0.8 of the distance to the nearest opponent whose scan is not stale,
 never below 36 px) and heads for the
 least risky, keeping its destination until a point 10% safer turns up (MMOVE-1). Risk is
 each opponent's energy over distance squared, doubled where Hadur would be that opponent's
-closest robot (an unseen neighbour counts as far as it could have moved) and half again for one that hit Hadur recently (MMOVE-2); a head-on and a
-linear `VirtualBullet` for every recorded `EnemyShot`, checked at four points along the
-straight route to the candidate, with a shot's fire-tick uncertainty widening its window
-and delaying its expiry (MMOVE-3); a pull off the centre, pushes off walls and corners, Hadur's
+closest robot (a neighbour unseen for longer than a sweep counts as far as it could have moved) and half again for one that hit Hadur recently (MMOVE-2); a head-on and a
+linear `VirtualBullet` for every recorded `EnemyShot`, scored where each would be when
+Hadur gets to the candidate (checking points along the route cost about 4 APS, mostly in
+time, and the destination is re-scored every tick), with a shot's fire-tick uncertainty widening its window
+and delaying its expiry, and bullets that never come within reach of a candidate skipped (MMOVE-3); a pull off the centre, pushes off walls and corners, Hadur's
 recent positions and a fixed noise field; and the melee strategy's posture. For the first
 30 ticks the closest-robot term doubles again and a pull heads for a wall-adjacent spot
 away from the corners. With two opponents left the ring shrinks to 80 to 200 px and the
 lateral weight rises, so Hadur is already orbiting when the duel takes over (MMOVE-4).
+
+### Melee gun
+
+`melee.FieldGun` has no single target (MGUN-1). Every opponent scanned in the last 8 ticks
+gets three firing solutions: `melee.EnemyHistory` keeps a battle-long kd-tree per opponent
+(distance, speed, turn rate, time since reversing, wall distance; the melee package may use
+`knn.KdTree` and nothing else of the duel's) of situations paired with the 90 ticks of
+movement that followed, and the three most like the present are played forward until
+Hadur's bullet would arrive. Each solution covers its angle plus or minus the robot's
+half-width, weighted by 1/distance and by the opponent's weakness, doubled for a finisher,
+1.3 for an isolated opponent and 1.5 for one that has hit Hadur twice in 200 ticks; the gun
+fires where the summed density peaks. An opponent with too little history gets a circular
+or linear solution, and a robot ramming Hadur inside 100 px is left to the movement unless
+it can be finished. `melee.MeleeEnergyPolicy` sets the power (MGUN-2, MGUN-3): the exact
+kill below 16 energy, the duel's table with two or fewer left, else 1.0 to 3.0 by distance,
+and nothing below 1 energy of its own. `melee.MeleeWaves` sends a wave at every opponent on
+every gun-heat cycle carrying the gun's aim (MGUN-4), and the M record counts the waves and
+the virtual hits, so the bench reads the gun's hit rate on the whole field.
 
 ## Opponent memory
 

@@ -34,6 +34,9 @@ public class EnemyInfo {
     public boolean alive = true;
     /** The last tick one of its bullets hit Hadur, or -1 (MMOVE-2). */
     public long lastHitHadur = -1;
+    /** The ticks its last few bullets hit Hadur, oldest first (RES-2: at most {@link #HITS_KEPT}). */
+    private final Deque<Long> hitsOnHadur = new ArrayDeque<>();
+    static final int HITS_KEPT = 8;
 
     private double prevHeading;
     private long prevScanTime = -1;
@@ -134,5 +137,21 @@ public class EnemyInfo {
 
     public double distance(Point2D.Double p) {
         return location.distance(p);
+    }
+
+    /** One of its bullets hit Hadur at {@code time}. */
+    public void recordHitOnHadur(long time) {
+        lastHitHadur = time;
+        if (hitsOnHadur.size() >= HITS_KEPT) hitsOnHadur.removeFirst();
+        hitsOnHadur.addLast(time);
+    }
+
+    /** How many of its bullets hit Hadur in the last {@code window} ticks. */
+    public int hitsOnHadur(long now, long window) {
+        int n = 0;
+        for (long t : hitsOnHadur) {
+            if (now - t <= window) n++;
+        }
+        return n;
     }
 }
