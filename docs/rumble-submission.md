@@ -10,13 +10,26 @@ same line go on both pages:
 [RoboRumble/Participants](https://robowiki.net/wiki/RoboRumble/Participants) for 1v1 and
 [RoboRumble/Participants/Melee](https://robowiki.net/wiki/RoboRumble/Participants/Melee).
 
+## Current entry
+
+Hadur 2.2 was entered in both leagues on 2026-09-27, with this line on both participants
+pages:
+
+```
+hadur2.Hadur 2.2,https://drive.google.com/uc?export=download&id=1Ws7gHc5ZTAuzsWHt969rPavhWBEjJ3zV
+```
+
+The jar behind that link is a local build of master at 60b18fe (the S7 merge), made with
+`mvn -B verify` because GitHub Actions was not running jobs at the time; so the `v2.2` tag
+and GitHub release do not exist yet. Its SHA-256 is
+`d9502bf441d9999ac282f0c9cd2f59b3aa738aea3d51155b8d5f94a1f1a9504a`. The steps below are how
+it was done, and how to enter the next version.
+
 ## 1. Get the jar
 
-Download `hadur2.Hadur_2.2.jar` from the
-[v2.2 GitHub release](https://github.com/lgriffin/Hadur_Robot/releases/tag/v2.2) (signed in to
-GitHub), or build
-it with `mvn verify` (it lands in `hadur-robot/target/`). Keep the file name exactly as it
-is: rumble clients expect `<package>.<Robot>_<version>.jar`.
+Build it with `mvn -B verify` (it lands in `hadur-robot/target/`), or, once a `v*` tag has
+run the release workflow, download it from that GitHub release (signed in to GitHub). Keep
+the file name exactly as it is: rumble clients expect `<package>.<Robot>_<version>.jar`.
 
 ## 2. Host it on Google Drive with a direct link
 
@@ -34,9 +47,9 @@ is: rumble clients expect `<package>.<Robot>_<version>.jar`.
    away, with no Drive preview page. (Files this small never get Drive's virus-scan
    warning page, which would break the download for rumble clients.)
 
-The repository is private, so the GitHub release's download link only works for you, not
-for rumble clients: use the Drive link. (If the repository is ever made public,
-`https://github.com/lgriffin/Hadur_Robot/releases/download/v2.2/hadur2.Hadur_2.2.jar`
+The repository is private, so a GitHub release's download link only works for you, not
+for rumble clients: use the Drive link. (If the repository is ever made public and a
+release is published, `https://github.com/lgriffin/Hadur_Robot/releases/download/v<version>/hadur2.Hadur_<version>.jar`
 becomes a direct download that never expires.)
 
 ## 3. Add the entry on the robowiki

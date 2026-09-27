@@ -81,7 +81,7 @@ The ADAPT and DIAL groups and RES-4 were implemented in S4 with these readings:
   divergence also returns the opening's gun choice and surf prior to live data.
 - **DIAL-1** covers S4's policies (the opening gun, the surf prior, the flattener, the seed
   trust) and the danger views' thresholds, which already padded the hit rate by its margin
-  in 1.20. The S5 policies take the same form (below); S6's will too.
+  in 1.20. The S5 and S6 policies take the same form (below).
 - **DIAL-2** is enforced structurally: the adapt package cannot see `BotInput` or
   `BotEvent`, and the seed trust counts waves.
 
