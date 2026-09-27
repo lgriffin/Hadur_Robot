@@ -9,7 +9,12 @@ import hadur2.core.model.BotInput;
 import hadur2.core.model.BotOrders;
 import hadur2.core.port.MemoryProfileStore;
 import hadur2.core.port.Telemetry;
+import hadur2.core.melee.EnemyInfo;
+import hadur2.core.melee.MeleeController;
+import hadur2.core.physics.BattleField;
 import hadur2.core.posture.Posture;
+import hadur2.core.posture.PostureGate;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -83,5 +88,60 @@ class PostureCoreTest {
             List.of(scan("a", 0.5, 300, false)), 1, 100));
         assertTrue(o.ahead() > 0, o.toString());
         assertEquals(0, o.bodyTurn(), 1e-9);
+    }
+
+    /** A melee brain that throws from one event handler, from tick {@code from} on. */
+    private static MeleeController throwing(String handler, long from) {
+        return new MeleeController(new BattleField(1000, 1000)) {
+            @Override
+            public EnemyInfo onScan(String name, Point2D.Double location, double distance,
+                                    double energy, double heading, double velocity, long time) {
+                if (handler.equals("scan") && time >= from) throw new IllegalStateException("scan");
+                return super.onScan(name, location, distance, energy, heading, velocity, time);
+            }
+
+            @Override
+            public void onRobotDeath(String name) {
+                if (handler.equals("death")) throw new IllegalStateException("death");
+                super.onRobotDeath(name);
+            }
+        };
+    }
+
+    private static List<BotEvent> threeScans() {
+        return List.of(scan("a", 0, 300, false), scan("b", 2, 300, false), scan("c", 4, 300, false));
+    }
+
+    @Test
+    @Tag("GATE-4")
+    @DisplayName("GATE-4: a melee scan handler that throws hands the round to the duel at once")
+    void scanHandlerFaultFailsClosed() {
+        List<String> telemetry = new ArrayList<>();
+        HadurCore core = new HadurCore(1000, 1000, 3, telemetry::add, null, throwing("scan", 2));
+        core.newRound(0);
+        core.tick(input(1, 3, 0, threeScans()));
+        assertEquals(Posture.MELEE, core.posture());
+        BotOrders o = core.tick(input(2, 3, 0, threeScans()));
+        assertEquals(PostureGate.Veto.FAULT, core.veto());
+        assertTrue(telemetry.stream().anyMatch(l -> l.startsWith("FAULT,0,2,melee,")), telemetry.toString());
+        assertTrue(Double.isInfinite(o.radarTurn()));
+        core.tick(input(3, 3, 0, List.of()));
+        assertEquals(Posture.DUEL, core.posture());
+        core.roundEnded(3, "loss", 50, 0);
+        String m = telemetry.stream().filter(l -> l.startsWith("M,")).findFirst().orElseThrow();
+        assertEquals("fault", m.split(",")[6], m);
+        assertEquals("1", m.split(",")[7], m);
+    }
+
+    @Test
+    @Tag("GATE-4")
+    @DisplayName("GATE-4: a melee death handler that throws vetoes melee too")
+    void deathHandlerFaultFailsClosed() {
+        HadurCore core = new HadurCore(1000, 1000, 3, Telemetry.NONE, null, throwing("death", 0));
+        core.newRound(0);
+        core.tick(input(1, 3, 0, threeScans()));
+        core.tick(input(2, 2, 0, List.of(new BotEvent.RobotDeath("c"))));
+        assertEquals(PostureGate.Veto.FAULT, core.veto());
+        assertEquals(Posture.DUEL, core.posture());
     }
 }

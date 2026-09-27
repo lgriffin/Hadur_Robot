@@ -103,35 +103,37 @@ hadur2.Hadur 2.2 against 2 opponents at once, 3 rounds per battle, 3 battles, 10
 
 | APS | Survival | Rounds won | Mean round place | Score share | Bullet damage |
 |---|---|---|---|---|---|
-| 61.5 | 55.6 | 2 / 9 | 1.89 | 44.2% | 965 |
+| 72.8 | 72.2 | 5 / 9 | 1.56 | 55.3% | 1163 |
 
 | Robot | Mean place | Mean score share | Firsts |
 |---|---|---|---|
-| hadur2.Hadur 2.2 | 1.3 | 44.2% | 2 |
-| sample.SpinBot | 1.7 | 33.8% | 6 |
-| sample.Tracker | 3.0 | 21.9% | 1 |
+| hadur2.Hadur 2.2 | 1.0 | 55.3% | 5 |
+| sample.Tracker | 2.3 | 26.9% | 3 |
+| sample.SpinBot | 2.7 | 17.8% | 1 |
 | samplesentry.BorderGuard | 4.0 | 0.0% | 0 |
 
 Hadur per battle:
 
 | Battle | Place | APS | Survival | Rounds won | Bullet damage |
 |---|---|---|---|---|---|
-| 1 | 1 | 71.7 | 66.7 | 1 / 3 | 421 |
-| 2 | 1 | 64.1 | 66.7 | 1 / 3 | 317 |
-| 3 | 2 | 48.6 | 33.3 | 0 / 3 | 227 |
+| 1 | 1 | 70.6 | 66.7 | 2 / 3 | 366 |
+| 2 | 1 | 76.9 | 83.3 | 2 / 3 | 437 |
+| 3 | 1 | 70.8 | 66.7 | 1 / 3 | 360 |
 
 Rounds that ended as a duel (Hadur and one other left):
 
 | Last opponent | Rounds | Hadur won |
 |---|---|---|
-| sample.SpinBot | 6 | 17% |
-| sample.Tracker | 2 | 50% |
+| sample.SpinBot | 5 | 80% |
+| sample.Tracker | 3 | 33% |
 
-Skipped turns: 0.
+Skipped turns: 1.
 
-Sentry safety: 0 sentry bullets hit Hadur, 9 of Hadur's bullets hit a sentry.
+Sentry safety: 1 sentry bullets hit Hadur, 6 of Hadur's bullets hit a sentry.
 
-Posture (Hadur's M records, 9 rounds): 0 melee ticks, 2188 duel ticks, 2611 focused-duel ticks; 8 rounds vetoed; 0 melee faults; longest scan gap 0 ticks; 0 ticks aimed at a dead robot; 9 shots at a sentry.
+Posture (Hadur's M records, 9 rounds): 0 melee ticks, 2133 duel ticks, 2363 focused-duel ticks; 8 rounds vetoed; 0 melee faults; longest scan gap 0 ticks; 0 ticks aimed at a dead robot; 4 shots at a sentry.
+
+Rerun after the review fixes (the fence now allows for braking; the harvester ranks a round cut short as unfinished). The one sentry bullet that hit Hadur hit it at (410, 845), 155 px from the nearest wall and outside the border: a sentry shot at a robot in the border that missed and flew on. The 6 of Hadur's bullets that hit the sentry were aimed at the duel's opponent.
 
 ## Melee bench: challenge
 

@@ -162,6 +162,8 @@ public final class HadurCore {
     private Posture posture = Posture.DUEL;
     /** Opponents that died this round, to catch the melee aiming at a dead robot (M2's gate). */
     private final Set<String> deadThisRound = new LinkedHashSet<>();
+    /** The first exception a melee event handler threw this tick (GATE-4). */
+    private RuntimeException meleeEventFault;
     /** Per-round counters for the M record. */
     private int meleeTicks, duelTicks, focusTicks, meleeFaults, ghostTicks, sentryHits, maxScanGap;
 
@@ -305,6 +307,15 @@ public final class HadurCore {
             if (seedLoader.done()) seedLoader = null;
         }
 
+        RuntimeException eventFault = meleeEventFault;
+        meleeEventFault = null;
+        if (eventFault != null) {
+            // GATE-4: the melee brain threw handling this tick's events. Fail closed now,
+            // whichever subsystems were about to drive.
+            if (melee) orders = meleeFailed(in, eventFault);
+            else recordMeleeFault(in, eventFault);
+            melee = false;
+        }
         if (melee) {
             try {
                 meleeTick(in, orders);
@@ -344,14 +355,23 @@ public final class HadurCore {
     }
 
     /**
+     * Runs a melee event handler, keeping the first exception for the tick to fail closed on
+     * (GATE-4) instead of letting it past the posture gate.
+     */
+    private void meleeEvent(Runnable handler) {
+        try {
+            handler.run();
+        } catch (RuntimeException ex) {
+            if (meleeEventFault == null) meleeEventFault = ex;
+        }
+    }
+
+    /**
      * GATE-4: the melee subsystems threw. Records the fault, vetoes melee for the rest of the
      * round and hands the tick to the duel, from a clean slate, with a fresh set of orders.
      */
     private BotOrders.Builder meleeFailed(BotInput in, RuntimeException ex) {
-        gate.meleeFailed();
-        meleeFaults++;
-        stats.faults++;
-        telemetry.emit("FAULT," + round + "," + in.time() + ",melee," + clean(ex.toString()));
+        recordMeleeFault(in, ex);
         posture = Posture.DUEL;
         inMelee = false;
         focusing = in.others() >= 2;
@@ -359,6 +379,14 @@ public final class HadurCore {
         resetDuelTracking();
         return BotOrders.builder().maxVelocity(Rules.MAX_VELOCITY)
             .turnRadarRight(Double.POSITIVE_INFINITY);
+    }
+
+    /** Counts and logs a melee fault and vetoes melee for the rest of the round (GATE-4). */
+    private void recordMeleeFault(BotInput in, RuntimeException ex) {
+        gate.meleeFailed();
+        meleeFaults++;
+        stats.faults++;
+        telemetry.emit("FAULT," + round + "," + in.time() + ",melee," + clean(ex.toString()));
     }
 
     /**
@@ -371,7 +399,7 @@ public final class HadurCore {
     }
 
     private void onRobotDeath(String name) {
-        melee.onRobotDeath(name);
+        meleeEvent(() -> melee.onRobotDeath(name));
         focus.died(name);
         if (deadThisRound.size() < 64) deadThisRound.add(name);
     }
@@ -635,7 +663,8 @@ public final class HadurCore {
         Point2D.Double myPos = in.location();
         double absBearing = Angles.normalAbsoluteAngle(in.heading() + e.bearing());
         Point2D.Double enemyPos = DiaUtils.project(myPos, absBearing, e.distance());
-        melee.onScan(e.name(), enemyPos, e.distance(), e.energy(), e.heading(), e.velocity(), time);
+        meleeEvent(() -> melee.onScan(e.name(), enemyPos, e.distance(), e.energy(), e.heading(),
+            e.velocity(), time));
         if (inMelee) return;
         // With several opponents alive the duel fights one and ignores the others.
         if (focusing && !e.name().equals(focusTarget(myPos))) return;
@@ -1026,7 +1055,7 @@ public final class HadurCore {
         }
         if (foreign) return;
         if (folder != null && !inMelee) folder.ourHit(lastEnemyDistance, Rules.getBulletDamage(e.power()));
-        melee.onBulletHit(e.name(), e.power());
+        meleeEvent(() -> melee.onBulletHit(e.name(), e.power()));
         ledger.ourBulletHit(e.power());
     }
 
@@ -1035,11 +1064,13 @@ public final class HadurCore {
         if (gate.isSentry(e.name())) return;
         if (focusing && !e.name().equals(focus.target())) {
             // Not the duel's enemy: the melee brain still learns who hurts us.
-            melee.onHitByBullet(e.name(), e.power(), e.heading(), in.location(), in.time());
+            meleeEvent(() -> melee.onHitByBullet(e.name(), e.power(), e.heading(), in.location(),
+                in.time()));
             return;
         }
         ledger.enemyBulletHitUs(e.power());
-        melee.onHitByBullet(e.name(), e.power(), e.heading(), in.location(), in.time());
+        meleeEvent(() -> melee.onHitByBullet(e.name(), e.power(), e.heading(), in.location(),
+            in.time()));
         Point2D.Double bulletLoc = new Point2D.Double(e.x(), e.y());
         Wave hitWave = moveController.findBulletWave(bulletLoc, in.time(), e.name(), e.power());
         if (hitWave != null) {

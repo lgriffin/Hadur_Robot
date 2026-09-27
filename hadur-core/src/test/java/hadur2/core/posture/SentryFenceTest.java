@@ -3,6 +3,7 @@ package hadur2.core.posture;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -55,6 +56,34 @@ class SentryFenceTest {
         assertSame(o, fence.apply(500, 800, 0, 8, o, 0));
         assertFalse(new SentryFence(200, 200).enforceable(100));
         assertSame(o, new SentryFence(200, 200).apply(100, 180, 0, 8, o, 100));
+    }
+
+    @Test
+    @Tag("GATE-3")
+    @DisplayName("GATE-3: orders that could not brake clear of the margin at the horizon are replaced")
+    void brakingCounts() {
+        // South at full speed from y = 250: 12 ticks reach y = 154, still clear, but braking
+        // from 8 takes 12 px more, past the 148 px inset.
+        BotOrders run = new BotOrders(0, Double.POSITIVE_INFINITY, 8, 0, 0, 0);
+        assertFalse(fence.staysSafe(500, 250, Math.PI, 8, run, 100));
+        assertTrue(fence.staysSafe(500, 280, Math.PI, 8, run, 100));
+        assertNotSame(run, fence.apply(500, 250, Math.PI, 8, run, 100));
+    }
+
+    @Test
+    @Tag("GATE-3")
+    @DisplayName("GATE-3: a robot already running at the margin gets the replacement that intrudes least")
+    void replacementIntrudesLeast() {
+        BotOrders keepGoing = new BotOrders(Double.NaN, Double.NaN, Double.NaN, 0.2, 0.3, 1.5);
+        BotOrders f = fence.apply(500, 149, Math.PI, 8, keepGoing, 100);
+        BotOrders stop = new BotOrders(0, 0, 8, 0.2, 0.3, 1.5);
+        double chosen = fence.intrusion(500, 149, Math.PI, 8, f, 100);
+        assertTrue(chosen <= fence.intrusion(500, 149, Math.PI, 8, stop, 100));
+        // It brakes 12 px: 11 px into the 30 px margin, never into the border zone itself.
+        assertEquals(11, chosen, 1e-9);
+        assertTrue(chosen < SentryFence.MARGIN);
+        assertEquals(0.2, f.gunTurn());
+        assertEquals(1.5, f.firePower());
     }
 
     @Test

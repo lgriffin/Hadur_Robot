@@ -42,6 +42,8 @@ public class MeleeHarvester extends BattleAdaptor {
     private int round;
     private int place;
     private int fielded;
+    /** Fighters alive at the last turn seen, Hadur included. */
+    private int aliveAtEnd;
     private String duelOpponent;
     private int sentryHitsTaken, sentryHitsGiven, skippedTurns;
     private boolean placed;
@@ -60,6 +62,7 @@ public class MeleeHarvester extends BattleAdaptor {
         round = e.getRound();
         place = 0;
         fielded = 0;
+        aliveAtEnd = 0;
         duelOpponent = null;
         sentryHitsTaken = sentryHitsGiven = skippedTurns = 0;
         placed = false;
@@ -85,6 +88,7 @@ public class MeleeHarvester extends BattleAdaptor {
         }
         if (me == null) return;
         fielded = fighters;
+        aliveAtEnd = alive;
         boolean meAlive = me.getState() != robocode.control.snapshot.RobotState.DEAD;
         if (!placed && !meAlive) {
             // Hadur died this turn: it placed behind everyone still alive.
@@ -110,10 +114,7 @@ public class MeleeHarvester extends BattleAdaptor {
 
     private boolean isSentry(IRobotSnapshot r) {
         if (r.isSentryRobot()) return true;
-        for (String s : sentries) {
-            if (r.getName().startsWith(s)) return true;
-        }
-        return false;
+        return MeleeReport.isSentry(r.getName(), sentries);
     }
 
     private static IRobotSnapshot byIndex(IRobotSnapshot[] robots, int index) {
@@ -135,7 +136,9 @@ public class MeleeHarvester extends BattleAdaptor {
 
     @Override
     public void onRoundEnded(RoundEndedEvent e) {
-        if (!placed) place = 1;
+        // Alive at the end: first only if alone. A round cut short with others still standing
+        // (the inactivity limit) ranks Hadur behind all of them, never as a win.
+        if (!placed) place = Math.max(1, aliveAtEnd);
         // Won the duel it was handed if it was one of the last two and came first.
         String duelWon = duelOpponent == null ? "-" : place == 1 ? "1" : "0";
         try {

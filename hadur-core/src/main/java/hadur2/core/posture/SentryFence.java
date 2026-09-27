@@ -52,6 +52,16 @@ public final class SentryFence {
     public BotOrders apply(double x, double y, double heading, double velocity, BotOrders o,
                            double border) {
         if (!enforceable(border) || staysSafe(x, y, heading, velocity, o, border)) return o;
+        // Head for the centre, unless braking where it stands keeps it further out of the zone
+        // (a robot already running at the border cannot always turn in time).
+        BotOrders home = toCentre(x, y, heading, o);
+        BotOrders stop = new BotOrders(0, 0, Rules.MAX_VELOCITY, o.gunTurn(), o.radarTurn(),
+            o.firePower());
+        return intrusion(x, y, heading, velocity, stop, border)
+            < intrusion(x, y, heading, velocity, home, border) ? stop : home;
+    }
+
+    private BotOrders toCentre(double x, double y, double heading, BotOrders o) {
         double cx = width / 2, cy = height / 2;
         double turn = Angles.normalRelativeAngle(Math.atan2(cx - x, cy - y) - heading);
         double distance = Math.hypot(cx - x, cy - y);
@@ -64,10 +74,23 @@ public final class SentryFence {
             o.firePower());
     }
 
-    /** Simulates the orders {@link #HORIZON} ticks ahead with the engine's movement rules. */
+    /**
+     * Simulates the orders {@link #HORIZON} ticks ahead with the engine's movement rules, then
+     * a full stop: the orders are safe only if the robot never enters the margin and could
+     * still brake clear of it at the end.
+     */
     public boolean staysSafe(double x, double y, double heading, double velocity, BotOrders o,
                       double border) {
-        if (!safe(x, y, border)) return false;
+        return intrusion(x, y, heading, velocity, o, border) == 0;
+    }
+
+    /**
+     * How deep into the margin the robot gets, at worst, under the orders for
+     * {@link #HORIZON} ticks and then braking to a stop; 0 if it never enters.
+     */
+    public double intrusion(double x, double y, double heading, double velocity, BotOrders o,
+                            double border) {
+        double worst = depth(x, y, border);
         double turnLeft = Double.isNaN(o.bodyTurn()) ? 0 : o.bodyTurn();
         // Without an ahead order the robot keeps going the way it is going.
         double distLeft = Double.isNaN(o.ahead())
@@ -84,9 +107,23 @@ public final class SentryFence {
             x += Math.sin(heading) * v;
             y += Math.cos(heading) * v;
             if (!Double.isInfinite(distLeft)) distLeft -= v;
-            if (!safe(x, y, border)) return false;
+            worst = Math.max(worst, depth(x, y, border));
         }
-        return true;
+        // Then brake: the robot must be able to stop short of the margin.
+        while (v != 0) {
+            v = nextVelocity(v, 0, maxV);
+            x += Math.sin(heading) * v;
+            y += Math.cos(heading) * v;
+            worst = Math.max(worst, depth(x, y, border));
+        }
+        return worst;
+    }
+
+    /** How far ({@code x}, {@code y}) is inside the margin of a {@code border} px zone; 0 if clear. */
+    double depth(double x, double y, double border) {
+        double in = inset(border);
+        return Math.max(0, Math.max(Math.max(in - x, x - (width - in)),
+            Math.max(in - y, y - (height - in))));
     }
 
     /** One tick of the engine's acceleration toward the remaining distance, simplified. */

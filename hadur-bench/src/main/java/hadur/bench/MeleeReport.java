@@ -80,7 +80,7 @@ public final class MeleeReport {
         double sum = 0;
         int n = 0;
         for (Map.Entry<String, double[]> e : b.robots.entrySet()) {
-            if (e.getKey().startsWith(robot) || isSentry(e.getKey(), sentries)) continue;
+            if (sameRobot(e.getKey(), robot) || isSentry(e.getKey(), sentries)) continue;
             double total = us[0] + e.getValue()[0];
             sum += total == 0 ? 50 : 100 * us[0] / total;
             n++;
@@ -104,16 +104,25 @@ public final class MeleeReport {
 
     static double[] find(Battle b, String robot) {
         for (Map.Entry<String, double[]> e : b.robots.entrySet()) {
-            if (e.getKey().startsWith(robot)) return e.getValue();
+            if (sameRobot(e.getKey(), robot)) return e.getValue();
         }
         return null;
     }
 
     static boolean isSentry(String name, Set<String> sentries) {
         for (String s : sentries) {
-            if (name.startsWith(s)) return true;
+            if (sameRobot(name, s)) return true;
         }
         return false;
+    }
+
+    /**
+     * Whether the engine's {@code name} for a robot is the robot configured as {@code configured}:
+     * the same name, or that name with a version after it. A different robot whose name merely
+     * starts the same way is not.
+     */
+    static boolean sameRobot(String name, String configured) {
+        return name.equals(configured) || name.startsWith(configured + " ");
     }
 
     /** The report for {@code battles} of {@code robot} against {@code opponents}. */

@@ -1,6 +1,7 @@
 package hadur.bench;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
@@ -61,5 +62,14 @@ class MeleeReportTest {
         assertTrue(r.contains("1880 melee ticks, 20 duel ticks, 100 focused-duel ticks; 1 rounds vetoed"), r);
         assertTrue(r.contains("longest scan gap 9 ticks"), r);
         assertTrue(r.contains("Skipped turns: 2."), r);
+    }
+
+    @Test
+    void robotsMatchByFullNameNotPrefix() {
+        assertTrue(MeleeReport.sameRobot("hadur2.Hadur 2.2", "hadur2.Hadur"));
+        assertTrue(MeleeReport.sameRobot("hadur2.Hadur 2.2", "hadur2.Hadur 2.2"));
+        assertFalse(MeleeReport.sameRobot("hadur2.HadurClone 1.0", "hadur2.Hadur"));
+        assertTrue(MeleeReport.isSentry("samplesentry.BorderGuard", Set.of("samplesentry.BorderGuard")));
+        assertFalse(MeleeReport.isSentry("samplesentry.BorderGuardClone", Set.of("samplesentry.BorderGuard")));
     }
 }
