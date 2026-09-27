@@ -18,6 +18,7 @@ graph LR
         GC[gun]
         MC[move]
         ML[melee]
+        PT[posture]
         M[model / physics / knn]
         T[port.Telemetry]
         MEM[memory]
@@ -33,6 +34,7 @@ graph LR
     A -- BotInput --> G
     G --> C
     C --> GC & MC
+    C --> PT
     C --> ML
     ML --> M
     GC & MC --> M
@@ -107,7 +109,8 @@ data directory through `RobocodeFileOutputStream`.
 | `knn` | KD-tree and KNN views |
 | `gun` | main KNN gun, anti-surfer gun, gun selection |
 | `move` | wave-surfing movement and its danger formulas; our bullets in flight and the shadows they cast (MOVE-1); go-to surfing |
-| `melee` | the melee brain (MELEE-1..8): opponent tracker, sweep radar, minimum-risk mover, target selector, circular gun, posture strategy, battle-long opponent stats |
+| `posture` | the melee extension's gate (GATE-1..5): `PostureGate` (melee or duel, failing closed), `DuelFocus` (the one opponent the duel fights while several are alive) and `SentryFence` (the sentry border as a wall for the duel's movement) |
+| `melee` | the melee brain (MELEE-2..8): opponent tracker, sweep radar, minimum-risk mover, target selector, circular gun, posture strategy, battle-long opponent stats |
 | `memory` | opponent memory (MEM-1..5, RES-3): lineage keys, the profile, its binary codec, the round folder and the library that loads, saves and evicts; estimates with margins of error, the tiers and the seed layout |
 | `adapt` | recognise and adapt (ADAPT-1..3, DIAL-1..2, RES-4): the opening book, the seed loader and the seed trust |
 | `policy` | aggressive (DIST-1, POW-1, POW-2, END-1, END-2): rolling hit-rate windows, the distance controller, the power policy, the endgame states and the enemy gun-heat estimate; unhittable (MOVE-2, TIME-1, TIME-2): the movement flavour and the tick budget |
@@ -123,16 +126,43 @@ physics, so nothing but the engine's rules decides which drops become waves; mel
 only on the model and physics, and no duel package depends on melee; memory depends only on
 itself and the ports, and no gun, movement, melee, ledger or model code depends on memory;
 the adapt and policy packages see neither `BotInput` nor `BotEvent` (DIAL-2), and no gun,
-movement or lower package depends on them.
+movement or lower package depends on them; the posture gate depends only on the model and
+physics, and only `HadurCore` sees it.
+
+`DuelIdentityTest` adds the melee extension's rule that "1v1 is sacred": it pins a hash of
+every source file in the duel's packages (adapt, gun, knn, ledger, memory, move, physics,
+policy, shield), taken at M0, so melee work that edits one fails the build.
 
 ## Melee and duel
 
-`HadurCore` picks the brain each tick from the number of opponents alive (MELEE-1). With two
-or more, every scan, hit and death goes to `melee.MeleeController`, which returns the radar
-sweep, a destination and the aim; the duel's waves, ledger and guns are not fed. When the
-count drops to one, the core forgets its duel tracking and lifts the melee speed limit
-(MELEE-2), and the duel machinery starts from the survivor's next scan. A 1v1 battle never
-enters melee, so the duel's replay fixtures are unchanged.
+Melee is a second posture of the same robot, and the duel is the default. Each tick,
+before handling events, `HadurCore` asks the `posture.PostureGate` which set of subsystems
+drives, and never mixes them:
+
+- **Melee** (GATE-1) while two or more opponents are alive, no sentry robot is alive or has
+  been scanned this round, and the melee subsystems have not thrown this round. Every
+  scan, hit and death then goes to `melee.MeleeController`, which returns the radar sweep, a
+  destination and the aim; the duel's waves, ledger and guns are not fed.
+- **The duel** otherwise, from the same tick (GATE-2). When melee hands over, the core
+  forgets its duel tracking and lifts the melee speed limit (MELEE-2), and the duel starts
+  from the survivor's next scan.
+
+Robocode leaves sentries out of `getOthers()`. A scanned sentry vetoes melee for the rest
+of the round (GATE-3), as does a melee exception, which is caught, recorded as a `FAULT`
+line and counted (GATE-4). Sentries are never passed to the melee tracker, the duel or
+opponent memory, and their bullets never reach the duel's ledger (GATE-5).
+
+When the duel drives with several opponents alive (a vetoed melee), `posture.DuelFocus`
+names the one it fights: the closest when the duel takes over, kept until it dies. Scans
+and hits of the others go only to the melee tracker, so the duel's model is about one robot.
+With sentries on the field, `posture.SentryFence` checks the duel's orders by simulating 12
+ticks of the engine's movement, and replaces them with a drive to the centre if they would
+come within 30 px of the border zone.
+
+A 1v1 battle never enters melee, and none of this routing runs in one: the duel's replay
+fixtures are unchanged. Each round of a battle with several opponents or sentries ends
+with an `M` record: ticks per posture, the veto, melee faults, the longest scan gap, ticks
+aimed at a dead robot and our bullets that hit a sentry.
 
 ## Opponent memory
 

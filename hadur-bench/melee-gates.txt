@@ -1,0 +1,7 @@
+# The melee plan's gates in one command (run from hadur-bench/):
+#   mvn -q compile exec:java -Dexec.args="--suite melee-gates.txt --report ../docs/bench/<name>.md"
+# Each line: label | bench options. Command-line options (robot, jar) apply to every line.
+duel | --set reference-set.txt --seeds 5 --rounds 35
+sentry | --set melee-sentry.txt --melee true --field 1000x1000 --rounds 3 --seeds 3 --sentry-border 100
+challenge | --set melee-challenge.txt --melee true --field 1000x1000 --rounds 100 --seeds 1
+reference | --set melee-reference.txt --melee true --field 1000x1000 --rounds 35 --seeds 5

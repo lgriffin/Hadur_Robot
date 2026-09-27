@@ -28,7 +28,6 @@ EARS requirements from the Hadur 2 technical direction. This file is the source 
 | END-2 | State | While enemy energy is 0, movement shall drive directly at the enemy. | S5 |
 | TIME-1 | Unwanted | If the previous tick exceeded 70% of the tick allowance, then the core shall reduce its computation level for the next tick. | S6 |
 | TIME-2 | Event | When a skipped-turn event is received, the core shall drop one computation level for the remainder of the round and record it. | S6 |
-| MELEE-1 | State | While two or more opponents are alive, the core shall drive the robot with the melee subsystems (sweep radar, minimum-risk movement, melee gun) instead of the duel subsystems. | S2 |
 | MELEE-2 | Event | When the number of opponents alive falls from two or more to one, the core shall discard its duel tracking and restore full speed before handling that tick's scans. | S2 |
 | MELEE-3 | State | While in melee, the radar shall sweep the full circle until every living opponent has been scanned, then keep turning toward the opponent scanned longest ago. | S2 |
 | MELEE-4 | State | While in melee, movement shall head for the candidate point of least risk, where risk grows with each opponent's energy over distance squared, near walls and corners, between two opponents, and with fewer escape routes. | S2 |
@@ -36,6 +35,25 @@ EARS requirements from the Hadur 2 technical direction. This file is the source 
 | MELEE-6 | Ubiquitous | The melee gun shall aim with circular prediction, fall back to linear prediction while the target's turn rate is unknown, and fire no more power than needed to kill the target. | S2 |
 | MELEE-7 | Unwanted | If the melee target's last scan is more than 5 ticks old, then the core shall not fire at it. | S2 |
 | MELEE-8 | State | While two opponents within 300 px of each other, and further from us than from each other, are both losing energy to others, the strategy shall keep clear of their fight and halve fire power. | S2 |
+| GATE-1 | State | While two or more opponents are alive, no sentry robot is alive, no sentry has been scanned this round and the melee subsystems have not failed this round, the core shall drive the robot with the melee subsystems instead of the duel subsystems. | M1 |
+| GATE-2 | Unwanted | If fewer than two opponents are alive, then the core shall drive the robot with the duel subsystems from that same tick. | M1 |
+| GATE-3 | Unwanted | If a scanned robot reports that it is a sentry, then the core shall use the duel subsystems for the rest of the round and shall treat the sentry border as a wall. | M1 |
+| GATE-4 | Unwanted | If the melee subsystems throw, then the core shall record the fault and use the duel subsystems for the rest of the round. | M1 |
+| GATE-5 | Ubiquitous | The core shall never target, count or profile a sentry robot as an opponent. | M1 |
+| MRADAR-1 | State | While in melee with four or more opponents alive, the radar shall complete a full sweep at least every 8 ticks. | M2 |
+| MRADAR-2 | State | While in melee with two or three opponents alive, the radar shall turn toward the opponent scanned longest ago. | M2 |
+| MSENSE-1 | Event | When an opponent's death is reported, the core shall drop it from the melee movement's risk and from targeting within the same tick. | M2 |
+| MSENSE-2 | Event | When an opponent's energy drops by between 0.1 and 3.0 that the core cannot explain as damage, the core shall record a shot from it at the power of the drop. | M2 |
+| MMOVE-1 | State | While in melee, movement shall choose its destination by minimum risk over at least 120 candidate points each decision. | M3 |
+| MMOVE-2 | State | While in melee, movement shall weight any point where it would be an opponent's closest robot at least twice the base risk. | M3 |
+| MMOVE-3 | Event | When an opponent's shot is recorded, movement shall simulate a head-on and a linear bullet from it and include both in the risk until they pass. | M3 |
+| MMOVE-4 | State | While in melee with two opponents alive, movement shall shrink its candidate ring and increase its lateral preference. | M3 |
+| MGUN-1 | State | While in melee, the gun shall compute firing solutions for every opponent scanned within the last 8 ticks and fire at the angle of highest combined hit probability. | M4 |
+| MGUN-2 | Event | When an opponent's energy is at most 16, the gun shall double that opponent's weight and fire the power that exactly kills it. | M4 |
+| MGUN-3 | State | While in melee, the gun shall choose bullet power by distance, own energy and target energy per the energy table, and shall not fire while its own energy is below 1.0. | M4 |
+| MGUN-4 | State | While in melee, the core shall emit a targeting wave at every opponent on every gun-heat cycle. | M4 |
+| MMEM-1 | Event | When a round of a melee battle ends, the store shall persist each opponent's melee profile block alongside its 1v1 profile. | M5 |
+| MMEM-2 | Event | When the number of opponents alive falls to one, the core shall hand the survivor's profile and the waves in flight to the duel subsystems. | M5 |
 | REL-1 | Ubiquitous | The robot jar shall contain only class files that a Java 11 runtime can load, so that every RoboRumble client can run it. | S2 |
 | SHIELD-1 | State | While at least 4 of our last 20 resolved duel bullets, and at least a quarter of them, were destroyed by enemy bullets, the core shall treat the enemy as a bullet shielder for the rest of the battle. | S2 |
 | SHIELD-2 | State | While the enemy is treated as a bullet shielder, the gun shall offset each shot's aim by between 15% and 50% of the target's angular half-width, varying the offset deterministically from shot to shot and holding it from aiming until the shot is fired. | S2 |
@@ -46,7 +64,8 @@ EARS requirements from the Hadur 2 technical direction. This file is the source 
 | RES-5 | Ubiquitous | Every degradation and fault counter shall be included in the round statistics and the bench report. | S1 |
 | RES-6 | Ubiquitous | The core shall contain no use of unseeded randomness, threads, reflection, or file I/O. | S1 |
 
-Stage is where the requirement is first implemented; see the stage plan S0–S7.
+Stage is where the requirement is first implemented: S0–S7 in the Hadur 2 stage plan, M0–M6
+in the melee extension plan ("Hadur 2 — Melee Extension Plan", 27 Sep 2026).
 
 RES-3 was reworded in S3 without changing its intent. It first said "rename", but Robocode's
 sandbox punishes a robot that renames a file (writes must go through
@@ -159,3 +178,32 @@ The S6 group (MOVE-1, MOVE-2, TIME-1, TIME-2) was implemented with these reading
 S7 adds no requirements. It keeps the MELEE group, although the plan's S7 was to cut it:
 2.1 had already entered the MeleeRumble with it, and melee runs only while two or more
 opponents are alive, so the duel requirements are untouched by it.
+
+## The melee extension (M0–M6)
+
+The melee extension plan keeps Hadur a duellist and adds melee as a second posture behind
+a gate that fails closed to the duel. Its requirements are the GATE, MRADAR, MSENSE, MMOVE,
+MGUN and MMEM groups, traced to tests like the rest; the build's `hadur.melee.stage` says
+which are due. They extend, and in places replace, the MELEE group from release 2.1.
+
+- **The plan's `hadur117` packages are `hadur2` here.** The gate lives in
+  `hadur2.core.posture` and the melee subsystems in `hadur2.core.melee`.
+- **Duel byte-identity** is checked on sources, not class files, because class bytes change
+  with the JDK: `DuelIdentityTest` pins a hash of every file in the duel's packages (adapt,
+  gun, knn, ledger, memory, move, physics, policy, shield) as of M0. The replay fixtures pin
+  the orchestrator's duel path tick for tick (CORE-2).
+- **Robocode leaves sentries out of `getOthers()`**, so GATE-1's "two or more opponents" reads
+  it directly. With sentries on the field and several opponents alive, the duel fights the
+  closest opponent and keeps it until it dies; the sentry border is a wall because the
+  duel's orders are simulated 12 ticks ahead and replaced by a drive to the centre if they
+  would come within 30 px of the border zone. The duel's own movement code is not changed.
+- **MSENSE-1 and MSENSE-2** are not in the plan's EARS list. They state M2's exit criterion
+  ("no ghost targets after deaths") and the energy-drop events M2 builds for M3.
+
+## Retired requirements
+
+A retired requirement keeps its ID; no new requirement reuses it.
+
+| ID | Requirement | Retired | Replaced by |
+|---|---|---|---|
+| MELEE-1 | While two or more opponents are alive, the core shall drive the robot with the melee subsystems (sweep radar, minimum-risk movement, melee gun) instead of the duel subsystems. | M1 | GATE-1, GATE-2 (sentries and melee faults now keep the duel) |

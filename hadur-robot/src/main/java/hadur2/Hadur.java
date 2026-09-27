@@ -96,7 +96,9 @@ public class Hadur extends AdvancedRobot {
         BotInput in = new BotInput(getTime(), getRoundNum(), getX(), getY(),
             getHeadingRadians(), getVelocity(), getEnergy(), getGunHeat(),
             getGunCoolingRate(), getGunHeadingRadians(), getGunTurnRemainingRadians(),
-            getRadarHeadingRadians(), getOthers(), pending);
+            getRadarHeadingRadians(), getOthers(), pending, getNumSentries(),
+            // The border size has a default even without sentries; it only matters with them.
+            getNumSentries() > 0 ? getSentryBorderSize() : 0);
         pending.clear();
         return in;
     }
@@ -116,7 +118,7 @@ public class Hadur extends AdvancedRobot {
     @Override
     public void onScannedRobot(ScannedRobotEvent e) {
         pending.add(new BotEvent.Scan(e.getName(), e.getBearingRadians(), e.getDistance(),
-            e.getEnergy(), e.getHeadingRadians(), e.getVelocity()));
+            e.getEnergy(), e.getHeadingRadians(), e.getVelocity(), e.isSentryRobot()));
     }
 
     @Override

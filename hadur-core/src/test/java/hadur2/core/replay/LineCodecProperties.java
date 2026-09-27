@@ -40,6 +40,35 @@ class LineCodecProperties {
         assertEquals(name, LineCodec.unesc(LineCodec.esc(name)));
     }
 
+    @Property
+    @Tag("GATE-3")
+    void sentryInputsRoundTrip(@ForAll("inputs") BotInput in,
+                               @ForAll("sentries") int sentries, @ForAll("anyDouble") double border) {
+        BotInput withSentries = new BotInput(in.time(), in.round(), in.x(), in.y(), in.heading(),
+            in.velocity(), in.energy(), in.gunHeat(), in.gunCoolingRate(), in.gunHeading(),
+            in.gunTurnRemaining(), in.radarHeading(), in.others(), in.events(), sentries, border);
+        assertEquals(withSentries, LineCodec.decodeInput(LineCodec.encode(withSentries)));
+    }
+
+    @Example
+    @Tag("GATE-3")
+    void linesWithoutSentriesReadAsBefore() {
+        // The fixtures recorded before M1 have 15 fields and no sentry flags.
+        String old = "I,3,0,1.0,2.0,0.0,0.0,100.0,0.0,0.1,0.0,0.0,0.0,1,S:a:0.5:300.0:100.0:0.0:8.0";
+        BotInput in = LineCodec.decodeInput(old);
+        assertEquals(0, in.numSentries());
+        assertEquals(0.0, in.sentryBorderSize());
+        assertEquals(false, ((BotEvent.Scan) in.events().get(0)).sentry());
+        assertEquals(old, LineCodec.encode(in));
+        BotEvent.Scan sentry = new BotEvent.Scan("s", 0, 1, 2, 3, 4, true);
+        assertEquals(sentry, LineCodec.decodeEvent(LineCodec.encode(sentry)));
+    }
+
+    @Provide
+    Arbitrary<Integer> sentries() {
+        return Arbitraries.integers().between(0, 3);
+    }
+
     @Example
     void noneOrdersKeepTheirNaNs() {
         assertEquals(BotOrders.NONE, LineCodec.decodeOrders(LineCodec.encode(BotOrders.NONE)));
@@ -69,6 +98,9 @@ class LineCodecProperties {
         Arbitrary<String> name = Arbitraries.strings().ofMaxLength(20);
         return Arbitraries.oneOf(
             Combinators.combine(name, d, d, d, d, d).as(BotEvent.Scan::new),
+            // M1: a scan's sentry flag.
+            Combinators.combine(name, d, d, d, d, d).as((n, b, di, en, h, v) ->
+                new BotEvent.Scan(n, b, di, en, h, v, true)),
             Combinators.combine(name, d, d, d, d).as(BotEvent.HitByBullet::new),
             Combinators.combine(name, d, d).as(BotEvent.BulletHit::new),
             Combinators.combine(d, d, d, d).as(BotEvent.BulletHitBullet::new),

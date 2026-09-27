@@ -22,8 +22,17 @@ public final class BotInput {
     private final double radarHeading;
     private final int others;
     private final List<BotEvent> events;
+    /** Sentry robots still alive, which {@link #others()} leaves out (Robocode 1.9). */
+    private final int numSentries;
+    /** How far in from each wall the sentries guard; 0 without sentries. */
+    private final double sentryBorderSize;
 
     public BotInput(long time, int round, double x, double y, double heading, double velocity, double energy, double gunHeat, double gunCoolingRate, double gunHeading, double gunTurnRemaining, double radarHeading, int others, List<BotEvent> events) {
+        this(time, round, x, y, heading, velocity, energy, gunHeat, gunCoolingRate, gunHeading,
+            gunTurnRemaining, radarHeading, others, events, 0, 0);
+    }
+
+    public BotInput(long time, int round, double x, double y, double heading, double velocity, double energy, double gunHeat, double gunCoolingRate, double gunHeading, double gunTurnRemaining, double radarHeading, int others, List<BotEvent> events, int numSentries, double sentryBorderSize) {
         this.time = time;
         this.round = round;
         this.x = x;
@@ -38,6 +47,8 @@ public final class BotInput {
         this.radarHeading = radarHeading;
         this.others = others;
         this.events = List.copyOf(events);
+        this.numSentries = numSentries;
+        this.sentryBorderSize = sentryBorderSize;
     }
 
     public long time() {
@@ -96,6 +107,14 @@ public final class BotInput {
         return events;
     }
 
+    public int numSentries() {
+        return numSentries;
+    }
+
+    public double sentryBorderSize() {
+        return sentryBorderSize;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -114,17 +133,19 @@ public final class BotInput {
             && Double.compare(gunTurnRemaining, that.gunTurnRemaining) == 0
             && Double.compare(radarHeading, that.radarHeading) == 0
             && others == that.others
-            && java.util.Objects.equals(events, that.events);
+            && java.util.Objects.equals(events, that.events)
+            && numSentries == that.numSentries
+            && Double.compare(sentryBorderSize, that.sentryBorderSize) == 0;
     }
 
     @Override
     public int hashCode() {
-        return java.util.Objects.hash(time, round, x, y, heading, velocity, energy, gunHeat, gunCoolingRate, gunHeading, gunTurnRemaining, radarHeading, others, events);
+        return java.util.Objects.hash(time, round, x, y, heading, velocity, energy, gunHeat, gunCoolingRate, gunHeading, gunTurnRemaining, radarHeading, others, events, numSentries, sentryBorderSize);
     }
 
     @Override
     public String toString() {
-        return "BotInput[time=" + time + ", round=" + round + ", x=" + x + ", y=" + y + ", heading=" + heading + ", velocity=" + velocity + ", energy=" + energy + ", gunHeat=" + gunHeat + ", gunCoolingRate=" + gunCoolingRate + ", gunHeading=" + gunHeading + ", gunTurnRemaining=" + gunTurnRemaining + ", radarHeading=" + radarHeading + ", others=" + others + ", events=" + events + "]";
+        return "BotInput[time=" + time + ", round=" + round + ", x=" + x + ", y=" + y + ", heading=" + heading + ", velocity=" + velocity + ", energy=" + energy + ", gunHeat=" + gunHeat + ", gunCoolingRate=" + gunCoolingRate + ", gunHeading=" + gunHeading + ", gunTurnRemaining=" + gunTurnRemaining + ", radarHeading=" + radarHeading + ", others=" + others + ", events=" + events + ", numSentries=" + numSentries + ", sentryBorderSize=" + sentryBorderSize + "]";
     }
 
     public java.awt.geom.Point2D.Double location() {

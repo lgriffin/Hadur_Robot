@@ -29,7 +29,7 @@ class MeleeControllerTest {
     }
 
     @Test
-    @Tag("MELEE-1")
+    @Tag("MELEE-4")
     void movesAimsAndFiresAtAFreshTarget() {
         scan(controller.tracker, "a", 400, 500, 20, 0);
         scan(controller.tracker, "b", 100, 100, 100, 0);

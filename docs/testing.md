@@ -46,8 +46,9 @@ named.
 `RequirementsTraceabilityTest` reads the requirements table in `docs/requirements.md` and
 every test source in the three modules. It fails when:
 
-- a requirement whose stage is at or before `hadur.stage` (a root pom property, now `S7`)
-  is named by no test;
+- a requirement whose stage is at or before the build's stage is named by no test. The
+  duel plan's S0–S7 are compared with `hadur.stage` (a root pom property, now `S7`) and the
+  melee extension's M0–M6 with `hadur.melee.stage`;
 - a tag names an ID that is not a requirement, so IDs cannot drift;
 - a jqwik `*Properties` class tags with JUnit's `@Tag`, which would make jqwik skip it.
 
@@ -75,6 +76,13 @@ The tick time (`TickTime`) is recorded like any other event, so the tick budget 
 too. The profile fixtures in `profiles/` (`v1.hp`, `v2.hp`) keep old profile formats
 loadable.
 
+## The duel is pinned
+
+The melee extension may not change the duel. Two checks hold it to that on every build:
+the replay fixtures (the duel's orders, tick for tick) and `DuelIdentityTest`, which pins a
+hash of every source file in the duel's packages as of M0. A stage meant to change the duel
+re-pins the snapshot with `-Dhadur.duel.snapshot=write` and says so in its pull request.
+
 ## The bench
 
 Unit and replay tests say the code does what it was written to do; the bench says whether
@@ -83,6 +91,12 @@ that wins. Every stage was gated on it: 35 rounds × 5 seeds against the referen
 and a 95% interval. The reports are in [bench/](bench/), and
 [strategy-evolution.md](strategy-evolution.md) reads them stage by stage. The bench is
 not part of `mvn verify`: it needs the opponents' jars and takes minutes per opponent.
+
+The melee stages are gated on `hadur-bench/melee-gates.txt`, a suite that runs the duel's
+reference bench and the melee benches (sentry safety, the sample challenge, the reference
+field) in one command. Melee reports give Hadur's APS and survival the MeleeRumble way,
+pairwise against each other robot, and read the per-round places, the rounds that ended
+as a duel and the sentry hits from the engine's snapshots.
 
 The bench also checks things no unit test can, against the engine's own record of each
 battle (`truth.log.gz`): which of Hadur's inferred waves were real shots (WAVE-1/2), and

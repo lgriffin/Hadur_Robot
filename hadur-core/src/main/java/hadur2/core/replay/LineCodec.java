@@ -13,9 +13,13 @@ import java.util.List;
  *
  * <pre>
  * I,time,round,x,y,heading,velocity,energy,gunHeat,gunCoolingRate,gunHeading,
- *   gunTurnRemaining,radarHeading,others,event;event;...
+ *   gunTurnRemaining,radarHeading,others,event;event;...[,numSentries,sentryBorderSize]
  * O,bodyTurn,ahead,maxVelocity,gunTurn,radarTurn,firePower
  * </pre>
+ *
+ * <p>The sentry fields (M1) are written only when there are sentries, and a scan's sentry
+ * flag only when it is set, so lines from battles without sentries, and the fixtures
+ * recorded before M1, read the same.</p>
  *
  * <p>An event is its type letter and fields separated by {@code :}. Names escape
  * {@code % , ; :} as {@code %XX}. Pure string work: no I/O here (RES-6).</p>
@@ -37,6 +41,9 @@ public final class LineCodec {
             if (i > 0) b.append(';');
             b.append(encode(in.events().get(i)));
         }
+        if (in.numSentries() != 0 || Double.compare(in.sentryBorderSize(), 0.0) != 0) {
+            b.append(',').append(in.numSentries()).append(',').append(in.sentryBorderSize());
+        }
         return b.toString();
     }
 
@@ -47,7 +54,7 @@ public final class LineCodec {
 
     public static BotInput decodeInput(String line) {
         String[] f = line.split(",", -1);
-        if (f.length != 15 || !f[0].equals("I")) {
+        if ((f.length != 15 && f.length != 17) || !f[0].equals("I")) {
             throw new IllegalArgumentException("Not an input line: " + line);
         }
         List<BotEvent> events = new ArrayList<>();
@@ -56,7 +63,8 @@ public final class LineCodec {
         }
         return new BotInput(Long.parseLong(f[1]), Integer.parseInt(f[2]), d(f[3]), d(f[4]),
             d(f[5]), d(f[6]), d(f[7]), d(f[8]), d(f[9]), d(f[10]), d(f[11]), d(f[12]),
-            Integer.parseInt(f[13]), events);
+            Integer.parseInt(f[13]), events,
+            f.length == 17 ? Integer.parseInt(f[15]) : 0, f.length == 17 ? d(f[16]) : 0);
     }
 
     public static BotOrders decodeOrders(String line) {
@@ -70,8 +78,11 @@ public final class LineCodec {
     static String encode(BotEvent e) {
         if (e instanceof BotEvent.Scan) {
             BotEvent.Scan s = (BotEvent.Scan) e;
-            return join("S", esc(s.name()), s.bearing(), s.distance(), s.energy(), s.heading(),
-                s.velocity());
+            return s.sentry()
+                ? join("S", esc(s.name()), s.bearing(), s.distance(), s.energy(), s.heading(),
+                    s.velocity(), 1)
+                : join("S", esc(s.name()), s.bearing(), s.distance(), s.energy(), s.heading(),
+                    s.velocity());
         } else if (e instanceof BotEvent.HitByBullet) {
             BotEvent.HitByBullet h = (BotEvent.HitByBullet) e;
             return join("H", esc(h.name()), h.power(), h.x(), h.y(), h.heading());
@@ -112,7 +123,8 @@ public final class LineCodec {
     static BotEvent decodeEvent(String s) {
         String[] f = s.split(":", -1);
         switch (f[0]) {
-            case "S": return new BotEvent.Scan(unesc(f[1]), d(f[2]), d(f[3]), d(f[4]), d(f[5]), d(f[6]));
+            case "S": return new BotEvent.Scan(unesc(f[1]), d(f[2]), d(f[3]), d(f[4]), d(f[5]), d(f[6]),
+                f.length > 7 && f[7].equals("1"));
             case "H": return new BotEvent.HitByBullet(unesc(f[1]), d(f[2]), d(f[3]), d(f[4]), d(f[5]));
             // S6 appended our bullet's heading to B, X and M; older fixtures lack it.
             case "B": return new BotEvent.BulletHit(unesc(f[1]), d(f[2]), d(f[3]), opt(f, 4));

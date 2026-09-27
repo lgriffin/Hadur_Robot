@@ -10,7 +10,7 @@ package hadur2.core.model;
  */
 public interface BotEvent {
 
-    /** The radar saw a robot. */
+    /** The radar saw a robot. {@code sentry} marks a Robocode 1.9 border sentry. */
     public static final class Scan implements BotEvent {
         private final String name;
         private final double bearing;
@@ -18,14 +18,20 @@ public interface BotEvent {
         private final double energy;
         private final double heading;
         private final double velocity;
+        private final boolean sentry;
 
         public Scan(String name, double bearing, double distance, double energy, double heading, double velocity) {
+            this(name, bearing, distance, energy, heading, velocity, false);
+        }
+
+        public Scan(String name, double bearing, double distance, double energy, double heading, double velocity, boolean sentry) {
             this.name = name;
             this.bearing = bearing;
             this.distance = distance;
             this.energy = energy;
             this.heading = heading;
             this.velocity = velocity;
+            this.sentry = sentry;
         }
 
         public String name() {
@@ -52,6 +58,10 @@ public interface BotEvent {
             return velocity;
         }
 
+        public boolean sentry() {
+            return sentry;
+        }
+
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
@@ -62,17 +72,18 @@ public interface BotEvent {
                 && Double.compare(distance, that.distance) == 0
                 && Double.compare(energy, that.energy) == 0
                 && Double.compare(heading, that.heading) == 0
-                && Double.compare(velocity, that.velocity) == 0;
+                && Double.compare(velocity, that.velocity) == 0
+                && sentry == that.sentry;
         }
 
         @Override
         public int hashCode() {
-            return java.util.Objects.hash(name, bearing, distance, energy, heading, velocity);
+            return java.util.Objects.hash(name, bearing, distance, energy, heading, velocity, sentry);
         }
 
         @Override
         public String toString() {
-            return "Scan[name=" + name + ", bearing=" + bearing + ", distance=" + distance + ", energy=" + energy + ", heading=" + heading + ", velocity=" + velocity + "]";
+            return "Scan[name=" + name + ", bearing=" + bearing + ", distance=" + distance + ", energy=" + energy + ", heading=" + heading + ", velocity=" + velocity + (sentry ? ", sentry" : "") + "]";
         }
     }
 

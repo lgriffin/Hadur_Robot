@@ -6,7 +6,7 @@ import hadur2.core.adapt.SeedLoader;
 import hadur2.core.adapt.SeedTrust;
 import hadur2.core.gun.GunController;
 import hadur2.core.ledger.EnergyLedger;
-import hadur2.core.melee.BattleMode;
+import hadur2.core.melee.EnemyInfo;
 import hadur2.core.melee.MeleeController;
 import hadur2.core.memory.Estimate;
 import hadur2.core.memory.LineageKey;
@@ -28,10 +28,18 @@ import hadur2.core.policy.HitWindow;
 import hadur2.core.policy.MoveFlavour;
 import hadur2.core.policy.PowerPolicy;
 import hadur2.core.policy.TickBudget;
+import hadur2.core.posture.DuelFocus;
+import hadur2.core.posture.Posture;
+import hadur2.core.posture.PostureGate;
+import hadur2.core.posture.SentryFence;
 import hadur2.core.shield.AimJitter;
 import hadur2.core.shield.ShieldDetector;
 import java.awt.geom.Point2D;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Hadur's brain. One instance lives for a whole battle; {@link #tick} turns each
@@ -42,8 +50,14 @@ import java.util.Locale;
  * <p>Per tick it handles the tick's events first, then runs the main loop body, the same
  * order in which Robocode runs event handlers and then {@code run()}.</p>
  *
- * <p>While two or more opponents are alive the {@link MeleeController} drives (MELEE-1);
- * once one is left, the duel machinery below takes over from a clean slate (MELEE-2).</p>
+ * <p>The {@link PostureGate} picks the subsystems each tick, failing closed to the duel: the
+ * {@link MeleeController} drives while two or more opponents are alive, no sentry is on the
+ * field or has been scanned this round, and melee has not thrown this round (GATE-1 to
+ * GATE-4). Once one opponent is left, the duel machinery below takes over from a clean slate
+ * (MELEE-2). When the duel drives with several opponents alive it fights one, the
+ * {@link DuelFocus}, and ignores the rest; with sentries about, the {@link SentryFence} keeps
+ * its movement out of their border. Sentries are never tracked, targeted or profiled (GATE-5).
+ * The melee extension adds this routing and leaves the duel's packages untouched.</p>
  *
  * <p>In a duel with a {@link ProfileStore}, the first scan loads the opponent's profile
  * (MEM-1), each round's observations are folded into it when the round ends (MEM-2), and
@@ -138,6 +152,21 @@ public final class HadurCore {
     private boolean inMelee;
     private MeleeController.Command lastMeleeCommand;
 
+    /** M1: the posture gate, the duel's focus among several opponents, and the sentry fence. */
+    private final PostureGate gate = new PostureGate();
+    private final DuelFocus focus = new DuelFocus();
+    private final SentryFence fence;
+    private final int enemiesTotal;
+    /** The duel is driving while two or more opponents are alive (a vetoed melee). */
+    private boolean focusing;
+    private Posture posture = Posture.DUEL;
+    /** Opponents that died this round, to catch the melee aiming at a dead robot (M2's gate). */
+    private final Set<String> deadThisRound = new LinkedHashSet<>();
+    /** The first exception a melee event handler threw this tick (GATE-4). */
+    private RuntimeException meleeEventFault;
+    /** Per-round counters for the M record. */
+    private int meleeTicks, duelTicks, focusTicks, meleeFaults, ghostTicks, sentryHits, maxScanGap;
+
     public HadurCore(double fieldWidth, double fieldHeight, int enemiesTotal, Telemetry telemetry) {
         this(fieldWidth, fieldHeight, enemiesTotal, telemetry, null);
     }
@@ -145,6 +174,13 @@ public final class HadurCore {
     /** A core that remembers opponents in {@code store} (null for none). */
     public HadurCore(double fieldWidth, double fieldHeight, int enemiesTotal, Telemetry telemetry,
                      ProfileStore store) {
+        this(fieldWidth, fieldHeight, enemiesTotal, telemetry, store,
+            new MeleeController(new BattleField(fieldWidth, fieldHeight)));
+    }
+
+    /** A core with the given melee brain; tests use it to make the melee fail (GATE-4). */
+    public HadurCore(double fieldWidth, double fieldHeight, int enemiesTotal, Telemetry telemetry,
+                     ProfileStore store, MeleeController melee) {
         this.battleField = new BattleField(fieldWidth, fieldHeight);
         this.predictor = new MovementPredictor(battleField);
         this.gunController = new GunController(battleField, enemiesTotal);
@@ -155,7 +191,9 @@ public final class HadurCore {
         this.enemyStateLog = new RobotStateLog();
         this.ledger = new EnergyLedger(fieldWidth, fieldHeight);
         this.telemetry = telemetry;
-        this.melee = new MeleeController(battleField);
+        this.melee = melee;
+        this.fence = new SentryFence(fieldWidth, fieldHeight);
+        this.enemiesTotal = enemiesTotal;
         this.library = store != null && enemiesTotal == 1 ? new ProfileLibrary(store) : null;
         this.fieldWidth = fieldWidth;
         this.fieldHeight = fieldHeight;
@@ -172,6 +210,9 @@ public final class HadurCore {
         resetRoundState();
         if (enemyGunHeat != null) enemyGunHeat.newRound();
         budget.newRound();
+        gate.newRound();
+        meleeTicks = duelTicks = focusTicks = meleeFaults = ghostTicks = sentryHits = maxScanGap = 0;
+        deadThisRound.clear();
     }
 
     /**
@@ -191,6 +232,8 @@ public final class HadurCore {
         meleeBulletsInFlight = 0;
         aimCarriesJitter = false;
         inMelee = false;
+        focusing = false;
+        focus.clear();
         lastMeleeCommand = null;
         resetDuelTracking();
     }
@@ -221,23 +264,40 @@ public final class HadurCore {
     public BotOrders tick(BotInput in) {
         BotOrders.Builder orders = BotOrders.builder();
         lastTickTime = in.time();
-        // MELEE-1: melee while more than one opponent is alive, a duel otherwise.
-        boolean melee = BattleMode.fromOthers(in.others()) == BattleMode.MELEE;
+        // GATE-3: a sentry scanned this tick vetoes melee before this tick's orders.
+        for (BotEvent e : in.events()) {
+            if (e instanceof BotEvent.Scan && ((BotEvent.Scan) e).sentry()) {
+                gate.sentryScanned(((BotEvent.Scan) e).name());
+            }
+        }
+        // GATE-1, GATE-2: melee only while the gate allows it, the duel otherwise.
+        posture = gate.evaluate(in.others(), in.numSentries());
+        boolean melee = posture == Posture.MELEE;
+        if (melee) measureScanGap(in.time());
         if (inMelee && !melee) {
             // MELEE-2: the survivor was never tracked as a duel opponent; start fresh.
             resetDuelTracking();
             orders.maxVelocity(Rules.MAX_VELOCITY);
         }
         inMelee = melee;
+        boolean wasFocusing = focusing;
+        focusing = !melee && in.others() >= 2;
+        if (wasFocusing && !focusing) focus.clear();
 
         for (BotEvent e : in.events()) {
-            if (e instanceof BotEvent.Scan) onScan(in, (BotEvent.Scan) e, orders);
+            if (e instanceof BotEvent.Scan) {
+                BotEvent.Scan scan = (BotEvent.Scan) e;
+                // GATE-5: a sentry is never tracked, targeted or profiled.
+                if (!scan.sentry() && !gate.isSentry(scan.name())) onScan(in, scan, orders);
+            }
             else if (e instanceof BotEvent.HitByBullet) onHitByBullet(in, (BotEvent.HitByBullet) e);
             else if (e instanceof BotEvent.BulletHitBullet) onBulletHitBullet(in, (BotEvent.BulletHitBullet) e);
             else if (e instanceof BotEvent.BulletHit) onBulletHit((BotEvent.BulletHit) e);
             else if (e instanceof BotEvent.BulletMissed) onBulletMissed((BotEvent.BulletMissed) e);
-            else if (e instanceof BotEvent.HitRobot) ledger.robotsCollided();
-            else if (e instanceof BotEvent.RobotDeath) this.melee.onRobotDeath(((BotEvent.RobotDeath) e).name());
+            else if (e instanceof BotEvent.HitRobot) {
+                if (!foreign(((BotEvent.HitRobot) e).name())) ledger.robotsCollided();
+            }
+            else if (e instanceof BotEvent.RobotDeath) onRobotDeath(((BotEvent.RobotDeath) e).name());
             else if (e instanceof BotEvent.SkippedTurn) onSkippedTurn(in);
             else if (e instanceof BotEvent.TickTime) onTickTime((BotEvent.TickTime) e);
         }
@@ -247,8 +307,22 @@ public final class HadurCore {
             if (seedLoader.done()) seedLoader = null;
         }
 
+        RuntimeException eventFault = meleeEventFault;
+        meleeEventFault = null;
+        if (eventFault != null) {
+            // GATE-4: the melee brain threw handling this tick's events. Fail closed now,
+            // whichever subsystems were about to drive.
+            if (melee) orders = meleeFailed(in, eventFault);
+            else recordMeleeFault(in, eventFault);
+            melee = false;
+        }
         if (melee) {
-            meleeTick(in, orders);
+            try {
+                meleeTick(in, orders);
+            } catch (RuntimeException ex) {
+                // GATE-4: fail closed. The duel takes this tick and the rest of the round.
+                orders = meleeFailed(in, ex);
+            }
         } else if (lastGunWave != null) {
             int level = budget.level();
             gunController.setKShare(TickBudget.kShare(level));
@@ -268,7 +342,100 @@ public final class HadurCore {
         } else {
             orders.turnRadarRight(Double.POSITIVE_INFINITY);
         }
-        return orders.build();
+        if (inMelee) meleeTicks++;
+        else if (focusing) focusTicks++;
+        else duelTicks++;
+        BotOrders built = orders.build();
+        // GATE-3: with sentries about, their border is a wall for the duel's movement.
+        if (!inMelee && in.numSentries() > 0) {
+            built = fence.apply(in.x(), in.y(), in.heading(), in.velocity(), built,
+                in.sentryBorderSize());
+        }
+        return built;
+    }
+
+    /**
+     * Runs a melee event handler, keeping the first exception for the tick to fail closed on
+     * (GATE-4) instead of letting it past the posture gate.
+     */
+    private void meleeEvent(Runnable handler) {
+        try {
+            handler.run();
+        } catch (RuntimeException ex) {
+            if (meleeEventFault == null) meleeEventFault = ex;
+        }
+    }
+
+    /**
+     * GATE-4: the melee subsystems threw. Records the fault, vetoes melee for the rest of the
+     * round and hands the tick to the duel, from a clean slate, with a fresh set of orders.
+     */
+    private BotOrders.Builder meleeFailed(BotInput in, RuntimeException ex) {
+        recordMeleeFault(in, ex);
+        posture = Posture.DUEL;
+        inMelee = false;
+        focusing = in.others() >= 2;
+        lastMeleeCommand = null;
+        resetDuelTracking();
+        return BotOrders.builder().maxVelocity(Rules.MAX_VELOCITY)
+            .turnRadarRight(Double.POSITIVE_INFINITY);
+    }
+
+    /** Counts and logs a melee fault and vetoes melee for the rest of the round (GATE-4). */
+    private void recordMeleeFault(BotInput in, RuntimeException ex) {
+        gate.meleeFailed();
+        meleeFaults++;
+        stats.faults++;
+        telemetry.emit("FAULT," + round + "," + in.time() + ",melee," + clean(ex.toString()));
+    }
+
+    /**
+     * Whether an event naming {@code name} is outside the duel: a sentry, or, while the duel
+     * fights one of several opponents, anyone but that one.
+     */
+    private boolean foreign(String name) {
+        if (gate.isSentry(name)) return true;
+        return focusing && !name.equals(focus.target());
+    }
+
+    private void onRobotDeath(String name) {
+        meleeEvent(() -> melee.onRobotDeath(name));
+        focus.died(name);
+        if (deadThisRound.size() < 64) deadThisRound.add(name);
+    }
+
+    /** M2's gate: the longest any living opponent has gone unscanned in melee this round. */
+    private void measureScanGap(long now) {
+        for (EnemyInfo e : melee.tracker.alive()) {
+            if (e.lastScanTime >= 0) maxScanGap = (int) Math.max(maxScanGap, now - e.lastScanTime);
+        }
+    }
+
+    /** The duel's focus among the living opponents, re-chosen when it dies (GATE-3, GATE-4). */
+    private String focusTarget(Point2D.Double me) {
+        Map<String, Double> alive = new LinkedHashMap<>();
+        for (EnemyInfo e : melee.tracker.alive()) alive.put(e.name, e.distance(me));
+        return focus.update(alive);
+    }
+
+    /** The subsystems that drove the last tick (GATE-1, GATE-2). */
+    public Posture posture() {
+        return posture;
+    }
+
+    /** Why melee is off for the rest of the round, if it is (GATE-3, GATE-4). */
+    public PostureGate.Veto veto() {
+        return gate.veto();
+    }
+
+    /** The opponent the duel fights while several are alive, or null. */
+    public String duelFocus() {
+        return focusing ? focus.target() : null;
+    }
+
+    /** The melee brain, for tests of what it tracks. */
+    public MeleeController melee() {
+        return melee;
     }
 
     /**
@@ -288,6 +455,7 @@ public final class HadurCore {
         MeleeController.Command c = melee.tick(new MeleeController.Situation(
             in.location(), in.gunHeading(), in.radarHeading(), in.energy(), in.time(),
             in.others()));
+        if (c.target != null && deadThisRound.contains(c.target)) ghostTicks++;
         orders.turnRadarRight(c.radarTurn);
         orders.turnGunRight(c.gunTurn);
         if (c.destination != null) goTo(in, c.destination, orders);
@@ -328,7 +496,20 @@ public final class HadurCore {
             stats.seedsEvicted = library.seedsEvicted();
         }
         telemetry.emit(stats.toRecord(round, tick, result, myEnergy, lastEnemyEnergy));
+        if (enemiesTotal >= 2 || gate.sentriesSeen()) telemetry.emit(meleeRecord(tick));
         return stats;
+    }
+
+    /**
+     * The melee extension's round record, for battles with several opponents or sentries:
+     * {@code M,round,tick,meleeTicks,duelTicks,focusTicks,veto,meleeFaults,maxScanGap,
+     * ghostTicks,sentryHits}. The veto is {@code -}, {@code sentry} or {@code fault};
+     * sentryHits counts our bullets that hit a sentry. Fields are only ever appended.
+     */
+    String meleeRecord(long tick) {
+        return "M," + round + "," + tick + "," + meleeTicks + "," + duelTicks + "," + focusTicks
+            + "," + (gate.veto() == PostureGate.Veto.NONE ? "-" : gate.veto().name().toLowerCase(Locale.ROOT))
+            + "," + meleeFaults + "," + maxScanGap + "," + ghostTicks + "," + sentryHits;
     }
 
     /** MEM-2: the round's observations join the profile. A failure here is counted, never thrown. */
@@ -482,8 +663,11 @@ public final class HadurCore {
         Point2D.Double myPos = in.location();
         double absBearing = Angles.normalAbsoluteAngle(in.heading() + e.bearing());
         Point2D.Double enemyPos = DiaUtils.project(myPos, absBearing, e.distance());
-        melee.onScan(e.name(), enemyPos, e.distance(), e.energy(), e.heading(), e.velocity(), time);
+        meleeEvent(() -> melee.onScan(e.name(), enemyPos, e.distance(), e.energy(), e.heading(),
+            e.velocity(), time));
         if (inMelee) return;
+        // With several opponents alive the duel fights one and ignores the others.
+        if (focusing && !e.name().equals(focusTarget(myPos))) return;
         if (duelOpponent != null && !duelOpponent.equals(e.name())) forgetDuelOpponent();
         duelOpponent = e.name();
         long previousScanTime = lastScanTime;
@@ -863,19 +1047,30 @@ public final class HadurCore {
     private void onBulletHit(BotEvent.BulletHit e) {
         stats.shotsHit++;
         moveController.ourBulletGone(e.bulletHeading(), e.power());
-        if (duelBulletResolved()) {
+        if (gate.isSentry(e.name())) sentryHits++;
+        boolean foreign = foreign(e.name());
+        if (duelBulletResolved() && !foreign) {
             shieldDetector.bulletHit();
             ourWindow.record(true);
         }
+        if (foreign) return;
         if (folder != null && !inMelee) folder.ourHit(lastEnemyDistance, Rules.getBulletDamage(e.power()));
-        melee.onBulletHit(e.name(), e.power());
+        meleeEvent(() -> melee.onBulletHit(e.name(), e.power()));
         ledger.ourBulletHit(e.power());
     }
 
     private void onHitByBullet(BotInput in, BotEvent.HitByBullet e) {
         stats.hitsTaken++;
+        if (gate.isSentry(e.name())) return;
+        if (focusing && !e.name().equals(focus.target())) {
+            // Not the duel's enemy: the melee brain still learns who hurts us.
+            meleeEvent(() -> melee.onHitByBullet(e.name(), e.power(), e.heading(), in.location(),
+                in.time()));
+            return;
+        }
         ledger.enemyBulletHitUs(e.power());
-        melee.onHitByBullet(e.name(), e.power(), e.heading(), in.location(), in.time());
+        meleeEvent(() -> melee.onHitByBullet(e.name(), e.power(), e.heading(), in.location(),
+            in.time()));
         Point2D.Double bulletLoc = new Point2D.Double(e.x(), e.y());
         Wave hitWave = moveController.findBulletWave(bulletLoc, in.time(), e.name(), e.power());
         if (hitWave != null) {

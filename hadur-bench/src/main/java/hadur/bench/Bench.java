@@ -41,6 +41,10 @@ import java.util.zip.GZIPOutputStream;
  *     security off and writes one gzipped transcript per opponent to DIR (CORE-2).</li>
  * <li>{@code --melee true} run every opponent in the set against Hadur at once, one battle
  *     per seed, and report finishing places instead (MeleeRumble: 10 robots, 1000x1000).</li>
+ * <li>{@code --sentry-border N} in melee mode, the set's {@code sentry} entries fight as
+ *     Robocode sentries guarding a border N px deep.</li>
+ * <li>{@code --suite FILE} run every bench the file lists ({@code label | options} per
+ *     line) and write one report, e.g. {@code melee-gates.txt}.</li>
  * <li>{@code --only TEXT} run opponents whose name contains TEXT,
  *     {@code --out DIR} working directory (work/&lt;mode&gt;-&lt;time&gt;),
  *     {@code --report FILE} also copy the report there.</li>
@@ -91,11 +95,57 @@ public final class Bench {
     }
 
     public static void main(String[] args) throws Exception {
+        Map<String, String> opts = parse(args);
+        System.exit(opts.containsKey("suite") ? runSuite(opts) : new Bench(opts).run());
+    }
+
+    static Map<String, String> parse(String[] args) {
         Map<String, String> opts = new HashMap<>();
         for (int i = 0; i + 1 < args.length; i += 2) {
             opts.put(args[i].replaceFirst("^--", ""), args[i + 1]);
         }
-        System.exit(new Bench(opts).run());
+        return opts;
+    }
+
+    /**
+     * Runs every bench a suite file lists, one after another, and writes one report with
+     * each bench's report in turn. Each line is {@code label | options}; the command line's
+     * own options (the robot, rounds, ...) apply to every line unless the line sets them.
+     * This is how a melee change and the duel's non-regression run in one command.
+     */
+    static int runSuite(Map<String, String> global) throws Exception {
+        Path benchDir = Path.of("").toAbsolutePath();
+        Path suite = benchDir.resolve(global.get("suite"));
+        String stamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss"));
+        Path out = Path.of(global.getOrDefault("out", "work/suite-" + stamp)).toAbsolutePath();
+        StringBuilder report = new StringBuilder("# Bench suite: ")
+            .append(suite.getFileName()).append("\n\n");
+        int exit = 0;
+        for (String line : Files.readAllLines(suite)) {
+            line = line.trim();
+            if (line.isEmpty() || line.startsWith("#")) continue;
+            String[] parts = line.split("\\|", 2);
+            String label = parts[0].trim();
+            Map<String, String> opts = new HashMap<>(global);
+            opts.remove("suite");
+            opts.remove("report");
+            opts.putAll(parse(parts[1].trim().split("\\s+")));
+            opts.put("out", out.resolve(label).toString());
+            opts.put("label", label);
+            System.out.println("== " + label);
+            exit |= new Bench(opts).run();
+            report.append(Files.readString(out.resolve(label).resolve("report.md")).replaceFirst("^# ", "## "))
+                .append("\n");
+        }
+        Files.createDirectories(out);
+        Files.writeString(out.resolve("report.md"), report);
+        if (global.containsKey("report")) {
+            Path copy = Path.of(global.get("report")).toAbsolutePath();
+            Files.createDirectories(copy.getParent());
+            Files.writeString(copy, report);
+        }
+        System.out.println(report);
+        return exit;
     }
 
     private int run() throws Exception {
@@ -193,68 +243,54 @@ public final class Bench {
         }
     }
 
-    /** Hadur against the whole set at once, {@code runs} times; prints each robot's average. */
+    /**
+     * Hadur against the whole set at once, {@code runs} times (one RANDOMSEED each), with the
+     * set's {@code sentry} entries as Robocode sentries when {@code --sentry-border} is set.
+     */
     private int runMelee(List<Opponent> opponents) throws IOException, InterruptedException {
         List<String> names = new ArrayList<>();
         names.add(robot);
-        for (Opponent o : opponents) names.add(o.name);
-        Map<String, double[]> totals = new LinkedHashMap<>();
-        StringBuilder battles = new StringBuilder();
-        int failed = 0;
+        List<String> others = new ArrayList<>();
+        Set<String> sentries = new HashSet<>();
+        for (Opponent o : opponents) {
+            names.add(o.name);
+            if (o.role.equals("sentry")) sentries.add(o.name);
+            else others.add(o.name);
+        }
+        int sentryBorder = Integer.parseInt(opts.getOrDefault("sentry-border", "0"));
+        List<MeleeReport.Battle> battles = new ArrayList<>();
         for (int i = 1; i <= runs; i++) {
             wipeData();
             Path dir = out.resolve("battles").resolve("melee-" + i);
             Files.createDirectories(dir);
+            Files.deleteIfExists(dir.resolve("melee.csv"));
             System.out.printf("melee battle %d/%d ...%n", i, runs);
             List<String> cmd = new ArrayList<>();
             cmd.add(Path.of(System.getProperty("java.home"), "bin", "java").toString());
             cmd.addAll(JVM_FLAGS);
             cmd.add("-DRANDOMSEED=" + i);
+            cmd.add("-Dhadur.sentries=" + String.join(",", sentries));
             cmd.add("-cp");
             cmd.add(classpath());
             cmd.add(MeleeRunner.class.getName());
             cmd.addAll(List.of(home.toString(), dir.toString(), String.valueOf(rounds),
-                String.valueOf(width), String.valueOf(height)));
+                String.valueOf(width), String.valueOf(height), String.valueOf(sentryBorder)));
             cmd.addAll(names);
             Process p = new ProcessBuilder(cmd).redirectErrorStream(true)
                 .redirectOutput(dir.resolve("engine.log").toFile()).start();
-            if (!p.waitFor(60, TimeUnit.MINUTES)) p.destroyForcibly();
-            Path csv = dir.resolve("melee.csv");
-            List<String> rows = Files.exists(csv) ? Files.readAllLines(csv) : List.of();
-            if (rows.size() < 2) {
-                failed++;
+            if (!p.waitFor(90, TimeUnit.MINUTES)) p.destroyForcibly();
+            MeleeReport.Battle b = MeleeReport.read(i, dir);
+            battles.add(b);
+            double[] us = b.ok ? MeleeReport.find(b, robot) : null;
+            if (us == null) {
                 System.out.println("  FAILED; see " + dir.resolve("engine.log"));
-                continue;
-            }
-            double total = 0;
-            for (String row : rows.subList(1, rows.size())) total += Double.parseDouble(row.split(",")[2]);
-            for (String row : rows.subList(1, rows.size())) {
-                String[] f = row.split(",");
-                double[] t = totals.computeIfAbsent(f[1], k -> new double[4]);
-                t[0] += Integer.parseInt(f[0]);
-                t[1] += Double.parseDouble(f[2]) / total;
-                t[2] += Integer.parseInt(f[3]);
-                t[3]++;
-                if (f[1].startsWith(robot)) {
-                    battles.append(String.format(java.util.Locale.ROOT,
-                        "| %d | %s | %.1f%% | %s |%n", i, f[0], 100 * Double.parseDouble(f[2]) / total, f[3]));
-                    System.out.printf("  Hadur placed %s, score share %.1f%%, %s firsts%n", f[0],
-                        100 * Double.parseDouble(f[2]) / total, f[3]);
-                }
+            } else {
+                System.out.printf(java.util.Locale.ROOT, "  Hadur placed %.0f, APS %.1f, survival %.1f%n",
+                    us[1], MeleeReport.aps(b, robot, sentries), MeleeReport.survival(b));
             }
         }
-        StringBuilder r = new StringBuilder("# Melee bench\n\n");
-        r.append(String.format(java.util.Locale.ROOT,
-            "%s against %d opponents at once, %d rounds per battle, %d battles, %dx%d.%n%n",
-            robot, opponents.size(), rounds, runs, width, height));
-        r.append("| Robot | Mean place | Mean score share | Firsts |\n|---|---|---|---|\n");
-        totals.entrySet().stream()
-            .sorted(Comparator.comparingDouble(e -> e.getValue()[0] / e.getValue()[3]))
-            .forEach(e -> r.append(String.format(java.util.Locale.ROOT, "| %s | %.1f | %.1f%% | %.0f |%n",
-                e.getKey(), e.getValue()[0] / e.getValue()[3], 100 * e.getValue()[1] / e.getValue()[3],
-                e.getValue()[2])));
-        r.append("\nHadur per battle:\n\n| Battle | Place | Score share | Firsts |\n|---|---|---|---|\n")
-            .append(battles);
+        String r = MeleeReport.render(opts.get("label"), robot, others, sentries, battles, rounds,
+            width, height, sentryBorder);
         Files.writeString(out.resolve("report.md"), r);
         if (opts.containsKey("report")) {
             Path copy = Path.of(opts.get("report")).toAbsolutePath();
@@ -263,7 +299,7 @@ public final class Bench {
         }
         System.out.println();
         System.out.println(r);
-        return failed > 0 ? 1 : 0;
+        return battles.stream().anyMatch(b -> !b.ok) ? 1 : 0;
     }
 
     private void saveFixture(Opponent o, int seed, Path transcript) throws IOException {
