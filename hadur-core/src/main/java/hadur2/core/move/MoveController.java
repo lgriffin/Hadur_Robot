@@ -181,9 +181,14 @@ public class MoveController {
         return raw1v1ShotsFired;
     }
 
-    /** Their hits on us over those waves, unweighted. */
-    public int enemyRawHits() {
-        return raw1v1ShotsHit;
+    /**
+     * Whether each firing wave that broke on us since the last call hit us, in the order
+     * the waves broke, bullet-hit-bullet ones aside. The list is handed over and emptied.
+     */
+    public List<Boolean> takeBrokenWaveOutcomes() {
+        List<Boolean> taken = new ArrayList<>(brokenWaveOutcomes);
+        brokenWaveOutcomes.clear();
+        return taken;
     }
 
     /** Their hits on us over those waves, each weighted by our angular width (normalised). */
@@ -197,12 +202,14 @@ public class MoveController {
         raw1v1ShotsHitThisRound = 0;
         weighted1v1ShotsHitThisRound = 0;
         lastBulletPower = 0;
+        brokenWaveOutcomes.clear();
         clearNeighborCache();
     }
 
     private int raw1v1ShotsFiredThisRound;
     private int raw1v1ShotsHitThisRound;
     private double weighted1v1ShotsHitThisRound;
+    private final List<Boolean> brokenWaveOutcomes = new ArrayList<>();
 
     public void clearNeighborCache() {
         for (KnnView<TimestampedGuessFactor> view : views) {
@@ -247,6 +254,7 @@ public class MoveController {
         if (!w.bulletHitBullet) {
             raw1v1ShotsFired++;
             raw1v1ShotsFiredThisRound++;
+            brokenWaveOutcomes.add(w.hitByBullet);
             if (w.hitByBullet) {
                 double angularBotWidth = intersection.bandwidth * 2.0;
                 double thisHit = 0.1 / angularBotWidth

@@ -58,4 +58,19 @@ class HitWindowTest {
         assertEquals(few.estimate().value(), many.estimate().value(), 1e-12);
         assertTrue(many.estimate().margin() < few.estimate().margin() / 2);
     }
+
+    @Test
+    @Tag("DIST-1")
+    @DisplayName("a cleared window is empty and fills again from the start")
+    void clears() {
+        HitWindow w = new HitWindow(4);
+        for (int i = 0; i < 6; i++) w.record(true);
+        w.clear();
+        assertEquals(0, w.size());
+        assertSame(Estimate.NONE, w.estimate());
+        w.record(false);
+        w.record(true);
+        assertEquals(2, w.size());
+        assertEquals(0.5, w.estimate().value(), 1e-12);
+    }
 }

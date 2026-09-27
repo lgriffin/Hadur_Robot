@@ -24,14 +24,30 @@ Feature: Aggressive
   @END-1
   Scenario: A weak enemy whose gun is hotter than ours is closed on to finish it
     Given a duel against a stranger
-    When the enemy, down to 10 energy, fires while Hadur has 80 energy and a cool gun
+    When the enemy, down to 10 energy, fires while Hadur has 80 energy and a gun just short of cool
     Then the endgame is "finish"
     And the target distance is 150
+
+  @DIST-1 @DIAL-1
+  Scenario: A new opponent starts with nothing learned about the last one
+    Given a duel against a stranger
+    When for 60 enemy waves Hadur's bullets hit 4 in 5 and the enemy's all miss
+    Then the target distance is 400
+    When the duel's opponent is now "sample.Crazy (2)"
+    Then the target distance is 650
+    And neither rolling hit rate has any outcomes
 
   @END-1
   Scenario: Not while our gun is the hotter one
     Given a duel against a stranger
     When the enemy is down to 10 energy while Hadur has 80 energy and a hot gun
+    Then the endgame is "none"
+    And the target distance is 650
+
+  @END-1
+  Scenario: Not on the tick Hadur's own shot makes its gun the hotter one
+    Given a duel against a stranger
+    When the enemy, down to 10 energy, fires as Hadur, with 80 energy, fires its cool gun
     Then the endgame is "none"
     And the target distance is 650
 

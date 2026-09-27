@@ -90,7 +90,10 @@ The S5 group (DIST-1, POW-1, POW-2, END-1, END-2) was implemented with these rea
 
 - **Rolling hit rates** are the last 100 resolved shots on each side: our bullets that hit,
   missed or were shot down, and their firing waves that broke on us, hit or not. A window,
-  not the battle's total, because the rate moves with the distance the policy picks.
+  not the battle's total, because the rate moves with the distance the policy picks. Each
+  wave's own outcome goes in, in the order the waves break. Both windows and the distance
+  controller start again when a different robot becomes the duel opponent (a melee's
+  survivor), and carry across rounds against the same one.
 - **DIST-1 steps once per enemy wave** that breaks. Coming in is the aggressive setting, so
   under DIAL-1 the lead must be certain: the gap between the two estimates' Agresti-Coull
   centres, less the gap's 95% margin, must still be 5 points or more. (A first version that
@@ -112,6 +115,7 @@ The S5 group (DIST-1, POW-1, POW-2, END-1, END-2) was implemented with these rea
   gun's own choice.
 - **END-1 reads the enemy's gun heat** from its shots as the ledger finds them: 3.0 at the
   round's start, 1 + power / 5 at each shot, cooling at the battle's rate. A shot we never
-  saw leaves the estimate low, which only makes END-1 less eager.
+  saw leaves the estimate low, which only makes END-1 less eager. Our own heat includes a
+  shot fired on the same tick, so a gun that has just fired never counts as the cooler one.
 - **END-2** takes over from the surf entirely: nothing to dodge from a disabled robot.
 - **DIAL-2** is enforced as in S4: the policy package cannot see `BotInput` or `BotEvent`.

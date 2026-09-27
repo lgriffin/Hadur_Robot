@@ -1,6 +1,7 @@
 package hadur2.core.policy;
 
 import hadur2.core.memory.Estimate;
+import java.util.Arrays;
 
 /**
  * A rolling hit rate: the last {@code capacity} shot outcomes and their estimate (DIST-1's
@@ -36,6 +37,14 @@ public final class HitWindow {
         outcomes[next] = hit;
         if (hit) hits++;
         next = (next + 1) % outcomes.length;
+    }
+
+    /** Forgets every outcome. */
+    public void clear() {
+        Arrays.fill(outcomes, false);
+        next = 0;
+        size = 0;
+        hits = 0;
     }
 
     /** The window's rate and its 95% margin; {@link Estimate#NONE} while it is empty. */

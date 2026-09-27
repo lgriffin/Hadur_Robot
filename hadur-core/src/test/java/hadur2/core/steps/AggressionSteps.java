@@ -2,9 +2,11 @@ package hadur2.core.steps;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import hadur2.core.HadurCore;
+import hadur2.core.memory.Estimate;
 import hadur2.core.memory.ProfileLibrary;
 import hadur2.core.memory.Profiles;
 import hadur2.core.model.BotEvent;
@@ -92,12 +94,34 @@ public class AggressionSteps {
         }
     }
 
-    @When("the enemy, down to {int} energy, fires while Hadur has {int} energy and a cool gun")
+    /** Hadur's gun is at 0.1: cooler than theirs after a shot, but not yet able to fire. */
+    @When("the enemy, down to {int} energy, fires while Hadur has {int} energy and a gun just short of cool")
     public void weakEnemyFires(int energy, int ours) {
+        enemyEnergy = energy + 0.5;
+        tick(ours, 0.1, List.of(scan(ENEMY)));
+        enemyEnergy = energy;
+        tick(ours, 0.1, List.of(scan(ENEMY)));
+    }
+
+    /** As above, but Hadur's gun has been cool a tick: last tick's aim goes out as they fire. */
+    @When("the enemy, down to {int} energy, fires as Hadur, with {int} energy, fires its cool gun")
+    public void bothFire(int energy, int ours) {
         enemyEnergy = energy + 0.5;
         tick(ours, 0, List.of(scan(ENEMY)));
         enemyEnergy = energy;
         tick(ours, 0, List.of(scan(ENEMY)));
+        assertTrue(last.firePower() > 0, "Hadur fired on the tick the enemy's shot was seen");
+    }
+
+    @When("the duel's opponent is now {string}")
+    public void newOpponent(String name) {
+        tick(100, 3, List.of(scan(name)));
+    }
+
+    @And("neither rolling hit rate has any outcomes")
+    public void windowsEmpty() {
+        assertSame(Estimate.NONE, core.ourRollingHitRate());
+        assertSame(Estimate.NONE, core.theirRollingHitRate());
     }
 
     @When("the enemy is down to {int} energy while Hadur has {int} energy and a hot gun")
