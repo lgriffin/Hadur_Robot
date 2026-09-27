@@ -29,17 +29,29 @@ public class MeleeController {
         public final double gunHeading, radarHeading, energy;
         public final long time;
         public final int others;
+        /** Hadur's body heading and velocity, for the aims opponents may take at it. */
+        public final double heading, velocity;
 
         public Situation(Point2D.Double me, double gunHeading, double radarHeading,
                          double energy, long time, int others) {
+            this(me, gunHeading, radarHeading, energy, time, others, 0, 0);
+        }
+
+        public Situation(Point2D.Double me, double gunHeading, double radarHeading,
+                         double energy, long time, int others, double heading, double velocity) {
             this.me = me;
             this.gunHeading = gunHeading;
             this.radarHeading = radarHeading;
             this.energy = energy;
             this.time = time;
             this.others = others;
+            this.heading = heading;
+            this.velocity = velocity;
         }
     }
+
+    /** A weak target the radar rescans often and the gun finishes (MGUN-2's threshold). */
+    static final double FINISHER_ENERGY = 16.0;
 
     /** What Hadur should do this tick. */
     public static final class Command {
@@ -52,7 +64,7 @@ public class MeleeController {
         public MeleeGun.Strategy gunStrategy;
     }
 
-    public final EnemyTracker tracker = new EnemyTracker();
+    public final EnemyTracker tracker;
     private final OpponentStatsBook book = new OpponentStatsBook();
     private final MeleeRadar radar = new MeleeRadar();
     private final MeleeMover mover;
@@ -61,8 +73,10 @@ public class MeleeController {
     private final MeleeStrategy strategy = new MeleeStrategy();
     /** Where Hadur has been this round, to tell head-on shooters from leading ones. */
     private final RobotStateLog myPath = new RobotStateLog();
+    private long ghostsDropped;
 
     public MeleeController(BattleField field) {
+        this.tracker = new EnemyTracker(field);
         this.mover = new MeleeMover(field);
         this.gun = new MeleeGun(field);
     }
@@ -80,7 +94,7 @@ public class MeleeController {
     /** An opponent was scanned at {@code location}, {@code distance} from Hadur. */
     public EnemyInfo onScan(String name, Point2D.Double location, double distance,
                             double energy, double heading, double velocity, long time) {
-        EnemyInfo info = tracker.onScan(name, location, energy, heading, velocity, time);
+        EnemyInfo info = tracker.onScan(name, location, energy, heading, velocity, time, distance);
         book.get(name).recordScan(distance, velocity, info.turnRate());
         return info;
     }
@@ -122,14 +136,24 @@ public class MeleeController {
     }
 
     public MeleeMover mover() { return mover; }
+
+    /** Opponents dropped as dead without a death event, this battle (MSENSE-1). */
+    public long ghostsDropped() { return ghostsDropped; }
+
+    /** Where Hadur has been this round, tick by tick. */
+    public RobotStateLog myPath() { return myPath; }
     public MeleeTargetSelector selector() { return selector; }
     public MeleeGun gun() { return gun; }
     public MeleeStrategy strategy() { return strategy; }
 
     public Command tick(Situation s) {
-        myPath.addState(RobotState.newBuilder().setLocation(s.me).setTime(s.time).build());
+        myPath.addState(RobotState.newBuilder().setLocation(s.me).setHeading(s.heading)
+            .setVelocity(s.velocity).setTime(s.time).build());
         Command c = new Command();
-        c.radarTurn = radar.radarTurn(s.me, s.radarHeading, tracker, s.others);
+        ghostsDropped += tracker.pruneGhosts(s.others, s.time, s.me);
+        EnemyInfo current = tracker.get(selector.current());
+        String finisher = current != null && current.energy <= FINISHER_ENERGY ? current.name : null;
+        c.radarTurn = radar.radarTurn(s.me, s.radarHeading, tracker, s.others, finisher, s.time);
 
         List<EnemyInfo> alive = tracker.alive();
         MeleeStrategy.Plan plan = strategy.evaluate(tracker, s.me, s.energy, s.others, s.time);

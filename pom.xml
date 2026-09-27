@@ -36,7 +36,7 @@
         <!-- Requirements from docs/requirements.md up to this stage must be covered by a test. -->
         <hadur.stage>S7</hadur.stage>
         <!-- The melee extension's stage (M0-M6): its requirements up to here must be covered too. -->
-        <hadur.melee.stage>M1</hadur.melee.stage>
+        <hadur.melee.stage>M2</hadur.melee.stage>
     </properties>
 
     <repositories>

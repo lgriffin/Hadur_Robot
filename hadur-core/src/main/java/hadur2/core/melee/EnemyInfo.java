@@ -16,6 +16,14 @@ public class EnemyInfo {
     private static final int MAX_TURN_RATE_GAP = 10;
     /** Window over which energy lost to other robots is summed. */
     public static final int LOSS_WINDOW = 40;
+    /** The engine's bullet powers: a drop in this range may be a shot (MSENSE-2). */
+    static final double MIN_SHOT = 0.1, MAX_SHOT = 3.0;
+    /**
+     * The fewest ticks between two shots: the lightest bullet heats the gun by 1.02, which
+     * the default cooling rate of 0.1 a tick takes 11 ticks to clear.
+     */
+    static final int MIN_REFIRE_TICKS = 11;
+    private static final double EPS = 1e-6;
 
     public final String name;
     public Point2D.Double location;
@@ -24,6 +32,8 @@ public class EnemyInfo {
     public double velocity;
     public long lastScanTime = -1;
     public boolean alive = true;
+    /** The last tick one of its bullets hit Hadur, or -1 (MMOVE-2). */
+    public long lastHitHadur = -1;
 
     private double prevHeading;
     private long prevScanTime = -1;
@@ -36,11 +46,31 @@ public class EnemyInfo {
 
     void update(Point2D.Double location, double energy, double heading,
                 double velocity, long time) {
+        update(location, energy, heading, velocity, time, false);
+    }
+
+    /**
+     * Takes a scan. Returns the power of the shot the energy drop since the last scan
+     * shows, or NaN: a drop in [0.1, 3.0] that neither our bullets nor a bump
+     * ({@code bumped}: a wall or a robot stopped it) explain (MSENSE-2). A drop above 3.0 is
+     * damage from another robot, unless the scans were far enough apart for several shots
+     * to fit, when it is recorded as neither. A hit from another
+     * robot's weak bullet can look the same; such false shots are cheap, and accepted.
+     */
+    double update(Point2D.Double location, double energy, double heading,
+                  double velocity, long time, boolean bumped) {
+        double shot = Double.NaN;
         if (lastScanTime >= 0) {
             double loss = this.energy - energy - pendingOwnDamage;
-            // Firing costs at most 3 energy, so larger drops are damage from someone else.
-            if (loss > 3.0) {
+            // A gap long enough for several shots can hide them in one bigger drop.
+            long shotsPossible = 1 + Math.max(0, time - lastScanTime - 1) / MIN_REFIRE_TICKS;
+            if (loss > MAX_SHOT + EPS && shotsPossible > 1 && loss <= shotsPossible * MAX_SHOT + EPS) {
+                // Several shots or someone's hit: neither can be told, so neither is recorded.
+            } else if (loss > MAX_SHOT + EPS) {
+                // Firing costs at most 3 energy, so larger drops are damage from someone else.
                 externalLosses.addLast(new long[]{time, Math.round(loss * 100)});
+            } else if (loss >= MIN_SHOT - EPS && !bumped) {
+                shot = Math.min(MAX_SHOT, Math.max(MIN_SHOT, loss));
             }
             prevHeading = this.heading;
             prevScanTime = lastScanTime;
@@ -52,6 +82,7 @@ public class EnemyInfo {
         this.heading = heading;
         this.velocity = velocity;
         this.lastScanTime = time;
+        return shot;
     }
 
     void recordOwnDamage(double damage) {

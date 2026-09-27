@@ -8,6 +8,7 @@ import hadur2.core.gun.GunController;
 import hadur2.core.ledger.EnergyLedger;
 import hadur2.core.melee.EnemyInfo;
 import hadur2.core.melee.MeleeController;
+import hadur2.core.melee.MeleeRadar;
 import hadur2.core.memory.Estimate;
 import hadur2.core.memory.LineageKey;
 import hadur2.core.memory.OpponentProfile;
@@ -165,7 +166,9 @@ public final class HadurCore {
     /** The first exception a melee event handler threw this tick (GATE-4). */
     private RuntimeException meleeEventFault;
     /** Per-round counters for the M record. */
-    private int meleeTicks, duelTicks, focusTicks, meleeFaults, ghostTicks, sentryHits, maxScanGap;
+    private int meleeTicks, duelTicks, focusTicks, meleeFaults, ghostTicks, sentryHits, maxScanGap,
+        sweepGap;
+    private long ghostsAtRoundStart;
 
     public HadurCore(double fieldWidth, double fieldHeight, int enemiesTotal, Telemetry telemetry) {
         this(fieldWidth, fieldHeight, enemiesTotal, telemetry, null);
@@ -211,7 +214,8 @@ public final class HadurCore {
         if (enemyGunHeat != null) enemyGunHeat.newRound();
         budget.newRound();
         gate.newRound();
-        meleeTicks = duelTicks = focusTicks = meleeFaults = ghostTicks = sentryHits = maxScanGap = 0;
+        meleeTicks = duelTicks = focusTicks = meleeFaults = ghostTicks = sentryHits = maxScanGap = sweepGap = 0;
+        ghostsAtRoundStart = melee.ghostsDropped();
         deadThisRound.clear();
     }
 
@@ -273,7 +277,7 @@ public final class HadurCore {
         // GATE-1, GATE-2: melee only while the gate allows it, the duel otherwise.
         posture = gate.evaluate(in.others(), in.numSentries());
         boolean melee = posture == Posture.MELEE;
-        if (melee) measureScanGap(in.time());
+        if (melee) measureScanGap(in.time(), in.others());
         if (inMelee && !melee) {
             // MELEE-2: the survivor was never tracked as a duel opponent; start fresh.
             resetDuelTracking();
@@ -405,9 +409,12 @@ public final class HadurCore {
     }
 
     /** M2's gate: the longest any living opponent has gone unscanned in melee this round. */
-    private void measureScanGap(long now) {
+    private void measureScanGap(long now, int others) {
         for (EnemyInfo e : melee.tracker.alive()) {
-            if (e.lastScanTime >= 0) maxScanGap = (int) Math.max(maxScanGap, now - e.lastScanTime);
+            if (e.lastScanTime < 0) continue;
+            int gap = (int) (now - e.lastScanTime);
+            maxScanGap = Math.max(maxScanGap, gap);
+            if (others >= MeleeRadar.SPIN_OTHERS) sweepGap = Math.max(sweepGap, gap);
         }
     }
 
@@ -439,7 +446,7 @@ public final class HadurCore {
     }
 
     /**
-     * MELEE-3..8: one tick of melee. The shot aimed last tick goes out first if the gun got
+     * MELEE-4..8, MRADAR-1..2: one tick of melee. The shot aimed last tick goes out first if the gun got
      * there, as in 1.x; then the melee brain picks the radar sweep, destination and aim.
      */
     private void meleeTick(BotInput in, BotOrders.Builder orders) {
@@ -454,7 +461,7 @@ public final class HadurCore {
 
         MeleeController.Command c = melee.tick(new MeleeController.Situation(
             in.location(), in.gunHeading(), in.radarHeading(), in.energy(), in.time(),
-            in.others()));
+            in.others(), in.heading(), in.velocity()));
         if (c.target != null && deadThisRound.contains(c.target)) ghostTicks++;
         orders.turnRadarRight(c.radarTurn);
         orders.turnGunRight(c.gunTurn);
@@ -503,13 +510,14 @@ public final class HadurCore {
     /**
      * The melee extension's round record, for battles with several opponents or sentries:
      * {@code M,round,tick,meleeTicks,duelTicks,focusTicks,veto,meleeFaults,maxScanGap,
-     * ghostTicks,sentryHits}. The veto is {@code -}, {@code sentry} or {@code fault};
+     * ghostTicks,sentryHits,sweepGap,ghostsDropped}. The veto is {@code -}, {@code sentry} or {@code fault};
      * sentryHits counts our bullets that hit a sentry. Fields are only ever appended.
      */
     String meleeRecord(long tick) {
         return "M," + round + "," + tick + "," + meleeTicks + "," + duelTicks + "," + focusTicks
             + "," + (gate.veto() == PostureGate.Veto.NONE ? "-" : gate.veto().name().toLowerCase(Locale.ROOT))
-            + "," + meleeFaults + "," + maxScanGap + "," + ghostTicks + "," + sentryHits;
+            + "," + meleeFaults + "," + maxScanGap + "," + ghostTicks + "," + sentryHits
+            + "," + sweepGap + "," + (melee.ghostsDropped() - ghostsAtRoundStart);
     }
 
     /** MEM-2: the round's observations join the profile. A failure here is counted, never thrown. */

@@ -19,7 +19,7 @@ class MeleeControllerTest {
     }
 
     @Test
-    @Tag("MELEE-3")
+    @Tag("MRADAR-1")
     void doesNothingButSweepUntilItSeesSomeone() {
         MeleeController.Command c = tick(0, 3);
         assertTrue(Double.isInfinite(c.radarTurn));

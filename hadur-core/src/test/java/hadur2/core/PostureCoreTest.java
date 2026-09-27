@@ -61,7 +61,7 @@ class PostureCoreTest {
         core.roundEnded(2, "win", 100, 0);
         String m = telemetry.stream().filter(l -> l.startsWith("M,")).findFirst().orElseThrow();
         // One of our bullets hit the sentry; it is counted, and nothing else follows from it.
-        assertTrue(m.endsWith(",1"), m);
+        assertEquals("1", m.split(",")[10], m);
         assertEquals("a", core.duelFocus());
     }
 
