@@ -80,6 +80,8 @@ public class MeleeController {
     private final MinimumRiskMovement mover;
     private final FieldGun gun;
     private final MeleeWaves waves = new MeleeWaves();
+    /** This round's observations for each opponent's melee profile block (MMEM-1). */
+    private final MeleeProfileFolder profiles = new MeleeProfileFolder();
     /** The opponent the gun aimed at last tick, for the radar's finisher rescans. */
     private String lastTarget;
     private final MeleeStrategy strategy = new MeleeStrategy();
@@ -105,10 +107,20 @@ public class MeleeController {
 
     public OpponentStatsBook book() { return book; }
 
+    /**
+     * This round's observations for the melee profile blocks (MMEM-1). Unlike the rest of
+     * the per-round state it is not cleared by {@link #newRound}, which the core also calls
+     * to recover from a fault mid-round; the core clears it when a round starts.
+     */
+    public MeleeProfileFolder profiles() { return profiles; }
+
     /** An opponent was scanned at {@code location}, {@code distance} from Hadur. */
     public EnemyInfo onScan(String name, Point2D.Double location, double distance,
                             double energy, double heading, double velocity, long time) {
         EnemyInfo info = tracker.onScan(name, location, energy, heading, velocity, time, distance);
+        profiles.scanned(name, distance);
+        EnemyShot shot = tracker.lastScanShot();
+        if (shot != null) profiles.shotInferred(name, shot.power);
         book.get(name).recordScan(distance, velocity, info.turnRate());
         gun.onScan(info, distance, time);
         waves.onScan(info, time);
@@ -133,6 +145,7 @@ public class MeleeController {
         EnemyInfo shooter = tracker.get(name);
         if (shooter == null) {
             stats.recordDamageReceived(damage, Double.NaN, 0);
+            profiles.hitOnHadur(name, null);
             return;
         }
         shooter.recordHitOnHadur(now);
@@ -141,13 +154,19 @@ public class MeleeController {
         RobotState atFire = myPath.getState(now - flight);
         if (atFire == null) {
             stats.recordDamageReceived(damage, Double.NaN, 0);
+            profiles.hitOnHadur(name, null);
             return;
         }
         double headOn = DiaUtils.absoluteBearing(shooter.location, atFire.location);
-        stats.recordDamageReceived(damage, heading - headOn, DiaUtils.botWidthAimAngle(distance));
+        double botWidth = DiaUtils.botWidthAimAngle(distance);
+        stats.recordDamageReceived(damage, heading - headOn, botWidth);
+        // The same test OpponentStats uses: within Hadur's width of head-on, else led.
+        profiles.hitOnHadur(name, Math.abs(Angles.normalRelativeAngle(heading - headOn)) <= botWidth
+            ? MeleeProfile.AimClass.HEAD_ON : MeleeProfile.AimClass.LINEAR);
     }
 
     public void onRobotDeath(String name) {
+        profiles.died(name);
         tracker.onRobotDeath(name);
         waves.onRobotDeath(name);
         if (name.equals(lastTarget)) lastTarget = null;

@@ -41,6 +41,8 @@ public class EnemyTracker {
 
     private final Map<String, EnemyInfo> enemies = new LinkedHashMap<>();
     private final Deque<EnemyShot> shots = new ArrayDeque<>();
+    /** The shot the last scan showed, or null (MMEM-1 counts them). */
+    private EnemyShot lastScanShot;
     /** Null when walls are not known; bumps against them then go undetected. */
     private final BattleField field;
 
@@ -55,6 +57,7 @@ public class EnemyTracker {
     public void newRound() {
         enemies.clear();
         shots.clear();
+        lastScanShot = null;
     }
 
     public EnemyInfo onScan(String name, Point2D.Double location, double energy,
@@ -79,8 +82,17 @@ public class EnemyTracker {
         long previousScan = e.lastScanTime;
         double shot = e.update(location, energy, heading, velocity, time, bumped);
         e.alive = true;
-        if (!Double.isNaN(shot)) addShot(inferredShot(name, before, previousScan, location, time, shot), time);
+        lastScanShot = null;
+        if (!Double.isNaN(shot)) {
+            lastScanShot = inferredShot(name, before, previousScan, location, time, shot);
+            addShot(lastScanShot, time);
+        }
         return e;
+    }
+
+    /** The shot the last {@link #onScan} inferred, or null when it inferred none. */
+    public EnemyShot lastScanShot() {
+        return lastScanShot;
     }
 
     /**

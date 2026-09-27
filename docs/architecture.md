@@ -102,7 +102,7 @@ data directory through `RobocodeFileOutputStream`.
 
 | Package | Holds |
 |---|---|
-| `hadur2.core` | `HadurCore` (the brain), `Guard` (RES-1), `RoundStats` (RES-5) |
+| `hadur2.core` | `HadurCore` (the brain), `Guard` (RES-1), `RoundStats` (RES-5), `MeleeMemory` (the melee blocks in the profile store, MMEM-1) |
 | `model` | the port values, robot states and their logs, waves and the wave manager |
 | `ledger` | `EnergyLedger`: explains the enemy's energy changes between scans so only bullet spending becomes a wave (WAVE-1, WAVE-2) |
 | `physics` | `Angles` and `Rules` (bit-identical to Robocode's), battle field, movement prediction |
@@ -110,7 +110,7 @@ data directory through `RobocodeFileOutputStream`.
 | `gun` | main KNN gun, anti-surfer gun, gun selection |
 | `move` | wave-surfing movement and its danger formulas; our bullets in flight and the shadows they cast (MOVE-1); go-to surfing |
 | `posture` | the melee extension's gate (GATE-1..5): `PostureGate` (melee or duel, failing closed), `DuelFocus` (the one opponent the duel fights while several are alive) and `SentryFence` (the sentry border as a wall for the duel's movement) |
-| `melee` | the melee brain (MELEE-2..8, MRADAR, MSENSE): battlefield model with shot detection, sweep radar, minimum-risk movement with virtual bullets, field gun with a play-it-forward history per opponent, energy table, targeting waves, posture strategy, battle-long opponent stats |
+| `melee` | the melee brain (MELEE-2..8, MRADAR, MSENSE, MMOVE, MGUN): battlefield model with shot detection, sweep radar, minimum-risk movement with virtual bullets, field gun with a play-it-forward history per opponent, energy table, targeting waves, posture strategy, battle-long opponent stats; the melee profile block, its round folder and its binary codec (MMEM-1) |
 | `memory` | opponent memory (MEM-1..5, RES-3): lineage keys, the profile, its binary codec, the round folder and the library that loads, saves and evicts; estimates with margins of error, the tiers and the seed layout |
 | `adapt` | recognise and adapt (ADAPT-1..3, DIAL-1..2, RES-4): the opening book, the seed loader and the seed trust |
 | `policy` | aggressive (DIST-1, POW-1, POW-2, END-1, END-2): rolling hit-rate windows, the distance controller, the power policy, the endgame states and the enemy gun-heat estimate; unhittable (MOVE-2, TIME-1, TIME-2): the movement flavour and the tick budget |
@@ -225,6 +225,43 @@ and nothing below 1 energy of its own. `melee.MeleeWaves` sends a wave at every 
 every gun-heat cycle carrying the gun's aim (MGUN-4), and the M record counts the waves and
 the virtual hits, so the bench reads the gun's hit rate on the whole field.
 
+### Melee memory and hand-off
+
+A melee battle keeps a melee profile block per opponent, `melee.MeleeProfile`, apart from its
+1v1 profile (MMEM-1): the opponent's inferred shots and how many hit Hadur, whether those
+hits were aimed head-on or led, the mean power of its shots, the share of its close scans
+(inside 200 px) at ramming range (inside 60 px), and its mean finishing place among the
+opponents. The melee brain feeds a `melee.MeleeProfileFolder` from the events it already
+handles; when the round ends the core folds each scanned opponent's round into its block,
+and each group of counts is halved once it passes its limit, as the 1v1 profile's are.
+`MeleeProfileCodec` writes a block in the 1v1 profile's style (magic `HM`, version 1,
+length, payload, CRC-32) and reads only version 1; damage of any kind throws one exception
+type.
+
+`hadur2.core.MeleeMemory` keeps the blocks in the same `ProfileStore`, one file per opponent
+named like its 1v1 profile with `.hm` for `.hp`, so the 1v1 library, which only touches
+`.hp` files, never evicts one and a block never costs a 1v1 profile anything. A block is
+loaded on the opponent's first scan (never a sentry's), and written with the 1v1 profile's
+temporary-copy order (RES-3) at every checkpoint and at the battle's end. The adapter only
+checkpoints while Hadur is alive, so a round Hadur dies in is folded at once and written at
+the next checkpoint. All blocks together stay under 16 KB, the least recently fought going
+first; a write that would take the store past 90% of its quota is skipped. Failures are
+counted, reported in `MEM` records and in the M record's last field, and never thrown.
+
+When a melee's opponents fall to one, the survivor's first scan hands it to the duel
+(MMEM-2), before the duel adds its own wave for that scan. The shots the melee tracker saw
+the survivor fire that have not reached Hadur become firing waves in the duel's movement,
+their features taken from where Hadur was when each was fired, so the surf dodges bullets
+already in the air. The survivor's 1v1 profile is read, once a battle, by a library that
+never saves: melee rounds do not change a 1v1 profile. Its opening sets the surf's prior and
+flattener, the starting distance, the movement flavour's baseline and POW-1's gun tier, and
+the surf's prior still fades when the live rate disagrees (RES-4). Seeds are not replayed
+(the duel's views are shared by every survivor of the battle) and the gun's opening is left
+alone (the virtual guns only run in a 1v1 battle). A bullet from a robot that died this round
+is no longer credited to the survivor's energy in the ledger. An `H` record
+(`H,round,tick,survivor,found1v1,foundMelee,wavesInjected`) says what was handed over. A
+melee vetoed by a sentry or a fault hands nothing over.
+
 ## Opponent memory
 
 In a duel, the first scan hands the opponent's name to `memory.ProfileLibrary`, which files
@@ -243,7 +280,8 @@ checksum, so a robot killed at any byte keeps a loadable profile (RES-3). Before
 if the store would pass 90% of its quota, the seeds of the least recently fought profiles
 are dropped first (MEM-5); a battle counter file (`battles.hc`) is what "recent" means.
 
-A melee battle neither loads nor saves profiles.
+A melee battle never saves a 1v1 profile; it reads the survivor's for the duel's opening and
+keeps melee blocks of its own (see "Melee memory and hand-off").
 
 Robocode charges the data quota for every byte written: opening a file for writing refunds
 its old length, but deleting it refunds nothing. `FileProfileStore.delete` therefore empties

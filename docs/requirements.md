@@ -195,6 +195,17 @@ which are due. They extend, and in places replace, the MELEE group from release 
   would come within 30 px of the border zone. The duel's own movement code is not changed.
 - **MSENSE-1 and MSENSE-2** are not in the plan's EARS list. They state M2's exit criterion
   ("no ghost targets after deaths") and the energy-drop events M2 builds for M3.
+- **MMEM-1's "when a round ends"** is read as: the round is folded into each block when it
+  ends, and written at the adapter's next write. The adapter writes at the end of every
+  round Hadur survives and at the battle's end (a dead robot's thread that stops to write
+  stays in the round, MEM-3), so a round Hadur dies in reaches the store one checkpoint
+  later. "Alongside" is a separate `.hm` file beside the `.hp`, since the memory package's
+  format is pinned by `DuelIdentityTest`.
+- **MMEM-2's "the survivor's profile"** is its 1v1 profile, read and never written, and it
+  sets the duel's opening without replaying seeds; "the waves in flight" are the
+  survivor's recorded shots that have not reached Hadur. Hand-off happens at the survivor's
+  first duel scan, and only when the melee drove until the end (a melee vetoed by a sentry
+  or a fault has been a duel all along).
 
 ## Retired requirements
 

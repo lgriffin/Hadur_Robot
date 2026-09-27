@@ -1,0 +1,6 @@
+# The M5 hand-off gate in one command (run from hadur-bench/):
+#   mvn -q compile exec:java -Dexec.args="--suite handoff-gates.txt --report ../docs/bench/<name>.md"
+# Compare the duel-ending win rate against each strong bot in "handoff" with the clean 1v1 in "clean".
+# Gate (M5): within 5 points of the clean 1v1.
+handoff | --set melee-handoff.txt --melee true --field 1000x1000 --rounds 35 --seeds 5
+clean | --set handoff-duel.txt --seeds 5 --rounds 35

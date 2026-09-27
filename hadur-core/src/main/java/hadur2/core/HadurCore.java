@@ -7,6 +7,7 @@ import hadur2.core.adapt.SeedTrust;
 import hadur2.core.gun.GunController;
 import hadur2.core.ledger.EnergyLedger;
 import hadur2.core.melee.EnemyInfo;
+import hadur2.core.melee.EnemyShot;
 import hadur2.core.melee.MeleeController;
 import hadur2.core.melee.MeleeRadar;
 import hadur2.core.memory.Estimate;
@@ -62,7 +63,15 @@ import java.util.Set;
  *
  * <p>In a duel with a {@link ProfileStore}, the first scan loads the opponent's profile
  * (MEM-1), each round's observations are folded into it when the round ends (MEM-2), and
- * {@link #saveProfile} persists it (MEM-3). Melee battles neither load nor save profiles.</p>
+ * {@link #saveProfile} persists it (MEM-3). Melee battles never write a 1v1 profile. They
+ * keep a melee block per opponent instead ({@link MeleeMemory}): loaded on the opponent's
+ * first scan, folded when the round ends and written by {@link #saveProfile} (MMEM-1).</p>
+ *
+ * <p>When a melee's opponents fall to one, the survivor's first scan hands it to the duel
+ * (MMEM-2): the shots the melee saw it fire that are still short of Hadur become the duel's
+ * firing waves, and its 1v1 profile, read but never written, sets the duel's opening (the
+ * surf's prior, the starting distance, the movement's baseline and POW-1's gun tier). An H
+ * record says what was handed over.</p>
  *
  * <p>The loaded profile also decides the battle's opening (S4): the {@link OpeningBook}
  * reads its tiers once and picks the first gun (ADAPT-1) and the surf's prior (ADAPT-2),
@@ -153,6 +162,21 @@ public final class HadurCore {
     private int meleeBulletsInFlight;
     /** Null when the battle keeps no memory (no store, or a melee battle). */
     private final ProfileLibrary library;
+    /** MMEM-1: the opponents' melee blocks; null unless a melee battle with a store. */
+    private final MeleeMemory meleeMemory;
+    /**
+     * MMEM-2: reads a melee survivor's 1v1 profile for the duel's opening, and never saves:
+     * melee rounds must not change a 1v1 profile. Null unless a melee battle with a store.
+     */
+    private final ProfileLibrary survivorLibrary;
+    /** Survivors' 1v1 profiles read this battle, by lineage key, so each is read once. */
+    private final Map<String, ProfileLibrary.Loaded> survivorProfiles = new LinkedHashMap<>();
+    /** MMEM-2: the melee has just ended; the next duel scan hands its survivor over. */
+    private boolean handOffPending;
+    /** The survivor whose profile set the duel's opening, or null. */
+    private String handOffOpening;
+    /** Melee memory failures this battle, for the M record (RES-5). */
+    private int meleeMemoryFailures;
     /** The battle field's width in px. */
     private final double fieldWidth;
     /** The battle field's height in px. */
@@ -333,6 +357,8 @@ public final class HadurCore {
         // Opponent memory is for duels: a battle that starts with several opponents neither
         // loads nor saves profiles (MEM-1 to MEM-5 read "duel"; see docs/requirements.md).
         this.library = store != null && enemiesTotal == 1 ? new ProfileLibrary(store) : null;
+        this.meleeMemory = store != null && enemiesTotal >= 2 ? new MeleeMemory(store) : null;
+        this.survivorLibrary = store != null && enemiesTotal >= 2 ? new ProfileLibrary(store) : null;
         this.fieldWidth = fieldWidth;
         this.fieldHeight = fieldHeight;
         // The V record opens every battle's log.
@@ -364,6 +390,8 @@ public final class HadurCore {
         wavesAtRoundStart[0] = melee.waves().emitted();
         wavesAtRoundStart[1] = melee.waves().resolved();
         wavesAtRoundStart[2] = melee.waves().hits();
+        melee.profiles().newRound();
+        handOffPending = false;
     }
 
     /**
@@ -446,6 +474,8 @@ public final class HadurCore {
             // MELEE-2: the survivor was never tracked as a duel opponent; start fresh.
             resetDuelTracking();
             orders.maxVelocity(Rules.MAX_VELOCITY);
+            // MMEM-2: what the melee knows about the survivor goes over on its first scan.
+            handOffPending = in.others() == 1;
         }
         inMelee = melee;
         // A duel with several opponents alive fights one of them (GATE-3, GATE-4); the focus
@@ -725,6 +755,7 @@ public final class HadurCore {
         stats.flavourStep = flavour.step().ordinal();
         stats.seedDecays = seedDecays;
         foldRound(tick, "win".equals(result));
+        foldMeleeRound(tick);
         if (library != null) {
             stats.profileLoadFailures = library.loadFailures();
             stats.profileSaveFailures = library.saveFailures() + library.skippedWrites();
@@ -738,10 +769,12 @@ public final class HadurCore {
     /**
      * The melee extension's round record, for battles with several opponents or sentries:
      * {@code M,round,tick,meleeTicks,duelTicks,focusTicks,veto,meleeFaults,maxScanGap,
-     * ghostTicks,sentryHits,sweepGap,ghostsDropped,wavesSent,wavesResolved,virtualHits}; the
+     * ghostTicks,sentryHits,sweepGap,ghostsDropped,wavesSent,wavesResolved,virtualHits,
+     * memFailures}; the
      * wave counts are the round's targeting waves (MGUN-4) and how many the field gun's aim
      * would have hit. The veto is {@code -}, {@code sentry} or {@code fault}; sentryHits counts
-     * our bullets that hit a sentry. Fields are only ever appended.
+     * our bullets that hit a sentry. M5 appends {@code memFailures}, the battle's melee memory
+     * failures so far (RES-5). Fields are only ever appended.
      */
     String meleeRecord(long tick) {
         return "M," + round + "," + tick + "," + meleeTicks + "," + duelTicks + "," + focusTicks
@@ -750,7 +783,8 @@ public final class HadurCore {
             + "," + sweepGap + "," + (melee.ghostsDropped() - ghostsAtRoundStart)
             + "," + (melee.waves().emitted() - wavesAtRoundStart[0])
             + "," + (melee.waves().resolved() - wavesAtRoundStart[1])
-            + "," + (melee.waves().hits() - wavesAtRoundStart[2]);
+            + "," + (melee.waves().hits() - wavesAtRoundStart[2])
+            + "," + meleeMemoryFailures;
     }
 
     /** MEM-2: the round's observations join the profile. A failure here is counted, never thrown. */
@@ -770,8 +804,60 @@ public final class HadurCore {
     }
 
     /**
+     * MMEM-1: each opponent scanned this round has the round folded into its melee block.
+     * Hadur may be dead by now; the block is written at the next checkpoint or the battle's
+     * end. A failure is counted, never thrown.
+     */
+    private void foldMeleeRound(long tick) {
+        if (meleeMemory == null) return;
+        try {
+            meleeMemory.foldRound(melee.profiles(), enemiesTotal);
+        } catch (RuntimeException e) {
+            meleeMemoryFailures++;
+            telemetry.emit("MEM," + round + "," + tick + ",melee-fold-failed," + clean(e.toString()));
+        }
+    }
+
+    /** MMEM-1: loads {@code name}'s melee block on its first scan of the battle. Never throws. */
+    private void loadMeleeBlock(long time, String name) {
+        if (meleeMemory == null) return;
+        try {
+            if (meleeMemory.isLoaded(name)) return;
+            int failures = meleeMemory.loadFailures();
+            meleeMemory.load(name);
+            if (meleeMemory.loadFailures() > failures) {
+                meleeMemoryFailures++;
+                telemetry.emit("MEM," + round + "," + time + ",melee-load-failed," + clean(meleeMemory.lastNote()));
+            }
+        } catch (RuntimeException e) {
+            meleeMemoryFailures++;
+            telemetry.emit("MEM," + round + "," + time + ",melee-load-failed," + clean(e.toString()));
+        }
+    }
+
+    /** MMEM-1: writes the melee blocks folded since the last save. Never throws. */
+    private void saveMeleeMemory(long tick) {
+        if (meleeMemory == null) return;
+        try {
+            int before = meleeMemory.saveFailures() + meleeMemory.skippedWrites();
+            meleeMemory.saveAll();
+            int failed = meleeMemory.saveFailures() + meleeMemory.skippedWrites() - before;
+            if (failed > 0) {
+                meleeMemoryFailures += failed;
+                telemetry.emit("MEM," + round + "," + tick + ",melee-save-failed," + clean(meleeMemory.lastNote()));
+            }
+        } catch (RuntimeException e) {
+            meleeMemoryFailures++;
+            telemetry.emit("MEM," + round + "," + tick + ",melee-save-failed," + clean(e.toString()));
+        }
+    }
+
+    /**
      * MEM-3: writes the profile to the store. The adapter calls this when a round ends, as
      * a checkpoint, and when the battle ends. Does nothing when the battle keeps no memory.
+     * In a melee battle it writes the melee blocks instead (MMEM-1); the adapter only
+     * checkpoints while Hadur is alive, so a round Hadur died in is written at the next
+     * checkpoint or at the battle's end.
      *
      * <p>The library does the atomic write (RES-3) and any eviction (MEM-5) and never
      * throws; anything but a clean write is logged as a {@code MEM} record.</p>
@@ -779,6 +865,7 @@ public final class HadurCore {
      * @param tick the tick of the save, for the record
      */
     public void saveProfile(long tick) {
+        saveMeleeMemory(tick);
         if (library == null || folder == null) return;
         ProfileLibrary.Saved saved = library.save(folder.profile());
         if (saved != ProfileLibrary.Saved.WRITTEN) {
@@ -793,6 +880,8 @@ public final class HadurCore {
      */
     public void prepareMemory() {
         if (library != null) library.prepare();
+        if (survivorLibrary != null) survivorLibrary.prepare();
+        if (meleeMemory != null) meleeMemory.prepare();
     }
 
     /**
@@ -990,12 +1079,15 @@ public final class HadurCore {
         meleeEvent(() -> melee.onScan(e.name(), enemyPos, e.distance(), e.energy(), e.heading(),
             e.velocity(), time));
         // In melee the tracker is all; the duel's model is not fed (GATE-1).
+        loadMeleeBlock(time, e.name());
         if (inMelee) return;
         // With several opponents alive the duel fights one and ignores the others.
         if (focusing && !e.name().equals(focusTarget(myPos))) return;
         // S5: the windows and the distance controller are about one robot's gun.
         if (duelOpponent != null && !duelOpponent.equals(e.name())) forgetDuelOpponent();
         duelOpponent = e.name();
+        // MMEM-2: before the duel adds its own wave for this scan.
+        if (handOffPending) handOff(in, e);
         long previousScanTime = lastScanTime;
         lastScanTime = time;
         lastEnemyAbsBearing = absBearing;
@@ -1217,6 +1309,125 @@ public final class HadurCore {
     }
 
     /**
+     * MMEM-2: the melee's survivor, scanned by the duel for the first time. Its shots the
+     * melee recorded that have not reached Hadur become the duel's firing waves, its 1v1
+     * profile (read, never written) sets the duel's opening, and an H record says what was
+     * handed over: {@code H,round,tick,survivor,found1v1,foundMelee,wavesInjected}.
+     */
+    private void handOff(BotInput in, BotEvent.Scan e) {
+        handOffPending = false;
+        String name = e.name();
+        int injected = 0;
+        try {
+            injected = injectWaves(in, name, e.energy());
+        } catch (RuntimeException ex) {
+            // A wave that cannot be built is a wave the duel will not surf; never fatal.
+            telemetry.emit("FAULT," + round + "," + in.time() + ",handoff," + clean(ex.toString()));
+        }
+        boolean found1v1 = false;
+        if (survivorLibrary != null) {
+            try {
+                ProfileLibrary.Loaded loaded = survivorProfile(in.time(), name);
+                found1v1 = loaded.found();
+                if (!name.equals(handOffOpening)) openForSurvivor(name, loaded.profile());
+            } catch (RuntimeException ex) {
+                meleeMemoryFailures++;
+                telemetry.emit("MEM," + round + "," + in.time() + ",handoff-failed," + clean(ex.toString()));
+            }
+        }
+        boolean foundMelee = false;
+        if (meleeMemory != null) {
+            try {
+                foundMelee = meleeMemory.load(name).found;
+            } catch (RuntimeException ex) {
+                meleeMemoryFailures++;
+            }
+        }
+        telemetry.emit("H," + round + "," + in.time() + "," + clean(name) + "," + (found1v1 ? 1 : 0)
+            + "," + (foundMelee ? 1 : 0) + "," + injected);
+    }
+
+    /** The survivor's 1v1 profile, read once a battle; a load failure reads as a stranger (MEM-4). */
+    private ProfileLibrary.Loaded survivorProfile(long time, String name) {
+        String key = LineageKey.of(name);
+        ProfileLibrary.Loaded loaded = survivorProfiles.get(key);
+        if (loaded != null) return loaded;
+        loaded = survivorLibrary.load(name);
+        if (survivorProfiles.size() < 64) survivorProfiles.put(key, loaded);
+        if (loaded.failure() != null) {
+            meleeMemoryFailures++;
+            telemetry.emit("MEM," + round + "," + time + ",load-failed," + clean(loaded.failure()));
+        }
+        return loaded;
+    }
+
+    /**
+     * MMEM-2: the survivor's profile opens the duel as S4 would, except for what a melee
+     * battle's duel cannot use or must not change: no seeds are replayed (the views are
+     * shared by every survivor of the battle), no samples are kept (the profile is never
+     * written), and the gun's opening is left alone (its virtual guns are 1v1-only). The
+     * surf's prior still fades when the live rate disagrees (RES-4).
+     */
+    private void openForSurvivor(String name, OpponentProfile p) {
+        handOffOpening = name;
+        opening = OpeningBook.read(p);
+        distance = new DistancePolicy(opening.distance());
+        moveController.clearPrior();
+        Estimate prior = opening.surfPrior();
+        if (!Double.isNaN(prior.value())) moveController.setPrior(prior.value(), prior.margin());
+        moveController.setFlattenerFirst(opening.flattenerFirst());
+        flavour = new MoveFlavour(p.theirShots() > 0
+            ? Estimate.of(p.theirHitRate() * p.theirShots(), p.theirShots()) : Estimate.NONE);
+        surfSeedTrust = new SeedTrust(new SeedWeight(0), opening.theirHitRate());
+        surfWavesChecked = moveController.enemyFiringWaves();
+    }
+
+    /**
+     * MMEM-2: the survivor's recorded shots still short of Hadur, as firing waves in the
+     * duel's movement, built as the duel builds its own from where Hadur was when each was
+     * fired. A shot fired before the path's first state is left out. Returns how many.
+     */
+    private int injectWaves(BotInput in, String survivor, double survivorEnergy) {
+        RobotStateLog path = melee.myPath();
+        int injected = 0;
+        for (EnemyShot shot : melee.tracker.shots(in.time())) {
+            if (!shot.shooter.equals(survivor)) continue;
+            if (shot.travelled(in.time()) >= shot.source.distance(in.location()) - Wave.MAX_BOT_RADIUS) continue;
+            RobotState me = path.getState(shot.fireTime, false);
+            if (me == null) continue;
+            RobotState before = path.getState(shot.fireTime - 1, false);
+            int sign = me.velocity != 0 ? (me.velocity > 0 ? 1 : -1)
+                : before != null && before.velocity < 0 ? -1 : 1;
+            Wave w = new Wave(survivor, shot.source, me.location, round, shot.fireTime, shot.power,
+                me.heading, me.velocity, sign, battleField, predictor);
+            w.setAccel(before == null ? 0 : DiaUtils.accel(me.velocity, before.velocity))
+                .setDistance(shot.source.distance(me.location))
+                .setVchangeTime(ticksSinceVelocityChange(path, shot.fireTime))
+                .setDistanceLast8Ticks(path.getDisplacementDistance(me.location, shot.fireTime, 8))
+                .setDistanceLast20Ticks(path.getDisplacementDistance(me.location, shot.fireTime, 20))
+                .setDistanceLast40Ticks(path.getDisplacementDistance(me.location, shot.fireTime, 40))
+                .setTargetEnergy(in.energy())
+                .setSourceEnergy(survivorEnergy);
+            w.setWallDistances();
+            w.setFiringWave(true);
+            moveController.addWave(w);
+            injected++;
+        }
+        return injected;
+    }
+
+    /** Ticks since Hadur's velocity last changed by more than 0.5 before {@code time}, as the duel counts it. */
+    private static long ticksSinceVelocityChange(RobotStateLog path, long time) {
+        long ticks = 0;
+        for (long t = time; ticks < 100; t--, ticks++) {
+            RobotState now = path.getState(t, false);
+            RobotState before = path.getState(t - 1, false);
+            if (now == null || before == null || Math.abs(now.velocity - before.velocity) > 0.5) break;
+        }
+        return ticks;
+    }
+
+    /**
      * RES-4: each of our virtual main-gun waves checks the gun seed against the live rating.
      * Once they disagree, the opening's gun choice goes too and live ratings pick the gun.
      */
@@ -1305,6 +1516,13 @@ public final class HadurCore {
      * to round): what the windows and the distance controller learned was about another gun.
      */
     private void forgetDuelOpponent() {
+        if (handOffOpening != null) {
+            // The last survivor's opening was about another robot.
+            handOffOpening = null;
+            opening = Opening.STRANGER;
+            moveController.clearPrior();
+            surfSeedTrust = null;
+        }
         ourWindow.clear();
         theirWindow.clear();
         distance = new DistancePolicy(opening.distance());
@@ -1486,6 +1704,12 @@ public final class HadurCore {
     private void onHitByBullet(BotInput in, BotEvent.HitByBullet e) {
         stats.hitsTaken++;
         if (gate.isSentry(e.name())) return;
+        if (enemiesTotal >= 2 && !inMelee && deadThisRound.contains(e.name())) {
+            // A dead robot's bullet: it explains none of the survivor's energy (MMEM-2).
+            meleeEvent(() -> melee.onHitByBullet(e.name(), e.power(), e.heading(), in.location(),
+                in.time()));
+            return;
+        }
         if (focusing && !e.name().equals(focus.target())) {
             // Not the duel's enemy: the melee brain still learns who hurts us.
             meleeEvent(() -> melee.onHitByBullet(e.name(), e.power(), e.heading(), in.location(),
