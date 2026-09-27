@@ -8,7 +8,8 @@ public final class BattleResult {
     public static final String HEADER = "ok,rounds,score,theirScore,firsts,survival,theirSurvival,"
         + "bulletDamage,theirBulletDamage,skippedTurns,turns,turnP50Ms,turnP95Ms,turnMaxMs,"
         + "roundRecords,faults,faultRecords,ourHitRate,theirHitRate,"
-        + "phantomWaves,enemyShots,unseenShots,inferredWaves,matchedWaves,radarReacquired,hiddenShots,errors";
+        + "phantomWaves,enemyShots,unseenShots,inferredWaves,matchedWaves,radarReacquired,hiddenShots,"
+        + "bulletsIntercepted,jitteredShots,shotsFired,errors";
 
     public boolean ok;
     public int rounds, firsts, skippedTurns, turns;
@@ -19,6 +20,8 @@ public final class BattleResult {
     public int phantomWaves, enemyShots, unseenShots, inferredWaves, matchedWaves;
     /** Radar reacquire ticks (RADAR-1) and hidden shots (WAVE-1), from Hadur's R records. */
     public int radarReacquired, hiddenShots;
+    /** Our bullets shot down, shots fired with the anti-shield offset, and all our shots (SHIELD-1, SHIELD-2). */
+    public int bulletsIntercepted, jitteredShots, shotsFired;
     public double score, theirScore, survival, theirSurvival, bulletDamage, theirBulletDamage;
     public double turnP50Ms, turnP95Ms, turnMaxMs;
     public String errors = "";
@@ -52,12 +55,15 @@ public final class BattleResult {
         r.matchedWaves = h.matchedWaves();
         r.radarReacquired = h.radarReacquired();
         r.hiddenShots = h.hiddenShots();
+        r.bulletsIntercepted = h.bulletsIntercepted();
+        r.jitteredShots = h.jitteredShots();
+        r.shotsFired = h.shotsFired();
         r.errors = errors.trim();
         return r;
     }
 
     static String failed(String why) {
-        return "false,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NaN,NaN,0,0,0,0,0,0,0," + sanitize(why);
+        return "false,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NaN,NaN,0,0,0,0,0,0,0,0,0,0," + sanitize(why);
     }
 
     String toCsv() {
@@ -70,11 +76,12 @@ public final class BattleResult {
             String.valueOf(enemyShots), String.valueOf(unseenShots),
             String.valueOf(inferredWaves),
             String.valueOf(matchedWaves), String.valueOf(radarReacquired),
-            String.valueOf(hiddenShots), sanitize(errors));
+            String.valueOf(hiddenShots), String.valueOf(bulletsIntercepted),
+            String.valueOf(jitteredShots), String.valueOf(shotsFired), sanitize(errors));
     }
 
     static BattleResult parse(String line) {
-        String[] f = line.split(",", 27);
+        String[] f = line.split(",", 30);
         BattleResult r = new BattleResult();
         r.ok = Boolean.parseBoolean(f[0]);
         r.rounds = Integer.parseInt(f[1]);
@@ -102,7 +109,10 @@ public final class BattleResult {
         r.matchedWaves = Integer.parseInt(f[23]);
         r.radarReacquired = Integer.parseInt(f[24]);
         r.hiddenShots = Integer.parseInt(f[25]);
-        r.errors = f.length > 26 ? f[26] : "";
+        r.bulletsIntercepted = Integer.parseInt(f[26]);
+        r.jitteredShots = Integer.parseInt(f[27]);
+        r.shotsFired = Integer.parseInt(f[28]);
+        r.errors = f.length > 29 ? f[29] : "";
         return r;
     }
 

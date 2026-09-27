@@ -51,6 +51,9 @@ public class LogHarvester extends BattleAdaptor {
     private final List<double[]> inferredWaves = new ArrayList<>();
     private int radarReacquired;
     private int hiddenShots;
+    private int bulletsIntercepted;
+    private int jitteredShots;
+    private int shotsFired;
     private final Set<Integer> enemyBulletIds = new HashSet<>();
     private double ourHitRateSum, theirHitRateSum;
 
@@ -128,6 +131,11 @@ public class LogHarvester extends BattleAdaptor {
                 if (f.length >= 16) {
                     radarReacquired += Integer.parseInt(f[14]);
                     hiddenShots += Integer.parseInt(f[15]);
+                }
+                if (f.length >= 19) {
+                    bulletsIntercepted += Integer.parseInt(f[16]);
+                    jitteredShots += Integer.parseInt(f[17]);
+                    shotsFired += Integer.parseInt(f[18]);
                 }
                 roundRecords++;
             } catch (NumberFormatException ignored) {
@@ -217,6 +225,21 @@ public class LogHarvester extends BattleAdaptor {
     /** Shots the ledger found that the raw energy drop hid (WAVE-1), from its R records. */
     public int hiddenShots() {
         return hiddenShots;
+    }
+
+    /** Our bullets destroyed by enemy bullets (SHIELD-1). */
+    public int bulletsIntercepted() {
+        return bulletsIntercepted;
+    }
+
+    /** Shots fired with an anti-shield aim offset (SHIELD-2). */
+    public int jitteredShots() {
+        return jitteredShots;
+    }
+
+    /** Shots Hadur fired, from its R records. */
+    public int shotsFired() {
+        return shotsFired;
     }
 
     /** Enemy waves Hadur inferred (EW records). */

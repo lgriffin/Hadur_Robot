@@ -82,6 +82,23 @@ final class Report {
                 e.getKey().name, shots, unseen, found, pct(matched, shots), pct(shots - matched, shots),
                 pct(found - matched, found), phantoms, hidden, radar));
         }
+        b.append("\n## Bullet shielding\n\n")
+         .append("How many of Hadur's bullets an enemy bullet destroyed. A share well above a few "
+            + "percent means the enemy shoots our bullets down on purpose (SHIELD-1); jittered shots "
+            + "went out with the anti-shield aim offset (SHIELD-2).\n\n")
+         .append("| Opponent | Our shots | Shot down | Jittered shots |\n")
+         .append("|---|---|---|---|\n");
+        for (Map.Entry<Opponent, List<BattleResult>> e : results.entrySet()) {
+            int fired = 0, down = 0, jittered = 0;
+            for (BattleResult r : e.getValue()) {
+                if (!r.ok) continue;
+                fired += r.shotsFired;
+                down += r.bulletsIntercepted;
+                jittered += r.jitteredShots;
+            }
+            b.append(String.format(Locale.ROOT, "| %s | %d | %s | %d |%n",
+                e.getKey().name, fired, pct(down, fired), jittered));
+        }
         if (warm) {
             b.append("\n## Learning curve (score share by battle)\n\n| Opponent |");
             for (int i = 1; i <= runs; i++) b.append(" ").append(i).append(" |");

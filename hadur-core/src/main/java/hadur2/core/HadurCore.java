@@ -9,6 +9,8 @@ import hadur2.core.move.MoveController;
 import hadur2.core.move.SurfMover;
 import hadur2.core.physics.*;
 import hadur2.core.port.Telemetry;
+import hadur2.core.shield.AimJitter;
+import hadur2.core.shield.ShieldDetector;
 import java.awt.geom.Point2D;
 import java.util.Locale;
 
@@ -37,6 +39,8 @@ public final class HadurCore {
     private final EnergyLedger ledger;
     private final Telemetry telemetry;
     private final MeleeController melee;
+    private final ShieldDetector shieldDetector = new ShieldDetector();
+    private final AimJitter aimJitter = new AimJitter();
 
     private int round;
     private RoundStats stats = new RoundStats();
@@ -140,6 +144,7 @@ public final class HadurCore {
             else if (e instanceof BotEvent.HitByBullet) onHitByBullet(in, (BotEvent.HitByBullet) e);
             else if (e instanceof BotEvent.BulletHitBullet) onBulletHitBullet(in, (BotEvent.BulletHitBullet) e);
             else if (e instanceof BotEvent.BulletHit) onBulletHit((BotEvent.BulletHit) e);
+            else if (e instanceof BotEvent.BulletMissed) onBulletMissed();
             else if (e instanceof BotEvent.HitRobot) ledger.robotsCollided();
             else if (e instanceof BotEvent.RobotDeath) this.melee.onRobotDeath(((BotEvent.RobotDeath) e).name());
             else if (e instanceof BotEvent.SkippedTurn) onSkippedTurn(in);
@@ -216,6 +221,7 @@ public final class HadurCore {
             double firedPower = Math.min(in.energy(), Math.min(
                 Math.max(aimedBulletPower, Rules.MIN_BULLET_POWER), Rules.MAX_BULLET_POWER));
             gunHeat += Rules.getGunHeat(firedPower);
+            aimJitter.shotFired();
         }
 
         aimedBulletPower = lastGunWave.bulletPower();
@@ -224,6 +230,10 @@ public final class HadurCore {
             aimAngle = DiaUtils.absoluteBearing(myNext, lastGunWave.targetLocation);
         } else {
             aimAngle = gunController.aim(lastGunWave, myNext, in.time());
+        }
+        if (shieldDetector.shielded()) {
+            // SHIELD-2: a shielder predicts our heading exactly; move it by an amount it can't.
+            aimAngle += aimJitter.offset(myNext.distance(lastGunWave.targetLocation));
         }
         orders.turnGunRight(Angles.normalRelativeAngle(aimAngle - in.gunHeading()));
     }
@@ -240,6 +250,7 @@ public final class HadurCore {
             gunController.fireVirtualBullets(lastGunWave, myNext, in.time());
             lastRealBulletFireTime = in.time();
             stats.shotsFired++;
+            if (shieldDetector.shielded()) stats.jitteredShots++;
             return true;
         }
         return false;
@@ -369,6 +380,7 @@ public final class HadurCore {
 
     private void onBulletHit(BotEvent.BulletHit e) {
         stats.shotsHit++;
+        if (!inMelee) shieldDetector.bulletHit();
         melee.onBulletHit(e.name(), e.power());
         ledger.ourBulletHit(e.power());
     }
@@ -385,7 +397,14 @@ public final class HadurCore {
         }
     }
 
+    private void onBulletMissed() {
+        if (!inMelee) shieldDetector.bulletMissed();
+    }
+
     private void onBulletHitBullet(BotInput in, BotEvent.BulletHitBullet e) {
+        stats.bulletsIntercepted++;
+        // SHIELD-1: in a duel, a bullet that meets ours may be a shield.
+        if (!inMelee) shieldDetector.bulletIntercepted();
         Point2D.Double hitLoc = new Point2D.Double(e.x(), e.y());
         Wave hitWave = moveController.findBulletWave(hitLoc, in.time(), null, e.enemyPower());
         if (hitWave != null) {
