@@ -67,7 +67,7 @@ public class EnemyTracker {
 
     /**
      * Takes a scan of {@code name}, {@code distanceToUs} from Hadur. An energy drop that
-     * looks like a shot joins {@link #shots()} (MSENSE-2).
+     * looks like a shot joins {@link #shots(long)} (MSENSE-2).
      */
     public EnemyInfo onScan(String name, Point2D.Double location, double energy,
                             double heading, double velocity, long time, double distanceToUs) {
