@@ -169,8 +169,10 @@ public class Hadur extends AdvancedRobot {
         // The engine can deliver this before WinEvent in the round's last batch.
         reportRound(getEnergy() <= 0 ? "loss" : getOthers() == 0 ? "win" : "draw");
         // A checkpoint: the robot may not get to the battle's end (MEM-3). File I/O is
-        // safe here, unlike in onWin and onDeath.
-        if (core != null) core.saveProfile(getTime());
+        // safe here, unlike in onWin and onDeath. Only when alive: a dead robot's thread
+        // that stops to write keeps it in the round, where the enemy goes on shooting it
+        // and its last bullets still refund it energy (the S3 bench saw this).
+        if (core != null && getEnergy() > 0) core.saveProfile(getTime());
     }
 
     @Override
