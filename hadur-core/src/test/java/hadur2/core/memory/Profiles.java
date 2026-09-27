@@ -20,10 +20,55 @@ public final class Profiles {
             f.ourHit(300, 16);
         }
         f.virtualGuns(40, 5.5, 40, 7.25);
+        f.normalised(40, 5.2);
         f.fold(true);
         for (int i = 0; i < gunSeed; i++) p.addGunSample(sampleValues(i));
         for (int i = 0; i < surfSeed; i++) p.addSurfSample(sampleValues(-i));
         return p;
+    }
+
+    /**
+     * Sets the evidence behind the tiers to 2000 waves each: their normalised hit rate on
+     * us, and our main and anti-surfer virtual ratings. Margins are then about 1.5 points.
+     */
+    public static OpponentProfile tiers(OpponentProfile p, double theirRate, double mainRating,
+                                        double antiSurferRating) {
+        p.normalised[0] = 2000;
+        p.normalised[1] = (float) (2000 * theirRate);
+        p.virtualFired[0] = 2000;
+        p.virtualHits[0] = (float) (2000 * mainRating);
+        p.virtualFired[1] = 2000;
+        p.virtualHits[1] = (float) (2000 * antiSurferRating);
+        return p;
+    }
+
+    /** Sets every tier's evidence to {@code waves} waves, their normalised rate to {@code theirRate}. */
+    public static OpponentProfile evidence(OpponentProfile p, int waves, double theirRate) {
+        p.normalised[0] = waves;
+        p.normalised[1] = (float) (waves * theirRate);
+        p.virtualFired[0] = waves;
+        p.virtualHits[0] = waves * 0.2f;
+        p.virtualFired[1] = waves;
+        p.virtualHits[1] = waves * 0.2f;
+        return p;
+    }
+
+    /** A plausible gun sample (see {@link Seeds}): data point, guess factor, displacement. */
+    public static double[] gunSample(double guessFactor, double dx, double dy) {
+        double[] s = new double[OpponentProfile.SAMPLE_WIDTH];
+        for (int i = 0; i < 10; i++) s[i] = 0.1 * (i % 5);
+        s[10] = guessFactor;
+        s[11] = dx;
+        s[12] = dy;
+        return s;
+    }
+
+    /** A plausible surf sample: 11 flattener values, the lateral value, the guess factor. */
+    public static double[] surfSample(double guessFactor) {
+        double[] s = new double[OpponentProfile.SAMPLE_WIDTH];
+        for (int i = 0; i < 12; i++) s[i] = 0.05 * (i % 7);
+        s[12] = guessFactor;
+        return s;
     }
 
     static short[] sampleValues(int seed) {

@@ -8,8 +8,15 @@ import hadur2.core.move.*;
 
 import java.awt.geom.Point2D;
 import java.util.*;
+import java.util.function.Consumer;
 
 public class MoveController {
+
+    /**
+     * A surf seed sample: the flattener formula's 11 data-point values (the normal views use
+     * the first 9), the simple view's lateral-velocity value, and the guess factor that hit us.
+     */
+    public static final int SAMPLE_WIDTH = 13;
 
     private static final double TYPICAL_ESCAPE_RANGE = 0.98;
     private static final double DECAY_RATE = 1.8;
@@ -24,6 +31,15 @@ public class MoveController {
     private double weighted1v1ShotsHit;
     private double lastBulletPower;
     private long lastBulletFireTime;
+    /** The profile's normalised hit rate and margin, in percent; NaN when there is none (ADAPT-2). */
+    private double priorHitPercentage = Double.NaN;
+    private double priorMarginOfError = Double.NaN;
+    /** ADAPT-2: the flattener views are on while the prior stands, whatever the thresholds say. */
+    private boolean flattenerFirst;
+    /** Seeded samples so far; their time, so the decaying views see them oldest first. */
+    private int seedsLoaded;
+    private final FlattenerFormula sampleFormula = new FlattenerFormula();
+    private Consumer<double[]> sampleSink;
 
     public MoveController(BattleField battleField, MovementPredictor predictor) {
         this.battleField = battleField;
@@ -69,6 +85,105 @@ public class MoveController {
             .setWeight(500).setK(50).setMaxDataPoints(2000).setKDivisor(14)
             .setPaddedHitThreshold(5.9).setDecayRate(DECAY_RATE).visitsOn()
             .setName("flattener2"));
+    }
+
+    /**
+     * ADAPT-2, DIAL-1: the enemy's normalised hit rate on us as the profile knows it. While
+     * its margin of error is narrower than the live estimate's, it decides which danger views
+     * are enabled, so a gun the profile rates T3 meets the flattener from the first wave.
+     */
+    public void setPrior(double hitRate, double marginOfError) {
+        this.priorHitPercentage = 100.0 * hitRate;
+        this.priorMarginOfError = 100.0 * marginOfError;
+    }
+
+    /**
+     * ADAPT-2: while the prior stands, turn on the flattener views (the ones that learn from
+     * every wave, not only hits) as soon as they hold data, whatever their thresholds say.
+     */
+    public void setFlattenerFirst(boolean flattenerFirst) {
+        this.flattenerFirst = flattenerFirst;
+    }
+
+    /** RES-4: forget the profile's estimate and the flattener it asked for; live data decides. */
+    public void clearPrior() {
+        this.priorHitPercentage = Double.NaN;
+        this.priorMarginOfError = Double.NaN;
+        this.flattenerFirst = false;
+    }
+
+    /**
+     * The views whose thresholds the current estimate meets, data or not: the policy the
+     * danger score applies (a view also needs data to count).
+     */
+    public List<String> viewsOn() {
+        List<String> on = new ArrayList<>();
+        double[] estimate = viewEstimate();
+        for (KnnView<TimestampedGuessFactor> view : views) {
+            if (viewOn(view, estimate)) on.add(view.name);
+        }
+        return on;
+    }
+
+    /** DIAL-1: the hit percentage and margin that decide the views: the more certain estimate. */
+    private double[] viewEstimate() {
+        double hitPercentage = normalizedEnemyHitPercentage();
+        double marginOfError = hitPercentageMarginOfError();
+        if (!Double.isNaN(priorHitPercentage) && priorMarginOfError < marginOfError) {
+            hitPercentage = priorHitPercentage;
+            marginOfError = priorMarginOfError;
+        }
+        return new double[] {hitPercentage, marginOfError};
+    }
+
+    private boolean viewOn(KnnView<TimestampedGuessFactor> view, double[] estimate) {
+        if (flattenerFirst && view.logVisits) return true;
+        return view.thresholdsMet(estimate[0], estimate[1]);
+    }
+
+    /** Whether the profile's estimate is deciding the danger views right now. */
+    public boolean priorInUse() {
+        return !Double.isNaN(priorHitPercentage) && priorMarginOfError < hitPercentageMarginOfError();
+    }
+
+    /** Receives one {@link #SAMPLE_WIDTH}-value sample per enemy bullet that hits us. */
+    public void setSampleSink(Consumer<double[]> sampleSink) {
+        this.sampleSink = sampleSink;
+    }
+
+    /** ADAPT-3: adds a seeded hit to every view that learns from bullet hits. */
+    public void seed(double[] sample, SeedWeight weight) {
+        if (sample.length != SAMPLE_WIDTH) throw new IllegalArgumentException("a surf sample has 13 values");
+        TimestampedGuessFactor tsgf = new TimestampedGuessFactor(Timestamped.SEED_ROUND,
+            seedsLoaded++, sample[12], weight);
+        for (KnnView<TimestampedGuessFactor> view : views) {
+            if (!view.logBulletHits) continue;
+            double[] point;
+            if (view.formula instanceof SimpleFormula) {
+                point = new double[] {sample[0], sample[11], sample[4]};
+            } else {
+                point = Arrays.copyOf(sample, view.formula.weights.length);
+            }
+            view.logSeed(point, tsgf);
+        }
+    }
+
+    /** Samples in the danger view called {@code name}, or -1 if there is none. */
+    public int viewSize(String name) {
+        for (KnnView<TimestampedGuessFactor> view : views) {
+            if (view.name.equals(name)) return view.size();
+        }
+        return -1;
+    }
+
+    /** Firing waves that have broken on us this battle, bullet-hit-bullet ones aside. */
+    public int enemyFiringWaves() {
+        return raw1v1ShotsFired;
+    }
+
+    /** Their hits on us over those waves, each weighted by our angular width (normalised). */
+    public double enemyWeightedHits() {
+        return weighted1v1ShotsHit;
     }
 
     public void initRound() {
@@ -148,6 +263,12 @@ public class MoveController {
             view.logWave(hitWave, new TimestampedGuessFactor(
                 currentRound, currentTime, hitGF));
         }
+        if (sampleSink != null) {
+            double[] sample = Arrays.copyOf(sampleFormula.dataPointFromWave(hitWave), SAMPLE_WIDTH);
+            sample[11] = (hitWave.lateralVelocity() + 0.1) / 8.1;
+            sample[12] = hitGF;
+            sampleSink.accept(sample);
+        }
     }
 
     public Wave findBulletWave(Point2D.Double bulletLocation, long currentTime,
@@ -192,11 +313,10 @@ public class MoveController {
         double totalDanger = 0;
         double totalScanWeight = 0;
         int enabledSize = 0;
-        double hitPercentage = normalizedEnemyHitPercentage();
-        double marginOfError = hitPercentageMarginOfError();
+        double[] estimate = viewEstimate();
 
         for (KnnView<TimestampedGuessFactor> view : views) {
-            if (!view.enabled(hitPercentage, marginOfError)) continue;
+            if (view.size() == 0 || !viewOn(view, estimate)) continue;
             enabledSize += view.size();
 
             List<KdTree.Entry<TimestampedGuessFactor>> neighbors =
@@ -207,8 +327,9 @@ public class MoveController {
             double viewScanWeight = 0;
             for (KdTree.Entry<TimestampedGuessFactor> entry : neighbors) {
                 TimestampedGuessFactor tsgf = entry.value;
+                // ADAPT-3: a seeded sample counts for its seed's weight, a live one for 1.
                 double scanWeight = weightMap.get(tsgf)
-                    / Math.sqrt(entry.distance);
+                    / Math.sqrt(entry.distance) * tsgf.weight();
                 double xFiringAngle = DiaUtils.normalizeAngle(
                     w.firingAngle(tsgf.guessFactor), dangerAngle);
                 double ux = (xFiringAngle - dangerAngle) / bandwidth;

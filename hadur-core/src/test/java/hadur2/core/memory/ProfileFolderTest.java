@@ -116,20 +116,56 @@ class ProfileFolderTest {
     }
 
     @Test
-    @DisplayName("tiers follow the artifact's tables once there is enough evidence")
+    @DisplayName("tiers follow the artifact's tables once the margin of error is narrow enough")
     void tiers() {
         OpponentProfile p = new OpponentProfile("a.B");
         p.startBattle("a.B", 1);
         ProfileFolder f = new ProfileFolder(p, 800, 600);
-        for (int i = 0; i < 10; i++) f.enemyShot(300, 2, true);
+        f.normalised(50, 7.5);
+        f.virtualGuns(50, 5, 50, 12);
         f.fold(true);
-        assertEquals(Tiers.Gun.UNKNOWN, Tiers.gun(p), "10 shots is not enough");
-        for (int i = 0; i < 90; i++) f.enemyShot(300, 2, true);
-        for (int i = 0; i < 15; i++) f.hitByEnemy(300, true, 10);
-        f.virtualGuns(100, 5, 100, 12);
+        assertEquals(Tiers.Gun.UNKNOWN, Tiers.gun(p), "50 waves leave too wide a margin");
+        assertEquals(Tiers.Move.UNKNOWN, Tiers.move(p));
+        f.normalised(1000, 150);
+        f.virtualGuns(1000, 100, 1000, 240);
         f.fold(true);
-        assertEquals(Tiers.Gun.T3, Tiers.gun(p), "15% hit rate");
-        assertEquals(Tiers.Move.M2, Tiers.move(p), "anti-surfer ahead");
+        assertEquals(Tiers.Gun.T3, Tiers.gun(p), "15% normalised hit rate");
+        assertEquals(Tiers.Move.M2, Tiers.move(p), "anti-surfer clearly ahead");
         assertEquals("T3/M2", Tiers.label(p));
+    }
+
+    @Test
+    @Tag("MEM-2")
+    @DisplayName("seeds and normalised counts join the profile only at the fold")
+    void seedsFoldAtRoundEnd() {
+        OpponentProfile p = new OpponentProfile("a.B");
+        p.startBattle("a.B", 1);
+        ProfileFolder f = new ProfileFolder(p, 800, 600);
+        for (int i = 0; i < 3; i++) f.gunSample(Profiles.gunSample(0.1 * i, 1, 2));
+        f.surfSample(Profiles.surfSample(-0.5));
+        f.normalised(12, 1.5);
+        assertEquals(0, p.gunSeedSize(), "nothing before the fold");
+        f.fold(true);
+        assertEquals(3, p.gunSeedSize());
+        assertEquals(1, p.surfSeedSize());
+        assertEquals(0.2, Seeds.gun(p.gunSeed().get(2))[10], 1e-4);
+        assertEquals(-0.5, Seeds.surf(p.surfSeed().get(0))[12], 1e-4);
+        assertEquals(12, p.normalisedWaves(), 1e-6);
+        f.normalised(20, 2.5);
+        f.fold(false);
+        assertEquals(20, p.normalisedWaves(), 1e-6, "battle totals fold as growth");
+        assertEquals(2.5, p.normalisedHits(), 1e-6);
+        assertEquals(3, p.gunSeedSize(), "a round's samples fold once");
+    }
+
+    @Test
+    @DisplayName("a round keeps only the newest samples a seed can hold")
+    void seedBufferIsBounded() {
+        OpponentProfile p = new OpponentProfile("a.B");
+        ProfileFolder f = new ProfileFolder(p, 800, 600);
+        for (int i = 0; i < OpponentProfile.MAX_GUN_SEED + 50; i++) f.gunSample(Profiles.gunSample(0, i / 1000.0, 0));
+        f.fold(true);
+        assertEquals(OpponentProfile.MAX_GUN_SEED, p.gunSeedSize());
+        assertEquals(0.05, Seeds.gun(p.gunSeed().get(0))[11], 1e-3, "the oldest 50 went");
     }
 }

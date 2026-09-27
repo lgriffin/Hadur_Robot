@@ -9,7 +9,7 @@ import java.util.zip.CRC32;
  *
  * <pre>
  * 'H' 'P'           magic
- * u8                version (1)
+ * u8                version (2; version 1 still loads)
  * i32               payload length
  * payload           see {@link #encode}
  * i32               CRC-32 of everything before it
@@ -22,7 +22,13 @@ import java.util.zip.CRC32;
  */
 public final class ProfileCodec {
 
-    public static final int VERSION = 1;
+    /**
+     * 2 adds the normalised hit counts after the motion group (S4) and gives the seeds their
+     * meaning ({@link Seeds}). A version 1 file loads with those counts at zero and without
+     * its seeds, which had no defined layout (S3 never filled them): stats kept, seeds dropped.
+     */
+    public static final int VERSION = 2;
+    static final int OLDEST_VERSION = 1;
     static final int MAGIC_0 = 'H';
     static final int MAGIC_1 = 'P';
     static final int HEADER = 7;
@@ -43,7 +49,8 @@ public final class ProfileCodec {
         payload.floats(p.shotsAtUs).floats(p.hitsOnUs)
             .floats(p.shotsByMotion).floats(p.hitsByMotion).floats(p.powerHistogram)
             .floats(p.virtualFired).floats(p.virtualHits)
-            .floats(p.ourShots).floats(p.ourHits).floats(p.motion);
+            .floats(p.ourShots).floats(p.ourHits).floats(p.motion)
+            .floats(p.normalised);
         writeSeed(payload, p.gunSeed);
         writeSeed(payload, p.surfSeed);
 
@@ -78,7 +85,7 @@ public final class ProfileCodec {
         Bytes.Reader h = new Bytes.Reader(bytes, 0, bytes.length);
         if (h.u8() != MAGIC_0 || h.u8() != MAGIC_1) throw new ProfileFormatException("not a profile");
         int version = h.u8();
-        if (version != VERSION) throw new ProfileFormatException("unknown version " + version);
+        if (version < OLDEST_VERSION || version > VERSION) throw new ProfileFormatException("unknown version " + version);
         int length = h.i32();
         if (length < 0 || length > MAX_PAYLOAD || HEADER + length + TRAILER != bytes.length) {
             throw new ProfileFormatException("length " + length + " does not fit " + bytes.length + " bytes");
@@ -114,9 +121,13 @@ public final class ProfileCodec {
         r.floats(p.ourShots, "our shots");
         r.floats(p.ourHits, "our hits");
         r.floats(p.motion, "motion");
+        if (version >= 2) {
+            r.floats(p.normalised, "normalised hits");
+        }
         readSeed(r, p.gunSeed, OpponentProfile.MAX_GUN_SEED, "gun seed");
         readSeed(r, p.surfSeed, OpponentProfile.MAX_SURF_SEED, "surf seed");
         if (r.remaining() != 0) throw new ProfileFormatException(r.remaining() + " stray bytes");
+        if (version == 1) p.dropSeeds();
         return p;
     }
 

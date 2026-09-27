@@ -139,33 +139,49 @@ final class Report {
         b.append("\n## Opponent memory\n\n")
          .append("\"Started warm\" counts battles whose first scan loaded a stored profile (MEM-1). "
             + "Memory failures are profiles that failed to load, fold or save (MEM-4, MEM-3); seed "
-            + "evictions are profiles whose seeds were dropped for room (MEM-5).\n\n")
-         .append("| Opponent | Started warm | Memory failures | Seed evictions |\n|---|---|---|---|\n");
+            + "evictions are profiles whose seeds were dropped for room (MEM-5). Tiers are what the "
+            + "profile said at each battle's first scan, and the opening is the gun the opening book "
+            + "chose from them (ADAPT-1; \"live\" leaves it to the virtual guns, as 1.20 did). Seeds "
+            + "are the gun and surf samples replayed at the start of the last battle (ADAPT-3); seed "
+            + "decays count the waves on which the live data disagreed with the profile and a seed "
+            + "lost weight (RES-4), over all battles.\n\n")
+         .append("| Opponent | Started warm | Memory failures | Seed evictions | Tiers by battle | "
+            + "Opening by battle | Seeds (last battle) | Seed decays |\n|---|---|---|---|---|---|---|---|\n");
         for (Map.Entry<Opponent, List<BattleResult>> e : results.entrySet()) {
-            int warmStarts = 0, battles = 0, failures = 0, evictions = 0;
+            int warmStarts = 0, battles = 0, failures = 0, evictions = 0, decays = 0;
+            StringBuilder tiers = new StringBuilder();
+            StringBuilder openings = new StringBuilder();
+            String seeds = "-";
             for (BattleResult r : e.getValue()) {
                 if (!r.ok) continue;
                 battles++;
                 warmStarts += r.profileFound;
                 failures += r.memoryFailures;
                 evictions = Math.max(evictions, r.seedsEvicted);
+                decays += r.seedDecays;
+                tiers.append(tiers.length() == 0 ? "" : ", ").append(r.tiers);
+                openings.append(openings.length() == 0 ? "" : ", ").append(r.openingGun);
+                seeds = r.gunSeed + " / " + r.surfSeed;
             }
-            b.append(String.format(Locale.ROOT, "| %s | %d / %d | %d | %d |%n",
-                e.getKey().name, warmStarts, battles, failures, evictions));
+            b.append(String.format(Locale.ROOT, "| %s | %d / %d | %d | %d | %s | %s | %s | %d |%n",
+                e.getKey().name, warmStarts, battles, failures, evictions, tiers, openings, seeds,
+                decays));
         }
         if (profiles.isEmpty()) return;
         b.append("\n### Stored profiles\n\n")
          .append("Decoded from Hadur's data directory after the opponent's last battle. Hit rates "
             + "are over all remembered shots; ratings are the virtual guns' weighted hits per "
-            + "wave; tiers are provisional until S4 tunes them. The last column is the estimated "
-            + "score share the profile recorded for each battle, oldest first.\n\n")
-         .append("| Opponent | Key | Battles | Rounds | Bytes | Their hit rate | Our hit rate | "
-            + "Main / anti-surfer rating | Stopped | Tiers | Recorded score share |\n")
-         .append("|---|---|---|---|---|---|---|---|---|---|---|\n");
+            + "wave; the normalised rate weights each of their hits by how small Hadur looked from "
+            + "where they fired, which is what the gun tier reads. Seeds are gun / surf samples. "
+            + "The last column is the estimated score share the profile recorded for each battle, "
+            + "oldest first.\n\n")
+         .append("| Opponent | Key | Battles | Rounds | Bytes | Their hit rate | Their normalised rate | "
+            + "Our hit rate | Main / anti-surfer rating | Stopped | Seeds | Tiers | Recorded score share |\n")
+         .append("|---|---|---|---|---|---|---|---|---|---|---|---|---|\n");
         for (Map.Entry<Opponent, List<BattleResult>> e : results.entrySet()) {
             OpponentProfile p = profiles.get(e.getKey());
             if (p == null) {
-                b.append("| ").append(e.getKey().name).append(" | none |||||||||\n");
+                b.append("| ").append(e.getKey().name).append(" | none |||||||||||\n");
                 continue;
             }
             StringBuilder curve = new StringBuilder();
@@ -174,12 +190,18 @@ final class Report {
                 curve.append(String.format(Locale.ROOT, "%.0f%%", 100 * o.estimatedScoreShare()));
             }
             b.append(String.format(Locale.ROOT,
-                "| %s | %s | %d | %d | %d | %s | %s | %s / %s | %s | %s | %s |%n",
+                "| %s | %s | %d | %d | %d | %s | %s | %s | %s / %s | %s | %d / %d | %s | %s |%n",
                 e.getKey().name, p.key(), p.battles(), p.rounds(),
                 hadur2.core.memory.ProfileCodec.encode(p).length,
-                rate(p.theirHitRate()), rate(p.ourHitRate()), rate(p.mainGunRating()),
-                rate(p.antiSurferRating()), rate(p.stoppedFraction()), Tiers.label(p), curve));
+                rate(p.theirHitRate()), estimate(Tiers.theirHitRate(p)), rate(p.ourHitRate()),
+                rate(p.mainGunRating()), rate(p.antiSurferRating()), rate(p.stoppedFraction()),
+                p.gunSeedSize(), p.surfSeedSize(), Tiers.label(p), curve));
         }
+    }
+
+    private static String estimate(hadur2.core.memory.Estimate e) {
+        return Double.isNaN(e.value()) ? "-"
+            : String.format(Locale.ROOT, "%.1f%% ± %.1f", 100 * e.value(), 100 * e.margin());
     }
 
     private static String rate(double r) {

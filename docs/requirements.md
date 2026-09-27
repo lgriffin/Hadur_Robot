@@ -62,3 +62,25 @@ the MeleeRumble, alongside S2; the melee code is the 1.x melee work ported into 
 The SHIELD group answers bullet shielding, found in the RoboRumble top-10 bench
 (oog.mega.saguaro.Saguaro 1.0 sits still and shoots Hadur's bullets down). It is outside
 the original plan and was added alongside S2 and S3; see docs/bullet-shielding.md.
+
+The ADAPT and DIAL groups and RES-4 were implemented in S4 with these readings:
+
+- **Tiers read estimates.** The gun tier reads their *normalised* hit rate on us (each hit
+  weighted by Hadur's angular width from where it was fired, the surf's own measure), and a
+  tier is named only while its 95% margin of error is at most 3 points; otherwise it is
+  unknown and the opening is 1.20's (DIAL-1). The artifact's gun-tier bounds (4, 9, 14%)
+  were set before any measurement; the S4 bench put head-on sample bots under 2% and Shadow
+  at 8-9%, so the bounds are 2, 4.5 and 7%.
+- **ADAPT-2** turns the flattener views on regardless of their thresholds. Any known gun
+  tier also lets the surf's thresholds read the profile's hit rate while it is more certain
+  than the live one, so the other danger views start where the last battle left them.
+- **RES-4** judges divergence only once the live estimate's margin is at most 5 points: a
+  weighted hit is not a coin flip, and a single early hit otherwise "disproved" a profile
+  built from 2,000 waves. After that, the seed's weight falls by a twentieth a wave. A
+  divergence also returns the opening's gun choice and surf prior to live data.
+- **DIAL-1** covers S4's policies (the opening gun, the surf prior, the flattener, the seed
+  trust) and the danger views' thresholds, which already padded the hit rate by its margin
+  in 1.20. The S5 and S6 policies will take the same form.
+- **DIAL-2** is enforced structurally: the adapt package cannot see `BotInput` or
+  `BotEvent`, and the seed trust counts waves.
+

@@ -39,7 +39,10 @@ public class AntiSurferGun {
             List<KdTree.Entry<TimestampedFiringAngle>> thisNeighbors =
                 view.nearestNeighbors(w, true);
             double[] thisWeights = new double[thisNeighbors.size()];
-            Arrays.fill(thisWeights, view.weight);
+            for (int i = 0; i < thisWeights.length; i++) {
+                // ADAPT-3: a seeded neighbour counts for its seed's weight, a live one for 1.
+                thisWeights[i] = view.weight * thisNeighbors.get(i).value.weight();
+            }
 
             if (allNeighbors == null) {
                 allNeighbors = new ArrayList<>(thisNeighbors);

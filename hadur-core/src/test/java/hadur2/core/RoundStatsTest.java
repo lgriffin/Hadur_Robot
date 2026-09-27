@@ -34,8 +34,10 @@ class RoundStatsTest {
         s.seedsEvicted = 3;
         s.bulletsIntercepted = 11;
         s.jitteredShots = 12;
+        s.seedDecays = 13;
         String[] f = s.toRecord(2, 900, "win", 55.5, 0).split(",");
-        assertEquals(22, f.length);
+        assertEquals(23, f.length);
+        assertEquals("13", f[22], "seed decays (RES-4)");
         assertEquals("1", f[16], "profile load failures");
         assertEquals("2", f[17], "profile save failures");
         assertEquals("3", f[18], "seed evictions");

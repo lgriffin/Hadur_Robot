@@ -33,8 +33,11 @@ public class MainGun {
         int numScans = neighbors.size();
         double[] firingAngles = new double[numScans];
         boolean[] valid = new boolean[numScans];
+        // ADAPT-3: a seeded neighbour counts for its seed's weight, a live one for 1.
+        double[] weights = new double[numScans];
 
         for (int i = 0; i < numScans; i++) {
+            weights[i] = neighbors.get(i).value.weight();
             Point2D.Double dispVector = neighbors.get(i).value.displacementVector;
             Point2D.Double projected = w.projectLocationBlind(
                 myNextLocation, dispVector, currentTime);
@@ -57,7 +60,7 @@ public class MainGun {
                 if (x != y && valid[y]) {
                     double ux = Angles.normalRelativeAngle(
                         xAngle - firingAngles[y]) / bandwidth;
-                    density += Math.exp(-0.5 * ux * ux);
+                    density += weights[y] * Math.exp(-0.5 * ux * ux);
                 }
             }
             if (density > bestDensity) {

@@ -18,7 +18,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-/** Opponent memory as the core drives it: load, fold, save, and no change to play in S3. */
+/** Opponent memory as the core drives it: load, fold, save. */
 class CoreMemoryTest {
 
     static final String SHADOW = "abc.Shadow 3.83c";
@@ -51,7 +51,7 @@ class CoreMemoryTest {
         assertEquals(2, p.battles());
         assertEquals(10, p.lastFought());
         String b = telemetry.stream().filter(l -> l.startsWith("B,")).findFirst().orElseThrow();
-        assertEquals("B,0,2,10,abc.Shadow 3.84,abc.Shadow,1,T3/M2,0,0,0", b);
+        assertEquals("B,0,2,10,abc.Shadow 3.84,abc.Shadow,1,T?/M?,0,0,0", b);
     }
 
     @Test
@@ -114,7 +114,7 @@ class CoreMemoryTest {
 
     @Test
     @Tag("RES-5")
-    @DisplayName("memory counters are the last three R fields")
+    @DisplayName("memory counters are R fields 16 to 18")
     void rRecordCarriesMemoryCounters() {
         MemoryProfileStore store = new MemoryProfileStore(300);
         List<String> telemetry = new ArrayList<>();
@@ -126,7 +126,7 @@ class CoreMemoryTest {
         core.newRound(1);
         core.roundEnded(3, "win", 100, 0);
         String[] r = telemetry.get(telemetry.size() - 1).split(",");
-        assertEquals(22, r.length);
+        assertEquals(23, r.length);
         assertEquals("1", r[17], "the save that could not fit a 300-byte quota");
         assertTrue(telemetry.stream().anyMatch(l -> l.startsWith("MEM,0,2,skipped,")), telemetry.toString());
     }
@@ -149,16 +149,35 @@ class CoreMemoryTest {
 
     @Test
     @Tag("CORE-2")
-    @DisplayName("S3 changes no order: a warm replay against Shadow matches the live robot")
-    void warmProfileChangesNoOrders() {
-        MemoryProfileStore store = storeWith(Profiles.sample(SHADOW, 41, 600, 300));
+    @Tag("DIAL-1")
+    @DisplayName("a profile too thin to name a tier, with no seeds, changes no order against Shadow")
+    void thinProfileChangesNoOrders() {
+        MemoryProfileStore store = storeWith(Profiles.sample(SHADOW, 41, 0, 0));
         List<String> lines = Fixtures.lines(Fixtures.DIR.resolve("abc.Shadow_3.83c.txt.gz"));
         List<String> telemetry = new ArrayList<>();
         List<Replay.Tick> ticks = Replay.run(lines, telemetry::add, store);
         for (Replay.Tick t : ticks) {
             assertEquals(t.recorded(), t.replayed(), "line " + t.line());
         }
-        assertTrue(telemetry.stream().anyMatch(l -> l.startsWith("B,") && l.contains(",abc.Shadow,1,")),
-            "the replay did load the stored profile");
+        assertTrue(telemetry.stream().anyMatch(l -> l.startsWith("B,") && l.contains(",abc.Shadow,1,T?/M?,")),
+            "the replay did load the stored profile, and it named no tier");
+        assertTrue(telemetry.stream().anyMatch(l -> l.startsWith("P,") && l.endsWith(",opening-gun,-,-,UNKNOWN:live")),
+            telemetry.stream().filter(l -> l.startsWith("P,")).toList().toString());
+    }
+
+    @Test
+    @Tag("ADAPT-1")
+    @DisplayName("a profile with named tiers and seeds changes the orders against Shadow")
+    void knownProfileChangesOrders() {
+        OpponentProfile p = Profiles.sample(SHADOW, 41, 0, 0);
+        Profiles.tiers(p, 0.16, 0.12, 0.22);
+        MemoryProfileStore store = storeWith(p);
+        List<String> lines = Fixtures.lines(Fixtures.DIR.resolve("abc.Shadow_3.83c.txt.gz"));
+        List<String> telemetry = new ArrayList<>();
+        List<Replay.Tick> ticks = Replay.run(lines, telemetry::add, store);
+        assertTrue(ticks.stream().anyMatch(t -> !t.recorded().equals(t.replayed())),
+            "an M2 profile opens on the anti-surfer gun, so some order must differ");
+        assertTrue(telemetry.stream().anyMatch(l -> l.startsWith("P,") && l.endsWith(",opening-gun,-,-,M2:anti_surfer")),
+            telemetry.stream().filter(l -> l.startsWith("P,")).toList().toString());
     }
 }

@@ -21,6 +21,7 @@ graph LR
         M[model / physics / knn]
         T[port.Telemetry]
         MEM[memory]
+        AD[adapt]
         PS[port.ProfileStore]
     end
     subgraph data directory
@@ -39,6 +40,8 @@ graph LR
     C -. line records .-> T
     T -. console .-> A
     C --> MEM
+    C --> AD
+    AD --> MEM
     MEM --> PS
     PS -. FileProfileStore .-> F
 ```
@@ -86,7 +89,8 @@ data directory through `RobocodeFileOutputStream`. S6 adds a `Clock` port.
 | `gun` | main KNN gun, anti-surfer gun, gun selection |
 | `move` | wave-surfing movement and its danger formulas |
 | `melee` | the melee brain (MELEE-1..8): opponent tracker, sweep radar, minimum-risk mover, target selector, circular gun, posture strategy, battle-long opponent stats |
-| `memory` | opponent memory (MEM-1..5, RES-3): lineage keys, the profile, its binary codec, the round folder and the library that loads, saves and evicts |
+| `memory` | opponent memory (MEM-1..5, RES-3): lineage keys, the profile, its binary codec, the round folder and the library that loads, saves and evicts; estimates with margins of error, the tiers and the seed layout |
+| `adapt` | recognise and adapt (ADAPT-1..3, DIAL-1..2, RES-4): the opening book, the seed loader and the seed trust |
 | `replay` | the line codec and replay driver for recorded battles (CORE-2) |
 | `port` | outbound interfaces |
 
@@ -125,8 +129,40 @@ checksum, so a robot killed at any byte keeps a loadable profile (RES-3). Before
 if the store would pass 90% of its quota, the seeds of the least recently fought profiles
 are dropped first (MEM-5); a battle counter file (`battles.hc`) is what "recent" means.
 
-A melee battle neither loads nor saves profiles. In S3 nothing in a profile changes an
-order; S4 reads its tiers and seeds.
+A melee battle neither loads nor saves profiles.
+
+Robocode charges the data quota for every byte written: opening a file for writing refunds
+its old length, but deleting it refunds nothing. `FileProfileStore.delete` therefore empties
+a file through the stream before deleting it, or each save would leak the temporary copy's
+size until the battle ends (with seeded profiles, the quota ran out by round ten).
+
+## Recognise and adapt
+
+At the first scan, right after the profile loads, `adapt.OpeningBook` reads it once and
+returns an `Opening`: the gun tier (their normalised hit rate on us) and the movement tier
+(our virtual guns' ratings), each named only while its margin of error is at most 3 points
+(DIAL-1), and what follows from them:
+
+| Decision | From | Applied through |
+|---|---|---|
+| First gun: anti-surfer for M2/M3, main for M0/M1, 1.20's rule when unknown (ADAPT-1) | movement tier | `GunController.setOpening`; the live virtual-gun ratings take over once they differ by more than their margin |
+| Flattener views on from the first surfable wave for T3 (ADAPT-2) | gun tier | `MoveController.setFlattenerFirst` |
+| The surf's view thresholds read the profile's hit rate while it is more certain than the live one | any known gun tier | `MoveController.setPrior` |
+| Gun and surf seeds replayed at weight 0.5 (ADAPT-3) | the profile's seeds | `GunController.seed`, `MoveController.seed`, 50 samples a tick |
+
+A seeded sample carries a shared `model.SeedWeight`; the main gun's density, the anti-surfer
+gun's and the surf's danger multiply each neighbour by it (a live sample weighs 1, which
+leaves 1.20's arithmetic bit for bit). Two `adapt.SeedTrust`s watch the seeds, one wave at a
+time: the gun seed against our main gun's live virtual rating, the surf seed against their
+live normalised hit rate. Once the live estimate is within 5 points and disagrees with the
+profile's by more than either margin, the seed loses a twentieth of its weight each wave,
+reaching zero within 20 waves (RES-4), and the opening it came with (the gun choice, the
+surf prior and the flattener) goes back to live data.
+
+While the round runs, each real bullet's gun wave and each enemy hit on us become seed
+samples in the `ProfileFolder`, which keeps the latest 600 and 300 and folds them into the
+profile at the round's end (MEM-2); `memory.Seeds` quantises them to shorts. P records
+(`P,round,tick,policy,value,margin,setting`) say what the book chose and each seed decay.
 
 ## Java version
 

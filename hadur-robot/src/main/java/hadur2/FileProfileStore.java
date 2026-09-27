@@ -19,6 +19,12 @@ import robocode.RobocodeFileOutputStream;
  * up to its data quota; it forbids renaming files. This adapter only moves bytes: the
  * core's {@code ProfileLibrary} does the checksums, the crash-safe write order (RES-3)
  * and eviction (MEM-5).
+ *
+ * <p>Robocode's quota counts bytes written, not bytes on disk: opening a file for writing
+ * gives back its old length, but deleting it gives back nothing. A deleted file's bytes
+ * would stay charged for the rest of the battle, and with seeded profiles (about 22 KB,
+ * written twice a save) the quota ran out by the tenth round. So {@link #delete} first
+ * empties the file through the stream, which returns its length, and then deletes it.</p>
  */
 final class FileProfileStore implements ProfileStore {
 
@@ -75,7 +81,14 @@ final class FileProfileStore implements ProfileStore {
     @Override
     public void delete(String name) {
         File f = file(name);
-        if (f.exists() && !f.delete()) throw new IllegalStateException("could not delete " + name);
+        if (!f.exists()) return;
+        // Empty it first: Robocode refunds a file's length when it is opened for writing.
+        try (OutputStream out = opener.open(f)) {
+            out.flush();
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+        if (!f.delete()) throw new IllegalStateException("could not delete " + name);
     }
 
     @Override

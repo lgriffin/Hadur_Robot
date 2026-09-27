@@ -32,6 +32,11 @@ public final class ProfileFolder {
     /** Virtual-gun totals at the last fold; the gun keeps battle totals, the profile wants rounds. */
     private final double[] virtualAtLastFold = new double[4];
     private final double[] virtualNow = new double[4];
+    /** Their firing waves and weighted hits, battle totals at the last fold and now. */
+    private final double[] normalisedAtLastFold = new double[2];
+    private final double[] normalisedNow = new double[2];
+    private final java.util.ArrayDeque<short[]> gunSamples = new java.util.ArrayDeque<>();
+    private final java.util.ArrayDeque<short[]> surfSamples = new java.util.ArrayDeque<>();
 
     public ProfileFolder(OpponentProfile profile, double fieldWidth, double fieldHeight) {
         this.profile = profile;
@@ -92,6 +97,31 @@ public final class ProfileFolder {
         virtualNow[3] = asHits;
     }
 
+    /**
+     * The surf's battle totals so far: their firing waves that broke on us and their hits
+     * over them, each weighted by our angular width. Only the growth since the last fold is
+     * folded.
+     */
+    public void normalised(double waves, double weightedHits) {
+        normalisedNow[0] = waves;
+        normalisedNow[1] = weightedHits;
+    }
+
+    /** A gun sample (see {@link Seeds}) from one of our bullets' waves; kept until the fold. */
+    public void gunSample(double[] sample) {
+        keep(gunSamples, Seeds.gun(sample), OpponentProfile.MAX_GUN_SEED);
+    }
+
+    /** A surf sample (see {@link Seeds}) from an enemy bullet that hit us; kept until the fold. */
+    public void surfSample(double[] sample) {
+        keep(surfSamples, Seeds.surf(sample), OpponentProfile.MAX_SURF_SEED);
+    }
+
+    private static void keep(java.util.ArrayDeque<short[]> buffer, short[] sample, int max) {
+        buffer.addLast(sample);
+        while (buffer.size() > max) buffer.removeFirst();
+    }
+
     /** MEM-2: adds this round to the profile and starts the next one. */
     public void fold(boolean won) {
         OpponentProfile p = profile;
@@ -108,6 +138,11 @@ public final class ProfileFolder {
         p.virtualFired[1] += growth(2);
         p.virtualHits[1] += growth(3);
         System.arraycopy(virtualNow, 0, virtualAtLastFold, 0, 4);
+        p.normalised[0] += growth(normalisedNow[0] - normalisedAtLastFold[0]);
+        p.normalised[1] += growth(normalisedNow[1] - normalisedAtLastFold[1]);
+        System.arraycopy(normalisedNow, 0, normalisedAtLastFold, 0, 2);
+        for (short[] sample : gunSamples) p.addGunSample(sample);
+        for (short[] sample : surfSamples) p.addSurfSample(sample);
 
         OpponentProfile.BattleOutcome o = p.currentOutcome();
         o.rounds = Math.min(o.rounds + 1, 0xffff);
@@ -120,7 +155,10 @@ public final class ProfileFolder {
     }
 
     private float growth(int i) {
-        double g = virtualNow[i] - virtualAtLastFold[i];
+        return growth(virtualNow[i] - virtualAtLastFold[i]);
+    }
+
+    private static float growth(double g) {
         return g > 0 && !Double.isInfinite(g) ? (float) g : 0f;
     }
 
@@ -136,6 +174,8 @@ public final class ProfileFolder {
         ourDamage = 0;
         theirDamage = 0;
         lastVelocitySign = 0;
+        gunSamples.clear();
+        surfSamples.clear();
     }
 
     private static void add(float[] into, float[] from) {

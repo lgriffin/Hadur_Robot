@@ -123,6 +123,17 @@ public class KnnView<T> {
         return logDataPoint(dataPoint, value);
     }
 
+    /**
+     * Adds a sample replayed from an opponent profile (ADAPT-3). The point must already be
+     * in this view's formula space; the value carries the seed's weight.
+     */
+    public void logSeed(double[] dataPoint, T value) {
+        if (dataPoint.length != formula.weights.length) {
+            throw new IllegalArgumentException(name + " takes " + formula.weights.length + " dimensions");
+        }
+        logDataPoint(dataPoint.clone(), value);
+    }
+
     protected double[] logDataPoint(double[] dataPoint, T value) {
         tree.addPoint(dataPoint, value);
         return dataPoint;
@@ -133,8 +144,12 @@ public class KnnView<T> {
     }
 
     public boolean enabled(double hitPercentage, double marginOfError) {
-        return size() > 0
-            && hitPercentage >= hitThreshold
+        return size() > 0 && thresholdsMet(hitPercentage, marginOfError);
+    }
+
+    /** Whether an enemy hit percentage and its margin clear this view's thresholds. */
+    public boolean thresholdsMet(double hitPercentage, double marginOfError) {
+        return hitPercentage >= hitThreshold
             && Math.max(0, hitPercentage - marginOfError) >= paddedHitThreshold;
     }
 
@@ -172,12 +187,13 @@ public class KnnView<T> {
                 sorted[i] = entries.get(i).value;
             }
             Arrays.sort(sorted);
-            for (int i = 0; i < numScans; i++) {
-                double w = 1.0;
-                for (int p = 0; p < numScans - i - 1; p++) {
-                    w /= decayRate;
-                }
+            // The newest weighs 1 and each older one decayRate times less. Walking from the
+            // newest repeats 1.20's divisions in the same order, so the weights are
+            // bit-identical, in linear time rather than quadratic.
+            double w = 1.0;
+            for (int i = numScans - 1; i >= 0; i--) {
                 weightMap.put(sorted[i], w);
+                w /= decayRate;
             }
         }
         return weightMap;
