@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rumble entry</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header><div class="wrap"><a class="brand" href="../index.html">Hadur 2</a><nav><a href="../index.html">Home</a><a href="../requirements.html">Requirements</a><a href="../docs/architecture.html">Architecture</a><a href="../docs/testing.html">Testing</a><a href="../api/index.html">Javadoc</a><a href="https://github.com/lgriffin/Hadur_Robot">GitHub</a></nav></div></header>
+<main class="wrap">
+<h1 id="entering-hadur-in-the-roborumble-and-meleerumble">Entering Hadur in the RoboRumble and MeleeRumble</h1>
+<p>Hadur 2.2 is built for both leagues. The RoboRumble is the 1v1 league (800x600, 35 rounds), where the duelist of S0 to S6 fights; the MeleeRumble is the 10-robot free-for-all (1000x1000, 35 rounds), where the melee brain takes over until one opponent is left. Volunteers&#x27; clients download every entrant&#x27;s jar, run the battles, and the results go to the public rankings. An entry is one line on a robowiki participants page: the robot&#x27;s name and version, a comma, and a URL that downloads the jar directly. The same jar and the same line go on both pages: <a href="https://robowiki.net/wiki/RoboRumble/Participants">RoboRumble/Participants</a> for 1v1 and <a href="https://robowiki.net/wiki/RoboRumble/Participants/Melee">RoboRumble/Participants/Melee</a>.</p>
+<h2 id="current-entry">Current entry</h2>
+<p>Hadur 2.2 was entered in both leagues on 2026-09-27, with this line on both participants pages:</p>
+<pre><code>hadur2.Hadur 2.2,https://drive.google.com/uc?export=download&amp;id=1Ws7gHc5ZTAuzsWHt969rPavhWBEjJ3zV</code></pre>
+<p>The jar behind that link is a local build of master at 60b18fe (the S7 merge), made with <code>mvn -B verify</code> because GitHub Actions was not running jobs at the time; so the <code>v2.2</code> tag and GitHub release do not exist yet. Its SHA-256 is <code>d9502bf441d9999ac282f0c9cd2f59b3aa738aea3d51155b8d5f94a1f1a9504a</code>. The steps below are how it was done, and how to enter the next version.</p>
+<h2 id="1-get-the-jar">1. Get the jar</h2>
+<p>Build it with <code>mvn -B verify</code> (it lands in <code>hadur-robot/target/</code>), or, once a <code>v*</code> tag has run the release workflow, download it from that GitHub release (signed in to GitHub). Keep the file name exactly as it is: rumble clients expect <code>&lt;package&gt;.&lt;Robot&gt;_&lt;version&gt;.jar</code>.</p>
+<h2 id="2-host-it-on-google-drive-with-a-direct-link">2. Host it on Google Drive with a direct link</h2>
+<ol><li>Upload <code>hadur2.Hadur_2.2.jar</code> to Google Drive.</li><li>Right-click it, <strong>Share</strong>, and under <strong>General access</strong> choose <strong>Anyone with the link</strong> (Viewer). Copy the link. It looks like <code>https://drive.google.com/file/d/1AbCdEfGhIjKlMnOpQrStUvWxYz/view?usp=sharing</code>.</li><li>Take the id between <code>/d/</code> and <code>/view</code> and put it in this form:</li></ol>
+<p><code></code><code> https://drive.google.com/uc?export=download&amp;id=1AbCdEfGhIjKlMnOpQrStUvWxYz </code><code></code></p>
+<ol><li>Check it: open that URL in a private browser window. The jar should download straight away, with no Drive preview page. (Files this small never get Drive&#x27;s virus-scan warning page, which would break the download for rumble clients.)</li></ol>
+<p>The repository is private, so a GitHub release&#x27;s download link only works for you, not for rumble clients: use the Drive link. (If the repository is ever made public and a release is published, <code>https://github.com/lgriffin/Hadur_Robot/releases/download/v&lt;version&gt;/hadur2.Hadur_&lt;version&gt;.jar</code> becomes a direct download that never expires.)</p>
+<h2 id="3-add-the-entry-on-the-robowiki">3. Add the entry on the robowiki</h2>
+<ol><li>Log in to <a href="https://robowiki.net">robowiki.net</a> (create an account if you don&#x27;t have one).</li><li>Open <a href="https://robowiki.net/wiki/RoboRumble/Participants">RoboRumble/Participants</a> (1v1) and click <strong>Edit</strong>. Repeat steps 2 to 4 on <a href="https://robowiki.net/wiki/RoboRumble/Participants/Melee">RoboRumble/Participants/Melee</a>.</li><li>Inside the <code>&lt;pre&gt;</code> block, add this line in alphabetical order by name (entries starting with <code>h</code> sit together), using your Drive link from step 2:</li></ol>
+<p><code></code><code> hadur2.Hadur 2.2,https://drive.google.com/uc?export=download&amp;id=1AbCdEfGhIjKlMnOpQrStUvWxYz </code><code></code></p>
+<p>The part before the comma must match the jar&#x27;s <code>robot.classname</code> and <code>robot.version</code> exactly: <code>hadur2.Hadur</code> and <code>2.2</code>, separated by one space.</p>
+<ol><li>Put something like &quot;Add hadur2.Hadur 2.2&quot; in the edit summary and save.</li></ol>
+<p>Clients pick up the participants list on their next run. Battles, and then a ranking, show up on the <a href="https://literumble.appspot.com/Rankings?game=roborumble">RoboRumble</a> and <a href="https://literumble.appspot.com/Rankings?game=meleerumble">MeleeRumble</a> rankings over the following days; it takes a few thousand battles for the rating to settle.</p>
+<h2 id="later-versions">Later versions</h2>
+<p>Give every new jar a new version (<code>2.3</code>, ...), upload it, and replace the old line on the participants page with the new one. Two versions of the same robot should not be entered at once unless you mean to compare them.</p><p class="source">Source: <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/docs/rumble-submission.md">docs/rumble-submission.md</a></p>
+</main>
+<footer class="wrap">Built from <a href="https://github.com/lgriffin/Hadur_Robot">lgriffin/Hadur_Robot</a> by <code>site/build.sh</code>.</footer>
+
+</body>
+</html>
