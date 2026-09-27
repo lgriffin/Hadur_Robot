@@ -101,9 +101,9 @@ class PostureCoreTest {
             }
 
             @Override
-            public void onRobotDeath(String name) {
+            public void onRobotDeath(String name, boolean sentry) {
                 if (handler.equals("death")) throw new IllegalStateException("death");
-                super.onRobotDeath(name);
+                super.onRobotDeath(name, sentry);
             }
         };
     }

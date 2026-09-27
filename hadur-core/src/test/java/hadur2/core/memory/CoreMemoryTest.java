@@ -132,7 +132,7 @@ class CoreMemoryTest {
     }
 
     @Test
-    @DisplayName("melee battles neither load nor save profiles")
+    @DisplayName("melee battles neither load nor save 1v1 profiles; only melee blocks are written (MMEM-1)")
     void meleeKeepsNoMemory() {
         MemoryProfileStore store = new MemoryProfileStore(200_000);
         HadurCore core = new HadurCore(1000, 1000, 3, Telemetry.NONE, store);
@@ -144,7 +144,9 @@ class CoreMemoryTest {
         core.roundEnded(6, "win", 100, 0);
         core.battleEnded(6);
         assertNull(core.profile());
-        assertEquals(0, store.writes());
+        for (String name : store.names()) {
+            assertTrue(name.endsWith(".hm"), "a melee battle wrote " + name);
+        }
     }
 
     @Test

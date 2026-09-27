@@ -5,9 +5,13 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import hadur2.core.HadurCore;
+import hadur2.core.melee.MeleeProfile;
+import hadur2.core.melee.MeleeProfileCodec;
+import hadur2.core.memory.LineageKey;
 import hadur2.core.model.BotEvent;
 import hadur2.core.model.BotInput;
 import hadur2.core.model.BotOrders;
+import hadur2.core.port.MemoryProfileStore;
 import hadur2.core.port.Telemetry;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -23,6 +27,8 @@ public class MeleeSteps {
     private static final double MY_Y = 300;
 
     private final List<BotOrders> orders = new ArrayList<>();
+    private final List<String> telemetry = new ArrayList<>();
+    private MemoryProfileStore store;
     private HadurCore core;
     private long time;
     private int others;
@@ -52,6 +58,18 @@ public class MeleeSteps {
         time = 0;
     }
 
+    @Given("a core with a profile store in an {int} by {int} battle against {int} opponents")
+    public void aCoreWithStore(int width, int height, int opponents) {
+        store = new MemoryProfileStore(200_000);
+        telemetry.clear();
+        core = new HadurCore(width, height, opponents, telemetry::add, store);
+        core.prepareMemory();
+        core.newRound(0);
+        others = opponents;
+        orders.clear();
+        time = 0;
+    }
+
     @When("it scans opponents at bearings {int}, {int} and {int} degrees, {int} px away")
     public void scansThree(int a, int b, int c, int distance) {
         tick(scan("A", a, distance), scan("B", b, distance), scan("C", c, distance));
@@ -68,6 +86,18 @@ public class MeleeSteps {
         for (int i = 0; i < ticks; i++) tick();
     }
 
+    @When("opponent A fires a bullet of power {double}")
+    public void aFires(double power) {
+        // The three opponents where the scans above put them; A's energy shows the shot.
+        tick(new BotEvent.Scan("A", 0, 300, 100 - power, 0, 0), scan("B", 120, 300), scan("C", 240, 300));
+    }
+
+    @When("the round ends and the robot saves its memory")
+    public void roundEnds() {
+        core.roundEnded(time, "win", 100, 0);
+        core.saveProfile(time);
+    }
+
     @When("two opponents die")
     public void twoDie() {
         others = 1;
@@ -77,6 +107,32 @@ public class MeleeSteps {
     @When("the survivor is scanned at bearing {int} degrees, {int} px away")
     public void survivorScanned(int bearing, int distance) {
         tick(scan("A", bearing, distance));
+    }
+
+    @Then("the store holds a melee block for each of A, B and C")
+    public void blocksStored() {
+        for (String name : List.of("A", "B", "C")) {
+            assertTrue(store.read(LineageKey.fileStem(name) + ".hm") != null, name + " in " + store.names());
+        }
+    }
+
+    @Then("A's block records {int} shot(s) at power {double}")
+    public void aBlock(int shots, double power) {
+        MeleeProfile a = MeleeProfileCodec.decode(store.read(LineageKey.fileStem("A") + ".hm"));
+        assertEquals(shots, a.shotsInferred(), 1e-9);
+        assertEquals(power, a.avgBulletPower(), 1e-6);
+    }
+
+    @Then("the store holds no 1v1 profile")
+    public void noProfile() {
+        assertTrue(store.names().stream().noneMatch(n -> n.endsWith(".hp")), store.names().toString());
+    }
+
+    @Then("the duel takes over {int} wave(s) from the survivor")
+    public void wavesHandedOver(int waves) {
+        String h = telemetry.stream().filter(l -> l.startsWith("H,")).findFirst().orElseThrow();
+        assertEquals(String.valueOf(waves), h.split(",")[6], h);
+        assertEquals("A", h.split(",")[3], h);
     }
 
     @Then("it keeps sweeping the radar")

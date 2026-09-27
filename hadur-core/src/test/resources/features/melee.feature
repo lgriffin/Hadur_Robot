@@ -37,3 +37,22 @@ Feature: Melee
     Given a core in an 800 by 600 battle against 1 opponent
     When the survivor is scanned at bearing 0 degrees, 300 px away
     Then it locks the radar onto the survivor
+
+  @MMEM-1
+  Scenario: A melee round's end writes each opponent's melee block beside its profile
+    Given a core with a profile store in an 800 by 600 battle against 3 opponents
+    When it scans opponents at bearings 0, 120 and 240 degrees, 300 px away, every tick for 3 ticks
+    And opponent A fires a bullet of power 2.0
+    And the round ends and the robot saves its memory
+    Then the store holds a melee block for each of A, B and C
+    And A's block records 1 shot at power 2.0
+    And the store holds no 1v1 profile
+
+  @MMEM-2
+  Scenario: The survivor's bullets in flight become the duel's waves
+    Given a core with a profile store in an 800 by 600 battle against 3 opponents
+    When it scans opponents at bearings 0, 120 and 240 degrees, 300 px away, every tick for 3 ticks
+    And opponent A fires a bullet of power 2.0
+    And two opponents die
+    And the survivor is scanned at bearing 0 degrees, 300 px away
+    Then the duel takes over 1 wave from the survivor
