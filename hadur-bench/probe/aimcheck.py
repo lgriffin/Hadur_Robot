@@ -15,6 +15,7 @@ for d in sorted(glob.glob(sys.argv[1] + '/*')):
                 F.append((int(p[1]), int(p[2]), float(p[4])))
     n = exact = close = 0
     errs = []
+    per = {}
     for (r, t, pw) in F:
         cur = T.get((r, t)); prev = T.get((r, t-1))
         if not cur or not prev: continue
@@ -44,10 +45,18 @@ for d in sorted(glob.glob(sys.argv[1] + '/*')):
         else:
             continue
         cands = [bearing(pex,pey,pmx,pmy), bearing(ex,ey,pmx,pmy), bearing(ex,ey,mx,my), bearing(pex,pey,mx,my)]
+        pp = T.get((r, t-2))
+        if pp:
+            cands.append(bearing(float(pp[8]), float(pp[9]), float(pp[3]), float(pp[4])))
+            cands.append(bearing(float(pp[8]), float(pp[9]), pmx, pmy))
+        else:
+            cands += [9, 9]
+        for i, c in enumerate(cands):
+            if abs(norm(h - c)) < 3e-4: per[i] = per.get(i, 0) + 1
         e = min(abs(norm(h - c)) for c in cands)
         n += 1; errs.append(e)
         if e < 3e-4: exact += 1
         if e < 0.003: close += 1
     errs.sort()
     med = errs[len(errs)//2] if errs else float('nan')
-    print(f"{os.path.basename(d):45s} shots {n:5d}  exact(<3e-4) {100*exact/max(n,1):5.1f}%  within 0.003 {100*close/max(n,1):5.1f}%  median err {med:.4f}")
+    print(f"{os.path.basename(d):45s} shots {n:5d}  exact(<3e-4) {100*exact/max(n,1):5.1f}%  within 0.003 {100*close/max(n,1):5.1f}%  median err {med:.4f} per {per}")

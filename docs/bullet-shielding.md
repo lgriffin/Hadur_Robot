@@ -48,26 +48,51 @@ shield mode after a few rounds.
 ## Could Hadur shield?
 
 Only against opponents whose aim at a still target is exact. `hadur-bench/probe` benches a
-robot that sits still and measures each opponent's heading against the head-on bearing
-(10 rounds, 1 seed):
+robot that sits still and measures each opponent's heading against head-on bearings from
+the shooter's positions on the firing tick and the two before it (10 rounds, 1 seed):
 
 | Opponent | Shots | Exactly head-on (< 3e-4 rad) | Within 0.003 rad |
 |---|---|---|---|
+| dsekercioglu.mega.Raven 3.56j8 | 75 | 100% (from two ticks back) | 100% |
 | xander.cat.XanderCat 12.9 | 220 | 99.5% | 99.5% |
 | oog.mega.saguaro.Saguaro 1.0 | 114 | 77.2% | 100% |
 | abc.Shadow 3.83c | 192 | 52.6% | 53.1% |
-| aaa.r.ScalarR 0.005h.053-noshield | 90 | 14.4% | 76.7% |
-| voidious.Diamond 1.8.22 | 205 | 9.8% | 21.5% |
-| kc.mega.BeepBoop 2.0 | 110 | 8.2% | 48.2% |
+| voidious.Diamond 1.8.22 | 205 | 15.1% | 25.9% |
+| aaa.r.ScalarR 0.005h.053-noshield | 90 | 14.4% | 77.8% |
+| kc.mega.BeepBoop 2.0 | 110 | 9.1% | 51.8% |
 | jk.mega.DrussGT 3.1.16 | 488 | 3.9% | 100% |
-| lxx.Tomcat 3.68 | 196 | 1.0% | 2.6% |
-| cb.fire.Firestarter 2.0f | 213 | 0.5% | 13.6% |
-| dsekercioglu.mega.Raven 3.56j8 | 75 | 2.7% | 2.7% |
-| rsalesc.mega.Knight 0.6.28 | 115 | 1.7% | 31.3% |
+| rsalesc.mega.Knight 0.6.28 | 115 | 2.6% | 40.9% |
+| lxx.Tomcat 3.68 | 196 | 2.0% | 8.7% |
+| cb.fire.Firestarter 2.0f | 213 | 0.5% | 16.0% |
 | sample.Tracker | 89 | 100% | 100% |
 | sample.Walls | 65 | 96.9% | 100% |
 
 DrussGT's shots all land within 0.003 rad but almost none exactly: it already jitters, as
-Hadur now does. Most of the top ten do the same or aim elsewhere entirely. A shield could
-pay only against XanderCat, Shadow and Saguaro, and sitting still is fatal against
-everyone else, so it would have to be chosen per opponent from measured results.
+Hadur now does.
+
+### The prototype, and why it was not shipped
+
+A full shield mode was built and benched (commit c6d4d7a, reverted in the next commit; the
+code is in history). It sat still, predicted each enemy bullet from twelve head-on
+predictors like Saguaro's (four bases, each plain, plus a learned offset, and plus a learned
+offset times our lateral direction), fired the widest-shadow bullet no stronger than the
+enemy's, and stepped 0.1 px aside on the tick before firing. It turned itself off for the
+battle after three hits that outnumbered its interceptions, three unpredicted hits, two
+rams or a lost round.
+
+It intercepted sample.Walls reliably. Against the bots the probe marked as shieldable it did
+not hold up, over 3-round trial battles:
+
+- **XanderCat and Saguaro change their aim once their bullets are shot down.** The first
+  shot is exactly head-on and is intercepted; the next ones carry a small offset that flips
+  with the way we last moved (our 0.1 px step), which the directional predictor learned,
+  and then XanderCat moved to stronger, differently aimed shots. Both turned the shield off
+  within round 0.
+- **Shadow and Raven are not exact against a robot that steps aside**, although they were
+  against the probe, which never moves: their aim follows the step.
+- Every trial against a strong bot costs round 0 sitting still, which is where most of
+  Hadur's round-0 losses in those trials came from.
+
+So shielding pays only against simple head-on bots, which Hadur already beats. The counter
+is what matters for the rumble: it beats Saguaro, and it will beat any other shielder that
+relies on exact head-on prediction.
