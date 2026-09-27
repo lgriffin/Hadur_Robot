@@ -2,6 +2,43 @@
 
 Open items from the Hadur 2 stages, newest stage first.
 
+## S6
+
+- **Go-to surfing lost the A/B as the default.** Against Shadow cold, the three-option surf
+  scored 54.8% +- 3.7 and go-to surfing 51.8% +- 5.1, with their hit rate 8.8% against
+  9.5% and more slow ticks (438 against 284) and skipped turns (42 against 12)
+  (docs/bench/s6-2.1-shadow-options-cold.md, s6-2.1-shadow-goto-cold.md). Go-to stays as
+  MOVE-2's second flavour: it is only reached when the base movement is already being hit
+  more than the profile says. Its candidates are every second tick along both orbits; a
+  finer set, or scoring the second wave for more than the best three, may change the
+  result, but costs time the budget does not have at the allowance assumed.
+- **The allowance is assumed, not read.** Robocode does not tell a robot its CPU constant;
+  3 ms is the bench host's. A slower rumble client would give more time, a faster one less,
+  and TIME-1 would shed later or sooner than it should. Hadur could estimate the constant
+  from the first skipped turn, as some rumble bots do.
+- **Level 3 was reached against Shadow,** mostly from host stalls the budget cannot
+  avoid (single turns of 20-50 ms), which count as skipped turns and hold a level for the
+  rest of the round. A bench on a quiet host would say how often the core itself runs over
+  budget.
+- **MOVE-2 has no measurable effect yet.** Cold it never fires, by design: a stranger has
+  no baseline. Warm it fired 8 times over 5 battles against Shadow (all three steps in
+  battles 2 and 3), and the warm bench scored 54.6% +- 6.0 with it and 55.2% +- 3.8 with it
+  switched off, their hit rate 8.3% both ways (docs/bench/s6-2.1-warm.md,
+  s6-2.1-shadow-warm-noflavour.md). Part of what triggers it is likely Shadow's gun learning
+  within a battle: the profile's rate averages whole battles, cold start included, while
+  the live window is the latest 100 waves. A baseline taken from the same part of past
+  battles (waves 100 on) would be fairer.
+- **Skipped turns are not zero,** which was S6's gate: 72 over the cold bench (26 against
+  Shadow, 5 to 14 per sample bot), against 174 at S5 on a stalled host and 15 at S3. Half
+  fall on the turn a round ends, when the round record and the profile checkpoint are
+  written; the rest are scattered, with turn p95 at 1.5 ms of the 3 ms allowance, which
+  points at the host or garbage collection rather than the core. Moving the checkpoint
+  write off the round's last turn is the next thing to try.
+- **The shadow is a bearing interval from the wave's source, not a guess-factor range.**
+  The surf's own views still bin guess factors; the danger is scaled by the share of the
+  robot's intersection a shadow covers, not re-binned. A precise surf could zero the bins a
+  shadow covers instead.
+
 ## S5
 
 - **The gate is only partly measurable.** "Bullet-damage share up against T0-T2" has no

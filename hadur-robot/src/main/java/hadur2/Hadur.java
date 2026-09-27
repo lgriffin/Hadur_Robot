@@ -26,9 +26,16 @@ public class Hadur extends AdvancedRobot {
     private static Guard guard;
     /** This round's console; telemetry goes to whichever round is running. */
     private static PrintStream console;
+    /**
+     * The per-turn time the tick budget assumes (TIME-1). A robot cannot read the engine's
+     * CPU constant, so this is a fixed guess: the bench machine's constant is about 3 ms.
+     */
+    static final long TICK_ALLOWANCE_NANOS = 3_000_000L;
 
     private final List<BotEvent> pending = new ArrayList<>();
     private boolean roundReported;
+    /** How long the core's last tick took; negative before the round's first. */
+    private long lastTickNanos = -1;
 
     @Override
     public void run() {
@@ -55,8 +62,11 @@ public class Hadur extends AdvancedRobot {
         setAdjustRadarForGunTurn(true);
 
         while (true) {
+            if (lastTickNanos >= 0) pending.add(0, new BotEvent.TickTime(lastTickNanos, TICK_ALLOWANCE_NANOS));
             BotInput in = input();
+            long start = System.nanoTime();
             BotOrders orders = guard.tick(in);
+            lastTickNanos = System.nanoTime() - start;
             ticked(in, orders);
             apply(orders);
             execute();
@@ -118,19 +128,21 @@ public class Hadur extends AdvancedRobot {
 
     @Override
     public void onBulletHit(BulletHitEvent e) {
-        pending.add(new BotEvent.BulletHit(e.getName(), e.getBullet().getPower(), e.getEnergy()));
+        pending.add(new BotEvent.BulletHit(e.getName(), e.getBullet().getPower(), e.getEnergy(),
+            e.getBullet().getHeadingRadians()));
     }
 
     @Override
     public void onBulletHitBullet(BulletHitBulletEvent e) {
         Bullet hit = e.getHitBullet();
         pending.add(new BotEvent.BulletHitBullet(e.getBullet().getPower(), hit.getX(), hit.getY(),
-            hit.getPower()));
+            hit.getPower(), e.getBullet().getHeadingRadians()));
     }
 
     @Override
     public void onBulletMissed(BulletMissedEvent e) {
-        pending.add(new BotEvent.BulletMissed(e.getBullet().getPower()));
+        pending.add(new BotEvent.BulletMissed(e.getBullet().getPower(),
+            e.getBullet().getHeadingRadians()));
     }
 
     @Override

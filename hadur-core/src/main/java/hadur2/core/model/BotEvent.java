@@ -3,7 +3,7 @@ package hadur2.core.model;
 /**
  * Engine events delivered to the robot during a tick, as plain immutable values. Angles are
  * radians; bearings are relative to the robot's heading, headings are absolute (0 = north,
- * clockwise). The set of event types is closed: these nine are all there are.
+ * clockwise). The set of event types is closed: these ten are all there are.
  *
  * <p>Written as final classes rather than records so the robot runs on Java 11, which
  * RoboRumble clients may still use.</p>
@@ -135,16 +135,29 @@ public interface BotEvent {
         }
     }
 
-    /** One of our bullets hit {@code name}, leaving it with {@code energy}. */
+    /**
+     * One of our bullets hit {@code name}, leaving it with {@code energy}. The bullet's
+     * heading names which of ours it was (MOVE-1); NaN when the source did not give it.
+     */
     public static final class BulletHit implements BotEvent {
         private final String name;
         private final double power;
         private final double energy;
+        private final double bulletHeading;
 
         public BulletHit(String name, double power, double energy) {
+            this(name, power, energy, Double.NaN);
+        }
+
+        public BulletHit(String name, double power, double energy, double bulletHeading) {
             this.name = name;
             this.power = power;
             this.energy = energy;
+            this.bulletHeading = bulletHeading;
+        }
+
+        public double bulletHeading() {
+            return bulletHeading;
         }
 
         public String name() {
@@ -166,32 +179,48 @@ public interface BotEvent {
             BulletHit that = (BulletHit) o;
             return java.util.Objects.equals(name, that.name)
                 && Double.compare(power, that.power) == 0
-                && Double.compare(energy, that.energy) == 0;
+                && Double.compare(energy, that.energy) == 0
+                && Double.compare(bulletHeading, that.bulletHeading) == 0;
         }
 
         @Override
         public int hashCode() {
-            return java.util.Objects.hash(name, power, energy);
+            return java.util.Objects.hash(name, power, energy, bulletHeading);
         }
 
         @Override
         public String toString() {
-            return "BulletHit[name=" + name + ", power=" + power + ", energy=" + energy + "]";
+            return "BulletHit[name=" + name + ", power=" + power + ", energy=" + energy
+                + ", bulletHeading=" + bulletHeading + "]";
         }
     }
 
-    /** One of our bullets collided with an enemy bullet, which was at {@code x}, {@code y}. */
+    /**
+     * One of our bullets collided with an enemy bullet, which was at {@code x}, {@code y}.
+     * {@code bulletHeading} is our bullet's (MOVE-1), NaN when the source did not give it.
+     */
     public static final class BulletHitBullet implements BotEvent {
         private final double power;
         private final double x;
         private final double y;
         private final double enemyPower;
+        private final double bulletHeading;
 
         public BulletHitBullet(double power, double x, double y, double enemyPower) {
+            this(power, x, y, enemyPower, Double.NaN);
+        }
+
+        public BulletHitBullet(double power, double x, double y, double enemyPower,
+                               double bulletHeading) {
             this.power = power;
             this.x = x;
             this.y = y;
             this.enemyPower = enemyPower;
+            this.bulletHeading = bulletHeading;
+        }
+
+        public double bulletHeading() {
+            return bulletHeading;
         }
 
         public double power() {
@@ -218,26 +247,38 @@ public interface BotEvent {
             return Double.compare(power, that.power) == 0
                 && Double.compare(x, that.x) == 0
                 && Double.compare(y, that.y) == 0
-                && Double.compare(enemyPower, that.enemyPower) == 0;
+                && Double.compare(enemyPower, that.enemyPower) == 0
+                && Double.compare(bulletHeading, that.bulletHeading) == 0;
         }
 
         @Override
         public int hashCode() {
-            return java.util.Objects.hash(power, x, y, enemyPower);
+            return java.util.Objects.hash(power, x, y, enemyPower, bulletHeading);
         }
 
         @Override
         public String toString() {
-            return "BulletHitBullet[power=" + power + ", x=" + x + ", y=" + y + ", enemyPower=" + enemyPower + "]";
+            return "BulletHitBullet[power=" + power + ", x=" + x + ", y=" + y + ", enemyPower="
+                + enemyPower + ", bulletHeading=" + bulletHeading + "]";
         }
     }
 
-    /** One of our bullets left the field. */
+    /** One of our bullets left the field; {@code bulletHeading} as for {@link BulletHit}. */
     public static final class BulletMissed implements BotEvent {
         private final double power;
+        private final double bulletHeading;
 
         public BulletMissed(double power) {
+            this(power, Double.NaN);
+        }
+
+        public BulletMissed(double power, double bulletHeading) {
             this.power = power;
+            this.bulletHeading = bulletHeading;
+        }
+
+        public double bulletHeading() {
+            return bulletHeading;
         }
 
         public double power() {
@@ -249,17 +290,18 @@ public interface BotEvent {
             if (this == o) return true;
             if (!(o instanceof BulletMissed)) return false;
             BulletMissed that = (BulletMissed) o;
-            return Double.compare(power, that.power) == 0;
+            return Double.compare(power, that.power) == 0
+                && Double.compare(bulletHeading, that.bulletHeading) == 0;
         }
 
         @Override
         public int hashCode() {
-            return java.util.Objects.hash(power);
+            return java.util.Objects.hash(power, bulletHeading);
         }
 
         @Override
         public String toString() {
-            return "BulletMissed[power=" + power + "]";
+            return "BulletMissed[power=" + power + ", bulletHeading=" + bulletHeading + "]";
         }
     }
 
@@ -402,6 +444,47 @@ public interface BotEvent {
         @Override
         public String toString() {
             return "SkippedTurn[skippedTime=" + skippedTime + "]";
+        }
+    }
+
+    /**
+     * How long the core's previous tick took, measured by the adapter, and the allowance it
+     * assumes per turn (TIME-1). An event, not a clock the core reads, so a replay of the
+     * same inputs makes the same decisions (CORE-2).
+     */
+    public static final class TickTime implements BotEvent {
+        private final long usedNanos;
+        private final long allowanceNanos;
+
+        public TickTime(long usedNanos, long allowanceNanos) {
+            this.usedNanos = usedNanos;
+            this.allowanceNanos = allowanceNanos;
+        }
+
+        public long usedNanos() {
+            return usedNanos;
+        }
+
+        public long allowanceNanos() {
+            return allowanceNanos;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof TickTime)) return false;
+            TickTime that = (TickTime) o;
+            return usedNanos == that.usedNanos && allowanceNanos == that.allowanceNanos;
+        }
+
+        @Override
+        public int hashCode() {
+            return java.util.Objects.hash(usedNanos, allowanceNanos);
+        }
+
+        @Override
+        public String toString() {
+            return "TickTime[usedNanos=" + usedNanos + ", allowanceNanos=" + allowanceNanos + "]";
         }
     }
 }

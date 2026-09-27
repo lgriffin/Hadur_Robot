@@ -75,6 +75,12 @@ public final class DistancePolicy {
         return ours.center() - theirs.center() - Math.hypot(ours.margin(), theirs.margin()) >= GAP;
     }
 
+    /** MOVE-2: moves the band out by {@code px}, not past {@link #CEILING}; returns the new target. */
+    public double shiftOut(double px) {
+        target = Math.min(CEILING, target + px);
+        return target;
+    }
+
     /** The target to steer to: {@link #FINISH} while finishing (END-1), else the controller's. */
     public double target(boolean finishing) {
         return finishing ? FINISH : target;

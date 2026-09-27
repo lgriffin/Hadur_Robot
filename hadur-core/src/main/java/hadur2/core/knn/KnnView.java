@@ -12,6 +12,7 @@ public class KnnView<T> {
     public DistanceFormula formula;
     public int kSize;
     public int kDivisor;
+    private double kShare = 1.0;
     public int maxDataPoints;
     public boolean logBulletHits;
     public boolean logVisits;
@@ -72,6 +73,12 @@ public class KnnView<T> {
 
     public KnnView<T> setK(int kSize) {
         this.kSize = kSize;
+        return this;
+    }
+
+    /** TIME-1, TIME-2: the share of k to use while the tick budget is short; 1 is all of it. */
+    public KnnView<T> setKShare(double kShare) {
+        this.kShare = kShare;
         return this;
     }
 
@@ -182,7 +189,8 @@ public class KnnView<T> {
 
     public List<KdTree.Entry<T>> nearestNeighbors(Wave w, boolean aiming) {
         return nearestNeighbors(w, aiming,
-            DiaUtils.limit(1, size() / kDivisor, kSize));
+            kShare == 1.0 ? DiaUtils.limit(1, size() / kDivisor, kSize)
+                : Math.max(1, (int) (DiaUtils.limit(1, size() / kDivisor, kSize) * kShare)));
     }
 
     public List<KdTree.Entry<T>> nearestNeighbors(Wave w, boolean aiming, int k) {

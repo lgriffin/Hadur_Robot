@@ -79,6 +79,13 @@ bullet damage dealt and taken per round, shots fired at full power (POW-1, POW-2
 ticks spent finishing (END-1) and ramming (END-2). They come from R fields 23-27 and the
 opening's `P,…,distance,…,<tier>:<px>` record.
 
+From S6 the "Unhittable" section shows, per opponent, their hit rate, skipped turns, the
+ticks that used more than 70% of the assumed 3 ms allowance (TIME-1), the highest
+computation level any round reached (TIME-2), the enemy firing waves per round that one
+of our bullets shadowed (MOVE-1), how many of the enemy bullets ours destroyed fell inside
+a shadow Hadur had computed (a check on the geometry: it should be all of them), and the
+movement flavour changes and last step (MOVE-2). They come from R fields 13 and 28-32.
+
 The report's hit-rate and fault columns come from Hadur's `R` (round end) and `FAULT`
 records, so every fault and degradation counter the core keeps reaches the report (RES-5).
 

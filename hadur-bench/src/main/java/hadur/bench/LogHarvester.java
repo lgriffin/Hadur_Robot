@@ -67,6 +67,8 @@ public class LogHarvester extends BattleAdaptor {
     private int distanceRounds;
     private long roundTicks;
     private int finishTicks, ramTicks, fullPowerShots;
+    /** Unhittable (S6): the highest computation level, slow ticks, shadows, intercepts in a shadow, flavour changes and the step reached. */
+    private int maxLevel, slowTicks, shadowedWaves, interceptsShadowed, flavourChanges, flavourStep;
 
     public LogHarvester(Path dir, String us) throws IOException {
         this.us = us;
@@ -194,6 +196,14 @@ public class LogHarvester extends BattleAdaptor {
                     ramTicks += Integer.parseInt(f[26]);
                     fullPowerShots += Integer.parseInt(f[27]);
                 }
+                if (f.length >= 33) {
+                    maxLevel = Math.max(maxLevel, Integer.parseInt(f[13]));
+                    slowTicks += Integer.parseInt(f[28]);
+                    shadowedWaves += Integer.parseInt(f[29]);
+                    flavourChanges += Integer.parseInt(f[30]);
+                    flavourStep = Math.max(flavourStep, Integer.parseInt(f[31]));
+                    interceptsShadowed += Integer.parseInt(f[32]);
+                }
                 roundRecords++;
             } catch (NumberFormatException ignored) {
                 // A malformed record is left out of the averages.
@@ -272,6 +282,30 @@ public class LogHarvester extends BattleAdaptor {
 
     public int fullPowerShots() {
         return fullPowerShots;
+    }
+
+    public int maxLevel() {
+        return maxLevel;
+    }
+
+    public int slowTicks() {
+        return slowTicks;
+    }
+
+    public int shadowedWaves() {
+        return shadowedWaves;
+    }
+
+    public int interceptsShadowed() {
+        return interceptsShadowed;
+    }
+
+    public int flavourChanges() {
+        return flavourChanges;
+    }
+
+    public int flavourStep() {
+        return flavourStep;
     }
 
     public String tiers() {

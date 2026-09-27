@@ -76,6 +76,11 @@ class LineCodecProperties {
             d.map(BotEvent.HitWall::new),
             Combinators.combine(name, d, d, Arbitraries.of(true, false)).as(BotEvent.HitRobot::new),
             name.map(BotEvent.RobotDeath::new),
-            Arbitraries.longs().map(BotEvent.SkippedTurn::new));
+            Arbitraries.longs().map(BotEvent.SkippedTurn::new),
+            // S6: our bullet's heading on the bullet events, and the tick time (MOVE-1, TIME-1).
+            Combinators.combine(name, d, d, d).as(BotEvent.BulletHit::new),
+            Combinators.combine(d, d, d, d, d).as(BotEvent.BulletHitBullet::new),
+            Combinators.combine(d, d).as(BotEvent.BulletMissed::new),
+            Combinators.combine(Arbitraries.longs(), Arbitraries.longs()).as(BotEvent.TickTime::new));
     }
 }

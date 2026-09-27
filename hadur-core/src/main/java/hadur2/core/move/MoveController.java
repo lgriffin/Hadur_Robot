@@ -203,6 +203,8 @@ public class MoveController {
         weighted1v1ShotsHitThisRound = 0;
         lastBulletPower = 0;
         brokenWaveOutcomes.clear();
+        ourBullets.clear();
+        shadowedWaves = 0;
         clearNeighborCache();
     }
 
@@ -210,11 +212,79 @@ public class MoveController {
     private int raw1v1ShotsHitThisRound;
     private double weighted1v1ShotsHitThisRound;
     private final List<Boolean> brokenWaveOutcomes = new ArrayList<>();
+    /** MOVE-1: our bullets in flight, oldest first, for the shadows they cast. */
+    private final List<OurBullet> ourBullets = new ArrayList<>();
+    /** MOVE-1: waves that have had a shadow this round. */
+    private int shadowedWaves;
 
     public void clearNeighborCache() {
         for (KnnView<TimestampedGuessFactor> view : views) {
             view.clearCache();
         }
+    }
+
+    /** TIME-1, TIME-2: the share of k every danger view uses; 1 is all of it. */
+    public void setKShare(double kShare) {
+        if (kShare == this.kShare) return;
+        this.kShare = kShare;
+        for (KnnView<TimestampedGuessFactor> view : views) view.setKShare(kShare);
+        clearNeighborCache();
+    }
+
+    private double kShare = 1.0;
+
+    /** MOVE-1: one of our bullets has left the gun. */
+    public void ourBulletFired(OurBullet bullet) {
+        ourBullets.add(bullet);
+    }
+
+    /**
+     * MOVE-1: one of our bullets hit, missed or met a bullet. The engine names it by heading
+     * and power; an event without a heading (NaN) stands for the oldest bullet of that power.
+     */
+    public void ourBulletGone(double heading, double power) {
+        for (Iterator<OurBullet> it = ourBullets.iterator(); it.hasNext(); ) {
+            OurBullet b = it.next();
+            if (Double.isNaN(heading) ? Math.abs(b.power - power) < 1e-6 : b.is(heading, power)) {
+                it.remove();
+                return;
+            }
+        }
+    }
+
+    /** MOVE-1: our bullets still in flight. */
+    public int ourBulletsInFlight() {
+        return ourBullets.size();
+    }
+
+    /**
+     * MOVE-1: forgets bullets that have left the field by {@code time} and recomputes the
+     * shadow every bullet in flight casts on every firing wave.
+     */
+    public void updateShadows(long time) {
+        ourBullets.removeIf(b -> {
+            java.awt.geom.Point2D.Double p = b.at(time);
+            return p.x < 0 || p.y < 0 || p.x > battleField.width || p.y > battleField.height;
+        });
+        waveManager.forAllWaves(w -> {
+            if (!w.firingWave) return;
+            if (ourBullets.isEmpty()) {
+                w.setShadows(new ArrayList<>());
+            } else {
+                List<List<double[]>> shadows =
+                    BulletShadows.of(w, ourBullets, battleField.width, battleField.height);
+                w.setShadows(shadows.get(0), shadows.get(1));
+            }
+            if (!w.possibleShadows().isEmpty() && !w.everShadowed) {
+                w.everShadowed = true;
+                shadowedWaves++;
+            }
+        });
+    }
+
+    /** MOVE-1: enemy firing waves one of our bullets shadowed this round. */
+    public int shadowedWaves() {
+        return shadowedWaves;
     }
 
     public WaveManager getWaveManager() {
