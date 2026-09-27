@@ -20,6 +20,10 @@ Open items from the Hadur 2 stages, newest stage first.
   hundred waves. A profile that is wrong from the first round costs up to that much play.
 - **Version 1 profiles lose their seeds** when read (they had none in practice) and are
   rewritten as version 2 on the next save.
+- **The S4 benches predate the review fixes.** Qodo's review found that fully faded seeds
+  still steered aim and could make surf danger NaN, and that thin profiles replayed seeds.
+  The fixes leave cold play bit-identical (the replay fixtures pass) but change warm play
+  after a seed fades and for thin profiles; rerun the warm set before comparing with S5.
 - **Robocode refunds quota only on rewrite, not on delete.** `FileProfileStore.delete`
   empties a file before deleting it. Any new file the robot writes must do the same.
 
