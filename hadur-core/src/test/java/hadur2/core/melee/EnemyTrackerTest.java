@@ -19,7 +19,7 @@ class EnemyTrackerTest {
     }
 
     @Test
-    @Tag("MELEE-4")
+    @Tag("MMOVE-1")
     void staleDataIsWeightedLower() {
         EnemyInfo e = scan(tracker, "a", 100, 100, 100, 0);
         assertEquals(1.0, e.freshness(8));
