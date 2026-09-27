@@ -5,8 +5,9 @@ a 1v1 duelist that remembers each opponent across battles, with a melee brain fo
 free-for-alls, and a core that has no idea it is inside Robocode.
 
 **Release 2.2** is the finished Hadur 2 plan: the duelist of stages S0 to S6 plus the melee
-brain from 2.1, for both the RoboRumble (1v1) and the MeleeRumble. See the
-[release notes](docs/releases/v2.2.md) and [how to enter it](docs/rumble-submission.md).
+brain from 2.1. It is entered in both the RoboRumble (1v1) and the MeleeRumble as
+`hadur2.Hadur 2.2`. See the [release notes](docs/releases/v2.2.md) and
+[the entry and how it was made](docs/rumble-submission.md).
 
 ## What it does
 
@@ -86,11 +87,13 @@ hadur-core/    the brain: physics, waves, KNN, guns, movement, memory, policies,
                Plain Java, no Robocode.
 hadur-robot/   the Robocode adapter (hadur2.Hadur): events in, orders out, profile files.
 hadur-bench/   headless battles, the bench report, and the replay recorder.
-docs/          requirements, architecture, strategy, bench reports, release notes.
+docs/          requirements, architecture, testing, strategy, bench reports, release notes,
+               rumble entry.
 repo/          the vendored Robocode 1.9.3.0 API jar.
 ```
 
-See [docs/architecture.md](docs/architecture.md) for how the pieces fit, and
+See [docs/architecture.md](docs/architecture.md) for how the pieces fit,
+[docs/testing.md](docs/testing.md) for how they are tested, and
 [docs/strategy-evolution.md](docs/strategy-evolution.md) for how the strategy evolved
 stage by stage.
 
@@ -106,18 +109,13 @@ mvn verify                  # all modules: tests, traceability, robot jar
 The robot jar is `hadur-robot/target/hadur2.Hadur_2.2.jar`; drop it into a Robocode
 `robots/` directory. The core is bundled inside it. Pushing a `v*` tag runs the release
 workflow: it builds, checks that the jar matches the tag, and publishes a GitHub release
-with `docs/releases/<tag>.md` as its notes.
+with `docs/releases/<tag>.md` as its notes. GitHub Actions was not running jobs when 2.2
+shipped, so 2.2 was built locally and has no tag or GitHub release yet.
 
-hadur-core's tests are layered:
-
-| Layer | Where | Covers |
-|---|---|---|
-| Architecture | `arch/ArchitectureTest` (ArchUnit) | CORE-1 no Robocode in the core; RES-6 no randomness, threads, reflection, I/O or clock; no mutable statics; the policy and adapt packages cannot see the engine's inputs (DIAL-2) |
-| Properties | `*Properties` (jqwik) | physics equals the engine's, bit for bit; the replay and profile codecs round-trip; WAVE-1/2 the ledger recovers the exact shot power under any mix of events; lineage keys, seeds and seed trust; the distance controller's bounds; MOVE-1 bullet shadows equal a brute-force collision check |
-| Unit | per package (`ledger`, `memory`, `adapt`, `policy`, `gun`, `move`, `shield`, `melee`), plus `GuardTest`, `RoundStatsTest`, `RadarReacquireTest` | each requirement's rules and edge cases; RES-1 safe orders on a fault; RES-2 bounded growth; RES-5 counters in the round record |
-| Replay | `replay/ReplayTest` | CORE-2: real recorded battles against every reference opponent replay to the live robot's exact orders |
-| Behaviour | `features/*.feature` (Cucumber) | one feature per EARS group (core, waves, resilience, memory, adapt, aggressive, unhittable, shield, melee); each scenario is tagged `@<ID>` |
-| Traceability | `trace/RequirementsTraceabilityTest` | fails if any requirement due by `hadur.stage` has no test, a tag names no requirement, or a jqwik test uses JUnit's `@Tag` (jqwik would skip it); writes `target/requirements-coverage.md` |
+The tests are layered: ArchUnit rules, jqwik properties, unit tests, replay of recorded
+battles, Cucumber scenarios per EARS group, and a traceability test that fails the build
+if any requirement has no test. [docs/testing.md](docs/testing.md) describes each layer,
+how to run them, and how to re-record the replay fixtures.
 
 ## Bench
 

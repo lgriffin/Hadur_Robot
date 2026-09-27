@@ -190,7 +190,7 @@ and shot dodging in the melee mover are the obvious next bets.
 
 ## S7: say what it is, and ship it
 
-S7 changes no strategy. The plan said to cut melee in S7, but release 2.1 had already put the 1.x melee brain into the core for the MeleeRumble, and it only runs while two or more opponents are alive, so Leigh chose to keep it. S7 rewrote the README around what the robot does now, stage by stage and requirement by requirement, and refreshed the telemetry reference, the architecture diagram (the shield package) and the rumble entry guide, which now covers the 1v1 RoboRumble as well as the MeleeRumble. The version is 2.2, and its release notes are ready; pushing the `v2.2` tag publishes the jar.
+S7 changes no strategy. The plan said to cut melee in S7, but release 2.1 had already put the 1.x melee brain into the core for the MeleeRumble, and it only runs while two or more opponents are alive, so Leigh chose to keep it. S7 rewrote the README around what the robot does now, stage by stage and requirement by requirement, and refreshed the telemetry reference, the architecture diagram (the shield package) and the rumble entry guide, which now covers the 1v1 RoboRumble as well as the MeleeRumble. The version is 2.2. With GitHub Actions not running jobs, 2.2 was built and checked locally and entered in both the RoboRumble and the MeleeRumble from a Google Drive link (docs/rumble-submission.md); the `v2.2` tag and GitHub release wait for Actions. A last docs pass added docs/testing.md, which describes each test layer and the traceability check.
 
 ## What comes next
 
@@ -198,7 +198,7 @@ Every EARS requirement is implemented and traced, and the staged plan is complet
 
 Open items carried forward:
 
-- **Enter 2.2 in both rumbles** and read the real rankings, which say more than the bench can.
+- **Read the real rankings.** 2.2 is entered in both rumbles; once a few thousand battles are in, the rankings say more than the bench can.
 - **Skipped turns** are 72 per cold bench, not the zero S6 aimed for. Half fall on a round's last turn, when the profile checkpoint is written.
 - **MOVE-2 has not shown a gain.** Warm, it scored the same switched on or off. Its baseline averages whole battles, while the live window sees a gun that has already learned; a baseline from the same part of past battles would be fairer.
 - **Memory has not clearly paid off against Shadow.** S6's warm run (54.6%) is below its cold one (57.4%), within noise. The T1 and T2 bounds have no bench opponent in them yet, so they are uncalibrated.

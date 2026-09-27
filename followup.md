@@ -7,9 +7,16 @@ Open items from the Hadur 2 stages, newest stage first.
 - **Melee stays.** The plan's S7 said to cut melee; Leigh chose to keep it (2026-09-27),
   since 2.1 entered the MeleeRumble with it and it only runs with two or more opponents
   alive. The earlier item under "Release 2.1" is settled.
-- **The 2.2 tag is not pushed yet.** Pushing `v2.2` runs the release workflow and publishes
-  the jar; it waits for Leigh's go. The workflow also needs GitHub Actions to run; the verify runs on
-  PRs #30 and #31 failed within seconds, before any step.
+- **2.2 is entered in both rumbles** (2026-09-27) from a local build hosted on Google Drive;
+  the participant line is in docs/rumble-submission.md. Watch the RoboRumble and
+  MeleeRumble rankings once a few thousand battles are in, and compare them with the
+  bench.
+- **The 2.2 tag is not pushed.** GitHub Actions was not running jobs (the verify runs on
+  PRs #30 and #31 failed within seconds, before any step), so 2.2 was built and checked
+  with a local `mvn -B verify` instead. Pushing `v2.2` once Actions works would publish
+  the same source as a GitHub release; the rumble entry does not need it.
+- **No mutation testing.** The plan's testing layers named PIT; it was never set up
+  (docs/testing.md).
 - **No new bench for 2.2.** The only code change after S6 is the version number, so the S6
   benches stand for 2.2.
 

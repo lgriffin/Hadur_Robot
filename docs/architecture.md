@@ -51,6 +51,20 @@ graph LR
     PS -. FileProfileStore .-> F
 ```
 
+## Modules
+
+| Module | Holds | Built for |
+|---|---|---|
+| `hadur-core` | the brain, as plain Java: every package listed below | Java 11 |
+| `hadur-robot` | the adapter `hadur2.Hadur`, `hadur2.FileProfileStore`, and `hadur2.HadurRecorder` (the robot plus a transcript of its inputs and orders, for replay fixtures) | Java 11 |
+| `hadur-bench` | headless battles in the real engine, the report, wave fidelity against the engine's truth | Java 17 |
+
+`hadur-robot` shades the core into two jars. `hadur2.Hadur_2.2.jar` is the competition
+jar, with the recorder left out; the `recorder` jar keeps it, and only the bench's
+`--record` mode loads it. The Robocode API is `provided`: the engine supplies it at run
+time, and the build compiles against the vendored 1.9.3.0 API in `repo/` (the bench runs
+the 1.9.5.6 engine from Maven Central).
+
 ## The tick
 
 Robocode runs a robot's event handlers inside `execute()`, then returns to `run()`. The
@@ -80,7 +94,7 @@ The core and guard are static in the adapter, so learning survives from round to
 
 `ProfileStore` has two adapters: `port.MemoryProfileStore` for tests and the bench (it can
 simulate a write killed part way), and `hadur2.FileProfileStore` in the robot, on Robocode's
-data directory through `RobocodeFileOutputStream`. S6 adds a `Clock` port.
+data directory through `RobocodeFileOutputStream`.
 
 ## Packages in the core
 
