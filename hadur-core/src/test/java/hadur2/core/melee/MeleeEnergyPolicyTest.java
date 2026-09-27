@@ -34,7 +34,9 @@ class MeleeEnergyPolicyTest {
     @DisplayName("MGUN-3: a shot never drops Hadur's energy below a weaker target's")
     void neverBelowTarget() {
         assertEquals(1.0, MeleeEnergyPolicy.power(100, 60, 59, 5), 1e-9);
-        assertEquals(MeleeEnergyPolicy.MIN_POWER, MeleeEnergyPolicy.power(100, 60, 59.95, 5), 1e-9);
+        assertEquals(MeleeEnergyPolicy.MIN_POWER, MeleeEnergyPolicy.power(100, 60, 59.9, 5), 1e-9);
+        // A lead smaller than the lightest shot: holding fire is the only way to keep it.
+        assertEquals(0, MeleeEnergyPolicy.power(100, 60, 59.95, 5));
         // Already behind: the table stands.
         assertEquals(3.0, MeleeEnergyPolicy.power(100, 50, 70, 5), 1e-9);
     }

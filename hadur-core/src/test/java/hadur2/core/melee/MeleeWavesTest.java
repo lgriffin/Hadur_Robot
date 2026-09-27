@@ -73,4 +73,46 @@ class MeleeWavesTest {
         waves.onRobotDeath("b");
         assertEquals(0, waves.inFlight());
     }
+
+    @Test
+    @Tag("MGUN-4")
+    @DisplayName("MGUN-4: a wave carries the field gun's own aim, and none goes out when the gun has none")
+    void wavesCarryTheGunsAim() {
+        EnemyInfo a = scan(tracker, "a", 700, 800, 100, 1);
+        assertTrue(waves.tick(me, 2, 0, tracker.alive(), gun, 100, 5));
+        FieldGun.Aim aim = gun.aim(me, 100, 5, java.util.Collections.singletonList(a), 2);
+        assertEquals(aim.angle, waves.peekAim(), 1e-12);
+        // Below the energy to fire, the gun has no solution, so there is nothing to score.
+        MeleeWaves low = new MeleeWaves();
+        assertTrue(low.tick(me, 2, 0, tracker.alive(), gun, 0.5, 5));
+        assertEquals(0, low.inFlight());
+        assertEquals(0, low.emitted());
+    }
+
+    @Test
+    @Tag("MGUN-4")
+    @DisplayName("MGUN-4: a wave is scored where the opponent was when it crossed, not at the next scan")
+    void scoredAtTheCrossing() {
+        // A wave from 500,500 aimed due north at speed 10, fired at tick 0.
+        MeleeWaves.Wave w = new MeleeWaves.Wave("a", pt(500, 500), 0, 10, 0);
+        // Scanned at 500,700 (tick 10, not yet reached) then at 700,800 (tick 40, well past):
+        // on the line between them the wave's radius 10t meets the distance at about 630,765.
+        Point2D.Double at = MeleeWaves.crossing(w, pt(500, 700), 10, pt(700, 800), 40);
+        assertEquals(630, at.x, 5);
+        assertEquals(700 + (at.x - 500) / 2, at.y, 1e-6);
+        // Off the aim line when crossed, back on it at the next scan: a miss, where scoring at
+        // the scan would have called it a hit.
+        scan(tracker, "b", 500, 800, 100, 1);
+        MeleeWaves one = new MeleeWaves();
+        one.tick(me, 2, 0, tracker.alive(), gun, 100, 5);
+        assertEquals(0, one.peekAim(), 0.01);
+        one.onScan(scan(tracker, "b", 800, 800, 100, 20), 20);
+        assertEquals(0, one.resolved());
+        EnemyInfo b = scan(tracker, "b", 500, 900, 100, 60);
+        one.onScan(b, 60);
+        assertEquals(1, one.resolved());
+        assertEquals(0, one.hits());
+        // With no earlier scan there is no segment: the latest position stands.
+        assertSame(b.location, MeleeWaves.crossing(w, null, -1, b.location, 40));
+    }
 }

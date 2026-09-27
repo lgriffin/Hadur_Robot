@@ -105,13 +105,6 @@ public class MinimumRiskMovement {
     static final long CAP_MAX_AGE = EnemyInfo.STALE_TICKS;
     /** The ring never shrinks below a robot's width, so Hadur can always move. */
     static final double MIN_RING = 36.0;
-    /**
-     * Points along the way to a candidate where the virtual bullets are checked. Only the
-     * destination: four points along the route cost about 4 APS on the reference field
-     * (docs/bench/m4-gates.md), mostly in time, and the destination is re-scored every tick
-     * as Hadur moves, so a bullet crossing the route is dodged on the way.
-     */
-    static final int ROUTE_SAMPLES = 1;
 
     /** What the movement sees this tick. */
     public static final class View {
@@ -266,7 +259,7 @@ public class MinimumRiskMovement {
         double max = endgame ? ENDGAME_RING_MAX : RING_MAX;
         double nearest = Double.POSITIVE_INFINITY;
         for (EnemyInfo e : enemies) {
-            if (now != Long.MIN_VALUE && e.age(now) > CAP_MAX_AGE) continue;
+            if (now != Long.MIN_VALUE && e.age(now) >= CAP_MAX_AGE) continue;
             nearest = Math.min(nearest, e.location.distance(me));
         }
         double cap = Math.max(MIN_RING, NEAREST_FRACTION * nearest);
@@ -339,10 +332,13 @@ public class MinimumRiskMovement {
     }
 
     /**
-     * The virtual bullets' danger on the way to {@code p}: Hadur drives there in a straight
-     * line, and at each of {@link #ROUTE_SAMPLES} points along it a bullet that passes within
-     * {@link #HIT_RADIUS} within {@link #HIT_WINDOW} ticks of Hadur being there, widened by
-     * the uncertainty of the shot's fire tick, is a hit. Each bullet counts once, at its
+     * The virtual bullets' danger at {@code p}: a bullet that passes within {@link #HIT_RADIUS}
+     * of it within {@link #HIT_WINDOW} ticks of Hadur arriving, widened by the uncertainty of
+     * the shot's fire tick, is a hit. The route there is deliberately not scored: virtual
+     * bullets are guesses (two per shot), and counting every guessed path Hadur would cross
+     * hems it in. Scoring the route, sampled or in closed form, cost 3 to 5 APS on the
+     * reference field with no rise in skipped turns (docs/bench/m4-gates.md); the destination
+     * is re-scored every tick as Hadur moves. Each bullet counts once, at its
      * nearest point, weighted by its damage; nearer misses count for less (MMOVE-3).
      */
     /**
@@ -368,14 +364,8 @@ public class MinimumRiskMovement {
         double r = 0;
         for (VirtualBullet b : bullets) {
             double window = HIT_WINDOW + b.shot.window;
-            double d = Double.POSITIVE_INFINITY;
-            for (int k = 1; k <= ROUTE_SAMPLES; k++) {
-                double f = (double) k / ROUTE_SAMPLES;
-                Point2D.Double at = new Point2D.Double(me.x + f * (p.x - me.x), me.y + f * (p.y - me.y));
-                double arrive = now + f * travel;
-                double from = Math.max(now, arrive - window);
-                d = Math.min(d, b.closestApproach(at, from, arrive + window));
-            }
+            double arrive = now + travel;
+            double d = b.closestApproach(p, Math.max(now, arrive - window), arrive + window);
             double damage = 4 * b.shot.power + Math.max(0, 2 * (b.shot.power - 1));
             double x = d / HIT_RADIUS;
             r += BULLET_K * damage / 4.0 * Math.exp(-x * x);

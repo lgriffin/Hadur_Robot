@@ -198,9 +198,9 @@ never below 36 px) and heads for the
 least risky, keeping its destination until a point 10% safer turns up (MMOVE-1). Risk is
 each opponent's energy over distance squared, doubled where Hadur would be that opponent's
 closest robot (a neighbour unseen for longer than a sweep counts as far as it could have moved) and half again for one that hit Hadur recently (MMOVE-2); a head-on and a
-linear `VirtualBullet` for every recorded `EnemyShot`, scored where each would be when
-Hadur gets to the candidate (checking points along the route cost about 4 APS, mostly in
-time, and the destination is re-scored every tick), with a shot's fire-tick uncertainty widening its window
+linear `VirtualBullet` for every recorded `EnemyShot`, scored at the candidate when Hadur
+gets there but not along the route (virtual bullets are guesses, and counting every guessed
+path Hadur would cross cost 3 to 5 APS; the destination is re-scored every tick), with a shot's fire-tick uncertainty widening its window
 and delaying its expiry, and bullets that never come within reach of a candidate skipped (MMOVE-3); a pull off the centre, pushes off walls and corners, Hadur's
 recent positions and a fixed noise field; and the melee strategy's posture. For the first
 30 ticks the closest-robot term doubles again and a pull heads for a wall-adjacent spot

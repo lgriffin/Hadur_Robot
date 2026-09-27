@@ -64,37 +64,63 @@ public final class MeleeWaves {
         lastEmit = now;
         for (EnemyInfo e : alive) {
             if (e.age(now) > FieldGun.MAX_AGE) continue;
-            FieldGun.Solution best = null;
-            for (FieldGun.Solution s : gun.solutions(me, energy, others, Collections.singletonList(e), now)) {
-                if (best == null || s.weight > best.weight) best = s;
-            }
-            double power = best == null ? 1.0 : best.power;
-            double aim = best == null ? DiaUtils.absoluteBearing(me, e.location) : best.angle;
+            // The gun's own choice for this opponent: the density peak over its solutions.
+            // With none (a rammer it leaves alone, too little energy) there is no aim to score.
+            FieldGun.Aim a = gun.aim(me, energy, others, Collections.singletonList(e), now);
+            if (a == null) continue;
             if (waves.size() >= MAX_WAVES) waves.removeFirst();
-            waves.addLast(new Wave(e.name, new Point2D.Double(me.x, me.y), now, 20 - 3 * power, aim));
+            waves.addLast(new Wave(e.name, new Point2D.Double(me.x, me.y), now, 20 - 3 * a.power, a.angle));
             emitted++;
         }
         return true;
     }
 
-    /** Scores the waves that have reached {@code e}'s latest scan. */
+    /**
+     * Scores the waves that have reached {@code e} by its latest scan, each at where the
+     * opponent was when the wave crossed it: between two scans the opponent is taken to move
+     * in a straight line, and the crossing is found along that segment.
+     */
     public void onScan(EnemyInfo e, long now) {
         for (Iterator<Wave> it = waves.iterator(); it.hasNext(); ) {
             Wave w = it.next();
             if (!w.target.equals(e.name)) continue;
-            double d = w.source.distance(e.location);
-            if ((now - w.time) * w.speed < d) continue;
+            if ((now - w.time) * w.speed < w.source.distance(e.location)) continue;
+            Point2D.Double at = crossing(w, e.previousLocation(), e.previousScanTime(), e.location, now);
+            double d = w.source.distance(at);
             double off = Math.abs(Angles.normalRelativeAngle(
-                DiaUtils.absoluteBearing(w.source, e.location) - w.aim));
+                DiaUtils.absoluteBearing(w.source, at) - w.aim));
             if (off <= DiaUtils.botWidthAimAngle(Math.max(18.0, d))) hits++;
             resolved++;
             it.remove();
         }
     }
 
+    /**
+     * Where the opponent was when {@code w} reached it, given that it had by tick {@code t1}
+     * at {@code p1}: along the straight line from its previous scan ({@code p0} at {@code t0})
+     * if the wave had not yet reached it there, else {@code p0}; {@code p1} with no previous scan.
+     */
+    static Point2D.Double crossing(Wave w, Point2D.Double p0, long t0, Point2D.Double p1, long t1) {
+        if (p0 == null || t0 < 0 || t0 >= t1) return p1;
+        if ((t0 - w.time) * w.speed >= w.source.distance(p0)) return p0;
+        double lo = 0, hi = 1;
+        for (int i = 0; i < 20; i++) {
+            double s = (lo + hi) / 2;
+            double t = t0 + s * (t1 - t0);
+            double x = p0.x + s * (p1.x - p0.x), y = p0.y + s * (p1.y - p0.y);
+            if ((t - w.time) * w.speed >= w.source.distance(x, y)) hi = s; else lo = s;
+        }
+        return new Point2D.Double(p0.x + hi * (p1.x - p0.x), p0.y + hi * (p1.y - p0.y));
+    }
+
     /** Drops the waves at a robot that died. */
     public void onRobotDeath(String name) {
         waves.removeIf(w -> w.target.equals(name));
+    }
+
+    /** The aim of the newest wave in flight (tests). */
+    double peekAim() {
+        return waves.peekLast().aim;
     }
 
     public int inFlight() {

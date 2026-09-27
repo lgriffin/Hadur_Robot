@@ -40,6 +40,7 @@ public class EnemyInfo {
 
     private double prevHeading;
     private long prevScanTime = -1;
+    private Point2D.Double prevLocation;
     private final Deque<long[]> externalLosses = new ArrayDeque<>();
     private double pendingOwnDamage;
 
@@ -77,6 +78,7 @@ public class EnemyInfo {
             }
             prevHeading = this.heading;
             prevScanTime = lastScanTime;
+            prevLocation = this.location;
         }
         pendingOwnDamage = 0;
         pruneLosses(time);
@@ -95,6 +97,16 @@ public class EnemyInfo {
     /** Ticks since the last scan. */
     public long age(long now) {
         return lastScanTime < 0 ? Long.MAX_VALUE : now - lastScanTime;
+    }
+
+    /** Where the scan before the latest one saw it, or null before its second scan. */
+    Point2D.Double previousLocation() {
+        return prevLocation;
+    }
+
+    /** The tick of the scan before the latest one, or -1. */
+    long previousScanTime() {
+        return prevScanTime;
     }
 
     public boolean isStale(long now) {

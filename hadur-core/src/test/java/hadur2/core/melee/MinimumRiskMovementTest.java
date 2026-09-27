@@ -72,6 +72,13 @@ class MinimumRiskMovementTest {
         double stale = move.candidates(pt(500, 500), 3, tracker.alive(), 50).stream()
             .mapToDouble(p -> p.distance(500, 500)).max().getAsDouble();
         assertEquals(300, stale, 1e-9);
+        // Stale from exactly STALE_TICKS on, as EnemyInfo.isStale has it; one tick younger still caps.
+        double atStale = move.candidates(pt(500, 500), 3, tracker.alive(), 1 + EnemyInfo.STALE_TICKS).stream()
+            .mapToDouble(p -> p.distance(500, 500)).max().getAsDouble();
+        assertEquals(300, atStale, 1e-9);
+        double young = move.candidates(pt(500, 500), 3, tracker.alive(), EnemyInfo.STALE_TICKS).stream()
+            .mapToDouble(p -> p.distance(500, 500)).max().getAsDouble();
+        assertEquals(MinimumRiskMovement.MIN_RING, young, 1e-9);
         for (Point2D.Double p : move.candidates(pt(500, 500), 3, tracker.alive(), 2)) {
             assertEquals(MinimumRiskMovement.MIN_RING, p.distance(500, 500), 1e-9);
         }
@@ -172,6 +179,21 @@ class MinimumRiskMovementTest {
         assertTrue(onPath > 1.0, "on path " + onPath);
         assertTrue(aside < 0.01, "aside " + aside);
         assertEquals(0, MinimumRiskMovement.bulletRisk(pt(500, 500), me, List.of(), 5));
+    }
+
+    @Test
+    @Tag("MMOVE-3")
+    @DisplayName("MMOVE-3: bullets are scored at the destination, not along the route")
+    void routeIsNotScored() {
+        Point2D.Double me = pt(500, 200);
+        // A power-3 bullet flying east along y = 350 crosses the route to 500,500 about when
+        // Hadur does, but is far from 500,500 on arrival: the destination is re-scored every
+        // tick as Hadur moves, and scoring guessed paths along the route cost APS.
+        EnemyShot s = new EnemyShot("a", pt(100, 350), 5, 3.0);
+        List<VirtualBullet> bs = Arrays.asList(new VirtualBullet(s, VirtualBullet.Aim.HEAD_ON, Math.PI / 2));
+        assertTrue(MinimumRiskMovement.bulletRisk(pt(500, 500), me, bs, 20) < 0.01);
+        // Standing in its way at the right time is risky.
+        assertTrue(MinimumRiskMovement.bulletRisk(pt(500, 350), pt(500, 340), bs, 40) > 1.0);
     }
 
     @Test

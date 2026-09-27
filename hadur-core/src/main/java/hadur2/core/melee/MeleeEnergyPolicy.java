@@ -43,7 +43,12 @@ public final class MeleeEnergyPolicy {
             p = 2.0 + (300 - distance) / 150.0;
         }
         p = Math.min(p, killPower(targetEnergy));
-        if (ownEnergy > targetEnergy) p = Math.min(p, ownEnergy - targetEnergy);
+        if (ownEnergy > targetEnergy) {
+            double lead = ownEnergy - targetEnergy;
+            // A lead too small for the lightest shot is kept by holding fire.
+            if (lead < MIN_POWER) return 0;
+            p = Math.min(p, lead);
+        }
         p = Math.max(p, MIN_POWER);
         return Math.min(p, ownEnergy);
     }
