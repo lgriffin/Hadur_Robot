@@ -29,8 +29,15 @@ public class EnemyTracker {
     /** A robot stopped this close to a wall, or to another robot, may have hit it. */
     static final double BUMP_RANGE = 26.0;
     static final double ROBOT_BUMP_RANGE = 55.0;
-    /** A surplus opponent not seen for longer than one full sweep is a ghost. */
-    static final long GHOST_AGE = 8;
+    /**
+     * A surplus opponent not seen for two full sweeps (8 ticks each) may be a ghost. One
+     * sweep is not enough: a robot moving with the sweep can go unseen for 10 to 24 ticks.
+     */
+    static final long GHOST_AGE = 16;
+    /** The engine's radar range. */
+    static final double RADAR_RANGE = 1200.0;
+    /** How far Hadur and an opponent can move apart in a tick, both at full speed. */
+    private static final double MAX_SEPARATION_RATE = 16.0;
 
     private final Map<String, EnemyInfo> enemies = new LinkedHashMap<>();
     private final Deque<EnemyShot> shots = new ArrayDeque<>();
@@ -69,13 +76,31 @@ public class EnemyTracker {
         boolean bumped = stopped(e, velocity) && (nearWall(location)
             || distanceToUs < ROBOT_BUMP_RANGE || nearOther(e, location));
         Point2D.Double before = e.location;
+        long previousScan = e.lastScanTime;
         double shot = e.update(location, energy, heading, velocity, time, bumped);
         e.alive = true;
-        if (!Double.isNaN(shot)) {
-            // Fired in the tick before this scan, from about where it was then.
-            addShot(new EnemyShot(name, before == null ? location : before, time - 1, shot), time);
-        }
+        if (!Double.isNaN(shot)) addShot(inferredShot(name, before, previousScan, location, time, shot), time);
         return e;
+    }
+
+    /**
+     * The shot an energy drop between two scans shows. Under the engine's convention a drop
+     * seen at {@code time} was fired at {@code time - 1} at the latest, and no earlier than
+     * the previous scan. Between scans the fire tick is unknown, so the shot takes the middle
+     * of that window, fired from the matching point on the line between the two scans, and
+     * carries the window's half-width as its uncertainty (MSENSE-2).
+     */
+    static EnemyShot inferredShot(String name, Point2D.Double before, long previousScan,
+                                  Point2D.Double location, long time, double power) {
+        if (before == null || previousScan < 0 || previousScan >= time - 1) {
+            return new EnemyShot(name, before == null ? location : before, time - 1, power);
+        }
+        long span = time - 1 - previousScan;
+        long fireTime = previousScan + span / 2;
+        double f = (double) (fireTime - previousScan) / (time - previousScan);
+        Point2D.Double source = new Point2D.Double(before.x + f * (location.x - before.x),
+            before.y + f * (location.y - before.y));
+        return new EnemyShot(name, source, fireTime, power, (span + 1) / 2);
     }
 
     private static boolean stopped(EnemyInfo e, double velocity) {
@@ -147,22 +172,37 @@ public class EnemyTracker {
         return list;
     }
 
-    /**
-     * Drops opponents that must be dead: while more are alive here than the engine counts,
-     * the one scanned longest ago goes, if a full sweep has passed it by (a death this core
-     * never heard of). Returns how many it dropped (MSENSE-1).
-     */
+    /** {@link #pruneGhosts(int, long, Point2D.Double)} with Hadur's position unknown. */
     public int pruneGhosts(int others, long now) {
+        return pruneGhosts(others, now, null);
+    }
+
+    /**
+     * Drops opponents that must be dead: while more are alive here than the engine counts
+     * (a death this core never heard of), the one scanned longest ago goes, if two full
+     * sweeps have passed it by and it cannot have left radar range since its last scan
+     * (unknown when {@code me} is null). The count says one is dead but not which one: a
+     * live robot dropped by mistake comes back on its next scan, and the dead one, which can
+     * never be scanned again, becomes the stalest and goes next. Returns how many it
+     * dropped (MSENSE-1).
+     */
+    public int pruneGhosts(int others, long now, Point2D.Double me) {
         int dropped = 0;
         List<EnemyInfo> alive = alive();
         while (alive.size() > others) {
             EnemyInfo stalest = stalest();
-            if (stalest == null || stalest.age(now) <= GHOST_AGE) break;
+            if (stalest == null || stalest.age(now) <= GHOST_AGE || !inRadarRange(stalest, me, now)) break;
             stalest.alive = false;
             alive.remove(stalest);
             dropped++;
         }
         return dropped;
+    }
+
+    /** Whether {@code e} is surely still within radar range of {@code me}, alive. */
+    private static boolean inRadarRange(EnemyInfo e, Point2D.Double me, long now) {
+        if (me == null || e.location == null) return true;
+        return me.distance(e.location) + MAX_SEPARATION_RATE * e.age(now) < RADAR_RANGE;
     }
 
     /** The alive opponent scanned longest ago, or null if none is known. */

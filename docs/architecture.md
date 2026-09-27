@@ -169,11 +169,18 @@ were alive, and robots dropped as dead without a death event.
 
 `melee.EnemyTracker` is the melee brain's battlefield model: every opponent's last
 position, heading, velocity, energy and scan tick. A death takes an opponent out of the
-movement's risk and the gun's targets on the same tick (MSENSE-1); so does being one more
-than the engine counts alive and a full sweep out of date, which catches a death the core
-never heard of. An energy drop of 0.1 to 3 that the core cannot explain as our bullet's
-damage, or as a wall or robot collision (a stop next to a wall or another robot), is
-recorded as an `EnemyShot` from where the opponent was a tick earlier (MSENSE-2).
+movement's risk and the gun's targets on the same tick (MSENSE-1). While more are tracked
+than the engine counts alive, a death the core never heard of, the one scanned longest ago
+goes once two full sweeps (16 ticks) have missed it and it cannot have left radar range.
+The count does not say which robot died: a live one dropped by mistake comes back on its
+next scan, and the dead one, which cannot be scanned again, goes next. An energy drop of
+0.1 to 3 that the core cannot explain as our bullet's damage, or as a wall or robot
+collision (a stop next to a wall or another robot), is recorded as an `EnemyShot`
+(MSENSE-2). After consecutive scans it was fired the tick before, from where the opponent
+was; across a gap it takes the middle of the ticks it could have fired in, from the matching
+point between the two scans, and carries that half-width as `window`. A bigger drop is
+another robot's hit, unless the gap fits several shots (one every 11 ticks at most) that
+could add up to it; that drop is recorded as neither.
 
 `melee.MeleeRadar` spins while four or more opponents are alive (MRADAR-1). With two or
 three it turns toward the one scanned longest ago (MRADAR-2), rescans a weak target the gun

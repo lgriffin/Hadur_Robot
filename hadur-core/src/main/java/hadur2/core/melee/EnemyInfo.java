@@ -18,6 +18,11 @@ public class EnemyInfo {
     public static final int LOSS_WINDOW = 40;
     /** The engine's bullet powers: a drop in this range may be a shot (MSENSE-2). */
     static final double MIN_SHOT = 0.1, MAX_SHOT = 3.0;
+    /**
+     * The fewest ticks between two shots: the lightest bullet heats the gun by 1.02, which
+     * the default cooling rate of 0.1 a tick takes 11 ticks to clear.
+     */
+    static final int MIN_REFIRE_TICKS = 11;
     private static final double EPS = 1e-6;
 
     public final String name;
@@ -47,7 +52,9 @@ public class EnemyInfo {
     /**
      * Takes a scan. Returns the power of the shot the energy drop since the last scan
      * shows, or NaN: a drop in [0.1, 3.0] that neither our bullets nor a bump
-     * ({@code bumped}: a wall or a robot stopped it) explain (MSENSE-2). A hit from another
+     * ({@code bumped}: a wall or a robot stopped it) explain (MSENSE-2). A drop above 3.0 is
+     * damage from another robot, unless the scans were far enough apart for several shots
+     * to fit, when it is recorded as neither. A hit from another
      * robot's weak bullet can look the same; such false shots are cheap, and accepted.
      */
     double update(Point2D.Double location, double energy, double heading,
@@ -55,8 +62,12 @@ public class EnemyInfo {
         double shot = Double.NaN;
         if (lastScanTime >= 0) {
             double loss = this.energy - energy - pendingOwnDamage;
-            // Firing costs at most 3 energy, so larger drops are damage from someone else.
-            if (loss > MAX_SHOT + EPS) {
+            // A gap long enough for several shots can hide them in one bigger drop.
+            long shotsPossible = 1 + Math.max(0, time - lastScanTime - 1) / MIN_REFIRE_TICKS;
+            if (loss > MAX_SHOT + EPS && shotsPossible > 1 && loss <= shotsPossible * MAX_SHOT + EPS) {
+                // Several shots or someone's hit: neither can be told, so neither is recorded.
+            } else if (loss > MAX_SHOT + EPS) {
+                // Firing costs at most 3 energy, so larger drops are damage from someone else.
                 externalLosses.addLast(new long[]{time, Math.round(loss * 100)});
             } else if (loss >= MIN_SHOT - EPS && !bumped) {
                 shot = Math.min(MAX_SHOT, Math.max(MIN_SHOT, loss));

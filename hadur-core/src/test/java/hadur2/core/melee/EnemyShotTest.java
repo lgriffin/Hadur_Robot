@@ -83,6 +83,36 @@ class EnemyShotTest {
 
     @Test
     @Tag("MSENSE-2")
+    @DisplayName("MSENSE-2: between scans far apart, a shot fired mid-gap from mid-path, with its uncertainty")
+    void shotBetweenDistantScans() {
+        tracker.onScan("a", pt(300, 300), 100, 0, 8, 10, 400);
+        tracker.onScan("a", pt(300, 380), 98, 0, 8, 20, 400);
+        EnemyShot s = tracker.shots(20).get(0);
+        // It fired somewhere in ticks 10 to 19.
+        assertEquals(14, s.fireTime);
+        assertEquals(5, s.window);
+        assertEquals(300, s.source.x, 1e-9);
+        assertEquals(332, s.source.y, 1e-9);
+        tracker.onScan("b", pt(600, 600), 100, 0, 0, 10, 400);
+        tracker.onScan("b", pt(600, 600), 99, 0, 0, 11, 400);
+        assertEquals(0, tracker.shots(11).get(1).window, "consecutive scans: exact");
+    }
+
+    @Test
+    @Tag("MSENSE-2")
+    @DisplayName("MSENSE-2: a drop over 3 across a gap that fits several shots is neither shots nor a hit")
+    void severalShotsFitTheGap() {
+        tracker.onScan("a", pt(300, 300), 100, 0, 0, 1, 400);
+        EnemyInfo a = tracker.onScan("a", pt(300, 300), 96, 0, 0, 25, 400);
+        assertTrue(tracker.shots(25).isEmpty());
+        assertEquals(0, a.recentExternalLoss(25), 1e-9);
+        // Far more than the gap's shots could cost: someone's hit.
+        a = tracker.onScan("a", pt(300, 300), 80, 0, 0, 49, 400);
+        assertEquals(16, a.recentExternalLoss(49), 1e-9);
+    }
+
+    @Test
+    @Tag("MSENSE-2")
     @DisplayName("MSENSE-2: a dead robot's shots fly on; old shots are dropped")
     void shotsOutliveTheShooterButNotTheirFlight() {
         tracker.onScan("a", pt(300, 300), 100, 0, 0, 1, 400);

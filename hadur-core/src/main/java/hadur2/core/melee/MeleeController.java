@@ -150,7 +150,7 @@ public class MeleeController {
         myPath.addState(RobotState.newBuilder().setLocation(s.me).setHeading(s.heading)
             .setVelocity(s.velocity).setTime(s.time).build());
         Command c = new Command();
-        ghostsDropped += tracker.pruneGhosts(s.others, s.time);
+        ghostsDropped += tracker.pruneGhosts(s.others, s.time, s.me);
         EnemyInfo current = tracker.get(selector.current());
         String finisher = current != null && current.energy <= FINISHER_ENERGY ? current.name : null;
         c.radarTurn = radar.radarTurn(s.me, s.radarHeading, tracker, s.others, finisher, s.time);

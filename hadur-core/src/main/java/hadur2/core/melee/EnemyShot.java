@@ -11,15 +11,25 @@ public final class EnemyShot {
 
     public final String shooter;
     public final Point2D.Double source;
-    /** The tick the bullet left the gun: the tick before the scan that showed the drop. */
+    /**
+     * The tick the bullet left the gun: the tick before the scan that showed the drop when
+     * the scans were consecutive, else the middle of the ticks it could have fired in.
+     */
     public final long fireTime;
     public final double power;
+    /** How many ticks either side of {@link #fireTime} it could have fired; 0 when exact. */
+    public final long window;
 
     public EnemyShot(String shooter, Point2D.Double source, long fireTime, double power) {
+        this(shooter, source, fireTime, power, 0);
+    }
+
+    public EnemyShot(String shooter, Point2D.Double source, long fireTime, double power, long window) {
         this.shooter = shooter;
         this.source = source;
         this.fireTime = fireTime;
         this.power = power;
+        this.window = window;
     }
 
     public double speed() {
