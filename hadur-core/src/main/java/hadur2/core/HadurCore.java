@@ -76,6 +76,7 @@ public final class HadurCore {
     private double lastEnemyDistance;
     private Opening opening = Opening.STRANGER;
     private SeedLoader seedLoader;
+    private int seedsReplayed;
     /** RES-4: null until a profile is opened. */
     private SeedTrust gunSeedTrust;
     private SeedTrust surfSeedTrust;
@@ -205,7 +206,7 @@ public final class HadurCore {
         }
 
         if (seedLoader != null && !melee) {
-            seedLoader.step();
+            seedsReplayed += seedLoader.step();
             if (seedLoader.done()) seedLoader = null;
         }
 
@@ -348,6 +349,11 @@ public final class HadurCore {
     /** Whether seeds are still being replayed into the views. */
     public boolean seedsLoading() {
         return seedLoader != null;
+    }
+
+    /** Seed samples replayed into the views so far this battle (ADAPT-3). */
+    public int seedsReplayed() {
+        return seedsReplayed;
     }
 
     private static String clean(String s) {
@@ -590,7 +596,6 @@ public final class HadurCore {
         seedLoader = new SeedLoader(opening.gunSeed(), opening.surfSeed(),
             sample -> gunController.seed(name, sample, gunWeight),
             sample -> moveController.seed(sample, surfWeight));
-        seedLoader.step();
     }
 
     /**

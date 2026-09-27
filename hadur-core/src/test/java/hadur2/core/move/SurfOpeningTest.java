@@ -5,8 +5,10 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import hadur2.core.model.SeedWeight;
+import hadur2.core.model.Wave;
 import hadur2.core.physics.BattleField;
 import hadur2.core.physics.MovementPredictor;
+import java.awt.geom.Point2D;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -86,5 +88,31 @@ class SurfOpeningTest {
         for (String name : List.of("simple", "normal", "recent3", "recent6")) assertEquals(7, m.viewSize(name), name);
         assertEquals(1, m.viewSize("recent1"), "recent1 holds one sample");
         for (String name : FLATTENERS) assertEquals(0, m.viewSize(name), name);
+    }
+
+    @Test
+    @Tag("RES-4")
+    @DisplayName("once the surf seed has faded to nothing, danger falls back to the stranger's, never NaN")
+    void fadedSurfSeedFallsBack() {
+        BattleField field = new BattleField(800, 600);
+        MovementPredictor predictor = new MovementPredictor(field);
+        Point2D.Double enemy = new Point2D.Double(400, 450);
+        Point2D.Double me = new Point2D.Double(400, 100);
+        Wave w = new Wave("abc.Shadow 3.83c", enemy, me, 0, 30, 1.95, 3 * Math.PI / 2, 8, 1, field, predictor);
+        w.setAccel(0).setDistance(me.distance(enemy)).setVchangeTime(10).setTargetEnergy(100)
+            .setSourceEnergy(100).setGunHeat(0).setEnemiesAlive(1).setLastBulletFiredTime(0);
+        w.setWallDistances();
+        Wave.Intersection at = new Wave.Intersection(w.absBearing + 0.1, 0.1);
+
+        MoveController seeded = controller();
+        double[] s = new double[MoveController.SAMPLE_WIDTH];
+        s[12] = 0.3;
+        SeedWeight weight = new SeedWeight(0.5);
+        for (int i = 0; i < 7; i++) seeded.seed(s, weight);
+        assertTrue(Double.isFinite(seeded.getDangerScore(w, at, 0)));
+        weight.set(0);
+        double faded = seeded.getDangerScore(w, at, 0);
+        assertTrue(Double.isFinite(faded), "danger " + faded);
+        assertEquals(controller().getDangerScore(w, at, 0), faded, 1e-12);
     }
 }

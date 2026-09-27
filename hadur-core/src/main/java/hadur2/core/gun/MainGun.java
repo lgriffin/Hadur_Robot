@@ -35,9 +35,13 @@ public class MainGun {
         boolean[] valid = new boolean[numScans];
         // ADAPT-3: a seeded neighbour counts for its seed's weight, a live one for 1.
         double[] weights = new double[numScans];
+        boolean seeded = false;
 
         for (int i = 0; i < numScans; i++) {
             weights[i] = neighbors.get(i).value.weight();
+            seeded |= weights[i] != 1.0;
+            // RES-4: a faded seed is no longer a candidate angle.
+            if (!(weights[i] > 0)) continue;
             Point2D.Double dispVector = neighbors.get(i).value.displacementVector;
             Point2D.Double projected = w.projectLocationBlind(
                 myNextLocation, dispVector, currentTime);
@@ -55,7 +59,10 @@ public class MainGun {
         for (int x = 0; x < numScans; x++) {
             if (!valid[x]) continue;
             double xAngle = firingAngles[x];
-            double density = 0;
+            // With seeds in play a candidate also counts its own weight, so a half-weight seed
+            // never outranks the live sample it agrees with. All-live views skip this, and
+            // score exactly as 1.20 did.
+            double density = seeded ? weights[x] : 0;
             for (int y = 0; y < numScans; y++) {
                 if (x != y && valid[y]) {
                     double ux = Angles.normalRelativeAngle(

@@ -34,7 +34,7 @@ public class AntiSurferGun {
 
         for (String viewName : VIEW_NAMES) {
             KnnView<TimestampedFiringAngle> view = views.get(viewName);
-            if (view == null || view.size() < view.kDivisor) continue;
+            if (view == null || view.effectiveSize() < view.kDivisor) continue;
 
             List<KdTree.Entry<TimestampedFiringAngle>> thisNeighbors =
                 view.nearestNeighbors(w, true);

@@ -38,6 +38,7 @@ Feature: Recognise and adapt
     And the stored profile holds 600 gun samples and 300 surf samples
     When Hadur first scans "abc.Shadow 3.83c"
     Then the seeds are still loading
+    And no more than 50 seed samples went in on that tick
     When 20 more ticks pass
     Then the seeds are loaded
     And both seeds weigh 0.5

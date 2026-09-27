@@ -58,6 +58,15 @@ class OpeningBookTest {
         assertFalse(o.flattenerFirst());
         assertTrue(Double.isNaN(o.surfPrior().value()), "no prior for the surf");
         assertSame(Opening.STRANGER, OpeningBook.read(null));
+
+        OpponentProfile thin = Profiles.sample("abc.Shadow 3.83c", 9, 0, 0);
+        for (int i = 0; i < 20; i++) {
+            thin.addGunSample(hadur2.core.memory.Seeds.gun(Profiles.gunSample(0.4, 2.5, -1)));
+            thin.addSurfSample(hadur2.core.memory.Seeds.surf(Profiles.surfSample(-0.3)));
+        }
+        Opening t = OpeningBook.read(thin);
+        assertTrue(t.gunSeed().isEmpty(), "its samples would skip the nine-wave head-on warm-up");
+        assertTrue(t.surfSeed().isEmpty());
     }
 
     @Test

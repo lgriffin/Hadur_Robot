@@ -164,7 +164,7 @@ public class MoveController {
             } else {
                 point = Arrays.copyOf(sample, view.formula.weights.length);
             }
-            view.logSeed(point, tsgf);
+            view.logSeed(point, tsgf, weight);
         }
     }
 
@@ -316,8 +316,9 @@ public class MoveController {
         double[] estimate = viewEstimate();
 
         for (KnnView<TimestampedGuessFactor> view : views) {
-            if (view.size() == 0 || !viewOn(view, estimate)) continue;
-            enabledSize += view.size();
+            // RES-4: a view holding only faded seeds is as good as empty.
+            if (view.effectiveSize() == 0 || !viewOn(view, estimate)) continue;
+            enabledSize += view.effectiveSize();
 
             List<KdTree.Entry<TimestampedGuessFactor>> neighbors =
                 getNearestNeighbors(view, w, surfWaveIndex);
@@ -340,7 +341,7 @@ public class MoveController {
             totalDanger += view.weight * density;
         }
 
-        if (enabledSize == 0) {
+        if (enabledSize == 0 || !(totalScanWeight > 0)) {
             return defaultDanger(w, intersection);
         }
         return totalDanger / totalScanWeight;

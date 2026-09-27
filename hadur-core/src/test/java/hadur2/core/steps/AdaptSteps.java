@@ -119,6 +119,11 @@ public class AdaptSteps {
         assertTrue(core.seedsLoading(), "900 samples do not all go in on the first scan's tick");
     }
 
+    @And("no more than {int} seed samples went in on that tick")
+    public void seedsOnFirstTick(int most) {
+        assertTrue(core.seedsReplayed() <= most, core.seedsReplayed() + " samples on one tick");
+    }
+
     @Then("the seeds are loaded")
     public void loaded() {
         assertFalse(core.seedsLoading());

@@ -20,7 +20,8 @@ import java.util.List;
  *     rate to the surf, which reads it in place of the live one while the profile's is the
  *     more certain, so the simple, normal and recent views start where the last battle
  *     left them rather than where a stranger starts.</li>
- * <li>ADAPT-3: the seeds start at {@link #SEED_WEIGHT}, half a live sample.</li>
+ * <li>ADAPT-3: the seeds start at {@link #SEED_WEIGHT}, half a live sample, and are replayed
+ *     only when the tier they back is known.</li>
  * <li>DIAL-1: a tier whose estimate is too uncertain is unknown (see {@link Tiers}), and
  *     an unknown tier selects the conservative setting, 1.20's.</li>
  * </ul>
@@ -51,10 +52,16 @@ public final class OpeningBook {
         }
         Estimate theirHitRate = Tiers.theirHitRate(profile);
         Estimate surfPrior = gunTier == Tiers.Gun.UNKNOWN ? Estimate.NONE : theirHitRate;
-        List<double[]> gunSeed = new ArrayList<>(profile.gunSeedSize());
-        for (short[] s : profile.gunSeed()) gunSeed.add(Seeds.gun(s));
-        List<double[]> surfSeed = new ArrayList<>(profile.surfSeedSize());
-        for (short[] s : profile.surfSeed()) surfSeed.add(Seeds.surf(s));
+        // A seed is replayed only when its evidence named a tier: a thin profile plays as a
+        // stranger, down to the nine-wave head-on warm-up its samples would otherwise fill.
+        List<double[]> gunSeed = new ArrayList<>();
+        if (moveTier != Tiers.Move.UNKNOWN) {
+            for (short[] s : profile.gunSeed()) gunSeed.add(Seeds.gun(s));
+        }
+        List<double[]> surfSeed = new ArrayList<>();
+        if (gunTier != Tiers.Gun.UNKNOWN) {
+            for (short[] s : profile.surfSeed()) surfSeed.add(Seeds.surf(s));
+        }
         return new Opening(gunTier, moveTier, gun, gunTier == Tiers.Gun.T3, surfPrior,
             theirHitRate, Tiers.mainGunRating(profile), SEED_WEIGHT, gunSeed, surfSeed);
     }

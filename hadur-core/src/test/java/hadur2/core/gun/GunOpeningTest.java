@@ -112,11 +112,76 @@ class GunOpeningTest {
         KnnView<TimestampedFiringAngle> view = new KnnView<TimestampedFiringAngle>(new GunFormula(1))
             .setK(100).setKDivisor(1);
         for (int i = 0; i < 6; i++) {
-            view.logSeed(point, new TimestampedFiringAngle(-1, i, 0, seeded, weight));
+            view.logSeed(point, new TimestampedFiringAngle(-1, i, 0, seeded, weight), weight);
         }
         for (int i = 0; i < 4; i++) {
-            view.logSeed(point, new TimestampedFiringAngle(0, i, 0, live));
+            view.logDataPoint(point, new TimestampedFiringAngle(0, i, 0, live));
         }
+        return new MainGun(FIELD).aim(w, view, ME, 30);
+    }
+
+    @Test
+    @Tag("RES-4")
+    @DisplayName("a seed never outranks the live sample it competes with, and a faded one is no candidate")
+    void seedNeverOutranksLive() {
+        Wave w = wave();
+        double[] point = new GunFormula(1).dataPointFromWave(w, true);
+        Point2D.Double seeded = new Point2D.Double(0, 3);
+        Point2D.Double live = new Point2D.Double(0, -3);
+        for (double weight : new double[] {0.5, 0.0}) {
+            SeedWeight sw = new SeedWeight(weight);
+            KnnView<TimestampedFiringAngle> view = new KnnView<TimestampedFiringAngle>(new GunFormula(1))
+                .setK(100).setKDivisor(1);
+            view.logSeed(point, new TimestampedFiringAngle(-1, 0, 0, seeded, sw), sw);
+            view.logDataPoint(point, new TimestampedFiringAngle(0, 0, 0, live));
+            double aim = new MainGun(FIELD).aim(w, view, ME, 30);
+            double liveAim = aimAt(w, point, live);
+            double seedAim = aimAt(w, point, seeded);
+            assertTrue(Math.abs(Angles.normalRelativeAngle(liveAim - seedAim)) > 0.05);
+            assertTrue(Math.abs(Angles.normalRelativeAngle(aim - seedAim))
+                    > Math.abs(Angles.normalRelativeAngle(aim - liveAim)),
+                "at seed weight " + weight + " the live sample's angle wins");
+        }
+    }
+
+    @Test
+    @Tag("RES-4")
+    @DisplayName("once the gun seed has faded to nothing, the gun warms up head-on again")
+    void fadedSeedsCountAsNoData() {
+        GunController g = new GunController(FIELD, 1);
+        Wave w = wave();
+        SeedWeight weight = new SeedWeight(0.5);
+        for (int i = 0; i < 100; i++) g.seed(w.botName, sample(w, 0.8, 0, 3), weight);
+        assertTrue(offsetFromHeadOn(g.aim(w, ME, 30)) > 0.01, "the seed aims while it has weight");
+        weight.set(0);
+        assertEquals(DiaUtils.absoluteBearing(ME, ENEMY), g.aim(w, ME, 30), 1e-12);
+    }
+
+    @Test
+    @Tag("RES-4")
+    @DisplayName("a view counts its faded seeds out of its effective size, evicted ones first")
+    void effectiveSize() {
+        KnnView<TimestampedFiringAngle> view = new KnnView<TimestampedFiringAngle>(new GunFormula(1))
+            .setK(100).setKDivisor(1).setMaxDataPoints(5);
+        double[] point = new GunFormula(1).dataPointFromWave(wave(), true);
+        SeedWeight sw = new SeedWeight(0.5);
+        Point2D.Double d = new Point2D.Double(0, 0);
+        for (int i = 0; i < 3; i++) view.logSeed(point, new TimestampedFiringAngle(-1, i, 0, d, sw), sw);
+        view.logDataPoint(point, new TimestampedFiringAngle(0, 0, 0, d));
+        assertEquals(4, view.effectiveSize());
+        sw.set(0);
+        assertEquals(1, view.effectiveSize());
+        for (int i = 1; i < 4; i++) view.logDataPoint(point, new TimestampedFiringAngle(0, i, 0, d));
+        assertEquals(5, view.size());
+        assertEquals(4, view.effectiveSize(), "two seeds were evicted, one faded seed is left");
+    }
+
+    /** Where the main gun aims with one live sample at {@code displacement}. */
+    static double aimAt(Wave w, double[] point, Point2D.Double displacement) {
+        KnnView<TimestampedFiringAngle> view = new KnnView<TimestampedFiringAngle>(new GunFormula(1))
+            .setK(100).setKDivisor(1);
+        view.logDataPoint(point, new TimestampedFiringAngle(0, 0, 0, displacement));
+        view.logDataPoint(point, new TimestampedFiringAngle(0, 1, 0, displacement));
         return new MainGun(FIELD).aim(w, view, ME, 30);
     }
 }

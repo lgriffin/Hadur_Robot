@@ -73,7 +73,7 @@ public class GunController {
         TimestampedFiringAngle tfa = new TimestampedFiringAngle(Timestamped.SEED_ROUND, seedsLoaded++,
             sample[10], new Point2D.Double(sample[11], sample[12]), weight);
         for (KnnView<TimestampedFiringAngle> view : getOrCreateViews(botName).values()) {
-            view.logSeed(Arrays.copyOf(sample, view.formula.weights.length), tfa);
+            view.logSeed(Arrays.copyOf(sample, view.formula.weights.length), tfa, weight);
         }
     }
 
@@ -110,7 +110,7 @@ public class GunController {
                 : mainGun.aim(w, mainView, myNextLocation, currentTime);
         }
 
-        if (mainView.size() < DATA_THRESHOLD) {
+        if (mainView.effectiveSize() < DATA_THRESHOLD) {
             return DiaUtils.absoluteBearing(myNextLocation, w.targetLocation);
         }
 
