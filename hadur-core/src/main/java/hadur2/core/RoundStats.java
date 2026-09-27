@@ -28,10 +28,6 @@ public final class RoundStats {
     public int bulletsIntercepted;
     /** Shots fired with an anti-shield aim offset (SHIELD-2). */
     public int jitteredShots;
-    /** Shield bullets fired at enemy bullets (SHIELD-3). */
-    public int shieldShots;
-    /** 1 if shield mode was still on when the round ended (SHIELD-5). */
-    public int shieldRound;
     /** Tick-budget computation level; 0 (full) until S6. */
     public int computationLevel;
 
@@ -46,16 +42,16 @@ public final class RoundStats {
     /**
      * The round-end record: {@code R,round,tick,result,ourEnergy,enemyEnergy,ourHitRate,
      * ourMargin,theirHitRate,theirMargin,phantomWaves,skippedTurns,faults,computationLevel,
-     * radarReacquired,hiddenShots,bulletsIntercepted,jitteredShots,shotsFired,shieldShots,shieldRound}. Fields are only ever appended, so older readers still work.
+     * radarReacquired,hiddenShots,bulletsIntercepted,jitteredShots,shotsFired}. Fields are only ever appended, so older readers still work.
      */
     public String toRecord(int round, long tick, String result, double ourEnergy,
                            double enemyEnergy) {
-        return String.format(Locale.ROOT, "R,%d,%d,%s,%.2f,%.2f,%.4f,%.4f,%.4f,%.4f,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d",
+        return String.format(Locale.ROOT, "R,%d,%d,%s,%.2f,%.2f,%.4f,%.4f,%.4f,%.4f,%d,%d,%d,%d,%d,%d,%d,%d,%d",
             round, tick, result, ourEnergy, enemyEnergy,
             ourHitRate(), margin(ourHitRate(), shotsFired),
             theirHitRate(), margin(theirHitRate(), enemyShotsDetected),
             phantomWaves, skippedTurns, faults, computationLevel, radarReacquired, hiddenShots,
-            bulletsIntercepted, jitteredShots, shotsFired, shieldShots, shieldRound);
+            bulletsIntercepted, jitteredShots, shotsFired);
     }
 
     private static double margin(double p, int n) {

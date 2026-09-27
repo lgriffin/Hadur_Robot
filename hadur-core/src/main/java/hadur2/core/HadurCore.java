@@ -11,7 +11,6 @@ import hadur2.core.physics.*;
 import hadur2.core.port.Telemetry;
 import hadur2.core.shield.AimJitter;
 import hadur2.core.shield.ShieldDetector;
-import hadur2.core.shield.ShieldMode;
 import java.awt.geom.Point2D;
 import java.util.Locale;
 
@@ -42,7 +41,6 @@ public final class HadurCore {
     private final MeleeController melee;
     private final ShieldDetector shieldDetector = new ShieldDetector();
     private final AimJitter aimJitter = new AimJitter();
-    private final ShieldMode shieldMode;
 
     private int round;
     private RoundStats stats = new RoundStats();
@@ -75,7 +73,6 @@ public final class HadurCore {
         this.ledger = new EnergyLedger(fieldWidth, fieldHeight);
         this.telemetry = telemetry;
         this.melee = new MeleeController(battleField);
-        this.shieldMode = new ShieldMode(enemiesTotal <= 1);
         telemetry.emit("V,1");
     }
 
@@ -86,7 +83,6 @@ public final class HadurCore {
         moveController.initRound();
         surfMover.initRound();
         gunWaveManager.initRound();
-        shieldMode.newRound();
         resetRoundState();
     }
 
@@ -149,7 +145,7 @@ public final class HadurCore {
             else if (e instanceof BotEvent.BulletHitBullet) onBulletHitBullet(in, (BotEvent.BulletHitBullet) e);
             else if (e instanceof BotEvent.BulletHit) onBulletHit((BotEvent.BulletHit) e);
             else if (e instanceof BotEvent.BulletMissed) onBulletMissed();
-            else if (e instanceof BotEvent.HitRobot) onHitRobot();
+            else if (e instanceof BotEvent.HitRobot) ledger.robotsCollided();
             else if (e instanceof BotEvent.RobotDeath) this.melee.onRobotDeath(((BotEvent.RobotDeath) e).name());
             else if (e instanceof BotEvent.SkippedTurn) onSkippedTurn(in);
         }
@@ -157,12 +153,9 @@ public final class HadurCore {
         if (melee) {
             meleeTick(in, orders);
         } else if (lastGunWave != null) {
-            // SHIELD-3..6: while shield mode is on, it drives the body and the gun.
-            boolean shielding = shieldMode.active();
-            if (shielding) shieldTick(in, orders);
-            else aimAndFire(in, orders);
+            aimAndFire(in, orders);
             moveController.checkWaves(in.time(), in.location());
-            if (!shielding) surfMover.move(orders, currentState(in), moveController, lastEnemyLocation, 2);
+            surfMover.move(orders, currentState(in), moveController, lastEnemyLocation, 2);
             if (in.time() - lastScanTime > 1) reacquire(in, orders);
         } else {
             orders.turnRadarRight(Double.POSITIVE_INFINITY);
@@ -215,9 +208,6 @@ public final class HadurCore {
      */
     public RoundStats roundEnded(long tick, String result, double myEnergy, int faults) {
         stats.faults = faults;
-        if (shieldMode.active()) stats.shieldRound = 1;
-        // SHIELD-5: a shield that loses a round is not working.
-        if ("loss".equals(result) && !inMelee) shieldMode.onRoundLost();
         telemetry.emit(stats.toRecord(round, tick, result, myEnergy, lastEnemyEnergy));
         return stats;
     }
@@ -246,43 +236,6 @@ public final class HadurCore {
             aimAngle += aimJitter.offset(myNext.distance(lastGunWave.targetLocation));
         }
         orders.turnGunRight(Angles.normalRelativeAngle(aimAngle - in.gunHeading()));
-    }
-
-    /** SHIELD-3..6: one duel tick in shield mode. */
-    private void shieldTick(BotInput in, BotOrders.Builder orders) {
-        Point2D.Double me = in.location();
-        double aimAngle;
-        if (lastGunWave.targetEnergy == 0 || ticksUntilGunCool(in.gunHeat(), in) > 3) {
-            aimAngle = DiaUtils.absoluteBearing(me, lastGunWave.targetLocation);
-        } else {
-            aimAngle = gunController.aim(lastGunWave, me, in.time());
-        }
-        if (shieldDetector.shielded()) {
-            aimAngle += aimJitter.offset(me.distance(lastGunWave.targetLocation));
-        }
-        boolean onTarget = Math.abs(Math.toDegrees(in.gunTurnRemaining())) < 0.05;
-        ShieldMode.Command c = shieldMode.tick(new ShieldMode.Situation(in.time(), me.x, me.y,
-            in.heading(), in.gunHeading(), in.gunHeat(), in.gunCoolingRate(), in.energy(),
-            lastEnemyLocation.x, lastEnemyLocation.y, lastEnemyEnergy, aimAngle,
-            lastGunWave.bulletPower(), onTarget));
-        orders.maxVelocity(Rules.MAX_VELOCITY);
-        orders.turnRight(c.bodyTurn);
-        orders.ahead(c.ahead);
-        orders.turnGunRight(c.gunTurn);
-        if (c.firePower > 0) {
-            orders.fire(c.firePower);
-            if (c.attack) {
-                lastGunWave.firingWave = true;
-                gunController.fireVirtualBullets(lastGunWave, me, in.time());
-                lastRealBulletFireTime = in.time();
-                stats.shotsFired++;
-                if (shieldDetector.shielded()) stats.jitteredShots++;
-                aimJitter.shotFired();
-            } else {
-                stats.shieldShots++;
-            }
-        }
-        aimedBulletPower = lastGunWave.bulletPower();
     }
 
     /** Fires if the gun is cool and on target; returns whether it fired. */
@@ -326,8 +279,6 @@ public final class HadurCore {
         lastEnemyAbsBearing = absBearing;
         lastEnemyLocation = enemyPos;
         lastEnemyEnergy = e.energy();
-        shieldMode.onScan(time, myPos.x, myPos.y, in.heading(), in.velocity(), enemyPos.x,
-            enemyPos.y, e.heading(), e.velocity());
         if (!announced) {
             // Opponent memory arrives in S3; for now B records the name only.
             telemetry.emit("B," + round + "," + time + ",-," + e.name() + "," + e.name()
@@ -416,7 +367,6 @@ public final class HadurCore {
             long fireTime = moveController.updateFiringWave(previousScanTime, time,
                 reading.corrected());
             stats.enemyShotsDetected++;
-            shieldMode.onEnemyShot(fireTime, reading.corrected());
             telemetry.emit(String.format(Locale.ROOT,
                 "EW,%d,%d,%d,%d,%.4f,%.4f,%.4f,%.1f", round, time, fireTime, fireTime,
                 reading.raw(), reading.corrected(), reading.corrected(), e.distance()));
@@ -438,7 +388,6 @@ public final class HadurCore {
     private void onHitByBullet(BotInput in, BotEvent.HitByBullet e) {
         stats.hitsTaken++;
         ledger.enemyBulletHitUs(e.power());
-        if (!inMelee) shieldMode.onHitByBullet(in.time(), e.power(), e.x(), e.y(), e.heading());
         melee.onHitByBullet(e.name(), e.power(), e.heading(), in.location(), in.time());
         Point2D.Double bulletLoc = new Point2D.Double(e.x(), e.y());
         Wave hitWave = moveController.findBulletWave(bulletLoc, in.time(), e.name(), e.power());
@@ -455,20 +404,12 @@ public final class HadurCore {
     private void onBulletHitBullet(BotInput in, BotEvent.BulletHitBullet e) {
         stats.bulletsIntercepted++;
         // SHIELD-1: in a duel, a bullet that meets ours may be a shield.
-        if (!inMelee) {
-            shieldDetector.bulletIntercepted();
-            shieldMode.onIntercepted(in.time(), e.enemyPower(), e.x(), e.y());
-        }
+        if (!inMelee) shieldDetector.bulletIntercepted();
         Point2D.Double hitLoc = new Point2D.Double(e.x(), e.y());
         Wave hitWave = moveController.findBulletWave(hitLoc, in.time(), null, e.enemyPower());
         if (hitWave != null) {
             hitWave.bulletHitBullet = true;
         }
-    }
-
-    private void onHitRobot() {
-        ledger.robotsCollided();
-        if (!inMelee) shieldMode.onRammed();
     }
 
     private void onSkippedTurn(BotInput in) {
