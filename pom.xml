@@ -124,6 +124,29 @@
                     <artifactId>jacoco-maven-plugin</artifactId>
                     <version>${jacoco.version}</version>
                 </plugin>
+                <!-- Javadoc is part of the build: `mvn verify` runs doclint over the core and the
+                     adapter, so a broken {@link}, a wrong @param or bad HTML fails like a test.
+                     Missing comments are not errors. The melee and posture packages are left out
+                     of the check while the melee extension (M4-M6) is still changing them; drop
+                     the two exclusions once it has merged. The docs site (site/build.sh) runs
+                     javadoc:aggregate with the same settings. -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>3.11.2</version>
+                    <configuration>
+                        <doctitle>Hadur 2 ${project.version} API</doctitle>
+                        <windowtitle>Hadur 2 API</windowtitle>
+                        <show>package</show>
+                        <detectJavaApiLink>false</detectJavaApiLink>
+                        <doclint>all,-missing</doclint>
+                        <additionalOptions>
+                            <additionalOption>-Xdoclint/package:-hadur2.core.melee,-hadur2.core.posture</additionalOption>
+                        </additionalOptions>
+                        <failOnWarnings>false</failOnWarnings>
+                        <quiet>true</quiet>
+                    </configuration>
+                </plugin>
             </plugins>
         </pluginManagement>
     </build>

@@ -34,18 +34,24 @@ public final class OpeningBook {
     /** ADAPT-3: a seeded sample's weight at the start of a battle; a live one weighs 1. */
     public static final double SEED_WEIGHT = 0.5;
 
-    /** S5: a stranger's starting distance, 1.20's fixed one. */
+    /** S5: a stranger's starting distance in px, 1.20's fixed one; also the top of DIST-1's [400, 650] range. */
     public static final double STRANGER_DISTANCE = 650;
     /**
      * S5: the starting distance for gun tiers T0 to T3. The artifact's bands started T0 at
      * 150-250 px, but the bench showed head-on guns hit Hadur often inside 400 px, so every
-     * tier starts at or beyond the distance controller's 400 px floor.
+     * tier starts at or beyond the distance controller's 400 px floor (DIST-1). Values in px.
      */
     private static final double[] TIER_DISTANCE = {400, 450, 500, 550};
 
     private OpeningBook() {}
 
-    /** S5: the distance to start at against a gun of {@code tier}. */
+    /**
+     * S5: the distance to start at against a gun of {@code tier}: closer the weaker their
+     * gun, and 1.20's 650 px when the tier is unknown.
+     *
+     * @param tier the gun tier
+     * @return the starting distance in px
+     */
     static double distance(Tiers.Gun tier) {
         switch (tier) {
             case T0: return TIER_DISTANCE[0];
@@ -56,10 +62,20 @@ public final class OpeningBook {
         }
     }
 
+    /**
+     * The opening for {@code profile}. Called once per battle, at the first scan.
+     *
+     * @param profile the loaded profile, or null without memory
+     * @return the decisions; {@link Opening#STRANGER} for a null profile
+     */
     public static Opening read(OpponentProfile profile) {
         if (profile == null) return Opening.STRANGER;
+        // Both tiers are UNKNOWN unless their estimates' margins are at most 3 points
+        // (DIAL-1), and an unknown tier maps to the stranger's setting at each step below.
         Tiers.Gun gunTier = Tiers.gun(profile);
         Tiers.Move moveTier = Tiers.move(profile);
+        // ADAPT-1: M2 and M3 are surfers, which the anti-surfer gun is built for; M0 and
+        // M1 get the main gun; an unknown tier leaves the choice to live ratings.
         Opening.Gun gun;
         switch (moveTier) {
             case M2:
@@ -74,9 +90,13 @@ public final class OpeningBook {
                 gun = Opening.Gun.LIVE;
         }
         Estimate theirHitRate = Tiers.theirHitRate(profile);
+        // Any known gun tier lets the surf's view thresholds read the profile's hit rate
+        // while it is the more certain estimate (the S4 reading of ADAPT-2).
         Estimate surfPrior = gunTier == Tiers.Gun.UNKNOWN ? Estimate.NONE : theirHitRate;
         // A seed is replayed only when its evidence named a tier: a thin profile plays as a
         // stranger, down to the nine-wave head-on warm-up its samples would otherwise fill.
+        // The gun seed backs the movement tier (it records how they moved under our
+        // bullets), the surf seed the gun tier (where their bullets hit us).
         List<double[]> gunSeed = new ArrayList<>();
         if (moveTier != Tiers.Move.UNKNOWN) {
             for (short[] s : profile.gunSeed()) gunSeed.add(Seeds.gun(s));
@@ -85,6 +105,7 @@ public final class OpeningBook {
         if (gunTier != Tiers.Gun.UNKNOWN) {
             for (short[] s : profile.surfSeed()) surfSeed.add(Seeds.surf(s));
         }
+        // ADAPT-2: T3 turns the flattener views on from the first surfable wave.
         return new Opening(gunTier, moveTier, gun, gunTier == Tiers.Gun.T3, surfPrior,
             theirHitRate, Tiers.mainGunRating(profile), SEED_WEIGHT, gunSeed, surfSeed,
             distance(gunTier));

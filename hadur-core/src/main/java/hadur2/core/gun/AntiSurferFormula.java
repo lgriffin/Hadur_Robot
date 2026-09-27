@@ -7,12 +7,22 @@ import hadur2.core.gun.*;
 import hadur2.core.move.*;
 
 
+/**
+ * The anti-surfer views' feature space: the first nine features of {@link GunFormula},
+ * computed the same way, without the melee crowd feature. The weights match the main
+ * gun's except virtuality, which counts half as much (1 against 2).
+ *
+ * <p>A gun seed sample's first nine values are this point, which is why
+ * {@link GunController#seed} can hand the same sample to every gun view.</p>
+ */
 public class AntiSurferFormula extends DistanceFormula {
 
+    /** The anti-surfer formula, with its nine weights. */
     public AntiSurferFormula() {
         this.weights = new double[]{3, 4, 3, 2, 2, 4, 2, 3, 1};
     }
 
+    /** {@inheritDoc} See {@link GunFormula} for what each value means. */
     @Override
     public double[] dataPointFromWave(Wave w, boolean aiming) {
         return new double[]{

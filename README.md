@@ -117,6 +117,20 @@ battles, Cucumber scenarios per EARS group, and a traceability test that fails t
 if any requirement has no test. [docs/testing.md](docs/testing.md) describes each layer,
 how to run them, and how to re-record the replay fixtures.
 
+## Documentation
+
+Every class in the core and the adapter carries Javadoc that explains how it works, why,
+and which EARS requirements it implements, with the IDs cited next to the code that
+meets them. `mvn verify` runs doclint over it (a broken link or a wrong `@param` fails the
+build; the melee and posture packages join the check once the melee extension lands).
+
+`site/build.sh` builds the docs site into `target/site-pages`: the Javadoc, a requirement
+map that lists for every EARS ID the classes that cite it and the tests tagged with it,
+and the design docs. `site/build.sh --publish` pushes it to the `gh-pages` branch, which
+GitHub Pages serves at https://lgriffin.github.io/Hadur_Robot/ once Pages is set to deploy
+from that branch. The `pages` workflow republishes on every push to master while Actions
+runs.
+
 ## Bench
 
 ```sh

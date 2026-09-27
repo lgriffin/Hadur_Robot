@@ -19,11 +19,23 @@ import robocode.RoundEndedEvent;
  * of the competition jar.
  *
  * <p>The transcript goes to the file named by the {@code hadur.record} system property.</p>
+ *
+ * <p>The transcript is the format {@link Replay#run} reads: an {@code F} line when the
+ * battle starts, an {@code N} line at each round's start, then for every turn the
+ * {@code I} line of the input the core was given and the {@code O} line of the orders it
+ * returned, both from {@link LineCodec}. Replaying it through a fresh core must give the
+ * same orders tick for tick (CORE-2).</p>
+ *
+ * <p>This class writes a file outside the data directory with plain {@code java.nio},
+ * which Robocode's sandbox would forbid, hence security off. Any I/O failure is thrown
+ * as {@code UncheckedIOException}.</p>
  */
 public class HadurRecorder extends Hadur {
 
+    /** The transcript for the whole battle; static, like the core, so it spans the rounds. */
     private static BufferedWriter writer;
 
+    /** Opens the transcript and writes its {@code F} line: {@code F,width,height,enemies}. */
     @Override
     protected void battleStarted(double width, double height, int enemies) {
         try {
@@ -35,11 +47,13 @@ public class HadurRecorder extends Hadur {
         write("F," + width + "," + height + "," + enemies);
     }
 
+    /** Writes {@code N,round}. */
     @Override
     protected void roundStarted(int round) {
         write("N," + round);
     }
 
+    /** Writes the tick's {@code I} and {@code O} lines and flushes them. */
     @Override
     protected void ticked(BotInput in, BotOrders orders) {
         write(LineCodec.encode(in));
@@ -49,18 +63,21 @@ public class HadurRecorder extends Hadur {
         flush();
     }
 
+    /** The robot's own round-end handling, then a flush. */
     @Override
     public void onRoundEnded(RoundEndedEvent e) {
         super.onRoundEnded(e);
         flush();
     }
 
+    /** The robot's own battle-end handling, then a flush. */
     @Override
     public void onBattleEnded(BattleEndedEvent e) {
         super.onBattleEnded(e);
         flush();
     }
 
+    /** Appends one line and a line separator. */
     private static void write(String line) {
         try {
             writer.write(line);
@@ -70,6 +87,7 @@ public class HadurRecorder extends Hadur {
         }
     }
 
+    /** Pushes buffered lines to the file. */
     private static void flush() {
         try {
             writer.flush();

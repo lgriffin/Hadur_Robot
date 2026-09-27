@@ -19,6 +19,15 @@ import java.util.zip.CRC32;
  * or throws {@link ProfileFormatException}; no input, however damaged, makes it throw
  * anything else (MEM-4). A file from an unknown version is rejected like a damaged one,
  * so the opponent is treated as a stranger rather than misread.</p>
+ *
+ * <p>The checksum is what makes RES-3's write order safe: a file cut short at any byte
+ * either fails the length check or the CRC, so {@link ProfileLibrary} can always tell a
+ * complete copy from a torn one. Every count read back is also checked to be finite and
+ * not negative, and every list length against its cap, so even a file with a valid CRC but
+ * nonsense values cannot put a NaN or an unbounded list
+ * into the core (RES-2).</p>
+ *
+ * <p>Encoding is deterministic: the same profile always gives the same bytes.</p>
  */
 public final class ProfileCodec {
 
@@ -28,16 +37,39 @@ public final class ProfileCodec {
      * its seeds, which had no defined layout (S3 never filled them): stats kept, seeds dropped.
      */
     public static final int VERSION = 2;
+    /** The oldest version {@link #decode} still accepts. */
     static final int OLDEST_VERSION = 1;
+    /** The first magic byte, {@code 'H'} (Hadur). */
     static final int MAGIC_0 = 'H';
+    /** The second magic byte, {@code 'P'} (profile). */
     static final int MAGIC_1 = 'P';
+    /** Header bytes: two of magic, one of version, four of payload length. */
     static final int HEADER = 7;
+    /** Trailer bytes: the CRC-32. */
     static final int TRAILER = 4;
     /** No real profile comes near this; a bigger length field is damage. */
     static final int MAX_PAYLOAD = 64 * 1024;
 
     private ProfileCodec() {}
 
+    /**
+     * Encodes a profile in the current {@link #VERSION}. The payload holds, in order:
+     *
+     * <ol>
+     * <li>key and last name (u8 length, then UTF-16 units); battles and rounds (i32);
+     *     lastFought (i64);</li>
+     * <li>the outcomes: a u8 count, then rounds and wins (u16) and our and their damage
+     *     (f32) for each;</li>
+     * <li>the count groups, each a u8 length and f32 values: shots at us, hits on us, shots
+     *     and hits by motion, the power histogram, virtual waves and hits, our shots and
+     *     hits, motion, and (version 2) the normalised waves and hits;</li>
+     * <li>the gun seed, then the surf seed: a u16 count, a u8 width (13), then the samples'
+     *     shorts.</li>
+     * </ol>
+     *
+     * @param p the profile
+     * @return the file's bytes, header, payload and CRC included
+     */
     public static byte[] encode(OpponentProfile p) {
         Bytes.Writer payload = new Bytes.Writer();
         payload.str(p.key()).str(p.lastName())
@@ -54,6 +86,7 @@ public final class ProfileCodec {
         writeSeed(payload, p.gunSeed);
         writeSeed(payload, p.surfSeed);
 
+        // Frame the payload: header, payload, then a CRC over everything written so far.
         Bytes.Writer out = new Bytes.Writer();
         out.u8(MAGIC_0).u8(MAGIC_1).u8(VERSION).i32(payload.size());
         byte[] body = payload.toArray();
@@ -62,11 +95,22 @@ public final class ProfileCodec {
         return out.toArray();
     }
 
+    /** A seed as a u16 sample count, a u8 width, then every sample's shorts. */
     private static void writeSeed(Bytes.Writer w, java.util.List<short[]> seed) {
         w.u16(seed.size()).u8(OpponentProfile.SAMPLE_WIDTH);
         for (short[] s : seed) w.shorts(s);
     }
 
+    /**
+     * Decodes a profile written by {@link #encode}, in this version or any since
+     * {@link #OLDEST_VERSION}.
+     *
+     * @param bytes the file's content; may be null
+     * @return a profile whose every count is finite and not negative and whose lists are
+     *     within their caps
+     * @throws ProfileFormatException for any input that is not such a profile; no other
+     *     exception escapes (MEM-4)
+     */
     public static OpponentProfile decode(byte[] bytes) {
         try {
             return decodeChecked(bytes);
@@ -78,7 +122,10 @@ public final class ProfileCodec {
         }
     }
 
+    /** {@link #decode}'s work, which may throw anything; the wrapper narrows it. */
     private static OpponentProfile decodeChecked(byte[] bytes) {
+        // Frame checks come first, cheapest first: size, magic, version, length, checksum.
+        // Only a frame whose CRC holds has its payload parsed.
         if (bytes == null || bytes.length < HEADER + TRAILER) {
             throw new ProfileFormatException("too short: " + (bytes == null ? 0 : bytes.length) + " bytes");
         }
@@ -87,12 +134,17 @@ public final class ProfileCodec {
         int version = h.u8();
         if (version < OLDEST_VERSION || version > VERSION) throw new ProfileFormatException("unknown version " + version);
         int length = h.i32();
+        // The length must account for the file exactly: a torn write is shorter, and a
+        // stray byte after the trailer is damage too. MAX_PAYLOAD also stops a corrupt
+        // length from sizing anything large.
         if (length < 0 || length > MAX_PAYLOAD || HEADER + length + TRAILER != bytes.length) {
             throw new ProfileFormatException("length " + length + " does not fit " + bytes.length + " bytes");
         }
+        // The CRC covers the header and payload, i.e. every byte before the trailer.
         int stored = new Bytes.Reader(bytes, HEADER + length, bytes.length).i32();
         if (stored != crc(bytes, HEADER + length)) throw new ProfileFormatException("checksum mismatch");
 
+        // The payload, field by field in encode()'s order, each value range-checked.
         Bytes.Reader r = new Bytes.Reader(bytes, HEADER, HEADER + length);
         String key = r.str();
         if (key.isEmpty()) throw new ProfileFormatException("empty key");
@@ -121,16 +173,21 @@ public final class ProfileCodec {
         r.floats(p.ourShots, "our shots");
         r.floats(p.ourHits, "our hits");
         r.floats(p.motion, "motion");
+        // Version 1 had no normalised group; its counts stay at zero.
         if (version >= 2) {
             r.floats(p.normalised, "normalised hits");
         }
         readSeed(r, p.gunSeed, OpponentProfile.MAX_GUN_SEED, "gun seed");
         readSeed(r, p.surfSeed, OpponentProfile.MAX_SURF_SEED, "surf seed");
+        // Every payload byte must be accounted for.
         if (r.remaining() != 0) throw new ProfileFormatException(r.remaining() + " stray bytes");
+        // Version 1 seeds had no defined layout, so they are read (to keep the parse
+        // honest) and then discarded.
         if (version == 1) p.dropSeeds();
         return p;
     }
 
+    /** Reads a seed written by {@link #writeSeed}; its count must be within {@code max} and its width 13. */
     private static void readSeed(Bytes.Reader r, java.util.List<short[]> into, int max, String what) {
         int n = r.u16();
         int width = r.u8();
@@ -140,11 +197,16 @@ public final class ProfileCodec {
         for (int i = 0; i < n; i++) into.add(r.shorts(width));
     }
 
+    /** Returns {@code v}, or throws if it is negative (a count read as a signed i32). */
     private static int nonNegative(int v, String what) {
         if (v < 0) throw new ProfileFormatException(what + " " + v);
         return v;
     }
 
+    /**
+     * The CRC-32 (the zip polynomial, {@code java.util.zip.CRC32}) of the first
+     * {@code length} bytes, as a signed int. Also used for the battle clock file.
+     */
     static int crc(byte[] bytes, int length) {
         CRC32 crc = new CRC32();
         crc.update(bytes, 0, length);

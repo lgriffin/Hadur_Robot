@@ -24,6 +24,13 @@ import hadur2.core.memory.Estimate;
  * <li>END-1: while finishing, the target is {@link #FINISH} whatever the controller holds;
  *     the controller's own target is kept for when the endgame ends.</li>
  * </ul>
+ *
+ * <p>Where it sits in the tick: {@code HadurCore} makes one per opponent from the opening
+ * book's distance, calls {@link #onWave} once for each enemy wave that broke this tick, with
+ * the two {@link HitWindow} estimates, and hands {@link #target(boolean)} to the surf as its
+ * desired distance. MOVE-2's last flavour moves the band out through {@link #shiftOut}. The
+ * target is a centre-to-centre distance in px and always lies in [{@link #FLOOR},
+ * {@link #CEILING}], apart from END-1's {@link #FINISH}.</p>
  */
 public final class DistancePolicy {
 
@@ -37,25 +44,50 @@ public final class DistancePolicy {
     public static final double FLOOR = 400;
     /** 1.20's fixed distance, and the furthest the controller goes. */
     public static final double CEILING = 650;
+    /** DIST-1: how far one wave moves the target, in px, in or out. */
     public static final double STEP = 25;
     /** The hit-rate gap, as a rate, that moves the target. */
     public static final double GAP = 0.05;
     /** END-1's target: at 150 px a 36 px robot spans 14 degrees and any gun hits. */
     public static final double FINISH = 150;
 
-    /** How a wave moved the target. */
+    /**
+     * How a wave moved the target: {@code IN} a step on a certain lead of ours, {@code OUT}
+     * a step on their lead, or {@code HOLD} with no clear lead either way, no rates yet, or
+     * the target already at the bound it would move toward.
+     */
     public enum Step { IN, OUT, HOLD }
 
+    /** Where this controller started, in px: the opening book's distance for this opponent. */
     private final double opening;
+    /** The controller's own target, in px, in [FLOOR, CEILING]. */
     private double target;
 
+    /**
+     * A controller starting at the opening's distance.
+     *
+     * @param opening the starting target, in px: {@link #CEILING} for a stranger, 400 to 550
+     *     for a known gun tier (T0 to T3)
+     * @throws IllegalArgumentException if {@code opening} is outside [{@link #FLOOR},
+     *     {@link #CEILING}] or NaN
+     */
     public DistancePolicy(double opening) {
         if (!(opening >= FLOOR && opening <= CEILING)) throw new IllegalArgumentException("opening " + opening);
         this.opening = opening;
         this.target = opening;
     }
 
-    /** DIST-1: one enemy wave's step, from both rolling hit rates. */
+    /**
+     * DIST-1: one enemy wave's step, from both rolling hit rates.
+     *
+     * <p>The 5-point test reads the raw rates, and the step in also needs
+     * {@link #certainLead} (DIAL-1). The step out needs only the raw gap, since further is
+     * the conservative side. An empty window (NaN rate) holds the target.</p>
+     *
+     * @param ours our rolling hit rate on them
+     * @param theirs their rolling hit rate on us
+     * @return which way the target moved
+     */
     public Step onWave(Estimate ours, Estimate theirs) {
         if (Double.isNaN(ours.value()) || Double.isNaN(theirs.value())) return Step.HOLD;
         double gap = ours.value() - theirs.value();
@@ -70,27 +102,50 @@ public final class DistancePolicy {
         return Step.HOLD;
     }
 
-    /** DIAL-1: whether our rate leads theirs by at least {@link #GAP} beyond the 95% margin of the difference. */
+    /**
+     * DIAL-1: whether our rate leads theirs by at least {@link #GAP} beyond the 95% margin of the difference.
+     *
+     * <p>For two independent estimates the margin of their difference is the root of the
+     * sum of their squared margins ({@code Math.hypot}). The gap is taken between the
+     * Agresti-Coull centres ({@link Estimate#center()}), which the margins are measured from,
+     * so a window of 0 hits in 3 shots does not read as a certain 0%.</p>
+     *
+     * @param ours our rolling hit rate on them
+     * @param theirs their rolling hit rate on us
+     * @return whether the lead is at least {@link #GAP} with 95% confidence
+     */
     public static boolean certainLead(Estimate ours, Estimate theirs) {
         return ours.center() - theirs.center() - Math.hypot(ours.margin(), theirs.margin()) >= GAP;
     }
 
-    /** MOVE-2: moves the band out by {@code px}, not past {@link #CEILING}; returns the new target. */
+    /**
+     * MOVE-2: moves the band out by {@code px}, not past {@link #CEILING}; returns the new target.
+     * DIST-1 keeps stepping from the new target on later waves.
+     *
+     * @param px how far to move the target out, in px
+     * @return the controller's new target, in px
+     */
     public double shiftOut(double px) {
         target = Math.min(CEILING, target + px);
         return target;
     }
 
-    /** The target to steer to: {@link #FINISH} while finishing (END-1), else the controller's. */
+    /**
+     * The target to steer to: {@link #FINISH} while finishing (END-1), else the controller's.
+     *
+     * @param finishing whether the endgame is in its END-1 finishing state
+     * @return the distance to keep from the enemy, in px
+     */
     public double target(boolean finishing) {
         return finishing ? FINISH : target;
     }
 
-    /** The controller's own target, the endgame aside. */
+    /** The controller's own target, the endgame aside, in px. */
     public double controllerTarget() {
         return target;
     }
 
+    /** The distance this controller started at, in px (the opening book's for this opponent). */
     public double opening() {
         return opening;
     }
