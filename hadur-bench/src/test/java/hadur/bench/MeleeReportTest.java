@@ -35,7 +35,7 @@ class MeleeReportTest {
             "0,5,R,0,5,win",
             "0,900,M,0,900,880,20,0,-,0,7,0,0",
             "1,800,M,1,800,700,0,100,sentry,0,6,0,1",
-            "2,300,M,2,300,300,0,0,-,0,9,0,0", ""));
+            "2,300,M,2,300,300,0,0,-,0,9,0,0,9,1", ""));
         return MeleeReport.read(1, dir);
     }
 
@@ -62,6 +62,10 @@ class MeleeReportTest {
         assertTrue(r.contains("1880 melee ticks, 20 duel ticks, 100 focused-duel ticks; 1 rounds vetoed"), r);
         assertTrue(r.contains("longest scan gap 9 ticks"), r);
         assertTrue(r.contains("Skipped turns: 2."), r);
+        // Only the last record carries the M2 sensing fields.
+        assertTrue(r.contains("Sensing (1 rounds): longest scan gap while four or more were alive 9 ticks "
+            + "(1 rounds over 8); rounds whose longest gap at any count was over 8: 1; robots dropped "
+            + "as dead without a death event: 1."), r);
     }
 
     @Test

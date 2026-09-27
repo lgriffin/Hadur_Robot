@@ -259,6 +259,8 @@ public final class MeleeReport {
     private static void appendRecords(StringBuilder r, List<Battle> battles) {
         long melee = 0, duel = 0, focus = 0, faults = 0, ghosts = 0, sentryShots = 0;
         int vetoes = 0, maxGap = 0, n = 0;
+        int sensed = 0, sweepGap = 0, sweepOver = 0, gapOver = 0;
+        long dropped = 0;
         for (Battle b : battles) {
             for (String[] m : b.records) {
                 if (m.length < 11) continue;
@@ -271,6 +273,14 @@ public final class MeleeReport {
                 maxGap = Math.max(maxGap, Integer.parseInt(m[8]));
                 ghosts += Long.parseLong(m[9]);
                 sentryShots += Long.parseLong(m[10]);
+                if (m.length >= 13) {
+                    sensed++;
+                    int sweep = Integer.parseInt(m[11]);
+                    sweepGap = Math.max(sweepGap, sweep);
+                    if (sweep > SWEEP_GATE) sweepOver++;
+                    if (Integer.parseInt(m[8]) > SWEEP_GATE) gapOver++;
+                    dropped += Long.parseLong(m[12]);
+                }
             }
         }
         if (n == 0) return;
@@ -278,5 +288,14 @@ public final class MeleeReport {
             + "%d duel ticks, %d focused-duel ticks; %d rounds vetoed; %d melee faults; "
             + "longest scan gap %d ticks; %d ticks aimed at a dead robot; %d shots at a sentry.%n",
             n, melee, duel, focus, vetoes, faults, maxGap, ghosts, sentryShots));
+        if (sensed > 0) {
+            r.append(String.format(Locale.ROOT, "%nSensing (%d rounds): longest scan gap while four or more "
+                + "were alive %d ticks (%d rounds over %d); rounds whose longest gap at any count was over "
+                + "%d: %d; robots dropped as dead without a death event: %d.%n",
+                sensed, sweepGap, sweepOver, SWEEP_GATE, SWEEP_GATE, gapOver, dropped));
+        }
     }
+
+    /** M2's exit: no opponent goes unscanned for more than a full sweep. */
+    static final int SWEEP_GATE = 8;
 }

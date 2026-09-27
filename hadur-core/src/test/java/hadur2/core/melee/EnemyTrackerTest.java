@@ -11,7 +11,7 @@ class EnemyTrackerTest {
     private final EnemyTracker tracker = new EnemyTracker();
 
     @Test
-    @Tag("MELEE-3")
+    @Tag("MRADAR-2")
     void opponentGoesStaleAfterTwentyTicksWithoutAScan() {
         EnemyInfo e = scan(tracker, "a", 100, 100, 100, 10);
         assertFalse(e.isStale(29));
@@ -45,7 +45,7 @@ class EnemyTrackerTest {
     }
 
     @Test
-    @Tag("MELEE-3")
+    @Tag("MRADAR-2")
     void stalestIsTheOpponentScannedLongestAgo() {
         scan(tracker, "a", 100, 100, 100, 5);
         scan(tracker, "b", 200, 100, 100, 2);

@@ -110,7 +110,7 @@ data directory through `RobocodeFileOutputStream`.
 | `gun` | main KNN gun, anti-surfer gun, gun selection |
 | `move` | wave-surfing movement and its danger formulas; our bullets in flight and the shadows they cast (MOVE-1); go-to surfing |
 | `posture` | the melee extension's gate (GATE-1..5): `PostureGate` (melee or duel, failing closed), `DuelFocus` (the one opponent the duel fights while several are alive) and `SentryFence` (the sentry border as a wall for the duel's movement) |
-| `melee` | the melee brain (MELEE-2..8): opponent tracker, sweep radar, minimum-risk mover, target selector, circular gun, posture strategy, battle-long opponent stats |
+| `melee` | the melee brain (MELEE-2..8, MRADAR, MSENSE): battlefield model with shot detection, sweep radar, minimum-risk mover, target selector, circular gun, posture strategy, battle-long opponent stats |
 | `memory` | opponent memory (MEM-1..5, RES-3): lineage keys, the profile, its binary codec, the round folder and the library that loads, saves and evicts; estimates with margins of error, the tiers and the seed layout |
 | `adapt` | recognise and adapt (ADAPT-1..3, DIAL-1..2, RES-4): the opening book, the seed loader and the seed trust |
 | `policy` | aggressive (DIST-1, POW-1, POW-2, END-1, END-2): rolling hit-rate windows, the distance controller, the power policy, the endgame states and the enemy gun-heat estimate; unhittable (MOVE-2, TIME-1, TIME-2): the movement flavour and the tick budget |
@@ -162,7 +162,26 @@ come within 30 px of the border zone.
 A 1v1 battle never enters melee, and none of this routing runs in one: the duel's replay
 fixtures are unchanged. Each round of a battle with several opponents or sentries ends
 with an `M` record: ticks per posture, the veto, melee faults, the longest scan gap, ticks
-aimed at a dead robot and our bullets that hit a sentry.
+aimed at a dead robot, our bullets that hit a sentry, the longest gap while four or more
+were alive, and robots dropped as dead without a death event.
+
+### Melee sensing
+
+`melee.EnemyTracker` is the melee brain's battlefield model: every opponent's last
+position, heading, velocity, energy and scan tick. A death takes an opponent out of the
+movement's risk and the gun's targets on the same tick (MSENSE-1); so does being one more
+than the engine counts alive and a full sweep out of date, which catches a death the core
+never heard of. An energy drop of 0.1 to 3 that the core cannot explain as our bullet's
+damage, or as a wall or robot collision (a stop next to a wall or another robot), is
+recorded as an `EnemyShot` from where the opponent was a tick earlier (MSENSE-2).
+
+`melee.MeleeRadar` spins while four or more opponents are alive (MRADAR-1). With two or
+three it turns toward the one scanned longest ago (MRADAR-2), rescans a weak target the gun
+wants to finish every other tick unless someone else is a sweep overdue, and once it turns
+toward an opponent keeps turning that way until it finds it. The 1.x radar reversed about
+a moved opponent's old bearing and could lose the field for hundreds of ticks. A spin sees
+each robot about every 8 ticks; a close robot moving the same way as the sweep can stretch
+that to 10 or 11.
 
 ## Opponent memory
 
