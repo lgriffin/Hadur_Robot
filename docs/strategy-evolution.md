@@ -152,7 +152,7 @@ Every strategic claim is backed by a requirement, a test that proves it and a be
 | Replay | Real recorded battles reproduce the live robot's orders exactly | ReplayTest |
 | Bench | Score, survival, damage, faults, wave fidelity against ground truth | hadur-bench |
 
-At S5 the build runs 358 core, 5 robot and 11 bench tests, none skipped, and all 37 requirements due by S5 are covered (POW-2 was added in S5). GitHub Actions runs `mvn verify` on every push; while Actions is off, stage PRs merge on a local `mvn -B verify` pass.
+At S5 the build runs 361 core, 5 robot and 11 bench tests, none skipped, and all 37 requirements due by S5 are covered (POW-2 was added in S5). GitHub Actions runs `mvn verify` on every push; while Actions is off, stage PRs merge on a local `mvn -B verify` pass.
 
 ## Release 2.1: fight melee too
 
