@@ -2,6 +2,22 @@
 
 Open items from the Hadur 2 stages, newest stage first.
 
+## S3
+
+- **Tiers are provisional.** `Tiers` uses the artifact's thresholds on raw hit rates (their
+  hit rate on us, our virtual guns' weighted ratings), with 30 observations minimum. The
+  artifact asks for a normalised hit rate; S4 should set the thresholds from the bench logs
+  before the opening book relies on them.
+- **Seeds are in the format but empty.** The codec stores up to 600 gun and 300 surf samples
+  of 13 shorts each; S4 decides the quantisation and fills them.
+- **Hit distance is approximate.** Our hits are filed under the distance at the last scan,
+  not at firing; their hits under the distance their wave was fired from when the wave is
+  found.
+- **Score share in a profile is estimated.** The robot never sees the enemy's score, so the
+  profile keeps 60 points a round won plus bullet damage for each side.
+- **Every round end writes the profile** (a checkpoint, about 1 KB and three file operations).
+  If a rumble client proves slow at file I/O, save only at the battle's end.
+
 ## Release 2.1 (melee)
 
 - **Melee is mid-field against real melee bots.** Hadur wins almost every round against

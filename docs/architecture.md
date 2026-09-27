@@ -20,6 +20,11 @@ graph LR
         ML[melee]
         M[model / physics / knn]
         T[port.Telemetry]
+        MEM[memory]
+        PS[port.ProfileStore]
+    end
+    subgraph data directory
+        F[profile files]
     end
     E -- events, getters --> A
     A -- BotInput --> G
@@ -33,6 +38,9 @@ graph LR
     A -- setters, execute --> E
     C -. line records .-> T
     T -. console .-> A
+    C --> MEM
+    MEM --> PS
+    PS -. FileProfileStore .-> F
 ```
 
 ## The tick
@@ -59,9 +67,12 @@ The core and guard are static in the adapter, so learning survives from round to
 | `model.BotInput` | in | time, round, own position, heading, velocity, energy, gun and radar state, others, events |
 | `model.BotEvent` | in | a closed set: `Scan`, `HitByBullet`, `BulletHit`, `BulletHitBullet`, `BulletMissed`, `HitWall`, `HitRobot`, `RobotDeath`, `SkippedTurn` |
 | `model.BotOrders` | out | body turn, ahead, max velocity, gun turn, radar turn, fire power |
-| `port.Telemetry` | out | one line record at a time (`V`, `B`, `R`, `FAULT`, `EW`) |
+| `port.Telemetry` | out | one line record at a time (`V`, `B`, `R`, `FAULT`, `EW`, `MEM`) |
+| `port.ProfileStore` | both | named byte blobs with a quota: read, write (may be cut short), delete, list, size |
 
-Later stages add `ProfileStore` (S3) and `Clock` (S6) ports.
+`ProfileStore` has two adapters: `port.MemoryProfileStore` for tests and the bench (it can
+simulate a write killed part way), and `hadur2.FileProfileStore` in the robot, on Robocode's
+data directory through `RobocodeFileOutputStream`. S6 adds a `Clock` port.
 
 ## Packages in the core
 
@@ -75,6 +86,7 @@ Later stages add `ProfileStore` (S3) and `Clock` (S6) ports.
 | `gun` | main KNN gun, anti-surfer gun, gun selection |
 | `move` | wave-surfing movement and its danger formulas |
 | `melee` | the melee brain (MELEE-1..8): opponent tracker, sweep radar, minimum-risk mover, target selector, circular gun, posture strategy, battle-long opponent stats |
+| `memory` | opponent memory (MEM-1..5, RES-3): lineage keys, the profile, its binary codec, the round folder and the library that loads, saves and evicts |
 | `replay` | the line codec and replay driver for recorded battles (CORE-2) |
 | `port` | outbound interfaces |
 
@@ -83,7 +95,8 @@ ArchUnit enforces the boundary on every build: no `robocode.*` in the core, only
 clock; no mutable static fields; model, physics and ports never depend on gun, movement
 or replay; gun and movement never depend on each other; the ledger depends only on
 physics, so nothing but the engine's rules decides which drops become waves; melee depends
-only on the model and physics, and no duel package depends on melee.
+only on the model and physics, and no duel package depends on melee; memory depends only on
+itself and the ports, and no gun, movement, melee, ledger or model code depends on memory.
 
 ## Melee and duel
 
@@ -93,6 +106,25 @@ sweep, a destination and the aim; the duel's waves, ledger and guns are not fed.
 count drops to one, the core forgets its duel tracking and lifts the melee speed limit
 (MELEE-2), and the duel machinery starts from the survivor's next scan. A 1v1 battle never
 enters melee, so the duel's replay fixtures are unchanged.
+
+## Opponent memory
+
+In a duel, the first scan hands the opponent's name to `memory.ProfileLibrary`, which files
+it under a lineage key (`abc.Shadow 3.84 (2)` is `abc.Shadow`) and loads that profile before
+the tick's orders are made (MEM-1). While the round runs, the core reports shots, hits and
+scans to a `ProfileFolder`; at the round's end they are folded into the profile (MEM-2).
+The adapter saves it at every round end, as a checkpoint, and at the battle's end (MEM-3).
+
+The file format is hand-written: magic, version byte, length, payload, CRC-32. Decoding
+either gives a sane profile or throws one exception type, which the library turns into "a
+stranger" plus a counted failure (MEM-4). Robocode forbids renaming files, so a save writes
+`<file>.tmp`, then the profile, then deletes the copy; a load takes whichever passes its
+checksum, so a robot killed at any byte keeps a loadable profile (RES-3). Before writing,
+if the store would pass 90% of its quota, the seeds of the least recently fought profiles
+are dropped first (MEM-5); a battle counter file (`battles.hc`) is what "recent" means.
+
+A melee battle neither loads nor saves profiles. In S3 nothing in a profile changes an
+order; S4 reads its tiers and seeds.
 
 ## Java version
 
