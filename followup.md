@@ -15,8 +15,13 @@ Open items from the Hadur 2 stages, newest stage first.
   found.
 - **Score share in a profile is estimated.** The robot never sees the enemy's score, so the
   profile keeps 60 points a round won plus bullet damage for each side.
-- **Every round end writes the profile** (a checkpoint, about 1 KB and three file operations).
-  If a rumble client proves slow at file I/O, save only at the battle's end.
+- **Every round Hadur survives writes the profile** (a checkpoint, about 1 KB and three file
+  operations). A round it loses does not: writing from a dead robot's thread kept it in the
+  round, where the enemy went on shooting it and its last bullets refunded it energy. The
+  battle-end save always runs. If a rumble client proves slow at file I/O, save only there.
+- **String joins are compiled inline** (`-XDstringConcat=inline` in the root pom). Java 9+'s
+  default bootstraps each join site on first use, a few ms each, and that alone made the
+  first scan skip turns. Keep the flag unless the tick budget work (S6) replaces it.
 
 ## Release 2.1 (melee)
 

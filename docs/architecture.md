@@ -113,7 +113,9 @@ In a duel, the first scan hands the opponent's name to `memory.ProfileLibrary`, 
 it under a lineage key (`abc.Shadow 3.84 (2)` is `abc.Shadow`) and loads that profile before
 the tick's orders are made (MEM-1). While the round runs, the core reports shots, hits and
 scans to a `ProfileFolder`; at the round's end they are folded into the profile (MEM-2).
-The adapter saves it at every round end, as a checkpoint, and at the battle's end (MEM-3).
+The adapter saves it at the end of every round Hadur survives, as a checkpoint, and at the
+battle's end (MEM-3). The file work that needs no name (the battle clock, the codec's first
+use) happens in `run()` before the first tick, so the first scan's load costs about 0.3 ms.
 
 The file format is hand-written: magic, version byte, length, payload, CRC-32. Decoding
 either gives a sane profile or throws one exception type, which the library turns into "a

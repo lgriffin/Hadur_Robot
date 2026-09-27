@@ -171,7 +171,12 @@ public final class Bench {
         if (!Files.exists(result)) {
             return BattleResult.parse(BattleResult.failed("no result; exit " + p.exitValue()));
         }
-        return BattleResult.parse(Files.readAllLines(result).get(1));
+        List<String> lines = Files.readAllLines(result);
+        if (lines.size() < 2) {
+            // Killed while writing its result.
+            return BattleResult.parse(BattleResult.failed("incomplete result; exit " + p.exitValue()));
+        }
+        return BattleResult.parse(lines.get(1));
     }
 
     /** Hadur against the whole set at once, {@code runs} times; prints each robot's average. */
