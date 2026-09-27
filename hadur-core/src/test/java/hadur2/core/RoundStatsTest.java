@@ -29,8 +29,14 @@ class RoundStatsTest {
         s.computationLevel = 7;
         s.radarReacquired = 8;
         s.hiddenShots = 9;
+        s.profileLoadFailures = 1;
+        s.profileSaveFailures = 2;
+        s.seedsEvicted = 3;
         String[] f = s.toRecord(2, 900, "win", 55.5, 0).split(",");
-        assertEquals(16, f.length);
+        assertEquals(19, f.length);
+        assertEquals("1", f[16], "profile load failures");
+        assertEquals("2", f[17], "profile save failures");
+        assertEquals("3", f[18], "seed evictions");
         assertEquals("R", f[0]);
         assertEquals("2", f[1]);
         assertEquals("900", f[2]);

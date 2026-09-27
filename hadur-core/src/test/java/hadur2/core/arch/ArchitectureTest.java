@@ -137,6 +137,23 @@ public class ArchitectureTest {
     }
 
     @Test
+    @Tag("MEM-3")
+    @DisplayName("MEM-3: opponent memory is a leaf that reaches storage only through the port")
+    void memoryIsLeaf() {
+        // The core observes and the memory records: memory never steers gun or movement in
+        // S3, and it touches storage only through ProfileStore, so it stays testable in memory.
+        noClasses().that().resideInAPackage("hadur2.core.memory..")
+            .should().dependOnClassesThat().resideOutsideOfPackages("hadur2.core.memory..",
+                "hadur2.core.port..", "java..")
+            .check(core);
+        noClasses().that().resideInAnyPackage("hadur2.core.gun..", "hadur2.core.move..",
+                "hadur2.core.knn..", "hadur2.core.ledger..", "hadur2.core.melee..",
+                "hadur2.core.physics..", "hadur2.core.model..")
+            .should().dependOnClassesThat().resideInAPackage("hadur2.core.memory..")
+            .check(core);
+    }
+
+    @Test
     @DisplayName("gun and movement are independent of each other")
     void gunAndMoveIndependent() {
         slices().matching("hadur2.core.(gun|move)..").should().notDependOnEachOther().check(core);

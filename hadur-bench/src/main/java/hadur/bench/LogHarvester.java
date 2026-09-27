@@ -53,6 +53,8 @@ public class LogHarvester extends BattleAdaptor {
     private int hiddenShots;
     private final Set<Integer> enemyBulletIds = new HashSet<>();
     private double ourHitRateSum, theirHitRateSum;
+    /** Opponent memory (S3): whether the B record said a profile was found, failures, evictions. */
+    private int profileFound, memoryFailures, seedsEvicted;
 
     public LogHarvester(Path dir, String us) throws IOException {
         this.us = us;
@@ -107,6 +109,14 @@ public class LogHarvester extends BattleAdaptor {
     void readRecord(String line) {
         if (line.startsWith("FAULT,")) {
             faultRecords++;
+        } else if (line.startsWith("B,")) {
+            // B,round,tick,battle,exactName,lineageKey,found,tiers,gunSeed,surfSeed,level
+            String[] f = line.split(",");
+            if (f.length >= 7 && f[6].equals("1")) profileFound = 1;
+        } else if (line.startsWith("MEM,")) {
+            // MEM,round,tick,event,detail: every memory failure writes one (MEM-4, RES-5).
+            String[] f = line.split(",");
+            if (f.length >= 4 && !f[3].equals("written_without_seeds")) memoryFailures++;
         } else if (line.startsWith("EW,")) {
             // EW,round,tick,waveId,fireTick,rawDrop,correctedDrop,power,distance
             String[] f = line.split(",");
@@ -128,6 +138,10 @@ public class LogHarvester extends BattleAdaptor {
                 if (f.length >= 16) {
                     radarReacquired += Integer.parseInt(f[14]);
                     hiddenShots += Integer.parseInt(f[15]);
+                }
+                if (f.length >= 19) {
+                    // Battle totals so far, so the last R record holds the battle's.
+                    seedsEvicted = Math.max(seedsEvicted, Integer.parseInt(f[18]));
                 }
                 roundRecords++;
             } catch (NumberFormatException ignored) {
@@ -175,6 +189,18 @@ public class LogHarvester extends BattleAdaptor {
 
     private static String f(double d) {
         return String.format(Locale.ROOT, "%.2f", d);
+    }
+
+    public int profileFound() {
+        return profileFound;
+    }
+
+    public int memoryFailures() {
+        return memoryFailures;
+    }
+
+    public int seedsEvicted() {
+        return seedsEvicted;
     }
 
     public int turns() {
