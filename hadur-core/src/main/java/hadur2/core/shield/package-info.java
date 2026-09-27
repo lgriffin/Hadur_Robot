@@ -10,5 +10,12 @@
  *
  * <p>The package needs only plain Java: it keeps no randomness of its
  * own (RES-6) and the same inputs always give the same offsets (CORE-2).</p>
+ *
+ * <p>Neither class knows about bullets, waves or the gun: {@code HadurCore} feeds the
+ * detector our duel bullets' fates and adds the jitter to whatever angle the gun chose, so
+ * the counter works the same over either gun. The package imports nothing from the rest of
+ * the core; the architecture tests forbid it to depend on {@code posture}, and it is one of
+ * the duel packages {@code DuelIdentityTest} pins. See docs/bullet-shielding.md for how
+ * Saguaro shields and how the counter did on the bench.</p>
  */
 package hadur2.core.shield;
