@@ -446,7 +446,7 @@ public final class HadurCore {
     }
 
     /**
-     * MELEE-4..8, MRADAR-1..2: one tick of melee. The shot aimed last tick goes out first if the gun got
+     * MELEE-5..8, MRADAR, MMOVE: one tick of melee. The shot aimed last tick goes out first if the gun got
      * there, as in 1.x; then the melee brain picks the radar sweep, destination and aim.
      */
     private void meleeTick(BotInput in, BotOrders.Builder orders) {

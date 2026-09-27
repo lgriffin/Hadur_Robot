@@ -39,11 +39,11 @@ class MeleeSenseTest {
         controller.onScan("near", pt(560, 500), 60, 100, 0, 0, 1);
         controller.onScan("b", pt(900, 900), 570, 100, 0, 0, 1);
         controller.onScan("c", pt(100, 900), 570, 100, 0, 0, 1);
-        double before = controller.mover().risk(pt(600, 500), me, controller.tracker.alive(), 1,
-            MeleeStrategy.Plan.normal());
+        double before = controller.mover().risk(pt(600, 500), controller.mover().view(me, 100, 1, 3,
+            controller.tracker.alive(), MeleeStrategy.Plan.normal()));
         controller.onRobotDeath("near");
-        double after = controller.mover().risk(pt(600, 500), me, controller.tracker.alive(), 1,
-            MeleeStrategy.Plan.normal());
+        double after = controller.mover().risk(pt(600, 500), controller.mover().view(me, 100, 1, 3,
+            controller.tracker.alive(), MeleeStrategy.Plan.normal()));
         assertTrue(after < before, before + " -> " + after);
         assertEquals(2, controller.tracker.alive().size());
     }

@@ -110,7 +110,7 @@ data directory through `RobocodeFileOutputStream`.
 | `gun` | main KNN gun, anti-surfer gun, gun selection |
 | `move` | wave-surfing movement and its danger formulas; our bullets in flight and the shadows they cast (MOVE-1); go-to surfing |
 | `posture` | the melee extension's gate (GATE-1..5): `PostureGate` (melee or duel, failing closed), `DuelFocus` (the one opponent the duel fights while several are alive) and `SentryFence` (the sentry border as a wall for the duel's movement) |
-| `melee` | the melee brain (MELEE-2..8, MRADAR, MSENSE): battlefield model with shot detection, sweep radar, minimum-risk mover, target selector, circular gun, posture strategy, battle-long opponent stats |
+| `melee` | the melee brain (MELEE-2..8, MRADAR, MSENSE): battlefield model with shot detection, sweep radar, minimum-risk movement with virtual bullets, target selector, circular gun, posture strategy, battle-long opponent stats |
 | `memory` | opponent memory (MEM-1..5, RES-3): lineage keys, the profile, its binary codec, the round folder and the library that loads, saves and evicts; estimates with margins of error, the tiers and the seed layout |
 | `adapt` | recognise and adapt (ADAPT-1..3, DIAL-1..2, RES-4): the opening book, the seed loader and the seed trust |
 | `policy` | aggressive (DIST-1, POW-1, POW-2, END-1, END-2): rolling hit-rate windows, the distance controller, the power policy, the endgame states and the enemy gun-heat estimate; unhittable (MOVE-2, TIME-1, TIME-2): the movement flavour and the tick budget |
@@ -189,6 +189,20 @@ toward an opponent keeps turning that way until it finds it. The 1.x radar rever
 a moved opponent's old bearing and could lose the field for hundreds of ticks. A spin sees
 each robot about every 8 ticks; a close robot moving the same way as the sweep can stretch
 that to 10 or 11.
+
+### Melee movement
+
+`melee.MinimumRiskMovement` scores 160 candidate points each tick (32 angles on 5 rings of
+100 to 300 px, capped at 0.8 of the distance to the nearest opponent) and heads for the
+least risky, keeping its destination until a point 10% safer turns up (MMOVE-1). Risk is
+each opponent's energy over distance squared, doubled where Hadur would be that opponent's
+closest robot and half again for one that hit Hadur recently (MMOVE-2); a head-on and a
+linear `VirtualBullet` for every recorded `EnemyShot`, scored where each would be when
+Hadur gets there (MMOVE-3); a pull off the centre, pushes off walls and corners, Hadur's
+recent positions and a fixed noise field; and the melee strategy's posture. For the first
+30 ticks the closest-robot term doubles again and a pull heads for a wall-adjacent spot
+away from the corners. With two opponents left the ring shrinks to 80 to 200 px and the
+lateral weight rises, so Hadur is already orbiting when the duel takes over (MMOVE-4).
 
 ## Opponent memory
 

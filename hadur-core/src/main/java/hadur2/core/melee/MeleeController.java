@@ -67,7 +67,7 @@ public class MeleeController {
     public final EnemyTracker tracker;
     private final OpponentStatsBook book = new OpponentStatsBook();
     private final MeleeRadar radar = new MeleeRadar();
-    private final MeleeMover mover;
+    private final MinimumRiskMovement mover;
     private final MeleeTargetSelector selector = new MeleeTargetSelector(book);
     private final MeleeGun gun;
     private final MeleeStrategy strategy = new MeleeStrategy();
@@ -77,7 +77,7 @@ public class MeleeController {
 
     public MeleeController(BattleField field) {
         this.tracker = new EnemyTracker(field);
-        this.mover = new MeleeMover(field);
+        this.mover = new MinimumRiskMovement(field);
         this.gun = new MeleeGun(field);
     }
 
@@ -119,6 +119,7 @@ public class MeleeController {
             stats.recordDamageReceived(damage, Double.NaN, 0);
             return;
         }
+        shooter.lastHitHadur = now;
         double distance = shooter.location.distance(me);
         long flight = Math.round(distance / Rules.getBulletSpeed(power));
         RobotState atFire = myPath.getState(now - flight);
@@ -135,7 +136,7 @@ public class MeleeController {
         selector.onRobotDeath(name);
     }
 
-    public MeleeMover mover() { return mover; }
+    public MinimumRiskMovement mover() { return mover; }
 
     /** Opponents dropped as dead without a death event, this battle (MSENSE-1). */
     public long ghostsDropped() { return ghostsDropped; }
@@ -158,8 +159,9 @@ public class MeleeController {
         List<EnemyInfo> alive = tracker.alive();
         MeleeStrategy.Plan plan = strategy.evaluate(tracker, s.me, s.energy, s.others, s.time);
         c.posture = plan.posture;
+        mover.updateBullets(tracker.shots(s.time), myPath, s.me, s.time);
         c.destination = alive.isEmpty() ? null
-            : mover.chooseDestination(s.me, alive, s.time, plan);
+            : mover.chooseDestination(s.me, s.energy, s.others, alive, s.time, plan);
 
         c.target = selector.select(tracker, s.me, s.gunHeading, s.time, s.energy,
             plan.preferredTarget);
