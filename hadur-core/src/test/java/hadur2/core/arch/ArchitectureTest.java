@@ -197,4 +197,23 @@ public class ArchitectureTest {
             .should().dependOnClassesThat().resideInAPackage("hadur2.core.melee..")
             .check(core);
     }
+
+    @Test
+    @Tag("DIAL-2")
+    @DisplayName("DIAL-2: the S5 policies see evidence, never ticks or rounds, and steer only through the core")
+    void policiesSeeNoClock() {
+        // DistancePolicy, PowerPolicy and Endgame read estimates, energies and gun heats. They
+        // cannot see BotInput or BotEvent, where time and the round number live.
+        noClasses().that().resideInAPackage("hadur2.core.policy..")
+            .should().dependOnClassesThat().resideOutsideOfPackages("hadur2.core.policy..",
+                "hadur2.core.memory..", "hadur2.core.physics..", "java..")
+            .check(core);
+        // Gun and movement take the policies' decisions through their own setters.
+        noClasses().that().resideInAnyPackage("hadur2.core.gun..", "hadur2.core.move..",
+                "hadur2.core.knn..", "hadur2.core.ledger..", "hadur2.core.melee..",
+                "hadur2.core.physics..", "hadur2.core.model..", "hadur2.core.memory..",
+                "hadur2.core.adapt..")
+            .should().dependOnClassesThat().resideInAPackage("hadur2.core.policy..")
+            .check(core);
+    }
 }

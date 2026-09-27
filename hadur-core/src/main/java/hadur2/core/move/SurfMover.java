@@ -11,7 +11,8 @@ import java.util.*;
 
 public class SurfMover {
 
-    private static final double DESIRED_DISTANCE = 650.0;
+    /** 1.20's fixed distance; the distance policy moves it from S5 (DIST-1, END-1). */
+    public static final double DEFAULT_DISTANCE = 650.0;
     private static final double WALL_STICK = 160.0;
     private static final double MEA_WALL_STICK = 100.0;
     private static final double DISTANCING_DANGER_BASE = 2.5;
@@ -26,10 +27,32 @@ public class SurfMover {
     private final Map<SurfOption, Double> surfOptionDangers = new HashMap<>();
     private final Map<SurfOption, Point2D.Double> surfOptionDestinations = new HashMap<>();
     private Wave lastWaveSurfed;
+    private double desiredDistance = DEFAULT_DISTANCE;
 
     public SurfMover(BattleField battleField, MovementPredictor predictor) {
         this.battleField = battleField;
         this.predictor = predictor;
+    }
+
+    /** The distance the surf's and the orbit's attack angles steer toward. */
+    public void setDesiredDistance(double desiredDistance) {
+        this.desiredDistance = desiredDistance;
+    }
+
+    public double desiredDistance() {
+        return desiredDistance;
+    }
+
+    /**
+     * END-2: drive straight at the enemy at full speed, front or back first, whichever needs
+     * less turning. A disabled robot cannot shoot, so there is nothing to surf.
+     */
+    public void ram(BotOrders.Builder orders, RobotState myState, Point2D.Double enemyLocation) {
+        orders.maxVelocity(8.0);
+        DiaUtils.setBackAsFront(orders, myState.heading,
+            DiaUtils.absoluteBearing(myState.location, enemyLocation));
+        lastSurfDestination = null;
+        stopDestination = null;
     }
 
     public void initRound() {
@@ -254,12 +277,12 @@ public class SurfMover {
     }
 
     private double surfAttackAngle(double distance) {
-        double factor = (distance - DESIRED_DISTANCE) / DESIRED_DISTANCE;
+        double factor = (distance - desiredDistance) / desiredDistance;
         return DiaUtils.limit(-MAX_ATTACK_ANGLE, factor * 0.6, MAX_ATTACK_ANGLE);
     }
 
     private double orbitAttackAngle(double distance) {
-        double factor = (distance - DESIRED_DISTANCE) / DESIRED_DISTANCE;
+        double factor = (distance - desiredDistance) / desiredDistance;
         return DiaUtils.limit(-MAX_ATTACK_ANGLE, factor * 1.65, MAX_ATTACK_ANGLE);
     }
 

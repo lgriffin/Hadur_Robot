@@ -45,6 +45,16 @@ public final class Estimate {
         return samples;
     }
 
+    /**
+     * The centre the margin is measured from: Agresti-Coull's rate of {@code hits + 2} in
+     * {@code n + 4}, pulled toward a half when there are few samples. A bound that must hold
+     * with 95% confidence is {@code center() +- margin()}; the raw value can sit at 0 or 1,
+     * right at the edge of an interval that is not centred on it. NaN when nothing is known.
+     */
+    public double center() {
+        return Double.isNaN(value) ? Double.NaN : (value * samples + 2) / (samples + 4);
+    }
+
     /** Whether the margin is at most {@code threshold}: a policy may act on it (DIAL-1). */
     public boolean within(double threshold) {
         return !Double.isNaN(value) && margin <= threshold;

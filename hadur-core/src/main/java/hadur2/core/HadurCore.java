@@ -19,6 +19,11 @@ import hadur2.core.move.SurfMover;
 import hadur2.core.physics.*;
 import hadur2.core.port.ProfileStore;
 import hadur2.core.port.Telemetry;
+import hadur2.core.policy.DistancePolicy;
+import hadur2.core.policy.Endgame;
+import hadur2.core.policy.EnemyGunHeat;
+import hadur2.core.policy.HitWindow;
+import hadur2.core.policy.PowerPolicy;
 import hadur2.core.shield.AimJitter;
 import hadur2.core.shield.ShieldDetector;
 import java.awt.geom.Point2D;
@@ -46,6 +51,12 @@ import java.util.Locale;
  * next ticks (ADAPT-3). Each wave then checks the live estimates against the profile's,
  * and a seed the opponent no longer matches fades out (RES-4). A stranger, or a profile
  * too thin to trust, opens exactly as 1.20 did (DIAL-1).</p>
+ *
+ * <p>S5 makes it aggressive. The {@link DistancePolicy} starts at the opening's distance
+ * and moves a step a wave on the gap between the rolling hit rates (DIST-1); the
+ * {@link PowerPolicy} fires full power against a gun that cannot hit us (POW-1, POW-2); and
+ * the {@link Endgame} closes in to finish a weak enemy (END-1) and rams a disabled one
+ * (END-2).</p>
  */
 public final class HadurCore {
 
@@ -85,6 +96,19 @@ public final class HadurCore {
     private int surfWavesChecked;
     /** Waves on which a seed's weight was lowered, battle total (RES-5). */
     private int seedDecays;
+    /**
+     * S5: our duel bullets' outcomes and their waves' outcomes, rolling, across rounds while
+     * the duel opponent stays the same one.
+     */
+    private final HitWindow ourWindow = new HitWindow();
+    private final HitWindow theirWindow = new HitWindow();
+    private DistancePolicy distance = new DistancePolicy(OpeningBook.STRANGER_DISTANCE);
+    /** Null until the first duel tick tells the cooling rate. */
+    private EnemyGunHeat enemyGunHeat;
+    private Endgame.State endgame = Endgame.State.NONE;
+    private PowerPolicy.Reason powerReason = PowerPolicy.Reason.GUN;
+    /** The robot the windows and the distance controller are about; null before a duel scan. */
+    private String duelOpponent;
 
     private int round;
     private RoundStats stats = new RoundStats();
@@ -137,6 +161,7 @@ public final class HadurCore {
         surfMover.initRound();
         gunWaveManager.initRound();
         resetRoundState();
+        if (enemyGunHeat != null) enemyGunHeat.newRound();
     }
 
     /**
@@ -213,10 +238,15 @@ public final class HadurCore {
         if (melee) {
             meleeTick(in, orders);
         } else if (lastGunWave != null) {
-            aimAndFire(in, orders);
+            double gunHeat = aimAndFire(in, orders);
             moveController.checkWaves(in.time(), in.location());
             checkSurfSeed(in.time());
-            surfMover.move(orders, currentState(in), moveController, lastEnemyLocation, 2);
+            checkDistance(in, gunHeat);
+            if (endgame == Endgame.State.RAM) {
+                surfMover.ram(orders, currentState(in), lastEnemyLocation);
+            } else {
+                surfMover.move(orders, currentState(in), moveController, lastEnemyLocation, 2);
+            }
             if (in.time() - lastScanTime > 1) reacquire(in, orders);
         } else {
             orders.turnRadarRight(Double.POSITIVE_INFINITY);
@@ -270,6 +300,7 @@ public final class HadurCore {
      */
     public RoundStats roundEnded(long tick, String result, double myEnergy, int faults) {
         stats.faults = faults;
+        stats.targetDistance = distance.controllerTarget();
         stats.seedDecays = seedDecays;
         foldRound(tick, "win".equals(result));
         if (library != null) {
@@ -360,7 +391,8 @@ public final class HadurCore {
         return s.replace(',', ';').replace('\n', ' ');
     }
 
-    private void aimAndFire(BotInput in, BotOrders.Builder orders) {
+    /** Aims, fires last tick's aimed shot if the gun got there, and returns the gun's heat after. */
+    private double aimAndFire(BotInput in, BotOrders.Builder orders) {
         Point2D.Double myNext = predictor.nextLocation(currentState(in));
         // In 1.20, setFireBullet heated the gun at once (the engine's proxy adds the new
         // shot's heat to getGunHeat()), so the aim below saw the hot gun.
@@ -385,6 +417,7 @@ public final class HadurCore {
             aimAngle += aimJitter.offset(myNext.distance(lastGunWave.targetLocation));
         }
         orders.turnGunRight(Angles.normalRelativeAngle(aimAngle - in.gunHeading()));
+        return gunHeat;
     }
 
     /** Fires if the gun is cool and on target; returns whether it fired. */
@@ -402,6 +435,7 @@ public final class HadurCore {
             gunController.fireVirtualBullets(lastGunWave, myNext, in.time());
             lastRealBulletFireTime = in.time();
             stats.shotsFired++;
+            if (bulletPower >= PowerPolicy.FULL_POWER) stats.fullPowerShots++;
             if (aimCarriesJitter) stats.jitteredShots++;
             if (folder != null) folder.ourShot(lastEnemyDistance);
             return true;
@@ -427,12 +461,16 @@ public final class HadurCore {
         Point2D.Double enemyPos = DiaUtils.project(myPos, absBearing, e.distance());
         melee.onScan(e.name(), enemyPos, e.distance(), e.energy(), e.heading(), e.velocity(), time);
         if (inMelee) return;
+        if (duelOpponent != null && !duelOpponent.equals(e.name())) forgetDuelOpponent();
+        duelOpponent = e.name();
         long previousScanTime = lastScanTime;
         lastScanTime = time;
         lastEnemyAbsBearing = absBearing;
         lastEnemyLocation = enemyPos;
         lastEnemyEnergy = e.energy();
         lastEnemyDistance = e.distance();
+        stats.distanceSum += e.distance();
+        stats.distanceScans++;
         if (!announced) {
             announced = true;
             announce(round, time, e.name());
@@ -477,6 +515,15 @@ public final class HadurCore {
 
         double bulletPower = gunController.calculateBulletPower(
             e.distance(), in.energy(), e.energy(), in.others());
+        // POW-1, POW-2: full power where the profile or this battle says their gun can't hit us.
+        PowerPolicy.Reason why = PowerPolicy.reason(opening.gunTier(), e.energy(), in.energy(),
+            ourWindow.estimate(), theirWindow.estimate());
+        if (why != powerReason) {
+            powerReason = why;
+            Estimate ours = ourWindow.estimate();
+            emitPolicy(round, time, "power", ours.value(), ours.margin(), why.name().toLowerCase(Locale.ROOT));
+        }
+        bulletPower = PowerPolicy.power(why, bulletPower, e.energy());
 
         lastGunWave = new Wave(e.name(), myPos, enemyPos,
             round, time, bulletPower,
@@ -524,6 +571,7 @@ public final class HadurCore {
             long fireTime = moveController.updateFiringWave(previousScanTime, time,
                 reading.corrected());
             stats.enemyShotsDetected++;
+            enemyGunHeat(in).shot(fireTime, reading.corrected());
             if (folder != null) folder.enemyShot(e.distance(), reading.corrected(), myVel != 0);
             telemetry.emit(String.format(Locale.ROOT,
                 "EW,%d,%d,%d,%d,%.4f,%.4f,%.4f,%.1f", round, time, fireTime, fireTime,
@@ -574,6 +622,9 @@ public final class HadurCore {
      */
     private void open(int round, long time, String name) {
         opening = OpeningBook.read(folder.profile());
+        distance = new DistancePolicy(opening.distance());
+        emitPolicy(round, time, "distance", Double.NaN, Double.NaN,
+            opening.gunTier() + ":" + Math.round(opening.distance()));
         gunController.setSampleSink(folder::gunSample);
         moveController.setSampleSink(folder::surfSample);
         if (opening.gun() != Opening.Gun.LIVE) {
@@ -644,6 +695,70 @@ public final class HadurCore {
         }
     }
 
+    /**
+     * S5, once a duel tick: feeds the enemy waves that broke this tick into their rolling
+     * hit rate, steps the distance controller once for each (DIST-1), then reads the endgame
+     * (END-1, END-2) and hands the surf its target distance. P records mark each change.
+     */
+    private void checkDistance(BotInput in, double gunHeat) {
+        for (boolean hit : moveController.takeBrokenWaveOutcomes()) {
+            theirWindow.record(hit);
+            Estimate ours = ourWindow.estimate();
+            Estimate theirs = theirWindow.estimate();
+            if (distance.onWave(ours, theirs) != DistancePolicy.Step.HOLD) {
+                emitPolicy(round, in.time(), "distance", ours.value() - theirs.value(),
+                    Math.hypot(ours.margin(), theirs.margin()),
+                    String.valueOf(Math.round(distance.controllerTarget())));
+            }
+        }
+
+        // Our heat counts a shot fired this tick: that gun can't answer before theirs.
+        Endgame.State now = Endgame.of(lastEnemyEnergy, in.energy(),
+            enemyGunHeat(in).at(in.time()), gunHeat);
+        if (now != endgame) {
+            endgame = now;
+            emitPolicy(round, in.time(), "endgame", lastEnemyEnergy, Double.NaN,
+                now.name().toLowerCase(Locale.ROOT));
+        }
+        if (now == Endgame.State.FINISH) stats.finishTicks++;
+        if (now == Endgame.State.RAM) stats.ramTicks++;
+        surfMover.setDesiredDistance(distance.target(now == Endgame.State.FINISH));
+    }
+
+    /**
+     * A different robot is now the duel opponent (a melee's survivor can change from round
+     * to round): what the windows and the distance controller learned was about another gun.
+     */
+    private void forgetDuelOpponent() {
+        ourWindow.clear();
+        theirWindow.clear();
+        distance = new DistancePolicy(opening.distance());
+    }
+
+    private EnemyGunHeat enemyGunHeat(BotInput in) {
+        if (enemyGunHeat == null) enemyGunHeat = new EnemyGunHeat(in.gunCoolingRate());
+        return enemyGunHeat;
+    }
+
+    /** S5: the distance the surf is steering to now. */
+    public double targetDistance() {
+        return surfMover.desiredDistance();
+    }
+
+    /** S5: the endgame state as of the last duel tick. */
+    public Endgame.State endgame() {
+        return endgame;
+    }
+
+    /** S5: our and their rolling hit rates. */
+    public Estimate ourRollingHitRate() {
+        return ourWindow.estimate();
+    }
+
+    public Estimate theirRollingHitRate() {
+        return theirWindow.estimate();
+    }
+
     private void emitPolicy(int round, long time, String policy, double value, double margin,
                             String setting) {
         telemetry.emit(String.format(Locale.ROOT, "P,%d,%d,%s,%s,%s,%s", round, time, policy,
@@ -653,7 +768,10 @@ public final class HadurCore {
 
     private void onBulletHit(BotEvent.BulletHit e) {
         stats.shotsHit++;
-        if (duelBulletResolved()) shieldDetector.bulletHit();
+        if (duelBulletResolved()) {
+            shieldDetector.bulletHit();
+            ourWindow.record(true);
+        }
         if (folder != null && !inMelee) folder.ourHit(lastEnemyDistance, Rules.getBulletDamage(e.power()));
         melee.onBulletHit(e.name(), e.power());
         ledger.ourBulletHit(e.power());
@@ -690,13 +808,19 @@ public final class HadurCore {
     }
 
     private void onBulletMissed() {
-        if (duelBulletResolved()) shieldDetector.bulletMissed();
+        if (duelBulletResolved()) {
+            shieldDetector.bulletMissed();
+            ourWindow.record(false);
+        }
     }
 
     private void onBulletHitBullet(BotInput in, BotEvent.BulletHitBullet e) {
         stats.bulletsIntercepted++;
         // SHIELD-1: in a duel, a bullet that meets ours may be a shield.
-        if (duelBulletResolved()) shieldDetector.bulletIntercepted();
+        if (duelBulletResolved()) {
+            shieldDetector.bulletIntercepted();
+            ourWindow.record(false);
+        }
         Point2D.Double hitLoc = new Point2D.Double(e.x(), e.y());
         Wave hitWave = moveController.findBulletWave(hitLoc, in.time(), null, e.enemyPower());
         if (hitWave != null) {

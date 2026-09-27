@@ -101,4 +101,22 @@ class OpeningBookTest {
         assertEquals(a.gunTier(), b.gunTier());
         assertEquals(a.surfPrior().value(), b.surfPrior().value());
     }
+
+    @Test
+    @Tag("DIST-1")
+    @DisplayName("S5: the gun tier sets the starting distance, and a stranger starts at 1.20's 650 px")
+    void distanceFromGunTier() {
+        assertEquals(650, Opening.STRANGER.distance());
+        assertEquals(650, OpeningBook.read(Profiles.sample("abc.Shadow 3.83c", 9, 0, 0)).distance(),
+            "a thin profile is a stranger");
+        assertEquals(OpeningBook.distance(Tiers.Gun.T0), OpeningBook.read(known(0.01, 0.4, 0.3)).distance());
+        assertEquals(OpeningBook.distance(Tiers.Gun.T3), OpeningBook.read(known(0.09, 0.2, 0.19)).distance());
+        double last = 0;
+        for (Tiers.Gun tier : new Tiers.Gun[] {Tiers.Gun.T0, Tiers.Gun.T1, Tiers.Gun.T2, Tiers.Gun.T3}) {
+            double d = OpeningBook.distance(tier);
+            assertTrue(d > last, "a better gun is met further out");
+            assertTrue(d >= 150 && d <= 650);
+            last = d;
+        }
+    }
 }

@@ -1,6 +1,6 @@
 # Hadur 2: evolution of strategy
 
-As of 2026-09-27. The living copy is the [Claude Doc](https://claude.ai/code/artifact/bc581157-b352-49c9-acaf-9f77035202c5); this file is its snapshot for evaluation.
+As of 2026-09-27 (after S5). The living copy is the [Claude Doc](https://claude.ai/code/artifact/bc581157-b352-49c9-acaf-9f77035202c5); this file is its snapshot for evaluation.
 
 ## Summary
 
@@ -8,7 +8,9 @@ Hadur has moved from a hard-to-test dual-mode robot (1.20) to a 1v1 duelist with
 
 Since S3 it also remembers each opponent across battles, crash-safely and within Robocode's data quota. Since S4 it reads that memory: it names the opponent's gun and movement tiers, picks an opening gun and surfing prior from them, replays stored samples into its guns and surfing at half weight, and lets live evidence overrule the profile when they disagree.
 
-Score share against Shadow has not moved yet: 40.8% at 1.20, 46.2% at S1, 43.7% at S2, 45.1% at S3, 44.3% at S4 (45.0% with memory). All are within each other's noise. S0 to S3 built the foundations (measurement, architecture, accurate waves, memory). S4 made memory drive decisions, but Shadow is an adaptive surfer with a strong gun, and starting warm has not yet shown a measurable gain against it. S5 and S6 are the stages that change how Hadur fights.
+Since S5 it also presses when it is ahead: a distance controller that comes in while Hadur clearly out-hits the enemy, full-power shots against guns that cannot hit it, and closing in to finish or ram a beaten enemy.
+
+Score share against Shadow has not moved outside the noise: 40.8% at 1.20, 46.2% at S1, 43.7% at S2, 45.1% at S3, 44.3% at S4 and 46.3% at S5 cold. Warm, S5 scored 48.5% ± 2.5 against 44.0% ± 4.5 for S4 re-run the same day, with survival share up from 52.6% to 62.4%; that is the first warm result above its cold one, but the intervals still overlap. Against the sample bots S5 ends rounds 5-13% sooner without losing share. S6 is the stage that targets Shadow's hit rate on Hadur directly.
 
 ## Starting point: Hadur 1.x
 
@@ -106,23 +108,35 @@ The bench found one real bug before merging. Robocode charges a robot's quota fo
 
 Result: 44.3% ± 5.5 against Shadow cold and 45.0% ± 10.3 over five warm battles (43, 51, 56, 39 and 36%), against 45.1% and 47.1% at S3. Against Saguaro, the bullet shielder, three warm battles gave 73.4% ± 7.0 (76, 70 and 74%), in line with the 72.4% the shield counter reached before S4; its profile reads T3/M0, so the opening is the main gun. Every sample-bot round was won both ways, the opening book picked the main gun in every warm battle after the first, and there were 0 memory failures. No gain from memory against Shadow is measurable yet. The cold run's skipped turns (283, against 15 at S3) came on a loaded host: 104 of them came in one stall on a single tick, and turn times on sample bots were twice the warm run's. The warm run, which does strictly more work, skipped 146 turns, 72 of them in one stall, and 12 against Shadow.
 
+## S5: press when ahead
+
+S5 replaces 1.20's fixed 650 px with a distance controller, and adds a power policy and an endgame. The S4 benches were re-run first, on the same host, as the baseline: Shadow 45.5% ± 6.0 cold and 44.0% ± 4.5 warm.
+
+- **A distance controller (DIST-1, DIAL-1).** Hadur keeps the last 100 shots of each side as rolling hit rates. On each enemy wave, while ours leads theirs by 5 points beyond the margin of error, the target comes in 25 px; while theirs leads by 5 points, it goes back out. A stranger starts at 650 px, so an unknown bot meets 1.20's distance until the evidence says otherwise; a profile's gun tier starts it closer (T0 at 400 px, T3 at 550 px).
+- **The bench moved the floor from 150 to 400 px.** At 150 px, sample bots' head-on guns hit Hadur often enough to take 0.4-2 points of score share off it, even though rounds ended a third sooner. At 300 px a little was still lost; at 400 px every sample bot's share was back at its S4 level. A first version also let one cold battle against Shadow walk in to 175 px on noise, so coming in now needs the lead to be 5 points *after* subtracting its margin.
+- **Full power (POW-1, POW-2).** Against a gun the profile rates T0, or while this battle shows Hadur hitting a certain 20%+ and being hit a certain sub-10%, every shot is power 3, capped at what kills. Landing power 3 refunds 9 energy, so against a gun that misses it pays for itself. Neither applies while Hadur has 12 energy or less.
+- **Finish and ram (END-1, END-2).** When the enemy is under 16 energy, Hadur has over 40, and the enemy's gun (estimated from its shots) is hotter than Hadur's, the target drops to 150 px, where any gun hits. A disabled enemy is rammed.
+
+Result: against Shadow, 46.3% ± 4.5 cold (bullet-damage share 37.9% ± 1.0, survival share 56.6%) and 48.5% ± 2.5 warm (survival 62.4% ± 4.1), against 45.5% and 44.0% for S4. The gate's second half holds: survival share against the T3 opponent did not fall. Its first half cannot be shown yet: the bench has no T1 or T2 opponent, and the sample bots (T0) already sit at 99-100% bullet-damage share. What moved against them is kill speed: Crazy's rounds fell from 459 to 399 ticks, Walls' from 238 to 213 and SpinBot's from 279 to 266, with 0.3-3 more damage dealt per round. Against Shadow the controller mostly stays out: cold, no lead is certain enough to come in, and warm the T3 opening at 550 px walked back out to 650 within a few rounds.
+
 ## Results by stage
 
 Across stages, Hadur has become more reliable and more accurate, while its score against Shadow has held steady. Each figure is a cold bench: 35 rounds × 5 seeds per opponent, mean ± 95% interval.
 
-| Measure | S0 (1.20) | S1 | S2 | S3 | S4 |
-| --- | --- | --- | --- | --- | --- |
-| Shadow score share | 40.8% ± 8.3 | 46.2% ± 6.4 | 43.7% ± 4.6 | 45.1% ± 8.9 | 44.3% ± 5.5 |
-| Shadow survival share | 46.9% ± 11.9 | 55.8% ± 10.0 | 53.1% ± 6.4 | 54.0% ± 10.3 | 54.9% ± 8.5 |
-| Shadow bullet-damage share | 36.5% ± 5.2 | 38.6% ± 3.7 | 36.2% ± 3.5 | 38.0% ± 7.4 | 35.7% ± 3.0 |
-| Shadow rounds won | 82 / 175 | 98 / 175 | 93 / 175 | 95 / 175 | 96 / 175 |
-| Sample-bot rounds won | 872 / 875 | 866 / 875 | 875 / 875 | 875 / 875 | 875 / 875 |
-| Shadow shots found as waves | not measured | not measured | 99.4%, 0 false | 99.9%, 3 false | 99.6%, 2 false |
-| Skipped turns (all opponents) | 44 | 73 | 57 | 15 | 283 (loaded host) |
-| Faults | not measured | 0 | 0 | 0 | 0 |
-| Memory failures | - | - | - | 0 | 0 |
+| Measure | S0 (1.20) | S1 | S2 | S3 | S4 | S5 |
+| --- | --- | --- | --- | --- | --- | --- |
+| Shadow score share | 40.8% ± 8.3 | 46.2% ± 6.4 | 43.7% ± 4.6 | 45.1% ± 8.9 | 44.3% ± 5.5 | 46.3% ± 4.5 |
+| Shadow survival share | 46.9% ± 11.9 | 55.8% ± 10.0 | 53.1% ± 6.4 | 54.0% ± 10.3 | 54.9% ± 8.5 | 56.6% ± 8.8 |
+| Shadow bullet-damage share | 36.5% ± 5.2 | 38.6% ± 3.7 | 36.2% ± 3.5 | 38.0% ± 7.4 | 35.7% ± 3.0 | 37.9% ± 1.0 |
+| Shadow rounds won | 82 / 175 | 98 / 175 | 93 / 175 | 95 / 175 | 96 / 175 | 99 / 175 |
+| Shadow warm score share | - | - | - | 47.1% | 45.0% ± 10.3 | 48.5% ± 2.5 |
+| Sample-bot rounds won | 872 / 875 | 866 / 875 | 875 / 875 | 875 / 875 | 875 / 875 | 875 / 875 |
+| Shadow shots found as waves | not measured | not measured | 99.4%, 0 false | 99.9%, 3 false | 99.6%, 2 false | 99.4%, 3 false |
+| Skipped turns (all opponents) | 44 | 73 | 57 | 15 | 283 (loaded host) | 174 (host stalls) |
+| Faults | not measured | 0 | 0 | 0 | 0 | 0 |
+| Memory failures | - | - | - | 0 | 0 | 0 |
 
-No change in score share is outside the noise. Bullet-damage share is the gap to close: Shadow still deals more damage than it takes. Sources: [S0](bench/s0-baseline-1.20-cold.md), [S1](bench/s1-2.0-cold.md), [S2](bench/s2-2.0-cold.md), [S3](bench/s3-2.1-cold.md) and [S4](bench/s4-2.1-cold.md) bench reports, plus the [S3](bench/s3-2.1-warm.md) and [S4](bench/s4-2.1-warm.md) warm runs.
+No change in score share is outside the noise. Bullet-damage share is the gap to close: Shadow still deals more damage than it takes. Sources: [S0](bench/s0-baseline-1.20-cold.md), [S1](bench/s1-2.0-cold.md), [S2](bench/s2-2.0-cold.md), [S3](bench/s3-2.1-cold.md), [S4](bench/s4-2.1-cold.md) and [S5](bench/s5-2.1-cold.md) bench reports, plus the [S3](bench/s3-2.1-warm.md), [S4](bench/s4-2.1-warm.md) and [S5](bench/s5-2.1-warm.md) warm runs. The S4 re-runs used as S5's baseline are [cold](bench/s4-2.1-shadow-cold-rerun.md), [warm](bench/s4-2.1-shadow-warm-rerun.md) and [sample bots](bench/s4-2.1-samples-cold-rerun.md).
 
 ## How the strategy is kept honest
 
@@ -138,7 +152,7 @@ Every strategic claim is backed by a requirement, a test that proves it and a be
 | Replay | Real recorded battles reproduce the live robot's orders exactly | ReplayTest |
 | Bench | Score, survival, damage, faults, wave fidelity against ground truth | hadur-bench |
 
-At S4 the build runs 317 core, 5 robot and 10 bench tests, none skipped, and all 32 requirements due by S4 are covered. GitHub Actions runs `mvn verify` on every push; while Actions is off, stage PRs merge on a local `mvn -B verify` pass.
+At S5 the build runs 361 core, 5 robot and 11 bench tests, none skipped, and all 37 requirements due by S5 are covered (POW-2 was added in S5). GitHub Actions runs `mvn verify` on every push; while Actions is off, stage PRs merge on a local `mvn -B verify` pass.
 
 ## Release 2.1: fight melee too
 
@@ -165,17 +179,17 @@ and shot dodging in the melee mover are the obvious next bets.
 
 ## What comes next
 
-The next stages turn accurate perception and memory into score. The remaining 8 requirements are spread over S5 and S6 (4 and 4).
+The remaining 4 requirements are all S6's.
 
 | Stage | Strategic bet | Requirements |
 | --- | --- | --- |
-| S5 | Press when ahead: close distance while out-hitting the enemy, full power against weak movers, finish off a disabled enemy | DIST-1, POW-1, END-1, END-2 |
 | S6 | Be unhittable within the tick budget: bullet shadows, switch movement when it is being hit, cut computation instead of skipping turns | MOVE-1, MOVE-2, TIME-1, TIME-2 |
 
 Open items carried forward:
 
 - **Skipped turns** are 15 per cold bench and are S6's gate (zero). The first-scan skips are gone; the rest are scattered.
-- **Memory has not paid off against Shadow.** Tiers, openings and seeds work as designed, but warm and cold scores are within noise. The T1 and T2 bounds have no bench opponent in them yet, so they are uncalibrated.
+- **Memory has not clearly paid off against Shadow.** S5's warm run is the first above its cold one (48.5% against 46.3%), but within noise. The T1 and T2 bounds have no bench opponent in them yet, so they are uncalibrated, and S5's gate cannot be tested on them.
+- **Aggression against mid-table bots is unmeasured.** A few RoboRumble bots between the sample bots and Shadow would calibrate T1/T2 and show whether closing in pays against them.
 - **Checkpoint I/O grew** to about 44 KB a surviving round with full seeds. If rumble clients prove slow at file I/O, checkpoint only the stats.
-- **Damage share against Shadow** is about 37%. S3 to S5 target it.
+- **Damage share against Shadow** is about 37-38%. S5 did not move it; S6 targets their hits on Hadur instead.
 - **The ledger's remaining ambiguity** is small. A shot fired as the enemy strikes a wall can be 0.5 off in power, and 0.6% of Shadow's visible shots are still missed and have not yet been examined.

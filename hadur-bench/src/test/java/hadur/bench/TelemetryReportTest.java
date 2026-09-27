@@ -60,6 +60,13 @@ class TelemetryReportTest {
         assertEquals(r.bulletsIntercepted, back.bulletsIntercepted);
         assertEquals(r.jitteredShots, back.jitteredShots);
         assertEquals(r.shotsFired, back.shotsFired);
+        assertEquals(r.openingDistance, back.openingDistance);
+        assertEquals(r.meanDistance, back.meanDistance, 1e-3);
+        assertEquals(r.targetDistance, back.targetDistance, 1e-3);
+        assertEquals(r.roundTicks, back.roundTicks, 1e-3);
+        assertEquals(r.finishTicks, back.finishTicks);
+        assertEquals(r.ramTicks, back.ramTicks);
+        assertEquals(r.fullPowerShots, back.fullPowerShots);
         assertEquals("a; b", back.errors);
         assertEquals(BattleResult.HEADER.split(",").length, r.toCsv().split(",").length);
     }
@@ -84,6 +91,8 @@ class TelemetryReportTest {
         assertTrue(report.contains("| 0 | 4 | 5 |"), "phantoms, hidden shots, radar reacquire: " + report);
         assertTrue(report.contains("| 400 | 120 (30.0%) | 80 |"),
             "shots, shot down, jittered: " + report);
+        assertTrue(report.contains("| 550 | 481 | 425 | 900 | 0.0 / 0.0 | 60 | 70 | 20 |"),
+            "S5 aggression: " + report);
     }
 
     @Test
@@ -138,7 +147,33 @@ class TelemetryReportTest {
         r.shotsFired = 400;
         r.bulletsIntercepted = 120;
         r.jitteredShots = 80;
+        r.openingDistance = "550";
+        r.meanDistance = 480.5;
+        r.targetDistance = 425;
+        r.roundTicks = 900;
+        r.finishTicks = 70;
+        r.ramTicks = 20;
+        r.fullPowerShots = 60;
         r.errors = "a, b";
         return r;
+    }
+
+    @Test
+    @Tag("DIST-1")
+    @DisplayName("S5 R fields and the opening's distance record reach the battle result")
+    void harvestsAggression() throws Exception {
+        LogHarvester h = new LogHarvester(dir, "hadur2.Hadur 2.1");
+        h.readRecord("P,0,1,distance,-,-,T3:550");
+        h.readRecord("P,0,90,distance,0.0800,0.0500,525");
+        h.readRecord("R,0,1000,win,80.00,0.00,0.2,0.1,0.1,0.1,0,0,0,0,0,0,0,0,0,0,0,30,0,500.0,525.0,12,3,4");
+        h.readRecord("R,1,800,win,80.00,0.00,0.2,0.1,0.1,0.1,0,0,0,0,0,0,0,0,0,0,0,30,0,400.0,500.0,8,0,6");
+        h.close();
+        assertEquals("550", h.openingDistance(), "the opening, not the later step");
+        assertEquals(450, h.meanDistance(), 1e-9);
+        assertEquals(500, h.targetDistance(), 1e-9, "the last round's target");
+        assertEquals(900, h.roundTicks(), 1e-9);
+        assertEquals(20, h.finishTicks());
+        assertEquals(3, h.ramTicks());
+        assertEquals(10, h.fullPowerShots());
     }
 }

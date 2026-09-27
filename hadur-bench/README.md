@@ -72,6 +72,13 @@ the live data disagreed with the profile (RES-4, R field 22). "Stored profiles" 
 normalised hit rate on Hadur with its margin, which is what the gun tier reads, and the
 seed sizes.
 
+From S5 the "Aggression" section shows, per opponent, the distance the controller opened at
+in each battle (650 px for a stranger, else by gun tier), the mean scan distance, the
+controller's target when the last round ended (DIST-1), the mean round length in ticks,
+bullet damage dealt and taken per round, shots fired at full power (POW-1, POW-2), and
+ticks spent finishing (END-1) and ramming (END-2). They come from R fields 23-27 and the
+opening's `P,…,distance,…,<tier>:<px>` record.
+
 The report's hit-rate and fault columns come from Hadur's `R` (round end) and `FAULT`
 records, so every fault and degradation counter the core keeps reaches the report (RES-5).
 

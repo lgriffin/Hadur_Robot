@@ -61,6 +61,12 @@ public class LogHarvester extends BattleAdaptor {
     /** Recognise and adapt (S4): tiers and seed sizes at the first scan, the opening gun, seed decays. */
     private String tiers = "-", openingGun = "-";
     private int gunSeed, surfSeed, seedDecays;
+    /** Aggressive (S5): the opening's distance, per-round mean distances, the last target, round lengths, endgame and full-power counts. */
+    private String openingDistance = "-";
+    private double distanceSum, targetDistance = Double.NaN;
+    private int distanceRounds;
+    private long roundTicks;
+    private int finishTicks, ramTicks, fullPowerShots;
 
     public LogHarvester(Path dir, String us) throws IOException {
         this.us = us;
@@ -135,6 +141,11 @@ public class LogHarvester extends BattleAdaptor {
                 int colon = f[6].indexOf(':');
                 openingGun = colon < 0 ? f[6] : f[6].substring(colon + 1);
             }
+            // S5: the opening's distance is "<tier>:<px>"; later distance records are steps.
+            if (f.length >= 7 && f[3].equals("distance") && openingDistance.equals("-")
+                    && f[6].indexOf(':') >= 0) {
+                openingDistance = f[6].substring(f[6].indexOf(':') + 1);
+            }
         } else if (line.startsWith("MEM,")) {
             // MEM,round,tick,event,detail: every memory failure writes one (MEM-4, RES-5).
             String[] f = line.split(",");
@@ -171,6 +182,18 @@ public class LogHarvester extends BattleAdaptor {
                     shotsFired += Integer.parseInt(f[21]);
                 }
                 if (f.length >= 23) seedDecays = Math.max(seedDecays, Integer.parseInt(f[22]));
+                roundTicks += Long.parseLong(f[2]);
+                if (f.length >= 28) {
+                    double mean = Double.parseDouble(f[23]);
+                    if (!Double.isNaN(mean)) {
+                        distanceSum += mean;
+                        distanceRounds++;
+                    }
+                    targetDistance = Double.parseDouble(f[24]);
+                    finishTicks += Integer.parseInt(f[25]);
+                    ramTicks += Integer.parseInt(f[26]);
+                    fullPowerShots += Integer.parseInt(f[27]);
+                }
                 roundRecords++;
             } catch (NumberFormatException ignored) {
                 // A malformed record is left out of the averages.
@@ -217,6 +240,38 @@ public class LogHarvester extends BattleAdaptor {
 
     private static String f(double d) {
         return String.format(Locale.ROOT, "%.2f", d);
+    }
+
+    /** S5: the opening's starting distance, "-" before S5 or without memory. */
+    public String openingDistance() {
+        return openingDistance;
+    }
+
+    /** S5: the mean of each round's mean scan distance; NaN without S5 R records. */
+    public double meanDistance() {
+        return distanceRounds == 0 ? Double.NaN : distanceSum / distanceRounds;
+    }
+
+    /** S5: the distance controller's target when the last round ended. */
+    public double targetDistance() {
+        return targetDistance;
+    }
+
+    /** Mean round length in ticks, from the R records. */
+    public double roundTicks() {
+        return roundRecords == 0 ? Double.NaN : (double) roundTicks / roundRecords;
+    }
+
+    public int finishTicks() {
+        return finishTicks;
+    }
+
+    public int ramTicks() {
+        return ramTicks;
+    }
+
+    public int fullPowerShots() {
+        return fullPowerShots;
     }
 
     public String tiers() {

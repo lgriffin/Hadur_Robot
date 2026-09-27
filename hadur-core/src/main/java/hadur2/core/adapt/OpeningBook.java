@@ -24,6 +24,9 @@ import java.util.List;
  *     only when the tier they back is known.</li>
  * <li>DIAL-1: a tier whose estimate is too uncertain is unknown (see {@link Tiers}), and
  *     an unknown tier selects the conservative setting, 1.20's.</li>
+ * <li>S5: the gun tier also sets the starting distance ({@link Opening#distance}): close against a
+ *     gun that cannot hit, further out the better it is. A stranger starts at 1.20's
+ *     650 px.</li>
  * </ul>
  */
 public final class OpeningBook {
@@ -31,7 +34,27 @@ public final class OpeningBook {
     /** ADAPT-3: a seeded sample's weight at the start of a battle; a live one weighs 1. */
     public static final double SEED_WEIGHT = 0.5;
 
+    /** S5: a stranger's starting distance, 1.20's fixed one. */
+    public static final double STRANGER_DISTANCE = 650;
+    /**
+     * S5: the starting distance for gun tiers T0 to T3. The artifact's bands started T0 at
+     * 150-250 px, but the bench showed head-on guns hit Hadur often inside 400 px, so every
+     * tier starts at or beyond the distance controller's 400 px floor.
+     */
+    private static final double[] TIER_DISTANCE = {400, 450, 500, 550};
+
     private OpeningBook() {}
+
+    /** S5: the distance to start at against a gun of {@code tier}. */
+    static double distance(Tiers.Gun tier) {
+        switch (tier) {
+            case T0: return TIER_DISTANCE[0];
+            case T1: return TIER_DISTANCE[1];
+            case T2: return TIER_DISTANCE[2];
+            case T3: return TIER_DISTANCE[3];
+            default: return STRANGER_DISTANCE;
+        }
+    }
 
     public static Opening read(OpponentProfile profile) {
         if (profile == null) return Opening.STRANGER;
@@ -63,6 +86,7 @@ public final class OpeningBook {
             for (short[] s : profile.surfSeed()) surfSeed.add(Seeds.surf(s));
         }
         return new Opening(gunTier, moveTier, gun, gunTier == Tiers.Gun.T3, surfPrior,
-            theirHitRate, Tiers.mainGunRating(profile), SEED_WEIGHT, gunSeed, surfSeed);
+            theirHitRate, Tiers.mainGunRating(profile), SEED_WEIGHT, gunSeed, surfSeed,
+            distance(gunTier));
     }
 }

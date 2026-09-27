@@ -22,6 +22,7 @@ graph LR
         T[port.Telemetry]
         MEM[memory]
         AD[adapt]
+        PO[policy]
         PS[port.ProfileStore]
     end
     subgraph data directory
@@ -41,6 +42,8 @@ graph LR
     T -. console .-> A
     C --> MEM
     C --> AD
+    C --> PO
+    PO --> MEM
     AD --> MEM
     MEM --> PS
     PS -. FileProfileStore .-> F
@@ -91,6 +94,7 @@ data directory through `RobocodeFileOutputStream`. S6 adds a `Clock` port.
 | `melee` | the melee brain (MELEE-1..8): opponent tracker, sweep radar, minimum-risk mover, target selector, circular gun, posture strategy, battle-long opponent stats |
 | `memory` | opponent memory (MEM-1..5, RES-3): lineage keys, the profile, its binary codec, the round folder and the library that loads, saves and evicts; estimates with margins of error, the tiers and the seed layout |
 | `adapt` | recognise and adapt (ADAPT-1..3, DIAL-1..2, RES-4): the opening book, the seed loader and the seed trust |
+| `policy` | aggressive (DIST-1, POW-1, POW-2, END-1, END-2): rolling hit-rate windows, the distance controller, the power policy, the endgame states and the enemy gun-heat estimate |
 | `replay` | the line codec and replay driver for recorded battles (CORE-2) |
 | `port` | outbound interfaces |
 
@@ -100,7 +104,9 @@ clock; no mutable static fields; model, physics and ports never depend on gun, m
 or replay; gun and movement never depend on each other; the ledger depends only on
 physics, so nothing but the engine's rules decides which drops become waves; melee depends
 only on the model and physics, and no duel package depends on melee; memory depends only on
-itself and the ports, and no gun, movement, melee, ledger or model code depends on memory.
+itself and the ports, and no gun, movement, melee, ledger or model code depends on memory;
+the adapt and policy packages see neither `BotInput` nor `BotEvent` (DIAL-2), and no gun,
+movement or lower package depends on them.
 
 ## Melee and duel
 
@@ -163,6 +169,26 @@ While the round runs, each real bullet's gun wave and each enemy hit on us becom
 samples in the `ProfileFolder`, which keeps the latest 600 and 300 and folds them into the
 profile at the round's end (MEM-2); `memory.Seeds` quantises them to shorts. P records
 (`P,round,tick,policy,value,margin,setting`) say what the book chose and each seed decay.
+
+## Aggressive
+
+S5 replaces 1.20's fixed 650 px with `policy.DistancePolicy`, and adds a power policy and
+the endgame. `HadurCore` owns them and applies their decisions each duel tick; gun and
+movement only see the results through setters.
+
+| Decision | From | Applied through |
+|---|---|---|
+| Starting distance: 650 for a stranger, 400 / 450 / 500 / 550 for T0 to T3 | gun tier (`Opening.distance`) | `DistancePolicy` |
+| Target in 25 px on each enemy wave while our rolling hit rate leads theirs by 5 points or more beyond its margin of error (DIST-1, DIAL-1); out 25 px while theirs leads by as much; within [400, 650] | two `HitWindow`s of the last 100 shots each | `SurfMover.setDesiredDistance`, which the surf's and the orbit's attack angles steer to |
+| Full power: T0 profile and enemy energy above 12 (POW-1), or a certain 20%+ against a certain sub-10% (POW-2); capped at a quarter of their energy, never while ours is 12 or less | gun tier, both windows | the gun wave's bullet power in `onScan` |
+| Finish: target 150 while enemy energy is under 16, ours over 40 and their gun hotter than ours (END-1) | energies, `EnemyGunHeat`, our gun heat | `DistancePolicy.target(true)` |
+| Ram: drive straight at a disabled enemy (END-2) | enemy energy 0 | `SurfMover.ram` in place of the surf |
+
+P records mark the opening distance (`distance`, `<tier>:<px>`), each step
+(`distance`, the gap, its margin, the new target), each change of power reason (`power`)
+and of endgame state (`endgame`). R fields 23-27 carry the round's mean scan distance, the
+target at the round's end, finishing and ramming ticks, and full-power shots; the bench's
+Aggression section reads them.
 
 ## Java version
 

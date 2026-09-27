@@ -24,7 +24,7 @@ public final class Opening {
     /** The opening for a stranger: 1.20's defaults, no prior, no seeds. */
     public static final Opening STRANGER = new Opening(Tiers.Gun.UNKNOWN, Tiers.Move.UNKNOWN,
         Gun.LIVE, false, Estimate.NONE, Estimate.NONE, Estimate.NONE, 0.0,
-        Collections.emptyList(), Collections.emptyList());
+        Collections.emptyList(), Collections.emptyList(), OpeningBook.STRANGER_DISTANCE);
 
     private final Tiers.Gun gunTier;
     private final Tiers.Move moveTier;
@@ -36,10 +36,11 @@ public final class Opening {
     private final double seedWeight;
     private final List<double[]> gunSeed;
     private final List<double[]> surfSeed;
+    private final double distance;
 
     Opening(Tiers.Gun gunTier, Tiers.Move moveTier, Gun gun, boolean flattenerFirst,
             Estimate surfPrior, Estimate theirHitRate, Estimate mainGunRating, double seedWeight,
-            List<double[]> gunSeed, List<double[]> surfSeed) {
+            List<double[]> gunSeed, List<double[]> surfSeed, double distance) {
         this.gunTier = gunTier;
         this.moveTier = moveTier;
         this.gun = gun;
@@ -50,6 +51,12 @@ public final class Opening {
         this.seedWeight = seedWeight;
         this.gunSeed = Collections.unmodifiableList(gunSeed);
         this.surfSeed = Collections.unmodifiableList(surfSeed);
+        this.distance = distance;
+    }
+
+    /** S5: the distance the battle starts at; the distance policy moves it from there. */
+    public double distance() {
+        return distance;
     }
 
     public Tiers.Gun gunTier() {
