@@ -166,7 +166,12 @@ public class MeleeController {
     }
 
     public void onRobotDeath(String name) {
-        profiles.died(name);
+        onRobotDeath(name, false);
+    }
+
+    /** A robot died; a {@code sentry} takes no place in the melee's standings (GATE-5). */
+    public void onRobotDeath(String name, boolean sentry) {
+        profiles.died(name, sentry);
         tracker.onRobotDeath(name);
         waves.onRobotDeath(name);
         if (name.equals(lastTarget)) lastTarget = null;

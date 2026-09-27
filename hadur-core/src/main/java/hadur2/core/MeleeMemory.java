@@ -29,9 +29,12 @@ import java.util.TreeSet;
  * <li>A save writes {@code <file>.tmp} first, then the block, then deletes the copy, and a
  *     load falls back to a complete copy, as RES-3 does for the 1v1 profile.</li>
  * <li>All blocks together stay under {@link #CAP} bytes: before a write that would pass it,
- *     the least recently fought other blocks are deleted. A write that would take the store
- *     past {@link #EVICT_AT} of its quota is skipped and counted instead, so melee memory
- *     never costs a 1v1 profile its room.</li>
+ *     the least recently fought other blocks are deleted, never one fought this battle. A
+ *     write that would still pass the cap, or would take the store past {@link #EVICT_AT} of
+ *     its quota, is skipped and counted instead, deleting nothing, so melee memory never
+ *     costs a 1v1 profile its room; the block stays pending for the next checkpoint.</li>
+ * <li>A file that holds another opponent's block (two keys on one file name) is never
+ *     overwritten: the later opponent goes unsaved and reads as a stranger.</li>
  * <li>Blocks are stamped with a melee battle number: one more than the highest stamp in the
  *     store when the battle starts.</li>
  * </ul>
@@ -71,6 +74,7 @@ final class MeleeMemory {
     private int saveFailures;
     private int skippedWrites;
     private int evicted;
+    private int collisions;
     private String lastNote = "";
 
     MeleeMemory(ProfileStore store) {
@@ -82,6 +86,8 @@ final class MeleeMemory {
     int skippedWrites() { return skippedWrites; }
     /** Blocks deleted to keep all blocks under {@link #CAP}. */
     int evicted() { return evicted; }
+    /** Saves refused because the file held another opponent's block (a file-name collision). */
+    int collisions() { return collisions; }
     String lastNote() { return lastNote; }
 
     static String fileName(String key) {
@@ -166,7 +172,10 @@ final class MeleeMemory {
         }
     }
 
-    /** MMEM-1: writes every block folded since the last save. Never throws. */
+    /**
+     * MMEM-1: writes every block folded since the last save. Never throws. A block that
+     * failed or was skipped for room stays pending, and the next checkpoint tries it again.
+     */
     void saveAll() {
         for (String key : new ArrayList<>(dirty)) {
             Loaded l = loaded.get(key);
@@ -174,18 +183,39 @@ final class MeleeMemory {
         }
     }
 
-    /** Writes one block; returns false when it failed and should be tried again. */
+    /**
+     * Writes one block. Returns true when it is done with (written, or refused because
+     * another opponent's block holds the file), false when it should be tried again (a
+     * failure, or no room). Nothing is deleted unless the write then goes ahead.
+     */
     private boolean save(MeleeProfile p) {
         String file = fileName(p.key());
         try {
+            if (heldByAnother(file, p.key())) {
+                collisions++;
+                lastNote = "melee kept " + file + ": it holds another opponent's block";
+                return true;
+            }
             byte[] bytes = MeleeProfileCodec.encode(p);
-            makeRoom(file, bytes.length);
-            long others = store.bytesUsed() - size(file) - size(file + TMP_SUFFIX);
+            List<String> evict = new ArrayList<>();
+            long freed = planRoom(file, bytes.length, evict);
+            if (freed < 0) {
+                skippedWrites++;
+                lastNote = "melee skipped " + p.key() + ": over the " + CAP + "-byte cap";
+                return false;
+            }
+            long others = store.bytesUsed() - size(file) - size(file + TMP_SUFFIX) - freed;
             // While saving, the temporary copy and the block exist side by side.
             if (others + 2L * bytes.length > (long) Math.floor(store.quota() * EVICT_AT)) {
                 skippedWrites++;
                 lastNote = "melee skipped " + p.key() + ": " + bytes.length + " bytes do not fit";
-                return true;
+                return false;
+            }
+            for (String block : evict) {
+                store.delete(block);
+                store.delete(block + TMP_SUFFIX);
+                evicted++;
+                lastNote = "melee evicted " + block;
             }
             store.write(file + TMP_SUFFIX, bytes);
             store.write(file, bytes);
@@ -198,12 +228,25 @@ final class MeleeMemory {
         }
     }
 
+    /** Whether {@code file} holds a valid block of a key other than {@code key}: a stem collision. */
+    private boolean heldByAnother(String file, String key) {
+        byte[] main = store.read(file);
+        if (main == null) return false;
+        try {
+            return !MeleeProfileCodec.decode(main).key().equals(key);
+        } catch (MeleeProfileFormatException e) {
+            // Damaged: ours to replace.
+            return false;
+        }
+    }
+
     /**
-     * Deletes the least recently fought other blocks (damaged ones first) until all blocks
-     * with {@code file} at {@code bytes} fit under {@link #CAP}. Blocks fought in this
-     * battle are kept.
+     * Plans the room for {@code file} at {@code bytes} under {@link #CAP}: adds to
+     * {@code evict} the least recently fought other blocks to delete (damaged ones first),
+     * never one fought in this battle, and returns the bytes they free; -1 when even those
+     * evictions would leave the blocks over the cap. Deletes nothing.
      */
-    private void makeRoom(String file, int bytes) {
+    private long planRoom(String file, int bytes, List<String> evict) {
         List<String> others = new ArrayList<>();
         Map<String, Long> stamps = new LinkedHashMap<>();
         long total = bytes;
@@ -220,17 +263,18 @@ final class MeleeMemory {
                 others.add(block);
             }
         }
-        if (total <= CAP) return;
+        if (total <= CAP) return 0;
         others.sort(Comparator.comparingLong((String n) -> stamps.get(n)).thenComparing(n -> n));
+        long freed = 0;
         for (String block : others) {
             if (total <= CAP) break;
             if (stamps.get(block) >= battle()) continue;
-            total -= size(block) + size(block + TMP_SUFFIX);
-            store.delete(block);
-            store.delete(block + TMP_SUFFIX);
-            evicted++;
-            lastNote = "melee evicted " + block;
+            long size = size(block) + size(block + TMP_SUFFIX);
+            total -= size;
+            freed += size;
+            evict.add(block);
         }
+        return total <= CAP ? freed : -1;
     }
 
     private long size(String name) {

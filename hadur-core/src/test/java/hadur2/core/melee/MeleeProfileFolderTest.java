@@ -55,13 +55,27 @@ class MeleeProfileFolderTest {
 
     @Test
     @Tag("MMEM-1")
+    @DisplayName("an unseen opponent's death still moves the places on; a sentry's does not")
+    void unseenDeathsCount() {
+        for (String n : List.of("a", "b", "c")) folder.scanned(n, 500);
+        folder.died("unseen", false);
+        folder.died("sentry", true);
+        folder.died("a", false);
+        folder.died("unseen", false);
+        assertEquals(4, folder.rank("a", 5), "the second of five to die places fourth");
+        assertEquals(0, folder.rank("unseen", 5));
+        assertEquals(1, folder.rank("b", 5));
+    }
+
+    @Test
+    @Tag("MMEM-1")
     @DisplayName("deaths place opponents from the last; survivors place first")
     void rankByDeathOrder() {
         for (String n : List.of("a", "b", "c", "d")) folder.scanned(n, 500);
-        folder.died("c");
-        folder.died("a");
-        folder.died("c");
-        folder.died("sentry");
+        folder.died("c", false);
+        folder.died("a", false);
+        folder.died("c", false);
+        folder.died("sentry", true);
         assertEquals(4, folder.rank("c", 4));
         assertEquals(3, folder.rank("a", 4));
         assertEquals(1, folder.rank("b", 4));

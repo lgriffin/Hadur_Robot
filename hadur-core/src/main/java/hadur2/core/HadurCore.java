@@ -614,7 +614,7 @@ public final class HadurCore {
      * at the next scan, and the name is kept to catch the melee aiming at a dead robot.
      */
     private void onRobotDeath(String name) {
-        meleeEvent(() -> melee.onRobotDeath(name));
+        meleeEvent(() -> melee.onRobotDeath(name, gate.isSentry(name)));
         focus.died(name);
         if (deadThisRound.size() < 64) deadThisRound.add(name);
     }
@@ -885,12 +885,17 @@ public final class HadurCore {
     }
 
     /**
-     * The battle is over: the last save (MEM-3).
+     * The battle is over: the last save (MEM-3), and in a melee battle with a store a
+     * closing count of melee memory failures, which the last M record cannot carry.
      *
      * @param tick the battle's last tick, for the record
      */
     public void battleEnded(long tick) {
         saveProfile(tick);
+        // The last round's M record went out before its checkpoint save: close the count here.
+        if (meleeMemory != null) {
+            telemetry.emit("MEM," + round + "," + tick + ",melee-battle-failures," + meleeMemoryFailures);
+        }
     }
 
     /**

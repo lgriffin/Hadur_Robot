@@ -113,6 +113,21 @@ class HandOffCoreTest {
 
     @Test
     @Tag("MMEM-1")
+    @DisplayName("a save that fails at the last checkpoint still shows in the battle's closing count")
+    void lastCheckpointFailuresCounted() {
+        // Too small a store for any block: every save is skipped and counted.
+        MemoryProfileStore store = new MemoryProfileStore(100);
+        HadurCore core = meleeToDuel(store);
+        core.roundEnded(31, "win", 100, 0);
+        core.saveProfile(31);
+        core.battleEnded(32);
+        String last = telemetry.stream().filter(l -> l.contains(",melee-battle-failures,"))
+            .reduce((x, y) -> y).orElseThrow();
+        assertTrue(Integer.parseInt(last.substring(last.lastIndexOf(',') + 1)) >= 1, last);
+    }
+
+    @Test
+    @Tag("MMEM-1")
     @DisplayName("a melee round's end writes each opponent's block, and the next battle finds it")
     void blocksWrittenAndFound() {
         MemoryProfileStore store = new MemoryProfileStore(200_000);

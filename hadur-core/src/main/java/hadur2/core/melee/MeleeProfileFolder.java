@@ -2,7 +2,9 @@ package hadur2.core.melee;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.Map;
 
 /**
@@ -38,10 +40,14 @@ public final class MeleeProfileFolder {
 
     private final Map<String, Tally> round = new LinkedHashMap<>();
     private int deaths;
+    /** This round's dead, each counted once (RES-2: a field's worth at most). */
+    private final Set<String> dead = new HashSet<>();
+    static final int MAX_DEAD = 64;
 
     public void newRound() {
         round.clear();
         deaths = 0;
+        dead.clear();
     }
 
     private Tally tally(String name) {
@@ -79,12 +85,15 @@ public final class MeleeProfileFolder {
     }
 
     /**
-     * {@code name} died. Only opponents scanned this round are placed, so a sentry, which
-     * the melee never scans (GATE-5), takes no place from them.
+     * {@code name} died. Every opponent's death moves the places on, scanned this round or
+     * not; a sentry's ({@code sentry}) does not, as a sentry takes no place (GATE-5). Only
+     * opponents scanned this round are placed themselves.
      */
-    public void died(String name) {
+    public void died(String name, boolean sentry) {
+        if (sentry || dead.size() >= MAX_DEAD || !dead.add(name)) return;
+        int order = deaths++;
         Tally t = round.get(name);
-        if (t != null && t.scanned && t.deathOrder < 0) t.deathOrder = deaths++;
+        if (t != null && t.scanned) t.deathOrder = order;
     }
 
     /** Opponents scanned this round, in the order first seen: the ones with a round to fold. */

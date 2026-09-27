@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import hadur2.core.melee.MeleeProfile;
@@ -13,6 +14,7 @@ import hadur2.core.memory.LineageKey;
 import hadur2.core.memory.ProfileLibrary;
 import hadur2.core.port.MemoryProfileStore;
 import hadur2.core.port.ProfileStore;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -179,5 +181,77 @@ class MeleeMemoryTest {
         assertEquals(2, m.saveFailures());
         m.saveAll();
         assertEquals(4, m.saveFailures(), "a failed block is tried again");
+    }
+
+    @Test
+    @Tag("MMEM-1")
+    @DisplayName("a save skipped for quota deletes nothing, and goes through once there is room")
+    void skipDeletesNothingAndRetries() {
+        // Old blocks just over the cap, in a store all but full: evicting to the cap would
+        // free too little for the write to stay under 90% of the quota.
+        String pad = "p".repeat(100);
+        List<byte[]> blocks = new ArrayList<>();
+        List<String> keys = new ArrayList<>();
+        long h = 0;
+        for (int i = 1; h <= MeleeMemory.CAP + 500; i++) {
+            String key = "old" + i + "." + pad;
+            byte[] b = block(key, i);
+            keys.add(key);
+            blocks.add(b);
+            h += b.length;
+        }
+        long quota = h + 2000;
+        MemoryProfileStore store = new MemoryProfileStore(quota);
+        for (int i = 0; i < keys.size(); i++) store.write(MeleeMemory.fileName(keys.get(i)), blocks.get(i));
+        store.write("big.hp", new byte[(int) (quota - h - 100)]);
+        long hmBefore = hmBytes(store);
+
+        MeleeMemory m = new MeleeMemory(store);
+        m.foldRound(round(2, "new.Robot"), 3);
+        m.saveAll();
+        assertEquals(1, m.skippedWrites());
+        assertEquals(0, m.evicted(), "nothing evicted for a write that did not happen");
+        assertEquals(hmBefore, hmBytes(store));
+        assertNull(store.read(MeleeMemory.fileName("new.Robot")));
+
+        // Room again: the block was kept pending, so the next checkpoint writes it.
+        store.delete("big.hp");
+        m.saveAll();
+        assertNotNull(store.read(MeleeMemory.fileName("new.Robot")));
+        assertTrue(hmBytes(store) <= MeleeMemory.CAP, "hm bytes " + hmBytes(store));
+    }
+
+    @Test
+    @Tag("MMEM-1")
+    @DisplayName("blocks fought this battle are never evicted, and never pass the cap together")
+    void thisBattleNeverPassesTheCap() {
+        MemoryProfileStore store = new MemoryProfileStore(200_000);
+        String pad = "q".repeat(120);
+        String[] names = new String[MeleeMemory.MAX_BLOCKS];
+        for (int i = 0; i < names.length; i++) names[i] = "bot" + i + "." + pad;
+        MeleeMemory m = new MeleeMemory(store);
+        m.foldRound(round(3, names), names.length);
+        m.saveAll();
+        assertTrue(hmBytes(store) <= MeleeMemory.CAP, "hm bytes " + hmBytes(store));
+        assertTrue(m.skippedWrites() > 0, "the blocks that do not fit are skipped");
+        assertEquals(0, m.evicted());
+    }
+
+    @Test
+    @Tag("MMEM-1")
+    @DisplayName("a file holding another opponent's block is never overwritten")
+    void collisionKeepsTheOtherBlock() {
+        MemoryProfileStore store = new MemoryProfileStore(200_000);
+        // As if "z.Z" and "a.A" shared a file name: the file holds z.Z's block.
+        byte[] theirs = block("z.Z", 1);
+        store.write(MeleeMemory.fileName("a.A"), theirs);
+        MeleeMemory m = new MeleeMemory(store);
+        assertFalse(m.load("a.A").found, "another key's block reads as a stranger");
+        m.foldRound(round(1, "a.A"), 3);
+        m.saveAll();
+        assertEquals(1, m.collisions());
+        assertArrayEquals(theirs, store.read(MeleeMemory.fileName("a.A")));
+        m.saveAll();
+        assertEquals(1, m.collisions(), "refused once, not retried");
     }
 }
