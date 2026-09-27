@@ -5,8 +5,8 @@ import hadur2.core.physics.DiaUtils;
 import java.awt.geom.Point2D;
 
 /**
- * Melee targeting: circular prediction, falling back to linear prediction when the
- * opponent's turn rate is unknown. Cheap enough to aim at a new target every tick.
+ * The field gun's fallback for an opponent with too little history (MGUN-1): circular
+ * prediction, or linear while the opponent's turn rate is unknown.
  */
 public class MeleeGun {
 
@@ -63,30 +63,5 @@ public class MeleeGun {
             if (t > elapsed && (t - elapsed) * speed >= me.distance(x, y)) break;
         }
         return new Point2D.Double(x, y);
-    }
-
-    /** Distance- and energy-based bullet power, never more than needed to kill. */
-    public static double basePower(double distance, double myEnergy,
-                                   double enemyEnergy, int enemiesAlive) {
-        double power = 2.999;
-        if (enemiesAlive <= 3) power = 1.999;
-        if (enemiesAlive <= 5 && distance > 500.0) power = 1.499;
-        if ((myEnergy < enemyEnergy && enemiesAlive <= 5 && distance > 300.0)
-                || distance > 700.0) {
-            power = 0.999;
-        }
-        if (myEnergy < 20.0 && myEnergy < enemyEnergy) {
-            power = Math.min(power, 2.0 - (20.0 - myEnergy) / 11.0);
-        }
-        power = Math.min(power, killPower(enemyEnergy));
-        power = Math.max(power, 0.1);
-        return Math.min(power, myEnergy);
-    }
-
-    /** Smallest bullet power whose damage finishes a robot with {@code energy} left. */
-    public static double killPower(double energy) {
-        // Bullet damage is 4p, plus 2(p - 1) above power 1.
-        double p = energy <= 4.0 ? energy / 4.0 : (energy + 2.0) / 6.0;
-        return Math.max(0.1, p + 0.01);
     }
 }

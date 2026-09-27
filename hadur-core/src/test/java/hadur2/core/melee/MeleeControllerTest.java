@@ -54,16 +54,16 @@ class MeleeControllerTest {
     }
 
     @Test
-    @Tag("MELEE-6")
+    @Tag("MGUN-2")
     void neverFiresMoreThanNeededToKill() {
         scan(controller.tracker, "a", 400, 450, 1.0, 0);
         scan(controller.tracker, "b", 100, 100, 100, 0);
         scan(controller.tracker, "c", 700, 100, 100, 0);
-        assertEquals(MeleeGun.killPower(1.0), tick(0, 3).firePower, 1e-9);
+        assertEquals(MeleeEnergyPolicy.killPower(1.0), tick(0, 3).firePower, 1e-9);
     }
 
     @Test
-    @Tag("MELEE-5")
+    @Tag("MSENSE-1")
     void retargetsTheTickAfterATargetDies() {
         scan(controller.tracker, "a", 400, 500, 20, 0);
         scan(controller.tracker, "b", 100, 100, 60, 0);

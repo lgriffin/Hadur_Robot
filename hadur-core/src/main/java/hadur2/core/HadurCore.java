@@ -274,6 +274,8 @@ public final class HadurCore {
         sweepGap;
     /** The melee tracker's battle count of ghosts at the round's start, so the M record shows this round's. */
     private long ghostsAtRoundStart;
+    /** The melee waves' battle totals when this round began (MGUN-4). */
+    private final long[] wavesAtRoundStart = new long[3];
 
     /**
      * A core without opponent memory.
@@ -359,6 +361,9 @@ public final class HadurCore {
         meleeTicks = duelTicks = focusTicks = meleeFaults = ghostTicks = sentryHits = maxScanGap = sweepGap = 0;
         ghostsAtRoundStart = melee.ghostsDropped();
         deadThisRound.clear();
+        wavesAtRoundStart[0] = melee.waves().emitted();
+        wavesAtRoundStart[1] = melee.waves().resolved();
+        wavesAtRoundStart[2] = melee.waves().hits();
     }
 
     /**
@@ -642,7 +647,7 @@ public final class HadurCore {
     }
 
     /**
-     * MELEE-5..8, MRADAR, MMOVE: one tick of melee. The shot aimed last tick goes out first if the gun got
+     * MELEE-7..8, MRADAR, MMOVE, MGUN: one tick of melee. The shot aimed last tick goes out first if the gun got
      * there, as in 1.x; then the melee brain picks the radar sweep, destination and aim.
      *
      * <p>Target choice, aim, power and the decision to hold fire are all the melee brain's
@@ -666,7 +671,7 @@ public final class HadurCore {
 
         MeleeController.Command c = melee.tick(new MeleeController.Situation(
             in.location(), in.gunHeading(), in.radarHeading(), in.energy(), in.time(),
-            in.others(), in.heading(), in.velocity()));
+            in.others(), in.heading(), in.velocity(), in.gunHeat()));
         // M2's check: a tick aimed at a robot that has died is a ghost tick.
         if (c.target != null && deadThisRound.contains(c.target)) ghostTicks++;
         orders.turnRadarRight(c.radarTurn);
@@ -733,14 +738,19 @@ public final class HadurCore {
     /**
      * The melee extension's round record, for battles with several opponents or sentries:
      * {@code M,round,tick,meleeTicks,duelTicks,focusTicks,veto,meleeFaults,maxScanGap,
-     * ghostTicks,sentryHits,sweepGap,ghostsDropped}. The veto is {@code -}, {@code sentry} or {@code fault};
-     * sentryHits counts our bullets that hit a sentry. Fields are only ever appended.
+     * ghostTicks,sentryHits,sweepGap,ghostsDropped,wavesSent,wavesResolved,virtualHits}; the
+     * wave counts are the round's targeting waves (MGUN-4) and how many the field gun's aim
+     * would have hit. The veto is {@code -}, {@code sentry} or {@code fault}; sentryHits counts
+     * our bullets that hit a sentry. Fields are only ever appended.
      */
     String meleeRecord(long tick) {
         return "M," + round + "," + tick + "," + meleeTicks + "," + duelTicks + "," + focusTicks
             + "," + (gate.veto() == PostureGate.Veto.NONE ? "-" : gate.veto().name().toLowerCase(Locale.ROOT))
             + "," + meleeFaults + "," + maxScanGap + "," + ghostTicks + "," + sentryHits
-            + "," + sweepGap + "," + (melee.ghostsDropped() - ghostsAtRoundStart);
+            + "," + sweepGap + "," + (melee.ghostsDropped() - ghostsAtRoundStart)
+            + "," + (melee.waves().emitted() - wavesAtRoundStart[0])
+            + "," + (melee.waves().resolved() - wavesAtRoundStart[1])
+            + "," + (melee.waves().hits() - wavesAtRoundStart[2]);
     }
 
     /** MEM-2: the round's observations join the profile. A failure here is counted, never thrown. */

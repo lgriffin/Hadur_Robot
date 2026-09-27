@@ -29,7 +29,7 @@ class EnemyTrackerTest {
     }
 
     @Test
-    @Tag("MELEE-6")
+    @Tag("MGUN-1")
     void turnRateComesFromConsecutiveScans() {
         tracker.onScan("a", pt(100, 100), 100, 0.0, 8, 0);
         EnemyInfo e = tracker.onScan("a", pt(100, 108), 100, 0.2, 8, 2);

@@ -72,6 +72,13 @@ class MinimumRiskMovementTest {
         double stale = move.candidates(pt(500, 500), 3, tracker.alive(), 50).stream()
             .mapToDouble(p -> p.distance(500, 500)).max().getAsDouble();
         assertEquals(300, stale, 1e-9);
+        // Stale from exactly STALE_TICKS on, as EnemyInfo.isStale has it; one tick younger still caps.
+        double atStale = move.candidates(pt(500, 500), 3, tracker.alive(), 1 + EnemyInfo.STALE_TICKS).stream()
+            .mapToDouble(p -> p.distance(500, 500)).max().getAsDouble();
+        assertEquals(300, atStale, 1e-9);
+        double young = move.candidates(pt(500, 500), 3, tracker.alive(), EnemyInfo.STALE_TICKS).stream()
+            .mapToDouble(p -> p.distance(500, 500)).max().getAsDouble();
+        assertEquals(MinimumRiskMovement.MIN_RING, young, 1e-9);
         for (Point2D.Double p : move.candidates(pt(500, 500), 3, tracker.alive(), 2)) {
             assertEquals(MinimumRiskMovement.MIN_RING, p.distance(500, 500), 1e-9);
         }
@@ -176,17 +183,30 @@ class MinimumRiskMovementTest {
 
     @Test
     @Tag("MMOVE-3")
-    @DisplayName("MMOVE-3: a bullet crossing the route before Hadur arrives is risky")
-    void bulletAcrossTheRoute() {
+    @DisplayName("MMOVE-3: bullets are scored at the destination, not along the route")
+    void routeIsNotScored() {
         Point2D.Double me = pt(500, 200);
-        // A power-3 bullet flying east along y = 350, at x = 500 when Hadur, heading north
-        // for 500,500, crosses y = 350 about 21 ticks from now.
+        // A power-3 bullet flying east along y = 350 crosses the route to 500,500 about when
+        // Hadur does, but is far from 500,500 on arrival: the destination is re-scored every
+        // tick as Hadur moves, and scoring guessed paths along the route cost APS.
         EnemyShot s = new EnemyShot("a", pt(100, 350), 5, 3.0);
         List<VirtualBullet> bs = Arrays.asList(new VirtualBullet(s, VirtualBullet.Aim.HEAD_ON, Math.PI / 2));
-        double across = MinimumRiskMovement.bulletRisk(pt(500, 500), me, bs, 20);
-        double clear = MinimumRiskMovement.bulletRisk(pt(800, 200), me, bs, 20);
-        assertTrue(across > 1.0, "across " + across);
-        assertTrue(clear < 0.01, "clear " + clear);
+        assertTrue(MinimumRiskMovement.bulletRisk(pt(500, 500), me, bs, 20) < 0.01);
+        // Standing in its way at the right time is risky.
+        assertTrue(MinimumRiskMovement.bulletRisk(pt(500, 350), pt(500, 340), bs, 40) > 1.0);
+    }
+
+    @Test
+    @Tag("TIME-1")
+    @DisplayName("TIME-1: bullets that stay far from every candidate are not scored")
+    void farBulletsAreSkipped() {
+        Point2D.Double me = pt(200, 200);
+        EnemyShot far = new EnemyShot("a", pt(900, 900), 10, 2.0);
+        EnemyShot near = new EnemyShot("b", pt(200, 700), 10, 2.0);
+        VirtualBullet away = new VirtualBullet(far, VirtualBullet.Aim.HEAD_ON, Math.PI / 2);
+        VirtualBullet coming = new VirtualBullet(near, VirtualBullet.Aim.HEAD_ON, Math.PI);
+        List<VirtualBullet> kept = MinimumRiskMovement.relevant(Arrays.asList(away, coming), me, 10);
+        assertEquals(Arrays.asList(coming), kept);
     }
 
     @Test

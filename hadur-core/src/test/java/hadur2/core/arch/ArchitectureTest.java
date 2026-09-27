@@ -4,7 +4,10 @@ import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.fields;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
 import static com.tngtech.archunit.library.dependencies.SlicesRuleDefinition.slices;
 
+import com.tngtech.archunit.base.DescribedPredicate;
+import com.tngtech.archunit.core.domain.JavaClass;
 import com.tngtech.archunit.core.domain.JavaClasses;
+import com.tngtech.archunit.core.domain.properties.HasName;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 import com.tngtech.archunit.core.importer.ImportOption;
 import com.tngtech.archunit.lang.ArchRule;
@@ -185,11 +188,17 @@ public class ArchitectureTest {
     @Tag("GATE-1")
     @DisplayName("GATE-1: melee is a separate brain beside the duel's gun and movement")
     void meleeIsSeparateFromDuel() {
-        // The melee brain runs instead of the duel subsystems, so it needs only the model and
-        // the engine's physics; and the duel code must not reach into it.
+        // The melee brain runs instead of the duel subsystems, so it needs only the model, the
+        // engine's physics and the generic kd-tree (its own instances: melee data never
+        // reaches a duel tree); and the duel code must not reach into it.
         noClasses().that().resideInAPackage("hadur2.core.melee..")
             .should().dependOnClassesThat().resideOutsideOfPackages("hadur2.core.melee..",
-                "hadur2.core.physics..", "hadur2.core.model..", "java..")
+                "hadur2.core.physics..", "hadur2.core.model..", "hadur2.core.knn..", "java..")
+            .check(core);
+        noClasses().that().resideInAPackage("hadur2.core.melee..")
+            .should().dependOnClassesThat(JavaClass.Predicates.resideInAPackage("hadur2.core.knn..")
+                .and(DescribedPredicate.not(HasName.Predicates.nameStartingWith("hadur2.core.knn.KdTree"))))
+            .because("the melee gun borrows the kd-tree and nothing else from the duel's KNN")
             .check(core);
         noClasses().that().resideInAnyPackage("hadur2.core.gun..", "hadur2.core.move..",
                 "hadur2.core.knn..", "hadur2.core.ledger..", "hadur2.core.model..",

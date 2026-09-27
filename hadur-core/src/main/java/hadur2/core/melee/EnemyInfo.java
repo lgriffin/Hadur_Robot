@@ -34,9 +34,13 @@ public class EnemyInfo {
     public boolean alive = true;
     /** The last tick one of its bullets hit Hadur, or -1 (MMOVE-2). */
     public long lastHitHadur = -1;
+    /** The ticks its last few bullets hit Hadur, oldest first (RES-2: at most {@link #HITS_KEPT}). */
+    private final Deque<Long> hitsOnHadur = new ArrayDeque<>();
+    static final int HITS_KEPT = 8;
 
     private double prevHeading;
     private long prevScanTime = -1;
+    private Point2D.Double prevLocation;
     private final Deque<long[]> externalLosses = new ArrayDeque<>();
     private double pendingOwnDamage;
 
@@ -74,6 +78,7 @@ public class EnemyInfo {
             }
             prevHeading = this.heading;
             prevScanTime = lastScanTime;
+            prevLocation = this.location;
         }
         pendingOwnDamage = 0;
         pruneLosses(time);
@@ -92,6 +97,16 @@ public class EnemyInfo {
     /** Ticks since the last scan. */
     public long age(long now) {
         return lastScanTime < 0 ? Long.MAX_VALUE : now - lastScanTime;
+    }
+
+    /** Where the scan before the latest one saw it, or null before its second scan. */
+    Point2D.Double previousLocation() {
+        return prevLocation;
+    }
+
+    /** The tick of the scan before the latest one, or -1. */
+    long previousScanTime() {
+        return prevScanTime;
     }
 
     public boolean isStale(long now) {
@@ -134,5 +149,21 @@ public class EnemyInfo {
 
     public double distance(Point2D.Double p) {
         return location.distance(p);
+    }
+
+    /** One of its bullets hit Hadur at {@code time}. */
+    public void recordHitOnHadur(long time) {
+        lastHitHadur = time;
+        if (hitsOnHadur.size() >= HITS_KEPT) hitsOnHadur.removeFirst();
+        hitsOnHadur.addLast(time);
+    }
+
+    /** How many of its bullets hit Hadur in the last {@code window} ticks. */
+    public int hitsOnHadur(long now, long window) {
+        int n = 0;
+        for (long t : hitsOnHadur) {
+            if (now - t <= window) n++;
+        }
+        return n;
     }
 }

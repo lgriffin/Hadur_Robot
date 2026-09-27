@@ -15,7 +15,7 @@ class MeleeGunTest {
     private final Point2D.Double me = pt(400, 100);
 
     @Test
-    @Tag("MELEE-6")
+    @Tag("MGUN-1")
     void stationaryTargetIsAimedAtDirectly() {
         EnemyInfo e = scan(tracker, "a", 400, 400, 100, 0);
         MeleeGun.Aim aim = gun.aim(me, e, 2.0, 0);
@@ -23,7 +23,7 @@ class MeleeGunTest {
     }
 
     @Test
-    @Tag("MELEE-6")
+    @Tag("MGUN-1")
     void linearPredictionLeadsAMovingTarget() {
         EnemyInfo e = scan(tracker, "a", 400, 400, 100, Math.PI / 2, 8, 0);
         MeleeGun.Aim aim = gun.aim(me, e, 2.0, 0);
@@ -35,7 +35,7 @@ class MeleeGunTest {
     }
 
     @Test
-    @Tag("MELEE-6")
+    @Tag("MGUN-1")
     void circularPredictionFollowsTheTurn() {
         tracker.onScan("a", pt(400, 400), 100, Math.PI / 2, 8, 0);
         EnemyInfo e = tracker.onScan("a", pt(416, 400), 100, Math.PI / 2 + 0.2, 8, 2);
@@ -47,7 +47,7 @@ class MeleeGunTest {
     }
 
     @Test
-    @Tag("MELEE-6")
+    @Tag("MGUN-1")
     void predictionAccountsForTimeSinceTheScan() {
         EnemyInfo e = scan(tracker, "a", 400, 400, 100, Math.PI / 2, 8, 0);
         Point2D.Double fresh = gun.predict(me, e, 2.0, 0, 0);
@@ -56,27 +56,10 @@ class MeleeGunTest {
     }
 
     @Test
-    @Tag("MELEE-6")
+    @Tag("MGUN-1")
     void predictedRobotsStopAtWalls() {
         EnemyInfo e = scan(tracker, "a", 760, 400, 100, Math.PI / 2, 8, 0);
         Point2D.Double p = gun.predict(me, e, 0.5, 0, 0);
         assertTrue(p.x <= 782);
-    }
-
-    @Test
-    @Tag("MELEE-6")
-    void killPowerFinishesTheTargetWithNoWaste() {
-        assertEquals(0.51, MeleeGun.killPower(2.0), 1e-9);
-        // Power 2 deals 4*2 + 2*(2-1) = 10 damage.
-        assertEquals(2.01, MeleeGun.killPower(10.0), 1e-9);
-        assertEquals(0.1, MeleeGun.killPower(0.0), 1e-9);
-    }
-
-    @Test
-    @Tag("MELEE-6")
-    void basePowerDropsWithDistanceAndNeverExceedsWhatIsLeft() {
-        assertTrue(MeleeGun.basePower(100, 100, 100, 6) > MeleeGun.basePower(800, 100, 100, 6));
-        assertEquals(0.51, MeleeGun.basePower(100, 100, 2, 6), 1e-9);
-        assertTrue(MeleeGun.basePower(100, 0.3, 100, 6) <= 0.3);
     }
 }

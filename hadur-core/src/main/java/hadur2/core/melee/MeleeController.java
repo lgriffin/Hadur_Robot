@@ -31,6 +31,8 @@ public class MeleeController {
         public final int others;
         /** Hadur's body heading and velocity, for the aims opponents may take at it. */
         public final double heading, velocity;
+        /** The gun's heat, for the targeting waves' cycles (MGUN-4). */
+        public final double gunHeat;
 
         public Situation(Point2D.Double me, double gunHeading, double radarHeading,
                          double energy, long time, int others) {
@@ -39,6 +41,12 @@ public class MeleeController {
 
         public Situation(Point2D.Double me, double gunHeading, double radarHeading,
                          double energy, long time, int others, double heading, double velocity) {
+            this(me, gunHeading, radarHeading, energy, time, others, heading, velocity, 0);
+        }
+
+        public Situation(Point2D.Double me, double gunHeading, double radarHeading,
+                         double energy, long time, int others, double heading, double velocity,
+                         double gunHeat) {
             this.me = me;
             this.gunHeading = gunHeading;
             this.radarHeading = radarHeading;
@@ -47,11 +55,12 @@ public class MeleeController {
             this.others = others;
             this.heading = heading;
             this.velocity = velocity;
+            this.gunHeat = gunHeat;
         }
     }
 
     /** A weak target the radar rescans often and the gun finishes (MGUN-2's threshold). */
-    static final double FINISHER_ENERGY = 16.0;
+    static final double FINISHER_ENERGY = MeleeEnergyPolicy.FINISHER_ENERGY;
 
     /** What Hadur should do this tick. */
     public static final class Command {
@@ -61,15 +70,18 @@ public class MeleeController {
         public Point2D.Double destination;
         public String target;
         public MeleeStrategy.Posture posture;
-        public MeleeGun.Strategy gunStrategy;
+        /** Whether the aim came from learned movement rather than circular or linear prediction. */
+        public boolean learnedAim;
     }
 
     public final EnemyTracker tracker;
     private final OpponentStatsBook book = new OpponentStatsBook();
     private final MeleeRadar radar = new MeleeRadar();
     private final MinimumRiskMovement mover;
-    private final MeleeTargetSelector selector = new MeleeTargetSelector(book);
-    private final MeleeGun gun;
+    private final FieldGun gun;
+    private final MeleeWaves waves = new MeleeWaves();
+    /** The opponent the gun aimed at last tick, for the radar's finisher rescans. */
+    private String lastTarget;
     private final MeleeStrategy strategy = new MeleeStrategy();
     /** Where Hadur has been this round, to tell head-on shooters from leading ones. */
     private final RobotStateLog myPath = new RobotStateLog();
@@ -78,14 +90,16 @@ public class MeleeController {
     public MeleeController(BattleField field) {
         this.tracker = new EnemyTracker(field);
         this.mover = new MinimumRiskMovement(field);
-        this.gun = new MeleeGun(field);
+        this.gun = new FieldGun(field);
     }
 
     public void newRound() {
         tracker.newRound();
         radar.newRound();
         mover.newRound();
-        selector.newRound();
+        gun.newRound();
+        waves.newRound();
+        lastTarget = null;
         myPath.clear();
     }
 
@@ -96,6 +110,8 @@ public class MeleeController {
                             double energy, double heading, double velocity, long time) {
         EnemyInfo info = tracker.onScan(name, location, energy, heading, velocity, time, distance);
         book.get(name).recordScan(distance, velocity, info.turnRate());
+        gun.onScan(info, distance, time);
+        waves.onScan(info, time);
         return info;
     }
 
@@ -119,7 +135,7 @@ public class MeleeController {
             stats.recordDamageReceived(damage, Double.NaN, 0);
             return;
         }
-        shooter.lastHitHadur = now;
+        shooter.recordHitOnHadur(now);
         double distance = shooter.location.distance(me);
         long flight = Math.round(distance / Rules.getBulletSpeed(power));
         RobotState atFire = myPath.getState(now - flight);
@@ -133,7 +149,8 @@ public class MeleeController {
 
     public void onRobotDeath(String name) {
         tracker.onRobotDeath(name);
-        selector.onRobotDeath(name);
+        waves.onRobotDeath(name);
+        if (name.equals(lastTarget)) lastTarget = null;
     }
 
     public MinimumRiskMovement mover() { return mover; }
@@ -143,8 +160,8 @@ public class MeleeController {
 
     /** Where Hadur has been this round, tick by tick. */
     public RobotStateLog myPath() { return myPath; }
-    public MeleeTargetSelector selector() { return selector; }
-    public MeleeGun gun() { return gun; }
+    public FieldGun gun() { return gun; }
+    public MeleeWaves waves() { return waves; }
     public MeleeStrategy strategy() { return strategy; }
 
     public Command tick(Situation s) {
@@ -152,8 +169,8 @@ public class MeleeController {
             .setVelocity(s.velocity).setTime(s.time).build());
         Command c = new Command();
         ghostsDropped += tracker.pruneGhosts(s.others, s.time, s.me);
-        EnemyInfo current = tracker.get(selector.current());
-        String finisher = current != null && current.energy <= FINISHER_ENERGY ? current.name : null;
+        EnemyInfo last = tracker.get(lastTarget);
+        String finisher = last != null && last.energy <= FINISHER_ENERGY ? last.name : null;
         c.radarTurn = radar.radarTurn(s.me, s.radarHeading, tracker, s.others, finisher, s.time);
 
         List<EnemyInfo> alive = tracker.alive();
@@ -162,23 +179,29 @@ public class MeleeController {
         mover.updateBullets(tracker.shots(s.time), myPath, s.me, s.time);
         c.destination = alive.isEmpty() ? null
             : mover.chooseDestination(s.me, s.energy, s.others, alive, s.time, plan);
+        waves.tick(s.me, s.time, s.gunHeat, alive, gun, s.energy, s.others);
 
-        c.target = selector.select(tracker, s.me, s.gunHeading, s.time, s.energy,
-            plan.preferredTarget);
-        EnemyInfo target = tracker.get(c.target);
-        if (target == null) return c;
+        // MGUN-1: the peak of every opponent's firing solutions.
+        FieldGun.Aim aim = gun.aim(s.me, s.energy, s.others, alive, s.time);
+        lastTarget = aim == null ? null : aim.target;
+        if (aim == null) return c;
+        EnemyInfo target = tracker.get(aim.target);
+        c.target = aim.target;
+        c.learnedAim = aim.learned;
+        c.gunTurn = Angles.normalRelativeAngle(aim.angle - s.gunHeading);
 
         double distance = target.distance(s.me);
-        double power = MeleeStrategy.adjustPower(
-            MeleeGun.basePower(distance, s.energy, target.energy, s.others), plan.posture);
-        power = Math.min(power, MeleeGun.killPower(target.energy));
-        MeleeGun.Aim aim = gun.aim(s.me, target, power, s.time);
-        c.gunTurn = Angles.normalRelativeAngle(aim.angle - s.gunHeading);
-        c.gunStrategy = aim.strategy;
-
+        double power = aim.power;
+        if (target.energy > MeleeEnergyPolicy.FINISHER_ENERGY) {
+            // MELEE-8: the strategy's posture may lower the table's power (MGUN-3), never raise
+            // it; a finisher's power stands (MGUN-2).
+            power = Math.min(power, MeleeStrategy.adjustPower(power, plan.posture));
+        }
+        power = Math.min(power, MeleeEnergyPolicy.killPower(target.energy));
         boolean hold = target.age(s.time) > MAX_FIRE_AGE
             || (plan.posture == MeleeStrategy.Posture.LET_THEM_FIGHT && distance > CONSERVE_RANGE)
             || (plan.posture == MeleeStrategy.Posture.LOW_PROFILE && distance > LOW_PROFILE_RANGE)
+            || s.energy < MeleeEnergyPolicy.MIN_OWN_ENERGY
             || s.energy <= power + 0.1;
         c.firePower = hold ? 0 : power;
         return c;
