@@ -1,17 +1,66 @@
 # Hadur 2
 
 **Hadur** (the Hungarian god of war) is a [Robocode](https://robocode.sourceforge.io/) robot:
-wave surfing and KNN guns with an anti-surfer array one on one, minimum-risk movement and a
-circular gun in melee, and a core that has no idea it is inside Robocode.
+a 1v1 duelist that remembers each opponent across battles, with a melee brain for
+free-for-alls, and a core that has no idea it is inside Robocode.
 
-**Release 2.1** is the MeleeRumble entry: the Hadur 2 duelist (S0 to S2) with the 1.x melee
-brain folded into the core. See [the release](https://github.com/lgriffin/Hadur_Robot/releases/tag/v2.1)
-and [how to enter it](docs/meleerumble-submission.md).
+**Release 2.2** is the finished Hadur 2 plan: the duelist of stages S0 to S6 plus the melee
+brain from 2.1, for both the RoboRumble (1v1) and the MeleeRumble. See the
+[release notes](docs/releases/v2.2.md) and [how to enter it](docs/rumble-submission.md).
 
-Hadur 2 is being rebuilt in stages (S0 to S7) from the "Hadur 2: a duelist that remembers"
-plan. Every stage is gated by the bench, and every requirement in
-[docs/requirements.md](docs/requirements.md) is written in EARS form and traced to the tests
-that prove it.
+## What it does
+
+One on one (the duel):
+
+- **Sees the enemy's shots as they really are.** An energy ledger takes our hits, their
+  refunds, wall and collision damage out of each energy drop, so only real shots become
+  waves (WAVE-1, WAVE-2). Against Shadow 3.83c, 99.8% of the shots a scan can see become
+  waves.
+- **Surfs those waves and aims with KNN guns.** Guess-factor danger views, and a main and
+  an anti-surfer gun chosen by virtual-gun ratings, as in Hadur 1.20.
+- **Makes itself harder to hit.** Its own bullets in flight shadow the enemy's waves: the
+  angles where an enemy bullet would be shot down are scored as safe (MOVE-1). When a
+  known opponent hits it more than its profile says, the movement changes flavour (MOVE-2).
+- **Remembers every opponent.** A profile per opponent (hit rates, gun and movement tiers,
+  gun and surf samples) is folded in at each round's end and saved within Robocode's data
+  quota, crash-safe (MEM-1..5, RES-3).
+- **Recognises and adapts.** From the profile it picks its opening gun, surf prior and
+  flattener, and replays stored samples at reduced weight; live evidence overrules the
+  profile when they disagree (ADAPT-1..3, RES-4).
+- **Presses when ahead.** A distance controller comes in while Hadur clearly out-hits the
+  enemy, fires full power at guns that cannot hit it, and closes in to finish or ram a
+  beaten enemy (DIST-1, POW-1, POW-2, END-1, END-2).
+- **Beats bullet shielding.** An enemy that shoots our bullets down is recognised, and our
+  aim is jittered so its shield shots miss (SHIELD-1, SHIELD-2).
+- **Stays within its time.** A tick budget sheds work, a level at a time, after a slow tick
+  or a skipped turn (TIME-1, TIME-2).
+
+Every policy input carries a margin of error, and each policy keeps its conservative
+setting until the evidence is certain enough (DIAL-1).
+
+In melee (two or more opponents): a radar that sweeps toward whoever was seen longest
+ago, minimum-risk movement, circular and linear aim at the cheapest kill, and staying out
+of other robots' fights (MELEE-1..8). When one opponent is left, the duel takes over.
+
+## Results
+
+Cold benches (no stored profile), 35 rounds × 5 seeds, mean ± 95% interval:
+
+| Against | 1.20 (S0) | 2.2 (S6) |
+|---|---|---|
+| Shadow 3.83c, score share | 40.8% ± 8.3 | 57.4% ± 5.0 |
+| Shadow 3.83c, rounds won | 82 / 175 | 125 / 175 |
+| Five sample bots, rounds won | 872 / 875 | 875 / 875 |
+
+Sources: [S0](docs/bench/s0-baseline-1.20-cold.md) and [S6](docs/bench/s6-2.1-cold.md)
+bench reports. [The strategy evolution](docs/strategy-evolution.md) has every stage's figures.
+
+## The plan
+
+Hadur 2 was rebuilt in stages from the "Hadur 2: a duelist that remembers" plan. Every
+stage was gated by the bench, and every requirement in
+[docs/requirements.md](docs/requirements.md) is written in EARS form and traced to the
+tests that prove it.
 
 | Stage | What | State |
 |---|---|---|
@@ -22,20 +71,28 @@ that prove it.
 | S4 | Recognise and adapt | done ([cold](docs/bench/s4-2.1-cold.md), [warm](docs/bench/s4-2.1-warm.md)) |
 | S5 | Aggressive: distance controller, full-power shots, finishing and ramming | done ([cold](docs/bench/s5-2.1-cold.md), [warm](docs/bench/s5-2.1-warm.md)) |
 | S6 | Unhittable: bullet shadows, go-to surfing, movement flavours, the tick budget | done ([cold](docs/bench/s6-2.1-cold.md), [warm](docs/bench/s6-2.1-warm.md)) |
-| S7 | Cut melee, rewrite the docs | |
+| S7 | Rewrite the docs to match the code; release 2.2 | done; melee kept (below) |
 | 2.1 | Melee brain in the core (MELEE-1..8), Java 11 target (REL-1) | released ([samples](docs/bench/melee-2.1-samples.md), [classic](docs/bench/melee-2.1-classic.md), [strong](docs/bench/melee-2.1-strong.md)) |
+| Shield | Bullet-shielding counter (SHIELD-1, SHIELD-2) | done ([Saguaro](docs/bench/shield-counter-saguaro.md), [notes](docs/bullet-shielding.md)) |
+
+The plan's S7 was "cut melee". Release 2.1 had already put melee in the core for the
+MeleeRumble, and it costs the duel nothing (it runs only while two or more opponents are
+alive), so S7 keeps it. Open items are in [followup.md](followup.md).
 
 ## Layout
 
 ```
-hadur-core/    the brain: physics, waves, KNN, guns, movement, melee. Plain Java, no Robocode.
-hadur-robot/   the Robocode adapter (hadur2.Hadur): events in, orders out.
+hadur-core/    the brain: physics, waves, KNN, guns, movement, memory, policies, melee.
+               Plain Java, no Robocode.
+hadur-robot/   the Robocode adapter (hadur2.Hadur): events in, orders out, profile files.
 hadur-bench/   headless battles, the bench report, and the replay recorder.
-docs/          requirements, architecture, bench reports.
+docs/          requirements, architecture, strategy, bench reports, release notes.
 repo/          the vendored Robocode 1.9.3.0 API jar.
 ```
 
-See [docs/architecture.md](docs/architecture.md) for how the pieces fit, and [docs/strategy-evolution.md](docs/strategy-evolution.md) for how the strategy has evolved stage by stage.
+See [docs/architecture.md](docs/architecture.md) for how the pieces fit, and
+[docs/strategy-evolution.md](docs/strategy-evolution.md) for how the strategy evolved
+stage by stage.
 
 ## Build and test
 
@@ -46,18 +103,20 @@ client can load it (REL-1).
 mvn verify                  # all modules: tests, traceability, robot jar
 ```
 
-The robot jar is `hadur-robot/target/hadur2.Hadur_2.1.jar`; drop it into a Robocode
-`robots/` directory. The core is bundled inside it.
+The robot jar is `hadur-robot/target/hadur2.Hadur_2.2.jar`; drop it into a Robocode
+`robots/` directory. The core is bundled inside it. Pushing a `v*` tag runs the release
+workflow: it builds, checks that the jar matches the tag, and publishes a GitHub release
+with `docs/releases/<tag>.md` as its notes.
 
 hadur-core's tests are layered:
 
 | Layer | Where | Covers |
 |---|---|---|
-| Architecture | `arch/ArchitectureTest` (ArchUnit) | CORE-1 no Robocode in the core; RES-6 no randomness, threads, reflection, I/O or clock; no mutable statics |
-| Properties | `*Properties` (jqwik) | the core's angle and rule helpers equal the engine's, bit for bit; the replay codec round-trips; WAVE-1/2 the ledger recovers the exact shot power under any mix of hits, refunds, collisions and wall damage, and never turns an explained drop into a wave |
-| Unit | `GuardTest`, `RoundStatsTest`, `ResourceBoundsTest`, `ledger/EnergyLedgerTest`, `RadarReacquireTest` | RES-1 safe orders on a fault; RES-5 counters in the round record; RES-2 bounded growth; WAVE-1/2 each correction and the [0.1, 3.0] bounds; RADAR-1 the sweep after a missed scan |
+| Architecture | `arch/ArchitectureTest` (ArchUnit) | CORE-1 no Robocode in the core; RES-6 no randomness, threads, reflection, I/O or clock; no mutable statics; the policy and adapt packages cannot see the engine's inputs (DIAL-2) |
+| Properties | `*Properties` (jqwik) | physics equals the engine's, bit for bit; the replay and profile codecs round-trip; WAVE-1/2 the ledger recovers the exact shot power under any mix of events; lineage keys, seeds and seed trust; the distance controller's bounds; MOVE-1 bullet shadows equal a brute-force collision check |
+| Unit | per package (`ledger`, `memory`, `adapt`, `policy`, `gun`, `move`, `shield`, `melee`), plus `GuardTest`, `RoundStatsTest`, `RadarReacquireTest` | each requirement's rules and edge cases; RES-1 safe orders on a fault; RES-2 bounded growth; RES-5 counters in the round record |
 | Replay | `replay/ReplayTest` | CORE-2: real recorded battles against every reference opponent replay to the live robot's exact orders |
-| Behaviour | `features/*.feature` (Cucumber) | one feature per EARS group; each scenario is tagged `@<ID>` |
+| Behaviour | `features/*.feature` (Cucumber) | one feature per EARS group (core, waves, resilience, memory, adapt, aggressive, unhittable, shield, melee); each scenario is tagged `@<ID>` |
 | Traceability | `trace/RequirementsTraceabilityTest` | fails if any requirement due by `hadur.stage` has no test, a tag names no requirement, or a jqwik test uses JUnit's `@Tag` (jqwik would skip it); writes `target/requirements-coverage.md` |
 
 ## Bench
@@ -68,7 +127,8 @@ cd hadur-bench
 mvn exec:java -Dexec.args="--mode cold --rounds 35 --seeds 5"
 ```
 
-For a 10-robot melee, as in the MeleeRumble:
+`--mode warm` keeps Hadur's profiles across consecutive battles and reports the learning
+curve. For a 10-robot melee, as in the MeleeRumble:
 
 ```sh
 mvn exec:java -Dexec.args="--set melee-samples.txt --melee true --field 1000x1000 --seeds 3"
@@ -79,17 +139,27 @@ as `abc.Shadow_3.83c.jar` in `hadur-bench/opponents/` (not committed).
 
 ## Telemetry
 
-Hadur prints line records to its console, which the bench collects:
+Hadur prints line records to its console, which the bench collects. Fields are only ever
+appended, so older readers keep working.
 
 - `V,1`: format version, once per battle.
-- `B,round,tick,...,name,...`: the opponent, on first scan.
-- `R,round,tick,result,ourEnergy,enemyEnergy,ourHitRate,ourMargin,theirHitRate,theirMargin,phantomWaves,skippedTurns,faults,computationLevel,radarReacquired,hiddenShots`: once per round. Fields are only ever appended.
+- `B,round,tick,battle,name,key,profileFound,tiers,gunSeed,surfSeed,computationLevel`: the
+  opponent, on first scan, and what its profile said (MEM-1, ADAPT-1..3).
+- `P,round,tick,policy,value,margin,setting`: a policy decision, with the estimate and
+  margin behind it (DIAL-1). The policies are `opening-gun`, `surf-prior`, `gun-seed`,
+  `surf-seed`, `distance`, `power`, `endgame`, `move-flavour` and `budget`.
+- `EW,round,tick,waveId,fireTick,rawDrop,correctedDrop,power,distance`: each enemy wave the
+  energy ledger infers. `rawDrop` is what 1.20 would have used.
+- `R,round,tick,result,...`: once per round, 33 fields: the energies, both hit rates with
+  their margins, and every counter the core keeps (RES-5). The field list is in
+  [RoundStats](hadur-core/src/main/java/hadur2/core/RoundStats.java).
+- `MEM,round,tick,what,note`: a profile that failed to load, fold or save (MEM-3, MEM-4).
 - `FAULT,round,tick,exception`: the first time in a round the guard has to cover for the core.
-- `EW,round,tick,waveId,fireTick,rawDrop,correctedDrop,power,distance`: each enemy wave the energy ledger infers (S2). `rawDrop` is what 1.20 would have used; `correctedDrop` is after taking out our hits, their refunds, collisions and wall damage.
 
 ## History
 
-Hadur 1.x (up to 1.20) was a dual-mode duel and melee robot. Hadur 2 started as a pure
-duelist; for the MeleeRumble, release 2.1 ported the 1.x melee work (from the
-`claude/project-thread-3j7vn4` branch) into the core's `melee` package. The old feature
-files are kept in [docs/legacy-features](docs/legacy-features).
+Hadur 1.x (up to 1.20) was a dual-mode duel and melee robot, evolved release by release by
+feel. Hadur 2 started as a pure duelist rebuilt around a measured bench; release 2.1 ported
+the 1.x melee work (from the `claude/project-thread-3j7vn4` branch) into the core's `melee`
+package for the MeleeRumble. The 1.x feature files are kept in
+[docs/legacy-features](docs/legacy-features).

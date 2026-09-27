@@ -2,6 +2,17 @@
 
 Open items from the Hadur 2 stages, newest stage first.
 
+## S7
+
+- **Melee stays.** The plan's S7 said to cut melee; Leigh chose to keep it (2026-09-27),
+  since 2.1 entered the MeleeRumble with it and it only runs with two or more opponents
+  alive. The earlier item under "Release 2.1" is settled.
+- **The 2.2 tag is not pushed yet.** Pushing `v2.2` runs the release workflow and publishes
+  the jar; it waits for Leigh's go. The workflow also needs GitHub Actions to run; the verify runs on
+  PRs #30 and #31 failed within seconds, before any step.
+- **No new bench for 2.2.** The only code change after S6 is the version number, so the S6
+  benches stand for 2.2.
+
 ## S6
 
 - **Go-to surfing lost the A/B as the default.** Against Shadow cold, the three-option surf
@@ -125,8 +136,7 @@ Open items from the Hadur 2 stages, newest stage first.
   leaders' (abc.Tron, rz.Aleph). The gun is plain circular/linear with no learning; a
   melee-aware KNN or play-it-forward gun and energy-drop shot dodging in the mover are the
   obvious next steps.
-- **The plan's S7 says "cut melee".** 2.1 keeps melee on purpose for the MeleeRumble. When
-  S7 comes round, decide whether melee stays in the core or moves to its own robot.
+- **The plan's S7 said "cut melee".** Settled in S7: melee stays in the core.
 - **Opponent stats are not used for much.** `OpponentStats` classifies movement and gun
   type, but only the damage a robot has done to Hadur feeds a decision (the target
   selector, when Hadur is low). Profiles in S3 could feed them.

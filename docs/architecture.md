@@ -23,6 +23,7 @@ graph LR
         MEM[memory]
         AD[adapt]
         PO[policy]
+        SH[shield]
         PS[port.ProfileStore]
     end
     subgraph data directory
@@ -43,6 +44,7 @@ graph LR
     C --> MEM
     C --> AD
     C --> PO
+    C --> SH
     PO --> MEM
     AD --> MEM
     MEM --> PS
@@ -73,7 +75,7 @@ The core and guard are static in the adapter, so learning survives from round to
 | `model.BotInput` | in | time, round, own position, heading, velocity, energy, gun and radar state, others, events |
 | `model.BotEvent` | in | a closed set: `Scan`, `HitByBullet`, `BulletHit`, `BulletHitBullet`, `BulletMissed`, `HitWall`, `HitRobot`, `RobotDeath`, `SkippedTurn`, `TickTime` (S6: how long the core's last tick took, measured by the adapter) |
 | `model.BotOrders` | out | body turn, ahead, max velocity, gun turn, radar turn, fire power |
-| `port.Telemetry` | out | one line record at a time (`V`, `B`, `R`, `FAULT`, `EW`, `MEM`) |
+| `port.Telemetry` | out | one line record at a time (`V`, `B`, `P`, `R`, `FAULT`, `EW`, `MEM`) |
 | `port.ProfileStore` | both | named byte blobs with a quota: read, write (may be cut short), delete, list, size |
 
 `ProfileStore` has two adapters: `port.MemoryProfileStore` for tests and the bench (it can
@@ -95,6 +97,7 @@ data directory through `RobocodeFileOutputStream`. S6 adds a `Clock` port.
 | `memory` | opponent memory (MEM-1..5, RES-3): lineage keys, the profile, its binary codec, the round folder and the library that loads, saves and evicts; estimates with margins of error, the tiers and the seed layout |
 | `adapt` | recognise and adapt (ADAPT-1..3, DIAL-1..2, RES-4): the opening book, the seed loader and the seed trust |
 | `policy` | aggressive (DIST-1, POW-1, POW-2, END-1, END-2): rolling hit-rate windows, the distance controller, the power policy, the endgame states and the enemy gun-heat estimate; unhittable (MOVE-2, TIME-1, TIME-2): the movement flavour and the tick budget |
+| `shield` | the bullet-shielding counter (SHIELD-1, SHIELD-2): the shield detector and the anti-shield aim jitter |
 | `replay` | the line codec and replay driver for recorded battles (CORE-2) |
 | `port` | outbound interfaces |
 

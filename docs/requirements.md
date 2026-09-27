@@ -154,3 +154,8 @@ The S6 group (MOVE-1, MOVE-2, TIME-1, TIME-2) was implemented with these reading
   then 100 px further out. A stranger has no baseline and never changes (DIAL-1).
 - **DIAL-2** is enforced as before: the policy package cannot see `BotInput` or `BotEvent`,
   and the tick budget and the flavour are driven by events, not the clock or the round.
+
+
+S7 adds no requirements. It keeps the MELEE group, although the plan's S7 was to cut it:
+2.1 had already entered the MeleeRumble with it, and melee runs only while two or more
+opponents are alive, so the duel requirements are untouched by it.
