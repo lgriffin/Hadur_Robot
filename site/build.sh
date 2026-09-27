@@ -27,7 +27,7 @@ if [[ "${1:-}" == "--publish" ]]; then
     git worktree add -q --detach "$tmp"
     git -C "$tmp" checkout -q --orphan gh-pages
   fi
-  git -C "$tmp" rm -rq --ignore-unmatch . >/dev/null
+  git -C "$tmp" rm -rfq --ignore-unmatch . >/dev/null
   cp -r "$out/." "$tmp/"
   git -C "$tmp" add -A
   if git -C "$tmp" diff --cached --quiet; then
