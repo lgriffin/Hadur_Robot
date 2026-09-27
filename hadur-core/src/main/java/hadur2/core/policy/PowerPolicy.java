@@ -22,9 +22,14 @@ import hadur2.core.memory.Tiers;
  * them, so a finishing shot never wastes energy. Neither applies while our own energy is
  * {@link #MIN_OUR_ENERGY} or less: there the gun's power-down in a losing energy war stands,
  * because a full-power miss could leave us disabled.</p>
+ *
+ * <p>{@code HadurCore} asks on every duel aim: the gun proposes a power, {@link #reason}
+ * says whether a policy overrides it, and {@link #power} gives the power the wave and the
+ * shot carry. Both methods are pure.</p>
  */
 public final class PowerPolicy {
 
+    /** The power both rules fire, in energy: the engine's maximum. */
     public static final double FULL_POWER = 3.0;
     /** POW-1: their energy must exceed this for a full-power shot. */
     public static final double MIN_ENEMY_ENERGY = 12;
@@ -35,12 +40,30 @@ public final class PowerPolicy {
     /** ... and theirs certainly below this. */
     public static final double THEIR_RATE = 0.10;
 
-    /** Why a shot got the power it did. */
+    /**
+     * Why a shot got the power it did: {@code GUN} when no rule applies and the gun's own
+     * power stands, {@code POW_1} when the profile rates their gun T0, {@code POW_2} when
+     * this battle's rolling hit rates call for full power.
+     */
     public enum Reason { GUN, POW_1, POW_2 }
 
     private PowerPolicy() {}
 
-    /** The reason full power applies, or {@link Reason#GUN} to keep the gun's choice. */
+    /**
+     * The reason full power applies, or {@link Reason#GUN} to keep the gun's choice.
+     *
+     * <p>Checked in order: our own energy first (at {@link #MIN_OUR_ENERGY} or below nothing
+     * applies), then POW-1, then POW-2. POW-2 needs both rates known and each bound clear by
+     * a full margin: our centre less our margin above {@link #OUR_RATE}, their centre plus
+     * their margin below {@link #THEIR_RATE}.</p>
+     *
+     * @param gunTier the profile's tier for their gun; {@code UNKNOWN} unless its margin is narrow
+     * @param enemyEnergy their energy at the scan, in energy
+     * @param ourEnergy our energy, in energy
+     * @param ours our rolling hit rate on them
+     * @param theirs their rolling hit rate on us
+     * @return which rule, if any, sets the power
+     */
     public static Reason reason(Tiers.Gun gunTier, double enemyEnergy, double ourEnergy,
                                 Estimate ours, Estimate theirs) {
         if (!(ourEnergy > MIN_OUR_ENERGY)) return Reason.GUN;
@@ -56,6 +79,14 @@ public final class PowerPolicy {
     /**
      * The power to fire: {@code gunPower} unless a reason applies, then {@link #FULL_POWER}
      * capped at a quarter of their energy, never below the gun's own choice.
+     *
+     * <p>A bullet of power p takes 4p up to power 1, so a quarter of their energy is exactly
+     * a killing shot at 4 energy or less, and more than enough above that.</p>
+     *
+     * @param reason the reason from {@link #reason}
+     * @param gunPower the power the gun chose, in energy
+     * @param enemyEnergy their energy, in energy
+     * @return the power to fire, in energy
      */
     public static double power(Reason reason, double gunPower, double enemyEnergy) {
         if (reason == Reason.GUN) return gunPower;
