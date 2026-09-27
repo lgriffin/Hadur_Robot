@@ -29,10 +29,14 @@ public class ShieldSteps {
 
     /** A scan of the still enemy, gun too hot to fire, so the aim is all that moves. */
     private void scan() {
+        scan(1.5);
+    }
+
+    private void scan(double gunHeat) {
         List<BotEvent> events = new ArrayList<>(pending);
         pending.clear();
         events.add(new BotEvent.Scan("shielder", Math.PI / 2, DISTANCE, 100, 0, 0));
-        orders.add(core.tick(new BotInput(++time, 0, MY_X, MY_Y, 0, 0, 100, 1.5, 0.1, 0, 0,
+        orders.add(core.tick(new BotInput(++time, 0, MY_X, MY_Y, 0, 0, 100, gunHeat, 0.1, 0, 0,
             Math.PI / 2, 1, events)));
     }
 
@@ -57,6 +61,40 @@ public class ShieldSteps {
     public void shotDownAmongMisses(int n, int misses) {
         for (int i = 0; i < misses; i++) pending.add(new BotEvent.BulletMissed(1.9));
         shotDown(n);
+    }
+
+    @Given("a melee in which we have fired {int} bullets")
+    public void meleeWithShots(int shots) {
+        core = new HadurCore(800, 600, 2, line -> { });
+        core.newRound(0);
+        // Two opponents; the gun is always cool and on target, so the melee gun fires as
+        // soon as it has aimed, and again each time it cools.
+        for (int i = 0; i < 400 && core.stats().shotsFired < shots; i++) {
+            List<BotEvent> events = new ArrayList<>();
+            events.add(new BotEvent.Scan("a", Math.PI / 2, DISTANCE, 100, 0, 0));
+            events.add(new BotEvent.Scan("b", -Math.PI / 2, 300, 100, 0, 0));
+            double heat = Math.max(0, 1.5 - 0.1 * (i % 16));
+            core.tick(new BotInput(++time, 0, MY_X, MY_Y, 0, 0, 100, heat, 0.1, 0, 0,
+                0, 2, events));
+        }
+        assertEquals(shots, core.stats().shotsFired, "melee shots fired");
+    }
+
+    @When("the last other opponent dies")
+    public void lastOtherDies() {
+        pending.add(new BotEvent.RobotDeath("b"));
+        scan();
+    }
+
+    @When("the enemy is scanned again with the gun cool and on target")
+    public void scannedCool() {
+        scan(0);
+    }
+
+    @Then("no shot is fired")
+    public void noShot() {
+        assertEquals(0, orders.get(orders.size() - 1).firePower());
+        assertEquals(0, core.stats().jitteredShots);
     }
 
     @When("the enemy is scanned again with the gun still hot")

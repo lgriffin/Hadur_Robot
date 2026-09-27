@@ -23,9 +23,18 @@ public final class AimJitter {
     private static final double BODY_HALF_WIDTH = 18;
 
     private double phase = GOLDEN;
+    private double current = Double.NaN;
 
-    /** The aim offset for the next shot, in radians, at {@code distance} from the target. */
+    /**
+     * The aim offset for the next shot, in radians. It is sized from {@code distance} to the
+     * target the first time it is asked for, and stays the same until {@link #shotFired}.
+     */
     public double offset(double distance) {
+        if (Double.isNaN(current)) current = fresh(distance);
+        return current;
+    }
+
+    private double fresh(double distance) {
         double halfWidth = Math.atan(BODY_HALF_WIDTH / Math.max(distance, BODY_HALF_WIDTH));
         double u = 2 * phase - 1;
         double magnitude = MIN_FRACTION + (1 - MIN_FRACTION) * Math.abs(u);
@@ -36,5 +45,6 @@ public final class AimJitter {
     public void shotFired() {
         phase += GOLDEN;
         if (phase >= 1) phase -= 1;
+        current = Double.NaN;
     }
 }

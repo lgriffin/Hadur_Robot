@@ -41,6 +41,10 @@ public final class HadurCore {
     private final MeleeController melee;
     private final ShieldDetector shieldDetector = new ShieldDetector();
     private final AimJitter aimJitter = new AimJitter();
+    /** Whether the aim the gun is turning to carries the anti-shield offset (SHIELD-2). */
+    private boolean aimCarriesJitter;
+    /** Our melee bullets not yet resolved; their outcomes are no evidence about a duel (SHIELD-1). */
+    private int meleeBulletsInFlight;
 
     private int round;
     private RoundStats stats = new RoundStats();
@@ -100,6 +104,8 @@ public final class HadurCore {
 
     private void resetRoundState() {
         melee.newRound();
+        meleeBulletsInFlight = 0;
+        aimCarriesJitter = false;
         inMelee = false;
         lastMeleeCommand = null;
         resetDuelTracking();
@@ -174,6 +180,7 @@ public final class HadurCore {
                 && in.energy() > previous.firePower) {
             orders.fire(previous.firePower);
             stats.shotsFired++;
+            meleeBulletsInFlight++;
         }
 
         MeleeController.Command c = melee.tick(new MeleeController.Situation(
@@ -221,7 +228,7 @@ public final class HadurCore {
             double firedPower = Math.min(in.energy(), Math.min(
                 Math.max(aimedBulletPower, Rules.MIN_BULLET_POWER), Rules.MAX_BULLET_POWER));
             gunHeat += Rules.getGunHeat(firedPower);
-            aimJitter.shotFired();
+            if (aimCarriesJitter) aimJitter.shotFired();
         }
 
         aimedBulletPower = lastGunWave.bulletPower();
@@ -231,7 +238,8 @@ public final class HadurCore {
         } else {
             aimAngle = gunController.aim(lastGunWave, myNext, in.time());
         }
-        if (shieldDetector.shielded()) {
+        aimCarriesJitter = shieldDetector.shielded();
+        if (aimCarriesJitter) {
             // SHIELD-2: a shielder predicts our heading exactly; move it by an amount it can't.
             aimAngle += aimJitter.offset(myNext.distance(lastGunWave.targetLocation));
         }
@@ -243,14 +251,17 @@ public final class HadurCore {
                                     Point2D.Double myNext) {
         // 1.20 compared getGunTurnRemaining(), which is in degrees, with 0.05, so the gun
         // has to be within 0.05 degrees. Kept exactly as it was; S1 changes no behaviour.
+        // SHIELD-2: once a shielder is found, hold the shot the gun settled on before, since
+        // that aim is the predictable one.
+        boolean predictable = shieldDetector.shielded() && !aimCarriesJitter;
         if (in.gunHeat() == 0 && Math.abs(Math.toDegrees(in.gunTurnRemaining())) < 0.05
-                && in.energy() > bulletPower && lastGunWave != null) {
+                && in.energy() > bulletPower && lastGunWave != null && !predictable) {
             orders.fire(bulletPower);
             lastGunWave.firingWave = true;
             gunController.fireVirtualBullets(lastGunWave, myNext, in.time());
             lastRealBulletFireTime = in.time();
             stats.shotsFired++;
-            if (shieldDetector.shielded()) stats.jitteredShots++;
+            if (aimCarriesJitter) stats.jitteredShots++;
             return true;
         }
         return false;
@@ -380,7 +391,7 @@ public final class HadurCore {
 
     private void onBulletHit(BotEvent.BulletHit e) {
         stats.shotsHit++;
-        if (!inMelee) shieldDetector.bulletHit();
+        if (duelBulletResolved()) shieldDetector.bulletHit();
         melee.onBulletHit(e.name(), e.power());
         ledger.ourBulletHit(e.power());
     }
@@ -397,14 +408,26 @@ public final class HadurCore {
         }
     }
 
+    /**
+     * Whether a bullet outcome is from a duel shot. Outcomes come one per bullet, so the
+     * first ones after a melee ends belong to bullets fired in it and are skipped.
+     */
+    private boolean duelBulletResolved() {
+        if (meleeBulletsInFlight > 0) {
+            meleeBulletsInFlight--;
+            return false;
+        }
+        return !inMelee;
+    }
+
     private void onBulletMissed() {
-        if (!inMelee) shieldDetector.bulletMissed();
+        if (duelBulletResolved()) shieldDetector.bulletMissed();
     }
 
     private void onBulletHitBullet(BotInput in, BotEvent.BulletHitBullet e) {
         stats.bulletsIntercepted++;
         // SHIELD-1: in a duel, a bullet that meets ours may be a shield.
-        if (!inMelee) shieldDetector.bulletIntercepted();
+        if (duelBulletResolved()) shieldDetector.bulletIntercepted();
         Point2D.Double hitLoc = new Point2D.Double(e.x(), e.y());
         Wave hitWave = moveController.findBulletWave(hitLoc, in.time(), null, e.enemyPower());
         if (hitWave != null) {

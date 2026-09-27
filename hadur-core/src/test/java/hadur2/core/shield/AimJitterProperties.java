@@ -40,10 +40,11 @@ class AimJitterProperties {
     @Tag("SHIELD-2")
     void offsetHoldsUntilAShotGoesOut(
             @ForAll @DoubleRange(min = 36, max = 1300) double distance,
+            @ForAll @DoubleRange(min = 36, max = 1300) double laterDistance,
             @ForAll @IntRange(min = 0, max = 500) int shots) {
         AimJitter j = after(shots);
         double first = j.offset(distance);
-        assertEquals(first, j.offset(distance), "asking again changes nothing");
+        assertEquals(first, j.offset(laterDistance), "asking again, from anywhere, changes nothing");
         j.shotFired();
         assertNotEquals(first, j.offset(distance), "the next shot gets a new offset");
     }
