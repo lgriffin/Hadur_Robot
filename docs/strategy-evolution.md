@@ -1,6 +1,6 @@
 # Hadur 2: evolution of strategy
 
-As of 2026-09-27 (after S6). The living copy is the [Claude Doc](https://claude.ai/code/artifact/bc581157-b352-49c9-acaf-9f77035202c5); this file is its snapshot for evaluation.
+As of 2026-09-27 (after S7, release 2.2). The living copy is the [Claude Doc](https://claude.ai/code/artifact/bc581157-b352-49c9-acaf-9f77035202c5); this file is its snapshot for evaluation.
 
 ## Summary
 
@@ -40,7 +40,7 @@ Hadur 2 is a 1v1 duelist that is measured at every step. Its goal is to learn ea
 | S4 | Recognise and adapt | Merged (PR #29) |
 | S5 | Aggressive distance and power policies | Merged (PR #30) |
 | S6 | Unhittable movement, tick budget | Merged (PR #31) |
-| S7 | Cut melee, rewrite the docs | Planned |
+| S7 | Rewrite the docs, release 2.2 (melee kept) | Merged (PR #32) |
 
 Melee was parked on 2026-09-26. The melee work (PR #17) was closed unmerged, and its branch was kept in case a separate melee robot is built later. Every design choice since then optimises for one opponent at a time.
 
@@ -188,16 +188,17 @@ Against real melee bots Hadur is mid-field: it survives reasonably but does abou
 bullet damage of the leaders, because its melee gun does not learn. A learning melee gun
 and shot dodging in the melee mover are the obvious next bets.
 
+## S7: say what it is, and ship it
+
+S7 changes no strategy. The plan said to cut melee in S7, but release 2.1 had already put the 1.x melee brain into the core for the MeleeRumble, and it only runs while two or more opponents are alive, so Leigh chose to keep it. S7 rewrote the README around what the robot does now, stage by stage and requirement by requirement, and refreshed the telemetry reference, the architecture diagram (the shield package) and the rumble entry guide, which now covers the 1v1 RoboRumble as well as the MeleeRumble. The version is 2.2, and its release notes are ready; pushing the `v2.2` tag publishes the jar.
+
 ## What comes next
 
-Every EARS requirement is now implemented. S7 rewrites the docs to match the code; melee stays, as Release 2.1 decided.
-
-| Stage | Strategic bet | Requirements |
-| --- | --- | --- |
-| S7 | Docs that describe the robot as it is: README, architecture, telemetry | none new |
+Every EARS requirement is implemented and traced, and the staged plan is complete. What remains is measurement and tuning, not new requirements.
 
 Open items carried forward:
 
+- **Enter 2.2 in both rumbles** and read the real rankings, which say more than the bench can.
 - **Skipped turns** are 72 per cold bench, not the zero S6 aimed for. Half fall on a round's last turn, when the profile checkpoint is written.
 - **MOVE-2 has not shown a gain.** Warm, it scored the same switched on or off. Its baseline averages whole battles, while the live window sees a gun that has already learned; a baseline from the same part of past battles would be fairer.
 - **Memory has not clearly paid off against Shadow.** S6's warm run (54.6%) is below its cold one (57.4%), within noise. The T1 and T2 bounds have no bench opponent in them yet, so they are uncalibrated.
