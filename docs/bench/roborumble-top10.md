@@ -2,6 +2,8 @@
 
 The 1v1 RoboRumble top 10 as ranked on https://rumble.robowiki.net/Rankings?game=roborumble on 2026-09-26, jars from robocode-archive.strangeautomata.com. Hadur 2.0 is master after S2 (energy ledger). 35 rounds x 5 seeds (data wiped) per opponent on 800x600. Engine Robocode 1.9.5.6, security manager on. Java 21.0.10, 4 cores.
 
+Later runs: [2.1 after S4](roborumble-top10-2.1.md) (39.6%) and [2.2](roborumble-top10-2.2.md) (45.1%), which also compares all three.
+
 Reproduce with `cd hadur-bench && mvn exec:java -Dexec.args="--set roborumble-top10.txt"` after putting the ten jars in `opponents/`.
 
 ## Summary
