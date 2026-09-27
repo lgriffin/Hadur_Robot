@@ -1,0 +1,5 @@
+# The clean 1v1 the hand-off gate compares with: the melee hand-off set's three strong bots.
+# Run with --set handoff-duel.txt (a duel bench, 800x600).
+abc.Shadow 3.84i | headline | abc.Shadow_3.84i.jar
+voidious.Diamond 1.8.28 | headline | voidious.Diamond_1.8.28.jar
+positive.Portia 1.26e | headline | positive.Portia_1.26e.jar

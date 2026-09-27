@@ -1,0 +1,6 @@
+# Sentry safety: two opponents and a border sentry guarding 100 px along every wall.
+# Gate: no sentry bullet hits Hadur from inside the border, and Hadur never shoots the sentry.
+# Run with --set melee-sentry.txt --melee true --field 1000x1000 --rounds 3 --sentry-border 100
+sample.SpinBot | melee | -
+sample.Tracker | melee | -
+samplesentry.BorderGuard | sentry | -

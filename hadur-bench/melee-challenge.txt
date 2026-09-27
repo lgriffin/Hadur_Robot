@@ -1,0 +1,13 @@
+# Melee sample challenge: sample and SuperSample bots, the shape of Wompi's 40k/100k challenge.
+# The M3 gate is 100 firsts in one 100-round battle; M4's is 100k bullet damage.
+# Jars from https://robocode-archive.strangeautomata.com/robots/<jar>; put them in opponents/.
+# Run with --set melee-challenge.txt --melee true --field 1000x1000 --rounds 100 --seeds 1
+sample.Walls | melee | -
+sample.Crazy | melee | -
+sample.SpinBot | melee | -
+rz.HawkOnFire 0.1 | melee | rz.HawkOnFire_0.1.jar
+kawigi.micro.Shiz 1.1 | melee | kawigi.micro.Shiz_1.1.jar
+SuperSample.SuperCrazy 1.0 | melee | SuperSample.SuperCrazy_1.0.jar
+supersample.SuperWalls 1.0 | melee | supersample.SuperWalls_1.0.jar
+supersample.SuperSpinBot 1.0 | melee | supersample.SuperSpinBot_1.0.jar
+supersample.SuperTracker 1.0 | melee | supersample.SuperTracker_1.0.jar

@@ -28,6 +28,8 @@ mvn exec:java -Dexec.args="--mode cold --rounds 35 --seeds 5"
 | `--record DIR` | | capture replay fixtures instead (see below) |
 | `--set FILE` | reference-set.txt | the opponent list, e.g. `roborumble-top10.txt` |
 | `--melee true` | | put Hadur and every opponent in the set in one battle, `--seeds` times, and report finishing places |
+| `--sentry-border N` | | with `--melee`, the set's `sentry` entries fight as Robocode sentries guarding a border N px deep |
+| `--suite FILE` | | run every bench the file lists (`label \| options` per line) and write one report |
 | `--only TEXT` | | run only opponents whose name contains TEXT |
 | `--out DIR` | work/&lt;mode&gt;-&lt;time&gt; | working directory (Robocode home, logs) |
 | `--report FILE` | | also write the report there, e.g. `../docs/bench/…` |
@@ -39,7 +41,31 @@ The command exits non-zero if any battle fails.
 `reference-set.txt` lists them. `roborumble-top10.txt` lists the RoboRumble top 10 (run it with `--set roborumble-top10.txt`); it is kept apart so CI and the replay fixtures stay on the reference set. For melee,
 `melee-samples.txt` holds nine sample bots, `melee-classic.txt` nine established MeleeRumble
 bots and `melee-strong.txt` top-end bots that also play melee; run them with `--melee true
---field 1000x1000`, the MeleeRumble's setting. Sample bots ship with the engine. Other bots go in
+--field 1000x1000`, the MeleeRumble's setting.
+
+The melee extension plan (M0–M6) adds its own sets:
+
+| Set | What | Gate |
+|---|---|---|
+| `melee-challenge.txt` | sample and SuperSample bots, 100 rounds, one battle | M3: 100 firsts; M4: 100k total score |
+| `melee-reference.txt` | nine MeleeRumble bots of ranks 30–100 | M3: survival 40; M4: APS 55; M6: APS 60 |
+| `melee-sentry.txt` | two opponents and `samplesentry.BorderGuard`, border 100 | no sentry hits taken, none given |
+| `melee-handoff.txt` | a field whose likely last opponents are Shadow, Diamond and Portia | M5: duel win rate within 5 points of `handoff-duel.txt`'s clean 1v1 |
+| `melee-top10.txt` | the MeleeRumble top 10 (less jd.Nullstride) | none: the trend line |
+
+`melee-gates.txt` is a suite: the duel reference bench, sentry safety, the challenge and the
+reference field, in one command:
+
+```sh
+mvn -q compile exec:java -Dexec.args="--suite melee-gates.txt --report ../docs/bench/<name>.md"
+```
+
+A melee report gives Hadur's APS (for each battle and each other robot, Hadur's share of the
+pair's score, averaged) and survival (for each round, the share of the other robots Hadur
+outlived), both as the MeleeRumble computes them; the rounds that ended as a duel and who
+won them; sentry hits both ways; and totals from Hadur's `M` records. Each melee battle's
+directory holds `melee.csv` (final scores), `rounds.csv` (per round: place, the last
+opponent, sentry hits, skipped turns) and `hadur.log`. Sample bots ship with the engine. Other bots go in
 `opponents/` as jars (not committed) and are listed with their jar name.
 
 ## Output

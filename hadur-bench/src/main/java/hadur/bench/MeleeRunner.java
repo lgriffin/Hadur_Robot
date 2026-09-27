@@ -18,8 +18,10 @@ import robocode.control.events.BattleCompletedEvent;
  * Runs one melee battle in this JVM and writes {@code melee.csv} into the battle directory:
  * one row per robot in finishing order. Started by {@link Bench} in {@code --melee} mode.
  *
- * <p>Arguments: robocode home, battle directory, rounds, field width, field height, then
- * every robot's name as Robocode lists it.</p>
+ * <p>Arguments: robocode home, battle directory, rounds, field width, field height, sentry
+ * border size, then every robot's name as Robocode lists it, Hadur first. A
+ * {@link MeleeHarvester} writes Hadur's console and a per-round table beside it. The
+ * system property {@code hadur.sentries} lists the sentries' names, comma-separated.</p>
  */
 public final class MeleeRunner {
 
@@ -33,11 +35,18 @@ public final class MeleeRunner {
         int rounds = Integer.parseInt(args[2]);
         int width = Integer.parseInt(args[3]);
         int height = Integer.parseInt(args[4]);
-        List<String> names = List.of(args).subList(5, args.length);
+        int sentryBorder = Integer.parseInt(args[5]);
+        List<String> names = List.of(args).subList(6, args.length);
         Files.createDirectories(battleDir);
 
         RobocodeEngine.setLogMessagesEnabled(false);
         RobocodeEngine engine = new RobocodeEngine(home);
+        java.util.Set<String> sentries = new java.util.HashSet<>();
+        for (String name : System.getProperty("hadur.sentries", "").split(",")) {
+            if (!name.isBlank()) sentries.add(name);
+        }
+        MeleeHarvester harvester = new MeleeHarvester(battleDir, names.get(0), sentries);
+        engine.addBattleListener(harvester);
         List<BattleResults> results = new ArrayList<>();
         engine.addBattleListener(new BattleAdaptor() {
             @Override
@@ -54,8 +63,10 @@ public final class MeleeRunner {
                 System.err.println("expected " + names.size() + " robots, found " + robots.length);
                 exit = 2;
             } else {
-                engine.runBattle(new BattleSpecification(rounds,
-                    new BattlefieldSpecification(width, height), robots), true);
+                // The rumble's defaults: 450 ticks of inactivity, gun cooling 0.1.
+                engine.runBattle(new BattleSpecification(new BattlefieldSpecification(width, height),
+                    rounds, 450, 0.1, sentryBorder, false, robots), true);
+                harvester.close();
                 // Sorted by score; getRank() is not the finishing place in 1.9.5.
                 int place = 0;
                 for (BattleResults r : results) {

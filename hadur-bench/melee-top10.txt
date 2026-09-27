@@ -1,0 +1,13 @@
+# The MeleeRumble top 10 of 27 Sep 2026, less jd.Nullstride 2.2.4 (not in the archive).
+# Not a gate: the trend line across the melee milestones.
+# Jars from https://robocode-archive.strangeautomata.com/robots/<jar>; put them in opponents/.
+# Run with --set melee-top10.txt --melee true --field 1000x1000
+aaa.r.ScalarR 0.005g.047 | melee | aaa.r.ScalarR_0.005g.047.jar
+jk.melee.Neuromancer 7.12 | melee | jk.melee.Neuromancer_7.12.jar
+cb.fire.Firestarter 2.0f | melee | cb.fire.Firestarter_2.0f.jar
+voidious.Diamond 1.8.28 | melee | voidious.Diamond_1.8.28.jar
+justin.DemonicRage 3.4 | melee | justin.DemonicRage_3.4.jar
+positive.Portia 1.26e | melee | positive.Portia_1.26e.jar
+abc.Shadow 3.84i | melee | abc.Shadow_3.84i.jar
+ags.Glacier 0.2.11 | melee | ags.Glacier_0.2.11.jar
+kc.mini.Mirage 0.2 | melee | kc.mini.Mirage_0.2.jar
