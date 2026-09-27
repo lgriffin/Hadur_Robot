@@ -2,6 +2,38 @@
 
 Open items from the Hadur 2 stages, newest stage first.
 
+## S5
+
+- **The gate is only partly measurable.** "Bullet-damage share up against T0-T2" has no
+  T1 or T2 opponent in the bench, and the sample bots (T0) already sit at 99-100% share,
+  so share cannot rise there. What S5 moved against them is kill speed: rounds 5-13%
+  shorter and 0.3-3 more damage dealt per round (docs/bench/s5-2.1-cold.md). Bench a few
+  mid-table RoboRumble bots to calibrate T1/T2 and to see whether closing pays against
+  them.
+- **DIST-1's floor is 400 px, not 150.** At 150 the sample bots' head-on and linear guns hit
+  Hadur often enough to take 0.4-2 points of share off it; 300 still lost a little. If a
+  T1/T2 set shows closer is better against learning guns that miss, the floor could
+  depend on the gun tier instead of being one number.
+- **Against Shadow the controller mostly stays out.** Cold, no lead is ever certain enough
+  to come in; warm, the T3 opening at 550 px walked back out to 650 within a few rounds,
+  because their rolling hit rate led ours by 5 points at some point (going out needs no
+  certainty). The warm gain (48.5% +- 2.5 against 44.0% +- 4.5 for S4 re-run) is
+  suggestive, not proven: the intervals overlap.
+- **The wall stick and the distancing exponent were not re-tuned.** The plan asked for it;
+  with the floor at 400 px the fighting distance moved less than the plan assumed (the
+  true mean distance against Shadow, from the truth logs, was 473 px at S4 and 469 px at
+  S5), so the Diamond constants still fit. Revisit if S6 or a T1/T2 bench moves the distance.
+- **POW-2 depends on the distance.** Against Walls at 150 px their hit rate rose to about
+  10%, so POW-2 never fired; at 400 px it fired about 1,000 shots a bench. The two
+  policies interact through the hit rates, not directly.
+- **END-1 fires often against Shadow** (1,759 ticks over a cold bench), whenever Shadow is
+  low and has just fired. Its effect is not separable from noise in these runs; a paired
+  bench with END-1 off would price it.
+- **Skipped turns on the cold run** were 174 against 124 for the S4 re-runs, with single
+  turns up to 89 ms: host stalls, not S5 work (turn p95 was unchanged, and a sample-bot
+  run of the same code a little earlier skipped 5-11 per opponent). S6's tick budget
+  remains the fix.
+
 ## S4
 
 - **T1 and T2 are uncalibrated.** The gun-tier bounds (normalised 2, 4.5 and 7%) were set so

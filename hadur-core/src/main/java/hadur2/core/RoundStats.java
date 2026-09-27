@@ -39,6 +39,21 @@ public final class RoundStats {
     /** Waves on which a seed's weight was lowered because the opponent left its profile (RES-4), battle total. */
     public int seedDecays;
 
+    /** S5: the sum and count of scan distances, for the round's mean fighting distance. */
+    public double distanceSum;
+    public int distanceScans;
+    /** S5: the distance controller's target at the round's end (DIST-1). */
+    public double targetDistance = Double.NaN;
+    /** S5: duel ticks spent finishing (END-1) and ramming (END-2). */
+    public int finishTicks;
+    public int ramTicks;
+    /** S5: shots fired at full power (POW-1, POW-2; the gun's own choice never reaches 3.0). */
+    public int fullPowerShots;
+
+    public double meanDistance() {
+        return distanceScans == 0 ? Double.NaN : distanceSum / distanceScans;
+    }
+
     public double ourHitRate() {
         return shotsFired == 0 ? 0 : (double) shotsHit / shotsFired;
     }
@@ -51,18 +66,20 @@ public final class RoundStats {
      * The round-end record: {@code R,round,tick,result,ourEnergy,enemyEnergy,ourHitRate,
      * ourMargin,theirHitRate,theirMargin,phantomWaves,skippedTurns,faults,computationLevel,
      * radarReacquired,hiddenShots,profileLoadFailures,profileSaveFailures,seedsEvicted,
-     * bulletsIntercepted,jitteredShots,shotsFired,seedDecays}. The memory fields are battle totals so
+     * bulletsIntercepted,jitteredShots,shotsFired,seedDecays,meanDistance,targetDistance,
+     * finishTicks,ramTicks,fullPowerShots}. The memory fields are battle totals so
      * far, not this round's. Fields are only ever appended, so older readers still work.
      */
     public String toRecord(int round, long tick, String result, double ourEnergy,
                            double enemyEnergy) {
-        return String.format(Locale.ROOT, "R,%d,%d,%s,%.2f,%.2f,%.4f,%.4f,%.4f,%.4f,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d",
+        return String.format(Locale.ROOT, "R,%d,%d,%s,%.2f,%.2f,%.4f,%.4f,%.4f,%.4f,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%.1f,%.1f,%d,%d,%d",
             round, tick, result, ourEnergy, enemyEnergy,
             ourHitRate(), margin(ourHitRate(), shotsFired),
             theirHitRate(), margin(theirHitRate(), enemyShotsDetected),
             phantomWaves, skippedTurns, faults, computationLevel, radarReacquired, hiddenShots,
             profileLoadFailures, profileSaveFailures, seedsEvicted,
-            bulletsIntercepted, jitteredShots, shotsFired, seedDecays);
+            bulletsIntercepted, jitteredShots, shotsFired, seedDecays,
+            meanDistance(), targetDistance, finishTicks, ramTicks, fullPowerShots);
     }
 
     private static double margin(double p, int n) {

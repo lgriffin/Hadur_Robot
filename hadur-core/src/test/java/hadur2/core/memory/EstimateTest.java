@@ -57,4 +57,12 @@ class EstimateTest {
         assertTrue(e.excludes(0.2));
         assertFalse(e.excludes(0.11));
     }
+
+    @Test
+    @DisplayName("the centre is Agresti-Coull's, pulled toward a half over few samples")
+    void center() {
+        assertEquals(0.6, Estimate.of(1, 1).center(), 1e-12);
+        assertEquals(42.0 / 104, Estimate.of(40, 100).center(), 1e-12);
+        assertTrue(Double.isNaN(Estimate.NONE.center()));
+    }
 }

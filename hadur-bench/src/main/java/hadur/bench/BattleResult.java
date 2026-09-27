@@ -10,7 +10,8 @@ public final class BattleResult {
         + "roundRecords,faults,faultRecords,ourHitRate,theirHitRate,"
         + "phantomWaves,enemyShots,unseenShots,inferredWaves,matchedWaves,radarReacquired,hiddenShots,"
         + "profileFound,memoryFailures,seedsEvicted,bulletsIntercepted,jitteredShots,shotsFired,"
-        + "tiers,openingGun,gunSeed,surfSeed,seedDecays,errors";
+        + "tiers,openingGun,gunSeed,surfSeed,seedDecays,"
+        + "openingDistance,meanDistance,targetDistance,roundTicks,finishTicks,ramTicks,fullPowerShots,errors";
 
     public boolean ok;
     public int rounds, firsts, skippedTurns, turns;
@@ -28,6 +29,10 @@ public final class BattleResult {
     /** Recognise and adapt (S4): tiers and seed sizes at the first scan, the opening gun, seed decays. */
     public String tiers = "-", openingGun = "-";
     public int gunSeed, surfSeed, seedDecays;
+    /** Aggressive (S5): opening distance, mean fighting distance, last target, mean round length, endgame ticks, full-power shots. */
+    public String openingDistance = "-";
+    public double meanDistance = Double.NaN, targetDistance = Double.NaN, roundTicks = Double.NaN;
+    public int finishTicks, ramTicks, fullPowerShots;
     public double score, theirScore, survival, theirSurvival, bulletDamage, theirBulletDamage;
     public double turnP50Ms, turnP95Ms, turnMaxMs;
     public String errors = "";
@@ -72,12 +77,19 @@ public final class BattleResult {
         r.gunSeed = h.gunSeed();
         r.surfSeed = h.surfSeed();
         r.seedDecays = h.seedDecays();
+        r.openingDistance = h.openingDistance();
+        r.meanDistance = h.meanDistance();
+        r.targetDistance = h.targetDistance();
+        r.roundTicks = h.roundTicks();
+        r.finishTicks = h.finishTicks();
+        r.ramTicks = h.ramTicks();
+        r.fullPowerShots = h.fullPowerShots();
         r.errors = errors.trim();
         return r;
     }
 
     static String failed(String why) {
-        return "false,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NaN,NaN,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,0,0,0," + sanitize(why);
+        return "false,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NaN,NaN,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,0,0,0,-,NaN,NaN,NaN,0,0,0," + sanitize(why);
     }
 
     String toCsv() {
@@ -95,11 +107,13 @@ public final class BattleResult {
             String.valueOf(bulletsIntercepted), String.valueOf(jitteredShots),
             String.valueOf(shotsFired), sanitize(tiers), sanitize(openingGun),
             String.valueOf(gunSeed), String.valueOf(surfSeed), String.valueOf(seedDecays),
+            sanitize(openingDistance), num(meanDistance), num(targetDistance), num(roundTicks),
+            String.valueOf(finishTicks), String.valueOf(ramTicks), String.valueOf(fullPowerShots),
             sanitize(errors));
     }
 
     static BattleResult parse(String line) {
-        String[] f = line.split(",", 38);
+        String[] f = line.split(",", 45);
         BattleResult r = new BattleResult();
         r.ok = Boolean.parseBoolean(f[0]);
         r.rounds = Integer.parseInt(f[1]);
@@ -138,7 +152,14 @@ public final class BattleResult {
         r.gunSeed = Integer.parseInt(f[34]);
         r.surfSeed = Integer.parseInt(f[35]);
         r.seedDecays = Integer.parseInt(f[36]);
-        r.errors = f.length > 37 ? f[37] : "";
+        r.openingDistance = f[37];
+        r.meanDistance = Double.parseDouble(f[38]);
+        r.targetDistance = Double.parseDouble(f[39]);
+        r.roundTicks = Double.parseDouble(f[40]);
+        r.finishTicks = Integer.parseInt(f[41]);
+        r.ramTicks = Integer.parseInt(f[42]);
+        r.fullPowerShots = Integer.parseInt(f[43]);
+        r.errors = f.length > 44 ? f[44] : "";
         return r;
     }
 

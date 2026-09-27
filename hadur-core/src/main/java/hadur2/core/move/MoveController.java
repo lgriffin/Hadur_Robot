@@ -181,6 +181,11 @@ public class MoveController {
         return raw1v1ShotsFired;
     }
 
+    /** Their hits on us over those waves, unweighted. */
+    public int enemyRawHits() {
+        return raw1v1ShotsHit;
+    }
+
     /** Their hits on us over those waves, each weighted by our angular width (normalised). */
     public double enemyWeightedHits() {
         return weighted1v1ShotsHit;

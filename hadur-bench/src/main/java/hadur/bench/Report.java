@@ -111,6 +111,7 @@ final class Report {
             b.append(String.format(Locale.ROOT, "| %s | %d | %s | %d |%n",
                 e.getKey().name, fired, pct(down, fired), jittered));
         }
+        aggression(b, results);
         if (warm) {
             b.append("\n## Learning curve (score share by battle)\n\n| Opponent |");
             for (int i = 1; i <= runs; i++) b.append(" ").append(i).append(" |");
@@ -131,6 +132,54 @@ final class Report {
             + "Hit rates and faults come from Hadur's own R and FAULT records (RES-5); hit rates are "
             + "per-round means, and \"-\" means the robot wrote no R records.\n");
         return b.toString();
+    }
+
+    /** S5: how close Hadur fought, how hard it shot, and how quickly rounds ended. */
+    private static void aggression(StringBuilder b, Map<Opponent, List<BattleResult>> results) {
+        b.append("\n## Aggression\n\n")
+         .append("The opening distance is where the distance controller started in each battle "
+            + "(set by the profile's gun tier; 650 px, 1.20's, for a stranger). The fighting "
+            + "distance is the mean scan distance over rounds, and the final target is the "
+            + "controller's target when the last round ended (DIST-1). Damage per round is bullet "
+            + "damage dealt and taken. Full-power shots were fired at 3.0 (POW-1, POW-2); finish "
+            + "and ram ticks were spent closing on a weak enemy (END-1) and ramming a disabled one "
+            + "(END-2).\n\n")
+         .append("| Opponent | Opening distance | Fighting distance | Final target | Round length (ticks) | "
+            + "Damage per round (dealt / taken) | Full-power shots | Finish ticks | Ram ticks |\n")
+         .append("|---|---|---|---|---|---|---|---|---|\n");
+        for (Map.Entry<Opponent, List<BattleResult>> e : results.entrySet()) {
+            List<Double> dist = new ArrayList<>(), target = new ArrayList<>(), ticks = new ArrayList<>();
+            StringBuilder openings = new StringBuilder();
+            double dealt = 0, taken = 0;
+            int rounds = 0, fullPower = 0, finish = 0, ram = 0;
+            for (BattleResult r : e.getValue()) {
+                if (!r.ok) continue;
+                if (openings.indexOf(r.openingDistance) < 0) {
+                    openings.append(openings.length() == 0 ? "" : ", ").append(r.openingDistance);
+                }
+                if (!Double.isNaN(r.meanDistance)) dist.add(r.meanDistance);
+                if (!Double.isNaN(r.targetDistance)) target.add(r.targetDistance);
+                if (!Double.isNaN(r.roundTicks)) ticks.add(r.roundTicks);
+                dealt += r.bulletDamage;
+                taken += r.theirBulletDamage;
+                rounds += r.rounds;
+                fullPower += r.fullPowerShots;
+                finish += r.finishTicks;
+                ram += r.ramTicks;
+            }
+            b.append(String.format(Locale.ROOT, "| %s | %s | %s | %s | %s | %s | %d | %d | %d |%n",
+                e.getKey().name, openings.length() == 0 ? "-" : openings,
+                mean(dist, "%.0f"), mean(target, "%.0f"), mean(ticks, "%.0f"),
+                rounds == 0 ? "-" : String.format(Locale.ROOT, "%.1f / %.1f", dealt / rounds, taken / rounds),
+                fullPower, finish, ram));
+        }
+    }
+
+    private static String mean(List<Double> xs, String format) {
+        if (xs.isEmpty()) return "-";
+        double sum = 0;
+        for (double x : xs) sum += x;
+        return String.format(Locale.ROOT, format, sum / xs.size());
     }
 
     /** S3: whether each battle started from a stored profile, memory failures, and what was stored. */

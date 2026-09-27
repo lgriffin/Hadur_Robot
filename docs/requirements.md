@@ -18,8 +18,9 @@ EARS requirements from the Hadur 2 technical direction. This file is the source 
 | WAVE-2 | Unwanted | If a corrected energy drop is outside [0.1, 3.0], then the core shall not create a firing wave. | S2 |
 | RADAR-1 | Unwanted | If no scan of the enemy arrived on the previous tick, then the core shall turn the radar toward the enemy's last known bearing until it scans the enemy again. | S2 |
 | MOVE-1 | Ubiquitous | Movement shall exclude bullet-shadowed guess-factor intervals from a wave's danger score. | S6 |
-| DIST-1 | State | While our rolling hit rate exceeds the enemy's by 5 points or more, the distance policy shall reduce the target distance by 25 px per wave, not below 150 px. | S5 |
+| DIST-1 | State | While our rolling hit rate exceeds the enemy's by 5 points or more, the distance policy shall reduce the target distance by 25 px per wave, not below 400 px. | S5 |
 | POW-1 | Optional | Where the profile's gun tier is T0 and enemy energy exceeds 12, the gun shall fire power 3.0. | S5 |
+| POW-2 | State | While our rolling hit rate exceeds 20% and the enemy's is below 10%, each by more than its margin of error, the gun shall fire power 3.0, capped at a quarter of the enemy's energy. | S5 |
 | MOVE-2 | State | While the enemy's rolling hit rate on us exceeds its profile baseline by more than the margin of error, movement shall change flavour (flattener weight, surf mode, distance band) at the next surfable wave. | S6 |
 | DIAL-1 | Ubiquitous | Every policy input shall carry a value and a margin of error, and each policy shall select its conservative setting while the margin exceeds the policy's threshold. | S4 |
 | DIAL-2 | Ubiquitous | The core shall not condition any policy on elapsed ticks or round number alone. | S4 |
@@ -80,7 +81,37 @@ The ADAPT and DIAL groups and RES-4 were implemented in S4 with these readings:
   divergence also returns the opening's gun choice and surf prior to live data.
 - **DIAL-1** covers S4's policies (the opening gun, the surf prior, the flattener, the seed
   trust) and the danger views' thresholds, which already padded the hit rate by its margin
-  in 1.20. The S5 and S6 policies will take the same form.
+  in 1.20. The S5 policies take the same form (below); S6's will too.
 - **DIAL-2** is enforced structurally: the adapt package cannot see `BotInput` or
   `BotEvent`, and the seed trust counts waves.
 
+
+The S5 group (DIST-1, POW-1, POW-2, END-1, END-2) was implemented with these readings:
+
+- **Rolling hit rates** are the last 100 resolved shots on each side: our bullets that hit,
+  missed or were shot down, and their firing waves that broke on us, hit or not. A window,
+  not the battle's total, because the rate moves with the distance the policy picks.
+- **DIST-1 steps once per enemy wave** that breaks. Coming in is the aggressive setting, so
+  under DIAL-1 the lead must be certain: the gap between the two estimates' Agresti-Coull
+  centres, less the gap's 95% margin, must still be 5 points or more. (A first version that
+  took any certain lead let one cold battle against Shadow, where the rates are equal, walk
+  in to 175 px on noise.) The reverse (they out-hit us by 5
+  points) takes the target back out 25 px a wave, with no certainty needed, since further is
+  the conservative side.
+- **DIST-1's floor was changed from 150 to 400 px in S5**, from the bench (the same kind of
+  rewording as RES-3's: the controller means what it did, only the bound moved). At 150 px
+  the sample bots' head-on and linear guns hit Hadur often enough to take 0.4 to 2 points
+  of score share off it; at 300 a little was still lost; at 400 every sample bot's share
+  was at its S4 level and rounds still ended sooner. END-1 still closes to 150 to finish.
+- **The range is [400, 650] px.** The artifact capped it at 550, but a stranger starts at
+  1.20's 650 so that Hadur 2 against an unknown bot starts no worse than 1.20. The opening
+  book starts a known gun tier closer: T0 at 400, T1 450, T2 500, T3 550.
+- **POW-2** is the artifact's live rule ("our hit rate above ~20% and theirs below ~10%"),
+  added as its own requirement. Both POW rules keep the gun's own power while our energy is
+  12 or less, so a full-power miss cannot leave Hadur disabled, and neither goes below the
+  gun's own choice.
+- **END-1 reads the enemy's gun heat** from its shots as the ledger finds them: 3.0 at the
+  round's start, 1 + power / 5 at each shot, cooling at the battle's rate. A shot we never
+  saw leaves the estimate low, which only makes END-1 less eager.
+- **END-2** takes over from the surf entirely: nothing to dodge from a disabled robot.
+- **DIAL-2** is enforced as in S4: the policy package cannot see `BotInput` or `BotEvent`.
