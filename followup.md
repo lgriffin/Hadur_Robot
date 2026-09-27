@@ -2,6 +2,27 @@
 
 Open items from the Hadur 2 stages, newest stage first.
 
+## S4
+
+- **T1 and T2 are uncalibrated.** The gun-tier bounds (normalised 2, 4.5 and 7%) were set so
+  the sample bots read T0 and Shadow T3. No bench opponent falls in T1 or T2 yet; bench the
+  RoboRumble top 10 warm to place them.
+- **No warm gain against Shadow yet.** Warm 45.0% ± 10.3 against cold 44.3% ± 5.5. The
+  opening (main gun, flattener on) is what live play converges to anyway, so the seeds only
+  save the first rounds' learning. Look at round-0 to round-2 scores before tuning weights.
+- **The S4 cold bench ran on a loaded host.** It skipped 283 turns, 104 of them in one stall,
+  with sample-bot turn times twice the warm run's. Rerun the cold set on a quiet host before
+  reading skipped turns as a regression; the warm run skipped 12 turns against Shadow.
+- **Checkpoint I/O is about 44 KB a surviving round** with full seeds (a copy plus the
+  profile). If a rumble client is slow at file I/O, checkpoint stats only and save seeds at
+  the battle's end.
+- **RES-4 waits for a tight live estimate** (margin at most 5 points), which takes a few
+  hundred waves. A profile that is wrong from the first round costs up to that much play.
+- **Version 1 profiles lose their seeds** when read (they had none in practice) and are
+  rewritten as version 2 on the next save.
+- **Robocode refunds quota only on rewrite, not on delete.** `FileProfileStore.delete`
+  empties a file before deleting it. Any new file the robot writes must do the same.
+
 ## S3
 
 - **Tiers are provisional.** `Tiers` uses the artifact's thresholds on raw hit rates (their

@@ -6,9 +6,9 @@ As of 2026-09-27. The living copy is the [Claude Doc](https://claude.ai/code/art
 
 Hadur has moved from a hard-to-test dual-mode robot (1.20) to a 1v1 duelist with a Robocode-free core and a measured bench. It now infers enemy shots almost exactly. Against Shadow 3.83c, the reference duelist, 99.4% of the shots a scan could reveal become waves and none of its waves are false. It now wins every round against the sample bots.
 
-Since S3 it also remembers each opponent across battles, crash-safely and within Robocode's data quota, though nothing reads that memory yet.
+Since S3 it also remembers each opponent across battles, crash-safely and within Robocode's data quota. Since S4 it reads that memory: it names the opponent's gun and movement tiers, picks an opening gun and surfing prior from them, replays stored samples into its guns and surfing at half weight, and lets live evidence overrule the profile when they disagree.
 
-Score share against Shadow has not moved yet: 40.8% at 1.20, 46.2% at S1, 43.7% at S2, 45.1% at S3. All four are within each other's noise. That was expected. S0 to S3 build the foundations (measurement, architecture, accurate waves, memory), and S4 onward is where they are meant to pay off in score.
+Score share against Shadow has not moved yet: 40.8% at 1.20, 46.2% at S1, 43.7% at S2, 45.1% at S3, 44.3% at S4 (45.0% with memory). All are within each other's noise. S0 to S3 built the foundations (measurement, architecture, accurate waves, memory). S4 made memory drive decisions, but Shadow is an adaptive surfer with a strong gun, and starting warm has not yet shown a measurable gain against it. S5 and S6 are the stages that change how Hadur fights.
 
 ## Starting point: Hadur 1.x
 
@@ -35,8 +35,8 @@ Hadur 2 is a 1v1 duelist that is measured at every step. Its goal is to learn ea
 | S1 | Hexagonal core, adapter, guard, replay | Merged (PR #19) |
 | S2 | Energy ledger, radar reacquire | Merged (PR #20) |
 | S3 | Opponent memory | Merged (PR #28) |
-| S4 | Recognise and adapt | Next |
-| S5 | Aggressive distance and power policies | Planned |
+| S4 | Recognise and adapt | Merged (PR #29) |
+| S5 | Aggressive distance and power policies | Next |
 | S6 | Unhittable movement, tick budget | Planned |
 | S7 | Cut melee, rewrite the docs | Planned |
 
@@ -93,23 +93,36 @@ The bench found two costs of memory, and both were fixed before merging:
 
 Result: 45.1% ± 8.9 against Shadow cold, and every sample-bot round won. Over five consecutive battles with memory kept, Shadow is 47.1% ± 9.8, flat from battle to battle as expected. Every profile saved and reloaded (24 of 24 warm starts), with 0 memory failures.
 
+## S4: recognise the opponent and adapt
+
+S4 is the first stage where memory changes play. When a stored profile is found on the first scan, Hadur reads it before making that tick's orders. A stranger, or a profile with too little evidence, is played exactly as before, so the recorded replay battles still reproduce bit for bit.
+
+- **Tiers with a margin of error (DIAL-1).** Every rate in the profile is now an estimate with an Agresti-Coull 95% margin, and a tier is named only when the margin is at most 3 points; otherwise it stays unknown ("T?"). The gun tier reads a *normalised* hit rate: each of the opponent's hits is weighted by how small Hadur looked from where it fired, so a close-range brawler and a long-range sniper are compared fairly. The artifact's bounds put Shadow (normalised 9.5%) in the middle, so the bounds were set from the bench logs to 2, 4.5 and 7%: sample bots are T0 and Shadow T3. The movement tier reads our guns' ratings: M0 when the main gun hits a quarter of the time, M3 when both guns stay under 10%, and M2 when the anti-surfer gun clearly leads.
+- **An opening book (ADAPT-1, DIAL-2).** The opening is a pure function of the profile, so the same profile always gives the same opening; an architecture test keeps the clock out of it. Against M0 and M1 movers Hadur opens with the main gun, and against M2 and M3 with the anti-surfer gun, instead of waiting nine waves for the virtual guns to decide. Against a T3 gun it switches on the flattener from the first wave. The opponent's remembered hit rate becomes the surfing prior while live data is thinner than the profile.
+- **Seeds (ADAPT-3).** A profile now keeps up to 600 gun and 300 surf samples, quantised to 16-bit values (about 20 KB per profile). They are replayed 50 a tick at half weight, so the first waves of a battle already have neighbours to aim and dodge by, and live samples outweigh them.
+- **Live evidence wins (RES-4).** Once the live estimate is tight (margin at most 5 points) and disagrees with the profile beyond both margins, the seed loses 1/20 of its weight on each disagreeing wave, and the opening or prior is dropped. In one bench battle Shadow's live hit rate climbed to 12.5% against a profile of 9.5%, and the surf seed faded as designed.
+
+The bench found one real bug before merging. Robocode charges a robot's quota for every byte written but refunds nothing when a file is deleted, so the crash-safe save (write a copy, delete it later) leaked quota, and with 20 KB seeds 38 saves failed within a few battles. A delete now empties the file first, which Robocode does refund; a test simulates the quota rules.
+
+Result: 44.3% ± 5.5 against Shadow cold and 45.0% ± 10.3 over five warm battles (43, 51, 56, 39 and 36%), against 45.1% and 47.1% at S3. Against Saguaro, the bullet shielder, three warm battles gave 73.4% ± 7.0 (76, 70 and 74%), in line with the 72.4% the shield counter reached before S4; its profile reads T3/M0, so the opening is the main gun. Every sample-bot round was won both ways, the opening book picked the main gun in every warm battle after the first, and there were 0 memory failures. No gain from memory against Shadow is measurable yet. The cold run's skipped turns (283, against 15 at S3) came on a loaded host: 104 of them came in one stall on a single tick, and turn times on sample bots were twice the warm run's. The warm run, which does strictly more work, skipped 146 turns, 72 of them in one stall, and 12 against Shadow.
+
 ## Results by stage
 
 Across stages, Hadur has become more reliable and more accurate, while its score against Shadow has held steady. Each figure is a cold bench: 35 rounds × 5 seeds per opponent, mean ± 95% interval.
 
-| Measure | S0 (1.20) | S1 | S2 | S3 |
-| --- | --- | --- | --- | --- |
-| Shadow score share | 40.8% ± 8.3 | 46.2% ± 6.4 | 43.7% ± 4.6 | 45.1% ± 8.9 |
-| Shadow survival share | 46.9% ± 11.9 | 55.8% ± 10.0 | 53.1% ± 6.4 | 54.0% ± 10.3 |
-| Shadow bullet-damage share | 36.5% ± 5.2 | 38.6% ± 3.7 | 36.2% ± 3.5 | 38.0% ± 7.4 |
-| Shadow rounds won | 82 / 175 | 98 / 175 | 93 / 175 | 95 / 175 |
-| Sample-bot rounds won | 872 / 875 | 866 / 875 | 875 / 875 | 875 / 875 |
-| Shadow shots found as waves | not measured | not measured | 99.4%, 0 false | 99.9%, 3 false |
-| Skipped turns (all opponents) | 44 | 73 | 57 | 15 |
-| Faults | not measured | 0 | 0 | 0 |
-| Memory failures | - | - | - | 0 |
+| Measure | S0 (1.20) | S1 | S2 | S3 | S4 |
+| --- | --- | --- | --- | --- | --- |
+| Shadow score share | 40.8% ± 8.3 | 46.2% ± 6.4 | 43.7% ± 4.6 | 45.1% ± 8.9 | 44.3% ± 5.5 |
+| Shadow survival share | 46.9% ± 11.9 | 55.8% ± 10.0 | 53.1% ± 6.4 | 54.0% ± 10.3 | 54.9% ± 8.5 |
+| Shadow bullet-damage share | 36.5% ± 5.2 | 38.6% ± 3.7 | 36.2% ± 3.5 | 38.0% ± 7.4 | 35.7% ± 3.0 |
+| Shadow rounds won | 82 / 175 | 98 / 175 | 93 / 175 | 95 / 175 | 96 / 175 |
+| Sample-bot rounds won | 872 / 875 | 866 / 875 | 875 / 875 | 875 / 875 | 875 / 875 |
+| Shadow shots found as waves | not measured | not measured | 99.4%, 0 false | 99.9%, 3 false | 99.6%, 2 false |
+| Skipped turns (all opponents) | 44 | 73 | 57 | 15 | 283 (loaded host) |
+| Faults | not measured | 0 | 0 | 0 | 0 |
+| Memory failures | - | - | - | 0 | 0 |
 
-No change in score share is outside the noise. Bullet-damage share is the gap to close: Shadow still deals more damage than it takes. Sources: [S0](bench/s0-baseline-1.20-cold.md), [S1](bench/s1-2.0-cold.md), [S2](bench/s2-2.0-cold.md) and [S3](bench/s3-2.1-cold.md) bench reports, plus the [S3 warm run](bench/s3-2.1-warm.md).
+No change in score share is outside the noise. Bullet-damage share is the gap to close: Shadow still deals more damage than it takes. Sources: [S0](bench/s0-baseline-1.20-cold.md), [S1](bench/s1-2.0-cold.md), [S2](bench/s2-2.0-cold.md), [S3](bench/s3-2.1-cold.md) and [S4](bench/s4-2.1-cold.md) bench reports, plus the [S3](bench/s3-2.1-warm.md) and [S4](bench/s4-2.1-warm.md) warm runs.
 
 ## How the strategy is kept honest
 
@@ -125,7 +138,7 @@ Every strategic claim is backed by a requirement, a test that proves it and a be
 | Replay | Real recorded battles reproduce the live robot's orders exactly | ReplayTest |
 | Bench | Score, survival, damage, faults, wave fidelity against ground truth | hadur-bench |
 
-At S3 the build runs 236 core, 4 robot and 10 bench tests, none skipped, and all 24 requirements due by S3 are covered. GitHub Actions runs `mvn verify` on every push.
+At S4 the build runs 313 core, 5 robot and 10 bench tests, none skipped, and all 32 requirements due by S4 are covered. GitHub Actions runs `mvn verify` on every push; while Actions is off, stage PRs merge on a local `mvn -B verify` pass.
 
 ## Release 2.1: fight melee too
 
@@ -152,17 +165,17 @@ and shot dodging in the melee mover are the obvious next bets.
 
 ## What comes next
 
-The next stages turn accurate perception and memory into score. The remaining 14 requirements are spread over S4 to S6 (6, 4 and 4).
+The next stages turn accurate perception and memory into score. The remaining 8 requirements are spread over S5 and S6 (4 and 4).
 
 | Stage | Strategic bet | Requirements |
 | --- | --- | --- |
-| S4 | Recognise the opponent's type and adapt from the first wave, and trust live evidence over old profiles | ADAPT-1 to 3, DIAL-1, DIAL-2, RES-4 |
 | S5 | Press when ahead: close distance while out-hitting the enemy, full power against weak movers, finish off a disabled enemy | DIST-1, POW-1, END-1, END-2 |
 | S6 | Be unhittable within the tick budget: bullet shadows, switch movement when it is being hit, cut computation instead of skipping turns | MOVE-1, MOVE-2, TIME-1, TIME-2 |
 
 Open items carried forward:
 
 - **Skipped turns** are 15 per cold bench and are S6's gate (zero). The first-scan skips are gone; the rest are scattered.
-- **Memory is stored but unread.** Tiers are provisional and the gun and surf seeds are empty; S4 sets the tier thresholds from bench logs and fills the seeds.
+- **Memory has not paid off against Shadow.** Tiers, openings and seeds work as designed, but warm and cold scores are within noise. The T1 and T2 bounds have no bench opponent in them yet, so they are uncalibrated.
+- **Checkpoint I/O grew** to about 44 KB a surviving round with full seeds. If rumble clients prove slow at file I/O, checkpoint only the stats.
 - **Damage share against Shadow** is about 37%. S3 to S5 target it.
 - **The ledger's remaining ambiguity** is small. A shot fired as the enemy strikes a wall can be 0.5 off in power, and 0.6% of Shadow's visible shots are still missed and have not yet been examined.
