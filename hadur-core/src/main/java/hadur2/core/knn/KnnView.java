@@ -32,6 +32,11 @@ public class KnnView<T> {
     public static final int DEFAULT_MAX_DATA_POINTS = 50_000;
 
     private KdTree<T> tree;
+    /** Points ever added, and how many of them were seeds (ADAPT-3), since the tree was made. */
+    private long added;
+    private int seeds;
+    /** The weight the seeds share; null while there are none. */
+    private SeedWeight seedWeight;
 
     public KnnView(DistanceFormula formula) {
         this.formula = formula;
@@ -55,6 +60,9 @@ public class KnnView<T> {
         tree = new KdTree<>(formula.weights.length,
             maxDataPoints == 0 ? DEFAULT_MAX_DATA_POINTS : maxDataPoints);
         tree.setWeights(formula.weights);
+        added = 0;
+        seeds = 0;
+        seedWeight = null;
     }
 
     public KnnView<T> setWeight(double weight) {
@@ -123,7 +131,21 @@ public class KnnView<T> {
         return logDataPoint(dataPoint, value);
     }
 
-    protected double[] logDataPoint(double[] dataPoint, T value) {
+    /**
+     * Adds a sample replayed from an opponent profile (ADAPT-3). The point must already be
+     * in this view's formula space; the value carries the seed's weight.
+     */
+    public void logSeed(double[] dataPoint, T value, SeedWeight weight) {
+        if (dataPoint.length != formula.weights.length) {
+            throw new IllegalArgumentException(name + " takes " + formula.weights.length + " dimensions");
+        }
+        seeds++;
+        seedWeight = weight;
+        logDataPoint(dataPoint.clone(), value);
+    }
+
+    public double[] logDataPoint(double[] dataPoint, T value) {
+        added++;
         tree.addPoint(dataPoint, value);
         return dataPoint;
     }
@@ -133,13 +155,29 @@ public class KnnView<T> {
     }
 
     public boolean enabled(double hitPercentage, double marginOfError) {
-        return size() > 0
-            && hitPercentage >= hitThreshold
+        return size() > 0 && thresholdsMet(hitPercentage, marginOfError);
+    }
+
+    /** Whether an enemy hit percentage and its margin clear this view's thresholds. */
+    public boolean thresholdsMet(double hitPercentage, double marginOfError) {
+        return hitPercentage >= hitThreshold
             && Math.max(0, hitPercentage - marginOfError) >= paddedHitThreshold;
     }
 
     public int size() {
         return tree.size();
+    }
+
+    /**
+     * Samples that still carry weight: {@link #size()} less the seeds once their weight has
+     * fallen to zero (RES-4). The tree evicts oldest first and seeds go in first, so evicted
+     * points are counted against the seeds.
+     */
+    public int effectiveSize() {
+        if (seedWeight == null || seedWeight.value() > 0) return size();
+        long evicted = added - size();
+        long deadSeeds = Math.max(0, seeds - evicted);
+        return (int) Math.max(0, size() - deadSeeds);
     }
 
     public List<KdTree.Entry<T>> nearestNeighbors(Wave w, boolean aiming) {
@@ -172,12 +210,13 @@ public class KnnView<T> {
                 sorted[i] = entries.get(i).value;
             }
             Arrays.sort(sorted);
-            for (int i = 0; i < numScans; i++) {
-                double w = 1.0;
-                for (int p = 0; p < numScans - i - 1; p++) {
-                    w /= decayRate;
-                }
+            // The newest weighs 1 and each older one decayRate times less. Walking from the
+            // newest repeats 1.20's divisions in the same order, so the weights are
+            // bit-identical, in linear time rather than quadratic.
+            double w = 1.0;
+            for (int i = numScans - 1; i >= 0; i--) {
                 weightMap.put(sorted[i], w);
+                w /= decayRate;
             }
         }
         return weightMap;

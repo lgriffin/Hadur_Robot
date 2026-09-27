@@ -58,6 +58,9 @@ public class LogHarvester extends BattleAdaptor {
     private double ourHitRateSum, theirHitRateSum;
     /** Opponent memory (S3): whether the B record said a profile was found, failures, evictions. */
     private int profileFound, memoryFailures, seedsEvicted;
+    /** Recognise and adapt (S4): tiers and seed sizes at the first scan, the opening gun, seed decays. */
+    private String tiers = "-", openingGun = "-";
+    private int gunSeed, surfSeed, seedDecays;
 
     public LogHarvester(Path dir, String us) throws IOException {
         this.us = us;
@@ -116,6 +119,22 @@ public class LogHarvester extends BattleAdaptor {
             // B,round,tick,battle,exactName,lineageKey,found,tiers,gunSeed,surfSeed,level
             String[] f = line.split(",");
             if (f.length >= 7 && f[6].equals("1")) profileFound = 1;
+            if (f.length >= 10 && tiers.equals("-")) {
+                tiers = f[7];
+                try {
+                    gunSeed = Integer.parseInt(f[8]);
+                    surfSeed = Integer.parseInt(f[9]);
+                } catch (NumberFormatException ignored) {
+                    // Sizes stay 0.
+                }
+            }
+        } else if (line.startsWith("P,")) {
+            // P,round,tick,policy,value,margin,setting: the opening gun is "<tier>:<gun>".
+            String[] f = line.split(",");
+            if (f.length >= 7 && f[3].equals("opening-gun") && openingGun.equals("-")) {
+                int colon = f[6].indexOf(':');
+                openingGun = colon < 0 ? f[6] : f[6].substring(colon + 1);
+            }
         } else if (line.startsWith("MEM,")) {
             // MEM,round,tick,event,detail: every memory failure writes one (MEM-4, RES-5).
             String[] f = line.split(",");
@@ -151,6 +170,7 @@ public class LogHarvester extends BattleAdaptor {
                     jitteredShots += Integer.parseInt(f[20]);
                     shotsFired += Integer.parseInt(f[21]);
                 }
+                if (f.length >= 23) seedDecays = Math.max(seedDecays, Integer.parseInt(f[22]));
                 roundRecords++;
             } catch (NumberFormatException ignored) {
                 // A malformed record is left out of the averages.
@@ -197,6 +217,26 @@ public class LogHarvester extends BattleAdaptor {
 
     private static String f(double d) {
         return String.format(Locale.ROOT, "%.2f", d);
+    }
+
+    public String tiers() {
+        return tiers;
+    }
+
+    public String openingGun() {
+        return openingGun;
+    }
+
+    public int gunSeed() {
+        return gunSeed;
+    }
+
+    public int surfSeed() {
+        return surfSeed;
+    }
+
+    public int seedDecays() {
+        return seedDecays;
     }
 
     public int profileFound() {

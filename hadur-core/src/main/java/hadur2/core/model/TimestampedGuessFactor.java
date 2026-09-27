@@ -8,7 +8,11 @@ public class TimestampedGuessFactor extends Timestamped {
     public double guessFactor;
 
     public TimestampedGuessFactor(int round, long time, double guessFactor) {
-        super(round, time);
+        this(round, time, guessFactor, null);
+    }
+
+    public TimestampedGuessFactor(int round, long time, double guessFactor, SeedWeight seed) {
+        super(round, time, seed);
         this.guessFactor = guessFactor;
     }
 }

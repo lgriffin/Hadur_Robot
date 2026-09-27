@@ -65,6 +65,52 @@ class FileProfileStoreTest {
         assertEquals(10_000, s.quota());
     }
 
+    /**
+     * Robocode's accounting (RobotFileSystemManager): the quota is charged for every byte
+     * written, opening an existing file for writing refunds its length, and a delete
+     * refunds nothing.
+     */
+    static final class RobocodeQuota {
+        final long max;
+        long used;
+
+        RobocodeQuota(long max, File dir) {
+            this.max = max;
+            File[] files = dir.listFiles();
+            if (files != null) for (File f : files) used += f.length();
+        }
+
+        OutputStream open(File file) throws IOException {
+            if (file.exists()) used -= file.length();
+            return new FilterOutputStream(new FileOutputStream(file)) {
+                @Override
+                public void write(int b) throws IOException {
+                    if (used + 1 > max) throw new IOException("You have reached your filesystem quota");
+                    used++;
+                    out.write(b);
+                }
+            };
+        }
+    }
+
+    @Test
+    @Tag("MEM-3")
+    @DisplayName("a round's checkpoint does not leak Robocode's write quota, however many rounds")
+    void savesDoNotLeakTheWriteQuota() {
+        RobocodeQuota quota = new RobocodeQuota(200_000, dir.toFile());
+        FileProfileStore s = new FileProfileStore(dir.toFile(), 200_000, quota::open);
+        ProfileLibrary library = new ProfileLibrary(s);
+        OpponentProfile p = profile("abc.Shadow 3.83c", 3);
+        for (int i = 0; i < 560; i++) p.addGunSample(new short[OpponentProfile.SAMPLE_WIDTH]);
+        for (int i = 0; i < 300; i++) p.addSurfSample(new short[OpponentProfile.SAMPLE_WIDTH]);
+        int size = ProfileCodec.encode(p).length;
+        assertTrue(size > 20_000, "a fully seeded profile, " + size + " bytes");
+        for (int round = 0; round < 35; round++) {
+            assertEquals(ProfileLibrary.Saved.WRITTEN, library.save(p), "round " + round);
+        }
+        assertEquals(s.bytesUsed(), quota.used, "the quota charges only what is on disk");
+    }
+
     @Test
     @DisplayName("names can never leave the data directory")
     void namesStayInside() {

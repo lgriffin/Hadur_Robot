@@ -1,9 +1,14 @@
 package hadur2.core;
 
+import hadur2.core.adapt.Opening;
+import hadur2.core.adapt.OpeningBook;
+import hadur2.core.adapt.SeedLoader;
+import hadur2.core.adapt.SeedTrust;
 import hadur2.core.gun.GunController;
 import hadur2.core.ledger.EnergyLedger;
 import hadur2.core.melee.BattleMode;
 import hadur2.core.melee.MeleeController;
+import hadur2.core.memory.Estimate;
 import hadur2.core.memory.LineageKey;
 import hadur2.core.memory.ProfileFolder;
 import hadur2.core.memory.ProfileLibrary;
@@ -33,8 +38,14 @@ import java.util.Locale;
  *
  * <p>In a duel with a {@link ProfileStore}, the first scan loads the opponent's profile
  * (MEM-1), each round's observations are folded into it when the round ends (MEM-2), and
- * {@link #saveProfile} persists it (MEM-3). In S3 the profile is only recorded: nothing it
- * holds changes an order. Melee battles neither load nor save profiles.</p>
+ * {@link #saveProfile} persists it (MEM-3). Melee battles neither load nor save profiles.</p>
+ *
+ * <p>The loaded profile also decides the battle's opening (S4): the {@link OpeningBook}
+ * reads its tiers once and picks the first gun (ADAPT-1) and the surf's prior (ADAPT-2),
+ * and its seeds are replayed into the KNN views at half a live sample's weight over the
+ * next ticks (ADAPT-3). Each wave then checks the live estimates against the profile's,
+ * and a seed the opponent no longer matches fades out (RES-4). A stranger, or a profile
+ * too thin to trust, opens exactly as 1.20 did (DIAL-1).</p>
  */
 public final class HadurCore {
 
@@ -63,6 +74,17 @@ public final class HadurCore {
     private boolean profileFound;
     private String opponentName;
     private double lastEnemyDistance;
+    private Opening opening = Opening.STRANGER;
+    private SeedLoader seedLoader;
+    private int seedsReplayed;
+    /** RES-4: null until a profile is opened. */
+    private SeedTrust gunSeedTrust;
+    private SeedTrust surfSeedTrust;
+    /** Waves already checked against the profile: our virtual main-gun waves, their firing waves. */
+    private double gunWavesChecked;
+    private int surfWavesChecked;
+    /** Waves on which a seed's weight was lowered, battle total (RES-5). */
+    private int seedDecays;
 
     private int round;
     private RoundStats stats = new RoundStats();
@@ -183,11 +205,17 @@ public final class HadurCore {
             else if (e instanceof BotEvent.SkippedTurn) onSkippedTurn(in);
         }
 
+        if (seedLoader != null && !melee) {
+            seedsReplayed += seedLoader.step();
+            if (seedLoader.done()) seedLoader = null;
+        }
+
         if (melee) {
             meleeTick(in, orders);
         } else if (lastGunWave != null) {
             aimAndFire(in, orders);
             moveController.checkWaves(in.time(), in.location());
+            checkSurfSeed(in.time());
             surfMover.move(orders, currentState(in), moveController, lastEnemyLocation, 2);
             if (in.time() - lastScanTime > 1) reacquire(in, orders);
         } else {
@@ -242,6 +270,7 @@ public final class HadurCore {
      */
     public RoundStats roundEnded(long tick, String result, double myEnergy, int faults) {
         stats.faults = faults;
+        stats.seedDecays = seedDecays;
         foldRound(tick, "win".equals(result));
         if (library != null) {
             stats.profileLoadFailures = library.loadFailures();
@@ -258,6 +287,7 @@ public final class HadurCore {
         try {
             double[] v = gunController.virtualGunScores(opponentName);
             folder.virtualGuns(v[0], v[1], v[2], v[3]);
+            folder.normalised(moveController.enemyFiringWaves(), moveController.enemyWeightedHits());
             folder.fold(won);
         } catch (RuntimeException e) {
             stats.profileSaveFailures++;
@@ -294,6 +324,36 @@ public final class HadurCore {
     /** The profile of this battle's opponent, or null before the first scan or without memory. */
     public hadur2.core.memory.OpponentProfile profile() {
         return folder == null ? null : folder.profile();
+    }
+
+    /** The battle's opening (S4); {@link Opening#STRANGER} before the first scan or without memory. */
+    public Opening opening() {
+        return opening;
+    }
+
+    /** The surf's danger views whose thresholds are met now (ADAPT-2, DIAL-1). */
+    public java.util.List<String> dangerViewsOn() {
+        return moveController.viewsOn();
+    }
+
+    /** The gun seed's weight now (ADAPT-3, RES-4), or NaN without a profile. */
+    public double gunSeedWeight() {
+        return gunSeedTrust == null ? Double.NaN : gunSeedTrust.weight().value();
+    }
+
+    /** The surf seed's weight now, or NaN without a profile. */
+    public double surfSeedWeight() {
+        return surfSeedTrust == null ? Double.NaN : surfSeedTrust.weight().value();
+    }
+
+    /** Whether seeds are still being replayed into the views. */
+    public boolean seedsLoading() {
+        return seedLoader != null;
+    }
+
+    /** Seed samples replayed into the views so far this battle (ADAPT-3). */
+    public int seedsReplayed() {
+        return seedsReplayed;
     }
 
     private static String clean(String s) {
@@ -438,6 +498,7 @@ public final class HadurCore {
 
         gunWaveManager.checkActiveWaves(time, enemyState,
             (w, bs) -> gunController.onWaveBreak(w, bs));
+        checkGunSeed(time);
 
         double guessPower = moveController.guessBulletPower();
         Wave moveWave = new Wave(e.name(), enemyPos, myPos,
@@ -503,6 +564,91 @@ public final class HadurCore {
         telemetry.emit("B," + round + "," + time + "," + battle + "," + clean(name) + ","
             + clean(key) + "," + (profileFound ? 1 : 0) + "," + tiers + "," + gunSeed + ","
             + surfSeed + "," + stats.computationLevel);
+        if (folder != null) open(round, time, name);
+    }
+
+    /**
+     * S4: the opening book reads the profile once, and its decisions go to the gun and the
+     * surf through their own setters. P records say what it chose and on what evidence:
+     * {@code P,round,tick,policy,value,margin,setting}.
+     */
+    private void open(int round, long time, String name) {
+        opening = OpeningBook.read(folder.profile());
+        gunController.setSampleSink(folder::gunSample);
+        moveController.setSampleSink(folder::surfSample);
+        if (opening.gun() != Opening.Gun.LIVE) {
+            gunController.setOpening(opening.gun() == Opening.Gun.ANTI_SURFER
+                ? GunController.Opening.ANTI_SURFER : GunController.Opening.MAIN);
+        }
+        Estimate prior = opening.surfPrior();
+        if (!Double.isNaN(prior.value())) moveController.setPrior(prior.value(), prior.margin());
+        moveController.setFlattenerFirst(opening.flattenerFirst());
+        emitPolicy(round, time, "opening-gun", Double.NaN, Double.NaN,
+            opening.moveTier() + ":" + opening.gun().name().toLowerCase(Locale.ROOT));
+        emitPolicy(round, time, "surf-prior", prior.value(), prior.margin(),
+            opening.gunTier() + ":" + (opening.flattenerFirst() ? "flattener" : Double.isNaN(prior.value()) ? "live" : "profile"));
+        // Without a seed the weights start at 0; the trusts still watch the opening's evidence.
+        SeedWeight gunWeight = new SeedWeight(opening.gunSeed().isEmpty() ? 0 : opening.seedWeight());
+        SeedWeight surfWeight = new SeedWeight(opening.surfSeed().isEmpty() ? 0 : opening.seedWeight());
+        gunSeedTrust = new SeedTrust(gunWeight, opening.mainGunRating());
+        surfSeedTrust = new SeedTrust(surfWeight, opening.theirHitRate());
+        if (opening.gunSeed().isEmpty() && opening.surfSeed().isEmpty()) return;
+        seedLoader = new SeedLoader(opening.gunSeed(), opening.surfSeed(),
+            sample -> gunController.seed(name, sample, gunWeight),
+            sample -> moveController.seed(sample, surfWeight));
+    }
+
+    /**
+     * RES-4: each of our virtual main-gun waves checks the gun seed against the live rating.
+     * Once they disagree, the opening's gun choice goes too and live ratings pick the gun.
+     */
+    private void checkGunSeed(long time) {
+        if (gunSeedTrust == null) return;
+        double[] v = gunController.virtualGunScores(opponentName);
+        Estimate live = Estimate.of(v[1], v[0]);
+        boolean trusted = !gunSeedTrust.distrusted();
+        for (; gunWavesChecked < v[0]; gunWavesChecked++) {
+            if (gunSeedTrust.observe(live)) {
+                seedDecays++;
+                emitPolicy(round, time, "gun-seed", live.value() - opening.mainGunRating().value(),
+                    Math.max(live.margin(), opening.mainGunRating().margin()),
+                    String.format(Locale.ROOT, "%.2f", gunSeedTrust.weight().value()));
+            }
+        }
+        if (trusted && gunSeedTrust.distrusted() && gunController.opening() != null) {
+            gunController.setOpening(null);
+            emitPolicy(round, time, "opening-gun", live.value(), live.margin(), "live");
+        }
+    }
+
+    /**
+     * RES-4: each enemy firing wave that breaks on us checks the surf seed against the live
+     * normalised hit rate. Once they disagree, the surf's prior goes too.
+     */
+    private void checkSurfSeed(long time) {
+        if (surfSeedTrust == null) return;
+        int waves = moveController.enemyFiringWaves();
+        Estimate live = Estimate.of(moveController.enemyWeightedHits(), waves);
+        boolean trusted = !surfSeedTrust.distrusted();
+        for (; surfWavesChecked < waves; surfWavesChecked++) {
+            if (surfSeedTrust.observe(live)) {
+                seedDecays++;
+                emitPolicy(round, time, "surf-seed", live.value() - opening.theirHitRate().value(),
+                    Math.max(live.margin(), opening.theirHitRate().margin()),
+                    String.format(Locale.ROOT, "%.2f", surfSeedTrust.weight().value()));
+            }
+        }
+        if (trusted && surfSeedTrust.distrusted() && !Double.isNaN(opening.surfPrior().value())) {
+            moveController.clearPrior();
+            emitPolicy(round, time, "surf-prior", live.value(), live.margin(), "live");
+        }
+    }
+
+    private void emitPolicy(int round, long time, String policy, double value, double margin,
+                            String setting) {
+        telemetry.emit(String.format(Locale.ROOT, "P,%d,%d,%s,%s,%s,%s", round, time, policy,
+            Double.isNaN(value) ? "-" : String.format(Locale.ROOT, "%.4f", value),
+            Double.isNaN(margin) ? "-" : String.format(Locale.ROOT, "%.4f", margin), setting));
     }
 
     private void onBulletHit(BotEvent.BulletHit e) {

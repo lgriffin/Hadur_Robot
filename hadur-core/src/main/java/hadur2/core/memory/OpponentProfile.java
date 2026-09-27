@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Everything Hadur remembers about one opponent lineage between battles (the artifact's
  * profile schema): who it is, how recent battles went, how its gun does against us, how
- * it moves under our guns, and (from S4) seed samples for the KNN views.
+ * it moves under our guns, and seed samples for the KNN views (S4).
  *
  * <p>Counts are floats so that old evidence can fade: once a group of counts passes
  * {@link #DECAY_LIMIT} it is halved, which keeps the profile weighted toward recent
@@ -25,7 +25,7 @@ public final class OpponentProfile {
     public static final int MAX_OUTCOMES = 10;
     public static final int MAX_GUN_SEED = 600;
     public static final int MAX_SURF_SEED = 300;
-    /** A seed sample: 10 KNN dimensions, a guess factor and a 2-D displacement, as shorts. */
+    /** A seed sample as shorts; see {@link Seeds} for what each holds. */
     public static final int SAMPLE_WIDTH = 13;
     /** A count group is halved when it passes this. */
     public static final float DECAY_LIMIT = 4000f;
@@ -112,6 +112,11 @@ public final class OpponentProfile {
     final float[] shotsByMotion = new float[2];
     final float[] hitsByMotion = new float[2];
     final float[] powerHistogram = new float[POWER_BINS];
+    /**
+     * Their firing waves that broke on us [0] and their hits over them [1], each hit weighted
+     * by our angular width as seen from the shooter: the normalised hit rate (S4, format v2).
+     */
+    final float[] normalised = new float[2];
 
     // Their movement: how well our guns do against it.
     /** Virtual-gun waves and weighted hits for the main gun [0] and the anti-surfer gun [1]. */
@@ -122,7 +127,7 @@ public final class OpponentProfile {
     /** Scans, velocity reversals, summed |lateral velocity|, scans near a wall, scans stopped. */
     final float[] motion = new float[5];
 
-    // Seeds (filled from S4).
+    // Seeds: recent samples for the KNN views (S4).
     final List<short[]> gunSeed = new ArrayList<>();
     final List<short[]> surfSeed = new ArrayList<>();
 
@@ -239,6 +244,19 @@ public final class OpponentProfile {
         return shotsByMotion[1] == 0 ? Double.NaN : hitsByMotion[1] / shotsByMotion[1];
     }
 
+    public double normalisedWaves() {
+        return normalised[0];
+    }
+
+    public double normalisedHits() {
+        return normalised[1];
+    }
+
+    /** Their normalised hit rate on us, or NaN before any wave. */
+    public double normalisedHitRate() {
+        return normalised[0] == 0 ? Double.NaN : normalised[1] / normalised[0];
+    }
+
     /** The share of their shots in each power bin. */
     public double[] powerShares() {
         double total = sum(powerHistogram);
@@ -315,6 +333,7 @@ public final class OpponentProfile {
             halve(hitsByMotion);
             halve(powerHistogram);
         }
+        if (normalised[0] > DECAY_LIMIT) halve(normalised);
         if (virtualFired[0] > DECAY_LIMIT || virtualFired[1] > DECAY_LIMIT) {
             halve(virtualFired);
             halve(virtualHits);
@@ -346,6 +365,7 @@ public final class OpponentProfile {
             && Arrays.equals(shotsByMotion, p.shotsByMotion)
             && Arrays.equals(hitsByMotion, p.hitsByMotion)
             && Arrays.equals(powerHistogram, p.powerHistogram)
+            && Arrays.equals(normalised, p.normalised)
             && Arrays.equals(virtualFired, p.virtualFired)
             && Arrays.equals(virtualHits, p.virtualHits)
             && Arrays.equals(ourShots, p.ourShots) && Arrays.equals(ourHits, p.ourHits)

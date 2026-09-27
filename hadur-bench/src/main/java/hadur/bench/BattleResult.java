@@ -9,7 +9,8 @@ public final class BattleResult {
         + "bulletDamage,theirBulletDamage,skippedTurns,turns,turnP50Ms,turnP95Ms,turnMaxMs,"
         + "roundRecords,faults,faultRecords,ourHitRate,theirHitRate,"
         + "phantomWaves,enemyShots,unseenShots,inferredWaves,matchedWaves,radarReacquired,hiddenShots,"
-        + "profileFound,memoryFailures,seedsEvicted,bulletsIntercepted,jitteredShots,shotsFired,errors";
+        + "profileFound,memoryFailures,seedsEvicted,bulletsIntercepted,jitteredShots,shotsFired,"
+        + "tiers,openingGun,gunSeed,surfSeed,seedDecays,errors";
 
     public boolean ok;
     public int rounds, firsts, skippedTurns, turns;
@@ -24,6 +25,9 @@ public final class BattleResult {
     public int profileFound, memoryFailures, seedsEvicted;
     /** Our bullets shot down, shots fired with the anti-shield offset, and all our shots (SHIELD-1, SHIELD-2). */
     public int bulletsIntercepted, jitteredShots, shotsFired;
+    /** Recognise and adapt (S4): tiers and seed sizes at the first scan, the opening gun, seed decays. */
+    public String tiers = "-", openingGun = "-";
+    public int gunSeed, surfSeed, seedDecays;
     public double score, theirScore, survival, theirSurvival, bulletDamage, theirBulletDamage;
     public double turnP50Ms, turnP95Ms, turnMaxMs;
     public String errors = "";
@@ -63,12 +67,17 @@ public final class BattleResult {
         r.bulletsIntercepted = h.bulletsIntercepted();
         r.jitteredShots = h.jitteredShots();
         r.shotsFired = h.shotsFired();
+        r.tiers = h.tiers();
+        r.openingGun = h.openingGun();
+        r.gunSeed = h.gunSeed();
+        r.surfSeed = h.surfSeed();
+        r.seedDecays = h.seedDecays();
         r.errors = errors.trim();
         return r;
     }
 
     static String failed(String why) {
-        return "false,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NaN,NaN,0,0,0,0,0,0,0,0,0,0,0,0,0," + sanitize(why);
+        return "false,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NaN,NaN,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,0,0,0," + sanitize(why);
     }
 
     String toCsv() {
@@ -84,11 +93,13 @@ public final class BattleResult {
             String.valueOf(hiddenShots), String.valueOf(profileFound),
             String.valueOf(memoryFailures), String.valueOf(seedsEvicted),
             String.valueOf(bulletsIntercepted), String.valueOf(jitteredShots),
-            String.valueOf(shotsFired), sanitize(errors));
+            String.valueOf(shotsFired), sanitize(tiers), sanitize(openingGun),
+            String.valueOf(gunSeed), String.valueOf(surfSeed), String.valueOf(seedDecays),
+            sanitize(errors));
     }
 
     static BattleResult parse(String line) {
-        String[] f = line.split(",", 33);
+        String[] f = line.split(",", 38);
         BattleResult r = new BattleResult();
         r.ok = Boolean.parseBoolean(f[0]);
         r.rounds = Integer.parseInt(f[1]);
@@ -122,7 +133,12 @@ public final class BattleResult {
         r.bulletsIntercepted = Integer.parseInt(f[29]);
         r.jitteredShots = Integer.parseInt(f[30]);
         r.shotsFired = Integer.parseInt(f[31]);
-        r.errors = f.length > 32 ? f[32] : "";
+        r.tiers = f[32];
+        r.openingGun = f[33];
+        r.gunSeed = Integer.parseInt(f[34]);
+        r.surfSeed = Integer.parseInt(f[35]);
+        r.seedDecays = Integer.parseInt(f[36]);
+        r.errors = f.length > 37 ? f[37] : "";
         return r;
     }
 

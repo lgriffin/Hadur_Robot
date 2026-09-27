@@ -8,8 +8,15 @@ import hadur2.core.move.*;
 
 import java.awt.geom.Point2D;
 import java.util.*;
+import java.util.function.Consumer;
 
 public class GunController {
+
+    /** The gun an opening book asks for until the live virtual guns clearly disagree (ADAPT-1). */
+    public enum Opening { MAIN, ANTI_SURFER }
+
+    /** A gun seed sample: the main view's 10 data-point values, the guess factor, the displacement. */
+    public static final int SAMPLE_WIDTH = 13;
 
     private static final int DATA_THRESHOLD = 9;
 
@@ -24,6 +31,11 @@ public class GunController {
     private final Map<String, GunStats> mainGunStats = new HashMap<>();
     private final Map<String, GunStats> antiSurferStats = new HashMap<>();
     private final Map<Wave, double[]> virtualBullets = new HashMap<>();
+    private final GunFormula sampleFormula;
+    private Opening opening;
+    private Consumer<double[]> sampleSink;
+    /** Seeded samples so far; their time, so they keep their order. */
+    private int seedsLoaded;
 
     public GunController(BattleField battleField, int enemiesTotal) {
         this.battleField = battleField;
@@ -31,6 +43,38 @@ public class GunController {
         this.is1v1 = (enemiesTotal <= 1);
         this.mainGun = new MainGun(battleField);
         this.antiSurferGun = new AntiSurferGun(battleField, is1v1);
+        this.sampleFormula = new GunFormula(enemiesTotal);
+    }
+
+    /**
+     * ADAPT-1: the gun to use from the first firing wave, until the live virtual-gun ratings
+     * disagree by more than their margin of error. Null (the default) keeps 1.20's choice:
+     * head-on for the first nine waves, then whichever virtual gun rates higher.
+     */
+    public void setOpening(Opening opening) {
+        this.opening = opening;
+    }
+
+    public Opening opening() {
+        return opening;
+    }
+
+    /** Receives one {@link #SAMPLE_WIDTH}-value sample per real bullet's wave as it breaks. */
+    public void setSampleSink(Consumer<double[]> sampleSink) {
+        this.sampleSink = sampleSink;
+    }
+
+    /**
+     * ADAPT-3: adds a seeded sample (as the sample sink produced it) to every gun view for
+     * {@code botName}. The main view takes all ten values, the anti-surfer views the first nine.
+     */
+    public void seed(String botName, double[] sample, SeedWeight weight) {
+        if (sample.length != SAMPLE_WIDTH) throw new IllegalArgumentException("a gun sample has 13 values");
+        TimestampedFiringAngle tfa = new TimestampedFiringAngle(Timestamped.SEED_ROUND, seedsLoaded++,
+            sample[10], new Point2D.Double(sample[11], sample[12]), weight);
+        for (KnnView<TimestampedFiringAngle> view : getOrCreateViews(botName).values()) {
+            view.logSeed(Arrays.copyOf(sample, view.formula.weights.length), tfa, weight);
+        }
     }
 
     public void initRound() {
@@ -57,7 +101,16 @@ public class GunController {
         Map<String, KnnView<TimestampedFiringAngle>> views = getOrCreateViews(w.botName);
         KnnView<TimestampedFiringAngle> mainView = views.get(MainGun.viewName());
 
-        if (mainView.size() < DATA_THRESHOLD) {
+        if (is1v1 && opening != null) {
+            // ADAPT-1: the profile's gun from the first wave, unless the live ratings disagree.
+            Opening live = liveVerdict(w.botName);
+            Opening use = live != null ? live : opening;
+            return use == Opening.ANTI_SURFER
+                ? antiSurferGun.aim(w, views, myNextLocation, currentTime)
+                : mainGun.aim(w, mainView, myNextLocation, currentTime);
+        }
+
+        if (mainView.effectiveSize() < DATA_THRESHOLD) {
             return DiaUtils.absoluteBearing(myNextLocation, w.targetLocation);
         }
 
@@ -69,6 +122,27 @@ public class GunController {
             }
         }
         return mainGun.aim(w, mainView, myNextLocation, currentTime);
+    }
+
+    /**
+     * DIAL-1: the gun the live virtual ratings pick, or null while the gap between them is
+     * within the margin of error of the better one (Agresti-Coull, 95%).
+     */
+    Opening liveVerdict(String botName) {
+        GunStats m = mainGunStats.get(botName);
+        GunStats a = antiSurferStats.get(botName);
+        if (m == null || a == null || m.shotsFired == 0) return null;
+        double mr = m.gunRating();
+        double ar = a.gunRating();
+        double margin = Math.max(margin(m.shotsHit, m.shotsFired), margin(a.shotsHit, a.shotsFired));
+        if (Math.abs(ar - mr) <= margin) return null;
+        return ar > mr ? Opening.ANTI_SURFER : Opening.MAIN;
+    }
+
+    /** The 95% margin of error of a rate of {@code hits} in {@code n} (Agresti-Coull). */
+    static double margin(double hits, double n) {
+        double p = (hits + 2) / (n + 4);
+        return 1.96 * Math.sqrt(p * (1 - p) / (n + 4));
     }
 
     public void fireVirtualBullets(Wave w, Point2D.Double myNextLocation,
@@ -141,6 +215,13 @@ public class GunController {
             if (shouldLog(view, w)) {
                 view.logWave(w, tfa);
             }
+        }
+        if (sampleSink != null && is1v1 && w.firingWave && !w.altWave) {
+            double[] sample = Arrays.copyOf(sampleFormula.dataPointFromWave(w), SAMPLE_WIDTH);
+            sample[10] = gf;
+            sample[11] = dv.x;
+            sample[12] = dv.y;
+            sampleSink.accept(sample);
         }
     }
 

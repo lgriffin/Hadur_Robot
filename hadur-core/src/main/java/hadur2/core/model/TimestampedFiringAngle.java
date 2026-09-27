@@ -12,7 +12,12 @@ public class TimestampedFiringAngle extends Timestamped {
 
     public TimestampedFiringAngle(int round, long time, double guessFactor,
                                   Point2D.Double displacementVector) {
-        super(round, time);
+        this(round, time, guessFactor, displacementVector, null);
+    }
+
+    public TimestampedFiringAngle(int round, long time, double guessFactor,
+                                  Point2D.Double displacementVector, SeedWeight seed) {
+        super(round, time, seed);
         this.guessFactor = guessFactor;
         this.displacementVector = displacementVector;
     }

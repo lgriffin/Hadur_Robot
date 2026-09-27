@@ -140,8 +140,9 @@ public class ArchitectureTest {
     @Tag("MEM-3")
     @DisplayName("MEM-3: opponent memory is a leaf that reaches storage only through the port")
     void memoryIsLeaf() {
-        // The core observes and the memory records: memory never steers gun or movement in
-        // S3, and it touches storage only through ProfileStore, so it stays testable in memory.
+        // The core observes and the memory records: memory never steers gun or movement
+        // itself (the adapt package reads it for them), and it touches storage only through
+        // ProfileStore, so it stays testable in memory.
         noClasses().that().resideInAPackage("hadur2.core.memory..")
             .should().dependOnClassesThat().resideOutsideOfPackages("hadur2.core.memory..",
                 "hadur2.core.port..", "java..")
@@ -150,6 +151,27 @@ public class ArchitectureTest {
                 "hadur2.core.knn..", "hadur2.core.ledger..", "hadur2.core.melee..",
                 "hadur2.core.physics..", "hadur2.core.model..")
             .should().dependOnClassesThat().resideInAPackage("hadur2.core.memory..")
+            .check(core);
+    }
+
+    @Test
+    @Tag("DIAL-2")
+    @DisplayName("DIAL-2: the opening book sees profiles, never ticks or rounds")
+    void adaptSeesNoClock() {
+        // The book and the seed trust can only condition on evidence: they depend on memory
+        // and the model's seed weight, never on BotInput or BotEvent, where time lives.
+        noClasses().that().resideInAPackage("hadur2.core.adapt..")
+            .should().dependOnClassesThat().resideOutsideOfPackages("hadur2.core.adapt..",
+                "hadur2.core.memory..", "hadur2.core.model..", "java..")
+            .check(core);
+        noClasses().that().resideInAPackage("hadur2.core.adapt..")
+            .should().dependOnClassesThat().haveNameMatching("hadur2\\.core\\.model\\.Bot(Input|Event)(\\$.*)?")
+            .check(core);
+        // Gun and movement take the book's decisions through their own setters.
+        noClasses().that().resideInAnyPackage("hadur2.core.gun..", "hadur2.core.move..",
+                "hadur2.core.knn..", "hadur2.core.ledger..", "hadur2.core.melee..",
+                "hadur2.core.physics..", "hadur2.core.model..", "hadur2.core.memory..")
+            .should().dependOnClassesThat().resideInAPackage("hadur2.core.adapt..")
             .check(core);
     }
 
