@@ -218,6 +218,28 @@ class ProfileLibraryTest {
         assertEquals(4, p.lastFought(), "one past the highest stamp in the store");
     }
 
+    @Test
+    @Tag("MEM-1")
+    @DisplayName("preparing before the first tick writes nothing and changes no load")
+    void prepareIsInvisible() {
+        MemoryProfileStore plain = new MemoryProfileStore(QUOTA);
+        MemoryProfileStore prepared = new MemoryProfileStore(QUOTA);
+        for (int i = 0; i < 3; i++) {
+            battle(plain, "abc.Shadow 3.83c");
+            battle(prepared, "abc.Shadow 3.83c");
+        }
+        prepared.delete(ProfileLibrary.CLOCK);
+        plain.delete(ProfileLibrary.CLOCK);
+        int writes = prepared.writes();
+        ProfileLibrary lib = new ProfileLibrary(prepared);
+        lib.prepare();
+        assertEquals(writes, prepared.writes(), "prepare only reads");
+        ProfileLibrary.Loaded a = new ProfileLibrary(plain).load("abc.Shadow 3.83c");
+        ProfileLibrary.Loaded b = lib.load("abc.Shadow 3.83c");
+        assertEquals(a.profile(), b.profile(), "same battle number, even with the clock lost");
+        assertTrue(b.found());
+    }
+
     static OpponentProfile stored(MemoryProfileStore store, String key) {
         return ProfileCodec.decode(store.read(ProfileLibrary.fileName(key)));
     }

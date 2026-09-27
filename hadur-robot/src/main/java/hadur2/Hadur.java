@@ -36,6 +36,8 @@ public class Hadur extends AdvancedRobot {
         if (core == null) {
             core = new HadurCore(getBattleFieldWidth(), getBattleFieldHeight(), getOthers(),
                 line -> console.println(line), profileStore());
+            // File I/O and class loading now, not in the first scan's turn.
+            core.prepareMemory();
             guard = new Guard(core::tick, core::recover, line -> console.println(line));
             battleStarted(getBattleFieldWidth(), getBattleFieldHeight(), getOthers());
         }

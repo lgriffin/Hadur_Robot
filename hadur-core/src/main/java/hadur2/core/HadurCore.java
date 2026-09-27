@@ -266,6 +266,14 @@ public final class HadurCore {
         }
     }
 
+    /**
+     * Gets opponent memory ready before the battle's first tick (reads the battle clock,
+     * loads the codec), so the first scan's load is quick. Does nothing without memory.
+     */
+    public void prepareMemory() {
+        if (library != null) library.prepare();
+    }
+
     /** The battle is over: the last save (MEM-3). */
     public void battleEnded(long tick) {
         saveProfile(tick);

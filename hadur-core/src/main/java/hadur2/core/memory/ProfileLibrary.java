@@ -99,6 +99,22 @@ public final class ProfileLibrary {
         return lastNote;
     }
 
+    /**
+     * Does the loading work that does not need the opponent's name: reads the battle clock
+     * and exercises the codec once. The robot calls this before its first tick, so the
+     * first scan (MEM-1) only has to read one small file. Never throws.
+     */
+    public void prepare() {
+        try {
+            nextBattle(new OpponentProfile(LineageKey.UNKNOWN));
+            OpponentProfile warmUp = new OpponentProfile(LineageKey.UNKNOWN);
+            new ProfileFolder(warmUp, 800, 600).fold(false);
+            Tiers.label(ProfileCodec.decode(ProfileCodec.encode(warmUp)));
+        } catch (RuntimeException e) {
+            // The first scan tries again and counts any failure.
+        }
+    }
+
     public static String fileName(String key) {
         return LineageKey.fileStem(key) + PROFILE_SUFFIX;
     }
