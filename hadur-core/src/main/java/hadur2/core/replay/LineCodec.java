@@ -23,11 +23,39 @@ import java.util.List;
  *
  * <p>An event is its type letter and fields separated by {@code :}. Names escape
  * {@code % , ; :} as {@code %XX}. Pure string work: no I/O here (RES-6).</p>
+ *
+ * <p>Event letters and fields, in the order written:</p>
+ * <ul>
+ * <li>{@code S}: scan; name, bearing, distance, energy, heading, velocity, and {@code 1}
+ *     when the robot is a sentry (GATE-3).</li>
+ * <li>{@code H}: hit by a bullet; shooter's name, power, bullet x, y, heading.</li>
+ * <li>{@code B}: our bullet hit; victim's name, power, victim's energy, bullet heading.</li>
+ * <li>{@code X}: our bullet hit a bullet; our power, x, y, the other bullet's power, our
+ *     bullet's heading.</li>
+ * <li>{@code M}: our bullet missed; power, bullet heading.</li>
+ * <li>{@code W}: we hit a wall; bearing.</li>
+ * <li>{@code R}: we hit a robot; name, bearing, its energy, whether it was our fault.</li>
+ * <li>{@code D}: a robot died; name.</li>
+ * <li>{@code K}: a skipped turn; the skipped tick (TIME-2).</li>
+ * <li>{@code Q}: the last core tick's duration and the allowance, in nanoseconds
+ *     (TIME-1).</li>
+ * </ul>
+ *
+ * <p>Formats only ever grow by appending optional fields, and the decoder treats a missing
+ * trailing field as its default (NaN for a bullet heading, not a sentry, no sentries), so
+ * every fixture recorded by an older build still replays. Angles are in radians as the
+ * adapter reports them, distances in px.</p>
  */
 public final class LineCodec {
 
     private LineCodec() {}
 
+    /**
+     * One {@code I} line for a tick's input.
+     *
+     * @param in the input
+     * @return the line, without a line terminator
+     */
     public static String encode(BotInput in) {
         StringBuilder b = new StringBuilder("I");
         b.append(',').append(in.time()).append(',').append(in.round());
@@ -41,18 +69,35 @@ public final class LineCodec {
             if (i > 0) b.append(';');
             b.append(encode(in.events().get(i)));
         }
+        // Double.compare rather than != so that a -0.0 or NaN border size is written too
+        // and reads back exactly.
         if (in.numSentries() != 0 || Double.compare(in.sentryBorderSize(), 0.0) != 0) {
             b.append(',').append(in.numSentries()).append(',').append(in.sentryBorderSize());
         }
         return b.toString();
     }
 
+    /**
+     * One {@code O} line for a tick's orders.
+     *
+     * @param o the orders
+     * @return the line, without a line terminator
+     */
     public static String encode(BotOrders o) {
         return "O," + o.bodyTurn() + "," + o.ahead() + "," + o.maxVelocity() + ","
             + o.gunTurn() + "," + o.radarTurn() + "," + o.firePower();
     }
 
+    /**
+     * Reads an {@code I} line.
+     *
+     * @param line a line written by {@link #encode(BotInput)}
+     * @return the input it describes
+     * @throws IllegalArgumentException if it is not an input line, or a field does not parse
+     */
     public static BotInput decodeInput(String line) {
+        // The -1 limit keeps trailing empty fields, so a tick with no events still has
+        // its (empty) field 14. 15 fields without the sentry pair, 17 with it.
         String[] f = line.split(",", -1);
         if ((f.length != 15 && f.length != 17) || !f[0].equals("I")) {
             throw new IllegalArgumentException("Not an input line: " + line);
@@ -67,6 +112,13 @@ public final class LineCodec {
             f.length == 17 ? Integer.parseInt(f[15]) : 0, f.length == 17 ? d(f[16]) : 0);
     }
 
+    /**
+     * Reads an {@code O} line.
+     *
+     * @param line a line written by {@link #encode(BotOrders)}
+     * @return the orders it describes
+     * @throws IllegalArgumentException if it is not an orders line, or a field does not parse
+     */
     public static BotOrders decodeOrders(String line) {
         String[] f = line.split(",", -1);
         if (f.length != 7 || !f[0].equals("O")) {
@@ -75,6 +127,11 @@ public final class LineCodec {
         return new BotOrders(d(f[1]), d(f[2]), d(f[3]), d(f[4]), d(f[5]), d(f[6]));
     }
 
+    /**
+     * One event as its letter and {@code :}-separated fields; see the class comment.
+     * Optional trailing fields (a sentry flag, a bullet heading) are written only when set,
+     * so the line is the same as an older build's whenever they are not.
+     */
     static String encode(BotEvent e) {
         if (e instanceof BotEvent.Scan) {
             BotEvent.Scan s = (BotEvent.Scan) e;
@@ -120,6 +177,7 @@ public final class LineCodec {
         throw new IllegalArgumentException("Unknown event " + e);
     }
 
+    /** Reads one event written by {@link #encode(BotEvent)}. */
     static BotEvent decodeEvent(String s) {
         String[] f = s.split(":", -1);
         switch (f[0]) {
@@ -140,20 +198,30 @@ public final class LineCodec {
         }
     }
 
+    /**
+     * The type letter and each field's {@code toString()}, separated by {@code :}. Doubles
+     * go through {@code Double.toString}, which round-trips exactly.
+     */
     private static String join(String type, Object... fields) {
         StringBuilder b = new StringBuilder(type);
         for (Object o : fields) b.append(':').append(o);
         return b.toString();
     }
 
+    /** Field {@code i} as a double, or NaN when an older line does not have it. */
     private static double opt(String[] f, int i) {
         return f.length > i ? d(f[i]) : Double.NaN;
     }
 
+    /** Parses a double as {@code Double.toString} wrote it, NaN and infinities included. */
     private static double d(String s) {
         return Double.parseDouble(s);
     }
 
+    /**
+     * Escapes a robot name for a field: {@code % , ; :} and control characters become
+     * {@code %XX} (two hex digits), everything else is kept.
+     */
     static String esc(String s) {
         StringBuilder b = new StringBuilder();
         for (char c : s.toCharArray()) {
@@ -166,6 +234,7 @@ public final class LineCodec {
         return b.toString();
     }
 
+    /** Reverses {@link #esc}. */
     static String unesc(String s) {
         StringBuilder b = new StringBuilder();
         for (int i = 0; i < s.length(); i++) {

@@ -83,6 +83,16 @@ the replay fixtures (the duel's orders, tick for tick) and `DuelIdentityTest`, w
 hash of every source file in the duel's packages as of M0. A stage meant to change the duel
 re-pins the snapshot with `-Dhadur.duel.snapshot=write` and says so in its pull request.
 
+Comment-only changes re-pin too, since the hash covers the whole source text. The Javadoc
+pass (2026-09-27) re-pinned after proving that every class compiled with `javac -g:none`
+was byte-identical to master's.
+
+## Javadoc
+
+`mvn verify` runs javadoc with doclint (every group but missing comments) over hadur-core
+and hadur-robot, so documentation errors fail the build like tests do. The melee and
+posture packages are excluded in the root pom until the melee extension (M4 to M6) merges.
+
 ## The bench
 
 Unit and replay tests say the code does what it was written to do; the bench says whether

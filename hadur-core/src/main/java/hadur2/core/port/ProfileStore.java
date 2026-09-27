@@ -4,7 +4,8 @@ import java.util.List;
 
 /**
  * Where opponent profiles are kept between battles: a flat directory of named byte
- * blobs with a size quota. The robot adapter backs it with Robocode's data directory;
+ * blobs with a size quota. It is the core's only way to persistent storage: the core
+ * itself may do no file I/O (RES-6), so the adapter hands one in. The robot adapter backs it with Robocode's data directory;
  * {@link MemoryProfileStore} backs it with a map for tests and the bench.
  *
  * <p>The port is deliberately dumb. A write may be cut short (the JVM can be killed
