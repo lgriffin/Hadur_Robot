@@ -1,26 +1,26 @@
 # Melee gates: M4 (field gun, energy policy, targeting waves)
 
-The M4 build (still versioned 2.2; it becomes 3.0 at M6) on the four fields of `melee-gates.txt`. M4 adds the melee gun: one aim per opponent from a shared kd-tree history (MGUN-1..3), an energy policy that sizes bullets to the field (MGUN-2), and targeting waves that score every cycle's aim without firing (MGUN-4). The duel sources are unchanged (DuelIdentityTest). The duel and sentry fields come from the first full M4 run (`work/m4`). The melee fields come from the final build after the review changes to the movement (`work/m4d`), run alone on the machine. Same engine, cores and seeds as M3; the reference field runs 5 seeds, not the plan's 20.
+The M4 build (still versioned 2.2; it becomes 3.0 at M6) on the four fields of `melee-gates.txt`. M4 adds the melee gun: one aim per opponent from a shared kd-tree history (MGUN-1..3), an energy policy that sizes bullets to the field (MGUN-2), and targeting waves that score every cycle's aim without firing (MGUN-4). The duel sources are unchanged (DuelIdentityTest). The duel and sentry fields come from the first full M4 run (`work/m4`). The melee fields come from the build after the M3 review changes to the movement (`work/m4d`), run alone on the machine; the M4 review fixes were benched after it (`work/r-abE`, `work/c-abE`, see below). Same engine, cores and seeds as M3; the reference field runs 5 seeds, not the plan's 20.
 
 ## Summary against the exit gate
 
 The M4 exit gate is ≥ 100k on the sample set and reference APS ≥ 55. A field of ten robots holds about 90k energy over 100 rounds, so 100k of bullet damage cannot be reached by one robot. This report reads the gate as total score on the challenge field; Hadur's total is 60,383, so **that gate is not met** either way.
 
-| Measure | M3 | M4 | Gate |
-|---|---|---|---|
-| Reference: APS | 50.6 | 55.0 | ≥ 55 (met, on the line) |
-| Reference: survival, rounds won | 55.0, 12 / 175 | 64.5, 26 / 175 | |
-| Reference: Hadur's mean place | 6.0 | 3.4 (second to Aleph) | |
-| Challenge: total score | 58,120 | 60,383 | 100k (not met) |
-| Challenge: bullet damage | 10,691 | 11,390 | |
-| Challenge: firsts of 100 | 71 | 77 | 100 (M3 gate, still not met) |
-| Challenge: APS, survival | 67.8, 87.9 | 68.7, 90.2 | |
+| Measure | M3 | M4 before review | M4 as merged | Gate |
+|---|---|---|---|---|
+| Reference: APS | 50.6 | 55.0 | 53.1 | ≥ 55 |
+| Reference: survival, rounds won | 55.0, 12 / 175 | 64.5, 26 / 175 | 62.2, 18 / 175 | |
+| Reference: Hadur's mean place | 6.0 | 3.4 | 4.4 | |
+| Challenge: total score | 58,120 | 60,383 | 60,939 | 100k (not met) |
+| Challenge: bullet damage | 10,691 | 11,390 | 11,314 | |
+| Challenge: firsts of 100 | 71 | 77 | 82 | 100 (M3 gate, still not met) |
+| Challenge: APS, survival | 67.8, 87.9 | 68.7, 90.2 | 68.9, 90.8 | |
 | Duel: Shadow score share | 55.2 (M1) | 56.5 ± 4.5 | unchanged |
 | Sentry: hits taken, APS | 1 (M1) | 1, 72.8 | |
 
-**Reference APS reaches 55.0, which meets the gate with no margin.** Five seeds give a per-battle range of 53.0 to 56.6, so the true value may sit either side; the plan's 20 seeds would settle it. Hadur is now second on the reference field by mean place. It wins most duels against the weaker survivors and loses most to Aleph (38% of 13) and Tron (20% of 10). The M5 hand-off targets those.
+**Reference APS is on the gate line, and the merged build sits just under it.** The build before the M4 review reached 55.0 (battles 53.0 to 56.6); the merged build, with the review fixes, reached 53.1 (battles 50.9 to 54.6). The two ranges overlap, and five seeds cannot separate them; the plan's 20 seeds would. The gate is reported as not met by the merged build, and is the first thing M6's tuning has to settle. Before the review, Hadur was second on the reference field by mean place. It wins most duels against the weaker survivors and loses most to Aleph (38% of 13) and Tron (20% of 10). The M5 hand-off targets those.
 
-Targeting waves score 19.0% virtual hits on the challenge field and 13.3% on the reference field. That is the gun's aim quality before bullet power and travel time.
+Targeting waves score 24.9% virtual hits on the challenge field and 14.5% on the reference field in the merged build (19.0% and 13.3% before the review fixed how they are scored, below). That is the gun's aim quality before bullet power and travel time.
 
 ### What the review changes cost, and why route sampling was reverted
 
@@ -33,11 +33,25 @@ Review of M3 (Qodo) led to four movement changes: a shot's timing window, neighb
 | Without the window | 48.4 | 51.7 | 1282 |
 | Without route sampling | 53.9 | 63.1 | 55 |
 
-Route sampling was the cost, mostly in time: four risk evaluations per candidate made Hadur miss turns. The final build keeps the window, the drift (now only for data older than one radar sweep) and the stale-aware ring cap. It skips virtual bullets that cannot come near Hadur and scores bullets at the destination only. It runs with 2 skipped turns on each melee field.
+Route sampling was the cost. Under parallel load it showed as skipped turns, but a solo run of the four-point build also lost about 4 APS with only 9 skipped turns (reference APS 50.2), so the cost is in behaviour, not time: virtual bullets are guesses, two per recorded shot, and counting every guessed path Hadur would cross hems it in. The build keeps the window, the drift (now only for data older than one radar sweep) and the stale-aware ring cap. It skips virtual bullets that cannot come near Hadur and scores bullets at the destination only. It runs with 2 skipped turns on each melee field.
+
+### The M4 review fixes
+
+Review of M4 (Qodo) found six issues; all are fixed except the route, which was measured again:
+
+- Targeting waves now carry the field gun's own aim (the density peak over its solutions, not the heaviest single one), none goes out when the gun has no aim, and each is scored where the opponent was when the wave crossed it, interpolated between its two scans, not at the next scan. These change the measurement only.
+- A lead on the target smaller than the lightest shot is kept by holding fire, and the ring cap drops an opponent from exactly the stale age.
+- Bullets crossing the route: a closed-form check, one closest approach per bullet between Hadur's straight drive and the bullet's flight, cost 2.8 APS on the reference field (50.3 with it, 53.1 without, 3 and 0 skipped turns), the same behavioural cost as the four-point sampling. It stays off.
+
+| Build (reference field, solo) | APS | Survival | Rounds won | Skipped turns |
+|---|---|---|---|---|
+| Before the M4 review (`m4d`) | 55.0 | 64.5 | 26 / 175 | 2 |
+| All six fixes, route check on (`m4e`) | 50.3 | 54.3 | 22 / 175 | 3 |
+| Five fixes, route check off (merged, `r-abE`) | 53.1 | 62.2 | 18 / 175 | 0 |
 
 ### Radar
 
-The worst scan gap while four or more were alive is 33 ticks on the challenge field and 67 on the reference field. Most rounds sit at 11 to 12 ticks. The tail is the M3 finding and is still untraced. The 8-tick gate from M2 and the tail are M6 radar work.
+The worst scan gap while four or more were alive is 33 ticks on the challenge field and 67 on the reference field before the review (86 and 42 in the merged build's runs). Most rounds sit at 11 to 12 ticks. The tail is the M3 finding and is still untraced. The 8-tick gate from M2 and the tail are M6 radar work.
 
 Per-round longest gap while four or more were alive, rounds at each value:
 
