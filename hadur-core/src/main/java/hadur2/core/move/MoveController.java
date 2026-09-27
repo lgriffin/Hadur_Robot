@@ -205,6 +205,8 @@ public class MoveController {
         brokenWaveOutcomes.clear();
         ourBullets.clear();
         shadowedWaves = 0;
+        shadowComputations = 0;
+        bulletsVersion++;
         clearNeighborCache();
     }
 
@@ -216,6 +218,9 @@ public class MoveController {
     private final List<OurBullet> ourBullets = new ArrayList<>();
     /** MOVE-1: waves that have had a shadow this round. */
     private int shadowedWaves;
+    /** Bumped whenever the bullets in flight change; a wave's shadows are current at one version. */
+    private long bulletsVersion;
+    private int shadowComputations;
 
     public void clearNeighborCache() {
         for (KnnView<TimestampedGuessFactor> view : views) {
@@ -236,6 +241,7 @@ public class MoveController {
     /** MOVE-1: one of our bullets has left the gun. */
     public void ourBulletFired(OurBullet bullet) {
         ourBullets.add(bullet);
+        bulletsVersion++;
     }
 
     /**
@@ -247,6 +253,7 @@ public class MoveController {
             OurBullet b = it.next();
             if (Double.isNaN(heading) ? Math.abs(b.power - power) < 1e-6 : b.is(heading, power)) {
                 it.remove();
+                bulletsVersion++;
                 return;
             }
         }
@@ -258,16 +265,22 @@ public class MoveController {
     }
 
     /**
-     * MOVE-1: forgets bullets that have left the field by {@code time} and recomputes the
-     * shadow every bullet in flight casts on every firing wave.
+     * MOVE-1: forgets bullets that have left the field by {@code time} and computes the
+     * shadow our bullets in flight cast on each firing wave. A shadow depends only on the
+     * wave and the bullets, not the time, so a wave is recomputed only when it is new or the
+     * bullets in flight have changed since (TIME-1: a slow tick repeats none of it).
      */
     public void updateShadows(long time) {
-        ourBullets.removeIf(b -> {
+        if (ourBullets.removeIf(b -> {
             java.awt.geom.Point2D.Double p = b.at(time);
             return p.x < 0 || p.y < 0 || p.x > battleField.width || p.y > battleField.height;
-        });
+        })) {
+            bulletsVersion++;
+        }
         waveManager.forAllWaves(w -> {
-            if (!w.firingWave) return;
+            if (!w.firingWave || w.shadowVersion == bulletsVersion) return;
+            w.shadowVersion = bulletsVersion;
+            shadowComputations++;
             if (ourBullets.isEmpty()) {
                 w.setShadows(new ArrayList<>());
             } else {
@@ -280,6 +293,11 @@ public class MoveController {
                 shadowedWaves++;
             }
         });
+    }
+
+    /** MOVE-1: how many times a wave's shadows were computed this round. */
+    public int shadowComputations() {
+        return shadowComputations;
     }
 
     /** MOVE-1: enemy firing waves one of our bullets shadowed this round. */

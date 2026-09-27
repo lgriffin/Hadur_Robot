@@ -176,4 +176,16 @@ class TelemetryReportTest {
         assertEquals(3, h.ramTicks());
         assertEquals(10, h.fullPowerShots());
     }
+
+    @Test
+    @DisplayName("a result in an older format reads as a failed battle, not a crash")
+    void oldResultIsAFailedBattle() throws Exception {
+        Path result = dir.resolve("result.csv");
+        java.nio.file.Files.write(result, List.of("header",
+            "true,35,1,1,1,1,1,1,1,0,100,1,1,1,35,0,0,0.1,0.1,0,0,0,0,0,0,0"));
+        BattleResult r = Bench.readResult(result, 1);
+        assertTrue(!r.ok, "failed");
+        assertTrue(r.errors.startsWith("unreadable result"), r.errors);
+        assertTrue(Bench.readResult(dir.resolve("missing.csv"), 3).errors.contains("no result"));
+    }
 }

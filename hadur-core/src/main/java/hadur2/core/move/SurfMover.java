@@ -320,7 +320,8 @@ public class SurfMover {
             double bestTotal = Double.POSITIVE_INFINITY;
             for (int i = 0; i < Math.min(GO_TO_SECOND_WAVE, options.size()); i++) {
                 GoToOption o = options.get(i);
-                double total = o.danger + secondWaveDanger(myState, moveCtrl, o, bestTotal);
+                double total = o.danger + secondWaveDanger(myState, moveCtrl, o,
+                    orbitSide(surfWave, myState, o.point), bestTotal);
                 if (total < bestTotal) {
                     bestTotal = total;
                     best = o;
@@ -328,11 +329,16 @@ public class SurfMover {
             }
         }
         goToPoint = best.point;
-        double orbitSide = Angles.normalRelativeAngle(
-            DiaUtils.absoluteBearing(surfWave.sourceLocation, best.point)
-                - DiaUtils.absoluteBearing(surfWave.sourceLocation, myState.location));
-        lastSurfOption = orbitSide < 0 ? SurfOption.COUNTER_CLOCKWISE : SurfOption.CLOCKWISE;
+        lastSurfOption = orbitSide(surfWave, myState, best.point);
         goTo(orders, myState, best.point);
+    }
+
+    /** The way round the wave's source that driving to {@code point} goes. */
+    static SurfOption orbitSide(Wave surfWave, RobotState myState, Point2D.Double point) {
+        double side = Angles.normalRelativeAngle(
+            DiaUtils.absoluteBearing(surfWave.sourceLocation, point)
+                - DiaUtils.absoluteBearing(surfWave.sourceLocation, myState.location));
+        return side < 0 ? SurfOption.COUNTER_CLOCKWISE : SurfOption.CLOCKWISE;
     }
 
     /** The stop points: where we stand, and every few ticks along both orbits until the wave passes. */
@@ -387,9 +393,13 @@ public class SurfMover {
         return new GoToOption(point, danger, passed, log);
     }
 
+    /**
+     * The second wave's danger after reaching {@code o}; a STOP there is predicted along
+     * {@code side}, the way this candidate goes round, not the last surf's.
+     */
     private double secondWaveDanger(RobotState myState, MoveController moveCtrl, GoToOption o,
-                                    double cutoff) {
-        boolean clockwise = lastSurfOption == SurfOption.CLOCKWISE;
+                                    SurfOption side, double cutoff) {
+        boolean clockwise = side == SurfOption.CLOCKWISE;
         double best = Double.POSITIVE_INFINITY;
         for (SurfOption option : SurfOption.values()) {
             best = Math.min(best, checkDanger(myState, moveCtrl, o.passed, option, clockwise, 1, 2,

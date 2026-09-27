@@ -834,6 +834,11 @@ public final class HadurCore {
         return moveController.shadowedWaves();
     }
 
+    /** MOVE-1: how many times a wave's shadows were computed this round. */
+    public int shadowComputations() {
+        return moveController.shadowComputations();
+    }
+
     /** S5: the endgame state as of the last duel tick. */
     public Endgame.State endgame() {
         return endgame;

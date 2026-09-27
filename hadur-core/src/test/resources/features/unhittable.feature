@@ -11,6 +11,13 @@ Feature: Unhittable
     When Hadur fires at the enemy as the enemy fires at Hadur
     Then the enemy's wave carries a bullet shadow
 
+  @MOVE-1 @TIME-1
+  Scenario: Shadows are computed once, not every tick
+    Given Hadur in a duel, 300 px from the enemy
+    When Hadur fires at the enemy as the enemy fires at Hadur
+    And a few more ticks pass with no bullet fired or gone
+    Then the wave's shadows were not computed again
+
   @MOVE-1
   Scenario: A shadowed part of a wave is no danger
     Given an enemy wave whose middle fifth our bullet shadows

@@ -69,6 +69,21 @@ public class UnhittableSteps {
         assertTrue(core.shadowedWaves() >= 1, "shadowed waves " + core.shadowedWaves());
     }
 
+    private int computations;
+
+    @And("a few more ticks pass with no bullet fired or gone")
+    public void quietTicks() {
+        computations = core.shadowComputations();
+        assertTrue(computations >= 1, "computed at least once");
+        for (int i = 0; i < 5; i++) tick(1);
+    }
+
+    @Then("the wave's shadows were not computed again")
+    public void notRecomputed() {
+        assertEquals(computations, core.shadowComputations());
+        assertTrue(core.shadowedWaves() >= 1, "and the shadow is still there");
+    }
+
     @Given("an enemy wave whose middle fifth our bullet shadows")
     public void shadowedWave() {
         BattleField field = new BattleField(800, 600);

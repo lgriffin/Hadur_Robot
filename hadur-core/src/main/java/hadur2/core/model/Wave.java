@@ -64,6 +64,8 @@ public class Wave implements Cloneable {
     private List<double[]> possibleShadows = new ArrayList<>();
     /** MOVE-1: whether this wave has ever had a shadow, for the round's count. */
     public boolean everShadowed;
+    /** MOVE-1: the version of our bullets in flight these shadows were computed for; -1 never. */
+    public long shadowVersion = -1;
 
     protected Wave() {}
 

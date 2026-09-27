@@ -143,6 +143,9 @@ public final class Bench {
     private BattleResult runBattle(Opponent o, int seed, Path dir)
             throws IOException, InterruptedException {
         Files.createDirectories(dir);
+        // A result left by an earlier run in this directory must not stand in for this one.
+        Path result = dir.resolve("result.csv");
+        Files.deleteIfExists(result);
         List<String> cmd = new ArrayList<>();
         cmd.add(Path.of(System.getProperty("java.home"), "bin", "java").toString());
         cmd.addAll(JVM_FLAGS);
@@ -167,16 +170,27 @@ public final class Bench {
             return BattleResult.parse(BattleResult.failed("timed out"));
         }
         if (record != null && Files.exists(transcript)) saveFixture(o, seed, transcript);
-        Path result = dir.resolve("result.csv");
+        return readResult(result, p.exitValue());
+    }
+
+    /**
+     * The battle's result as its child wrote it: a failed battle when there is none, it is
+     * cut short, or it cannot be read (an old format, say).
+     */
+    static BattleResult readResult(Path result, int exit) throws IOException {
         if (!Files.exists(result)) {
-            return BattleResult.parse(BattleResult.failed("no result; exit " + p.exitValue()));
+            return BattleResult.parse(BattleResult.failed("no result; exit " + exit));
         }
         List<String> lines = Files.readAllLines(result);
         if (lines.size() < 2) {
             // Killed while writing its result.
-            return BattleResult.parse(BattleResult.failed("incomplete result; exit " + p.exitValue()));
+            return BattleResult.parse(BattleResult.failed("incomplete result; exit " + exit));
         }
-        return BattleResult.parse(lines.get(1));
+        try {
+            return BattleResult.parse(lines.get(1));
+        } catch (RuntimeException e) {
+            return BattleResult.parse(BattleResult.failed("unreadable result: " + e));
+        }
     }
 
     /** Hadur against the whole set at once, {@code runs} times; prints each robot's average. */
