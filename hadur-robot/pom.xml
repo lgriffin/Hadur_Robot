@@ -35,6 +35,19 @@
         <!-- RoboRumble naming: package.BotName_version.jar -->
         <finalName>hadur2.Hadur_2.2</finalName>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>doclint</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>javadoc-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <!-- Always rebuild the plain jar: the robot shade below overwrites it in place, so a
                  jar left "up to date" from the last build would feed the recorder shade a jar
                  that no longer holds the recorder. -->
