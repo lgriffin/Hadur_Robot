@@ -65,6 +65,13 @@ and lists it under "Stored profiles": battles, rounds, size, both hit rates, vir
 ratings, provisional tiers and the per-battle score share the profile recorded. In cold
 mode that is the profile of the last battle only; warm mode keeps it across battles.
 
+From S4 the same section shows, per battle, the tiers the profile named at the first scan
+and the gun the opening book chose from them (Hadur's `B` and `P` records), the seed sizes
+replayed at the start of the last battle, and the waves on which a seed lost weight because
+the live data disagreed with the profile (RES-4, R field 22). "Stored profiles" adds their
+normalised hit rate on Hadur with its margin, which is what the gun tier reads, and the
+seed sizes.
+
 The report's hit-rate and fault columns come from Hadur's `R` (round end) and `FAULT`
 records, so every fault and degradation counter the core keeps reaches the report (RES-5).
 
