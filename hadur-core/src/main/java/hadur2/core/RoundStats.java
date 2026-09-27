@@ -24,6 +24,10 @@ public final class RoundStats {
     public int radarReacquired;
     /** Shots the ledger found that the raw drop hid (for example, fired in a tick we hit them). */
     public int hiddenShots;
+    /** Our bullets destroyed by enemy bullets (SHIELD-1). */
+    public int bulletsIntercepted;
+    /** Shots fired with an anti-shield aim offset (SHIELD-2). */
+    public int jitteredShots;
     /** Tick-budget computation level; 0 (full) until S6. */
     public int computationLevel;
     /** Opponent memory, battle totals so far: profiles that failed to load (MEM-4). */
@@ -44,17 +48,19 @@ public final class RoundStats {
     /**
      * The round-end record: {@code R,round,tick,result,ourEnergy,enemyEnergy,ourHitRate,
      * ourMargin,theirHitRate,theirMargin,phantomWaves,skippedTurns,faults,computationLevel,
-     * radarReacquired,hiddenShots,profileLoadFailures,profileSaveFailures,seedsEvicted}. The
-     * last three are battle totals so far, not this round's. Fields are only ever appended, so older readers still work.
+     * radarReacquired,hiddenShots,profileLoadFailures,profileSaveFailures,seedsEvicted,
+     * bulletsIntercepted,jitteredShots,shotsFired}. The memory fields are battle totals so
+     * far, not this round's. Fields are only ever appended, so older readers still work.
      */
     public String toRecord(int round, long tick, String result, double ourEnergy,
                            double enemyEnergy) {
-        return String.format(Locale.ROOT, "R,%d,%d,%s,%.2f,%.2f,%.4f,%.4f,%.4f,%.4f,%d,%d,%d,%d,%d,%d,%d,%d,%d",
+        return String.format(Locale.ROOT, "R,%d,%d,%s,%.2f,%.2f,%.4f,%.4f,%.4f,%.4f,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d",
             round, tick, result, ourEnergy, enemyEnergy,
             ourHitRate(), margin(ourHitRate(), shotsFired),
             theirHitRate(), margin(theirHitRate(), enemyShotsDetected),
             phantomWaves, skippedTurns, faults, computationLevel, radarReacquired, hiddenShots,
-            profileLoadFailures, profileSaveFailures, seedsEvicted);
+            profileLoadFailures, profileSaveFailures, seedsEvicted,
+            bulletsIntercepted, jitteredShots, shotsFired);
     }
 
     private static double margin(double p, int n) {

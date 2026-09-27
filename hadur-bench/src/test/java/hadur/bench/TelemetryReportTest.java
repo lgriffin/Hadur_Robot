@@ -27,15 +27,19 @@ class TelemetryReportTest {
         h.readRecord("R,0,500,win,80.00,0.00,0.2000,0.1000,0.1000,0.1000,0,1,0,0");
         h.readRecord("FAULT,1,33,IllegalStateException:boom");
         h.readRecord("R,1,700,loss,0.00,20.00,0.4000,0.1000,0.3000,0.1000,0,0,12,0,7,2");
+        h.readRecord("R,2,800,loss,0.00,20.00,0.0100,0.1000,0.0000,0.1000,0,0,0,0,0,0,0,0,0,9,6,30");
         h.readRecord("R,broken");
         h.close();
-        assertEquals(2, h.roundRecords());
+        assertEquals(3, h.roundRecords());
         assertEquals(12, h.faults());
         assertEquals(1, h.faultRecords());
-        assertEquals(0.3, h.ourHitRate(), 1e-9);
-        assertEquals(0.2, h.theirHitRate(), 1e-9);
+        assertEquals(0.61 / 3, h.ourHitRate(), 1e-9);
+        assertEquals(0.4 / 3, h.theirHitRate(), 1e-9);
         assertEquals(7, h.radarReacquired(), "radar reacquire ticks, from the newer 16-field R");
         assertEquals(2, h.hiddenShots());
+        assertEquals(9, h.bulletsIntercepted(), "from the 22-field R");
+        assertEquals(6, h.jitteredShots());
+        assertEquals(30, h.shotsFired());
     }
 
     @Test
@@ -53,6 +57,9 @@ class TelemetryReportTest {
         assertEquals(r.profileFound, back.profileFound);
         assertEquals(r.memoryFailures, back.memoryFailures);
         assertEquals(r.seedsEvicted, back.seedsEvicted);
+        assertEquals(r.bulletsIntercepted, back.bulletsIntercepted);
+        assertEquals(r.jitteredShots, back.jitteredShots);
+        assertEquals(r.shotsFired, back.shotsFired);
         assertEquals("a; b", back.errors);
         assertEquals(BattleResult.HEADER.split(",").length, r.toCsv().split(",").length);
     }
@@ -75,6 +82,8 @@ class TelemetryReportTest {
         assertTrue(report.contains("| 12 in 1 round(s) |"), report);
         assertTrue(report.contains("Our hit rate"), report);
         assertTrue(report.contains("| 0 | 4 | 5 |"), "phantoms, hidden shots, radar reacquire: " + report);
+        assertTrue(report.contains("| 400 | 120 (30.0%) | 80 |"),
+            "shots, shot down, jittered: " + report);
     }
 
     @Test
@@ -126,6 +135,9 @@ class TelemetryReportTest {
         r.profileFound = 1;
         r.memoryFailures = 2;
         r.seedsEvicted = 3;
+        r.shotsFired = 400;
+        r.bulletsIntercepted = 120;
+        r.jitteredShots = 80;
         r.errors = "a, b";
         return r;
     }
