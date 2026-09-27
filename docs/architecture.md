@@ -193,12 +193,14 @@ that to 10 or 11.
 ### Melee movement
 
 `melee.MinimumRiskMovement` scores 160 candidate points each tick (32 angles on 5 rings of
-100 to 300 px, capped at 0.8 of the distance to the nearest opponent) and heads for the
+100 to 300 px, capped at 0.8 of the distance to the nearest opponent scanned within a sweep,
+never below 36 px) and heads for the
 least risky, keeping its destination until a point 10% safer turns up (MMOVE-1). Risk is
 each opponent's energy over distance squared, doubled where Hadur would be that opponent's
-closest robot and half again for one that hit Hadur recently (MMOVE-2); a head-on and a
-linear `VirtualBullet` for every recorded `EnemyShot`, scored where each would be when
-Hadur gets there (MMOVE-3); a pull off the centre, pushes off walls and corners, Hadur's
+closest robot (an unseen neighbour counts as far as it could have moved) and half again for one that hit Hadur recently (MMOVE-2); a head-on and a
+linear `VirtualBullet` for every recorded `EnemyShot`, checked at four points along the
+straight route to the candidate, with a shot's fire-tick uncertainty widening its window
+and delaying its expiry (MMOVE-3); a pull off the centre, pushes off walls and corners, Hadur's
 recent positions and a fixed noise field; and the melee strategy's posture. For the first
 30 ticks the closest-robot term doubles again and a pull heads for a wall-adjacent spot
 away from the corners. With two opponents left the ring shrinks to 80 to 200 px and the

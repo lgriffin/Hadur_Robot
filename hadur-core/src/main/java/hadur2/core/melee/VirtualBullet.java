@@ -28,9 +28,12 @@ public final class VirtualBullet {
         return DiaUtils.project(shot.source, heading, flown);
     }
 
-    /** Whether the bullet has flown past {@code p}, or left a field no larger than {@code reach}. */
+    /**
+     * Whether the bullet has flown past {@code p}, or left a field no larger than
+     * {@code reach}, even if it was fired at the latest tick its shot's window allows.
+     */
     public boolean passed(Point2D.Double p, long now, double reach) {
-        double flown = shot.travelled(now);
+        double flown = Math.max(0, now - (shot.fireTime + shot.window)) * shot.speed();
         return flown > reach || flown > shot.source.distance(p) + 40;
     }
 

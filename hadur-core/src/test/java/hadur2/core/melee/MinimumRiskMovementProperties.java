@@ -45,8 +45,10 @@ class MinimumRiskMovementProperties {
         assertTrue(d.y >= MinimumRiskMovement.WALL_MARGIN && d.y <= 1000 - MinimumRiskMovement.WALL_MARGIN);
         double nearest = enemies.stream().mapToDouble(e -> e.location.distance(me)).min().getAsDouble();
         for (Point2D.Double p : move.candidates(me, Math.max(2, n), enemies)) {
-            // Clipping to the walls only ever pulls a point closer to Hadur.
-            assertTrue(p.distance(me) <= 0.8 * nearest + 1e-6, "past 80% of the nearest opponent");
+            // Clipping to the walls only ever pulls a point closer to Hadur. Right on top of
+            // an opponent the ring still keeps a robot's width, so Hadur can move away.
+            double cap = Math.max(MinimumRiskMovement.MIN_RING, 0.8 * nearest);
+            assertTrue(p.distance(me) <= cap + 1e-6, "past 80% of the nearest opponent");
         }
     }
 

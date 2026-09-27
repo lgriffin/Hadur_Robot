@@ -94,6 +94,15 @@ public class MinimumRiskMovement {
     static final double FINISH_RANGE = 550.0;
 
     private static final double UNIT = 100.0 * 100.0;
+    /** A robot's top speed, and the most drift an unseen opponent's position is given. */
+    static final double MAX_SPEED = 8.0;
+    static final double MAX_DRIFT = 400.0;
+    /** Opponents scanned longer ago than one sweep do not cap the ring. */
+    static final long CAP_MAX_AGE = 8;
+    /** The ring never shrinks below a robot's width, so Hadur can always move. */
+    static final double MIN_RING = 36.0;
+    /** Points along the way to a candidate where the virtual bullets are checked. */
+    static final int ROUTE_SAMPLES = 4;
 
     /** What the movement sees this tick. */
     public static final class View {
@@ -121,7 +130,11 @@ public class MinimumRiskMovement {
                 double best = Double.POSITIVE_INFINITY;
                 for (int j = 0; j < enemies.size(); j++) {
                     if (i == j) continue;
-                    best = Math.min(best, enemies.get(i).location.distance(enemies.get(j).location));
+                    // A neighbour unseen for a while may have moved away: take it as far as it
+                    // could be, so an old position never hides Hadur being the closest.
+                    EnemyInfo o = enemies.get(j);
+                    double drift = Math.min(MAX_DRIFT, MAX_SPEED * Math.max(0, o.age(now)));
+                    best = Math.min(best, enemies.get(i).location.distance(o.location) + drift);
                 }
                 nearestOther[i] = best;
             }
@@ -188,7 +201,8 @@ public class MinimumRiskMovement {
                 it.remove();
             }
         }
-        if (seenShots.size() > 4 * MAX_BULLETS) seenShots.clear();
+        // Forget only the shots the tracker no longer holds, so each one turns into bullets once.
+        seenShots.retainAll(shots);
     }
 
     private void add(VirtualBullet b) {
@@ -203,7 +217,7 @@ public class MinimumRiskMovement {
         remember(me, now);
         if (openingSpot == null) openingSpot = openingSpot(me);
         View v = new View(me, energy, now, others, enemies, new ArrayList<>(bullets), plan);
-        List<Point2D.Double> candidates = candidates(me, others, enemies);
+        List<Point2D.Double> candidates = candidates(me, others, enemies, now);
         lastCandidates = candidates.size();
         Point2D.Double best = null;
         double bestRisk = Double.POSITIVE_INFINITY;
@@ -228,12 +242,25 @@ public class MinimumRiskMovement {
      * field's margin (MMOVE-1). With two opponents left the ring is the endgame one (MMOVE-4).
      */
     public List<Point2D.Double> candidates(Point2D.Double me, int others, List<EnemyInfo> enemies) {
+        return candidates(me, others, enemies, Long.MIN_VALUE);
+    }
+
+    /**
+     * As {@link #candidates(Point2D.Double, int, List)}, where only opponents scanned within
+     * {@link #CAP_MAX_AGE} ticks of {@code now} cap the ring, and the cap is never below
+     * {@link #MIN_RING}: an old position must not pin Hadur where the opponent used to be.
+     */
+    public List<Point2D.Double> candidates(Point2D.Double me, int others, List<EnemyInfo> enemies,
+                                           long now) {
         boolean endgame = others == 2;
         double min = endgame ? ENDGAME_RING_MIN : RING_MIN;
         double max = endgame ? ENDGAME_RING_MAX : RING_MAX;
         double nearest = Double.POSITIVE_INFINITY;
-        for (EnemyInfo e : enemies) nearest = Math.min(nearest, e.location.distance(me));
-        double cap = NEAREST_FRACTION * nearest;
+        for (EnemyInfo e : enemies) {
+            if (now != Long.MIN_VALUE && e.age(now) > CAP_MAX_AGE) continue;
+            nearest = Math.min(nearest, e.location.distance(me));
+        }
+        double cap = Math.max(MIN_RING, NEAREST_FRACTION * nearest);
         List<Point2D.Double> out = new ArrayList<>(CANDIDATES);
         for (int ring = 0; ring < RINGS; ring++) {
             double d = min + (max - min) * ring / (RINGS - 1);
@@ -303,18 +330,27 @@ public class MinimumRiskMovement {
     }
 
     /**
-     * The virtual bullets' danger at {@code p}: a bullet that passes within
-     * {@link #HIT_RADIUS} of it within {@link #HIT_WINDOW} ticks of Hadur getting there is a
-     * hit, weighted by its damage; nearer misses count for less (MMOVE-3).
+     * The virtual bullets' danger on the way to {@code p}: Hadur drives there in a straight
+     * line, and at each of {@link #ROUTE_SAMPLES} points along it a bullet that passes within
+     * {@link #HIT_RADIUS} within {@link #HIT_WINDOW} ticks of Hadur being there, widened by
+     * the uncertainty of the shot's fire tick, is a hit. Each bullet counts once, at its
+     * nearest point, weighted by its damage; nearer misses count for less (MMOVE-3).
      */
     public static double bulletRisk(Point2D.Double p, Point2D.Double me,
                                     List<VirtualBullet> bullets, long now) {
         if (bullets.isEmpty()) return 0;
-        double arrive = now + p.distance(me) / TRAVEL_SPEED;
+        double travel = p.distance(me) / TRAVEL_SPEED;
         double r = 0;
         for (VirtualBullet b : bullets) {
-            double from = Math.max(now, arrive - HIT_WINDOW);
-            double d = b.closestApproach(p, from, arrive + HIT_WINDOW);
+            double window = HIT_WINDOW + b.shot.window;
+            double d = Double.POSITIVE_INFINITY;
+            for (int k = 1; k <= ROUTE_SAMPLES; k++) {
+                double f = (double) k / ROUTE_SAMPLES;
+                Point2D.Double at = new Point2D.Double(me.x + f * (p.x - me.x), me.y + f * (p.y - me.y));
+                double arrive = now + f * travel;
+                double from = Math.max(now, arrive - window);
+                d = Math.min(d, b.closestApproach(at, from, arrive + window));
+            }
             double damage = 4 * b.shot.power + Math.max(0, 2 * (b.shot.power - 1));
             double x = d / HIT_RADIUS;
             r += BULLET_K * damage / 4.0 * Math.exp(-x * x);
