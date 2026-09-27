@@ -10,11 +10,13 @@ import hadur2.core.melee.BattleMode;
 import hadur2.core.melee.MeleeController;
 import hadur2.core.memory.Estimate;
 import hadur2.core.memory.LineageKey;
+import hadur2.core.memory.OpponentProfile;
 import hadur2.core.memory.ProfileFolder;
 import hadur2.core.memory.ProfileLibrary;
 import hadur2.core.memory.Tiers;
 import hadur2.core.model.*;
 import hadur2.core.move.MoveController;
+import hadur2.core.move.OurBullet;
 import hadur2.core.move.SurfMover;
 import hadur2.core.physics.*;
 import hadur2.core.port.ProfileStore;
@@ -23,7 +25,9 @@ import hadur2.core.policy.DistancePolicy;
 import hadur2.core.policy.Endgame;
 import hadur2.core.policy.EnemyGunHeat;
 import hadur2.core.policy.HitWindow;
+import hadur2.core.policy.MoveFlavour;
 import hadur2.core.policy.PowerPolicy;
+import hadur2.core.policy.TickBudget;
 import hadur2.core.shield.AimJitter;
 import hadur2.core.shield.ShieldDetector;
 import java.awt.geom.Point2D;
@@ -109,6 +113,11 @@ public final class HadurCore {
     private PowerPolicy.Reason powerReason = PowerPolicy.Reason.GUN;
     /** The robot the windows and the distance controller are about; null before a duel scan. */
     private String duelOpponent;
+    /** S6: the tick budget (TIME-1, TIME-2) and the movement's flavour (MOVE-2). */
+    private final TickBudget budget = new TickBudget();
+    private MoveFlavour flavour = MoveFlavour.stranger();
+    /** The tick being processed, for records written from event handlers. */
+    private long lastTickTime;
 
     private int round;
     private RoundStats stats = new RoundStats();
@@ -162,6 +171,7 @@ public final class HadurCore {
         gunWaveManager.initRound();
         resetRoundState();
         if (enemyGunHeat != null) enemyGunHeat.newRound();
+        budget.newRound();
     }
 
     /**
@@ -210,6 +220,7 @@ public final class HadurCore {
 
     public BotOrders tick(BotInput in) {
         BotOrders.Builder orders = BotOrders.builder();
+        lastTickTime = in.time();
         // MELEE-1: melee while more than one opponent is alive, a duel otherwise.
         boolean melee = BattleMode.fromOthers(in.others()) == BattleMode.MELEE;
         if (inMelee && !melee) {
@@ -224,10 +235,11 @@ public final class HadurCore {
             else if (e instanceof BotEvent.HitByBullet) onHitByBullet(in, (BotEvent.HitByBullet) e);
             else if (e instanceof BotEvent.BulletHitBullet) onBulletHitBullet(in, (BotEvent.BulletHitBullet) e);
             else if (e instanceof BotEvent.BulletHit) onBulletHit((BotEvent.BulletHit) e);
-            else if (e instanceof BotEvent.BulletMissed) onBulletMissed();
+            else if (e instanceof BotEvent.BulletMissed) onBulletMissed((BotEvent.BulletMissed) e);
             else if (e instanceof BotEvent.HitRobot) ledger.robotsCollided();
             else if (e instanceof BotEvent.RobotDeath) this.melee.onRobotDeath(((BotEvent.RobotDeath) e).name());
             else if (e instanceof BotEvent.SkippedTurn) onSkippedTurn(in);
+            else if (e instanceof BotEvent.TickTime) onTickTime((BotEvent.TickTime) e);
         }
 
         if (seedLoader != null && !melee) {
@@ -238,14 +250,19 @@ public final class HadurCore {
         if (melee) {
             meleeTick(in, orders);
         } else if (lastGunWave != null) {
-            double gunHeat = aimAndFire(in, orders);
+            int level = budget.level();
+            gunController.setKShare(TickBudget.kShare(level));
+            moveController.setKShare(TickBudget.kShare(level));
+            double gunHeat = aimAndFire(in, orders, TickBudget.virtualGuns(level));
             moveController.checkWaves(in.time(), in.location());
             checkSurfSeed(in.time());
             checkDistance(in, gunHeat);
+            moveController.updateShadows(in.time());
             if (endgame == Endgame.State.RAM) {
                 surfMover.ram(orders, currentState(in), lastEnemyLocation);
             } else {
-                surfMover.move(orders, currentState(in), moveController, lastEnemyLocation, 2);
+                surfMover.move(orders, currentState(in), moveController, lastEnemyLocation,
+                    TickBudget.wavesToSurf(level), TickBudget.goToAllowed(level));
             }
             if (in.time() - lastScanTime > 1) reacquire(in, orders);
         } else {
@@ -301,6 +318,8 @@ public final class HadurCore {
     public RoundStats roundEnded(long tick, String result, double myEnergy, int faults) {
         stats.faults = faults;
         stats.targetDistance = distance.controllerTarget();
+        stats.shadowedWaves = moveController.shadowedWaves();
+        stats.flavourStep = flavour.step().ordinal();
         stats.seedDecays = seedDecays;
         foldRound(tick, "win".equals(result));
         if (library != null) {
@@ -392,15 +411,18 @@ public final class HadurCore {
     }
 
     /** Aims, fires last tick's aimed shot if the gun got there, and returns the gun's heat after. */
-    private double aimAndFire(BotInput in, BotOrders.Builder orders) {
+    private double aimAndFire(BotInput in, BotOrders.Builder orders, boolean virtualGuns) {
         Point2D.Double myNext = predictor.nextLocation(currentState(in));
         // In 1.20, setFireBullet heated the gun at once (the engine's proxy adds the new
         // shot's heat to getGunHeat()), so the aim below saw the hot gun.
         double gunHeat = in.gunHeat();
-        if (fireIfGunTurned(in, orders, aimedBulletPower, myNext)) {
+        if (fireIfGunTurned(in, orders, aimedBulletPower, myNext, virtualGuns)) {
             double firedPower = Math.min(in.energy(), Math.min(
                 Math.max(aimedBulletPower, Rules.MIN_BULLET_POWER), Rules.MAX_BULLET_POWER));
             gunHeat += Rules.getGunHeat(firedPower);
+            // MOVE-1: it leaves from here along the gun's heading this tick.
+            moveController.ourBulletFired(new OurBullet(in.time(), in.location(), in.gunHeading(),
+                firedPower));
             if (aimCarriesJitter) aimJitter.shotFired();
         }
 
@@ -422,7 +444,7 @@ public final class HadurCore {
 
     /** Fires if the gun is cool and on target; returns whether it fired. */
     private boolean fireIfGunTurned(BotInput in, BotOrders.Builder orders, double bulletPower,
-                                    Point2D.Double myNext) {
+                                    Point2D.Double myNext, boolean virtualGuns) {
         // 1.20 compared getGunTurnRemaining(), which is in degrees, with 0.05, so the gun
         // has to be within 0.05 degrees. Kept exactly as it was; S1 changes no behaviour.
         // SHIELD-2: once a shielder is found, hold the shot the gun settled on before, since
@@ -432,7 +454,8 @@ public final class HadurCore {
                 && in.energy() > bulletPower && lastGunWave != null && !predictable) {
             orders.fire(bulletPower);
             lastGunWave.firingWave = true;
-            gunController.fireVirtualBullets(lastGunWave, myNext, in.time());
+            // TIME-1: at the lowest computation level the virtual guns are not scored.
+            if (virtualGuns) gunController.fireVirtualBullets(lastGunWave, myNext, in.time());
             lastRealBulletFireTime = in.time();
             stats.shotsFired++;
             if (bulletPower >= PowerPolicy.FULL_POWER) stats.fullPowerShots++;
@@ -634,6 +657,9 @@ public final class HadurCore {
         Estimate prior = opening.surfPrior();
         if (!Double.isNaN(prior.value())) moveController.setPrior(prior.value(), prior.margin());
         moveController.setFlattenerFirst(opening.flattenerFirst());
+        OpponentProfile p = folder.profile();
+        flavour = new MoveFlavour(p.theirShots() > 0
+            ? Estimate.of(p.theirHitRate() * p.theirShots(), p.theirShots()) : Estimate.NONE);
         emitPolicy(round, time, "opening-gun", Double.NaN, Double.NaN,
             opening.moveTier() + ":" + opening.gun().name().toLowerCase(Locale.ROOT));
         emitPolicy(round, time, "surf-prior", prior.value(), prior.margin(),
@@ -703,6 +729,8 @@ public final class HadurCore {
     private void checkDistance(BotInput in, double gunHeat) {
         for (boolean hit : moveController.takeBrokenWaveOutcomes()) {
             theirWindow.record(hit);
+            MoveFlavour.Step added = flavour.onWave(hit);
+            if (added != null) changeFlavour(in, added);
             Estimate ours = ourWindow.estimate();
             Estimate theirs = theirWindow.estimate();
             if (distance.onWave(ours, theirs) != DistancePolicy.Step.HOLD) {
@@ -733,6 +761,47 @@ public final class HadurCore {
         ourWindow.clear();
         theirWindow.clear();
         distance = new DistancePolicy(opening.distance());
+        flavour = MoveFlavour.stranger();
+        surfMover.setMode(SurfMover.Mode.OPTIONS);
+    }
+
+    /**
+     * MOVE-2: their gun is doing better than the profile says; add the next flavour. The
+     * surf takes a new mode at the next wave it surfs; the views and the band change now,
+     * and the next surfable wave is the first scored with them.
+     */
+    private void changeFlavour(BotInput in, MoveFlavour.Step step) {
+        stats.flavourChanges++;
+        switch (step) {
+            case FLATTENER:
+                moveController.setFlattenerFirst(true);
+                break;
+            case GO_TO:
+                surfMover.setMode(SurfMover.Mode.GO_TO);
+                break;
+            case FAR:
+                distance.shiftOut(MoveFlavour.FAR_SHIFT);
+                break;
+            default:
+                break;
+        }
+        Estimate live = flavour.trigger();
+        emitPolicy(round, in.time(), "move-flavour", live.value(), live.margin(),
+            step.name().toLowerCase(Locale.ROOT));
+    }
+
+    /** TIME-1: the adapter's measure of the previous tick. */
+    private void onTickTime(BotEvent.TickTime e) {
+        int before = budget.level();
+        budget.tickTook(e.usedNanos(), e.allowanceNanos());
+        stats.computationLevel = budget.maxLevel();
+        stats.slowTicks = budget.slowTicks();
+        if (budget.level() != before) emitBudget();
+    }
+
+    private void emitBudget() {
+        emitPolicy(round, lastTickTime, "budget", budget.level(), Double.NaN,
+            "level-" + budget.level());
     }
 
     private EnemyGunHeat enemyGunHeat(BotInput in) {
@@ -743,6 +812,31 @@ public final class HadurCore {
     /** S5: the distance the surf is steering to now. */
     public double targetDistance() {
         return surfMover.desiredDistance();
+    }
+
+    /** S6: the tick budget's computation level for the next tick (TIME-1, TIME-2). */
+    public int computationLevel() {
+        return budget.level();
+    }
+
+    /** S6: the movement flavour reached (MOVE-2). */
+    public MoveFlavour.Step moveFlavour() {
+        return flavour.step();
+    }
+
+    /** S6: how the surf picks its spot for the wave being surfed. */
+    public SurfMover.Mode surfMode() {
+        return surfMover.mode();
+    }
+
+    /** S6: enemy firing waves one of our bullets has shadowed this round (MOVE-1). */
+    public int shadowedWaves() {
+        return moveController.shadowedWaves();
+    }
+
+    /** MOVE-1: how many times a wave's shadows were computed this round. */
+    public int shadowComputations() {
+        return moveController.shadowComputations();
     }
 
     /** S5: the endgame state as of the last duel tick. */
@@ -768,6 +862,7 @@ public final class HadurCore {
 
     private void onBulletHit(BotEvent.BulletHit e) {
         stats.shotsHit++;
+        moveController.ourBulletGone(e.bulletHeading(), e.power());
         if (duelBulletResolved()) {
             shieldDetector.bulletHit();
             ourWindow.record(true);
@@ -807,7 +902,8 @@ public final class HadurCore {
         return !inMelee;
     }
 
-    private void onBulletMissed() {
+    private void onBulletMissed(BotEvent.BulletMissed e) {
+        moveController.ourBulletGone(e.bulletHeading(), e.power());
         if (duelBulletResolved()) {
             shieldDetector.bulletMissed();
             ourWindow.record(false);
@@ -816,6 +912,7 @@ public final class HadurCore {
 
     private void onBulletHitBullet(BotInput in, BotEvent.BulletHitBullet e) {
         stats.bulletsIntercepted++;
+        moveController.ourBulletGone(e.bulletHeading(), e.power());
         // SHIELD-1: in a duel, a bullet that meets ours may be a shield.
         if (duelBulletResolved()) {
             shieldDetector.bulletIntercepted();
@@ -824,12 +921,20 @@ public final class HadurCore {
         Point2D.Double hitLoc = new Point2D.Double(e.x(), e.y());
         Wave hitWave = moveController.findBulletWave(hitLoc, in.time(), null, e.enemyPower());
         if (hitWave != null) {
+            // MOVE-1's check on itself: the bullet ours destroyed should have been in a shadow.
+            if (hitWave.inShadow(DiaUtils.absoluteBearing(hitWave.sourceLocation, hitLoc), 1e-3)) {
+                stats.interceptsShadowed++;
+            }
             hitWave.bulletHitBullet = true;
         }
     }
 
     private void onSkippedTurn(BotInput in) {
         stats.skippedTurns++;
+        // TIME-2: one level down for the rest of the round.
+        budget.skippedTurn();
+        stats.computationLevel = budget.maxLevel();
+        emitBudget();
         telemetry.emit("WARNING: Turn skipped at " + in.time());
     }
 

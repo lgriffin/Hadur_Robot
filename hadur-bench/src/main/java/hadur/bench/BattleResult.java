@@ -11,7 +11,8 @@ public final class BattleResult {
         + "phantomWaves,enemyShots,unseenShots,inferredWaves,matchedWaves,radarReacquired,hiddenShots,"
         + "profileFound,memoryFailures,seedsEvicted,bulletsIntercepted,jitteredShots,shotsFired,"
         + "tiers,openingGun,gunSeed,surfSeed,seedDecays,"
-        + "openingDistance,meanDistance,targetDistance,roundTicks,finishTicks,ramTicks,fullPowerShots,errors";
+        + "openingDistance,meanDistance,targetDistance,roundTicks,finishTicks,ramTicks,fullPowerShots,"
+        + "maxLevel,slowTicks,shadowedWaves,interceptsShadowed,flavourChanges,flavourStep,errors";
 
     public boolean ok;
     public int rounds, firsts, skippedTurns, turns;
@@ -33,6 +34,8 @@ public final class BattleResult {
     public String openingDistance = "-";
     public double meanDistance = Double.NaN, targetDistance = Double.NaN, roundTicks = Double.NaN;
     public int finishTicks, ramTicks, fullPowerShots;
+    /** Unhittable (S6): highest computation level, slow ticks, shadowed waves, intercepts in a shadow, flavour changes and step. */
+    public int maxLevel, slowTicks, shadowedWaves, interceptsShadowed, flavourChanges, flavourStep;
     public double score, theirScore, survival, theirSurvival, bulletDamage, theirBulletDamage;
     public double turnP50Ms, turnP95Ms, turnMaxMs;
     public String errors = "";
@@ -84,12 +87,18 @@ public final class BattleResult {
         r.finishTicks = h.finishTicks();
         r.ramTicks = h.ramTicks();
         r.fullPowerShots = h.fullPowerShots();
+        r.maxLevel = h.maxLevel();
+        r.slowTicks = h.slowTicks();
+        r.shadowedWaves = h.shadowedWaves();
+        r.interceptsShadowed = h.interceptsShadowed();
+        r.flavourChanges = h.flavourChanges();
+        r.flavourStep = h.flavourStep();
         r.errors = errors.trim();
         return r;
     }
 
     static String failed(String why) {
-        return "false,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NaN,NaN,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,0,0,0,-,NaN,NaN,NaN,0,0,0," + sanitize(why);
+        return "false,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NaN,NaN,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,0,0,0,-,NaN,NaN,NaN,0,0,0,0,0,0,0,0,0," + sanitize(why);
     }
 
     String toCsv() {
@@ -109,11 +118,13 @@ public final class BattleResult {
             String.valueOf(gunSeed), String.valueOf(surfSeed), String.valueOf(seedDecays),
             sanitize(openingDistance), num(meanDistance), num(targetDistance), num(roundTicks),
             String.valueOf(finishTicks), String.valueOf(ramTicks), String.valueOf(fullPowerShots),
-            sanitize(errors));
+            String.valueOf(maxLevel), String.valueOf(slowTicks), String.valueOf(shadowedWaves),
+            String.valueOf(interceptsShadowed), String.valueOf(flavourChanges),
+            String.valueOf(flavourStep), sanitize(errors));
     }
 
     static BattleResult parse(String line) {
-        String[] f = line.split(",", 45);
+        String[] f = line.split(",", 51);
         BattleResult r = new BattleResult();
         r.ok = Boolean.parseBoolean(f[0]);
         r.rounds = Integer.parseInt(f[1]);
@@ -159,7 +170,13 @@ public final class BattleResult {
         r.finishTicks = Integer.parseInt(f[41]);
         r.ramTicks = Integer.parseInt(f[42]);
         r.fullPowerShots = Integer.parseInt(f[43]);
-        r.errors = f.length > 44 ? f[44] : "";
+        r.maxLevel = Integer.parseInt(f[44]);
+        r.slowTicks = Integer.parseInt(f[45]);
+        r.shadowedWaves = Integer.parseInt(f[46]);
+        r.interceptsShadowed = Integer.parseInt(f[47]);
+        r.flavourChanges = Integer.parseInt(f[48]);
+        r.flavourStep = Integer.parseInt(f[49]);
+        r.errors = f.length > 50 ? f[50] : "";
         return r;
     }
 

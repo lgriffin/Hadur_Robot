@@ -112,6 +112,7 @@ final class Report {
                 e.getKey().name, fired, pct(down, fired), jittered));
         }
         aggression(b, results);
+        unhittable(b, results);
         if (warm) {
             b.append("\n## Learning curve (score share by battle)\n\n| Opponent |");
             for (int i = 1; i <= runs; i++) b.append(" ").append(i).append(" |");
@@ -173,6 +174,53 @@ final class Report {
                 rounds == 0 ? "-" : String.format(Locale.ROOT, "%.1f / %.1f", dealt / rounds, taken / rounds),
                 fullPower, finish, ram));
         }
+    }
+
+    /** S6: bullet shadows, the tick budget and the movement flavour, per opponent. */
+    private static void unhittable(StringBuilder b, Map<Opponent, List<BattleResult>> results) {
+        b.append("\n## Unhittable\n\n")
+         .append("Shadowed waves are enemy firing waves one of our bullets crossed, so part of them "
+            + "could not hit (MOVE-1); intercepts in a shadow are the enemy bullets ours destroyed "
+            + "that fell inside a shadow Hadur had computed, a check on the shadow geometry. Slow "
+            + "ticks used more than 70% of the assumed 3 ms allowance and shed a level for the next "
+            + "tick (TIME-1); the highest level is the most any round shed (a skipped turn holds a "
+            + "level for the rest of the round, TIME-2). Flavour changes count the times their hit "
+            + "rate beat the profile's and the movement changed (MOVE-2); the last step is 0 base, "
+            + "1 flattener, 2 go-to, 3 far.\n\n")
+         .append("| Opponent | Their hit rate | Skipped turns | Slow ticks | Highest level | "
+            + "Shadowed waves per round | Intercepts in a shadow | Flavour changes | Last step |\n")
+         .append("|---|---|---|---|---|---|---|---|---|\n");
+        for (Map.Entry<Opponent, List<BattleResult>> e : results.entrySet()) {
+            List<Double> theirs = new ArrayList<>();
+            int rounds = 0, skipped = 0, slow = 0, level = 0, shadowed = 0, intercepted = 0,
+                inShadow = 0, changes = 0, step = 0;
+            for (BattleResult r : e.getValue()) {
+                if (!r.ok) continue;
+                if (!Double.isNaN(r.theirHitRate)) theirs.add(r.theirHitRate);
+                rounds += r.rounds;
+                skipped += r.skippedTurns;
+                slow += r.slowTicks;
+                level = Math.max(level, r.maxLevel);
+                shadowed += r.shadowedWaves;
+                intercepted += r.bulletsIntercepted;
+                inShadow += r.interceptsShadowed;
+                changes += r.flavourChanges;
+                step = r.flavourStep;
+            }
+            b.append(String.format(Locale.ROOT, "| %s | %s | %d | %d | %d | %s | %s | %d | %d |%n",
+                e.getKey().name, theirs.isEmpty() ? "-" : String.format(Locale.ROOT, "%.1f%%", 100 * sum(theirs) / theirs.size()),
+                skipped, slow, level,
+                rounds == 0 ? "-" : String.format(Locale.ROOT, "%.1f", (double) shadowed / rounds),
+                intercepted == 0 ? "-" : String.format(Locale.ROOT, "%d / %d (%.0f%%)", inShadow, intercepted,
+                    100.0 * inShadow / intercepted),
+                changes, step));
+        }
+    }
+
+    private static double sum(List<Double> xs) {
+        double s = 0;
+        for (double x : xs) s += x;
+        return s;
     }
 
     private static String mean(List<Double> xs, String format) {

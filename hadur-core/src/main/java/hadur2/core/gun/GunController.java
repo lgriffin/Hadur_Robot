@@ -77,6 +77,8 @@ public class GunController {
         }
     }
 
+    private double kShare = 1.0;
+
     public void initRound() {
         virtualBullets.clear();
         for (Map<String, KnnView<TimestampedFiringAngle>> views : enemyViews.values()) {
@@ -89,12 +91,21 @@ public class GunController {
     public Map<String, KnnView<TimestampedFiringAngle>> getOrCreateViews(String botName) {
         return enemyViews.computeIfAbsent(botName, k -> {
             Map<String, KnnView<TimestampedFiringAngle>> views = new LinkedHashMap<>();
-            views.put(MainGun.viewName(), mainGun.createView(enemiesTotal));
+            views.put(MainGun.viewName(), mainGun.createView(enemiesTotal).setKShare(kShare));
             for (KnnView<TimestampedFiringAngle> asView : antiSurferGun.createViews()) {
-                views.put(asView.name, asView);
+                views.put(asView.name, asView.setKShare(kShare));
             }
             return views;
         });
+    }
+
+    /** TIME-1, TIME-2: the share of k every gun view uses; 1 is all of it. */
+    public void setKShare(double kShare) {
+        if (kShare == this.kShare) return;
+        this.kShare = kShare;
+        for (Map<String, KnnView<TimestampedFiringAngle>> views : enemyViews.values()) {
+            for (KnnView<TimestampedFiringAngle> view : views.values()) view.setKShare(kShare);
+        }
     }
 
     public double aim(Wave w, Point2D.Double myNextLocation, long currentTime) {

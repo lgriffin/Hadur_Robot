@@ -55,6 +55,18 @@ public class Wave implements Cloneable {
     private Double cachedPositiveEscapeAngle;
     private Double cachedNegativeEscapeAngle;
 
+    /**
+     * MOVE-1: firing angles (absolute, from the source) where one of our bullets meets this
+     * wave's bullet, as disjoint {@code [low, high]} pairs; empty when none of ours crosses it.
+     */
+    private List<double[]> shadows = new ArrayList<>();
+    /** MOVE-1: the angles that may meet one of ours, depending on the engine's bullet order. */
+    private List<double[]> possibleShadows = new ArrayList<>();
+    /** MOVE-1: whether this wave has ever had a shadow, for the round's count. */
+    public boolean everShadowed;
+    /** MOVE-1: the version of our bullets in flight these shadows were computed for; -1 never. */
+    public long shadowVersion = -1;
+
     protected Wave() {}
 
     public Wave(String botName, Point2D.Double sourceLocation, Point2D.Double targetLocation,
@@ -81,6 +93,62 @@ public class Wave implements Cloneable {
         this.bulletHitBullet = false;
         this.firingWave = false;
         this.altWave = false;
+    }
+
+    /** MOVE-1: replaces the wave's bullet shadows (see {@link #shadows()}); the possible ones are the certain ones. */
+    public Wave setShadows(List<double[]> shadows) {
+        return setShadows(shadows, shadows);
+    }
+
+    /**
+     * MOVE-1: replaces the wave's certain shadows and the possible ones (which include the
+     * certain ones): angles a bullet of ours meets whatever order the engine moves them in,
+     * and angles it meets in one order of the two.
+     */
+    public Wave setShadows(List<double[]> certain, List<double[]> possible) {
+        this.shadows = certain;
+        this.possibleShadows = possible;
+        return this;
+    }
+
+    public List<double[]> possibleShadows() {
+        return possibleShadows;
+    }
+
+    public List<double[]> shadows() {
+        return shadows;
+    }
+
+    /**
+     * MOVE-1: the share of the firing angles that would hit a robot at {@code intersection}
+     * that fall in a bullet shadow, in [0, 1]. A bullet fired at a shadowed angle meets one
+     * of ours first and never arrives.
+     */
+    public double shadowedFraction(Intersection intersection) {
+        if (possibleShadows.isEmpty() || intersection == null || !(intersection.bandwidth > 0)) return 0;
+        // A possible shadow stops the bullet about half the time.
+        return (covered(shadows, intersection) + covered(possibleShadows, intersection)) / 2;
+    }
+
+    private static double covered(List<double[]> intervals, Intersection intersection) {
+        double low = intersection.angle - intersection.bandwidth;
+        double high = intersection.angle + intersection.bandwidth;
+        double covered = 0;
+        for (double[] shadow : intervals) {
+            double from = DiaUtils.normalizeAngle(shadow[0], intersection.angle);
+            double to = from + (shadow[1] - shadow[0]);
+            covered += Math.max(0, Math.min(high, to) - Math.max(low, from));
+        }
+        return Math.min(1.0, covered / (high - low));
+    }
+
+    /** MOVE-1: whether a bullet fired along {@code angle} from the source may meet one of ours. */
+    public boolean inShadow(double angle, double tolerance) {
+        for (double[] shadow : possibleShadows) {
+            double a = DiaUtils.normalizeAngle(angle, (shadow[0] + shadow[1]) / 2);
+            if (a >= shadow[0] - tolerance && a <= shadow[1] + tolerance) return true;
+        }
+        return false;
     }
 
     public Wave setBulletPower(double power) {

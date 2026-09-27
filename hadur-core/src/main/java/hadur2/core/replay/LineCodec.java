@@ -77,13 +77,19 @@ public final class LineCodec {
             return join("H", esc(h.name()), h.power(), h.x(), h.y(), h.heading());
         } else if (e instanceof BotEvent.BulletHit) {
             BotEvent.BulletHit b = (BotEvent.BulletHit) e;
-            return join("B", esc(b.name()), b.power(), b.energy());
+            return Double.isNaN(b.bulletHeading())
+                ? join("B", esc(b.name()), b.power(), b.energy())
+                : join("B", esc(b.name()), b.power(), b.energy(), b.bulletHeading());
         } else if (e instanceof BotEvent.BulletHitBullet) {
             BotEvent.BulletHitBullet b = (BotEvent.BulletHitBullet) e;
-            return join("X", b.power(), b.x(), b.y(), b.enemyPower());
+            return Double.isNaN(b.bulletHeading())
+                ? join("X", b.power(), b.x(), b.y(), b.enemyPower())
+                : join("X", b.power(), b.x(), b.y(), b.enemyPower(), b.bulletHeading());
         } else if (e instanceof BotEvent.BulletMissed) {
             BotEvent.BulletMissed m = (BotEvent.BulletMissed) e;
-            return join("M", m.power());
+            return Double.isNaN(m.bulletHeading())
+                ? join("M", m.power())
+                : join("M", m.power(), m.bulletHeading());
         } else if (e instanceof BotEvent.HitWall) {
             BotEvent.HitWall w = (BotEvent.HitWall) e;
             return join("W", w.bearing());
@@ -96,6 +102,9 @@ public final class LineCodec {
         } else if (e instanceof BotEvent.SkippedTurn) {
             BotEvent.SkippedTurn s = (BotEvent.SkippedTurn) e;
             return join("K", s.skippedTime());
+        } else if (e instanceof BotEvent.TickTime) {
+            BotEvent.TickTime t = (BotEvent.TickTime) e;
+            return join("Q", t.usedNanos(), t.allowanceNanos());
         }
         throw new IllegalArgumentException("Unknown event " + e);
     }
@@ -105,14 +114,16 @@ public final class LineCodec {
         switch (f[0]) {
             case "S": return new BotEvent.Scan(unesc(f[1]), d(f[2]), d(f[3]), d(f[4]), d(f[5]), d(f[6]));
             case "H": return new BotEvent.HitByBullet(unesc(f[1]), d(f[2]), d(f[3]), d(f[4]), d(f[5]));
-            case "B": return new BotEvent.BulletHit(unesc(f[1]), d(f[2]), d(f[3]));
-            case "X": return new BotEvent.BulletHitBullet(d(f[1]), d(f[2]), d(f[3]), d(f[4]));
-            case "M": return new BotEvent.BulletMissed(d(f[1]));
+            // S6 appended our bullet's heading to B, X and M; older fixtures lack it.
+            case "B": return new BotEvent.BulletHit(unesc(f[1]), d(f[2]), d(f[3]), opt(f, 4));
+            case "X": return new BotEvent.BulletHitBullet(d(f[1]), d(f[2]), d(f[3]), d(f[4]), opt(f, 5));
+            case "M": return new BotEvent.BulletMissed(d(f[1]), opt(f, 2));
             case "W": return new BotEvent.HitWall(d(f[1]));
             case "R": return new BotEvent.HitRobot(unesc(f[1]), d(f[2]), d(f[3]),
                 Boolean.parseBoolean(f[4]));
             case "D": return new BotEvent.RobotDeath(unesc(f[1]));
             case "K": return new BotEvent.SkippedTurn(Long.parseLong(f[1]));
+            case "Q": return new BotEvent.TickTime(Long.parseLong(f[1]), Long.parseLong(f[2]));
             default: throw new IllegalArgumentException("Unknown event " + s);
         }
     }
@@ -121,6 +132,10 @@ public final class LineCodec {
         StringBuilder b = new StringBuilder(type);
         for (Object o : fields) b.append(':').append(o);
         return b.toString();
+    }
+
+    private static double opt(String[] f, int i) {
+        return f.length > i ? d(f[i]) : Double.NaN;
     }
 
     private static double d(String s) {

@@ -71,7 +71,7 @@ The core and guard are static in the adapter, so learning survives from round to
 | Type | Direction | What |
 |---|---|---|
 | `model.BotInput` | in | time, round, own position, heading, velocity, energy, gun and radar state, others, events |
-| `model.BotEvent` | in | a closed set: `Scan`, `HitByBullet`, `BulletHit`, `BulletHitBullet`, `BulletMissed`, `HitWall`, `HitRobot`, `RobotDeath`, `SkippedTurn` |
+| `model.BotEvent` | in | a closed set: `Scan`, `HitByBullet`, `BulletHit`, `BulletHitBullet`, `BulletMissed`, `HitWall`, `HitRobot`, `RobotDeath`, `SkippedTurn`, `TickTime` (S6: how long the core's last tick took, measured by the adapter) |
 | `model.BotOrders` | out | body turn, ahead, max velocity, gun turn, radar turn, fire power |
 | `port.Telemetry` | out | one line record at a time (`V`, `B`, `R`, `FAULT`, `EW`, `MEM`) |
 | `port.ProfileStore` | both | named byte blobs with a quota: read, write (may be cut short), delete, list, size |
@@ -90,11 +90,11 @@ data directory through `RobocodeFileOutputStream`. S6 adds a `Clock` port.
 | `physics` | `Angles` and `Rules` (bit-identical to Robocode's), battle field, movement prediction |
 | `knn` | KD-tree and KNN views |
 | `gun` | main KNN gun, anti-surfer gun, gun selection |
-| `move` | wave-surfing movement and its danger formulas |
+| `move` | wave-surfing movement and its danger formulas; our bullets in flight and the shadows they cast (MOVE-1); go-to surfing |
 | `melee` | the melee brain (MELEE-1..8): opponent tracker, sweep radar, minimum-risk mover, target selector, circular gun, posture strategy, battle-long opponent stats |
 | `memory` | opponent memory (MEM-1..5, RES-3): lineage keys, the profile, its binary codec, the round folder and the library that loads, saves and evicts; estimates with margins of error, the tiers and the seed layout |
 | `adapt` | recognise and adapt (ADAPT-1..3, DIAL-1..2, RES-4): the opening book, the seed loader and the seed trust |
-| `policy` | aggressive (DIST-1, POW-1, POW-2, END-1, END-2): rolling hit-rate windows, the distance controller, the power policy, the endgame states and the enemy gun-heat estimate |
+| `policy` | aggressive (DIST-1, POW-1, POW-2, END-1, END-2): rolling hit-rate windows, the distance controller, the power policy, the endgame states and the enemy gun-heat estimate; unhittable (MOVE-2, TIME-1, TIME-2): the movement flavour and the tick budget |
 | `replay` | the line codec and replay driver for recorded battles (CORE-2) |
 | `port` | outbound interfaces |
 
@@ -189,6 +189,37 @@ P records mark the opening distance (`distance`, `<tier>:<px>`), each step
 and of endgame state (`endgame`). R fields 23-27 carry the round's mean scan distance, the
 target at the round's end, finishing and ramming ticks, and full-power shots; the bench's
 Aggression section reads them.
+
+## Unhittable
+
+S6 makes Hadur harder to hit and keeps it inside its turn.
+
+| Decision | From | Applied through |
+|---|---|---|
+| Bullet shadows: angles of an enemy wave where one of our bullets in flight meets its bullet (MOVE-1) | `move.OurBullet`s (fired from where we stood, along the gun's heading), the wave | `Wave.shadowedFraction`, which scales the surf's danger at each intersection |
+| Movement flavour: flattener, then go-to surfing, then the band 100 px out, each added when their hit rate beats the profile's by more than the margin (MOVE-2, DIAL-1) | the profile's hit rate, a window of their waves since the last change | `MoveController.setFlattenerFirst`, `SurfMover.setMode` (from the next surfed wave), `DistancePolicy.shiftOut` |
+| Computation level 0-3: one wave and no go-to, then half k, then no virtual-gun scoring (TIME-1, TIME-2) | `TickTime` events, skipped turns | `SurfMover.move`'s wave count and mode, `KnnView.setKShare`, the virtual-gun call |
+
+**Shadows follow the engine's order of play.** Each turn the engine moves every bullet
+before any robot, one bullet at a time in a random order, and each bullet checks its new
+segment against the others' segments as they stand. So an enemy bullet and ours always
+meet if their segments of the same turn cross (the certain shadow), and meet in about half
+the turns if one's move crosses the other's previous segment (the possible shadow). A
+robot, moved after the bullets, meets the next turn's segment, which is why a wave's robot
+intersection reads one turn ahead of its shadows. `BulletShadowsProperties` checks the
+geometry against a brute-force flight of both bullets; the bench checks it against the
+engine: every enemy bullet one of ours destroyed fell inside a possible shadow.
+
+**The tick time is an event, not a clock.** The adapter measures how long `Guard.tick`
+took and hands it to the next tick as `TickTime`, with its assumed allowance (3 ms; a
+robot cannot read the engine's CPU constant). The replay fixtures record it like any other
+event, so a replay makes the same decisions (CORE-2), and ArchUnit's ban on clocks in the
+core stands.
+
+P records mark each flavour change (`move-flavour`, with the live hit rate and margin that
+made it and the step added) and each change of computation level (`budget`, with the new level). R fields 28-32 carry slow ticks, shadowed waves, flavour changes, the flavour
+step reached and the intercepts that fell inside a shadow; field 13, the computation level,
+is now the highest the round used. The bench's Unhittable section reads them.
 
 ## Java version
 

@@ -119,3 +119,38 @@ The S5 group (DIST-1, POW-1, POW-2, END-1, END-2) was implemented with these rea
   shot fired on the same tick, so a gun that has just fired never counts as the cooler one.
 - **END-2** takes over from the surf entirely: nothing to dodge from a disabled robot.
 - **DIAL-2** is enforced as in S4: the policy package cannot see `BotInput` or `BotEvent`.
+
+
+The S6 group (MOVE-1, MOVE-2, TIME-1, TIME-2) was implemented with these readings:
+
+- **MOVE-1's shadows are bearings from the wave's source**, not guess factors. The surf
+  scores bearings anyway, and a bearing interval needs no guess about the enemy's escape
+  angle. A shadow is every firing angle whose bullet meets one of ours on a turn both are
+  in flight, computed segment by segment as the engine moves bullets (straight lines, all
+  bullets before any robot).
+- **The engine moves bullets one at a time in a random order each turn**, so a pair can
+  also meet when one bullet's move crosses the other's previous segment. Angles that meet
+  in every order are the certain shadow; angles that meet in only one order are possible.
+  A wave keeps `1 - (certain + possible / 2)` of the danger it would have had, each term
+  the share of our robot's intersection it covers: a possible shadow counts as half. In the bench, every enemy bullet one of
+  ours destroyed fell inside a computed shadow (the check the bench's "intercepts in a
+  shadow" column reports).
+- **Bullets are named by heading and power.** The engine's bullet events carry the
+  bullet's heading, which the adapter now passes on, so the core drops the right bullet
+  from its shadows when one hits, misses or is shot down.
+- **TIME-1 and TIME-2 read the time from an event**, `TickTime`, which the adapter measures
+  around the core's tick and hands in with the next tick's events. The core never reads a
+  clock, so a replay takes the same decisions (CORE-2). The allowance is taken as 3 ms, the
+  bench machine's CPU constant; Robocode does not tell a robot its own.
+- **A computation level sheds work in a fixed order**: level 1 surfs one wave and no
+  go-to; level 2 also halves k in every KNN view; level 3 also stops scoring the virtual
+  guns. TIME-2's skipped turn holds a level for the rest of the round; TIME-1's slow tick
+  adds one for the next tick only. Levels are capped at 3.
+- **MOVE-2's baseline is the profile's raw hit rate** on us, and the rolling rate is a window
+  cleared at each change, so each flavour is judged on its own waves. A change needs the live
+  estimate's margin to be 15 points or less (at one hit in one wave, Agresti-Coull's
+  interval is wide enough to "exceed" any baseline) and the centre gap to exceed the two
+  margins together. The flavours are added in order: flattener first, then go-to surfing,
+  then 100 px further out. A stranger has no baseline and never changes (DIAL-1).
+- **DIAL-2** is enforced as before: the policy package cannot see `BotInput` or `BotEvent`,
+  and the tick budget and the flavour are driven by events, not the clock or the round.

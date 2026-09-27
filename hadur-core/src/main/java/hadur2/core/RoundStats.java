@@ -28,7 +28,7 @@ public final class RoundStats {
     public int bulletsIntercepted;
     /** Shots fired with an anti-shield aim offset (SHIELD-2). */
     public int jitteredShots;
-    /** Tick-budget computation level; 0 (full) until S6. */
+    /** The highest tick-budget computation level this round used, 0 (full) to 3 (TIME-1, TIME-2). */
     public int computationLevel;
     /** Opponent memory, battle totals so far: profiles that failed to load (MEM-4). */
     public int profileLoadFailures;
@@ -49,6 +49,15 @@ public final class RoundStats {
     public int ramTicks;
     /** S5: shots fired at full power (POW-1, POW-2; the gun's own choice never reaches 3.0). */
     public int fullPowerShots;
+    /** S6: ticks that used more than 70% of the allowance (TIME-1). */
+    public int slowTicks;
+    /** S6: enemy firing waves one of our bullets shadowed (MOVE-1). */
+    public int shadowedWaves;
+    /** S6: enemy bullets ours destroyed that were inside a shadow Hadur had computed (MOVE-1's fidelity). */
+    public int interceptsShadowed;
+    /** S6: movement flavour changes this round, and the step reached, battle-wide (MOVE-2). */
+    public int flavourChanges;
+    public int flavourStep;
 
     public double meanDistance() {
         return distanceScans == 0 ? Double.NaN : distanceSum / distanceScans;
@@ -67,19 +76,20 @@ public final class RoundStats {
      * ourMargin,theirHitRate,theirMargin,phantomWaves,skippedTurns,faults,computationLevel,
      * radarReacquired,hiddenShots,profileLoadFailures,profileSaveFailures,seedsEvicted,
      * bulletsIntercepted,jitteredShots,shotsFired,seedDecays,meanDistance,targetDistance,
-     * finishTicks,ramTicks,fullPowerShots}. The memory fields are battle totals so
+     * finishTicks,ramTicks,fullPowerShots,slowTicks,shadowedWaves,flavourChanges,flavourStep,interceptsShadowed}. The memory fields are battle totals so
      * far, not this round's. Fields are only ever appended, so older readers still work.
      */
     public String toRecord(int round, long tick, String result, double ourEnergy,
                            double enemyEnergy) {
-        return String.format(Locale.ROOT, "R,%d,%d,%s,%.2f,%.2f,%.4f,%.4f,%.4f,%.4f,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%.1f,%.1f,%d,%d,%d",
+        return String.format(Locale.ROOT, "R,%d,%d,%s,%.2f,%.2f,%.4f,%.4f,%.4f,%.4f,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%.1f,%.1f,%d,%d,%d,%d,%d,%d,%d,%d",
             round, tick, result, ourEnergy, enemyEnergy,
             ourHitRate(), margin(ourHitRate(), shotsFired),
             theirHitRate(), margin(theirHitRate(), enemyShotsDetected),
             phantomWaves, skippedTurns, faults, computationLevel, radarReacquired, hiddenShots,
             profileLoadFailures, profileSaveFailures, seedsEvicted,
             bulletsIntercepted, jitteredShots, shotsFired, seedDecays,
-            meanDistance(), targetDistance, finishTicks, ramTicks, fullPowerShots);
+            meanDistance(), targetDistance, finishTicks, ramTicks, fullPowerShots,
+            slowTicks, shadowedWaves, flavourChanges, flavourStep, interceptsShadowed);
     }
 
     private static double margin(double p, int n) {

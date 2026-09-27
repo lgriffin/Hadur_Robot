@@ -28,6 +28,11 @@ public class SurfMover {
     private final Map<SurfOption, Point2D.Double> surfOptionDestinations = new HashMap<>();
     private Wave lastWaveSurfed;
     private double desiredDistance = DEFAULT_DISTANCE;
+    /** The surf mode for the wave being surfed, and the one the next wave starts with (MOVE-2). */
+    private Mode mode = Mode.OPTIONS;
+    private Mode nextMode = Mode.OPTIONS;
+    /** Go-to surfing: the point chosen on the last tick, for the SD record. */
+    private Point2D.Double goToPoint;
 
     public SurfMover(BattleField battleField, MovementPredictor predictor) {
         this.battleField = battleField;
@@ -41,6 +46,26 @@ public class SurfMover {
 
     public double desiredDistance() {
         return desiredDistance;
+    }
+
+    /**
+     * How to pick where to be when a wave breaks. The mode changes only when a new wave is
+     * surfed (MOVE-2's "at the next surfable wave"), never under a wave half-dodged.
+     */
+    public enum Mode {
+        /** 1.20's three options: orbit counter-clockwise, stop, orbit clockwise. */
+        OPTIONS,
+        /** Go-to surfing: a spread of stop points along both orbits; drive to the safest. */
+        GO_TO
+    }
+
+    public void setMode(Mode mode) {
+        this.nextMode = mode;
+    }
+
+    /** The mode surfing the current wave. */
+    public Mode mode() {
+        return mode;
     }
 
     /**
@@ -59,17 +84,34 @@ public class SurfMover {
         lastSurfDestination = null;
         stopDestination = null;
         lastWaveSurfed = null;
+        goToPoint = null;
+    }
+
+    /**
+     * Surfs the first surfable wave (and {@code wavesToSurf - 1} behind it), or orbits when
+     * there is none. {@code goToAllowed} is false while the tick budget is short (TIME-1):
+     * go-to surfing then falls back to the three options.
+     */
+    public void move(BotOrders.Builder orders, RobotState myState,
+                     MoveController moveCtrl, Point2D.Double enemyLocation,
+                     int wavesToSurf, boolean goToAllowed) {
+        Wave surfWave = moveCtrl.findSurfableWave(0, myState);
+        if (surfWave == null) {
+            orbit(orders, myState.heading, myState.location, enemyLocation);
+            return;
+        }
+        if (surfWave != lastWaveSurfed) mode = nextMode;
+        if (mode == Mode.GO_TO && goToAllowed) {
+            goToSurf(orders, myState, moveCtrl, surfWave, wavesToSurf);
+        } else {
+            surf(orders, myState, moveCtrl, surfWave, wavesToSurf);
+        }
     }
 
     public void move(BotOrders.Builder orders, RobotState myState,
                      MoveController moveCtrl, Point2D.Double enemyLocation,
                      int wavesToSurf) {
-        Wave surfWave = moveCtrl.findSurfableWave(0, myState);
-        if (surfWave == null) {
-            orbit(orders, myState.heading, myState.location, enemyLocation);
-        } else {
-            surf(orders, myState, moveCtrl, surfWave, wavesToSurf);
-        }
+        move(orders, myState, moveCtrl, enemyLocation, wavesToSurf, true);
     }
 
     private void orbit(BotOrders.Builder orders, double heading, Point2D.Double myLocation,
@@ -209,18 +251,8 @@ public class SurfMover {
             predicted = predictSurfLocation(predicted, surfDest, maxVelocity, smoothOption);
         } while (!wavePassed);
 
-        Wave.Intersection intersection = surfWave.preciseIntersection(dangerStates);
-        double hitRate = moveCtrl.normalizedEnemyHitRate();
-        double danger = hitRate + moveCtrl.getDangerScore(surfWave, intersection, surfWaveIndex);
-        danger *= Rules.getBulletDamage(surfWave.bulletPower());
-
-        double currentDist = myState.location.distance(surfWave.sourceLocation);
-        double currentWaveDist = currentDist - surfWave.distanceTraveled(myState.time);
-        double timeToImpact = Math.max(1.0, currentWaveDist / surfWave.bulletSpeed());
-        danger /= timeToImpact;
-
-        danger *= distancingDanger(startState.location, passedState.location,
-            surfWave.sourceLocation);
+        double danger = waveDanger(myState, moveCtrl, surfWave, surfWaveIndex, dangerStates,
+            startState.location, passedState.location);
 
         if (surfWaveIndex + 1 < numWaves && danger < cutoff) {
             double nextCcw = checkDanger(myState, moveCtrl, passedState,
@@ -235,6 +267,197 @@ public class SurfMover {
             danger += Math.min(nextCcw, Math.min(nextStop, nextCw));
         }
         return danger;
+    }
+
+    /**
+     * The danger of being where {@code dangerStates} say when {@code surfWave} breaks: the
+     * views' score at that intersection, less the share our bullets shadow (MOVE-1), scaled
+     * by the bullet's damage, how soon it arrives and how much closer the move takes us.
+     */
+    private double waveDanger(RobotState myState, MoveController moveCtrl, Wave surfWave,
+                              int surfWaveIndex, List<RobotState> dangerStates,
+                              Point2D.Double start, Point2D.Double passed) {
+        Wave.Intersection intersection = surfWave.preciseIntersection(dangerStates);
+        double hitRate = moveCtrl.normalizedEnemyHitRate();
+        double danger = hitRate + moveCtrl.getDangerScore(surfWave, intersection, surfWaveIndex);
+        double shadowed = surfWave.shadowedFraction(intersection);
+        if (shadowed > 0) danger *= 1 - shadowed;
+        danger *= Rules.getBulletDamage(surfWave.bulletPower());
+
+        double currentDist = myState.location.distance(surfWave.sourceLocation);
+        double currentWaveDist = currentDist - surfWave.distanceTraveled(myState.time);
+        double timeToImpact = Math.max(1.0, currentWaveDist / surfWave.bulletSpeed());
+        danger /= timeToImpact;
+
+        danger *= distancingDanger(start, passed, surfWave.sourceLocation);
+        return danger;
+    }
+
+    // Go-to surfing (S6's A/B against the three options).
+
+    /** Candidate stop points are taken every this many ticks along each orbit. */
+    static final int GO_TO_SPACING = 2;
+    /** Candidates whose first-wave danger is lowest get the second wave's danger added. */
+    static final int GO_TO_SECOND_WAVE = 3;
+    private static final int MAX_PREDICTION = 150;
+
+    private void goToSurf(BotOrders.Builder orders, RobotState myState, MoveController moveCtrl,
+                          Wave surfWave, int wavesToSurf) {
+        if (surfWave != lastWaveSurfed) {
+            moveCtrl.clearNeighborCache();
+            lastWaveSurfed = surfWave;
+            lastSurfDestination = null;
+            stopDestination = null;
+        }
+        List<Point2D.Double> candidates = goToCandidates(myState, surfWave);
+        List<GoToOption> options = new ArrayList<>();
+        for (Point2D.Double c : candidates) {
+            options.add(goToDanger(myState, moveCtrl, surfWave, c));
+        }
+        options.sort(Comparator.comparingDouble(o -> o.danger));
+        GoToOption best = options.get(0);
+        if (wavesToSurf > 1) {
+            double bestTotal = Double.POSITIVE_INFINITY;
+            for (int i = 0; i < Math.min(GO_TO_SECOND_WAVE, options.size()); i++) {
+                GoToOption o = options.get(i);
+                double total = o.danger + secondWaveDanger(myState, moveCtrl, o,
+                    orbitSide(surfWave, myState, o.point), bestTotal);
+                if (total < bestTotal) {
+                    bestTotal = total;
+                    best = o;
+                }
+            }
+        }
+        goToPoint = best.point;
+        lastSurfOption = orbitSide(surfWave, myState, best.point);
+        goTo(orders, myState, best.point);
+    }
+
+    /** The way round the wave's source that driving to {@code point} goes. */
+    static SurfOption orbitSide(Wave surfWave, RobotState myState, Point2D.Double point) {
+        double side = Angles.normalRelativeAngle(
+            DiaUtils.absoluteBearing(surfWave.sourceLocation, point)
+                - DiaUtils.absoluteBearing(surfWave.sourceLocation, myState.location));
+        return side < 0 ? SurfOption.COUNTER_CLOCKWISE : SurfOption.CLOCKWISE;
+    }
+
+    /** The stop points: where we stand, and every few ticks along both orbits until the wave passes. */
+    List<Point2D.Double> goToCandidates(RobotState myState, Wave surfWave) {
+        List<Point2D.Double> candidates = new ArrayList<>();
+        candidates.add(myState.location);
+        for (SurfOption option : new SurfOption[] {SurfOption.COUNTER_CLOCKWISE, SurfOption.CLOCKWISE}) {
+            double attackAngle = surfAttackAngle(surfWave.sourceLocation.distance(myState.location));
+            Point2D.Double dest = predictor.preciseEscapeAngle(option.direction,
+                surfWave.sourceLocation, surfWave.fireTime, surfWave.bulletSpeed(), myState,
+                attackAngle, MEA_WALL_STICK).location;
+            RobotState state = myState;
+            for (int t = 1; t <= MAX_PREDICTION; t++) {
+                state = predictSurfLocation(state, dest, 8.0, option);
+                Wave.WavePosition pos = surfWave.checkWavePosition(state, true);
+                boolean passed = pos == Wave.WavePosition.BREAKING_CENTER
+                    || pos == Wave.WavePosition.GONE;
+                if (t % GO_TO_SPACING == 0 || passed) candidates.add(state.location);
+                if (passed) break;
+            }
+        }
+        return candidates;
+    }
+
+    private GoToOption goToDanger(RobotState myState, MoveController moveCtrl, Wave surfWave,
+                                  Point2D.Double point) {
+        RobotStateLog log = new RobotStateLog();
+        List<RobotState> dangerStates = new ArrayList<>();
+        RobotState predicted = myState;
+        RobotState passed = myState;
+        boolean waveHit = false;
+        for (int t = 0; t < MAX_PREDICTION; t++) {
+            if (!waveHit && surfWave.checkWavePosition(predicted,
+                    Wave.WavePosition.BREAKING_FRONT) == Wave.WavePosition.BREAKING_FRONT) {
+                RobotState ds = predicted;
+                for (int u = 0; u < MAX_PREDICTION
+                        && surfWave.checkWavePosition(ds, true) != Wave.WavePosition.GONE; u++) {
+                    dangerStates.add(ds);
+                    ds = goToStep(ds, point);
+                }
+                waveHit = true;
+            }
+            Wave.WavePosition pos = surfWave.checkWavePosition(predicted, true);
+            passed = predicted;
+            if (pos == Wave.WavePosition.BREAKING_CENTER || pos == Wave.WavePosition.GONE) break;
+            log.addState(predicted);
+            predicted = goToStep(predicted, point);
+        }
+        double danger = dangerStates.isEmpty() ? 0
+            : waveDanger(myState, moveCtrl, surfWave, 0, dangerStates, myState.location,
+                passed.location);
+        return new GoToOption(point, danger, passed, log);
+    }
+
+    /**
+     * The second wave's danger after reaching {@code o}; a STOP there is predicted along
+     * {@code side}, the way this candidate goes round, not the last surf's.
+     */
+    private double secondWaveDanger(RobotState myState, MoveController moveCtrl, GoToOption o,
+                                    SurfOption side, double cutoff) {
+        boolean clockwise = side == SurfOption.CLOCKWISE;
+        double best = Double.POSITIVE_INFINITY;
+        for (SurfOption option : SurfOption.values()) {
+            best = Math.min(best, checkDanger(myState, moveCtrl, o.passed, option, clockwise, 1, 2,
+                cutoff, (RobotStateLog) o.log.clone()));
+        }
+        return best;
+    }
+
+    /** One tick of driving to {@code point} and stopping there, front or back first. */
+    RobotState goToStep(RobotState state, Point2D.Double point) {
+        double dist = state.location.distance(point);
+        if (dist < 0.5) return predictor.predict(state, 0, 0, 8.0, 1, false);
+        double turn = Angles.normalRelativeAngle(
+            DiaUtils.absoluteBearing(state.location, point) - state.heading);
+        double distance = dist;
+        if (Math.abs(turn) > Math.PI / 2) {
+            turn -= Math.signum(turn) * Math.PI;
+            distance = -dist;
+        }
+        return predictor.predict(state, distance, turn, 8.0, 1, false);
+    }
+
+    private static void goTo(BotOrders.Builder orders, RobotState state, Point2D.Double point) {
+        orders.maxVelocity(8.0);
+        double dist = state.location.distance(point);
+        if (dist < 0.5) {
+            orders.turnRight(0);
+            orders.ahead(0);
+            return;
+        }
+        double turn = Angles.normalRelativeAngle(
+            DiaUtils.absoluteBearing(state.location, point) - state.heading);
+        double distance = dist;
+        if (Math.abs(turn) > Math.PI / 2) {
+            turn -= Math.signum(turn) * Math.PI;
+            distance = -dist;
+        }
+        orders.turnRight(turn);
+        orders.ahead(distance);
+    }
+
+    /** Go-to surfing's pick on the last tick; null in the three-option mode. */
+    public Point2D.Double goToPoint() {
+        return mode == Mode.GO_TO ? goToPoint : null;
+    }
+
+    private static final class GoToOption {
+        final Point2D.Double point;
+        final double danger;
+        final RobotState passed;
+        final RobotStateLog log;
+
+        GoToOption(Point2D.Double point, double danger, RobotState passed, RobotStateLog log) {
+            this.point = point;
+            this.danger = danger;
+            this.passed = passed;
+            this.log = log;
+        }
     }
 
     private List<RobotState> replaySurfStates(Wave surfWave, RobotStateLog log) {
