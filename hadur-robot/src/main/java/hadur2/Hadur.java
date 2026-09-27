@@ -5,6 +5,7 @@ import hadur2.core.HadurCore;
 import hadur2.core.model.BotEvent;
 import hadur2.core.model.BotInput;
 import hadur2.core.model.BotOrders;
+import hadur2.core.port.ProfileStore;
 import java.awt.Color;
 import java.io.PrintStream;
 import java.util.ArrayList;
@@ -34,7 +35,9 @@ public class Hadur extends AdvancedRobot {
         console = out;
         if (core == null) {
             core = new HadurCore(getBattleFieldWidth(), getBattleFieldHeight(), getOthers(),
-                line -> console.println(line));
+                line -> console.println(line), profileStore());
+            // File I/O and class loading now, not in the first scan's turn.
+            core.prepareMemory();
             guard = new Guard(core::tick, core::recover, line -> console.println(line));
             battleStarted(getBattleFieldWidth(), getBattleFieldHeight(), getOthers());
         }
@@ -57,6 +60,16 @@ public class Hadur extends AdvancedRobot {
             ticked(in, orders);
             apply(orders);
             execute();
+        }
+    }
+
+    /** Opponent memory lives in the data directory; without one, Hadur fights as a stranger. */
+    private ProfileStore profileStore() {
+        try {
+            return FileProfileStore.forRobot(this);
+        } catch (RuntimeException e) {
+            out.println("MEM," + getRoundNum() + "," + getTime() + ",no-store," + e);
+            return null;
         }
     }
 
@@ -155,6 +168,16 @@ public class Hadur extends AdvancedRobot {
     public void onRoundEnded(RoundEndedEvent e) {
         // The engine can deliver this before WinEvent in the round's last batch.
         reportRound(getEnergy() <= 0 ? "loss" : getOthers() == 0 ? "win" : "draw");
+        // A checkpoint: the robot may not get to the battle's end (MEM-3). File I/O is
+        // safe here, unlike in onWin and onDeath. Only when alive: a dead robot's thread
+        // that stops to write keeps it in the round, where the enemy goes on shooting it
+        // and its last bullets still refund it energy (the S3 bench saw this).
+        if (core != null && getEnergy() > 0) core.saveProfile(getTime());
+    }
+
+    @Override
+    public void onBattleEnded(BattleEndedEvent e) {
+        if (core != null) core.battleEnded(getTime());
     }
 
     /** One R record per round (RES-5), from whichever end-of-round event comes first. */

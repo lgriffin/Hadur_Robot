@@ -1,5 +1,7 @@
 package hadur.bench;
 
+import hadur2.core.memory.OpponentProfile;
+import hadur2.core.memory.Tiers;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -11,6 +13,16 @@ final class Report {
     private Report() {}
 
     static String render(Map<Opponent, List<BattleResult>> results, String robot, boolean warm,
+                         int rounds, int runs, int width, int height, String cpuConstant) {
+        return render(results, Map.of(), robot, warm, rounds, runs, width, height, cpuConstant);
+    }
+
+    /**
+     * {@code profiles} holds, per opponent, the profile Hadur had stored once its battles
+     * against that opponent were over (null or absent when there was none).
+     */
+    static String render(Map<Opponent, List<BattleResult>> results,
+                         Map<Opponent, OpponentProfile> profiles, String robot, boolean warm,
                          int rounds, int runs, int width, int height, String cpuConstant) {
         StringBuilder b = new StringBuilder();
         b.append("# Bench: ").append(robot).append(warm ? " (warm)" : " (cold)").append("\n\n");
@@ -96,11 +108,65 @@ final class Report {
                 b.append('\n');
             }
         }
+        memory(b, results, profiles);
         b.append("\nTurn times are wall-clock per engine turn (both robots plus the engine), "
             + "measured by the harness. Skipped turns are counted from the engine's messages in Hadur's console. "
             + "Hit rates and faults come from Hadur's own R and FAULT records (RES-5); hit rates are "
             + "per-round means, and \"-\" means the robot wrote no R records.\n");
         return b.toString();
+    }
+
+    /** S3: whether each battle started from a stored profile, memory failures, and what was stored. */
+    private static void memory(StringBuilder b, Map<Opponent, List<BattleResult>> results,
+                               Map<Opponent, OpponentProfile> profiles) {
+        b.append("\n## Opponent memory\n\n")
+         .append("\"Started warm\" counts battles whose first scan loaded a stored profile (MEM-1). "
+            + "Memory failures are profiles that failed to load, fold or save (MEM-4, MEM-3); seed "
+            + "evictions are profiles whose seeds were dropped for room (MEM-5).\n\n")
+         .append("| Opponent | Started warm | Memory failures | Seed evictions |\n|---|---|---|---|\n");
+        for (Map.Entry<Opponent, List<BattleResult>> e : results.entrySet()) {
+            int warmStarts = 0, battles = 0, failures = 0, evictions = 0;
+            for (BattleResult r : e.getValue()) {
+                if (!r.ok) continue;
+                battles++;
+                warmStarts += r.profileFound;
+                failures += r.memoryFailures;
+                evictions = Math.max(evictions, r.seedsEvicted);
+            }
+            b.append(String.format(Locale.ROOT, "| %s | %d / %d | %d | %d |%n",
+                e.getKey().name, warmStarts, battles, failures, evictions));
+        }
+        if (profiles.isEmpty()) return;
+        b.append("\n### Stored profiles\n\n")
+         .append("Decoded from Hadur's data directory after the opponent's last battle. Hit rates "
+            + "are over all remembered shots; ratings are the virtual guns' weighted hits per "
+            + "wave; tiers are provisional until S4 tunes them. The last column is the estimated "
+            + "score share the profile recorded for each battle, oldest first.\n\n")
+         .append("| Opponent | Key | Battles | Rounds | Bytes | Their hit rate | Our hit rate | "
+            + "Main / anti-surfer rating | Stopped | Tiers | Recorded score share |\n")
+         .append("|---|---|---|---|---|---|---|---|---|---|---|\n");
+        for (Map.Entry<Opponent, List<BattleResult>> e : results.entrySet()) {
+            OpponentProfile p = profiles.get(e.getKey());
+            if (p == null) {
+                b.append("| ").append(e.getKey().name).append(" | none |||||||||\n");
+                continue;
+            }
+            StringBuilder curve = new StringBuilder();
+            for (OpponentProfile.BattleOutcome o : p.outcomes()) {
+                if (curve.length() > 0) curve.append(", ");
+                curve.append(String.format(Locale.ROOT, "%.0f%%", 100 * o.estimatedScoreShare()));
+            }
+            b.append(String.format(Locale.ROOT,
+                "| %s | %s | %d | %d | %d | %s | %s | %s / %s | %s | %s | %s |%n",
+                e.getKey().name, p.key(), p.battles(), p.rounds(),
+                hadur2.core.memory.ProfileCodec.encode(p).length,
+                rate(p.theirHitRate()), rate(p.ourHitRate()), rate(p.mainGunRating()),
+                rate(p.antiSurferRating()), rate(p.stoppedFraction()), Tiers.label(p), curve));
+        }
+    }
+
+    private static String rate(double r) {
+        return Double.isNaN(r) ? "-" : String.format(Locale.ROOT, "%.1f%%", 100 * r);
     }
 
     private static String pct(int part, int whole) {

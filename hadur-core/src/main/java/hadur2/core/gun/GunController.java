@@ -197,6 +197,18 @@ public class GunController {
         return bulletPower;
     }
 
+    /**
+     * The virtual guns' battle totals against {@code botName}: main-gun waves, main weighted
+     * hits, anti-surfer waves, anti-surfer weighted hits. Zeros before any virtual bullet.
+     */
+    public double[] virtualGunScores(String botName) {
+        GunStats m = mainGunStats.get(botName);
+        GunStats a = antiSurferStats.get(botName);
+        return new double[] {
+            m == null ? 0 : m.shotsFired, m == null ? 0 : m.shotsHit,
+            a == null ? 0 : a.shotsFired, a == null ? 0 : a.shotsHit};
+    }
+
     public String bestGunLabel(String botName) {
         if (!is1v1) return mainGun.getLabel();
         GunStats mStats = mainGunStats.get(botName);

@@ -34,7 +34,7 @@
         <!-- The API the robot is built against; vendored in repo/. -->
         <robocode.api.version>1.9.3.0</robocode.api.version>
         <!-- Requirements from docs/requirements.md up to this stage must be covered by a test. -->
-        <hadur.stage>S2</hadur.stage>
+        <hadur.stage>S3</hadur.stage>
     </properties>
 
     <repositories>
@@ -90,6 +90,14 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>3.13.0</version>
+                    <configuration>
+                        <compilerArgs>
+                            <!-- String joins as StringBuilder calls. The default bootstraps
+                                 each join site on first use, a few ms apiece, which made
+                                 the robot skip turns on its first scan (S3). -->
+                            <arg>-XDstringConcat=inline</arg>
+                        </compilerArgs>
+                    </configuration>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>

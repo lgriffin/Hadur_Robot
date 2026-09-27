@@ -4,10 +4,15 @@ import hadur2.core.gun.GunController;
 import hadur2.core.ledger.EnergyLedger;
 import hadur2.core.melee.BattleMode;
 import hadur2.core.melee.MeleeController;
+import hadur2.core.memory.LineageKey;
+import hadur2.core.memory.ProfileFolder;
+import hadur2.core.memory.ProfileLibrary;
+import hadur2.core.memory.Tiers;
 import hadur2.core.model.*;
 import hadur2.core.move.MoveController;
 import hadur2.core.move.SurfMover;
 import hadur2.core.physics.*;
+import hadur2.core.port.ProfileStore;
 import hadur2.core.port.Telemetry;
 import java.awt.geom.Point2D;
 import java.util.Locale;
@@ -23,6 +28,11 @@ import java.util.Locale;
  *
  * <p>While two or more opponents are alive the {@link MeleeController} drives (MELEE-1);
  * once one is left, the duel machinery below takes over from a clean slate (MELEE-2).</p>
+ *
+ * <p>In a duel with a {@link ProfileStore}, the first scan loads the opponent's profile
+ * (MEM-1), each round's observations are folded into it when the round ends (MEM-2), and
+ * {@link #saveProfile} persists it (MEM-3). In S3 the profile is only recorded: nothing it
+ * holds changes an order. Melee battles neither load nor save profiles.</p>
  */
 public final class HadurCore {
 
@@ -37,6 +47,14 @@ public final class HadurCore {
     private final EnergyLedger ledger;
     private final Telemetry telemetry;
     private final MeleeController melee;
+    /** Null when the battle keeps no memory (no store, or a melee battle). */
+    private final ProfileLibrary library;
+    private final double fieldWidth;
+    private final double fieldHeight;
+    private ProfileFolder folder;
+    private boolean profileFound;
+    private String opponentName;
+    private double lastEnemyDistance;
 
     private int round;
     private RoundStats stats = new RoundStats();
@@ -58,6 +76,12 @@ public final class HadurCore {
     private MeleeController.Command lastMeleeCommand;
 
     public HadurCore(double fieldWidth, double fieldHeight, int enemiesTotal, Telemetry telemetry) {
+        this(fieldWidth, fieldHeight, enemiesTotal, telemetry, null);
+    }
+
+    /** A core that remembers opponents in {@code store} (null for none). */
+    public HadurCore(double fieldWidth, double fieldHeight, int enemiesTotal, Telemetry telemetry,
+                     ProfileStore store) {
         this.battleField = new BattleField(fieldWidth, fieldHeight);
         this.predictor = new MovementPredictor(battleField);
         this.gunController = new GunController(battleField, enemiesTotal);
@@ -69,6 +93,9 @@ public final class HadurCore {
         this.ledger = new EnergyLedger(fieldWidth, fieldHeight);
         this.telemetry = telemetry;
         this.melee = new MeleeController(battleField);
+        this.library = store != null && enemiesTotal == 1 ? new ProfileLibrary(store) : null;
+        this.fieldWidth = fieldWidth;
+        this.fieldHeight = fieldHeight;
         telemetry.emit("V,1");
     }
 
@@ -203,8 +230,62 @@ public final class HadurCore {
      */
     public RoundStats roundEnded(long tick, String result, double myEnergy, int faults) {
         stats.faults = faults;
+        foldRound(tick, "win".equals(result));
+        if (library != null) {
+            stats.profileLoadFailures = library.loadFailures();
+            stats.profileSaveFailures = library.saveFailures() + library.skippedWrites();
+            stats.seedsEvicted = library.seedsEvicted();
+        }
         telemetry.emit(stats.toRecord(round, tick, result, myEnergy, lastEnemyEnergy));
         return stats;
+    }
+
+    /** MEM-2: the round's observations join the profile. A failure here is counted, never thrown. */
+    private void foldRound(long tick, boolean won) {
+        if (folder == null) return;
+        try {
+            double[] v = gunController.virtualGunScores(opponentName);
+            folder.virtualGuns(v[0], v[1], v[2], v[3]);
+            folder.fold(won);
+        } catch (RuntimeException e) {
+            stats.profileSaveFailures++;
+            telemetry.emit("MEM," + round + "," + tick + ",fold-failed," + clean(e.toString()));
+        }
+    }
+
+    /**
+     * MEM-3: writes the profile to the store. The adapter calls this when a round ends, as
+     * a checkpoint, and when the battle ends. Does nothing when the battle keeps no memory.
+     */
+    public void saveProfile(long tick) {
+        if (library == null || folder == null) return;
+        ProfileLibrary.Saved saved = library.save(folder.profile());
+        if (saved != ProfileLibrary.Saved.WRITTEN) {
+            telemetry.emit("MEM," + round + "," + tick + "," + saved.name().toLowerCase(Locale.ROOT)
+                + "," + clean(library.lastNote()));
+        }
+    }
+
+    /**
+     * Gets opponent memory ready before the battle's first tick (reads the battle clock,
+     * loads the codec), so the first scan's load is quick. Does nothing without memory.
+     */
+    public void prepareMemory() {
+        if (library != null) library.prepare();
+    }
+
+    /** The battle is over: the last save (MEM-3). */
+    public void battleEnded(long tick) {
+        saveProfile(tick);
+    }
+
+    /** The profile of this battle's opponent, or null before the first scan or without memory. */
+    public hadur2.core.memory.OpponentProfile profile() {
+        return folder == null ? null : folder.profile();
+    }
+
+    private static String clean(String s) {
+        return s.replace(',', ';').replace('\n', ' ');
     }
 
     private void aimAndFire(BotInput in, BotOrders.Builder orders) {
@@ -240,6 +321,7 @@ public final class HadurCore {
             gunController.fireVirtualBullets(lastGunWave, myNext, in.time());
             lastRealBulletFireTime = in.time();
             stats.shotsFired++;
+            if (folder != null) folder.ourShot(lastEnemyDistance);
             return true;
         }
         return false;
@@ -268,11 +350,14 @@ public final class HadurCore {
         lastEnemyAbsBearing = absBearing;
         lastEnemyLocation = enemyPos;
         lastEnemyEnergy = e.energy();
+        lastEnemyDistance = e.distance();
         if (!announced) {
-            // Opponent memory arrives in S3; for now B records the name only.
-            telemetry.emit("B," + round + "," + time + ",-," + e.name() + "," + e.name()
-                + ",0,-,0,0," + stats.computationLevel);
             announced = true;
+            announce(round, time, e.name());
+        }
+        if (folder != null) {
+            folder.enemyScanned(e.velocity(), e.velocity() * Math.sin(e.heading() - absBearing),
+                enemyPos.x, enemyPos.y);
         }
 
         double enemyVel = e.velocity();
@@ -356,6 +441,7 @@ public final class HadurCore {
             long fireTime = moveController.updateFiringWave(previousScanTime, time,
                 reading.corrected());
             stats.enemyShotsDetected++;
+            if (folder != null) folder.enemyShot(e.distance(), reading.corrected(), myVel != 0);
             telemetry.emit(String.format(Locale.ROOT,
                 "EW,%d,%d,%d,%d,%.4f,%.4f,%.4f,%.1f", round, time, fireTime, fireTime,
                 reading.raw(), reading.corrected(), reading.corrected(), e.distance()));
@@ -367,8 +453,39 @@ public final class HadurCore {
         prevMyVelocity = myVel;
     }
 
+    /**
+     * MEM-1: the first scan of the battle loads the opponent's profile before this tick's
+     * orders are made. B records who it is and what memory said:
+     * {@code B,round,tick,battle,exactName,lineageKey,found,tiers,gunSeed,surfSeed,level}.
+     */
+    private void announce(int round, long time, String name) {
+        String battle = "-";
+        String key = LineageKey.of(name);
+        String tiers = "-";
+        int gunSeed = 0;
+        int surfSeed = 0;
+        opponentName = name;
+        if (library != null) {
+            ProfileLibrary.Loaded loaded = library.load(name);
+            folder = new ProfileFolder(loaded.profile(), fieldWidth, fieldHeight);
+            profileFound = loaded.found();
+            battle = String.valueOf(loaded.profile().lastFought());
+            tiers = Tiers.label(loaded.profile());
+            gunSeed = loaded.profile().gunSeedSize();
+            surfSeed = loaded.profile().surfSeedSize();
+            stats.profileLoadFailures = library.loadFailures();
+            if (loaded.failure() != null) {
+                telemetry.emit("MEM," + round + "," + time + ",load-failed," + clean(loaded.failure()));
+            }
+        }
+        telemetry.emit("B," + round + "," + time + "," + battle + "," + clean(name) + ","
+            + clean(key) + "," + (profileFound ? 1 : 0) + "," + tiers + "," + gunSeed + ","
+            + surfSeed + "," + stats.computationLevel);
+    }
+
     private void onBulletHit(BotEvent.BulletHit e) {
         stats.shotsHit++;
+        if (folder != null && !inMelee) folder.ourHit(lastEnemyDistance, Rules.getBulletDamage(e.power()));
         melee.onBulletHit(e.name(), e.power());
         ledger.ourBulletHit(e.power());
     }
@@ -382,6 +499,12 @@ public final class HadurCore {
         if (hitWave != null) {
             hitWave.hitByBullet = true;
             moveController.logBulletHit(hitWave, bulletLoc, round, in.time());
+        }
+        if (folder != null && !inMelee) {
+            boolean found = hitWave != null;
+            folder.hitByEnemy(found ? hitWave.targetDistance : lastEnemyDistance,
+                (found ? hitWave.targetVelocity : in.velocity()) != 0,
+                Rules.getBulletDamage(e.power()));
         }
     }
 

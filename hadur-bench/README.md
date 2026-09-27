@@ -58,6 +58,13 @@ Each battle directory under `work/…/battles/` holds:
 
 `report.md` in the working directory is the summary table.
 
+The "Opponent memory" section (S3) counts the battles whose first scan loaded a stored
+profile, memory failures (Hadur's `MEM` records) and seed evictions. After each opponent's
+last battle the bench decodes the profile Hadur left in `robots/.data/hadur2/Hadur.data/`
+and lists it under "Stored profiles": battles, rounds, size, both hit rates, virtual-gun
+ratings, provisional tiers and the per-battle score share the profile recorded. In cold
+mode that is the profile of the last battle only; warm mode keeps it across battles.
+
 The report's hit-rate and fault columns come from Hadur's `R` (round end) and `FAULT`
 records, so every fault and degradation counter the core keeps reaches the report (RES-5).
 

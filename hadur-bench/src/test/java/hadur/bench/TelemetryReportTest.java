@@ -50,6 +50,9 @@ class TelemetryReportTest {
         assertEquals(r.theirHitRate, back.theirHitRate, 1e-3);
         assertEquals(r.radarReacquired, back.radarReacquired);
         assertEquals(r.hiddenShots, back.hiddenShots);
+        assertEquals(r.profileFound, back.profileFound);
+        assertEquals(r.memoryFailures, back.memoryFailures);
+        assertEquals(r.seedsEvicted, back.seedsEvicted);
         assertEquals("a; b", back.errors);
         assertEquals(BattleResult.HEADER.split(",").length, r.toCsv().split(",").length);
     }
@@ -74,6 +77,38 @@ class TelemetryReportTest {
         assertTrue(report.contains("| 0 | 4 | 5 |"), "phantoms, hidden shots, radar reacquire: " + report);
     }
 
+    @Test
+    @DisplayName("memory records reach the battle result: warm start, failures, evictions")
+    void harvestsMemoryRecords() throws Exception {
+        LogHarvester h = new LogHarvester(dir, "hadur2.Hadur 2.1");
+        h.readRecord("B,0,5,12,abc.Shadow 3.83c,abc.Shadow,1,T3/M2,0,0,0");
+        h.readRecord("MEM,3,900,skipped,no room");
+        h.readRecord("MEM,4,950,written_without_seeds,evicted seeds of a.B");
+        h.readRecord("R,0,500,win,80.00,0.00,0.2000,0.1000,0.1000,0.1000,0,1,0,0,0,0,0,1,2");
+        h.readRecord("R,1,700,win,80.00,0.00,0.2000,0.1000,0.1000,0.1000,0,1,0,0,0,0,0,1,1");
+        h.close();
+        assertEquals(1, h.profileFound());
+        assertEquals(1, h.memoryFailures(), "a seedless write is not a failure");
+        assertEquals(2, h.seedsEvicted(), "battle totals: the largest wins");
+    }
+
+    @Test
+    @DisplayName("the report shows the memory table and the stored profiles")
+    void reportShowsMemory() throws Exception {
+        Map<Opponent, List<BattleResult>> results = new LinkedHashMap<>();
+        Opponent o = Opponent.load(Path.of("reference-set.txt")).get(0);
+        results.put(o, List.of(sample()));
+        hadur2.core.memory.ProfileLibrary lib = new hadur2.core.memory.ProfileLibrary(
+            new hadur2.core.port.MemoryProfileStore(200_000));
+        hadur2.core.memory.OpponentProfile p = lib.load(o.name).profile();
+        String report = Report.render(results, Map.of(o, p), "hadur2.Hadur 2.1", true, 35, 1,
+            800, 600, "cpu");
+        assertTrue(report.contains("## Opponent memory"), report);
+        assertTrue(report.contains("| " + o.name + " | 1 / 1 | 2 | 3 |"), report);
+        assertTrue(report.contains("### Stored profiles"), report);
+        assertTrue(report.contains("| " + o.name + " | sample.SpinBot | 1 | 0 |"), report);
+    }
+
     static BattleResult sample() {
         BattleResult r = new BattleResult();
         r.ok = true;
@@ -88,6 +123,9 @@ class TelemetryReportTest {
         r.theirHitRate = 0.09;
         r.radarReacquired = 5;
         r.hiddenShots = 4;
+        r.profileFound = 1;
+        r.memoryFailures = 2;
+        r.seedsEvicted = 3;
         r.errors = "a, b";
         return r;
     }
