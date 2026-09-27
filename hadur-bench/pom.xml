@@ -24,6 +24,12 @@
     </properties>
 
     <dependencies>
+        <!-- Reads Hadur's stored profiles for the report (the bench process only; battles
+             run in child JVMs whose classpath leaves the core out, see below). -->
+        <dependency>
+            <groupId>com.lgriffin</groupId>
+            <artifactId>hadur-core</artifactId>
+        </dependency>
         <dependency>
             <groupId>net.sf.robocode</groupId>
             <artifactId>robocode.api</artifactId>
@@ -79,6 +85,9 @@
                         <configuration>
                             <outputFile>${project.build.directory}/classpath.txt</outputFile>
                             <includeScope>runtime</includeScope>
+                            <!-- The robot brings its own copy of the core in its jar; one on
+                                 the engine's classpath could shadow it. -->
+                            <excludeArtifactIds>hadur-core</excludeArtifactIds>
                         </configuration>
                     </execution>
                     <execution>

@@ -40,12 +40,21 @@ EARS requirements from the Hadur 2 technical direction. This file is the source 
 | SHIELD-2 | State | While the enemy is treated as a bullet shielder, the gun shall offset each shot's aim by between 15% and 50% of the target's angular half-width, varying the offset deterministically from shot to shot and holding it from aiming until the shot is fired. | S2 |
 | RES-1 | Unwanted | If the core throws on any tick, then the adapter shall issue the safe order set for that tick and record the fault. | S1 |
 | RES-2 | Ubiquitous | The core shall bound every data structure that grows during a battle. | S1 |
-| RES-3 | Ubiquitous | The store shall write a profile to a temporary file and rename it, so that an interrupted write leaves the previous profile intact. | S3 |
+| RES-3 | Ubiquitous | The store shall write a profile to a temporary file before replacing it, and remove the temporary file only once the profile is complete, so that an interrupted write leaves the previous profile, or the complete new one, loadable. | S3 |
 | RES-4 | Unwanted | If the live hit-rate estimate diverges from the profile's by more than the margin of error, then the core shall decay the seed weight to zero within 20 waves. | S4 |
 | RES-5 | Ubiquitous | Every degradation and fault counter shall be included in the round statistics and the bench report. | S1 |
 | RES-6 | Ubiquitous | The core shall contain no use of unseeded randomness, threads, reflection, or file I/O. | S1 |
 
 Stage is where the requirement is first implemented; see the stage plan S0–S7.
+
+RES-3 was reworded in S3 without changing its intent. It first said "rename", but Robocode's
+sandbox punishes a robot that renames a file (writes must go through
+`RobocodeFileOutputStream`). The store therefore copies instead: temporary file, then the
+profile, then delete the temporary file; a load takes the profile if its checksum holds,
+else the temporary copy.
+
+Opponent memory (MEM-1 to MEM-5) is for duels. A battle that starts with two or more
+opponents neither loads nor saves profiles.
 
 The MELEE group is outside the original 1v1 plan. It was added for release 2.1, which enters
 the MeleeRumble, alongside S2; the melee code is the 1.x melee work ported into the core.

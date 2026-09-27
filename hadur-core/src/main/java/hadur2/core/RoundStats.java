@@ -30,6 +30,12 @@ public final class RoundStats {
     public int jitteredShots;
     /** Tick-budget computation level; 0 (full) until S6. */
     public int computationLevel;
+    /** Opponent memory, battle totals so far: profiles that failed to load (MEM-4). */
+    public int profileLoadFailures;
+    /** Profile saves that failed or were skipped for want of room (MEM-3). */
+    public int profileSaveFailures;
+    /** Profiles whose seeds were dropped to make room (MEM-5). */
+    public int seedsEvicted;
 
     public double ourHitRate() {
         return shotsFired == 0 ? 0 : (double) shotsHit / shotsFired;
@@ -42,15 +48,18 @@ public final class RoundStats {
     /**
      * The round-end record: {@code R,round,tick,result,ourEnergy,enemyEnergy,ourHitRate,
      * ourMargin,theirHitRate,theirMargin,phantomWaves,skippedTurns,faults,computationLevel,
-     * radarReacquired,hiddenShots,bulletsIntercepted,jitteredShots,shotsFired}. Fields are only ever appended, so older readers still work.
+     * radarReacquired,hiddenShots,profileLoadFailures,profileSaveFailures,seedsEvicted,
+     * bulletsIntercepted,jitteredShots,shotsFired}. The memory fields are battle totals so
+     * far, not this round's. Fields are only ever appended, so older readers still work.
      */
     public String toRecord(int round, long tick, String result, double ourEnergy,
                            double enemyEnergy) {
-        return String.format(Locale.ROOT, "R,%d,%d,%s,%.2f,%.2f,%.4f,%.4f,%.4f,%.4f,%d,%d,%d,%d,%d,%d,%d,%d,%d",
+        return String.format(Locale.ROOT, "R,%d,%d,%s,%.2f,%.2f,%.4f,%.4f,%.4f,%.4f,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d",
             round, tick, result, ourEnergy, enemyEnergy,
             ourHitRate(), margin(ourHitRate(), shotsFired),
             theirHitRate(), margin(theirHitRate(), enemyShotsDetected),
             phantomWaves, skippedTurns, faults, computationLevel, radarReacquired, hiddenShots,
+            profileLoadFailures, profileSaveFailures, seedsEvicted,
             bulletsIntercepted, jitteredShots, shotsFired);
     }
 

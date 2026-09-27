@@ -57,6 +57,7 @@ public class HadurRecorder extends Hadur {
 
     @Override
     public void onBattleEnded(BattleEndedEvent e) {
+        super.onBattleEnded(e);
         flush();
     }
 

@@ -9,7 +9,7 @@ public final class BattleResult {
         + "bulletDamage,theirBulletDamage,skippedTurns,turns,turnP50Ms,turnP95Ms,turnMaxMs,"
         + "roundRecords,faults,faultRecords,ourHitRate,theirHitRate,"
         + "phantomWaves,enemyShots,unseenShots,inferredWaves,matchedWaves,radarReacquired,hiddenShots,"
-        + "bulletsIntercepted,jitteredShots,shotsFired,errors";
+        + "profileFound,memoryFailures,seedsEvicted,bulletsIntercepted,jitteredShots,shotsFired,errors";
 
     public boolean ok;
     public int rounds, firsts, skippedTurns, turns;
@@ -20,6 +20,8 @@ public final class BattleResult {
     public int phantomWaves, enemyShots, unseenShots, inferredWaves, matchedWaves;
     /** Radar reacquire ticks (RADAR-1) and hidden shots (WAVE-1), from Hadur's R records. */
     public int radarReacquired, hiddenShots;
+    /** Opponent memory (S3): profile found at the first scan (0/1), MEM failure records, seed evictions. */
+    public int profileFound, memoryFailures, seedsEvicted;
     /** Our bullets shot down, shots fired with the anti-shield offset, and all our shots (SHIELD-1, SHIELD-2). */
     public int bulletsIntercepted, jitteredShots, shotsFired;
     public double score, theirScore, survival, theirSurvival, bulletDamage, theirBulletDamage;
@@ -55,6 +57,9 @@ public final class BattleResult {
         r.matchedWaves = h.matchedWaves();
         r.radarReacquired = h.radarReacquired();
         r.hiddenShots = h.hiddenShots();
+        r.profileFound = h.profileFound();
+        r.memoryFailures = h.memoryFailures();
+        r.seedsEvicted = h.seedsEvicted();
         r.bulletsIntercepted = h.bulletsIntercepted();
         r.jitteredShots = h.jitteredShots();
         r.shotsFired = h.shotsFired();
@@ -63,7 +68,7 @@ public final class BattleResult {
     }
 
     static String failed(String why) {
-        return "false,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NaN,NaN,0,0,0,0,0,0,0,0,0,0," + sanitize(why);
+        return "false,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NaN,NaN,0,0,0,0,0,0,0,0,0,0,0,0,0," + sanitize(why);
     }
 
     String toCsv() {
@@ -76,12 +81,14 @@ public final class BattleResult {
             String.valueOf(enemyShots), String.valueOf(unseenShots),
             String.valueOf(inferredWaves),
             String.valueOf(matchedWaves), String.valueOf(radarReacquired),
-            String.valueOf(hiddenShots), String.valueOf(bulletsIntercepted),
-            String.valueOf(jitteredShots), String.valueOf(shotsFired), sanitize(errors));
+            String.valueOf(hiddenShots), String.valueOf(profileFound),
+            String.valueOf(memoryFailures), String.valueOf(seedsEvicted),
+            String.valueOf(bulletsIntercepted), String.valueOf(jitteredShots),
+            String.valueOf(shotsFired), sanitize(errors));
     }
 
     static BattleResult parse(String line) {
-        String[] f = line.split(",", 30);
+        String[] f = line.split(",", 33);
         BattleResult r = new BattleResult();
         r.ok = Boolean.parseBoolean(f[0]);
         r.rounds = Integer.parseInt(f[1]);
@@ -109,10 +116,13 @@ public final class BattleResult {
         r.matchedWaves = Integer.parseInt(f[23]);
         r.radarReacquired = Integer.parseInt(f[24]);
         r.hiddenShots = Integer.parseInt(f[25]);
-        r.bulletsIntercepted = Integer.parseInt(f[26]);
-        r.jitteredShots = Integer.parseInt(f[27]);
-        r.shotsFired = Integer.parseInt(f[28]);
-        r.errors = f.length > 29 ? f[29] : "";
+        r.profileFound = Integer.parseInt(f[26]);
+        r.memoryFailures = Integer.parseInt(f[27]);
+        r.seedsEvicted = Integer.parseInt(f[28]);
+        r.bulletsIntercepted = Integer.parseInt(f[29]);
+        r.jitteredShots = Integer.parseInt(f[30]);
+        r.shotsFired = Integer.parseInt(f[31]);
+        r.errors = f.length > 32 ? f[32] : "";
         return r;
     }
 

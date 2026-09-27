@@ -4,6 +4,7 @@ import hadur2.core.Guard;
 import hadur2.core.HadurCore;
 import hadur2.core.model.BotInput;
 import hadur2.core.model.BotOrders;
+import hadur2.core.port.ProfileStore;
 import hadur2.core.port.Telemetry;
 import java.util.ArrayList;
 import java.util.List;
@@ -73,6 +74,11 @@ public final class Replay {
     private Replay() {}
 
     public static List<Tick> run(List<String> lines, Telemetry telemetry) {
+        return run(lines, telemetry, null);
+    }
+
+    /** Replays with opponent memory in {@code store} (null for none), as the robot runs. */
+    public static List<Tick> run(List<String> lines, Telemetry telemetry, ProfileStore store) {
         HadurCore core = null;
         Guard guard = null;
         List<Tick> ticks = new ArrayList<>();
@@ -81,7 +87,7 @@ public final class Replay {
             if (line.startsWith("F,")) {
                 String[] f = line.split(",");
                 core = new HadurCore(Double.parseDouble(f[1]), Double.parseDouble(f[2]),
-                    Integer.parseInt(f[3]), telemetry);
+                    Integer.parseInt(f[3]), telemetry, store);
                 HadurCore c = core;
                 guard = new Guard(c::tick, c::recover, telemetry);
             } else if (line.startsWith("N,")) {

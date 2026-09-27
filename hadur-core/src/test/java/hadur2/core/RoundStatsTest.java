@@ -29,10 +29,16 @@ class RoundStatsTest {
         s.computationLevel = 7;
         s.radarReacquired = 8;
         s.hiddenShots = 9;
+        s.profileLoadFailures = 1;
+        s.profileSaveFailures = 2;
+        s.seedsEvicted = 3;
         s.bulletsIntercepted = 11;
         s.jitteredShots = 12;
         String[] f = s.toRecord(2, 900, "win", 55.5, 0).split(",");
-        assertEquals(19, f.length);
+        assertEquals(22, f.length);
+        assertEquals("1", f[16], "profile load failures");
+        assertEquals("2", f[17], "profile save failures");
+        assertEquals("3", f[18], "seed evictions");
         assertEquals("R", f[0]);
         assertEquals("2", f[1]);
         assertEquals("900", f[2]);
@@ -47,9 +53,9 @@ class RoundStatsTest {
         assertEquals("7", f[13], "computation level");
         assertEquals("8", f[14], "radar reacquire ticks");
         assertEquals("9", f[15], "hidden shots");
-        assertEquals("11", f[16], "bullets shot down (SHIELD-1)");
-        assertEquals("12", f[17], "jittered shots (SHIELD-2)");
-        assertEquals("10", f[18], "shots fired");
+        assertEquals("11", f[19], "bullets shot down (SHIELD-1)");
+        assertEquals("12", f[20], "jittered shots (SHIELD-2)");
+        assertEquals("10", f[21], "shots fired");
     }
 
     @Test

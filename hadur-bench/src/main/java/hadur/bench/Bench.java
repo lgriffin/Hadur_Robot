@@ -1,5 +1,10 @@
 package hadur.bench;
 
+import hadur2.core.memory.LineageKey;
+import hadur2.core.memory.OpponentProfile;
+import hadur2.core.memory.ProfileCodec;
+import hadur2.core.memory.ProfileFormatException;
+import hadur2.core.memory.ProfileLibrary;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -101,6 +106,7 @@ public final class Bench {
         if (opts.containsKey("melee")) return runMelee(opponents);
 
         Map<Opponent, List<BattleResult>> results = new LinkedHashMap<>();
+        Map<Opponent, OpponentProfile> profiles = new LinkedHashMap<>();
         for (Opponent o : opponents) {
             List<BattleResult> list = new ArrayList<>();
             results.put(o, list);
@@ -115,9 +121,12 @@ public final class Bench {
                     r.scoreShare() * 100, r.firsts, r.rounds, r.skippedTurns,
                     r.ok ? "" : " FAILED: " + r.errors);
             }
+            // Read before the next opponent's wipe: what Hadur remembered (MEM-3).
+            OpponentProfile stored = storedProfile(o.name);
+            if (stored != null) profiles.put(o, stored);
         }
 
-        String report = Report.render(results, robot, warm, rounds, runs, width, height,
+        String report = Report.render(results, profiles, robot, warm, rounds, runs, width, height,
             cpuConstant());
         Files.writeString(out.resolve("report.md"), report);
         if (opts.containsKey("report")) {
@@ -162,7 +171,12 @@ public final class Bench {
         if (!Files.exists(result)) {
             return BattleResult.parse(BattleResult.failed("no result; exit " + p.exitValue()));
         }
-        return BattleResult.parse(Files.readAllLines(result).get(1));
+        List<String> lines = Files.readAllLines(result);
+        if (lines.size() < 2) {
+            // Killed while writing its result.
+            return BattleResult.parse(BattleResult.failed("incomplete result; exit " + p.exitValue()));
+        }
+        return BattleResult.parse(lines.get(1));
     }
 
     /** Hadur against the whole set at once, {@code runs} times; prints each robot's average. */
@@ -300,6 +314,27 @@ public final class Bench {
                 jar.closeEntry();
             }
         }
+    }
+
+    /**
+     * The profile Hadur stored for {@code opponent}, decoded from its data directory, or
+     * null when there is none or it does not decode.
+     */
+    private OpponentProfile storedProfile(String opponent) throws IOException {
+        Path data = home.resolve("robots/.data");
+        if (!Files.exists(data)) return null;
+        String file = ProfileLibrary.fileName(LineageKey.of(opponent));
+        try (Stream<Path> files = Files.walk(data)) {
+            for (Path f : (Iterable<Path>) files::iterator) {
+                if (!f.getFileName().toString().equals(file)) continue;
+                try {
+                    return ProfileCodec.decode(Files.readAllBytes(f));
+                } catch (ProfileFormatException e) {
+                    System.out.println("  stored profile " + f + " does not decode: " + e.getMessage());
+                }
+            }
+        }
+        return null;
     }
 
     /** Robocode keeps robot data files under robots/.data; cold mode deletes it. */
