@@ -1,0 +1,16 @@
+# RoboRumble 1v1 top 50 (rumble.robowiki.net rankings, 2026-09-28), in rank order.
+# Jars from https://robocode-archive.strangeautomata.com/robots/<jar>; put them in opponents/.
+#   <robot name as Robocode lists it> | <role> | <jar file in opponents/>
+oog.mega.saguaro.Saguaro 1.0 | rumble-4 | oog.mega.saguaro.Saguaro_1.0.jar
+voidious.Diamond 1.8.22 | rumble-6 | voidious.Diamond_1.8.22.jar
+rsalesc.mega.Knight 0.6.28 | rumble-9 | rsalesc.mega.Knight_0.6.28.jar
+dsekercioglu.mega.WhiteFang 2.8.1 | rumble-16 | dsekercioglu.mega.WhiteFang_2.8.1.jar
+cs.Nene 1.0.5 | rumble-17 | cs.Nene_1.0.5.jar
+mue.Ascendant 1.2.27 | rumble-23 | mue.Ascendant_1.2.27.jar
+darkcanuck.Pris 0.92 | rumble-25 | darkcanuck.Pris_0.92.jar
+ags.Midboss 1q.fast | rumble-32 | ags.Midboss_1q.fast.jar
+zen.Mirage 0.9.5 | rumble-33 | zen.Mirage_0.9.5.jar
+cs.s2.Seraphim 2.3.1 | rumble-38 | cs.s2.Seraphim_2.3.1.jar
+sheldor.mini.Foilist 1.3.1 | rumble-41 | sheldor.mini.Foilist_1.3.1.jar
+pez.rumble.Ali 0.4.9 | rumble-47 | pez.rumble.Ali_0.4.9.jar
+florent.XSeries.X2 0.17 | rumble-49 | florent.XSeries.X2_0.17.jar
