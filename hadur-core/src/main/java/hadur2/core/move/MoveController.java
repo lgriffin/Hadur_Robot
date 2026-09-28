@@ -648,14 +648,18 @@ public class MoveController {
      * @param previousScanTime the tick of the scan before this one
      * @param currentTime the tick of this scan
      * @param bulletPower the shot's power, from the corrected energy drop
+     * @param uncertain WAVE-3: whether a wall hit was inferred on the same interval, so the
+     *     wave is surfed at half weight ({@code SurfMover})
      * @return the marked wave's fire time, or {@code currentTime - 1}
      */
-    public long updateFiringWave(long previousScanTime, long currentTime, double bulletPower) {
+    public long updateFiringWave(long previousScanTime, long currentTime, double bulletPower,
+                                  boolean uncertain) {
         // Newest first: after missed scans the latest wave in the span is the best guess.
         for (long fireTime = currentTime - 1; fireTime >= previousScanTime; fireTime--) {
             Wave w = waveManager.getWaveByFireTime(fireTime);
             if (w != null) {
                 w.firingWave = true;
+                w.uncertain = uncertain;
                 // The wave was made at the guessed power; the real one fixes its speed and
                 // escape angle.
                 w.setBulletPower(bulletPower);

@@ -249,10 +249,39 @@ robot for that gap, closing three of the open items below:
   always finite by construction, so this was unreachable in practice, but the guard is now
   explicit rather than relying on that invariant never changing.
 
+### R2: full share vs weak and mid-table bots
+
+R2 targets the ~900 bots below rank 300, where a cheap policy fix is free against the top 10
+but adds up broadly: full power against more of the gun tiers, an energy-aware choice when no
+tier rule applies, never wasting energy on an already-decided kill, and a clean response to a
+robot that just drives at us.
+
+- **POW-3**: full power now also applies to a T1 gun (not just T0), gated by range (450 px)
+  rather than unconditionally, since a T1 gun's threat is real enough at distance to keep the
+  range check that POW-1 doesn't need.
+- **POW-4**: where no tier or live-rate rule applies but both rates are known within 5 points,
+  the gun compares its own power against full power by expected value (hit rate times
+  damage, less the energy spent) and fires whichever wins — never below its own choice.
+  Robocode's damage curve is convex, so the better of the two ends is always the answer;
+  no power in between is ever worth checking.
+- **END-3**: the opposite kind of override. While a single shot at some legal power would
+  kill on a hit, the gun fires the least power that still does, even below its own or a
+  full-power rule's choice, so a decided fight spends no more energy than it needs to end.
+- **RAM-1**: a robot that closes at 6 px/tick or more for ten scans within 250 px is a rammer,
+  profile or no profile. Hadur now meets it with full power and a reversed orbit side, so a
+  charging enemy can't count on the same predictable path every tick.
+- **WAVE-3**: a shot fired as the enemy strikes a wall was already detected, but the split
+  between wall damage and bullet power there is a guess, not a clean read (Firestarter's
+  8.6% false waves). That wave is now marked uncertain and surfed at half weight, rather than
+  trusted like an unambiguous one.
+- **TIER-1 is not in this release.** Calibrating the T1/T2 gun-tier bounds needs real
+  mid-table opponents to bench against, and every bot benched so far reads either T0 or T3 —
+  issue #53 tracks getting that bench run. It lands once that data exists, not before.
+
 ## What comes next
 
-Every EARS requirement up to R1 is implemented and traced. R2 to R5 (full share vs weak and
-mid-table bots, gun vs surfers, movement, and a memory decision) continue the climb plan.
+Every EARS requirement up to R2, bar TIER-1 (above), is implemented and traced. R3 to R5
+(gun vs surfers, movement, and a memory decision) continue the climb plan.
 
 Open items carried forward, each tracked as a [GitHub issue](https://github.com/lgriffin/Hadur_Robot/issues):
 
@@ -260,6 +289,6 @@ Open items carried forward, each tracked as a [GitHub issue](https://github.com/
 - **Melee APS is short of 60.** The radar and a warm hand-off bench are the next levers (above).
 - **Skipped turns** are 72 per cold bench, not the zero S6 aimed for. Half fall on a round's last turn, when the profile checkpoint is written; R1's TIME-4 cuts what that write costs.
 - **MOVE-2 has not shown a gain.** Warm, it scored the same switched on or off. Its baseline averages whole battles, while the live window sees a gun that has already learned; a baseline from the same part of past battles would be fairer.
-- **Memory has not clearly paid off against Shadow.** S6's warm run (54.6%) is below its cold one (57.4%), within noise. The T1 and T2 bounds have no bench opponent in them yet, so they are uncalibrated.
-- **Aggression against mid-table bots is unmeasured.** A few RoboRumble bots between the sample bots and Shadow would calibrate T1/T2 and show whether closing in pays against them; R2 of the climb plan targets this directly.
-- **The ledger's remaining ambiguity** is small. A shot fired as the enemy strikes a wall can be 0.5 off in power, and 0.2% of Shadow's visible shots are still missed.
+- **Memory has not clearly paid off against Shadow.** S6's warm run (54.6%) is below its cold one (57.4%), within noise. The T1 and T2 bounds still have no bench opponent in them (issue #53).
+- **Aggression against mid-table bots is unmeasured.** A few RoboRumble bots between the sample bots and Shadow would calibrate T1/T2 (TIER-1) and let R2's own gate run against the strata it targets.
+- **The ledger's remaining ambiguity** is smaller now that a wall-hit-coincident shot is flagged (WAVE-3), but still there: such a shot can be 0.5 off in power, and 0.2% of Shadow's visible shots are still missed.

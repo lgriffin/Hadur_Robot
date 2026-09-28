@@ -60,6 +60,15 @@ class EnergyLedgerTest {
         assertFalse(r.hidden());
     }
 
+    @Test
+    @Tag("WAVE-3")
+    @DisplayName("WAVE-3: a clean shot with no wall hit is not uncertain")
+    void plainShotIsNotUncertain() {
+        EnergyLedger.Reading r = next(ledger, 98.1, 8, MID_X, MID_Y);
+        assertTrue(r.shot());
+        assertFalse(r.uncertain());
+    }
+
     @Nested
     @Tag("WAVE-1")
     @DisplayName("explained drops")
@@ -131,6 +140,16 @@ class EnergyLedgerTest {
             EnergyLedger.Reading r = next(ledger, 100 - wall - 1.7, 0, 18, MID_Y);
             assertTrue(r.shot());
             assertEquals(1.7, r.corrected(), DELTA);
+        }
+
+        @Test
+        @Tag("WAVE-3")
+        @DisplayName("WAVE-3: a shot found alongside a wall hit is marked uncertain")
+        void shotAtWallIsUncertain() {
+            double wall = Rules.getWallHitDamage(8);
+            EnergyLedger.Reading r = next(ledger, 100 - wall - 1.7, 0, 18, MID_Y);
+            assertTrue(r.shot());
+            assertTrue(r.uncertain(), () -> "a wall-hit-coincident shot should be flagged: " + r);
         }
 
         @Test

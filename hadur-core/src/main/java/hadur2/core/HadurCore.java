@@ -29,6 +29,7 @@ import hadur2.core.policy.EnemyGunHeat;
 import hadur2.core.policy.HitWindow;
 import hadur2.core.policy.MoveFlavour;
 import hadur2.core.policy.PowerPolicy;
+import hadur2.core.policy.RammerPolicy;
 import hadur2.core.policy.TickBudget;
 import hadur2.core.posture.DuelFocus;
 import hadur2.core.posture.Posture;
@@ -224,6 +225,10 @@ public final class HadurCore {
     private String duelOpponent;
     /** S6: the tick budget (TIME-1, TIME-2) and the movement's flavour (MOVE-2). */
     private final TickBudget budget = new TickBudget();
+    /** R2: recognising and countering a charging rammer, no profile needed (RAM-1). */
+    private final RammerPolicy rammer = new RammerPolicy();
+    /** RAM-1: whether the rammer response is active, as of the last scan. */
+    private boolean ramActive;
     /** S6: the movement flavour and the evidence for the next change (MOVE-2). */
     private MoveFlavour flavour = MoveFlavour.stranger();
     /** The tick being processed, for records written from event handlers. */
@@ -421,6 +426,8 @@ public final class HadurCore {
     /** Forgets the duel's view of the enemy, at a round's start and when a melee ends. */
     private void resetDuelTracking() {
         ledger.newRound();
+        rammer.newRound();
+        ramActive = false;
         myStateLog.clear();
         enemyStateLog.clear();
         lastGunWave = null;
@@ -1176,15 +1183,23 @@ public final class HadurCore {
 
         double bulletPower = gunController.calculateBulletPower(
             e.distance(), in.energy(), e.energy(), in.others());
-        // POW-1, POW-2: full power where the profile or this battle says their gun can't hit us.
+        // POW-1, POW-2, POW-3, POW-4: full power where the profile, the range or this
+        // battle's rates say it pays.
         PowerPolicy.Reason why = PowerPolicy.reason(opening.gunTier(), e.energy(), in.energy(),
-            ourWindow.estimate(), theirWindow.estimate());
+            e.distance(), bulletPower, ourWindow.estimate(), theirWindow.estimate());
         if (why != powerReason) {
             powerReason = why;
             Estimate ours = ourWindow.estimate();
             emitPolicy(round, time, "power", ours.value(), ours.margin(), why.name().toLowerCase(Locale.ROOT));
         }
         bulletPower = PowerPolicy.power(why, bulletPower, e.energy());
+        // END-3: a guaranteed kill costs no more energy than the least power that lands it,
+        // whatever the gun or the rules above chose (even less than the gun's own power).
+        double killPower = PowerPolicy.leastPowerThatKills(e.energy());
+        if (!Double.isNaN(killPower)) bulletPower = killPower;
+        // RAM-1: a closing rammer overrides every other power rule with full power.
+        ramActive = rammer.tick(e.distance());
+        if (ramActive) bulletPower = RammerPolicy.POWER;
 
         // Our gun wave: from us to the enemy at the power we would fire. Every scan makes
         // one; only those a real shot left from become firing waves, but all of them teach
@@ -1239,7 +1254,7 @@ public final class HadurCore {
             // tick: the latest movement wave from before this scan, back to the previous one,
             // becomes the firing wave, at the drop's power (which sets its speed).
             long fireTime = moveController.updateFiringWave(previousScanTime, time,
-                reading.corrected());
+                reading.corrected(), reading.uncertain());
             stats.enemyShotsDetected++;
             enemyGunHeat(in).shot(fireTime, reading.corrected());
             if (folder != null) folder.enemyShot(e.distance(), reading.corrected(), myVel != 0);
@@ -1538,6 +1553,8 @@ public final class HadurCore {
         if (now == Endgame.State.RAM) stats.ramTicks++;
         // END-1 overrides the controller's target with the finishing distance, 150 px.
         surfMover.setDesiredDistance(distance.target(now == Endgame.State.FINISH));
+        // RAM-1: the no-wave orbit takes the other side while a rammer is closing.
+        surfMover.setRammerActive(ramActive);
     }
 
     /**

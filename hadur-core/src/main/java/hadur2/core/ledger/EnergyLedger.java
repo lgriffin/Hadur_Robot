@@ -18,6 +18,12 @@ import java.util.Arrays;
  * are counted as phantom waves; drops it recovers from outside that range as hidden
  * shots.</p>
  *
+ * <p>WAVE-3: a shot found on the same interval as an inferred wall hit ({@link #wallDamage})
+ * splits one unexplained drop between the two by a heuristic, not a certain read, so
+ * {@link Reading#uncertain()} flags it and its power is clamped to the nearest legal bullet
+ * power. {@code HadurCore} carries the flag onto the movement wave it becomes, and
+ * {@code SurfMover} halves such a wave's danger rather than trusting it like a clean one.</p>
+ *
  * <p>Where it sits in the tick: {@code HadurCore} feeds it {@link #ourBulletHit},
  * {@link #enemyBulletHitUs} and {@link #robotsCollided} from the tick's events, then calls
  * {@link #scan} with the duel opponent's scan. A {@link Reading} whose {@link Reading#shot()}
@@ -55,6 +61,7 @@ public final class EnergyLedger {
         private final boolean shot;
         private final boolean phantom;
         private final boolean hidden;
+        private final boolean uncertain;
 
         /**
          * A reading as {@link EnergyLedger#scan} makes it.
@@ -65,14 +72,17 @@ public final class EnergyLedger {
          * @param shot whether {@code corrected} is a bullet's power (WAVE-2)
          * @param phantom whether {@code raw} looked like a shot but {@code corrected} is not
          * @param hidden whether {@code corrected} is a shot but {@code raw} did not look like one
+         * @param uncertain WAVE-3: whether a wall hit was inferred on the same interval as this shot
          */
-        public Reading(double raw, double corrected, double wallDamage, boolean shot, boolean phantom, boolean hidden) {
+        public Reading(double raw, double corrected, double wallDamage, boolean shot, boolean phantom,
+                       boolean hidden, boolean uncertain) {
             this.raw = raw;
             this.corrected = corrected;
             this.wallDamage = wallDamage;
             this.shot = shot;
             this.phantom = phantom;
             this.hidden = hidden;
+            this.uncertain = uncertain;
         }
 
         /** The energy the enemy lost since the last scan, as read (negative if it gained), in energy. */
@@ -105,6 +115,15 @@ public final class EnergyLedger {
             return hidden;
         }
 
+        /**
+         * WAVE-3: whether a wall hit was inferred over the same interval as this shot, so the
+         * split between wall damage and bullet power is a guess rather than a clean read.
+         * Only meaningful when {@link #shot()} is true.
+         */
+        public boolean uncertain() {
+            return uncertain;
+        }
+
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
@@ -115,21 +134,24 @@ public final class EnergyLedger {
                 && Double.compare(wallDamage, that.wallDamage) == 0
                 && shot == that.shot
                 && phantom == that.phantom
-                && hidden == that.hidden;
+                && hidden == that.hidden
+                && uncertain == that.uncertain;
         }
 
         @Override
         public int hashCode() {
-            return java.util.Objects.hash(raw, corrected, wallDamage, shot, phantom, hidden);
+            return java.util.Objects.hash(raw, corrected, wallDamage, shot, phantom, hidden, uncertain);
         }
 
         @Override
         public String toString() {
-            return "Reading[raw=" + raw + ", corrected=" + corrected + ", wallDamage=" + wallDamage + ", shot=" + shot + ", phantom=" + phantom + ", hidden=" + hidden + "]";
+            return "Reading[raw=" + raw + ", corrected=" + corrected + ", wallDamage=" + wallDamage
+                + ", shot=" + shot + ", phantom=" + phantom + ", hidden=" + hidden
+                + ", uncertain=" + uncertain + "]";
         }
 
         /** The reading for a round's first scan: nothing to compare with, so no shot. */
-        static final Reading FIRST = new Reading(0, 0, 0, false, false, false);
+        static final Reading FIRST = new Reading(0, 0, 0, false, false, false, false);
     }
 
     /** The field's size, in px, for telling whether the enemy is next to a wall. */
@@ -229,8 +251,12 @@ public final class EnergyLedger {
         double corrected = explained - wall;
         boolean rawShot = isShot(raw);
         boolean shot = isShot(corrected);
+        // WAVE-3: a wall hit was inferred on the same interval as a shot-sized remainder, so
+        // the split between the two is a guess; clamp to the nearest legal power and flag it.
+        boolean uncertain = shot && wall > 0;
+        if (uncertain) corrected = Math.max(MIN_SHOT, Math.min(MAX_SHOT, corrected));
         remember(time, energy, velocity);
-        return new Reading(raw, corrected, wall, shot, rawShot && !shot, shot && !rawShot);
+        return new Reading(raw, corrected, wall, shot, rawShot && !shot, shot && !rawShot, uncertain);
     }
 
     /**

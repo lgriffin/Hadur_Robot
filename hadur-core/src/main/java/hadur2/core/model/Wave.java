@@ -167,6 +167,12 @@ public class Wave implements Cloneable {
      * lookup skip. Nothing in the core currently sets it.
      */
     public boolean altWave;
+    /**
+     * WAVE-3: this movement wave's power came from a scan where the energy ledger also
+     * inferred a wall hit, so the split between the wall and the bullet is a guess. Surfed
+     * at half weight ({@code SurfMover}) rather than trusted like a clean reading.
+     */
+    public boolean uncertain;
 
     /** The bullet's power, in [0.1, 3.0]; for a movement wave, a guess until a shot is found. */
     private double bulletPower;
@@ -887,6 +893,7 @@ public class Wave implements Cloneable {
         w.sourceEnergy = sourceEnergy;
         w.altWave = altWave;
         w.firingWave = firingWave;
+        w.uncertain = uncertain;
         w.hitByBullet = hitByBullet;
         w.bulletHitBullet = bulletHitBullet;
         w.enemiesAlive = enemiesAlive;
