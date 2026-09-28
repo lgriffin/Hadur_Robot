@@ -221,6 +221,10 @@ public final class HadurCore {
     private Endgame.State endgame = Endgame.State.NONE;
     /** S5: why the last scan's bullet power was chosen, so a P record marks each change (POW-1, POW-2). */
     private PowerPolicy.Reason powerReason = PowerPolicy.Reason.GUN;
+    /** R2: whether END-3's kill-power override is active, so a P record marks each change. */
+    private boolean end3Active;
+    /** R2: whether RAM-1's power override is active (affordable, not just detected), ditto. */
+    private boolean ram1Active;
     /** The robot the windows and the distance controller are about; null before a duel scan. */
     private String duelOpponent;
     /** S6: the tick budget (TIME-1, TIME-2) and the movement's flavour (MOVE-2). */
@@ -428,6 +432,8 @@ public final class HadurCore {
         ledger.newRound();
         rammer.newRound();
         ramActive = false;
+        end3Active = false;
+        ram1Active = false;
         myStateLog.clear();
         enemyStateLog.clear();
         lastGunWave = null;
@@ -1194,12 +1200,30 @@ public final class HadurCore {
         }
         bulletPower = PowerPolicy.power(why, bulletPower, e.energy());
         // END-3: a guaranteed kill costs no more energy than the least power that lands it,
-        // whatever the gun or the rules above chose (even less than the gun's own power).
+        // so it only ever lowers what's already chosen, never raises it past what we can
+        // already afford (a low reading from a low-energy gun stays fireable).
         double killPower = PowerPolicy.leastPowerThatKills(e.energy());
-        if (!Double.isNaN(killPower)) bulletPower = killPower;
-        // RAM-1: a closing rammer overrides every other power rule with full power.
-        ramActive = rammer.tick(e.distance());
-        if (ramActive) bulletPower = RammerPolicy.POWER;
+        boolean end3 = !Double.isNaN(killPower) && killPower < bulletPower;
+        if (end3) bulletPower = killPower;
+        if (end3 != end3Active) {
+            end3Active = end3;
+            emitPolicy(round, time, "power", bulletPower, Double.NaN,
+                end3 ? "end_3" : why.name().toLowerCase(Locale.ROOT));
+        }
+        // RAM-1: a closing rammer's own speed toward us, not the raw change in distance (which
+        // also moves with our own approach or retreat, and needs no per-tick division since
+        // velocity already is one).
+        double enemyClosingSpeed = -enemyVel * Math.cos(enemyHead - absBearing);
+        ramActive = rammer.tick(e.distance(), enemyClosingSpeed);
+        // Gated and capped exactly as the other full-power rules are (PowerPolicy#power):
+        // never past our own energy's threshold, never past a quarter of theirs, never below
+        // what was already chosen.
+        boolean ram1 = ramActive && in.energy() > PowerPolicy.MIN_OUR_ENERGY;
+        if (ram1) bulletPower = Math.max(bulletPower, Math.min(RammerPolicy.POWER, e.energy() / 4.0));
+        if (ram1 != ram1Active) {
+            ram1Active = ram1;
+            emitPolicy(round, time, "power", bulletPower, Double.NaN, ram1 ? "ram_1" : why.name().toLowerCase(Locale.ROOT));
+        }
 
         // Our gun wave: from us to the enemy at the power we would fire. Every scan makes
         // one; only those a real shot left from become firing waves, but all of them teach

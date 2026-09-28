@@ -95,10 +95,29 @@ class PowerPolicyTest {
             PowerPolicy.reason(Tiers.Gun.T1, 12.5, 80, 450.01, ANY_GUN_POWER, NONE, NONE));
     }
 
-    /** Certain enough for POW-4's 5-point gate: n=400 keeps the margin under 0.05 near these rates. */
-    static final Estimate CERTAIN_40_PERCENT = Estimate.of(160, 400);
-    static final Estimate CERTAIN_20_PERCENT = Estimate.of(80, 400);
-    static final Estimate CERTAIN_5_PERCENT = Estimate.of(5, 100);
+    /**
+     * Certain enough for POW-4's gate at a full, realistic {@link HitWindow} (100 outcomes):
+     * its Agresti-Coull margin peaks at about 0.096 at a 50% rate, so {@link PowerPolicy#POW_4_MARGIN}
+     * (0.10) must clear a full window everywhere, not just at the extremes a wider, unrealistic
+     * window (as the old, narrower margin needed) would have required.
+     */
+    static Estimate hitWindowEstimate(int hits, int of) {
+        HitWindow w = new HitWindow(100);
+        for (int i = 0; i < of; i++) w.record(i < hits);
+        return w.estimate();
+    }
+
+    static final Estimate CERTAIN_40_PERCENT = hitWindowEstimate(40, 100);
+    static final Estimate CERTAIN_20_PERCENT = hitWindowEstimate(20, 100);
+    static final Estimate CERTAIN_5_PERCENT = hitWindowEstimate(5, 100);
+
+    @Test
+    @Tag("POW-4")
+    @DisplayName("POW-4: a full, realistic HitWindow can actually reach the gate")
+    void aFullHitWindowReachesTheGate() {
+        assertTrue(CERTAIN_40_PERCENT.within(PowerPolicy.POW_4_MARGIN));
+        assertTrue(CERTAIN_20_PERCENT.within(PowerPolicy.POW_4_MARGIN));
+    }
 
     @Test
     @Tag("POW-4")
@@ -123,9 +142,9 @@ class PowerPolicyTest {
     @Test
     @Tag("POW-4")
     @Tag("DIAL-1")
-    @DisplayName("POW-4: a rate uncertain past 5 points keeps the gun's own choice")
+    @DisplayName("POW-4: a rate uncertain past the margin keeps the gun's own choice")
     void uncertainRateKeepsTheGunForPow4() {
-        // A margin over 5 points, on either side, leaves the comparison untrusted.
+        // A window with too few outcomes for the margin leaves the comparison untrusted.
         assertEquals(PowerPolicy.Reason.GUN, PowerPolicy.reason(Tiers.Gun.UNKNOWN, 80, 80,
             ANY_DISTANCE, 0.5, Estimate.of(4, 10), CERTAIN_20_PERCENT));
         assertEquals(PowerPolicy.Reason.GUN, PowerPolicy.reason(Tiers.Gun.UNKNOWN, 80, 80,

@@ -259,17 +259,27 @@ robot that just drives at us.
 - **POW-3**: full power now also applies to a T1 gun (not just T0), gated by range (450 px)
   rather than unconditionally, since a T1 gun's threat is real enough at distance to keep the
   range check that POW-1 doesn't need.
-- **POW-4**: where no tier or live-rate rule applies but both rates are known within 5 points,
-  the gun compares its own power against full power by expected value (hit rate times
+- **POW-4**: where no tier or live-rate rule applies but both rates are known within 10
+  points, the gun compares its own power against full power by expected value (hit rate times
   damage, less the energy spent) and fires whichever wins — never below its own choice.
   Robocode's damage curve is convex, so the better of the two ends is always the answer;
-  no power in between is ever worth checking.
+  no power in between is ever worth checking. (Review on PR #61 caught the margin set too
+  tight: a real 100-outcome rolling window can't close to 5 points anywhere full power
+  actually wins, so the rule read as covered by its own tests but could never fire live.)
 - **END-3**: the opposite kind of override. While a single shot at some legal power would
-  kill on a hit, the gun fires the least power that still does, even below its own or a
-  full-power rule's choice, so a decided fight spends no more energy than it needs to end.
-- **RAM-1**: a robot that closes at 6 px/tick or more for ten scans within 250 px is a rammer,
-  profile or no profile. Hadur now meets it with full power and a reversed orbit side, so a
-  charging enemy can't count on the same predictable path every tick.
+  kill on a hit, the gun caps its power at the least power that still does, so a decided
+  fight spends no more energy than it needs to end. (Review on PR #61 caught the first cut
+  setting it outright instead of capping, which could replace a low-energy gun's own
+  affordable choice with a kill power it couldn't afford and cost the shot entirely.)
+- **RAM-1**: a robot whose own speed toward us is 6 px/tick or more for ten scans within
+  250 px is a rammer, profile or no profile. Hadur now meets it with power raised toward 3.0
+  (capped and gated exactly like the other full-power rules, so it never bids more than it
+  can afford) and a reversed orbit side, so a charging enemy can't count on the same
+  predictable path every tick. (Review on PR #61 caught two bugs here too: the closing rate
+  was the raw change in distance, which our own movement and a missed scan could both throw
+  off, fixed by reading the enemy's own velocity instead; and the power override ignored
+  affordability entirely, fixed by gating and capping it the same way POW-1 through POW-4
+  are.)
 - **WAVE-3**: a shot fired as the enemy strikes a wall was already detected, but the split
   between wall damage and bullet power there is a guess, not a clean read (Firestarter's
   8.6% false waves). That wave is now marked uncertain and surfed at half weight, rather than

@@ -39,9 +39,9 @@ import hadur2.core.physics.Rules;
  * <p>END-3 is the opposite kind of override, so it is a separate calculation
  * ({@link #leastPowerThatKills}) rather than a {@link Reason}: while their energy is at most
  * a power-3 bullet's damage, the fight is already decided by whichever power is fired, so the
- * least power that still kills spends no more energy than a kill needs, whatever the gun or
- * the rules above chose. {@code HadurCore} applies it last, after {@link #power}, and it
- * overrides every other reason including a lower reading than the gun's own choice.</p>
+ * least power that still kills spends no more energy than a kill needs. {@code HadurCore}
+ * applies it last, after {@link #power}, capping whatever the gun or the rules above chose
+ * down to it — never raising it, so a shot the gun could already afford stays affordable.</p>
  *
  * <p>{@code HadurCore} asks on every duel aim: the gun proposes a power, {@link #reason}
  * says whether a policy overrides it, and {@link #power} gives the power the wave and the
@@ -61,8 +61,15 @@ public final class PowerPolicy {
     public static final double THEIR_RATE = 0.10;
     /** POW-3: their distance must be at most this, in px. */
     public static final double POW_3_RANGE = 450;
-    /** POW-4: both rates' margins must be at most this (5 points) for the comparison to run. */
-    public static final double POW_4_MARGIN = 0.05;
+    /**
+     * POW-4: both rates' margins must be at most this for the comparison to run. Set so a
+     * full {@link HitWindow} (100 outcomes) can actually reach it in the range where full
+     * power wins the comparison (above roughly 17% against a power-1 gun): at 0.05 its
+     * Agresti-Coull margin only closes that far below about 7% or above 93%, where full
+     * power practically never wins, so the rule could pass its unit tests (built from wider,
+     * unrealistic windows) yet never fire in a real battle.
+     */
+    public static final double POW_4_MARGIN = 0.10;
 
     /**
      * Why a shot got the power it did: {@code GUN} when no rule applies and the gun's own
