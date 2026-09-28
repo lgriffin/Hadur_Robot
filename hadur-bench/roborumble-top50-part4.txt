@@ -1,15 +1,15 @@
 # RoboRumble 1v1 top 50 (rumble.robowiki.net rankings, 2026-09-28), in rank order.
 # Jars from https://robocode-archive.strangeautomata.com/robots/<jar>; put them in opponents/.
 #   <robot name as Robocode lists it> | <role> | <jar file in opponents/>
-kc.serpent.WaveSerpent 2.11 | rumble-14 | kc.serpent.WaveSerpent_2.11.jar
-abc.Shadow 3.83c | rumble-24 | abc.Shadow_3.83c.jar
-zyx.mega.YersiniaPestis 3.0 | rumble-31 | zyx.mega.YersiniaPestis_3.0.jar
-axeBots.SilverSurfer 2.53.33fix | rumble-37 | axeBots.SilverSurfer_2.53.33fix.jar
-wcsv.PowerHouse.PowerHouse 1.7e3 | rumble-45 | wcsv.PowerHouse.PowerHouse_1.7e3.jar
 jk.mega.DrussGT 3.1.16 | rumble-3 | jk.mega.DrussGT_3.1.16.jar
 lxx.Tomcat 3.68 | rumble-8 | lxx.Tomcat_3.68.jar
+kc.serpent.WaveSerpent 2.11 | rumble-14 | kc.serpent.WaveSerpent_2.11.jar
 gh.GresSuffurd 0.4.13 | rumble-15 | gh.GresSuffurd_0.4.13.jar
 cb.Domogled 1.2 | rumble-22 | cb.Domogled_1.2.jar
+abc.Shadow 3.83c | rumble-24 | abc.Shadow_3.83c.jar
 davidalves.Firebird 0.25 | rumble-29 | davidalves.Firebird_0.25.jar
+zyx.mega.YersiniaPestis 3.0 | rumble-31 | zyx.mega.YersiniaPestis_3.0.jar
+axeBots.SilverSurfer 2.53.33fix | rumble-37 | axeBots.SilverSurfer_2.53.33fix.jar
 jk.mini.CunobelinDC 1.2 | rumble-40 | jk.mini.CunobelinDC_1.2.jar
+wcsv.PowerHouse.PowerHouse 1.7e3 | rumble-45 | wcsv.PowerHouse.PowerHouse_1.7e3.jar
 dft.Cardigan 1.09 | rumble-48 | dft.Cardigan_1.09.jar

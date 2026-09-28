@@ -11,9 +11,9 @@ share). The 8 losses are concentrated at the very top of the scoreboard: BeepBoo
 ScalarR (#5, 22.6%), DrussGT (#3, 33.7%), Diamond (#6, 34.5%), Wavelet (#13, 39.5%),
 Firestarter (#7, 45.4%), Gilgalad (#12, 49.0%) and Neuromancer (#18, 49.7%) — 6 of these 8 are
 in the current top 13, so the gap to top 40 is concentrated in a handful of the very strongest
-guns/movements rather than spread across the field. Raw per-bot data: `bench-data/
-roborumble-top50-summary.tsv` and `bench-data/roborumble-top50-jars.tsv` under
-`/mnt/project-files/`.
+guns/movements rather than spread across the field. Raw per-bot data: `data/
+roborumble-top50-summary.tsv` (this table's source rows) and `data/roborumble-top50-jars.tsv`
+(rank -> jar URL resolution, including the 2 excluded).
 
 Shares are Hadur's fraction of the two robots' total, mean over 5 battles.
 

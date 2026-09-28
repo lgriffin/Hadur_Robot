@@ -1,15 +1,15 @@
 # RoboRumble 1v1 top 50 (rumble.robowiki.net rankings, 2026-09-28), in rank order.
 # Jars from https://robocode-archive.strangeautomata.com/robots/<jar>; put them in opponents/.
 #   <robot name as Robocode lists it> | <role> | <jar file in opponents/>
-aw.Gilgalad 1.99.5c | rumble-12 | aw.Gilgalad_1.99.5c.jar
-rsalesc.roborio.Roborio 1.2.4 | rumble-21 | rsalesc.roborio.Roborio_1.2.4.jar
-pulsar.PulsarMax 0.8.9 | rumble-30 | pulsar.PulsarMax_0.8.9.jar
-Krabb.sliNk.Garm 0.9u | rumble-35 | Krabb.sliNk.Garm_0.9u.jar
-ar.horizon.Horizon 1.2.2 | rumble-44 | ar.horizon.Horizon_1.2.2.jar
 kc.mega.BeepBoop 2.0 | rumble-1 | kc.mega.BeepBoop_2.0.jar
 cb.fire.Firestarter 2.0f | rumble-7 | cb.fire.Firestarter_2.0f.jar
+aw.Gilgalad 1.99.5c | rumble-12 | aw.Gilgalad_1.99.5c.jar
 pc.Wavelet 1.5 | rumble-13 | pc.Wavelet_1.5.jar
 davidalves.Phoenix 1.02 | rumble-20 | davidalves.Phoenix_1.02.jar
+rsalesc.roborio.Roborio 1.2.4 | rumble-21 | rsalesc.roborio.Roborio_1.2.4.jar
 jk.precise.Wintermute 0.8 | rumble-28 | jk.precise.Wintermute_0.8.jar
+pulsar.PulsarMax 0.8.9 | rumble-30 | pulsar.PulsarMax_0.8.9.jar
+Krabb.sliNk.Garm 0.9u | rumble-35 | Krabb.sliNk.Garm_0.9u.jar
 fromHell.CHCl3 1.4.2 | rumble-39 | fromHell.CHCl3_1.4.2.jar
+ar.horizon.Horizon 1.2.2 | rumble-44 | ar.horizon.Horizon_1.2.2.jar
 sheldor.mini.FoilistMC 1.0 | rumble-46 | sheldor.mini.FoilistMC_1.0.jar
