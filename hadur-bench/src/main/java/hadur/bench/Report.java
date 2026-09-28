@@ -236,13 +236,25 @@ final class Report {
         List<Stats> candidateStats = new ArrayList<>(), baselineStats = new ArrayList<>();
         List<Double> weights = new ArrayList<>();
         for (Opponent o : candidate.keySet()) {
-            List<Double> cand = shares(candidate.get(o));
-            List<Double> base = shares(baseline.getOrDefault(o, List.of()));
-            Stats cs = Stats.of(cand), bs = Stats.of(base);
+            List<BattleResult> candResults = candidate.get(o);
+            List<BattleResult> baseResults = baseline.getOrDefault(o, List.of());
+            Stats cs = Stats.of(shares(candResults)), bs = Stats.of(shares(baseResults));
             candidateStats.add(cs);
             baselineStats.add(bs);
             weights.add(o.weight);
-            Stats diff = Stats.pairedDiff(cand, base);
+            // Pair by seed index (both lists are seed 1..runs, in order) and keep only the
+            // seeds where both jars produced a battle, so a lone failure on one side cannot
+            // shift every later seed's pairing out of alignment.
+            List<Double> candPaired = new ArrayList<>(), basePaired = new ArrayList<>();
+            int n = Math.min(candResults.size(), baseResults.size());
+            for (int i = 0; i < n; i++) {
+                BattleResult cr = candResults.get(i), br = baseResults.get(i);
+                if (cr.ok && br.ok) {
+                    candPaired.add(cr.scoreShare());
+                    basePaired.add(br.scoreShare());
+                }
+            }
+            Stats diff = Stats.pairedDiff(candPaired, basePaired);
             b.append(String.format(Locale.ROOT, "| %s | %s | %s | %s |%n",
                 o.name, cs.percent(), bs.percent(),
                 diff.n == 0 ? "n/a" : String.format(Locale.ROOT, "%+.1f%s", diff.mean * 100,

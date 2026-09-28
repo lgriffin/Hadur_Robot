@@ -71,4 +71,18 @@ class StatsTest {
         Stats diff = Stats.pairedDiff(List.of(0.4, 0.3), List.of(0.6, 0.5));
         assertTrue(diff.mean < 0);
     }
+
+    @Test
+    @Tag("BENCH-2")
+    @DisplayName("mismatched-length inputs pair only the shared prefix, not a shifted tail")
+    void pairedDiffTruncatesToShorterList() {
+        // If a caller drops one side's failed seed independently before pairing, the lists
+        // can end up different lengths and every later seed would pair against the wrong
+        // one; pairedDiff itself only pairs index-for-index over the shared length.
+        List<Double> candidate = List.of(0.9, 0.9, 0.1);
+        List<Double> baseline = List.of(0.9, 0.9);
+        Stats diff = Stats.pairedDiff(candidate, baseline);
+        assertEquals(2, diff.n);
+        assertEquals(0.0, diff.mean, 1e-9);
+    }
 }

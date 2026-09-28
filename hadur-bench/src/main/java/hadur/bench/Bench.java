@@ -43,9 +43,11 @@ import java.util.zip.GZIPOutputStream;
  *     per seed, and report finishing places instead (MeleeRumble: 10 robots, 1000x1000).</li>
  * <li>{@code --baseline JAR} (BENCH-2) also fight every opponent with this second jar, one
  *     battle per seed at the same {@code RANDOMSEED} as the candidate's, and report the
- *     paired score-share difference instead of two separate means. {@code --baseline-robot
- *     NAME} names it as Robocode lists it (default: same name as {@code --robot}, for two
- *     builds of the same version string kept in separate directories).</li>
+ *     paired score-share difference instead of two separate means. Requires
+ *     {@code --baseline-robot NAME}, naming it as Robocode lists it and distinct from
+ *     {@code --robot}: two jars sharing a robot name+version would install to the same
+ *     file, so the candidate and baseline must be different name/version strings (e.g. a
+ *     released version against a locally bumped one).</li>
  * <li>{@code --sentry-border N} in melee mode, the set's {@code sentry} entries fight as
  *     Robocode sentries guarding a border N px deep.</li>
  * <li>{@code --suite FILE} run every bench the file lists ({@code label | options} per
@@ -80,7 +82,7 @@ public final class Bench {
     private final Path baselineJar;
     private final String baselineRobot;
 
-    private Bench(Map<String, String> opts) {
+    Bench(Map<String, String> opts) {
         this.opts = opts;
         this.benchDir = Path.of("").toAbsolutePath();
         this.warm = opts.getOrDefault("mode", "cold").equals("warm");
@@ -97,7 +99,20 @@ public final class Bench {
         }
         this.robot = opts.getOrDefault("robot", "hadur2.Hadur 3.0");
         this.baselineJar = opts.containsKey("baseline") ? Path.of(opts.get("baseline")).toAbsolutePath() : null;
-        this.baselineRobot = opts.getOrDefault("baseline-robot", robot);
+        this.baselineRobot = opts.get("baseline-robot");
+        if (baselineJar != null) {
+            // Robocode identifies a robot by name+version, so two jars sharing it install to
+            // the same file: the second copy would silently replace the first (BENCH-2).
+            if (baselineRobot == null) {
+                throw new IllegalArgumentException(
+                    "--baseline needs --baseline-robot NAME (as Robocode lists it), distinct from --robot");
+            }
+            if (baselineRobot.equals(robot)) {
+                throw new IllegalArgumentException(
+                    "--baseline-robot must differ from --robot (" + robot + "); "
+                    + "installing two jars under the same robot name would overwrite one with the other");
+            }
+        }
         String stamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss"));
         this.out = Path.of(opts.getOrDefault("out",
             "work/" + (warm ? "warm" : "cold") + "-" + stamp)).toAbsolutePath();
