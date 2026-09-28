@@ -41,6 +41,13 @@ import java.util.zip.GZIPOutputStream;
  *     security off and writes one gzipped transcript per opponent to DIR (CORE-2).</li>
  * <li>{@code --melee true} run every opponent in the set against Hadur at once, one battle
  *     per seed, and report finishing places instead (MeleeRumble: 10 robots, 1000x1000).</li>
+ * <li>{@code --baseline JAR} (BENCH-2) also fight every opponent with this second jar, one
+ *     battle per seed at the same {@code RANDOMSEED} as the candidate's, and report the
+ *     paired score-share difference instead of two separate means. Requires
+ *     {@code --baseline-robot NAME}, naming it as Robocode lists it and distinct from
+ *     {@code --robot}: two jars sharing a robot name+version would install to the same
+ *     file, so the candidate and baseline must be different name/version strings (e.g. a
+ *     released version against a locally bumped one).</li>
  * <li>{@code --sentry-border N} in melee mode, the set's {@code sentry} entries fight as
  *     Robocode sentries guarding a border N px deep.</li>
  * <li>{@code --suite FILE} run every bench the file lists ({@code label | options} per
@@ -71,8 +78,11 @@ public final class Bench {
     /** Where replay fixtures go, or null when not recording. */
     private final Path record;
     private final int rounds, runs, width, height;
+    /** BENCH-2: the paired baseline jar and robot name, or null when not running paired. */
+    private final Path baselineJar;
+    private final String baselineRobot;
 
-    private Bench(Map<String, String> opts) {
+    Bench(Map<String, String> opts) {
         this.opts = opts;
         this.benchDir = Path.of("").toAbsolutePath();
         this.warm = opts.getOrDefault("mode", "cold").equals("warm");
@@ -88,6 +98,21 @@ public final class Bench {
             opts.putIfAbsent("robot-jar", "../hadur-robot/target/hadur-robot-2.0-SNAPSHOT-recorder.jar");
         }
         this.robot = opts.getOrDefault("robot", "hadur2.Hadur 3.0");
+        this.baselineJar = opts.containsKey("baseline") ? Path.of(opts.get("baseline")).toAbsolutePath() : null;
+        this.baselineRobot = opts.get("baseline-robot");
+        if (baselineJar != null) {
+            // Robocode identifies a robot by name+version, so two jars sharing it install to
+            // the same file: the second copy would silently replace the first (BENCH-2).
+            if (baselineRobot == null) {
+                throw new IllegalArgumentException(
+                    "--baseline needs --baseline-robot NAME (as Robocode lists it), distinct from --robot");
+            }
+            if (baselineRobot.equals(robot)) {
+                throw new IllegalArgumentException(
+                    "--baseline-robot must differ from --robot (" + robot + "); "
+                    + "installing two jars under the same robot name would overwrite one with the other");
+            }
+        }
         String stamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss"));
         this.out = Path.of(opts.getOrDefault("out",
             "work/" + (warm ? "warm" : "cold") + "-" + stamp)).toAbsolutePath();
@@ -156,20 +181,32 @@ public final class Bench {
         if (opts.containsKey("melee")) return runMelee(opponents);
 
         Map<Opponent, List<BattleResult>> results = new LinkedHashMap<>();
+        Map<Opponent, List<BattleResult>> baselineResults = baselineJar != null ? new LinkedHashMap<>() : null;
         Map<Opponent, OpponentProfile> profiles = new LinkedHashMap<>();
         for (Opponent o : opponents) {
             List<BattleResult> list = new ArrayList<>();
             results.put(o, list);
+            List<BattleResult> baselineList = baselineResults != null ? new ArrayList<>() : null;
+            if (baselineResults != null) baselineResults.put(o, baselineList);
             if (warm) wipeData();
             for (int i = 1; i <= runs; i++) {
                 if (!warm) wipeData();
                 Path dir = out.resolve("battles").resolve(o.slug() + "-" + i);
                 System.out.printf("%s battle %d/%d ...%n", o.name, i, runs);
-                BattleResult r = runBattle(o, i, dir);
+                BattleResult r = runBattle(o, i, dir, robot);
                 list.add(r);
                 System.out.printf("  score share %.1f%%, wins %d/%d, skipped turns %d%s%n",
                     r.scoreShare() * 100, r.firsts, r.rounds, r.skippedTurns,
                     r.ok ? "" : " FAILED: " + r.errors);
+                if (baselineList != null) {
+                    // Same seed as the candidate's battle just above: BENCH-2 pairs on it.
+                    if (!warm) wipeData();
+                    BattleResult base = runBattle(o, i, out.resolve("battles").resolve(o.slug() + "-" + i + "-baseline"),
+                        baselineRobot);
+                    baselineList.add(base);
+                    System.out.printf("  baseline score share %.1f%%%s%n",
+                        base.scoreShare() * 100, base.ok ? "" : " FAILED: " + base.errors);
+                }
             }
             // Read before the next opponent's wipe: what Hadur remembered (MEM-3).
             OpponentProfile stored = storedProfile(o.name);
@@ -178,6 +215,13 @@ public final class Bench {
 
         String report = Report.render(results, profiles, robot, warm, rounds, runs, width, height,
             cpuConstant());
+        if (baselineResults != null) {
+            // BENCH-2's diff table, then BENCH-3's full per-opponent diagnostics for the
+            // baseline too (hit rate, skips, faults, pace), not just its score share.
+            report += Report.renderPaired(results, baselineResults, robot, baselineRobot);
+            report += "\n" + Report.render(baselineResults, robot + " baseline (" + baselineRobot + ")",
+                warm, rounds, runs, width, height, cpuConstant());
+        }
         Files.writeString(out.resolve("report.md"), report);
         if (opts.containsKey("report")) {
             Path copy = Path.of(opts.get("report")).toAbsolutePath();
@@ -187,10 +231,13 @@ public final class Bench {
         System.out.println();
         System.out.println(report);
         boolean failed = results.values().stream().flatMap(List::stream).anyMatch(r -> !r.ok);
+        if (baselineResults != null) {
+            failed |= baselineResults.values().stream().flatMap(List::stream).anyMatch(r -> !r.ok);
+        }
         return failed ? 1 : 0;
     }
 
-    private BattleResult runBattle(Opponent o, int seed, Path dir)
+    private BattleResult runBattle(Opponent o, int seed, Path dir, String robotName)
             throws IOException, InterruptedException {
         Files.createDirectories(dir);
         // A result left by an earlier run in this directory must not stand in for this one.
@@ -210,7 +257,7 @@ public final class Bench {
         cmd.add(classpath());
         cmd.add(BattleRunner.class.getName());
         cmd.addAll(List.of(home.toString(), dir.toString(), String.valueOf(rounds),
-            String.valueOf(width), String.valueOf(height), robot, o.name));
+            String.valueOf(width), String.valueOf(height), robotName, o.name));
         Process p = new ProcessBuilder(cmd)
             .redirectErrorStream(true)
             .redirectOutput(dir.resolve("engine.log").toFile())
@@ -336,6 +383,14 @@ public final class Bench {
                 throw new IllegalStateException("No robot jar at " + jar + "; run mvn package first");
             }
             Files.copy(jar, target, StandardCopyOption.REPLACE_EXISTING);
+        }
+        if (baselineJar != null) {
+            if (!Files.isRegularFile(baselineJar)) {
+                throw new IllegalStateException("No baseline jar at " + baselineJar);
+            }
+            String[] baseParts = baselineRobot.split(" ");
+            Path baseTarget = robots.resolve(baseParts[0] + "_" + baseParts[1] + ".jar");
+            Files.copy(baselineJar, baseTarget, StandardCopyOption.REPLACE_EXISTING);
         }
 
         try (Stream<Path> samples = Files.list(benchDir.resolve("target/samples"))) {

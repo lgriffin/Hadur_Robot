@@ -33,6 +33,8 @@ final class Report {
             width, height, System.getProperty("java.version"),
             Runtime.getRuntime().availableProcessors(), cpuConstant));
         b.append("Shares are Hadur's fraction of the two robots' total, mean ± 95% interval over battles.\n\n");
+        String aps = weightedApsLine(robot, results);
+        if (!aps.isEmpty()) b.append(aps).append("\n");
         b.append("| Opponent | Role | Score share | Survival share | Bullet-damage share | Rounds won | Our hit rate | Their hit rate | Skipped turns | Faults | Turn p95 / max (ms) |\n");
         b.append("|---|---|---|---|---|---|---|---|---|---|---|\n");
         for (Map.Entry<Opponent, List<BattleResult>> e : results.entrySet()) {
@@ -215,6 +217,83 @@ final class Report {
                     100.0 * inShadow / intercepted),
                 changes, step));
         }
+    }
+
+    /**
+     * BENCH-2: the paired score-share difference per opponent between the candidate and
+     * baseline jars, seed for seed, plus a BENCH-1 stratified APS estimate for each jar
+     * from the set's opponent weights (0 when the set carries none).
+     */
+    static String renderPaired(Map<Opponent, List<BattleResult>> candidate,
+                               Map<Opponent, List<BattleResult>> baseline,
+                               String candidateRobot, String baselineRobot) {
+        StringBuilder b = new StringBuilder();
+        b.append("\n## Paired A/B: ").append(candidateRobot).append(" vs ").append(baselineRobot)
+         .append("\n\n")
+         .append("Each row pairs the candidate's and baseline's battles at the same seed against "
+            + "the same opponent, so noise common to both (the seed's opening, the field) cancels "
+            + "out of the difference (BENCH-2). Positive is better for the candidate.\n\n")
+         .append("| Opponent | Candidate share | Baseline share | Paired diff (pp) |\n")
+         .append("|---|---|---|---|\n");
+        List<Stats> candidateStats = new ArrayList<>(), baselineStats = new ArrayList<>();
+        List<Double> weights = new ArrayList<>();
+        for (Opponent o : candidate.keySet()) {
+            List<BattleResult> candResults = candidate.get(o);
+            List<BattleResult> baseResults = baseline.getOrDefault(o, List.of());
+            Stats cs = Stats.of(shares(candResults)), bs = Stats.of(shares(baseResults));
+            candidateStats.add(cs);
+            baselineStats.add(bs);
+            weights.add(o.weight);
+            // Pair by seed index (both lists are seed 1..runs, in order) and keep only the
+            // seeds where both jars produced a battle, so a lone failure on one side cannot
+            // shift every later seed's pairing out of alignment.
+            List<Double> candPaired = new ArrayList<>(), basePaired = new ArrayList<>();
+            int n = Math.min(candResults.size(), baseResults.size());
+            for (int i = 0; i < n; i++) {
+                BattleResult cr = candResults.get(i), br = baseResults.get(i);
+                if (cr.ok && br.ok) {
+                    candPaired.add(cr.scoreShare());
+                    basePaired.add(br.scoreShare());
+                }
+            }
+            Stats diff = Stats.pairedDiff(candPaired, basePaired);
+            b.append(String.format(Locale.ROOT, "| %s | %s | %s | %s |%n",
+                o.name, cs.percent(), bs.percent(),
+                diff.n == 0 ? "n/a" : String.format(Locale.ROOT, "%+.1f%s", diff.mean * 100,
+                    Double.isNaN(diff.halfWidth) ? "" : String.format(Locale.ROOT, " ± %.1f", diff.halfWidth * 100))));
+        }
+        boolean anyWeighted = weights.stream().anyMatch(w -> w != null && w > 0);
+        if (anyWeighted) {
+            Stats candAps = Stats.weighted(candidateStats, weights);
+            Stats baseAps = Stats.weighted(baselineStats, weights);
+            b.append(String.format(Locale.ROOT,
+                "%n**Stratified APS estimate (BENCH-1):** candidate %s, baseline %s.%n",
+                candAps.percent(), baseAps.percent()));
+        }
+        return b.toString();
+    }
+
+    /**
+     * BENCH-1: the stratified APS estimate for one jar's results, or "" when the opponent
+     * set carries no weights. Shown in every report, not only a paired A/B one, so a plain
+     * single-jar run against a weighted set (rumble-sample.txt) still reports it.
+     */
+    private static String weightedApsLine(String robot, Map<Opponent, List<BattleResult>> results) {
+        List<Stats> stats = new ArrayList<>();
+        List<Double> weights = new ArrayList<>();
+        for (Map.Entry<Opponent, List<BattleResult>> e : results.entrySet()) {
+            stats.add(Stats.of(shares(e.getValue())));
+            weights.add(e.getKey().weight);
+        }
+        if (weights.stream().noneMatch(w -> w != null && w > 0)) return "";
+        return String.format(Locale.ROOT, "**Stratified APS estimate (BENCH-1) for %s:** %s.%n",
+            robot, Stats.weighted(stats, weights).percent());
+    }
+
+    private static List<Double> shares(List<BattleResult> rs) {
+        List<Double> out = new ArrayList<>();
+        for (BattleResult r : rs) if (r.ok) out.add(r.scoreShare());
+        return out;
     }
 
     private static double sum(List<Double> xs) {
