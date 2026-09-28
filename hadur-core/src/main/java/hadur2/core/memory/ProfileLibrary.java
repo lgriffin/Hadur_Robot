@@ -267,7 +267,12 @@ public final class ProfileLibrary {
      * <p>The space check assumes the worst moment of a save: the temporary copy and the
      * profile both on disk, plus the clock. If that would pass {@link #EVICT_AT} of the
      * quota, other profiles' seeds go first (MEM-5); if it would still pass the whole quota,
-     * this profile's own seeds go; if even that does not fit, nothing is written.</p>
+     * this profile's own seeds go; if even that does not fit, nothing is written. MEM-6:
+     * that last case cannot happen while any other profile still has seeds, because
+     * {@link #evictSeeds} never stops short of freeing what {@link #EVICT_AT}'s threshold
+     * needs unless it has already taken every seed there was to take (its target is always
+     * at or under the hard quota checked here) — so a write is only ever skipped once
+     * nothing more can be evicted from anyone.</p>
      *
      * @param profile the profile to save
      * @return what was done
@@ -304,6 +309,30 @@ public final class ProfileLibrary {
             // battle recovers the number from the profiles (maxLastFought).
             store.write(CLOCK, clockBytes(Math.max(battleNumber, profile.lastFought())));
             return outcome;
+        } catch (RuntimeException e) {
+            saveFailures++;
+            lastNote = "save " + profile.key() + ": " + describe(e);
+            return Saved.FAILED;
+        }
+    }
+
+    /**
+     * TIME-4: writes only {@code profile}'s statistics, never its seeds. Round-end
+     * checkpoints use this so the frequent write costs only what the stats need; the
+     * seeds it holds in memory are untouched and still there for the rest of the battle,
+     * and a full save (seeds included, when the quota has room) still happens at battle
+     * end and periodically ({@code HadurCore#checkpoint}).
+     *
+     * @param profile the profile to save
+     * @return what was done
+     */
+    public Saved saveStatsOnly(OpponentProfile profile) {
+        try {
+            // A decoded copy, never the caller's own profile: dropSeeds() must not touch the
+            // seeds the battle still has in memory, only what this checkpoint persists.
+            OpponentProfile copy = ProfileCodec.decode(ProfileCodec.encode(profile));
+            copy.dropSeeds();
+            return save(copy);
         } catch (RuntimeException e) {
             saveFailures++;
             lastNote = "save " + profile.key() + ": " + describe(e);

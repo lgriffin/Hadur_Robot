@@ -209,6 +209,34 @@ class ProfileLibraryTest {
     }
 
     @Test
+    @Tag("MEM-6")
+    @DisplayName("MEM-6: filling the quota with plain profiles empties every seed before any write is skipped")
+    void skipOnlyAfterEveryonesSeedsAreGone() {
+        OpponentProfile seeded = Profiles.sample("z.Sample", 1, 600, 300);
+        int full = ProfileCodec.encode(seeded).length;
+        // Room for two seeded profiles, generously, while nothing else competes for it.
+        MemoryProfileStore store = new MemoryProfileStore((long) Math.ceil((3L * full + 200) / ProfileLibrary.EVICT_AT));
+        ProfileLibrary lib = new ProfileLibrary(store);
+        lib.save(Profiles.sample("a.First", 1, 600, 300));
+        lib.save(Profiles.sample("b.Second", 2, 600, 300));
+        // Room for both, with no eviction forced yet.
+        assertTrue(stored(store, "a.First").gunSeedSize() > 0 || stored(store, "b.Second").gunSeedSize() > 0,
+            "at least one still has seeds before the store is crowded");
+
+        // Crowd the store with plain, seedless profiles until a write is finally skipped.
+        ProfileLibrary.Saved s = ProfileLibrary.Saved.WRITTEN;
+        for (int i = 0; i < 20_000 && s != ProfileLibrary.Saved.SKIPPED; i++) {
+            s = lib.save(Profiles.sample("c.Bot" + i, 3 + i, 0, 0));
+        }
+        assertEquals(ProfileLibrary.Saved.SKIPPED, s, "the quota should eventually run out");
+
+        // MEM-6: by the time a write is skipped, eviction has already taken every seed
+        // there was to take, from both of the profiles that started with any.
+        assertEquals(0, stored(store, "a.First").gunSeedSize(), "nobody keeps seeds before a skip");
+        assertEquals(0, stored(store, "b.Second").gunSeedSize());
+    }
+
+    @Test
     @DisplayName("a lost battle clock is rebuilt from the profiles")
     void clockRecovers() {
         MemoryProfileStore store = new MemoryProfileStore(QUOTA);

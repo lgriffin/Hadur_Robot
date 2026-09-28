@@ -16,10 +16,14 @@ package hadur2.core.policy;
  *
  * <p>The core never reads a clock (RES-6, CORE-2). The adapter times each call into the
  * core and hands the measurement in with the next tick's events as a {@code TickTime}
- * event, which {@code HadurCore} passes to {@link #tickTook}; the allowance is the adapter's
- * constant (3 ms, the bench machine's CPU constant, since Robocode does not tell a robot
- * its own). A {@code SkippedTurn} event goes to {@link #skippedTurn()}. The core then reads
- * {@link #level()} and asks the static methods what that level allows.</p>
+ * event, which {@code HadurCore} passes to {@link #tickTook}; the allowance starts as the
+ * adapter's guessed constant (3 ms, the bench machine's CPU constant, since Robocode does
+ * not tell a robot its own). TIME-3: the first skipped turn proves that guess was too high
+ * for this client, so from then on {@link #tickTook} ignores the passed-in allowance and
+ * uses the tick that caused the skip as the real one, for the rest of the battle (not just
+ * the round, so it survives {@link #newRound}). A {@code SkippedTurn} event goes to
+ * {@link #skippedTurn()}. The core then reads {@link #level()} and asks the static methods
+ * what that level allows.</p>
  *
  * <p>{@link #maxLevel()} and {@link #slowTicks()} are this round's degradation counters,
  * which the core copies into the round statistics.</p>
@@ -37,6 +41,13 @@ public final class TickBudget {
     private boolean slow;
     private int maxLevel;
     private int slowTicks;
+    /** The tick that most recently reported its duration; -1 before the first one. */
+    private long lastUsedNanos = -1;
+    /**
+     * TIME-3: the allowance learned from the tick that caused the first skipped turn, held
+     * for the rest of the battle. -1 until a skip has happened; not reset by {@link #newRound}.
+     */
+    private long learnedAllowanceNanos = -1;
 
     /** A new round starts at full computation (TIME-2's "for the remainder of the round"). */
     public void newRound() {
@@ -51,21 +62,35 @@ public final class TickBudget {
      *
      * <p>Each measurement replaces the last, so a slow tick costs a level only until the
      * next measurement arrives, one tick later. An allowance of 0 or less means it is
-     * unknown, and an unknown allowance never sheds.</p>
+     * unknown, and an unknown allowance never sheds. Once TIME-3 has learned a real
+     * allowance from a skipped turn, {@code allowanceNanos} is ignored in favour of it.</p>
      *
      * @param usedNanos how long the core took on the previous tick, in nanoseconds
-     * @param allowanceNanos the time a tick may take, in nanoseconds
+     * @param allowanceNanos the time a tick may take, in nanoseconds, before a skip has
+     *     taught the real one
      */
     public void tickTook(long usedNanos, long allowanceNanos) {
-        slow = allowanceNanos > 0 && usedNanos > THRESHOLD * allowanceNanos;
+        long effectiveAllowance = learnedAllowanceNanos > 0 ? learnedAllowanceNanos : allowanceNanos;
+        slow = effectiveAllowance > 0 && usedNanos > THRESHOLD * effectiveAllowance;
         if (slow) slowTicks++;
+        maxLevel = Math.max(maxLevel, level());
+        lastUsedNanos = usedNanos;
+    }
+
+    /**
+     * TIME-2: the engine skipped a turn. The round's level drops one, down to
+     * {@link #MAX_LEVEL}. TIME-3: the first time this happens, the tick that caused it
+     * becomes the learned allowance for the rest of the battle.
+     */
+    public void skippedTurn() {
+        if (learnedAllowanceNanos <= 0 && lastUsedNanos > 0) learnedAllowanceNanos = lastUsedNanos;
+        roundLevel = Math.min(MAX_LEVEL, roundLevel + 1);
         maxLevel = Math.max(maxLevel, level());
     }
 
-    /** TIME-2: the engine skipped a turn. The round's level drops one, down to {@link #MAX_LEVEL}. */
-    public void skippedTurn() {
-        roundLevel = Math.min(MAX_LEVEL, roundLevel + 1);
-        maxLevel = Math.max(maxLevel, level());
+    /** TIME-3: the allowance learned from a skip, or -1 if none has happened yet. */
+    public long learnedAllowanceNanos() {
+        return learnedAllowanceNanos;
     }
 
     /** The level for this tick: the round's level, one more after a slow tick, at most {@link #MAX_LEVEL}. */

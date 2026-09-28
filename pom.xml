@@ -38,7 +38,7 @@
         <!-- The melee extension's stage (M0-M6): its requirements up to here must be covered too. -->
         <hadur.melee.stage>M6</hadur.melee.stage>
         <!-- The RoboRumble climb plan's stage (R0-R5): its requirements up to here must be covered too. -->
-        <hadur.climb.stage>R0</hadur.climb.stage>
+        <hadur.climb.stage>R1</hadur.climb.stage>
     </properties>
 
     <repositories>

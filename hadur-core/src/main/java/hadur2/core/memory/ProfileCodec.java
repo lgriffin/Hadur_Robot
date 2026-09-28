@@ -71,6 +71,26 @@ public final class ProfileCodec {
      * @return the file's bytes, header, payload and CRC included
      */
     public static byte[] encode(OpponentProfile p) {
+        return encode(p, VERSION);
+    }
+
+    /**
+     * MEM-7: encodes a profile in {@code version} instead of the current one, so a client
+     * still running a previous release can go on reading what a newer one writes. Only
+     * {@link #OLDEST_VERSION} to {@link #VERSION} are supported, the same range
+     * {@link #decode} accepts; a version-gated field a target version does not have (today,
+     * only the normalised-hits group, added in version 2) is left out, exactly as that
+     * version's own encoder would have left it out.
+     *
+     * @param p the profile
+     * @param version the format version to write, {@link #OLDEST_VERSION} to {@link #VERSION}
+     * @return the file's bytes, header, payload and CRC included
+     * @throws IllegalArgumentException if {@code version} is outside the supported range
+     */
+    public static byte[] encode(OpponentProfile p, int version) {
+        if (version < OLDEST_VERSION || version > VERSION) {
+            throw new IllegalArgumentException("unsupported version " + version);
+        }
         Bytes.Writer payload = new Bytes.Writer();
         payload.str(p.key()).str(p.lastName())
             .i32(p.battles).i32(p.rounds).i64(p.lastFought);
@@ -81,14 +101,15 @@ public final class ProfileCodec {
         payload.floats(p.shotsAtUs).floats(p.hitsOnUs)
             .floats(p.shotsByMotion).floats(p.hitsByMotion).floats(p.powerHistogram)
             .floats(p.virtualFired).floats(p.virtualHits)
-            .floats(p.ourShots).floats(p.ourHits).floats(p.motion)
-            .floats(p.normalised);
+            .floats(p.ourShots).floats(p.ourHits).floats(p.motion);
+        // Version 1 had no normalised group; a version 1 file must not have one either.
+        if (version >= 2) payload.floats(p.normalised);
         writeSeed(payload, p.gunSeed);
         writeSeed(payload, p.surfSeed);
 
         // Frame the payload: header, payload, then a CRC over everything written so far.
         Bytes.Writer out = new Bytes.Writer();
-        out.u8(MAGIC_0).u8(MAGIC_1).u8(VERSION).i32(payload.size());
+        out.u8(MAGIC_0).u8(MAGIC_1).u8(version).i32(payload.size());
         byte[] body = payload.toArray();
         for (byte b : body) out.u8(b);
         out.i32(crc(out.toArray(), out.size()));

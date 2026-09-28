@@ -91,6 +91,30 @@ class CoreMemoryTest {
     }
 
     @Test
+    @Tag("TIME-4")
+    @DisplayName("TIME-4: checkpoints write stats every round but seeds only on the tenth")
+    void checkpointsCapSeedWrites() {
+        MemoryProfileStore store = storeWith(Profiles.sample(SHADOW, 9, 50, 50));
+        HadurCore core = new HadurCore(800, 600, 1, Telemetry.NONE, store);
+        String file = ProfileLibrary.fileName("abc.Shadow");
+        for (int round = 0; round < 9; round++) {
+            core.newRound(round);
+            core.tick(scan(1, SHADOW));
+            core.roundEnded(2, "win", 100, 0);
+            core.checkpoint(2);
+            OpponentProfile persisted = ProfileCodec.decode(store.read(file));
+            assertEquals(0, persisted.gunSeedSize(), "checkpoint " + (round + 1) + " must not write seeds yet");
+            assertEquals(50, core.profile().gunSeedSize(), "the battle keeps its own seeds in memory");
+        }
+        core.newRound(9);
+        core.tick(scan(1, SHADOW));
+        core.roundEnded(2, "win", 100, 0);
+        core.checkpoint(2);
+        OpponentProfile tenth = ProfileCodec.decode(store.read(file));
+        assertEquals(50, tenth.gunSeedSize(), "the tenth checkpoint writes the seeds");
+    }
+
+    @Test
     @Tag("MEM-4")
     @DisplayName("a damaged profile is a stranger, recorded in MEM and R records")
     void damagedProfileRecorded() {

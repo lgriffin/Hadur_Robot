@@ -75,6 +75,9 @@ public class Hadur extends AdvancedRobot {
         // Each round's robot has its own console stream; telemetry closures read the static.
         console = out;
         if (core == null) {
+            // TIME-5: warm up class loading and JIT compilation on a throwaway core before
+            // the real one's first tick pays for it.
+            warmUp(getBattleFieldWidth(), getBattleFieldHeight(), getOthers());
             // First round of the battle. The telemetry lambdas go through the static
             // console rather than capturing this round's `out`.
             core = new HadurCore(getBattleFieldWidth(), getBattleFieldHeight(), getOthers(),
@@ -111,6 +114,24 @@ public class Hadur extends AdvancedRobot {
             ticked(in, orders);
             apply(orders);
             execute();
+        }
+    }
+
+    /**
+     * TIME-5: runs one tick through a throwaway core and guard before the real battle
+     * begins, so that class loading and JIT warm-up land here rather than on the round's
+     * first real tick. No store (nothing is read or written), no telemetry, and the
+     * throwaway core and its result are discarded; nothing it does reaches the real core.
+     */
+    static void warmUp(double width, double height, int others) {
+        try {
+            HadurCore warm = new HadurCore(width, height, others, line -> {}, null);
+            warm.newRound(0);
+            new Guard(warm::tick, warm::recover, line -> {})
+                .tick(new BotInput(0, 0, width / 2, height / 2, 0, 0, 100, 0, 0, 0, 0, 0, others,
+                    List.of()));
+        } catch (RuntimeException e) {
+            // Best-effort: a cold real tick still runs correctly if this throws.
         }
     }
 
@@ -278,11 +299,12 @@ public class Hadur extends AdvancedRobot {
     public void onRoundEnded(RoundEndedEvent e) {
         // The engine can deliver this before WinEvent in the round's last batch.
         reportRound(getEnergy() <= 0 ? "loss" : getOthers() == 0 ? "win" : "draw");
-        // A checkpoint: the robot may not get to the battle's end (MEM-3). File I/O is
-        // safe here, unlike in onWin and onDeath. Only when alive: a dead robot's thread
-        // that stops to write keeps it in the round, where the enemy goes on shooting it
-        // and its last bullets still refund it energy (the S3 bench saw this).
-        if (core != null && getEnergy() > 0) core.saveProfile(getTime());
+        // A checkpoint: the robot may not get to the battle's end (MEM-3), and TIME-4
+        // caps what each one writes. File I/O is safe here, unlike in onWin and onDeath.
+        // Only when alive: a dead robot's thread that stops to write keeps it in the
+        // round, where the enemy goes on shooting it and its last bullets still refund it
+        // energy (the S3 bench saw this).
+        if (core != null && getEnergy() > 0) core.checkpoint(getTime());
     }
 
     /** The battle is over: the final profile save (MEM-3). */

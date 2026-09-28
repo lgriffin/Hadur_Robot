@@ -87,7 +87,12 @@ public final class SeedTrust {
         // RES-4's "more than the margin of error": the raw values must differ by more
         // than the wider margin, so neither estimate's noise alone can trigger it.
         if (!live.within(MAX_LIVE_MARGIN) || Double.isNaN(profile.value())) return false;
-        return Math.abs(live.value() - profile.value()) > Math.max(live.margin(), profile.margin());
+        double margin = Math.max(live.margin(), profile.margin());
+        // DIAL-3: a margin this comparison cannot trust is not "no divergence" (an Estimate
+        // in practice never carries one, but a silent NaN comparison would fail that way by
+        // accident); the conservative reading for a seed is to stop trusting it.
+        if (!Double.isFinite(margin)) return true;
+        return Math.abs(live.value() - profile.value()) > margin;
     }
 
     /**

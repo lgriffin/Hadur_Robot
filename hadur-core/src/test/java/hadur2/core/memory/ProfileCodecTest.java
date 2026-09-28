@@ -54,6 +54,42 @@ class ProfileCodecTest {
     }
 
     @Test
+    @Tag("MEM-7")
+    @DisplayName("MEM-7: encoding at the oldest version drops what that version never had, and it still decodes")
+    void downLevelEncodeDecodes() {
+        OpponentProfile p = Profiles.sample("abc.Shadow 3.83c", 42, 4, 2);
+        byte[] atOldest = ProfileCodec.encode(p, ProfileCodec.OLDEST_VERSION);
+        assertEquals((byte) ProfileCodec.OLDEST_VERSION, atOldest[2], "the version byte matches");
+        OpponentProfile back = ProfileCodec.decode(atOldest);
+        // The oldest version has no normalised group and no defined seed layout: both are
+        // gone, exactly as a real version-1 file would decode (see goldenV1Loads).
+        OpponentProfile expected = Profiles.sample("abc.Shadow 3.83c", 42, 0, 0);
+        java.util.Arrays.fill(expected.normalised, 0);
+        assertEquals(expected, back);
+        assertEquals(0, back.gunSeedSize());
+    }
+
+    @Test
+    @Tag("MEM-7")
+    @DisplayName("MEM-7: encoding at the current version keeps everything, same as plain encode")
+    void currentVersionEncodeMatchesPlainEncode() {
+        OpponentProfile p = Profiles.sample("abc.Shadow 3.83c", 42, 4, 2);
+        assertEquals(java.util.Arrays.toString(ProfileCodec.encode(p)),
+            java.util.Arrays.toString(ProfileCodec.encode(p, ProfileCodec.VERSION)));
+    }
+
+    @Test
+    @Tag("MEM-7")
+    @DisplayName("MEM-7: a version outside the supported range is refused, not silently clamped")
+    void outOfRangeVersionRejected() {
+        OpponentProfile p = Profiles.sample("a.B", 1, 0, 0);
+        assertThrows(IllegalArgumentException.class,
+            () -> ProfileCodec.encode(p, ProfileCodec.OLDEST_VERSION - 1));
+        assertThrows(IllegalArgumentException.class,
+            () -> ProfileCodec.encode(p, ProfileCodec.VERSION + 1));
+    }
+
+    @Test
     @Tag("MEM-5")
     @DisplayName("stats alone stay under 1 KB, so every opponent can keep them")
     void statsAreSmall() {
