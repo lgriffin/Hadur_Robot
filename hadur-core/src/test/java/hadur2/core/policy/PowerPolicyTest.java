@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
-/** POW-1, POW-2, POW-3, POW-4, END-3 and their guards. */
+/** POW-1, POW-2, POW-3, POW-4, POW-5, END-3 and their guards. */
 class PowerPolicyTest {
 
     static final Estimate NONE = Estimate.NONE;
@@ -156,6 +156,50 @@ class PowerPolicyTest {
     @DisplayName("POW-4: never below the gun's own choice even when GUN wins the comparison")
     void neverBelowGunPower() {
         assertEquals(1.9, PowerPolicy.power(PowerPolicy.Reason.GUN, 1.9, 80));
+    }
+
+    @Test
+    @Tag("POW-5")
+    @DisplayName("POW-5: a T3 gun beyond 500 px caps the shot at 1.7")
+    void t3BeyondRangeIsCapped() {
+        assertEquals(1.7, PowerPolicy.capPower(Tiers.Gun.T3, 500.01, 1.95), 1e-12);
+        assertEquals(1.7, PowerPolicy.capPower(Tiers.Gun.T3, 800, 3.0), 1e-12);
+    }
+
+    @Test
+    @Tag("POW-5")
+    @DisplayName("POW-5: never raises the power, only lowers it")
+    void t3CapNeverRaisesThePower() {
+        assertEquals(0.5, PowerPolicy.capPower(Tiers.Gun.T3, 800, 0.5), 1e-12,
+            "a gun choice already below the cap is left alone");
+    }
+
+    @ParameterizedTest
+    @EnumSource(value = Tiers.Gun.class, names = {"UNKNOWN", "T0", "T1", "T2"})
+    @Tag("POW-5")
+    @DisplayName("POW-5: any tier but T3 keeps the gun's own power, whatever the distance")
+    void onlyT3IsCapped(Tiers.Gun tier) {
+        assertEquals(1.95, PowerPolicy.capPower(tier, 800, 1.95), 1e-12);
+    }
+
+    @Test
+    @Tag("POW-5")
+    @DisplayName("POW-5: at 500 px or closer, a T3 gun keeps the gun's own power")
+    void t3WithinRangeIsNotCapped() {
+        assertEquals(1.95, PowerPolicy.capPower(Tiers.Gun.T3, 500, 1.95), 1e-12);
+        assertEquals(1.95, PowerPolicy.capPower(Tiers.Gun.T3, 100, 1.95), 1e-12);
+    }
+
+    @Test
+    @Tag("POW-5")
+    @DisplayName("POW-5: a full-power rule overrides the cap upward, as \"unless\" requires")
+    void fullPowerRuleOverridesTheCap() {
+        // The order HadurCore uses: capPower first, then reason/power. A T0 gun (POW-1) at
+        // long range against a T3-rated enemy can't both be true of the same profile reading,
+        // but the composition itself - power()'s Math.max against the capped value - is what
+        // matters here, and it must win regardless of how the cap got there.
+        double capped = PowerPolicy.capPower(Tiers.Gun.T3, 800, 1.95);
+        assertEquals(3.0, PowerPolicy.power(PowerPolicy.Reason.POW_1, capped, 80));
     }
 
     @Test

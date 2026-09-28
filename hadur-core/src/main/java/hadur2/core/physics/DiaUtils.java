@@ -211,6 +211,33 @@ public final class DiaUtils {
     }
 
     /**
+     * GUN-3: {@code numAngles} firing angles spread evenly over
+     * [-{@code negativeEscapeAngle}, {@code positiveEscapeAngle}], relative to the head-on
+     * bearing. Unlike {@link #generateFiringAngles(int, double)}, the two sides need not be
+     * equal, so a target's precise escape angle (which the walls and its own heading can
+     * make asymmetric) is covered exactly rather than the smaller, symmetric classic one:
+     * the grid used to test only out to the classic maximum escape angle even though a
+     * neighbour's firing angle (from {@link hadur2.core.model.Wave#preciseEscapeAngle}) could
+     * fall outside it, which meant those neighbours could never be the chosen angle if the
+     * true best angle lay beyond the classic bound.
+     *
+     * @param numAngles how many angles, at least 2
+     * @param negativeEscapeAngle the escape angle the grid spans on the negative side, radians
+     * @param positiveEscapeAngle the escape angle the grid spans on the positive side, radians
+     * @return the angles, in radians, from -{@code negativeEscapeAngle} to
+     *     {@code positiveEscapeAngle}, evenly spaced
+     */
+    public static double[] generateFiringAngles(int numAngles, double negativeEscapeAngle,
+                                                 double positiveEscapeAngle) {
+        double[] firingAngles = new double[numAngles];
+        double span = negativeEscapeAngle + positiveEscapeAngle;
+        for (int x = 0; x < numAngles; x++) {
+            firingAngles[x] = -negativeEscapeAngle + span * x / (numAngles - 1);
+        }
+        return firingAngles;
+    }
+
+    /**
      * The 95% margin of error of a proportion by the normal (Wald) approximation:
      * 1.96 × sqrt(p (1 - p) / n). It is 0 for a rate of exactly 0 or 1 and undefined for
      * n = 0, so it understates the doubt over few samples; the policies' inputs use

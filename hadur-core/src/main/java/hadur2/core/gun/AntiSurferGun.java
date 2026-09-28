@@ -130,11 +130,18 @@ public class AntiSurferGun {
 
         double bestAngle = 0;
         double bestDensity = Double.NEGATIVE_INFINITY;
-        // About one robot width at this distance, as in the main gun.
-        double bandwidth = 2.0 * DiaUtils.botWidthAimAngle(
-            myNextLocation.distance(w.targetLocation));
-        // 59 offsets from -MEA to +MEA (the plain maximum escape angle, asin(8 / bullet speed)).
-        double[] testAngles = DiaUtils.generateFiringAngles(FIRING_ANGLES, w.maxEscapeAngle());
+        double distance = myNextLocation.distance(w.targetLocation);
+        // About one robot width at this distance, as in the main gun; GUN-3 floors it at the
+        // target's own angular half-width, so the kernel is never narrower than the target
+        // itself, whatever distance-based bandwidth would otherwise give.
+        double bandwidth = Math.max(2.0 * DiaUtils.botWidthAimAngle(distance),
+            DiaUtils.botWidthAimAngle(distance));
+        // GUN-3: 59 offsets across the target's actual (precise) escape angle on each side,
+        // not the smaller, symmetric classic one. The classic grid could leave the true best
+        // angle - a neighbour's precise firing angle beyond the classic bound - off the grid
+        // entirely, so two narrow, real peaks either side of it were never tested between.
+        double[] testAngles = DiaUtils.generateFiringAngles(FIRING_ANGLES,
+            w.preciseEscapeAngle(false), w.preciseEscapeAngle(true));
 
         // Kernel density at each grid offset: a Gaussian of the gap to every pooled
         // neighbour, times that neighbour's weight. The first offset on a tie wins.

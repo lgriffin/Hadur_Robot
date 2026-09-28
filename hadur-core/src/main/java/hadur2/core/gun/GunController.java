@@ -25,11 +25,17 @@ import java.util.function.Consumer;
  * <p>Which gun aims, in a duel:</p>
  * <ol>
  * <li>With an opening from the profile, that gun from the first wave (ADAPT-1), until the
- *     live virtual-gun ratings differ by more than their margin of error (DIAL-1).</li>
+ *     live virtual-gun ratings differ by more than their margin of error (DIAL-1, GUN-1).</li>
  * <li>Otherwise head-on until the main view holds {@link #DATA_THRESHOLD} points that still
- *     count, then the anti-surfer gun while its virtual rating is strictly higher, else the
- *     main gun (1.20's rule).</li>
+ *     count, then whichever gun's live rating is highest by more than the margin of error
+ *     (GUN-1's margin-gated form of 1.20's rule), main on a tie or while nothing clears it.</li>
  * </ol>
+ * <p>GUN-4's third gun (the hybrid gun, see {@link HybridGun}) joins that live comparison,
+ * in both cases, only while its gate is open: the live movement tier is M2 or M3, or the
+ * plain main-vs-anti-surfer verdict already favours a switch. It is always rated alongside
+ * the other two (see {@link #fireVirtualBullets}), gate open or not, so it already has a
+ * history once the gate opens. Every live rating decays each shot with a 100-shot half-life
+ * (GUN-1), so a surfer that changes its movement mid-battle can flip the choice again.</p>
  * <p>With several opponents at the battle's start only the main gun aims and no virtual
  * guns are scored.</p>
  *
@@ -39,8 +45,13 @@ import java.util.function.Consumer;
  */
 public class GunController {
 
-    /** The gun an opening book asks for until the live virtual guns clearly disagree (ADAPT-1). */
-    public enum Opening { MAIN, ANTI_SURFER }
+    /**
+     * The gun an opening book asks for until the live virtual guns clearly disagree
+     * (ADAPT-1). {@code HYBRID} is never an opening (the opening book only ever reads the
+     * main and anti-surfer ratings from a profile): it is GUN-4's third gun, chosen live,
+     * within a battle, once it rates above the other two outside the margin of error.
+     */
+    public enum Opening { MAIN, ANTI_SURFER, HYBRID }
 
     /** A gun seed sample: the main view's 10 data-point values, the guess factor, the displacement. */
     public static final int SAMPLE_WIDTH = 13;
@@ -50,6 +61,8 @@ public class GunController {
 
     private final MainGun mainGun;
     private final AntiSurferGun antiSurferGun;
+    /** GUN-4: the third gun, rated and fired only while its gate is open. */
+    private final HybridGun hybridGun;
     private final BattleField battleField;
     /** Opponents at the battle's start. */
     private final int enemiesTotal;
@@ -63,7 +76,9 @@ public class GunController {
     private final Map<String, GunStats> mainGunStats = new HashMap<>();
     /** Per opponent name: the anti-surfer gun's virtual record. */
     private final Map<String, GunStats> antiSurferStats = new HashMap<>();
-    /** Each real bullet's wave, until it breaks: the main and anti-surfer angles, in that order. */
+    /** GUN-4: per opponent name: the hybrid gun's virtual record. */
+    private final Map<String, GunStats> hybridStats = new HashMap<>();
+    /** Each real bullet's wave, until it breaks: the main, anti-surfer and hybrid angles, in that order. */
     private final Map<Wave, double[]> virtualBullets = new HashMap<>();
     /** Builds the seed samples' first ten values, in the main view's space. */
     private final GunFormula sampleFormula;
@@ -84,6 +99,7 @@ public class GunController {
         this.is1v1 = (enemiesTotal <= 1);
         this.mainGun = new MainGun(battleField);
         this.antiSurferGun = new AntiSurferGun(battleField, is1v1);
+        this.hybridGun = new HybridGun(battleField, is1v1);
         this.sampleFormula = new GunFormula(enemiesTotal);
     }
 
@@ -132,9 +148,26 @@ public class GunController {
         TimestampedFiringAngle tfa = new TimestampedFiringAngle(Timestamped.SEED_ROUND, seedsLoaded++,
             sample[10], new Point2D.Double(sample[11], sample[12]), weight);
         for (KnnView<TimestampedFiringAngle> view : getOrCreateViews(botName).values()) {
-            // Truncate to the view's dimensions: 10 for the main view, 9 for anti-surfer.
-            view.logSeed(Arrays.copyOf(sample, view.formula.weights.length), tfa, weight);
+            view.logSeed(seedPoint(sample, view.formula), tfa, weight);
         }
+    }
+
+    /**
+     * The point a gun seed sample gives {@code formula}: truncated to the view's dimensions
+     * for the main view (10) and, before GUN-2, the anti-surfer views (9). GUN-2 grew the
+     * anti-surfer formula (and the hybrid gun's, which shares it) to 12 features, three of
+     * which a sample recorded before R3 never captured; those three are seeded at
+     * {@link AntiSurferFormula#NEUTRAL_NEW_FEATURE} rather than guessed from data that was
+     * never collected.
+     */
+    private static double[] seedPoint(double[] sample, hadur2.core.knn.DistanceFormula formula) {
+        int dims = formula.weights.length;
+        if (!(formula instanceof AntiSurferFormula) || dims <= AntiSurferFormula.LEGACY_FEATURES) {
+            return Arrays.copyOf(sample, dims);
+        }
+        double[] point = Arrays.copyOf(sample, dims);
+        Arrays.fill(point, AntiSurferFormula.LEGACY_FEATURES, dims, AntiSurferFormula.NEUTRAL_NEW_FEATURE);
+        return point;
     }
 
     /** TIME-1, TIME-2: the k share every gun view uses, kept for views made later. */
@@ -167,6 +200,7 @@ public class GunController {
             for (KnnView<TimestampedFiringAngle> asView : antiSurferGun.createViews()) {
                 views.put(asView.name, asView.setKShare(kShare));
             }
+            views.put(HybridGun.viewName(), hybridGun.createView().setKShare(kShare));
             return views;
         });
     }
@@ -198,14 +232,12 @@ public class GunController {
         KnnView<TimestampedFiringAngle> mainView = views.get(MainGun.viewName());
 
         if (is1v1 && opening != null) {
-            // ADAPT-1: the profile's gun from the first wave, unless the live ratings disagree.
-            // There is no head-on warm-up here: the seeds are the data, and each gun falls
-            // back to head-on by itself while it has none.
+            // ADAPT-1: the profile's gun from the first wave, unless the live ratings disagree
+            // (GUN-1) or GUN-4's third gun rates above both. There is no head-on warm-up here:
+            // the seeds are the data, and each gun falls back to head-on by itself while it
+            // has none.
             Opening live = liveVerdict(w.botName);
-            Opening use = live != null ? live : opening;
-            return use == Opening.ANTI_SURFER
-                ? antiSurferGun.aim(w, views, myNextLocation, currentTime)
-                : mainGun.aim(w, mainView, myNextLocation, currentTime);
+            return fireWith(live != null ? live : opening, w, views, mainView, myNextLocation, currentTime);
         }
 
         // Warm-up: too few points to learn from, so fire head-on from our next position.
@@ -214,34 +246,123 @@ public class GunController {
             return DiaUtils.absoluteBearing(myNextLocation, w.targetLocation);
         }
 
-        if (is1v1) {
-            GunStats mStats = mainGunStats.computeIfAbsent(w.botName, k -> new GunStats());
-            GunStats aStats = antiSurferStats.computeIfAbsent(w.botName, k -> new GunStats());
-            // 1.20's rule: strictly better, with no margin of error; ties go to the main gun.
-            if (aStats.gunRating() > mStats.gunRating()) {
-                return antiSurferGun.aim(w, views, myNextLocation, currentTime);
-            }
+        // GUN-1: 1.20's rule (main unless another gun rates strictly higher) is now
+        // margin-gated like every other DIAL-1 comparison, through the same liveVerdict this
+        // gun uses once an opening is set, so ties and noise-sized gaps no longer flip it.
+        Opening live = is1v1 ? liveVerdict(w.botName) : null;
+        return fireWith(live != null ? live : Opening.MAIN, w, views, mainView, myNextLocation, currentTime);
+    }
+
+    /** Aims with whichever of the three guns {@code use} names. */
+    private double fireWith(Opening use, Wave w, Map<String, KnnView<TimestampedFiringAngle>> views,
+                            KnnView<TimestampedFiringAngle> mainView, Point2D.Double myNextLocation,
+                            long currentTime) {
+        if (use == Opening.HYBRID) {
+            return hybridGun.aim(w, views.get(HybridGun.viewName()), myNextLocation, currentTime);
+        }
+        if (use == Opening.ANTI_SURFER) {
+            return antiSurferGun.aim(w, views, myNextLocation, currentTime);
         }
         return mainGun.aim(w, mainView, myNextLocation, currentTime);
     }
 
     /**
-     * DIAL-1: the gun the live virtual ratings pick, or null while the gap between them is
-     * within the margin of error of the better one (Agresti-Coull, 95%).
+     * GUN-1, GUN-4: the gun the live virtual ratings pick, or null while no gun clears every
+     * other candidate's margin of error (Agresti-Coull, 95%; DIAL-1). Always compares the
+     * main and anti-surfer guns; the hybrid gun joins the comparison only while
+     * {@link #hybridGateOpen} (GUN-4's gate: the live movement tier is M2 or M3, or the
+     * plain main-vs-anti-surfer verdict already names a switch) and it has been rated at
+     * least once. Null before the first virtual bullet has been scored.
      *
-     * <p>The margin used is the larger of the two guns' margins, so either gun's
-     * uncertainty holds the opening in place. Null too before the first virtual bullet has
-     * been scored.</p>
+     * @param botName the opponent
+     * @return the best-rated gun, or null while the gap to every other candidate is within
+     *     margin
      */
     Opening liveVerdict(String botName) {
         GunStats m = mainGunStats.get(botName);
         GunStats a = antiSurferStats.get(botName);
         if (m == null || a == null || m.shotsFired == 0) return null;
-        double mr = m.gunRating();
-        double ar = a.gunRating();
-        double margin = Math.max(margin(m.shotsHit, m.shotsFired), margin(a.shotsHit, a.shotsFired));
-        if (Math.abs(ar - mr) <= margin) return null;
-        return ar > mr ? Opening.ANTI_SURFER : Opening.MAIN;
+
+        Map<Opening, GunStats> candidates = new EnumMap<>(Opening.class);
+        candidates.put(Opening.MAIN, m);
+        candidates.put(Opening.ANTI_SURFER, a);
+        if (hybridGateOpen(m, a)) {
+            GunStats h = hybridStats.get(botName);
+            if (h != null && h.shotsFired > 0) candidates.put(Opening.HYBRID, h);
+        }
+
+        Opening best = null;
+        double bestRating = Double.NEGATIVE_INFINITY;
+        for (Map.Entry<Opening, GunStats> e : candidates.entrySet()) {
+            double r = e.getValue().gunRating();
+            if (r > bestRating) {
+                bestRating = r;
+                best = e.getKey();
+            }
+        }
+        GunStats bestStats = candidates.get(best);
+        // GUN-1: the choice changes only once it clears every other candidate's margin.
+        for (Map.Entry<Opening, GunStats> e : candidates.entrySet()) {
+            if (e.getKey() == best) continue;
+            double gap = bestRating - e.getValue().gunRating();
+            double widestMargin = Math.max(margin(bestStats.shotsHit, bestStats.shotsFired),
+                margin(e.getValue().shotsHit, e.getValue().shotsFired));
+            if (gap <= widestMargin) return null;
+        }
+        return best;
+    }
+
+    /**
+     * The widest margin (DIAL-1) at which a movement tier is named, matching
+     * {@code hadur2.core.memory.Tiers.MAX_MARGIN}. Duplicated rather than shared: the gun
+     * package must not depend on {@code hadur2.core.memory} (see
+     * {@code ArchitectureTest.memoryIsLeaf}), so GUN-4's gate reads the live ratings' own
+     * margin ({@link #margin}) directly instead of building a
+     * {@code hadur2.core.memory.Estimate} and asking {@code Tiers.move}.
+     */
+    private static final double MAX_TIER_MARGIN = 0.03;
+    /** Matching {@code Tiers.M0_RATING}: at or above this the main gun already hits enough. */
+    private static final double M0_TIER_RATING = 0.25;
+    /** Matching {@code Tiers.M3_RATING}: below this, certainly, neither gun can find them. */
+    private static final double M3_TIER_RATING = 0.10;
+
+    /**
+     * GUN-4's gate: whether the hybrid gun is rated and eligible to fire this scan. Open
+     * while the live movement tier - read from the main and anti-surfer guns' own decayed
+     * ratings, the same bounds {@code Tiers.move} reads a profile's with - is M2 or M3, or
+     * while the plain main-vs-anti-surfer live verdict already names a switch away from the
+     * main gun (DIAL-1's margin, not the three-way one {@link #liveVerdict} uses).
+     */
+    private static boolean hybridGateOpen(GunStats main, GunStats antiSurfer) {
+        double mainMargin = margin(main.shotsHit, main.shotsFired);
+        double asMargin = margin(antiSurfer.shotsHit, antiSurfer.shotsFired);
+        double mainRating = main.gunRating();
+        double asRating = antiSurfer.gunRating();
+        if (mainMargin <= MAX_TIER_MARGIN && asMargin <= MAX_TIER_MARGIN && mainRating < M0_TIER_RATING) {
+            boolean m3 = mainRating + mainMargin < M3_TIER_RATING && asRating + asMargin < M3_TIER_RATING;
+            boolean m2 = asRating - mainRating > Math.max(mainMargin, asMargin);
+            if (m3 || m2) return true;
+        }
+        double gap = asRating - mainRating;
+        return gap > Math.max(mainMargin, asMargin);
+    }
+
+    /**
+     * Test seam: records one virtual bullet's weighted hit score directly against
+     * {@code botName} for {@code gun}, bypassing the KNN aim and precise-intersection
+     * machinery {@link #fireVirtualBullets}/{@link #onWaveBreak} normally go through, so a
+     * test can drive GUN-1's decay and GUN-4's gate with a controlled hit/miss sequence
+     * instead of engineering wave geometry to produce one. Package-private; nothing in
+     * production calls it.
+     *
+     * @param botName the opponent
+     * @param gun which gun's record to add to
+     * @param hitScore the weighted hit score, as {@link #score} would compute it
+     */
+    void recordVirtualShotForTest(String botName, Opening gun, double hitScore) {
+        Map<String, GunStats> stats = gun == Opening.HYBRID ? hybridStats
+            : gun == Opening.ANTI_SURFER ? antiSurferStats : mainGunStats;
+        stats.computeIfAbsent(botName, k -> new GunStats()).record(hitScore);
     }
 
     /**
@@ -258,9 +379,12 @@ public class GunController {
     }
 
     /**
-     * Fires one virtual bullet for each gun along with a real bullet: records the angle each
-     * gun would have fired on {@code w}, to be scored when the wave breaks. Duels only. The
-     * core skips this call at its lowest computation level (TIME-1, TIME-2).
+     * Fires one virtual bullet for each of the three guns along with a real bullet: records
+     * the angle each gun would have fired on {@code w}, to be scored when the wave breaks.
+     * Duels only. The core skips this call at its lowest computation level (TIME-1, TIME-2).
+     *
+     * <p>The hybrid gun is always rated here, whether or not GUN-4's gate is open, so it
+     * already has a history by the time the gate opens rather than starting from nothing.</p>
      *
      * @param w the wave the real bullet rides
      * @param myNextLocation where we will be when the bullet leaves
@@ -275,11 +399,13 @@ public class GunController {
         double mainAngle = mainGun.aim(w, views.get(MainGun.viewName()),
             myNextLocation, currentTime);
         double asAngle = antiSurferGun.aim(w, views, myNextLocation, currentTime);
-        virtualBullets.put(w, new double[]{mainAngle, asAngle});
+        double hybridAngle = hybridGun.aim(w, views.get(HybridGun.viewName()), myNextLocation, currentTime);
+        virtualBullets.put(w, new double[]{mainAngle, asAngle, hybridAngle});
 
         // Records exist from the first virtual bullet, so liveVerdict can read them.
         mainGunStats.computeIfAbsent(w.botName, k -> new GunStats());
         antiSurferStats.computeIfAbsent(w.botName, k -> new GunStats());
+        hybridStats.computeIfAbsent(w.botName, k -> new GunStats());
     }
 
     /**
@@ -332,21 +458,17 @@ public class GunController {
         // 0.1 / width * range / 0.9 = (range / width) / 9.
         double hitWeight = 0.1 / angularBotWidth * (w.escapeAngleRange() / 0.9);
 
-        GunStats mStats = mainGunStats.get(w.botName);
-        GunStats aStats = antiSurferStats.get(w.botName);
+        score(mainGunStats.get(w.botName), vbAngles[0], hitAngle, tolerance, hitWeight);
+        score(antiSurferStats.get(w.botName), vbAngles[1], hitAngle, tolerance, hitWeight);
+        score(hybridStats.get(w.botName), vbAngles[2], hitAngle, tolerance, hitWeight);
+    }
 
-        if (mStats != null) {
-            double ux = Math.abs(Angles.normalRelativeAngle(
-                vbAngles[0] - hitAngle)) / tolerance;
-            mStats.shotsHit += hitWeight * Math.pow(1.6, -ux);
-            mStats.shotsFired++;
-        }
-        if (aStats != null) {
-            double ux = Math.abs(Angles.normalRelativeAngle(
-                vbAngles[1] - hitAngle)) / tolerance;
-            aStats.shotsHit += hitWeight * Math.pow(1.6, -ux);
-            aStats.shotsFired++;
-        }
+    /** Scores one gun's virtual bullet against the precise intersection; see {@link #scoreVirtualGuns}. */
+    private static void score(GunStats stats, double angle, double hitAngle, double tolerance,
+                              double hitWeight) {
+        if (stats == null) return;
+        double ux = Math.abs(Angles.normalRelativeAngle(angle - hitAngle)) / tolerance;
+        stats.record(hitWeight * Math.pow(1.6, -ux));
     }
 
     /**
@@ -469,8 +591,13 @@ public class GunController {
      * The virtual guns' battle totals against {@code botName}: main-gun waves, main weighted
      * hits, anti-surfer waves, anti-surfer weighted hits. Zeros before any virtual bullet.
      *
-     * <p>The core folds them into the profile (MEM-2), where they set the movement tier the
-     * next opening reads, and checks the gun seed against the main gun's live rating (RES-4).</p>
+     * <p>These are the undecayed lifetime totals for the battle, not GUN-1's decayed live
+     * rating: what folds into the profile (MEM-2) must stay a plain count across the whole
+     * battle, since the profile is read across future battles too, where GUN-1's 100-shot
+     * half-life (meant to let this battle's live choice track a surfer that changes
+     * movement mid-fight) has no meaning. The core also checks the gun seed against the
+     * main gun's rating here (RES-4). The hybrid gun's rating is not folded into the profile
+     * (GUN-4 is a live, in-battle gate only; the profile format is unchanged).</p>
      *
      * @param botName the opponent
      * @return four totals, as above
@@ -479,19 +606,24 @@ public class GunController {
         GunStats m = mainGunStats.get(botName);
         GunStats a = antiSurferStats.get(botName);
         return new double[] {
-            m == null ? 0 : m.shotsFired, m == null ? 0 : m.shotsHit,
-            a == null ? 0 : a.shotsFired, a == null ? 0 : a.shotsHit};
+            m == null ? 0 : m.lifetimeFired, m == null ? 0 : m.lifetimeHit,
+            a == null ? 0 : a.lifetimeFired, a == null ? 0 : a.lifetimeHit};
     }
 
     /**
-     * The label of the gun with the higher virtual rating against {@code botName}, for the
-     * logs; the main gun on a tie and always in melee.
+     * The label of the gun with the higher live (GUN-1 decayed) virtual rating against
+     * {@code botName}, for the logs; the main gun on a tie and always in melee.
      *
      * @param botName the opponent
      * @return a gun's label
      */
     public String bestGunLabel(String botName) {
         if (!is1v1) return mainGun.getLabel();
+        Opening best = liveVerdict(botName);
+        if (best == Opening.HYBRID) return hybridGun.getLabel();
+        if (best == Opening.ANTI_SURFER) return antiSurferGun.getLabel();
+        if (best == Opening.MAIN) return mainGun.getLabel();
+        // No verdict yet, or the gap is within margin: fall back to the raw ratings, as before.
         GunStats mStats = mainGunStats.get(botName);
         GunStats aStats = antiSurferStats.get(botName);
         double mainRating = mStats != null ? mStats.gunRating() : 0;
@@ -499,16 +631,33 @@ public class GunController {
         return asRating > mainRating ? antiSurferGun.getLabel() : mainGun.getLabel();
     }
 
-    /** One virtual gun's record against one opponent over the battle. */
+    /**
+     * One virtual gun's record against one opponent over the battle: both a GUN-1 decayed
+     * live rating (100-shot half-life, for this battle's gun choice) and the undecayed
+     * lifetime totals the profile folds (see {@link #virtualGunScores}).
+     */
     private static class GunStats {
-        /** Virtual bullets scored. */
-        int shotsFired = 0;
-        /** The sum of their weighted hit scores (see scoreVirtualGuns). */
-        double shotsHit = 0.0;
+        /** GUN-1: each shot's weight relative to the next one; a half-life of 100 shots. */
+        static final double DECAY = Math.pow(0.5, 1.0 / 100.0);
 
-        /** Weighted hits per virtual bullet; 0 before the first. */
+        /** GUN-1: the decayed shot count and weighted-hit sum {@link #gunRating} reads. */
+        double shotsFired = 0.0;
+        double shotsHit = 0.0;
+        /** The plain lifetime totals for the battle, what {@link #virtualGunScores} reads. */
+        double lifetimeFired = 0.0;
+        double lifetimeHit = 0.0;
+
+        /** Records one virtual bullet's weighted hit score, decaying what came before it. */
+        void record(double hitScore) {
+            shotsFired = shotsFired * DECAY + 1.0;
+            shotsHit = shotsHit * DECAY + hitScore;
+            lifetimeFired += 1.0;
+            lifetimeHit += hitScore;
+        }
+
+        /** GUN-1's live, decayed weighted hits per virtual bullet; 0 before the first. */
         double gunRating() {
-            return shotsFired == 0 ? 0.0 : shotsHit / (double) shotsFired;
+            return shotsFired == 0 ? 0.0 : shotsHit / shotsFired;
         }
     }
 }

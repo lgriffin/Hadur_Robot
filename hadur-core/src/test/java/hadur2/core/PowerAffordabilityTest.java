@@ -2,9 +2,13 @@ package hadur2.core;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import hadur2.core.memory.OpponentProfile;
+import hadur2.core.memory.ProfileLibrary;
+import hadur2.core.memory.Profiles;
 import hadur2.core.model.BotEvent;
 import hadur2.core.model.BotInput;
 import hadur2.core.model.BotOrders;
+import hadur2.core.port.MemoryProfileStore;
 import hadur2.core.port.Telemetry;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -14,7 +18,9 @@ import org.junit.jupiter.api.Test;
 /**
  * END-3 and RAM-1 must never make an otherwise fireable shot unaffordable: a bug found by
  * review on PR #61 had each override replace the gun's chosen power outright, so a low-energy
- * robot that could have fired its own small choice fired nothing at all.
+ * robot that could have fired its own small choice fired nothing at all. POW-5 (R3) is a cap,
+ * not a raise, so it needs no such guard of its own, but it must still compose correctly with
+ * the rules that do.
  */
 class PowerAffordabilityTest {
 
@@ -60,5 +66,24 @@ class PowerAffordabilityTest {
         }
         assertTrue(last.firePower() > 0, "a shot the gun could already afford must still fire");
         assertTrue(last.firePower() < 3.0, "power 3.0 is unaffordable at 2.5 energy");
+    }
+
+    @Test
+    @Tag("POW-5")
+    @DisplayName("POW-5 caps a long-range shot against a T3 gun to 1.7, and it still fires")
+    void t3CapStillFires() {
+        // A profile whose normalised hit rate on us reads T3 (>= 7%, 2000 waves for a narrow
+        // margin) and whose own virtual ratings are unremarkable, so no full-power rule
+        // (POW-1..4) fires alongside POW-5's cap.
+        OpponentProfile p = Profiles.sample("enemy", 5, 0, 0);
+        Profiles.tiers(p, 0.10, 0.05, 0.05);
+        MemoryProfileStore store = new MemoryProfileStore(200_000);
+        new ProfileLibrary(store).save(p);
+        HadurCore core = new HadurCore(800, 600, 1, Telemetry.NONE, store);
+        core.newRound(0);
+        core.tick(input(1, 80, 0.0005, scan(0.2, 600, 80, 0, 0)));
+        BotOrders o = core.tick(input(2, 80, 0.0005, scan(0.2, 600, 80, 0, 0)));
+        assertTrue(o.firePower() > 0, "the capped shot must still fire");
+        assertTrue(o.firePower() <= 1.7 + 1e-9, "POW-5 caps it at 1.7: was " + o.firePower());
     }
 }
