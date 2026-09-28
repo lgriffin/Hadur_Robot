@@ -74,6 +74,11 @@ EARS requirements from the Hadur 2 technical direction. This file is the source 
 | END-3 | Event | When the enemy's energy is at most a power-3 bullet's damage, the gun shall fire the least power that still kills on a hit, whatever power the gun or another rule chose. | R2 |
 | RAM-1 | State | While the enemy's own speed toward us is 6 px/tick or more for ten scans running, within 250 px, the core shall fire up to power 3.0, capped and gated as the other full-power rules are, and reverse the no-wave orbit's chosen side. | R2 |
 | WAVE-3 | Unwanted | If a shot is found on the same interval as an inferred wall hit, then the movement wave it becomes shall be marked uncertain and surfed at half weight. | R2 |
+| GUN-1 | State | While a virtual gun's rating is beyond the margin of error of every other gun's, the gun shall switch to it; each shot shall decay every virtual gun's rating with a 100-shot half-life. | R3 |
+| GUN-2 | Ubiquitous | The anti-surfer gun's features shall include ticks since the target's last velocity reversal, its 20-tick displacement and its orbit-direction changes over the last 40 ticks. | R3 |
+| GUN-3 | Ubiquitous | The anti-surfer gun shall aim with the target's precise escape angle and a kernel no narrower than the target's angular half-width. | R3 |
+| GUN-4 | State | While the live movement tier is M2 or M3, or the live gun verdict already names a switch, the gun shall rate a third gun trained on virtual and real waves and fire it when it rates highest. | R3 |
+| POW-5 | State | While the enemy's gun tier is T3 and their distance exceeds 500 px, the gun shall fire no more than 1.7 unless a full-power rule applies. | R3 |
 
 Stage is where the requirement is first implemented: S0–S7 in the Hadur 2 stage plan, M0–M6
 in the melee extension plan ("Hadur 2 — Melee Extension Plan", 27 Sep 2026).
@@ -346,6 +351,93 @@ top 10 but adds up over the ~900 bots below rank 300.
   sample bots) or T3 (the top 10 and Shadow) — the gap `Tiers.java`'s own javadoc already
   flagged and issue #53 tracks. It lands in a follow-up once that bench exists, rather than
   guessing bounds from no data in between.
+
+R3 (part of the rumble climb plan) is a gun that hits surfers: the two guns' virtual ratings
+never forgot a battle's earlier movement, rated within 1-3 points of each other on the bench,
+and carried no surfer-specific signal, so a target that changed its movement mid-battle kept
+whichever gun won the opening exchange.
+
+- **GUN-1** reworks `GunController.GunStats` from a flat lifetime average into an
+  exponentially decayed one: each virtual bullet multiplies what came before it by
+  `0.5^(1/100)` before adding the new one, a 100-shot half-life, so a movement change
+  20-30 shots old still dominates the rating while one from round 1 has faded away. The
+  choice among guns still only changes once the best one clears every other candidate's
+  Agresti-Coull margin (DIAL-1) - reusing `GunController.margin`, the same construction
+  `PowerPolicy` and `Tiers` use - so the decay makes the rating responsive without making the
+  choice flap on noise. This also unifies gun selection: the old "1.20's rule" fallback (no
+  opening set, strictly higher wins, no margin) is now the same margin-gated comparison as
+  the opening's live override, through one method, `GunController.liveVerdict`.
+  `virtualGunScores`, what folds into the profile across battles (MEM-2, the movement tier's
+  evidence), keeps a separate, undecayed lifetime total on each `GunStats`: GUN-1's half-life
+  is about this battle's live choice, and has no meaning read back across future battles.
+  `GunControllerTest` and `GunOpeningTest` cover the decay and the margin-gated switch.
+- **GUN-2** adds three features to `AntiSurferFormula` (9 to 12 dimensions, weight 2 each):
+  ticks since the target's last velocity reversal (distinct from the existing
+  `targetVchangeTime`, which resets on any speed change, not only a direction change), its
+  20-tick displacement (already computed for the main gun's formula, `Wave.targetDl20t`, and
+  simply reused here) and how many times its orbit direction flipped over the last 40 ticks.
+  `HadurCore.onScan` tracks the two new raw values the same way it already tracks
+  `enemyVchangeTime` and the 8/20/40-tick displacements: a tick counter reset on a sign flip,
+  and a 40-scan ring buffer of orbit directions counted for reversals, both set onto the gun
+  wave (`Wave.setTicksSinceReversal`, `Wave.setOrbitChanges40`) before the anti-surfer views
+  read them. A gun seed sample recorded before R3 has no data for the three new features (the
+  stored sample format is 13 values, unchanged); `GunController.seed` seeds them at
+  `AntiSurferFormula.NEUTRAL_NEW_FEATURE` (0.5, the middle of each feature's [0, 1] range)
+  rather than guessing, so an old seed still loads without corrupting the space it aims in.
+  `AntiSurferFormulaTest` covers the three features' scaling and the seed padding.
+- **GUN-3** fixes two things in `AntiSurferGun.aim`'s kernel search, which the plan doc called
+  out as "the 59-angle grid never aims between two narrow peaks": the 59-angle test grid used
+  to span the classic, symmetric maximum escape angle (`asin(8 / bulletSpeed)`), even though
+  each neighbour's own firing angle is already computed from the target's precise, generally
+  asymmetric escape angle (`Wave.preciseEscapeAngle`) - so a neighbour whose true angle fell
+  outside the classic bound could never be the chosen angle, no matter how many neighbours
+  agreed with it. `DiaUtils.generateFiringAngles(int, double, double)` is a new overload that
+  spans `[-preciseEscapeAngle(false), preciseEscapeAngle(true)]` instead, so the grid always
+  covers every neighbour's real angle. Second, the Gaussian kernel's bandwidth is now
+  explicitly floored at the target's own angular half-width
+  (`DiaUtils.botWidthAimAngle(distance)`) rather than only implicitly wider than it through
+  the existing "twice the half-width" multiplier - the same floor GUN-4's hybrid gun shares,
+  since it reuses this gun's aim mechanics. `AntiSurferGunTest` covers the asymmetric grid and
+  the bandwidth floor as explicit invariants (a property test), not only as a side effect of
+  today's constants.
+- **GUN-4** adds `HybridGun`, a third gun rated alongside the main and anti-surfer guns and
+  fired when it rates highest. It shares GUN-2's anti-surfer feature space and GUN-3's aim
+  mechanics (precise-escape-angle guess factors, the same widened kernel), but as one
+  long-memory view (`HybridGun.createView`, capped at 6,000 points, k 30 at one neighbour per
+  8) rather than the anti-surfer gun's four fast-forgetting ones, and it is rated from both
+  real and virtual waves exactly as the anti-surfer gun already is (`GunController` always
+  fires and scores its virtual bullet in `fireVirtualBullets`/`onWaveBreak`, gate open or
+  not, so it already has a history by the time the gate opens). The gate itself
+  (`GunController.hybridGateOpen`) is open while the live movement tier is M2 or M3 - read
+  from the main and anti-surfer guns' own decayed ratings against the same bounds
+  `Tiers.move` uses (duplicated rather than shared: the gun package must not depend on
+  `hadur2.core.memory`, `ArchitectureTest.memoryIsLeaf`, so this reads `GunController`'s own
+  `margin()` instead of building a `memory.Estimate`) - or while the plain main-vs-anti-surfer
+  live verdict already favours a switch. Once open, the hybrid gun joins GUN-1's three-way,
+  margin-gated `liveVerdict` like any other candidate. `GunOpeningTest` and `GunControllerTest`
+  cover the gate and the three-way choice. **Judgement call**: the plan text left "trained on
+  virtual and real waves" and "a third gun" underspecified; this reading was chosen because it
+  reuses proven GUN-2/GUN-3 mechanics end to end rather than inventing a fourth aiming
+  algorithm, and because gating it on the same live evidence GUN-1 already computes needs no
+  new bookkeeping in `HadurCore`. It is a genuine third vote, not a relabelling of the other
+  two: its own long-memory view, its own decayed rating, its own gate.
+- **POW-5** is a straightforward addition to `PowerPolicy`, but the plan's framing ("already
+  there" alongside POW-3/POW-4/RAM-1/END-3) did not match this repository once `origin/master`
+  was fetched: R2 (PR #61) turned out to already be merged there with exactly that shape, so
+  POW-5 slots in beside it as intended. It is a cap, not a `Reason`, for the same reason END-3
+  is: `PowerPolicy.capPower` can only lower the gun's own choice (`Math.min`), so
+  `HadurCore.onScan` calls it first, before `PowerPolicy.reason`/`power`, and any full-power
+  rule's `Math.max` against the gun's choice overrides the cap afterwards exactly as "unless a
+  full-power rule applies" asks - the same never-worsen shape R2's Qodo review already fixed
+  POW-3/POW-4/END-3/RAM-1 into, so POW-5 is built into that shape from the start rather than
+  needing the same fix later. `PowerPolicyTest` covers the cap and the override, and
+  `PowerAffordabilityTest` that it never makes an affordable shot unaffordable (capping only
+  ever lowers the energy a shot spends).
+
+The gate not run for R3 is the multi-hour paired A/B bench (top-10 + ranks 31-150, cold,
+solo) the plan artifact calls for; the numeric validation it would give - hit rate +1.0pt
+against BeepBoop/ScalarR/Diamond/DrussGT, top-10 mean 45.1% to 48%+, ranks 31-150 +1.5pt, tick
+p95 at most 2.0ms - is a follow-up, as it was for R0 through R2.
 
 ## Retired requirements
 

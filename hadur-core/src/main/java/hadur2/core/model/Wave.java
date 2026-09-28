@@ -139,6 +139,19 @@ public class Wave implements Cloneable {
     public double targetDl20t;
     /** Pixels between the target's position at fire time and 40 ticks earlier. */
     public double targetDl40t;
+    /**
+     * GUN-2: how many scans in a row the target's velocity had kept the same sign (its
+     * direction along its heading) at fire time; 0 right after a reversal. Distinct from
+     * {@link #targetVchangeTime}, which resets on any speed change of more than 0.5 px/tick,
+     * not only a change of direction.
+     */
+    public long targetTicksSinceReversal;
+    /**
+     * GUN-2: how many times the target's orbit direction around the source flipped over the
+     * 40 scans up to and including fire time (clockwise to counter-clockwise or back); a
+     * surfer that keeps changing which way it orbits scores high here.
+     */
+    public int targetOrbitChanges40;
     /** The target's energy at fire time. */
     public double targetEnergy;
     /** The source's energy at fire time. */
@@ -391,6 +404,10 @@ public class Wave implements Cloneable {
     public Wave setDistanceLast20Ticks(double d) { this.targetDl20t = d; return this; }
     /** Sets {@link #targetDl40t}, pixels. */
     public Wave setDistanceLast40Ticks(double d) { this.targetDl40t = d; return this; }
+    /** GUN-2: sets {@link #targetTicksSinceReversal}, scans. */
+    public Wave setTicksSinceReversal(long t) { this.targetTicksSinceReversal = t; return this; }
+    /** GUN-2: sets {@link #targetOrbitChanges40}. */
+    public Wave setOrbitChanges40(int n) { this.targetOrbitChanges40 = n; return this; }
     /** Sets {@link #targetEnergy}. */
     public Wave setTargetEnergy(double e) { this.targetEnergy = e; return this; }
     /** Sets {@link #sourceEnergy}. */
@@ -889,6 +906,8 @@ public class Wave implements Cloneable {
         w.targetDl8t = targetDl8t;
         w.targetDl20t = targetDl20t;
         w.targetDl40t = targetDl40t;
+        w.targetTicksSinceReversal = targetTicksSinceReversal;
+        w.targetOrbitChanges40 = targetOrbitChanges40;
         w.targetEnergy = targetEnergy;
         w.sourceEnergy = sourceEnergy;
         w.altWave = altWave;

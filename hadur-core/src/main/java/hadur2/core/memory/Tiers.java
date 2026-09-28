@@ -118,8 +118,19 @@ public final class Tiers {
      * @return the movement tier, or {@link Move#UNKNOWN} while either rating's margin is over 3 points
      */
     public static Move move(OpponentProfile p) {
-        Estimate main = mainGunRating(p);
-        Estimate antiSurfer = antiSurferRating(p);
+        return move(mainGunRating(p), antiSurferRating(p));
+    }
+
+    /**
+     * As {@link #move(OpponentProfile)}, from the main and anti-surfer ratings directly
+     * rather than a profile: GUN-4 reads the live, in-battle ratings this way, since a
+     * battle's own virtual guns have no profile to read them from.
+     *
+     * @param main the main gun's rating
+     * @param antiSurfer the anti-surfer gun's rating, measured the same way
+     * @return the movement tier, or {@link Move#UNKNOWN} while either rating's margin is over 3 points
+     */
+    public static Move move(Estimate main, Estimate antiSurfer) {
         // DIAL-1: both ratings must be certain enough before a tier is named.
         if (!main.within(MAX_MARGIN) || !antiSurfer.within(MAX_MARGIN)) return Move.UNKNOWN;
         if (main.value() >= M0_RATING) return Move.M0;

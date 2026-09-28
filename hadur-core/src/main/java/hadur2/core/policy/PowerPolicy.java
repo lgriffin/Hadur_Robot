@@ -36,6 +36,22 @@ import hadur2.core.physics.Rules;
  * {@link #MIN_OUR_ENERGY} or less: there the gun's power-down in a losing energy war stands,
  * because a full-power miss could leave us disabled.</p>
  *
+ * <p>POW-5 is the opposite kind of rule, a cap rather than a raise: while the enemy's gun
+ * tier is T3 and they are beyond {@link #POW_5_RANGE} px, cap the shot at
+ * {@link #POW_5_CAP} unless a full-power rule (POW-1 to POW-4, or RAM-1) already applies. A
+ * T3 gun is the opposite risk from POW-1/POW-3's weak guns: it is good enough to punish a
+ * heavier bullet's telegraphed extra turn time at long range, where the extra damage is
+ * worth less than the extra exposure, so the cap trades damage for staying less predictable
+ * rather than the other rules' trade the other way.</p>
+ *
+ * <p>POW-5 is a cap, not a {@link Reason}, for the same reason END-3 is: it can only lower
+ * what was chosen, never raise it, so it is applied before the full-power rules
+ * ({@code HadurCore} calls {@link #capPower} on the gun's own choice, then {@link #reason}
+ * and {@link #power} on the result) and a full-power rule that fires afterwards overrides it
+ * exactly as "unless a full-power rule applies" asks — {@link #power}'s {@code Math.max}
+ * against the gun's choice already ensures a full-power rule never ends up capped by POW-5
+ * to something lower than what it or the gun would have chosen on their own.</p>
+ *
  * <p>END-3 is the opposite kind of override, so it is a separate calculation
  * ({@link #leastPowerThatKills}) rather than a {@link Reason}: while their energy is at most
  * a power-3 bullet's damage, the fight is already decided by whichever power is fired, so the
@@ -70,6 +86,10 @@ public final class PowerPolicy {
      * unrealistic windows) yet never fire in a real battle.
      */
     public static final double POW_4_MARGIN = 0.10;
+    /** POW-5: their distance must exceed this, in px, for the cap to apply. */
+    public static final double POW_5_RANGE = 500;
+    /** POW-5: the power the shot is capped at against a T3 gun beyond {@link #POW_5_RANGE}. */
+    public static final double POW_5_CAP = 1.7;
 
     /**
      * Why a shot got the power it did: {@code GUN} when no rule applies and the gun's own
@@ -116,6 +136,25 @@ public final class PowerPolicy {
             return Reason.POW_4;
         }
         return Reason.GUN;
+    }
+
+    /**
+     * POW-5: caps {@code gunPower} at {@link #POW_5_CAP} while {@code gunTier} is T3 and
+     * {@code distance} exceeds {@link #POW_5_RANGE}, otherwise returns it unchanged. Never
+     * raises it, so a cheaper shot the gun already chose is never made more expensive; a
+     * caller applies this before {@link #reason}/{@link #power} so a full-power rule can
+     * still override it upward afterwards ("unless a full-power rule applies").
+     *
+     * @param gunTier the profile's tier for their gun; {@code UNKNOWN} unless its margin is narrow
+     * @param distance their distance at the scan, in px
+     * @param gunPower the power the gun (or an earlier step) chose, in energy
+     * @return {@code gunPower}, or {@link #POW_5_CAP} if that is lower and the gate is met
+     */
+    public static double capPower(Tiers.Gun gunTier, double distance, double gunPower) {
+        if (gunTier == Tiers.Gun.T3 && distance > POW_5_RANGE) {
+            return Math.min(gunPower, POW_5_CAP);
+        }
+        return gunPower;
     }
 
     /**

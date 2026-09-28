@@ -268,6 +268,18 @@ public final class HadurCore {
     private long enemyVchangeTime;
     private long myVchangeTime;
     /**
+     * GUN-2: scans since the enemy's velocity last reversed sign (its direction along its
+     * heading flipped), distinct from {@link #enemyVchangeTime} above, which resets on any
+     * speed change over 0.5 px/tick, not only a direction change.
+     */
+    private long enemyTicksSinceReversal;
+    /**
+     * GUN-2: the enemy's orbit direction (+1 or -1, as {@link hadur2.core.model.Wave#orbitDirection}
+     * computes it) at each of the last 40 scans, oldest first, for counting direction
+     * reversals over that window.
+     */
+    private final java.util.ArrayDeque<Integer> enemyOrbitHistory = new java.util.ArrayDeque<>(40);
+    /**
      * The power of the shot the gun is turning to aim, taken from the previous tick's gun
      * wave. The aim depends on bullet speed, so the shot fired is the one that was aimed.
      */
@@ -440,6 +452,8 @@ public final class HadurCore {
         lastEnemyLocation = null;
         enemyVelocitySign = 1;
         myVelocitySign = 1;
+        enemyTicksSinceReversal = 0;
+        enemyOrbitHistory.clear();
         prevEnemyVelocity = 0;
         prevMyVelocity = 0;
         enemyVchangeTime = 0;
@@ -1166,8 +1180,28 @@ public final class HadurCore {
         enemyStateLog.addState(enemyState);
 
         // A stopped robot keeps the direction it had, so its guess factors keep their side.
+        int prevEnemySign = enemyVelocitySign;
         if (enemyVel != 0) enemyVelocitySign = enemyVel > 0 ? 1 : -1;
         if (myVel != 0) myVelocitySign = myVel > 0 ? 1 : -1;
+
+        // GUN-2: a reversal is the sign itself flipping, not merely a speed change.
+        if (enemyVelocitySign != prevEnemySign) enemyTicksSinceReversal = 0;
+        else enemyTicksSinceReversal++;
+
+        // GUN-2: the enemy's orbit direction this scan, the same formula Wave's constructor
+        // uses, tracked over the last 40 scans to count how often it flips.
+        double enemyEffectiveHeading = Angles.normalAbsoluteAngle(
+            enemyHead + (enemyVelocitySign == 1 ? 0 : Math.PI));
+        int enemyOrbitDirection = Angles.normalRelativeAngle(
+            enemyEffectiveHeading - absBearing) < 0 ? -1 : 1;
+        if (enemyOrbitHistory.size() == 40) enemyOrbitHistory.removeFirst();
+        enemyOrbitHistory.addLast(enemyOrbitDirection);
+        int enemyOrbitChanges40 = 0;
+        Integer previousOrbit = null;
+        for (int dir : enemyOrbitHistory) {
+            if (previousOrbit != null && dir != previousOrbit) enemyOrbitChanges40++;
+            previousOrbit = dir;
+        }
 
         double enemyAccel = DiaUtils.accel(enemyVel, prevEnemyVelocity);
         double myAccel = DiaUtils.accel(myVel, prevMyVelocity);
@@ -1189,6 +1223,9 @@ public final class HadurCore {
 
         double bulletPower = gunController.calculateBulletPower(
             e.distance(), in.energy(), e.energy(), in.others());
+        // POW-5: cap the shot against a T3 gun beyond 500 px, unless a full-power rule below
+        // applies - applied first so POW-1..4's Math.max can still override it upward.
+        bulletPower = PowerPolicy.capPower(opening.gunTier(), e.distance(), bulletPower);
         // POW-1, POW-2, POW-3, POW-4: full power where the profile, the range or this
         // battle's rates say it pays.
         PowerPolicy.Reason why = PowerPolicy.reason(opening.gunTier(), e.energy(), in.energy(),
@@ -1238,6 +1275,8 @@ public final class HadurCore {
             .setDistanceLast8Ticks(eDl8)
             .setDistanceLast20Ticks(eDl20)
             .setDistanceLast40Ticks(eDl40)
+            .setTicksSinceReversal(enemyTicksSinceReversal)
+            .setOrbitChanges40(enemyOrbitChanges40)
             .setTargetEnergy(e.energy())
             .setSourceEnergy(in.energy())
             .setGunHeat(in.gunHeat())
