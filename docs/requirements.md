@@ -244,9 +244,15 @@ on an older jar after a profile format changes underneath them.
   (or larger) than the bench machine's; `TickBudgetTest` covers the learn-once, hold-for-the-
   battle behaviour. It needed no change outside `TickBudget` — the adapter still reports
   ticks and skips exactly as before, and the core simply starts trusting a better number.
-- **TIME-4** and **TIME-5** are not yet implemented; they touch the `hadur-robot` adapter
-  (`Hadur.java`'s round-end/battle-end save calls and its first-round setup) rather than the
-  core alone.
+- **TIME-4** caps a round-end checkpoint's cost: `ProfileLibrary.saveStatsOnly` persists the
+  stats alone (the caller's own seeds stay in memory, untouched), and `HadurCore.checkpoint`
+  calls it for nine round-end checkpoints out of ten, writing the full profile (seeds
+  included) only on the tenth and always at battle end; `CoreMemoryTest.checkpointsCapSeedWrites`
+  covers the schedule.
+- **TIME-5** runs one tick through a throwaway core and guard, built and discarded with no
+  store and no telemetry, before the real one's first round in `Hadur.java`'s `run()`; the
+  point is only to pay class-loading and JIT warm-up costs once, in the JVM, ahead of the
+  real first tick. `HadurWarmUpTest` checks it runs cleanly for a couple of battlefield sizes.
 - **MEM-6** turned out to already hold: `ProfileLibrary.evictSeeds` never returns short of
   its target unless it has already stripped every other profile with seeds, and whenever it
   reaches its target the hard-quota check (100% of quota) is guaranteed to pass because its
@@ -254,8 +260,11 @@ on an older jar after a profile format changes underneath them.
   write is skipped only once nothing more can be evicted from anyone; no code change was
   needed, only a test pinning the invariant (`ProfileLibraryTest.skipOnlyAfterEveryonesSeedsAreGone`)
   and a javadoc explaining why.
-- **MEM-7** is not yet implemented; it needs a codec entry point that can write the previous
-  release's format, not just read it.
+- **MEM-7** adds `ProfileCodec.encode(profile, version)`, which writes any version from
+  `OLDEST_VERSION` to the current one, leaving out a field (today, only the normalised-hits
+  group) a target version never had, exactly as that version's own encoder would have;
+  `ProfileLibrary` and every existing caller still default to the current version, so this
+  is an entry point a future migration can call, not a change to what gets written today.
 - **DIAL-3** found one real gap: `SeedTrust.diverges` compared live and profile margins
   without a finiteness guard, so a non-finite margin (unreachable today, since `Estimate`'s
   margin is always finite by construction — see `EstimateTest.marginIsAlwaysFinite`) would
