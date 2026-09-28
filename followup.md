@@ -1,6 +1,36 @@
 # Follow-ups
 
-Open items from the Hadur 2 stages, newest stage first.
+Open items from the Hadur 2 stages, newest stage first. The open ones are tracked as
+[GitHub issues](https://github.com/lgriffin/Hadur_Robot/issues) (#44 to #56, opened
+2026-09-28); the notes below are the detail behind them.
+
+## Release 3.0 and the melee extension (M0 to M6)
+
+- **Reference APS 60 is not met** (#44). Four 10-seed runs of the M6 builds range 52.7 to
+  54.6 (docs/bench/m6-gates.md), and the weight sweep found the movement at a local
+  optimum. The next levers are the radar (turn it with the gun and body, an arc sweep; the
+  worst scan gap is still 10 to 11 ticks against M2's 8) and the field gun's bullet damage.
+- **The hand-off gate needs a warm bench** (#45). M5 won 31% of hand-off duels against 57%
+  in clean 1v1, but the bench is cold, so the survivor's 1v1 profile is never handed over.
+- **The MeleeRumble 2,000-battle gate** waits on the ratings (#46). 3.0 replaced 2.2 in both
+  rumbles on 2026-09-28 (docs/rumble-submission.md).
+- **No `v2.2` or `v3.0` tag** (#47). Actions runs still fail before any step, so both
+  releases were built and verified locally, and gh-pages is republished by hand with
+  `site/build.sh --publish`.
+- **Skipped turns follow a round win in melee** (#48): the melee profile write at round end,
+  the same cause as the duel's round-end skips (S6 below).
+- **Code findings from the Javadoc pass** (#50, #51, #52): possible play bugs (NaN margins,
+  a stale surf neighbour cache, `is1v1` fixed at battle start), telemetry the round record
+  overwrites in melee, and edge cases and dead code. None was fixed by the pass, which
+  changed comments only. The broken `{@link #shots()}` in `melee/EnemyTracker` it also
+  found was fixed at M6, when doclint started covering the melee packages.
+- **The duel gun is the weak spot against strong surfers** (#49). On the 2.2 top-10 cold
+  bench (mean 45.1%), BeepBoop, ScalarR, Diamond and DrussGT score 19 to 39%, with our hit
+  rate 5.7 to 7.8% against them. No warm top-10 run has been done yet.
+- **Scoring virtual bullets along the route costs about 3 APS** in behaviour, not time
+  (guessed bullet paths hem Hadur in), so the mover scores destinations only (M4).
+- **Four benches in parallel on four cores inflate skipped turns badly;** compare variants
+  under equal load, solo, at 10 seeds (the same jar gave 51.3 and 53.7 APS on 5).
 
 ## S7
 
@@ -15,7 +45,7 @@ Open items from the Hadur 2 stages, newest stage first.
   PRs #30 and #31 failed within seconds, before any step), so 2.2 was built and checked
   with a local `mvn -B verify` instead. Pushing `v2.2` once Actions works would publish
   the same source as a GitHub release; the rumble entry does not need it.
-- **No mutation testing.** The plan's testing layers named PIT; it was never set up
+- **No mutation testing** (#56). The plan's testing layers named PIT; it was never set up
   (docs/testing.md).
 - **No new bench for 2.2.** The only code change after S6 is the version number, so the S6
   benches stand for 2.2.
@@ -30,7 +60,7 @@ Open items from the Hadur 2 stages, newest stage first.
   more than the profile says. Its candidates are every second tick along both orbits; a
   finer set, or scoring the second wave for more than the best three, may change the
   result, but costs time the budget does not have at the allowance assumed.
-- **The allowance is assumed, not read.** Robocode does not tell a robot its CPU constant;
+- **The allowance is assumed, not read** (#54). Robocode does not tell a robot its CPU constant;
   3 ms is the bench host's. A slower rumble client would give more time, a faster one less,
   and TIME-1 would shed later or sooner than it should. Hadur could estimate the constant
   from the first skipped turn, as some rumble bots do.
@@ -38,7 +68,7 @@ Open items from the Hadur 2 stages, newest stage first.
   avoid (single turns of 20-50 ms), which count as skipped turns and hold a level for the
   rest of the round. A bench on a quiet host would say how often the core itself runs over
   budget.
-- **MOVE-2 has no measurable effect yet.** Cold it never fires, by design: a stranger has
+- **MOVE-2 has no measurable effect yet** (#55). Cold it never fires, by design: a stranger has
   no baseline. Warm it fired 8 times over 5 battles against Shadow (all three steps in
   battles 2 and 3), and the warm bench scored 54.6% +- 6.0 with it and 55.2% +- 3.8 with it
   switched off, their hit rate 8.3% both ways (docs/bench/s6-2.1-warm.md,
@@ -46,7 +76,7 @@ Open items from the Hadur 2 stages, newest stage first.
   within a battle: the profile's rate averages whole battles, cold start included, while
   the live window is the latest 100 waves. A baseline taken from the same part of past
   battles (waves 100 on) would be fairer.
-- **Skipped turns are not zero,** which was S6's gate: 72 over the cold bench (26 against
+- **Skipped turns are not zero** (#48), which was S6's gate: 72 over the cold bench (26 against
   Shadow, 5 to 14 per sample bot), against 174 at S5 on a stalled host and 15 at S3. Half
   fall on the turn a round ends, when the round record and the profile checkpoint are
   written; the rest are scattered, with turn p95 at 1.5 ms of the 3 ms allowance, which
@@ -91,7 +121,7 @@ Open items from the Hadur 2 stages, newest stage first.
 
 ## S4
 
-- **T1 and T2 are uncalibrated.** The gun-tier bounds (normalised 2, 4.5 and 7%) were set so
+- **T1 and T2 are uncalibrated** (#53). The gun-tier bounds (normalised 2, 4.5 and 7%) were set so
   the sample bots read T0 and Shadow T3. No bench opponent falls in T1 or T2 yet; bench the
   RoboRumble top 10 warm to place them.
 - **No warm gain against Shadow yet.** Warm 45.0% ± 10.3 against cold 44.3% ± 5.5. The
@@ -147,9 +177,9 @@ Open items from the Hadur 2 stages, newest stage first.
 - **Opponent stats are not used for much.** `OpponentStats` classifies movement and gun
   type, but only the damage a robot has done to Hadur feeds a decision (the target
   selector, when Hadur is low). Profiles in S3 could feed them.
-- **No per-tick budget in melee.** The mover scores 108 points against every opponent each
+- **No per-tick budget in melee** (#54). The mover scores 108 points against every opponent each
   tick; cheap at 10 robots, but the S6 tick budget (TIME-1/2) should cover melee too.
-- **The melee bench reports places and score share only.** It does not collect Hadur's
+- **The melee bench reports places and score share only** (#51). It does not collect Hadur's
   R records per battle as the 1v1 bench does.
 
 ## S2
@@ -171,7 +201,7 @@ Open items from the Hadur 2 stages, newest stage first.
 
 - **ProGuard dropped.** 1.x shrank the robot jar with ProGuard; 2.0 ships the shaded jar
   unshrunk (about 100 KB). Revisit if RoboRumble size matters.
-- **The adapter has no unit tests of its own.** It is covered end to end instead: the replay
+- **The adapter has no unit tests of its own** (#56). It is covered end to end instead: the replay
   fixtures are recorded from the adapter in the real engine, and the bench runs it. A fake
   `AdvancedRobot` harness could test `NaN` handling directly.
 - **Replay fixtures pin behaviour.** Any change meant to alter Hadur's play must re-record

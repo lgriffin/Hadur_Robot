@@ -33,6 +33,8 @@ DOCS = [
     ("docs/bullet-shielding.md", "bullet-shielding.html", "Bullet shielding"),
     ("docs/requirements.md", "requirements-notes.html", "Requirement readings"),
     ("docs/rumble-submission.md", "rumble-submission.html", "Rumble entry"),
+    ("docs/releases/v3.0.md", "release-3.0.html", "Release 3.0"),
+    ("followup.md", "followup.html", "Follow-ups"),
 ]
 
 ID = r"[A-Z]+-\d+"

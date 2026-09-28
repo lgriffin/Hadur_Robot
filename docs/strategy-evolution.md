@@ -210,9 +210,10 @@ The plan's last gate, reference APS 60, is not met. The next levers are the rada
 
 Every EARS requirement is implemented and traced, and the staged plan is complete. What remains is measurement and tuning, not new requirements.
 
-Open items carried forward:
+Open items carried forward, each tracked as a [GitHub issue](https://github.com/lgriffin/Hadur_Robot/issues):
 
-- **Read the real rankings.** 2.2 is entered in both rumbles; once a few thousand battles are in, the rankings say more than the bench can.
+- **Read the real rankings.** 3.0 is entered in both rumbles (replacing 2.2); once a few thousand battles are in, the rankings say more than the bench can, and the MeleeRumble rating is the melee plan's last gate.
+- **Melee APS is short of 60.** The radar and a warm hand-off bench are the next levers (above).
 - **Skipped turns** are 72 per cold bench, not the zero S6 aimed for. Half fall on a round's last turn, when the profile checkpoint is written.
 - **MOVE-2 has not shown a gain.** Warm, it scored the same switched on or off. Its baseline averages whole battles, while the live window sees a gun that has already learned; a baseline from the same part of past battles would be fairer.
 - **Memory has not clearly paid off against Shadow.** S6's warm run (54.6%) is below its cold one (57.4%), within noise. The T1 and T2 bounds have no bench opponent in them yet, so they are uncalibrated.

@@ -58,7 +58,20 @@ Cold benches (no stored profile), 35 rounds × 5 seeds, mean ± 95% interval:
 | Five sample bots, rounds won | 872 / 875 | 875 / 875 |
 
 Sources: [S0](docs/bench/s0-baseline-1.20-cold.md) and [S6](docs/bench/s6-2.1-cold.md)
-bench reports. [The strategy evolution](docs/strategy-evolution.md) has every stage's figures.
+bench reports. 3.0 duels exactly as 2.2 does (the duel's sources are pinned).
+
+| Melee, cold, 1000x1000 | 2.2 | 3.0 (M6) |
+|---|---|---|
+| Reference field (9 established melee bots), APS | 37.9 | 52.7 to 54.6 |
+| Challenge field (9 sample bots), firsts of 100 | 33 | 72 |
+
+Source: the [M6 report](docs/bench/m6-gates.md). [The strategy evolution](docs/strategy-evolution.md)
+has every stage's figures.
+
+## Open work
+
+Follow-ups are tracked as [GitHub issues](https://github.com/lgriffin/Hadur_Robot/issues);
+[followup.md](followup.md) keeps the notes behind them, stage by stage.
 
 ## The plan
 
@@ -126,8 +139,8 @@ how to run them, and how to re-record the replay fixtures.
 
 Every class in the core and the adapter carries Javadoc that explains how it works, why,
 and which EARS requirements it implements, with the IDs cited next to the code that
-meets them. `mvn verify` runs doclint over it (a broken link or a wrong `@param` fails the
-build; the melee and posture packages join the check once the melee extension lands).
+meets them. `mvn verify` runs doclint over all of it, the melee and posture packages
+included (a broken link or a wrong `@param` fails the build).
 
 `site/build.sh` builds the docs site into `target/site-pages`: the Javadoc, a requirement
 map that lists for every EARS ID the classes that cite it and the tests tagged with it,
