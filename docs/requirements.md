@@ -60,6 +60,9 @@ EARS requirements from the Hadur 2 technical direction. This file is the source 
 | RES-4 | Unwanted | If the live hit-rate estimate diverges from the profile's by more than the margin of error, then the core shall decay the seed weight to zero within 20 waves. | S4 |
 | RES-5 | Ubiquitous | Every degradation and fault counter shall be included in the round statistics and the bench report. | S1 |
 | RES-6 | Ubiquitous | The core shall contain no use of unseeded randomness, threads, reflection, or file I/O. | S1 |
+| BENCH-1 | Ubiquitous | The bench report shall give an APS estimate as the stratum-weighted mean of score share over the rumble-sample set with a 95% interval. | R0 |
+| BENCH-2 | Event | When two robot jars are given, the bench shall run each seed with both and report the paired difference with its 95% interval. | R0 |
+| BENCH-3 | Ubiquitous | The bench shall report per opponent our hit rate, their hit rate, skipped turns, faults, round length and damage per round for both jars. | R0 |
 
 Stage is where the requirement is first implemented: S0–S7 in the Hadur 2 stage plan, M0–M6
 in the melee extension plan ("Hadur 2 — Melee Extension Plan", 27 Sep 2026).
@@ -207,6 +210,23 @@ which are due. They extend, and in places replace, the MELEE group from release 
   survivor's recorded shots that have not reached Hadur. Hand-off happens at the survivor's
   first duel scan, and only when the melee drove until the end (a melee vetoed by a sentry
   or a fault has been a duel all along).
+
+The BENCH group (R0, the rumble climb plan) governs `hadur-bench`, not the robot core, so it
+has no Cucumber feature or ArchUnit rule; it is covered by `hadur.bench.StatsTest` and the
+report renderers.
+
+- **BENCH-1's weight** is the opponent's line in `hadur-bench/rumble-sample.txt` (its
+  stratum's share of the live rumble population, split evenly across that stratum's
+  opponents in the set); an opponent with no weight or zero weight is left out of the
+  estimate, not counted as zero. The interval is a weighted variance across opponents'
+  means, so one noisy opponent's battles do not dominate it.
+- **BENCH-2's pairing** is by seed, not by battle order: `--baseline JAR` runs the same
+  `RANDOMSEED` against both jars back to back, so the paired difference cancels whatever the
+  seed itself varies (the opening, the field) rather than averaging two separately noisy
+  means.
+- **BENCH-3** was already met by the S1–S6 report tables (hit rates, skipped turns, faults,
+  fighting distance, damage per round); `ReportTest` pins those columns so a future report
+  change cannot drop what BENCH-3 promises without failing the build.
 
 ## Retired requirements
 

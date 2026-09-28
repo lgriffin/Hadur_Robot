@@ -217,6 +217,54 @@ final class Report {
         }
     }
 
+    /**
+     * BENCH-2: the paired score-share difference per opponent between the candidate and
+     * baseline jars, seed for seed, plus a BENCH-1 stratified APS estimate for each jar
+     * from the set's opponent weights (0 when the set carries none).
+     */
+    static String renderPaired(Map<Opponent, List<BattleResult>> candidate,
+                               Map<Opponent, List<BattleResult>> baseline,
+                               String candidateRobot, String baselineRobot) {
+        StringBuilder b = new StringBuilder();
+        b.append("\n## Paired A/B: ").append(candidateRobot).append(" vs ").append(baselineRobot)
+         .append("\n\n")
+         .append("Each row pairs the candidate's and baseline's battles at the same seed against "
+            + "the same opponent, so noise common to both (the seed's opening, the field) cancels "
+            + "out of the difference (BENCH-2). Positive is better for the candidate.\n\n")
+         .append("| Opponent | Candidate share | Baseline share | Paired diff (pp) |\n")
+         .append("|---|---|---|---|\n");
+        List<Stats> candidateStats = new ArrayList<>(), baselineStats = new ArrayList<>();
+        List<Double> weights = new ArrayList<>();
+        for (Opponent o : candidate.keySet()) {
+            List<Double> cand = shares(candidate.get(o));
+            List<Double> base = shares(baseline.getOrDefault(o, List.of()));
+            Stats cs = Stats.of(cand), bs = Stats.of(base);
+            candidateStats.add(cs);
+            baselineStats.add(bs);
+            weights.add(o.weight);
+            Stats diff = Stats.pairedDiff(cand, base);
+            b.append(String.format(Locale.ROOT, "| %s | %s | %s | %s |%n",
+                o.name, cs.percent(), bs.percent(),
+                diff.n == 0 ? "n/a" : String.format(Locale.ROOT, "%+.1f%s", diff.mean * 100,
+                    Double.isNaN(diff.halfWidth) ? "" : String.format(Locale.ROOT, " ± %.1f", diff.halfWidth * 100))));
+        }
+        boolean anyWeighted = weights.stream().anyMatch(w -> w != null && w > 0);
+        if (anyWeighted) {
+            Stats candAps = Stats.weighted(candidateStats, weights);
+            Stats baseAps = Stats.weighted(baselineStats, weights);
+            b.append(String.format(Locale.ROOT,
+                "%n**Stratified APS estimate (BENCH-1):** candidate %s, baseline %s.%n",
+                candAps.percent(), baseAps.percent()));
+        }
+        return b.toString();
+    }
+
+    private static List<Double> shares(List<BattleResult> rs) {
+        List<Double> out = new ArrayList<>();
+        for (BattleResult r : rs) if (r.ok) out.add(r.scoreShare());
+        return out;
+    }
+
     private static double sum(List<Double> xs) {
         double s = 0;
         for (double x : xs) s += x;
