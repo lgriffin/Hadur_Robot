@@ -10,10 +10,26 @@ same line go on both pages:
 [RoboRumble/Participants](https://robowiki.net/wiki/RoboRumble/Participants) for 1v1 and
 [RoboRumble/Participants/Melee](https://robowiki.net/wiki/RoboRumble/Participants/Melee).
 
-## Current entry
+## Current entry: 3.0
 
-Hadur 2.2 was entered in both leagues on 2026-09-27, with this line on both participants
-pages:
+Hadur 3.0 (the melee extension, M0 to M6) replaces 2.2 in both leagues. Its jar was
+uploaded to Google Drive on 2026-09-28, and this line replaces the 2.2 line on both
+participants pages:
+
+```
+hadur2.Hadur 3.0,https://drive.google.com/uc?export=download&id=1Pv1Czl_DGdxiGxkD4cdd4ze4clhOu2HY
+```
+
+The jar is a local build of the M6 branch, made with `mvn -B verify` because GitHub
+Actions was not running jobs, so the `v3.0` tag and GitHub release do not exist yet. Its
+SHA-256 is `d12cc9367eca841498e851c07bd41629bfc4e564300e4c9207cceeaafa75f63d`. The M6 gate
+asks for the MeleeRumble rating to settle at 2,000 battles or more; check the
+[MeleeRumble ranking](https://literumble.appspot.com/Rankings?game=meleerumble) once it
+has.
+
+## Previous entry: 2.2
+
+Hadur 2.2 was entered in both leagues on 2026-09-27 with this line:
 
 ```
 hadur2.Hadur 2.2,https://drive.google.com/uc?export=download&id=1Ws7gHc5ZTAuzsWHt969rPavhWBEjJ3zV
@@ -21,18 +37,6 @@ hadur2.Hadur 2.2,https://drive.google.com/uc?export=download&id=1Ws7gHc5ZTAuzsWH
 
 That jar is a local build of master at 60b18fe (the S7 merge), SHA-256
 `d9502bf441d9999ac282f0c9cd2f59b3aa738aea3d51155b8d5f94a1f1a9504a`.
-
-## Next entry: 3.0
-
-3.0 (the melee extension, M0 to M6) replaces 2.2 on both pages. Its jar,
-`hadur2.Hadur_3.0.jar`, is a local build made with `mvn -B verify` because GitHub Actions
-was not running jobs, so the `v3.0` tag and GitHub release do not exist yet. Its SHA-256 is
-`d12cc9367eca841498e851c07bd41629bfc4e564300e4c9207cceeaafa75f63d`. Upload it to
-Drive as in step 2 and replace the 2.2 line with
-`hadur2.Hadur 3.0,<the Drive link>` on both participants pages. The M6 gate asks for the
-MeleeRumble rating to settle at 2,000 battles or more; check the
-[MeleeRumble ranking](https://literumble.appspot.com/Rankings?game=meleerumble) once it
-has.
 
 ## 1. Get the jar
 
