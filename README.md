@@ -4,10 +4,10 @@
 a 1v1 duelist that remembers each opponent across battles, with a melee brain for
 free-for-alls, and a core that has no idea it is inside Robocode.
 
-**Release 2.2** is the finished Hadur 2 plan: the duelist of stages S0 to S6 plus the melee
-brain from 2.1. It is entered in both the RoboRumble (1v1) and the MeleeRumble as
-`hadur2.Hadur 2.2`. See the [release notes](docs/releases/v2.2.md) and
-[the entry and how it was made](docs/rumble-submission.md).
+**Release 3.0** is the Hadur 2 duelist of stages S0 to S6 with the melee brain rebuilt by
+the Melee Extension Plan (M0 to M6). It is built for both the RoboRumble (1v1) and the
+MeleeRumble as `hadur2.Hadur 3.0`. See the [release notes](docs/releases/v3.0.md) and
+[how to enter it](docs/rumble-submission.md).
 
 ## What it does
 
@@ -39,9 +39,13 @@ One on one (the duel):
 Every policy input carries a margin of error, and each policy keeps its conservative
 setting until the evidence is certain enough (DIAL-1).
 
-In melee (two or more opponents): a radar that sweeps toward whoever was seen longest
-ago, minimum-risk movement, circular and linear aim at the cheapest kill, and staying out
-of other robots' fights (MELEE-1..8). When one opponent is left, the duel takes over.
+In melee (two or more opponents, no sentry on the field): a gate that falls back to the
+duel on a sentry or a fault (GATE-1..5); a radar that keeps spinning with four or more
+alive (MRADAR-1, MRADAR-2); minimum-risk movement with virtual bullets from every recorded
+shot, clear of other robots' fights (MMOVE-1..5); a learning field gun that aims at every
+opponent at once, with an energy table and exact kill shots (MGUN-1..5); and a melee
+profile per opponent. When one opponent is left, its 1v1 profile and its shots in flight
+go to the duel (MMEM-1, MMEM-2).
 
 ## Results
 
@@ -75,6 +79,7 @@ tests that prove it.
 | S7 | Rewrite the docs to match the code; release 2.2 | done; melee kept (below) |
 | 2.1 | Melee brain in the core (MELEE-1..8), Java 11 target (REL-1) | released ([samples](docs/bench/melee-2.1-samples.md), [classic](docs/bench/melee-2.1-classic.md), [strong](docs/bench/melee-2.1-strong.md)) |
 | Shield | Bullet-shielding counter (SHIELD-1, SHIELD-2) | done ([Saguaro](docs/bench/shield-counter-saguaro.md), [notes](docs/bullet-shielding.md)) |
+| M0-M6 | Melee Extension Plan: fail-closed gate, sensing, minimum risk, field gun, melee memory, tuning; release 3.0 | done, final APS gate not met ([M6 report](docs/bench/m6-gates.md)) |
 
 The plan's S7 was "cut melee". Release 2.1 had already put melee in the core for the
 MeleeRumble, and it costs the duel nothing (it runs only while two or more opponents are
@@ -106,11 +111,11 @@ client can load it (REL-1).
 mvn verify                  # all modules: tests, traceability, robot jar
 ```
 
-The robot jar is `hadur-robot/target/hadur2.Hadur_2.2.jar`; drop it into a Robocode
+The robot jar is `hadur-robot/target/hadur2.Hadur_3.0.jar`; drop it into a Robocode
 `robots/` directory. The core is bundled inside it. Pushing a `v*` tag runs the release
 workflow: it builds, checks that the jar matches the tag, and publishes a GitHub release
 with `docs/releases/<tag>.md` as its notes. GitHub Actions was not running jobs when 2.2
-shipped, so 2.2 was built locally and has no tag or GitHub release yet.
+and 3.0 shipped, so both were built locally and have no tag or GitHub release yet.
 
 The tests are layered: ArchUnit rules, jqwik properties, unit tests, replay of recorded
 battles, Cucumber scenarios per EARS group, and a traceability test that fails the build

@@ -19,9 +19,6 @@ public class MeleeController {
 
     /** Scans older than this are too stale to fire on. */
     static final long MAX_FIRE_AGE = 5;
-    /** Range beyond which Hadur holds fire while conserving energy. */
-    static final double CONSERVE_RANGE = 400.0;
-    static final double LOW_PROFILE_RANGE = 600.0;
 
     /** What Hadur knows about itself this tick. */
     public static final class Situation {
@@ -214,17 +211,10 @@ public class MeleeController {
         c.learnedAim = aim.learned;
         c.gunTurn = Angles.normalRelativeAngle(aim.angle - s.gunHeading);
 
-        double distance = target.distance(s.me);
-        double power = aim.power;
-        if (target.energy > MeleeEnergyPolicy.FINISHER_ENERGY) {
-            // MELEE-8: the strategy's posture may lower the table's power (MGUN-3), never raise
-            // it; a finisher's power stands (MGUN-2).
-            power = Math.min(power, MeleeStrategy.adjustPower(power, plan.posture));
-        }
-        power = Math.min(power, MeleeEnergyPolicy.killPower(target.energy));
+        // MGUN-5: the energy table's power stands whatever the posture; the posture shapes
+        // where Hadur goes, never whether or how hard it fires.
+        double power = Math.min(aim.power, MeleeEnergyPolicy.killPower(target.energy));
         boolean hold = target.age(s.time) > MAX_FIRE_AGE
-            || (plan.posture == MeleeStrategy.Posture.LET_THEM_FIGHT && distance > CONSERVE_RANGE)
-            || (plan.posture == MeleeStrategy.Posture.LOW_PROFILE && distance > LOW_PROFILE_RANGE)
             || s.energy < MeleeEnergyPolicy.MIN_OWN_ENERGY
             || s.energy <= power + 0.1;
         c.firePower = hold ? 0 : power;

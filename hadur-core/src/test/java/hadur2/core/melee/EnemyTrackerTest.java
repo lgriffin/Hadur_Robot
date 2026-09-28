@@ -63,7 +63,7 @@ class EnemyTrackerTest {
     }
 
     @Test
-    @Tag("MELEE-8")
+    @Tag("MMOVE-5")
     void damageFromOurBulletsIsNotCountedAsAnotherRobotsHit() {
         scan(tracker, "a", 100, 100, 100, 0);
         tracker.onBulletHit("a", 16);
@@ -72,7 +72,7 @@ class EnemyTrackerTest {
     }
 
     @Test
-    @Tag("MELEE-8")
+    @Tag("MMOVE-5")
     void opponentsLosingEnergyNearEachOtherAreFighting() {
         scan(tracker, "a", 100, 100, 100, 0);
         scan(tracker, "b", 250, 100, 100, 0);
@@ -90,7 +90,7 @@ class EnemyTrackerTest {
     }
 
     @Test
-    @Tag("MELEE-8")
+    @Tag("MMOVE-5")
     void firingCostsAreNotMistakenForDamage() {
         scan(tracker, "a", 100, 100, 100, 0);
         EnemyInfo a = scan(tracker, "a", 100, 100, 97, 5);

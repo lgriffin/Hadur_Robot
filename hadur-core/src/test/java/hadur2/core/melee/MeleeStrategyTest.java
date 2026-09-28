@@ -47,7 +47,7 @@ class MeleeStrategyTest {
     }
 
     @Test
-    @Tag("MELEE-8")
+    @Tag("MMOVE-5")
     void letsAFightPlayOutAndWaitsForTheWeakerSurvivor() {
         scan(tracker, "a", 100, 450, 100, 0);
         scan(tracker, "b", 250, 450, 100, 0);
@@ -57,17 +57,5 @@ class MeleeStrategyTest {
         MeleeStrategy.Plan plan = strategy.evaluate(tracker, pt(650, 300), 100, 3, 10);
         assertEquals(MeleeStrategy.Posture.LET_THEM_FIGHT, plan.posture);
         assertEquals("a", plan.preferredTarget.name);
-    }
-
-    @Test
-    @Tag("MELEE-8")
-    void postureScalesFirePower() {
-        assertTrue(MeleeStrategy.adjustPower(2, MeleeStrategy.Posture.AGGRESSIVE) > 2);
-        assertEquals(2, MeleeStrategy.adjustPower(2, MeleeStrategy.Posture.NORMAL));
-        assertTrue(MeleeStrategy.adjustPower(2, MeleeStrategy.Posture.LOW_PROFILE) < 2);
-        assertTrue(MeleeStrategy.adjustPower(2, MeleeStrategy.Posture.LET_THEM_FIGHT)
-            < MeleeStrategy.adjustPower(2, MeleeStrategy.Posture.LOW_PROFILE));
-        assertEquals(3.0, MeleeStrategy.adjustPower(2.9, MeleeStrategy.Posture.AGGRESSIVE));
-        assertEquals(0.1, MeleeStrategy.adjustPower(0.1, MeleeStrategy.Posture.LET_THEM_FIGHT));
     }
 }

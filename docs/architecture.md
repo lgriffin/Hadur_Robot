@@ -61,7 +61,7 @@ graph LR
 | `hadur-robot` | the adapter `hadur2.Hadur`, `hadur2.FileProfileStore`, and `hadur2.HadurRecorder` (the robot plus a transcript of its inputs and orders, for replay fixtures) | Java 11 |
 | `hadur-bench` | headless battles in the real engine, the report, wave fidelity against the engine's truth | Java 17 |
 
-`hadur-robot` shades the core into two jars. `hadur2.Hadur_2.2.jar` is the competition
+`hadur-robot` shades the core into two jars. `hadur2.Hadur_3.0.jar` is the competition
 jar, with the recorder left out; the `recorder` jar keeps it, and only the bench's
 `--record` mode loads it. The Robocode API is `provided`: the engine supplies it at run
 time, and the build compiles against the vendored 1.9.3.0 API in `repo/` (the bench runs
@@ -202,7 +202,9 @@ linear `VirtualBullet` for every recorded `EnemyShot`, scored at the candidate w
 gets there but not along the route (virtual bullets are guesses, and counting every guessed
 path Hadur would cross cost 3 to 5 APS; the destination is re-scored every tick), with a shot's fire-tick uncertainty widening its window
 and delaying its expiry, and bullets that never come within reach of a candidate skipped (MMOVE-3); a pull off the centre, pushes off walls and corners, Hadur's
-recent positions and a fixed noise field; and the melee strategy's posture. For the first
+recent positions and a fixed noise field; and the melee strategy's posture, which keeps
+Hadur clear of two opponents fighting each other and within reach of the weaker (MMOVE-5),
+herds the weaker of the last two, and keeps to the edge of the field while Hadur leads. For the first
 30 ticks the closest-robot term doubles again and a pull heads for a wall-adjacent spot
 away from the corners. With two opponents left the ring shrinks to 80 to 200 px and the
 lateral weight rises, so Hadur is already orbiting when the duel takes over (MMOVE-4).
@@ -221,7 +223,11 @@ fires where the summed density peaks. An opponent with too little history gets a
 or linear solution, and a robot ramming Hadur inside 100 px is left to the movement unless
 it can be finished. `melee.MeleeEnergyPolicy` sets the power (MGUN-2, MGUN-3): the exact
 kill below 16 energy, the duel's table with two or fewer left, else 1.0 to 3.0 by distance,
-and nothing below 1 energy of its own. `melee.MeleeWaves` sends a wave at every opponent on
+and nothing below 1 energy of its own. The strategy's posture never lowers that power or
+holds fire (MGUN-5): until M6 it halved the power and held fire beyond 400 px while two others
+fought, and cut it by 30% and held beyond 600 px while Hadur led. Removing that raised
+Hadur's bullet damage by about 15% at the same APS in the M6 sweep
+([docs/bench/m6-gates.md](bench/m6-gates.md)). `melee.MeleeWaves` sends a wave at every opponent on
 every gun-heat cycle carrying the gun's aim (MGUN-4), and the M record counts the waves and
 the virtual hits, so the bench reads the gun's hit rate on the whole field.
 

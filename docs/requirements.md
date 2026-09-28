@@ -30,7 +30,6 @@ EARS requirements from the Hadur 2 technical direction. This file is the source 
 | TIME-2 | Event | When a skipped-turn event is received, the core shall drop one computation level for the remainder of the round and record it. | S6 |
 | MELEE-2 | Event | When the number of opponents alive falls from two or more to one, the core shall discard its duel tracking and restore full speed before handling that tick's scans. | S2 |
 | MELEE-7 | Unwanted | If the melee target's last scan is more than 5 ticks old, then the core shall not fire at it. | S2 |
-| MELEE-8 | State | While two opponents within 300 px of each other, and further from us than from each other, are both losing energy to others, the strategy shall keep clear of their fight and halve fire power. | S2 |
 | GATE-1 | State | While two or more opponents are alive, no sentry robot is alive, no sentry has been scanned this round and the melee subsystems have not failed this round, the core shall drive the robot with the melee subsystems instead of the duel subsystems. | M1 |
 | GATE-2 | Unwanted | If fewer than two opponents are alive, then the core shall drive the robot with the duel subsystems from that same tick. | M1 |
 | GATE-3 | Unwanted | If a scanned robot reports that it is a sentry, then the core shall use the duel subsystems for the rest of the round and shall treat the sentry border as a wall. | M1 |
@@ -44,10 +43,12 @@ EARS requirements from the Hadur 2 technical direction. This file is the source 
 | MMOVE-2 | State | While in melee, movement shall weight any point where it would be an opponent's closest robot at least twice the base risk. | M3 |
 | MMOVE-3 | Event | When an opponent's shot is recorded, movement shall simulate a head-on and a linear bullet from it and include both in the risk until they pass. | M3 |
 | MMOVE-4 | State | While in melee with two opponents alive, movement shall shrink its candidate ring and increase its lateral preference. | M3 |
+| MMOVE-5 | State | While two opponents within 300 px of each other, and further from us than from each other, are both losing energy to others, movement shall keep clear of their fight and stay within reach of the weaker one. | M6 |
 | MGUN-1 | State | While in melee, the gun shall compute firing solutions for every opponent scanned within the last 8 ticks and fire at the angle of highest combined hit probability. | M4 |
 | MGUN-2 | Event | When an opponent's energy is at most 16, the gun shall double that opponent's weight and fire the power that exactly kills it. | M4 |
 | MGUN-3 | State | While in melee, the gun shall choose bullet power by distance, own energy and target energy per the energy table, and shall not fire while its own energy is below 1.0. | M4 |
 | MGUN-4 | State | While in melee, the core shall emit a targeting wave at every opponent on every gun-heat cycle. | M4 |
+| MGUN-5 | Ubiquitous | The melee strategy's posture shall not lower the gun's bullet power or hold its fire. | M6 |
 | MMEM-1 | Event | When a round of a melee battle ends, the store shall persist each opponent's melee profile block alongside its 1v1 profile. | M5 |
 | MMEM-2 | Event | When the number of opponents alive falls to one, the core shall hand the survivor's profile and the waves in flight to the duel subsystems. | M5 |
 | REL-1 | Ubiquitous | The robot jar shall contain only class files that a Java 11 runtime can load, so that every RoboRumble client can run it. | S2 |
@@ -218,3 +219,4 @@ A retired requirement keeps its ID; no new requirement reuses it.
 | MELEE-4 | While in melee, movement shall head for the candidate point of least risk, where risk grows with each opponent's energy over distance squared, near walls and corners, between two opponents, and with fewer escape routes. | M3 | MMOVE-1 to MMOVE-4 (minimum risk over 160 points with the closest-robot term and virtual bullets) |
 | MELEE-5 | While in melee, the gun shall target the opponent with the lowest score of energy, distance and gun turn, and shall switch from a living current target only when another scores at least 20% lower and the gun can reach it within 4 ticks. | M4 | MGUN-1 (the field gun aims at the peak of every opponent's solutions, so there is no single target to hold) |
 | MELEE-6 | The melee gun shall aim with circular prediction, fall back to linear prediction while the target's turn rate is unknown, and fire no more power than needed to kill the target. | M4 | MGUN-1, MGUN-2, MGUN-3 (learned play-it-forward aim, circular and linear only as the fallback; the energy table and exact kill power) |
+| MELEE-8 | While two opponents within 300 px of each other, and further from us than from each other, are both losing energy to others, the strategy shall keep clear of their fight and halve fire power. | M6 | MMOVE-5 (keep clear, unchanged), MGUN-5 (full power: the M6 sweep found the posture's power cuts and holds cost score) |

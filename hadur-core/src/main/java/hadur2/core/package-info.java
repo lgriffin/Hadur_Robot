@@ -125,7 +125,7 @@
  *     selector with a switching margin (MELEE-5); a circular gun with a linear fallback that
  *     fires no more than the kill needs (MELEE-6) and holds fire at a target whose last scan
  *     is too old (MELEE-7); and a strategy that keeps clear of two opponents fighting each
- *     other (MELEE-8). It depends only on the model, physics and the JDK, and no duel package
+ *     other (MMOVE-5). It depends only on the model, physics and the JDK, and no duel package
  *     may depend on it (GATE-1). The plan's later groups, MGUN and MMEM, belong to its M4
  *     and M5 stages.</li>
  * <li>{@code port}: the outbound interfaces, {@link hadur2.core.port.Telemetry} and

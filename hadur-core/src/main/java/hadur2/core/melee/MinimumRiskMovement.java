@@ -32,7 +32,7 @@ import java.util.Set;
  *     scored where they would be when Hadur gets to the point (MMOVE-3);</li>
  * <li>a pull off the middle of the field, a push off the walls' last few pixels, Hadur's
  *     recent positions, and a fixed per-round noise field, so the path is no pattern;</li>
- * <li>the melee strategy's posture (MELEE-8).</li>
+ * <li>the melee strategy's posture (MMOVE-5).</li>
  * </ul>
  *
  * <p>For the first {@link #OPENING_TICKS} ticks the closest-robot term doubles again and a
