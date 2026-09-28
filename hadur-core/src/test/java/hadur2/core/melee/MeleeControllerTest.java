@@ -54,6 +54,27 @@ class MeleeControllerTest {
     }
 
     @Test
+    @Tag("MGUN-5")
+    void keepsFiringTheTablesPowerWhileOthersFight() {
+        // a and b, 100 px apart and both losing energy, fight each other; every opponent is
+        // over 400 px away, where Hadur used to hold fire while it let them fight.
+        scan(controller.tracker, "a", 20, 20, 100, 0);
+        scan(controller.tracker, "b", 20, 120, 100, 0);
+        scan(controller.tracker, "c", 780, 580, 100, 0);
+        scan(controller.tracker, "a", 20, 20, 88, 10);
+        scan(controller.tracker, "b", 20, 120, 90, 10);
+        scan(controller.tracker, "c", 780, 580, 100, 10);
+        MeleeController.Command c = tick(10, 3);
+        assertEquals(MeleeStrategy.Posture.LET_THEM_FIGHT, c.posture);
+        EnemyInfo target = controller.tracker.get(c.target);
+        assertTrue(target.distance(me) > 400);
+        FieldGun.Aim aim = controller.gun().aim(me, 100, 3, controller.tracker.alive(), 10);
+        double table = Math.min(aim.power, MeleeEnergyPolicy.killPower(target.energy));
+        assertTrue(table > 0);
+        assertEquals(table, c.firePower, 1e-9);
+    }
+
+    @Test
     @Tag("MGUN-2")
     void neverFiresMoreThanNeededToKill() {
         scan(controller.tracker, "a", 400, 450, 1.0, 0);

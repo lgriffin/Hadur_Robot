@@ -64,16 +64,4 @@ public class MeleeStrategy {
         }
         return Plan.normal();
     }
-
-    /** Scales a base bullet power for the posture. */
-    public static double adjustPower(double basePower, Posture posture) {
-        double p;
-        switch (posture) {
-            case AGGRESSIVE: p = basePower * 1.5; break;
-            case LOW_PROFILE: p = basePower * 0.7; break;
-            case LET_THEM_FIGHT: p = basePower * 0.5; break;
-            default: p = basePower;
-        }
-        return Math.max(0.1, Math.min(3.0, p));
-    }
 }

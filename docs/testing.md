@@ -90,8 +90,8 @@ was byte-identical to master's.
 ## Javadoc
 
 `mvn verify` runs javadoc with doclint (every group but missing comments) over hadur-core
-and hadur-robot, so documentation errors fail the build like tests do. The melee and
-posture packages are excluded in the root pom until the melee extension (M4 to M6) merges.
+and hadur-robot, so documentation errors fail the build like tests do, the melee and posture
+packages included (they were excluded until M6).
 
 ## The bench
 

@@ -24,7 +24,7 @@ mvn exec:java -Dexec.args="--mode cold --rounds 35 --seeds 5"
 | `--field WxH` | 800x600 | battlefield size |
 | `--robot-jar FILE` | ../hadur-robot/target/hadur2.Hadur_2.2.jar | the robot jar |
 | `--robot-classes DIR` | | jar a compiled class tree instead, e.g. an older Hadur |
-| `--robot NAME` | hadur2.Hadur 2.2 | the robot's name as Robocode lists it |
+| `--robot NAME` | hadur2.Hadur 3.0 | the robot's name as Robocode lists it |
 | `--record DIR` | | capture replay fixtures instead (see below) |
 | `--set FILE` | reference-set.txt | the opponent list, e.g. `roborumble-top10.txt` |
 | `--melee true` | | put Hadur and every opponent in the set in one battle, `--seeds` times, and report finishing places |
