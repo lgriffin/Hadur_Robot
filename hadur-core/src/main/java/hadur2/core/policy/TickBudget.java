@@ -41,6 +41,9 @@ public final class TickBudget {
     private boolean slow;
     private int maxLevel;
     private int slowTicks;
+    /** TIME-3: a learned allowance under this share of the first guess is not trusted. */
+    static final double MIN_LEARNED_SHARE = 0.2;
+
     /** The tick that most recently reported its duration; -1 before the first one. */
     private long lastUsedNanos = -1;
     /**
@@ -48,6 +51,8 @@ public final class TickBudget {
      * for the rest of the battle. -1 until a skip has happened; not reset by {@link #newRound}.
      */
     private long learnedAllowanceNanos = -1;
+    /** The first positive allowance {@link #tickTook} was given; -1 until then. */
+    private long guessedAllowanceNanos = -1;
 
     /** A new round starts at full computation (TIME-2's "for the remainder of the round"). */
     public void newRound() {
@@ -70,6 +75,7 @@ public final class TickBudget {
      *     taught the real one
      */
     public void tickTook(long usedNanos, long allowanceNanos) {
+        if (guessedAllowanceNanos < 0 && allowanceNanos > 0) guessedAllowanceNanos = allowanceNanos;
         long effectiveAllowance = learnedAllowanceNanos > 0 ? learnedAllowanceNanos : allowanceNanos;
         slow = effectiveAllowance > 0 && usedNanos > THRESHOLD * effectiveAllowance;
         if (slow) slowTicks++;
@@ -80,10 +86,19 @@ public final class TickBudget {
     /**
      * TIME-2: the engine skipped a turn. The round's level drops one, down to
      * {@link #MAX_LEVEL}. TIME-3: the first time this happens, the tick that caused it
-     * becomes the learned allowance for the rest of the battle.
+     * becomes the learned allowance for the rest of the battle — unless that measurement
+     * is too small a share ({@link #MIN_LEARNED_SHARE}) of the first guess to trust. The
+     * adapter only times its own call into the core, not whatever else the engine charged
+     * the turn for (a round-end checkpoint's write, a GC pause), so a skip can arrive
+     * right after a measured tick that had nothing to do with it; without the floor, that
+     * unrelated short measurement would become a battle-long allowance and shed far more
+     * computation than the client actually needs to.
      */
     public void skippedTurn() {
-        if (learnedAllowanceNanos <= 0 && lastUsedNanos > 0) learnedAllowanceNanos = lastUsedNanos;
+        if (learnedAllowanceNanos <= 0 && lastUsedNanos > 0
+                && (guessedAllowanceNanos < 0 || lastUsedNanos >= MIN_LEARNED_SHARE * guessedAllowanceNanos)) {
+            learnedAllowanceNanos = lastUsedNanos;
+        }
         roundLevel = Math.min(MAX_LEVEL, roundLevel + 1);
         maxLevel = Math.max(maxLevel, level());
     }

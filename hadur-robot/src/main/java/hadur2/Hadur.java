@@ -120,18 +120,28 @@ public class Hadur extends AdvancedRobot {
     /**
      * TIME-5: runs one tick through a throwaway core and guard before the real battle
      * begins, so that class loading and JIT warm-up land here rather than on the round's
-     * first real tick. No store (nothing is read or written), no telemetry, and the
-     * throwaway core and its result are discarded; nothing it does reaches the real core.
+     * first real tick. No store (nothing is read or written) and no telemetry from the
+     * throwaway core itself; the core, guard and result are all discarded, and nothing
+     * they do reaches the real core.
+     *
+     * <p>The tick carries a synthetic scan, not just a bare one: a tick with no scan takes
+     * only the "enemy not seen yet" branch, which never reaches the aiming, movement and
+     * memory-adjacent code the real first scan will actually run, so it would warm little
+     * of what needs it. A failure here is logged, not silent: it never stops the battle
+     * (a cold real tick still runs correctly), but it is worth knowing about.</p>
      */
     static void warmUp(double width, double height, int others) {
         try {
             HadurCore warm = new HadurCore(width, height, others, line -> {}, null);
             warm.newRound(0);
-            new Guard(warm::tick, warm::recover, line -> {})
-                .tick(new BotInput(0, 0, width / 2, height / 2, 0, 0, 100, 0, 0, 0, 0, 0, others,
-                    List.of()));
+            Guard warmGuard = new Guard(warm::tick, warm::recover, line -> {});
+            warmGuard.tick(new BotInput(0, 0, width / 2, height / 2, 0, 0, 100, 0, 0, 0, 0, 0, others,
+                List.of(new BotEvent.Scan("warmup.Enemy", 0, width / 4, 100, 0, 0))));
+            if (warmGuard.faultsThisRound() > 0 && console != null) {
+                console.println("WARM,0,0,fault," + warmGuard.faultsThisRound());
+            }
         } catch (RuntimeException e) {
-            // Best-effort: a cold real tick still runs correctly if this throws.
+            if (console != null) console.println("WARM,0,0,exception," + e);
         }
     }
 

@@ -71,7 +71,7 @@ public final class ProfileCodec {
      * @return the file's bytes, header, payload and CRC included
      */
     public static byte[] encode(OpponentProfile p) {
-        return encode(p, VERSION);
+        return encode(p, VERSION, p.gunSeed, p.surfSeed);
     }
 
     /**
@@ -88,6 +88,25 @@ public final class ProfileCodec {
      * @throws IllegalArgumentException if {@code version} is outside the supported range
      */
     public static byte[] encode(OpponentProfile p, int version) {
+        return encode(p, version, p.gunSeed, p.surfSeed);
+    }
+
+    /**
+     * TIME-4: encodes {@code p}'s statistics with empty seed sections, without ever
+     * serialising its actual (possibly large, capped-size) seed lists. Used to build a
+     * cheap, independent copy of just the stats fields for a checkpoint that will not
+     * write seeds; the copy still decodes at the current version, so seeds carried over
+     * from elsewhere can be added back onto it afterwards.
+     *
+     * @param p the profile
+     * @return the file's bytes, header, payload and CRC included, with no seed samples
+     */
+    static byte[] encodeStatsOnly(OpponentProfile p) {
+        return encode(p, VERSION, java.util.List.of(), java.util.List.of());
+    }
+
+    private static byte[] encode(OpponentProfile p, int version, java.util.List<short[]> gunSeed,
+            java.util.List<short[]> surfSeed) {
         if (version < OLDEST_VERSION || version > VERSION) {
             throw new IllegalArgumentException("unsupported version " + version);
         }
@@ -104,8 +123,8 @@ public final class ProfileCodec {
             .floats(p.ourShots).floats(p.ourHits).floats(p.motion);
         // Version 1 had no normalised group; a version 1 file must not have one either.
         if (version >= 2) payload.floats(p.normalised);
-        writeSeed(payload, p.gunSeed);
-        writeSeed(payload, p.surfSeed);
+        writeSeed(payload, gunSeed);
+        writeSeed(payload, surfSeed);
 
         // Frame the payload: header, payload, then a CRC over everything written so far.
         Bytes.Writer out = new Bytes.Writer();

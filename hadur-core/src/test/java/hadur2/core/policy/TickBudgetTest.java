@@ -111,4 +111,23 @@ class TickBudgetTest {
         b.skippedTurn(); // must not overwrite the learned 1ms with 5ms
         assertEquals(1_000_000L, b.learnedAllowanceNanos());
     }
+
+    @Test
+    @Tag("TIME-3")
+    @DisplayName("TIME-3: a measurement far below the guess is not trusted as the real allowance")
+    void implausiblyTinyMeasurementIsNotLearned() {
+        TickBudget b = new TickBudget();
+        b.newRound();
+        // A skip right after a tiny measured tick: plausible when something the adapter
+        // does not time (a checkpoint write, a GC pause) caused the skip, not the tick
+        // itself. Below 20% of the 3ms guess, so it must not become the allowance.
+        b.tickTook(50_000L, ALLOWANCE);
+        b.skippedTurn();
+        assertEquals(-1, b.learnedAllowanceNanos(), "too small a share of the guess to trust");
+
+        // A later skip whose tick is a plausible share of the guess still learns normally.
+        b.tickTook(1_000_000L, ALLOWANCE);
+        b.skippedTurn();
+        assertEquals(1_000_000L, b.learnedAllowanceNanos());
+    }
 }

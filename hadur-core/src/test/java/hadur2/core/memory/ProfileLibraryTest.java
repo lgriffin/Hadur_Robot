@@ -209,6 +209,53 @@ class ProfileLibraryTest {
     }
 
     @Test
+    @Tag("TIME-4")
+    @DisplayName("TIME-4: a stats-only save carries over whatever seeds are already on disk, never erasing them")
+    void statsOnlySaveKeepsStoredSeeds() {
+        MemoryProfileStore store = new MemoryProfileStore(QUOTA);
+        ProfileLibrary lib = new ProfileLibrary(store);
+        lib.save(Profiles.sample("a.Seeded", 1, 50, 30));
+        assertEquals(50, stored(store, "a.Seeded").gunSeedSize());
+
+        // A checkpoint's profile object carries no seeds of its own here (as a freshly
+        // loaded one would, before any seed replay); the seeds already on disk from the
+        // earlier full save must still be there afterward, not erased.
+        OpponentProfile checkpointProfile = Profiles.sample("a.Seeded", 2, 0, 0);
+        assertEquals(ProfileLibrary.Saved.WRITTEN, lib.saveStatsOnly(checkpointProfile));
+        assertEquals(50, stored(store, "a.Seeded").gunSeedSize(),
+            "the stats-only save must not erase stored seeds");
+        assertEquals(30, stored(store, "a.Seeded").surfSeedSize());
+        assertEquals(0, checkpointProfile.gunSeedSize(), "the caller's own profile is untouched");
+    }
+
+    @Test
+    @Tag("TIME-4")
+    @DisplayName("TIME-4: a stats-only save of a profile with nothing stored yet writes no seeds")
+    void statsOnlySaveOfNewProfileHasNoSeeds() {
+        MemoryProfileStore store = new MemoryProfileStore(QUOTA);
+        ProfileLibrary lib = new ProfileLibrary(store);
+        OpponentProfile fresh = Profiles.sample("b.Fresh", 1, 40, 20);
+        assertEquals(ProfileLibrary.Saved.WRITTEN, lib.saveStatsOnly(fresh));
+        assertEquals(0, stored(store, "b.Fresh").gunSeedSize());
+        assertEquals(0, stored(store, "b.Fresh").surfSeedSize());
+        assertEquals(40, fresh.gunSeedSize(), "the caller's own profile keeps its seeds in memory");
+    }
+
+    @Test
+    @Tag("MEM-7")
+    @DisplayName("MEM-7: a library built with an older write version writes every save, eviction included, at it")
+    void writeVersionAppliesToEverySave() {
+        MemoryProfileStore store = new MemoryProfileStore(QUOTA);
+        ProfileLibrary lib = new ProfileLibrary(store, ProfileCodec.OLDEST_VERSION);
+        lib.save(Profiles.sample("a.Old", 1, 4, 2));
+        byte[] bytes = store.read(ProfileLibrary.fileName("a.Old"));
+        assertEquals((byte) ProfileCodec.OLDEST_VERSION, bytes[2]);
+        // The oldest version has no defined seed layout, so a plain decode drops them,
+        // exactly as it would for a real version-1 file.
+        assertEquals(0, ProfileCodec.decode(bytes).gunSeedSize());
+    }
+
+    @Test
     @Tag("MEM-6")
     @DisplayName("MEM-6: filling the quota with plain profiles empties every seed before any write is skipped")
     void skipOnlyAfterEveryonesSeedsAreGone() {

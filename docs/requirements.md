@@ -242,17 +242,25 @@ on an older jar after a profile format changes underneath them.
 - **TIME-3** replaces the adapter's fixed 3 ms allowance guess with a learned one once the
   engine actually skips a turn, since a RoboRumble client's real allowance can be smaller
   (or larger) than the bench machine's; `TickBudgetTest` covers the learn-once, hold-for-the-
-  battle behaviour. It needed no change outside `TickBudget` — the adapter still reports
-  ticks and skips exactly as before, and the core simply starts trusting a better number.
+  battle behaviour. The adapter still reports ticks and skips exactly as before; the core
+  starts trusting a better number, but only when the tick behind a skip is a plausible share
+  of the first guess (`TickBudget.MIN_LEARNED_SHARE`) — the adapter times only its own call
+  into the core, not whatever else the engine charged the turn for (a checkpoint write, a
+  GC pause), so an unrelated short tick must not become the battle-long allowance.
 - **TIME-4** caps a round-end checkpoint's cost: `ProfileLibrary.saveStatsOnly` persists the
-  stats alone (the caller's own seeds stay in memory, untouched), and `HadurCore.checkpoint`
-  calls it for nine round-end checkpoints out of ten, writing the full profile (seeds
-  included) only on the tenth and always at battle end; `CoreMemoryTest.checkpointsCapSeedWrites`
-  covers the schedule.
+  stats alone, via `ProfileCodec.encodeStatsOnly` (which never serialises the caller's own
+  seed lists at all), carrying over whatever seeds are already on disk unchanged rather than
+  erasing them — a checkpoint before the tenth only leaves stored seeds stale, never gone.
+  `HadurCore.checkpoint` calls it for nine round-end checkpoints out of ten, writing the full
+  profile (seeds included) only on the tenth and always at battle end;
+  `CoreMemoryTest.checkpointsCapSeedWrites` and `ProfileLibraryTest.statsOnlySaveKeepsStoredSeeds`
+  cover the schedule and the no-erasure guarantee.
 - **TIME-5** runs one tick through a throwaway core and guard, built and discarded with no
-  store and no telemetry, before the real one's first round in `Hadur.java`'s `run()`; the
-  point is only to pay class-loading and JIT warm-up costs once, in the JVM, ahead of the
-  real first tick. `HadurWarmUpTest` checks it runs cleanly for a couple of battlefield sizes.
+  store and no telemetry, before the real one's first round in `Hadur.java`'s `run()`. The
+  tick carries a synthetic scan, not an empty one, so the warm-up actually reaches the
+  aiming, movement and memory-adjacent code the real first scan will run, not just the
+  "enemy not seen yet" branch; a failure is logged (best-effort, never fatal).
+  `HadurWarmUpTest` checks it runs cleanly for a couple of battlefield sizes.
 - **MEM-6** turned out to already hold: `ProfileLibrary.evictSeeds` never returns short of
   its target unless it has already stripped every other profile with seeds, and whenever it
   reaches its target the hard-quota check (100% of quota) is guaranteed to pass because its
@@ -262,9 +270,11 @@ on an older jar after a profile format changes underneath them.
   and a javadoc explaining why.
 - **MEM-7** adds `ProfileCodec.encode(profile, version)`, which writes any version from
   `OLDEST_VERSION` to the current one, leaving out a field (today, only the normalised-hits
-  group) a target version never had, exactly as that version's own encoder would have;
-  `ProfileLibrary` and every existing caller still default to the current version, so this
-  is an entry point a future migration can call, not a change to what gets written today.
+  group) a target version never had, exactly as that version's own encoder would have. A
+  `ProfileLibrary` built with a write-version argument (defaulting to the current one) uses
+  it for every save it makes — regular saves, eviction rewrites and stats-only checkpoints
+  alike — so it is a lever an actual mixed-release migration can turn, not just a capability
+  sitting unused: `ProfileLibraryTest.writeVersionAppliesToEverySave` covers it.
 - **DIAL-3** found one real gap: `SeedTrust.diverges` compared live and profile margins
   without a finiteness guard, so a non-finite margin (unreachable today, since `Estimate`'s
   margin is always finite by construction — see `EstimateTest.marginIsAlwaysFinite`) would
