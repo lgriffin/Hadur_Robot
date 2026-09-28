@@ -84,6 +84,8 @@ public class SurfMover {
     private Mode nextMode = Mode.OPTIONS;
     /** Go-to surfing: the point chosen on the last tick, for the SD record. */
     private Point2D.Double goToPoint;
+    /** RAM-1: while true, the no-wave orbit takes the side it would otherwise not have. */
+    private boolean rammerActive;
 
     /**
      * A surf on {@code battleField}, in the three-option mode, at {@link #DEFAULT_DISTANCE}.
@@ -139,6 +141,18 @@ public class SurfMover {
     }
 
     /**
+     * RAM-1: while active, the no-wave orbit ({@link #orbit}) picks the side it would
+     * otherwise reject, rather than whichever wall-smoothed heading points more directly
+     * away from the enemy. A charging rammer rarely leaves a real firing wave to surf, so
+     * only the plain orbit is affected.
+     *
+     * @param active whether the rammer response is active this tick
+     */
+    public void setRammerActive(boolean active) {
+        this.rammerActive = active;
+    }
+
+    /**
      * END-2: drive straight at the enemy at full speed, front or back first, whichever needs
      * less turning. A disabled robot cannot shoot, so there is nothing to surf.
      *
@@ -161,6 +175,7 @@ public class SurfMover {
         stopDestination = null;
         lastWaveSurfed = null;
         goToPoint = null;
+        rammerActive = false;
     }
 
     /**
@@ -235,8 +250,12 @@ public class SurfMover {
 
         // Take the side whose heading, after wall smoothing, stays closer to straight away
         // from the enemy (a wall bends a heading toward it); ties go counter-clockwise.
-        if (Math.abs(Angles.normalRelativeAngle(cwAngle - orbitAbsBearing))
-                < Math.abs(Angles.normalRelativeAngle(ccwAngle - orbitAbsBearing))) {
+        // RAM-1: while the rammer response is active, take the other side instead, so a
+        // charging enemy meets a less predictable path than the same side every tick.
+        boolean clockwise = Math.abs(Angles.normalRelativeAngle(cwAngle - orbitAbsBearing))
+            < Math.abs(Angles.normalRelativeAngle(ccwAngle - orbitAbsBearing));
+        if (rammerActive) clockwise = !clockwise;
+        if (clockwise) {
             lastSurfOption = SurfOption.CLOCKWISE;
             DiaUtils.setBackAsFront(orders, heading, cwAngle);
         } else {
@@ -456,6 +475,8 @@ public class SurfMover {
         if (shadowed > 0) danger *= 1 - shadowed;
         // Robocode's damage: 4 * power, plus 2 * (power - 1) above power 1.
         danger *= Rules.getBulletDamage(surfWave.bulletPower());
+        // WAVE-3: a wave whose power came from an ambiguous wall-hit split is trusted at half.
+        if (surfWave.uncertain) danger *= 0.5;
 
         // Ticks until the wave reaches our centre as we stand now, at least 1: a wave about
         // to arrive weighs more than one far off.

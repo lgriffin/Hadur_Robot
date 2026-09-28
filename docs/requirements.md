@@ -69,6 +69,11 @@ EARS requirements from the Hadur 2 technical direction. This file is the source 
 | MEM-6 | Ubiquitous | The store shall keep statistics loadable at quota by evicting seeds from every profile before any statistics are skipped. | R1 |
 | MEM-7 | Ubiquitous | The profile codec shall be able to write a profile in the format a previous release can read. | R1 |
 | DIAL-3 | Unwanted | If a margin used in a policy comparison is not a finite number, then the policy shall take its conservative branch rather than treat the comparison as settled. | R1 |
+| POW-3 | State | While the profile rates their gun T1, they are within 450 px and their energy exceeds 12, the gun shall fire power 3.0. | R2 |
+| POW-4 | State | While no full-power rule applies and both our and their rolling hit rates are known within 5 points, the gun shall fire whichever of its own power or 3.0 gives the higher expected value (hit rate times bullet damage, less the power spent), never below its own choice. | R2 |
+| END-3 | Event | When the enemy's energy is at most a power-3 bullet's damage, the gun shall fire the least power that still kills on a hit, whatever power the gun or another rule chose. | R2 |
+| RAM-1 | State | While the enemy's own speed toward us is 6 px/tick or more for ten scans running, within 250 px, the core shall fire up to power 3.0, capped and gated as the other full-power rules are, and reverse the no-wave orbit's chosen side. | R2 |
+| WAVE-3 | Unwanted | If a shot is found on the same interval as an inferred wall hit, then the movement wave it becomes shall be marked uncertain and surfed at half weight. | R2 |
 
 Stage is where the requirement is first implemented: S0–S7 in the Hadur 2 stage plan, M0–M6
 in the melee extension plan ("Hadur 2 — Melee Extension Plan", 27 Sep 2026).
@@ -280,6 +285,67 @@ on an older jar after a profile format changes underneath them.
   margin is always finite by construction — see `EstimateTest.marginIsAlwaysFinite`) would
   have silently read as "no divergence", the wrong direction for a seed the core can no
   longer trust. Fixed defensively so the invariant holds even if `Estimate` is ever changed.
+
+R2 (part of the rumble climb plan) takes the full share from opponents Hadur already beats:
+weak and mid-table guns, and rammers, where a cheap policy fix costs nothing against the
+top 10 but adds up over the ~900 bots below rank 300.
+
+- **POW-3** extends POW-1's full-power rule to a T1 gun, gated by range (450 px) rather than
+  unconditionally: a T1 gun is still weak enough that closing costs less than the energy risk,
+  but not so weak that the range no longer matters. `PowerPolicy.reason` checks it right after
+  POW-1; `PowerPolicyTest` covers the tier and the range boundary.
+- **POW-4** compares the gun's own power against full power by expected value (hit rate times
+  `Rules.getBulletDamage`, less the power spent) whenever no other rule applies and both
+  rates are known within `PowerPolicy.POW_4_MARGIN` (10 points, not 5: review on PR #61 found
+  a full, realistic `HitWindow` of 100 outcomes can't close to 5 points anywhere the rule
+  would actually change the shot, so it passed its own unit tests, built from wider windows
+  than the real ones, but could never fire in a battle). Robocode's damage curve is convex
+  (its slope rises from 4 to 6 past power 1), so this expected value is convex in the power
+  fired, and a convex function's best value on an interval is always at one of its ends —
+  there is no power between the gun's choice and 3.0 worth checking, only those two.
+  `PowerPolicyTest.highHitRateFavoursFullPower` and `.lowHitRateKeepsTheGun` cover both ends
+  of that comparison, and `.aFullHitWindowReachesTheGate` pins a real `HitWindow`'s reach.
+- **END-3** is a separate calculation, `PowerPolicy.leastPowerThatKills`, rather than another
+  `Reason`, because it can override every full-power rule with *less* than the gun's own
+  choice: while a single shot at some legal power would kill on a hit, firing more than that
+  wastes energy a decided fight no longer needs. `HadurCore` applies it after every other
+  power rule as a ceiling, not a replacement (`Math.min` against whatever was already chosen):
+  review on PR #61 found the first cut set it outright, so a low-energy gun's own small,
+  affordable choice could be overridden by a kill power it could not afford, losing a shot it
+  would otherwise have fired. `PowerPolicyTest.leastPowerThatKills` pins the inverse of the
+  damage formula on both sides of power 1, and
+  `PowerAffordabilityTest.killPowerNeverMakesAnAffordableShotUnaffordable` covers the
+  low-energy case end to end.
+- **RAM-1** is `RammerPolicy`, a small state machine independent of any opponent profile: ten
+  scans of the enemy's own speed toward us at 6 px/tick or more within 250 px turns it on, and
+  it holds while the enemy stays in range. That speed is the enemy's velocity resolved onto
+  the line from them to us, not the raw change in distance between scans, which review on
+  PR #61 found conflated our own approach with theirs and needed dividing by elapsed ticks
+  whenever a scan was missed; velocity is already a per-tick quantity, so using it sidesteps
+  both problems. Active, it raises the shot's power toward 3.0 in `HadurCore.onScan`, gated
+  and capped exactly as the other full-power rules are (never past our own energy's
+  threshold, never past a quarter of theirs, never below what was already chosen — the same
+  review found the first cut ignored both and could turn an affordable shot into none at
+  all), and `SurfMover.setRammerActive` flips which side the no-wave orbit takes, so a
+  charging rammer meets a less predictable path than the same side every tick. A rammer
+  rarely leaves a real firing wave to surf, so the flip applies only to the plain orbit, not
+  to wave surfing. `RammerPolicyTest` covers the state machine, `RammerOrbitTest` the orbit
+  reversal, and
+  `PowerAffordabilityTest.rammerResponseNeverMakesAnAffordableShotUnaffordable` the low-energy
+  guard.
+- **WAVE-3** covers a case the energy ledger already partly handled: a shot fired as the enemy
+  strikes a wall, where the split between the two is a guess (Firestarter's 8.6% false waves,
+  S4's bench). `EnergyLedger.Reading` now carries an `uncertain` flag, set when a wall hit is
+  inferred on the same interval as a shot-sized remainder, and its power is clamped to the
+  nearest legal bullet power. `MoveController.updateFiringWave` carries the flag onto the
+  wave it marks, and `SurfMover` halves such a wave's danger rather than trusting it like a
+  clean reading. `EnergyLedgerTest` covers the flag and `FiringWaveTest` the wiring onto the
+  wave.
+- **TIER-1** is not in this stage's requirements table yet: calibrating the T1/T2 gun-tier
+  bounds needs real mid-table opponents, and every bot benched so far reads either T0 (the
+  sample bots) or T3 (the top 10 and Shadow) — the gap `Tiers.java`'s own javadoc already
+  flagged and issue #53 tracks. It lands in a follow-up once that bench exists, rather than
+  guessing bounds from no data in between.
 
 ## Retired requirements
 
