@@ -225,9 +225,9 @@ it can be finished. `melee.MeleeEnergyPolicy` sets the power (MGUN-2, MGUN-3): t
 kill below 16 energy, the duel's table with two or fewer left, else 1.0 to 3.0 by distance,
 and nothing below 1 energy of its own. The strategy's posture never lowers that power or
 holds fire (MGUN-5): until M6 it halved the power and held fire beyond 400 px while two others
-fought, and cut it by 30% and held beyond 600 px while Hadur led, and the M6 sweep found that
-this left Hadur with the least bullet damage of the strong bots on the field for no gain in
-survival. `melee.MeleeWaves` sends a wave at every opponent on
+fought, and cut it by 30% and held beyond 600 px while Hadur led. Removing that raised
+Hadur's bullet damage by about 15% at the same APS in the M6 sweep
+([docs/bench/m6-gates.md](bench/m6-gates.md)). `melee.MeleeWaves` sends a wave at every opponent on
 every gun-heat cycle carrying the gun's aim (MGUN-4), and the M record counts the waves and
 the virtual hits, so the bench reads the gun's hit rate on the whole field.
 

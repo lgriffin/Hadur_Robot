@@ -192,6 +192,20 @@ and shot dodging in the melee mover are the obvious next bets.
 
 S7 changes no strategy. The plan said to cut melee in S7, but release 2.1 had already put the 1.x melee brain into the core for the MeleeRumble, and it only runs while two or more opponents are alive, so Leigh chose to keep it. S7 rewrote the README around what the robot does now, stage by stage and requirement by requirement, and refreshed the telemetry reference, the architecture diagram (the shield package) and the rumble entry guide, which now covers the 1v1 RoboRumble as well as the MeleeRumble. The version is 2.2. With GitHub Actions not running jobs, 2.2 was built and checked locally and entered in both the RoboRumble and the MeleeRumble from a Google Drive link (docs/rumble-submission.md); the `v2.2` tag and GitHub release wait for Actions. A last docs pass added docs/testing.md, which describes each test layer and the traceability check.
 
+## The melee extension (M0 to M6): release 3.0
+
+After 2.2, the Melee Extension Plan rebuilt the melee half while keeping Hadur a duelist: the duel's sources are pinned by a hash (`DuelIdentityTest`), and a gate decides each tick which half drives, failing closed to the duel on a sentry or a melee fault (M0, M1). M2 rebuilt the sensing: a radar that keeps spinning with four or more alive, and shots read from opponents' energy drops. M3 replaced the movement with minimum risk over 160 points, the closest-robot term and virtual bullets from those shots; survival on the reference field rose from 33 to 55. M4 replaced the gun with a learning field gun that aims at every opponent at once, and M5 added melee memory and the hand-off of the last opponent's profile and shots to the duel.
+
+M6 was tuning. A sweep of the movement weights at 10 seeds (the bench's noise is about 2 APS at 5) found them at a local optimum; the virtual bullets matter most (without them APS drops 3). On the reference field Hadur survived second best but dealt the least bullet damage of the strong bots, and most of that was the posture holding fire and cutting power; dropping that raised damage by about 15% at the same APS, and 3.0 keeps it as the simpler rule (MGUN-5).
+
+| Melee bench, cold, 1000x1000 | 2.2 | 3.0 |
+| --- | --- | --- |
+| Reference field, APS | 37.9 | 52.7 to 54.6 |
+| Reference field, survival | 32.6 | 59.5 to 63.4 |
+| Challenge field, firsts of 100 | 33 | 72 |
+
+The plan's last gate, reference APS 60, is not met. The next levers are the radar (turning it with the gun and body, an arc sweep, as the scan gap is still 10 to 11 ticks) and a warm hand-off bench, so the 1v1 profile at the hand-off can be measured.
+
 ## What comes next
 
 Every EARS requirement is implemented and traced, and the staged plan is complete. What remains is measurement and tuning, not new requirements.
