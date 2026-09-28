@@ -63,6 +63,12 @@ EARS requirements from the Hadur 2 technical direction. This file is the source 
 | BENCH-1 | Ubiquitous | The bench report shall give an APS estimate as the stratum-weighted mean of score share over the rumble-sample set with a 95% interval. | R0 |
 | BENCH-2 | Event | When two robot jars are given, the bench shall run each seed with both and report the paired difference with its 95% interval. | R0 |
 | BENCH-3 | Ubiquitous | The bench shall report per opponent our hit rate, their hit rate, skipped turns, faults, round length and damage per round for both jars. | R0 |
+| TIME-3 | Event | When the engine skips a turn for the first time in a battle, the core shall learn the tick allowance from the tick that caused it and use that allowance, not the adapter's guess, for the rest of the battle. | R1 |
+| TIME-4 | Ubiquitous | The core shall cap the bytes written at a round's end and shall write seeds only at battle end or on every tenth surviving round. | R1 |
+| TIME-5 | Ubiquitous | The adapter shall run one warm-up tick through a discarded core before the first round, so that class loading and JIT warm-up do not cost the first real tick. | R1 |
+| MEM-6 | Ubiquitous | The store shall keep statistics loadable at quota by evicting seeds from every profile before any statistics are skipped. | R1 |
+| MEM-7 | Ubiquitous | The profile codec shall be able to write a profile in the format a previous release can read. | R1 |
+| DIAL-3 | Unwanted | If a margin used in a policy comparison is not a finite number, then the policy shall take its conservative branch rather than treat the comparison as settled. | R1 |
 
 Stage is where the requirement is first implemented: S0–S7 in the Hadur 2 stage plan, M0–M6
 in the melee extension plan ("Hadur 2 — Melee Extension Plan", 27 Sep 2026).
@@ -227,6 +233,53 @@ report renderers.
 - **BENCH-3** was already met by the S1–S6 report tables (hit rates, skipped turns, faults,
   fighting distance, damage per round); `ReportTest` pins those columns so a future report
   change cannot drop what BENCH-3 promises without failing the build.
+
+R1 (client reliability, part of the rumble climb plan) hardens the robot for RoboRumble's
+real clients, which the S0–S7 bench never exercised: a slower or busier machine than the
+bench's, hundreds of battles writing to a quota-limited data directory, and clients staying
+on an older jar after a profile format changes underneath them.
+
+- **TIME-3** replaces the adapter's fixed 3 ms allowance guess with a learned one once the
+  engine actually skips a turn, since a RoboRumble client's real allowance can be smaller
+  (or larger) than the bench machine's; `TickBudgetTest` covers the learn-once, hold-for-the-
+  battle behaviour. The adapter still reports ticks and skips exactly as before; the core
+  starts trusting a better number, but only when the tick behind a skip is a plausible share
+  of the first guess (`TickBudget.MIN_LEARNED_SHARE`) — the adapter times only its own call
+  into the core, not whatever else the engine charged the turn for (a checkpoint write, a
+  GC pause), so an unrelated short tick must not become the battle-long allowance.
+- **TIME-4** caps a round-end checkpoint's cost: `ProfileLibrary.saveStatsOnly` persists the
+  stats alone, via `ProfileCodec.encodeStatsOnly` (which never serialises the caller's own
+  seed lists at all), carrying over whatever seeds are already on disk unchanged rather than
+  erasing them — a checkpoint before the tenth only leaves stored seeds stale, never gone.
+  `HadurCore.checkpoint` calls it for nine round-end checkpoints out of ten, writing the full
+  profile (seeds included) only on the tenth and always at battle end;
+  `CoreMemoryTest.checkpointsCapSeedWrites` and `ProfileLibraryTest.statsOnlySaveKeepsStoredSeeds`
+  cover the schedule and the no-erasure guarantee.
+- **TIME-5** runs one tick through a throwaway core and guard, built and discarded with no
+  store and no telemetry, before the real one's first round in `Hadur.java`'s `run()`. The
+  tick carries a synthetic scan, not an empty one, so the warm-up actually reaches the
+  aiming, movement and memory-adjacent code the real first scan will run, not just the
+  "enemy not seen yet" branch; a failure is logged (best-effort, never fatal).
+  `HadurWarmUpTest` checks it runs cleanly for a couple of battlefield sizes.
+- **MEM-6** turned out to already hold: `ProfileLibrary.evictSeeds` never returns short of
+  its target unless it has already stripped every other profile with seeds, and whenever it
+  reaches its target the hard-quota check (100% of quota) is guaranteed to pass because its
+  target is computed against the lower 90% (`ProfileLibrary.EVICT_AT`) threshold. So a
+  write is skipped only once nothing more can be evicted from anyone; no code change was
+  needed, only a test pinning the invariant (`ProfileLibraryTest.skipOnlyAfterEveryonesSeedsAreGone`)
+  and a javadoc explaining why.
+- **MEM-7** adds `ProfileCodec.encode(profile, version)`, which writes any version from
+  `OLDEST_VERSION` to the current one, leaving out a field (today, only the normalised-hits
+  group) a target version never had, exactly as that version's own encoder would have. A
+  `ProfileLibrary` built with a write-version argument (defaulting to the current one) uses
+  it for every save it makes — regular saves, eviction rewrites and stats-only checkpoints
+  alike — so it is a lever an actual mixed-release migration can turn, not just a capability
+  sitting unused: `ProfileLibraryTest.writeVersionAppliesToEverySave` covers it.
+- **DIAL-3** found one real gap: `SeedTrust.diverges` compared live and profile margins
+  without a finiteness guard, so a non-finite margin (unreachable today, since `Estimate`'s
+  margin is always finite by construction — see `EstimateTest.marginIsAlwaysFinite`) would
+  have silently read as "no divergence", the wrong direction for a seed the core can no
+  longer trust. Fixed defensively so the invariant holds even if `Estimate` is ever changed.
 
 ## Retired requirements
 

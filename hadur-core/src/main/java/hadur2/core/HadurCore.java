@@ -853,11 +853,13 @@ public final class HadurCore {
     }
 
     /**
-     * MEM-3: writes the profile to the store. The adapter calls this when a round ends, as
-     * a checkpoint, and when the battle ends. Does nothing when the battle keeps no memory.
-     * In a melee battle it writes the melee blocks instead (MMEM-1); the adapter only
-     * checkpoints while Hadur is alive, so a round Hadur died in is written at the next
-     * checkpoint or at the battle's end.
+     * MEM-3: writes the profile to the store in full, seeds included. The adapter calls
+     * this when the battle ends; round-end checkpoints while the battle continues go
+     * through {@link #checkpoint} instead (TIME-4), which only writes seeds on every
+     * tenth one. Does nothing when the battle keeps no memory. In a melee battle it writes
+     * the melee blocks instead (MMEM-1); the adapter only checkpoints while Hadur is
+     * alive, so a round Hadur died in is written at the next checkpoint or at the battle's
+     * end.
      *
      * <p>The library does the atomic write (RES-3) and any eviction (MEM-5) and never
      * throws; anything but a clean write is logged as a {@code MEM} record.</p>
@@ -865,9 +867,31 @@ public final class HadurCore {
      * @param tick the tick of the save, for the record
      */
     public void saveProfile(long tick) {
+        save(tick, false);
+    }
+
+    /** Round-end checkpoints since the battle began; every tenth writes the seeds (TIME-4). */
+    private int checkpoints;
+
+    /**
+     * TIME-4: a round-end checkpoint. Every checkpoint writes the profile's statistics;
+     * only every tenth one also writes its seeds, so a battle of hundreds of rounds does
+     * not spend its whole data quota on checkpoints nobody but the last one needs. The
+     * final save at the battle's end ({@link #battleEnded}) always writes the seeds.
+     *
+     * @param tick the tick of the save, for the record
+     */
+    public void checkpoint(long tick) {
+        checkpoints++;
+        save(tick, checkpoints % 10 != 0);
+    }
+
+    private void save(long tick, boolean statsOnly) {
         saveMeleeMemory(tick);
         if (library == null || folder == null) return;
-        ProfileLibrary.Saved saved = library.save(folder.profile());
+        ProfileLibrary.Saved saved = statsOnly
+            ? library.saveStatsOnly(folder.profile())
+            : library.save(folder.profile());
         if (saved != ProfileLibrary.Saved.WRITTEN) {
             telemetry.emit("MEM," + round + "," + tick + "," + saved.name().toLowerCase(Locale.ROOT)
                 + "," + clean(library.lastNote()));

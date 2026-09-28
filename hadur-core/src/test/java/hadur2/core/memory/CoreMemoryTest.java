@@ -91,6 +91,31 @@ class CoreMemoryTest {
     }
 
     @Test
+    @Tag("TIME-4")
+    @DisplayName("TIME-4: checkpoints never lose stored seeds, and the tenth catches disk up to the battle's own")
+    void checkpointsCapSeedWrites() {
+        MemoryProfileStore store = storeWith(Profiles.sample(SHADOW, 9, 50, 50));
+        HadurCore core = new HadurCore(800, 600, 1, Telemetry.NONE, store);
+        String file = ProfileLibrary.fileName("abc.Shadow");
+        for (int round = 0; round < 9; round++) {
+            core.newRound(round);
+            core.tick(scan(1, SHADOW));
+            core.roundEnded(2, "win", 100, 0);
+            core.checkpoint(2);
+            OpponentProfile persisted = ProfileCodec.decode(store.read(file));
+            assertTrue(persisted.gunSeedSize() >= 50,
+                "checkpoint " + (round + 1) + " must not erase what an earlier save already stored");
+        }
+        core.newRound(9);
+        core.tick(scan(1, SHADOW));
+        core.roundEnded(2, "win", 100, 0);
+        core.checkpoint(2);
+        OpponentProfile tenth = ProfileCodec.decode(store.read(file));
+        assertEquals(core.profile().gunSeedSize(), tenth.gunSeedSize(),
+            "the tenth checkpoint catches disk up to what the battle currently holds");
+    }
+
+    @Test
     @Tag("MEM-4")
     @DisplayName("a damaged profile is a stranger, recorded in MEM and R records")
     void damagedProfileRecorded() {

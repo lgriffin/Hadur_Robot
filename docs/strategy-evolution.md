@@ -206,18 +206,60 @@ M6 was tuning. A sweep of the movement weights at 10 seeds (the bench's noise is
 
 The plan's last gate, reference APS 60, is not met. The next levers are the radar (turning it with the gun and body, an arc sweep, as the scan gap is still 10 to 11 ticks) and a warm hand-off bench, so the 1v1 profile at the hand-off can be measured.
 
+## The RoboRumble climb plan (R0-R5)
+
+3.0 placed 64th of 1,216 in the 1v1 RoboRumble on 2026-09-28. The [climb plan
+artifact](https://claude.ai/artifact/RrAnDpngzZjcf9hYL3pLcW) reads that placement against
+the bench's own results and stages six releases (R0-R5) to close the gap, each still bench-
+gated and EARS-traced like the duel and melee plans. Stage PRs on this plan merge without
+waiting for review, per standing instruction, once CI is green and any bot review findings
+are addressed.
+
+### R0: measure the climb itself
+
+Before changing the robot, the bench needed to measure against the rumble population, not
+just the sample bots. `hadur-bench` gained a stratum-weighted APS estimate over a sampled
+slice of the live rankings (BENCH-1), a paired-seed A/B mode that cancels a seed's own noise
+between a candidate and a baseline jar (BENCH-2), and per-opponent diagnostics for both jars
+in that comparison (BENCH-3). This is bench tooling only; it changes nothing the robot does.
+
+### R1: client reliability
+
+R0's bench runs on one fixed machine; a real RoboRumble client does not. R1 hardens the
+robot for that gap, closing three of the open items below:
+
+- **TIME-3**: the adapter's fixed 3 ms tick-allowance guess is now only a starting point.
+  The first turn a client's engine actually skips, the core learns the real allowance from
+  the tick that caused it and uses that number, not the guess, for the rest of the battle.
+- **TIME-4**: round-end checkpoints now write seeds only on every tenth surviving round (and
+  always at the battle's end); the other nine write stats only, cutting the roughly 44 KB a
+  full checkpoint cost to what the stats alone need.
+- **TIME-5**: the adapter runs one tick through a throwaway core before the real battle
+  starts, so class loading and JIT warm-up land there instead of on the first real tick.
+- **MEM-6**: audited, not changed. `ProfileLibrary`'s eviction already never stops short of
+  freeing what its 90%-of-quota target needs unless every other profile's seeds are already
+  gone, so a write is only ever skipped once nothing more can be evicted from anyone; a test
+  pins the invariant.
+- **MEM-7**: the profile codec can now write a profile in any format version back to the
+  oldest it still reads, so a client left on a previous release can keep reading what a
+  newer one writes across an in-place upgrade.
+- **DIAL-3**: found one real bug while auditing every margin comparison for a non-finite
+  value: `SeedTrust.diverges` would have read an unmeasurable margin as "no divergence",
+  the wrong direction for a seed the core can no longer trust. `Estimate`'s own margin is
+  always finite by construction, so this was unreachable in practice, but the guard is now
+  explicit rather than relying on that invariant never changing.
+
 ## What comes next
 
-Every EARS requirement is implemented and traced, and the staged plan is complete. What remains is measurement and tuning, not new requirements.
+Every EARS requirement up to R1 is implemented and traced. R2 to R5 (full share vs weak and
+mid-table bots, gun vs surfers, movement, and a memory decision) continue the climb plan.
 
 Open items carried forward, each tracked as a [GitHub issue](https://github.com/lgriffin/Hadur_Robot/issues):
 
 - **Read the real rankings.** 3.0 is entered in both rumbles (replacing 2.2); once a few thousand battles are in, the rankings say more than the bench can, and the MeleeRumble rating is the melee plan's last gate.
 - **Melee APS is short of 60.** The radar and a warm hand-off bench are the next levers (above).
-- **Skipped turns** are 72 per cold bench, not the zero S6 aimed for. Half fall on a round's last turn, when the profile checkpoint is written.
+- **Skipped turns** are 72 per cold bench, not the zero S6 aimed for. Half fall on a round's last turn, when the profile checkpoint is written; R1's TIME-4 cuts what that write costs.
 - **MOVE-2 has not shown a gain.** Warm, it scored the same switched on or off. Its baseline averages whole battles, while the live window sees a gun that has already learned; a baseline from the same part of past battles would be fairer.
 - **Memory has not clearly paid off against Shadow.** S6's warm run (54.6%) is below its cold one (57.4%), within noise. The T1 and T2 bounds have no bench opponent in them yet, so they are uncalibrated.
-- **Aggression against mid-table bots is unmeasured.** A few RoboRumble bots between the sample bots and Shadow would calibrate T1/T2 and show whether closing in pays against them.
-- **The tick allowance is assumed** at 3 ms, the bench host's. Robocode does not tell a robot its own, so a rumble client that is much faster or slower sheds work at the wrong time.
-- **Checkpoint I/O** is about 44 KB a surviving round with full seeds. If rumble clients prove slow at file I/O, checkpoint only the stats.
+- **Aggression against mid-table bots is unmeasured.** A few RoboRumble bots between the sample bots and Shadow would calibrate T1/T2 and show whether closing in pays against them; R2 of the climb plan targets this directly.
 - **The ledger's remaining ambiguity** is small. A shot fired as the enemy strikes a wall can be 0.5 off in power, and 0.2% of Shadow's visible shots are still missed.

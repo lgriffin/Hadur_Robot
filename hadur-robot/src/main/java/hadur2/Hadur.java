@@ -75,6 +75,9 @@ public class Hadur extends AdvancedRobot {
         // Each round's robot has its own console stream; telemetry closures read the static.
         console = out;
         if (core == null) {
+            // TIME-5: warm up class loading and JIT compilation on a throwaway core before
+            // the real one's first tick pays for it.
+            warmUp(getBattleFieldWidth(), getBattleFieldHeight(), getOthers());
             // First round of the battle. The telemetry lambdas go through the static
             // console rather than capturing this round's `out`.
             core = new HadurCore(getBattleFieldWidth(), getBattleFieldHeight(), getOthers(),
@@ -111,6 +114,34 @@ public class Hadur extends AdvancedRobot {
             ticked(in, orders);
             apply(orders);
             execute();
+        }
+    }
+
+    /**
+     * TIME-5: runs one tick through a throwaway core and guard before the real battle
+     * begins, so that class loading and JIT warm-up land here rather than on the round's
+     * first real tick. No store (nothing is read or written) and no telemetry from the
+     * throwaway core itself; the core, guard and result are all discarded, and nothing
+     * they do reaches the real core.
+     *
+     * <p>The tick carries a synthetic scan, not just a bare one: a tick with no scan takes
+     * only the "enemy not seen yet" branch, which never reaches the aiming, movement and
+     * memory-adjacent code the real first scan will actually run, so it would warm little
+     * of what needs it. A failure here is logged, not silent: it never stops the battle
+     * (a cold real tick still runs correctly), but it is worth knowing about.</p>
+     */
+    static void warmUp(double width, double height, int others) {
+        try {
+            HadurCore warm = new HadurCore(width, height, others, line -> {}, null);
+            warm.newRound(0);
+            Guard warmGuard = new Guard(warm::tick, warm::recover, line -> {});
+            warmGuard.tick(new BotInput(0, 0, width / 2, height / 2, 0, 0, 100, 0, 0, 0, 0, 0, others,
+                List.of(new BotEvent.Scan("warmup.Enemy", 0, width / 4, 100, 0, 0))));
+            if (warmGuard.faultsThisRound() > 0 && console != null) {
+                console.println("WARM,0,0,fault," + warmGuard.faultsThisRound());
+            }
+        } catch (RuntimeException e) {
+            if (console != null) console.println("WARM,0,0,exception," + e);
         }
     }
 
@@ -278,11 +309,12 @@ public class Hadur extends AdvancedRobot {
     public void onRoundEnded(RoundEndedEvent e) {
         // The engine can deliver this before WinEvent in the round's last batch.
         reportRound(getEnergy() <= 0 ? "loss" : getOthers() == 0 ? "win" : "draw");
-        // A checkpoint: the robot may not get to the battle's end (MEM-3). File I/O is
-        // safe here, unlike in onWin and onDeath. Only when alive: a dead robot's thread
-        // that stops to write keeps it in the round, where the enemy goes on shooting it
-        // and its last bullets still refund it energy (the S3 bench saw this).
-        if (core != null && getEnergy() > 0) core.saveProfile(getTime());
+        // A checkpoint: the robot may not get to the battle's end (MEM-3), and TIME-4
+        // caps what each one writes. File I/O is safe here, unlike in onWin and onDeath.
+        // Only when alive: a dead robot's thread that stops to write keeps it in the
+        // round, where the enemy goes on shooting it and its last bullets still refund it
+        // energy (the S3 bench saw this).
+        if (core != null && getEnergy() > 0) core.checkpoint(getTime());
     }
 
     /** The battle is over: the final profile save (MEM-3). */

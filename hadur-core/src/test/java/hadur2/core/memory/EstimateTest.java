@@ -65,4 +65,22 @@ class EstimateTest {
         assertEquals(42.0 / 104, Estimate.of(40, 100).center(), 1e-12);
         assertTrue(Double.isNaN(Estimate.NONE.center()));
     }
+
+    @Test
+    @Tag("DIAL-3")
+    @DisplayName("DIAL-3: the margin is always finite, whatever the inputs, including NONE's")
+    void marginIsAlwaysFinite() {
+        // The premise DIAL-3 guards against ("an estimate's margin is not a finite number")
+        // never arises through the only way to build one: of() rejects bad inputs into
+        // NONE, whose own margin (1.0) is finite too. A policy reading margin() can rely on
+        // it always being a real number, and hadur2.core.adapt.SeedTrust.diverges still adds
+        // an explicit guard for the value should this invariant ever be weakened.
+        double[][] cases = {{0, 0}, {Double.NaN, 10}, {1, Double.POSITIVE_INFINITY}, {-1, 10},
+            {0, 1}, {1, 1}, {1e9, 1e9}, {0, 3}, {3, 3}, {12.5, 10}};
+        for (double[] c : cases) {
+            double margin = Estimate.of(c[0], c[1]).margin();
+            assertTrue(Double.isFinite(margin), "of(" + c[0] + ", " + c[1] + ") margin=" + margin);
+        }
+        assertTrue(Double.isFinite(Estimate.NONE.margin()));
+    }
 }

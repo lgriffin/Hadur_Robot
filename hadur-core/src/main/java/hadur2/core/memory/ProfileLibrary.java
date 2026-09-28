@@ -86,6 +86,8 @@ public final class ProfileLibrary {
     public enum Saved { WRITTEN, WRITTEN_WITHOUT_SEEDS, SKIPPED, FAILED }
 
     private final ProfileStore store;
+    /** The format version every write this library makes uses (MEM-7). */
+    private final int writeVersion;
     private int loadFailures;
     private int saveFailures;
     private int skippedWrites;
@@ -95,12 +97,28 @@ public final class ProfileLibrary {
     private String lastNote = "";
 
     /**
-     * A library over {@code store}. Nothing is read until {@link #prepare()} or {@link #load}.
+     * A library over {@code store}, writing at the codec's current version.
      *
      * @param store where the profiles live; the robot's data directory or an in-memory map
      */
     public ProfileLibrary(ProfileStore store) {
+        this(store, ProfileCodec.VERSION);
+    }
+
+    /**
+     * MEM-7: a library that writes every profile — regular saves, eviction rewrites and
+     * stats-only checkpoints alike — at {@code writeVersion} instead of the codec's current
+     * one, so a client still on a previous release can go on reading what this one writes.
+     * {@link ProfileCodec#decode} reads any version back to {@link ProfileCodec#OLDEST_VERSION},
+     * whatever this library writes, so nothing here needs to change to read older files.
+     *
+     * @param store where the profiles live; the robot's data directory or an in-memory map
+     * @param writeVersion the format version to write, {@code ProfileCodec.OLDEST_VERSION}
+     *     to {@code ProfileCodec.VERSION}
+     */
+    public ProfileLibrary(ProfileStore store, int writeVersion) {
         this.store = store;
+        this.writeVersion = writeVersion;
     }
 
     /** Loads that found something but could not read it, this battle (MEM-4). */
@@ -267,7 +285,12 @@ public final class ProfileLibrary {
      * <p>The space check assumes the worst moment of a save: the temporary copy and the
      * profile both on disk, plus the clock. If that would pass {@link #EVICT_AT} of the
      * quota, other profiles' seeds go first (MEM-5); if it would still pass the whole quota,
-     * this profile's own seeds go; if even that does not fit, nothing is written.</p>
+     * this profile's own seeds go; if even that does not fit, nothing is written. MEM-6:
+     * that last case cannot happen while any other profile still has seeds, because
+     * {@link #evictSeeds} never stops short of freeing what {@link #EVICT_AT}'s threshold
+     * needs unless it has already taken every seed there was to take (its target is always
+     * at or under the hard quota checked here) — so a write is only ever skipped once
+     * nothing more can be evicted from anyone.</p>
      *
      * @param profile the profile to save
      * @return what was done
@@ -275,7 +298,7 @@ public final class ProfileLibrary {
     public Saved save(OpponentProfile profile) {
         String file = fileName(profile.key());
         try {
-            byte[] bytes = ProfileCodec.encode(profile);
+            byte[] bytes = ProfileCodec.encode(profile, writeVersion);
             // Bytes held by everything this save does not replace.
             long others = store.bytesUsed() - size(file) - size(file + TMP_SUFFIX) - size(CLOCK);
             long limit = (long) Math.floor(store.quota() * EVICT_AT);
@@ -290,7 +313,7 @@ public final class ProfileLibrary {
                 OpponentProfile stripped = ProfileCodec.decode(bytes);
                 if (stripped.dropSeeds()) {
                     seedsEvicted++;
-                    bytes = ProfileCodec.encode(stripped);
+                    bytes = ProfileCodec.encode(stripped, writeVersion);
                     outcome = Saved.WRITTEN_WITHOUT_SEEDS;
                 }
                 if (others + 2L * bytes.length + CLOCK_SIZE > store.quota()) {
@@ -304,6 +327,44 @@ public final class ProfileLibrary {
             // battle recovers the number from the profiles (maxLastFought).
             store.write(CLOCK, clockBytes(Math.max(battleNumber, profile.lastFought())));
             return outcome;
+        } catch (RuntimeException e) {
+            saveFailures++;
+            lastNote = "save " + profile.key() + ": " + describe(e);
+            return Saved.FAILED;
+        }
+    }
+
+    /**
+     * TIME-4: writes {@code profile}'s statistics without re-writing its seeds from
+     * scratch. Round-end checkpoints use this so the frequent write costs only what the
+     * stats need: it never serialises the caller's own (possibly large) seed lists, and
+     * never touches them in memory either. Whatever seeds are already safely on disk for
+     * this profile are carried over unchanged, so a checkpoint before the tenth never
+     * erases what an earlier save already committed (MEM-3) — it only leaves them stale
+     * until the next full save (battle end, or every tenth checkpoint, see
+     * {@code HadurCore#checkpoint}), never gone.
+     *
+     * @param profile the profile to save
+     * @return what was done
+     */
+    public Saved saveStatsOnly(OpponentProfile profile) {
+        try {
+            // A cheap, independent copy of just the stats: never the caller's own profile
+            // (whose seeds must stay in memory for the rest of the battle untouched), and
+            // never an encode of the caller's own seed lists either (TIME-4's whole point).
+            OpponentProfile copy = ProfileCodec.decode(ProfileCodec.encodeStatsOnly(profile));
+            byte[] stored = store.read(fileName(profile.key()));
+            if (stored != null) {
+                try {
+                    OpponentProfile onDisk = ProfileCodec.decode(stored);
+                    copy.gunSeed.addAll(onDisk.gunSeed);
+                    copy.surfSeed.addAll(onDisk.surfSeed);
+                } catch (RuntimeException e) {
+                    // Nothing valid on disk to carry over; the copy keeps no seeds, as if
+                    // this were the profile's first save.
+                }
+            }
+            return save(copy);
         } catch (RuntimeException e) {
             saveFailures++;
             lastNote = "save " + profile.key() + ": " + describe(e);
@@ -363,7 +424,7 @@ public final class ProfileLibrary {
             String name = fileName(p.key());
             long before = size(name);
             p.dropSeeds();
-            byte[] stripped = ProfileCodec.encode(p);
+            byte[] stripped = ProfileCodec.encode(p, writeVersion);
             writeAtomically(name, stripped);
             freed += before - stripped.length;
             seedsEvicted++;
