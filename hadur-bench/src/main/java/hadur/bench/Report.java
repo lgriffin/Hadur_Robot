@@ -33,6 +33,8 @@ final class Report {
             width, height, System.getProperty("java.version"),
             Runtime.getRuntime().availableProcessors(), cpuConstant));
         b.append("Shares are Hadur's fraction of the two robots' total, mean ± 95% interval over battles.\n\n");
+        String aps = weightedApsLine(robot, results);
+        if (!aps.isEmpty()) b.append(aps).append("\n");
         b.append("| Opponent | Role | Score share | Survival share | Bullet-damage share | Rounds won | Our hit rate | Their hit rate | Skipped turns | Faults | Turn p95 / max (ms) |\n");
         b.append("|---|---|---|---|---|---|---|---|---|---|---|\n");
         for (Map.Entry<Opponent, List<BattleResult>> e : results.entrySet()) {
@@ -269,6 +271,23 @@ final class Report {
                 candAps.percent(), baseAps.percent()));
         }
         return b.toString();
+    }
+
+    /**
+     * BENCH-1: the stratified APS estimate for one jar's results, or "" when the opponent
+     * set carries no weights. Shown in every report, not only a paired A/B one, so a plain
+     * single-jar run against a weighted set (rumble-sample.txt) still reports it.
+     */
+    private static String weightedApsLine(String robot, Map<Opponent, List<BattleResult>> results) {
+        List<Stats> stats = new ArrayList<>();
+        List<Double> weights = new ArrayList<>();
+        for (Map.Entry<Opponent, List<BattleResult>> e : results.entrySet()) {
+            stats.add(Stats.of(shares(e.getValue())));
+            weights.add(e.getKey().weight);
+        }
+        if (weights.stream().noneMatch(w -> w != null && w > 0)) return "";
+        return String.format(Locale.ROOT, "**Stratified APS estimate (BENCH-1) for %s:** %s.%n",
+            robot, Stats.weighted(stats, weights).percent());
     }
 
     private static List<Double> shares(List<BattleResult> rs) {

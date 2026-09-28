@@ -17,18 +17,18 @@
 #   kawigi.sbf.Barracuda (PBI -26.64), nexus.Two (-25.75), zzx.Gron (-22.02),
 #   jep.nano.Hawkwing (-20.74), racso.Crono (-19.40), caimano.Furia_Ceca (-19.26)
 
-# top 30 (2.5%), 10 opponents already benched, 0.25% each
-kc.mega.BeepBoop 2.0 | top30 | kc.mega.BeepBoop_2.0.jar | 0.25
-jk.mega.DrussGT 3.1.16 | top30 | jk.mega.DrussGT_3.1.16.jar | 0.25
-oog.mega.saguaro.Saguaro 1.0 | top30 | oog.mega.saguaro.Saguaro_1.0.jar | 0.25
-aaa.r.ScalarR 0.005h.053-noshield | top30 | aaa.r.ScalarR_0.005h.053-noshield.jar | 0.25
-voidious.Diamond 1.8.22 | top30 | voidious.Diamond_1.8.22.jar | 0.25
-cb.fire.Firestarter 2.0f | top30 | cb.fire.Firestarter_2.0f.jar | 0.25
-dsekercioglu.mega.Raven 3.56j8 | top30 | dsekercioglu.mega.Raven_3.56j8.jar | 0.25
-xander.cat.XanderCat 12.9 | top30 | xander.cat.XanderCat_12.9.jar | 0.25
-lxx.Tomcat 3.68 | top30 | lxx.Tomcat_3.68.jar | 0.25
-rsalesc.mega.Knight 0.6.28 | top30 | rsalesc.mega.Knight_0.6.28.jar | 0.25
-abc.Shadow 3.83c | top30 | abc.Shadow_3.83c.jar | 0.25
+# top 30 (2.5% total), 11 opponents already benched, 2.5/11 = 0.2273% each
+kc.mega.BeepBoop 2.0 | top30 | kc.mega.BeepBoop_2.0.jar | 0.2273
+jk.mega.DrussGT 3.1.16 | top30 | jk.mega.DrussGT_3.1.16.jar | 0.2273
+oog.mega.saguaro.Saguaro 1.0 | top30 | oog.mega.saguaro.Saguaro_1.0.jar | 0.2273
+aaa.r.ScalarR 0.005h.053-noshield | top30 | aaa.r.ScalarR_0.005h.053-noshield.jar | 0.2273
+voidious.Diamond 1.8.22 | top30 | voidious.Diamond_1.8.22.jar | 0.2273
+cb.fire.Firestarter 2.0f | top30 | cb.fire.Firestarter_2.0f.jar | 0.2273
+dsekercioglu.mega.Raven 3.56j8 | top30 | dsekercioglu.mega.Raven_3.56j8.jar | 0.2273
+xander.cat.XanderCat 12.9 | top30 | xander.cat.XanderCat_12.9.jar | 0.2273
+lxx.Tomcat 3.68 | top30 | lxx.Tomcat_3.68.jar | 0.2273
+rsalesc.mega.Knight 0.6.28 | top30 | rsalesc.mega.Knight_0.6.28.jar | 0.2273
+abc.Shadow 3.83c | top30 | abc.Shadow_3.83c.jar | 0.2273
 
 # sanity: rammer response (R2, RAM-1), not part of the weighted estimate (weight 0)
 sample.RamFire | sanity | - | 0

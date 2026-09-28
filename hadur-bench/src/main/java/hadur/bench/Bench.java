@@ -216,7 +216,11 @@ public final class Bench {
         String report = Report.render(results, profiles, robot, warm, rounds, runs, width, height,
             cpuConstant());
         if (baselineResults != null) {
+            // BENCH-2's diff table, then BENCH-3's full per-opponent diagnostics for the
+            // baseline too (hit rate, skips, faults, pace), not just its score share.
             report += Report.renderPaired(results, baselineResults, robot, baselineRobot);
+            report += "\n" + Report.render(baselineResults, robot + " baseline (" + baselineRobot + ")",
+                warm, rounds, runs, width, height, cpuConstant());
         }
         Files.writeString(out.resolve("report.md"), report);
         if (opts.containsKey("report")) {
@@ -227,6 +231,9 @@ public final class Bench {
         System.out.println();
         System.out.println(report);
         boolean failed = results.values().stream().flatMap(List::stream).anyMatch(r -> !r.ok);
+        if (baselineResults != null) {
+            failed |= baselineResults.values().stream().flatMap(List::stream).anyMatch(r -> !r.ok);
+        }
         return failed ? 1 : 0;
     }
 

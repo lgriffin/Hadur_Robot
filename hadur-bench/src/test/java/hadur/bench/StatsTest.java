@@ -53,6 +53,36 @@ class StatsTest {
     }
 
     @Test
+    @Tag("BENCH-1")
+    @DisplayName("equal weights give the same interval as a plain Stats.of over the same means")
+    void equalWeightsMatchPlainMeanInterval() {
+        // Four "opponents", each a single mean: a weighted estimate over equal weights
+        // should reduce exactly to treating those means as one plain sample.
+        List<Stats> perOpponent = List.of(Stats.of(List.of(0.7)), Stats.of(List.of(0.5)),
+            Stats.of(List.of(0.6)), Stats.of(List.of(0.4)));
+        Stats weighted = Stats.weighted(perOpponent, List.of(1.0, 1.0, 1.0, 1.0));
+        Stats plain = Stats.of(List.of(0.7, 0.5, 0.6, 0.4));
+        assertEquals(plain.mean, weighted.mean, 1e-9);
+        assertEquals(plain.halfWidth, weighted.halfWidth, 1e-6);
+    }
+
+    @Test
+    @Tag("BENCH-1")
+    @DisplayName("a weighted estimate near the t-table's edge does not throw")
+    void tTableEdgeDoesNotThrow() {
+        // 31 equally-weighted opponents: effective N rounds to 31, one past the table's
+        // last entry (n=30), which must fall back to 1.96 rather than index out of bounds.
+        List<Stats> perOpponent = new java.util.ArrayList<>();
+        List<Double> weights = new java.util.ArrayList<>();
+        for (int i = 0; i < 31; i++) {
+            perOpponent.add(Stats.of(List.of(0.5 + 0.01 * i)));
+            weights.add(1.0);
+        }
+        Stats weighted = Stats.weighted(perOpponent, weights);
+        assertTrue(weighted.n == 31 && !Double.isNaN(weighted.halfWidth));
+    }
+
+    @Test
     @Tag("BENCH-2")
     @DisplayName("a paired diff cancels a shift common to both jars at every seed")
     void pairedDiffCancelsCommonNoise() {

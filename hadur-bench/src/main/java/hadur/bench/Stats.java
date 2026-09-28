@@ -69,16 +69,23 @@ public final class Stats {
         if (n == 0) return new Stats(0, Double.NaN, Double.NaN);
         double mean = weightedMean / weightSum;
         if (n == 1) return new Stats(1, mean, Double.NaN);
-        // Weighted sample variance of the per-opponent means (reliability weights).
+        double v1 = weightSum;
+        double v2 = 0;
+        for (double w : usedWeights) v2 += w * w;
+        double effectiveN = v1 * v1 / v2;
+        // Bias-corrected weighted sample variance for reliability weights (Gatz & Smith):
+        // dividing by weightSum alone (a population variance) understates it; for equal
+        // weights this reduces exactly to the unbiased sample variance Stats.of uses.
         double num = 0;
         for (int i = 0; i < n; i++) {
             double d = usedMeans.get(i) - mean;
             num += usedWeights.get(i) * d * d;
         }
-        double variance = num / weightSum;
-        double effectiveN = weightSum * weightSum / usedWeights.stream().mapToDouble(w -> w * w).sum();
-        double t = effectiveN - 1 < T975.length && effectiveN >= 2
-            ? T975[(int) Math.round(effectiveN) - 1] : 1.96;
+        double denom = v1 - v2 / v1;
+        double variance = denom > 0 ? num / denom : Double.NaN;
+        if (Double.isNaN(variance)) return new Stats(n, mean, Double.NaN);
+        int nRounded = (int) Math.round(effectiveN);
+        double t = nRounded >= 2 && nRounded - 1 < T975.length ? T975[nRounded - 1] : 1.96;
         double se = Math.sqrt(variance / effectiveN);
         return new Stats(n, mean, t * se);
     }
