@@ -22,7 +22,7 @@ mvn exec:java -Dexec.args="--mode cold --rounds 35 --seeds 5"
 | `--seeds N` | 5 | battles per opponent (cold) |
 | `--battles N` | 5 | consecutive battles per opponent (warm) |
 | `--field WxH` | 800x600 | battlefield size |
-| `--robot-jar FILE` | ../hadur-robot/target/hadur2.Hadur_2.2.jar | the robot jar |
+| `--robot-jar FILE` | ../hadur-robot/target/hadur2.Hadur_3.0.jar | the robot jar |
 | `--robot-classes DIR` | | jar a compiled class tree instead, e.g. an older Hadur |
 | `--robot NAME` | hadur2.Hadur 3.0 | the robot's name as Robocode lists it |
 | `--record DIR` | | capture replay fixtures instead (see below) |

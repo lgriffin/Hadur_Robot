@@ -18,7 +18,7 @@ mvn -B -pl hadur-core test -Dtest=ReplayTest    # one class
 
 `mvn -B verify` is the whole check. It is what the `build` workflow runs on every push
 and pull request, and what the release workflow runs before it publishes a jar. When
-GitHub Actions is not running jobs, run it locally before merging: 2.2 was built and
+GitHub Actions is not running jobs, run it locally before merging: 2.2 and 3.0 were built and
 checked that way.
 
 Surefire runs classes named `*Test`, `*Tests` and `*Properties`. jqwik keeps its
@@ -57,8 +57,8 @@ A JUnit or jqwik test names a requirement with `@Tag("MEM-3")`; a Cucumber scena
 it, to `hadur-core/target/requirements-coverage.md`, and the `build` workflow adds it to
 the run's summary.
 
-All 41 requirements are covered. At release 2.2 the build runs 397 tests: 380 in the
-core, 5 in the robot and 12 in the bench.
+All 56 requirements due by S7 and M6 are covered. At release 3.0 the build runs 504
+tests: 483 in the core, 5 in the robot and 16 in the bench.
 
 ## Replay fixtures
 
