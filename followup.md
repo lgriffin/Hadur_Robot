@@ -4,6 +4,27 @@ Open items from the Hadur 2 stages, newest stage first. The open ones are tracke
 [GitHub issues](https://github.com/lgriffin/Hadur_Robot/issues) (#44 to #56, opened
 2026-09-28); the notes below are the detail behind them.
 
+## Rumble climb R4b/R4c (BENCH-4, release 3.2)
+
+- **BENCH-4** (`hadur-bench --client FILE`) runs the opponent set once per rumble-client
+  condition a file lists (a shared or prefilled data directory, a forced CPU constant,
+  background load, another engine or JVM), each its own pass, and reports survival share
+  and skipped turns per opponent per condition. An `engine=`/`java=` condition with nothing
+  local to match is reported as not run, not failed.
+- **Not reproduced.** Run against master over the weak set: a shared never-wiped data
+  directory, the CPU constant forced to 1.0ms and 0.3ms, and four background-load threads
+  all leave survival at 97 to 100%, the same as the default bench, against the live drop to
+  71-77%. See `docs/bench/r4-client-conditions.md` and `data/learnings.md` L-21.
+- **Not tried**: another Robocode engine release, another JVM, a data directory prefilled
+  from 2.2 or 3.0. BENCH-4 supports all three (`engine=`, `java=`, `data=prefill:DIR`), but
+  this environment has no second engine distribution, JDK or prefill set on hand. Whoever
+  picks this up with a real rumble client available should try those first — they are the
+  plan's own top candidates (`docs/rumble-climb-r4-r6-plan.md` section 6).
+- **Per the plan's decision tree**, "not reproduced" ships RES-7 and RES-8 anyway: this
+  stage releases 3.2 and reads the live rating with BENCH-5 once it has 300+ pairings,
+  rather than block on conditions this environment cannot exercise. `hadur.climb.stage`
+  moves to `R4`.
+
 ## Rumble climb R4a (BENCH-5, RES-7, RES-8)
 
 - **BENCH-5** (`hadur.bench.LiveDetails`) reads a saved LiteRumble BotDetails page and

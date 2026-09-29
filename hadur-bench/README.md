@@ -22,13 +22,14 @@ mvn exec:java -Dexec.args="--mode cold --rounds 35 --seeds 5"
 | `--seeds N` | 5 | battles per opponent (cold) |
 | `--battles N` | 5 | consecutive battles per opponent (warm) |
 | `--field WxH` | 800x600 | battlefield size |
-| `--robot-jar FILE` | ../hadur-robot/target/hadur2.Hadur_3.1.jar | the robot jar |
+| `--robot-jar FILE` | ../hadur-robot/target/hadur2.Hadur_3.2.jar | the robot jar |
 | `--robot-classes DIR` | | jar a compiled class tree instead, e.g. an older Hadur |
-| `--robot NAME` | hadur2.Hadur 3.1 | the robot's name as Robocode lists it |
+| `--robot NAME` | hadur2.Hadur 3.2 | the robot's name as Robocode lists it |
 | `--record DIR` | | capture replay fixtures instead (see below) |
 | `--set FILE` | reference-set.txt | the opponent list, e.g. `roborumble-top10.txt` |
 | `--melee true` | | put Hadur and every opponent in the set in one battle, `--seeds` times, and report finishing places |
 | `--sentry-border N` | | with `--melee`, the set's `sentry` entries fight as Robocode sentries guarding a border N px deep |
+| `--client FILE` | | (BENCH-4) run the set through each rumble-client condition the file lists (`label \| key=value ...` per line: `data`, `cpu`, `load`, `engine`, `java`), one bench pass per condition, and report survival share and skipped turns per opponent per condition |
 | `--suite FILE` | | run every bench the file lists (`label \| options` per line) and write one report |
 | `--only TEXT` | | run only opponents whose name contains TEXT |
 | `--out DIR` | work/&lt;mode&gt;-&lt;time&gt; | working directory (Robocode home, logs) |
@@ -121,6 +122,23 @@ real bullet in the same round within 3 ticks and 0.15 power. "Unseen" shots were
 while either robot was disabled and matched no wave; they are left out of the real-shot
 count. (A disabled robot is still scanned, so such a shot is often seen, and then counts.) "False waves" are inferred waves with no real bullet behind them;
 "ledger phantoms" are drops 1.20 would have read as shots that the ledger explained away.
+
+## Client conditions (BENCH-4)
+
+```sh
+mvn exec:java -Dexec.args="--client client-conditions-r4b.txt --set weak-pbi.txt --rounds 35 --seeds 1"
+```
+
+Runs the set once per condition the file lists, each its own bench pass: `data=shared`
+never wipes the robot data directory between opponents or battles (a rumble client's
+reality), `data=prefill:DIR` copies DIR into it first then behaves as `data=shared`;
+`cpu=NANOS` forces `robocode.cpu.constant` for the pass (a condition naming no `cpu` resets
+it, so an earlier condition's forced constant never leaks into a later one); `load=N` runs
+N CPU-bound threads alongside the battles; `engine=VERSION` and `java=DIR` swap the engine
+jars or the JVM a condition's battles run under (see `engines/README.md`), and are reported
+as not run, not failed, when not available locally. The combined report gives survival
+share and skipped turns per opponent per condition, e.g.
+`docs/bench/r4-client-conditions.md`.
 
 ## Replay fixtures
 

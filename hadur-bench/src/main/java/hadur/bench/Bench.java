@@ -33,9 +33,9 @@ import java.util.zip.GZIPOutputStream;
  *     warm keeps it across {@code --battles} consecutive battles per opponent.</li>
  * <li>{@code --rounds N} rounds per battle (35), {@code --seeds N} battles per opponent in
  *     cold mode (5), {@code --battles N} in warm mode (5), {@code --field WxH} (800x600).</li>
- * <li>{@code --robot-jar FILE} the robot jar (../hadur-robot/target/hadur2.Hadur_3.1.jar),
+ * <li>{@code --robot-jar FILE} the robot jar (../hadur-robot/target/hadur2.Hadur_3.2.jar),
  *     or {@code --robot-classes DIR} to jar a compiled class tree instead;
- *     {@code --robot NAME} as Robocode lists it ("hadur2.Hadur 3.1").</li>
+ *     {@code --robot NAME} as Robocode lists it ("hadur2.Hadur 3.2").</li>
  * <li>{@code --record DIR} capture replay fixtures instead: runs the recorder robot
  *     (../hadur-robot/target/hadur-robot-2.0-SNAPSHOT-recorder.jar) with Robocode's
  *     security off and writes one gzipped transcript per opponent to DIR (CORE-2).</li>
@@ -100,10 +100,10 @@ public final class Bench {
         this.height = Integer.parseInt(field[1]);
         this.record = opts.containsKey("record") ? Path.of(opts.get("record")).toAbsolutePath() : null;
         if (record != null) {
-            opts.putIfAbsent("robot", "hadur2.HadurRecorder 3.1");
+            opts.putIfAbsent("robot", "hadur2.HadurRecorder 3.2");
             opts.putIfAbsent("robot-jar", "../hadur-robot/target/hadur-robot-2.0-SNAPSHOT-recorder.jar");
         }
-        this.robot = opts.getOrDefault("robot", "hadur2.Hadur 3.1");
+        this.robot = opts.getOrDefault("robot", "hadur2.Hadur 3.2");
         this.baselineJar = opts.containsKey("baseline") ? Path.of(opts.get("baseline")).toAbsolutePath() : null;
         this.baselineRobot = opts.get("baseline-robot");
         if (baselineJar != null) {
@@ -551,7 +551,7 @@ public final class Bench {
             jar(classes, target);
         } else {
             Path jar = Path.of(opts.getOrDefault("robot-jar",
-                "../hadur-robot/target/hadur2.Hadur_3.1.jar")).toAbsolutePath();
+                "../hadur-robot/target/hadur2.Hadur_3.2.jar")).toAbsolutePath();
             if (!Files.isRegularFile(jar)) {
                 throw new IllegalStateException("No robot jar at " + jar + "; run mvn package first");
             }

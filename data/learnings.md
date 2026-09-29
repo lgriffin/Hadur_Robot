@@ -117,3 +117,14 @@ APS / 91.6% survival before 08:30 UTC, 239 at 77.2 / 72.5% from it (the plan's 9
 used a slightly different survival definition; the split and the APS match). Confirms the
 tool reads the page correctly, so it is ready to read 3.1's page once it has 300+ pairings.
 Evidence: `docs/bench/live-details-3.0.md`; `hadur-bench` `LiveDetailsTest`. Owner: R4.
+
+**L-21 · confirmed (extends L-03).** BENCH-4's client-conditions bench (`--client`), run
+against master (3.1) over the weak set: a shared never-wiped data directory, the CPU
+constant forced to 1.0ms and to 0.3ms (up to 112 skipped turns a battle), and four
+background-load threads all leave survival at 97 to 100%, same as the default bench,
+against a live drop to 71-77%. Confirms L-03 with a tool instead of an ad hoc run and rules
+out CPU pressure and a shared data directory alone as the cause. Not tried: another engine
+release, another JVM, a 2.2-prefilled data directory (BENCH-4 supports all three but no
+second engine, JDK or prefill set is available in this environment).
+Evidence: `docs/bench/r4-client-conditions.md`; `hadur-bench/client-conditions-r4b.txt`.
+Owner: R4.

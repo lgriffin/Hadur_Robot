@@ -10,21 +10,32 @@ same line go on both pages:
 [RoboRumble/Participants](https://robowiki.net/wiki/RoboRumble/Participants) for 1v1 and
 [RoboRumble/Participants/Melee](https://robowiki.net/wiki/RoboRumble/Participants/Melee).
 
-## Current entry: 3.1
+## Current entry: 3.2
 
-Hadur 3.1 (R1 to R3 of the RoboRumble climb plan, see
-[docs/releases/v3.1.md](https://github.com/lgriffin/Hadur_Robot/blob/master/docs/releases/v3.1.md))
-replaces 3.0 in both leagues. Its jar was uploaded to Google Drive on 2026-09-29, and this
-line replaces the 3.0 line on both participants pages:
+Hadur 3.2 (R4 of the RoboRumble climb plan: the client-conditions bench, live-details
+reader, fallback fire and health record, see
+[docs/releases/v3.2.md](https://github.com/lgriffin/Hadur_Robot/blob/master/docs/releases/v3.2.md))
+replaces 3.1 in both leagues. This line replaces the 3.1 line on both participants pages
+once Leigh hosts the jar on Google Drive:
+
+```
+hadur2.Hadur 3.2,<Leigh's Google Drive link>
+```
+
+To do: Leigh uploads the jar (step 2 below), replaces the 3.1 line with the real link on
+both participants pages, and saves a BotDetails page for 3.2 into the project once it has
+300+ pairings (BENCH-5 reads it).
+
+## Previous entry: 3.1
+
+Hadur 3.1 (R1 to R3 of the RoboRumble climb plan) replaced 3.0 in both leagues on
+2026-09-29 with this line:
 
 ```
 hadur2.Hadur 3.1,https://drive.google.com/uc?export=download&id=1KLr000bCbXMk255jkojnkDOaezNr50Hj
 ```
 
-To do: Leigh replaces the 3.0 line with the line above on both participants pages, and
-saves a BotDetails page for 3.1 into the project once it has 300+ pairings (R4 reads it).
-
-## Previous entry: 3.0
+## Earlier entry: 3.0
 
 Hadur 3.0 (the melee extension, M0 to M6) replaced 2.2 in both leagues on 2026-09-28 with
 this line:
@@ -36,17 +47,6 @@ hadur2.Hadur 3.0,https://drive.google.com/uc?export=download&id=1Pv1Czl_DGdxiGxk
 Its GitHub release is [v3.0](https://github.com/lgriffin/Hadur_Robot/releases/tag/v3.0).
 SHA-256 `d12cc9367eca841498e851c07bd41629bfc4e564300e4c9207cceeaafa75f63d`.
 
-## Earlier entry: 2.2
-
-Hadur 2.2 was entered in both leagues on 2026-09-27 with this line:
-
-```
-hadur2.Hadur 2.2,https://drive.google.com/uc?export=download&id=1Ws7gHc5ZTAuzsWHt969rPavhWBEjJ3zV
-```
-
-That jar is a local build of master at 60b18fe (the S7 merge), SHA-256
-`d9502bf441d9999ac282f0c9cd2f59b3aa738aea3d51155b8d5f94a1f1a9504a`.
-
 ## 1. Get the jar
 
 Build it with `mvn -B verify` (it lands in `hadur-robot/target/`), or, once a `v*` tag has
@@ -55,7 +55,7 @@ the file name exactly as it is: rumble clients expect `<package>.<Robot>_<versio
 
 ## 2. Host it on Google Drive with a direct link
 
-1. Upload the jar (`hadur2.Hadur_3.1.jar`) to Google Drive.
+1. Upload the jar (`hadur2.Hadur_3.2.jar`) to Google Drive.
 2. Right-click it, **Share**, and under **General access** choose **Anyone with the link**
    (Viewer). Copy the link. It looks like
    `https://drive.google.com/file/d/1AbCdEfGhIjKlMnOpQrStUvWxYz/view?usp=sharing`.
@@ -84,12 +84,12 @@ becomes a direct download that never expires.)
    with `h` sit together), using your Drive link from step 2:
 
    ```
-   hadur2.Hadur 3.1,https://drive.google.com/uc?export=download&id=1AbCdEfGhIjKlMnOpQrStUvWxYz
+   hadur2.Hadur 3.2,https://drive.google.com/uc?export=download&id=1AbCdEfGhIjKlMnOpQrStUvWxYz
    ```
 
    The part before the comma must match the jar's `robot.classname` and `robot.version`
-   exactly: `hadur2.Hadur` and `3.1`, separated by one space.
-4. Put something like "Hadur 3.1 replaces 3.0" in the edit summary and save.
+   exactly: `hadur2.Hadur` and `3.2`, separated by one space.
+4. Put something like "Hadur 3.2 replaces 3.1" in the edit summary and save.
 
 Clients pick up the participants list on their next run. Battles, and then a ranking, show
 up on the [RoboRumble](https://literumble.appspot.com/Rankings?game=roborumble) and
@@ -98,6 +98,6 @@ over the following days; it takes a few thousand battles for the rating to settl
 
 ## Later versions
 
-Give every new jar a new version (`3.1`, ...), upload it, and replace the old line on the
+Give every new jar a new version (`3.2`, ...), upload it, and replace the old line on the
 participants page with the new one. Two versions of the same robot should not be entered
 at once unless you mean to compare them.
