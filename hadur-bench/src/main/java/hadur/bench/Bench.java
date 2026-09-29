@@ -94,7 +94,7 @@ public final class Bench {
         this.height = Integer.parseInt(field[1]);
         this.record = opts.containsKey("record") ? Path.of(opts.get("record")).toAbsolutePath() : null;
         if (record != null) {
-            opts.putIfAbsent("robot", "hadur2.HadurRecorder 3.0");
+            opts.putIfAbsent("robot", "hadur2.HadurRecorder 3.1");
             opts.putIfAbsent("robot-jar", "../hadur-robot/target/hadur-robot-2.0-SNAPSHOT-recorder.jar");
         }
         this.robot = opts.getOrDefault("robot", "hadur2.Hadur 3.1");

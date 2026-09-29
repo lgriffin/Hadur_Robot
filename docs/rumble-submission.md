@@ -84,12 +84,12 @@ becomes a direct download that never expires.)
    with `h` sit together), using your Drive link from step 2:
 
    ```
-   hadur2.Hadur 3.0,https://drive.google.com/uc?export=download&id=1AbCdEfGhIjKlMnOpQrStUvWxYz
+   hadur2.Hadur 3.1,https://drive.google.com/uc?export=download&id=1AbCdEfGhIjKlMnOpQrStUvWxYz
    ```
 
    The part before the comma must match the jar's `robot.classname` and `robot.version`
-   exactly: `hadur2.Hadur` and `3.0`, separated by one space.
-4. Put something like "Hadur 3.0 replaces 2.2" in the edit summary and save.
+   exactly: `hadur2.Hadur` and `3.1`, separated by one space.
+4. Put something like "Hadur 3.1 replaces 3.0" in the edit summary and save.
 
 Clients pick up the participants list on their next run. Battles, and then a ranking, show
 up on the [RoboRumble](https://literumble.appspot.com/Rankings?game=roborumble) and
