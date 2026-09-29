@@ -10,24 +10,33 @@ same line go on both pages:
 [RoboRumble/Participants](https://robowiki.net/wiki/RoboRumble/Participants) for 1v1 and
 [RoboRumble/Participants/Melee](https://robowiki.net/wiki/RoboRumble/Participants/Melee).
 
-## Current entry: 3.0
+## Current entry: 3.1
 
-Hadur 3.0 (the melee extension, M0 to M6) replaces 2.2 in both leagues. Its jar was
-uploaded to Google Drive on 2026-09-28, and this line replaces the 2.2 line on both
-participants pages:
+Hadur 3.1 (R1 to R3 of the RoboRumble climb plan, see
+[docs/releases/v3.1.md](https://github.com/lgriffin/Hadur_Robot/blob/master/docs/releases/v3.1.md))
+replaces 3.0 in both leagues. This line replaces the 3.0 line on both participants pages:
+
+```
+hadur2.Hadur 3.1,https://drive.google.com/uc?export=download&id=REPLACE_ME
+```
+
+To do: Leigh uploads `hadur2.Hadur_3.1.jar` to Google Drive (step 2 below), replaces the
+3.0 line with the line above (using the real Drive id) on both participants pages, and
+saves a BotDetails page for 3.1 into the project once it has 300+ pairings (R4 reads it).
+
+## Previous entry: 3.0
+
+Hadur 3.0 (the melee extension, M0 to M6) replaced 2.2 in both leagues on 2026-09-28 with
+this line:
 
 ```
 hadur2.Hadur 3.0,https://drive.google.com/uc?export=download&id=1Pv1Czl_DGdxiGxkD4cdd4ze4clhOu2HY
 ```
 
-The jar is a local build of the M6 branch, made with `mvn -B verify` because GitHub
-Actions was not running jobs, so the `v3.0` tag and GitHub release do not exist yet. Its
-SHA-256 is `d12cc9367eca841498e851c07bd41629bfc4e564300e4c9207cceeaafa75f63d`. The M6 gate
-asks for the MeleeRumble rating to settle at 2,000 battles or more; check the
-[MeleeRumble ranking](https://literumble.appspot.com/Rankings?game=meleerumble) once it
-has.
+Its GitHub release is [v3.0](https://github.com/lgriffin/Hadur_Robot/releases/tag/v3.0).
+SHA-256 `d12cc9367eca841498e851c07bd41629bfc4e564300e4c9207cceeaafa75f63d`.
 
-## Previous entry: 2.2
+## Earlier entry: 2.2
 
 Hadur 2.2 was entered in both leagues on 2026-09-27 with this line:
 
@@ -46,7 +55,7 @@ the file name exactly as it is: rumble clients expect `<package>.<Robot>_<versio
 
 ## 2. Host it on Google Drive with a direct link
 
-1. Upload the jar (`hadur2.Hadur_3.0.jar`) to Google Drive.
+1. Upload the jar (`hadur2.Hadur_3.1.jar`) to Google Drive.
 2. Right-click it, **Share**, and under **General access** choose **Anyone with the link**
    (Viewer). Copy the link. It looks like
    `https://drive.google.com/file/d/1AbCdEfGhIjKlMnOpQrStUvWxYz/view?usp=sharing`.

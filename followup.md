@@ -4,6 +4,20 @@ Open items from the Hadur 2 stages, newest stage first. The open ones are tracke
 [GitHub issues](https://github.com/lgriffin/Hadur_Robot/issues) (#44 to #56, opened
 2026-09-28); the notes below are the detail behind them.
 
+## Rumble climb R3.5 (3.1 release)
+
+- **3.0's live rating collapsed about 08:30 UTC on 2026-09-28** (85.5 to 77.2 APS, survival
+  92.6% to 71.2%) and the bench cannot reproduce it; see
+  [docs/rumble-climb-r4-r6-plan.md](docs/rumble-climb-r4-r6-plan.md). R3.5 ships the merged
+  and previously unreleased R1 to R3 work as 3.1 so live battles start on it while R4
+  investigates the cause directly.
+- **None of R1, R2 or R3's own bench gates have been run** yet (`hadur-bench/rumble-sample.txt`
+  still only covers the top-30 stratum, so BENCH-1 can't estimate APS). 3.1's own bench (weak
+  set and top-10, docs/bench/rumble-3.1-*.md) shows no regression beyond noise, but is not
+  those gates.
+- **Read the 3.1 BotDetails page with BENCH-5 once it has 300+ pairings** to see whether R1
+  touched the 08:30 effect before deciding R4's next step.
+
 ## Release 3.0 and the melee extension (M0 to M6)
 
 - **Reference APS 60 is not met** (#44). Four 10-seed runs of the M6 builds range 52.7 to
