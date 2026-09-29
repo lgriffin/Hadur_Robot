@@ -51,6 +51,38 @@ class ReportTest {
     }
 
     @Test
+    @Tag("BENCH-4")
+    @DisplayName("client-conditions report gives survival and skipped turns per opponent per condition")
+    void renderConditionsReportsPerOpponentPerCondition() {
+        Opponent o = new Opponent("kc.mega.BeepBoop 2.0", "top30", "kc.mega.BeepBoop_2.0.jar", 0.25);
+        BattleResult ok = new BattleResult();
+        ok.ok = true;
+        ok.rounds = 35;
+        ok.firsts = 30;
+        ok.survival = 30;
+        ok.theirSurvival = 5;
+        ok.skippedTurns = 12;
+        BattleResult failed = new BattleResult();
+        failed.ok = false;
+
+        Map<Opponent, List<BattleResult>> shared = new LinkedHashMap<>();
+        shared.put(o, List.of(ok));
+        Map<String, Map<Opponent, List<BattleResult>>> byCondition = new LinkedHashMap<>();
+        byCondition.put("data=shared", shared);
+        byCondition.put("engine=1.9.4.4", Map.of());
+        Map<String, String> cpuByCondition = Map.of("data=shared", "robocode.cpu.constant=3100000");
+
+        String report = Report.renderConditions(byCondition, cpuByCondition);
+
+        assertTrue(report.contains("## data=shared"));
+        assertTrue(report.contains("kc.mega.BeepBoop 2.0"), "missing the opponent row");
+        assertTrue(report.contains("12"), "skipped turns not rendered");
+        assertTrue(report.contains("30 / 35"), "rounds won not rendered");
+        assertTrue(report.contains("## engine=1.9.4.4"));
+        assertTrue(report.contains("Not run"), "unavailable condition not reported as such");
+    }
+
+    @Test
     @Tag("BENCH-2")
     @DisplayName("a paired diff skips a seed where either jar's battle failed, not just filters and shifts")
     void pairedDiffAlignsBySeedAcrossFailures() {

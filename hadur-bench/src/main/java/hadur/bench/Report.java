@@ -290,6 +290,50 @@ final class Report {
             robot, Stats.weighted(stats, weights).percent());
     }
 
+    /**
+     * BENCH-4: survival share and skipped turns per opponent, one section per client
+     * condition. A condition with no results (an {@code engine}/{@code java} not available
+     * locally) is reported as not run rather than omitted.
+     */
+    static String renderConditions(Map<String, Map<Opponent, List<BattleResult>>> byCondition,
+                                   Map<String, String> cpuByCondition) {
+        StringBuilder b = new StringBuilder();
+        b.append("# BENCH-4: client conditions\n\n")
+         .append("One bench pass per condition, each isolating one difference from the rumble "
+            + "client's default (a shared or prefilled data directory, CPU constant, background "
+            + "load, engine or JVM). Survival share is Hadur's fraction of rounds survived.\n\n");
+        for (Map.Entry<String, Map<Opponent, List<BattleResult>>> ce : byCondition.entrySet()) {
+            b.append("## ").append(ce.getKey()).append("\n\n");
+            Map<Opponent, List<BattleResult>> results = ce.getValue();
+            if (results.isEmpty()) {
+                b.append("Not run: the condition's engine or JVM is not available locally.\n\n");
+                continue;
+            }
+            String cpu = cpuByCondition.get(ce.getKey());
+            if (cpu != null) b.append(cpu).append(".\n\n");
+            b.append("| Opponent | Survival share | Skipped turns | Rounds won | Battles ok |\n")
+             .append("|---|---|---|---|---|\n");
+            for (Map.Entry<Opponent, List<BattleResult>> oe : results.entrySet()) {
+                List<Double> surv = new ArrayList<>();
+                int skipped = 0, won = 0, rounds = 0, ok = 0, total = 0;
+                for (BattleResult r : oe.getValue()) {
+                    total++;
+                    if (!r.ok) continue;
+                    ok++;
+                    surv.add(r.survivalShare());
+                    skipped += r.skippedTurns;
+                    won += r.firsts;
+                    rounds += r.rounds;
+                }
+                b.append(String.format(Locale.ROOT, "| %s | %s | %d | %d / %d | %d / %d |%n",
+                    oe.getKey().name, surv.isEmpty() ? "-" : Stats.of(surv).percent(), skipped,
+                    won, rounds, ok, total));
+            }
+            b.append('\n');
+        }
+        return b.toString();
+    }
+
     private static List<Double> shares(List<BattleResult> rs) {
         List<Double> out = new ArrayList<>();
         for (BattleResult r : rs) if (r.ok) out.add(r.scoreShare());
