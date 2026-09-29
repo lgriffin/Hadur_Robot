@@ -205,6 +205,28 @@ public final class OpponentProfile {
         return Collections.unmodifiableList(outcomes);
     }
 
+    /**
+     * Our estimated score share summed over every recorded battle ({@link #outcomes()}),
+     * the same formula as {@link BattleOutcome#estimatedScoreShare()} but over their total
+     * rounds, wins and damage rather than one battle's; a half before any outcome is
+     * recorded. MEM-8 gates seed-keeping on this.
+     */
+    public double recordedScoreShare() {
+        int wins = 0;
+        int rounds = 0;
+        double ourDamage = 0;
+        double theirDamage = 0;
+        for (BattleOutcome o : outcomes) {
+            wins += o.wins;
+            rounds += o.rounds;
+            ourDamage += o.ourDamage;
+            theirDamage += o.theirDamage;
+        }
+        double ours = 60.0 * wins + ourDamage;
+        double theirs = 60.0 * (rounds - wins) + theirDamage;
+        return ours + theirs == 0 ? 0.5 : ours / (ours + theirs);
+    }
+
     /** Gun seed samples stored. */
     public int gunSeedSize() {
         return gunSeed.size();

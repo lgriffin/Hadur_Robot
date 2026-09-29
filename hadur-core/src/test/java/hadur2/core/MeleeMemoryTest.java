@@ -67,8 +67,10 @@ class MeleeMemoryTest {
         first.foldRound(round(4, "abc.Shadow 3.84", "x.Other 1"), 5);
         first.saveAll();
 
+        // MEM-9 namespaces 1v1 profiles by format version; melee blocks are not versioned
+        // and keep the plain stem, so the two names share a stem but not a naming scheme.
         String hm = LineageKey.fileStem("abc.Shadow") + ".hm";
-        assertEquals(ProfileLibrary.fileName("abc.Shadow").replace(".hp", ".hm"), hm);
+        assertTrue(ProfileLibrary.fileName("abc.Shadow").startsWith(LineageKey.fileStem("abc.Shadow")));
         assertNotNull(store.read(hm));
         assertNotNull(store.read(LineageKey.fileStem("x.Other") + ".hm"));
         assertArrayEquals(hp, store.read(ProfileLibrary.fileName("abc.Shadow")), "the 1v1 profile is untouched");

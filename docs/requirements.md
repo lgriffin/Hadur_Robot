@@ -83,6 +83,10 @@ EARS requirements from the Hadur 2 technical direction. This file is the source 
 | BENCH-5 | Event | When a saved LiteRumble BotDetails page is given, the bench shall report APS and survival by opponent-APS band and by UTC hour, a before/after split at a given time, and live minus bench share for every opponent in a given bench report. | R4 |
 | RES-7 | Unwanted | If the core has faulted on three ticks of a round, then the guard's safe orders shall also fire power 1.0 at the enemy's last scanned bearing whenever the gun is cool. | R4 |
 | RES-8 | Event | When a battle ends, the adapter shall write a battle-health record of at most 64 bytes with rounds, rounds survived, faults, skipped turns, memory failures and the learned tick allowance. | R4 |
+| MEM-8 | Ubiquitous | The store shall keep seeds only for at most five opponents met at least twice with a recorded score share under 60%, and shall keep every other profile as statistics of at most 1 KB. | R5 |
+| MEM-9 | Ubiquitous | The store shall keep its files under a subdirectory named for the profile-format version and shall not read or write another version's subdirectory except to carry tiers forward once. | R5 |
+| MEM-10 | Ubiquitous | The adapter shall do at most one profile read and two profile writes per battle, each at most 2 KB, apart from MEM-8's seeded profiles. | R5 |
+| ADAPT-4 | Event | When a profile with a known gun tier and no seeds loads, the core shall apply the opening book's choices from the first tick without replaying samples. | R5 |
 
 Stage is where the requirement is first implemented: S0–S7 in the Hadur 2 stage plan, M0–M6
 in the melee extension plan ("Hadur 2 — Melee Extension Plan", 27 Sep 2026).
@@ -265,10 +269,12 @@ on an older jar after a profile format changes underneath them.
   stats alone, via `ProfileCodec.encodeStatsOnly` (which never serialises the caller's own
   seed lists at all), carrying over whatever seeds are already on disk unchanged rather than
   erasing them — a checkpoint before the tenth only leaves stored seeds stale, never gone.
-  `HadurCore.checkpoint` calls it for nine round-end checkpoints out of ten, writing the full
-  profile (seeds included) only on the tenth and always at battle end;
-  `CoreMemoryTest.checkpointsCapSeedWrites` and `ProfileLibraryTest.statsOnlySaveKeepsStoredSeeds`
-  cover the schedule and the no-erasure guarantee.
+  `HadurCore.checkpoint` originally called it for nine round-end checkpoints out of ten,
+  writing the full profile (seeds included) only on the tenth and always at battle end; MEM-10
+  (R5) tightened that further to the battle's one checkpoint, so seeds are now only ever
+  written fresh by the save at battle end. `CoreMemoryTest.checkpointsCapSeedWrites` and
+  `ProfileLibraryTest.statsOnlySaveKeepsStoredSeeds` cover the schedule and the no-erasure
+  guarantee.
 - **TIME-5** runs one tick through a throwaway core and guard, built and discarded with no
   store and no telemetry, before the real one's first round in `Hadur.java`'s `run()`. The
   tick carries a synthetic scan, not an empty one, so the warm-up actually reaches the
@@ -442,6 +448,56 @@ The gate not run for R3 is the multi-hour paired A/B bench (top-10 + ranks 31-15
 solo) the plan artifact calls for; the numeric validation it would give - hit rate +1.0pt
 against BeepBoop/ScalarR/Diamond/DrussGT, top-10 mean 45.1% to 48%+, ranks 31-150 +1.5pt, tick
 p95 at most 2.0ms - is a follow-up, as it was for R0 through R2.
+
+R5 (rumble-safe memory, `docs/rumble-climb-r4-r6-plan.md`) tightens opponent memory itself:
+R4's client-conditions bench never reproduced 3.0's live rating collapse, but the data
+directory every Hadur version on a rumble client shares (`robots/.data/hadur2/Hadur.data/`)
+was still the plan's likeliest live difference, so R5 makes what memory keeps, and how often
+it writes, strictly smaller regardless of quota pressure.
+
+- **MEM-8** adds `ProfileLibrary.seedWorthy` (battles at least two, `OpponentProfile
+  .recordedScoreShare()` — the same estimated-score formula as a single `BattleOutcome`, but
+  summed over every recorded outcome — under 60%) and checks it in `save` before a profile's
+  seeds are ever written: a profile that fails it is encoded stats-only regardless of the
+  quota (`ProfileCodec.encodeStatsOnly`), the same codec path TIME-4 already used for
+  checkpoints. A profile that passes goes through the new `enforceSeedCap`, which keeps at
+  most `MAX_SEEDED` (5) profiles holding seeds at a time, evicting the least recently fought
+  of the others first — the same order MEM-5's quota eviction already uses. The two caps
+  compose: MEM-8 decides who is even a candidate to keep seeds, MEM-5 still evicts under
+  quota pressure among whoever MEM-8 left seeded. `ProfileLibraryTest.evictsLeastRecentlyFoughtSeeds`
+  and the new `ProfileLibraryTest` MEM-8 cases cover both.
+- **MEM-9** namespaces every store name by write version (`ProfileLibrary.fileName(key,
+  version)`), since the store is a flat namespace — `ProfileStore`'s own contract, and the
+  robot adapter's sandbox forbids path separators in a name — so a "subdirectory" is a name
+  prefix, not a real directory. `load` falls back to the nearest other version's file, stats
+  only (`readOtherVersion`), when this version has nothing yet, which is MEM-7's codec
+  downgrade's one remaining use: carrying tiers forward once, never seeds from a format this
+  library did not write. `prepare` calls the new `cleanupOtherVersions`, which deletes other
+  versions' files, oldest fought first, only once the store is short of quota — so an old
+  version's files are never touched while there is room, and the carry-forward above still
+  has something to read from until there genuinely is not.
+- **MEM-10** cuts `HadurCore.checkpoint` down to the battle's first call only (a `checkpointed`
+  flag); every later call in the same battle is a no-op. Together with the always-on save at
+  battle end, that is at most two writes a battle from the core's own flow, both stats-only
+  saves that carry over whatever seeds are already on disk (TIME-4) — the seed-worthy
+  profiles MEM-8 exempts from the 2 KB figure get their seeds refreshed only by the battle-end
+  save, never a checkpoint. `CoreMemoryTest.checkpointsCapSeedWrites` (retagged MEM-10) covers
+  the one-write cap and that the caps compose without losing what an earlier save already
+  committed.
+- **ADAPT-4** needed no code change: `OpeningBook.read` already only replays a seed list
+  populated from `profile.gunSeed()`/`.surfSeed()`, so once MEM-8 leaves a profile with a
+  known tier and no seeds on disk, those lists are empty and the opening applies from the
+  first tick exactly as `OpeningBookTest.knownTierWithNoSeedsAppliesImmediately` now pins.
+
+Test fixtures needed the same tightening: `Profiles.sample` (a decisive, one-battle win)
+never qualifies for MEM-8's cap, which is correct — most of the existing MEM-5/MEM-6/RES-3
+fixtures that expect seeds to survive a save now use the new `Profiles.seedWorthy` (two
+battles, both losses) instead, so seed eviction in those tests is still driven by quota
+pressure (MEM-5), not tripped over by MEM-8 first.
+
+The R5 gate (BENCH-4 `data=shared` over 60 opponents, then the weak set again; every weak
+battle 35/35; the data directory under 180 KB; 0 memory failures; warm top-10 not below cold
+top-10 by more than 1 point) is recorded in `docs/bench/`; see followup.md for the run.
 
 ## Retired requirements
 

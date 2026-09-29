@@ -885,8 +885,8 @@ public final class HadurCore {
     /**
      * MEM-3: writes the profile to the store in full, seeds included. The adapter calls
      * this when the battle ends; round-end checkpoints while the battle continues go
-     * through {@link #checkpoint} instead (TIME-4), which only writes seeds on every
-     * tenth one. Does nothing when the battle keeps no memory. In a melee battle it writes
+     * through {@link #checkpoint} instead (TIME-4), which never writes seeds fresh
+     * (MEM-10). Does nothing when the battle keeps no memory. In a melee battle it writes
      * the melee blocks instead (MMEM-1); the adapter only checkpoints while Hadur is
      * alive, so a round Hadur died in is written at the next checkpoint or at the battle's
      * end.
@@ -900,20 +900,23 @@ public final class HadurCore {
         save(tick, false);
     }
 
-    /** Round-end checkpoints since the battle began; every tenth writes the seeds (TIME-4). */
-    private int checkpoints;
+    /** Whether this battle's one round-end checkpoint has already been written (MEM-10). */
+    private boolean checkpointed;
 
     /**
-     * TIME-4: a round-end checkpoint. Every checkpoint writes the profile's statistics;
-     * only every tenth one also writes its seeds, so a battle of hundreds of rounds does
-     * not spend its whole data quota on checkpoints nobody but the last one needs. The
-     * final save at the battle's end ({@link #battleEnded}) always writes the seeds.
+     * TIME-4, tightened by MEM-10: at most one round-end checkpoint a battle, so together
+     * with the save at the battle's end ({@link #battleEnded}) memory does at most two
+     * writes a battle (seed-worthy profiles' larger writes excepted, MEM-8). It always
+     * writes the profile's statistics only ({@code saveStatsOnly}), carrying over whatever
+     * seeds are already on disk (TIME-4); the seeds themselves only ever get written fresh
+     * by the final save.
      *
      * @param tick the tick of the save, for the record
      */
     public void checkpoint(long tick) {
-        checkpoints++;
-        save(tick, checkpoints % 10 != 0);
+        if (checkpointed) return;
+        checkpointed = true;
+        save(tick, true);
     }
 
     private void save(long tick, boolean statsOnly) {
