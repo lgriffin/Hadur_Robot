@@ -1,0 +1,217 @@
+report	robot	version	section	table	entrant	mean_place	score_share	firsts
+m0-2.2-gates.md	hadur2.Hadur	2.2	Melee bench: sentry	9	hadur2.Hadur 2.2	1.0	62.7	5
+m0-2.2-gates.md	hadur2.Hadur	2.2	Melee bench: sentry	9	sample.Tracker	2.3	19.8	2
+m0-2.2-gates.md	hadur2.Hadur	2.2	Melee bench: sentry	9	sample.SpinBot	2.7	17.5	2
+m0-2.2-gates.md	hadur2.Hadur	2.2	Melee bench: sentry	9	samplesentry.BorderGuard	4.0	0.0	0
+m0-2.2-gates.md	hadur2.Hadur	2.2	Melee bench: challenge	13	rz.HawkOnFire 0.1	1.0	16.1	22
+m0-2.2-gates.md	hadur2.Hadur	2.2	Melee bench: challenge	13	kawigi.micro.Shiz 1.1	2.0	14.8	25
+m0-2.2-gates.md	hadur2.Hadur	2.2	Melee bench: challenge	13	hadur2.Hadur 2.2	3.0	14.1	33
+m0-2.2-gates.md	hadur2.Hadur	2.2	Melee bench: challenge	13	supersample.SuperSpinBot 1.0	4.0	10.2	4
+m0-2.2-gates.md	hadur2.Hadur	2.2	Melee bench: challenge	13	sample.Walls	5.0	9.3	8
+m0-2.2-gates.md	hadur2.Hadur	2.2	Melee bench: challenge	13	supersample.SuperWalls 1.0	6.0	7.9	6
+m0-2.2-gates.md	hadur2.Hadur	2.2	Melee bench: challenge	13	supersample.SuperTracker 1.0	7.0	7.3	0
+m0-2.2-gates.md	hadur2.Hadur	2.2	Melee bench: challenge	13	SuperSample.SuperCrazy 1.0	8.0	7.3	1
+m0-2.2-gates.md	hadur2.Hadur	2.2	Melee bench: challenge	13	sample.Crazy	9.0	6.8	1
+m0-2.2-gates.md	hadur2.Hadur	2.2	Melee bench: challenge	13	sample.SpinBot	10.0	6.1	0
+m0-2.2-gates.md	hadur2.Hadur	2.2	Melee bench: reference	17	rz.Aleph 0.34	1.2	14.6	50
+m0-2.2-gates.md	hadur2.Hadur	2.2	Melee bench: reference	17	abc.Tron 2.02	3.2	11.6	20
+m0-2.2-gates.md	hadur2.Hadur	2.2	Melee bench: reference	17	darkcanuck.B26354 1.06	3.8	11.7	35
+m0-2.2-gates.md	hadur2.Hadur	2.2	Melee bench: reference	17	rz.HawkOnFire 0.1	4.4	11.2	16
+m0-2.2-gates.md	hadur2.Hadur	2.2	Melee bench: reference	17	kawigi.mini.Coriantumr 1.1	4.8	10.9	14
+m0-2.2-gates.md	hadur2.Hadur	2.2	Melee bench: reference	17	kawigi.sbf.FloodHT 0.9.2	5.0	10.7	17
+m0-2.2-gates.md	hadur2.Hadur	2.2	Melee bench: reference	17	simonton.micro.Sprout 1.1.3	6.2	10.1	7
+m0-2.2-gates.md	hadur2.Hadur	2.2	Melee bench: reference	17	gh.Griezel 0.5.4	7.4	9.4	16
+m0-2.2-gates.md	hadur2.Hadur	2.2	Melee bench: reference	17	hadur2.Hadur 2.2	9.0	6.0	0
+m0-2.2-gates.md	hadur2.Hadur	2.2	Melee bench: reference	17	cx.mini.Cigaret 1.31	10.0	3.7	0
+m1-gates.md	hadur2.Hadur	2.2	Melee bench: sentry	9	hadur2.Hadur 2.2	1.0	55.3	5
+m1-gates.md	hadur2.Hadur	2.2	Melee bench: sentry	9	sample.Tracker	2.3	26.9	3
+m1-gates.md	hadur2.Hadur	2.2	Melee bench: sentry	9	sample.SpinBot	2.7	17.8	1
+m1-gates.md	hadur2.Hadur	2.2	Melee bench: sentry	9	samplesentry.BorderGuard	4.0	0.0	0
+m1-gates.md	hadur2.Hadur	2.2	Melee bench: challenge	13	hadur2.Hadur 2.2	1.0	15.2	42
+m1-gates.md	hadur2.Hadur	2.2	Melee bench: challenge	13	rz.HawkOnFire 0.1	2.0	14.9	17
+m1-gates.md	hadur2.Hadur	2.2	Melee bench: challenge	13	kawigi.micro.Shiz 1.1	3.0	13.5	16
+m1-gates.md	hadur2.Hadur	2.2	Melee bench: challenge	13	supersample.SuperSpinBot 1.0	4.0	10.0	3
+m1-gates.md	hadur2.Hadur	2.2	Melee bench: challenge	13	sample.Walls	5.0	10.0	9
+m1-gates.md	hadur2.Hadur	2.2	Melee bench: challenge	13	sample.SpinBot	6.0	7.6	3
+m1-gates.md	hadur2.Hadur	2.2	Melee bench: challenge	13	SuperSample.SuperCrazy 1.0	7.0	7.4	1
+m1-gates.md	hadur2.Hadur	2.2	Melee bench: challenge	13	supersample.SuperTracker 1.0	8.0	7.4	2
+m1-gates.md	hadur2.Hadur	2.2	Melee bench: challenge	13	supersample.SuperWalls 1.0	9.0	7.2	3
+m1-gates.md	hadur2.Hadur	2.2	Melee bench: challenge	13	sample.Crazy	10.0	7.0	4
+m1-gates.md	hadur2.Hadur	2.2	Melee bench: reference	17	rz.Aleph 0.34	1.0	14.3	36
+m1-gates.md	hadur2.Hadur	2.2	Melee bench: reference	17	kawigi.mini.Coriantumr 1.1	3.8	11.0	16
+m1-gates.md	hadur2.Hadur	2.2	Melee bench: reference	17	abc.Tron 2.02	3.8	11.5	24
+m1-gates.md	hadur2.Hadur	2.2	Melee bench: reference	17	darkcanuck.B26354 1.06	4.8	11.0	28
+m1-gates.md	hadur2.Hadur	2.2	Melee bench: reference	17	rz.HawkOnFire 0.1	5.0	10.7	10
+m1-gates.md	hadur2.Hadur	2.2	Melee bench: reference	17	kawigi.sbf.FloodHT 0.9.2	5.6	10.5	20
+m1-gates.md	hadur2.Hadur	2.2	Melee bench: reference	17	simonton.micro.Sprout 1.1.3	5.8	10.4	12
+m1-gates.md	hadur2.Hadur	2.2	Melee bench: reference	17	gh.Griezel 0.5.4	6.2	10.0	27
+m1-gates.md	hadur2.Hadur	2.2	Melee bench: reference	17	hadur2.Hadur 2.2	9.0	5.9	2
+m1-gates.md	hadur2.Hadur	2.2	Melee bench: reference	17	cx.mini.Cigaret 1.31	10.0	4.6	0
+m2-gates.md	hadur2.Hadur	2.2	Melee bench: challenge	4	kawigi.micro.Shiz 1.1	1.0	14.5	26
+m2-gates.md	hadur2.Hadur	2.2	Melee bench: challenge	4	rz.HawkOnFire 0.1	2.0	14.5	18
+m2-gates.md	hadur2.Hadur	2.2	Melee bench: challenge	4	hadur2.Hadur 2.2	3.0	14.2	34
+m2-gates.md	hadur2.Hadur	2.2	Melee bench: challenge	4	sample.Walls	4.0	9.4	6
+m2-gates.md	hadur2.Hadur	2.2	Melee bench: challenge	4	supersample.SuperSpinBot 1.0	5.0	9.1	5
+m2-gates.md	hadur2.Hadur	2.2	Melee bench: challenge	4	supersample.SuperTracker 1.0	6.0	8.6	1
+m2-gates.md	hadur2.Hadur	2.2	Melee bench: challenge	4	SuperSample.SuperCrazy 1.0	7.0	8.3	4
+m2-gates.md	hadur2.Hadur	2.2	Melee bench: challenge	4	sample.Crazy	8.0	7.5	3
+m2-gates.md	hadur2.Hadur	2.2	Melee bench: challenge	4	sample.SpinBot	9.0	7.4	1
+m2-gates.md	hadur2.Hadur	2.2	Melee bench: challenge	4	supersample.SuperWalls 1.0	10.0	6.5	2
+m2-gates.md	hadur2.Hadur	2.2	Melee bench: reference	8	rz.Aleph 0.34	1.0	14.2	47
+m2-gates.md	hadur2.Hadur	2.2	Melee bench: reference	8	darkcanuck.B26354 1.06	3.0	12.1	38
+m2-gates.md	hadur2.Hadur	2.2	Melee bench: reference	8	abc.Tron 2.02	4.4	10.8	20
+m2-gates.md	hadur2.Hadur	2.2	Melee bench: reference	8	kawigi.sbf.FloodHT 0.9.2	5.0	10.9	19
+m2-gates.md	hadur2.Hadur	2.2	Melee bench: reference	8	rz.HawkOnFire 0.1	5.0	10.8	9
+m2-gates.md	hadur2.Hadur	2.2	Melee bench: reference	8	simonton.micro.Sprout 1.1.3	5.6	10.7	7
+m2-gates.md	hadur2.Hadur	2.2	Melee bench: reference	8	kawigi.mini.Coriantumr 1.1	5.8	10.3	10
+m2-gates.md	hadur2.Hadur	2.2	Melee bench: reference	8	gh.Griezel 0.5.4	6.2	10.2	24
+m2-gates.md	hadur2.Hadur	2.2	Melee bench: reference	8	hadur2.Hadur 2.2	9.0	5.9	1
+m2-gates.md	hadur2.Hadur	2.2	Melee bench: reference	8	cx.mini.Cigaret 1.31	10.0	4.0	0
+m3-gates.md	hadur2.Hadur	2.2	Melee bench: challenge	4	hadur2.Hadur 2.2	1.0	18.5	71
+m3-gates.md	hadur2.Hadur	2.2	Melee bench: challenge	4	kawigi.micro.Shiz 1.1	2.0	14.3	10
+m3-gates.md	hadur2.Hadur	2.2	Melee bench: challenge	4	rz.HawkOnFire 0.1	3.0	13.4	7
+m3-gates.md	hadur2.Hadur	2.2	Melee bench: challenge	4	supersample.SuperSpinBot 1.0	4.0	9.9	4
+m3-gates.md	hadur2.Hadur	2.2	Melee bench: challenge	4	sample.Walls	5.0	8.9	3
+m3-gates.md	hadur2.Hadur	2.2	Melee bench: challenge	4	supersample.SuperTracker 1.0	6.0	8.0	0
+m3-gates.md	hadur2.Hadur	2.2	Melee bench: challenge	4	sample.Crazy	7.0	7.5	3
+m3-gates.md	hadur2.Hadur	2.2	Melee bench: challenge	4	sample.SpinBot	8.0	6.8	0
+m3-gates.md	hadur2.Hadur	2.2	Melee bench: challenge	4	SuperSample.SuperCrazy 1.0	9.0	6.5	0
+m3-gates.md	hadur2.Hadur	2.2	Melee bench: challenge	4	supersample.SuperWalls 1.0	10.0	6.2	2
+m3-gates.md	hadur2.Hadur	2.2	Melee bench: reference	8	rz.Aleph 0.34	1.2	13.5	38
+m3-gates.md	hadur2.Hadur	2.2	Melee bench: reference	8	rz.HawkOnFire 0.1	4.4	10.6	15
+m3-gates.md	hadur2.Hadur	2.2	Melee bench: reference	8	simonton.micro.Sprout 1.1.3	4.4	11.0	12
+m3-gates.md	hadur2.Hadur	2.2	Melee bench: reference	8	abc.Tron 2.02	4.8	10.5	24
+m3-gates.md	hadur2.Hadur	2.2	Melee bench: reference	8	kawigi.sbf.FloodHT 0.9.2	5.0	10.5	14
+m3-gates.md	hadur2.Hadur	2.2	Melee bench: reference	8	darkcanuck.B26354 1.06	5.0	10.7	23
+m3-gates.md	hadur2.Hadur	2.2	Melee bench: reference	8	hadur2.Hadur 2.2	6.0	9.8	12
+m3-gates.md	hadur2.Hadur	2.2	Melee bench: reference	8	kawigi.mini.Coriantumr 1.1	6.2	10.2	15
+m3-gates.md	hadur2.Hadur	2.2	Melee bench: reference	8	gh.Griezel 0.5.4	8.0	9.2	21
+m3-gates.md	hadur2.Hadur	2.2	Melee bench: reference	8	cx.mini.Cigaret 1.31	10.0	4.0	2
+m4-gates.md	hadur2.Hadur	2.2	Melee bench: sentry	13	hadur2.Hadur 2.2	1.0	55.3	5
+m4-gates.md	hadur2.Hadur	2.2	Melee bench: sentry	13	sample.Tracker	2.3	26.9	3
+m4-gates.md	hadur2.Hadur	2.2	Melee bench: sentry	13	sample.SpinBot	2.7	17.8	1
+m4-gates.md	hadur2.Hadur	2.2	Melee bench: sentry	13	samplesentry.BorderGuard	4.0	0.0	0
+m4-gates.md	hadur2.Hadur	2.2	Melee bench: challenge	17	hadur2.Hadur 2.2	1.0	19.1	77
+m4-gates.md	hadur2.Hadur	2.2	Melee bench: challenge	17	rz.HawkOnFire 0.1	2.0	14.7	7
+m4-gates.md	hadur2.Hadur	2.2	Melee bench: challenge	17	kawigi.micro.Shiz 1.1	3.0	14.3	12
+m4-gates.md	hadur2.Hadur	2.2	Melee bench: challenge	17	supersample.SuperSpinBot 1.0	4.0	9.6	1
+m4-gates.md	hadur2.Hadur	2.2	Melee bench: challenge	17	sample.Crazy	5.0	7.5	1
+m4-gates.md	hadur2.Hadur	2.2	Melee bench: challenge	17	sample.Walls	6.0	7.3	1
+m4-gates.md	hadur2.Hadur	2.2	Melee bench: challenge	17	sample.SpinBot	7.0	7.0	0
+m4-gates.md	hadur2.Hadur	2.2	Melee bench: challenge	17	supersample.SuperTracker 1.0	8.0	6.9	0
+m4-gates.md	hadur2.Hadur	2.2	Melee bench: challenge	17	supersample.SuperWalls 1.0	9.0	6.8	0
+m4-gates.md	hadur2.Hadur	2.2	Melee bench: challenge	17	SuperSample.SuperCrazy 1.0	10.0	6.7	1
+m4-gates.md	hadur2.Hadur	2.2	Melee bench: reference	21	rz.Aleph 0.34	1.0	13.3	38
+m4-gates.md	hadur2.Hadur	2.2	Melee bench: reference	21	hadur2.Hadur 2.2	3.4	11.6	26
+m4-gates.md	hadur2.Hadur	2.2	Melee bench: reference	21	abc.Tron 2.02	3.8	11.2	24
+m4-gates.md	hadur2.Hadur	2.2	Melee bench: reference	21	kawigi.mini.Coriantumr 1.1	5.4	10.3	8
+m4-gates.md	hadur2.Hadur	2.2	Melee bench: reference	21	darkcanuck.B26354 1.06	5.4	10.6	25
+m4-gates.md	hadur2.Hadur	2.2	Melee bench: reference	21	rz.HawkOnFire 0.1	5.6	9.8	8
+m4-gates.md	hadur2.Hadur	2.2	Melee bench: reference	21	simonton.micro.Sprout 1.1.3	6.2	10.2	11
+m4-gates.md	hadur2.Hadur	2.2	Melee bench: reference	21	gh.Griezel 0.5.4	6.8	9.6	21
+m4-gates.md	hadur2.Hadur	2.2	Melee bench: reference	21	kawigi.sbf.FloodHT 0.9.2	7.4	9.7	15
+m4-gates.md	hadur2.Hadur	2.2	Melee bench: reference	21	cx.mini.Cigaret 1.31	10.0	3.6	0
+m5-gates.md	hadur2.Hadur	2.2	M4 baseline on the hand-off field	4	voidious.Diamond 1.8.28	1.0	15.1	61
+m5-gates.md	hadur2.Hadur	2.2	M4 baseline on the hand-off field	4	abc.Shadow 3.84i	2.2	12.4	30
+m5-gates.md	hadur2.Hadur	2.2	M4 baseline on the hand-off field	4	positive.Portia 1.26e	2.8	12.4	28
+m5-gates.md	hadur2.Hadur	2.2	M4 baseline on the hand-off field	4	hadur2.Hadur 2.2	4.4	10.3	10
+m5-gates.md	hadur2.Hadur	2.2	M4 baseline on the hand-off field	4	kawigi.mini.Coriantumr 1.1	5.8	9.4	10
+m5-gates.md	hadur2.Hadur	2.2	M4 baseline on the hand-off field	4	darkcanuck.B26354 1.06	6.2	9.1	14
+m5-gates.md	hadur2.Hadur	2.2	M4 baseline on the hand-off field	4	rz.HawkOnFire 0.1	7.0	8.8	3
+m5-gates.md	hadur2.Hadur	2.2	M4 baseline on the hand-off field	4	kawigi.sbf.FloodHT 0.9.2	7.2	8.2	6
+m5-gates.md	hadur2.Hadur	2.2	M4 baseline on the hand-off field	4	simonton.micro.Sprout 1.1.3	8.6	7.7	5
+m5-gates.md	hadur2.Hadur	2.2	M4 baseline on the hand-off field	4	gh.Griezel 0.5.4	9.8	6.6	8
+m5-gates.md	hadur2.Hadur	2.2	M5 run	8	voidious.Diamond 1.8.28	1.4	14.7	53
+m5-gates.md	hadur2.Hadur	2.2	M5 run	8	abc.Shadow 3.84i	2.2	12.4	25
+m5-gates.md	hadur2.Hadur	2.2	M5 run	8	positive.Portia 1.26e	2.4	12.4	33
+m5-gates.md	hadur2.Hadur	2.2	M5 run	8	hadur2.Hadur 2.2	4.6	10.0	9
+m5-gates.md	hadur2.Hadur	2.2	M5 run	8	darkcanuck.B26354 1.06	5.8	9.4	19
+m5-gates.md	hadur2.Hadur	2.2	M5 run	8	kawigi.mini.Coriantumr 1.1	6.4	9.0	8
+m5-gates.md	hadur2.Hadur	2.2	M5 run	8	kawigi.sbf.FloodHT 0.9.2	7.0	8.7	11
+m5-gates.md	hadur2.Hadur	2.2	M5 run	8	rz.HawkOnFire 0.1	7.8	8.4	4
+m5-gates.md	hadur2.Hadur	2.2	M5 run	8	gh.Griezel 0.5.4	8.2	7.7	10
+m5-gates.md	hadur2.Hadur	2.2	M5 run	8	simonton.micro.Sprout 1.1.3	9.2	7.1	4
+m6-gates.md	hadur2.Hadur	3.0	Melee bench: sentry	12	hadur2.Hadur 3.0	1.0	55.3	5
+m6-gates.md	hadur2.Hadur	3.0	Melee bench: sentry	12	sample.Tracker	2.3	26.9	3
+m6-gates.md	hadur2.Hadur	3.0	Melee bench: sentry	12	sample.SpinBot	2.7	17.8	1
+m6-gates.md	hadur2.Hadur	3.0	Melee bench: sentry	12	samplesentry.BorderGuard	4.0	0.0	0
+m6-gates.md	hadur2.Hadur	3.0	Melee bench: challenge	16	hadur2.Hadur 3.0	1.0	19.7	72
+m6-gates.md	hadur2.Hadur	3.0	Melee bench: challenge	16	kawigi.micro.Shiz 1.1	2.0	14.6	15
+m6-gates.md	hadur2.Hadur	3.0	Melee bench: challenge	16	rz.HawkOnFire 0.1	3.0	13.5	4
+m6-gates.md	hadur2.Hadur	3.0	Melee bench: challenge	16	supersample.SuperSpinBot 1.0	4.0	8.8	2
+m6-gates.md	hadur2.Hadur	3.0	Melee bench: challenge	16	supersample.SuperTracker 1.0	5.0	8.0	1
+m6-gates.md	hadur2.Hadur	3.0	Melee bench: challenge	16	sample.Crazy	6.0	7.6	3
+m6-gates.md	hadur2.Hadur	3.0	Melee bench: challenge	16	supersample.SuperWalls 1.0	7.0	7.5	1
+m6-gates.md	hadur2.Hadur	3.0	Melee bench: challenge	16	SuperSample.SuperCrazy 1.0	8.0	7.1	1
+m6-gates.md	hadur2.Hadur	3.0	Melee bench: challenge	16	sample.Walls	9.0	7.0	1
+m6-gates.md	hadur2.Hadur	3.0	Melee bench: challenge	16	sample.SpinBot	10.0	6.1	0
+m6-gates.md	hadur2.Hadur	3.0	Melee bench: reference	20	rz.Aleph 0.34	1.1	13.2	76
+m6-gates.md	hadur2.Hadur	3.0	Melee bench: reference	20	darkcanuck.B26354 1.06	3.2	11.3	57
+m6-gates.md	hadur2.Hadur	3.0	Melee bench: reference	20	hadur2.Hadur 3.0	4.7	10.7	32
+m6-gates.md	hadur2.Hadur	3.0	Melee bench: reference	20	abc.Tron 2.02	5.1	10.6	43
+m6-gates.md	hadur2.Hadur	3.0	Melee bench: reference	20	kawigi.sbf.FloodHT 0.9.2	5.4	10.3	30
+m6-gates.md	hadur2.Hadur	3.0	Melee bench: reference	20	rz.HawkOnFire 0.1	5.5	10.4	17
+m6-gates.md	hadur2.Hadur	3.0	Melee bench: reference	20	kawigi.mini.Coriantumr 1.1	5.6	10.5	32
+m6-gates.md	hadur2.Hadur	3.0	Melee bench: reference	20	simonton.micro.Sprout 1.1.3	6.9	9.5	11
+m6-gates.md	hadur2.Hadur	3.0	Melee bench: reference	20	gh.Griezel 0.5.4	7.5	9.5	53
+m6-gates.md	hadur2.Hadur	3.0	Melee bench: reference	20	cx.mini.Cigaret 1.31	10.0	4.0	0
+melee-2.1-classic.md	hadur2.Hadur	2.1	Melee bench	1	rz.Aleph 0.34	1.2	17.2	60
+melee-2.1-classic.md	hadur2.Hadur	2.1	Melee bench	1	abc.Tron 2.02	2.2	15.8	41
+melee-2.1-classic.md	hadur2.Hadur	2.1	Melee bench	1	kawigi.mini.Coriantumr 1.1	2.6	15.4	40
+melee-2.1-classic.md	hadur2.Hadur	2.1	Melee bench	1	hadur2.Hadur 2.1	4.4	10.1	8
+melee-2.1-classic.md	hadur2.Hadur	2.1	Melee bench	1	pedersen.Ugluk 1.0	4.6	10.7	22
+melee-2.1-classic.md	hadur2.Hadur	2.1	Melee bench	1	cx.mini.Cigaret 1.31	7.0	7.3	0
+melee-2.1-classic.md	hadur2.Hadur	2.1	Melee bench	1	kawigi.sbf.FloodMini 1.4	7.0	7.3	3
+melee-2.1-classic.md	hadur2.Hadur	2.1	Melee bench	1	cjm.Chomsky 1.5	7.4	6.9	1
+melee-2.1-classic.md	hadur2.Hadur	2.1	Melee bench	1	dmp.micro.Aurora 1.41	8.6	5.8	0
+melee-2.1-classic.md	hadur2.Hadur	2.1	Melee bench	1	mue.Ascendant 1.2.27	10.0	3.3	0
+melee-2.1-samples.md	hadur2.Hadur	2.1	Melee bench	1	hadur2.Hadur 2.1	1.0	23.0	92
+melee-2.1-samples.md	hadur2.Hadur	2.1	Melee bench	1	sample.Walls	2.0	13.6	7
+melee-2.1-samples.md	hadur2.Hadur	2.1	Melee bench	1	sample.SpinBot	3.7	10.5	4
+melee-2.1-samples.md	hadur2.Hadur	2.1	Melee bench	1	sample.Tracker	4.0	9.6	0
+melee-2.1-samples.md	hadur2.Hadur	2.1	Melee bench	1	sample.VelociRobot	5.3	8.9	0
+melee-2.1-samples.md	hadur2.Hadur	2.1	Melee bench	1	sample.Crazy	5.3	8.9	1
+melee-2.1-samples.md	hadur2.Hadur	2.1	Melee bench	1	sample.RamFire	6.7	7.8	0
+melee-2.1-samples.md	hadur2.Hadur	2.1	Melee bench	1	sample.Fire	8.0	6.4	0
+melee-2.1-samples.md	hadur2.Hadur	2.1	Melee bench	1	sample.Corners	9.3	5.9	0
+melee-2.1-samples.md	hadur2.Hadur	2.1	Melee bench	1	sample.TrackFire	9.7	5.4	1
+melee-2.1-strong.md	hadur2.Hadur	2.1	Melee bench	1	voidious.Diamond 1.8.22	1.0	18.2	29
+melee-2.1-strong.md	hadur2.Hadur	2.1	Melee bench	1	abc.Shadow 3.83c	2.0	16.8	17
+melee-2.1-strong.md	hadur2.Hadur	2.1	Melee bench	1	abc.Tron 2.02	3.3	14.0	1
+melee-2.1-strong.md	hadur2.Hadur	2.1	Melee bench	1	aaa.r.ScalarR 0.005h.053-noshield	3.7	13.4	56
+melee-2.1-strong.md	hadur2.Hadur	2.1	Melee bench	1	pedersen.Ugluk 1.0	5.3	9.2	1
+melee-2.1-strong.md	hadur2.Hadur	2.1	Melee bench	1	hadur2.Hadur 2.1	5.7	8.6	0
+melee-2.1-strong.md	hadur2.Hadur	2.1	Melee bench	1	ags.Midboss 1s	7.0	7.3	1
+melee-2.1-strong.md	hadur2.Hadur	2.1	Melee bench	1	jk.mega.DrussGT 3.1.16	8.3	5.9	0
+melee-2.1-strong.md	hadur2.Hadur	2.1	Melee bench	1	kawigi.sbf.FloodMini 1.4	8.7	5.1	0
+melee-2.1-strong.md	hadur2.Hadur	2.1	Melee bench	1	mue.Ascendant 1.2.27	10.0	1.5	0
+melee-3.0-classic.md	hadur2.Hadur	3.0	Melee bench	2	rz.Aleph 0.34	1.2	16.3	48
+melee-3.0-classic.md	hadur2.Hadur	3.0	Melee bench	2	hadur2.Hadur 3.0	2.6	14.8	42
+melee-3.0-classic.md	hadur2.Hadur	3.0	Melee bench	2	kawigi.mini.Coriantumr 1.1	3.0	15.1	36
+melee-3.0-classic.md	hadur2.Hadur	3.0	Melee bench	2	abc.Tron 2.02	3.2	14.4	40
+melee-3.0-classic.md	hadur2.Hadur	3.0	Melee bench	2	pedersen.Ugluk 1.0	5.0	9.9	7
+melee-3.0-classic.md	hadur2.Hadur	3.0	Melee bench	2	kawigi.sbf.FloodMini 1.4	6.6	7.4	0
+melee-3.0-classic.md	hadur2.Hadur	3.0	Melee bench	2	cx.mini.Cigaret 1.31	6.8	7.3	0
+melee-3.0-classic.md	hadur2.Hadur	3.0	Melee bench	2	cjm.Chomsky 1.5	7.8	6.5	2
+melee-3.0-classic.md	hadur2.Hadur	3.0	Melee bench	2	dmp.micro.Aurora 1.41	8.8	5.5	0
+melee-3.0-classic.md	hadur2.Hadur	3.0	Melee bench	2	mue.Ascendant 1.2.27	10.0	2.7	0
+melee-3.0-samples.md	hadur2.Hadur	3.0	Melee bench	2	hadur2.Hadur 3.0	1.0	26.4	105
+melee-3.0-samples.md	hadur2.Hadur	3.0	Melee bench	2	sample.Walls	2.0	11.2	0
+melee-3.0-samples.md	hadur2.Hadur	3.0	Melee bench	2	sample.SpinBot	3.7	9.8	0
+melee-3.0-samples.md	hadur2.Hadur	3.0	Melee bench	2	sample.Crazy	4.3	9.5	0
+melee-3.0-samples.md	hadur2.Hadur	3.0	Melee bench	2	sample.Tracker	4.7	9.5	0
+melee-3.0-samples.md	hadur2.Hadur	3.0	Melee bench	2	sample.VelociRobot	6.3	8.4	0
+melee-3.0-samples.md	hadur2.Hadur	3.0	Melee bench	2	sample.RamFire	6.7	7.5	0
+melee-3.0-samples.md	hadur2.Hadur	3.0	Melee bench	2	sample.Fire	7.3	6.6	0
+melee-3.0-samples.md	hadur2.Hadur	3.0	Melee bench	2	sample.Corners	9.0	5.9	0
+melee-3.0-samples.md	hadur2.Hadur	3.0	Melee bench	2	sample.TrackFire	10.0	5.2	0
+melee-3.0-strong.md	hadur2.Hadur	3.0	Melee bench	2	voidious.Diamond 1.8.22	1.0	17.9	29
+melee-3.0-strong.md	hadur2.Hadur	3.0	Melee bench	2	abc.Shadow 3.83c	2.3	15.4	15
+melee-3.0-strong.md	hadur2.Hadur	3.0	Melee bench	2	aaa.r.ScalarR 0.005h.053-noshield	3.3	13.7	56
+melee-3.0-strong.md	hadur2.Hadur	3.0	Melee bench	2	hadur2.Hadur 3.0	4.0	13.6	3
+melee-3.0-strong.md	hadur2.Hadur	3.0	Melee bench	2	abc.Tron 2.02	4.3	12.6	2
+melee-3.0-strong.md	hadur2.Hadur	3.0	Melee bench	2	pedersen.Ugluk 1.0	6.0	8.2	0
+melee-3.0-strong.md	hadur2.Hadur	3.0	Melee bench	2	ags.Midboss 1s	7.0	7.1	0
+melee-3.0-strong.md	hadur2.Hadur	3.0	Melee bench	2	jk.mega.DrussGT 3.1.16	8.3	4.8	0
+melee-3.0-strong.md	hadur2.Hadur	3.0	Melee bench	2	kawigi.sbf.FloodMini 1.4	8.7	4.7	0
+melee-3.0-strong.md	hadur2.Hadur	3.0	Melee bench	2	mue.Ascendant 1.2.27	10.0	2.1	0

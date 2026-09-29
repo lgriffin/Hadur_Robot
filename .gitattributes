@@ -1,0 +1,2 @@
+# Saved web pages keep their bytes exactly as saved (CRLF, MIME parts).
+data/rumble/pages/** -text -diff

@@ -109,6 +109,8 @@ hadur-robot/   the Robocode adapter (hadur2.Hadur): events in, orders out, profi
 hadur-bench/   headless battles, the bench report, and the replay recorder.
 docs/          requirements, architecture, testing, strategy, bench reports, release notes,
                rumble entry.
+data/          the rumble and bench archive: saved rumble pages, parsed tables, bench
+               history, and the learnings ledger. Not read by the build.
 repo/          the vendored Robocode 1.9.3.0 API jar.
 ```
 
