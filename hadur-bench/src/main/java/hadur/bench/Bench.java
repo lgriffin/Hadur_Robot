@@ -33,9 +33,9 @@ import java.util.zip.GZIPOutputStream;
  *     warm keeps it across {@code --battles} consecutive battles per opponent.</li>
  * <li>{@code --rounds N} rounds per battle (35), {@code --seeds N} battles per opponent in
  *     cold mode (5), {@code --battles N} in warm mode (5), {@code --field WxH} (800x600).</li>
- * <li>{@code --robot-jar FILE} the robot jar (../hadur-robot/target/hadur2.Hadur_3.1.jar),
+ * <li>{@code --robot-jar FILE} the robot jar (../hadur-robot/target/hadur2.Hadur_3.2.jar),
  *     or {@code --robot-classes DIR} to jar a compiled class tree instead;
- *     {@code --robot NAME} as Robocode lists it ("hadur2.Hadur 3.1").</li>
+ *     {@code --robot NAME} as Robocode lists it ("hadur2.Hadur 3.2").</li>
  * <li>{@code --record DIR} capture replay fixtures instead: runs the recorder robot
  *     (../hadur-robot/target/hadur-robot-2.0-SNAPSHOT-recorder.jar) with Robocode's
  *     security off and writes one gzipped transcript per opponent to DIR (CORE-2).</li>
@@ -50,6 +50,10 @@ import java.util.zip.GZIPOutputStream;
  *     released version against a locally bumped one).</li>
  * <li>{@code --sentry-border N} in melee mode, the set's {@code sentry} entries fight as
  *     Robocode sentries guarding a border N px deep.</li>
+ * <li>{@code --client FILE} (BENCH-4) run the set through each rumble-client condition the
+ *     file lists ({@code label | key=value ...} per line: {@code data}, {@code cpu},
+ *     {@code load}, {@code engine}, {@code java}; see {@link ClientConditions}), one bench
+ *     pass per condition, and report survival and skipped turns per opponent per condition.</li>
  * <li>{@code --suite FILE} run every bench the file lists ({@code label | options} per
  *     line) and write one report, e.g. {@code melee-gates.txt}.</li>
  * <li>{@code --only TEXT} run opponents whose name contains TEXT,
@@ -81,6 +85,8 @@ public final class Bench {
     /** BENCH-2: the paired baseline jar and robot name, or null when not running paired. */
     private final Path baselineJar;
     private final String baselineRobot;
+    /** BENCH-4: the client-conditions file, or null when running a plain single pass. */
+    private final Path client;
 
     Bench(Map<String, String> opts) {
         this.opts = opts;
@@ -94,10 +100,10 @@ public final class Bench {
         this.height = Integer.parseInt(field[1]);
         this.record = opts.containsKey("record") ? Path.of(opts.get("record")).toAbsolutePath() : null;
         if (record != null) {
-            opts.putIfAbsent("robot", "hadur2.HadurRecorder 3.1");
+            opts.putIfAbsent("robot", "hadur2.HadurRecorder 3.2");
             opts.putIfAbsent("robot-jar", "../hadur-robot/target/hadur-robot-2.0-SNAPSHOT-recorder.jar");
         }
-        this.robot = opts.getOrDefault("robot", "hadur2.Hadur 3.1");
+        this.robot = opts.getOrDefault("robot", "hadur2.Hadur 3.2");
         this.baselineJar = opts.containsKey("baseline") ? Path.of(opts.get("baseline")).toAbsolutePath() : null;
         this.baselineRobot = opts.get("baseline-robot");
         if (baselineJar != null) {
@@ -113,6 +119,7 @@ public final class Bench {
                     + "installing two jars under the same robot name would overwrite one with the other");
             }
         }
+        this.client = opts.containsKey("client") ? Path.of(opts.get("client")).toAbsolutePath() : null;
         String stamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss"));
         this.out = Path.of(opts.getOrDefault("out",
             "work/" + (warm ? "warm" : "cold") + "-" + stamp)).toAbsolutePath();
@@ -179,6 +186,7 @@ public final class Bench {
         if (only != null) opponents.removeIf(o -> !o.name.contains(only));
         installRobots(opponents);
         if (opts.containsKey("melee")) return runMelee(opponents);
+        if (client != null) return runClientConditions(opponents);
 
         Map<Opponent, List<BattleResult>> results = new LinkedHashMap<>();
         Map<Opponent, List<BattleResult>> baselineResults = baselineJar != null ? new LinkedHashMap<>() : null;
@@ -239,12 +247,18 @@ public final class Bench {
 
     private BattleResult runBattle(Opponent o, int seed, Path dir, String robotName)
             throws IOException, InterruptedException {
+        return runBattle(o, seed, dir, robotName, defaultJavaBin(), classpath());
+    }
+
+    /** BENCH-4: as above, but on a given JVM and classpath (an {@code engine=}/{@code java=} condition). */
+    private BattleResult runBattle(Opponent o, int seed, Path dir, String robotName,
+                                    String javaBin, String cp) throws IOException, InterruptedException {
         Files.createDirectories(dir);
         // A result left by an earlier run in this directory must not stand in for this one.
         Path result = dir.resolve("result.csv");
         Files.deleteIfExists(result);
         List<String> cmd = new ArrayList<>();
-        cmd.add(Path.of(System.getProperty("java.home"), "bin", "java").toString());
+        cmd.add(javaBin);
         cmd.addAll(JVM_FLAGS);
         cmd.add("-DRANDOMSEED=" + seed);
         Path transcript = dir.resolve("transcript.txt");
@@ -254,7 +268,7 @@ public final class Bench {
             cmd.add("-Dhadur.record=" + transcript);
         }
         cmd.add("-cp");
-        cmd.add(classpath());
+        cmd.add(cp);
         cmd.add(BattleRunner.class.getName());
         cmd.addAll(List.of(home.toString(), dir.toString(), String.valueOf(rounds),
             String.valueOf(width), String.valueOf(height), robotName, o.name));
@@ -349,6 +363,165 @@ public final class Bench {
         return battles.stream().anyMatch(b -> !b.ok) ? 1 : 0;
     }
 
+    private String defaultJavaBin() {
+        return Path.of(System.getProperty("java.home"), "bin", "java").toString();
+    }
+
+    /**
+     * BENCH-4: runs {@code opponents} once per condition in {@link #client}, each its own
+     * pass (its own data-directory handling, CPU constant, background load, engine and JVM),
+     * and writes one combined report of survival share and skipped turns per opponent per
+     * condition. A condition naming an {@code engine} or {@code java} not present locally is
+     * skipped (reported as such), not failed.
+     */
+    private int runClientConditions(List<Opponent> opponents) throws IOException, InterruptedException {
+        List<ClientConditions.Condition> conditions = ClientConditions.parse(client);
+        Map<String, Map<Opponent, List<BattleResult>>> byCondition = new LinkedHashMap<>();
+        Map<String, String> cpuByCondition = new LinkedHashMap<>();
+        boolean anyBattleFailed = false;
+        for (ClientConditions.Condition c : conditions) {
+            System.out.println("== condition: " + c.label());
+            String cp = resolveEngineClasspath(c);
+            String javaBin = resolveJavaBin(c);
+            if (cp == null) {
+                System.out.println("  engine " + c.engine() + " not available locally (no "
+                    + "hadur-bench/engines/" + c.engine() + "/); skipping this condition");
+                byCondition.put(c.label(), Map.of());
+                continue;
+            }
+            if (javaBin == null) {
+                System.out.println("  java " + c.javaHome() + " not available locally; skipping this condition");
+                byCondition.put(c.label(), Map.of());
+                continue;
+            }
+            prepareCondition(c);
+            List<Thread> load = startLoad(c.load());
+            try {
+                Map<Opponent, List<BattleResult>> results = new LinkedHashMap<>();
+                for (Opponent o : opponents) {
+                    List<BattleResult> list = new ArrayList<>();
+                    results.put(o, list);
+                    for (int i = 1; i <= runs; i++) {
+                        if (!c.neverWipe()) wipeData();
+                        Path dir = out.resolve("conditions").resolve(slug(c.label())).resolve(o.slug() + "-" + i);
+                        BattleResult r = runBattle(o, i, dir, robot, javaBin, cp);
+                        list.add(r);
+                        System.out.printf(Locale.ROOT, "  %s vs %s %d/%d: survival %.1f%%, skipped %d%s%n",
+                            c.label(), o.name, i, runs, r.survivalShare() * 100, r.skippedTurns,
+                            r.ok ? "" : " FAILED: " + r.errors);
+                        if (!r.ok) anyBattleFailed = true;
+                    }
+                }
+                byCondition.put(c.label(), results);
+                // Read after the pass: a forced constant reads back as itself, and one left
+                // to the engine's own default reads back as whatever it calibrated to.
+                cpuByCondition.put(c.label(), cpuConstant());
+            } finally {
+                stopLoad(load);
+            }
+        }
+        String report = Report.renderConditions(byCondition, cpuByCondition);
+        Files.createDirectories(out);
+        Files.writeString(out.resolve("report.md"), report);
+        if (opts.containsKey("report")) {
+            Path copy = Path.of(opts.get("report")).toAbsolutePath();
+            Files.createDirectories(copy.getParent());
+            Files.writeString(copy, report);
+        }
+        System.out.println();
+        System.out.println(report);
+        return anyBattleFailed ? 1 : 0;
+    }
+
+    /**
+     * Sets up the data directory and CPU constant a condition asks for, before its pass runs.
+     * A condition naming no {@code cpu} resets it, so an earlier condition's forced constant
+     * never leaks into a later one that means to run at the engine's own default.
+     */
+    private void prepareCondition(ClientConditions.Condition c) throws IOException {
+        if (c.cpuNanos() != null) writeCpuConstant(c.cpuNanos());
+        else resetCpuConstant();
+        String prefill = c.prefillDir();
+        if (prefill != null) {
+            wipeData();
+            Path src = Path.of(prefill);
+            if (!Files.isDirectory(src)) throw new IllegalStateException("No prefill directory at " + src);
+            Path dest = home.resolve("robots/.data/hadur2/Hadur.data");
+            Files.createDirectories(dest);
+            try (Stream<Path> files = Files.walk(src)) {
+                for (Path f : (Iterable<Path>) files::iterator) {
+                    Path target = dest.resolve(src.relativize(f).toString());
+                    if (Files.isDirectory(f)) Files.createDirectories(target);
+                    else Files.copy(f, target, StandardCopyOption.REPLACE_EXISTING);
+                }
+            }
+        } else if (!c.neverWipe()) {
+            wipeData();
+        }
+        // A plain "data=shared" with no prefill: leave the directory as the previous
+        // condition (or an empty start) left it, and never wipe it during this pass.
+    }
+
+    private void writeCpuConstant(long nanos) throws IOException {
+        Path props = home.resolve("config/robocode.properties");
+        Files.createDirectories(props.getParent());
+        Files.writeString(props, "#Robocode Properties\nrobocode.cpu.constant=" + nanos + "\n");
+    }
+
+    /** Removes a forced CPU constant so the engine recalibrates or uses its own default. */
+    private void resetCpuConstant() throws IOException {
+        Files.deleteIfExists(home.resolve("config/robocode.properties"));
+    }
+
+    /** N daemon CPU-bound threads, to mimic a rumble client under load; stop with {@link #stopLoad}. */
+    private List<Thread> startLoad(int n) {
+        List<Thread> threads = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            Thread t = new Thread(() -> {
+                double x = 1.0;
+                while (!Thread.currentThread().isInterrupted()) x = Math.sin(x) + Math.cos(x);
+            }, "bench-load-" + i);
+            t.setDaemon(true);
+            t.start();
+            threads.add(t);
+        }
+        return threads;
+    }
+
+    private void stopLoad(List<Thread> threads) throws InterruptedException {
+        for (Thread t : threads) t.interrupt();
+        for (Thread t : threads) t.join(1000);
+    }
+
+    /**
+     * The classpath for a condition's engine: the default when it names none, jars from
+     * {@code engines/<version>/} put ahead of the default when it does, or null when that
+     * directory does not exist (the condition is skipped, not failed).
+     */
+    private String resolveEngineClasspath(ClientConditions.Condition c) throws IOException {
+        if (c.engine() == null) return classpath();
+        Path dir = benchDir.resolve("engines").resolve(c.engine());
+        if (!Files.isDirectory(dir)) return null;
+        StringBuilder cp = new StringBuilder();
+        try (Stream<Path> jars = Files.list(dir)) {
+            for (Path j : (Iterable<Path>) jars.filter(p -> p.toString().endsWith(".jar"))::iterator) {
+                cp.append(j).append(File.pathSeparator);
+            }
+        }
+        return cp.append(classpath()).toString();
+    }
+
+    /** The battle child's {@code java} binary: the default, a condition's JDK home, or null if missing. */
+    private String resolveJavaBin(ClientConditions.Condition c) {
+        if (c.javaHome() == null) return defaultJavaBin();
+        Path bin = Path.of(c.javaHome(), "bin", "java");
+        return Files.isExecutable(bin) ? bin.toString() : null;
+    }
+
+    private static String slug(String label) {
+        return label.toLowerCase(Locale.ROOT).replaceAll("[^a-z0-9]+", "-");
+    }
+
     private void saveFixture(Opponent o, int seed, Path transcript) throws IOException {
         Files.createDirectories(record);
         Path fixture = record.resolve(o.slug() + (runs > 1 ? "-" + seed : "") + ".txt.gz");
@@ -378,7 +551,7 @@ public final class Bench {
             jar(classes, target);
         } else {
             Path jar = Path.of(opts.getOrDefault("robot-jar",
-                "../hadur-robot/target/hadur2.Hadur_3.1.jar")).toAbsolutePath();
+                "../hadur-robot/target/hadur2.Hadur_3.2.jar")).toAbsolutePath();
             if (!Files.isRegularFile(jar)) {
                 throw new IllegalStateException("No robot jar at " + jar + "; run mvn package first");
             }

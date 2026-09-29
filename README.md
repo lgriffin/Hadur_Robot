@@ -128,7 +128,7 @@ client can load it (REL-1).
 mvn verify                  # all modules: tests, traceability, robot jar
 ```
 
-The robot jar is `hadur-robot/target/hadur2.Hadur_3.1.jar`; drop it into a Robocode
+The robot jar is `hadur-robot/target/hadur2.Hadur_3.2.jar`; drop it into a Robocode
 `robots/` directory. The core is bundled inside it. Pushing a `v*` tag runs the release
 workflow: it builds, checks that the jar matches the tag, and publishes a GitHub release
 with `docs/releases/<tag>.md` as its notes. GitHub Actions was not running jobs when 2.2

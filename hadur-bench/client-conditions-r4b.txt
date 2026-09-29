@@ -1,0 +1,10 @@
+# BENCH-4 conditions for R4b (rumble-climb-r4-r6-plan.md section R4b). Each line is its own
+# bench pass over the weak set; see data/learnings.md L-03 for what the ad hoc predecessor
+# of this tool already tried informally. "default" is the bench's own default (a fresh data
+# directory every seed, the engine's calibrated CPU constant, no background load): the
+# baseline the other rows are compared against.
+default |
+data shared, never wiped |            data=shared
+cpu constant forced to 1.0ms |        cpu=1000000
+cpu constant forced to 0.3ms |        cpu=300000
+background load, 4 threads |          load=4
