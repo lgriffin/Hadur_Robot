@@ -14,14 +14,19 @@ leave every battle at 34/35 or 35/35 rounds won. The one lost round (`racso.Cron
 recurs in three of the five conditions including the default, so it reads as this bot's own
 noise rather than a condition effect (`data/learnings.md` L-19).
 
+A further pass, prefilling from a data directory built with the 2.2 jar then the 3.0 jar
+(matching a real client that has hosted every Hadur version), was also run — see
+[r4-prefill-condition.md](r4-prefill-condition.md). It does not reproduce the collapse
+either.
+
 **Not tried here:** another Robocode engine release or JVM (BENCH-4 supports `engine=` and
 `java=` conditions, but no second engine distribution or JDK is installed in this
-environment — see `hadur-bench/engines/README` and the tool's own report, which lists them
-as skipped rather than fabricating a result), and a data directory prefilled from an older
-Hadur version (`data=prefill:DIR`; building one needs a warm run of the 2.2 jar this
-environment does not have handy). Per the plan's decision tree (R4c), this stage ships
-RES-7 and RES-8 anyway as 3.2 and reads the live rating with BENCH-5 once it has 300+
-pairings, rather than block on conditions this environment cannot exercise.
+environment — see `hadur-bench/engines/README.md` and the tool's own report, which lists
+them as skipped rather than fabricating a result), and the actual offline RoboRumble client
+(`roborumble.jar`, not one of the Maven-available Robocode artifacts). Per the plan's
+decision tree (R4c), this stage ships RES-7 and RES-8 anyway as 3.2 and reads the live
+rating with BENCH-5 once it has 300+ pairings, rather than block on conditions this
+environment cannot exercise.
 
 One bench pass per condition, each isolating one difference from the rumble client's default (a shared or prefilled data directory, CPU constant, background load, engine or JVM). Survival share is Hadur's fraction of rounds survived.
 

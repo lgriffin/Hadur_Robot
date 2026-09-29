@@ -123,8 +123,14 @@ against master (3.1) over the weak set: a shared never-wiped data directory, the
 constant forced to 1.0ms and to 0.3ms (up to 112 skipped turns a battle), and four
 background-load threads all leave survival at 97 to 100%, same as the default bench,
 against a live drop to 71-77%. Confirms L-03 with a tool instead of an ad hoc run and rules
-out CPU pressure and a shared data directory alone as the cause. Not tried: another engine
-release, another JVM, a 2.2-prefilled data directory (BENCH-4 supports all three but no
-second engine, JDK or prefill set is available in this environment).
-Evidence: `docs/bench/r4-client-conditions.md`; `hadur-bench/client-conditions-r4b.txt`.
-Owner: R4.
+out CPU pressure and a shared data directory alone as the cause. A further pass built a data
+directory the way a real client that has hosted every Hadur version would (the 2.2 jar
+warm over the weak set, 184 KB, then the 3.0 jar warm on top of it, same 184 KB, 12
+profiles), then ran 3.2 prefilled from it: still 97-100% survival, only the usual one round
+in 35 noise on two opponents. So a cross-version data directory is not the cause either.
+Not tried: another engine release, another JVM (BENCH-4 supports both, `engine=`/`java=`,
+but no second engine distribution or JDK is available in this environment); the actual
+offline RoboRumble client (`roborumble.jar`, not one of the Maven-available Robocode
+artifacts) as a BENCH-4 condition, suggested but not attempted this session.
+Evidence: `docs/bench/r4-client-conditions.md`, `docs/bench/r4-prefill-condition.md`;
+`hadur-bench/client-conditions-r4b.txt`. Owner: R4.

@@ -15,11 +15,20 @@ Open items from the Hadur 2 stages, newest stage first. The open ones are tracke
   directory, the CPU constant forced to 1.0ms and 0.3ms, and four background-load threads
   all leave survival at 97 to 100%, the same as the default bench, against the live drop to
   71-77%. See `docs/bench/r4-client-conditions.md` and `data/learnings.md` L-21.
-- **Not tried**: another Robocode engine release, another JVM, a data directory prefilled
-  from 2.2 or 3.0. BENCH-4 supports all three (`engine=`, `java=`, `data=prefill:DIR`), but
-  this environment has no second engine distribution, JDK or prefill set on hand. Whoever
-  picks this up with a real rumble client available should try those first — they are the
-  plan's own top candidates (`docs/rumble-climb-r4-r6-plan.md` section 6).
+- **The plan's top candidate doesn't reproduce it either.** A data directory built the way
+  a real multi-version client would (the 2.2 jar warm over the weak set, then the 3.0 jar
+  warm on top of it, 184 KB), with 3.2 prefilled from it: still 97-100% survival. See
+  `docs/bench/r4-prefill-condition.md`.
+- **Not tried**: another Robocode engine release, another JVM (BENCH-4 supports both,
+  `engine=`/`java=`, but this environment has no second engine distribution or JDK on
+  hand), and the actual offline RoboRumble client (`roborumble.jar`) run as a BENCH-4
+  condition — suggested during this stage but not one of the Maven-available Robocode
+  artifacts, so not attempted. Whoever picks this up with a real rumble client available
+  should try those next.
+- **Timing for the hand-off**: 3.1 went live at 04:32 UTC 2026-09-29. Don't swap the live
+  rumble entry from 3.1 to 3.2 until 3.1's own BotDetails page has been saved (roughly
+  10:30 UTC or later, ~6h of pairings) — swapping earlier loses the read on whether R1
+  already fixed the collapse.
 - **Per the plan's decision tree**, "not reproduced" ships RES-7 and RES-8 anyway: this
   stage releases 3.2 and reads the live rating with BENCH-5 once it has 300+ pairings,
   rather than block on conditions this environment cannot exercise. `hadur.climb.stage`

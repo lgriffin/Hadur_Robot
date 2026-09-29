@@ -22,9 +22,13 @@ once Leigh hosts the jar on Google Drive:
 hadur2.Hadur 3.2,<Leigh's Google Drive link>
 ```
 
-To do: Leigh uploads the jar (step 2 below), replaces the 3.1 line with the real link on
-both participants pages, and saves a BotDetails page for 3.2 into the project once it has
-300+ pairings (BENCH-5 reads it).
+**Wait before swapping.** 3.1 went live at 04:32 UTC 2026-09-29; R4's read on whether R1
+already fixed the 08:30 UTC collapse needs 3.1's own BotDetails page with 300+ pairings
+(about 6 hours, so from roughly 10:30 UTC). Save that page first, or the signal is lost.
+
+To do: Leigh saves 3.1's BotDetails page (once it has 300+ pairings), uploads the 3.2 jar
+(step 2 below), replaces the 3.1 line with the real link on both participants pages, and
+saves a BotDetails page for 3.2 once it has 300+ pairings too (BENCH-5 reads both).
 
 ## Previous entry: 3.1
 
