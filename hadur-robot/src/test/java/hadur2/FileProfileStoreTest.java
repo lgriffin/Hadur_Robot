@@ -35,13 +35,22 @@ class FileProfileStoreTest {
         return new FileProfileStore(dir.toFile(), quota, FileOutputStream::new);
     }
 
+    /**
+     * A profile fought twice (MEM-8: seeds are only kept for an opponent met at least
+     * twice), losing every round so its recorded score share stays under 60%.
+     */
     static OpponentProfile profile(String name, int rounds) {
         ProfileLibrary scratch = new ProfileLibrary(new hadur2.core.port.MemoryProfileStore(1 << 20));
+        // A first, empty, losing battle: MEM-8 keeps seeds only for an opponent met at
+        // least twice with a recorded score share under 60%.
+        OpponentProfile first = scratch.load(name).profile();
+        new ProfileFolder(first, 800, 600).fold(false);
+        scratch.save(first);
         OpponentProfile p = scratch.load(name).profile();
         ProfileFolder f = new ProfileFolder(p, 800, 600);
         for (int r = 0; r < rounds; r++) {
             f.enemyShot(300, 2, true);
-            f.fold(r % 2 == 0);
+            f.fold(false);
         }
         for (int i = 0; i < 40; i++) p.addGunSample(new short[OpponentProfile.SAMPLE_WIDTH]);
         return p;
@@ -128,7 +137,7 @@ class FileProfileStoreTest {
         assertEquals(ProfileLibrary.Saved.WRITTEN, new ProfileLibrary(store(200_000)).save(p));
         ProfileLibrary.Loaded loaded = new ProfileLibrary(store(200_000)).load("abc.Shadow 3.84");
         assertTrue(loaded.found());
-        assertEquals(5, loaded.profile().rounds());
+        assertEquals(6, loaded.profile().rounds(), "5 folded rounds plus profile()'s own first battle");
         assertEquals(40, loaded.profile().gunSeedSize());
         assertTrue(new File(dir.toFile(), ProfileLibrary.CLOCK).isFile());
     }
@@ -155,7 +164,7 @@ class FileProfileStoreTest {
                 ProfileLibrary.Loaded loaded = new ProfileLibrary(store(200_000)).load("abc.Shadow");
                 assertTrue(loaded.found(), "write " + write + " killed at " + at);
                 assertNull(loaded.failure(), "write " + write + " killed at " + at);
-                assertEquals(write == 0 ? 3 : 4, loaded.profile().rounds(),
+                assertEquals(write == 0 ? 4 : 5, loaded.profile().rounds(),
                     "write " + write + " killed at " + at);
             }
         }

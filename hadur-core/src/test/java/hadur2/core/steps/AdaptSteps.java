@@ -51,13 +51,15 @@ public class AdaptSteps {
 
     @Given("a stored profile of {string} with their hit rate {double}%, main rating {double}% and anti-surfer rating {double}%")
     public void storedProfile(String name, double theirs, double main, double antiSurfer) {
-        profile = Profiles.tiers(Profiles.sample(name, 9, 0, 0), theirs / 100, main / 100, antiSurfer / 100);
+        // MEM-8: seeds are only kept for an opponent fought at least twice and losing to
+        // (a score share under 60%); these scenarios need seeds to survive the save below.
+        profile = Profiles.tiers(Profiles.seedWorthy(name, 9, 0, 0), theirs / 100, main / 100, antiSurfer / 100);
         save();
     }
 
     @Given("a stored profile of {string} from {int} waves with their hit rate {double}%")
     public void thinProfile(String name, int waves, double theirs) {
-        profile = Profiles.sample(name, 9, 0, 0);
+        profile = Profiles.seedWorthy(name, 9, 0, 0);
         Profiles.evidence(profile, waves, theirs / 100);
         save();
     }
