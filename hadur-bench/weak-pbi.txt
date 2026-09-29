@@ -1,0 +1,17 @@
+# Weak RoboRumble bots that beat Hadur 3.0 in 30-40% of rounds live (worst KNNPBI rows of the
+# 3.0 BotDetails page, opponent APS under 50), yet lose every round to it on the bench.
+# See docs/rumble-climb-r4-r6-plan.md (R3.5 and R4). Jars from
+# https://robocode-archive.strangeautomata.com/robots/<jar>, into opponents/ (not committed).
+#   <robot name as Robocode lists it> | <role> | <jar file in opponents/>
+RobotMarco.MarcoV 0.1 | weak | RobotMarco.MarcoV_0.1.jar
+abud.ThirdRobo 1.0 | weak | abud.ThirdRobo_1.0.jar
+bons.NanoStalker 1.2 | weak | bons.NanoStalker_1.2.jar
+dittman.BlindSquirl Retired | weak | dittman.BlindSquirl_Retired.jar
+hlavko.nano.Ringo 2.0 | weak | hlavko.nano.Ringo_2.0.jar
+jep.nano.Hawkwing 0.4.1 | weak | jep.nano.Hawkwing_0.4.1.jar
+kawigi.sbf.Barracuda 1.0 | weak | kawigi.sbf.Barracuda_1.0.jar
+nexus.Two 0.2 | weak | nexus.Two_0.2.jar
+pa.Improved 1.1 | weak | pa.Improved_1.1.jar
+quietus.NarrowRadar 0.1 | weak | quietus.NarrowRadar_0.1.jar
+racso.Crono 1.0 | weak | racso.Crono_1.0.jar
+zzx.Gron 1.14 | weak | zzx.Gron_1.14.jar
