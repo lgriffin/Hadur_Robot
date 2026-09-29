@@ -163,6 +163,8 @@ public final class HadurCore {
     private int meleeBulletsInFlight;
     /** Null when the battle keeps no memory (no store, or a melee battle). */
     private final ProfileLibrary library;
+    /** RES-8: kept only to write the battle-health record; the core does no other I/O with it. */
+    private final ProfileStore store;
     /** MMEM-1: the opponents' melee blocks; null unless a melee battle with a store. */
     private final MeleeMemory meleeMemory;
     /**
@@ -377,6 +379,7 @@ public final class HadurCore {
         this.enemiesTotal = enemiesTotal;
         // Opponent memory is for duels: a battle that starts with several opponents neither
         // loads nor saves profiles (MEM-1 to MEM-5 read "duel"; see docs/requirements.md).
+        this.store = store;
         this.library = store != null && enemiesTotal == 1 ? new ProfileLibrary(store) : null;
         this.meleeMemory = store != null && enemiesTotal >= 2 ? new MeleeMemory(store) : null;
         this.survivorLibrary = store != null && enemiesTotal >= 2 ? new ProfileLibrary(store) : null;
@@ -946,6 +949,33 @@ public final class HadurCore {
         // The last round's M record went out before its checkpoint save: close the count here.
         if (meleeMemory != null) {
             telemetry.emit("MEM," + round + "," + tick + ",melee-battle-failures," + meleeMemoryFailures);
+        }
+    }
+
+    /**
+     * RES-8: writes a small, plain-text battle-health record (at most 64 bytes, overwritten
+     * every battle) so a client-side reproduction of a live-rumble problem is
+     * self-describing even without the console log. Does nothing without a store, and
+     * never throws: a health record is a diagnostic, not something a battle can fail over.
+     *
+     * @param rounds rounds fought this battle
+     * @param roundsSurvived rounds this battle that were not a loss
+     * @param faults ticks the guard covered this battle, summed over every round
+     * @param skippedTurns engine-skipped-turn events this battle
+     */
+    public void writeBattleHealth(int rounds, int roundsSurvived, int faults, int skippedTurns) {
+        if (store == null) return;
+        int memoryFailures = meleeMemoryFailures
+            + (library == null ? 0 : library.loadFailures() + library.saveFailures() + library.skippedWrites());
+        String record = "HEALTH," + rounds + "," + roundsSurvived + "," + faults + ","
+            + skippedTurns + "," + memoryFailures + "," + budget.learnedAllowanceNanos();
+        try {
+            // RES-6: no java.nio (Charset included), so the ASCII record is encoded by hand.
+            byte[] bytes = new byte[record.length()];
+            for (int i = 0; i < record.length(); i++) bytes[i] = (byte) record.charAt(i);
+            store.write("health.hc", bytes);
+        } catch (RuntimeException e) {
+            // Best effort, as the class doc says; nothing reads this record but a human.
         }
     }
 

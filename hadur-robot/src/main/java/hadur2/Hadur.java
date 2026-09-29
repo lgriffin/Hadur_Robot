@@ -51,6 +51,14 @@ public class Hadur extends AdvancedRobot {
     private static Guard guard;
     /** This round's console; telemetry goes to whichever round is running. */
     private static PrintStream console;
+    /** RES-8: rounds fought this battle, for the health record. */
+    private static int battleRounds;
+    /** RES-8: rounds this battle that were not a loss. */
+    private static int battleRoundsSurvived;
+    /** RES-8: faults this battle, summed over every round's {@link Guard#faultsThisRound()}. */
+    private static int battleFaults;
+    /** RES-8: engine-skipped-turn events this battle. */
+    private static int battleSkippedTurns;
     /**
      * The per-turn time the tick budget assumes (TIME-1). A robot cannot read the engine's
      * CPU constant, so this is a fixed guess: the bench machine's constant is about 3 ms.
@@ -75,6 +83,11 @@ public class Hadur extends AdvancedRobot {
         // Each round's robot has its own console stream; telemetry closures read the static.
         console = out;
         if (core == null) {
+            // RES-8: fresh battle totals for the health record.
+            battleRounds = 0;
+            battleRoundsSurvived = 0;
+            battleFaults = 0;
+            battleSkippedTurns = 0;
             // TIME-5: warm up class loading and JIT compilation on a throwaway core before
             // the real one's first tick pays for it.
             warmUp(getBattleFieldWidth(), getBattleFieldHeight(), getOthers());
@@ -290,6 +303,7 @@ public class Hadur extends AdvancedRobot {
     @Override
     public void onSkippedTurn(SkippedTurnEvent e) {
         pending.add(new BotEvent.SkippedTurn(e.getSkippedTurn()));
+        battleSkippedTurns++;
     }
 
     /** We won the round. No file I/O here; the save waits for {@link #onRoundEnded}. */
@@ -317,16 +331,23 @@ public class Hadur extends AdvancedRobot {
         if (core != null && getEnergy() > 0) core.checkpoint(getTime());
     }
 
-    /** The battle is over: the final profile save (MEM-3). */
+    /** The battle is over: the final profile save (MEM-3) and the health record (RES-8). */
     @Override
     public void onBattleEnded(BattleEndedEvent e) {
-        if (core != null) core.battleEnded(getTime());
+        if (core == null) return;
+        core.battleEnded(getTime());
+        core.writeBattleHealth(battleRounds, battleRoundsSurvived, battleFaults, battleSkippedTurns);
     }
 
     /** One R record per round (RES-5), from whichever end-of-round event comes first. */
     private void reportRound(String result) {
         if (roundReported || core == null) return;
         roundReported = true;
+        // RES-8: battle totals for the health record; a draw counts as survived, only a
+        // loss does not.
+        battleRounds++;
+        if (!"loss".equals(result)) battleRoundsSurvived++;
+        battleFaults += guard.faultsThisRound();
         core.roundEnded(getTime(), result, getEnergy(), guard.faultsThisRound());
     }
 }
