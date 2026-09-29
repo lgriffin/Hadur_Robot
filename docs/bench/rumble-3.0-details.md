@@ -33,5 +33,5 @@ Worst single PBI rows (single-battle, high noise, but the pattern — losing hea
 APS 30–55 — recurs across dozens of rows): kawigi.sbf.Barracuda -26.64, nexus.Two -25.75, zzx.Gron
 -22.02, jep.nano.Hawkwing -20.74, racso.Crono -19.40, caimano.Furia_Ceca -19.26, and 78 more below -10.
 
-Raw parsed rows: see `rumble-3.0-details.csv` (not committed; ask Leigh for the file if needed, or
-re-export from the LiteRumble BotDetails page).
+Raw parsed rows: [`data/rumble/parsed/2026-09-28T1724Z_roborumble_botdetails_hadur2.Hadur_3.0.csv`](../../data/rumble/parsed/2026-09-28T1724Z_roborumble_botdetails_hadur2.Hadur_3.0.csv);
+the saved page itself is in [`data/rumble/pages/`](../../data/rumble/pages/).

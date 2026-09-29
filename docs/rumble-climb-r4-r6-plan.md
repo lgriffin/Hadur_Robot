@@ -20,7 +20,7 @@ about +1.5 APS, and +2.0 to be safely inside it.
 ### 1.1 The rating fell off a cliff at about 08:30 UTC on 2026-09-28
 
 Leigh's saved RatingDetails page for 3.0 (507 pairings, 03:38 to 14:10 UTC, mostly one
-battle each; rows in `docs/bench/data/rumble-3.0-details.csv`) splits cleanly by the time each pairing was fought. The opponents on each side
+battle each; rows in `data/rumble/parsed/2026-09-28T1724Z_roborumble_botdetails_hadur2.Hadur_3.0.csv`) splits cleanly by the time each pairing was fought. The opponents on each side
 of the split are equally strong (mean opponent APS 48 before, 49 after), yet:
 
 | Fought | Pairings | Our APS | Our survival | Mean PBI |
@@ -127,7 +127,7 @@ it now costs nothing and turns the next day of rumble battles into a test.
 5. Hand off to Leigh: upload the jar to Drive, replace the 3.0 line on both participants
    pages. Only one Hadur version is entered at a time.
 6. After at least 300 pairings, Leigh saves the 3.1 BotDetails page (as for 3.0) into the
-   project; R4's tooling reads it (BENCH-5).
+   project; it is archived under `data/rumble/pages/` and R4's tooling reads it (BENCH-5).
 
 ### R4: stop losing rounds we should win
 
@@ -142,10 +142,11 @@ Targets: the whole population, and above all opponents under 60 APS, where live 
   a markdown report: APS and survival by opponent-APS band, by UTC hour of the latest battle,
   a before/after split at a given time, and the pairings also in a given bench report with
   live minus bench. It reproduces section 1.1's tables from the 3.0 page, which is the test
-  fixture (the page Leigh saved is in the project's shared files, not the repo, as
-  `uploads/hearth/5ab40e31-714e-44a0-8279-10c33b8c5426`; copy it into
-  `hadur-bench/src/test/resources/`, it is public rumble data). Its parsed rows are committed
-  as `docs/bench/data/rumble-3.0-details.csv`.
+  fixture (the page Leigh saved is committed as
+  `data/rumble/pages/2026-09-28T1724Z_roborumble_botdetails_hadur2.Hadur_3.0.mht`; copy it into
+  `hadur-bench/src/test/resources/` so the build never reads `data/`). Its parsed rows are
+  `data/rumble/parsed/2026-09-28T1724Z_roborumble_botdetails_hadur2.Hadur_3.0.csv`; see
+  `data/README.md` for where later pages go.
 - Ask Leigh (one line in the stage's first reply, not blocking) whether LiteRumble shows
   who uploaded each battle, or the client version, for a pairing; if it does, the uploader of
   post-08:30 battles is the first lead.

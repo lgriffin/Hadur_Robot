@@ -1,0 +1,179 @@
+report	robot	version	mode	section	table	opponent	role	score_share	score_ci	survival_share	survival_ci	bullet_damage_share	bullet_damage_ci	rounds_won	rounds	our_hit_rate	our_hit_ci	their_hit_rate	their_hit_ci	skipped_turns	faults	turn_p95_ms	turn_max_ms
+m0-2.2-gates.md	hadur2.Hadur	2.2	cold	Bench: hadur2.Hadur 2.2 (cold)	1	sample.SpinBot	sanity	100.0	0.1	100.0	0.0	99.9	0.1	175	175	44.0	0.9	0.4	0.5	7	0	0.61	12.9
+m0-2.2-gates.md	hadur2.Hadur	2.2	cold	Bench: hadur2.Hadur 2.2 (cold)	1	sample.Tracker	sanity	99.9	0.2	100.0	0.0	99.8	0.3	175	175	80.6	1.9	1.2	2.0	4	0	0.50	8.8
+m0-2.2-gates.md	hadur2.Hadur	2.2	cold	Bench: hadur2.Hadur 2.2 (cold)	1	sample.Crazy	sanity	99.7	0.4	100.0	0.0	99.5	0.7	175	175	31.9	1.4	2.6	3.2	2	0	0.56	10.8
+m0-2.2-gates.md	hadur2.Hadur	2.2	cold	Bench: hadur2.Hadur 2.2 (cold)	1	sample.Walls	sanity	99.8	0.2	100.0	0.0	99.7	0.3	175	175	51.9	2.5	1.1	1.1	9	0	0.54	10.3
+m0-2.2-gates.md	hadur2.Hadur	2.2	cold	Bench: hadur2.Hadur 2.2 (cold)	1	sample.RamFire	sanity	98.0	1.8	100.0	0.0	97.3	2.5	175	175	81.1	0.6	10.6	8.1	8	0	0.53	13.2
+m0-2.2-gates.md	hadur2.Hadur	2.2	cold	Bench: hadur2.Hadur 2.2 (cold)	1	abc.Shadow 3.83c	headline	57.2	5.1	71.8	5.2	43.7	4.6	126	175	9.4	0.5	8.3	0.8	12	0	1.19	36.5
+m1-gates.md	hadur2.Hadur	2.2	cold	Bench: hadur2.Hadur 2.2 (cold)	1	sample.SpinBot	sanity	100.0	0.0	100.0	0.0	100.0	0.1	175	175	41.0	3.9	0.1	0.3	3	0	0.59	10.0
+m1-gates.md	hadur2.Hadur	2.2	cold	Bench: hadur2.Hadur 2.2 (cold)	1	sample.Tracker	sanity	99.9	0.2	100.0	0.0	99.8	0.3	175	175	80.8	1.4	1.2	2.0	5	0	0.52	10.5
+m1-gates.md	hadur2.Hadur	2.2	cold	Bench: hadur2.Hadur 2.2 (cold)	1	sample.Crazy	sanity	99.6	0.3	100.0	0.0	99.2	0.6	175	175	30.2	1.4	3.2	2.3	7	0	0.57	11.8
+m1-gates.md	hadur2.Hadur	2.2	cold	Bench: hadur2.Hadur 2.2 (cold)	1	sample.Walls	sanity	99.9	0.1	100.0	0.0	99.8	0.2	175	175	53.7	2.0	0.9	1.2	7	0	0.52	12.9
+m1-gates.md	hadur2.Hadur	2.2	cold	Bench: hadur2.Hadur 2.2 (cold)	1	sample.RamFire	sanity	97.8	0.7	100.0	0.0	96.9	1.0	175	175	81.0	0.6	12.6	3.2	1	0	0.50	12.3
+m1-gates.md	hadur2.Hadur	2.2	cold	Bench: hadur2.Hadur 2.2 (cold)	1	abc.Shadow 3.83c	headline	55.2	1.7	69.1	1.6	42.3	3.1	121	175	9.4	0.3	8.5	0.3	3	0	1.14	16.2
+m4-gates.md	hadur2.Hadur	2.2	cold	Bench: hadur2.Hadur 2.2 (cold)	5	sample.SpinBot	sanity	99.9	0.0	100.0	0.0	99.9	0.1	175	175	40.9	3.2	0.5	0.4	10	0	0.63	22.5
+m4-gates.md	hadur2.Hadur	2.2	cold	Bench: hadur2.Hadur 2.2 (cold)	5	sample.Tracker	sanity	99.9	0.1	100.0	0.0	99.9	0.3	175	175	79.8	1.5	0.6	1.6	5	0	0.55	11.5
+m4-gates.md	hadur2.Hadur	2.2	cold	Bench: hadur2.Hadur 2.2 (cold)	5	sample.Crazy	sanity	99.8	0.2	100.0	0.0	99.7	0.4	175	175	29.5	2.1	1.6	2.2	9	0	0.57	16.1
+m4-gates.md	hadur2.Hadur	2.2	cold	Bench: hadur2.Hadur 2.2 (cold)	5	sample.Walls	sanity	99.9	0.1	100.0	0.0	99.9	0.2	175	175	52.8	1.6	0.5	0.8	5	0	0.58	13.1
+m4-gates.md	hadur2.Hadur	2.2	cold	Bench: hadur2.Hadur 2.2 (cold)	5	sample.RamFire	sanity	97.5	1.2	100.0	0.0	96.5	1.6	175	175	80.7	1.1	11.7	4.0	4	0	0.50	13.0
+m4-gates.md	hadur2.Hadur	2.2	cold	Bench: hadur2.Hadur 2.2 (cold)	5	abc.Shadow 3.83c	headline	56.5	4.5	72.0	6.3	41.9	4.0	126	175	9.1	0.7	8.4	0.8	15	0	1.19	52.4
+m5-gates.md	hadur2.Hadur	2.2	cold	Bench: hadur2.Hadur 2.2 (cold)	11	abc.Shadow 3.84i	headline	60.0	6.3	76.4	6.9	44.3	5.1	134	175	9.4	1.0	8.3	1.3	23	0	1.13	15.4
+m5-gates.md	hadur2.Hadur	2.2	cold	Bench: hadur2.Hadur 2.2 (cold)	11	voidious.Diamond 1.8.28	headline	35.2	8.0	27.3	11.6	44.5	5.2	50	175	6.9	0.6	8.5	0.4	11	0	2.12	29.7
+m5-gates.md	hadur2.Hadur	2.2	cold	Bench: hadur2.Hadur 2.2 (cold)	11	positive.Portia 1.26e	headline	72.1	3.9	86.9	4.0	57.2	4.4	152	175	11.4	0.7	7.1	0.6	32	0	1.31	25.9
+m6-gates.md	hadur2.Hadur	3.0	cold	Bench: hadur2.Hadur 3.0 (cold)	4	sample.SpinBot	sanity	100.0	0.0	100.0	0.0	100.0	0.1	175	175	40.0	2.5	0.1	0.3	7	0	0.83	11.3
+m6-gates.md	hadur2.Hadur	3.0	cold	Bench: hadur2.Hadur 3.0 (cold)	4	sample.Tracker	sanity	99.9	0.2	100.0	0.0	99.8	0.3	175	175	81.0	1.6	1.2	2.0	1	0	0.50	10.4
+m6-gates.md	hadur2.Hadur	3.0	cold	Bench: hadur2.Hadur 3.0 (cold)	4	sample.Crazy	sanity	99.8	0.1	100.0	0.0	99.5	0.2	175	175	31.4	2.3	2.1	1.2	0	0	0.53	13.0
+m6-gates.md	hadur2.Hadur	3.0	cold	Bench: hadur2.Hadur 3.0 (cold)	4	sample.Walls	sanity	99.9	0.1	100.0	0.0	99.9	0.2	175	175	54.5	1.2	0.4	0.7	2	0	0.54	11.1
+m6-gates.md	hadur2.Hadur	3.0	cold	Bench: hadur2.Hadur 3.0 (cold)	4	sample.RamFire	sanity	97.5	1.4	100.0	0.0	96.6	1.9	175	175	80.9	0.7	14.0	5.9	1	0	0.52	16.1
+m6-gates.md	hadur2.Hadur	3.0	cold	Bench: hadur2.Hadur 3.0 (cold)	4	abc.Shadow 3.83c	headline	54.5	4.5	68.0	6.3	41.9	2.4	119	175	9.3	0.5	8.4	1.0	3	0	1.12	15.0
+roborumble-top10-2.1.md	hadur2.Hadur	2.1	cold	Bench: hadur2.Hadur 2.1 (after S4) against the RoboRumble top 10 (cold)	1	kc.mega.BeepBoop 2.0	rumble-1	15.1	1.1	0.0	0.0	33.8	2.1	0	175	5.8	0.2	10.8	0.3	75	0	3.11	162.6
+roborumble-top10-2.1.md	hadur2.Hadur	2.1	cold	Bench: hadur2.Hadur 2.1 (after S4) against the RoboRumble top 10 (cold)	1	jk.mega.DrussGT 3.1.16	rumble-2	34.6	6.2	20.3	7.8	49.1	4.2	38	175	8.2	0.5	10.7	0.5	107	0	2.41	648.8
+roborumble-top10-2.1.md	hadur2.Hadur	2.1	cold	Bench: hadur2.Hadur 2.1 (after S4) against the RoboRumble top 10 (cold)	1	oog.mega.saguaro.Saguaro 1.0	rumble-3	77.0	5.2	92.0	4.6	62.8	7.0	161	175	20.0	1.8	6.6	1.1	21	0	3.19	38.3
+roborumble-top10-2.1.md	hadur2.Hadur	2.1	cold	Bench: hadur2.Hadur 2.1 (after S4) against the RoboRumble top 10 (cold)	1	aaa.r.ScalarR 0.005h.053-noshield	rumble-4	22.3	5.7	8.1	5.5	37.7	5.4	15	175	7.2	0.3	11.7	0.4	100	0	2.67	135.0
+roborumble-top10-2.1.md	hadur2.Hadur	2.1	cold	Bench: hadur2.Hadur 2.1 (after S4) against the RoboRumble top 10 (cold)	1	voidious.Diamond 1.8.22	rumble-5	28.7	7.5	20.2	10.1	38.3	4.9	39	175	7.1	0.3	9.6	0.4	54	0	2.53	62.2
+roborumble-top10-2.1.md	hadur2.Hadur	2.1	cold	Bench: hadur2.Hadur 2.1 (after S4) against the RoboRumble top 10 (cold)	1	cb.fire.Firestarter 2.0f	rumble-6	34.8	5.4	14.9	6.8	55.7	5.3	26	175	9.1	0.5	9.2	0.5	237	0	2.35	55.8
+roborumble-top10-2.1.md	hadur2.Hadur	2.1	cold	Bench: hadur2.Hadur 2.1 (after S4) against the RoboRumble top 10 (cold)	1	dsekercioglu.mega.Raven 3.56j8	rumble-7	49.8	3.1	61.7	5.4	39.4	2.0	108	175	9.4	1.1	9.6	0.4	93	0	1.57	68.4
+roborumble-top10-2.1.md	hadur2.Hadur	2.1	cold	Bench: hadur2.Hadur 2.1 (after S4) against the RoboRumble top 10 (cold)	1	xander.cat.XanderCat 12.9	rumble-8	49.5	7.0	57.7	11.0	43.1	4.0	101	175	11.5	0.4	10.4	0.7	70	0	1.59	49.9
+roborumble-top10-2.1.md	hadur2.Hadur	2.1	cold	Bench: hadur2.Hadur 2.1 (after S4) against the RoboRumble top 10 (cold)	1	lxx.Tomcat 3.68	rumble-9	43.8	7.3	49.4	9.4	39.7	5.8	88	175	9.1	0.6	10.8	0.7	153	0	2.87	158.2
+roborumble-top10-2.1.md	hadur2.Hadur	2.1	cold	Bench: hadur2.Hadur 2.1 (after S4) against the RoboRumble top 10 (cold)	1	rsalesc.mega.Knight 0.6.28	rumble-10	40.1	7.1	29.7	9.2	50.2	4.9	52	175	9.9	0.6	10.9	0.5	180	0	3.13	141.0
+roborumble-top10-2.2.md	hadur2.Hadur	2.2	cold	Results (2.2)	2	kc.mega.BeepBoop 2.0	rumble-1	18.9	2.6	2.3	3.0	40.6	3.8	4	175	5.7	0.4	9.3	0.2	59	0	3.14	86.3
+roborumble-top10-2.2.md	hadur2.Hadur	2.2	cold	Results (2.2)	2	jk.mega.DrussGT 3.1.16	rumble-2	39.1	8.1	27.5	9.1	51.5	5.7	50	175	7.8	0.5	9.4	0.3	68	0	2.22	55.3
+roborumble-top10-2.2.md	hadur2.Hadur	2.2	cold	Results (2.2)	2	oog.mega.saguaro.Saguaro 1.0	rumble-3	73.2	3.6	85.7	3.5	61.4	3.1	150	175	20.4	1.5	6.8	0.6	12	0	2.75	31.3
+roborumble-top10-2.2.md	hadur2.Hadur	2.2	cold	Results (2.2)	2	aaa.r.ScalarR 0.005h.053-noshield	rumble-4	25.6	5.4	12.1	7.6	40.9	3.5	22	175	7.0	0.5	9.9	0.5	89	0	2.91	83.6
+roborumble-top10-2.2.md	hadur2.Hadur	2.2	cold	Results (2.2)	2	voidious.Diamond 1.8.22	rumble-5	31.8	6.9	24.9	8.1	39.7	5.7	50	175	7.0	0.5	8.8	0.3	40	0	2.61	59.2
+roborumble-top10-2.2.md	hadur2.Hadur	2.2	cold	Results (2.2)	2	cb.fire.Firestarter 2.0f	rumble-6	46.4	13.9	32.0	17.3	60.2	9.9	56	175	9.8	0.4	8.3	0.5	59	0	2.19	77.9
+roborumble-top10-2.2.md	hadur2.Hadur	2.2	cold	Results (2.2)	2	dsekercioglu.mega.Raven 3.56j8	rumble-7	58.0	7.0	72.6	8.5	44.2	4.8	127	175	9.6	0.4	9.1	0.9	33	0	1.51	47.5
+roborumble-top10-2.2.md	hadur2.Hadur	2.2	cold	Results (2.2)	2	xander.cat.XanderCat 12.9	rumble-8	55.2	3.4	61.1	6.4	50.0	1.1	107	175	11.4	0.1	8.6	0.6	34	0	1.65	74.5
+roborumble-top10-2.2.md	hadur2.Hadur	2.2	cold	Results (2.2)	2	lxx.Tomcat 3.68	rumble-9	56.6	7.4	67.0	10.7	47.3	4.8	119	175	9.1	0.4	9.6	0.6	51	0	2.81	45.1
+roborumble-top10-2.2.md	hadur2.Hadur	2.2	cold	Results (2.2)	2	rsalesc.mega.Knight 0.6.28	rumble-10	46.5	5.4	38.3	8.2	54.5	2.4	67	175	9.5	0.2	9.2	0.3	68	0	3.20	46.3
+roborumble-top10.md	hadur2.Hadur	2.0	cold	Results	1	kc.mega.BeepBoop 2.0	rumble-1	14.6	2.5	0.0	0.0	32.5	5.2	0	175	5.8	0.4	11.3	0.6	64	0	2.74	116.4
+roborumble-top10.md	hadur2.Hadur	2.0	cold	Results	1	jk.mega.DrussGT 3.1.16	rumble-2	25.5	4.6	10.3	4.8	43.1	3.5	18	175	7.4	1.1	9.9	1.1	65	0	2.05	69.6
+roborumble-top10.md	hadur2.Hadur	2.0	cold	Results	1	oog.mega.saguaro.Saguaro 1.0	rumble-3	1.7	0.4	0.0	0.0	26.1	6.1	0	175	0.5	0.1	0.2	0.1	26	0	0.44	51.7
+roborumble-top10.md	hadur2.Hadur	2.0	cold	Results	1	aaa.r.ScalarR 0.005h.053-noshield	rumble-4	21.0	2.5	8.6	2.5	34.8	2.5	15	175	7.2	0.5	11.8	0.9	126	0	2.54	99.7
+roborumble-top10.md	hadur2.Hadur	2.0	cold	Results	1	voidious.Diamond 1.8.22	rumble-5	22.2	3.0	10.4	3.7	35.8	3.4	22	175	6.8	0.4	9.8	0.3	73	0	2.19	68.4
+roborumble-top10.md	hadur2.Hadur	2.0	cold	Results	1	cb.fire.Firestarter 2.0f	rumble-6	35.2	4.4	17.1	5.6	53.2	3.8	30	175	9.4	0.2	9.6	0.6	67	0	2.06	45.6
+roborumble-top10.md	hadur2.Hadur	2.0	cold	Results	1	dsekercioglu.mega.Raven 3.56j8	rumble-7	52.9	7.9	66.3	10.8	41.7	5.3	116	175	10.0	0.2	10.3	0.4	26	0	1.41	53.7
+roborumble-top10.md	hadur2.Hadur	2.0	cold	Results	1	xander.cat.XanderCat 12.9	rumble-8	44.3	9.0	48.6	10.9	41.2	7.2	85	175	10.9	0.5	10.4	1.2	32	0	1.55	68.8
+roborumble-top10.md	hadur2.Hadur	2.0	cold	Results	1	lxx.Tomcat 3.68	rumble-9	44.2	7.4	49.0	11.3	40.8	3.8	88	175	9.2	0.6	10.6	0.4	36	0	2.57	48.0
+roborumble-top10.md	hadur2.Hadur	2.0	cold	Results	1	rsalesc.mega.Knight 0.6.28	rumble-10	37.6	7.8	25.3	10.8	49.7	4.3	45	175	9.8	0.4	11.0	0.6	72	0	2.67	92.0
+roborumble-top50.md	hadur2.Hadur	3.0	cold	Summary	1	kc.mega.BeepBoop 2.0	rumble-1	17.2	2.9	1.1	1.9	38.2	5.1	2	175	5.9	0.3	9.7	0.4	599	0	3.20	645.3
+roborumble-top50.md	hadur2.Hadur	3.0	cold	Summary	1	jk.mega.DrussGT 3.1.16	rumble-3	33.7	3.5	20.7	3.2	48.1	3.6	37	175	7.5	0.3	9.6	0.5	557	0	2.20	644.3
+roborumble-top50.md	hadur2.Hadur	3.0	cold	Summary	1	oog.mega.saguaro.Saguaro 1.0	rumble-4	74.1	8.5	84.6	12.4	63.6	7.3	148	175	19.5	2.7	6.3	0.7	274	0	4.42	500.4
+roborumble-top50.md	hadur2.Hadur	3.0	cold	Summary	1	aaa.r.ScalarR 0.005h.053-noshield	rumble-5	22.6	4.8	7.4	7.4	40.5	3.0	13	175	7.1	0.4	10.4	1.2	591	0	2.91	660.6
+roborumble-top50.md	hadur2.Hadur	3.0	cold	Summary	1	voidious.Diamond 1.8.22	rumble-6	34.5	3.6	26.5	5.1	44.0	3.6	50	175	7.0	0.3	8.6	0.4	588	0	3.30	761.5
+roborumble-top50.md	hadur2.Hadur	3.0	cold	Summary	1	cb.fire.Firestarter 2.0f	rumble-7	45.4	6.2	31.5	8.8	58.8	4.2	56	175	9.3	0.5	8.4	0.3	500	0	2.52	605.4
+roborumble-top50.md	hadur2.Hadur	3.0	cold	Summary	1	lxx.Tomcat 3.68	rumble-8	54.6	1.4	63.0	2.5	47.4	1.8	111	175	10.0	0.8	9.6	0.6	439	0	2.99	805.1
+roborumble-top50.md	hadur2.Hadur	3.0	cold	Summary	1	rsalesc.mega.Knight 0.6.28	rumble-9	52.0	4.5	47.4	6.4	56.7	2.7	83	175	9.6	0.3	9.0	0.3	747	0	3.18	1143.4
+roborumble-top50.md	hadur2.Hadur	3.0	cold	Summary	1	dsekercioglu.mega.Raven 3.56j8	rumble-10	57.0	7.2	71.2	9.2	43.2	5.4	125	175	9.3	1.1	8.9	0.5	624	0	1.92	727.7
+roborumble-top50.md	hadur2.Hadur	3.0	cold	Summary	1	xander.cat.XanderCat 12.9	rumble-11	57.3	9.1	62.6	13.3	51.8	6.5	110	175	12.2	3.5	8.6	0.5	619	0	2.01	1005.2
+roborumble-top50.md	hadur2.Hadur	3.0	cold	Summary	1	aw.Gilgalad 1.99.5c	rumble-12	49.0	7.3	52.6	11.1	46.1	4.7	94	175	9.0	2.0	9.6	1.1	406	0	2.63	633.3
+roborumble-top50.md	hadur2.Hadur	3.0	cold	Summary	1	pc.Wavelet 1.5	rumble-13	39.5	5.8	20.0	9.4	59.1	1.9	35	175	9.9	0.5	10.2	0.3	183	0	4.32	341.4
+roborumble-top50.md	hadur2.Hadur	3.0	cold	Summary	1	kc.serpent.WaveSerpent 2.11	rumble-14	55.1	8.3	69.7	11.7	40.3	4.3	122	175	8.1	0.6	7.9	0.8	381	0	4.25	823.1
+roborumble-top50.md	hadur2.Hadur	3.0	cold	Summary	1	gh.GresSuffurd 0.4.13	rumble-15	61.2	9.2	71.7	15.5	50.7	3.1	126	175	10.8	0.9	8.3	1.2	507	0	1.69	582.3
+roborumble-top50.md	hadur2.Hadur	3.0	cold	Summary	1	dsekercioglu.mega.WhiteFang 2.8.1	rumble-16	67.9	2.5	83.3	2.7	52.0	3.6	146	175	10.7	0.8	7.9	0.2	453	0	1.99	764.7
+roborumble-top50.md	hadur2.Hadur	3.0	cold	Summary	1	cs.Nene 1.0.5	rumble-17	57.4	3.3	73.7	3.9	41.2	3.4	129	175	8.7	1.2	7.6	0.9	455	0	2.18	389.1
+roborumble-top50.md	hadur2.Hadur	3.0	cold	Summary	1	jk.melee.Neuromancer 7.12	rumble-18	49.7	5.7	44.0	9.6	54.7	3.4	77	175	10.5	0.9	9.4	0.4	599	0	2.38	835.9
+roborumble-top50.md	hadur2.Hadur	3.0	cold	Summary	1	voidious.Dookious 1.573c	rumble-19	59.8	3.1	74.9	3.9	43.9	4.5	131	175	8.4	0.8	7.0	0.4	438	0	1.84	1139.9
+roborumble-top50.md	hadur2.Hadur	3.0	cold	Summary	1	davidalves.Phoenix 1.02	rumble-20	61.1	4.7	76.6	6.8	45.8	3.1	134	175	9.3	0.9	7.7	0.3	19	0	1.57	79.1
+roborumble-top50.md	hadur2.Hadur	3.0	cold	Summary	1	rsalesc.roborio.Roborio 1.2.4	rumble-21	58.9	4.7	53.7	8.1	62.8	3.1	94	175	13.0	0.7	8.7	0.4	542	0	2.58	768.5
+roborumble-top50.md	hadur2.Hadur	3.0	cold	Summary	1	cb.Domogled 1.2	rumble-22	57.9	5.5	48.0	10.2	65.8	2.2	84	175	11.3	0.6	11.2	11.0	533	0	1.31	674.3
+roborumble-top50.md	hadur2.Hadur	3.0	cold	Summary	1	mue.Ascendant 1.2.27	rumble-23	53.9	2.8	66.1	5.4	43.1	3.2	116	175	10.7	0.7	8.2	0.5	443	0	1.59	724.1
+roborumble-top50.md	hadur2.Hadur	3.0	cold	Summary	1	abc.Shadow 3.83c	rumble-24	53.7	9.1	68.6	12.8	40.0	5.0	120	175	9.0	0.6	8.5	0.6	275	0	1.81	473.8
+roborumble-top50.md	hadur2.Hadur	3.0	cold	Summary	1	darkcanuck.Pris 0.92	rumble-25	57.2	6.8	69.7	7.8	46.1	6.2	122	175	11.0	0.9	8.5	1.1	355	0	3.31	721.4
+roborumble-top50.md	hadur2.Hadur	3.0	cold	Summary	1	fromHell.BlackBox 0.0.2	rumble-26	66.7	6.5	78.3	9.9	55.3	3.6	137	175	14.1	1.0	8.0	0.7	290	0	1.41	872.8
+roborumble-top50.md	hadur2.Hadur	3.0	cold	Summary	1	kc.serpent.Hydra 0.21	rumble-27	58.4	6.0	73.1	8.2	43.7	4.9	128	175	8.7	0.4	8.0	0.8	452	0	1.69	658.6
+roborumble-top50.md	hadur2.Hadur	3.0	cold	Summary	1	jk.precise.Wintermute 0.8	rumble-28	70.1	3.1	85.7	3.5	54.0	4.2	150	175	11.0	1.3	7.5	0.5	13	0	1.69	88.3
+roborumble-top50.md	hadur2.Hadur	3.0	cold	Summary	1	davidalves.Firebird 0.25	rumble-29	64.0	6.2	82.3	7.3	45.3	4.9	144	175	9.1	0.6	7.4	0.3	282	0	2.17	551.6
+roborumble-top50.md	hadur2.Hadur	3.0	cold	Summary	1	pulsar.PulsarMax 0.8.9	rumble-30	63.0	10.9	80.0	14.0	45.6	7.1	140	175	9.1	0.5	7.3	0.8	299	0	1.62	593.8
+roborumble-top50.md	hadur2.Hadur	3.0	cold	Summary	1	zyx.mega.YersiniaPestis 3.0	rumble-31	56.2	9.0	68.6	14.0	44.5	4.1	120	175	9.7	0.5	8.0	0.8	316	0	2.85	624.5
+roborumble-top50.md	hadur2.Hadur	3.0	cold	Summary	1	ags.Midboss 1q.fast	rumble-32	68.8	8.8	78.9	11.9	59.3	5.4	138	175	13.1	0.8	8.6	0.6	281	0	2.57	775.5
+roborumble-top50.md	hadur2.Hadur	3.0	cold	Summary	1	pez.rumble.CassiusClay 2rho.02no	rumble-34	65.2	8.8	70.3	12.9	59.8	4.7	123	175	12.4	0.8	7.8	0.5	425	0	1.84	581.8
+roborumble-top50.md	hadur2.Hadur	3.0	cold	Summary	1	Krabb.sliNk.Garm 0.9u	rumble-35	68.5	7.3	82.5	11.1	53.5	3.0	124	175	10.7	0.3	6.5	0.7	276	0	3.58	524.2
+roborumble-top50.md	hadur2.Hadur	3.0	cold	Summary	1	mn.Combat 3.25.0	rumble-36	61.4	4.6	73.5	4.8	49.3	4.4	129	175	9.8	0.5	9.0	0.4	492	0	1.80	449.9
+roborumble-top50.md	hadur2.Hadur	3.0	cold	Summary	1	axeBots.SilverSurfer 2.53.33fix	rumble-37	61.2	6.5	72.6	5.9	50.9	7.6	127	175	11.4	0.7	6.7	0.7	317	0	2.96	677.7
+roborumble-top50.md	hadur2.Hadur	3.0	cold	Summary	1	cs.s2.Seraphim 2.3.1	rumble-38	67.8	2.5	84.0	3.2	51.8	4.2	147	175	11.2	1.2	7.3	0.3	327	0	1.72	770.3
+roborumble-top50.md	hadur2.Hadur	3.0	cold	Summary	1	fromHell.CHCl3 1.4.2	rumble-39	68.6	5.5	80.6	8.5	56.7	4.1	141	175	13.7	1.2	7.4	0.4	20	0	1.09	20.4
+roborumble-top50.md	hadur2.Hadur	3.0	cold	Summary	1	jk.mini.CunobelinDC 1.2	rumble-40	74.2	2.7	90.3	5.9	57.6	2.7	158	175	11.7	1.3	7.0	0.5	529	0	1.60	628.0
+roborumble-top50.md	hadur2.Hadur	3.0	cold	Summary	1	sheldor.mini.Foilist 1.3.1	rumble-41	67.5	5.6	78.9	5.4	56.3	6.2	138	175	11.2	1.1	7.8	0.7	328	0	1.69	757.5
+roborumble-top50.md	hadur2.Hadur	3.0	cold	Summary	1	florent.test.Toad 0.14t	rumble-42	64.2	12.5	79.7	15.2	48.5	9.9	105	175	10.4	0.8	7.3	0.7	671	0	4.26	619.5
+roborumble-top50.md	hadur2.Hadur	3.0	cold	Summary	1	cjm.chalk.Chalk 2.6.Be	rumble-43	65.7	6.3	80.0	7.5	50.4	5.1	140	175	9.8	0.4	6.6	0.9	278	0	1.55	360.4
+roborumble-top50.md	hadur2.Hadur	3.0	cold	Summary	1	ar.horizon.Horizon 1.2.2	rumble-44	60.0	2.1	72.4	3.3	48.6	2.6	127	175	11.0	0.7	8.5	0.9	305	0	2.34	410.2
+roborumble-top50.md	hadur2.Hadur	3.0	cold	Summary	1	wcsv.PowerHouse.PowerHouse 1.7e3	rumble-45	61.5	10.6	76.0	13.6	47.2	6.9	133	175	10.3	0.9	7.8	1.1	587	0	1.53	547.0
+roborumble-top50.md	hadur2.Hadur	3.0	cold	Summary	1	sheldor.mini.FoilistMC 1.0	rumble-46	73.1	7.4	87.4	8.2	58.4	6.1	153	175	11.4	0.8	7.6	0.7	13	0	1.88	106.6
+roborumble-top50.md	hadur2.Hadur	3.0	cold	Summary	1	pez.rumble.Ali 0.4.9	rumble-47	72.1	5.8	86.8	8.1	55.3	2.9	152	175	10.0	0.3	5.9	0.5	326	0	2.05	534.6
+roborumble-top50.md	hadur2.Hadur	3.0	cold	Summary	1	dft.Cardigan 1.09	rumble-48	74.8	8.4	90.3	10.2	58.6	6.2	158	175	11.3	0.1	6.9	0.8	437	0	1.50	527.7
+roborumble-top50.md	hadur2.Hadur	3.0	cold	Summary	1	florent.XSeries.X2 0.17	rumble-49	58.7	6.7	73.1	8.9	45.0	5.8	128	175	10.4	1.4	8.0	0.8	75	0	2.81	247.8
+roborumble-top50.md	hadur2.Hadur	3.0	cold	Summary	1	ags.rougedc.RougeDC willow	rumble-50	67.6	7.5	73.7	8.5	61.6	6.5	129	175	14.3	1.3	10.2	0.6	562	0	2.95	651.6
+s0-baseline-1.20-cold.md	hadur117.Hadur	1.20	cold	Bench: hadur117.Hadur 1.20 (cold)	1	sample.SpinBot	sanity	99.2	1.2	99.4	1.6	98.9	1.2	174	175					3		0.72	34.0
+s0-baseline-1.20-cold.md	hadur117.Hadur	1.20	cold	Bench: hadur117.Hadur 1.20 (cold)	1	sample.Tracker	sanity	99.5	0.0	100.0	0.0	99.1	0.0	175	175					0		0.48	17.1
+s0-baseline-1.20-cold.md	hadur117.Hadur	1.20	cold	Bench: hadur117.Hadur 1.20 (cold)	1	sample.Crazy	sanity	99.8	0.2	100.0	0.0	99.7	0.4	175	175					5		0.60	40.0
+s0-baseline-1.20-cold.md	hadur117.Hadur	1.20	cold	Bench: hadur117.Hadur 1.20 (cold)	1	sample.Walls	sanity	99.6	1.0	99.4	1.6	99.7	0.8	174	175					4		0.47	11.6
+s0-baseline-1.20-cold.md	hadur117.Hadur	1.20	cold	Bench: hadur117.Hadur 1.20 (cold)	1	sample.RamFire	sanity	97.2	1.9	99.4	1.6	96.6	1.9	174	175					1		0.56	12.3
+s0-baseline-1.20-cold.md	hadur117.Hadur	1.20	cold	Bench: hadur117.Hadur 1.20 (cold)	1	abc.Shadow 3.83c	headline	40.8	8.3	46.9	11.9	36.5	5.2	82	175					31		1.34	42.6
+s1-2.0-cold.md	hadur2.Hadur	2.0	cold	Bench: hadur2.Hadur 2.0 (cold)	1	sample.SpinBot	sanity	97.1	0.5	97.1	0.0	97.0	0.8	170	175	46.5	2.2	1.2	0.8	10	0	0.58	16.3
+s1-2.0-cold.md	hadur2.Hadur	2.0	cold	Bench: hadur2.Hadur 2.0 (cold)	1	sample.Tracker	sanity	97.9	2.6	98.9	3.2	97.1	2.7	173	175	79.1	4.5	6.3	9.6	6	0	0.50	31.2
+s1-2.0-cold.md	hadur2.Hadur	2.0	cold	Bench: hadur2.Hadur 2.0 (cold)	1	sample.Crazy	sanity	99.2	1.0	99.4	1.6	99.0	0.9	174	175	26.7	1.3	2.1	2.4	11	0	0.59	29.2
+s1-2.0-cold.md	hadur2.Hadur	2.0	cold	Bench: hadur2.Hadur 2.0 (cold)	1	sample.Walls	sanity	99.6	0.4	100.0	0.0	99.2	0.8	175	175	60.5	2.1	0.8	1.3	7	0	0.55	10.1
+s1-2.0-cold.md	hadur2.Hadur	2.0	cold	Bench: hadur2.Hadur 2.0 (cold)	1	sample.RamFire	sanity	97.6	1.4	99.4	1.6	97.1	1.3	174	175	79.8	1.4	3.1	1.3	3	0	0.52	39.2
+s1-2.0-cold.md	hadur2.Hadur	2.0	cold	Bench: hadur2.Hadur 2.0 (cold)	1	abc.Shadow 3.83c	headline	46.2	6.4	55.8	10.0	38.6	3.7	98	175	9.5	0.9	9.6	0.5	36	0	1.30	61.4
+s2-2.0-cold.md	hadur2.Hadur	2.0	cold	Bench: hadur2.Hadur 2.0 (cold)	1	sample.SpinBot	sanity	100.0	0.0	100.0	0.0	100.0	0.0	175	175	45.7	1.2	0.0	0.0	8	0	0.68	36.0
+s2-2.0-cold.md	hadur2.Hadur	2.0	cold	Bench: hadur2.Hadur 2.0 (cold)	1	sample.Tracker	sanity	100.0	0.0	100.0	0.0	100.0	0.0	175	175	79.8	0.8	0.0	0.0	5	0	0.63	24.7
+s2-2.0-cold.md	hadur2.Hadur	2.0	cold	Bench: hadur2.Hadur 2.0 (cold)	1	sample.Crazy	sanity	99.8	0.4	100.0	0.0	99.6	0.7	175	175	27.2	1.3	1.6	2.5	4	0	0.76	50.9
+s2-2.0-cold.md	hadur2.Hadur	2.0	cold	Bench: hadur2.Hadur 2.0 (cold)	1	sample.Walls	sanity	100.0	0.0	100.0	0.0	100.0	0.0	175	175	60.9	3.3	0.0	0.0	4	0	0.70	11.8
+s2-2.0-cold.md	hadur2.Hadur	2.0	cold	Bench: hadur2.Hadur 2.0 (cold)	1	sample.RamFire	sanity	97.5	2.4	100.0	0.0	96.6	3.3	175	175	81.8	1.5	12.6	11.1	6	0	0.85	66.8
+s2-2.0-cold.md	hadur2.Hadur	2.0	cold	Bench: hadur2.Hadur 2.0 (cold)	1	abc.Shadow 3.83c	headline	43.7	4.6	53.1	6.4	36.2	3.5	93	175	9.4	0.4	9.9	0.7	30	0	1.72	66.3
+s3-2.1-cold.md	hadur2.Hadur	2.1	cold	Bench: hadur2.Hadur 2.1 (cold)	1	sample.SpinBot	sanity	100.0	0.0	100.0	0.0	100.0	0.0	175	175	47.3	3.3	0.0	0.0	2	0	0.48	9.5
+s3-2.1-cold.md	hadur2.Hadur	2.1	cold	Bench: hadur2.Hadur 2.1 (cold)	1	sample.Tracker	sanity	100.0	0.0	100.0	0.0	100.0	0.0	175	175	79.7	1.1	0.0	0.0	3	0	0.46	13.0
+s3-2.1-cold.md	hadur2.Hadur	2.1	cold	Bench: hadur2.Hadur 2.1 (cold)	1	sample.Crazy	sanity	99.8	0.4	100.0	0.0	99.7	0.6	175	175	26.1	0.8	1.3	2.8	1	0	0.48	10.6
+s3-2.1-cold.md	hadur2.Hadur	2.1	cold	Bench: hadur2.Hadur 2.1 (cold)	1	sample.Walls	sanity	100.0	0.0	100.0	0.0	100.0	0.0	175	175	60.6	3.3	0.0	0.0	3	0	0.46	12.4
+s3-2.1-cold.md	hadur2.Hadur	2.1	cold	Bench: hadur2.Hadur 2.1 (cold)	1	sample.RamFire	sanity	98.4	0.9	100.0	0.0	97.8	1.2	175	175	80.1	1.4	8.6	2.5	1	0	0.43	7.9
+s3-2.1-cold.md	hadur2.Hadur	2.1	cold	Bench: hadur2.Hadur 2.1 (cold)	1	abc.Shadow 3.83c	headline	45.1	8.9	54.0	10.3	38.0	7.4	95	175	9.5	1.1	9.3	1.1	5	0	1.17	11.6
+s3-2.1-warm.md	hadur2.Hadur	2.1	warm	Bench: hadur2.Hadur 2.1 (warm)	1	sample.SpinBot	sanity	100.0	0.0	100.0	0.0	100.0	0.0	175	175	47.0	3.4	0.0	0.0	1	0	0.48	15.0
+s3-2.1-warm.md	hadur2.Hadur	2.1	warm	Bench: hadur2.Hadur 2.1 (warm)	1	sample.Tracker	sanity	100.0	0.0	100.0	0.0	100.0	0.0	175	175	79.3	1.5	0.0	0.0	1	0	0.46	9.0
+s3-2.1-warm.md	hadur2.Hadur	2.1	warm	Bench: hadur2.Hadur 2.1 (warm)	1	sample.Crazy	sanity	99.8	0.4	100.0	0.0	99.7	0.6	175	175	27.1	2.0	1.2	2.9	1	0	0.47	13.7
+s3-2.1-warm.md	hadur2.Hadur	2.1	warm	Bench: hadur2.Hadur 2.1 (warm)	1	sample.Walls	sanity	100.0	0.0	100.0	0.0	100.0	0.0	175	175	60.3	3.7	0.0	0.0	2	0	0.45	10.9
+s3-2.1-warm.md	hadur2.Hadur	2.1	warm	Bench: hadur2.Hadur 2.1 (warm)	1	sample.RamFire	sanity	98.1	1.0	100.0	0.0	97.4	1.4	175	175	80.4	0.9	9.2	3.9	1	0	0.43	6.4
+s3-2.1-warm.md	hadur2.Hadur	2.1	warm	Bench: hadur2.Hadur 2.1 (warm)	1	abc.Shadow 3.83c	headline	47.1	9.8	58.1	13.3	38.0	6.0	102	175	9.9	0.5	9.9	1.4	6	0	1.17	14.5
+s4-2.1-cold.md	hadur2.Hadur	2.1	cold	Bench: hadur2.Hadur 2.1 (cold)	1	sample.SpinBot	sanity	100.0	0.0	100.0	0.0	100.0	0.0	175	175	48.2	2.7	0.0	0.0	16	0	1.30	35.4
+s4-2.1-cold.md	hadur2.Hadur	2.1	cold	Bench: hadur2.Hadur 2.1 (cold)	1	sample.Tracker	sanity	100.0	0.0	100.0	0.0	100.0	0.0	175	175	80.4	2.2	0.0	0.0	20	0	1.27	41.3
+s4-2.1-cold.md	hadur2.Hadur	2.1	cold	Bench: hadur2.Hadur 2.1 (cold)	1	sample.Crazy	sanity	99.9	0.2	100.0	0.0	99.8	0.3	175	175	26.6	0.9	0.9	1.5	26	0	1.60	53.3
+s4-2.1-cold.md	hadur2.Hadur	2.1	cold	Bench: hadur2.Hadur 2.1 (cold)	1	sample.Walls	sanity	100.0	0.0	100.0	0.0	100.0	0.0	175	175	61.3	3.0	0.0	0.0	22	0	1.36	19.6
+s4-2.1-cold.md	hadur2.Hadur	2.1	cold	Bench: hadur2.Hadur 2.1 (cold)	1	sample.RamFire	sanity	98.1	1.7	100.0	0.0	97.3	2.3	175	175	80.1	1.9	11.4	7.9	19	0	1.38	79.9
+s4-2.1-cold.md	hadur2.Hadur	2.1	cold	Bench: hadur2.Hadur 2.1 (cold)	1	abc.Shadow 3.83c	headline	44.3	5.5	54.9	8.5	35.7	3.0	96	175	9.5	0.2	10.3	1.1	196	0	2.74	86.4
+s4-2.1-samples-cold-rerun.md	hadur2.Hadur	2.1	cold	Bench: hadur2.Hadur 2.1 (cold)	1	sample.SpinBot	sanity	99.9	0.2	100.0	0.0	99.9	0.3	175	175	48.0	2.2	0.1	0.3	7	0	0.60	9.1
+s4-2.1-samples-cold-rerun.md	hadur2.Hadur	2.1	cold	Bench: hadur2.Hadur 2.1 (cold)	1	sample.Tracker	sanity	100.0	0.0	100.0	0.0	100.0	0.0	175	175	78.6	2.8	0.0	0.0	7	0	0.58	15.8
+s4-2.1-samples-cold-rerun.md	hadur2.Hadur	2.1	cold	Bench: hadur2.Hadur 2.1 (cold)	1	sample.Crazy	sanity	99.8	0.2	100.0	0.0	99.7	0.4	175	175	25.9	2.2	1.2	1.5	4	0	0.62	30.6
+s4-2.1-samples-cold-rerun.md	hadur2.Hadur	2.1	cold	Bench: hadur2.Hadur 2.1 (cold)	1	sample.Walls	sanity	100.0	0.0	100.0	0.0	100.0	0.0	175	175	60.8	1.1	0.0	0.0	9	0	0.61	10.1
+s4-2.1-samples-cold-rerun.md	hadur2.Hadur	2.1	cold	Bench: hadur2.Hadur 2.1 (cold)	1	sample.RamFire	sanity	97.9	1.8	100.0	0.0	97.0	2.4	175	175	80.0	0.9	12.0	7.7	7	0	0.62	15.3
+s4-2.1-shadow-cold-rerun.md	hadur2.Hadur	2.1	cold	Bench: hadur2.Hadur 2.1 (cold)	1	abc.Shadow 3.83c	headline	45.5	6.0	56.0	8.9	37.1	3.7	98	175	9.6	0.4	9.8	1.0	90	0	1.47	17.9
+s4-2.1-shadow-warm-rerun.md	hadur2.Hadur	2.1	warm	Bench: hadur2.Hadur 2.1 (warm)	1	abc.Shadow 3.83c	headline	44.0	4.5	52.6	6.3	37.3	2.4	93	175	9.6	0.5	9.6	1.0	21	0	1.53	46.2
+s4-2.1-warm.md	hadur2.Hadur	2.1	warm	Bench: hadur2.Hadur 2.1 (warm)	1	sample.SpinBot	sanity	100.0	0.0	100.0	0.0	100.0	0.0	175	175	46.8	1.6	0.0	0.0	117	0	2.43	2430.3
+s4-2.1-warm.md	hadur2.Hadur	2.1	warm	Bench: hadur2.Hadur 2.1 (warm)	1	sample.Tracker	sanity	100.0	0.0	100.0	0.0	100.0	0.0	175	175	79.5	1.0	0.0	0.0	5	0	0.60	13.1
+s4-2.1-warm.md	hadur2.Hadur	2.1	warm	Bench: hadur2.Hadur 2.1 (warm)	1	sample.Crazy	sanity	99.9	0.2	100.0	0.0	99.8	0.4	175	175	26.6	2.5	0.9	1.4	7	0	0.62	13.1
+s4-2.1-warm.md	hadur2.Hadur	2.1	warm	Bench: hadur2.Hadur 2.1 (warm)	1	sample.Walls	sanity	100.0	0.0	100.0	0.0	100.0	0.0	175	175	62.6	2.6	0.0	0.0	5	0	0.56	11.1
+s4-2.1-warm.md	hadur2.Hadur	2.1	warm	Bench: hadur2.Hadur 2.1 (warm)	1	sample.RamFire	sanity	97.9	0.8	100.0	0.0	97.2	0.9	175	175	80.3	1.0	10.7	2.9	3	0	0.55	24.0
+s4-2.1-warm.md	hadur2.Hadur	2.1	warm	Bench: hadur2.Hadur 2.1 (warm)	1	abc.Shadow 3.83c	headline	45.0	10.3	55.1	13.0	36.7	7.5	97	175	9.1	1.0	9.5	1.5	12	0	1.53	26.8
+s4-saguaro-warm.md	hadur2.Hadur	2.1	warm	Bench: hadur2.Hadur 2.1 (warm)	1	oog.mega.saguaro.Saguaro 1.0	rumble-3	73.4	7.0	89.5	4.1	57.1	18.1	94	105	16.5	10.7	6.7	2.4	17	0	3.01	34.9
+s5-2.1-cold.md	hadur2.Hadur	2.1	cold	Bench: hadur2.Hadur 2.1 (cold)	1	sample.SpinBot	sanity	100.0	0.1	100.0	0.0	99.9	0.1	175	175	41.2	2.6	0.2	0.3	19	0	0.64	21.4
+s5-2.1-cold.md	hadur2.Hadur	2.1	cold	Bench: hadur2.Hadur 2.1 (cold)	1	sample.Tracker	sanity	99.9	0.1	100.0	0.0	99.9	0.3	175	175	80.4	1.7	0.6	1.6	9	0	0.55	10.6
+s5-2.1-cold.md	hadur2.Hadur	2.1	cold	Bench: hadur2.Hadur 2.1 (cold)	1	sample.Crazy	sanity	99.6	0.3	100.0	0.0	99.3	0.5	175	175	30.1	2.0	2.7	2.0	28	0	0.69	39.1
+s5-2.1-cold.md	hadur2.Hadur	2.1	cold	Bench: hadur2.Hadur 2.1 (cold)	1	sample.Walls	sanity	99.7	0.3	100.0	0.0	99.4	0.5	175	175	54.8	4.9	1.8	1.6	20	0	0.57	89.0
+s5-2.1-cold.md	hadur2.Hadur	2.1	cold	Bench: hadur2.Hadur 2.1 (cold)	1	sample.RamFire	sanity	97.5	0.5	100.0	0.0	96.6	0.8	175	175	80.9	1.1	11.7	4.0	31	0	0.59	25.8
+s5-2.1-cold.md	hadur2.Hadur	2.1	cold	Bench: hadur2.Hadur 2.1 (cold)	1	abc.Shadow 3.83c	headline	46.3	4.5	56.6	8.8	37.9	1.0	99	175	9.3	0.6	9.9	0.5	67	0	1.40	39.3
+s5-2.1-warm.md	hadur2.Hadur	2.1	warm	Bench: hadur2.Hadur 2.1 (warm)	1	sample.SpinBot	sanity	100.0	0.1	100.0	0.0	100.0	0.1	175	175	40.3	1.6	0.1	0.3	15	0	0.67	11.3
+s5-2.1-warm.md	hadur2.Hadur	2.1	warm	Bench: hadur2.Hadur 2.1 (warm)	1	sample.Tracker	sanity	99.9	0.1	100.0	0.0	99.9	0.3	175	175	81.1	2.1	0.6	1.6	5	0	0.57	15.8
+s5-2.1-warm.md	hadur2.Hadur	2.1	warm	Bench: hadur2.Hadur 2.1 (warm)	1	sample.Crazy	sanity	99.7	0.2	100.0	0.0	99.5	0.3	175	175	28.3	3.5	2.3	1.2	7	0	0.64	11.3
+s5-2.1-warm.md	hadur2.Hadur	2.1	warm	Bench: hadur2.Hadur 2.1 (warm)	1	sample.Walls	sanity	99.8	0.3	100.0	0.0	99.7	0.5	175	175	49.3	2.5	1.0	1.7	12	0	0.56	49.9
+s5-2.1-warm.md	hadur2.Hadur	2.1	warm	Bench: hadur2.Hadur 2.1 (warm)	1	sample.RamFire	sanity	96.3	0.8	100.0	0.0	95.0	1.1	175	175	80.8	1.3	15.5	2.2	7	0	0.64	27.5
+s5-2.1-warm.md	hadur2.Hadur	2.1	warm	Bench: hadur2.Hadur 2.1 (warm)	1	abc.Shadow 3.83c	headline	48.5	2.5	62.4	4.1	36.8	2.9	110	175	9.1	1.0	9.5	0.7	23	0	1.48	23.9
+s6-2.1-cold.md	hadur2.Hadur	2.1	cold	Bench: hadur2.Hadur 2.1 (cold)	1	sample.SpinBot	sanity	100.0	0.0	100.0	0.0	100.0	0.1	175	175	41.7	3.8	0.2	0.3	10	0	0.76	10.5
+s6-2.1-cold.md	hadur2.Hadur	2.1	cold	Bench: hadur2.Hadur 2.1 (cold)	1	sample.Tracker	sanity	99.9	0.2	100.0	0.0	99.8	0.3	175	175	81.6	1.5	1.2	2.0	7	0	0.61	13.1
+s6-2.1-cold.md	hadur2.Hadur	2.1	cold	Bench: hadur2.Hadur 2.1 (cold)	1	sample.Crazy	sanity	99.7	0.1	100.0	0.0	99.5	0.3	175	175	31.5	2.6	2.2	0.7	14	0	0.73	23.9
+s6-2.1-cold.md	hadur2.Hadur	2.1	cold	Bench: hadur2.Hadur 2.1 (cold)	1	sample.Walls	sanity	99.8	0.2	100.0	0.0	99.6	0.4	175	175	53.3	1.0	1.3	1.5	6	0	0.71	13.6
+s6-2.1-cold.md	hadur2.Hadur	2.1	cold	Bench: hadur2.Hadur 2.1 (cold)	1	sample.RamFire	sanity	97.0	1.4	100.0	0.0	96.0	2.0	175	175	81.0	1.1	14.0	6.2	9	0	0.73	26.7
+s6-2.1-cold.md	hadur2.Hadur	2.1	cold	Bench: hadur2.Hadur 2.1 (cold)	1	abc.Shadow 3.83c	headline	57.4	5.0	71.4	7.1	44.1	3.7	125	175	9.0	0.6	7.9	0.7	26	0	1.49	21.4
+s6-2.1-shadow-goto-cold.md	hadur2.Hadur	2.1	cold	Bench: hadur2.Hadur 2.1 (cold)	1	abc.Shadow 3.83c	headline	51.8	5.1	62.9	7.1	42.4	4.2	110	175	10.0	0.3	9.5	0.8	42	0	1.60	53.0
+s6-2.1-shadow-options-cold.md	hadur2.Hadur	2.1	cold	Bench: hadur2.Hadur 2.1 (cold)	1	abc.Shadow 3.83c	headline	54.8	3.7	69.0	4.0	42.3	3.7	121	175	9.5	0.8	8.8	0.6	12	0	1.43	27.8
+s6-2.1-shadow-warm-noflavour.md	hadur2.Hadur	2.1	warm	Bench: hadur2.Hadur 2.1 (warm)	1	abc.Shadow 3.83c	headline	55.2	3.8	69.0	4.0	42.6	3.4	121	175	9.6	0.6	8.3	0.9	38	0	1.54	17.6
+s6-2.1-warm.md	hadur2.Hadur	2.1	warm	Bench: hadur2.Hadur 2.1 (warm)	1	abc.Shadow 3.83c	headline	54.6	6.0	66.3	9.8	44.0	3.5	116	175	9.7	0.5	8.3	0.5	30	0	1.70	140.1
+shield-counter-saguaro.md	hadur2.Hadur	2.1	cold	Bench: hadur2.Hadur 2.1 (cold)	1	oog.mega.saguaro.Saguaro 1.0	rumble-3	68.8	6.6	81.1	9.2	57.6	5.2	142	175	19.4	1.9	7.4	0.7	26	0	2.60	65.7

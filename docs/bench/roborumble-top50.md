@@ -1,6 +1,6 @@
 # Bench: hadur2.Hadur 3.0 vs the RoboRumble top 50 (cold, 2026-09-28)
 
-Snapshot from Leigh's saved LiteRumble scoreboard (2026-09-28), top 50 by APS. 49 of the 50 had a resolvable jar (see bench-data/roborumble-top50-jars.tsv); jd.Nullstride 2.3.0 (#2) has no archive-mirror copy and wasn't run. zen.Mirage 0.9.5 (#33) loaded 1 robot instead of 2 (likely missing its Kotlin runtime classes in the jar) and every battle failed — excluded from the totals below.
+Snapshot from Leigh's saved LiteRumble scoreboard (2026-09-28), top 50 by APS. 49 of the 50 had a resolvable jar (see [`data/rumble/parsed/2026-09-28_roborumble_top50_jars.tsv`](../../data/rumble/parsed/2026-09-28_roborumble_top50_jars.tsv)); jd.Nullstride 2.3.0 (#2) has no archive-mirror copy and wasn't run. zen.Mirage 0.9.5 (#33) loaded 1 robot instead of 2 (likely missing its Kotlin runtime classes in the jar) and every battle failed — excluded from the totals below.
 
 35 rounds x 5 seeds (data wiped) per opponent on 800x600, split across 4 parallel processes on 4 cores. Engine Robocode 1.9.5.6, security manager on, Java 21.
 
@@ -11,8 +11,10 @@ share). The 8 losses are concentrated at the very top of the scoreboard: BeepBoo
 ScalarR (#5, 22.6%), DrussGT (#3, 33.7%), Diamond (#6, 34.5%), Wavelet (#13, 39.5%),
 Firestarter (#7, 45.4%), Gilgalad (#12, 49.0%) and Neuromancer (#18, 49.7%) — 6 of these 8 are
 in the current top 13, so the gap to top 40 is concentrated in a handful of the very strongest
-guns/movements rather than spread across the field. Raw per-bot data: `data/
-roborumble-top50-summary.tsv` (this table's source rows) and `data/roborumble-top50-jars.tsv`
+guns/movements rather than spread across the field. Raw per-bot data:
+[`data/bench/2026-09-28_hadur-3.0_roborumble-top50_cold.tsv`](../../data/bench/2026-09-28_hadur-3.0_roborumble-top50_cold.tsv)
+(this table's source rows) and
+[`data/rumble/parsed/2026-09-28_roborumble_top50_jars.tsv`](../../data/rumble/parsed/2026-09-28_roborumble_top50_jars.tsv)
 (rank -> jar URL resolution, including the 2 excluded).
 
 Shares are Hadur's fraction of the two robots' total, mean over 5 battles.
