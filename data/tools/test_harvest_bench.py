@@ -12,6 +12,7 @@ REPORT = """# Bench: hadur2.Hadur 2.1 (warm)
 | Opponent | Role | Score share | Survival share | Bullet-damage share | Rounds won | Our hit rate | Their hit rate | Skipped turns | Faults | Turn p95 / max (ms) |
 |---|---|---|---|---|---|---|---|---|---|---|
 | abc.Shadow 3.83c | headline | 57.4% ± 5.0 | 71.4% ± 7.1 | 44.1% ± 3.7 | 125 / 175 | 9.0% ± 0.6 | 7.9% ± 0.7 | 26 | 0 | 1.49 / 21.4 |
+| zen.Mirage 0.9.5 | rumble-33 | n/a | n/a | n/a | 0 / 0 | - | - | 0 | 0 | 0.00 / 0.0 | 5 battle(s) failed
 | broken row | only | three |
 
 ## Melee: hadur2.Hadur 3.0 against 9 opponents
@@ -37,14 +38,22 @@ class HarvestReportTest(unittest.TestCase):
 
     def test_duel_row_splits_values_from_intervals(self):
         duel, _, _ = hb.harvest_report("s6.md", REPORT)
-        self.assertEqual(len(duel), 1, "the malformed row is skipped")
+        self.assertEqual(len(duel), 2, "the short row is skipped")
         row = duel[0]
+        self.assertEqual(row["note"], "")
         self.assertEqual((row["robot"], row["version"], row["mode"]), ("hadur2.Hadur", "2.1", "warm"))
         self.assertEqual((row["opponent"], row["role"]), ("abc.Shadow 3.83c", "headline"))
         self.assertEqual((row["score_share"], row["score_ci"]), ("57.4", "5.0"))
         self.assertEqual((row["rounds_won"], row["rounds"]), ("125", "175"))
         self.assertEqual((row["their_hit_rate"], row["their_hit_ci"]), ("7.9", "0.7"))
         self.assertEqual((row["turn_p95_ms"], row["turn_max_ms"]), ("1.49", "21.4"))
+
+    def test_failed_matchup_is_kept_with_its_status_as_the_note(self):
+        duel, _, _ = hb.harvest_report("top50.md", REPORT)
+        failed = duel[1]
+        self.assertEqual(failed["opponent"], "zen.Mirage 0.9.5")
+        self.assertEqual(failed["note"], "5 battle(s) failed")
+        self.assertEqual((failed["score_share"], failed["rounds_won"], failed["rounds"]), ("", "0", "0"))
 
     def test_later_heading_names_the_build_for_the_tables_under_it(self):
         _, melee, field = hb.harvest_report("m6.md", REPORT)

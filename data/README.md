@@ -19,6 +19,7 @@ data/
   bench/
     <date>_hadur-<version>_<set>_<cold|warm>.tsv   raw per-opponent rows of one bench run
     duel-history.tsv    every duel table of every docs/bench report, one row per opponent
+                        (a failed matchup keeps its row, with the status in `note`)
     melee-history.tsv   Hadur's summary row from every melee table
     melee-field.tsv     every melee standings table, one row per entrant
   tools/
@@ -65,9 +66,9 @@ python3 -m unittest discover -s data/tools
 ```
 
 They are not wired into CI on purpose, so that a new bench report can never turn a stage PR
-red. Code that the build does depend on (the BENCH-5 live-details reader, for one) lives in
-`hadur-bench` with its own tests and copies any fixture it needs from here into
-`src/test/resources/`.
+red. Code the build depends on belongs in `hadur-bench` with its own tests, and copies any
+fixture it needs from here into `src/test/resources/`. The planned BENCH-5 live-details
+reader (R4, not built yet) is the first such case.
 
 ## Parsed page formats
 

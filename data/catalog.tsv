@@ -7,6 +7,6 @@ rumble/pages/2026-09-28T1929Z_robowiki_participants.mht	saved page	https://robow
 rumble/parsed/2026-09-28T1929Z_robowiki_participants_jars.txt	parsed page	rumble/pages/2026-09-28T1929Z_robowiki_participants.mht	2026-09-28T19:29Z	RoboRumble 1v1 participants	1028	climb thread	Archive-mirror jar URL per participant that resolved.
 rumble/parsed/2026-09-28_roborumble_top50_jars.tsv	derived	rankings top 50 + participants	2026-09-28	RoboRumble 1v1 top 50	50	climb thread	Jar URL per ranked bot; jd.Nullstride 2.3.0 has none (host blocked). Was docs/bench/data/roborumble-top50-jars.tsv.
 bench/2026-09-28_hadur-3.0_roborumble-top50_cold.tsv	bench run	docs/bench/roborumble-top50.md	2026-09-28	hadur2.Hadur 3.0 vs top 50, cold, 35x5	49	hadur-bench (PR #63)	Includes zen.Mirage (every battle failed). Was docs/bench/data/roborumble-top50-summary.tsv.
-bench/duel-history.tsv	harvest	docs/bench/*.md	(per report)	every duel bench, 1.20 to 3.0	178	tools/harvest_bench.py	Regenerate after adding a report.
+bench/duel-history.tsv	harvest	docs/bench/*.md	(per report)	every duel bench, 1.20 to 3.0	179	tools/harvest_bench.py	Regenerate after adding a report.
 bench/melee-history.tsv	harvest	docs/bench/*.md	(per report)	Hadur's melee summaries, 2.2 to 3.0	21	tools/harvest_bench.py	Regenerate after adding a report.
 bench/melee-field.tsv	harvest	docs/bench/*.md	(per report)	melee standings, 2.1 to 3.0	216	tools/harvest_bench.py	Regenerate after adding a report.

@@ -32,7 +32,7 @@ DUEL_COLUMNS = [
     "score_share", "score_ci", "survival_share", "survival_ci",
     "bullet_damage_share", "bullet_damage_ci", "rounds_won", "rounds",
     "our_hit_rate", "our_hit_ci", "their_hit_rate", "their_hit_ci",
-    "skipped_turns", "faults", "turn_p95_ms", "turn_max_ms",
+    "skipped_turns", "faults", "turn_p95_ms", "turn_max_ms", "note",
 ]
 
 MELEE_COLUMNS = [
@@ -108,10 +108,13 @@ def harvest_report(name, text):
             tables(text.splitlines()), start=1):
         if header[:3] == ["Opponent", "Role", "Score share"]:
             for row in rows:
-                if len(row) != len(header):
+                # A failed matchup keeps its row and adds a status cell past the header
+                # ("5 battle(s) failed"); keep it as the note rather than drop the row.
+                if len(row) < len(header):
                     continue
                 cell = dict(zip(header, row))
                 out = dict.fromkeys(DUEL_COLUMNS, "")
+                out["note"] = " | ".join(c for c in row[len(header):] if c)
                 out.update(report=name, robot=robot, version=version, mode=mode,
                            section=section, table=str(index), opponent=cell["Opponent"],
                            role=cell["Role"])
