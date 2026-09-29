@@ -96,6 +96,32 @@ class GuardTest {
     }
 
     @Test
+    @Tag("RES-7")
+    @DisplayName("after three faults this round, with the gun cool, safe orders also fire back")
+    void firesBackAfterThreeFaults() {
+        double bearing = 0.4;
+        Guard g = guard(in -> { throw new RuntimeException(); });
+        BotOrders first = g.tick(input(1, 8, scanAt(bearing)));
+        BotOrders second = g.tick(input(2, 8));
+        assertEquals(0, first.firePower(), "not yet three faults");
+        assertEquals(0, second.firePower(), "not yet three faults");
+        BotOrders third = g.tick(input(3, 8));
+        assertEquals(1.0, third.firePower());
+        assertEquals(bearing, third.gunTurn(), 1e-12, "gun heading is 0 in this fixture");
+    }
+
+    @Test
+    @Tag("RES-7")
+    @DisplayName("after three faults with the enemy never seen, safe orders still hold fire")
+    void noReturnFireWithoutAnEnemySeen() {
+        Guard g = guard(in -> { throw new RuntimeException(); });
+        g.tick(input(1, 8));
+        g.tick(input(2, 8));
+        BotOrders o = g.tick(input(3, 8));
+        assertEquals(0, o.firePower());
+    }
+
+    @Test
     @DisplayName("the core recovers on the next scan after a fault, and only once")
     void recoversOnNextScan() {
         boolean[] fail = {true};

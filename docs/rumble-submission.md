@@ -14,14 +14,14 @@ same line go on both pages:
 
 Hadur 3.1 (R1 to R3 of the RoboRumble climb plan, see
 [docs/releases/v3.1.md](https://github.com/lgriffin/Hadur_Robot/blob/master/docs/releases/v3.1.md))
-replaces 3.0 in both leagues. This line replaces the 3.0 line on both participants pages:
+replaces 3.0 in both leagues. Its jar was uploaded to Google Drive on 2026-09-29, and this
+line replaces the 3.0 line on both participants pages:
 
 ```
-hadur2.Hadur 3.1,https://drive.google.com/uc?export=download&id=REPLACE_ME
+hadur2.Hadur 3.1,https://drive.google.com/uc?export=download&id=1KLr000bCbXMk255jkojnkDOaezNr50Hj
 ```
 
-To do: Leigh uploads `hadur2.Hadur_3.1.jar` to Google Drive (step 2 below), replaces the
-3.0 line with the line above (using the real Drive id) on both participants pages, and
+To do: Leigh replaces the 3.0 line with the line above on both participants pages, and
 saves a BotDetails page for 3.1 into the project once it has 300+ pairings (R4 reads it).
 
 ## Previous entry: 3.0

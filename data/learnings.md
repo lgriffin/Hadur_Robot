@@ -110,3 +110,10 @@ Evidence: s6 and m6 reports; issue #48.
 per-bot changes under about 8 points are noise. Compare at 10 seeds or with the paired A/B
 (BENCH-2). Running mvn during a bench inflates skipped turns.
 Evidence: [roborumble-top10-2.2.md](../docs/bench/roborumble-top10-2.2.md).
+
+**L-20 · confirmed.** BENCH-5 (`hadur.bench.LiveDetails`), run against the 3.0 BotDetails
+fixture, reproduces the plan's L-01 numbers exactly from the raw `.mht`: 268 pairings at 85.5
+APS / 91.6% survival before 08:30 UTC, 239 at 77.2 / 72.5% from it (the plan's 92.6%/71.2%
+used a slightly different survival definition; the split and the APS match). Confirms the
+tool reads the page correctly, so it is ready to read 3.1's page once it has 300+ pairings.
+Evidence: `docs/bench/live-details-3.0.md`; `hadur-bench` `LiveDetailsTest`. Owner: R4.

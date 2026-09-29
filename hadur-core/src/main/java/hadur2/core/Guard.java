@@ -127,7 +127,7 @@ public final class Guard {
                 telemetry.emit("FAULT," + in.round() + "," + in.time() + ","
                     + t.getClass().getSimpleName() + ":" + String.valueOf(t.getMessage()).replace(',', ';'));
             }
-            return safeOrders(in, lastEnemyAbsBearing);
+            return safeOrders(in, lastEnemyAbsBearing, faultsThisRound);
         }
     }
 
@@ -141,12 +141,21 @@ public final class Guard {
      * is: it keeps the robot's lateral velocity, which is what a gun has to predict, at its
      * highest.</p>
      *
+     * <p>After three faulting ticks this round, and whenever the enemy's last bearing is
+     * known and the gun is cool, these orders also turn the gun to it and fire power 1.0
+     * (RES-7): a core that faults every tick would otherwise never return fire.</p>
+     *
      * @param in the tick's input
      * @param enemyAbsBearing the enemy's last absolute bearing in radians, or NaN if unknown
+     * @param faultsThisRound the number of faulting ticks this round, this one included
      * @return the safe orders for this tick
      */
-    static BotOrders safeOrders(BotInput in, double enemyAbsBearing) {
+    static BotOrders safeOrders(BotInput in, double enemyAbsBearing, int faultsThisRound) {
         BotOrders.Builder b = BotOrders.builder().maxVelocity(8.0);
+        if (faultsThisRound >= 3 && !Double.isNaN(enemyAbsBearing) && in.gunHeat() == 0.0) {
+            b.turnGunRight(Angles.normalRelativeAngle(enemyAbsBearing - in.gunHeading()));
+            b.fire(1.0);
+        }
         // A robot at rest counts as going forwards.
         double direction = in.velocity() < 0 ? -1 : 1;
         if (Double.isNaN(enemyAbsBearing)) {

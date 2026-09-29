@@ -4,6 +4,27 @@ Open items from the Hadur 2 stages, newest stage first. The open ones are tracke
 [GitHub issues](https://github.com/lgriffin/Hadur_Robot/issues) (#44 to #56, opened
 2026-09-28); the notes below are the detail behind them.
 
+## Rumble climb R4a (BENCH-5, RES-7, RES-8)
+
+- **BENCH-5** (`hadur.bench.LiveDetails`) reads a saved LiteRumble BotDetails page and
+  reports APS/survival by opponent-APS band, by UTC hour, a before/after split, and live
+  minus bench share against a given bench report. Run against 3.0's saved page it reproduces
+  the plan's numbers exactly (docs/bench/live-details-3.0.md): 268 pairings at 85.5 APS
+  before 08:30 UTC, 239 at 77.2 after. Once 3.1 has 300+ pairings, save its BotDetails page
+  and run the same tool against it to see whether R1's client-reliability work touched the
+  effect.
+- **RES-7**: after three faulting ticks in a round, the guard's safe orders now also fire
+  power 1.0 at the enemy's last scanned bearing whenever the gun is cool, so a core that
+  faults every tick still returns fire.
+- **RES-8**: the core writes a small `health.hc` record at battle end (rounds, rounds
+  survived, faults, skipped turns, memory failures, learned tick allowance), so a
+  client-side reproduction of a live problem is self-describing.
+- **Still open**: BENCH-4 (the client-conditions bench: shared/prefilled data directory,
+  CPU constant, background load, another engine or JVM) is R4's next piece, and the one
+  most likely to reproduce the 08:30 collapse (L-03 in `data/learnings.md`). `hadur.climb.stage`
+  stays at R3 until BENCH-4 lands too, so these three requirements are visible in
+  `docs/requirements.md` but not yet due.
+
 ## Rumble climb R3.5 (3.1 release)
 
 - **3.0's live rating collapsed about 08:30 UTC on 2026-09-28** (85.5 to 77.2 APS, survival

@@ -79,6 +79,10 @@ EARS requirements from the Hadur 2 technical direction. This file is the source 
 | GUN-3 | Ubiquitous | The anti-surfer gun shall aim with the target's precise escape angle and a kernel no narrower than the target's angular half-width. | R3 |
 | GUN-4 | State | While the live movement tier is M2 or M3, or the live gun verdict already names a switch, the gun shall rate a third gun trained on virtual and real waves and fire it when it rates highest. | R3 |
 | POW-5 | State | While the enemy's gun tier is T3 and their distance exceeds 500 px, the gun shall fire no more than 1.7 unless a full-power rule applies. | R3 |
+| BENCH-4 | Event | When a client-conditions file is given, the bench shall run each listed condition (shared or prefilled data directory, CPU constant, background load, engine version, JVM) as its own pass and report survival and skipped turns per opponent and per condition. | R4 |
+| BENCH-5 | Event | When a saved LiteRumble BotDetails page is given, the bench shall report APS and survival by opponent-APS band and by UTC hour, a before/after split at a given time, and live minus bench share for every opponent in a given bench report. | R4 |
+| RES-7 | Unwanted | If the core has faulted on three ticks of a round, then the guard's safe orders shall also fire power 1.0 at the enemy's last scanned bearing whenever the gun is cool. | R4 |
+| RES-8 | Event | When a battle ends, the adapter shall write a battle-health record of at most 64 bytes with rounds, rounds survived, faults, skipped turns, memory failures and the learned tick allowance. | R4 |
 
 Stage is where the requirement is first implemented: S0–S7 in the Hadur 2 stage plan, M0–M6
 in the melee extension plan ("Hadur 2 — Melee Extension Plan", 27 Sep 2026).
