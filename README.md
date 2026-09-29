@@ -93,6 +93,8 @@ tests that prove it.
 | 2.1 | Melee brain in the core (MELEE-1..8), Java 11 target (REL-1) | released ([samples](docs/bench/melee-2.1-samples.md), [classic](docs/bench/melee-2.1-classic.md), [strong](docs/bench/melee-2.1-strong.md)) |
 | Shield | Bullet-shielding counter (SHIELD-1, SHIELD-2) | done ([Saguaro](docs/bench/shield-counter-saguaro.md), [notes](docs/bullet-shielding.md)) |
 | M0-M6 | Melee Extension Plan: fail-closed gate, sensing, minimum risk, field gun, melee memory, tuning; release 3.0 | done, final APS gate not met ([M6 report](docs/bench/m6-gates.md)) |
+| R0-R3 | Rumble climb: bench tooling, client reliability, full share vs weak bots, anti-surfer gun | merged, not yet released |
+| R3.5-R6 | Rumble climb: release, stop the lost live rounds, rumble-safe memory, movement precision | planned ([plan](docs/rumble-climb-r4-r6-plan.md)) |
 
 The plan's S7 was "cut melee". Release 2.1 had already put melee in the core for the
 MeleeRumble, and it costs the duel nothing (it runs only while two or more opponents are
