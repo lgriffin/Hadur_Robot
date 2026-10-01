@@ -4,8 +4,8 @@
 a 1v1 duelist that remembers each opponent across battles, with a melee brain for
 free-for-alls, and a core that has no idea it is inside Robocode.
 
-**Hadur 3.4 is ranked 20th of 1,216 in the RoboRumble 1v1**, the highest-ranked robot
-flying the Irish flag. It was designed, written, tested and tuned by Claude agents working
+**Hadur 3.4 is ranked 20th of 1,216 in the RoboRumble 1v1** and 28th in the MeleeRumble,
+the highest-ranked robot flying the Irish flag. It was designed, written, tested and tuned by Claude agents working
 in a shared project with one human, Leigh Griffin, who set the goals and ran the live
 entries. This page covers what the robot does, how it is built, and how it was built.
 
@@ -18,6 +18,7 @@ pairing filled:
 |---|---|---|---|---|---|---|
 | **20th of 1,216** | **85.90** ± 0.20 | 99.26 | 89.03 | 93.92% | 1,215 | 1,628 |
 
+- **28th in the MeleeRumble** as well (Leigh, 2026-10-01; no melee page is archived yet).
 - **Ireland's most successful robot.** Twelve robots in the rumble fly the Irish flag. The
   next best, jam.RaikoMX 0.32, has 82.24 APS (57th).
 - **Against the top 19 it wins 10 pairings and loses 9**: it beats Saguaro, Raven,
