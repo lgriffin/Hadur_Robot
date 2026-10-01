@@ -162,3 +162,22 @@ offline RoboRumble client (`roborumble.jar`, not one of the Maven-available Robo
 artifacts) as a BENCH-4 condition, suggested but not attempted this session.
 Evidence: `docs/bench/r4-client-conditions.md`, `docs/bench/r4-prefill-condition.md`;
 `hadur-bench/client-conditions-r4b.txt`. Owner: R4.
+
+**L-22 · confirmed.** The session bench (BENCH-6/7, 300 battles in one engine process, 3.2
+jar) shows skipped turns per battle climbing from 10 to 90 while the control robot stays at
+0, with survival, heap, live classes and turn p95 flat. Every added skip sits one tick after
+a round's end: it is the round-end profile save, whose cost grows with the number of files in
+the data directory (`ProfileLibrary.save` walks the directory for `bytesUsed`, and above 90%
+of quota reads and decodes every own-version profile in `evictSeeds`). Wiping the directory
+before each battle holds skips flat over 150 battles; prefilling it with 1,000 stats-only
+profiles costs 21 to 31 skipped turns per save on both 3.2 and 3.3, 2,000 costs 42 to 53.
+Survival stays 100% because the stall is after the round is decided. Evidence:
+`docs/bench/r7-session.md`. Owner: R7; fix planned as R8 (`docs/rumble-memory-scale-plan.md`).
+
+**L-23 · confirmed.** Past about 700 stats-only profiles (275 bytes each, 200 KB quota) the
+data directory is over quota and every profile save is skipped ("275 bytes do not fit"), so
+on a rumble client that has met most of the field Hadur persists nothing between battles.
+`hadur2.Hadur.data` is keyed by class name, not version, so a long-lived client reaches this
+with any version. The live slide (a survival collapse) is not reproduced by any directory
+size, so this explains lost memory and the skipped-turn growth, not the slide. Evidence:
+`docs/bench/r7-session.md` section 3. Owner: R8.
