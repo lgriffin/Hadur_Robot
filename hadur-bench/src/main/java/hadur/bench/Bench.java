@@ -181,6 +181,7 @@ public final class Bench {
     }
 
     private int run() throws Exception {
+        if (opts.containsKey("session")) return runSession();
         List<Opponent> opponents = Opponent.load(benchDir.resolve(opts.getOrDefault("set", "reference-set.txt")));
         String only = opts.get("only");
         if (only != null) opponents.removeIf(o -> !o.name.contains(only));
@@ -539,6 +540,11 @@ public final class Bench {
 
     /** Sets up a Robocode home with Hadur's jar, the sample bots and any opponent jars. */
     private void installRobots(List<Opponent> opponents) throws IOException {
+        installRobots(opponents, false);
+    }
+
+    /** As above; {@code lenient} drops opponents whose jar is missing instead of failing (a session's sample). */
+    private void installRobots(List<Opponent> opponents, boolean lenient) throws IOException {
         Path robots = home.resolve("robots");
         Files.createDirectories(robots);
         String[] parts = robot.split(" ");
@@ -571,12 +577,117 @@ public final class Bench {
                 Files.copy(s, robots.resolve(s.getFileName()), StandardCopyOption.REPLACE_EXISTING);
             }
         }
-        for (Opponent o : opponents) {
+        for (Iterator<Opponent> it = opponents.iterator(); it.hasNext();) {
+            Opponent o = it.next();
             if (o.jar == null) continue;
             Path jar = benchDir.resolve("opponents").resolve(o.jar);
-            if (!Files.exists(jar)) throw new IllegalStateException("Missing opponent jar " + jar);
+            if (!Files.exists(jar)) {
+                if (!lenient) throw new IllegalStateException("Missing opponent jar " + jar);
+                System.out.println("  no jar for " + o.name + "; dropped from the session");
+                it.remove();
+                continue;
+            }
             Files.copy(jar, robots.resolve(o.jar), StandardCopyOption.REPLACE_EXISTING);
         }
+    }
+
+    /**
+     * BENCH-6/7: runs the session file's opponents in order through one engine process under
+     * the file's heap cap, then (with a control robot) again with the control, and reports
+     * both by blocks of 25 battles.
+     */
+    private int runSession() throws Exception {
+        SessionFile sf = SessionFile.parse(benchDir.resolve(opts.get("session")));
+        List<Opponent> opponents = Opponent.load(benchDir.resolve(sf.opponents()));
+        if (opts.containsKey("limit")) {
+            opponents = new ArrayList<>(opponents.subList(0, Math.min(opponents.size(), Integer.parseInt(opts.get("limit")))));
+        }
+        installRobots(opponents, true);
+        if (sf.controlJar() != null) {
+            String[] parts = sf.control().split(" ");
+            Files.copy(Path.of(sf.controlJar()).toAbsolutePath(),
+                home.resolve("robots").resolve(parts[0] + "_" + parts[1] + ".jar"), StandardCopyOption.REPLACE_EXISTING);
+        }
+        int rounds = opts.containsKey("rounds") ? this.rounds : sf.rounds();
+        Map<String, List<SessionReport.Row>> sessions = new LinkedHashMap<>();
+        List<String> robots = new ArrayList<>(List.of(robot));
+        if (sf.control() != null) robots.add(sf.control());
+        for (String r : robots) {
+            wipeData();
+            Path dir = out.resolve("session-" + slug(r));
+            Files.createDirectories(dir);
+            Path list = dir.resolve("opponents.tsv");
+            List<String> lines = new ArrayList<>();
+            for (int i = 0; i < opponents.size(); i++) lines.add(opponents.get(i).name + "\t" + (i + 1));
+            Files.write(list, lines);
+            System.out.println("== session: " + r + " (" + opponents.size() + " battles, heap " + sf.heap() + ")");
+            if (sf.fresh()) {
+                for (int i = 0; i < lines.size(); i++) {
+                    Path one = dir.resolve("one.tsv");
+                    Files.writeString(one, lines.get(i) + "\n");
+                    runSessionChild(sf, r, dir, one, rounds, i == 0);
+                }
+            } else {
+                runSessionChild(sf, r, dir, list, rounds, true);
+            }
+            sessions.put(r, readSession(dir, opponents));
+        }
+        String report = SessionReport.render(sessions, sf.heap(), sf.fresh(), sf.wipe(), rounds);
+        Files.createDirectories(out);
+        Files.writeString(out.resolve("report.md"), report);
+        if (opts.containsKey("report")) {
+            Path copy = Path.of(opts.get("report")).toAbsolutePath();
+            Files.createDirectories(copy.getParent());
+            Files.writeString(copy, report);
+        }
+        System.out.println();
+        System.out.println(report);
+        return 0;
+    }
+
+    private void runSessionChild(SessionFile sf, String robotName, Path dir, Path list, int rounds, boolean first)
+            throws IOException, InterruptedException {
+        List<String> cmd = new ArrayList<>();
+        cmd.add(defaultJavaBin());
+        cmd.addAll(JVM_FLAGS);
+        if (sf.heapFlag() != null) cmd.add(sf.heapFlag());
+        cmd.add("-Xlog:gc*:file=" + dir.resolve("gc.log") + ":time");
+        cmd.add("-cp");
+        cmd.add(classpath());
+        cmd.add(SessionRunner.class.getName());
+        cmd.addAll(List.of(home.toString(), dir.toString(), String.valueOf(rounds), String.valueOf(width),
+            String.valueOf(height), robotName, list.toString(), String.valueOf(sf.wipe())));
+        Process p = new ProcessBuilder(cmd).redirectErrorStream(true)
+            .redirectOutput(first ? ProcessBuilder.Redirect.to(dir.resolve("session.log").toFile())
+                                  : ProcessBuilder.Redirect.appendTo(dir.resolve("session.log").toFile()))
+            .start();
+        if (!p.waitFor(12, TimeUnit.HOURS)) p.destroyForcibly();
+    }
+
+    /** The session's rows as its child left them: a battle with no row (the JVM died) is simply absent. */
+    private static List<SessionReport.Row> readSession(Path dir, List<Opponent> opponents) throws IOException {
+        List<SessionReport.Row> rows = new ArrayList<>();
+        Path csv = dir.resolve("session.csv");
+        if (!Files.exists(csv)) return rows;
+        List<String> lines = Files.readAllLines(csv);
+        for (String line : lines.subList(1, lines.size())) {
+            Map<String, String> c = SessionReport.columns(SessionRunner.HEADER, line);
+            int index = Integer.parseInt(c.get("index"));
+            Opponent o = opponents.get(index - 1);
+            Path result = dir.resolve(String.format("%04d-%s", index, SessionRunner.slug(o.name))).resolve("result.csv");
+            BattleResult b = Files.exists(result) ? readResult(result, 0) : null;
+            double aps;
+            try {
+                aps = Double.parseDouble(o.role);
+            } catch (NumberFormatException e) {
+                aps = Double.NaN;
+            }
+            rows.add(new SessionReport.Row(index, o.name, aps, b, Double.parseDouble(c.get("heapAfterGcMb")),
+                Double.parseDouble(c.get("longestPauseMs")), Integer.parseInt(c.get("loadedClasses")),
+                Integer.parseInt(c.get("unloadedClasses")), Integer.parseInt(c.get("engineDisables")),
+                Integer.parseInt(c.get("duressTicks"))));
+        }
+        return rows;
     }
 
     private static void jar(Path classes, Path target) throws IOException {

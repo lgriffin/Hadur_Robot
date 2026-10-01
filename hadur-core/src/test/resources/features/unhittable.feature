@@ -43,6 +43,19 @@ Feature: Unhittable
     When the next round starts
     Then the computation level is 0
 
+  @RES-9
+  Scenario: Three skipped turns put the rest of the round in duress
+    Given Hadur in a duel, 300 px from the enemy
+    When the engine skips a turn
+    And the engine skips a turn
+    And the engine skips a turn
+    And Hadur plays 10 ticks with a cool gun
+    Then 10 ticks of the round ran in duress
+    And every one of them fired at power 1.0 head-on
+    When the next round starts
+    And Hadur plays 1 ticks with a cool gun
+    Then 0 ticks of the round ran in duress
+
   @MOVE-2 @DIAL-1
   Scenario: A gun hitting well above its profile's rate changes the movement's flavour
     Given a profile that saw the enemy hit 10% of 2000 waves

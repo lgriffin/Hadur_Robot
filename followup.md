@@ -4,6 +4,31 @@ Open items from the Hadur 2 stages, newest stage first. The open ones are tracke
 [GitHub issues](https://github.com/lgriffin/Hadur_Robot/issues) (#44 to #56, opened
 2026-09-28); the notes below are the detail behind them.
 
+## Rumble climb R5 and R7 (rumble-safe memory, session bench, duress)
+
+- **R5** (PR #70, merged): MEM-8 to MEM-10 and ADAPT-4. Profiles are stats-only except for
+  at most five opponents met twice and scored under 60% against; each profile-format version
+  keeps its own file names; the round-end checkpoint writes at most once a battle. Gate in
+  `docs/bench/r5-gate.md`: 12 of 12 weak bots 35/35 with a shared never-wiped data
+  directory, the `hadur2` directory 18 KB for 60 opponents, warm top-10 43.2% against the
+  cold 43.1%. Not released on its own; it ships in the next release after 3.2's live pass.
+- **BENCH-6/BENCH-7** (`hadur-bench --session FILE`): the condition no earlier bench had,
+  hundreds of battles through one engine process under `-Xmx512M`, with a `sample.Tracker`
+  control, per-battle heap after a full collection, longest GC pause, live classes, engine
+  disables and duress ticks, reported by blocks of 25 battles. `session-300.txt` and its
+  300 opponents (`data/tools/sample_session.py`, fixed seed) are the R7 session; see
+  `hadur-bench/README.md`.
+- **RES-9** (duress): after three skipped turns in a round the core stops learning (no
+  waves, samples or tree reads) and orbits at 400 px, fires head-on at power 1.0 and keeps the
+  radar locked for the rest of the round. `RoundStats.duressTicks` is the new last field of
+  the R record. The duel's pinned sources changed in `TickBudget.java` only (the skip
+  counter): a deliberate re-pin of `duel-sources.sha256`.
+- **RES-10**: `RobotLoaderTest` runs 40 one-round battles through one engine under 256 MB
+  and requires the live class count to stop growing; the shipped robot passes it, so a leaked
+  robot class loader is not the cause of the live slide.
+- **Open**: the 300-battle session itself and its bisect (heap cap, fresh JVM, wiped data
+  directory) decide the R7b fix; results go in `docs/bench/r7-session.md`.
+
 ## Rumble climb R4b/R4c (BENCH-4, release 3.2)
 
 - **BENCH-4** (`hadur-bench --client FILE`) runs the opponent set once per rumble-client

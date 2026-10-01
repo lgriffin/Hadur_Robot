@@ -87,6 +87,10 @@ EARS requirements from the Hadur 2 technical direction. This file is the source 
 | MEM-9 | Ubiquitous | The store shall keep its files under a subdirectory named for the profile-format version and shall not read or write another version's subdirectory except to carry tiers forward once. | R5 |
 | MEM-10 | Ubiquitous | The adapter shall do at most one profile read and two profile writes per battle, each at most 2 KB, apart from MEM-8's seeded profiles. | R5 |
 | ADAPT-4 | Event | When a profile with a known gun tier and no seeds loads, the core shall apply the opening book's choices from the first tick without replaying samples. | R5 |
+| BENCH-6 | Event | When a session file is given, the bench shall run its battles in order through one engine process under the file's heap cap, keeping the data directory, and shall report per battle its survival share, score share, skipped turns, faults, engine disables, heap after collection, longest pause and loaded classes. | R7 |
+| BENCH-7 | Event | When a session file names a control robot, the bench shall run the same session with the control robot and report the two side by side by blocks of 25 battles. | R7 |
+| RES-9 | Unwanted | If the engine has skipped three turns in a round, then the core shall run the rest of the round at a duress level that adds no samples, builds no waves, reads no neighbour tree, orbits at the distance floor and fires head-on at power 1.0 whenever the gun is cool. | R7 |
+| RES-10 | Ubiquitous | The robot shall leave no reference to its classes in the process after a battle, so that the number of classes loaded in one JVM stays flat across a session of battles. | R7 |
 
 Stage is where the requirement is first implemented: S0–S7 in the Hadur 2 stage plan, M0–M6
 in the melee extension plan ("Hadur 2 — Melee Extension Plan", 27 Sep 2026).
@@ -498,6 +502,24 @@ pressure (MEM-5), not tripped over by MEM-8 first.
 The R5 gate (BENCH-4 `data=shared` over 60 opponents, then the weak set again; every weak
 battle 35/35; the data directory under 180 KB; 0 memory failures; warm top-10 not below cold
 top-10 by more than 1 point) is recorded in `docs/bench/`; see followup.md for the run.
+
+## R7 notes: the session bench, duress and the loader test
+
+- **BENCH-6** is `hadur-bench --session FILE` (`SessionFile`, `SessionRunner`,
+  `SessionReport`): one child JVM under the file's heap cap runs every battle through one
+  `RobocodeEngine`, writing `session.csv` a battle at a time. The heap figure is the live
+  set after a full collection at the battle's end; the pause is the longest collector run
+  during the battle. **BENCH-7** is the same session again with `control=ROBOT`.
+- **RES-9** is `Duress` (root package, so it may see `BotInput`) driven from
+  `HadurCore.tick` when `TickBudget.duress()`, which is `DURESS_SKIPS` (3) skipped turns in the
+  round. Only a duel's already-announced opponent is fought this way; melee is untouched.
+  Scans in duress only move the last known enemy position. The reversal interval comes from
+  a xorshift generator seeded by the round, so a replay is exact (RES-6, CORE-2).
+  `ArchitectureTest` pins that `Duress` depends on no gun, movement, KNN, ledger, memory,
+  adapt or melee class. The skipped-turn count lives in `TickBudget`, which is in the pinned
+  duel sources, so `duel-sources.sha256` was re-pinned deliberately.
+- **RES-10** is measured as the live class count of one JVM across a session of battles
+  (`RobotLoaderTest`), which is what a retained robot class loader would raise.
 
 ## Retired requirements
 

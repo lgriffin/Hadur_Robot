@@ -114,6 +114,27 @@ public class UnhittableSteps {
         tick(3, new BotEvent.SkippedTurn(time));
     }
 
+    private final List<hadur2.core.model.BotOrders> played = new ArrayList<>();
+
+    @When("Hadur plays {int} ticks with a cool gun")
+    public void playsWithCoolGun(int ticks) {
+        played.clear();
+        for (int i = 0; i < ticks; i++) played.add(core.tick(input(0, List.of(scan()))));
+    }
+
+    @Then("{int} ticks of the round ran in duress")
+    public void duressTicks(int ticks) {
+        assertEquals(ticks, core.stats().duressTicks);
+    }
+
+    @Then("every one of them fired at power 1.0 head-on")
+    public void firedHeadOn() {
+        for (hadur2.core.model.BotOrders o : played) {
+            assertEquals(1.0, o.firePower(), 1e-9);
+            assertEquals(0.0, o.gunTurn(), 1e-9, "the enemy is straight ahead of the gun");
+        }
+    }
+
     @Then("the computation level is {int}")
     public void level(int level) {
         assertEquals(level, core.computationLevel());

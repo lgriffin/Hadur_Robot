@@ -46,13 +46,15 @@ class RoundStatsTest {
         s.flavourChanges = 1;
         s.flavourStep = 2;
         s.interceptsShadowed = 19;
+        s.duressTicks = 20;
         String[] f = s.toRecord(2, 900, "win", 55.5, 0).split(",");
-        assertEquals(33, f.length);
+        assertEquals(34, f.length);
         assertEquals("17", f[28], "slow ticks (TIME-1)");
         assertEquals("18", f[29], "shadowed waves (MOVE-1)");
         assertEquals("1", f[30], "flavour changes (MOVE-2)");
         assertEquals("2", f[31], "flavour step (MOVE-2)");
         assertEquals("19", f[32], "intercepts inside a shadow (MOVE-1)");
+        assertEquals("20", f[33], "ticks in duress (RES-9)");
         assertEquals("300.0", f[23], "mean scan distance (S5)");
         assertEquals("425.0", f[24], "target distance at the round's end (DIST-1)");
         assertEquals("14", f[25], "finishing ticks (END-1)");

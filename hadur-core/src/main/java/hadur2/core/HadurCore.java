@@ -231,6 +231,8 @@ public final class HadurCore {
     private String duelOpponent;
     /** S6: the tick budget (TIME-1, TIME-2) and the movement's flavour (MOVE-2). */
     private final TickBudget budget = new TickBudget();
+    /** RES-9: the rest of a round after the engine has skipped three of its turns. */
+    private final Duress duress;
     /** R2: recognising and countering a charging rammer, no profile needed (RAM-1). */
     private final RammerPolicy rammer = new RammerPolicy();
     /** RAM-1: whether the rammer response is active, as of the last scan. */
@@ -365,6 +367,7 @@ public final class HadurCore {
     public HadurCore(double fieldWidth, double fieldHeight, int enemiesTotal, Telemetry telemetry,
                      ProfileStore store, MeleeController melee) {
         this.battleField = new BattleField(fieldWidth, fieldHeight);
+        this.duress = new Duress(battleField);
         this.predictor = new MovementPredictor(battleField);
         this.gunController = new GunController(battleField, enemiesTotal);
         this.moveController = new MoveController(battleField, predictor);
@@ -407,6 +410,7 @@ public final class HadurCore {
         resetRoundState();
         if (enemyGunHeat != null) enemyGunHeat.newRound();
         budget.newRound();
+        duress.newRound(round);
         gate.newRound();
         meleeTicks = duelTicks = focusTicks = meleeFaults = ghostTicks = sentryHits = maxScanGap = sweepGap = 0;
         ghostsAtRoundStart = melee.ghostsDropped();
@@ -514,10 +518,22 @@ public final class HadurCore {
         focusing = !melee && in.others() >= 2;
         if (wasFocusing && !focusing) focus.clear();
 
+        // RES-9: three skipped turns in a round put the rest of it in duress, which runs
+        // none of the learning below: no samples, no waves, no tree. Only a duel's known
+        // opponent is fought this way; before its first scan there is nothing to orbit.
+        boolean inDuress = !melee && announced && lastEnemyLocation != null && budget.duress();
+
         // The events in the order the adapter queued them, which is the engine's own. HitWall
         // needs no handling: the ledger infers the enemy's wall hits, and our own wall damage
         // does not change what the enemy's energy says.
         for (BotEvent e : in.events()) {
+            if (inDuress) {
+                if (e instanceof BotEvent.Scan) onDuressScan(in, (BotEvent.Scan) e);
+                else if (e instanceof BotEvent.SkippedTurn) onSkippedTurn(in);
+                else if (e instanceof BotEvent.TickTime) onTickTime((BotEvent.TickTime) e);
+                else if (e instanceof BotEvent.RobotDeath) onRobotDeath(((BotEvent.RobotDeath) e).name());
+                continue;
+            }
             if (e instanceof BotEvent.Scan) {
                 BotEvent.Scan scan = (BotEvent.Scan) e;
                 // GATE-5: a sentry is never tracked, targeted or profiled.
@@ -537,7 +553,7 @@ public final class HadurCore {
         }
 
         // ADAPT-3: a few seed samples a tick, so no one tick pays for the whole seed.
-        if (seedLoader != null && !melee) {
+        if (seedLoader != null && !melee && !inDuress) {
             seedsReplayed += seedLoader.step();
             if (seedLoader.done()) seedLoader = null;
         }
@@ -557,6 +573,13 @@ public final class HadurCore {
             } catch (RuntimeException ex) {
                 // GATE-4: fail closed. The duel takes this tick and the rest of the round.
                 orders = meleeFailed(in, ex);
+            }
+        } else if (inDuress) {
+            // RES-9: orbit at the distance floor, fire head-on, lock the radar; nothing else.
+            stats.duressTicks++;
+            if (duress.orders(in, lastEnemyLocation, orders)) {
+                stats.shotsFired++;
+                lastRealBulletFireTime = in.time();
             }
         } else if (lastGunWave != null) {
             // The duel's main body, once its opponent has been scanned. TIME-1, TIME-2: the
@@ -1367,6 +1390,23 @@ public final class HadurCore {
 
         prevEnemyVelocity = enemyVel;
         prevMyVelocity = myVel;
+    }
+
+    /**
+     * RES-9: a scan in duress only moves where the enemy is thought to be. Everything the
+     * normal scan feeds (the state logs, both waves, the ledger, the gun's and the surf's
+     * trees) is skipped, since none of it can finish in the time the engine allows.
+     */
+    private void onDuressScan(BotInput in, BotEvent.Scan e) {
+        if (e.sentry() || gate.isSentry(e.name())) return;
+        if (!e.name().equals(duelOpponent)) return;
+        if (focusing && !e.name().equals(focusTarget(in.location()))) return;
+        double absBearing = Angles.normalAbsoluteAngle(in.heading() + e.bearing());
+        lastScanTime = in.time();
+        lastEnemyAbsBearing = absBearing;
+        lastEnemyLocation = DiaUtils.project(in.location(), absBearing, e.distance());
+        lastEnemyEnergy = e.energy();
+        lastEnemyDistance = e.distance();
     }
 
     /**
