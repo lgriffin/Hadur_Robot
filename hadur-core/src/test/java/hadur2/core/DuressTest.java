@@ -57,6 +57,17 @@ class DuressTest {
     }
 
     @Test
+    @DisplayName("a stale enemy position sweeps the radar and holds fire")
+    void staleSpotSweepsAndHoldsFire() {
+        Duress d = new Duress(new BattleField(800, 600));
+        BotOrders.Builder b = BotOrders.builder();
+        assertFalse(d.orders(input(1, 400, 200, 0, 0, 0, 100), ENEMY, true, b));
+        BotOrders o = b.build();
+        assertTrue(Double.isInfinite(o.radarTurn()), "a sweep, not a lock on an empty spot");
+        assertEquals(0.0, o.firePower(), 1e-9);
+    }
+
+    @Test
     @DisplayName("a gun far off the enemy turns toward it without firing")
     void turnsBeforeFiring() {
         Duress d = new Duress(new BattleField(800, 600));

@@ -599,17 +599,19 @@ public final class Bench {
     private int runSession() throws Exception {
         SessionFile sf = SessionFile.parse(benchDir.resolve(opts.get("session")));
         List<Opponent> opponents = Opponent.load(benchDir.resolve(sf.opponents()));
+        String only = opts.get("only");
+        if (only != null) opponents.removeIf(o -> !o.name.contains(only));
         if (opts.containsKey("limit")) {
             opponents = new ArrayList<>(opponents.subList(0, Math.min(opponents.size(), Integer.parseInt(opts.get("limit")))));
         }
         installRobots(opponents, true);
         if (sf.controlJar() != null) {
-            String[] parts = sf.control().split(" ");
-            Files.copy(Path.of(sf.controlJar()).toAbsolutePath(),
-                home.resolve("robots").resolve(parts[0] + "_" + parts[1] + ".jar"), StandardCopyOption.REPLACE_EXISTING);
+            Path jar = Path.of(sf.controlJar()).toAbsolutePath();
+            Files.copy(jar, home.resolve("robots").resolve(jar.getFileName()), StandardCopyOption.REPLACE_EXISTING);
         }
         int rounds = opts.containsKey("rounds") ? this.rounds : sf.rounds();
         Map<String, List<SessionReport.Row>> sessions = new LinkedHashMap<>();
+        int status = 0;
         List<String> robots = new ArrayList<>(List.of(robot));
         if (sf.control() != null) robots.add(sf.control());
         for (String r : robots) {
@@ -625,12 +627,17 @@ public final class Bench {
                 for (int i = 0; i < lines.size(); i++) {
                     Path one = dir.resolve("one.tsv");
                     Files.writeString(one, lines.get(i) + "\n");
-                    runSessionChild(sf, r, dir, one, rounds, i == 0);
+                    if (!runSessionChild(sf, r, dir, one, rounds, i == 0)) status = 1;
                 }
             } else {
-                runSessionChild(sf, r, dir, list, rounds, true);
+                if (!runSessionChild(sf, r, dir, list, rounds, true)) status = 1;
             }
-            sessions.put(r, readSession(dir, opponents));
+            List<SessionReport.Row> rows = readSession(dir, opponents);
+            if (rows.stream().anyMatch(SessionReport.Row::missing)) {
+                System.err.println("session " + r + ": some battles produced no result row");
+                status = 1;
+            }
+            sessions.put(r, rows);
         }
         String report = SessionReport.render(sessions, sf.heap(), sf.fresh(), sf.wipe(), rounds);
         Files.createDirectories(out);
@@ -642,10 +649,11 @@ public final class Bench {
         }
         System.out.println();
         System.out.println(report);
-        return 0;
+        return status;
     }
 
-    private void runSessionChild(SessionFile sf, String robotName, Path dir, Path list, int rounds, boolean first)
+    /** Runs one session child; false when it timed out or exited nonzero. The partial output is kept. */
+    private boolean runSessionChild(SessionFile sf, String robotName, Path dir, Path list, int rounds, boolean first)
             throws IOException, InterruptedException {
         List<String> cmd = new ArrayList<>();
         cmd.add(defaultJavaBin());
@@ -661,33 +669,54 @@ public final class Bench {
             .redirectOutput(first ? ProcessBuilder.Redirect.to(dir.resolve("session.log").toFile())
                                   : ProcessBuilder.Redirect.appendTo(dir.resolve("session.log").toFile()))
             .start();
-        if (!p.waitFor(12, TimeUnit.HOURS)) p.destroyForcibly();
+        if (!p.waitFor(12, TimeUnit.HOURS)) {
+            p.destroyForcibly();
+            System.err.println("session child timed out");
+            return false;
+        }
+        if (p.exitValue() != 0) {
+            System.err.println("session child exited " + p.exitValue());
+            return false;
+        }
+        return true;
     }
 
-    /** The session's rows as its child left them: a battle with no row (the JVM died) is simply absent. */
+    /**
+     * The session's rows, one per expected opponent in order: a battle with no row (the JVM
+     * died before writing it) is a placeholder, so later battles keep their own positions.
+     */
     private static List<SessionReport.Row> readSession(Path dir, List<Opponent> opponents) throws IOException {
-        List<SessionReport.Row> rows = new ArrayList<>();
+        SessionReport.Row[] rows = new SessionReport.Row[opponents.size()];
         Path csv = dir.resolve("session.csv");
-        if (!Files.exists(csv)) return rows;
-        List<String> lines = Files.readAllLines(csv);
-        for (String line : lines.subList(1, lines.size())) {
-            Map<String, String> c = SessionReport.columns(SessionRunner.HEADER, line);
-            int index = Integer.parseInt(c.get("index"));
-            Opponent o = opponents.get(index - 1);
-            Path result = dir.resolve(String.format("%04d-%s", index, SessionRunner.slug(o.name))).resolve("result.csv");
-            BattleResult b = Files.exists(result) ? readResult(result, 0) : null;
-            double aps;
-            try {
-                aps = Double.parseDouble(o.role);
-            } catch (NumberFormatException e) {
-                aps = Double.NaN;
+        if (Files.exists(csv)) {
+            List<String> lines = Files.readAllLines(csv);
+            for (String line : lines.subList(1, lines.size())) {
+                Map<String, String> c = SessionReport.columns(SessionRunner.HEADER, line);
+                int index = Integer.parseInt(c.get("index"));
+                Opponent o = opponents.get(index - 1);
+                Path result = dir.resolve(String.format("%04d-%s", index, SessionRunner.slug(o.name))).resolve("result.csv");
+                BattleResult b = Files.exists(result) ? readResult(result, 0) : null;
+                rows[index - 1] = new SessionReport.Row(index, o.name, apsOf(o), b,
+                    Double.parseDouble(c.get("heapAfterGcMb")), Double.parseDouble(c.get("longestPauseMs")),
+                    Integer.parseInt(c.get("loadedClasses")), Integer.parseInt(c.get("unloadedClasses")),
+                    Integer.parseInt(c.get("engineDisables")), Integer.parseInt(c.get("duressTicks")), false);
             }
-            rows.add(new SessionReport.Row(index, o.name, aps, b, Double.parseDouble(c.get("heapAfterGcMb")),
-                Double.parseDouble(c.get("longestPauseMs")), Integer.parseInt(c.get("loadedClasses")),
-                Integer.parseInt(c.get("unloadedClasses")), Integer.parseInt(c.get("engineDisables")),
-                Integer.parseInt(c.get("duressTicks"))));
         }
-        return rows;
+        for (int i = 0; i < rows.length; i++) {
+            if (rows[i] == null) {
+                rows[i] = new SessionReport.Row(i + 1, opponents.get(i).name, apsOf(opponents.get(i)), null,
+                    0, 0, 0, 0, 0, 0, true);
+            }
+        }
+        return new ArrayList<>(List.of(rows));
+    }
+
+    private static double apsOf(Opponent o) {
+        try {
+            return Double.parseDouble(o.role);
+        } catch (NumberFormatException e) {
+            return Double.NaN;
+        }
     }
 
     private static void jar(Path classes, Path target) throws IOException {

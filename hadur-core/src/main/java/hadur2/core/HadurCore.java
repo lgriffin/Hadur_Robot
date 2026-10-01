@@ -529,6 +529,9 @@ public final class HadurCore {
         for (BotEvent e : in.events()) {
             if (inDuress) {
                 if (e instanceof BotEvent.Scan) onDuressScan(in, (BotEvent.Scan) e);
+                else if (e instanceof BotEvent.BulletHit) stats.shotsHit++;
+                else if (e instanceof BotEvent.HitByBullet) stats.hitsTaken++;
+                else if (e instanceof BotEvent.BulletHitBullet) stats.bulletsIntercepted++;
                 else if (e instanceof BotEvent.SkippedTurn) onSkippedTurn(in);
                 else if (e instanceof BotEvent.TickTime) onTickTime((BotEvent.TickTime) e);
                 else if (e instanceof BotEvent.RobotDeath) onRobotDeath(((BotEvent.RobotDeath) e).name());
@@ -577,7 +580,8 @@ public final class HadurCore {
         } else if (inDuress) {
             // RES-9: orbit at the distance floor, fire head-on, lock the radar; nothing else.
             stats.duressTicks++;
-            if (duress.orders(in, lastEnemyLocation, orders)) {
+            // A scan gap over one tick means the spot is stale: sweep the radar, hold fire.
+            if (duress.orders(in, lastEnemyLocation, in.time() - lastScanTime > 1, orders)) {
                 stats.shotsFired++;
                 lastRealBulletFireTime = in.time();
             }

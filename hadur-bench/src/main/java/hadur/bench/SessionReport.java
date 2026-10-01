@@ -15,11 +15,13 @@ final class SessionReport {
     /** Opponents under this APS are the ones whose survival is the health check. */
     static final double WEAK_APS = 50;
     static final int BLOCK = 25;
+    /** Fewer weak battles than this cannot tell a slide from noise. */
+    static final int MIN_WEAK = 120;
 
     /** One battle of a session. {@code result} is null when the battle failed to load. */
     record Row(int index, String opponent, double aps, BattleResult result, double heapMb,
                double longestPauseMs, int loadedClasses, int unloadedClasses, int engineDisables,
-               int duressTicks) {
+               int duressTicks, boolean missing) {
 
         boolean ran() {
             return result != null && result.ok;
@@ -46,19 +48,43 @@ final class SessionReport {
         return n == 0 ? Double.NaN : sum / n;
     }
 
+    /** The weak battles that ran, in order. */
+    static List<Row> weakRan(List<Row> rows) {
+        return rows.stream().filter(r -> r.ran() && r.weak()).toList();
+    }
+
+    /** Mean survival over a window of weak battles, or NaN when it has none. */
+    private static double mean(List<Row> weak) {
+        return weak.isEmpty() ? Double.NaN
+            : weak.stream().mapToDouble(r -> r.result().survivalShare()).average().getAsDouble();
+    }
+
+    /** Survival over the first {@code n} weak battles that ran. */
+    static double firstWeakSurvival(List<Row> rows, int n) {
+        List<Row> w = weakRan(rows);
+        return mean(w.subList(0, Math.min(n, w.size())));
+    }
+
+    /** Survival over the last {@code n} weak battles that ran. */
+    static double lastWeakSurvival(List<Row> rows, int n) {
+        List<Row> w = weakRan(rows);
+        return mean(w.subList(Math.max(0, w.size() - n), w.size()));
+    }
+
     static int disables(List<Row> rows) {
         return rows.stream().mapToInt(Row::engineDisables).sum();
     }
 
     /**
-     * The BENCH-6 reproduction gate: the last 100 battles' survival against weak bots under
-     * 85% while the first 50 are over 95%, or the engine disabled the robot at least once.
+     * The BENCH-6 reproduction gate: survival over the last 100 weak-opponent battles under
+     * 85% while the first 50 are over 95% (at least 120 weak battles must have run), or the
+     * engine disabled the robot at least once.
      */
     static boolean reproduced(List<Row> rows) {
         if (disables(rows) > 0) return true;
-        if (rows.size() < 150) return false;
-        double first = weakSurvival(rows, 0, 50);
-        double last = weakSurvival(rows, rows.size() - 100, rows.size());
+        if (weakRan(rows).size() < MIN_WEAK) return false;
+        double first = firstWeakSurvival(rows, 50);
+        double last = lastWeakSurvival(rows, 100);
         return first > 0.95 && last < 0.85;
     }
 
@@ -80,8 +106,8 @@ final class SessionReport {
             }
             sb.append("\n");
             sb.append(String.format(Locale.ROOT, "First 50 weak survival %s, last 100 weak survival %s, engine "
-                + "disables %d. **%s**%n%n", pct(weakSurvival(rows, 0, 50)),
-                pct(weakSurvival(rows, Math.max(0, rows.size() - 100), rows.size())), disables(rows),
+                + "disables %d. **%s**%n%n", pct(firstWeakSurvival(rows, 50)),
+                pct(lastWeakSurvival(rows, 100)), disables(rows),
                 reproduced(rows) ? "Slide reproduced." : "No slide."));
         }
         if (sessions.size() == 2) sb.append(sideBySide(sessions));
@@ -92,8 +118,12 @@ final class SessionReport {
         int weakRan = 0, failed = 0, ran = 0, skipped = 0, duressTicks = 0;
         double weakSurv = 0, allSurv = 0, score = 0, heap = 0, pause = 0;
         int classes = 0;
+        int measured = 0;
         for (Row r : rows) {
-            heap += r.heapMb();
+            if (!r.missing()) {
+                heap += r.heapMb();
+                measured++;
+            }
             pause = Math.max(pause, r.longestPauseMs());
             classes = r.loadedClasses();
             duressTicks += r.duressTicks();
@@ -115,7 +145,7 @@ final class SessionReport {
             from + 1, from + rows.size(), weakRan, pct(weakRan == 0 ? Double.NaN : weakSurv / weakRan),
             pct(ran == 0 ? Double.NaN : allSurv / ran), pct(ran == 0 ? Double.NaN : score / ran),
             ran == 0 ? 0.0 : (double) skipped / ran, rows.stream().mapToInt(Row::engineDisables).sum(),
-            duressTicks, failed, heap / rows.size(), pause, classes);
+            duressTicks, failed, measured == 0 ? 0.0 : heap / measured, pause, classes);
     }
 
     /** BENCH-7: the robot's weak-survival and the control's, block by block. */

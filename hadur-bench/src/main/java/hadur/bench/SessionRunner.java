@@ -60,6 +60,8 @@ public final class SessionRunner {
                 if (!GarbageCollectionNotificationInfo.GARBAGE_COLLECTION_NOTIFICATION.equals(n.getType())) return;
                 GarbageCollectionNotificationInfo info =
                     GarbageCollectionNotificationInfo.from((CompositeData) n.getUserData());
+                // The bench's own System.gc() between battles is not a pause the battle saw.
+                if ("System.gc()".equals(info.getGcCause())) return;
                 synchronized (longestPauseNanos) {
                     longestPauseNanos[0] = Math.max(longestPauseNanos[0], info.getGcInfo().getDuration() * 1_000_000L);
                 }
@@ -143,6 +145,7 @@ public final class SessionRunner {
                 }
             }
         } finally {
+            harvester.close();
             engine.removeBattleListener(harvester);
             engine.removeBattleListener(listener);
         }

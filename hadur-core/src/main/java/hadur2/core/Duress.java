@@ -80,6 +80,17 @@ public final class Duress {
      * @return whether the gun fired this tick
      */
     public boolean orders(BotInput in, Point2D.Double enemy, BotOrders.Builder orders) {
+        return orders(in, enemy, false, orders);
+    }
+
+    /**
+     * As {@link #orders(BotInput, Point2D.Double, BotOrders.Builder)}, but a stale position
+     * (the enemy has not scanned for more than a tick, likely a turn skipped) sweeps the
+     * radar to find it again and holds fire, rather than shooting at an empty spot.
+     *
+     * @param stale whether the enemy's last known spot is out of date
+     */
+    public boolean orders(BotInput in, Point2D.Double enemy, boolean stale, BotOrders.Builder orders) {
         Point2D.Double me = in.location();
         double toEnemy = DiaUtils.absoluteBearing(me, enemy);
         double distance = me.distance(enemy);
@@ -100,12 +111,14 @@ public final class Duress {
         DiaUtils.setBackAsFront(orders, in.heading(), goAngle);
         orders.maxVelocity(8.0);
 
-        orders.turnRadarRight(Angles.normalRelativeAngle(toEnemy - in.radarHeading()) * 2.0);
+        double radarTurn = Angles.normalRelativeAngle(toEnemy - in.radarHeading());
+        orders.turnRadarRight(stale ? (radarTurn < 0 ? Double.NEGATIVE_INFINITY : Double.POSITIVE_INFINITY)
+            : radarTurn * 2.0);
 
         double aim = Angles.normalRelativeAngle(toEnemy - in.gunHeading());
         orders.turnGunRight(aim);
         double power = Math.min(POWER, in.energy() - 0.1);
-        if (in.gunHeat() == 0.0 && Math.abs(aim) < AIM_TOLERANCE && power >= 0.1) {
+        if (!stale && in.gunHeat() == 0.0 && Math.abs(aim) < AIM_TOLERANCE && power >= 0.1) {
             orders.fire(power);
             return true;
         }

@@ -103,6 +103,33 @@ class SessionTest {
     }
 
     @Test
+    @DisplayName("the gate's windows count weak battles, not positions, so strong bots do not thin them")
+    void windowsCountWeakBattles() {
+        List<SessionReport.Row> rows = new ArrayList<>();
+        for (int i = 0; i < 300; i++) {
+            boolean weak = i % 2 == 0;
+            // weak bots: 100% early, 70% late; strong bots always 50%
+            double surv = !weak ? 0.5 : (i < 100 ? 1.0 : 0.7);
+            rows.add(row(i + 1, weak ? 20 : 80, surv, 0));
+        }
+        assertEquals(1.0, SessionReport.firstWeakSurvival(rows, 50), 1e-9);
+        assertEquals(0.7, SessionReport.lastWeakSurvival(rows, 100), 1e-9);
+        assertTrue(SessionReport.reproduced(rows));
+    }
+
+    @Test
+    @DisplayName("a placeholder for a battle that never wrote a row keeps its position and counts as failed")
+    void missingRowIsAPlaceholder() {
+        List<SessionReport.Row> rows = session(50, i -> 1.0, i -> 0);
+        rows.set(10, new SessionReport.Row(11, "bot11", 20, null, 0, 0, 0, 0, 0, 0, true));
+        assertTrue(rows.get(10).missing());
+        assertFalse(rows.get(10).ran());
+        String report = SessionReport.render(Map.of("r", rows), "512M", false, false, 35);
+        assertTrue(report.contains("| 1-25 | 24 |"), report);
+        assertTrue(report.contains("| 26-50 | 25 |"), report);
+    }
+
+    @Test
     @DisplayName("a session CSV record reads back by column name")
     void columnsByName() {
         Map<String, String> c = SessionReport.columns(SessionRunner.HEADER, "7,a b,true,41.5,3.2,6100,900,0,0,19");
@@ -137,6 +164,6 @@ class SessionTest {
         r.theirScore = 40;
         r.survival = survival;
         r.theirSurvival = 1 - survival;
-        return new SessionReport.Row(index, "bot" + index, aps, r, 40, 3, 6000, 200, disables, 0);
+        return new SessionReport.Row(index, "bot" + index, aps, r, 40, 3, 6000, 200, disables, 0, false);
     }
 }

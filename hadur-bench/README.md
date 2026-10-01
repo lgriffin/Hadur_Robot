@@ -162,7 +162,7 @@ collection at the battle's end, longest GC pause, live and unloaded classes, eng
 disables, ticks in duress, seconds), a `result.csv` per battle in the usual format, and a GC
 log. The report gives blocks of 25 battles: survival against opponents under 50 APS (the
 health check), survival over all, score share, skipped turns, engine disables, duress ticks,
-heap and live classes; then says whether the slide reproduced (the first 50 sub-50 battles
+heap and live classes; then says whether the slide reproduced (the first 50 sub-50 battles (at least 120 must have run)
 over 95% survival and the last 100 under 85%, or any engine disable). With a control the two
 sessions are put side by side.
 
