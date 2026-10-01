@@ -157,24 +157,27 @@ graph LR
 ### One tick
 
 The adapter queues each event in the engine's priority order, builds a `BotInput`, and
-calls the guard. The core handles the events, picks a posture, and returns orders. If the
-core throws, the guard returns a safe order set (keep orbiting, hold fire, keep the radar on)
-so the robot never stalls.
+calls the guard. The core picks a posture first (a sentry scanned this tick vetoes melee),
+then handles the events and returns orders. If the core throws, the guard returns safe orders
+(keep orbiting, radar on the enemy, hold fire; from the third faulting tick in a round it
+fires power 1.0 at the enemy's last bearing when the gun is cool, RES-7), so the robot never
+stalls.
 
 ```mermaid
 flowchart TD
     EV["Engine events<br/>onScannedRobot, onHitByBullet, ..."] --> Q["Adapter queues BotEvents"]
     Q --> IN["BotInput: own state + events"]
     IN --> GU{"Guard.tick"}
-    GU -- "core throws" --> SAFE["Safe orders:<br/>orbit, hold fire, radar on enemy"]
-    GU --> EVH["HadurCore handles events"]
+    GU -- "core throws" --> SAFE["Safe orders: orbit, radar on enemy,<br/>hold fire; power 1.0 from the 3rd fault (RES-7)"]
+    GU --> SEN["Sentry scans this tick veto melee (GATE-3)"]
+    SEN --> GATE{"Posture gate<br/>(GATE-1, GATE-2)"}
+    GATE -- "2+ opponents, no sentry" --> MEL["Melee: sweep radar,<br/>minimum-risk movement, field gun"]
+    GATE -- "duel, or fail closed" --> DUR{"3+ skipped turns<br/>this round? (RES-9)"}
+    DUR -- yes --> CHEAP["Duress: events counted only;<br/>cheap orbit, head-on power 1.0"]
+    DUR -- no --> EVH["Handle events in engine order"]
     EVH --> LED["Energy ledger: real shots become waves<br/>(WAVE-1..3)"]
     EVH --> FOLD["Profile folder records shots and hits"]
-    LED --> GATE{"Posture gate<br/>(GATE-1..5)"}
-    GATE -- "2+ opponents, no sentry" --> MEL["Melee: sweep radar,<br/>minimum-risk movement, field gun"]
-    GATE -- "1 opponent, or fail closed" --> DUR{"3+ skipped turns<br/>this round? (RES-9)"}
-    DUR -- yes --> CHEAP["Duress: cheap orbit,<br/>head-on power 1.0"]
-    DUR -- no --> LVL["Tick budget picks<br/>computation level 0-3 (TIME-1, TIME-2)"]
+    LED --> LVL["Tick budget picks<br/>computation level 0-3 (TIME-1, TIME-2)"]
     LVL --> GN["Gun: KNN main / anti-surfer,<br/>power policy (POW, END, RAM)"]
     LVL --> MO["Movement: surf waves with bullet shadows,<br/>distance policy, flavours (MOVE, DIST)"]
     MEL & CHEAP & GN & MO & SAFE --> OUT["BotOrders"]
@@ -206,7 +209,11 @@ sequenceDiagram
         Trust-->>Gun: decay seeds a twentieth per wave on disagreement (RES-4)
     end
     R->>Lib: round ends: fold shots, hits, tiers into the profile (MEM-2)
-    Lib->>Store: one checkpoint save, crash-safe (MEM-3, RES-3)
+    opt first round Hadur survives this battle
+        Lib->>Store: one stats-only checkpoint (TIME-4, MEM-10)
+    end
+    R->>Lib: battle ends
+    Lib->>Store: final save with seeds, crash-safe (MEM-3, RES-3)
     Note over Store: listed once per battle, an index answers size questions,<br/>oldest profiles forgotten at the quota (MEM-11..13)
 ```
 
