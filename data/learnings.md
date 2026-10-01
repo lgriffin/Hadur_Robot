@@ -72,6 +72,25 @@ Evidence: `hadur-bench` `Bench.runBattle` and `BattleRunner`; the Robocode 1.9.5
 about 160 battles an hour, three times the R4 plan's gauge. A new version's complete read
 is the same afternoon. Evidence: the battle times in L-22's table.
 
+**L-29 · confirmed.** 3.4's first full pass (1,215 pairings, 1,628 battles, 09:04 to 16:04
+UTC on 2026-10-01) put it 20th at 85.90 APS ± 0.20, survival 93.9%. Unlike 3.0 and 3.1 it
+did not slide: mean APS dipped to 82 to 84 in hours +1 and +2, then held 86.2 to 86.7 for
+four hours against a steady opponent mix (mean opponent APS 49 to 51 every hour).
+Evidence: `rumble/parsed/2026-10-01T2020Z_roborumble_botdetails_hadur2.Hadur_3.4.csv`.
+
+**L-30 · confirmed (extends L-02, L-04).** Against the 19 bots ranked above it (by their own
+APS on that page) 3.4 averages 47.7% ± 1.7: 8 clear wins (Saguaro, Raven, XanderCat,
+Tomcat, GresSuffurd, Nene, WhiteFang, Dookious), 8 clear losses (BeepBoop and Nullstride
+near 17% with no survival; DrussGT, ScalarR, Diamond, Firestarter, Wavelet, Gilgalad at 31
+to 42%), 3 within noise. Mean PBI is +5.2 against them and -1.6 / -1.0 against opponents
+under 50 / 50 to 70 APS. Live tracks the bench closely at the top: r = 0.96 over 18 of
+them, live minus bench +1.0 (SD 4.4), no gap beyond one battle's noise (bench 3.2 for the
+old top 10, 3.0 otherwise). The top 19 cost only 0.82 of the 14.1 APS Hadur gives up; the
+447 opponents at 50 to 70 APS cost 6.78. Passing 19th (86.41) needs about 620 points: 33
+per top-19 pairing or about 1.4 per 50-to-70 pairing.
+Evidence: `rumble/parsed/2026-10-01_hadur-3.4_vs_top19.tsv`; report artifact
+https://claude.ai/artifact/R1RPjQhCyb8eohTN2eJgtY.
+
 ## The bench against the field
 
 **L-07 · confirmed.** 3.0 beats 40 of 48 of the top 50 on the bench (mean share 58.5%). The
@@ -192,11 +211,11 @@ the session at a client constant (`docs/skipped-turns-plan.md` section 5). Also 
 `session.log`). Evidence: the session logs under `/mnt/project-files/bench-session/`,
 `docs/skipped-turns-plan.md`. Owner: R8.
 
-**L-29 · confirmed.** 3.4 holds rank 20 (85.90 APS, 1,215 pairings, no slide: last 400
-pairings 86.3 APS against 84.7 for the first 400). Its KNN PBI is +5.1 against the top 100
-and −1.7 against the 716 opponents ranked below 500; that weak-tier deficit costs about 1.0
-APS, twice the gap to rank 19. It sits in the 368 weak pairings where Hadur loses a round or
-more (PBI −3.3); where it wins every round PBI is −0.1. The worst are simple bots, several
-rammers by name (vort.Chaser, bbo.RamboT, PSW.Relentless, mahrgell.mahrram). Evidence:
+**L-31 · confirmed (extends L-30).** The weak tier is where 3.4's next ranks are. Its KNN PBI
+is +5.1 against the top 100 and −1.7 against the 716 opponents ranked below 500; that
+deficit costs about 1.0 APS, twice the gap to rank 19. It sits in the 368 weak pairings where
+Hadur loses a round or more (PBI −3.3, 1.4 rounds of 35 lost on average); where it wins every
+round PBI is −0.1. The worst are simple bots, several rammers by name (vort.Chaser,
+bbo.RamboT, PSW.Relentless, mahrgell.mahrram). Evidence:
 `rumble/parsed/2026-10-01T2020Z_roborumble_botdetails_hadur2.Hadur_3.4.csv`,
 `docs/top20-analysis.md`. Owner: none (no code work planned).

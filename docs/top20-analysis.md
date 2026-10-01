@@ -10,6 +10,9 @@ ranked above it: head to head, by overall profile, and by where each side earns 
 lists every pairing with Hadur's score against that opponent and the opponent's own overall
 APS and survival, which is what the ranks below are derived from. The band and hour report
 from the same page is [bench/live-details-3.4.md](bench/live-details-3.4.md).
+[data/learnings.md](../data/learnings.md) L-29 to L-31 record the findings, and
+`data/rumble/parsed/2026-10-01_hadur-3.4_vs_top19.tsv` adds the bench share against each of
+the top 19 next to its live score (live tracks the bench at r = 0.96, L-30).
 
 ## Summary
 
