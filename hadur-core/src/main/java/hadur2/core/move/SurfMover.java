@@ -25,8 +25,8 @@ import java.util.*;
  * simulated tick by tick with the engine's own movement rules ({@link MovementPredictor})
  * until the wave passes our centre. The states in which the wave is crossing us give the
  * precise intersection: the firing angles that would hit us. Its danger is the views'
- * score there ({@link MoveController#getDangerScore}), less the part our bullets shadow
- * (MOVE-1), times the bullet's damage, over the ticks until impact, and scaled by whether
+ * score there ({@link MoveController#getDangerScore}, which counts only the part our
+ * bullets do not shadow, MOVE-1 and MOVE-3), times the bullet's damage, over the ticks until impact, and scaled by whether
  * the move takes us closer to the enemy. With two waves to surf, the second wave's best
  * option from where the first leaves us is added, so the choice for the first wave does not
  * corner us for the next. The cheapest option wins.</p>

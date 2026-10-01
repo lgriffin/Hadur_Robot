@@ -535,8 +535,8 @@ public class Wave implements Cloneable {
      * Computes {@link #targetWallDistance} and {@link #targetRevWallDistance} from the field
      * and the current bullet power: how far the target could orbit each way, keeping its
      * distance from the source, before reaching a wall, as a multiple of the classic escape
-     * angle and capped at 1.5. A movement wave keeps the values from its guessed power even
-     * after {@link #setBulletPower} corrects it.
+     * angle and capped at 1.5. A movement wave's values are recomputed
+     * when {@code MoveController.updateFiringWave} corrects its power (WAVE-4).
      */
     public void setWallDistances() {
         targetWallDistance = Math.min(1.5,
