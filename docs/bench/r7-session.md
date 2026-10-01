@@ -26,8 +26,15 @@ under 50 APS.
 The control (sample.Tracker, same 300 opponents in the same process) skipped 0.0 to 0.1
 turns a battle in every block. First 50 weak survival 100%, last 100 weak survival 99.4%.
 No slide in survival or score; a steady climb in skipped turns, Hadur only. The three
-engine disables are the engine's "is not stopping, forcing a stop" on opponents
-(gjr.Cephalosporin, taqho.taqbot in `session.log`), not on Hadur.
+engine disables (blocks 51-75, 151-175, 201-225) are Hadur's: `hadur.log` of battles 59
+(pez.mako.Mako), 166 (pkbots.BoyTDSurfer) and 215 (djc.Aardvark) carries "Hadur 3.2 has
+not performed any actions in a reasonable amount of time" mid-round (round 1 tick 685,
+round 9 tick 553, round 8 tick 753) with no skipped-turn, fault or memory line before it,
+so each is a silent freeze of about 240 turns that costs that round. They are not the
+round-end stalls and are not explained by the data directory; see L-28 and
+`docs/skipped-turns-plan.md`. (The "is not stopping, forcing a stop" lines in
+`session.log` are on opponents, gjr.Cephalosporin and taqho.taqbot, and are a separate
+thing.)
 
 Where the skips are (from Robocode's "skipped turn" lines in `hadur.log`, against each
 round's `R` record):
