@@ -447,4 +447,61 @@ class ProfileLibraryTest {
     static OpponentProfile stored(MemoryProfileStore store, String key) {
         return ProfileCodec.decode(store.read(ProfileLibrary.fileName(key)));
     }
+
+    @Test
+    @Tag("MEM-9")
+    @DisplayName("MEM-9: a profile written before versioned names carries forward, seeds dropped")
+    void carriesForwardAnUnversionedProfile() {
+        MemoryProfileStore store = new MemoryProfileStore(QUOTA);
+        OpponentProfile old = Profiles.seedWorthy("a.Legacy", 3, 50, 50);
+        store.write(LineageKey.fileStem(old.key()) + ProfileLibrary.PROFILE_SUFFIX, ProfileCodec.encode(old));
+
+        ProfileLibrary lib = new ProfileLibrary(store);
+        ProfileLibrary.Loaded loaded = lib.load("a.Legacy");
+        assertTrue(loaded.found(), "the pre-R5 file's stats carry forward");
+        assertEquals(old.rounds(), loaded.profile().rounds());
+        assertEquals(0, loaded.profile().gunSeedSize());
+        assertEquals(0, lib.loadFailures());
+    }
+
+    @Test
+    @Tag("MEM-9")
+    @DisplayName("MEM-9: a damaged file from another version is no failed load")
+    void damagedOtherVersionIsNotAFailure() {
+        MemoryProfileStore store = new MemoryProfileStore(QUOTA);
+        store.write(ProfileLibrary.fileName("a.Bot", ProfileCodec.OLDEST_VERSION), new byte[] {1, 2, 3});
+        ProfileLibrary lib = new ProfileLibrary(store);
+        ProfileLibrary.Loaded loaded = lib.load("a.Bot");
+        assertFalse(loaded.found());
+        assertNull(loaded.failure());
+        assertEquals(0, lib.loadFailures());
+    }
+
+    @Test
+    @Tag("MEM-8")
+    @DisplayName("MEM-8: a save that fails leaves the other opponents' seeds where they were")
+    void failedSaveStripsNobody() {
+        MemoryProfileStore inner = new MemoryProfileStore(QUOTA);
+        ProfileLibrary lib = new ProfileLibrary(inner);
+        for (int i = 0; i < ProfileLibrary.MAX_SEEDED; i++) {
+            lib.save(Profiles.seedWorthy("a.Bot" + i, i + 1, 50, 50));
+        }
+        String sixth = ProfileLibrary.fileName(Profiles.seedWorthy("a.Sixth", 9, 50, 50).key());
+        ProfileStore failing = new ProfileStore() {
+            public byte[] read(String name) { return inner.read(name); }
+            public void write(String name, byte[] bytes) {
+                if (name.startsWith(sixth)) throw new IllegalStateException("disk full");
+                inner.write(name, bytes);
+            }
+            public void delete(String name) { inner.delete(name); }
+            public List<String> names() { return inner.names(); }
+            public long bytesUsed() { return inner.bytesUsed(); }
+            public long quota() { return inner.quota(); }
+        };
+        ProfileLibrary second = new ProfileLibrary(failing);
+        assertEquals(ProfileLibrary.Saved.FAILED, second.save(Profiles.seedWorthy("a.Sixth", 9, 50, 50)));
+        for (int i = 0; i < ProfileLibrary.MAX_SEEDED; i++) {
+            assertTrue(stored(inner, "a.Bot" + i).gunSeedSize() > 0, "a.Bot" + i + " keeps its seeds");
+        }
+    }
 }

@@ -279,13 +279,28 @@ public final class ProfileLibrary {
     private OpponentProfile readOtherVersion(String key) {
         for (int v = ProfileCodec.VERSION; v >= ProfileCodec.OLDEST_VERSION; v--) {
             if (v == writeVersion) continue;
-            OpponentProfile p = read(fileName(key, v), key);
+            OpponentProfile p = readQuietly(fileName(key, v), key);
             if (p != null) {
                 p.dropSeeds();
                 return p;
             }
         }
-        return null;
+        // Files written before MEM-9 had no version in their name.
+        OpponentProfile legacy = readQuietly(LineageKey.fileStem(key) + PROFILE_SUFFIX, key);
+        if (legacy != null) legacy.dropSeeds();
+        return legacy;
+    }
+
+    /**
+     * {@link #read} for another version's file: damage there means this version simply has
+     * nothing to carry forward, not a failed load, so it is skipped rather than counted.
+     */
+    private OpponentProfile readQuietly(String file, String key) {
+        try {
+            return read(file, key);
+        } catch (RuntimeException e) {
+            return null;
+        }
     }
 
     /**
@@ -392,8 +407,6 @@ public final class ProfileLibrary {
                 // caller's own profile keeps its seeds in memory for the rest of the battle.
                 toWrite = ProfileCodec.decode(ProfileCodec.encodeStatsOnly(profile));
                 seeded = false;
-            } else if (hadSeeds) {
-                enforceSeedCap(file);
             }
             byte[] bytes = ProfileCodec.encode(toWrite, writeVersion);
             // Bytes held by everything this save does not replace.
@@ -411,6 +424,7 @@ public final class ProfileLibrary {
                 // its seeds for the rest of the battle.
                 OpponentProfile stripped = ProfileCodec.decode(bytes);
                 if (stripped.dropSeeds()) {
+                    seeded = false;
                     seedsEvicted++;
                     bytes = ProfileCodec.encode(stripped, writeVersion);
                     outcome = Saved.WRITTEN_WITHOUT_SEEDS;
@@ -421,7 +435,13 @@ public final class ProfileLibrary {
                     return Saved.SKIPPED;
                 }
             }
+            // MEM-8's cap comes after the write, so a save that is skipped or fails has not
+            // stripped anyone else. It only runs when this file is a new holder: one that
+            // already held seeds cannot raise the count, so the common checkpoint of an
+            // already-seeded opponent never scans the store.
+            boolean newHolder = seeded && !holdsSeeds(file);
             writeAtomically(file, bytes);
+            if (newHolder) enforceSeedCap(file);
             // The clock goes after the profile. If its write is lost or torn, the next
             // battle recovers the number from the profiles (maxLastFought).
             store.write(CLOCK, clockBytes(Math.max(battleNumber, profile.lastFought())));
@@ -582,6 +602,18 @@ public final class ProfileLibrary {
             writeAtomically(c.name, stripped);
             seedsEvicted++;
             lastNote = "evicted seeds of " + c.profile.key() + " (MEM-8 cap)";
+        }
+    }
+
+    /** Whether the stored profile {@code name} exists, decodes and holds seeds. */
+    private boolean holdsSeeds(String name) {
+        byte[] bytes = store.read(name);
+        if (bytes == null) return false;
+        try {
+            OpponentProfile p = ProfileCodec.decode(bytes);
+            return p.gunSeedSize() + p.surfSeedSize() > 0;
+        } catch (RuntimeException e) {
+            return false;
         }
     }
 
