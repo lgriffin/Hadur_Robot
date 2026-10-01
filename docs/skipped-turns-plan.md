@@ -71,7 +71,11 @@ the process" branch of the top-30 plan's R7b table (code cache, threads, engine 
 ### 2.3 Reproduced in twenty minutes on the weak set
 
 A 300-opponent directory built with the 3.2 jar's own `ProfileLibrary` (a stranger loaded,
-600 gun and 300 surf samples added, saved in full, 300 times under the 200,000-byte quota:
+600 gun and 300 surf samples added, saved in full, 300 times under the 200,000-byte quota; run
+against the 3.2 jar's classes, where every save keeps its seeds, so the directory ends at 156 KB with
+three seeded 23 KB profiles and 297 stripped ones, the state a 3.2 session reaches. Run against 3.3's
+classes the same tool makes stats-only profiles, because MEM-8 strips seeds from any opponent fought
+once, which is the state a 3.3 session reaches:
 `hadur-bench/tools/Prefill.java`, the same idea as #74's generator, to be merged into `hadur.bench.Prefill`),
 placed in `robots/.data/hadur2/Hadur.data/`, then `weak-pbi.txt` (12 bots, 35 rounds) with
 the 3.2 release jar, solo on a quiet host:
@@ -150,9 +154,9 @@ The MEM-11 to MEM-13 design in #74 stands as written. Add:
    client's constant. The prefill tool is one class, `hadur.bench.Prefill`, that builds a
    directory for any jar at any size.
 4. **RES-11: self-protection.** If the adapter has counted more than 100 skipped-turn
-   events in a battle, it stops checkpointing for the rest of it (the battle-end save still
-   runs under MEM-11's bound). Cheap insurance for a client whose disk makes even a bounded
-   save slow.
+   events in a battle before a save is due, that save (the one round-end checkpoint 3.3
+   still makes, MEM-10, or the battle-end save) is skipped and a `MEM` line records it.
+   Cheap insurance for a client whose disk makes even a bounded save slow.
 
 Requirements rows (stage R8, alongside #74's MEM-11 to MEM-14 and BENCH-8):
 
@@ -160,7 +164,7 @@ Requirements rows (stage R8, alongside #74's MEM-11 to MEM-14 and BENCH-8):
 |---|---|---|
 | TIME-6 | Event | When a battle starts, the adapter shall call `execute()` once before any file operation or warm-up work. |
 | TIME-7 | Ubiquitous | The adapter shall report the wall-clock duration of each prepare, checkpoint and battle-end save as an `IO` record. |
-| RES-11 | Unwanted | If more than 100 turns have been skipped in a battle, then the adapter shall skip the remaining round-end checkpoints of that battle. |
+| RES-11 | Unwanted | If more than 100 turns have been skipped in a battle when a profile save is due, then the adapter shall skip that save and record it. |
 
 Gate, in addition to #74's: the 300-profile weak-set run of section 2.3 on the R8 jar shows
 skipped turns at the empty-directory level at both constants (under 14 a battle at 2.86 ms,

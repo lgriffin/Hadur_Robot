@@ -15,6 +15,11 @@ import java.util.Random;
  * each "battle" loads a stranger, fills its seeds, and saves it in full, under a
  * 200,000-byte quota (Robocode's default), so the eviction dynamics are the real ones.
  *
+ * Run it against the jar whose session you want to imitate: with 3.2's classes every save keeps
+ * its seeds (seeded 23 KB profiles, evicted to about 300 bytes as the quota fills); with 3.3's
+ * classes MEM-8 strips the seeds of any opponent fought once, so every profile is stats-only.
+ * The printed save outcome and byte total say which you got.
+ *
  * Usage: java -cp hadur2.Hadur_3.2.jar Prefill.java DIR N
  */
 public class Prefill {
