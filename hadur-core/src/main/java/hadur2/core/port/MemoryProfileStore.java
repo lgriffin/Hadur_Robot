@@ -44,6 +44,8 @@ public final class MemoryProfileStore implements ProfileStore {
     private int crashAfterBytes = -1;
     /** Writes attempted so far, including refused and crashed ones. */
     private int writes;
+    /** MEM-13: each entry's write sequence number, standing in for a file's modification time. */
+    private final Map<String, Long> written = new TreeMap<>();
 
     /**
      * An empty store.
@@ -102,15 +104,18 @@ public final class MemoryProfileStore implements ProfileStore {
             int keep = Math.min(crashAfterBytes, bytes.length);
             crashAfterBytes = -1;
             entries.put(name, Arrays.copyOf(bytes, keep));
+            written.put(name, (long) writes);
             throw new Crash("killed after " + keep + " bytes of " + name);
         }
         entries.put(name, bytes.clone());
+        written.put(name, (long) writes);
     }
 
     /** Removes the entry and frees its bytes; does nothing when there is none. */
     @Override
     public void delete(String name) {
         entries.remove(name);
+        written.remove(name);
     }
 
     /** Every entry name, in sorted order, as a new list. */
@@ -125,6 +130,30 @@ public final class MemoryProfileStore implements ProfileStore {
         long total = 0;
         for (byte[] b : entries.values()) total += b.length;
         return total;
+    }
+
+    /** The entry's length, without copying it. */
+    @Override
+    public long size(String name) {
+        byte[] b = entries.get(name);
+        return b == null ? 0 : b.length;
+    }
+
+    /** The number of the write that last replaced the entry; 0 when there is none. */
+    @Override
+    public long lastModified(String name) {
+        return written.getOrDefault(name, 0L);
+    }
+
+    /**
+     * Test support: makes {@code name} look written at {@code sequence}, as if its file's
+     * modification time were set back, so MEM-13's order can be arranged directly.
+     *
+     * @param name an existing entry
+     * @param sequence the write number it should appear to have
+     */
+    public void touch(String name, long sequence) {
+        if (entries.containsKey(name)) written.put(name, sequence);
     }
 
     /** The quota given at construction. */

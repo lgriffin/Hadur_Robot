@@ -97,6 +97,9 @@ EARS requirements from the Hadur 2 technical direction. This file is the source 
 | MOVE-7 | Event | When a wave in flight is removed or reordered, movement shall discard the neighbour cache of every wave whose surf index changed. | R6 |
 | PHYS-1 | Ubiquitous | The movement predictor shall stop a predicted robot at a wall as the engine does. | R6 |
 | WAVE-4 | Event | When a movement wave's bullet power is updated, its wall distances shall be recomputed. | R6 |
+| MEM-11 | Ubiquitous | The adapter shall list the data directory at most once per battle and answer every later name, size and age question from an index it keeps current. | R8 |
+| MEM-12 | Ubiquitous | The library shall read a stored profile to look for seeds only when its file is larger than 1 KB. | R8 |
+| MEM-13 | Unwanted | If a save would take the store past 90% of its quota after every other seed is gone, then the library shall delete the least recently written profiles until it fits, and write. | R8 |
 
 Stage is where the requirement is first implemented: S0–S7 in the Hadur 2 stage plan, M0–M6
 in the melee extension plan ("Hadur 2 — Melee Extension Plan", 27 Sep 2026).
@@ -526,6 +529,33 @@ top-10 by more than 1 point) is recorded in `docs/bench/`; see followup.md for t
   duel sources, so `duel-sources.sha256` was re-pinned deliberately.
 - **RES-10** is measured as the live class count of one JVM across a session of battles
   (`RobotLoaderTest`), which is what a retained robot class loader would raise.
+
+## R8 notes: memory at rumble scale (shipped as 3.4)
+
+- Shipped from R8 (docs/rumble-memory-scale-plan.md, docs/skipped-turns-plan.md): MEM-11 to
+  MEM-13. Left for later: MEM-14 (format bump), TIME-7 (IO timing records), RES-11 (skip a
+  save after 100 skips) and BENCH-8's extended harvester. TIME-6 was built, benched and
+  dropped (below).
+- **MEM-11** is `FileProfileStore`'s index: `forRobot` lists the directory once (the listing
+  it already made to compute the quota), and `names`, `bytesUsed`, `size` and `lastModified`
+  answer from it; `write` and `delete` update it. The port gained `size` and `lastModified`
+  as default methods, so other stores keep working.
+- **MEM-12** is `ProfileLibrary.STATS_ONLY_MAX` (1 KB): `evictSeeds` and `enforceSeedCap`
+  skip any own-version profile at or under it unread. A damaged small file is therefore no
+  longer reclaimed by MEM-5's pass; MEM-13 removes it in age order instead.
+- **MEM-13** is `ProfileLibrary.forgetOldest`, called in `save` after MEM-5's seed eviction
+  and before the hard-quota check, so a write is now skipped only when the profile's own
+  stats cannot fit an otherwise empty store. Its order is the store's write time (a file is
+  rewritten when its opponent is fought), so no profile is read to choose. MEM-6's test now
+  checks that nothing is forgotten while any seed remains. `cleanupOtherVersions` (MEM-9)
+  uses the same order instead of decoding every other version's file.
+- **TIME-6 was dropped.** With `execute()` moved ahead of the battle's set-up, the set-up
+  ran on turn 1, which has ten constants of grace instead of the round start's 300: at a
+  1 ms constant with 700 profiles on disk it cost 36 skipped turns at the start of round 0
+  (turns 2 to 37), enough to put the round into duress (RES-9, three skips). Left before the
+  first `execute()`, the same work fits inside the start grace and costs 0 to 4 skips. The
+  set-up would only outgrow that grace if it took more than 300 constants (150 ms at a
+  0.5 ms constant); here it took about 36 ms.
 
 ## Retired requirements
 

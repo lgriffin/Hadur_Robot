@@ -163,6 +163,8 @@ class ProfileLibraryTest {
         public List<String> names() { return inner.names(); }
         public long bytesUsed() { return inner.bytesUsed(); }
         public long quota() { return inner.quota(); }
+        public long size(String name) { return inner.size(name); }
+        public long lastModified(String name) { return inner.lastModified(name); }
     }
 
     @Test
@@ -194,20 +196,33 @@ class ProfileLibraryTest {
 
     @Test
     @Tag("MEM-5")
-    @DisplayName("a 2 KB store keeps stats only, then skips writes it cannot fit")
+    @Tag("MEM-13")
+    @DisplayName("a 2 KB store keeps stats only, and forgets old opponents rather than skip a write")
     void tinyQuota() {
         MemoryProfileStore store = new MemoryProfileStore(2048);
         ProfileLibrary lib = new ProfileLibrary(store);
         assertEquals(ProfileLibrary.Saved.WRITTEN_WITHOUT_SEEDS,
             lib.save(Profiles.sample("a.Seeded", 1, 50, 50)));
         assertEquals(0, stored(store, "a.Seeded").gunSeedSize());
-        ProfileLibrary.Saved s = ProfileLibrary.Saved.WRITTEN;
-        for (int i = 0; i < 10 && s != ProfileLibrary.Saved.SKIPPED; i++) {
-            s = lib.save(Profiles.sample("b.Bot" + i, 2 + i, 0, 0));
+        for (int i = 0; i < 10; i++) {
+            assertEquals(ProfileLibrary.Saved.WRITTEN, lib.save(Profiles.sample("b.Bot" + i, 2 + i, 0, 0)));
         }
-        assertEquals(ProfileLibrary.Saved.SKIPPED, s);
+        assertEquals(0, lib.skippedWrites());
+        assertTrue(lib.profilesForgotten() > 0, "the oldest went to make room");
+        assertNull(store.read(ProfileLibrary.fileName("a.Seeded")), "the first written is the first forgotten");
+        assertNotNull(store.read(ProfileLibrary.fileName("b.Bot9")), "the newest is kept");
+        assertTrue(store.bytesUsed() <= 2048 * ProfileLibrary.EVICT_AT);
+    }
+
+    @Test
+    @Tag("MEM-5")
+    @DisplayName("a store too small for even one profile's stats skips the write")
+    void quotaBelowOneProfile() {
+        MemoryProfileStore store = new MemoryProfileStore(300);
+        ProfileLibrary lib = new ProfileLibrary(store);
+        assertEquals(ProfileLibrary.Saved.SKIPPED, lib.save(Profiles.sample("a.Bot", 1, 0, 0)));
         assertEquals(1, lib.skippedWrites());
-        assertTrue(store.bytesUsed() <= 2048);
+        assertEquals(0, store.bytesUsed());
     }
 
     @Test
@@ -272,17 +287,20 @@ class ProfileLibraryTest {
         assertTrue(stored(store, "a.First").gunSeedSize() > 0 || stored(store, "b.Second").gunSeedSize() > 0,
             "at least one still has seeds before the store is crowded");
 
-        // Crowd the store with plain, seedless profiles until a write is finally skipped.
-        ProfileLibrary.Saved s = ProfileLibrary.Saved.WRITTEN;
-        for (int i = 0; i < 20_000 && s != ProfileLibrary.Saved.SKIPPED; i++) {
-            s = lib.save(Profiles.sample("c.Bot" + i, 3 + i, 0, 0));
+        // Crowd the store with plain, seedless profiles until a profile is first forgotten
+        // (MEM-13, which since R8 stands where a skipped write used to).
+        for (int i = 0; i < 20_000 && lib.profilesForgotten() == 0; i++) {
+            assertEquals(ProfileLibrary.Saved.WRITTEN, lib.save(Profiles.sample("c.Bot" + i, 3 + i, 0, 0)));
         }
-        assertEquals(ProfileLibrary.Saved.SKIPPED, s, "the quota should eventually run out");
+        assertTrue(lib.profilesForgotten() > 0, "the quota should eventually run out");
+        assertEquals(0, lib.skippedWrites());
 
-        // MEM-6: by the time a write is skipped, eviction has already taken every seed
+        // MEM-6: by the time anything is forgotten, eviction has already taken every seed
         // there was to take, from both of the profiles that started with any.
-        assertEquals(0, stored(store, "a.First").gunSeedSize(), "nobody keeps seeds before a skip");
-        assertEquals(0, stored(store, "b.Second").gunSeedSize());
+        for (String key : List.of("a.First", "b.Second")) {
+            byte[] b = store.read(ProfileLibrary.fileName(key));
+            assertTrue(b == null || ProfileCodec.decode(b).gunSeedSize() == 0, key + " keeps no seeds");
+        }
     }
 
     @Test
@@ -442,6 +460,60 @@ class ProfileLibraryTest {
         ProfileLibrary.Loaded b = lib.load("abc.Shadow 3.83c");
         assertEquals(a.profile(), b.profile(), "same battle number, even with the clock lost");
         assertTrue(b.found());
+    }
+
+    @Test
+    @Tag("MEM-13")
+    @DisplayName("MEM-13: a full store forgets the least recently written opponents, whole, and always writes")
+    void fullStoreForgetsOldest() {
+        MemoryProfileStore store = new MemoryProfileStore(20_000);
+        ProfileLibrary lib = new ProfileLibrary(store);
+        int n = 0;
+        while (store.bytesUsed() < 20_000 * ProfileLibrary.EVICT_AT - 600) {
+            lib.save(Profiles.sample("a.Bot" + n, n + 1, 0, 0));
+            n++;
+        }
+        // Make a late one look oldest: the order is the store's write time, not the name.
+        String late = ProfileLibrary.fileName("a.Bot" + (n - 1));
+        store.touch(late, 0);
+        int before = store.names().size();
+        for (int i = 0; i < 5; i++) {
+            assertEquals(ProfileLibrary.Saved.WRITTEN, lib.save(Profiles.sample("b.New" + i, 1000 + i, 0, 0)));
+        }
+        assertTrue(lib.profilesForgotten() >= 3, "forgot " + lib.profilesForgotten());
+        assertNull(store.read(late), "the least recently written goes first");
+        assertNull(store.read(ProfileLibrary.fileName("a.Bot0")));
+        assertTrue(store.read(ProfileLibrary.fileName("a.Bot" + (n - 2))) != null, "recent ones stay");
+        assertTrue(store.bytesUsed() <= 20_000 * ProfileLibrary.EVICT_AT);
+        assertTrue(store.names().size() <= before + 5);
+        assertTrue(lib.lastNote().startsWith("forgot "), lib.lastNote());
+    }
+
+    @Test
+    @Tag("MEM-12")
+    @Tag("MEM-11")
+    @DisplayName("MEM-11/12: saves into a store of hundreds of stats-only profiles read no other profile")
+    void savesDoNotReadEveryProfile() {
+        MemoryProfileStore inner = new MemoryProfileStore(100_000);
+        ProfileLibrary filler = new ProfileLibrary(inner);
+        for (int i = 0; i < 300; i++) filler.save(Profiles.sample("a.Bot" + i, i + 1, 0, 0));
+        assertTrue(inner.bytesUsed() > 0.6 * 100_000, "a crowded store: " + inner.bytesUsed());
+        int[] reads = {0};
+        ProfileStore counting = new DelegatingStore(inner) {
+            @Override public byte[] read(String name) { reads[0]++; return inner.read(name); }
+        };
+        ProfileLibrary lib = new ProfileLibrary(counting);
+        lib.prepare();
+        reads[0] = 0;
+        // A new seed holder (runs MEM-8's cap) and a plain save, then a full store's save
+        // (runs MEM-5's eviction and MEM-13's forgetting).
+        lib.save(Profiles.seedWorthy("b.Hard", 400, 600, 300));
+        lib.save(Profiles.sample("c.Plain", 401, 0, 0));
+        assertTrue(reads[0] <= 4, "reads " + reads[0]);
+        for (int i = 0; i < 300; i++) lib.save(Profiles.seedWorthy("d.Hard" + i, 500 + i, 600, 300));
+        assertTrue(lib.profilesForgotten() > 0);
+        assertEquals(0, lib.skippedWrites());
+        assertTrue(reads[0] < 300 * 12, "reads " + reads[0] + " grew with the store");
     }
 
     static OpponentProfile stored(MemoryProfileStore store, String key) {

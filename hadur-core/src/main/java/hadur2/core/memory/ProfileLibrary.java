@@ -21,6 +21,12 @@ import java.util.List;
  *     seeds of the least recently fought other profiles are dropped until it would not. If
  *     the write still would not fit, this profile's own seeds go; if even the stats alone do
  *     not fit, the write is skipped and counted.</li>
+ * <li>MEM-11 to MEM-13: no save does work proportional to the files in the store. Sizes and
+ *     ages come from the store's index ({@link ProfileStore#size}, {@link ProfileStore#lastModified});
+ *     only files larger than {@link #STATS_ONLY_MAX} can hold seeds, so only those are ever
+ *     read to find seed holders (MEM-12); and when a save still would not fit, the least
+ *     recently written profiles are forgotten, whole, until it does (MEM-13), so the store
+ *     never fills up and stops learning.</li>
  * <li>A battle counter in {@link #CLOCK} stamps each profile with when it was last fought,
  *     which is what "least recently fought" means.</li>
  * </ul>
@@ -58,6 +64,13 @@ public final class ProfileLibrary {
      * sandbox forbids path separators), so a version's files share the store's one
      * directory under a name prefix rather than a real subdirectory. */
     private static final String VERSION_SEPARATOR = "-v";
+    /**
+     * MEM-12: the largest a profile without seeds can be. A stats-only profile is about 300
+     * bytes (MEM-8 allows 1 KB), and a profile is only kept with seeds after a whole battle's
+     * worth of samples, several KB. So a file no larger than this is taken to hold no seeds
+     * and is never read to find out.
+     */
+    public static final int STATS_ONLY_MAX = 1024;
     /** The clock file's size: {@code 'H' 'C'}, version 1, an i64 battle number and an i32 CRC. */
     static final int CLOCK_SIZE = 15;
 
@@ -103,6 +116,7 @@ public final class ProfileLibrary {
     private int saveFailures;
     private int skippedWrites;
     private int seedsEvicted;
+    private int profilesForgotten;
     /** This battle's number on the clock; -1 until {@link #nextBattle} first runs. */
     private long battleNumber = -1;
     private String lastNote = "";
@@ -152,6 +166,11 @@ public final class ProfileLibrary {
         return seedsEvicted;
     }
 
+    /** Whole profiles deleted to make room for a save (MEM-13), this battle. */
+    public int profilesForgotten() {
+        return profilesForgotten;
+    }
+
     /** A short description of the last failure or eviction, for telemetry. */
     public String lastNote() {
         return lastNote;
@@ -197,20 +216,11 @@ public final class ProfileLibrary {
             if (name.equals(CLOCK) || isOwnVersion(name)) continue;
             if (name.endsWith(PROFILE_SUFFIX) || name.endsWith(PROFILE_SUFFIX + TMP_SUFFIX)) others.add(name);
         }
-        others.sort(Comparator.comparingLong(this::lastFoughtOf).thenComparing(n -> n));
+        // MEM-11: oldest written first, from the store's index; no file is read.
+        others.sort(Comparator.comparingLong(store::lastModified).thenComparing(n -> n));
         for (String name : others) {
             if (store.bytesUsed() <= limit) break;
             store.delete(name);
-        }
-    }
-
-    /** The battle a stored profile file was last fought in, or -1 if it cannot be read. */
-    private long lastFoughtOf(String name) {
-        try {
-            byte[] b = store.read(name);
-            return b == null ? -1 : ProfileCodec.decode(b).lastFought();
-        } catch (RuntimeException e) {
-            return -1;
         }
     }
 
@@ -419,6 +429,11 @@ public final class ProfileLibrary {
             // A profile that never had seeds is simply WRITTEN; one whose seeds were
             // dropped, by MEM-8 above or by quota eviction below, is WRITTEN_WITHOUT_SEEDS.
             Saved outcome = hadSeeds && !seeded ? Saved.WRITTEN_WITHOUT_SEEDS : Saved.WRITTEN;
+            // MEM-13: still over the threshold with every seed gone: forget the opponents
+            // met longest ago, whole files, rather than stop learning about this one.
+            if (others + 2L * bytes.length + CLOCK_SIZE > limit) {
+                others -= forgetOldest(file, others + 2L * bytes.length + CLOCK_SIZE - limit);
+            }
             if (others + 2L * bytes.length + CLOCK_SIZE > store.quota()) {
                 // Strip a copy (decoded from the bytes), not the caller's profile, which keeps
                 // its seeds for the rest of the battle.
@@ -517,6 +532,8 @@ public final class ProfileLibrary {
         for (String name : store.names()) {
             if (name.equals(ownFile) || name.equals(ownFile + TMP_SUFFIX) || name.equals(CLOCK)) continue;
             if (!isOwnVersion(name)) continue;
+            // MEM-12: a profile this small holds no seeds; leave it unread.
+            if (name.endsWith(PROFILE_SUFFIX) && store.size(name) <= STATS_ONLY_MAX) continue;
             byte[] bytes = store.read(name);
             if (bytes == null) continue;
             if (!name.endsWith(PROFILE_SUFFIX)) {
@@ -553,6 +570,33 @@ public final class ProfileLibrary {
         return freed;
     }
 
+    /**
+     * MEM-13: deletes whole profile files, least recently written first (the store's
+     * {@link ProfileStore#lastModified}, then the name, so the order is deterministic),
+     * until at least {@code needed} bytes are freed or nothing else is left. Never this
+     * save's own file, its temporary copy or the clock; any version's files are fair game.
+     * Returns the bytes freed.
+     */
+    private long forgetOldest(String ownFile, long needed) {
+        List<String> candidates = new ArrayList<>();
+        for (String name : store.names()) {
+            if (name.equals(ownFile) || name.equals(ownFile + TMP_SUFFIX) || name.equals(CLOCK)) continue;
+            if (name.endsWith(PROFILE_SUFFIX)) candidates.add(name);
+        }
+        candidates.sort(Comparator.comparingLong(store::lastModified).thenComparing(n -> n));
+        long freed = 0;
+        for (String name : candidates) {
+            if (freed >= needed) break;
+            long size = store.size(name) + store.size(name + TMP_SUFFIX);
+            store.delete(name);
+            store.delete(name + TMP_SUFFIX);
+            freed += size;
+            profilesForgotten++;
+            lastNote = "forgot " + name;
+        }
+        return freed;
+    }
+
     /** A stored profile, paired with the exact store name it was read from. */
     private static final class SeededFile {
         final String name;
@@ -582,6 +626,8 @@ public final class ProfileLibrary {
         List<SeededFile> holders = new ArrayList<>();
         for (String name : store.names()) {
             if (name.equals(ownFile) || !isOwnVersion(name) || !name.endsWith(PROFILE_SUFFIX)) continue;
+            // MEM-12: only a file larger than any stats-only profile can be a seed holder.
+            if (store.size(name) <= STATS_ONLY_MAX) continue;
             byte[] bytes = store.read(name);
             if (bytes == null) continue;
             try {
@@ -630,8 +676,7 @@ public final class ProfileLibrary {
 
     /** The size of a store entry in bytes, 0 when it does not exist. */
     private long size(String name) {
-        byte[] b = store.read(name);
-        return b == null ? 0 : b.length;
+        return store.size(name);
     }
 
     /** An exception as {@code "Type: message"} for a note. */

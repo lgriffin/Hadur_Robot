@@ -193,4 +193,34 @@ class FileProfileStoreTest {
             for (int i = 0; i < len; i++) write(b[off + i]);
         }
     }
+
+    @Test
+    @Tag("MEM-11")
+    @DisplayName("MEM-11: the directory is listed once; later answers come from the index the store keeps")
+    void listsOnce() throws IOException {
+        File d = dir.toFile();
+        try (FileOutputStream out = new FileOutputStream(new File(d, "old.hp"))) {
+            out.write(new byte[100]);
+        }
+        FileProfileStore s = store(10_000);
+        assertEquals(100, s.bytesUsed());
+        assertEquals(100, s.size("old.hp"));
+        // A file that appears behind the store's back is not seen: nothing lists again.
+        try (FileOutputStream out = new FileOutputStream(new File(d, "stray.hp"))) {
+            out.write(new byte[7]);
+        }
+        assertEquals(List.of("old.hp"), s.names());
+        // The store's own writes and deletes keep the index current.
+        s.write("new.hp", new byte[20]);
+        assertEquals(120, s.bytesUsed());
+        assertEquals(20, s.size("new.hp"));
+        assertTrue(s.lastModified("new.hp") > s.lastModified("old.hp"), "a write is newer than anything listed");
+        s.write("old.hp", new byte[5]);
+        assertTrue(s.lastModified("old.hp") > s.lastModified("new.hp"));
+        s.delete("new.hp");
+        assertEquals(List.of("old.hp"), s.names());
+        assertEquals(5, s.bytesUsed());
+        assertEquals(0, s.size("new.hp"));
+        assertEquals(0, s.lastModified("new.hp"));
+    }
 }
