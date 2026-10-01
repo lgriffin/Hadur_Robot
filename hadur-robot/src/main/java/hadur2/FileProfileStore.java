@@ -118,9 +118,7 @@ final class FileProfileStore implements ProfileStore {
         try (OutputStream out = opener.open(file(name))) {
             out.write(bytes);
         } catch (IOException e) {
-            // What is on disk now is unknown; the next listing would tell, but a save that
-            // fails is counted and the battle goes on, so drop the entry's length to what
-            // is certain to have been written: nothing past the old file.
+            // The write stopped part way: record whatever the file holds now.
             idx.remove(name);
             File f = new File(dir, name);
             if (f.isFile()) idx.put(name, new long[] {f.length(), ++clock});
