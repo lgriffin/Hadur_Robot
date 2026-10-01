@@ -94,7 +94,8 @@ tests that prove it.
 | Shield | Bullet-shielding counter (SHIELD-1, SHIELD-2) | done ([Saguaro](docs/bench/shield-counter-saguaro.md), [notes](docs/bullet-shielding.md)) |
 | M0-M6 | Melee Extension Plan: fail-closed gate, sensing, minimum risk, field gun, melee memory, tuning; release 3.0 | done, final APS gate not met ([M6 report](docs/bench/m6-gates.md)) |
 | R0-R3 | Rumble climb: bench tooling, client reliability, full share vs weak bots, anti-surfer gun | merged, not yet released |
-| R3.5-R6 | Rumble climb: release, stop the lost live rounds, rumble-safe memory, movement precision | planned ([plan](docs/rumble-climb-r4-r6-plan.md)) |
+| R3.5-R4 | Rumble climb: release 3.1, client-conditions bench, return fire and health record; release 3.2 | done ([plan](docs/rumble-climb-r4-r6-plan.md)); the live slide was not reproduced |
+| R5, R7, R6 | Top 30: rumble-safe memory, the long-session bench and the slide's fix, movement precision | planned ([plan](docs/rumble-climb-top30-plan.md)) |
 
 The plan's S7 was "cut melee". Release 2.1 had already put melee in the core for the
 MeleeRumble, and it costs the duel nothing (it runs only while two or more opponents are

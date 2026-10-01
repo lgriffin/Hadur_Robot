@@ -44,6 +44,34 @@ Evidence: `rumble/parsed/2026-09-28T1944Z_roborumble_rankings_top50.tsv`.
 **L-06 · confirmed.** The live flag showed "Unknown" until `hadur2,IRL` was added to the
 robowiki `RoboRumble/Country_Flags` page. Evidence: the BotDetails page header.
 
+**L-22 · confirmed (extends L-01, refutes the hope in R3.5).** 3.1's first full rumble pass
+(512 pairings, 2026-09-30 11:23 to 14:38 UTC) slides the way 3.0 collapsed: 85.7 APS / 91.8%
+survival in the first hour, 82.1 / 85.2 in the second, 79.7 / 79.1 in the third, 78.6 / 76.1
+in the last 40 minutes, at constant opponent strength (PBI falls from +3.2 to -1.5). The 16th
+place at 11:45 was the first 53 pairings, which still average 86.74 in the complete page.
+R1 did not fix it: head to head on 213 common opponents 3.1 is +0.6 over 3.0, noise.
+Evidence: `rumble/parsed/2026-09-30T1443Z_roborumble_botdetails_hadur2.Hadur_3.1.csv`,
+`docs/bench/live-details-3.1.md`, [top-30 plan section 1](../docs/rumble-climb-top30-plan.md).
+Owner: R7.
+
+**L-23 · confirmed.** The gap. On 2026-09-30 rank 30 needed 84.30 APS and rank 40 83.11; 3.1
+finished at 81.46 (rank 65), 36 bots between it and rank 30. 3.1's first-hour rate (85.7)
+is rank 21; its first-hour PBI applied to every pairing gives 84.3, rank 30 exactly. The
+slide is the whole gap and R6-style tuning is only margin.
+Evidence: `rumble/parsed/2026-09-30T1145Z_roborumble_rankings.tsv`.
+
+**L-24 · open.** Every bench pass ever run, BENCH-4's conditions included, forks a fresh JVM
+per battle with the default heap and meets at most 60 distinct opponents; a rumble client
+runs a session's battles through one `RobocodeEngine` in one process under `-Xmx512M`
+against hundreds of distinct opponents. That difference has never been benched and matches
+the live signature (healthy first, degrading over an hour or a few hundred battles).
+Evidence: `hadur-bench` `Bench.runBattle` and `BattleRunner`; the Robocode 1.9.5.6
+`roborumble.sh`. Owner: R7 (BENCH-6).
+
+**L-25 · confirmed.** The rumble ran 3.1's 512 priority pairings in 3 hours 15 minutes,
+about 160 battles an hour, three times the R4 plan's gauge. A new version's complete read
+is the same afternoon. Evidence: the battle times in L-22's table.
+
 ## The bench against the field
 
 **L-07 · confirmed.** 3.0 beats 40 of 48 of the top 50 on the bench (mean share 58.5%). The
