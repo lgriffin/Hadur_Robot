@@ -4,7 +4,7 @@ Planning document written after the R7 session bench (300 battles in one engine 
 jar) showed Hadur's skipped turns per battle climbing from about 10 to about 90 while the
 control robot stayed at 0. It answers three questions Leigh asked on 2026-10-01: why that
 happened, how to prevent it, and what changes when it is gone. Evidence is in
-[docs/bench/r7-session.md](bench/r7-session.md) and `data/learnings.md` (L-22, L-23).
+[docs/bench/r7-session.md](bench/r7-session.md) and `data/learnings.md` (L-26, L-27).
 
 **Status: proposed.** One stage, R8, one PR, shipping as 3.4.
 

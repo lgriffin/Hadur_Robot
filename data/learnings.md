@@ -163,7 +163,7 @@ artifacts) as a BENCH-4 condition, suggested but not attempted this session.
 Evidence: `docs/bench/r4-client-conditions.md`, `docs/bench/r4-prefill-condition.md`;
 `hadur-bench/client-conditions-r4b.txt`. Owner: R4.
 
-**L-22 · confirmed.** The session bench (BENCH-6/7, 300 battles in one engine process, 3.2
+**L-26 · confirmed.** The session bench (BENCH-6/7, 300 battles in one engine process, 3.2
 jar) shows skipped turns per battle climbing from 10 to 90 while the control robot stays at
 0, with survival, heap, live classes and turn p95 flat. Every added skip sits one tick after
 a round's end: it is the round-end profile save, whose cost grows with the number of files in
@@ -174,10 +174,20 @@ profiles costs 21 to 31 skipped turns per save on both 3.2 and 3.3, 2,000 costs 
 Survival stays 100% because the stall is after the round is decided. Evidence:
 `docs/bench/r7-session.md`. Owner: R7; fix planned as R8 (`docs/rumble-memory-scale-plan.md`).
 
-**L-23 · confirmed.** Past about 700 stats-only profiles (275 bytes each, 200 KB quota) the
+**L-27 · confirmed.** Past about 700 stats-only profiles (275 bytes each, 200 KB quota) the
 data directory is over quota and every profile save is skipped ("275 bytes do not fit"), so
 on a rumble client that has met most of the field Hadur persists nothing between battles.
 `hadur2.Hadur.data` is keyed by class name, not version, so a long-lived client reaches this
 with any version. The live slide (a survival collapse) is not reproduced by any directory
 size, so this explains lost memory and the skipped-turn growth, not the slide. Evidence:
 `docs/bench/r7-session.md` section 3. Owner: R8.
+
+**L-28 · open.** The 300-battle session disabled Hadur three times (battles 59, 166, 215:
+"has not performed any actions in a reasonable amount of time"), each mid-round, each after a
+silent gap of about 240 turns with no skipped-turn, FAULT or MEM line before it, costing that
+round. The engine's rule needs 240 consecutive misses (240 ms on a 1 ms client, 690 ms here),
+so these are the one thing in the session shaped like the live slide. Unexplained; the test is
+the session at a client constant (`docs/skipped-turns-plan.md` section 5). Also seen: on Java
+20+ the engine's `Thread.stop` throws `UnsupportedOperationException` (two opponents in
+`session.log`). Evidence: the session logs under `/mnt/project-files/bench-session/`,
+`docs/skipped-turns-plan.md`. Owner: R8.
