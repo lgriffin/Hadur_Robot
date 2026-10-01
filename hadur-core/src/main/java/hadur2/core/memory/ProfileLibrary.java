@@ -47,6 +47,17 @@ public final class ProfileLibrary {
     public static final String CLOCK = "battles.hc";
     /** MEM-5's threshold: seeds are evicted before a save would take the store past 90% of its quota. */
     public static final double EVICT_AT = 0.9;
+    /** MEM-8: seeds are kept for at most this many opponents, regardless of quota pressure. */
+    public static final int MAX_SEEDED = 5;
+    /** MEM-8: an opponent's seeds are worth keeping only once it has been fought this often. */
+    public static final int SEED_WORTHY_BATTLES = 2;
+    /** MEM-8: and only while its recorded score share stays under this. */
+    public static final double SEED_WORTHY_SCORE_SHARE = 0.6;
+    /** MEM-9: the separator between a file's format-version prefix and its stem. The store
+     * is a flat namespace (RES-6 keeps file I/O out of the core, and the robot adapter's
+     * sandbox forbids path separators), so a version's files share the store's one
+     * directory under a name prefix rather than a real subdirectory. */
+    private static final String VERSION_SEPARATOR = "-v";
     /** The clock file's size: {@code 'H' 'C'}, version 1, an i64 battle number and an i32 CRC. */
     static final int CLOCK_SIZE = 15;
 
@@ -164,16 +175,71 @@ public final class ProfileLibrary {
         } catch (RuntimeException e) {
             // The first scan tries again and counts any failure.
         }
+        try {
+            cleanupOtherVersions();
+        } catch (RuntimeException e) {
+            // Cleanup is an optimisation; a failure here costs space, never the battle.
+        }
     }
 
     /**
-     * The store name of a key's profile.
+     * MEM-9: while the store is short of quota, deletes other format versions' files —
+     * this version's own are never touched — oldest fought first, until it is not or none
+     * of them are left. A version no client on this build ever writes again only ever
+     * shrinks, so this reclaims the space other versions hold without touching anything
+     * {@link #readOtherVersion} might still carry forward from them.
+     */
+    private void cleanupOtherVersions() {
+        long limit = (long) Math.floor(store.quota() * EVICT_AT);
+        if (store.bytesUsed() <= limit) return;
+        List<String> others = new ArrayList<>();
+        for (String name : store.names()) {
+            if (name.equals(CLOCK) || isOwnVersion(name)) continue;
+            if (name.endsWith(PROFILE_SUFFIX) || name.endsWith(PROFILE_SUFFIX + TMP_SUFFIX)) others.add(name);
+        }
+        others.sort(Comparator.comparingLong(this::lastFoughtOf).thenComparing(n -> n));
+        for (String name : others) {
+            if (store.bytesUsed() <= limit) break;
+            store.delete(name);
+        }
+    }
+
+    /** The battle a stored profile file was last fought in, or -1 if it cannot be read. */
+    private long lastFoughtOf(String name) {
+        try {
+            byte[] b = store.read(name);
+            return b == null ? -1 : ProfileCodec.decode(b).lastFought();
+        } catch (RuntimeException e) {
+            return -1;
+        }
+    }
+
+    /**
+     * The store name of a key's profile at the codec's current version.
      *
      * @param key a lineage key
      * @return the stem from {@link LineageKey#fileStem} plus {@link #PROFILE_SUFFIX}
      */
     public static String fileName(String key) {
-        return LineageKey.fileStem(key) + PROFILE_SUFFIX;
+        return fileName(key, ProfileCodec.VERSION);
+    }
+
+    /**
+     * MEM-9: the store name of a key's profile at format {@code version}. Different
+     * versions never share a name, so a Hadur release on an older or newer format never
+     * reads or overwrites another version's file.
+     *
+     * @param key a lineage key
+     * @param version a profile format version
+     */
+    static String fileName(String key, int version) {
+        return LineageKey.fileStem(key) + VERSION_SEPARATOR + version + PROFILE_SUFFIX;
+    }
+
+    /** Whether {@code name} is one of this library's own {@link #writeVersion}'s files. */
+    private boolean isOwnVersion(String name) {
+        return name.endsWith(VERSION_SEPARATOR + writeVersion + PROFILE_SUFFIX)
+            || name.endsWith(VERSION_SEPARATOR + writeVersion + PROFILE_SUFFIX + TMP_SUFFIX);
     }
 
     /**
@@ -188,7 +254,11 @@ public final class ProfileLibrary {
         OpponentProfile profile = null;
         String failure = null;
         try {
-            profile = read(fileName(key), key);
+            profile = read(fileName(key, writeVersion), key);
+            // MEM-9: nothing of this version yet; an older or newer release's file still
+            // carries tiers forward, once, stats only — its seeds mean nothing to a format
+            // this library did not write and are dropped rather than trusted.
+            if (profile == null) profile = readOtherVersion(key);
         } catch (RuntimeException e) {
             failure = describe(e);
             loadFailures++;
@@ -200,6 +270,37 @@ public final class ProfileLibrary {
         if (profile == null) profile = new OpponentProfile(key);
         profile.startBattle(exactName, nextBattle(profile));
         return new Loaded(profile, found, failure);
+    }
+
+    /**
+     * MEM-9: the nearest other format version's profile for {@code key}, newest version
+     * first, stats only. Returns null when none of the other versions have one.
+     */
+    private OpponentProfile readOtherVersion(String key) {
+        for (int v = ProfileCodec.VERSION; v >= ProfileCodec.OLDEST_VERSION; v--) {
+            if (v == writeVersion) continue;
+            OpponentProfile p = readQuietly(fileName(key, v), key);
+            if (p != null) {
+                p.dropSeeds();
+                return p;
+            }
+        }
+        // Files written before MEM-9 had no version in their name.
+        OpponentProfile legacy = readQuietly(LineageKey.fileStem(key) + PROFILE_SUFFIX, key);
+        if (legacy != null) legacy.dropSeeds();
+        return legacy;
+    }
+
+    /**
+     * {@link #read} for another version's file: damage there means this version simply has
+     * nothing to carry forward, not a failed load, so it is skipped rather than counted.
+     */
+    private OpponentProfile readQuietly(String file, String key) {
+        try {
+            return read(file, key);
+        } catch (RuntimeException e) {
+            return null;
+        }
     }
 
     /**
@@ -296,9 +397,18 @@ public final class ProfileLibrary {
      * @return what was done
      */
     public Saved save(OpponentProfile profile) {
-        String file = fileName(profile.key());
+        String file = fileName(profile.key(), writeVersion);
         try {
-            byte[] bytes = ProfileCodec.encode(profile, writeVersion);
+            OpponentProfile toWrite = profile;
+            boolean hadSeeds = profile.gunSeedSize() + profile.surfSeedSize() > 0;
+            boolean seeded = hadSeeds;
+            if (hadSeeds && !seedWorthy(profile)) {
+                // MEM-8: not worth the space; write the stats, not the seeds. A copy, so the
+                // caller's own profile keeps its seeds in memory for the rest of the battle.
+                toWrite = ProfileCodec.decode(ProfileCodec.encodeStatsOnly(profile));
+                seeded = false;
+            }
+            byte[] bytes = ProfileCodec.encode(toWrite, writeVersion);
             // Bytes held by everything this save does not replace.
             long others = store.bytesUsed() - size(file) - size(file + TMP_SUFFIX) - size(CLOCK);
             long limit = (long) Math.floor(store.quota() * EVICT_AT);
@@ -306,12 +416,15 @@ public final class ProfileLibrary {
             if (others + 2L * bytes.length + CLOCK_SIZE > limit) {
                 others -= evictSeeds(file, others + 2L * bytes.length + CLOCK_SIZE - limit);
             }
-            Saved outcome = Saved.WRITTEN;
+            // A profile that never had seeds is simply WRITTEN; one whose seeds were
+            // dropped, by MEM-8 above or by quota eviction below, is WRITTEN_WITHOUT_SEEDS.
+            Saved outcome = hadSeeds && !seeded ? Saved.WRITTEN_WITHOUT_SEEDS : Saved.WRITTEN;
             if (others + 2L * bytes.length + CLOCK_SIZE > store.quota()) {
                 // Strip a copy (decoded from the bytes), not the caller's profile, which keeps
                 // its seeds for the rest of the battle.
                 OpponentProfile stripped = ProfileCodec.decode(bytes);
                 if (stripped.dropSeeds()) {
+                    seeded = false;
                     seedsEvicted++;
                     bytes = ProfileCodec.encode(stripped, writeVersion);
                     outcome = Saved.WRITTEN_WITHOUT_SEEDS;
@@ -322,7 +435,13 @@ public final class ProfileLibrary {
                     return Saved.SKIPPED;
                 }
             }
+            // MEM-8's cap comes after the write, so a save that is skipped or fails has not
+            // stripped anyone else. It only runs when this file is a new holder: one that
+            // already held seeds cannot raise the count, so the common checkpoint of an
+            // already-seeded opponent never scans the store.
+            boolean newHolder = seeded && !holdsSeeds(file);
             writeAtomically(file, bytes);
+            if (newHolder) enforceSeedCap(file);
             // The clock goes after the profile. If its write is lost or torn, the next
             // battle recovers the number from the profiles (maxLastFought).
             store.write(CLOCK, clockBytes(Math.max(battleNumber, profile.lastFought())));
@@ -339,9 +458,9 @@ public final class ProfileLibrary {
      * scratch. Round-end checkpoints use this so the frequent write costs only what the
      * stats need: it never serialises the caller's own (possibly large) seed lists, and
      * never touches them in memory either. Whatever seeds are already safely on disk for
-     * this profile are carried over unchanged, so a checkpoint before the tenth never
-     * erases what an earlier save already committed (MEM-3) — it only leaves them stale
-     * until the next full save (battle end, or every tenth checkpoint, see
+     * this profile are carried over unchanged, so a checkpoint never erases what an earlier
+     * save already committed (MEM-3) — it only leaves them stale until the next full save,
+     * which MEM-10 limits to the battle's one checkpoint and its end (see
      * {@code HadurCore#checkpoint}), never gone.
      *
      * @param profile the profile to save
@@ -353,7 +472,7 @@ public final class ProfileLibrary {
             // (whose seeds must stay in memory for the rest of the battle untouched), and
             // never an encode of the caller's own seed lists either (TIME-4's whole point).
             OpponentProfile copy = ProfileCodec.decode(ProfileCodec.encodeStatsOnly(profile));
-            byte[] stored = store.read(fileName(profile.key()));
+            byte[] stored = store.read(fileName(profile.key(), writeVersion));
             if (stored != null) {
                 try {
                     OpponentProfile onDisk = ProfileCodec.decode(stored);
@@ -391,11 +510,13 @@ public final class ProfileLibrary {
      * they can never be read. Returns the bytes freed.
      */
     private long evictSeeds(String ownFile, long needed) {
-        List<OpponentProfile> candidates = new ArrayList<>();
+        List<SeededFile> candidates = new ArrayList<>();
         long freed = 0;
-        // Pass 1: reclaim what can never be read, and collect profiles that still have seeds.
+        // Pass 1: reclaim what can never be read, and collect profiles that still have
+        // seeds. MEM-9: only this version's own files, never another version's.
         for (String name : store.names()) {
             if (name.equals(ownFile) || name.equals(ownFile + TMP_SUFFIX) || name.equals(CLOCK)) continue;
+            if (!isOwnVersion(name)) continue;
             byte[] bytes = store.read(name);
             if (bytes == null) continue;
             if (!name.endsWith(PROFILE_SUFFIX)) {
@@ -409,7 +530,7 @@ public final class ProfileLibrary {
             }
             try {
                 OpponentProfile p = ProfileCodec.decode(bytes);
-                if (p.gunSeedSize() + p.surfSeedSize() > 0) candidates.add(p);
+                if (p.gunSeedSize() + p.surfSeedSize() > 0) candidates.add(new SeededFile(name, p));
             } catch (ProfileFormatException e) {
                 store.delete(name);
                 freed += bytes.length;
@@ -417,20 +538,83 @@ public final class ProfileLibrary {
         }
         // Pass 2: least recently fought first; the key breaks ties so the order is
         // deterministic (CORE-2).
-        candidates.sort(Comparator.comparingLong(OpponentProfile::lastFought)
-            .thenComparing(OpponentProfile::key));
-        for (OpponentProfile p : candidates) {
+        candidates.sort(Comparator.<SeededFile>comparingLong(c -> c.profile.lastFought())
+            .thenComparing(c -> c.profile.key()));
+        for (SeededFile c : candidates) {
             if (freed >= needed) break;
-            String name = fileName(p.key());
-            long before = size(name);
-            p.dropSeeds();
-            byte[] stripped = ProfileCodec.encode(p, writeVersion);
-            writeAtomically(name, stripped);
+            long before = size(c.name);
+            c.profile.dropSeeds();
+            byte[] stripped = ProfileCodec.encode(c.profile, writeVersion);
+            writeAtomically(c.name, stripped);
             freed += before - stripped.length;
             seedsEvicted++;
-            lastNote = "evicted seeds of " + p.key();
+            lastNote = "evicted seeds of " + c.profile.key();
         }
         return freed;
+    }
+
+    /** A stored profile, paired with the exact store name it was read from. */
+    private static final class SeededFile {
+        final String name;
+        final OpponentProfile profile;
+
+        SeededFile(String name, OpponentProfile profile) {
+            this.name = name;
+            this.profile = profile;
+        }
+    }
+
+    /** MEM-8: an opponent's seeds are worth the space once it has been fought at least
+     * {@link #SEED_WORTHY_BATTLES} times and scored under {@link #SEED_WORTHY_SCORE_SHARE}. */
+    static boolean seedWorthy(OpponentProfile profile) {
+        return profile.battles() >= SEED_WORTHY_BATTLES
+            && profile.recordedScoreShare() < SEED_WORTHY_SCORE_SHARE;
+    }
+
+    /**
+     * MEM-8: keeps at most {@link #MAX_SEEDED} profiles (this version's own) holding seeds
+     * at a time. Called just before {@code ownFile} is written with seeds of its own: if
+     * that would be the {@code MAX_SEEDED + 1}th, the least recently fought of the others
+     * loses its seeds first, so the newest and most relevant opponents are what a thin
+     * quota can still replay from (ADAPT-3).
+     */
+    private void enforceSeedCap(String ownFile) {
+        List<SeededFile> holders = new ArrayList<>();
+        for (String name : store.names()) {
+            if (name.equals(ownFile) || !isOwnVersion(name) || !name.endsWith(PROFILE_SUFFIX)) continue;
+            byte[] bytes = store.read(name);
+            if (bytes == null) continue;
+            try {
+                OpponentProfile p = ProfileCodec.decode(bytes);
+                if (p.gunSeedSize() + p.surfSeedSize() > 0) holders.add(new SeededFile(name, p));
+            } catch (ProfileFormatException e) {
+                // MEM-5's own eviction path reclaims a damaged file; nothing to do here.
+            }
+        }
+        int excess = holders.size() - (MAX_SEEDED - 1);
+        if (excess <= 0) return;
+        holders.sort(Comparator.<SeededFile>comparingLong(c -> c.profile.lastFought())
+            .thenComparing(c -> c.profile.key()));
+        for (int i = 0; i < excess; i++) {
+            SeededFile c = holders.get(i);
+            c.profile.dropSeeds();
+            byte[] stripped = ProfileCodec.encode(c.profile, writeVersion);
+            writeAtomically(c.name, stripped);
+            seedsEvicted++;
+            lastNote = "evicted seeds of " + c.profile.key() + " (MEM-8 cap)";
+        }
+    }
+
+    /** Whether the stored profile {@code name} exists, decodes and holds seeds. */
+    private boolean holdsSeeds(String name) {
+        byte[] bytes = store.read(name);
+        if (bytes == null) return false;
+        try {
+            OpponentProfile p = ProfileCodec.decode(bytes);
+            return p.gunSeedSize() + p.surfSeedSize() > 0;
+        } catch (RuntimeException e) {
+            return false;
+        }
     }
 
     /** Whether {@code bytes} decode as a profile. */

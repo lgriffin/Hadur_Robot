@@ -166,23 +166,24 @@ public class MemorySteps {
 
     @Given("a nearly full store with seeded profiles fought in battles {int}, {int} and {int}")
     public void nearlyFull(int a, int b, int c) {
-        int size = ProfileCodec.encode(Profiles.sample("x.Y", 1, 600, 300)).length;
+        int size = ProfileCodec.encode(Profiles.seedWorthy("x.Y", 1, 600, 300)).length;
         store = new MemoryProfileStore((long) ((4 * size + 200) / ProfileLibrary.EVICT_AT));
         ProfileLibrary lib = new ProfileLibrary(store);
-        for (int battle : new int[] {a, b, c}) lib.save(Profiles.sample("bot.B" + battle, battle, 600, 300));
+        for (int battle : new int[] {a, b, c}) lib.save(Profiles.seedWorthy("bot.B" + battle, battle, 600, 300));
     }
 
     @When("a seeded profile from battle {int} is saved")
     public void saveSeeded(int battle) {
         assertEquals(ProfileLibrary.Saved.WRITTEN,
-            new ProfileLibrary(store).save(Profiles.sample("bot.B" + battle, battle, 600, 300)));
+            new ProfileLibrary(store).save(Profiles.seedWorthy("bot.B" + battle, battle, 600, 300)));
     }
 
     @Then("the profile from battle {int} has no seeds but keeps its stats")
     public void noSeeds(int battle) {
         OpponentProfile p = stored("bot.B" + battle);
         assertEquals(0, p.gunSeedSize() + p.surfSeedSize());
-        assertEquals(1, p.rounds());
+        // Profiles.seedWorthy folds two battles, so the stats it keeps span both.
+        assertEquals(2, p.rounds());
     }
 
     @And("the profile from battle {int} keeps its seeds")

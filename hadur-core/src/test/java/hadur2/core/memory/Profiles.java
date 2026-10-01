@@ -28,6 +28,34 @@ public final class Profiles {
     }
 
     /**
+     * A profile fought twice and losing both times (MEM-8: worth keeping seeds for — met
+     * at least twice, recorded score share under 60%), with seeds when asked. Otherwise the
+     * same shape as {@link #sample}.
+     */
+    public static OpponentProfile seedWorthy(String name, long battleNumber, int gunSeed, int surfSeed) {
+        OpponentProfile p = new OpponentProfile(LineageKey.of(name));
+        p.startBattle(name, Math.max(0, battleNumber - 1));
+        new ProfileFolder(p, 800, 600).fold(false);
+        p.startBattle(name, battleNumber);
+        ProfileFolder f = new ProfileFolder(p, 800, 600);
+        for (int i = 0; i < 40; i++) {
+            f.enemyShot(100 + i * 15, 0.5 + (i % 5) * 0.5, i % 3 != 0);
+            f.ourShot(120 + i * 12);
+            f.enemyScanned(i % 7 == 0 ? -8 : 8, 5.5, 30 + i, 300);
+        }
+        for (int i = 0; i < 6; i++) {
+            f.hitByEnemy(200 + i * 40, true, 10);
+            f.ourHit(300, 16);
+        }
+        f.virtualGuns(40, 5.5, 40, 7.25);
+        f.normalised(40, 5.2);
+        f.fold(false);
+        for (int i = 0; i < gunSeed; i++) p.addGunSample(sampleValues(i));
+        for (int i = 0; i < surfSeed; i++) p.addSurfSample(sampleValues(-i));
+        return p;
+    }
+
+    /**
      * Sets the evidence behind the tiers to 2000 waves each: their normalised hit rate on
      * us, and our main and anti-surfer virtual ratings. Margins are then about 1.5 points.
      */

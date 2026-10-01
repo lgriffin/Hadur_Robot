@@ -85,6 +85,20 @@ class OpeningBookTest {
     }
 
     @Test
+    @Tag("ADAPT-4")
+    @DisplayName("ADAPT-4: a known gun tier with no seeds applies from the first tick, replaying nothing")
+    void knownTierWithNoSeedsAppliesImmediately() {
+        // MEM-8 leaves exactly this shape for an opponent not worth seeding: known tiers,
+        // no seeds on disk. The opening book must not wait on samples that do not exist.
+        Opening o = OpeningBook.read(known(0.09, 0.2, 0.19));
+        assertTrue(o.gunTier() != Tiers.Gun.UNKNOWN, "the tier is known");
+        assertTrue(o.gunSeed().isEmpty(), "no seeds to replay");
+        assertTrue(o.surfSeed().isEmpty());
+        assertTrue(o.flattenerFirst(), "T3's flattener choice still applies immediately");
+        assertEquals(OpeningBook.distance(Tiers.Gun.T3), o.distance(), "so does the starting distance");
+    }
+
+    @Test
     @Tag("DIAL-2")
     @DisplayName("the book reads only the profile: no tick, round or clock goes in")
     void bookTakesNoTime() {

@@ -92,27 +92,38 @@ class CoreMemoryTest {
 
     @Test
     @Tag("TIME-4")
-    @DisplayName("TIME-4: checkpoints never lose stored seeds, and the tenth catches disk up to the battle's own")
+    @Tag("MEM-10")
+    @DisplayName("MEM-10: only the battle's first round-end checkpoint writes; the rest are no-ops")
     void checkpointsCapSeedWrites() {
-        MemoryProfileStore store = storeWith(Profiles.sample(SHADOW, 9, 50, 50));
+        // A losing profile throughout, so its recorded score share stays under 60% and
+        // MEM-8 keeps its seeds through every save this test makes, checkpoints included.
+        MemoryProfileStore store = storeWith(Profiles.seedWorthy(SHADOW, 9, 50, 50));
+        int roundsBefore = ProfileCodec.decode(store.read(ProfileLibrary.fileName("abc.Shadow"))).rounds();
         HadurCore core = new HadurCore(800, 600, 1, Telemetry.NONE, store);
         String file = ProfileLibrary.fileName("abc.Shadow");
-        for (int round = 0; round < 9; round++) {
+        core.newRound(0);
+        core.tick(scan(1, SHADOW));
+        core.roundEnded(2, "loss", 0, 50);
+        core.checkpoint(2);
+        OpponentProfile afterFirst = ProfileCodec.decode(store.read(file));
+        assertEquals(roundsBefore + 1, afterFirst.rounds(), "the first checkpoint writes what the battle folded so far");
+        assertTrue(afterFirst.gunSeedSize() >= 50, "the first checkpoint must not erase stored seeds");
+
+        int writesAfterFirst = store.writes();
+        for (int round = 1; round < 5; round++) {
             core.newRound(round);
             core.tick(scan(1, SHADOW));
-            core.roundEnded(2, "win", 100, 0);
+            core.roundEnded(2, "loss", 0, 50);
             core.checkpoint(2);
-            OpponentProfile persisted = ProfileCodec.decode(store.read(file));
-            assertTrue(persisted.gunSeedSize() >= 50,
-                "checkpoint " + (round + 1) + " must not erase what an earlier save already stored");
         }
-        core.newRound(9);
-        core.tick(scan(1, SHADOW));
-        core.roundEnded(2, "win", 100, 0);
-        core.checkpoint(2);
-        OpponentProfile tenth = ProfileCodec.decode(store.read(file));
-        assertEquals(core.profile().gunSeedSize(), tenth.gunSeedSize(),
-            "the tenth checkpoint catches disk up to what the battle currently holds");
+        assertEquals(writesAfterFirst, store.writes(), "later checkpoints in the same battle write nothing (MEM-10)");
+        OpponentProfile stillFirst = ProfileCodec.decode(store.read(file));
+        assertEquals(roundsBefore + 1, stillFirst.rounds(), "what's on disk is still just the first checkpoint");
+
+        core.battleEnded(2);
+        OpponentProfile atEnd = ProfileCodec.decode(store.read(file));
+        assertEquals(roundsBefore + 5, atEnd.rounds(), "the battle-end save catches everything up");
+        assertTrue(atEnd.gunSeedSize() >= 50, "the battle-end save still carries the seeds");
     }
 
     @Test

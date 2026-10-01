@@ -1,5 +1,6 @@
 package hadur2.core.memory;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -52,7 +53,7 @@ class ProfileLibraryTest {
     @DisplayName("a save persists the profile byte for byte, with no temporary copy left")
     void savePersists() {
         MemoryProfileStore store = new MemoryProfileStore(QUOTA);
-        OpponentProfile p = Profiles.sample("sample.Crazy", 5, 10, 10);
+        OpponentProfile p = Profiles.seedWorthy("sample.Crazy", 5, 10, 10);
         assertEquals(ProfileLibrary.Saved.WRITTEN, new ProfileLibrary(store).save(p));
         String file = ProfileLibrary.fileName("sample.Crazy");
         assertEquals(p, ProfileCodec.decode(store.read(file)));
@@ -107,8 +108,8 @@ class ProfileLibraryTest {
     @Tag("RES-3")
     @DisplayName("a save killed at any byte leaves a loadable profile, old or new")
     void killedAtEveryByte() {
-        OpponentProfile old = Profiles.sample("abc.Shadow 3.83c", 3, 20, 5);
-        OpponentProfile next = Profiles.sample("abc.Shadow 3.83c", 4, 25, 6);
+        OpponentProfile old = Profiles.seedWorthy("abc.Shadow 3.83c", 3, 20, 5);
+        OpponentProfile next = Profiles.seedWorthy("abc.Shadow 3.83c", 4, 25, 6);
         int size = ProfileCodec.encode(next).length;
         // Writes in one save: the temporary copy, then the profile. Kill each at every byte.
         for (int write = 0; write < 2; write++) {
@@ -168,11 +169,12 @@ class ProfileLibraryTest {
     @Tag("MEM-5")
     @DisplayName("near the quota, seeds of the least recently fought profiles go first")
     void evictsLeastRecentlyFoughtSeeds() {
-        OpponentProfile oldest = Profiles.sample("a.Oldest", 1, 600, 300);
-        OpponentProfile middle = Profiles.sample("b.Middle", 2, 600, 300);
-        OpponentProfile newest = Profiles.sample("c.Newest", 3, 600, 300);
+        OpponentProfile oldest = Profiles.seedWorthy("a.Oldest", 1, 600, 300);
+        OpponentProfile middle = Profiles.seedWorthy("b.Middle", 2, 600, 300);
+        OpponentProfile newest = Profiles.seedWorthy("c.Newest", 3, 600, 300);
         int full = ProfileCodec.encode(oldest).length;
-        // Room for three seeded profiles while saving, but not a fourth.
+        // Room for three seeded profiles while saving, but not a fourth. Four is still
+        // within MEM-8's five-opponent cap, so only the quota (MEM-5) forces this eviction.
         MemoryProfileStore store = new MemoryProfileStore((long) ((4 * full + 200) / ProfileLibrary.EVICT_AT));
         ProfileLibrary lib = new ProfileLibrary(store);
         lib.save(newest);
@@ -180,13 +182,13 @@ class ProfileLibraryTest {
         lib.save(middle);
         assertEquals(0, lib.seedsEvicted());
 
-        OpponentProfile incoming = Profiles.sample("d.Incoming", 4, 600, 300);
+        OpponentProfile incoming = Profiles.seedWorthy("d.Incoming", 4, 600, 300);
         assertEquals(ProfileLibrary.Saved.WRITTEN, lib.save(incoming));
         assertTrue(lib.seedsEvicted() >= 1);
         assertEquals(0, stored(store, "a.Oldest").gunSeedSize(), "least recently fought loses its seeds");
         assertEquals(600, stored(store, "c.Newest").gunSeedSize(), "most recent keeps them");
         assertEquals(600, stored(store, "d.Incoming").gunSeedSize());
-        assertEquals(1, stored(store, "a.Oldest").rounds(), "stats are kept");
+        assertEquals(2, stored(store, "a.Oldest").rounds(), "stats are kept");
         assertTrue(store.bytesUsed() <= store.quota() * ProfileLibrary.EVICT_AT);
     }
 
@@ -214,13 +216,13 @@ class ProfileLibraryTest {
     void statsOnlySaveKeepsStoredSeeds() {
         MemoryProfileStore store = new MemoryProfileStore(QUOTA);
         ProfileLibrary lib = new ProfileLibrary(store);
-        lib.save(Profiles.sample("a.Seeded", 1, 50, 30));
+        lib.save(Profiles.seedWorthy("a.Seeded", 1, 50, 30));
         assertEquals(50, stored(store, "a.Seeded").gunSeedSize());
 
         // A checkpoint's profile object carries no seeds of its own here (as a freshly
         // loaded one would, before any seed replay); the seeds already on disk from the
         // earlier full save must still be there afterward, not erased.
-        OpponentProfile checkpointProfile = Profiles.sample("a.Seeded", 2, 0, 0);
+        OpponentProfile checkpointProfile = Profiles.seedWorthy("a.Seeded", 2, 0, 0);
         assertEquals(ProfileLibrary.Saved.WRITTEN, lib.saveStatsOnly(checkpointProfile));
         assertEquals(50, stored(store, "a.Seeded").gunSeedSize(),
             "the stats-only save must not erase stored seeds");
@@ -248,7 +250,7 @@ class ProfileLibraryTest {
         MemoryProfileStore store = new MemoryProfileStore(QUOTA);
         ProfileLibrary lib = new ProfileLibrary(store, ProfileCodec.OLDEST_VERSION);
         lib.save(Profiles.sample("a.Old", 1, 4, 2));
-        byte[] bytes = store.read(ProfileLibrary.fileName("a.Old"));
+        byte[] bytes = store.read(ProfileLibrary.fileName("a.Old", ProfileCodec.OLDEST_VERSION));
         assertEquals((byte) ProfileCodec.OLDEST_VERSION, bytes[2]);
         // The oldest version has no defined seed layout, so a plain decode drops them,
         // exactly as it would for a real version-1 file.
@@ -259,13 +261,13 @@ class ProfileLibraryTest {
     @Tag("MEM-6")
     @DisplayName("MEM-6: filling the quota with plain profiles empties every seed before any write is skipped")
     void skipOnlyAfterEveryonesSeedsAreGone() {
-        OpponentProfile seeded = Profiles.sample("z.Sample", 1, 600, 300);
+        OpponentProfile seeded = Profiles.seedWorthy("z.Sample", 1, 600, 300);
         int full = ProfileCodec.encode(seeded).length;
         // Room for two seeded profiles, generously, while nothing else competes for it.
         MemoryProfileStore store = new MemoryProfileStore((long) Math.ceil((3L * full + 200) / ProfileLibrary.EVICT_AT));
         ProfileLibrary lib = new ProfileLibrary(store);
-        lib.save(Profiles.sample("a.First", 1, 600, 300));
-        lib.save(Profiles.sample("b.Second", 2, 600, 300));
+        lib.save(Profiles.seedWorthy("a.First", 1, 600, 300));
+        lib.save(Profiles.seedWorthy("b.Second", 2, 600, 300));
         // Room for both, with no eviction forced yet.
         assertTrue(stored(store, "a.First").gunSeedSize() > 0 || stored(store, "b.Second").gunSeedSize() > 0,
             "at least one still has seeds before the store is crowded");
@@ -281,6 +283,133 @@ class ProfileLibraryTest {
         // there was to take, from both of the profiles that started with any.
         assertEquals(0, stored(store, "a.First").gunSeedSize(), "nobody keeps seeds before a skip");
         assertEquals(0, stored(store, "b.Second").gunSeedSize());
+    }
+
+    @Test
+    @Tag("MEM-8")
+    @DisplayName("MEM-8: a decisively won profile keeps its stats but never its seeds")
+    void oneSidedProfileKeepsNoSeeds() {
+        MemoryProfileStore store = new MemoryProfileStore(QUOTA);
+        ProfileLibrary lib = new ProfileLibrary(store);
+        // Profiles.sample is a single, decisively-won battle: not seed-worthy either way.
+        assertEquals(ProfileLibrary.Saved.WRITTEN_WITHOUT_SEEDS, lib.save(Profiles.sample("a.Easy", 1, 50, 50)));
+        assertEquals(0, stored(store, "a.Easy").gunSeedSize());
+        assertTrue(stored(store, "a.Easy").rounds() > 0, "the stats are still kept");
+    }
+
+    @Test
+    @Tag("MEM-8")
+    @DisplayName("MEM-8: a profile met only once is not worth seeding yet, even a losing one")
+    void metOnceIsNotYetSeedWorthy() {
+        // One battle, lost outright (all their damage, none of ours): a score share of 0,
+        // well under 60%, but still only one battle.
+        OpponentProfile metOnce = new OpponentProfile(LineageKey.of("b.OnceOnly"));
+        metOnce.startBattle("b.OnceOnly", 1);
+        ProfileFolder folder = new ProfileFolder(metOnce, 800, 600);
+        folder.hitByEnemy(200, true, 10);
+        folder.fold(false);
+        metOnce.addGunSample(Profiles.sampleValues(1));
+        metOnce.addSurfSample(Profiles.sampleValues(2));
+        assertEquals(1, metOnce.battles());
+
+        MemoryProfileStore store = new MemoryProfileStore(QUOTA);
+        assertEquals(ProfileLibrary.Saved.WRITTEN_WITHOUT_SEEDS, new ProfileLibrary(store).save(metOnce));
+    }
+
+    @Test
+    @Tag("MEM-8")
+    @DisplayName("MEM-8: a profile never had seeds still just WRITES, not WRITTEN_WITHOUT_SEEDS")
+    void seedlessProfileIsPlainlyWritten() {
+        MemoryProfileStore store = new MemoryProfileStore(QUOTA);
+        assertEquals(ProfileLibrary.Saved.WRITTEN,
+            new ProfileLibrary(store).save(Profiles.sample("a.NoSeeds", 1, 0, 0)));
+    }
+
+    @Test
+    @Tag("MEM-8")
+    @DisplayName("MEM-8: seeds are kept for at most five opponents, quota aside")
+    void atMostFiveSeededOpponents() {
+        MemoryProfileStore store = new MemoryProfileStore(QUOTA);
+        ProfileLibrary lib = new ProfileLibrary(store);
+        for (int i = 0; i < ProfileLibrary.MAX_SEEDED; i++) {
+            lib.save(Profiles.seedWorthy("a.Bot" + i, i + 1, 50, 50));
+        }
+        long withSeeds = 0;
+        for (int i = 0; i < ProfileLibrary.MAX_SEEDED; i++) {
+            if (stored(store, "a.Bot" + i).gunSeedSize() > 0) withSeeds++;
+        }
+        assertEquals(ProfileLibrary.MAX_SEEDED, withSeeds, "room for all five, well within quota");
+
+        // A sixth, more recent seed-worthy opponent bumps the least recently fought one.
+        lib.save(Profiles.seedWorthy("a.Bot" + ProfileLibrary.MAX_SEEDED, ProfileLibrary.MAX_SEEDED + 1, 50, 50));
+        withSeeds = 0;
+        for (int i = 0; i <= ProfileLibrary.MAX_SEEDED; i++) {
+            if (stored(store, "a.Bot" + i).gunSeedSize() > 0) withSeeds++;
+        }
+        assertEquals(ProfileLibrary.MAX_SEEDED, withSeeds, "still at most five, not six");
+        assertEquals(0, stored(store, "a.Bot0").gunSeedSize(), "the least recently fought lost its seeds");
+        assertTrue(stored(store, "a.Bot" + ProfileLibrary.MAX_SEEDED).gunSeedSize() > 0, "the newest keeps them");
+    }
+
+    @Test
+    @Tag("MEM-9")
+    @DisplayName("MEM-9: a save never overwrites another version's file, each keeps its own")
+    void versionsAreNamespaced() {
+        MemoryProfileStore store = new MemoryProfileStore(QUOTA);
+        new ProfileLibrary(store, ProfileCodec.OLDEST_VERSION).save(Profiles.sample("a.Bot", 1, 5, 5));
+        byte[] oldFile = store.read(ProfileLibrary.fileName("a.Bot", ProfileCodec.OLDEST_VERSION));
+        assertNotNull(oldFile);
+
+        // The current version's library carries the older one's stats forward (once, no
+        // seeds), then saves — its own save must not touch the older version's file.
+        ProfileLibrary current = new ProfileLibrary(store);
+        ProfileLibrary.Loaded loaded = current.load("a.Bot");
+        assertTrue(loaded.found(), "the older version's stats carry forward");
+        assertEquals(0, current.loadFailures());
+        current.save(loaded.profile());
+        assertArrayEquals(oldFile, store.read(ProfileLibrary.fileName("a.Bot", ProfileCodec.OLDEST_VERSION)),
+            "the older version's own file is untouched");
+        assertNotNull(store.read(ProfileLibrary.fileName("a.Bot", ProfileCodec.VERSION)),
+            "the current version now has its own file too");
+    }
+
+    @Test
+    @Tag("MEM-9")
+    @DisplayName("MEM-9: a newer version carries an older version's stats forward once, seeds dropped")
+    void carriesStatsForwardAcrossVersions() {
+        MemoryProfileStore store = new MemoryProfileStore(QUOTA);
+        OpponentProfile old = Profiles.seedWorthy("a.Bot", 3, 50, 50);
+        new ProfileLibrary(store, ProfileCodec.OLDEST_VERSION).save(old);
+
+        ProfileLibrary.Loaded loaded = new ProfileLibrary(store).load("a.Bot");
+        assertTrue(loaded.found(), "the older version's stats carry forward");
+        assertEquals(old.rounds(), loaded.profile().rounds(), "rounds carried over");
+        assertEquals(0, loaded.profile().gunSeedSize(), "seeds do not carry across a format version");
+        assertEquals(0, loaded.profile().surfSeedSize());
+    }
+
+    @Test
+    @Tag("MEM-9")
+    @DisplayName("MEM-9: short of quota, another version's files are deleted, oldest fought first")
+    void cleansUpOtherVersionsWhenShort() {
+        // Written directly, at the older version, so the store starts already short of
+        // quota — MEM-5's own eviction inside a save() is a different mechanism.
+        OpponentProfile older = Profiles.sample("a.Old", 1, 0, 0);
+        OpponentProfile newer = Profiles.sample("b.Newer", 2, 0, 0);
+        byte[] olderBytes = ProfileCodec.encode(older, ProfileCodec.OLDEST_VERSION);
+        byte[] newerBytes = ProfileCodec.encode(newer, ProfileCodec.OLDEST_VERSION);
+        MemoryProfileStore store = new MemoryProfileStore(olderBytes.length + newerBytes.length + 20);
+        store.write(ProfileLibrary.fileName("a.Old", ProfileCodec.OLDEST_VERSION), olderBytes);
+        store.write(ProfileLibrary.fileName("b.Newer", ProfileCodec.OLDEST_VERSION), newerBytes);
+        assertTrue(store.bytesUsed() > store.quota() * ProfileLibrary.EVICT_AT);
+
+        // A current-version library preparing for its first battle, short of quota, cleans
+        // up the older version's files before writing anything of its own.
+        new ProfileLibrary(store).prepare();
+        assertNull(store.read(ProfileLibrary.fileName("a.Old", ProfileCodec.OLDEST_VERSION)),
+            "the least recently fought old-version file is gone");
+        assertNotNull(store.read(ProfileLibrary.fileName("b.Newer", ProfileCodec.OLDEST_VERSION)),
+            "the more recently fought one is not touched unless it too must go");
     }
 
     @Test
@@ -317,5 +446,62 @@ class ProfileLibraryTest {
 
     static OpponentProfile stored(MemoryProfileStore store, String key) {
         return ProfileCodec.decode(store.read(ProfileLibrary.fileName(key)));
+    }
+
+    @Test
+    @Tag("MEM-9")
+    @DisplayName("MEM-9: a profile written before versioned names carries forward, seeds dropped")
+    void carriesForwardAnUnversionedProfile() {
+        MemoryProfileStore store = new MemoryProfileStore(QUOTA);
+        OpponentProfile old = Profiles.seedWorthy("a.Legacy", 3, 50, 50);
+        store.write(LineageKey.fileStem(old.key()) + ProfileLibrary.PROFILE_SUFFIX, ProfileCodec.encode(old));
+
+        ProfileLibrary lib = new ProfileLibrary(store);
+        ProfileLibrary.Loaded loaded = lib.load("a.Legacy");
+        assertTrue(loaded.found(), "the pre-R5 file's stats carry forward");
+        assertEquals(old.rounds(), loaded.profile().rounds());
+        assertEquals(0, loaded.profile().gunSeedSize());
+        assertEquals(0, lib.loadFailures());
+    }
+
+    @Test
+    @Tag("MEM-9")
+    @DisplayName("MEM-9: a damaged file from another version is no failed load")
+    void damagedOtherVersionIsNotAFailure() {
+        MemoryProfileStore store = new MemoryProfileStore(QUOTA);
+        store.write(ProfileLibrary.fileName("a.Bot", ProfileCodec.OLDEST_VERSION), new byte[] {1, 2, 3});
+        ProfileLibrary lib = new ProfileLibrary(store);
+        ProfileLibrary.Loaded loaded = lib.load("a.Bot");
+        assertFalse(loaded.found());
+        assertNull(loaded.failure());
+        assertEquals(0, lib.loadFailures());
+    }
+
+    @Test
+    @Tag("MEM-8")
+    @DisplayName("MEM-8: a save that fails leaves the other opponents' seeds where they were")
+    void failedSaveStripsNobody() {
+        MemoryProfileStore inner = new MemoryProfileStore(QUOTA);
+        ProfileLibrary lib = new ProfileLibrary(inner);
+        for (int i = 0; i < ProfileLibrary.MAX_SEEDED; i++) {
+            lib.save(Profiles.seedWorthy("a.Bot" + i, i + 1, 50, 50));
+        }
+        String sixth = ProfileLibrary.fileName(Profiles.seedWorthy("a.Sixth", 9, 50, 50).key());
+        ProfileStore failing = new ProfileStore() {
+            public byte[] read(String name) { return inner.read(name); }
+            public void write(String name, byte[] bytes) {
+                if (name.startsWith(sixth)) throw new IllegalStateException("disk full");
+                inner.write(name, bytes);
+            }
+            public void delete(String name) { inner.delete(name); }
+            public List<String> names() { return inner.names(); }
+            public long bytesUsed() { return inner.bytesUsed(); }
+            public long quota() { return inner.quota(); }
+        };
+        ProfileLibrary second = new ProfileLibrary(failing);
+        assertEquals(ProfileLibrary.Saved.FAILED, second.save(Profiles.seedWorthy("a.Sixth", 9, 50, 50)));
+        for (int i = 0; i < ProfileLibrary.MAX_SEEDED; i++) {
+            assertTrue(stored(inner, "a.Bot" + i).gunSeedSize() > 0, "a.Bot" + i + " keeps its seeds");
+        }
     }
 }
