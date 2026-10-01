@@ -210,3 +210,12 @@ the session at a client constant (`docs/skipped-turns-plan.md` section 5). Also 
 20+ the engine's `Thread.stop` throws `UnsupportedOperationException` (two opponents in
 `session.log`). Evidence: the session logs under `/mnt/project-files/bench-session/`,
 `docs/skipped-turns-plan.md`. Owner: R8.
+
+**L-31 · confirmed (extends L-30).** The weak tier is where 3.4's next ranks are. Its KNN PBI
+is +5.1 against the top 100 and −1.7 against the 716 opponents ranked below 500; that
+deficit costs about 1.0 APS, twice the gap to rank 19. It sits in the 368 weak pairings where
+Hadur loses a round or more (PBI −3.3, 1.4 rounds of 35 lost on average); where it wins every
+round PBI is −0.1. The worst are simple bots, several rammers by name (vort.Chaser,
+bbo.RamboT, PSW.Relentless, mahrgell.mahrram). Evidence:
+`rumble/parsed/2026-10-01T2020Z_roborumble_botdetails_hadur2.Hadur_3.4.csv`,
+`docs/top20-analysis.md`. Owner: none (no code work planned).
