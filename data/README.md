@@ -24,6 +24,7 @@ data/
     melee-field.tsv     every melee standings table, one row per entrant
   tools/
     harvest_bench.py    rebuilds the three *-history/field files from docs/bench/*.md
+    parse_rumble_page.py  parses a saved BotDetails or Rankings page into rumble/parsed/
 ```
 
 The bench reports themselves stay in [`docs/bench/`](../docs/bench/) as the readable record;
@@ -44,7 +45,8 @@ Sites: `roborumble` is the LiteRumble server (rumble.robowiki.net: `BotDetails`,
 
 1. **A saved page** (Leigh saves it in the browser as "Webpage, single file" and uploads it to
    the project): copy it into `rumble/pages/` under the naming rule, parse it into
-   `rumble/parsed/` with the same stem, and add a row to `catalog.tsv` for each. The pages
+   `rumble/parsed/` with the same stem (`python3 data/tools/parse_rumble_page.py PAGE.mht`
+   does both page kinds), and add a row to `catalog.tsv` for each. The pages
    are public rumble data. `.gitattributes` keeps their bytes exact (CRLF, MIME parts).
    The pages to keep saving: the current version's `BotDetails` after every few hundred
    pairings, and the `Rankings` top 100 on the same day, so rank and APS line up.
@@ -68,7 +70,7 @@ python3 -m unittest discover -s data/tools
 They are not wired into CI on purpose, so that a new bench report can never turn a stage PR
 red. Code the build depends on belongs in `hadur-bench` with its own tests, and copies any
 fixture it needs from here into `src/test/resources/`. The planned BENCH-5 live-details
-reader (R4, not built yet) is the first such case.
+reader (`hadur.bench.LiveDetails`, R4) is the first such case.
 
 ## Parsed page formats
 

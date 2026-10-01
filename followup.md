@@ -66,8 +66,11 @@ Open items from the Hadur 2 stages, newest stage first. The open ones are tracke
   still only covers the top-30 stratum, so BENCH-1 can't estimate APS). 3.1's own bench (weak
   set and top-10, docs/bench/rumble-3.1-*.md) shows no regression beyond noise, but is not
   those gates.
-- **Read the 3.1 BotDetails page with BENCH-5 once it has 300+ pairings** to see whether R1
-  touched the 08:30 effect before deciding R4's next step.
+- **Read with BENCH-5 (2026-09-30): R1 did not touch it.** 3.1's complete pass slides the same
+  way (85.7 APS in its first hour to 78.6 in its last; `docs/bench/live-details-3.1.md`).
+  The next plan is [docs/rumble-climb-top30-plan.md](docs/rumble-climb-top30-plan.md): enter
+  3.2 now, merge the held R5, then R7 (a one-JVM session bench over 300 rumble bots, the
+  one condition never benched) and R6 last.
 
 ## Release 3.0 and the melee extension (M0 to M6)
 

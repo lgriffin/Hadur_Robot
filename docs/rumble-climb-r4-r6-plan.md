@@ -5,7 +5,7 @@ top-50 bench (PR #63) and before any R4 code. It replaces the R4 and R5 sections
 original climb plan (the "Hadur Rumble Climb" artifact) and adds R6. R0 to R3 are merged
 (PRs #59 to #62) and are not changed here.
 
-**Status: final.** A Sonnet thread implements it stage by stage, one PR per stage, merged
+**Status: final; R3.5 and R4 done, R5 and R6 carried into [the top-30 plan](rumble-climb-top30-plan.md) (2026-09-30), which adds R7 after 3.1's live pass showed the same slide as 3.0.** A Sonnet thread implements it stage by stage, one PR per stage, merged
 as needed, with the usual rigour (EARS rows in `docs/requirements.md`, a tagged Cucumber
 scenario per ID, unit and jqwik tests, ArchUnit unchanged, replay fixtures re-recorded
 when play changes, deliberate `DuelIdentityTest` re-pins named in the PR,
