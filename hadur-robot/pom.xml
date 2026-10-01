@@ -33,7 +33,7 @@
 
     <build>
         <!-- RoboRumble naming: package.BotName_version.jar -->
-        <finalName>hadur2.Hadur_3.3</finalName>
+        <finalName>hadur2.Hadur_3.4</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

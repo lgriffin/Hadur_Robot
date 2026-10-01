@@ -10,18 +10,34 @@ same line go on both pages:
 [RoboRumble/Participants](https://robowiki.net/wiki/RoboRumble/Participants) for 1v1 and
 [RoboRumble/Participants/Melee](https://robowiki.net/wiki/RoboRumble/Participants/Melee).
 
-## Next entry: 3.3
+## Next entry: 3.4
+
+Hadur 3.4 (R8's memory fixes, see
+[docs/releases/v3.4.md](https://github.com/lgriffin/Hadur_Robot/blob/master/docs/releases/v3.4.md))
+replaces 3.3 in both leagues. The repository is public, so the GitHub release's asset is a
+direct download that never expires, and the line can use it without a Drive upload:
+
+```
+hadur2.Hadur 3.4,https://github.com/lgriffin/Hadur_Robot/releases/download/v3.4/hadur2.Hadur_3.4.jar
+```
+
+If you prefer Drive (as for 3.0 and 3.1), upload `hadur2.Hadur_3.4.jar` as in step 2 and
+use `hadur2.Hadur 3.4,https://drive.google.com/uc?export=download&id=<file id>` instead.
+Save 3.3's BotDetails page (if it has battles) before swapping.
+
+## Country flag
+
+LiteRumble shows the flag of the author's country next to each bot, keyed by the bot's
+main package, from the robowiki page
+[RoboRumble/Country Flags](https://robowiki.net/wiki/RoboRumble/Country_Flags). Hadur's
+package is `hadur2`, so the page needs one line `hadur2,IRL` (package, comma, the
+three-letter code the other entries use), added once; every Hadur version picks it up.
+
+## Previous entry: 3.3
 
 Hadur 3.3 (R5, R7 and R6 of the top-30 climb in one version, see
 [docs/releases/v3.3.md](https://github.com/lgriffin/Hadur_Robot/blob/master/docs/releases/v3.3.md))
-replaces 3.2 in both leagues once 3.2's pass is complete and Leigh hosts the jar on Google
-Drive. Its line, with the real link:
-
-```
-hadur2.Hadur 3.3,<Leigh's Google Drive link>
-```
-
-Save 3.2's BotDetails page before swapping. The steps below use 3.3.
+was to replace 3.2 with `hadur2.Hadur 3.3,<Leigh's Google Drive link>`; 3.4 supersedes it.
 
 ## Previous entry: 3.2
 
@@ -72,7 +88,7 @@ the file name exactly as it is: rumble clients expect `<package>.<Robot>_<versio
 
 ## 2. Host it on Google Drive with a direct link
 
-1. Upload the jar (`hadur2.Hadur_3.3.jar`) to Google Drive.
+1. Upload the jar (`hadur2.Hadur_3.4.jar`) to Google Drive.
 2. Right-click it, **Share**, and under **General access** choose **Anyone with the link**
    (Viewer). Copy the link. It looks like
    `https://drive.google.com/file/d/1AbCdEfGhIjKlMnOpQrStUvWxYz/view?usp=sharing`.
@@ -86,10 +102,9 @@ the file name exactly as it is: rumble clients expect `<package>.<Robot>_<versio
    away, with no Drive preview page. (Files this small never get Drive's virus-scan
    warning page, which would break the download for rumble clients.)
 
-The repository is private, so a GitHub release's download link only works for you, not
-for rumble clients: use the Drive link. (If the repository is ever made public and a
-release is published, `https://github.com/lgriffin/Hadur_Robot/releases/download/v<version>/hadur2.Hadur_<version>.jar`
-becomes a direct download that never expires.)
+Since the repository went public (2026-09-28), a release's
+`https://github.com/lgriffin/Hadur_Robot/releases/download/v<version>/hadur2.Hadur_<version>.jar`
+is itself a direct download that never expires, so Drive is optional.
 
 ## 3. Add the entry on the robowiki
 
@@ -101,12 +116,12 @@ becomes a direct download that never expires.)
    with `h` sit together), using your Drive link from step 2:
 
    ```
-   hadur2.Hadur 3.3,https://drive.google.com/uc?export=download&id=1AbCdEfGhIjKlMnOpQrStUvWxYz
+   hadur2.Hadur 3.4,https://drive.google.com/uc?export=download&id=1AbCdEfGhIjKlMnOpQrStUvWxYz
    ```
 
    The part before the comma must match the jar's `robot.classname` and `robot.version`
-   exactly: `hadur2.Hadur` and `3.3`, separated by one space.
-4. Put something like "Hadur 3.3 replaces 3.2" in the edit summary and save.
+   exactly: `hadur2.Hadur` and `3.4`, separated by one space.
+4. Put something like "Hadur 3.4 replaces 3.3" in the edit summary and save.
 
 Clients pick up the participants list on their next run. Battles, and then a ranking, show
 up on the [RoboRumble](https://literumble.appspot.com/Rankings?game=roborumble) and

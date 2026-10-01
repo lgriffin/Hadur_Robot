@@ -10,6 +10,8 @@ import java.io.UncheckedIOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import robocode.AdvancedRobot;
 import robocode.RobocodeFileOutputStream;
 
@@ -25,6 +27,12 @@ import robocode.RobocodeFileOutputStream;
  * would stay charged for the rest of the battle, and with seeded profiles (about 22 KB,
  * written twice a save) the quota ran out by the tenth round. So {@link #delete} first
  * empties the file through the stream, which returns its length, and then deletes it.</p>
+ *
+ * <p>MEM-11: the directory is listed once per battle, the first time a name, a size or the
+ * total is asked for, into an index of each file's length and modification time. Every
+ * later question is answered from the index, and {@link #write} and {@link #delete} keep it
+ * current, so a save does work for the files it touches, never for the files on disk. Only
+ * this battle's robot writes into its own data directory, so the index cannot go stale.</p>
  *
  * <p>Failures surface as unchecked exceptions ({@code UncheckedIOException},
  * {@code IllegalStateException}, {@code IllegalArgumentException}, or the sandbox's own
@@ -43,6 +51,10 @@ final class FileProfileStore implements ProfileStore {
     /** The most bytes the directory may hold, fixed when the store is made. */
     private final long quota;
     private final Opener opener;
+    /** MEM-11: name to {length, modification time}; null until the one listing. */
+    private Map<String, long[]> index;
+    /** MEM-13: the latest modification time handed out, so later writes always order later. */
+    private long clock;
 
     /**
      * A store over {@code dir}.
@@ -61,10 +73,14 @@ final class FileProfileStore implements ProfileStore {
     static FileProfileStore forRobot(AdvancedRobot robot) {
         File dir = robot.getDataDirectory();
         // Robocode reports what is left, not the total; the store wants the total, so it
-        // adds back what is already on disk.
-        long used = sizeOf(dir);
-        return new FileProfileStore(dir, used + robot.getDataQuotaAvailable(),
+        // adds back what is already on disk. The listing that sums it is MEM-11's one
+        // listing: the store keeps it as its index.
+        Map<String, long[]> index = list(dir);
+        long used = total(index);
+        FileProfileStore store = new FileProfileStore(dir, used + robot.getDataQuotaAvailable(),
             RobocodeFileOutputStream::new);
+        store.adopt(index);
+        return store;
     }
 
     /** Reads a whole file; reading needs no special stream in Robocode's sandbox. */
@@ -98,43 +114,65 @@ final class FileProfileStore implements ProfileStore {
      */
     @Override
     public void write(String name, byte[] bytes) {
+        Map<String, long[]> idx = index();
         try (OutputStream out = opener.open(file(name))) {
             out.write(bytes);
         } catch (IOException e) {
+            // What is on disk now is unknown; the next listing would tell, but a save that
+            // fails is counted and the battle goes on, so drop the entry's length to what
+            // is certain to have been written: nothing past the old file.
+            idx.remove(name);
+            File f = new File(dir, name);
+            if (f.isFile()) idx.put(name, new long[] {f.length(), ++clock});
             throw new UncheckedIOException(e);
         }
+        idx.put(name, new long[] {bytes.length, ++clock});
     }
 
     /** Empties the file through the opener, to get its length back from the quota, then deletes it. */
     @Override
     public void delete(String name) {
         File f = file(name);
-        if (!f.exists()) return;
+        if (!f.exists()) {
+            index().remove(name);
+            return;
+        }
         // Empty it first: Robocode refunds a file's length when it is opened for writing.
         try (OutputStream out = opener.open(f)) {
             out.flush();
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
+        // Emptied, so its bytes are back in the quota even if the delete below fails.
+        index().put(name, new long[] {0, ++clock});
         if (!f.delete()) throw new IllegalStateException("could not delete " + name);
+        index().remove(name);
     }
 
-    /** The plain files in the data directory; an absent directory has none. */
+    /** The plain files in the data directory, from the index; an absent directory has none. */
     @Override
     public List<String> names() {
-        String[] names = dir.list();
-        List<String> out = new ArrayList<>();
-        if (names == null) return out;
-        for (String n : names) {
-            if (new File(dir, n).isFile()) out.add(n);
-        }
-        return out;
+        return new ArrayList<>(index().keySet());
     }
 
-    /** The total length of the files in the data directory, as on disk now. */
+    /** The total length of the files in the data directory, from the index. */
     @Override
     public long bytesUsed() {
-        return sizeOf(dir);
+        return total(index());
+    }
+
+    /** A file's length from the index, 0 when there is no such file. */
+    @Override
+    public long size(String name) {
+        long[] e = index().get(name);
+        return e == null ? 0 : e[0];
+    }
+
+    /** A file's modification time from the index, 0 when there is no such file. */
+    @Override
+    public long lastModified(String name) {
+        long[] e = index().get(name);
+        return e == null ? 0 : e[1];
     }
 
     /** The quota computed when the store was made. */
@@ -151,13 +189,37 @@ final class FileProfileStore implements ProfileStore {
         return new File(dir, name);
     }
 
-    /** The total length of the plain files directly in {@code dir}; 0 when it is null or absent. */
-    private static long sizeOf(File dir) {
+    /** MEM-11: the index, listing the directory the first time it is needed. */
+    private Map<String, long[]> index() {
+        if (index == null) adopt(list(dir));
+        return index;
+    }
+
+    /** Takes {@code listing} as the index; later writes are stamped after its newest file. */
+    private void adopt(Map<String, long[]> listing) {
+        index = listing;
+        for (long[] e : listing.values()) clock = Math.max(clock, e[1]);
+    }
+
+    /**
+     * The one listing: every plain file directly in {@code dir} with its length and
+     * modification time, sorted by name; empty when {@code dir} is null or absent.
+     */
+    private static Map<String, long[]> list(File dir) {
+        Map<String, long[]> out = new TreeMap<>();
         File[] files = dir == null ? null : dir.listFiles();
-        long total = 0;
         if (files != null) {
-            for (File f : files) if (f.isFile()) total += f.length();
+            for (File f : files) {
+                if (f.isFile()) out.put(f.getName(), new long[] {f.length(), f.lastModified()});
+            }
         }
+        return out;
+    }
+
+    /** The total length of the files in {@code index}. */
+    private static long total(Map<String, long[]> index) {
+        long total = 0;
+        for (long[] e : index.values()) total += e[0];
         return total;
     }
 }

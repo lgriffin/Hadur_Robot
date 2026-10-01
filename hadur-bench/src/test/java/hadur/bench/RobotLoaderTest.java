@@ -90,7 +90,7 @@ class RobotLoaderTest {
         }
     }
 
-    /** {@code hadur2.Hadur_3.3.jar} is the robot {@code hadur2.Hadur 3.3}. */
+    /** {@code hadur2.Hadur_3.4.jar} is the robot {@code hadur2.Hadur 3.4}. */
     static String robotName(Path jar) {
         String n = jar.getFileName().toString();
         return n.substring(0, n.length() - 4).replace('_', ' ');

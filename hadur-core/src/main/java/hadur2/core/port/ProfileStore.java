@@ -36,4 +36,23 @@ public interface ProfileStore {
 
     /** The most bytes the store may hold. */
     long quota();
+
+    /**
+     * MEM-11: the length of {@code name} in bytes, 0 when it does not exist. The default
+     * reads the entry; a store that keeps an index answers without touching storage.
+     */
+    default long size(String name) {
+        byte[] b = read(name);
+        return b == null ? 0 : b.length;
+    }
+
+    /**
+     * MEM-13: when {@code name} was last written, as a number that only grows with later
+     * writes; 0 when unknown. The library forgets the least recently written profiles first,
+     * and a profile's file is written only when its opponent is fought, so this orders
+     * opponents by when they were last met without reading a single profile.
+     */
+    default long lastModified(String name) {
+        return 0;
+    }
 }
