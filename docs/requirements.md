@@ -91,6 +91,12 @@ EARS requirements from the Hadur 2 technical direction. This file is the source 
 | BENCH-7 | Event | When a session file names a control robot, the bench shall run the same session with the control robot and report the two side by side by blocks of 25 battles. | R7 |
 | RES-9 | Unwanted | If the engine has skipped three turns in a round, then the core shall run the rest of the round at a duress level that adds no samples, builds no waves, reads no neighbour tree, orbits at the distance floor and fires head-on at power 1.0 whenever the gun is cool. | R7 |
 | RES-10 | Ubiquitous | The robot shall leave no reference to its classes in the process after a battle, so that the number of classes loaded in one JVM stays flat across a session of battles. | R7 |
+| MOVE-3 | Ubiquitous | Movement shall score a wave's danger only over the part of the intersection not in a certain bullet shadow, at half weight inside a possible shadow. | R6 |
+| MOVE-4 | Ubiquitous | Movement shall score a wave's danger as the danger density integrated over the firing angles of the precise intersection. | R6 |
+| MOVE-5 | State | While the enemy's normalised hit rate less its margin exceeds 4.5%, movement shall enable the flattener views. | R6 |
+| MOVE-7 | Event | When a wave in flight is removed or reordered, movement shall discard the neighbour cache of every wave whose surf index changed. | R6 |
+| PHYS-1 | Ubiquitous | The movement predictor shall stop a predicted robot at a wall as the engine does. | R6 |
+| WAVE-4 | Event | When a movement wave's bullet power is updated, its wall distances shall be recomputed. | R6 |
 
 Stage is where the requirement is first implemented: S0–S7 in the Hadur 2 stage plan, M0–M6
 in the melee extension plan ("Hadur 2 — Melee Extension Plan", 27 Sep 2026).
@@ -533,3 +539,21 @@ A retired requirement keeps its ID; no new requirement reuses it.
 | MELEE-5 | While in melee, the gun shall target the opponent with the lowest score of energy, distance and gun turn, and shall switch from a living current target only when another scores at least 20% lower and the gun can reach it within 4 ticks. | M4 | MGUN-1 (the field gun aims at the peak of every opponent's solutions, so there is no single target to hold) |
 | MELEE-6 | The melee gun shall aim with circular prediction, fall back to linear prediction while the target's turn rate is unknown, and fire no more power than needed to kill the target. | M4 | MGUN-1, MGUN-2, MGUN-3 (learned play-it-forward aim, circular and linear only as the fallback; the energy table and exact kill power) |
 | MELEE-8 | While two opponents within 300 px of each other, and further from us than from each other, are both losing energy to others, the strategy shall keep clear of their fight and halve fire power. | M6 | MMOVE-5 (keep clear, unchanged), MGUN-5 (full power: the M6 sweep found the posture's power cuts and holds cost score) |
+
+### R6 notes
+
+- **MOVE-3 and MOVE-4** are one change in `MoveController.getDangerScore`: the kernel
+  `2^(-|a - f| / bandwidth)` is integrated (its antiderivative, `kernelMass`) over the precise
+  intersection instead of read at its centre, and over `Wave.transmission(intersection)`'s
+  segments (0 in a certain shadow, 0.5 in a possible one, 1 elsewhere) instead of scaling the
+  whole wave's danger by `1 - shadowedFraction`. A centred, unshadowed neighbour still scores 1.
+  The hit-rate term, which has no angle, keeps the old shadow scaling in `SurfMover.waveDanger`.
+  An exact feature match no longer makes the weight infinite (#50 item 4).
+- **MOVE-5** is `MoveController.FLATTENER_THRESHOLD` (4.5, was 5.9).
+- **MOVE-7** keeps the wave each surf index's neighbours were searched for and drops that
+  index's cache when a different wave arrives at it (#50 item 3).
+- **PHYS-1** zeroes the velocity when the predicted step meets a wall (#50 item 8); **WAVE-4**
+  calls `setWallDistances()` after the real power is set (#50 item 7).
+- **MOVE-6 is not in this stage.** The profile stores one whole-battle hit count, so a
+  same-phase baseline (from the 100th wave) needs new profile fields and a format bump (MEM-9
+  carry-forward). It stays on #55.

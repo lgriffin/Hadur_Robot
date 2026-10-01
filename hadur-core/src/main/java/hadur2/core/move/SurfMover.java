@@ -468,11 +468,12 @@ public class SurfMover {
         // The enemy's normalised hit rate is added to the views' score, so every wave from a
         // gun that hits us often weighs more, even where the views see no danger.
         double hitRate = moveCtrl.normalizedEnemyHitRate();
-        double danger = hitRate + moveCtrl.getDangerScore(surfWave, intersection, surfWaveIndex);
-        // MOVE-1: keep 1 - (certain + possible / 2) of it; a bullet fired into a shadow dies
-        // on one of ours before it reaches us.
+        // MOVE-1: a bullet fired into a shadow dies on one of ours before it reaches us. The
+        // views' score already counts only what the shadows let through (MOVE-3); the hit-rate
+        // term, which has no angle, keeps 1 - (certain + possible / 2) of its weight.
         double shadowed = surfWave.shadowedFraction(intersection);
-        if (shadowed > 0) danger *= 1 - shadowed;
+        double danger = hitRate * (1 - shadowed)
+            + moveCtrl.getDangerScore(surfWave, intersection, surfWaveIndex);
         // Robocode's damage: 4 * power, plus 2 * (power - 1) above power 1.
         danger *= Rules.getBulletDamage(surfWave.bulletPower());
         // WAVE-3: a wave whose power came from an ambiguous wall-hit split is trusted at half.
