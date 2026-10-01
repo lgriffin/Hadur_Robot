@@ -315,6 +315,56 @@ public class Wave implements Cloneable {
     }
 
     /**
+     * MOVE-3: how much of a bullet fired at each angle of the intersection would still reach
+     * us. The range {@code angle +/- bandwidth} is cut at every shadow edge into segments
+     * {@code {from, to, transmission}}: 0 inside a certain shadow, 0.5 where the shadow is
+     * only possible (a bullet stopped about half the time), 1 elsewhere. The segments are in
+     * ascending order and cover the whole range; with no shadows it is one segment at 1.
+     *
+     * @param intersection the firing angles that would hit us
+     * @return the segments, never empty for a positive width
+     */
+    public List<double[]> transmission(Intersection intersection) {
+        double low = intersection.angle - intersection.bandwidth;
+        double high = intersection.angle + intersection.bandwidth;
+        List<double[]> out = new ArrayList<>();
+        if (possibleShadows.isEmpty() || !(intersection.bandwidth > 0)) {
+            out.add(new double[] {low, high, 1.0});
+            return out;
+        }
+        java.util.TreeSet<Double> cuts = new java.util.TreeSet<>();
+        cuts.add(low);
+        cuts.add(high);
+        for (List<double[]> list : List.of(shadows, possibleShadows)) {
+            for (double[] shadow : list) {
+                double from = DiaUtils.normalizeAngle(shadow[0], intersection.angle);
+                double to = from + (shadow[1] - shadow[0]);
+                if (from > low && from < high) cuts.add(from);
+                if (to > low && to < high) cuts.add(to);
+            }
+        }
+        Double previous = null;
+        for (double cut : cuts) {
+            if (previous != null && cut > previous) {
+                double mid = (previous + cut) / 2;
+                double stopped = ((contains(shadows, mid, intersection.angle) ? 1 : 0)
+                    + (contains(possibleShadows, mid, intersection.angle) ? 1 : 0)) / 2.0;
+                out.add(new double[] {previous, cut, 1.0 - stopped});
+            }
+            previous = cut;
+        }
+        return out;
+    }
+
+    private static boolean contains(List<double[]> intervals, double angle, double near) {
+        for (double[] shadow : intervals) {
+            double from = DiaUtils.normalizeAngle(shadow[0], near);
+            if (angle >= from && angle <= from + (shadow[1] - shadow[0])) return true;
+        }
+        return false;
+    }
+
+    /**
      * The share of the intersection's angle range, {@code angle +/- bandwidth}, that the
      * {@code intervals} cover, in [0, 1]. The intervals are assumed disjoint, as the shadow
      * lists are, so their overlaps can simply be added.
@@ -485,8 +535,8 @@ public class Wave implements Cloneable {
      * Computes {@link #targetWallDistance} and {@link #targetRevWallDistance} from the field
      * and the current bullet power: how far the target could orbit each way, keeping its
      * distance from the source, before reaching a wall, as a multiple of the classic escape
-     * angle and capped at 1.5. A movement wave keeps the values from its guessed power even
-     * after {@link #setBulletPower} corrects it.
+     * angle and capped at 1.5. A movement wave's values are recomputed
+     * when {@code MoveController.updateFiringWave} corrects its power (WAVE-4).
      */
     public void setWallDistances() {
         targetWallDistance = Math.min(1.5,

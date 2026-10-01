@@ -50,7 +50,7 @@ class SurfOpeningTest {
         m.setPrior(0.05, 0.02);
         List<String> on = m.viewsOn();
         assertTrue(on.containsAll(List.of("simple", "normal", "recent1", "lightFlattener")), on.toString());
-        assertFalse(on.contains("flattener"), "5% less 2% misses the flattener's 5.9%");
+        assertFalse(on.contains("flattener"), "5% less 2% misses the flattener's 4.5%");
         m.setPrior(0.01, 0.005);
         assertEquals(List.of("simple"), m.viewsOn(), "T0: no recent views");
     }

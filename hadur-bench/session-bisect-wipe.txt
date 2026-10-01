@@ -1,0 +1,6 @@
+# R7b bisect: the 300-battle session with one change, no control. wipe=true.
+opponents=session-300-opponents.txt
+heap=512M
+rounds=35
+fresh=false
+wipe=true

@@ -58,6 +58,9 @@ import java.util.function.Consumer;
  */
 public class MoveController {
 
+    /** MOVE-5: the padded hit rate, in percent, at which the flattener views switch on. */
+    public static final double FLATTENER_THRESHOLD = 4.5;
+
     /**
      * A surf seed sample: the flattener formula's 11 data-point values (the normal views use
      * the first 9), the simple view's lateral-velocity value, and the guess factor that hit us.
@@ -133,7 +136,7 @@ public class MoveController {
      * <li>"lightFlattener": the {@link MoveFormula} space, learning from every wave, on once
      *     the hit rate less its margin of error is at least 3% (a padded threshold, DIAL-1).</li>
      * <li>"flattener" and "flattener2": the {@link FlattenerFormula} space, learning from
-     *     every wave, on once the padded hit rate is at least 5.9%; flattener2 holds 2,000
+     *     every wave, on once the padded hit rate is at least {@value #FLATTENER_THRESHOLD}% (MOVE-5); flattener2 holds 2,000
      *     points and decays by age. These are the views ADAPT-2 and MOVE-2 turn on early.</li>
      * </ul>
      *
@@ -172,11 +175,11 @@ public class MoveController {
             .setName("lightFlattener"));
         views.add(new KnnView<TimestampedGuessFactor>(new FlattenerFormula())
             .setWeight(50).setK(25).setMaxDataPoints(300).setKDivisor(12)
-            .setPaddedHitThreshold(5.9).visitsOn()
+            .setPaddedHitThreshold(FLATTENER_THRESHOLD).visitsOn()
             .setName("flattener"));
         views.add(new KnnView<TimestampedGuessFactor>(new FlattenerFormula())
             .setWeight(500).setK(50).setMaxDataPoints(2000).setKDivisor(14)
-            .setPaddedHitThreshold(5.9).setDecayRate(DECAY_RATE).visitsOn()
+            .setPaddedHitThreshold(FLATTENER_THRESHOLD).setDecayRate(DECAY_RATE).visitsOn()
             .setName("flattener2"));
     }
 
@@ -398,6 +401,20 @@ public class MoveController {
         for (KnnView<TimestampedGuessFactor> view : views) {
             view.clearCache();
         }
+        cacheOwners.clear();
+    }
+
+    /** MOVE-7: the wave each surf index's cached neighbours were searched for. */
+    private final Map<Integer, Wave> cacheOwners = new HashMap<>();
+
+    /**
+     * MOVE-7: drops the cached neighbours of a surf index whose wave is not the one they
+     * were searched for, so a wave that moved up the surf order never reads another's.
+     */
+    private void validateCache(Wave w, int surfWaveIndex) {
+        if (cacheOwners.get(surfWaveIndex) == w) return;
+        for (KnnView<TimestampedGuessFactor> view : views) view.cachedNeighbors.remove(surfWaveIndex);
+        cacheOwners.put(surfWaveIndex, w);
     }
 
     /**
@@ -663,6 +680,8 @@ public class MoveController {
                 // The wave was made at the guessed power; the real one fixes its speed and
                 // escape angle.
                 w.setBulletPower(bulletPower);
+                // WAVE-4: the wall room is a function of the power's escape angle.
+                w.setWallDistances();
                 lastBulletPower = bulletPower;
                 lastBulletFireTime = fireTime;
                 return fireTime;
@@ -713,6 +732,9 @@ public class MoveController {
                                   int surfWaveIndex) {
         double dangerAngle = intersection.angle;
         double bandwidth = intersection.bandwidth;
+        validateCache(w, surfWaveIndex);
+        // MOVE-3: the intersection cut at the shadows' edges, each part with what gets through.
+        List<double[]> segments = w.transmission(intersection);
         double totalDanger = 0;
         double totalScanWeight = 0;
         int enabledSize = 0;
@@ -734,13 +756,16 @@ public class MoveController {
                 // ADAPT-3: a seeded sample counts for its seed's weight, a live one for 1.
                 // entry.distance is the squared weighted distance, so this divides by the
                 // Euclidean distance: nearer situations count for more.
+                // An exact feature match has distance 0; the floor keeps the weight finite
+                // (#50 item 4) while still letting that neighbour dominate.
                 double scanWeight = weightMap.get(tsgf)
-                    / Math.sqrt(entry.distance) * tsgf.weight();
+                    / Math.sqrt(Math.max(entry.distance, MIN_DISTANCE)) * tsgf.weight();
                 // The neighbour's guess factor as an angle on this wave, unwrapped near ours.
                 double xFiringAngle = DiaUtils.normalizeAngle(
                     w.firingAngle(tsgf.guessFactor), dangerAngle);
-                double ux = (xFiringAngle - dangerAngle) / bandwidth;
-                density += scanWeight * Math.pow(2.0, -Math.abs(ux));
+                // MOVE-4: the kernel's mass over the whole intersection, not its height at the
+                // centre; MOVE-3: counting only what the shadows let through.
+                density += scanWeight * kernelMass(xFiringAngle, bandwidth, segments);
                 viewScanWeight += scanWeight;
             }
             totalScanWeight += viewScanWeight * view.weight;
@@ -749,7 +774,7 @@ public class MoveController {
 
         // !(x > 0) also catches NaN.
         if (enabledSize == 0 || !(totalScanWeight > 0)) {
-            return defaultDanger(w, intersection);
+            return defaultDanger(w, segments, bandwidth);
         }
         return totalDanger / totalScanWeight;
     }
@@ -775,17 +800,42 @@ public class MoveController {
      * averaged) over two assumed guns: head-on (guess factor 0, weight 3) and one firing at
      * 0.85 of the escape angle toward our direction of travel (weight 1).
      */
-    private static double defaultDanger(Wave w, Wave.Intersection intersection) {
+    private static double defaultDanger(Wave w, List<double[]> segments, double bandwidth) {
         double[] guessFactors = {0.0, 0.85};
         double[] weights = {3.0, 1.0};
         double danger = 0;
         for (int i = 0; i < guessFactors.length; i++) {
             double firingAngle = w.firingAngle(guessFactors[i]);
-            double ux = (firingAngle - DiaUtils.normalizeAngle(
-                intersection.angle, firingAngle)) / intersection.bandwidth;
-            danger += weights[i] * Math.pow(2.0, -Math.abs(ux));
+            double centre = (segments.get(0)[0] + segments.get(segments.size() - 1)[1]) / 2;
+            danger += weights[i] * kernelMass(DiaUtils.normalizeAngle(firingAngle, centre), bandwidth, segments);
         }
         return danger;
+    }
+
+    /** Floor for a neighbour's squared distance, so an exact match weighs a lot but not infinitely. */
+    private static final double MIN_DISTANCE = 1e-12;
+
+    /**
+     * MOVE-3, MOVE-4: the mass of the kernel {@code 2^(-|a - at| / bandwidth)} over the
+     * intersection's segments, each scaled by its transmission, and normalised so that a kernel
+     * centred on an unshadowed intersection scores 1 (the value the point kernel gave there).
+     * It is the kernel's antiderivative, so a wide intersection is charged for every angle that
+     * hits, at the cost of a few exponentials a neighbour.
+     */
+    static double kernelMass(double at, double bandwidth, List<double[]> segments) {
+        double mass = 0;
+        for (double[] s : segments) {
+            if (s[2] <= 0) continue;
+            mass += s[2] * (kernelCdf(s[1], at, bandwidth) - kernelCdf(s[0], at, bandwidth));
+        }
+        return mass;
+    }
+
+    /** The kernel's integral from {@code at}, in units where [at - b, at + b] weighs 1. */
+    private static double kernelCdf(double a, double at, double bandwidth) {
+        double d = (a - at) / bandwidth;
+        double m = 1.0 - Math.pow(2.0, -Math.abs(d));
+        return d >= 0 ? m : -m;
     }
 
     /**

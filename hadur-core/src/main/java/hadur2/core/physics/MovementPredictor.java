@@ -61,9 +61,8 @@ public class MovementPredictor {
      * used up as it goes.</p>
      *
      * <p>If the robot would end a tick outside the field it is pulled back onto the wall
-     * along its heading (unless {@code ignoreWalls}). The engine would also stop it dead;
-     * this prediction keeps the velocity, so the next tick starts from that speed rather
-     * than from 0.</p>
+     * along its heading (unless {@code ignoreWalls}). As the engine does, it is
+     * also stopped dead (PHYS-1): the next tick starts from velocity 0.</p>
      *
      * @param startState where the robot starts, with its heading, velocity and time
      * @param distance how far it is still told to move, in px: negative to reverse,
@@ -99,6 +98,8 @@ public class MovementPredictor {
 
             if (!ignoreWalls && !rect.contains(nextLocation)) {
                 adjustForWalls(nextLocation, nextHeading);
+                // PHYS-1: the engine stops a robot that meets a wall dead.
+                nextVelocity = 0;
             }
 
             state = RobotState.newBuilder()
