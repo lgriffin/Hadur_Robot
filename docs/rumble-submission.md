@@ -10,7 +10,20 @@ same line go on both pages:
 [RoboRumble/Participants](https://robowiki.net/wiki/RoboRumble/Participants) for 1v1 and
 [RoboRumble/Participants/Melee](https://robowiki.net/wiki/RoboRumble/Participants/Melee).
 
-## Current entry: 3.2
+## Next entry: 3.3
+
+Hadur 3.3 (R5, R7 and R6 of the top-30 climb in one version, see
+[docs/releases/v3.3.md](https://github.com/lgriffin/Hadur_Robot/blob/master/docs/releases/v3.3.md))
+replaces 3.2 in both leagues once 3.2's pass is complete and Leigh hosts the jar on Google
+Drive. Its line, with the real link:
+
+```
+hadur2.Hadur 3.3,<Leigh's Google Drive link>
+```
+
+Save 3.2's BotDetails page before swapping. The steps below use 3.3.
+
+## Previous entry: 3.2
 
 Hadur 3.2 (R4 of the RoboRumble climb plan: the client-conditions bench, live-details
 reader, fallback fire and health record, see
@@ -59,7 +72,7 @@ the file name exactly as it is: rumble clients expect `<package>.<Robot>_<versio
 
 ## 2. Host it on Google Drive with a direct link
 
-1. Upload the jar (`hadur2.Hadur_3.2.jar`) to Google Drive.
+1. Upload the jar (`hadur2.Hadur_3.3.jar`) to Google Drive.
 2. Right-click it, **Share**, and under **General access** choose **Anyone with the link**
    (Viewer). Copy the link. It looks like
    `https://drive.google.com/file/d/1AbCdEfGhIjKlMnOpQrStUvWxYz/view?usp=sharing`.
@@ -88,12 +101,12 @@ becomes a direct download that never expires.)
    with `h` sit together), using your Drive link from step 2:
 
    ```
-   hadur2.Hadur 3.2,https://drive.google.com/uc?export=download&id=1AbCdEfGhIjKlMnOpQrStUvWxYz
+   hadur2.Hadur 3.3,https://drive.google.com/uc?export=download&id=1AbCdEfGhIjKlMnOpQrStUvWxYz
    ```
 
    The part before the comma must match the jar's `robot.classname` and `robot.version`
-   exactly: `hadur2.Hadur` and `3.2`, separated by one space.
-4. Put something like "Hadur 3.2 replaces 3.1" in the edit summary and save.
+   exactly: `hadur2.Hadur` and `3.3`, separated by one space.
+4. Put something like "Hadur 3.3 replaces 3.2" in the edit summary and save.
 
 Clients pick up the participants list on their next run. Battles, and then a ranking, show
 up on the [RoboRumble](https://literumble.appspot.com/Rankings?game=roborumble) and
