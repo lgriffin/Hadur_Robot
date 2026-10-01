@@ -140,6 +140,38 @@ as not run, not failed, when not available locally. The combined report gives su
 share and skipped turns per opponent per condition, e.g.
 `docs/bench/r4-client-conditions.md`.
 
+## Session bench (BENCH-6, BENCH-7)
+
+```sh
+mvn exec:java -Dexec.args="--session session-300.txt --report ../docs/bench/r7-session.md"
+```
+
+Every other pass forks a fresh JVM per battle and fights at most 60 opponents. A rumble
+client does neither: it runs hundreds of battles through one `RobocodeEngine` under
+`-Xmx512M`. `--session FILE` imitates that. The session file (`SessionFile`) is `key=value`
+lines: `opponents=FILE` (a set, `name | rumble APS | jar`, fought once each in list order),
+`heap=512M` or `heap=none`, `rounds=N`, `fresh=true` (a fresh JVM per battle, data kept),
+`wipe=true` (the data directory emptied before each battle) and `control=ROBOT` with an
+optional `control-jar=JAR` (BENCH-7: the same session again with a robot that cannot be the
+cause, `sample.Tracker` by default). Opponents whose jar is missing are dropped with a
+line; `--limit N` runs only the first N.
+
+`SessionRunner` is the child. It writes one `session.csv` row per battle as it goes, so a
+session that dies still leaves its rows (index, opponent, ok, live heap in MB after a full
+collection at the battle's end, longest GC pause, live and unloaded classes, engine
+disables, ticks in duress, seconds), a `result.csv` per battle in the usual format, and a GC
+log. The report gives blocks of 25 battles: survival against opponents under 50 APS (the
+health check), survival over all, score share, skipped turns, engine disables, duress ticks,
+heap and live classes; then says whether the slide reproduced (the first 50 sub-50 battles (at least 120 must have run)
+over 95% survival and the last 100 under 85%, or any engine disable). With a control the two
+sessions are put side by side.
+
+`data/tools/sample_session.py` draws `session-300-opponents.txt` from the archived
+participants page (fixed seed). The jars are not committed: fetch them from the archive
+mirror into `opponents/` (a `curl` loop over the jar column does it; 300 jars are about
+15 MB). A 300-battle session is about two hours and a control about as long, so start it
+with the shell tool's own background mode, not `nohup`.
+
 ## Replay fixtures
 
 ```sh

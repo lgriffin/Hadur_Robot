@@ -35,8 +35,13 @@ public final class TickBudget {
     /** The deepest level: everything that can be shed is shed. Levels are capped here. */
     public static final int MAX_LEVEL = 3;
 
+    /** RES-9: the skipped turns in one round after which the core runs the rest of it in duress. */
+    public static final int DURESS_SKIPS = 3;
+
     /** Levels held for the rest of the round by skipped turns (TIME-2). */
     private int roundLevel;
+    /** Turns the engine has skipped this round (RES-9). */
+    private int skipsThisRound;
     /** Whether the last measured tick went over the threshold: one more level (TIME-1). */
     private boolean slow;
     private int maxLevel;
@@ -57,6 +62,7 @@ public final class TickBudget {
     /** A new round starts at full computation (TIME-2's "for the remainder of the round"). */
     public void newRound() {
         roundLevel = 0;
+        skipsThisRound = 0;
         slow = false;
         maxLevel = 0;
         slowTicks = 0;
@@ -100,7 +106,18 @@ public final class TickBudget {
             learnedAllowanceNanos = lastUsedNanos;
         }
         roundLevel = Math.min(MAX_LEVEL, roundLevel + 1);
+        skipsThisRound++;
         maxLevel = Math.max(maxLevel, level());
+    }
+
+    /**
+     * RES-9: whether the engine has skipped {@link #DURESS_SKIPS} turns this round, so the
+     * rest of it runs at the duress level, below {@link #MAX_LEVEL}: no samples, no tree.
+     *
+     * @return true from the third skipped turn of a round until the round ends
+     */
+    public boolean duress() {
+        return skipsThisRound >= DURESS_SKIPS;
     }
 
     /** TIME-3: the allowance learned from a skip, or -1 if none has happened yet. */

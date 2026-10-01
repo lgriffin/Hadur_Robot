@@ -1,0 +1,6 @@
+# name | rumble APS | jar (- for a bundled sample)
+sample.SittingDuck | 5 | -
+sample.Walls | 40 | -
+sample.Crazy | 30 | -
+sample.SpinBot | 35 | -
+sample.RamFire | 20 | -

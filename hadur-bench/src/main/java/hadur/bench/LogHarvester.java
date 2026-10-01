@@ -45,6 +45,9 @@ public class LogHarvester extends BattleAdaptor {
     private long[] turnNanos = new long[4096];
     private int turns;
     private int skippedTurns;
+    private int engineDisables;
+    /** RES-9: ticks that ran in duress, from the R records. */
+    private int duressTicks;
     private int roundRecords, faults, faultRecords, phantomWaves;
     /** Enemy bullets as the engine saw them, and the waves Hadur inferred (S2 wave fidelity). */
     private final List<double[]> enemyShots = new ArrayList<>();
@@ -114,6 +117,9 @@ public class LogHarvester extends BattleAdaptor {
             if (line.isEmpty()) continue;
             // The engine announces each skipped turn as "SYSTEM: <robot> skipped turn <n>".
             if (line.startsWith("SYSTEM:") && line.contains("skipped turn")) skippedTurns++;
+            // BENCH-6: the engine switching the robot off for being too slow or silent.
+            if (line.startsWith("SYSTEM:") && (line.contains("Robot disabled")
+                    || line.contains("not performed any actions"))) engineDisables++;
             readRecord(line);
             hadurLog.write(round + "," + turn + "," + line + "\n");
         }
@@ -204,6 +210,7 @@ public class LogHarvester extends BattleAdaptor {
                     flavourStep = Math.max(flavourStep, Integer.parseInt(f[31]));
                     interceptsShadowed += Integer.parseInt(f[32]);
                 }
+                if (f.length >= 34) duressTicks += Integer.parseInt(f[33]);
                 roundRecords++;
             } catch (NumberFormatException ignored) {
                 // A malformed record is left out of the averages.
@@ -442,6 +449,16 @@ public class LogHarvester extends BattleAdaptor {
         Arrays.sort(sorted);
         int i = (int) Math.min(turns - 1, Math.ceil(p * turns) - 1);
         return sorted[Math.max(0, i)] / 1e6;
+    }
+
+    /** RES-9: ticks the robot ran in duress, summed over its R records. */
+    public int duressTicks() {
+        return duressTicks;
+    }
+
+    /** BENCH-6: how many times the engine disabled the robot (too many skipped turns, or no actions). */
+    public int engineDisables() {
+        return engineDisables;
     }
 
     public void close() throws IOException {

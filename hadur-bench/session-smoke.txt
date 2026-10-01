@@ -1,0 +1,5 @@
+# A short session for checking the bench itself: five sample bots, three rounds each.
+opponents=session-smoke-opponents.txt
+heap=512M
+rounds=3
+control=sample.Tracker
