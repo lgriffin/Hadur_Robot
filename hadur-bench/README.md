@@ -22,9 +22,9 @@ mvn exec:java -Dexec.args="--mode cold --rounds 35 --seeds 5"
 | `--seeds N` | 5 | battles per opponent (cold) |
 | `--battles N` | 5 | consecutive battles per opponent (warm) |
 | `--field WxH` | 800x600 | battlefield size |
-| `--robot-jar FILE` | ../hadur-robot/target/hadur2.Hadur_3.4.jar | the robot jar |
+| `--robot-jar FILE` | ../hadur-robot/target/hadur2.Hadur_3.5.jar | the robot jar |
 | `--robot-classes DIR` | | jar a compiled class tree instead, e.g. an older Hadur |
-| `--robot NAME` | hadur2.Hadur 3.4 | the robot's name as Robocode lists it |
+| `--robot NAME` | hadur2.Hadur 3.5 | the robot's name as Robocode lists it |
 | `--record DIR` | | capture replay fixtures instead (see below) |
 | `--set FILE` | reference-set.txt | the opponent list, e.g. `roborumble-top10.txt` |
 | `--melee true` | | put Hadur and every opponent in the set in one battle, `--seeds` times, and report finishing places |
@@ -39,7 +39,7 @@ The command exits non-zero if any battle fails.
 
 ## Opponents
 
-`reference-set.txt` lists them. `roborumble-top10.txt` lists the RoboRumble top 10 (run it with `--set roborumble-top10.txt`); it is kept apart so CI and the replay fixtures stay on the reference set. For melee,
+`reference-set.txt` lists them. R9 added `weak-leak.txt` (the eleven weak bots of issue #80: rammers, mirror movers and close-range nanos) and `top19.txt` (the 1v1 top 19 above 3.4, the regression gate); see `docs/bench/r9-weak-leak.md`. `roborumble-top10.txt` lists the RoboRumble top 10 (run it with `--set roborumble-top10.txt`); it is kept apart so CI and the replay fixtures stay on the reference set. For melee,
 `melee-samples.txt` holds nine sample bots, `melee-classic.txt` nine established MeleeRumble
 bots and `melee-strong.txt` top-end bots that also play melee; run them with `--melee true
 --field 1000x1000`, the MeleeRumble's setting.

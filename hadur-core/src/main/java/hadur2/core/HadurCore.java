@@ -19,6 +19,8 @@ import hadur2.core.memory.Tiers;
 import hadur2.core.model.*;
 import hadur2.core.move.MoveController;
 import hadur2.core.move.OurBullet;
+import hadur2.core.move.MirrorDrive;
+import hadur2.core.move.RamEscape;
 import hadur2.core.move.SurfMover;
 import hadur2.core.physics.*;
 import hadur2.core.port.ProfileStore;
@@ -27,6 +29,7 @@ import hadur2.core.policy.DistancePolicy;
 import hadur2.core.policy.Endgame;
 import hadur2.core.policy.EnemyGunHeat;
 import hadur2.core.policy.HitWindow;
+import hadur2.core.policy.MirrorDetector;
 import hadur2.core.policy.MoveFlavour;
 import hadur2.core.policy.PowerPolicy;
 import hadur2.core.policy.RammerPolicy;
@@ -237,6 +240,20 @@ public final class HadurCore {
     private final RammerPolicy rammer = new RammerPolicy();
     /** RAM-1: whether the rammer response is active, as of the last scan. */
     private boolean ramActive;
+    /** RAM-2: whether the escape from a confirmed rammer is on, as of the last scan. */
+    private boolean ramEscaping;
+    /** RAM-2: the movement while the rammer response is active. */
+    private final RamEscape ramEscape;
+    /** RAM-2: the enemy as last scanned, for the escape's pursuit model; null before a scan. */
+    private RobotState lastEnemyState;
+    /** MIR-1: recognising an enemy that drives to the mirror image of our position. */
+    private final MirrorDetector mirror;
+    /** MIR-1: the planned path that makes a mirror bot predictable. */
+    private final MirrorDrive mirrorDrive;
+    /** MIR-1: whether the mirror response is active, as of the last scan. */
+    private boolean mirrorActive;
+    /** MIR-1: whether the aim being held was taken from the mirror plan. */
+    private boolean aimIsMirror;
     /** S6: the movement flavour and the evidence for the next change (MOVE-2). */
     private MoveFlavour flavour = MoveFlavour.stranger();
     /** The tick being processed, for records written from event handlers. */
@@ -372,6 +389,9 @@ public final class HadurCore {
         this.gunController = new GunController(battleField, enemiesTotal);
         this.moveController = new MoveController(battleField, predictor);
         this.surfMover = new SurfMover(battleField, predictor);
+        this.ramEscape = new RamEscape(battleField, predictor);
+        this.mirror = new MirrorDetector(fieldWidth, fieldHeight);
+        this.mirrorDrive = new MirrorDrive(battleField, predictor);
         this.gunWaveManager = new WaveManager();
         this.myStateLog = new RobotStateLog();
         this.enemyStateLog = new RobotStateLog();
@@ -451,6 +471,13 @@ public final class HadurCore {
         ledger.newRound();
         rammer.newRound();
         ramActive = false;
+        ramEscaping = false;
+        ramEscape.initRound();
+        lastEnemyState = null;
+        mirror.newRound();
+        mirrorDrive.initRound();
+        mirrorActive = false;
+        aimIsMirror = false;
         end3Active = false;
         ram1Active = false;
         myStateLog.clear();
@@ -600,6 +627,15 @@ public final class HadurCore {
             moveController.updateShadows(in.time());
             if (endgame == Endgame.State.RAM) {
                 surfMover.ram(orders, currentState(in), lastEnemyLocation);
+            } else if (mirrorActive) {
+                // MIR-1: a planned path, so the gun knows where the mirror image will be. It
+                // comes first: a mirror bot heading for our reflection can read as a charge,
+                // but the plan keeps it at least twice the centre margin away.
+                mirrorDrive.move(orders, currentState(in));
+            } else if (ramEscaping && lastEnemyState != null) {
+                // RAM-2: a charging rammer is kept out, not surfed or orbited.
+                stats.ramEscapeTicks++;
+                ramEscape.move(orders, currentState(in), lastEnemyState);
             } else {
                 surfMover.move(orders, currentState(in), moveController, lastEnemyLocation,
                     TickBudget.wavesToSurf(level), TickBudget.goToAllowed(level));
@@ -1113,15 +1149,41 @@ public final class HadurCore {
         } else {
             aimAngle = gunController.aim(lastGunWave, myNext, in.time());
         }
+        // MIR-1: a mirror bot will be at the reflection of where our plan has us, a few
+        // ticks late; the shot leaves next tick from myNext.
+        aimIsMirror = false;
+        if (mirrorActive && lastGunWave.targetEnergy > 0) {
+            double angle = mirrorAim(in, myNext);
+            if (!Double.isNaN(angle)) {
+                aimAngle = angle;
+                aimIsMirror = true;
+            }
+        }
         // Recorded with the aim, so the shot fired from it next tick knows whether it carries
         // the offset (the shielded check in fireIfGunTurned).
-        aimCarriesJitter = shieldDetector.shielded();
+        aimCarriesJitter = shieldDetector.shielded() && !aimIsMirror;
         if (aimCarriesJitter) {
             // SHIELD-2: a shielder predicts our heading exactly; move it by an amount it can't.
             aimAngle += aimJitter.offset(myNext.distance(lastGunWave.targetLocation));
         }
         orders.turnGunRight(Angles.normalRelativeAngle(aimAngle - in.gunHeading()));
         return gunHeat;
+    }
+
+    /**
+     * MIR-1: the angle at the reflection of our planned position at the shot's arrival, the
+     * detector's lag; NaN when the plan cannot answer.
+     */
+    private double mirrorAim(BotInput in, Point2D.Double myNext) {
+        mirrorDrive.follow(currentState(in));
+        double speed = Rules.getBulletSpeed(Math.max(aimedBulletPower, Rules.MIN_BULLET_POWER));
+        return mirrorDrive.aim(myNext, in.time() + 1, speed, mirror.lag(),
+            p -> new Point2D.Double(MirrorDetector.mirrorX(p.x, battleField.width),
+                MirrorDetector.mirrorY(p.y, battleField.height)),
+            t -> {
+                RobotState s = myStateLog.getState(t);
+                return s == null ? null : s.location;
+            });
     }
 
     /**
@@ -1147,6 +1209,7 @@ public final class HadurCore {
             stats.shotsFired++;
             if (bulletPower >= PowerPolicy.FULL_POWER) stats.fullPowerShots++;
             if (aimCarriesJitter) stats.jitteredShots++;
+            if (aimIsMirror) stats.mirrorShots++;
             if (folder != null) folder.ourShot(lastEnemyDistance);
             return true;
         }
@@ -1238,6 +1301,8 @@ public final class HadurCore {
             .setLocation(enemyPos).setHeading(enemyHead)
             .setVelocity(enemyVel).setTime(time).build();
         enemyStateLog.addState(enemyState);
+        lastEnemyState = enemyState;
+        checkMirror(round, time, enemyPos, in.energy(), e.energy());
 
         // A stopped robot keeps the direction it had, so its guess factors keep their side.
         int prevEnemySign = enemyVelocitySign;
@@ -1312,10 +1377,17 @@ public final class HadurCore {
         // velocity already is one).
         double enemyClosingSpeed = -enemyVel * Math.cos(enemyHead - absBearing);
         ramActive = rammer.tick(e.distance(), enemyClosingSpeed);
+        // RAM-2: the escape, once a charge has really reached us this battle.
+        boolean wasEscaping = ramEscaping;
+        ramEscaping = rammer.escape(e.distance(), enemyClosingSpeed, in.energy(), e.energy());
+        if (ramEscaping != wasEscaping) {
+            emitPolicy(round, time, "ram-escape", e.distance(), Double.NaN,
+                ramEscaping ? "ram_2" : "off");
+        }
         // Gated and capped exactly as the other full-power rules are (PowerPolicy#power):
         // never past our own energy's threshold, never past a quarter of theirs, never below
         // what was already chosen.
-        boolean ram1 = ramActive && in.energy() > PowerPolicy.MIN_OUR_ENERGY;
+        boolean ram1 = (ramActive || ramEscaping) && in.energy() > PowerPolicy.MIN_OUR_ENERGY;
         if (ram1) bulletPower = Math.max(bulletPower, Math.min(RammerPolicy.POWER, e.energy() / 4.0));
         if (ram1 != ram1Active) {
             ram1Active = ram1;
@@ -1661,6 +1733,31 @@ public final class HadurCore {
     }
 
     /**
+     * MIR-1: one scan for the mirror detector, from our logged positions over the last
+     * {@link MirrorDetector#MAX_LAG} ticks; a P record marks each change.
+     */
+    private void checkMirror(int round, long time, Point2D.Double enemyPos, double ourEnergy,
+                             double enemyEnergy) {
+        int n = 0;
+        double[] xs = new double[MirrorDetector.MAX_LAG + 1];
+        double[] ys = new double[MirrorDetector.MAX_LAG + 1];
+        for (; n <= MirrorDetector.MAX_LAG; n++) {
+            RobotState s = myStateLog.getState(time - n);
+            if (s == null) break;
+            xs[n] = s.location.x;
+            ys[n] = s.location.y;
+        }
+        if (n == 0) return;
+        boolean now = mirror.tick(enemyPos.x, enemyPos.y,
+            java.util.Arrays.copyOf(xs, n), java.util.Arrays.copyOf(ys, n), ourEnergy, enemyEnergy);
+        if (now != mirrorActive) {
+            mirrorActive = now;
+            emitPolicy(round, time, "mirror", mirror.lag(), Double.NaN,
+                now ? "mir_1" : "off");
+        }
+    }
+
+    /**
      * S5, once a duel tick: feeds the enemy waves that broke this tick into their rolling
      * hit rate, steps the distance controller once for each (DIST-1), then reads the endgame
      * (END-1, END-2) and hands the surf its target distance. P records mark each change.
@@ -1711,6 +1808,8 @@ public final class HadurCore {
         }
         ourWindow.clear();
         theirWindow.clear();
+        rammer.forget();
+        mirror.forget();
         distance = new DistancePolicy(opening.distance());
         flavour = MoveFlavour.stranger();
         surfMover.setMode(SurfMover.Mode.OPTIONS);

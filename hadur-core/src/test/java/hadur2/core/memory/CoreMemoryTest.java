@@ -162,7 +162,7 @@ class CoreMemoryTest {
         core.newRound(1);
         core.roundEnded(3, "win", 100, 0);
         String[] r = telemetry.get(telemetry.size() - 1).split(",");
-        assertEquals(34, r.length);
+        assertEquals(36, r.length);
         assertEquals("1", r[17], "the save that could not fit a 300-byte quota");
         assertTrue(telemetry.stream().anyMatch(l -> l.startsWith("MEM,0,2,skipped,")), telemetry.toString());
     }

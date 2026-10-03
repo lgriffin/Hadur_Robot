@@ -108,12 +108,12 @@ data directory through `RobocodeFileOutputStream`.
 | `physics` | `Angles` and `Rules` (bit-identical to Robocode's), battle field, movement prediction |
 | `knn` | KD-tree and KNN views |
 | `gun` | main KNN gun, anti-surfer gun, gun selection |
-| `move` | wave-surfing movement and its danger formulas; our bullets in flight and the shadows they cast (MOVE-1); go-to surfing |
+| `move` | wave-surfing movement and its danger formulas; our bullets in flight and the shadows they cast (MOVE-1); go-to surfing; the rammer escape (`RamEscape`, RAM-2) and the planned path against a mirror mover (`MirrorDrive`, MIR-1) |
 | `posture` | the melee extension's gate (GATE-1..5): `PostureGate` (melee or duel, failing closed), `DuelFocus` (the one opponent the duel fights while several are alive) and `SentryFence` (the sentry border as a wall for the duel's movement) |
 | `melee` | the melee brain (MELEE-2..8, MRADAR, MSENSE, MMOVE, MGUN): battlefield model with shot detection, sweep radar, minimum-risk movement with virtual bullets, field gun with a play-it-forward history per opponent, energy table, targeting waves, posture strategy, battle-long opponent stats; the melee profile block, its round folder and its binary codec (MMEM-1) |
 | `memory` | opponent memory (MEM-1..5, RES-3): lineage keys, the profile, its binary codec, the round folder and the library that loads, saves and evicts; estimates with margins of error, the tiers and the seed layout |
 | `adapt` | recognise and adapt (ADAPT-1..3, DIAL-1..2, RES-4): the opening book, the seed loader and the seed trust |
-| `policy` | aggressive (DIST-1, POW-1, POW-2, END-1, END-2): rolling hit-rate windows, the distance controller, the power policy, the endgame states and the enemy gun-heat estimate; unhittable (MOVE-2, TIME-1, TIME-2): the movement flavour and the tick budget |
+| `policy` | aggressive (DIST-1, POW-1, POW-2, END-1, END-2): rolling hit-rate windows, the distance controller, the power policy, the endgame states and the enemy gun-heat estimate; unhittable (MOVE-2, TIME-1, TIME-2): the movement flavour and the tick budget; recognising a rammer (`RammerPolicy`, RAM-1, RAM-2) and a mirror mover (`MirrorDetector`, MIR-1) |
 | `shield` | the bullet-shielding counter (SHIELD-1, SHIELD-2): the shield detector and the anti-shield aim jitter |
 | `replay` | the line codec and replay driver for recorded battles (CORE-2) |
 | `port` | outbound interfaces |

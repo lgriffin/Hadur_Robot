@@ -219,3 +219,39 @@ round PBI is −0.1. The worst are simple bots, several rammers by name (vort.Ch
 bbo.RamboT, PSW.Relentless, mahrgell.mahrram). Evidence:
 `rumble/parsed/2026-10-01T2020Z_roborumble_botdetails_hadur2.Hadur_3.4.csv`,
 `docs/top20-analysis.md`. Owner: none (no code work planned).
+
+**L-32 · confirmed.** The weak-tier leak (L-31) is tactics, not live-only stalls: the bench
+reproduces it. 3.4 cold on the bench scored 75.9% against vort.Chaser (74.7 live), 64.6%
+against mahrgell.mahrram (65.0) and 77.1% against stelo.MirrorNano (70.7), losing 203 of 3,850
+rounds against 11 weak bots. Against rammers it spent most of each round within 100 px, where
+they fire power-3 shots: 3.4's RAM-1 needed ten scans inside 250 px, by which time the rammer
+had arrived, and then only flipped the orbit's side. Several nanos (RedBull, Tirunculus,
+SledgeHammer, NanoDeath) fight the same way. Evidence: `docs/bench/r9-weak-leak.md`. Owner: R9.
+
+**L-33 · confirmed.** Against a mirror mover, the gun needs our own future path, not theirs.
+Offline, on 3.4's truth logs, aiming at the reflection of where we really were at the bullet's
+arrival (two to five ticks late) hit MirrorNano 71-75% and MirrorMicro 86-87%; head-on hit
+30% and 18%, linear 27% and 11%, and aiming at the reflection of a straight-line guess of our
+own path 15% and 9%, worse than head-on. 3.4's KNN gun hit them about 8%. MIR-1 makes the path
+known by planning it 110 ticks ahead and following it exactly. Evidence:
+`docs/bench/r9-weak-leak.md`. Owner: R9.
+
+**L-34 · confirmed.** Running from a rammer beats fighting it at close range. With RAM-2 (the
+heading that keeps a pursuit model furthest away over 20 ticks, once a rammer is confirmed)
+and MIR-1, the 11-bot weak bench rose from 74.8% to 86.8% mean share and rounds lost from 203
+to 69; rammers +7.1 to +20.1 points, mirrors +16.2 and +15.3. Two nanos that shoot well at mid
+range (SledgeHammer +2.3, NanoDeath +1.4) gained little: running keeps them out of
+point-blank range but not out of their guns'. Evidence: `docs/bench/r9-weak-leak.md`.
+Owner: R9.
+
+**L-35 · confirmed.** A rule meant for weak bots must be gated on behaviour strong bots never
+show, and checked against the top tier before it ships. The first cut of RAM-2 (four closing
+scans within 500 px) and MIR-1 (30 scans, three mirrors) fired against nearly every top-19
+robot and cost 5 points of mean share there (Raven −14, Neuromancer −15). Replaying the
+detectors over the engine's truth logs found the separating facts: no top-19 robot ever
+charged to within 120 px with both robots above 20 energy in two rounds of a battle (they
+close in only to finish a disabled Hadur; XanderCat once drove through us from a close
+spawn), and no top-19 pair stayed at each other's centre reflection for more than 80 scans
+with both above 10 energy (two crawling, nearly dead robots did for 335). Offline replay of
+the truth logs is a cheap gate before a 3-hour bench. Evidence: `docs/bench/r9-weak-leak.md`.
+Owner: R9.

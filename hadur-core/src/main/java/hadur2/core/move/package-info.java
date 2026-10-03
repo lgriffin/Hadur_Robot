@@ -14,6 +14,12 @@
  *     drives the safest; it orbits when no wave is in the air and rams a disabled enemy
  *     (END-2). The distance policy steers its attack angle (DIST-1, END-1) and the movement
  *     flavour its mode, three options or go-to surfing (MOVE-2).</li>
+ * <li>{@link hadur2.core.move.RamEscape}: while a rammer is charging (RAM-2), the heading
+ *     that keeps a pursuing enemy furthest away over the next 20 ticks, in place of the
+ *     surf and the orbit.</li>
+ * <li>{@link hadur2.core.move.MirrorDrive}: while the enemy mirrors us (MIR-1), straight
+ *     runs planned at least 110 ticks ahead and followed exactly, and the aim at the
+ *     reflection of that plan.</li>
  * <li>{@link hadur2.core.move.BulletShadows} and {@link hadur2.core.move.OurBullet}: the
  *     geometry of MOVE-1, following the engine's order of play: all bullets move before any
  *     robot, in straight segments, one at a time in a random order.</li>
