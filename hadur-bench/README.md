@@ -39,7 +39,7 @@ The command exits non-zero if any battle fails.
 
 ## Opponents
 
-`reference-set.txt` lists them. R9 added `weak-leak.txt` (the eleven weak bots of issue #80: rammers, mirror movers and close-range nanos) and `top19.txt` (the 1v1 top 19 above 3.4, the regression gate); see `docs/bench/r9-weak-leak.md`. `roborumble-top10.txt` lists the RoboRumble top 10 (run it with `--set roborumble-top10.txt`); it is kept apart so CI and the replay fixtures stay on the reference set. For melee,
+`reference-set.txt` lists them. R9 added `weak-leak.txt` (the eleven weak bots of issue #80: rammers, mirror movers and close-range nanos) and `top19.txt` (the 1v1 top 19 above 3.4, the regression gate); see `docs/bench/r9-weak-leak.md`. R10 adds `below-us-panel.txt` (49 opponents ranked below Hadur: the worst 3.4 pairings by PBI in two APS bands, five R9 misfire checks and four controls); see `docs/rumble-climb-top15-plan.md`. `roborumble-top10.txt` lists the RoboRumble top 10 (run it with `--set roborumble-top10.txt`); it is kept apart so CI and the replay fixtures stay on the reference set. For melee,
 `melee-samples.txt` holds nine sample bots, `melee-classic.txt` nine established MeleeRumble
 bots and `melee-strong.txt` top-end bots that also play melee; run them with `--melee true
 --field 1000x1000`, the MeleeRumble's setting.

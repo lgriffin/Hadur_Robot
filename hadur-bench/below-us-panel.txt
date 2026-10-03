@@ -1,0 +1,109 @@
+# R10 below-us panel (docs/rumble-climb-top15-plan.md, BENCH-9). Opponents ranked below Hadur,
+# chosen from the 3.4 BotDetails page of 2026-10-01 (complete pass, 1,215 pairings):
+#   leak     the 30 worst KNN PBI rows with opponent APS 40-70 and a round lost, R9's 11 excluded
+#   floor    the 10 worst with opponent APS under 40 and a round lost, R9's 11 excluded
+#   r9-watch the 5 that fell most from 3.4 to 3.5.1 in the 2026-10-03 snapshot (RAM-2/MIR-1 misfire check)
+#   control  4 with every round won and PBI about 0 (tells regression to the mean from a real leak)
+# Live 3.4 score / survival / PBI on the comment line above each robot. Single-battle rows: expect some leak rows
+# not to reproduce on the bench (a one-battle score has an SD of about 4 points).
+# Jars from https://robocode-archive.strangeautomata.com/robots/<jar>, into opponents/ (not committed).
+# Jars marked (not in the 2026-09-28 participants list) use the archive's usual <name>_<version>.jar.
+#   <robot name as Robocode lists it> | <role> | <jar file in opponents/>
+# live 3.4 70.1 / 80.0% / PBI -15.4, opponent APS 56.2
+alpha.BlackIce 1.0 | leak | alpha.BlackIce_1.0.jar
+# live 3.4 67.9 / 80.0% / PBI -14.2, opponent APS 68.8
+cf.mini.Chiva 1.0 | leak | cf.mini.Chiva_1.0.jar
+# live 3.4 63.0 / 88.6% / PBI -14.1, opponent APS 64.9; jar not in the 2026-09-28 participants list
+ers.nano.sunderer.Sunderer 1.23a | leak | ers.nano.sunderer.Sunderer_1.23a.jar
+# live 3.4 62.4 / 88.6% / PBI -13.7, opponent APS 65.8; jar not in the 2026-09-28 participants list
+slugzilla.ButtHead 2.0 | leak | slugzilla.ButtHead_2.0.jar
+# live 3.4 68.4 / 94.3% / PBI -12.4, opponent APS 47.9
+exauge.Leopard 1.1.019 | leak | exauge.Leopard_1.1.019.jar
+# live 3.4 67.7 / 82.9% / PBI -12.3, opponent APS 65.8
+pez.clean.Swiffer 0.2.9 | leak | pez.clean.Swiffer_0.2.9.jar
+# live 3.4 84.4 / 91.4% / PBI -11.8, opponent APS 43.4
+kjc.etc.Dharok 1.0 | leak | kjc.etc.Dharok_1.0.jar
+# live 3.4 80.8 / 97.1% / PBI -11.7, opponent APS 43.9
+janm.Jammy 1.0 | leak | janm.Jammy_1.0.jar
+# live 3.4 63.6 / 92.9% / PBI -11.6, opponent APS 62.7; jar not in the 2026-09-28 participants list
+jk.nano.Machete 2.0 | leak | jk.nano.Machete_2.0.jar
+# live 3.4 74.5 / 82.9% / PBI -11.6, opponent APS 59.5
+cx.micro.Blur 0.2 | leak | cx.micro.Blur_0.2.jar
+# live 3.4 80.9 / 98.6% / PBI -11.4, opponent APS 41.5
+pmc.SniperBot 1.0 | leak | pmc.SniperBot_1.0.jar
+# live 3.4 65.5 / 88.6% / PBI -11.1, opponent APS 65.0
+oog.nano.Caligula 1.15 | leak | oog.nano.Caligula_1.15.jar
+# live 3.4 64.8 / 91.4% / PBI -10.9, opponent APS 48.6
+maribo.FollowFire 1.11 | leak | maribo.FollowFire_1.11.jar
+# live 3.4 61.6 / 74.3% / PBI -10.9, opponent APS 67.9
+mladjo.Grrrrr 0.9 | leak | mladjo.Grrrrr_0.9.jar
+# live 3.4 81.4 / 88.6% / PBI -10.8, opponent APS 50.2
+synnalagma.test.MiniNeural 1.1 | leak | synnalagma.test.MiniNeural_1.1.jar
+# live 3.4 64.3 / 91.4% / PBI -10.7, opponent APS 52.2
+benhorner.PureAggression 0.2.6 | leak | benhorner.PureAggression_0.2.6.jar
+# live 3.4 67.7 / 97.1% / PBI -10.6, opponent APS 49.8
+bayen.UbaRamLT 1.0 | leak | bayen.UbaRamLT_1.0.jar
+# live 3.4 61.9 / 90.0% / PBI -10.5, opponent APS 55.5
+jab.micro.Sanguijuela 0.8 | leak | jab.micro.Sanguijuela_0.8.jar
+# live 3.4 84.4 / 91.4% / PBI -10.3, opponent APS 58.5; jar not in the 2026-09-28 participants list
+Polkwane.Piyane 0.7b | leak | Polkwane.Piyane_0.7b.jar
+# live 3.4 69.8 / 88.6% / PBI -10.2, opponent APS 68.4
+kcn.unnamed.Unnamed 1.21 | leak | kcn.unnamed.Unnamed_1.21.jar
+# live 3.4 65.7 / 91.4% / PBI -10.2, opponent APS 51.7
+radnor.RamRod 1.0 | leak | radnor.RamRod_1.0.jar
+# live 3.4 76.1 / 88.6% / PBI -10.2, opponent APS 55.5
+hp.Athena 0.1 | leak | hp.Athena_0.1.jar
+# live 3.4 74.5 / 65.7% / PBI -10.1, opponent APS 61.8
+tw.Exterminator 1.0 | leak | tw.Exterminator_1.0.jar
+# live 3.4 76.1 / 85.7% / PBI -10.1, opponent APS 52.4
+ne.Chimera 1.2 | leak | ne.Chimera_1.2.jar
+# live 3.4 77.6 / 88.6% / PBI -9.9, opponent APS 51.9
+de.erdega.robocode.Polyphemos 0.4 | leak | de.erdega.robocode.Polyphemos_0.4.jar
+# live 3.4 60.8 / 82.9% / PBI -9.9, opponent APS 56.8; jar not in the 2026-09-28 participants list
+gh.micro.GrubbmThree 1.01 | leak | gh.micro.GrubbmThree_1.01.jar
+# live 3.4 76.8 / 92.9% / PBI -9.9, opponent APS 51.3
+demetrix.nano.Neutrino 0.27 | leak | demetrix.nano.Neutrino_0.27.jar
+# live 3.4 64.6 / 90.5% / PBI -9.8, opponent APS 66.0
+sheldor.nano.Sabreur 1.1.2 | leak | sheldor.nano.Sabreur_1.1.2.jar
+# live 3.4 85.8 / 91.4% / PBI -9.7, opponent APS 44.4
+ph.Thinker 0.2.5 | leak | ph.Thinker_0.2.5.jar
+# live 3.4 77.0 / 94.3% / PBI -9.7, opponent APS 51.0; jar not in the 2026-09-28 participants list
+supersample.SuperRamFire 1.0 | leak | supersample.SuperRamFire_1.0.jar
+# live 3.4 74.5 / 94.3% / PBI -12.2, opponent APS 33.3
+stelo.Lifestealer 1.0 | floor | stelo.Lifestealer_1.0.jar
+# live 3.4 88.9 / 97.1% / PBI -10.8, opponent APS 14.0
+sample.RamFire 1.0 | floor | -
+# live 3.4 87.8 / 97.1% / PBI -10.7, opponent APS 21.7
+zch.David 0.21 | floor | zch.David_0.21.jar
+# live 3.4 84.5 / 97.1% / PBI -9.7, opponent APS 34.0
+nexus.Prototype 1.0 | floor | nexus.Prototype_1.0.jar
+# live 3.4 82.8 / 82.9% / PBI -9.2, opponent APS 32.8; jar not in the 2026-09-28 participants list
+seed.Anastasia 1.0 | floor | seed.Anastasia_1.0.jar
+# live 3.4 71.7 / 85.7% / PBI -8.5, opponent APS 35.6; jar not in the 2026-09-28 participants list
+mn.micro.perceptual.Mimic 1.0.0 | floor | mn.micro.perceptual.Mimic_1.0.0.jar
+# live 3.4 84.4 / 94.3% / PBI -8.3, opponent APS 31.4
+ntw.Sighup 1.5 | floor | ntw.Sighup_1.5.jar
+# live 3.4 90.8 / 97.1% / PBI -7.8, opponent APS 38.0
+jep.nano.Hawkwing 0.4.1 | floor | jep.nano.Hawkwing_0.4.1.jar
+# live 3.4 90.5 / 94.3% / PBI -7.7, opponent APS 38.6
+hlavko.nano.Phoenix 1.0 | floor | hlavko.nano.Phoenix_1.0.jar
+# live 3.4 88.0 / 91.4% / PBI -7.7, opponent APS 38.4
+tlp.ThreeLeggedPig 1 | floor | tlp.ThreeLeggedPig_1.jar
+# live 3.4 92.0 / 100.0% / PBI +0.0, opponent APS 44.3; jar not in the 2026-09-28 participants list
+GarmBox.Oranges 1.0.1 | r9-watch | GarmBox.Oranges_1.0.1.jar
+# live 3.4 72.5 / 90.0% / PBI +2.9, opponent APS 80.2
+cf.proto.Shiva 2.2 | r9-watch | cf.proto.Shiva_2.2.jar
+# live 3.4 80.5 / 91.4% / PBI +3.5, opponent APS 64.3
+areb.Union 1.06 | r9-watch | areb.Union_1.06.jar
+# live 3.4 87.9 / 98.6% / PBI +5.0, opponent APS 56.5
+axeBots.HataMoto 3.09 | r9-watch | axeBots.HataMoto_3.09.jar
+# live 3.4 86.3 / 100.0% / PBI +5.4, opponent APS 56.3
+buba.Archivist 0.1 | r9-watch | buba.Archivist_0.1.jar
+# live 3.4 97.6 / 100.0% / PBI +0.0, opponent APS 42.5
+maribo.melee.BMV 0.1 | control | maribo.melee.BMV_0.1.jar
+# live 3.4 93.3 / 100.0% / PBI -0.0, opponent APS 56.8; jar not in the 2026-09-28 participants list
+steff.Rebel 2.1 | control | steff.Rebel_2.1.jar
+# live 3.4 94.0 / 100.0% / PBI +0.0, opponent APS 49.8
+klein.GottesKrieger 1.1 | control | klein.GottesKrieger_1.1.jar
+# live 3.4 97.4 / 100.0% / PBI +0.1, opponent APS 42.6
+blir.nano.Cabbage R1.0.1 | control | blir.nano.Cabbage_R1.0.1.jar
