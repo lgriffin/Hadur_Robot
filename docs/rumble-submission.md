@@ -10,19 +10,15 @@ same line go on both pages:
 [RoboRumble/Participants](https://robowiki.net/wiki/RoboRumble/Participants) for 1v1 and
 [RoboRumble/Participants/Melee](https://robowiki.net/wiki/RoboRumble/Participants/Melee).
 
-## Next entry: 3.5
+## Next entry: 3.5.1
 
-Hadur 3.5 (R9, the weak-bot leak, see
-[docs/releases/v3.5.md](https://github.com/lgriffin/Hadur_Robot/blob/master/docs/releases/v3.5.md))
-replaces 3.4 in both leagues. The repository is public, so the GitHub release's asset is a
-direct download that never expires:
+Hadur 3.5.1 (R9's review fixes, see
+[docs/releases/v3.5.1.md](https://github.com/lgriffin/Hadur_Robot/blob/master/docs/releases/v3.5.1.md))
+replaces 3.5 in both leagues:
 
 ```
-hadur2.Hadur 3.5,https://github.com/lgriffin/Hadur_Robot/releases/download/v3.5/hadur2.Hadur_3.5.jar
+hadur2.Hadur 3.5.1,https://github.com/lgriffin/Hadur_Robot/releases/download/v3.5.1/hadur2.Hadur_3.5.1.jar
 ```
-
-Save 3.4's BotDetails page before swapping, so 3.5's weak-tier PBI can be compared with
-3.4's −1.7.
 
 ## Country flag
 
@@ -32,13 +28,21 @@ main package, from the robowiki page
 package is `hadur2`, so the page needs one line `hadur2,IRL` (package, comma, the
 three-letter code the other entries use), added once; every Hadur version picks it up.
 
+## Previous entry: 3.5
+
+Hadur 3.5 (R9, the weak-bot leak, see
+[docs/releases/v3.5.md](https://github.com/lgriffin/Hadur_Robot/blob/master/docs/releases/v3.5.md))
+replaced 3.4 with
+`hadur2.Hadur 3.5,https://github.com/lgriffin/Hadur_Robot/releases/download/v3.5/hadur2.Hadur_3.5.jar`;
+3.5.1 superseded it.
+
 ## Previous entry: 3.4
 
 Hadur 3.4 (R8's memory fixes, see
 [docs/releases/v3.4.md](https://github.com/lgriffin/Hadur_Robot/blob/master/docs/releases/v3.4.md))
 replaced 3.3 with
 `hadur2.Hadur 3.4,https://github.com/lgriffin/Hadur_Robot/releases/download/v3.4/hadur2.Hadur_3.4.jar`
-and reached 20th in the 1v1 RoboRumble; 3.5 supersedes it.
+and reached 20th in the 1v1 RoboRumble; 3.5 superseded it.
 
 ## Previous entry: 3.3
 
