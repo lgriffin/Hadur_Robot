@@ -66,10 +66,12 @@ expected to give part of that (below); the rest has to come from here.
 
 Source: 3.4's complete page, the last full measurement (1,215 pairings). 1,196 opponents
 rank below Hadur. Bands by the opponent's own APS. "Rounds lost" is (100 − survival) × 35
-summed over the band. "APS cost" is the band's points lost divided by all 1,215 pairings.
+summed over the band: lost rounds per 35-round pairing, the unit APS is averaged in. Most
+pairings are one battle; the 350 with two or three lose about a third more rounds in total
+(battle-weighted: 198, 722, 981 and 1,055 from the bottom band up). "APS cost" is the band's points lost divided by all 1,215 pairings.
 "Value of a round" is the slope of Hadur's score on its survival inside the band.
 
-| Opponent APS | Pairings | Hadur's score | Survival | Mean PBI | Rounds lost (share of rounds) | Value of a round | APS cost of lost rounds |
+| Opponent APS | Pairings | Hadur's score | Survival | Mean PBI | Rounds lost per 35-round pairing, summed (share) | Value of a round | APS cost of lost rounds |
 |---|---|---|---|---|---|---|---|
 | above 85.9 (top 19) | 19 | 47.7 | 48.2 | +5.2 | 345 | | (out of scope) |
 | 70 to 85.9 | 151 | 70.8 | 84.3 | **+3.6** | 828 (15.7%) | 2.0 pts | 1.36 |
@@ -85,7 +87,7 @@ What the table says:
    −1.8 PBI is in the pairings that lose a round. One lost round against a 40-60 APS robot
    costs about 4 points of that pairing's score.
 3. **The losses are spread thin, not concentrated.** R9's 11 bots account for only 29 of the
-   1,414 rounds lost below 70 APS (−0.13 APS of PBI); the 16 opponents with rammer-like names
+   1,414 (per-pairing equivalent) rounds lost below 70 APS (−0.13 APS of PBI); the 16 opponents with rammer-like names
    for 33. The 50 worst pairings hold a quarter of the negative PBI. So there is no next
    "rammer" class to find by name: the leak is a broad rate.
 4. **Against the weakest, the leak looks like one round per battle.** Of 248 single-battle
@@ -127,7 +129,9 @@ splits the leak into what the bench reproduces (tactics, B) and what it does not
 - **Runs:** 3.5.1, 4 battles per opponent, cold, default conditions; then the same panel under
   the client conditions of BENCH-4 at a 1.0 ms and a 0.3 ms constant (`--client`), the
   settings that make skipped turns, and so duress, happen; then one BENCH-6 session of the
-  panel in one engine process with the data directory kept, as a client runs it.
+  panel in one engine process with the data directory kept, as a client runs it
+  (`below-us-session.txt`, whose opponent file carries each robot's APS in field 2, which
+  the session report reads, where the panel file carries the role).
   3.4 on the `r9-watch` five, same seeds, for the paired comparison.
 - **Output:** `docs/bench/r10-below-us.md` with, per opponent and per band: live rounds lost per
   35 (3.4 page), bench rounds lost per 35 under each condition, and each lost round's

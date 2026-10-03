@@ -266,7 +266,7 @@ sample. 3.5.1 read 85.54 (21st) on its first 259 pairings; 259 opponents drawn a
 section 1. Owner: R10 (reads the complete page).
 
 **L-37 · open (extends L-31).** Below 70 APS, 3.4's whole deficit is lost rounds and it is a
-broad rate, not a class: 1,414 rounds lost in 1,045 pairings, of which R9's 11 bots hold 29.
+broad rate, not a class: 1,414 rounds lost in 1,045 pairings (per 35-round pairing; battle-weighted 1,901), of which R9's 11 bots hold 29.
 Against robots under 40 APS, 86 of 248 single-battle pairings lost exactly one round (1.3% of
 rounds) where the bench loses 0.24%, which points at something live-only (an engine disable as
 in L-28, a round in duress, a round-start cost). Unconfirmed until the R10 panel splits the

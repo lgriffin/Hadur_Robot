@@ -6,6 +6,9 @@
 #   control  4 with every round won and PBI about 0 (tells regression to the mean from a real leak)
 # Live 3.4 score / survival / PBI on the comment line above each robot. Single-battle rows: expect some leak rows
 # not to reproduce on the bench (a one-battle score has an SD of about 4 points).
+# This file is for the per-opponent runs (role in field 2). The BENCH-6 session reads field 2 as
+# opponent APS, so the session run uses below-us-session.txt (opponents in below-us-session-opponents.txt:
+# the same robots, field 2 = APS).
 # Jars from https://robocode-archive.strangeautomata.com/robots/<jar>, into opponents/ (not committed).
 # Jars marked (not in the 2026-09-28 participants list) use the archive's usual <name>_<version>.jar.
 #   <robot name as Robocode lists it> | <role> | <jar file in opponents/>
@@ -71,8 +74,6 @@ ph.Thinker 0.2.5 | leak | ph.Thinker_0.2.5.jar
 supersample.SuperRamFire 1.0 | leak | supersample.SuperRamFire_1.0.jar
 # live 3.4 74.5 / 94.3% / PBI -12.2, opponent APS 33.3
 stelo.Lifestealer 1.0 | floor | stelo.Lifestealer_1.0.jar
-# live 3.4 88.9 / 97.1% / PBI -10.8, opponent APS 14.0
-sample.RamFire 1.0 | floor | -
 # live 3.4 87.8 / 97.1% / PBI -10.7, opponent APS 21.7
 zch.David 0.21 | floor | zch.David_0.21.jar
 # live 3.4 84.5 / 97.1% / PBI -9.7, opponent APS 34.0
@@ -89,6 +90,8 @@ jep.nano.Hawkwing 0.4.1 | floor | jep.nano.Hawkwing_0.4.1.jar
 hlavko.nano.Phoenix 1.0 | floor | hlavko.nano.Phoenix_1.0.jar
 # live 3.4 88.0 / 91.4% / PBI -7.7, opponent APS 38.4
 tlp.ThreeLeggedPig 1 | floor | tlp.ThreeLeggedPig_1.jar
+# live 3.4 87.5 / 97.1% / PBI -7.6, opponent APS 36.2
+jeremyreeder.Bully 1 | floor | jeremyreeder.Bully_1.jar
 # live 3.4 92.0 / 100.0% / PBI +0.0, opponent APS 44.3; jar not in the 2026-09-28 participants list
 GarmBox.Oranges 1.0.1 | r9-watch | GarmBox.Oranges_1.0.1.jar
 # live 3.4 72.5 / 90.0% / PBI +2.9, opponent APS 80.2
