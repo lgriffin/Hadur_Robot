@@ -21,8 +21,9 @@ package hadur2.core.policy;
  * look like a mirror for a while: on the top-19 benches the longest such run under 30 px was
  * 80 scans, while MirrorNano's and MirrorMicro's shortest was 152 (they mirror from the first
  * tick to the last). Scans while either robot has {@link #MIN_ENERGY} energy or less do not
- * count: two nearly disabled robots crawling about stayed at each other's reflection for 335
- * scans in one round against Neuromancer. Only the reflection through the centre is checked:
+ * extend the run (a scan off the reflection still breaks it): two nearly disabled robots
+ * crawling about stayed at each other's reflection for 335 scans in one round against
+ * Neuromancer. Only the reflection through the centre is checked:
  * the axis mirrors, which no RoboRumble robot is known to use, matched surfers far more
  * often.</p>
  *
@@ -105,7 +106,8 @@ public final class MirrorDetector {
             }
         }
         // Two nearly disabled robots crawling still can sit at each other's reflection for
-        // hundreds of ticks; such scans neither extend the run nor break it.
+        // hundreds of ticks; such scans do not extend the run. A scan off the reflection
+        // breaks it whatever the energies: the gate only ever makes the detector stricter.
         boolean counts = ourEnergy > MIN_ENERGY && enemyEnergy > MIN_ENERGY;
         if (best >= ON_ERROR) closeScans = 0;
         else if (counts) closeScans++;

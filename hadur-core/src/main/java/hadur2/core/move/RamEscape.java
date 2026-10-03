@@ -140,7 +140,9 @@ public final class RamEscape {
         RobotState us = me;
         double ex = enemy.location.x;
         double ey = enemy.location.y;
-        double eh = enemy.heading;
+        // The direction of travel: a robot driving backward travels opposite its heading.
+        double eh = enemy.velocity < 0 ? Angles.normalAbsoluteAngle(enemy.heading + Math.PI)
+            : enemy.heading;
         double ev = Math.abs(enemy.velocity);
         double min = Double.POSITIVE_INFINITY;
         double sum = 0;

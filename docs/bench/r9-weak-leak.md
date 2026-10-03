@@ -118,3 +118,18 @@ against the real positions (including real bullet collisions):
 
 The gun needs our own future path, which a surf decides a tick at a time; so MIR-1 decides
 it 110 ticks ahead instead.
+
+## Review follow-up (after 3.5)
+
+Two fixes from the PR #81 review: the MIR-1 gun aims from the planned position rather than a
+straight-line guess, and RAM-2 plays a rammer driving backward along its direction of travel.
+Neither path switches on against the top 19, so only the weak set was re-benched (same 10 seeds).
+
+| Opponent | 3.5 | follow-up |
+|---|---|---|
+| stelo.MirrorMicro 1.1 | 83.3% ± 13.8 | 91.7% ± 1.3 |
+| zyx.nano.RedBull 1.0 | 87.4% | 93.7% |
+| demetrix.nano.SledgeHammer 0.22 | 67.6% | 69.2% |
+| mz.NanoDeath 2.56 | 67.0% | 68.0% |
+| the other 7 | within ±0.5 | within ±0.5 |
+| **Mean of 11** | **86.7%** | **88.3%** |

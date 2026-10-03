@@ -185,7 +185,7 @@ class MirrorDetectorTest {
 
     @Test
     @Tag("MIR-1")
-    @DisplayName("MIR-1: scans while either robot is nearly disabled neither extend nor break the run")
+    @DisplayName("MIR-1: a close scan while either robot is nearly disabled neither extends nor breaks the run")
     void lowEnergyScansDoNotCount() {
         MirrorDetector d = new MirrorDetector(W, H);
         long t = 10;
@@ -202,6 +202,26 @@ class MirrorDetectorTest {
         h = history(++t);
         assertTrue(d.tick(W - ourX(t), H - ourY(t), h[0], h[1], 100, 100),
             "the low-energy scan did not break the run");
+    }
+
+    @Test
+    @Tag("MIR-1")
+    @DisplayName("MIR-1: a scan off the reflection breaks the run even while nearly disabled")
+    void lowEnergyScanOffTheReflectionStillBreaksTheRun() {
+        MirrorDetector d = new MirrorDetector(W, H);
+        long t = 10;
+        for (int i = 0; i < MirrorDetector.ON_SCANS - 1; i++, t++) {
+            double[][] h = history(t);
+            assertFalse(d.tick(W - ourX(t), H - ourY(t), h[0], h[1], 100, 100));
+        }
+        // Far enough off for long enough that the averaged error passes ON_ERROR.
+        for (int i = 0; i < 20; i++, t++) {
+            double[][] h = history(t);
+            d.tick(ourX(t), ourY(t), h[0], h[1], 5, 5);
+        }
+        double[][] h = history(t);
+        assertFalse(d.tick(W - ourX(t), H - ourY(t), h[0], h[1], 100, 100),
+            "the stricter reading: low energy never shields a broken run");
     }
 
     @Test

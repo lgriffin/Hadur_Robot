@@ -1177,7 +1177,13 @@ public final class HadurCore {
     private double mirrorAim(BotInput in, Point2D.Double myNext) {
         mirrorDrive.follow(currentState(in));
         double speed = Rules.getBulletSpeed(Math.max(aimedBulletPower, Rules.MIN_BULLET_POWER));
-        return mirrorDrive.aim(myNext, in.time() + 1, speed, mirror.lag(),
+        // The shot leaves next tick from where the plan puts us, which turns and accelerates;
+        // myNext, a straight-line guess, stands in when the plan has no answer, or when sentries
+        // are about (GATE-3: the fence may replace the plan's drive after this aim).
+        Point2D.Double planned = in.numSentries() > 0 ? null
+            : mirrorDrive.plannedLocation(in.time() + 1);
+        Point2D.Double from = planned != null ? planned : myNext;
+        return mirrorDrive.aim(from, in.time() + 1, speed, mirror.lag(),
             p -> new Point2D.Double(MirrorDetector.mirrorX(p.x, battleField.width),
                 MirrorDetector.mirrorY(p.y, battleField.height)),
             t -> {
