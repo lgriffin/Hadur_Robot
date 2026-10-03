@@ -1,0 +1,22 @@
+# The RoboRumble 1v1 top 19 above Hadur 3.4 (2026-10-01), less jd.Nullstride 2.3.0 (no archive copy).
+# The top-tier regression gate for issue #80: data/rumble/parsed/2026-10-01_hadur-3.4_vs_top19.tsv
+# is the baseline. Jars from https://robocode-archive.strangeautomata.com/robots/<jar>, into opponents/.
+#   <robot name as Robocode lists it> | <role> | <jar file in opponents/>
+kc.mega.BeepBoop 2.0 | rumble-1 | kc.mega.BeepBoop_2.0.jar
+jk.mega.DrussGT 3.1.16 | rumble-3 | jk.mega.DrussGT_3.1.16.jar
+oog.mega.saguaro.Saguaro 1.0 | rumble-4 | oog.mega.saguaro.Saguaro_1.0.jar
+aaa.r.ScalarR 0.005h.053-noshield | rumble-5 | aaa.r.ScalarR_0.005h.053-noshield.jar
+voidious.Diamond 1.8.22 | rumble-6 | voidious.Diamond_1.8.22.jar
+cb.fire.Firestarter 2.0f | rumble-7 | cb.fire.Firestarter_2.0f.jar
+lxx.Tomcat 3.68 | rumble-8 | lxx.Tomcat_3.68.jar
+rsalesc.mega.Knight 0.6.28 | rumble-9 | rsalesc.mega.Knight_0.6.28.jar
+dsekercioglu.mega.Raven 3.56j8 | rumble-10 | dsekercioglu.mega.Raven_3.56j8.jar
+xander.cat.XanderCat 12.9 | rumble-11 | xander.cat.XanderCat_12.9.jar
+aw.Gilgalad 1.99.5c | rumble-12 | aw.Gilgalad_1.99.5c.jar
+pc.Wavelet 1.5 | rumble-13 | pc.Wavelet_1.5.jar
+kc.serpent.WaveSerpent 2.11 | rumble-14 | kc.serpent.WaveSerpent_2.11.jar
+gh.GresSuffurd 0.4.13 | rumble-15 | gh.GresSuffurd_0.4.13.jar
+dsekercioglu.mega.WhiteFang 2.8.1 | rumble-16 | dsekercioglu.mega.WhiteFang_2.8.1.jar
+cs.Nene 1.0.5 | rumble-17 | cs.Nene_1.0.5.jar
+jk.melee.Neuromancer 7.12 | rumble-18 | jk.melee.Neuromancer_7.12.jar
+voidious.Dookious 1.573c | rumble-19 | voidious.Dookious_1.573c.jar

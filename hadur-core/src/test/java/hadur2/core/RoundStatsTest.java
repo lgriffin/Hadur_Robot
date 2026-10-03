@@ -47,8 +47,12 @@ class RoundStatsTest {
         s.flavourStep = 2;
         s.interceptsShadowed = 19;
         s.duressTicks = 20;
+        s.ramEscapeTicks = 21;
+        s.mirrorShots = 22;
         String[] f = s.toRecord(2, 900, "win", 55.5, 0).split(",");
-        assertEquals(34, f.length);
+        assertEquals(36, f.length);
+        assertEquals("21", f[34], "ticks running from a rammer (RAM-2)");
+        assertEquals("22", f[35], "shots at the mirror image (MIR-1)");
         assertEquals("17", f[28], "slow ticks (TIME-1)");
         assertEquals("18", f[29], "shadowed waves (MOVE-1)");
         assertEquals("1", f[30], "flavour changes (MOVE-2)");

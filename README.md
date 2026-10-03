@@ -358,6 +358,7 @@ tests that prove it.
 | R3.5-R4 | Rumble climb: release 3.1, client-conditions bench, return fire and health record; release 3.2 | done ([plan](docs/rumble-climb-r4-r6-plan.md)) |
 | R5, R7, R6 | Top 30: rumble-safe memory, the long-session bench and duress, movement precision | released as 3.3 ([plan](docs/rumble-climb-top30-plan.md), [session bench](docs/bench/r7-session.md)) |
 | R8 | Memory at rumble scale: one directory listing per battle, forget the oldest | released as 3.4 ([plan](docs/rumble-memory-scale-plan.md), [gate](docs/bench/r8-memory-scale.md)); 20th live |
+| R9 | The weak-bot leak: run from rammers (RAM-2), plan a path against mirror movers (MIR-1) | released as 3.5 ([issue #80](https://github.com/lgriffin/Hadur_Robot/issues/80), [bench](docs/bench/r9-weak-leak.md)): weak set 74.8% to 86.8%, top 19 unchanged |
 
 The plan's S7 was "cut melee". Release 2.1 had already put melee in the core for the
 MeleeRumble, and it costs the duel nothing (it runs only while two or more opponents are
@@ -391,11 +392,11 @@ client can load it (REL-1).
 mvn verify                  # all modules: tests, traceability, robot jar
 ```
 
-The robot jar is `hadur-robot/target/hadur2.Hadur_3.4.jar`; drop it into a Robocode
+The robot jar is `hadur-robot/target/hadur2.Hadur_3.5.jar`; drop it into a Robocode
 `robots/` directory. The core is bundled inside it. Pushing a `v*` tag runs the release
 workflow, as does running it by hand with a version: it builds, checks that the jar
 matches the version, and publishes a GitHub release with `docs/releases/<tag>.md` as its
-notes. 3.4's release asset is the jar the RoboRumble downloads. 2.2 and 3.0 were built
+notes. The latest release's asset is the jar the RoboRumble downloads. 2.2 and 3.0 were built
 locally while Actions was not running jobs.
 
 The tests are layered: ArchUnit rules, jqwik properties, unit tests, replay of recorded

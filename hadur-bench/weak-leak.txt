@@ -1,0 +1,16 @@
+# Issue #80: the weak RoboRumble bots Hadur 3.4 lost the most against live (worst KNN PBI rows of
+# the 2026-10-01 BotDetails page, opponent rank 500+), plus the sample rammer. Two kinds dominate:
+# rammers (RAM-2) and mirror movers (MIR-1); the nanos are the control group.
+# Jars from https://robocode-archive.strangeautomata.com/robots/<jar>, into opponents/ (not committed).
+#   <robot name as Robocode lists it> | <role> | <jar file in opponents/>
+vort.Chaser 0.0.3 | rammer | vort.Chaser_0.0.3.jar
+bbo.RamboT 0.3 | rammer | bbo.RamboT_0.3.jar
+PSW.Relentless 0.1 | rammer | PSW.Relentless_0.1.jar
+mahrgell.mahrram 1.3 | rammer | mahrgell.mahrram_1.3.jar
+sample.RamFire | rammer | -
+stelo.MirrorNano 1.4 | mirror | stelo.MirrorNano_1.4.jar
+stelo.MirrorMicro 1.1 | mirror | stelo.MirrorMicro_1.1.jar
+zyx.nano.RedBull 1.0 | nano | zyx.nano.RedBull_1.0.jar
+bwbaugh.nano.Tirunculus 0.0.0a | nano | bwbaugh.nano.Tirunculus_0.0.0a.jar
+demetrix.nano.SledgeHammer 0.22 | nano | demetrix.nano.SledgeHammer_0.22.jar
+mz.NanoDeath 2.56 | nano | mz.NanoDeath_2.56.jar

@@ -87,6 +87,10 @@ public final class RoundStats {
     public int flavourStep;
     /** RES-9: ticks this round that ran at the duress level. */
     public int duressTicks;
+    /** 3.5: duel ticks spent running from a charging rammer (RAM-2). */
+    public int ramEscapeTicks;
+    /** 3.5: shots aimed at the mirror of our own position (MIR-1). */
+    public int mirrorShots;
 
     /**
      * The round's mean distance to the duel opponent over the scans the duel handled.
@@ -123,7 +127,8 @@ public final class RoundStats {
      * ourMargin,theirHitRate,theirMargin,phantomWaves,skippedTurns,faults,computationLevel,
      * radarReacquired,hiddenShots,profileLoadFailures,profileSaveFailures,seedsEvicted,
      * bulletsIntercepted,jitteredShots,shotsFired,seedDecays,meanDistance,targetDistance,
-     * finishTicks,ramTicks,fullPowerShots,slowTicks,shadowedWaves,flavourChanges,flavourStep,interceptsShadowed,duressTicks}. The memory fields are battle totals so
+     * finishTicks,ramTicks,fullPowerShots,slowTicks,shadowedWaves,flavourChanges,flavourStep,interceptsShadowed,duressTicks,
+     * ramEscapeTicks,mirrorShots}. The memory fields are battle totals so
      * far, not this round's. Fields are only ever appended, so older readers still work.
      *
      * <p>Numbers are formatted with {@link Locale#ROOT}, so the decimal separator is always
@@ -138,7 +143,7 @@ public final class RoundStats {
      */
     public String toRecord(int round, long tick, String result, double ourEnergy,
                            double enemyEnergy) {
-        return String.format(Locale.ROOT, "R,%d,%d,%s,%.2f,%.2f,%.4f,%.4f,%.4f,%.4f,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%.1f,%.1f,%d,%d,%d,%d,%d,%d,%d,%d,%d",
+        return String.format(Locale.ROOT, "R,%d,%d,%s,%.2f,%.2f,%.4f,%.4f,%.4f,%.4f,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%.1f,%.1f,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d",
             round, tick, result, ourEnergy, enemyEnergy,
             ourHitRate(), margin(ourHitRate(), shotsFired),
             theirHitRate(), margin(theirHitRate(), enemyShotsDetected),
@@ -146,7 +151,8 @@ public final class RoundStats {
             profileLoadFailures, profileSaveFailures, seedsEvicted,
             bulletsIntercepted, jitteredShots, shotsFired, seedDecays,
             meanDistance(), targetDistance, finishTicks, ramTicks, fullPowerShots,
-            slowTicks, shadowedWaves, flavourChanges, flavourStep, interceptsShadowed, duressTicks);
+            slowTicks, shadowedWaves, flavourChanges, flavourStep, interceptsShadowed, duressTicks,
+            ramEscapeTicks, mirrorShots);
     }
 
     /**

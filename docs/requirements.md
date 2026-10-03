@@ -100,6 +100,8 @@ EARS requirements from the Hadur 2 technical direction. This file is the source 
 | MEM-11 | Ubiquitous | The adapter shall list the data directory at most once per battle and answer every later name, size and age question from an index it keeps current. | R8 |
 | MEM-12 | Ubiquitous | The library shall read a stored profile to look for seeds only when its file is larger than 1 KB. | R8 |
 | MEM-13 | Unwanted | If a save would take the store past 90% of its quota after every other seed is gone, then the library shall delete the least recently written profiles until it fits, and write. | R8 |
+| RAM-2 | State | Once charges (the enemy's own speed toward us 6 px/tick or more for four scans running) have come within 120 px, with both robots above 20 energy, in two different rounds, for the rest of the battle, while the enemy has closed for two scans running within 500 px and until it is more than 650 px away, movement shall drive the heading that keeps a pursuing enemy furthest away over the next 20 ticks, and the core shall fire as RAM-1 does. | R9 |
+| MIR-1 | State | While the enemy has stayed within 30 px (running average) of the reflection through the field's centre of our own position of up to 8 ticks before for 120 scans running with both robots above 10 energy (30 once confirmed this battle), and until that error exceeds 80 px, movement shall follow a path planned at least 110 ticks ahead and the gun shall aim at the reflection of where that path has us when the bullet arrives. | R9 |
 
 Stage is where the requirement is first implemented: S0–S7 in the Hadur 2 stage plan, M0–M6
 in the melee extension plan ("Hadur 2 — Melee Extension Plan", 27 Sep 2026).
@@ -556,6 +558,56 @@ top-10 by more than 1 point) is recorded in `docs/bench/`; see followup.md for t
   first `execute()`, the same work fits inside the start grace and costs 0 to 4 skips. The
   set-up would only outgrow that grace if it took more than 300 constants (150 ms at a
   0.5 ms constant); here it took about 36 ms.
+
+## R9 notes: the weak-bot leak (shipped as 3.5)
+
+Issue #80: 3.4 was 20th, but lost about 1.0 APS against the robots ranked below 500 (KNN PBI
+-1.7), mostly to rammers and mirror movers. The bench reproduced it (Chaser 75.9%, mahrram
+64.6%, MirrorNano 77.1%, against 74.7, 65.0 and 70.7 live), so the dropped rounds were
+tactics, not live-only stalls. See `docs/bench/r9-weak-leak.md`.
+
+- **RAM-2** is `RammerPolicy.escape` (the battle-long confirmation and the escape's on/off)
+  and `move.RamEscape` (the movement). 3.4 spent most of each round within 100 px of a
+  rammer, where the RoboRumble's rammers fire their full-power shots: RAM-1 needed ten scans
+  inside 250 px, by which point the rammer had arrived, and only flipped the orbit's side.
+  The escape plays 24 headings x 2 wall-smoothing orientations forward 20 ticks against a
+  turn-limited pure-pursuit model of the enemy and drives the one with the furthest closest
+  approach; ties go to the larger mean distance, then to the smallest change of heading. A
+  candidate stops being played once it falls below the best closest approach so far, and the
+  second orientation is skipped when no wall bent the first, which keeps a tick to about
+  0.2 ms. RAM-1 is unchanged.
+- **The first cut of RAM-2 failed the top-19 gate.** It started the escape after four
+  closing scans within 500 px, with no confirmation. That lifted the weak set from 74.8% to
+  87.9%, but strong robots close in like that all the time (ScalarR in 77% of rounds,
+  XanderCat 80%), and running from them cost up to 15 points (Raven 60% to 45%, Knight 48% to
+  37%). On the 3.4 truth logs no top-19 robot came within 120 px on a four-scan charge with
+  both robots above 20 energy (they close in only to finish a disabled Hadur), while every
+  rammer and close-range nano did in 61-100% of rounds, so the confirmation is that, in two
+  different rounds: on the second top-19 bench XanderCat, spawned 190 px away, once drove
+  straight through us at a round's start, which a single ram would have taken for a rammer
+  (it cost 10 points in that battle).
+- **MIR-1** is `policy.MirrorDetector` (at which lag) and `move.MirrorDrive` (the plan and
+  the aim). The detector keeps a running error for each lag 0-8 ticks against the reflection
+  through the centre. The first cut also tried the two axis mirrors with a 30-scan run under
+  40 px, and it switched on for a few dozen ticks against every top-19 robot (two surfers
+  orbiting each other about a point near the centre look like a mirror). On the truth logs of
+  both top-19 benches the longest run under 30 px, centre only, counting only scans with both
+  robots above 10 energy, was 80; MirrorNano's and MirrorMicro's shortest was 152, so the run
+  is now 120 (30 once confirmed in the battle). Without the energy rule, two nearly disabled
+  robots crawling about held a 335-scan run against Neuromancer. The
+  drive plans straight full-speed runs of 10 to 36 ticks in directions from the golden-ratio
+  sequence (RES-6), each clear of the walls by 40 px and of the centre by 140 px, at least 110
+  ticks ahead, and follows them order for order; the engine's movement is reproduced exactly
+  by `MovementPredictor`, so the plan is remade only after a collision or a skipped turn. The
+  aim is the first tick of the bullet's flight at which the reflection of the planned
+  position, lagged by the detector's lag, is within the bullet's reach. Offline, on 3.4's
+  bench truth logs, aiming at the reflection of our real future position hit MirrorNano and
+  MirrorMicro 75-87% of the time against 18-30% for head-on, while aiming at the reflection
+  of a straight-line guess of our own path did worse than head-on: the plan is what makes it
+  work. MIR-1's movement takes precedence over RAM-2's, since a mirror bot heading for the
+  reflection reads as a charge.
+- The round record gained `ramEscapeTicks` and `mirrorShots` (fields 35 and 36); fields are
+  only ever appended.
 
 ## Retired requirements
 
