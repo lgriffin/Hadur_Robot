@@ -100,6 +100,18 @@ class RamEscapeTest {
 
     @Test
     @Tag("RAM-2")
+    @DisplayName("RAM-2: a rammer charging in reverse is played along its direction of travel")
+    void reversingRammerIsPlayedTheWayItTravels() {
+        RobotState me = state(400, 300, 0, 0, 0);
+        // Heading south, away from us, but driving backward: it travels north, at us.
+        RobotState backward = state(400, 150, Math.PI, -8, 0);
+        RobotState forward = state(400, 150, 0, 8, 0);
+        assertEquals(new RamEscape(FIELD, PREDICTOR).choose(me, forward),
+            new RamEscape(FIELD, PREDICTOR).choose(me, backward), 1e-9);
+    }
+
+    @Test
+    @Tag("RAM-2")
     @DisplayName("RAM-2: the chosen heading points away from the rammer, not toward it")
     void headsAway() {
         RobotState me = state(400, 300, 0, 0, 0);
