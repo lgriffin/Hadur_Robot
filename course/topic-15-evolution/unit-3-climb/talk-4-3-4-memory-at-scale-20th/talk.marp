@@ -1,0 +1,115 @@
+---
+marp: true
+theme: default
+paginate: true
+---
+
+<!-- footer: "Sources: docs/releases/v3.4.md, docs/bench/r8-memory-scale.md, docs/rumble-memory-scale-plan.md, docs/top20-analysis.md, README.md (Standing)" -->
+
+# 3.4: memory at scale, 20th
+
+Fixing the save, not the fight
+
+Unit 3, talk 4
+
+---
+
+## The rule
+
+R8 followed one rule from the memory-scale plan:
+
+**Profile memory does no work proportional to the number of files on disk, ever.**
+
+Three requirements follow from it.
+
+---
+
+## The three changes
+
+- **MEM-11:** list the data directory **once per battle**, then answer every size and name question from an index the store keeps current
+- **MEM-12:** read only files over 1 KB (the only ones that can hold seeds)
+- **MEM-13:** when a save would not fit, delete the least recently fought opponents' profiles, whole, until it does
+
+Nothing in the fighting code changed.
+
+---
+
+## Why it mattered
+
+- A stats-only profile is 275 bytes. The quota is 200 KB, so about **700** profiles fit.
+- The rumble has **1,216** bots
+- Before: past quota, every save was skipped and Hadur learned nothing new
+- After: the oldest opponents are forgotten so the newest can be learned
+
+---
+
+## The bench gate
+
+A slow client (CPU constant forced to 1 ms), a directory prefilled with **698** profiles (199,622 of 200,000 bytes):
+
+| Jar | Skipped turns per battle | After the round was decided |
+|---|---|---|
+| 3.3 | 188 to 224 | 772 of 814 |
+| 3.4 | 10 to 26 | 43 of 67 |
+
+Survival: 90 to 100% for 3.3, 100% for 3.4. The 12-bot weak set: every bot 35 of 35, 0 to 4 skips.
+
+---
+
+## An idea built, measured, and dropped
+
+**TIME-6:** answer the first turn before the battle's set-up.
+
+- In the bench it produced 36 to 61 skipped turns a battle, 36 of them in round 0
+- The set-up left the round start's grace period too short
+- Three skips put the round in duress mode
+- Not shipped. Dropped on the evidence.
+
+---
+
+## The live result
+
+2026-10-01, one pass: 1,215 pairings from 1,628 battles.
+
+| APS | PWIN | ANPP | Survival | Rank |
+|---|---|---|---|---|
+| **85.90 ± 0.20** | 99.26 | 89.03 | **93.92%** | **20th of 1,216** |
+
+Also 28th in the MeleeRumble.
+
+---
+
+## No slide this time
+
+- The last 400 pairings averaged **86.3** APS against **84.7** for the first 400
+- Hours 12:00 to 15:00 UTC sat between 86.0 and 86.9
+- Compared with 3.0 on the same opponents: **+4.7 ± 0.7** APS, mostly survival (82.6% to 93.9%)
+
+The README traces the live slide to the round-end save. 3.4 changed that save and shows no slide.
+
+---
+
+## How close was 20th?
+
+- Rank 19, Dookious, is at 86.41: **0.51** above
+- Rank 21, Phoenix, is at 85.77: **0.13** below, inside the page's interval
+- Against the 19 robots above it, Hadur wins **10** pairings and loses 9
+- Eleven other Irish-flag robots are in the rumble. The best, jam.RaikoMX, is at 82.24 (57th).
+
+---
+
+## What it taught us
+
+- The lost 5 to 8 APS was traced to a cost that grew with the data directory, not to tactics
+- Agents can only test what they can simulate. Widening the bench was the fix.
+- A fix that touches no fighting code can be the biggest gain of the climb
+- Keep an index in memory instead of asking the disk again
+
+---
+
+## Sources
+
+- [docs/releases/v3.4.md](https://github.com/lgriffin/Hadur_Robot/blob/a9ee021/docs/releases/v3.4.md)
+- [docs/bench/r8-memory-scale.md](https://github.com/lgriffin/Hadur_Robot/blob/a9ee021/docs/bench/r8-memory-scale.md)
+- [docs/rumble-memory-scale-plan.md](https://github.com/lgriffin/Hadur_Robot/blob/a9ee021/docs/rumble-memory-scale-plan.md)
+- [docs/top20-analysis.md](https://github.com/lgriffin/Hadur_Robot/blob/a9ee021/docs/top20-analysis.md) and [README.md](https://github.com/lgriffin/Hadur_Robot/blob/a9ee021/README.md): Standing

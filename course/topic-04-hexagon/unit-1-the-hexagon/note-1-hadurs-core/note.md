@@ -1,0 +1,95 @@
+# Hadur's version: the core
+
+Read this after the talks. It maps Hadur's core packages, shows what each may depend on, and points at the classes that make up the boundary.
+
+Links use the S1 commit, `afd6cc9`, where the hexagon, the guard and the replay were introduced, so you see the idea in its first form. `ProfileStore` came with opponent memory in S3, so it and the architecture document use `a9ee021` (3.5.1).
+
+## The hexagon
+
+```mermaid
+graph LR
+    subgraph Robocode
+        E[Engine]
+    end
+    subgraph "hadur-robot (adapter)"
+        A["hadur2.Hadur"]
+        FS["FileProfileStore"]
+    end
+    subgraph "hadur-core (plain Java 11)"
+        G["Guard (RES-1)"]
+        C[HadurCore]
+        L["ledger: energy ledger"]
+        GUN["gun: KNN main + anti-surfer"]
+        MV["move: wave surfing, bullet shadows"]
+        PO["policy: distance, power, endgame, tick budget"]
+        AD["adapt: opening book, seed trust"]
+        SH["shield: anti-shield aim"]
+        ML["melee + posture gate"]
+        MEM["memory: profiles, library"]
+        PS(["port: ProfileStore"])
+        T(["port: Telemetry"])
+    end
+    D[("data directory")]
+    E -- "events, getters" --> A
+    A -- BotInput --> G --> C
+    C --> L & GUN & MV & PO & AD & SH & ML
+    AD & PO --> MEM
+    MEM --> PS
+    C -- BotOrders --> G -- BotOrders --> A
+    A -- "setters, execute()" --> E
+    PS -. implemented by .-> FS --> D
+    C -. "line records" .-> T
+```
+
+The diagram is from the project README. The strategy boxes (ledger, gun, move and the rest) are the subject of later topics. For now, look at the edges of the core: `Guard` on the way in, the two ports on the way out.
+
+## The packages of the core
+
+Everything is under `hadur2.core`. The architecture document has the full table. The shape is:
+
+| Package | Role | Depends on |
+|---|---|---|
+| `model` | the port values: `BotInput`, `BotEvent`, `BotOrders`, waves | itself, physics and the generic kd-tree; never gun, move or replay |
+| `physics` | `Angles`, `Rules`, the battle field | the JDK |
+| `port` | `Telemetry`, `ProfileStore` | the JDK |
+| `ledger` | energy bookkeeping | physics only |
+| `gun`, `move` | aiming and movement | the model, physics and the kd-tree; never each other |
+| `memory` | opponent profiles | itself and the ports only |
+| `replay` | the line codec and replay driver | the model and the core |
+| `hadur2.core` | `HadurCore`, `Guard` | everything above |
+
+The right-hand column is not a convention. Topic 05 shows the ArchUnit rules that check it on every build.
+
+## The classes to open
+
+| Class | What to look for |
+|---|---|
+| [Guard](https://github.com/lgriffin/Hadur_Robot/blob/afd6cc9/hadur-core/src/main/java/hadur2/core/Guard.java) | the `Function<BotInput, BotOrders>` field, the `catch (Throwable t)`, `safeOrders` |
+| [GuardTest](https://github.com/lgriffin/Hadur_Robot/blob/afd6cc9/hadur-core/src/test/java/hadur2/core/GuardTest.java) | lambdas as test doubles, one test per behaviour |
+| [Telemetry](https://github.com/lgriffin/Hadur_Robot/blob/afd6cc9/hadur-core/src/main/java/hadur2/core/port/Telemetry.java) | a one-method port with a `NONE` constant |
+| [ProfileStore](https://github.com/lgriffin/Hadur_Robot/blob/a9ee021/hadur-core/src/main/java/hadur2/core/port/ProfileStore.java) | a port that is "deliberately dumb"; default methods `size` and `lastModified` |
+| [Hadur](https://github.com/lgriffin/Hadur_Robot/blob/a9ee021/hadur-robot/src/main/java/hadur2/Hadur.java) | where the ports are plugged in: `new Guard(core::tick, ...)` |
+| [architecture.md](https://github.com/lgriffin/Hadur_Robot/blob/a9ee021/docs/architecture.md) | "Modules", "The tick", "Ports and values" |
+
+## One tick through the boundary
+
+The next diagram, also from the README, shows where the guard sits. Follow the "core throws" arrow: it is the only path where the core's answer is replaced.
+
+```mermaid
+flowchart TD
+    EV["Engine events<br/>onScannedRobot, onHitByBullet, ..."] --> Q["Adapter queues BotEvents"]
+    Q --> IN["BotInput: own state + events"]
+    IN --> GU{"Guard.tick"}
+    GU -- "core throws" --> SAFE["Safe orders: orbit, radar on enemy,<br/>hold fire; power 1.0 from the 3rd fault (RES-7)"]
+    GU --> CORE["HadurCore handles events,<br/>picks orders"]
+    CORE --> OUT["BotOrders"]
+    SAFE --> OUT
+    OUT --> EX["Adapter applies setters, execute()"]
+```
+
+This version trims the README's diagram to the guard's path. The full one, with the posture gate and the tick budget, is in the README.
+
+## Two small things worth noticing
+
+- `ProfileStore` has default methods (`size`, `lastModified`). A port can grow by adding a default method, so existing implementations keep compiling.
+- `Guard` takes `Function<BotInput, BotOrders>` rather than a `HadurCore`. In a test it is a lambda. In the robot it is `core::tick`. The guard never learns the difference.

@@ -1,0 +1,180 @@
+---
+marp: true
+theme: default
+paginate: true
+---
+
+# Testing in layers
+
+**Topic 06: Testing in layers**
+
+After this talk you can say what each kind of test in Hadur catches that the others cannot, write a custom jqwik generator, and explain how replay works.
+
+Java skills: generics, functional interfaces, method references, I/O streams, `java.util.zip`, try-with-resources.
+
+---
+
+# The layers
+
+| Layer | Where | Covers |
+|---|---|---|
+| Architecture | `arch/ArchitectureTest` | the boundary and the bans |
+| Properties | `*Properties` (jqwik) | rules over many inputs |
+| Unit | per package | each rule and edge case |
+| Release | `ReleaseTargetTest` | every class loads on Java 11 |
+| Replay | `replay/ReplayTest` | recorded battles give the same orders |
+| Behaviour | `features/*.feature` | one feature per EARS group |
+| Traceability | `RequirementsTraceabilityTest` | requirements and tests stay in step |
+| Adapter | `FileProfileStoreTest` | the data-directory store |
+| Bench | `hadur-bench` | whole battles, and whether it wins |
+
+*Source: `docs/testing.md`, "The layers".*
+
+---
+
+# What each layer catches that the others cannot
+
+- **Unit** says a rule works on the cases you thought of.
+- **Properties** find the case you did not think of.
+- **Architecture** finds a dependency that no behaviour test would notice.
+- **Replay** finds a change in play that was not meant to change play.
+- **Traceability** finds a requirement with no test.
+- **Bench** finds a change that passes every test and still loses.
+
+`docs/testing.md` is honest about the gaps: no mutation testing, and no unit tests of the adapter beyond the profile store.
+
+---
+
+# Functional interfaces in tests
+
+A functional interface has one abstract method, so a lambda can stand in for it. Tests use that to fake collaborators in one line.
+
+```java
+private Guard guard(Function<BotInput, BotOrders> core) {
+    return new Guard(core, () -> recoveries++, telemetry::add);
+}
+```
+
+`Function<BotInput, BotOrders>` is generic: input type first, output type second. `telemetry::add` is a method reference, a lambda that just calls `add`. `() -> recoveries++` is a `Runnable`.
+
+*Source: `GuardTest`.*
+
+---
+
+# A property
+
+An example test checks one input. A property states a rule and lets jqwik try many.
+
+```java
+@Property
+void ordersRoundTrip(@ForAll("anyDouble") double a, @ForAll("anyDouble") double b,
+                     @ForAll("anyDouble") double c, @ForAll("anyDouble") double d,
+                     @ForAll("anyDouble") double e, @ForAll("anyDouble") double f) {
+    BotOrders o = new BotOrders(a, b, c, d, e, f);
+    assertEquals(o, LineCodec.decodeOrders(LineCodec.encode(o)));
+}
+```
+
+This is a **round trip**: encode then decode must give back an equal value. When a rule fails, jqwik shrinks the inputs to a small counterexample.
+
+*Source: `LineCodecProperties`.*
+
+---
+
+# A custom generator
+
+Plain random doubles almost never hit NaN or infinity. The `@Provide` method names the awkward values on purpose:
+
+```java
+@Provide
+Arbitrary<Double> anyDouble() {
+    return Arbitraries.oneOf(Arbitraries.doubles(),
+        Arbitraries.of(Double.NaN, Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY,
+            -0.0, 0.0, Double.MIN_VALUE, Double.MAX_VALUE));
+}
+```
+
+`Arbitrary<Double>` is a generic type: a source of `Double`s. `@ForAll("anyDouble")` picks it by name.
+
+---
+
+# Building bigger values
+
+`Combinators.combine` joins generators, and a constructor reference builds the value:
+
+```java
+Combinators.combine(name, d, d, d, d, d).as(BotEvent.Scan::new),
+Combinators.combine(name, d, d, d, d).as(BotEvent.HitByBullet::new),
+d.map(BotEvent.HitWall::new),
+name.map(BotEvent.RobotDeath::new),
+```
+
+`BotEvent.Scan::new` is the constructor as a function. Because Topic 03 made events plain values with simple constructors, every event type has a generator in one line.
+
+*Source: `LineCodecProperties.event`.*
+
+---
+
+# A model-based property
+
+Sometimes the check is "the fast code equals a slow, obviously correct version". MOVE-1 does that for bullet shadows:
+
+```java
+@Property(tries = 300)
+@Tag("MOVE-1")
+void shadowsAreExactlyTheAnglesThatCollide(
+        @ForAll @DoubleRange(min = 100, max = 700) double sx,
+        // ...
+        @ForAll @IntRange(min = 0, max = 20) int fireGap) {
+```
+
+It flies bullets turn by turn and tests each angle for a collision, then requires the shadows to match. The brute force is the oracle. Lab 08 does the same for a KD-tree.
+
+*Source: `BulletShadowsProperties`.*
+
+---
+
+# Replay
+
+Record every `BotInput` the live robot received and every `BotOrders` it issued, as text lines. Later, feed the inputs to a fresh core:
+
+```java
+List<Replay.Tick> ticks = Replay.run(Fixtures.lines(fixture), Telemetry.NONE);
+assertFalse(ticks.isEmpty());
+for (Replay.Tick t : ticks) {
+    assertEquals(t.recorded(), t.replayed(),
+```
+
+Any difference in a single order, in any tick of any round, fails the test. That is CORE-2. Lab 06 records Hadurling's own battle.
+
+*Source: `ReplayTest`.*
+
+---
+
+# Reading the fixtures
+
+The fixtures are gzipped text. Plain `java.io` and `java.util.zip` read them, and try-with-resources closes the stream:
+
+```java
+try (BufferedReader r = new BufferedReader(new InputStreamReader(
+        new GZIPInputStream(Files.newInputStream(fixture)), StandardCharsets.UTF_8))) {
+    return r.lines().toList();
+}
+```
+
+Streams wrap streams: bytes from a file, decompressed, decoded as UTF-8, split into lines. Each layer is one constructor.
+
+*Source: `replay.Fixtures.lines`.*
+
+---
+
+# When a replay fails
+
+The rule for the fixtures, from the testing document:
+
+- A change **not** meant to alter play must leave them passing.
+- A change that **is** meant to alter play must re-record them, and say so in the pull request.
+
+The test cannot tell you whether the new behaviour is better. That is the bench's job (Topic 12). The replay only tells you that something changed.
+
+*Source: `docs/testing.md`, "Replay fixtures".*

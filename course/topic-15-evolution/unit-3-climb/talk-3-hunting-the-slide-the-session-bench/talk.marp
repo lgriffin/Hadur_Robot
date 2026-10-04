@@ -1,0 +1,129 @@
+---
+marp: true
+theme: default
+paginate: true
+---
+
+<!-- footer: "Sources: docs/bench/r7-session.md, docs/skipped-turns-plan.md, docs/rumble-memory-scale-plan.md, docs/rumble-climb-top30-plan.md (1.3), data/learnings.md (L-24 to L-28)" -->
+
+# Hunting the slide: the session bench
+
+Building a bench that behaves like a rumble client
+
+Unit 3, talk 3
+
+---
+
+## What no bench had ever done
+
+Every bench pass, including BENCH-4, forked a **fresh JVM for each battle** and met at most **60** opponents.
+
+A rumble client does the opposite:
+
+- every battle in **one** `RobocodeEngine` process
+- a heap capped at `-Xmx512M`
+- **hundreds** of distinct opponents in a row
+
+That difference had never been benched (L-24).
+
+---
+
+## The session bench (BENCH-6, BENCH-7)
+
+- 300 battles, one engine process, 512 MB heap, data directory kept
+- 35 rounds a battle, reported in blocks of 25
+- A **control robot** (`sample.Tracker`) fights the same opponents in the same process, so anything wrong with the host shows on both
+
+---
+
+## The result
+
+| Battles | Weak survival | Skipped turns / battle | Heap after GC |
+|---|---|---|---|
+| 1-25 | 100.0% | 10.0 | 7 MB |
+| 101-125 | 99.7% | 39.5 | 6 MB |
+| 201-225 | 98.7% | 67.3 | 6 MB |
+| 276-300 | 99.5% | **89.6** | 6 MB |
+
+The control skipped 0.0 to 0.1 turns a battle in every block. No slide in survival or score. A steady climb in skipped turns, Hadur only.
+
+---
+
+## Where the skips were
+
+- Every added skip sat **one tick after a round ended**
+- Battle 299: 164 skipped turns, **160** of them at round end + 1
+- Heap, live classes and turn p95 (about 1 ms) were flat
+- So nothing per tick grew. Only the one stall per round did.
+
+---
+
+## The bisect
+
+Same session, but the data directory **wiped before every battle** (150 battles):
+
+- Skipped turns per battle stayed flat, 7.1 in the first block and 8.2 in the last
+- So the growth needs the accumulating data directory
+
+A prefilled directory reproduced it, on both the 3.2 and 3.3 jars.
+
+---
+
+## The cost, by size of directory
+
+| Profiles on disk | Skipped turns (3.3) | Save |
+|---|---|---|
+| 0 | 4 | written |
+| 300 | 10 | written without seeds |
+| 1000 | 57 | skipped |
+| 2000 | 96 | skipped |
+
+Past about 700 stats-only profiles (275 bytes each, 200 KB quota), **every save is skipped** and Hadur stops learning (L-27).
+
+---
+
+## The cause
+
+`ProfileLibrary.save` did work proportional to the number of files on disk:
+
+1. walk the directory to add up the bytes used
+2. above 90% of quota, read and decode **every** profile to find the ones holding seeds
+3. then skip the write anyway
+
+Each file goes through the security manager, so 1,000 to 2,000 files meant a stall of 100 to 200 ms.
+
+---
+
+## A planner checks an implementer
+
+The skipped-turns plan re-checked the implementer's diagnosis against the raw session logs and the Robocode engine source. It confirmed the cause and corrected four points before any code was written.
+
+One correction: three engine disables in the session were Hadur's, mid-round, and **unexplained** (L-28).
+
+---
+
+## What it did not explain
+
+- The stalls happen after the round is decided and cost **no rounds** on the bench
+- So on the bench this was a real fault, but the plan did not call it the live slide: "not the whole of the live gap"
+- 3.4's live pass later showed no slide (next talk)
+- 3.3 added duress mode (RES-9): after three skipped turns in a round, stop learning and play a cheap orbit
+
+---
+
+## What it taught us
+
+- If the bench cannot reproduce a problem, copy the failing environment more closely
+- A control robot turns "something is slow" into "it is us"
+- A bisect (change one thing, keep the rest) pointed at the data directory
+- A fix can be right and still not be the fix you wanted. Write down which one it is.
+
+---
+
+## Sources
+
+- [docs/bench/r7-session.md](https://github.com/lgriffin/Hadur_Robot/blob/a9ee021/docs/bench/r7-session.md)
+- [docs/skipped-turns-plan.md](https://github.com/lgriffin/Hadur_Robot/blob/a9ee021/docs/skipped-turns-plan.md)
+- [docs/rumble-memory-scale-plan.md](https://github.com/lgriffin/Hadur_Robot/blob/a9ee021/docs/rumble-memory-scale-plan.md)
+- [docs/rumble-climb-top30-plan.md](https://github.com/lgriffin/Hadur_Robot/blob/a9ee021/docs/rumble-climb-top30-plan.md): section 1.3
+- [data/learnings.md](https://github.com/lgriffin/Hadur_Robot/blob/a9ee021/data/learnings.md): L-24 to L-28

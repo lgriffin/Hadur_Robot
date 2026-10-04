@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>course.hadurling</groupId>
+    <artifactId>hadurling-lab13</artifactId>
+    <version>0.1</version>
+    <packaging>pom</packaging>
+
+    <name>Hadurling (lab 13)</name>
+    <description>The Building Hadur course robot: a core with no Robocode, and an adapter.</description>
+
+    <modules>
+        <module>hadurling-core</module>
+        <module>hadurling-robot</module>
+        <module>hadurling-bench</module>
+    </modules>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- Robots run on every RoboRumble client, which is Java 11; tests can be newer. -->
+        <maven.compiler.release>11</maven.compiler.release>
+        <maven.compiler.testRelease>17</maven.compiler.testRelease>
+        <junit.version>5.11.4</junit.version>
+        <jqwik.version>1.9.2</jqwik.version>
+        <archunit.version>1.3.0</archunit.version>
+        <cucumber.version>7.20.1</cucumber.version>
+        <robocode.version>1.9.5.6</robocode.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>course.hadurling</groupId>
+                <artifactId>hadurling-lab13-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>net.sf.robocode</groupId>
+                <artifactId>robocode.api</artifactId>
+                <version>${robocode.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.junit</groupId>
+                <artifactId>junit-bom</artifactId>
+                <version>${junit.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>io.cucumber</groupId>
+                <artifactId>cucumber-bom</artifactId>
+                <version>${cucumber.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.tngtech.archunit</groupId>
+                <artifactId>archunit-junit5</artifactId>
+                <version>${archunit.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>net.jqwik</groupId>
+                <artifactId>jqwik</artifactId>
+                <version>${jqwik.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.13.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>3.5.2</version>
+                    <configuration>
+                        <includes>
+                            <include>**/*Test.java</include>
+                            <include>**/*Tests.java</include>
+                            <!-- jqwik property classes -->
+                            <include>**/*Properties.java</include>
+                        </includes>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+</project>
