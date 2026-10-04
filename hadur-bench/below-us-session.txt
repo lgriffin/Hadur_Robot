@@ -1,0 +1,7 @@
+# R10 (docs/rumble-climb-top15-plan.md): the below-us panel as a rumble client fights it, one
+# battle each, in list order, through ONE engine process with the data directory kept.
+opponents=below-us-session-opponents.txt
+heap=512M
+rounds=35
+fresh=false
+wipe=false

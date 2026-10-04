@@ -255,3 +255,21 @@ spawn), and no top-19 pair stayed at each other's centre reflection for more tha
 with both above 10 energy (two crawling, nearly dead robots did for 335). Offline replay of
 the truth logs is a cheap gate before a 3-hour bench. Evidence: `docs/bench/r9-weak-leak.md`.
 Owner: R9.
+
+**L-36 · confirmed.** A partial pass is a sample of opponents, and its rank moves with the
+sample. 3.5.1 read 85.54 (21st) on its first 259 pairings; 259 opponents drawn at random from
+3.4's complete 1,215 give 84.79 to 86.96 (90%), and 30% of draws read 85.54 or lower. On the
+50 opponents visible on the page 3.5.1 averages +0.92 (± 1.6) over 3.4. The page's own
+± 0.49 does not count which opponents are still unmet. Evidence:
+`rumble/parsed/2026-10-03T2330Z_roborumble_botdetails_hadur2.Hadur_3.5.1.csv`,
+`rumble/parsed/2026-10-03_hadur-3.5.1_vs_3.4_common.tsv`, `docs/rumble-climb-top15-plan.md`
+section 1. Owner: R10 (reads the complete page).
+
+**L-37 · open (extends L-31).** Below 70 APS, 3.4's whole deficit is lost rounds and it is a
+broad rate, not a class: 1,414 rounds lost in 1,045 pairings (per 35-round pairing; battle-weighted 1,901), of which R9's 11 bots hold 29.
+Against robots under 40 APS, 86 of 248 single-battle pairings lost exactly one round (1.3% of
+rounds) where the bench loses 0.24%, which points at something live-only (an engine disable as
+in L-28, a round in duress, a round-start cost). Unconfirmed until the R10 panel splits the
+leak into bench-reproduced and live-only rounds. Evidence: the 3.4 page,
+`docs/rumble-climb-top15-plan.md` section 3, `docs/bench/rumble-3.2-weak-pbi.md`.
+Owner: R10.
