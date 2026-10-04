@@ -141,7 +141,7 @@ public final class ProfileLibrary {
         while (others + 2L * needed > store.quota()) {
             String oldest = null;
             for (String name : byAge) {
-                if (!name.equals(own) && !name.equals(own + TMP_SUFFIX)) {
+                if (isProfileFile(name) && !name.equals(own) && !name.equals(own + TMP_SUFFIX)) {
                     oldest = name;
                     break;
                 }
@@ -194,5 +194,10 @@ public final class ProfileLibrary {
     private long sizeOf(String name) {
         long[] e = index.get(name);
         return e == null ? 0 : e[0];
+    }
+
+    /** Only the library's own files may be forgotten; anything else in the directory is left alone. */
+    private static boolean isProfileFile(String name) {
+        return name.endsWith(SUFFIX) || name.endsWith(SUFFIX + TMP_SUFFIX);
     }
 }

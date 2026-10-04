@@ -98,6 +98,21 @@ class ProfileLibraryTest {
     }
 
     @Test
+    @DisplayName("making room never deletes a file the library did not write")
+    void leavesOtherFilesAlone() {
+        int size = ProfileCodec.encode(profile("a.One", 1)).length;
+        MemoryProfileStore store = new MemoryProfileStore(4L * size + 8);
+        store.write("transcript.txt", new byte[size]);
+        ProfileLibrary library = new ProfileLibrary(store);
+        assertTrue(library.save(profile("a.One", 1)));
+        assertTrue(library.save(profile("a.Two", 1)));
+        assertTrue(library.save(profile("a.Six", 1)));
+        assertTrue(store.names().contains("transcript.txt"));
+        assertEquals(Profile.stranger("a.One"), library.load("a.One"));
+        assertEquals(profile("a.Six", 1), library.load("a.Six"));
+    }
+
+    @Test
     @DisplayName("a profile too big for the quota fails to save and the others survive")
     void tooBig() {
         MemoryProfileStore store = new MemoryProfileStore(200);

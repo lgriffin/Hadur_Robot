@@ -124,7 +124,7 @@ public final class ProfileLibrary {
         while (others + 2L * needed > store.quota()) {
             String oldest = null;
             for (String name : names) {
-                if (name.equals(own) || name.equals(own + TMP_SUFFIX)) continue;
+                if (!isProfileFile(name) || name.equals(own) || name.equals(own + TMP_SUFFIX)) continue;
                 if (oldest == null || store.lastModified(name) < store.lastModified(oldest)) oldest = name;
             }
             if (oldest == null) throw new IllegalStateException("a profile of " + needed + " bytes does not fit");
@@ -132,5 +132,10 @@ public final class ProfileLibrary {
             store.delete(oldest);
             names.remove(oldest);
         }
+    }
+
+    /** Only the library's own files may be forgotten; anything else in the directory is left alone. */
+    private static boolean isProfileFile(String name) {
+        return name.endsWith(SUFFIX) || name.endsWith(SUFFIX + TMP_SUFFIX);
     }
 }
