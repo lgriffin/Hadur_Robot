@@ -1,0 +1,187 @@
+---
+marp: true
+theme: default
+paginate: true
+---
+
+# Physics as pure functions
+
+**Topic 02: Physics as pure functions, and a first test**
+
+After this talk you can write a static utility method, test it with JUnit 5, and explain why two doubles are compared with a tolerance, or exactly.
+
+Java skills: static utility classes, `Math`, floating point, JUnit 5, Maven test layout.
+
+---
+
+# A pure function
+
+A pure function returns the same answer for the same arguments and touches nothing else. No fields, no clock, no I/O.
+
+Hadur's physics are all pure functions in two `final` classes with private constructors:
+
+```java
+public final class Angles {
+    // ...
+    private Angles() {}
+```
+
+`final` stops subclassing. The private constructor stops anyone creating one. The class is only a home for static methods.
+
+*Source: `hadur2.core.physics.Angles`.*
+
+---
+
+# Angles wrap around
+
+Directions are in radians, and 2 pi is the same direction as 0. Before you compare or subtract angles, normalise them.
+
+```java
+public static double normalAbsoluteAngle(double angle) {
+    angle %= TWO_PI;
+    return angle >= 0 ? angle : angle + TWO_PI;
+}
+```
+
+Java's `%` keeps the sign of the left operand. So `-1.0 % 6.28` is `-1.0`, not `5.28`. The second line adds one more turn to fix it.
+
+*Source: `Angles.normalAbsoluteAngle`.*
+
+---
+
+# Relative angles: the short way round
+
+An **absolute** angle is in [0, 2 pi). A **relative** angle is in [-pi, pi): the sign says which way to turn, and the size is the short way.
+
+```java
+public static double normalRelativeAngle(double angle) {
+    angle %= TWO_PI;
+    if (angle >= 0) {
+        return angle < PI ? angle : angle - TWO_PI;
+    }
+    return angle >= -PI ? angle : angle + TWO_PI;
+}
+```
+
+Exactly pi maps to -pi. The interval is closed below and open above, as in the engine.
+
+---
+
+# Bullet speed
+
+A bigger bullet is slower: speed is `20 - 3 x power`.
+
+```java
+public static double getBulletSpeed(double power) {
+    power = Math.min(Math.max(power, MIN_BULLET_POWER), MAX_BULLET_POWER);
+    return 20 - 3 * power;
+}
+```
+
+| Power | Speed (px/tick) |
+|---|---|
+| 3.0 | 11 |
+| 1.0 | 17 |
+| 0.1 | 19.7 |
+
+Power is clamped to [0.1, 3.0] first. Reassigning `power` is safe: it only changes the method's own copy of the argument.
+
+*Source: `hadur2.core.physics.Rules`.*
+
+---
+
+# Maximum escape angle
+
+A robot moves at most 8 px per tick. A bullet of speed `v` takes time to arrive. In that time the target can swing the bullet's aim by at most `asin(8 / v)`.
+
+Hadur's wave stores it when it is created:
+
+```java
+this.maxEscapeAngle = Math.asin(8.0 / bulletSpeed);
+```
+
+| Power | Bullet speed | Max escape angle |
+|---|---|---|
+| 3.0 | 11 | about 46.7 degrees |
+| 1.0 | 17 | about 28.1 degrees |
+
+Fast bullets leave the target less room. Topic 08 uses this angle as the scale for guess factors.
+
+*Source: `hadur2.core.model.Wave`.*
+
+---
+
+# Damage and energy
+
+```java
+public static double getBulletDamage(double power) {
+    double damage = 4 * power;
+    if (power > 1) {
+        damage += 2 * (power - 1);
+    }
+    return damage;
+}
+```
+
+A power-3 hit costs `4 x 3 + 2 x 2 = 16`. The shooter gets back `3 x power`. A robot hitting a wall at full speed loses `8 / 2 - 1 = 3.0`, the same as the biggest bullet. Topic 09 shows how the energy ledger has to account for it.
+
+---
+
+# Doubles are not exact
+
+`0.1 + 0.2` is not `0.3` in binary floating point. Compare computed values with a tolerance:
+
+```java
+assertEquals(782, end.location.x, 1e-9);
+```
+
+The third argument is the allowed difference. Without it, `assertEquals(double, double)` demands exactly the same value.
+
+*Source: `WallStopTest`, which checks that a predicted robot stops at a wall.*
+
+---
+
+# A first test, laid out by Maven
+
+```
+hadur-core/
+  src/main/java/hadur2/core/physics/Angles.java
+  src/test/java/hadur2/core/physics/WallStopTest.java
+```
+
+The test sits in the **same package** under `src/test/java`, so it can see package-private code. Surefire runs classes named `*Test`, `*Tests` or `*Properties`.
+
+```java
+@Test
+@DisplayName("away from walls nothing changes")
+void openFieldKeepsSpeed() {
+```
+
+`@Test` marks a test method. `@DisplayName` is the sentence in the report.
+
+---
+
+# A property: one rule, thousands of inputs
+
+```java
+@Property(tries = 5000)
+void normalRelativeAngleMatchesEngine(@ForAll @DoubleRange(min = -1e4, max = 1e4) double a) {
+    assertEquals(robocode.util.Utils.normalRelativeAngle(a), Angles.normalRelativeAngle(a));
+}
+```
+
+jqwik generates 5000 angles. If one fails it shrinks to a small failing case. Note there is **no tolerance**: Hadur's copy must equal the engine's exactly.
+
+*Source: `PhysicsMatchesEngineProperties`.*
+
+---
+
+# Why bit-identical matters
+
+The core may not import `robocode.*`, so it carries its own copy of the engine's maths. If the copy differs in the last bit, a recorded battle replays differently and every behaviour test is suspect.
+
+So the build checks the copy against the engine on thousands of angles and on edge cases: zero, pi, infinities and NaN.
+
+Lab 02 writes this test for your own `Angles`.
+
+*Sources: `Angles` Javadoc, `PhysicsMatchesEngineProperties`.*

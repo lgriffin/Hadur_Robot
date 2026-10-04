@@ -1,0 +1,117 @@
+---
+marp: true
+theme: default
+paginate: true
+---
+
+<!-- footer: "Sources: docs/bench/s1-2.0-cold.md, docs/bench/s2-2.0-cold.md, docs/strategy-evolution.md (S1, S2)" -->
+
+# S1-S2: brain from engine, shots as they are
+
+A core with no Robocode, then an honest picture of the enemy
+
+Unit 1, talk 3
+
+---
+
+## S1: the goal
+
+Move all of Hadur's strategy into a core with **no Robocode imports**, without changing how it plays.
+
+Everything after S1 depends on it: strategy can be tested, replayed and reasoned about outside the engine.
+
+---
+
+## The hexagon in one picture
+
+```mermaid
+graph LR
+    E[Robocode engine] -->|events| A[Adapter]
+    A -->|BotInput| C[Core]
+    C -->|BotOrders| A
+    A -->|setters| E
+    C -.->|line records| T[Telemetry port]
+```
+
+ArchUnit enforces the boundary on every build.
+
+---
+
+## Two safety nets (S1)
+
+- **Guard (RES-1):** if the core throws, the robot still gets safe orders that tick. No faults in **1,050** benchmarked rounds.
+- **Replay (CORE-2):** recorded battles replay through a fresh core to the live robot's exact orders, bit for bit. An unintended change in play fails the build.
+
+---
+
+## The faithful port paid off
+
+Comparing same-seed battles against 1.20 turn by turn exposed two slips:
+
+1. 1.20's fire check reads the gun's remaining turn in degrees, not radians
+2. 1.20's aim sees gun heat from a shot fired earlier in the same tick
+
+After the fixes, 3 of the 4 comparable battles were identical for all 35 rounds.
+
+---
+
+## S1 result: no change, as intended
+
+- Shadow score share **46.2% ± 6.4**, 98 of 175 rounds
+- Within noise of S0 (40.8% ± 8.3)
+- The gate was "do not change play", and the numbers say it did not
+
+---
+
+## S2: see the enemy's bullets as they really are
+
+- 1.20 treated *any* energy drop as a shot
+- S2 adds an **energy ledger** (WAVE-1, WAVE-2)
+- Between scans it subtracts our bullet damage, the enemy's hit refund, collisions and inferred wall damage
+- Only a remainder in [0.1, 3.0] becomes a wave
+
+---
+
+## S2 result: waves that exist
+
+- Against Shadow, **99.4%** of the shots a scan can reveal become waves, with **0** false waves
+- Across all opponents, **1,820** drops that 1.20 would have surfed as phantom waves were explained away
+- On the samples, 8 of 12,144 inferred waves were false
+
+---
+
+## The bench told us what to fix
+
+Wave fidelity was scored against the engine's real bullets:
+
+1. 0.1-power shots read as 0.0999999, so compare with a tolerance
+2. The engine applies acceleration before its wall check (13.6% false waves against Crazy)
+3. The bench's own accounting was wrong too
+
+Also found: after a skipped turn the radar could lose the enemy for the rest of the round (RADAR-1 fixed it).
+
+---
+
+## S2 result: score still flat
+
+- Shadow **43.7% ± 4.6**, 93 of 175 rounds
+- Every one of the 875 sample-bot rounds won
+- Skipped turns **73 to 57**
+- Honest reading: a better picture of the enemy has not yet changed the score
+
+---
+
+## What it taught us
+
+- A boundary you can enforce (ArchUnit) is worth more than one you remember
+- A faithful port, compared turn by turn, catches slips that tests do not
+- Score from truth logs, not from belief: the bench's own accounting was wrong three times
+- Flat results are results. S1 and S2 were meant to be flat or small.
+
+---
+
+## Sources
+
+- [docs/bench/s1-2.0-cold.md](https://github.com/lgriffin/Hadur_Robot/blob/a9ee021/docs/bench/s1-2.0-cold.md)
+- [docs/bench/s2-2.0-cold.md](https://github.com/lgriffin/Hadur_Robot/blob/a9ee021/docs/bench/s2-2.0-cold.md)
+- [docs/strategy-evolution.md](https://github.com/lgriffin/Hadur_Robot/blob/a9ee021/docs/strategy-evolution.md): S1, S2

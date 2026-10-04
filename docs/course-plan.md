@@ -114,8 +114,8 @@ topic-04-hexagon/
 ## 4. Topics, labs and sources
 
 Level is the Java and design level a learner needs coming in. Each lab names its Hadurling
-step: `course-labs/lab-NN/start` is the previous lab's solution and `solution` is the
-answer, each a standalone Maven project (Java 17 for tests, Java 11 for the robot, as
+step: `course-labs/lab-NN` is the answer to Lab NN and the starting point of the next,
+each a standalone Maven project (Java 17 for tests, Java 11 for the robot, as
 Hadur does it).
 
 ### Part 1: Foundations (beginner)
@@ -184,9 +184,9 @@ Hadur does it).
 **Topic 06. Testing in layers** (generics, functional interfaces)
 - Talk: the layer table (architecture, properties, unit, release, replay, behaviour,
   traceability, adapter, bench) and what each catches that the others cannot.
-- Lab 06a: property tests with jqwik: custom `Arbitrary` generators, shrinking, a round-trip
+- Lab 06, part one: property tests with jqwik: custom `Arbitrary` generators, shrinking, a round-trip
   property, a model-based property (fast code equals a brute-force check, as MOVE-1 does).
-- Lab 06b: record and replay. Hadurling writes each tick's input and orders as line records;
+- Lab 06, part two: record and replay. Hadurling writes each tick's input and orders as line records;
   a replay test feeds a recorded battle through a fresh core and requires the same orders.
   Java: `java.util.zip`, readers and writers, `Iterator`, test resources.
 - Compare with Hadur: `replay/LineCodec`, `replay/ReplayTest`, `BulletShadowsProperties`,
@@ -287,7 +287,7 @@ link into the repo. These need no lab code and can ship first (section 7).
 | | *S5-S6: press when ahead, be harder to hit* | S5 and S6 reports; Shadow 40.8% to 57.4% |
 | 2. Melee | *2.1 to 3.0: a second brain without touching the first* | `docs/bench/m*-gates.md`, release notes 2.1 and 3.0 |
 | 3. The climb | *3.0: 64th, and what the rumble measures* | `docs/bench/rumble-3.0-details.md`, L-01.. |
-| | *3.1: 16th for an hour, then 64th* | rumble-climb-top30-plan.md section 1 |
+| | *3.1: 16th for an hour, then 65th* | rumble-climb-top30-plan.md section 1 |
 | | *Hunting the slide: the session bench* | `docs/bench/r7-session.md`, skipped-turns-plan.md |
 | | *3.4: memory at scale, 20th* | r8-memory-scale.md, top20-analysis.md |
 | | *3.5: the weak-bot leak and what is next* | `docs/bench/r9-weak-leak.md`, issue #80 |
@@ -350,20 +350,20 @@ SHAs; if Leigh wants friendlier names, `course/s1`-style tags can be pushed by h
 
 ```
 course-labs/
-  README.md                how the steps relate; how to run one
-  pom.xml                  an aggregator for CI only; not a module of the root pom
-  lab-01/start, lab-01/solution
-  lab-02/start, lab-02/solution
-  ...
-  lab-16/start             the capstone starts from lab-13's solution
-  tools/check.sh           builds and tests every solution; zips each start into
-                           course/topic-NN-*/side-labs/book-*/archives/start.zip
+  AUTHORING.md             conventions for the course and the labs
+  lab-00/                  the starting skeleton (Lab 01 starts here)
+  lab-01/ ... lab-13/      lab-NN is the solution of Lab NN and the start of Lab NN+1
+  tools/check.sh           builds and tests every lab; zips lab-(NN-1) into
+                           course/topic-NN-*/side-labs/book-labNN-*/archives/start.zip
+  tools/new-lab.sh         copies one lab to the next, renumbering its artifactIds
+  tools/cards.py           writes SVG title cards for course objects without an image
 ```
 
-- Each `start` is the previous lab's `solution`, so a learner who falls behind can pick up at
-  any lab.
-- Robocode's API comes from the jar already vendored in `repo/`, so the lab projects build
-  offline like Hadur does.
+- Each lab folder is one standalone Maven project, so a learner who falls behind takes the
+  previous folder and carries on. (The first draft of this plan had a `start` and a
+  `solution` per lab; one folder per lab holds the same code without the duplicate.)
+- Robocode's API comes from Maven Central (`net.sf.robocode:robocode.api:1.9.5.6`), so a
+  lab's zip builds on its own, outside this repository.
 - The root `pom.xml` does not list `course-labs`, so `mvn verify` for the robot, the
   traceability test and the duel hash pin are untouched.
 

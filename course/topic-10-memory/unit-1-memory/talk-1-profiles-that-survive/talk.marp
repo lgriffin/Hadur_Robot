@@ -1,0 +1,170 @@
+---
+marp: true
+theme: default
+paginate: true
+---
+
+# One profile per opponent
+
+Topic 10
+
+After this talk you can:
+
+- design a small versioned binary file with a checksum
+- write a decoder that either returns a valid value or throws one kind of exception
+- order writes so that a killed process loses nothing
+
+---
+
+## What is being remembered
+
+Each opponent gets one profile: how it shoots at us (hit rates by distance, whether we move, its power choices), how it moves, how our guns did against it, and each battle's outcome.
+
+- stats only: about 300 bytes
+- with gun and surf samples ("seeds"): about 20 KB
+
+Robocode lets a robot write only into its own data directory, and only up to 200 KB. The 1,216-robot rumble means the budget is real.
+
+Source: `docs/strategy-evolution.md`, S3 and S4.
+
+---
+
+## One profile per lineage
+
+`abc.Shadow 3.84` and `abc.Shadow 3.83c (2)` are the same opponent. The key drops the version and the duplicate marker.
+
+```java
+s = stripDuplicateMarkers(s.trim());
+int space = s.indexOf(' ');
+if (space > 0 && s.substring(0, space).indexOf('.') > 0) {
+    s = s.substring(0, space);
+}
+return s.isEmpty() ? UNKNOWN : s;
+```
+
+An odd name is kept whole, so it never throws and never collapses into another robot's key. The file name adds a hash, and the file stores its key, so a collision is detected and treated as a stranger.
+
+---
+
+## The file format
+
+Small, hand-written, versioned, checksummed. Not Java serialisation (breaks when classes change) and not text (does not fit the quota).
+
+```text
+'H' 'P'      magic
+u8           version (2; version 1 still loads)
+i32          payload length
+payload      fields in a fixed order
+i32          CRC-32 of everything before it
+```
+
+(`ProfileCodec` class comment.) Encoding is deterministic: the same profile gives the same bytes.
+
+---
+
+## Writing bytes without java.io
+
+The core may do no I/O (RES-6), so it has its own tiny big-endian writer. It behaves like `DataOutputStream`: most significant byte first, floats stored as their IEEE 754 bits.
+
+```java
+Writer i32(int v) {
+    ensure(4);
+    for (int shift = 24; shift >= 0; shift -= 8) {
+        buf[size++] = (byte) (v >>> shift);
+    }
+    return this;
+}
+```
+
+In your lab you may use `DataOutputStream` and `ByteBuffer`. Hadur's reasons for not doing so are architectural, not technical.
+
+---
+
+## Reading defensively (MEM-4)
+
+`decode` either returns a profile whose every count is finite and not negative, or throws `ProfileFormatException`. Nothing else escapes.
+
+```java
+// cheapest checks first
+if (bytes == null || bytes.length < HEADER + TRAILER) throw ...;
+if (h.u8() != MAGIC_0 || h.u8() != MAGIC_1) throw ...;
+if (version < OLDEST_VERSION || version > VERSION) throw ...;
+if (length < 0 || length > MAX_PAYLOAD
+    || HEADER + length + TRAILER != bytes.length) throw ...;
+if (stored != crc(bytes, HEADER + length)) throw ...;
+```
+
+Only a frame whose CRC holds has its payload parsed. Even then each value is range-checked, because a bug can write a valid CRC over nonsense.
+
+---
+
+## Versions
+
+Version 2 added a group of counts. Version 1 files still load: the new counts start at zero and the v1 seeds (which had no defined layout) are dropped. An unknown version is rejected like damage, so the opponent is a stranger, not misread.
+
+```java
+// MEM-7: write an older version for a client still running an old release
+public static byte[] encode(OpponentProfile p, int version)
+```
+
+Golden files from each version sit in the tests (`goldenV1Loads`, `goldenV2Loads`). A format you cannot reload from last month is not a format.
+
+---
+
+## Killed at any byte (RES-3)
+
+Robocode forbids renaming files, so the usual "write to a temp file, then rename" is out. Hadur writes a copy first.
+
+```java
+private void writeAtomically(String file, byte[] bytes) {
+    store.write(file + TMP_SUFFIX, bytes);
+    store.write(file, bytes);
+    store.delete(file + TMP_SUFFIX);
+}
+```
+
+At every moment one of the two files is complete: the old main file until the copy is done, then the copy until the main file is done. The CRC tells a complete copy from a torn one.
+
+---
+
+## Proving it: kill every write at every byte
+
+`MemoryProfileStore` is a `ProfileStore` in a map. It can be told to keep only the first n bytes of the next write and then throw.
+
+```java
+for (int write = 0; write < 2; write++) {
+    for (int at = 0; at <= size; at++) {
+        // ... save old, arm the crash at byte `at` of write `write`
+        ProfileLibrary.Loaded loaded =
+            new ProfileLibrary(store).load("abc.Shadow");
+        assertTrue(loaded.found());
+        assertNull(loaded.failure());
+    }
+}
+```
+
+(`ProfileLibraryTest.killedAtEveryByte`, tagged RES-3.) The loaded profile must be the old one or the new one, never a broken one.
+
+---
+
+## The quota has quirks only a bench finds
+
+Robocode charges the quota for every byte written and refunds nothing on delete. It does refund a file's old length when you reopen it for writing.
+
+So Hadur's `FileProfileStore.delete` empties the file first, then deletes it. Before that fix, 38 saves failed within a few battles once seeds reached 20 KB (S4 notes).
+
+The port is deliberately dumb: bytes in, bytes out. The format, the checksum and the write order live in the core, where they can be tested.
+
+---
+
+## Recap
+
+- One key per opponent lineage, with a safe file name.
+- Magic, version, length, payload, CRC. Reject anything else with one exception type.
+- Old versions load; unknown ones are strangers.
+- Write a copy, then the file, then drop the copy.
+- Test it by killing the write at every byte.
+
+Memory has a cost, and it grows with the number of opponents. Topic 13 picks that up.
+
+<!-- Code excerpts are trimmed and re-wrapped to fit a slide; the linked source files are exact. -->

@@ -1,0 +1,116 @@
+---
+marp: true
+theme: default
+paginate: true
+---
+
+<!-- footer: "Sources: README.md (Standing, release table, Built by agents), docs/releases/" -->
+
+# Hadur in ten slides
+
+What it is, where it ranks, what you will build
+
+Building Hadur: Welcome
+
+---
+
+## Robocode
+
+- A programming game: you write a robot in Java, and robots fight on a 2D battlefield
+- The engine runs the battle in ticks. Each tick your robot sees, decides, and acts.
+- A robot can move, turn its gun and radar, and fire bullets of power 0.1 to 3
+- Free, open source, and a good way to learn real Java
+
+---
+
+## The RoboRumble
+
+- A continuous, worldwide tournament for Robocode robots
+- Volunteers' machines run pairings all day and upload the scores
+- Every robot ends up with a ranking, built from many pairings
+- The 1v1 ladder has **1,216** robots. There is also a MeleeRumble for free-for-alls.
+
+---
+
+## Meet Hadur
+
+**Hadur** (the Hungarian god of war) is a Robocode robot:
+
+- a 1v1 duelist that remembers each opponent across battles
+- a melee brain for free-for-alls
+- a core that has no idea it is inside Robocode
+
+It was designed, written, tested and tuned by Claude agents, with one human, Leigh Griffin, who set the goals and ran the live entries.
+
+---
+
+## Where it stands
+
+The live record for Hadur 3.4, saved 2026-10-01:
+
+| Rank | APS | PWIN | Survival | Pairings |
+|---|---|---|---|---|
+| **20th of 1,216** | **85.90 ± 0.20** | 99.26 | 93.92% | 1,215 |
+
+- 28th in the MeleeRumble as well
+- The highest-ranked robot flying the Irish flag
+
+---
+
+## 64th to 20th
+
+| Release | Date | Live APS | Rank |
+|---|---|---|---|
+| 3.0 | 2026-09-28 | 81.57 | 64th |
+| 3.1 | 2026-09-30 | 81.46 | 16th in its first hour, 65th at the end |
+| 3.4 | 2026-10-01 | **85.90** | **20th** |
+
+Every stage was gated on a **bench** of real Robocode battles with 95% intervals, and every behaviour is an **EARS requirement** traced to a test. Ideas that benched badly were dropped.
+
+---
+
+## Not by guessing
+
+- Every stage had a **bench gate**: real Robocode battles, run headless, with 95% intervals
+- Every behaviour is an **EARS requirement** traced to the tests that prove it
+- Ideas that benched badly were dropped on the evidence
+- A learnings ledger records what was found, with its evidence
+
+---
+
+## The shape of the code
+
+```mermaid
+graph LR
+    E[Robocode engine] --> A[Adapter]
+    A --> C[Core: no Robocode inside]
+    C --> A
+    A --> E
+```
+
+The strategy lives in a core of plain Java. A thin adapter talks to the engine. That is why the core can be replayed, fuzzed and benched without an engine.
+
+---
+
+## What this course builds
+
+You build **Hadurling**, a small robot of your own, one lab at a time:
+
+- an ordinary Robocode robot at first
+- then a core with no Robocode in it, ArchUnit rules, property tests, a replay test
+- EARS requirements with a traceability test
+- a guess-factor gun, an energy ledger, a saved opponent profile, a bench report
+
+Each lab ends by opening the real Hadur code for the same idea.
+
+It is also a Java course: it starts from a class and a loop, and ends at the level of Hadur's roughly 25,000 lines.
+
+---
+
+## Next
+
+1. Read the course map (the next note)
+2. Do **Lab 00**: install Java, Maven and Robocode, build Hadur, watch it win
+3. Start Topic 01
+
+Sources: [README.md](https://github.com/lgriffin/Hadur_Robot/blob/a9ee021/README.md), [docs/releases/](https://github.com/lgriffin/Hadur_Robot/tree/a9ee021/docs/releases)

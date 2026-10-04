@@ -9,3 +9,7 @@ target/
 Thumbs.db
 .jqwik-database
 __pycache__/
+
+# Tutors course build output
+course/json/
+course/html/
