@@ -321,8 +321,11 @@ public final class Bench {
         }
         int sentryBorder = Integer.parseInt(opts.getOrDefault("sentry-border", "0"));
         List<MeleeReport.Battle> battles = new ArrayList<>();
+        boolean keepData = Boolean.parseBoolean(opts.getOrDefault("keep-data", "false"));
         for (int i = 1; i <= runs; i++) {
-            wipeData();
+            // A0: --keep-data true fights on whatever the robot's data directory already
+            // holds (a warm duel's profiles, say), for a hand-off fixture on a store.
+            if (!keepData) wipeData();
             Path dir = out.resolve("battles").resolve("melee-" + i);
             Files.createDirectories(dir);
             Files.deleteIfExists(dir.resolve("melee.csv"));
@@ -332,6 +335,12 @@ public final class Bench {
             cmd.addAll(JVM_FLAGS);
             cmd.add("-DRANDOMSEED=" + i);
             cmd.add("-Dhadur.sentries=" + String.join(",", sentries));
+            Path transcript = dir.resolve("transcript.txt");
+            if (record != null) {
+                // A0: the recorder on the melee path too (STRAND-4).
+                cmd.add("-DNOSECURITY=true");
+                cmd.add("-Dhadur.record=" + transcript);
+            }
             cmd.add("-cp");
             cmd.add(classpath());
             cmd.add(MeleeRunner.class.getName());
@@ -341,6 +350,9 @@ public final class Bench {
             Process p = new ProcessBuilder(cmd).redirectErrorStream(true)
                 .redirectOutput(dir.resolve("engine.log").toFile()).start();
             if (!p.waitFor(90, TimeUnit.MINUTES)) p.destroyForcibly();
+            if (record != null && Files.exists(transcript)) {
+                saveFixture(melee(opts.getOrDefault("set", "melee")), i, transcript);
+            }
             MeleeReport.Battle b = MeleeReport.read(i, dir);
             battles.add(b);
             double[] us = b.ok ? MeleeReport.find(b, robot) : null;
@@ -523,9 +535,20 @@ public final class Bench {
         return label.toLowerCase(Locale.ROOT).replaceAll("[^a-z0-9]+", "-");
     }
 
+    /** A melee fixture's name: {@code melee-} and the set file's name, e.g. {@code melee-samples}. */
+    private static String melee(String set) {
+        String name = Path.of(set).getFileName().toString().replaceFirst("\\.txt$", "");
+        return name.startsWith("melee-") ? name : "melee-" + name;
+    }
+
     private void saveFixture(Opponent o, int seed, Path transcript) throws IOException {
+        saveFixture(o.slug(), seed, transcript);
+    }
+
+    private void saveFixture(String slug, int seed, Path transcript) throws IOException {
         Files.createDirectories(record);
-        Path fixture = record.resolve(o.slug() + (runs > 1 ? "-" + seed : "") + ".txt.gz");
+        Path fixture = record.resolve(opts.getOrDefault("fixture", slug)
+            + (runs > 1 ? "-" + seed : "") + ".txt.gz");
         try (OutputStream gz = new GZIPOutputStream(Files.newOutputStream(fixture))) {
             Files.copy(transcript, gz);
         }

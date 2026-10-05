@@ -1,0 +1,22 @@
+# The ownership map (STRAND-1): every package of the core and its one owner.
+# Owners: kernel (what every strand shares), duel, melee, team (the strands), conductor
+# (runs the tick, owns the role contract and one seam to each brain).
+# A package missing here, or listed and gone, fails the build. "hadur2.core" is the root
+# package alone, not its subpackages.
+#
+# package             | owner
+hadur2.core           | conductor
+hadur2.core.posture   | conductor
+hadur2.core.replay    | conductor
+hadur2.core.model     | kernel
+hadur2.core.physics   | kernel
+hadur2.core.knn       | kernel
+hadur2.core.ledger    | kernel
+hadur2.core.memory    | kernel
+hadur2.core.port      | kernel
+hadur2.core.gun       | duel
+hadur2.core.move      | duel
+hadur2.core.adapt     | duel
+hadur2.core.policy    | duel
+hadur2.core.shield    | duel
+hadur2.core.melee     | melee

@@ -133,6 +133,47 @@ physics, and only `HadurCore` sees it.
 every source file in the duel's packages (adapt, gun, knn, ledger, memory, move, physics,
 policy, shield), taken at M0, so melee work that edits one fails the build.
 
+## Owners: one identity, three strands
+
+The architecture evolution ([architecture-evolution.md](architecture-evolution.md), stages
+A0 to A5) adds a second boundary inside the core, between what Hadur is and how it fights
+in each kind of battle. From A0 every package has exactly one owner, written in
+`hadur-core/src/test/resources/ownership.txt` and enforced by `StrandOwnershipTest`:
+
+| Owner | Packages | Rule |
+|---|---|---|
+| Kernel | `model`, `physics`, `knn`, `ledger`, `memory`, `port` | depends on no strand and not on the conductor (STRAND-2) |
+| Duel strand | `gun`, `move`, `adapt`, `policy`, `shield` | sees only the kernel and itself |
+| Melee strand | `melee` | sees only the kernel and itself |
+| Team strand | none yet | from the Team plan |
+| Conductor | the root package, `posture`, `replay` | runs the tick and owns the seams |
+
+```mermaid
+graph TB
+    subgraph Conductor
+        HC[HadurCore, Guard, posture, replay]
+    end
+    subgraph Strands
+        D[Duel: gun, move, adapt, policy, shield]
+        M[Melee: melee]
+        T[Team: later]
+    end
+    subgraph Kernel
+        K[model, physics, knn, ledger, memory, port]
+    end
+    HC --> D
+    HC --> M
+    HC --> K
+    D --> K
+    M --> K
+    T -.-> K
+```
+
+A package with no owner fails the build (STRAND-1). Each owner's sources are pinned by hash
+in `pins/<owner>.sha256` (STRAND-3), and a stage re-pins only the owners it names. Every
+replay fixture, duel and melee alike, must reproduce the live robot's orders, the telemetry
+it was pinned with and the files the live robot left in its store (STRAND-4).
+
 ## Melee and duel
 
 Melee is a second posture of the same robot, and the duel is the default. Each tick,
@@ -394,6 +435,15 @@ Given the same inputs, the core issues the same orders (CORE-2). The ArchUnit ru
 the usual sources of drift, the 1.20 code's `Math.random` view names and a global view
 counter were removed, and the replay tests check the property end to end against battles
 recorded from the real robot in the real engine.
+
+Since A0 the check covers the whole robot, not only the orders. The recorder also logs the
+store the battle started on, the adapter's round-end, checkpoint, battle-end and
+health-record calls, and the files the battle left; the tests' `FixtureReplay` makes the
+same calls with its own guard, and `ReplayTest` compares orders with the live robot's,
+telemetry with a pinned snapshot (`replay/telemetry/`) and the store with the live robot's
+files. Eleven fixtures cover the six S1 duels, a ten-robot melee, a melee with a border
+sentry, a melee that hands a known survivor to the duel, a warm duel on a seeded store and a
+duel in RES-9's duress (STRAND-4).
 
 ## Bounded growth
 
