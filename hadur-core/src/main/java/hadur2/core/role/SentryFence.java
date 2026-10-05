@@ -1,4 +1,4 @@
-package hadur2.core.posture;
+package hadur2.core.role;
 
 import hadur2.core.model.BotOrders;
 import hadur2.core.physics.Angles;

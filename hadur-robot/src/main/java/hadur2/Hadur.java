@@ -2,6 +2,7 @@ package hadur2;
 
 import hadur2.core.Guard;
 import hadur2.core.HadurCore;
+import hadur2.core.model.BattleFacts;
 import hadur2.core.model.BotEvent;
 import hadur2.core.model.BotInput;
 import hadur2.core.model.BotOrders;
@@ -93,8 +94,10 @@ public class Hadur extends AdvancedRobot {
             warmUp(getBattleFieldWidth(), getBattleFieldHeight(), getOthers());
             // First round of the battle. The telemetry lambdas go through the static
             // console rather than capturing this round's `out`.
-            core = new HadurCore(getBattleFieldWidth(), getBattleFieldHeight(), getOthers(),
-                line -> console.println(line), profileStore());
+            // ROLE-1: the battle's facts before the first tick fix its charter. An
+            // AdvancedRobot cannot ask for teammates, so the roster is empty until A4.
+            core = new HadurCore(BattleFacts.solo(getBattleFieldWidth(), getBattleFieldHeight(),
+                getOthers()), line -> console.println(line), profileStore());
             // File I/O and class loading now, not in the first scan's turn.
             core.prepareMemory();
             guard = new Guard(core::tick, core::recover, line -> console.println(line));

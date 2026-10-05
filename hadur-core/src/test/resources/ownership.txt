@@ -6,7 +6,7 @@
 #
 # package             | owner
 hadur2.core           | conductor
-hadur2.core.posture   | conductor
+hadur2.core.role      | conductor
 hadur2.core.replay    | conductor
 hadur2.core.model     | kernel
 hadur2.core.physics   | kernel

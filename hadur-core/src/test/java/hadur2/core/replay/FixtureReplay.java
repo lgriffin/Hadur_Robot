@@ -49,10 +49,10 @@ public final class FixtureReplay {
     public static final java.nio.file.Path TELEMETRY = Fixtures.DIR.resolve("telemetry");
 
     /**
-     * Telemetry lines a stage added on purpose, which the snapshot comparison sets aside.
-     * None yet: A1's {@code ROLE} record is the first.
+     * Telemetry lines a stage added on purpose, which the snapshot comparison sets aside:
+     * A1's {@code ROLE} record.
      */
-    public static final List<String> SET_ASIDE = List.of();
+    public static final List<String> SET_ASIDE = List.of("ROLE,");
 
     private FixtureReplay() {}
 

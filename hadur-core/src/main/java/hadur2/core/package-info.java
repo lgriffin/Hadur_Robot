@@ -35,9 +35,10 @@
  * {@link hadur2.core.HadurCore#tick}:</p>
  *
  * <ol>
- * <li>The {@link hadur2.core.posture.PostureGate} picks the tick's subsystems, failing closed
- *     to the duel: melee only while two or more opponents are alive, no sentry is alive or
- *     has been scanned this round, and melee has not thrown this round (GATE-1 to GATE-4). A
+ * <li>The {@link hadur2.core.role.RoleResolver} picks the tick's role, failing closed to the
+ *     duel: melee only in a Melee-charter battle while two or more opponents are alive, no
+ *     sentry is alive or has been scanned this round, melee has not thrown this round and the
+ *     duel has not yet driven this round (ROLE-2 to ROLE-4, GATE-2 to GATE-4). A
  *     melee that has just ended hands over to a clean duel at full speed (MELEE-2).</li>
  * <li>The events. Every non-sentry scan and death goes to the melee tracker (GATE-5 keeps
  *     sentries out of everything). In the duel posture, the duel opponent's scan makes a gun
@@ -106,14 +107,17 @@
  * <li>{@code shield}: the bullet-shielding counter (SHIELD-1, SHIELD-2): the
  *     {@link hadur2.core.shield.ShieldDetector} and the deterministic
  *     {@link hadur2.core.shield.AimJitter}.</li>
- * <li>{@code posture}: the melee extension's gate (GATE-1 to GATE-5). The
- *     {@link hadur2.core.posture.PostureGate} picks melee or duel each tick and remembers
- *     sentry names for the battle; the {@link hadur2.core.posture.DuelFocus} names the one
+ * <li>{@code role}: the role contract's routing (ROLE-1 to ROLE-4, GATE-2 to GATE-5), folded
+ *     in from the melee extension's {@code posture} at A1. The
+ *     {@link hadur2.core.role.Charter} is fixed from the battle's facts before the first tick;
+ *     the {@link hadur2.core.role.RoleResolver} picks the role each tick, latches the round
+ *     so the role only steps down, and remembers sentry names for the battle; the
+ *     {@link hadur2.core.role.DuelFocus} names the one
  *     opponent the duel fights while several are alive (the closest when the duel takes
- *     over, kept until it dies); the {@link hadur2.core.posture.SentryFence} simulates the
+ *     over, kept until it dies); the {@link hadur2.core.role.SentryFence} simulates the
  *     duel's orders a few ticks ahead and replaces them with a drive to the centre if they
  *     would take the robot near the sentries' border. A leaf on the model and physics that
- *     only this package sees, so neither brain can tell which posture is on.</li>
+ *     only this package sees, so neither brain can tell which role is on.</li>
  * <li>{@code melee}: the melee brain, driven each tick by the
  *     {@link hadur2.core.melee.MeleeController}. A per-round tracker of every opponent that
  *     drops the dead at once and infers shots from unexplained energy drops of 0.1 to 3.0

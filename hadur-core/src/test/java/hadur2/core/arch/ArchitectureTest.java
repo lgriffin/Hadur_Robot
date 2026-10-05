@@ -185,8 +185,8 @@ public class ArchitectureTest {
     }
 
     @Test
-    @Tag("GATE-1")
-    @DisplayName("GATE-1: melee is a separate brain beside the duel's gun and movement")
+    @Tag("STRAND-2")
+    @DisplayName("STRAND-2: melee is a separate brain beside the duel's gun and movement")
     void meleeIsSeparateFromDuel() {
         // The melee brain runs instead of the duel subsystems, so it needs only the model, the
         // engine's physics and the generic kd-tree (its own instances: melee data never
@@ -208,21 +208,22 @@ public class ArchitectureTest {
     }
 
     @Test
-    @Tag("GATE-1")
-    @DisplayName("GATE-1: the posture gate is a leaf that only the orchestrator sees")
-    void postureIsALeaf() {
-        // The gate decides from counts and events alone, so it cannot lean on the duel's or
-        // the melee's state; and neither brain can see which posture is on, so each runs the
+    @Tag("STRAND-2")
+    @DisplayName("STRAND-2: the role routing is a leaf that only the conductor sees")
+    void roleIsALeaf() {
+        // A1 folds the posture gate into the role package. The resolver decides from the
+        // charter, counts and events alone, so it cannot lean on the duel's or the melee's
+        // state; and neither brain nor the kernel can see which role is on, so each runs the
         // same whether or not the other exists.
-        noClasses().that().resideInAPackage("hadur2.core.posture..")
-            .should().dependOnClassesThat().resideOutsideOfPackages("hadur2.core.posture..",
+        noClasses().that().resideInAPackage("hadur2.core.role..")
+            .should().dependOnClassesThat().resideOutsideOfPackages("hadur2.core.role..",
                 "hadur2.core.model..", "hadur2.core.physics..", "java..")
             .check(core);
         noClasses().that().resideInAnyPackage("hadur2.core.gun..", "hadur2.core.move..",
                 "hadur2.core.knn..", "hadur2.core.ledger..", "hadur2.core.melee..",
                 "hadur2.core.physics..", "hadur2.core.model..", "hadur2.core.memory..",
                 "hadur2.core.adapt..", "hadur2.core.policy..", "hadur2.core.shield..")
-            .should().dependOnClassesThat().resideInAPackage("hadur2.core.posture..")
+            .should().dependOnClassesThat().resideInAPackage("hadur2.core.role..")
             .check(core);
     }
 

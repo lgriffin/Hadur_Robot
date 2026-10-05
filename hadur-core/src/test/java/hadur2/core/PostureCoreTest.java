@@ -12,8 +12,8 @@ import hadur2.core.port.Telemetry;
 import hadur2.core.melee.EnemyInfo;
 import hadur2.core.melee.MeleeController;
 import hadur2.core.physics.BattleField;
-import hadur2.core.posture.Posture;
-import hadur2.core.posture.PostureGate;
+import hadur2.core.role.Posture;
+import hadur2.core.role.Veto;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
@@ -122,7 +122,7 @@ class PostureCoreTest {
         core.tick(input(1, 3, 0, threeScans()));
         assertEquals(Posture.MELEE, core.posture());
         BotOrders o = core.tick(input(2, 3, 0, threeScans()));
-        assertEquals(PostureGate.Veto.FAULT, core.veto());
+        assertEquals(Veto.FAULT, core.veto());
         assertTrue(telemetry.stream().anyMatch(l -> l.startsWith("FAULT,0,2,melee,")), telemetry.toString());
         assertTrue(Double.isInfinite(o.radarTurn()));
         core.tick(input(3, 3, 0, List.of()));
@@ -141,7 +141,7 @@ class PostureCoreTest {
         core.newRound(0);
         core.tick(input(1, 3, 0, threeScans()));
         core.tick(input(2, 2, 0, List.of(new BotEvent.RobotDeath("c"))));
-        assertEquals(PostureGate.Veto.FAULT, core.veto());
+        assertEquals(Veto.FAULT, core.veto());
         assertEquals(Posture.DUEL, core.posture());
     }
 }

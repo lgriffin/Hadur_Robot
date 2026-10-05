@@ -34,10 +34,13 @@ import hadur2.core.policy.MoveFlavour;
 import hadur2.core.policy.PowerPolicy;
 import hadur2.core.policy.RammerPolicy;
 import hadur2.core.policy.TickBudget;
-import hadur2.core.posture.DuelFocus;
-import hadur2.core.posture.Posture;
-import hadur2.core.posture.PostureGate;
-import hadur2.core.posture.SentryFence;
+import hadur2.core.role.Charter;
+import hadur2.core.role.DuelFocus;
+import hadur2.core.role.Posture;
+import hadur2.core.role.RoleId;
+import hadur2.core.role.RoleResolver;
+import hadur2.core.role.SentryFence;
+import hadur2.core.role.Veto;
 import hadur2.core.shield.AimJitter;
 import hadur2.core.shield.ShieldDetector;
 import java.awt.geom.Point2D;
@@ -56,10 +59,11 @@ import java.util.Set;
  * <p>Per tick it handles the tick's events first, then runs the main loop body, the same
  * order in which Robocode runs event handlers and then {@code run()}.</p>
  *
- * <p>The {@link PostureGate} picks the subsystems each tick, failing closed to the duel: the
- * {@link MeleeController} drives while two or more opponents are alive, no sentry is on the
- * field or has been scanned this round, and melee has not thrown this round (GATE-1 to
- * GATE-4). Once one opponent is left, the duel machinery below takes over from a clean slate
+ * <p>The battle's {@link Charter} is fixed from its {@link BattleFacts} when the core is made
+ * (ROLE-1), and the {@link RoleResolver} picks the role each tick, failing closed to the duel:
+ * the {@link MeleeController} drives while two or more opponents are alive, no sentry is on
+ * the field or has been scanned this round, melee has not thrown this round and the duel has
+ * not yet driven this round (ROLE-2 to ROLE-4, GATE-2 to GATE-4). Once one opponent is left, the duel machinery below takes over from a clean slate
  * (MELEE-2). When the duel drives with several opponents alive it fights one, the
  * {@link DuelFocus}, and ignores the rest; with sentries about, the {@link SentryFence} keeps
  * its movement out of their border. Sentries are never tracked, targeted or profiled (GATE-5).
@@ -318,8 +322,13 @@ public final class HadurCore {
     /** What the melee brain asked for last tick; its fire power goes out this tick if the gun is there. */
     private MeleeController.Command lastMeleeCommand;
 
-    /** M1: the posture gate, the duel's focus among several opponents, and the sentry fence. */
-    private final PostureGate gate = new PostureGate();
+    /** A1: the battle's facts at tick 0 and the role resolver they set up (ROLE-1). */
+    private final BattleFacts facts;
+    /** ROLE-2 to ROLE-4: the role each tick, its vetoes, the latch and the sentry names. */
+    private final RoleResolver gate;
+    /** The role whose ROLE record went out last, or null at a round's start. */
+    private RoleId lastRole;
+    /** M1: the duel's focus among several opponents, and the sentry fence. */
     private final DuelFocus focus = new DuelFocus();
     private final SentryFence fence;
     /** Opponents at the battle's start; 1 is a duel battle, the only kind with memory. */
@@ -383,6 +392,36 @@ public final class HadurCore {
      */
     public HadurCore(double fieldWidth, double fieldHeight, int enemiesTotal, Telemetry telemetry,
                      ProfileStore store, MeleeController melee) {
+        this(BattleFacts.solo(fieldWidth, fieldHeight, enemiesTotal), telemetry, store, melee);
+    }
+
+    /**
+     * A core for the battle {@code facts} describe (ROLE-1), remembering opponents in
+     * {@code store} (null for none). This is the adapter's constructor.
+     *
+     * @param facts the engine's facts before the first tick
+     * @param telemetry where the line records go
+     * @param store where profiles are kept between battles, or null
+     */
+    public HadurCore(BattleFacts facts, Telemetry telemetry, ProfileStore store) {
+        this(facts, telemetry, store, new MeleeController(new BattleField(facts.width(), facts.height())));
+    }
+
+    /**
+     * A core for {@code facts} with the given melee brain; tests use it to make the melee fail.
+     *
+     * @param facts the engine's facts before the first tick
+     * @param telemetry where the line records go
+     * @param store where profiles are kept between battles, or null
+     * @param melee the melee brain
+     */
+    public HadurCore(BattleFacts facts, Telemetry telemetry, ProfileStore store, MeleeController melee) {
+        double fieldWidth = facts.width();
+        double fieldHeight = facts.height();
+        int enemiesTotal = facts.enemies();
+        this.facts = facts;
+        // ROLE-1: the charter is fixed here, before the first tick.
+        this.gate = new RoleResolver(Charter.of(facts));
         this.battleField = new BattleField(fieldWidth, fieldHeight);
         this.duress = new Duress(battleField);
         this.predictor = new MovementPredictor(battleField);
@@ -432,6 +471,7 @@ public final class HadurCore {
         budget.newRound();
         duress.newRound(round);
         gate.newRound();
+        lastRole = null;
         meleeTicks = duelTicks = focusTicks = meleeFaults = ghostTicks = sentryHits = maxScanGap = sweepGap = 0;
         ghostsAtRoundStart = melee.ghostsDropped();
         deadThisRound.clear();
@@ -525,8 +565,10 @@ public final class HadurCore {
                 gate.sentryScanned(((BotEvent.Scan) e).name());
             }
         }
-        // GATE-1, GATE-2: melee only while the gate allows it, the duel otherwise.
-        posture = gate.evaluate(in.others(), in.numSentries());
+        // ROLE-2 to ROLE-4: the role from the charter, the counts, the vetoes and the latch.
+        // Off a team the enemies are the engine's others. No adapter supplies a roster before
+        // A4, so there are no teammates yet; A5 brings the team's count (WORLD-2, WORLD-8).
+        posture = RoleResolver.posture(gate.resolve(in.others(), 0, in.numSentries()));
         boolean melee = posture == Posture.MELEE;
         if (melee) measureScanGap(in.time(), in.others());
         // Checked before this tick's scans are handled, so the survivor's scan on this tick
@@ -655,6 +697,14 @@ public final class HadurCore {
             built = fence.apply(in.x(), in.y(), in.heading(), in.velocity(), built,
                 in.sentryBorderSize());
         }
+        // ROLE-4: the role that completed this tick latches the round. This is the tick's
+        // last step, so a tick the Guard covers leaves the latch as it stands.
+        RoleId drove = inMelee ? RoleId.MELEE : RoleId.DUEL;
+        gate.drove(drove);
+        if (drove != lastRole) {
+            emitRole(in, drove);
+            lastRole = drove;
+        }
         return built;
     }
 
@@ -747,8 +797,36 @@ public final class HadurCore {
      *
      * @return the gate's veto, {@code NONE} while melee is allowed
      */
-    public PostureGate.Veto veto() {
+    public Veto veto() {
         return gate.veto();
+    }
+
+    /**
+     * The battle's charter, fixed from its facts before the first tick (ROLE-1).
+     *
+     * @return duel, melee or team
+     */
+    public Charter charter() {
+        return gate.charter();
+    }
+
+    /**
+     * The facts the core was made with (ROLE-1).
+     *
+     * @return the field, the others at the start and the roster
+     */
+    public BattleFacts facts() {
+        return facts;
+    }
+
+    /**
+     * A1: the {@code ROLE} record, at a round's first completed tick and at each change of
+     * role: {@code ROLE,round,tick,role,charter,enemies,sentries,veto}. Replay comparisons
+     * set it aside, since it is the only telemetry A1 adds.
+     */
+    private void emitRole(BotInput in, RoleId role) {
+        telemetry.emit("ROLE," + round + "," + in.time() + "," + role + "," + gate.charter() + ","
+            + in.others() + "," + in.numSentries() + "," + gate.veto());
     }
 
     /**
@@ -871,7 +949,7 @@ public final class HadurCore {
      */
     String meleeRecord(long tick) {
         return "M," + round + "," + tick + "," + meleeTicks + "," + duelTicks + "," + focusTicks
-            + "," + (gate.veto() == PostureGate.Veto.NONE ? "-" : gate.veto().name().toLowerCase(Locale.ROOT))
+            + "," + (gate.veto() == Veto.NONE ? "-" : gate.veto().name().toLowerCase(Locale.ROOT))
             + "," + meleeFaults + "," + maxScanGap + "," + ghostTicks + "," + sentryHits
             + "," + sweepGap + "," + (melee.ghostsDropped() - ghostsAtRoundStart)
             + "," + (melee.waves().emitted() - wavesAtRoundStart[0])
