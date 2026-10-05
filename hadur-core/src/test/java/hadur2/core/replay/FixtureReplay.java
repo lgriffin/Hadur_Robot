@@ -2,6 +2,7 @@ package hadur2.core.replay;
 
 import hadur2.core.Guard;
 import hadur2.core.HadurCore;
+import hadur2.core.role.Charter;
 import hadur2.core.model.BotEvent;
 import hadur2.core.model.BotInput;
 import hadur2.core.model.BotOrders;
@@ -27,6 +28,9 @@ import java.util.TreeMap;
  * ({@code S} lines), so a test can compare all three. A recording with no {@code Q} line
  * (the six S1 fixtures) replays with no store and no memory calls, exactly as
  * {@link Replay#run} does.</p>
+ *
+ * <p>A5 (STRAND-5): a team member's transcript is replayed the same way, from the facts on
+ * its {@code F} line and with the guard that holds fire; it carries no store.</p>
  *
  * <p>Test code on purpose: A0 changes no shipped class, the {@code replay} package
  * included.</p>
@@ -95,12 +99,11 @@ public final class FixtureReplay {
                 ages.sort((a, b) -> a[0].equals(b[0]) ? ((String) a[1]).compareTo((String) b[1])
                     : Long.compare((Long) a[0], (Long) b[0]));
                 for (Object[] a : ages) store.touch((String) a[1], ++sequence);
-                String[] f = line.split(",");
-                core = new HadurCore(Double.parseDouble(f[1]), Double.parseDouble(f[2]),
-                    Integer.parseInt(f[3]), r.telemetry::add, store);
+                core = new HadurCore(Replay.facts(line), r.telemetry::add, store);
                 if (store != null) core.prepareMemory();
                 HadurCore c = core;
-                guard = new Guard(c::tick, c::recover, r.telemetry::add);
+                // WEAVE-5: on a team the guard's safe orders hold fire, as the adapter's do.
+                guard = new Guard(c::tick, c::recover, r.telemetry::add, c.charter() == Charter.TEAM);
             } else if (line.startsWith("N,")) {
                 core.newRound(Integer.parseInt(line.substring(2)));
                 guard.newRound();

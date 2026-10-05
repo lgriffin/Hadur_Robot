@@ -19,20 +19,36 @@ import hadur2.core.role.RoleId;
  *     read in any charter: the melee hand-off reads the survivor's {@code .hp} profile.</li>
  * <li>SHELF-1: a shelf is written only on behalf of its own strand's role, which the gate
  *     enforces by file name whoever asks.</li>
+ * <li>SHELF-2: in a team battle only the leader, the team's scribe fixed at tick 0, writes
+ *     or deletes anything, the health record included: five members share one data
+ *     directory, and each counts its own quota.</li>
  * </ul>
  */
 final class Archive {
 
     private final Charter charter;
     private final GatedProfileStore store;
+    /** SHELF-2: whether this member may write at all; always off a team. */
+    private final boolean scribe;
 
     /**
      * @param store the adapter's store, or null for none
      * @param charter the battle's charter
      */
     Archive(ProfileStore store, Charter charter) {
+        this(store, charter, true);
+    }
+
+    /**
+     * @param store the adapter's store, or null for none
+     * @param charter the battle's charter
+     * @param scribe whether this member writes for its team: in a team battle only the leader
+     */
+    Archive(ProfileStore store, Charter charter, boolean scribe) {
         this.charter = charter;
-        this.store = store == null ? null : new GatedProfileStore(store, name -> mayWrite(charter, name));
+        this.scribe = charter != Charter.TEAM || scribe;
+        boolean writer = this.scribe;
+        this.store = store == null ? null : new GatedProfileStore(store, name -> writer && mayWrite(charter, name));
     }
 
     /** The strand whose shelf holds {@code file}; null for the conductor's own files. */
@@ -61,7 +77,12 @@ final class Archive {
 
     /** Whether this battle writes {@code shelf}: the question asked before any save. */
     boolean writes(RoleId shelf) {
-        return store != null && shelf == ownShelf(charter);
+        return store != null && scribe && shelf == ownShelf(charter);
+    }
+
+    /** SHELF-2: whether this member writes the conductor's own files, the health record. */
+    boolean scribe() {
+        return store != null && scribe;
     }
 
     /** The store behind the gate, or null for none. */

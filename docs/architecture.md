@@ -64,12 +64,13 @@ graph LR
 | Module | Holds | Built for |
 |---|---|---|
 | `hadur-core` | the brain, as plain Java: every package listed below | Java 11 |
-| `hadur-robot` | the adapter `hadur2.Hadur` (a `TeamRobot` from A4, so one class plays all three ladders), `hadur2.FileProfileStore`, and `hadur2.HadurRecorder` (the robot plus a transcript of its inputs and orders, for replay fixtures) | Java 11 |
+| `hadur-robot` | the adapter `hadur2.Hadur` (a `TeamRobot` from A4, so one class plays all three ladders; from A5 a second jar, `hadur2.HadurTeam`, fields five of it as a team), `hadur2.FileProfileStore`, and `hadur2.HadurRecorder` (the robot plus a transcript of its inputs and orders, for replay fixtures) | Java 11 |
 | `hadur-bench` | headless battles in the real engine, the report, wave fidelity against the engine's truth | Java 17 |
 
-`hadur-robot` shades the core into two jars. `hadur2.Hadur_3.0.jar` is the competition
+`hadur-robot` shades the core into three jars. `hadur2.Hadur_<version>.jar` is the competition
 jar, with the recorder left out; the `recorder` jar keeps it, and only the bench's
-`--record` mode loads it. The Robocode API is `provided`: the engine supplies it at run
+`--record` mode loads it. From A5 `hadur2.HadurTeam_<version>.jar` is the same classes as
+the competition jar plus `hadur2/HadurTeam.team`, five `hadur2.Hadur` of that version. The Robocode API is `provided`: the engine supplies it at run
 time, and the build compiles against the vendored 1.9.3.0 API in `repo/` (the bench runs
 the 1.9.5.6 engine from Maven Central).
 
@@ -108,7 +109,7 @@ data directory through `RobocodeFileOutputStream`.
 
 | Package | Holds |
 |---|---|
-| `hadur2.core` | `HadurCore` (the conductor), `Guard` (RES-1), the seams `DuelSeam` and `MeleeSeam` (A2), `MeleeMemory` (the melee blocks in the profile store, MMEM-1), `Archive` (A4: each brain's shelf by charter, behind the store's gate, SHELF-1, SHELF-3) |
+| `hadur2.core` | `HadurCore` (the conductor), `Guard` (RES-1), the seams `DuelSeam` and `MeleeSeam` (A2), `MeleeMemory` (the melee blocks in the profile store, MMEM-1), `Archive` (A4: each brain's shelf by charter, behind the store's gate, SHELF-1, SHELF-3; A5: only the scribe writes, SHELF-2), `TeamLink` (A5: the input a role sees on a team, the merge of teammates' reports, the fire lane and our own report) |
 | `duel` | the Duel's brain (A2): `DuelController`, everything the duel does against one opponent, lifted out of `HadurCore`, and `Duress` (RES-9) |
 | `model` | the port values, robot states and their logs, waves and the wave manager, the battle's facts, the round's counters (`RoundStats`, RES-5) and the baton one role hands the next |
 | `ledger` | `EnergyLedger`: explains the enemy's energy changes between scans so only bullet spending becomes a wave (WAVE-1, WAVE-2) |
@@ -117,7 +118,7 @@ data directory through `RobocodeFileOutputStream`.
 | `gun` | main KNN gun, anti-surfer gun, gun selection |
 | `move` | wave-surfing movement and its danger formulas; our bullets in flight and the shadows they cast (MOVE-1); go-to surfing; the rammer escape (`RamEscape`, RAM-2) and the planned path against a mirror mover (`MirrorDrive`, MIR-1) |
 | `role` | the role contract and its resolution (ROLE, WEAVE, GATE-2..5): `Role`, `Tick`, the battle's `Charter`, the `RoleResolver` with its latch (A1, in place of the melee extension's `PostureGate`), `DuelFocus` (the one opponent the duel fights while several are alive) and `SentryFence` (the sentry border as a wall for the duel's movement) |
-| `world` | the World (A3, WORLD-1): one picture of the field, `EnemyTracker` with each robot's `EnemyInfo` and the enemy shots it infers (`EnemyShot`), fed by the conductor before any role; the melee brain reads it |
+| `world` | the World (A3, WORLD-1): one picture of the field, `EnemyTracker` with each robot's `EnemyInfo` and the enemy shots it infers (`EnemyShot`), fed by the conductor before any role; the melee brain reads it. A5 adds the `Roster` of teammates and the count of enemies alive (WORLD-3, WORLD-8), and the shot lifetime from the field |
 | `melee` | the melee brain (MELEE-2..8, MRADAR, MSENSE, MMOVE, MGUN): sweep radar, minimum-risk movement with virtual bullets, field gun with a play-it-forward history per opponent, energy table, targeting waves, posture strategy, battle-long opponent stats; the melee profile block, its round folder and its binary codec (MMEM-1) |
 | `memory` | opponent memory (MEM-1..5, RES-3): lineage keys, the profile, its binary codec, the round folder and the library that loads, saves and evicts; estimates with margins of error, the tiers and the seed layout |
 | `adapt` | recognise and adapt (ADAPT-1..3, DIAL-1..2, RES-4): the opening book, the seed loader and the seed trust |

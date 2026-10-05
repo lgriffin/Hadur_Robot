@@ -62,10 +62,10 @@ class LinkCoreTest {
 
     @Test
     @Tag("ROLE-2")
-    @DisplayName("until A5 the strands count teammates, as every tick's others() does")
-    void strandsCountTheEngineOthers() {
+    @DisplayName("the strands count enemies, as the filtered input's others() does (WORLD-8)")
+    void strandsCountTheEnemies() {
         BattleFacts facts = new BattleFacts(1000, 1000, 3, List.of("mate"), "me", 200, 0);
         HadurCore core = new HadurCore(facts, l -> { }, null);
-        assertEquals(3, core.enemiesTotal());
+        assertEquals(2, core.enemiesTotal());
     }
 }

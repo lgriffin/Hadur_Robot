@@ -42,6 +42,8 @@ public final class Guard {
     private final Runnable recover;
     /** Where the one {@code FAULT} record per round goes. */
     private final Telemetry telemetry;
+    /** WEAVE-5: on a team the safe orders hold fire. */
+    private final boolean holdFire;
     /** Ticks this round on which the core threw or returned nothing. */
     private int faultsThisRound;
     /** Set by a fault; the next tick with a scan runs {@code recover} before the core. */
@@ -62,9 +64,23 @@ public final class Guard {
      * @param telemetry where the {@code FAULT} record goes
      */
     public Guard(Function<BotInput, BotOrders> core, Runnable recover, Telemetry telemetry) {
+        this(core, recover, telemetry, false);
+    }
+
+    /**
+     * A guard that may be told it guards a team member (A5).
+     *
+     * @param core the core's tick function, which may throw or return null
+     * @param recover what to run on the first scan after a fault
+     * @param telemetry where the {@code FAULT} record goes
+     * @param holdFire true on a team: the safe orders never fire (WEAVE-5), since the guard
+     *     cannot see the fire lane, so RES-7 applies only off a team
+     */
+    public Guard(Function<BotInput, BotOrders> core, Runnable recover, Telemetry telemetry, boolean holdFire) {
         this.core = core;
         this.recover = recover;
         this.telemetry = telemetry;
+        this.holdFire = holdFire;
     }
 
     /**
@@ -127,7 +143,7 @@ public final class Guard {
                 telemetry.emit("FAULT," + in.round() + "," + in.time() + ","
                     + t.getClass().getSimpleName() + ":" + String.valueOf(t.getMessage()).replace(',', ';'));
             }
-            return safeOrders(in, lastEnemyAbsBearing, faultsThisRound);
+            return safeOrders(in, lastEnemyAbsBearing, holdFire ? 0 : faultsThisRound);
         }
     }
 
@@ -143,7 +159,8 @@ public final class Guard {
      *
      * <p>After three faulting ticks this round, and whenever the enemy's last bearing is
      * known and the gun is cool, these orders also turn the gun to it and fire power 1.0
-     * (RES-7): a core that faults every tick would otherwise never return fire.</p>
+     * (RES-7): a core that faults every tick would otherwise never return fire. On a team the
+     * guard passes a fault count of 0, so they never fire (WEAVE-5).</p>
      *
      * @param in the tick's input
      * @param enemyAbsBearing the enemy's last absolute bearing in radians, or NaN if unknown

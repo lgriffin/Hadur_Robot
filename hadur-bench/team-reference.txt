@@ -1,0 +1,12 @@
+# Team reference set (A5): five-member TeamRumble teams, fought one at a time by HadurTeam
+# (five hadur2.Hadur members) as in a TeamRumble battle: 1200x1200, 10 rounds.
+# Jars from https://robocode-archive.strangeautomata.com/robots/<jar>; put them in opponents/.
+# Run with --set team-reference.txt --team true
+sampleteam.MyFirstTeam | team | -
+abc.ShadowTeam 3.83 | team | abc.ShadowTeam_3.83.jar
+rz.AlephTeam 0.34 | team | rz.AlephTeam_0.34.jar
+mn.CombatTeam 3.25.0 | team | mn.CombatTeam_3.25.0.jar
+lxx.ConceptATeam 0.8 | team | lxx.ConceptATeam_0.8.jar
+cb.mega.FirestarterTeam 1.14 | team | cb.mega.FirestarterTeam_1.14.jar
+davidalves.PhoenixTeam 0.54 | team | davidalves.PhoenixTeam_0.54.jar
+apvteam.MambaTeam 0.7.5 | team | apvteam.MambaTeam_0.7.5.jar

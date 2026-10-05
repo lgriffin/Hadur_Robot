@@ -7,6 +7,7 @@ import hadur2.core.model.BotEvent;
 import hadur2.core.model.BotInput;
 import hadur2.core.model.BotOrders;
 import hadur2.core.port.ProfileStore;
+import hadur2.core.role.Charter;
 import hadur2.core.role.RoleId;
 import java.awt.Color;
 import java.io.IOException;
@@ -62,6 +63,8 @@ public class Hadur extends TeamRobot {
     private static Guard guard;
     /** This round's console; telemetry goes to whichever round is running. */
     private static PrintStream console;
+    /** Whether this battle is a team's (A5): fixed with the core on the first round. */
+    private static boolean team;
     /** RES-8: rounds fought this battle, for the health record. */
     private static int battleRounds;
     /** RES-8: rounds this battle that were not a loss. */
@@ -106,11 +109,14 @@ public class Hadur extends TeamRobot {
             // console rather than capturing this round's `out`.
             // ROLE-1: the battle's facts before the first tick fix its charter. As a
             // TeamRobot (A4) Hadur can ask for its teammates; off a team there are none.
-            core = new HadurCore(facts(), line -> console.println(line), profileStore());
+            BattleFacts facts = facts();
+            core = new HadurCore(facts, line -> console.println(line), profileStore());
             // File I/O and class loading now, not in the first scan's turn.
             core.prepareMemory();
-            guard = new Guard(core::tick, core::recover, line -> console.println(line));
-            battleStarted(getBattleFieldWidth(), getBattleFieldHeight(), getOthers());
+            // WEAVE-5: on a team the guard's safe orders hold fire.
+            team = core.charter() == Charter.TEAM;
+            guard = new Guard(core::tick, core::recover, line -> console.println(line), team);
+            battleStarted(facts);
         }
         core.newRound(getRoundNum());
         guard.newRound();
@@ -219,11 +225,11 @@ public class Hadur extends TeamRobot {
     /**
      * Called once per battle, after the core is built.
      *
-     * @param width the battlefield's width in px
-     * @param height the battlefield's height in px
-     * @param enemies opponents alive at the start (sentries excluded, as {@code getOthers()} counts)
+     * @param facts the facts the core was built from: the field, the others at the start
+     *     (sentries excluded, as {@code getOthers()} counts), and on a team the roster, our
+     *     name, our starting energy and the sentry border
      */
-    protected void battleStarted(double width, double height, int enemies) {}
+    protected void battleStarted(BattleFacts facts) {}
 
     /**
      * Called at the start of every round, after the core's and guard's {@code newRound}.
@@ -382,7 +388,14 @@ public class Hadur extends TeamRobot {
     @Override
     public void onRoundEnded(RoundEndedEvent e) {
         // The engine can deliver this before WinEvent in the round's last batch.
-        reportRound(getEnergy() <= 0 ? "loss" : getOthers() == 0 ? "win" : "draw");
+        if (!team) {
+            reportRound(getEnergy() <= 0 ? "loss" : getOthers() == 0 ? "win" : "draw");
+        } else if (getEnergy() > 0) {
+            // A5: a living teammate keeps getOthers() above 0, so on a team a member alive
+            // at the round's end is on the winning side. At energy 0 the win or death event
+            // that follows in the same batch says which it was.
+            reportRound("win");
+        }
         // A checkpoint: the robot may not get to the battle's end (MEM-3), and TIME-4
         // caps what each one writes. File I/O is safe here, unlike in onWin and onDeath.
         // Only when alive: a dead robot's thread that stops to write keeps it in the

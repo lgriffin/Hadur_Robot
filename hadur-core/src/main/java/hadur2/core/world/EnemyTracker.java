@@ -1,6 +1,7 @@
 package hadur2.core.world;
 
 import hadur2.core.physics.BattleField;
+import hadur2.core.physics.Rules;
 import java.awt.geom.Point2D;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ public class EnemyTracker {
     static final int MAX_ENEMIES = 64;
     /** Shots kept: a bullet crosses a 1000 px field's diagonal in under 130 ticks. RES-2. */
     static final int MAX_SHOTS = 64;
+    /** The shortest a shot is kept, ticks; a larger field keeps them longer (A5). */
     static final long SHOT_LIFETIME = 130;
     /** A robot stopped this close to a wall, or to another robot, may have hit it. */
     static final double BUMP_RANGE = 26.0;
@@ -45,6 +47,8 @@ public class EnemyTracker {
     private EnemyShot lastScanShot;
     /** Null when walls are not known; bumps against them then go undetected. */
     private final BattleField field;
+    /** How long a shot is kept: long enough for the slowest bullet to cross the field. */
+    private final long shotLifetime;
 
     public EnemyTracker() {
         this(null);
@@ -52,6 +56,23 @@ public class EnemyTracker {
 
     public EnemyTracker(BattleField field) {
         this.field = field;
+        this.shotLifetime = shotLifetime(field);
+    }
+
+    /**
+     * A5: the ticks a power-3 bullet takes to cross {@code field}'s diagonal, and never less
+     * than {@link #SHOT_LIFETIME}, so a 1000 x 1000 melee keeps 130 and a 1200 x 1200 team
+     * field 155.
+     */
+    static long shotLifetime(BattleField field) {
+        if (field == null) return SHOT_LIFETIME;
+        double cross = Math.hypot(field.width, field.height) / Rules.getBulletSpeed(Rules.MAX_BULLET_POWER);
+        return Math.max(SHOT_LIFETIME, (long) Math.ceil(cross));
+    }
+
+    /** How long this World keeps a shot, ticks. */
+    public long shotLifetime() {
+        return shotLifetime;
     }
 
     public void newRound() {
@@ -142,13 +163,13 @@ public class EnemyTracker {
     }
 
     private void pruneShots(long now) {
-        while (!shots.isEmpty() && now - shots.peekFirst().fireTime > SHOT_LIFETIME) {
+        while (!shots.isEmpty() && now - shots.peekFirst().fireTime > shotLifetime) {
             shots.removeFirst();
         }
     }
 
     /**
-     * Shots fired in the last {@link #SHOT_LIFETIME} ticks, oldest first. A dead robot's
+     * Shots fired in the last {@link #shotLifetime()} ticks, oldest first. A dead robot's
      * bullets fly on, so its shots stay.
      */
     public List<EnemyShot> shots(long now) {

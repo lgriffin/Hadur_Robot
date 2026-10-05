@@ -112,6 +112,13 @@ public final class BotOrders {
         return copy;
     }
 
+    /** These orders with {@code message} added after any they carry (LINK-4). */
+    public BotOrders send(byte[] message) {
+        List<byte[]> more = new ArrayList<>(messages);
+        more.add(message);
+        return new BotOrders(bodyTurn, ahead, maxVelocity, gunTurn, radarTurn, firePower, more);
+    }
+
     /** These orders with the drive replaced: the gun, radar, fire and messages kept (WEAVE-2). */
     public BotOrders withDrive(double bodyTurn, double ahead, double maxVelocity) {
         return new BotOrders(bodyTurn, ahead, maxVelocity, gunTurn, radarTurn, firePower, messages);

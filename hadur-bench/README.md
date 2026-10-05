@@ -31,6 +31,7 @@ mvn exec:java -Dexec.args="--mode cold --rounds 35 --seeds 5"
 | `--set FILE` | reference-set.txt | the opponent list, e.g. `roborumble-top10.txt` |
 | `--melee true` | | put Hadur and every opponent in the set in one battle, `--seeds` times, and report finishing places |
 | `--sentry-border N` | | with `--melee`, the set's `sentry` entries fight as Robocode sentries guarding a border N px deep |
+| `--team true` | | (A5) fight each team in the set with our team jar (`--robot-jar`, default `hadur2.HadurTeam_<ver>.jar`; `--robot` `hadur2.HadurTeam <ver>`; `--member` `hadur2.Hadur`), `--seeds` battles each at TeamRumble settings (1200x1200, 10 rounds) |
 | `--client FILE` | | (BENCH-4) run the set through each rumble-client condition the file lists (`label \| key=value ...` per line: `data`, `cpu`, `load`, `engine`, `java`), one bench pass per condition, and report survival share and skipped turns per opponent per condition |
 | `--suite FILE` | | run every bench the file lists (`label \| options` per line) and write one report |
 | `--only TEXT` | | run only opponents whose name contains TEXT |
@@ -199,6 +200,19 @@ mvn exec:java -Dexec.args="--record R --mode warm --battles 2 --only Shadow --ro
 mvn exec:java -Dexec.args="--record R --set melee-handoff-fixture.txt --melee true --field 1000x1000 --rounds 3 --seeds 1 --keep-data true --fixture melee-handoff --out W"
 mvn exec:java -Dexec.args="--record R --only Walls --rounds 3 --seeds 1 --client duress.txt --fixture duress-sample.Walls"   # duress.txt: "duress | cpu=150000"
 ```
+
+A5 records a team battle the same way: with `--team true`, `--record` builds a team of five
+recorders from the recorder jar and saves one transcript per member as
+`team-<opponent>-m<N>`. The two team fixtures are member 1 (the leader) and member 2:
+
+```sh
+mvn exec:java -Dexec.args="--record R --set team-reference.txt --team true --only MyFirst --rounds 3 --seeds 1 --out W"   # keep m1 and m2
+```
+
+`team-gates.txt` is A5's team gate suite: `team-reference.txt`'s eight teams, three battles
+each, reported per opponent with the gate's counts (faults, skipped turns, LINK rejects,
+shots with a teammate truly in the lane, the count of enemies below the truth, the members'
+`T` sums and the data files left).
 
 `arch-gates.txt` is the evolution's gate suite: the duel sets, the melee gates and the
 hand-off gates in one pass, run on 3.5.1 at A0 as the baseline and on the candidate at A2.
