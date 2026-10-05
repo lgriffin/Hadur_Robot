@@ -45,8 +45,8 @@
  *     sentry is alive or has been scanned this round, melee has not thrown this round and the
  *     duel has not yet driven this round (ROLE-2 to ROLE-4, GATE-2 to GATE-4). A
  *     melee that has just ended hands over to a clean duel at full speed (MELEE-2).</li>
- * <li>The events. Every non-sentry scan and death goes to the melee tracker (GATE-5 keeps
- *     sentries out of everything); each event is offered to the roles of the charter, Melee
+ * <li>The events. In a Melee charter every non-sentry scan, hit and death goes first to
+ *     the World (WORLD-1; GATE-5 keeps sentries out of everything); each event is offered to the roles of the charter, Melee
  *     before Duel (ROLE-5). While the Duel drives, the duel opponent's scan makes a gun
  *     wave and a candidate enemy wave, and the energy ledger turns only unexplained energy
  *     drops into firing waves (WAVE-1, WAVE-2). Bullet events feed the ledger, the hit
@@ -125,8 +125,8 @@
  *     would take the robot near the sentries' border. A leaf on the model and physics that
  *     only this package sees, so neither brain can tell which role is on.</li>
  * <li>{@code melee}: the melee brain, driven each tick by the
- *     {@link hadur2.core.melee.MeleeController}. A per-round tracker of every opponent that
- *     drops the dead at once and infers shots from unexplained energy drops of 0.1 to 3.0
+ *     {@link hadur2.core.melee.MeleeController}. It reads the World, {@code world}'s per-round
+ *     tracker of every opponent that drops the dead at once and infers shots from unexplained energy drops of 0.1 to 3.0
  *     (MSENSE-1, MSENSE-2); a radar that spins with four or more opponents alive and turns
  *     toward the one scanned longest ago with two or three (MRADAR-1, MRADAR-2);
  *     minimum-risk movement over a ring of candidate points, weighting the points where

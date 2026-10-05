@@ -1,5 +1,7 @@
 package hadur2.core.melee;
 
+import hadur2.core.world.EnemyInfo;
+import hadur2.core.world.EnemyShot;
 import hadur2.core.model.RobotState;
 import hadur2.core.model.RobotStateLog;
 import hadur2.core.physics.BattleField;

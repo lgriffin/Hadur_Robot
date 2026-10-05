@@ -1,5 +1,7 @@
 package hadur2.core.melee;
 
+import hadur2.core.world.EnemyTracker;
+import hadur2.core.world.EnemyInfo;
 import static hadur2.core.melee.Fixtures.*;
 import static org.junit.jupiter.api.Assertions.*;
 

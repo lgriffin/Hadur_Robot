@@ -2,7 +2,6 @@ package hadur2.core;
 
 import hadur2.core.adapt.Opening;
 import hadur2.core.duel.DuelController;
-import hadur2.core.melee.EnemyInfo;
 import hadur2.core.melee.MeleeController;
 import hadur2.core.memory.Estimate;
 import hadur2.core.memory.ProfileLibrary;
@@ -13,7 +12,9 @@ import hadur2.core.model.BotInput;
 import hadur2.core.model.BotOrders;
 import hadur2.core.model.RoundStats;
 import hadur2.core.move.SurfMover;
+import hadur2.core.physics.Angles;
 import hadur2.core.physics.BattleField;
+import hadur2.core.physics.DiaUtils;
 import hadur2.core.physics.Rules;
 import hadur2.core.policy.Endgame;
 import hadur2.core.policy.MoveFlavour;
@@ -30,6 +31,9 @@ import hadur2.core.role.RoundResult;
 import hadur2.core.role.SentryFence;
 import hadur2.core.role.Tick;
 import hadur2.core.role.Veto;
+import hadur2.core.world.EnemyInfo;
+import hadur2.core.world.EnemyShot;
+import hadur2.core.world.EnemyTracker;
 import java.awt.geom.Point2D;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -105,8 +109,19 @@ public final class HadurCore {
     /** The Duel's brain, and the seam the conductor drives it through. */
     private final DuelController duel;
     private final DuelSeam duelSeam;
-    /** The melee brain's seam; the brain sees every non-sentry scan and death, whichever role drives. */
+    /**
+     * The melee brain's seam; the brain sees every non-sentry scan and death, whichever role
+     * drives. Null unless the charter has the Melee role (ROLE-6).
+     */
     private final MeleeSeam meleeSeam;
+    /**
+     * A3: the World, the core's one model of the field, fed before any role is offered an
+     * event (WORLD-1). Null unless the charter has the Melee role: in a duel nothing reads it.
+     */
+    private final EnemyTracker world;
+    /** What the World made of the scan being offered, for the Melee seam; null when its feed failed. */
+    private EnemyInfo scanInfo;
+    private EnemyShot scanShot;
     /** WORLD-5: our melee bullets not yet resolved; their outcomes are no evidence about a duel. */
     private int meleeBulletsInFlight;
     /** MMEM-2: the melee has just ended; the next duel scan hands its survivor over. */
@@ -174,12 +189,12 @@ public final class HadurCore {
      */
     public HadurCore(double fieldWidth, double fieldHeight, int enemiesTotal, Telemetry telemetry,
                      ProfileStore store) {
-        this(fieldWidth, fieldHeight, enemiesTotal, telemetry, store,
-            new MeleeController(new BattleField(fieldWidth, fieldHeight)));
+        this(fieldWidth, fieldHeight, enemiesTotal, telemetry, store, null);
     }
 
     /**
-     * A core with the given melee brain; tests use it to make the melee fail (GATE-4).
+     * A core with the given melee brain; tests use it to make the melee fail (GATE-4). The
+     * brain is held only when the charter has the Melee role (ROLE-6); null builds one then.
      *
      * @param fieldWidth the battle field's width in px
      * @param fieldHeight the battle field's height in px
@@ -202,11 +217,13 @@ public final class HadurCore {
      * @param store where profiles are kept between battles, or null
      */
     public HadurCore(BattleFacts facts, Telemetry telemetry, ProfileStore store) {
-        this(facts, telemetry, store, new MeleeController(new BattleField(facts.width(), facts.height())));
+        this(facts, telemetry, store, null);
     }
 
     /**
      * A core for {@code facts} with the given melee brain; tests use it to make the melee fail.
+     * The brain is held only when the charter has the Melee role (ROLE-6); null builds one
+     * then, reading a new World. A given brain's World is the one it was built with.
      *
      * @param facts the engine's facts before the first tick
      * @param telemetry where the line records go
@@ -232,13 +249,24 @@ public final class HadurCore {
         this.duel = new DuelController(facts.width(), facts.height(), enemiesTotal, telemetry,
             library, survivorLibrary, stats);
         this.duelSeam = new DuelSeam(this, duel);
-        this.meleeSeam = new MeleeSeam(this, melee, meleeMemory, stats);
+        // ROLE-6: only the charter's roles are built.
+        if (charter.has(RoleId.MELEE)) {
+            if (melee == null) {
+                BattleField field = new BattleField(facts.width(), facts.height());
+                melee = new MeleeController(field, new EnemyTracker(field));
+            }
+            this.world = melee.tracker;
+            this.meleeSeam = new MeleeSeam(this, melee, meleeMemory, stats);
+        } else {
+            this.world = null;
+            this.meleeSeam = null;
+        }
         // The V record opens every battle's log.
         telemetry.emit("V,1");
     }
 
     /**
-     * Starts a round. Transient state (waves, logs, the melee tracker, the resolver's veto
+     * Starts a round. Transient state (waves, logs, the World, the resolver's veto
      * and latch, the tick budget's round level) is cleared; what was learned (KNN views,
      * virtual-gun ratings, the profile, the hit windows, the distance controller, the shield
      * verdict) carries on, because the core lives for the whole battle.
@@ -250,7 +278,7 @@ public final class HadurCore {
         this.stats = new RoundStats();
         RoundFacts facts = new RoundFacts(round, stats);
         duelSeam.newRound(facts);
-        meleeSeam.newRound(facts);
+        if (meleeSeam != null) meleeSeam.newRound(facts);
         resetConductor();
         budget.newRound();
         gate.newRound();
@@ -268,7 +296,7 @@ public final class HadurCore {
      */
     public void recover() {
         duelSeam.recover();
-        meleeSeam.recover();
+        if (meleeSeam != null) meleeSeam.recover();
         resetConductor();
     }
 
@@ -346,7 +374,7 @@ public final class HadurCore {
         // ADAPT-3: a few seed samples a tick, so no one tick pays for the whole seed.
         if (!melee && !inDuress) duel.replaySeeds();
 
-        RuntimeException eventFault = meleeSeam.takeFault();
+        RuntimeException eventFault = meleeSeam == null ? null : meleeSeam.takeFault();
         if (eventFault != null) {
             // GATE-4: the melee brain threw handling this tick's events. Fail closed now,
             // whichever role was about to drive.
@@ -416,8 +444,57 @@ public final class HadurCore {
             onTickTime((BotEvent.TickTime) e);
             return;
         }
-        meleeSeam.observe(e, tick);
+        if (meleeSeam != null) {
+            // WORLD-1: the World takes what Melee is offered, before any role is offered it.
+            boolean fed = feedWorld(e, tick);
+            meleeSeam.observe(e, tick, fed);
+        }
         duelSeam.observe(e, tick);
+    }
+
+    /**
+     * WORLD-1: feeds the World every scan, hit and death ROLE-5 offers the Melee role. A
+     * failure here is the Melee role's, as it was when the tracker sat inside the melee
+     * brain: the round fails closed to the Duel (GATE-4). Returns whether the feed held.
+     */
+    private boolean feedWorld(BotEvent e, Tick tick) {
+        BotInput in = tick.in();
+        if (e instanceof BotEvent.Scan) {
+            BotEvent.Scan scan = (BotEvent.Scan) e;
+            scanInfo = null;
+            scanShot = null;
+            return meleeSeam.guard(() -> {
+                double absBearing = Angles.normalAbsoluteAngle(in.heading() + scan.bearing());
+                Point2D.Double at = DiaUtils.project(in.location(), absBearing, scan.distance());
+                scanInfo = world.onScan(scan.name(), at, scan.energy(), scan.heading(), scan.velocity(),
+                    in.time(), scan.distance());
+                scanShot = world.lastScanShot();
+            });
+        } else if (e instanceof BotEvent.BulletHit) {
+            BotEvent.BulletHit hit = (BotEvent.BulletHit) e;
+            if (tick.foreign(hit.name())) return true;
+            return meleeSeam.guard(() -> world.onBulletHit(hit.name(), Rules.getBulletDamage(hit.power())));
+        } else if (e instanceof BotEvent.HitByBullet) {
+            String name = ((BotEvent.HitByBullet) e).name();
+            return meleeSeam.guard(() -> {
+                EnemyInfo shooter = world.get(name);
+                if (shooter != null) shooter.recordHitOnHadur(in.time());
+            });
+        } else if (e instanceof BotEvent.RobotDeath) {
+            String name = ((BotEvent.RobotDeath) e).name();
+            return meleeSeam.guard(() -> world.onRobotDeath(name));
+        }
+        return true;
+    }
+
+    /** The World's view of the scan being offered, or null when its feed failed. */
+    EnemyInfo scanInfo() {
+        return scanInfo;
+    }
+
+    /** The shot the World inferred from the scan being offered, or null. */
+    EnemyShot scanShot() {
+        return scanShot;
     }
 
     /**
@@ -438,7 +515,10 @@ public final class HadurCore {
         else if (e instanceof BotEvent.TickTime) onTickTime((BotEvent.TickTime) e);
         else if (e instanceof BotEvent.RobotDeath) {
             robotDied(((BotEvent.RobotDeath) e).name());
-            meleeSeam.observe(e, tick);
+            if (meleeSeam != null) {
+                boolean fed = feedWorld(e, tick);
+                meleeSeam.observe(e, tick, fed);
+            }
         }
     }
 
@@ -472,7 +552,7 @@ public final class HadurCore {
         posture = Posture.DUEL;
         inMelee = false;
         focusing = in.others() >= 2;
-        meleeSeam.stopDriving();
+        if (meleeSeam != null) meleeSeam.stopDriving();
         duelSeam.reset();
         return BotOrders.builder().maxVelocity(Rules.MAX_VELOCITY)
             .turnRadarRight(Double.POSITIVE_INFINITY);
@@ -500,10 +580,13 @@ public final class HadurCore {
         return deadThisRound.contains(name);
     }
 
-    /** The duel's focus among the living opponents, re-chosen when it dies (GATE-3, GATE-4). */
+    /**
+     * The duel's focus among the living opponents, re-chosen when it dies (GATE-3, GATE-4),
+     * read from the World. Only a Melee charter starts with several opponents to focus on.
+     */
     String focusTarget(Point2D.Double me) {
         Map<String, Double> alive = new LinkedHashMap<>();
-        for (EnemyInfo e : meleeSeam.melee.tracker.alive()) alive.put(e.name, e.distance(me));
+        if (world != null) for (EnemyInfo e : world.alive()) alive.put(e.name, e.distance(me));
         return focus.update(alive);
     }
 
@@ -539,13 +622,13 @@ public final class HadurCore {
         handOffPending = false;
         Baton baton;
         try {
-            baton = meleeSeam.give(tick);
+            baton = meleeSeam == null ? Baton.EMPTY : meleeSeam.give(tick);
         } catch (RuntimeException ex) {
             duel.batonFailed(tick.in().time(), ex);
             baton = null;
         }
         duelSeam.take(baton, tick);
-        boolean foundMelee = meleeSeam.knows(e.name());
+        boolean foundMelee = meleeSeam != null && meleeSeam.knows(e.name());
         telemetry.emit("H," + round + "," + tick.in().time() + "," + clean(e.name()) + ","
             + (duel.found1v1() ? 1 : 0) + "," + (foundMelee ? 1 : 0) + "," + duel.injected());
     }
@@ -623,10 +706,19 @@ public final class HadurCore {
     /**
      * The melee brain, for tests of what it tracks.
      *
-     * @return the melee controller this core drives
+     * @return the melee controller this core drives; null unless the charter has Melee (ROLE-6)
      */
     public MeleeController melee() {
-        return meleeSeam.melee;
+        return meleeSeam == null ? null : meleeSeam.melee;
+    }
+
+    /**
+     * The World, the core's one model of the field (A3).
+     *
+     * @return the World; null unless the charter has Melee, the only role that reads it yet
+     */
+    public EnemyTracker world() {
+        return world;
     }
 
     /**
@@ -660,7 +752,7 @@ public final class HadurCore {
         stats.faults = faults;
         RoundResult ended = new RoundResult(tick, result);
         duelSeam.roundEnded(ended);
-        meleeSeam.roundEnded(ended);
+        if (meleeSeam != null) meleeSeam.roundEnded(ended);
         telemetry.emit(stats.toRecord(round, tick, result, myEnergy, duel.lastEnemyEnergy()));
         if (enemiesTotal >= 2 || gate.sentriesSeen()) telemetry.emit(meleeRecord(tick));
         return stats;
@@ -679,14 +771,16 @@ public final class HadurCore {
     String meleeRecord(long tick) {
         return "M," + round + "," + tick + "," + meleeTicks + "," + duelTicks + "," + focusTicks
             + "," + (gate.veto() == Veto.NONE ? "-" : gate.veto().name().toLowerCase(Locale.ROOT))
-            + "," + meleeFaults + "," + meleeSeam.maxScanGap + "," + meleeSeam.ghostTicks + "," + sentryHits
-            + "," + meleeSeam.sweepGap + "," + meleeSeam.roundCounts()
+            + "," + meleeFaults + "," + (meleeSeam == null ? 0 : meleeSeam.maxScanGap)
+            + "," + (meleeSeam == null ? 0 : meleeSeam.ghostTicks) + "," + sentryHits
+            + "," + (meleeSeam == null ? 0 : meleeSeam.sweepGap)
+            + "," + (meleeSeam == null ? "0,0,0,0" : meleeSeam.roundCounts())
             + "," + meleeMemoryFailures();
     }
 
     /** Melee memory failures this battle, the survivors' 1v1 reads included (RES-5). */
     private int meleeMemoryFailures() {
-        return meleeSeam.memoryFailures() + duel.survivorFailures();
+        return (meleeSeam == null ? 0 : meleeSeam.memoryFailures()) + duel.survivorFailures();
     }
 
     /**
@@ -704,7 +798,7 @@ public final class HadurCore {
      * @param tick the tick of the save, for the record
      */
     public void saveProfile(long tick) {
-        meleeSeam.battleEnded(tick);
+        if (meleeSeam != null) meleeSeam.battleEnded(tick);
         duelSeam.battleEnded(tick);
     }
 
@@ -721,7 +815,7 @@ public final class HadurCore {
     public void checkpoint(long tick) {
         if (checkpointed) return;
         checkpointed = true;
-        meleeSeam.checkpoint(tick);
+        if (meleeSeam != null) meleeSeam.checkpoint(tick);
         duelSeam.checkpoint(tick);
     }
 
@@ -731,7 +825,7 @@ public final class HadurCore {
      */
     public void prepareMemory() {
         duelSeam.prepare();
-        meleeSeam.prepare();
+        if (meleeSeam != null) meleeSeam.prepare();
     }
 
     /**
@@ -743,7 +837,7 @@ public final class HadurCore {
     public void battleEnded(long tick) {
         saveProfile(tick);
         // The last round's M record went out before its checkpoint save: close the count here.
-        if (meleeSeam.hasShelf()) {
+        if (meleeSeam != null && meleeSeam.hasShelf()) {
             telemetry.emit("MEM," + round + "," + tick + ",melee-battle-failures," + meleeMemoryFailures());
         }
     }

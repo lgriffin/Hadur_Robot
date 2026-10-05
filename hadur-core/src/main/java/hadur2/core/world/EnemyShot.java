@@ -1,4 +1,4 @@
-package hadur2.core.melee;
+package hadur2.core.world;
 
 import java.awt.geom.Point2D;
 

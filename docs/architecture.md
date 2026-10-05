@@ -18,6 +18,7 @@ graph LR
         GC[gun]
         MC[move]
         ML[melee]
+        W[world]
         PT[role]
         DU[duel]
         M[model / physics / knn]
@@ -38,6 +39,8 @@ graph LR
     DU --> GC & MC
     C --> PT
     C --> ML
+    C --> W
+    ML --> W
     ML --> M
     GC & MC --> M
     C -- BotOrders --> G
@@ -114,7 +117,8 @@ data directory through `RobocodeFileOutputStream`.
 | `gun` | main KNN gun, anti-surfer gun, gun selection |
 | `move` | wave-surfing movement and its danger formulas; our bullets in flight and the shadows they cast (MOVE-1); go-to surfing; the rammer escape (`RamEscape`, RAM-2) and the planned path against a mirror mover (`MirrorDrive`, MIR-1) |
 | `role` | the role contract and its resolution (ROLE, WEAVE, GATE-2..5): `Role`, `Tick`, the battle's `Charter`, the `RoleResolver` with its latch (A1, in place of the melee extension's `PostureGate`), `DuelFocus` (the one opponent the duel fights while several are alive) and `SentryFence` (the sentry border as a wall for the duel's movement) |
-| `melee` | the melee brain (MELEE-2..8, MRADAR, MSENSE, MMOVE, MGUN): battlefield model with shot detection, sweep radar, minimum-risk movement with virtual bullets, field gun with a play-it-forward history per opponent, energy table, targeting waves, posture strategy, battle-long opponent stats; the melee profile block, its round folder and its binary codec (MMEM-1) |
+| `world` | the World (A3, WORLD-1): one picture of the field, `EnemyTracker` with each robot's `EnemyInfo` and the enemy shots it infers (`EnemyShot`), fed by the conductor before any role; the melee brain reads it |
+| `melee` | the melee brain (MELEE-2..8, MRADAR, MSENSE, MMOVE, MGUN): sweep radar, minimum-risk movement with virtual bullets, field gun with a play-it-forward history per opponent, energy table, targeting waves, posture strategy, battle-long opponent stats; the melee profile block, its round folder and its binary codec (MMEM-1) |
 | `memory` | opponent memory (MEM-1..5, RES-3): lineage keys, the profile, its binary codec, the round folder and the library that loads, saves and evicts; estimates with margins of error, the tiers and the seed layout |
 | `adapt` | recognise and adapt (ADAPT-1..3, DIAL-1..2, RES-4): the opening book, the seed loader and the seed trust |
 | `policy` | aggressive (DIST-1, POW-1, POW-2, END-1, END-2): rolling hit-rate windows, the distance controller, the power policy, the endgame states and the enemy gun-heat estimate; unhittable (MOVE-2, TIME-1, TIME-2): the movement flavour and the tick budget; recognising a rammer (`RammerPolicy`, RAM-1, RAM-2) and a mirror mover (`MirrorDetector`, MIR-1) |
@@ -127,7 +131,7 @@ ArchUnit enforces the boundary on every build: no `robocode.*` in the core, only
 clock; no mutable static fields; model, physics and ports never depend on gun, movement
 or replay; gun and movement never depend on each other; the ledger depends only on
 physics, so nothing but the engine's rules decides which drops become waves; melee depends
-only on the model and physics, and no duel package depends on melee; memory depends only on
+only on the model, physics, the kd-tree and the World, which reads no strand; no duel package depends on melee; memory depends only on
 itself and the ports, and no gun, movement, melee, ledger or model code depends on memory;
 the adapt and policy packages see neither `BotInput` nor `BotEvent` (DIAL-2), and no gun,
 movement or lower package depends on them; the `role` package depends only on the model and
@@ -146,7 +150,7 @@ in each kind of battle. From A0 every package has exactly one owner, written in
 
 | Owner | Packages | Rule |
 |---|---|---|
-| Kernel | `model`, `physics`, `knn`, `ledger`, `memory`, `port` | depends on no strand and not on the conductor (STRAND-2) |
+| Kernel | `model`, `physics`, `knn`, `ledger`, `memory`, `port`, `world` (A3) | depends on no strand and not on the conductor (STRAND-2) |
 | Duel strand | `gun`, `move`, `adapt`, `policy`, `shield`, `duel` (A2) | sees only the kernel and itself |
 | Melee strand | `melee` | sees only the kernel and itself |
 | Team strand | none yet | from the Team plan |
@@ -163,7 +167,7 @@ graph TB
         T[Team: later]
     end
     subgraph Kernel
-        K[model, physics, knn, ledger, memory, port]
+        K[model, physics, knn, ledger, memory, port, world]
     end
     HC --> D
     HC --> M
@@ -190,7 +194,8 @@ conductor's fire permission (WEAVE-3).
 
 - **Melee** (ROLE-3) while two or more opponents are alive, no sentry robot is alive or has
   been scanned this round, and the melee subsystems have not thrown this round. Every
-  scan, hit and death then goes to `melee.MeleeController`, which returns the radar sweep, a
+  scan, hit and death goes first to the World (`world.EnemyTracker`, WORLD-1), whichever
+  role drives, and then to `melee.MeleeController`, which returns the radar sweep, a
   destination and the aim; the duel's waves, ledger and guns are not fed.
 - **The duel** otherwise, from the same tick (GATE-2). When melee hands over, the core
   forgets its duel tracking and lifts the melee speed limit (MELEE-2), and the duel starts
@@ -198,26 +203,26 @@ conductor's fire permission (WEAVE-3).
 
 Robocode leaves sentries out of `getOthers()`. A scanned sentry vetoes melee for the rest
 of the round (GATE-3), as does a melee exception, which is caught, recorded as a `FAULT`
-line and counted (GATE-4). Sentries are never passed to the melee tracker, the duel or
+line and counted (GATE-4). Sentries are never passed to the World, the duel or
 opponent memory, and their bullets never reach the duel's ledger (GATE-5).
 
 When the duel drives with several opponents alive (a vetoed melee), `role.DuelFocus`
 names the one it fights: the closest when the duel takes over, kept until it dies. Scans
-and hits of the others go only to the melee tracker, so the duel's model is about one robot.
+and hits of the others go only to the World and the melee brain, so the duel's model is about one robot.
 With sentries on the field, `role.SentryFence` checks the duel's orders by simulating 12
 ticks of the engine's movement, and replaces them with a drive to the centre if they would
 come within 30 px of the border zone. The fence only replaces the drive: the gun, the
 radar and the fire order pass through untouched (WEAVE-2).
 
-A 1v1 battle never enters melee, and none of this routing runs in one: the duel's replay
-fixtures are unchanged. Each round of a battle with several opponents or sentries ends
+A 1v1 battle never enters melee, and since A3 holds only the Duel's brain: no melee brain,
+no World and no melee seam are built (ROLE-6), so none of this routing runs in one. Each round of a battle with several opponents or sentries ends
 with an `M` record: ticks per posture, the veto, melee faults, the longest scan gap, ticks
 aimed at a dead robot, our bullets that hit a sentry, the longest gap while four or more
 were alive, and robots dropped as dead without a death event.
 
 ### Melee sensing
 
-`melee.EnemyTracker` is the melee brain's battlefield model: every opponent's last
+`world.EnemyTracker` (in `melee` until A3) is the World the melee brain reads: every opponent's last
 position, heading, velocity, energy and scan tick. A death takes an opponent out of the
 movement's risk and the gun's targets on the same tick (MSENSE-1). While more are tracked
 than the engine counts alive, a death the core never heard of, the one scanned longest ago

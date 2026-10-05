@@ -1,4 +1,4 @@
-package hadur2.core.melee;
+package hadur2.core.world;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayDeque;
@@ -100,12 +100,12 @@ public class EnemyInfo {
     }
 
     /** Where the scan before the latest one saw it, or null before its second scan. */
-    Point2D.Double previousLocation() {
+    public Point2D.Double previousLocation() {
         return prevLocation;
     }
 
     /** The tick of the scan before the latest one, or -1. */
-    long previousScanTime() {
+    public long previousScanTime() {
         return prevScanTime;
     }
 
