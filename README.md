@@ -4,12 +4,31 @@
 a 1v1 duelist that remembers each opponent across battles, with a melee brain for
 free-for-alls, and a core that has no idea it is inside Robocode.
 
-**Hadur 3.4 is ranked 20th of 1,216 in the RoboRumble 1v1** and 28th in the MeleeRumble,
+**Hadur 3.5.1 is ranked 16th of 1,216 in the RoboRumble 1v1** and 18th in the MeleeRumble,
 the highest-ranked robot flying the Irish flag. It was designed, written, tested and tuned by Claude agents working
 in a shared project with one human, Leigh Griffin, who set the goals and ran the live
 entries. This page covers what the robot does, how it is built, and how it was built.
 
 ## Standing
+
+The LiteRumble rankings page saved 2026-10-05 05:51 UTC puts `hadur2.Hadur 3.5.1` 16th, after
+1,119 of its 1,215 pairings (1,261 battles):
+
+| Rank | APS | PWIN | ANPP | Survival | Pairings | Battles |
+|---|---|---|---|---|---|---|
+| **16th of 1,216** | **86.65** ± 0.23 | 99.02 | 89.76 | 94.36% | 1,119 | 1,261 |
+
+- **18th in the MeleeRumble**, up from 28th for 3.4 (Leigh, 2026-10-05; no melee page is
+  archived yet).
+- **The ram approach paid off.** 3.5.1 is 3.4 plus R9: run from a confirmed rammer (RAM-2)
+  and plan a path against mirror movers (MIR-1). It gained 0.75 APS and four places over
+  3.4's complete pass, more than the 0.1 to 0.5 the weak-bot bench predicted, and survival
+  rose from 93.9% to 94.4%. The pass is 92% complete, so the last digit can still move: 15th
+  (WaveSerpent) is 0.03 APS ahead and 17th (WhiteFang) 0.02 behind.
+
+The page is archived in [`data/rumble/`](data/rumble/) ([L-38](data/learnings.md)).
+
+### 3.4 at 20th
 
 The live LiteRumble record for `hadur2.Hadur 3.4`, saved 2026-10-01 20:20 UTC with every
 pairing filled:
@@ -31,11 +50,14 @@ pairing filled:
 above it, and [the band and hour report](docs/bench/live-details-3.4.md) the same page read
 by BENCH-5. The saved page is archived in [`data/rumble/`](data/rumble/).
 
+### Rank history
+
 | Release | Date | Live APS | Survival | Rank | What changed |
 |---|---|---|---|---|---|
 | 3.0 | 2026-09-28 | 81.57 | 82.6% | 64th | Hadur 2 duelist (S0-S6) and the rebuilt melee brain (M0-M6) |
 | 3.1 | 2026-09-30 | 81.46 | 83.0% | 16th in its first hour, 65th at the end | R1-R3: client reliability, full power vs weak bots, a gun for surfers |
-| 3.4 | 2026-10-01 | **85.90** | **93.9%** | **20th** | R5-R8: rumble-safe memory, duress mode, movement, memory that stays cheap |
+| 3.4 | 2026-10-01 | 85.90 | 93.9% | 20th (28th melee) | R5-R8: rumble-safe memory, duress mode, movement, memory that stays cheap |
+| 3.5.1 | 2026-10-03 | **86.65** | **94.4%** | **16th (18th melee)** | R9, the ram approach: run from rammers (RAM-2), a planned path against mirror movers (MIR-1) |
 
 3.0 and 3.1 both started near 85.7 APS and slid by 5 to 8 points within hours on live
 clients, which the bench could not reproduce. R7's one-JVM session bench and R8 traced it to
@@ -358,7 +380,7 @@ tests that prove it.
 | R3.5-R4 | Rumble climb: release 3.1, client-conditions bench, return fire and health record; release 3.2 | done ([plan](docs/rumble-climb-r4-r6-plan.md)) |
 | R5, R7, R6 | Top 30: rumble-safe memory, the long-session bench and duress, movement precision | released as 3.3 ([plan](docs/rumble-climb-top30-plan.md), [session bench](docs/bench/r7-session.md)) |
 | R8 | Memory at rumble scale: one directory listing per battle, forget the oldest | released as 3.4 ([plan](docs/rumble-memory-scale-plan.md), [gate](docs/bench/r8-memory-scale.md)); 20th live |
-| R9 | The weak-bot leak: run from rammers (RAM-2), plan a path against mirror movers (MIR-1) | released as 3.5, review fixes as 3.5.1 ([issue #80](https://github.com/lgriffin/Hadur_Robot/issues/80), [bench](docs/bench/r9-weak-leak.md)): weak set 74.8% to 86.8%, top 19 unchanged |
+| R9 | The weak-bot leak: run from rammers (RAM-2), plan a path against mirror movers (MIR-1) | released as 3.5, review fixes as 3.5.1 ([issue #80](https://github.com/lgriffin/Hadur_Robot/issues/80), [bench](docs/bench/r9-weak-leak.md)): weak set 74.8% to 86.8%, top 19 unchanged; 16th live, 18th melee |
 
 The plan's S7 was "cut melee". Release 2.1 had already put melee in the core for the
 MeleeRumble, and it costs the duel nothing (it runs only while two or more opponents are
