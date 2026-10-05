@@ -1620,7 +1620,10 @@ public final class DuelController {
                 lastGunWave.setWallDistances();
             }
             // TIME-1: at the lowest computation level the virtual guns are not scored.
-            if (virtualGuns) gunController.fireVirtualBullets(lastGunWave, myNext, in.time());
+            // GUN-5: the virtual guns are rated in the class of the power the bullet really
+            // went at; the sampled gun's phase moves on with every real shot.
+            if (virtualGuns) gunController.fireVirtualBullets(lastGunWave, myNext, in.time(), firePower);
+            gunController.shotFired();
             lastRealBulletFireTime = in.time();
             stats.shotsFired++;
             if (firePower >= PowerPolicy.FULL_POWER) stats.fullPowerShots++;

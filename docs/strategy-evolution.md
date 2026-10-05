@@ -324,6 +324,20 @@ Still release 3.8 (D1 and D2 ship together). Two small rules and one engine chec
 - **Changed scenario:** `shield.feature`'s "a bullet shot down by accident changes nothing" now has the enemy stir first, since against a still enemy one bullet is SHIELD-3's evidence.
 - **Gate** ([d2-gate.md](bench/d2-gate.md)), paired against D1 (3.8.1): DrussGT **+1.0 ± 3.8** points (47.6% against 46.6%, 20 battles), level and not below. The stage jars were built on the D1 base before D5 and T1 merged. The top-10 and weak sets are measured once for the whole D2 to D4 stack (stack gate, pending). The report shows no direct evidence for SHIELD-3 or SHIELD-4 against DrussGT, which does not stand still.
 
+<a id="d3"></a>
+
+### D3: light bullets get their own aim
+
+Still release 3.8; `hadur.druss.stage` was `D3` when this stage was built (it stays `D5` with D5 merged). One requirement and one gun.
+
+- **GUN-5** rates the virtual guns separately for bullets under 0.2 and for the rest, and fires the gun rated highest for the class of the shot about to be fired. The duel decides power before it aims (D1), so the gun wave already carries the class when `GunController.aim` runs. Each class keeps GUN-1's decayed ratings and margin gate; the combined table of D2 is now the rest class's.
+- **The new gun** is `SampledGun`, the probe's sampled aim (one neighbour of the hybrid view picked by a golden-ratio phase, its guess factor scaled by the escape angle). It competes for light bullets only, so it is used where it rates highest rather than unconditionally as in the probe. The phase is core state and advances with real shots, so replays are deterministic.
+- **Not kept in the profile:** the format and its size are unchanged; see the D3 notes in `docs/requirements.md` for why.
+- **Re-recorded fixtures:** none. All 68 replay checks pass unchanged: the fixtures' opponents are fought at ordinary power, where the rest class's table is what D2's single table was, and the sampled gun is never fired before it is rated best.
+- **Re-snapshotted:** nothing.
+- **Re-pinned:** `pins/duel.sha256` (`-Dhadur.pin=duel`) and `duel-sources.sha256` (`-Dhadur.duel.snapshot=write`). The kernel, conductor, melee and team pins did not change.
+- **Gate not run.** The plan's D3 gate (40 battles; light-bullet hit rate up and DrussGT's not) is a bench job; the probe's 7.9% to 9.3% is for the unconditional aim.
+
 ## D5: the shield list (DrussGT route)
 
 Hadur opens each round in shield mode against the opponents on a list of its own (SHIELD-5): it sits

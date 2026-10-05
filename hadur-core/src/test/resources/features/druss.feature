@@ -210,3 +210,31 @@ Feature: The DrussGT route
     When the enemy fires a 0.5 bullet
     And Hadur scans the enemy for 4 ticks with a cool gun on target
     Then a shot went out
+
+  @GUN-5
+  Scenario: Light and heavy bullets are rated apart, and each class fires its own best gun
+    Given the anti-surfer gun has been rated best over 200 light shots, the others rating nothing
+    And the main gun has been rated best over 200 heavy shots, the others rating nothing
+    Then the gun fired for a light shot is the anti-surfer gun
+    And the gun fired for a heavy shot is the main gun
+
+  @GUN-5
+  Scenario: Ratings of light bullets say nothing about heavy ones
+    Given the anti-surfer gun has been rated best over 200 light shots, the others rating nothing
+    Then the gun fired for a light shot is the anti-surfer gun
+    And no gun is rated clearly highest for a heavy shot, so the main gun fires
+
+  @GUN-5
+  Scenario: The sampled gun competes for light bullets and wins them when it rates highest
+    Given the sampled gun has been rated best over 200 light shots, the others rating nothing
+    Then the gun fired for a light shot is the sampled gun
+
+  @GUN-5
+  Scenario: The sampled gun is never fired for heavy bullets, however it rates there
+    Given the sampled gun has been rated best over 200 heavy shots, the others rating nothing
+    Then the gun fired for a heavy shot is not the sampled gun
+
+  @GUN-5
+  Scenario: Guns rated alike over light shots: no gun clears its margin of error
+    Given every gun has been rated alike over 200 light shots
+    Then no gun is rated clearly highest for a light shot, so the main gun fires
