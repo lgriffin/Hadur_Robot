@@ -93,7 +93,7 @@
                         </goals>
                         <configuration>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <outputFile>${project.build.directory}/hadur2.HadurTeam_3.5.1.jar</outputFile>
+                            <outputFile>${project.build.directory}/hadur2.HadurTeam_3.6.jar</outputFile>
                             <artifactSet>
                                 <includes>
                                     <include>com.lgriffin:hadur-core</include>

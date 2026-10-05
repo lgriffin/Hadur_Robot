@@ -42,7 +42,7 @@ import java.util.zip.GZIPOutputStream;
  * <li>{@code --melee true} run every opponent in the set against Hadur at once, one battle
  *     per seed, and report finishing places instead (MeleeRumble: 10 robots, 1000x1000).</li>
  * <li>{@code --team true} (A5) fight each team of the set with our team jar
- *     ({@code --robot-jar}, hadur2.HadurTeam_3.5.1.jar; {@code --robot} "hadur2.HadurTeam
+ *     ({@code --robot-jar}, hadur2.HadurTeam_3.6.jar; {@code --robot} "hadur2.HadurTeam
  *     3.5.1"; {@code --member} hadur2.Hadur), TeamRumble style: 1200x1200, 10 rounds.</li>
  * <li>{@code --baseline JAR} (BENCH-2) also fight every opponent with this second jar, one
  *     battle per seed at the same {@code RANDOMSEED} as the candidate's, and report the
@@ -101,12 +101,12 @@ public final class Bench {
             opts.putIfAbsent("seeds", "3");
             if (opts.containsKey("record")) {
                 // STRAND-5: five recorders, a team jar made from the recorder jar (runTeam).
-                opts.putIfAbsent("robot", "hadur2.HadurRecorderTeam 3.5.1");
+                opts.putIfAbsent("robot", "hadur2.HadurRecorderTeam 3.6");
                 opts.putIfAbsent("member", "hadur2.HadurRecorder");
                 opts.putIfAbsent("robot-jar", "../hadur-robot/target/hadur-robot-2.0-SNAPSHOT-recorder.jar");
             }
-            opts.putIfAbsent("robot", "hadur2.HadurTeam 3.5.1");
-            opts.putIfAbsent("robot-jar", "../hadur-robot/target/hadur2.HadurTeam_3.5.1.jar");
+            opts.putIfAbsent("robot", "hadur2.HadurTeam 3.6");
+            opts.putIfAbsent("robot-jar", "../hadur-robot/target/hadur2.HadurTeam_3.6.jar");
         }
         this.warm = opts.getOrDefault("mode", "cold").equals("warm");
         this.rounds = Integer.parseInt(opts.getOrDefault("rounds", "35"));
