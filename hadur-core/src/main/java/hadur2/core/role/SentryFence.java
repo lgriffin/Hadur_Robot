@@ -55,8 +55,7 @@ public final class SentryFence {
         // Head for the centre, unless braking where it stands keeps it further out of the zone
         // (a robot already running at the border cannot always turn in time).
         BotOrders home = toCentre(x, y, heading, o);
-        BotOrders stop = new BotOrders(0, 0, Rules.MAX_VELOCITY, o.gunTurn(), o.radarTurn(),
-            o.firePower());
+        BotOrders stop = o.withDrive(0, 0, Rules.MAX_VELOCITY);
         return intrusion(x, y, heading, velocity, stop, border)
             < intrusion(x, y, heading, velocity, home, border) ? stop : home;
     }
@@ -70,8 +69,7 @@ public final class SentryFence {
             turn = Angles.normalRelativeAngle(turn + Math.PI);
             distance = -distance;
         }
-        return new BotOrders(turn, distance, Rules.MAX_VELOCITY, o.gunTurn(), o.radarTurn(),
-            o.firePower());
+        return o.withDrive(turn, distance, Rules.MAX_VELOCITY);
     }
 
     /**

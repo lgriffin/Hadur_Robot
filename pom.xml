@@ -40,7 +40,7 @@
         <!-- The RoboRumble climb plan's stage (R0-R5): its requirements up to here must be covered too. -->
         <hadur.climb.stage>R9</hadur.climb.stage>
         <!-- The architecture evolution's stage (A0-A5, docs/architecture-evolution.md). -->
-        <hadur.arch.stage>A3</hadur.arch.stage>
+        <hadur.arch.stage>A4</hadur.arch.stage>
     </properties>
 
     <repositories>

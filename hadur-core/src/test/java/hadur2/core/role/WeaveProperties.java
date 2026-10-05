@@ -13,8 +13,8 @@ import net.jqwik.api.constraints.DoubleRange;
 
 /**
  * WEAVE-2 as a property: a fence only replaces a drive. Whatever the driving role ordered and
- * wherever Hadur stands, the sentry fence's orders keep the gun turn, the radar turn and the
- * fire order exactly as the role gave them (a NaN stays NaN).
+ * wherever Hadur stands, the sentry fence's orders keep the gun turn, the radar turn, the
+ * fire order and the messages exactly as the role gave them (a NaN stays NaN).
  */
 class WeaveProperties {
 
@@ -29,8 +29,10 @@ class WeaveProperties {
         Arbitrary<Double> radar = Arbitraries.doubles().between(-7, 7).injectNull(0.1)
             .map(d -> d == null ? Double.POSITIVE_INFINITY : d);
         Arbitrary<Double> fire = Arbitraries.of(0.0, 0.1, 1.0, 1.9, 3.0);
-        return net.jqwik.api.Combinators.combine(turn, ahead, turn, radar, fire)
-            .as((t, a, g, r, f) -> new BotOrders(t, a, 8, g, r, f));
+        Arbitrary<java.util.List<byte[]>> messages = Arbitraries.bytes().array(byte[].class).ofMaxSize(40)
+            .list().ofMaxSize(3);
+        return net.jqwik.api.Combinators.combine(turn, ahead, turn, radar, fire, messages)
+            .as((t, a, g, r, f, m) -> new BotOrders(t, a, 8, g, r, f, m));
     }
 
     @Property(tries = 2000)
@@ -45,5 +47,10 @@ class WeaveProperties {
         assertEquals(drive.gunTurn(), fenced.gunTurn());
         assertEquals(drive.radarTurn(), fenced.radarTurn());
         assertEquals(drive.firePower(), fenced.firePower());
+        // A4: the messages pass the fence too.
+        assertEquals(drive.messages().size(), fenced.messages().size());
+        for (int i = 0; i < drive.messages().size(); i++) {
+            org.junit.jupiter.api.Assertions.assertArrayEquals(drive.messages().get(i), fenced.messages().get(i));
+        }
     }
 }

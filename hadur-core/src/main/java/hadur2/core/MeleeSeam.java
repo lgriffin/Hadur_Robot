@@ -41,6 +41,8 @@ final class MeleeSeam implements Role {
     final MeleeController melee;
     /** MMEM-1: the opponents' melee blocks; null unless a melee charter with a store. */
     private final MeleeMemory memory;
+    /** SHELF-3: whether this battle writes the melee shelf; only a Melee charter's does. */
+    private final boolean writes;
     /** What the melee brain asked for last tick; its fire power goes out this tick if the gun is there. */
     private MeleeController.Command lastCommand;
     /** The first exception a melee event handler threw this tick (GATE-4). */
@@ -56,10 +58,11 @@ final class MeleeSeam implements Role {
     /** This round's counters. */
     private RoundStats stats;
 
-    MeleeSeam(HadurCore core, MeleeController melee, MeleeMemory memory, RoundStats stats) {
+    MeleeSeam(HadurCore core, MeleeController melee, MeleeMemory memory, boolean writes, RoundStats stats) {
         this.core = core;
         this.melee = melee;
         this.memory = memory;
+        this.writes = writes;
         this.stats = stats;
     }
 
@@ -119,7 +122,8 @@ final class MeleeSeam implements Role {
 
     /** MMEM-1: writes the melee blocks folded since the last save. Never throws. */
     void save(long tick) {
-        if (memory == null) return;
+        // The Archive's answer first: a gated save is never attempted (SHELF-3).
+        if (memory == null || !writes) return;
         try {
             int before = memory.saveFailures() + memory.skippedWrites();
             memory.saveAll();

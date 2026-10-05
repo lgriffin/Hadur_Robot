@@ -3,7 +3,7 @@ package hadur2.core.model;
 /**
  * Engine events delivered to the robot during a tick, as plain immutable values. Angles are
  * radians; bearings are relative to the robot's heading, headings are absolute (0 = north,
- * clockwise). The set of event types is closed: these ten are all there are.
+ * clockwise). The set of event types is closed: these eleven are all there are.
  *
  * <p>The adapter ({@code hadur2.Hadur}, outside the core) turns each Robocode event into one
  * of these in its event handlers, in the engine's own priority order, and hands the list to
@@ -318,6 +318,7 @@ public interface BotEvent {
         private final double y;
         private final double enemyPower;
         private final double bulletHeading;
+        private final String owner;
 
         /**
          * A collision whose bullet heading is unknown (older transcripts).
@@ -342,11 +343,35 @@ public interface BotEvent {
          */
         public BulletHitBullet(double power, double x, double y, double enemyPower,
                                double bulletHeading) {
+            this(power, x, y, enemyPower, bulletHeading, null);
+        }
+
+        /**
+         * A collision between one of our bullets and another robot's (A4).
+         *
+         * @param power our bullet's power
+         * @param x the other bullet's x at the collision, pixels
+         * @param y the other bullet's y at the collision, pixels
+         * @param enemyPower the other bullet's power
+         * @param bulletHeading our bullet's absolute heading, radians, or NaN when unknown
+         * @param owner the robot that fired the other bullet, or null when unknown
+         */
+        public BulletHitBullet(double power, double x, double y, double enemyPower,
+                               double bulletHeading, String owner) {
             this.power = power;
             this.x = x;
             this.y = y;
             this.enemyPower = enemyPower;
             this.bulletHeading = bulletHeading;
+            this.owner = owner;
+        }
+
+        /**
+         * The robot that fired the other bullet, so a teammate's can be told from an enemy's
+         * (WORLD-6); null when unknown (older transcripts).
+         */
+        public String owner() {
+            return owner;
         }
 
         /** Our bullet's absolute heading, radians (0 = north, clockwise); NaN when unknown. */
@@ -383,18 +408,19 @@ public interface BotEvent {
                 && Double.compare(x, that.x) == 0
                 && Double.compare(y, that.y) == 0
                 && Double.compare(enemyPower, that.enemyPower) == 0
-                && Double.compare(bulletHeading, that.bulletHeading) == 0;
+                && Double.compare(bulletHeading, that.bulletHeading) == 0
+                && java.util.Objects.equals(owner, that.owner);
         }
 
         @Override
         public int hashCode() {
-            return java.util.Objects.hash(power, x, y, enemyPower, bulletHeading);
+            return java.util.Objects.hash(power, x, y, enemyPower, bulletHeading, owner);
         }
 
         @Override
         public String toString() {
             return "BulletHitBullet[power=" + power + ", x=" + x + ", y=" + y + ", enemyPower="
-                + enemyPower + ", bulletHeading=" + bulletHeading + "]";
+                + enemyPower + ", bulletHeading=" + bulletHeading + ", owner=" + owner + "]";
         }
     }
 
@@ -698,6 +724,55 @@ public interface BotEvent {
         @Override
         public String toString() {
             return "TickTime[usedNanos=" + usedNanos + ", allowanceNanos=" + allowanceNanos + "]";
+        }
+    }
+
+    /**
+     * A teammate's message (A4): its sender and the bytes it broadcast on the tick before.
+     * The core reads them with its own link codec (LINK-1); a message that fails it is
+     * ignored and counted (LINK-2). Off a team none ever arrives.
+     */
+    public static final class Message implements BotEvent {
+        private final String sender;
+        private final byte[] bytes;
+
+        /**
+         * A message.
+         *
+         * @param sender the teammate that sent it
+         * @param bytes what it sent; copied
+         */
+        public Message(String sender, byte[] bytes) {
+            this.sender = sender;
+            this.bytes = bytes.clone();
+        }
+
+        /** The teammate that sent it. */
+        public String sender() {
+            return sender;
+        }
+
+        /** What it sent, as a copy. */
+        public byte[] bytes() {
+            return bytes.clone();
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof Message)) return false;
+            Message that = (Message) o;
+            return java.util.Objects.equals(sender, that.sender) && java.util.Arrays.equals(bytes, that.bytes);
+        }
+
+        @Override
+        public int hashCode() {
+            return 31 * java.util.Objects.hashCode(sender) + java.util.Arrays.hashCode(bytes);
+        }
+
+        @Override
+        public String toString() {
+            return "Message[sender=" + sender + ", bytes=" + bytes.length + "]";
         }
     }
 }

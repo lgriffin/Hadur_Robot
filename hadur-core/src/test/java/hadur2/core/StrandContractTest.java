@@ -137,7 +137,7 @@ class StrandContractTest {
         seen.clear();
         // Straight through the role contract, past the conductor's feed: the World's last
         // scan is a's, so b's scan must not be booked as a's.
-        MeleeSeam seam = new MeleeSeam(core, melee, null, new hadur2.core.model.RoundStats());
+        MeleeSeam seam = new MeleeSeam(core, melee, null, false, new hadur2.core.model.RoundStats());
         Tick t = new Tick(input(2, 2, 0, List.of()), RoleId.MELEE, false, new DuelFocus(), n -> false, false);
         seam.observe(scan("b", 2.0, 300, false), t);
         assertFalse(seen.stream().anyMatch(s -> s.startsWith("scan:")), seen.toString());
