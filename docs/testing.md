@@ -73,7 +73,9 @@ core and requires the same orders. They pin behaviour, so:
   pull request.
 
 The tick time (`TickTime`) is recorded like any other event, so the tick budget replays
-too. The profile fixtures in `profiles/` (`v1.hp`, `v2.hp`) keep old profile formats
+too. Since A0 the replay also compares the telemetry each fixture was pinned with and the
+files the live robot left in its store (STRAND-4), and since A5 a team fixture holds one
+transcript per member (`team-sampleteam.MyFirstTeam-m1`, `-m2`). The profile fixtures in `profiles/` (`v1.hp`, `v2.hp`) keep old profile formats
 loadable.
 
 ## The duel is pinned
@@ -90,7 +92,7 @@ was byte-identical to master's.
 ## Javadoc
 
 `mvn verify` runs javadoc with doclint (every group but missing comments) over hadur-core
-and hadur-robot, so documentation errors fail the build like tests do, the melee and posture
+and hadur-robot, so documentation errors fail the build like tests do, the melee and role
 packages included (they were excluded until M6).
 
 ## The bench
@@ -107,6 +109,11 @@ reference bench and the melee benches (sentry safety, the sample challenge, the 
 field) in one command. Melee reports give Hadur's APS and survival the MeleeRumble way,
 pairwise against each other robot, and read the per-round places, the rounds that ended
 as a duel and the sentry hits from the engine's snapshots.
+
+Team battles run with `--team true` against `team-reference.txt`, through the gate suite
+`team-gates.txt`. A team report counts faults, rejected messages, shots held for the fire
+lane, shots with a teammate truly in it, counts of enemies below the truth, stray shelf
+files and teammate collisions ([bench/a5-team.md](bench/a5-team.md)).
 
 The bench also checks things no unit test can, against the engine's own record of each
 battle (`truth.log.gz`): which of Hadur's inferred waves were real shots (WAVE-1/2), and

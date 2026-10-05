@@ -1,6 +1,6 @@
 # Hadur 2: evolution of strategy
 
-As of 2026-09-27 (after S7, release 2.2). The living copy is the [Claude Doc](https://claude.ai/code/artifact/bc581157-b352-49c9-acaf-9f77035202c5); this file is its snapshot for evaluation.
+As of 2026-09-27 (after S7, release 2.2). The living copy is the [Claude Doc](https://claude.ai/code/artifact/bc581157-b352-49c9-acaf-9f77035202c5); this file is its snapshot for evaluation. The living copy also covers the melee extension, R9, the top-15 plan and the architecture evolution (A0 to A5, releases 3.6 and 3.7). For the stages since this snapshot, see the stage log in [architecture-evolution.md](architecture-evolution.md#stage-log) and [what 3.7 should score](bench/expected-3.7.md).
 
 ## Summary
 

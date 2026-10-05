@@ -32,14 +32,17 @@ DOCS = [
     ("docs/strategy-evolution.md", "strategy-evolution.html", "Strategy evolution"),
     ("docs/bullet-shielding.md", "bullet-shielding.html", "Bullet shielding"),
     ("docs/requirements.md", "requirements-notes.html", "Requirement readings"),
+    ("docs/architecture-evolution.md", "architecture-evolution.html", "Architecture evolution"),
+    ("docs/bench/expected-3.7.md", "expected-3.7.html", "What 3.7 should score"),
     ("docs/rumble-submission.md", "rumble-submission.html", "Rumble entry"),
     ("docs/releases/v3.0.md", "release-3.0.html", "Release 3.0"),
+    ("docs/releases/v3.7.md", "release-3.7.html", "Release 3.7"),
     ("followup.md", "followup.html", "Follow-ups"),
 ]
 
 ID = r"[A-Z]+-\d+"
-ROW = re.compile(r"^\|\s*(" + ID + r")\s*\|\s*([^|]+?)\s*\|\s*(.+?)\s*\|\s*(S\d|M\d)\s*\|\s*$")
-RETIRED = re.compile(r"^\|\s*(" + ID + r")\s*\|\s*(.+?)\s*\|\s*(M\d|S\d)\s*\|\s*(.+?)\s*\|\s*$")
+ROW = re.compile(r"^\|\s*(" + ID + r")\s*\|\s*([^|]+?)\s*\|\s*(.+?)\s*\|\s*([SMRA]\d+)\s*\|\s*$")
+RETIRED = re.compile(r"^\|\s*(" + ID + r")\s*\|\s*(.+?)\s*\|\s*([SMRA]\d+)\s*\|\s*(.+?)\s*\|\s*$")
 JAVA_TAG = re.compile(r'@Tag\("(' + ID + r')"\)')
 FEATURE_TAG = re.compile(r"@(" + ID + r")\b")
 

@@ -4,6 +4,23 @@ Open items from the Hadur 2 stages, newest stage first. The open ones are tracke
 [GitHub issues](https://github.com/lgriffin/Hadur_Robot/issues) (#44 to #56, opened
 2026-09-28); the notes below are the detail behind them.
 
+## Architecture evolution A0 to A5 (releases 3.6 and 3.7)
+
+All six stages merged (#87, #88, #89, #92, #93, #94), and 3.7 was entered on the RoboRumble,
+MeleeRumble and TeamRumble on 2026-10-05. Open after A5:
+
+- **Read 3.7's complete passes** against [docs/bench/expected-3.7.md](docs/bench/expected-3.7.md).
+  A 1v1 pass below 86.1 APS, or melee more than 1.5 APS down, is outside what the benches
+  predict. Read it against the fixtures before any ladder plan merges code.
+- **Teammates collide** about 440 times a round, and 884 of our bullets hit a teammate
+  over the A5 gate. Neither mover sees teammates yet. This is the Team plan's first item,
+  ahead of a shared target and formation ([a5-team.md](docs/bench/a5-team.md)).
+- **Droids** (a leader with radar-less members) are left to the Team plan.
+- **Stale comments.** Comments in the nine pinned packages that name `HadurCore` are out
+  of date since A2. Fixing them is one optional, comment-only re-pin.
+- **The Tutors course** (`course/`) teaches the pre-A1 core. Its hexagon and melee notes
+  and the capstone lab still describe the posture gate in place of the role resolver.
+
 ## Rumble climb R5 and R7 (rumble-safe memory, session bench, duress)
 
 - **R5** (PR #70, merged): MEM-8 to MEM-10 and ADAPT-4. Profiles are stats-only except for

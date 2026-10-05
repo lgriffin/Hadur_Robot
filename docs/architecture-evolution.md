@@ -514,6 +514,8 @@ Everything was read on 4 and 5 October 2026.
 
 ## Stage log
 
+All six stages are merged, and the evolution is complete. 3.7 carries A3 to A5 with the team jar, and was entered on all three ladders on 2026-10-05. The expected live result is in [bench/expected-3.7.md](bench/expected-3.7.md).
+
 | Stage | Pull request | What landed |
 |---|---|---|
 | A0 Pin and record | [#87](https://github.com/lgriffin/Hadur_Robot/pull/87) | The ownership map and one pin per owner (STRAND-1 to STRAND-3); five new fixtures recorded on 3.5.1 (melee, sentry, hand-off on a store, warm duel, duress); the recorder logs the store and the adapter's memory calls; the replay compares telemetry and store files (STRAND-4); `hadur.arch.stage` A0. |
