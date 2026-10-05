@@ -237,7 +237,7 @@ public class Hadur extends TeamRobot {
         String[] teammates = getTeammates();
         return new BattleFacts(getBattleFieldWidth(), getBattleFieldHeight(), getOthers(),
             teammates == null ? List.of() : Arrays.asList(teammates), getName(), getEnergy(),
-            getNumSentries() > 0 ? getSentryBorderSize() : 0);
+            getNumSentries() > 0 ? getSentryBorderSize() : 0, getNumRounds());
     }
 
     /**

@@ -290,7 +290,7 @@ public final class HadurCore {
         MeleeMemory meleeMemory = archive.meleeShelf();
         ProfileLibrary survivorLibrary = archive.survivorShelf();
         this.duel = new DuelController(facts.width(), facts.height(), enemiesTotal, telemetry,
-            library, survivorLibrary, stats, charter == Charter.DUEL ? shieldList : ShieldList.NONE);
+            library, survivorLibrary, stats, charter == Charter.DUEL ? shieldList : ShieldList.NONE, facts.rounds());
         this.duelSeam = new DuelSeam(this, duel);
         // ROLE-6: only the charter's roles are built.
         if (charter.has(RoleId.MELEE)) {

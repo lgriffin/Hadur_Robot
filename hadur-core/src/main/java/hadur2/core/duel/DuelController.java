@@ -257,10 +257,11 @@ public final class DuelController {
      * @param stats the round's counters until the first {@link #newRound}
      * @param shieldList SHIELD-5: the opponents shield mode applies to; used only when
      *     {@code enemiesTotal} is 1 (the Duel charter), null or empty for none
+     * @param rounds the battle's number of rounds, for SHIELD-6's budget; 0 when not known
      */
     public DuelController(double fieldWidth, double fieldHeight, int enemiesTotal, Telemetry telemetry,
                           ProfileLibrary library, ProfileLibrary survivorLibrary, RoundStats stats,
-                          ShieldList shieldList) {
+                          ShieldList shieldList, int rounds) {
         this.battleField = new BattleField(fieldWidth, fieldHeight);
         this.duress = new Duress(battleField);
         this.predictor = new MovementPredictor(battleField);
@@ -282,7 +283,7 @@ public final class DuelController {
         this.fieldHeight = fieldHeight;
         this.stats = stats;
         this.shield = enemiesTotal == 1 && shieldList != null && !shieldList.isEmpty()
-            ? new ShieldMode(shieldList, telemetry) : null;
+            ? new ShieldMode(shieldList, telemetry, rounds) : null;
     }
 
     /**

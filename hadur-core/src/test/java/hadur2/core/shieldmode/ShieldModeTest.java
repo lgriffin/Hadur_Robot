@@ -243,10 +243,11 @@ class ShieldModeTest {
     @Tag("SHIELD-6")
     @DisplayName("damage past what holds the share at 85% leaves shield mode for the battle")
     void budgetExit() {
+        // A one-round battle allows 60 * 15/85, about 10.6 damage: one hit of 1.95 (9.7) is within, two (19.4) are over.
+        mode = new ShieldMode(ShieldList.parse(List.of("list.Target")), records::add, 1);
         scan(1);
-        // Round 0 allows about 10.6 damage: one hit of 1.95 (9.7) and the second (19.4) is over.
         mode.onHitByBullet(30, 1.95, MY_X, MY_Y, Math.PI);
-        assertFalse(mode.battleOff(), "9.7 damage is within round 0's 10.6");
+        assertFalse(mode.battleOff(), "9.7 damage is within 10.6");
         mode.onHitByBullet(60, 1.95, MY_X, MY_Y, Math.PI);
         assertTrue(mode.battleOff());
         assertFalse(mode.active());
@@ -257,6 +258,7 @@ class ShieldModeTest {
     @Tag("SHIELD-6")
     @DisplayName("once left for the battle it stays left at every later round")
     void budgetExitLastsTheBattle() {
+        mode = new ShieldMode(ShieldList.parse(List.of("list.Target")), records::add, 1);
         scan(1);
         mode.onHitByBullet(30, 3.0, MY_X, MY_Y, Math.PI);
         assertTrue(mode.battleOff());
@@ -270,32 +272,28 @@ class ShieldModeTest {
 
     @Test
     @Tag("SHIELD-6")
-    @DisplayName("rounds won raise the limit, so the same hits stay affordable later")
-    void roundsWonRaiseTheLimit() {
-        for (int r = 0; r < 6; r++) {
-            if (r > 0) mode.newRound(r);
-            scan(1);
-            mode.onRoundEnded(500, true);
-        }
-        mode.newRound(6);
+    @DisplayName("the allowance is the whole battle's: a 35-round battle affords twenty full-power hits in round 0")
+    void theWholeBattleIsAffordedFromTheStart() {
         scan(1);
-        // Seven rounds' allowance (about 74) against three full-power hits (48).
-        for (int i = 0; i < 3; i++) mode.onHitByBullet(30 + 20 * i, 3.0, MY_X, MY_Y, Math.PI);
+        // 35 rounds allow about 370 damage; twenty hits of 3.0 are 320.
+        for (int i = 0; i < 20; i++) mode.onHitByBullet(30 + 20 * i, 3.0, MY_X, MY_Y, Math.PI);
         assertFalse(mode.battleOff());
-        assertTrue(mode.budget().taken() < mode.budget().allowed());
+        assertEquals(370.6, mode.budget().allowed(), 0.1);
+        for (int i = 20; i < 24; i++) mode.onHitByBullet(30 + 20 * i, 3.0, MY_X, MY_Y, Math.PI);
+        assertTrue(mode.battleOff(), "twenty-four hits (384) are past it");
     }
 
     @Test
     @Tag("SHIELD-6")
-    @DisplayName("a lost round is charged through the damage that lost it, not on top")
-    void aLostRoundIsNotChargedTwice() {
+    @DisplayName("rounds won or lost do not move the allowance: a loss shows in the damage taken")
+    void roundResultsDoNotMoveIt() {
         scan(1);
-        mode.onHitByBullet(30, 1.0, MY_X, MY_Y, Math.PI);
-        mode.onRoundEnded(100, false);
-        assertFalse(mode.battleOff(), "4 damage is within round 0's 10.6, and the loss adds nothing");
+        double before = mode.budget().allowed();
+        mode.onRoundEnded(500, true);
         mode.newRound(1);
         scan(1);
-        assertTrue(mode.active());
+        mode.onRoundEnded(500, false);
+        assertEquals(before, mode.budget().allowed(), 1e-12);
     }
 
     @Test
@@ -316,7 +314,7 @@ class ShieldModeTest {
         mode.onHitByBullet(30, 0.5, MY_X, MY_Y, Math.PI);
         mode.onRoundEnded(200, true);
         String sr = records.stream().filter(r -> r.startsWith("SR,")).findFirst().orElseThrow();
-        assertEquals("SR,0,200,0,0,1,1,0,2.0,21.2,-", sr);
+        assertEquals("SR,0,200,0,0,1,1,0,2.0,370.6,-", sr);
     }
 
     // ---- shield bullets are told from attack bullets

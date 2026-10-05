@@ -41,17 +41,16 @@ Feature: Shield mode and its list (D5)
 
   @SHIELD-6
   Scenario: Damage past what holds the share at 85% ends shield mode for the battle
-    Given a duel against "list.Target 1.0" and a shield list naming "list.Target"
+    Given a 5-round duel against "list.Target 1.0" and a shield list naming "list.Target"
     When the enemy is scanned 400 px due east
-    And 2 enemy bullets of power 1.95 hit us
+    And 4 enemy bullets of power 3.0 hit us
     Then the telemetry says shield mode is off for the battle because "budget"
     When the next round starts and the enemy is scanned 400 px due east
     Then the telemetry holds no shield record for round 1
 
   @SHIELD-6
-  Scenario: Rounds won raise the limit
-    Given a duel against "list.Target 1.0" and a shield list naming "list.Target"
-    And 5 rounds won against it
+  Scenario: A longer battle allows more, from its first round
+    Given a 35-round duel against "list.Target 1.0" and a shield list naming "list.Target"
     When the enemy is scanned 400 px due east
-    And 3 enemy bullets of power 3.0 hit us
+    And 4 enemy bullets of power 3.0 hit us
     Then the telemetry holds no budget exit

@@ -19,16 +19,25 @@ class ShieldBudgetTest {
 
     @Example
     @Tag("SHIELD-6")
-    void roundZeroAllowsAboutTenAndAHalfDamage() {
-        ShieldBudget b = new ShieldBudget();
-        assertEquals(STEP, b.allowed(), 1e-9);
-        assertEquals(10.588, b.allowed(), 1e-3);
+    void aThirtyFiveRoundBattleAllowsAboutThreeHundredSeventy() {
+        ShieldBudget b = new ShieldBudget(35);
+        assertEquals(35 * STEP, b.allowed(), 1e-9);
+        assertEquals(370.6, b.allowed(), 0.1);
     }
 
     @Example
     @Tag("SHIELD-6")
-    void oneHitOfAnOrdinaryBulletIsAffordableAndTwoAreNot() {
-        ShieldBudget b = new ShieldBudget();
+    void anUnknownBattleLengthIsTheRumblesThirtyFive() {
+        assertEquals(35, new ShieldBudget(0).rounds());
+        assertEquals(35, new ShieldBudget(-3).rounds());
+        assertEquals(new ShieldBudget(35).allowed(), new ShieldBudget(0).allowed(), 0);
+    }
+
+    @Example
+    @Tag("SHIELD-6")
+    void aOneRoundBattleAllowsAboutTenAndAHalf() {
+        ShieldBudget b = new ShieldBudget(1);
+        assertEquals(10.588, b.allowed(), 1e-3);
         b.damageTaken(1.95);
         assertFalse(b.exceeded(), "9.7 damage is under 10.59");
         b.damageTaken(1.95);
@@ -37,37 +46,8 @@ class ShieldBudgetTest {
 
     @Example
     @Tag("SHIELD-6")
-    void aFullPowerHitAloneExceedsRoundZerosAllowance() {
-        ShieldBudget b = new ShieldBudget();
-        b.damageTaken(3.0);
-        assertEquals(16.0, b.taken(), 1e-9);
-        assertTrue(b.exceeded());
-    }
-
-    @Example
-    @Tag("SHIELD-6")
-    void everyRoundWonRaisesTheAllowanceByTheSameAmount() {
-        ShieldBudget b = new ShieldBudget();
-        for (int i = 0; i < 34; i++) b.roundEnded(true);
-        // Round 34 of 35, every earlier round won: DrussGT's list limit of about 370.
-        assertEquals(35 * STEP, b.allowed(), 1e-9);
-        assertEquals(370.6, b.allowed(), 0.1);
-    }
-
-    @Example
-    @Tag("SHIELD-6")
-    void aRoundLostOrDrawnRaisesNothingAndCostsNothingExtra() {
-        ShieldBudget b = new ShieldBudget();
-        b.roundEnded(true);
-        double before = b.allowed();
-        b.roundEnded(false);
-        assertEquals(before, b.allowed(), 1e-12, "a round lost shows in the damage taken, not in the allowance");
-    }
-
-    @Example
-    @Tag("SHIELD-6")
     void damageWeDealtRaisesTheAllowanceByItsShareOfTheLimit() {
-        ShieldBudget b = new ShieldBudget();
+        ShieldBudget b = new ShieldBudget(35);
         double before = b.allowed();
         b.damageDealt(2.0);
         // 4 * 2 + 2 * (2 - 1) = 10 damage dealt.
@@ -77,12 +57,11 @@ class ShieldBudgetTest {
     @Property
     @Tag("SHIELD-6")
     void leavingMeansTheShareWouldFallBelowEightyFivePercent(
-            @ForAll @IntRange(min = 0, max = 40) int won,
+            @ForAll @IntRange(min = 1, max = 100) int rounds,
             @ForAll @DoubleRange(min = 0.1, max = 3.0) double dealtPower,
-            @ForAll @IntRange(min = 0, max = 60) int hits,
+            @ForAll @IntRange(min = 0, max = 200) int hits,
             @ForAll @DoubleRange(min = 0.1, max = 3.0) double hitPower) {
-        ShieldBudget b = new ShieldBudget();
-        for (int i = 0; i < won; i++) b.roundEnded(true);
+        ShieldBudget b = new ShieldBudget(rounds);
         b.damageDealt(dealtPower);
         for (int i = 0; i < hits; i++) b.damageTaken(hitPower);
         // Ours is the allowance back over (1 - hold) / hold.
@@ -94,17 +73,14 @@ class ShieldBudgetTest {
 
     @Property
     @Tag("SHIELD-6")
-    void winningARoundOrDealingDamageRaisesTheAllowance(
-            @ForAll @IntRange(min = 0, max = 20) int lost,
+    void moreRoundsOrMoreDamageDealtRaiseTheAllowance(
+            @ForAll @IntRange(min = 1, max = 100) int rounds,
             @ForAll @DoubleRange(min = 0.1, max = 3.0) double power) {
-        ShieldBudget b = new ShieldBudget();
-        for (int i = 0; i < lost; i++) b.roundEnded(false);
-        double a0 = b.allowed();
-        b.damageDealt(power);
-        double a1 = b.allowed();
-        b.roundEnded(true);
-        double a2 = b.allowed();
-        assertTrue(a1 > a0);
-        assertTrue(a2 > a1);
+        ShieldBudget shorter = new ShieldBudget(rounds);
+        ShieldBudget longer = new ShieldBudget(rounds + 1);
+        assertTrue(longer.allowed() > shorter.allowed());
+        double a0 = shorter.allowed();
+        shorter.damageDealt(power);
+        assertTrue(shorter.allowed() > a0);
     }
 }

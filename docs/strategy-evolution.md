@@ -314,7 +314,7 @@ Hadur opens each round in shield mode against the opponents on a list of its own
 still, predicts the enemy's bullet from head-on predictors and fires a lighter bullet that meets it
 mid-air (`hadur2.core.shieldmode`, ported from the c6d4d7a prototype). SHIELD-6 bounds the cost: once
 the enemy's bullet damage exceeds what would hold our score share at 85%, shield mode is off for the
-rest of the battle (allowance 60 * (rounds won + 1) + damage dealt, times 15/85). Per-round exits
+rest of the battle (allowance 15/85 * (60 * the battle's rounds + damage dealt), about 370 for 35 rounds). Per-round exits
 (close, rammed, unpredicted, outhit, quiet, duress) hand the round back to the normal duel. The list
 ships empty in robot 3.8; names go on it only after BENCH-11's paired probe (`--shield-probe`) shows
 shield mode wins against them. It ships as a class, `hadur2.ShieldListData`, because Robocode's

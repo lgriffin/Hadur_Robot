@@ -36,8 +36,12 @@ public class ShieldModeSteps {
     private long time;
 
     private void start(String enemyName, int enemies, ShieldList list) {
+        start(enemyName, enemies, list, 0);
+    }
+
+    private void start(String enemyName, int enemies, ShieldList list, int rounds) {
         enemy = enemyName;
-        BattleFacts facts = BattleFacts.solo(800, 600, enemies);
+        BattleFacts facts = new BattleFacts(800, 600, enemies, List.of(), "", 100, 0, rounds);
         core = new HadurCore(facts, records::add, null, null, list);
         plain = new HadurCore(facts, plainRecords::add, null, null, ShieldList.NONE);
         core.newRound(0);
@@ -47,6 +51,11 @@ public class ShieldModeSteps {
     @Given("a duel against {string} and a shield list naming {string}")
     public void duel(String enemyName, String listed) {
         start(enemyName, 1, ShieldList.parse(List.of("# the list", listed)));
+    }
+
+    @Given("a {int}-round duel against {string} and a shield list naming {string}")
+    public void roundsDuel(int rounds, String enemyName, String listed) {
+        start(enemyName, 1, ShieldList.parse(List.of("# the list", listed)), rounds);
     }
 
     @Given("a duel against {string} and an empty shield list")
@@ -151,7 +160,7 @@ public class ShieldModeSteps {
     @Then("the telemetry holds no budget exit")
     public void noBudgetExit() {
         assertFalse(records.stream().anyMatch(rec -> rec.contains(",off,budget")), records.toString());
-        assertTrue(has("SH,5,"), "shield mode ran in round 5: " + records);
+        assertTrue(has("SH,0,"), "shield mode ran in round 0: " + records);
     }
 
     @Then("the robot holds still and holds fire")

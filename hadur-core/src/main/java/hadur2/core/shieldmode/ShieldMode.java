@@ -192,7 +192,7 @@ public final class ShieldMode {
 
     private final ShieldList list;
     private final Telemetry telemetry;
-    private final ShieldBudget budget = new ShieldBudget();
+    private final ShieldBudget budget;
 
     private final long[] scanTime = new long[HISTORY];
     private final double[][] scan = new double[HISTORY][7];
@@ -235,8 +235,20 @@ public final class ShieldMode {
      * @param telemetry where its records go
      */
     public ShieldMode(ShieldList list, Telemetry telemetry) {
+        this(list, telemetry, 0);
+    }
+
+    /**
+     * A shield mode for one battle of a known length.
+     *
+     * @param list the opponents it applies to; null or empty for none
+     * @param telemetry where its records go
+     * @param rounds the battle's number of rounds, for SHIELD-6's budget; 0 when not known
+     */
+    public ShieldMode(ShieldList list, Telemetry telemetry, int rounds) {
         this.list = list == null ? ShieldList.NONE : list;
         this.telemetry = telemetry;
+        this.budget = new ShieldBudget(rounds);
         newRound(0);
     }
 
@@ -518,14 +530,13 @@ public final class ShieldMode {
     }
 
     /**
-     * A round ended: the budget takes the result, and the round's record is written.
+     * A round ended: the round's record is written and the budget is checked.
      *
      * @param tick the tick the round ended on
      * @param won whether we won it
      */
     public void onRoundEnded(long tick, boolean won) {
         if (!listed) return;
-        budget.roundEnded(won);
         telemetry.emit(String.format(Locale.ROOT, "SR,%d,%d,%d,%d,%d,%d,%d,%.1f,%.1f,%s",
             round, tick, shieldShotsThisRound, interceptsThisRound, hitsThisRound,
             unpredictedThisRound, attackShotsThisRound, budget.taken(), budget.allowed(),

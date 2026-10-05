@@ -914,15 +914,19 @@ strand, in the `shieldmode` package, and applies to a 1v1 battle only.
   for two bullets destroying each other). Between shields it fires the main gun at the enemy only
   when its gun will be cool again in time for the enemy's next shot. Our shield bullets are not
   evidence for SHIELD-1's detector, the hit-rate windows or the bullet shadows.
-- **SHIELD-6's amount** (`ShieldBudget`). The score share is ours over the pair's total. Our score
-  so far is the damage we dealt plus 60 for each round won (a round's survival and last-survivor
-  bonuses), counting the round in progress as won. With the enemy's bullet damage as its score, our
-  share stays at 85% or more exactly while that damage is at most `ours * 15/85`; past it, shield
-  mode is off for the battle and the duel plays on. Round 0 allows about 10.6 damage, each round won
-  adds about 10.6, and 35 rounds all won allow about 370, DrussGT's own limit for its list. A round
-  lost is not charged on top: it already shows in the damage taken. Damage counts in or out of
-  shield mode. Kill bonuses are left out of both sides, so the allowance is a lower bound and
-  errs towards leaving.
+- **SHIELD-6's amount** (`ShieldBudget`). The score share is ours over the pair's total, read over
+  the whole battle: ours = 60 for each round of the battle (a round's survival and last-survivor
+  bonuses) plus the bullet damage we have dealt so far, and the enemy's score is its bullet damage.
+  Our share stays at 85% or more exactly while the enemy's damage is at most
+  `allowed = 15/85 * (60 * rounds + our damage dealt)`; past it, shield mode is off for the rest of
+  the battle and the duel plays on. Shield mode is there to win the rounds, so the battle is read as
+  won and the budget asks what that can afford. A 35-round battle allows about 370 damage from its
+  first tick (35 * 60 * 15/85), DrussGT's own limit for its list of 357 robots; each point of
+  damage we deal adds 0.18. The allowance does not move with rounds won or lost: a lost round
+  already shows in the damage taken. The round count is the engine's `getNumRounds()`, carried in
+  `BattleFacts.rounds()` (0 when not known, such as a replayed transcript, and 35 is assumed). Damage
+  counts in or out of shield mode. Kill bonuses are left out of both sides, so the allowance is a
+  lower bound and errs towards leaving.
 - **The round's safety exits** leave shield mode for the rest of that round only, and the next
   round opens in it again: the enemy within 100 px (`close`), a collision (`rammed`), two enemy
   bullets that hit us with no predictor exact (`unpredicted`), three hits taken and more than we
