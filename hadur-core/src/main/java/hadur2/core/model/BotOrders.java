@@ -1,5 +1,10 @@
 package hadur2.core.model;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * What the robot should do this tick. A field left as {@code NaN} means "leave the
  * previous setting in place", as when an {@code AdvancedRobot} does not call the setter.
@@ -16,6 +21,10 @@ package hadur2.core.model;
  * <p>{@link #equals} compares fields with {@link Double#compare}, under which {@code NaN}
  * equals {@code NaN}, so "no order" matches "no order" when the replay checks that recorded
  * and replayed orders are identical (CORE-2).</p>
+ *
+ * <p>From A4 the orders also carry the messages to broadcast to teammates this tick
+ * ({@link #messages()}), each a byte array in the core's link format (LINK-1). Off a team
+ * there are none, and the adapter sends nothing.</p>
  */
 public final class BotOrders {
     private final double bodyTurn;
@@ -24,6 +33,7 @@ public final class BotOrders {
     private final double gunTurn;
     private final double radarTurn;
     private final double firePower;
+    private final List<byte[]> messages;
 
     /**
      * Orders as the adapter applies them; {@code NaN} leaves a setting as it was.
@@ -36,6 +46,25 @@ public final class BotOrders {
      * @param firePower the bullet power to fire, or 0 to hold fire
      */
     public BotOrders(double bodyTurn, double ahead, double maxVelocity, double gunTurn, double radarTurn, double firePower) {
+        this(bodyTurn, ahead, maxVelocity, gunTurn, radarTurn, firePower, List.of());
+    }
+
+    /**
+     * Orders with messages to broadcast (A4).
+     *
+     * @param bodyTurn radians to turn the body, clockwise positive
+     * @param ahead pixels to drive, negative for backwards
+     * @param maxVelocity the speed limit, pixels per tick
+     * @param gunTurn radians to turn the gun, clockwise positive
+     * @param radarTurn radians to turn the radar, clockwise positive
+     * @param firePower the bullet power to fire, or 0 to hold fire
+     * @param messages the messages to broadcast, in order; each copied
+     */
+    public BotOrders(double bodyTurn, double ahead, double maxVelocity, double gunTurn, double radarTurn,
+                     double firePower, List<byte[]> messages) {
+        List<byte[]> copy = new ArrayList<>(messages.size());
+        for (byte[] m : messages) copy.add(m.clone());
+        this.messages = Collections.unmodifiableList(copy);
         this.bodyTurn = bodyTurn;
         this.ahead = ahead;
         this.maxVelocity = maxVelocity;
@@ -76,6 +105,18 @@ public final class BotOrders {
         return firePower;
     }
 
+    /** The messages to broadcast this tick, in order (A4); empty off a team. Copies. */
+    public List<byte[]> messages() {
+        List<byte[]> copy = new ArrayList<>(messages.size());
+        for (byte[] m : messages) copy.add(m.clone());
+        return copy;
+    }
+
+    /** These orders with the drive replaced: the gun, radar, fire and messages kept (WEAVE-2). */
+    public BotOrders withDrive(double bodyTurn, double ahead, double maxVelocity) {
+        return new BotOrders(bodyTurn, ahead, maxVelocity, gunTurn, radarTurn, firePower, messages);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -86,17 +127,27 @@ public final class BotOrders {
             && Double.compare(maxVelocity, that.maxVelocity) == 0
             && Double.compare(gunTurn, that.gunTurn) == 0
             && Double.compare(radarTurn, that.radarTurn) == 0
-            && Double.compare(firePower, that.firePower) == 0;
+            && Double.compare(firePower, that.firePower) == 0
+            && sameMessages(messages, that.messages);
+    }
+
+    private static boolean sameMessages(List<byte[]> a, List<byte[]> b) {
+        if (a.size() != b.size()) return false;
+        for (int i = 0; i < a.size(); i++) if (!Arrays.equals(a.get(i), b.get(i))) return false;
+        return true;
     }
 
     @Override
     public int hashCode() {
-        return java.util.Objects.hash(bodyTurn, ahead, maxVelocity, gunTurn, radarTurn, firePower);
+        int h = java.util.Objects.hash(bodyTurn, ahead, maxVelocity, gunTurn, radarTurn, firePower);
+        for (byte[] m : messages) h = 31 * h + Arrays.hashCode(m);
+        return h;
     }
 
     @Override
     public String toString() {
-        return "BotOrders[bodyTurn=" + bodyTurn + ", ahead=" + ahead + ", maxVelocity=" + maxVelocity + ", gunTurn=" + gunTurn + ", radarTurn=" + radarTurn + ", firePower=" + firePower + "]";
+        return "BotOrders[bodyTurn=" + bodyTurn + ", ahead=" + ahead + ", maxVelocity=" + maxVelocity + ", gunTurn=" + gunTurn + ", radarTurn=" + radarTurn + ", firePower=" + firePower
+            + (messages.isEmpty() ? "" : ", messages=" + messages.size()) + "]";
     }
 
     /** Orders that change nothing and hold fire: every setting {@code NaN}, power 0. */
@@ -118,6 +169,7 @@ public final class BotOrders {
         private double gunTurn = Double.NaN;
         private double radarTurn = Double.NaN;
         private double firePower;
+        private final List<byte[]> messages = new ArrayList<>();
 
         /** Radians, positive is clockwise. */
         public Builder turnRight(double radians) {
@@ -158,9 +210,15 @@ public final class BotOrders {
             return this;
         }
 
+        /** A message to broadcast to teammates this tick, after any already added (A4). */
+        public Builder send(byte[] message) {
+            messages.add(message.clone());
+            return this;
+        }
+
         /** The orders collected so far. */
         public BotOrders build() {
-            return new BotOrders(bodyTurn, ahead, maxVelocity, gunTurn, radarTurn, firePower);
+            return new BotOrders(bodyTurn, ahead, maxVelocity, gunTurn, radarTurn, firePower, messages);
         }
     }
 }

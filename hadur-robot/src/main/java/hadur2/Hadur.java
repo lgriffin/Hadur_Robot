@@ -9,8 +9,10 @@ import hadur2.core.model.BotOrders;
 import hadur2.core.port.ProfileStore;
 import hadur2.core.role.RoleId;
 import java.awt.Color;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
@@ -23,6 +25,11 @@ import robocode.*;
  *
  * <p>The core is static so what it learns survives from round to round, as Robocode
  * creates a new robot instance each round.</p>
+ *
+ * <p>From A4 the adapter is a {@code TeamRobot}, so one class plays all three ladders and
+ * one memory serves them: it passes the roster into the battle's facts, hands teammates'
+ * messages to the core and broadcasts the core's. Off a team {@code getTeammates()} is null,
+ * no message arrives and none is sent, so it behaves as the {@code AdvancedRobot} it was.</p>
  *
  * <p>One turn, as the engine runs it:</p>
  * <ol>
@@ -47,7 +54,7 @@ import robocode.*;
  * CORE-2's ban on them covers {@code hadur2.core} only, and here they are the point: a
  * static survives the new robot instance Robocode creates each round.</p>
  */
-public class Hadur extends AdvancedRobot {
+public class Hadur extends TeamRobot {
 
     /** The brain for the whole battle; built on the first round's {@code run()}. */
     private static HadurCore core;
@@ -97,10 +104,9 @@ public class Hadur extends AdvancedRobot {
             warmUp(getBattleFieldWidth(), getBattleFieldHeight(), getOthers());
             // First round of the battle. The telemetry lambdas go through the static
             // console rather than capturing this round's `out`.
-            // ROLE-1: the battle's facts before the first tick fix its charter. An
-            // AdvancedRobot cannot ask for teammates, so the roster is empty until A4.
-            core = new HadurCore(BattleFacts.solo(getBattleFieldWidth(), getBattleFieldHeight(),
-                getOthers()), line -> console.println(line), profileStore());
+            // ROLE-1: the battle's facts before the first tick fix its charter. As a
+            // TeamRobot (A4) Hadur can ask for its teammates; off a team there are none.
+            core = new HadurCore(facts(), line -> console.println(line), profileStore());
             // File I/O and class loading now, not in the first scan's turn.
             core.prepareMemory();
             guard = new Guard(core::tick, core::recover, line -> console.println(line));
@@ -199,6 +205,18 @@ public class Hadur extends AdvancedRobot {
     // The robot itself does nothing in them.
 
     /**
+     * The engine's facts before the first tick (ROLE-1): the field, the others, the roster
+     * ({@code getTeammates()} is null off a team), our name, our starting energy, which says
+     * whether we lead, and the sentry border.
+     */
+    private BattleFacts facts() {
+        String[] teammates = getTeammates();
+        return new BattleFacts(getBattleFieldWidth(), getBattleFieldHeight(), getOthers(),
+            teammates == null ? List.of() : Arrays.asList(teammates), getName(), getEnergy(),
+            getNumSentries() > 0 ? getSentryBorderSize() : 0);
+    }
+
+    /**
      * Called once per battle, after the core is built.
      *
      * @param width the battlefield's width in px
@@ -251,6 +269,14 @@ public class Hadur extends AdvancedRobot {
         if (!Double.isNaN(o.gunTurn())) setTurnGunRightRadians(o.gunTurn());
         if (!Double.isNaN(o.radarTurn())) setTurnRadarRightRadians(o.radarTurn());
         if (o.firePower() > 0) setFire(o.firePower());
+        // A4: the tick's reports to teammates; the engine delivers them on the next tick.
+        for (byte[] message : o.messages()) {
+            try {
+                broadcastMessage(message);
+            } catch (IOException | RuntimeException e) {
+                if (console != null) console.println("LINK," + getRoundNum() + "," + getTime() + ",send-failed," + e);
+            }
+        }
     }
 
     // Events arrive during execute(), in the engine's priority order, and are handed to
@@ -290,7 +316,18 @@ public class Hadur extends AdvancedRobot {
     public void onBulletHitBullet(BulletHitBulletEvent e) {
         Bullet hit = e.getHitBullet();
         pending.add(new BotEvent.BulletHitBullet(e.getBullet().getPower(), hit.getX(), hit.getY(),
-            hit.getPower(), e.getBullet().getHeadingRadians()));
+            hit.getPower(), e.getBullet().getHeadingRadians(), hit.getName()));
+    }
+
+    /**
+     * A teammate's message (A4). Hadur's reports are byte arrays; anything else is passed on
+     * as no bytes, which the core's link codec refuses and counts (LINK-2).
+     */
+    @Override
+    public void onMessageReceived(MessageEvent e) {
+        Object message = e.getMessage();
+        pending.add(new BotEvent.Message(e.getSender(),
+            message instanceof byte[] ? (byte[]) message : new byte[0]));
     }
 
     /** One of our bullets reached a wall. */

@@ -48,7 +48,7 @@ EARS requirements from the Hadur 2 technical direction. This file is the source 
 | MGUN-3 | State | While in melee, the gun shall choose bullet power by distance, own energy and target energy per the energy table, and shall not fire while its own energy is below 1.0. | M4 |
 | MGUN-4 | State | While in melee, the core shall emit a targeting wave at every opponent on every gun-heat cycle. | M4 |
 | MGUN-5 | Ubiquitous | The melee strategy's posture shall not lower the gun's bullet power or hold its fire. | M6 |
-| MMEM-1 | Event | When a round of a melee battle ends, the store shall persist each opponent's melee profile block alongside its 1v1 profile. | M5 |
+| MMEM-1 | Event | When a round of a Melee-charter battle ends, the store shall persist each opponent's melee profile block alongside its 1v1 profile. | M5 |
 | MMEM-2 | Event | When the number of opponents alive falls to one, the core shall hand the survivor's profile and the waves in flight to the duel subsystems. | M5 |
 | REL-1 | Ubiquitous | The robot jar shall contain only class files that a Java 11 runtime can load, so that every RoboRumble client can run it. | S2 |
 | SHIELD-1 | State | While at least 4 of our last 20 resolved duel bullets, and at least a quarter of them, were destroyed by enemy bullets, the core shall treat the enemy as a bullet shielder for the rest of the battle. | S2 |
@@ -622,7 +622,7 @@ Every requirement group belongs to one owner, the same owner as the code it gove
 
 | Owner | Packages | Requirement groups |
 |---|---|---|
-| Kernel | `model`, `physics`, `knn`, `ledger`, `memory`, `port`, `world` (from A3) | CORE, WAVE, MEM, PHYS, WORLD, LINK, SHELF |
+| Kernel | `model`, `physics`, `knn`, `ledger`, `memory`, `port`, `world` (from A3), `link` (from A4) | CORE, WAVE, MEM, PHYS, WORLD, LINK, SHELF |
 | Duel strand | `gun`, `move`, `adapt`, `policy`, `shield`, `duel` (from A2) | ADAPT, GUN, DIST, POW, MOVE, END, DIAL, RADAR, SHIELD, TIME, RAM, MIR |
 | Melee strand | `melee` | MELEE, MRADAR, MMOVE, MGUN, MSENSE, MMEM |
 | Team strand | `team`, from the Team plan | none yet |
@@ -666,6 +666,41 @@ Every requirement group belongs to one owner, the same owner as the code it gove
 | STRAND-3 | Ubiquitous | Each owner's sources shall be pinned by hash. | A0 |
 | STRAND-4 | Ubiquitous | A recorded duel battle and a recorded melee battle shall each replay to identical orders, telemetry and store files. | A0 |
 | STRAND-5 | Ubiquitous | A recorded team battle shall replay to identical orders and telemetry for each recorded member. | A5 |
+
+### A4 notes
+
+- **The ports.** `BotEvent.Message` carries a teammate's bytes and its sender; the
+  bullet-meets-bullet event names the other bullet's owner; `BotOrders.messages` carries
+  the tick's reports to broadcast, and `BotOrders.withDrive` replaces a drive and keeps
+  the gun, radar, fire and messages, which is how `SentryFence` now builds its orders
+  (WEAVE-2, whose property now covers the messages). `BattleFacts` gains our name, our
+  starting energy (`leads()`: only a team's leader starts with 200) and the sentry border.
+  The replay codec appends a `G` event, the owner on `X` and the messages on `O`, each
+  only when present, so every older transcript reads and writes back the same.
+- **LINK-1, LINK-2** are the kernel's new `link` package: a `Report` (own state, fresh
+  sightings, the round's deaths, the bullets fired) and `LinkCodec`, big-endian with a
+  version byte and a CRC-32. A message that fails the checksum, carries another version,
+  is cut short or runs long is refused whole; the conductor counts it and writes a
+  `LINK,round,tick,rejected,sender,reason` record. A good report is kept per teammate
+  for A5 to merge. No role is offered a message.
+- **SHELF-1, SHELF-3** are the conductor's `Archive` and the port's `GatedProfileStore`.
+  Each file belongs to one shelf by name (`.hp` and the battle clock to the Duel, `.hm`
+  to Melee, `.ht` to Team, anything else to the conductor), and a battle writes or
+  deletes only its own charter's shelf and the conductor's files. The melee seam asks
+  the Archive before it saves, so a team battle never tries to write `.hm`; a delete a
+  library makes on its own, such as the 1v1 library's clean-up in a melee, is refused
+  quietly and counted in a `MEM,…,gated,n` record at the battle's end. Every shelf
+  may still be read in any charter.
+- **SHELF-4**: the `.hm` blocks were already capped at 16 KB (MMEM-1's `CAP`); the `.ht`
+  shelf comes with the Team plan.
+- **The adapter is a `TeamRobot`.** It passes the roster from `getTeammates()` (null off
+  a team), hands teammates' byte-array messages to the core (anything else arrives as no
+  bytes and is refused) and broadcasts the core's. A team battle is now a Team charter:
+  until the Team strand exists it builds Melee and Duel, reads every shelf and writes
+  none but the health record, and a teammate still reads as an opponent until A5.
+- **MMEM-1** reads "a Melee-charter battle".
+- **The gate.** All eleven fixtures replay to identical orders, telemetry and store files,
+  none re-recorded.
 
 ### A3 notes
 

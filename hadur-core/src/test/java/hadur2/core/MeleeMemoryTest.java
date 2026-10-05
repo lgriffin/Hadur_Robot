@@ -123,6 +123,7 @@ class MeleeMemoryTest {
 
     @Test
     @Tag("MMEM-1")
+    @Tag("SHELF-4")
     @DisplayName("all blocks stay under 16 KB: the least recently fought go first, 1v1 data never")
     void capEvictsOldestBlocks() {
         MemoryProfileStore store = new MemoryProfileStore(200_000);

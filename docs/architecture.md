@@ -64,7 +64,7 @@ graph LR
 | Module | Holds | Built for |
 |---|---|---|
 | `hadur-core` | the brain, as plain Java: every package listed below | Java 11 |
-| `hadur-robot` | the adapter `hadur2.Hadur`, `hadur2.FileProfileStore`, and `hadur2.HadurRecorder` (the robot plus a transcript of its inputs and orders, for replay fixtures) | Java 11 |
+| `hadur-robot` | the adapter `hadur2.Hadur` (a `TeamRobot` from A4, so one class plays all three ladders), `hadur2.FileProfileStore`, and `hadur2.HadurRecorder` (the robot plus a transcript of its inputs and orders, for replay fixtures) | Java 11 |
 | `hadur-bench` | headless battles in the real engine, the report, wave fidelity against the engine's truth | Java 17 |
 
 `hadur-robot` shades the core into two jars. `hadur2.Hadur_3.0.jar` is the competition
@@ -108,7 +108,7 @@ data directory through `RobocodeFileOutputStream`.
 
 | Package | Holds |
 |---|---|
-| `hadur2.core` | `HadurCore` (the conductor), `Guard` (RES-1), the seams `DuelSeam` and `MeleeSeam` (A2), `MeleeMemory` (the melee blocks in the profile store, MMEM-1) |
+| `hadur2.core` | `HadurCore` (the conductor), `Guard` (RES-1), the seams `DuelSeam` and `MeleeSeam` (A2), `MeleeMemory` (the melee blocks in the profile store, MMEM-1), `Archive` (A4: each brain's shelf by charter, behind the store's gate, SHELF-1, SHELF-3) |
 | `duel` | the Duel's brain (A2): `DuelController`, everything the duel does against one opponent, lifted out of `HadurCore`, and `Duress` (RES-9) |
 | `model` | the port values, robot states and their logs, waves and the wave manager, the battle's facts, the round's counters (`RoundStats`, RES-5) and the baton one role hands the next |
 | `ledger` | `EnergyLedger`: explains the enemy's energy changes between scans so only bullet spending becomes a wave (WAVE-1, WAVE-2) |
@@ -124,7 +124,8 @@ data directory through `RobocodeFileOutputStream`.
 | `policy` | aggressive (DIST-1, POW-1, POW-2, END-1, END-2): rolling hit-rate windows, the distance controller, the power policy, the endgame states and the enemy gun-heat estimate; unhittable (MOVE-2, TIME-1, TIME-2): the movement flavour and the tick budget; recognising a rammer (`RammerPolicy`, RAM-1, RAM-2) and a mirror mover (`MirrorDetector`, MIR-1) |
 | `shield` | the bullet-shielding counter (SHIELD-1, SHIELD-2): the shield detector and the anti-shield aim jitter |
 | `replay` | the line codec and replay driver for recorded battles (CORE-2) |
-| `port` | outbound interfaces |
+| `link` | teammates' reports as bytes (A4, LINK-1, LINK-2): `Report` and `LinkCodec`, versioned and checksummed |
+| `port` | outbound interfaces, and `GatedProfileStore` (A4), a store with a gate on writes and deletes |
 
 ArchUnit enforces the boundary on every build: no `robocode.*` in the core, only JDK
 `java.lang`, `java.util` and `java.awt.geom`; no randomness, threads, reflection, I/O or
@@ -150,7 +151,7 @@ in each kind of battle. From A0 every package has exactly one owner, written in
 
 | Owner | Packages | Rule |
 |---|---|---|
-| Kernel | `model`, `physics`, `knn`, `ledger`, `memory`, `port`, `world` (A3) | depends on no strand and not on the conductor (STRAND-2) |
+| Kernel | `model`, `physics`, `knn`, `ledger`, `memory`, `port`, `world` (A3), `link` (A4) | depends on no strand and not on the conductor (STRAND-2) |
 | Duel strand | `gun`, `move`, `adapt`, `policy`, `shield`, `duel` (A2) | sees only the kernel and itself |
 | Melee strand | `melee` | sees only the kernel and itself |
 | Team strand | none yet | from the Team plan |
@@ -167,7 +168,7 @@ graph TB
         T[Team: later]
     end
     subgraph Kernel
-        K[model, physics, knn, ledger, memory, port, world]
+        K[model, physics, knn, ledger, memory, port, world, link]
     end
     HC --> D
     HC --> M
