@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import hadur2.core.melee.EnemyShot;
+import hadur2.core.world.EnemyShot;
 import hadur2.core.melee.MeleeProfile;
 import hadur2.core.melee.MeleeProfileCodec;
 import hadur2.core.memory.ProfileLibrary;

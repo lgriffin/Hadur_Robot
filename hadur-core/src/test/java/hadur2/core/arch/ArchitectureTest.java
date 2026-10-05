@@ -185,15 +185,26 @@ public class ArchitectureTest {
     }
 
     @Test
+    @Tag("WORLD-1")
+    @DisplayName("WORLD-1: the World is kernel, a picture of the field that reads no strand")
+    void worldReadsNoStrand() {
+        noClasses().that().resideInAPackage("hadur2.core.world..")
+            .should().dependOnClassesThat().resideOutsideOfPackages("hadur2.core.world..",
+                "hadur2.core.physics..", "hadur2.core.model..", "java..")
+            .check(core);
+    }
+
+    @Test
     @Tag("STRAND-2")
     @DisplayName("STRAND-2: melee is a separate brain beside the duel's gun and movement")
     void meleeIsSeparateFromDuel() {
         // The melee brain runs instead of the duel subsystems, so it needs only the model, the
-        // engine's physics and the generic kd-tree (its own instances: melee data never
-        // reaches a duel tree); and the duel code must not reach into it.
+        // engine's physics, the shared World (A3) and the generic kd-tree (its own instances:
+        // melee data never reaches a duel tree); and the duel code must not reach into it.
         noClasses().that().resideInAPackage("hadur2.core.melee..")
             .should().dependOnClassesThat().resideOutsideOfPackages("hadur2.core.melee..",
-                "hadur2.core.physics..", "hadur2.core.model..", "hadur2.core.knn..", "java..")
+                "hadur2.core.physics..", "hadur2.core.model..", "hadur2.core.knn..",
+                "hadur2.core.world..", "java..")
             .check(core);
         noClasses().that().resideInAPackage("hadur2.core.melee..")
             .should().dependOnClassesThat(JavaClass.Predicates.resideInAPackage("hadur2.core.knn..")

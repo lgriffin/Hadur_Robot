@@ -1,7 +1,5 @@
 package hadur2.core;
 
-import hadur2.core.melee.EnemyInfo;
-import hadur2.core.melee.EnemyShot;
 import hadur2.core.melee.MeleeController;
 import hadur2.core.melee.MeleeRadar;
 import hadur2.core.model.Baton;
@@ -17,6 +15,8 @@ import hadur2.core.role.RoleId;
 import hadur2.core.role.RoundFacts;
 import hadur2.core.role.RoundResult;
 import hadur2.core.role.Tick;
+import hadur2.core.world.EnemyInfo;
+import hadur2.core.world.EnemyShot;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
@@ -137,41 +137,56 @@ final class MeleeSeam implements Role {
     /**
      * ROLE-5: the melee brain is fed whichever role drives: scans, deaths, the bullets that
      * hit Hadur, and Hadur's own hits except on a robot the Duel is ignoring. The conductor
-     * offers no sentry's scan or bullet.
+     * offers no sentry's scan or bullet. The World takes the event first (WORLD-1); the
+     * conductor's {@link #observe(BotEvent, Tick, boolean)} says whether it held. A scan is
+     * booked only against the World's view of that same robot, so a caller that skips the
+     * conductor's feed books nothing rather than a stale robot's scan.
      */
     @Override
     public void observe(BotEvent event, Tick tick) {
+        observe(event, tick, true);
+    }
+
+    /**
+     * As {@link #observe(BotEvent, Tick)}, after the World's feed; when the feed failed the
+     * melee's own books skip the event, as they did when the tracker threw inside them.
+     */
+    void observe(BotEvent event, Tick tick, boolean worldFed) {
         BotInput in = tick.in();
         if (event instanceof BotEvent.Scan) {
             BotEvent.Scan e = (BotEvent.Scan) event;
             long time = in.time();
-            double absBearing = Angles.normalAbsoluteAngle(in.heading() + e.bearing());
-            Point2D.Double enemyPos = DiaUtils.project(in.location(), absBearing, e.distance());
-            guard(() -> melee.onScan(e.name(), enemyPos, e.distance(), e.energy(), e.heading(),
-                e.velocity(), time));
-            // MMEM-1: after the tracker has the scan and before the Duel sees it.
+            EnemyInfo info = core.scanInfo();
+            if (worldFed && info != null && info.name.equals(e.name())) {
+                guard(() -> melee.scanned(info, core.scanShot(), e.distance(), e.velocity(), time));
+            }
+            // MMEM-1: after the World has the scan and before the Duel sees it.
             loadBlock(time, e.name());
+        } else if (!worldFed) {
+            return;
         } else if (event instanceof BotEvent.BulletHit) {
             BotEvent.BulletHit e = (BotEvent.BulletHit) event;
-            if (!tick.foreign(e.name())) guard(() -> melee.onBulletHit(e.name(), e.power()));
+            if (!tick.foreign(e.name())) guard(() -> melee.bulletHit(e.name(), e.power()));
         } else if (event instanceof BotEvent.HitByBullet) {
             BotEvent.HitByBullet e = (BotEvent.HitByBullet) event;
-            guard(() -> melee.onHitByBullet(e.name(), e.power(), e.heading(), in.location(), in.time()));
+            guard(() -> melee.hitByBullet(e.name(), e.power(), e.heading(), in.location(), in.time()));
         } else if (event instanceof BotEvent.RobotDeath) {
             String name = ((BotEvent.RobotDeath) event).name();
-            guard(() -> melee.onRobotDeath(name, tick.isSentry(name)));
+            guard(() -> melee.died(name, tick.isSentry(name)));
         }
     }
 
     /**
      * Runs a melee event handler, keeping the first exception for the tick to fail closed on
-     * (GATE-4) instead of letting it past the resolver.
+     * (GATE-4) instead of letting it past the resolver. Returns whether it ran clean.
      */
-    private void guard(Runnable handler) {
+    boolean guard(Runnable handler) {
         try {
             handler.run();
+            return true;
         } catch (RuntimeException ex) {
             if (eventFault == null) eventFault = ex;
+            return false;
         }
     }
 
@@ -226,7 +241,7 @@ final class MeleeSeam implements Role {
      * opponent never scanned (last scan tick below 0) is skipped.
      */
     void measureScanGap(long now, int others) {
-        for (EnemyInfo e : melee.tracker.alive()) {
+        for (EnemyInfo e : core.world().alive()) {
             if (e.lastScanTime < 0) continue;
             int gap = (int) (now - e.lastScanTime);
             maxScanGap = Math.max(maxScanGap, gap);
@@ -318,7 +333,8 @@ final class MeleeSeam implements Role {
     public Baton give(Tick tick) {
         long now = tick.in().time();
         List<Baton.Shot> shots = new ArrayList<>();
-        for (EnemyShot s : melee.tracker.shots(now)) {
+        // A3: the shots are the World's, which the melee brain reads.
+        for (EnemyShot s : core.world().shots(now)) {
             shots.add(new Baton.Shot(s.shooter, s.source, s.fireTime, s.power, s.travelled(now)));
         }
         return new Baton(shots, melee.myPath());

@@ -1,5 +1,6 @@
 package hadur2.core.melee;
 
+import hadur2.core.world.EnemyInfo;
 import hadur2.core.knn.KdTree;
 import hadur2.core.physics.Angles;
 import hadur2.core.physics.BattleField;

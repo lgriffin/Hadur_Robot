@@ -64,7 +64,7 @@ EARS requirements from the Hadur 2 technical direction. This file is the source 
 | BENCH-3 | Ubiquitous | The bench shall report per opponent our hit rate, their hit rate, skipped turns, faults, round length and damage per round for both jars. | R0 |
 | TIME-3 | Event | When the engine skips a turn for the first time in a battle, the core shall learn the tick allowance from the tick that caused it and use that allowance, not the adapter's guess, for the rest of the battle. | R1 |
 | TIME-4 | Ubiquitous | The core shall cap the bytes written at a round's end and shall write seeds only at battle end or on every tenth surviving round. | R1 |
-| TIME-5 | Ubiquitous | The adapter shall run one warm-up tick through a discarded core before the first round, so that class loading and JIT warm-up do not cost the first real tick. | R1 |
+| TIME-5 | Ubiquitous | The adapter shall run one warm-up tick for each role of the charter through a discarded core before the first round, so that class loading and JIT warm-up do not cost the first real tick a role drives. | R1 |
 | MEM-6 | Ubiquitous | The store shall keep statistics loadable at quota by evicting seeds from every profile before any statistics are skipped. | R1 |
 | MEM-7 | Ubiquitous | The profile codec shall be able to write a profile in the format a previous release can read. | R1 |
 | DIAL-3 | Unwanted | If a margin used in a policy comparison is not a finite number, then the policy shall take its conservative branch rather than treat the comparison as settled. | R1 |
@@ -622,7 +622,7 @@ Every requirement group belongs to one owner, the same owner as the code it gove
 
 | Owner | Packages | Requirement groups |
 |---|---|---|
-| Kernel | `model`, `physics`, `knn`, `ledger`, `memory`, `port` (and `world` from A3) | CORE, WAVE, MEM, PHYS, WORLD, LINK, SHELF |
+| Kernel | `model`, `physics`, `knn`, `ledger`, `memory`, `port`, `world` (from A3) | CORE, WAVE, MEM, PHYS, WORLD, LINK, SHELF |
 | Duel strand | `gun`, `move`, `adapt`, `policy`, `shield`, `duel` (from A2) | ADAPT, GUN, DIST, POW, MOVE, END, DIAL, RADAR, SHIELD, TIME, RAM, MIR |
 | Melee strand | `melee` | MELEE, MRADAR, MMOVE, MGUN, MSENSE, MMEM |
 | Team strand | `team`, from the Team plan | none yet |
@@ -666,6 +666,30 @@ Every requirement group belongs to one owner, the same owner as the code it gove
 | STRAND-3 | Ubiquitous | Each owner's sources shall be pinned by hash. | A0 |
 | STRAND-4 | Ubiquitous | A recorded duel battle and a recorded melee battle shall each replay to identical orders, telemetry and store files. | A0 |
 | STRAND-5 | Ubiquitous | A recorded team battle shall replay to identical orders and telemetry for each recorded member. | A5 |
+
+### A3 notes
+
+- **The World.** `melee.EnemyTracker`, `EnemyInfo` and `EnemyShot` moved to the kernel's
+  `world` package, unchanged but for three members made public for the melee brain to read.
+  `ArchitectureTest.worldReadsNoStrand` keeps it to `physics` and `model`, and
+  `meleeIsSeparateFromDuel` now lets `melee` see `world`. The melee pin changed once, as the
+  donor (imports only, and the books-only handlers below); the nine pinned packages did not.
+- **WORLD-1** is the conductor's `feedWorld`: every scan, hit and death ROLE-5 offers Melee
+  goes to the World first, then the melee brain's own books take it through the new
+  books-only handlers (`scanned`, `bulletHit`, `hitByBullet`, `died`). A failure feeding the
+  World is the Melee role's, as it was inside the tracker (GATE-4). The `on*` handlers stay
+  for the melee's own tests and feed its tracker first, as before. The focus and the baton's
+  shots read the World.
+- **ROLE-6.** A Duel charter builds no `MeleeController`, no World and no melee seam; a melee
+  brain handed to a 1v1 core is dropped. The ROLE-5 scenario and tests that heard the melee
+  brain in a 1v1 now use a Melee charter with one opponent left, where the Duel drives.
+- **TIME-5** runs one warm-up tick per role of the charter: in a melee, the Melee with every
+  opponent alive, then the Duel with one left, the hand-off included. The warm-up passed a
+  gun cooling rate of 0, which the core refuses, so since R1 the warm-up tick has faulted
+  before reaching the guns; it now passes the engine's 0.1, and `HadurWarmUpTest` checks that
+  each role drives a tick, which a faulted tick never does.
+- **The gate.** All eleven fixtures replay to identical orders, telemetry and store files,
+  none re-recorded.
 
 ### A2 notes
 

@@ -38,13 +38,19 @@ Feature: One identity, three strands
       | melee-handoff         |
 
   @ROLE-5
-  Scenario: The melee brain hears a duel's scans, and a sentry is offered to no role
-    Given a core in a 1000 by 1000 battle against 1 opponent
+  Scenario: The World hears a duel's scans, and a sentry is offered to no role
+    Given a core in a 1000 by 1000 battle against 2 opponents
     And a border sentry guarding 100 px
     When it plays 10 ticks scanning every opponent and the sentry
     Then the duel drove every tick
-    And the melee brain tracks "opp1"
-    And the duel fights "opp1" and the melee brain never saw the sentry
+    And the World tracks "opp1"
+    And the World never saw the sentry
+
+  @ROLE-6 @WORLD-1
+  Scenario: A duel builds only the Duel's brain
+    Given a core in a 1000 by 1000 battle against 1 opponent
+    When it plays 10 ticks scanning every opponent
+    Then the battle built no melee brain and no World
 
   @WEAVE-3
   Scenario: The driving role shoots only with the conductor's permission

@@ -7,7 +7,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import hadur2.core.duel.DuelController;
-import hadur2.core.melee.EnemyInfo;
+import hadur2.core.world.EnemyInfo;
+import hadur2.core.world.EnemyShot;
 import hadur2.core.melee.MeleeController;
 import hadur2.core.memory.Estimate;
 import hadur2.core.model.BotEvent;
@@ -59,22 +60,21 @@ class StrandContractTest {
         }
 
         @Override
-        public EnemyInfo onScan(String name, Point2D.Double location, double distance, double energy,
-                                double heading, double velocity, long time) {
-            seen.add("scan:" + name);
-            return super.onScan(name, location, distance, energy, heading, velocity, time);
+        public void scanned(EnemyInfo info, EnemyShot shot, double distance, double velocity, long time) {
+            seen.add("scan:" + info.name);
+            super.scanned(info, shot, distance, velocity, time);
         }
 
         @Override
-        public void onBulletHit(String name, double power) {
+        public void bulletHit(String name, double power) {
             seen.add("hit:" + name);
-            super.onBulletHit(name, power);
+            super.bulletHit(name, power);
         }
 
         @Override
-        public void onHitByBullet(String name, double power, double heading, Point2D.Double me, long time) {
+        public void hitByBullet(String name, double power, double heading, Point2D.Double me, long time) {
             seen.add("hitBy:" + name);
-            super.onHitByBullet(name, power, heading, me, time);
+            super.hitByBullet(name, power, heading, me, time);
         }
     }
 
@@ -83,7 +83,7 @@ class StrandContractTest {
     @DisplayName("ROLE-5: a scan is offered to Melee before the Duel")
     void meleeBeforeDuel() {
         List<String> seen = new ArrayList<>();
-        HadurCore core = new HadurCore(1000, 1000, 1, seen::add, null, new RecordingMelee(seen));
+        HadurCore core = new HadurCore(1000, 1000, 2, seen::add, null, new RecordingMelee(seen));
         core.newRound(0);
         core.tick(input(1, 1, 0, List.of(scan("x", 1.0, 300, false))));
         int melee = seen.indexOf("scan:x");
@@ -97,7 +97,7 @@ class StrandContractTest {
     @DisplayName("ROLE-5: a sentry's scan and a sentry's bullet are offered to no role")
     void sentryOfferedToNoRole() {
         List<String> seen = new ArrayList<>();
-        HadurCore core = new HadurCore(1000, 1000, 1, seen::add, null, new RecordingMelee(seen));
+        HadurCore core = new HadurCore(1000, 1000, 2, seen::add, null, new RecordingMelee(seen));
         core.newRound(0);
         core.tick(input(1, 1, 1, List.of(scan("s", 0, 450, true), scan("x", 1.0, 300, false))));
         core.tick(input(2, 1, 1, List.of(new BotEvent.HitByBullet("s", 1.0, 500, 520, Math.PI))));
@@ -122,6 +122,78 @@ class StrandContractTest {
             new BotEvent.BulletHit("a", 1.0, 90))));
         assertFalse(seen.contains("hit:b"), seen.toString());
         assertTrue(seen.contains("hit:a"), seen.toString());
+    }
+
+    @Test
+    @Tag("WORLD-1")
+    @DisplayName("WORLD-1: a scan the World has not taken is booked against no robot")
+    void unfedScanBooksNoRobot() {
+        List<String> seen = new ArrayList<>();
+        RecordingMelee melee = new RecordingMelee(seen);
+        HadurCore core = new HadurCore(1000, 1000, 2, seen::add, null, melee);
+        core.newRound(0);
+        core.tick(input(1, 2, 0, List.of(scan("a", 1.0, 300, false))));
+        assertTrue(seen.contains("scan:a"), seen.toString());
+        seen.clear();
+        // Straight through the role contract, past the conductor's feed: the World's last
+        // scan is a's, so b's scan must not be booked as a's.
+        MeleeSeam seam = new MeleeSeam(core, melee, null, new hadur2.core.model.RoundStats());
+        Tick t = new Tick(input(2, 2, 0, List.of()), RoleId.MELEE, false, new DuelFocus(), n -> false, false);
+        seam.observe(scan("b", 2.0, 300, false), t);
+        assertFalse(seen.stream().anyMatch(s -> s.startsWith("scan:")), seen.toString());
+    }
+
+    @Test
+    @Tag("ROLE-6")
+    @DisplayName("ROLE-6: a duel holds no melee brain and no World; a melee holds both, one World")
+    void onlyTheCharterRolesAreBuilt() {
+        HadurCore duel = new HadurCore(1000, 1000, 1, Telemetry.NONE);
+        assertEquals(null, duel.melee());
+        assertEquals(null, duel.world());
+        // A melee brain handed to a duel is not held either.
+        HadurCore handed = new HadurCore(1000, 1000, 1, Telemetry.NONE, null, new RecordingMelee(new ArrayList<>()));
+        assertEquals(null, handed.melee());
+        HadurCore melee = new HadurCore(1000, 1000, 2, Telemetry.NONE);
+        assertTrue(melee.melee() != null && melee.world() != null);
+        assertSame(melee.world(), melee.melee().tracker, "one World, which the melee brain reads");
+    }
+
+    /** A melee brain that notes, at each event it is offered, whether the World already knew it. */
+    static final class WorldFirstMelee extends MeleeController {
+        final List<String> seen = new ArrayList<>();
+
+        WorldFirstMelee() {
+            super(new BattleField(1000, 1000));
+        }
+
+        @Override
+        public void scanned(EnemyInfo info, EnemyShot shot, double distance, double velocity, long time) {
+            seen.add("scan:" + info.name + "@" + tracker.get(info.name).lastScanTime);
+            super.scanned(info, shot, distance, velocity, time);
+        }
+
+        @Override
+        public void died(String name, boolean sentry) {
+            seen.add("died:" + name + "@" + (tracker.get(name) != null));
+            super.died(name, sentry);
+        }
+    }
+
+    @Test
+    @Tag("WORLD-1")
+    @DisplayName("WORLD-1: the World takes each scan and death before any role is offered it")
+    void worldIsFedFirst() {
+        WorldFirstMelee melee = new WorldFirstMelee();
+        HadurCore core = new HadurCore(1000, 1000, 3, Telemetry.NONE, null, melee);
+        core.newRound(0);
+        core.tick(input(1, 3, 0, List.of(scan("a", 1.0, 200, false), scan("b", 2.0, 300, false),
+            scan("c", 3.0, 400, false))));
+        core.tick(input(2, 2, 0, List.of(new BotEvent.RobotDeath("c"))));
+        assertEquals(List.of("scan:a@1", "scan:b@1", "scan:c@1", "died:c@false"), melee.seen);
+        // The World is fed whichever role drives: the Duel drives with one left.
+        core.tick(input(3, 1, 0, List.of(new BotEvent.RobotDeath("b"), scan("a", 1.0, 200, false))));
+        assertEquals(3, core.world().get("a").lastScanTime);
+        assertEquals(null, core.world().get("b"), "b is dead in the World");
     }
 
     /** A melee brain that always wants to fire at power 1. */

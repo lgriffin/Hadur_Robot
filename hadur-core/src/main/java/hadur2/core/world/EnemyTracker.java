@@ -1,4 +1,4 @@
-package hadur2.core.melee;
+package hadur2.core.world;
 
 import hadur2.core.physics.BattleField;
 import java.awt.geom.Point2D;
@@ -33,7 +33,7 @@ public class EnemyTracker {
      * A surplus opponent not seen for two full sweeps (8 ticks each) may be a ghost. One
      * sweep is not enough: a robot moving with the sweep can go unseen for 10 to 24 ticks.
      */
-    static final long GHOST_AGE = 16;
+    public static final long GHOST_AGE = 16;
     /** The engine's radar range. */
     static final double RADAR_RANGE = 1200.0;
     /** How far Hadur and an opponent can move apart in a tick, both at full speed. */

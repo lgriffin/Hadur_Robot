@@ -9,7 +9,8 @@ import hadur2.core.model.BotInput;
 import hadur2.core.model.BotOrders;
 import hadur2.core.port.MemoryProfileStore;
 import hadur2.core.port.Telemetry;
-import hadur2.core.melee.EnemyInfo;
+import hadur2.core.world.EnemyInfo;
+import hadur2.core.world.EnemyShot;
 import hadur2.core.melee.MeleeController;
 import hadur2.core.physics.BattleField;
 import hadur2.core.role.Posture;
@@ -94,16 +95,15 @@ class PostureCoreTest {
     private static MeleeController throwing(String handler, long from) {
         return new MeleeController(new BattleField(1000, 1000)) {
             @Override
-            public EnemyInfo onScan(String name, Point2D.Double location, double distance,
-                                    double energy, double heading, double velocity, long time) {
+            public void scanned(EnemyInfo info, EnemyShot shot, double distance, double velocity, long time) {
                 if (handler.equals("scan") && time >= from) throw new IllegalStateException("scan");
-                return super.onScan(name, location, distance, energy, heading, velocity, time);
+                super.scanned(info, shot, distance, velocity, time);
             }
 
             @Override
-            public void onRobotDeath(String name, boolean sentry) {
+            public void died(String name, boolean sentry) {
                 if (handler.equals("death")) throw new IllegalStateException("death");
-                super.onRobotDeath(name, sentry);
+                super.died(name, sentry);
             }
         };
     }

@@ -7,10 +7,13 @@ import hadur2.core.model.BotEvent;
 import hadur2.core.model.BotInput;
 import hadur2.core.model.BotOrders;
 import hadur2.core.port.ProfileStore;
+import hadur2.core.role.RoleId;
 import java.awt.Color;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
+import java.util.Set;
 import robocode.*;
 
 /**
@@ -134,31 +137,48 @@ public class Hadur extends AdvancedRobot {
     }
 
     /**
-     * TIME-5: runs one tick through a throwaway core and guard before the real battle
-     * begins, so that class loading and JIT warm-up land here rather than on the round's
-     * first real tick. No store (nothing is read or written) and no telemetry from the
-     * throwaway core itself; the core, guard and result are all discarded, and nothing
-     * they do reaches the real core.
+     * TIME-5: runs one tick for each role of the charter through a throwaway core and guard
+     * before the real battle begins, so that class loading and JIT warm-up land here rather
+     * than on the first real tick a role drives. No store (nothing is read or written) and no
+     * telemetry from the throwaway core itself; the core, guard and result are all discarded,
+     * and nothing they do reaches the real core.
      *
-     * <p>The tick carries a synthetic scan, not just a bare one: a tick with no scan takes
+     * <p>Each tick carries a synthetic scan, not just a bare one: a tick with no scan takes
      * only the "enemy not seen yet" branch, which never reaches the aiming, movement and
      * memory-adjacent code the real first scan will actually run, so it would warm little
-     * of what needs it. A failure here is logged, not silent: it never stops the battle
-     * (a cold real tick still runs correctly), but it is worth knowing about.</p>
+     * of what needs it. In a melee the Melee drives the first tick with every opponent
+     * alive, and the Duel the second with one left, the hand-off included (A3). A failure
+     * here is logged, not silent: it never stops the battle (a cold real tick still runs
+     * correctly), but it is worth knowing about.</p>
+     *
+     * @return the roles that drove a warm-up tick
      */
-    static void warmUp(double width, double height, int others) {
+    static Set<RoleId> warmUp(double width, double height, int others) {
+        Set<RoleId> driven = EnumSet.noneOf(RoleId.class);
         try {
-            HadurCore warm = new HadurCore(width, height, others, line -> {}, null);
+            List<String> lines = new ArrayList<>();
+            HadurCore warm = new HadurCore(width, height, others, lines::add, null);
             warm.newRound(0);
             Guard warmGuard = new Guard(warm::tick, warm::recover, line -> {});
-            warmGuard.tick(new BotInput(0, 0, width / 2, height / 2, 0, 0, 100, 0, 0, 0, 0, 0, others,
-                List.of(new BotEvent.Scan("warmup.Enemy", 0, width / 4, 100, 0, 0))));
+            List<Integer> counts = new ArrayList<>();
+            if (warm.charter().has(RoleId.MELEE)) counts.add(others);
+            counts.add(1);
+            long time = 0;
+            for (int left : counts) {
+                // The engine's cooling rate: a rate of 0 is refused, and faults the tick.
+                warmGuard.tick(new BotInput(time++, 0, width / 2, height / 2, 0, 0, 100, 0, 0.1, 0, 0, 0, left,
+                    List.of(new BotEvent.Scan("warmup.Enemy", 0, width / 4, 100, 0, 0))));
+            }
+            for (String line : lines) {
+                if (line.startsWith("ROLE,")) driven.add(RoleId.valueOf(line.split(",")[3]));
+            }
             if (warmGuard.faultsThisRound() > 0 && console != null) {
                 console.println("WARM,0,0,fault," + warmGuard.faultsThisRound());
             }
         } catch (RuntimeException e) {
             if (console != null) console.println("WARM,0,0,exception," + e);
         }
+        return driven;
     }
 
     /**

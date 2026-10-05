@@ -1,4 +1,4 @@
-package hadur2.core.melee;
+package hadur2.core.world;
 
 import static hadur2.core.melee.Fixtures.*;
 import static org.junit.jupiter.api.Assertions.*;

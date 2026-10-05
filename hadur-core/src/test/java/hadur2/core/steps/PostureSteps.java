@@ -3,10 +3,11 @@ package hadur2.core.steps;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import hadur2.core.HadurCore;
-import hadur2.core.melee.EnemyInfo;
+import hadur2.core.world.EnemyInfo;
 import hadur2.core.melee.MeleeController;
 import hadur2.core.model.BotEvent;
 import hadur2.core.model.BotInput;
@@ -194,7 +195,7 @@ public class PostureSteps {
 
     @Then("the sentry is never tracked as an opponent")
     public void sentryNeverTracked() {
-        for (EnemyInfo e : core.melee().tracker.all()) {
+        for (EnemyInfo e : core.world().all()) {
             assertFalse(e.name.contains("BorderGuard"), "tracked " + e.name);
         }
         assertNotNull(core.duelFocus());
@@ -223,18 +224,24 @@ public class PostureSteps {
         assertTrue(orders.stream().anyMatch(o -> o.firePower() > 0), orders.toString());
     }
 
-    @Then("the melee brain tracks {string}")
-    public void meleeTracks(String name) {
-        assertTrue(core.melee().tracker.all().stream().anyMatch(e -> e.name.equals(name)),
-            core.melee().tracker.all().toString());
+    @Then("the World tracks {string}")
+    public void worldTracks(String name) {
+        assertTrue(core.world().all().stream().anyMatch(e -> e.name.equals(name)),
+            core.world().all().toString());
     }
 
-    @Then("the duel fights {string} and the melee brain never saw the sentry")
-    public void duelFightsNotSentry(String name) {
-        assertEquals(name, core.duel().opponent());
-        for (EnemyInfo e : core.melee().tracker.all()) {
+    @Then("the World never saw the sentry")
+    public void worldNeverSawSentry() {
+        assertNotNull(core.duel().opponent());
+        for (EnemyInfo e : core.world().all()) {
             assertFalse(e.name.contains("BorderGuard"), "tracked " + e.name);
         }
+    }
+
+    @Then("the battle built no melee brain and no World")
+    public void noMeleeNoWorld() {
+        assertNull(core.melee());
+        assertNull(core.world());
     }
 
     @Then("the round's veto is {string}")
