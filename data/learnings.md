@@ -274,3 +274,10 @@ fix generalises past the benched bots when the behaviour it targets (charging, m
 **L-41 · open (5 and 3 battles).** Random gun (34.17%), all chaff (29.94%) and hold fire (24.55%) all score below the released build or the lead-aware rule; none is a fallback. Sampled aim added +0.74 ± 3.96 over lead-aware: not confirmed.
 
 **L-42 · decision (2026-10-05).** APS is the objective and a shield list is agreed (D5). Hadur 3.4 averaged 82.27% over the 357 pairings on DrussGT's shield list: +1.68 APS at 88%, +2.27 at 90%, +2.86 at 92%. The list is built from the bench, not DrussGT's names alone. Evidence: `docs/druss-route-plan.md`, `data/rumble/parsed/2026-10-05_drussgt-3.1.16_shield-targets_vs_hadur-3.4.tsv`. Owner: SHIELD. IDs L-39 to L-42 may be renumbered if PR #83 merges first.
+
+**L-43 · open (live, pass 99% complete).** 3.7 reads 85.67 ± 0.18 APS in the 1v1 (21st), 0.98
+below 3.5.1's partial 86.65 and 0.43 below the range the A-stage benches predicted, with every
+3.5.1 fixture replaying unchanged. Survival 94.36% → 93.06%. Melee is level (65.25 against
+65.31) and the first TeamRumble pass reads 39.43 (32nd of 46), above the bench's 28% forecast.
+Not yet attributed: the live slide seen on 3.1 or a cost below the benches' 0.5-point
+resolution. Evidence: `docs/bench/live-3.7.md`. Owner: ladder plan.
