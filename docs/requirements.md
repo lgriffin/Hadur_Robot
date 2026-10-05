@@ -609,6 +609,84 @@ tactics, not live-only stalls. See `docs/bench/r9-weak-leak.md`.
 - The round record gained `ramEscapeTicks` and `mirrorShots` (fields 35 and 36); fields are
   only ever appended.
 
+## The architecture evolution (A0–A5)
+
+The plan is [docs/architecture-evolution.md](architecture-evolution.md): one identity kernel
+and three strands (Duel, Melee, Team) behind one role contract. Its stages are compared with
+`hadur.arch.stage` in the root pom. Six new groups carry it: ROLE, WORLD, WEAVE, LINK, SHELF
+and STRAND. IDs keep their meaning; only the owner of each group is new.
+
+### Owners
+
+Every requirement group belongs to one owner, the same owner as the code it governs
+(`hadur-core/src/test/resources/ownership.txt` maps the packages).
+
+| Owner | Packages | Requirement groups |
+|---|---|---|
+| Kernel | `model`, `physics`, `knn`, `ledger`, `memory`, `port` (and `world` from A3) | CORE, WAVE, MEM, PHYS, WORLD, LINK, SHELF |
+| Duel strand | `gun`, `move`, `adapt`, `policy`, `shield` (and `duel` from A2) | ADAPT, GUN, DIST, POW, MOVE, END, DIAL, RADAR, SHIELD, TIME, RAM, MIR |
+| Melee strand | `melee` | MELEE, MRADAR, MMOVE, MGUN, MSENSE, MMEM |
+| Team strand | `team`, from the Team plan | none yet |
+| Conductor | the root package, `posture` (`role` from A1), `replay` | GATE, ROLE, WEAVE, RES, STRAND |
+| Bench and release | `hadur-bench`, the adapter | BENCH, REL |
+
+### Requirements
+
+| ID | Pattern | Requirement | Stage |
+|---|---|---|---|
+| ROLE-1 | Event | When a battle starts, the core shall fix the battle's charter from the battle facts before the first tick. | A1 |
+| ROLE-2 | Ubiquitous | The core shall choose each tick's role from the charter, the counts of enemies, teammates and sentries alive, the round's vetoes and the roles that have already driven this round, and from nothing else. | A1 |
+| ROLE-3 | State | While the Team role's own conditions do not hold, the Melee role is built and has not failed this round, two or more enemies are alive, no sentry robot is alive or has been scanned this round, and the Duel role has not driven this round, the core shall drive the robot with the Melee role. | A1 |
+| ROLE-4 | State | While a role has driven in the current round, the core shall not drive with a role above it in the order Team, Melee, Duel. | A1 |
+| ROLE-5 | State | While a tick is not in duress (RES-9), the core shall offer each of its events to the roles of the charter, Melee before Duel, in the engine's order, except that a sentry's scan and a sentry's bullet are offered to no role (GATE-5) and Hadur's hit on a robot the Duel is ignoring is not offered to the Melee role. | A2 |
+| ROLE-6 | Ubiquitous | The core shall hold no role outside its charter. | A3 |
+| WORLD-1 | State | While a tick is not in duress (RES-9), the core shall feed one model of the field with every scan, hit and death that ROLE-5 offers the Melee role, before any role is offered it. | A3 |
+| WORLD-2 | Ubiquitous | The core shall report to a role, as its count of others, the engine's count off a team and the count of enemies alive that WORLD-8 defines on a team. | A5 |
+| WORLD-3 | Unwanted | If a teammate has sent no report for a set number of ticks while the engine's count of others has fallen, then the core shall count it dead. | A5 |
+| WORLD-4 | Event | When teammates' reports arrive, the core shall merge each report once, in the order of their stated ticks, and keep the newer of two sightings of a robot. | A5 |
+| WORLD-5 | Event | When a role hands over with bullets of its own still in flight, the core shall keep the first bullet outcomes that follow, one for each of those bullets, out of the next role's gun evidence. | A2 |
+| WORLD-6 | Event | When one of our bullets ends on a teammate or on a teammate's bullet, the core shall report it to the role that fired it as a bullet that missed. | A5 |
+| WORLD-7 | Ubiquitous | The core shall offer an event that names a teammate to the World alone. | A5 |
+| WORLD-8 | State | While in a team battle, the core shall take as its count of enemies alive the smaller of the engine's count of others less the teammates heard from on that tick, and the enemies at the start less the distinct enemies known dead that round. | A5 |
+| WEAVE-1 | Ubiquitous | Only the driving role shall originate a tick's body, gun, radar and fire orders, apart from the full-speed order the conductor gives at a change of role. | A2 |
+| WEAVE-2 | Ubiquitous | A fence shall only replace a drive; it shall never touch the gun, the radar, the fire order or the messages. | A2 |
+| WEAVE-3 | Ubiquitous | The driving role shall order a shot only on a tick for which the conductor has given the fire permission. | A2 |
+| WEAVE-4 | State | While a living teammate's last known position is no older than the WORLD-3 window and lies in the fire lane, the conductor shall withhold the fire permission. | A5 |
+| WEAVE-5 | State | While in a team battle, the Guard's safe orders shall hold fire. | A5 |
+| WEAVE-6 | Unwanted | If the driving role orders a shot on a tick without the fire permission, then the core shall treat it as that role's fault. | A2 |
+| LINK-1 | Ubiquitous | Team messages shall be byte arrays in a versioned, checksummed format that the core encodes and decodes. | A4 |
+| LINK-2 | Unwanted | If a message fails its checksum or carries an unknown version, then the core shall ignore it and count it. | A4 |
+| LINK-3 | Unwanted | If no teammate's report has arrived, then the core shall still resolve its role from the engine's facts alone. | A5 |
+| LINK-4 | State | While it has a living teammate, the core shall broadcast its own state, its fresh sightings, the deaths it knows of this round and its bullet events with the orders of every tick it completes. | A5 |
+| SHELF-1 | Ubiquitous | A shelf shall be written only on behalf of its own strand's role. | A4 |
+| SHELF-2 | State | While in a team battle, a member that is not the team's leader shall neither write to nor delete from the store. | A5 |
+| SHELF-3 | Ubiquitous | The `.hp` shelf shall be written only in a Duel-charter battle, the `.hm` shelf only in a Melee-charter battle and the `.ht` shelf only in a Team-charter battle. | A4 |
+| SHELF-4 | Ubiquitous | The `.hm` and `.ht` shelves shall each stay within a fixed byte budget. | A4 |
+| STRAND-1 | Ubiquitous | Every package of the core shall have exactly one owner: the kernel, one strand, or the conductor. | A0 |
+| STRAND-2 | Ubiquitous | No strand's package shall depend on another strand's or on the conductor's, and no kernel package on a strand's or the conductor's. | A0 |
+| STRAND-3 | Ubiquitous | Each owner's sources shall be pinned by hash. | A0 |
+| STRAND-4 | Ubiquitous | A recorded duel battle and a recorded melee battle shall each replay to identical orders, telemetry and store files. | A0 |
+| STRAND-5 | Ubiquitous | A recorded team battle shall replay to identical orders and telemetry for each recorded member. | A5 |
+
+### A0 notes
+
+- **STRAND-1 and STRAND-2** are `hadur2.core.arch.StrandOwnershipTest`, reading
+  `ownership.txt`. A package with no owner, or an owner the map does not know, fails the
+  build. The layers are checked on the compiled classes with ArchUnit.
+- **STRAND-3** pins each owner's sources in `src/test/resources/pins/<owner>.sha256`. A
+  stage re-pins only the owners it names (`-Dhadur.pin=duel,conductor`), and its pull request
+  says which. `DuelIdentityTest` still pins the nine packages the evolution may not edit.
+- **STRAND-4** is `ReplayTest`, driven by the test-side `FixtureReplay`. The recorder now
+  logs the store the battle started on, the adapter's round-end, checkpoint, battle-end and
+  health-record calls, and the files the battle left. The replay makes those calls with its
+  own guard and compares orders with the live robot's, telemetry with the snapshot under
+  `replay/telemetry/`, and the store with the live robot's files. A0 recorded five fixtures
+  on 3.5.1 beside the six S1 duels: `melee-samples`, `melee-sentry`, `melee-handoff` (on a
+  store holding Shadow's 1v1 profile), `warm-abc.Shadow_3.83c` (the second of two warm
+  battles) and `duress-sample.Walls` (a duel at a 0.15 ms CPU constant, with rounds in
+  RES-9's duress). From A1 to A4 no fixture is re-recorded; where a requirement's wording
+  and a fixture disagree, the fixture wins and the difference is raised as its own change.
+
 ## Retired requirements
 
 A retired requirement keeps its ID; no new requirement reuses it.

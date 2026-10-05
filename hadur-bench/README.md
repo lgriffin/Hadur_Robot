@@ -26,6 +26,8 @@ mvn exec:java -Dexec.args="--mode cold --rounds 35 --seeds 5"
 | `--robot-classes DIR` | | jar a compiled class tree instead, e.g. an older Hadur |
 | `--robot NAME` | hadur2.Hadur 3.5.1 | the robot's name as Robocode lists it |
 | `--record DIR` | | capture replay fixtures instead (see below) |
+| `--fixture NAME` | | with `--record`, the fixture's file name instead of the opponent's (A0) |
+| `--keep-data true` | | with `--melee`, fight on the data directory as it is instead of wiping it before each battle (A0's hand-off fixture on a store) |
 | `--set FILE` | reference-set.txt | the opponent list, e.g. `roborumble-top10.txt` |
 | `--melee true` | | put Hadur and every opponent in the set in one battle, `--seeds` times, and report finishing places |
 | `--sentry-border N` | | with `--melee`, the set's `sentry` entries fight as Robocode sentries guarding a border N px deep |
@@ -183,3 +185,20 @@ Runs `hadur2.HadurRecorder` (the robot plus a transcript of every `BotInput` and
 per opponent. hadur-core's replay tests feed each transcript through a fresh core and
 require the same orders, bit for bit (CORE-2). Re-record whenever a change is meant to
 alter Hadur's behaviour; a replay that breaks without such a change is a regression.
+
+A0 of the architecture evolution (`docs/architecture-evolution.md`) records on the melee path
+too, and the recorder logs the store the battle started on, the adapter's memory calls and
+the files the battle left, so the replay compares telemetry and store files as well as
+orders (STRAND-4). The five fixtures A0 added were recorded on 3.5.1 like this (`W` a work
+directory, `R` the fixture directory):
+
+```sh
+mvn exec:java -Dexec.args="--record R --set melee-samples.txt --melee true --field 1000x1000 --rounds 3 --seeds 1 --fixture melee-samples"
+mvn exec:java -Dexec.args="--record R --set melee-sentry.txt --melee true --field 1000x1000 --rounds 3 --seeds 1 --sentry-border 100 --fixture melee-sentry"
+mvn exec:java -Dexec.args="--record R --mode warm --battles 2 --only Shadow --rounds 3 --fixture warm-abc.Shadow_3.83c --out W"   # keep the -2 transcript
+mvn exec:java -Dexec.args="--record R --set melee-handoff-fixture.txt --melee true --field 1000x1000 --rounds 3 --seeds 1 --keep-data true --fixture melee-handoff --out W"
+mvn exec:java -Dexec.args="--record R --only Walls --rounds 3 --seeds 1 --client duress.txt --fixture duress-sample.Walls"   # duress.txt: "duress | cpu=150000"
+```
+
+`arch-gates.txt` is the evolution's gate suite: the duel sets, the melee gates and the
+hand-off gates in one pass, run on 3.5.1 at A0 as the baseline and on the candidate at A2.
