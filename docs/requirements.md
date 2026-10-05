@@ -64,7 +64,7 @@ EARS requirements from the Hadur 2 technical direction. This file is the source 
 | BENCH-3 | Ubiquitous | The bench shall report per opponent our hit rate, their hit rate, skipped turns, faults, round length and damage per round for both jars. | R0 |
 | TIME-3 | Event | When the engine skips a turn for the first time in a battle, the core shall learn the tick allowance from the tick that caused it and use that allowance, not the adapter's guess, for the rest of the battle. | R1 |
 | TIME-4 | Ubiquitous | The core shall cap the bytes written at a round's end and shall write seeds only at battle end or on every tenth surviving round. | R1 |
-| TIME-5 | Ubiquitous | The adapter shall run one warm-up tick through a discarded core before the first round, so that class loading and JIT warm-up do not cost the first real tick. | R1 |
+| TIME-5 | Ubiquitous | The adapter shall run one warm-up tick for each role of the charter through a discarded core before the first round, so that class loading and JIT warm-up do not cost the first real tick a role drives. | R1 |
 | MEM-6 | Ubiquitous | The store shall keep statistics loadable at quota by evicting seeds from every profile before any statistics are skipped. | R1 |
 | MEM-7 | Ubiquitous | The profile codec shall be able to write a profile in the format a previous release can read. | R1 |
 | DIAL-3 | Unwanted | If a margin used in a policy comparison is not a finite number, then the policy shall take its conservative branch rather than treat the comparison as settled. | R1 |
