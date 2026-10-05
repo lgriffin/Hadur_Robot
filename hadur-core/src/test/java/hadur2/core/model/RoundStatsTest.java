@@ -12,8 +12,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-/** RES-5: every fault and degradation counter reaches the round record. */
+/** RES-5: every fault and degradation counter reaches the round record; POW-11: so do the hit counts by power class. */
 @Tag("RES-5")
+@Tag("POW-11")
 class RoundStatsTest {
 
     @Test
@@ -50,8 +51,33 @@ class RoundStatsTest {
         s.duressTicks = 20;
         s.ramEscapeTicks = 21;
         s.mirrorShots = 22;
+        // POW-11: shots then hits, for classes 0, 1 and 2, ours then theirs.
+        s.ourShotsByClass[0] = 30;
+        s.ourHitsByClass[0] = 3;
+        s.ourShotsByClass[1] = 4;
+        s.ourHitsByClass[1] = 1;
+        s.ourShotsByClass[2] = 5;
+        s.ourHitsByClass[2] = 2;
+        s.theirShotsByClass[0] = 40;
+        s.theirHitsByClass[0] = 4;
+        s.theirShotsByClass[1] = 6;
+        s.theirHitsByClass[1] = 0;
+        s.theirShotsByClass[2] = 7;
+        s.theirHitsByClass[2] = 1;
         String[] f = s.toRecord(2, 900, "win", 55.5, 0).split(",");
-        assertEquals(36, f.length);
+        assertEquals(48, f.length);
+        assertEquals("30", f[36], "our light bullets (POW-11)");
+        assertEquals("3", f[37], "our light hits");
+        assertEquals("4", f[38]);
+        assertEquals("1", f[39]);
+        assertEquals("5", f[40]);
+        assertEquals("2", f[41], "our heavy hits");
+        assertEquals("40", f[42], "their light bullets");
+        assertEquals("4", f[43]);
+        assertEquals("6", f[44]);
+        assertEquals("0", f[45]);
+        assertEquals("7", f[46]);
+        assertEquals("1", f[47], "their heavy hits");
         assertEquals("21", f[34], "ticks running from a rammer (RAM-2)");
         assertEquals("22", f[35], "shots at the mirror image (MIR-1)");
         assertEquals("17", f[28], "slow ticks (TIME-1)");
@@ -59,7 +85,7 @@ class RoundStatsTest {
         assertEquals("1", f[30], "flavour changes (MOVE-2)");
         assertEquals("2", f[31], "flavour step (MOVE-2)");
         assertEquals("19", f[32], "intercepts inside a shadow (MOVE-1)");
-        assertEquals("20", f[33], "ticks in duress (RES-9)");
+        assertEquals("20", f[33], "ticks in duress (RES-14)");
         assertEquals("300.0", f[23], "mean scan distance (S5)");
         assertEquals("425.0", f[24], "target distance at the round's end (DIST-1)");
         assertEquals("14", f[25], "finishing ticks (END-1)");

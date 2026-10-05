@@ -197,6 +197,17 @@ public final class ProfileFolder {
     }
 
     /**
+     * ADAPT-5: the lead-aware power rule's verdict as the round ends: whether POW-7's hit-rate
+     * condition stands. The core hands it over just before {@link #fold}; the profile keeps the
+     * latest one, so after a battle's last round it holds the battle's end.
+     *
+     * @param standing whether the condition stands
+     */
+    public void leadAware(boolean standing) {
+        profile.leadAware = standing;
+    }
+
+    /**
      * MEM-2: adds this round to the profile and starts the next one.
      *
      * <p>The core calls this once per round, at its end, after passing the battle totals

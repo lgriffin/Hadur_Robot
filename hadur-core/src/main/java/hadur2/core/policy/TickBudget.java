@@ -37,11 +37,22 @@ public final class TickBudget {
 
     /** RES-9: the skipped turns in one round after which the core runs the rest of it in duress. */
     public static final int DURESS_SKIPS = 3;
+    /**
+     * RES-14: the ticks without a skipped turn after which duress ends, counted from the last
+     * skipped turn (never from the round's clock, DIAL-2). A longer round no longer stays in
+     * duress for its remainder: its trigger was met in 1 of 350 baseline rounds and the robot
+     * lost 7 of the 11 such rounds it fought, one of them from 52 energy ahead.
+     */
+    public static final int DURESS_QUIET_TICKS = 300;
 
     /** Levels held for the rest of the round by skipped turns (TIME-2). */
     private int roundLevel;
     /** Turns the engine has skipped this round (RES-9). */
     private int skipsThisRound;
+    /** RES-14: the tick the core is on, as {@link #tickBegan} last told it. */
+    private long now;
+    /** RES-14: the tick the last skipped turn was reported on; meaningful once a turn has been skipped. */
+    private long lastSkip;
     /** Whether the last measured tick went over the threshold: one more level (TIME-1). */
     private boolean slow;
     private int maxLevel;
@@ -63,9 +74,22 @@ public final class TickBudget {
     public void newRound() {
         roundLevel = 0;
         skipsThisRound = 0;
+        now = 0;
+        lastSkip = 0;
         slow = false;
         maxLevel = 0;
         slowTicks = 0;
+    }
+
+    /**
+     * RES-14: a tick begins. The core tells the budget which tick it is before it asks whether
+     * the tick runs in duress, so the quiet stretch since the last skipped turn is measured in
+     * ticks the engine ran, skipped ones included.
+     *
+     * @param time the engine's tick, as the input carries it
+     */
+    public void tickBegan(long time) {
+        now = time;
     }
 
     /**
@@ -107,17 +131,21 @@ public final class TickBudget {
         }
         roundLevel = Math.min(MAX_LEVEL, roundLevel + 1);
         skipsThisRound++;
+        lastSkip = now;
         maxLevel = Math.max(maxLevel, level());
     }
 
     /**
-     * RES-9: whether the engine has skipped {@link #DURESS_SKIPS} turns this round, so the
-     * rest of it runs at the duress level, below {@link #MAX_LEVEL}: no samples, no tree.
+     * RES-9, RES-14: whether the engine has skipped {@link #DURESS_SKIPS} turns this round and
+     * fewer than {@link #DURESS_QUIET_TICKS} ticks have passed since the last one, so the tick
+     * runs at the duress level, below {@link #MAX_LEVEL}: no samples, no tree. Another skipped
+     * turn after duress has ended starts it again, and the round's skip count is not cleared.
      *
-     * @return true from the third skipped turn of a round until the round ends
+     * @return true from the third skipped turn of a round until 300 ticks pass without another,
+     *     or the round ends
      */
     public boolean duress() {
-        return skipsThisRound >= DURESS_SKIPS;
+        return skipsThisRound >= DURESS_SKIPS && now - lastSkip < DURESS_QUIET_TICKS;
     }
 
     /** TIME-3: the allowance learned from a skip, or -1 if none has happened yet. */

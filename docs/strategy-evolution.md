@@ -288,6 +288,25 @@ robot that just drives at us.
   mid-table opponents to bench against, and every bot benched so far reads either T0 or T3 —
   issue #53 tracks getting that bench run. It lands once that data exists, not before.
 
+## The DrussGT route (D1 to D6)
+
+The plan is [druss-route-plan.md](druss-route-plan.md); the requirements are in [requirements.md](requirements.md#the-drussgt-route-d1-to-d6).
+
+<a id="d1"></a>
+
+### D1: power by the lead
+
+Release 3.8. Against DrussGT both guns hit below break-even, so each shot costs its owner more energy than it takes, and the robot firing the lighter bullet keeps its lead (D0's probes, `docs/bench/d0-drussgt-probes.md`). D1 teaches the duel that, and nothing else yet.
+
+- **POW-11** keeps battle-long shot and hit counts for both robots in three power classes and overall, with margins, and the `R` record gains twelve appended fields (`oS0 oH0 oS1 oH1 oS2 oH2 tS0 ... tH2`).
+- **POW-7 to POW-9** fire the minimum power while both robots are certainly below break-even and Hadur is level or ahead, and 1.20's default power (without its cubic power-down) when behind by more than 3 with more than 10 energy, or while both exceed 60. POW-1 to POW-5, RAM-1 and END-3 keep precedence.
+- **POW-10** never holds a shot Hadur can pay for: it is lowered to what energy allows. The END-4 hook is left for a later stage.
+- **ADAPT-5** stores the verdict in the profile (format version 3, so `-v3.hp` file names; a version 2 profile loads its stats only).
+- **RES-14** ends duress 300 ticks after the last skipped turn, and retires RES-9.
+- **Re-recorded fixtures:** `abc.Shadow_3.83c`, `warm-abc.Shadow_3.83c` (the second battle's transcript, `-2`), `duress-sample.Walls` and `melee-sentry`, with the bench `--record` commands in `hadur-bench/README.md`. The other nine did not diverge in orders and were kept.
+- **Re-snapshotted:** the telemetry snapshots of all thirteen fixtures (`-Dhadur.replay.snapshot=write`), because the `R` record is longer.
+- **Re-pinned:** `pins/kernel.sha256`, `pins/duel.sha256`, `pins/conductor.sha256` (`-Dhadur.pin=kernel,duel,conductor`) and `duel-sources.sha256` (`-Dhadur.duel.snapshot=write`). The melee and team pins did not change.
+
 ## What comes next
 
 Every EARS requirement up to R2, bar TIER-1 (above), is implemented and traced. R3 to R5

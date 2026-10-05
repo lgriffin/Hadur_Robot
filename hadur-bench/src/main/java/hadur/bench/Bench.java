@@ -35,15 +35,15 @@ import java.util.zip.GZIPOutputStream;
  *     cold mode (5), {@code --battles N} in warm mode (5), {@code --field WxH} (800x600).</li>
  * <li>{@code --robot-jar FILE} the robot jar (../hadur-robot/target/hadur2.Hadur_3.3.jar),
  *     or {@code --robot-classes DIR} to jar a compiled class tree instead;
- *     {@code --robot NAME} as Robocode lists it ("hadur2.Hadur 3.7").</li>
+ *     {@code --robot NAME} as Robocode lists it ("hadur2.Hadur 3.8").</li>
  * <li>{@code --record DIR} capture replay fixtures instead: runs the recorder robot
  *     (../hadur-robot/target/hadur-robot-2.0-SNAPSHOT-recorder.jar) with Robocode's
  *     security off and writes one gzipped transcript per opponent to DIR (CORE-2).</li>
  * <li>{@code --melee true} run every opponent in the set against Hadur at once, one battle
  *     per seed, and report finishing places instead (MeleeRumble: 10 robots, 1000x1000).</li>
  * <li>{@code --team true} (A5) fight each team of the set with our team jar
- *     ({@code --robot-jar}, hadur2.HadurTeam_3.7.jar; {@code --robot} "hadur2.HadurTeam
- *     3.7"; {@code --member} hadur2.Hadur), TeamRumble style: 1200x1200, 10 rounds.</li>
+ *     ({@code --robot-jar}, hadur2.HadurTeam_3.8.jar; {@code --robot} "hadur2.HadurTeam
+ *     3.8"; {@code --member} hadur2.Hadur), TeamRumble style: 1200x1200, 10 rounds.</li>
  * <li>{@code --baseline JAR} (BENCH-2) also fight every opponent with this second jar, one
  *     battle per seed at the same {@code RANDOMSEED} as the candidate's, and report the
  *     paired score-share difference instead of two separate means. Requires
@@ -101,12 +101,12 @@ public final class Bench {
             opts.putIfAbsent("seeds", "3");
             if (opts.containsKey("record")) {
                 // STRAND-5: five recorders, a team jar made from the recorder jar (runTeam).
-                opts.putIfAbsent("robot", "hadur2.HadurRecorderTeam 3.7");
+                opts.putIfAbsent("robot", "hadur2.HadurRecorderTeam 3.8");
                 opts.putIfAbsent("member", "hadur2.HadurRecorder");
                 opts.putIfAbsent("robot-jar", "../hadur-robot/target/hadur-robot-2.0-SNAPSHOT-recorder.jar");
             }
-            opts.putIfAbsent("robot", "hadur2.HadurTeam 3.7");
-            opts.putIfAbsent("robot-jar", "../hadur-robot/target/hadur2.HadurTeam_3.7.jar");
+            opts.putIfAbsent("robot", "hadur2.HadurTeam 3.8");
+            opts.putIfAbsent("robot-jar", "../hadur-robot/target/hadur2.HadurTeam_3.8.jar");
         }
         this.warm = opts.getOrDefault("mode", "cold").equals("warm");
         this.rounds = Integer.parseInt(opts.getOrDefault("rounds", "35"));
@@ -117,10 +117,10 @@ public final class Bench {
         this.height = Integer.parseInt(field[1]);
         this.record = opts.containsKey("record") ? Path.of(opts.get("record")).toAbsolutePath() : null;
         if (record != null) {
-            opts.putIfAbsent("robot", "hadur2.HadurRecorder 3.7");
+            opts.putIfAbsent("robot", "hadur2.HadurRecorder 3.8");
             opts.putIfAbsent("robot-jar", "../hadur-robot/target/hadur-robot-2.0-SNAPSHOT-recorder.jar");
         }
-        this.robot = opts.getOrDefault("robot", "hadur2.Hadur 3.7");
+        this.robot = opts.getOrDefault("robot", "hadur2.Hadur 3.8");
         this.baselineJar = opts.containsKey("baseline") ? Path.of(opts.get("baseline")).toAbsolutePath() : null;
         this.baselineRobot = opts.get("baseline-robot");
         if (baselineJar != null) {

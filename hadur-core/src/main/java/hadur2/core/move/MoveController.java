@@ -348,6 +348,20 @@ public class MoveController {
     }
 
     /**
+     * The bullet power of each firing wave that broke on us since the last call, in the order
+     * the waves broke and one for each outcome {@link #takeBrokenWaveOutcomes} hands over, so a
+     * caller drains both together (POW-11 counts each outcome in its power class). The list is
+     * handed over and emptied.
+     *
+     * @return a new list of powers, as the waves carried them
+     */
+    public List<Double> takeBrokenWavePowers() {
+        List<Double> taken = new ArrayList<>(brokenWavePowers);
+        brokenWavePowers.clear();
+        return taken;
+    }
+
+    /**
      * Their hits on us over those waves, each weighted by our angular width (normalised).
      *
      * @return the weighted hit count this battle; divided by {@link #enemyFiringWaves} it is
@@ -369,6 +383,7 @@ public class MoveController {
         weighted1v1ShotsHitThisRound = 0;
         lastBulletPower = 0;
         brokenWaveOutcomes.clear();
+        brokenWavePowers.clear();
         ourBullets.clear();
         shadowedWaves = 0;
         shadowComputations = 0;
@@ -383,6 +398,8 @@ public class MoveController {
     private double weighted1v1ShotsHitThisRound;
     /** Whether each firing wave broken since the last {@link #takeBrokenWaveOutcomes} hit us. */
     private final List<Boolean> brokenWaveOutcomes = new ArrayList<>();
+    /** The power of each wave in {@link #brokenWaveOutcomes}, in the same order (POW-11). */
+    private final List<Double> brokenWavePowers = new ArrayList<>();
     /** MOVE-1: our bullets in flight, oldest first, for the shadows they cast. */
     private final List<OurBullet> ourBullets = new ArrayList<>();
     /** MOVE-1: waves that have had a shadow this round. */
@@ -579,6 +596,7 @@ public class MoveController {
             raw1v1ShotsFired++;
             raw1v1ShotsFiredThisRound++;
             brokenWaveOutcomes.add(w.hitByBullet);
+            brokenWavePowers.add(w.bulletPower());
             if (w.hitByBullet) {
                 // Normalise the hit: it counts (range / width) * (0.1 / 0.98), where width is
                 // our full angular width at the intersection and range the wave's precise

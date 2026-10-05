@@ -70,6 +70,12 @@ public final class Profiles {
         return p;
     }
 
+    /** Sets ADAPT-5's verdict: POW-7's hit-rate condition stood at the last battle's end. */
+    public static OpponentProfile leadAware(OpponentProfile p, boolean standing) {
+        p.leadAware = standing;
+        return p;
+    }
+
     /** Sets every tier's evidence to {@code waves} waves, their normalised rate to {@code theirRate}. */
     public static OpponentProfile evidence(OpponentProfile p, int waves, double theirRate) {
         p.normalised[0] = waves;
