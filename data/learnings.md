@@ -255,3 +255,14 @@ spawn), and no top-19 pair stayed at each other's centre reflection for more tha
 with both above 10 energy (two crawling, nearly dead robots did for 335). Offline replay of
 the truth logs is a cheap gate before a 3-hour bench. Evidence: `docs/bench/r9-weak-leak.md`.
 Owner: R9.
+
+**L-38 · confirmed (live, pass 92% complete).** The ram approach (R9, 3.5.1: RAM-2 runs from a
+confirmed rammer, MIR-1 plans a path and aim against a mirror mover) gained more live than the
+weak-set bench predicted. The rankings page saved 2026-10-05 05:51 UTC has 3.5.1 16th of
+1,216 at 86.65 ± 0.23 APS after 1,119 of 1,215 pairings, against 3.4's complete 85.90 (20th):
++0.75 APS, where the 11-bot bench forecast +0.1 and +0.5 at best. Survival 93.92% → 94.36%,
+PWIN 99.26 → 99.02. Leigh reports the MeleeRumble at 18th, up from 28th; R9 is a duel
+change (one enemy), so that move is recorded but not attributed to it. The 21st read on
+2026-10-03 (259 pairings) was noise, as the top-15 plan (PR #83) found. Lesson: a weak-tier
+fix generalises past the benched bots when the behaviour it targets (charging, mirroring) is common among the bots below us. Evidence:
+`data/rumble/pages/2026-10-05T0551Z_roborumble_rankings.mht`. Owner: R9.
