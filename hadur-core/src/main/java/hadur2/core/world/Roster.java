@@ -1,8 +1,10 @@
 package hadur2.core.world;
 
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -29,6 +31,9 @@ public final class Roster {
         public final String name;
         double x = Double.NaN;
         double y = Double.NaN;
+        /** Its heading (radians, clockwise from north) and velocity as last stated (WORLD-9). */
+        double heading;
+        double velocity;
         /** The tick its position was known on; -1 for never this round. */
         long seen = -1;
         /** The tick its last report stated; -1 for none this round. */
@@ -59,7 +64,34 @@ public final class Roster {
         public boolean alive() {
             return diedAt < 0 && !presumedDead;
         }
+
+        public double heading() {
+            return heading;
+        }
+
+        public double velocity() {
+            return velocity;
+        }
+
+        /**
+         * WORLD-9: where it is predicted to be at {@code tick}: the last known point moved
+         * {@code velocity} for each tick since it was known along {@code heading}, no further
+         * than a robot's top speed allows. Before it was known, or never known, its last
+         * known point.
+         */
+        public Point2D.Double at(long tick) {
+            long dt = tick - seen;
+            if (seen < 0 || dt <= 0) return new Point2D.Double(x, y);
+            double dist = velocity * dt;
+            double cap = MAX_SPEED * dt;
+            if (dist > cap) dist = cap;
+            else if (dist < -cap) dist = -cap;
+            return new Point2D.Double(x + Math.sin(heading) * dist, y + Math.cos(heading) * dist);
+        }
     }
+
+    /** A robot's top speed, px a tick: the most a prediction may move a teammate (WORLD-9). */
+    public static final double MAX_SPEED = 8.0;
 
     private final Map<String, Mate> mates = new LinkedHashMap<>();
     private final int enemiesAtStart;
@@ -111,11 +143,23 @@ public final class Roster {
         return mates.get(name);
     }
 
+    /**
+     * WORLD-9: the living teammates whose position is known and no older than
+     * {@link #SILENT_WINDOW} ticks at {@code now}, in roster order.
+     */
+    public List<Mate> living(long now) {
+        List<Mate> out = new ArrayList<>(mates.size());
+        for (Mate m : mates.values()) {
+            if (m.alive() && m.seen >= 0 && now - m.seen <= SILENT_WINDOW) out.add(m);
+        }
+        return Collections.unmodifiableList(out);
+    }
+
     /** Our radar saw a teammate at ({@code x}, {@code y}) on {@code tick}: heard from, and alive. */
-    public void scanned(String name, double x, double y, long tick) {
+    public void scanned(String name, double x, double y, double heading, double velocity, long tick) {
         Mate m = mates.get(name);
         if (m == null) return;
-        place(m, x, y, tick);
+        place(m, x, y, heading, velocity, tick);
         if (m.diedAt >= 0 && tick <= m.diedAt) return;
         m.diedAt = -1;
         m.presumedDead = false;
@@ -128,10 +172,11 @@ public final class Roster {
      * A report stating a tick no later than the sender's known death (its last, read with the
      * death) places it and nothing more: the dead stay dead.
      */
-    public void reported(String name, long tick, double x, double y, int othersNow) {
+    public void reported(String name, long tick, double x, double y, double heading, double velocity,
+                         int othersNow) {
         Mate m = mates.get(name);
         if (m == null) return;
-        place(m, x, y, tick);
+        place(m, x, y, heading, velocity, tick);
         if (m.diedAt >= 0 && tick <= m.diedAt) return;
         m.reported = Math.max(m.reported, tick);
         m.othersAtReport = othersNow;
@@ -141,15 +186,17 @@ public final class Roster {
     }
 
     /** A teammate's sighting of another teammate: the newer position wins (WORLD-4). */
-    public void sighted(String name, double x, double y, long tick) {
+    public void sighted(String name, double x, double y, double heading, double velocity, long tick) {
         Mate m = mates.get(name);
-        if (m != null) place(m, x, y, tick);
+        if (m != null) place(m, x, y, heading, velocity, tick);
     }
 
-    private static void place(Mate m, double x, double y, long tick) {
+    private static void place(Mate m, double x, double y, double heading, double velocity, long tick) {
         if (tick < m.seen) return;
         m.x = x;
         m.y = y;
+        m.heading = heading;
+        m.velocity = velocity;
         m.seen = tick;
     }
 

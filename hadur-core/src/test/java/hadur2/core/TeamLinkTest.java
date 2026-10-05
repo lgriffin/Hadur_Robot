@@ -278,6 +278,95 @@ class TeamLinkTest {
         assertTrue(fired > 0);
     }
 
+    /** The scan of a teammate that is {@code ahead} px up the gun's line and {@code side} px east, moving as given. */
+    static BotEvent.Scan mateScan(double ahead, double side, double heading, double velocity) {
+        return new BotEvent.Scan(MATE, Math.atan2(side, ahead), Math.hypot(ahead, side), 100, heading, velocity);
+    }
+
+    private static double fired(BotEvent.Scan mate, int ticks) {
+        HadurCore core = new HadurCore(facts(), line -> {}, null, new TriggerHappy());
+        core.newRound(0);
+        List<BotEvent> events = new ArrayList<>(enemies());
+        events.add(mate);
+        double fired = 0;
+        for (long t = 1; t <= ticks; t++) fired += core.tick(input(t, 5, events)).firePower();
+        return fired;
+    }
+
+    @Test
+    @Tag("WEAVE-7")
+    @DisplayName("WEAVE-7: a teammate crossing the lane while a bullet flies holds the shot; one moving away does not")
+    void crossingMateHoldsTheShot() {
+        // 300 px up the lane and 100 px east, running west at 8 px a tick: in the lane as a bullet passes.
+        assertEquals(0, fired(mateScan(300, 100, 3 * Math.PI / 2, 8), 6), 1e-9, "crossing mate");
+        // The same place, running east: 100 px wide now and 200 wider by the time the bullet passes.
+        assertTrue(fired(mateScan(300, 100, Math.PI / 2, 8), 6) > 0, "receding mate");
+        // Standing 150 px off the lane, wider than the lane and its slack: it never held.
+        assertTrue(fired(mateScan(300, 150, 0, 0), 6) > 0, "standing mate");
+    }
+
+    @Test
+    @Tag("WEAVE-7")
+    @DisplayName("WEAVE-7: a teammate close to the gun is judged over a short flight")
+    void nearMateJudgedOverAShortFlight() {
+        // 50 px up and 60 px east, running west: it crosses the line within a tick or two.
+        assertEquals(0, fired(mateScan(50, 60, 3 * Math.PI / 2, 8), 6), 1e-9);
+    }
+
+    @Test
+    @Tag("WEAVE-8")
+    @DisplayName("WEAVE-8: a team core heading at a teammate has its drive replaced; the same input off a team is untouched")
+    void teamCoreBrakesForAMate() {
+        // The melee brain wants to go 300 px north, past a teammate (or, off a team, an opponent) 60 px up.
+        List<String> telemetry = new ArrayList<>();
+        HadurCore team = new HadurCore(facts(), telemetry::add, null, new GoNorth());
+        team.newRound(0);
+        List<BotEvent> events = new ArrayList<>(enemies());
+        events.add(scan(MATE, 0, 60));
+        BotInput start = new BotInput(1, 0, 600, 600, 0, 8, 200, 0, 0.1, 0, 0, 0, 5, events);
+        BotOrders braked = team.tick(start);
+        assertEquals(0, braked.ahead(), 0, "drive replaced by a brake");
+        assertEquals(1, braked.messages().size(), "the report is kept");
+        team.roundEnded(2, "win", 50, 0);
+        String t = telemetry.stream().filter(l -> l.startsWith("T,")).findFirst().orElseThrow();
+        String[] f = t.split(",");
+        assertEquals("1", f[f.length - 1], "one drive fenced, counted as the T record's last field: " + t);
+
+        BotInput solo = new BotInput(1, 0, 600, 600, 0, 8, 100, 0, 0.1, 0, 0, 0, 5, events);
+        HadurCore alone = new HadurCore(new BattleFacts(1200, 1200, 5, List.of()), line -> {}, null, new GoNorth());
+        alone.newRound(0);
+        BotOrders free = alone.tick(solo);
+        assertEquals(300, free.ahead(), 1e-9, "off a team nothing fences the drive");
+    }
+
+    @Test
+    @Tag("MMOVE-8")
+    @DisplayName("MMOVE-8: each member of a team has its own place in the roster")
+    void rosterPlacesAreDistinct() {
+        List<String> all = List.of(ME, MATE, MATE2, "hadur2.Hadur (4)", "hadur2.Hadur (5)");
+        java.util.Set<Integer> places = new java.util.TreeSet<>();
+        for (String name : all) {
+            List<String> others = new ArrayList<>(all);
+            others.remove(name);
+            places.add(HadurCore.rosterIndex(new BattleFacts(1200, 1200, 5, others, name, 100, 0)));
+        }
+        assertEquals(java.util.Set.of(0, 1, 2, 3, 4), places);
+    }
+
+    /** A melee brain that always wants to drive 300 px due north. */
+    static final class GoNorth extends MeleeController {
+        GoNorth() {
+            super(new BattleField(1200, 1200));
+        }
+
+        @Override
+        public Command tick(Situation s) {
+            Command c = super.tick(s);
+            c.destination = new Point2D.Double(s.me.x, s.me.y + 300);
+            return c;
+        }
+    }
+
     @Test
     @Tag("WEAVE-5")
     @DisplayName("WEAVE-5: on a team the guard's safe orders hold fire however often the core faults")

@@ -43,6 +43,8 @@
         <hadur.arch.stage>A5</hadur.arch.stage>
         <!-- The DrussGT route's stage (D1-D6, docs/druss-route-plan.md): its requirements up to here must be covered too. -->
         <hadur.druss.stage>D5</hadur.druss.stage>
+        <!-- The Team plan's stage (T1, docs/team-plan-t1.md). -->
+        <hadur.team.stage>T1</hadur.team.stage>
     </properties>
 
     <repositories>
@@ -124,6 +126,7 @@
                             <hadur.climb.stage>${hadur.climb.stage}</hadur.climb.stage>
                             <hadur.arch.stage>${hadur.arch.stage}</hadur.arch.stage>
                             <hadur.druss.stage>${hadur.druss.stage}</hadur.druss.stage>
+                            <hadur.team.stage>${hadur.team.stage}</hadur.team.stage>
                             <hadur.root>${maven.multiModuleProjectDirectory}</hadur.root>
                         </systemPropertyVariables>
                     </configuration>

@@ -238,6 +238,11 @@ recorders from the recorder jar and saves one transcript per member as
 mvn exec:java -Dexec.args="--record R --set team-reference.txt --team true --only MyFirst --rounds 3 --seeds 1 --out W"   # keep m1 and m2
 ```
 
+T1 adds two things to a team report. `rounds.csv` gains a ninth column, `bulletsOnMates`, the
+engine's own count of our bullets that hit one of our members (the report prints it beside the
+members' `T` sums, whose last field is now the count of drives the teammate fence replaced), and
+each battle directory gets `friendly.log`, one line per such hit with the bullet's power and flight.
+
 `team-gates.txt` is A5's team gate suite: `team-reference.txt`'s eight teams, three battles
 each, reported per opponent with the gate's counts (faults, skipped turns, LINK rejects,
 shots with a teammate truly in the lane, the count of enemies below the truth, the members'

@@ -2,10 +2,12 @@ package hadur2.core.melee;
 
 import hadur2.core.world.EnemyInfo;
 import hadur2.core.world.EnemyShot;
+import hadur2.core.world.Roster;
 import hadur2.core.model.RobotState;
 import hadur2.core.model.RobotStateLog;
 import hadur2.core.physics.BattleField;
 import hadur2.core.physics.DiaUtils;
+import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -36,6 +38,14 @@ import java.util.Set;
  *     recent positions, and a fixed per-round noise field, so the path is no pattern;</li>
  * <li>the melee strategy's posture (MMOVE-5).</li>
  * </ul>
+ *
+ * <p>On a team (T1) each living teammate whose position is fresh adds a term that rises with
+ * the inverse square of its distance from the point, taken where the teammate is predicted
+ * to be when Hadur gets there, and a term for a path that crosses its predicted track
+ * (MMOVE-6, MMOVE-7); the ring is capped by the nearest such teammate as by the nearest
+ * opponent; and each member's noise field and opening spot are shifted by its place in the
+ * roster (MMOVE-8), so five copies of this function do not choose one destination. Off a
+ * team none of this applies and the scoring is what it was.</p>
  *
  * <p>For the first {@link #OPENING_TICKS} ticks the closest-robot term doubles again and a
  * pull heads for the nearest wall-adjacent spot away from the corners. With two opponents
@@ -84,6 +94,15 @@ public class MinimumRiskMovement {
     static final long PAST_EVERY = 5;
     static final double NOISE_K = 0.05;
     static final double NOISE_CELL = 25;
+    /** MMOVE-6: weight, in units of {@link #UNIT}, of a teammate's inverse-square term. */
+    static final double MATE_K = 0.6;
+    /** MMOVE-6: a teammate nearer than this is scored as if at this distance: about a robot's width. */
+    static final double MATE_FLOOR = 36;
+    /** MMOVE-7: weight, and reach in px, of the term for a path crossing a teammate's track. */
+    static final double MATE_PATH_K = 0.3;
+    static final double MATE_PATH_RANGE = 60;
+    /** MMOVE-8: how far apart, along its wall, the opening spots of two members in the roster are. */
+    static final double MATE_FAN = 120;
     static final double SWITCH_GAIN = 0.9;
     static final double REACHED = 20;
 
@@ -119,9 +138,17 @@ public class MinimumRiskMovement {
         final MeleeStrategy.Plan plan;
         /** Per enemy: the distance to its nearest other opponent. */
         final double[] nearestOther;
+        /** MMOVE-6: the living teammates whose position is fresh; empty off a team. */
+        final List<Roster.Mate> mates;
 
         View(Point2D.Double me, double energy, long now, int others, List<EnemyInfo> enemies,
              List<VirtualBullet> bullets, MeleeStrategy.Plan plan) {
+            this(me, energy, now, others, enemies, bullets, plan, List.of());
+        }
+
+        View(Point2D.Double me, double energy, long now, int others, List<EnemyInfo> enemies,
+             List<VirtualBullet> bullets, MeleeStrategy.Plan plan, List<Roster.Mate> mates) {
+            this.mates = mates;
             this.me = me;
             this.energy = energy;
             this.now = now;
@@ -155,10 +182,23 @@ public class MinimumRiskMovement {
     private Point2D.Double openingSpot;
     private long round = -1;
     private int lastCandidates;
+    /** MMOVE-8: this member's place in the team's roster, or -1 off a team. */
+    private int teamIndex = -1;
+    /** MMOVE-8: XORed into the noise field's hash; 0 off a team, so the field is MMOVE-1's. */
+    private long salt;
 
     public MinimumRiskMovement(BattleField field) {
         this.field = field;
         this.centre = new Point2D.Double(field.width / 2, field.height / 2);
+    }
+
+    /**
+     * MMOVE-8: this member's place in the team's roster, 0 up; a negative index is off a team.
+     * It salts the noise field and fans the opening spots out along the walls.
+     */
+    public void team(int index) {
+        teamIndex = index < 0 ? -1 : index;
+        salt = index < 0 ? 0 : mix(index + 1L);
     }
 
     public void newRound() {
@@ -218,10 +258,17 @@ public class MinimumRiskMovement {
     public Point2D.Double chooseDestination(Point2D.Double me, double energy, int others,
                                             List<EnemyInfo> enemies, long now,
                                             MeleeStrategy.Plan plan) {
+        return chooseDestination(me, energy, others, enemies, now, plan, List.of());
+    }
+
+    /** As above, on a team: the living teammates {@code mates} add their terms (MMOVE-6, MMOVE-7). */
+    public Point2D.Double chooseDestination(Point2D.Double me, double energy, int others,
+                                            List<EnemyInfo> enemies, long now,
+                                            MeleeStrategy.Plan plan, List<Roster.Mate> mates) {
         remember(me, now);
         if (openingSpot == null) openingSpot = openingSpot(me);
-        View v = new View(me, energy, now, others, enemies, new ArrayList<>(bullets), plan);
-        List<Point2D.Double> candidates = candidates(me, others, enemies, now);
+        View v = new View(me, energy, now, others, enemies, new ArrayList<>(bullets), plan, mates);
+        List<Point2D.Double> candidates = candidates(me, others, enemies, now, mates);
         lastCandidates = candidates.size();
         Point2D.Double best = null;
         double bestRisk = Double.POSITIVE_INFINITY;
@@ -256,6 +303,15 @@ public class MinimumRiskMovement {
      */
     public List<Point2D.Double> candidates(Point2D.Double me, int others, List<EnemyInfo> enemies,
                                            long now) {
+        return candidates(me, others, enemies, now, List.of());
+    }
+
+    /**
+     * As above, where the nearest of {@code mates} caps the ring like the nearest opponent
+     * (MMOVE-7); {@code mates} are the living teammates whose position is fresh at {@code now}.
+     */
+    public List<Point2D.Double> candidates(Point2D.Double me, int others, List<EnemyInfo> enemies,
+                                           long now, List<Roster.Mate> mates) {
         boolean endgame = others == 2;
         double min = endgame ? ENDGAME_RING_MIN : RING_MIN;
         double max = endgame ? ENDGAME_RING_MAX : RING_MAX;
@@ -264,6 +320,7 @@ public class MinimumRiskMovement {
             if (now != Long.MIN_VALUE && e.age(now) >= CAP_MAX_AGE) continue;
             nearest = Math.min(nearest, e.location.distance(me));
         }
+        for (Roster.Mate m : mates) nearest = Math.min(nearest, m.at(now).distance(me));
         double cap = Math.max(MIN_RING, NEAREST_FRACTION * nearest);
         List<Point2D.Double> out = new ArrayList<>(CANDIDATES);
         for (int ring = 0; ring < RINGS; ring++) {
@@ -301,7 +358,48 @@ public class MinimumRiskMovement {
         if (v.now < OPENING_TICKS && openingSpot != null) {
             r += OPENING_K * p.distance(openingSpot) / 500.0;
         }
+        if (!v.mates.isEmpty()) r += teammateRisk(p, v);
         return r + postureRisk(p, v.enemies, v.plan);
+    }
+
+    /**
+     * MMOVE-6, MMOVE-7: for each living teammate with a fresh position, its predicted point
+     * when Hadur would arrive at {@code p} scores {@link #MATE_K} over the inverse square of
+     * the distance (floored at {@link #MATE_FLOOR}), and the path from Hadur to {@code p}
+     * scores {@link #MATE_PATH_K} for passing within {@link #MATE_PATH_RANGE} of the
+     * teammate's predicted track from now until then.
+     */
+    double teammateRisk(Point2D.Double p, View v) {
+        double r = 0;
+        long arrive = v.now + (long) Math.ceil(p.distance(v.me) / TRAVEL_SPEED);
+        for (Roster.Mate m : v.mates) {
+            Point2D.Double q = m.at(arrive);
+            double d = Math.max(MATE_FLOOR, p.distance(q));
+            r += MATE_K * UNIT / (d * d);
+            Point2D.Double from = m.at(v.now);
+            // Segments whose boxes are further apart than the range score nothing: skip the geometry.
+            if (Math.max(from.x, q.x) < Math.min(v.me.x, p.x) - MATE_PATH_RANGE
+                    || Math.min(from.x, q.x) > Math.max(v.me.x, p.x) + MATE_PATH_RANGE
+                    || Math.max(from.y, q.y) < Math.min(v.me.y, p.y) - MATE_PATH_RANGE
+                    || Math.min(from.y, q.y) > Math.max(v.me.y, p.y) + MATE_PATH_RANGE) {
+                continue;
+            }
+            double sd = segmentDistance(v.me, p, from, q);
+            r += MATE_PATH_K * Math.max(0, 1 - sd / MATE_PATH_RANGE);
+        }
+        return r;
+    }
+
+    /** The least distance between segments a-b and c-d. */
+    static double segmentDistance(Point2D a, Point2D b, Point2D c, Point2D d) {
+        if (Line2D.linesIntersect(a.getX(), a.getY(), b.getX(), b.getY(),
+                c.getX(), c.getY(), d.getX(), d.getY())) {
+            return 0;
+        }
+        return Math.min(Math.min(Line2D.ptSegDist(a.getX(), a.getY(), b.getX(), b.getY(), c.getX(), c.getY()),
+                Line2D.ptSegDist(a.getX(), a.getY(), b.getX(), b.getY(), d.getX(), d.getY())),
+            Math.min(Line2D.ptSegDist(c.getX(), c.getY(), d.getX(), d.getY(), a.getX(), a.getY()),
+                Line2D.ptSegDist(c.getX(), c.getY(), d.getX(), d.getY(), b.getX(), b.getY())));
     }
 
     /** Opponent {@code i}'s term: energy over distance squared, with the closest-robot factor (MMOVE-2). */
@@ -405,11 +503,14 @@ public class MinimumRiskMovement {
         return r;
     }
 
-    /** A fixed pseudo-random field over the battlefield, different every round. */
+    /**
+     * A fixed pseudo-random field over the battlefield, different every round, and on a team
+     * different for each member (MMOVE-8).
+     */
     double noise(Point2D.Double p) {
         long cx = (long) Math.floor(p.x / NOISE_CELL);
         long cy = (long) Math.floor(p.y / NOISE_CELL);
-        return NOISE_K * unit(mix(round * 0x9E3779B97F4A7C15L ^ (cx << 20) ^ cy));
+        return NOISE_K * unit(mix(round * 0x9E3779B97F4A7C15L ^ (cx << 20) ^ cy ^ salt));
     }
 
     static long mix(long z) {
@@ -439,6 +540,13 @@ public class MinimumRiskMovement {
         double gapY = Math.min(OPENING_CORNER_GAP, field.height / 2);
         double alongX = DiaUtils.limit(gapX, me.x, field.width - gapX);
         double alongY = DiaUtils.limit(gapY, me.y, field.height - gapY);
+        // MMOVE-8: on a team the spots fan out along the wall by the member's place (centred on
+        // a roster of five), still clear of the corners; off a team there is no shift.
+        if (teamIndex >= 0) {
+            double fan = (teamIndex - 2) * MATE_FAN;
+            alongX = DiaUtils.limit(gapX, alongX + fan, field.width - gapX);
+            alongY = DiaUtils.limit(gapY, alongY + fan, field.height - gapY);
+        }
         if (m == left) return new Point2D.Double(OPENING_WALL_GAP, alongY);
         if (m == right) return new Point2D.Double(field.width - OPENING_WALL_GAP, alongY);
         if (m == bottom) return new Point2D.Double(alongX, OPENING_WALL_GAP);
@@ -497,5 +605,11 @@ public class MinimumRiskMovement {
     public View view(Point2D.Double me, double energy, long now, int others,
                      List<EnemyInfo> enemies, MeleeStrategy.Plan plan) {
         return new View(me, energy, now, others, enemies, new ArrayList<>(bullets), plan);
+    }
+
+    /** As above with the living teammates a team member sees (MMOVE-6). */
+    public View view(Point2D.Double me, double energy, long now, int others,
+                     List<EnemyInfo> enemies, MeleeStrategy.Plan plan, List<Roster.Mate> mates) {
+        return new View(me, energy, now, others, enemies, new ArrayList<>(bullets), plan, mates);
     }
 }
