@@ -43,7 +43,7 @@ import java.util.zip.GZIPOutputStream;
  *     per seed, and report finishing places instead (MeleeRumble: 10 robots, 1000x1000).</li>
  * <li>{@code --team true} (A5) fight each team of the set with our team jar
  *     ({@code --robot-jar}, hadur2.HadurTeam_3.6.jar; {@code --robot} "hadur2.HadurTeam
- *     3.5.1"; {@code --member} hadur2.Hadur), TeamRumble style: 1200x1200, 10 rounds.</li>
+ *     3.6"; {@code --member} hadur2.Hadur), TeamRumble style: 1200x1200, 10 rounds.</li>
  * <li>{@code --baseline JAR} (BENCH-2) also fight every opponent with this second jar, one
  *     battle per seed at the same {@code RANDOMSEED} as the candidate's, and report the
  *     paired score-share difference instead of two separate means. Requires
