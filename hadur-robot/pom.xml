@@ -17,7 +17,7 @@
     <properties>
         <!-- The robot's version: the solo and team jars are both named for it, and it must
              match robot.version in Hadur.properties and the team file (HadurTeamFileTest). -->
-        <robot.release>3.6</robot.release>
+        <robot.release>3.7</robot.release>
     </properties>
 
     <dependencies>
