@@ -9,9 +9,9 @@ Open items from the Hadur 2 stages, newest stage first. The open ones are tracke
 All six stages merged (#87, #88, #89, #92, #93, #94), and 3.7 was entered on the RoboRumble,
 MeleeRumble and TeamRumble on 2026-10-05. Open after A5:
 
-- **Read 3.7's complete passes** against [docs/bench/expected-3.7.md](docs/bench/expected-3.7.md).
-  A 1v1 pass below 86.1 APS, or melee more than 1.5 APS down, is outside what the benches
-  predict. Read it against the fixtures before any ladder plan merges code.
+- **3.7's passes, read** in [docs/bench/live-3.7.md](docs/bench/live-3.7.md): the 1v1 at
+  85.67 (21st) is 0.43 below the predicted range and not yet attributed (L-43); melee 65.25
+  (18th) is level; the first team pass reads 39.43 (32nd of 46).
 - **Teammates collide** about 440 times a round, and 884 of our bullets hit a teammate
   over the A5 gate. Neither mover sees teammates yet. This is the Team plan's first item,
   ahead of a shared target and formation ([a5-team.md](docs/bench/a5-team.md)).
