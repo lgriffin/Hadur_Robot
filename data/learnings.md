@@ -266,3 +266,11 @@ change (one enemy), so that move is recorded but not attributed to it. The 21st 
 2026-10-03 (259 pairings) was noise, as the top-15 plan (PR #83) found. Lesson: a weak-tier
 fix generalises past the benched bots when the behaviour it targets (charging, mirroring) is common among the bots below us. Evidence:
 `data/rumble/pages/2026-10-05T0551Z_roborumble_rankings.mht`. Owner: R9.
+
+**L-39 · confirmed (bench, 10 battles each).** Against DrussGT 3.1.16 the gap is bullet power, not aim. Both guns hit below break-even (Hadur 7.47%, DrussGT 9.69%) and Hadur's shooting costs 39.6 energy lead a round against 27.8. A lead-aware power rule (0.1 while level or ahead) took the score share from 37.53% ± 3.49 to 50.69% ± 3.39, paired +13.16 ± 4.18, outright wins 86 to 188 of 350. Evidence: `docs/bench/d0-drussgt-probes.md`. Owner: POW.
+
+**L-40 · confirmed (bench).** Rounds are decided by the early energy lead: released 3.5.1 won 75.6% of rounds ahead at tick 1000 and 9.0% of rounds not ahead. Lead-aware shifted that to 86.1% and 5.7%. Evidence: same report.
+
+**L-41 · open (5 and 3 battles).** Random gun (34.17%), all chaff (29.94%) and hold fire (24.55%) all score below the released build or the lead-aware rule; none is a fallback. Sampled aim added +0.74 ± 3.96 over lead-aware: not confirmed.
+
+**L-42 · decision (2026-10-05).** APS is the objective and a shield list is agreed (D5). Hadur 3.4 averaged 82.27% over the 357 pairings on DrussGT's shield list: +1.68 APS at 88%, +2.27 at 90%, +2.86 at 92%. The list is built from the bench, not DrussGT's names alone. Evidence: `docs/druss-route-plan.md`, `data/rumble/parsed/2026-10-05_drussgt-3.1.16_shield-targets_vs_hadur-3.4.tsv`. Owner: SHIELD. IDs L-39 to L-42 may be renumbered if PR #83 merges first.

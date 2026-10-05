@@ -1,0 +1,68 @@
+# A panel of DrussGT's shield list, stratified by Hadur's score, for the paired bench of a shield
+# build against the released robot (--baseline, BENCH-2).
+# From DrussGT 3.1.16's shield target list (jk/mega/ShieldTargets.java in its jar, by Skilgannon:
+# "Bots where jk.precise.EnergyDome 1.8 outscores jk.mega.DrussGT 3.1.12 on APS"), joined with
+# Hadur's scores on 2026-10-01T2020Z_roborumble_botdetails_hadur2.Hadur_3.4.csv.
+# Written by data/tools/drussgt/shield_targets.py; see docs/druss-route-plan.md, stage D0.
+# The role is Hadur's live score band against the robot.
+# A weight is the band's share of the 357 listed pairings, split evenly over its robots here, so the
+# bench's stratified estimate (BENCH-1) is the list's mean score. Robots are drawn evenly spaced by
+# name from those with a jar on record.
+# Jars from https://robocode-archive.strangeautomata.com/robots/<jar>, into opponents/ (not committed).
+#   <robot name as Robocode lists it> | <role> | <jar file in opponents/, or - for bundled samples> | <weight>
+
+# Hadur scores under 70: 46 of the list, 10 here
+apv.test.Virus 0.6.1 | shield-under-70 | apv.test.Virus_0.6.1.jar | 0.01289
+cf.mini.Chiva 1.0 | shield-under-70 | cf.mini.Chiva_1.0.jar | 0.01289
+cx.Princess 1.0 | shield-under-70 | cx.Princess_1.0.jar | 0.01289
+ej.ChocolateBar 1.1 | shield-under-70 | ej.ChocolateBar_1.1.jar | 0.01289
+kcn.unnamed.Unnamed 1.21 | shield-under-70 | kcn.unnamed.Unnamed_1.21.jar | 0.01289
+mue.Hyperion 0.8 | shield-under-70 | mue.Hyperion_0.8.jar | 0.01289
+ph.musketeer.Musketeer 0.6 | shield-under-70 | ph.musketeer.Musketeer_0.6.jar | 0.01289
+simonton.mega.SniperFrog 1.0.fix2 | shield-under-70 | simonton.mega.SniperFrog_1.0.fix2.jar | 0.01289
+suh.micro.MirrorPM 1.00 | shield-under-70 | suh.micro.MirrorPM_1.00.jar | 0.01289
+vic.Locke 0.7.5.5 | shield-under-70 | vic.Locke_0.7.5.5.jar | 0.01289
+
+# Hadur scores 70 to 80: 106 of the list, 12 here
+amk.ChumbaMini 0.2 | shield-70-80 | amk.ChumbaMini_0.2.jar | 0.02474
+bvh.mini.Fenrir 0.39 | shield-70-80 | bvh.mini.Fenrir_0.39.jar | 0.02474
+cx.micro.Smoke 0.96 | shield-70-80 | cx.micro.Smoke_0.96.jar | 0.02474
+dft.Virgin 1.25 | shield-70-80 | dft.Virgin_1.25.jar | 0.02474
+jam.micro.RaikoMicro 1.44 | shield-70-80 | jam.micro.RaikoMicro_1.44.jar | 0.02474
+kid.Gladiator .7.2 | shield-70-80 | kid.Gladiator_.7.2.jar | 0.02474
+nat.Hikari dev0001 | shield-70-80 | nat.Hikari_dev0001.jar | 0.02474
+pez.gloom.GloomyDark 0.9.2 | shield-70-80 | pez.gloom.GloomyDark_0.9.2.jar | 0.02474
+rsim.mini.BulletCatcher 0.4 | shield-70-80 | rsim.mini.BulletCatcher_0.4.jar | 0.02474
+stelo.MatchupMini 1.1 | shield-70-80 | stelo.MatchupMini_1.1.jar | 0.02474
+theo.Tungsten 1.0a | shield-70-80 | theo.Tungsten_1.0a.jar | 0.02474
+wcsv.mega.PowerHouse2 0.2 | shield-70-80 | wcsv.mega.PowerHouse2_0.2.jar | 0.02474
+
+# Hadur scores 80 to 90: 115 of the list, 12 here
+amk.ChumbaWumba 0.3 | shield-80-90 | amk.ChumbaWumba_0.3.jar | 0.02684
+casey.Flee 1.0 | shield-80-90 | casey.Flee_1.0.jar | 0.02684
+gh.GrubbmGrb 1.2.4 | shield-80-90 | gh.GrubbmGrb_1.2.4.jar | 0.02684
+kawigi.mini.Fhqwhgads 1.1 | shield-80-90 | kawigi.mini.Fhqwhgads_1.1.jar | 0.02684
+lucasslf.Dodger 1.0 | shield-80-90 | lucasslf.Dodger_1.0.jar | 0.02684
+nkn.mini.Jskr0 0.1 | shield-80-90 | nkn.mini.Jskr0_0.1.jar | 0.02684
+pedersen.Hubris 2.4 | shield-80-90 | pedersen.Hubris_2.4.jar | 0.02684
+reaper.Reaper 1.1 | shield-80-90 | reaper.Reaper_1.1.jar | 0.02684
+shinh.Entangled 0.3 | shield-80-90 | shinh.Entangled_0.3.jar | 0.02684
+stelo.SteloTestNano 1.0 | shield-80-90 | stelo.SteloTestNano_1.0.jar | 0.02684
+timmit.nano.TimCat 0.13 | shield-80-90 | timmit.nano.TimCat_0.13.jar | 0.02684
+wiki.BasicGFSurfer 1.02 | shield-80-90 | wiki.BasicGFSurfer_1.02.jar | 0.02684
+
+# Hadur scores 90 to 95: 36 of the list, 6 here
+bndl.LostLion 1.2 | shield-90-95 | bndl.LostLion_1.2.jar | 0.01681
+dz.Caedo 1.4 | shield-90-95 | dz.Caedo_1.4.jar | 0.01681
+lrem.quickhack.QuickHack 1.0 | shield-90-95 | lrem.quickhack.QuickHack_1.0.jar | 0.01681
+mz.Adept 2.65 | shield-90-95 | mz.Adept_2.65.jar | 0.01681
+rsk1.RSK1 4.0 | shield-90-95 | rsk1.RSK1_4.0.jar | 0.01681
+throxbot.ThroxBot 0.1 | shield-90-95 | throxbot.ThroxBot_0.1.jar | 0.01681
+
+# Hadur scores 95 and up: 54 of the list, 6 here
+cli.WasteOfAmmo 1.0 | shield-95-up | cli.WasteOfAmmo_1.0.jar | 0.02521
+gh.nano.Grofvuil 0.2 | shield-95-up | gh.nano.Grofvuil_0.2.jar | 0.02521
+logiblocs.SittingDroid 1.0 | shield-95-up | logiblocs.SittingDroid_1.0.jar | 0.02521
+Noran.RandomTargeting 0.02 | shield-95-up | Noran.RandomTargeting_0.02.jar | 0.02521
+sample.Fire | shield-95-up | - | 0.02521
+suh.nano.OscillatorL 1.00 | shield-95-up | suh.nano.OscillatorL_1.00.jar | 0.02521

@@ -24,6 +24,7 @@ data/
     melee-field.tsv     every melee standings table, one row per entrant
   tools/
     harvest_bench.py    rebuilds the three *-history/field files from docs/bench/*.md
+    drussgt/            DrussGT bench analysis, energy model and shield-list tools (see its README)
     parse_rumble_page.py  parses a saved BotDetails or Rankings page into rumble/parsed/
 ```
 
