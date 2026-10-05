@@ -1,4 +1,4 @@
-package hadur2.core;
+package hadur2.core.duel;
 
 import hadur2.core.model.BotInput;
 import hadur2.core.model.BotOrders;

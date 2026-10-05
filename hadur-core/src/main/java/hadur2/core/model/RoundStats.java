@@ -1,4 +1,4 @@
-package hadur2.core;
+package hadur2.core.model;
 
 import hadur2.core.physics.DiaUtils;
 import java.util.Locale;
@@ -7,9 +7,9 @@ import java.util.Locale;
  * Per-round counters. Every fault and degradation counter lands here and in the
  * {@code R} telemetry record, so the bench report can show it (RES-5).
  *
- * <p>{@link HadurCore} creates a fresh instance in {@code newRound} and writes the fields
+ * <p>{@code HadurCore} creates a fresh instance in {@code newRound} and writes the fields
  * as the round runs (the fields are public for exactly that, and for tests); at the round's
- * end {@link HadurCore#roundEnded} fills in the fields it reads from its subsystems and
+ * end {@code HadurCore.roundEnded} fills in the fields it reads from its subsystems and
  * emits {@link #toRecord}. Most counters are this round's; the memory fields and
  * {@link #seedDecays} are battle totals so far, and {@link #flavourStep} is the step
  * reached in the battle. Nothing here grows: it is a fixed set of numbers (RES-2).</p>
@@ -28,7 +28,7 @@ public final class RoundStats {
     /** Bullets that hit us this round, from any robot, sentries included. */
     public int hitsTaken;
     /**
-     * Faults this round. {@link HadurCore#roundEnded} sets it to the ticks the {@link Guard}
+     * Faults this round. {@code HadurCore.roundEnded} sets it to the ticks the {@code Guard}
      * covered (RES-1); melee faults (GATE-4) are counted here during the round but that
      * assignment replaces them, and they reach the report through the {@code M} record.
      */

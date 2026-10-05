@@ -250,7 +250,7 @@ public class ArchitectureTest {
     @Tag("RES-9")
     @DisplayName("RES-9: duress reads no tree, no wave and no memory")
     void duressLearnsNothing() {
-        noClasses().that().haveFullyQualifiedName("hadur2.core.Duress")
+        noClasses().that().haveFullyQualifiedName("hadur2.core.duel.Duress")
             .should().dependOnClassesThat().resideInAnyPackage("hadur2.core.gun..", "hadur2.core.move..",
                 "hadur2.core.knn..", "hadur2.core.ledger..", "hadur2.core.memory..", "hadur2.core.adapt..",
                 "hadur2.core.melee..")

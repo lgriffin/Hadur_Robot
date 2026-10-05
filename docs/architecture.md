@@ -18,7 +18,8 @@ graph LR
         GC[gun]
         MC[move]
         ML[melee]
-        PT[posture]
+        PT[role]
+        DU[duel]
         M[model / physics / knn]
         T[port.Telemetry]
         MEM[memory]
@@ -33,7 +34,8 @@ graph LR
     E -- events, getters --> A
     A -- BotInput --> G
     G --> C
-    C --> GC & MC
+    C --> DU
+    DU --> GC & MC
     C --> PT
     C --> ML
     ML --> M
@@ -44,9 +46,10 @@ graph LR
     C -. line records .-> T
     T -. console .-> A
     C --> MEM
-    C --> AD
-    C --> PO
-    C --> SH
+    DU --> MEM
+    DU --> AD
+    DU --> PO
+    DU --> SH
     PO --> MEM
     AD --> MEM
     MEM --> PS
@@ -102,14 +105,15 @@ data directory through `RobocodeFileOutputStream`.
 
 | Package | Holds |
 |---|---|
-| `hadur2.core` | `HadurCore` (the brain), `Guard` (RES-1), `RoundStats` (RES-5), `MeleeMemory` (the melee blocks in the profile store, MMEM-1) |
-| `model` | the port values, robot states and their logs, waves and the wave manager |
+| `hadur2.core` | `HadurCore` (the conductor), `Guard` (RES-1), the seams `DuelSeam` and `MeleeSeam` (A2), `MeleeMemory` (the melee blocks in the profile store, MMEM-1) |
+| `duel` | the Duel's brain (A2): `DuelController`, everything the duel does against one opponent, lifted out of `HadurCore`, and `Duress` (RES-9) |
+| `model` | the port values, robot states and their logs, waves and the wave manager, the battle's facts, the round's counters (`RoundStats`, RES-5) and the baton one role hands the next |
 | `ledger` | `EnergyLedger`: explains the enemy's energy changes between scans so only bullet spending becomes a wave (WAVE-1, WAVE-2) |
 | `physics` | `Angles` and `Rules` (bit-identical to Robocode's), battle field, movement prediction |
 | `knn` | KD-tree and KNN views |
 | `gun` | main KNN gun, anti-surfer gun, gun selection |
 | `move` | wave-surfing movement and its danger formulas; our bullets in flight and the shadows they cast (MOVE-1); go-to surfing; the rammer escape (`RamEscape`, RAM-2) and the planned path against a mirror mover (`MirrorDrive`, MIR-1) |
-| `posture` | the melee extension's gate (GATE-1..5): `PostureGate` (melee or duel, failing closed), `DuelFocus` (the one opponent the duel fights while several are alive) and `SentryFence` (the sentry border as a wall for the duel's movement) |
+| `role` | the role contract and its resolution (ROLE, WEAVE, GATE-2..5): `Role`, `Tick`, the battle's `Charter`, the `RoleResolver` with its latch (A1, in place of the melee extension's `PostureGate`), `DuelFocus` (the one opponent the duel fights while several are alive) and `SentryFence` (the sentry border as a wall for the duel's movement) |
 | `melee` | the melee brain (MELEE-2..8, MRADAR, MSENSE, MMOVE, MGUN): battlefield model with shot detection, sweep radar, minimum-risk movement with virtual bullets, field gun with a play-it-forward history per opponent, energy table, targeting waves, posture strategy, battle-long opponent stats; the melee profile block, its round folder and its binary codec (MMEM-1) |
 | `memory` | opponent memory (MEM-1..5, RES-3): lineage keys, the profile, its binary codec, the round folder and the library that loads, saves and evicts; estimates with margins of error, the tiers and the seed layout |
 | `adapt` | recognise and adapt (ADAPT-1..3, DIAL-1..2, RES-4): the opening book, the seed loader and the seed trust |
@@ -126,8 +130,8 @@ physics, so nothing but the engine's rules decides which drops become waves; mel
 only on the model and physics, and no duel package depends on melee; memory depends only on
 itself and the ports, and no gun, movement, melee, ledger or model code depends on memory;
 the adapt and policy packages see neither `BotInput` nor `BotEvent` (DIAL-2), and no gun,
-movement or lower package depends on them; the posture gate depends only on the model and
-physics, and only `HadurCore` sees it.
+movement or lower package depends on them; the `role` package depends only on the model and
+physics, and no brain or kernel package sees it.
 
 `DuelIdentityTest` adds the melee extension's rule that "1v1 is sacred": it pins a hash of
 every source file in the duel's packages (adapt, gun, knn, ledger, memory, move, physics,
@@ -143,18 +147,18 @@ in each kind of battle. From A0 every package has exactly one owner, written in
 | Owner | Packages | Rule |
 |---|---|---|
 | Kernel | `model`, `physics`, `knn`, `ledger`, `memory`, `port` | depends on no strand and not on the conductor (STRAND-2) |
-| Duel strand | `gun`, `move`, `adapt`, `policy`, `shield` | sees only the kernel and itself |
+| Duel strand | `gun`, `move`, `adapt`, `policy`, `shield`, `duel` (A2) | sees only the kernel and itself |
 | Melee strand | `melee` | sees only the kernel and itself |
 | Team strand | none yet | from the Team plan |
-| Conductor | the root package, `posture`, `replay` | runs the tick and owns the seams |
+| Conductor | the root package, `role`, `replay` | runs the tick and owns the seams |
 
 ```mermaid
 graph TB
     subgraph Conductor
-        HC[HadurCore, Guard, posture, replay]
+        HC[HadurCore, Guard, seams, role, replay]
     end
     subgraph Strands
-        D[Duel: gun, move, adapt, policy, shield]
+        D[Duel: duel, gun, move, adapt, policy, shield]
         M[Melee: melee]
         T[Team: later]
     end
@@ -176,11 +180,15 @@ it was pinned with and the files the live robot left in its store (STRAND-4).
 
 ## Melee and duel
 
-Melee is a second posture of the same robot, and the duel is the default. Each tick,
-before handling events, `HadurCore` asks the `posture.PostureGate` which set of subsystems
-drives, and never mixes them:
+Melee is a second role of the same robot, and the duel is the default. Each tick,
+before handling events, `HadurCore` asks the `role.RoleResolver` which role drives, and
+never mixes them. Since A2 each role is a brain behind the `role.Role` contract, driven
+through the conductor's seam for it: `duel.DuelController` through `DuelSeam`, and
+`melee.MeleeController` through `MeleeSeam`. Every event is offered to the charter's roles,
+Melee before Duel (ROLE-5); only the driving role writes orders (WEAVE-1), and only with the
+conductor's fire permission (WEAVE-3).
 
-- **Melee** (GATE-1) while two or more opponents are alive, no sentry robot is alive or has
+- **Melee** (ROLE-3) while two or more opponents are alive, no sentry robot is alive or has
   been scanned this round, and the melee subsystems have not thrown this round. Every
   scan, hit and death then goes to `melee.MeleeController`, which returns the radar sweep, a
   destination and the aim; the duel's waves, ledger and guns are not fed.
@@ -193,12 +201,13 @@ of the round (GATE-3), as does a melee exception, which is caught, recorded as a
 line and counted (GATE-4). Sentries are never passed to the melee tracker, the duel or
 opponent memory, and their bullets never reach the duel's ledger (GATE-5).
 
-When the duel drives with several opponents alive (a vetoed melee), `posture.DuelFocus`
+When the duel drives with several opponents alive (a vetoed melee), `role.DuelFocus`
 names the one it fights: the closest when the duel takes over, kept until it dies. Scans
 and hits of the others go only to the melee tracker, so the duel's model is about one robot.
-With sentries on the field, `posture.SentryFence` checks the duel's orders by simulating 12
+With sentries on the field, `role.SentryFence` checks the duel's orders by simulating 12
 ticks of the engine's movement, and replaces them with a drive to the centre if they would
-come within 30 px of the border zone.
+come within 30 px of the border zone. The fence only replaces the drive: the gun, the
+radar and the fire order pass through untouched (WEAVE-2).
 
 A 1v1 battle never enters melee, and none of this routing runs in one: the duel's replay
 fixtures are unchanged. Each round of a battle with several opponents or sentries ends
