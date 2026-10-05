@@ -246,7 +246,9 @@ public final class HadurCore {
         // ROLE-1: the charter is fixed here, before the first tick.
         Charter charter = Charter.of(facts);
         this.gate = new RoleResolver(charter);
-        this.enemiesTotal = facts.enemies();
+        // Until A5 filters teammates out of the input, the engine's count (teammates included)
+        // is what every tick's others() is measured against, so the strands get the same.
+        this.enemiesTotal = facts.others();
         this.telemetry = telemetry;
         this.fence = new SentryFence(facts.width(), facts.height());
         // A4: the Archive hands each brain its shelf, or none, by charter, behind one gate on
@@ -298,6 +300,7 @@ public final class HadurCore {
         meleeTicks = duelTicks = focusTicks = meleeFaults = sentryHits = 0;
         deadThisRound.clear();
         handOffPending = false;
+        reports.clear();
     }
 
     /**
@@ -541,11 +544,14 @@ public final class HadurCore {
 
     /**
      * LINK-1, LINK-2: a teammate's message is read with the link codec; one that fails it is
-     * ignored, counted and noted in a {@code LINK} record. A5 merges the reports into the World.
+     * ignored, counted and noted in a {@code LINK} record. A report of another round is
+     * dropped: the reports are this round's. A5 merges them into the World.
      */
     private void linkReceived(BotEvent.Message m, Tick tick) {
         try {
-            reports.put(m.sender(), LinkCodec.decode(m.bytes()));
+            Report r = LinkCodec.decode(m.bytes());
+            if (r.round() != round) return;
+            reports.put(m.sender(), r);
             linkReceived++;
         } catch (LinkFormatException ex) {
             linkRejected++;
@@ -564,7 +570,7 @@ public final class HadurCore {
         return linkRejected;
     }
 
-    /** The last report read from each teammate, by name (A5 merges them into the World). */
+    /** The last report read from each teammate this round, by name (A5 merges them into the World). */
     public Map<String, Report> reports() {
         return Collections.unmodifiableMap(reports);
     }

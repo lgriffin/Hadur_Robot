@@ -34,6 +34,20 @@ public class LinkCodecTest {
     }
 
     @Test
+    @Tag("LINK-1")
+    @DisplayName("LINK-1: a report's round is what the wire's 16 bits carry, 0 to 65535, and no more")
+    void roundFitsTheWire() {
+        for (int round : new int[] {0, Report.MAX_ROUND}) {
+            Report r = new Report(round, 1, 0, 0, 0, 0, 100, List.of(), List.of(), List.of());
+            assertEquals(round, LinkCodec.decode(LinkCodec.encode(r)).round());
+        }
+        for (int round : new int[] {-1, Report.MAX_ROUND + 1}) {
+            assertThrows(IllegalArgumentException.class,
+                () -> new Report(round, 1, 0, 0, 0, 0, 100, List.of(), List.of(), List.of()));
+        }
+    }
+
+    @Test
     @Tag("LINK-2")
     @DisplayName("LINK-2: an unknown version, a cut message, a long one and stray bytes are all refused")
     void refusesWhatItCannotRead() {

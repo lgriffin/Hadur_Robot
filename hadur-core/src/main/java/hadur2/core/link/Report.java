@@ -87,6 +87,9 @@ public final class Report {
         }
     }
 
+    /** The highest round a report can carry: the wire gives the round 16 bits. */
+    public static final int MAX_ROUND = 0xFFFF;
+
     private final int round;
     private final long tick;
     private final double x;
@@ -99,7 +102,7 @@ public final class Report {
     private final List<Shot> shots;
 
     /**
-     * @param round the round, from 0
+     * @param round the round, from 0 to 65535 (the wire's 16 bits)
      * @param tick the tick the report was built on
      * @param x the member's x
      * @param y the member's y
@@ -112,6 +115,7 @@ public final class Report {
      */
     public Report(int round, long tick, double x, double y, double heading, double velocity, double energy,
                   List<Sighting> sightings, List<String> deaths, List<Shot> shots) {
+        if (round < 0 || round > MAX_ROUND) throw new IllegalArgumentException("round " + round + " is not 0 to " + MAX_ROUND);
         this.round = round;
         this.tick = tick;
         this.x = x;
