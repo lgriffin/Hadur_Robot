@@ -5,6 +5,7 @@ import hadur2.core.adapt.OpeningBook;
 import hadur2.core.adapt.SeedLoader;
 import hadur2.core.adapt.SeedTrust;
 import hadur2.core.gun.GunController;
+import hadur2.core.gun.ShadowValue;
 import hadur2.core.ledger.EnergyLedger;
 import hadur2.core.memory.Estimate;
 import hadur2.core.memory.LineageKey;
@@ -70,6 +71,8 @@ public final class DuelController {
     private final MoveController moveController;
     /** Turns the enemy waves' danger into movement orders, or rams (END-2). */
     private final SurfMover surfMover;
+    /** GUN-7: the gun's view of the plan movement publishes (MOVE-8); the duel is the only seam. */
+    private final ShadowAvoidance shadowAvoidance;
     /** Our gun waves, one per duel scan, broken as the enemy crosses them to teach the gun. */
     private final WaveManager gunWaveManager;
     /** Our own states at each duel scan, for the movement waves' features. */
@@ -285,6 +288,7 @@ public final class DuelController {
         this.gunController = new GunController(battleField, enemiesTotal);
         this.moveController = new MoveController(battleField, predictor);
         this.surfMover = new SurfMover(battleField, predictor);
+        this.shadowAvoidance = new ShadowAvoidance(fieldWidth, fieldHeight);
         this.ramEscape = new RamEscape(battleField, predictor);
         this.mirror = new MirrorDetector(fieldWidth, fieldHeight);
         this.mirrorDrive = new MirrorDrive(battleField, predictor);
@@ -748,6 +752,8 @@ public final class DuelController {
         checkSurfSeed(in.time());
         checkDistance(in, gunHeat);
         moveController.updateShadows(in.time());
+        // MOVE-8: the plan is republished by the surf on each tick it drives.
+        moveController.clearPlan();
         if (endgame == Endgame.State.RAM) {
             surfMover.ram(orders, currentState(in), lastEnemyLocation);
         } else if (mirrorActive) {
@@ -1423,7 +1429,15 @@ public final class DuelController {
         if (lastGunWave.targetEnergy == 0 || ticksUntilGunCool(gunHeat, in) > 3) {
             aimAngle = DiaUtils.absoluteBearing(myNext, lastGunWave.targetLocation);
         } else {
-            aimAngle = gunController.aim(lastGunWave, myNext, in.time());
+            // GUN-7: with a plan published on a wave in the air, the angle also weighs what the
+            // bullet's shadows save us. Our own bullets' shadows are brought up to date first,
+            // so a shot fired this tick already counts.
+            ShadowValue shadow = null;
+            if (GunController.SHADOW_AIM && !moveController.planIntervals().isEmpty()) {
+                moveController.updateShadows(in.time());
+                shadow = shadowAvoidance.prepare(moveController.planIntervals(), myNext, in.time());
+            }
+            aimAngle = gunController.aim(lastGunWave, myNext, in.time(), shadow);
         }
         // MIR-1: a mirror bot will be at the reflection of where our plan has us, a few
         // ticks late; the shot leaves next tick from myNext.

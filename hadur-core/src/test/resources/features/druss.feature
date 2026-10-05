@@ -238,3 +238,50 @@ Feature: The DrussGT route
   Scenario: Guns rated alike over light shots: no gun clears its margin of error
     Given every gun has been rated alike over 200 light shots
     Then no gun is rated clearly highest for a light shot, so the main gun fires
+
+  @MOVE-8
+  Scenario: Movement publishes the interval its plan occupies on an enemy bullet in the air
+    Given an enemy bullet is in the air towards Hadur
+    When Hadur's movement plans its next tick
+    Then movement publishes an interval for that bullet
+
+  @MOVE-8
+  Scenario: The interval holds where Hadur will be when the bullet arrives
+    Given an enemy bullet is in the air towards Hadur
+    When Hadur's movement plans to stand still
+    Then the interval holds the bearing from the enemy to where Hadur will be
+
+  @MOVE-8
+  Scenario: With no enemy bullet in the air nothing is published
+    Given no enemy bullet is in the air
+    When Hadur's movement plans its next tick
+    Then movement publishes nothing
+
+  @GUN-7
+  Scenario: With no enemy bullet in the air the gun fires the angle it aimed
+    Given a gun with a full main view and no enemy bullet in the air
+    Then the gun fires exactly the angle it aimed
+
+  @GUN-7
+  Scenario: A shadow worth more than the hit it costs moves the shot, but not past a bot's width or so
+    Given a gun with a full main view
+    Then a bullet clockwise of the aim that would save 50 damage moves the shot clockwise, within two bot half-widths
+
+  @GUN-7
+  Scenario: A shadow worth nothing leaves the shot where the gun aimed it
+    Given a gun with a full main view
+    Then a bullet clockwise of the aim that would save 0 damage leaves the shot where it was
+
+  @GUN-7
+  Scenario: A bullet that crosses the enemy bullet's path saves damage, one that cannot meet it saves none
+    Given an enemy bullet is in the air towards Hadur
+    And a plan interval on that bullet with a 0.2 chance of a hit
+    Then a bullet fired close to the line at the enemy saves some damage, never more than the interval is worth
+    And a bullet fired across the field saves nothing
+
+  @GUN-7
+  Scenario: What our bullets in flight already stop is not counted again
+    Given an enemy bullet is in the air towards Hadur
+    And a plan interval on that bullet with a 0.2 chance of a hit
+    And our bullets in flight already stop all of that interval
+    Then no bullet saves anything more

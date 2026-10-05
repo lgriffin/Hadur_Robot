@@ -75,8 +75,69 @@ public class MainGun {
     public double aim(Wave w, KnnView<TimestampedFiringAngle> view,
                       Point2D.Double myNextLocation, long currentTime) {
         if (view.size() == 0) return w.absBearing;
+        return aimFrom(w, view.nearestNeighbors(w, true), myNextLocation, currentTime, null);
+    }
 
+    /**
+     * GUN-7: {@link #aim} and the probability mass of the same aim, from one neighbour
+     * search: the angle is exactly {@code aim}'s, and the mass is the kernel density of the
+     * neighbours that {@code aim} scored (valid ones, with their weights).
+     *
+     * @param w the gun wave for the shot
+     * @param view the main view for the target
+     * @param myNextLocation where we will be when the bullet leaves, the next tick
+     * @param currentTime the present tick
+     * @return the angle and the mass; the mass is null when no neighbour is usable, in which
+     *     case the angle is head-on
+     */
+    public Aimed aimWithMass(Wave w, KnnView<TimestampedFiringAngle> view,
+                             Point2D.Double myNextLocation, long currentTime) {
+        if (view.size() == 0) return new Aimed(w.absBearing, null);
         List<KdTree.Entry<TimestampedFiringAngle>> neighbors = view.nearestNeighbors(w, true);
+        Scored sc = new Scored();
+        double angle = aimFrom(w, neighbors, myNextLocation, currentTime, sc);
+        return new Aimed(angle, sc.angles == null ? null : massOf(sc, w, myNextLocation));
+    }
+
+    /** An angle and the mass behind it, see {@link #aimWithMass}. */
+    public static final class Aimed {
+        /** The bearing to fire along, absolute radians. */
+        public final double angle;
+        /** The probability mass over firing angles, or null when none. */
+        public final ShadowAim.Mass mass;
+
+        Aimed(double angle, ShadowAim.Mass mass) {
+            this.angle = angle;
+            this.mass = mass;
+        }
+    }
+
+    /** What {@link #aimFrom} scored, kept for GUN-7's mass. */
+    private static final class Scored {
+        double[] angles;
+        double[] weights;
+        boolean[] valid;
+    }
+
+    /** The scored neighbours' angles and weights as GUN-7's mass; null when none is usable. */
+    private static ShadowAim.Mass massOf(Scored sc, Wave w, Point2D.Double myNextLocation) {
+        int n = sc.angles.length;
+        double[] angles = new double[n];
+        double[] weights = new double[n];
+        int used = 0;
+        for (int i = 0; i < n; i++) {
+            if (!sc.valid[i]) continue;
+            angles[used] = sc.angles[i];
+            weights[used++] = sc.weights[i];
+        }
+        if (used == 0) return null;
+        return ShadowAim.Mass.kernel(java.util.Arrays.copyOf(angles, used),
+            java.util.Arrays.copyOf(weights, used),
+            2.0 * DiaUtils.botWidthAimAngle(myNextLocation.distance(w.targetLocation)));
+    }
+
+    private double aimFrom(Wave w, List<KdTree.Entry<TimestampedFiringAngle>> neighbors,
+                           Point2D.Double myNextLocation, long currentTime, Scored keep) {
         int numScans = neighbors.size();
         double[] firingAngles = new double[numScans];
         boolean[] valid = new boolean[numScans];
@@ -131,6 +192,11 @@ public class MainGun {
             }
         }
 
+        if (keep != null) {
+            keep.angles = firingAngles;
+            keep.weights = weights;
+            keep.valid = valid;
+        }
         // No candidate was valid: every neighbour faded or projected off the field.
         if (bestDensity == Double.NEGATIVE_INFINITY) return w.absBearing;
         return Angles.normalAbsoluteAngle(bestAngle);

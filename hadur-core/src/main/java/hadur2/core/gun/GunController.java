@@ -73,6 +73,12 @@ public class GunController {
         return power < LIGHT_BELOW;
     }
 
+    /**
+     * GUN-7: whether the aim weighs shadows at all. On in the release; a constant so the gate
+     * can build an A/B without the term (set false and the aim is D3's, exactly).
+     */
+    public static final boolean SHADOW_AIM = true;
+
     /** A gun seed sample: the main view's 10 data-point values, the guess factor, the displacement. */
     public static final int SAMPLE_WIDTH = 13;
 
@@ -256,6 +262,44 @@ public class GunController {
      * @return an absolute bearing in radians
      */
     public double aim(Wave w, Point2D.Double myNextLocation, long currentTime) {
+        return aim(w, myNextLocation, currentTime, null);
+    }
+
+    /**
+     * GUN-7: {@link #aim(Wave, Point2D.Double, long)}, then the shot's angle chosen among a few
+     * nearby candidates by the damage a hit would do plus the damage the bullet's shadows save
+     * us ({@link ShadowAim}). The chosen gun still decides which angle is the centre of the
+     * choice; the virtual guns are rated on their own angles, not on the shifted one.
+     *
+     * <p>Without a shadow term, with {@link #SHADOW_AIM} off, while no wave has a published
+     * interval, and in the head-on warm-up, the answer is the plain aim's, exactly.</p>
+     *
+     * @param w the latest gun wave at the target
+     * @param myNextLocation where we will be when the bullet leaves, the next tick
+     * @param currentTime the present tick
+     * @param shadow what a firing angle's shadows are worth, or null for none
+     * @return an absolute bearing in radians
+     */
+    public double aim(Wave w, Point2D.Double myNextLocation, long currentTime, ShadowValue shadow) {
+        boolean shadowed = SHADOW_AIM && shadow != null && shadow.active();
+        aimedGun = null;
+        aimMass = null;
+        wantMass = shadowed;
+        double base = plainAim(w, myNextLocation, currentTime);
+        if (!shadowed || aimedGun == null) return base;
+        double halfWidth = DiaUtils.botWidthAimAngle(myNextLocation.distance(w.targetLocation));
+        ShadowAim.Mass mass = aimMass != null ? aimMass : ShadowAim.Mass.around(base, 2.0 * halfWidth);
+        return ShadowAim.choose(base, mass, halfWidth, w.bulletPower(), shadow);
+    }
+
+    /** GUN-7: the gun that aimed last, null in the head-on warm-up; read by {@link #aim(Wave, Point2D.Double, long, ShadowValue)}. */
+    private Opening aimedGun;
+    /** GUN-7: the main gun's mass for the last aim, when it aimed and one was asked for. */
+    private ShadowAim.Mass aimMass;
+    /** GUN-7: whether the main gun is to keep its mass for this aim. */
+    private boolean wantMass;
+
+    private double plainAim(Wave w, Point2D.Double myNextLocation, long currentTime) {
         Map<String, KnnView<TimestampedFiringAngle>> views = getOrCreateViews(w.botName);
         KnnView<TimestampedFiringAngle> mainView = views.get(MainGun.viewName());
         // GUN-5: the wave carries the power the shot will go at (D1 decides power before aim),
@@ -288,6 +332,7 @@ public class GunController {
     private double fireWith(Opening use, Wave w, Map<String, KnnView<TimestampedFiringAngle>> views,
                             KnnView<TimestampedFiringAngle> mainView, Point2D.Double myNextLocation,
                             long currentTime) {
+        aimedGun = use;
         if (use == Opening.SAMPLED) {
             return sampledGun.aim(w, views.get(HybridGun.viewName()), myNextLocation);
         }
@@ -296,6 +341,12 @@ public class GunController {
         }
         if (use == Opening.ANTI_SURFER) {
             return antiSurferGun.aim(w, views, myNextLocation, currentTime);
+        }
+        if (wantMass) {
+            // GUN-7: the same angle as aim() gives, with the mass behind it, from one search.
+            MainGun.Aimed aimed = mainGun.aimWithMass(w, mainView, myNextLocation, currentTime);
+            aimMass = aimed.mass;
+            return aimed.angle;
         }
         return mainGun.aim(w, mainView, myNextLocation, currentTime);
     }

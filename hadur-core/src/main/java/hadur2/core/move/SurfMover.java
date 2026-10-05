@@ -86,6 +86,12 @@ public class SurfMover {
     private Point2D.Double goToPoint;
     /** RAM-1: while true, the no-wave orbit takes the side it would otherwise not have. */
     private boolean rammerActive;
+    /** MOVE-8: the interval the last {@link #waveDanger} scored; null when it had no intersection. */
+    private PlanInterval lastLeg;
+    /** MOVE-8: the intervals of the last {@link #checkDanger} leg and the best legs after it, nearest wave first. */
+    private List<PlanInterval> lastChain = List.of();
+    /** MOVE-8: this tick's plan for each of the three options, from {@link #lastChain}. */
+    private final Map<SurfOption, List<PlanInterval>> surfOptionChains = new HashMap<>();
 
     /**
      * A surf on {@code battleField}, in the three-option mode, at {@link #DEFAULT_DISTANCE}.
@@ -287,7 +293,9 @@ public class SurfMover {
         double cwDanger = surfOptionDangers.getOrDefault(SurfOption.CLOCKWISE, 0.0);
 
         Point2D.Double surfDest;
+        SurfOption chosen;
         if (stopDanger <= ccwDanger && stopDanger <= cwDanger) {
+            chosen = SurfOption.STOP;
             // Stop: speed 0, still turned toward the last orbit's destination. The point is
             // fixed while the stop lasts, so the stop predicted next tick is the same stop.
             if (stopDestination == null) {
@@ -300,10 +308,14 @@ public class SurfMover {
             orders.maxVelocity(8.0);
             lastSurfOption = cwDanger < ccwDanger
                 ? SurfOption.CLOCKWISE : SurfOption.COUNTER_CLOCKWISE;
+            chosen = lastSurfOption;
             lastSurfDestination = surfOptionDestinations.get(lastSurfOption);
             surfDest = lastSurfDestination;
             stopDestination = null;
         }
+
+        // MOVE-8: the plan just chosen, for the gun to read.
+        moveCtrl.publishPlan(surfOptionChains.getOrDefault(chosen, List.of()));
 
         // Drive the same way the prediction did: toward the destination, wall-smoothed on
         // the orbit's side, reversing rather than turning more than 90 degrees.
@@ -325,6 +337,7 @@ public class SurfMover {
             double danger = checkDanger(myState, moveCtrl, myState, option,
                 goingClockwise, 0, wavesToSurf, bestDanger, new RobotStateLog());
             surfOptionDangers.put(option, danger);
+            surfOptionChains.put(option, lastChain);
             bestDanger = Math.min(bestDanger, danger);
         }
     }
@@ -359,6 +372,8 @@ public class SurfMover {
                        RobotState startState, SurfOption option,
                        boolean prevClockwise, int surfWaveIndex,
                        int numWaves, double cutoff, RobotStateLog predictedLog) {
+        // MOVE-8: nothing planned on this wave unless the leg below scores it.
+        lastChain = List.of();
         Wave surfWave = moveCtrl.findSurfableWave(surfWaveIndex, myState);
         if (surfWave == null) return 0;
 
@@ -429,21 +444,29 @@ public class SurfMover {
 
         double danger = waveDanger(myState, moveCtrl, surfWave, surfWaveIndex, dangerStates,
             startState.location, passedState.location);
+        PlanInterval own = lastLeg;
 
         // Look one wave further, from where this leg ends. Each branch gets its own copy of
         // the log, so the options do not see each other's states.
+        List<PlanInterval> nextChain = List.of();
         if (surfWaveIndex + 1 < numWaves && danger < cutoff) {
             double nextCcw = checkDanger(myState, moveCtrl, passedState,
                 SurfOption.COUNTER_CLOCKWISE, predictClockwise, surfWaveIndex + 1,
                 numWaves, cutoff, (RobotStateLog) predictedLog.clone());
+            List<PlanInterval> chainCcw = lastChain;
             double nextStop = checkDanger(myState, moveCtrl, passedState,
                 SurfOption.STOP, predictClockwise, surfWaveIndex + 1,
                 numWaves, cutoff, (RobotStateLog) predictedLog.clone());
+            List<PlanInterval> chainStop = lastChain;
             double nextCw = checkDanger(myState, moveCtrl, passedState,
                 SurfOption.CLOCKWISE, predictClockwise, surfWaveIndex + 1,
                 numWaves, cutoff, (RobotStateLog) predictedLog.clone());
-            danger += Math.min(nextCcw, Math.min(nextStop, nextCw));
+            double nextMin = Math.min(nextCcw, Math.min(nextStop, nextCw));
+            danger += nextMin;
+            // MOVE-8: the plan goes on along the cheapest of the three (the first on a tie).
+            nextChain = nextCcw == nextMin ? chainCcw : nextStop == nextMin ? chainStop : lastChain;
         }
+        lastChain = chain(own, nextChain);
         return danger;
     }
 
@@ -472,8 +495,10 @@ public class SurfMover {
         // views' score already counts only what the shadows let through (MOVE-3); the hit-rate
         // term, which has no angle, keeps 1 - (certain + possible / 2) of its weight.
         double shadowed = surfWave.shadowedFraction(intersection);
-        double danger = hitRate * (1 - shadowed)
-            + moveCtrl.getDangerScore(surfWave, intersection, surfWaveIndex);
+        double viewScore = moveCtrl.getDangerScore(surfWave, intersection, surfWaveIndex);
+        double danger = hitRate * (1 - shadowed) + viewScore;
+        // MOVE-8: what the gun is told about this wave, before the damage and timing scale it.
+        lastLeg = intersection == null ? null : PlanInterval.of(surfWave, intersection, danger);
         // Robocode's damage: 4 * power, plus 2 * (power - 1) above power 1.
         danger *= Rules.getBulletDamage(surfWave.bulletPower());
         // WAVE-3: a wave whose power came from an ambiguous wall-hit split is trusted at half.
@@ -531,6 +556,7 @@ public class SurfMover {
         }
         options.sort(Comparator.comparingDouble(o -> o.danger));
         GoToOption best = options.get(0);
+        List<PlanInterval> bestPlan = chain(best.first, List.of());
         if (wavesToSurf > 1) {
             double bestTotal = Double.POSITIVE_INFINITY;
             for (int i = 0; i < Math.min(GO_TO_SECOND_WAVE, options.size()); i++) {
@@ -542,10 +568,13 @@ public class SurfMover {
                 if (total < bestTotal) {
                     bestTotal = total;
                     best = o;
+                    bestPlan = chain(o.first, lastChain);
                 }
             }
         }
         goToPoint = best.point;
+        // MOVE-8: the plan the pick implies on the first wave and, when looked at, the second.
+        moveCtrl.publishPlan(bestPlan);
         // Recorded so a later three-option wave, or a stop, starts on this side.
         lastSurfOption = orbitSide(surfWave, myState, best.point);
         goTo(orders, myState, best.point);
@@ -634,10 +663,11 @@ public class SurfMover {
             predicted = goToStep(predicted, point);
         }
         // No state met the wave within MAX_PREDICTION ticks: nothing to score.
+        lastLeg = null;
         double danger = dangerStates.isEmpty() ? 0
             : waveDanger(myState, moveCtrl, surfWave, 0, dangerStates, myState.location,
                 passed.location);
-        return new GoToOption(point, danger, passed, log);
+        return new GoToOption(point, danger, passed, log, lastLeg);
     }
 
     /**
@@ -655,10 +685,15 @@ public class SurfMover {
                                     SurfOption side, double cutoff) {
         boolean clockwise = side == SurfOption.CLOCKWISE;
         double best = Double.POSITIVE_INFINITY;
+        List<PlanInterval> bestChain = List.of();
         for (SurfOption option : SurfOption.values()) {
-            best = Math.min(best, checkDanger(myState, moveCtrl, o.passed, option, clockwise, 1, 2,
-                cutoff, (RobotStateLog) o.log.clone()));
+            double d = checkDanger(myState, moveCtrl, o.passed, option, clockwise, 1, 2,
+                cutoff, (RobotStateLog) o.log.clone());
+            if (d < best) bestChain = lastChain;
+            best = Math.min(best, d);
         }
+        // MOVE-8: read by goToSurf for the candidate it keeps.
+        lastChain = bestChain;
         return best;
     }
 
@@ -723,13 +758,32 @@ public class SurfMover {
         final double danger;
         final RobotState passed;
         final RobotStateLog log;
+        /** MOVE-8: the interval its first-wave score used; null when there was none. */
+        final PlanInterval first;
 
-        GoToOption(Point2D.Double point, double danger, RobotState passed, RobotStateLog log) {
+        GoToOption(Point2D.Double point, double danger, RobotState passed, RobotStateLog log,
+                   PlanInterval first) {
             this.point = point;
             this.danger = danger;
             this.passed = passed;
             this.log = log;
+            this.first = first;
         }
+    }
+
+    /** MOVE-8, a seam for tests: the plan the last {@link #checkDanger} call scored, nearest wave first. */
+    List<PlanInterval> lastPlan() {
+        return lastChain;
+    }
+
+    /** MOVE-8: {@code first} (when there is one) followed by {@code rest}. */
+    private static List<PlanInterval> chain(PlanInterval first, List<PlanInterval> rest) {
+        if (first == null) return rest;
+        if (rest.isEmpty()) return List.of(first);
+        List<PlanInterval> out = new ArrayList<>(rest.size() + 1);
+        out.add(first);
+        out.addAll(rest);
+        return out;
     }
 
     /** The logged predicted states in which {@code surfWave} is crossing our hit box. */
