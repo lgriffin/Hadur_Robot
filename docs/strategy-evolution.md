@@ -308,6 +308,18 @@ Release 3.8. Against DrussGT both guns hit below break-even, so each shot costs 
 - **Re-snapshotted:** the telemetry snapshots of all thirteen fixtures (`-Dhadur.replay.snapshot=write`), because the `R` record is longer.
 - **Re-pinned:** `pins/kernel.sha256`, `pins/duel.sha256`, `pins/conductor.sha256` (`-Dhadur.pin=kernel,duel,conductor`) and `duel-sources.sha256` (`-Dhadur.duel.snapshot=write`). The melee and team pins did not change.
 - **Gate** ([d1-gate.md](bench/d1-gate.md)), paired against 3.7: DrussGT **+12.0 ± 4.3** points (48.2% against 36.2%, 20 battles), the top 10 +6.7 on average (Firestarter +21.3, Diamond +14.1, Knight +11.6), the weak set level. The rule pays against surfers whose power follows ours down, not only DrussGT.
+## D5: the shield list (DrussGT route)
+
+Hadur opens each round in shield mode against the opponents on a list of its own (SHIELD-5): it sits
+still, predicts the enemy's bullet from head-on predictors and fires a lighter bullet that meets it
+mid-air (`hadur2.core.shieldmode`, ported from the c6d4d7a prototype). SHIELD-6 bounds the cost: once
+the enemy's bullet damage exceeds what would hold our score share at 85%, shield mode is off for the
+rest of the battle (allowance 60 * (rounds won + 1) + damage dealt, times 15/85). Per-round exits
+(close, rammed, unpredicted, outhit, quiet, duress) hand the round back to the normal duel. The list
+ships empty in robot 3.8; names go on it only after BENCH-11's paired probe (`--shield-probe`) shows
+shield mode wins against them. It ships as a class, `hadur2.ShieldListData`, because Robocode's
+sandbox kills a robot that reads a resource of its own jar. Requirements are in the D5 subsection of
+`docs/requirements.md`.
 
 ## What comes next
 

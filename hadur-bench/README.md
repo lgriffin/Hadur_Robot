@@ -126,6 +126,35 @@ while either robot was disabled and matched no wave; they are left out of the re
 count. (A disabled robot is still scanned, so such a shot is often seen, and then counts.) "False waves" are inferred waves with no real bullet behind them;
 "ledger phantoms" are drops 1.20 would have read as shots that the ledger explained away.
 
+## Shield probe (BENCH-11)
+
+```sh
+mvn exec:java -Dexec.args="--shield-probe candidates.txt --seeds 20 --rounds 35"
+```
+
+`candidates.txt` is an ordinary opponent set (`name | role | jar | weight`, the format of
+`--set`). The probe repacks the robot jar (`--robot-jar`, default the built
+`hadur-robot/target/hadur2.Hadur_<version>.jar`) twice into `<out>/shield-probe/`: as
+`<version>-on`, whose shield list (`hadur2.ShieldListData`, SHIELD-5) names every opponent of the set,
+and as `<version>-off`, whose list names nobody. The two jars are the same bytes apart from that
+class and the version string in `Hadur.properties`. It then runs the existing paired machinery
+(`--baseline`, BENCH-2) with "on" as the candidate and "off" as the baseline: one battle each per
+seed at the same `RANDOMSEED`. It needs a JDK (the list class is compiled on the fly), makes its
+own baseline (so it refuses `--baseline`), and takes no `--melee`, `--team`, `--session`,
+`--client`, `--record` or `--robot-classes`.
+
+The report gets a "Shield probe" section after the paired table: per opponent the shares on and
+off, the paired difference in points with its verdict (*wins* when the 95% interval lies above 0,
+*loses* below, *open* otherwise), and what shield mode did in the "on" battles, read from the `SH`
+and `SR` records in `hadur.log`: rounds that opened in shield mode, shield bullets fired, enemy
+bullets they met, hits taken while it ran, rounds left early (and why), and battles in which the
+SHIELD-6 budget switched it off. Then the weighted mean paired difference over the set (BENCH-1
+weights) and, ready to paste into `ShieldListData.lines()`, the opponents that win.
+
+Reading it: twenty seeds resolve a paired difference to about 2.7 points; one seed gives *open*
+for everything. A "budget exit" in every battle with few rounds on means SHIELD-6 (hold 85% of
+the score share) ended it early, which is the cost the probe is there to price in.
+
 ## Client conditions (BENCH-4)
 
 ```sh

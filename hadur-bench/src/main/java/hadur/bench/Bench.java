@@ -33,7 +33,7 @@ import java.util.zip.GZIPOutputStream;
  *     warm keeps it across {@code --battles} consecutive battles per opponent.</li>
  * <li>{@code --rounds N} rounds per battle (35), {@code --seeds N} battles per opponent in
  *     cold mode (5), {@code --battles N} in warm mode (5), {@code --field WxH} (800x600).</li>
- * <li>{@code --robot-jar FILE} the robot jar (../hadur-robot/target/hadur2.Hadur_3.3.jar),
+ * <li>{@code --robot-jar FILE} the robot jar (../hadur-robot/target/hadur2.Hadur_3.8.jar),
  *     or {@code --robot-classes DIR} to jar a compiled class tree instead;
  *     {@code --robot NAME} as Robocode lists it ("hadur2.Hadur 3.8").</li>
  * <li>{@code --record DIR} capture replay fixtures instead: runs the recorder robot
@@ -51,6 +51,14 @@ import java.util.zip.GZIPOutputStream;
  *     {@code --robot}: two jars sharing a robot name+version would install to the same
  *     file, so the candidate and baseline must be different name/version strings (e.g. a
  *     released version against a locally bumped one).</li>
+ * <li>{@code --shield-probe FILE} (BENCH-11) run each opponent of FILE (the usual set
+ *     format, with the weight column) with Hadur's shield mode on and off over the same
+ *     seeds, and report the paired difference per opponent and the weighted mean. The
+ *     candidate jar is repacked twice, with a shield list naming every opponent ("on") and
+ *     an empty one ("off"), under robot versions {@code <version>-on} and {@code
+ *     <version>-off}, and the pair runs through the {@code --baseline} machinery; so the
+ *     option takes {@code --robot-jar}, {@code --robot}, {@code --rounds}, {@code --seeds}
+ *     and {@code --only}, and no {@code --baseline}. See {@link ShieldProbe}.</li>
  * <li>{@code --sentry-border N} in melee mode, the set's {@code sentry} entries fight as
  *     Robocode sentries guarding a border N px deep.</li>
  * <li>{@code --client FILE} (BENCH-4) run the set through each rumble-client condition the
@@ -94,6 +102,12 @@ public final class Bench {
     Bench(Map<String, String> opts) {
         this.opts = opts;
         this.benchDir = Path.of("").toAbsolutePath();
+        try {
+            // BENCH-11: --shield-probe becomes a paired run of the same jar with shield mode on and off.
+            ShieldProbe.prepare(opts, benchDir);
+        } catch (IOException e) {
+            throw new java.io.UncheckedIOException(e);
+        }
         if (opts.containsKey("team")) {
             // A5: the TeamRumble's settings and the team jar, unless given.
             opts.putIfAbsent("field", "1200x1200");
@@ -246,6 +260,11 @@ public final class Bench {
             // BENCH-2's diff table, then BENCH-3's full per-opponent diagnostics for the
             // baseline too (hit rate, skips, faults, pace), not just its score share.
             report += Report.renderPaired(results, baselineResults, robot, baselineRobot);
+            // BENCH-11: what shield mode did, and the verdict per opponent.
+            if (opts.containsKey("shield-probe")) {
+                report += ShieldProbe.render(results, baselineResults, out.resolve("battles"), robot,
+                    baselineRobot);
+            }
             report += "\n" + Report.render(baselineResults, robot + " baseline (" + baselineRobot + ")",
                 warm, rounds, runs, width, height, cpuConstant());
         }
@@ -701,7 +720,7 @@ public final class Bench {
             jar(classes, target);
         } else {
             Path jar = Path.of(opts.getOrDefault("robot-jar",
-                "../hadur-robot/target/hadur2.Hadur_3.3.jar")).toAbsolutePath();
+                "../hadur-robot/target/hadur2.Hadur_3.8.jar")).toAbsolutePath();
             if (!Files.isRegularFile(jar)) {
                 throw new IllegalStateException("No robot jar at " + jar + "; run mvn package first");
             }
