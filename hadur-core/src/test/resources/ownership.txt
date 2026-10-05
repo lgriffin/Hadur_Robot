@@ -19,4 +19,5 @@ hadur2.core.move      | duel
 hadur2.core.adapt     | duel
 hadur2.core.policy    | duel
 hadur2.core.shield    | duel
+hadur2.core.duel      | duel
 hadur2.core.melee     | melee

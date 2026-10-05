@@ -623,10 +623,10 @@ Every requirement group belongs to one owner, the same owner as the code it gove
 | Owner | Packages | Requirement groups |
 |---|---|---|
 | Kernel | `model`, `physics`, `knn`, `ledger`, `memory`, `port` (and `world` from A3) | CORE, WAVE, MEM, PHYS, WORLD, LINK, SHELF |
-| Duel strand | `gun`, `move`, `adapt`, `policy`, `shield` (and `duel` from A2) | ADAPT, GUN, DIST, POW, MOVE, END, DIAL, RADAR, SHIELD, TIME, RAM, MIR |
+| Duel strand | `gun`, `move`, `adapt`, `policy`, `shield`, `duel` (from A2) | ADAPT, GUN, DIST, POW, MOVE, END, DIAL, RADAR, SHIELD, TIME, RAM, MIR |
 | Melee strand | `melee` | MELEE, MRADAR, MMOVE, MGUN, MSENSE, MMEM |
 | Team strand | `team`, from the Team plan | none yet |
-| Conductor | the root package, `posture` (`role` from A1), `replay` | GATE, ROLE, WEAVE, RES, STRAND |
+| Conductor | the root package, `role` (`posture` until A1), `replay` | GATE, ROLE, WEAVE, RES, STRAND |
 | Bench and release | `hadur-bench`, the adapter | BENCH, REL |
 
 ### Requirements
@@ -666,6 +666,40 @@ Every requirement group belongs to one owner, the same owner as the code it gove
 | STRAND-3 | Ubiquitous | Each owner's sources shall be pinned by hash. | A0 |
 | STRAND-4 | Ubiquitous | A recorded duel battle and a recorded melee battle shall each replay to identical orders, telemetry and store files. | A0 |
 | STRAND-5 | Ubiquitous | A recorded team battle shall replay to identical orders and telemetry for each recorded member. | A5 |
+
+### A2 notes
+
+- **The Duel is lifted.** `duel.DuelController` holds everything the duel did inside
+  `HadurCore`, moved verbatim: the guns, the surf, the waves and state logs, the ledger, the
+  shield, the S4 opening and seeds, the S5 and S6 policies, the rammer and mirror responses,
+  and `Duress`, which moved with it. `RoundStats` moved to the kernel's `model`, so the Duel
+  fills in its counters without seeing the conductor. The duel pin only gains the two files;
+  `DuelIdentityTest` shows no file in the nine pinned packages changed.
+- **The contract.** `role.Role` is the plan's interface, with `Tick`, `RoundFacts` and
+  `RoundResult`. The conductor drives each brain through its seam in the root package:
+  `DuelSeam` and `MeleeSeam` (today's `meleeTick` and `goTo`, the melee half of the `M`
+  record and the `.hm` shelf). Each seam is handed its shelf by charter: the `.hp` library in
+  a Duel charter, the melee blocks and the survivors' 1v1 profiles in a Melee charter. The
+  baton (`model.Baton`) carries the melee's shots and Hadur's path, so `duel` imports
+  nothing from `melee`. `HadurCore` keeps every public method and accessor it had.
+- **ROLE-5** is the conductor's `observe`: its own bookkeeping first (round counters,
+  deaths, the budget's events), then the Melee seam, then the Duel seam. Sentry scans and a
+  sentry's bullets stop there (GATE-5); the Melee seam skips Hadur's hit on a robot the Duel
+  ignores. The hand-off happens inside the Duel seam's scan, after the opponent switch and
+  before the scan is logged.
+- **WORLD-5** is the conductor's count of melee bullets in flight, unchanged; the Duel seam
+  asks it once per outcome.
+- **WEAVE-1**: `Role.observe` is handed no orders, and the Duel holds a scan's radar lock
+  until `drive`, which writes it first, where the scan used to. **WEAVE-2** is a property:
+  the sentry fence keeps the gun, radar and fire orders bit for bit. **WEAVE-3**: the
+  conductor gives the fire permission before the role drives (always, until A5's fire lane;
+  `HadurCore.firePermission` lets tests withhold it), and both seams hold their shot and its
+  count without it. **WEAVE-6**: a shot ordered without it is the driving role's fault, a
+  melee fault (GATE-4) in Melee and the Guard's in the Duel.
+- **The gate.** All eleven fixtures replay to identical orders, telemetry and store files,
+  none re-recorded. One shelf rule now reads the charter instead of a count: a battle that
+  starts with no opponent at all would be a Duel charter with a `.hp` shelf. Robocode never
+  starts one.
 
 ### A1 notes
 

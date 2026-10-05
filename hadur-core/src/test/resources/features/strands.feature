@@ -36,3 +36,30 @@ Feature: One identity, three strands
       | melee-samples         |
       | melee-sentry          |
       | melee-handoff         |
+
+  @ROLE-5
+  Scenario: The melee brain hears a duel's scans, and a sentry is offered to no role
+    Given a core in a 1000 by 1000 battle against 1 opponent
+    And a border sentry guarding 100 px
+    When it plays 10 ticks scanning every opponent and the sentry
+    Then the duel drove every tick
+    And the melee brain tracks "opp1"
+    And the duel fights "opp1" and the melee brain never saw the sentry
+
+  @WEAVE-3
+  Scenario: The driving role shoots only with the conductor's permission
+    Given a core in a 1000 by 1000 battle against 1 opponent
+    When it plays 40 ticks scanning every opponent
+    Then some order fires
+
+  @WEAVE-3
+  Scenario: Without the fire permission no shot leaves, in a duel or a melee
+    Given a core in a 1000 by 1000 battle against 3 opponents
+    And the conductor withholds the fire permission
+    When it plays 40 ticks scanning every opponent
+    Then melee drove every tick
+    And no order fires
+    When opponent 2 dies
+    And opponent 3 dies
+    And it plays 40 ticks scanning every opponent
+    Then no order fires

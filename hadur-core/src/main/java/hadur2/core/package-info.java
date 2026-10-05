@@ -20,13 +20,18 @@
  * same orders (CORE-2). This package itself holds the three classes the adapter talks to.</p>
  *
  * <ul>
- * <li>{@link hadur2.core.HadurCore}: the brain. One instance lives for the whole battle
+ * <li>{@link hadur2.core.HadurCore}: the conductor. One instance lives for the whole battle
  *     (Robocode makes a new robot object each round, so the adapter keeps it static), which
- *     is how learning survives from round to round.</li>
+ *     is how learning survives from round to round. Since A2 it drives two brains, the
+ *     {@link hadur2.core.duel.DuelController} and the {@link hadur2.core.melee.MeleeController},
+ *     each through the conductor's seam for it, behind the {@link hadur2.core.role.Role}
+ *     contract.</li>
  * <li>{@link hadur2.core.Guard}: wraps every core tick and returns safe orders if the core
  *     throws or returns nothing (RES-1).</li>
- * <li>{@link hadur2.core.RoundStats}: the round's counters and the {@code R} record that
- *     carries every fault and degradation counter to the bench report (RES-5).</li>
+ * <li>{@link hadur2.core.model.RoundStats}: the round's counters and the {@code R} record that
+ *     carries every fault and degradation counter to the bench report (RES-5). A2 moved it to
+ *     the kernel's {@code model}, so the Duel keeps its counters without seeing the
+ *     conductor.</li>
  * </ul>
  *
  * <p><b>The tick.</b> Robocode runs a robot's event handlers inside {@code execute()} and then
@@ -41,12 +46,13 @@
  *     duel has not yet driven this round (ROLE-2 to ROLE-4, GATE-2 to GATE-4). A
  *     melee that has just ended hands over to a clean duel at full speed (MELEE-2).</li>
  * <li>The events. Every non-sentry scan and death goes to the melee tracker (GATE-5 keeps
- *     sentries out of everything). In the duel posture, the duel opponent's scan makes a gun
+ *     sentries out of everything); each event is offered to the roles of the charter, Melee
+ *     before Duel (ROLE-5). While the Duel drives, the duel opponent's scan makes a gun
  *     wave and a candidate enemy wave, and the energy ledger turns only unexplained energy
  *     drops into firing waves (WAVE-1, WAVE-2). Bullet events feed the ledger, the hit
  *     windows, the shield detector and the bullet shadows; the adapter's {@code TickTime}
  *     and skipped turns feed the tick budget (TIME-1, TIME-2).</li>
- * <li>The driving posture's main body. Melee: the melee brain's radar, destination and aim.
+ * <li>The driving role's main body, with the conductor's fire permission (WEAVE-3). Melee: the melee brain's radar, destination and aim.
  *     Duel: fire the shot aimed last tick and aim the next, break the waves that have passed
  *     us, check the profile's seeds against live evidence (RES-4), step the distance,
  *     endgame and flavour policies, update the shadows, surf (or ram), and sweep the radar

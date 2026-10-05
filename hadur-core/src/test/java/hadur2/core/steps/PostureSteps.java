@@ -208,6 +208,35 @@ public class PostureSteps {
         }
     }
 
+    @Given("the conductor withholds the fire permission")
+    public void withholdFire() {
+        core.firePermission(in -> false);
+    }
+
+    @Then("no order fires")
+    public void noOrderFires() {
+        for (BotOrders o : orders) assertEquals(0.0, o.firePower(), o.toString());
+    }
+
+    @Then("some order fires")
+    public void someOrderFires() {
+        assertTrue(orders.stream().anyMatch(o -> o.firePower() > 0), orders.toString());
+    }
+
+    @Then("the melee brain tracks {string}")
+    public void meleeTracks(String name) {
+        assertTrue(core.melee().tracker.all().stream().anyMatch(e -> e.name.equals(name)),
+            core.melee().tracker.all().toString());
+    }
+
+    @Then("the duel fights {string} and the melee brain never saw the sentry")
+    public void duelFightsNotSentry(String name) {
+        assertEquals(name, core.duel().opponent());
+        for (EnemyInfo e : core.melee().tracker.all()) {
+            assertFalse(e.name.contains("BorderGuard"), "tracked " + e.name);
+        }
+    }
+
     @Then("the round's veto is {string}")
     public void vetoIs(String veto) {
         assertEquals(veto, core.veto().name().toLowerCase(java.util.Locale.ROOT));
