@@ -1,4 +1,4 @@
-package hadur2.core.posture;
+package hadur2.core.role;
 
 /** The set of subsystems that drives the robot for a tick. The two are never mixed. */
 public enum Posture {

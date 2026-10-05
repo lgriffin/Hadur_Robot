@@ -1,4 +1,4 @@
-package hadur2.core.posture;
+package hadur2.core.role;
 
 import java.util.Map;
 

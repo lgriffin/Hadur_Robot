@@ -12,8 +12,8 @@ import hadur2.core.model.BotEvent;
 import hadur2.core.model.BotInput;
 import hadur2.core.model.BotOrders;
 import hadur2.core.physics.BattleField;
-import hadur2.core.posture.Posture;
-import hadur2.core.posture.SentryFence;
+import hadur2.core.role.Posture;
+import hadur2.core.role.SentryFence;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -119,6 +119,27 @@ public class PostureSteps {
     public void dies(int k) {
         others--;
         tick(List.of(new BotEvent.RobotDeath("opp" + k)));
+    }
+
+    @When("the sentry dies unscanned")
+    public void sentryDies() {
+        sentries = 0;
+        List<BotEvent> events = new ArrayList<>();
+        for (int k = 1; k <= others; k++) events.add(opponent(k));
+        events.add(new BotEvent.RobotDeath("samplesentry.BorderGuard"));
+        tick(events);
+    }
+
+    @Then("the battle's charter is {string}")
+    public void charterIs(String charter) {
+        assertEquals(charter, core.charter().name());
+    }
+
+    @Then("the round's ROLE records name {string}")
+    public void roleRecords(String roles) {
+        List<String> named = new ArrayList<>();
+        for (String l : telemetry) if (l.startsWith("ROLE," + round + ",")) named.add(l.split(",")[3]);
+        assertEquals(roles, String.join(" ", named));
     }
 
     @When("the next melee round starts")

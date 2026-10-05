@@ -1,4 +1,4 @@
-package hadur2.core.posture;
+package hadur2.core.role;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;

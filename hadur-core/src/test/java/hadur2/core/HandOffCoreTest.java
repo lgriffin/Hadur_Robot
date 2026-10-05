@@ -12,7 +12,7 @@ import hadur2.core.memory.ProfileLibrary;
 import hadur2.core.model.BotEvent;
 import hadur2.core.model.BotInput;
 import hadur2.core.port.MemoryProfileStore;
-import hadur2.core.posture.Posture;
+import hadur2.core.role.Posture;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;

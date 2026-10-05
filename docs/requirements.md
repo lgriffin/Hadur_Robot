@@ -30,7 +30,6 @@ EARS requirements from the Hadur 2 technical direction. This file is the source 
 | TIME-2 | Event | When a skipped-turn event is received, the core shall drop one computation level for the remainder of the round and record it. | S6 |
 | MELEE-2 | Event | When the number of opponents alive falls from two or more to one, the core shall discard its duel tracking and restore full speed before handling that tick's scans. | S2 |
 | MELEE-7 | Unwanted | If the melee target's last scan is more than 5 ticks old, then the core shall not fire at it. | S2 |
-| GATE-1 | State | While two or more opponents are alive, no sentry robot is alive, no sentry has been scanned this round and the melee subsystems have not failed this round, the core shall drive the robot with the melee subsystems instead of the duel subsystems. | M1 |
 | GATE-2 | Unwanted | If fewer than two opponents are alive, then the core shall drive the robot with the duel subsystems from that same tick. | M1 |
 | GATE-3 | Unwanted | If a scanned robot reports that it is a sentry, then the core shall use the duel subsystems for the rest of the round and shall treat the sentry border as a wall. | M1 |
 | GATE-4 | Unwanted | If the melee subsystems throw, then the core shall record the fault and use the duel subsystems for the rest of the round. | M1 |
@@ -668,6 +667,25 @@ Every requirement group belongs to one owner, the same owner as the code it gove
 | STRAND-4 | Ubiquitous | A recorded duel battle and a recorded melee battle shall each replay to identical orders, telemetry and store files. | A0 |
 | STRAND-5 | Ubiquitous | A recorded team battle shall replay to identical orders and telemetry for each recorded member. | A5 |
 
+### A1 notes
+
+- **ROLE-1** is `Charter.of(BattleFacts)`, fixed in `HadurCore`'s constructor. The adapter
+  passes `BattleFacts.solo(width, height, getOthers())`: an `AdvancedRobot` cannot ask for
+  teammates, so until A4 the roster is empty and no battle is a Team charter.
+- **ROLE-2 to ROLE-4** are `RoleResolver`, in the new `role` package (the melee extension's
+  `posture` folded in; `Posture` and `Veto` keep their constants, so only imports change at
+  their call sites). The resolver latches the lowest role that completed a tick; a tick the
+  Guard covers never completes, so it leaves the latch as it stands. Off a team the enemies
+  are the engine's `getOthers()`.
+- **GATE-1 is retired** for ROLE-3, which carries the same conditions plus the latch. Its ten
+  tags moved: six scenario tags and two `RoleResolverTest` tests to ROLE-3, and the two
+  ArchUnit rules to STRAND-2. `sentryAliveKeepsTheDuel` now expects the duel to stay once it
+  has driven. The one change in play: a sentry that dies unscanned no longer hands the round
+  back to melee. No fixture holds such a round, and every fixture's orders, store files and
+  telemetry (less the new `ROLE` lines, which the comparison sets aside) are unchanged.
+- The **`ROLE` record**: `ROLE,round,tick,role,charter,enemies,sentries,veto`, at a round's
+  first completed tick and at each change of role.
+
 ### A0 notes
 
 - **STRAND-1 and STRAND-2** are `hadur2.core.arch.StrandOwnershipTest`, reading
@@ -693,6 +711,7 @@ A retired requirement keeps its ID; no new requirement reuses it.
 
 | ID | Requirement | Retired | Replaced by |
 |---|---|---|---|
+| GATE-1 | While two or more opponents are alive, no sentry robot is alive, no sentry has been scanned this round and the melee subsystems have not failed this round, the core shall drive the robot with the melee subsystems instead of the duel subsystems. | A1 | ROLE-3 (the same conditions, plus the latch: once the duel has driven in a round, melee does not return) |
 | MELEE-1 | While two or more opponents are alive, the core shall drive the robot with the melee subsystems (sweep radar, minimum-risk movement, melee gun) instead of the duel subsystems. | M1 | GATE-1, GATE-2 (sentries and melee faults now keep the duel) |
 | MELEE-3 | While in melee, the radar shall sweep the full circle until every living opponent has been scanned, then keep turning toward the opponent scanned longest ago. | M2 | MRADAR-1, MRADAR-2 (the sweep now keeps spinning with four or more alive and rescans a weak target) |
 | MELEE-4 | While in melee, movement shall head for the candidate point of least risk, where risk grows with each opponent's energy over distance squared, near walls and corners, between two opponents, and with fewer escape routes. | M3 | MMOVE-1 to MMOVE-4 (minimum risk over 160 points with the closest-robot term and virtual bullets) |
