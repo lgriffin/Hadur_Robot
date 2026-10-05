@@ -566,7 +566,8 @@ public final class HadurCore {
             }
         }
         // ROLE-2 to ROLE-4: the role from the charter, the counts, the vetoes and the latch.
-        // Off a team the enemies are the engine's others; there are no teammates yet.
+        // Off a team the enemies are the engine's others. No adapter supplies a roster before
+        // A4, so there are no teammates yet; A5 brings the team's count (WORLD-2, WORLD-8).
         posture = RoleResolver.posture(gate.resolve(in.others(), 0, in.numSentries()));
         boolean melee = posture == Posture.MELEE;
         if (melee) measureScanGap(in.time(), in.others());
@@ -690,19 +691,19 @@ public final class HadurCore {
         if (inMelee) meleeTicks++;
         else if (focusing) focusTicks++;
         else duelTicks++;
-        // ROLE-4: the role that completed this tick latches the round; a tick the Guard
-        // covers never gets here, so it leaves the latch as it stands.
-        RoleId drove = inMelee ? RoleId.MELEE : RoleId.DUEL;
-        gate.drove(drove);
-        if (drove != lastRole) {
-            emitRole(in, drove);
-            lastRole = drove;
-        }
         BotOrders built = orders.build();
         // GATE-3: with sentries about, their border is a wall for the duel's movement.
         if (!inMelee && in.numSentries() > 0) {
             built = fence.apply(in.x(), in.y(), in.heading(), in.velocity(), built,
                 in.sentryBorderSize());
+        }
+        // ROLE-4: the role that completed this tick latches the round. This is the tick's
+        // last step, so a tick the Guard covers leaves the latch as it stands.
+        RoleId drove = inMelee ? RoleId.MELEE : RoleId.DUEL;
+        gate.drove(drove);
+        if (drove != lastRole) {
+            emitRole(in, drove);
+            lastRole = drove;
         }
         return built;
     }
