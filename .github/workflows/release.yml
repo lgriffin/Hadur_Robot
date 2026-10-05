@@ -44,8 +44,12 @@ jobs:
           test -f "$jar" || { echo "missing $jar"; exit 1; }
           unzip -p "$jar" hadur2/Hadur.properties | grep -qx "robot.version=${version}" \
             || { echo "robot.version in $jar is not ${version}"; exit 1; }
-          # A5: the team jar, when the build makes one, ships beside it at the same version.
+          # A5: a source with a team file builds the team jar, which ships beside the solo
+          # jar at the same version; a missing one fails the release rather than dropping it.
           team="hadur-robot/target/hadur2.HadurTeam_${version}.jar"
+          if [ -f hadur-robot/src/team/HadurTeam.team ] && [ ! -f "$team" ]; then
+            echo "missing $team"; ls hadur-robot/target/hadur2.HadurTeam_*.jar 2>/dev/null; exit 1
+          fi
           if [ -f "$team" ]; then
             unzip -p "$team" hadur2/HadurTeam.team | grep -qx "team.version=${version}" \
               || { echo "team.version in $team is not ${version}"; exit 1; }

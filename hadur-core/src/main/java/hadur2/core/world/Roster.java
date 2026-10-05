@@ -116,6 +116,7 @@ public final class Roster {
         Mate m = mates.get(name);
         if (m == null) return;
         place(m, x, y, tick);
+        if (m.diedAt >= 0 && tick <= m.diedAt) return;
         m.diedAt = -1;
         m.presumedDead = false;
         if (tick == now) heard.add(name);
@@ -124,11 +125,14 @@ public final class Roster {
     /**
      * WORLD-4, WORLD-8: a report from {@code name} stating {@code tick}, with its position. A
      * report proves its sender alive; one stating the tick before is a hearing on this one.
+     * A report stating a tick no later than the sender's known death (its last, read with the
+     * death) places it and nothing more: the dead stay dead.
      */
     public void reported(String name, long tick, double x, double y, int othersNow) {
         Mate m = mates.get(name);
         if (m == null) return;
         place(m, x, y, tick);
+        if (m.diedAt >= 0 && tick <= m.diedAt) return;
         m.reported = Math.max(m.reported, tick);
         m.othersAtReport = othersNow;
         m.diedAt = -1;

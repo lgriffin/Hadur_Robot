@@ -157,6 +157,39 @@ class TeamLinkTest {
     }
 
     @Test
+    @Tag("WORLD-8")
+    @DisplayName("WORLD-8: a teammate's last report, read with its death, does not bring it back")
+    void lastReportWithDeathStaysDead() {
+        Recording melee = new Recording();
+        HadurCore core = new HadurCore(facts(), line -> {}, null, melee);
+        core.newRound(0);
+        core.tick(input(1, 5, enemies()));
+        // MATE's report of tick 1 arrives with its death; MATE2 reports too. Truth: three
+        // enemies and MATE2 alive, others 4.
+        core.tick(input(2, 4, List.of(new BotEvent.RobotDeath(MATE), report(MATE, 1, 500, 500, List.of(), List.of()),
+            report(MATE2, 1, 700, 700, List.of(), List.of()))));
+        assertFalse(core.roster().mate(MATE).alive(), "the dead stay dead");
+        assertEquals(1, core.roster().heardFrom(), "only MATE2 is heard on this tick");
+        assertEquals("others:3", last(melee.seen, "others:"), "never fewer enemies than the truth");
+    }
+
+    @Test
+    @Tag("WORLD-4")
+    @DisplayName("WORLD-4: an enemy's death heard first in a report closes the melee books once")
+    void reportedKillClosesTheBooksOnce() {
+        Recording melee = new Recording();
+        HadurCore core = new HadurCore(facts(), line -> {}, null, melee);
+        core.newRound(0);
+        core.tick(input(1, 5, enemies()));
+        core.tick(input(2, 5, List.of(report(MATE, 1, 500, 500, List.of(), List.of("e.C")))));
+        assertNull(core.world().get("e.C"));
+        assertEquals(1, melee.seen.stream().filter("died:e.C"::equals).count(), melee.seen.toString());
+        // The engine's own event for it comes a tick later: not offered again.
+        core.tick(input(3, 4, List.of(new BotEvent.RobotDeath("e.C"))));
+        assertEquals(1, melee.seen.stream().filter("died:e.C"::equals).count(), melee.seen.toString());
+    }
+
+    @Test
     @Tag("WORLD-4")
     @DisplayName("WORLD-4: a report is merged once, and the newer of two sightings is kept")
     void reportsMergedOnce() {
@@ -228,7 +261,7 @@ class TeamLinkTest {
         assertTrue(later.firePower() > 0, "a position older than the window is not used");
         core.roundEnded(23, "win", 50, 0);
         String t = telemetry.stream().filter(l -> l.startsWith("T,")).findFirst().orElseThrow();
-        assertTrue(Integer.parseInt(t.split(",")[6]) >= 1, t);
+        assertEquals(1, Integer.parseInt(t.split(",")[6]), "one shot held, however long it waited: " + t);
     }
 
     @Test

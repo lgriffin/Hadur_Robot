@@ -14,6 +14,12 @@
     <name>Hadur robot</name>
     <description>The Robocode adapter: engine events in, core orders out.</description>
 
+    <properties>
+        <!-- The robot's version: the solo and team jars are both named for it, and it must
+             match robot.version in Hadur.properties and the team file (HadurTeamFileTest). -->
+        <robot.release>3.6</robot.release>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>com.lgriffin</groupId>
@@ -33,7 +39,7 @@
 
     <build>
         <!-- RoboRumble naming: package.BotName_version.jar -->
-        <finalName>hadur2.Hadur_3.6</finalName>
+        <finalName>hadur2.Hadur_${robot.release}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -93,7 +99,7 @@
                         </goals>
                         <configuration>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <outputFile>${project.build.directory}/hadur2.HadurTeam_3.6.jar</outputFile>
+                            <outputFile>${project.build.directory}/hadur2.HadurTeam_${robot.release}.jar</outputFile>
                             <artifactSet>
                                 <includes>
                                     <include>com.lgriffin:hadur-core</include>

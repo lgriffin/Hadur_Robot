@@ -420,7 +420,7 @@ public final class HadurCore {
         // WEAVE-3: the permission is given before the role drives, from where Hadur is now.
         // WEAVE-4: on a team it is withheld while a teammate stands in the fire lane.
         boolean laneClear = teamLink == null || teamLink.laneClear(raw);
-        if (!laneClear) teamLink.blocked(raw);
+        if (teamLink != null) teamLink.lane(raw, laneClear);
         Tick drive = tick.forDrive(melee ? RoleId.MELEE : RoleId.DUEL, focusing, budget.level(),
             laneClear && firePermission.test(in));
         if (melee) {

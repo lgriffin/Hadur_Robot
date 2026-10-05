@@ -62,6 +62,7 @@ final class TeamLink {
     int teammateBulletHits;
     int teammateCollisions;
     int blockedShots;
+    private boolean holding;
     int reportsMerged;
 
     TeamLink(HadurCore core, BattleFacts facts, Roster roster, EnemyTracker world) {
@@ -74,6 +75,7 @@ final class TeamLink {
     void newRound() {
         roster.newRound();
         merged.clear();
+        holding = false;
         teammateHits = teammateBulletHits = teammateCollisions = blockedShots = reportsMerged = 0;
     }
 
@@ -134,13 +136,15 @@ final class TeamLink {
                 else kept.add(e);
             } else if (e instanceof BotEvent.RobotDeath) {
                 String name = ((BotEvent.RobotDeath) e).name();
+                // A death a teammate reported first was offered to the roles then (WORLD-4).
+                boolean known = roster.enemyDead(name);
                 roster.died(name, now, sentries);
-                if (!roster.isTeammate(name)) kept.add(e);
+                if (!roster.isTeammate(name) && !known) kept.add(e);
             } else {
                 kept.add(e);
             }
         }
-        merge(in, reports, senders);
+        merge(in, reports, senders, kept);
         roster.presume(now, in.others(), facts.others());
         int enemies = roster.enemiesAlive(in.others());
         return new BotInput(in.time(), in.round(), in.x(), in.y(), in.heading(), in.velocity(), in.energy(),
@@ -148,8 +152,13 @@ final class TeamLink {
             enemies, kept, in.numSentries(), in.sentryBorderSize());
     }
 
-    /** WORLD-4: each report once, oldest stated tick first, into the roster and the World. */
-    private void merge(BotInput in, List<Report> reports, List<String> senders) {
+    /**
+     * WORLD-4: each report once, oldest stated tick first, into the roster and the World. An
+     * enemy's death heard first in a report is offered to the roles as the engine's would be,
+     * so the World and the melee brain's books both close it; the engine's own event for it,
+     * when it comes, is then not offered again.
+     */
+    private void merge(BotInput in, List<Report> reports, List<String> senders, List<BotEvent> kept) {
         List<Integer> order = new ArrayList<>();
         for (int i = 0; i < reports.size(); i++) order.add(i);
         order.sort(Comparator.<Integer>comparingLong(i -> reports.get(i).tick()).thenComparing(senders::get));
@@ -179,8 +188,9 @@ final class TeamLink {
             }
             for (String dead : r.deaths()) {
                 if (dead.equals(facts.name())) continue;
+                boolean known = roster.enemyDead(dead);
                 roster.died(dead, r.tick(), sentries);
-                if (!roster.isTeammate(dead) && roster.enemyDead(dead)) world.onRobotDeath(dead);
+                if (!roster.isTeammate(dead) && !known && roster.enemyDead(dead)) kept.add(new BotEvent.RobotDeath(dead));
             }
         }
     }
@@ -213,9 +223,14 @@ final class TeamLink {
         return true;
     }
 
-    /** Counts a shot the lane held back, when the gun was cool enough to have fired it. */
-    void blocked(BotInput in) {
-        if (in.gunHeat() == 0) blockedShots++;
+    /**
+     * WEAVE-4: counts a shot the lane held back. The gun is cool and the lane blocked; a held
+     * shot is counted once, on the tick it is first held, not again each tick it waits.
+     */
+    void lane(BotInput in, boolean clear) {
+        boolean hold = !clear && in.gunHeat() == 0;
+        if (hold && !holding) blockedShots++;
+        holding = hold;
     }
 
     /** Whether a teammate lives, as the World believes: then the tick's orders carry a report. */
