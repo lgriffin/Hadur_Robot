@@ -11,7 +11,9 @@ root="$(cd "$(dirname "$0")/.." && pwd)"
 out="$root/target/site-pages"
 cd "$root"
 
-mvn -B -q javadoc:aggregate
+# The aggregate covers the bench too, which is Java 17 (records), so the site's Javadoc runs
+# at 17; the robot's own javadoc in mvn verify stays at 11.
+mvn -B -q javadoc:aggregate -Dmaven.compiler.release=17
 rm -rf "$out"
 mkdir -p "$out"
 cp -r target/reports/apidocs "$out/api"

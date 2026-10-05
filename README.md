@@ -2,7 +2,7 @@
 
 **Hadur** (the Hungarian god of war) is a [Robocode](https://robocode.sourceforge.io/) robot:
 a 1v1 duelist that remembers each opponent across battles, with a melee brain for
-free-for-alls, and a core that has no idea it is inside Robocode.
+free-for-alls, a five-robot team entry, and a core that has no idea it is inside Robocode.
 
 **Hadur 3.5.1 is ranked 16th of 1,216 in the RoboRumble 1v1** and 18th in the MeleeRumble,
 the highest-ranked robot flying the Irish flag. It was designed, written, tested and tuned by Claude agents working
@@ -10,6 +10,13 @@ in a shared project with one human, Leigh Griffin, who set the goals and ran the
 entries. This page covers what the robot does, how it is built, and how it was built.
 
 ## Standing
+
+**3.7 was entered on all three ladders on 2026-10-05**: `hadur2.Hadur 3.7` replaces 3.5.1 on
+the RoboRumble and MeleeRumble, and `hadur2.HadurTeam 3.7` is Hadur's first TeamRumble
+entry. 3.7 closes the architecture evolution (below) and should play the 1v1 and melee as
+3.5.1 does. [What 3.7 should score](docs/bench/expected-3.7.md) records the expected APS and
+its range on each ladder, the baseline its complete passes are read against. The figures
+below are 3.5.1's until 3.7's pass is complete.
 
 The LiteRumble rankings page saved 2026-10-05 05:51 UTC puts `hadur2.Hadur 3.5.1` 16th, after
 1,119 of its 1,215 pairings (1,261 battles):
@@ -147,31 +154,42 @@ graph LR
         E[Engine]
     end
     subgraph "hadur-robot (adapter)"
-        A["hadur2.Hadur"]
+        A["hadur2.Hadur (TeamRobot)"]
         FS["FileProfileStore"]
     end
     subgraph "hadur-core (plain Java 11)"
         G["Guard (RES-1)"]
-        C[HadurCore]
-        L["ledger: energy ledger"]
-        GUN["gun: KNN main + anti-surfer"]
-        MV["move: wave surfing, bullet shadows"]
-        PO["policy: distance, power, endgame, tick budget"]
-        AD["adapt: opening book, seed trust"]
-        SH["shield: anti-shield aim"]
-        ML["melee + posture gate"]
-        MEM["memory: profiles, library"]
-        PS(["port: ProfileStore"])
-        T(["port: Telemetry"])
+        C["HadurCore: the conductor"]
+        R["role: charter and resolver"]
+        TL["TeamLink: reports, fire lane"]
+        subgraph "Duel strand"
+            DU["duel: DuelController"]
+            DS["gun, move, policy, adapt, shield"]
+        end
+        subgraph "Melee strand"
+            ML["melee: MeleeController"]
+        end
+        subgraph Kernel
+            W["world: the World, roster"]
+            LK["link: report codec"]
+            L["ledger, physics, knn, model"]
+            MEM["memory: profiles, library"]
+            PS(["port: ProfileStore"])
+            T(["port: Telemetry"])
+        end
     end
     D[("data directory")]
-    E -- "events, getters" --> A
+    E -- "events, getters, messages" --> A
     A -- BotInput --> G --> C
-    C --> L & GUN & MV & PO & AD & SH & ML
-    AD & PO --> MEM
+    C --> R
+    C --> TL --> LK
+    C --> W
+    C --> DU --> DS
+    C --> ML --> W
+    DS --> L & MEM
     MEM --> PS
     C -- BotOrders --> G -- BotOrders --> A
-    A -- "setters, execute()" --> E
+    A -- "setters, messages, execute()" --> E
     PS -. implemented by .-> FS --> D
     C -. "line records" .-> T
 ```
@@ -179,21 +197,25 @@ graph LR
 ### One tick
 
 The adapter queues each event in the engine's priority order, builds a `BotInput`, and
-calls the guard. The core picks a posture first (a sentry scanned this tick vetoes melee),
-then handles the events and returns orders. If the core throws, the guard returns safe orders
-(keep orbiting, radar on the enemy, hold fire; from the third faulting tick in a round it
-fires power 1.0 at the enemy's last bearing when the gun is cool, RES-7), so the robot never
-stalls.
+calls the guard. On a team, the conductor first takes teammates out of the input and merges
+their reports. It feeds the World, then the role resolver picks the role that drives this
+tick: Melee or Duel, never both, and only ever stepping down within a round (a sentry
+scanned this tick vetoes melee). That role handles the events and returns orders. On a
+team, a shot is held while a teammate stands in the fire lane. If the core throws, the guard returns safe orders
+(keep orbiting, radar on the enemy, hold fire; off a team, from the third faulting tick in
+a round it fires power 1.0 at the enemy's last bearing when the gun is cool, RES-7; on a
+team it always holds fire, WEAVE-5), so the robot never stalls.
 
 ```mermaid
 flowchart TD
     EV["Engine events<br/>onScannedRobot, onHitByBullet, ..."] --> Q["Adapter queues BotEvents"]
     Q --> IN["BotInput: own state + events"]
     IN --> GU{"Guard.tick"}
-    GU -- "core throws" --> SAFE["Safe orders: orbit, radar on enemy,<br/>hold fire; power 1.0 from the 3rd fault (RES-7)"]
-    GU --> SEN["Sentry scans this tick veto melee (GATE-3)"]
-    SEN --> GATE{"Posture gate<br/>(GATE-1, GATE-2)"}
-    GATE -- "2+ opponents, no sentry" --> MEL["Melee: sweep radar,<br/>minimum-risk movement, field gun"]
+    GU -- "core throws" --> SAFE["Safe orders: orbit, radar on enemy,<br/>hold fire; off a team, power 1.0 from<br/>the 3rd fault (RES-7); on a team, hold (WEAVE-5)"]
+    GU --> TEAM["On a team: teammates filtered out,<br/>their reports merged (WORLD-2, WORLD-4)"]
+    TEAM --> WLD["The World fed first (WORLD-1);<br/>sentry scans veto melee (GATE-3)"]
+    WLD --> GATE{"Role resolver<br/>(ROLE-3, the latch)"}
+    GATE -- "2+ enemies, no sentry" --> MEL["Melee: sweep radar,<br/>minimum-risk movement, field gun"]
     GATE -- "duel, or fail closed" --> DUR{"3+ skipped turns<br/>this round? (RES-9)"}
     DUR -- yes --> CHEAP["Duress: events counted only;<br/>cheap orbit, head-on power 1.0"]
     DUR -- no --> EVH["Handle events in engine order"]
@@ -202,7 +224,8 @@ flowchart TD
     LED --> LVL["Tick budget picks<br/>computation level 0-3 (TIME-1, TIME-2)"]
     LVL --> GN["Gun: KNN main / anti-surfer,<br/>power policy (POW, END, RAM)"]
     LVL --> MO["Movement: surf waves with bullet shadows,<br/>distance policy, flavours (MOVE, DIST)"]
-    MEL & CHEAP & GN & MO & SAFE --> OUT["BotOrders"]
+    MEL & CHEAP & GN & MO --> LANE["On a team: hold fire while a teammate<br/>is in the fire lane (WEAVE-4)"]
+    LANE & SAFE --> OUT["BotOrders"]
     OUT --> EX["Adapter applies setters, execute()"]
 ```
 
@@ -381,6 +404,7 @@ tests that prove it.
 | R5, R7, R6 | Top 30: rumble-safe memory, the long-session bench and duress, movement precision | released as 3.3 ([plan](docs/rumble-climb-top30-plan.md), [session bench](docs/bench/r7-session.md)) |
 | R8 | Memory at rumble scale: one directory listing per battle, forget the oldest | released as 3.4 ([plan](docs/rumble-memory-scale-plan.md), [gate](docs/bench/r8-memory-scale.md)); 20th live |
 | R9 | The weak-bot leak: run from rammers (RAM-2), plan a path against mirror movers (MIR-1) | released as 3.5, review fixes as 3.5.1 ([issue #80](https://github.com/lgriffin/Hadur_Robot/issues/80), [bench](docs/bench/r9-weak-leak.md)): weak set 74.8% to 86.8%, top 19 unchanged; 16th live, 18th melee |
+| A0-A5 | Architecture evolution: one identity kernel, three strands (Duel, Melee, Team), the World, team messages and the team baseline | released as 3.6 (A2) and 3.7 (A5, with the team jar) ([plan](docs/architecture-evolution.md), [stage log](docs/architecture-evolution.md#stage-log), [team gate](docs/bench/a5-team.md), [expected APS](docs/bench/expected-3.7.md)) |
 
 The plan's S7 was "cut melee". Release 2.1 had already put melee in the core for the
 MeleeRumble, and it costs the duel nothing (it runs only while two or more opponents are
@@ -389,9 +413,11 @@ alive), so S7 keeps it. Open items are in [followup.md](followup.md).
 ## Layout
 
 ```
-hadur-core/    the brain: physics, waves, KNN, guns, movement, memory, policies, melee.
+hadur-core/    the brain: a kernel (physics, waves, KNN, memory, the World, the team link),
+               the Duel and Melee strands, and the conductor that picks the role each tick.
                Plain Java, no Robocode.
-hadur-robot/   the Robocode adapter (hadur2.Hadur): events in, orders out, profile files.
+hadur-robot/   the Robocode adapter (hadur2.Hadur, a TeamRobot): events in, orders out,
+               profile files; and the team jar hadur2.HadurTeam, five of it.
 hadur-bench/   headless battles, the bench report, and the replay recorder.
 docs/          requirements, architecture, testing, strategy, bench reports, release notes,
                rumble entry.
@@ -414,11 +440,12 @@ client can load it (REL-1).
 mvn verify                  # all modules: tests, traceability, robot jar
 ```
 
-The robot jar is `hadur-robot/target/hadur2.Hadur_3.7.jar`; drop it into a Robocode
-`robots/` directory. The core is bundled inside it. Pushing a `v*` tag runs the release
+The robot jar is `hadur-robot/target/hadur2.Hadur_3.7.jar`, and the team jar
+`hadur2.HadurTeam_3.7.jar` sits beside it; drop either into a Robocode `robots/` directory. The core is bundled inside it. Pushing a `v*` tag runs the release
 workflow, as does running it by hand with a version: it builds, checks that the jar
 matches the version, and publishes a GitHub release with `docs/releases/<tag>.md` as its
-notes. The latest release's asset is the jar the RoboRumble downloads. 2.2 and 3.0 were built
+notes, with the team jar attached beside the solo one. The latest release's assets are the
+jars the rumbles download. 2.2 and 3.0 were built
 locally while Actions was not running jobs.
 
 The tests are layered: ArchUnit rules, jqwik properties, unit tests, replay of recorded
@@ -430,7 +457,7 @@ how to run them, and how to re-record the replay fixtures.
 
 Every class in the core and the adapter carries Javadoc that explains how it works, why,
 and which EARS requirements it implements, with the IDs cited next to the code that
-meets them. `mvn verify` runs doclint over all of it, the melee and posture packages
+meets them. `mvn verify` runs doclint over all of it, the melee and role packages
 included (a broken link or a wrong `@param` fails the build).
 
 `site/build.sh` builds the docs site into `target/site-pages`: the Javadoc, a requirement

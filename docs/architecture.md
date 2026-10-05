@@ -19,6 +19,8 @@ graph LR
         MC[move]
         ML[melee]
         W[world]
+        TL[TeamLink]
+        LK[link]
         PT[role]
         DU[duel]
         M[model / physics / knn]
@@ -40,6 +42,9 @@ graph LR
     C --> PT
     C --> ML
     C --> W
+    C --> TL
+    TL --> LK
+    TL --> W
     ML --> W
     ML --> M
     GC & MC --> M
@@ -155,7 +160,7 @@ in each kind of battle. From A0 every package has exactly one owner, written in
 | Kernel | `model`, `physics`, `knn`, `ledger`, `memory`, `port`, `world` (A3), `link` (A4) | depends on no strand and not on the conductor (STRAND-2) |
 | Duel strand | `gun`, `move`, `adapt`, `policy`, `shield`, `duel` (A2) | sees only the kernel and itself |
 | Melee strand | `melee` | sees only the kernel and itself |
-| Team strand | none yet | from the Team plan |
+| Team strand | none yet (the A5 baseline lives in the conductor's `TeamLink`) | from the Team plan |
 | Conductor | the root package, `role`, `replay` | runs the tick and owns the seams |
 
 ```mermaid
@@ -324,6 +329,54 @@ alone (the virtual guns only run in a 1v1 battle). A bullet from a robot that di
 is no longer credited to the survivor's energy in the ledger. An `H` record
 (`H,round,tick,survivor,found1v1,foundMelee,wavesInjected`) says what was handed over. A
 melee vetoed by a sentry or a fault hands nothing over.
+
+## The team baseline
+
+From A5 Hadur can fight as one of five. `hadur2.HadurTeam` is five `hadur2.Hadur` of the
+same version, and nothing in the strands knows it is on a team. The conductor's `TeamLink`
+does the work around them, so the Team strand is still empty: its tactics come from the
+Team plan.
+
+- **The roster.** `BattleFacts` names our teammates at tick 0, and the World's `Roster`
+  keeps their last known positions. A teammate silent for 20 ticks while the engine's
+  count of others has fallen is counted dead (WORLD-3).
+- **The filtered input.** Each tick `TeamLink` takes teammates' scans, hits and deaths out
+  of the input the roles see (WORLD-2, WORLD-6, WORLD-7), so no brain targets or counts a
+  teammate. A role sees only enemies, and Melee drives while two or more of them live.
+- **Shared eyes.** Every member sends one `link.Report` a tick while a teammate lives
+  (LINK-4): its own state, its fresh sightings, the deaths it knows of and its bullet
+  events, versioned and checksummed (LINK-1, LINK-2). Reports merge into the World once,
+  in the order of their ticks, keeping the newer sighting (WORLD-4). A reported death
+  closes that robot's books only once.
+- **A count that errs upward.** On a team the count of enemies alive is the smaller of
+  two upper bounds: the engine's others less the teammates heard from, and the starting
+  enemies less those known dead (WORLD-8). It is never below the truth, so Melee never
+  hands over to the Duel too early. With no report at all the role still resolves from
+  the engine's facts (LINK-3).
+- **The fire lane.** A shot is held while a living teammate lies in the lane ahead of the
+  gun's present heading: within 24 px of it, plus 8 px for each tick since that teammate's
+  last known position (WEAVE-4). A position older than the WORLD-3 window (20 ticks) is not
+  checked. On a team the Guard holds fire rather than firing blind (WEAVE-5).
+- **One scribe.** Only the team leader writes to the store, and in a team battle it
+  writes only its health record (SHELF-2), so five members never race for the same files.
+
+```mermaid
+flowchart LR
+    IN["BotInput from the engine"] --> F["TeamLink.filter:<br/>teammates out"]
+    MSG["Teammates' reports<br/>(one tick old)"] --> M["merge, by tick<br/>(WORLD-4)"]
+    F --> W["World: enemies, roster,<br/>count of enemies alive"]
+    M --> W
+    W --> R["Role resolver"] --> B["Melee or Duel brain"]
+    B --> L{"Teammate in the fire lane?<br/>(TeamLink.laneClear)"}
+    L -- yes --> H["Hold the shot"]
+    L -- no --> O["BotOrders"]
+    H --> O
+    W --> REP["Our report"] --> O
+```
+
+The bench's team mode (`--team true`) runs the team jar against `team-reference.txt` with
+one transcript per member. The baseline on record is 28.1% of the score over eight real
+teams, with no faults and no undercount ([bench/a5-team.md](bench/a5-team.md)).
 
 ## Opponent memory
 
