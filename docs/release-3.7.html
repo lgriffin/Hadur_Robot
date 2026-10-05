@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Release 3.7</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header><div class="wrap"><a class="brand" href="../index.html">Hadur 2</a><nav><a href="../index.html">Home</a><a href="../requirements.html">Requirements</a><a href="../docs/architecture.html">Architecture</a><a href="../docs/testing.html">Testing</a><a href="../api/index.html">Javadoc</a><a href="https://github.com/lgriffin/Hadur_Robot">GitHub</a></nav></div></header>
+<main class="wrap">
+<p>Hadur 3.7 completes the architecture evolution (stages A0 to A5). The solo robot plays as 3.6 does, and Hadur now has a team entry.</p>
+<ul><li><strong>The World, one battlefield model.</strong> The melee tracker is promoted to the kernel, and the conductor feeds it before any role. Only the battle&#x27;s charter&#x27;s roles are built, so a 1v1 carries no melee brain. The warm-up runs one throwaway tick per role, which fixes a warm-up fault that dated back to R1 (A3; <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/docs/bench/a3-melee.md">docs/bench/a3-melee.md</a>).</li><li><strong>Ports for a team.</strong> The adapter is now a <code>TeamRobot</code>. Messages, the bullet owner and a checksummed link codec are new, and each strand&#x27;s store shelves are gated by charter. Old transcripts and profiles still load. The duel, melee and 300-battle session benches are level with A3 (A4; <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/docs/bench/a4-gate.md">docs/bench/a4-gate.md</a>).</li><li><strong>The team baseline.</strong> <code>hadur2.HadurTeam</code> is five Hadurs that share sightings and deaths, never target or count each other, and hold a shot while a teammate stands in the fire lane. On a team only the leader writes, and only its health record. Against eight teams there were no faults, no rejected messages, and no count of enemies below the truth (A5; <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/docs/bench/a5-team.md">docs/bench/a5-team.md</a>). This is a baseline for the team plan, not a team strategy.</li></ul>
+<p>The solo line replaces 3.5.1 on both the RoboRumble and MeleeRumble participants pages:</p>
+<pre><code>hadur2.Hadur 3.7,https://github.com/lgriffin/Hadur_Robot/releases/download/v3.7/hadur2.Hadur_3.7.jar</code></pre>
+<p>The team line goes on the TeamRumble participants page:</p>
+<pre><code>hadur2.HadurTeam 3.7,https://github.com/lgriffin/Hadur_Robot/releases/download/v3.7/hadur2.HadurTeam_3.7.jar</code></pre><p class="source">Source: <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/docs/releases/v3.7.md">docs/releases/v3.7.md</a></p>
+</main>
+<footer class="wrap">Built from <a href="https://github.com/lgriffin/Hadur_Robot">lgriffin/Hadur_Robot</a> by <code>site/build.sh</code>.</footer>
+
+</body>
+</html>

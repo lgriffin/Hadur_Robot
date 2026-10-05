@@ -2,9 +2,11 @@ hadur.bench
 hadur2
 hadur2.core
 hadur2.core.adapt
+hadur2.core.duel
 hadur2.core.gun
 hadur2.core.knn
 hadur2.core.ledger
+hadur2.core.link
 hadur2.core.melee
 hadur2.core.memory
 hadur2.core.model
@@ -12,6 +14,7 @@ hadur2.core.move
 hadur2.core.physics
 hadur2.core.policy
 hadur2.core.port
-hadur2.core.posture
 hadur2.core.replay
+hadur2.core.role
 hadur2.core.shield
+hadur2.core.world
