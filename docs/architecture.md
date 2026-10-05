@@ -353,9 +353,10 @@ Team plan.
   enemies less those known dead (WORLD-8). It is never below the truth, so Melee never
   hands over to the Duel too early. With no report at all the role still resolves from
   the engine's facts (LINK-3).
-- **The fire lane.** A shot is held while a teammate's last known position, widened by
-  24 px plus 8 px for each tick of its age, lies on the line to the target (WEAVE-4). On a
-  team the Guard holds fire rather than firing blind (WEAVE-5).
+- **The fire lane.** A shot is held while a living teammate lies in the lane ahead of the
+  gun's present heading: within 24 px of it, plus 8 px for each tick since that teammate's
+  last known position (WEAVE-4). A position older than the WORLD-3 window (20 ticks) is not
+  checked. On a team the Guard holds fire rather than firing blind (WEAVE-5).
 - **One scribe.** Only the team leader writes to the store, and in a team battle it
   writes only its health record (SHELF-2), so five members never race for the same files.
 

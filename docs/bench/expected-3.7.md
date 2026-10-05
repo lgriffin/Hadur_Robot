@@ -2,8 +2,10 @@
 
 3.7 was entered on 5 October 2026 on the RoboRumble, the MeleeRumble and, for the first
 time, the TeamRumble. Its predecessor 3.5.1 stood 16th in the 1v1 at 86.65 APS ± 0.23
-(1,119 pairings, [data/rumble/](../../data/rumble/)) and 18th in melee. No melee page was
-archived for 3.5.1, so its melee APS is not on record. This page sets out what the gate
+(1,119 pairings, [data/rumble/](../../data/rumble/)) and 18th of 415 in melee at 65.31 APS,
+survival 38.90 (read on 5 October 2026 and recorded in
+[architecture-evolution.md](../architecture-evolution.md#where-hadur-stands); the melee page
+itself is not archived). This page sets out what the gate
 benches predict for 3.7, so a complete live pass can be read against it.
 
 **In short: 3.7 should play the 1v1 and melee as 3.5.1 does, and the team entry starts
@@ -16,7 +18,7 @@ same orders on 3.7, and no paired bench moved beyond its noise.
 | Ladder | 3.5.1 | Expected for 3.7 | Range | What it rests on |
 |---|---|---|---|---|
 | RoboRumble 1v1 | 86.65 APS, 16th | 86.65 APS, no change | 86.1 to 87.2 APS; about 14th to 19th | Fixtures replay unchanged; paired benches within noise (below) |
-| MeleeRumble | 18th, APS not archived | no change | ±1.5 APS around 3.5.1's melee APS | Fixtures replay unchanged; melee gates within noise |
+| MeleeRumble | 65.31 APS, 18th | 65.3 APS, no change | 63.8 to 66.8 APS | Fixtures replay unchanged; melee gates within noise |
 | TeamRumble | not entered | about 28% score share against real teams | 20% to 35% share; low on the ladder | The A5 team baseline over eight teams |
 
 The 1v1 range is the live pass's own noise (± 0.23) plus what the benches cannot resolve.
@@ -25,7 +27,7 @@ The finest of them, the reference duels at 5 seeds, cannot see a change below ab
 ahead and 17th 0.02 behind, so the rank can move two or three places either way on noise
 alone.
 
-A complete pass below 86.1 APS in the 1v1, or more than 1.5 APS down in melee, is outside
+A complete pass below 86.1 APS in the 1v1, or below 63.8 APS in melee, is outside
 what the benches predict. Read it against the fixtures before it is put down to the
 ladder (the plan's BENCH-5 rule).
 

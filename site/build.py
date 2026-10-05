@@ -298,22 +298,22 @@ def build(root, out):
 
     rendered = {src: "docs/" + pg for src, pg, _ in DOCS}
 
-    def linker_for(prefix, from_docs):
-        """Resolves a Markdown link target: a rendered doc becomes its page (relative to
-        the linking page), any other repository path a GitHub link."""
+    def linker_for(prefix, base):
+        """Resolves a Markdown link target, relative to the directory `base` of the source
+        it appears in: a rendered doc becomes its page (relative to the linking page), any
+        other repository path a GitHub link."""
         def page_for(target):
             if re.match(r"^[a-z]+:", target) or target.startswith("#"):
                 return target
             path, _, frag = target.partition("#")
-            norm = os.path.normpath(os.path.join("docs", path)) if from_docs else os.path.normpath(path)
+            norm = os.path.normpath(os.path.join(base, path))
             tail = "#" + frag if frag else ""
             if norm in rendered:
                 return prefix + os.path.basename(rendered[norm]) + tail
             return BLOB + norm.replace(os.sep, "/") + tail
         return page_for
 
-    page_for_doc = linker_for("docs/", False)
-    page_in_docs = linker_for("", True)
+    page_for_doc = linker_for("docs/", "")
 
     # Requirement traceability page.
     by_group = defaultdict(list)
@@ -367,7 +367,7 @@ traceability check reads. %d of %d live requirements have a tagged test. The rea
         if not os.path.exists(p):
             continue
         text = read(p)
-        body = markdown(text, linker1, page_in_docs)
+        body = markdown(text, linker1, linker_for("", os.path.dirname(src)))
         body += '<p class="source">Source: <a href="%s">%s</a></p>' % (BLOB + src, src)
         write(os.path.join(out, "docs", pg), page(title, body, "docs/" + pg, depth=1, mermaid="```mermaid" in text))
 

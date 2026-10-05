@@ -202,16 +202,16 @@ their reports. It feeds the World, then the role resolver picks the role that dr
 tick: Melee or Duel, never both, and only ever stepping down within a round (a sentry
 scanned this tick vetoes melee). That role handles the events and returns orders. On a
 team, a shot is held while a teammate stands in the fire lane. If the core throws, the guard returns safe orders
-(keep orbiting, radar on the enemy, hold fire; from the third faulting tick in a round it
-fires power 1.0 at the enemy's last bearing when the gun is cool, RES-7), so the robot never
-stalls.
+(keep orbiting, radar on the enemy, hold fire; off a team, from the third faulting tick in
+a round it fires power 1.0 at the enemy's last bearing when the gun is cool, RES-7; on a
+team it always holds fire, WEAVE-5), so the robot never stalls.
 
 ```mermaid
 flowchart TD
     EV["Engine events<br/>onScannedRobot, onHitByBullet, ..."] --> Q["Adapter queues BotEvents"]
     Q --> IN["BotInput: own state + events"]
     IN --> GU{"Guard.tick"}
-    GU -- "core throws" --> SAFE["Safe orders: orbit, radar on enemy,<br/>hold fire; power 1.0 from the 3rd fault (RES-7)"]
+    GU -- "core throws" --> SAFE["Safe orders: orbit, radar on enemy,<br/>hold fire; off a team, power 1.0 from<br/>the 3rd fault (RES-7); on a team, hold (WEAVE-5)"]
     GU --> TEAM["On a team: teammates filtered out,<br/>their reports merged (WORLD-2, WORLD-4)"]
     TEAM --> WLD["The World fed first (WORLD-1);<br/>sentry scans veto melee (GATE-3)"]
     WLD --> GATE{"Role resolver<br/>(ROLE-3, the latch)"}
