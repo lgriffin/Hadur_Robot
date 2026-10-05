@@ -1,0 +1,7 @@
+#Robocode Robot Team
+team.members=hadur2.Hadur 3.5.1,hadur2.Hadur 3.5.1,hadur2.Hadur 3.5.1,hadur2.Hadur 3.5.1,hadur2.Hadur 3.5.1
+team.author.name=lgriffin
+team.version=3.5.1
+team.webpage=https://github.com/lgriffin/Hadur_Robot
+team.description=Five Hadurs: one robot on every ladder. Shared eyes, a fire lane kept clear of teammates, and the melee brain against the enemy.
+robocode.version=1.9.3.0

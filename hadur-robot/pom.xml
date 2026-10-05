@@ -82,6 +82,39 @@
                             </artifactSet>
                         </configuration>
                     </execution>
+                    <!-- A5: the TeamRumble entry, the same classes as the robot jar plus the
+                         .team file that lists the robot five times. Runs while the main artifact
+                         still holds the recorder, so it is excluded here too. -->
+                    <execution>
+                        <id>team</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <outputFile>${project.build.directory}/hadur2.HadurTeam_3.5.1.jar</outputFile>
+                            <artifactSet>
+                                <includes>
+                                    <include>com.lgriffin:hadur-core</include>
+                                </includes>
+                            </artifactSet>
+                            <filters>
+                                <filter>
+                                    <artifact>com.lgriffin:hadur-robot</artifact>
+                                    <excludes>
+                                        <exclude>hadur2/HadurRecorder*</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.IncludeResourceTransformer">
+                                    <resource>hadur2/HadurTeam.team</resource>
+                                    <file>src/team/HadurTeam.team</file>
+                                </transformer>
+                            </transformers>
+                        </configuration>
+                    </execution>
                     <execution>
                         <id>robot</id>
                         <phase>package</phase>

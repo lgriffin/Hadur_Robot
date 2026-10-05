@@ -41,6 +41,9 @@ import java.util.zip.GZIPOutputStream;
  *     security off and writes one gzipped transcript per opponent to DIR (CORE-2).</li>
  * <li>{@code --melee true} run every opponent in the set against Hadur at once, one battle
  *     per seed, and report finishing places instead (MeleeRumble: 10 robots, 1000x1000).</li>
+ * <li>{@code --team true} (A5) fight each team of the set with our team jar
+ *     ({@code --robot-jar}, hadur2.HadurTeam_3.5.1.jar; {@code --robot} "hadur2.HadurTeam
+ *     3.5.1"; {@code --member} hadur2.Hadur), TeamRumble style: 1200x1200, 10 rounds.</li>
  * <li>{@code --baseline JAR} (BENCH-2) also fight every opponent with this second jar, one
  *     battle per seed at the same {@code RANDOMSEED} as the candidate's, and report the
  *     paired score-share difference instead of two separate means. Requires
@@ -91,6 +94,20 @@ public final class Bench {
     Bench(Map<String, String> opts) {
         this.opts = opts;
         this.benchDir = Path.of("").toAbsolutePath();
+        if (opts.containsKey("team")) {
+            // A5: the TeamRumble's settings and the team jar, unless given.
+            opts.putIfAbsent("field", "1200x1200");
+            opts.putIfAbsent("rounds", "10");
+            opts.putIfAbsent("seeds", "3");
+            if (opts.containsKey("record")) {
+                // STRAND-5: five recorders, a team jar made from the recorder jar (runTeam).
+                opts.putIfAbsent("robot", "hadur2.HadurRecorderTeam 3.5.1");
+                opts.putIfAbsent("member", "hadur2.HadurRecorder");
+                opts.putIfAbsent("robot-jar", "../hadur-robot/target/hadur-robot-2.0-SNAPSHOT-recorder.jar");
+            }
+            opts.putIfAbsent("robot", "hadur2.HadurTeam 3.5.1");
+            opts.putIfAbsent("robot-jar", "../hadur-robot/target/hadur2.HadurTeam_3.5.1.jar");
+        }
         this.warm = opts.getOrDefault("mode", "cold").equals("warm");
         this.rounds = Integer.parseInt(opts.getOrDefault("rounds", "35"));
         this.runs = Integer.parseInt(warm ? opts.getOrDefault("battles", "5")
@@ -187,6 +204,7 @@ public final class Bench {
         if (only != null) opponents.removeIf(o -> !o.name.contains(only));
         installRobots(opponents);
         if (opts.containsKey("melee")) return runMelee(opponents);
+        if (opts.containsKey("team")) return runTeam(opponents);
         if (client != null) return runClientConditions(opponents);
 
         Map<Opponent, List<BattleResult>> results = new LinkedHashMap<>();
@@ -374,6 +392,109 @@ public final class Bench {
         System.out.println();
         System.out.println(r);
         return battles.stream().anyMatch(b -> !b.ok) ? 1 : 0;
+    }
+
+    /**
+     * A5: our team against each team of the set in turn, {@code runs} battles each (one
+     * RANDOMSEED each), on a wiped data directory; reports by {@link TeamReport}.
+     */
+    private int runTeam(List<Opponent> opponents) throws IOException, InterruptedException {
+        String member = opts.getOrDefault("member", "hadur2.Hadur");
+        if (record != null) recorderTeam(member);
+        Map<Opponent, List<TeamReport.Battle>> results = new LinkedHashMap<>();
+        for (Opponent o : opponents) {
+            List<TeamReport.Battle> list = new ArrayList<>();
+            results.put(o, list);
+            for (int i = 1; i <= runs; i++) {
+                wipeData();
+                Path dir = out.resolve("battles").resolve(o.slug() + "-" + i);
+                Files.createDirectories(dir);
+                Files.deleteIfExists(dir.resolve("team.csv"));
+                System.out.printf("%s team battle %d/%d ...%n", o.name, i, runs);
+                List<String> cmd = new ArrayList<>();
+                cmd.add(defaultJavaBin());
+                cmd.addAll(JVM_FLAGS);
+                cmd.add("-DRANDOMSEED=" + i);
+                Path transcript = dir.resolve("transcript.txt");
+                if (record != null) {
+                    // STRAND-5: each member writes transcript-member-N.txt beside it.
+                    cmd.add("-DNOSECURITY=true");
+                    cmd.add("-Dhadur.record=" + transcript);
+                }
+                cmd.add("-cp");
+                cmd.add(classpath());
+                cmd.add(TeamRunner.class.getName());
+                cmd.addAll(List.of(home.toString(), dir.toString(), String.valueOf(rounds),
+                    String.valueOf(width), String.valueOf(height), member, robot, o.name));
+                Process p = new ProcessBuilder(cmd).redirectErrorStream(true)
+                    .redirectOutput(dir.resolve("engine.log").toFile()).start();
+                if (!p.waitFor(60, TimeUnit.MINUTES)) p.destroyForcibly();
+                if (record != null) {
+                    try (Stream<Path> members = Files.list(dir)) {
+                        for (Path t : (Iterable<Path>) members.sorted()::iterator) {
+                            String n = t.getFileName().toString();
+                            if (!n.startsWith("transcript-member-")) continue;
+                            String m = n.substring("transcript-member-".length(), n.length() - ".txt".length());
+                            saveFixture("team-" + o.slug() + "-m" + m, i, t);
+                        }
+                    }
+                }
+                TeamReport.Battle b = TeamReport.read(dir, robot, member, dataFiles());
+                list.add(b);
+                System.out.println(b.ok ? "  " + b.summary() : "  FAILED; see " + dir.resolve("engine.log"));
+            }
+        }
+        String r = TeamReport.render(opts.get("label"), robot, results, rounds, width, height);
+        Files.writeString(out.resolve("report.md"), r);
+        if (opts.containsKey("report")) {
+            Path copy = Path.of(opts.get("report")).toAbsolutePath();
+            Files.createDirectories(copy.getParent());
+            Files.writeString(copy, r);
+        }
+        System.out.println();
+        System.out.println(r);
+        return results.values().stream().flatMap(List::stream).anyMatch(b -> !b.ok) ? 1 : 0;
+    }
+
+    /**
+     * STRAND-5: replaces the installed jar with a team of five {@code member}s made from it:
+     * the recorder jar's entries and a team file naming the members, at our robot's version.
+     */
+    private void recorderTeam(String member) throws IOException {
+        String[] parts = robot.split(" ");
+        Path target = home.resolve("robots").resolve(parts[0] + "_" + parts[1] + ".jar");
+        Path source = Path.of(opts.get("robot-jar")).toAbsolutePath();
+        String m = member + " " + parts[1];
+        String team = "team.members=" + String.join(",", Collections.nCopies(5, m)) + "\n"
+            + "team.version=" + parts[1] + "\nteam.author.name=lgriffin\nrobocode.version=1.9.3.0\n";
+        try (JarOutputStream jar = new JarOutputStream(Files.newOutputStream(target));
+             java.util.jar.JarFile in = new java.util.jar.JarFile(source.toFile())) {
+            for (JarEntry e : Collections.list(in.entries())) {
+                if (e.isDirectory()) continue;
+                jar.putNextEntry(new JarEntry(e.getName()));
+                try (InputStream s = in.getInputStream(e)) {
+                    s.transferTo(jar);
+                }
+                jar.closeEntry();
+            }
+            jar.putNextEntry(new JarEntry(parts[0].replace('.', '/') + ".team"));
+            jar.write(team.getBytes(StandardCharsets.ISO_8859_1));
+            jar.closeEntry();
+        }
+    }
+
+    /** Every file in the robots' data directory, by path relative to it (SHELF-2's check). */
+    private List<String> dataFiles() throws IOException {
+        Path data = home.resolve("robots/.data");
+        List<String> files = new ArrayList<>();
+        if (!Files.exists(data)) return files;
+        try (Stream<Path> all = Files.walk(data)) {
+            for (Path f : (Iterable<Path>) all::iterator) {
+                if (Files.isRegularFile(f)) files.add(data.relativize(f).toString());
+            }
+        }
+        Collections.sort(files);
+        return files;
     }
 
     private String defaultJavaBin() {

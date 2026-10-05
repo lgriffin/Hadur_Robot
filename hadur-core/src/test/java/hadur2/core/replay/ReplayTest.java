@@ -79,6 +79,27 @@ class ReplayTest {
             "the hand-off fixture must hand a survivor over (MMEM-2)");
     }
 
+    @Test
+    @Tag("STRAND-5")
+    @DisplayName("STRAND-5: a team battle's leader and a droid each replay their own transcript")
+    void teamMembersReplay() {
+        List<String> names = Fixtures.all().stream().map(Fixtures::opponent).toList();
+        for (String member : List.of("team-sampleteam.MyFirstTeam-m1", "team-sampleteam.MyFirstTeam-m2")) {
+            assertTrue(names.contains(member), "missing replay fixture " + member);
+            List<String> lines = Fixtures.lines(Fixtures.DIR.resolve(member + ".txt.gz"));
+            FixtureReplay.Result r = FixtureReplay.run(lines);
+            assertFalse(r.hasStore, member + ": a member records no store");
+            for (Replay.Tick t : r.ticks) assertEquals(t.recorded(), t.replayed(), member + " line " + t.line());
+            assertTrue(r.ticks.stream().anyMatch(t -> !t.recorded().messages().isEmpty()),
+                member + " sends its report (LINK-4)");
+            assertTrue(r.telemetry.stream().anyMatch(l -> l.startsWith("T,") && !l.split(",")[7].equals("0")),
+                member + " merges its teammates' reports (WORLD-4)");
+        }
+        String leader = Fixtures.lines(Fixtures.DIR.resolve("team-sampleteam.MyFirstTeam-m1.txt.gz")).stream()
+            .filter(l -> l.startsWith("F,")).findFirst().orElseThrow();
+        assertTrue(Replay.facts(leader).leads(), "member 1 is the leader");
+    }
+
     @ParameterizedTest(name = "{0}")
     @MethodSource("fixtures")
     @DisplayName("replaying a recorded battle reproduces the live robot's orders")

@@ -1,5 +1,6 @@
 package hadur2;
 
+import hadur2.core.model.BattleFacts;
 import hadur2.core.model.BotInput;
 import hadur2.core.model.BotOrders;
 import hadur2.core.replay.LineCodec;
@@ -48,6 +49,13 @@ import robocode.WinEvent;
  * <li>one {@code S,name,base64} per file the battle left in the data directory.</li>
  * </ul>
  *
+ * <p>A5 (STRAND-5): on a team each member writes its own transcript, the property's file
+ * name with {@code -member-N} before its extension, N from the engine's {@code (N)} suffix
+ * on the member's name. Its {@code F} line carries the rest of the battle's facts,
+ * {@code F,width,height,others,name,startingEnergy,sentryBorder,mate;mate;...}, and it
+ * writes no store lines: the members share one data directory, which only the leader
+ * writes (SHELF-2), so no member's store is its own to replay.</p>
+ *
  * <p>This class writes a file outside the data directory with plain {@code java.nio},
  * which Robocode's sandbox would forbid, hence security off. Any I/O failure is thrown
  * as {@code UncheckedIOException}.</p>
@@ -60,26 +68,53 @@ public class HadurRecorder extends Hadur {
     private static int rounds, survived, skipped;
     /** Whether this round's end has been written; the round's end can arrive by several events. */
     private boolean reported;
+    /** Whether this battle is a team's: no store lines then (A5). */
+    private static boolean onTeam;
 
     /** On the battle's first round, opens the transcript and writes the store it starts on. */
     @Override
     public void run() {
         if (writer == null) {
+            onTeam = getTeammates() != null;
+            Path file = Path.of(System.getProperty("hadur.record"));
+            if (onTeam) file = memberFile(file, getName());
             try {
-                writer = Files.newBufferedWriter(Path.of(System.getProperty("hadur.record")),
-                    StandardCharsets.UTF_8);
+                writer = Files.newBufferedWriter(file, StandardCharsets.UTF_8);
             } catch (IOException e) {
                 throw new UncheckedIOException(e);
             }
-            writeStore("D");
+            if (!onTeam) writeStore("D");
         }
         super.run();
     }
 
-    /** Writes the {@code F} line: {@code F,width,height,enemies}. */
+    /**
+     * {@code file} with {@code -member-N} before its extension, N from the {@code (N)} that
+     * ends a team member's name (1 when there is none).
+     */
+    static Path memberFile(Path file, String name) {
+        String n = "1";
+        int open = name.lastIndexOf('(');
+        if (open >= 0 && name.endsWith(")")) n = name.substring(open + 1, name.length() - 1);
+        String base = file.getFileName().toString();
+        int dot = base.lastIndexOf('.');
+        String stem = dot < 0 ? base : base.substring(0, dot);
+        String ext = dot < 0 ? "" : base.substring(dot);
+        return file.resolveSibling(stem + "-member-" + n + ext);
+    }
+
+    /**
+     * Writes the {@code F} line: {@code F,width,height,enemies} off a team, and on a team
+     * also our name, starting energy, sentry border and roster (A5).
+     */
     @Override
-    protected void battleStarted(double width, double height, int enemies) {
-        write("F," + width + "," + height + "," + enemies);
+    protected void battleStarted(BattleFacts facts) {
+        String line = "F," + facts.width() + "," + facts.height() + "," + facts.others();
+        if (!facts.teammates().isEmpty()) {
+            line += "," + facts.name() + "," + facts.startingEnergy() + "," + facts.sentryBorder()
+                + "," + String.join(";", facts.teammates());
+        }
+        write(line);
     }
 
     /** Writes {@code N,round}. */
@@ -119,7 +154,9 @@ public class HadurRecorder extends Hadur {
     /** The robot's own round-end handling, recorded as the adapter makes it, then a flush. */
     @Override
     public void onRoundEnded(RoundEndedEvent e) {
-        roundEnd(getEnergy() <= 0 ? "loss" : getOthers() == 0 ? "win" : "draw");
+        // As the adapter: on a team a member alive at the round's end won (A5).
+        if (!onTeam) roundEnd(getEnergy() <= 0 ? "loss" : getOthers() == 0 ? "win" : "draw");
+        else if (getEnergy() > 0) roundEnd("win");
         if (getEnergy() > 0) write("CP," + getTime());
         super.onRoundEnded(e);
         flush();
@@ -131,7 +168,7 @@ public class HadurRecorder extends Hadur {
         write("BE," + getTime());
         write("HE," + rounds + "," + survived + "," + skipped);
         super.onBattleEnded(e);
-        writeStore("S");
+        if (!onTeam) writeStore("S");
         flush();
     }
 

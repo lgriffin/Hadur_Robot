@@ -37,6 +37,7 @@ import hadur2.core.role.Veto;
 import hadur2.core.world.EnemyInfo;
 import hadur2.core.world.EnemyShot;
 import hadur2.core.world.EnemyTracker;
+import hadur2.core.world.Roster;
 import java.awt.geom.Point2D;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -115,6 +116,12 @@ public final class HadurCore {
     private final Map<String, Report> reports = new TreeMap<>();
     private int linkReceived;
     private int linkRejected;
+    /** A5: the conductor's part in a team battle; null in a duel or a melee. */
+    private final TeamLink teamLink;
+    /** A5: the World's teammates and its count of enemies; null off a team. */
+    private final Roster roster;
+    /** The count of enemies alive the roles last saw, for the T record. */
+    private int lastEnemiesAlive;
     /** A4: the shelves by charter, and the gate on the store's writes and deletes. */
     private final Archive archive;
     /** The Duel's brain, and the seam the conductor drives it through. */
@@ -246,16 +253,16 @@ public final class HadurCore {
         // ROLE-1: the charter is fixed here, before the first tick.
         Charter charter = Charter.of(facts);
         this.gate = new RoleResolver(charter);
-        // Until A5 filters teammates out of the input, the engine's count (teammates included)
-        // is what every tick's others() is measured against, so the strands get the same.
-        this.enemiesTotal = facts.others();
+        // A5: on a team the roles see the filtered input, whose others() counts enemies only
+        // (WORLD-8), so the strands' total is the enemies too; off a team the two are equal.
+        this.enemiesTotal = facts.enemies();
         this.telemetry = telemetry;
         this.fence = new SentryFence(facts.width(), facts.height());
         // A4: the Archive hands each brain its shelf, or none, by charter, behind one gate on
         // the store's writes and deletes: the Duel's .hp library in a duel, the melee blocks
         // and the survivors' 1v1 profiles (read, never written) wherever Melee is a role, and
         // a shelf written only in its own charter's battle (SHELF-1, SHELF-3).
-        this.archive = new Archive(store, charter);
+        this.archive = new Archive(store, charter, facts.leads());
         this.store = archive.store();
         ProfileLibrary library = archive.duelShelf();
         MeleeMemory meleeMemory = archive.meleeShelf();
@@ -274,6 +281,14 @@ public final class HadurCore {
         } else {
             this.world = null;
             this.meleeSeam = null;
+        }
+        // A5: a team battle's roster and its link; the roles never see a teammate.
+        if (charter == Charter.TEAM) {
+            this.roster = new Roster(facts.teammates(), facts.enemies());
+            this.teamLink = new TeamLink(this, facts, roster, world);
+        } else {
+            this.roster = null;
+            this.teamLink = null;
         }
         // The V record opens every battle's log.
         telemetry.emit("V,1");
@@ -301,6 +316,8 @@ public final class HadurCore {
         deadThisRound.clear();
         handOffPending = false;
         reports.clear();
+        if (teamLink != null) teamLink.newRound();
+        lastEnemiesAlive = -1;
     }
 
     /**
@@ -336,10 +353,13 @@ public final class HadurCore {
      * Turns one tick's input into orders: resolve, observe, drive, fence (see the class
      * comment). May throw; the {@link Guard} covers it (RES-1).
      *
-     * @param in the robot's state and the events that arrived this tick
+     * @param raw the robot's state and the events that arrived this tick
      * @return the tick's orders; fields left NaN keep the previous setting
      */
-    public BotOrders tick(BotInput in) {
+    public BotOrders tick(BotInput raw) {
+        // A5: on a team the roles see the filtered input (WORLD-2, WORLD-6 to WORLD-8);
+        // elsewhere the raw one, so nothing changes.
+        BotInput in = teamLink == null ? raw : teamLink.filter(raw);
         BotOrders.Builder orders = BotOrders.builder();
         lastTickTime = in.time();
         duel.beginTick();
@@ -398,8 +418,11 @@ public final class HadurCore {
             melee = false;
         }
         // WEAVE-3: the permission is given before the role drives, from where Hadur is now.
+        // WEAVE-4: on a team it is withheld while a teammate stands in the fire lane.
+        boolean laneClear = teamLink == null || teamLink.laneClear(raw);
+        if (!laneClear) teamLink.blocked(raw);
         Tick drive = tick.forDrive(melee ? RoleId.MELEE : RoleId.DUEL, focusing, budget.level(),
-            firePermission.test(in));
+            laneClear && firePermission.test(in));
         if (melee) {
             try {
                 meleeSeam.drive(drive, orders);
@@ -429,6 +452,13 @@ public final class HadurCore {
             emitRole(in, drove);
             lastRole = drove;
         }
+        // LINK-4: while a teammate lives, the completed tick's orders carry our report.
+        if (teamLink != null && teamLink.hasLivingTeammate()) built = built.send(teamLink.report(raw, built));
+        // The bench's count check (WORLD-8): the count of enemies alive, each time it changes.
+        if (teamLink != null && in.others() != lastEnemiesAlive) {
+            telemetry.emit("E," + round + "," + in.time() + "," + in.others());
+        }
+        lastEnemiesAlive = in.others();
         return built;
     }
 
@@ -542,21 +572,28 @@ public final class HadurCore {
         }
     }
 
-    /**
-     * LINK-1, LINK-2: a teammate's message is read with the link codec; one that fails it is
-     * ignored, counted and noted in a {@code LINK} record. A report of another round is
-     * dropped: the reports are this round's. A5 merges them into the World.
-     */
+    /** A message the roles were offered: off a team none arrives, and none is a role's. */
     private void linkReceived(BotEvent.Message m, Tick tick) {
+        readMessage(m, tick.in().time());
+    }
+
+    /**
+     * LINK-1, LINK-2: a teammate's message read with the link codec; one that fails it is
+     * ignored, counted and noted in a {@code LINK} record, and null returned. A report of
+     * another round is dropped, and null returned: the reports are this round's.
+     */
+    Report readMessage(BotEvent.Message m, long time) {
         try {
             Report r = LinkCodec.decode(m.bytes());
-            if (r.round() != round) return;
+            if (r.round() != round) return null;
             reports.put(m.sender(), r);
             linkReceived++;
+            return r;
         } catch (LinkFormatException ex) {
             linkRejected++;
-            telemetry.emit("LINK," + round + "," + tick.in().time() + ",rejected," + clean(m.sender()) + ","
+            telemetry.emit("LINK," + round + "," + time + ",rejected," + clean(m.sender()) + ","
                 + clean(ex.getMessage()));
+            return null;
         }
     }
 
@@ -573,6 +610,11 @@ public final class HadurCore {
     /** The last report read from each teammate this round, by name (A5 merges them into the World). */
     public Map<String, Report> reports() {
         return Collections.unmodifiableMap(reports);
+    }
+
+    /** A5: the World's teammates and count of enemies; null off a team. */
+    public Roster roster() {
+        return roster;
     }
 
     /** Writes and deletes the Archive's gate refused this battle (SHELF-1, SHELF-3). */
@@ -813,6 +855,7 @@ public final class HadurCore {
         if (meleeSeam != null) meleeSeam.roundEnded(ended);
         telemetry.emit(stats.toRecord(round, tick, result, myEnergy, duel.lastEnemyEnergy()));
         if (enemiesTotal >= 2 || gate.sentriesSeen()) telemetry.emit(meleeRecord(tick));
+        if (teamLink != null) telemetry.emit(teamLink.record(round, tick, linkRejected, lastEnemiesAlive));
         return stats;
     }
 
@@ -914,7 +957,8 @@ public final class HadurCore {
      * @param skippedTurns engine-skipped-turn events this battle
      */
     public void writeBattleHealth(int rounds, int roundsSurvived, int faults, int skippedTurns) {
-        if (store == null) return;
+        // SHELF-2: on a team only the scribe writes; the Archive asks before the gate would refuse.
+        if (store == null || !archive.scribe()) return;
         int memoryFailures = meleeMemoryFailures() + duel.memoryFailures();
         String record = "HEALTH," + rounds + "," + roundsSurvived + "," + faults + ","
             + skippedTurns + "," + memoryFailures + "," + budget.learnedAllowanceNanos();

@@ -2,8 +2,9 @@ name: release
 
 # Pushing a tag like v2.1, or running this workflow by hand with a version, builds the
 # robot, checks the jar matches the version, and publishes a GitHub release (tagging the
-# commit if needed) with the jar attached. The release asset URL is a direct download,
-# which is what RoboRumble participant lists need.
+# commit if needed) with the jar attached, and the team jar beside it when the build makes
+# one (A5). The release asset URL is a direct download, which is what RoboRumble
+# participant lists need.
 on:
   push:
     tags: ['v*']
@@ -43,7 +44,19 @@ jobs:
           test -f "$jar" || { echo "missing $jar"; exit 1; }
           unzip -p "$jar" hadur2/Hadur.properties | grep -qx "robot.version=${version}" \
             || { echo "robot.version in $jar is not ${version}"; exit 1; }
-          echo "JAR=$jar" >> "$GITHUB_ENV"
+          # A5: the team jar, when the build makes one, ships beside it at the same version.
+          team="hadur-robot/target/hadur2.HadurTeam_${version}.jar"
+          if [ -f "$team" ]; then
+            unzip -p "$team" hadur2/HadurTeam.team | grep -qx "team.version=${version}" \
+              || { echo "team.version in $team is not ${version}"; exit 1; }
+            unzip -p "$team" hadur2/HadurTeam.team | grep -q "^team.members=hadur2.Hadur ${version}," \
+              || { echo "the members in $team are not hadur2.Hadur ${version}"; exit 1; }
+            unzip -p "$team" hadur2/Hadur.properties | grep -qx "robot.version=${version}" \
+              || { echo "robot.version in $team is not ${version}"; exit 1; }
+          else
+            team=""
+          fi
+          { echo "FILES<<EOF"; echo "$jar"; [ -z "$team" ] || echo "$team"; echo "EOF"; } >> "$GITHUB_ENV"
       - name: Check an existing tag points at this commit
         run: |
           # A manual run for a version that is already tagged must build that tag's commit,
@@ -61,5 +74,5 @@ jobs:
           tag_name: ${{ env.TAG }}
           target_commitish: ${{ github.sha }}
           name: Hadur ${{ env.TAG }}
-          files: ${{ env.JAR }}
+          files: ${{ env.FILES }}
           body_path: docs/releases/${{ env.TAG }}.md
