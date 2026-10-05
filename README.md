@@ -414,7 +414,7 @@ client can load it (REL-1).
 mvn verify                  # all modules: tests, traceability, robot jar
 ```
 
-The robot jar is `hadur-robot/target/hadur2.Hadur_3.6.jar`; drop it into a Robocode
+The robot jar is `hadur-robot/target/hadur2.Hadur_3.7.jar`; drop it into a Robocode
 `robots/` directory. The core is bundled inside it. Pushing a `v*` tag runs the release
 workflow, as does running it by hand with a version: it builds, checks that the jar
 matches the version, and publishes a GitHub release with `docs/releases/<tag>.md` as its

@@ -10,15 +10,25 @@ same line go on both pages:
 [RoboRumble/Participants](https://robowiki.net/wiki/RoboRumble/Participants) for 1v1 and
 [RoboRumble/Participants/Melee](https://robowiki.net/wiki/RoboRumble/Participants/Melee).
 
-## Next entry: 3.5.1
+## Next entry: 3.7
 
-Hadur 3.5.1 (R9's review fixes, see
-[docs/releases/v3.5.1.md](https://github.com/lgriffin/Hadur_Robot/blob/master/docs/releases/v3.5.1.md))
-replaces 3.5 in both leagues:
+Hadur 3.7 (the architecture evolution, A0 to A5, see
+[docs/releases/v3.7.md](https://github.com/lgriffin/Hadur_Robot/blob/master/docs/releases/v3.7.md))
+replaces 3.5.1 in both leagues:
 
 ```
-hadur2.Hadur 3.5.1,https://github.com/lgriffin/Hadur_Robot/releases/download/v3.5.1/hadur2.Hadur_3.5.1.jar
+hadur2.Hadur 3.7,https://github.com/lgriffin/Hadur_Robot/releases/download/v3.7/hadur2.Hadur_3.7.jar
 ```
+
+It also enters the TeamRumble, the 5-against-5 team league, with the team jar (five
+`hadur2.Hadur 3.7`). This line goes on
+[RoboRumble/Participants/Teams](https://robowiki.net/wiki/RoboRumble/Participants/Teams):
+
+```
+hadur2.HadurTeam 3.7,https://github.com/lgriffin/Hadur_Robot/releases/download/v3.7/hadur2.HadurTeam_3.7.jar
+```
+
+3.6 (A0 to A2) was released but not entered; 3.7 carries the same solo play.
 
 ## Country flag
 
@@ -27,6 +37,14 @@ main package, from the robowiki page
 [RoboRumble/Country Flags](https://robowiki.net/wiki/RoboRumble/Country_Flags). Hadur's
 package is `hadur2`, so the page needs one line `hadur2,IRL` (package, comma, the
 three-letter code the other entries use), added once; every Hadur version picks it up.
+
+## Previous entry: 3.5.1
+
+Hadur 3.5.1 (R9's review fixes, see
+[docs/releases/v3.5.1.md](https://github.com/lgriffin/Hadur_Robot/blob/master/docs/releases/v3.5.1.md))
+replaced 3.5 with
+`hadur2.Hadur 3.5.1,https://github.com/lgriffin/Hadur_Robot/releases/download/v3.5.1/hadur2.Hadur_3.5.1.jar`
+and reached 16th in the 1v1 RoboRumble and 18th in the MeleeRumble; 3.7 supersedes it.
 
 ## Previous entry: 3.5
 
