@@ -128,9 +128,17 @@ final class DuelSeam implements Role {
         return Baton.EMPTY;
     }
 
-    /** MMEM-2: inside the survivor's first scan, after the opponent switch. */
+    /**
+     * MMEM-2: inside the survivor's first scan, after the opponent switch. The conductor's
+     * {@code handOff} is the only caller, from within {@link #observe} on that scan.
+     *
+     * @throws IllegalStateException if called outside the survivor's scan
+     */
     @Override
     public void take(Baton baton, Tick tick) {
+        if (scan == null) {
+            throw new IllegalStateException("the Duel takes a baton only inside the survivor's scan");
+        }
         duel.take(tick.in(), baton, scan.name(), scan.energy());
     }
 

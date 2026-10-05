@@ -242,4 +242,15 @@ class StrandContractTest {
         HadurCore.checkFirePermission(tick(false), BotOrders.builder().turnGunRight(1.0));
         HadurCore.checkFirePermission(tick(true), BotOrders.builder().fire(1.0));
     }
+
+    @Test
+    @Tag("WEAVE-1")
+    @DisplayName("the Duel takes a baton only inside the survivor's scan")
+    void takeOutsideAScanFailsClearly() {
+        HadurCore core = new HadurCore(1000, 1000, 1, Telemetry.NONE);
+        DuelSeam seam = new DuelSeam(core, core.duel());
+        IllegalStateException e = assertThrows(IllegalStateException.class,
+            () -> seam.take(hadur2.core.model.Baton.EMPTY, tick(true)));
+        assertTrue(e.getMessage().contains("survivor's scan"));
+    }
 }
