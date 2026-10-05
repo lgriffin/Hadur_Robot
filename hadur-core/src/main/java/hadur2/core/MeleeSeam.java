@@ -137,8 +137,10 @@ final class MeleeSeam implements Role {
     /**
      * ROLE-5: the melee brain is fed whichever role drives: scans, deaths, the bullets that
      * hit Hadur, and Hadur's own hits except on a robot the Duel is ignoring. The conductor
-     * offers no sentry's scan or bullet. The World took the event first (WORLD-1); the
-     * conductor's {@link #observe(BotEvent, Tick, boolean)} says whether it held.
+     * offers no sentry's scan or bullet. The World takes the event first (WORLD-1); the
+     * conductor's {@link #observe(BotEvent, Tick, boolean)} says whether it held. A scan is
+     * booked only against the World's view of that same robot, so a caller that skips the
+     * conductor's feed books nothing rather than a stale robot's scan.
      */
     @Override
     public void observe(BotEvent event, Tick tick) {
@@ -155,7 +157,7 @@ final class MeleeSeam implements Role {
             BotEvent.Scan e = (BotEvent.Scan) event;
             long time = in.time();
             EnemyInfo info = core.scanInfo();
-            if (worldFed && info != null) {
+            if (worldFed && info != null && info.name.equals(e.name())) {
                 guard(() -> melee.scanned(info, core.scanShot(), e.distance(), e.velocity(), time));
             }
             // MMEM-1: after the World has the scan and before the Duel sees it.

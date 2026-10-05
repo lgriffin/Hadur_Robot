@@ -125,6 +125,25 @@ class StrandContractTest {
     }
 
     @Test
+    @Tag("WORLD-1")
+    @DisplayName("WORLD-1: a scan the World has not taken is booked against no robot")
+    void unfedScanBooksNoRobot() {
+        List<String> seen = new ArrayList<>();
+        RecordingMelee melee = new RecordingMelee(seen);
+        HadurCore core = new HadurCore(1000, 1000, 2, seen::add, null, melee);
+        core.newRound(0);
+        core.tick(input(1, 2, 0, List.of(scan("a", 1.0, 300, false))));
+        assertTrue(seen.contains("scan:a"), seen.toString());
+        seen.clear();
+        // Straight through the role contract, past the conductor's feed: the World's last
+        // scan is a's, so b's scan must not be booked as a's.
+        MeleeSeam seam = new MeleeSeam(core, melee, null, new hadur2.core.model.RoundStats());
+        Tick t = new Tick(input(2, 2, 0, List.of()), RoleId.MELEE, false, new DuelFocus(), n -> false, false);
+        seam.observe(scan("b", 2.0, 300, false), t);
+        assertFalse(seen.stream().anyMatch(s -> s.startsWith("scan:")), seen.toString());
+    }
+
+    @Test
     @Tag("ROLE-6")
     @DisplayName("ROLE-6: a duel holds no melee brain and no World; a melee holds both, one World")
     void onlyTheCharterRolesAreBuilt() {
