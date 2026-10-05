@@ -409,6 +409,21 @@ class ProfileLibraryTest {
     }
 
     @Test
+    @Tag("SHIELD-3")
+    @DisplayName("SHIELD-3: the shielder flag survives a save, a checkpoint and a reload, so battle two starts with it")
+    void shielderFlagIsKept() {
+        MemoryProfileStore store = new MemoryProfileStore(QUOTA);
+        ProfileLibrary lib = new ProfileLibrary(store);
+        OpponentProfile p = Profiles.shielder(Profiles.seedWorthy("a.Bot", 3, 20, 20), true);
+        lib.save(p);
+        assertTrue(stored(store, "a.Bot").shielder());
+        assertTrue(lib.load("a.Bot").profile().shielder());
+        lib.saveStatsOnly(p);
+        assertTrue(stored(store, "a.Bot").shielder(), "a checkpoint keeps it");
+        assertFalse(stored(store, "a.Bot").leadAware(), "and the verdict is its own");
+    }
+
+    @Test
     @Tag("MEM-9")
     @Tag("ADAPT-5")
     @DisplayName("MEM-9, ADAPT-5: a release's version 2 file carries its stats forward once, with no verdict, and is left alone")

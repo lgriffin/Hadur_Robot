@@ -27,6 +27,8 @@ import java.util.List;
  * <li>ADAPT-5: the profile's lead-aware verdict (POW-7's hit-rate condition at the last
  *     battle's end) passes through as {@link Opening#leadAware()}, for the core to apply
  *     from the first shot.</li>
+ * <li>SHIELD-3: the profile's shielder flag passes through as {@link Opening#shielder()}, so the
+ *     core treats the enemy as a bullet shielder from the first shot.</li>
  * <li>S5: the gun tier also sets the starting distance ({@link Opening#distance}): close against a
  *     gun that cannot hit, further out the better it is. A stranger starts at 1.20's
  *     650 px.</li>
@@ -111,6 +113,6 @@ public final class OpeningBook {
         // ADAPT-2: T3 turns the flattener views on from the first surfable wave.
         return new Opening(gunTier, moveTier, gun, gunTier == Tiers.Gun.T3, surfPrior,
             theirHitRate, Tiers.mainGunRating(profile), SEED_WEIGHT, gunSeed, surfSeed,
-            distance(gunTier), profile.leadAware());
+            distance(gunTier), profile.leadAware(), profile.shielder());
     }
 }

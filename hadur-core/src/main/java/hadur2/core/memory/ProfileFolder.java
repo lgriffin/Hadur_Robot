@@ -208,6 +208,17 @@ public final class ProfileFolder {
     }
 
     /**
+     * SHIELD-3: whether the enemy is treated as a bullet shielder as the round ends. The core
+     * hands it over just before {@link #fold}; like the lead-aware verdict, the profile keeps the
+     * latest one.
+     *
+     * @param treated whether the enemy is treated as a shielder
+     */
+    public void shielder(boolean treated) {
+        profile.shielder = treated;
+    }
+
+    /**
      * MEM-2: adds this round to the profile and starts the next one.
      *
      * <p>The core calls this once per round, at its end, after passing the battle totals

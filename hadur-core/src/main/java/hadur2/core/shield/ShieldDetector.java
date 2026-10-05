@@ -8,7 +8,9 @@ package hadur2.core.shield;
  * at least {@link #MIN_SHARE} of them, were destroyed. Two bullets meet by accident a few
  * times a battle; a shielder meets most of ours. Once found, the verdict holds for the rest
  * of the battle: the counter makes intercepts rare, and dropping it would let the shield
- * back in.</p>
+ * back in. SHIELD-3 adds two ways in: a bullet destroyed by an enemy that has not moved since the
+ * round began latches it at once, and a profile that records a shielder latches it from the
+ * first shot.</p>
  *
  * <p>{@code HadurCore} reports each of our duel bullets' fate from the engine's bullet
  * events: hit, missed (left the field) or intercepted (met an enemy bullet). Bullets fired
@@ -47,8 +49,25 @@ public final class ShieldDetector {
 
     /** One of our bullets was destroyed by an enemy bullet. */
     public void bulletIntercepted() {
+        bulletIntercepted(false);
+    }
+
+    /**
+     * One of our bullets was destroyed by an enemy bullet.
+     *
+     * @param enemyStill SHIELD-3: the enemy has not moved since the round began, so this is a
+     *     shield and not two robots that happened to fire at once: the enemy is a shielder
+     *     from the next shot, without waiting for SHIELD-1's four in twenty
+     */
+    public void bulletIntercepted(boolean enemyStill) {
         totalIntercepts++;
+        if (enemyStill) shielded = true;
         record(true);
+    }
+
+    /** SHIELD-3: a profile records the enemy as a shielder from an earlier battle; it is one from the first shot. */
+    public void knownShielder() {
+        shielded = true;
     }
 
     /** Whether the enemy has been found to shoot our bullets down in this battle. */
