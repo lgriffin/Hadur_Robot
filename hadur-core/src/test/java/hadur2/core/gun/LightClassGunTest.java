@@ -6,8 +6,14 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import hadur2.core.knn.KdTree;
+import hadur2.core.knn.KnnView;
 import hadur2.core.model.RobotState;
 import hadur2.core.model.SeedWeight;
+import hadur2.core.model.Timestamped;
+import hadur2.core.model.TimestampedFiringAngle;
+import hadur2.core.physics.Angles;
+import hadur2.core.physics.DiaUtils;
 import hadur2.core.model.Wave;
 import hadur2.core.policy.BattleHitRates;
 import java.awt.geom.Point2D;
@@ -198,6 +204,92 @@ class LightClassGunTest {
         b.shotFired();
         assertNotEquals(start, a.samplePhaseForTest());
         assertEquals(a.samplePhaseForTest(), b.samplePhaseForTest(), 0.0, "deterministic: a replay repeats it");
+    }
+
+    @Test
+    @Tag("GUN-5")
+    @DisplayName("a shield attack cut across the 0.2 line is rated in the class it was fired at")
+    void shieldAttackRatedAtFiredPower() {
+        GunController g = seeded();
+        Wave w = GunOpeningTest.wave();
+        w.setBulletPower(0.25);
+        g.shieldAttackFired(w, ME, 30, 0.15, true);
+        w.firingWave = true;
+        g.onWaveBreak(w, statesAcross(w));
+        assertEquals(1, g.ratedShotsForTest(BOT, true), "fired light, though the wave said 0.25");
+        assertEquals(0, g.ratedShotsForTest(BOT, false));
+    }
+
+    @Test
+    @Tag("GUN-5")
+    @DisplayName("every shield attack shot moves the sampled gun's phase on, shed virtual guns or not")
+    void shieldAttackAdvancesPhase() {
+        GunController g = seeded();
+        double start = g.samplePhaseForTest();
+        g.shieldAttackFired(GunOpeningTest.wave(), ME, 30, 0.15, true);
+        double one = g.samplePhaseForTest();
+        assertNotEquals(start, one);
+        g.shieldAttackFired(GunOpeningTest.wave(), ME, 31, 1.0, false);
+        assertNotEquals(one, g.samplePhaseForTest(), "also when the budget sheds the virtual guns");
+    }
+
+    /** A view that returns the neighbours it was given, in order, whatever the wave. */
+    private static KnnView<TimestampedFiringAngle> viewOf(List<TimestampedFiringAngle> samples) {
+        return new KnnView<TimestampedFiringAngle>(new GunFormula(1)) {
+            @Override
+            public int effectiveSize() {
+                return samples.size();
+            }
+
+            @Override
+            public List<KdTree.Entry<TimestampedFiringAngle>> nearestNeighbors(Wave w, boolean aiming) {
+                List<KdTree.Entry<TimestampedFiringAngle>> out = new ArrayList<>();
+                for (TimestampedFiringAngle t : samples) out.add(new KdTree.Entry<>(0, t));
+                return out;
+            }
+        };
+    }
+
+    private static TimestampedFiringAngle sampleAt(double gf, double weight) {
+        return new TimestampedFiringAngle(Timestamped.SEED_ROUND, 0, gf, new Point2D.Double(), new SeedWeight(weight));
+    }
+
+    @Test
+    @Tag("GUN-5")
+    @DisplayName("a zero-weight neighbour is never the sampled gun's pick, and with none left it fires head-on")
+    void sampledGunSkipsZeroWeight() {
+        Wave w = GunOpeningTest.wave();
+        double headOn = DiaUtils.absoluteBearing(ME, w.targetLocation);
+        KnnView<TimestampedFiringAngle> view = viewOf(List.of(sampleAt(0.8, 0), sampleAt(-0.8, 1)));
+        SampledGun gun = new SampledGun();
+        for (int i = 0; i < 200; i++) {
+            double aim = gun.aim(w, view, ME);
+            double side = Angles.normalRelativeAngle(aim - headOn) * w.orbitDirection;
+            assertTrue(side < 0, "only the weighted neighbour (GF -0.8) is picked");
+            gun.shotFired();
+        }
+        KnnView<TimestampedFiringAngle> dead = viewOf(List.of(sampleAt(0.8, 0), sampleAt(0.5, 0)));
+        assertEquals(headOn, new SampledGun().aim(w, dead, ME), 1e-12, "nothing left: guess factor 0");
+    }
+
+    @Test
+    @Tag("GUN-5")
+    @DisplayName("a half-weight neighbour is picked about half as often over a phase sweep")
+    void sampledGunWeightsProportionally() {
+        Wave w = GunOpeningTest.wave();
+        double headOn = DiaUtils.absoluteBearing(ME, w.targetLocation);
+        KnnView<TimestampedFiringAngle> view = viewOf(List.of(sampleAt(0.8, 1.0), sampleAt(-0.8, 0.5)));
+        SampledGun gun = new SampledGun();
+        int full = 0;
+        int half = 0;
+        for (int i = 0; i < 1000; i++) {
+            double side = Angles.normalRelativeAngle(gun.aim(w, view, ME) - headOn) * w.orbitDirection;
+            if (side > 0) full++; else half++;
+            gun.shotFired();
+        }
+        assertEquals(2.0, full / (double) half, 0.1, "full:half picks " + full + ":" + half);
+        assertEquals(0, SampledGun.pick(0.0, new double[] {0.5, 1.0}));
+        assertEquals(1, SampledGun.pick(0.34, new double[] {0.5, 1.0}));
     }
 
     @Test

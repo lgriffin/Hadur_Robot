@@ -542,6 +542,24 @@ public class GunController {
     }
 
     /**
+     * SHIELD-6, GUN-5: a real shield-mode attack shot went out at {@code firedPower}, which the
+     * shield may have cut from the wave's. The virtual guns are rated in the class of that
+     * power (unless the tick budget has shed them) and the sampled gun's phase moves on. An
+     * intercept bullet, shot at an enemy bullet, is no attack and does not come here.
+     *
+     * @param w the wave the real bullet rides
+     * @param myLocation where the bullet leaves from
+     * @param currentTime the present tick
+     * @param firedPower the power the real bullet was fired at
+     * @param virtualGuns whether the virtual guns are scored this tick (TIME-1, TIME-2)
+     */
+    public void shieldAttackFired(Wave w, Point2D.Double myLocation, long currentTime,
+                                  double firedPower, boolean virtualGuns) {
+        if (virtualGuns) fireVirtualBullets(w, myLocation, currentTime, firedPower);
+        shotFired();
+    }
+
+    /**
      * GUN-5: a real shot went out. The sampled gun's phase moves on, so the next shot
      * samples a different neighbour; called once per real duel bullet, whether or not the
      * virtual guns were fired for it.

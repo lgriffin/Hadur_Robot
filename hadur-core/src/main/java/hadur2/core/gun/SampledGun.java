@@ -5,11 +5,12 @@ import hadur2.core.physics.*;
 import hadur2.core.knn.*;
 
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * GUN-5: the light bullets' fourth virtual gun. It aims at one neighbour's guess factor,
- * chosen by a quasi-random phase, instead of at the density peak of all of them.
+ * chosen by a quasi-random phase in proportion to its weight, instead of at the density peak of all of them.
  *
  * <p>Why it exists. A bullet of power 0.1 is nearly free, so the aim that pays is not always the
  * single most likely angle: a surfer that dodges the peak is shot at it, and a flattener that
@@ -53,7 +54,8 @@ public final class SampledGun {
     }
 
     /**
-     * Which of {@code n} neighbours the phase picks: {@code floor(phase * n)}, the last at most.
+     * Which of {@code n} equally weighted neighbours the phase picks: {@code floor(phase * n)},
+     * the last at most.
      *
      * @param phase a phase in [0, 1)
      * @param n the neighbour count, at least 1
@@ -61,6 +63,27 @@ public final class SampledGun {
      */
     static int pick(double phase, int n) {
         return Math.min(n - 1, (int) (phase * n));
+    }
+
+    /**
+     * Which neighbour the phase picks, in proportion to weight: the first whose running total
+     * of weights passes {@code phase * total}, the last positive one at most. Deterministic,
+     * so a replay picks as the recorded battle did.
+     *
+     * @param phase a phase in [0, 1)
+     * @param weights the neighbours' weights, each above 0, at least one
+     * @return an index into {@code weights}
+     */
+    static int pick(double phase, double[] weights) {
+        double total = 0;
+        for (double w : weights) total += w;
+        double target = phase * total;
+        double run = 0;
+        for (int i = 0; i < weights.length; i++) {
+            run += weights[i];
+            if (target < run) return i;
+        }
+        return weights.length - 1;
     }
 
     /**
@@ -76,9 +99,17 @@ public final class SampledGun {
         if (view.effectiveSize() == 0) return w.absBearing;
         List<KdTree.Entry<TimestampedFiringAngle>> neighbors = view.nearestNeighbors(w, true);
         if (neighbors.isEmpty()) return w.absBearing;
-        double gf = neighbors.get(pick(phase, neighbors.size())).value.guessFactor;
-        gf = Math.max(-1.0, Math.min(1.0, gf));
+        // A neighbour that weighs nothing (a seed the trust has faded out, RES-4) is no data.
+        List<TimestampedFiringAngle> live = new ArrayList<>(neighbors.size());
+        for (KdTree.Entry<TimestampedFiringAngle> e : neighbors) {
+            if (e.value.weight() > 0) live.add(e.value);
+        }
         double nextAbsBearing = DiaUtils.absoluteBearing(myNextLocation, w.targetLocation);
+        if (live.isEmpty()) return nextAbsBearing;
+        double[] weights = new double[live.size()];
+        for (int i = 0; i < weights.length; i++) weights[i] = live.get(i).weight();
+        double gf = live.get(pick(phase, weights)).guessFactor;
+        gf = Math.max(-1.0, Math.min(1.0, gf));
         return Angles.normalAbsoluteAngle(
             nextAbsBearing + gf * w.orbitDirection * w.preciseEscapeAngle(gf >= 0));
     }

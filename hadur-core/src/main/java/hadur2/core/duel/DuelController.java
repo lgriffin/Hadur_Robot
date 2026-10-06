@@ -258,6 +258,8 @@ public final class DuelController {
     private double aimedBulletPower;
     /** The tick of our last real duel shot, a gun-wave feature. */
     private long lastRealBulletFireTime;
+    /** GUN-7: the tick the surf last published a plan on; -1 for none this round. */
+    private long planTime = -1;
     /** The tick of the duel opponent's last scan (RADAR-1 reads its age). */
     private long lastScanTime;
     /** The duel opponent's absolute bearing at its last scan, radians. */
@@ -365,6 +367,8 @@ public final class DuelController {
         myVchangeTime = 0;
         // The power the gun aims for before its first wave says otherwise.
         aimedBulletPower = 1.9;
+        planTime = -1;
+        moveController.clearPlan();
         lastRealBulletFireTime = 0;
         lastScanTime = 0;
         lastEnemyAbsBearing = 0;
@@ -746,7 +750,8 @@ public final class DuelController {
         moveController.setKShare(TickBudget.kShare(level));
         // SHIELD-5, SHIELD-6: on a listed opponent the shield drives body and gun until it is left.
         if (shield != null && shield.active() && shieldDrive(in, orders, level, mayFire)) return;
-        double gunHeat = aimAndFire(in, orders, TickBudget.virtualGuns(level), mayFire);
+        double gunHeat = aimAndFire(in, orders, TickBudget.virtualGuns(level), TickBudget.shadowAim(level),
+            mayFire);
         // Break the enemy waves that have passed us, before the policies read their outcomes.
         moveController.checkWaves(in.time(), in.location());
         checkSurfSeed(in.time());
@@ -769,6 +774,8 @@ public final class DuelController {
             surfMover.move(orders, currentState(in), moveController, lastEnemyLocation,
                 TickBudget.wavesToSurf(level), TickBudget.goToAllowed(level));
         }
+        // GUN-7: the next aim may read this plan, one tick on, if the surf published one.
+        if (!moveController.planIntervals().isEmpty()) planTime = in.time();
         // RADAR-1: no scan this tick or the one before, so the lock has lost it.
         if (in.time() - lastScanTime > 1) reacquire(in, orders);
     }
@@ -1400,7 +1407,7 @@ public final class DuelController {
      * fired then would leave from.</p>
      */
     private double aimAndFire(BotInput in, BotOrders.Builder orders, boolean virtualGuns,
-                              boolean mayFire) {
+                              boolean shadowAim, boolean mayFire) {
         // Where our current velocity carries us in one tick.
         Point2D.Double myNext = predictor.nextLocation(currentState(in));
         // In 1.20, setFireBullet heated the gun at once (the engine's proxy adds the new
@@ -1433,7 +1440,12 @@ public final class DuelController {
             // bullet's shadows save us. Our own bullets' shadows are brought up to date first,
             // so a shot fired this tick already counts.
             ShadowValue shadow = null;
-            if (GunController.SHADOW_AIM && !moveController.planIntervals().isEmpty()) {
+            // The plan is the one published on the tick before: the surf runs after the aim
+            // within a tick, so it is the latest there is, and a plan older than that (a
+            // tick the shield or duress drove, or the surf did not publish) is not used.
+            // TIME-1, TIME-2: shed at level 2 and up.
+            if (GunController.SHADOW_AIM && shadowAim && planTime == in.time() - 1
+                    && !moveController.planIntervals().isEmpty()) {
                 moveController.updateShadows(in.time());
                 shadow = shadowAvoidance.prepare(moveController.planIntervals(), myNext, in.time());
             }
@@ -1520,7 +1532,11 @@ public final class DuelController {
             orders.fire(c.firePower);
             if (c.attack) {
                 lastGunWave.firingWave = true;
-                if (TickBudget.virtualGuns(level)) gunController.fireVirtualBullets(lastGunWave, me, in.time());
+                // GUN-5: rated in the class of the power the shield fired at, which it may
+                // have cut from the wave's; the sampled gun's phase moves on as for any shot.
+                double firedPower = Math.min(in.energy(), c.firePower);
+                gunController.shieldAttackFired(lastGunWave, me, in.time(), firedPower,
+                    TickBudget.virtualGuns(level));
                 lastRealBulletFireTime = in.time();
                 stats.shotsFired++;
                 if (c.firePower >= PowerPolicy.FULL_POWER) stats.fullPowerShots++;
@@ -1531,7 +1547,7 @@ public final class DuelController {
                 if (folder != null) folder.ourShot(lastEnemyDistance);
                 // MOVE-1: it leaves from here along the gun's heading this tick.
                 moveController.ourBulletFired(new OurBullet(in.time(), me, in.gunHeading(),
-                    Math.min(in.energy(), c.firePower)));
+                    firedPower));
             }
         }
         aimedBulletPower = lastGunWave.bulletPower();

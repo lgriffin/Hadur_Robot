@@ -199,8 +199,8 @@ The S6 group (MOVE-1, MOVE-2, TIME-1, TIME-2) was implemented with these reading
   clock, so a replay takes the same decisions (CORE-2). The allowance is taken as 3 ms, the
   bench machine's CPU constant; Robocode does not tell a robot its own.
 - **A computation level sheds work in a fixed order**: level 1 surfs one wave and no
-  go-to; level 2 also halves k in every KNN view; level 3 also stops scoring the virtual
-  guns. TIME-2's skipped turn holds a level for the rest of the round; TIME-1's slow tick
+  go-to; level 2 also halves k in every KNN view and drops GUN-7's shadow weighing (the aim is
+  D3's plain aim); level 3 also stops scoring the virtual guns. TIME-2's skipped turn holds a level for the rest of the round; TIME-1's slow tick
   adds one for the next tick only. Levels are capped at 3.
 - **MOVE-2's baseline is the profile's raw hit rate** on us, and the rolling rate is a window
   cleared at each change, so each flavour is judged on its own waves. A change needs the live
