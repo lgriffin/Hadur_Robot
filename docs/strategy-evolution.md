@@ -413,6 +413,20 @@ DrussGT **+10.5 ± 3.1** points over 10 battles (10 of 10 up), the top-10 set **
 over 20 (14 up). Skipped turns against DrussGT rose from 314 to 447 over 350 rounds (the top 10 was 298 against 335), the cost to watch live.
 Open items are in `followup.md` under the DrussGT route.
 
+## 3.8 live: the top rose, the field fell
+
+The first full 1v1 pass ([live-3.8.md](bench/live-3.8.md), 6 October 2026, 1,205 of 1,215
+pairings) puts 3.8 at **84.58 APS, 29th**, down from 3.7's 85.67 (21st) and 3.4's 85.90 (20th).
+Melee rose to **16th** (from 18th) and the team to **12th** (from 32nd of 46). In the 1v1,
+Nullstride 2.3.3 took 1st from BeepBoop 2.0.
+
+Compared pairing by pairing with 3.4's full pass, the top 10 rose +5.2 points per pairing,
+which is where the DrussGT route was aimed. Everyone ranked 21st and below fell 1.55 ± 0.15,
+mostly through lost survival (-2.3), and that costs 1.5 APS. D5's shield list gained live.
+Holding 3.4's level outside the top 20 would put 3.8 at about 86.0, 20th. So the next work
+fixes the leak against the weak and mid field, and keeps the strategy. A paired bench of the
+D1 to D4 stage jars against 3.7 on a large weak and mid set comes first.
+
 ## What comes next
 
 Every EARS requirement up to R2, bar TIER-1 (above), is implemented and traced. R3 to R5
