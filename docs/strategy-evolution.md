@@ -427,6 +427,18 @@ Holding 3.4's level outside the top 20 would put 3.8 at about 86.0, 20th. So the
 fixes the leak against the weak and mid field, and keeps the strategy. A paired bench of the
 D1 to D4 stage jars against 3.7 on a large weak and mid set comes first.
 
+## 3.8.5 live: a fifth of the leak back
+
+3.8.5 scopes the DrussGT route to duels Hadur is not already winning on the guns (MATCH-1,
+MATCH-2): once the battle's hit rates clearly favour Hadur, shadow-weighted aim and the
+one-bullet shielder latch switch off. Its first pass ([live-3.8.5.md](bench/live-3.8.5.md),
+6 October 2026, 1,206 pairings) puts it at **84.79 APS, 24th**, up from 3.8's 84.58 (29th).
+The gain came where the gate aims, +0.36 per pairing against bots ranked 401st and below, and
+the top 10 held. But that is about a fifth of the leak. Against 3.4, 3.8.5 still loses 1.1 APS,
+mostly as lost survival (-2) against the weak field. 3.7 was already 0.23 below 3.4, so part of
+the leak may predate the DrussGT route. The next measure is a release bisect, 3.4 against
+3.5.1, 3.7, 3.8 and 3.8.5, on the bots that lost to 3.4 in both live passes.
+
 ## What comes next
 
 Every EARS requirement up to R2, bar TIER-1 (above), is implemented and traced. R3 to R5

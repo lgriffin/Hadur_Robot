@@ -1,0 +1,47 @@
+# Live losers (docs/bench/live-3.8.5.md): the 40 bots ranked 21st and below that both 3.8
+# and 3.8.5 scored more than 5 points under 3.4 live, worst first by the mean of the two.
+# Each live pairing is one to three battles, and both are measured against the same 3.4
+# score, so part of this list is 3.4's luck; the bench decides which losses are real.
+# Use: a release bisect, 3.4 against 3.5.1, 3.7, 3.8 and 3.8.5.
+# Jars from https://robocode-archive.strangeautomata.com/robots/<jar>, into opponents/ (not committed).
+#   <robot name as Robocode lists it> | <role> | <jar file in opponents/>
+marcinek.TopGun 1.3 | weak | marcinek.TopGun_1.3.jar
+ahr.ice.Ice 1.0 | weak | ahr.ice.Ice_1.0.jar
+wiki.WaveRammer 1.0 | weak | wiki.WaveRammer_1.0.jar
+pl.Drum 0.1 | weak | pl.Drum_0.1.jar
+shrub.Silver v048 | weak | shrub.Silver_v048.jar
+justin.DemonicRage 3.20 | mid | justin.DemonicRage_3.20.jar
+lorneswork.Predator 1.0 | weak | lorneswork.Predator_1.0.jar
+maribo.IotaCT 1.0 | weak | maribo.IotaCT_1.0.jar
+jcs.AutoBot 4.2.1 | weak | jcs.AutoBot_4.2.1.jar
+GarmBox.Oranges 1.0.1 | weak | GarmBox.Oranges_1.0.1.jar
+zen.Ronin 1.0.0 | mid | zen.Ronin_1.0.0.jar
+dz.Caedo 1.4 | weak | dz.Caedo_1.4.jar
+supersample.SuperTrackFire 1.0 | weak | supersample.SuperTrackFire_1.0.jar
+theo.QuarkSoup 1.5fga | weak | theo.QuarkSoup_1.5fga.jar
+nat.Samekh 0.4 | mid | nat.Samekh_0.4.jar
+pl.Patton.GeneralPatton 1.54 | weak | pl.Patton.GeneralPatton_1.54.jar
+dcs.Eater_of_Worlds_Mini 1.0 | weak | dcs.Eater_of_Worlds_Mini_1.0.jar
+com.syncleus.robocode.Dreadnaught 0.1 | weak | com.syncleus.robocode.Dreadnaught_0.1.jar
+theo.real.Ahab 1.0 | mid | theo.real.Ahab_1.0.jar
+vjik.UnViolation 1.1 | weak | vjik.UnViolation_1.1.jar
+bvh.tyr.Tyr 1.74 | weak | bvh.tyr.Tyr_1.74.jar
+zezinho.QuerMePegarKKKK 1.0 | weak | zezinho.QuerMePegarKKKK_1.0.jar
+jwst.DAD.DarkAndDarker 1.1 | weak | jwst.DAD.DarkAndDarker_1.1.jar
+apc.Colossus2 0.12 | weak | apc.Colossus2_0.12.jar
+ara.Shera 0.88 | weak | ara.Shera_0.88.jar
+dft.Immortal 1.40 | mid | dft.Immortal_1.40.jar
+ethdsy.Malacka 2.4 | weak | ethdsy.Malacka_2.4.jar
+dmh.robocode.robot.PinkPanther 1.1 | weak | dmh.robocode.robot.PinkPanther_1.1.jar
+rtk.Tachikoma 1.0 | weak | rtk.Tachikoma_1.0.jar
+tad.Dalek98 0.98 | weak | tad.Dalek98_0.98.jar
+dk.stable.Gorgatron 1.1 | weak | dk.stable.Gorgatron_1.1.jar
+element.Earth 1.1 | weak | element.Earth_1.1.jar
+davidalves.Firebird 0.25 | mid | davidalves.Firebird_0.25.jar
+wcsv.Engineer.Engineer 0.5.4 | mid | wcsv.Engineer.Engineer_0.5.4.jar
+kinsen.nano.Quarrelet 1.0 | weak | kinsen.nano.Quarrelet_1.0.jar
+sheldor.mini.FoilistMC 1.0 | mid | sheldor.mini.FoilistMC_1.0.jar
+tide.pear.Pear 0.62.1 | mid | tide.pear.Pear_0.62.1.jar
+theo.avenge.Pequod 1.0 | mid | theo.avenge.Pequod_1.0.jar
+rz.Aleph 0.34 | mid | rz.Aleph_0.34.jar
+oog.mini.AlphaDragon 0.1 | weak | oog.mini.AlphaDragon_0.1.jar
