@@ -1212,6 +1212,15 @@ public final class HadurCore {
     }
 
     /**
+     * MATCH-1: whether this battle's duel reads as won on the guns.
+     *
+     * @return the reading as of the last tick driven
+     */
+    public boolean matchWon() {
+        return duel.matchWon();
+    }
+
+    /**
      * POW-11: their counts of resolved bullets over the whole battle, by power class.
      *
      * @return the live counters; read-only for the caller

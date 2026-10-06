@@ -22,6 +22,7 @@ import hadur2.core.move.SurfMover;
 import hadur2.core.physics.*;
 import hadur2.core.port.Telemetry;
 import hadur2.core.policy.BattleHitRates;
+import hadur2.core.policy.Matchup;
 import hadur2.core.policy.DistancePolicy;
 import hadur2.core.policy.Endgame;
 import hadur2.core.policy.EnemyGunHeat;
@@ -167,6 +168,8 @@ public final class DuelController {
     private final BattleHitRates ourRates = new BattleHitRates();
     /** POW-11: their resolved bullets over the whole battle, by power class. */
     private final BattleHitRates theirRates = new BattleHitRates();
+    /** MATCH-1: whether this battle's duel reads as won on the guns, as of the last tick driven. */
+    private boolean matchWon;
     /** ADAPT-5: whether the profile records POW-7's hit-rate condition as standing; false for a stranger. */
     private boolean leadVerdict;
     /** POW-7: whether the lead-aware regime was in force at the last scan, so a P record marks each change. */
@@ -750,8 +753,11 @@ public final class DuelController {
         moveController.setKShare(TickBudget.kShare(level));
         // SHIELD-5, SHIELD-6: on a listed opponent the shield drives body and gun until it is left.
         if (shield != null && shield.active() && shieldDrive(in, orders, level, mayFire)) return;
-        double gunHeat = aimAndFire(in, orders, TickBudget.virtualGuns(level), TickBudget.shadowAim(level),
-            mayFire);
+        // MATCH-1, MATCH-2: in a duel the guns already favour us, the route's shadow aim is
+        // left out; it was built for the opponents that out-hit us.
+        updateMatchup(in.time());
+        double gunHeat = aimAndFire(in, orders, TickBudget.virtualGuns(level),
+            TickBudget.shadowAim(level) && !matchWon, mayFire);
         // Break the enemy waves that have passed us, before the policies read their outcomes.
         moveController.checkWaves(in.time(), in.location());
         checkSurfSeed(in.time());
@@ -871,8 +877,10 @@ public final class DuelController {
         if (ownOutcome && !shieldShot) {
             // SHIELD-3: an enemy that has not moved since the round began is a shield at once.
             // Only the still-enemy rule's own latch is credited to SHIELD-3.
+            // MATCH-2: not in a duel the guns already favour us, where a head-on shot meeting
+            // ours is a coincidence more often than a shield.
             boolean byStillEnemy = shieldDetector.bulletIntercepted(
-                enemiesTotal <= 1 && !stillness.movedThisRound());
+                enemiesTotal <= 1 && !stillness.movedThisRound() && !matchWon);
             if (byStillEnemy && !shieldAnnounced) {
                 shieldAnnounced = true;
                 emitPolicy(round, in.time(), "shield", Double.NaN, Double.NaN, "shield_3");
@@ -1356,6 +1364,7 @@ public final class DuelController {
         theirRates.clear();
         leadVerdict = false;
         leadApplied = false;
+        matchWon = false;
         smallestEnemyPower = Double.NaN;
         rammer.forget();
         mirror.forget();
@@ -1448,6 +1457,7 @@ public final class DuelController {
                     && !moveController.planIntervals().isEmpty()) {
                 moveController.updateShadows(in.time());
                 shadow = shadowAvoidance.prepare(moveController.planIntervals(), myNext, in.time());
+                stats.shadowAims++;
             }
             aimAngle = gunController.aim(lastGunWave, myNext, in.time(), shadow);
         }
@@ -1879,6 +1889,29 @@ public final class DuelController {
      * Writes a {@code P,round,tick,policy,value,margin,setting} record; a NaN value or margin
      * is written as {@code -}.
      */
+    /**
+     * MATCH-1: re-reads whether the guns already favour us, from the battle-long rates, and
+     * marks a change with a {@code P,...,match,...} record. Duel only: with others about the
+     * rates mix opponents.
+     */
+    private void updateMatchup(long time) {
+        boolean won = enemiesTotal <= 1 && Matchup.won(ourRates.estimate(), theirRates.estimate(), matchWon);
+        if (won != matchWon) {
+            matchWon = won;
+            Estimate ours = ourRates.estimate();
+            emitPolicy(round, time, "match", ours.value(), ours.margin(), won ? "match_won" : "match_open");
+        }
+    }
+
+    /**
+     * MATCH-1: whether this battle's duel reads as won on the guns.
+     *
+     * @return the reading as of the last tick driven
+     */
+    public boolean matchWon() {
+        return matchWon;
+    }
+
     private void emitPolicy(int round, long time, String policy, double value, double margin,
                             String setting) {
         telemetry.emit(String.format(Locale.ROOT, "P,%d,%d,%s,%s,%s,%s", round, time, policy,

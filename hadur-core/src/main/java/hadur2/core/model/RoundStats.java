@@ -77,6 +77,8 @@ public final class RoundStats {
     public int shadowedWaves;
     /** S6: enemy bullets ours destroyed that were inside a shadow Hadur had computed (MOVE-1's fidelity). */
     public int interceptsShadowed;
+    /** MATCH-2: aims that weighed our bullets' shadows (GUN-7) this round; not in the round record. */
+    public int shadowAims;
     /** S6: movement flavour changes made this round (MOVE-2). */
     public int flavourChanges;
     /**
