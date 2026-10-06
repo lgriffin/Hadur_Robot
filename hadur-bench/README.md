@@ -25,14 +25,15 @@ mvn exec:java -Dexec.args="--mode cold --rounds 35 --seeds 5"
 | `--robot-jar FILE` | follows `robot.release` in hadur-robot/pom.xml (3.8 today) | the robot jar |
 | `--robot-classes DIR` | | jar a compiled class tree instead, e.g. an older Hadur |
 | `--robot NAME` | follows `robot.release` in hadur-robot/pom.xml (3.8 today) | the robot's name as Robocode lists it |
-| `--parallel N` | 1 | run N battles at once in the duel modes (cold, warm, paired with `--baseline`), each in its own Robocode home (`home-1..home-N` under the work dir); warm parallelises across opponents, keeping one opponent's consecutive battles on one worker |
-| `--cpu-constant NANOS` | | pin `robocode.cpu.constant` in every home; without it, a parallel run calibrates once in the main home with an idle one-round sample battle and copies that constant to every worker, so workers do not each calibrate under load |
-| `--child-cpus N` | 2 when `--parallel` > 1, else off | tell each battle JVM to size its JIT and GC thread pools for N processors (`-XX:ActiveProcessorCount=N`), so twenty children do not each start a 48-core machine's worth of threads; 0 leaves the JVM to itself |
-| `--child-heap SIZE` | | cap each battle JVM's heap (`-Xmx`), e.g. `512M`, the rumble client's |
-| `--per-opponent DIR` | | besides the main report, write one report per opponent to `DIR/<slug>.md` (slug: the opponent name with non `[A-Za-z0-9.]` runs replaced by `_`), with a per-seed battle table (and the baseline and paired difference when `--baseline` ran) followed by that opponent's full diagnostics |
+| `--parallel N` | 1 | run N battles at once, each in its own Robocode home (`home-1..home-N` under the work dir): in the duel modes (cold, warm, paired with `--baseline`), with `--melee` (the seeds of the field) and with `--team` (the seeds of the opponents); warm parallelises across opponents, keeping one opponent's consecutive battles on one worker. Below 1 is rejected; with `--keep-data` it must be 1 |
+| `--cpu-constant NANOS` | | pin `robocode.cpu.constant` in every home (duel, melee and team); without it, a parallel run calibrates once in the main home with an idle one-round sample battle and copies that constant to every worker, so workers do not each calibrate under load. The report's host line names the constant in use |
+| `--child-cpus N` | 2 when `--parallel` > 1, else off | (all modes) tell each battle JVM to size its JIT and GC thread pools for N processors (`-XX:ActiveProcessorCount=N`), so twenty children do not each start a 48-core machine's worth of threads; 0 leaves the JVM to itself |
+| `--child-heap SIZE` | | (all modes) cap each battle JVM's heap (`-Xmx`), e.g. `512M`, the rumble client's |
+| `--per-opponent DIR` | | besides the main report, write one report per opponent to `DIR/<slug>.md` (slug: the opponent name with non `[A-Za-z0-9.]` runs replaced by `_`), with a per-seed battle table (and the baseline and paired difference when `--baseline` ran) followed by that opponent's full diagnostics. With `--team`: one report per opposing team in the same style, with the team records (T) by member; with `--melee`: one per opponent in `DIR/<label>/`, one field's battles each (pooling fields stays `data/tools/melee_pairwise.py`'s job) |
 | `--record DIR` | | capture replay fixtures instead (see below) |
 | `--fixture NAME` | | with `--record`, the fixture's file name instead of the opponent's (A0) |
 | `--keep-data true` | | with `--melee`, fight on the data directory as it is instead of wiping it before each battle (A0's hand-off fixture on a store) |
+| `--baseline JAR` | | (BENCH-2) also fight every opponent, field or team with this second jar at the same seeds and add a paired table; needs `--baseline-robot NAME`. Duel, `--melee` and `--team` all take it |
 | `--set FILE` | reference-set.txt | the opponent list, e.g. `roborumble-top10.txt` |
 | `--melee true` | | put Hadur and every opponent in the set in one battle, `--seeds` times, and report finishing places |
 | `--sentry-border N` | | with `--melee`, the set's `sentry` entries fight as Robocode sentries guarding a border N px deep |
@@ -84,8 +85,9 @@ Control session that drives these runs, see issue #102.
 
 ### Parallel runs
 
-`--parallel N` runs N battles at once in the duel modes (cold, warm, paired with
-`--baseline`), each in its own Robocode home under the work directory. Issue #102 guessed one battle per 2 logical cores. The local ladder
+`--parallel N` runs N battles at once, each in its own Robocode home under the work directory.
+It applies to the duel modes (cold, warm, paired with `--baseline`), to `--melee` (the seeds of
+a field run concurrently) and to `--team` (the seeds of the opponents run concurrently). Issue #102 guessed one battle per 2 logical cores. The local ladder
 (`docs/bench/local/2026-10-06_parallel-ladder.md`) measured otherwise: with `--child-cpus 2`, the
 default for any parallel run, 6 to 24 wide all stayed workable on a 48-thread host, and the
 top-20 scripts default to a quarter of the logical cores. Without `--child-cpus` the same width
@@ -98,8 +100,13 @@ calibrate under load. Pass `--cpu-constant NANOS` to pin a known value instead (
 one read from an existing `robocode.properties`, so every run on the same machine compares
 like for like).
 
-The report header records the host (CPU model, logical cores, OS) and the parallel count
-used, and a "Skipped turns: ..." summary line. Before trusting a parallel run's numbers,
+The report header records the host (CPU model, logical cores, OS), the CPU constant and the
+parallel count used, and a "Skipped turns: ..." summary line (total over N battles, per battle,
+most in one battle). Melee and team reports carry the same header and line, plus a "Duress
+ticks" line when Hadur's `R` records carry the field. `--melee` and `--team` runs with
+`--baseline` fight the baseline at the same seeds and add a "Paired A/B" section (per field and
+per opponent for melee, per team plus an "All" row for team), using BENCH-2's paired
+difference and 95% interval. Before trusting a parallel run's numbers,
 compare its skipped-turn line with a sequential run (`--parallel 1`) of the same set: if
 parallel skips noticeably more turns, the machine cannot sustain that many workers and
 `--parallel` should come down.

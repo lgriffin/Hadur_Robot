@@ -1,0 +1,13 @@
+# Melee top-20 field D: Hadur and 9 opponents, ranks 1, 3, 7, 10, 12, 14, 17, 19, 22 of the 2026-10-05 MeleeRumble.
+# See the header of melee-top20.txt for how the five fields were drawn. Run with
+# --set melee-top20-d.txt --melee true --field 1000x1000
+#   <robot name as Robocode lists it> | <role> | <jar file in opponents/>
+aaa.r.ScalarR 0.005g.047 | melee-1 | aaa.r.ScalarR_0.005g.047.jar
+cb.fire.Firestarter 2.0f | melee-3 | cb.fire.Firestarter_2.0f.jar
+positive.Portia 1.26e | melee-7 | positive.Portia_1.26e.jar
+kc.mini.Mirage 0.2 | melee-10 | kc.mini.Mirage_0.2.jar
+mn.Combat 3.25.0 | melee-12 | mn.Combat_3.25.0.jar
+catcat20.Matcha 0.006 | melee-14 | catcat20.Matcha_0.006.jar
+kc.micro.Figment 1.0 | melee-17 | kc.micro.Figment_1.0.jar
+catcat20.Lambda 0.024 | melee-19 | catcat20.Lambda_0.024.jar
+stelo.Spread 0.9 | melee-22 | stelo.Spread_0.9.jar
