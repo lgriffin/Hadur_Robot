@@ -12,7 +12,7 @@
 <h1>EARS requirements</h1>
 <p class="lede">Every requirement from <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/docs/requirements.md">docs/requirements.md</a>, the source of truth. <em>Implemented in</em> lists
 the classes whose documentation cites the ID; <em>Verified by</em> lists the tests tagged with it, the same tags the build's
-traceability check reads. 130 of 130 live requirements have a tagged test. The readings behind the numbers are in
+traceability check reads. 152 of 152 live requirements have a tagged test. The readings behind the numbers are in
 <a href="docs/requirements-notes.html">Requirement readings</a>.</p>
 <nav class="toc"><a href="#group-CORE">Core</a> <a href="#group-RES">Resilience</a> <a href="#group-REL">Release</a> <a href="#group-WAVE">Waves</a> <a href="#group-RADAR">Radar</a> <a href="#group-MEM">Memory</a> <a href="#group-ADAPT">Adapt</a> <a href="#group-DIAL">Dials</a> <a href="#group-DIST">Distance</a> <a href="#group-POW">Power</a> <a href="#group-END">Endgame</a> <a href="#group-MOVE">Movement</a> <a href="#group-TIME">Time budget</a> <a href="#group-SHIELD">Bullet shielding</a> <a href="#group-MELEE">Melee (2.1)</a> <a href="#group-GATE">Posture gate</a> <a href="#group-MRADAR">Melee radar</a> <a href="#group-MSENSE">Melee sensing</a> <a href="#group-MMOVE">Melee movement</a> <a href="#group-MGUN">Melee gun</a> <a href="#group-MMEM">Melee memory</a></nav><h2 id="group-CORE">Core</h2>
 <article class="req-card" id="CORE-1">
@@ -480,6 +480,116 @@ traceability check reads. 130 of 130 live requirements have a tagged test. The r
 <div class="req-head"><span class="rid">BENCH-12</span><span class="badge">Ubiquitous</span><span class="badge stage">R9</span></div>
 <p>The bench shall default to the robot release named in <code>hadur-robot/pom.xml</code>, shall run battles in parallel on a pinned CPU constant with a bounded child JVM, and shall name the host, the skipped turns and the duress ticks in every report, so that a run on a loaded machine can be recognised.</p>
 <dl><dt>Implemented in</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/MeleeReport.java" title="hadur.bench.MeleeReport">MeleeReport</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/Report.java" title="hadur.bench.Report">Report</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/TeamReport.java" title="hadur.bench.TeamReport">TeamReport</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/BenchTest.java">BenchTest.java</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/HostTest.java">HostTest.java</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/MeleeBenchModesTest.java">MeleeBenchModesTest.java</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/ReportTest.java">ReportTest.java</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/RobotJarTest.java">RobotJarTest.java</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/TeamReportTest.java">TeamReportTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="BENCH-38">
+<div class="req-head"><span class="rid">BENCH-38</span><span class="badge">Ubiquitous</span><span class="badge stage">R9</span></div>
+<p>The bench shall compute every 95% interval from Student&#x27;s t at the sample&#x27;s own degrees of freedom, accurate to 1e-3 for any df, with no table limit and no normal fallback.</p>
+<dl><dt>Implemented in</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/Stats.java" title="hadur.bench.Stats">Stats</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/StatsTest.java">StatsTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="BENCH-39">
+<div class="req-head"><span class="rid">BENCH-39</span><span class="badge">Event</span><span class="badge stage">R9</span></div>
+<p>When asked for a bootstrap interval of a difference of two samples, the bench shall return the 2.5th to 97.5th percentile of the resampled difference of means, reproducibly for a given seed.</p>
+<dl><dt>Implemented in</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/Stats.java" title="hadur.bench.Stats">Stats</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/StatsTest.java">StatsTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="BENCH-40">
+<div class="req-head"><span class="rid">BENCH-40</span><span class="badge">Event</span><span class="badge stage">R9</span></div>
+<p>When a melee round ends, the bench shall record in <code>rounds.csv</code> the tick Hadur died, the robot that killed it (the one whose bullet hit on the death tick, else the nearest robot still alive) and the last robot to hit it, and the melee report shall name who kills Hadur most and the mean death tick.</p>
+<dl><dt>Implemented in</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/MeleeReport.java" title="hadur.bench.MeleeReport">MeleeReport</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/MeleeDeathReportTest.java">MeleeDeathReportTest.java</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/MeleeHarvesterTest.java">MeleeHarvesterTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="BENCH-41">
+<div class="req-head"><span class="rid">BENCH-41</span><span class="badge">Event</span><span class="badge stage">R9</span></div>
+<p>When a team run has a baseline, the team report shall give the pooled candidate-minus-baseline paired difference, with its interval, for rounds won, survival, in-lane shots, focus fire and bullets on own members.</p>
+<dl><dt>Implemented in</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/TeamReport.java" title="hadur.bench.TeamReport">TeamReport</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/TeamPairedTest.java">TeamPairedTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="BENCH-42">
+<div class="req-head"><span class="rid">BENCH-42</span><span class="badge">Event</span><span class="badge stage">R9</span></div>
+<p>When a team round ends, the bench shall record in <code>rounds.csv</code> the share of our bullet damage that landed on the round&#x27;s most-hit enemy, and the team report shall show it per opponent and overall.</p>
+<dl><dt>Implemented in</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/TeamHarvester.java" title="hadur.bench.TeamHarvester">TeamHarvester</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/TeamReport.java" title="hadur.bench.TeamReport">TeamReport</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/TeamPairedTest.java">TeamPairedTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="BENCH-43">
+<div class="req-head"><span class="rid">BENCH-43</span><span class="badge">Ubiquitous</span><span class="badge stage">R9</span></div>
+<p>The paired reports shall state how many battles of each build were used against each opponent and shall flag a pair that is uneven because a battle failed.</p>
+<dl><dt>Implemented in</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/MeleeReport.java" title="hadur.bench.MeleeReport">MeleeReport</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/MeleeDeathReportTest.java">MeleeDeathReportTest.java</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/TeamPairedTest.java">TeamPairedTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="BENCH-20">
+<div class="req-head"><span class="rid">BENCH-20</span><span class="badge">Ubiquitous</span><span class="badge stage">R9</span></div>
+<p>The bench shall record per battle its duress ticks, engine disables, security-manager denials and the rounds whose R record is missing, appended after the existing result columns, and shall keep reading rows written without them.</p>
+<dl><dt>Implemented in</dt><dd><span class="none">no citation in the sources</span></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/TrustAndRoundsTest.java">TrustAndRoundsTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="BENCH-21">
+<div class="req-head"><span class="rid">BENCH-21</span><span class="badge">State</span><span class="badge stage">R9</span></div>
+<p>While a battle finished with no ticks in duress, at most a configured number of skipped turns per round and an R record for every round, the bench shall call it trusted, and its report shall give the trusted count per opponent and the paired score-share difference again over trusted pairs only.</p>
+<dl><dt>Implemented in</dt><dd><span class="none">no citation in the sources</span></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/TrustAndRoundsTest.java">TrustAndRoundsTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="BENCH-22">
+<div class="req-head"><span class="rid">BENCH-22</span><span class="badge">Event</span><span class="badge stage">R9</span></div>
+<p>When a battle ends, the bench shall wait, within a bound, for the engine to finish reporting before it closes the robot&#x27;s log, and shall record how many R records are missing and whether the last round&#x27;s is one of them.</p>
+<dl><dt>Implemented in</dt><dd><span class="none">no citation in the sources</span></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/TrustAndRoundsTest.java">TrustAndRoundsTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="BENCH-23">
+<div class="req-head"><span class="rid">BENCH-23</span><span class="badge">Event</span><span class="badge stage">R9</span></div>
+<p>When a battle ends, the bench shall write each round&#x27;s outcome, survival, ticks, bullet damage dealt and taken, hit rate, duress ticks and skipped turns to a rounds file in the battle&#x27;s directory, and shall merge a run&#x27;s rounds files into one table.</p>
+<dl><dt>Implemented in</dt><dd><span class="none">no citation in the sources</span></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/TrustAndRoundsTest.java">TrustAndRoundsTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="BENCH-24">
+<div class="req-head"><span class="rid">BENCH-24</span><span class="badge">Ubiquitous</span><span class="badge stage">R9</span></div>
+<p>The bench shall report per opponent the first five rounds of a battle against the last ten, by win rate and bullet-damage share, with the paired late-minus-early difference and its 95% interval.</p>
+<dl><dt>Implemented in</dt><dd><span class="none">no citation in the sources</span></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/TrustAndRoundsTest.java">TrustAndRoundsTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="BENCH-25">
+<div class="req-head"><span class="rid">BENCH-25</span><span class="badge">Ubiquitous</span><span class="badge stage">R9</span></div>
+<p>The paired A/B report shall give the paired difference and its 95% interval for score share, survival share, win rate and bullet-damage share, per opponent and over all pairs.</p>
+<dl><dt>Implemented in</dt><dd><span class="none">no citation in the sources</span></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/TrustAndRoundsTest.java">TrustAndRoundsTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="BENCH-50">
+<div class="req-head"><span class="rid">BENCH-50</span><span class="badge">Ubiquitous</span><span class="badge stage">R9</span></div>
+<p>The bench shall sample the host&#x27;s CPU utilisation and the number of other Robocode JVMs while it runs, and shall record the minimum, mean and maximum utilisation and the most other JVMs seen during each battle as four columns appended to the battle&#x27;s result row, so that a run on a busy machine can be told from one on an idle one; a row without the columns shall still be read.</p>
+<dl><dt>Implemented in</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/BattleResult.java" title="hadur.bench.BattleResult">BattleResult</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/Bench.java" title="hadur.bench.Bench">Bench</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/Host.java" title="hadur.bench.Host">Host</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/HostSamplerTest.java">HostSamplerTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="BENCH-51">
+<div class="req-head"><span class="rid">BENCH-51</span><span class="badge">Event</span><span class="badge stage">R9</span></div>
+<p>When a run starts and again when it ends, the bench shall write <code>conditions.json</code> into the run&#x27;s directory with the commit, the jar checksums, the parallelism, the child CPUs and JVM flags, the CPU constant, the engine version, the host sample summary and the size and checksum of the data directory the run began on.</p>
+<dl><dt>Implemented in</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/Bench.java" title="hadur.bench.Bench">Bench</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/Conditions.java" title="hadur.bench.Conditions">Conditions</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/ConditionsTest.java">ConditionsTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="BENCH-52">
+<div class="req-head"><span class="rid">BENCH-52</span><span class="badge">Ubiquitous</span><span class="badge stage">R9</span></div>
+<p>The duel report shall carry the child JVM flags in its conditions line as the melee and team reports do, and a paired duel shall fight the candidate first on odd seeds and the baseline first on even seeds, so that a drift in the host&#x27;s load does not favour one build.</p>
+<dl><dt>Implemented in</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/Bench.java" title="hadur.bench.Bench">Bench</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/RunOptionsTest.java">RunOptionsTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="BENCH-53">
+<div class="req-head"><span class="rid">BENCH-53</span><span class="badge">Optional</span><span class="badge stage">R9</span></div>
+<p>Where <code>--repeat K</code> is given, the bench shall fight each jar, opponent and seed K times, write every battle to <code>repeat.tsv</code> and print the score-share standard deviation per opponent and pooled.</p>
+<dl><dt>Implemented in</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/Bench.java" title="hadur.bench.Bench">Bench</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/RepeatStudy.java" title="hadur.bench.RepeatStudy">RepeatStudy</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/RepeatColdWarmTest.java">RepeatColdWarmTest.java</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/RunOptionsTest.java">RunOptionsTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="BENCH-54">
+<div class="req-head"><span class="rid">BENCH-54</span><span class="badge">Optional</span><span class="badge stage">R9</span></div>
+<p>Where <code>--cold-warm</code> is given, the bench shall fight each seed cold with the data directory empty and then warm on the shelf the cold battle left, and shall write the pairing with the shelf&#x27;s size and checksum to <code>cold-warm.tsv</code>.</p>
+<dl><dt>Implemented in</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/Bench.java" title="hadur.bench.Bench">Bench</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/ColdWarm.java" title="hadur.bench.ColdWarm">ColdWarm</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/Conditions.java" title="hadur.bench.Conditions">Conditions</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/RepeatColdWarmTest.java">RepeatColdWarmTest.java</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/RunOptionsTest.java">RunOptionsTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="BENCH-55">
+<div class="req-head"><span class="rid">BENCH-55</span><span class="badge">Event</span><span class="badge stage">R9</span></div>
+<p>When a battle fails, the bench shall run it again up to <code>--retries</code> times (default 1), and shall list every battle that still failed at the end of the run and in the report&#x27;s footer.</p>
+<dl><dt>Implemented in</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/Bench.java" title="hadur.bench.Bench">Bench</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/RunOptionsTest.java">RunOptionsTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="BENCH-56">
+<div class="req-head"><span class="rid">BENCH-56</span><span class="badge">Optional</span><span class="badge stage">R9</span></div>
+<p>Where <code>--dry-run true</code> is given, the bench shall describe the battles its options and set add up to and shall start no robot and no battle; each bench script shall take <code>--dry-run</code> and run no build, fetch or bench.</p>
+<dl><dt>Implemented in</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/Bench.java" title="hadur.bench.Bench">Bench</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/RunOptionsTest.java">RunOptionsTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="BENCH-57">
+<div class="req-head"><span class="rid">BENCH-57</span><span class="badge">Ubiquitous</span><span class="badge stage">R9</span></div>
+<p>The bench shall take the arena as <code>--field WIDTHxHEIGHT</code> in every mode and shall refuse a value that is not two positive whole numbers.</p>
+<dl><dt>Implemented in</dt><dd><span class="none">no citation in the sources</span></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/RunOptionsTest.java">RunOptionsTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="BENCH-58">
+<div class="req-head"><span class="rid">BENCH-58</span><span class="badge">Event</span><span class="badge stage">R9</span></div>
+<p>When <code>sweep-cpu-constant.sh</code> runs a set, it shall run it once at each multiplier of one CPU constant, with the derived constant and a label naming the multiplier, and shall start nothing under <code>--dry-run</code>.</p>
+<dl><dt>Implemented in</dt><dd><span class="none">no citation in the sources</span></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/SweepScriptTest.java">SweepScriptTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="BENCH-59">
+<div class="req-head"><span class="rid">BENCH-59</span><span class="badge">Ubiquitous</span><span class="badge stage">R9</span></div>
+<p>The bench shall read its arguments from a file when its only argument is <code>@FILE</code> (one argument per line), and the PowerShell bench scripts shall pass them that way, so that a value with a space reaches it intact on Windows PowerShell 5.1.</p>
+<dl><dt>Implemented in</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/Bench.java" title="hadur.bench.Bench">Bench</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/RunOptionsTest.java">RunOptionsTest.java</a></dd></dl>
 </article>
 <h2 id="group-GUN">GUN</h2>
 <article class="req-card" id="GUN-1">
