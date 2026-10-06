@@ -1,0 +1,13 @@
+file	date	label	mode	candidate	baseline	engine	seeds	units	pairs	diff_pp	ci_lo	ci_hi	skipped_cand	skipped_base	failed	rows
+2026-10-06_hadur-3.8_drussgt40-local_cold.tsv	2026-10-06	hadur-3.8_drussgt40-local_cold	duel	3.8	3.7	1.9.5.6	40	1	40	13.21	10.67	15.74	53.5	44.2	0	80
+2026-10-06_hadur-3.8_top20-local_cold.tsv	2026-10-06	hadur-3.8_top20-local_cold	duel	3.8	3.7	1.9.5.6	5	20	100	2.84	1.44	4.23	33.1	32.9	0	200
+2026-10-06_hadur-leak38-step1-16seeds-local_cold.tsv	2026-10-06	hadur-leak38-step1-16seeds-local_cold	duel	3.8	3.7	1.9.5.6	16	32	512	-0.14	-0.51	0.23	14.1	13.8	0	1024
+2026-10-06_hadur-leak38-step1-e1111-local_cold.tsv	2026-10-06	hadur-leak38-step1-e1111-local_cold	duel	3.8	3.7	1.11.1	16	32	512	0.19	-0.17	0.56	11.7	11.1	0	1024
+2026-10-06_hadur-leak38-step1-loaded-local_cold.tsv	2026-10-06	hadur-leak38-step1-loaded-local_cold	duel	3.8	3.7	1.9.5.6	4	32	128	0.34	-0.55	1.22	43.5	37.4	0	256
+2026-10-06_hadur-leak38-step1-local_cold.tsv	2026-10-06	hadur-leak38-step1-local_cold	duel	3.8	3.7	1.9.5.6	4	32	128	-0.43	-1.12	0.25	12.3	11.3	0	256
+2026-10-06_hadur-leak38-step2-16seeds-local_cold.tsv	2026-10-06	hadur-leak38-step2-16seeds-local_cold	duel	3.8.1	3.7	1.9.5.6	16	32	512	-0.36	-0.75	0.02	13.7	14.3	0	1024
+2026-10-06_hadur-leak38-step2-local_cold.tsv	2026-10-06	hadur-leak38-step2-local_cold	duel	3.8.1	3.7	1.9.5.6	4	32	128	0.06	-0.70	0.82	10.8	10.1	0	256
+2026-10-06_hadur-leak38-step3-local_cold.tsv	2026-10-06	hadur-leak38-step3-local_cold	duel	3.8.1	3.8	1.9.5.6	4	32	128	0.21	-0.40	0.81	11.4	11.4	0	256
+2026-10-06_hadur-melee-top20-local_cold.tsv	2026-10-06	hadur-melee-top20-local_cold	melee	3.8	3.7	1.9.5.6	10	5	50	-0.50	-0.82	-0.17			0	1000
+2026-10-06_hadur-team-top20-local_cold.tsv	2026-10-06	hadur-team-top20-local_cold	duel	3.8	3.7	1.9.5.6	10	0							400	400
+2026-10-06_hadur-top20-e1111-local_cold.tsv	2026-10-06	hadur-top20-e1111-local_cold	duel	3.8	3.7	1.11.1	5	20	100	3.05	1.73	4.38	21.1	20.9	0	200
