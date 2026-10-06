@@ -11,6 +11,12 @@ entries. This page covers what the robot does, how it is built, and how it was b
 
 ## Standing
 
+**3.8 was released on 2026-10-06** with the DrussGT route (D1 to D5) and teammates that no
+longer collide (T1). Paired against 3.7 on the same seeds it scores +10.5 ± 3.1 points
+against DrussGT and +7.2 ± 6.3 on the top-10 set ([release check](docs/bench/release-check-3.8.md));
+the team's score share rose from 28.8% to 48.2% on the team gate. The figures below are
+3.7's and 3.5.1's until 3.8's passes are in.
+
 **3.7 was entered on all three ladders on 2026-10-05**: `hadur2.Hadur 3.7` replaces 3.5.1 on
 the RoboRumble and MeleeRumble, and `hadur2.HadurTeam 3.7` is Hadur's first TeamRumble
 entry. 3.7 closes the architecture evolution (below) and should play the 1v1 and melee as
@@ -405,6 +411,8 @@ tests that prove it.
 | R8 | Memory at rumble scale: one directory listing per battle, forget the oldest | released as 3.4 ([plan](docs/rumble-memory-scale-plan.md), [gate](docs/bench/r8-memory-scale.md)); 20th live |
 | R9 | The weak-bot leak: run from rammers (RAM-2), plan a path against mirror movers (MIR-1) | released as 3.5, review fixes as 3.5.1 ([issue #80](https://github.com/lgriffin/Hadur_Robot/issues/80), [bench](docs/bench/r9-weak-leak.md)): weak set 74.8% to 86.8%, top 19 unchanged; 16th live, 18th melee |
 | A0-A5 | Architecture evolution: one identity kernel, three strands (Duel, Melee, Team), the World, team messages and the team baseline | released as 3.6 (A2) and 3.7 (A5, with the team jar) ([plan](docs/architecture-evolution.md), [stage log](docs/architecture-evolution.md#stage-log), [team gate](docs/bench/a5-team.md), [expected APS](docs/bench/expected-3.7.md)) |
+| D1-D5 | The DrussGT route: power by the lead, shield openers and the last shot, light-bullet aim, shadow-aware aim, and a shield list of 14 opponents | released as 3.8 ([plan](docs/druss-route-plan.md); gates [D1](docs/bench/d1-gate.md), [D5](docs/bench/d5-gate.md), [D2](docs/bench/d2-gate.md), [D3](docs/bench/d3-gate.md), [D4](docs/bench/d4-gate.md), [stack](docs/bench/stack-gate.md)); D6 stays research |
+| T1 | The Team plan's first stage: teammates seen, predicted and fenced, so they stop colliding; the fire lane covers the bullet's flight | released as 3.8 ([plan](docs/team-plan-t1.md), [gate](docs/bench/t1-team.md)): collisions -99.9%, team share 28.8% to 48.2% |
 
 The plan's S7 was "cut melee". Release 2.1 had already put melee in the core for the
 MeleeRumble, and it costs the duel nothing (it runs only while two or more opponents are
@@ -440,8 +448,8 @@ client can load it (REL-1).
 mvn verify                  # all modules: tests, traceability, robot jar
 ```
 
-The robot jar is `hadur-robot/target/hadur2.Hadur_3.7.jar`, and the team jar
-`hadur2.HadurTeam_3.7.jar` sits beside it; drop either into a Robocode `robots/` directory. The core is bundled inside it. Pushing a `v*` tag runs the release
+The robot jar is `hadur-robot/target/hadur2.Hadur_3.8.jar`, and the team jar
+`hadur2.HadurTeam_3.8.jar` sits beside it; drop either into a Robocode `robots/` directory. The core is bundled inside it. Pushing a `v*` tag runs the release
 workflow, as does running it by hand with a version: it builds, checks that the jar
 matches the version, and publishes a GitHub release with `docs/releases/<tag>.md` as its
 notes, with the team jar attached beside the solo one. The latest release's assets are the

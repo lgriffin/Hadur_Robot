@@ -4,6 +4,24 @@ Open items from the Hadur 2 stages, newest stage first. The open ones are tracke
 [GitHub issues](https://github.com/lgriffin/Hadur_Robot/issues) (#44 to #56, opened
 2026-09-28); the notes below are the detail behind them.
 
+## The DrussGT route D1 to D5 and T1 (release 3.8)
+
+D1, D5, T1, D2 and D3 with D4 merged (#98, #99, #100, #101, #104); D6 stays research. Open:
+
+- **D3's own measure is unmet.** The light-bullet hit rate stayed at 7.6% (the probe reached
+  9.3%), and the `R` records do not say how often the sampled gun is chosen for a light shot.
+  Log the chosen gun per class, then decide whether the sampled gun competes or fires outright.
+- **D4 costs CPU.** Slow ticks rose tenfold on the DrussGT gate (skipped turns 564 to 616 over
+  700 rounds); the review fixes shed the shadow term at TickBudget level 2 and up. Watch 3.8's
+  live survival and skipped turns. DrussGT's hit rate fell 0.3 points, not the plan's one.
+- **The one-tick plan lag.** The shadow aim reads the surf plan published on the previous tick
+  (the surf runs after the aim). On a reversal tick the shadow is scored on the side being left.
+- **Gates at 20 battles, not 40.** D3 and D4 were each level on DrussGT within ±4.3; the merge
+  rests on the stack gate (+3.5 ± 3.2 on the top 10). Re-run the D4 and stack gates at 40
+  battles on a local machine (issue #102).
+- **The review fixes on D2 to D4 came after their gates**; the 3.8-against-3.7 release check
+  is the bench that covers the shipped code.
+
 ## Architecture evolution A0 to A5 (releases 3.6 and 3.7)
 
 All six stages merged (#87, #88, #89, #92, #93, #94), and 3.7 was entered on the RoboRumble,

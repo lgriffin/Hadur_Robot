@@ -322,7 +322,7 @@ Still release 3.8 (D1 and D2 ship together). Two small rules and one engine chec
 - **Re-snapshotted:** the telemetry snapshot of `warm-abc.Shadow_3.83c` only.
 - **Re-pinned:** `pins/kernel.sha256` and `pins/duel.sha256` (`-Dhadur.pin=kernel,duel`) and `duel-sources.sha256` (`-Dhadur.duel.snapshot=write`). The conductor, melee and team pins did not change.
 - **Changed scenario:** `shield.feature`'s "a bullet shot down by accident changes nothing" now has the enemy stir first, since against a still enemy one bullet is SHIELD-3's evidence.
-- **Gate** ([d2-gate.md](bench/d2-gate.md)), paired against D1 (3.8.1): DrussGT **+1.0 ± 3.8** points (47.6% against 46.6%, 20 battles), level and not below. The stage jars were built on the D1 base before D5 and T1 merged. The top-10 and weak sets are measured once for the whole D2 to D4 stack (stack gate, pending). The report shows no direct evidence for SHIELD-3 or SHIELD-4 against DrussGT, which does not stand still.
+- **Gate** ([d2-gate.md](bench/d2-gate.md)), paired against D1 (3.8.1): DrussGT **+1.0 ± 3.8** points (47.6% against 46.6%, 20 battles), level and not below. The stage jars were built on the D1 base before D5 and T1 merged. The top-10 and weak sets are measured once for the whole D2 to D4 stack ([stack gate](bench/stack-gate.md): top 10 +3.5 ± 3.2, weak set level). The report shows no direct evidence for SHIELD-3 or SHIELD-4 against DrussGT, which does not stand still.
 
 <a id="d3"></a>
 
@@ -336,7 +336,7 @@ Still release 3.8; `hadur.druss.stage` was `D3` when this stage was built (it st
 - **Re-recorded fixtures:** none. All 68 replay checks pass unchanged: the fixtures' opponents are fought at ordinary power, where the rest class's table is what D2's single table was, and the sampled gun is never fired before it is rated best.
 - **Re-snapshotted:** nothing.
 - **Re-pinned:** `pins/duel.sha256` (`-Dhadur.pin=duel`) and `duel-sources.sha256` (`-Dhadur.duel.snapshot=write`). The kernel, conductor, melee and team pins did not change.
-- **Gate** ([d3-gate.md](bench/d3-gate.md)), paired against D2 (3.8.2): DrussGT **+0.5 ± 4.2** points (45.8% against 45.3%, 20 battles), level and not below. The stage's own measure is **not met**: Hadur's light-bullet hit rate is 7.63% ± 0.18 against 7.60% ± 0.13 for D2 (paired +0.03 ± 0.21), where the plan's probe reached 9.3%; DrussGT's light bullets hit 10.25%. The `R` records do not show how often the sampled gun was chosen. The top-10 and weak sets are measured once for the whole D2 to D4 stack (pending).
+- **Gate** ([d3-gate.md](bench/d3-gate.md)), paired against D2 (3.8.2): DrussGT **+0.5 ± 4.2** points (45.8% against 45.3%, 20 battles), level and not below. The stage's own measure is **not met**: Hadur's light-bullet hit rate is 7.63% ± 0.18 against 7.60% ± 0.13 for D2 (paired +0.03 ± 0.21), where the plan's probe reached 9.3%; DrussGT's light bullets hit 10.25%. The `R` records do not show how often the sampled gun was chosen. The top-10 and weak sets are measured once for the whole D2 to D4 stack ([stack gate](bench/stack-gate.md)). D3 merged on that stack result, its own measure unmet.
 
 <a id="d4"></a>
 
@@ -347,11 +347,13 @@ Still release 3.8; `hadur.druss.stage` was `D4` when this stage was built (it st
 - **MOVE-8** publishes, for each enemy wave in the air that the surf scored, the absolute bearing interval from the wave's source that would hit us where the chosen plan puts us when the wave arrives (the equivalent of a guess-factor interval, with no escape-angle assumption), and the surf's own chance that a bullet fired inside it hits. It is recorded as the surf scores its options, so it costs no extra prediction, and it is withdrawn on every tick the surf does not drive.
 - **GUN-7** picks the firing angle among at most 13 candidates (the gun's own angle, four offsets of 0.45 and 0.9 half-widths, and up to eight of the main gun's own neighbour angles within two half-widths) by `P(hit) * damage + damage avoided`. The avoided damage is the share of the published interval a candidate bullet's shadow newly stops (`BulletShadows`' geometry, over what our bullets in flight already stop), times the surf's chance of a hit there and the enemy bullet's damage. The gun's own angle wins every tie. The shadow term is `GunController.SHADOW_AIM`, shipped `true`; with nothing to shadow the angle is D3's exactly.
 - **Not done:** the other virtual guns' angles are not candidates (they are computed only when a real bullet leaves, and each is a KNN search), and nothing here uses a per-wave fraction of our bullets' certain and possible shadows beyond what MOVE-1 already counts.
-- **Cost:** `hadur2.core.duel.ShadowAimBench` (test scope, run by hand) times one aiming tick with 400 learned samples, two enemy waves in the air and two of our bullets in flight: the plain aim took 4.8 ms (the machine was running a gate bench, so only the difference means anything) and the shadow term added 0.09 to 0.10 ms, about 2%, to each aiming tick (two passes of 20,000 aims: 88.0 and 99.4 microseconds). The gun aims on at most four ticks per shot (within three ticks of a cool gun), so the term adds under 0.4 ms per shot and nothing on ticks that do not aim; Hadur's skipped turns are not expected to rise.
+- **Cost:** `hadur2.core.duel.ShadowAimBench` (test scope, run by hand) times one aiming tick with 400 learned samples, two enemy waves in the air and two of our bullets in flight: the plain aim took 4.8 ms (the machine was running a gate bench, so only the difference means anything) and the shadow term added 0.09 to 0.10 ms, about 2%, to each aiming tick (two passes of 20,000 aims: 88.0 and 99.4 microseconds). The gun aims on at most four ticks per shot (within three ticks of a cool gun), so the term adds under 0.4 ms per shot and nothing on ticks that do not aim; Hadur's skipped turns were not expected to rise. The gate showed otherwise: slow ticks rose tenfold against D3, so the review fixes shed the shadow term at TickBudget level 2 and up (below).
 - **Re-recorded fixtures:** eleven of thirteen diverged, because an enemy wave is in the air for most of a duel, so the shot is shifted wherever a shadow is worth more than the hit it costs: `sample.SpinBot`, `sample.Tracker`, `sample.Crazy`, `sample.Walls`, `sample.RamFire`, `abc.Shadow_3.83c`, `warm-abc.Shadow_3.83c` (the second battle's transcript), `duress-sample.Walls`, `melee-samples`, `melee-sentry` and `melee-handoff` (the three melee fixtures end in duels, or run one with sentries about). Recorded with the commands in `hadur-bench/README.md`, one `--record` run each, on a machine running a gate bench. The two team fixtures did not diverge.
 - **Re-snapshotted:** the telemetry of those eleven.
 - **Re-pinned:** `pins/duel.sha256` (`-Dhadur.pin=duel`) and `duel-sources.sha256` (`-Dhadur.duel.snapshot=write`). The kernel, conductor, melee and team pins did not change.
-- **Gate not run.** The plan gates D4 on DrussGT's hit rate, not ours; that is a bench job.
+- **Gate** ([d4-gate.md](bench/d4-gate.md)), paired against D3 (3.8.3): DrussGT **+1.2 ± 4.3** points (47.3% against 46.1%, 20 battles), level and not below. Its own measure moved the right way but short of the plan's level: DrussGT's hit rate **9.9% against 10.2%** (the plan looks for a point lower), while ours rose from 7.2% to 7.5%. Slow ticks rose from 2,822 to 27,900 and skipped turns from 564 to 616 over 700 rounds.
+- **Stack gate** ([stack-gate.md](bench/stack-gate.md)), D4 (with D2 and D3) against D1 on the plan's other sets: top 10 at 3 seeds **+3.5 ± 3.2** points (20 of 30 pairs up; BeepBoop +6.9, ScalarR +6.8, DrussGT +6.6), weak set at 2 seeds **-0.1 ± 0.6**, skipped turns level (746 against 737). D3 and D4 merged on this (PR #104).
+- **Review fixes (PR #104):** the shadow aim uses the surf's plan only when it was published on the previous tick, so a tick the shield, duress, ram or mirror drove supplies none (the surf runs after the aim within a tick; the one-tick lag on a reversal tick is accepted, see the PR); a shield-mode attack is rated in the class of the power it actually fired at and advances the sampled gun's phase; `SampledGun` drops zero-weight seeds and picks in proportion to weight; and `TickBudget.shadowAim` sheds the shadow term at level 2 and up. Five fixtures re-recorded (`sample.Crazy`, `sample.RamFire`, `duress-sample.Walls`, `melee-samples`, `melee-handoff`), duel pins re-pinned. These fixes came after the gates.
 
 ## D5: the shield list (DrussGT route)
 
@@ -401,6 +403,15 @@ The first fire-lane slack (1.5 px a tick of flight) left 14 friendly hits in the
 3 px cut them to 7 for 17% more held shots. A smoke is not the gate.
 
 - **Gate** ([t1-team.md](bench/t1-team.md)), `team-gates.txt` against 3.7 (3 seeds x 8 teams x 10 rounds): score share **48.2% against 28.8%** (+19.4, every team up), teammate collisions 101,322 to 65 (-99.9%), our bullets on a teammate 1,015 to 328 (-68%, **short of the 80% bar**), shots held for the lane 5,188 to 19,286 (3.7x), 0 faults, 0 LINK rejects. Merged on score share and collisions; narrowing `TURN_SLACK` and spacing members on a shared target are follow-ups.
+
+## Release 3.8
+
+3.8 ships D1, D2, D3, D4 and D5 of the DrussGT route and T1 of the Team plan; D6 stays
+research. The stage gates ran on jars built before the later stages and the review fixes
+merged, so the shipped build was benched once against 3.7 ([release-check-3.8.md](bench/release-check-3.8.md)):
+DrussGT **+10.5 ± 3.1** points over 10 battles (10 of 10 up), the top-10 set **+7.2 ± 6.3**
+over 20 (14 up). Skipped turns against DrussGT rose from 314 to 447 over 350 rounds (the top 10 was 298 against 335), the cost to watch live.
+Open items are in `followup.md` under the DrussGT route.
 
 ## What comes next
 
