@@ -12,9 +12,21 @@ MeleeRumble and TeamRumble on 2026-10-05. Open after A5:
 - **3.7's passes, read** in [docs/bench/live-3.7.md](docs/bench/live-3.7.md): the 1v1 at
   85.67 (21st) is 0.43 below the predicted range and not yet attributed (L-43); melee 65.25
   (18th) is level; the first team pass reads 39.43 (32nd of 46).
-- **Teammates collide** about 440 times a round, and 884 of our bullets hit a teammate
-  over the A5 gate. Neither mover sees teammates yet. This is the Team plan's first item,
-  ahead of a shared target and formation ([a5-team.md](docs/bench/a5-team.md)).
+- **Teammate collisions: done in T1** ([team-plan-t1.md](docs/team-plan-t1.md), 3.8; gate in
+  [docs/bench/t1-team.md](docs/bench/t1-team.md)). Collisions fell from 101,322 to 65 over the
+  gate suite (-99.9%) and the team's score share rose from 28.8% to 48.2%. Follow-ups the gate
+  opened:
+  - **Friendly fire.** Our bullets on a teammate fell 1,015 to 328 (-68%), short of the plan's
+    80% bar (177). `TURN_SLACK` is 3 px a tick (it was 1.5 in the first smoke
+    test; widening it cut friendly hits): wider holds more shots and hits a teammate less, narrower
+    does the reverse. Space members that share a target.
+  - **Held shots.** Shots held for the lane rose 5,188 to 19,286 (3.7x, above the plan's flag of
+    about 3x); `TURN_SLACK` is the knob, to be set against the friendly-fire count
+    (wider: more holds, fewer friendly hits). The lane check now also asks that bullet and
+    teammate coincide along the lane in time (a mate that crosses and is gone before any bullet
+    arrives no longer holds the shot), which addresses the held-shot count without narrowing it.
+  - **Bullet on a teammate's bullet** rose 2,598 to 3,557 (the plan's RC5): the shared-target
+    item, with a shared target and formation.
 - **Droids** (a leader with radar-less members) are left to the Team plan.
 - **Stale comments.** Comments in the nine pinned packages that name `HadurCore` are out
   of date since A2. Fixing them is one optional, comment-only re-pin.

@@ -34,7 +34,7 @@ class RosterProperties {
         // A death can be missed (a skipped turn wipes it), never invented.
         for (int i = 0; i < Math.min(deathsKnown, enemiesDead); i++) r.died("enemy" + i, 5, false);
         // Only a living teammate can be heard from.
-        for (int i = 0; i < Math.min(heard, mates - matesDead); i++) r.reported("mate" + i, 9, 0, 0, 0);
+        for (int i = 0; i < Math.min(heard, mates - matesDead); i++) r.reported("mate" + i, 9, 0, 0, 0, 0, 0);
         int others = (enemies - enemiesDead) + (mates - matesDead);
         int truth = enemies - enemiesDead;
         assertTrue(r.enemiesAlive(others) >= truth, r.enemiesAlive(others) + " < " + truth);

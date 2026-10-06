@@ -944,6 +944,45 @@ strand, in the `shieldmode` package, and applies to a 1v1 battle only.
   did (rounds, shield shots, bullets met, hits taken, early exits, budget exits), the weighted mean
   difference over the file's weights (BENCH-1) and the opponents that win, as list lines.
 
+## The Team plan (T1)
+
+[team-plan-t1.md](team-plan-t1.md) answers the A5 baseline's teammate collisions and friendly fire
+([bench/a5-team.md](bench/a5-team.md)). Its stage letter is `T`; the requirements are built
+from `hadur.team.stage` in the root pom (`T1`). Owners: WORLD-9 the kernel, MMOVE-6 to
+MMOVE-8 the melee strand, WEAVE-7 and WEAVE-8 the conductor.
+
+| ID | Pattern | Requirement | Stage |
+|---|---|---|---|
+| WORLD-9 | Event | When a teammate's state is scanned or reported, the World shall keep its heading and velocity with its position and shall predict its position at a later tick from them, moved no further than a robot's top speed allows. | T1 |
+| MMOVE-6 | State | While in melee on a team, movement shall add to each candidate point's risk a term for every living teammate whose position is no older than the WORLD-3 window, rising with the inverse square of the distance between the point and the teammate's predicted position when Hadur would arrive. | T1 |
+| MMOVE-7 | State | While in melee on a team, movement shall score the path to each candidate against each such teammate's predicted track, and shall cap the candidate ring at the same fraction of the nearest teammate's distance as of the nearest opponent's. | T1 |
+| MMOVE-8 | State | While on a team, each member's movement noise field shall differ from its teammates' by the member's place in the roster; off a team the field shall be the one MMOVE-1 uses. | T1 |
+| WEAVE-7 | State | While a living teammate's predicted track, over the time a bullet of any power would take to pass it, comes within the fire lane's half-width of the lane, the conductor shall withhold the fire permission. | T1 |
+| WEAVE-8 | Unwanted | If the driving role's drive, simulated a set number of ticks ahead, would bring Hadur within a robot's width and a margin of a living teammate's predicted position, then the conductor shall replace the drive with the nearest of a brake or a reversal that stays clear, keeping the gun, radar, fire and message orders. | T1 |
+
+### T1 notes
+
+- **WORLD-9.** `Roster.Mate` keeps the heading and velocity a scan, a report or a teammate's
+  sighting states with the position. `at(tick)` moves the last known point `velocity` px for
+  each tick since, along the heading, no more than 8 px a tick. `Roster.living(now)` lists the
+  living teammates whose position is no older than `SILENT_WINDOW`.
+- **MMOVE-6 to MMOVE-8.** `MinimumRiskMovement.teammateRisk` adds `MATE_K` (0.6) over the
+  square of the distance (floored at 36 px) to the teammate's predicted point at arrival, and
+  `MATE_PATH_K` (0.3) for a path within 60 px of its predicted track; the ring is capped by
+  the nearest teammate as by the nearest opponent. The noise hash is salted with
+  `mix(place + 1)` on a team and 0 off one, so a solo field is bit for bit what it was, and the
+  opening spots fan out along the wall by 120 px a place. The place is the member's rank among
+  the team's names in sorted order.
+- **WEAVE-7.** The lane also holds while a teammate's predicted track, between the times the
+  fastest and the slowest bullet take to cover its distance, passes within the half-width plus
+  3 px for each tick of flight (`TeamLink.TURN_SLACK`).
+- **WEAVE-8.** `TeammateFence` simulates the built drive six ticks ahead and compares each
+  tick with the teammate's predicted point; within 46 px, and nearer than now, is a predicted
+  collision. It tries the drive as given, a brake, a reversal, and keeps the first that stays
+  clear, else the one with the greatest closest approach. The `T` record's last field counts the
+  drives it replaced.
+- Solo play is untouched: every term is reached through the team link or an empty teammate list.
+
 ## Retired requirements
 
 A retired requirement keeps its ID; no new requirement reuses it.

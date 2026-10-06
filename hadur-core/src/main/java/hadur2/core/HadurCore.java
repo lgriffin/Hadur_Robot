@@ -44,6 +44,7 @@ import java.awt.geom.Point2D;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
@@ -308,12 +309,29 @@ public final class HadurCore {
         if (charter == Charter.TEAM) {
             this.roster = new Roster(facts.teammates(), facts.enemies());
             this.teamLink = new TeamLink(this, facts, roster, world);
+            // MMOVE-8: the melee movement's noise differs by the member's place in the roster.
+            if (meleeSeam != null) meleeSeam.melee.team(rosterIndex(facts));
         } else {
             this.roster = null;
             this.teamLink = null;
         }
         // The V record opens every battle's log.
         telemetry.emit("V,1");
+    }
+
+    /**
+     * MMOVE-8: this member's place among its team's names in sorted order, 0 up. Every member
+     * sorts the same five names, so the places are distinct.
+     */
+    static int rosterIndex(BattleFacts facts) {
+        int index = 0;
+        for (String t : facts.teammates()) if (t.compareTo(facts.name()) < 0) index++;
+        return index;
+    }
+
+    /** WORLD-9: the living teammates with a fresh position this tick; empty off a team. */
+    List<Roster.Mate> livingTeammates() {
+        return teamLink == null ? List.of() : teamLink.living();
     }
 
     /**
@@ -473,6 +491,8 @@ public final class HadurCore {
             built = fence.apply(in.x(), in.y(), in.heading(), in.velocity(), built,
                 in.sentryBorderSize());
         }
+        // WEAVE-8: on a team, whichever role drives, the drive never runs into a living teammate.
+        if (teamLink != null) built = teamLink.fence(in, built);
         // ROLE-4: the role that completed this tick latches the round. This is the tick's
         // last step, so a tick the Guard covers leaves the latch as it stands.
         RoleId drove = inMelee ? RoleId.MELEE : RoleId.DUEL;

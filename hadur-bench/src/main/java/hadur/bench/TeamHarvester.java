@@ -15,6 +15,7 @@ import robocode.control.events.BattleAdaptor;
 import robocode.control.events.RoundEndedEvent;
 import robocode.control.events.RoundStartedEvent;
 import robocode.control.events.TurnEndedEvent;
+import robocode.control.snapshot.BulletState;
 import robocode.control.snapshot.IBulletSnapshot;
 import robocode.control.snapshot.IRobotSnapshot;
 import robocode.control.snapshot.ITurnSnapshot;
@@ -27,12 +28,15 @@ import robocode.control.snapshot.ITurnSnapshot;
  * <li>{@code rounds.csv}: one row per round ({@link #HEADER}): our members and enemies alive
  *     at the end, whether our team won, our shots fired and how many left with a living
  *     teammate truly in the lane, and the member reports of the count of enemies alive
- *     ({@code E} records) that fell below the truth (WORLD-8).</li>
+ *     ({@code E} records) that fell below the truth (WORLD-8), and, from the engine's own
+ *     bullet snapshots, our bullets that hit one of our own members (T1's friendly fire).</li>
+ * <li>{@code friendly.log}: one line for each of those, with the bullet's power and how far
+ *     it flew, so a hit can be read against the lane that was kept.</li>
  * </ul>
  */
 public class TeamHarvester extends BattleAdaptor {
 
-    public static final String HEADER = "round,membersAlive,enemiesAlive,won,shots,shotsWithMateInLane,countBelowTruth,countReports";
+    public static final String HEADER = "round,membersAlive,enemiesAlive,won,shots,shotsWithMateInLane,countBelowTruth,countReports,bulletsOnMates";
     /** A robot's half-width: a teammate this close to a bullet's line is in its lane. */
     static final double HALF_WIDTH = 18;
 
@@ -41,22 +45,28 @@ public class TeamHarvester extends BattleAdaptor {
     private final Map<Integer, BufferedWriter> logs = new HashMap<>();
     private final BufferedWriter rounds;
     private final Set<Integer> bullets = new HashSet<>();
+    private final Set<Integer> friendly = new HashSet<>();
+    private final Map<Integer, double[]> firstSeen = new HashMap<>();
+    private final BufferedWriter debug;
     private int round;
     private int ourTeam = -1;
-    private int membersAlive, enemiesAlive, shots, inLane, belowTruth, countReports;
+    private int membersAlive, enemiesAlive, shots, inLane, belowTruth, countReports, bulletsOnMates;
 
     public TeamHarvester(Path dir, String memberClass) throws IOException {
         this.dir = dir;
         this.memberClass = memberClass;
         this.rounds = Files.newBufferedWriter(dir.resolve("rounds.csv"), StandardCharsets.UTF_8);
         rounds.write(HEADER + "\n");
+        this.debug = Files.newBufferedWriter(dir.resolve("friendly.log"), StandardCharsets.UTF_8);
     }
 
     @Override
     public void onRoundStarted(RoundStartedEvent e) {
         round = e.getRound();
         bullets.clear();
-        membersAlive = enemiesAlive = shots = inLane = belowTruth = countReports = 0;
+        friendly.clear();
+        firstSeen.clear();
+        membersAlive = enemiesAlive = shots = inLane = belowTruth = countReports = bulletsOnMates = 0;
     }
 
     private boolean ours(IRobotSnapshot r) {
@@ -94,6 +104,22 @@ public class TeamHarvester extends BattleAdaptor {
             }
         }
         for (IBulletSnapshot b : snap.getBullets()) {
+            firstSeen.putIfAbsent(b.getBulletId(), new double[] {b.getX(), b.getY()});
+            // The engine's own record of a bullet of ours that ended on one of our members.
+            if (b.getState() == BulletState.HIT_VICTIM && b.getVictimIndex() >= 0
+                    && b.getVictimIndex() < robots.length && b.getOwnerIndex() >= 0
+                    && b.getOwnerIndex() < robots.length
+                    && robots[b.getOwnerIndex()].getTeamIndex() == ourTeam
+                    && robots[b.getVictimIndex()].getTeamIndex() == ourTeam
+                    && friendly.add(b.getBulletId())) {
+                bulletsOnMates++;
+                IRobotSnapshot v = robots[b.getVictimIndex()], o = robots[b.getOwnerIndex()];
+                double[] first = firstSeen.get(b.getBulletId());
+                write(debug, String.format(Locale.ROOT, "%d,%d,owner=%d,victim=%d,power=%.2f,travelled=%.0f,"
+                    + "victimVelocity=%.1f,ownerVelocity=%.1f%n", round, turn, o.getRobotIndex(), v.getRobotIndex(),
+                    b.getPower(), Math.hypot(b.getX() - first[0], b.getY() - first[1]), v.getVelocity(),
+                    o.getVelocity()));
+            }
             if (!bullets.add(b.getBulletId())) continue;
             IRobotSnapshot owner = b.getOwnerIndex() >= 0 && b.getOwnerIndex() < robots.length
                 ? robots[b.getOwnerIndex()] : null;
@@ -116,8 +142,9 @@ public class TeamHarvester extends BattleAdaptor {
 
     @Override
     public void onRoundEnded(RoundEndedEvent e) {
-        write(rounds, String.format(Locale.ROOT, "%d,%d,%d,%d,%d,%d,%d,%d%n", round, membersAlive, enemiesAlive,
-            membersAlive > 0 && enemiesAlive == 0 ? 1 : 0, shots, inLane, belowTruth, countReports));
+        write(rounds, String.format(Locale.ROOT, "%d,%d,%d,%d,%d,%d,%d,%d,%d%n", round, membersAlive, enemiesAlive,
+            membersAlive > 0 && enemiesAlive == 0 ? 1 : 0, shots, inLane, belowTruth, countReports,
+            bulletsOnMates));
     }
 
     private BufferedWriter log(int robotIndex) {
@@ -140,6 +167,7 @@ public class TeamHarvester extends BattleAdaptor {
 
     public void close() throws IOException {
         rounds.close();
+        debug.close();
         for (BufferedWriter w : logs.values()) w.close();
     }
 }

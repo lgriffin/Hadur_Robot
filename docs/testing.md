@@ -48,7 +48,7 @@ every test source in the three modules. It fails when:
 
 - a requirement whose stage is at or before the build's stage is named by no test. The
   duel plan's S0–S7 are compared with `hadur.stage` (a root pom property, now `S7`) and the
-  melee extension's M0–M6 with `hadur.melee.stage`;
+  melee extension's M0–M6 with `hadur.melee.stage`, the Team plan's T1 with `hadur.team.stage`;
 - a tag names an ID that is not a requirement, so IDs cannot drift;
 - a jqwik `*Properties` class tags with JUnit's `@Tag`, which would make jqwik skip it.
 

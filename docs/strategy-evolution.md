@@ -324,6 +324,39 @@ sandbox kills a robot that reads a resource of its own jar. Requirements are in 
 
 - **Gate** ([d5-gate.md](bench/d5-gate.md)): 46 panel robots, 3 seeds of 35 rounds, shield mode on against off, paired: weighted mean **+2.9 ± 2.7** points over the panel (stratified APS 86.8 against 83.9). Eight robots win; the list takes those and six more at +9 or better, and leaves off the seven it loses against (Hubris, TimCat, RSK1, ThroxBot, Grofvuil, sample.Fire, OscillatorL). D6 is not built: it stays a research item.
 
+## The Team plan (T1): teammates stop running into each other (3.8)
+
+[team-plan-t1.md](team-plan-t1.md) is the first stage of the Team plan, answering the A5
+baseline's two team-only faults: about 440 collisions a round and 884 of our bullets on a
+teammate. The cause was that neither mover could see a teammate (the World held enemies
+only), the five members shared eyes and so one noise field and one choice of destination, and
+the fire lane judged only the moment of firing, though about 92% of the friendly hits were a
+teammate entering the lane during the flight.
+
+What changed (WORLD-9, MMOVE-6 to MMOVE-8, WEAVE-7, WEAVE-8): the roster keeps each
+teammate's heading and velocity and predicts its position; the melee movement adds an
+inverse-square term and a path term for each living teammate, caps its ring by the nearest
+one and salts its noise field and opening spot by the member's place in the roster; the
+conductor's `TeammateFence` replaces a drive that would run into a teammate within six ticks
+by a brake or a reversal, whichever role drives (so the duel's endgame is covered without
+touching the pinned duel packages); and the fire lane holds while a teammate's predicted
+track crosses it over the time a bullet takes to pass.
+
+Smoke bench, 1200 x 1200, seed 1 (3.7 against 3.8 on the same machine and load):
+
+| | 3.7 | 3.8 |
+|---|---|---|
+| MyFirstTeam, 10 rounds: teammate collisions | 7,287 | 2 |
+| MyFirstTeam, 10 rounds: our bullets on a teammate (engine) | 41 | 7 |
+| MyFirstTeam, 10 rounds: score share | 82.1% | 95.8% |
+| ConceptA, 3 rounds x 2 seeds: teammate collisions | 1,456 | 0 |
+| ConceptA, 3 rounds x 2 seeds: our bullets on a teammate | 48 | 7 |
+
+The first fire-lane slack (1.5 px a tick of flight) left 14 friendly hits in the 10 rounds;
+3 px cut them to 7 for 17% more held shots. A smoke is not the gate.
+
+- **Gate** ([t1-team.md](bench/t1-team.md)), `team-gates.txt` against 3.7 (3 seeds x 8 teams x 10 rounds): score share **48.2% against 28.8%** (+19.4, every team up), teammate collisions 101,322 to 65 (-99.9%), our bullets on a teammate 1,015 to 328 (-68%, **short of the 80% bar**), shots held for the lane 5,188 to 19,286 (3.7x), 0 faults, 0 LINK rejects. Merged on score share and collisions; narrowing `TURN_SLACK` and spacing members on a shared target are follow-ups.
+
 ## What comes next
 
 Every EARS requirement up to R2, bar TIER-1 (above), is implemented and traced. R3 to R5

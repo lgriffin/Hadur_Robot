@@ -7,6 +7,7 @@ import hadur2.core.model.BotEvent;
 import hadur2.core.model.BotInput;
 import hadur2.core.model.BotOrders;
 import hadur2.core.physics.Angles;
+import hadur2.core.role.TeammateFence;
 import hadur2.core.world.EnemyInfo;
 import hadur2.core.world.EnemyTracker;
 import hadur2.core.world.Roster;
@@ -36,6 +37,10 @@ import java.util.Map;
  *     the engine's count and the deaths it announced.</li>
  * <li>WEAVE-4: the fire permission is withheld while a living teammate's last known
  *     position, no older than {@link Roster#SILENT_WINDOW}, lies in the fire lane.</li>
+ * <li>WEAVE-7 (T1): the lane is also held while a teammate's predicted track, over the time
+ *     a bullet would take to pass it, comes within the lane's half-width.</li>
+ * <li>WEAVE-8 (T1): the driving role's drive is replaced when it would bring Hadur into a
+ *     living teammate ({@link TeammateFence}); the replacements are counted.</li>
  * <li>LINK-4: while a teammate lives, every completed tick's orders carry our report.</li>
  * </ul>
  */
@@ -48,6 +53,13 @@ final class TeamLink {
     static final double LANE_HALF_WIDTH = 24;
     /** A robot's top speed: how far a teammate can have moved per tick since last known. */
     static final double DRIFT = 8;
+    /** WEAVE-7: a bullet's slowest and fastest speed, px a tick: when it passes a teammate's range. */
+    static final double SLOWEST_BULLET = 11;
+    static final double FASTEST_BULLET = 19.7;
+    /** WEAVE-7: how far, px for each tick of the bullet's flight, a teammate may turn off its predicted track. */
+    static final double TURN_SLACK = 3.0;
+    /** WEAVE-7: the longest flight judged, ticks: far more than any field's diagonal over a bullet's slowest speed. */
+    static final int MAX_FLIGHT = 400;
 
     private final HadurCore core;
     private final BattleFacts facts;
@@ -62,7 +74,12 @@ final class TeamLink {
     int teammateBulletHits;
     int teammateCollisions;
     int blockedShots;
+    /** WEAVE-8: drives the teammate fence replaced this round. */
+    int fenced;
     private boolean holding;
+    private final TeammateFence mateFence;
+    /** WORLD-9: the living teammates with a fresh position as of the tick's input. */
+    private List<Roster.Mate> living = List.of();
     int reportsMerged;
 
     TeamLink(HadurCore core, BattleFacts facts, Roster roster, EnemyTracker world) {
@@ -70,13 +87,15 @@ final class TeamLink {
         this.facts = facts;
         this.roster = roster;
         this.world = world;
+        this.mateFence = new TeammateFence(facts.width(), facts.height());
     }
 
     void newRound() {
         roster.newRound();
         merged.clear();
         holding = false;
-        teammateHits = teammateBulletHits = teammateCollisions = blockedShots = reportsMerged = 0;
+        teammateHits = teammateBulletHits = teammateCollisions = blockedShots = reportsMerged = fenced = 0;
+        living = List.of();
     }
 
     /**
@@ -104,7 +123,7 @@ final class TeamLink {
                 BotEvent.Scan s = (BotEvent.Scan) e;
                 Point2D.Double at = position(in, s.bearing(), s.distance());
                 if (roster.isTeammate(s.name())) {
-                    roster.scanned(s.name(), at.x, at.y, now);
+                    roster.scanned(s.name(), at.x, at.y, s.heading(), s.velocity(), now);
                     continue;
                 }
                 if (!s.sentry()) {
@@ -147,6 +166,7 @@ final class TeamLink {
         merge(in, reports, senders, kept);
         roster.presume(now, in.others(), facts.others());
         int enemies = roster.enemiesAlive(in.others());
+        living = roster.living(now);
         return new BotInput(in.time(), in.round(), in.x(), in.y(), in.heading(), in.velocity(), in.energy(),
             in.gunHeat(), in.gunCoolingRate(), in.gunHeading(), in.gunTurnRemaining(), in.radarHeading(),
             enemies, kept, in.numSentries(), in.sentryBorderSize());
@@ -171,11 +191,11 @@ final class TeamLink {
             if (r.round() != in.round() || (last != null && r.tick() <= last)) continue;
             merged.put(sender, r.tick());
             reportsMerged++;
-            roster.reported(sender, r.tick(), r.x(), r.y(), in.others());
+            roster.reported(sender, r.tick(), r.x(), r.y(), r.heading(), r.velocity(), in.others());
             for (Report.Sighting s : r.sightings()) {
                 if (s.name.equals(facts.name())) continue;
                 if (roster.isTeammate(s.name)) {
-                    roster.sighted(s.name, s.x, s.y, s.tick);
+                    roster.sighted(s.name, s.x, s.y, s.heading, s.velocity, s.tick);
                     continue;
                 }
                 roster.notSentry(s.name);
@@ -201,24 +221,46 @@ final class TeamLink {
     }
 
     /**
-     * WEAVE-4: whether a shot may leave on the gun's present heading: no living teammate's
-     * last known position, no older than {@link Roster#SILENT_WINDOW}, lies within the lane's
-     * half-width, grown by {@link #DRIFT} for each tick of its age, ahead of the gun.
+     * WEAVE-4, WEAVE-7: whether a shot may leave on the gun's present heading. A living
+     * teammate's position no older than {@link Roster#SILENT_WINDOW} holds the shot when it
+     * lies within the lane's half-width, grown by {@link #DRIFT} for each tick of its age,
+     * ahead of the gun; and when, on some tick {@code t} of a bullet's flight, its predicted
+     * place is within that half-width widened by {@link #TURN_SLACK} for each tick, and its
+     * distance along the lane is one a bullet could have reached by then (between
+     * {@code 11t} and {@code 19.7t} px, give or take the half-width): the bullet and the
+     * teammate must coincide in time, not only cross the same line. A teammate behind the gun
+     * keeps WEAVE-4's test on its known point alone.
      */
     boolean laneClear(BotInput in) {
         double dx = Math.sin(in.gunHeading());
         double dy = Math.cos(in.gunHeading());
-        for (Roster.Mate m : roster.mates()) {
-            if (!m.alive() || m.seen() < 0) continue;
+        for (Roster.Mate m : roster.living(in.time())) {
             long age = in.time() - m.seen();
-            if (age > Roster.SILENT_WINDOW) continue;
             double rx = m.x() - in.x();
             double ry = m.y() - in.y();
             double along = rx * dx + ry * dy;
             double half = LANE_HALF_WIDTH + DRIFT * Math.max(0, age);
             if (along < -half) continue;
             double across = Math.abs(rx * dy - ry * dx);
-            if (along < 0 ? Math.hypot(rx, ry) <= half : across <= half) return false;
+            if (along < 0) {
+                if (Math.hypot(rx, ry) <= half) return false;
+                continue;
+            }
+            if (across <= half) return false;
+            // WEAVE-7: a bullet of any power flies 11 to 19.7 px a tick, so on tick t it is
+            // somewhere between 11t and 19.7t along the lane. The teammate holds the shot only
+            // if, on some tick, its predicted place is within the lane's width (widened by the
+            // turn slack) and within the bullet's reach along the lane.
+            for (int t = 1; t <= MAX_FLIGHT; t++) {
+                Point2D.Double p = m.at(in.time() + t);
+                double pa = (p.x - in.x()) * dx + (p.y - in.y()) * dy;
+                double lo = SLOWEST_BULLET * t - half;
+                // Past the furthest the teammate can have got: the slowest bullet is ahead of it for good.
+                if (lo > along + Roster.MAX_SPEED * (age + t)) break;
+                if (pa < lo || pa > FASTEST_BULLET * t + half) continue;
+                double pl = Math.abs((p.x - in.x()) * dy - (p.y - in.y()) * dx);
+                if (pl <= half + TURN_SLACK * t) return false;
+            }
         }
         return true;
     }
@@ -231,6 +273,30 @@ final class TeamLink {
         boolean hold = !clear && in.gunHeat() == 0;
         if (hold && !holding) blockedShots++;
         holding = hold;
+    }
+
+    /** WORLD-9: the living teammates with a fresh position, as of this tick's input. */
+    List<Roster.Mate> living() {
+        return living;
+    }
+
+    /**
+     * WEAVE-8: the driving role's {@code built} orders, or a drive of the teammate fence's
+     * choosing in their place when they would bring Hadur into a living teammate. The
+     * replacements are counted.
+     */
+    BotOrders fence(BotInput in, BotOrders built) {
+        if (living.isEmpty()) return built;
+        List<Point2D.Double[]> tracks = new ArrayList<>(living.size());
+        for (Roster.Mate m : living) {
+            Point2D.Double[] track = new Point2D.Double[TeammateFence.HORIZON + 1];
+            for (int t = 0; t < track.length; t++) track[t] = m.at(in.time() + t);
+            tracks.add(track);
+        }
+        BotOrders out = mateFence.apply(in.x(), in.y(), in.heading(), in.velocity(), built, tracks,
+            in.numSentries() > 0 ? in.sentryBorderSize() : 0);
+        if (out != built) fenced++;
+        return out;
     }
 
     /** Whether a teammate lives, as the World believes: then the tick's orders carry a report. */
@@ -251,9 +317,9 @@ final class TeamLink {
             in.energy(), sightings, deaths.size() > 255 ? deaths.subList(0, 255) : deaths, shots));
     }
 
-    /** The team's round record: {@code T,round,tick,teammateHits,teammateBulletHits,collisions,blockedShots,reportsMerged,linkRejected,enemiesAlive}. */
+    /** The team's round record: {@code T,round,tick,teammateHits,teammateBulletHits,collisions,blockedShots,reportsMerged,linkRejected,enemiesAlive,fenced}. */
     String record(int round, long tick, int linkRejected, int enemiesAlive) {
         return "T," + round + "," + tick + "," + teammateHits + "," + teammateBulletHits + "," + teammateCollisions
-            + "," + blockedShots + "," + reportsMerged + "," + linkRejected + "," + enemiesAlive;
+            + "," + blockedShots + "," + reportsMerged + "," + linkRejected + "," + enemiesAlive + "," + fenced;
     }
 }

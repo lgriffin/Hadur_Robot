@@ -289,7 +289,7 @@ final class MeleeSeam implements Role {
 
         MeleeController.Command c = melee.tick(new MeleeController.Situation(
             in.location(), in.gunHeading(), in.radarHeading(), in.energy(), in.time(),
-            in.others(), in.heading(), in.velocity(), in.gunHeat()));
+            in.others(), in.heading(), in.velocity(), in.gunHeat(), core.livingTeammates()));
         // M2's check: a tick aimed at a robot that has died is a ghost tick.
         if (c.target != null && core.diedThisRound(c.target)) ghostTicks++;
         orders.turnRadarRight(c.radarTurn);

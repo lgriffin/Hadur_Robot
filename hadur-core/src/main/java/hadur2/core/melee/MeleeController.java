@@ -3,6 +3,7 @@ package hadur2.core.melee;
 import hadur2.core.world.EnemyTracker;
 import hadur2.core.world.EnemyInfo;
 import hadur2.core.world.EnemyShot;
+import hadur2.core.world.Roster;
 import hadur2.core.model.RobotState;
 import hadur2.core.model.RobotStateLog;
 import hadur2.core.physics.Angles;
@@ -33,6 +34,8 @@ public class MeleeController {
         public final double heading, velocity;
         /** The gun's heat, for the targeting waves' cycles (MGUN-4). */
         public final double gunHeat;
+        /** T1: the living teammates whose position is fresh; empty off a team (MMOVE-6). */
+        public final List<Roster.Mate> teammates;
 
         public Situation(Point2D.Double me, double gunHeading, double radarHeading,
                          double energy, long time, int others) {
@@ -47,6 +50,13 @@ public class MeleeController {
         public Situation(Point2D.Double me, double gunHeading, double radarHeading,
                          double energy, long time, int others, double heading, double velocity,
                          double gunHeat) {
+            this(me, gunHeading, radarHeading, energy, time, others, heading, velocity, gunHeat, List.of());
+        }
+
+        public Situation(Point2D.Double me, double gunHeading, double radarHeading,
+                         double energy, long time, int others, double heading, double velocity,
+                         double gunHeat, List<Roster.Mate> teammates) {
+            this.teammates = teammates;
             this.me = me;
             this.gunHeading = gunHeading;
             this.radarHeading = radarHeading;
@@ -222,6 +232,11 @@ public class MeleeController {
     public MeleeWaves waves() { return waves; }
     public MeleeStrategy strategy() { return strategy; }
 
+    /** MMOVE-8: this member's place in its team's roster (negative off a team). */
+    public void team(int index) {
+        mover.team(index);
+    }
+
     public Command tick(Situation s) {
         myPath.addState(RobotState.newBuilder().setLocation(s.me).setHeading(s.heading)
             .setVelocity(s.velocity).setTime(s.time).build());
@@ -236,7 +251,7 @@ public class MeleeController {
         c.posture = plan.posture;
         mover.updateBullets(tracker.shots(s.time), myPath, s.me, s.time);
         c.destination = alive.isEmpty() ? null
-            : mover.chooseDestination(s.me, s.energy, s.others, alive, s.time, plan);
+            : mover.chooseDestination(s.me, s.energy, s.others, alive, s.time, plan, s.teammates);
         waves.tick(s.me, s.time, s.gunHeat, alive, gun, s.energy, s.others);
 
         // MGUN-1: the peak of every opponent's firing solutions.

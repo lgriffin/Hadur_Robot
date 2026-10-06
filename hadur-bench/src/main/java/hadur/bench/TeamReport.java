@@ -28,8 +28,10 @@ public final class TeamReport {
         public int firsts, rounds, roundsWon, roundsSurvived;
         public int shots, shotsInLane, countBelowTruth, countReports;
         public int faults, skipped, linkRejects;
-        /** Sums over the members' {@code T} records: teammate hits, teammate bullet hits, collisions, blocked shots, reports merged. */
-        public final long[] team = new long[5];
+        /** Sums over the members' {@code T} records: teammate hits, teammate bullet hits, collisions, blocked shots, reports merged, drives fenced (T1). */
+        public final long[] team = new long[6];
+        /** The engine's count of our bullets that hit one of our own members (T1); -1 in older rounds.csv. */
+        public int bulletsOnMates;
         public List<String> dataFiles = List.of();
 
         double share() {
@@ -84,6 +86,7 @@ public final class TeamReport {
             b.shotsInLane += Integer.parseInt(f[5]);
             b.countBelowTruth += Integer.parseInt(f[6]);
             b.countReports += Integer.parseInt(f[7]);
+            if (f.length > 8) b.bulletsOnMates += Integer.parseInt(f[8]);
         }
         try (Stream<Path> logs = Files.list(dir)) {
             for (Path log : (Iterable<Path>) logs::iterator) {
@@ -98,6 +101,8 @@ public final class TeamReport {
                     else if (text.startsWith("T,")) {
                         String[] f = text.split(",");
                         for (int i = 0; i < 5 && 3 + i < f.length; i++) b.team[i] += Long.parseLong(f[3 + i]);
+                        // T1: the count of drives the teammate fence replaced is the record's last field.
+                        if (f.length > 10) b.team[5] += Long.parseLong(f[10]);
                     }
                 }
             }
@@ -145,8 +150,9 @@ public final class TeamReport {
             all.linkRejects, all.shotsInLane, all.shots, all.countBelowTruth, all.countReports,
             results.values().stream().mapToLong(TeamReport::strays).sum()));
         r.append(String.format(Locale.ROOT, "Members' team records (sums): teammate hits %d, teammate bullet hits %d, "
-            + "teammate collisions %d, shots held for the fire lane %d, reports merged %d.%n",
-            all.team[0], all.team[1], all.team[2], all.team[3], all.team[4]));
+            + "teammate collisions %d, shots held for the fire lane %d, reports merged %d, drives fenced %d.%n"
+            + "Engine's count of our bullets that hit one of our own members: %d.%n",
+            all.team[0], all.team[1], all.team[2], all.team[3], all.team[4], all.team[5], all.bulletsOnMates));
         if (failed > 0) r.append(String.format(Locale.ROOT, "%n**%d battle(s) failed**; see their engine.log.%n", failed));
         List<String> files = new ArrayList<>();
         for (List<Battle> list : results.values()) for (Battle b : list) for (String f : b.dataFiles) if (!files.contains(f)) files.add(f);
@@ -169,6 +175,7 @@ public final class TeamReport {
         to.faults += b.faults;
         to.skipped += b.skipped;
         to.linkRejects += b.linkRejects;
+        to.bulletsOnMates += b.bulletsOnMates;
         for (int i = 0; i < to.team.length; i++) to.team[i] += b.team[i];
     }
 
