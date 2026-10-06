@@ -151,20 +151,35 @@ final class Report {
      * trusted when this mean stays close to the sequential run's.
      */
     private static String skippedTurnsLine(Map<Opponent, List<BattleResult>> results) {
-        int total = 0, battles = 0, worst = 0;
+        List<Integer> perBattle = new ArrayList<>();
         for (List<BattleResult> rs : results.values()) {
             for (BattleResult r : rs) {
-                if (!r.ok) continue;
-                total += r.skippedTurns;
-                battles++;
-                worst = Math.max(worst, r.skippedTurns);
+                if (r.ok) perBattle.add(r.skippedTurns);
             }
         }
-        if (battles == 0) return "Skipped turns: none recorded (no battle completed).\n\n";
-        return String.format(Locale.ROOT,
-            "Skipped turns: %d over %d battles (%.1f per battle, most in one battle %d). "
-            + "Issue #102 trusts a parallel run when the mean stays near the sequential run's.%n%n",
-            total, battles, (double) total / battles, worst);
+        return tallyLine("Skipped turns", perBattle, TRUST_NOTE);
+    }
+
+    /** The sentence the skipped-turns line ends with in every report that carries it. */
+    static final String TRUST_NOTE =
+        "Issue #102 trusts a parallel run when the mean stays near the sequential run's.";
+
+    /**
+     * A per-battle count (skipped turns, duress ticks) as the report's one-line tally: the
+     * total over the battles, the mean per battle and the worst single battle. Shared by the
+     * duel, melee and team reports so the three read alike (issue #102, BENCH-12).
+     */
+    static String tallyLine(String label, List<Integer> perBattle, String trailer) {
+        if (perBattle.isEmpty()) return label + ": none recorded (no battle completed).\n\n";
+        long total = 0;
+        int worst = 0;
+        for (int n : perBattle) {
+            total += n;
+            worst = Math.max(worst, n);
+        }
+        return String.format(Locale.ROOT, "%s: %d over %d battles (%.1f per battle, most in one battle %d).",
+            label, total, perBattle.size(), (double) total / perBattle.size(), worst)
+            + (trailer.isEmpty() ? "" : " " + trailer) + "\n\n";
     }
 
     /** S5: how close Hadur fought, how hard it shot, and how quickly rounds ended. */
@@ -270,9 +285,17 @@ final class Report {
 
     /** {@code pairedDiff(candidate, baseline)} formatted as "+1.2 ± 3.4" or "n/a" with no pairs. */
     private static String pairedDiffStr(List<BattleResult> candidate, List<BattleResult> baseline) {
-        Stats diff = pairedDiff(candidate, baseline);
-        return diff.n == 0 ? "n/a" : String.format(Locale.ROOT, "%+.1f%s", diff.mean * 100,
-            Double.isNaN(diff.halfWidth) ? "" : String.format(Locale.ROOT, " ± %.1f", diff.halfWidth * 100));
+        return signedDiff(pairedDiff(candidate, baseline), 100);
+    }
+
+    /**
+     * A paired difference as "+1.2 ± 3.4" (the BENCH-2 convention: mean, then the 95%
+     * half-width when two or more pairs exist), or "n/a" with no pairs. {@code scale} turns a
+     * fraction into points (100) or leaves points alone (1).
+     */
+    static String signedDiff(Stats diff, double scale) {
+        return diff.n == 0 ? "n/a" : String.format(Locale.ROOT, "%+.1f%s", diff.mean * scale,
+            Double.isNaN(diff.halfWidth) ? "" : String.format(Locale.ROOT, " ± %.1f", diff.halfWidth * scale));
     }
 
     /**
