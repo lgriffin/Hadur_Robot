@@ -220,6 +220,25 @@ final class Report {
     }
 
     /**
+     * BENCH-2: the paired score-share difference (candidate minus baseline) over one
+     * opponent's seeds. The lists are paired by seed index (both are seed 1..runs, in order)
+     * and only the seeds where both jars produced a battle are kept, so a lone failure on one
+     * side cannot shift every later seed's pairing out of alignment.
+     */
+    static Stats pairedDiff(List<BattleResult> candidate, List<BattleResult> baseline) {
+        List<Double> candPaired = new ArrayList<>(), basePaired = new ArrayList<>();
+        int n = Math.min(candidate.size(), baseline.size());
+        for (int i = 0; i < n; i++) {
+            BattleResult cr = candidate.get(i), br = baseline.get(i);
+            if (cr.ok && br.ok) {
+                candPaired.add(cr.scoreShare());
+                basePaired.add(br.scoreShare());
+            }
+        }
+        return Stats.pairedDiff(candPaired, basePaired);
+    }
+
+    /**
      * BENCH-2: the paired score-share difference per opponent between the candidate and
      * baseline jars, seed for seed, plus a BENCH-1 stratified APS estimate for each jar
      * from the set's opponent weights (0 when the set carries none).
@@ -244,19 +263,7 @@ final class Report {
             candidateStats.add(cs);
             baselineStats.add(bs);
             weights.add(o.weight);
-            // Pair by seed index (both lists are seed 1..runs, in order) and keep only the
-            // seeds where both jars produced a battle, so a lone failure on one side cannot
-            // shift every later seed's pairing out of alignment.
-            List<Double> candPaired = new ArrayList<>(), basePaired = new ArrayList<>();
-            int n = Math.min(candResults.size(), baseResults.size());
-            for (int i = 0; i < n; i++) {
-                BattleResult cr = candResults.get(i), br = baseResults.get(i);
-                if (cr.ok && br.ok) {
-                    candPaired.add(cr.scoreShare());
-                    basePaired.add(br.scoreShare());
-                }
-            }
-            Stats diff = Stats.pairedDiff(candPaired, basePaired);
+            Stats diff = pairedDiff(candResults, baseResults);
             b.append(String.format(Locale.ROOT, "| %s | %s | %s | %s |%n",
                 o.name, cs.percent(), bs.percent(),
                 diff.n == 0 ? "n/a" : String.format(Locale.ROOT, "%+.1f%s", diff.mean * 100,
@@ -334,7 +341,7 @@ final class Report {
         return b.toString();
     }
 
-    private static List<Double> shares(List<BattleResult> rs) {
+    static List<Double> shares(List<BattleResult> rs) {
         List<Double> out = new ArrayList<>();
         for (BattleResult r : rs) if (r.ok) out.add(r.scoreShare());
         return out;

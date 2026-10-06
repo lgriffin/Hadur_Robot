@@ -9,6 +9,7 @@ import hadur2.core.model.BotOrders;
 import hadur2.core.port.ProfileStore;
 import hadur2.core.role.Charter;
 import hadur2.core.role.RoleId;
+import hadur2.core.shieldmode.ShieldList;
 import java.awt.Color;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -110,7 +111,7 @@ public class Hadur extends TeamRobot {
             // ROLE-1: the battle's facts before the first tick fix its charter. As a
             // TeamRobot (A4) Hadur can ask for its teammates; off a team there are none.
             BattleFacts facts = facts();
-            core = new HadurCore(facts, line -> console.println(line), profileStore());
+            core = new HadurCore(facts, line -> console.println(line), profileStore(), null, shieldList());
             // File I/O and class loading now, not in the first scan's turn.
             core.prepareMemory();
             // WEAVE-5: on a team the guard's safe orders hold fire.
@@ -194,6 +195,23 @@ public class Hadur extends TeamRobot {
     }
 
     /**
+     * SHIELD-5: Hadur's own shield list, from {@link ShieldListData} in the robot jar. It is a
+     * class, not a text resource, because Robocode's sandbox refuses a robot the read of its
+     * own jar (a resource stream raises a security violation and the robot is killed); class
+     * loading is the one way a robot's jar content reaches it. The core does no I/O and takes
+     * only the lines. A list that cannot be read is an empty list, with a {@code SH} line:
+     * shield mode then never starts and Hadur fights as it did before the list existed.
+     */
+    private ShieldList shieldList() {
+        try {
+            return ShieldList.parse(Arrays.asList(ShieldListData.lines()));
+        } catch (RuntimeException | LinkageError e) {
+            out.println("SH," + getRoundNum() + "," + getTime() + ",list-failed," + e);
+            return ShieldList.NONE;
+        }
+    }
+
+    /**
      * Opponent memory lives in the data directory; without one, Hadur fights as a stranger.
      * A failure here is printed as a {@code MEM} line and leaves the core without a store,
      * never stops the robot (MEM-4).
@@ -219,7 +237,7 @@ public class Hadur extends TeamRobot {
         String[] teammates = getTeammates();
         return new BattleFacts(getBattleFieldWidth(), getBattleFieldHeight(), getOthers(),
             teammates == null ? List.of() : Arrays.asList(teammates), getName(), getEnergy(),
-            getNumSentries() > 0 ? getSentryBorderSize() : 0);
+            getNumSentries() > 0 ? getSentryBorderSize() : 0, getNumRounds());
     }
 
     /**

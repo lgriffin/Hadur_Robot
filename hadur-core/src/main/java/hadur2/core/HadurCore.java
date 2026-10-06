@@ -35,6 +35,7 @@ import hadur2.core.role.RoundResult;
 import hadur2.core.role.SentryFence;
 import hadur2.core.role.Tick;
 import hadur2.core.role.Veto;
+import hadur2.core.shieldmode.ShieldList;
 import hadur2.core.world.EnemyInfo;
 import hadur2.core.world.EnemyShot;
 import hadur2.core.world.EnemyTracker;
@@ -102,7 +103,8 @@ import java.util.function.Predicate;
  * (battle and opponent, at the first duel scan), {@code P} (a policy decision), {@code EW}
  * (an enemy wave the ledger found), {@code MEM} (a memory failure), {@code FAULT}, {@code H}
  * (a hand-off), {@code ROLE} (a change of role), {@code R} (round end, see
- * {@link RoundStats}) and {@code M} (the melee extension's round end).</p>
+ * {@link RoundStats}) and {@code M} (the melee extension's round end), and, only where shield mode is on for a listed
+ * opponent (D5), {@code SH} (it starts or is left) and {@code SR} (its round's end).</p>
  *
  * <p>Nothing grows without bound (RES-2): the brains cap their own logs, trees and windows,
  * and the only collection held here, the round's dead robots, stops at 64 names.</p>
@@ -252,6 +254,23 @@ public final class HadurCore {
      * @param melee the melee brain
      */
     public HadurCore(BattleFacts facts, Telemetry telemetry, ProfileStore store, MeleeController melee) {
+        this(facts, telemetry, store, melee, ShieldList.NONE);
+    }
+
+    /**
+     * A core for {@code facts} with a shield list of Hadur's own (D5, SHIELD-5): on the
+     * opponents it names, a Duel charter's rounds open in shield mode. The adapter reads the
+     * list from the robot jar and passes it here; any other charter ignores it, since shield
+     * mode applies to a 1v1 and to no melee or team. An empty list changes nothing.
+     *
+     * @param facts the engine's facts before the first tick
+     * @param telemetry where the line records go
+     * @param store where profiles are kept between battles, or null
+     * @param melee the melee brain, or null to build one when the charter has the Melee role
+     * @param shieldList the opponents shield mode applies to, or null for none
+     */
+    public HadurCore(BattleFacts facts, Telemetry telemetry, ProfileStore store, MeleeController melee,
+                     ShieldList shieldList) {
         this.facts = facts;
         // ROLE-1: the charter is fixed here, before the first tick.
         Charter charter = Charter.of(facts);
@@ -271,7 +290,7 @@ public final class HadurCore {
         MeleeMemory meleeMemory = archive.meleeShelf();
         ProfileLibrary survivorLibrary = archive.survivorShelf();
         this.duel = new DuelController(facts.width(), facts.height(), enemiesTotal, telemetry,
-            library, survivorLibrary, stats);
+            library, survivorLibrary, stats, charter == Charter.DUEL ? shieldList : ShieldList.NONE, facts.rounds());
         this.duelSeam = new DuelSeam(this, duel);
         // ROLE-6: only the charter's roles are built.
         if (charter.has(RoleId.MELEE)) {
@@ -569,7 +588,11 @@ public final class HadurCore {
             duelSeam.observeInDuress(scan, tick);
         }
         else if (e instanceof BotEvent.BulletHit) stats.shotsHit++;
-        else if (e instanceof BotEvent.HitByBullet) stats.hitsTaken++;
+        else if (e instanceof BotEvent.HitByBullet) {
+            stats.hitsTaken++;
+            // SHIELD-6: the damage still counts against the shield's budget.
+            duelSeam.hitInDuress((BotEvent.HitByBullet) e, tick);
+        }
         else if (e instanceof BotEvent.BulletHitBullet) stats.bulletsIntercepted++;
         else if (e instanceof BotEvent.SkippedTurn) onSkippedTurn(tick.in(), ((BotEvent.SkippedTurn) e).skippedTime());
         else if (e instanceof BotEvent.TickTime) onTickTime((BotEvent.TickTime) e);

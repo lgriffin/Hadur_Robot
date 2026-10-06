@@ -19,6 +19,7 @@ public final class BattleFacts {
     private final String name;
     private final double startingEnergy;
     private final double sentryBorder;
+    private final int rounds;
 
     /** A team leader starts each round with 200 energy, every other robot with 100. */
     public static final double LEADER_ENERGY = 200;
@@ -46,6 +47,24 @@ public final class BattleFacts {
      */
     public BattleFacts(double width, double height, int others, List<String> teammates, String name,
                        double startingEnergy, double sentryBorder) {
+        this(width, height, others, teammates, name, startingEnergy, sentryBorder, 0);
+    }
+
+    /**
+     * The adapter's facts with the battle's length (D5).
+     *
+     * @param width the field's width in px
+     * @param height the field's height in px
+     * @param others the engine's count of other robots at the start, sentries excluded
+     * @param teammates the other members of our team, in roster order; null or empty for none
+     * @param name our own name as the engine gives it
+     * @param startingEnergy our energy before the first tick: 200 for a team's leader
+     * @param sentryBorder the sentry border's size in px; 0 when it does not matter
+     * @param rounds the engine's number of rounds in the battle ({@code getNumRounds()}); 0 when not known
+     */
+    public BattleFacts(double width, double height, int others, List<String> teammates, String name,
+                       double startingEnergy, double sentryBorder, int rounds) {
+        this.rounds = Math.max(0, rounds);
         this.width = width;
         this.height = height;
         this.others = others;
@@ -93,6 +112,11 @@ public final class BattleFacts {
         return startingEnergy;
     }
 
+    /** The engine's number of rounds in the battle; 0 when not known (SHIELD-6 then assumes the rumble's 35). */
+    public int rounds() {
+        return rounds;
+    }
+
     /** The sentry border's size in px; 0 when it does not matter. */
     public double sentryBorder() {
         return sentryBorder;
@@ -111,12 +135,13 @@ public final class BattleFacts {
         if (!(o instanceof BattleFacts)) return false;
         BattleFacts b = (BattleFacts) o;
         return width == b.width && height == b.height && others == b.others && teammates.equals(b.teammates)
-            && name.equals(b.name) && startingEnergy == b.startingEnergy && sentryBorder == b.sentryBorder;
+            && name.equals(b.name) && startingEnergy == b.startingEnergy && sentryBorder == b.sentryBorder
+            && rounds == b.rounds;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(width, height, others, teammates, name, startingEnergy, sentryBorder);
+        return Objects.hash(width, height, others, teammates, name, startingEnergy, sentryBorder, rounds);
     }
 
     @Override

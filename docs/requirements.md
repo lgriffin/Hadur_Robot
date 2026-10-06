@@ -622,7 +622,7 @@ Every requirement group belongs to one owner, the same owner as the code it gove
 | Owner | Packages | Requirement groups |
 |---|---|---|
 | Kernel | `model`, `physics`, `knn`, `ledger`, `memory`, `port`, `world` (from A3), `link` (from A4) | CORE, WAVE, MEM, PHYS, WORLD, LINK, SHELF |
-| Duel strand | `gun`, `move`, `adapt`, `policy`, `shield`, `duel` (from A2) | ADAPT, GUN, DIST, POW, MOVE, END, DIAL, RADAR, SHIELD, TIME, RAM, MIR |
+| Duel strand | `gun`, `move`, `adapt`, `policy`, `shield`, `shieldmode` (from D5), `duel` (from A2) | ADAPT, GUN, DIST, POW, MOVE, END, DIAL, RADAR, SHIELD, TIME, RAM, MIR |
 | Melee strand | `melee` | MELEE, MRADAR, MMOVE, MGUN, MSENSE, MMEM |
 | Team strand | `team`, from the Team plan | none yet |
 | Conductor | the root package, `role` (`posture` until A1), `replay` | GATE, ROLE, WEAVE, RES, STRAND |
@@ -852,7 +852,7 @@ Every requirement group belongs to one owner, the same owner as the code it gove
 
 ## The DrussGT route (D1 to D6)
 
-The plan is [docs/druss-route-plan.md](druss-route-plan.md): the findings of the 4 and 5 October 2026 probes against DrussGT 3.1.16 and the stages D0 to D6 that follow from them. Its stages are compared with `hadur.druss.stage` in the root pom, which is `D1`. The plan's draft IDs were renumbered here because open PR #83 reserves BENCH-9, BENCH-10, POW-6, RES-12, RES-13, GUN-6 and DIST-2: the plan's POW-6 is **POW-11** and its RES-12 is **RES-14**; POW-7 to POW-10 and ADAPT-5 keep their numbers. The requirements of D2 to D6 stay in the plan until their stages are built.
+The plan is [docs/druss-route-plan.md](druss-route-plan.md): the findings of the 4 and 5 October 2026 probes against DrussGT 3.1.16 and the stages D0 to D6 that follow from them. Its stages are compared with `hadur.druss.stage` in the root pom, which is `D5`. The plan's draft IDs were renumbered here because open PR #83 reserves BENCH-9, BENCH-10, POW-6, RES-12, RES-13, GUN-6 and DIST-2: the plan's POW-6 is **POW-11** and its RES-12 is **RES-14**; POW-7 to POW-10 and ADAPT-5 keep their numbers. The requirements of D2 to D6 stay in the plan until their stages are built.
 
 ### Requirements
 
@@ -877,6 +877,72 @@ POW-7 to POW-9 apply to a duel only. POW-1 to POW-5, RAM-1 and END-3 keep preced
 - **ADAPT-5.** The profile format moves to **version 3**: one u8 after the normalised group, the verdict `OpponentProfile.leadAware`, written at every round fold and so, after a battle's last round, the battle's end. The verdict is what the rule itself holds at that point (`PowerPolicy.applies`): true when this battle's rates satisfy POW-7's condition, or when the profile's verdict stood and this battle never contradicted it. Contradicting means either robot's rate is above 12.5% by more than its margin (the centre less the margin is over the figure). `OpeningBook.read` passes the verdict through as `Opening.leadAware()`, and the Duel applies POW-7 to POW-9 from the first shot while it stands. Under MEM-9 a version keeps its own store names: version 3 files are `<stem>-v3.hp`, a version 2 file is read once, stats only, with the verdict false (its seeds are not carried over, as for any other version), and encoding at version 2 or 1 (MEM-7) leaves the byte out. The profile grows by one byte, so MEM-5, MEM-8's 1 KB stats and MEM-10's 2 KB are unchanged in kind.
 - **RES-14** is `TickBudget.duress()`: three skipped turns in the round and fewer than `DURESS_QUIET_TICKS` (300) ticks since the last. `HadurCore` tells the budget the tick (`tickBegan`) before it asks, so the 300 ticks are engine ticks counted from the last skipped turn, never the round clock (DIAL-2). Another skipped turn after duress has ended starts it again, since the round already holds three. When duress ends, the Duel's view of the enemy is stale (the ledger has missed every energy drop, the logs every state), so the conductor resets it once (`DuelSeam.afterDuress`, `DuelController.resumeAfterDuress`) and the first normal scan starts afresh. That reset also discards both wave managers' outstanding waves (the gun's and the surf's), the gun's virtual bullets and the surf's per-wave state, since they would otherwise be judged against the unobserved interval; the battle-long learning (the trees, ratings and hit rates) stays. The 300 ticks count from the tick the engine skipped (the event's `skippedTime`), not the tick the event is handled on. Duress itself, the level RES-9 defined, is unchanged. ROLE-5 and WORLD-1 still read "(RES-9)" for the same condition; they mean the duress level.
 - **Re-pinned.** This stage changes the duel's play where POW-7 triggers, where POW-10 now fires, and where duress now ends, so the replay fixtures that diverged were re-recorded and the snapshots and source pins re-taken: see the stage notes in [strategy-evolution.md](strategy-evolution.md#d1) for exactly which.
+
+### D5: the shield list
+
+Shield mode is Hadur's own bullet shield (SHIELD-5, SHIELD-6), the other half of the SHIELD
+group's counter to an enemy that shields (SHIELD-1, SHIELD-2). It is a mode of the Duel
+strand, in the `shieldmode` package, and applies to a 1v1 battle only.
+
+| ID | Pattern | Requirement | Stage |
+|---|---|---|---|
+| BENCH-11 | Event | When a candidate list is given, the bench shall run each named opponent with shield mode on and off over the same seeds and report the paired difference. | D5 |
+| SHIELD-5 | Optional | Where the opponent is on the shield list, the core shall open each round in shield mode. | D5 |
+| SHIELD-6 | Unwanted | If the enemy's bullet damage in a battle exceeds the amount that would hold our score share below 85%, then the core shall leave shield mode for the rest of that battle. | D5 |
+
+#### D5 notes
+
+- **The list ships in the robot jar as a class**, `hadur2.ShieldListData` (`hadur-robot/src/main/java/hadur2/ShieldListData.java`),
+  one robot per string, `#` for comments. It is a class and not a text resource because
+  Robocode's sandbox denies a robot the read of its own jar: `getResourceAsStream` raises a
+  security violation and the robot is killed (seen in the BENCH-11 smoke run), while class
+  loading always works. The adapter passes the lines on and the core only parses them
+  (`ShieldList`; RES-6 keeps I/O out of the core). A line is a robot's name as Robocode lists it:
+  `apv.test.Virus 0.6.1` matches that version only, and `apv.test.Virus` matches every version.
+  Matching is exact and case-sensitive, never a prefix. A list that cannot be loaded is an empty
+  list. It ships with 14 robots: the 8 the BENCH-11 probe marked "wins" and 6 "open" ones with a
+  mean gain of 9 points or more (docs/bench/d5-probe.md, docs/bench/d5-gate.md). A name goes on only
+  after the paired bench shows shield mode beats normal mode for that robot, or an expected gain
+  that APS, the objective, counts; SHIELD-6 bounds the cost. Fixtures whose opponent is not on the
+  list replay unchanged.
+- **Where it applies.** Only a Duel charter (one opponent, no teammates) is given the list; a melee,
+  a team or a sentry battle never has shield mode. The list is asked once, with the opponent's
+  name at the first scan. For a listed opponent every round opens in shield mode (a `SH,round,tick,on`
+  record); the duel's gun and movement take over when it is left.
+- **What shield mode does.** It sits still, predicts each enemy bullet's heading from twelve
+  head-on predictors (four head-on bases, each plain, plus a learned offset, plus a learned offset
+  times our lateral direction) and fires a lighter bullet that meets it in mid-air, stepping 0.1 px
+  aside the tick before so the two paths are not collinear (`ShieldGeometry` is the engine's rule
+  for two bullets destroying each other). Between shields it fires the main gun at the enemy only
+  when its gun will be cool again in time for the enemy's next shot. Our shield bullets are not
+  evidence for SHIELD-1's detector, the hit-rate windows or the bullet shadows.
+- **SHIELD-6's amount** (`ShieldBudget`). The score share is ours over the pair's total, read over
+  the whole battle: ours = 60 for each round of the battle (a round's survival and last-survivor
+  bonuses) plus the bullet damage we have dealt so far, and the enemy's score is its bullet damage.
+  Our share stays at 85% or more exactly while the enemy's damage is at most
+  `allowed = 15/85 * (60 * rounds + our damage dealt)`; past it, shield mode is off for the rest of
+  the battle and the duel plays on. Shield mode is there to win the rounds, so the battle is read as
+  won and the budget asks what that can afford. A 35-round battle allows about 370 damage from its
+  first tick (35 * 60 * 15/85), DrussGT's own limit for its list of 357 robots; each point of
+  damage we deal adds 0.18. The allowance does not move with rounds won or lost: a lost round
+  already shows in the damage taken. The round count is the engine's `getNumRounds()`, carried in
+  `BattleFacts.rounds()` (0 when not known, such as a replayed transcript, and 35 is assumed). Damage
+  counts in or out of shield mode. Kill bonuses are left out of both sides, so the allowance is a
+  lower bound and errs towards leaving.
+- **The round's safety exits** leave shield mode for the rest of that round only, and the next
+  round opens in it again: the enemy within 100 px (`close`), a collision (`rammed`), two enemy
+  bullets that hit us with no predictor exact (`unpredicted`), three hits taken and more than we
+  shot down (`outhit`), no enemy shot for 120 ticks (`quiet`) and RES-14's duress (`duress`). Each is
+  an `SH,round,tick,exit,reason` record. The battle's exit is `SH,round,tick,off,budget`.
+- **Records** are written only for a listed opponent, so a battle without the list writes none and
+  the round record `R` is unchanged: `SH` as above, and at each round's end `SR,round,tick,
+  shieldShots,intercepts,hitsTaken,unpredicted,attackShots,damageTaken,allowed,exit`.
+- **BENCH-11** is the bench's `--shield-probe FILE`: it repacks the candidate jar twice, with the
+  list naming every opponent of FILE ("on") and an empty list ("off"), under the versions
+  `<version>-on` and `<version>-off`, and runs the pair through the paired machinery of BENCH-2.
+  The report gives each opponent's paired difference with its interval, a verdict, what shield mode
+  did (rounds, shield shots, bullets met, hits taken, early exits, budget exits), the weighted mean
+  difference over the file's weights (BENCH-1) and the opponents that win, as list lines.
 
 ## Retired requirements
 
