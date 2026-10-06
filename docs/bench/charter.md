@@ -104,11 +104,11 @@ cloud bench does.
 - [x] The bench runs in parallel on this PC with a measured, safe width.
 - [x] 1v1 top 20 run, 3.8 against 3.7, with DrussGT at 40 seeds.
 - [x] Melee and team gain parallel, pinned CPU constant, paired baseline and reports.
-- [ ] Melee top 20 run, 3.8 against 3.7, every robot in at least two fields.
-- [ ] Team top 20 run, 3.8 against 3.7.
-- [ ] The three strategy documents carry a dated local result for every robot.
+- [x] Melee top 20 run, 3.8 against 3.7, every robot in at least two fields (2026-10-06, 10 seeds a field).
+- [x] Team top 20 run, 3.8 against 3.7 (2026-10-06, 10 seeds).
+- [x] The three strategy documents carry a dated local result for every robot.
 - [ ] A larger-sample follow-up for the 1v1 robots whose paired difference is not resolved.
-- [ ] A findings write-up per arena, with the cloud figures alongside.
+- [ ] A findings write-up per arena, with the cloud figures alongside. (Melee and team: `local/2026-10-06_melee-team-findings.md`; the cloud figures are not yet alongside.)
 - [ ] Issue #102's checklist updated and the branch merged, with the owner's go-ahead.
 
 ## Review
@@ -129,3 +129,7 @@ should change. Record changes below.
 - 2026-10-06: The temporary RoboRumble clients stay running. Their load is recorded, not removed.
 - 2026-10-06: Nullstride (no archive jar) is skipped in 1v1 and melee, with the next-ranked
   robots standing in where a field needs filling.
+- 2026-10-06: Melee and team top 20 run, 3.8 against 3.7. Melee pooled APS is about 1.3 points lower for 3.8, with 1.8 times
+  the duress of 3.7; team is +25.5 points for 3.8. Findings in `local/2026-10-06_melee-team-findings.md`.
+- 2026-10-06: Harness gap analysis written (`local/2026-10-06_harness-review.md`). Its main finding is that seed pairing
+  buys little variance reduction, so the charter's "noise cancels" principle is a design intent, not a measured effect.

@@ -132,92 +132,92 @@ documents say; where nothing is recorded the entry says unknown.
 MeleeRumble APS 72.80. Fields A, D, E. Style: not documented here for melee. In the 1v1 plan it is a DrussGT-route
 target. Prior: the other version, 0.005h.053-noshield, took 13.7% of the score at mean final rank 3.3 with 56 round
 wins, and won 8% of its 12 duels with Hadur 3.0 (`melee-3.0-strong.md`). This ranked version has not been fought locally.
-Local 3.8 result: _pending_
+Local 3.8 result (2026-10-06, 10 seeds a field, 35 rounds): Hadur 3.8 took 40.8% of the score over 30 battles (3 fields), mean place 5.0 against its 1.3, out-scored it in 0 / 30. Paired 3.8 minus 3.7 on the same seeds: -0.6 ± 1.8 pp pooled over fields (A -0.4, D -0.0, E -1.3).
 
 ### 2. jk.melee.Neuromancer 7.12
 APS 72.19. Fields A, B, E. Style: unknown here. In 1v1 it is a coin flip (51.6% live at 3.4, `docs/top20-analysis.md`).
 No melee run recorded.
-Local 3.8 result: _pending_
+Local 3.8 result (2026-10-06, 10 seeds a field, 35 rounds): Hadur 3.8 took 42.1% of the score over 30 battles (3 fields), mean place 5.4 against its 1.8, out-scored it in 0 / 30. Paired 3.8 minus 3.7 on the same seeds: -1.5 ± 1.6 pp pooled over fields (A -2.1, B -0.8, E -1.7).
 
 ### 3. cb.fire.Firestarter 2.0f
 APS 71.52. Fields C, D. Style: one robot on all three ladders (7th 1v1, 3rd melee, 2nd team); its 2.0 notes
 restructured it for team play (`docs/architecture-evolution.md`). No melee run recorded.
-Local 3.8 result: _pending_
+Local 3.8 result (2026-10-06, 10 seeds a field, 35 rounds): Hadur 3.8 took 44.0% of the score over 20 battles (2 fields), mean place 5.5 against its 2.9, out-scored it in 2 / 20. Paired 3.8 minus 3.7 on the same seeds: -1.9 ± 2.3 pp pooled over fields (C -3.7, D +0.0).
 
 ### 5. voidious.Diamond 1.8.28
 APS 70.18. Fields C, E. Style: not documented here for melee. Prior: on the hand-off field 3.5.1 saw it at mean final
 rank 1.7 and a 14.6% share (A3: 1.0, 14.6%); Hadur won 3 of 12 duels against it at M5 and 28.6% of clean 1v1 rounds
 (`m5-gates.md`). It takes the hand-off when the field thins. In 1v1 it is a DrussGT-route target.
-Local 3.8 result: _pending_
+Local 3.8 result (2026-10-06, 10 seeds a field, 35 rounds): Hadur 3.8 took 44.9% of the score over 20 battles (2 fields), mean place 6.2 against its 3.4, out-scored it in 3 / 20. Paired 3.8 minus 3.7 on the same seeds: -1.4 ± 3.7 pp pooled over fields (C -1.1, E -1.6).
 
 ### 6. justin.DemonicRage 3.4
 APS 70.05. Fields B, E. Style unknown; no run recorded.
-Local 3.8 result: _pending_
+Local 3.8 result (2026-10-06, 10 seeds a field, 35 rounds): Hadur 3.8 took 45.4% of the score over 20 battles (2 fields), mean place 5.8 against its 3.2, out-scored it in 3 / 20. Paired 3.8 minus 3.7 on the same seeds: +0.0 ± 2.9 pp pooled over fields (B -1.1, E +1.1).
 
 ### 7. positive.Portia 1.26e
 APS 69.43. Fields A, D. Style unknown here. Prior: final rank 2.3 to 2.8 and a share of 12 to 13% on the hand-off
 field; Hadur won 2 of 6 duels at M5 yet 86.9% of clean 1v1 rounds (`m5-gates.md`), so its melee strength is more than its duel.
-Local 3.8 result: _pending_
+Local 3.8 result (2026-10-06, 10 seeds a field, 35 rounds): Hadur 3.8 took 51.0% of the score over 20 battles (2 fields), mean place 4.5 against its 5.4, out-scored it in 13 / 20. Paired 3.8 minus 3.7 on the same seeds: -1.3 ± 3.2 pp pooled over fields (A -0.6, D -2.0).
 
 ### 8. abc.Shadow 3.84i
 APS 69.33. Fields B, C. Style unknown here beyond being strong in melee and 1v1. Prior: final rank 2.0 to 2.3, share
 12 to 13%; 3 of 8 duels won at M5, 76.6% of clean 1v1 rounds (`m5-gates.md`). Shadow 3.83c scored 15.4% against Hadur 3.0.
-Local 3.8 result: _pending_
+Local 3.8 result (2026-10-06, 10 seeds a field, 35 rounds): Hadur 3.8 took 44.3% of the score over 20 battles (2 fields), mean place 6.0 against its 3.2, out-scored it in 1 / 20. Paired 3.8 minus 3.7 on the same seeds: -3.0 ± 2.5 pp pooled over fields (B -0.6, C -5.4).
 
 ### 9. ags.Glacier 0.2.11
 APS 68.92. Fields A, C. Style unknown; no run recorded.
-Local 3.8 result: _pending_
+Local 3.8 result (2026-10-06, 10 seeds a field, 35 rounds): Hadur 3.8 took 48.2% of the score over 20 battles (2 fields), mean place 5.5 against its 4.5, out-scored it in 6 / 20. Paired 3.8 minus 3.7 on the same seeds: -0.8 ± 2.2 pp pooled over fields (A -1.7, C +0.0).
 
 ### 10. kc.mini.Mirage 0.2
 APS 68.31. Fields B, D. Style unknown; the name suggests a mini-class robot. No run recorded.
-Local 3.8 result: _pending_
+Local 3.8 result (2026-10-06, 10 seeds a field, 35 rounds): Hadur 3.8 took 46.5% of the score over 20 battles (2 fields), mean place 5.0 against its 3.1, out-scored it in 3 / 20. Paired 3.8 minus 3.7 on the same seeds: -0.2 ± 1.6 pp pooled over fields (B +0.3, D -0.8).
 
 ### 11. rsalesc.melee.Medina 0.4.5
 APS 68.09. Fields A, E. Style unknown; no run recorded.
-Local 3.8 result: _pending_
+Local 3.8 result (2026-10-06, 10 seeds a field, 35 rounds): Hadur 3.8 took 54.3% of the score over 20 battles (2 fields), mean place 5.2 against its 8.0, out-scored it in 17 / 20. Paired 3.8 minus 3.7 on the same seeds: -1.2 ± 3.2 pp pooled over fields (A -0.2, E -2.1).
 
 ### 12. mn.Combat 3.25.0
 APS 68.07. Fields D, E. Style: extends `TeamRobot`, and its team build leads the TeamRumble
 (`docs/architecture-evolution.md`). No melee run recorded.
-Local 3.8 result: _pending_
+Local 3.8 result (2026-10-06, 10 seeds a field, 35 rounds): Hadur 3.8 took 50.6% of the score over 20 battles (2 fields), mean place 5.2 against its 6.0, out-scored it in 12 / 20. Paired 3.8 minus 3.7 on the same seeds: +1.6 ± 2.3 pp pooled over fields (D +2.1, E +1.2).
 
 ### 13. rz.Aleph 0.34
 APS 67.93. Fields B, E. Style unknown, but the classic-set regular and the best-measured here. Prior: it took the top
 of the classic field at every version, mean final rank 1.0 to 1.3 and a 13 to 17% share (3.0: 1.2, 16.3%, 48 round
 wins; `melee-3.0-classic.md`), and Hadur's survival was second only to Aleph's (`m6-gates.md`).
-Local 3.8 result: _pending_
+Local 3.8 result (2026-10-06, 10 seeds a field, 35 rounds): Hadur 3.8 took 49.1% of the score over 20 battles (2 fields), mean place 5.8 against its 5.2, out-scored it in 5 / 20. Paired 3.8 minus 3.7 on the same seeds: +0.0 ± 3.2 pp pooled over fields (B -0.4, E +0.4).
 
 ### 14. catcat20.Matcha 0.006
 APS 66.50. Fields A, D. Style unknown; no run recorded.
-Local 3.8 result: _pending_
+Local 3.8 result (2026-10-06, 10 seeds a field, 35 rounds): Hadur 3.8 took 52.6% of the score over 20 battles (2 fields), mean place 4.5 against its 6.5, out-scored it in 17 / 20. Paired 3.8 minus 3.7 on the same seeds: -1.5 ± 3.2 pp pooled over fields (A -2.8, D -0.2).
 
 ### 15. wompi.Numbat 2.1
 APS 66.48. Fields C, E. Style unknown; no run recorded.
-Local 3.8 result: _pending_
+Local 3.8 result (2026-10-06, 10 seeds a field, 35 rounds): Hadur 3.8 took 50.1% of the score over 20 battles (2 fields), mean place 6.2 against its 7.0, out-scored it in 13 / 20. Paired 3.8 minus 3.7 on the same seeds: -2.2 ± 2.4 pp pooled over fields (C -5.3, E +0.9).
 
 ### 16. justin.Mallais 14.0
 APS 65.89. Fields A, C. Style unknown; no run recorded.
-Local 3.8 result: _pending_
+Local 3.8 result (2026-10-06, 10 seeds a field, 35 rounds): Hadur 3.8 took 50.0% of the score over 20 battles (2 fields), mean place 5.5 against its 6.1, out-scored it in 12 / 20. Paired 3.8 minus 3.7 on the same seeds: -3.2 ± 2.7 pp pooled over fields (A -0.4, C -5.9).
 
 ### 17. kc.micro.Figment 1.0
 APS 65.38. Fields B, C, D (three). Style unknown; the name suggests a micro-class robot (the jar is 5 KB). No run recorded.
-Local 3.8 result: _pending_
+Local 3.8 result (2026-10-06, 10 seeds a field, 35 rounds): Hadur 3.8 took 61.0% of the score over 30 battles (3 fields), mean place 5.5 against its 9.5, out-scored it in 30 / 30. Paired 3.8 minus 3.7 on the same seeds: -0.7 ± 2.8 pp pooled over fields (B -1.0, C -2.2, D +1.2).
 
 ### 19. catcat20.Lambda 0.024
 APS 65.09. Fields C, D, E (three). Style unknown; no run recorded.
-Local 3.8 result: _pending_
+Local 3.8 result (2026-10-06, 10 seeds a field, 35 rounds): Hadur 3.8 took 53.3% of the score over 30 battles (3 fields), mean place 5.6 against its 7.8, out-scored it in 26 / 30. Paired 3.8 minus 3.7 on the same seeds: -3.6 ± 2.8 pp pooled over fields (C -5.8, D -2.3, E -2.7).
 
 ### 20. wompi.Wallaby 5.1
 APS 64.99. Fields A, B, C (three). Style unknown; no run recorded.
-Local 3.8 result: _pending_
+Local 3.8 result (2026-10-06, 10 seeds a field, 35 rounds): Hadur 3.8 took 53.0% of the score over 30 battles (3 fields), mean place 5.5 against its 7.5, out-scored it in 27 / 30. Paired 3.8 minus 3.7 on the same seeds: -2.4 ± 2.8 pp pooled over fields (A -1.7, B -0.3, C -5.2).
 
 ### 21. stelo.PastFuture 2.3.2 (stands in for Nullstride)
 APS 64.86. Fields A, B. Style unknown; no run recorded.
-Local 3.8 result: _pending_
+Local 3.8 result (2026-10-06, 10 seeds a field, 35 rounds): Hadur 3.8 took 59.6% of the score over 20 battles (2 fields), mean place 5.1 against its 9.2, out-scored it in 20 / 20. Paired 3.8 minus 3.7 on the same seeds: -1.5 ± 1.9 pp pooled over fields (A -3.2, B +0.3).
 
 ### 22. stelo.Spread 0.9 (stands in for Nullstride's gap)
 APS 64.80. Fields B, D. Style unknown; no run recorded.
-Local 3.8 result: _pending_
+Local 3.8 result (2026-10-06, 10 seeds a field, 35 rounds): Hadur 3.8 took 58.0% of the score over 20 battles (2 fields), mean place 5.0 against its 8.6, out-scored it in 20 / 20. Paired 3.8 minus 3.7 on the same seeds: -0.0 ± 3.0 pp pooled over fields (B -1.0, D +0.9).
 
 ## Follow-ups that need Java changes
 
