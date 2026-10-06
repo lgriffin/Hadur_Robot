@@ -252,6 +252,7 @@ public final class MeleeReport {
         }
 
         appendHandoff(r, battles);
+        appendDeaths(r, battles);
         appendSentries(r, battles, sentries);
         appendRecords(r, battles);
         return r.toString();
@@ -273,6 +274,47 @@ public final class MeleeReport {
         duels.entrySet().stream().sorted((a, b) -> b.getValue()[0] - a.getValue()[0])
             .forEach(e -> r.append(String.format(Locale.ROOT, "| %s | %d | %.0f%% |%n", e.getKey(),
                 e.getValue()[0], 100.0 * e.getValue()[1] / e.getValue()[0])));
+    }
+
+    /** Columns of rounds.csv after skippedTurns: deathTick, killer, lastHit (older files have none). */
+    private static boolean hasDeathColumns(String[] round) {
+        return round.length >= 11;
+    }
+
+    /**
+     * Who killed Hadur (BENCH-40): per robot, the rounds it was the killer ({@link MeleeHarvester}'s
+     * rule) and the rounds it was the last to hit Hadur, and the mean tick Hadur died at.
+     */
+    private static void appendDeaths(StringBuilder r, List<Battle> battles) {
+        Map<String, int[]> by = new LinkedHashMap<>();
+        int rounds = 0, deaths = 0, unknown = 0;
+        long tickSum = 0;
+        for (Battle b : battles) {
+            for (String[] round : b.rounds) {
+                if (!hasDeathColumns(round)) continue;
+                rounds++;
+                if (!round[8].equals("-")) {
+                    deaths++;
+                    tickSum += Long.parseLong(round[8]);
+                    if (round[9].equals("-")) unknown++;
+                    else by.computeIfAbsent(round[9], k -> new int[2])[0]++;
+                }
+                if (!round[10].equals("-")) by.computeIfAbsent(round[10], k -> new int[2])[1]++;
+            }
+        }
+        if (rounds == 0) return;
+        r.append(String.format(Locale.ROOT, "%nHadur died in %d of %d rounds, at a mean tick of %s. "
+            + "Killer: the owner of the bullet that last hit Hadur if it landed on the death turn or the "
+            + "one before, else the nearest fighter still alive (a rammer).%n", deaths, rounds,
+            deaths == 0 ? "n/a" : String.format(Locale.ROOT, "%.0f", (double) tickSum / deaths)));
+        if (by.isEmpty()) return;
+        r.append("\n| Robot | Killed Hadur | Share of deaths | Last to hit Hadur (any round) |\n|---|---|---|---|\n");
+        final int total = deaths;
+        by.entrySet().stream().sorted((a, c) -> c.getValue()[0] - a.getValue()[0] != 0
+                ? c.getValue()[0] - a.getValue()[0] : c.getValue()[1] - a.getValue()[1])
+            .forEach(e -> r.append(String.format(Locale.ROOT, "| %s | %d | %.0f%% | %d |%n", e.getKey(),
+                e.getValue()[0], total == 0 ? 0.0 : 100.0 * e.getValue()[0] / total, e.getValue()[1])));
+        if (unknown > 0) r.append(unknown).append(" death(s) with no robot to name.\n");
     }
 
     private static void appendSentries(StringBuilder r, List<Battle> battles, Set<String> sentries) {
@@ -383,6 +425,25 @@ public final class MeleeReport {
         return out;
     }
 
+    /**
+     * BENCH-43: how many battles of each build were used, so a failed battle that left an
+     * uneven pair is visible. {@code subject} says what the battles were against.
+     */
+    static String battlesUsed(String subject, List<Battle> candidate, List<Battle> baseline) {
+        int c = 0, b = 0, pairs = 0;
+        for (int i = 0; i < Math.max(candidate.size(), baseline.size()); i++) {
+            boolean co = i < candidate.size() && candidate.get(i).ok;
+            boolean bo = i < baseline.size() && baseline.get(i).ok;
+            if (co) c++;
+            if (bo) b++;
+            if (co && bo) pairs++;
+        }
+        String line = String.format(Locale.ROOT, "Battles used %s: candidate %d of %d, baseline %d of %d, "
+            + "%d paired seeds.", subject, c, candidate.size(), b, baseline.size(), pairs);
+        if (c != b || pairs != c) line += " **Uneven: a failed battle dropped its seed from the pairing.**";
+        return line + "\n\n";
+    }
+
     private static Stats meanOf(List<Double> xs) {
         return Stats.of(xs.stream().filter(x -> !Double.isNaN(x)).toList());
     }
@@ -422,6 +483,7 @@ public final class MeleeReport {
             + "seed, so noise common to both cancels out of the difference (BENCH-2). Shares are mean "
             + "± 95% interval over seeds; positive is better for the candidate. Pairwise share is "
             + "Hadur's share of the pair's scores against that one opponent, 100 H / (H + X).\n\n")
+         .append(battlesUsed("on this field", candidate, baseline))
          .append("| Measure | Candidate | Baseline | Paired diff (pp) |\n|---|---|---|---|\n");
         measureRow(r, "APS", values(candidate, b -> aps(b, robot, sentries) / 100),
             values(baseline, b -> aps(b, baselineRobot, sentries) / 100));
@@ -492,7 +554,9 @@ public final class MeleeReport {
             r.append('\n');
         }
         List<Double> cand = values(candidate, b -> pairwise(b, robot, opponent));
-        r.append("\nMean pairwise share ").append(meanOf(cand).percent());
+        r.append("\n");
+        if (paired) r.append(battlesUsed("against " + opponent, candidate, baseline));
+        r.append("Mean pairwise share ").append(meanOf(cand).percent());
         if (paired) {
             List<Double> base = values(baseline, b -> pairwise(b, baselineRobot, opponent));
             r.append(", baseline ").append(meanOf(base).percent()).append(", paired diff ")

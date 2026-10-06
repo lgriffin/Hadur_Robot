@@ -111,6 +111,14 @@ compare its skipped-turn line with a sequential run (`--parallel 1`) of the same
 parallel skips noticeably more turns, the machine cannot sustain that many workers and
 `--parallel` should come down.
 
+A paired melee or team report also says how many battles of each build it used (BENCH-43): "Battles
+used" lines for the field and for each opponent, and for a team run a table of candidate, baseline
+and paired seeds per opponent. Pairing is by seed, so a failed battle drops its seed from the
+pairing; whenever the counts differ the report flags the pair as uneven. A team run's paired
+section also pools every opponent's pairs into a table of the other measures (BENCH-41): rounds
+won, survival, in-lane shots, focus fire and bullets on own members, each as mean and 95% interval
+for both builds and as the paired candidate-minus-baseline difference.
+
 ### The top-20 bench
 
 Why this bench exists, what it will and will not do, and the rules it runs under are in `docs/bench/charter.md`.
@@ -166,8 +174,25 @@ pair's score, averaged) and survival (for each round, the share of the other rob
 outlived), both as the MeleeRumble computes them; the rounds that ended as a duel and who
 won them; sentry hits both ways; and totals from Hadur's `M` records. Each melee battle's
 directory holds `melee.csv` (final scores), `rounds.csv` (per round: place, the last
-opponent, sentry hits, skipped turns) and `hadur.log`. Sample bots ship with the engine. Other bots go in
+opponent, sentry hits, skipped turns, and since BENCH-40 the tick Hadur died, its killer and the
+last robot to hit it) and `hadur.log`. Sample bots ship with the engine. Other bots go in
 `opponents/` as jars (not committed) and are listed with their jar name.
+
+Who killed Hadur (BENCH-40). `rounds.csv` ends with `deathTick`, `killer` and `lastHit`, a dash in
+a round Hadur lived through (`lastHit` is still named if something hit it earlier). The engine
+does not say who killed a robot, so the harvester takes the robot whose bullet hit Hadur on the
+death tick or the tick before; with no such bullet (a ram, a wall, the inactivity rule) it takes
+the nearest robot still alive on the death tick. The report adds a "Hadur died in X of Y rounds,
+at a mean tick of N" line and a table of how many deaths each robot caused and how often it was
+the last to hit Hadur. A `rounds.csv` from before these columns just leaves the section out.
+
+Three tools under `data/tools` read a melee run outside the JVM. `export_melee.py --work W
+--build 3.8 --baseline-build 3.7 --out FILE.tsv` flattens every field's `melee.csv` files into one
+TSV. `melee_pairwise.py --work W` writes the per-opponent and per-field tables (with each field's
+deaths, mean death tick and top killer, and a pooled table of killers, when the rounds carry them),
+and `melee_pairwise.py --tsv FILE.tsv` prints the pooled paired difference: Hadur's APS in each
+(field, seed) cell for both builds, the candidate minus the baseline, as a mean over all cells
+with a 95% t interval, then the same per field. `python3 data/tools/test_*.py` tests them.
 
 ## Output
 
@@ -345,6 +370,17 @@ T1 adds two things to a team report. `rounds.csv` gains a ninth column, `bullets
 engine's own count of our bullets that hit one of our members (the report prints it beside the
 members' `T` sums, whose last field is now the count of drives the teammate fence replaced), and
 each battle directory gets `friendly.log`, one line per such hit with the bullet's power and flight.
+
+`rounds.csv` then gains a tenth column, `focusFireRatio` (BENCH-42): of the damage our bullets did
+to enemies in the round, the share that landed on the enemy hit most (1.0 is all on one robot, a
+dash is a round with no damage). The report gives its mean per opponent and overall.
+
+`data/tools/export_team.py` flattens a team run's battle directories (a team battle leaves no
+`result.csv`, so `export_battles.py` finds nothing) into one TSV row per battle: score, the two
+teams' score share, rounds won and survived, skipped turns, duress ticks, shots, shots with a mate
+in the lane, bullets on mates and the focus-fire ratio, read from `team.csv`, `rounds.csv` and the
+members' logs as the team report reads them. A battle that left no standings is written with
+`ok` false.
 
 `team-gates.txt` is A5's team gate suite: `team-reference.txt`'s eight teams, three battles
 each, reported per opponent with the gate's counts (faults, skipped turns, LINK rejects,

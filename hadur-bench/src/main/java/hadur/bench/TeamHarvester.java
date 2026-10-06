@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import robocode.Rules;
 import robocode.control.events.BattleAdaptor;
 import robocode.control.events.RoundEndedEvent;
 import robocode.control.events.RoundStartedEvent;
@@ -33,10 +34,15 @@ import robocode.control.snapshot.ITurnSnapshot;
  * <li>{@code friendly.log}: one line for each of those, with the bullet's power and how far
  *     it flew, so a hit can be read against the lane that was kept.</li>
  * </ul>
+ *
+ * <p>{@code focusFireRatio} (the last column, BENCH-42) is, from the engine's bullet snapshots,
+ * the share of the damage our team's bullets did to enemy fighters that landed on the most-hit
+ * enemy this round; {@code -} when none landed. It is bullet damage only: ramming is not in it,
+ * and with few enemies left it rises on its own.</p>
  */
 public class TeamHarvester extends BattleAdaptor {
 
-    public static final String HEADER = "round,membersAlive,enemiesAlive,won,shots,shotsWithMateInLane,countBelowTruth,countReports,bulletsOnMates";
+    public static final String HEADER = "round,membersAlive,enemiesAlive,won,shots,shotsWithMateInLane,countBelowTruth,countReports,bulletsOnMates,focusFireRatio";
     /** A robot's half-width: a teammate this close to a bullet's line is in its lane. */
     static final double HALF_WIDTH = 18;
 
@@ -47,6 +53,8 @@ public class TeamHarvester extends BattleAdaptor {
     private final Set<Integer> bullets = new HashSet<>();
     private final Set<Integer> friendly = new HashSet<>();
     private final Map<Integer, double[]> firstSeen = new HashMap<>();
+    private final Set<Integer> damaging = new HashSet<>();
+    private final Map<Integer, Double> damageByEnemy = new HashMap<>();
     private final BufferedWriter debug;
     private int round;
     private int ourTeam = -1;
@@ -66,6 +74,8 @@ public class TeamHarvester extends BattleAdaptor {
         bullets.clear();
         friendly.clear();
         firstSeen.clear();
+        damaging.clear();
+        damageByEnemy.clear();
         membersAlive = enemiesAlive = shots = inLane = belowTruth = countReports = bulletsOnMates = 0;
     }
 
@@ -120,6 +130,14 @@ public class TeamHarvester extends BattleAdaptor {
                     b.getPower(), Math.hypot(b.getX() - first[0], b.getY() - first[1]), v.getVelocity(),
                     o.getVelocity()));
             }
+            if (b.getState() == BulletState.HIT_VICTIM && b.getVictimIndex() >= 0
+                    && b.getVictimIndex() < robots.length && b.getOwnerIndex() >= 0
+                    && b.getOwnerIndex() < robots.length
+                    && robots[b.getOwnerIndex()].getTeamIndex() == ourTeam
+                    && robots[b.getVictimIndex()].getTeamIndex() != ourTeam
+                    && !robots[b.getVictimIndex()].isSentryRobot() && damaging.add(b.getBulletId())) {
+                damageByEnemy.merge(b.getVictimIndex(), Rules.getBulletDamage(b.getPower()), Double::sum);
+            }
             if (!bullets.add(b.getBulletId())) continue;
             IRobotSnapshot owner = b.getOwnerIndex() >= 0 && b.getOwnerIndex() < robots.length
                 ? robots[b.getOwnerIndex()] : null;
@@ -142,9 +160,14 @@ public class TeamHarvester extends BattleAdaptor {
 
     @Override
     public void onRoundEnded(RoundEndedEvent e) {
-        write(rounds, String.format(Locale.ROOT, "%d,%d,%d,%d,%d,%d,%d,%d,%d%n", round, membersAlive, enemiesAlive,
+        double total = 0, most = 0;
+        for (double d : damageByEnemy.values()) {
+            total += d;
+            most = Math.max(most, d);
+        }
+        write(rounds, String.format(Locale.ROOT, "%d,%d,%d,%d,%d,%d,%d,%d,%d,%s%n", round, membersAlive, enemiesAlive,
             membersAlive > 0 && enemiesAlive == 0 ? 1 : 0, shots, inLane, belowTruth, countReports,
-            bulletsOnMates));
+            bulletsOnMates, total > 0 ? String.format(Locale.ROOT, "%.4f", most / total) : "-"));
     }
 
     private BufferedWriter log(int robotIndex) {
