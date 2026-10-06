@@ -28,13 +28,18 @@ done
 if [ -n "$SET" ]; then
     [ -f "$SET" ] || [ ! -f "$HERE/$SET" ] || SET="$HERE/$SET"
     [ -f "$SET" ] || { echo "no such set file: $SET" >&2; exit 2; }
-    FILES="$SET"
+    set -- "$SET"
 else
-    FILES=$(ls "$HERE"/*.txt)
+    set -- "$HERE"/*.txt
 fi
 
 mkdir -p "$DIR" || exit 1
-JARS=$(for f in $FILES; do cat "$f"; echo; done | tr -d '\r' | awk -F'|' '
+# Read every set file, quoted so a path with spaces stays whole; a file that cannot be
+# read stops the script rather than yielding an empty list.
+for f in "$@"; do
+    [ -r "$f" ] || { echo "cannot read set file: $f" >&2; exit 1; }
+done
+JARS=$(for f in "$@"; do cat "$f"; echo; done | tr -d '\r' | awk -F'|' '
     /^[ \t]*#/ { next }
     NF >= 3 { j = $3; gsub(/^[ \t]+|[ \t]+$/, "", j); if (j ~ /\.jar$/) print j }' | sort -u)
 
@@ -45,9 +50,14 @@ for jar in $JARS; do
         continue
     fi
     if curl -fsSL --retry 2 -o "$DIR/$jar.part" "$BASE_URL/$jar"; then
-        mv "$DIR/$jar.part" "$DIR/$jar"
-        downloaded=$((downloaded + 1))
-        echo "downloaded $jar"
+        if mv "$DIR/$jar.part" "$DIR/$jar"; then
+            downloaded=$((downloaded + 1))
+            echo "downloaded $jar"
+        else
+            rm -f "$DIR/$jar.part"
+            failed=$((failed + 1))
+            echo "FAILED     $jar (could not rename the download)" >&2
+        fi
     else
         rm -f "$DIR/$jar.part"
         failed=$((failed + 1))

@@ -62,8 +62,8 @@ foreach ($jar in $jars) {
     }
     $part = "$target.part"
     try {
-        Invoke-WebRequest -UseBasicParsing -Uri "$baseUrl/$jar" -OutFile $part
-        Move-Item -LiteralPath $part -Destination $target -Force
+        Invoke-WebRequest -UseBasicParsing -Uri "$baseUrl/$jar" -OutFile $part -ErrorAction Stop
+        Move-Item -LiteralPath $part -Destination $target -Force -ErrorAction Stop
         $downloaded++
         Write-Host "downloaded $jar"
     } catch {
