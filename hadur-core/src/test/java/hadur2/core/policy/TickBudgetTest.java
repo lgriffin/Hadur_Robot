@@ -64,6 +64,16 @@ class TickBudgetTest {
     }
 
     @Test
+    @Tag("TIME-1")
+    @DisplayName("TIME-1, TIME-2: the shadow-aware aim is shed from level 2, with the halving of k")
+    void shadowAimShedAtLevelTwo() {
+        assertTrue(TickBudget.shadowAim(0));
+        assertTrue(TickBudget.shadowAim(1));
+        assertFalse(TickBudget.shadowAim(2));
+        assertFalse(TickBudget.shadowAim(3));
+    }
+
+    @Test
     @Tag("DIAL-2")
     @DisplayName("an unknown allowance never sheds")
     void noAllowanceNoShedding() {

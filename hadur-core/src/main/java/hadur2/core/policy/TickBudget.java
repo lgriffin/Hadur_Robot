@@ -6,7 +6,8 @@ package hadur2.core.policy;
  *
  * <ol>
  * <li>surf only the nearest wave, with the three options (no second wave, no go-to);</li>
- * <li>also halve k in every KNN view the gun and the surf read;</li>
+ * <li>also halve k in every KNN view the gun and the surf read, and aim without the
+ * shadow weighing (GUN-7: plain D3 aim);</li>
  * <li>also stop scoring the virtual guns (their ratings hold where they were).</li>
  * </ol>
  *
@@ -214,5 +215,16 @@ public final class TickBudget {
      */
     public static boolean virtualGuns(int level) {
         return level < 3;
+    }
+
+    /**
+     * GUN-7: the shadow-aware aim, which builds a shadow value and weighs up to 13 candidates,
+     * is shed from level 2, with the halving of k.
+     *
+     * @param level a computation level
+     * @return whether the gun may weigh shadows this tick
+     */
+    public static boolean shadowAim(int level) {
+        return level < 2;
     }
 }

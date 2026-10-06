@@ -344,7 +344,7 @@ This PR changes no robot or bench Java. It adds notes, analysis tools and data o
 
 ## Draft requirements
 
-Requirement IDs below are proposals. PR #83 already uses BENCH-9, BENCH-10, POW-6, RES-12 and GUN-6 for other requirements, so they are renumbered as the work is implemented. D1 renumbered POW-6 to **POW-11** and RES-12 to **RES-14**; the tables and notes below keep the plan's original numbers, and `docs/requirements.md` (section "The DrussGT route (D1 to D6)") is where each requirement is defined once it is built.
+Requirement IDs below are proposals. PR #83 already uses BENCH-9, BENCH-10, POW-6, RES-12 and GUN-6 for other requirements, so they are renumbered as the work is implemented. D1 renumbered POW-6 to **POW-11** and RES-12 to **RES-14**, and D4 renumbered GUN-6 to **GUN-7** (MOVE-8 keeps its number); the tables and notes below keep the plan's original numbers, and `docs/requirements.md` (section "The DrussGT route (D1 to D6)") is where each requirement is defined once it is built.
 
 These continue the IDs in `docs/requirements.md`, in EARS form. The thresholds are the probe's values and should be re-fitted at each gate.
 

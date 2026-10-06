@@ -5,6 +5,7 @@ import hadur2.core.adapt.OpeningBook;
 import hadur2.core.adapt.SeedLoader;
 import hadur2.core.adapt.SeedTrust;
 import hadur2.core.gun.GunController;
+import hadur2.core.gun.ShadowValue;
 import hadur2.core.ledger.EnergyLedger;
 import hadur2.core.memory.Estimate;
 import hadur2.core.memory.LineageKey;
@@ -70,6 +71,8 @@ public final class DuelController {
     private final MoveController moveController;
     /** Turns the enemy waves' danger into movement orders, or rams (END-2). */
     private final SurfMover surfMover;
+    /** GUN-7: the gun's view of the plan movement publishes (MOVE-8); the duel is the only seam. */
+    private final ShadowAvoidance shadowAvoidance;
     /** Our gun waves, one per duel scan, broken as the enemy crosses them to teach the gun. */
     private final WaveManager gunWaveManager;
     /** Our own states at each duel scan, for the movement waves' features. */
@@ -255,6 +258,8 @@ public final class DuelController {
     private double aimedBulletPower;
     /** The tick of our last real duel shot, a gun-wave feature. */
     private long lastRealBulletFireTime;
+    /** GUN-7: the tick the surf last published a plan on; -1 for none this round. */
+    private long planTime = -1;
     /** The tick of the duel opponent's last scan (RADAR-1 reads its age). */
     private long lastScanTime;
     /** The duel opponent's absolute bearing at its last scan, radians. */
@@ -285,6 +290,7 @@ public final class DuelController {
         this.gunController = new GunController(battleField, enemiesTotal);
         this.moveController = new MoveController(battleField, predictor);
         this.surfMover = new SurfMover(battleField, predictor);
+        this.shadowAvoidance = new ShadowAvoidance(fieldWidth, fieldHeight);
         this.ramEscape = new RamEscape(battleField, predictor);
         this.mirror = new MirrorDetector(fieldWidth, fieldHeight);
         this.mirrorDrive = new MirrorDrive(battleField, predictor);
@@ -361,6 +367,8 @@ public final class DuelController {
         myVchangeTime = 0;
         // The power the gun aims for before its first wave says otherwise.
         aimedBulletPower = 1.9;
+        planTime = -1;
+        moveController.clearPlan();
         lastRealBulletFireTime = 0;
         lastScanTime = 0;
         lastEnemyAbsBearing = 0;
@@ -742,12 +750,15 @@ public final class DuelController {
         moveController.setKShare(TickBudget.kShare(level));
         // SHIELD-5, SHIELD-6: on a listed opponent the shield drives body and gun until it is left.
         if (shield != null && shield.active() && shieldDrive(in, orders, level, mayFire)) return;
-        double gunHeat = aimAndFire(in, orders, TickBudget.virtualGuns(level), mayFire);
+        double gunHeat = aimAndFire(in, orders, TickBudget.virtualGuns(level), TickBudget.shadowAim(level),
+            mayFire);
         // Break the enemy waves that have passed us, before the policies read their outcomes.
         moveController.checkWaves(in.time(), in.location());
         checkSurfSeed(in.time());
         checkDistance(in, gunHeat);
         moveController.updateShadows(in.time());
+        // MOVE-8: the plan is republished by the surf on each tick it drives.
+        moveController.clearPlan();
         if (endgame == Endgame.State.RAM) {
             surfMover.ram(orders, currentState(in), lastEnemyLocation);
         } else if (mirrorActive) {
@@ -763,6 +774,8 @@ public final class DuelController {
             surfMover.move(orders, currentState(in), moveController, lastEnemyLocation,
                 TickBudget.wavesToSurf(level), TickBudget.goToAllowed(level));
         }
+        // GUN-7: the next aim may read this plan, one tick on, if the surf published one.
+        if (!moveController.planIntervals().isEmpty()) planTime = in.time();
         // RADAR-1: no scan this tick or the one before, so the lock has lost it.
         if (in.time() - lastScanTime > 1) reacquire(in, orders);
     }
@@ -1394,7 +1407,7 @@ public final class DuelController {
      * fired then would leave from.</p>
      */
     private double aimAndFire(BotInput in, BotOrders.Builder orders, boolean virtualGuns,
-                              boolean mayFire) {
+                              boolean shadowAim, boolean mayFire) {
         // Where our current velocity carries us in one tick.
         Point2D.Double myNext = predictor.nextLocation(currentState(in));
         // In 1.20, setFireBullet heated the gun at once (the engine's proxy adds the new
@@ -1423,7 +1436,20 @@ public final class DuelController {
         if (lastGunWave.targetEnergy == 0 || ticksUntilGunCool(gunHeat, in) > 3) {
             aimAngle = DiaUtils.absoluteBearing(myNext, lastGunWave.targetLocation);
         } else {
-            aimAngle = gunController.aim(lastGunWave, myNext, in.time());
+            // GUN-7: with a plan published on a wave in the air, the angle also weighs what the
+            // bullet's shadows save us. Our own bullets' shadows are brought up to date first,
+            // so a shot fired this tick already counts.
+            ShadowValue shadow = null;
+            // The plan is the one published on the tick before: the surf runs after the aim
+            // within a tick, so it is the latest there is, and a plan older than that (a
+            // tick the shield or duress drove, or the surf did not publish) is not used.
+            // TIME-1, TIME-2: shed at level 2 and up.
+            if (GunController.SHADOW_AIM && shadowAim && planTime == in.time() - 1
+                    && !moveController.planIntervals().isEmpty()) {
+                moveController.updateShadows(in.time());
+                shadow = shadowAvoidance.prepare(moveController.planIntervals(), myNext, in.time());
+            }
+            aimAngle = gunController.aim(lastGunWave, myNext, in.time(), shadow);
         }
         // MIR-1: a mirror bot will be at the reflection of where our plan has us, a few
         // ticks late; the shot leaves next tick from myNext.
@@ -1506,7 +1532,11 @@ public final class DuelController {
             orders.fire(c.firePower);
             if (c.attack) {
                 lastGunWave.firingWave = true;
-                if (TickBudget.virtualGuns(level)) gunController.fireVirtualBullets(lastGunWave, me, in.time());
+                // GUN-5: rated in the class of the power the shield fired at, which it may
+                // have cut from the wave's; the sampled gun's phase moves on as for any shot.
+                double firedPower = Math.min(in.energy(), c.firePower);
+                gunController.shieldAttackFired(lastGunWave, me, in.time(), firedPower,
+                    TickBudget.virtualGuns(level));
                 lastRealBulletFireTime = in.time();
                 stats.shotsFired++;
                 if (c.firePower >= PowerPolicy.FULL_POWER) stats.fullPowerShots++;
@@ -1517,7 +1547,7 @@ public final class DuelController {
                 if (folder != null) folder.ourShot(lastEnemyDistance);
                 // MOVE-1: it leaves from here along the gun's heading this tick.
                 moveController.ourBulletFired(new OurBullet(in.time(), me, in.gunHeading(),
-                    Math.min(in.energy(), c.firePower)));
+                    firedPower));
             }
         }
         aimedBulletPower = lastGunWave.bulletPower();
@@ -1620,7 +1650,10 @@ public final class DuelController {
                 lastGunWave.setWallDistances();
             }
             // TIME-1: at the lowest computation level the virtual guns are not scored.
-            if (virtualGuns) gunController.fireVirtualBullets(lastGunWave, myNext, in.time());
+            // GUN-5: the virtual guns are rated in the class of the power the bullet really
+            // went at; the sampled gun's phase moves on with every real shot.
+            if (virtualGuns) gunController.fireVirtualBullets(lastGunWave, myNext, in.time(), firePower);
+            gunController.shotFired();
             lastRealBulletFireTime = in.time();
             stats.shotsFired++;
             if (firePower >= PowerPolicy.FULL_POWER) stats.fullPowerShots++;

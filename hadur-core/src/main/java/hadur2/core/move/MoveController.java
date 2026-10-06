@@ -397,6 +397,7 @@ public class MoveController {
         brokenWaveOutcomes.clear();
         brokenWavePowers.clear();
         ourBullets.clear();
+        plan = List.of();
         shadowedWaves = 0;
         shadowComputations = 0;
         // A new version, so no wave can match a stale one and skip its shadow computation.
@@ -414,6 +415,8 @@ public class MoveController {
     private final List<Double> brokenWavePowers = new ArrayList<>();
     /** MOVE-1: our bullets in flight, oldest first, for the shadows they cast. */
     private final List<OurBullet> ourBullets = new ArrayList<>();
+    /** MOVE-8: where the surf's plan puts us on each wave in the air; empty when it has none. */
+    private List<PlanInterval> plan = List.of();
     /** MOVE-1: waves that have had a shadow this round. */
     private int shadowedWaves;
     /** Bumped whenever the bullets in flight change; a wave's shadows are current at one version. */
@@ -493,6 +496,32 @@ public class MoveController {
                 return;
             }
         }
+    }
+
+    /**
+     * MOVE-8: the surf publishes the intervals its plan occupies, one per enemy wave in the
+     * air that it scored, nearest wave first. Replaces the last tick's.
+     *
+     * @param intervals the plan's intervals; copied
+     */
+    public void publishPlan(List<PlanInterval> intervals) {
+        plan = intervals.isEmpty() ? List.of() : List.copyOf(intervals);
+    }
+
+    /** MOVE-8: withdraws the plan, for a tick on which the surf does not drive. */
+    public void clearPlan() {
+        plan = List.of();
+    }
+
+    /**
+     * MOVE-8: the guess-factor interval, as the absolute bearing interval from each wave's
+     * source, that the current plan occupies when that wave arrives, for each enemy wave in
+     * the air the surf scored. Read-only; the duel's gun reads it (GUN-7).
+     *
+     * @return an unmodifiable list, empty when the surf has no plan on any wave
+     */
+    public List<PlanInterval> planIntervals() {
+        return plan;
     }
 
     /** MOVE-1: our bullets still in flight, as far as the events and the field edge tell. */

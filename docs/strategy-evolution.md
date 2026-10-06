@@ -324,6 +324,35 @@ Still release 3.8 (D1 and D2 ship together). Two small rules and one engine chec
 - **Changed scenario:** `shield.feature`'s "a bullet shot down by accident changes nothing" now has the enemy stir first, since against a still enemy one bullet is SHIELD-3's evidence.
 - **Gate** ([d2-gate.md](bench/d2-gate.md)), paired against D1 (3.8.1): DrussGT **+1.0 ± 3.8** points (47.6% against 46.6%, 20 battles), level and not below. The stage jars were built on the D1 base before D5 and T1 merged. The top-10 and weak sets are measured once for the whole D2 to D4 stack (stack gate, pending). The report shows no direct evidence for SHIELD-3 or SHIELD-4 against DrussGT, which does not stand still.
 
+<a id="d3"></a>
+
+### D3: light bullets get their own aim
+
+Still release 3.8; `hadur.druss.stage` was `D3` when this stage was built (it stays `D5` with D5 merged). One requirement and one gun.
+
+- **GUN-5** rates the virtual guns separately for bullets under 0.2 and for the rest, and fires the gun rated highest for the class of the shot about to be fired. The duel decides power before it aims (D1), so the gun wave already carries the class when `GunController.aim` runs. Each class keeps GUN-1's decayed ratings and margin gate; the combined table of D2 is now the rest class's.
+- **The new gun** is `SampledGun`, the probe's sampled aim (one neighbour of the hybrid view picked by a golden-ratio phase, its guess factor scaled by the escape angle). It competes for light bullets only, so it is used where it rates highest rather than unconditionally as in the probe. The phase is core state and advances with real shots, so replays are deterministic.
+- **Not kept in the profile:** the format and its size are unchanged; see the D3 notes in `docs/requirements.md` for why.
+- **Re-recorded fixtures:** none. All 68 replay checks pass unchanged: the fixtures' opponents are fought at ordinary power, where the rest class's table is what D2's single table was, and the sampled gun is never fired before it is rated best.
+- **Re-snapshotted:** nothing.
+- **Re-pinned:** `pins/duel.sha256` (`-Dhadur.pin=duel`) and `duel-sources.sha256` (`-Dhadur.duel.snapshot=write`). The kernel, conductor, melee and team pins did not change.
+- **Gate** ([d3-gate.md](bench/d3-gate.md)), paired against D2 (3.8.2): DrussGT **+0.5 ± 4.2** points (45.8% against 45.3%, 20 battles), level and not below. The stage's own measure is **not met**: Hadur's light-bullet hit rate is 7.63% ± 0.18 against 7.60% ± 0.13 for D2 (paired +0.03 ± 0.21), where the plan's probe reached 9.3%; DrussGT's light bullets hit 10.25%. The `R` records do not show how often the sampled gun was chosen. The top-10 and weak sets are measured once for the whole D2 to D4 stack (pending).
+
+<a id="d4"></a>
+
+### D4: bullets are armour
+
+Still release 3.8; `hadur.druss.stage` was `D4` when this stage was built (it stays `D5` with D5 merged). Two requirements: movement publishes where its plan is, and the gun weighs the shadow of each candidate shot.
+
+- **MOVE-8** publishes, for each enemy wave in the air that the surf scored, the absolute bearing interval from the wave's source that would hit us where the chosen plan puts us when the wave arrives (the equivalent of a guess-factor interval, with no escape-angle assumption), and the surf's own chance that a bullet fired inside it hits. It is recorded as the surf scores its options, so it costs no extra prediction, and it is withdrawn on every tick the surf does not drive.
+- **GUN-7** picks the firing angle among at most 13 candidates (the gun's own angle, four offsets of 0.45 and 0.9 half-widths, and up to eight of the main gun's own neighbour angles within two half-widths) by `P(hit) * damage + damage avoided`. The avoided damage is the share of the published interval a candidate bullet's shadow newly stops (`BulletShadows`' geometry, over what our bullets in flight already stop), times the surf's chance of a hit there and the enemy bullet's damage. The gun's own angle wins every tie. The shadow term is `GunController.SHADOW_AIM`, shipped `true`; with nothing to shadow the angle is D3's exactly.
+- **Not done:** the other virtual guns' angles are not candidates (they are computed only when a real bullet leaves, and each is a KNN search), and nothing here uses a per-wave fraction of our bullets' certain and possible shadows beyond what MOVE-1 already counts.
+- **Cost:** `hadur2.core.duel.ShadowAimBench` (test scope, run by hand) times one aiming tick with 400 learned samples, two enemy waves in the air and two of our bullets in flight: the plain aim took 4.8 ms (the machine was running a gate bench, so only the difference means anything) and the shadow term added 0.09 to 0.10 ms, about 2%, to each aiming tick (two passes of 20,000 aims: 88.0 and 99.4 microseconds). The gun aims on at most four ticks per shot (within three ticks of a cool gun), so the term adds under 0.4 ms per shot and nothing on ticks that do not aim; Hadur's skipped turns are not expected to rise.
+- **Re-recorded fixtures:** eleven of thirteen diverged, because an enemy wave is in the air for most of a duel, so the shot is shifted wherever a shadow is worth more than the hit it costs: `sample.SpinBot`, `sample.Tracker`, `sample.Crazy`, `sample.Walls`, `sample.RamFire`, `abc.Shadow_3.83c`, `warm-abc.Shadow_3.83c` (the second battle's transcript), `duress-sample.Walls`, `melee-samples`, `melee-sentry` and `melee-handoff` (the three melee fixtures end in duels, or run one with sentries about). Recorded with the commands in `hadur-bench/README.md`, one `--record` run each, on a machine running a gate bench. The two team fixtures did not diverge.
+- **Re-snapshotted:** the telemetry of those eleven.
+- **Re-pinned:** `pins/duel.sha256` (`-Dhadur.pin=duel`) and `duel-sources.sha256` (`-Dhadur.duel.snapshot=write`). The kernel, conductor, melee and team pins did not change.
+- **Gate not run.** The plan gates D4 on DrussGT's hit rate, not ours; that is a bench job.
+
 ## D5: the shield list (DrussGT route)
 
 Hadur opens each round in shield mode against the opponents on a list of its own (SHIELD-5): it sits
