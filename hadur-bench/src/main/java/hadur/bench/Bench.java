@@ -33,17 +33,18 @@ import java.util.zip.GZIPOutputStream;
  *     warm keeps it across {@code --battles} consecutive battles per opponent.</li>
  * <li>{@code --rounds N} rounds per battle (35), {@code --seeds N} battles per opponent in
  *     cold mode (5), {@code --battles N} in warm mode (5), {@code --field WxH} (800x600).</li>
- * <li>{@code --robot-jar FILE} the robot jar (../hadur-robot/target/hadur2.Hadur_3.8.jar),
+ * <li>{@code --robot-jar FILE} the robot jar (../hadur-robot/target/hadur2.Hadur_&lt;release&gt;.jar,
+ *     the release being {@code robot.release} in hadur-robot/pom.xml, see {@link RobotJar}),
  *     or {@code --robot-classes DIR} to jar a compiled class tree instead;
- *     {@code --robot NAME} as Robocode lists it ("hadur2.Hadur 3.8").</li>
+ *     {@code --robot NAME} as Robocode lists it ("hadur2.Hadur &lt;release&gt;").</li>
  * <li>{@code --record DIR} capture replay fixtures instead: runs the recorder robot
  *     (../hadur-robot/target/hadur-robot-2.0-SNAPSHOT-recorder.jar) with Robocode's
  *     security off and writes one gzipped transcript per opponent to DIR (CORE-2).</li>
  * <li>{@code --melee true} run every opponent in the set against Hadur at once, one battle
  *     per seed, and report finishing places instead (MeleeRumble: 10 robots, 1000x1000).</li>
  * <li>{@code --team true} (A5) fight each team of the set with our team jar
- *     ({@code --robot-jar}, hadur2.HadurTeam_3.8.jar; {@code --robot} "hadur2.HadurTeam
- *     3.8"; {@code --member} hadur2.Hadur), TeamRumble style: 1200x1200, 10 rounds.</li>
+ *     ({@code --robot-jar}, hadur2.HadurTeam_&lt;release&gt;.jar; {@code --robot} "hadur2.HadurTeam
+ *     &lt;release&gt;"; {@code --member} hadur2.Hadur), TeamRumble style: 1200x1200, 10 rounds.</li>
  * <li>{@code --baseline JAR} (BENCH-2) also fight every opponent with this second jar, one
  *     battle per seed at the same {@code RANDOMSEED} as the candidate's, and report the
  *     paired score-share difference instead of two separate means. Requires
@@ -67,6 +68,12 @@ import java.util.zip.GZIPOutputStream;
  *     pass per condition, and report survival and skipped turns per opponent per condition.</li>
  * <li>{@code --suite FILE} run every bench the file lists ({@code label | options} per
  *     line) and write one report, e.g. {@code melee-gates.txt}.</li>
+ * <li>{@code --parallel N} (issue #102) run N duel battles at once, each on its own Robocode
+ *     home ({@code home-1..home-N}); {@code --cpu-constant NANOS} pins the engine's CPU
+ *     constant in every home (else several workers share one idle calibration);
+ *     {@code --child-cpus N} sizes each battle JVM for N processors (2 when parallel, else
+ *     off) and {@code --child-heap SIZE} caps its heap; {@code --per-opponent DIR} writes
+ *     one report per opponent beside the main one.</li>
  * <li>{@code --only TEXT} run opponents whose name contains TEXT,
  *     {@code --out DIR} working directory (work/&lt;mode&gt;-&lt;time&gt;),
  *     {@code --report FILE} also copy the report there.</li>
@@ -89,6 +96,13 @@ public final class Bench {
     private final Path out;
     private final Path home;
     private final String robot;
+    /** The robot release the defaults name (issue #102): from the robot pom, or the newest built jar. */
+    private final String release;
+    /**
+     * Battles run at once in the duel modes (cold, warm, paired), each in its own Robocode
+     * home so their data directories never meet; 1 runs them one after another, as before.
+     */
+    private final int parallel;
     private final boolean warm;
     /** Where replay fixtures go, or null when not recording. */
     private final Path record;
@@ -102,9 +116,10 @@ public final class Bench {
     Bench(Map<String, String> opts) {
         this.opts = opts;
         this.benchDir = Path.of("").toAbsolutePath();
+        this.release = RobotJar.release(benchDir);
         try {
             // BENCH-11: --shield-probe becomes a paired run of the same jar with shield mode on and off.
-            ShieldProbe.prepare(opts, benchDir);
+            ShieldProbe.prepare(opts, benchDir, release);
         } catch (IOException e) {
             throw new java.io.UncheckedIOException(e);
         }
@@ -115,26 +130,28 @@ public final class Bench {
             opts.putIfAbsent("seeds", "3");
             if (opts.containsKey("record")) {
                 // STRAND-5: five recorders, a team jar made from the recorder jar (runTeam).
-                opts.putIfAbsent("robot", "hadur2.HadurRecorderTeam 3.8");
+                opts.putIfAbsent("robot", "hadur2.HadurRecorderTeam " + release);
                 opts.putIfAbsent("member", "hadur2.HadurRecorder");
-                opts.putIfAbsent("robot-jar", "../hadur-robot/target/hadur-robot-2.0-SNAPSHOT-recorder.jar");
+                opts.putIfAbsent("robot-jar", RobotJar.recorderJar());
             }
-            opts.putIfAbsent("robot", "hadur2.HadurTeam 3.8");
-            opts.putIfAbsent("robot-jar", "../hadur-robot/target/hadur2.HadurTeam_3.8.jar");
+            opts.putIfAbsent("robot", "hadur2.HadurTeam " + release);
+            opts.putIfAbsent("robot-jar", RobotJar.teamJar(release));
         }
         this.warm = opts.getOrDefault("mode", "cold").equals("warm");
         this.rounds = Integer.parseInt(opts.getOrDefault("rounds", "35"));
         this.runs = Integer.parseInt(warm ? opts.getOrDefault("battles", "5")
                                           : opts.getOrDefault("seeds", "5"));
+        this.parallel = Integer.parseInt(opts.getOrDefault("parallel", "1"));
+        if (parallel < 1) throw new IllegalArgumentException("--parallel must be at least 1, not " + parallel);
         String[] field = opts.getOrDefault("field", "800x600").split("x");
         this.width = Integer.parseInt(field[0]);
         this.height = Integer.parseInt(field[1]);
         this.record = opts.containsKey("record") ? Path.of(opts.get("record")).toAbsolutePath() : null;
         if (record != null) {
-            opts.putIfAbsent("robot", "hadur2.HadurRecorder 3.8");
-            opts.putIfAbsent("robot-jar", "../hadur-robot/target/hadur-robot-2.0-SNAPSHOT-recorder.jar");
+            opts.putIfAbsent("robot", "hadur2.HadurRecorder " + release);
+            opts.putIfAbsent("robot-jar", RobotJar.recorderJar());
         }
-        this.robot = opts.getOrDefault("robot", "hadur2.Hadur 3.8");
+        this.robot = opts.getOrDefault("robot", defaultRobot(opts, benchDir, release));
         this.baselineJar = opts.containsKey("baseline") ? Path.of(opts.get("baseline")).toAbsolutePath() : null;
         this.baselineRobot = opts.get("baseline-robot");
         if (baselineJar != null) {
@@ -155,6 +172,18 @@ public final class Bench {
         this.out = Path.of(opts.getOrDefault("out",
             "work/" + (warm ? "warm" : "cold") + "-" + stamp)).toAbsolutePath();
         this.home = out.resolve("home");
+    }
+
+    /**
+     * The {@code --robot} default: what the given {@code --robot-jar} says it holds, else
+     * the solo robot of the project's release (issue #102: no default lags the version).
+     */
+    static String defaultRobot(Map<String, String> opts, Path benchDir, String release) {
+        if (opts.containsKey("robot-jar")) {
+            String named = RobotJar.nameOf(benchDir.resolve(opts.get("robot-jar")));
+            if (named != null) return named;
+        }
+        return "hadur2.Hadur " + release;
     }
 
     public static void main(String[] args) throws Exception {
@@ -221,41 +250,49 @@ public final class Bench {
         if (opts.containsKey("team")) return runTeam(opponents);
         if (client != null) return runClientConditions(opponents);
 
-        Map<Opponent, List<BattleResult>> results = new LinkedHashMap<>();
-        Map<Opponent, List<BattleResult>> baselineResults = baselineJar != null ? new LinkedHashMap<>() : null;
-        Map<Opponent, OpponentProfile> profiles = new LinkedHashMap<>();
-        for (Opponent o : opponents) {
-            List<BattleResult> list = new ArrayList<>();
-            results.put(o, list);
-            List<BattleResult> baselineList = baselineResults != null ? new ArrayList<>() : null;
-            if (baselineResults != null) baselineResults.put(o, baselineList);
-            if (warm) wipeData();
-            for (int i = 1; i <= runs; i++) {
-                if (!warm) wipeData();
-                Path dir = out.resolve("battles").resolve(o.slug() + "-" + i);
-                System.out.printf("%s battle %d/%d ...%n", o.name, i, runs);
-                BattleResult r = runBattle(o, i, dir, robot);
-                list.add(r);
-                System.out.printf("  score share %.1f%%, wins %d/%d, skipped turns %d%s%n",
-                    r.scoreShare() * 100, r.firsts, r.rounds, r.skippedTurns,
-                    r.ok ? "" : " FAILED: " + r.errors);
-                if (baselineList != null) {
-                    // Same seed as the candidate's battle just above: BENCH-2 pairs on it.
-                    if (!warm) wipeData();
-                    BattleResult base = runBattle(o, i, out.resolve("battles").resolve(o.slug() + "-" + i + "-baseline"),
-                        baselineRobot);
-                    baselineList.add(base);
-                    System.out.printf("  baseline score share %.1f%%%s%n",
-                        base.scoreShare() * 100, base.ok ? "" : " FAILED: " + base.errors);
+        // Issue #102: the duel modes run their battles on a pool of worker homes, --parallel
+        // at a time. Cold mode schedules every (opponent, seed) battle on its own; warm mode
+        // keeps an opponent's consecutive battles on one worker, so the data directory they
+        // share is theirs alone. With --parallel 1 there is one home and the order is the old one.
+        int n = opponents.size();
+        BattleResult[][] cand = new BattleResult[n][runs];
+        BattleResult[][] base = baselineJar != null ? new BattleResult[n][runs] : null;
+        OpponentProfile[] stored = new OpponentProfile[n];
+        List<Job> jobs = new ArrayList<>();
+        for (int oi = 0; oi < n; oi++) {
+            Opponent o = opponents.get(oi);
+            if (warm) {
+                int index = oi;
+                jobs.add(h -> {
+                    wipeData(h);
+                    for (int i = 1; i <= runs; i++) duel(h, o, i, cand[index], base == null ? null : base[index], stored, index);
+                });
+            } else {
+                for (int i = 1; i <= runs; i++) {
+                    int index = oi, seed = i;
+                    jobs.add(h -> {
+                        wipeData(h);
+                        duel(h, o, seed, cand[index], base == null ? null : base[index], stored, index);
+                    });
                 }
             }
-            // Read before the next opponent's wipe: what Hadur remembered (MEM-3).
-            OpponentProfile stored = storedProfile(o.name);
-            if (stored != null) profiles.put(o, stored);
+        }
+        List<Path> homes = workerHomes(Math.min(parallel, Math.max(1, jobs.size())));
+        pinCpuConstant(homes);
+        runJobs(jobs, homes);
+
+        Map<Opponent, List<BattleResult>> results = new LinkedHashMap<>();
+        Map<Opponent, List<BattleResult>> baselineResults = base != null ? new LinkedHashMap<>() : null;
+        Map<Opponent, OpponentProfile> profiles = new LinkedHashMap<>();
+        for (int oi = 0; oi < n; oi++) {
+            Opponent o = opponents.get(oi);
+            results.put(o, new ArrayList<>(Arrays.asList(cand[oi])));
+            if (baselineResults != null) baselineResults.put(o, new ArrayList<>(Arrays.asList(base[oi])));
+            if (stored[oi] != null) profiles.put(o, stored[oi]);
         }
 
-        String report = Report.render(results, profiles, robot, warm, rounds, runs, width, height,
-            cpuConstant());
+        String host = cpuConstant() + ". Host: " + Host.describe() + ", parallel " + homes.size();
+        String report = Report.render(results, profiles, robot, warm, rounds, runs, width, height, host);
         if (baselineResults != null) {
             // BENCH-2's diff table, then BENCH-3's full per-opponent diagnostics for the
             // baseline too (hit rate, skips, faults, pace), not just its score share.
@@ -266,13 +303,25 @@ public final class Bench {
                     baselineRobot);
             }
             report += "\n" + Report.render(baselineResults, robot + " baseline (" + baselineRobot + ")",
-                warm, rounds, runs, width, height, cpuConstant());
+                warm, rounds, runs, width, height, host);
         }
         Files.writeString(out.resolve("report.md"), report);
         if (opts.containsKey("report")) {
             Path copy = Path.of(opts.get("report")).toAbsolutePath();
             Files.createDirectories(copy.getParent());
             Files.writeString(copy, report);
+        }
+        if (opts.containsKey("per-opponent")) {
+            // Issue #102: one report per opponent, for the per-robot bench strategy.
+            Path dir = Path.of(opts.get("per-opponent")).toAbsolutePath();
+            Files.createDirectories(dir);
+            for (Opponent o : opponents) {
+                String one = Report.renderOpponent(o, results.get(o),
+                    baselineResults == null ? null : baselineResults.get(o), profiles.get(o),
+                    robot, baselineRobot, warm, rounds, runs, width, height, host);
+                Files.writeString(dir.resolve(o.slug() + ".md"), one);
+            }
+            System.out.println("per-opponent reports in " + dir);
         }
         System.out.println();
         System.out.println(report);
@@ -283,13 +332,181 @@ public final class Bench {
         return failed ? 1 : 0;
     }
 
+    /** A unit of work on one worker home: one battle (cold), or an opponent's run of battles (warm). */
+    private interface Job {
+        void run(Path home) throws Exception;
+    }
+
+    /**
+     * One seed of one opponent on a worker home: the candidate's battle, then the baseline's at
+     * the same seed when paired (BENCH-2). After the opponent's last seed the profile Hadur
+     * left is read from this home, before anything wipes it (MEM-3). A battle that throws is
+     * recorded as failed with the exception's message, so the report still shows it.
+     */
+    private void duel(Path h, Opponent o, int seed, BattleResult[] cand, BattleResult[] base,
+                      OpponentProfile[] stored, int index) throws Exception {
+        if (parallel == 1) System.out.printf("%s battle %d/%d ...%n", o.name, seed, runs);
+        BattleResult r;
+        try {
+            r = runBattle(o, seed, out.resolve("battles").resolve(o.slug() + "-" + seed), robot, h);
+        } catch (IOException | RuntimeException e) {
+            r = BattleResult.parse(BattleResult.failed("bench error: " + e));
+        }
+        cand[seed - 1] = r;
+        say(String.format(Locale.ROOT, "%s%s battle %d/%d: score share %.1f%%, wins %d/%d, skipped turns %d%s",
+            parallel == 1 ? "  " : "", o.name, seed, runs, r.scoreShare() * 100, r.firsts, r.rounds,
+            r.skippedTurns, r.ok ? "" : " FAILED: " + r.errors));
+        if (seed == runs) {
+            OpponentProfile p = storedProfile(h, o.name);
+            if (p != null) stored[index] = p;
+        }
+        if (base != null) {
+            if (!warm) wipeData(h);
+            BattleResult b;
+            try {
+                b = runBattle(o, seed, out.resolve("battles").resolve(o.slug() + "-" + seed + "-baseline"),
+                    baselineRobot, h);
+            } catch (IOException | RuntimeException e) {
+                b = BattleResult.parse(BattleResult.failed("bench error: " + e));
+            }
+            base[seed - 1] = b;
+            say(String.format(Locale.ROOT, "%s%s battle %d/%d: baseline score share %.1f%%%s",
+                parallel == 1 ? "  " : "", o.name, seed, runs, b.scoreShare() * 100,
+                b.ok ? "" : " FAILED: " + b.errors));
+        }
+    }
+
+    private static synchronized void say(String line) {
+        System.out.println(line);
+    }
+
+    /**
+     * Runs the jobs on a pool of {@code homes.size()} threads; each job takes a free home,
+     * fights on it and hands it back. A job's own failure is caught inside it; anything that
+     * escapes (a missing classpath, say) stops the bench with that exception.
+     */
+    private void runJobs(List<Job> jobs, List<Path> homes) throws Exception {
+        java.util.concurrent.BlockingQueue<Path> free = new java.util.concurrent.LinkedBlockingQueue<>(homes);
+        java.util.concurrent.ExecutorService pool = java.util.concurrent.Executors.newFixedThreadPool(homes.size());
+        List<java.util.concurrent.Future<?>> futures = new ArrayList<>();
+        try {
+            for (Job job : jobs) {
+                futures.add(pool.submit(() -> {
+                    Path h = free.take();
+                    try {
+                        job.run(h);
+                    } finally {
+                        free.put(h);
+                    }
+                    return null;
+                }));
+            }
+            for (java.util.concurrent.Future<?> f : futures) {
+                try {
+                    f.get();
+                } catch (java.util.concurrent.ExecutionException e) {
+                    Throwable cause = e.getCause();
+                    if (cause instanceof Exception) throw (Exception) cause;
+                    throw e;
+                }
+            }
+        } finally {
+            pool.shutdownNow();
+        }
+    }
+
+    /**
+     * The homes the duel battles run on: the main home alone for one worker, else
+     * {@code home-1..home-N} beside it, each with its own copy of the installed robots. The
+     * main home keeps the samples and jars (and the CPU constant) the workers are copied from.
+     */
+    private List<Path> workerHomes(int workers) throws IOException {
+        if (workers == 1) return List.of(home);
+        List<Path> homes = new ArrayList<>();
+        for (int w = 1; w <= workers; w++) {
+            Path h = out.resolve("home-" + w);
+            copyTree(home.resolve("robots"), h.resolve("robots"));
+            homes.add(h);
+        }
+        return homes;
+    }
+
+    /**
+     * Issue #102: the CPU constant every worker runs under. {@code --cpu-constant NANOS} pins
+     * it (the rumble client's own value on this host, say). Otherwise a single worker lets the
+     * engine calibrate in its first battle as it always did, and several workers calibrate
+     * once, idle, in the main home (a one-round sample battle) and share the result, so no
+     * worker measures its allowance while the others load the machine.
+     */
+    private void pinCpuConstant(List<Path> homes) throws IOException, InterruptedException {
+        String pinned = opts.get("cpu-constant");
+        if (pinned != null) {
+            for (Path h : homes) writeCpuConstant(h, Long.parseLong(pinned.trim()));
+            return;
+        }
+        if (homes.size() == 1) return;
+        Path config = home.resolve("config/robocode.properties");
+        if (!Files.exists(config)) {
+            System.out.println("calibrating the CPU constant in the main home ...");
+            runBattle(new Opponent("sample.SittingDuck", "calibration", null, 0), 1,
+                out.resolve("calibration"), "sample.Walls", home, 1, defaultJavaBin(), classpath());
+        }
+        if (!Files.exists(config)) {
+            System.out.println("  the engine wrote no CPU constant; each worker will calibrate itself");
+            return;
+        }
+        for (Path h : homes) {
+            Files.createDirectories(h.resolve("config"));
+            Files.copy(config, h.resolve("config/robocode.properties"), StandardCopyOption.REPLACE_EXISTING);
+        }
+        System.out.println("  " + cpuConstant() + " shared by " + homes.size() + " workers");
+    }
+
+    private static void copyTree(Path src, Path dest) throws IOException {
+        Files.createDirectories(dest);
+        try (Stream<Path> files = Files.walk(src)) {
+            for (Path f : (Iterable<Path>) files::iterator) {
+                Path target = dest.resolve(src.relativize(f).toString());
+                if (Files.isDirectory(f)) Files.createDirectories(target);
+                else Files.copy(f, target, StandardCopyOption.REPLACE_EXISTING);
+            }
+        }
+    }
+
     private BattleResult runBattle(Opponent o, int seed, Path dir, String robotName)
             throws IOException, InterruptedException {
-        return runBattle(o, seed, dir, robotName, defaultJavaBin(), classpath());
+        return runBattle(o, seed, dir, robotName, home);
+    }
+
+    /** As above, on a given Robocode home (a worker's). */
+    private BattleResult runBattle(Opponent o, int seed, Path dir, String robotName, Path h)
+            throws IOException, InterruptedException {
+        return runBattle(o, seed, dir, robotName, h, rounds, defaultJavaBin(), classpath());
     }
 
     /** BENCH-4: as above, but on a given JVM and classpath (an {@code engine=}/{@code java=} condition). */
     private BattleResult runBattle(Opponent o, int seed, Path dir, String robotName,
+                                    String javaBin, String cp) throws IOException, InterruptedException {
+        return runBattle(o, seed, dir, robotName, home, rounds, javaBin, cp);
+    }
+
+    /**
+     * Issue #102: the JVM flags a battle child gets beyond {@link #JVM_FLAGS}. With several
+     * workers each child is told to size itself for {@code --child-cpus} processors (2 by
+     * default) so that twenty JVMs do not each start a 48-core machine's worth of JIT and GC
+     * threads; {@code --child-cpus 0} leaves the JVM to itself. {@code --child-heap} (e.g.
+     * {@code 512M}, the rumble client's) caps the heap.
+     */
+    private List<String> childFlags() {
+        List<String> flags = new ArrayList<>();
+        int cpus = Integer.parseInt(opts.getOrDefault("child-cpus", parallel > 1 ? "2" : "0"));
+        if (cpus > 0) flags.add("-XX:ActiveProcessorCount=" + cpus);
+        String heap = opts.get("child-heap");
+        if (heap != null) flags.add("-Xmx" + heap);
+        return flags;
+    }
+
+    private BattleResult runBattle(Opponent o, int seed, Path dir, String robotName, Path h, int rounds,
                                     String javaBin, String cp) throws IOException, InterruptedException {
         Files.createDirectories(dir);
         // A result left by an earlier run in this directory must not stand in for this one.
@@ -298,6 +515,7 @@ public final class Bench {
         List<String> cmd = new ArrayList<>();
         cmd.add(javaBin);
         cmd.addAll(JVM_FLAGS);
+        cmd.addAll(childFlags());
         cmd.add("-DRANDOMSEED=" + seed);
         Path transcript = dir.resolve("transcript.txt");
         if (record != null) {
@@ -308,7 +526,7 @@ public final class Bench {
         cmd.add("-cp");
         cmd.add(cp);
         cmd.add(BattleRunner.class.getName());
-        cmd.addAll(List.of(home.toString(), dir.toString(), String.valueOf(rounds),
+        cmd.addAll(List.of(h.toString(), dir.toString(), String.valueOf(rounds),
             String.valueOf(width), String.valueOf(height), robotName, o.name));
         Process p = new ProcessBuilder(cmd)
             .redirectErrorStream(true)
@@ -616,7 +834,11 @@ public final class Bench {
     }
 
     private void writeCpuConstant(long nanos) throws IOException {
-        Path props = home.resolve("config/robocode.properties");
+        writeCpuConstant(home, nanos);
+    }
+
+    private static void writeCpuConstant(Path h, long nanos) throws IOException {
+        Path props = h.resolve("config/robocode.properties");
         Files.createDirectories(props.getParent());
         Files.writeString(props, "#Robocode Properties\nrobocode.cpu.constant=" + nanos + "\n");
     }
@@ -719,8 +941,7 @@ public final class Bench {
             }
             jar(classes, target);
         } else {
-            Path jar = Path.of(opts.getOrDefault("robot-jar",
-                "../hadur-robot/target/hadur2.Hadur_3.8.jar")).toAbsolutePath();
+            Path jar = Path.of(opts.getOrDefault("robot-jar", RobotJar.soloJar(release))).toAbsolutePath();
             if (!Files.isRegularFile(jar)) {
                 throw new IllegalStateException("No robot jar at " + jar + "; run mvn package first");
             }
@@ -902,7 +1123,11 @@ public final class Bench {
      * null when there is none or it does not decode.
      */
     private OpponentProfile storedProfile(String opponent) throws IOException {
-        Path data = home.resolve("robots/.data");
+        return storedProfile(home, opponent);
+    }
+
+    private static OpponentProfile storedProfile(Path h, String opponent) throws IOException {
+        Path data = h.resolve("robots/.data");
         if (!Files.exists(data)) return null;
         String file = ProfileLibrary.fileName(LineageKey.of(opponent));
         try (Stream<Path> files = Files.walk(data)) {
@@ -920,7 +1145,11 @@ public final class Bench {
 
     /** Robocode keeps robot data files under robots/.data; cold mode deletes it. */
     private void wipeData() throws IOException {
-        Path data = home.resolve("robots/.data");
+        wipeData(home);
+    }
+
+    private static void wipeData(Path h) throws IOException {
+        Path data = h.resolve("robots/.data");
         if (!Files.exists(data)) return;
         try (Stream<Path> files = Files.walk(data)) {
             for (Path f : (Iterable<Path>) files.sorted(Comparator.reverseOrder())::iterator) {

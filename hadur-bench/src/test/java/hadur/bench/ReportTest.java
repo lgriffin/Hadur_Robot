@@ -106,6 +106,59 @@ class ReportTest {
             "paired diff should not be the shifted (misaligned) pairing, got: " + report);
     }
 
+    @Test
+    @Tag("BENCH-12")
+    @DisplayName("the report names the total skipped turns over all ok battles")
+    void reportsTotalSkippedTurns() {
+        BattleResult r = new BattleResult();
+        r.ok = true;
+        r.rounds = 1;
+        r.score = 100;
+        r.theirScore = 40;
+        r.skippedTurns = 4;
+
+        Map<Opponent, List<BattleResult>> results = new LinkedHashMap<>();
+        Opponent o = new Opponent("kc.mega.BeepBoop 2.0", "top30", "kc.mega.BeepBoop_2.0.jar", 0.25);
+        results.put(o, List.of(r));
+
+        String report = Report.render(results, "hadur2.Hadur 3.1", false, 35, 1, 800, 600, "unknown");
+
+        assertTrue(report.contains("Skipped turns: 4 over 1 battles"),
+            "missing skipped-turns summary line, got: " + report);
+    }
+
+    @Test
+    @Tag("BENCH-12")
+    @DisplayName("an opponent's own report has a per-seed table with a paired baseline column")
+    void renderOpponentReportsPerSeedTableWithBaseline() {
+        Opponent o = new Opponent("kc.mega.BeepBoop 2.0", "top30", "kc.mega.BeepBoop_2.0.jar", 0.25);
+        List<BattleResult> candidate = List.of(share(0.60), share(0.55));
+        List<BattleResult> baseline = List.of(share(0.50), share(0.45));
+
+        String report = Report.renderOpponent(o, candidate, baseline, null,
+            "hadur2.Hadur 3.1", "hadur2.Hadur 3.0", false, 35, 2, 800, 600, "unknown");
+
+        assertTrue(report.contains("## Battles"), "missing battles section, got: " + report);
+        assertTrue(report.contains("| 1 |"), "missing seed 1 row, got: " + report);
+        assertTrue(report.contains("| 2 |"), "missing seed 2 row, got: " + report);
+        assertTrue(report.contains("Paired diff (pp)"), "missing paired diff column, got: " + report);
+        assertTrue(report.contains("## Full report"), "missing full report section, got: " + report);
+    }
+
+    @Test
+    @Tag("BENCH-12")
+    @DisplayName("an opponent's own report with no baseline has no baseline column")
+    void renderOpponentWithoutBaselineHasNoBaselineColumn() {
+        Opponent o = new Opponent("kc.mega.BeepBoop 2.0", "top30", "kc.mega.BeepBoop_2.0.jar", 0.25);
+        List<BattleResult> candidate = List.of(share(0.60), share(0.55));
+
+        String report = Report.renderOpponent(o, candidate, null, null,
+            "hadur2.Hadur 3.1", null, false, 35, 2, 800, 600, "unknown");
+
+        assertTrue(!report.contains("Baseline share"),
+            "should have no baseline column with no baseline run, got: " + report);
+    }
+
     private static BattleResult share(double share) {
         BattleResult r = new BattleResult();
         r.ok = true;
