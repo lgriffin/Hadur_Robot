@@ -62,7 +62,7 @@ class TrustAndRoundsTest {
     @Tag("BENCH-20")
     @DisplayName("the new trust columns come last in the header and survive a write and a read")
     void trustColumnsRoundTrip() {
-        assertTrue(BattleResult.HEADER.endsWith(",errors,duressTicks,engineDisables,securityErrors,rShortfall,finalRMissing"));
+        assertTrue(BattleResult.HEADER.endsWith(",errors,duressTicks,engineDisables,securityErrors,rShortfall,finalRMissing,hostCpuMin,hostCpuMean,hostCpuMax,otherJvms"));
         BattleResult r = battle(60, 40);
         r.duressTicks = 7;
         r.engineDisables = 2;

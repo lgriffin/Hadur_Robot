@@ -442,6 +442,11 @@ public final class Bench {
             Files.writeString(out.resolve("cold-warm.tsv"), ColdWarm.tsv(rows));
             report += ColdWarm.render(rows);
         }
+        List<RoundSeries.Row> roundRows = RoundSeries.readAll(out);
+        if (!roundRows.isEmpty()) {
+            Files.writeString(out.resolve("rounds.tsv"), RoundSeries.merge(roundRows));
+            report += Report.renderRoundSplit(roundRows, robot, baselineResults != null ? baselineRobot : null);
+        }
         report += failureFooter(failures, retried);
         Files.writeString(out.resolve("report.md"), report);
         if (opts.containsKey("report")) {

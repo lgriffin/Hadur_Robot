@@ -121,7 +121,7 @@ class HostSamplerTest {
     @DisplayName("a row without the host columns still reads, with the load unknown")
     void oldRowStillReads() {
         String failed = BattleResult.failed("old format");
-        String old = failed.substring(0, failed.length() - ",NaN,NaN,NaN,-1".length());
+        String old = failed.substring(0, failed.length() - ",0,0,0,0,0,NaN,NaN,NaN,-1".length());
         assertEquals(51, old.split(",", -1).length);
         BattleResult r = BattleResult.parse(old);
         assertEquals("old format", r.errors);
