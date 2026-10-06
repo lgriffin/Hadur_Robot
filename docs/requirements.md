@@ -943,6 +943,7 @@ strand, in the `shieldmode` package, and applies to a 1v1 battle only.
   The report gives each opponent's paired difference with its interval, a verdict, what shield mode
   did (rounds, shield shots, bullets met, hits taken, early exits, budget exits), the weighted mean
   difference over the file's weights (BENCH-1) and the opponents that win, as list lines.
+
 ## The Team plan (T1)
 
 [team-plan-t1.md](team-plan-t1.md) answers the A5 baseline's teammate collisions and friendly fire

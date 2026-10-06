@@ -323,6 +323,7 @@ sandbox kills a robot that reads a resource of its own jar. Requirements are in 
 `docs/requirements.md`.
 
 - **Gate** ([d5-gate.md](bench/d5-gate.md)): 46 panel robots, 3 seeds of 35 rounds, shield mode on against off, paired: weighted mean **+2.9 ± 2.7** points over the panel (stratified APS 86.8 against 83.9). Eight robots win; the list takes those and six more at +9 or better, and leaves off the seven it loses against (Hubris, TimCat, RSK1, ThroxBot, Grofvuil, sample.Fire, OscillatorL). D6 is not built: it stays a research item.
+
 ## The Team plan (T1): teammates stop running into each other (3.8)
 
 [team-plan-t1.md](team-plan-t1.md) is the first stage of the Team plan, answering the A5
@@ -352,8 +353,9 @@ Smoke bench, 1200 x 1200, seed 1 (3.7 against 3.8 on the same machine and load):
 | ConceptA, 3 rounds x 2 seeds: our bullets on a teammate | 48 | 7 |
 
 The first fire-lane slack (1.5 px a tick of flight) left 14 friendly hits in the 10 rounds;
-3 px cut them to 7 for 17% more held shots. A smoke is not the gate: the gate is
-`team-gates.txt` against 3.7 (docs/team-plan-t1.md, section 6).
+3 px cut them to 7 for 17% more held shots. A smoke is not the gate.
+
+- **Gate** ([t1-team.md](bench/t1-team.md)), `team-gates.txt` against 3.7 (3 seeds x 8 teams x 10 rounds): score share **48.2% against 28.8%** (+19.4, every team up), teammate collisions 101,322 to 65 (-99.9%), our bullets on a teammate 1,015 to 328 (-68%, **short of the 80% bar**), shots held for the lane 5,188 to 19,286 (3.7x), 0 faults, 0 LINK rejects. Merged on score share and collisions; narrowing `TURN_SLACK` and spacing members on a shared target are follow-ups.
 
 ## What comes next
 

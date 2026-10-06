@@ -12,15 +12,16 @@ MeleeRumble and TeamRumble on 2026-10-05. Open after A5:
 - **3.7's passes, read** in [docs/bench/live-3.7.md](docs/bench/live-3.7.md): the 1v1 at
   85.67 (21st) is 0.43 below the predicted range and not yet attributed (L-43); melee 65.25
   (18th) is level; the first team pass reads 39.43 (32nd of 46).
-- **Teammates collide: addressed by T1** ([team-plan-t1.md](docs/team-plan-t1.md), 3.8). The A5
-  baseline had about 440 collisions a round and 884 of our bullets on a teammate
-  ([a5-team.md](docs/bench/a5-team.md)). The World now predicts a teammate, the melee movement
-  scores it, the conductor fences the drive of whichever role drives and widens the fire lane
-  over the bullet's flight. The smoke bench (3 to 10 rounds against MyFirstTeam, ConceptA and
-  ShadowTeam) reads collisions down about 99.9% and friendly hits down 83% to 85%. The T1 gate
-  run (`team-gates.txt`, 3 seeds, 8 teams, `docs/bench/t1-team.md`) is still to be run and
-  read. Still open for the Team plan: bullets that hit a teammate's bullet (2,610 at A5; the
-  shared-target item), a shared target and formation.
+- **Teammate collisions: done in T1** ([team-plan-t1.md](docs/team-plan-t1.md), 3.8; gate in
+  [docs/bench/t1-team.md](docs/bench/t1-team.md)). Collisions fell from 101,322 to 65 over the
+  gate suite (-99.9%) and the team's score share rose from 28.8% to 48.2%. Follow-ups the gate
+  opened:
+  - **Friendly fire.** Our bullets on a teammate fell 1,015 to 328 (-68%), short of the plan's
+    80% bar (177). Narrow `TURN_SLACK` (1.5 px a tick) and space members that share a target.
+  - **Held shots.** Shots held for the lane rose 5,188 to 19,286 (3.7x, above the plan's flag of
+    about 3x); `TURN_SLACK` is the knob, to be set against the friendly-fire count.
+  - **Bullet on a teammate's bullet** rose 2,598 to 3,557 (the plan's RC5): the shared-target
+    item, with a shared target and formation.
 - **Droids** (a leader with radar-less members) are left to the Team plan.
 - **Stale comments.** Comments in the nine pinned packages that name `HadurCore` are out
   of date since A2. Fixing them is one optional, comment-only re-pin.
