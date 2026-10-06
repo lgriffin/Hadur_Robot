@@ -1,0 +1,4 @@
+# Optional bisect step (docs/bench/live-3.8.md): one pass at the bench host's own speed and one
+# with the CPU constant forced to 1.0 ms a turn, the slow end of the rumble clients.
+own | data=shared
+slow | data=shared cpu=1000000

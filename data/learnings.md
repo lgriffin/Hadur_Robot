@@ -281,3 +281,10 @@ below 3.5.1's partial 86.65 and 0.43 below the range the A-stage benches predict
 65.31) and the first TeamRumble pass reads 39.43 (32nd of 46), above the bench's 28% forecast.
 Not yet attributed: the live slide seen on 3.1 or a cost below the benches' 0.5-point
 resolution. Evidence: `docs/bench/live-3.7.md`. Owner: ladder plan.
+
+**L-44 · open (live, pass 99% complete).** 3.8 reads 84.58 ± 0.20 APS in the 1v1 (29th). Matched
+pairing by pairing with 3.4's full pass, it is +5.2 against the top 10 and -1.55 ± 0.15 against
+the 1,171 opponents outside the top 20 and off the shield list (794 down, 370 up), through
+survival (-2.3). The loss is spread evenly over time. The D5 shield list gains +0.14 APS live. A
+12-bot weak set cannot resolve a leak of this size. Not yet attributed among D1 to D4. Evidence:
+`docs/bench/live-3.8.md`. Owner: ladder plan.
