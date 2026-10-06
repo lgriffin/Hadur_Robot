@@ -1,5 +1,6 @@
 package hadur.bench;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.LinkedHashMap;
@@ -172,5 +173,15 @@ class ReportTest {
         r.ok = false;
         r.errors = "timed out";
         return r;
+    }
+
+    @Test
+    @DisplayName("the report names the engine on the classpath, not the pom's default")
+    void namesTheEngineOnTheClasspath() {
+        String cp = "/m2/net/sf/robocode/robocode.api/1.11.1/robocode.api-1.11.1.jar:"
+            + "/m2/net/sf/robocode/robocode.core/1.11.1/robocode.core-1.11.1.jar:/x/other.jar";
+        assertEquals("1.11.1", Report.engineVersion(cp));
+        assertEquals("1.9.5.6", Report.engineVersion("C:\\m2\\robocode.core-1.9.5.6.jar;C:\\y.jar"));
+        assertEquals("unknown", Report.engineVersion("/x/other.jar"));
     }
 }
