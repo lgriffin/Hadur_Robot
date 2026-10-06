@@ -336,7 +336,7 @@ Still release 3.8; `hadur.druss.stage` was `D3` when this stage was built (it st
 - **Re-recorded fixtures:** none. All 68 replay checks pass unchanged: the fixtures' opponents are fought at ordinary power, where the rest class's table is what D2's single table was, and the sampled gun is never fired before it is rated best.
 - **Re-snapshotted:** nothing.
 - **Re-pinned:** `pins/duel.sha256` (`-Dhadur.pin=duel`) and `duel-sources.sha256` (`-Dhadur.duel.snapshot=write`). The kernel, conductor, melee and team pins did not change.
-- **Gate not run.** The plan's D3 gate (40 battles; light-bullet hit rate up and DrussGT's not) is a bench job; the probe's 7.9% to 9.3% is for the unconditional aim.
+- **Gate** ([d3-gate.md](bench/d3-gate.md)), paired against D2 (3.8.2): DrussGT **+0.5 ± 4.2** points (45.8% against 45.3%, 20 battles), level and not below. The stage's own measure is **not met**: Hadur's light-bullet hit rate is 7.63% ± 0.18 against 7.60% ± 0.13 for D2 (paired +0.03 ± 0.21), where the plan's probe reached 9.3%; DrussGT's light bullets hit 10.25%. The `R` records do not show how often the sampled gun was chosen. The top-10 and weak sets are measured once for the whole D2 to D4 stack (pending).
 
 ## D5: the shield list (DrussGT route)
 
