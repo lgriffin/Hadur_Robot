@@ -73,6 +73,31 @@ public class LogHarvester extends BattleAdaptor {
     /** Unhittable (S6): the highest computation level, slow ticks, shadows, intercepts in a shadow, flavour changes and the step reached. */
     private int maxLevel, slowTicks, shadowedWaves, interceptsShadowed, flavourChanges, flavourStep;
 
+    /** One round as the harness saw it: engine truth per turn, plus the fields of Hadur's R record when one arrived (G3). */
+    public static final class RoundRow {
+        public final int round;
+        public long ticks;
+        public double damageDealt, damageTaken;
+        public boolean alive;
+        public int skips;
+        /** From the R record; {@code hasRecord} is false when it never arrived. */
+        public boolean hasRecord, won;
+        public double ourHitRate = Double.NaN;
+        public int duressTicks;
+
+        RoundRow(int round) {
+            this.round = round;
+        }
+    }
+
+    private final java.util.TreeMap<Integer, RoundRow> roundRows = new java.util.TreeMap<>();
+    private volatile boolean battleFinished;
+    private volatile long lastEventNanos = System.nanoTime();
+
+    private RoundRow row(int r) {
+        return roundRows.computeIfAbsent(r, RoundRow::new);
+    }
+
     public LogHarvester(Path dir, String us) throws IOException {
         this.us = us;
         this.hadurLog = Files.newBufferedWriter(dir.resolve("hadur.log"), StandardCharsets.UTF_8);
@@ -95,12 +120,18 @@ public class LogHarvester extends BattleAdaptor {
         turnNanos[turns++] = now - lastTurnNanos;
         lastTurnNanos = now;
 
+        lastEventNanos = now;
         ITurnSnapshot snap = e.getTurnSnapshot();
         int turn = snap.getTurn();
         IRobotSnapshot me = null, enemy = null;
         for (IRobotSnapshot r : snap.getRobots()) {
             if (r.getName().equals(us)) me = r;
             else enemy = r;
+        }
+        if (me != null && enemy != null) {
+            noteTurn(round, turn, me.getScoreSnapshot().getCurrentBulletDamageScore(),
+                enemy.getScoreSnapshot().getCurrentBulletDamageScore(),
+                me.getState() != robocode.control.snapshot.RobotState.DEAD);
         }
         try {
             if (me != null) harvestConsole(me, turn);
@@ -110,13 +141,56 @@ public class LogHarvester extends BattleAdaptor {
         }
     }
 
+    /** The latest turn of {@code round} wins: damage so far, whether we are alive, and the tick count. */
+    void noteTurn(int round, int turn, double dealt, double taken, boolean alive) {
+        RoundRow r = row(round);
+        r.ticks = Math.max(r.ticks, turn + 1L);
+        r.damageDealt = dealt;
+        r.damageTaken = taken;
+        r.alive = alive;
+    }
+
+    @Override
+    public void onBattleFinished(robocode.control.events.BattleFinishedEvent e) {
+        battleFinished = true;
+        lastEventNanos = System.nanoTime();
+    }
+
+    /**
+     * G14: waits, up to {@code maxMillis}, until the engine has announced the battle's end and
+     * no turn has been reported for {@code quietMillis}, so nothing still in flight is lost
+     * when the log is read. Returns whether it saw the battle finish.
+     */
+    public boolean awaitDrain(long maxMillis, long quietMillis) throws InterruptedException {
+        long deadline = System.nanoTime() + maxMillis * 1_000_000L;
+        while (System.nanoTime() < deadline) {
+            if (battleFinished && System.nanoTime() - lastEventNanos >= quietMillis * 1_000_000L) return true;
+            Thread.sleep(10);
+        }
+        return battleFinished;
+    }
+
+    /** The per-round rows, in round order. */
+    public List<RoundRow> rounds() {
+        return new ArrayList<>(roundRows.values());
+    }
+
+    /** G14: true when rounds were played but the last round's R record never arrived. */
+    public boolean finalRecordMissing(int rounds) {
+        RoundRow last = roundRows.get(rounds - 1);
+        return rounds > 0 && (last == null || !last.hasRecord);
+    }
+
     private void harvestConsole(IRobotSnapshot me, int turn) throws IOException {
         String out = me.getOutputStreamSnapshot();
         if (out == null || out.isEmpty()) return;
         for (String line : out.split("\\R")) {
             if (line.isEmpty()) continue;
             // The engine announces each skipped turn as "SYSTEM: <robot> skipped turn <n>".
-            if (line.startsWith("SYSTEM:") && line.contains("skipped turn")) skippedTurns++;
+            if (line.startsWith("SYSTEM:") && line.contains("skipped turn")) {
+                skippedTurns++;
+                row(round).skips++;
+            }
             // BENCH-6: the engine switching the robot off for being too slow or silent.
             if (line.startsWith("SYSTEM:") && (line.contains("Robot disabled")
                     || line.contains("not performed any actions"))) engineDisables++;
@@ -210,7 +284,13 @@ public class LogHarvester extends BattleAdaptor {
                     flavourStep = Math.max(flavourStep, Integer.parseInt(f[31]));
                     interceptsShadowed += Integer.parseInt(f[32]);
                 }
-                if (f.length >= 34) duressTicks += Integer.parseInt(f[33]);
+                int duress = f.length >= 34 ? Integer.parseInt(f[33]) : 0;
+                duressTicks += duress;
+                RoundRow rr = row(Integer.parseInt(f[1]));
+                rr.hasRecord = true;
+                rr.won = f[3].equals("win");
+                rr.ourHitRate = Double.parseDouble(f[6]);
+                rr.duressTicks = duress;
                 roundRecords++;
             } catch (NumberFormatException ignored) {
                 // A malformed record is left out of the averages.
