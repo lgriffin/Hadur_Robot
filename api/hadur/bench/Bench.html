@@ -104,17 +104,18 @@ loadScripts(document, 'script');</script>
      warm keeps it across <code>--battles</code> consecutive battles per opponent.</li>
  <li><code>--rounds N</code> rounds per battle (35), <code>--seeds N</code> battles per opponent in
      cold mode (5), <code>--battles N</code> in warm mode (5), <code>--field WxH</code> (800x600).</li>
- <li><code>--robot-jar FILE</code> the robot jar (../hadur-robot/target/hadur2.Hadur_3.8.jar),
+ <li><code>--robot-jar FILE</code> the robot jar (../hadur-robot/target/hadur2.Hadur_&lt;release&gt;.jar,
+     the release being <code>robot.release</code> in hadur-robot/pom.xml, see <a href="RobotJar.html" title="class in hadur.bench"><code>RobotJar</code></a>),
      or <code>--robot-classes DIR</code> to jar a compiled class tree instead;
-     <code>--robot NAME</code> as Robocode lists it ("hadur2.Hadur 3.8").</li>
+     <code>--robot NAME</code> as Robocode lists it ("hadur2.Hadur &lt;release&gt;").</li>
  <li><code>--record DIR</code> capture replay fixtures instead: runs the recorder robot
      (../hadur-robot/target/hadur-robot-2.0-SNAPSHOT-recorder.jar) with Robocode's
      security off and writes one gzipped transcript per opponent to DIR (<a class="req" href="../../../requirements.html#CORE-2">CORE-2</a>).</li>
  <li><code>--melee true</code> run every opponent in the set against Hadur at once, one battle
      per seed, and report finishing places instead (MeleeRumble: 10 robots, 1000x1000).</li>
  <li><code>--team true</code> (A5) fight each team of the set with our team jar
-     (<code>--robot-jar</code>, hadur2.HadurTeam_3.8.jar; <code>--robot</code> "hadur2.HadurTeam
-     3.8"; <code>--member</code> hadur2.Hadur), TeamRumble style: 1200x1200, 10 rounds.</li>
+     (<code>--robot-jar</code>, hadur2.HadurTeam_&lt;release&gt;.jar; <code>--robot</code> "hadur2.HadurTeam
+     &lt;release&gt;"; <code>--member</code> hadur2.Hadur), TeamRumble style: 1200x1200, 10 rounds.</li>
  <li><code>--baseline JAR</code> (<a class="req" href="../../../requirements.html#BENCH-2">BENCH-2</a>) also fight every opponent with this second jar, one
      battle per seed at the same <code>RANDOMSEED</code> as the candidate's, and report the
      paired score-share difference instead of two separate means. Requires
@@ -138,6 +139,12 @@ loadScripts(document, 'script');</script>
      pass per condition, and report survival and skipped turns per opponent per condition.</li>
  <li><code>--suite FILE</code> run every bench the file lists (<code>label | options</code> per
      line) and write one report, e.g. <code>melee-gates.txt</code>.</li>
+ <li><code>--parallel N</code> (issue #102) run N duel battles at once, each on its own Robocode
+     home (<code>home-1..home-N</code>); <code>--cpu-constant NANOS</code> pins the engine's CPU
+     constant in every home (else several workers share one idle calibration);
+     <code>--child-cpus N</code> sizes each battle JVM for N processors (2 when parallel, else
+     off) and <code>--child-heap SIZE</code> caps its heap; <code>--per-opponent DIR</code> writes
+     one report per opponent beside the main one.</li>
  <li><code>--only TEXT</code> run opponents whose name contains TEXT,
      <code>--out DIR</code> working directory (work/&lt;mode&gt;-&lt;time&gt;),
      <code>--report FILE</code> also copy the report there.</li>
@@ -169,22 +176,30 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#main(java.lang.String%5B%5D)" class="member-name-link">main</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]&nbsp;args)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#parse(java.lang.String%5B%5D)" class="member-name-link">parse</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]&nbsp;args)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static <a href="BattleResult.html" title="class in hadur.bench">BattleResult</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#readResult(java.nio.file.Path,int)" class="member-name-link">readResult</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/nio/file/Path.html" title="class or interface in java.nio.file" class="external-link">Path</a>&nbsp;result,
- int&nbsp;exit)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#defaultRobot(java.util.Map,java.nio.file.Path,java.lang.String)" class="member-name-link">defaultRobot</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;opts,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/nio/file/Path.html" title="class or interface in java.nio.file" class="external-link">Path</a>&nbsp;benchDir,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;release)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">The <code>--robot</code> default: what the given <code>--robot-jar</code> says it holds, else
+ the solo robot of the project's release (issue #102: no default lags the version).</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#main(java.lang.String%5B%5D)" class="member-name-link">main</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]&nbsp;args)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#parse(java.lang.String%5B%5D)" class="member-name-link">parse</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]&nbsp;args)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static <a href="BattleResult.html" title="class in hadur.bench">BattleResult</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#readResult(java.nio.file.Path,int)" class="member-name-link">readResult</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/nio/file/Path.html" title="class or interface in java.nio.file" class="external-link">Path</a>&nbsp;result,
+ int&nbsp;exit)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">The battle's result as its child wrote it: a failed battle when there is none, it is
  cut short, or it cannot be read (an old format, say).</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static int</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#runSuite(java.util.Map)" class="member-name-link">runSuite</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;global)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#runSuite(java.util.Map)" class="member-name-link">runSuite</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;global)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Runs every bench a suite file lists, one after another, and writes one report with
  each bench's report in turn.</div>
 </div>
@@ -219,6 +234,16 @@ loadScripts(document, 'script');</script>
 <section class="method-details" id="method-detail">
 <h2>Method Details</h2>
 <ul class="member-list">
+<li>
+<section class="detail" id="defaultRobot(java.util.Map,java.nio.file.Path,java.lang.String)">
+<h3>defaultRobot</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">defaultRobot</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;opts,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/nio/file/Path.html" title="class or interface in java.nio.file" class="external-link">Path</a>&nbsp;benchDir,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;release)</span></div>
+<div class="block">The <code>--robot</code> default: what the given <code>--robot-jar</code> says it holds, else
+ the solo robot of the project's release (issue #102: no default lags the version).</div>
+</section>
+</li>
 <li>
 <section class="detail" id="main(java.lang.String[])">
 <h3>main</h3>

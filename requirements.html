@@ -12,7 +12,7 @@
 <h1>EARS requirements</h1>
 <p class="lede">Every requirement from <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/docs/requirements.md">docs/requirements.md</a>, the source of truth. <em>Implemented in</em> lists
 the classes whose documentation cites the ID; <em>Verified by</em> lists the tests tagged with it, the same tags the build's
-traceability check reads. 129 of 129 live requirements have a tagged test. The readings behind the numbers are in
+traceability check reads. 130 of 130 live requirements have a tagged test. The readings behind the numbers are in
 <a href="docs/requirements-notes.html">Requirement readings</a>.</p>
 <nav class="toc"><a href="#group-CORE">Core</a> <a href="#group-RES">Resilience</a> <a href="#group-REL">Release</a> <a href="#group-WAVE">Waves</a> <a href="#group-RADAR">Radar</a> <a href="#group-MEM">Memory</a> <a href="#group-ADAPT">Adapt</a> <a href="#group-DIAL">Dials</a> <a href="#group-DIST">Distance</a> <a href="#group-POW">Power</a> <a href="#group-END">Endgame</a> <a href="#group-MOVE">Movement</a> <a href="#group-TIME">Time budget</a> <a href="#group-SHIELD">Bullet shielding</a> <a href="#group-MELEE">Melee (2.1)</a> <a href="#group-GATE">Posture gate</a> <a href="#group-MRADAR">Melee radar</a> <a href="#group-MSENSE">Melee sensing</a> <a href="#group-MMOVE">Melee movement</a> <a href="#group-MGUN">Melee gun</a> <a href="#group-MMEM">Melee memory</a></nav><h2 id="group-CORE">Core</h2>
 <article class="req-card" id="CORE-1">
@@ -475,6 +475,11 @@ traceability check reads. 129 of 129 live requirements have a tagged test. The r
 <div class="req-head"><span class="rid">BENCH-7</span><span class="badge">Event</span><span class="badge stage">R7</span></div>
 <p>When a session file names a control robot, the bench shall run the same session with the control robot and report the two side by side by blocks of 25 battles.</p>
 <dl><dt>Implemented in</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/SessionFile.java" title="hadur.bench.SessionFile">SessionFile</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/SessionReport.java" title="hadur.bench.SessionReport">SessionReport</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/SessionTest.java">SessionTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="BENCH-12">
+<div class="req-head"><span class="rid">BENCH-12</span><span class="badge">Ubiquitous</span><span class="badge stage">R9</span></div>
+<p>The bench shall default to the robot release named in <code>hadur-robot/pom.xml</code>, shall run battles in parallel on a pinned CPU constant with a bounded child JVM, and shall name the host, the skipped turns and the duress ticks in every report, so that a run on a loaded machine can be recognised.</p>
+<dl><dt>Implemented in</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/Report.java" title="hadur.bench.Report">Report</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/BenchTest.java">BenchTest.java</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/HostTest.java">HostTest.java</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/ReportTest.java">ReportTest.java</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/RobotJarTest.java">RobotJarTest.java</a></dd></dl>
 </article>
 <h2 id="group-GUN">GUN</h2>
 <article class="req-card" id="GUN-1">

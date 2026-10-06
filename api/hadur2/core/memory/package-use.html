@@ -54,35 +54,52 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Package</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><a href="#hadur2.core">hadur2.core</a></div>
-<div class="col-last even-row-color">
+<div class="col-first even-row-color"><a href="#hadur.bench">hadur.bench</a></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><a href="#hadur2.core">hadur2.core</a></div>
+<div class="col-last odd-row-color">
 <div class="block">Hadur 2's core: the whole of the robot's strategy, as plain Java that never sees the
  Robocode engine.</div>
 </div>
-<div class="col-first odd-row-color"><a href="#hadur2.core.adapt">hadur2.core.adapt</a></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><a href="#hadur2.core.adapt">hadur2.core.adapt</a></div>
+<div class="col-last even-row-color">
 <div class="block">Recognise, then adapt (S4): the opening book that turns a loaded profile into decisions
  for the first tick (<a class="req" href="../../../../requirements.html#ADAPT-1">ADAPT-1</a>, <a class="req" href="../../../../requirements.html#ADAPT-2">ADAPT-2</a>), the seeds it replays into the KNN views at a lower
  weight (<a class="req" href="../../../../requirements.html#ADAPT-3">ADAPT-3</a>), and the trust that fades those seeds when the opponent no longer
  behaves like its profile (<a class="req" href="../../../../requirements.html#RES-4">RES-4</a>).</div>
 </div>
-<div class="col-first even-row-color"><a href="#hadur2.core.duel">hadur2.core.duel</a></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><a href="#hadur2.core.memory">hadur2.core.memory</a></div>
-<div class="col-last odd-row-color">
+<div class="col-first odd-row-color"><a href="#hadur2.core.duel">hadur2.core.duel</a></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><a href="#hadur2.core.memory">hadur2.core.memory</a></div>
+<div class="col-last even-row-color">
 <div class="block">Opponent memory (stage S3): one <a href="OpponentProfile.html" title="class in hadur2.core.memory"><code>OpponentProfile</code></a> per opponent
  lineage, folded from each round's observations (<a class="req" href="../../../../requirements.html#MEM-2">MEM-2</a>), encoded in a small checksummed
  binary format (<a href="ProfileCodec.html" title="class in hadur2.core.memory"><code>ProfileCodec</code></a>) and kept in a
  <a href="../port/ProfileStore.html" title="interface in hadur2.core.port"><code>ProfileStore</code></a> by the <a href="ProfileLibrary.html" title="class in hadur2.core.memory"><code>ProfileLibrary</code></a>
  (<a class="req" href="../../../../requirements.html#MEM-1">MEM-1</a>, <a class="req" href="../../../../requirements.html#MEM-3">MEM-3</a> to <a class="req" href="../../../../requirements.html#MEM-5">MEM-5</a>, <a class="req" href="../../../../requirements.html#RES-3">RES-3</a>).</div>
 </div>
-<div class="col-first even-row-color"><a href="#hadur2.core.policy">hadur2.core.policy</a></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><a href="#hadur2.core.policy">hadur2.core.policy</a></div>
+<div class="col-last odd-row-color">
 <div class="block">Aggressive (S5): the policies that decide how close Hadur fights and how hard it shoots.</div>
 </div>
 </div>
 <section class="package-uses">
 <ul class="block-list">
+<li>
+<section class="detail" id="hadur.bench">
+<div class="caption"><span>Classes in <a href="package-summary.html">hadur2.core.memory</a> used by <a href="../../../hadur/bench/package-summary.html">hadur.bench</a></span></div>
+<div class="summary-table two-column-summary">
+<div class="table-header col-first">Class</div>
+<div class="table-header col-last">Description</div>
+<div class="col-first even-row-color"><a href="class-use/OpponentProfile.html#hadur.bench">OpponentProfile</a></div>
+<div class="col-last even-row-color">
+<div class="block">Everything Hadur remembers about one opponent lineage between battles (the artifact's
+ profile schema): who it is, how recent battles went, how its gun does against us, how
+ it moves under our guns, and seed samples for the KNN views (S4).</div>
+</div>
+</div>
+</section>
+</li>
 <li>
 <section class="detail" id="hadur2.core">
 <div class="caption"><span>Classes in <a href="package-summary.html">hadur2.core.memory</a> used by <a href="../package-summary.html">hadur2.core</a></span></div>

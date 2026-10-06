@@ -54,22 +54,24 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Package</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><a href="#hadur2.core">hadur2.core</a></div>
-<div class="col-last even-row-color">
+<div class="col-first even-row-color"><a href="#hadur.bench">hadur.bench</a></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><a href="#hadur2.core">hadur2.core</a></div>
+<div class="col-last odd-row-color">
 <div class="block">Hadur 2's core: the whole of the robot's strategy, as plain Java that never sees the
  Robocode engine.</div>
 </div>
-<div class="col-first odd-row-color"><a href="#hadur2.core.adapt">hadur2.core.adapt</a></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><a href="#hadur2.core.adapt">hadur2.core.adapt</a></div>
+<div class="col-last even-row-color">
 <div class="block">Recognise, then adapt (S4): the opening book that turns a loaded profile into decisions
  for the first tick (<a class="req" href="../../../../../requirements.html#ADAPT-1">ADAPT-1</a>, <a class="req" href="../../../../../requirements.html#ADAPT-2">ADAPT-2</a>), the seeds it replays into the KNN views at a lower
  weight (<a class="req" href="../../../../../requirements.html#ADAPT-3">ADAPT-3</a>), and the trust that fades those seeds when the opponent no longer
  behaves like its profile (<a class="req" href="../../../../../requirements.html#RES-4">RES-4</a>).</div>
 </div>
-<div class="col-first even-row-color"><a href="#hadur2.core.duel">hadur2.core.duel</a></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><a href="#hadur2.core.memory">hadur2.core.memory</a></div>
-<div class="col-last odd-row-color">
+<div class="col-first odd-row-color"><a href="#hadur2.core.duel">hadur2.core.duel</a></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><a href="#hadur2.core.memory">hadur2.core.memory</a></div>
+<div class="col-last even-row-color">
 <div class="block">Opponent memory (stage S3): one <a href="../OpponentProfile.html" title="class in hadur2.core.memory"><code>OpponentProfile</code></a> per opponent
  lineage, folded from each round's observations (<a class="req" href="../../../../../requirements.html#MEM-2">MEM-2</a>), encoded in a small checksummed
  binary format (<a href="../ProfileCodec.html" title="class in hadur2.core.memory"><code>ProfileCodec</code></a>) and kept in a
@@ -79,6 +81,33 @@ loadScripts(document, 'script');</script>
 </div>
 <section class="class-uses">
 <ul class="block-list">
+<li>
+<section class="detail" id="hadur.bench">
+<h2>Uses of <a href="../OpponentProfile.html" title="class in hadur2.core.memory">OpponentProfile</a> in <a href="../../../../hadur/bench/package-summary.html">hadur.bench</a></h2>
+<div class="caption"><span>Methods in <a href="../../../../hadur/bench/package-summary.html">hadur.bench</a> with parameters of type <a href="../OpponentProfile.html" title="class in hadur2.core.memory">OpponentProfile</a></span></div>
+<div class="summary-table three-column-summary">
+<div class="table-header col-first">Modifier and Type</div>
+<div class="table-header col-second">Method</div>
+<div class="table-header col-last">Description</div>
+<div class="col-first even-row-color"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color"><span class="type-name-label">Report.</span><code><a href="../../../../hadur/bench/Report.html#renderOpponent(hadur.bench.Opponent,java.util.List,java.util.List,hadur2.core.memory.OpponentProfile,java.lang.String,java.lang.String,boolean,int,int,int,int,java.lang.String)" class="member-name-link">renderOpponent</a><wbr>(<a href="../../../../hadur/bench/Opponent.html" title="class in hadur.bench">Opponent</a>&nbsp;o,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../hadur/bench/BattleResult.html" title="class in hadur.bench">BattleResult</a>&gt;&nbsp;candidate,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../hadur/bench/BattleResult.html" title="class in hadur.bench">BattleResult</a>&gt;&nbsp;baseline,
+ <a href="../OpponentProfile.html" title="class in hadur2.core.memory">OpponentProfile</a>&nbsp;profile,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;robot,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;baselineRobot,
+ boolean&nbsp;warm,
+ int&nbsp;rounds,
+ int&nbsp;runs,
+ int&nbsp;width,
+ int&nbsp;height,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;cpuConstant)</code></div>
+<div class="col-last even-row-color">
+<div class="block">One opponent's own report: a per-battle table (seed by seed, with the baseline and the paired difference when a baseline ran), then every section of the full report for that opponent alone.</div>
+</div>
+</div>
+</section>
+</li>
 <li>
 <section class="detail" id="hadur2.core">
 <h2>Uses of <a href="../OpponentProfile.html" title="class in hadur2.core.memory">OpponentProfile</a> in <a href="../../package-summary.html">hadur2.core</a></h2>

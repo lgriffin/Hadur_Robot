@@ -383,93 +383,98 @@ loadScripts(document, 'script');</script>
 <div class="block">A rolling hit rate: the last <code>capacity</code> shot outcomes and their estimate (<a class="req" href="../requirements.html#DIST-1">DIST-1</a>'s
  "rolling hit rate").</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/gun/HybridGun.html" title="class in hadur2.core.gun">HybridGun</a></div>
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="hadur/bench/Host.html" title="class in hadur.bench">Host</a></div>
 <div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="block">Describes the machine a bench ran on, for the report header (issue #102: bench numbers
+ differ between hosts, so each report says which one made them).</div>
+</div>
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/gun/HybridGun.html" title="class in hadur2.core.gun">HybridGun</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block"><a class="req" href="../requirements.html#GUN-4">GUN-4</a>: a third gun, rated alongside the main and anti-surfer guns and fired when it rates
  highest.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="hadur/bench/InactivityCheck.html" title="class in hadur.bench">InactivityCheck</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="hadur/bench/InactivityCheck.html" title="class in hadur.bench">InactivityCheck</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">D2's check on the engine (END-4): with two robots that never hit each other, does the one
  with more energy survive Robocode's inactivity penalty?</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/knn/KdTree.html" title="class in hadur2.core.knn">KdTree&lt;T&gt;</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/knn/KdTree.html" title="class in hadur2.core.knn">KdTree&lt;T&gt;</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">Weighted squared-Euclidean KD-tree with optional FIFO size limit.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/knn/KdTree.Entry.html" title="class in hadur2.core.knn">KdTree.Entry&lt;T&gt;</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/knn/KdTree.Entry.html" title="class in hadur2.core.knn">KdTree.Entry&lt;T&gt;</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">One search result.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/knn/KnnView.html" title="class in hadur2.core.knn">KnnView&lt;T&gt;</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/knn/KnnView.html" title="class in hadur2.core.knn">KnnView&lt;T&gt;</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">One KNN "view" of an opponent: a feature space (its <a href="hadur2/core/knn/DistanceFormula.html" title="class in hadur2.core.knn"><code>DistanceFormula</code></a>), a bounded
  <a href="hadur2/core/knn/KdTree.html" title="class in hadur2.core.knn"><code>KdTree</code></a> of past wave outcomes in that space, and the settings that say which waves
  it learns from and how many neighbours it returns.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/memory/LineageKey.html" title="class in hadur2.core.memory">LineageKey</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/memory/LineageKey.html" title="class in hadur2.core.memory">LineageKey</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">Turns the name the radar reports into the key a profile is filed under, so that every
  version of a robot shares one profile: <code>"abc.Shadow 3.84"</code> and
  <code>"abc.Shadow 3.83c (2)"</code> are both <code>"abc.Shadow"</code>.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/replay/LineCodec.html" title="class in hadur2.core.replay">LineCodec</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/replay/LineCodec.html" title="class in hadur2.core.replay">LineCodec</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">Text form of <a href="hadur2/core/model/BotInput.html" title="class in hadur2.core.model"><code>BotInput</code></a> and <a href="hadur2/core/model/BotOrders.html" title="class in hadur2.core.model"><code>BotOrders</code></a>, one line each, so a battle can be
  recorded and replayed through the core (<a class="req" href="../requirements.html#CORE-2">CORE-2</a>).</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/link/LinkCodec.html" title="class in hadur2.core.link">LinkCodec</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/link/LinkCodec.html" title="class in hadur2.core.link">LinkCodec</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block"><a class="req" href="../requirements.html#LINK-1">LINK-1</a>: a <a href="hadur2/core/link/Report.html" title="class in hadur2.core.link"><code>Report</code></a> as bytes and back.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab5"><a href="hadur2/core/link/LinkFormatException.html" title="class in hadur2.core.link">LinkFormatException</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab5">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab5"><a href="hadur2/core/link/LinkFormatException.html" title="class in hadur2.core.link">LinkFormatException</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab5">
 <div class="block">A message that is not a report this build can read: refused whole (<a class="req" href="../requirements.html#LINK-2">LINK-2</a>).</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="hadur/bench/LiveDetails.html" title="class in hadur.bench">LiveDetails</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="hadur/bench/LiveDetails.html" title="class in hadur.bench">LiveDetails</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">Reads a saved LiteRumble <code>BotDetails</code> page (MIME, HTML table: rank, name, APS, APS
  CI, NPP, survival, KNNPBI, battles, latest battle, opponent APS, opponent survival) and
  reports APS and survival by opponent-APS band, by UTC hour of the latest battle, a
  before/after split at a given time, and, when a bench report is given, live minus bench
  share for every opponent the two have in common (<a class="req" href="../requirements.html#BENCH-5">BENCH-5</a>).</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab4"><a href="hadur/bench/LiveDetails.Pairing.html" title="class in hadur.bench">LiveDetails.Pairing</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab4">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab4"><a href="hadur/bench/LiveDetails.Pairing.html" title="class in hadur.bench">LiveDetails.Pairing</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab4">
 <div class="block">One row of the BotDetails table: one live pairing against one opponent.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="hadur/bench/LogHarvester.html" title="class in hadur.bench">LogHarvester</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="hadur/bench/LogHarvester.html" title="class in hadur.bench">LogHarvester</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">Collects what a battle looked like from the outside.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/gun/MainGun.html" title="class in hadur2.core.gun">MainGun</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/gun/MainGun.html" title="class in hadur2.core.gun">MainGun</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">The main gun: a KNN displacement-vector gun with a kernel-density choice of angle.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/gun/MainGun.Aimed.html" title="class in hadur2.core.gun">MainGun.Aimed</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/gun/MainGun.Aimed.html" title="class in hadur2.core.gun">MainGun.Aimed</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">An angle and the mass behind it, see <a href="hadur2/core/gun/MainGun.html#aimWithMass(hadur2.core.model.Wave,hadur2.core.knn.KnnView,java.awt.geom.Point2D.Double,long)"><code>MainGun.aimWithMass(hadur2.core.model.Wave, hadur2.core.knn.KnnView&lt;hadur2.core.model.TimestampedFiringAngle&gt;, java.awt.geom.Point2D.Double, long)</code></a>.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/model/MaxEscapeTarget.html" title="class in hadur2.core.model">MaxEscapeTarget</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/model/MaxEscapeTarget.html" title="class in hadur2.core.model">MaxEscapeTarget</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">The result of a precise maximum-escape-angle prediction: how far, as an angle seen from a
  wave's source, the target can get from its bearing at fire time before the wave reaches
  it, and where it would be then.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/melee/MeleeController.html" title="class in hadur2.core.melee">MeleeController</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/melee/MeleeController.html" title="class in hadur2.core.melee">MeleeController</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">Runs Hadur's melee subsystems for one tick and returns what the robot should do.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/melee/MeleeController.Command.html" title="class in hadur2.core.melee">MeleeController.Command</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/melee/MeleeController.Command.html" title="class in hadur2.core.melee">MeleeController.Command</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">What Hadur should do this tick.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/melee/MeleeController.Situation.html" title="class in hadur2.core.melee">MeleeController.Situation</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/melee/MeleeController.Situation.html" title="class in hadur2.core.melee">MeleeController.Situation</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">What Hadur knows about itself this tick.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/melee/MeleeEnergyPolicy.html" title="class in hadur2.core.melee">MeleeEnergyPolicy</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/melee/MeleeEnergyPolicy.html" title="class in hadur2.core.melee">MeleeEnergyPolicy</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">Melee bullet power (<a class="req" href="../requirements.html#MGUN-2">MGUN-2</a>, <a class="req" href="../requirements.html#MGUN-3">MGUN-3</a>), the plan's energy table:
 
  
@@ -481,290 +486,295 @@ loadScripts(document, 'script');</script>
      2.0 inside 300 px rising to 3.0 at 150 px.
  </div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/melee/MeleeGun.html" title="class in hadur2.core.melee">MeleeGun</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/melee/MeleeGun.html" title="class in hadur2.core.melee">MeleeGun</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">The field gun's fallback for an opponent with too little history (<a class="req" href="../requirements.html#MGUN-1">MGUN-1</a>): circular
  prediction, or linear while the opponent's turn rate is unknown.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/melee/MeleeGun.Aim.html" title="class in hadur2.core.melee">MeleeGun.Aim</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">&nbsp;</div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab3"><a href="hadur2/core/melee/MeleeGun.Strategy.html" title="enum class in hadur2.core.melee">MeleeGun.Strategy</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab3">&nbsp;</div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="hadur/bench/MeleeHarvester.html" title="class in hadur.bench">MeleeHarvester</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/melee/MeleeGun.Aim.html" title="class in hadur2.core.melee">MeleeGun.Aim</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">&nbsp;</div>
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab3"><a href="hadur2/core/melee/MeleeGun.Strategy.html" title="enum class in hadur2.core.melee">MeleeGun.Strategy</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab3">&nbsp;</div>
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="hadur/bench/MeleeHarvester.html" title="class in hadur.bench">MeleeHarvester</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">Watches a melee battle from the outside, for the melee gates.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/MeleeMemory.html" title="class in hadur2.core">MeleeMemory</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/MeleeMemory.html" title="class in hadur2.core">MeleeMemory</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">Loads and saves the opponents' melee profile blocks (<a class="req" href="../requirements.html#MMEM-1">MMEM-1</a>) in the same
  <a href="hadur2/core/port/ProfileStore.html" title="interface in hadur2.core.port"><code>ProfileStore</code></a> as the 1v1 profiles.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/MeleeMemory.Loaded.html" title="class in hadur2.core">MeleeMemory.Loaded</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/MeleeMemory.Loaded.html" title="class in hadur2.core">MeleeMemory.Loaded</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">A loaded block and whether it came from the store.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/melee/MeleeProfile.html" title="class in hadur2.core.melee">MeleeProfile</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/melee/MeleeProfile.html" title="class in hadur2.core.melee">MeleeProfile</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">What Hadur remembers about one opponent from melee battles (<a class="req" href="../requirements.html#MMEM-1">MMEM-1</a>): how often its
  inferred shots hit Hadur, whether those hits were aimed head-on or led, how hard it
  fires, how often it comes in to ram, and where it usually finishes.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab3"><a href="hadur2/core/melee/MeleeProfile.AimClass.html" title="enum class in hadur2.core.melee">MeleeProfile.AimClass</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab3">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab3"><a href="hadur2/core/melee/MeleeProfile.AimClass.html" title="enum class in hadur2.core.melee">MeleeProfile.AimClass</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab3">
 <div class="block">Aim classes of the hits on Hadur, the index into <a href="hadur2/core/melee/MeleeProfile.html#aimHits"><code>MeleeProfile.aimHits</code></a>.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/melee/MeleeProfileCodec.html" title="class in hadur2.core.melee">MeleeProfileCodec</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/melee/MeleeProfileCodec.html" title="class in hadur2.core.melee">MeleeProfileCodec</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">The melee profile block's file format (<a class="req" href="../requirements.html#MMEM-1">MMEM-1</a>): small, hand-written, versioned and
  checksummed like the 1v1 profile's, and written to its own file beside it.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/melee/MeleeProfileFolder.html" title="class in hadur2.core.melee">MeleeProfileFolder</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/melee/MeleeProfileFolder.html" title="class in hadur2.core.melee">MeleeProfileFolder</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">One round's melee observations of each opponent, waiting to join its
  <a href="hadur2/core/melee/MeleeProfile.html" title="class in hadur2.core.melee"><code>MeleeProfile</code></a> when the round ends (<a class="req" href="../requirements.html#MMEM-1">MMEM-1</a>).</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/melee/MeleeProfileFolder.Tally.html" title="class in hadur2.core.melee">MeleeProfileFolder.Tally</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/melee/MeleeProfileFolder.Tally.html" title="class in hadur2.core.melee">MeleeProfileFolder.Tally</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">One opponent's round so far.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab5"><a href="hadur2/core/melee/MeleeProfileFormatException.html" title="class in hadur2.core.melee">MeleeProfileFormatException</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab5">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab5"><a href="hadur2/core/melee/MeleeProfileFormatException.html" title="class in hadur2.core.melee">MeleeProfileFormatException</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab5">
 <div class="block">Bytes that are not a valid melee profile block: wrong magic or version, truncated, bad
  checksum or bad values (<a class="req" href="../requirements.html#MMEM-1">MMEM-1</a>).</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/melee/MeleeRadar.html" title="class in hadur2.core.melee">MeleeRadar</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/melee/MeleeRadar.html" title="class in hadur2.core.melee">MeleeRadar</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">Melee radar.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="hadur/bench/MeleeReport.html" title="class in hadur.bench">MeleeReport</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="hadur/bench/MeleeReport.html" title="class in hadur.bench">MeleeReport</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">The melee bench's report, built from each battle's <code>melee.csv</code> (the engine's final
  scores), <code>rounds.csv</code> (<a href="hadur/bench/MeleeHarvester.html" title="class in hadur.bench"><code>MeleeHarvester</code></a>) and <code>hadur.log</code>.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="hadur/bench/MeleeReport.Battle.html" title="class in hadur.bench">MeleeReport.Battle</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="hadur/bench/MeleeReport.Battle.html" title="class in hadur.bench">MeleeReport.Battle</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">One battle's outcome.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="hadur/bench/MeleeRunner.html" title="class in hadur.bench">MeleeRunner</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="hadur/bench/MeleeRunner.html" title="class in hadur.bench">MeleeRunner</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">Runs one melee battle in this JVM and writes <code>melee.csv</code> into the battle directory:
  one row per robot in finishing order.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/MeleeSeam.html" title="class in hadur2.core">MeleeSeam</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/MeleeSeam.html" title="class in hadur2.core">MeleeSeam</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">The conductor's seam for the melee brain (A2): it turns each <a href="hadur2/core/role/Tick.html" title="class in hadur2.core.role"><code>Tick</code></a> into the
  <a href="hadur2/core/melee/MeleeController.html" title="class in hadur2.core.melee"><code>MeleeController</code></a>'s own arguments, as <code>HadurCore</code> did before, and holds the melee
  shelf (<a href="hadur2/core/MeleeMemory.html" title="class in hadur2.core"><code>MeleeMemory</code></a>) the conductor handed it by charter, or none.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/melee/MeleeStrategy.html" title="class in hadur2.core.melee">MeleeStrategy</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/melee/MeleeStrategy.html" title="class in hadur2.core.melee">MeleeStrategy</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">Picks Hadur's overall posture in a melee from the state of the battle.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/melee/MeleeStrategy.Plan.html" title="class in hadur2.core.melee">MeleeStrategy.Plan</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/melee/MeleeStrategy.Plan.html" title="class in hadur2.core.melee">MeleeStrategy.Plan</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">The chosen posture, plus what it implies for targeting and positioning.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab3"><a href="hadur2/core/melee/MeleeStrategy.Posture.html" title="enum class in hadur2.core.melee">MeleeStrategy.Posture</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab3">&nbsp;</div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/melee/MeleeWaves.html" title="class in hadur2.core.melee">MeleeWaves</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab3"><a href="hadur2/core/melee/MeleeStrategy.Posture.html" title="enum class in hadur2.core.melee">MeleeStrategy.Posture</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab3">&nbsp;</div>
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/melee/MeleeWaves.html" title="class in hadur2.core.melee">MeleeWaves</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">Targeting waves on every gun-heat cycle (<a class="req" href="../requirements.html#MGUN-4">MGUN-4</a>): whenever the gun comes off cooldown, and
  every <a href="hadur2/core/melee/MeleeWaves.html#IDLE_INTERVAL"><code>MeleeWaves.IDLE_INTERVAL</code></a> ticks while it sits cool without firing, a wave goes out at
  every opponent in sight carrying the angle the field gun would aim at it.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/melee/MeleeWaves.Wave.html" title="class in hadur2.core.melee">MeleeWaves.Wave</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/melee/MeleeWaves.Wave.html" title="class in hadur2.core.melee">MeleeWaves.Wave</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">One wave at one opponent.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/port/MemoryProfileStore.html" title="class in hadur2.core.port">MemoryProfileStore</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/port/MemoryProfileStore.html" title="class in hadur2.core.port">MemoryProfileStore</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">A <a href="hadur2/core/port/ProfileStore.html" title="interface in hadur2.core.port"><code>ProfileStore</code></a> held in memory, for tests and the bench.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab5"><a href="hadur2/core/port/MemoryProfileStore.Crash.html" title="class in hadur2.core.port">MemoryProfileStore.Crash</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab5">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab5"><a href="hadur2/core/port/MemoryProfileStore.Crash.html" title="class in hadur2.core.port">MemoryProfileStore.Crash</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab5">
 <div class="block">Thrown by a write that <a href="hadur2/core/port/MemoryProfileStore.html#crashAfter(int)"><code>MemoryProfileStore.crashAfter(int)</code></a> cut short.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/melee/MinimumRiskMovement.html" title="class in hadur2.core.melee">MinimumRiskMovement</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/melee/MinimumRiskMovement.html" title="class in hadur2.core.melee">MinimumRiskMovement</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">Melee movement: minimum risk (<a class="req" href="../requirements.html#MMOVE-1">MMOVE-1</a>..4), the HawkOnFire and Diamond shape.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/melee/MinimumRiskMovement.View.html" title="class in hadur2.core.melee">MinimumRiskMovement.View</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/melee/MinimumRiskMovement.View.html" title="class in hadur2.core.melee">MinimumRiskMovement.View</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">What the movement sees this tick.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/policy/MirrorDetector.html" title="class in hadur2.core.policy">MirrorDetector</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/policy/MirrorDetector.html" title="class in hadur2.core.policy">MirrorDetector</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block"><a class="req" href="../requirements.html#MIR-1">MIR-1</a>: recognising a robot that moves as a mirror image of us.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/move/MirrorDrive.html" title="class in hadur2.core.move">MirrorDrive</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/move/MirrorDrive.html" title="class in hadur2.core.move">MirrorDrive</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block"><a class="req" href="../requirements.html#MIR-1">MIR-1</a>: a path decided in advance, so a robot that mirrors it can be hit.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/move/MoveController.html" title="class in hadur2.core.move">MoveController</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/move/MoveController.html" title="class in hadur2.core.move">MoveController</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">What the duel's surf knows about the enemy's gun: its waves in flight, the KNN danger
  views that score where on a wave its bullets go, its hit rate on us, and our bullets in
  flight with the shadows they cast on its waves (<a class="req" href="../requirements.html#MOVE-1">MOVE-1</a>).</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/policy/MoveFlavour.html" title="class in hadur2.core.policy">MoveFlavour</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/policy/MoveFlavour.html" title="class in hadur2.core.policy">MoveFlavour</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block"><a class="req" href="../requirements.html#MOVE-2">MOVE-2</a>: when the enemy hits us more than its profile says it does, beyond the margin of
  error, the movement changes flavour at the next surfable wave.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab3"><a href="hadur2/core/policy/MoveFlavour.Step.html" title="enum class in hadur2.core.policy">MoveFlavour.Step</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab3">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab3"><a href="hadur2/core/policy/MoveFlavour.Step.html" title="enum class in hadur2.core.policy">MoveFlavour.Step</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab3">
 <div class="block">The flavours in the order they are added; each keeps the ones before it.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/move/MoveFormula.html" title="class in hadur2.core.move">MoveFormula</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/move/MoveFormula.html" title="class in hadur2.core.move">MoveFormula</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">The surf's main feature space: nine attributes of our own movement when an enemy wave was
  fired, each scaled to about [0, 1], that the danger views' KD-trees search for the
  enemy's past firing situations most like the one being surfed.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/physics/MovementPredictor.html" title="class in hadur2.core.physics">MovementPredictor</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/physics/MovementPredictor.html" title="class in hadur2.core.physics">MovementPredictor</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">Tick-by-tick prediction of a robot's movement under Robocode's physics, and the precise
  maximum escape angle built on it.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/adapt/Opening.html" title="class in hadur2.core.adapt">Opening</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/adapt/Opening.html" title="class in hadur2.core.adapt">Opening</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">What the opening book decided for one battle, read once from the profile at the first
  scan (the artifact's "one struct").</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab3"><a href="hadur2/core/adapt/Opening.Gun.html" title="enum class in hadur2.core.adapt">Opening.Gun</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab3">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab3"><a href="hadur2/core/adapt/Opening.Gun.html" title="enum class in hadur2.core.adapt">Opening.Gun</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab3">
 <div class="block">The gun to start with (<a class="req" href="../requirements.html#ADAPT-1">ADAPT-1</a>), from the movement tier.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/adapt/OpeningBook.html" title="class in hadur2.core.adapt">OpeningBook</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/adapt/OpeningBook.html" title="class in hadur2.core.adapt">OpeningBook</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">Reads a profile's tiers once and turns them into an <a href="hadur2/core/adapt/Opening.html" title="class in hadur2.core.adapt"><code>Opening</code></a> (the artifact's
  "Recognise, then adapt").</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="hadur/bench/Opponent.html" title="class in hadur.bench">Opponent</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="hadur/bench/Opponent.html" title="class in hadur.bench">Opponent</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">One entry of <code>reference-set.txt</code>.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/memory/OpponentProfile.html" title="class in hadur2.core.memory">OpponentProfile</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/memory/OpponentProfile.html" title="class in hadur2.core.memory">OpponentProfile</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">Everything Hadur remembers about one opponent lineage between battles (the artifact's
  profile schema): who it is, how recent battles went, how its gun does against us, how
  it moves under our guns, and seed samples for the KNN views (S4).</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/memory/OpponentProfile.BattleOutcome.html" title="class in hadur2.core.memory">OpponentProfile.BattleOutcome</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/memory/OpponentProfile.BattleOutcome.html" title="class in hadur2.core.memory">OpponentProfile.BattleOutcome</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">One battle's result as Hadur saw it.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/melee/OpponentStats.html" title="class in hadur2.core.melee">OpponentStats</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/melee/OpponentStats.html" title="class in hadur2.core.melee">OpponentStats</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">Statistics about one opponent, accumulated across every round of a battle.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab3"><a href="hadur2/core/melee/OpponentStats.GunType.html" title="enum class in hadur2.core.melee">OpponentStats.GunType</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab3">&nbsp;</div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab3"><a href="hadur2/core/melee/OpponentStats.MovementType.html" title="enum class in hadur2.core.melee">OpponentStats.MovementType</a></div>
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab3"><a href="hadur2/core/melee/OpponentStats.GunType.html" title="enum class in hadur2.core.melee">OpponentStats.GunType</a></div>
 <div class="col-last odd-row-color all-classes-table all-classes-table-tab3">&nbsp;</div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/melee/OpponentStatsBook.html" title="class in hadur2.core.melee">OpponentStatsBook</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab3"><a href="hadur2/core/melee/OpponentStats.MovementType.html" title="enum class in hadur2.core.melee">OpponentStats.MovementType</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab3">&nbsp;</div>
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/melee/OpponentStatsBook.html" title="class in hadur2.core.melee">OpponentStatsBook</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">Battle-long store of <a href="hadur2/core/melee/OpponentStats.html" title="class in hadur2.core.melee"><code>OpponentStats</code></a>.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/move/OurBullet.html" title="class in hadur2.core.move">OurBullet</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/move/OurBullet.html" title="class in hadur2.core.move">OurBullet</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">One of our bullets in flight, as the core fired it: it leaves from where we stood on the
  tick we fired, along the gun's heading that tick, and after turn <code>k</code> it is
  <code>speed * (k - fireTime)</code> from there (the engine's order, checked in S2's bench).</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/move/PlanInterval.html" title="class in hadur2.core.move">PlanInterval</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/move/PlanInterval.html" title="class in hadur2.core.move">PlanInterval</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">MOVE-8: where our current plan puts us on one enemy wave, as the firing angles that would
  hit us there.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab3"><a href="hadur2/core/role/Posture.html" title="enum class in hadur2.core.role">Posture</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab3">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab3"><a href="hadur2/core/role/Posture.html" title="enum class in hadur2.core.role">Posture</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab3">
 <div class="block">The set of subsystems that drives the robot for a tick.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/policy/PowerPolicy.html" title="class in hadur2.core.policy">PowerPolicy</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/policy/PowerPolicy.html" title="class in hadur2.core.policy">PowerPolicy</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">When to fire full power instead of the gun's own choice, and, separately, when to fire
  less than it chose because a kill is already certain.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab3"><a href="hadur2/core/policy/PowerPolicy.Lead.html" title="enum class in hadur2.core.policy">PowerPolicy.Lead</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab3">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab3"><a href="hadur2/core/policy/PowerPolicy.Lead.html" title="enum class in hadur2.core.policy">PowerPolicy.Lead</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab3">
 <div class="block">What the lead-aware regime (POW-7 to POW-9) asks of the gun's power: <code>OFF</code> leaves
  1.20's choice, <code>CHAFF</code> is the minimum power, <code>DEFAULT</code> is the gun's base
  power without its power-down.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab3"><a href="hadur2/core/policy/PowerPolicy.Reason.html" title="enum class in hadur2.core.policy">PowerPolicy.Reason</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab3">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab3"><a href="hadur2/core/policy/PowerPolicy.Reason.html" title="enum class in hadur2.core.policy">PowerPolicy.Reason</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab3">
 <div class="block">Why a shot got the power it did: <code>GUN</code> when no rule applies and the gun's own
  power stands, <code>POW_1</code>/<code>POW_2</code>/<code>POW_3</code> for the full-power rules,
  <code>POW_4</code> when the expected-value comparison picked full power over the gun's own.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/memory/ProfileCodec.html" title="class in hadur2.core.memory">ProfileCodec</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/memory/ProfileCodec.html" title="class in hadur2.core.memory">ProfileCodec</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">The profile file format: small, hand-written, versioned and checksummed (the artifact's
  "Format" section).</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/memory/ProfileFolder.html" title="class in hadur2.core.memory">ProfileFolder</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/memory/ProfileFolder.html" title="class in hadur2.core.memory">ProfileFolder</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">Collects one round's observations of the opponent and folds them into its profile when
  the round ends (<a class="req" href="../requirements.html#MEM-2">MEM-2</a>).</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab5"><a href="hadur2/core/memory/ProfileFormatException.html" title="class in hadur2.core.memory">ProfileFormatException</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab5">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab5"><a href="hadur2/core/memory/ProfileFormatException.html" title="class in hadur2.core.memory">ProfileFormatException</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab5">
 <div class="block">Bytes that are not a valid profile: wrong magic or version, truncated, bad checksum or bad values.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/memory/ProfileLibrary.html" title="class in hadur2.core.memory">ProfileLibrary</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/memory/ProfileLibrary.html" title="class in hadur2.core.memory">ProfileLibrary</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">Loads and saves opponent profiles in a <a href="hadur2/core/port/ProfileStore.html" title="interface in hadur2.core.port"><code>ProfileStore</code></a>.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/memory/ProfileLibrary.Loaded.html" title="class in hadur2.core.memory">ProfileLibrary.Loaded</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/memory/ProfileLibrary.Loaded.html" title="class in hadur2.core.memory">ProfileLibrary.Loaded</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">The result of a load.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab3"><a href="hadur2/core/memory/ProfileLibrary.Saved.html" title="enum class in hadur2.core.memory">ProfileLibrary.Saved</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab3">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab3"><a href="hadur2/core/memory/ProfileLibrary.Saved.html" title="enum class in hadur2.core.memory">ProfileLibrary.Saved</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab3">
 <div class="block">What a save did: <code>WRITTEN</code> in full; <code>WRITTEN_WITHOUT_SEEDS</code> when only the
  stats fitted (<a class="req" href="../requirements.html#MEM-5">MEM-5</a>); <code>SKIPPED</code> when even they did not, leaving the old file;
  <code>FAILED</code> when the store or codec threw.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab1"><a href="hadur2/core/port/ProfileStore.html" title="interface in hadur2.core.port">ProfileStore</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab1">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab1"><a href="hadur2/core/port/ProfileStore.html" title="interface in hadur2.core.port">ProfileStore</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab1">
 <div class="block">Where opponent profiles are kept between battles: a flat directory of named byte
  blobs with a size quota.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/move/RamEscape.html" title="class in hadur2.core.move">RamEscape</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/move/RamEscape.html" title="class in hadur2.core.move">RamEscape</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block"><a class="req" href="../requirements.html#RAM-2">RAM-2</a>: keeping a charging rammer at arm's length.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/policy/RammerPolicy.html" title="class in hadur2.core.policy">RammerPolicy</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/policy/RammerPolicy.html" title="class in hadur2.core.policy">RammerPolicy</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block"><a class="req" href="../requirements.html#RAM-1">RAM-1</a>, <a class="req" href="../requirements.html#RAM-2">RAM-2</a>: recognising a robot that is simply driving at us, and the response to it, no
  profile or gun tier needed.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/replay/Replay.html" title="class in hadur2.core.replay">Replay</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/replay/Replay.html" title="class in hadur2.core.replay">Replay</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">Runs a recorded battle back through a fresh core and guard, the same way the robot
  drives them, and returns the orders for every tick (<a class="req" href="../requirements.html#CORE-2">CORE-2</a>).</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/replay/Replay.Tick.html" title="class in hadur2.core.replay">Replay.Tick</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/replay/Replay.Tick.html" title="class in hadur2.core.replay">Replay.Tick</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">One replayed tick: what the live robot issued and what the replay produced.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="hadur/bench/Report.html" title="class in hadur.bench">Report</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="hadur/bench/Report.html" title="class in hadur.bench">Report</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">Renders bench results as Markdown.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/link/Report.html" title="class in hadur2.core.link">Report</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/link/Report.html" title="class in hadur2.core.link">Report</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">One member's report for one tick (<a class="req" href="../requirements.html#LINK-4">LINK-4</a>): its own state, what its radar saw fresh, the
  deaths it knows of this round and the bullets it fired.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/link/Report.Shot.html" title="class in hadur2.core.link">Report.Shot</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/link/Report.Shot.html" title="class in hadur2.core.link">Report.Shot</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">A bullet the member fired: from where, on which heading, at what power and when.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/link/Report.Sighting.html" title="class in hadur2.core.link">Report.Sighting</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/link/Report.Sighting.html" title="class in hadur2.core.link">Report.Sighting</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">Where a robot stood when one of us scanned it, and when.</div>
+</div>
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="hadur/bench/RobotJar.html" title="class in hadur.bench">RobotJar</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="block">Where the built robot lives and which release it is, so that no bench default lags the
+ project version (issue #102).</div>
 </div>
 <div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/model/RobotState.html" title="class in hadur2.core.model">RobotState</a></div>
 <div class="col-last even-row-color all-classes-table all-classes-table-tab2">

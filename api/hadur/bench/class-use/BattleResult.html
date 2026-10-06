@@ -143,18 +143,34 @@ loadScripts(document, 'script');</script>
  condition.</div>
 </div>
 <div class="col-first odd-row-color"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color"><span class="type-name-label">Report.</span><code><a href="../Report.html#renderPaired(java.util.Map,java.util.Map,java.lang.String,java.lang.String)" class="member-name-link">renderPaired</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="../Opponent.html" title="class in hadur.bench">Opponent</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../BattleResult.html" title="class in hadur.bench">BattleResult</a>&gt;&gt;&nbsp;candidate,
+<div class="col-second odd-row-color"><span class="type-name-label">Report.</span><code><a href="../Report.html#renderOpponent(hadur.bench.Opponent,java.util.List,java.util.List,hadur2.core.memory.OpponentProfile,java.lang.String,java.lang.String,boolean,int,int,int,int,java.lang.String)" class="member-name-link">renderOpponent</a><wbr>(<a href="../Opponent.html" title="class in hadur.bench">Opponent</a>&nbsp;o,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../BattleResult.html" title="class in hadur.bench">BattleResult</a>&gt;&nbsp;candidate,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../BattleResult.html" title="class in hadur.bench">BattleResult</a>&gt;&nbsp;baseline,
+ <a href="../../../hadur2/core/memory/OpponentProfile.html" title="class in hadur2.core.memory">OpponentProfile</a>&nbsp;profile,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;robot,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;baselineRobot,
+ boolean&nbsp;warm,
+ int&nbsp;rounds,
+ int&nbsp;runs,
+ int&nbsp;width,
+ int&nbsp;height,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;cpuConstant)</code></div>
+<div class="col-last odd-row-color">
+<div class="block">One opponent's own report: a per-battle table (seed by seed, with the baseline and the paired difference when a baseline ran), then every section of the full report for that opponent alone.</div>
+</div>
+<div class="col-first even-row-color"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color"><span class="type-name-label">Report.</span><code><a href="../Report.html#renderPaired(java.util.Map,java.util.Map,java.lang.String,java.lang.String)" class="member-name-link">renderPaired</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="../Opponent.html" title="class in hadur.bench">Opponent</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../BattleResult.html" title="class in hadur.bench">BattleResult</a>&gt;&gt;&nbsp;candidate,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="../Opponent.html" title="class in hadur.bench">Opponent</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../BattleResult.html" title="class in hadur.bench">BattleResult</a>&gt;&gt;&nbsp;baseline,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;candidateRobot,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;baselineRobot)</code></div>
-<div class="col-last odd-row-color">
+<div class="col-last even-row-color">
 <div class="block"><a class="req" href="../../../../requirements.html#BENCH-2">BENCH-2</a>: the paired score-share difference per opponent between the candidate and
  baseline jars, seed for seed, plus a <a class="req" href="../../../../requirements.html#BENCH-1">BENCH-1</a> stratified APS estimate for each jar
  from the set's opponent weights (0 when the set carries none).</div>
 </div>
-<div class="col-first even-row-color"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Double.html" title="class or interface in java.lang" class="external-link">Double</a>&gt;</code></div>
-<div class="col-second even-row-color"><span class="type-name-label">Report.</span><code><a href="../Report.html#shares(java.util.List)" class="member-name-link">shares</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../BattleResult.html" title="class in hadur.bench">BattleResult</a>&gt;&nbsp;rs)</code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Double.html" title="class or interface in java.lang" class="external-link">Double</a>&gt;</code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">Report.</span><code><a href="../Report.html#shares(java.util.List)" class="member-name-link">shares</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../BattleResult.html" title="class in hadur.bench">BattleResult</a>&gt;&nbsp;rs)</code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
 </div>
 <div class="caption"><span>Constructors in <a href="../package-summary.html">hadur.bench</a> with parameters of type <a href="../BattleResult.html" title="class in hadur.bench">BattleResult</a></span></div>
 <div class="summary-table three-column-summary">
