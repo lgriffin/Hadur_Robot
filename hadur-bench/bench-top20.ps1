@@ -48,6 +48,20 @@
 .PARAMETER PerOpponent
   Where to write one report per opponent (--per-opponent). Default:
   ../docs/bench/local/<yyyy-MM-dd>_<Label>.
+.PARAMETER Repeat
+  Fight each (jar, opponent, seed) this many times (--repeat K, BENCH-53) and print the
+  score-share SD; writes repeat.tsv. Default: off.
+.PARAMETER ColdWarm
+  Fight each seed cold, then warm on the shelf the cold battle left (--cold-warm true,
+  BENCH-54); writes cold-warm.tsv. Default: off.
+.PARAMETER Retries
+  Run a failed battle again up to this many times (--retries N, BENCH-55). Default: the
+  bench's own, 1.
+.PARAMETER Field
+  The arena as WIDTHxHEIGHT (--field). Default: the bench's own for the mode.
+.PARAMETER DryRun
+  Print what would be built, fetched and run, and the bench's argument list, and run nothing.
+  The argument file is not written.
 .PARAMETER SkipBuild
   Skip `mvn -q package -DskipTests -Dmaven.javadoc.skip` at the repo root before the bench.
 .PARAMETER Engine
@@ -77,6 +91,11 @@ param(
     [string]$Out = "",
     [string]$Report = "",
     [string]$PerOpponent = "",
+    [int]$Repeat = 0,
+    [switch]$ColdWarm,
+    [int]$Retries = -1,
+    [string]$Field = "",
+    [switch]$DryRun,
     [switch]$SkipBuild,
     [switch]$SkipFetch,
     [string]$Engine = ""
@@ -85,10 +104,7 @@ param(
 $ErrorActionPreference = "Stop"
 Set-Location $PSScriptRoot
 
-function QuoteIfNeeded([string]$value) {
-    if ($value -match '\s') { return '"' + $value + '"' }
-    return $value
-}
+. (Join-Path $PSScriptRoot "bench-args.ps1")
 
 if ($Parallel -le 0) {
     $cores = [Environment]::ProcessorCount
@@ -117,7 +133,9 @@ if ((-not $CpuConstant) -and (-not $NoCpuPin)) {
     }
 }
 
-if (-not $SkipBuild) {
+if ($DryRun) {
+    if (-not $SkipBuild) { Write-Host "dry run, would run: mvn -q package -DskipTests -Dmaven.javadoc.skip (repo root)" }
+} elseif (-not $SkipBuild) {
     Write-Host "mvn -q package -DskipTests -Dmaven.javadoc.skip (repo root)"
     Push-Location ..
     & mvn -q package "-DskipTests" "-Dmaven.javadoc.skip"
@@ -126,35 +144,45 @@ if (-not $SkipBuild) {
     if ($code -ne 0) { exit $code }
 }
 
-if (-not $SkipFetch) {
+if ($DryRun) {
+    if (-not $SkipFetch) { Write-Host "dry run, would run: .\fetch-opponents.ps1 -Set $Set" }
+} elseif (-not $SkipFetch) {
     Write-Host ".\fetch-opponents.ps1 -Set $Set"
     & .\fetch-opponents.ps1 -Set $Set
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 }
 
 $parts = @(
-    "--set", (QuoteIfNeeded $Set),
+    "--set", $Set,
     "--seeds", $Seeds,
     "--rounds", $Rounds,
     "--parallel", $Parallel,
-    "--out", (QuoteIfNeeded $Out),
-    "--report", (QuoteIfNeeded $Report),
-    "--per-opponent", (QuoteIfNeeded $PerOpponent)
+    "--out", $Out,
+    "--report", $Report,
+    "--per-opponent", $PerOpponent
 )
-if ($RobotJar) { $parts += @("--robot-jar", (QuoteIfNeeded $RobotJar)) }
-if ($Robot) { $parts += @("--robot", (QuoteIfNeeded $Robot)) }
+if ($RobotJar) { $parts += @("--robot-jar", $RobotJar) }
+if ($Robot) { $parts += @("--robot", $Robot) }
 if ($Baseline) {
-    $parts += @("--baseline", (QuoteIfNeeded $Baseline), "--baseline-robot", (QuoteIfNeeded $BaselineRobot))
+    $parts += @("--baseline", $Baseline, "--baseline-robot", $BaselineRobot)
 }
 if ($CpuConstant) { $parts += @("--cpu-constant", $CpuConstant) }
+if ($Repeat -gt 0) { $parts += @("--repeat", $Repeat) }
+if ($ColdWarm) { $parts += @("--cold-warm", "true") }
+if ($Retries -ge 0) { $parts += @("--retries", $Retries) }
+if ($Field) { $parts += @("--field", $Field) }
 
-$execArgs = $parts -join " "
 # The engine is the bench's own Maven dependency, so another release is a property away;
 # the bench's classpath file is rebuilt with it on this compile (issue #109).
 $mvnArgs = @("-q")
 if ($Engine) { $mvnArgs += "-Drobocode.version=$Engine" }
+$execArgs = New-BenchArgFile -Parts $parts -Name "$Label-$stamp" -DryRun:$DryRun
 $mvnArgs += @("compile", "exec:java", "-Dexec.args=$execArgs")
 Write-Host ("mvn " + ($mvnArgs -join " "))
+if ($DryRun) {
+    Write-Host "dry run: nothing was built, fetched or run"
+    exit 0
+}
 & mvn @mvnArgs
 $benchCode = $LASTEXITCODE
 

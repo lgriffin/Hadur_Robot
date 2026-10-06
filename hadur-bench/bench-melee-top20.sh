@@ -49,6 +49,11 @@
 #   --out DIR              working directory, default work/<label>-<timestamp>
 #   --report FILE          the combined report (suite run), default ../docs/bench/local/<date>_<label>.md;
 #                          with separate processes a report per field, <date>_<label>_<field>.md
+#   --repeat K             fight each (jar, opponent, seed) K times and print the score-share SD (BENCH-53); writes repeat.tsv
+#   --cold-warm            fight each seed cold, then warm on the shelf the cold battle left (BENCH-54); writes cold-warm.tsv
+#   --retries N            run a failed battle again up to N times (BENCH-55), Bench default 1
+#   --field WxH            the arena, e.g. 1000x1000, Bench default for the mode
+#   --dry-run              print what would be built, fetched and run, and run nothing
 #   --skip-build           skip `mvn package` at the repo root
 #   --skip-fetch           skip fetching the opponent jars
 set -u
@@ -75,6 +80,11 @@ OUT=""
 REPORT=""
 SKIP_BUILD=0
 SKIP_FETCH=0
+REPEAT=""
+COLD_WARM=0
+RETRIES=""
+FIELD=""
+DRY_RUN=0
 
 while [ $# -gt 0 ]; do
     case "$1" in
@@ -97,6 +107,11 @@ while [ $# -gt 0 ]; do
         --report) REPORT="${2:?--report needs a file}"; shift 2 ;;
         --skip-build) SKIP_BUILD=1; shift ;;
         --skip-fetch) SKIP_FETCH=1; shift ;;
+        --repeat) REPEAT="${2:?--repeat needs a number}"; shift 2 ;;
+        --cold-warm) COLD_WARM=1; shift ;;
+        --retries) RETRIES="${2:?--retries needs a number}"; shift 2 ;;
+        --field) FIELD="${2:?--field needs WIDTHxHEIGHT}"; shift 2 ;;
+        --dry-run) DRY_RUN=1; shift ;;
         -h|--help) sed -n '2,/^set -u$/p' "$0" | sed '$d' | sed 's/^# \{0,1\}//'; exit 0 ;;
         *) echo "unknown option: $1" >&2; exit 2 ;;
     esac
@@ -136,6 +151,15 @@ for f in $FIELD_LIST; do
     case "$f" in A|B|C|D|E) ;; *) echo "unknown field: $f (A to E)" >&2; exit 2 ;; esac
 done
 
+# --dry-run prints each build, fetch and run step instead of running it.
+step() {
+    if [ "$DRY_RUN" -eq 1 ]; then
+        echo "dry run, would run: $*"
+        return 0
+    fi
+    "$@"
+}
+
 STAMP=$(date +%Y%m%d-%H%M%S)
 if [ -z "$OUT" ]; then OUT="work/$LABEL-$STAMP"; fi
 DAY=$(date +%Y-%m-%d)
@@ -145,14 +169,14 @@ mkdir -p "$(dirname "$REPORT")"
 
 if [ "$SKIP_BUILD" -eq 0 ]; then
     echo "mvn -q package -DskipTests -Dmaven.javadoc.skip (repo root)"
-    (cd .. && mvn -q package -DskipTests -Dmaven.javadoc.skip)
+    (cd .. && step mvn -q package -DskipTests -Dmaven.javadoc.skip)
     status=$?
     if [ "$status" -ne 0 ]; then exit "$status"; fi
 fi
 
 if [ "$SKIP_FETCH" -eq 0 ]; then
     echo "./fetch-opponents.sh --set melee-top20-set.txt"
-    ./fetch-opponents.sh --set melee-top20-set.txt
+    step ./fetch-opponents.sh --set melee-top20-set.txt
     status=$?
     if [ "$status" -ne 0 ]; then exit "$status"; fi
 fi
@@ -167,28 +191,34 @@ if [ "$PARALLEL" -gt 1 ]; then COMMON_ARGS="$COMMON_ARGS --parallel $PARALLEL"; 
 if [ -n "$CHILD_CPUS" ]; then COMMON_ARGS="$COMMON_ARGS --child-cpus $CHILD_CPUS"; fi
 if [ -n "$CHILD_HEAP" ]; then COMMON_ARGS="$COMMON_ARGS --child-heap $CHILD_HEAP"; fi
 if [ -n "$CPU_CONSTANT" ]; then COMMON_ARGS="$COMMON_ARGS --cpu-constant $CPU_CONSTANT"; fi
+if [ -n "$REPEAT" ]; then COMMON_ARGS="$COMMON_ARGS --repeat $REPEAT"; fi
+if [ "$COLD_WARM" -eq 1 ]; then COMMON_ARGS="$COMMON_ARGS --cold-warm true"; fi
+if [ -n "$RETRIES" ]; then COMMON_ARGS="$COMMON_ARGS --retries $RETRIES"; fi
+if [ -n "$FIELD" ]; then COMMON_ARGS="$COMMON_ARGS --field $FIELD"; fi
 if [ -n "$BASELINE" ]; then COMMON_ARGS="$COMMON_ARGS --baseline $BASELINE --baseline-robot \"$BASELINE_ROBOT\""; fi
 if [ "$PER_OPPONENT" -eq 1 ]; then COMMON_ARGS="$COMMON_ARGS --per-opponent ${REPORT_BASE}_per-opponent"; fi
 
 if [ "$SEPARATE" -eq 0 ]; then
     ARGS="--suite melee-top20.txt $COMMON_ARGS --out $OUT --report $REPORT$ROBOT_ARGS"
     echo "mvn -q compile exec:java -Dexec.args=\"$ARGS\""
-    mvn -q compile exec:java -Dexec.args="$ARGS"
+    step mvn -q compile exec:java -Dexec.args="$ARGS"
     code=$?
     echo "report: $REPORT"
+    if [ "$DRY_RUN" -eq 1 ]; then echo "dry run: nothing was built, fetched or run"; exit 0; fi
 else
     # One compile up front; the field processes then only run exec:java, so none of them
     # recompiles the tree under another.
     echo "mvn -q compile"
-    mvn -q compile
+    step mvn -q compile
     status=$?
     if [ "$status" -ne 0 ]; then exit "$status"; fi
-    mkdir -p "$OUT"
+    if [ "$DRY_RUN" -eq 0 ]; then mkdir -p "$OUT"; fi
     run_field() {
         f=$1
         lower=$(echo "$f" | tr 'A-E' 'a-e')
         FARGS="--set melee-top20-$lower.txt --melee true --field 1000x1000 --label $f $COMMON_ARGS --out $OUT/$f --report ${REPORT_BASE}_$f.md$ROBOT_ARGS"
         echo "field $f: mvn -q exec:java -Dexec.args=\"$FARGS\" (log $OUT/$f.log)"
+        if [ "$DRY_RUN" -eq 1 ]; then return 0; fi
         mvn -q exec:java -Dexec.args="$FARGS" > "$OUT/$f.log" 2>&1
         echo $? > "$OUT/$f.status"
     }
@@ -199,6 +229,7 @@ else
         if [ "$running" -ge "$FIELDS_PARALLEL" ]; then wait; running=0; fi
     done
     wait
+    if [ "$DRY_RUN" -eq 1 ]; then echo "dry run: nothing was built, fetched or run"; exit 0; fi
     code=0
     for f in $FIELD_LIST; do
         s=$(cat "$OUT/$f.status" 2>/dev/null || echo 1)
