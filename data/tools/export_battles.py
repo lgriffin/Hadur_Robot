@@ -31,7 +31,8 @@ FALLBACK_HEADER = (
     "profileFound,memoryFailures,seedsEvicted,bulletsIntercepted,jitteredShots,shotsFired,"
     "tiers,openingGun,gunSeed,surfSeed,seedDecays,"
     "openingDistance,meanDistance,targetDistance,roundTicks,finishTicks,ramTicks,fullPowerShots,"
-    "maxLevel,slowTicks,shadowedWaves,interceptsShadowed,flavourChanges,flavourStep,errors"
+    "maxLevel,slowTicks,shadowedWaves,interceptsShadowed,flavourChanges,flavourStep,errors,"
+    "duressTicks,engineDisables,securityErrors,rShortfall,finalRMissing"
 ).split(",")
 
 # hadur.bench.Opponent.slug(): runs of characters outside [A-Za-z0-9.] become one "_".
@@ -181,6 +182,64 @@ def collect(work, set_file, build, baseline_build, want_share):
     return columns, rows, candidate_count, baseline_count, unmatched
 
 
+def read_rounds(path):
+    """Return (columns, [row dicts]) from one battle's rounds.tsv, or (None, []) if absent."""
+    try:
+        with open(path, encoding="utf-8") as f:
+            lines = f.read().splitlines()
+    except OSError:
+        return None, []
+    if not lines:
+        return None, []
+    header = lines[0].split("\t")
+    return header, [dict(zip(header, line.split("\t"))) for line in lines[1:] if line]
+
+
+def collect_rounds(work, set_file, build, baseline_build):
+    """One row per round of every battle that left a rounds.tsv (hadur.bench.RoundSeries).
+
+    The build, opponent and seed columns come from the directory name and the set file, as
+    in collect(), so the labels match the battle TSV; the rest are the file's own columns.
+    """
+    battles_dir = os.path.join(work, "battles")
+    try:
+        dirnames = sorted(
+            n for n in os.listdir(battles_dir) if os.path.isdir(os.path.join(battles_dir, n))
+        )
+    except OSError:
+        dirnames = []
+    opponents = load_set(set_file)
+    columns = None
+    rows = []
+    for dirname in dirnames:
+        m = DIR_RE.match(dirname)
+        opp = opponents.get(m.group("slug")) if m else None
+        if opp is None:
+            continue
+        is_baseline = m.group("baseline") is not None
+        if is_baseline and not baseline_build:
+            continue
+        header, battle_rows = read_rounds(os.path.join(battles_dir, dirname, "rounds.tsv"))
+        if header is None:
+            continue
+        own = [c for c in header if c not in ("build", "opponent", "seed")]
+        if columns is None:
+            columns = ["build", "opponent", "role", "rank", "seed"] + own
+        for r in battle_rows:
+            row = {"build": baseline_build if is_baseline else build, "opponent": opp[0],
+                   "role": opp[1], "rank": opp[2], "seed": m.group("seed")}
+            row.update({c: r.get(c, "") for c in own})
+            rows.append(row)
+
+    def sort_key(row):
+        rank = row["rank"]
+        return (0 if row["build"] == build else 1, int(rank) if rank != "" else float("inf"),
+                row["opponent"], int(row["seed"]), int(row.get("round") or 0))
+
+    rows.sort(key=sort_key)
+    return columns or ["build", "opponent", "role", "rank", "seed"], rows
+
+
 def write_tsv(path, columns, rows):
     with open(path, "w", encoding="utf-8", newline="") as f:
         writer = csv.DictWriter(f, columns, delimiter="\t", lineterminator="\n")
@@ -196,6 +255,8 @@ def main():
     parser.add_argument("--baseline-build", default="", help="label for baseline rows; omit to skip them")
     parser.add_argument("--out", required=True, help="TSV file to write")
     parser.add_argument("--share", action="store_true", help="add score_share and survival_share columns")
+    parser.add_argument("--rounds-out", default="",
+                        help="also write the per-round rows (each battle's rounds.tsv) to this TSV")
     args = parser.parse_args()
 
     columns, rows, candidate_count, baseline_count, unmatched = collect(
@@ -209,6 +270,10 @@ def main():
     if unmatched:
         summary += "; %d unmatched: %s" % (len(unmatched), ", ".join(unmatched))
     print(summary)
+    if args.rounds_out:
+        r_columns, r_rows = collect_rounds(args.work, args.set, args.build, args.baseline_build)
+        write_tsv(args.rounds_out, r_columns, r_rows)
+        print("wrote %d round rows to %s" % (len(r_rows), args.rounds_out))
     return 0
 
 

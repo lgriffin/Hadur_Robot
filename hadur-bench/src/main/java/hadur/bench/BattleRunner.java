@@ -1,6 +1,7 @@
 package hadur.bench;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -69,7 +70,15 @@ public final class BattleRunner {
             } else {
                 engine.runBattle(new BattleSpecification(rounds,
                     new BattlefieldSpecification(width, height), robots), true);
+                // G14: let the engine finish reporting before the log is read and closed.
+                harvester.awaitDrain(5000, 250);
                 harvester.close();
+                try {
+                    RoundSeries.write(battleDir, us, them, Integer.getInteger("RANDOMSEED", 0),
+                        harvester.rounds());
+                } catch (IOException e) {
+                    System.err.println("rounds.tsv not written: " + e);
+                }
                 if (results[0] == null || theirs[0] == null) {
                     out.println(BattleResult.failed("no results " + errors));
                     exit = 3;

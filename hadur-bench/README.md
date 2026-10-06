@@ -21,7 +21,12 @@ mvn exec:java -Dexec.args="--mode cold --rounds 35 --seeds 5"
 | `--rounds N` | 35 | rounds per battle |
 | `--seeds N` | 5 | battles per opponent (cold) |
 | `--battles N` | 5 | consecutive battles per opponent (warm) |
-| `--field WxH` | 800x600 | battlefield size |
+| `--field WxH` | 800x600 | battlefield size (BENCH-57: `WxH` with both at least 1, else refused; melee and the TeamRumble use 1000x1000 and 1200x1200 via this) |
+| `--repeat K` | | (BENCH-53) fight each (jar, opponent, seed) K times, K at least 2, cold duel only; writes `repeat.tsv` and prints the score-share SD, per opponent and pooled, which is what the host alone does to one battle |
+| `--cold-warm true` | | (BENCH-54) fight each seed cold (data wiped), then warm on the shelf that battle left, per build; writes `cold-warm.tsv` pairing the two with the shelf the warm battle started on; cold duel only |
+| `--retries N` | 1 | (BENCH-55) run a battle that failed again, up to N more times; battles still failed are listed at the end of the run and under "Failed battles" in the report. 0 turns it off |
+| `--dry-run true` | | (BENCH-56) say what would run (mode, set, battle count, field, flags, constant) and exit 0 without installing a robot or starting a battle |
+| `@FILE` | | (BENCH-59) as the only argument, read the arguments from FILE, one per line (blank lines and `#` lines skipped), so a value with a space needs no quoting; the PowerShell scripts use it |
 | `--robot-jar FILE` | follows `robot.release` in hadur-robot/pom.xml (3.8 today) | the robot jar |
 | `--robot-classes DIR` | | jar a compiled class tree instead, e.g. an older Hadur |
 | `--robot NAME` | follows `robot.release` in hadur-robot/pom.xml (3.8 today) | the robot's name as Robocode lists it |
@@ -111,6 +116,14 @@ compare its skipped-turn line with a sequential run (`--parallel 1`) of the same
 parallel skips noticeably more turns, the machine cannot sustain that many workers and
 `--parallel` should come down.
 
+A paired melee or team report also says how many battles of each build it used (BENCH-43): "Battles
+used" lines for the field and for each opponent, and for a team run a table of candidate, baseline
+and paired seeds per opponent. Pairing is by seed, so a failed battle drops its seed from the
+pairing; whenever the counts differ the report flags the pair as uneven. A team run's paired
+section also pools every opponent's pairs into a table of the other measures (BENCH-41): rounds
+won, survival, in-lane shots, focus fire and bullets on own members, each as mean and 95% interval
+for both builds and as the paired candidate-minus-baseline difference.
+
 ### The top-20 bench
 
 Why this bench exists, what it will and will not do, and the rules it runs under are in `docs/bench/charter.md`.
@@ -136,6 +149,39 @@ command before running it and exit with the bench's own exit code.
 
 The first example is a plain run at the defaults (5 seeds, 35 rounds). The second pairs the
 built jar against 3.7 by seed (BENCH-2), the way a release check compares two versions.
+
+All three top-20 scripts (`bench-top20`, `bench-team-top20`, `bench-melee-top20`, each in
+`.ps1` and `.sh`) take the options of issue #117 as `-Repeat K -ColdWarm -Retries N -Field WxH
+-DryRun` (PowerShell) or `--repeat K --cold-warm --retries N --field WxH --dry-run` (sh).
+`-DryRun`/`--dry-run` prints each build, fetch and bench step and the bench's argument list,
+and runs none of them; the way to check a change to a script is to run it that way.
+
+The PowerShell scripts pass the bench its arguments in a file (`work/args-<label>-<time>.txt`,
+one argument per line, via `@FILE` above) and give Maven only `-Dexec.args=@work/args-....txt`.
+Windows PowerShell 5.1 rebuilds a native command's line from its arguments and does not
+re-escape the quotes inside `-Dexec.args="..."`, so a quoted robot name reached `mvn.cmd`
+broken ("The syntax of the command is incorrect"); a path with no spaces or quotes survives.
+This was checked without a battle: a stand-in `mvn.cmd` that prints the command line it was
+given showed the old form arriving with its quotes stripped and the new form arriving intact,
+and `-DryRun` shows the argument list the file will hold.
+
+### Host load, conditions and repeatability (issue #117)
+
+- `result.csv` ends with `hostCpuMin,hostCpuMean,hostCpuMax,otherJvms` (BENCH-50): the
+  system CPU use sampled while that battle ran (0 to 1) and the most other Robocode JVMs
+  `jps` showed (the bench's own children left out). A row without them still reads, as NaN
+  and -1.
+- `conditions.json` in the work directory (BENCH-51) is written at the start of a run and
+  again at its end: git sha, the candidate and baseline jar checksums, `--parallel`, child
+  CPUs, the cpu constant, JVM flags, engine version, the host sample summary, and the
+  shelf (file count, bytes, SHA-256 of `robots/.data`) at the start.
+- The duel report's conditions line carries the child JVM flags as the melee and team ones do.
+- With `--baseline` the candidate fights first on odd seeds and the baseline first on even
+  ones (BENCH-52), so the order is not confounded with the build.
+- `./sweep-cpu-constant.sh --constant NANOS` (BENCH-58) runs one set at 0.5x, 1x and 2x of a
+  `robocode.cpu.constant`, labelling each run `<label>-cpu<m>x`; `--multipliers "0.5 1 2 4"`,
+  `--set`, `--seeds`, `--label`, `--script` and `--dry-run` are its options, and everything
+  after `--` goes to the bench script. Use `--dry-run` to see the three commands first.
 
 ## Opponents
 
@@ -166,8 +212,25 @@ pair's score, averaged) and survival (for each round, the share of the other rob
 outlived), both as the MeleeRumble computes them; the rounds that ended as a duel and who
 won them; sentry hits both ways; and totals from Hadur's `M` records. Each melee battle's
 directory holds `melee.csv` (final scores), `rounds.csv` (per round: place, the last
-opponent, sentry hits, skipped turns) and `hadur.log`. Sample bots ship with the engine. Other bots go in
+opponent, sentry hits, skipped turns, and since BENCH-40 the tick Hadur died, its killer and the
+last robot to hit it) and `hadur.log`. Sample bots ship with the engine. Other bots go in
 `opponents/` as jars (not committed) and are listed with their jar name.
+
+Who killed Hadur (BENCH-40). `rounds.csv` ends with `deathTick`, `killer` and `lastHit`, a dash in
+a round Hadur lived through (`lastHit` is still named if something hit it earlier). The engine
+does not say who killed a robot, so the harvester takes the robot whose bullet hit Hadur on the
+death tick or the tick before; with no such bullet (a ram, a wall, the inactivity rule) it takes
+the nearest robot still alive on the death tick. The report adds a "Hadur died in X of Y rounds,
+at a mean tick of N" line and a table of how many deaths each robot caused and how often it was
+the last to hit Hadur. A `rounds.csv` from before these columns just leaves the section out.
+
+Three tools under `data/tools` read a melee run outside the JVM. `export_melee.py --work W
+--build 3.8 --baseline-build 3.7 --out FILE.tsv` flattens every field's `melee.csv` files into one
+TSV. `melee_pairwise.py --work W` writes the per-opponent and per-field tables (with each field's
+deaths, mean death tick and top killer, and a pooled table of killers, when the rounds carry them),
+and `melee_pairwise.py --tsv FILE.tsv` prints the pooled paired difference: Hadur's APS in each
+(field, seed) cell for both builds, the candidate minus the baseline, as a mean over all cells
+with a 95% t interval, then the same per field. `python3 data/tools/test_*.py` tests them.
 
 ## Output
 
@@ -184,6 +247,38 @@ Each battle directory under `work/…/battles/` holds:
 - `engine.log`: the engine's own output.
 
 `report.md` in the working directory is the summary table.
+
+### Trust and per-round series (BENCH-20 to BENCH-25, issue #117)
+
+`result.csv` ends with five trust columns: `duressTicks` (ticks Hadur spent in duress, -1 in
+rows from before the column existed), `engineDisables`, `securityErrors` (engine
+"Preventing ..." lines), `rShortfall` (rounds with no `R` record) and `finalRMissing`
+(1 when the last round's record is the one that is missing). Old 51-column rows still parse.
+A battle is trusted when it finished, spent no ticks in duress, has an `R` record for every
+round and skipped no more than 2 turns per round on average; change the last limit with
+`-Dhadur.bench.trust.skips=N`.
+
+Before a battle is read, the runner waits (at most 5 s, 250 ms of quiet) for the engine's
+console output to drain, so a final `R` record that is still in flight is not lost. Missing
+records are counted instead of hidden. The cause of the missing last-round record was not
+found conclusively: the old logs lack exactly the last round's record in most short logs,
+which fits output printed after the last turn snapshot at the end of a battle.
+
+Each battle directory also holds `rounds.tsv`: one row per round (build, opponent, seed,
+round, won, survived, ticks, damage dealt and taken, hit rate, duress ticks, skips). To
+merge a run's files and print the first-rounds against last-rounds comparison afterwards:
+
+    java -cp target/classes hadur.bench.RoundSeries work/NAME --candidate "hadur2.Hadur 3.8" \
+        [--baseline "hadur2.Hadur 3.7"] [--tsv rounds.tsv] [--report rounds.md]
+
+`data/tools/export_battles.py ... --rounds-out rounds.tsv` writes the same rows with the
+build, role and rank labels beside the battle TSV.
+
+`report.md` gains a "Trust" table per opponent, a "Paired intervals by metric" table (score
+share, survival share, win rate and bullet-damage share, each as a paired interval in
+percentage points), a "Sensitivity: trusted pairs only" table that repeats the score-share
+interval without the untrusted battles, and the "First rounds against last rounds" section
+(first 5 rounds against the last 10, with the late-minus-early paired difference).
 
 The "Opponent memory" section (S3) counts the battles whose first scan loaded a stored
 profile, memory failures (Hadur's `MEM` records) and seed evictions. After each opponent's
@@ -222,6 +317,16 @@ real bullet in the same round within 3 ticks and 0.15 power. "Unseen" shots were
 while either robot was disabled and matched no wave; they are left out of the real-shot
 count. (A disabled robot is still scanned, so such a shot is often seen, and then counts.) "False waves" are inferred waves with no real bullet behind them;
 "ledger phantoms" are drops 1.20 would have read as shots that the ledger explained away.
+
+## Analysing the rows (BENCH-38, BENCH-39)
+
+`Stats` takes its 95% critical values from Student's t at the sample's own degrees of freedom
+(any df; no table limit, no 1.96 fallback) and offers `bootstrapDiff(a, b, B, seed)`, a
+percentile interval for a difference of means. Outside the JVM, `data/tools/analyse.py` pools
+the exported TSV rows (paired difference over all opponents, Holm and Benjamini-Hochberg
+adjustment, TOST non-inferiority, `--plan` for seeds needed) and `data/tools/repeatability.py`
+measures run-to-run repeatability. Seed pairing was measured to remove about no variance, so
+seed counts are planned unpaired. See `data/README.md`.
 
 ## Shield probe (BENCH-11)
 
@@ -345,6 +450,17 @@ T1 adds two things to a team report. `rounds.csv` gains a ninth column, `bullets
 engine's own count of our bullets that hit one of our members (the report prints it beside the
 members' `T` sums, whose last field is now the count of drives the teammate fence replaced), and
 each battle directory gets `friendly.log`, one line per such hit with the bullet's power and flight.
+
+`rounds.csv` then gains a tenth column, `focusFireRatio` (BENCH-42): of the damage our bullets did
+to enemies in the round, the share that landed on the enemy hit most (1.0 is all on one robot, a
+dash is a round with no damage). The report gives its mean per opponent and overall.
+
+`data/tools/export_team.py` flattens a team run's battle directories (a team battle leaves no
+`result.csv`, so `export_battles.py` finds nothing) into one TSV row per battle: score, the two
+teams' score share, rounds won and survived, skipped turns, duress ticks, shots, shots with a mate
+in the lane, bullets on mates and the focus-fire ratio, read from `team.csv`, `rounds.csv` and the
+members' logs as the team report reads them. A battle that left no standings is written with
+`ok` false.
 
 `team-gates.txt` is A5's team gate suite: `team-reference.txt`'s eight teams, three battles
 each, reported per opponent with the gate's counts (faults, skipped turns, LINK rejects,

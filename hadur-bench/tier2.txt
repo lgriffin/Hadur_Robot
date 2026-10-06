@@ -1,0 +1,30 @@
+# The second tier of the RoboRumble 1v1 ladder (G10, docs/bench/local/2026-10-06_harness-review.md):
+# every fifth robot ranked 21 to 100 in the 2026-10-06 15:05 UTC rankings, i.e. ranks 21, 26, 31, ... 96.
+# The rule is mechanical: take ranks r with (r - 21) % 5 == 0 and 21 <= r <= 100, skip hadur2.Hadur itself
+# (rank 29, not selected) and any robot known to have no archive jar (jd.Nullstride, rank 1, is outside
+# the range anyway). No selected robot is skipped, so there are 16.
+# Source: data/rumble/parsed/2026-10-06T1505Z_roborumble_rankings.tsv
+# Jar names follow the rule every other set file follows: the robot name with each space replaced by
+# an underscore, plus .jar. They are derived, not checked against the archive: fetch-opponents reports
+# any that fail to download. Jars from https://robocode-archive.strangeautomata.com/robots/<jar>, into
+# opponents/ (not committed).
+# Roles: `mid`, as leak-38.txt marks ranks 21 to about 200.
+# Seven of the 16 (ranks 21, 26, 31, 36, 41, 46, 51) already appear in roborumble-top50.txt, so their
+# jars are known to download; the other nine are derived by the rule and unchecked.
+#   <robot name as Robocode lists it> | <role> | <jar file in opponents/>
+rsalesc.roborio.Roborio 1.2.4 | mid | rsalesc.roborio.Roborio_1.2.4.jar
+fromHell.BlackBox 0.0.2 | mid | fromHell.BlackBox_0.0.2.jar
+pulsar.PulsarMax 0.8.9 | mid | pulsar.PulsarMax_0.8.9.jar
+pez.rumble.CassiusClay 2rho.02no | mid | pez.rumble.CassiusClay_2rho.02no.jar
+sheldor.mini.Foilist 1.3.1 | mid | sheldor.mini.Foilist_1.3.1.jar
+sheldor.mini.FoilistMC 1.0 | mid | sheldor.mini.FoilistMC_1.0.jar
+dft.Cardigan 1.09 | mid | dft.Cardigan_1.09.jar
+wcsv.Engineer.Engineer 0.5.4 | mid | wcsv.Engineer.Engineer_0.5.4.jar
+zen.Ronin 1.0.0 | mid | zen.Ronin_1.0.0.jar
+eem.zapper v6.03 | mid | eem.zapper_v6.03.jar
+DM.mega.Regicide 2.0rrr | mid | DM.mega.Regicide_2.0rrr.jar
+dft.Immortal 1.40 | mid | dft.Immortal_1.40.jar
+catcat20.shape.Theta 0.018 | mid | catcat20.shape.Theta_0.018.jar
+DM.mega.Bezier 1.618fprrr | mid | DM.mega.Bezier_1.618fprrr.jar
+jk.micro.Cotillion 0.8 | mid | jk.micro.Cotillion_0.8.jar
+sheldor.micro.Continuation 1.1 | mid | sheldor.micro.Continuation_1.1.jar

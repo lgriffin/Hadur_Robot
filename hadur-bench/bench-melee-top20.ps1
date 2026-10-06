@@ -59,6 +59,20 @@
 .PARAMETER Report
   The combined report (suite run). Default: ../docs/bench/local/<yyyy-MM-dd>_<Label>.md. With
   separate processes, one report per field: <yyyy-MM-dd>_<Label>_<field>.md.
+.PARAMETER Repeat
+  Fight each (jar, opponent, seed) this many times (--repeat K, BENCH-53) and print the
+  score-share SD; writes repeat.tsv. Default: off.
+.PARAMETER ColdWarm
+  Fight each seed cold, then warm on the shelf the cold battle left (--cold-warm true,
+  BENCH-54); writes cold-warm.tsv. Default: off.
+.PARAMETER Retries
+  Run a failed battle again up to this many times (--retries N, BENCH-55). Default: the
+  bench's own, 1.
+.PARAMETER Field
+  The arena as WIDTHxHEIGHT (--field). Default: the bench's own for the mode.
+.PARAMETER DryRun
+  Print what would be built, fetched and run, and the bench's argument list, and run nothing.
+  The argument file is not written.
 .PARAMETER SkipBuild
   Skip `mvn -q package -DskipTests -Dmaven.javadoc.skip` at the repo root before the bench.
 .PARAMETER SkipFetch
@@ -88,6 +102,11 @@ param(
     [string]$Label = "melee-top20",
     [string]$Out = "",
     [string]$Report = "",
+    [int]$Repeat = 0,
+    [switch]$ColdWarm,
+    [int]$Retries = -1,
+    [string]$Field = "",
+    [switch]$DryRun,
     [switch]$SkipBuild,
     [switch]$SkipFetch
 )
@@ -96,10 +115,7 @@ $ErrorActionPreference = "Stop"
 Set-Location $PSScriptRoot
 $benchDir = $PSScriptRoot
 
-function QuoteIfNeeded([string]$value) {
-    if ($value -match '\s') { return '"' + $value + '"' }
-    return $value
-}
+. (Join-Path $PSScriptRoot "bench-args.ps1")
 
 if ($Parallel -lt 1) {
     Write-Error "-Parallel must be at least 1"
@@ -140,7 +156,9 @@ if ((-not $CpuConstant) -and (-not $NoCpuPin)) {
     }
 }
 
-if (-not $SkipBuild) {
+if ($DryRun) {
+    if (-not $SkipBuild) { Write-Host "dry run, would run: mvn -q package -DskipTests -Dmaven.javadoc.skip (repo root)" }
+} elseif (-not $SkipBuild) {
     Write-Host "mvn -q package -DskipTests -Dmaven.javadoc.skip (repo root)"
     Push-Location ..
     & mvn -q package "-DskipTests" "-Dmaven.javadoc.skip"
@@ -149,15 +167,17 @@ if (-not $SkipBuild) {
     if ($code -ne 0) { exit $code }
 }
 
-if (-not $SkipFetch) {
+if ($DryRun) {
+    if (-not $SkipFetch) { Write-Host "dry run, would run: .\fetch-opponents.ps1 -Set melee-top20-set.txt" }
+} elseif (-not $SkipFetch) {
     Write-Host ".\fetch-opponents.ps1 -Set melee-top20-set.txt"
     & .\fetch-opponents.ps1 -Set melee-top20-set.txt
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 }
 
 $robotParts = @()
-if ($RobotJar) { $robotParts += @("--robot-jar", (QuoteIfNeeded $RobotJar)) }
-if ($Robot) { $robotParts += @("--robot", (QuoteIfNeeded $Robot)) }
+if ($RobotJar) { $robotParts += @("--robot-jar", $RobotJar) }
+if ($Robot) { $robotParts += @("--robot", $Robot) }
 
 # Options every Bench run gets, whether the suite or a single field.
 $commonParts = @("--seeds", $Seeds, "--rounds", $Rounds)
@@ -166,18 +186,26 @@ if ($ChildCpus -ge 0) { $commonParts += @("--child-cpus", $ChildCpus) }
 if ($ChildHeap) { $commonParts += @("--child-heap", $ChildHeap) }
 if ($CpuConstant) { $commonParts += @("--cpu-constant", $CpuConstant) }
 if ($Baseline) {
-    $commonParts += @("--baseline", (QuoteIfNeeded $Baseline), "--baseline-robot", (QuoteIfNeeded $BaselineRobot))
+    $commonParts += @("--baseline", $Baseline, "--baseline-robot", $BaselineRobot)
 }
+if ($Repeat -gt 0) { $commonParts += @("--repeat", $Repeat) }
+if ($ColdWarm) { $commonParts += @("--cold-warm", "true") }
+if ($Retries -ge 0) { $commonParts += @("--retries", $Retries) }
+if ($Field) { $commonParts += @("--field", $Field) }
 if (-not $NoPerOpponent) {
-    $commonParts += @("--per-opponent", (QuoteIfNeeded "${reportBase}_per-opponent"))
+    $commonParts += @("--per-opponent", "${reportBase}_per-opponent")
 }
 
 $benchCode = 0
 if (-not $separate) {
     $parts = @("--suite", "melee-top20.txt") + $commonParts +
-        @("--out", (QuoteIfNeeded $Out), "--report", (QuoteIfNeeded $Report)) + $robotParts
-    $execArgs = $parts -join " "
-    Write-Host ('mvn -q compile exec:java "-Dexec.args=' + $execArgs + '"')
+        @("--out", $Out, "--report", $Report) + $robotParts
+    $execArgs = New-BenchArgFile -Parts $parts -Name "$Label-$stamp" -DryRun:$DryRun
+    Write-Host "mvn -q compile exec:java -Dexec.args=$execArgs"
+    if ($DryRun) {
+        Write-Host "dry run: nothing was built, fetched or run"
+        exit 0
+    }
     & mvn -q compile exec:java "-Dexec.args=$execArgs"
     $benchCode = $LASTEXITCODE
     Write-Host "report: $Report"
@@ -185,16 +213,23 @@ if (-not $separate) {
     # One compile up front; the field processes then only run exec:java, so none of them
     # recompiles the tree under another.
     Write-Host "mvn -q compile"
-    & mvn -q compile
-    if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-    New-Item -ItemType Directory -Force -Path $Out | Out-Null
+    if (-not $DryRun) {
+        & mvn -q compile
+        if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+        New-Item -ItemType Directory -Force -Path $Out | Out-Null
+    }
     $fieldArgs = @{}
     foreach ($f in $fieldList) {
         $lower = $f.ToLower()
         $parts = @("--set", "melee-top20-$lower.txt", "--melee", "true", "--field", "1000x1000",
             "--label", $f) + $commonParts +
-            @("--out", (QuoteIfNeeded "$Out/$f"), "--report", (QuoteIfNeeded "${reportBase}_$f.md")) + $robotParts
-        $fieldArgs[$f] = $parts -join " "
+            @("--out", "$Out/$f", "--report", "${reportBase}_$f.md") + $robotParts
+        $fieldArgs[$f] = New-BenchArgFile -Parts $parts -Name "$Label-$stamp-$f" -DryRun:$DryRun
+    }
+    if ($DryRun) {
+        foreach ($f in $fieldList) { Write-Host "field ${f}: mvn -q exec:java -Dexec.args=$($fieldArgs[$f])" }
+        Write-Host "dry run: nothing was built, fetched or run"
+        exit 0
     }
     $jobs = @{}
     $pending = New-Object System.Collections.Queue
@@ -205,7 +240,7 @@ if (-not $separate) {
         while ($pending.Count -gt 0 -and $jobs.Count -lt $width) {
             $f = $pending.Dequeue()
             $log = Join-Path $benchDir "$Out/$f.log"
-            Write-Host ("field ${f}: mvn -q exec:java ""-Dexec.args=" + $fieldArgs[$f] + """ (log $Out/$f.log)")
+            Write-Host "field ${f}: mvn -q exec:java -Dexec.args=$($fieldArgs[$f]) (log $Out/$f.log)"
             $jobs[$f] = Start-Job -ArgumentList $benchDir, $fieldArgs[$f], $log -ScriptBlock {
                 param($dir, $execArgs, $logFile)
                 Set-Location $dir

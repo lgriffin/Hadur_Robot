@@ -11,6 +11,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -78,6 +79,15 @@ import java.util.zip.GZIPOutputStream;
  *     (team) concurrently, {@code --baseline}/{@code --baseline-robot} add a paired table,
  *     and {@code --per-opponent} writes a markdown per opponent (per field, in melee);
  *     {@code --keep-data} in melee needs {@code --parallel 1}.</li>
+ * <li>{@code --retries N} (BENCH-55, default 1) run a failed battle again up to N times; a
+ *     battle still failed is listed at the end of the run and in the report's footer.</li>
+ * <li>{@code --repeat K} (BENCH-53) fight each (jar, opponent, seed) K times and write
+ *     {@code repeat.tsv} with every battle's score share, printing the SD.</li>
+ * <li>{@code --cold-warm true} (BENCH-54) fight each seed cold and then warm on the shelf the
+ *     cold battle left, and write {@code cold-warm.tsv} with the pairing and the shelf.</li>
+ * <li>{@code --dry-run true} print what would run (opponents, battles, options) and exit.</li>
+ * <li>{@code @FILE} as the only argument (BENCH-59) reads the arguments from FILE, one per
+ *     line, so a robot name with a space needs no quoting through Maven or a shell.</li>
  * <li>{@code --only TEXT} run opponents whose name contains TEXT,
  *     {@code --out DIR} working directory (work/&lt;mode&gt;-&lt;time&gt;),
  *     {@code --report FILE} also copy the report there.</li>
@@ -116,6 +126,25 @@ public final class Bench {
     private final String baselineRobot;
     /** BENCH-4: the client-conditions file, or null when running a plain single pass. */
     private final Path client;
+    /** BENCH-55: how many times a failed battle is run again before it stays failed. */
+    private final int retries;
+    /** BENCH-53: how many times each (jar, opponent, seed) is fought in {@code --repeat} mode, or 0. */
+    private final int repeat;
+    /** BENCH-54: fight each seed cold, then warm on the shelf the cold battle left. */
+    private final boolean coldWarm;
+    private final boolean dryRun;
+    /** Battles that stayed failed after their retries, and those that needed one (BENCH-55). */
+    private final List<Failure> failures = Collections.synchronizedList(new ArrayList<>());
+    private final List<String> retried = Collections.synchronizedList(new ArrayList<>());
+    private final List<ColdWarm.Row> coldWarmRows = Collections.synchronizedList(new ArrayList<>());
+    /** BENCH-50, BENCH-51: the host sampler, the run's start and the shelf it began on; set once a run starts. */
+    private Host.Sampler sampler;
+    private Instant startedAt;
+    private Conditions.Shelf startShelf;
+    private volatile int workers = 1;
+
+    /** A battle that failed on every attempt. */
+    record Failure(String what, int attempts, String why) {}
 
     Bench(Map<String, String> opts) {
         this.opts = opts;
@@ -147,9 +176,9 @@ public final class Bench {
                                           : opts.getOrDefault("seeds", "5"));
         this.parallel = Integer.parseInt(opts.getOrDefault("parallel", "1"));
         if (parallel < 1) throw new IllegalArgumentException("--parallel must be at least 1, not " + parallel);
-        String[] field = opts.getOrDefault("field", "800x600").split("x");
-        this.width = Integer.parseInt(field[0]);
-        this.height = Integer.parseInt(field[1]);
+        int[] field = parseField(opts.getOrDefault("field", "800x600"));
+        this.width = field[0];
+        this.height = field[1];
         this.record = opts.containsKey("record") ? Path.of(opts.get("record")).toAbsolutePath() : null;
         if (record != null) {
             opts.putIfAbsent("robot", "hadur2.HadurRecorder " + release);
@@ -172,6 +201,26 @@ public final class Bench {
             }
         }
         this.client = opts.containsKey("client") ? Path.of(opts.get("client")).toAbsolutePath() : null;
+        this.retries = Integer.parseInt(opts.getOrDefault("retries", "1"));
+        if (retries < 0) throw new IllegalArgumentException("--retries must be at least 0, not " + retries);
+        this.repeat = Integer.parseInt(opts.getOrDefault("repeat", "0"));
+        if (repeat < 0 || repeat == 1) {
+            throw new IllegalArgumentException("--repeat needs at least 2 runs of each battle, not " + repeat);
+        }
+        this.coldWarm = Boolean.parseBoolean(opts.getOrDefault("cold-warm", "false"));
+        if (coldWarm && (warm || repeat > 0 || client != null || opts.containsKey("melee")
+                || opts.containsKey("team") || opts.containsKey("session") || record != null)) {
+            throw new IllegalArgumentException(
+                "--cold-warm is a cold-mode duel option: it does not combine with --mode warm, --repeat, "
+                + "--client, --melee, --team, --session or --record");
+        }
+        if (repeat > 0 && (warm || client != null || opts.containsKey("melee") || opts.containsKey("team")
+                || opts.containsKey("session") || record != null)) {
+            throw new IllegalArgumentException(
+                "--repeat is a cold-mode duel option: it does not combine with --mode warm, "
+                + "--client, --melee, --team, --session or --record");
+        }
+        this.dryRun = Boolean.parseBoolean(opts.getOrDefault("dry-run", "false"));
         String stamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss"));
         this.out = Path.of(opts.getOrDefault("out",
             "work/" + (warm ? "warm" : "cold") + "-" + stamp)).toAbsolutePath();
@@ -190,8 +239,38 @@ public final class Bench {
         return "hadur2.Hadur " + release;
     }
 
+    /** {@code WxH} as {width, height}; anything else is refused with the form it wants. */
+    static int[] parseField(String field) {
+        String[] f = field.split("x");
+        try {
+            if (f.length != 2) throw new NumberFormatException(field);
+            int w = Integer.parseInt(f[0].trim()), h = Integer.parseInt(f[1].trim());
+            if (w < 1 || h < 1) throw new NumberFormatException(field);
+            return new int[] {w, h};
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("--field must be WIDTHxHEIGHT, e.g. 800x600, not " + field);
+        }
+    }
+
+    /**
+     * BENCH-59: a single argument {@code @FILE} stands for the arguments in FILE, one per
+     * line (blank lines and lines starting with {@code #} skipped). A robot name with a space
+     * is then one line, with no quoting for Maven's {@code -Dexec.args}, cmd.exe or PowerShell
+     * 5.1 to mangle.
+     */
+    static String[] expandArgFile(String[] args) throws IOException {
+        if (args.length != 1 || !args[0].startsWith("@") || args[0].length() < 2) return args;
+        List<String> out = new ArrayList<>();
+        for (String line : Files.readAllLines(Path.of(args[0].substring(1)), StandardCharsets.UTF_8)) {
+            String t = !line.isEmpty() && line.charAt(0) == 0xFEFF ? line.substring(1) : line;
+            if (t.isBlank() || t.startsWith("#")) continue;
+            out.add(t);
+        }
+        return out.toArray(new String[0]);
+    }
+
     public static void main(String[] args) throws Exception {
-        Map<String, String> opts = parse(args);
+        Map<String, String> opts = parse(expandArgFile(args));
         System.exit(opts.containsKey("suite") ? runSuite(opts) : new Bench(opts).run());
     }
 
@@ -244,16 +323,62 @@ public final class Bench {
         return exit;
     }
 
-    private int run() throws Exception {
-        if (opts.containsKey("session")) return runSession();
+    int run() throws Exception {
+        if (opts.containsKey("session")) {
+            if (dryRun) {
+                System.out.println("dry run: --session " + opts.get("session") + ", no battle started");
+                return 0;
+            }
+            return runSession();
+        }
         List<Opponent> opponents = Opponent.load(benchDir.resolve(opts.getOrDefault("set", "reference-set.txt")));
         String only = opts.get("only");
         if (only != null) opponents.removeIf(o -> !o.name.contains(only));
+        if (dryRun) return dryRun(opponents);
         installRobots(opponents);
-        if (opts.containsKey("melee")) return runMelee(opponents);
-        if (opts.containsKey("team")) return runTeam(opponents);
-        if (client != null) return runClientConditions(opponents);
+        startedAt = Instant.now();
+        startShelf = Conditions.shelf(home.resolve("robots/.data"));
+        sampler = Host.Sampler.system();
+        sampler.start();
+        writeConditions(opponents, false);
+        try {
+            if (opts.containsKey("melee")) return runMelee(opponents);
+            if (opts.containsKey("team")) return runTeam(opponents);
+            if (client != null) return runClientConditions(opponents);
+            if (repeat > 0) return runRepeat(opponents);
+            return runDuel(opponents);
+        } finally {
+            sampler.close();
+            writeConditions(opponents, true);
+            printFailures();
+        }
+    }
 
+    /**
+     * BENCH-56, {@code --dry-run true}: says what the options and the set add up to, without installing a
+     * robot or starting a battle, so a script's command line can be checked cheaply.
+     */
+    private int dryRun(List<Opponent> opponents) {
+        String mode = opts.containsKey("melee") ? "melee" : opts.containsKey("team") ? "team"
+            : client != null ? "client conditions"
+            : repeat > 0 ? "repeat x" + repeat : coldWarm ? "cold-warm" : warm ? "warm" : "cold";
+        boolean field = opts.containsKey("melee");
+        int perOpponent = repeat > 0 ? runs * repeat : runs * (coldWarm ? 2 : 1);
+        int builds = baselineJar != null ? 2 : 1;
+        int battles = field ? runs * builds : opponents.size() * perOpponent * builds;
+        System.out.println("dry run: no robot installed, no battle started");
+        System.out.println("  mode " + mode + ", robot " + robot + (baselineJar == null ? "" : ", baseline " + baselineRobot
+            + " (" + baselineJar + ")"));
+        System.out.println("  set " + opts.getOrDefault("set", "reference-set.txt") + ": " + opponents.size() + " opponents; "
+            + battles + " battles of " + rounds + " rounds on " + width + "x" + height
+            + ", parallel " + parallel + ", retries " + retries);
+        System.out.println("  child flags " + childFlags() + ", cpu constant "
+            + (opts.containsKey("cpu-constant") ? opts.get("cpu-constant") : "engine's own") + ", out " + out);
+        System.out.println("  options " + new TreeMap<>(opts));
+        return 0;
+    }
+
+    private int runDuel(List<Opponent> opponents) throws Exception {
         // Issue #102: the duel modes run their battles on a pool of worker homes, --parallel
         // at a time. Cold mode schedules every (opponent, seed) battle on its own; warm mode
         // keeps an opponent's consecutive battles on one worker, so the data directory they
@@ -282,6 +407,7 @@ public final class Bench {
             }
         }
         List<Path> homes = workerHomes(Math.min(parallel, Math.max(1, jobs.size())));
+        workers = homes.size();
         pinCpuConstant(homes);
         runJobs(jobs, homes);
 
@@ -295,7 +421,7 @@ public final class Bench {
             if (stored[oi] != null) profiles.put(o, stored[oi]);
         }
 
-        String host = reportedCpuConstant() + ". Host: " + Host.describe() + ", parallel " + homes.size();
+        String host = duelHostLine(homes.size());
         String report = Report.render(results, profiles, robot, warm, rounds, runs, width, height, host);
         if (baselineResults != null) {
             // BENCH-2's diff table, then BENCH-3's full per-opponent diagnostics for the
@@ -309,6 +435,19 @@ public final class Bench {
             report += "\n" + Report.render(baselineResults, robot + " baseline (" + baselineRobot + ")",
                 warm, rounds, runs, width, height, host);
         }
+        if (coldWarm) {
+            ArrayList<ColdWarm.Row> rows = new ArrayList<>(coldWarmRows);
+            rows.sort(Comparator.comparing(ColdWarm.Row::opponent).thenComparingInt(ColdWarm.Row::seed)
+                .thenComparing(ColdWarm.Row::build));
+            Files.writeString(out.resolve("cold-warm.tsv"), ColdWarm.tsv(rows));
+            report += ColdWarm.render(rows);
+        }
+        List<RoundSeries.Row> roundRows = RoundSeries.readAll(out);
+        if (!roundRows.isEmpty()) {
+            Files.writeString(out.resolve("rounds.tsv"), RoundSeries.merge(roundRows));
+            report += Report.renderRoundSplit(roundRows, robot, baselineResults != null ? baselineRobot : null);
+        }
+        report += failureFooter(failures, retried);
         Files.writeString(out.resolve("report.md"), report);
         if (opts.containsKey("report")) {
             Path copy = Path.of(opts.get("report")).toAbsolutePath();
@@ -336,26 +475,153 @@ public final class Bench {
         return failed ? 1 : 0;
     }
 
+    /**
+     * BENCH-53, {@code --repeat K}: every (jar, opponent, seed) is fought K times in a row on one
+     * worker home, cold each time, and {@code repeat.tsv} keeps every battle. The spread of one
+     * seed's repeats is what the host alone does to a battle, so the report prints it as the
+     * score-share SD per opponent and pooled.
+     */
+    private int runRepeat(List<Opponent> opponents) throws Exception {
+        List<List<RepeatStudy.Row>> perJob = new ArrayList<>();
+        List<Job> jobs = new ArrayList<>();
+        List<String[]> builds = new ArrayList<>();
+        builds.add(new String[] {robot, ""});
+        if (baselineJar != null) builds.add(new String[] {baselineRobot, "-baseline"});
+        for (Opponent o : opponents) {
+            for (int s = 1; s <= runs; s++) {
+                int seed = s;
+                List<RepeatStudy.Row> mine = new ArrayList<>();
+                perJob.add(mine);
+                jobs.add(h -> {
+                    for (int rep = 1; rep <= repeat; rep++) {
+                        for (int b = 0; b < builds.size(); b++) {
+                            String[] build = builds.get(candidateFirst(rep) ? b : builds.size() - 1 - b);
+                            Path dir = out.resolve("battles").resolve(o.slug() + "-" + seed + "-r" + rep + build[1]);
+                            BattleResult r = fight(h, o, seed, dir, build[0], true);
+                            mine.add(RepeatStudy.Row.of(build[0], o.name, seed, rep, r));
+                            say(String.format(Locale.ROOT, "%s seed %d repeat %d/%d %s: score share %.1f%%%s",
+                                o.name, seed, rep, repeat, build[0], r.scoreShare() * 100,
+                                r.ok ? "" : " FAILED: " + r.errors));
+                        }
+                    }
+                });
+            }
+        }
+        List<Path> homes = workerHomes(Math.min(parallel, Math.max(1, jobs.size())));
+        workers = homes.size();
+        pinCpuConstant(homes);
+        runJobs(jobs, homes);
+
+        List<RepeatStudy.Row> rows = perJob.stream().flatMap(List::stream).toList();
+        Files.writeString(out.resolve("repeat.tsv"), RepeatStudy.tsv(rows));
+        String report = RepeatStudy.render(rows, repeat) + "\nConditions: " + duelHostLine(homes.size())
+            + ". Rounds " + rounds + ", field " + width + "x" + height + ".\n" + failureFooter(failures, retried);
+        Files.writeString(out.resolve("report.md"), report);
+        if (opts.containsKey("report")) {
+            Path copy = Path.of(opts.get("report")).toAbsolutePath();
+            Files.createDirectories(copy.getParent());
+            Files.writeString(copy, report);
+        }
+        System.out.println();
+        System.out.println(report);
+        return rows.stream().anyMatch(r -> !r.ok()) ? 1 : 0;
+    }
+
+    /**
+     * BENCH-51: {@code conditions.json}, written when the run starts and again when it ends:
+     * the commit, the jars' checksums, the parallelism and child settings, the CPU constant, the
+     * engine, the shelf the run began on and what the host sampler saw.
+     */
+    private void writeConditions(List<Opponent> opponents, boolean finished) {
+        try {
+            Map<String, Object> m = new LinkedHashMap<>();
+            m.put("started", startedAt.toString());
+            m.put("finished", finished ? Instant.now().toString() : null);
+            m.put("mode", opts.containsKey("melee") ? "melee" : opts.containsKey("team") ? "team"
+                : client != null ? "client" : repeat > 0 ? "repeat" : coldWarm ? "cold-warm" : warm ? "warm" : "cold");
+            m.put("git", Conditions.git(benchDir));
+            Map<String, Object> jars = new LinkedHashMap<>();
+            jars.put("candidate", installedJar(robot));
+            if (baselineJar != null) jars.put("baseline", installedJar(baselineRobot));
+            m.put("jars", jars);
+            m.put("robot", robot);
+            m.put("baselineRobot", baselineRobot);
+            m.put("engine", Report.ENGINE);
+            m.put("parallel", parallel);
+            m.put("workers", workers);
+            m.put("childCpus", opts.getOrDefault("child-cpus", parallel > 1 ? "2" : "0"));
+            m.put("childFlags", childFlags());
+            m.put("jvmFlags", JVM_FLAGS);
+            m.put("cpuConstant", reportedCpuConstant());
+            m.put("rounds", rounds);
+            m.put("seeds", runs);
+            m.put("field", width + "x" + height);
+            m.put("retries", retries);
+            m.put("repeat", repeat);
+            m.put("set", opts.getOrDefault("set", "reference-set.txt"));
+            m.put("opponents", opponents.size());
+            m.put("options", new TreeMap<>(opts));
+            m.put("host", Host.describe());
+            Host.Window w = sampler.overall();
+            Map<String, Object> sample = new LinkedHashMap<>();
+            sample.put("samples", w.samples());
+            sample.put("cpuMin", w.cpuMin());
+            sample.put("cpuMean", w.cpuMean());
+            sample.put("cpuMax", w.cpuMax());
+            sample.put("otherJvmsMax", w.otherJvms());
+            m.put("hostSample", sample);
+            m.put("shelfAtStart", startShelf.toMap());
+            m.put("failedBattles", failures.size());
+            m.put("retriedBattles", retried.size());
+            Files.createDirectories(out);
+            Files.writeString(out.resolve("conditions.json"), Conditions.json(m));
+        } catch (IOException | RuntimeException e) {
+            System.err.println("could not write conditions.json: " + e);
+        }
+    }
+
+    private Map<String, Object> installedJar(String robotName) {
+        String[] parts = robotName.split(" ");
+        return Conditions.jar(home.resolve("robots").resolve(parts[0] + "_" + parts[1] + ".jar"));
+    }
+
     /** A unit of work on one worker home: one battle (cold), or an opponent's run of battles (warm). */
     private interface Job {
         void run(Path home) throws Exception;
     }
 
     /**
-     * One seed of one opponent on a worker home: the candidate's battle, then the baseline's at
-     * the same seed when paired (BENCH-2). After the opponent's last seed the profile Hadur
-     * left is read from this home, before anything wipes it (MEM-3). A battle that throws is
-     * recorded as failed with the exception's message, so the report still shows it.
+     * One seed of one opponent on a worker home: the candidate's battle and the baseline's at
+     * the same seed when paired (BENCH-2). The two are fought in an order that alternates with
+     * the seed's parity (BENCH-52), so a trend in the host's load over a job cannot favour the
+     * same build on every seed. After the opponent's last seed the profile Hadur left is read
+     * from this home, before anything wipes it (MEM-3). A battle that throws is recorded as
+     * failed with the exception's message, so the report still shows it.
      */
     private void duel(Path h, Opponent o, int seed, BattleResult[] cand, BattleResult[] base,
                       OpponentProfile[] stored, int index) throws Exception {
         if (parallel == 1) System.out.printf("%s battle %d/%d ...%n", o.name, seed, runs);
-        BattleResult r;
-        try {
-            r = runBattle(o, seed, out.resolve("battles").resolve(o.slug() + "-" + seed), robot, h);
-        } catch (IOException | RuntimeException e) {
-            r = BattleResult.parse(BattleResult.failed("bench error: " + e));
+        if (base == null || candidateFirst(seed)) {
+            fightCandidate(h, o, seed, cand, stored, index);
+            if (base != null) {
+                if (!warm) wipeData(h);
+                fightBaseline(h, o, seed, base);
+            }
+        } else {
+            fightBaseline(h, o, seed, base);
+            if (!warm) wipeData(h);
+            fightCandidate(h, o, seed, cand, stored, index);
         }
+    }
+
+    /** BENCH-52: the candidate goes first on odd seeds, the baseline on even ones. */
+    static boolean candidateFirst(int seed) {
+        return seed % 2 != 0;
+    }
+
+    private void fightCandidate(Path h, Opponent o, int seed, BattleResult[] cand, OpponentProfile[] stored,
+                                int index) throws Exception {
+        BattleResult r = legs(h, o, seed, robot, o.slug() + "-" + seed);
         cand[seed - 1] = r;
         say(String.format(Locale.ROOT, "%s%s battle %d/%d: score share %.1f%%, wins %d/%d, skipped turns %d%s",
             parallel == 1 ? "  " : "", o.name, seed, runs, r.scoreShare() * 100, r.firsts, r.rounds,
@@ -364,20 +630,105 @@ public final class Bench {
             OpponentProfile p = storedProfile(h, o.name);
             if (p != null) stored[index] = p;
         }
-        if (base != null) {
-            if (!warm) wipeData(h);
-            BattleResult b;
+    }
+
+    private void fightBaseline(Path h, Opponent o, int seed, BattleResult[] base) throws Exception {
+        BattleResult b = legs(h, o, seed, baselineRobot, o.slug() + "-" + seed + "-baseline");
+        base[seed - 1] = b;
+        say(String.format(Locale.ROOT, "%s%s battle %d/%d: baseline score share %.1f%%%s",
+            parallel == 1 ? "  " : "", o.name, seed, runs, b.scoreShare() * 100,
+            b.ok ? "" : " FAILED: " + b.errors));
+    }
+
+    /**
+     * One build's battle at one seed. With {@code --cold-warm} it is the cold battle (the data
+     * directory is empty) followed by a warm one on the shelf the cold one left, and the pair is
+     * recorded for {@code cold-warm.tsv} (BENCH-54); the cold battle stands as the result.
+     */
+    private BattleResult legs(Path h, Opponent o, int seed, String robotName, String dirName) throws Exception {
+        Path battles = out.resolve("battles");
+        BattleResult cold = fight(h, o, seed, battles.resolve(dirName), robotName, !warm);
+        if (!coldWarm) return cold;
+        Conditions.Shelf shelf = Conditions.shelf(h.resolve("robots/.data"));
+        BattleResult second = fight(h, o, seed, battles.resolve(dirName + "-warm"), robotName, false);
+        coldWarmRows.add(new ColdWarm.Row(robotName, o.name, seed, cold, second, shelf, dirName, dirName + "-warm"));
+        say(String.format(Locale.ROOT, "%s%s battle %d/%d: %s warm score share %.1f%% (cold %.1f%%)",
+            parallel == 1 ? "  " : "", o.name, seed, runs, robotName, second.scoreShare() * 100,
+            cold.scoreShare() * 100));
+        return cold;
+    }
+
+    /**
+     * One battle with its retries (BENCH-55). {@code wipe} clears the data directory before
+     * every attempt, so a retried cold battle is as cold as the first. A battle that stays
+     * failed is remembered for the end of the run.
+     */
+    private BattleResult fight(Path h, Opponent o, int seed, Path dir, String robotName, boolean wipe)
+            throws Exception {
+        Tried<BattleResult> t = attempts(retries, () -> {
+            if (wipe) wipeData(h);
             try {
-                b = runBattle(o, seed, out.resolve("battles").resolve(o.slug() + "-" + seed + "-baseline"),
-                    baselineRobot, h);
+                return runBattle(o, seed, dir, robotName, h);
             } catch (IOException | RuntimeException e) {
-                b = BattleResult.parse(BattleResult.failed("bench error: " + e));
+                return BattleResult.parse(BattleResult.failed("bench error: " + e));
             }
-            base[seed - 1] = b;
-            say(String.format(Locale.ROOT, "%s%s battle %d/%d: baseline score share %.1f%%%s",
-                parallel == 1 ? "  " : "", o.name, seed, runs, b.scoreShare() * 100,
-                b.ok ? "" : " FAILED: " + b.errors));
+        }, r -> r.ok);
+        note(o.name + " seed " + seed + " " + dir.getFileName(), t.attempts(), t.value().ok, t.value().errors);
+        return t.value();
+    }
+
+    /** What {@link #attempts} ended with: the last value and how many tries it took. */
+    record Tried<T>(T value, int attempts) {}
+
+    interface Attempt<T> {
+        T run() throws Exception;
+    }
+
+    /** Runs {@code attempt} until {@code ok} accepts its value, at most {@code retries} more times (BENCH-55). */
+    static <T> Tried<T> attempts(int retries, Attempt<T> attempt, java.util.function.Predicate<T> ok)
+            throws Exception {
+        int n = 0;
+        T value;
+        do {
+            n++;
+            value = attempt.run();
+        } while (!ok.test(value) && n <= retries);
+        return new Tried<>(value, n);
+    }
+
+    /** Remembers a battle that needed a retry, or stayed failed after them. */
+    private void note(String what, int attempts, boolean ok, String why) {
+        if (!ok) failures.add(new Failure(what, attempts, why));
+        else if (attempts > 1) retried.add(what + " (" + attempts + " attempts)");
+    }
+
+    /** BENCH-55: the report footer for battles that stayed failed or needed a retry; empty when neither happened. */
+    static String failureFooter(List<Failure> failed, List<String> retried) {
+        if (failed.isEmpty() && retried.isEmpty()) return "";
+        StringBuilder b = new StringBuilder("\n## Failed battles\n\n");
+        if (failed.isEmpty()) b.append("None; every battle finished.\n");
+        for (Failure f : failed) {
+            b.append("- ").append(f.what()).append(": failed after ").append(f.attempts())
+                .append(f.attempts() == 1 ? " attempt" : " attempts").append(" (").append(f.why()).append(")\n");
         }
+        if (!retried.isEmpty()) {
+            b.append("\nRetried and then finished: ").append(String.join("; ", retried)).append(".\n");
+        }
+        return b.toString();
+    }
+
+    private void printFailures() {
+        if (failures.isEmpty()) return;
+        System.out.println();
+        System.out.println(failures.size() + " battle" + (failures.size() == 1 ? "" : "s")
+            + " failed after " + retries + " retr" + (retries == 1 ? "y" : "ies") + ":");
+        for (Failure f : failures) System.out.println("  " + f.what() + " (" + f.attempts() + " attempts): " + f.why());
+    }
+
+    /** The duel report's conditions: the melee and team reports' line, less its closing full stop (the report adds it). */
+    String duelHostLine(int workers) {
+        String line = hostLine(reportedCpuConstant(), Host.describe(), workers, childFlags());
+        return line.substring(0, line.length() - 1);
     }
 
     private static synchronized void say(String line) {
@@ -537,6 +888,7 @@ public final class Bench {
         cmd.add(BattleRunner.class.getName());
         cmd.addAll(List.of(h.toString(), dir.toString(), String.valueOf(rounds),
             String.valueOf(width), String.valueOf(height), robotName, o.name));
+        long from = System.currentTimeMillis();
         Process p = new ProcessBuilder(cmd)
             .redirectErrorStream(true)
             .redirectOutput(dir.resolve("engine.log").toFile())
@@ -546,7 +898,24 @@ public final class Bench {
             return BattleResult.parse(BattleResult.failed("timed out"));
         }
         if (record != null && Files.exists(transcript)) saveFixture(o, seed, transcript);
-        return readResult(result, p.exitValue());
+        BattleResult r = readResult(result, p.exitValue());
+        if (sampler != null) annotate(r, result, sampler.window(from, System.currentTimeMillis()));
+        return r;
+    }
+
+    /**
+     * BENCH-50: gives {@code r} the host load its battle ran under and writes the result row
+     * again with the four host columns filled in (the battle's own JVM cannot know them), so
+     * the battle's {@code result.csv} carries them for the exporter. A missing or unreadable
+     * file is left alone.
+     */
+    static void annotate(BattleResult r, Path result, Host.Window w) throws IOException {
+        r.hostCpuMin = w.cpuMin();
+        r.hostCpuMean = w.cpuMean();
+        r.hostCpuMax = w.cpuMax();
+        r.otherJvms = w.otherJvms();
+        if (!Files.exists(result) || Files.readAllLines(result).size() < 2) return;
+        Files.writeString(result, BattleResult.HEADER + System.lineSeparator() + r.toCsv() + System.lineSeparator());
     }
 
     /**
@@ -597,16 +966,25 @@ public final class Bench {
         for (int i = 1; i <= runs; i++) {
             int seed = i;
             jobs.add(h -> {
-                if (!keepData) wipeData(h);
-                cand[seed - 1] = meleeBattle(h, seed, "melee-" + seed, robot, names, sentries, sentryBorder, true);
-                if (base != null) {
+                Tried<MeleeReport.Battle> c = attempts(retries, () -> {
                     if (!keepData) wipeData(h);
-                    base[seed - 1] = meleeBattle(h, seed, "melee-" + seed + "-baseline", baselineRobot,
-                        baseNames, sentries, sentryBorder, false);
+                    return meleeBattle(h, seed, "melee-" + seed, robot, names, sentries, sentryBorder, true);
+                }, b -> b.ok);
+                cand[seed - 1] = c.value();
+                note("melee seed " + seed, c.attempts(), c.value().ok, "no result");
+                if (base != null) {
+                    Tried<MeleeReport.Battle> t = attempts(retries, () -> {
+                        if (!keepData) wipeData(h);
+                        return meleeBattle(h, seed, "melee-" + seed + "-baseline", baselineRobot,
+                            baseNames, sentries, sentryBorder, false);
+                    }, b -> b.ok);
+                    base[seed - 1] = t.value();
+                    note("melee seed " + seed + " baseline", t.attempts(), t.value().ok, "no result");
                 }
             });
         }
         List<Path> homes = workerHomes(Math.min(parallel, Math.max(1, jobs.size())));
+        workers = homes.size();
         pinCpuConstant(homes);
         runJobs(jobs, homes);
 
@@ -621,6 +999,7 @@ public final class Bench {
             r += "\n" + MeleeReport.render(label, baselineRobot, others, sentries, baseBattles, rounds,
                 width, height, sentryBorder, null).replaceFirst("^# ", "## ");
         }
+        r += failureFooter(failures, retried);
         Files.writeString(out.resolve("report.md"), r);
         if (opts.containsKey("report")) {
             Path copy = Path.of(opts.get("report")).toAbsolutePath();
@@ -737,18 +1116,27 @@ public final class Bench {
             for (int i = 1; i <= runs; i++) {
                 int index = oi, seed = i;
                 jobs.add(h -> {
-                    wipeData(h);
-                    cand[index][seed - 1] = teamBattle(h, o, seed, o.slug() + "-" + seed, robot, member, true);
-                    if (base != null) {
+                    Tried<TeamReport.Battle> c = attempts(retries, () -> {
                         wipeData(h);
-                        base[index][seed - 1] = teamBattle(h, o, seed, o.slug() + "-" + seed + "-baseline",
-                            baselineRobot, member, false);
+                        return teamBattle(h, o, seed, o.slug() + "-" + seed, robot, member, true);
+                    }, b -> b.ok);
+                    cand[index][seed - 1] = c.value();
+                    note(o.name + " team seed " + seed, c.attempts(), c.value().ok, "no result");
+                    if (base != null) {
+                        Tried<TeamReport.Battle> t = attempts(retries, () -> {
+                            wipeData(h);
+                            return teamBattle(h, o, seed, o.slug() + "-" + seed + "-baseline",
+                                baselineRobot, member, false);
+                        }, b -> b.ok);
+                        base[index][seed - 1] = t.value();
+                        note(o.name + " team seed " + seed + " baseline", t.attempts(), t.value().ok, "no result");
                     }
                 });
             }
         }
         // The recorder team (if any) is installed in the main home above, before the workers copy it.
         List<Path> homes = workerHomes(Math.min(parallel, Math.max(1, jobs.size())));
+        workers = homes.size();
         pinCpuConstant(homes);
         runJobs(jobs, homes);
 
@@ -766,6 +1154,7 @@ public final class Bench {
             r += "\n" + TeamReport.render(label, baselineRobot, baseResults, rounds, width, height)
                 .replaceFirst("^# ", "## ");
         }
+        r += failureFooter(failures, retried);
         Files.writeString(out.resolve("report.md"), r);
         if (opts.containsKey("report")) {
             Path copy = Path.of(opts.get("report")).toAbsolutePath();
