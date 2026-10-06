@@ -40,6 +40,43 @@ mvn exec:java -Dexec.args="--mode cold --rounds 35 --seeds 5"
 
 The command exits non-zero if any battle fails.
 
+## Running locally (Windows or Linux)
+
+Prerequisites: JDK 21 and Maven 3.9+ on the PATH (`java -version`, `mvn -version`).
+
+```sh
+mvn package -DskipTests        # repo root: builds hadur-robot/target/hadur2.Hadur_3.8.jar
+cd hadur-bench
+./fetch-opponents.sh           # Linux/macOS; downloads the jars the set files name
+```
+
+```powershell
+mvn package -DskipTests
+cd hadur-bench
+.\fetch-opponents.ps1          # Windows PowerShell 5.1+ or pwsh
+```
+
+The jars are not committed. The script reads every set file here (suite files name no jars
+and are skipped), downloads each missing jar into `opponents/` from
+`https://robocode-archive.strangeautomata.com/robots/`, prints downloaded/present/failed
+counts and exits non-zero if any download failed. Fetch one set with `--set top19.txt`
+(`-Set top19.txt`), or use another target directory with `--dir DIR` (`-Dir DIR`).
+
+A smoke bench (one set, few seeds). In PowerShell the whole `-Dexec.args` argument must be
+quoted:
+
+```powershell
+mvn -q compile exec:java "-Dexec.args=--set top19.txt --rounds 10 --seeds 1 --robot-jar ../hadur-robot/target/hadur2.Hadur_3.8.jar"
+```
+
+```sh
+mvn -q compile exec:java -Dexec.args="--set top19.txt --rounds 10 --seeds 1 --robot-jar ../hadur-robot/target/hadur2.Hadur_3.8.jar"
+```
+
+Pass `--robot-jar` explicitly (the default is `../hadur-robot/target/hadur2.Hadur_3.8.jar`,
+which goes stale when the robot version changes). For the Remote Control session that
+drives these runs, see issue #102.
+
 ## Opponents
 
 `reference-set.txt` lists them. R9 added `weak-leak.txt` (the eleven weak bots of issue #80: rammers, mirror movers and close-range nanos) and `top19.txt` (the 1v1 top 19 above 3.4, the regression gate); see `docs/bench/r9-weak-leak.md`. `roborumble-top10.txt` lists the RoboRumble top 10 (run it with `--set roborumble-top10.txt`); it is kept apart so CI and the replay fixtures stay on the reference set. For melee,
