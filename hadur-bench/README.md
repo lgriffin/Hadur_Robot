@@ -210,6 +210,38 @@ Each battle directory under `work/…/battles/` holds:
 
 `report.md` in the working directory is the summary table.
 
+### Trust and per-round series (BENCH-20 to BENCH-25, issue #117)
+
+`result.csv` ends with five trust columns: `duressTicks` (ticks Hadur spent in duress, -1 in
+rows from before the column existed), `engineDisables`, `securityErrors` (engine
+"Preventing ..." lines), `rShortfall` (rounds with no `R` record) and `finalRMissing`
+(1 when the last round's record is the one that is missing). Old 51-column rows still parse.
+A battle is trusted when it finished, spent no ticks in duress, has an `R` record for every
+round and skipped no more than 2 turns per round on average; change the last limit with
+`-Dhadur.bench.trust.skips=N`.
+
+Before a battle is read, the runner waits (at most 5 s, 250 ms of quiet) for the engine's
+console output to drain, so a final `R` record that is still in flight is not lost. Missing
+records are counted instead of hidden. The cause of the missing last-round record was not
+found conclusively: the old logs lack exactly the last round's record in most short logs,
+which fits output printed after the last turn snapshot at the end of a battle.
+
+Each battle directory also holds `rounds.tsv`: one row per round (build, opponent, seed,
+round, won, survived, ticks, damage dealt and taken, hit rate, duress ticks, skips). To
+merge a run's files and print the first-rounds against last-rounds comparison afterwards:
+
+    java -cp target/classes hadur.bench.RoundSeries work/NAME --candidate "hadur2.Hadur 3.8" \
+        [--baseline "hadur2.Hadur 3.7"] [--tsv rounds.tsv] [--report rounds.md]
+
+`data/tools/export_battles.py ... --rounds-out rounds.tsv` writes the same rows with the
+build, role and rank labels beside the battle TSV.
+
+`report.md` gains a "Trust" table per opponent, a "Paired intervals by metric" table (score
+share, survival share, win rate and bullet-damage share, each as a paired interval in
+percentage points), a "Sensitivity: trusted pairs only" table that repeats the score-share
+interval without the untrusted battles, and the "First rounds against last rounds" section
+(first 5 rounds against the last 10, with the late-minus-early paired difference).
+
 The "Opponent memory" section (S3) counts the battles whose first scan loaded a stored
 profile, memory failures (Hadur's `MEM` records) and seed evictions. After each opponent's
 last battle the bench decodes the profile Hadur left in `robots/.data/hadur2/Hadur.data/`

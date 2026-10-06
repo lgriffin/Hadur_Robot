@@ -12,7 +12,8 @@ public final class BattleResult {
         + "profileFound,memoryFailures,seedsEvicted,bulletsIntercepted,jitteredShots,shotsFired,"
         + "tiers,openingGun,gunSeed,surfSeed,seedDecays,"
         + "openingDistance,meanDistance,targetDistance,roundTicks,finishTicks,ramTicks,fullPowerShots,"
-        + "maxLevel,slowTicks,shadowedWaves,interceptsShadowed,flavourChanges,flavourStep,errors";
+        + "maxLevel,slowTicks,shadowedWaves,interceptsShadowed,flavourChanges,flavourStep,errors,"
+        + "duressTicks,engineDisables,securityErrors,rShortfall,finalRMissing";
 
     public boolean ok;
     public int rounds, firsts, skippedTurns, turns;
@@ -39,6 +40,55 @@ public final class BattleResult {
     public double score, theirScore, survival, theirSurvival, bulletDamage, theirBulletDamage;
     public double turnP50Ms, turnP95Ms, turnMaxMs;
     public String errors = "";
+    /**
+     * Trust signals (issue #117, G2). {@code duressTicks} is -1 on a row written before the
+     * column existed, meaning unknown. {@code rShortfall} is rounds with no R record and
+     * {@code finalRMissing} is 1 when the last round's record is the one that never arrived (G14).
+     */
+    public int duressTicks = -1, engineDisables, securityErrors, rShortfall, finalRMissing;
+
+    /** Default ceiling on engine-announced skipped turns per round for a battle to count as trusted. */
+    static final double DEFAULT_SKIPS_PER_ROUND = 2.0;
+
+    /** The skips-per-round ceiling: {@code -Dhadur.bench.trust.skips=<n>} overrides {@link #DEFAULT_SKIPS_PER_ROUND}. */
+    static double skipsPerRoundLimit() {
+        String v = System.getProperty("hadur.bench.trust.skips");
+        if (v == null) return DEFAULT_SKIPS_PER_ROUND;
+        try {
+            return Double.parseDouble(v);
+        } catch (NumberFormatException e) {
+            return DEFAULT_SKIPS_PER_ROUND;
+        }
+    }
+
+    /**
+     * A battle whose numbers measure the robot rather than the host: it finished, ran no
+     * ticks in duress (unknown counts as none), skipped at most {@code skipsPerRound} turns a
+     * round on average, and delivered an R record for every round.
+     */
+    boolean trusted(double skipsPerRound) {
+        return ok && duressTicks <= 0 && roundRecords == rounds
+            && skippedTurns <= skipsPerRound * rounds;
+    }
+
+    boolean trusted() { return trusted(skipsPerRoundLimit()); }
+
+    /** The reasons {@link #trusted()} fails, as short words (empty when trusted). */
+    java.util.List<String> untrustedReasons(double skipsPerRound) {
+        java.util.List<String> why = new java.util.ArrayList<>();
+        if (!ok) why.add("failed");
+        if (duressTicks > 0) why.add("duress");
+        if (roundRecords != rounds) why.add("R records");
+        if (skippedTurns > skipsPerRound * rounds) why.add("skips");
+        return why;
+    }
+
+    /** How many security-manager denials an engine error text holds (each reads "Preventing X from access"). */
+    static int securityErrorCount(String errors) {
+        int n = 0;
+        for (int i = errors.indexOf("Preventing "); i >= 0; i = errors.indexOf("Preventing ", i + 1)) n++;
+        return n;
+    }
 
     static BattleResult of(BattleResults us, BattleResults them, int rounds,
                            LogHarvester h, String errors) {
@@ -94,11 +144,16 @@ public final class BattleResult {
         r.flavourChanges = h.flavourChanges();
         r.flavourStep = h.flavourStep();
         r.errors = errors.trim();
+        r.duressTicks = h.duressTicks();
+        r.engineDisables = h.engineDisables();
+        r.securityErrors = securityErrorCount(r.errors);
+        r.rShortfall = Math.max(0, rounds - r.roundRecords);
+        r.finalRMissing = h.finalRecordMissing(rounds) ? 1 : 0;
         return r;
     }
 
     static String failed(String why) {
-        return "false,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NaN,NaN,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,0,0,0,-,NaN,NaN,NaN,0,0,0,0,0,0,0,0,0," + sanitize(why);
+        return "false,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NaN,NaN,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,0,0,0,-,NaN,NaN,NaN,0,0,0,0,0,0,0,0,0," + sanitize(why) + ",0,0,0,0,0";
     }
 
     String toCsv() {
@@ -120,11 +175,13 @@ public final class BattleResult {
             String.valueOf(finishTicks), String.valueOf(ramTicks), String.valueOf(fullPowerShots),
             String.valueOf(maxLevel), String.valueOf(slowTicks), String.valueOf(shadowedWaves),
             String.valueOf(interceptsShadowed), String.valueOf(flavourChanges),
-            String.valueOf(flavourStep), sanitize(errors));
+            String.valueOf(flavourStep), sanitize(errors), String.valueOf(duressTicks),
+            String.valueOf(engineDisables), String.valueOf(securityErrors),
+            String.valueOf(rShortfall), String.valueOf(finalRMissing));
     }
 
     static BattleResult parse(String line) {
-        String[] f = line.split(",", 51);
+        String[] f = line.split(",", -1);
         BattleResult r = new BattleResult();
         r.ok = Boolean.parseBoolean(f[0]);
         r.rounds = Integer.parseInt(f[1]);
@@ -177,6 +234,13 @@ public final class BattleResult {
         r.flavourChanges = Integer.parseInt(f[48]);
         r.flavourStep = Integer.parseInt(f[49]);
         r.errors = f.length > 50 ? f[50] : "";
+        if (f.length >= 56) {
+            r.duressTicks = Integer.parseInt(f[51]);
+            r.engineDisables = Integer.parseInt(f[52]);
+            r.securityErrors = Integer.parseInt(f[53]);
+            r.rShortfall = Integer.parseInt(f[54]);
+            r.finalRMissing = Integer.parseInt(f[55]);
+        }
         return r;
     }
 

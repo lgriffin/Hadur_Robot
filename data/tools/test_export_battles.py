@@ -147,5 +147,63 @@ class WriteTsvTest(unittest.TestCase):
         self.assertEqual(first_line.split("\t"), columns)
 
 
+class FallbackHeaderTest(unittest.TestCase):
+
+    def test_trust_columns_follow_errors_at_the_end(self):
+        header = eb.FALLBACK_HEADER
+        self.assertEqual(header[50], "errors")
+        self.assertEqual(header[51:], ["duressTicks", "engineDisables", "securityErrors",
+                                       "rShortfall", "finalRMissing"])
+        self.assertEqual(len(header), 56)
+
+
+ROUNDS_HEADER = "build\topponent\tseed\tround\twon\tsurvived\tticks\tdamageDealt\tdamageTaken\thitRate\tduressTicks\tskips"
+
+
+def _rounds_text(*rows):
+    return ROUNDS_HEADER + "\n" + "".join(r + "\n" for r in rows)
+
+
+class CollectRoundsTest(unittest.TestCase):
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.tmp.cleanup)
+        self.work = build_work(os.path.join(self.tmp.name, "work"))
+        self.set_file = os.path.join(self.tmp.name, "set.txt")
+        _write(self.set_file, SET_FILE)
+        battles = os.path.join(self.work, "battles")
+        _write(os.path.join(battles, "abc.Alpha_1.0-1", "rounds.tsv"), _rounds_text(
+            "x\tx\t1\t2\t0\t0\t900\t10.0\t30.0\t0.1000\t0\t0",
+            "x\tx\t1\t1\t1\t1\t800\t40.0\t5.0\t0.2000\t0\t1"))
+        _write(os.path.join(battles, "abc.Alpha_1.0-1-baseline", "rounds.tsv"), _rounds_text(
+            "x\tx\t1\t1\t0\t0\t700\t1.0\t2.0\t\t0\t0"))
+        _write(os.path.join(battles, "unknown.Bot_9.0-1", "rounds.tsv"), _rounds_text(
+            "x\tx\t1\t1\t1\t1\t700\t1.0\t2.0\t\t0\t0"))
+
+    def test_labels_come_from_directory_and_set_file(self):
+        columns, rows = eb.collect_rounds(self.work, self.set_file, "3.8", "")
+        self.assertEqual(columns[:6], ["build", "opponent", "role", "rank", "seed", "round"])
+        self.assertEqual(len(rows), 2, "baseline skipped without a label, unknown opponent skipped")
+        self.assertEqual((rows[0]["build"], rows[0]["opponent"], rows[0]["role"], rows[0]["rank"]),
+                         ("3.8", "abc.Alpha 1.0", "rumble-5", "5"))
+
+    def test_rows_sorted_by_round_within_battle(self):
+        _, rows = eb.collect_rounds(self.work, self.set_file, "3.8", "")
+        self.assertEqual([r["round"] for r in rows], ["1", "2"])
+        self.assertEqual(rows[0]["damageDealt"], "40.0")
+
+    def test_baseline_rows_follow_the_candidate_when_labelled(self):
+        _, rows = eb.collect_rounds(self.work, self.set_file, "3.8", "3.7")
+        self.assertEqual([r["build"] for r in rows], ["3.8", "3.8", "3.7"])
+
+    def test_no_rounds_files_gives_no_rows(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            work = build_work(os.path.join(tmp, "work"))
+            columns, rows = eb.collect_rounds(work, self.set_file, "3.8", "")
+        self.assertEqual(rows, [])
+        self.assertEqual(columns, ["build", "opponent", "role", "rank", "seed"])
+
+
 if __name__ == "__main__":
     unittest.main()
