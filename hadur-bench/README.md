@@ -230,6 +230,12 @@ mvn exec:java -Dexec.args="--record R --set melee-handoff-fixture.txt --melee tr
 mvn exec:java -Dexec.args="--record R --only Walls --rounds 3 --seeds 1 --client duress.txt --fixture duress-sample.Walls"   # duress.txt: "duress | cpu=150000"
 ```
 
+D2 re-recorded `warm-abc.Shadow_3.83c` (SHIELD-3 latches on Shadow in the warm battle) with the same command as A0's, keeping the `-2` transcript, on 3.8:
+
+```sh
+mvn exec:java -Dexec.args="--record R --mode warm --battles 2 --only Shadow --rounds 3 --fixture warm-abc.Shadow_3.83c --out W"   # keep the -2 transcript
+```
+
 A5 records a team battle the same way: with `--team true`, `--record` builds a team of five
 recorders from the recorder jar and saves one transcript per member as
 `team-<opponent>-m<N>`. The two team fixtures are member 1 (the leader) and member 2:
@@ -250,3 +256,18 @@ shots with a teammate truly in the lane, the count of enemies below the truth, t
 
 `arch-gates.txt` is the evolution's gate suite: the duel sets, the melee gates and the
 hand-off gates in one pass, run on 3.5.1 at A0 as the baseline and on the candidate at A2.
+
+## Engine check: the inactivity penalty (D2, END-4)
+
+`hadur.bench.InactivityCheck` is not a battle against opponents. It compiles two tiny robots
+that never hit each other into a scratch Robocode home and runs one-round battles through the
+engine, to confirm that the robot with more energy survives the inactivity penalty (the
+result on 1.9.5.6 is in docs/requirements.md's D2 notes). Run it with the bench's classpath
+and `Bench.JVM_FLAGS`, for example from `hadur-bench` after `mvn package`:
+
+```sh
+java --add-opens=java.base/sun.net.www.protocol.jar=ALL-UNNAMED --add-opens=java.base/java.lang=ALL-UNNAMED \
+     --add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.base/java.net=ALL-UNNAMED \
+     --add-opens=java.desktop/sun.awt=ALL-UNNAMED -Djava.security.manager=allow -Djava.awt.headless=true \
+     -cp "target/classes:$(cat target/classpath.txt)" hadur.bench.InactivityCheck /tmp/inactivity-home
+```

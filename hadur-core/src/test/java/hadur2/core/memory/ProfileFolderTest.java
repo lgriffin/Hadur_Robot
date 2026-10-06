@@ -11,6 +11,22 @@ import org.junit.jupiter.api.Test;
 class ProfileFolderTest {
 
     @Test
+    @Tag("SHIELD-3")
+    @DisplayName("SHIELD-3: the folder keeps the latest shielder flag, so the last round's is the battle's end")
+    void shielderFlagIsTheLatest() {
+        OpponentProfile p = new OpponentProfile("a.B");
+        p.startBattle("a.B 1", 1);
+        ProfileFolder f = new ProfileFolder(p, 800, 600);
+        assertFalse(p.shielder(), "a stranger is no shielder");
+        f.shielder(true);
+        f.fold(true);
+        assertTrue(p.shielder());
+        f.shielder(false);
+        f.fold(false);
+        assertFalse(p.shielder());
+    }
+
+    @Test
     @Tag("MEM-2")
     @DisplayName("nothing reaches the profile until the round ends")
     void foldsOnlyAtRoundEnd() {

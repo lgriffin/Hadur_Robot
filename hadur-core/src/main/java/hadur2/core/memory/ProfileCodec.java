@@ -32,8 +32,9 @@ import java.util.zip.CRC32;
 public final class ProfileCodec {
 
     /**
-     * 3 adds ADAPT-5's one-byte verdict, whether POW-7's hit-rate condition stood at the last
-     * battle's end, after the normalised group. A version 2 file loads with the verdict false.
+     * 3 adds a one-byte set of verdict flags after the normalised group: ADAPT-5's, whether POW-7's
+     * hit-rate condition stood at the last battle's end, and SHIELD-3's, whether the enemy was
+     * treated as a bullet shielder (the second flag joined version 3 before its release). A version 2 file loads with the verdict false.
      * Like every version, 3 keeps its own store names (MEM-9: {@code -v3.hp}), so a release
      * still on version 2 never reads or overwrites it. 2 adds the normalised hit counts after the motion group (S4) and gives the seeds their
      * meaning ({@link Seeds}). A version 1 file loads with those counts at zero and without
@@ -66,7 +67,8 @@ public final class ProfileCodec {
      * <li>the count groups, each a u8 length and f32 values: shots at us, hits on us, shots
      *     and hits by motion, the power histogram, virtual waves and hits, our shots and
      *     hits, motion, and (version 2) the normalised waves and hits;</li>
-     * <li>(version 3) ADAPT-5's verdict, a u8 that is 1 when POW-7's hit-rate condition stood;</li>
+     * <li>(version 3) the verdict flags, a u8: bit 0 is ADAPT-5's verdict (POW-7's hit-rate
+     *     condition stood), bit 1 is SHIELD-3's (the enemy was treated as a bullet shielder);</li>
      * <li>the gun seed, then the surf seed: a u16 count, a u8 width (13), then the samples'
      *     shorts.</li>
      * </ol>
@@ -128,7 +130,7 @@ public final class ProfileCodec {
         // Version 1 had no normalised group; a version 1 file must not have one either.
         if (version >= 2) payload.floats(p.normalised);
         // Versions 1 and 2 had no verdict; neither file may carry one.
-        if (version >= 3) payload.u8(p.leadAware ? 1 : 0);
+        if (version >= 3) payload.u8((p.leadAware ? 1 : 0) | (p.shielder ? 2 : 0));
         writeSeed(payload, gunSeed);
         writeSeed(payload, surfSeed);
 
@@ -226,8 +228,9 @@ public final class ProfileCodec {
         // Versions 1 and 2 had no verdict; it stays false.
         if (version >= 3) {
             int verdict = r.u8();
-            if (verdict > 1) throw new ProfileFormatException("lead-aware verdict " + verdict);
-            p.leadAware = verdict == 1;
+            if (verdict > 3) throw new ProfileFormatException("verdict flags " + verdict);
+            p.leadAware = (verdict & 1) != 0;
+            p.shielder = (verdict & 2) != 0;
         }
         readSeed(r, p.gunSeed, OpponentProfile.MAX_GUN_SEED, "gun seed");
         readSeed(r, p.surfSeed, OpponentProfile.MAX_SURF_SEED, "surf seed");

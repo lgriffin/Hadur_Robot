@@ -26,6 +26,7 @@ public class ShieldSteps {
     private final List<BotOrders> orders = new ArrayList<>();
     private HadurCore core;
     private long time;
+    private double enemyVelocity;
 
     /** A scan of the still enemy, gun too hot to fire, so the aim is all that moves. */
     private void scan() {
@@ -35,7 +36,7 @@ public class ShieldSteps {
     private void scan(double gunHeat) {
         List<BotEvent> events = new ArrayList<>(pending);
         pending.clear();
-        events.add(new BotEvent.Scan("shielder", Math.PI / 2, DISTANCE, 100, 0, 0));
+        events.add(new BotEvent.Scan("shielder", Math.PI / 2, DISTANCE, 100, 0, enemyVelocity));
         orders.add(core.tick(new BotInput(++time, 0, MY_X, MY_Y, 0, 0, 100, gunHeat, 0.1, 0, 0,
             Math.PI / 2, 1, events)));
     }
@@ -50,6 +51,14 @@ public class ShieldSteps {
         core = new HadurCore(800, 600, 1, line -> { });
         core.newRound(0);
         scan();
+    }
+
+    /** SHIELD-3: an enemy that has moved is not a still shielder, so one shot down means only what SHIELD-1 makes of it. */
+    @When("the enemy has stirred once")
+    public void enemyStirred() {
+        enemyVelocity = 6;
+        scan();
+        enemyVelocity = 0;
     }
 
     @When("{int} of our bullets are/is shot down")

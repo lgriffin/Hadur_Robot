@@ -54,7 +54,9 @@ import hadur2.core.physics.Rules;
  * runs them, so the full-power rules raise it and END-3 lowers it as before.</p>
  *
  * <p>POW-10: {@link #payable} lowers a power that the energy cannot pay for instead of
- * holding the shot.</p>
+ * holding the shot. END-4 ({@link #holdsLastShot}) is the one exception that holds a shot we
+ * could pay for. SHIELD-4 ({@link #shieldPower}) raises the power to 3.0 against a still
+ * bullet shielder, before END-3 caps it.</p>
  *
  * <p>Every full-power rule is still capped at a quarter of their energy, which is what kills
  * them, so a finishing shot never wastes energy, and none applies while our own energy is
@@ -131,6 +133,8 @@ public final class PowerPolicy {
     public static final double OPENING_ENERGY = 60;
     /** POW-10: the energy left in hand when a shot is lowered to what we can pay for. */
     public static final double RESERVE = 0.1;
+    /** END-4: the energy our side must keep above the enemy's once it can no longer fire. */
+    public static final double END_4_MARGIN = 0.3;
 
     /**
      * What the lead-aware regime (POW-7 to POW-9) asks of the gun's power: {@code OFF} leaves
@@ -247,6 +251,65 @@ public final class PowerPolicy {
         if (ourEnergy > OPENING_ENERGY && enemyEnergy > OPENING_ENERGY) return Lead.DEFAULT;
         if (ourEnergy - enemyEnergy >= -LEAD_MARGIN) return Lead.CHAFF;
         return ourEnergy > LEAD_MIN_ENERGY ? Lead.DEFAULT : Lead.CHAFF;
+    }
+
+    /**
+     * SHIELD-4: the power to fire at a bullet shielder that has not moved in the last 10 ticks:
+     * {@link #FULL_POWER}, never below what the rules before it chose. A shielder answers with a
+     * bullet that scales with ours, so a heavier shot makes its shield dearer. END-3 lowers the
+     * result afterwards, as it does every power.
+     *
+     * @param shielder whether the enemy is treated as a bullet shielder (SHIELD-1, SHIELD-3)
+     * @param stillForTenTicks whether the enemy has not moved in the last 10 ticks
+     * @param power the power chosen so far
+     * @param ourEnergy our energy: like every full-power rule, SHIELD-4 does not apply at
+     *     {@link #MIN_OUR_ENERGY} or below, where a shot a shielder destroys (no refund) could
+     *     leave us disabled
+     * @return the power to carry on with
+     */
+    public static double shieldPower(boolean shielder, boolean stillForTenTicks, double power,
+                                     double ourEnergy) {
+        return shielder && stillForTenTicks && ourEnergy > MIN_OUR_ENERGY ? Math.max(power, FULL_POWER) : power;
+    }
+
+    /**
+     * END-4: whether to hold a shot so the last of our energy is kept. It holds while the
+     * enemy's energy is below the smallest bullet power it has fired this battle (so it can no
+     * longer fire, and the inactivity rule decides a stalemate for whoever has more energy), we
+     * are ahead, and the shot would leave our energy less than {@link #END_4_MARGIN} above the
+     * enemy's. When level or behind there is no lead to keep, and holding would lose to the
+     * inactivity rule for certain, so the shot goes (POW-10).
+     *
+     * @param ourEnergy our energy now
+     * @param firePower the power the shot would leave at
+     * @param enemyEnergy their energy at the last scan
+     * @param smallestEnemyPower the smallest bullet power they have fired this battle, or NaN if none
+     * @return whether to hold the shot
+     */
+    public static boolean holdsLastShot(double ourEnergy, double firePower, double enemyEnergy,
+                                        double smallestEnemyPower) {
+        if (Double.isNaN(smallestEnemyPower) || !(enemyEnergy < smallestEnemyPower)) return false;
+        if (!(ourEnergy > enemyEnergy)) return false;
+        return ourEnergy - firePower - enemyEnergy < END_4_MARGIN;
+    }
+
+    /**
+     * END-4 for a shot that does not go through the main gun's own hold: shield mode's attack
+     * shots and duress's head-on shots. The power that would really leave is the one asked for,
+     * lowered to what our energy can pay (shield mode keeps 1 of it), so that is what is tested.
+     *
+     * @param ourEnergy our energy now
+     * @param power the power the shot would leave at
+     * @param reserve the energy the shot's own rules keep back from it
+     * @param enemyEnergy their energy at the last scan
+     * @param smallestEnemyPower the smallest bullet power they have fired this battle, or NaN if none
+     * @return whether to hold the shot
+     */
+    public static boolean holdsShotAt(double ourEnergy, double power, double reserve,
+                                      double enemyEnergy, double smallestEnemyPower) {
+        double fired = Math.min(power, ourEnergy - reserve);
+        return fired >= Rules.MIN_BULLET_POWER - 1e-9
+            && holdsLastShot(ourEnergy, fired, enemyEnergy, smallestEnemyPower);
     }
 
     private static boolean below(Estimate e) {

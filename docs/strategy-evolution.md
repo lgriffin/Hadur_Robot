@@ -308,6 +308,22 @@ Release 3.8. Against DrussGT both guns hit below break-even, so each shot costs 
 - **Re-snapshotted:** the telemetry snapshots of all thirteen fixtures (`-Dhadur.replay.snapshot=write`), because the `R` record is longer.
 - **Re-pinned:** `pins/kernel.sha256`, `pins/duel.sha256`, `pins/conductor.sha256` (`-Dhadur.pin=kernel,duel,conductor`) and `duel-sources.sha256` (`-Dhadur.duel.snapshot=write`). The melee and team pins did not change.
 - **Gate** ([d1-gate.md](bench/d1-gate.md)), paired against 3.7: DrussGT **+12.0 ± 4.3** points (48.2% against 36.2%, 20 battles), the top 10 +6.7 on average (Firestarter +21.3, Diamond +14.1, Knight +11.6), the weak set level. The rule pays against surfers whose power follows ours down, not only DrussGT.
+<a id="d2"></a>
+
+### D2: shield openers caught, the last shot kept
+
+Still release 3.8 (D1 and D2 ship together). Two small rules and one engine check; `hadur.druss.stage` was `D2` when this stage was built (it is `D5` once D5 has merged: D5 is the highest stage and every D row is due).
+
+- **SHIELD-3** latches the shielder flag on the first of our bullets destroyed by an enemy that has not moved since the round began, instead of waiting for SHIELD-1's four in twenty. The flag goes into the profile, so battle two starts with it and with SHIELD-2's aim jitter on. The profile stays at format version 3 (not yet released): the verdict byte D1 added is now a set of flags, bit 0 ADAPT-5's verdict and bit 1 the shielder, so the D1 golden file loads unchanged and no new byte is added.
+- **SHIELD-4** fires 3.0 at a latched shielder that has not moved in the last 10 ticks, with END-3 still capping it. This is the part of the probe that fired 3.0 at a still target; the plan notes the gain is not yet established, so D2's gate is the bench, not this entry.
+- **END-4** holds the shot that would leave Hadur less than 0.3 energy above an enemy that can no longer fire. It holds only while Hadur is ahead (when level or behind the shot goes): a deliberate narrowing of the requirement's wording, described in the requirements notes.
+- **Engine check.** `hadur.bench.InactivityCheck` ran two tiny robots that never hit each other through Robocode 1.9.5.6: the one with more energy survived the inactivity penalty at every gap tried (0.1, 0.3, 1.0 and 3.0); with equal energy both died on the same tick. A gap of 0.1 is enough, so the 0.3 margin is conservative.
+- **Re-recorded fixture:** `warm-abc.Shadow_3.83c` (the second battle's transcript, with the `-2` command in `hadur-bench/README.md`): SHIELD-3 latches on Shadow in round 0 of the warm battle. The other twelve fixtures did not diverge, and their telemetry is unchanged.
+- **Re-snapshotted:** the telemetry snapshot of `warm-abc.Shadow_3.83c` only.
+- **Re-pinned:** `pins/kernel.sha256` and `pins/duel.sha256` (`-Dhadur.pin=kernel,duel`) and `duel-sources.sha256` (`-Dhadur.duel.snapshot=write`). The conductor, melee and team pins did not change.
+- **Changed scenario:** `shield.feature`'s "a bullet shot down by accident changes nothing" now has the enemy stir first, since against a still enemy one bullet is SHIELD-3's evidence.
+- **Gate** ([d2-gate.md](bench/d2-gate.md)), paired against D1 (3.8.1): DrussGT **+1.0 ± 3.8** points (47.6% against 46.6%, 20 battles), level and not below. The stage jars were built on the D1 base before D5 and T1 merged. The top-10 and weak sets are measured once for the whole D2 to D4 stack (stack gate, pending). The report shows no direct evidence for SHIELD-3 or SHIELD-4 against DrussGT, which does not stand still.
+
 ## D5: the shield list (DrussGT route)
 
 Hadur opens each round in shield mode against the opponents on a list of its own (SHIELD-5): it sits

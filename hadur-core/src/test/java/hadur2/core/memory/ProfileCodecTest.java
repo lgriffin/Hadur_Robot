@@ -82,16 +82,46 @@ class ProfileCodecTest {
 
     @Test
     @Tag("ADAPT-5")
-    @DisplayName("ADAPT-5: a verdict byte other than 0 or 1 is rejected even under a valid checksum")
+    @DisplayName("ADAPT-5, SHIELD-3: a verdict byte with a bit beyond the two flags is rejected even under a valid checksum")
     void badVerdictRejected() {
         byte[] bytes = ProfileCodec.encode(Profiles.sample("a.B", 1, 0, 0));
         // The verdict sits just before the two empty seeds (u16 count + u8 width each), then the CRC.
         int verdict = bytes.length - ProfileCodec.TRAILER - 2 * 3 - 1;
         assertEquals(0, bytes[verdict], "found the verdict");
-        bytes[verdict] = 2;
+        bytes[verdict] = 4;
         int crc = ProfileCodec.crc(bytes, bytes.length - ProfileCodec.TRAILER);
         for (int i = 0; i < 4; i++) bytes[bytes.length - 4 + i] = (byte) (crc >>> (24 - 8 * i));
         assertThrows(ProfileFormatException.class, () -> ProfileCodec.decode(bytes));
+    }
+
+    @Test
+    @Tag("SHIELD-3")
+    @DisplayName("SHIELD-3: the shielder flag is the verdict byte's second bit, so all four pairs round-trip in the same size")
+    void shielderFlagSharesTheVerdictByte() {
+        byte[] none = ProfileCodec.encode(Profiles.sample("a.B", 1, 0, 0));
+        int verdict = none.length - ProfileCodec.TRAILER - 2 * 3 - 1;
+        for (boolean lead : new boolean[] {false, true}) {
+            for (boolean shield : new boolean[] {false, true}) {
+                OpponentProfile p = Profiles.shielder(Profiles.leadAware(Profiles.sample("a.B", 1, 0, 0), lead), shield);
+                byte[] bytes = ProfileCodec.encode(p);
+                assertEquals(none.length, bytes.length, "the flag adds no byte");
+                assertEquals((lead ? 1 : 0) | (shield ? 2 : 0), bytes[verdict]);
+                OpponentProfile back = ProfileCodec.decode(bytes);
+                assertEquals(lead, back.leadAware());
+                assertEquals(shield, back.shielder());
+                assertEquals(p, back);
+            }
+        }
+    }
+
+    @Test
+    @Tag("SHIELD-3")
+    @Tag("MEM-7")
+    @DisplayName("SHIELD-3, MEM-7: encoding at version 2 leaves the shielder flag out, as it does the verdict")
+    void versionTwoEncodeDropsTheShielderFlag() {
+        OpponentProfile p = Profiles.shielder(Profiles.sample("abc.Shadow 3.83c", 42, 4, 2), true);
+        assertFalse(ProfileCodec.decode(ProfileCodec.encode(p, 2)).shielder());
+        assertTrue(ProfileCodec.decode(ProfileCodec.encode(p)).shielder());
     }
 
     @Test

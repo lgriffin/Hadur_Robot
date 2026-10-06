@@ -91,6 +91,18 @@ class HandOffCoreTest {
     }
 
     @Test
+    @Tag("SHIELD-3")
+    @DisplayName("SHIELD-3: a survivor whose stored profile records a shielder is treated as one from the handoff")
+    void survivorShielderVerdictApplies() {
+        MemoryProfileStore store = new MemoryProfileStore(200_000);
+        new ProfileLibrary(store).save(hadur2.core.memory.Profiles.shielder(
+            hadur2.core.memory.Profiles.sample(A, 9, 0, 0), true));
+        meleeToDuel(store);
+        assertTrue(telemetry.stream().anyMatch(l -> l.startsWith("P,0,30,shield,") && l.endsWith(",shield_3_profile")),
+            telemetry.toString());
+    }
+
+    @Test
     @Tag("MMEM-2")
     @DisplayName("the survivor's 1v1 profile is read for the duel and a melee battle writes no 1v1 profile")
     void profileReadNeverWritten() {

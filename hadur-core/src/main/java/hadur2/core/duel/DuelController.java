@@ -31,6 +31,7 @@ import hadur2.core.policy.PowerPolicy;
 import hadur2.core.policy.RammerPolicy;
 import hadur2.core.policy.TickBudget;
 import hadur2.core.shield.AimJitter;
+import hadur2.core.shield.EnemyStillness;
 import hadur2.core.shield.ShieldDetector;
 import hadur2.core.shieldmode.ShieldList;
 import hadur2.core.shieldmode.ShieldMode;
@@ -83,6 +84,14 @@ public final class DuelController {
     private final ShieldDetector shieldDetector = new ShieldDetector();
     /** The deterministic anti-shield aim offset (SHIELD-2). */
     private final AimJitter aimJitter = new AimJitter();
+    /** SHIELD-3, SHIELD-4: whether the enemy has moved since the round began and in the last 10 ticks. */
+    private final EnemyStillness stillness = new EnemyStillness();
+    /** SHIELD-3: whether a shielder verdict from SHIELD-3 or the profile has been announced, so a P record marks it once. */
+    private boolean shieldAnnounced;
+    /** END-4: the smallest bullet power the enemy has fired this battle, NaN before its first shot. */
+    private double smallestEnemyPower = Double.NaN;
+    /** END-4: whether the last shot decision held the shot, so a P record marks each change. */
+    private boolean end4Holding;
     /** Whether the aim the gun is turning to carries the anti-shield offset (SHIELD-2). */
     private boolean aimCarriesJitter;
     /**
@@ -305,6 +314,8 @@ public final class DuelController {
         this.stats = stats;
         if (shield != null) shield.newRound(round);
         recover();
+        // The history of the enemy's movement starts with the round; recover() marked it unknown.
+        stillness.newRound();
         if (enemyGunHeat != null) enemyGunHeat.newRound();
         duress.newRound(round);
     }
@@ -333,6 +344,9 @@ public final class DuelController {
         aimIsMirror = false;
         end3Active = false;
         ram1Active = false;
+        // What the enemy did before this is not known: neither SHIELD-3 nor SHIELD-4 may guess.
+        stillness.forget();
+        end4Holding = false;
         myStateLog.clear();
         enemyStateLog.clear();
         lastGunWave = null;
@@ -463,6 +477,7 @@ public final class DuelController {
             .setVelocity(enemyVel).setTime(time).build();
         enemyStateLog.addState(enemyState);
         lastEnemyState = enemyState;
+        stillness.scanned(time, enemyPos.x, enemyPos.y, enemyVel);
         checkMirror(round, time, enemyPos, in.energy(), e.energy());
 
         // A stopped robot keeps the direction it had, so its guess factors keep their side.
@@ -533,6 +548,12 @@ public final class DuelController {
             emitPolicy(round, time, "power", ours.value(), ours.margin(), why.name().toLowerCase(Locale.ROOT));
         }
         bulletPower = PowerPolicy.power(why, bulletPower, e.energy());
+        // SHIELD-4: a bullet shielder standing still is shot at full power, jittered (SHIELD-2);
+        // END-3 below still lowers it. Duel only, like the lead-aware regime.
+        if (enemiesTotal <= 1) {
+            bulletPower = PowerPolicy.shieldPower(shieldDetector.shielded(),
+                stillness.stillForTenTicks(time), bulletPower, in.energy());
+        }
         // END-3: a guaranteed kill costs no more energy than the least power that lands it,
         // so it only ever lowers what's already chosen, never raises it past what we can
         // already afford (a low reading from a low-energy gun stays fireable).
@@ -566,7 +587,8 @@ public final class DuelController {
             emitPolicy(round, time, "power", bulletPower, Double.NaN, ram1 ? "ram_1" : why.name().toLowerCase(Locale.ROOT));
         }
         // POW-10: a power our energy cannot pay for is lowered, not held. END-4 (D2) will be the
-        // one rule that holds a shot we could pay for; its hook is here and in fireIfGunTurned.
+        // one rule that holds a shot we could pay for, and it holds where the shot leaves, in
+        // fireIfGunTurned: every scan still makes its wave, which teaches the gun.
         double payable = PowerPolicy.payable(bulletPower, in.energy());
         if (!Double.isNaN(payable)) bulletPower = payable;
 
@@ -629,6 +651,10 @@ public final class DuelController {
             stats.enemyShotsDetected++;
             // SHIELD-5: a shot whose wall hit was inferred on the same interval has no sure power.
             if (shield != null && !reading.uncertain()) shield.onEnemyShot(fireTime, reading.corrected());
+            // END-4: the smallest bullet the enemy has fired this battle.
+            if (Double.isNaN(smallestEnemyPower) || reading.corrected() < smallestEnemyPower) {
+                smallestEnemyPower = reading.corrected();
+            }
             enemyGunHeat(in).shot(fireTime, reading.corrected());
             if (folder != null) folder.enemyShot(e.distance(), reading.corrected(), myVel != 0);
             // EW,round,tick,waveId,fireTick,rawDrop,correctedDrop,power,distance: the wave is
@@ -680,8 +706,11 @@ public final class DuelController {
         stats.duressTicks++;
         // A scan gap over one tick means the spot is stale: sweep the radar, hold fire.
         boolean fired = duress.orders(in, lastEnemyLocation, in.time() - lastScanTime > 1, orders);
+        // END-4: duress's head-on shot keeps the last of our lead as the main gun's does.
+        boolean holdLast = fired && PowerPolicy.holdsShotAt(in.energy(), Duress.POWER, 0.1,
+            lastEnemyEnergy, smallestEnemyPower);
         // WEAVE-3: without the permission the shot is held, and so is its count.
-        if (fired && !mayFire) {
+        if (fired && (!mayFire || holdLast)) {
             orders.fire(0);
             fired = false;
         }
@@ -827,7 +856,14 @@ public final class DuelController {
         if (!shieldShot) moveController.ourBulletGone(e.bulletHeading(), e.power());
         // SHIELD-1: in a duel, a bullet that meets ours may be a shield.
         if (ownOutcome && !shieldShot) {
-            shieldDetector.bulletIntercepted();
+            // SHIELD-3: an enemy that has not moved since the round began is a shield at once.
+            // Only the still-enemy rule's own latch is credited to SHIELD-3.
+            boolean byStillEnemy = shieldDetector.bulletIntercepted(
+                enemiesTotal <= 1 && !stillness.movedThisRound());
+            if (byStillEnemy && !shieldAnnounced) {
+                shieldAnnounced = true;
+                emitPolicy(round, in.time(), "shield", Double.NaN, Double.NaN, "shield_3");
+            }
             ourWindow.record(false);
             countOurs(e.power(), false);
         }
@@ -899,6 +935,8 @@ public final class DuelController {
             folder.normalised(moveController.enemyFiringWaves(), moveController.enemyWeightedHits());
             // ADAPT-5: the verdict the rule itself holds as the round ends; the last round's is the battle's end.
             folder.leadAware(PowerPolicy.applies(leadVerdict, ourRates.estimate(), theirRates.estimate()));
+            // SHIELD-3: the shielder verdict as the round ends; the last round's is the battle's end.
+            folder.shielder(shieldDetector.shielded());
             folder.fold(won);
         } catch (RuntimeException e) {
             stats.profileSaveFailures++;
@@ -966,7 +1004,7 @@ public final class DuelController {
             try {
                 ProfileLibrary.Loaded loaded = survivorProfile(in.time(), survivor);
                 found1v1 = loaded.found();
-                if (!survivor.equals(handOffOpening)) openForSurvivor(survivor, loaded.profile());
+                if (!survivor.equals(handOffOpening)) openForSurvivor(in.time(), survivor, loaded.profile());
             } catch (RuntimeException ex) {
                 survivorFailures++;
                 telemetry.emit("MEM," + round + "," + in.time() + ",handoff-failed," + clean(ex.toString()));
@@ -1040,6 +1078,12 @@ public final class DuelController {
             opening.gunTier() + ":" + Math.round(opening.distance()));
         // ADAPT-5: the profile's verdict applies from the first shot, until this battle's rates contradict it.
         leadVerdict = opening.leadAware();
+        // SHIELD-3: a profile that records a shielder starts the battle treating the enemy as one.
+        if (opening.shielder()) {
+            shieldDetector.knownShielder();
+            shieldAnnounced = true;
+            emitPolicy(round, time, "shield", Double.NaN, Double.NaN, "shield_3_profile");
+        }
         gunController.setSampleSink(folder::gunSample);
         moveController.setSampleSink(folder::surfSample);
         // This battle's gun waves and hits on us go to the folder as samples, the profile's
@@ -1096,10 +1140,16 @@ public final class DuelController {
      * written), and the gun's opening is left alone (its virtual guns are 1v1-only). The
      * surf's prior still fades when the live rate disagrees (RES-4).
      */
-    private void openForSurvivor(String name, OpponentProfile p) {
+    private void openForSurvivor(long time, String name, OpponentProfile p) {
         handOffOpening = name;
         opening = OpeningBook.read(p);
         leadVerdict = opening.leadAware();
+        // SHIELD-3: the survivor's stored shielder verdict applies from the first duel shot.
+        if (opening.shielder()) {
+            shieldDetector.knownShielder();
+            shieldAnnounced = true;
+            emitPolicy(round, time, "shield", Double.NaN, Double.NaN, "shield_3_profile");
+        }
         distance = new DistancePolicy(opening.distance());
         moveController.clearPrior();
         Estimate prior = opening.surfPrior();
@@ -1293,6 +1343,7 @@ public final class DuelController {
         theirRates.clear();
         leadVerdict = false;
         leadApplied = false;
+        smallestEnemyPower = Double.NaN;
         rammer.forget();
         mirror.forget();
         distance = new DistancePolicy(opening.distance());
@@ -1428,6 +1479,11 @@ public final class DuelController {
             && Math.abs(Math.toDegrees(Angles.normalRelativeAngle(shieldAim - in.gunHeading()))) < 0.05
             && !(carries && !carried);
         double attackPower = onTarget ? shieldAimPower : lastGunWave.bulletPower();
+        // END-4: shield mode's attack shots keep the last of our lead too (a shield shot is
+        // not an attack and is never held: it is what keeps the lead).
+        if (PowerPolicy.holdsShotAt(in.energy(), attackPower, 1, lastEnemyEnergy, smallestEnemyPower)) {
+            attackPower = 0;
+        }
         ShieldMode.Command c = shield.tick(new ShieldMode.Situation(in.time(), me.x, me.y,
             in.heading(), in.gunHeading(), in.gunHeat(), in.gunCoolingRate(), in.energy(),
             lastEnemyLocation.x, lastEnemyLocation.y, lastEnemyEnergy, aimAngle,
@@ -1543,11 +1599,17 @@ public final class DuelController {
         // hit on us since the aim has made it dear, and only held when no power can be paid for.
         // The holds that stay are intentional: SHIELD-2's (a shielder predicts the settled
         // aim), the conductor's fire permission (WEAVE-3) and a gun that is hot or off target.
-        // END-4 (D2) will add its own hold here.
+        // END-4: the last of our lead is kept once the enemy can no longer fire.
         double firePower = PowerPolicy.payable(bulletPower, in.energy());
+        boolean end4 = !Double.isNaN(firePower) && PowerPolicy.holdsLastShot(in.energy(), firePower,
+            lastEnemyEnergy, smallestEnemyPower);
+        if (end4 != end4Holding) {
+            end4Holding = end4;
+            emitPolicy(round, in.time(), "power", firePower, Double.NaN, end4 ? "end_4" : "end_4_off");
+        }
         if (in.gunHeat() == 0 && Math.abs(Math.toDegrees(in.gunTurnRemaining())) < 0.05
                 && !Double.isNaN(firePower) && lastGunWave != null && !predictable
-                && mayFire) {
+                && mayFire && !end4) {
             orders.fire(firePower);
             lastFiredPower = firePower;
             lastGunWave.firingWave = true;

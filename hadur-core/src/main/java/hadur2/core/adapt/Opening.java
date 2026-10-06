@@ -36,7 +36,7 @@ public final class Opening {
      */
     public static final Opening STRANGER = new Opening(Tiers.Gun.UNKNOWN, Tiers.Move.UNKNOWN,
         Gun.LIVE, false, Estimate.NONE, Estimate.NONE, Estimate.NONE, 0.0,
-        Collections.emptyList(), Collections.emptyList(), OpeningBook.STRANGER_DISTANCE, false);
+        Collections.emptyList(), Collections.emptyList(), OpeningBook.STRANGER_DISTANCE, false, false);
 
     private final Tiers.Gun gunTier;
     private final Tiers.Move moveTier;
@@ -50,11 +50,13 @@ public final class Opening {
     private final List<double[]> surfSeed;
     private final double distance;
     private final boolean leadAware;
+    private final boolean shielder;
 
     /** Every decision, as {@link OpeningBook#read} computed it; the seed lists are wrapped read-only. */
     Opening(Tiers.Gun gunTier, Tiers.Move moveTier, Gun gun, boolean flattenerFirst,
             Estimate surfPrior, Estimate theirHitRate, Estimate mainGunRating, double seedWeight,
-            List<double[]> gunSeed, List<double[]> surfSeed, double distance, boolean leadAware) {
+            List<double[]> gunSeed, List<double[]> surfSeed, double distance, boolean leadAware,
+            boolean shielder) {
         this.gunTier = gunTier;
         this.moveTier = moveTier;
         this.gun = gun;
@@ -67,6 +69,7 @@ public final class Opening {
         this.surfSeed = Collections.unmodifiableList(surfSeed);
         this.distance = distance;
         this.leadAware = leadAware;
+        this.shielder = shielder;
     }
 
     /**
@@ -84,6 +87,14 @@ public final class Opening {
      */
     public boolean leadAware() {
         return leadAware;
+    }
+
+    /**
+     * SHIELD-3: whether the profile records the enemy as a bullet shielder, so the core treats
+     * it as one from the first shot. False for a stranger.
+     */
+    public boolean shielder() {
+        return shielder;
     }
 
     /** Their gun's tier from the profile, {@code UNKNOWN} while its margin is too wide (DIAL-1). */

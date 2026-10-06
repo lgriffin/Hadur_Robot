@@ -113,3 +113,100 @@ Feature: The DrussGT route
     And Hadur scans the enemy for 2 ticks with a cool gun on target
     Then the lead-aware regime is on
     And the shot fired went out at power 0.1
+
+  # D2: shield openers are caught on the first bullet, and the last shot is kept.
+
+  @SHIELD-3
+  Scenario: One bullet destroyed by an enemy that has not moved since the round began makes it a shielder
+    Given a duel in which Hadur has 100 energy and the enemy 100
+    When 12 quiet ticks pass so the last waves break
+    And one of Hadur's bullets is destroyed by an enemy bullet
+    And Hadur scans the enemy for 4 ticks with a cool gun on target
+    Then the enemy is treated as a bullet shielder
+    And a shot went out with an anti-shield aim offset
+
+  @SHIELD-3
+  Scenario: A bullet destroyed by an enemy that has moved is not enough
+    Given a duel in which Hadur has 100 energy and the enemy 100
+    When the enemy moves for 3 ticks
+    And one of Hadur's bullets is destroyed by an enemy bullet
+    And Hadur scans the enemy for 4 ticks with a cool gun on target
+    Then the enemy is not treated as a bullet shielder
+    And no shot went out with an anti-shield aim offset
+
+  @SHIELD-3
+  Scenario: The shielder flag goes into the profile when the battle ends
+    Given a duel in which Hadur has 100 energy and the enemy 100
+    When 12 quiet ticks pass so the last waves break
+    And one of Hadur's bullets is destroyed by an enemy bullet
+    And the round and the battle end
+    Then the profile on disk records the enemy as a bullet shielder
+
+  @SHIELD-3
+  Scenario: A profile that records a shielder starts the next battle with it
+    Given Hadur remembers the enemy as a bullet shielder, and has 100 energy against 100
+    When 12 quiet ticks pass so the last waves break
+    And Hadur scans the enemy for 4 ticks with a cool gun on target
+    Then the enemy is treated as a bullet shielder
+    And a shot went out with an anti-shield aim offset
+
+  @SHIELD-3
+  Scenario: An enemy that is not a shielder is not recorded as one
+    Given a duel in which Hadur has 100 energy and the enemy 100
+    When 12 quiet ticks pass so the last waves break
+    And the round and the battle end
+    Then the profile on disk does not record the enemy as a bullet shielder
+
+  @SHIELD-4
+  Scenario: A shielder that has not moved in 10 ticks is shot at 3.0 with the aim jitter on
+    Given a duel in which Hadur has 100 energy and the enemy 100
+    When 12 quiet ticks pass so the last waves break
+    And one of Hadur's bullets is destroyed by an enemy bullet
+    And Hadur scans the enemy for 4 ticks with a cool gun on target
+    Then the shot fired went out at power 3.0
+    And a shot went out with an anti-shield aim offset
+
+  @SHIELD-4
+  Scenario: A shielder that moved a moment ago is not shot at 3.0
+    Given a duel in which Hadur has 100 energy and the enemy 100
+    When 12 quiet ticks pass so the last waves break
+    And one of Hadur's bullets is destroyed by an enemy bullet
+    And the enemy moves for 1 ticks
+    And Hadur scans the enemy for 4 ticks with a cool gun on target
+    Then the shot fired went out below power 3.0
+
+  @SHIELD-4
+  Scenario: END-3 still lowers the shot at a shielder that is nearly dead
+    Given a duel in which Hadur has 100 energy and the enemy 10
+    When 12 quiet ticks pass so the last waves break
+    And one of Hadur's bullets is destroyed by an enemy bullet
+    And Hadur scans the enemy for 4 ticks with a cool gun on target
+    Then the shot fired went out below power 3.0
+
+  @END-4
+  Scenario: With the enemy unable to fire, a shot that would leave us under 0.3 ahead is held
+    Given a duel in which Hadur has 0.5 energy and the enemy 0.7
+    When the enemy fires a 0.5 bullet
+    And Hadur scans the enemy for 4 ticks with a cool gun on target
+    Then no shot went out
+
+  @END-4
+  Scenario: With energy to spare the shot goes
+    Given a duel in which Hadur has 3 energy and the enemy 0.7
+    When the enemy fires a 0.5 bullet
+    And Hadur scans the enemy for 4 ticks with a cool gun on target
+    Then the shot fired went out at power 0.1
+
+  @END-4
+  Scenario: While the enemy can still fire, nothing is held
+    Given a duel in which Hadur has 0.9 energy and the enemy 1
+    When the enemy fires a 0.5 bullet
+    And Hadur scans the enemy for 4 ticks with a cool gun on target
+    Then a shot went out
+
+  @END-4
+  Scenario: Behind or level there is no lead to keep, so the shot goes
+    Given a duel in which Hadur has 0.15 energy and the enemy 0.7
+    When the enemy fires a 0.5 bullet
+    And Hadur scans the enemy for 4 ticks with a cool gun on target
+    Then a shot went out

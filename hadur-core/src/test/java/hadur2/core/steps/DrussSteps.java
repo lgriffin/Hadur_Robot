@@ -33,13 +33,14 @@ public class DrussSteps {
     private double ourEnergy = 100;
     private double enemyEnergy = 100;
     private double distance = 400;
+    private double enemyVelocity;
 
     private BotInput input(double gunHeat, List<BotEvent> events) {
         return new BotInput(++time, 0, 400, 300, 0, 4, ourEnergy, gunHeat, 0.1, 0, 0, 0, 1, events);
     }
 
     private BotEvent scan() {
-        return new BotEvent.Scan(ENEMY, BEARING, distance, enemyEnergy, 0, 0);
+        return new BotEvent.Scan(ENEMY, BEARING, distance, enemyEnergy, 0, enemyVelocity);
     }
 
     private void tick(double gunHeat, List<BotEvent> events) {
@@ -59,13 +60,13 @@ public class DrussSteps {
         duelWithEnergies(ours, theirs);
     }
 
-    @Given("a duel in which Hadur has {int} energy and the enemy {int}")
-    public void duelAtFourHundred(int ours, int theirs) {
+    @Given("a duel in which Hadur has {double} energy and the enemy {double}")
+    public void duelAtFourHundred(double ours, double theirs) {
         distance = 400;
         duelWithEnergies(ours, theirs);
     }
 
-    private void duelWithEnergies(double ours, int theirs) {
+    private void duelWithEnergies(double ours, double theirs) {
         store = new MemoryProfileStore(200_000);
         ourEnergy = ours;
         enemyEnergy = theirs;
@@ -81,6 +82,43 @@ public class DrussSteps {
         ourEnergy = ours;
         enemyEnergy = theirs;
         start();
+    }
+
+    @Given("Hadur remembers the enemy as a bullet shielder, and has {int} energy against {int}")
+    public void remembersShielder(int ours, int theirs) {
+        distance = 400;
+        store = new MemoryProfileStore(200_000);
+        new ProfileLibrary(store).save(Profiles.shielder(Profiles.sample(ENEMY, 9, 0, 0), true));
+        ourEnergy = ours;
+        enemyEnergy = theirs;
+        start();
+    }
+
+    @When("the enemy moves for {int} ticks")
+    public void enemyMoves(int ticks) {
+        enemyVelocity = 6;
+        for (int i = 0; i < ticks; i++) tick(3, List.of(scan()));
+        enemyVelocity = 0;
+    }
+
+    @When("one of Hadur's bullets is destroyed by an enemy bullet")
+    public void bulletDestroyed() {
+        List<BotEvent> events = new ArrayList<>();
+        events.add(new BotEvent.BulletHitBullet(1.0, 400, 300, 0.5));
+        events.add(scan());
+        tick(3, events);
+    }
+
+    @When("the enemy fires a {double} bullet")
+    public void enemyFires(double power) {
+        enemyEnergy -= power;
+        tick(3, List.of(scan()));
+    }
+
+    @When("the round and the battle end")
+    public void battleEnds() {
+        core.roundEnded(time, "win", ourEnergy, 0);
+        core.battleEnded(time);
     }
 
     /**
@@ -175,6 +213,46 @@ public class DrussSteps {
     @Then("the shot fired went out below power {double}")
     public void firedBelow(double power) {
         assertTrue(last.firePower() > 0 && last.firePower() < power, "fired " + last.firePower());
+    }
+
+    @Then("the enemy is treated as a bullet shielder")
+    public void treatedAsShielder() {
+        assertTrue(shieldRecords() > 0 || core.stats().jitteredShots > 0, "no shielder verdict");
+    }
+
+    @Then("the enemy is not treated as a bullet shielder")
+    public void notTreatedAsShielder() {
+        assertEquals(0, shieldRecords());
+        assertEquals(0, core.stats().jitteredShots);
+    }
+
+    private long shieldRecords() {
+        return telemetry.stream().filter(l -> l.startsWith("P,") && l.contains(",shield,")).count();
+    }
+
+    @Then("a shot went out with an anti-shield aim offset")
+    public void jittered() {
+        assertTrue(core.stats().jitteredShots > 0, "jittered shots " + core.stats().jitteredShots);
+    }
+
+    @Then("no shot went out with an anti-shield aim offset")
+    public void notJittered() {
+        assertEquals(0, core.stats().jitteredShots);
+    }
+
+    @Then("the profile on disk records the enemy as a bullet shielder")
+    public void profileRecordsShielder() {
+        assertTrue(new ProfileLibrary(store).load(ENEMY).profile().shielder());
+    }
+
+    @Then("the profile on disk does not record the enemy as a bullet shielder")
+    public void profileDoesNotRecordShielder() {
+        assertFalse(new ProfileLibrary(store).load(ENEMY).profile().shielder());
+    }
+
+    @Then("a shot went out")
+    public void aShotWentOut() {
+        assertTrue(last.firePower() > 0, "fired " + last.firePower());
     }
 
     @Then("no shot went out")

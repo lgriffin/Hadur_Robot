@@ -44,6 +44,18 @@ class OpeningBookTest {
     }
 
     @Test
+    @Tag("SHIELD-3")
+    @DisplayName("SHIELD-3: the opening carries the profile's shielder flag, and a stranger has none")
+    void shielderFlagPassesThrough() {
+        assertFalse(Opening.STRANGER.shielder());
+        assertFalse(OpeningBook.read(null).shielder());
+        assertFalse(OpeningBook.read(Profiles.sample("abc.Shadow 3.83c", 9, 0, 0)).shielder());
+        assertTrue(OpeningBook.read(Profiles.shielder(Profiles.sample("abc.Shadow 3.83c", 9, 0, 0), true)).shielder());
+        assertFalse(OpeningBook.read(Profiles.shielder(Profiles.sample("abc.Shadow 3.83c", 9, 0, 0), true)).leadAware(),
+            "the two flags are independent");
+    }
+
+    @Test
     @Tag("ADAPT-2")
     @DisplayName("T3 turns the flattener on from the first wave and hands the surf the profile's rate")
     void flattenerFromGunTier() {
