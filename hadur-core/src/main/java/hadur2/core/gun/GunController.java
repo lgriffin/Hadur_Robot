@@ -173,12 +173,17 @@ public class GunController {
     /** TIME-1, TIME-2: the k share every gun view uses, kept for views made later. */
     private double kShare = 1.0;
 
+    /** RES-14: forgets the virtual bullets still in flight, without touching what the views learned. */
+    public void discardPendingVirtualBullets() {
+        virtualBullets.clear();
+    }
+
     /**
      * Starts a round: drops the virtual bullets still in flight (their waves will never
      * break) and the views' neighbour caches. What the views have learned is kept.
      */
     public void initRound() {
-        virtualBullets.clear();
+        discardPendingVirtualBullets();
         for (Map<String, KnnView<TimestampedFiringAngle>> views : enemyViews.values()) {
             for (KnnView<TimestampedFiringAngle> view : views.values()) {
                 view.clearCache();
@@ -518,6 +523,14 @@ public class GunController {
     }
 
     /**
+     * How the lead-aware regime (POW-7 to POW-9, decided by the core's power policy) bears on
+     * the duel's own power: {@code NORMAL} keeps 1.20's choice, power-down included;
+     * {@code CHAFF} fires the minimum power; {@code DEFAULT} fires the base power (1.95, or
+     * 2.95 inside 150 px) without the cubic power-down, the one thing the regime replaces.
+     */
+    public enum Stakes { NORMAL, CHAFF, DEFAULT }
+
+    /**
      * The bullet power for the next gun wave, before the core's power policy.
      *
      * @param distance the distance to the target, px
@@ -528,8 +541,24 @@ public class GunController {
      */
     public double calculateBulletPower(double distance, double myEnergy,
                                         double enemyEnergy, int enemiesAlive) {
+        return calculateBulletPower(distance, myEnergy, enemyEnergy, enemiesAlive, Stakes.NORMAL);
+    }
+
+    /**
+     * The bullet power for the next gun wave, before the core's power policy, under the
+     * lead-aware regime's call. In a melee battle {@code stakes} is ignored.
+     *
+     * @param distance the distance to the target, px
+     * @param myEnergy our energy
+     * @param enemyEnergy the target's energy
+     * @param enemiesAlive the opponents alive
+     * @param stakes what the lead-aware regime asks of the power (POW-7 to POW-9)
+     * @return the power; at least 0.1 unless our energy is lower, and never above it
+     */
+    public double calculateBulletPower(double distance, double myEnergy,
+                                        double enemyEnergy, int enemiesAlive, Stakes stakes) {
         if (is1v1) {
-            return calculate1v1BulletPower(distance, myEnergy, enemyEnergy);
+            return calculate1v1BulletPower(distance, myEnergy, enemyEnergy, stakes);
         }
         return calculateMeleeBulletPower(distance, myEnergy, enemyEnergy, enemiesAlive);
     }
@@ -538,15 +567,19 @@ public class GunController {
      * 1.20's duel power: 1.95, or 2.95 inside 150 px; beyond 325 px, cut while our energy
      * is below a threshold of 63 (4 lower per point of energy we lead by, never below 35),
      * to 1.95 times the cube of our energy's share of that threshold. Then capped at a quarter of the enemy's
-     * energy, floored at 0.1 and capped at our own energy.
+     * energy, floored at 0.1 and capped at our own energy. Under the lead-aware regime the
+     * power-down is skipped ({@link Stakes#DEFAULT}) or the base power is replaced by the
+     * minimum ({@link Stakes#CHAFF}); the caps and the floor still apply.
      */
     private double calculate1v1BulletPower(double distance, double myEnergy,
-                                            double enemyEnergy) {
+                                            double enemyEnergy, Stakes stakes) {
         double bulletPower = 1.95;
         if (distance < 150.0) {
             bulletPower = 2.95;
         }
-        if (distance > 325.0) {
+        if (stakes == Stakes.CHAFF) {
+            bulletPower = Rules.MIN_BULLET_POWER;
+        } else if (stakes == Stakes.NORMAL && distance > 325.0) {
             // 63 at an even or worse energy balance, 4 lower per point we lead, never below 35.
             double powerDownPoint = DiaUtils.limit(35.0,
                 63.0 + (enemyEnergy - myEnergy) * 4.0, 63.0);

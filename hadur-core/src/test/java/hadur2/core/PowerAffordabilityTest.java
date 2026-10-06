@@ -1,5 +1,6 @@
 package hadur2.core;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import hadur2.core.memory.OpponentProfile;
@@ -66,6 +67,69 @@ class PowerAffordabilityTest {
         }
         assertTrue(last.firePower() > 0, "a shot the gun could already afford must still fire");
         assertTrue(last.firePower() < 3.0, "power 3.0 is unaffordable at 2.5 energy");
+    }
+
+    @Test
+    @Tag("POW-10")
+    @DisplayName("POW-10: a shot dearer than our energy is lowered to what we can pay for, not held")
+    void shotDearerThanOurEnergyIsLowered() {
+        // 200 px away the gun's own power is 1.95 (no power-down inside 325 px) and our energy
+        // is 1.5, so the old rule capped it at 1.5 and then held it, since 1.5 is not above 1.5.
+        HadurCore core = new HadurCore(800, 600, 1, Telemetry.NONE);
+        core.newRound(0);
+        core.tick(input(1, 1.5, 0.0005, scan(0.2, 200, 50, 0, 0)));
+        BotOrders o = core.tick(input(2, 1.5, 0.0005, scan(0.2, 200, 50, 0, 0)));
+        assertTrue(o.firePower() > 0, "the shot must go");
+        assertTrue(o.firePower() < 1.5, "at a power our energy can pay for: " + o.firePower());
+    }
+
+    @Test
+    @Tag("POW-10")
+    @DisplayName("POW-10: a hit between the aim and the shot lowers the aimed power instead of holding the shot")
+    void shotLoweredAfterAHitBetweenAimAndFire() {
+        HadurCore core = new HadurCore(800, 600, 1, Telemetry.NONE);
+        core.newRound(0);
+        core.tick(input(1, 80, 0.0005, scan(0.2, 200, 50, 0, 0)));
+        // The aim above was for 1.95; by the time it goes we are down to 1.0 energy.
+        BotOrders o = core.tick(input(2, 1.0, 0.0005, scan(0.2, 200, 50, 0, 0)));
+        assertTrue(o.firePower() > 0, "the shot must go");
+        assertTrue(o.firePower() < 1.0, "at a power 1.0 energy can pay for: " + o.firePower());
+    }
+
+    @Test
+    @Tag("POW-10")
+    @DisplayName("POW-10: with 0.1 energy no power can be paid for, and no shot goes")
+    void nothingToPayWith() {
+        HadurCore core = new HadurCore(800, 600, 1, Telemetry.NONE);
+        core.newRound(0);
+        core.tick(input(1, 0.1, 0.0005, scan(0.2, 200, 50, 0, 0)));
+        BotOrders o = core.tick(input(2, 0.1, 0.0005, scan(0.2, 200, 50, 0, 0)));
+        assertTrue(o.firePower() == 0, "fired " + o.firePower());
+    }
+
+    @Test
+    @Tag("ADAPT-5")
+    @DisplayName("ADAPT-5: a profile that records the condition fires the lead-aware power from the very first shot")
+    void profileVerdictAppliesFromTheFirstShot() {
+        OpponentProfile p = Profiles.leadAware(Profiles.sample("enemy", 5, 0, 0), true);
+        MemoryProfileStore store = new MemoryProfileStore(200_000);
+        new ProfileLibrary(store).save(p);
+        HadurCore core = new HadurCore(800, 600, 1, Telemetry.NONE, store);
+        core.newRound(0);
+        // 50 energy against 52 at 400 px: level, below 60, so POW-7 fires 0.1 where 1.20's
+        // power-down would fire 1.95 x (50/63)^3, about 0.97.
+        core.tick(input(1, 50, 0.0005, scan(0.2, 400, 52, 0, 0)));
+        BotOrders o = core.tick(input(2, 50, 0.0005, scan(0.2, 400, 52, 0, 0)));
+        assertEquals(0.1, o.firePower(), 1e-9);
+
+        // The same battle with no verdict in the profile is 1.20's.
+        MemoryProfileStore stranger = new MemoryProfileStore(200_000);
+        new ProfileLibrary(stranger).save(Profiles.sample("enemy", 5, 0, 0));
+        HadurCore other = new HadurCore(800, 600, 1, Telemetry.NONE, stranger);
+        other.newRound(0);
+        other.tick(input(1, 50, 0.0005, scan(0.2, 400, 52, 0, 0)));
+        BotOrders n = other.tick(input(2, 50, 0.0005, scan(0.2, 400, 52, 0, 0)));
+        assertTrue(n.firePower() > 0.9 && n.firePower() < 1.0, "was " + n.firePower());
     }
 
     @Test

@@ -288,6 +288,27 @@ robot that just drives at us.
   mid-table opponents to bench against, and every bot benched so far reads either T0 or T3 —
   issue #53 tracks getting that bench run. It lands once that data exists, not before.
 
+## The DrussGT route (D1 to D6)
+
+The plan is [druss-route-plan.md](druss-route-plan.md); the requirements are in [requirements.md](requirements.md#the-drussgt-route-d1-to-d6).
+
+<a id="d1"></a>
+
+### D1: power by the lead
+
+Release 3.8. Against DrussGT both guns hit below break-even, so each shot costs its owner more energy than it takes, and the robot firing the lighter bullet keeps its lead (D0's probes, `docs/bench/d0-drussgt-probes.md`). D1 teaches the duel that, and nothing else yet.
+
+- **POW-11** keeps battle-long shot and hit counts for both robots in three power classes and overall, with margins, and the `R` record gains twelve appended fields (`oS0 oH0 oS1 oH1 oS2 oH2 tS0 ... tH2`).
+- **POW-7 to POW-9** fire the minimum power while both robots are certainly below break-even and Hadur is level or ahead, and 1.20's default power (without its cubic power-down) when behind by more than 3 with more than 10 energy, or while both exceed 60. POW-1 to POW-5, RAM-1 and END-3 keep precedence.
+- **POW-10** never holds a shot Hadur can pay for: it is lowered to what energy allows. The END-4 hook is left for a later stage.
+- **ADAPT-5** stores the verdict in the profile (format version 3, so `-v3.hp` file names; a version 2 profile loads its stats only).
+- **RES-14** ends duress 300 ticks after the last skipped turn, and retires RES-9.
+- **Re-recorded fixtures:** `abc.Shadow_3.83c`, `warm-abc.Shadow_3.83c` (the second battle's transcript, `-2`), `duress-sample.Walls` and `melee-sentry`, with the bench `--record` commands in `hadur-bench/README.md`. The other nine did not diverge in orders and were kept.
+- **Review fixes (PR #98):** the fired power is carried on the firing wave (POW-10), enemy hits are counted from the `HitByBullet` event (POW-11), duress exit discards both managers' outstanding waves (RES-14), the RES-14 clock reads the skipped tick the event carries, and a nearly dead trailing robot fires the minimum power (POW-8). The first of these changes orders wherever the shot's power differs from the tick's wave, so eight fixtures were re-recorded again (`abc.Shadow_3.83c`, `warm-abc.Shadow_3.83c`, `duress-sample.Walls`, `melee-samples`, `melee-sentry`, `sample.Tracker`, `sample.Walls` and the team pair `m1`/`m2`), their telemetry snapshots rewritten, and the duel and conductor pins and `duel-sources.sha256` re-pinned.
+- **Re-snapshotted:** the telemetry snapshots of all thirteen fixtures (`-Dhadur.replay.snapshot=write`), because the `R` record is longer.
+- **Re-pinned:** `pins/kernel.sha256`, `pins/duel.sha256`, `pins/conductor.sha256` (`-Dhadur.pin=kernel,duel,conductor`) and `duel-sources.sha256` (`-Dhadur.duel.snapshot=write`). The melee and team pins did not change.
+- **Gate** ([d1-gate.md](bench/d1-gate.md)), paired against 3.7: DrussGT **+12.0 ± 4.3** points (48.2% against 36.2%, 20 battles), the top 10 +6.7 on average (Firestarter +21.3, Diamond +14.1, Knight +11.6), the weak set level. The rule pays against surfers whose power follows ours down, not only DrussGT.
+
 ## What comes next
 
 Every EARS requirement up to R2, bar TIER-1 (above), is implemented and traced. R3 to R5

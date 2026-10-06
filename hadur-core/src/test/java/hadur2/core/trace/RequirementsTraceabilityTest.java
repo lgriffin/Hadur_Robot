@@ -28,14 +28,15 @@ import org.junit.jupiter.api.Test;
  * The duel plan's stages S0-S7 are compared with {@code hadur.stage}, the melee
  * extension's M0-M6 with {@code hadur.melee.stage}, the RoboRumble climb plan's R0-R5
  * with {@code hadur.climb.stage}, and the architecture evolution's A0-A5 with
- * {@code hadur.arch.stage}, all set in the root pom.
+ * {@code hadur.arch.stage}, and the DrussGT route's D0-D6 with {@code hadur.druss.stage}, all
+ * set in the root pom.
  *
  * <p>Writes the coverage table to {@code target/requirements-coverage.md}.</p>
  */
 class RequirementsTraceabilityTest {
 
     static final Pattern ROW = Pattern.compile(
-        "^\\|\\s*([A-Z]+-\\d+)\\s*\\|[^|]*\\|[^|]*\\|\\s*([SMRA]\\d)\\s*\\|\\s*$");
+        "^\\|\\s*([A-Z]+-\\d+)\\s*\\|[^|]*\\|[^|]*\\|\\s*([SMRAD]\\d)\\s*\\|\\s*$");
     static final Pattern JAVA_TAG = Pattern.compile("@Tag\\(\"([A-Z]+-\\d+)\"\\)");
     // Split so this file's own source doesn't match them.
     static final String JQWIK_PROPERTY = "import net.jqwik.api." + "Property;";
@@ -47,6 +48,7 @@ class RequirementsTraceabilityTest {
     static String meleeStage;
     static String climbStage;
     static String archStage;
+    static String drussStage;
     static Map<String, String> requirements;
     static Map<String, Set<String>> coverage;
     /** jqwik test files that tag with JUnit's {@code @Tag}, which makes jqwik skip them. */
@@ -59,6 +61,7 @@ class RequirementsTraceabilityTest {
         meleeStage = System.getProperty("hadur.melee.stage", "M0");
         climbStage = System.getProperty("hadur.climb.stage", "R0");
         archStage = System.getProperty("hadur.arch.stage", "A0");
+        drussStage = System.getProperty("hadur.druss.stage", "D0");
         requirements = readRequirements(root.resolve("docs/requirements.md"));
         coverage = new TreeMap<>();
         junitTaggedProperties = new ArrayList<>();
@@ -91,7 +94,7 @@ class RequirementsTraceabilityTest {
             if (due(s) && !coverage.containsKey(id)) missing.add(id + " (" + s + ")");
         });
         assertTrue(missing.isEmpty(), "No test names " + missing + "; stages are " + stage
-            + ", " + meleeStage + ", " + climbStage + " and " + archStage);
+            + ", " + meleeStage + ", " + climbStage + ", " + archStage + " and " + drussStage);
     }
 
     @Test
@@ -122,7 +125,7 @@ class RequirementsTraceabilityTest {
     static boolean due(String s) {
         char plan = s.charAt(0);
         return atOrBefore(s, plan == 'M' ? meleeStage : plan == 'R' ? climbStage
-            : plan == 'A' ? archStage : stage);
+            : plan == 'A' ? archStage : plan == 'D' ? drussStage : stage);
     }
 
     static boolean atOrBefore(String s, String stage) {
@@ -168,7 +171,7 @@ class RequirementsTraceabilityTest {
     static void writeReport() throws IOException {
         StringBuilder b = new StringBuilder("# Requirement coverage at stages ").append(stage)
             .append(", ").append(meleeStage).append(", ").append(climbStage)
-            .append(" and ").append(archStage).append("\n\n| ID | Stage | Covered by |\n|---|---|---|\n");
+            .append(", ").append(archStage).append(" and ").append(drussStage).append("\n\n| ID | Stage | Covered by |\n|---|---|---|\n");
         int due = 0, covered = 0;
         for (Map.Entry<String, String> e : requirements.entrySet()) {
             Set<String> by = coverage.get(e.getKey());
@@ -183,12 +186,12 @@ class RequirementsTraceabilityTest {
         }
         b.append("\n").append(covered).append(" of ").append(due)
             .append(" requirements due by ").append(stage).append(", ").append(meleeStage)
-            .append(", ").append(climbStage).append(" and ").append(archStage).append(" are covered.\n");
+            .append(", ").append(climbStage).append(", ").append(archStage).append(" and ").append(drussStage).append(" are covered.\n");
         Path out = Path.of("target/requirements-coverage.md");
         Files.createDirectories(out.getParent());
         Files.writeString(out, b);
         System.out.println(covered + " of " + due + " requirements due by " + stage + ", " + meleeStage
-            + ", " + climbStage + " and " + archStage + " are covered; see " + out.toAbsolutePath());
+            + ", " + climbStage + ", " + archStage + " and " + drussStage + " are covered; see " + out.toAbsolutePath());
     }
 
     static Path findRoot() {

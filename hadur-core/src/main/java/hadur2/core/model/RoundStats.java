@@ -91,6 +91,20 @@ public final class RoundStats {
     public int ramEscapeTicks;
     /** 3.5: shots aimed at the mirror of our own position (MIR-1). */
     public int mirrorShots;
+    /**
+     * POW-11: this round's resolved duel bullets of ours by power class (0 under 0.2, 1 from 0.2
+     * to 1.2, 2 above 1.2): the bullets that hit, missed or were shot down.
+     */
+    public final int[] ourShotsByClass = new int[3];
+    /** POW-11: the hits among {@link #ourShotsByClass}, by power class. */
+    public final int[] ourHitsByClass = new int[3];
+    /**
+     * POW-11: this round's resolved enemy bullets by power class: those that broke on us or met
+     * one of ours, at the power the energy drop gave.
+     */
+    public final int[] theirShotsByClass = new int[3];
+    /** POW-11: the hits among {@link #theirShotsByClass}, by power class. */
+    public final int[] theirHitsByClass = new int[3];
 
     /**
      * The round's mean distance to the duel opponent over the scans the duel handled.
@@ -128,7 +142,9 @@ public final class RoundStats {
      * radarReacquired,hiddenShots,profileLoadFailures,profileSaveFailures,seedsEvicted,
      * bulletsIntercepted,jitteredShots,shotsFired,seedDecays,meanDistance,targetDistance,
      * finishTicks,ramTicks,fullPowerShots,slowTicks,shadowedWaves,flavourChanges,flavourStep,interceptsShadowed,duressTicks,
-     * ramEscapeTicks,mirrorShots}. The memory fields are battle totals so
+     * ramEscapeTicks,mirrorShots,oS0,oH0,oS1,oH1,oS2,oH2,tS0,tH0,tS1,tH1,tS2,tH2}. The last twelve
+     * (POW-11) are this round's resolved bullets and hits by power class, ours (o) then theirs (t),
+     * classes 0 (under 0.2), 1 (0.2 to 1.2) and 2 (over 1.2). The memory fields are battle totals so
      * far, not this round's. Fields are only ever appended, so older readers still work.
      *
      * <p>Numbers are formatted with {@link Locale#ROOT}, so the decimal separator is always
@@ -143,7 +159,7 @@ public final class RoundStats {
      */
     public String toRecord(int round, long tick, String result, double ourEnergy,
                            double enemyEnergy) {
-        return String.format(Locale.ROOT, "R,%d,%d,%s,%.2f,%.2f,%.4f,%.4f,%.4f,%.4f,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%.1f,%.1f,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d",
+        return String.format(Locale.ROOT, "R,%d,%d,%s,%.2f,%.2f,%.4f,%.4f,%.4f,%.4f,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%.1f,%.1f,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d",
             round, tick, result, ourEnergy, enemyEnergy,
             ourHitRate(), margin(ourHitRate(), shotsFired),
             theirHitRate(), margin(theirHitRate(), enemyShotsDetected),
@@ -152,7 +168,11 @@ public final class RoundStats {
             bulletsIntercepted, jitteredShots, shotsFired, seedDecays,
             meanDistance(), targetDistance, finishTicks, ramTicks, fullPowerShots,
             slowTicks, shadowedWaves, flavourChanges, flavourStep, interceptsShadowed, duressTicks,
-            ramEscapeTicks, mirrorShots);
+            ramEscapeTicks, mirrorShots,
+            ourShotsByClass[0], ourHitsByClass[0], ourShotsByClass[1], ourHitsByClass[1],
+            ourShotsByClass[2], ourHitsByClass[2],
+            theirShotsByClass[0], theirHitsByClass[0], theirShotsByClass[1], theirHitsByClass[1],
+            theirShotsByClass[2], theirHitsByClass[2]);
     }
 
     /**

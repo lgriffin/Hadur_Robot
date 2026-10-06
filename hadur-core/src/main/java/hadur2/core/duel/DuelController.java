@@ -20,6 +20,7 @@ import hadur2.core.move.RamEscape;
 import hadur2.core.move.SurfMover;
 import hadur2.core.physics.*;
 import hadur2.core.port.Telemetry;
+import hadur2.core.policy.BattleHitRates;
 import hadur2.core.policy.DistancePolicy;
 import hadur2.core.policy.Endgame;
 import hadur2.core.policy.EnemyGunHeat;
@@ -135,6 +136,16 @@ public final class DuelController {
     private final HitWindow ourWindow = new HitWindow();
     /** S5: the outcomes of their firing waves as they break on us, rolling (DIST-1, POW-2). */
     private final HitWindow theirWindow = new HitWindow();
+    /** POW-11: our resolved duel bullets over the whole battle, by power class. */
+    private final BattleHitRates ourRates = new BattleHitRates();
+    /** POW-11: their resolved bullets over the whole battle, by power class. */
+    private final BattleHitRates theirRates = new BattleHitRates();
+    /** ADAPT-5: whether the profile records POW-7's hit-rate condition as standing; false for a stranger. */
+    private boolean leadVerdict;
+    /** POW-7: whether the lead-aware regime was in force at the last scan, so a P record marks each change. */
+    private boolean leadApplied;
+    /** POW-10: the power of the shot that last left, which is the aimed power unless it was lowered to what we could pay. */
+    private double lastFiredPower;
     /** S5: the distance controller (DIST-1, END-1); a stranger starts at 650 px. */
     private DistancePolicy distance = new DistancePolicy(OpeningBook.STRANGER_DISTANCE);
     /** Null until the first duel tick tells the cooling rate. */
@@ -320,6 +331,23 @@ public final class DuelController {
         radarLock = Double.NaN;
     }
 
+    /**
+     * RES-14: duress has ended. The waves of both managers, and the per-wave state that goes
+     * with them (the gun's virtual bullets, the surf's wave and our bullets' shadows), are from
+     * before an interval that went unobserved: processed on the next scan they would be
+     * judged against it. They are discarded, and the duel's view of the enemy starts afresh;
+     * what the battle learned (the gun's and surf's trees, the ratings, the battle's hit rates)
+     * stays.
+     */
+    public void resumeAfterDuress() {
+        gunWaveManager.initRound();
+        gunController.discardPendingVirtualBullets();
+        moveController.discardWaves();
+        surfMover.initRound();
+        aimCarriesJitter = false;
+        resetTracking();
+    }
+
     /** A tick begins: a lock asked for on a tick that never finished is dropped. */
     public void beginTick() {
         radarLock = Double.NaN;
@@ -453,8 +481,19 @@ public final class DuelController {
         double mDl20 = myStateLog.getDisplacementDistance(myPos, time, 20);
         double mDl40 = myStateLog.getDisplacementDistance(myPos, time, 40);
 
+        // POW-7 to POW-9, ADAPT-5: the lead-aware regime replaces the gun's power-down, and
+        // only that, while both guns lose energy on every shot. Duel only: the gun's melee
+        // power has no such rule.
+        boolean leadApplies = enemiesTotal <= 1 && PowerPolicy.applies(leadVerdict,
+            ourRates.estimate(), theirRates.estimate());
+        if (leadApplies != leadApplied) {
+            leadApplied = leadApplies;
+            Estimate ours = ourRates.estimate();
+            emitPolicy(round, time, "lead", ours.value(), ours.margin(), leadApplies ? "lead_on" : "lead_off");
+        }
+        PowerPolicy.Lead lead = PowerPolicy.lead(leadApplies, in.energy(), e.energy());
         double bulletPower = gunController.calculateBulletPower(
-            e.distance(), in.energy(), e.energy(), in.others());
+            e.distance(), in.energy(), e.energy(), in.others(), stakes(lead));
         // POW-5: cap the shot against a T3 gun beyond 500 px, unless a full-power rule below
         // applies - applied first so POW-1..4's Math.max can still override it upward.
         bulletPower = PowerPolicy.capPower(opening.gunTier(), e.distance(), bulletPower);
@@ -500,6 +539,10 @@ public final class DuelController {
             ram1Active = ram1;
             emitPolicy(round, time, "power", bulletPower, Double.NaN, ram1 ? "ram_1" : why.name().toLowerCase(Locale.ROOT));
         }
+        // POW-10: a power our energy cannot pay for is lowered, not held. END-4 (D2) will be the
+        // one rule that holds a shot we could pay for; its hook is here and in fireIfGunTurned.
+        double payable = PowerPolicy.payable(bulletPower, in.energy());
+        if (!Double.isNaN(payable)) bulletPower = payable;
 
         // Our gun wave: from us to the enemy at the power we would fire. Every scan makes
         // one; only those a real shot left from become firing waves, but all of them teach
@@ -677,6 +720,7 @@ public final class DuelController {
         if (ownOutcome) {
             shieldDetector.bulletHit();
             ourWindow.record(true);
+            countOurs(e.power(), true);
         }
         if (foreign) return;
         if (folder != null && driving) folder.ourHit(lastEnemyDistance, Rules.getBulletDamage(e.power()));
@@ -695,6 +739,10 @@ public final class DuelController {
         // A dead robot's bullet: it explains none of the survivor's energy (MMEM-2).
         if (enemiesTotal >= 2 && driving && shooterDead) return;
         ledger.enemyBulletHitUs(e.power());
+        // POW-11: the hit is certain from the event itself, whether or not a wave carried it
+        // or later breaks with an outcome; counted here once (checkDistance skips hits), and only
+        // while the Duel drives, as checkDistance's counts were.
+        if (driving) countTheirs(e.power(), true);
         // The firing wave of this robot and power whose front is closest to the bullet.
         Point2D.Double bulletLoc = new Point2D.Double(e.x(), e.y());
         Wave hitWave = moveController.findBulletWave(bulletLoc, in.time(), e.name(), e.power());
@@ -721,6 +769,7 @@ public final class DuelController {
         if (ownOutcome) {
             shieldDetector.bulletMissed();
             ourWindow.record(false);
+            countOurs(e.power(), false);
         }
     }
 
@@ -738,12 +787,17 @@ public final class DuelController {
         if (ownOutcome) {
             shieldDetector.bulletIntercepted();
             ourWindow.record(false);
+            countOurs(e.power(), false);
         }
         Point2D.Double hitLoc = new Point2D.Double(e.x(), e.y());
         // No name: the event does not say whose bullet ours met, so the firing wave of that
         // power whose front is closest to the point is taken.
         Wave hitWave = moveController.findBulletWave(hitLoc, in.time(), null, e.enemyPower());
         if (hitWave != null) {
+            // POW-11: the shot never reached us, hit or miss: it cost the enemy its energy and
+            // returned nothing, so it counts as a bullet that did not hit. Counted only when its
+            // wave was found, so the wave's own break (which skips it) cannot count it twice.
+            countTheirs(e.enemyPower(), false);
             // MOVE-1's check on itself: the bullet ours destroyed should have been in a shadow.
             if (hitWave.inShadow(DiaUtils.absoluteBearing(hitWave.sourceLocation, hitLoc), 1e-3)) {
                 stats.interceptsShadowed++;
@@ -795,6 +849,8 @@ public final class DuelController {
             double[] v = gunController.virtualGunScores(opponentName);
             folder.virtualGuns(v[0], v[1], v[2], v[3]);
             folder.normalised(moveController.enemyFiringWaves(), moveController.enemyWeightedHits());
+            // ADAPT-5: the verdict the rule itself holds as the round ends; the last round's is the battle's end.
+            folder.leadAware(PowerPolicy.applies(leadVerdict, ourRates.estimate(), theirRates.estimate()));
             folder.fold(won);
         } catch (RuntimeException e) {
             stats.profileSaveFailures++;
@@ -934,6 +990,8 @@ public final class DuelController {
         distance = new DistancePolicy(opening.distance());
         emitPolicy(round, time, "distance", Double.NaN, Double.NaN,
             opening.gunTier() + ":" + Math.round(opening.distance()));
+        // ADAPT-5: the profile's verdict applies from the first shot, until this battle's rates contradict it.
+        leadVerdict = opening.leadAware();
         gunController.setSampleSink(folder::gunSample);
         moveController.setSampleSink(folder::surfSample);
         // This battle's gun waves and hits on us go to the folder as samples, the profile's
@@ -993,6 +1051,7 @@ public final class DuelController {
     private void openForSurvivor(String name, OpponentProfile p) {
         handOffOpening = name;
         opening = OpeningBook.read(p);
+        leadVerdict = opening.leadAware();
         distance = new DistancePolicy(opening.distance());
         moveController.clearPrior();
         Estimate prior = opening.surfPrior();
@@ -1131,7 +1190,14 @@ public final class DuelController {
      */
     private void checkDistance(BotInput in, double gunHeat) {
         // Each wave's outcome in the order they broke; each one also counts toward MOVE-2.
-        for (boolean hit : moveController.takeBrokenWaveOutcomes()) {
+        java.util.List<Boolean> outcomes = moveController.takeBrokenWaveOutcomes();
+        java.util.List<Double> outcomePowers = moveController.takeBrokenWavePowers();
+        for (int i = 0; i < outcomes.size(); i++) {
+            boolean hit = outcomes.get(i);
+            // POW-11: a hit was counted when its HitByBullet event arrived (hitByBullet), so
+            // that one whose wave never yielded a precise intersection counts too; only the
+            // misses are counted here, once, as their waves break.
+            if (!hit) countTheirs(outcomePowers.get(i), false);
             theirWindow.record(hit);
             MoveFlavour.Step added = flavour.onWave(hit);
             if (added != null) changeFlavour(in, added);
@@ -1175,6 +1241,10 @@ public final class DuelController {
         }
         ourWindow.clear();
         theirWindow.clear();
+        ourRates.clear();
+        theirRates.clear();
+        leadVerdict = false;
+        leadApplied = false;
         rammer.forget();
         mirror.forget();
         distance = new DistancePolicy(opening.distance());
@@ -1231,11 +1301,14 @@ public final class DuelController {
         // In 1.20, setFireBullet heated the gun at once (the engine's proxy adds the new
         // shot's heat to getGunHeat()), so the aim below saw the hot gun.
         double gunHeat = in.gunHeat();
+        // The power this tick's wave was made for: the next aim's, whatever the shot below went
+        // out at (a fired wave takes the fired power on, POW-10).
+        double wavePower = lastGunWave.bulletPower();
         if (fireIfGunTurned(in, orders, aimedBulletPower, myNext, virtualGuns, mayFire)) {
             // The power the engine will actually fire: clamped to [0.1, 3.0] and to our
             // energy, as Robocode clamps it. Its heat is 1 + power / 5.
             double firedPower = Math.min(in.energy(), Math.min(
-                Math.max(aimedBulletPower, Rules.MIN_BULLET_POWER), Rules.MAX_BULLET_POWER));
+                Math.max(lastFiredPower, Rules.MIN_BULLET_POWER), Rules.MAX_BULLET_POWER));
             gunHeat += Rules.getGunHeat(firedPower);
             // MOVE-1: it leaves from here along the gun's heading this tick.
             moveController.ourBulletFired(new OurBullet(in.time(), in.location(), in.gunHeading(),
@@ -1243,7 +1316,7 @@ public final class DuelController {
             if (aimCarriesJitter) aimJitter.shotFired();
         }
 
-        aimedBulletPower = lastGunWave.bulletPower();
+        aimedBulletPower = wavePower;
         double aimAngle;
         // Head-on at a disabled enemy (it cannot move, so head-on is exact), and while the gun
         // is more than 3 ticks from cool, when no shot can use the real aim: the KNN search is
@@ -1311,16 +1384,29 @@ public final class DuelController {
         // SHIELD-2: once a shielder is found, hold the shot the gun settled on before, since
         // that aim is the predictable one.
         boolean predictable = shieldDetector.shielded() && !aimCarriesJitter;
+        // POW-10: the shot goes at the aimed power, lowered to what our energy can pay for if a
+        // hit on us since the aim has made it dear, and only held when no power can be paid for.
+        // The holds that stay are intentional: SHIELD-2's (a shielder predicts the settled
+        // aim), the conductor's fire permission (WEAVE-3) and a gun that is hot or off target.
+        // END-4 (D2) will add its own hold here.
+        double firePower = PowerPolicy.payable(bulletPower, in.energy());
         if (in.gunHeat() == 0 && Math.abs(Math.toDegrees(in.gunTurnRemaining())) < 0.05
-                && in.energy() > bulletPower && lastGunWave != null && !predictable
+                && !Double.isNaN(firePower) && lastGunWave != null && !predictable
                 && mayFire) {
-            orders.fire(bulletPower);
+            orders.fire(firePower);
+            lastFiredPower = firePower;
             lastGunWave.firingWave = true;
+            // POW-10: the wave carries the power really fired, so the virtual guns' bullets
+            // and the learning use its speed and arrival, not the aimed power's.
+            if (firePower != lastGunWave.bulletPower()) {
+                lastGunWave.setBulletPower(firePower);
+                lastGunWave.setWallDistances();
+            }
             // TIME-1: at the lowest computation level the virtual guns are not scored.
             if (virtualGuns) gunController.fireVirtualBullets(lastGunWave, myNext, in.time());
             lastRealBulletFireTime = in.time();
             stats.shotsFired++;
-            if (bulletPower >= PowerPolicy.FULL_POWER) stats.fullPowerShots++;
+            if (firePower >= PowerPolicy.FULL_POWER) stats.fullPowerShots++;
             if (aimCarriesJitter) stats.jitteredShots++;
             if (aimIsMirror) stats.mirrorShots++;
             if (folder != null) folder.ourShot(lastEnemyDistance);
@@ -1476,6 +1562,67 @@ public final class DuelController {
      */
     public Estimate theirRollingHitRate() {
         return theirWindow.estimate();
+    }
+
+    /** POW-11: counts one resolved duel bullet of ours, in the battle's rates and the round's counters. */
+    private void countOurs(double power, boolean hit) {
+        ourRates.record(power, hit);
+        int c = BattleHitRates.classOf(power);
+        stats.ourShotsByClass[c]++;
+        if (hit) stats.ourHitsByClass[c]++;
+    }
+
+    /** POW-11: counts one resolved enemy bullet, in the battle's rates and the round's counters. */
+    private void countTheirs(double power, boolean hit) {
+        theirRates.record(power, hit);
+        int c = BattleHitRates.classOf(power);
+        stats.theirShotsByClass[c]++;
+        if (hit) stats.theirHitsByClass[c]++;
+    }
+
+    /** The gun's reading of the regime's call (POW-7 to POW-9). */
+    private static GunController.Stakes stakes(PowerPolicy.Lead lead) {
+        switch (lead) {
+            case CHAFF: return GunController.Stakes.CHAFF;
+            case DEFAULT: return GunController.Stakes.DEFAULT;
+            default: return GunController.Stakes.NORMAL;
+        }
+    }
+
+    /**
+     * POW-11: our battle-long hit rate over all our resolved duel bullets.
+     *
+     * @return the rate with its margin of error
+     */
+    public Estimate ourBattleHitRate() {
+        return ourRates.estimate();
+    }
+
+    /**
+     * POW-11: their battle-long hit rate over all their resolved bullets.
+     *
+     * @return the rate with its margin of error
+     */
+    public Estimate theirBattleHitRate() {
+        return theirRates.estimate();
+    }
+
+    /**
+     * POW-11: our battle-long counts by power class.
+     *
+     * @return the live counters
+     */
+    public BattleHitRates ourBattleRates() {
+        return ourRates;
+    }
+
+    /**
+     * POW-11: their battle-long counts by power class.
+     *
+     * @return the live counters
+     */
+    public BattleHitRates theirBattleRates() {
+        return theirRates;
     }
 
     /**

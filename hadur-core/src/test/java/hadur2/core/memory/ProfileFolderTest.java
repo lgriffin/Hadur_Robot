@@ -1,6 +1,7 @@
 package hadur2.core.memory;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.DisplayName;
@@ -24,6 +25,25 @@ class ProfileFolderTest {
         assertEquals(1, p.theirShots());
         assertEquals(1, p.ourShots());
         assertEquals(1, p.rounds());
+    }
+
+    @Test
+    @Tag("ADAPT-5")
+    @DisplayName("ADAPT-5: the folder keeps the latest verdict, so the last round's is the battle's end")
+    void leadAwareVerdictIsTheLatest() {
+        OpponentProfile p = new OpponentProfile("a.B");
+        p.startBattle("a.B 1", 1);
+        ProfileFolder f = new ProfileFolder(p, 800, 600);
+        assertFalse(p.leadAware(), "a stranger has no verdict");
+        f.leadAware(true);
+        f.fold(true);
+        assertTrue(p.leadAware());
+        f.leadAware(true);
+        f.fold(false);
+        assertTrue(p.leadAware());
+        f.leadAware(false);
+        f.fold(false);
+        assertFalse(p.leadAware(), "the battle's last round contradicted it");
     }
 
     @Test

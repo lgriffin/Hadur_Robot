@@ -31,6 +31,31 @@ import hadur2.core.physics.Rules;
  *     there is no point part-way between the gun's choice and full power worth checking.</li>
  * </ul>
  *
+ * <p>The lead-aware regime (D1) is the one place the gun's own power-down is replaced, and only
+ * while it holds ({@link #lead}):</p>
+ * <ul>
+ * <li>POW-7: while both robots' battle-long hit rates over all their bullets are below
+ *     {@link #BREAK_EVEN} by more than their margins ({@link #conditionStands}), and our energy
+ *     is no more than {@link #LEAD_MARGIN} below the enemy's, fire {@link Lead#CHAFF}, the
+ *     minimum power. Both guns lose energy on every shot, so a lead is frozen by firing the
+ *     cheapest bullet that still refunds on a hit.</li>
+ * <li>POW-8: while that condition holds, we are more than {@link #LEAD_MARGIN} behind and our
+ *     energy exceeds {@link #LEAD_MIN_ENERGY}, fire the gun's default power
+ *     ({@link Lead#DEFAULT}): a trailing robot cannot freeze anything.</li>
+ * <li>POW-9: while both energies exceed {@link #OPENING_ENERGY}, fire the default whatever
+ *     POW-7 would choose: the opening exchange is traded at full stakes.</li>
+ * <li>ADAPT-5: a profile that records the condition as standing starts it standing, and
+ *     {@link #applies} drops it once this battle's rates are above {@link #BREAK_EVEN} by
+ *     more than their margins.</li>
+ * </ul>
+ * <p>{@link Lead#DEFAULT} is the gun's base power (1.95, or 2.95 inside 150 px) without 1.20's
+ * cubic power-down, which {@code GunController} skips in the regime. POW-1 to POW-5, RAM-1
+ * and END-3 still apply to what the regime chose, in the order {@code DuelController}
+ * runs them, so the full-power rules raise it and END-3 lowers it as before.</p>
+ *
+ * <p>POW-10: {@link #payable} lowers a power that the energy cannot pay for instead of
+ * holding the shot.</p>
+ *
  * <p>Every full-power rule is still capped at a quarter of their energy, which is what kills
  * them, so a finishing shot never wastes energy, and none applies while our own energy is
  * {@link #MIN_OUR_ENERGY} or less: there the gun's power-down in a losing energy war stands,
@@ -92,6 +117,29 @@ public final class PowerPolicy {
     public static final double POW_5_CAP = 1.7;
 
     /**
+     * POW-7: the hit rate at which a bullet of power p returns its cost, p over the damage it
+     * does plus the 3p it refunds: 1 / 7 = 14.3% at power 1 and below, 1.95 / (9.7 + 5.85) =
+     * 12.5% at 1.95. The lower figure is used for every bullet, so the condition stands only
+     * while both guns lose energy at either of those powers.
+     */
+    public static final double BREAK_EVEN = 0.125;
+    /** POW-7, POW-8: how far behind the enemy our energy may be before the regime stops chaffing. */
+    public static final double LEAD_MARGIN = 3.0;
+    /** POW-8: our energy must exceed this for the trailing robot to raise its stakes. */
+    public static final double LEAD_MIN_ENERGY = 10;
+    /** POW-9: both robots' energy must exceed this for the opening exchange to be traded at the default power. */
+    public static final double OPENING_ENERGY = 60;
+    /** POW-10: the energy left in hand when a shot is lowered to what we can pay for. */
+    public static final double RESERVE = 0.1;
+
+    /**
+     * What the lead-aware regime (POW-7 to POW-9) asks of the gun's power: {@code OFF} leaves
+     * 1.20's choice, {@code CHAFF} is the minimum power, {@code DEFAULT} is the gun's base
+     * power without its power-down.
+     */
+    public enum Lead { OFF, CHAFF, DEFAULT }
+
+    /**
      * Why a shot got the power it did: {@code GUN} when no rule applies and the gun's own
      * power stands, {@code POW_1}/{@code POW_2}/{@code POW_3} for the full-power rules,
      * {@code POW_4} when the expected-value comparison picked full power over the gun's own.
@@ -136,6 +184,93 @@ public final class PowerPolicy {
             return Reason.POW_4;
         }
         return Reason.GUN;
+    }
+
+    /**
+     * POW-7's hit-rate condition: both robots' hit rates over all their bullets are known and
+     * below {@link #BREAK_EVEN} by more than their margins, measured from the estimate's centre
+     * as POW-2 does (the centre plus the margin is still under the figure).
+     *
+     * @param ours our battle-long hit rate
+     * @param theirs their battle-long hit rate
+     * @return whether the condition stands
+     */
+    public static boolean conditionStands(Estimate ours, Estimate theirs) {
+        return below(ours) && below(theirs);
+    }
+
+    /**
+     * ADAPT-5: whether this battle's rates contradict the condition: either robot's hit rate is
+     * above {@link #BREAK_EVEN} by more than its margin (the centre less the margin is still over
+     * the figure).
+     *
+     * @param ours our battle-long hit rate
+     * @param theirs their battle-long hit rate
+     * @return whether the evidence is conclusive that the condition does not hold
+     */
+    public static boolean conditionContradicted(Estimate ours, Estimate theirs) {
+        return above(ours) || above(theirs);
+    }
+
+    /**
+     * Whether the lead-aware regime is in force: this battle's own rates satisfy POW-7's
+     * condition, or the profile recorded it as standing (ADAPT-5) and this battle's rates have
+     * not contradicted it. Evidence from this battle always outranks the profile's verdict, so
+     * with neither side conclusive the profile's stands.
+     *
+     * @param profileVerdict the profile's verdict, false for a stranger
+     * @param ours our battle-long hit rate
+     * @param theirs their battle-long hit rate
+     * @return whether POW-7 to POW-9 apply
+     */
+    public static boolean applies(boolean profileVerdict, Estimate ours, Estimate theirs) {
+        if (conditionStands(ours, theirs)) return true;
+        return profileVerdict && !conditionContradicted(ours, theirs);
+    }
+
+    /**
+     * POW-7 to POW-9: what the regime asks of the power, given whether it is in force. POW-9
+     * comes first (both energies above {@link #OPENING_ENERGY}: the default), then POW-7 (no
+     * more than {@link #LEAD_MARGIN} behind: chaff), then POW-8 (further behind with more than
+     * {@link #LEAD_MIN_ENERGY}: the default). Further behind with that much or less, no rule
+     * raises the stakes: the minimum power is fired. 1.20's power-down is not relied on for
+     * that, as it only applies beyond 325 px and a nearly dead robot closer in would
+     * otherwise fire 1.95 or 2.95 and spend almost all it has left.
+     *
+     * @param applies whether the regime is in force ({@link #applies})
+     * @param ourEnergy our energy
+     * @param enemyEnergy their energy
+     * @return the regime's call
+     */
+    public static Lead lead(boolean applies, double ourEnergy, double enemyEnergy) {
+        if (!applies) return Lead.OFF;
+        if (ourEnergy > OPENING_ENERGY && enemyEnergy > OPENING_ENERGY) return Lead.DEFAULT;
+        if (ourEnergy - enemyEnergy >= -LEAD_MARGIN) return Lead.CHAFF;
+        return ourEnergy > LEAD_MIN_ENERGY ? Lead.DEFAULT : Lead.CHAFF;
+    }
+
+    private static boolean below(Estimate e) {
+        return !Double.isNaN(e.value()) && e.center() + e.margin() < BREAK_EVEN;
+    }
+
+    private static boolean above(Estimate e) {
+        return !Double.isNaN(e.value()) && e.center() - e.margin() > BREAK_EVEN;
+    }
+
+    /**
+     * POW-10: the power a shot can be paid for at. A power below our energy stands; otherwise
+     * it is lowered to {@link #RESERVE} less than our energy, never below the engine's minimum.
+     * NaN when even the minimum power would leave nothing (our energy is at most
+     * {@link Rules#MIN_BULLET_POWER}), the one shot we cannot pay for.
+     *
+     * @param power the power chosen
+     * @param energy our energy now
+     * @return the power to fire, or NaN when none can be paid for
+     */
+    public static double payable(double power, double energy) {
+        if (power < energy) return power;
+        double lowered = Math.max(Rules.MIN_BULLET_POWER, energy - RESERVE);
+        return lowered < energy ? lowered : Double.NaN;
     }
 
     /**

@@ -41,6 +41,8 @@
         <hadur.climb.stage>R9</hadur.climb.stage>
         <!-- The architecture evolution's stage (A0-A5, docs/architecture-evolution.md). -->
         <hadur.arch.stage>A5</hadur.arch.stage>
+        <!-- The DrussGT route's stage (D1-D6, docs/druss-route-plan.md): its requirements up to here must be covered too. -->
+        <hadur.druss.stage>D1</hadur.druss.stage>
     </properties>
 
     <repositories>
@@ -121,6 +123,7 @@
                             <hadur.melee.stage>${hadur.melee.stage}</hadur.melee.stage>
                             <hadur.climb.stage>${hadur.climb.stage}</hadur.climb.stage>
                             <hadur.arch.stage>${hadur.arch.stage}</hadur.arch.stage>
+                            <hadur.druss.stage>${hadur.druss.stage}</hadur.druss.stage>
                             <hadur.root>${maven.multiModuleProjectDirectory}</hadur.root>
                         </systemPropertyVariables>
                     </configuration>

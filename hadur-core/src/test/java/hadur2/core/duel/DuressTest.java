@@ -19,8 +19,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-/** RES-9: after three skipped turns in a round the core orbits, fires head-on and learns nothing. */
-@Tag("RES-9")
+/** RES-9 (retired), RES-14: after three skipped turns in a round the core orbits, fires head-on and learns nothing. */
+@Tag("RES-14")
 class DuressTest {
 
     private static final Point2D.Double ENEMY = new Point2D.Double(400, 500);
@@ -35,12 +35,92 @@ class DuressTest {
     void budgetThirdSkip() {
         TickBudget b = new TickBudget();
         b.newRound();
-        b.skippedTurn();
-        b.skippedTurn();
+        b.skippedTurn(0);
+        b.skippedTurn(0);
         assertFalse(b.duress());
-        b.skippedTurn();
+        b.skippedTurn(0);
         assertTrue(b.duress());
         b.newRound();
+        assertFalse(b.duress());
+    }
+
+    @Test
+    @DisplayName("RES-14: duress ends 300 ticks after the last skipped turn, and only then")
+    void budgetDuressEndsAfterQuietTicks() {
+        TickBudget b = new TickBudget();
+        b.newRound();
+        b.tickBegan(10);
+        b.skippedTurn(10);
+        b.tickBegan(20);
+        b.skippedTurn(20);
+        b.tickBegan(142);
+        b.skippedTurn(142);
+        assertTrue(b.duress(), "the third skip of the round");
+        b.tickBegan(142 + 299);
+        assertTrue(b.duress(), "299 ticks after the last skip");
+        b.tickBegan(142 + 300);
+        assertFalse(b.duress(), "300 ticks without a skipped turn");
+        b.tickBegan(142 + 301);
+        assertFalse(b.duress());
+    }
+
+    @Test
+    @DisplayName("RES-14: the 300 ticks count from the last skipped turn, not the round's clock or the first skip")
+    void budgetQuietCountsFromTheLastSkip() {
+        TickBudget b = new TickBudget();
+        b.newRound();
+        for (long t : new long[] {8, 34, 142}) {
+            b.tickBegan(t);
+            b.skippedTurn(t);
+        }
+        b.tickBegan(400);
+        assertTrue(b.duress(), "tick 400 is past 300 from the first skip but only 258 from the last");
+        b.tickBegan(442);
+        assertFalse(b.duress());
+    }
+
+    @Test
+    @DisplayName("RES-14: a skipped turn after duress has ended starts it again, with the round's three already counted")
+    void budgetSkipRestartsDuress() {
+        TickBudget b = new TickBudget();
+        b.newRound();
+        for (long t : new long[] {5, 6, 7}) {
+            b.tickBegan(t);
+            b.skippedTurn(t);
+        }
+        b.tickBegan(400);
+        assertFalse(b.duress());
+        b.skippedTurn(400);
+        assertTrue(b.duress(), "a fourth skip, no new triple needed");
+        b.tickBegan(700);
+        assertFalse(b.duress());
+    }
+
+    @Test
+    @DisplayName("RES-14: a skip delivered late counts from the tick the engine skipped, not the tick it arrives on")
+    void budgetQuietCountsFromTheSkippedTickOfALateEvent() {
+        TickBudget b = new TickBudget();
+        b.newRound();
+        b.tickBegan(100);
+        b.skippedTurn(100);
+        b.skippedTurn(101);
+        b.tickBegan(250);
+        b.skippedTurn(102); // delivered 148 ticks after the tick it names
+        b.tickBegan(401);
+        assertTrue(b.duress(), "299 ticks after tick 102");
+        b.tickBegan(402);
+        assertFalse(b.duress(), "300 ticks after tick 102, though only 152 after the delivery");
+    }
+
+    @Test
+    @DisplayName("RES-14: the trigger is unchanged: two skips, however recent, are not duress")
+    void budgetTwoSkipsAreNotDuress() {
+        TickBudget b = new TickBudget();
+        b.newRound();
+        b.tickBegan(30);
+        b.skippedTurn(30);
+        b.tickBegan(31);
+        b.skippedTurn(31);
         assertFalse(b.duress());
     }
 

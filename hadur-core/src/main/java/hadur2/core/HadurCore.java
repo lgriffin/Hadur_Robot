@@ -18,6 +18,7 @@ import hadur2.core.physics.DiaUtils;
 import hadur2.core.physics.Rules;
 import hadur2.core.policy.Endgame;
 import hadur2.core.policy.MoveFlavour;
+import hadur2.core.policy.BattleHitRates;
 import hadur2.core.policy.TickBudget;
 import hadur2.core.link.LinkCodec;
 import hadur2.core.link.LinkFormatException;
@@ -146,6 +147,8 @@ public final class HadurCore {
     private boolean handOffPending;
     /** S6: the tick budget (TIME-1, TIME-2), the conductor's; its level goes to the driving role. */
     private final TickBudget budget = new TickBudget();
+    /** RES-14: whether the last tick ran in duress, so the tick that leaves it can start the Duel's view afresh. */
+    private boolean wasInDuress;
     /** WEAVE-3: whether a shot may leave this tick; until A5 always. */
     private Predicate<BotInput> firePermission = in -> true;
     /** The tick being processed, for records written from event handlers. */
@@ -312,6 +315,7 @@ public final class HadurCore {
         budget.newRound();
         gate.newRound();
         lastRole = null;
+        wasInDuress = false;
         meleeTicks = duelTicks = focusTicks = meleeFaults = sentryHits = 0;
         deadThisRound.clear();
         handOffPending = false;
@@ -394,7 +398,13 @@ public final class HadurCore {
         // RES-9: three skipped turns in a round put the rest of it in duress, which runs
         // none of the learning below: no samples, no waves, no tree. Only a duel's known
         // opponent is fought this way; before its first scan there is nothing to orbit.
+        // RES-14: and only until 300 ticks pass without a skipped turn, counted from the last one.
+        budget.tickBegan(in.time());
         boolean inDuress = !melee && duel.canFightInDuress() && budget.duress();
+        // RES-14: what the Duel knew before duress is stale once duress ends (the ledger has
+        // missed every drop, the logs every state), so it starts its view of the enemy afresh and drops the waves from before it.
+        if (wasInDuress && !inDuress && !melee) duelSeam.afterDuress();
+        wasInDuress = inDuress;
         Tick tick = new Tick(in, melee ? RoleId.MELEE : RoleId.DUEL, focusing, focus, gate::isSentry,
             inDuress);
 
@@ -483,7 +493,7 @@ public final class HadurCore {
         } else if (e instanceof BotEvent.RobotDeath) {
             robotDied(((BotEvent.RobotDeath) e).name());
         } else if (e instanceof BotEvent.SkippedTurn) {
-            onSkippedTurn(tick.in());
+            onSkippedTurn(tick.in(), ((BotEvent.SkippedTurn) e).skippedTime());
             return;
         } else if (e instanceof BotEvent.TickTime) {
             onTickTime((BotEvent.TickTime) e);
@@ -561,7 +571,7 @@ public final class HadurCore {
         else if (e instanceof BotEvent.BulletHit) stats.shotsHit++;
         else if (e instanceof BotEvent.HitByBullet) stats.hitsTaken++;
         else if (e instanceof BotEvent.BulletHitBullet) stats.bulletsIntercepted++;
-        else if (e instanceof BotEvent.SkippedTurn) onSkippedTurn(tick.in());
+        else if (e instanceof BotEvent.SkippedTurn) onSkippedTurn(tick.in(), ((BotEvent.SkippedTurn) e).skippedTime());
         else if (e instanceof BotEvent.TickTime) onTickTime((BotEvent.TickTime) e);
         else if (e instanceof BotEvent.RobotDeath) {
             robotDied(((BotEvent.RobotDeath) e).name());
@@ -1059,10 +1069,10 @@ public final class HadurCore {
     }
 
     /** TIME-2: the engine skipped one of our turns because a tick ran over its time. */
-    private void onSkippedTurn(BotInput in) {
+    private void onSkippedTurn(BotInput in, long skippedTime) {
         stats.skippedTurns++;
         // TIME-2: one level down for the rest of the round.
-        budget.skippedTurn();
+        budget.skippedTurn(skippedTime);
         stats.computationLevel = budget.maxLevel();
         emitBudget();
         telemetry.emit("WARNING: Turn skipped at " + in.time());
@@ -1147,5 +1157,23 @@ public final class HadurCore {
      */
     public Estimate theirRollingHitRate() {
         return duel.theirRollingHitRate();
+    }
+
+    /**
+     * POW-11: our counts of resolved duel bullets over the whole battle, by power class.
+     *
+     * @return the live counters; read-only for the caller
+     */
+    public BattleHitRates ourBattleRates() {
+        return duel.ourBattleRates();
+    }
+
+    /**
+     * POW-11: their counts of resolved bullets over the whole battle, by power class.
+     *
+     * @return the live counters; read-only for the caller
+     */
+    public BattleHitRates theirBattleRates() {
+        return duel.theirBattleRates();
     }
 }

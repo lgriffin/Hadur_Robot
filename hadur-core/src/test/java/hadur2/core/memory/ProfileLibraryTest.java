@@ -393,6 +393,44 @@ class ProfileLibraryTest {
 
     @Test
     @Tag("MEM-9")
+    @Tag("ADAPT-5")
+    @DisplayName("MEM-9, ADAPT-5: profile format 3 files are named -v3 and keep the verdict through every kind of save")
+    void versionThreeKeepsItsOwnFilesAndItsVerdict() {
+        assertEquals(3, ProfileCodec.VERSION);
+        assertTrue(ProfileLibrary.fileName("a.Bot").endsWith("-v3.hp"), ProfileLibrary.fileName("a.Bot"));
+        MemoryProfileStore store = new MemoryProfileStore(QUOTA);
+        ProfileLibrary lib = new ProfileLibrary(store);
+        OpponentProfile p = Profiles.leadAware(Profiles.seedWorthy("a.Bot", 3, 20, 20), true);
+        lib.save(p);
+        assertTrue(stored(store, "a.Bot").leadAware());
+        assertTrue(lib.load("a.Bot").profile().leadAware(), "applies from the next battle's first shot");
+        lib.saveStatsOnly(p);
+        assertTrue(stored(store, "a.Bot").leadAware(), "a checkpoint keeps it");
+    }
+
+    @Test
+    @Tag("MEM-9")
+    @Tag("ADAPT-5")
+    @DisplayName("MEM-9, ADAPT-5: a release's version 2 file carries its stats forward once, with no verdict, and is left alone")
+    void versionTwoFileCarriesForwardWithoutAVerdict() {
+        MemoryProfileStore store = new MemoryProfileStore(QUOTA);
+        new ProfileLibrary(store, 2).save(Profiles.seedWorthy("a.Bot", 3, 50, 50));
+        String v2 = ProfileLibrary.fileName("a.Bot", 2);
+        byte[] before = store.read(v2);
+        assertNotNull(before);
+        assertEquals((byte) 2, before[2]);
+        ProfileLibrary lib = new ProfileLibrary(store);
+        ProfileLibrary.Loaded loaded = lib.load("a.Bot");
+        assertTrue(loaded.found());
+        assertFalse(loaded.profile().leadAware());
+        assertEquals(0, loaded.profile().gunSeedSize(), "seeds are not carried over a format change");
+        lib.save(Profiles.leadAware(loaded.profile(), true));
+        assertArrayEquals(before, store.read(v2), "the version 2 file is untouched");
+        assertTrue(stored(store, "a.Bot").leadAware());
+    }
+
+    @Test
+    @Tag("MEM-9")
     @DisplayName("MEM-9: a newer version carries an older version's stats forward once, seeds dropped")
     void carriesStatsForwardAcrossVersions() {
         MemoryProfileStore store = new MemoryProfileStore(QUOTA);

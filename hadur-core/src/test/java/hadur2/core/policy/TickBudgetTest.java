@@ -35,14 +35,14 @@ class TickBudgetTest {
     void skippedTurnsHoldForTheRound() {
         TickBudget b = new TickBudget();
         b.newRound();
-        b.skippedTurn();
+        b.skippedTurn(0);
         b.tickTook(100_000L, ALLOWANCE);
         assertEquals(1, b.level());
-        b.skippedTurn();
+        b.skippedTurn(0);
         b.tickTook(2_500_000L, ALLOWANCE);
         assertEquals(3, b.level(), "two skips and a slow tick");
-        b.skippedTurn();
-        b.skippedTurn();
+        b.skippedTurn(0);
+        b.skippedTurn(0);
         assertEquals(TickBudget.MAX_LEVEL, b.level());
         b.newRound();
         assertEquals(0, b.level(), "a new round starts at full computation");
@@ -80,7 +80,7 @@ class TickBudgetTest {
         b.newRound();
         b.tickTook(2_000_000L, ALLOWANCE); // 2ms, under the guessed 3ms allowance
         assertEquals(-1, b.learnedAllowanceNanos(), "nothing learned before a skip");
-        b.skippedTurn(); // the engine skipped anyway: the real allowance is under 2ms
+        b.skippedTurn(0); // the engine skipped anyway: the real allowance is under 2ms
         assertEquals(2_000_000L, b.learnedAllowanceNanos());
     }
 
@@ -91,7 +91,7 @@ class TickBudgetTest {
         TickBudget b = new TickBudget();
         b.newRound();
         b.tickTook(1_000_000L, ALLOWANCE);
-        b.skippedTurn(); // learns 1ms
+        b.skippedTurn(0); // learns 1ms
         b.newRound();
         // 1.5ms is under the guessed 3ms allowance but over 70% of the learned 1ms one.
         b.tickTook(1_500_000L, ALLOWANCE);
@@ -106,9 +106,9 @@ class TickBudgetTest {
         TickBudget b = new TickBudget();
         b.newRound();
         b.tickTook(1_000_000L, ALLOWANCE);
-        b.skippedTurn(); // learns 1ms
+        b.skippedTurn(0); // learns 1ms
         b.tickTook(5_000_000L, ALLOWANCE);
-        b.skippedTurn(); // must not overwrite the learned 1ms with 5ms
+        b.skippedTurn(0); // must not overwrite the learned 1ms with 5ms
         assertEquals(1_000_000L, b.learnedAllowanceNanos());
     }
 
@@ -122,12 +122,12 @@ class TickBudgetTest {
         // does not time (a checkpoint write, a GC pause) caused the skip, not the tick
         // itself. Below 20% of the 3ms guess, so it must not become the allowance.
         b.tickTook(50_000L, ALLOWANCE);
-        b.skippedTurn();
+        b.skippedTurn(0);
         assertEquals(-1, b.learnedAllowanceNanos(), "too small a share of the guess to trust");
 
         // A later skip whose tick is a plausible share of the guess still learns normally.
         b.tickTook(1_000_000L, ALLOWANCE);
-        b.skippedTurn();
+        b.skippedTurn(0);
         assertEquals(1_000_000L, b.learnedAllowanceNanos());
     }
 }
