@@ -307,6 +307,18 @@ class TeamLinkTest {
 
     @Test
     @Tag("WEAVE-7")
+    @DisplayName("WEAVE-7: a teammate that crosses the lane while moving forward, clear of it before any bullet arrives, does not hold the shot")
+    void forwardCrossingMateGoneBeforeTheBulletArrives() {
+        // 400 px up and 60 east, running north-west at 8 px a tick: it crosses the line about
+        // tick 9 but is then 450 px up, where the slowest bullet is not until tick 41.
+        double heading = 5 * Math.PI / 3;
+        assertTrue(fired(mateScan(400, 60, heading, 8), 6) > 0, "crossed and gone before a bullet");
+        // Nearer, the same course has a bullet there as the mate crosses: held.
+        assertEquals(0, fired(mateScan(250, 100, heading, 8), 6), 1e-9, "genuine crossing");
+    }
+
+    @Test
+    @Tag("WEAVE-7")
     @DisplayName("WEAVE-7: a teammate close to the gun is judged over a short flight")
     void nearMateJudgedOverAShortFlight() {
         // 50 px up and 60 px east, running west: it crosses the line within a tick or two.

@@ -17,9 +17,14 @@ MeleeRumble and TeamRumble on 2026-10-05. Open after A5:
   gate suite (-99.9%) and the team's score share rose from 28.8% to 48.2%. Follow-ups the gate
   opened:
   - **Friendly fire.** Our bullets on a teammate fell 1,015 to 328 (-68%), short of the plan's
-    80% bar (177). Narrow `TURN_SLACK` (1.5 px a tick) and space members that share a target.
+    80% bar (177). `TURN_SLACK` is 3 px a tick (it was 1.5 in the first smoke
+    test; widening it cut friendly hits): wider holds more shots and hits a teammate less, narrower
+    does the reverse. Space members that share a target.
   - **Held shots.** Shots held for the lane rose 5,188 to 19,286 (3.7x, above the plan's flag of
-    about 3x); `TURN_SLACK` is the knob, to be set against the friendly-fire count.
+    about 3x); `TURN_SLACK` is the knob, to be set against the friendly-fire count
+    (wider: more holds, fewer friendly hits). The lane check now also asks that bullet and
+    teammate coincide along the lane in time (a mate that crosses and is gone before any bullet
+    arrives no longer holds the shot), which addresses the held-shot count without narrowing it.
   - **Bullet on a teammate's bullet** rose 2,598 to 3,557 (the plan's RC5): the shared-target
     item, with a shared target and formation.
 - **Droids** (a leader with radar-less members) are left to the Team plan.

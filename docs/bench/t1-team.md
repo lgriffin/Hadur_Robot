@@ -51,15 +51,19 @@ and Mamba from 4 to 22.
   touching the pinned duel packages.
 - **Friendly fire misses its bar.** 328 of our bullets still hit a member, down 68% where the
   plan asked for 80%. The in-lane count at fire time is small (31 of 50,979); most of the
-  remaining hits are a teammate entering the lane in flight, so the 1.5 px a tick of
-  `TURN_SLACK` is too narrow for fast turners, and members that share a target still fire
-  along near-parallel lines. Recorded as a follow-up (narrow `TURN_SLACK`, spacing for a
-  shared target), not a blocker: the score share and the collisions pass with room.
+  remaining hits are a teammate entering the lane in flight, and members that share a target
+  still fire along near-parallel lines. `TURN_SLACK` is 3 px a tick (raised from 1.5 in the
+  first smoke test, which cut friendly hits): widening it holds more shots and cuts friendly
+  hits, narrowing it does the reverse. Recorded as a follow-up (spacing for a shared target),
+  not a blocker: the score share and the collisions pass with room.
 - **Bullet on teammate's bullet** rose from 2,598 to 3,557. That is the plan's RC5 (two
   members shooting the same target), out of scope for T1. Members also fired more
   (50,979 shots against 33,963), which accounts for part of the rise.
-- **Held shots** rose 3.7x, above the plan's flag of about 3x, so `TURN_SLACK` is the first
-  knob for the follow-up; the extra holds cost shots but the score share rose.
+- **Held shots** rose 3.7x, above the plan's flag of about 3x, so `TURN_SLACK` (3 px a tick;
+  wider holds more, narrower holds fewer but lets more friendly hits through) is the first knob
+  for the follow-up. The lane check now also requires the bullet and the teammate to coincide
+  along the lane in time, which drops the holds for a mate that has crossed and gone before any
+  bullet arrives. The extra holds cost shots but the score share rose.
 - **Skipped turns** 82 against 43, inside the 2x limit of 86 but close. Faults, LINK rejects, count-below-truth and stray shelf files are
   zero on both sides.
 

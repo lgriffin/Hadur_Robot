@@ -2,6 +2,7 @@ package hadur2.core.role;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
 import hadur2.core.model.BotOrders;
@@ -105,5 +106,73 @@ class TeammateFenceTest {
         BotOrders unset = new BotOrders(Double.NaN, Double.NaN, Double.NaN, 0, 0, 0);
         BotOrders out = fence.apply(500, 500, 0, 8, unset, mate(500, 560, 0, 0));
         assertEquals(0, out.ahead(), 0);
+    }
+
+    private static List<Point2D.Double[]> both(List<Point2D.Double[]> a, List<Point2D.Double[]> b) {
+        List<Point2D.Double[]> all = new java.util.ArrayList<>(a);
+        all.addAll(b);
+        return all;
+    }
+
+    @Test
+    @Tag("WEAVE-8")
+    @DisplayName("WEAVE-8: a teammate already close does not hide a collision with another")
+    void closeMateDoesNotHideAnother() {
+        // A is 20 px behind (the robot drives away from it); B is wide of the path by 25 px,
+        // inside the 36 px of contact. One global limit of 20 would pass that.
+        List<Point2D.Double[]> mates = both(mate(500, 480, 0, 0), mate(525, 560, 0, 0));
+        BotOrders given = drive(300);
+        BotOrders out = fence.apply(500, 500, 0, 8, given, mates);
+        assertNotSame(given, out);
+        // B alone is caught too, and the pair is judged as B alone is.
+        assertNotSame(given, fence.apply(500, 500, 0, 8, given, mate(525, 560, 0, 0)));
+    }
+
+    @Test
+    @Tag("WEAVE-8")
+    @DisplayName("WEAVE-8: a robot ordered to stand still retreats from a mate closing on it, away from it")
+    void standingRobotRetreats() {
+        // A mate 60 px north coming south at 4 px a tick: standing still is not enough.
+        BotOrders stop = drive(0);
+        assertEquals(-TeammateFence.REVERSE, fence.apply(500, 500, 0, 0, stop, mate(500, 560, Math.PI, 4)).ahead(), 0);
+        // From the south it is the other way.
+        assertEquals(TeammateFence.REVERSE, fence.apply(500, 500, 0, 0, stop, mate(500, 440, 0, 4)).ahead(), 0);
+    }
+
+    @Test
+    @Tag("WEAVE-8")
+    @DisplayName("WEAVE-8: an unset drive is not read as travelling on: a retained reverse with a mate behind is replaced")
+    void retainedReverseWithAMateBehind() {
+        BotOrders unset = new BotOrders(Double.NaN, Double.NaN, Double.NaN, 0, 0, 0);
+        // At rest, facing north, a teammate 40 px south standing still.
+        BotOrders out = fence.apply(500, 500, 0, 0, unset, mate(500, 460, 0, 0));
+        assertEquals(0, out.ahead(), 0, "the unset drive is replaced by an explicit command");
+        // Nothing near: the unset drive stays as it is.
+        assertSame(unset, fence.apply(500, 500, 0, 0, unset, mate(500, 900, 0, 0)));
+    }
+
+    @Test
+    @Tag("WEAVE-8")
+    @DisplayName("WEAVE-8: a retreat that would leave the field is not preferred to braking")
+    void retreatNeverBacksIntoAWall() {
+        // Facing east at x = 30, a mate 60 px east coming west at 4 px a tick; west is the wall.
+        BotOrders stop = drive(0);
+        TeammateFence onField = new TeammateFence(1000, 1000);
+        assertEquals(0, onField.apply(30, 500, Math.PI / 2, 0, stop, mate(90, 500, 3 * Math.PI / 2, 4)).ahead(), 0);
+        // The same 60 px further in has room to back into.
+        assertEquals(-TeammateFence.REVERSE,
+            onField.apply(300, 500, Math.PI / 2, 0, stop, mate(360, 500, 3 * Math.PI / 2, 4)).ahead(), 0);
+    }
+
+    @Test
+    @Tag("WEAVE-8")
+    @DisplayName("WEAVE-8: a retreat that would cross the sentries' border is not preferred to braking")
+    void retreatNeverUndoesTheSentryFence() {
+        // A 100 px border keeps the centre 148 px in. At x = 160, west is out of bounds.
+        BotOrders stop = drive(0);
+        List<Point2D.Double[]> mate = mate(220, 500, 3 * Math.PI / 2, 4);
+        TeammateFence onField = new TeammateFence(1000, 1000);
+        assertEquals(-TeammateFence.REVERSE, onField.apply(160, 500, Math.PI / 2, 0, stop, mate, 0).ahead(), 0);
+        assertEquals(0, onField.apply(160, 500, Math.PI / 2, 0, stop, mate, 100).ahead(), 0);
     }
 }

@@ -58,6 +58,8 @@ final class TeamLink {
     static final double FASTEST_BULLET = 19.7;
     /** WEAVE-7: how far, px for each tick of the bullet's flight, a teammate may turn off its predicted track. */
     static final double TURN_SLACK = 3.0;
+    /** WEAVE-7: the longest flight judged, ticks: far more than any field's diagonal over a bullet's slowest speed. */
+    static final int MAX_FLIGHT = 400;
 
     private final HadurCore core;
     private final BattleFacts facts;
@@ -75,7 +77,7 @@ final class TeamLink {
     /** WEAVE-8: drives the teammate fence replaced this round. */
     int fenced;
     private boolean holding;
-    private final TeammateFence mateFence = new TeammateFence();
+    private final TeammateFence mateFence;
     /** WORLD-9: the living teammates with a fresh position as of the tick's input. */
     private List<Roster.Mate> living = List.of();
     int reportsMerged;
@@ -85,6 +87,7 @@ final class TeamLink {
         this.facts = facts;
         this.roster = roster;
         this.world = world;
+        this.mateFence = new TeammateFence(facts.width(), facts.height());
     }
 
     void newRound() {
@@ -221,10 +224,12 @@ final class TeamLink {
      * WEAVE-4, WEAVE-7: whether a shot may leave on the gun's present heading. A living
      * teammate's position no older than {@link Roster#SILENT_WINDOW} holds the shot when it
      * lies within the lane's half-width, grown by {@link #DRIFT} for each tick of its age,
-     * ahead of the gun; and when its predicted track, over the time a bullet of any power
-     * takes to pass its distance along the lane ({@code along / 19.7} to {@code along / 11}
-     * ticks), comes within that half-width widened by {@link #TURN_SLACK} for each tick of
-     * flight. A teammate behind the gun keeps WEAVE-4's test on its known point alone.
+     * ahead of the gun; and when, on some tick {@code t} of a bullet's flight, its predicted
+     * place is within that half-width widened by {@link #TURN_SLACK} for each tick, and its
+     * distance along the lane is one a bullet could have reached by then (between
+     * {@code 11t} and {@code 19.7t} px, give or take the half-width): the bullet and the
+     * teammate must coincide in time, not only cross the same line. A teammate behind the gun
+     * keeps WEAVE-4's test on its known point alone.
      */
     boolean laneClear(BotInput in) {
         double dx = Math.sin(in.gunHeading());
@@ -242,18 +247,20 @@ final class TeamLink {
                 continue;
             }
             if (across <= half) return false;
-            // WEAVE-7: where the teammate is predicted to be as a bullet passes its distance.
-            Point2D.Double now = m.at(in.time());
-            double ahead = (now.x - in.x()) * dx + (now.y - in.y()) * dy;
-            if (ahead < 0) ahead = along;
-            double t1 = ahead / FASTEST_BULLET;
-            double t2 = ahead / SLOWEST_BULLET;
-            Point2D.Double a = m.at(in.time() + (long) Math.floor(t1));
-            Point2D.Double b = m.at(in.time() + (long) Math.ceil(t2));
-            double ca = (a.x - in.x()) * dy - (a.y - in.y()) * dx;
-            double cb = (b.x - in.x()) * dy - (b.y - in.y()) * dx;
-            double gap = ca * cb <= 0 ? 0 : Math.min(Math.abs(ca), Math.abs(cb));
-            if (gap <= half + TURN_SLACK * t2) return false;
+            // WEAVE-7: a bullet of any power flies 11 to 19.7 px a tick, so on tick t it is
+            // somewhere between 11t and 19.7t along the lane. The teammate holds the shot only
+            // if, on some tick, its predicted place is within the lane's width (widened by the
+            // turn slack) and within the bullet's reach along the lane.
+            for (int t = 1; t <= MAX_FLIGHT; t++) {
+                Point2D.Double p = m.at(in.time() + t);
+                double pa = (p.x - in.x()) * dx + (p.y - in.y()) * dy;
+                double lo = SLOWEST_BULLET * t - half;
+                // Past the furthest the teammate can have got: the slowest bullet is ahead of it for good.
+                if (lo > along + Roster.MAX_SPEED * (age + t)) break;
+                if (pa < lo || pa > FASTEST_BULLET * t + half) continue;
+                double pl = Math.abs((p.x - in.x()) * dy - (p.y - in.y()) * dx);
+                if (pl <= half + TURN_SLACK * t) return false;
+            }
         }
         return true;
     }
@@ -286,7 +293,8 @@ final class TeamLink {
             for (int t = 0; t < track.length; t++) track[t] = m.at(in.time() + t);
             tracks.add(track);
         }
-        BotOrders out = mateFence.apply(in.x(), in.y(), in.heading(), in.velocity(), built, tracks);
+        BotOrders out = mateFence.apply(in.x(), in.y(), in.heading(), in.velocity(), built, tracks,
+            in.numSentries() > 0 ? in.sentryBorderSize() : 0);
         if (out != built) fenced++;
         return out;
     }
