@@ -40,6 +40,11 @@
 #   --label NAME           used in the default --out and --report, default team-top20
 #   --out DIR              working directory, default work/<label>-<timestamp>
 #   --report FILE          the report, default ../docs/bench/local/<date>_<label>.md
+#   --repeat K             fight each (jar, opponent, seed) K times and print the score-share SD (BENCH-53); writes repeat.tsv
+#   --cold-warm            fight each seed cold, then warm on the shelf the cold battle left (BENCH-54); writes cold-warm.tsv
+#   --retries N            run a failed battle again up to N times (BENCH-55), Bench default 1
+#   --field WxH            the arena, e.g. 1000x1000, Bench default for the mode
+#   --dry-run              print what would be built, fetched and run, and run nothing
 #   --skip-build           skip `mvn package` at the repo root
 #   --skip-fetch           skip fetching the set's team jars
 set -u
@@ -66,6 +71,11 @@ OUT=""
 REPORT=""
 SKIP_BUILD=0
 SKIP_FETCH=0
+REPEAT=""
+COLD_WARM=0
+RETRIES=""
+FIELD=""
+DRY_RUN=0
 
 while [ $# -gt 0 ]; do
     case "$1" in
@@ -88,6 +98,11 @@ while [ $# -gt 0 ]; do
         --report) REPORT="${2:?--report needs a file}"; shift 2 ;;
         --skip-build) SKIP_BUILD=1; shift ;;
         --skip-fetch) SKIP_FETCH=1; shift ;;
+        --repeat) REPEAT="${2:?--repeat needs a number}"; shift 2 ;;
+        --cold-warm) COLD_WARM=1; shift ;;
+        --retries) RETRIES="${2:?--retries needs a number}"; shift 2 ;;
+        --field) FIELD="${2:?--field needs WIDTHxHEIGHT}"; shift 2 ;;
+        --dry-run) DRY_RUN=1; shift ;;
         -h|--help) sed -n '2,/^set -u$/p' "$0" | sed '$d' | sed 's/^# \{0,1\}//'; exit 0 ;;
         *) echo "unknown option: $1" >&2; exit 2 ;;
     esac
@@ -128,6 +143,15 @@ if [ -z "$CPU_CONSTANT" ] && [ "$NO_CPU_PIN" -eq 0 ]; then
     done
 fi
 
+# --dry-run prints each build, fetch and run step instead of running it.
+step() {
+    if [ "$DRY_RUN" -eq 1 ]; then
+        echo "dry run, would run: $*"
+        return 0
+    fi
+    "$@"
+}
+
 STAMP=$(date +%Y%m%d-%H%M%S)
 if [ -z "$OUT" ]; then OUT="work/$LABEL-$STAMP"; fi
 DAY=$(date +%Y-%m-%d)
@@ -136,14 +160,14 @@ mkdir -p "$(dirname "$REPORT")"
 
 if [ "$SKIP_BUILD" -eq 0 ]; then
     echo "mvn -q package -DskipTests -Dmaven.javadoc.skip (repo root)"
-    (cd .. && mvn -q package -DskipTests -Dmaven.javadoc.skip)
+    (cd .. && step mvn -q package -DskipTests -Dmaven.javadoc.skip)
     status=$?
     if [ "$status" -ne 0 ]; then exit "$status"; fi
 fi
 
 if [ "$SKIP_FETCH" -eq 0 ]; then
     echo "./fetch-opponents.sh --set $SET"
-    ./fetch-opponents.sh --set "$SET"
+    step ./fetch-opponents.sh --set "$SET"
     status=$?
     if [ "$status" -ne 0 ]; then exit "$status"; fi
 fi
@@ -154,6 +178,10 @@ if [ -n "$CHILD_CPUS" ]; then ARGS="$ARGS --child-cpus $CHILD_CPUS"; fi
 if [ -n "$CHILD_HEAP" ]; then ARGS="$ARGS --child-heap $CHILD_HEAP"; fi
 if [ -n "$CPU_CONSTANT" ]; then ARGS="$ARGS --cpu-constant $CPU_CONSTANT"; fi
 if [ -n "$ONLY" ]; then ARGS="$ARGS --only \"$ONLY\""; fi
+if [ -n "$REPEAT" ]; then ARGS="$ARGS --repeat $REPEAT"; fi
+if [ "$COLD_WARM" -eq 1 ]; then ARGS="$ARGS --cold-warm true"; fi
+if [ -n "$RETRIES" ]; then ARGS="$ARGS --retries $RETRIES"; fi
+if [ -n "$FIELD" ]; then ARGS="$ARGS --field $FIELD"; fi
 if [ -n "$ROBOT_JAR" ]; then ARGS="$ARGS --robot-jar $ROBOT_JAR"; fi
 if [ -n "$ROBOT" ]; then ARGS="$ARGS --robot \"$ROBOT\""; fi
 if [ -n "$BASELINE" ]; then ARGS="$ARGS --baseline $BASELINE --baseline-robot \"$BASELINE_ROBOT\""; fi
@@ -161,9 +189,10 @@ PER_OPPONENT_DIR="${REPORT%.md}_per-opponent"
 if [ "$PER_OPPONENT" -eq 1 ]; then ARGS="$ARGS --per-opponent $PER_OPPONENT_DIR"; fi
 
 echo "mvn -q compile exec:java -Dexec.args=\"$ARGS\""
-mvn -q compile exec:java -Dexec.args="$ARGS"
+step mvn -q compile exec:java -Dexec.args="$ARGS"
 code=$?
 
+if [ "$DRY_RUN" -eq 1 ]; then echo "dry run: nothing was built, fetched or run"; exit 0; fi
 echo "report: $REPORT"
 if [ "$PER_OPPONENT" -eq 1 ]; then echo "per-opponent reports: $PER_OPPONENT_DIR"; fi
 echo "battle directories (engine.log, member-N.log, rounds.csv, team.csv): $OUT/battles"

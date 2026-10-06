@@ -12,7 +12,8 @@ public final class BattleResult {
         + "profileFound,memoryFailures,seedsEvicted,bulletsIntercepted,jitteredShots,shotsFired,"
         + "tiers,openingGun,gunSeed,surfSeed,seedDecays,"
         + "openingDistance,meanDistance,targetDistance,roundTicks,finishTicks,ramTicks,fullPowerShots,"
-        + "maxLevel,slowTicks,shadowedWaves,interceptsShadowed,flavourChanges,flavourStep,errors";
+        + "maxLevel,slowTicks,shadowedWaves,interceptsShadowed,flavourChanges,flavourStep,errors,"
+        + "hostCpuMin,hostCpuMean,hostCpuMax,otherJvms";
 
     public boolean ok;
     public int rounds, firsts, skippedTurns, turns;
@@ -36,6 +37,13 @@ public final class BattleResult {
     public int finishTicks, ramTicks, fullPowerShots;
     /** Unhittable (S6): highest computation level, slow ticks, shadowed waves, intercepts in a shadow, flavour changes and step. */
     public int maxLevel, slowTicks, shadowedWaves, interceptsShadowed, flavourChanges, flavourStep;
+    /**
+     * Host load while this battle ran (BENCH-50), set by the bench from its sampler, not by the
+     * battle's own JVM: system CPU utilisation 0..1 (NaN when never sampled) and the most other
+     * Robocode JVMs seen on the host (-1 when unknown).
+     */
+    public double hostCpuMin = Double.NaN, hostCpuMean = Double.NaN, hostCpuMax = Double.NaN;
+    public int otherJvms = -1;
     public double score, theirScore, survival, theirSurvival, bulletDamage, theirBulletDamage;
     public double turnP50Ms, turnP95Ms, turnMaxMs;
     public String errors = "";
@@ -98,7 +106,7 @@ public final class BattleResult {
     }
 
     static String failed(String why) {
-        return "false,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NaN,NaN,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,0,0,0,-,NaN,NaN,NaN,0,0,0,0,0,0,0,0,0," + sanitize(why);
+        return "false,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NaN,NaN,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,0,0,0,-,NaN,NaN,NaN,0,0,0,0,0,0,0,0,0," + sanitize(why) + ",NaN,NaN,NaN,-1";
     }
 
     String toCsv() {
@@ -120,11 +128,12 @@ public final class BattleResult {
             String.valueOf(finishTicks), String.valueOf(ramTicks), String.valueOf(fullPowerShots),
             String.valueOf(maxLevel), String.valueOf(slowTicks), String.valueOf(shadowedWaves),
             String.valueOf(interceptsShadowed), String.valueOf(flavourChanges),
-            String.valueOf(flavourStep), sanitize(errors));
+            String.valueOf(flavourStep), sanitize(errors),
+            num(hostCpuMin), num(hostCpuMean), num(hostCpuMax), String.valueOf(otherJvms));
     }
 
     static BattleResult parse(String line) {
-        String[] f = line.split(",", 51);
+        String[] f = line.split(",", 55);
         BattleResult r = new BattleResult();
         r.ok = Boolean.parseBoolean(f[0]);
         r.rounds = Integer.parseInt(f[1]);
@@ -177,6 +186,12 @@ public final class BattleResult {
         r.flavourChanges = Integer.parseInt(f[48]);
         r.flavourStep = Integer.parseInt(f[49]);
         r.errors = f.length > 50 ? f[50] : "";
+        if (f.length > 54) {
+            r.hostCpuMin = Double.parseDouble(f[51]);
+            r.hostCpuMean = Double.parseDouble(f[52]);
+            r.hostCpuMax = Double.parseDouble(f[53]);
+            r.otherJvms = Integer.parseInt(f[54]);
+        }
         return r;
     }
 

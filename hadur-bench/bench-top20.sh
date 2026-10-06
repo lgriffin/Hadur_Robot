@@ -27,6 +27,11 @@
 #   --out DIR              working directory, default work/<label>-<timestamp>
 #   --report FILE          also write the report there, default ../docs/bench/local/<date>_<label>.md
 #   --per-opponent DIR     one report per opponent, default ../docs/bench/local/<date>_<label>
+#   --repeat K             fight each (jar, opponent, seed) K times and print the score-share SD (BENCH-53); writes repeat.tsv
+#   --cold-warm            fight each seed cold, then warm on the shelf the cold battle left (BENCH-54); writes cold-warm.tsv
+#   --retries N            run a failed battle again up to N times (BENCH-55), Bench default 1
+#   --field WxH            the arena, e.g. 1000x1000, Bench default for the mode
+#   --dry-run              print what would be built, fetched and run, and run nothing
 #   --skip-build           skip `mvn package` at the repo root
 #   --skip-fetch           skip fetching the set's opponent jars
 #   --engine VERSION       run the battles on this Robocode release from Maven Central (e.g. 1.11.1)
@@ -50,6 +55,11 @@ REPORT=""
 PER_OPPONENT=""
 SKIP_BUILD=0
 SKIP_FETCH=0
+REPEAT=""
+COLD_WARM=0
+RETRIES=""
+FIELD=""
+DRY_RUN=0
 ENGINE=""
 
 while [ $# -gt 0 ]; do
@@ -69,8 +79,13 @@ while [ $# -gt 0 ]; do
         --per-opponent) PER_OPPONENT="${2:?--per-opponent needs a directory}"; shift 2 ;;
         --skip-build) SKIP_BUILD=1; shift ;;
         --skip-fetch) SKIP_FETCH=1; shift ;;
+        --repeat) REPEAT="${2:?--repeat needs a number}"; shift 2 ;;
+        --cold-warm) COLD_WARM=1; shift ;;
+        --retries) RETRIES="${2:?--retries needs a number}"; shift 2 ;;
+        --field) FIELD="${2:?--field needs WIDTHxHEIGHT}"; shift 2 ;;
+        --dry-run) DRY_RUN=1; shift ;;
         --engine) ENGINE="${2:?--engine needs a Robocode version}"; shift 2 ;;
-        -h|--help) sed -n '2,32p' "$0" | sed 's/^# \{0,1\}//'; exit 0 ;;
+        -h|--help) sed -n '2,/^set -u$/p' "$0" | sed '$d' | sed 's/^# \{0,1\}//'; exit 0 ;;
         *) echo "unknown option: $1" >&2; exit 2 ;;
     esac
 done
@@ -86,6 +101,15 @@ if [ "$PARALLEL" -eq 0 ]; then
     if [ "$PARALLEL" -lt 1 ]; then PARALLEL=1; fi
 fi
 
+# --dry-run prints each build, fetch and run step instead of running it.
+step() {
+    if [ "$DRY_RUN" -eq 1 ]; then
+        echo "dry run, would run: $*"
+        return 0
+    fi
+    "$@"
+}
+
 STAMP=$(date +%Y%m%d-%H%M%S)
 if [ -z "$OUT" ]; then OUT="work/$LABEL-$STAMP"; fi
 DAY=$(date +%Y-%m-%d)
@@ -94,14 +118,14 @@ if [ -z "$PER_OPPONENT" ]; then PER_OPPONENT="../docs/bench/local/${DAY}_${LABEL
 
 if [ "$SKIP_BUILD" -eq 0 ]; then
     echo "mvn -q package -DskipTests -Dmaven.javadoc.skip (repo root)"
-    (cd .. && mvn -q package -DskipTests -Dmaven.javadoc.skip)
+    (cd .. && step mvn -q package -DskipTests -Dmaven.javadoc.skip)
     status=$?
     if [ "$status" -ne 0 ]; then exit "$status"; fi
 fi
 
 if [ "$SKIP_FETCH" -eq 0 ]; then
     echo "./fetch-opponents.sh --set $SET"
-    ./fetch-opponents.sh --set "$SET"
+    step ./fetch-opponents.sh --set "$SET"
     status=$?
     if [ "$status" -ne 0 ]; then exit "$status"; fi
 fi
@@ -111,6 +135,10 @@ if [ -n "$ROBOT_JAR" ]; then ARGS="$ARGS --robot-jar $ROBOT_JAR"; fi
 if [ -n "$ROBOT" ]; then ARGS="$ARGS --robot \"$ROBOT\""; fi
 if [ -n "$BASELINE" ]; then ARGS="$ARGS --baseline $BASELINE --baseline-robot \"$BASELINE_ROBOT\""; fi
 if [ -n "$CPU_CONSTANT" ]; then ARGS="$ARGS --cpu-constant $CPU_CONSTANT"; fi
+if [ -n "$REPEAT" ]; then ARGS="$ARGS --repeat $REPEAT"; fi
+if [ "$COLD_WARM" -eq 1 ]; then ARGS="$ARGS --cold-warm true"; fi
+if [ -n "$RETRIES" ]; then ARGS="$ARGS --retries $RETRIES"; fi
+if [ -n "$FIELD" ]; then ARGS="$ARGS --field $FIELD"; fi
 
 # The engine is the bench's own Maven dependency, so another release is a property away;
 # the bench's classpath file is rebuilt with it on this compile (issue #109).
@@ -118,9 +146,10 @@ ENGINE_PROP=""
 if [ -n "$ENGINE" ]; then ENGINE_PROP="-Drobocode.version=$ENGINE"; fi
 
 echo "mvn -q $ENGINE_PROP compile exec:java -Dexec.args=\"$ARGS\""
-mvn -q $ENGINE_PROP compile exec:java -Dexec.args="$ARGS"
+step mvn -q $ENGINE_PROP compile exec:java -Dexec.args="$ARGS"
 code=$?
 
+if [ "$DRY_RUN" -eq 1 ]; then echo "dry run: nothing was built, fetched or run"; exit 0; fi
 echo "report: $REPORT"
 echo "per-opponent reports: $PER_OPPONENT"
 exit "$code"

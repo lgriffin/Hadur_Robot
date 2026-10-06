@@ -21,7 +21,12 @@ mvn exec:java -Dexec.args="--mode cold --rounds 35 --seeds 5"
 | `--rounds N` | 35 | rounds per battle |
 | `--seeds N` | 5 | battles per opponent (cold) |
 | `--battles N` | 5 | consecutive battles per opponent (warm) |
-| `--field WxH` | 800x600 | battlefield size |
+| `--field WxH` | 800x600 | battlefield size (BENCH-57: `WxH` with both at least 1, else refused; melee and the TeamRumble use 1000x1000 and 1200x1200 via this) |
+| `--repeat K` | | (BENCH-53) fight each (jar, opponent, seed) K times, K at least 2, cold duel only; writes `repeat.tsv` and prints the score-share SD, per opponent and pooled, which is what the host alone does to one battle |
+| `--cold-warm true` | | (BENCH-54) fight each seed cold (data wiped), then warm on the shelf that battle left, per build; writes `cold-warm.tsv` pairing the two with the shelf the warm battle started on; cold duel only |
+| `--retries N` | 1 | (BENCH-55) run a battle that failed again, up to N more times; battles still failed are listed at the end of the run and under "Failed battles" in the report. 0 turns it off |
+| `--dry-run true` | | (BENCH-56) say what would run (mode, set, battle count, field, flags, constant) and exit 0 without installing a robot or starting a battle |
+| `@FILE` | | (BENCH-59) as the only argument, read the arguments from FILE, one per line (blank lines and `#` lines skipped), so a value with a space needs no quoting; the PowerShell scripts use it |
 | `--robot-jar FILE` | follows `robot.release` in hadur-robot/pom.xml (3.8 today) | the robot jar |
 | `--robot-classes DIR` | | jar a compiled class tree instead, e.g. an older Hadur |
 | `--robot NAME` | follows `robot.release` in hadur-robot/pom.xml (3.8 today) | the robot's name as Robocode lists it |
@@ -136,6 +141,39 @@ command before running it and exit with the bench's own exit code.
 
 The first example is a plain run at the defaults (5 seeds, 35 rounds). The second pairs the
 built jar against 3.7 by seed (BENCH-2), the way a release check compares two versions.
+
+All three top-20 scripts (`bench-top20`, `bench-team-top20`, `bench-melee-top20`, each in
+`.ps1` and `.sh`) take the options of issue #117 as `-Repeat K -ColdWarm -Retries N -Field WxH
+-DryRun` (PowerShell) or `--repeat K --cold-warm --retries N --field WxH --dry-run` (sh).
+`-DryRun`/`--dry-run` prints each build, fetch and bench step and the bench's argument list,
+and runs none of them; the way to check a change to a script is to run it that way.
+
+The PowerShell scripts pass the bench its arguments in a file (`work/args-<label>-<time>.txt`,
+one argument per line, via `@FILE` above) and give Maven only `-Dexec.args=@work/args-....txt`.
+Windows PowerShell 5.1 rebuilds a native command's line from its arguments and does not
+re-escape the quotes inside `-Dexec.args="..."`, so a quoted robot name reached `mvn.cmd`
+broken ("The syntax of the command is incorrect"); a path with no spaces or quotes survives.
+This was checked without a battle: a stand-in `mvn.cmd` that prints the command line it was
+given showed the old form arriving with its quotes stripped and the new form arriving intact,
+and `-DryRun` shows the argument list the file will hold.
+
+### Host load, conditions and repeatability (issue #117)
+
+- `result.csv` ends with `hostCpuMin,hostCpuMean,hostCpuMax,otherJvms` (BENCH-50): the
+  system CPU use sampled while that battle ran (0 to 1) and the most other Robocode JVMs
+  `jps` showed (the bench's own children left out). A row without them still reads, as NaN
+  and -1.
+- `conditions.json` in the work directory (BENCH-51) is written at the start of a run and
+  again at its end: git sha, the candidate and baseline jar checksums, `--parallel`, child
+  CPUs, the cpu constant, JVM flags, engine version, the host sample summary, and the
+  shelf (file count, bytes, SHA-256 of `robots/.data`) at the start.
+- The duel report's conditions line carries the child JVM flags as the melee and team ones do.
+- With `--baseline` the candidate fights first on odd seeds and the baseline first on even
+  ones (BENCH-52), so the order is not confounded with the build.
+- `./sweep-cpu-constant.sh --constant NANOS` (BENCH-58) runs one set at 0.5x, 1x and 2x of a
+  `robocode.cpu.constant`, labelling each run `<label>-cpu<m>x`; `--multipliers "0.5 1 2 4"`,
+  `--set`, `--seeds`, `--label`, `--script` and `--dry-run` are its options, and everything
+  after `--` goes to the bench script. Use `--dry-run` to see the three commands first.
 
 ## Opponents
 
