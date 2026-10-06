@@ -29,6 +29,7 @@
 #   --per-opponent DIR     one report per opponent, default ../docs/bench/local/<date>_<label>
 #   --skip-build           skip `mvn package` at the repo root
 #   --skip-fetch           skip fetching the set's opponent jars
+#   --engine VERSION       run the battles on this Robocode release from Maven Central (e.g. 1.11.1)
 set -u
 
 HERE=$(cd "$(dirname "$0")" && pwd)
@@ -49,6 +50,7 @@ REPORT=""
 PER_OPPONENT=""
 SKIP_BUILD=0
 SKIP_FETCH=0
+ENGINE=""
 
 while [ $# -gt 0 ]; do
     case "$1" in
@@ -67,7 +69,8 @@ while [ $# -gt 0 ]; do
         --per-opponent) PER_OPPONENT="${2:?--per-opponent needs a directory}"; shift 2 ;;
         --skip-build) SKIP_BUILD=1; shift ;;
         --skip-fetch) SKIP_FETCH=1; shift ;;
-        -h|--help) sed -n '2,29p' "$0" | sed 's/^# \{0,1\}//'; exit 0 ;;
+        --engine) ENGINE="${2:?--engine needs a Robocode version}"; shift 2 ;;
+        -h|--help) sed -n '2,32p' "$0" | sed 's/^# \{0,1\}//'; exit 0 ;;
         *) echo "unknown option: $1" >&2; exit 2 ;;
     esac
 done
@@ -109,8 +112,13 @@ if [ -n "$ROBOT" ]; then ARGS="$ARGS --robot \"$ROBOT\""; fi
 if [ -n "$BASELINE" ]; then ARGS="$ARGS --baseline $BASELINE --baseline-robot \"$BASELINE_ROBOT\""; fi
 if [ -n "$CPU_CONSTANT" ]; then ARGS="$ARGS --cpu-constant $CPU_CONSTANT"; fi
 
-echo "mvn -q compile exec:java -Dexec.args=\"$ARGS\""
-mvn -q compile exec:java -Dexec.args="$ARGS"
+# The engine is the bench's own Maven dependency, so another release is a property away;
+# the bench's classpath file is rebuilt with it on this compile (issue #109).
+ENGINE_PROP=""
+if [ -n "$ENGINE" ]; then ENGINE_PROP="-Drobocode.version=$ENGINE"; fi
+
+echo "mvn -q $ENGINE_PROP compile exec:java -Dexec.args=\"$ARGS\""
+mvn -q $ENGINE_PROP compile exec:java -Dexec.args="$ARGS"
 code=$?
 
 echo "report: $REPORT"

@@ -1,0 +1,12 @@
+# 3.8 leak plan (docs/leak-38-plan.md, A2): session-300 with 3.7 as the control. Run on engine 1.11.1.
+# BENCH-6/BENCH-7: a rumble client's session, imitated. See README.md, "Session bench".
+# The opponents are 300 rumble participants drawn with a fixed seed (data/tools/sample_session.py),
+# fought once each, in list order, through ONE engine process under the client's heap cap, with
+# the robot data directory kept throughout. The control robot runs the same session after.
+opponents=session-300-opponents.txt
+heap=512M
+rounds=35
+fresh=false
+wipe=false
+control=hadur2.Hadur 3.7
+control-jar=bisect/hadur2.Hadur_3.7.jar

@@ -50,6 +50,9 @@
   ../docs/bench/local/<yyyy-MM-dd>_<Label>.
 .PARAMETER SkipBuild
   Skip `mvn -q package -DskipTests -Dmaven.javadoc.skip` at the repo root before the bench.
+.PARAMETER Engine
+  Run the battles on this Robocode release from Maven Central (-Drobocode.version), e.g.
+  1.11.1, the version the rumble clients run. Default: the bench pom's version.
 .PARAMETER SkipFetch
   Skip fetching the set's opponent jars (fetch-opponents.ps1 -Set <Set>) before the bench.
 .EXAMPLE
@@ -75,7 +78,8 @@ param(
     [string]$Report = "",
     [string]$PerOpponent = "",
     [switch]$SkipBuild,
-    [switch]$SkipFetch
+    [switch]$SkipFetch,
+    [string]$Engine = ""
 )
 
 $ErrorActionPreference = "Stop"
@@ -145,9 +149,13 @@ if ($Baseline) {
 if ($CpuConstant) { $parts += @("--cpu-constant", $CpuConstant) }
 
 $execArgs = $parts -join " "
-$cmd = 'mvn -q compile exec:java "-Dexec.args=' + $execArgs + '"'
-Write-Host $cmd
-& mvn -q compile exec:java "-Dexec.args=$execArgs"
+# The engine is the bench's own Maven dependency, so another release is a property away;
+# the bench's classpath file is rebuilt with it on this compile (issue #109).
+$mvnArgs = @("-q")
+if ($Engine) { $mvnArgs += "-Drobocode.version=$Engine" }
+$mvnArgs += @("compile", "exec:java", "-Dexec.args=$execArgs")
+Write-Host ("mvn " + ($mvnArgs -join " "))
+& mvn @mvnArgs
 $benchCode = $LASTEXITCODE
 
 Write-Host "report: $Report"

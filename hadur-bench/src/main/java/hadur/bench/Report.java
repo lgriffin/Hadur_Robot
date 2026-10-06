@@ -137,11 +137,34 @@ final class Report {
     private static String conditionsParagraph(int rounds, int runs, boolean warm, int width, int height,
                                                String cpuConstant) {
         return String.format(Locale.ROOT,
-            "%d rounds x %d %s per opponent on %dx%d. Engine Robocode 1.9.5.6, security manager on. "
+            "%d rounds x %d %s per opponent on %dx%d. Engine Robocode %s, security manager on. "
             + "Java %s, %d cores. %s.%n%n",
             rounds, runs, warm ? "consecutive battles (data kept)" : "seeds (data wiped)",
-            width, height, System.getProperty("java.version"),
+            width, height, ENGINE, System.getProperty("java.version"),
             Runtime.getRuntime().availableProcessors(), cpuConstant);
+    }
+
+    /** The engine the battles run on: the robocode.core jar on the bench's classpath. */
+    static final String ENGINE = engineVersion(readClasspath());
+
+    private static String readClasspath() {
+        try {
+            return java.nio.file.Files.readString(java.nio.file.Path.of("target/classpath.txt"));
+        } catch (java.io.IOException | RuntimeException e) {
+            return "";
+        }
+    }
+
+    /**
+     * The Robocode version in a classpath string, read from its robocode.core jar's name
+     * (Maven's {@code robocode.core-<version>.jar}), or "unknown" when there is none. The
+     * engine can be swapped with {@code -Drobocode.version=...} (issue #109), so the report
+     * says which one ran rather than assuming the pom's default.
+     */
+    static String engineVersion(String classpath) {
+        java.util.regex.Matcher m = java.util.regex.Pattern
+            .compile("robocode\\.core-([0-9][0-9A-Za-z.\\-]*)\\.jar").matcher(classpath);
+        return m.find() ? m.group(1) : "unknown";
     }
 
     /**
