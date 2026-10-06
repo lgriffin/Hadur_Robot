@@ -39,7 +39,8 @@ at this size (the 3.7 shares swing by 50 points between seeds against some).
   The gains are on the surfers whose bullet power follows ours down (DrussGT, Diamond, ScalarR,
   Firestarter, BeepBoop); Tomcat, XanderCat and Saguaro read lower, inside the noise of two
   seeds.
-- **Skipped turns**: 447 against 335 on the top 10 (20 battles), 298 against 314 on DrussGT.
-  D4's shadow aim is the likely cost on the top 10; it is shed at TickBudget level 2 and up.
+- **Skipped turns**: 447 against 314 on DrussGT (10 battles, 350 rounds), 298 against 335 on
+  the top 10 (20 battles). DrussGT keeps the most enemy waves in the air, which is where D4's
+  shadow aim costs most; it is shed at TickBudget level 2 and up.
 - Not measured here: the weak set (level in the D1 and stack gates), melee (no D stage touches
   the melee strand; T1 acts only on a team) and the team (T1 gate: share 28.8% to 48.2%).

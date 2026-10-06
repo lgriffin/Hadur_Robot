@@ -410,7 +410,7 @@ The first fire-lane slack (1.5 px a tick of flight) left 14 friendly hits in the
 research. The stage gates ran on jars built before the later stages and the review fixes
 merged, so the shipped build was benched once against 3.7 ([release-check-3.8.md](bench/release-check-3.8.md)):
 DrussGT **+10.5 ± 3.1** points over 10 battles (10 of 10 up), the top-10 set **+7.2 ± 6.3**
-over 20 (14 up). Skipped turns on the top 10 rose from 335 to 447, the cost to watch live.
+over 20 (14 up). Skipped turns against DrussGT rose from 314 to 447 over 350 rounds (the top 10 was 298 against 335), the cost to watch live.
 Open items are in `followup.md` under the DrussGT route.
 
 ## What comes next
