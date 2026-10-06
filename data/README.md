@@ -22,8 +22,12 @@ data/
                         (a failed matchup keeps its row, with the status in `note`)
     melee-history.tsv   Hadur's summary row from every melee table
     melee-field.tsv     every melee standings table, one row per entrant
+    history.tsv         one headline row per committed per-battle run (written by tools/trend.py)
   tools/
     harvest_bench.py    rebuilds the three *-history/field files from docs/bench/*.md
+    trend.py            appends each committed run's headline to bench/history.tsv, draws docs/bench/trend.svg
+    calibrate.py        regresses bench share per opponent on the live per-opponent figure
+    bench_tables.py     shared readers for the per-battle tables (used by the two above)
     drussgt/            DrussGT bench analysis, energy model and shield-list tools (see its README)
     parse_rumble_page.py  parses a saved BotDetails or Rankings page into rumble/parsed/
 ```
@@ -72,6 +76,29 @@ They are not wired into CI on purpose, so that a new bench report can never turn
 red. Code the build depends on belongs in `hadur-bench` with its own tests, and copies any
 fixture it needs from here into `src/test/resources/`. The planned BENCH-5 live-details
 reader (`hadur.bench.LiveDetails`, R4) is the first such case.
+
+## Trend, calibration and the second tier
+
+All three are records for a person to read. None gates anything, and nothing in CI runs them.
+
+- **`tools/trend.py`** reads the per-battle tables that `catalog.tsv` lists as `bench table` or
+  `bench run` and writes one row each to `bench/history.tsv`: date, label, candidate and baseline
+  (the baseline is the lowest version in the table), engine (from the catalog subject, else
+  1.9.5.6), seeds, pooled paired score-share difference in points with its 95% interval, mean
+  skipped turns per battle for each build, failed battles, rows. Opponents are weighted equally;
+  each opponent's variance comes from its own paired differences. Melee tables use Hadur's share of the points in
+  a battle, paired by field and seed. Re-running replaces a run's row and never duplicates it;
+  `--check` says whether `history.tsv` and `docs/bench/trend.svg` are stale. Probe tables are
+  skipped. The tables carry no duress column, so skipped turns are the only trust signal.
+- **`tools/calibrate.py`** joins the bench score share per opponent to Hadur's APS against that
+  opponent on a saved BotDetails page of the same version, and reports the bench-to-rumble
+  offset, the fitted slope and the residual SD beside the SD that sampling noise alone would
+  give. `live-3.7.md` and `live-3.8.md` hold ladder-level figures only, so the join uses the
+  BotDetails CSVs they cite; a build with no saved page (3.7) gets no calibration, and a join
+  under eight opponents is reported as too thin. `--list` shows every opponent.
+- **`hadur-bench/tier2.txt`** is a second-tier 1v1 set: every fifth robot ranked 21 to 100 on
+  2026-10-06 (ranks 21, 26, ... 96, 16 robots). The header gives the rule and the jar naming
+  rule. Run it with `--set tier2.txt`; the jars are fetched like any other set's.
 
 ## Parsed page formats
 
