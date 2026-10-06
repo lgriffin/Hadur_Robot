@@ -138,46 +138,46 @@ any of these teams' tactics beyond what is quoted here. T1 figures: score share,
 
 - **1. mn.CombatTeam 3.25.0 (83.64).** Five `mn.Combat`. Style unknown (its solo Combat is a
   `TeamRobot` already ranked 12th in melee, `docs/architecture-evolution-plan.md`). T1: 20.9%,
-  0 of 30 rounds, against 8.6% on 3.7. Local 3.8 result: _pending_
+  0 of 30 rounds, against 8.6% on 3.7. Local 3.8 result (2026-10-06, 10 seeds, 10 rounds): 3.8 took 23.1% of the score against 3.7's 8.8% (paired +14.3 ± 4.2 pp), won 3/100 rounds, 38 skipped turns over 10 battles.
 - **2. cb.fire.FirestarterTeam 2.0 (83.25).** Five `cb.fire.Firestarter` 2.0. Style unknown.
   Not measured; the older `cb.mega.FirestarterTeam 1.14` read 27.7% on 3.8, 9.9% on 3.7,
-  which is a different version. Local 3.8 result: _pending_
+  which is a different version. Local 3.8 result (2026-10-06, 10 seeds, 10 rounds): 3.8 took 21.1% of the score against 3.7's 8.6% (paired +12.5 ± 2.8 pp), won 2/100 rounds, 31 skipped turns over 10 battles.
 - **3. abc.ShadowTeam 3.83 (80.51).** Five `abc.Shadow`. Style unknown. T1: 24.4%, 2 of 30
-  rounds, against 9.7%. Local 3.8 result: _pending_
+  rounds, against 9.7%. Local 3.8 result (2026-10-06, 10 seeds, 10 rounds): 3.8 took 22.6% of the score against 3.7's 9.0% (paired +13.6 ± 3.4 pp), won 6/100 rounds, 41 skipped turns over 10 battles.
 - **4. rz.AlephTeam 0.34 (78.67).** Five `rz.Aleph`. Style unknown. T1: 28.6%, 3 of 30 rounds,
-  against 11.0%; 25 skipped turns in 3 battles, the highest of the eight. Local 3.8 result: _pending_
+  against 11.0%; 25 skipped turns in 3 battles, the highest of the eight. Local 3.8 result (2026-10-06, 10 seeds, 10 rounds): 3.8 took 27.8% of the score against 3.7's 8.3% (paired +19.5 ± 3.4 pp), won 8/100 rounds, 62 skipped turns over 10 battles.
 - **5. ustimaw.NightmareTeam 3.3 (78.38).** Four `ustimaw.Nightmare` and one member named
-  `NigitmareDroid` (jar spelling). Style unknown. Local 3.8 result: _pending_
+  `NigitmareDroid` (jar spelling). Style unknown. Local 3.8 result (2026-10-06, 10 seeds, 10 rounds): 3.8 took 15.2% of the score against 3.7's 19.1% (paired -3.9 ± 2.7 pp), won 6/100 rounds, 12 skipped turns over 10 battles.
 - **6. florent.XSeries.Xmen 0.9 (72.57).** Five `florent.XSeries.X2` (nested member jar, 185 KB).
-  Style unknown. Local 3.8 result: _pending_
+  Style unknown. Local 3.8 result (2026-10-06, 10 seeds, 10 rounds): 3.8 took 37.4% of the score against 3.7's 19.3% (paired +18.3 ± 6.3 pp), won 42/90 rounds, 56 skipped turns over 9 battles.
 - **7. ags.polylunar.Polylunar 1.6 (69.63).** Five different robots: Luna, Phobos, Io, Europa,
-  Charon. Style unknown. Local 3.8 result: _pending_
+  Charon. Style unknown. Local 3.8 result (2026-10-06, 10 seeds, 10 rounds): 3.8 took 17.7% of the score against 3.7's 26.6% (paired -8.9 ± 4.1 pp), won 4/100 rounds, 19 skipped turns over 10 battles.
 - **8. rz.GlowingHawks 0.2 (69.47).** Five `rz.GHMember`; a 5 KB jar. Style unknown.
-  Local 3.8 result: _pending_
+  Local 3.8 result (2026-10-06, 10 seeds, 10 rounds): 3.8 took 52.7% of the score against 3.7's 18.5% (paired +34.2 ± 5.7 pp), won 56/100 rounds, 74 skipped turns over 10 battles.
 - **9. kawigi.micro.ArmyOfShiz 1.1 (67.63).** Five `kawigi.micro.Shiz`; a 7 KB jar. Style
-  unknown. Local 3.8 result: _pending_
+  unknown. Local 3.8 result (2026-10-06, 10 seeds, 10 rounds): 3.8 took 38.3% of the score against 3.7's 13.3% (paired +24.9 ± 3.6 pp), won 55/100 rounds, 68 skipped turns over 10 battles.
 - **10. rz.HOFSwarm 1.1 (67.44).** Five `rz.HOFMember`; a 4 KB jar. Style unknown.
-  Local 3.8 result: _pending_
+  Local 3.8 result (2026-10-06, 10 seeds, 10 rounds): 3.8 took 48.1% of the score against 3.7's 13.8% (paired +34.3 ± 5.3 pp), won 48/100 rounds, 76 skipped turns over 10 battles.
 - **11. davidalves.PhoenixTeam 0.54 (65.60).** Five `davidalves.Phoenix`. Style unknown. T1:
-  54.9%, 13 of 30 rounds, against 17.4% on 3.7, the biggest move of the eight. Local 3.8 result: _pending_
+  54.9%, 13 of 30 rounds, against 17.4% on 3.7, the biggest move of the eight. Local 3.8 result (2026-10-06, 10 seeds, 10 rounds): 3.8 took 57.6% of the score against 3.7's 18.3% (paired +39.3 ± 5.0 pp), won 52/100 rounds, 92 skipped turns over 10 battles.
 - **12. kid.team.OmegaSquad .0.2 (64.29).** The `.team` file lists four members (Niner,
-  Darman, Fi, Atin), so five Hadurs fight four. Style unknown. Local 3.8 result: _pending_
+  Darman, Fi, Atin), so five Hadurs fight four. Style unknown. Local 3.8 result (2026-10-06, 10 seeds, 10 rounds): 3.8 took 58.2% of the score against 3.7's 13.0% (paired +45.2 ± 7.5 pp), won 50/100 rounds, 67 skipped turns over 10 battles.
 - **13. cx.mini.DemoniacNimrods 0.50 (63.56).** Five `cx.mini.Nimrod`; a 10 KB jar. Style
-  unknown. Local 3.8 result: _pending_
+  unknown. Local 3.8 result (2026-10-06, 10 seeds, 10 rounds): 3.8 took 47.8% of the score against 3.7's 20.0% (paired +27.8 ± 4.9 pp), won 49/100 rounds, 71 skipped turns over 10 battles.
 - **14. tmnr.TMNR 1.01 (63.37).** Five different robots: Donatello, Giovanni, Leonardo,
-  Michelangelo, Raphael. Style unknown. Local 3.8 result: _pending_
+  Michelangelo, Raphael. Style unknown. Local 3.8 result (2026-10-06, 10 seeds, 10 rounds): 3.8 took 49.7% of the score against 3.7's 24.4% (paired +25.2 ± 3.9 pp), won 73/100 rounds, 109 skipped turns over 10 battles.
 - **15. myl.micro.TroodonPack 1.10 (62.78).** Two `Troodon` and three `TroodonDroid`. Style
-  unknown. Local 3.8 result: _pending_
+  unknown. Local 3.8 result (2026-10-06, 10 seeds, 10 rounds): 3.8 took 59.2% of the score against 3.7's 29.3% (paired +29.8 ± 5.1 pp), won 81/100 rounds, 116 skipped turns over 10 battles.
 - **16. Krabb.sliNk.SlartibartfassTeam 0.5 (62.16).** Three `Slartibartfass` and two
-  `Fatghost`. Style unknown. Local 3.8 result: _pending_
+  `Fatghost`. Style unknown. Local 3.8 result (2026-10-06, 10 seeds, 10 rounds): 3.8 took 60.9% of the score against 3.7's 17.9% (paired +43.0 ± 4.1 pp), won 83/100 rounds, 70 skipped turns over 10 battles.
 - **17. bvh.team.Valkiries 1.0 (61.17).** Five `bvh.team.Valkirie` 0.44t; a 6 KB jar. Style
-  unknown. Local 3.8 result: _pending_
+  unknown. Local 3.8 result (2026-10-06, 10 seeds, 10 rounds): 3.8 took 57.7% of the score against 3.7's 20.8% (paired +36.9 ± 5.7 pp), won 68/100 rounds, 72 skipped turns over 10 battles.
 - **18. radnor.RadnorMedSchool 1.0 (61.15).** Five `radnor.DoctorBobTeam`; a 2 KB jar, one
-  class. Style unknown. Local 3.8 result: _pending_
+  class. Style unknown. Local 3.8 result (2026-10-06, 10 seeds, 10 rounds): 3.8 took 62.4% of the score against 3.7's 32.7% (paired +29.7 ± 5.1 pp), won 78/100 rounds, 54 skipped turns over 10 battles.
 - **19. gh.mini.GrubbmGroup 0.4 (61.02).** One `GrubbmOgre` 0.4 and four `GrubbmGrunt` 0.5.
-  Style unknown. Local 3.8 result: _pending_
+  Style unknown. Local 3.8 result (2026-10-06, 10 seeds, 10 rounds): 3.8 took 53.5% of the score against 3.7's 15.4% (paired +38.1 ± 7.1 pp), won 64/100 rounds, 92 skipped turns over 10 battles.
 - **20. apvteam.MambaTeam 0.7.5 (59.46).** Five `apvteam.Mamba`. Style unknown. T1: 51.8%,
-  22 of 30 rounds, against 22.5%. Local 3.8 result: _pending_
+  22 of 30 rounds, against 22.5%. Local 3.8 result (2026-10-06, 10 seeds, 10 rounds): 3.8 took 58.3% of the score against 3.7's 22.8% (paired +35.5 ± 5.3 pp), won 73/100 rounds, 52 skipped turns over 10 battles.
 
 ## What is already measured (docs/bench/a5-team.md, t1-team.md)
 

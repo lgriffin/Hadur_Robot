@@ -120,7 +120,7 @@ if ((-not $CpuConstant) -and (-not $NoCpuPin)) {
 if (-not $SkipBuild) {
     Write-Host "mvn -q package -DskipTests -Dmaven.javadoc.skip (repo root)"
     Push-Location ..
-    & mvn -q package -DskipTests -Dmaven.javadoc.skip
+    & mvn -q package "-DskipTests" "-Dmaven.javadoc.skip"
     $code = $LASTEXITCODE
     Pop-Location
     if ($code -ne 0) { exit $code }

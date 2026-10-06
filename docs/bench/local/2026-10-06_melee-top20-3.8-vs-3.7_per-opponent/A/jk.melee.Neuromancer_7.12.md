@@ -2,26 +2,26 @@
 
 35 rounds per battle, 10 battles, 1000x1000.
 
-robocode.cpu.constant=1488498 (pinned with --cpu-constant). Host: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 48 logical cores, Windows 11 10.0, 6 other Robocode JVMs running (roborumble.RoboRumbleAtHome x6), parallel 6. Battle JVM flags: -XX:ActiveProcessorCount=2.
+robocode.cpu.constant=1488498 (pinned with --cpu-constant). Host: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 48 logical cores, Windows 11 10.0, no other Robocode JVMs running, parallel 5. Battle JVM flags: -XX:ActiveProcessorCount=2.
 
 ## Battles
 
 | Seed | Hadur place | Hadur score | jk.melee.Neuromancer 7.12 score | Pairwise share | Skipped turns | Rounds as a duel with it | Hadur won those | Baseline share | Paired diff (pp) |
 |---|---|---|---|---|---|---|---|---|---|
-| 1 | 7 | 10554 | 12791 | 45.2% | 6 | 0 | 0 | 36.4% | +8.9 |
-| 2 | 4 | 10860 | 14079 | 43.5% | 114 | 3 | 0 | 42.7% | +0.8 |
-| 3 | 3 | 11010 | 17575 | 38.5% | 10 | 3 | 0 | 36.0% | +2.5 |
-| 4 | 3 | 11527 | 17072 | 40.3% | 122 | 2 | 1 | 40.0% | +0.3 |
-| 5 | 4 | 11438 | 13809 | 45.3% | 12 | 1 | 0 | 40.4% | +4.9 |
-| 6 | 5 | 10723 | 13656 | 44.0% | 9 | 1 | 0 | 42.4% | +1.6 |
-| 7 | 3 | 11526 | 15800 | 42.2% | 118 | 1 | 0 | 36.2% | +6.0 |
-| 8 | 8 | 9266 | 13902 | 40.0% | 99 | 0 | 0 | 39.1% | +0.9 |
-| 9 | 5 | 11431 | 15287 | 42.8% | 128 | 0 | 0 | 44.9% | -2.1 |
-| 10 | 6 | 11048 | 15470 | 41.7% | 120 | 1 | 0 | 43.3% | -1.6 |
+| 1 | 4 | 10336 | 14820 | 41.1% | 97 | 0 | 0 | 42.1% | -1.0 |
+| 2 | 5 | 10257 | 17616 | 36.8% | 9 | 1 | 0 | 46.0% | -9.2 |
+| 3 | 4 | 10985 | 18038 | 37.8% | 111 | 3 | 0 | 41.9% | -4.1 |
+| 4 | 3 | 11979 | 16917 | 41.5% | 106 | 2 | 0 | 46.1% | -4.6 |
+| 5 | 8 | 9647 | 13735 | 41.3% | 6 | 0 | 0 | 45.2% | -4.0 |
+| 6 | 3 | 11801 | 17348 | 40.5% | 96 | 1 | 0 | 44.1% | -3.6 |
+| 7 | 4 | 11578 | 13425 | 46.3% | 9 | 2 | 0 | 42.1% | +4.2 |
+| 8 | 5 | 11440 | 14675 | 43.8% | 94 | 2 | 1 | 39.5% | +4.3 |
+| 9 | 7 | 9621 | 13402 | 41.8% | 13 | 4 | 0 | 46.5% | -4.8 |
+| 10 | 3 | 12700 | 15314 | 45.3% | 96 | 1 | 1 | 43.2% | +2.1 |
 
-Mean pairwise share 42.3% ± 1.6, baseline 40.1% ± 2.3, paired diff +2.2 ± 2.5.
+Mean pairwise share 41.6% ± 2.1, baseline 43.7% ± 1.7, paired diff -2.1 ± 3.1.
 
-Skipped turns: 738 over 10 battles (73.8 per battle, most in one battle 128). Issue #102 trusts a parallel run when the mean stays near the sequential run's.
+Skipped turns: 637 over 10 battles (63.7 per battle, most in one battle 111). Issue #102 trusts a parallel run when the mean stays near the sequential run's.
 
-Duress ticks: 2390 over 10 battles (239.0 per battle, most in one battle 811).
+Duress ticks: 2116 over 10 battles (211.6 per battle, most in one battle 405).
 
