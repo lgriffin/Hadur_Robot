@@ -17,4 +17,5 @@ hadur2.core.port
 hadur2.core.replay
 hadur2.core.role
 hadur2.core.shield
+hadur2.core.shieldmode
 hadur2.core.world
