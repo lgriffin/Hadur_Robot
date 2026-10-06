@@ -322,6 +322,7 @@ Still release 3.8 (D1 and D2 ship together). Two small rules and one engine chec
 - **Re-snapshotted:** the telemetry snapshot of `warm-abc.Shadow_3.83c` only.
 - **Re-pinned:** `pins/kernel.sha256` and `pins/duel.sha256` (`-Dhadur.pin=kernel,duel`) and `duel-sources.sha256` (`-Dhadur.duel.snapshot=write`). The conductor, melee and team pins did not change.
 - **Changed scenario:** `shield.feature`'s "a bullet shot down by accident changes nothing" now has the enemy stir first, since against a still enemy one bullet is SHIELD-3's evidence.
+- **Gate** ([d2-gate.md](bench/d2-gate.md)), paired against D1 (3.8.1): DrussGT **+1.0 ± 3.8** points (47.6% against 46.6%, 20 battles), level and not below. The stage jars were built on the D1 base before D5 and T1 merged. The top-10 and weak sets are measured once for the whole D2 to D4 stack (stack gate, pending). The report shows no direct evidence for SHIELD-3 or SHIELD-4 against DrussGT, which does not stand still.
 
 ## D5: the shield list (DrussGT route)
 
