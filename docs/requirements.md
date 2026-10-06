@@ -900,9 +900,11 @@ strand, in the `shieldmode` package, and applies to a 1v1 battle only.
   (`ShieldList`; RES-6 keeps I/O out of the core). A line is a robot's name as Robocode lists it:
   `apv.test.Virus 0.6.1` matches that version only, and `apv.test.Virus` matches every version.
   Matching is exact and case-sensitive, never a prefix. A list that cannot be loaded is an empty
-  list. It ships empty: a name goes on only after the paired bench shows shield mode beats
-  normal mode for that robot (BENCH-11), so with the shipped list shield mode never starts and the
-  replay fixtures replay unchanged.
+  list. It ships with 14 robots: the 8 the BENCH-11 probe marked "wins" and 6 "open" ones with a
+  mean gain of 9 points or more (docs/bench/d5-probe.md, docs/bench/d5-gate.md). A name goes on only
+  after the paired bench shows shield mode beats normal mode for that robot, or an expected gain
+  that APS, the objective, counts; SHIELD-6 bounds the cost. Fixtures whose opponent is not on the
+  list replay unchanged.
 - **Where it applies.** Only a Duel charter (one opponent, no teammates) is given the list; a melee,
   a team or a sentry battle never has shield mode. The list is asked once, with the opponent's
   name at the first scan. For a listed opponent every round opens in shield mode (a `SH,round,tick,on`

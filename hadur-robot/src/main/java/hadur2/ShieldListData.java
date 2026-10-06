@@ -12,8 +12,9 @@ package hadur2;
  *
  * <p>A name goes on this list only after the paired bench shows shield mode beats normal mode
  * for that robot (BENCH-11: {@code mvn exec:java -Dexec.args="--shield-probe FILE ..."}, which
- * prints the lines to paste below). It ships empty: with nobody on it shield mode never starts
- * and Hadur fights exactly as without the feature. SHIELD-6 still bounds the cost for a listed
+ * prints the lines to paste below). The list below comes from the BENCH-11 probe recorded in
+ * docs/bench/d5-probe.md (gate in docs/bench/d5-gate.md): the robots shield mode wins against,
+ * and those it is expected to gain against. SHIELD-6 still bounds the cost for a listed
  * robot: shield mode is left for the rest of a battle once the enemy's bullet damage would
  * hold our score share below 85%.</p>
  *
@@ -34,7 +35,23 @@ final class ShieldListData {
      */
     static String[] lines() {
         return new String[] {
-            // "apv.test.Virus 0.6.1",
+            // The probe's "wins": the paired difference's interval lies above 0 (3 seeds each).
+            "apv.test.Virus 0.6.1",
+            "kcn.unnamed.Unnamed 1.21",
+            "simonton.mega.SniperFrog 1.0.fix2",
+            "vic.Locke 0.7.5.5",
+            "cx.micro.Smoke 0.96",
+            "dft.Virgin 1.25",
+            "kid.Gladiator .7.2",
+            "nkn.mini.Jskr0 0.1",
+            // The probe's "open" ones with a mean gain of 9 points or more: APS is the objective,
+            // so a positive expected value counts even where the interval spans 0.
+            "ej.ChocolateBar 1.1",
+            "jam.micro.RaikoMicro 1.44",
+            "ph.musketeer.Musketeer 0.6",
+            "suh.micro.MirrorPM 1.00",
+            "pez.gloom.GloomyDark 0.9.2",
+            "reaper.Reaper 1.1",
         };
     }
 }

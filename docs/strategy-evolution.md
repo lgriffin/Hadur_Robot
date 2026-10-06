@@ -316,10 +316,13 @@ mid-air (`hadur2.core.shieldmode`, ported from the c6d4d7a prototype). SHIELD-6 
 the enemy's bullet damage exceeds what would hold our score share at 85%, shield mode is off for the
 rest of the battle (allowance 15/85 * (60 * the battle's rounds + damage dealt), about 370 for 35 rounds). Per-round exits
 (close, rammed, unpredicted, outhit, quiet, duress) hand the round back to the normal duel. The list
-ships empty in robot 3.8; names go on it only after BENCH-11's paired probe (`--shield-probe`) shows
-shield mode wins against them. It ships as a class, `hadur2.ShieldListData`, because Robocode's
+ships in robot 3.8 with 14 names, chosen from BENCH-11's paired probe (`--shield-probe`,
+[d5-probe.md](bench/d5-probe.md), gate in [d5-gate.md](bench/d5-gate.md)): the 8 it shows shield mode
+winning against and 6 more with a mean gain of 9 points or more. It ships as a class, `hadur2.ShieldListData`, because Robocode's
 sandbox kills a robot that reads a resource of its own jar. Requirements are in the D5 subsection of
 `docs/requirements.md`.
+
+- **Gate** ([d5-gate.md](bench/d5-gate.md)): 46 panel robots, 3 seeds of 35 rounds, shield mode on against off, paired: weighted mean **+2.9 ± 2.7** points over the panel (stratified APS 86.8 against 83.9). Eight robots win; the list takes those and six more at +9 or better, and leaves off the seven it loses against (Hubris, TimCat, RSK1, ThroxBot, Grofvuil, sample.Fire, OscillatorL). D6 is not built: it stays a research item.
 
 ## What comes next
 
