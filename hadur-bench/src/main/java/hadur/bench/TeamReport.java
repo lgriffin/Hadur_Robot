@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.function.ToDoubleFunction;
 import java.util.stream.Stream;
 
 /**
@@ -33,6 +34,9 @@ public final class TeamReport {
         public final long[] team = new long[6];
         /** The engine's count of our bullets that hit one of our own members (T1); -1 in older rounds.csv. */
         public int bulletsOnMates;
+        /** Sum of the rounds' focus-fire ratios and how many rounds carried one (BENCH-42); none in older rounds.csv. */
+        public double focusSum;
+        public int focusRounds;
         /**
          * Ticks the members ran in duress, summed over their {@code R} records (field 33), and
          * how many R records carried the field; none when the members' logs are from before it.
@@ -49,6 +53,11 @@ public final class TeamReport {
         /** Files of a duel or melee shelf: a team battle writes neither (SHELF-2). */
         long strayShelves() {
             return dataFiles.stream().filter(f -> f.endsWith(".hp") || f.endsWith(".hm") || f.endsWith("battles.hc")).count();
+        }
+
+        /** Mean share of our bullet damage that landed on the round's most-hit enemy; NaN with no such round. */
+        double focusFire() {
+            return focusRounds == 0 ? Double.NaN : focusSum / focusRounds;
         }
 
         String summary() {
@@ -95,6 +104,10 @@ public final class TeamReport {
             b.countBelowTruth += Integer.parseInt(f[6]);
             b.countReports += Integer.parseInt(f[7]);
             if (f.length > 8) b.bulletsOnMates += Integer.parseInt(f[8]);
+            if (f.length > 9 && !f[9].equals("-")) {
+                b.focusSum += Double.parseDouble(f[9]);
+                b.focusRounds++;
+            }
         }
         try (Stream<Path> logs = Files.list(dir)) {
             for (Path log : (Iterable<Path>) logs::iterator) {
@@ -201,11 +214,36 @@ public final class TeamReport {
             + "teammate collisions %d, shots held for the fire lane %d, reports merged %d, drives fenced %d.%n"
             + "Engine's count of our bullets that hit one of our own members: %d.%n",
             all.team[0], all.team[1], all.team[2], all.team[3], all.team[4], all.team[5], all.bulletsOnMates));
+        appendFocusFire(r, results);
         if (failed > 0) r.append(String.format(Locale.ROOT, "%n**%d battle(s) failed**; see their engine.log.%n", failed));
         List<String> files = new ArrayList<>();
         for (List<Battle> list : results.values()) for (Battle b : list) for (String f : b.dataFiles) if (!files.contains(f)) files.add(f);
         r.append("\nData files written (any battle): ").append(files.isEmpty() ? "none" : String.join(", ", files)).append("\n");
         return r.toString();
+    }
+
+    /**
+     * BENCH-42: per opponent team, the mean over rounds of the share of our bullet damage that
+     * landed on the round's most-hit enemy (a higher share is more focused fire). Nothing is
+     * written when no battle carried the column.
+     */
+    private static void appendFocusFire(StringBuilder r, Map<Opponent, List<Battle>> results) {
+        Battle all = new Battle();
+        StringBuilder rows = new StringBuilder();
+        for (Map.Entry<Opponent, List<Battle>> e : results.entrySet()) {
+            Battle sum = new Battle();
+            for (Battle b : e.getValue()) if (b.ok) add(sum, b);
+            add(all, sum);
+            if (sum.focusRounds > 0) {
+                rows.append(String.format(Locale.ROOT, "| %s | %d | %s |%n", e.getKey().name, sum.focusRounds,
+                    pct(sum.focusFire())));
+            }
+        }
+        if (all.focusRounds == 0) return;
+        r.append(String.format(Locale.ROOT, "%nFocus fire: per round, the share of our bullet damage that landed on "
+            + "the most-hit enemy (rounds where we did damage; ramming is not counted).%n%n"
+            + "| Opponent team | Rounds | Focus fire |%n|---|---|---|%n%s| **All** | %d | %s |%n", rows,
+            all.focusRounds, pct(all.focusFire())));
     }
 
     /** The skipped-turns and (when carried) duress tallies over the battles that completed. */
@@ -234,6 +272,41 @@ public final class TeamReport {
             b.add(baseline.get(i).share());
         }
         return Stats.pairedDiff(c, b);
+    }
+
+    private static int used(List<Battle> battles) {
+        return (int) battles.stream().filter(b -> b.ok).count();
+    }
+
+    private static int pairs(List<Battle> candidate, List<Battle> baseline) {
+        int n = 0;
+        for (int i = 0; i < Math.min(candidate.size(), baseline.size()); i++) {
+            if (candidate.get(i).ok && baseline.get(i).ok) n++;
+        }
+        return n;
+    }
+
+    /** One BENCH-41 row: {@code f} per battle, kept only where both builds' battles of the seed are ok and have a value. */
+    private static void measureRow(StringBuilder r, String name, List<Battle> candidate, List<Battle> baseline,
+                                   ToDoubleFunction<Battle> f, boolean share) {
+        List<Double> c = new ArrayList<>(), b = new ArrayList<>();
+        for (int i = 0; i < Math.min(candidate.size(), baseline.size()); i++) {
+            if (!candidate.get(i).ok || !baseline.get(i).ok) continue;
+            double x = f.applyAsDouble(candidate.get(i)), y = f.applyAsDouble(baseline.get(i));
+            if (Double.isNaN(x) || Double.isNaN(y)) continue;
+            c.add(x);
+            b.add(y);
+        }
+        double scale = share ? 100 : 1;
+        r.append(String.format(Locale.ROOT, "| %s | %s | %s | %s |%n", name, meanText(Stats.of(c), scale, share),
+            meanText(Stats.of(b), scale, share), Report.signedDiff(Stats.pairedDiff(c, b), scale)));
+    }
+
+    private static String meanText(Stats s, double scale, boolean share) {
+        if (s.n == 0) return "n/a";
+        if (share) return s.percent();
+        return String.format(Locale.ROOT, "%.2f", s.mean * scale)
+            + (Double.isNaN(s.halfWidth) ? "" : String.format(Locale.ROOT, " \u00b1 %.2f", s.halfWidth * scale));
     }
 
     private static Stats shares(List<Battle> battles) {
@@ -268,6 +341,28 @@ public final class TeamReport {
         }
         r.append(String.format(Locale.ROOT, "| **All** | %s | %s | %s |%n", shares(allCand).percent(),
             shares(allBase).percent(), Report.signedDiff(pairedDiff(allCand, allBase), 100)));
+        r.append("\nBattles used per opponent (a failed battle drops its seed from the pairing):\n\n"
+            + "| Opponent team | Candidate | Baseline | Paired seeds |\n|---|---|---|---|\n");
+        boolean uneven = false;
+        for (Map.Entry<Opponent, List<Battle>> e : candidate.entrySet()) {
+            List<Battle> base = baseline.getOrDefault(e.getKey(), List.of());
+            int c = used(e.getValue()), b = used(base), pairs = pairs(e.getValue(), base);
+            uneven |= c != b || pairs != c;
+            r.append(String.format(Locale.ROOT, "| %s | %d of %d | %d of %d | %d |%n", e.getKey().name, c,
+                e.getValue().size(), b, base.size(), pairs));
+        }
+        if (uneven) r.append("\n**Uneven: at least one opponent has fewer paired seeds than battles run.**\n");
+        r.append("\nPooled over every opponent's pairs, the other measures (mean \u00b1 95% interval, candidate "
+            + "minus baseline; shares in points, counts per battle):\n\n"
+            + "| Measure | Candidate | Baseline | Paired diff |\n|---|---|---|---|\n");
+        measureRow(r, "Rounds won", allCand, allBase,
+            b -> b.rounds == 0 ? Double.NaN : (double) b.roundsWon / b.rounds, true);
+        measureRow(r, "Survival", allCand, allBase,
+            b -> b.rounds == 0 ? Double.NaN : (double) b.roundsSurvived / b.rounds, true);
+        measureRow(r, "In-lane shots", allCand, allBase,
+            b -> b.shots == 0 ? Double.NaN : (double) b.shotsInLane / b.shots, true);
+        measureRow(r, "Focus fire", allCand, allBase, Battle::focusFire, true);
+        measureRow(r, "Bullets on own members", allCand, allBase, b -> b.bulletsOnMates, false);
         return r.toString();
     }
 
@@ -313,6 +408,12 @@ public final class TeamReport {
             }
             r.append('\n');
         }
+        if (paired) {
+            int c = used(candidate), b = used(baseline), pairs = pairs(candidate, baseline);
+            r.append(String.format(Locale.ROOT, "\nBattles used: candidate %d of %d, baseline %d of %d, %d paired "
+                + "seeds.%s%n", c, candidate.size(), b, baseline.size(), pairs,
+                c != b || pairs != c ? " **Uneven: a failed battle dropped its seed from the pairing.**" : ""));
+        }
         r.append("\nMean score share ").append(shares(candidate).percent());
         if (paired) {
             r.append(", baseline ").append(shares(baseline).percent()).append(", paired diff ")
@@ -322,6 +423,10 @@ public final class TeamReport {
 
         Battle sum = new Battle();
         for (Battle b : candidate) if (b.ok) add(sum, b);
+        if (sum.focusRounds > 0) {
+            r.append("Focus fire (share of our bullet damage on the round's most-hit enemy, mean over ")
+             .append(sum.focusRounds).append(" rounds): ").append(pct(sum.focusFire())).append(".\n\n");
+        }
         r.append("## Team records (T), summed over the seeds\n\n")
          .append("- Teammate hits: ").append(sum.team[0]).append("\n")
          .append("- Teammate bullet hits: ").append(sum.team[1]).append("\n")
@@ -367,6 +472,8 @@ public final class TeamReport {
         to.skipped += b.skipped;
         to.linkRejects += b.linkRejects;
         to.bulletsOnMates += b.bulletsOnMates;
+        to.focusSum += b.focusSum;
+        to.focusRounds += b.focusRounds;
         to.duressTicks += b.duressTicks;
         to.duressRecords += b.duressRecords;
         for (int i = 0; i < to.team.length; i++) to.team[i] += b.team[i];
