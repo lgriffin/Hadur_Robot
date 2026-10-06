@@ -105,3 +105,11 @@ Feature: The DrussGT route
     When for 3 enemy waves of power 0.5 Hadur's 0.1 bullets hit 0 in 1 and the enemy's all miss
     And Hadur scans the enemy for 2 ticks with a cool gun on target
     Then the lead-aware regime is on
+
+  @POW-8
+  Scenario: Behind by more than 3 with 10 energy or less: the minimum power, even inside 325 px
+    Given a duel at 300 px in which Hadur has 8 energy and the enemy 85
+    When for 60 enemy waves of power 0.5 Hadur's 0.1 bullets hit 0 in 1 and the enemy's all miss
+    And Hadur scans the enemy for 2 ticks with a cool gun on target
+    Then the lead-aware regime is on
+    And the shot fired went out at power 0.1

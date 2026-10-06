@@ -62,10 +62,10 @@ Feature: Unhittable
     When the engine skips a turn
     And the engine skips a turn
     And the engine skips a turn
-    And Hadur plays 299 ticks with a cool gun
-    Then 299 ticks of the round ran in duress
+    And Hadur plays 298 ticks with a cool gun
+    Then 298 ticks of the round ran in duress
     When Hadur plays 20 ticks with a cool gun
-    Then 299 ticks of the round ran in duress
+    Then 298 ticks of the round ran in duress
 
   @RES-14
   Scenario: A skipped turn after duress has ended starts it again
@@ -74,10 +74,10 @@ Feature: Unhittable
     And the engine skips a turn
     And the engine skips a turn
     And Hadur plays 300 ticks with a cool gun
-    Then 299 ticks of the round ran in duress
+    Then 298 ticks of the round ran in duress
     When the engine skips a turn
     And Hadur plays 10 ticks with a cool gun
-    Then 309 ticks of the round ran in duress
+    Then 308 ticks of the round ran in duress
 
   @MOVE-2 @DIAL-1
   Scenario: A gun hitting well above its profile's rate changes the movement's flavour

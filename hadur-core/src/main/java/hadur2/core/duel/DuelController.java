@@ -331,6 +331,23 @@ public final class DuelController {
         radarLock = Double.NaN;
     }
 
+    /**
+     * RES-14: duress has ended. The waves of both managers, and the per-wave state that goes
+     * with them (the gun's virtual bullets, the surf's wave and our bullets' shadows), are from
+     * before an interval that went unobserved: processed on the next scan they would be
+     * judged against it. They are discarded, and the duel's view of the enemy starts afresh;
+     * what the battle learned (the gun's and surf's trees, the ratings, the battle's hit rates)
+     * stays.
+     */
+    public void resumeAfterDuress() {
+        gunWaveManager.initRound();
+        gunController.discardPendingVirtualBullets();
+        moveController.discardWaves();
+        surfMover.initRound();
+        aimCarriesJitter = false;
+        resetTracking();
+    }
+
     /** A tick begins: a lock asked for on a tick that never finished is dropped. */
     public void beginTick() {
         radarLock = Double.NaN;
@@ -722,6 +739,10 @@ public final class DuelController {
         // A dead robot's bullet: it explains none of the survivor's energy (MMEM-2).
         if (enemiesTotal >= 2 && driving && shooterDead) return;
         ledger.enemyBulletHitUs(e.power());
+        // POW-11: the hit is certain from the event itself, whether or not a wave carried it
+        // or later breaks with an outcome; counted here once (checkDistance skips hits), and only
+        // while the Duel drives, as checkDistance's counts were.
+        if (driving) countTheirs(e.power(), true);
         // The firing wave of this robot and power whose front is closest to the bullet.
         Point2D.Double bulletLoc = new Point2D.Double(e.x(), e.y());
         Wave hitWave = moveController.findBulletWave(bulletLoc, in.time(), e.name(), e.power());
@@ -1173,7 +1194,10 @@ public final class DuelController {
         java.util.List<Double> outcomePowers = moveController.takeBrokenWavePowers();
         for (int i = 0; i < outcomes.size(); i++) {
             boolean hit = outcomes.get(i);
-            countTheirs(outcomePowers.get(i), hit);
+            // POW-11: a hit was counted when its HitByBullet event arrived (hitByBullet), so
+            // that one whose wave never yielded a precise intersection counts too; only the
+            // misses are counted here, once, as their waves break.
+            if (!hit) countTheirs(outcomePowers.get(i), false);
             theirWindow.record(hit);
             MoveFlavour.Step added = flavour.onWave(hit);
             if (added != null) changeFlavour(in, added);
@@ -1277,6 +1301,9 @@ public final class DuelController {
         // In 1.20, setFireBullet heated the gun at once (the engine's proxy adds the new
         // shot's heat to getGunHeat()), so the aim below saw the hot gun.
         double gunHeat = in.gunHeat();
+        // The power this tick's wave was made for: the next aim's, whatever the shot below went
+        // out at (a fired wave takes the fired power on, POW-10).
+        double wavePower = lastGunWave.bulletPower();
         if (fireIfGunTurned(in, orders, aimedBulletPower, myNext, virtualGuns, mayFire)) {
             // The power the engine will actually fire: clamped to [0.1, 3.0] and to our
             // energy, as Robocode clamps it. Its heat is 1 + power / 5.
@@ -1289,7 +1316,7 @@ public final class DuelController {
             if (aimCarriesJitter) aimJitter.shotFired();
         }
 
-        aimedBulletPower = lastGunWave.bulletPower();
+        aimedBulletPower = wavePower;
         double aimAngle;
         // Head-on at a disabled enemy (it cannot move, so head-on is exact), and while the gun
         // is more than 3 ticks from cool, when no shot can use the real aim: the KNN search is
@@ -1369,6 +1396,12 @@ public final class DuelController {
             orders.fire(firePower);
             lastFiredPower = firePower;
             lastGunWave.firingWave = true;
+            // POW-10: the wave carries the power really fired, so the virtual guns' bullets
+            // and the learning use its speed and arrival, not the aimed power's.
+            if (firePower != lastGunWave.bulletPower()) {
+                lastGunWave.setBulletPower(firePower);
+                lastGunWave.setWallDistances();
+            }
             // TIME-1: at the lowest computation level the virtual guns are not scored.
             if (virtualGuns) gunController.fireVirtualBullets(lastGunWave, myNext, in.time());
             lastRealBulletFireTime = in.time();

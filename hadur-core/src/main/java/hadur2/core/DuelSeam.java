@@ -122,6 +122,11 @@ final class DuelSeam implements Role {
         duel.resetTracking();
     }
 
+    /** RES-14: duress ended; the Duel drops its pre-duress waves and starts its view afresh. */
+    void afterDuress() {
+        duel.resumeAfterDuress();
+    }
+
     /** The Duel is the floor: it never hands over. */
     @Override
     public Baton give(Tick tick) {

@@ -25,7 +25,7 @@ class TickBudgetProperties {
         for (int gap : gaps) {
             now += gap;
             b.tickBegan(now);
-            b.skippedTurn();
+            b.skippedTurn(now);
             lastSkip = now;
         }
         now += wait;
@@ -42,7 +42,7 @@ class TickBudgetProperties {
         b.newRound();
         for (int i = 0; i < skips; i++) {
             b.tickBegan(i);
-            b.skippedTurn();
+            b.skippedTurn(i);
         }
         b.newRound();
         b.tickBegan(0);

@@ -69,9 +69,9 @@ class LeadAwarePowerTest {
     void defaultWhenFurtherBehind() {
         assertEquals(PowerPolicy.Lead.DEFAULT, PowerPolicy.lead(true, 46.9, 50));
         assertEquals(PowerPolicy.Lead.DEFAULT, PowerPolicy.lead(true, 10.1, 40));
-        assertEquals(PowerPolicy.Lead.OFF, PowerPolicy.lead(true, 10, 40),
-            "10 energy is not more than 10: no rule, 1.20's power-down, which already fires the minimum");
-        assertEquals(PowerPolicy.Lead.OFF, PowerPolicy.lead(true, 3, 40));
+        assertEquals(PowerPolicy.Lead.CHAFF, PowerPolicy.lead(true, 10, 40),
+            "10 energy is not more than 10: the minimum power, not 1.20's power-down (325 px only)");
+        assertEquals(PowerPolicy.Lead.CHAFF, PowerPolicy.lead(true, 3, 40));
     }
 
     @Test

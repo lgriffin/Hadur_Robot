@@ -22,7 +22,7 @@ package hadur2.core.policy;
  * for this client, so from then on {@link #tickTook} ignores the passed-in allowance and
  * uses the tick that caused the skip as the real one, for the rest of the battle (not just
  * the round, so it survives {@link #newRound}). A {@code SkippedTurn} event goes to
- * {@link #skippedTurn()}. The core then reads {@link #level()} and asks the static methods
+ * {@link #skippedTurn(long)}. The core then reads {@link #level()} and asks the static methods
  * what that level allows.</p>
  *
  * <p>{@link #maxLevel()} and {@link #slowTicks()} are this round's degradation counters,
@@ -122,16 +122,19 @@ public final class TickBudget {
      * the turn for (a round-end checkpoint's write, a GC pause), so a skip can arrive
      * right after a measured tick that had nothing to do with it; without the floor, that
      * unrelated short measurement would become a battle-long allowance and shed far more
-     * computation than the client actually needs to.
+     * computation than the client actually needs to. RES-14: the quiet stretch counts from
+     * the tick the engine skipped, not the tick this event is processed on, which can be later.
+     *
+     * @param skippedTime the tick the engine skipped, as the event carries it
      */
-    public void skippedTurn() {
+    public void skippedTurn(long skippedTime) {
         if (learnedAllowanceNanos <= 0 && lastUsedNanos > 0
                 && (guessedAllowanceNanos < 0 || lastUsedNanos >= MIN_LEARNED_SHARE * guessedAllowanceNanos)) {
             learnedAllowanceNanos = lastUsedNanos;
         }
         roundLevel = Math.min(MAX_LEVEL, roundLevel + 1);
         skipsThisRound++;
-        lastSkip = now;
+        lastSkip = Math.max(lastSkip, skippedTime);
         maxLevel = Math.max(maxLevel, level());
     }
 

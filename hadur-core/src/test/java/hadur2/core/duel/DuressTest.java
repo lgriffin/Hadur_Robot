@@ -35,10 +35,10 @@ class DuressTest {
     void budgetThirdSkip() {
         TickBudget b = new TickBudget();
         b.newRound();
-        b.skippedTurn();
-        b.skippedTurn();
+        b.skippedTurn(0);
+        b.skippedTurn(0);
         assertFalse(b.duress());
-        b.skippedTurn();
+        b.skippedTurn(0);
         assertTrue(b.duress());
         b.newRound();
         assertFalse(b.duress());
@@ -50,11 +50,11 @@ class DuressTest {
         TickBudget b = new TickBudget();
         b.newRound();
         b.tickBegan(10);
-        b.skippedTurn();
+        b.skippedTurn(10);
         b.tickBegan(20);
-        b.skippedTurn();
+        b.skippedTurn(20);
         b.tickBegan(142);
-        b.skippedTurn();
+        b.skippedTurn(142);
         assertTrue(b.duress(), "the third skip of the round");
         b.tickBegan(142 + 299);
         assertTrue(b.duress(), "299 ticks after the last skip");
@@ -71,7 +71,7 @@ class DuressTest {
         b.newRound();
         for (long t : new long[] {8, 34, 142}) {
             b.tickBegan(t);
-            b.skippedTurn();
+            b.skippedTurn(t);
         }
         b.tickBegan(400);
         assertTrue(b.duress(), "tick 400 is past 300 from the first skip but only 258 from the last");
@@ -86,14 +86,30 @@ class DuressTest {
         b.newRound();
         for (long t : new long[] {5, 6, 7}) {
             b.tickBegan(t);
-            b.skippedTurn();
+            b.skippedTurn(t);
         }
         b.tickBegan(400);
         assertFalse(b.duress());
-        b.skippedTurn();
+        b.skippedTurn(400);
         assertTrue(b.duress(), "a fourth skip, no new triple needed");
         b.tickBegan(700);
         assertFalse(b.duress());
+    }
+
+    @Test
+    @DisplayName("RES-14: a skip delivered late counts from the tick the engine skipped, not the tick it arrives on")
+    void budgetQuietCountsFromTheSkippedTickOfALateEvent() {
+        TickBudget b = new TickBudget();
+        b.newRound();
+        b.tickBegan(100);
+        b.skippedTurn(100);
+        b.skippedTurn(101);
+        b.tickBegan(250);
+        b.skippedTurn(102); // delivered 148 ticks after the tick it names
+        b.tickBegan(401);
+        assertTrue(b.duress(), "299 ticks after tick 102");
+        b.tickBegan(402);
+        assertFalse(b.duress(), "300 ticks after tick 102, though only 152 after the delivery");
     }
 
     @Test
@@ -102,9 +118,9 @@ class DuressTest {
         TickBudget b = new TickBudget();
         b.newRound();
         b.tickBegan(30);
-        b.skippedTurn();
+        b.skippedTurn(30);
         b.tickBegan(31);
-        b.skippedTurn();
+        b.skippedTurn(31);
         assertFalse(b.duress());
     }
 

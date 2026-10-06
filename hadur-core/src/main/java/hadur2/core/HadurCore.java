@@ -402,8 +402,8 @@ public final class HadurCore {
         budget.tickBegan(in.time());
         boolean inDuress = !melee && duel.canFightInDuress() && budget.duress();
         // RES-14: what the Duel knew before duress is stale once duress ends (the ledger has
-        // missed every drop, the logs every state), so it starts its view of the enemy afresh.
-        if (wasInDuress && !inDuress && !melee) duelSeam.reset();
+        // missed every drop, the logs every state), so it starts its view of the enemy afresh and drops the waves from before it.
+        if (wasInDuress && !inDuress && !melee) duelSeam.afterDuress();
         wasInDuress = inDuress;
         Tick tick = new Tick(in, melee ? RoleId.MELEE : RoleId.DUEL, focusing, focus, gate::isSentry,
             inDuress);
@@ -493,7 +493,7 @@ public final class HadurCore {
         } else if (e instanceof BotEvent.RobotDeath) {
             robotDied(((BotEvent.RobotDeath) e).name());
         } else if (e instanceof BotEvent.SkippedTurn) {
-            onSkippedTurn(tick.in());
+            onSkippedTurn(tick.in(), ((BotEvent.SkippedTurn) e).skippedTime());
             return;
         } else if (e instanceof BotEvent.TickTime) {
             onTickTime((BotEvent.TickTime) e);
@@ -571,7 +571,7 @@ public final class HadurCore {
         else if (e instanceof BotEvent.BulletHit) stats.shotsHit++;
         else if (e instanceof BotEvent.HitByBullet) stats.hitsTaken++;
         else if (e instanceof BotEvent.BulletHitBullet) stats.bulletsIntercepted++;
-        else if (e instanceof BotEvent.SkippedTurn) onSkippedTurn(tick.in());
+        else if (e instanceof BotEvent.SkippedTurn) onSkippedTurn(tick.in(), ((BotEvent.SkippedTurn) e).skippedTime());
         else if (e instanceof BotEvent.TickTime) onTickTime((BotEvent.TickTime) e);
         else if (e instanceof BotEvent.RobotDeath) {
             robotDied(((BotEvent.RobotDeath) e).name());
@@ -1069,10 +1069,10 @@ public final class HadurCore {
     }
 
     /** TIME-2: the engine skipped one of our turns because a tick ran over its time. */
-    private void onSkippedTurn(BotInput in) {
+    private void onSkippedTurn(BotInput in, long skippedTime) {
         stats.skippedTurns++;
         // TIME-2: one level down for the rest of the round.
-        budget.skippedTurn();
+        budget.skippedTurn(skippedTime);
         stats.computationLevel = budget.maxLevel();
         emitBudget();
         telemetry.emit("WARNING: Turn skipped at " + in.time());

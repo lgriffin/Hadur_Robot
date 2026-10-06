@@ -233,7 +233,9 @@ public final class PowerPolicy {
      * comes first (both energies above {@link #OPENING_ENERGY}: the default), then POW-7 (no
      * more than {@link #LEAD_MARGIN} behind: chaff), then POW-8 (further behind with more than
      * {@link #LEAD_MIN_ENERGY}: the default). Further behind with that much or less, no rule
-     * applies and 1.20's power-down stands, which at that energy already fires the minimum.
+     * raises the stakes: the minimum power is fired. 1.20's power-down is not relied on for
+     * that, as it only applies beyond 325 px and a nearly dead robot closer in would
+     * otherwise fire 1.95 or 2.95 and spend almost all it has left.
      *
      * @param applies whether the regime is in force ({@link #applies})
      * @param ourEnergy our energy
@@ -244,7 +246,7 @@ public final class PowerPolicy {
         if (!applies) return Lead.OFF;
         if (ourEnergy > OPENING_ENERGY && enemyEnergy > OPENING_ENERGY) return Lead.DEFAULT;
         if (ourEnergy - enemyEnergy >= -LEAD_MARGIN) return Lead.CHAFF;
-        return ourEnergy > LEAD_MIN_ENERGY ? Lead.DEFAULT : Lead.OFF;
+        return ourEnergy > LEAD_MIN_ENERGY ? Lead.DEFAULT : Lead.CHAFF;
     }
 
     private static boolean below(Estimate e) {
