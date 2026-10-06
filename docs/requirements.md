@@ -982,6 +982,31 @@ strand, in the `shieldmode` package, and applies to a 1v1 battle only.
   did (rounds, shield shots, bullets met, hits taken, early exits, budget exits), the weighted mean
   difference over the file's weights (BENCH-1) and the opponents that win, as list lines.
 
+### D7: the route's scope (release 3.8.5)
+
+Live, 3.8 gained on the top 10 and lost about 1.5 points a pairing on the field below the top
+20, with no bench condition yet reproducing the loss ([leak-38-plan.md](leak-38-plan.md), Track
+B). The route's parts that act on every duel are scoped to the duels it was built for: those
+whose guns out-hit Hadur's or match them.
+
+| ID | Pattern | Requirement | Stage |
+|---|---|---|---|
+| MATCH-1 | State | While both robots have resolved at least 30 duel bullets this battle and our battle-long hit rate's lower bound is above the enemy's upper bound, the core shall treat the duel as won on the guns, until our lower bound falls to the enemy's raw rate. | D7 |
+| MATCH-2 | State | While the duel is won on the guns (MATCH-1), the gun shall not weigh our bullets' shadows (GUN-7), and a bullet destroyed by a still enemy's shall not make it a shielder by itself (SHIELD-3). | D7 |
+
+#### D7 notes
+
+- **MATCH-1** is `policy.Matchup`, read by `DuelController.updateMatchup` at the top of each
+  driven tick from POW-11's battle-long rates, and marked by a `P,...,match,...` record
+  (`match_won` or `match_open`) on each change. Against the top 10 our gun hits 5% to 8% and
+  theirs 9% to 14% on the local bench, so they never read as won. Unknown rates (fewer than 30
+  bullets on either side) read as open, so the first round plays as 3.8 did.
+- **MATCH-2** passes `shadowAim && !matchWon` to the aim and `still && !matchWon` to SHIELD-3's
+  latch. D1's POW-7 and D3's GUN-5 are left as they are: POW-7 already needs both guns below
+  break-even, and GUN-5's light class only fires under POW-7. SHIELD-1's four in twenty, D5's
+  shield list and SHIELD-4 on a latched shielder are unchanged. `RoundStats.shadowAims` counts
+  the aims that weighed shadows; it is not in the round record.
+
 ## The Team plan (T1)
 
 [team-plan-t1.md](team-plan-t1.md) answers the A5 baseline's teammate collisions and friendly fire

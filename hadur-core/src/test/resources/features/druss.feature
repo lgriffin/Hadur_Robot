@@ -285,3 +285,51 @@ Feature: The DrussGT route
     And a plan interval on that bullet with a 0.2 chance of a hit
     And our bullets in flight already stop all of that interval
     Then no bullet saves anything more
+
+  # D7: the route's scope (docs/leak-38-plan.md). The DrussGT route is for the duels whose
+  # guns out-hit Hadur; once this battle's guns favour Hadur it plays as before the route.
+
+  @MATCH-1
+  Scenario: A duel in which Hadur's gun hits far more often than the enemy's reads as won
+    Given a duel in which Hadur has 100 energy and the enemy 100
+    And the battle's guns already favour Hadur, its bullets hitting 30 of 100 and the enemy's 8 of 100
+    When Hadur scans the enemy for 2 ticks with a cool gun on target
+    Then the matchup reads as won
+
+  @MATCH-1
+  Scenario: A duel the enemy's gun matches does not read as won
+    Given a duel in which Hadur has 100 energy and the enemy 100
+    And the battle's guns already favour Hadur, its bullets hitting 9 of 100 and the enemy's 10 of 100
+    When Hadur scans the enemy for 2 ticks with a cool gun on target
+    Then the matchup reads as open
+
+  @MATCH-1
+  Scenario: Too few bullets read as open, however lopsided
+    Given a duel in which Hadur has 100 energy and the enemy 100
+    And the battle's guns already favour Hadur, its bullets hitting 20 of 20 and the enemy's 0 of 20
+    When Hadur scans the enemy for 2 ticks with a cool gun on target
+    Then the matchup reads as open
+
+  @MATCH-2
+  Scenario: In a won duel a bullet met by a still enemy's is not taken for a shield
+    Given a duel in which Hadur has 100 energy and the enemy 100
+    And the battle's guns already favour Hadur, its bullets hitting 30 of 100 and the enemy's 8 of 100
+    When 12 quiet ticks pass so the last waves break
+    And one of Hadur's bullets is destroyed by an enemy bullet
+    And Hadur scans the enemy for 4 ticks with a cool gun on target
+    Then the enemy is not treated as a bullet shielder
+
+  @MATCH-2
+  Scenario: In a won duel the gun aims without weighing shadows
+    Given a duel in which Hadur has 100 energy and the enemy 100
+    And the battle's guns already favour Hadur, its bullets hitting 30 of 100 and the enemy's 8 of 100
+    When for 2 enemy waves Hadur's bullets hit 1 in 2, the enemy's all miss, and the gun is nearly cool
+    Then the matchup reads as won
+    And the last waves were aimed without weighing shadows
+
+  @MATCH-2
+  Scenario: In an open duel the gun still weighs shadows
+    Given a duel in which Hadur has 100 energy and the enemy 100
+    When for 2 enemy waves Hadur's bullets hit 1 in 2, the enemy's all miss, and the gun is nearly cool
+    Then the matchup reads as open
+    And the last waves were aimed weighing shadows

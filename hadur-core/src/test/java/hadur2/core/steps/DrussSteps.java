@@ -147,6 +147,66 @@ public class DrussSteps {
         }
     }
 
+    /**
+     * MATCH-1, MATCH-2: as {@link #exchange}, but the gun is two ticks from cool on every
+     * tick, so each aim is one that may be fired soon (the real aim, which GUN-7 may shift)
+     * and none is fired that would heat it again.
+     */
+    @When("for {int} enemy waves Hadur's bullets hit {int} in {int}, the enemy's all miss, and the gun is nearly cool")
+    public void exchangeCool(int waves, int hits, int every) {
+        for (int wave = 0; wave < waves; wave++) {
+            boolean hit = wave % every < hits;
+            for (int k = 0; k < 16; k++) {
+                List<BotEvent> events = new ArrayList<>();
+                if (k == 0) enemyEnergy -= 2.0;
+                if (k == 8) {
+                    if (hit) {
+                        enemyEnergy -= Rules.getBulletDamage(2.0);
+                        events.add(new BotEvent.BulletHit(ENEMY, 2.0, enemyEnergy));
+                    } else {
+                        events.add(new BotEvent.BulletMissed(2.0));
+                    }
+                }
+                events.add(scan());
+                tick(0.2, events);
+            }
+            // The enemy's energy is topped up so the duel goes on; only the counts matter here.
+            if (enemyEnergy < 40) enemyEnergy = 100;
+        }
+    }
+
+    @Given("the battle's guns already favour Hadur, its bullets hitting {int} of {int} and the enemy's {int} of {int}")
+    public void gunsFavour(int ourHits, int ourShots, int theirHits, int theirShots) {
+        for (int i = 0; i < ourShots; i++) core.ourBattleRates().record(2.0, i < ourHits);
+        for (int i = 0; i < theirShots; i++) core.theirBattleRates().record(2.0, i < theirHits);
+    }
+
+    @Then("the matchup reads as won")
+    public void matchupWon() {
+        assertTrue(core.matchWon(), "matchup open");
+        assertTrue(telemetry.stream().anyMatch(l -> l.contains(",match,") && l.endsWith("match_won")),
+            "no match_won record");
+    }
+
+    @Then("the matchup reads as open")
+    public void matchupOpen() {
+        assertFalse(core.matchWon(), "matchup won");
+    }
+
+    @Then("the last waves were aimed without weighing shadows")
+    public void noShadowAims() {
+        int before = core.stats().shadowAims;
+        exchangeCool(4, 1, 2);
+        assertEquals(before, core.stats().shadowAims, "aims weighed shadows in a won matchup");
+    }
+
+    @Then("the last waves were aimed weighing shadows")
+    public void shadowAims() {
+        int before = core.stats().shadowAims;
+        exchangeCool(4, 1, 2);
+        assertTrue(core.stats().shadowAims > before, "no aim weighed shadows in an open matchup");
+    }
+
     @And("{int} quiet ticks pass so the last waves break")
     public void quiet(int ticks) {
         for (int i = 0; i < ticks; i++) tick(3, List.of(scan()));
