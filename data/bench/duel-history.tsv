@@ -75,6 +75,148 @@ a2-candidate.md	hadur2.Hadur	3.5.1	cold	Bench: hadur2.Hadur 3.5.1 (cold)	15	mz.N
 a2-candidate.md	hadur2.Hadur	3.5.1	cold	Bench: hadur2.Hadur 3.5.1 (cold)	34	abc.Shadow 3.84i	headline	52.2	15.1	65.3	20.6	40.8	9.5	69	105	9.6	0.8	9.1	1.1	19	0	2.19	34.1	
 a2-candidate.md	hadur2.Hadur	3.5.1	cold	Bench: hadur2.Hadur 3.5.1 (cold)	34	voidious.Diamond 1.8.28	headline	29.0	25.3	18.8	34.1	40.8	19.1	23	105	6.6	0.2	9.2	2.3	48	0	3.81	78.4	
 a2-candidate.md	hadur2.Hadur	3.5.1	cold	Bench: hadur2.Hadur 3.5.1 (cold)	34	positive.Portia 1.26e	headline	66.6	10.1	78.1	14.8	54.7	5.3	82	105	10.8	0.5	9.0	3.3	78	0	2.70	240.1	
+d1-gate.md	hadur2.Hadur	3.8	cold	Bench: hadur2.Hadur 3.8 (cold)	2	jk.mega.DrussGT 3.1.16	rumble-2	48.2	2.1	49.0	3.6	47.2	0.9	347	700	7.4	0.2	9.8	0.2	224	0	2.80	119.7	
+d1-gate.md	hadur2.Hadur	3.8	cold	Bench: hadur2.Hadur 3.8 baseline (hadur2.Hadur 3.7) (cold)	9	jk.mega.DrussGT 3.1.16	rumble-2	36.2	3.4	23.1	4.5	50.3	2.1	173	700	7.8	0.2	9.4	0.2	163	0	2.77	100.2	
+d1-gate.md	hadur2.Hadur	3.8	cold	Bench: hadur2.Hadur 3.8 (cold)	15	kc.mega.BeepBoop 2.0	rumble-1	24.7	13.4	10.6	15.5	43.9	14.5	12	105	4.8	1.4	8.2	0.6	31	0	2.83	60.8	
+d1-gate.md	hadur2.Hadur	3.8	cold	Bench: hadur2.Hadur 3.8 (cold)	15	jk.mega.DrussGT 3.1.16	rumble-2	47.7	7.9	49.5	10.8	45.4	7.4	52	105	6.9	1.3	9.4	1.5	55	0	2.56	51.9	
+d1-gate.md	hadur2.Hadur	3.8	cold	Bench: hadur2.Hadur 3.8 (cold)	15	oog.mega.saguaro.Saguaro 1.0	rumble-3	73.0	3.0	84.8	4.1	61.4	4.7	89	105	19.1	1.0	6.6	1.1	8	0	2.54	21.6	
+d1-gate.md	hadur2.Hadur	3.8	cold	Bench: hadur2.Hadur 3.8 (cold)	15	aaa.r.ScalarR 0.005h.053-noshield	rumble-4	35.7	19.1	31.4	28.4	41.3	8.4	33	105	6.5	1.2	10.0	1.3	29	0	2.77	61.0	
+d1-gate.md	hadur2.Hadur	3.8	cold	Bench: hadur2.Hadur 3.8 (cold)	15	voidious.Diamond 1.8.22	rumble-5	44.6	10.7	51.0	21.4	38.1	7.0	54	105	6.1	1.7	8.2	1.0	20	0	2.78	36.0	
+d1-gate.md	hadur2.Hadur	3.8	cold	Bench: hadur2.Hadur 3.8 (cold)	15	cb.fire.Firestarter 2.0f	rumble-6	54.0	6.0	53.3	10.8	54.8	0.8	56	105	8.5	0.4	8.5	1.3	51	0	2.38	141.1	
+d1-gate.md	hadur2.Hadur	3.8	cold	Bench: hadur2.Hadur 3.8 (cold)	15	dsekercioglu.mega.Raven 3.56j8	rumble-7	58.1	13.6	74.3	18.8	41.1	8.8	78	105	9.8	0.5	9.2	0.2	12	0	1.72	61.7	
+d1-gate.md	hadur2.Hadur	3.8	cold	Bench: hadur2.Hadur 3.8 (cold)	15	xander.cat.XanderCat 12.9	rumble-8	53.3	11.7	61.0	17.9	46.2	9.1	64	105	11.9	1.4	8.4	1.4	24	0	1.86	35.4	
+d1-gate.md	hadur2.Hadur	3.8	cold	Bench: hadur2.Hadur 3.8 (cold)	15	lxx.Tomcat 3.68	rumble-9	46.4	7.9	55.2	10.8	38.2	4.4	58	105	8.5	0.6	10.6	0.8	66	0	2.76	116.1	
+d1-gate.md	hadur2.Hadur	3.8	cold	Bench: hadur2.Hadur 3.8 (cold)	15	rsalesc.mega.Knight 0.6.28	rumble-10	57.3	5.5	63.8	8.2	50.2	3.6	67	105	8.7	1.1	9.6	0.4	43	0	3.11	80.5	
+d1-gate.md	hadur2.Hadur	3.8	cold	Bench: hadur2.Hadur 3.8 baseline (hadur2.Hadur 3.7) (cold)	22	kc.mega.BeepBoop 2.0	rumble-1	16.4	12.1	2.9	12.3	35.5	11.4	3	105	5.5	0.7	9.6	0.9	29	0	3.05	119.4	
+d1-gate.md	hadur2.Hadur	3.8	cold	Bench: hadur2.Hadur 3.8 baseline (hadur2.Hadur 3.7) (cold)	22	jk.mega.DrussGT 3.1.16	rumble-2	33.5	8.3	21.6	11.2	47.0	5.7	25	105	7.4	1.4	9.9	0.8	41	0	2.47	64.1	
+d1-gate.md	hadur2.Hadur	3.8	cold	Bench: hadur2.Hadur 3.8 baseline (hadur2.Hadur 3.7) (cold)	22	oog.mega.saguaro.Saguaro 1.0	rumble-3	70.8	12.8	81.9	14.8	59.8	11.2	86	105	19.4	2.7	6.6	1.0	3	0	2.94	33.9	
+d1-gate.md	hadur2.Hadur	3.8	cold	Bench: hadur2.Hadur 3.8 baseline (hadur2.Hadur 3.7) (cold)	22	aaa.r.ScalarR 0.005h.053-noshield	rumble-4	27.4	18.0	13.3	21.7	43.1	12.7	14	105	7.4	1.0	10.2	1.3	36	0	2.76	55.4	
+d1-gate.md	hadur2.Hadur	3.8	cold	Bench: hadur2.Hadur 3.8 baseline (hadur2.Hadur 3.7) (cold)	22	voidious.Diamond 1.8.22	rumble-5	30.5	12.0	18.5	22.1	43.7	3.4	22	105	6.8	0.3	8.5	0.8	35	0	2.65	128.4	
+d1-gate.md	hadur2.Hadur	3.8	cold	Bench: hadur2.Hadur 3.8 baseline (hadur2.Hadur 3.7) (cold)	22	cb.fire.Firestarter 2.0f	rumble-6	32.8	10.6	14.6	14.9	52.0	6.0	17	105	8.9	0.9	8.4	2.1	55	0	2.45	79.5	
+d1-gate.md	hadur2.Hadur	3.8	cold	Bench: hadur2.Hadur 3.8 baseline (hadur2.Hadur 3.7) (cold)	22	dsekercioglu.mega.Raven 3.56j8	rumble-7	63.1	11.0	80.0	14.2	46.1	6.2	84	105	9.2	1.4	8.8	1.4	18	0	1.77	31.9	
+d1-gate.md	hadur2.Hadur	3.8	cold	Bench: hadur2.Hadur 3.8 baseline (hadur2.Hadur 3.7) (cold)	22	xander.cat.XanderCat 12.9	rumble-8	50.5	3.8	55.2	10.8	46.6	5.1	58	105	11.1	0.9	8.6	0.7	15	0	1.82	33.5	
+d1-gate.md	hadur2.Hadur	3.8	cold	Bench: hadur2.Hadur 3.8 baseline (hadur2.Hadur 3.7) (cold)	22	lxx.Tomcat 3.68	rumble-9	57.6	19.2	67.2	23.0	48.5	14.3	71	105	9.0	0.6	9.2	1.4	30	0	2.62	105.2	
+d1-gate.md	hadur2.Hadur	3.8	cold	Bench: hadur2.Hadur 3.8 baseline (hadur2.Hadur 3.7) (cold)	22	rsalesc.mega.Knight 0.6.28	rumble-10	45.7	10.2	38.1	14.8	53.0	6.1	40	105	9.8	0.5	9.4	0.9	47	0	2.96	72.4	
+d1-gate.md	hadur2.Hadur	3.8	cold	Bench: hadur2.Hadur 3.8 (cold)	28	vort.Chaser 0.0.3	rammer	96.3	1.9	100.0	0.0	93.4	3.3	70	70	77.3	0.6	11.5	15.9	4	0	0.82	10.9	
+d1-gate.md	hadur2.Hadur	3.8	cold	Bench: hadur2.Hadur 3.8 (cold)	28	bbo.RamboT 0.3	rammer	97.9	5.0	100.0	0.0	96.4	6.4	70	70	77.2	2.5	9.0	29.9	2	0	0.79	8.9	
+d1-gate.md	hadur2.Hadur	3.8	cold	Bench: hadur2.Hadur 3.8 (cold)	28	PSW.Relentless 0.1	rammer	98.2	7.8	100.0	0.0	97.1	12.6	70	70	72.7	31.8	7.6	1.9	1	0	0.74	6.7	
+d1-gate.md	hadur2.Hadur	3.8	cold	Bench: hadur2.Hadur 3.8 (cold)	28	mahrgell.mahrram 1.3	rammer	78.9	11.3	100.0	0.0	69.3	14.7	70	70	69.3	21.6	38.3	15.2	2	0	0.77	10.9	
+d1-gate.md	hadur2.Hadur	3.8	cold	Bench: hadur2.Hadur 3.8 (cold)	28	sample.RamFire	rammer	99.8	2.1	100.0	0.0	99.8	2.9	70	70	67.5	14.6	1.5	18.4	0	0	0.70	9.7	
+d1-gate.md	hadur2.Hadur	3.8	cold	Bench: hadur2.Hadur 3.8 (cold)	28	stelo.MirrorNano 1.4	mirror	83.7	115.0	94.3	72.6	73.8	157.9	66	70	30.9	75.0	5.6	4.4	2	0	0.81	14.0	
+d1-gate.md	hadur2.Hadur	3.8	cold	Bench: hadur2.Hadur 3.8 (cold)	28	stelo.MirrorMicro 1.1	mirror	91.9	33.0	100.0	0.0	85.0	54.9	70	70	35.9	13.3	6.4	30.5	3	0	0.87	11.5	
+d1-gate.md	hadur2.Hadur	3.8	cold	Bench: hadur2.Hadur 3.8 (cold)	28	zyx.nano.RedBull 1.0	nano	94.2	1.5	100.0	0.0	91.0	1.5	70	70	81.7	1.9	9.1	1.3	1	0	0.68	9.2	
+d1-gate.md	hadur2.Hadur	3.8	cold	Bench: hadur2.Hadur 3.8 (cold)	28	bwbaugh.nano.Tirunculus 0.0.0a	nano	85.5	8.5	100.0	0.0	77.8	14.6	70	70	83.7	5.7	76.5	29.2	0	0	0.76	7.4	
+d1-gate.md	hadur2.Hadur	3.8	cold	Bench: hadur2.Hadur 3.8 (cold)	28	demetrix.nano.SledgeHammer 0.22	nano	69.1	25.3	97.1	36.3	58.5	15.8	68	70	73.6	7.0	54.7	41.9	3	0	0.82	54.1	
+d1-gate.md	hadur2.Hadur	3.8	cold	Bench: hadur2.Hadur 3.8 (cold)	28	mz.NanoDeath 2.56	nano	68.5	18.8	92.9	18.2	59.2	12.6	65	70	70.0	26.7	50.5	54.6	1	0	0.81	12.0	
+d1-gate.md	hadur2.Hadur	3.8	cold	Bench: hadur2.Hadur 3.8 baseline (hadur2.Hadur 3.7) (cold)	35	vort.Chaser 0.0.3	rammer	94.3	11.7	100.0	0.0	90.0	19.0	70	70	79.2	14.0	15.0	14.6	0	0	0.79	14.4	
+d1-gate.md	hadur2.Hadur	3.8	cold	Bench: hadur2.Hadur 3.8 baseline (hadur2.Hadur 3.7) (cold)	35	bbo.RamboT 0.3	rammer	97.8	4.7	100.0	0.0	96.5	7.7	70	70	75.3	22.2	9.5	24.8	2	0	0.73	11.6	
+d1-gate.md	hadur2.Hadur	3.8	cold	Bench: hadur2.Hadur 3.8 baseline (hadur2.Hadur 3.7) (cold)	35	PSW.Relentless 0.1	rammer	98.2	7.8	100.0	0.0	97.1	12.6	70	70	72.7	31.8	7.6	1.9	0	0	0.73	12.3	
+d1-gate.md	hadur2.Hadur	3.8	cold	Bench: hadur2.Hadur 3.8 baseline (hadur2.Hadur 3.7) (cold)	35	mahrgell.mahrram 1.3	rammer	79.4	5.5	100.0	0.0	69.8	8.1	70	70	69.3	21.0	37.4	3.2	0	0	0.78	14.1	
+d1-gate.md	hadur2.Hadur	3.8	cold	Bench: hadur2.Hadur 3.8 baseline (hadur2.Hadur 3.7) (cold)	35	sample.RamFire	rammer	99.8	2.1	100.0	0.0	99.8	2.9	70	70	67.9	20.3	1.5	18.4	3	0	0.71	23.5	
+d1-gate.md	hadur2.Hadur	3.8	cold	Bench: hadur2.Hadur 3.8 baseline (hadur2.Hadur 3.7) (cold)	35	stelo.MirrorNano 1.4	mirror	94.5	5.3	100.0	0.0	89.3	9.6	70	70	36.6	7.0	4.4	5.7	1	0	0.88	12.4	
+d1-gate.md	hadur2.Hadur	3.8	cold	Bench: hadur2.Hadur 3.8 baseline (hadur2.Hadur 3.7) (cold)	35	stelo.MirrorMicro 1.1	mirror	91.9	27.2	100.0	0.0	84.9	46.1	70	70	35.4	9.5	6.8	19.7	2	0	0.87	14.3	
+d1-gate.md	hadur2.Hadur	3.8	cold	Bench: hadur2.Hadur 3.8 baseline (hadur2.Hadur 3.7) (cold)	35	zyx.nano.RedBull 1.0	nano	93.1	0.2	100.0	0.0	90.0	10.3	70	70	82.6	15.2	10.4	0.0	0	0	0.72	16.5	
+d1-gate.md	hadur2.Hadur	3.8	cold	Bench: hadur2.Hadur 3.8 baseline (hadur2.Hadur 3.7) (cold)	35	bwbaugh.nano.Tirunculus 0.0.0a	nano	85.1	4.1	100.0	0.0	77.3	9.1	70	70	82.8	5.1	76.1	34.9	4	0	0.78	10.1	
+d1-gate.md	hadur2.Hadur	3.8	cold	Bench: hadur2.Hadur 3.8 baseline (hadur2.Hadur 3.7) (cold)	35	demetrix.nano.SledgeHammer 0.22	nano	68.4	9.2	95.7	18.2	58.2	5.4	67	70	73.3	6.4	56.2	0.0	3	0	0.78	9.8	
+d1-gate.md	hadur2.Hadur	3.8	cold	Bench: hadur2.Hadur 3.8 baseline (hadur2.Hadur 3.7) (cold)	35	mz.NanoDeath 2.56	nano	67.4	8.4	92.9	18.2	58.0	5.2	65	70	73.7	25.4	54.9	5.1	1	0	0.82	12.9	
+d2-gate-report.md	hadur2.Hadur	3.8.2	cold	Bench: hadur2.Hadur 3.8.2 (cold)	1	jk.mega.DrussGT 3.1.16	rumble-2	47.6	2.7	48.1	4.6	47.1	1.1	339	700	7.2	0.2	10.0	0.4	420	0	2.53	119.9	
+d2-gate-report.md	hadur2.Hadur	3.8.2	cold	Bench: hadur2.Hadur 3.8.2 baseline (hadur2.Hadur 3.8.1) (cold)	9	jk.mega.DrussGT 3.1.16	rumble-2	46.6	2.6	46.6	4.4	46.7	1.0	330	700	7.2	0.2	10.1	0.3	404	0	2.55	141.0	
+d3-gate-report.md	hadur2.Hadur	3.8.3	cold	Bench: hadur2.Hadur 3.8.3 (cold)	1	jk.mega.DrussGT 3.1.16	rumble-2	45.8	2.5	45.4	3.9	46.1	1.3	320	700	7.1	0.2	10.1	0.2	399	0	2.64	209.4	
+d3-gate-report.md	hadur2.Hadur	3.8.3	cold	Bench: hadur2.Hadur 3.8.3 baseline (hadur2.Hadur 3.8.2) (cold)	8	jk.mega.DrussGT 3.1.16	rumble-2	45.3	2.7	44.8	4.3	46.0	1.2	315	700	7.0	0.2	10.0	0.2	464	0	2.70	122.2	
+d4-gate-report.md	hadur2.Hadur	3.8.4	cold	Bench: hadur2.Hadur 3.8.4 (cold)	1	jk.mega.DrussGT 3.1.16	rumble-2	47.3	2.6	47.1	4.2	47.4	1.0	330	700	7.5	0.2	9.9	0.2	616	0	2.79	169.5	
+d4-gate-report.md	hadur2.Hadur	3.8.4	cold	Bench: hadur2.Hadur 3.8.4 baseline (hadur2.Hadur 3.8.3) (cold)	9	jk.mega.DrussGT 3.1.16	rumble-2	46.1	2.5	45.5	4.0	46.8	0.9	321	700	7.2	0.2	10.2	0.2	564	0	2.75	203.3	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on (cold)	1	apv.test.Virus 0.6.1	shield-under-70	88.2	4.1	98.1	4.1	59.7	11.3	103	105	19.8	8.6	3.9	1.2	2	0	0.79	44.2	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on (cold)	1	cf.mini.Chiva 1.0	shield-under-70	86.8	2.4	98.1	4.1	76.8	1.2	103	105	42.3	16.6	7.4	3.3	3	0	0.94	13.3	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on (cold)	1	cx.Princess 1.0	shield-under-70	97.3	6.5	99.0	4.1	55.0	70.6	104	105	0.7	1.1	0.2	0.1	0	0	1.28	15.8	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on (cold)	1	ej.ChocolateBar 1.1	shield-under-70	91.8	11.4	98.1	8.2	57.7	35.7	103	105	7.3	9.8	1.1	0.4	0	0	0.63	53.2	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on (cold)	1	kcn.unnamed.Unnamed 1.21	shield-under-70	95.6	3.4	100.0	0.0	67.9	9.7	105	105	5.1	1.9	0.9	1.1	2	0	0.68	36.7	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on (cold)	1	mue.Hyperion 0.8	shield-under-70	69.7	10.8	84.8	10.8	56.3	10.6	89	105	14.5	1.1	8.7	3.3	9	0	1.23	116.8	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on (cold)	1	ph.musketeer.Musketeer 0.6	shield-under-70	79.0	13.6	91.4	12.3	36.0	18.3	96	105	6.3	3.3	4.1	1.2	4	0	0.73	26.0	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on (cold)	1	simonton.mega.SniperFrog 1.0.fix2	shield-under-70	93.7	6.7	100.0	0.0	69.1	25.0	105	105	12.4	1.6	1.5	1.0	4	0	1.05	15.1	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on (cold)	1	suh.micro.MirrorPM 1.00	shield-under-70	95.1	5.2	98.1	4.1	91.8	6.7	103	105	79.7	56.7	2.9	2.7	2	0	0.71	18.1	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on (cold)	1	vic.Locke 0.7.5.5	shield-under-70	87.6	15.8	96.2	10.8	42.7	4.1	101	105	4.6	2.1	1.3	1.5	2	0	0.78	29.8	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on (cold)	1	amk.ChumbaMini 0.2	shield-70-80	77.8	4.9	95.2	4.1	60.5	5.9	100	105	17.6	1.3	6.7	1.8	6	0	1.10	30.9	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on (cold)	1	bvh.mini.Fenrir 0.39	shield-70-80	77.8	5.4	91.4	7.1	61.2	6.3	96	105	34.1	23.3	5.5	1.9	16	0	0.95	32.5	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on (cold)	1	cx.micro.Smoke 0.96	shield-70-80	84.0	10.1	97.1	7.1	45.9	10.8	102	105	10.2	6.0	2.2	1.6	5	0	0.92	30.6	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on (cold)	1	dft.Virgin 1.25	shield-70-80	95.4	5.3	100.0	0.0	74.9	24.2	105	105	10.3	0.9	1.2	1.6	16	0	0.65	59.3	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on (cold)	1	jam.micro.RaikoMicro 1.44	shield-70-80	90.6	4.1	97.1	0.0	50.9	19.3	102	105	4.2	6.1	1.3	2.0	13	0	0.60	29.9	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on (cold)	1	kid.Gladiator .7.2	shield-70-80	93.8	8.5	97.1	12.3	84.6	11.3	102	105	13.2	5.1	0.8	0.8	21	0	0.66	47.9	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on (cold)	1	nat.Hikari dev0001	shield-70-80	86.7	8.8	98.1	4.1	47.4	6.3	103	105	15.3	9.2	2.9	1.6	11	0	0.71	23.7	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on (cold)	1	pez.gloom.GloomyDark 0.9.2	shield-70-80	85.8	4.7	94.3	7.1	51.8	20.3	99	105	7.4	2.7	1.4	0.7	9	0	0.70	16.7	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on (cold)	1	rsim.mini.BulletCatcher 0.4	shield-70-80	83.9	6.5	97.1	7.1	62.4	3.1	102	105	18.0	5.8	5.9	2.7	8	0	0.90	16.7	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on (cold)	1	stelo.MatchupMini 1.1	shield-70-80	66.4	10.7	81.9	10.8	46.7	23.5	86	105	13.7	3.6	6.5	5.4	12	0	2.56	159.0	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on (cold)	1	theo.Tungsten 1.0a	shield-70-80	81.5	15.6	92.4	14.8	53.2	22.0	97	105	14.0	6.7	2.4	1.4	4	0	0.95	43.7	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on (cold)	1	wcsv.mega.PowerHouse2 0.2	shield-70-80	77.8	13.7	91.4	14.2	49.0	9.6	96	105	20.3	8.6	3.3	1.4	16	0	0.86	25.5	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on (cold)	1	amk.ChumbaWumba 0.3	shield-80-90	88.6	18.4	96.2	10.8	59.8	8.7	101	105	10.4	11.4	1.7	2.5	7	0	0.73	32.8	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on (cold)	1	casey.Flee 1.0	shield-80-90	84.0	15.6	95.2	10.8	47.8	5.4	100	105	12.6	5.6	2.3	1.1	8	0	0.67	18.2	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on (cold)	1	gh.GrubbmGrb 1.2.4	shield-80-90	86.3	25.1	94.3	12.3	68.7	40.0	99	105	19.8	35.4	6.8	17.9	10	0	0.99	48.6	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on (cold)	1	kawigi.mini.Fhqwhgads 1.1	shield-80-90	82.4	14.2	93.3	10.8	49.4	29.8	98	105	11.6	4.2	5.0	0.1	4	0	0.70	90.5	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on (cold)	1	lucasslf.Dodger 1.0	shield-80-90	83.1	7.7	94.3	7.1	39.2	27.1	99	105	8.2	2.9	3.0	1.2	9	0	0.65	76.8	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on (cold)	1	nkn.mini.Jskr0 0.1	shield-80-90	93.5	8.1	99.0	4.1	58.2	14.6	104	105	11.0	4.1	0.9	1.6	6	0	0.61	53.0	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on (cold)	1	pedersen.Hubris 2.4	shield-80-90	74.4	4.8	85.7	7.1	64.4	5.1	90	105	18.2	3.5	9.7	5.3	10	0	1.33	48.7	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on (cold)	1	reaper.Reaper 1.1	shield-80-90	95.9	10.1	99.0	4.1	77.5	24.9	104	105	10.4	7.4	0.8	1.2	5	0	0.75	79.7	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on (cold)	1	shinh.Entangled 0.3	shield-80-90	86.9	2.1	97.1	0.0	60.3	22.6	102	105	13.2	7.8	3.0	2.0	12	0	0.87	22.1	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on (cold)	1	stelo.SteloTestNano 1.0	shield-80-90	88.9	6.4	97.1	0.0	62.9	9.6	102	105	20.8	2.6	2.6	4.8	28	0	0.68	26.1	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on (cold)	1	timmit.nano.TimCat 0.13	shield-80-90	84.3	0.6	95.2	4.1	70.2	5.6	100	105	22.7	9.9	3.7	0.4	27	0	1.12	52.0	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on (cold)	1	wiki.BasicGFSurfer 1.02	shield-80-90	73.9	6.1	88.6	7.1	49.1	8.9	93	105	11.2	4.4	4.4	2.0	4	0	1.03	14.4	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on (cold)	1	bndl.LostLion 1.2	shield-90-95	90.6	8.8	99.0	4.1	72.6	6.5	104	105	20.7	7.4	2.7	2.9	2	0	2.55	55.0	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on (cold)	1	dz.Caedo 1.4	shield-90-95	80.5	15.2	92.4	21.7	58.3	11.3	97	105	18.0	6.2	6.7	2.8	3	0	0.97	66.0	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on (cold)	1	lrem.quickhack.QuickHack 1.0	shield-90-95	89.4	3.9	100.0	0.0	44.5	4.1	105	105	11.2	2.1	4.1	0.2	8	0	0.67	14.0	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on (cold)	1	mz.Adept 2.65	shield-90-95	83.9	3.5	94.3	0.0	57.5	3.8	99	105	32.1	12.3	3.2	1.6	3	0	0.70	35.2	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on (cold)	1	rsk1.RSK1 4.0	shield-90-95	85.2	14.0	95.2	10.8	50.9	20.9	100	105	12.2	10.2	2.5	2.9	1	0	0.86	15.7	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on (cold)	1	throxbot.ThroxBot 0.1	shield-90-95	85.0	2.2	96.2	4.1	69.7	10.5	101	105	26.5	4.8	5.6	4.4	10	0	1.26	33.2	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on (cold)	1	cli.WasteOfAmmo 1.0	shield-95-up	100.0	0.0	100.0	0.0	100.0	0.0	105	105	211.7	29.4	0.0	0.0	4	0	0.65	11.5	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on (cold)	1	gh.nano.Grofvuil 0.2	shield-95-up	94.5	3.1	100.0	0.0	76.2	18.5	105	105	33.2	14.8	1.7	1.1	3	0	0.64	11.3	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on (cold)	1	logiblocs.SittingDroid 1.0	shield-95-up	100.0	0.0	100.0	0.0	100.0	0.0	105	105	80.1	1.1	0.0	0.0	3	0	0.56	33.8	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on (cold)	1	Noran.RandomTargeting 0.02	shield-95-up	99.3	1.3	100.0	0.0	95.2	9.9	105	105	16.0	7.3	0.1	0.2	6	0	0.58	16.8	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on (cold)	1	sample.Fire	shield-95-up	99.2	0.2	100.0	0.0	98.3	0.5	105	105	36.9	12.8	6.4	3.5	4	0	0.57	34.9	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on (cold)	1	suh.nano.OscillatorL 1.00	shield-95-up	83.5	1.8	88.6	0.0	79.0	3.0	93	105	29.0	5.5	6.1	1.0	7	0	1.01	11.9	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on baseline (hadur2.Hadur 3.8-off) (cold)	9	apv.test.Virus 0.6.1	shield-under-70	64.9	11.5	80.0	12.3	49.9	9.0	84	105	10.6	0.5	7.2	1.9	11	0	1.62	31.8	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on baseline (hadur2.Hadur 3.8-off) (cold)	9	cf.mini.Chiva 1.0	shield-under-70	81.7	5.7	95.2	8.2	68.8	3.9	100	105	17.3	3.9	6.8	0.9	6	0	1.11	12.3	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on baseline (hadur2.Hadur 3.8-off) (cold)	9	cx.Princess 1.0	shield-under-70	98.8	1.5	100.0	0.0	79.8	22.2	105	105	0.9	0.2	0.3	0.4	0	0	1.13	11.4	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on baseline (hadur2.Hadur 3.8-off) (cold)	9	ej.ChocolateBar 1.1	shield-under-70	72.6	13.8	88.6	14.2	56.0	14.9	93	105	11.7	1.9	6.2	1.8	12	0	1.28	19.5	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on baseline (hadur2.Hadur 3.8-off) (cold)	9	kcn.unnamed.Unnamed 1.21	shield-under-70	79.3	5.9	95.2	4.1	60.4	4.5	100	105	10.8	3.2	5.1	1.1	16	0	1.29	64.5	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on baseline (hadur2.Hadur 3.8-off) (cold)	9	mue.Hyperion 0.8	shield-under-70	68.8	2.6	80.0	7.1	59.1	2.1	84	105	15.0	2.4	9.0	1.3	8	0	1.27	14.0	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on baseline (hadur2.Hadur 3.8-off) (cold)	9	ph.musketeer.Musketeer 0.6	shield-under-70	67.4	8.7	82.9	7.1	52.3	9.9	87	105	11.9	1.8	7.2	1.3	12	0	1.30	20.6	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on baseline (hadur2.Hadur 3.8-off) (cold)	9	simonton.mega.SniperFrog 1.0.fix2	shield-under-70	71.8	14.5	83.8	14.8	60.4	15.5	88	105	14.6	3.7	7.4	0.7	11	0	1.55	16.6	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on baseline (hadur2.Hadur 3.8-off) (cold)	9	suh.micro.MirrorPM 1.00	shield-under-70	70.1	85.5	77.1	98.4	64.8	75.3	81	105	32.0	26.7	12.9	6.6	3	0	1.09	10.5	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on baseline (hadur2.Hadur 3.8-off) (cold)	9	vic.Locke 0.7.5.5	shield-under-70	62.5	11.8	77.1	12.3	48.3	9.1	81	105	11.2	2.9	7.5	1.0	20	0	1.55	46.9	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on baseline (hadur2.Hadur 3.8-off) (cold)	9	amk.ChumbaMini 0.2	shield-70-80	80.0	8.1	95.2	4.1	64.2	12.6	100	105	16.7	5.9	6.1	0.8	12	0	1.11	17.8	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on baseline (hadur2.Hadur 3.8-off) (cold)	9	bvh.mini.Fenrir 0.39	shield-70-80	78.1	8.2	89.5	10.8	68.3	7.7	94	105	18.8	3.4	8.0	2.4	11	0	1.11	38.3	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on baseline (hadur2.Hadur 3.8-off) (cold)	9	cx.micro.Smoke 0.96	shield-70-80	70.4	14.4	86.7	17.9	53.4	9.6	91	105	12.4	1.4	5.9	2.0	27	0	1.27	34.5	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on baseline (hadur2.Hadur 3.8-off) (cold)	9	dft.Virgin 1.25	shield-70-80	76.0	13.6	91.4	18.8	58.5	7.0	96	105	11.7	3.6	5.4	0.4	27	0	1.20	77.7	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on baseline (hadur2.Hadur 3.8-off) (cold)	9	jam.micro.RaikoMicro 1.44	shield-70-80	72.5	16.8	89.5	21.7	54.2	10.1	94	105	11.2	2.4	6.4	0.6	14	0	1.32	96.9	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on baseline (hadur2.Hadur 3.8-off) (cold)	9	kid.Gladiator .7.2	shield-70-80	82.4	3.1	94.3	0.0	71.2	5.3	99	105	14.6	1.4	7.0	2.0	15	0	0.99	33.8	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on baseline (hadur2.Hadur 3.8-off) (cold)	9	nat.Hikari dev0001	shield-70-80	83.8	3.0	97.1	0.0	70.4	5.0	102	105	15.8	1.3	6.4	1.2	9	0	1.17	40.6	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on baseline (hadur2.Hadur 3.8-off) (cold)	9	pez.gloom.GloomyDark 0.9.2	shield-70-80	76.2	13.5	89.5	17.9	61.7	7.9	94	105	11.9	1.7	5.4	1.3	9	0	1.25	25.2	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on baseline (hadur2.Hadur 3.8-off) (cold)	9	rsim.mini.BulletCatcher 0.4	shield-70-80	85.7	5.8	94.3	7.1	77.9	7.9	99	105	25.4	3.5	7.0	2.5	10	0	1.26	9.8	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on baseline (hadur2.Hadur 3.8-off) (cold)	9	stelo.MatchupMini 1.1	shield-70-80	66.8	6.8	81.9	10.8	52.3	1.8	86	105	12.0	1.3	7.7	1.9	10	0	2.53	30.4	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on baseline (hadur2.Hadur 3.8-off) (cold)	9	theo.Tungsten 1.0a	shield-70-80	74.2	5.8	87.6	4.1	59.2	6.2	92	105	11.1	1.8	7.8	10.7	26	0	1.40	26.2	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on baseline (hadur2.Hadur 3.8-off) (cold)	9	wcsv.mega.PowerHouse2 0.2	shield-70-80	71.7	7.2	87.6	10.8	56.0	4.1	92	105	13.3	2.4	7.2	1.1	14	0	1.41	31.6	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on baseline (hadur2.Hadur 3.8-off) (cold)	9	amk.ChumbaWumba 0.3	shield-80-90	85.3	3.2	100.0	0.0	65.0	8.0	105	105	11.4	3.0	3.9	0.3	26	0	1.17	53.8	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on baseline (hadur2.Hadur 3.8-off) (cold)	9	casey.Flee 1.0	shield-80-90	89.8	5.7	100.0	0.0	76.1	10.8	105	105	14.9	1.7	3.9	2.5	9	0	1.01	17.3	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on baseline (hadur2.Hadur 3.8-off) (cold)	9	gh.GrubbmGrb 1.2.4	shield-80-90	83.5	11.2	93.3	16.4	73.2	5.4	98	105	15.8	5.8	6.1	1.4	15	0	1.22	24.6	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on baseline (hadur2.Hadur 3.8-off) (cold)	9	kawigi.mini.Fhqwhgads 1.1	shield-80-90	80.0	15.0	93.3	14.8	65.5	15.1	98	105	14.2	3.1	6.6	3.3	14	0	1.06	26.6	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on baseline (hadur2.Hadur 3.8-off) (cold)	9	lucasslf.Dodger 1.0	shield-80-90	81.2	5.2	95.2	8.2	66.7	0.8	100	105	13.8	0.8	6.4	1.0	14	0	1.32	39.9	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on baseline (hadur2.Hadur 3.8-off) (cold)	9	nkn.mini.Jskr0 0.1	shield-80-90	85.4	1.3	97.1	0.0	72.1	1.9	102	105	14.8	0.3	5.0	0.9	11	0	1.12	22.1	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on baseline (hadur2.Hadur 3.8-off) (cold)	9	pedersen.Hubris 2.4	shield-80-90	83.4	5.2	96.2	8.2	71.5	3.5	101	105	17.6	0.6	7.5	0.7	12	0	1.35	139.2	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on baseline (hadur2.Hadur 3.8-off) (cold)	9	reaper.Reaper 1.1	shield-80-90	86.6	2.5	99.0	4.1	75.1	6.8	104	105	15.5	1.3	7.2	0.9	27	0	1.36	57.7	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on baseline (hadur2.Hadur 3.8-off) (cold)	9	shinh.Entangled 0.3	shield-80-90	87.6	1.9	96.2	4.1	79.8	0.6	101	105	17.6	1.2	7.3	0.9	38	0	1.54	99.3	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on baseline (hadur2.Hadur 3.8-off) (cold)	9	stelo.SteloTestNano 1.0	shield-80-90	87.6	6.3	99.0	4.1	76.1	8.4	104	105	20.6	3.5	5.6	2.6	12	0	1.06	23.6	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on baseline (hadur2.Hadur 3.8-off) (cold)	9	timmit.nano.TimCat 0.13	shield-80-90	96.9	3.1	99.0	4.1	93.6	1.0	104	105	16.3	1.5	0.8	0.3	17	0	1.03	25.9	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on baseline (hadur2.Hadur 3.8-off) (cold)	9	wiki.BasicGFSurfer 1.02	shield-80-90	79.6	6.4	92.4	8.2	66.6	8.3	97	105	14.8	2.0	6.5	1.0	9	0	1.23	13.3	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on baseline (hadur2.Hadur 3.8-off) (cold)	9	bndl.LostLion 1.2	shield-90-95	92.9	4.5	99.0	4.1	86.9	11.5	104	105	21.8	3.1	5.0	4.7	7	0	2.94	65.0	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on baseline (hadur2.Hadur 3.8-off) (cold)	9	dz.Caedo 1.4	shield-90-95	83.5	9.3	87.6	10.8	79.3	9.0	92	105	19.4	0.8	12.6	1.3	6	0	1.21	11.8	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on baseline (hadur2.Hadur 3.8-off) (cold)	9	lrem.quickhack.QuickHack 1.0	shield-90-95	88.1	12.4	96.2	10.8	81.0	13.8	101	105	25.0	5.3	8.3	3.4	1	0	1.22	10.9	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on baseline (hadur2.Hadur 3.8-off) (cold)	9	mz.Adept 2.65	shield-90-95	90.2	4.0	99.0	4.1	81.5	7.4	104	105	23.8	2.6	4.8	2.8	3	0	1.05	10.6	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on baseline (hadur2.Hadur 3.8-off) (cold)	9	rsk1.RSK1 4.0	shield-90-95	89.2	10.6	96.2	8.2	81.9	13.8	101	105	16.9	1.3	5.1	4.5	4	0	1.24	15.0	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on baseline (hadur2.Hadur 3.8-off) (cold)	9	throxbot.ThroxBot 0.1	shield-90-95	94.8	2.9	100.0	0.0	90.1	4.9	105	105	31.5	7.5	4.6	3.1	6	0	1.03	11.1	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on baseline (hadur2.Hadur 3.8-off) (cold)	9	cli.WasteOfAmmo 1.0	shield-95-up	100.0	0.0	100.0	0.0	100.0	0.0	105	105	64.5	0.9	0.0	0.0	4	0	0.75	20.1	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on baseline (hadur2.Hadur 3.8-off) (cold)	9	gh.nano.Grofvuil 0.2	shield-95-up	98.8	1.0	100.0	0.0	97.7	1.9	105	105	41.8	4.3	1.0	0.6	1	0	0.92	12.7	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on baseline (hadur2.Hadur 3.8-off) (cold)	9	logiblocs.SittingDroid 1.0	shield-95-up	100.0	0.0	100.0	0.0	100.0	0.0	105	105	79.6	0.4	0.0	0.0	1	0	0.57	12.6	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on baseline (hadur2.Hadur 3.8-off) (cold)	9	Noran.RandomTargeting 0.02	shield-95-up	99.6	0.4	100.0	0.0	99.3	0.8	105	105	20.0	4.7	0.8	0.7	5	0	0.87	16.9	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on baseline (hadur2.Hadur 3.8-off) (cold)	9	sample.Fire	shield-95-up	100.0	0.0	100.0	0.0	100.0	0.0	105	105	40.2	2.9	0.0	0.0	1	0	0.70	10.6	
+d5-probe.md	hadur2.Hadur	3.8		Bench: hadur2.Hadur 3.8-on baseline (hadur2.Hadur 3.8-off) (cold)	9	suh.nano.OscillatorL 1.00	shield-95-up	97.3	5.2	100.0	0.0	94.7	10.1	105	105	27.3	2.8	1.9	3.9	2	0	0.86	13.6	
 m0-2.2-gates.md	hadur2.Hadur	2.2	cold	Bench: hadur2.Hadur 2.2 (cold)	1	sample.SpinBot	sanity	100.0	0.1	100.0	0.0	99.9	0.1	175	175	44.0	0.9	0.4	0.5	7	0	0.61	12.9	
 m0-2.2-gates.md	hadur2.Hadur	2.2	cold	Bench: hadur2.Hadur 2.2 (cold)	1	sample.Tracker	sanity	99.9	0.2	100.0	0.0	99.8	0.3	175	175	80.6	1.9	1.2	2.0	4	0	0.50	8.8	
 m0-2.2-gates.md	hadur2.Hadur	2.2	cold	Bench: hadur2.Hadur 2.2 (cold)	1	sample.Crazy	sanity	99.7	0.4	100.0	0.0	99.5	0.7	175	175	31.9	1.4	2.6	3.2	2	0	0.56	10.8	
@@ -112,6 +254,28 @@ r5-gate.md				Warm top 10 (3 consecutive battles per opponent, data kept)	3	dsek
 r5-gate.md				Warm top 10 (3 consecutive battles per opponent, data kept)	3	xander.cat.XanderCat 12.9	rumble-8	56.1	19.1	61.9	29.6	50.3	9.6	65	105	11.1	0.7	8.6	1.5	24	0	1.83	45.2	
 r5-gate.md				Warm top 10 (3 consecutive battles per opponent, data kept)	3	lxx.Tomcat 3.68	rumble-9	57.1	22.7	68.7	29.8	46.6	14.4	73	105	9.6	1.1	10.0	1.7	34	0	3.11	104.6	
 r5-gate.md				Warm top 10 (3 consecutive battles per opponent, data kept)	3	rsalesc.mega.Knight 0.6.28	rumble-10	46.3	9.3	37.1	14.2	55.0	4.2	39	105	9.7	0.2	9.4	1.4	38	0	3.20	68.8	
+release-check-3.8-report.md	hadur2.Hadur	3.8	cold	Bench: hadur2.Hadur 3.8 (cold)	1	jk.mega.DrussGT 3.1.16	rumble-2	45.5	2.8	43.9	4.8	47.4	1.5	155	350	7.4	0.3	10.1	0.3	447	0	2.78	259.2	
+release-check-3.8-report.md	hadur2.Hadur	3.8	cold	Bench: hadur2.Hadur 3.8 baseline (hadur2.Hadur 3.7) (cold)	8	jk.mega.DrussGT 3.1.16	rumble-2	35.1	2.5	21.6	3.5	49.8	1.6	81	350	7.7	0.3	11.8	3.0	314	0	2.70	158.4	
+release-check-3.8-report.md	hadur2.Hadur	3.8	cold	Bench: hadur2.Hadur 3.8 (cold)	14	kc.mega.BeepBoop 2.0	rumble-1	25.9	22.6	15.7	54.5	39.7	16.4	11	70	5.1	0.6	9.6	2.5	28	0	3.42	107.7	
+release-check-3.8-report.md	hadur2.Hadur	3.8	cold	Bench: hadur2.Hadur 3.8 (cold)	14	jk.mega.DrussGT 3.1.16	rumble-2	53.4	95.5	56.9	162.5	49.8	22.2	41	70	7.6	0.6	9.9	0.6	41	0	2.86	87.7	
+release-check-3.8-report.md	hadur2.Hadur	3.8	cold	Bench: hadur2.Hadur 3.8 (cold)	14	oog.mega.saguaro.Saguaro 1.0	rumble-3	68.6	43.1	78.6	54.5	59.0	28.8	55	70	18.6	2.5	6.8	7.0	8	0	3.63	30.0	
+release-check-3.8-report.md	hadur2.Hadur	3.8	cold	Bench: hadur2.Hadur 3.8 (cold)	14	aaa.r.ScalarR 0.005h.053-noshield	rumble-4	42.9	18.0	41.4	18.2	44.8	15.9	29	70	7.1	6.4	9.6	5.1	33	0	3.36	58.7	
+release-check-3.8-report.md	hadur2.Hadur	3.8	cold	Bench: hadur2.Hadur 3.8 (cold)	14	voidious.Diamond 1.8.22	rumble-5	49.8	6.5	58.6	18.2	40.4	9.3	41	70	6.6	3.8	9.2	5.1	42	0	3.39	62.5	
+release-check-3.8-report.md	hadur2.Hadur	3.8	cold	Bench: hadur2.Hadur 3.8 (cold)	14	cb.fire.Firestarter 2.0f	rumble-6	51.1	35.6	48.6	72.6	53.8	2.9	34	70	8.6	0.0	8.6	3.2	64	0	2.98	218.6	
+release-check-3.8-report.md	hadur2.Hadur	3.8	cold	Bench: hadur2.Hadur 3.8 (cold)	14	dsekercioglu.mega.Raven 3.56j8	rumble-7	56.8	37.2	72.9	54.5	39.7	15.5	51	70	9.4	7.6	9.2	1.9	8	0	2.09	41.1	
+release-check-3.8-report.md	hadur2.Hadur	3.8	cold	Bench: hadur2.Hadur 3.8 (cold)	14	xander.cat.XanderCat 12.9	rumble-8	46.6	15.3	47.1	18.2	46.3	33.2	33	70	11.7	6.4	9.0	1.3	18	0	2.11	23.8	
+release-check-3.8-report.md	hadur2.Hadur	3.8	cold	Bench: hadur2.Hadur 3.8 (cold)	14	lxx.Tomcat 3.68	rumble-9	45.6	6.0	51.4	36.3	40.4	21.6	36	70	9.0	0.6	10.1	1.3	24	0	3.18	118.7	
+release-check-3.8-report.md	hadur2.Hadur	3.8	cold	Bench: hadur2.Hadur 3.8 (cold)	14	rsalesc.mega.Knight 0.6.28	rumble-10	55.3	17.7	58.6	18.2	51.4	16.1	41	70	9.5	0.6	10.1	2.5	32	0	3.41	59.4	
+release-check-3.8-report.md	hadur2.Hadur	3.8	cold	Bench: hadur2.Hadur 3.8 baseline (hadur2.Hadur 3.7) (cold)	21	kc.mega.BeepBoop 2.0	rumble-1	18.5	5.1	2.9	0.0	38.9	11.8	2	70	5.7	0.6	11.2	23.5	38	0	3.40	100.5	
+release-check-3.8-report.md	hadur2.Hadur	3.8	cold	Bench: hadur2.Hadur 3.8 baseline (hadur2.Hadur 3.7) (cold)	21	jk.mega.DrussGT 3.1.16	rumble-2	29.0	2.9	11.8	0.0	47.3	6.4	10	70	7.7	6.4	10.4	1.3	63	0	2.73	112.8	
+release-check-3.8-report.md	hadur2.Hadur	3.8	cold	Bench: hadur2.Hadur 3.8 baseline (hadur2.Hadur 3.7) (cold)	21	oog.mega.saguaro.Saguaro 1.0	rumble-3	73.6	51.2	85.7	36.3	61.9	60.3	60	70	19.3	1.9	6.7	10.2	0	0	3.29	96.2	
+release-check-3.8-report.md	hadur2.Hadur	3.8	cold	Bench: hadur2.Hadur 3.8 baseline (hadur2.Hadur 3.7) (cold)	21	aaa.r.ScalarR 0.005h.053-noshield	rumble-4	20.7	3.5	5.7	0.0	38.0	6.1	4	70	7.2	3.2	10.7	1.3	54	0	3.16	210.7	
+release-check-3.8-report.md	hadur2.Hadur	3.8	cold	Bench: hadur2.Hadur 3.8 baseline (hadur2.Hadur 3.7) (cold)	21	voidious.Diamond 1.8.22	rumble-5	25.6	55.0	16.2	56.1	36.9	42.6	13	70	7.0	8.3	8.9	6.4	31	0	3.07	88.1	
+release-check-3.8-report.md	hadur2.Hadur	3.8	cold	Bench: hadur2.Hadur 3.8 baseline (hadur2.Hadur 3.7) (cold)	21	cb.fire.Firestarter 2.0f	rumble-6	40.8	87.1	24.3	127.1	58.1	30.3	17	70	9.0	5.7	14.2	85.8	78	0	2.84	126.8	
+release-check-3.8-report.md	hadur2.Hadur	3.8	cold	Bench: hadur2.Hadur 3.8 baseline (hadur2.Hadur 3.7) (cold)	21	dsekercioglu.mega.Raven 3.56j8	rumble-7	57.6	25.4	71.4	36.3	44.4	14.2	50	70	9.8	0.0	8.6	3.2	13	0	2.11	48.6	
+release-check-3.8-report.md	hadur2.Hadur	3.8	cold	Bench: hadur2.Hadur 3.8 baseline (hadur2.Hadur 3.7) (cold)	21	xander.cat.XanderCat 12.9	rumble-8	53.8	124.5	58.6	163.4	49.4	82.4	41	70	11.3	0.6	8.8	14.6	14	0	2.04	68.4	
+release-check-3.8-report.md	hadur2.Hadur	3.8	cold	Bench: hadur2.Hadur 3.8 baseline (hadur2.Hadur 3.7) (cold)	21	lxx.Tomcat 3.68	rumble-9	54.2	55.7	60.3	56.1	48.6	52.5	43	70	8.5	2.5	8.7	3.8	22	0	3.06	58.8	
+release-check-3.8-report.md	hadur2.Hadur	3.8	cold	Bench: hadur2.Hadur 3.8 baseline (hadur2.Hadur 3.7) (cold)	21	rsalesc.mega.Knight 0.6.28	rumble-10	50.3	19.9	42.9	36.3	57.3	5.0	30	70	9.5	0.6	9.4	9.5	22	0	3.20	61.6	
 roborumble-top10-2.1.md	hadur2.Hadur	2.1	cold	Bench: hadur2.Hadur 2.1 (after S4) against the RoboRumble top 10 (cold)	1	kc.mega.BeepBoop 2.0	rumble-1	15.1	1.1	0.0	0.0	33.8	2.1	0	175	5.8	0.2	10.8	0.3	75	0	3.11	162.6	
 roborumble-top10-2.1.md	hadur2.Hadur	2.1	cold	Bench: hadur2.Hadur 2.1 (after S4) against the RoboRumble top 10 (cold)	1	jk.mega.DrussGT 3.1.16	rumble-2	34.6	6.2	20.3	7.8	49.1	4.2	38	175	8.2	0.5	10.7	0.5	107	0	2.41	648.8	
 roborumble-top10-2.1.md	hadur2.Hadur	2.1	cold	Bench: hadur2.Hadur 2.1 (after S4) against the RoboRumble top 10 (cold)	1	oog.mega.saguaro.Saguaro 1.0	rumble-3	77.0	5.2	92.0	4.6	62.8	7.0	161	175	20.0	1.8	6.6	1.1	21	0	3.19	38.3	
@@ -308,3 +472,45 @@ s6-2.1-shadow-options-cold.md	hadur2.Hadur	2.1	cold	Bench: hadur2.Hadur 2.1 (col
 s6-2.1-shadow-warm-noflavour.md	hadur2.Hadur	2.1	warm	Bench: hadur2.Hadur 2.1 (warm)	1	abc.Shadow 3.83c	headline	55.2	3.8	69.0	4.0	42.6	3.4	121	175	9.6	0.6	8.3	0.9	38	0	1.54	17.6	
 s6-2.1-warm.md	hadur2.Hadur	2.1	warm	Bench: hadur2.Hadur 2.1 (warm)	1	abc.Shadow 3.83c	headline	54.6	6.0	66.3	9.8	44.0	3.5	116	175	9.7	0.5	8.3	0.5	30	0	1.70	140.1	
 shield-counter-saguaro.md	hadur2.Hadur	2.1	cold	Bench: hadur2.Hadur 2.1 (cold)	1	oog.mega.saguaro.Saguaro 1.0	rumble-3	68.8	6.6	81.1	9.2	57.6	5.2	142	175	19.4	1.9	7.4	0.7	26	0	2.60	65.7	
+stack-gate-report.md	hadur2.Hadur	3.8.4	cold	Bench: hadur2.Hadur 3.8.4 (cold)	1	kc.mega.BeepBoop 2.0	rumble-1	24.3	4.2	10.5	4.1	43.0	9.4	11	105	5.1	0.5	8.6	0.6	63	0	3.42	99.2	
+stack-gate-report.md	hadur2.Hadur	3.8.4	cold	Bench: hadur2.Hadur 3.8.4 (cold)	1	jk.mega.DrussGT 3.1.16	rumble-2	46.9	14.6	46.7	26.9	47.2	6.1	49	105	7.5	1.8	10.7	0.7	118	0	2.68	66.7	
+stack-gate-report.md	hadur2.Hadur	3.8.4	cold	Bench: hadur2.Hadur 3.8.4 (cold)	1	oog.mega.saguaro.Saguaro 1.0	rumble-3	73.5	7.6	82.9	7.1	63.7	7.9	87	105	18.8	4.1	6.9	3.5	13	0	3.48	54.5	
+stack-gate-report.md	hadur2.Hadur	3.8.4	cold	Bench: hadur2.Hadur 3.8.4 (cold)	1	aaa.r.ScalarR 0.005h.053-noshield	rumble-4	35.0	14.4	28.6	28.4	42.7	5.1	30	105	6.9	0.9	10.3	2.0	122	0	2.95	85.4	
+stack-gate-report.md	hadur2.Hadur	3.8.4	cold	Bench: hadur2.Hadur 3.8.4 (cold)	1	voidious.Diamond 1.8.22	rumble-5	49.9	10.5	58.1	14.8	41.8	7.0	61	105	7.1	0.8	8.7	0.3	82	0	2.98	198.7	
+stack-gate-report.md	hadur2.Hadur	3.8.4	cold	Bench: hadur2.Hadur 3.8.4 (cold)	1	cb.fire.Firestarter 2.0f	rumble-6	47.5	22.3	45.3	31.2	50.3	12.0	48	105	8.0	1.4	9.0	2.4	92	0	2.60	173.0	
+stack-gate-report.md	hadur2.Hadur	3.8.4	cold	Bench: hadur2.Hadur 3.8.4 (cold)	1	dsekercioglu.mega.Raven 3.56j8	rumble-7	54.4	11.8	69.5	16.4	38.6	6.5	73	105	9.5	0.9	9.1	1.6	23	0	1.97	44.0	
+stack-gate-report.md	hadur2.Hadur	3.8.4	cold	Bench: hadur2.Hadur 3.8.4 (cold)	1	xander.cat.XanderCat 12.9	rumble-8	67.2	47.1	73.3	49.9	61.4	47.1	77	105	22.3	43.8	9.2	2.7	27	0	1.92	31.5	
+stack-gate-report.md	hadur2.Hadur	3.8.4	cold	Bench: hadur2.Hadur 3.8.4 (cold)	1	lxx.Tomcat 3.68	rumble-9	53.5	3.3	64.8	8.2	42.4	4.3	68	105	8.7	0.8	10.0	1.9	86	0	3.26	77.1	
+stack-gate-report.md	hadur2.Hadur	3.8.4	cold	Bench: hadur2.Hadur 3.8.4 (cold)	1	rsalesc.mega.Knight 0.6.28	rumble-10	53.3	3.9	55.2	8.2	50.6	3.5	58	105	9.5	1.8	10.2	1.5	120	0	3.50	164.2	
+stack-gate-report.md	hadur2.Hadur	3.8.4	cold	Bench: hadur2.Hadur 3.8.4 baseline (hadur2.Hadur 3.8.1) (cold)	9	kc.mega.BeepBoop 2.0	rumble-1	17.4	10.7	2.9	7.1	38.4	9.0	3	105	4.5	0.9	8.8	2.2	51	0	3.38	92.7	
+stack-gate-report.md	hadur2.Hadur	3.8.4	cold	Bench: hadur2.Hadur 3.8.4 baseline (hadur2.Hadur 3.8.1) (cold)	9	jk.mega.DrussGT 3.1.16	rumble-2	40.3	25.0	35.6	39.0	46.0	6.7	38	105	7.4	0.9	10.0	1.8	112	0	2.67	88.1	
+stack-gate-report.md	hadur2.Hadur	3.8.4	cold	Bench: hadur2.Hadur 3.8.4 baseline (hadur2.Hadur 3.8.1) (cold)	9	oog.mega.saguaro.Saguaro 1.0	rumble-3	72.3	4.8	84.8	14.8	60.3	5.1	89	105	18.5	2.0	6.3	3.0	30	0	3.44	62.2	
+stack-gate-report.md	hadur2.Hadur	3.8.4	cold	Bench: hadur2.Hadur 3.8.4 baseline (hadur2.Hadur 3.8.1) (cold)	9	aaa.r.ScalarR 0.005h.053-noshield	rumble-4	28.2	10.9	19.0	16.4	39.3	3.3	20	105	6.3	0.1	10.7	1.7	84	0	2.70	132.1	
+stack-gate-report.md	hadur2.Hadur	3.8.4	cold	Bench: hadur2.Hadur 3.8.4 baseline (hadur2.Hadur 3.8.1) (cold)	9	voidious.Diamond 1.8.22	rumble-5	49.4	12.4	56.2	16.4	41.5	8.7	59	105	6.3	1.7	8.4	0.9	106	0	2.91	156.7	
+stack-gate-report.md	hadur2.Hadur	3.8.4	cold	Bench: hadur2.Hadur 3.8.4 baseline (hadur2.Hadur 3.8.1) (cold)	9	cb.fire.Firestarter 2.0f	rumble-6	44.4	16.6	39.5	26.6	50.0	5.2	42	105	8.2	0.5	8.9	0.9	103	0	2.60	136.0	
+stack-gate-report.md	hadur2.Hadur	3.8.4	cold	Bench: hadur2.Hadur 3.8.4 baseline (hadur2.Hadur 3.8.1) (cold)	9	dsekercioglu.mega.Raven 3.56j8	rumble-7	55.6	6.3	69.5	8.2	40.9	5.8	73	105	9.4	1.9	9.0	0.1	38	0	1.93	35.8	
+stack-gate-report.md	hadur2.Hadur	3.8.4	cold	Bench: hadur2.Hadur 3.8.4 baseline (hadur2.Hadur 3.8.1) (cold)	9	xander.cat.XanderCat 12.9	rumble-8	57.8	3.0	63.8	8.2	52.2	1.5	67	105	11.6	1.1	8.5	1.2	34	0	2.03	48.1	
+stack-gate-report.md	hadur2.Hadur	3.8.4	cold	Bench: hadur2.Hadur 3.8.4 baseline (hadur2.Hadur 3.8.1) (cold)	9	lxx.Tomcat 3.68	rumble-9	53.2	10.4	64.8	10.8	41.9	8.2	68	105	9.1	1.0	10.1	1.7	71	0	3.24	92.8	
+stack-gate-report.md	hadur2.Hadur	3.8.4	cold	Bench: hadur2.Hadur 3.8.4 baseline (hadur2.Hadur 3.8.1) (cold)	9	rsalesc.mega.Knight 0.6.28	rumble-10	51.8	9.9	54.3	14.2	49.1	5.5	57	105	9.0	0.4	10.8	2.0	108	0	3.43	112.7	
+stack-gate-report.md	hadur2.Hadur	3.8.4	cold	Bench: hadur2.Hadur 3.8.4 (cold)	15	vort.Chaser 0.0.3	rammer	94.9	16.4	100.0	0.0	91.2	27.1	70	70	79.6	12.7	14.2	12.7	2	0	1.03	10.9	
+stack-gate-report.md	hadur2.Hadur	3.8.4	cold	Bench: hadur2.Hadur 3.8.4 (cold)	15	bbo.RamboT 0.3	rammer	97.8	6.0	100.0	0.0	96.2	8.7	70	70	75.3	26.7	9.6	36.2	4	0	1.07	12.8	
+stack-gate-report.md	hadur2.Hadur	3.8.4	cold	Bench: hadur2.Hadur 3.8.4 (cold)	15	PSW.Relentless 0.1	rammer	98.3	8.2	100.0	0.0	97.1	13.3	70	70	71.8	3.2	9.1	19.1	0	0	1.00	44.8	
+stack-gate-report.md	hadur2.Hadur	3.8.4	cold	Bench: hadur2.Hadur 3.8.4 (cold)	15	mahrgell.mahrram 1.3	rammer	79.4	20.7	98.6	18.2	70.7	18.6	69	70	71.4	7.0	37.1	29.2	2	0	1.05	10.9	
+stack-gate-report.md	hadur2.Hadur	3.8.4	cold	Bench: hadur2.Hadur 3.8.4 (cold)	15	sample.RamFire	rammer	99.7	3.7	100.0	0.0	99.5	5.8	70	70	69.7	42.6	2.9	36.2	2	0	0.96	12.9	
+stack-gate-report.md	hadur2.Hadur	3.8.4	cold	Bench: hadur2.Hadur 3.8.4 (cold)	15	stelo.MirrorNano 1.4	mirror	93.2	13.2	100.0	0.0	87.0	22.6	70	70	35.2	9.5	5.2	11.4	8	0	1.19	15.0	
+stack-gate-report.md	hadur2.Hadur	3.8.4	cold	Bench: hadur2.Hadur 3.8.4 (cold)	15	stelo.MirrorMicro 1.1	mirror	93.4	1.0	100.0	0.0	87.4	1.7	70	70	35.4	3.2	5.9	1.9	9	0	1.16	13.1	
+stack-gate-report.md	hadur2.Hadur	3.8.4	cold	Bench: hadur2.Hadur 3.8.4 (cold)	15	zyx.nano.RedBull 1.0	nano	93.9	12.0	100.0	0.0	91.1	18.6	70	70	80.6	20.3	9.7	17.8	6	0	0.98	10.7	
+stack-gate-report.md	hadur2.Hadur	3.8.4	cold	Bench: hadur2.Hadur 3.8.4 (cold)	15	bwbaugh.nano.Tirunculus 0.0.0a	nano	86.0	3.9	100.0	0.0	78.4	1.3	70	70	80.5	22.9	73.2	21.0	4	0	1.05	13.7	
+stack-gate-report.md	hadur2.Hadur	3.8.4	cold	Bench: hadur2.Hadur 3.8.4 (cold)	15	demetrix.nano.SledgeHammer 0.22	nano	67.3	11.9	91.4	0.0	58.2	13.9	64	70	72.0	6.4	54.2	39.4	1	0	0.95	12.8	
+stack-gate-report.md	hadur2.Hadur	3.8.4	cold	Bench: hadur2.Hadur 3.8.4 (cold)	15	mz.NanoDeath 2.56	nano	68.7	8.3	95.7	18.2	58.6	0.5	67	70	74.2	2.5	54.4	5.1	8	0	0.98	13.0	
+stack-gate-report.md	hadur2.Hadur	3.8.4	cold	Bench: hadur2.Hadur 3.8.4 baseline (hadur2.Hadur 3.8.1) (cold)	23	vort.Chaser 0.0.3	rammer	94.4	9.8	100.0	0.0	90.3	15.9	70	70	79.4	15.9	14.5	8.9	0	0	0.98	9.2	
+stack-gate-report.md	hadur2.Hadur	3.8.4	cold	Bench: hadur2.Hadur 3.8.4 baseline (hadur2.Hadur 3.8.1) (cold)	23	bbo.RamboT 0.3	rammer	97.4	1.1	100.0	0.0	95.7	2.6	70	70	75.2	23.5	11.6	3.2	8	0	1.03	12.9	
+stack-gate-report.md	hadur2.Hadur	3.8.4	cold	Bench: hadur2.Hadur 3.8.4 baseline (hadur2.Hadur 3.8.1) (cold)	23	PSW.Relentless 0.1	rammer	98.2	7.8	100.0	0.0	97.1	12.6	70	70	68.5	22.2	8.2	5.7	3	0	1.00	12.2	
+stack-gate-report.md	hadur2.Hadur	3.8.4	cold	Bench: hadur2.Hadur 3.8.4 baseline (hadur2.Hadur 3.8.1) (cold)	23	mahrgell.mahrram 1.3	rammer	79.1	9.0	100.0	0.0	69.7	9.7	70	70	70.6	37.5	38.3	15.2	1	0	1.10	15.9	
+stack-gate-report.md	hadur2.Hadur	3.8.4	cold	Bench: hadur2.Hadur 3.8.4 baseline (hadur2.Hadur 3.8.1) (cold)	23	sample.RamFire	rammer	99.8	2.1	100.0	0.0	99.8	2.9	70	70	68.3	3.8	1.5	18.4	3	0	0.96	11.6	
+stack-gate-report.md	hadur2.Hadur	3.8.4	cold	Bench: hadur2.Hadur 3.8.4 baseline (hadur2.Hadur 3.8.1) (cold)	23	stelo.MirrorNano 1.4	mirror	93.1	2.0	100.0	0.0	86.9	3.9	70	70	37.1	10.8	5.5	1.9	7	0	1.05	11.8	
+stack-gate-report.md	hadur2.Hadur	3.8.4	cold	Bench: hadur2.Hadur 3.8.4 baseline (hadur2.Hadur 3.8.1) (cold)	23	stelo.MirrorMicro 1.1	mirror	94.0	12.9	100.0	0.0	88.4	22.9	70	70	35.1	5.1	5.5	12.7	3	0	1.07	12.1	
+stack-gate-report.md	hadur2.Hadur	3.8.4	cold	Bench: hadur2.Hadur 3.8.4 baseline (hadur2.Hadur 3.8.1) (cold)	23	zyx.nano.RedBull 1.0	nano	95.0	5.0	100.0	0.0	92.7	0.0	70	70	80.7	1.9	7.9	12.7	2	0	0.93	12.2	
+stack-gate-report.md	hadur2.Hadur	3.8.4	cold	Bench: hadur2.Hadur 3.8.4 baseline (hadur2.Hadur 3.8.1) (cold)	23	bwbaugh.nano.Tirunculus 0.0.0a	nano	84.7	1.5	100.0	0.0	76.7	5.3	70	70	82.6	6.4	77.3	21.6	0	0	0.93	9.8	
+stack-gate-report.md	hadur2.Hadur	3.8.4	cold	Bench: hadur2.Hadur 3.8.4 baseline (hadur2.Hadur 3.8.1) (cold)	23	demetrix.nano.SledgeHammer 0.22	nano	68.3	14.5	94.3	0.0	58.5	15.6	66	70	73.6	7.6	55.4	33.7	4	0	1.01	23.4	
+stack-gate-report.md	hadur2.Hadur	3.8.4	cold	Bench: hadur2.Hadur 3.8.4 baseline (hadur2.Hadur 3.8.1) (cold)	23	mz.NanoDeath 2.56	nano	69.9	31.0	95.7	18.2	59.8	25.8	67	70	72.7	20.3	51.2	65.4	2	0	0.99	14.5	

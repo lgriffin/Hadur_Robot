@@ -61,6 +61,11 @@ final class ShieldProbe {
      * @throws IOException if the jar cannot be read or the new ones written
      */
     static void prepare(Map<String, String> opts, Path benchDir) throws IOException {
+        prepare(opts, benchDir, RobotJar.release(benchDir));
+    }
+
+    /** As above, with the robot release the {@code --robot} default names (issue #102). */
+    static void prepare(Map<String, String> opts, Path benchDir, String release) throws IOException {
         String probe = opts.get("shield-probe");
         if (probe == null) return;
         if (opts.containsKey("baseline") || opts.containsKey("baseline-robot")) {
@@ -72,7 +77,7 @@ final class ShieldProbe {
                 "--shield-probe runs the duel set with a robot jar; it takes no --robot-classes, --melee,"
                 + " --team, --session, --client or --record");
         }
-        String robot = opts.getOrDefault("robot", "hadur2.Hadur 3.8");
+        String robot = opts.getOrDefault("robot", Bench.defaultRobot(opts, benchDir, release));
         String[] parts = robot.split(" ");
         if (parts.length != 2) throw new IllegalArgumentException("--robot must be 'name version': " + robot);
         Path source = benchDir.resolve(opts.getOrDefault("robot-jar",

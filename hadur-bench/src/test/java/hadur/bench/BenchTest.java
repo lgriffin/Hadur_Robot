@@ -44,4 +44,21 @@ class BenchTest {
             "robot", "hadur2.Hadur 3.0");
         new Bench(opts); // does not throw
     }
+
+    @Test
+    @Tag("BENCH-12")
+    @DisplayName("--parallel 0 is rejected")
+    void parallelZeroIsRejected() {
+        Map<String, String> opts = Map.of("parallel", "0");
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> new Bench(opts));
+        assertTrue(e.getMessage().contains("parallel"));
+    }
+
+    @Test
+    @Tag("BENCH-12")
+    @DisplayName("--parallel 4 is accepted")
+    void parallelFourIsFine() {
+        Map<String, String> opts = Map.of("parallel", "4");
+        new Bench(opts); // does not throw
+    }
 }

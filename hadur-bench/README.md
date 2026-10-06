@@ -22,9 +22,14 @@ mvn exec:java -Dexec.args="--mode cold --rounds 35 --seeds 5"
 | `--seeds N` | 5 | battles per opponent (cold) |
 | `--battles N` | 5 | consecutive battles per opponent (warm) |
 | `--field WxH` | 800x600 | battlefield size |
-| `--robot-jar FILE` | ../hadur-robot/target/hadur2.Hadur_3.8.jar | the robot jar |
+| `--robot-jar FILE` | follows `robot.release` in hadur-robot/pom.xml (3.8 today) | the robot jar |
 | `--robot-classes DIR` | | jar a compiled class tree instead, e.g. an older Hadur |
-| `--robot NAME` | hadur2.Hadur 3.8 | the robot's name as Robocode lists it |
+| `--robot NAME` | follows `robot.release` in hadur-robot/pom.xml (3.8 today) | the robot's name as Robocode lists it |
+| `--parallel N` | 1 | run N battles at once in the duel modes (cold, warm, paired with `--baseline`), each in its own Robocode home (`home-1..home-N` under the work dir); warm parallelises across opponents, keeping one opponent's consecutive battles on one worker |
+| `--cpu-constant NANOS` | | pin `robocode.cpu.constant` in every home; without it, a parallel run calibrates once in the main home with an idle one-round sample battle and copies that constant to every worker, so workers do not each calibrate under load |
+| `--child-cpus N` | 2 when `--parallel` > 1, else off | tell each battle JVM to size its JIT and GC thread pools for N processors (`-XX:ActiveProcessorCount=N`), so twenty children do not each start a 48-core machine's worth of threads; 0 leaves the JVM to itself |
+| `--child-heap SIZE` | | cap each battle JVM's heap (`-Xmx`), e.g. `512M`, the rumble client's |
+| `--per-opponent DIR` | | besides the main report, write one report per opponent to `DIR/<slug>.md` (slug: the opponent name with non `[A-Za-z0-9.]` runs replaced by `_`), with a per-seed battle table (and the baseline and paired difference when `--baseline` ran) followed by that opponent's full diagnostics |
 | `--record DIR` | | capture replay fixtures instead (see below) |
 | `--fixture NAME` | | with `--record`, the fixture's file name instead of the opponent's (A0) |
 | `--keep-data true` | | with `--melee`, fight on the data directory as it is instead of wiping it before each battle (A0's hand-off fixture on a store) |
@@ -66,20 +71,68 @@ A smoke bench (one set, few seeds). In PowerShell the whole `-Dexec.args` argume
 quoted:
 
 ```powershell
-mvn -q compile exec:java "-Dexec.args=--set top19.txt --rounds 10 --seeds 1 --robot-jar ../hadur-robot/target/hadur2.Hadur_3.8.jar"
+mvn -q compile exec:java "-Dexec.args=--set top19.txt --rounds 10 --seeds 1"
 ```
 
 ```sh
-mvn -q compile exec:java -Dexec.args="--set top19.txt --rounds 10 --seeds 1 --robot-jar ../hadur-robot/target/hadur2.Hadur_3.8.jar"
+mvn -q compile exec:java -Dexec.args="--set top19.txt --rounds 10 --seeds 1"
 ```
 
-Pass `--robot-jar` explicitly (the default is `../hadur-robot/target/hadur2.Hadur_3.8.jar`,
-which goes stale when the robot version changes). For the Remote Control session that
-drives these runs, see issue #102.
+`--robot-jar` and `--robot` need not be passed: both follow `robot.release` in
+hadur-robot/pom.xml (3.8 today), so they stay right across a version bump. For the Remote
+Control session that drives these runs, see issue #102.
+
+### Parallel runs
+
+`--parallel N` runs N battles at once in the duel modes (cold, warm, paired with
+`--baseline`), each in its own Robocode home under the work directory. Issue #102 guessed one battle per 2 logical cores. The local ladder
+(`docs/bench/local/2026-10-06_parallel-ladder.md`) measured otherwise: with `--child-cpus 2`, the
+default for any parallel run, 6 to 24 wide all stayed workable on a 48-thread host, and the
+top-20 scripts default to a quarter of the logical cores. Without `--child-cpus` the same width
+starves the battles and shows up as skipped turns, which spoil a result the same way a loaded
+cloud container does. Read the report's skipped-turns line before trusting a run.
+
+A parallel run calibrates `robocode.cpu.constant` once, in the main home, with an idle
+one-round sample battle, then copies that constant to every worker so workers do not each
+calibrate under load. Pass `--cpu-constant NANOS` to pin a known value instead (for example
+one read from an existing `robocode.properties`, so every run on the same machine compares
+like for like).
+
+The report header records the host (CPU model, logical cores, OS) and the parallel count
+used, and a "Skipped turns: ..." summary line. Before trusting a parallel run's numbers,
+compare its skipped-turn line with a sequential run (`--parallel 1`) of the same set: if
+parallel skips noticeably more turns, the machine cannot sustain that many workers and
+`--parallel` should come down.
+
+### The top-20 bench
+
+Why this bench exists, what it will and will not do, and the rules it runs under are in `docs/bench/charter.md`.
+
+`top20.txt` is the RoboRumble 1v1 top 20 by the 2026-10-05 rankings
+(`data/rumble/parsed/2026-10-05T0551Z_roborumble_rankings.tsv`), less hadur2.Hadur itself and
+jd.Nullstride 2.3.1 (no archive copy). `bench-top20.ps1` (PowerShell) and `bench-top20.sh`
+(sh/bash) run it end to end from this directory: build (unless `-SkipBuild`/`--skip-build`),
+fetch the set's jars (unless `-SkipFetch`/`--skip-fetch`), then the bench itself with
+`--parallel` defaulted from the host's logical core count, writing the main report and a
+`--per-opponent` report tree under `../docs/bench/local/`. Both scripts print the exec:java
+command before running it and exit with the bench's own exit code.
+
+```powershell
+.\bench-top20.ps1
+.\bench-top20.ps1 -Baseline C:\robocode\robots\hadur2.Hadur_3.7.jar -BaselineRobot "hadur2.Hadur 3.7" -Seeds 5
+```
+
+```sh
+./bench-top20.sh
+./bench-top20.sh --baseline /path/to/hadur2.Hadur_3.7.jar --baseline-robot "hadur2.Hadur 3.7" --seeds 5
+```
+
+The first example is a plain run at the defaults (5 seeds, 35 rounds). The second pairs the
+built jar against 3.7 by seed (BENCH-2), the way a release check compares two versions.
 
 ## Opponents
 
-`reference-set.txt` lists them. R9 added `weak-leak.txt` (the eleven weak bots of issue #80: rammers, mirror movers and close-range nanos) and `top19.txt` (the 1v1 top 19 above 3.4, the regression gate); see `docs/bench/r9-weak-leak.md`. `roborumble-top10.txt` lists the RoboRumble top 10 (run it with `--set roborumble-top10.txt`); it is kept apart so CI and the replay fixtures stay on the reference set. For melee,
+`reference-set.txt` lists them. R9 added `weak-leak.txt` (the eleven weak bots of issue #80: rammers, mirror movers and close-range nanos) and `top19.txt` (the 1v1 top 19 above 3.4, the regression gate); see `docs/bench/r9-weak-leak.md`. `roborumble-top10.txt` lists the RoboRumble top 10 (run it with `--set roborumble-top10.txt`); it is kept apart so CI and the replay fixtures stay on the reference set. `top20.txt` lists the RoboRumble 1v1 top 20 (issue #102's local bench; see "The top-20 bench" above). For melee,
 `melee-samples.txt` holds nine sample bots, `melee-classic.txt` nine established MeleeRumble
 bots and `melee-strong.txt` top-end bots that also play melee; run them with `--melee true
 --field 1000x1000`, the MeleeRumble's setting.
