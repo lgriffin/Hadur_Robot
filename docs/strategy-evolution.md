@@ -306,6 +306,7 @@ Release 3.8. Against DrussGT both guns hit below break-even, so each shot costs 
 - **Re-recorded fixtures:** `abc.Shadow_3.83c`, `warm-abc.Shadow_3.83c` (the second battle's transcript, `-2`), `duress-sample.Walls` and `melee-sentry`, with the bench `--record` commands in `hadur-bench/README.md`. The other nine did not diverge in orders and were kept.
 - **Re-snapshotted:** the telemetry snapshots of all thirteen fixtures (`-Dhadur.replay.snapshot=write`), because the `R` record is longer.
 - **Re-pinned:** `pins/kernel.sha256`, `pins/duel.sha256`, `pins/conductor.sha256` (`-Dhadur.pin=kernel,duel,conductor`) and `duel-sources.sha256` (`-Dhadur.duel.snapshot=write`). The melee and team pins did not change.
+- **Gate** ([d1-gate.md](bench/d1-gate.md)), paired against 3.7: DrussGT **+12.0 ± 4.3** points (48.2% against 36.2%, 20 battles), the top 10 +6.7 on average (Firestarter +21.3, Diamond +14.1, Knight +11.6), the weak set level. The rule pays against surfers whose power follows ours down, not only DrussGT.
 
 ## What comes next
 
