@@ -30,6 +30,8 @@ data/
     bench_tables.py     shared readers for the per-battle tables (used by the two above)
     drussgt/            DrussGT bench analysis, energy model and shield-list tools (see its README)
     parse_rumble_page.py  parses a saved BotDetails or Rankings page into rumble/parsed/
+    analyse.py          pooled paired difference, Holm/BH, TOST non-inferiority and a seeds planner for a bench TSV
+    repeatability.py    per-battle SD, ICC and pairing check from repeated runs of the same jar and seeds
 ```
 
 The bench reports themselves stay in [`docs/bench/`](../docs/bench/) as the readable record;
@@ -71,6 +73,16 @@ up; `python3 data/tools/harvest_bench.py --check` says whether the history files
 ```
 python3 -m unittest discover -s data/tools
 ```
+
+`tools/analyse.py` and `tools/repeatability.py` (standard library only, tests beside them) read the
+bench TSVs. `analyse.py FILE.tsv` pools the paired candidate-minus-baseline difference over all
+opponents (per battle and opponent-clustered 95% t intervals, `--weights [COL]` for an opponent
+weight column), gives Holm and Benjamini-Hochberg adjusted p-values across opponents and a TOST
+non-inferiority verdict (`--margin`, default 1.0 point), and `--plan --halfwidth H` prints the seeds
+per opponent needed for a target half-width from the unpaired SD. `repeatability.py A.tsv B.tsv`
+takes two or more runs of the same jar and seeds and reports per-battle SD, identical pairs, ICC and
+the per-opponent candidate/baseline correlation that shows whether seed pairing cancels noise
+(measured: it does not, see `docs/bench/charter.md`).
 
 They are not wired into CI on purpose, so that a new bench report can never turn a stage PR
 red. Code the build depends on belongs in `hadur-bench` with its own tests, and copies any
