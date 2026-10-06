@@ -1,77 +1,117 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 342" width="900" height="342" role="img" aria-label="Candidate minus baseline score share by bench run">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 430" width="900" height="430" role="img" aria-label="Candidate minus baseline score share by bench run">
 <style>.bg{fill:#fff}.t{fill:#1f2328;font:12px sans-serif}.m{fill:#59636e;font:11px sans-serif}.g{stroke:#d1d9e0}.z{stroke:#59636e}.ci{stroke:#0b6bcb;stroke-width:2}.pt{fill:#0b6bcb;stroke:#fff;stroke-width:2}@media (prefers-color-scheme:dark){.bg{fill:#0d1117}.t{fill:#e6edf3}.m{fill:#9198a1}.g{stroke:#30363d}.z{stroke:#9198a1}.ci{stroke:#58a6ff}.pt{fill:#58a6ff;stroke:#0d1117}}</style>
-<rect class="bg" width="900" height="342"/>
+<rect class="bg" width="900" height="430"/>
 <text class="t" x="16" y="22" font-weight="bold">Candidate minus baseline score share, by committed bench run</text>
 <text class="m" x="16" y="38">Percentage points, pooled over opponents, 95% interval. Right of zero means the candidate scored more.</text>
-<line class="g" x1="290.0" x2="290.0" y1="48" y2="312"/>
-<text class="m" x="290.0" y="328" text-anchor="middle">-2</text>
-<line class="g" x1="321.7" x2="321.7" y1="48" y2="312"/>
-<text class="m" x="321.7" y="328" text-anchor="middle">-1</text>
-<line class="z" x1="353.3" x2="353.3" y1="48" y2="312"/>
-<text class="m" x="353.3" y="328" text-anchor="middle">0</text>
-<line class="g" x1="385.0" x2="385.0" y1="48" y2="312"/>
-<text class="m" x="385.0" y="328" text-anchor="middle">+1</text>
-<line class="g" x1="416.7" x2="416.7" y1="48" y2="312"/>
-<text class="m" x="416.7" y="328" text-anchor="middle">+2</text>
-<line class="g" x1="448.3" x2="448.3" y1="48" y2="312"/>
-<text class="m" x="448.3" y="328" text-anchor="middle">+3</text>
-<line class="g" x1="480.0" x2="480.0" y1="48" y2="312"/>
-<text class="m" x="480.0" y="328" text-anchor="middle">+4</text>
-<line class="g" x1="511.7" x2="511.7" y1="48" y2="312"/>
-<text class="m" x="511.7" y="328" text-anchor="middle">+5</text>
-<line class="g" x1="543.3" x2="543.3" y1="48" y2="312"/>
-<text class="m" x="543.3" y="328" text-anchor="middle">+6</text>
-<line class="g" x1="575.0" x2="575.0" y1="48" y2="312"/>
-<text class="m" x="575.0" y="328" text-anchor="middle">+7</text>
-<line class="g" x1="606.7" x2="606.7" y1="48" y2="312"/>
-<text class="m" x="606.7" y="328" text-anchor="middle">+8</text>
-<line class="g" x1="638.3" x2="638.3" y1="48" y2="312"/>
-<text class="m" x="638.3" y="328" text-anchor="middle">+9</text>
-<line class="g" x1="670.0" x2="670.0" y1="48" y2="312"/>
-<text class="m" x="670.0" y="328" text-anchor="middle">+10</text>
-<line class="g" x1="701.7" x2="701.7" y1="48" y2="312"/>
-<text class="m" x="701.7" y="328" text-anchor="middle">+11</text>
-<line class="g" x1="733.3" x2="733.3" y1="48" y2="312"/>
-<text class="m" x="733.3" y="328" text-anchor="middle">+12</text>
-<line class="g" x1="765.0" x2="765.0" y1="48" y2="312"/>
-<text class="m" x="765.0" y="328" text-anchor="middle">+13</text>
-<line class="g" x1="796.7" x2="796.7" y1="48" y2="312"/>
-<text class="m" x="796.7" y="328" text-anchor="middle">+14</text>
-<line class="g" x1="828.3" x2="828.3" y1="48" y2="312"/>
-<text class="m" x="828.3" y="328" text-anchor="middle">+15</text>
-<line class="g" x1="860.0" x2="860.0" y1="48" y2="312"/>
-<text class="m" x="860.0" y="328" text-anchor="middle">+16</text>
+<line class="g" x1="290.0" x2="290.0" y1="48" y2="400"/>
+<text class="m" x="290.0" y="416" text-anchor="middle">-5</text>
+<line class="g" x1="307.8" x2="307.8" y1="48" y2="400"/>
+<text class="m" x="307.8" y="416" text-anchor="middle">-4</text>
+<line class="g" x1="325.6" x2="325.6" y1="48" y2="400"/>
+<text class="m" x="325.6" y="416" text-anchor="middle">-3</text>
+<line class="g" x1="343.4" x2="343.4" y1="48" y2="400"/>
+<text class="m" x="343.4" y="416" text-anchor="middle">-2</text>
+<line class="g" x1="361.2" x2="361.2" y1="48" y2="400"/>
+<text class="m" x="361.2" y="416" text-anchor="middle">-1</text>
+<line class="z" x1="379.1" x2="379.1" y1="48" y2="400"/>
+<text class="m" x="379.1" y="416" text-anchor="middle">0</text>
+<line class="g" x1="396.9" x2="396.9" y1="48" y2="400"/>
+<text class="m" x="396.9" y="416" text-anchor="middle">+1</text>
+<line class="g" x1="414.7" x2="414.7" y1="48" y2="400"/>
+<text class="m" x="414.7" y="416" text-anchor="middle">+2</text>
+<line class="g" x1="432.5" x2="432.5" y1="48" y2="400"/>
+<text class="m" x="432.5" y="416" text-anchor="middle">+3</text>
+<line class="g" x1="450.3" x2="450.3" y1="48" y2="400"/>
+<text class="m" x="450.3" y="416" text-anchor="middle">+4</text>
+<line class="g" x1="468.1" x2="468.1" y1="48" y2="400"/>
+<text class="m" x="468.1" y="416" text-anchor="middle">+5</text>
+<line class="g" x1="485.9" x2="485.9" y1="48" y2="400"/>
+<text class="m" x="485.9" y="416" text-anchor="middle">+6</text>
+<line class="g" x1="503.8" x2="503.8" y1="48" y2="400"/>
+<text class="m" x="503.8" y="416" text-anchor="middle">+7</text>
+<line class="g" x1="521.6" x2="521.6" y1="48" y2="400"/>
+<text class="m" x="521.6" y="416" text-anchor="middle">+8</text>
+<line class="g" x1="539.4" x2="539.4" y1="48" y2="400"/>
+<text class="m" x="539.4" y="416" text-anchor="middle">+9</text>
+<line class="g" x1="557.2" x2="557.2" y1="48" y2="400"/>
+<text class="m" x="557.2" y="416" text-anchor="middle">+10</text>
+<line class="g" x1="575.0" x2="575.0" y1="48" y2="400"/>
+<text class="m" x="575.0" y="416" text-anchor="middle">+11</text>
+<line class="g" x1="592.8" x2="592.8" y1="48" y2="400"/>
+<text class="m" x="592.8" y="416" text-anchor="middle">+12</text>
+<line class="g" x1="610.6" x2="610.6" y1="48" y2="400"/>
+<text class="m" x="610.6" y="416" text-anchor="middle">+13</text>
+<line class="g" x1="628.4" x2="628.4" y1="48" y2="400"/>
+<text class="m" x="628.4" y="416" text-anchor="middle">+14</text>
+<line class="g" x1="646.2" x2="646.2" y1="48" y2="400"/>
+<text class="m" x="646.2" y="416" text-anchor="middle">+15</text>
+<line class="g" x1="664.1" x2="664.1" y1="48" y2="400"/>
+<text class="m" x="664.1" y="416" text-anchor="middle">+16</text>
+<line class="g" x1="681.9" x2="681.9" y1="48" y2="400"/>
+<text class="m" x="681.9" y="416" text-anchor="middle">+17</text>
+<line class="g" x1="699.7" x2="699.7" y1="48" y2="400"/>
+<text class="m" x="699.7" y="416" text-anchor="middle">+18</text>
+<line class="g" x1="717.5" x2="717.5" y1="48" y2="400"/>
+<text class="m" x="717.5" y="416" text-anchor="middle">+19</text>
+<line class="g" x1="735.3" x2="735.3" y1="48" y2="400"/>
+<text class="m" x="735.3" y="416" text-anchor="middle">+20</text>
+<line class="g" x1="753.1" x2="753.1" y1="48" y2="400"/>
+<text class="m" x="753.1" y="416" text-anchor="middle">+21</text>
+<line class="g" x1="770.9" x2="770.9" y1="48" y2="400"/>
+<text class="m" x="770.9" y="416" text-anchor="middle">+22</text>
+<line class="g" x1="788.8" x2="788.8" y1="48" y2="400"/>
+<text class="m" x="788.8" y="416" text-anchor="middle">+23</text>
+<line class="g" x1="806.6" x2="806.6" y1="48" y2="400"/>
+<text class="m" x="806.6" y="416" text-anchor="middle">+24</text>
+<line class="g" x1="824.4" x2="824.4" y1="48" y2="400"/>
+<text class="m" x="824.4" y="416" text-anchor="middle">+25</text>
+<line class="g" x1="842.2" x2="842.2" y1="48" y2="400"/>
+<text class="m" x="842.2" y="416" text-anchor="middle">+26</text>
+<line class="g" x1="860.0" x2="860.0" y1="48" y2="400"/>
+<text class="m" x="860.0" y="416" text-anchor="middle">+27</text>
 <text class="t" x="16" y="69.0">3.8 vs 3.7  drussgt40</text>
-<line class="ci" x1="691.2" x2="851.8" y1="65.0" y2="65.0"/>
-<circle class="pt" cx="771.7" cy="65.0" r="4.5"><title>2026-10-06_hadur-3.8_drussgt40-local_cold.tsv: 13.21 pp (10.67 to 15.74)</title></circle>
+<line class="ci" x1="569.1" x2="659.4" y1="65.0" y2="65.0"/>
+<circle class="pt" cx="614.4" cy="65.0" r="4.5"><title>2026-10-06_hadur-3.8_drussgt40-local_cold.tsv: 13.21 pp (10.67 to 15.74)</title></circle>
 <text class="t" x="16" y="91.0">3.8 vs 3.7  top20</text>
-<line class="ci" x1="398.9" x2="487.3" y1="87.0" y2="87.0"/>
-<circle class="pt" cx="443.3" cy="87.0" r="4.5"><title>2026-10-06_hadur-3.8_top20-local_cold.tsv: 2.84 pp (1.44 to 4.23)</title></circle>
-<text class="t" x="16" y="113.0">3.8 vs 3.7  leak38-step1-16seeds</text>
-<line class="ci" x1="337.2" x2="360.6" y1="109.0" y2="109.0"/>
-<circle class="pt" cx="348.9" cy="109.0" r="4.5"><title>2026-10-06_hadur-leak38-step1-16seeds-local_cold.tsv: -0.14 pp (-0.51 to 0.23)</title></circle>
-<text class="t" x="16" y="135.0">3.8 vs 3.7  leak38-step1-e1111 [1.11.1]</text>
-<line class="ci" x1="347.9" x2="371.1" y1="131.0" y2="131.0"/>
-<circle class="pt" cx="359.4" cy="131.0" r="4.5"><title>2026-10-06_hadur-leak38-step1-e1111-local_cold.tsv: 0.19 pp (-0.17 to 0.56)</title></circle>
-<text class="t" x="16" y="157.0">3.8 vs 3.7  leak38-step1-loaded</text>
-<line class="ci" x1="335.9" x2="392.0" y1="153.0" y2="153.0"/>
-<circle class="pt" cx="364.1" cy="153.0" r="4.5"><title>2026-10-06_hadur-leak38-step1-loaded-local_cold.tsv: 0.34 pp (-0.55 to 1.22)</title></circle>
-<text class="t" x="16" y="179.0">3.8 vs 3.7  leak38-step1</text>
-<line class="ci" x1="317.9" x2="361.2" y1="175.0" y2="175.0"/>
-<circle class="pt" cx="339.7" cy="175.0" r="4.5"><title>2026-10-06_hadur-leak38-step1-local_cold.tsv: -0.43 pp (-1.12 to 0.25)</title></circle>
-<text class="t" x="16" y="201.0">3.8.1 vs 3.7  leak38-step2-16seeds</text>
-<line class="ci" x1="329.6" x2="354.0" y1="197.0" y2="197.0"/>
-<circle class="pt" cx="341.9" cy="197.0" r="4.5"><title>2026-10-06_hadur-leak38-step2-16seeds-local_cold.tsv: -0.36 pp (-0.75 to 0.02)</title></circle>
-<text class="t" x="16" y="223.0">3.8.1 vs 3.7  leak38-step2</text>
-<line class="ci" x1="331.2" x2="379.3" y1="219.0" y2="219.0"/>
-<circle class="pt" cx="355.2" cy="219.0" r="4.5"><title>2026-10-06_hadur-leak38-step2-local_cold.tsv: 0.06 pp (-0.70 to 0.82)</title></circle>
-<text class="t" x="16" y="245.0">3.8.1 vs 3.8  leak38-step3</text>
-<line class="ci" x1="340.7" x2="379.0" y1="241.0" y2="241.0"/>
-<circle class="pt" cx="360.0" cy="241.0" r="4.5"><title>2026-10-06_hadur-leak38-step3-local_cold.tsv: 0.21 pp (-0.40 to 0.81)</title></circle>
-<text class="t" x="16" y="267.0">3.8 vs 3.7  melee-top20</text>
-<line class="ci" x1="327.4" x2="347.9" y1="263.0" y2="263.0"/>
-<circle class="pt" cx="337.5" cy="263.0" r="4.5"><title>2026-10-06_hadur-melee-top20-local_cold.tsv: -0.50 pp (-0.82 to -0.17)</title></circle>
-<text class="t" x="16" y="289.0">3.8 vs 3.7  top20-e1111 [1.11.1]</text>
-<line class="ci" x1="408.1" x2="492.0" y1="285.0" y2="285.0"/>
-<circle class="pt" cx="449.9" cy="285.0" r="4.5"><title>2026-10-06_hadur-top20-e1111-local_cold.tsv: 3.05 pp (1.73 to 4.38)</title></circle>
+<line class="ci" x1="404.7" x2="454.4" y1="87.0" y2="87.0"/>
+<circle class="pt" cx="429.6" cy="87.0" r="4.5"><title>2026-10-06_hadur-3.8_top20-local_cold.tsv: 2.84 pp (1.44 to 4.23)</title></circle>
+<text class="t" x="16" y="113.0">3.8.5 vs 3.8  druss-385 [1.11.1]</text>
+<line class="ci" x1="306.4" x2="437.0" y1="109.0" y2="109.0"/>
+<circle class="pt" cx="371.8" cy="109.0" r="4.5"><title>2026-10-06_hadur-druss-385-local_cold.tsv: -0.41 pp (-4.08 to 3.25)</title></circle>
+<text class="t" x="16" y="135.0">3.8.5 vs 3.8  leak38-385 [1.11.1]</text>
+<line class="ci" x1="368.0" x2="380.7" y1="131.0" y2="131.0"/>
+<circle class="pt" cx="374.4" cy="131.0" r="4.5"><title>2026-10-06_hadur-leak38-385-local_cold.tsv: -0.26 pp (-0.62 to 0.09)</title></circle>
+<text class="t" x="16" y="157.0">3.8 vs 3.7  leak38-step1-16seeds</text>
+<line class="ci" x1="370.0" x2="383.2" y1="153.0" y2="153.0"/>
+<circle class="pt" cx="376.6" cy="153.0" r="4.5"><title>2026-10-06_hadur-leak38-step1-16seeds-local_cold.tsv: -0.14 pp (-0.51 to 0.23)</title></circle>
+<text class="t" x="16" y="179.0">3.8 vs 3.7  leak38-step1-e1111 [1.11.1]</text>
+<line class="ci" x1="376.0" x2="389.0" y1="175.0" y2="175.0"/>
+<circle class="pt" cx="382.4" cy="175.0" r="4.5"><title>2026-10-06_hadur-leak38-step1-e1111-local_cold.tsv: 0.19 pp (-0.17 to 0.56)</title></circle>
+<text class="t" x="16" y="201.0">3.8 vs 3.7  leak38-step1-loaded</text>
+<line class="ci" x1="369.3" x2="400.8" y1="197.0" y2="197.0"/>
+<circle class="pt" cx="385.1" cy="197.0" r="4.5"><title>2026-10-06_hadur-leak38-step1-loaded-local_cold.tsv: 0.34 pp (-0.55 to 1.22)</title></circle>
+<text class="t" x="16" y="223.0">3.8 vs 3.7  leak38-step1</text>
+<line class="ci" x1="359.1" x2="383.5" y1="219.0" y2="219.0"/>
+<circle class="pt" cx="371.4" cy="219.0" r="4.5"><title>2026-10-06_hadur-leak38-step1-local_cold.tsv: -0.43 pp (-1.12 to 0.25)</title></circle>
+<text class="t" x="16" y="245.0">3.8.1 vs 3.7  leak38-step2-16seeds</text>
+<line class="ci" x1="365.7" x2="379.4" y1="241.0" y2="241.0"/>
+<circle class="pt" cx="372.6" cy="241.0" r="4.5"><title>2026-10-06_hadur-leak38-step2-16seeds-local_cold.tsv: -0.36 pp (-0.75 to 0.02)</title></circle>
+<text class="t" x="16" y="267.0">3.8.1 vs 3.7  leak38-step2</text>
+<line class="ci" x1="366.6" x2="393.7" y1="263.0" y2="263.0"/>
+<circle class="pt" cx="380.1" cy="263.0" r="4.5"><title>2026-10-06_hadur-leak38-step2-local_cold.tsv: 0.06 pp (-0.70 to 0.82)</title></circle>
+<text class="t" x="16" y="289.0">3.8.1 vs 3.8  leak38-step3</text>
+<line class="ci" x1="371.9" x2="393.5" y1="285.0" y2="285.0"/>
+<circle class="pt" cx="382.8" cy="285.0" r="4.5"><title>2026-10-06_hadur-leak38-step3-local_cold.tsv: 0.21 pp (-0.40 to 0.81)</title></circle>
+<text class="t" x="16" y="311.0">3.8 vs 3.7  melee-top20</text>
+<line class="ci" x1="364.5" x2="376.0" y1="307.0" y2="307.0"/>
+<circle class="pt" cx="370.2" cy="307.0" r="4.5"><title>2026-10-06_hadur-melee-top20-local_cold.tsv: -0.50 pp (-0.82 to -0.17)</title></circle>
+<text class="t" x="16" y="333.0">3.8 vs 3.7  team-top20</text>
+<line class="ci" x1="815.8" x2="850.0" y1="329.0" y2="329.0"/>
+<circle class="pt" cx="832.9" cy="329.0" r="4.5"><title>2026-10-06_hadur-team-top20-local_cold.tsv: 25.48 pp (24.52 to 26.44)</title></circle>
+<text class="t" x="16" y="355.0">3.8.5 vs 3.8  top20-385 [1.11.1]</text>
+<line class="ci" x1="332.8" x2="385.7" y1="351.0" y2="351.0"/>
+<circle class="pt" cx="359.1" cy="351.0" r="4.5"><title>2026-10-06_hadur-top20-385-local_cold.tsv: -1.12 pp (-2.60 to 0.37)</title></circle>
+<text class="t" x="16" y="377.0">3.8 vs 3.7  top20-e1111 [1.11.1]</text>
+<line class="ci" x1="409.9" x2="457.1" y1="373.0" y2="373.0"/>
+<circle class="pt" cx="433.4" cy="373.0" r="4.5"><title>2026-10-06_hadur-top20-e1111-local_cold.tsv: 3.05 pp (1.73 to 4.38)</title></circle>
 </svg>
