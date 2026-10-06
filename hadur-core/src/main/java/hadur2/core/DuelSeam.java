@@ -110,6 +110,12 @@ final class DuelSeam implements Role {
         duel.duressScan(tick.in(), e);
     }
 
+    /** RES-9, SHIELD-6: a hit taken in duress still counts against the shield's budget. */
+    void hitInDuress(BotEvent.HitByBullet e, Tick tick) {
+        if (tick.focusing() && !e.name().equals(tick.focus().target())) return;
+        duel.hitInDuress(tick.in(), e);
+    }
+
     @Override
     public void drive(Tick tick, BotOrders.Builder out) {
         if (tick.duress()) duel.duressDrive(tick.in(), out, tick.mayFire());

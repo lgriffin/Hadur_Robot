@@ -588,7 +588,11 @@ public final class HadurCore {
             duelSeam.observeInDuress(scan, tick);
         }
         else if (e instanceof BotEvent.BulletHit) stats.shotsHit++;
-        else if (e instanceof BotEvent.HitByBullet) stats.hitsTaken++;
+        else if (e instanceof BotEvent.HitByBullet) {
+            stats.hitsTaken++;
+            // SHIELD-6: the damage still counts against the shield's budget.
+            duelSeam.hitInDuress((BotEvent.HitByBullet) e, tick);
+        }
         else if (e instanceof BotEvent.BulletHitBullet) stats.bulletsIntercepted++;
         else if (e instanceof BotEvent.SkippedTurn) onSkippedTurn(tick.in(), ((BotEvent.SkippedTurn) e).skippedTime());
         else if (e instanceof BotEvent.TickTime) onTickTime((BotEvent.TickTime) e);

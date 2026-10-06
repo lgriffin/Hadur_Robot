@@ -90,6 +90,14 @@ public final class DuelController {
      * opponent and the shield list names someone, so a melee or an empty list costs nothing.
      */
     private final ShieldMode shield;
+    /**
+     * SHIELD-5: the aim the shield tick turned the gun to for a shot at the enemy, the tick it
+     * was ordered ({@link #shieldAimTime}); the shot goes out next tick if the gun is on it.
+     */
+    private double shieldAim = Double.NaN;
+    private long shieldAimTime = Long.MIN_VALUE;
+    /** The power that aim was made for. */
+    private double shieldAimPower;
     /** The Duel's shelf: null when the battle keeps no 1v1 memory (no store, or not a duel charter). */
     private final ProfileLibrary library;
     /**
@@ -741,7 +749,7 @@ public final class DuelController {
      */
     public void bulletHit(BotEvent.BulletHit e, boolean ownOutcome, boolean foreign, boolean driving) {
         // SHIELD-5: a bullet shot at an enemy bullet is no evidence about the enemy's aim.
-        boolean shieldShot = shield != null && shield.ownBulletResolved(e.power());
+        boolean shieldShot = shield != null && shield.ownBulletResolved(e.power(), e.bulletHeading());
         if (!shieldShot) moveController.ourBulletGone(e.bulletHeading(), e.power());
         if (ownOutcome && !shieldShot) {
             shieldDetector.bulletHit();
@@ -794,7 +802,7 @@ public final class DuelController {
      * @param ownOutcome WORLD-5: the outcome is a Duel bullet's
      */
     public void bulletMissed(BotEvent.BulletMissed e, boolean ownOutcome) {
-        boolean shieldShot = shield != null && shield.ownBulletResolved(e.power());
+        boolean shieldShot = shield != null && shield.ownBulletResolved(e.power(), e.bulletHeading());
         if (!shieldShot) moveController.ourBulletGone(e.bulletHeading(), e.power());
         if (ownOutcome && !shieldShot) {
             shieldDetector.bulletMissed();
@@ -814,7 +822,7 @@ public final class DuelController {
     public void bulletHitBullet(BotInput in, BotEvent.BulletHitBullet e, boolean ownOutcome) {
         // SHIELD-5: our own shield bullets are meant to meet theirs; that is not SHIELD-1's
         // evidence of an enemy shield, nor a miss, nor a bullet the shadows know of.
-        boolean shieldShot = shield != null && shield.ownBulletResolved(e.power());
+        boolean shieldShot = shield != null && shield.ownBulletResolved(e.power(), e.bulletHeading());
         if (shield != null) shield.onIntercepted(in.time(), e.enemyPower(), e.x(), e.y());
         if (!shieldShot) moveController.ourBulletGone(e.bulletHeading(), e.power());
         // SHIELD-1: in a duel, a bullet that meets ours may be a shield.
@@ -860,8 +868,9 @@ public final class DuelController {
         stats.shadowedWaves = moveController.shadowedWaves();
         stats.flavourStep = flavour.step().ordinal();
         stats.seedDecays = seedDecays;
-        // SHIELD-6: the round's result moves the budget.
-        if (shield != null) shield.onRoundEnded(tick, won);
+        // SHIELD-6: the round's record, and the budget is checked once more; the result of the
+        // round does not move the budget, only the damage does.
+        if (shield != null) shield.onRoundEnded(tick);
         foldRound(tick, won);
     }
 
@@ -1409,14 +1418,30 @@ public final class DuelController {
         boolean carried = aimCarriesJitter;
         boolean carries = shieldDetector.shielded();
         if (carries) aimAngle += aimJitter.offset(me.distance(lastGunWave.targetLocation));
-        // SHIELD-2: the shot aimed before a shield was found is held, as aimAndFire holds it.
-        boolean onTarget = Math.abs(Math.toDegrees(in.gunTurnRemaining())) < 0.05 && !(carries && !carried);
+        // The main gun fires the shot aimed on the tick before, once the gun has settled on that
+        // aim. The same here: the shot that may go now is for the aim ordered last tick, so the
+        // gun's heading is compared with that aim, and it goes at the power that aim assumed.
+        // A gun that finished some other turn (a shield's) is not on target. SHIELD-2: the shot
+        // aimed before a shield was found is held, as aimAndFire holds it.
+        boolean heldAim = shieldAimTime == in.time() - 1 && !Double.isNaN(shieldAim);
+        boolean onTarget = heldAim
+            && Math.abs(Math.toDegrees(Angles.normalRelativeAngle(shieldAim - in.gunHeading()))) < 0.05
+            && !(carries && !carried);
+        double attackPower = onTarget ? shieldAimPower : lastGunWave.bulletPower();
         ShieldMode.Command c = shield.tick(new ShieldMode.Situation(in.time(), me.x, me.y,
             in.heading(), in.gunHeading(), in.gunHeat(), in.gunCoolingRate(), in.energy(),
             lastEnemyLocation.x, lastEnemyLocation.y, lastEnemyEnergy, aimAngle,
-            lastGunWave.bulletPower(), onTarget, mayFire));
-        if (c == null) return false;
+            attackPower, onTarget, mayFire));
+        if (c == null) {
+            shieldAim = Double.NaN;
+            return false;
+        }
         aimCarriesJitter = carries;
+        // The aim is held for next tick's shot only when this tick's gun order is the turn to it.
+        boolean turnsToAim = Math.abs(c.gunTurn - Angles.normalRelativeAngle(aimAngle - in.gunHeading())) < 1e-9;
+        shieldAim = turnsToAim ? aimAngle : Double.NaN;
+        shieldAimTime = in.time();
+        shieldAimPower = lastGunWave.bulletPower();
         orders.maxVelocity(Rules.MAX_VELOCITY);
         orders.turnRight(c.bodyTurn);
         orders.ahead(c.ahead);
@@ -1441,8 +1466,40 @@ public final class DuelController {
         }
         aimedBulletPower = lastGunWave.bulletPower();
         moveController.checkWaves(in.time(), me);
+        drainShieldWaveOutcomes();
         if (in.time() - lastScanTime > 1) reacquire(in, orders);
         return true;
+    }
+
+    /**
+     * SHIELD-5: the waves that broke on us while shield mode drove, which checkDistance does
+     * not see. Their misses are counted in the battle's hit rates, as checkDistance counts
+     * them (POW-11: a hit rate is a battle-long fact about the enemy's gun, and the lead
+     * regime reads it, so a shield that stays still must not make the enemy look worse at
+     * hitting than it is). Their outcomes are then dropped: the rolling window, the
+     * move-flavour policy and the distance controller learn how well our movement does, and
+     * an outcome against a robot sitting still says nothing about that. Left in the queue they
+     * would reach those policies in a lump when shield mode is left.
+     */
+    private void drainShieldWaveOutcomes() {
+        java.util.List<Boolean> outcomes = moveController.takeBrokenWaveOutcomes();
+        java.util.List<Double> powers = moveController.takeBrokenWavePowers();
+        for (int i = 0; i < outcomes.size(); i++) {
+            // A hit was counted when its HitByBullet event arrived.
+            if (!outcomes.get(i)) countTheirs(powers.get(i), false);
+        }
+    }
+
+    /**
+     * RES-9, SHIELD-6: an enemy bullet hit us while the conductor held the Duel in duress. Only
+     * the shield's budget hears of it: the damage counts against the battle's allowance, as
+     * {@link #hitByBullet} counts it.
+     *
+     * @param in the tick's input
+     * @param e the hit
+     */
+    public void hitInDuress(BotInput in, BotEvent.HitByBullet e) {
+        if (shield != null) shield.onHitByBullet(in.time(), e.power(), e.x(), e.y(), e.heading());
     }
 
     /**

@@ -198,7 +198,8 @@ public final class ShieldMode {
     private final double[][] scan = new double[HISTORY][7];
     private int scans;
     private final List<EnemyWave> waves = new ArrayList<>();
-    private final List<Double> ownBullets = new ArrayList<>();
+    /** Our shield bullets in flight: {power, heading}, oldest first. */
+    private final List<double[]> ownBullets = new ArrayList<>();
     private final int[] exactHits = new int[PREDICTORS];
     private final double[] offsets = new double[BASES];
     private final double[] directionalOffsets = new double[BASES];
@@ -387,12 +388,14 @@ public final class ShieldMode {
         }
     }
 
-    private double[] scanAt(long time) {
+    /** The slot of the latest scan taken at or before {@code time}, or -1 when there is none. */
+    private int scanSlotAtOrBefore(long time) {
+        int best = -1;
         for (int n = 0; n < Math.min(scans, HISTORY); n++) {
             int i = (scans - 1 - n) % HISTORY;
-            if (scanTime[i] == time) return scan[i];
+            if (scanTime[i] <= time && (best < 0 || scanTime[i] > scanTime[best])) best = i;
         }
-        return null;
+        return best;
     }
 
     /**
@@ -411,9 +414,21 @@ public final class ShieldMode {
         lastEnemyPower = power;
         enemyNextFire = fireTime + (long) Math.ceil((1 + power / 5) / coolingRate - 1e-9);
         if (!active()) return;
-        double[] at = scanAt(fireTime);
-        double[] before = scanAt(fireTime - 1);
-        if (at == null || before == null) return;
+        // The scans of the firing tick and the tick before it are what the predictors want. A
+        // scan the radar missed (a skipped turn, a gap in the lock) must not lose the shot: the
+        // latest scan at or before the firing tick stands in for the first, projected along the
+        // enemy's own velocity to the firing tick, and the latest one before that for the second.
+        int atSlot = scanSlotAtOrBefore(fireTime);
+        if (atSlot < 0) return;
+        int beforeSlot = scanSlotAtOrBefore(scanTime[atSlot] - 1);
+        if (beforeSlot < 0) return;
+        double[] at = scan[atSlot].clone();
+        double[] before = scan[beforeSlot];
+        long gap = fireTime - scanTime[atSlot];
+        if (gap > 0) {
+            at[2] += Math.sin(at[4]) * at[5] * gap;
+            at[3] += Math.cos(at[4]) * at[5] * gap;
+        }
         EnemyWave w = new EnemyWave();
         w.time = fireTime;
         w.ox = at[2];
@@ -530,12 +545,12 @@ public final class ShieldMode {
     }
 
     /**
-     * A round ended: the round's record is written and the budget is checked.
+     * A round ended: the round's record is written and the budget is checked. The result of
+     * the round plays no part: the budget counts damage, not wins (SHIELD-6).
      *
      * @param tick the tick the round ended on
-     * @param won whether we won it
      */
-    public void onRoundEnded(long tick, boolean won) {
+    public void onRoundEnded(long tick) {
         if (!listed) return;
         telemetry.emit(String.format(Locale.ROOT, "SR,%d,%d,%d,%d,%d,%d,%d,%.1f,%.1f,%s",
             round, tick, shieldShotsThisRound, interceptsThisRound, hitsThisRound,
@@ -549,20 +564,26 @@ public final class ShieldMode {
     }
 
     /**
-     * Whether a bullet of ours of {@code power} that has just hit, missed or met a bullet is
-     * one this mode shot at an enemy bullet, and so no evidence about the enemy's aim (not
-     * SHIELD-1's detector's, not the hit rate's). The oldest shield bullet of that power is
+     * Whether a bullet of ours that has just hit, missed or met a bullet is one this mode shot
+     * at an enemy bullet, and so no evidence about the enemy's aim (not SHIELD-1's detector's,
+     * not the hit rate's). A bullet is told by its power and its heading, the gun's heading on
+     * the tick it left, which the engine's event carries; an attack bullet of the same power
+     * left along another heading and is not taken for it. With no heading (NaN, from an older
+     * transcript) the oldest shield bullet of that power is taken. The shield bullet found is
      * taken off the list.
      *
      * @param power the bullet's power
+     * @param heading the bullet's absolute heading, radians, or NaN when unknown
      * @return whether it was a shield bullet
      */
-    public boolean ownBulletResolved(double power) {
+    public boolean ownBulletResolved(double power, double heading) {
         for (int i = 0; i < ownBullets.size(); i++) {
-            if (Math.abs(ownBullets.get(i) - power) < 1e-6) {
-                ownBullets.remove(i);
-                return true;
-            }
+            double[] b = ownBullets.get(i);
+            if (Math.abs(b[0] - power) >= 1e-6) continue;
+            if (!Double.isNaN(heading)
+                    && Math.abs(Angles.normalRelativeAngle(b[1] - heading)) >= 1e-6) continue;
+            ownBullets.remove(i);
+            return true;
         }
         return false;
     }
@@ -617,7 +638,7 @@ public final class ShieldMode {
             if (canFire(p, s)) {
                 shieldShotsThisRound++;
                 if (ownBullets.size() >= MAX_OWN_BULLETS) ownBullets.remove(0);
-                ownBullets.add(p.power);
+                ownBullets.add(new double[] {p.power, s.gunHeading});
                 wiggleSide = -wiggleSide;
                 return new Command(0, -p.wiggle,
                     Angles.normalRelativeAngle(s.attackAngle - s.gunHeading), p.power, false);

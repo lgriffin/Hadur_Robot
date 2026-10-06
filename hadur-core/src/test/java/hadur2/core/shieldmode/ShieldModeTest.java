@@ -65,7 +65,7 @@ class ShieldModeTest {
         mode.onIntercepted(21, 1.0, 400, 300);
         mode.onRammed();
         mode.onDuress(30);
-        mode.onRoundEnded(100, false);
+        mode.onRoundEnded(100);
         assertFalse(mode.active());
         assertEquals(List.of(), records);
         assertEquals(0, mode.budget().taken(), 0, "an unlisted opponent's damage is not tracked");
@@ -285,14 +285,14 @@ class ShieldModeTest {
 
     @Test
     @Tag("SHIELD-6")
-    @DisplayName("rounds won or lost do not move the allowance: a loss shows in the damage taken")
+    @DisplayName("a round ending does not move the allowance: only damage does")
     void roundResultsDoNotMoveIt() {
         scan(1);
         double before = mode.budget().allowed();
-        mode.onRoundEnded(500, true);
+        mode.onRoundEnded(500);
         mode.newRound(1);
         scan(1);
-        mode.onRoundEnded(500, false);
+        mode.onRoundEnded(500);
         assertEquals(before, mode.budget().allowed(), 1e-12);
     }
 
@@ -312,9 +312,84 @@ class ShieldModeTest {
     void roundRecord() {
         scan(1);
         mode.onHitByBullet(30, 0.5, MY_X, MY_Y, Math.PI);
-        mode.onRoundEnded(200, true);
+        mode.onRoundEnded(200);
         String sr = records.stream().filter(r -> r.startsWith("SR,")).findFirst().orElseThrow();
         assertEquals("SR,0,200,0,0,1,1,0,2.0,370.6,-", sr);
+    }
+
+    // ---- a shot detected across scan gaps still makes a wave; shield bullets are told by heading
+
+    /** The gun's heading on the tick the shield bullet left. */
+    private double shotGunHeading;
+
+    /** Scans 1 to {@code upTo}, then none until the shot is reported: the radar lost the enemy. */
+    private ShieldMode.Command planAfterShot(long upTo, long fireTime, double power) {
+        for (long t = 1; t <= upTo; t++) scan(t);
+        mode.onEnemyShot(fireTime, power);
+        ShieldMode.Command shielded = null;
+        double gun = 0;
+        double x = MY_X;
+        for (long t = fireTime + 1; t < fireTime + 40 && shielded == null; t++) {
+            ShieldMode.Command c = mode.tick(new ShieldMode.Situation(t, x, MY_Y, Math.PI / 2, gun, 0, 0.1,
+                100, ENEMY_X, ENEMY_Y, 100, 0, 1.9, false, true));
+            if (c == null) break;
+            if (c.firePower > 0 && !c.attack) {
+                shielded = c;
+                shotGunHeading = gun;
+            }
+            // The engine turns the gun and drives the step by the order (heading east: along x).
+            gun += c.gunTurn;
+            x += c.ahead;
+        }
+        return shielded;
+    }
+
+    @Test
+    @Tag("SHIELD-5")
+    @DisplayName("a shot with no scan at its firing tick or the tick before still makes a wave and is shielded")
+    void shotAcrossScanGap() {
+        assertNotNull(planAfterShot(6, 10, 1.0), "scans stop at 6, the shot is at 10");
+    }
+
+    @Test
+    @Tag("SHIELD-5")
+    @DisplayName("a shot whose firing tick was missed but whose tick before was scanned is shielded")
+    void shotMissingOnlyTheFiringScan() {
+        assertNotNull(planAfterShot(9, 10, 1.0));
+    }
+
+    @Test
+    @Tag("SHIELD-5")
+    @DisplayName("a shot before the first scan has no wave to build and is dropped")
+    void shotBeforeAnyScan() {
+        scan(20);
+        mode.onEnemyShot(10, 1.0);
+        for (long t = 21; t < 60; t++) {
+            ShieldMode.Command c = tick(t);
+            assertTrue(c == null || c.firePower == 0 || c.attack, "no shield without a wave");
+        }
+    }
+
+    @Test
+    @Tag("SHIELD-5")
+    @DisplayName("an attack bullet of the same power is not taken for a shield bullet; the shield bullet is, once")
+    void shieldBulletIsToldByHeading() {
+        ShieldMode.Command shielded = planAfterShot(9, 10, 1.0);
+        assertNotNull(shielded);
+        double power = shielded.firePower;
+        // An attack bullet of the same power left along another heading.
+        assertFalse(mode.ownBulletResolved(power, shotGunHeading + 0.3), "same power, another heading");
+        assertTrue(mode.ownBulletResolved(power, shotGunHeading), "the shield bullet");
+        assertFalse(mode.ownBulletResolved(power, shotGunHeading), "and it is taken off the list");
+    }
+
+    @Test
+    @Tag("SHIELD-5")
+    @DisplayName("an event with no bullet heading is matched by power alone")
+    void unknownHeadingMatchesByPower() {
+        ShieldMode.Command shielded = planAfterShot(9, 10, 1.0);
+        assertNotNull(shielded);
+        assertTrue(mode.ownBulletResolved(shielded.firePower, Double.NaN));
     }
 
     // ---- shield bullets are told from attack bullets
@@ -324,6 +399,6 @@ class ShieldModeTest {
     @DisplayName("a bullet of ours that was not shot at an enemy bullet is not a shield bullet")
     void notAShieldBullet() {
         scan(1);
-        assertFalse(mode.ownBulletResolved(1.9));
+        assertFalse(mode.ownBulletResolved(1.9, 0.5));
     }
 }
