@@ -223,6 +223,16 @@ while either robot was disabled and matched no wave; they are left out of the re
 count. (A disabled robot is still scanned, so such a shot is often seen, and then counts.) "False waves" are inferred waves with no real bullet behind them;
 "ledger phantoms" are drops 1.20 would have read as shots that the ledger explained away.
 
+## Analysing the rows (BENCH-38, BENCH-39)
+
+`Stats` takes its 95% critical values from Student's t at the sample's own degrees of freedom
+(any df; no table limit, no 1.96 fallback) and offers `bootstrapDiff(a, b, B, seed)`, a
+percentile interval for a difference of means. Outside the JVM, `data/tools/analyse.py` pools
+the exported TSV rows (paired difference over all opponents, Holm and Benjamini-Hochberg
+adjustment, TOST non-inferiority, `--plan` for seeds needed) and `data/tools/repeatability.py`
+measures run-to-run repeatability. Seed pairing was measured to remove about no variance, so
+seed counts are planned unpaired. See `data/README.md`.
+
 ## Shield probe (BENCH-11)
 
 ```sh

@@ -66,9 +66,16 @@ cloud bench does.
 
 ## Principles
 
-1. **Paired by seed.** Candidate and baseline fight the same opponent on the same seeds, so
-   noise common to both cancels. Every comparison in a report is a paired difference with a
-   95% interval.
+1. **Paired by seed.** Candidate and baseline fight the same opponent on the same seeds, and
+   every comparison in a report is a paired difference with a 95% interval. Pairing is a
+   design convenience (a fixed, repeatable list of fights, and a valid interval), not a noise
+   canceller: measured on repeated runs it removes about no variance. The same jar, opponent
+   and seed gives a score share that differs between sessions by an SD of 3 to 5 points per
+   battle with only 29 of 512 pairs identical, the seed explains none of the within-opponent
+   variance (intraclass correlation -0.05), and candidate and baseline shares on the same seed
+   are uncorrelated (mean r about 0, paired/unpaired variance ratio 0.94 to 1.02). Plan seed
+   counts as an unpaired design (`data/tools/analyse.py --plan`); numbers from
+   `data/tools/repeatability.py`.
 2. **Trust before numbers.** Hadur reads its own turn times and sheds work when the engine
    skips its turns, so an overloaded bench measures a different robot. Each report must show
    skipped turns and duress ticks, and a run whose load differs between candidate and baseline
@@ -133,3 +140,9 @@ should change. Record changes below.
   the duress of 3.7; team is +25.5 points for 3.8. Findings in `local/2026-10-06_melee-team-findings.md`.
 - 2026-10-06: Harness gap analysis written (`local/2026-10-06_harness-review.md`). Its main finding is that seed pairing
   buys little variance reduction, so the charter's "noise cancels" principle is a design intent, not a measured effect.
+- 2026-10-06: Principle 1 reworded after `data/tools/repeatability.py` on the leak38 step 1 and
+  step 2 runs (3.7, 16 seeds, 32 opponents, same jar and seeds in two sessions): per-battle SD
+  3.21 points, 29 of 512 pairs identical, ICC 0.90 overall but -0.05 within opponent, paired/
+  unpaired variance ratio 1.01 and 0.94. Seed pairing is kept for repeatability and a valid
+  interval, and seeds are planned unpaired. `data/tools/analyse.py` adds the pooled paired
+  difference, Holm and Benjamini-Hochberg adjustment, TOST non-inferiority and the seeds planner.
