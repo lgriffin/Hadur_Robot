@@ -56,6 +56,37 @@ class ShieldOpenerTest {
 
     @Test
     @Tag("SHIELD-3")
+    @DisplayName("SHIELD-3: a first scan long after the round began leaves the whole-round history unknown")
+    void lateFirstScanIsUnknown() {
+        EnemyStillness s = new EnemyStillness();
+        s.newRound();
+        s.scanned(EnemyStillness.KNOWN_FROM + 1, 400, 300, 0);
+        s.scanned(EnemyStillness.KNOWN_FROM + 2, 400, 300, 0);
+        assertTrue(s.movedThisRound(), "it may have moved and stopped before it was seen");
+        EnemyStillness early = new EnemyStillness();
+        early.newRound();
+        early.scanned(EnemyStillness.KNOWN_FROM, 400, 300, 0);
+        assertFalse(early.movedThisRound());
+    }
+
+    @Test
+    @Tag("SHIELD-3")
+    @DisplayName("SHIELD-3: the latch reports itself only when the still-enemy rule made the shielder")
+    void latchReason() {
+        ShieldDetector d = new ShieldDetector();
+        assertTrue(d.bulletIntercepted(true), "one bullet from a still enemy");
+        assertFalse(d.bulletIntercepted(true), "already a shielder");
+        ShieldDetector moving = new ShieldDetector();
+        for (int i = 0; i < ShieldDetector.MIN_INTERCEPTS - 1; i++) assertFalse(moving.bulletIntercepted(false));
+        assertFalse(moving.bulletIntercepted(false), "SHIELD-1's window latches, not SHIELD-3");
+        assertTrue(moving.shielded());
+        ShieldDetector both = new ShieldDetector();
+        for (int i = 0; i < ShieldDetector.MIN_INTERCEPTS - 1; i++) both.bulletIntercepted(false);
+        assertFalse(both.bulletIntercepted(true), "the window latches on this bullet too: it is credited");
+    }
+
+    @Test
+    @Tag("SHIELD-3")
     @DisplayName("SHIELD-3: any velocity, or a position off its start, means it has moved, for the rest of the round")
     void movementIsRemembered() {
         EnemyStillness s = new EnemyStillness();

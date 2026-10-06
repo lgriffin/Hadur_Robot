@@ -58,11 +58,16 @@ public final class ShieldDetector {
      * @param enemyStill SHIELD-3: the enemy has not moved since the round began, so this is a
      *     shield and not two robots that happened to fire at once: the enemy is a shielder
      *     from the next shot, without waiting for SHIELD-1's four in twenty
+     * @return whether the still-enemy rule is what made the enemy a shielder on this bullet
+     *     (not an earlier verdict, and not SHIELD-1's window latching on the same bullet)
      */
-    public void bulletIntercepted(boolean enemyStill) {
+    public boolean bulletIntercepted(boolean enemyStill) {
+        boolean was = shielded;
         totalIntercepts++;
-        if (enemyStill) shielded = true;
         record(true);
+        boolean byWindow = !was && shielded;
+        if (enemyStill && !shielded) shielded = true;
+        return enemyStill && !was && !byWindow;
     }
 
     /** SHIELD-3: a profile records the enemy as a shielder from an earlier battle; it is one from the first shot. */

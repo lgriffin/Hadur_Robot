@@ -16,14 +16,21 @@ class LastShotProperties {
     @Property
     @Tag("SHIELD-4")
     void aStillShielderIsNeverShotBelowFullPower(@ForAll @DoubleRange(min = 0.1, max = 3.0) @Scale(3) double chosen) {
-        assertEquals(PowerPolicy.FULL_POWER, PowerPolicy.shieldPower(true, true, chosen));
+        assertEquals(PowerPolicy.FULL_POWER, PowerPolicy.shieldPower(true, true, chosen, 100));
+    }
+
+    @Property
+    @Tag("SHIELD-4")
+    void atTwelveEnergyOrLessThePowerIsUnchanged(@ForAll @DoubleRange(min = 0.1, max = 3.0) @Scale(3) double chosen,
+                                                 @ForAll @DoubleRange(min = 0, max = 12) @Scale(3) double ours) {
+        assertEquals(chosen, PowerPolicy.shieldPower(true, true, chosen, ours));
     }
 
     @Property
     @Tag("SHIELD-4")
     void withoutBothConditionsThePowerIsUnchanged(@ForAll @DoubleRange(min = 0.1, max = 3.0) @Scale(3) double chosen,
                                                   @ForAll boolean shielder, @ForAll boolean still) {
-        if (!(shielder && still)) assertEquals(chosen, PowerPolicy.shieldPower(shielder, still, chosen));
+        if (!(shielder && still)) assertEquals(chosen, PowerPolicy.shieldPower(shielder, still, chosen, 100));
     }
 
     @Property

@@ -12,7 +12,8 @@ package hadur2.core.shield;
  * {@link #TOLERANCE} px, and, for the whole-round question, when its position differs from
  * where it was first seen.</p>
  *
- * <p>The history is only known from a round's start. {@link #forget} (a recovery, or the
+ * <p>The history is only known from a round's start (a first scan after {@link #KNOWN_FROM}
+ * ticks leaves it unknown, as {@link #forget} does). {@link #forget} (a recovery, or the
  * duel taking over in mid-round) marks the enemy as having moved, so neither rule fires on
  * a guess.</p>
  */
@@ -20,6 +21,12 @@ public final class EnemyStillness {
 
     /** SHIELD-4: the enemy must have been still for this many ticks. */
     public static final long STILL_TICKS = 10;
+    /**
+     * SHIELD-3: the latest tick a round's first scan may come for the whole-round history to
+     * count as known. A later first scan may find an enemy that moved and stopped before it was
+     * seen, so the enemy counts as having moved.
+     */
+    public static final long KNOWN_FROM = 10;
     /** The distance, in px, below which two positions are the same: scan rounding, nothing more. */
     public static final double TOLERANCE = 0.5;
 
@@ -63,6 +70,8 @@ public final class EnemyStillness {
             // Still from the tick it was first seen, unless this scan already shows it moving.
             lastMoveTime = time;
             if (velocity != 0) markMoved(time);
+            // The round's history from before this scan is unknown if the scan came late.
+            if (time > KNOWN_FROM) moved = true;
             return;
         }
         boolean nowMoving = velocity != 0 || Math.hypot(x - lastX, y - lastY) > TOLERANCE;

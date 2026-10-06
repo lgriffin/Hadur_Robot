@@ -262,10 +262,14 @@ public final class PowerPolicy {
      * @param shielder whether the enemy is treated as a bullet shielder (SHIELD-1, SHIELD-3)
      * @param stillForTenTicks whether the enemy has not moved in the last 10 ticks
      * @param power the power chosen so far
+     * @param ourEnergy our energy: like every full-power rule, SHIELD-4 does not apply at
+     *     {@link #MIN_OUR_ENERGY} or below, where a shot a shielder destroys (no refund) could
+     *     leave us disabled
      * @return the power to carry on with
      */
-    public static double shieldPower(boolean shielder, boolean stillForTenTicks, double power) {
-        return shielder && stillForTenTicks ? Math.max(power, FULL_POWER) : power;
+    public static double shieldPower(boolean shielder, boolean stillForTenTicks, double power,
+                                     double ourEnergy) {
+        return shielder && stillForTenTicks && ourEnergy > MIN_OUR_ENERGY ? Math.max(power, FULL_POWER) : power;
     }
 
     /**
@@ -287,6 +291,25 @@ public final class PowerPolicy {
         if (Double.isNaN(smallestEnemyPower) || !(enemyEnergy < smallestEnemyPower)) return false;
         if (!(ourEnergy > enemyEnergy)) return false;
         return ourEnergy - firePower - enemyEnergy < END_4_MARGIN;
+    }
+
+    /**
+     * END-4 for a shot that does not go through the main gun's own hold: shield mode's attack
+     * shots and duress's head-on shots. The power that would really leave is the one asked for,
+     * lowered to what our energy can pay (shield mode keeps 1 of it), so that is what is tested.
+     *
+     * @param ourEnergy our energy now
+     * @param power the power the shot would leave at
+     * @param reserve the energy the shot's own rules keep back from it
+     * @param enemyEnergy their energy at the last scan
+     * @param smallestEnemyPower the smallest bullet power they have fired this battle, or NaN if none
+     * @return whether to hold the shot
+     */
+    public static boolean holdsShotAt(double ourEnergy, double power, double reserve,
+                                      double enemyEnergy, double smallestEnemyPower) {
+        double fired = Math.min(power, ourEnergy - reserve);
+        return fired >= Rules.MIN_BULLET_POWER - 1e-9
+            && holdsLastShot(ourEnergy, fired, enemyEnergy, smallestEnemyPower);
     }
 
     private static boolean below(Estimate e) {

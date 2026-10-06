@@ -18,6 +18,8 @@ import robocode.control.BattlefieldSpecification;
 import robocode.control.RobocodeEngine;
 import robocode.control.RobotSpecification;
 import robocode.control.events.BattleAdaptor;
+import robocode.control.events.BattleCompletedEvent;
+import robocode.control.events.BattleErrorEvent;
 import robocode.control.events.TurnEndedEvent;
 import robocode.control.snapshot.IRobotSnapshot;
 import robocode.control.snapshot.RobotState;
@@ -86,26 +88,49 @@ public final class InactivityCheck {
         System.out.println("engine " + engine.getVersion());
         System.out.println("spend | gap at 440 | spender dies | idler dies | idler left at the end");
         boolean allMoreEnergySurvives = true;
+        boolean allValid = true;
         for (int i = 0; i < powers.length; i++) {
             RobotSpecification[] specs = engine.getLocalRepository("inact.Idler,inact." + names.get(i));
             Outcome o = run(engine, specs);
             System.out.printf("%.1f | %.2f | %s | %s | %s%n", powers[i], o.gap, o.spenderDied, o.idlerDied, o.idlerSurvived);
+            if (!o.valid) {
+                System.out.println("INVALID case for spend " + powers[i] + ": " + o.problem);
+                allValid = false;
+            }
             if (powers[i] > 0 && !o.idlerSurvived) allMoreEnergySurvives = false;
         }
         engine.close();
+        if (!allValid) {
+            System.out.println("RESULT invalid: the engine did not complete every case, so nothing is concluded");
+            System.exit(1);
+        }
         System.out.println(allMoreEnergySurvives ? "RESULT the robot with more energy survived every unequal case"
             : "RESULT the robot with more energy did NOT survive every unequal case");
         System.exit(0);
     }
 
-    private record Outcome(double gap, long spenderDied, long idlerDied, boolean idlerSurvived) {}
+    /** {@code valid} is false, with the {@code problem}, when the battle did not run to a result. */
+    private record Outcome(double gap, long spenderDied, long idlerDied, boolean idlerSurvived,
+                           boolean valid, String problem) {}
 
     private static Outcome run(RobocodeEngine engine, RobotSpecification[] specs) {
         if (specs.length != 2) throw new IllegalStateException("expected 2 robots, found " + specs.length);
         long[] died = {-1, -1};
         double[] gap = {Double.NaN};
         boolean[] idlerAliveAtEnd = {true};
+        boolean[] completed = {false};
+        String[] error = {null};
         BattleAdaptor listener = new BattleAdaptor() {
+            @Override
+            public void onBattleCompleted(BattleCompletedEvent e) {
+                completed[0] = true;
+            }
+
+            @Override
+            public void onBattleError(BattleErrorEvent e) {
+                error[0] = e.getError();
+            }
+
             @Override
             public void onTurnEnded(TurnEndedEvent e) {
                 IRobotSnapshot[] r = e.getTurnSnapshot().getRobots();
@@ -121,7 +146,23 @@ public final class InactivityCheck {
         engine.addBattleListener(listener);
         engine.runBattle(new BattleSpecification(1, new BattlefieldSpecification(800, 600), specs), true);
         engine.removeBattleListener(listener);
-        return new Outcome(gap[0], died[0], died[1], died[1] < 0 || (died[0] >= 0 && died[0] < died[1]));
+        // A battle that did not complete, or never reached the measured tick or a death, has no
+        // observations to read: the unset sentinels must not pass for "the idler survived".
+        String problem = problemWith(completed[0], error[0], gap[0], died[0], died[1]);
+        return new Outcome(gap[0], died[0], died[1], died[1] < 0 || (died[0] >= 0 && died[0] < died[1]),
+            problem == null, problem);
+    }
+
+    /**
+     * What is wrong with a case's observations, or null when they can be read: the battle must
+     * have completed without an engine error, reached the measured tick and ended with a death.
+     */
+    static String problemWith(boolean completed, String error, double gap, long spenderDied, long idlerDied) {
+        if (error != null) return "engine error: " + error;
+        if (!completed) return "the battle did not complete";
+        if (Double.isNaN(gap)) return "no turn 440 observed (no energy gap)";
+        if (spenderDied < 0 && idlerDied < 0) return "neither robot died: no result";
+        return null;
     }
 
     /** Compiles {@code source} into a robot jar named as Robocode expects, with its properties file. */
