@@ -73,7 +73,11 @@ import java.util.zip.GZIPOutputStream;
  *     constant in every home (else several workers share one idle calibration);
  *     {@code --child-cpus N} sizes each battle JVM for N processors (2 when parallel, else
  *     off) and {@code --child-heap SIZE} caps its heap; {@code --per-opponent DIR} writes
- *     one report per opponent beside the main one.</li>
+ *     one report per opponent beside the main one. All of these apply to the melee and team
+ *     modes too: {@code --parallel} runs a field's seeds (melee) or an opponent's seeds
+ *     (team) concurrently, {@code --baseline}/{@code --baseline-robot} add a paired table,
+ *     and {@code --per-opponent} writes a markdown per opponent (per field, in melee);
+ *     {@code --keep-data} in melee needs {@code --parallel 1}.</li>
  * <li>{@code --only TEXT} run opponents whose name contains TEXT,
  *     {@code --out DIR} working directory (work/&lt;mode&gt;-&lt;time&gt;),
  *     {@code --report FILE} also copy the report there.</li>
@@ -291,7 +295,7 @@ public final class Bench {
             if (stored[oi] != null) profiles.put(o, stored[oi]);
         }
 
-        String host = cpuConstant() + ". Host: " + Host.describe() + ", parallel " + homes.size();
+        String host = reportedCpuConstant() + ". Host: " + Host.describe() + ", parallel " + homes.size();
         String report = Report.render(results, profiles, robot, warm, rounds, runs, width, height, host);
         if (baselineResults != null) {
             // BENCH-2's diff table, then BENCH-3's full per-opponent diagnostics for the
@@ -498,6 +502,11 @@ public final class Bench {
      * {@code 512M}, the rumble client's) caps the heap.
      */
     private List<String> childFlags() {
+        return childFlags(opts, parallel);
+    }
+
+    /** The flags for {@code opts} and a {@code parallel} width, shared by the duel, melee and team runs. */
+    static List<String> childFlags(Map<String, String> opts, int parallel) {
         List<String> flags = new ArrayList<>();
         int cpus = Integer.parseInt(opts.getOrDefault("child-cpus", parallel > 1 ? "2" : "0"));
         if (cpus > 0) flags.add("-XX:ActiveProcessorCount=" + cpus);
@@ -563,8 +572,10 @@ public final class Bench {
     /**
      * Hadur against the whole set at once, {@code runs} times (one RANDOMSEED each), with the
      * set's {@code sentry} entries as Robocode sentries when {@code --sentry-border} is set.
+     * Issue #102: the seeds run on a pool of worker homes, {@code --parallel} at a time, and
+     * with {@code --baseline} the baseline fights the same field at the same seed.
      */
-    private int runMelee(List<Opponent> opponents) throws IOException, InterruptedException {
+    private int runMelee(List<Opponent> opponents) throws Exception {
         List<String> names = new ArrayList<>();
         names.add(robot);
         List<String> others = new ArrayList<>();
@@ -575,23 +586,106 @@ public final class Bench {
             else others.add(o.name);
         }
         int sentryBorder = Integer.parseInt(opts.getOrDefault("sentry-border", "0"));
-        List<MeleeReport.Battle> battles = new ArrayList<>();
+        // A0: --keep-data true fights on whatever the robot's data directory already
+        // holds (a warm duel's profiles, say), for a hand-off fixture on a store.
         boolean keepData = Boolean.parseBoolean(opts.getOrDefault("keep-data", "false"));
+        requireSerialKeepData(keepData, parallel);
+        MeleeReport.Battle[] cand = new MeleeReport.Battle[runs];
+        MeleeReport.Battle[] base = baselineJar != null ? new MeleeReport.Battle[runs] : null;
+        List<String> baseNames = base == null ? null : withFirst(names, baselineRobot);
+        List<Job> jobs = new ArrayList<>();
         for (int i = 1; i <= runs; i++) {
-            // A0: --keep-data true fights on whatever the robot's data directory already
-            // holds (a warm duel's profiles, say), for a hand-off fixture on a store.
-            if (!keepData) wipeData();
-            Path dir = out.resolve("battles").resolve("melee-" + i);
+            int seed = i;
+            jobs.add(h -> {
+                if (!keepData) wipeData(h);
+                cand[seed - 1] = meleeBattle(h, seed, "melee-" + seed, robot, names, sentries, sentryBorder, true);
+                if (base != null) {
+                    if (!keepData) wipeData(h);
+                    base[seed - 1] = meleeBattle(h, seed, "melee-" + seed + "-baseline", baselineRobot,
+                        baseNames, sentries, sentryBorder, false);
+                }
+            });
+        }
+        List<Path> homes = workerHomes(Math.min(parallel, Math.max(1, jobs.size())));
+        pinCpuConstant(homes);
+        runJobs(jobs, homes);
+
+        List<MeleeReport.Battle> battles = Arrays.asList(cand);
+        List<MeleeReport.Battle> baseBattles = base == null ? null : Arrays.asList(base);
+        String host = hostLine(reportedCpuConstant(), Host.describe(), homes.size(), childFlags());
+        String label = opts.get("label");
+        String r = MeleeReport.render(label, robot, others, sentries, battles, rounds,
+            width, height, sentryBorder, host);
+        if (baseBattles != null) {
+            r += MeleeReport.renderPaired(robot, baselineRobot, others, sentries, battles, baseBattles);
+            r += "\n" + MeleeReport.render(label, baselineRobot, others, sentries, baseBattles, rounds,
+                width, height, sentryBorder, null).replaceFirst("^# ", "## ");
+        }
+        Files.writeString(out.resolve("report.md"), r);
+        if (opts.containsKey("report")) {
+            Path copy = Path.of(opts.get("report")).toAbsolutePath();
+            Files.createDirectories(copy.getParent());
+            Files.writeString(copy, r);
+        }
+        if (opts.containsKey("per-opponent")) {
+            // Issue #102: one report per opponent in this field, for the per-robot bench strategy.
+            // A field's label is a subdirectory, so the fields of a suite (an opponent stands in
+            // several) do not overwrite one another.
+            Path dir = Path.of(opts.get("per-opponent")).toAbsolutePath();
+            if (label != null) dir = dir.resolve(label.replaceAll("[^A-Za-z0-9.]+", "_"));
+            Files.createDirectories(dir);
+            for (Opponent o : opponents) {
+                if (sentries.contains(o.name)) continue;
+                Files.writeString(dir.resolve(o.slug() + ".md"), MeleeReport.renderOpponent(o.name, label,
+                    robot, baselineRobot, battles, baseBattles, rounds, width, height, host));
+            }
+            System.out.println("per-opponent reports in " + dir);
+        }
+        System.out.println();
+        System.out.println(r);
+        boolean failed = battles.stream().anyMatch(b -> !b.ok);
+        if (baseBattles != null) failed |= baseBattles.stream().anyMatch(b -> !b.ok);
+        return failed ? 1 : 0;
+    }
+
+    /** {@code names} with its first entry (Hadur's) replaced by {@code first}: the baseline's field. */
+    static List<String> withFirst(List<String> names, String first) {
+        List<String> copy = new ArrayList<>(names);
+        copy.set(0, first);
+        return copy;
+    }
+
+    /**
+     * {@code --keep-data} makes each melee battle depend on what the one before it left in
+     * the data directory, which several worker homes cannot share: refused with {@code --parallel}.
+     */
+    static void requireSerialKeepData(boolean keepData, int parallel) {
+        if (keepData && parallel > 1) {
+            throw new IllegalArgumentException(
+                "--keep-data needs --parallel 1: each battle builds on the data the one before left in the home");
+        }
+    }
+
+    /**
+     * One melee battle on a worker home: the child JVM, then its directory read back. A battle
+     * that throws is recorded as failed so the report still shows it.
+     */
+    private MeleeReport.Battle meleeBattle(Path h, int seed, String dirName, String robotName,
+                                           List<String> names, Set<String> sentries, int sentryBorder,
+                                           boolean candidate) throws InterruptedException {
+        Path dir = out.resolve("battles").resolve(dirName);
+        try {
             Files.createDirectories(dir);
             Files.deleteIfExists(dir.resolve("melee.csv"));
-            System.out.printf("melee battle %d/%d ...%n", i, runs);
+            if (parallel == 1) System.out.printf("melee battle %d/%d%s ...%n", seed, runs, candidate ? "" : " (baseline)");
             List<String> cmd = new ArrayList<>();
-            cmd.add(Path.of(System.getProperty("java.home"), "bin", "java").toString());
+            cmd.add(defaultJavaBin());
             cmd.addAll(JVM_FLAGS);
-            cmd.add("-DRANDOMSEED=" + i);
+            cmd.addAll(childFlags());
+            cmd.add("-DRANDOMSEED=" + seed);
             cmd.add("-Dhadur.sentries=" + String.join(",", sentries));
             Path transcript = dir.resolve("transcript.txt");
-            if (record != null) {
+            if (record != null && candidate) {
                 // A0: the recorder on the melee path too (STRAND-4).
                 cmd.add("-DNOSECURITY=true");
                 cmd.add("-Dhadur.record=" + transcript);
@@ -599,98 +693,153 @@ public final class Bench {
             cmd.add("-cp");
             cmd.add(classpath());
             cmd.add(MeleeRunner.class.getName());
-            cmd.addAll(List.of(home.toString(), dir.toString(), String.valueOf(rounds),
+            cmd.addAll(List.of(h.toString(), dir.toString(), String.valueOf(rounds),
                 String.valueOf(width), String.valueOf(height), String.valueOf(sentryBorder)));
             cmd.addAll(names);
             Process p = new ProcessBuilder(cmd).redirectErrorStream(true)
                 .redirectOutput(dir.resolve("engine.log").toFile()).start();
             if (!p.waitFor(90, TimeUnit.MINUTES)) p.destroyForcibly();
-            if (record != null && Files.exists(transcript)) {
-                saveFixture(melee(opts.getOrDefault("set", "melee")), i, transcript);
+            if (record != null && candidate && Files.exists(transcript)) {
+                saveFixture(melee(opts.getOrDefault("set", "melee")), seed, transcript);
             }
-            MeleeReport.Battle b = MeleeReport.read(i, dir);
-            battles.add(b);
-            double[] us = b.ok ? MeleeReport.find(b, robot) : null;
+            MeleeReport.Battle b = MeleeReport.read(seed, dir);
+            double[] us = b.ok ? MeleeReport.find(b, robotName) : null;
             if (us == null) {
-                System.out.println("  FAILED; see " + dir.resolve("engine.log"));
+                say("  melee battle " + seed + "/" + runs + (candidate ? "" : " baseline")
+                    + " FAILED; see " + dir.resolve("engine.log"));
             } else {
-                System.out.printf(java.util.Locale.ROOT, "  Hadur placed %.0f, APS %.1f, survival %.1f%n",
-                    us[1], MeleeReport.aps(b, robot, sentries), MeleeReport.survival(b));
+                say(String.format(Locale.ROOT, "  melee battle %d/%d%s: Hadur placed %.0f, APS %.1f, survival %.1f",
+                    seed, runs, candidate ? "" : " baseline", us[1],
+                    MeleeReport.aps(b, robotName, sentries), MeleeReport.survival(b)));
             }
+            return b;
+        } catch (IOException | RuntimeException e) {
+            say("  melee battle " + seed + "/" + runs + " FAILED: bench error: " + e);
+            return new MeleeReport.Battle(seed, false);
         }
-        String r = MeleeReport.render(opts.get("label"), robot, others, sentries, battles, rounds,
-            width, height, sentryBorder);
-        Files.writeString(out.resolve("report.md"), r);
-        if (opts.containsKey("report")) {
-            Path copy = Path.of(opts.get("report")).toAbsolutePath();
-            Files.createDirectories(copy.getParent());
-            Files.writeString(copy, r);
-        }
-        System.out.println();
-        System.out.println(r);
-        return battles.stream().anyMatch(b -> !b.ok) ? 1 : 0;
     }
 
     /**
      * A5: our team against each team of the set in turn, {@code runs} battles each (one
-     * RANDOMSEED each), on a wiped data directory; reports by {@link TeamReport}.
+     * RANDOMSEED each), on a wiped data directory; reports by {@link TeamReport}. Issue #102:
+     * the (opponent, seed) battles run on worker homes, {@code --parallel} at a time, and
+     * with {@code --baseline} the baseline team fights the same opponent at the same seed.
      */
-    private int runTeam(List<Opponent> opponents) throws IOException, InterruptedException {
+    private int runTeam(List<Opponent> opponents) throws Exception {
         String member = opts.getOrDefault("member", "hadur2.Hadur");
         if (record != null) recorderTeam(member);
-        Map<Opponent, List<TeamReport.Battle>> results = new LinkedHashMap<>();
-        for (Opponent o : opponents) {
-            List<TeamReport.Battle> list = new ArrayList<>();
-            results.put(o, list);
+        int n = opponents.size();
+        TeamReport.Battle[][] cand = new TeamReport.Battle[n][runs];
+        TeamReport.Battle[][] base = baselineJar != null ? new TeamReport.Battle[n][runs] : null;
+        List<Job> jobs = new ArrayList<>();
+        for (int oi = 0; oi < n; oi++) {
+            Opponent o = opponents.get(oi);
             for (int i = 1; i <= runs; i++) {
-                wipeData();
-                Path dir = out.resolve("battles").resolve(o.slug() + "-" + i);
-                Files.createDirectories(dir);
-                Files.deleteIfExists(dir.resolve("team.csv"));
-                System.out.printf("%s team battle %d/%d ...%n", o.name, i, runs);
-                List<String> cmd = new ArrayList<>();
-                cmd.add(defaultJavaBin());
-                cmd.addAll(JVM_FLAGS);
-                cmd.add("-DRANDOMSEED=" + i);
-                Path transcript = dir.resolve("transcript.txt");
-                if (record != null) {
-                    // STRAND-5: each member writes transcript-member-N.txt beside it.
-                    cmd.add("-DNOSECURITY=true");
-                    cmd.add("-Dhadur.record=" + transcript);
-                }
-                cmd.add("-cp");
-                cmd.add(classpath());
-                cmd.add(TeamRunner.class.getName());
-                cmd.addAll(List.of(home.toString(), dir.toString(), String.valueOf(rounds),
-                    String.valueOf(width), String.valueOf(height), member, robot, o.name));
-                Process p = new ProcessBuilder(cmd).redirectErrorStream(true)
-                    .redirectOutput(dir.resolve("engine.log").toFile()).start();
-                if (!p.waitFor(60, TimeUnit.MINUTES)) p.destroyForcibly();
-                if (record != null) {
-                    try (Stream<Path> members = Files.list(dir)) {
-                        for (Path t : (Iterable<Path>) members.sorted()::iterator) {
-                            String n = t.getFileName().toString();
-                            if (!n.startsWith("transcript-member-")) continue;
-                            String m = n.substring("transcript-member-".length(), n.length() - ".txt".length());
-                            saveFixture("team-" + o.slug() + "-m" + m, i, t);
-                        }
+                int index = oi, seed = i;
+                jobs.add(h -> {
+                    wipeData(h);
+                    cand[index][seed - 1] = teamBattle(h, o, seed, o.slug() + "-" + seed, robot, member, true);
+                    if (base != null) {
+                        wipeData(h);
+                        base[index][seed - 1] = teamBattle(h, o, seed, o.slug() + "-" + seed + "-baseline",
+                            baselineRobot, member, false);
                     }
-                }
-                TeamReport.Battle b = TeamReport.read(dir, robot, member, dataFiles());
-                list.add(b);
-                System.out.println(b.ok ? "  " + b.summary() : "  FAILED; see " + dir.resolve("engine.log"));
+                });
             }
         }
-        String r = TeamReport.render(opts.get("label"), robot, results, rounds, width, height);
+        // The recorder team (if any) is installed in the main home above, before the workers copy it.
+        List<Path> homes = workerHomes(Math.min(parallel, Math.max(1, jobs.size())));
+        pinCpuConstant(homes);
+        runJobs(jobs, homes);
+
+        Map<Opponent, List<TeamReport.Battle>> results = new LinkedHashMap<>();
+        Map<Opponent, List<TeamReport.Battle>> baseResults = base != null ? new LinkedHashMap<>() : null;
+        for (int oi = 0; oi < n; oi++) {
+            results.put(opponents.get(oi), new ArrayList<>(Arrays.asList(cand[oi])));
+            if (baseResults != null) baseResults.put(opponents.get(oi), new ArrayList<>(Arrays.asList(base[oi])));
+        }
+        String host = hostLine(reportedCpuConstant(), Host.describe(), homes.size(), childFlags());
+        String label = opts.get("label");
+        String r = TeamReport.render(label, robot, results, rounds, width, height, host);
+        if (baseResults != null) {
+            r += TeamReport.renderPaired(results, baseResults, robot, baselineRobot);
+            r += "\n" + TeamReport.render(label, baselineRobot, baseResults, rounds, width, height)
+                .replaceFirst("^# ", "## ");
+        }
         Files.writeString(out.resolve("report.md"), r);
         if (opts.containsKey("report")) {
             Path copy = Path.of(opts.get("report")).toAbsolutePath();
             Files.createDirectories(copy.getParent());
             Files.writeString(copy, r);
         }
+        if (opts.containsKey("per-opponent")) {
+            // Issue #102: one report per opposing team, for the per-opponent bench strategy.
+            Path dir = Path.of(opts.get("per-opponent")).toAbsolutePath();
+            Files.createDirectories(dir);
+            for (Opponent o : opponents) {
+                Files.writeString(dir.resolve(o.slug() + ".md"), TeamReport.renderOpponent(o, label,
+                    results.get(o), baseResults == null ? null : baseResults.get(o), robot, baselineRobot,
+                    rounds, width, height, host));
+            }
+            System.out.println("per-opponent reports in " + dir);
+        }
         System.out.println();
         System.out.println(r);
-        return results.values().stream().flatMap(List::stream).anyMatch(b -> !b.ok) ? 1 : 0;
+        boolean failed = results.values().stream().flatMap(List::stream).anyMatch(b -> !b.ok);
+        if (baseResults != null) failed |= baseResults.values().stream().flatMap(List::stream).anyMatch(b -> !b.ok);
+        return failed ? 1 : 0;
+    }
+
+    /**
+     * One team battle on a worker home: {@code teamRobot} (ours or the baseline) against
+     * {@code o}, read back by {@link TeamReport}. A battle that throws is recorded as failed.
+     */
+    private TeamReport.Battle teamBattle(Path h, Opponent o, int seed, String dirName, String teamRobot,
+                                         String member, boolean candidate) throws InterruptedException {
+        Path dir = out.resolve("battles").resolve(dirName);
+        try {
+            Files.createDirectories(dir);
+            Files.deleteIfExists(dir.resolve("team.csv"));
+            if (parallel == 1) System.out.printf("%s team battle %d/%d%s ...%n", o.name, seed, runs,
+                candidate ? "" : " (baseline)");
+            List<String> cmd = new ArrayList<>();
+            cmd.add(defaultJavaBin());
+            cmd.addAll(JVM_FLAGS);
+            cmd.addAll(childFlags());
+            cmd.add("-DRANDOMSEED=" + seed);
+            Path transcript = dir.resolve("transcript.txt");
+            boolean recording = record != null && candidate;
+            if (recording) {
+                // STRAND-5: each member writes transcript-member-N.txt beside it.
+                cmd.add("-DNOSECURITY=true");
+                cmd.add("-Dhadur.record=" + transcript);
+            }
+            cmd.add("-cp");
+            cmd.add(classpath());
+            cmd.add(TeamRunner.class.getName());
+            cmd.addAll(List.of(h.toString(), dir.toString(), String.valueOf(rounds),
+                String.valueOf(width), String.valueOf(height), member, teamRobot, o.name));
+            Process p = new ProcessBuilder(cmd).redirectErrorStream(true)
+                .redirectOutput(dir.resolve("engine.log").toFile()).start();
+            if (!p.waitFor(60, TimeUnit.MINUTES)) p.destroyForcibly();
+            if (recording) {
+                try (Stream<Path> members = Files.list(dir)) {
+                    for (Path t : (Iterable<Path>) members.sorted()::iterator) {
+                        String n = t.getFileName().toString();
+                        if (!n.startsWith("transcript-member-")) continue;
+                        String m = n.substring("transcript-member-".length(), n.length() - ".txt".length());
+                        saveFixture("team-" + o.slug() + "-m" + m, seed, t);
+                    }
+                }
+            }
+            TeamReport.Battle b = TeamReport.read(dir, teamRobot, member, dataFiles(h));
+            say("  " + o.name + " team battle " + seed + "/" + runs + (candidate ? "" : " baseline") + ": "
+                + (b.ok ? b.summary() : "FAILED; see " + dir.resolve("engine.log")));
+            return b;
+        } catch (IOException | RuntimeException e) {
+            say("  " + o.name + " team battle " + seed + "/" + runs + " FAILED: bench error: " + e);
+            return new TeamReport.Battle();
+        }
     }
 
     /**
@@ -721,8 +870,8 @@ public final class Bench {
     }
 
     /** Every file in the robots' data directory, by path relative to it (SHELF-2's check). */
-    private List<String> dataFiles() throws IOException {
-        Path data = home.resolve("robots/.data");
+    private static List<String> dataFiles(Path h) throws IOException {
+        Path data = h.resolve("robots/.data");
         List<String> files = new ArrayList<>();
         if (!Files.exists(data)) return files;
         try (Stream<Path> all = Files.walk(data)) {
@@ -1156,6 +1305,31 @@ public final class Bench {
                 Files.delete(f);
             }
         }
+    }
+
+    /**
+     * The CPU constant line the report names: the pinned value when {@code --cpu-constant}
+     * gave one (with several workers the main home never holds it, so reading the home would
+     * say "unknown"), else what the main home's properties file holds.
+     */
+    private String reportedCpuConstant() {
+        return cpuConstantLine(opts.get("cpu-constant"), cpuConstant());
+    }
+
+    static String cpuConstantLine(String pinned, String fromHome) {
+        if (pinned == null || pinned.isBlank()) return fromHome;
+        return "robocode.cpu.constant=" + pinned.trim() + " (pinned with --cpu-constant)";
+    }
+
+    /**
+     * The conditions paragraph of a melee or team report: the CPU constant, the host
+     * ({@link Host#describe()}), the number of worker homes and the child JVM flags, if any
+     * (issue #102: a report that does not say so cannot be compared with another host's).
+     */
+    static String hostLine(String cpuConstant, String host, int workers, List<String> childFlags) {
+        String line = cpuConstant + ". Host: " + host + ", parallel " + workers;
+        if (!childFlags.isEmpty()) line += ". Battle JVM flags: " + String.join(" ", childFlags);
+        return line + ".";
     }
 
     private String cpuConstant() {

@@ -43,8 +43,7 @@ Claude session", and widens it from the 1v1 top 20 to melee and team.
 | Melee | MeleeRumble top 20, less Hadur and Nullstride, ranks 21 and 22 standing in | five overlapping fields of ten, 1000x1000 | Hadur 3.7, paired by seed | `melee-top20.txt` and fields a to e | `bench-melee-top20.ps1` / `.sh` | `top20-melee-strategy.md` |
 | Team | TeamRumble top 20 | one opposing team at a time, 1200x1200 | HadurTeam 3.7, paired by seed | `team-top20.txt` | `bench-team-top20.ps1` / `.sh` | `top20-team-strategy.md` |
 
-The melee and team rows land in the follow-up pull request, stacked on the 1v1 one; the charter
-is shared by both. Set files and scripts live in `hadur-bench/`. Strategy documents live in `docs/bench/`. Rankings
+Set files and scripts live in `hadur-bench/`. Strategy documents live in `docs/bench/`. Rankings
 come from the pages saved under `data/rumble/`, dated 2026-10-05.
 
 Out of scope for now: robots below the top 20, the 1v1 top 50 (already covered by earlier
@@ -104,7 +103,7 @@ cloud bench does.
 - [x] The default robot jar follows the project version (issue #102).
 - [x] The bench runs in parallel on this PC with a measured, safe width.
 - [x] 1v1 top 20 run, 3.8 against 3.7, with DrussGT at 40 seeds.
-- [ ] Melee and team gain parallel, pinned CPU constant, paired baseline and reports (second pull request).
+- [x] Melee and team gain parallel, pinned CPU constant, paired baseline and reports.
 - [ ] Melee top 20 run, 3.8 against 3.7, every robot in at least two fields.
 - [ ] Team top 20 run, 3.8 against 3.7.
 - [ ] The three strategy documents carry a dated local result for every robot.

@@ -61,7 +61,7 @@ class MeleeReportTest {
         assertTrue(r.contains("Sentry safety: 1 sentry bullets hit Hadur, 1 of Hadur's bullets hit a sentry."), r);
         assertTrue(r.contains("1880 melee ticks, 20 duel ticks, 100 focused-duel ticks; 1 rounds vetoed"), r);
         assertTrue(r.contains("longest scan gap 9 ticks"), r);
-        assertTrue(r.contains("Skipped turns: 2."), r);
+        assertTrue(r.contains("Skipped turns: 2 over 1 battles (2.0 per battle, most in one battle 2)."), r);
         // Only the last record carries the M2 sensing fields.
         assertTrue(r.contains("Sensing (1 rounds): longest scan gap while four or more were alive 9 ticks "
             + "(1 rounds over 8); rounds whose longest gap at any count was over 8: 1; robots dropped "

@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.ToDoubleFunction;
 
 /**
  * The melee bench's report, built from each battle's {@code melee.csv} (the engine's final
@@ -35,6 +36,12 @@ public final class MeleeReport {
         final List<String[]> rounds = new ArrayList<>();
         /** Hadur's M records, one per round. */
         final List<String[]> records = new ArrayList<>();
+        /**
+         * Ticks Hadur ran in duress, summed over its {@code R} records (field 33), and how many
+         * R records carried the field. An R record is written every round whatever the mode,
+         * so a melee battle has them; a log from before the field existed has none.
+         */
+        int duressTicks, duressRecords;
         final boolean ok;
 
         Battle(int number, boolean ok) {
@@ -68,9 +75,28 @@ public final class MeleeReport {
                 // round,turn,M,...
                 int c = line.indexOf(',', line.indexOf(',') + 1);
                 if (c > 0 && line.startsWith("M,", c + 1)) b.records.add(line.substring(c + 1).split(","));
+                else if (c > 0 && line.startsWith("R,", c + 1)) addDuress(b, line.substring(c + 1).split(","));
             }
         }
         return b;
+    }
+
+    /** R,round,tick,result,...: field 33 is the round's duress ticks (RES-9); older logs stop short of it. */
+    private static void addDuress(Battle b, String[] r) {
+        if (r.length < 34) return;
+        try {
+            b.duressTicks += Integer.parseInt(r[33]);
+            b.duressRecords++;
+        } catch (NumberFormatException ignored) {
+            // A malformed record is left out.
+        }
+    }
+
+    /** Skipped turns over a battle's rounds, as the harvester counted them. */
+    static int skipped(Battle b) {
+        int n = 0;
+        for (String[] round : b.rounds) n += Integer.parseInt(round[7]);
+        return n;
     }
 
     /** Hadur's pairwise score percentage in one battle, leaving out {@code sentries}. */
@@ -125,10 +151,21 @@ public final class MeleeReport {
         return name.equals(configured) || name.startsWith(configured + " ");
     }
 
-    /** The report for {@code battles} of {@code robot} against {@code opponents}. */
+    /** The report for {@code battles} of {@code robot} against {@code opponents}, with no host line. */
     public static String render(String label, String robot, List<String> opponents,
                                 Set<String> sentries, List<Battle> battles, int rounds,
                                 int width, int height, int sentryBorder) {
+        return render(label, robot, opponents, sentries, battles, rounds, width, height, sentryBorder, null);
+    }
+
+    /**
+     * As above; {@code host} (the CPU constant, the host description and the parallel width,
+     * as the duel report prints them) is a paragraph of its own under the title, and the
+     * skipped-turns and duress tallies follow it (issue #102, BENCH-12).
+     */
+    public static String render(String label, String robot, List<String> opponents,
+                                Set<String> sentries, List<Battle> battles, int rounds,
+                                int width, int height, int sentryBorder, String host) {
         StringBuilder r = new StringBuilder("# Melee bench");
         if (label != null) r.append(": ").append(label);
         r.append("\n\n");
@@ -137,6 +174,8 @@ public final class MeleeReport {
             robot, opponents.size(), rounds, battles.size(), width, height));
         if (sentryBorder > 0) r.append(", sentry border ").append(sentryBorder);
         r.append(".\n\n");
+        if (host != null) r.append(host).append("\n\n");
+        r.append(tallies(battles));
 
         double aps = 0, surv = 0, share = 0, damage = 0;
         int apsN = 0, survN = 0, shareN = 0, firsts = 0, roundCount = 0, failed = 0;
@@ -221,10 +260,8 @@ public final class MeleeReport {
     /** Rounds that thinned to Hadur and one other: whom, how often, and how often Hadur won. */
     private static void appendHandoff(StringBuilder r, List<Battle> battles) {
         Map<String, int[]> duels = new LinkedHashMap<>();
-        int skipped = 0;
         for (Battle b : battles) {
             for (String[] round : b.rounds) {
-                skipped += Integer.parseInt(round[7]);
                 if (round[3].equals("-")) continue;
                 int[] d = duels.computeIfAbsent(round[3], k -> new int[2]);
                 d[0]++;
@@ -236,7 +273,6 @@ public final class MeleeReport {
         duels.entrySet().stream().sorted((a, b) -> b.getValue()[0] - a.getValue()[0])
             .forEach(e -> r.append(String.format(Locale.ROOT, "| %s | %d | %.0f%% |%n", e.getKey(),
                 e.getValue()[0], 100.0 * e.getValue()[1] / e.getValue()[0])));
-        r.append("\nSkipped turns: ").append(skipped).append(".\n");
     }
 
     private static void appendSentries(StringBuilder r, List<Battle> battles, Set<String> sentries) {
@@ -308,6 +344,162 @@ public final class MeleeReport {
                 waved, wavesSent, wavesResolved, virtualHits,
                 wavesResolved == 0 ? 0.0 : 100.0 * virtualHits / wavesResolved));
         }
+    }
+
+    /**
+     * The skipped-turns tally over the battles that completed (the same line the duel report
+     * carries, issue #102) and, when Hadur's R records carried it, the duress-ticks tally.
+     * A log with no R record that reaches field 33 gets no duress line rather than a zero.
+     */
+    static String tallies(List<Battle> battles) {
+        List<Integer> skipped = new ArrayList<>(), duress = new ArrayList<>();
+        for (Battle b : battles) {
+            if (!b.ok) continue;
+            skipped.add(skipped(b));
+            if (b.duressRecords > 0) duress.add(b.duressTicks);
+        }
+        String text = Report.tallyLine("Skipped turns", skipped, Report.TRUST_NOTE);
+        if (!duress.isEmpty()) text += Report.tallyLine("Duress ticks", duress, "");
+        return text;
+    }
+
+    /**
+     * Hadur's pairwise score share against one opponent in one battle, as a fraction:
+     * {@code H / (H + X)}, a half when neither scored; NaN for a failed battle or when either
+     * robot is not in it. The per-opponent view of the pairs {@link #aps} averages.
+     */
+    static double pairwise(Battle b, String robot, String opponent) {
+        if (!b.ok) return Double.NaN;
+        double[] us = find(b, robot), them = find(b, opponent);
+        if (us == null || them == null) return Double.NaN;
+        double total = us[0] + them[0];
+        return total == 0 ? 0.5 : us[0] / total;
+    }
+
+    /** One value per battle (NaN where the battle failed or has none), so two runs stay aligned by seed. */
+    private static List<Double> values(List<Battle> battles, ToDoubleFunction<Battle> f) {
+        List<Double> out = new ArrayList<>();
+        for (Battle b : battles) out.add(b.ok ? f.applyAsDouble(b) : Double.NaN);
+        return out;
+    }
+
+    private static Stats meanOf(List<Double> xs) {
+        return Stats.of(xs.stream().filter(x -> !Double.isNaN(x)).toList());
+    }
+
+    /**
+     * The BENCH-2 paired difference of two per-seed lists: only the seeds where both runs
+     * produced a value are kept, so one failed battle cannot shift later pairings.
+     */
+    static Stats pairedDiff(List<Double> candidate, List<Double> baseline) {
+        List<Double> c = new ArrayList<>(), b = new ArrayList<>();
+        for (int i = 0; i < Math.min(candidate.size(), baseline.size()); i++) {
+            if (Double.isNaN(candidate.get(i)) || Double.isNaN(baseline.get(i))) continue;
+            c.add(candidate.get(i));
+            b.add(baseline.get(i));
+        }
+        return Stats.pairedDiff(c, b);
+    }
+
+    private static double roundsWonShare(Battle b) {
+        if (b.rounds.isEmpty()) return Double.NaN;
+        long won = b.rounds.stream().filter(x -> x[1].equals("1")).count();
+        return (double) won / b.rounds.size();
+    }
+
+    /**
+     * The paired A/B table (BENCH-2's convention, issue #102): the candidate's and the
+     * baseline's battles on the same field at the same seed, so noise common to both cancels;
+     * first the headline measures, then Hadur's pairwise share against each opponent pooled
+     * over the seeds (the per-opponent view {@code data/tools/melee_pairwise.py} gives over
+     * many fields; this bench's one field gives the same table for it).
+     */
+    static String renderPaired(String robot, String baselineRobot, List<String> opponents,
+                               Set<String> sentries, List<Battle> candidate, List<Battle> baseline) {
+        StringBuilder r = new StringBuilder();
+        r.append("\n## Paired A/B: ").append(robot).append(" vs ").append(baselineRobot).append("\n\n")
+         .append("Each row pairs the candidate's and the baseline's battle on the same field at the same "
+            + "seed, so noise common to both cancels out of the difference (BENCH-2). Shares are mean "
+            + "± 95% interval over seeds; positive is better for the candidate. Pairwise share is "
+            + "Hadur's share of the pair's scores against that one opponent, 100 H / (H + X).\n\n")
+         .append("| Measure | Candidate | Baseline | Paired diff (pp) |\n|---|---|---|---|\n");
+        measureRow(r, "APS", values(candidate, b -> aps(b, robot, sentries) / 100),
+            values(baseline, b -> aps(b, baselineRobot, sentries) / 100));
+        measureRow(r, "Survival", values(candidate, b -> survival(b) / 100),
+            values(baseline, b -> survival(b) / 100));
+        measureRow(r, "Rounds won", values(candidate, MeleeReport::roundsWonShare),
+            values(baseline, MeleeReport::roundsWonShare));
+        r.append("\nPairwise share against each opponent:\n\n")
+         .append("| Opponent | Candidate | Baseline | Paired diff (pp) |\n|---|---|---|---|\n");
+        for (String o : opponents) {
+            measureRow(r, o, values(candidate, b -> pairwise(b, robot, o)),
+                values(baseline, b -> pairwise(b, baselineRobot, o)));
+        }
+        return r.toString();
+    }
+
+    private static void measureRow(StringBuilder r, String name, List<Double> cand, List<Double> base) {
+        r.append(String.format(Locale.ROOT, "| %s | %s | %s | %s |%n", name, meanOf(cand).percent(),
+            meanOf(base).percent(), Report.signedDiff(pairedDiff(cand, base), 100)));
+    }
+
+    /**
+     * One opponent's own report for the per-robot bench strategy (issue #102): the seed-by-seed
+     * table of how Hadur fared against it in the field (places, scores, pairwise share, the
+     * baseline's share and the paired difference when a baseline ran, and the rounds that
+     * ended as a duel with it). One field's battles only: pooling several fields' tables is
+     * {@code data/tools/melee_pairwise.py}'s job.
+     */
+    static String renderOpponent(String opponent, String label, String robot, String baselineRobot,
+                                 List<Battle> candidate, List<Battle> baseline,
+                                 int rounds, int width, int height, String host) {
+        boolean paired = baseline != null;
+        StringBuilder r = new StringBuilder("# ").append(opponent).append(" in melee");
+        if (label != null) r.append(" (").append(label).append(")");
+        r.append(": ").append(robot).append("\n\n");
+        r.append(String.format(Locale.ROOT, "%d rounds per battle, %d battles, %dx%d.%n%n",
+            rounds, candidate.size(), width, height));
+        if (host != null) r.append(host).append("\n\n");
+        r.append("## Battles\n\n| Seed | Hadur place | Hadur score | ").append(opponent)
+         .append(" score | Pairwise share | Skipped turns | Rounds as a duel with it | Hadur won those |");
+        if (paired) r.append(" Baseline share | Paired diff (pp) |");
+        r.append("\n|---|---|---|---|---|---|---|---|");
+        if (paired) r.append("---|---|");
+        r.append('\n');
+        for (int i = 0; i < candidate.size(); i++) {
+            Battle b = candidate.get(i);
+            double[] us = b.ok ? find(b, robot) : null, them = b.ok ? find(b, opponent) : null;
+            r.append("| ").append(i + 1).append(" |");
+            if (us == null || them == null) {
+                r.append(" failed | | | | | | |");
+            } else {
+                int duels = 0, won = 0;
+                for (String[] round : b.rounds) {
+                    if (!sameRobot(round[3], opponent)) continue;
+                    duels++;
+                    if (round[4].equals("1")) won++;
+                }
+                r.append(String.format(Locale.ROOT, " %.0f | %.0f | %.0f | %.1f%% | %d | %d | %d |",
+                    us[1], us[0], them[0], 100 * pairwise(b, robot, opponent), skipped(b), duels, won));
+            }
+            if (paired) {
+                double bs = i < baseline.size() ? pairwise(baseline.get(i), baselineRobot, opponent) : Double.NaN;
+                double cs = pairwise(b, robot, opponent);
+                r.append(Double.isNaN(bs) ? " - |" : String.format(Locale.ROOT, " %.1f%% |", 100 * bs));
+                r.append(Double.isNaN(bs) || Double.isNaN(cs) ? " - |"
+                    : String.format(Locale.ROOT, " %+.1f |", 100 * (cs - bs)));
+            }
+            r.append('\n');
+        }
+        List<Double> cand = values(candidate, b -> pairwise(b, robot, opponent));
+        r.append("\nMean pairwise share ").append(meanOf(cand).percent());
+        if (paired) {
+            List<Double> base = values(baseline, b -> pairwise(b, baselineRobot, opponent));
+            r.append(", baseline ").append(meanOf(base).percent()).append(", paired diff ")
+             .append(Report.signedDiff(pairedDiff(cand, base), 100));
+        }
+        r.append(".\n\n").append(tallies(candidate));
+        return r.toString();
     }
 
     /** M2's exit: no opponent goes unscanned for more than a full sweep. */
