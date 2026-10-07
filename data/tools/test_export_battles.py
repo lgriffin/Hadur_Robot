@@ -130,6 +130,32 @@ class CollectTest(unittest.TestCase):
         self.assertEqual((failed["score_share"], failed["survival_share"]), ("", ""))
 
 
+class ScoreSplitColumnsTest(unittest.TestCase):
+    """Issue #138: the reference flag and the score split ride through from result.csv."""
+
+    NEW_HEADER = HEADER + ",reference,theirRamDamage,theirBulletDamageBonus,engineRoundTicks"
+
+    def test_new_columns_are_exported_and_old_rows_leave_them_blank(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            work = os.path.join(tmp, "work")
+            set_file = os.path.join(tmp, "set.txt")
+            _write(set_file, SET_FILE)
+            battles = os.path.join(work, "battles")
+            _write(os.path.join(battles, "abc.Alpha_1.0-1", "result.csv"),
+                   self.NEW_HEADER + "\n" + "true,35,100,50,10,5,,1,12.250,3.000,812.500\n")
+            _write(os.path.join(battles, "xyz.Beta_2.0-1", "result.csv"),
+                   HEADER + "\n" + "true,35,30,30,20,20,\n")
+            columns, rows, _, _, _ = eb.collect(work, set_file, "knight", "", False)
+        self.assertEqual(columns[-4:], ["reference", "theirRamDamage", "theirBulletDamageBonus",
+                                        "engineRoundTicks"])
+        new = [r for r in rows if r["opponent"] == "abc.Alpha 1.0"][0]
+        self.assertEqual((new["reference"], new["theirRamDamage"], new["engineRoundTicks"]),
+                         ("1", "12.250", "812.500"))
+        old = [r for r in rows if r["opponent"] == "xyz.Beta 2.0"][0]
+        self.assertEqual((old["reference"], old["theirRamDamage"], old["engineRoundTicks"]),
+                         ("", "", ""))
+
+
 class WriteTsvTest(unittest.TestCase):
 
     def test_writes_tab_separated_rows_with_lf_endings(self):
