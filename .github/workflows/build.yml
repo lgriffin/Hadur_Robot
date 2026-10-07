@@ -16,6 +16,8 @@ jobs:
           cache: maven
       - name: Tests, architecture rules, replay and requirement traceability
         run: mvn -B verify
+      - name: Bench queue runner tests
+        run: python3 -m unittest discover -s hadur-bench -p "test_benchqueue.py"
       - name: Requirement coverage
         if: always()
         run: cat hadur-core/target/requirements-coverage.md >> "$GITHUB_STEP_SUMMARY" || true
