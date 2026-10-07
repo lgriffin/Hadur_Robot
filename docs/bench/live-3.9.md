@@ -105,6 +105,27 @@ run a reference bot (Knight) against it to show where Knight keeps the points; t
 score breakdown (bullet, ram and bonus points for each side) are the harness changes in
 issue #136.
 
+### Against rank 1
+
+The compare page of Nullstride 2.3.3 (1st) against Hadur 3.9, saved 20:58 UTC, shows a different
+shape. Nullstride is 7.85 APS ahead over the 1,214 shared opponents, and the gap grows toward the
+middle of the table, not the tail:
+
+| Ranks | Pairings | Nullstride | Hadur | Difference | APS contribution |
+|---|---|---|---|---|---|
+| 1-20 | 18 | 75.4 | 52.2 | +23.25 ± 4.12 | +0.34 |
+| 21-50 | 30 | 86.4 | 63.5 | +22.87 ± 3.99 | +0.57 |
+| 51-150 | 100 | 89.7 | 72.1 | +17.58 ± 1.83 | +1.45 |
+| 151-400 | 250 | 92.8 | 80.4 | +12.36 ± 0.94 | **+2.55** |
+| 401-700 | 300 | 95.3 | 87.5 | +7.81 ± 0.71 | +1.93 |
+| 701+ | 516 | 98.3 | 95.9 | +2.39 ± 0.26 | +1.02 |
+
+Most of it is survival: Nullstride wins 98.7% of rounds against ranks 151-400 to Hadur's 92.6%, and
+97.6% against 51-150 to 85.6%. The top 20 are worth only 0.34 of the 7.85. On the bench sets it
+scores 90 against the score-leak and lost-rounds bots (Hadur 78 and 74) and 97.1 on the tail
+(Hadur 92.8), so the close-range bots that cost the 10th-place group as much as Hadur do not
+cost Nullstride.
+
 ## Next
 
 `hadur-bench/plans/overnight-39.queue` (issue for the overnight run):
