@@ -152,6 +152,31 @@
    "published": "2026-10-07T22:22Z"
   },
   {
+   "id": "2026-10-07_lost-rounds-39-v34",
+   "date": "2026-10-07",
+   "label": "lost-rounds-39-v34",
+   "kind": "solo",
+   "set": "lost-rounds-39.txt",
+   "engine": "1.11.1",
+   "source": "work directory",
+   "candidate": "3.9",
+   "baseline": "3.4",
+   "seeds": 8,
+   "rounds": 35,
+   "gate": "CAUTION",
+   "verdict": "up",
+   "diff": 1.6985546875000002,
+   "ci95": [
+    0.15077265841295184,
+    3.2463367165870487
+   ],
+   "n": 256,
+   "opponents": 32,
+   "host": "AMD Ryzen Threadripper PRO 9965WX 24-Cores, 48 logical cores, Windows 11 10.0, no other Robocode JVMs running",
+   "path": "runs/2026-10-07_lost-rounds-39-v34/",
+   "published": "2026-10-07T22:22Z"
+  },
+  {
    "id": "2026-10-07_ll-39-v385",
    "date": "2026-10-07",
    "label": "ll-39-v385",
