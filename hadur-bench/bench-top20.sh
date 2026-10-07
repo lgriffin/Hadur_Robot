@@ -31,6 +31,7 @@
 #   --cold-warm            fight each seed cold, then warm on the shelf the cold battle left (BENCH-54); writes cold-warm.tsv
 #   --retries N            run a failed battle again up to N times (BENCH-55), Bench default 1
 #   --field WxH            the arena, e.g. 1000x1000, Bench default for the mode
+#   --publish              after a finished run, add its analysis to the project site (or HADUR_BENCH_PUBLISH=1); never changes the exit code
 #   --dry-run              print what would be built, fetched and run, and run nothing
 #   --skip-build           skip `mvn package` at the repo root
 #   --skip-fetch           skip fetching the set's opponent jars
@@ -60,6 +61,8 @@ COLD_WARM=0
 RETRIES=""
 FIELD=""
 DRY_RUN=0
+PUBLISH=0
+if [ "${HADUR_BENCH_PUBLISH:-}" = "1" ]; then PUBLISH=1; fi
 ENGINE=""
 
 while [ $# -gt 0 ]; do
@@ -84,6 +87,7 @@ while [ $# -gt 0 ]; do
         --retries) RETRIES="${2:?--retries needs a number}"; shift 2 ;;
         --field) FIELD="${2:?--field needs WIDTHxHEIGHT}"; shift 2 ;;
         --dry-run) DRY_RUN=1; shift ;;
+        --publish) PUBLISH=1; shift ;;
         --engine) ENGINE="${2:?--engine needs a Robocode version}"; shift 2 ;;
         -h|--help) sed -n '2,/^set -u$/p' "$0" | sed '$d' | sed 's/^# \{0,1\}//'; exit 0 ;;
         *) echo "unknown option: $1" >&2; exit 2 ;;
@@ -152,4 +156,15 @@ code=$?
 if [ "$DRY_RUN" -eq 1 ]; then echo "dry run: nothing was built, fetched or run"; exit 0; fi
 echo "report: $REPORT"
 echo "per-opponent reports: $PER_OPPONENT"
+
+# --publish (or HADUR_BENCH_PUBLISH=1): add this run's analysis to the project site (issue #102).
+# A failure here never changes the run's exit code.
+if [ "$PUBLISH" -eq 1 ] && [ "$DRY_RUN" -eq 0 ] && [ "$code" -eq 0 ]; then
+    PUB_PY=$(command -v python3 || command -v python || true)
+    if [ -n "$PUB_PY" ]; then
+        "$PUB_PY" ../data/tools/publish_run.py run --work "$OUT" --set "$SET" --label "$LABEL" || echo "publish failed; the run is unaffected" >&2
+    else
+        echo "publish skipped: python not found" >&2
+    fi
+fi
 exit "$code"

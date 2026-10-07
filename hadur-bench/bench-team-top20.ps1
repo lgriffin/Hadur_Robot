@@ -66,6 +66,8 @@
   bench's own, 1.
 .PARAMETER Field
   The arena as WIDTHxHEIGHT (--field). Default: the bench's own for the mode.
+.PARAMETER Publish
+  After a finished run, add its analysis to the project site (data/tools/publish_run.py run). HADUR_BENCH_PUBLISH=1 does the same. A failed publish never changes the exit code.
 .PARAMETER DryRun
   Print what would be built, fetched and run, and the bench's argument list, and run nothing.
   The argument file is not written.
@@ -103,6 +105,7 @@ param(
     [int]$Retries = -1,
     [string]$Field = "",
     [switch]$DryRun,
+    [switch]$Publish,
     [switch]$SkipBuild,
     [switch]$SkipFetch
 )
@@ -196,4 +199,19 @@ $benchCode = $LASTEXITCODE
 Write-Host "report: $Report"
 if (-not $NoPerOpponent) { Write-Host "per-opponent reports: $perOpponentDir" }
 Write-Host "battle directories (engine.log, member-N.log, rounds.csv, team.csv): $Out/battles"
+
+# -Publish (or HADUR_BENCH_PUBLISH=1): add this run's analysis to the project site (issue #102).
+# A failure here never changes the run's exit code.
+if (($Publish -or $env:HADUR_BENCH_PUBLISH -eq "1") -and -not $DryRun -and $benchCode -eq 0) {
+    $pubPy = $null
+    foreach ($candidate in @("python3", "python", "py")) {
+        if (Get-Command $candidate -ErrorAction SilentlyContinue) { $pubPy = $candidate; break }
+    }
+    if ($pubPy) {
+        & $pubPy ../data/tools/publish_run.py run --work $Out --set $Set --label $Label
+        if ($LASTEXITCODE -ne 0) { Write-Warning "publish failed; the run is unaffected" }
+    } else {
+        Write-Warning "publish skipped: python not found"
+    }
+}
 exit $benchCode

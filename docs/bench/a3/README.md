@@ -82,6 +82,11 @@ Units: differences and intervals are score-share points; `hostLoad` is percent (
 fraction. `goal` is an extension for this tool and may be absent. A reference file is
 `data/tools/fixtures/analysis-ll-351v34.json`, real data from the 3.5.1 against 3.4 run.
 
+## On the project site
+
+`data/tools/publish_run.py` renders each run's A3 and publishes it, with the history, to the site's
+`bench/` pages after a harness run: see `docs/bench/pages.md`.
+
 ## What this does not do
 
 It does not run battles, change the robot, or decide what Hadur should do next. It reports what is
