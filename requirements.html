@@ -12,7 +12,7 @@
 <h1>EARS requirements</h1>
 <p class="lede">Every requirement from <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/docs/requirements.md">docs/requirements.md</a>, the source of truth. <em>Implemented in</em> lists
 the classes whose documentation cites the ID; <em>Verified by</em> lists the tests tagged with it, the same tags the build's
-traceability check reads. 160 of 160 live requirements have a tagged test. The readings behind the numbers are in
+traceability check reads. 164 of 164 live requirements have a tagged test. The readings behind the numbers are in
 <a href="docs/requirements-notes.html">Requirement readings</a>.</p>
 <nav class="toc"><a href="#group-CORE">Core</a> <a href="#group-RES">Resilience</a> <a href="#group-REL">Release</a> <a href="#group-WAVE">Waves</a> <a href="#group-RADAR">Radar</a> <a href="#group-MEM">Memory</a> <a href="#group-ADAPT">Adapt</a> <a href="#group-DIAL">Dials</a> <a href="#group-DIST">Distance</a> <a href="#group-POW">Power</a> <a href="#group-END">Endgame</a> <a href="#group-MOVE">Movement</a> <a href="#group-TIME">Time budget</a> <a href="#group-SHIELD">Bullet shielding</a> <a href="#group-MELEE">Melee (2.1)</a> <a href="#group-GATE">Posture gate</a> <a href="#group-MRADAR">Melee radar</a> <a href="#group-MSENSE">Melee sensing</a> <a href="#group-MMOVE">Melee movement</a> <a href="#group-MGUN">Melee gun</a> <a href="#group-MMEM">Melee memory</a></nav><h2 id="group-CORE">Core</h2>
 <article class="req-card" id="CORE-1">
@@ -630,6 +630,26 @@ traceability check reads. 160 of 160 live requirements have a tagged test. The r
 <div class="req-head"><span class="rid">BENCH-67</span><span class="badge">Ubiquitous</span><span class="badge stage">R9</span></div>
 <p>The bench shall give a failure&#x27;s reason as the first line of the battle&#x27;s error text, cut to 160 characters, and &quot;no result&quot; when there is none.</p>
 <dl><dt>Implemented in</dt><dd><span class="none">no citation in the sources</span></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/ExclusionsTest.java">ExclusionsTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="BENCH-68">
+<div class="req-head"><span class="rid">BENCH-68</span><span class="badge">Ubiquitous</span><span class="badge stage">R9</span></div>
+<p>The bench shall judge a battle fought by a robot that is not a Hadur build (a reference build) on the engine&#x27;s own signals alone (it finished, skipped no more turns than the limit, spent no ticks in duress where known), shall not apply the R-record rule to it, and shall show the columns that come from R records as &quot;-&quot; and leave out the Hadur-only report sections.</p>
+<dl><dt>Implemented in</dt><dd><span class="none">no citation in the sources</span></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/ReferenceBuildTest.java">ReferenceBuildTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="BENCH-69">
+<div class="req-head"><span class="rid">BENCH-69</span><span class="badge">Ubiquitous</span><span class="badge stage">R9</span></div>
+<p>The bench shall write <code>reference</code>, <code>ramDamage</code>, <code>ramDamageBonus</code>, <code>bulletDamageBonus</code> and <code>lastSurvivorBonus</code> (and the <code>their</code> form of each) from the engine&#x27;s battle results as the last columns of <code>result.csv</code>, after <code>otherJvms</code>, and shall read a row without them as NaN.</p>
+<dl><dt>Implemented in</dt><dd><span class="none">no citation in the sources</span></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/ReferenceBuildTest.java">ReferenceBuildTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="BENCH-70">
+<div class="req-head"><span class="rid">BENCH-70</span><span class="badge">Ubiquitous</span><span class="badge stage">R9</span></div>
+<p>Every duel report shall carry a table &quot;Where their points come from&quot;, the opponent&#x27;s score pooled over the battles as shares of survival, bullet damage, ram damage and bonuses, with &quot;-&quot; for a row that has no split.</p>
+<dl><dt>Implemented in</dt><dd><span class="none">no citation in the sources</span></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/ReferenceBuildTest.java">ReferenceBuildTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="BENCH-71">
+<div class="req-head"><span class="rid">BENCH-71</span><span class="badge">Ubiquitous</span><span class="badge stage">R9</span></div>
+<p>The bench shall record the engine&#x27;s mean ticks per round for any build, from the round-ended events, as <code>engineRoundTicks</code>, and the duel report shall show it per opponent.</p>
+<dl><dt>Implemented in</dt><dd><span class="none">no citation in the sources</span></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/ReferenceBuildTest.java">ReferenceBuildTest.java</a></dd></dl>
 </article>
 <h2 id="group-GUN">GUN</h2>
 <article class="req-card" id="GUN-1">
