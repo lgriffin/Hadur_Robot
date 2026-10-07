@@ -136,6 +136,7 @@ public final class Bench {
     /** Battles that stayed failed after their retries, and those that needed one (BENCH-55). */
     private final List<Failure> failures = Collections.synchronizedList(new ArrayList<>());
     private final List<String> retried = Collections.synchronizedList(new ArrayList<>());
+    private final Exclusions.Counter outcomes = new Exclusions.Counter();
     private final List<ColdWarm.Row> coldWarmRows = Collections.synchronizedList(new ArrayList<>());
     /** BENCH-50, BENCH-51: the host sampler, the run's start and the shelf it began on; set once a run starts. */
     private Host.Sampler sampler;
@@ -448,6 +449,7 @@ public final class Bench {
             report += Report.renderRoundSplit(roundRows, robot, baselineResults != null ? baselineRobot : null);
         }
         report += failureFooter(failures, retried);
+        report = Exclusions.insertAfterTitle(report, Exclusions.block(outcomes.tallies()));
         Files.writeString(out.resolve("report.md"), report);
         if (opts.containsKey("report")) {
             Path copy = Path.of(opts.get("report")).toAbsolutePath();
@@ -572,6 +574,7 @@ public final class Bench {
             m.put("hostSample", sample);
             m.put("shelfAtStart", startShelf.toMap());
             m.put("failedBattles", failures.size());
+            m.put("excluded", Exclusions.toMaps(outcomes.tallies()));
             m.put("retriedBattles", retried.size());
             Files.createDirectories(out);
             Files.writeString(out.resolve("conditions.json"), Conditions.json(m));
@@ -673,7 +676,7 @@ public final class Bench {
                 return BattleResult.parse(BattleResult.failed("bench error: " + e));
             }
         }, r -> r.ok);
-        note(o.name + " seed " + seed + " " + dir.getFileName(), t.attempts(), t.value().ok, t.value().errors);
+        note(o.name + (robotName.equals(baselineRobot) ? " (baseline)" : ""), o.name + " seed " + seed + " " + dir.getFileName(), t.attempts(), t.value().ok, t.value().errors);
         return t.value();
     }
 
@@ -697,7 +700,8 @@ public final class Bench {
     }
 
     /** Remembers a battle that needed a retry, or stayed failed after them. */
-    private void note(String what, int attempts, boolean ok, String why) {
+    private void note(String unit, String what, int attempts, boolean ok, String why) {
+        outcomes.add(unit, ok, why);
         if (!ok) failures.add(new Failure(what, attempts, why));
         else if (attempts > 1) retried.add(what + " (" + attempts + " attempts)");
     }
@@ -720,6 +724,8 @@ public final class Bench {
     private void printFailures() {
         if (failures.isEmpty()) return;
         System.out.println();
+        String excluded = Exclusions.summary(outcomes.tallies());
+        if (!excluded.isEmpty()) System.out.println(excluded);
         System.out.println(failures.size() + " battle" + (failures.size() == 1 ? "" : "s")
             + " failed after " + retries + " retr" + (retries == 1 ? "y" : "ies") + ":");
         for (Failure f : failures) System.out.println("  " + f.what() + " (" + f.attempts() + " attempts): " + f.why());
@@ -971,7 +977,7 @@ public final class Bench {
                     return meleeBattle(h, seed, "melee-" + seed, robot, names, sentries, sentryBorder, true);
                 }, b -> b.ok);
                 cand[seed - 1] = c.value();
-                note("melee seed " + seed, c.attempts(), c.value().ok, "no result");
+                note("melee field", "melee seed " + seed, c.attempts(), c.value().ok, "no result");
                 if (base != null) {
                     Tried<MeleeReport.Battle> t = attempts(retries, () -> {
                         if (!keepData) wipeData(h);
@@ -979,7 +985,7 @@ public final class Bench {
                             baseNames, sentries, sentryBorder, false);
                     }, b -> b.ok);
                     base[seed - 1] = t.value();
-                    note("melee seed " + seed + " baseline", t.attempts(), t.value().ok, "no result");
+                    note("melee field (baseline)", "melee seed " + seed + " baseline", t.attempts(), t.value().ok, "no result");
                 }
             });
         }
@@ -1000,6 +1006,7 @@ public final class Bench {
                 width, height, sentryBorder, null).replaceFirst("^# ", "## ");
         }
         r += failureFooter(failures, retried);
+        r = Exclusions.insertAfterTitle(r, Exclusions.block(outcomes.tallies()));
         Files.writeString(out.resolve("report.md"), r);
         if (opts.containsKey("report")) {
             Path copy = Path.of(opts.get("report")).toAbsolutePath();
@@ -1121,7 +1128,7 @@ public final class Bench {
                         return teamBattle(h, o, seed, o.slug() + "-" + seed, robot, member, true);
                     }, b -> b.ok);
                     cand[index][seed - 1] = c.value();
-                    note(o.name + " team seed " + seed, c.attempts(), c.value().ok, "no result");
+                    note(o.name, o.name + " team seed " + seed, c.attempts(), c.value().ok, "no result");
                     if (base != null) {
                         Tried<TeamReport.Battle> t = attempts(retries, () -> {
                             wipeData(h);
@@ -1129,7 +1136,7 @@ public final class Bench {
                                 baselineRobot, member, false);
                         }, b -> b.ok);
                         base[index][seed - 1] = t.value();
-                        note(o.name + " team seed " + seed + " baseline", t.attempts(), t.value().ok, "no result");
+                        note(o.name + " (baseline)", o.name + " team seed " + seed + " baseline", t.attempts(), t.value().ok, "no result");
                     }
                 });
             }
@@ -1155,6 +1162,7 @@ public final class Bench {
                 .replaceFirst("^# ", "## ");
         }
         r += failureFooter(failures, retried);
+        r = Exclusions.insertAfterTitle(r, Exclusions.block(outcomes.tallies()));
         Files.writeString(out.resolve("report.md"), r);
         if (opts.containsKey("report")) {
             Path copy = Path.of(opts.get("report")).toAbsolutePath();

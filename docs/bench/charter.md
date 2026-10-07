@@ -146,3 +146,7 @@ should change. Record changes below.
   unpaired variance ratio 1.01 and 0.94. Seed pairing is kept for repeatability and a valid
   interval, and seeds are planned unpaired. `data/tools/analyse.py` adds the pooled paired
   difference, Holm and Benjamini-Hochberg adjustment, TOST non-inferiority and the seeds planner.
+- 2026-10-07: Run conditions (rounds, engine, child heap, CPU constant, parallel width, CPUs per child) are carried
+  into `data/catalog.tsv`, `history.tsv` and the trend chart, which marks runs that differ from the usual; reports
+  list opponents that failed at least half their battles under "Excluded or failing opponents". `data/tools/compare_conditions.py`
+  says whether two runs are comparable. Tooling and data only; no change to the robot.
