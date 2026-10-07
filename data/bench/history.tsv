@@ -21,11 +21,18 @@ file	date	label	mode	candidate	baseline	engine	rounds	child_heap	cpu_constant	pa
 2026-10-06_hadur-team-top20-local_cold.tsv	2026-10-06	hadur-team-top20-local_cold	duel	3.8	3.7	1.9.5.6	10					10	20	199	25.48	24.52	26.44	6.4	2.1	1	400
 2026-10-06_hadur-top20-385-local_cold.tsv	2026-10-06	hadur-top20-385-local_cold	duel	3.8.5	3.8	1.11.1	35			12		5	20	100	-1.12	-2.60	0.37	28.0	27.2	0	200
 2026-10-06_hadur-top20-e1111-local_cold.tsv	2026-10-06	hadur-top20-e1111-local_cold	duel	3.8	3.7	1.11.1	35			12		5	20	100	3.05	1.73	4.38	21.1	20.9	0	200
+2026-10-07_hadur-calib-cpu1m-39-v385-local_cold.tsv	2026-10-07	hadur-calib-cpu1m-39-v385-local_cold	duel	2.Hadur 3.9	2.Hadur 3.8.5	1.11.1	35			12		16	32	512	0.28	-0.04	0.60	11.6	11.7	0	1024
+2026-10-07_hadur-calib-warm-39-v385-local_cold.tsv	2026-10-07	hadur-calib-warm-39-v385-local_cold	duel	2.Hadur 3.9	2.Hadur 3.8.5	1.11.1	35			12		8	32	256	0.54	-0.12	1.21	11.6	12.3	0	512
+2026-10-07_hadur-calib-warm-39-v385-local_warm.tsv	2026-10-07	hadur-calib-warm-39-v385-local_warm	duel	2.Hadur 3.9	2.Hadur 3.8.5	1.11.1	35			12		8	32	256	0.60	-0.30	1.49	13.7	13.4	0	512
 2026-10-07_hadur-leak-39-v385-local_cold.tsv	2026-10-07	hadur-leak-39-v385-local_cold	duel	2.Hadur 3.9	2.Hadur 3.8.5	1.11.1	35			12		16	32	512	0.08	-0.28	0.44	12.8	12.9	0	1024
 2026-10-07_hadur-leak-39r-v385-local_cold.tsv	2026-10-07	hadur-leak-39r-v385-local_cold	duel	2.Hadur 3.9	2.Hadur 3.8.5	1.11.1	35			12		16	32	512	-0.02	-0.40	0.36	11.4	11.4	0	1024
 2026-10-07_hadur-ll-39-v385-local_cold.tsv	2026-10-07	hadur-ll-39-v385-local_cold	duel	2.Hadur 3.9	2.Hadur 3.8.5	1.11.1	35			12		8	39	312	5.46	4.74	6.19	11.7	12.2	16	640
+2026-10-07_hadur-lost-rounds-39-v34-local_cold.tsv	2026-10-07	hadur-lost-rounds-39-v34-local_cold	duel	2.Hadur 3.9	2.Hadur 3.4	1.11.1	35			12		8	32	256	1.70	0.94	2.46	11.2	11.8	0	512
 2026-10-07_hadur-melee-top20-385-vs-37-local_cold.tsv	2026-10-07	hadur-melee-top20-385-vs-37-local_cold	melee	3.8.5	3.7	1.9.5.6				5		10	5	50	0.22	-0.08	0.52			0	1000
 2026-10-07_hadur-melee-top20-385-vs-38-local_cold.tsv	2026-10-07	hadur-melee-top20-385-vs-38-local_cold	melee	3.8.5	3.8	1.9.5.6				5		10	5	50	0.20	-0.21	0.60			0	1000
+2026-10-07_hadur-score-leak-39-v34-local_cold.tsv	2026-10-07	hadur-score-leak-39-v34-local_cold	duel	2.Hadur 3.9	2.Hadur 3.4	1.11.1	35			12		8	32	256	5.71	5.23	6.19	10.5	11.1	0	512
+2026-10-07_hadur-tail-39-v34-local_cold.tsv	2026-10-07	hadur-tail-39-v34-local_cold	duel	2.Hadur 3.9	2.Hadur 3.4	1.11.1	35			12		8	39	312	0.16	-0.13	0.44	11.5	11.1	16	640
+2026-10-07_hadur-tail-knight-v39-local_cold.tsv	2026-10-07	hadur-tail-knight-v39-local_cold	duel	2.Hadur 3.9	rsalesc.mega.Knight 0.6.28	1.11.1	35			12		8	39	312	-1.20	-1.54	-0.86	10.8	1.9	16	640
 2026-10-07_hadur-team-top20-385-vs-37-local_cold.tsv	2026-10-07	hadur-team-top20-385-vs-37-local_cold	duel	3.8.5	3.7	1.9.5.6	35			4		10	20	200	25.13	24.61	25.65	7.5	3.8	0	400
 2026-10-07_hadur-team-top20-385-vs-38-local_cold.tsv	2026-10-07	hadur-team-top20-385-vs-38-local_cold	duel	3.8.5	3.8	1.9.5.6	35			4		10	20	200	-0.10	-0.81	0.60	7.8	7.7	0	400
 2026-10-07_hadur-tier2-385-local_cold.tsv	2026-10-07	hadur-tier2-385-local_cold	duel	3.8.5	3.8	1.11.1	35			12		20	15	300	-0.29	-1.11	0.52	16.1	16.7	40	640
