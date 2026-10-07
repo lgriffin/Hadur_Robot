@@ -2,6 +2,31 @@
  "schema": 1,
  "runs": [
   {
+   "id": "2026-10-07_top20big-385",
+   "date": "2026-10-07",
+   "label": "top20big-385",
+   "kind": "solo",
+   "set": "top20.txt",
+   "engine": "1.11.1",
+   "source": "work directory",
+   "candidate": "3.8.5",
+   "baseline": "3.8",
+   "seeds": 100,
+   "rounds": 35,
+   "gate": "CAUTION",
+   "verdict": "level",
+   "diff": -0.32043999999999995,
+   "ci95": [
+    -0.7127212648766592,
+    0.07184126487665926
+   ],
+   "n": 2000,
+   "opponents": 20,
+   "host": "AMD Ryzen Threadripper PRO 9965WX 24-Cores, 48 logical cores, Windows 11 10.0, no other Robocode JVMs running",
+   "path": "runs/2026-10-07_top20big-385/",
+   "published": "2026-10-07T11:45Z"
+  },
+  {
    "id": "2026-10-06_top20-e1111",
    "date": "2026-10-06",
    "label": "top20-e1111",
