@@ -12,7 +12,7 @@
 <h1>EARS requirements</h1>
 <p class="lede">Every requirement from <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/docs/requirements.md">docs/requirements.md</a>, the source of truth. <em>Implemented in</em> lists
 the classes whose documentation cites the ID; <em>Verified by</em> lists the tests tagged with it, the same tags the build's
-traceability check reads. 157 of 157 live requirements have a tagged test. The readings behind the numbers are in
+traceability check reads. 160 of 160 live requirements have a tagged test. The readings behind the numbers are in
 <a href="docs/requirements-notes.html">Requirement readings</a>.</p>
 <nav class="toc"><a href="#group-CORE">Core</a> <a href="#group-RES">Resilience</a> <a href="#group-REL">Release</a> <a href="#group-WAVE">Waves</a> <a href="#group-RADAR">Radar</a> <a href="#group-MEM">Memory</a> <a href="#group-ADAPT">Adapt</a> <a href="#group-DIAL">Dials</a> <a href="#group-DIST">Distance</a> <a href="#group-POW">Power</a> <a href="#group-END">Endgame</a> <a href="#group-MOVE">Movement</a> <a href="#group-TIME">Time budget</a> <a href="#group-SHIELD">Bullet shielding</a> <a href="#group-MELEE">Melee (2.1)</a> <a href="#group-GATE">Posture gate</a> <a href="#group-MRADAR">Melee radar</a> <a href="#group-MSENSE">Melee sensing</a> <a href="#group-MMOVE">Melee movement</a> <a href="#group-MGUN">Melee gun</a> <a href="#group-MMEM">Melee memory</a></nav><h2 id="group-CORE">Core</h2>
 <article class="req-card" id="CORE-1">
@@ -590,6 +590,21 @@ traceability check reads. 157 of 157 live requirements have a tagged test. The r
 <div class="req-head"><span class="rid">BENCH-59</span><span class="badge">Ubiquitous</span><span class="badge stage">R9</span></div>
 <p>The bench shall read its arguments from a file when its only argument is <code>@FILE</code> (one argument per line), and the PowerShell bench scripts shall pass them that way, so that a value with a space reaches it intact on Windows PowerShell 5.1.</p>
 <dl><dt>Implemented in</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/Bench.java" title="hadur.bench.Bench">Bench</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/RunOptionsTest.java">RunOptionsTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="BENCH-60">
+<div class="req-head"><span class="rid">BENCH-60</span><span class="badge">Ubiquitous</span><span class="badge stage">R9</span></div>
+<p>The bench shall cap each battle JVM&#x27;s heap at 2G unless <code>--child-heap</code> names another size, shall leave the heap uncapped for <code>--child-heap none</code>, and every run wrapper shall pass <code>--child-heap</code> through.</p>
+<dl><dt>Implemented in</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/Bench.java" title="hadur.bench.Bench">Bench</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/Memory.java" title="hadur.bench.Memory">Memory</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/MemoryTest.java">MemoryTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="BENCH-61">
+<div class="req-head"><span class="rid">BENCH-61</span><span class="badge">Unwanted</span><span class="badge stage">R9</span></div>
+<p>If the battle JVMs a run plans (parallel x heap plus about 300 MB each, or 7500 MB each when uncapped) exceed 70% of the host&#x27;s free memory, the bench shall refuse to start, name a <code>--parallel</code> that fits, and start only when <code>--force-memory true</code> is given; <code>--dry-run true</code> shall show the estimate.</p>
+<dl><dt>Implemented in</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/Memory.java" title="hadur.bench.Memory">Memory</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/MemoryTest.java">MemoryTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="BENCH-62">
+<div class="req-head"><span class="rid">BENCH-62</span><span class="badge">Event</span><span class="badge stage">R9</span></div>
+<p>When a run starts and ends, the bench shall record the effective child heap cap and the planned memory in <code>conditions.json</code>.</p>
+<dl><dt>Implemented in</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/Memory.java" title="hadur.bench.Memory">Memory</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/MemoryTest.java">MemoryTest.java</a></dd></dl>
 </article>
 <article class="req-card" id="BENCH-63">
 <div class="req-head"><span class="rid">BENCH-63</span><span class="badge">Ubiquitous</span><span class="badge stage">R9</span></div>
