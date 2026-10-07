@@ -1,80 +1,80 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 835" width="900" height="835" role="img" aria-label="Candidate minus baseline score share by bench run">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 967" width="900" height="967" role="img" aria-label="Candidate minus baseline score share by bench run">
 <style>.bg{fill:#fff}.t{fill:#1f2328;font:12px sans-serif}.m{fill:#59636e;font:11px sans-serif}.g{stroke:#d1d9e0}.z{stroke:#59636e}.ci{stroke:#0b6bcb;stroke-width:2}.pt{fill:#0b6bcb;stroke:#fff;stroke-width:2}.pt.open{fill:#fff;stroke:#0b6bcb}@media (prefers-color-scheme:dark){.bg{fill:#0d1117}.t{fill:#e6edf3}.m{fill:#9198a1}.g{stroke:#30363d}.z{stroke:#9198a1}.ci{stroke:#58a6ff}.pt{fill:#58a6ff;stroke:#0d1117}.pt.open{fill:#0d1117;stroke:#58a6ff}}</style>
-<rect class="bg" width="900" height="835"/>
+<rect class="bg" width="900" height="967"/>
 <text class="t" x="16" y="22" font-weight="bold">Candidate minus baseline score share, by committed bench run</text>
 <text class="m" x="16" y="38">Percentage points, pooled over opponents, 95% interval. Right of zero means the candidate scored more.</text>
-<line class="g" x1="290.0" x2="290.0" y1="48" y2="708"/>
-<text class="m" x="290.0" y="724" text-anchor="middle">-8</text>
-<line class="g" x1="306.3" x2="306.3" y1="48" y2="708"/>
-<text class="m" x="306.3" y="724" text-anchor="middle">-7</text>
-<line class="g" x1="322.6" x2="322.6" y1="48" y2="708"/>
-<text class="m" x="322.6" y="724" text-anchor="middle">-6</text>
-<line class="g" x1="338.9" x2="338.9" y1="48" y2="708"/>
-<text class="m" x="338.9" y="724" text-anchor="middle">-5</text>
-<line class="g" x1="355.1" x2="355.1" y1="48" y2="708"/>
-<text class="m" x="355.1" y="724" text-anchor="middle">-4</text>
-<line class="g" x1="371.4" x2="371.4" y1="48" y2="708"/>
-<text class="m" x="371.4" y="724" text-anchor="middle">-3</text>
-<line class="g" x1="387.7" x2="387.7" y1="48" y2="708"/>
-<text class="m" x="387.7" y="724" text-anchor="middle">-2</text>
-<line class="g" x1="404.0" x2="404.0" y1="48" y2="708"/>
-<text class="m" x="404.0" y="724" text-anchor="middle">-1</text>
-<line class="z" x1="420.3" x2="420.3" y1="48" y2="708"/>
-<text class="m" x="420.3" y="724" text-anchor="middle">0</text>
-<line class="g" x1="436.6" x2="436.6" y1="48" y2="708"/>
-<text class="m" x="436.6" y="724" text-anchor="middle">+1</text>
-<line class="g" x1="452.9" x2="452.9" y1="48" y2="708"/>
-<text class="m" x="452.9" y="724" text-anchor="middle">+2</text>
-<line class="g" x1="469.1" x2="469.1" y1="48" y2="708"/>
-<text class="m" x="469.1" y="724" text-anchor="middle">+3</text>
-<line class="g" x1="485.4" x2="485.4" y1="48" y2="708"/>
-<text class="m" x="485.4" y="724" text-anchor="middle">+4</text>
-<line class="g" x1="501.7" x2="501.7" y1="48" y2="708"/>
-<text class="m" x="501.7" y="724" text-anchor="middle">+5</text>
-<line class="g" x1="518.0" x2="518.0" y1="48" y2="708"/>
-<text class="m" x="518.0" y="724" text-anchor="middle">+6</text>
-<line class="g" x1="534.3" x2="534.3" y1="48" y2="708"/>
-<text class="m" x="534.3" y="724" text-anchor="middle">+7</text>
-<line class="g" x1="550.6" x2="550.6" y1="48" y2="708"/>
-<text class="m" x="550.6" y="724" text-anchor="middle">+8</text>
-<line class="g" x1="566.9" x2="566.9" y1="48" y2="708"/>
-<text class="m" x="566.9" y="724" text-anchor="middle">+9</text>
-<line class="g" x1="583.1" x2="583.1" y1="48" y2="708"/>
-<text class="m" x="583.1" y="724" text-anchor="middle">+10</text>
-<line class="g" x1="599.4" x2="599.4" y1="48" y2="708"/>
-<text class="m" x="599.4" y="724" text-anchor="middle">+11</text>
-<line class="g" x1="615.7" x2="615.7" y1="48" y2="708"/>
-<text class="m" x="615.7" y="724" text-anchor="middle">+12</text>
-<line class="g" x1="632.0" x2="632.0" y1="48" y2="708"/>
-<text class="m" x="632.0" y="724" text-anchor="middle">+13</text>
-<line class="g" x1="648.3" x2="648.3" y1="48" y2="708"/>
-<text class="m" x="648.3" y="724" text-anchor="middle">+14</text>
-<line class="g" x1="664.6" x2="664.6" y1="48" y2="708"/>
-<text class="m" x="664.6" y="724" text-anchor="middle">+15</text>
-<line class="g" x1="680.9" x2="680.9" y1="48" y2="708"/>
-<text class="m" x="680.9" y="724" text-anchor="middle">+16</text>
-<line class="g" x1="697.1" x2="697.1" y1="48" y2="708"/>
-<text class="m" x="697.1" y="724" text-anchor="middle">+17</text>
-<line class="g" x1="713.4" x2="713.4" y1="48" y2="708"/>
-<text class="m" x="713.4" y="724" text-anchor="middle">+18</text>
-<line class="g" x1="729.7" x2="729.7" y1="48" y2="708"/>
-<text class="m" x="729.7" y="724" text-anchor="middle">+19</text>
-<line class="g" x1="746.0" x2="746.0" y1="48" y2="708"/>
-<text class="m" x="746.0" y="724" text-anchor="middle">+20</text>
-<line class="g" x1="762.3" x2="762.3" y1="48" y2="708"/>
-<text class="m" x="762.3" y="724" text-anchor="middle">+21</text>
-<line class="g" x1="778.6" x2="778.6" y1="48" y2="708"/>
-<text class="m" x="778.6" y="724" text-anchor="middle">+22</text>
-<line class="g" x1="794.9" x2="794.9" y1="48" y2="708"/>
-<text class="m" x="794.9" y="724" text-anchor="middle">+23</text>
-<line class="g" x1="811.1" x2="811.1" y1="48" y2="708"/>
-<text class="m" x="811.1" y="724" text-anchor="middle">+24</text>
-<line class="g" x1="827.4" x2="827.4" y1="48" y2="708"/>
-<text class="m" x="827.4" y="724" text-anchor="middle">+25</text>
-<line class="g" x1="843.7" x2="843.7" y1="48" y2="708"/>
-<text class="m" x="843.7" y="724" text-anchor="middle">+26</text>
-<line class="g" x1="860.0" x2="860.0" y1="48" y2="708"/>
-<text class="m" x="860.0" y="724" text-anchor="middle">+27</text>
+<line class="g" x1="290.0" x2="290.0" y1="48" y2="840"/>
+<text class="m" x="290.0" y="856" text-anchor="middle">-8</text>
+<line class="g" x1="306.3" x2="306.3" y1="48" y2="840"/>
+<text class="m" x="306.3" y="856" text-anchor="middle">-7</text>
+<line class="g" x1="322.6" x2="322.6" y1="48" y2="840"/>
+<text class="m" x="322.6" y="856" text-anchor="middle">-6</text>
+<line class="g" x1="338.9" x2="338.9" y1="48" y2="840"/>
+<text class="m" x="338.9" y="856" text-anchor="middle">-5</text>
+<line class="g" x1="355.1" x2="355.1" y1="48" y2="840"/>
+<text class="m" x="355.1" y="856" text-anchor="middle">-4</text>
+<line class="g" x1="371.4" x2="371.4" y1="48" y2="840"/>
+<text class="m" x="371.4" y="856" text-anchor="middle">-3</text>
+<line class="g" x1="387.7" x2="387.7" y1="48" y2="840"/>
+<text class="m" x="387.7" y="856" text-anchor="middle">-2</text>
+<line class="g" x1="404.0" x2="404.0" y1="48" y2="840"/>
+<text class="m" x="404.0" y="856" text-anchor="middle">-1</text>
+<line class="z" x1="420.3" x2="420.3" y1="48" y2="840"/>
+<text class="m" x="420.3" y="856" text-anchor="middle">0</text>
+<line class="g" x1="436.6" x2="436.6" y1="48" y2="840"/>
+<text class="m" x="436.6" y="856" text-anchor="middle">+1</text>
+<line class="g" x1="452.9" x2="452.9" y1="48" y2="840"/>
+<text class="m" x="452.9" y="856" text-anchor="middle">+2</text>
+<line class="g" x1="469.1" x2="469.1" y1="48" y2="840"/>
+<text class="m" x="469.1" y="856" text-anchor="middle">+3</text>
+<line class="g" x1="485.4" x2="485.4" y1="48" y2="840"/>
+<text class="m" x="485.4" y="856" text-anchor="middle">+4</text>
+<line class="g" x1="501.7" x2="501.7" y1="48" y2="840"/>
+<text class="m" x="501.7" y="856" text-anchor="middle">+5</text>
+<line class="g" x1="518.0" x2="518.0" y1="48" y2="840"/>
+<text class="m" x="518.0" y="856" text-anchor="middle">+6</text>
+<line class="g" x1="534.3" x2="534.3" y1="48" y2="840"/>
+<text class="m" x="534.3" y="856" text-anchor="middle">+7</text>
+<line class="g" x1="550.6" x2="550.6" y1="48" y2="840"/>
+<text class="m" x="550.6" y="856" text-anchor="middle">+8</text>
+<line class="g" x1="566.9" x2="566.9" y1="48" y2="840"/>
+<text class="m" x="566.9" y="856" text-anchor="middle">+9</text>
+<line class="g" x1="583.1" x2="583.1" y1="48" y2="840"/>
+<text class="m" x="583.1" y="856" text-anchor="middle">+10</text>
+<line class="g" x1="599.4" x2="599.4" y1="48" y2="840"/>
+<text class="m" x="599.4" y="856" text-anchor="middle">+11</text>
+<line class="g" x1="615.7" x2="615.7" y1="48" y2="840"/>
+<text class="m" x="615.7" y="856" text-anchor="middle">+12</text>
+<line class="g" x1="632.0" x2="632.0" y1="48" y2="840"/>
+<text class="m" x="632.0" y="856" text-anchor="middle">+13</text>
+<line class="g" x1="648.3" x2="648.3" y1="48" y2="840"/>
+<text class="m" x="648.3" y="856" text-anchor="middle">+14</text>
+<line class="g" x1="664.6" x2="664.6" y1="48" y2="840"/>
+<text class="m" x="664.6" y="856" text-anchor="middle">+15</text>
+<line class="g" x1="680.9" x2="680.9" y1="48" y2="840"/>
+<text class="m" x="680.9" y="856" text-anchor="middle">+16</text>
+<line class="g" x1="697.1" x2="697.1" y1="48" y2="840"/>
+<text class="m" x="697.1" y="856" text-anchor="middle">+17</text>
+<line class="g" x1="713.4" x2="713.4" y1="48" y2="840"/>
+<text class="m" x="713.4" y="856" text-anchor="middle">+18</text>
+<line class="g" x1="729.7" x2="729.7" y1="48" y2="840"/>
+<text class="m" x="729.7" y="856" text-anchor="middle">+19</text>
+<line class="g" x1="746.0" x2="746.0" y1="48" y2="840"/>
+<text class="m" x="746.0" y="856" text-anchor="middle">+20</text>
+<line class="g" x1="762.3" x2="762.3" y1="48" y2="840"/>
+<text class="m" x="762.3" y="856" text-anchor="middle">+21</text>
+<line class="g" x1="778.6" x2="778.6" y1="48" y2="840"/>
+<text class="m" x="778.6" y="856" text-anchor="middle">+22</text>
+<line class="g" x1="794.9" x2="794.9" y1="48" y2="840"/>
+<text class="m" x="794.9" y="856" text-anchor="middle">+23</text>
+<line class="g" x1="811.1" x2="811.1" y1="48" y2="840"/>
+<text class="m" x="811.1" y="856" text-anchor="middle">+24</text>
+<line class="g" x1="827.4" x2="827.4" y1="48" y2="840"/>
+<text class="m" x="827.4" y="856" text-anchor="middle">+25</text>
+<line class="g" x1="843.7" x2="843.7" y1="48" y2="840"/>
+<text class="m" x="843.7" y="856" text-anchor="middle">+26</text>
+<line class="g" x1="860.0" x2="860.0" y1="48" y2="840"/>
+<text class="m" x="860.0" y="856" text-anchor="middle">+27</text>
 <text class="t" x="16" y="69.0">3.8 vs 3.7  drussgt40</text>
 <line class="ci" x1="594.1" x2="676.6" y1="65.0" y2="65.0"/>
 <circle class="pt open" cx="635.4" cy="65.0" r="4.5"><title>2026-10-06_hadur-3.8_drussgt40-local_cold.tsv: 13.21 pp (10.67 to 15.74); conditions differ from the usual: engine 1.9.5.6</title></circle>
@@ -141,31 +141,49 @@
 <text class="t" x="16" y="531.0">3.8 vs 3.7  top20-e1111 [1.11.1]</text>
 <line class="ci" x1="448.5" x2="491.6" y1="527.0" y2="527.0"/>
 <circle class="pt" cx="470.0" cy="527.0" r="4.5"><title>2026-10-06_hadur-top20-e1111-local_cold.tsv: 3.05 pp (1.73 to 4.38)</title></circle>
-<text class="t" x="16" y="553.0">3.8.5 vs 3.7  melee-top20-385-vs-37</text>
-<line class="ci" x1="419.0" x2="428.8" y1="549.0" y2="549.0"/>
-<circle class="pt open" cx="423.9" cy="549.0" r="4.5"><title>2026-10-07_hadur-melee-top20-385-vs-37-local_cold.tsv: 0.22 pp (-0.08 to 0.52); conditions differ from the usual: engine 1.9.5.6, parallel width 5</title></circle>
-<text class="t" x="16" y="575.0">3.8.5 vs 3.8  melee-top20-385-vs-38</text>
-<line class="ci" x1="416.9" x2="430.1" y1="571.0" y2="571.0"/>
-<circle class="pt open" cx="423.5" cy="571.0" r="4.5"><title>2026-10-07_hadur-melee-top20-385-vs-38-local_cold.tsv: 0.20 pp (-0.21 to 0.60); conditions differ from the usual: engine 1.9.5.6, parallel width 5</title></circle>
-<text class="t" x="16" y="597.0">3.8.5 vs 3.7  team-top20-385-vs-37</text>
-<line class="ci" x1="821.1" x2="838.0" y1="593.0" y2="593.0"/>
-<circle class="pt open" cx="829.5" cy="593.0" r="4.5"><title>2026-10-07_hadur-team-top20-385-vs-37-local_cold.tsv: 25.13 pp (24.61 to 25.65); conditions differ from the usual: engine 1.9.5.6, parallel width 4</title></circle>
-<text class="t" x="16" y="619.0">3.8.5 vs 3.8  team-top20-385-vs-38</text>
-<line class="ci" x1="407.1" x2="430.1" y1="615.0" y2="615.0"/>
-<circle class="pt open" cx="418.7" cy="615.0" r="4.5"><title>2026-10-07_hadur-team-top20-385-vs-38-local_cold.tsv: -0.10 pp (-0.81 to 0.60); conditions differ from the usual: engine 1.9.5.6, parallel width 4</title></circle>
-<text class="t" x="16" y="641.0">3.8.5 vs 3.8  tier2-385 [1.11.1]</text>
-<line class="ci" x1="402.2" x2="428.8" y1="637.0" y2="637.0"/>
-<circle class="pt" cx="415.6" cy="637.0" r="4.5"><title>2026-10-07_hadur-tier2-385-local_cold.tsv: -0.29 pp (-1.11 to 0.52)</title></circle>
-<text class="t" x="16" y="663.0">3.8.5 vs 3.7  top20-385-vs-37 [1.11.1]</text>
-<line class="ci" x1="446.2" x2="469.8" y1="659.0" y2="659.0"/>
-<circle class="pt" cx="458.1" cy="659.0" r="4.5"><title>2026-10-07_hadur-top20-385-vs-37-local_cold.tsv: 2.32 pp (1.59 to 3.04)</title></circle>
-<text class="t" x="16" y="685.0">3.8.5 vs 3.8  top20big-385 [1.11.1]</text>
-<line class="ci" x1="410.0" x2="420.1" y1="681.0" y2="681.0"/>
-<circle class="pt" cx="415.1" cy="681.0" r="4.5"><title>2026-10-07_hadur-top20big-385-local_cold.tsv: -0.32 pp (-0.63 to -0.01)</title></circle>
-<text class="m" x="16" y="740">Open circle: a condition that differs from the usual one for this chart (a blank is not recorded, not assumed).</text>
-<text class="m" x="16" y="756">rounds per battle 10 (usual 35): 1 run</text>
-<text class="m" x="16" y="771">engine 1.9.5.6 (usual 1.11.1): 14 runs</text>
-<text class="m" x="16" y="786">parallel width 16 (usual 12): 2 runs</text>
-<text class="m" x="16" y="801">parallel width 4 (usual 12): 2 runs</text>
-<text class="m" x="16" y="816">parallel width 5 (usual 12): 2 runs</text>
+<text class="t" x="16" y="553.0">2.Hadur 3.9 vs 2.Hadur 3.8.5  leak-39-v385 [1.11.1]</text>
+<line class="ci" x1="415.7" x2="427.5" y1="549.0" y2="549.0"/>
+<circle class="pt" cx="421.6" cy="549.0" r="4.5"><title>2026-10-07_hadur-leak-39-v385-local_cold.tsv: 0.08 pp (-0.28 to 0.44)</title></circle>
+<text class="t" x="16" y="575.0">2.Hadur 3.9 vs 2.Hadur 3.8.5  leak-39r-v385 [1.11.1]</text>
+<line class="ci" x1="413.8" x2="426.1" y1="571.0" y2="571.0"/>
+<circle class="pt" cx="420.0" cy="571.0" r="4.5"><title>2026-10-07_hadur-leak-39r-v385-local_cold.tsv: -0.02 pp (-0.40 to 0.36)</title></circle>
+<text class="t" x="16" y="597.0">2.Hadur 3.9 vs 2.Hadur 3.8.5  ll-39-v385 [1.11.1]</text>
+<line class="ci" x1="497.5" x2="521.1" y1="593.0" y2="593.0"/>
+<circle class="pt" cx="509.2" cy="593.0" r="4.5"><title>2026-10-07_hadur-ll-39-v385-local_cold.tsv: 5.46 pp (4.74 to 6.19)</title></circle>
+<text class="t" x="16" y="619.0">3.8.5 vs 3.7  melee-top20-385-vs-37</text>
+<line class="ci" x1="419.0" x2="428.8" y1="615.0" y2="615.0"/>
+<circle class="pt open" cx="423.9" cy="615.0" r="4.5"><title>2026-10-07_hadur-melee-top20-385-vs-37-local_cold.tsv: 0.22 pp (-0.08 to 0.52); conditions differ from the usual: engine 1.9.5.6, parallel width 5</title></circle>
+<text class="t" x="16" y="641.0">3.8.5 vs 3.8  melee-top20-385-vs-38</text>
+<line class="ci" x1="416.9" x2="430.1" y1="637.0" y2="637.0"/>
+<circle class="pt open" cx="423.5" cy="637.0" r="4.5"><title>2026-10-07_hadur-melee-top20-385-vs-38-local_cold.tsv: 0.20 pp (-0.21 to 0.60); conditions differ from the usual: engine 1.9.5.6, parallel width 5</title></circle>
+<text class="t" x="16" y="663.0">3.8.5 vs 3.7  team-top20-385-vs-37</text>
+<line class="ci" x1="821.1" x2="838.0" y1="659.0" y2="659.0"/>
+<circle class="pt open" cx="829.5" cy="659.0" r="4.5"><title>2026-10-07_hadur-team-top20-385-vs-37-local_cold.tsv: 25.13 pp (24.61 to 25.65); conditions differ from the usual: engine 1.9.5.6, parallel width 4</title></circle>
+<text class="t" x="16" y="685.0">3.8.5 vs 3.8  team-top20-385-vs-38</text>
+<line class="ci" x1="407.1" x2="430.1" y1="681.0" y2="681.0"/>
+<circle class="pt open" cx="418.7" cy="681.0" r="4.5"><title>2026-10-07_hadur-team-top20-385-vs-38-local_cold.tsv: -0.10 pp (-0.81 to 0.60); conditions differ from the usual: engine 1.9.5.6, parallel width 4</title></circle>
+<text class="t" x="16" y="707.0">3.8.5 vs 3.8  tier2-385 [1.11.1]</text>
+<line class="ci" x1="402.2" x2="428.8" y1="703.0" y2="703.0"/>
+<circle class="pt" cx="415.6" cy="703.0" r="4.5"><title>2026-10-07_hadur-tier2-385-local_cold.tsv: -0.29 pp (-1.11 to 0.52)</title></circle>
+<text class="t" x="16" y="729.0">3.8.5 vs 3.7  top20-385-vs-37 [1.11.1]</text>
+<line class="ci" x1="446.2" x2="469.8" y1="725.0" y2="725.0"/>
+<circle class="pt" cx="458.1" cy="725.0" r="4.5"><title>2026-10-07_hadur-top20-385-vs-37-local_cold.tsv: 2.32 pp (1.59 to 3.04)</title></circle>
+<text class="t" x="16" y="751.0">2.Hadur 3.9 vs 2.Hadur 3.8.5  top20-39-v385 [1.11.1]</text>
+<line class="ci" x1="403.3" x2="437.4" y1="747.0" y2="747.0"/>
+<circle class="pt" cx="420.3" cy="747.0" r="4.5"><title>2026-10-07_hadur-top20-39-v385-local_cold.tsv: 0.00 pp (-1.04 to 1.05)</title></circle>
+<text class="t" x="16" y="773.0">3.8.5 vs 3.8  top20big-385 [1.11.1]</text>
+<line class="ci" x1="410.0" x2="420.1" y1="769.0" y2="769.0"/>
+<circle class="pt" cx="415.1" cy="769.0" r="4.5"><title>2026-10-07_hadur-top20big-385-local_cold.tsv: -0.32 pp (-0.63 to -0.01)</title></circle>
+<text class="t" x="16" y="795.0">2.Hadur 3.9 vs 2.Hadur 3.8.5  weak-39-v385 [1.11.1]</text>
+<line class="ci" x1="390.0" x2="428.1" y1="791.0" y2="791.0"/>
+<circle class="pt" cx="409.0" cy="791.0" r="4.5"><title>2026-10-07_hadur-weak-39-v385-local_cold.tsv: -0.69 pp (-1.86 to 0.48)</title></circle>
+<text class="t" x="16" y="817.0">2.Hadur 3.9 vs 2.Hadur 3.8.5  weak-39r-v385 [1.11.1]</text>
+<line class="ci" x1="407.4" x2="435.3" y1="813.0" y2="813.0"/>
+<circle class="pt" cx="421.3" cy="813.0" r="4.5"><title>2026-10-07_hadur-weak-39r-v385-local_cold.tsv: 0.06 pp (-0.79 to 0.92)</title></circle>
+<text class="m" x="16" y="872">Open circle: a condition that differs from the usual one for this chart (a blank is not recorded, not assumed).</text>
+<text class="m" x="16" y="888">rounds per battle 10 (usual 35): 1 run</text>
+<text class="m" x="16" y="903">engine 1.9.5.6 (usual 1.11.1): 14 runs</text>
+<text class="m" x="16" y="918">parallel width 16 (usual 12): 2 runs</text>
+<text class="m" x="16" y="933">parallel width 4 (usual 12): 2 runs</text>
+<text class="m" x="16" y="948">parallel width 5 (usual 12): 2 runs</text>
 </svg>
