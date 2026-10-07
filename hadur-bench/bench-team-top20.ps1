@@ -27,7 +27,9 @@
   Processors each battle JVM is told it has (--child-cpus). Default: Bench's own, 2 when
   -Parallel is above 1.
 .PARAMETER ChildHeap
-  Heap cap for each battle JVM (--child-heap), for example 512M.
+  Heap cap for each battle JVM (--child-heap), for example 512M. Default 2G; "none" for no cap.
+.PARAMETER ForceMemory
+  Start even when the memory check says the run will not fit in free memory (--force-memory).
 .PARAMETER Only
   Only teams whose name contains this text (--only).
 .PARAMETER RobotJar
@@ -102,6 +104,7 @@ param(
     [switch]$ColdWarm,
     [int]$Retries = -1,
     [string]$Field = "",
+    [switch]$ForceMemory,
     [switch]$DryRun,
     [switch]$SkipBuild,
     [switch]$SkipFetch
@@ -172,6 +175,7 @@ $parts = @("--team", "true", "--set", $Set, "--seeds", $Seeds, "--rounds", $Roun
 if ($Parallel -gt 1) { $parts += @("--parallel", $Parallel) }
 if ($ChildCpus -ge 0) { $parts += @("--child-cpus", $ChildCpus) }
 if ($ChildHeap) { $parts += @("--child-heap", $ChildHeap) }
+if ($ForceMemory) { $parts += @("--force-memory", "true") }
 if ($CpuConstant) { $parts += @("--cpu-constant", $CpuConstant) }
 if ($Only) { $parts += @("--only", $Only) }
 if ($RobotJar) { $parts += @("--robot-jar", $RobotJar) }

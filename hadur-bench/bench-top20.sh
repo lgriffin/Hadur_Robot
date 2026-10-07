@@ -27,6 +27,8 @@
 #   --out DIR              working directory, default work/<label>-<timestamp>
 #   --report FILE          also write the report there, default ../docs/bench/local/<date>_<label>.md
 #   --per-opponent DIR     one report per opponent, default ../docs/bench/local/<date>_<label>
+#   --child-heap SIZE      cap each battle JVM's heap (-Xmx), default 2G, `none` for no cap; --child-cpus N sets the processors each is told it has
+#   --force-memory         start even when the memory check says the run will not fit in free memory
 #   --repeat K             fight each (jar, opponent, seed) K times and print the score-share SD (BENCH-53); writes repeat.tsv
 #   --cold-warm            fight each seed cold, then warm on the shelf the cold battle left (BENCH-54); writes cold-warm.tsv
 #   --retries N            run a failed battle again up to N times (BENCH-55), Bench default 1
@@ -61,6 +63,9 @@ RETRIES=""
 FIELD=""
 DRY_RUN=0
 ENGINE=""
+CHILD_HEAP=""
+CHILD_CPUS=""
+FORCE_MEMORY=0
 
 while [ $# -gt 0 ]; do
     case "$1" in
@@ -84,6 +89,9 @@ while [ $# -gt 0 ]; do
         --retries) RETRIES="${2:?--retries needs a number}"; shift 2 ;;
         --field) FIELD="${2:?--field needs WIDTHxHEIGHT}"; shift 2 ;;
         --dry-run) DRY_RUN=1; shift ;;
+        --child-heap) CHILD_HEAP="${2:?--child-heap needs a size such as 2G, or none}"; shift 2 ;;
+        --child-cpus) CHILD_CPUS="${2:?--child-cpus needs a number}"; shift 2 ;;
+        --force-memory) FORCE_MEMORY=1; shift ;;
         --engine) ENGINE="${2:?--engine needs a Robocode version}"; shift 2 ;;
         -h|--help) sed -n '2,/^set -u$/p' "$0" | sed '$d' | sed 's/^# \{0,1\}//'; exit 0 ;;
         *) echo "unknown option: $1" >&2; exit 2 ;;
@@ -139,6 +147,9 @@ if [ -n "$REPEAT" ]; then ARGS="$ARGS --repeat $REPEAT"; fi
 if [ "$COLD_WARM" -eq 1 ]; then ARGS="$ARGS --cold-warm true"; fi
 if [ -n "$RETRIES" ]; then ARGS="$ARGS --retries $RETRIES"; fi
 if [ -n "$FIELD" ]; then ARGS="$ARGS --field $FIELD"; fi
+if [ -n "$CHILD_HEAP" ]; then ARGS="$ARGS --child-heap $CHILD_HEAP"; fi
+if [ -n "$CHILD_CPUS" ]; then ARGS="$ARGS --child-cpus $CHILD_CPUS"; fi
+if [ "$FORCE_MEMORY" -eq 1 ]; then ARGS="$ARGS --force-memory true"; fi
 
 # The engine is the bench's own Maven dependency, so another release is a property away;
 # the bench's classpath file is rebuilt with it on this compile (issue #109).
