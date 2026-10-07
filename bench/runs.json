@@ -202,6 +202,31 @@
    "published": "2026-10-07T22:22Z"
   },
   {
+   "id": "2026-10-07_mid-shieldall-v39",
+   "date": "2026-10-07",
+   "label": "mid-shieldall-v39",
+   "kind": "solo",
+   "set": "mid-39.txt",
+   "engine": "1.11.1",
+   "source": "work directory",
+   "candidate": "hadur2.Hadur 3.9sa",
+   "baseline": "hadur2.Hadur 3.9",
+   "seeds": 8,
+   "rounds": 35,
+   "gate": "CAUTION",
+   "verdict": "not-resolved",
+   "diff": -1.2404062499999997,
+   "ci95": [
+    -3.4588713922888905,
+    0.9780588922888909
+   ],
+   "n": 320,
+   "opponents": 40,
+   "host": "AMD Ryzen Threadripper PRO 9965WX 24-Cores, 48 logical cores, Windows 11 10.0, no other Robocode JVMs running",
+   "path": "runs/2026-10-07_mid-shieldall-v39/",
+   "published": "2026-10-07T23:12Z"
+  },
+  {
    "id": "2026-10-07_mid-39-v34",
    "date": "2026-10-07",
    "label": "mid-39-v34",
