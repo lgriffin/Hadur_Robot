@@ -102,6 +102,31 @@
    "published": "2026-10-07T15:21Z"
   },
   {
+   "id": "2026-10-07_leak-39-v385",
+   "date": "2026-10-07",
+   "label": "leak-39-v385",
+   "kind": "solo",
+   "set": "leak-38.txt",
+   "engine": "1.11.1",
+   "source": "work directory",
+   "candidate": "3.9",
+   "baseline": "3.8.5",
+   "seeds": 16,
+   "rounds": 35,
+   "gate": "NOT_TRUSTED",
+   "verdict": "level",
+   "diff": 0.08193359374999999,
+   "ci95": [
+    -0.24362265338074784,
+    0.4074898408807478
+   ],
+   "n": 512,
+   "opponents": 32,
+   "host": "AMD Ryzen Threadripper PRO 9965WX 24-Cores, 48 logical cores, Windows 11 10.0, 12 other Robocode JVMs running (hadur.bench.BattleRunner x12)",
+   "path": "runs/2026-10-07_leak-39-v385/",
+   "published": "2026-10-07T15:22Z"
+  },
+  {
    "id": "2026-10-06_top20-e1111",
    "date": "2026-10-06",
    "label": "top20-e1111",
