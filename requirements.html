@@ -12,7 +12,7 @@
 <h1>EARS requirements</h1>
 <p class="lede">Every requirement from <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/docs/requirements.md">docs/requirements.md</a>, the source of truth. <em>Implemented in</em> lists
 the classes whose documentation cites the ID; <em>Verified by</em> lists the tests tagged with it, the same tags the build's
-traceability check reads. 152 of 152 live requirements have a tagged test. The readings behind the numbers are in
+traceability check reads. 157 of 157 live requirements have a tagged test. The readings behind the numbers are in
 <a href="docs/requirements-notes.html">Requirement readings</a>.</p>
 <nav class="toc"><a href="#group-CORE">Core</a> <a href="#group-RES">Resilience</a> <a href="#group-REL">Release</a> <a href="#group-WAVE">Waves</a> <a href="#group-RADAR">Radar</a> <a href="#group-MEM">Memory</a> <a href="#group-ADAPT">Adapt</a> <a href="#group-DIAL">Dials</a> <a href="#group-DIST">Distance</a> <a href="#group-POW">Power</a> <a href="#group-END">Endgame</a> <a href="#group-MOVE">Movement</a> <a href="#group-TIME">Time budget</a> <a href="#group-SHIELD">Bullet shielding</a> <a href="#group-MELEE">Melee (2.1)</a> <a href="#group-GATE">Posture gate</a> <a href="#group-MRADAR">Melee radar</a> <a href="#group-MSENSE">Melee sensing</a> <a href="#group-MMOVE">Melee movement</a> <a href="#group-MGUN">Melee gun</a> <a href="#group-MMEM">Melee memory</a></nav><h2 id="group-CORE">Core</h2>
 <article class="req-card" id="CORE-1">
@@ -590,6 +590,31 @@ traceability check reads. 152 of 152 live requirements have a tagged test. The r
 <div class="req-head"><span class="rid">BENCH-59</span><span class="badge">Ubiquitous</span><span class="badge stage">R9</span></div>
 <p>The bench shall read its arguments from a file when its only argument is <code>@FILE</code> (one argument per line), and the PowerShell bench scripts shall pass them that way, so that a value with a space reaches it intact on Windows PowerShell 5.1.</p>
 <dl><dt>Implemented in</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/Bench.java" title="hadur.bench.Bench">Bench</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/RunOptionsTest.java">RunOptionsTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="BENCH-63">
+<div class="req-head"><span class="rid">BENCH-63</span><span class="badge">Ubiquitous</span><span class="badge stage">R9</span></div>
+<p>The bench shall list, under the heading &quot;Excluded or failing opponents&quot; near the top of a duel, melee or team report, every opponent that failed at least half of its battles, with the number failed of the number fought and the first failure&#x27;s reason, and shall add nothing when no opponent did.</p>
+<dl><dt>Implemented in</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/Exclusions.java" title="hadur.bench.Exclusions">Exclusions</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/ExclusionsTest.java">ExclusionsTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="BENCH-64">
+<div class="req-head"><span class="rid">BENCH-64</span><span class="badge">Ubiquitous</span><span class="badge stage">R9</span></div>
+<p>The bench shall place that block after the report&#x27;s title and leave the rest of the report unchanged.</p>
+<dl><dt>Implemented in</dt><dd><span class="none">no citation in the sources</span></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/ExclusionsTest.java">ExclusionsTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="BENCH-65">
+<div class="req-head"><span class="rid">BENCH-65</span><span class="badge">Event</span><span class="badge stage">R9</span></div>
+<p>When a run ends with opponents that failed at least half of their battles, the bench shall name them, with their failed and fought counts, in one line of its console output.</p>
+<dl><dt>Implemented in</dt><dd><span class="none">no citation in the sources</span></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/ExclusionsTest.java">ExclusionsTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="BENCH-66">
+<div class="req-head"><span class="rid">BENCH-66</span><span class="badge">Ubiquitous</span><span class="badge stage">R9</span></div>
+<p>The bench shall list those opponents under <code>excluded</code> in the run&#x27;s <code>conditions.json</code>, so a later tool can tell a shrunken set from a full one.</p>
+<dl><dt>Implemented in</dt><dd><span class="none">no citation in the sources</span></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/ExclusionsTest.java">ExclusionsTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="BENCH-67">
+<div class="req-head"><span class="rid">BENCH-67</span><span class="badge">Ubiquitous</span><span class="badge stage">R9</span></div>
+<p>The bench shall give a failure&#x27;s reason as the first line of the battle&#x27;s error text, cut to 160 characters, and &quot;no result&quot; when there is none.</p>
+<dl><dt>Implemented in</dt><dd><span class="none">no citation in the sources</span></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/ExclusionsTest.java">ExclusionsTest.java</a></dd></dl>
 </article>
 <h2 id="group-GUN">GUN</h2>
 <article class="req-card" id="GUN-1">
