@@ -30,6 +30,11 @@ file	date	label	mode	candidate	baseline	engine	rounds	child_heap	cpu_constant	pa
 2026-10-07_hadur-lost-rounds-39-v34-local_cold.tsv	2026-10-07	hadur-lost-rounds-39-v34-local_cold	duel	2.Hadur 3.9	2.Hadur 3.4	1.11.1	35			12		8	32	256	1.70	0.94	2.46	11.2	11.8	0	512
 2026-10-07_hadur-melee-top20-385-vs-37-local_cold.tsv	2026-10-07	hadur-melee-top20-385-vs-37-local_cold	melee	3.8.5	3.7	1.9.5.6				5		10	5	50	0.22	-0.08	0.52			0	1000
 2026-10-07_hadur-melee-top20-385-vs-38-local_cold.tsv	2026-10-07	hadur-melee-top20-385-vs-38-local_cold	melee	3.8.5	3.8	1.9.5.6				5		10	5	50	0.20	-0.21	0.60			0	1000
+2026-10-07_hadur-mid-39-v34-local_cold.tsv	2026-10-07	hadur-mid-39-v34-local_cold	duel	2.Hadur 3.9	2.Hadur 3.4	1.11.1	35			12		8	40	320	-0.01	-0.64	0.62	11.7	12.0	0	640
+2026-10-07_hadur-mid-null-list-v39-local_cold.tsv	2026-10-07	hadur-mid-null-list-v39-local_cold	duel	2.Hadur 3.9	jd.Nullstride 2.3.3	1.11.1	35			12		8	30	240	-17.84	-18.53	-17.15	12.7	32.9	0	480
+2026-10-07_hadur-mid-null-v39-local_cold.tsv	2026-10-07	hadur-mid-null-v39-local_cold	duel	2.Hadur 3.9	jd.Nullstride 2.3.3	1.11.1	35			12		8	40	320	-10.95	-11.51	-10.39	12.1	46.1	0	640
+2026-10-07_hadur-mid-shieldall-list-v39-local_cold.tsv	2026-10-07	hadur-mid-shieldall-list-v39-local_cold	duel	2.Hadur 3.9	2.Hadur 3.9sa	1.11.1	35			12		8	30	240	-8.05	-8.91	-7.19	12.3	11.7	0	480
+2026-10-07_hadur-mid-shieldall-v39-local_cold.tsv	2026-10-07	hadur-mid-shieldall-v39-local_cold	duel	2.Hadur 3.9	2.Hadur 3.9sa	1.11.1	35			12		8	40	320	1.24	0.53	1.95	11.9	12.3	0	640
 2026-10-07_hadur-score-leak-39-v34-local_cold.tsv	2026-10-07	hadur-score-leak-39-v34-local_cold	duel	2.Hadur 3.9	2.Hadur 3.4	1.11.1	35			12		8	32	256	5.71	5.23	6.19	10.5	11.1	0	512
 2026-10-07_hadur-tail-39-v34-local_cold.tsv	2026-10-07	hadur-tail-39-v34-local_cold	duel	2.Hadur 3.9	2.Hadur 3.4	1.11.1	35			12		8	39	312	0.16	-0.13	0.44	11.5	11.1	16	640
 2026-10-07_hadur-tail-knight-v39-local_cold.tsv	2026-10-07	hadur-tail-knight-v39-local_cold	duel	2.Hadur 3.9	rsalesc.mega.Knight 0.6.28	1.11.1	35			12		8	39	312	-1.20	-1.54	-0.86	10.8	1.9	16	640
