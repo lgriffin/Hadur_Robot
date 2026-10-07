@@ -19,7 +19,7 @@ jobs:
       - name: Bench queue runner tests
         run: python3 -m unittest discover -s hadur-bench -p "test_benchqueue.py"
       - name: Bench publish tests
-        run: python3 data/tools/test_publish_run.py
+        run: python3 test_publish_run.py
         working-directory: data/tools
       - name: Requirement coverage
         if: always()
