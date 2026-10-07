@@ -504,3 +504,11 @@ java --add-opens=java.base/sun.net.www.protocol.jar=ALL-UNNAMED --add-opens=java
      --add-opens=java.desktop/sun.awt=ALL-UNNAMED -Djava.security.manager=allow -Djava.awt.headless=true \
      -cp "target/classes:$(cat target/classpath.txt)" hadur.bench.InactivityCheck /tmp/inactivity-home
 ```
+
+## Ablation builds
+
+`build-ablation.sh [--ref REF] ram2|mir1|ram2,mir1` builds Hadur from REF with a behaviour switched
+off (RAM-2 the rammer escape, MIR-1 the mirror drive) under its own version (`3.8.5nr`, `3.8.5nm`,
+`3.8.5nrnm`) into `bisect/`, for a paired run against the release it came from. It works in a
+temporary git worktree and skips tests. `plans/ablation-r9.queue` runs the R9 ablation set.
+
