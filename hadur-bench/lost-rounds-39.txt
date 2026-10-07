@@ -1,0 +1,38 @@
+# Lost rounds (docs/bench/live-3.9.md): 32 bots ranked 151st and below that 3.9 lost more
+# than 5% of rounds to live and that both 3.4 and 3.9 scored more than 4 points under Hadur's
+# own trend for their rank, worst first by the mean of the two. Each live pairing is one to
+# three battles, so part of this list is luck; the bench says which losses are real.
+# Jars from https://robocode-archive.strangeautomata.com/robots/<jar>, into opponents/ (not committed).
+#   <robot name as Robocode lists it> | <role> | <jar file in opponents/>
+gh.micro.GrubbmThree 1.01 | weak | gh.micro.GrubbmThree_1.01.jar
+cf.OldMan.OldManXP 0.1 | weak | cf.OldMan.OldManXP_0.1.jar
+mz.NanoDeath 2.56 | weak | mz.NanoDeath_2.56.jar
+sul.Bicephal 1.2 | weak | sul.Bicephal_1.2.jar
+kc.micro.rammer.MaxRisk 0.6 | weak | kc.micro.rammer.MaxRisk_0.6.jar
+mn.nano.perceptual.Impact 1.3.0 | weak | mn.nano.perceptual.Impact_1.3.0.jar
+test.Podgy 4.0 | weak | test.Podgy_4.0.jar
+non.mega.NaN 0.1 | weak | non.mega.NaN_0.1.jar
+demetrix.nano.Neutrino 0.27 | weak | demetrix.nano.Neutrino_0.27.jar
+whind.Wisdom 0.5.1 | weak | whind.Wisdom_0.5.1.jar
+as.xbots 1.0 | weak | as.xbots_1.0.jar
+ers.nano.sunderer.Sunderer 1.23a | weak | ers.nano.sunderer.Sunderer_1.23a.jar
+robar.nano.Breeze 0.3 | weak | robar.nano.Breeze_0.3.jar
+dmh.robocode.robot.PinkPanther 1.1 | weak | dmh.robocode.robot.PinkPanther_1.1.jar
+sm.Devil 7.3 | weak | sm.Devil_7.3.jar
+seed.Anastasia 1.0 | weak | seed.Anastasia_1.0.jar
+janm.Jammy 1.0 | weak | janm.Jammy_1.0.jar
+dcs.PM.Eater_of_Worlds_PM 1.2 | weak | dcs.PM.Eater_of_Worlds_PM_1.2.jar
+apv.MicroAspid 1.8 | weak | apv.MicroAspid_1.8.jar
+mladjo.Grrrrr 0.9 | weak | mladjo.Grrrrr_0.9.jar
+md.November 1.0 | weak | md.November_1.0.jar
+ph.mini.Archer 0.6.6 | weak | ph.mini.Archer_0.6.6.jar
+cb.mega.RandomBot 1.0 | weak | cb.mega.RandomBot_1.0.jar
+dmp.micro.Aurora 1.41 | weak | dmp.micro.Aurora_1.41.jar
+doka.Test 1.0 | weak | doka.Test_1.0.jar
+davidalves.net.DuelistNano 1.0 | weak | davidalves.net.DuelistNano_1.0.jar
+arthord.NanoSatanMelee Beta | weak | arthord.NanoSatanMelee_Beta.jar
+DTF.Kludgy 1.2b | weak | DTF.Kludgy_1.2b.jar
+cx.Princess 1.0 | weak | cx.Princess_1.0.jar
+slugzilla.RandomPattern 1.0 | weak | slugzilla.RandomPattern_1.0.jar
+stelo.MatchupAGF 1.1 | weak | stelo.MatchupAGF_1.1.jar
+stelo.MatchupMini 1.1 | weak | stelo.MatchupMini_1.1.jar
