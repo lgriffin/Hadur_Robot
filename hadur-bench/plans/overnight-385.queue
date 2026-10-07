@@ -1,0 +1,49 @@
+# The overnight queue of 2026-10-06/07 (issue #117): the release bisect on the live losers first,
+# then the 3.8.5 comprehensive set. It is the work/overnight4.sh that ran, as a plan. Run it with
+#   ./queue.sh run overnight-385        (or  .\queue.ps1 run overnight-385)
+# and read it with  ./queue.sh status overnight-385. Steps that exited 0 are skipped on a restart.
+# Every battle JVM is capped at -Xmx2G (uncapped heaps reached about 96 GB on the 48-thread host).
+
+set HEAP = --child-heap 2G
+set COMMON = --rounds 35 --cpu-constant 1488498 ${HEAP}
+set E = --engine 1.11.1
+set B38 = --baseline bisect/hadur2.Hadur_3.8.jar --baseline-robot "hadur2.Hadur 3.8"
+set B37 = --baseline baselines/hadur2.Hadur_3.7.jar --baseline-robot "hadur2.Hadur 3.7"
+set LL = ./bench-top20.sh --skip-build --skip-fetch --set live-losers-385.txt --seeds 8 --rounds 35 ${HEAP} ${E}
+
+fetchll    | ./fetch-opponents.sh --set live-losers-385.txt
+fetchleak  | ./fetch-opponents.sh --set leak-38.txt
+
+# Bisect, 3.4 -> 3.5.1 -> 3.7 -> 3.8 -> 3.8.5. A -tight step pins the CPU constant at 400000.
+leak38-38v34 | ./bench-top20.sh --skip-build --skip-fetch --set leak-38.txt --seeds 16 --rounds 35 --cpu-constant 1488498 ${HEAP} ${E} --robot-jar bisect/hadur2.Hadur_3.8.jar --robot "hadur2.Hadur 3.8" --baseline bisect/hadur2.Hadur_3.4.jar --baseline-robot "hadur2.Hadur 3.4" --label leak38-38v34
+  after: fetchleak
+ll-37v351 | ${LL} --cpu-constant 1488498 --robot-jar baselines/hadur2.Hadur_3.7.jar --robot "hadur2.Hadur 3.7" --baseline bisect/hadur2.Hadur_3.5.1.jar --baseline-robot "hadur2.Hadur 3.5.1" --label ll-37v351
+  after: fetchll
+ll-385v37 | ${LL} --cpu-constant 1488498 --robot-jar bisect/hadur2.Hadur_3.8.5.jar --robot "hadur2.Hadur 3.8.5" ${B37} --label ll-385v37
+  after: fetchll
+ll-351v34 | ${LL} --cpu-constant 1488498 --robot-jar bisect/hadur2.Hadur_3.5.1.jar --robot "hadur2.Hadur 3.5.1" --baseline bisect/hadur2.Hadur_3.4.jar --baseline-robot "hadur2.Hadur 3.4" --label ll-351v34
+  after: fetchll
+ll-37v351-tight | ${LL} --cpu-constant 400000 --robot-jar baselines/hadur2.Hadur_3.7.jar --robot "hadur2.Hadur 3.7" --baseline bisect/hadur2.Hadur_3.5.1.jar --baseline-robot "hadur2.Hadur 3.5.1" --label ll-37v351-tight
+  after: fetchll
+ll-385v34-tight | ${LL} --cpu-constant 400000 --robot-jar bisect/hadur2.Hadur_3.8.5.jar --robot "hadur2.Hadur 3.8.5" --baseline bisect/hadur2.Hadur_3.4.jar --baseline-robot "hadur2.Hadur 3.4" --label ll-385v34-tight
+  after: fetchll
+ll-385v34 | ${LL} --cpu-constant 1488498 --robot-jar bisect/hadur2.Hadur_3.8.5.jar --robot "hadur2.Hadur 3.8.5" --baseline bisect/hadur2.Hadur_3.4.jar --baseline-robot "hadur2.Hadur 3.4" --label ll-385v34
+  after: fetchll
+
+# 3.8.5 against 3.8 and 3.7 in melee, team and 1v1.
+melee      | ./bench-melee-top20.sh --skip-build --skip-fetch --seeds 10 --parallel 5 ${COMMON} ${B38} --label melee-top20-385-vs-38
+team37     | ./bench-team-top20.sh --skip-build --skip-fetch --seeds 10 --parallel 4 ${COMMON} --baseline baselines/hadur2.HadurTeam_3.7.jar --baseline-robot "hadur2.HadurTeam 3.7" --label team-top20-385-vs-37
+top20vs37  | ./bench-top20.sh --skip-build --skip-fetch --set top20.txt --seeds 20 ${COMMON} ${E} ${B37} --label top20-385-vs-37
+melee37    | ./bench-melee-top20.sh --skip-build --skip-fetch --seeds 10 --parallel 5 ${COMMON} ${B37} --label melee-top20-385-vs-37
+
+# The 3.8 team jar, built from the v3.8 tag in a scratch worktree unless it is already in bisect/.
+build38team | test -f bisect/hadur2.HadurTeam_3.8.jar || { T=$(mktemp -d) && git -C .. worktree add -f --detach "$T/b" v3.8 && (cd "$T/b" && mvn -q -pl hadur-robot -am package -DskipTests -Dmaven.javadoc.skip) && cp "$T/b/hadur-robot/target/hadur2.HadurTeam_3.8.jar" bisect/ && git -C .. worktree remove --force "$T/b"; }
+  timeout: 30m
+team38     | ./bench-team-top20.sh --skip-build --skip-fetch --seeds 10 --parallel 4 ${COMMON} --baseline bisect/hadur2.HadurTeam_3.8.jar --baseline-robot "hadur2.HadurTeam 3.8" --label team-top20-385-vs-38
+  after: build38team
+
+# Noise floor, cold against warm, then the big 1v1 run. The CPU-constant sweep (sweep-cpu-constant.sh) is left off.
+repeat     | ./bench-top20.sh --skip-build --skip-fetch --set top20.txt --seeds 3 --repeat 3 ${COMMON} ${E} --label repeat-385
+coldwarm   | ./bench-top20.sh --skip-build --skip-fetch --set top20.txt --seeds 4 --cold-warm ${COMMON} ${E} --label coldwarm-385
+top20big   | ./bench-top20.sh --skip-build --skip-fetch --set top20.txt --seeds 100 ${COMMON} ${E} ${B38} --label top20big-385
+  timeout: 12h
