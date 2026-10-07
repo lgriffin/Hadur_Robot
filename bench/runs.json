@@ -127,6 +127,31 @@
    "published": "2026-10-07T15:22Z"
   },
   {
+   "id": "2026-10-07_tail-39-v34",
+   "date": "2026-10-07",
+   "label": "tail-39-v34",
+   "kind": "solo",
+   "set": "tail-39.txt",
+   "engine": "1.11.1",
+   "source": "work directory",
+   "candidate": "3.9",
+   "baseline": "3.4",
+   "seeds": 8,
+   "rounds": 35,
+   "gate": "CAUTION",
+   "verdict": "level",
+   "diff": 0.15839743589743505,
+   "ci95": [
+    -0.34016492169848933,
+    0.6569597934933594
+   ],
+   "n": 312,
+   "opponents": 39,
+   "host": "AMD Ryzen Threadripper PRO 9965WX 24-Cores, 48 logical cores, Windows 11 10.0, no other Robocode JVMs running",
+   "path": "runs/2026-10-07_tail-39-v34/",
+   "published": "2026-10-07T22:23Z"
+  },
+  {
    "id": "2026-10-07_score-leak-39-v34",
    "date": "2026-10-07",
    "label": "score-leak-39-v34",
