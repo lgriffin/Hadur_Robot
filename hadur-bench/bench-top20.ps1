@@ -25,6 +25,13 @@
   robot.release in hadur-robot/pom.xml.
 .PARAMETER Robot
   The robot's name as Robocode lists it (--robot). Default: the bench's own default.
+.PARAMETER ChildCpus
+  Processors each battle JVM is told it has (--child-cpus). Default: Bench's own, 2 when
+  -Parallel is above 1.
+.PARAMETER ChildHeap
+  Heap cap for each battle JVM (--child-heap), for example 512M. Default 2G; "none" for no cap.
+.PARAMETER ForceMemory
+  Start even when the memory check says the run will not fit in free memory (--force-memory).
 .PARAMETER Baseline
   A baseline jar for a paired A/B run (--baseline, BENCH-2). Requires -BaselineRobot.
 .PARAMETER BaselineRobot
@@ -95,6 +102,9 @@ param(
     [switch]$ColdWarm,
     [int]$Retries = -1,
     [string]$Field = "",
+    [int]$ChildCpus = -1,
+    [string]$ChildHeap = "",
+    [switch]$ForceMemory,
     [switch]$DryRun,
     [switch]$SkipBuild,
     [switch]$SkipFetch,
@@ -171,6 +181,9 @@ if ($Repeat -gt 0) { $parts += @("--repeat", $Repeat) }
 if ($ColdWarm) { $parts += @("--cold-warm", "true") }
 if ($Retries -ge 0) { $parts += @("--retries", $Retries) }
 if ($Field) { $parts += @("--field", $Field) }
+if ($ChildCpus -ge 0) { $parts += @("--child-cpus", $ChildCpus) }
+if ($ChildHeap) { $parts += @("--child-heap", $ChildHeap) }
+if ($ForceMemory) { $parts += @("--force-memory", "true") }
 
 # The engine is the bench's own Maven dependency, so another release is a property away;
 # the bench's classpath file is rebuilt with it on this compile (issue #109).

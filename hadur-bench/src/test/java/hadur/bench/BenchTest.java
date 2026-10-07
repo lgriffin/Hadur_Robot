@@ -87,9 +87,10 @@ class BenchTest {
     @Tag("BENCH-12")
     @DisplayName("child flags: none for one worker, 2 CPUs for several, --child-cpus 0 off, --child-heap added")
     void childFlagsFollowTheOptions() {
-        assertEquals(List.of(), Bench.childFlags(Map.of(), 1));
-        assertEquals(List.of("-XX:ActiveProcessorCount=2"), Bench.childFlags(Map.of(), 4));
-        assertEquals(List.of(), Bench.childFlags(Map.of("child-cpus", "0"), 4));
+        assertEquals(List.of("-Xmx2G"), Bench.childFlags(Map.of(), 1));
+        assertEquals(List.of("-XX:ActiveProcessorCount=2", "-Xmx2G"), Bench.childFlags(Map.of(), 4));
+        assertEquals(List.of("-Xmx2G"), Bench.childFlags(Map.of("child-cpus", "0"), 4));
+        assertEquals(List.of("-XX:ActiveProcessorCount=2"), Bench.childFlags(Map.of("child-heap", "none"), 4));
         assertEquals(List.of("-XX:ActiveProcessorCount=3", "-Xmx512M"),
             Bench.childFlags(Map.of("child-cpus", "3", "child-heap", "512M"), 1));
     }

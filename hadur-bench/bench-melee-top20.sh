@@ -39,7 +39,8 @@
 #   --robot NAME           the robot's name as Robocode lists it
 #   --parallel N           seeds of a field at once, default 1 (Bench's own option)
 #   --child-cpus N         processors each battle JVM is told it has (Bench default: 2 when --parallel > 1)
-#   --child-heap SIZE      cap each battle JVM's heap, e.g. 512M
+#   --child-heap SIZE      cap each battle JVM's heap, default 2G, `none` for no cap
+#   --force-memory         start even when the memory check says the run will not fit in free memory
 #   --cpu-constant NANOS   robocode.cpu.constant to pin in every home (default: read from the host's config)
 #   --no-cpu-pin           do not look up the constant in the host's Robocode config
 #   --baseline FILE        a baseline robot jar, fought on the same seeds, for the paired tables
@@ -70,6 +71,7 @@ ROBOT=""
 PARALLEL=1
 CHILD_CPUS=""
 CHILD_HEAP=""
+FORCE_MEMORY=0
 CPU_CONSTANT=""
 NO_CPU_PIN=0
 BASELINE=""
@@ -96,7 +98,7 @@ while [ $# -gt 0 ]; do
         --robot) ROBOT="${2:?--robot needs a name}"; shift 2 ;;
         --parallel) PARALLEL="${2:?--parallel needs a number}"; shift 2 ;;
         --child-cpus) CHILD_CPUS="${2:?--child-cpus needs a number}"; shift 2 ;;
-        --child-heap) CHILD_HEAP="${2:?--child-heap needs a size such as 512M}"; shift 2 ;;
+        --child-heap) CHILD_HEAP="${2:?--child-heap needs a size such as 2G, or none}"; shift 2 ;;
         --cpu-constant) CPU_CONSTANT="${2:?--cpu-constant needs nanoseconds}"; shift 2 ;;
         --no-cpu-pin) NO_CPU_PIN=1; shift ;;
         --baseline) BASELINE="${2:?--baseline needs a jar}"; shift 2 ;;
@@ -111,6 +113,7 @@ while [ $# -gt 0 ]; do
         --cold-warm) COLD_WARM=1; shift ;;
         --retries) RETRIES="${2:?--retries needs a number}"; shift 2 ;;
         --field) FIELD="${2:?--field needs WIDTHxHEIGHT}"; shift 2 ;;
+        --force-memory) FORCE_MEMORY=1; shift ;;
         --dry-run) DRY_RUN=1; shift ;;
         -h|--help) sed -n '2,/^set -u$/p' "$0" | sed '$d' | sed 's/^# \{0,1\}//'; exit 0 ;;
         *) echo "unknown option: $1" >&2; exit 2 ;;
@@ -190,6 +193,7 @@ COMMON_ARGS="--seeds $SEEDS --rounds $ROUNDS"
 if [ "$PARALLEL" -gt 1 ]; then COMMON_ARGS="$COMMON_ARGS --parallel $PARALLEL"; fi
 if [ -n "$CHILD_CPUS" ]; then COMMON_ARGS="$COMMON_ARGS --child-cpus $CHILD_CPUS"; fi
 if [ -n "$CHILD_HEAP" ]; then COMMON_ARGS="$COMMON_ARGS --child-heap $CHILD_HEAP"; fi
+if [ "$FORCE_MEMORY" -eq 1 ]; then COMMON_ARGS="$COMMON_ARGS --force-memory true"; fi
 if [ -n "$CPU_CONSTANT" ]; then COMMON_ARGS="$COMMON_ARGS --cpu-constant $CPU_CONSTANT"; fi
 if [ -n "$REPEAT" ]; then COMMON_ARGS="$COMMON_ARGS --repeat $REPEAT"; fi
 if [ "$COLD_WARM" -eq 1 ]; then COMMON_ARGS="$COMMON_ARGS --cold-warm true"; fi

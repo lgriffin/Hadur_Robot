@@ -28,7 +28,8 @@
 #   --rounds N             rounds per battle, default 10 (TeamRumble)
 #   --parallel N           battles at once, default 1
 #   --child-cpus N         processors each battle JVM is told it has (Bench default: 2 when --parallel > 1)
-#   --child-heap SIZE      cap each battle JVM's heap, e.g. 512M
+#   --child-heap SIZE      cap each battle JVM's heap, default 2G, `none` for no cap
+#   --force-memory         start even when the memory check says the run will not fit in free memory
 #   --only TEXT            only teams whose name contains TEXT
 #   --robot-jar FILE       our team jar (bench default: ../hadur-robot/target/hadur2.HadurTeam_<release>.jar)
 #   --robot NAME           our team's name as Robocode lists it, "hadur2.HadurTeam <release>"
@@ -58,6 +59,7 @@ ROUNDS=10
 PARALLEL=1
 CHILD_CPUS=""
 CHILD_HEAP=""
+FORCE_MEMORY=0
 ONLY=""
 ROBOT_JAR=""
 ROBOT=""
@@ -84,7 +86,7 @@ while [ $# -gt 0 ]; do
         --rounds) ROUNDS="${2:?--rounds needs a number}"; shift 2 ;;
         --parallel) PARALLEL="${2:?--parallel needs a number}"; shift 2 ;;
         --child-cpus) CHILD_CPUS="${2:?--child-cpus needs a number}"; shift 2 ;;
-        --child-heap) CHILD_HEAP="${2:?--child-heap needs a size such as 512M}"; shift 2 ;;
+        --child-heap) CHILD_HEAP="${2:?--child-heap needs a size such as 2G, or none}"; shift 2 ;;
         --only) ONLY="${2:?--only needs text}"; shift 2 ;;
         --robot-jar) ROBOT_JAR="${2:?--robot-jar needs a file}"; shift 2 ;;
         --robot) ROBOT="${2:?--robot needs a name}"; shift 2 ;;
@@ -102,6 +104,7 @@ while [ $# -gt 0 ]; do
         --cold-warm) COLD_WARM=1; shift ;;
         --retries) RETRIES="${2:?--retries needs a number}"; shift 2 ;;
         --field) FIELD="${2:?--field needs WIDTHxHEIGHT}"; shift 2 ;;
+        --force-memory) FORCE_MEMORY=1; shift ;;
         --dry-run) DRY_RUN=1; shift ;;
         -h|--help) sed -n '2,/^set -u$/p' "$0" | sed '$d' | sed 's/^# \{0,1\}//'; exit 0 ;;
         *) echo "unknown option: $1" >&2; exit 2 ;;
@@ -176,6 +179,7 @@ ARGS="--team true --set $SET --seeds $SEEDS --rounds $ROUNDS --label $LABEL --ou
 if [ "$PARALLEL" -gt 1 ]; then ARGS="$ARGS --parallel $PARALLEL"; fi
 if [ -n "$CHILD_CPUS" ]; then ARGS="$ARGS --child-cpus $CHILD_CPUS"; fi
 if [ -n "$CHILD_HEAP" ]; then ARGS="$ARGS --child-heap $CHILD_HEAP"; fi
+if [ "$FORCE_MEMORY" -eq 1 ]; then ARGS="$ARGS --force-memory true"; fi
 if [ -n "$CPU_CONSTANT" ]; then ARGS="$ARGS --cpu-constant $CPU_CONSTANT"; fi
 if [ -n "$ONLY" ]; then ARGS="$ARGS --only \"$ONLY\""; fi
 if [ -n "$REPEAT" ]; then ARGS="$ARGS --repeat $REPEAT"; fi

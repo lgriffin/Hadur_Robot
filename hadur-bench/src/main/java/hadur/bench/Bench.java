@@ -73,7 +73,8 @@ import java.util.zip.GZIPOutputStream;
  *     home ({@code home-1..home-N}); {@code --cpu-constant NANOS} pins the engine's CPU
  *     constant in every home (else several workers share one idle calibration);
  *     {@code --child-cpus N} sizes each battle JVM for N processors (2 when parallel, else
- *     off) and {@code --child-heap SIZE} caps its heap; {@code --per-opponent DIR} writes
+ *     off) and {@code --child-heap SIZE} sets its heap cap (2G by default, {@code none} for no cap) and
+ *     {@code --force-memory true} starts a run the memory check would refuse; {@code --per-opponent DIR} writes
  *     one report per opponent beside the main one. All of these apply to the melee and team
  *     modes too: {@code --parallel} runs a field's seeds (melee) or an opponent's seeds
  *     (team) concurrently, {@code --baseline}/{@code --baseline-robot} add a paired table,
@@ -335,6 +336,12 @@ public final class Bench {
         String only = opts.get("only");
         if (only != null) opponents.removeIf(o -> !o.name.contains(only));
         if (dryRun) return dryRun(opponents);
+        Memory.Check memory = Memory.check(Memory.freeMb(), parallel, childHeap());
+        System.out.println("memory: " + memory.message());
+        if (!memory.ok() && !Boolean.parseBoolean(opts.getOrDefault("force-memory", "false"))) {
+            System.err.println("refusing to start: " + memory.message());
+            return 2;
+        }
         installRobots(opponents);
         startedAt = Instant.now();
         startShelf = Conditions.shelf(home.resolve("robots/.data"));
@@ -374,8 +381,14 @@ public final class Bench {
             + ", parallel " + parallel + ", retries " + retries);
         System.out.println("  child flags " + childFlags() + ", cpu constant "
             + (opts.containsKey("cpu-constant") ? opts.get("cpu-constant") : "engine's own") + ", out " + out);
+        System.out.println("  memory: " + Memory.check(Memory.freeMb(), parallel, childHeap()).message());
         System.out.println("  options " + new TreeMap<>(opts));
         return 0;
+    }
+
+    /** The heap cap each battle JVM gets: {@code --child-heap}, or {@link Memory#DEFAULT_CHILD_HEAP}; {@code none} is uncapped. */
+    private String childHeap() {
+        return opts.getOrDefault("child-heap", Memory.DEFAULT_CHILD_HEAP);
     }
 
     private int runDuel(List<Opponent> opponents) throws Exception {
@@ -550,6 +563,7 @@ public final class Bench {
             m.put("parallel", parallel);
             m.put("workers", workers);
             m.put("childCpus", opts.getOrDefault("child-cpus", parallel > 1 ? "2" : "0"));
+            m.putAll(Memory.conditions(parallel, childHeap()));
             m.put("childFlags", childFlags());
             m.put("jvmFlags", JVM_FLAGS);
             m.put("cpuConstant", reportedCpuConstant());
@@ -850,7 +864,8 @@ public final class Bench {
      * workers each child is told to size itself for {@code --child-cpus} processors (2 by
      * default) so that twenty JVMs do not each start a 48-core machine's worth of JIT and GC
      * threads; {@code --child-cpus 0} leaves the JVM to itself. {@code --child-heap} (e.g.
-     * {@code 512M}, the rumble client's) caps the heap.
+     * {@code 512M}, the rumble client's) sets the heap cap, {@code 2G} when not given (BENCH-60),
+     * and {@code none} leaves it uncapped.
      */
     private List<String> childFlags() {
         return childFlags(opts, parallel);
@@ -861,8 +876,8 @@ public final class Bench {
         List<String> flags = new ArrayList<>();
         int cpus = Integer.parseInt(opts.getOrDefault("child-cpus", parallel > 1 ? "2" : "0"));
         if (cpus > 0) flags.add("-XX:ActiveProcessorCount=" + cpus);
-        String heap = opts.get("child-heap");
-        if (heap != null) flags.add("-Xmx" + heap);
+        String heap = opts.getOrDefault("child-heap", Memory.DEFAULT_CHILD_HEAP);
+        if (!Memory.uncapped(heap)) flags.add("-Xmx" + heap);
         return flags;
     }
 
