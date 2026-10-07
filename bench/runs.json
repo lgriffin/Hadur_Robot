@@ -27,6 +27,31 @@
    "published": "2026-10-07T11:47Z"
   },
   {
+   "id": "2026-10-07_ll-39-v385",
+   "date": "2026-10-07",
+   "label": "ll-39-v385",
+   "kind": "solo",
+   "set": "live-losers-385.txt",
+   "engine": "1.11.1",
+   "source": "work directory",
+   "candidate": "3.9",
+   "baseline": "3.8.5",
+   "seeds": 8,
+   "rounds": 35,
+   "gate": "CAUTION",
+   "verdict": "up",
+   "diff": 5.461923076923076,
+   "ci95": [
+    3.0800852156782073,
+    7.843760938167946
+   ],
+   "n": 312,
+   "opponents": 39,
+   "host": "AMD Ryzen Threadripper PRO 9965WX 24-Cores, 48 logical cores, Windows 11 10.0, no other Robocode JVMs running",
+   "path": "runs/2026-10-07_ll-39-v385/",
+   "published": "2026-10-07T15:21Z"
+  },
+  {
    "id": "2026-10-06_top20-e1111",
    "date": "2026-10-06",
    "label": "top20-e1111",
