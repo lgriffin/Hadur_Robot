@@ -1,6 +1,6 @@
 # Hadur's version: the posture gate and the melee brain
 
-Melee has no lab. This note is fuller than the others for that reason. It is a reading guide to four things: the posture gate that fails closed, the test that keeps the duel untouched, minimum-risk movement, and the field gun. It ends with the M6 bench table.
+Melee has no lab. This note is fuller than the others for that reason. It is a reading guide to four things: the posture gate that fails closed, the test that keeps the duel untouched, minimum-risk movement, and the field gun. It ends with the M6 bench table, and with what became of the gate after 3.5.1, when it was replaced by a role resolver.
 
 Commits used: `94deb10` (M0 and M1, the gate), `c1ec5c7` (M3, minimum risk), `6a33109` (M6, release 3.0). For `docs/architecture.md`, "Melee and duel", read the section of that name alongside this note.
 
@@ -122,9 +122,28 @@ The other gates in that report, as a non-regression check:
 
 The conclusions in the report are worth reading as a model of how to write a result down: the movement weights are at a local optimum; the extra bullet damage from `gpost` is paid for with about 1.6 points of survival; APS did not move, so 3.0 keeps `gpost` because it is simpler and neutral. The plan's APS 60 gate is stated as not met.
 
+## 6. After 3.5.1: the gate becomes a role resolver
+
+Sections 1 to 5 show melee as it was built and released in 3.0, and the links stay pinned there so the code matches the text. Two releases later the gate was gone. The architecture evolution (Topic 04, "Since 3.5.1") had to make room for a third kind of battle, the TeamRumble, and a binary `DUEL` or `MELEE` gate could not do it: in a team battle `getOthers()` counts teammates, so a teammate would read as an opponent.
+
+Stage A1 replaced `PostureGate` with two pieces in a new `role` package, read in this order (pinned to 3.9, `df731e8`):
+
+1. [`Charter`](https://github.com/lgriffin/Hadur_Robot/blob/df731e8/hadur-core/src/main/java/hadur2/core/role/Charter.java), 40 lines. The kind of battle, `DUEL`, `MELEE` or `TEAM`, fixed from the engine's facts **before the first tick** (ROLE-1). It names the roles the battle can ever ask for, and only those roles are built. A 1v1 never carries a melee brain.
+2. [`RoleResolver`](https://github.com/lgriffin/Hadur_Robot/blob/df731e8/hadur-core/src/main/java/hadur2/core/role/RoleResolver.java), 147 lines. `resolve` is one pure function of the charter, the counts alive, the round's veto and a **latch**: the lowest role that has driven this round. Team, then Melee, then Duel; the first row that holds wins, and the Duel is the floor.
+
+What carries over from the gate is the part this note praised: it still fails closed. `Veto` is still `NONE`, `SENTRY` or `FAULT`, still lasts until `newRound()`, and a melee fault still hands the same tick to the Duel. What is new is the latch (ROLE-4). Once a role has driven, no role above it drives again that round, so a round changes role at most twice and never moves back up. The gate re-read the count every tick; the resolver cannot be talked back into melee by a robot that reappears.
+
+The tests are worth comparing with `PostureGateTest`. [`RoleResolverTest`](https://github.com/lgriffin/Hadur_Robot/blob/df731e8/hadur-core/src/test/java/hadur2/core/role/RoleResolverTest.java) keeps one example per requirement, and [`RoleResolverProperties`](https://github.com/lgriffin/Hadur_Robot/blob/df731e8/hadur-core/src/test/java/hadur2/core/role/RoleResolverProperties.java) states the three promises as one jqwik property over random rounds of counts (the resolver always answers, never moves up within a round, and changes at most twice), and a second property that the function is pure. GATE-1 was retired for ROLE-3 in `docs/requirements.md`; the other GATE IDs stayed, because the vetoes did.
+
+The brains moved too. In A2 the duel was lifted out of `HadurCore` into [`duel.DuelController`](https://github.com/lgriffin/Hadur_Robot/blob/df731e8/hadur-core/src/main/java/hadur2/core/duel/DuelController.java), beside `melee.MeleeController`, and `HadurCore` became the conductor that calls each brain through a seam (`DuelSeam`, `MeleeSeam`). The hand-off of section 1 (MELEE-2, MMEM-1, MMEM-2) is now a baton the Melee seam gives and the Duel seam takes, so `duel` imports nothing from `melee`. In A3 melee's `EnemyTracker` was promoted to the kernel's `world` package, so the duel and melee read one picture of the field. `SentryFence` and `DuelFocus` now live in `role`. Every recorded battle replayed to the same orders through all of this, and the 3.6 bench was level with 3.5.1.
+
+The team entry, `hadur2.HadurTeam` (3.7, with T1 in 3.8), is five Hadurs that share sightings through the kernel's `link` codec, never count or target each other, and hold a shot while a teammate stands in the fire lane. There is no Team brain yet: a team battle runs Melee and then Duel, on an input the conductor's `TeamLink` has filtered to enemies only. Read [`architecture.md`, "The team baseline"](https://github.com/lgriffin/Hadur_Robot/blob/df731e8/docs/architecture.md) for the details.
+
 ## Try this
 
 1. In `PostureGate`, change `others >= 2` to `others >= 1`. Which test in `PostureGateTest` fails, and which requirement does it name?
 2. You add a file to `hadur2/core/gun/`. Which test fails and what does its message say? What is the right way to get it merged?
 3. In `FieldGun.weight`, why is the distance floored at 50 rather than used raw?
 4. Write the Strategy interface for the two brains as in the talk, and list what state the two would need to share. Do you still prefer the interface?
+5. Compare your answer to 4 with `role.Role` and the two seams at 3.9. Where did the shared state you listed end up: in the kernel's `world`, in the baton, or in the conductor?
+6. In `RoleResolver.resolve`, delete the latch check. Which of the three promises in `alwaysAnswersNeverMovesUpAtMostTwoChanges` breaks, and what round of counts does jqwik shrink the failure to?

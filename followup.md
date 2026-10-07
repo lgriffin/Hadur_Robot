@@ -48,8 +48,11 @@ MeleeRumble and TeamRumble on 2026-10-05. Open after A5:
 - **Droids** (a leader with radar-less members) are left to the Team plan.
 - **Stale comments.** Comments in the nine pinned packages that name `HadurCore` are out
   of date since A2. Fixing them is one optional, comment-only re-pin.
-- **The Tutors course** (`course/`) teaches the pre-A1 core. Its hexagon and melee notes
-  and the capstone lab still describe the posture gate in place of the role resolver.
+- **The Tutors course** (`course/`) was aligned with 3.9 on 2026-10-07: the hexagon note has
+  the kernel, strands and conductor; the melee note and quiz cover the role resolver; the
+  capstone points at RAM-3 and the resolver; Topic 15 has a 3.6 to 3.9 talk. Still open: the
+  labs (Hadurling) have no role resolver or team, and the notes' code links stay pinned to the
+  commits that introduced each idea.
 
 ## Rumble climb R5 and R7 (rumble-safe memory, session bench, duress)
 

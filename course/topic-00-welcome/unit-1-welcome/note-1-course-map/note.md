@@ -19,7 +19,7 @@ The level is the Java and design experience you need when you arrive. Topic 00 n
 ## Two kinds of content
 
 - **Modules with labs** (Topics 01 to 13). Each module has talks, notes and a quiz where it helps, and a lab in the sidebar. You learn by building.
-- **Talks without labs** (Topic 15, and the melee topic as reading). Short slide decks on how Hadur evolved: the rebuild, melee, the climb and how agents built it. You can read these at any time.
+- **Talks without labs** (Topic 15, and the melee topic as reading). Short slide decks on how Hadur evolved: the rebuild, melee, the climb, the three strands and how agents built it. You can read these at any time.
 
 ## How the labs fit together
 

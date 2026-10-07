@@ -76,4 +76,22 @@ options:
   - Not met: the 3.0 builds scored 52.7 to 54.6
   - Not measured
 correct: 2
+---
+question: Since 3.6 the role resolver's latch replaces the gate's per-tick re-read. What does the latch guarantee?
+type: multiple-choice
+options:
+  - Melee is chosen whenever two opponents are visible
+  - Once a lower role has driven in a round, no higher role drives again that round
+  - The role is fixed for the whole battle at tick 0
+  - A sentry can never be scanned twice
+correct: 1
+---
+question: What fixes a battle's charter (Duel, Melee or Team)?
+type: multiple-choice
+options:
+  - The engine's facts before the first tick
+  - How many robots the radar has seen after ten ticks
+  - The opponent's saved profile
+  - A setting in the robot's properties file
+correct: 0
 ```
