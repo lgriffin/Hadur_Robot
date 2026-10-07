@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>A3: hadur-3.8 against hadur-3.7 on 3.8_drussgt40</title><style>
+:root{--bg:#fff;--ink:#1d2433;--mute:#5b6577;--line:#cfd6e2;--head:#f1f4f9;--ok:#1f7a45;--warn:#a86a00;--bad:#b3261e;--acc:#2858a8}
+@media (prefers-color-scheme:dark){:root{--bg:#14171d;--ink:#e6e9ef;--mute:#9aa4b5;--line:#343c4b;--head:#1d222c;--ok:#5cc88a;--warn:#e0a53a;--bad:#f08a82;--acc:#8ab4f8}}
+@page{size:A3 landscape;margin:10mm}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:13px/1.4 system-ui,-apple-system,"Segoe UI",sans-serif}
+.sheet{max-width:1500px;margin:0 auto;padding:16px}
+header{display:flex;flex-wrap:wrap;gap:12px;align-items:center;border-bottom:2px solid var(--ink);padding-bottom:8px;margin-bottom:10px}
+header h1{font-size:19px;margin:0;flex:1 1 360px}
+.gate{font-weight:700;padding:4px 12px;border-radius:4px;color:#fff}
+.gate.TRUSTED{background:var(--ok)}.gate.CAUTION{background:var(--warn)}.gate.NOT_TRUSTED{background:var(--bad)}.gate.unknown{background:var(--mute)}
+.headline{flex:1 1 100%;font-size:15px;font-weight:600}
+.reasons{flex:1 1 100%;margin:0;color:var(--mute);font-size:12px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media (max-width:900px){.grid{grid-template-columns:1fr}}
+.col{display:flex;flex-direction:column;gap:10px;min-width:0}
+section{border:1px solid var(--line);border-radius:4px;overflow:hidden;break-inside:avoid}
+section>h2{margin:0;padding:3px 8px;background:var(--head);font-size:12px;text-transform:uppercase;letter-spacing:.04em;border-bottom:1px solid var(--line)}
+section>div{padding:6px 8px}
+table{border-collapse:collapse;width:100%;font-size:12px}
+td,th{padding:2px 6px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{color:var(--mute);font-weight:600;width:34%}
+td.n{text-align:right;font-variant-numeric:tabular-nums}
+ol,ul{margin:0;padding-left:18px}li{margin:2px 0}
+.nm{color:var(--mute);font-style:italic}
+.cap{color:var(--mute);font-size:11px;margin:3px 0 0}
+svg{width:100%;height:auto;display:block}
+svg .lab,svg .tick{font-size:8px;fill:var(--ink)}svg .tick{fill:var(--mute)}
+svg .zero{stroke:var(--mute);stroke-dasharray:3 2}svg .ci{stroke:var(--mute);stroke-width:1.2}
+svg .dot{fill:none;stroke:var(--acc);stroke-width:1.2}svg .dot-sig{fill:var(--acc)}
+svg .bar{fill:none;stroke:var(--acc);stroke-width:1.2}svg .bar-sig{fill:var(--acc)}svg .bar-other{fill:var(--line)}
+svg .cum{fill:none;stroke:var(--bad);stroke-width:1.4}svg .thr{stroke:var(--mute);stroke-dasharray:4 3}
+footer{margin-top:8px;color:var(--mute);font-size:11px}
+@media print{.sheet{max-width:none;padding:0}body{font-size:11px}}
+</style></head><body><p style="margin:0;padding:6px 14px;font:13px system-ui,sans-serif"><a href="../../index.html">&larr; Bench analysis</a> &middot; <a href="analysis.json">analysis.json</a> &middot; <a href="a3.md">markdown</a></p><div class="sheet">
+<header><h1>A3: hadur-3.8 against hadur-3.7 on 3.8_drussgt40</h1><span class="gate NOT_TRUSTED">NOT TRUSTED</span>
+<div class="headline">NO VERDICT: the run is not trusted (NOT RESOLVED: the interval spans zero)</div><p class="reasons">90% of pairs are untrusted (duress, skipped turns or R records)</p></header>
+<div class="grid"><div class="col">
+<section><h2>1 Background</h2><div><table><tr><th>Compared</th><td>hadur-3.8 (candidate) against hadur-3.7 (baseline)</td></tr><tr><th>Opponent set</th><td>3.8_drussgt40</td></tr><tr><th>Seeds, rounds</th><td>40 seeds, 35 rounds</td></tr><tr><th>Engine, date</th><td>not measured, 2026-10-06</td></tr><tr><th>Host</th><td><span class="nm">not measured</span></td></tr><tr><th>CPU constant</th><td><span class="nm">not measured</span></td></tr><tr><th>Parallel, child heap, child CPUs</th><td>not measured, not measured, not measured</td></tr><tr><th>Host CPU min / mean / max</th><td>not measured / not measured / not measured %</td></tr><tr><th>Other Robocode JVMs</th><td><span class="nm">not measured</span></td></tr></table></div></section>
+<section><h2>2 Current condition</h2><div><table><tr><th>Pooled difference (points, cand minus base)</th><td>+13.21</td></tr><tr><th>95% interval, per battle</th><td>[+10.67, +15.74]</td></tr><tr><th>95% interval, opponent-clustered</th><td><span class="nm">not measured</span></td></tr><tr><th>Pairs, opponents</th><td>40, 1</td></tr><tr><th>TOST</th><td>margin 1.0: p=not measured, not equivalent</td></tr><tr><th>Skipped turns per battle (cand / base)</th><td>53.5 / 44.2</td></tr><tr><th>Duress ticks per battle (cand / base)</th><td><span class="nm">not measured</span></td></tr><tr><th>Untrusted pairs</th><td>36</td></tr><tr><th>Near the score floor</th><td>no</td></tr></table><h3 style="font-size:12px;margin:8px 0 2px">Excluded opponents</h3><p class="nm">none excluded</p><svg viewBox="0 0 560 42" role="img" aria-label="Per-opponent paired difference with 95% intervals" xmlns="http://www.w3.org/2000/svg"><line x1="350.0" y1="4" x2="350.0" y2="22" class="zero"/><text x="150.0" y="36" class="tick" text-anchor="middle">-20</text><text x="350.0" y="36" class="tick" text-anchor="middle">+0</text><text x="550.0" y="36" class="tick" text-anchor="middle">+20</text><text x="144" y="11" class="lab" text-anchor="end">jk.mega.DrussGT 3.1.16</text><line x1="456.7" y1="8" x2="507.4" y2="8" class="ci"/><circle cx="482.1" cy="8" r="2.6" class="dot-sig"><title>jk.mega.DrussGT 3.1.16 +13.21</title></circle></svg><p class="cap">Dots: candidate minus baseline in points, bars: 95%% interval; filled dots passed Holm adjustment (0.05).</p></div></section>
+<section><h2>3 Goal</h2><div>The candidate is no worse than 1.0 points below the baseline (non-inferiority, opponent-clustered), and no opponent is resolved down.</div></section>
+</div><div class="col">
+<section><h2>4 Root cause analysis</h2><div><p class="nm">no opponent has a negative mean difference</p><h3 style="font-size:12px;margin:8px 0 2px">5 Whys</h3><p class="nm">no kaizen file given: the 5 Whys are not recorded</p></div></section>
+<section><h2>5 Countermeasures</h2><div><p class="nm">no kaizen file given: the 5 Whys are not recorded</p></div></section>
+<section><h2>6 Plan</h2><div><p class="nm">no kaizen file given: the 5 Whys are not recorded</p></div></section>
+<section><h2>7 Follow-up</h2><div><p class="nm">no kaizen file given: the 5 Whys are not recorded</p></div></section>
+</div></div>
+<footer>Generated by data/tools/a3.py from analysis.json (schema 1). Nothing here is recomputed or filled in: &ldquo;not measured&rdquo; means the input did not carry it. The bench observes the robot; it makes no evolution decision.</footer>
+</div></body></html>

@@ -1,0 +1,85 @@
+{
+ "schema": 1,
+ "run": {
+  "label": "druss-385",
+  "candidate": "3.8.5",
+  "baseline": "3.8",
+  "set": "druss-385",
+  "seeds": 20,
+  "rounds": 35,
+  "engine": null,
+  "date": "2026-10-06",
+  "selectedOn": null,
+  "conditions": {
+   "host": null,
+   "cpuConstant": null,
+   "parallel": null,
+   "childHeap": null,
+   "childCpus": null,
+   "hostLoad": {
+    "min": null,
+    "mean": null,
+    "max": null
+   },
+   "otherJvms": null
+  }
+ },
+ "gate": {
+  "verdict": "NOT_TRUSTED",
+  "reasons": [
+   "70% of pairs are untrusted (duress, skipped turns or R records)"
+  ]
+ },
+ "pooled": {
+  "diff": -0.41199999999999937,
+  "ci95": [
+   -4.075487165043015,
+   3.2514871650430157
+  ],
+  "clusteredCi95": [
+   null,
+   null
+  ],
+  "n": 20,
+  "nOpponents": 1,
+  "tost": {
+   "margin": 1.0,
+   "p": null,
+   "equivalent": false
+  },
+  "verdict": "not-resolved"
+ },
+ "opponents": [
+  {
+   "name": "jk.mega.DrussGT 3.1.16",
+   "diff": -0.41199999999999937,
+   "ci95": [
+    -4.075487165043015,
+    3.2514871650430157
+   ],
+   "holm": 0.8164291924319163,
+   "bh": 0.8164291924319163,
+   "skips": {
+    "cand": 42.2,
+    "base": 38.15
+   },
+   "n": 20,
+   "failed": 0
+  }
+ ],
+ "excluded": [],
+ "floorWarning": false,
+ "trust": {
+  "skippedPerBattle": {
+   "cand": 42.2,
+   "base": 38.15
+  },
+  "duressPerBattle": {
+   "cand": null,
+   "base": null
+  },
+  "untrustedPairs": 14,
+  "pairs": 20,
+  "withoutDuress": null
+ }
+}
