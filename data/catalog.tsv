@@ -1,4 +1,4 @@
-path	kind	source	captured_utc	subject	rows	produced_by	notes
+path	kind	source	captured_utc	subject	rows	produced_by	notes	rounds	engine	child_heap	cpu_constant	parallel	child_cpus
 rumble/pages/2026-09-28T1724Z_roborumble_botdetails_hadur2.Hadur_3.0.mht	saved page	https://rumble.robowiki.net/BotDetails?game=roborumble&name=hadur2.Hadur%203.0	2026-09-28T17:24Z	hadur2.Hadur 3.0, 1v1	507 pairings	Leigh (browser save)	Battles 03:38 to 14:10 UTC; shows the 08:30 UTC collapse. BENCH-5 test fixture.
 rumble/parsed/2026-09-28T1724Z_roborumble_botdetails_hadur2.Hadur_3.0.csv	parsed page	rumble/pages/2026-09-28T1724Z_roborumble_botdetails_hadur2.Hadur_3.0.mht	2026-09-28T17:24Z	hadur2.Hadur 3.0, 1v1	507	climb thread (Python email + regex)	Was docs/bench/data/rumble-3.0-details.csv.
 rumble/pages/2026-09-28T1944Z_roborumble_rankings_top50.mht	saved page	https://rumble.robowiki.net/Rankings?game=roborumble&limit=50	2026-09-28T19:44Z	RoboRumble 1v1 top 50	50	Leigh (browser save)	Rank 40 at 83.07 APS, rank 50 at 82.46.

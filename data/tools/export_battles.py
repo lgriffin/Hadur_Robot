@@ -21,6 +21,8 @@ import os
 import re
 import sys
 
+import compare_conditions
+
 # hadur.bench.BattleResult.HEADER, used only when no result.csv in the work directory
 # has a readable header line yet (every file still empty, battle(s) in flight).
 FALLBACK_HEADER = (
@@ -270,6 +272,7 @@ def main():
     if unmatched:
         summary += "; %d unmatched: %s" % (len(unmatched), ", ".join(unmatched))
     print(summary)
+    print(compare_conditions.catalog_note(args.work))
     if args.rounds_out:
         r_columns, r_rows = collect_rounds(args.work, args.set, args.build, args.baseline_build)
         write_tsv(args.rounds_out, r_columns, r_rows)

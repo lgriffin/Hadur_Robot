@@ -114,6 +114,11 @@ EARS requirements from the Hadur 2 technical direction. This file is the source 
 | BENCH-60 | Ubiquitous | The bench shall cap each battle JVM's heap at 2G unless `--child-heap` names another size, shall leave the heap uncapped for `--child-heap none`, and every run wrapper shall pass `--child-heap` through. | R9 |
 | BENCH-61 | Unwanted | If the battle JVMs a run plans (parallel x heap plus about 300 MB each, or 7500 MB each when uncapped) exceed 70% of the host's free memory, the bench shall refuse to start, name a `--parallel` that fits, and start only when `--force-memory true` is given; `--dry-run true` shall show the estimate. | R9 |
 | BENCH-62 | Event | When a run starts and ends, the bench shall record the effective child heap cap and the planned memory in `conditions.json`. | R9 |
+| BENCH-63 | Ubiquitous | The bench shall list, under the heading "Excluded or failing opponents" near the top of a duel, melee or team report, every opponent that failed at least half of its battles, with the number failed of the number fought and the first failure's reason, and shall add nothing when no opponent did. | R9 |
+| BENCH-64 | Ubiquitous | The bench shall place that block after the report's title and leave the rest of the report unchanged. | R9 |
+| BENCH-65 | Event | When a run ends with opponents that failed at least half of their battles, the bench shall name them, with their failed and fought counts, in one line of its console output. | R9 |
+| BENCH-66 | Ubiquitous | The bench shall list those opponents under `excluded` in the run's `conditions.json`, so a later tool can tell a shrunken set from a full one. | R9 |
+| BENCH-67 | Ubiquitous | The bench shall give a failure's reason as the first line of the battle's error text, cut to 160 characters, and "no result" when there is none. | R9 |
 | RES-10 | Ubiquitous | The robot shall leave no reference to its classes in the process after a battle, so that the number of classes loaded in one JVM stays flat across a session of battles. | R7 |
 | MOVE-3 | Ubiquitous | Movement shall score a wave's danger only over the part of the intersection not in a certain bullet shadow, at half weight inside a possible shadow. | R6 |
 | MOVE-4 | Ubiquitous | Movement shall score a wave's danger as the danger density integrated over the firing angles of the precise intersection. | R6 |

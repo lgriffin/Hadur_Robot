@@ -183,6 +183,26 @@ and `-DryRun` shows the argument list the file will hold.
   `--set`, `--seeds`, `--label`, `--script` and `--dry-run` are its options, and everything
   after `--` goes to the bench script. Use `--dry-run` to see the three commands first.
 
+### Overnight plans: the queue runner (issue #117)
+
+`queue.sh` / `queue.ps1` run a plan file of bench steps one after another, so a long night is one command that can be stopped, resumed and read, instead of a hand-written bash script.
+
+```
+./queue.sh run overnight-385            # plans/overnight-385.queue; .\queue.ps1 on PowerShell
+./queue.sh run overnight-385 --dry-run  # print every step and its state, run nothing
+./queue.sh status overnight-385         # each step: pending, running, done, failed, skipped, interrupted
+./queue.sh stop overnight-385           # kill the current step's process tree; a rerun resumes
+```
+
+Start it in the background on Windows with `(nohup ./queue.sh run overnight-385 &)` from Git Bash. A plan is one `name | command` per line, with `#` comments, `set NAME = value` variables (used as `${NAME}`) and indented `after: step` and `timeout: 6h` lines; `plans/overnight-385.queue` is the 2026-10-06 overnight run written as a plan. Commands run through bash from this directory, so `./bench-top20.sh ...` lines are the same lines you would type.
+
+- **Resume.** State is kept in `work/queue-<plan>.state.json`. A restart skips every step that exited 0 and runs the rest; `--fresh` ignores the state, `--only a,b` and `--skip a` pick steps. A step whose `after:` step has not exited 0 is skipped. A failed step does not stop the queue unless `--stop-on-fail` is given.
+- **Log.** `work-queue-<plan>.log` reads `HH:MM:SS start X`, `HH:MM:SS X exit=N in S s` and ends with `ALLDONE`; each step's output goes to `work-queue-<plan>-<step>.log`.
+- **Stop and cleanup.** Each step runs in its own process group (Linux) or job object (Windows). Stop (Ctrl-C, `stop`, or a `work/queue-<plan>.STOP` file), a timeout (exit 124) or the runner dying kills that step's tree, including the child battle JVMs, and nothing else; no other java on the host is touched.
+- **Memory guard.** Before each step the runner waits while free memory is under `--min-free-gb` (default 8; 0 turns it off) and says so in the log. It does not shrink a step: pair it with `--child-heap` so the step itself stays inside the budget.
+
+The runner is `benchqueue.py` (Python 3 standard library only; it is not called `queue.py` because that would shadow the standard `queue` module). Its tests run in CI: `python3 -m unittest discover -s hadur-bench -p "test_benchqueue.py"`.
+
 ## Opponents
 
 `reference-set.txt` lists them. R9 added `weak-leak.txt` (the eleven weak bots of issue #80: rammers, mirror movers and close-range nanos) and `top19.txt` (the 1v1 top 19 above 3.4, the regression gate); see `docs/bench/r9-weak-leak.md`. `roborumble-top10.txt` lists the RoboRumble top 10 (run it with `--set roborumble-top10.txt`); it is kept apart so CI and the replay fixtures stay on the reference set. `top20.txt` lists the RoboRumble 1v1 top 20 (issue #102's local bench; see "The top-20 bench" above). For melee,

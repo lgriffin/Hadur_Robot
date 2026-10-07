@@ -16,6 +16,8 @@ import os
 import re
 import sys
 
+import compare_conditions
+
 BATTLE = re.compile(r"^melee-(\d+)(-baseline)?$")
 
 
@@ -52,6 +54,7 @@ def main():
             w.writerow(row)
             n += 1
     print(f"wrote {n} rows to {a.out}")
+    print(compare_conditions.catalog_note(a.work))
     return 0 if n else 1
 
 

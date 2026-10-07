@@ -32,6 +32,7 @@ data/
     parse_rumble_page.py  parses a saved BotDetails or Rankings page into rumble/parsed/
     analyse.py          pooled paired difference, Holm/BH, TOST non-inferiority and a seeds planner for a bench TSV
     repeatability.py    per-battle SD, ICC and pairing check from repeated runs of the same jar and seeds
+    compare_conditions.py  says whether two runs (work dirs or conditions.json) were made under comparable conditions
 ```
 
 The bench reports themselves stay in [`docs/bench/`](../docs/bench/) as the readable record;
@@ -49,6 +50,12 @@ Sites: `roborumble` is the LiteRumble server (rumble.robowiki.net: `BotDetails`,
 `Rankings`), `robowiki` the wiki (`RoboRumble/Participants`, `Country_Flags`).
 
 ## Adding data
+
+Every `catalog.tsv` row may also carry six condition columns, `rounds`, `engine`, `child_heap` (MB, or
+`uncapped`), `cpu_constant`, `parallel` and `child_cpus`. Blank means not recorded, never assumed. The three
+`export_*.py` tools print the values to paste from the run's `conditions.json`, `harvest_bench.py` reads
+them from each report's conditions sentence, and `trend.py` marks any run that differs from the chart's
+usual conditions as an open circle with a footnote.
 
 1. **A saved page** (Leigh saves it in the browser as "Webpage, single file" and uploads it to
    the project): copy it into `rumble/pages/` under the naming rule, parse it into
