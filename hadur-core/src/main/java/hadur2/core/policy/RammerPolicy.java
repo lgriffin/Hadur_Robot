@@ -125,6 +125,11 @@ public final class RammerPolicy {
         return escaping;
     }
 
+    /** RAM-3: whether this round has had a ram (a charge within {@link #RAM_RANGE} px). */
+    public boolean rammedThisRound() {
+        return rammedThisRound;
+    }
+
     /** RAM-2: whether this battle's opponent has been confirmed as a rammer. */
     public boolean confirmed() {
         return confirmed;

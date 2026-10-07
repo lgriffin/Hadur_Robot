@@ -59,7 +59,7 @@ edit "$src/hadur-robot/pom.xml" "<robot.release>$base</robot.release>" "<robot.r
 for f in Hadur.properties HadurRecorder.properties; do
     edit "$src/hadur-robot/src/main/resources/hadur2/$f" "robot.version=$base" "robot.version=$version"
 done
-team="$src/hadur-robot/src/main/resources/hadur2/HadurTeam.team"
+team="$src/hadur-robot/src/team/HadurTeam.team"
 [[ -f "$team" ]] && sed -i "s/$base/$version/g" "$team"
 
 (cd "$src" && mvn -q -B package -DskipTests -Dmaven.javadoc.skip=true)

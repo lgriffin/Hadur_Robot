@@ -1037,6 +1037,31 @@ whose guns out-hit Hadur's or match them.
   shield list and SHIELD-4 on a latched shielder are unchanged. `RoundStats.shadowAims` counts
   the aims that weighed shadows; it is not in the round record.
 
+### D8: the rammer trial (release 3.9)
+
+The live-loser bisect ([live-loser-bisect](bench/local/2026-10-07_live-loser-bisect.md)) put the
+one resolved regression since 3.4 in 3.5: 3.5.1 scores 6.4 points below 3.4 on the live losers,
+14 opponents down. Building 3.8.5 with RAM-2 off wins them back (+14 to +25 points on six of
+them, PR #129): close-range fighters such as TopGun, Silver and Ice confirm as rammers, and
+running from them, Hadur is hit two to seven times as often. RAM-2 still wins rounds back from
+pure rammers (docs/bench/r9-weak-leak.md), so it is tried, not dropped.
+
+| ID | Pattern | Requirement | Stage |
+|---|---|---|---|
+| RAM-3 | State | While the enemy is a confirmed rammer (RAM-2), each round shall play one arm from its start, the escape (RAM-2) or the fight (RAM-1 only, as 3.4 plays): the escape until it has played two rounds, then the arm whose rounds have the higher mean energy margin (our energy at the round's end less the enemy's), the escape on a tie; a round with a ram before the confirmation counts for the fight. | D8 |
+
+#### D8 notes
+
+- **RAM-3** is `policy.EscapeTrial`, held by `DuelController`. The arm is chosen in `newRound`
+  when `RammerPolicy.confirmed()` and marked by a `P,<round>,0,ram-trial,<fight mean>,<escape
+  mean>,<arm>` record; RAM-2's escape is passed through only in an escape round. The round that
+  confirms a rammer is now fought to its end (3.5 started the escape at the confirming ram).
+  `roundEnded` records the margin from the last scan's energies, ours 0 on a loss and theirs 0 on
+  a win. The samples are battle-long and go with the opponent (`forget`).
+- Against a pure rammer, two fought rounds (the confirming ones) and two escape rounds come
+  first, so a battle plays as 3.5 did from the fifth ram round. Against a fighter that 3.4 beat,
+  two escape rounds are the cost before Hadur fights again.
+
 ## The Team plan (T1)
 
 [team-plan-t1.md](team-plan-t1.md) answers the A5 baseline's teammate collisions and friendly fire

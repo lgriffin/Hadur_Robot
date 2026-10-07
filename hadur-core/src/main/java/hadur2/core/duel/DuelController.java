@@ -26,6 +26,7 @@ import hadur2.core.policy.Matchup;
 import hadur2.core.policy.DistancePolicy;
 import hadur2.core.policy.Endgame;
 import hadur2.core.policy.EnemyGunHeat;
+import hadur2.core.policy.EscapeTrial;
 import hadur2.core.policy.HitWindow;
 import hadur2.core.policy.MirrorDetector;
 import hadur2.core.policy.MoveFlavour;
@@ -198,6 +199,14 @@ public final class DuelController {
     private boolean ramActive;
     /** RAM-2: whether the escape from a confirmed rammer is on, as of the last scan. */
     private boolean ramEscaping;
+    /** RAM-3: whether escaping a confirmed rammer pays against this opponent, by its rounds. */
+    private final EscapeTrial escapeTrial = new EscapeTrial();
+    /** RAM-3: whether the rammer was confirmed when this round started, so it plays an arm. */
+    private boolean trialRound;
+    /** RAM-3: the arm this round plays, chosen at its start. */
+    private EscapeTrial.Arm trialArm = EscapeTrial.Arm.FIGHT;
+    /** RAM-3: our energy at the last scan, for the round's margin. */
+    private double lastOurEnergy = Double.NaN;
     /** RAM-2: the movement while the rammer response is active. */
     private final RamEscape ramEscape;
     /** RAM-2: the enemy as last scanned, for the escape's pursuit model; null before a scan. */
@@ -327,6 +336,14 @@ public final class DuelController {
         stillness.newRound();
         if (enemyGunHeat != null) enemyGunHeat.newRound();
         duress.newRound(round);
+        // RAM-3: a confirmed rammer's round plays one arm from its start.
+        trialRound = rammer.confirmed();
+        trialArm = trialRound ? escapeTrial.choose() : EscapeTrial.Arm.FIGHT;
+        lastOurEnergy = Double.NaN;
+        if (trialRound) {
+            emitPolicy(round, 0, "ram-trial", escapeTrial.mean(EscapeTrial.Arm.FIGHT),
+                escapeTrial.mean(EscapeTrial.Arm.ESCAPE), trialArm.name().toLowerCase(Locale.ROOT));
+        }
     }
 
     /** RES-1: forgets this round's transient state (waves, logs, the last scan), keeping what was learned. */
@@ -583,7 +600,10 @@ public final class DuelController {
         ramActive = rammer.tick(e.distance(), enemyClosingSpeed);
         // RAM-2: the escape, once a charge has really reached us this battle.
         boolean wasEscaping = ramEscaping;
-        ramEscaping = rammer.escape(e.distance(), enemyClosingSpeed, in.energy(), e.energy());
+        // RAM-3: only in a round whose arm is the escape; the confirming round is fought.
+        lastOurEnergy = in.energy();
+        ramEscaping = rammer.escape(e.distance(), enemyClosingSpeed, in.energy(), e.energy())
+            && trialRound && trialArm == EscapeTrial.Arm.ESCAPE;
         if (ramEscaping != wasEscaping) {
             emitPolicy(round, time, "ram-escape", e.distance(), Double.NaN,
                 ramEscaping ? "ram_2" : "off");
@@ -928,6 +948,12 @@ public final class DuelController {
         // SHIELD-6: the round's record, and the budget is checked once more; the result of the
         // round does not move the budget, only the damage does.
         if (shield != null) shield.onRoundEnded(tick);
+        // RAM-3: a round the rammer played, before its confirmation (fought) or after (its arm).
+        if (trialRound || rammer.rammedThisRound()) {
+            double ours = won ? lastOurEnergy : 0;
+            double theirs = won ? 0 : lastEnemyEnergy;
+            escapeTrial.record(trialRound ? trialArm : EscapeTrial.Arm.FIGHT, ours - theirs);
+        }
         foldRound(tick, won);
     }
 
@@ -1367,6 +1393,7 @@ public final class DuelController {
         matchWon = false;
         smallestEnemyPower = Double.NaN;
         rammer.forget();
+        escapeTrial.forget();
         mirror.forget();
         distance = new DistancePolicy(opening.distance());
         flavour = MoveFlavour.stranger();
