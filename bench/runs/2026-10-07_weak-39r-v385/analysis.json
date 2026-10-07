@@ -1,0 +1,254 @@
+{
+ "schema": 1,
+ "run": {
+  "label": "weak-39r-v385",
+  "candidate": "3.9",
+  "baseline": "3.8.5",
+  "set": "weak-leak.txt",
+  "seeds": 16,
+  "rounds": 35,
+  "engine": "1.11.1",
+  "date": "2026-10-07",
+  "selectedOn": null,
+  "conditions": {
+   "host": "AMD Ryzen Threadripper PRO 9965WX 24-Cores, 48 logical cores, Windows 11 10.0, no other Robocode JVMs running",
+   "cpuConstant": 1488498,
+   "parallel": 12,
+   "childHeap": "2G",
+   "childCpus": 2,
+   "hostLoad": {
+    "min": 0.0,
+    "mean": 48.2,
+    "max": 60.0
+   },
+   "otherJvms": 1
+  }
+ },
+ "gate": {
+  "verdict": "NOT_TRUSTED",
+  "reasons": [
+   "27% of pairs are untrusted (duress, skipped turns or R records)",
+   "up to 1 other Robocode JVMs ran beside the bench"
+  ]
+ },
+ "pooled": {
+  "diff": 0.06499999999999978,
+  "ci95": [
+   -0.791377688736824,
+   0.9213776887368237
+  ],
+  "clusteredCi95": [
+   -1.4481855458435142,
+   1.5781855458435137
+  ],
+  "n": 176,
+  "nOpponents": 11,
+  "tost": {
+   "margin": 1.0,
+   "p": 0.09931089208007321,
+   "equivalent": false
+  },
+  "verdict": "not-resolved"
+ },
+ "opponents": [
+  {
+   "name": "PSW.Relentless 0.1",
+   "diff": -0.8350000000000009,
+   "ci95": [
+    -1.2629474410803074,
+    -0.4070525589196942
+   ],
+   "holm": 0.008399789946140768,
+   "bh": 0.004619884470377422,
+   "skips": {
+    "cand": 11.375,
+    "base": 11.625
+   },
+   "n": 16,
+   "failed": 0
+  },
+  {
+   "name": "bbo.RamboT 0.3",
+   "diff": -0.8287500000000003,
+   "ci95": [
+    -1.4243648628984764,
+    -0.23313513710152434
+   ],
+   "holm": 0.08658541833956868,
+   "bh": 0.03527554080500946,
+   "skips": {
+    "cand": 11.4375,
+    "base": 11.4375
+   },
+   "n": 16,
+   "failed": 0
+  },
+  {
+   "name": "bwbaugh.nano.Tirunculus 0.0.0a",
+   "diff": -0.6043750000000001,
+   "ci95": [
+    -1.5625122846682493,
+    0.3537622846682492
+   ],
+   "holm": 1.0,
+   "bh": 0.274196259646001,
+   "skips": {
+    "cand": 10.25,
+    "base": 11.25
+   },
+   "n": 16,
+   "failed": 0
+  },
+  {
+   "name": "demetrix.nano.SledgeHammer 0.22",
+   "diff": 0.039374999999999716,
+   "ci95": [
+    -1.0110038059647108,
+    1.0897538059647103
+   ],
+   "holm": 1.0,
+   "bh": 0.9373726247069798,
+   "skips": {
+    "cand": 10.625,
+    "base": 10.0625
+   },
+   "n": 16,
+   "failed": 0
+  },
+  {
+   "name": "mahrgell.mahrram 1.3",
+   "diff": -0.2887499999999985,
+   "ci95": [
+    -1.5194381438875073,
+    0.9419381438875103
+   ],
+   "holm": 1.0,
+   "bh": 0.6866943119404152,
+   "skips": {
+    "cand": 10.6875,
+    "base": 10.75
+   },
+   "n": 16,
+   "failed": 0
+  },
+  {
+   "name": "mz.NanoDeath 2.56",
+   "diff": -2.1025000000000005,
+   "ci95": [
+    -4.018960889250732,
+    -0.18603911074926938
+   ],
+   "holm": 0.26904170298970165,
+   "bh": 0.09248308540270994,
+   "skips": {
+    "cand": 9.75,
+    "base": 10.0625
+   },
+   "n": 16,
+   "failed": 0
+  },
+  {
+   "name": "sample.RamFire",
+   "diff": -0.6425000000000018,
+   "ci95": [
+    -0.9194551932877868,
+    -0.3655448067122169
+   ],
+   "holm": 0.0019395139900002523,
+   "bh": 0.0019395139900002523,
+   "skips": {
+    "cand": 11.1875,
+    "base": 10.75
+   },
+   "n": 16,
+   "failed": 0
+  },
+  {
+   "name": "stelo.MirrorMicro 1.1",
+   "diff": 6.431874999999997,
+   "ci95": [
+    -2.2771011295659997,
+    15.140851129565995
+   ],
+   "holm": 0.9541366762160455,
+   "bh": 0.274196259646001,
+   "skips": {
+    "cand": 10.4375,
+    "base": 10.0625
+   },
+   "n": 16,
+   "failed": 0
+  },
+  {
+   "name": "stelo.MirrorNano 1.4",
+   "diff": 1.183749999999999,
+   "ci95": [
+    -1.548454536135695,
+    3.915954536135693
+   ],
+   "holm": 1.0,
+   "bh": 0.45268733641063924,
+   "skips": {
+    "cand": 11.8125,
+    "base": 11.1875
+   },
+   "n": 16,
+   "failed": 0
+  },
+  {
+   "name": "vort.Chaser 0.0.3",
+   "diff": -0.8106249999999964,
+   "ci95": [
+    -2.097679749547207,
+    0.4764297495472143
+   ],
+   "holm": 1.0,
+   "bh": 0.274196259646001,
+   "skips": {
+    "cand": 12.0625,
+    "base": 12.0
+   },
+   "n": 16,
+   "failed": 0
+  },
+  {
+   "name": "zyx.nano.RedBull 1.0",
+   "diff": -0.8274999999999997,
+   "ci95": [
+    -2.098927222332975,
+    0.4439272223329753
+   ],
+   "holm": 1.0,
+   "bh": 0.274196259646001,
+   "skips": {
+    "cand": 9.9375,
+    "base": 10.1875
+   },
+   "n": 16,
+   "failed": 0
+  }
+ ],
+ "excluded": [],
+ "floorWarning": false,
+ "trust": {
+  "skippedPerBattle": {
+   "cand": 10.869318181818182,
+   "base": 10.852272727272727
+  },
+  "duressPerBattle": {
+   "cand": 32.60227272727273,
+   "base": 31.926136363636363
+  },
+  "untrustedPairs": 47,
+  "pairs": 176,
+  "withoutDuress": {
+   "n": 131,
+   "diff": -0.25508356290174516,
+   "clusteredCi95": [
+    -1.4457996386463274,
+    0.9356325128428371
+   ],
+   "removed": 45
+  }
+ }
+}
