@@ -87,7 +87,40 @@ flowchart TD
     OUT --> EX["Adapter applies setters, execute()"]
 ```
 
-This version trims the README's diagram to the guard's path. The full one, with the posture gate and the tick budget, is in the README.
+This version trims the README's diagram to the guard's path. The full one at 3.5.1, with the posture gate and the tick budget, is in [the README at that commit](https://github.com/lgriffin/Hadur_Robot/blob/a9ee021/README.md).
+
+## Since 3.5.1: a second boundary inside the core
+
+Everything above still holds: the adapter, the guard and the two ports are where they were. What changed, in the architecture evolution (stages A0 to A5, releases 3.6 and 3.7), is the inside of the hexagon. At 3.5.1 `HadurCore` was 2,100 lines, two thirds of them the duel, with melee as a delegate. That made a third kind of battle, a team, a third set of branches in every event handler. So the core got a second boundary, between what Hadur *is* and how it fights in each kind of battle.
+
+```mermaid
+graph TD
+    A["hadur2.Hadur (adapter, a TeamRobot)"] --> G[Guard]
+    G --> C["HadurCore: the conductor<br/>runs the tick, owns the role contract"]
+    C --> R{"RoleResolver<br/>charter + counts alive"}
+    R -- "DUEL" --> DS["DuelSeam"] --> D["duel.DuelController<br/>gun, move, adapt, policy, shield"]
+    R -- "MELEE" --> MS["MeleeSeam"] --> M["melee.MeleeController"]
+    C --> W["world: one picture of the field<br/>fed before any role"]
+    C --> TL["TeamLink: roster, reports, fire lane"]
+    subgraph Kernel
+        W
+        K["model, physics, knn, ledger, memory, link, port"]
+    end
+    D --> K
+    M --> K
+```
+
+Three kinds of code, each with one job:
+
+| Kind | Job | In code (3.9) |
+|---|---|---|
+| Kernel | Hadur's identity: facts, memory, evidence rules. No tactics | `model`, `physics`, `knn`, `ledger`, `memory`, `port`, `world`, `link` |
+| Strand | One role's tactics behind one entry class, its brain. A strand never imports another strand | Duel: `duel.DuelController` with `gun`, `move`, `adapt`, `policy`, `shield`. Melee: `melee.MeleeController`. Team: none yet; the team baseline lives in the conductor |
+| Conductor | Runs the tick and hands each brain only what it may see | `HadurCore`, `Guard`, `replay`, `role`, the seams, `TeamLink` |
+
+The same ideas as the outer hexagon, applied one level in. The brains are reached through a seam, as the core is reached through the guard. Ownership is checked in the build: [`StrandOwnershipTest`](https://github.com/lgriffin/Hadur_Robot/blob/df731e8/hadur-core/src/test/java/hadur2/core/arch/StrandOwnershipTest.java) reads [`ownership.txt`](https://github.com/lgriffin/Hadur_Robot/blob/df731e8/hadur-core/src/test/resources/ownership.txt), which gives every package exactly one owner. And the move itself was proved by replay: every recorded battle replayed to the same orders, telemetry and data files after the duel was lifted out (A2), which is Topic 06's replay test doing exactly the job it was built for.
+
+Read [`architecture.md`, "Owners: one identity, three strands"](https://github.com/lgriffin/Hadur_Robot/blob/df731e8/docs/architecture.md) for the current table, and the [plan](https://github.com/lgriffin/Hadur_Robot/blob/df731e8/docs/architecture-evolution.md) for why each stage was cut where it was. Topic 14 shows the role resolver that replaced the posture gate.
 
 ## Two small things worth noticing
 

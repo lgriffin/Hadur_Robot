@@ -4,7 +4,7 @@ theme: default
 paginate: true
 ---
 
-<!-- footer: "Sources: README.md (Standing, release table, Built by agents), docs/releases/" -->
+<!-- footer: "Sources: README.md (Standing, release table, Built by agents), docs/releases/, docs/strategy-evolution.md" -->
 
 # Hadur in ten slides
 
@@ -28,7 +28,7 @@ Building Hadur: Welcome
 - A continuous, worldwide tournament for Robocode robots
 - Volunteers' machines run pairings all day and upload the scores
 - Every robot ends up with a ranking, built from many pairings
-- The 1v1 ladder has **1,216** robots. There is also a MeleeRumble for free-for-alls.
+- The 1v1 ladder has **1,216** robots. There is also a MeleeRumble for free-for-alls and a TeamRumble for teams of five.
 
 ---
 
@@ -37,7 +37,7 @@ Building Hadur: Welcome
 **Hadur** (the Hungarian god of war) is a Robocode robot:
 
 - a 1v1 duelist that remembers each opponent across battles
-- a melee brain for free-for-alls
+- a melee brain for free-for-alls, and a team of five Hadurs
 - a core that has no idea it is inside Robocode
 
 It was designed, written, tested and tuned by Claude agents, with one human, Leigh Griffin, who set the goals and ran the live entries.
@@ -46,24 +46,27 @@ It was designed, written, tested and tuned by Claude agents, with one human, Lei
 
 ## Where it stands
 
-The live record for Hadur 3.4, saved 2026-10-01:
+The live record for Hadur 3.9, saved 2026-10-07:
 
-| Rank | APS | PWIN | Survival | Pairings |
-|---|---|---|---|---|
-| **20th of 1,216** | **85.90 ± 0.20** | 99.26 | 93.92% | 1,215 |
+| Rank | APS | Survival | Pairings |
+|---|---|---|---|
+| **13th of 1,216** | **87.15 ± 0.19** | 95.04% | 1,215 |
 
-- 28th in the MeleeRumble as well
+- 19th in the MeleeRumble and 12th in the TeamRumble, from the same jar
 - The highest-ranked robot flying the Irish flag
+- Ranks move every day; `docs/strategy-evolution.md` keeps the history
 
 ---
 
-## 64th to 20th
+## 64th to 13th
 
 | Release | Date | Live APS | Rank |
 |---|---|---|---|
 | 3.0 | 2026-09-28 | 81.57 | 64th |
 | 3.1 | 2026-09-30 | 81.46 | 16th in its first hour, 65th at the end |
-| 3.4 | 2026-10-01 | **85.90** | **20th** |
+| 3.4 | 2026-10-01 | 85.90 | 20th |
+| 3.8 | 2026-10-06 | 84.58 | 29th |
+| 3.9 | 2026-10-07 | **87.15** | **13th** |
 
 Every stage was gated on a **bench** of real Robocode battles with 95% intervals, and every behaviour is an **EARS requirement** traced to a test. Ideas that benched badly were dropped.
 
@@ -113,4 +116,4 @@ It is also a Java course: it starts from a class and a loop, and ends at the lev
 2. Do **Lab 00**: install Java, Maven and Robocode, build Hadur, watch it win
 3. Start Topic 01
 
-Sources: [README.md](https://github.com/lgriffin/Hadur_Robot/blob/a9ee021/README.md), [docs/releases/](https://github.com/lgriffin/Hadur_Robot/tree/a9ee021/docs/releases)
+Sources: [README.md](https://github.com/lgriffin/Hadur_Robot/blob/a9ee021/README.md), [docs/releases/](https://github.com/lgriffin/Hadur_Robot/tree/master/docs/releases), [docs/strategy-evolution.md](https://github.com/lgriffin/Hadur_Robot/blob/master/docs/strategy-evolution.md)
