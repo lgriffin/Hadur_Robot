@@ -103,7 +103,7 @@ class HostSamplerTest {
     @Test
     @DisplayName("a result row carries the four host columns, appended to the header")
     void rowCarriesTheHostColumns() {
-        assertTrue(BattleResult.HEADER.endsWith("hostCpuMin,hostCpuMean,hostCpuMax,otherJvms"));
+        assertTrue(BattleResult.HEADER.contains(",hostCpuMin,hostCpuMean,hostCpuMax,otherJvms,"));
         BattleResult r = BattleResult.parse(BattleResult.failed("x"));
         r.hostCpuMin = 0.125;
         r.hostCpuMean = 0.5;
@@ -121,7 +121,7 @@ class HostSamplerTest {
     @DisplayName("a row without the host columns still reads, with the load unknown")
     void oldRowStillReads() {
         String failed = BattleResult.failed("old format");
-        String old = failed.substring(0, failed.length() - ",0,0,0,0,0,NaN,NaN,NaN,-1".length());
+        String old = failed.substring(0, failed.length() - (",0,0,0,0,0,NaN,NaN,NaN,-1" + BattleResult.FAILED_TAIL).length());
         assertEquals(51, old.split(",", -1).length);
         BattleResult r = BattleResult.parse(old);
         assertEquals("old format", r.errors);

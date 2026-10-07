@@ -281,6 +281,33 @@ A battle is trusted when it finished, spent no ticks in duress, has an `R` recor
 round and skipped no more than 2 turns per round on average; change the last limit with
 `-Dhadur.bench.trust.skips=N`.
 
+#### Reference builds and the score split (issue #138, BENCH-68 to BENCH-71)
+
+Any robot jar can be the candidate or the baseline, not only a Hadur build:
+`--robot-jar opponents/rsalesc.mega.Knight_0.6.28.jar --robot "rsalesc.mega.Knight 0.6.28"`
+(download it with `./fetch-opponents.sh --set top20.txt`, or fetch the one jar from
+`https://robocode-archive.strangeautomata.com/robots/` into `opponents/`). A robot whose name does not
+begin with `hadur` is a reference build: it writes no `R` or `FAULT` records, so its
+`result.csv` row has `reference` 1 and `duressTicks` -1 (unknown), the R-record rule is not
+applied to it, and the engine's skipped-turn count (read from the engine's own console lines)
+alone vouches for the battle. The report shows `-` for the hit-rate and fault columns, and a
+report whose every battle is a reference build leaves out the Wave fidelity, Bullet shielding,
+aggression, unhittable and memory sections. `analyse.py` reads the `reference` column the same way
+(old rows have none and count as Hadur). The queue step `tail-knight` in `plans/overnight-39.queue`
+runs Knight against Hadur 3.9 on `tail-39.txt` this way.
+
+`result.csv` then ends with ten more columns, after `otherJvms`:
+`reference,ramDamage,theirRamDamage,ramDamageBonus,theirRamDamageBonus,bulletDamageBonus,theirBulletDamageBonus,lastSurvivorBonus,theirLastSurvivorBonus,engineRoundTicks`.
+The first nine are the engine's `BattleResults` split for both sides (with `survival` and
+`bulletDamage` already present, they add up to the score), and `engineRoundTicks` is the mean ticks
+per round from the engine's round-ended events, so it exists for any build (`roundTicks`, from
+Hadur's own records, stays). A row with fewer than 70 columns reads the new ones as NaN (and
+`reference` as false). Every duel report gains "Where their points come from": the opponent's
+score pooled over the battles as shares of survival, bullet damage, ram damage and bonuses, with
+the engine's ticks per round beside it; `-` marks an opponent whose rows pre-date the split.
+`export_battles.py` carries the columns through from the run's `result.csv` header, so the TSVs
+gain them with no flag.
+
 Before a battle is read, the runner waits (at most 5 s, 250 ms of quiet) for the engine's
 console output to drain, so a final `R` record that is still in flight is not lost. Missing
 records are counted instead of hidden. The cause of the missing last-round record was not

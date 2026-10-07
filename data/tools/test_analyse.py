@@ -234,6 +234,23 @@ class TrustAndGateTest(unittest.TestCase):
         lost = trow("new", "o", 1, 0.5, roundRecords=33, rShortfall=2, finalRMissing=1)
         self.assertEqual(an.untrusted_reasons(lost), ["R records"])
 
+    def test_reference_build_has_no_r_record_rule(self):
+        ref = trow("knight", "o", 1, 0.5, roundRecords=0, rShortfall=35, finalRMissing=1,
+                   duressTicks=-1, reference=1)
+        self.assertEqual(an.untrusted_reasons(ref), [])
+        spoiled = trow("knight", "o", 1, 0.5, roundRecords=0, rShortfall=35, finalRMissing=1,
+                       duressTicks=-1, reference=1, skippedTurns=71)
+        self.assertEqual(an.untrusted_reasons(spoiled), ["skips"])
+        hadur = trow("new", "o", 1, 0.5, roundRecords=0, rShortfall=35, finalRMissing=1, reference=0)
+        self.assertEqual(an.untrusted_reasons(hadur), ["R records"])
+
+    def test_unknown_duress_is_not_averaged_in(self):
+        rows = [trow("knight", "o", 1, 0.5, duressTicks=-1, reference=1),
+                trow("knight", "o", 2, 0.5, duressTicks=-1, reference=1)]
+        self.assertIsNone(an.mean_column(rows, "knight", "duressTicks"))
+        rows.append(trow("knight", "o", 3, 0.5, duressTicks=4, reference=1))
+        self.assertEqual(an.mean_column(rows, "knight", "duressTicks"), 4)
+
     def test_reasons_for_duress_and_skips(self):
         self.assertEqual(an.untrusted_reasons(trow("new", "o", 1, 0.5, duressTicks=3)), ["duress"])
         self.assertEqual(an.untrusted_reasons(trow("new", "o", 1, 0.5, skippedTurns=71)), ["skips"])

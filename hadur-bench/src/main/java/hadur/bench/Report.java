@@ -27,7 +27,12 @@ final class Report {
         StringBuilder b = new StringBuilder();
         b.append("# Bench: ").append(robot).append(warm ? " (warm)" : " (cold)").append("\n\n");
         b.append(conditionsParagraph(rounds, runs, warm, width, height, cpuConstant));
-        b.append("Shares are Hadur's fraction of the two robots' total, mean ± 95% interval over battles.\n\n");
+        boolean reference = allReference(results);
+        b.append(reference
+            ? "Shares are the robot's fraction of the two robots' total, mean ± 95% interval over battles. "
+                + "It is a reference build, not Hadur: it writes no R records, so the columns that come "
+                + "from them show \"-\" and the battle's trust rests on the engine's skipped turns alone.\n\n"
+            : "Shares are Hadur's fraction of the two robots' total, mean ± 95% interval over battles.\n\n");
         b.append(skippedTurnsLine(results));
         String aps = weightedApsLine(robot, results);
         if (!aps.isEmpty()) b.append(aps).append("\n");
@@ -62,10 +67,12 @@ final class Report {
                 Stats.of(surv).percent(), Stats.of(dmg).percent(), won, played,
                 ourHr.isEmpty() ? "-" : Stats.of(ourHr).percent(),
                 theirHr.isEmpty() ? "-" : Stats.of(theirHr).percent(), skipped,
-                faultRounds == 0 ? "0" : faults + " in " + faultRounds + " round(s)", p95, max,
+                reference ? "-" : faultRounds == 0 ? "0" : faults + " in " + faultRounds + " round(s)", p95, max,
                 failed > 0 ? " " + failed + " battle(s) failed" : ""));
         }
+        theirPoints(b, results);
         trust(b, results);
+        if (reference) return b.toString();
         b.append("\n## Wave fidelity\n\n")
          .append("How well Hadur's inferred enemy waves match the bullets the enemy really fired "
             + "(from the engine's ground truth). A found wave matches a real bullet within "
@@ -174,6 +181,60 @@ final class Report {
      * bad battle apart. Issue #102 is the harness's own note that a parallel run is only
      * trusted when this mean stays close to the sequential run's.
      */
+    /** True when every battle that ran was fought by a reference build (issue #138), not a Hadur one. */
+    static boolean allReference(Map<Opponent, List<BattleResult>> results) {
+        boolean any = false;
+        for (List<BattleResult> rs : results.values()) {
+            for (BattleResult r : rs) {
+                if (!r.ok) continue;
+                if (!r.reference) return false;
+                any = true;
+            }
+        }
+        return any;
+    }
+
+    /**
+     * Issue #138, A2: where the opponent's points came from, pooled over the battles that carry
+     * the split: survival, bullet damage, ram damage and the three bonuses, each as a share of
+     * the opponent's total. Beside it the engine's mean ticks per round (A3), which bounds how
+     * many survival points a round can pay. A row written before the columns existed is left out.
+     */
+    private static void theirPoints(StringBuilder b, Map<Opponent, List<BattleResult>> results) {
+        b.append("\n## Where their points come from\n\n")
+         .append("The opponent's score split by source, pooled over the battles: survival, bullet "
+            + "damage, ram damage, and the bonuses (last survivor, bullet-damage and ram-damage), each "
+            + "as a share of the opponent's total. A robot that scores mostly from survival is "
+            + "outliving us; one that scores from bullet damage is out-shooting us; a share in ram "
+            + "damage means it is ramming. \"-\" means no battle carried the split (rows from before "
+            + "issue #138). Ticks per round are the engine's own count, for any build.\n\n")
+         .append("| Opponent | Battles | Their score | Survival | Bullet damage | Ram damage | Bonuses | Ticks / round |\n")
+         .append("|---|---|---|---|---|---|---|---|\n");
+        for (Map.Entry<Opponent, List<BattleResult>> e : results.entrySet()) {
+            double[] sum = new double[4];
+            int counted = 0;
+            List<Double> ticks = new ArrayList<>();
+            for (BattleResult r : e.getValue()) {
+                if (!r.ok) continue;
+                if (!Double.isNaN(r.engineRoundTicks)) ticks.add(r.engineRoundTicks);
+                double[] split = r.theirScoreSplit();
+                if (split == null) continue;
+                for (int i = 0; i < sum.length; i++) sum[i] += split[i];
+                counted++;
+            }
+            double total = sum[0] + sum[1] + sum[2] + sum[3];
+            String tick = ticks.isEmpty() ? "-" : mean(ticks, "%.0f");
+            if (counted == 0 || total <= 0) {
+                b.append(String.format(Locale.ROOT, "| %s | %d | - | - | - | - | - | %s |%n",
+                    e.getKey().name, counted, tick));
+            } else {
+                b.append(String.format(Locale.ROOT, "| %s | %d | %.0f | %.1f%% | %.1f%% | %.1f%% | %.1f%% | %s |%n",
+                    e.getKey().name, counted, total / counted, 100 * sum[0] / total,
+                    100 * sum[1] / total, 100 * sum[2] / total, 100 * sum[3] / total, tick));
+            }
+        }
+    }
+
     private static String skippedTurnsLine(Map<Opponent, List<BattleResult>> results) {
         List<Integer> perBattle = new ArrayList<>();
         for (List<BattleResult> rs : results.values()) {
@@ -429,7 +490,7 @@ final class Report {
          .append("Score-share paired difference (pp) with every pair dropped in which either battle "
             + "is untrusted (see the Trust section: duress, skips over ")
          .append(String.format(Locale.ROOT, "%.1f", BattleResult.skipsPerRoundLimit()))
-         .append(" a round, or a round without an R record).\n\n")
+         .append(" a round, or, for a Hadur build, a round without an R record).\n\n")
          .append("| Opponent | Pairs | Trusted pairs | All pairs (pp) | Trusted pairs only (pp) |\n")
          .append("|---|---|---|---|---|\n");
         List<Double> allC = new ArrayList<>(), allB = new ArrayList<>();
@@ -460,8 +521,9 @@ final class Report {
         b.append("\n## Trust\n\n")
          .append(String.format(Locale.ROOT,
             "A battle is trusted when it finished, spent no ticks in duress, skipped at most %.1f "
-            + "turns a round on average and delivered an R record for every round. Duress is "
-            + "\"n/a\" for battles written before the column existed.%n%n", limit))
+            + "turns a round on average and delivered an R record for every round. A reference build "
+            + "(not Hadur, issue #138) writes no R records, so it is held to the engine's skipped "
+            + "turns alone, and its duress is \"n/a\", as it is for battles written before the column existed.%n%n", limit))
          .append("| Opponent | Battles | Trusted | Duress ticks | Engine disables | Skips / round | Rounds without R | Final R missing | Security errors |\n")
          .append("|---|---|---|---|---|---|---|---|---|\n");
         int allBattles = 0, allTrusted = 0;
@@ -477,8 +539,10 @@ final class Report {
                 disables += r.engineDisables;
                 skips += r.skippedTurns;
                 rounds += r.rounds;
-                missing += Math.max(0, r.rounds - r.roundRecords);
-                if (r.roundRecords < r.rounds && r.finalRMissing == 1) finalMissing++;
+                if (!r.reference) {
+                    missing += Math.max(0, r.rounds - r.roundRecords);
+                    if (r.roundRecords < r.rounds && r.finalRMissing == 1) finalMissing++;
+                }
                 security += r.securityErrors;
             }
             allBattles += battles;
@@ -649,7 +713,7 @@ final class Report {
                 cells.add(Double.isNaN(r.ourHitRate) ? "-" : String.format(Locale.ROOT, "%.1f%%", r.ourHitRate * 100));
                 cells.add(Double.isNaN(r.theirHitRate) ? "-" : String.format(Locale.ROOT, "%.1f%%", r.theirHitRate * 100));
                 cells.add(String.valueOf(r.skippedTurns));
-                cells.add(r.faultRecords == 0 ? "0" : r.faults + " in " + r.faultRecords + " round(s)");
+                cells.add(r.reference ? "-" : r.faultRecords == 0 ? "0" : r.faults + " in " + r.faultRecords + " round(s)");
                 cells.add(String.format(Locale.ROOT, "%.2f / %.1f", r.turnP95Ms, r.turnMaxMs));
             }
             if (paired) {

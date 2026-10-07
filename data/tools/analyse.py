@@ -247,14 +247,18 @@ def untrusted_reasons(row, skips_per_round=2.0):
     R record, or more than skips_per_round skipped turns a round. The one exception is the last
     round's record that never arrives on this engine (finalRMissing, G14), which both builds
     share and which is not held against a row; with no rShortfall column any record short of
-    the rounds counts. Columns the TSV lacks are not held against the row."""
+    the rounds counts. Columns the TSV lacks are not held against the row. A reference build
+    (reference = 1: a robot that is not Hadur, issue #138) writes no R records, so the record
+    rule is not applied to it and the engine's skipped turns are its trust signal."""
     why = []
     duress = _num(row, "duressTicks")
     if duress is not None and duress > 0:
         why.append("duress")
     rounds, records = _num(row, "rounds"), _num(row, "roundRecords")
     short, final = _num(row, "rShortfall"), _num(row, "finalRMissing")
-    if short is not None and final is not None:
+    if str(row.get("reference", "")).strip() == "1":
+        pass
+    elif short is not None and final is not None:
         if short - final > 0:
             why.append("R records")
     elif rounds is not None and records is not None and records != rounds:
@@ -390,7 +394,12 @@ def _mean(xs):
 
 
 def mean_column(rows, build, key):
-    return _mean([_num(r, key) for r in rows if r["build"] == build])
+    """The mean of a column over one build's rows. A negative duressTicks is the bench's
+    "unknown" (a reference build writes none), so it is left out rather than averaged in."""
+    xs = [_num(r, key) for r in rows if r["build"] == build]
+    if key == "duressTicks":
+        xs = [x for x in xs if x is None or x >= 0]
+    return _mean(xs)
 
 
 def trust_summary(per_opp, ok_rows, candidate, baseline):

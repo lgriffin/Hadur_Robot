@@ -13,6 +13,7 @@ import robocode.control.RobotSpecification;
 import robocode.control.events.BattleAdaptor;
 import robocode.control.events.BattleCompletedEvent;
 import robocode.control.events.BattleErrorEvent;
+import robocode.control.events.RoundEndedEvent;
 
 /**
  * Runs one battle in this JVM and writes {@code result.csv} into the battle directory.
@@ -42,6 +43,7 @@ public final class BattleRunner {
         StringBuilder errors = new StringBuilder();
         BattleResults[] results = new BattleResults[1];
         BattleResults[] theirs = new BattleResults[1];
+        long[] roundTurns = new long[2];
         engine.addBattleListener(new BattleAdaptor() {
             @Override
             public void onBattleCompleted(BattleCompletedEvent e) {
@@ -49,6 +51,12 @@ public final class BattleRunner {
                     if (r.getTeamLeaderName().equals(us)) results[0] = r;
                     else theirs[0] = r;
                 }
+            }
+
+            @Override
+            public void onRoundEnded(RoundEndedEvent e) {
+                roundTurns[0] += e.getTurns();
+                roundTurns[1]++;
             }
 
             @Override
@@ -83,8 +91,12 @@ public final class BattleRunner {
                     out.println(BattleResult.failed("no results " + errors));
                     exit = 3;
                 } else {
-                    out.println(BattleResult.of(results[0], theirs[0], rounds, harvester,
-                        errors.toString()).toCsv());
+                    BattleResult row = BattleResult.of(results[0], theirs[0], rounds, harvester,
+                        errors.toString());
+                    row.reference = !BattleResult.isHadur(us);
+                    if (row.reference) row.duressTicks = -1;
+                    row.engineRoundTicks = roundTurns[1] == 0 ? Double.NaN : (double) roundTurns[0] / roundTurns[1];
+                    out.println(row.toCsv());
                 }
             }
         }
