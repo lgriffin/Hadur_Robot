@@ -460,6 +460,12 @@ fifth of the score away, or loses rounds to simple guns. The overnight plan
 (`hadur-bench/plans/overnight-39.queue`) checks those two groups on the bench and tests which live
 condition the bench is missing.
 
+The compare pages against Tomcat, Knight and Raven then moved the target. All three score
+about a point a pairing more than Hadur against the bots ranked 401st and below, with almost
+the same survival, and match or trail Hadur above rank 150: the whole 0.57 is points Hadur
+gives away to weak bots in rounds it wins. The close-range group turned out to cost the top 10
+nearly as much as Hadur, so the next stage aims at the weak tail first.
+
 ## What comes next
 
 Every EARS requirement up to R2, bar TIER-1 (above), is implemented and traced. R3 to R5

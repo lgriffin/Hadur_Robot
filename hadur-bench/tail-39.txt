@@ -1,0 +1,47 @@
+# The weak tail (docs/bench/live-3.9.md, "The bots above us"): 40 bots drawn at random (seed 39)
+# from those ranked 401st and below on 2026-10-07, leaving out DrussGT's shield list. Live,
+# Tomcat, Knight and Raven outscore Hadur 3.9 by about one point a pairing here; on this draw by
+# 1.58. Use: bench Hadur against a reference top-10 bot on the same opponents, and see where
+# the reference keeps the points Hadur gives away.
+# Jars from https://robocode-archive.strangeautomata.com/robots/<jar>, into opponents/ (not committed).
+#   <robot name as Robocode lists it> | <role> | <jar file in opponents/>
+ers.nano.lig.LigMA 1.9 | weak | ers.nano.lig.LigMA_1.9.jar
+apv.TheBrainPi 0.5fix | weak | apv.TheBrainPi_0.5fix.jar
+jmcd.BeoWulf 2.8 | weak | jmcd.BeoWulf_2.8.jar
+DM.Mijit .3 | weak | DM.Mijit_.3.jar
+nan.Ihivatar_Mk_1 1.0 | weak | nan.Ihivatar_Mk_1_1.0.jar
+jab.micro.Sanguijuela 0.8 | weak | jab.micro.Sanguijuela_0.8.jar
+serenity.moonlightBat 1.17 | weak | serenity.moonlightBat_1.17.jar
+myl.nano.Kakuru 1.20 | weak | myl.nano.Kakuru_1.20.jar
+mcb.Audace 1.3 | weak | mcb.Audace_1.3.jar
+suh.micro.WallPM 1.00 | weak | suh.micro.WallPM_1.00.jar
+fm.claire 1.7 | weak | fm.claire_1.7.jar
+dmh.robocode.robot.GreenDragon 1.0 | weak | dmh.robocode.robot.GreenDragon_1.0.jar
+oog.melee.Mercutio 1.0 | weak | oog.melee.Mercutio_1.0.jar
+js.PinBall 1.6 | weak | js.PinBall_1.6.jar
+EH.Fusion 0.32 | weak | EH.Fusion_0.32.jar
+ratosh.Wesco 1.4 | weak | ratosh.Wesco_1.4.jar
+xander.cat.Spitfire 1.4 | weak | xander.cat.Spitfire_1.4.jar
+marksteam.Phoenix 1.0 | weak | marksteam.Phoenix_1.0.jar
+ndn.DyslexicMonkey 1.1 | weak | ndn.DyslexicMonkey_1.1.jar
+supersample.SuperCorners 1.0 | weak | supersample.SuperCorners_1.0.jar
+bots.UnterExBot 1.0 | weak | bots.UnterExBot_1.0.jar
+hlavko.nano.Ringo 2.0 | weak | hlavko.nano.Ringo_2.0.jar
+dsw.StaticD 1.0 | weak | dsw.StaticD_1.0.jar
+sul.BlueBot 1.0 | weak | sul.BlueBot_1.0.jar
+hapiel.Spiral 0.1 | weak | hapiel.Spiral_0.1.jar
+Lo_Ian.Gandalf_V4 4.0 | weak | Lo_Ian.Gandalf_V4_4.0.jar
+e32.Omni 0.06 | weak | e32.Omni_0.06.jar
+suh.nano.CrossC 1.00 | weak | suh.nano.CrossC_1.00.jar
+hirataatsushi.Trinity 0.003 | weak | hirataatsushi.Trinity_0.003.jar
+adt.Ar2 1.0 | weak | adt.Ar2_1.0.jar
+yk.JahMicro 1.0 | weak | yk.JahMicro_1.0.jar
+uccc.MilkyWay 1.01 | weak | uccc.MilkyWay_1.01.jar
+amk.superstrike.SuperStrike 0.3 | weak | amk.superstrike.SuperStrike_0.3.jar
+omens.CannonfodderNano 1.4 | weak | omens.CannonfodderNano_1.4.jar
+AD.CodaFirst 1.1 | weak | AD.CodaFirst_1.1.jar
+madmath.Cow 0.1.1 | weak | madmath.Cow_0.1.1.jar
+kjc.Karaykan 1.0 | weak | kjc.Karaykan_1.0.jar
+pac.ABC 2.1 | weak | pac.ABC_2.1.jar
+bk.Shooter 1.0 | weak | bk.Shooter_1.0.jar
+McS.Spanky_test 0.1a | weak | McS.Spanky_test_0.1a.jar

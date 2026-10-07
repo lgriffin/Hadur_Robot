@@ -4,42 +4,34 @@
 a 1v1 duelist that remembers each opponent across battles, with a melee brain for
 free-for-alls, a five-robot team entry, and a core that has no idea it is inside Robocode.
 
-**Hadur 3.5.1 is ranked 16th of 1,216 in the RoboRumble 1v1** and 18th in the MeleeRumble,
-the highest-ranked robot flying the Irish flag. It was designed, written, tested and tuned by Claude agents working
+**Hadur 3.9 is ranked 13th of 1,216 in the RoboRumble 1v1**, 19th in the MeleeRumble and
+12th in the TeamRumble, the highest-ranked robot flying the Irish flag. It was designed, written, tested and tuned by Claude agents working
 in a shared project with one human, Leigh Griffin, who set the goals and ran the live
 entries. This page covers what the robot does, how it is built, and how it was built.
 
 ## Standing
 
-**3.8 was released on 2026-10-06** with the DrussGT route (D1 to D5) and teammates that no
-longer collide (T1). Paired against 3.7 on the same seeds it scores +10.5 ± 3.1 points
-against DrussGT and +7.2 ± 6.3 on the top-10 set ([release check](docs/bench/release-check-3.8.md));
-the team's score share rose from 28.8% to 48.2% on the team gate. The figures below are
-3.7's and 3.5.1's until 3.8's passes are in.
-
-**3.7 was entered on all three ladders on 2026-10-05**: `hadur2.Hadur 3.7` replaces 3.5.1 on
-the RoboRumble and MeleeRumble, and `hadur2.HadurTeam 3.7` is Hadur's first TeamRumble
-entry. 3.7 closes the architecture evolution (below) and should play the 1v1 and melee as
-3.5.1 does. [What 3.7 should score](docs/bench/expected-3.7.md) records the expected APS and
-its range on each ladder, the baseline its complete passes are read against. The figures
-below are 3.5.1's until 3.7's pass is complete.
-
-The LiteRumble rankings page saved 2026-10-05 05:51 UTC puts `hadur2.Hadur 3.5.1` 16th, after
-1,119 of its 1,215 pairings (1,261 battles):
+**3.9 was released on 2026-10-07** and its first full 1v1 pass, saved 2026-10-07 20:28 UTC
+with every pairing filled, puts `hadur2.Hadur 3.9` 13th, Hadur's best score:
 
 | Rank | APS | PWIN | ANPP | Survival | Pairings | Battles |
 |---|---|---|---|---|---|---|
-| **16th of 1,216** | **86.65** ± 0.23 | 99.02 | 89.76 | 94.36% | 1,119 | 1,261 |
+| **13th of 1,216** | **87.15** ± 0.19 | 99.34 | 90.31 | 95.04% | 1,215 | 1,885 |
 
-- **18th in the MeleeRumble**, up from 28th for 3.4 (Leigh, 2026-10-05; no melee page is
-  archived yet).
-- **The ram approach paid off.** 3.5.1 is 3.4 plus R9: run from a confirmed rammer (RAM-2)
-  and plan a path against mirror movers (MIR-1). It gained 0.75 APS and four places over
-  3.4's complete pass, more than the 0.1 to 0.5 the weak-bot bench predicted, and survival
-  rose from 93.9% to 94.4%. The pass is 92% complete, so the last digit can still move: 15th
-  (WaveSerpent) is 0.03 APS ahead and 17th (WhiteFang) 0.02 behind.
+- **19th in the MeleeRumble** (65.07 APS) and **12th in the TeamRumble** (`hadur2.HadurTeam
+  3.9`, 63.97 APS). 3.9 did not change melee or team play.
+- **The rammer trial paid off.** 3.8 had fallen to 29th and 3.8.5 to 24th. An overnight
+  bisect traced the loss to 3.5's rammer escape (RAM-2), which also ran from ordinary
+  close-range fighters and got Hadur hit two to seven times as often. 3.9 (RAM-3) keeps the
+  escape only where the battle's own rounds show it pays. It gained 2.36 APS over 3.8.5, evenly
+  across every band from rank 51 down ([live notes](docs/bench/live-3.9.md)).
+- **10th is 0.56 APS away.** Tomcat 3.68 is 10th at 87.71, and ranks 8 to 12 sit within 0.11
+  of each other. Compared opponent by opponent, Tomcat, Knight and Raven score below Hadur
+  against the top 150 and about a point a pairing above it against the bots ranked 401st and
+  below, which is the whole gap ([the bots above us](docs/bench/live-3.9.md#the-bots-above-us)).
 
-The page is archived in [`data/rumble/`](data/rumble/) ([L-38](data/learnings.md)).
+The pages are archived in [`data/rumble/`](data/rumble/). The road to the top 10 is
+[issue #135](https://github.com/lgriffin/Hadur_Robot/issues/135) and the plan in the live notes.
 
 ### 3.4 at 20th
 
@@ -70,7 +62,11 @@ by BENCH-5. The saved page is archived in [`data/rumble/`](data/rumble/).
 | 3.0 | 2026-09-28 | 81.57 | 82.6% | 64th | Hadur 2 duelist (S0-S6) and the rebuilt melee brain (M0-M6) |
 | 3.1 | 2026-09-30 | 81.46 | 83.0% | 16th in its first hour, 65th at the end | R1-R3: client reliability, full power vs weak bots, a gun for surfers |
 | 3.4 | 2026-10-01 | 85.90 | 93.9% | 20th (28th melee) | R5-R8: rumble-safe memory, duress mode, movement, memory that stays cheap |
-| 3.5.1 | 2026-10-03 | **86.65** | **94.4%** | **16th (18th melee)** | R9, the ram approach: run from rammers (RAM-2), a planned path against mirror movers (MIR-1) |
+| 3.5.1 | 2026-10-03 | 86.65 | 94.4% | 16th (18th melee) | R9, the ram approach: run from rammers (RAM-2), a planned path against mirror movers (MIR-1) |
+| 3.7 | 2026-10-05 | 85.67 | | 21st (18th melee, 32nd team) | A0-A5, the architecture evolution, and the first team entry |
+| 3.8 | 2026-10-06 | 84.58 | 91.8% | 29th (16th melee, 12th team) | D1-D5, the DrussGT route, and T1, teammates that no longer collide |
+| 3.8.5 | 2026-10-06 | 84.79 | 92.0% | 24th | MATCH-1/2: the DrussGT aim and shield latch only in duels Hadur is not already winning |
+| 3.9 | 2026-10-07 | **87.15** | **95.0%** | **13th (19th melee, 12th team)** | RAM-3, the rammer trial: escape a rammer only where its rounds show it pays |
 
 3.0 and 3.1 both started near 85.7 APS and slid by 5 to 8 points within hours on live
 clients, which the bench could not reproduce. R7's one-JVM session bench and R8 traced it to
@@ -294,7 +290,7 @@ Hadur 2 is as much an experiment in how AI agents build software as it is a robo
 1.x (up to 1.20) was evolved release by release, by feel. Hadur 2 was rebuilt from 2026-09-26
 to 2026-10-01 by Claude sessions working in one shared project: 50 merged pull requests, about
 24,000 lines of production Java and 12,000 of tests, from a 64th-place 3.0 to a 20th-place
-3.4. Leigh set the goals, made the calls only a human could (what "good" means, when to
+3.4 (and, by 2026-10-07, a 13th-place 3.9). Leigh set the goals, made the calls only a human could (what "good" means, when to
 enter the rumble), and carried the live entries; everything else was done by agents. What
 follows is what made that work, and where it did not.
 
@@ -412,6 +408,8 @@ tests that prove it.
 | R9 | The weak-bot leak: run from rammers (RAM-2), plan a path against mirror movers (MIR-1) | released as 3.5, review fixes as 3.5.1 ([issue #80](https://github.com/lgriffin/Hadur_Robot/issues/80), [bench](docs/bench/r9-weak-leak.md)): weak set 74.8% to 86.8%, top 19 unchanged; 16th live, 18th melee |
 | A0-A5 | Architecture evolution: one identity kernel, three strands (Duel, Melee, Team), the World, team messages and the team baseline | released as 3.6 (A2) and 3.7 (A5, with the team jar) ([plan](docs/architecture-evolution.md), [stage log](docs/architecture-evolution.md#stage-log), [team gate](docs/bench/a5-team.md), [expected APS](docs/bench/expected-3.7.md)) |
 | D1-D5 | The DrussGT route: power by the lead, shield openers and the last shot, light-bullet aim, shadow-aware aim, and a shield list of 14 opponents | released as 3.8 ([plan](docs/druss-route-plan.md); gates [D1](docs/bench/d1-gate.md), [D5](docs/bench/d5-gate.md), [D2](docs/bench/d2-gate.md), [D3](docs/bench/d3-gate.md), [D4](docs/bench/d4-gate.md), [stack](docs/bench/stack-gate.md)); D6 stays research |
+| MATCH | The matchup gate: switch the DrussGT aim and shield latch off once a duel is clearly won | released as 3.8.5; 24th live ([notes](docs/bench/live-3.8.5.md)) |
+| R9 bisect, D8 | The 3.8 leak traced to RAM-2 by an overnight release bisect and ablation; RAM-3, the rammer trial | released as 3.9 ([bisect](docs/bench/local/2026-10-07_live-loser-bisect.md), [gate](docs/bench/local/2026-10-07_candidate-39-gate.md), [notes](docs/releases/v3.9.md)): 13th live ([live notes](docs/bench/live-3.9.md)) |
 | T1 | The Team plan's first stage: teammates seen, predicted and fenced, so they stop colliding; the fire lane covers the bullet's flight | released as 3.8 ([plan](docs/team-plan-t1.md), [gate](docs/bench/t1-team.md)): collisions -99.9%, team share 28.8% to 48.2% |
 
 The plan's S7 was "cut melee". Release 2.1 had already put melee in the core for the

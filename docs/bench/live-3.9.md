@@ -68,6 +68,43 @@ more than they should (NanoDeath, Neutrino, Breeze, RandomPattern).
 
 Inferred, not measured: the 0.56 to 10th is there in these two groups without touching the top 50.
 
+## The bots above us
+
+Leigh saved the LiteRumble compare pages of Tomcat 3.68 (10th), Knight 0.6.28 (11th) and Raven
+3.56j8 (8th) against Hadur 3.9, saved 2026-10-07 20:46 UTC (`data/rumble/pages/2026-10-07T2046Z_*`,
+parsed by `data/tools/parse_rumble_page.py`). Each covers the 1,214 opponents both bots share.
+Their own pairings rest on tens of thousands of battles, so the noise is Hadur's.
+
+| Ranks | Pairings | Tomcat minus Hadur | Knight minus Hadur | Raven minus Hadur |
+|---|---|---|---|---|
+| 1-20 | 18 | -4.52 ± 3.09 | -0.01 ± 3.66 | -6.71 ± 3.41 |
+| 21-50 | 30 | -0.79 ± 1.93 | +1.37 ± 2.17 | -3.45 ± 2.34 |
+| 51-150 | 100 | -1.08 ± 1.39 | -1.39 ± 1.31 | -3.29 ± 1.36 |
+| 151-400 | 250 | +0.07 ± 0.73 | -0.22 ± 0.79 | -0.27 ± 0.80 |
+| 401-700 | 300 | **+1.17 ± 0.43** | **+1.32 ± 0.45** | **+2.12 ± 0.45** |
+| 701+ | 516 | **+1.03 ± 0.21** | **+0.87 ± 0.19** | **+1.41 ± 0.22** |
+| All | | +0.57 APS | +0.57 APS | +0.61 APS |
+
+- **The whole gap is below rank 400.** All three score about a point a pairing more than Hadur
+  against the 816 bots ranked 401st and below (0.7 to 1.1 APS), and match or trail it above
+  that. Hadur already outscores Raven and Tomcat against the top 150.
+- **It is points given away in rounds Hadur wins.** Below rank 700 their survival is only 0.3
+  to 0.4 above Hadur's (99.4), yet they score about a point more: weak bots hit Hadur more
+  often, or for longer, than they hit the top 10. From 401 to 700 their survival is also 1.2 to
+  1.4 higher, so there part of it is rounds.
+- **The score-leak group is mostly the opponents' doing.** Against the 32 bots of
+  `score-leak-39.txt`, Tomcat scores 77.0 and Hadur 77.6; Knight and Raven score 82. Fixing it is
+  worth about 0.1 APS, not the 0.2 to 0.4 estimated above.
+- **The lost-rounds group is real but small.** The three score 5 to 7 more than Hadur there,
+  0.13 to 0.18 APS.
+
+So the plan changes: the first target is the weak tail, how often a weak bot hits Hadur in a
+round Hadur wins, not the close-range group. `hadur-bench/tail-39.txt` is a random 40 of
+the 401+ bots (the three bots outscore Hadur by 1.58 on that draw live). The bench needs to
+run a reference bot (Knight) against it to show where Knight keeps the points; that and a
+score breakdown (bullet, ram and bonus points for each side) are the harness changes in
+issue #136.
+
 ## Next
 
 `hadur-bench/plans/overnight-39.queue` (issue for the overnight run):
@@ -77,3 +114,5 @@ Inferred, not measured: the 0.56 to 10th is there in these two groups without to
 2. `lost-rounds-39.txt` (32 bots), 3.9 against 3.4, 8 seeds: which lost rounds are real.
 3. `leak-38.txt`, 3.9 against 3.8.5, warm (`--cold-warm`) and at a slower CPU constant (1000000):
    which condition makes the bench see the +2 it missed.
+4. `tail-39.txt` (40 bots ranked 401+), 3.9 against 3.4, 8 seeds: Hadur's damage taken and round
+   length on the weak tail, the baseline for the reference-bot run once the harness can do it.
