@@ -1,7 +1,7 @@
 # Nullstride in the mid-table: what the compare page says, and the bench to test it
 
 Issue #140. Prepared 2026-10-07 while the #138 overnight run was going. This is analysis of the
-saved compare page and a ready plan; no battles have been run for it yet.
+saved compare page and the plan; the battles have since been run, results in `2026-10-07_nullstride-mid-results.md`.
 
 Source: `data/rumble/parsed/2026-10-07T2058Z_roborumble_botcompare_Nullstride_2.3.3_vs_hadur2.Hadur_3.9.csv`
 (1,214 shared opponents), joined to `2026-10-07T2028Z_roborumble_rankings.tsv` for rank. Every
