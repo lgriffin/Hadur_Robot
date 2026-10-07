@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="../style.css">
 </head>
 <body>
-<header><div class="wrap"><a class="brand" href="../index.html">Hadur 2</a><nav><a href="../index.html">Home</a><a href="../requirements.html">Requirements</a><a href="../docs/architecture.html" aria-current="page">Architecture</a><a href="../docs/testing.html">Testing</a><a href="../api/index.html">Javadoc</a><a href="https://github.com/lgriffin/Hadur_Robot">GitHub</a></nav></div></header>
+<header><div class="wrap"><a class="brand" href="../index.html">Hadur 2</a><nav><a href="../index.html">Home</a><a href="../requirements.html">Requirements</a><a href="../docs/architecture.html" aria-current="page">Architecture</a><a href="../docs/testing.html">Testing</a><a href="../bench/index.html">Bench analysis</a><a href="../api/index.html">Javadoc</a><a href="https://github.com/lgriffin/Hadur_Robot">GitHub</a></nav></div></header>
 <main class="wrap">
 <h1 id="hadur-2-architecture">Hadur 2 architecture</h1>
 <p>Hadur 2 is hexagonal: the strategy lives in a core that only sees plain values, and a thin adapter connects it to Robocode. That split is what makes the rest of the plan testable: the core can be replayed, fuzzed and fault-injected without an engine.</p>

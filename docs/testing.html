@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="../style.css">
 </head>
 <body>
-<header><div class="wrap"><a class="brand" href="../index.html">Hadur 2</a><nav><a href="../index.html">Home</a><a href="../requirements.html">Requirements</a><a href="../docs/architecture.html">Architecture</a><a href="../docs/testing.html" aria-current="page">Testing</a><a href="../api/index.html">Javadoc</a><a href="https://github.com/lgriffin/Hadur_Robot">GitHub</a></nav></div></header>
+<header><div class="wrap"><a class="brand" href="../index.html">Hadur 2</a><nav><a href="../index.html">Home</a><a href="../requirements.html">Requirements</a><a href="../docs/architecture.html">Architecture</a><a href="../docs/testing.html" aria-current="page">Testing</a><a href="../bench/index.html">Bench analysis</a><a href="../api/index.html">Javadoc</a><a href="https://github.com/lgriffin/Hadur_Robot">GitHub</a></nav></div></header>
 <main class="wrap">
 <h1 id="testing-hadur-2">Testing Hadur 2</h1>
 <p>Hadur 2 is tested in layers, from rules that hold on every build to battles in the real engine. Every requirement in <a href="requirements-notes.html">requirements.md</a> is traced to at least one test, and the build fails if one is not. The hexagonal core (see <a href="architecture.html">architecture.md</a>) is what makes this possible: the brain sees only plain values, so it can be replayed, fuzzed and fault-injected without Robocode.</p>
