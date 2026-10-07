@@ -1,7 +1,7 @@
 # Candidate 3.9 gate: 3.9 against 3.8.5
 
 Written 2026-10-07 after `./queue.sh run candidate-39` (plan `hadur-bench/plans/candidate-39.queue`)
-and two clean reruns. 3.9 is the RAM-3 rammer trial: the rammer escape is tried and kept only where
+and three reruns (rammers, leak set, top 20). 3.9 is the RAM-3 rammer trial: the rammer escape is tried and kept only where
 it pays (#130). Nothing in `hadur-core` or `hadur-robot` was changed for this bench, and 3.9 has not
 been released or tagged; that is the owner's call. This page reports what was measured and how
 sure we are.
@@ -10,10 +10,11 @@ sure we are.
 
 On the live losers 3.9 is clearly ahead of 3.8.5 (+5.46 points, clustered 95% interval +3.08 to
 +7.84). On the leak set and the 1v1 top 20 it is level, with intervals that sit inside the 1.0 point
-margin on the leak set and a wider, marginal one on the top 20. On 3.5's rammers the first run read
+margin on the leak set and on the clean 20-seed top-20 rerun (+0.22, -0.39 to +0.82). On 3.5's rammers the first run read
 -0.69 (-1.01 to -0.38) and the clean rerun read +0.06 (-1.45 to +1.58): the set as a whole is level
 but a few rammers are lower by 0.6 to 0.8 points, and that cost is the thing to watch. Every gate
-has a trust caveat below; none is a clean TRUSTED run.
+has a trust caveat below; none is a clean TRUSTED run. The leak and top-20 reruns agree with their first runs;
+the rammer reruns do not agree on the set mean (see below).
 
 ## Results
 
@@ -28,6 +29,7 @@ the opponent-clustered 95% interval. Raw rows are in `data/bench/2026-10-07_hadu
 | Leak set | `leak-39` | 32 x 16 | +0.08 | -0.24 to +0.41 | LEVEL | NOT_TRUSTED |
 | Leak set, rerun | `leak-39r` | 32 x 16 | -0.02 | -0.48 to +0.44 | LEVEL (TOST) | CAUTION |
 | Top 20 | `top20-39` | 20 x 10 | +0.00 | -1.20 to +1.21 | LEVEL (marginal) | CAUTION |
+| Top 20, rerun | `top20-39r` | 20 x 20 | +0.22 | -0.39 to +0.82 | LEVEL (TOST) | CAUTION |
 
 ### Live losers (`ll-39`)
 
@@ -55,14 +57,18 @@ non-inferiority and equivalence tests at the 1.0 margin (both p < 0.0001). No op
 after adjustment. The first run was NOT_TRUSTED because the top-20 run was on the machine beside it
 (up to 13 other Robocode JVMs); the rerun replaces it.
 
-### Top 20 (`top20-39`)
+### Top 20 (`top20-39`, `top20-39r`)
 
-+0.00 +/- 1.20. Equivalence at the 1.0 margin holds only marginally (p 0.0498). The largest raw
-losses are cs.Nene 1.0.5 (-5.76 +/- 3.59, raw p 0.0055, Holm 0.11) and gh.GresSuffurd 0.4.13
-(-6.24 +/- 5.47); neither resolves after adjustment. Firestarter (+3.30) and Roborio (+2.61) lean
-up. With only 10 seeds a 20-opponent set cannot separate a few-point change on one opponent from
-noise. A clean 20-seed rerun, `top20-39r`, was started to settle Nene and GresSuffurd; it is not in
-this page.
+First run, 10 seeds: +0.00 +/- 1.20, equivalence at the 1.0 margin only marginal (p 0.0498). The
+largest raw losses were cs.Nene 1.0.5 (-5.76 +/- 3.59, Holm 0.11) and gh.GresSuffurd 0.4.13
+(-6.24 +/- 5.47); neither resolved.
+
+Rerun, 20 seeds, run on its own at 12 wide with the RoboRumble clients (up to 6 other Robocode
+JVMs): +0.22 +/- 0.61 (-0.39 to +0.82), equivalent at the 1.0 margin (p 0.0070), non-inferior
+(p 0.0002). Gate CAUTION: 75 of 400 pairs untrusted (19%); without the duress pairs +0.23 (-0.43 to
++0.90). No opponent resolves after adjustment. cs.Nene reads +1.63 and GresSuffurd -1.39, so the
+first run's large losses on both were noise. The rerun's largest movements are ScalarR +2.97, DrussGT
+-2.14, Firestarter +1.83 and Roborio -1.37, all unresolved.
 
 ## Conditions and caveats
 
@@ -82,8 +88,8 @@ this page.
 ## What this says for the release decision
 
 - The expected gain (the live losers come back) is there and large.
-- Nothing in the leak set or top 20 shows a loss that resolves.
+- Nothing in the leak set or top 20 shows a loss that resolves, on either run.
 - The cost to watch is a small drop against some rammers (sample.RamFire, PSW.Relentless).
-- cs.Nene and GresSuffurd are the two top-20 robots to look at in the clean rerun.
+- The top 20 is level on the clean rerun, and the two robots that looked worst in the first run (cs.Nene, GresSuffurd) are not lower.
 
 Whether to cut 3.9 is the owner's decision.
