@@ -185,21 +185,24 @@ and `-DryRun` shows the argument list the file will hold.
 
 ### Overnight plans: the queue runner (issue #117)
 
-`queue.sh` / `queue.ps1` run a plan file of bench steps one after another, so a long night is one command that can be stopped, resumed and read, instead of a hand-written bash script.
+`queue.sh` / `queue.ps1` run a plan file of bench steps, one after another by default, so a long night is one command that can be stopped, resumed and read, instead of a hand-written bash script.
 
 ```
 ./queue.sh run overnight-385            # plans/overnight-385.queue; .\queue.ps1 on PowerShell
 ./queue.sh run overnight-385 --dry-run  # print every step and its state, run nothing
 ./queue.sh status overnight-385         # each step: pending, running, done, failed, skipped, interrupted
-./queue.sh stop overnight-385           # kill the current step's process tree; a rerun resumes
+./queue.sh stop overnight-385           # kill every running step's process tree; a rerun resumes
 ```
 
-Start it in the background on Windows with `(nohup ./queue.sh run overnight-385 &)` from Git Bash. A plan is one `name | command` per line, with `#` comments, `set NAME = value` variables (used as `${NAME}`) and indented `after: step` and `timeout: 6h` lines; `plans/overnight-385.queue` is the 2026-10-06 overnight run written as a plan. Commands run through bash from this directory, so `./bench-top20.sh ...` lines are the same lines you would type.
+Start it in the background on Windows with `(nohup ./queue.sh run overnight-385 &)` from Git Bash. A plan is one `name | command` per line, with `#` comments, `set NAME = value` variables (used as `${NAME}`) and indented `after: step`, `timeout: 6h` and `memory: 24g` lines; `plans/overnight-385.queue` is the 2026-10-06 overnight run written as a plan. Commands run through bash from this directory, so `./bench-top20.sh ...` lines are the same lines you would type.
 
-- **Resume.** State is kept in `work/queue-<plan>.state.json`. A restart skips every step that exited 0 and runs the rest; `--fresh` ignores the state, `--only a,b` and `--skip a` pick steps. A step whose `after:` step has not exited 0 is skipped. A failed step does not stop the queue unless `--stop-on-fail` is given.
+- **Resume.** State is kept in `work/queue-<plan>.state.json`. A restart skips every step that exited 0 and runs the rest; `--fresh` ignores the state, `--only a,b` and `--skip a` pick steps. A step whose `after:` step has not exited 0 is skipped. A failed step does not stop the queue unless `--stop-on-fail` is given (with concurrency, steps already running finish, none start, and the exit code is the first failure's).
 - **Log.** `work-queue-<plan>.log` reads `HH:MM:SS start X`, `HH:MM:SS X exit=N in S s` and ends with `ALLDONE`; each step's output goes to `work-queue-<plan>-<step>.log`.
 - **Stop and cleanup.** Each step runs in its own process group (Linux) or job object (Windows). Stop (Ctrl-C, `stop`, or a `work/queue-<plan>.STOP` file), a timeout (exit 124) or the runner dying kills that step's tree, including the child battle JVMs, and nothing else; no other java on the host is touched.
-- **Memory guard.** Before each step the runner waits while free memory is under `--min-free-gb` (default 8; 0 turns it off) and says so in the log. It does not shrink a step: pair it with `--child-heap` so the step itself stays inside the budget.
+- **Memory guard.** Before each step the runner waits while free memory is under `--min-free-gb` (default 8; 0 turns it off) and says so in the log. It does not shrink a step: pair it with `--child-heap` so the step itself stays inside the budget. A step's `memory: 24g` line is its rough peak; for a minute after it starts (it has not used it yet) that amount is added to the threshold for the next start.
+- **Concurrency.** Off by default. `set CONCURRENCY = 2` in a plan, or `--concurrency 2` (which wins), lets up to that many steps run side by side: each time a slot is free the first step in plan order whose `after:` step is done (or that has none) starts, and a step after one that is still running waits for it. A timeout kills only that step, a stop kills every running step, `ALLDONE` is logged when the last one ends, and `status` lists each running step. Resume is unchanged.
+
+Concurrency spends the host's width twice. The width a run uses is `--parallel` x `--child-cpus` cores, so two steps need each step's `--parallel` halved to stay inside the same budget (the parallel ladder, `docs/bench/local/2026-10-06_parallel-ladder.md`, found about 24 cores workable in total, and 12 wide with `--child-cpus 2` leaves room for the rumble clients). Each step also sees the other's battle JVMs as "other Robocode JVMs" in `conditions.json`, which the trust gate counts, so a concurrent run reads CAUTION on that account even when the load was fine; read its skipped-turn and duress figures before relying on it. Use it for steps that are each too narrow to fill the host (a few opponents, or a single-threaded prep and fetch), not to run two full-width benches at once.
 
 The runner is `benchqueue.py` (Python 3 standard library only; it is not called `queue.py` because that would shadow the standard `queue` module). Its tests run in CI: `python3 -m unittest discover -s hadur-bench -p "test_benchqueue.py"`.
 
