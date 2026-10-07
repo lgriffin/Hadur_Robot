@@ -273,6 +273,183 @@ class StatusTest(QueueCase):
         self.assertIn("1 of 3 steps done", text)
 
 
+def wait_for_flag(flag, seconds=20):
+    """A step that waits for `flag` to appear and exits 0 if it did, 1 if it never did."""
+    return py("import os,sys,time;e=time.time()+%d;"
+              "[None for _ in iter(lambda:(time.sleep(0.05),not os.path.exists('%s') and time.time()<e)[1],False)];"
+              "sys.exit(0 if os.path.exists('%s') else 1)" % (seconds, flag, flag))
+
+
+def nap(seconds):
+    return py(f"import time;time.sleep({seconds})")
+
+
+class ConcurrencyTest(QueueCase):
+    def order(self, name="t"):
+        """The log lines that name a step starting or ending, as 'start a' / 'end a'."""
+        seen = []
+        for line in self.logtext(name).splitlines():
+            parts = line.split()
+            if len(parts) >= 3 and parts[1] == "start":
+                seen.append(f"start {parts[2]}")
+            elif len(parts) >= 3 and parts[2].startswith("exit="):
+                seen.append(f"end {parts[1]}")
+        return seen
+
+    def test_independent_steps_run_side_by_side_with_the_flag(self):
+        self.plan(f"a | {wait_for_flag('b.flag')}\nb | {append_marker('b.flag')}\n")
+        code, _ = self.run_queue("t", "--concurrency", "2")
+        self.assertEqual(code, 0)
+        self.assertEqual(self.state()["a"]["status"], "done")
+        self.assertEqual(self.order()[:2], ["start a", "start b"])
+        self.assertIn("ALLDONE", self.logtext())
+
+    def test_the_plan_can_ask_for_concurrency(self):
+        self.plan(f"set CONCURRENCY = 2\na | {wait_for_flag('b.flag')}\nb | {append_marker('b.flag')}\n")
+        code, _ = self.run_queue()
+        self.assertEqual(code, 0)
+        self.assertIn("running up to 2 steps at a time", self.logtext())
+
+    def test_the_default_is_one_step_at_a_time(self):
+        self.plan(f"a | {wait_for_flag('b.flag', 1)}\nb | {append_marker('b.flag')}\n")
+        code, _ = self.run_queue()
+        self.assertEqual(code, 1)
+        self.assertEqual(self.order()[:3], ["start a", "end a", "start b"])
+        self.assertEqual(self.state()["a"]["status"], "failed")
+        self.assertEqual(self.state()["b"]["status"], "done")
+
+    def test_the_cap_is_respected(self):
+        self.plan(f"a | {nap(1.5)}\nb | {nap(1.5)}\nc | {nap(0.1)}\n")
+        code, _ = self.run_queue("t", "--concurrency", "2")
+        self.assertEqual(code, 0)
+        order = self.order()
+        self.assertEqual(order[:2], ["start a", "start b"])
+        self.assertEqual(order[2], "end a")
+        self.assertLess(order.index("end a"), order.index("start c"))
+
+    def test_a_step_waits_for_its_after_step_while_others_run(self):
+        self.plan(f"a | {nap(1.5)}\nc | {append_marker('c.ran')}\n  after: a\nb | {nap(0.1)}\n")
+        code, _ = self.run_queue("t", "--concurrency", "3")
+        self.assertEqual(code, 0)
+        order = self.order()
+        self.assertLess(order.index("start b"), order.index("end a"))
+        self.assertLess(order.index("end a"), order.index("start c"))
+        self.assertTrue((self.home / "c.ran").exists())
+
+    def test_an_after_step_later_in_the_plan_is_waited_for(self):
+        self.plan(f"a | {append_marker('a.ran')}\n  after: b\nb | {py('print(2)')}\n")
+        code, _ = self.run_queue("t", "--concurrency", "2")
+        self.assertEqual(code, 0)
+        self.assertEqual(self.order(), ["start b", "end b", "start a", "end a"])
+
+    def test_a_failed_after_step_skips_its_dependents_even_when_concurrent(self):
+        self.plan(f"a | {py('raise SystemExit(3)')}\nb | {append_marker('b.ran')}\n  after: a\nc | {py('print(1)')}\n")
+        code, _ = self.run_queue("t", "--concurrency", "3")
+        self.assertEqual(code, 1)
+        st = self.state()
+        self.assertEqual(st["b"]["status"], "skipped")
+        self.assertEqual(st["c"]["status"], "done")
+        self.assertFalse((self.home / "b.ran").exists())
+        self.assertIn("ALLDONE", self.logtext())
+
+    def test_a_cycle_is_skipped_not_hung(self):
+        self.plan(f"a | {py('print(1)')}\n  after: b\nb | {py('print(2)')}\n  after: a\n")
+        code, _ = self.run_queue("t", "--concurrency", "2")
+        self.assertEqual(code, 1)
+        self.assertEqual(self.state()["a"]["status"], "skipped")
+        self.assertEqual(self.state()["b"]["status"], "skipped")
+
+    def test_a_timeout_kills_only_that_step(self):
+        self.plan(f"a | {nap(60)}\n  timeout: 1s\nb | {nap(2.5)}\n")
+        code, _ = self.run_queue("t", "--concurrency", "2")
+        self.assertEqual(code, 1)
+        st = self.state()
+        self.assertEqual(st["a"]["status"], "failed")
+        self.assertEqual(st["a"]["exit"], 124)
+        self.assertEqual(st["b"]["status"], "done")
+        self.assertIn("a exit=124", self.logtext())
+
+    def test_stop_on_fail_lets_the_running_step_finish_and_starts_no_more(self):
+        self.plan(f"a | {py('raise SystemExit(4)')}\nb | {nap(1.5)}\nc | {append_marker('c.ran')}\n")
+        code, _ = self.run_queue("t", "--concurrency", "2", "--stop-on-fail")
+        self.assertEqual(code, 4)
+        st = self.state()
+        self.assertEqual(st["b"]["status"], "done")
+        self.assertNotIn("c", st)
+        self.assertFalse((self.home / "c.ran").exists())
+        self.assertNotIn("ALLDONE", self.logtext())
+
+    def test_stop_kills_every_running_tree_and_a_rerun_resumes(self):
+        kids = [(self.home / f"child{i}.pid").as_posix() for i in (1, 2)]
+        self.plan(f"one | {py(SPAWN_CHILD.replace('CHILD', kids[0]))}\ntwo | {py(SPAWN_CHILD.replace('CHILD', kids[1]))}\n")
+        runner = subprocess.Popen([sys.executable, str(Path(benchqueue.__file__)), "--home", str(self.home),
+                                   "run", "t", "--poll", "0.1", "--min-free-gb", "0", "--concurrency", "2"],
+                                  stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        try:
+            pids = [int(self.wait_for(k)) for k in kids]
+            out = io.StringIO()
+            with redirect_stdout(out):
+                self.assertEqual(benchqueue.main(["--home", str(self.home), "stop", "t"]), 0)
+            runner.wait(timeout=60)
+            for pid in pids:
+                self.assert_dead(pid)
+        finally:
+            if runner.poll() is None:
+                runner.kill()
+        st = self.state()
+        self.assertEqual(st["one"]["status"], "interrupted")
+        self.assertEqual(st["two"]["status"], "interrupted")
+        self.assertFalse((self.home / "work" / "queue-t.pid").exists())
+        self.assertNotIn("ALLDONE", self.logtext())
+
+    def test_a_started_steps_memory_is_held_back_until_it_has_ramped_up(self):
+        self.plan(f"a | {nap(2)}\n  memory: 5g\nb | {py('print(1)')}\n")
+        with mock.patch.object(benchqueue, "free_memory_gb", return_value=10.0), \
+                mock.patch.object(benchqueue, "RAMP_SECONDS", 0.6):
+            with redirect_stdout(io.StringIO()):
+                code = benchqueue.main(["--home", str(self.home), "run", "t", "--poll", "0.1",
+                                        "--min-free-gb", "8", "--concurrency", "2"])
+        self.assertEqual(code, 0)
+        text = self.logtext()
+        self.assertIn("paused before b: 10.0 GB free is under 13 GB", text)
+        self.assertIn("memory recovered", text)
+        order = self.order()
+        self.assertEqual(order[0], "start a")
+        self.assertLess(order.index("start b"), order.index("end a"))
+
+    def test_status_shows_the_concurrency_and_the_running_steps(self):
+        self.plan(f"set CONCURRENCY = 2\na | {py('print(1)')}\nb | {py('print(2)')}\n")
+        paths = benchqueue.Paths(self.home, self.home / "plans" / "t.queue")
+        benchqueue.save_state(paths, {"steps": {"a": {"status": "running"}, "b": {"status": "running"}}})
+        with mock.patch.object(benchqueue, "runner_pid", return_value=4242):
+            out = io.StringIO()
+            with redirect_stdout(out):
+                benchqueue.main(["--home", str(self.home), "status", "t"])
+        text = out.getvalue()
+        self.assertIn("up to 2 steps at a time", text)
+        self.assertRegex(text, r"a\s+running")
+        self.assertRegex(text, r"b\s+running")
+        self.assertIn("0 of 2 steps done, 2 running", text)
+
+    def test_a_bad_concurrency_or_memory_is_refused(self):
+        with self.assertRaises(benchqueue.PlanError):
+            benchqueue.parse_plan("set CONCURRENCY = 0\na | echo 1\n")
+        with self.assertRaises(benchqueue.PlanError):
+            benchqueue.parse_plan("set CONCURRENCY = lots\na | echo 1\n")
+        with self.assertRaises(benchqueue.PlanError):
+            benchqueue.parse_plan("a | echo 1\n  memory: plenty\n")
+        self.plan(f"a | {py('print(1)')}\n")
+        with redirect_stdout(io.StringIO()):
+            self.assertEqual(benchqueue.main(["--home", str(self.home), "run", "t", "--concurrency", "0"]), 2)
+
+    def test_parse_reads_the_plan_concurrency_and_a_step_memory(self):
+        plan = benchqueue.parse_plan("set CONCURRENCY = 3\na | echo 1\n  memory: 24g\nb | echo 2\n")
+        self.assertEqual(plan.concurrency, 3)
+        self.assertEqual(plan[0].memory, 24.0)
+        self.assertEqual(plan[1].memory, 0.0)
+        self.assertEqual(benchqueue.parse_plan("a | echo 1\n").concurrency, 1)
+
+
 class ShippedPlanTest(unittest.TestCase):
     def test_every_shipped_plan_parses_with_all_variables_resolved(self):
         plans = Path(benchqueue.__file__).resolve().parent / "plans"
