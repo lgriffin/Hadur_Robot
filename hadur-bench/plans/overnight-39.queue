@@ -12,7 +12,7 @@ set C39 = --robot-jar bisect/hadur2.Hadur_3.9.jar --robot "hadur2.Hadur 3.9"
 set B385 = --baseline bisect/hadur2.Hadur_3.8.5.jar --baseline-robot "hadur2.Hadur 3.8.5"
 set B34 = --baseline bisect/hadur2.Hadur_3.4.jar --baseline-robot "hadur2.Hadur 3.4"
 
-prep | curl -fsSL -o bisect/hadur2.Hadur_3.9.jar https://github.com/lgriffin/Hadur_Robot/releases/download/v3.9/hadur2.Hadur_3.9.jar && curl -fsSL -o bisect/hadur2.Hadur_3.8.5.jar https://github.com/lgriffin/Hadur_Robot/releases/download/v3.8.5/hadur2.Hadur_3.8.5.jar && curl -fsSL -o bisect/hadur2.Hadur_3.4.jar https://github.com/lgriffin/Hadur_Robot/releases/download/v3.4/hadur2.Hadur_3.4.jar && ./fetch-opponents.sh --set score-leak-39.txt && ./fetch-opponents.sh --set lost-rounds-39.txt && ./fetch-opponents.sh --set leak-38.txt
+prep | mkdir -p bisect && curl -fsSL -o bisect/hadur2.Hadur_3.9.jar https://github.com/lgriffin/Hadur_Robot/releases/download/v3.9/hadur2.Hadur_3.9.jar && curl -fsSL -o bisect/hadur2.Hadur_3.8.5.jar https://github.com/lgriffin/Hadur_Robot/releases/download/v3.8.5/hadur2.Hadur_3.8.5.jar && curl -fsSL -o bisect/hadur2.Hadur_3.4.jar https://github.com/lgriffin/Hadur_Robot/releases/download/v3.4/hadur2.Hadur_3.4.jar && ./fetch-opponents.sh --set score-leak-39.txt && ./fetch-opponents.sh --set lost-rounds-39.txt && ./fetch-opponents.sh --set leak-38.txt
 
 # 1. The score leak: 3.9 wins the rounds against these and scores about 79. Does the bench
 #    see it, and is 3.4 the same? Per-round damage taken says whether bullets or rams cost it.
