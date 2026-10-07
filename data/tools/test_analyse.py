@@ -318,13 +318,19 @@ class AnalysisJsonTest(unittest.TestCase):
         c = run["conditions"]
         self.assertEqual((c["host"], c["cpuConstant"], c["parallel"], c["childHeap"], c["childCpus"]),
                          ("box", 400000, 12, "2G", 2))
-        self.assertEqual(c["hostLoad"], dict(min=0.0, mean=0.4, max=1.0))
+        self.assertEqual(c["hostLoad"], dict(min=0.0, mean=40.0, max=100.0))
         self.assertEqual(set(parsed["pooled"]), {"diff", "ci95", "clusteredCi95", "n", "nOpponents",
                                                  "tost", "verdict"})
         self.assertEqual(set(parsed["opponents"][0]), {"name", "diff", "ci95", "holm", "bh", "skips",
                                                        "n", "failed"})
         self.assertEqual(set(parsed["trust"]), {"skippedPerBattle", "duressPerBattle",
                                                 "untrustedPairs", "pairs", "withoutDuress"})
+
+    def test_host_load_is_percent_from_a_fraction_and_the_gate_still_reads_the_fraction(self):
+        cond = dict(hostSample=dict(cpuMin=0.123, cpuMean=0.434, cpuMax=0.9, otherJvmsMax=0))
+        doc = run_analysis(run_rows([0.02] * 4), cond=cond)[2]
+        self.assertEqual(doc["run"]["conditions"]["hostLoad"], dict(min=12.3, mean=43.4, max=90.0))
+        self.assertEqual(doc["gate"]["verdict"], "TRUSTED")
 
     def test_without_conditions_file_the_block_is_null(self):
         c = run_analysis(run_rows([0.02] * 4))[2]["run"]["conditions"]

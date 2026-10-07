@@ -568,6 +568,8 @@ def build_json(per_opp, result, all_rows, ok_rows, candidate, baseline, margin, 
     floor, floor_reasons = floor_state(ok_rows, per_opp, trust, metric.endswith("_share"))
     g = gate(trust, floor, floor_reasons, ok_rows, conditions["hostLoad"],
              conditions["otherJvms"], selected_on)
+    conditions = dict(conditions, hostLoad={k: (None if v is None else round(100.0 * v, 1))
+                                            for k, v in conditions["hostLoad"].items()})
     cl, bt = result["cluster"], result["battle"]
     t = tost(cl, margin)
     failed = failed_counts(all_rows, candidate, baseline)

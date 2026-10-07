@@ -27,7 +27,7 @@ lost to"), which adds a warning and a CAUTION.
     "selectedOn": null,
     "conditions": {
       "host": "...", "cpuConstant": 1488498, "parallel": 12, "childHeap": "2G", "childCpus": 2,
-      "hostLoad": {"min": 0.1, "mean": 0.6, "max": 1.0}, "otherJvms": 0
+      "hostLoad": {"min": 10.0, "mean": 60.0, "max": 100.0}, "otherJvms": 0
     }
   },
   "gate": {"verdict": "TRUSTED | CAUTION | NOT_TRUSTED", "reasons": ["..."]},
@@ -51,6 +51,11 @@ lost to"), which adds a warning and a CAUTION.
   }
 }
 ```
+
+`run.conditions.hostLoad.{min,mean,max}` is **percent** (0 to 100, one decimal), converted from the
+fractions in the TSV and `conditions.json`. `run.conditions.otherJvms` is the most other Robocode
+JVMs seen across the battles; `conditions.json`'s start-of-run note may say there were none, so
+the two can differ.
 
 All differences are in score-share points (candidate minus baseline). Missing values are `null`,
 never `NaN` and never a made-up number: "not measured" stays visible.
