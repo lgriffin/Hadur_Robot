@@ -2,6 +2,31 @@
  "schema": 1,
  "runs": [
   {
+   "id": "2026-10-07_weak-39-v385",
+   "date": "2026-10-07",
+   "label": "weak-39-v385",
+   "kind": "solo",
+   "set": "weak-leak.txt",
+   "engine": "1.11.1",
+   "source": "work directory",
+   "candidate": "3.9",
+   "baseline": "3.8.5",
+   "seeds": 16,
+   "rounds": 35,
+   "gate": "NOT_TRUSTED",
+   "verdict": "level",
+   "diff": -0.6946022727272733,
+   "ci95": [
+    -1.0064184953245965,
+    -0.38278605012995
+   ],
+   "n": 176,
+   "opponents": 11,
+   "host": "AMD Ryzen Threadripper PRO 9965WX 24-Cores, 48 logical cores, Windows 11 10.0, no other Robocode JVMs running",
+   "path": "runs/2026-10-07_weak-39-v385/",
+   "published": "2026-10-07T15:21Z"
+  },
+  {
    "id": "2026-10-07_top20big-385",
    "date": "2026-10-07",
    "label": "top20big-385",
