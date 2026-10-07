@@ -21,11 +21,23 @@ Reports
              deviation: measured seed pairing gave about zero variance reduction (see
              repeatability.py), so planning as paired would be optimistic.
   --weights [COL]  weight each opponent by the column COL (default "weight") when present.
+  --json FILE      also write analysis.json (docs/bench/analysis-json.md): the numbers above, a
+             trust gate (TRUSTED, CAUTION, NOT_TRUSTED), the opponents set aside, and the run's
+             conditions. --conditions FILE reads the run's conditions.json for the latter.
+
+The HEADLINE is the opponent-clustered interval: the opponents are a sample of the field, so the
+interval has to allow for how much they differ from each other. The per-battle interval treats
+every battle as an independent draw about one opponent and is narrower; it is shown for
+reference and never decides the verdict. More seeds against the same opponents narrow only the
+within-opponent part, so --plan also says when more opponents are the only way to narrow it.
 """
 
 import argparse
 import csv
+import json
 import math
+import os
+import re
 import sys
 from collections import OrderedDict
 
@@ -193,18 +205,19 @@ def benjamini_hochberg(ps):
     return out
 
 
-def load(paths, metric):
-    """Rows as dicts from one or more TSVs; failed battles (ok false) are dropped."""
+def read_rows(paths, metric):
+    """Every row of one or more TSVs as dicts, failed battles included (ok is 'true' or 'false')."""
     rows = []
     for path in paths:
         with open(path, encoding="utf-8", newline="") as f:
-            for row in csv.DictReader(f, delimiter="\t"):
-                if row.get("ok", "true").strip().lower() == "false":
-                    continue
+            for row in csv.DictReader(f, delimiter="	"):
+                row["ok"] = row.get("ok", "true").strip().lower()
                 rows.append(row)
     if rows and metric not in rows[0]:
         if metric == "score_share" and "score" in rows[0] and "theirScore" in rows[0]:
             for row in rows:
+                if row["ok"] == "false":
+                    continue
                 s, t = float(row["score"]), float(row["theirScore"])
                 row["score_share"] = repr(s / (s + t)) if s + t > 0 else ""
         else:
@@ -212,23 +225,70 @@ def load(paths, metric):
     return rows
 
 
+def load(paths, metric):
+    """Rows as dicts from one or more TSVs; failed battles (ok false) are dropped."""
+    return [r for r in read_rows(paths, metric) if r["ok"] != "false"]
+
+
+def _num(row, key):
+    """A row's column as a float, or None when the column is absent or empty."""
+    v = row.get(key, "")
+    if v is None or v == "":
+        return None
+    try:
+        x = float(v)
+    except ValueError:
+        return None
+    return None if math.isnan(x) else x
+
+
+def untrusted_reasons(row, skips_per_round=2.0):
+    """Why a battle row is not trusted, mirroring BattleResult.trusted(): duress ticks, a missing
+    R record, or more than skips_per_round skipped turns a round. The one exception is the last
+    round's record that never arrives on this engine (finalRMissing, G14), which both builds
+    share and which is not held against a row; with no rShortfall column any record short of
+    the rounds counts. Columns the TSV lacks are not held against the row."""
+    why = []
+    duress = _num(row, "duressTicks")
+    if duress is not None and duress > 0:
+        why.append("duress")
+    rounds, records = _num(row, "rounds"), _num(row, "roundRecords")
+    short, final = _num(row, "rShortfall"), _num(row, "finalRMissing")
+    if short is not None and final is not None:
+        if short - final > 0:
+            why.append("R records")
+    elif rounds is not None and records is not None and records != rounds:
+        why.append("R records")
+    skips = _num(row, "skippedTurns")
+    if rounds is not None and skips is not None and skips > skips_per_round * rounds:
+        why.append("skips")
+    return why
+
+
 def pair(rows, metric, candidate, baseline, scale, weight_col=None):
-    """OrderedDict opponent -> dict(diffs, cand, base, weight), paired by (opponent, seed)."""
+    """OrderedDict opponent -> dict(diffs, cand, base, weight, duress, untrusted), paired by
+    (opponent, seed). duress and untrusted are one bool per pair: duress on either side, and
+    untrusted_reasons() on either side."""
     by = OrderedDict()
     weights = {}
     for row in rows:
         if row["build"] not in (candidate, baseline) or row.get(metric, "") == "":
             continue
-        by.setdefault((row["opponent"], row["seed"]), {})[row["build"]] = float(row[metric]) * scale
+        got = by.setdefault((row["opponent"], row["seed"]), {})
+        got[row["build"]] = (float(row[metric]) * scale, row)
         if weight_col and row.get(weight_col, "") != "":
             weights[row["opponent"]] = float(row[weight_col])
     out = OrderedDict()
     for (opp, _seed), got in by.items():
         if candidate in got and baseline in got:
-            o = out.setdefault(opp, dict(diffs=[], cand=[], base=[], weight=weights.get(opp, 1.0)))
-            o["diffs"].append(got[candidate] - got[baseline])
-            o["cand"].append(got[candidate])
-            o["base"].append(got[baseline])
+            o = out.setdefault(opp, dict(diffs=[], cand=[], base=[], duress=[], untrusted=[],
+                                         weight=weights.get(opp, 1.0)))
+            (cv, cr), (bv, br) = got[candidate], got[baseline]
+            o["diffs"].append(cv - bv)
+            o["cand"].append(cv)
+            o["base"].append(bv)
+            o["duress"].append(any("duress" in untrusted_reasons(r) for r in (cr, br)))
+            o["untrusted"].append(bool(untrusted_reasons(cr) or untrusted_reasons(br)))
     return out
 
 
@@ -295,6 +355,274 @@ def plan(per_opp, halfwidth):
     return rows
 
 
+SELECTION_WARNING = ("set chosen from the baseline's results; gaps are likely overstated "
+                     "(regression to the mean); confirm on fresh opponents")
+FLOOR_SKIPS_PER_BATTLE = 100.0
+FLOOR_SHARE = 35.0
+SKIPS_PER_ROUND_LIMIT = 2.0
+
+
+def excluded_opponents(all_rows, candidate, baseline):
+    """Opponents whose every battle (either build) failed: they carry no pairs, so they are set
+    aside and named, not silently missing from the pooled figures."""
+    tally = OrderedDict()
+    for row in all_rows:
+        if row["build"] not in (candidate, baseline):
+            continue
+        t = tally.setdefault(row["opponent"], [0, 0])
+        t[1] += 1
+        t[0] += row["ok"] == "false"
+    return [dict(name=o, reason="failed every battle (%d of %d)" % (f, n), failed=f, total=n)
+            for o, (f, n) in tally.items() if n and f == n]
+
+
+def failed_counts(all_rows, candidate, baseline):
+    out = {}
+    for row in all_rows:
+        if row["build"] in (candidate, baseline) and row["ok"] == "false":
+            out[row["opponent"]] = out.get(row["opponent"], 0) + 1
+    return out
+
+
+def _mean(xs):
+    xs = [x for x in xs if x is not None]
+    return sum(xs) / len(xs) if xs else None
+
+
+def mean_column(rows, build, key):
+    return _mean([_num(r, key) for r in rows if r["build"] == build])
+
+
+def trust_summary(per_opp, ok_rows, candidate, baseline):
+    """Skips and duress per battle by build, and how many pairs are untrusted or carry duress."""
+    pairs = sum(len(o["diffs"]) for o in per_opp.values())
+    return dict(
+        pairs=pairs,
+        untrusted=sum(sum(o["untrusted"]) for o in per_opp.values()),
+        duressPairs=sum(sum(o["duress"]) for o in per_opp.values()),
+        skipped=dict(cand=mean_column(ok_rows, candidate, "skippedTurns"),
+                     base=mean_column(ok_rows, baseline, "skippedTurns")),
+        duress=dict(cand=mean_column(ok_rows, candidate, "duressTicks"),
+                    base=mean_column(ok_rows, baseline, "duressTicks")))
+
+
+def without_duress(per_opp):
+    """The pooled paired difference with every pair that had duress on either side removed, as
+    dict(n, diff, clusteredCi95, removed); None when no pair carried duress or none is left."""
+    kept = OrderedDict()
+    removed = 0
+    for opp, o in per_opp.items():
+        idx = [i for i, d in enumerate(o["duress"]) if not d]
+        removed += len(o["diffs"]) - len(idx)
+        if idx:
+            kept[opp] = dict(diffs=[o["diffs"][i] for i in idx], cand=[o["cand"][i] for i in idx],
+                             base=[o["base"][i] for i in idx], duress=[False] * len(idx),
+                             untrusted=[o["untrusted"][i] for i in idx], weight=o["weight"])
+    if not removed or not kept:
+        return None
+    res = analyse(kept, 1.0)
+    c = res["cluster"]
+    return dict(n=res["pairs"], diff=c["mean"], clusteredCi95=[c["lo"], c["hi"]], removed=removed)
+
+
+def floor_state(ok_rows, per_opp, trust, share_metric=True):
+    """True when both builds are pushed so far that their difference is a floor effect: more than
+    FLOOR_SKIPS_PER_BATTLE skipped turns a battle on either side, or both mean score shares under
+    FLOOR_SHARE with skipping over the trusted limit. Returns (flag, reasons)."""
+    reasons = []
+    skips = [v for v in trust["skipped"].values() if v is not None]
+    if skips and max(skips) > FLOOR_SKIPS_PER_BATTLE:
+        reasons.append("skipped turns reach %.0f a battle (over %.0f)"
+                       % (max(skips), FLOOR_SKIPS_PER_BATTLE))
+    cm = _mean([x for o in per_opp.values() for x in o["cand"]])
+    bm = _mean([x for o in per_opp.values() for x in o["base"]])
+    rounds = _mean([_num(r, "rounds") for r in ok_rows])
+    if (share_metric and cm is not None and bm is not None and cm < FLOOR_SHARE and bm < FLOOR_SHARE and skips
+            and rounds and max(skips) > SKIPS_PER_ROUND_LIMIT * rounds):
+        reasons.append("both builds average under %.0f%% score share while skipping over %.1f "
+                       "turns a round" % (FLOOR_SHARE, SKIPS_PER_ROUND_LIMIT))
+    return bool(reasons), reasons
+
+
+def pooled_verdict(cluster, margin):
+    """level when the clustered 90% interval sits inside +-margin (TOST equivalent), else up or
+    down when the clustered 95% interval excludes zero, else not-resolved."""
+    if math.isnan(cluster["mean"]) or math.isnan(cluster["half"]):
+        return "not-resolved"
+    if tost(cluster, margin)["equivalent"]:
+        return "level"
+    if cluster["hi"] < 0:
+        return "down"
+    if cluster["lo"] > 0:
+        return "up"
+    return "not-resolved"
+
+
+def gate(trust, floor, floor_reasons, ok_rows, host_load, other_jvms, selected_on):
+    """TRUSTED, CAUTION or NOT_TRUSTED with the reasons.
+
+    NOT_TRUSTED: no pairs, more than a quarter of the pairs untrusted (duress, missing R records,
+    over 2 skipped turns a round), or the two builds skipping very different numbers of turns
+    (over 1.5 times and 10 more a battle: they ran under different load).
+    CAUTION: any untrusted pairs, a floor effect, mixed rounds, the host busier than 85% or other
+    Robocode JVMs running, or a set selected from the baseline's results."""
+    bad, caution = [], []
+    if not trust["pairs"]:
+        bad.append("no (opponent, seed) pairs with both builds")
+    else:
+        share = trust["untrusted"] / trust["pairs"]
+        if share > 0.25:
+            bad.append("%.0f%% of pairs are untrusted (duress, skipped turns or R records)"
+                       % (100 * share))
+        elif trust["untrusted"]:
+            caution.append("%d of %d pairs are untrusted (%.0f%%)" % (
+                trust["untrusted"], trust["pairs"], 100 * share))
+        c, b = trust["skipped"]["cand"], trust["skipped"]["base"]
+        if c is not None and b is not None and max(c, b) > 1.5 * min(c, b) and abs(c - b) > 10:
+            bad.append("the builds skipped different numbers of turns (%.1f against %.1f a "
+                       "battle): they ran under different load" % (c, b))
+    if floor:
+        caution.extend("floor effect: " + r + "; sign differences here are not evidence"
+                       for r in floor_reasons)
+    rounds = sorted({r.get("rounds") for r in ok_rows if r.get("rounds")})
+    if len(rounds) > 1:
+        caution.append("mixed rounds per battle in the rows: " + ", ".join(rounds))
+    if host_load["mean"] is not None and host_load["mean"] > 0.85:
+        caution.append("host CPU averaged %.0f%%" % (100 * host_load["mean"]))
+    if other_jvms:
+        caution.append("up to %d other Robocode JVMs ran beside the bench" % other_jvms)
+    if selected_on == "baseline":
+        caution.append(SELECTION_WARNING)
+    if bad:
+        return dict(verdict="NOT_TRUSTED", reasons=bad + caution)
+    if caution:
+        return dict(verdict="CAUTION", reasons=caution)
+    return dict(verdict="TRUSTED", reasons=[])
+
+
+def conditions_of(cond, ok_rows):
+    """The run's conditions for analysis.json: from conditions.json when given, else what the
+    rows' host columns hold, else None (not measured)."""
+    cond = cond or {}
+    opts = cond.get("options") or {}
+    sample = cond.get("hostSample") or {}
+    cpu = cond.get("cpuConstant")
+    if isinstance(cpu, str):
+        m = re.search(r"=\s*(\d+)", cpu) or re.search(r"(\d+)", cpu)
+        cpu = int(m.group(1)) if m else None
+    child_cpus = cond.get("childCpus")
+    child_cpus = int(child_cpus) if str(child_cpus).isdigit() else None
+    mins = [_num(r, "hostCpuMin") for r in ok_rows]
+    mins = [x for x in mins if x is not None and x >= 0]
+    maxs = [_num(r, "hostCpuMax") for r in ok_rows]
+    maxs = [x for x in maxs if x is not None and x >= 0]
+    means = [_num(r, "hostCpuMean") for r in ok_rows]
+    means = [x for x in means if x is not None and x >= 0]
+    jvms = [_num(r, "otherJvms") for r in ok_rows]
+    jvms = [x for x in jvms if x is not None and x >= 0]
+    host_load = dict(min=sample.get("cpuMin", min(mins) if mins else None),
+                     mean=sample.get("cpuMean", _mean(means)),
+                     max=sample.get("cpuMax", max(maxs) if maxs else None))
+    other = sample.get("otherJvmsMax", int(max(jvms)) if jvms else None)
+    return dict(host=cond.get("host"), cpuConstant=cpu, parallel=cond.get("parallel"),
+                childHeap=opts.get("child-heap"), childCpus=child_cpus,
+                hostLoad=host_load, otherJvms=other)
+
+
+def _j(x):
+    """JSON-safe: NaN and infinities become null."""
+    if isinstance(x, float) and (math.isnan(x) or math.isinf(x)):
+        return None
+    if isinstance(x, dict):
+        return {k: _j(v) for k, v in x.items()}
+    if isinstance(x, (list, tuple)):
+        return [_j(v) for v in x]
+    return x
+
+
+def opponent_skips(ok_rows, candidate, baseline):
+    out = {}
+    for opp in {r["opponent"] for r in ok_rows}:
+        rs = [r for r in ok_rows if r["opponent"] == opp]
+        out[opp] = dict(cand=mean_column(rs, candidate, "skippedTurns"),
+                        base=mean_column(rs, baseline, "skippedTurns"))
+    return out
+
+
+def run_meta(cond, args, tsv_paths, ok_rows):
+    """label, set, seeds, rounds, engine and date for analysis.json, from conditions.json when
+    given and the command line over it."""
+    cond = cond or {}
+    started = cond.get("started") or ""
+    return dict(label=args.label or os.path.splitext(os.path.basename(tsv_paths[0]))[0],
+                set=args.set_name or cond.get("set"), seeds=cond.get("seeds"),
+                rounds=cond.get("rounds"), engine=cond.get("engine"),
+                date=started[:10] or None)
+
+
+def build_json(per_opp, result, all_rows, ok_rows, candidate, baseline, margin, cond, meta,
+               selected_on, metric="score_share"):
+    """The analysis.json document (docs/bench/analysis-json.md)."""
+    conditions = conditions_of(cond, ok_rows)
+    trust = trust_summary(per_opp, ok_rows, candidate, baseline)
+    floor, floor_reasons = floor_state(ok_rows, per_opp, trust, metric.endswith("_share"))
+    g = gate(trust, floor, floor_reasons, ok_rows, conditions["hostLoad"],
+             conditions["otherJvms"], selected_on)
+    cl, bt = result["cluster"], result["battle"]
+    t = tost(cl, margin)
+    failed = failed_counts(all_rows, candidate, baseline)
+    skips = opponent_skips(ok_rows, candidate, baseline)
+    opponents = [dict(name=r["opponent"], diff=r["mean"],
+                      ci95=[r["mean"] - r["half"], r["mean"] + r["half"]],
+                      holm=r["p_holm"], bh=r["p_bh"],
+                      skips=skips.get(r["opponent"], dict(cand=None, base=None)),
+                      n=r["n"], failed=failed.get(r["opponent"], 0)) for r in result["rows"]]
+    rounds = meta.get("rounds") or _mean([_num(r, "rounds") for r in ok_rows])
+    seeds = meta.get("seeds") or max((len(o["diffs"]) for o in per_opp.values()), default=None)
+    doc = dict(
+        schema=1,
+        run=dict(label=meta.get("label"), candidate=candidate, baseline=baseline,
+                 set=meta.get("set"), seeds=seeds, rounds=int(rounds) if rounds else None,
+                 engine=meta.get("engine"), date=meta.get("date"), selectedOn=selected_on,
+                 conditions=conditions),
+        gate=g,
+        pooled=dict(diff=cl["mean"], ci95=[bt["lo"], bt["hi"]], clusteredCi95=[cl["lo"], cl["hi"]],
+                    n=result["pairs"], nOpponents=len(result["rows"]),
+                    tost=dict(margin=margin, p=t["p_equivalent"], equivalent=t["equivalent"]),
+                    verdict=pooled_verdict(cl, margin)),
+        opponents=opponents,
+        excluded=excluded_opponents(all_rows, candidate, baseline),
+        floorWarning=floor,
+        trust=dict(skippedPerBattle=trust["skipped"], duressPerBattle=trust["duress"],
+                   untrustedPairs=trust["untrusted"], pairs=trust["pairs"],
+                   withoutDuress=without_duress(per_opp)))
+    return _j(doc)
+
+
+def plan_pooled(per_opp, halfwidth):
+    """What narrows the POOLED opponent-clustered interval. The opponents' own spread (the
+    between SD) is not shrunk by seeds, so the pooled half-width cannot fall below
+    t * between_sd / sqrt(k) for k opponents however many seeds are fought. Returns dict(k,
+    between_sd, floor_half, k_need, seeds_limited), or None with fewer than two opponents."""
+    means = [mean_sd(o["diffs"])[0] for o in per_opp.values()]
+    k = len(means)
+    if k < 2:
+        return None
+    var_means = mean_sd(means)[1] ** 2
+    within = [mean_sd(o["diffs"])[1] ** 2 / len(o["diffs"]) for o in per_opp.values()
+              if len(o["diffs"]) > 1]
+    within_mean = sum(within) / len(within) if within else 0.0
+    between_var = max(0.0, var_means - within_mean)
+    floor_half = t_ppf(0.975, k - 1) * math.sqrt(between_var / k)
+    k_need = None
+    for kk in range(2, 100000):
+        if t_ppf(0.975, kk - 1) * math.sqrt(between_var / kk) <= halfwidth:
+            k_need = kk
+            break
+    return dict(k=k, between_sd=math.sqrt(between_var), floor_half=floor_half, k_need=k_need,
+                seeds_limited=floor_half > halfwidth)
+
+
 def fmt(x, places=2, signed=False):
     if x is None or math.isnan(x):
         return "n/a"
@@ -307,21 +635,46 @@ def fmtp(p):
     return "<0.0001" if p < 1e-4 else "%.4f" % p
 
 
-def render(result, candidate, baseline, metric, unit):
+def render(result, candidate, baseline, metric, unit, margin=None, extra=None):
+    """The text report. The opponent-clustered interval leads and decides the verdict; the
+    per-battle interval follows for reference. extra carries the gate, exclusions and warnings."""
+    margin = result["margin"] if margin is None else margin
+    extra = extra or {}
+    cl, bt = result["cluster"], result["battle"]
     out = ["%s: %s minus %s, paired by (opponent, seed), in %s" % (metric, candidate, baseline, unit), ""]
-    for label, e in (("per battle", result["battle"]), ("opponent-clustered", result["cluster"])):
-        out.append("pooled %-19s %s +/- %s  [%s, %s]  n=%d df=%s  (95%% t interval)" % (
-            label, fmt(e["mean"], 2, True), fmt(e["half"]), fmt(e["lo"], 2, True),
-            fmt(e["hi"], 2, True), e["n"], fmt(e["df"], 0)))
+    out.append("HEADLINE  %s +/- %s  [%s, %s]  opponent-clustered 95%% interval, %d opponents  -> %s" % (
+        fmt(cl["mean"], 2, True), fmt(cl["half"]), fmt(cl["lo"], 2, True), fmt(cl["hi"], 2, True),
+        cl["n"], pooled_verdict(cl, margin).upper()))
+    out.append("per battle %s +/- %s  [%s, %s]  n=%d  (ignores how much the opponents differ; "
+               "narrower, for reference only)" % (
+                   fmt(bt["mean"], 2, True), fmt(bt["half"]), fmt(bt["lo"], 2, True),
+                   fmt(bt["hi"], 2, True), bt["n"]))
     out.append("pairs: %d across %d opponents%s" % (
         result["pairs"], len(result["rows"]), ", weighted" if result["weighted"] else ""))
+    if not math.isnan(bt["half"]) and not math.isnan(cl["half"]) and cl["half"] > 1.5 * bt["half"]:
+        out.append("the clustered interval is %.1f times the per-battle one: the opponents' own "
+                   "spread dominates, so more seeds will not resolve this, more opponents might"
+                   % (cl["half"] / bt["half"]))
+    if extra.get("gate"):
+        g = extra["gate"]
+        out.append("")
+        out.append("GATE %s" % g["verdict"])
+        out.extend("  - " + r for r in g["reasons"])
+        if g["verdict"] == "NOT_TRUSTED":
+            out.append("  the headline above is not a result: this run's conditions were not trusted")
+    sd = extra.get("without_duress")
+    if sd:
+        out.append("without the %d pairs with duress on either side: %s  [%s, %s]  n=%d (clustered)" % (
+            sd["removed"], fmt(sd["diff"], 2, True), fmt(sd["clusteredCi95"][0], 2, True),
+            fmt(sd["clusteredCi95"][1], 2, True), sd["n"]))
+    for ex in extra.get("excluded", []):
+        out.append("excluded from the pooled figures: %s, %s" % (ex["name"], ex["reason"]))
     out.append("")
-    m = result["margin"]
-    for label, key in (("per battle", "battle"), ("opponent-clustered", "cluster")):
-        t = tost(result[key], m)
+    for label, key in (("opponent-clustered", "cluster"), ("per battle", "battle")):
+        t = tost(result[key], margin)
         out.append("TOST %-19s margin %s: non-inferior p=%s (%s); equivalent p=%s (%s); "
                    "90%% interval [%s, %s]" % (
-                       label, fmt(m), fmtp(t["p_noninferior"]), "yes" if t["noninferior"] else "no",
+                       label, fmt(margin), fmtp(t["p_noninferior"]), "yes" if t["noninferior"] else "no",
                        fmtp(t["p_equivalent"]), "yes" if t["equivalent"] else "no",
                        fmt(t["lower90"], 2, True), fmt(t["upper90"], 2, True)))
     out.append("")
@@ -339,7 +692,7 @@ def render(result, candidate, baseline, metric, unit):
     return "\n".join(out)
 
 
-def render_plan(rows, halfwidth, unit):
+def render_plan(rows, halfwidth, unit, pooled=None):
     out = ["seeds per build needed for a 95%% half-width of %s %s per opponent, "
            "from the unpaired SD" % (fmt(halfwidth), unit), "",
            "%-34s %4s %8s %8s %9s %6s" % ("opponent", "now", "sd cand", "sd base", "sd paired", "need")]
@@ -354,6 +707,20 @@ def render_plan(rows, halfwidth, unit):
     if ratios:
         out.append("mean paired/unpaired variance ratio: %.2f (1.00 means pairing buys nothing)"
                    % (sum(ratios) / len(ratios)))
+    if pooled:
+        out.append("")
+        out.append("pooled opponent-clustered interval over %d opponents: the opponents differ from "
+                   "each other with SD %s %s, which no number of seeds shrinks" % (
+                       pooled["k"], fmt(pooled["between_sd"]), unit))
+        if pooled["seeds_limited"]:
+            need = ("about %d opponents" % pooled["k_need"]) if pooled["k_need"] else "many more opponents"
+            out.append("MORE OPPONENTS, NOT MORE SEEDS: even with unlimited seeds the pooled half-width "
+                       "stays at about %s %s; reaching %s needs %s (now %d)" % (
+                           fmt(pooled["floor_half"]), unit, fmt(halfwidth), need, pooled["k"]))
+        else:
+            out.append("the pooled half-width floor from the opponent spread is about %s %s, under "
+                       "the target %s: seeds can still narrow it" % (
+                           fmt(pooled["floor_half"]), unit, fmt(halfwidth)))
     return "\n".join(out)
 
 
@@ -391,9 +758,18 @@ def main(argv=None):
     ap.add_argument("--plan", action="store_true", help="print seeds needed per opponent instead")
     ap.add_argument("--halfwidth", type=float, default=2.0,
                     help="target 95%% half-width for --plan, in points (default 2.0)")
+    ap.add_argument("--json", metavar="FILE", help="also write analysis.json here")
+    ap.add_argument("--conditions", metavar="FILE",
+                    help="the run's conditions.json, for analysis.json's conditions block")
+    ap.add_argument("--label", help="run label for analysis.json (default: the TSV's name)")
+    ap.add_argument("--set-name", help="opponent set name for analysis.json (default: conditions.json's)")
+    ap.add_argument("--selected-on", choices=["baseline"],
+                    help="the opponent set was chosen from the baseline's results: warn that the "
+                         "gaps are likely overstated")
     args = ap.parse_args(argv)
 
-    rows = load(args.tsv, args.metric)
+    all_rows = read_rows(args.tsv, args.metric)
+    rows = [r for r in all_rows if r["ok"] != "false"]
     candidate, baseline = pick_builds(rows, args.candidate, args.baseline)
     share = args.metric.endswith("_share")
     scale = args.scale if args.scale is not None else (100.0 if share else 1.0)
@@ -406,10 +782,24 @@ def main(argv=None):
     per_opp = pair(rows, args.metric, candidate, baseline, scale, weight_col)
     if not per_opp:
         raise SystemExit("no (opponent, seed) pairs with both %s and %s" % (candidate, baseline))
+    cond = None
+    if args.conditions:
+        with open(args.conditions, encoding="utf-8") as f:
+            cond = json.load(f)
     if args.plan:
-        print(render_plan(plan(per_opp, args.halfwidth), args.halfwidth, unit))
-    else:
-        print(render(analyse(per_opp, args.margin), candidate, baseline, args.metric, unit))
+        print(render_plan(plan(per_opp, args.halfwidth), args.halfwidth, unit,
+                          plan_pooled(per_opp, args.halfwidth)))
+        return 0
+    result = analyse(per_opp, args.margin)
+    doc = build_json(per_opp, result, all_rows, rows, candidate, baseline, args.margin, cond,
+                     run_meta(cond, args, args.tsv, rows), args.selected_on, args.metric)
+    extra = dict(gate=doc["gate"], excluded=doc["excluded"],
+                 without_duress=doc["trust"]["withoutDuress"])
+    print(render(result, candidate, baseline, args.metric, unit, args.margin, extra))
+    if args.json:
+        with open(args.json, "w", encoding="utf-8") as f:
+            json.dump(doc, f, indent=2)
+            f.write("\n")
     return 0
 
 
