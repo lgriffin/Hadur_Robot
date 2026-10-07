@@ -38,7 +38,9 @@
   Processors each battle JVM is told it has (--child-cpus). Default: Bench's own, 2 when
   -Parallel is above 1.
 .PARAMETER ChildHeap
-  Heap cap for each battle JVM (--child-heap), for example 512M.
+  Heap cap for each battle JVM (--child-heap), for example 512M. Default 2G; "none" for no cap.
+.PARAMETER ForceMemory
+  Start even when the memory check says the run will not fit in free memory (--force-memory).
 .PARAMETER Baseline
   A baseline robot jar (--baseline), fought on the same seeds, for the paired tables.
 .PARAMETER BaselineRobot
@@ -108,6 +110,7 @@ param(
     [switch]$ColdWarm,
     [int]$Retries = -1,
     [string]$Field = "",
+    [switch]$ForceMemory,
     [switch]$DryRun,
     [switch]$Publish,
     [switch]$SkipBuild,
@@ -187,6 +190,7 @@ $commonParts = @("--seeds", $Seeds, "--rounds", $Rounds)
 if ($Parallel -gt 1) { $commonParts += @("--parallel", $Parallel) }
 if ($ChildCpus -ge 0) { $commonParts += @("--child-cpus", $ChildCpus) }
 if ($ChildHeap) { $commonParts += @("--child-heap", $ChildHeap) }
+if ($ForceMemory) { $commonParts += @("--force-memory", "true") }
 if ($CpuConstant) { $commonParts += @("--cpu-constant", $CpuConstant) }
 if ($Baseline) {
     $commonParts += @("--baseline", $Baseline, "--baseline-robot", $BaselineRobot)
