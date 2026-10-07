@@ -47,7 +47,7 @@ failure never changes the run's own result or exit code. Needs push access to `o
     python3 data/tools/publish_run.py backfill
 
 publishes every committed `data/bench/*.tsv` that holds a paired candidate and baseline `score_share`
-(1v1 and team) in one commit, naming each skipped file and why. Those TSVs have no `conditions.json`,
+(1v1 only; team and melee runs are listed without a one-pager) in one commit, naming each skipped file and why. Those TSVs have no `conditions.json`,
 so the gate reads what the rows carry and most are CAUTION or NOT TRUSTED. Run it once after this
 lands, and again after a results PR adds TSVs; a run already published is replaced, not duplicated.
 

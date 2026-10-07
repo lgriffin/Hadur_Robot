@@ -309,6 +309,9 @@ def source_from_work(args, tmp):
     if kind == "melee":
         src["why"] = "melee has no per-opponent paired analysis; the pooled pairwise figures are in the run's report"
         return src
+    if kind == "team":
+        src["why"] = "A3 one-pagers cover 1v1 only for now; the team figures are in the run's report"
+        return src
     if not baseline_build:
         src["why"] = "the run has no baseline, so there is no paired difference"
         return src
@@ -336,6 +339,9 @@ def sources_from_backfill(args, tmp):
         if not m:
             continue
         label = slug(re.sub(r"^hadur-", "", re.sub(r"[-_]local_cold$|_cold$", "", m.group(2))))
+        if "team" in name:
+            skipped.append("%s: A3 one-pagers cover 1v1 only for now" % name)
+            continue
         try:
             with open(path, encoding="utf-8", newline="") as f:
                 header = f.readline().rstrip("\n").split("\t")
@@ -351,8 +357,7 @@ def sources_from_backfill(args, tmp):
         except (ValueError, SystemExit, RuntimeError, KeyError) as e:
             skipped.append("%s: %s" % (name, e))
             continue
-        kind = "team" if "team" in name else "solo"
-        out.append(dict(id="%s_%s" % (m.group(1), label), date=m.group(1), label=label, kind=kind, set=label, engine=None,
+        out.append(dict(id="%s_%s" % (m.group(1), label), date=m.group(1), label=label, kind="solo", set=label, engine=None,
                         analysis=analysis, source="backfill from %s/%s" % (args.bench_dir, name)))
     return out, skipped
 
