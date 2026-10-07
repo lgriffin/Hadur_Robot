@@ -5,7 +5,9 @@
 
 A BotDetails page becomes a CSV with the columns the 3.0 table used (rank, flag, name,
 compare, APS, APS CI, NPP, survival, KNNPBI, battles, latest battle, opponent APS, opponent
-survival); a Rankings page becomes a TSV of rank, name, APS. With no OUT the table is
+survival); a BotCompare page (bot A against bot B over their common opponents) becomes a CSV
+of the opponent, both bots' APS and survival, A minus B, and the opponent's APS and survival;
+a Rankings page becomes a TSV of rank, name, APS. With no OUT the table is
 written next to the page under rumble/parsed/ with the page's stem. Standard library only.
 """
 import csv
@@ -32,6 +34,8 @@ def page_html(path):
 def kind(path, text):
     loc = re.search(r"^Snapshot-Content-Location:\s*(\S+)", text, re.M)
     url = loc.group(1) if loc else path.name
+    if "BotCompare" in url or "botcompare" in path.name:
+        return "botcompare"
     if "BotDetails" in url or "botdetails" in path.name:
         return "botdetails"
     if "Rankings" in url or "rankings" in path.name:
@@ -49,6 +53,17 @@ def parse_botdetails(doc):
         cells = cells_of(row)
         if len(cells) >= 13 and cells[0].isdigit():
             rows.append(cells[:13])
+    return rows
+
+
+def parse_botcompare(doc):
+    """Opponent rows: index, flag, name, A APS, A survival, B APS, B survival, APS diff,
+    survival diff, opponent APS, opponent survival (11 cells)."""
+    rows = []
+    for row in ROW.findall(doc):
+        cells = cells_of(row)
+        if len(cells) >= 11 and cells[0].isdigit():
+            rows.append(cells[:11])
     return rows
 
 
@@ -78,6 +93,14 @@ def main(argv):
             w.writerow(["rank", "flag", "name", "compare", "aps", "aps_ci", "npp", "survival",
                         "knnpbi", "battles", "latest_battle_utc", "opponent_aps",
                         "opponent_survival"])
+            w.writerows(rows)
+    elif what == "botcompare":
+        rows = parse_botcompare(doc)
+        out = Path(argv[2]) if len(argv) > 2 else parsed_dir / (page.stem + ".csv")
+        with open(out, "w", newline="") as f:
+            w = csv.writer(f)
+            w.writerow(["index", "flag", "name", "a_aps", "a_survival", "b_aps", "b_survival",
+                        "aps_diff", "survival_diff", "opponent_aps", "opponent_survival"])
             w.writerows(rows)
     else:
         rows = parse_rankings(doc)
