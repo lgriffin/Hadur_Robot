@@ -6,10 +6,14 @@
 #   ./build-ablation.sh ram2            # bisect/hadur2.Hadur_3.8.5nr.jar, "hadur2.Hadur 3.8.5nr"
 #   ./build-ablation.sh mir1            # ... 3.8.5nm
 #   ./build-ablation.sh ram2,mir1       # ... 3.8.5nrnm
+#   ./build-ablation.sh shield-all      # ... 3.8.5sa
 #
 # Ablations (each a one-line edit of the duel, checked to apply exactly once):
 #   ram2  RAM-2 off: never escape a confirmed rammer; RAM-1's full-power rule stays (3.4's play)
 #   mir1  MIR-1 off: never recognise a mirror bot, so no mirror drive or mirror aim
+#   shield-all  the D5 shield list matches every opponent, so each 1v1 round opens in shield
+#         mode (SHIELD-6 still takes it back where the enemy's bullets would hold the score
+#         share under 85%). Issue #140, M2: is Nullstride's mid-table score a shielding score?
 #
 # The build runs in a temporary git worktree of REF (default HEAD), so the checkout is not
 # touched. The robot version is REF's version plus one suffix per ablation (nr, nm), so the
@@ -20,7 +24,7 @@ set -euo pipefail
 
 ref=HEAD
 if [[ "${1:-}" == "--ref" ]]; then ref="$2"; shift 2; fi
-[[ $# -eq 1 ]] || { sed -n '2,18p' "$0"; exit 2; }
+[[ $# -eq 1 ]] || { sed -n '2,22p' "$0"; exit 2; }
 
 here="$(cd "$(dirname "$0")" && pwd)"
 repo="$(git -C "$here" rev-parse --show-toplevel)"
@@ -29,6 +33,7 @@ trap 'git -C "$repo" worktree remove --force "$work/src" >/dev/null 2>&1 || true
 git -C "$repo" worktree add --detach "$work/src" "$ref" >/dev/null
 src="$work/src"
 duel="$src/hadur-core/src/main/java/hadur2/core/duel/DuelController.java"
+shields="$src/hadur-core/src/main/java/hadur2/core/shieldmode/ShieldList.java"
 
 # Replace exactly one occurrence of $2 with $3 in file $1, or fail.
 edit() {
@@ -51,7 +56,10 @@ for a in "${list[@]}"; do
             edit "$duel" "java.util.Arrays.copyOf(xs, n), java.util.Arrays.copyOf(ys, n), ourEnergy, enemyEnergy);" \
                 "java.util.Arrays.copyOf(xs, n), java.util.Arrays.copyOf(ys, n), ourEnergy, enemyEnergy) && false;"
             version="${version}nm" ;;
-        *) echo "unknown ablation: $a (ram2, mir1)" >&2; exit 2 ;;
+        shield-all)
+            edit "$shields" "return entries.contains(name) || entries.contains(withoutVersion(name));"                 "return true;"
+            version="${version}sa" ;;
+        *) echo "unknown ablation: $a (ram2, mir1, shield-all)" >&2; exit 2 ;;
     esac
 done
 
