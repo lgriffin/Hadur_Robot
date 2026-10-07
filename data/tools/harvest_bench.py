@@ -33,11 +33,13 @@ DUEL_COLUMNS = [
     "bullet_damage_share", "bullet_damage_ci", "rounds_won", "rounds",
     "our_hit_rate", "our_hit_ci", "their_hit_rate", "their_hit_ci",
     "skipped_turns", "faults", "turn_p95_ms", "turn_max_ms", "note",
+    "battle_rounds", "engine", "cpu_constant", "parallel",
 ]
 
 MELEE_COLUMNS = [
     "report", "robot", "version", "section", "table",
     "aps", "survival", "rounds_won", "rounds", "mean_place", "score_share", "bullet_damage",
+    "battle_rounds", "engine", "cpu_constant", "parallel",
 ]
 
 FIELD_COLUMNS = [
@@ -56,6 +58,14 @@ PERCENT_CELLS = {
 
 # "hadur2.Hadur 2.1 (cold)" in a title, heading or opening sentence names the robot under test.
 IDENTITY = re.compile(r"\b([\w.]+\.Hadur)\s+(\d+(?:\.\d+)*)(?:[^|]*?\((cold|warm)\b)?")
+# The report's conditions sentence: "35 rounds x 5 seeds ... Engine Robocode 1.11.1 ...
+# robocode.cpu.constant=1488498 ... parallel 12." A value the sentence does not state stays blank.
+CONDITION_PATTERNS = {
+    "battle_rounds": re.compile(r"(\d+) rounds x \d+ seeds"),
+    "engine": re.compile(r"Engine Robocode (\d+(?:\.\d+)+)"),
+    "cpu_constant": re.compile(r"robocode\.cpu\.constant=(\d+)"),
+    "parallel": re.compile(r"\bparallel (\d+)"),
+}
 PERCENT = re.compile(r"^(-?[\d.]+)%(?:\s*±\s*([\d.]+))?$")
 FRACTION = re.compile(r"^(\d+)\s*/\s*(\d+)$")
 
@@ -102,8 +112,23 @@ def tables(lines):
         i += 1
 
 
+def conditions(text):
+    """{battle_rounds, engine, cpu_constant, parallel} from the first line of the report that states them."""
+    out = dict.fromkeys(CONDITION_PATTERNS, "")
+    for line in text.splitlines():
+        if line.startswith("|") or not re.search(r"\d+ rounds x \d+ seeds", line):
+            continue
+        for key, pattern in CONDITION_PATTERNS.items():
+            m = pattern.search(line)
+            if m:
+                out[key] = m.group(1)
+        break
+    return out
+
+
 def harvest_report(name, text):
     duel, melee, field = [], [], []
+    cond = conditions(text)
     for index, (section, (robot, version, mode), header, rows) in enumerate(
             tables(text.splitlines()), start=1):
         if header[:3] == ["Opponent", "Role", "Score share"]:
@@ -114,6 +139,7 @@ def harvest_report(name, text):
                     continue
                 cell = dict(zip(header, row))
                 out = dict.fromkeys(DUEL_COLUMNS, "")
+                out.update(cond)
                 out["note"] = " | ".join(c for c in row[len(header):] if c)
                 out.update(report=name, robot=robot, version=version, mode=mode,
                            section=section, table=str(index), opponent=cell["Opponent"],
@@ -134,6 +160,7 @@ def harvest_report(name, text):
                     continue
                 cell = dict(zip(header, row))
                 out = dict.fromkeys(MELEE_COLUMNS, "")
+                out.update(cond)
                 out.update(report=name, robot=robot, version=version,
                            section=section, table=str(index), aps=cell["APS"],
                            survival=cell["Survival"], mean_place=cell["Mean round place"],

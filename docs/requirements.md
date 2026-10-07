@@ -111,6 +111,11 @@ EARS requirements from the Hadur 2 technical direction. This file is the source 
 | BENCH-57 | Ubiquitous | The bench shall take the arena as `--field WIDTHxHEIGHT` in every mode and shall refuse a value that is not two positive whole numbers. | R9 |
 | BENCH-58 | Event | When `sweep-cpu-constant.sh` runs a set, it shall run it once at each multiplier of one CPU constant, with the derived constant and a label naming the multiplier, and shall start nothing under `--dry-run`. | R9 |
 | BENCH-59 | Ubiquitous | The bench shall read its arguments from a file when its only argument is `@FILE` (one argument per line), and the PowerShell bench scripts shall pass them that way, so that a value with a space reaches it intact on Windows PowerShell 5.1. | R9 |
+| BENCH-63 | Ubiquitous | The bench shall list, under the heading "Excluded or failing opponents" near the top of a duel, melee or team report, every opponent that failed at least half of its battles, with the number failed of the number fought and the first failure's reason, and shall add nothing when no opponent did. | R9 |
+| BENCH-64 | Ubiquitous | The bench shall place that block after the report's title and leave the rest of the report unchanged. | R9 |
+| BENCH-65 | Event | When a run ends with opponents that failed at least half of their battles, the bench shall name them, with their failed and fought counts, in one line of its console output. | R9 |
+| BENCH-66 | Ubiquitous | The bench shall list those opponents under `excluded` in the run's `conditions.json`, so a later tool can tell a shrunken set from a full one. | R9 |
+| BENCH-67 | Ubiquitous | The bench shall give a failure's reason as the first line of the battle's error text, cut to 160 characters, and "no result" when there is none. | R9 |
 | RES-10 | Ubiquitous | The robot shall leave no reference to its classes in the process after a battle, so that the number of classes loaded in one JVM stays flat across a session of battles. | R7 |
 | MOVE-3 | Ubiquitous | Movement shall score a wave's danger only over the part of the intersection not in a certain bullet shadow, at half weight inside a possible shadow. | R6 |
 | MOVE-4 | Ubiquitous | Movement shall score a wave's danger as the danger density integrated over the firing angles of the precise intersection. | R6 |

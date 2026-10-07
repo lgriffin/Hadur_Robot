@@ -96,5 +96,48 @@ class HistoryTest(unittest.TestCase):
         self.assertIn("<title>f: 1.00 pp", svg)
 
 
+def scored(name, **conditions):
+    row = {"date": "2026-10-06", "label": name, "candidate": "3.8", "baseline": "3.7", "engine": t.DEFAULT_ENGINE,
+           "file": name, "diff_pp": "1.00", "ci_lo": "-0.50", "ci_hi": "2.50"}
+    row.update(conditions)
+    return row
+
+
+class ConditionsTest(unittest.TestCase):
+
+    def test_usual_conditions_are_the_most_common_recorded_value(self):
+        rows = [scored("a", rounds="35"), scored("b", rounds="35"), scored("c", rounds="10"), scored("d")]
+        self.assertEqual({"rounds": "35", "engine": t.DEFAULT_ENGINE}, t.usual_conditions(rows))
+
+    def test_a_blank_condition_is_never_unusual(self):
+        usual = {"rounds": "35"}
+        self.assertEqual([], t.unusual(scored("a"), usual))
+        self.assertEqual([("rounds", "10")], t.unusual(scored("b", rounds="10"), usual))
+
+    def test_chart_marks_a_differing_run_open_and_footnotes_it(self):
+        rows = [scored("a", parallel="12"), scored("b", parallel="12"), scored("c", parallel="16"),
+                scored("d", parallel="16", engine="1.11.1"), scored("e")]
+        svg = t.render_svg(rows)
+        self.assertEqual(2, svg.count('class="pt open"'))
+        self.assertIn("parallel width 16 (usual 12): 2 runs", svg)
+        self.assertIn("engine 1.11.1 (usual 1.9.5.6): 1 run<", svg)
+        self.assertIn("conditions differ from the usual: parallel width 16", svg)
+
+    def test_chart_without_differences_has_no_footnote_or_open_circle(self):
+        svg = t.render_svg([scored("a", rounds="35"), scored("b", rounds="35")])
+        self.assertNotIn('class="pt open"', svg)
+        self.assertNotIn("Open circle", svg)
+
+    def test_history_row_reads_catalog_columns_before_the_subject(self):
+        entry = {"subject": "16 seeds, Robocode 1.11.1, parallel 12", "engine": "1.9.5.6", "parallel": "",
+                 "child_heap": "2G", "rounds": ""}
+        c = t.conditions_of(entry, {"rounds": "35"})
+        self.assertEqual(("1.9.5.6", "12", "2048", "35"), (c["engine"], c["parallel"], c["child_heap"], c["rounds"]))
+
+    def test_old_catalog_row_without_the_columns_still_reads(self):
+        c = t.conditions_of({"subject": "hadur 3.8, 1v1"}, {})
+        self.assertEqual((t.DEFAULT_ENGINE, "", "", ""), (c["engine"], c["parallel"], c["child_heap"], c["rounds"]))
+
+
 if __name__ == "__main__":
     unittest.main()

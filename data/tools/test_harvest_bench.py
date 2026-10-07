@@ -7,7 +7,7 @@ import harvest_bench as hb
 
 REPORT = """# Bench: hadur2.Hadur 2.1 (warm)
 
-35 rounds x 5 seeds per opponent.
+35 rounds x 5 seeds per opponent on 800x600. Engine Robocode 1.11.1, security manager on. Java 21.0.10, 48 cores. robocode.cpu.constant=1488498 (pinned with --cpu-constant). Host: 48 logical cores, parallel 12.
 
 | Opponent | Role | Score share | Survival share | Bullet-damage share | Rounds won | Our hit rate | Their hit rate | Skipped turns | Faults | Turn p95 / max (ms) |
 |---|---|---|---|---|---|---|---|---|---|---|
@@ -69,6 +69,16 @@ class HarvestReportTest(unittest.TestCase):
         self.assertEqual(duel[0]["our_hit_rate"], "")
         self.assertEqual(duel[0]["faults"], "")
         self.assertEqual(duel[0]["skipped_turns"], "6")
+
+    def test_conditions_sentence_fills_the_condition_columns_of_every_row(self):
+        duel, melee, _ = hb.harvest_report("c.md", REPORT)
+        want = {"battle_rounds": "35", "engine": "1.11.1", "cpu_constant": "1488498", "parallel": "12"}
+        for row in (duel[0], duel[1], melee[0]):
+            self.assertEqual(want, {k: row[k] for k in want})
+
+    def test_report_that_does_not_state_conditions_leaves_them_blank(self):
+        duel, _, _ = hb.harvest_report("s0.md", OLD_REPORT)
+        self.assertEqual(["", "", "", ""], [duel[0][k] for k in ("battle_rounds", "engine", "cpu_constant", "parallel")])
 
     def test_committed_history_matches_the_reports(self):
         outputs = hb.harvest()

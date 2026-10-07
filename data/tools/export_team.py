@@ -25,6 +25,8 @@ import os
 import re
 import sys
 
+import compare_conditions
+
 import export_battles as eb
 
 ROLE_RANK = re.compile(r"^[a-z]+-(\d+)$")
@@ -181,6 +183,7 @@ def main():
         w.writerows(rows)
     ok = sum(1 for r in rows if r["ok"] == "true")
     print("wrote %d rows (%d ok) to %s" % (len(rows), ok, a.out))
+    print(compare_conditions.catalog_note(a.work))
     if unmatched:
         print("warning: %d directories matched no opponent in the set: %s" % (len(unmatched), ", ".join(unmatched[:5])),
               file=sys.stderr)
