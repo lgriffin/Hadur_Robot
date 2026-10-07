@@ -1,0 +1,33 @@
+# Overnight after 3.9's first live pass (docs/bench/live-3.9.md), toward the 1v1 top 10.
+# 3.9 is 13th at 87.15, 0.56 under 10th. The plan behind these steps is in that page; each
+# step answers one question it leaves open.
+#   ./queue.sh run overnight-39        (or  .\queue.ps1 run overnight-39)
+# Builds are the released 3.9 and 3.4 and 3.8.5 jars, so the checkout's own build is not used.
+
+set HEAP = --child-heap 2G
+set E = --engine 1.11.1
+set COMMON = --skip-build --skip-fetch --rounds 35 ${HEAP} ${E}
+set CPU = --cpu-constant 1488498
+set C39 = --robot-jar bisect/hadur2.Hadur_3.9.jar --robot "hadur2.Hadur 3.9"
+set B385 = --baseline bisect/hadur2.Hadur_3.8.5.jar --baseline-robot "hadur2.Hadur 3.8.5"
+set B34 = --baseline bisect/hadur2.Hadur_3.4.jar --baseline-robot "hadur2.Hadur 3.4"
+
+prep | mkdir -p bisect && curl -fsSL -o bisect/hadur2.Hadur_3.9.jar https://github.com/lgriffin/Hadur_Robot/releases/download/v3.9/hadur2.Hadur_3.9.jar && curl -fsSL -o bisect/hadur2.Hadur_3.8.5.jar https://github.com/lgriffin/Hadur_Robot/releases/download/v3.8.5/hadur2.Hadur_3.8.5.jar && curl -fsSL -o bisect/hadur2.Hadur_3.4.jar https://github.com/lgriffin/Hadur_Robot/releases/download/v3.4/hadur2.Hadur_3.4.jar && ./fetch-opponents.sh --set score-leak-39.txt && ./fetch-opponents.sh --set lost-rounds-39.txt && ./fetch-opponents.sh --set leak-38.txt
+
+# 1. The score leak: 3.9 wins the rounds against these and scores about 79. Does the bench
+#    see it, and is 3.4 the same? Per-round damage taken says whether bullets or rams cost it.
+leak-score | ./bench-top20.sh ${COMMON} ${CPU} --set score-leak-39.txt --seeds 8 ${C39} ${B34} --label score-leak-39-v34
+  after: prep
+
+# 2. The lost rounds: which of these losses are real? 8 seeds each; a bot the bench beats
+#    in every round was luck on the live pass and comes off the target list.
+lost-rounds | ./bench-top20.sh ${COMMON} ${CPU} --set lost-rounds-39.txt --seeds 8 ${C39} ${B34} --label lost-rounds-39-v34
+  after: prep
+
+# 3. Why the bench missed 3.9's field-wide gain. Live, 3.9 scored 2.1 more than 3.8.5 on the
+#    leak set (+2.14 +/- 1.04); the gate run on the same 32 bots read level. Two conditions
+#    the gate did not have: Hadur's data left from an earlier battle (warm), and a slower client.
+calib-warm | ./bench-top20.sh ${COMMON} ${CPU} --cold-warm --set leak-38.txt --seeds 8 ${C39} ${B385} --label calib-warm-39-v385
+  after: prep
+calib-cpu  | ./bench-top20.sh ${COMMON} --cpu-constant 1000000 --set leak-38.txt --seeds 16 ${C39} ${B385} --label calib-cpu1m-39-v385
+  after: prep

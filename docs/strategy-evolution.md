@@ -439,6 +439,27 @@ mostly as lost survival (-2) against the weak field. 3.7 was already 0.23 below 
 the leak may predate the DrussGT route. The next measure is a release bisect, 3.4 against
 3.5.1, 3.7, 3.8 and 3.8.5, on the bots that lost to 3.4 in both live passes.
 
+## 3.9 live: the rammer trial, 13th
+
+The bisect put the whole leak in 3.4 to 3.5.1, and an ablation put it on RAM-2, the rammer escape:
+close-range fighters confirm as rammers, and running from them got Hadur hit two to seven times as
+often. 3.9 (RAM-3, the rammer trial) keeps the escape only where the battle's own rounds say it
+pays: two escape rounds after confirmation, then whichever arm has the better energy margin.
+
+Its first full pass ([live-3.9.md](bench/live-3.9.md), 7 October 2026, 1,215 pairings) puts it at
+**87.15 APS, 13th**, Hadur's best 1v1 score, 0.56 under Tomcat 3.68 in 10th. Melee is 19th and the
+team 12th, with no change to their play. The gain over 3.8.5 is +2.32 APS, even across every band
+from 51st down (+2.2 to +2.9 per pairing, survival +3), six times the gate's estimate: RAM-2 had
+been running from ordinary bots across the field, not only from the 40 live losers. 3.9 now beats
+3.4 below rank 150. The PC bench read 3.9 level with 3.8.5 on the same random bots where live
+shows +2.1, so the bench cannot yet see a field-wide change like this one.
+
+What is left is about 1.8 APS of persistent shortfall below Hadur's own trend, all below rank 20,
+mostly against nano and micro rammers and close-range fighters: Hadur wins the rounds and gives a
+fifth of the score away, or loses rounds to simple guns. The overnight plan
+(`hadur-bench/plans/overnight-39.queue`) checks those two groups on the bench and tests which live
+condition the bench is missing.
+
 ## What comes next
 
 Every EARS requirement up to R2, bar TIER-1 (above), is implemented and traced. R3 to R5
