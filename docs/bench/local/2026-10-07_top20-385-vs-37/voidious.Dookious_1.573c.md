@@ -1,0 +1,102 @@
+# voidious.Dookious 1.573c (rumble-20) vs hadur2.Hadur 3.8.5
+
+35 rounds x 20 seeds (data wiped) per opponent on 800x600. Engine Robocode 1.11.1, security manager on. Java 21.0.10, 48 cores. robocode.cpu.constant=1488498 (pinned with --cpu-constant). Host: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 48 logical cores, Windows 11 10.0, no other Robocode JVMs running, parallel 12. Battle JVM flags: -XX:ActiveProcessorCount=2 -Xmx2G.
+
+## Battles
+
+| Seed | Score share | Survival share | Bullet-damage share | Rounds won | Our hit rate | Their hit rate | Skipped turns | Faults | Turn p95 / max (ms) | Baseline share | Paired diff (pp) |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| 1 | 56.0% | 68.6% | 40.6% | 24 / 35 | 8.1% | 6.4% | 5 | 0 | 1.13 / 12.7 | 64.5% | -8.5 |
+| 2 | 57.7% | 74.3% | 38.9% | 26 / 35 | 9.4% | 7.2% | 8 | 0 | 1.16 / 12.3 | 66.2% | -8.5 |
+| 3 | 69.1% | 91.4% | 43.1% | 32 / 35 | 9.8% | 6.9% | 10 | 0 | 1.12 / 24.1 | 64.2% | +4.8 |
+| 4 | 59.2% | 74.3% | 43.2% | 26 / 35 | 9.8% | 7.2% | 90 | 0 | 1.18 / 11.8 | 69.5% | -10.3 |
+| 5 | 52.5% | 65.7% | 38.7% | 23 / 35 | 9.5% | 7.9% | 18 | 0 | 1.20 / 20.4 | 60.2% | -7.7 |
+| 6 | 54.0% | 65.7% | 41.5% | 23 / 35 | 9.2% | 7.6% | 6 | 0 | 1.14 / 12.3 | 72.1% | -18.1 |
+| 7 | 72.5% | 91.4% | 49.6% | 32 / 35 | 9.6% | 6.5% | 6 | 0 | 1.12 / 12.5 | 58.6% | +13.9 |
+| 8 | 52.8% | 65.7% | 37.9% | 23 / 35 | 8.5% | 6.9% | 12 | 0 | 1.13 / 13.2 | 66.9% | -14.2 |
+| 9 | 61.6% | 77.1% | 44.4% | 27 / 35 | 10.0% | 7.2% | 5 | 0 | 1.15 / 12.1 | 63.2% | -1.6 |
+| 10 | 72.1% | 94.3% | 44.4% | 33 / 35 | 9.5% | 6.6% | 15 | 0 | 1.17 / 13.2 | 62.0% | +10.1 |
+| 11 | 63.4% | 80.0% | 44.8% | 28 / 35 | 9.6% | 7.3% | 12 | 0 | 1.21 / 12.8 | 55.0% | +8.4 |
+| 12 | 60.0% | 74.3% | 43.7% | 26 / 35 | 9.6% | 6.8% | 14 | 0 | 1.17 / 12.7 | 56.1% | +3.9 |
+| 13 | 61.0% | 80.0% | 39.5% | 28 / 35 | 9.1% | 7.5% | 16 | 0 | 1.18 / 67.5 | 66.1% | -5.1 |
+| 14 | 59.4% | 71.4% | 47.3% | 25 / 35 | 10.0% | 7.4% | 16 | 0 | 1.20 / 12.8 | 65.8% | -6.4 |
+| 15 | 64.3% | 80.0% | 46.4% | 28 / 35 | 9.5% | 6.2% | 7 | 0 | 1.15 / 80.5 | 57.6% | +6.7 |
+| 16 | 69.9% | 88.6% | 47.5% | 31 / 35 | 8.9% | 6.5% | 12 | 0 | 1.14 / 11.8 | 64.5% | +5.4 |
+| 17 | 54.9% | 65.7% | 43.7% | 23 / 35 | 9.1% | 7.6% | 12 | 0 | 1.20 / 16.0 | 67.9% | -12.9 |
+| 18 | 55.9% | 68.6% | 42.2% | 24 / 35 | 9.7% | 7.1% | 12 | 0 | 1.17 / 106.6 | 65.3% | -9.3 |
+| 19 | 53.6% | 65.7% | 40.8% | 23 / 35 | 9.9% | 7.6% | 14 | 0 | 1.20 / 11.9 | 62.9% | -9.2 |
+| 20 | 57.5% | 74.3% | 38.9% | 26 / 35 | 9.3% | 6.9% | 3 | 0 | 1.26 / 245.8 | 64.1% | -6.6 |
+
+Mean score share 60.4% ± 3.0, baseline 63.6% ± 2.1, paired diff -3.3 ± 4.2.
+
+## Full report
+
+35 rounds x 20 seeds (data wiped) per opponent on 800x600. Engine Robocode 1.11.1, security manager on. Java 21.0.10, 48 cores. robocode.cpu.constant=1488498 (pinned with --cpu-constant). Host: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 48 logical cores, Windows 11 10.0, no other Robocode JVMs running, parallel 12. Battle JVM flags: -XX:ActiveProcessorCount=2 -Xmx2G.
+
+Shares are Hadur's fraction of the two robots' total, mean ± 95% interval over battles.
+
+Skipped turns: 293 over 20 battles (14.7 per battle, most in one battle 90). Issue #102 trusts a parallel run when the mean stays near the sequential run's.
+
+| Opponent | Role | Score share | Survival share | Bullet-damage share | Rounds won | Our hit rate | Their hit rate | Skipped turns | Faults | Turn p95 / max (ms) |
+|---|---|---|---|---|---|---|---|---|---|---|
+| voidious.Dookious 1.573c | rumble-20 | 60.4% ± 3.0 | 75.9% ± 4.4 | 42.9% ± 1.5 | 531 / 700 | 9.4% ± 0.2 | 7.1% ± 0.2 | 293 | 0 | 1.26 / 245.8 |
+
+## Trust
+
+A battle is trusted when it finished, spent no ticks in duress, skipped at most 2.0 turns a round on average and delivered an R record for every round. Duress is "n/a" for battles written before the column existed.
+
+| Opponent | Battles | Trusted | Duress ticks | Engine disables | Skips / round | Rounds without R | Final R missing | Security errors |
+|---|---|---|---|---|---|---|---|---|
+| voidious.Dookious 1.573c | 20 | 17 | 0 | 1 | 0.42 | 2 | 1 | 0 |
+
+17 of 20 battles trusted.
+
+## Wave fidelity
+
+How well Hadur's inferred enemy waves match the bullets the enemy really fired (from the engine's ground truth). A found wave matches a real bullet within 3 ticks and 0.15 power. Real shots leave out the unseen ones: shots fired while either robot was disabled that no wave matched. Hidden shots are ones the ledger found that the raw drop hid (WAVE-1); radar reacquire counts the ticks the radar spent sweeping for a lost enemy (RADAR-1). Ledger phantoms are energy drops the ledger explained away that 1.20 would have read as shots (WAVE-1).
+
+| Opponent | Real shots | Unseen | Waves found | Matched | Missed | False waves | Ledger phantoms | Hidden shots | Radar reacquire ticks |
+|---|---|---|---|---|---|---|---|---|---|
+| voidious.Dookious 1.573c | 37319 | 59 | 37318 | 37315 (100.0%) | 4 (0.0%) | 3 (0.0%) | 2611 | 240 | 118 |
+
+## Bullet shielding
+
+How many of Hadur's bullets an enemy bullet destroyed. A share well above a few percent means the enemy shoots our bullets down on purpose (SHIELD-1); jittered shots went out with the anti-shield aim offset (SHIELD-2).
+
+| Opponent | Our shots | Shot down | Jittered shots |
+|---|---|---|---|
+| voidious.Dookious 1.573c | 45912 | 3588 (7.8%) | 37968 |
+
+## Aggression
+
+The opening distance is where the distance controller started in each battle (set by the profile's gun tier; 650 px, 1.20's, for a stranger). The fighting distance is the mean scan distance over rounds, and the final target is the controller's target when the last round ended (DIST-1). Damage per round is bullet damage dealt and taken. Full-power shots were fired at 3.0 (POW-1, POW-2); finish and ram ticks were spent closing on a weak enemy (END-1) and ramming a disabled one (END-2).
+
+| Opponent | Opening distance | Fighting distance | Final target | Round length (ticks) | Damage per round (dealt / taken) | Full-power shots | Finish ticks | Ram ticks |
+|---|---|---|---|---|---|---|---|---|
+| voidious.Dookious 1.573c | 650 | 485 | 645 | 836 | 23.4 / 31.2 | 454 | 24366 | 12008 |
+
+## Unhittable
+
+Shadowed waves are enemy firing waves one of our bullets crossed, so part of them could not hit (MOVE-1); intercepts in a shadow are the enemy bullets ours destroyed that fell inside a shadow Hadur had computed, a check on the shadow geometry. Slow ticks used more than 70% of the assumed 3 ms allowance and shed a level for the next tick (TIME-1); the highest level is the most any round shed (a skipped turn holds a level for the rest of the round, TIME-2). Flavour changes count the times their hit rate beat the profile's and the movement changed (MOVE-2); the last step is 0 base, 1 flattener, 2 go-to, 3 far.
+
+| Opponent | Their hit rate | Skipped turns | Slow ticks | Highest level | Shadowed waves per round | Intercepts in a shadow | Flavour changes | Last step |
+|---|---|---|---|---|---|---|---|---|
+| voidious.Dookious 1.573c | 7.1% | 293 | 385 | 3 | 53.1 | 3582 / 3588 (100%) | 0 | 0 |
+
+## Opponent memory
+
+"Started warm" counts battles whose first scan loaded a stored profile (MEM-1). Memory failures are profiles that failed to load, fold or save (MEM-4, MEM-3); seed evictions are profiles whose seeds were dropped for room (MEM-5). Tiers are what the profile said at each battle's first scan, and the opening is the gun the opening book chose from them (ADAPT-1; "live" leaves it to the virtual guns, as 1.20 did). Seeds are the gun and surf samples replayed at the start of the last battle (ADAPT-3); seed decays count the waves on which the live data disagreed with the profile and a seed lost weight (RES-4), over all battles.
+
+| Opponent | Started warm | Memory failures | Seed evictions | Tiers by battle | Opening by battle | Seeds (last battle) | Seed decays |
+|---|---|---|---|---|---|---|---|
+| voidious.Dookious 1.573c | 0 / 20 | 0 | 0 | T?/M?, T?/M?, T?/M?, T?/M?, T?/M?, T?/M?, T?/M?, T?/M?, T?/M?, T?/M?, T?/M?, T?/M?, T?/M?, T?/M?, T?/M?, T?/M?, T?/M?, T?/M?, T?/M?, T?/M? | live, live, live, live, live, live, live, live, live, live, live, live, live, live, live, live, live, live, live, live | 0 / 0 | 0 |
+
+### Stored profiles
+
+Decoded from Hadur's data directory after the opponent's last battle. Hit rates are over all remembered shots; ratings are the virtual guns' weighted hits per wave; the normalised rate weights each of their hits by how small Hadur looked from where they fired, which is what the gun tier reads. Seeds are gun / surf samples. The last column is the estimated score share the profile recorded for each battle, oldest first.
+
+| Opponent | Key | Battles | Rounds | Bytes | Their hit rate | Their normalised rate | Our hit rate | Main / anti-surfer rating | Stopped | Seeds | Tiers | Recorded score share |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| voidious.Dookious 1.573c | voidious.Dookious | 1 | 35 | 306 | 7.6% | 7.2% ± 1.2 | 10.1% | 21.4% / 21.6% | 12.2% | 0 / 0 | T3/M1 | 57% |
+
+Turn times are wall-clock per engine turn (both robots plus the engine), measured by the harness. Skipped turns are counted from the engine's messages in Hadur's console. Hit rates and faults come from Hadur's own R and FAULT records (RES-5); hit rates are per-round means, and "-" means the robot wrote no R records.

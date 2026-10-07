@@ -114,7 +114,7 @@ cloud bench does.
 - [x] Melee top 20 run, 3.8 against 3.7, every robot in at least two fields (2026-10-06, 10 seeds a field).
 - [x] Team top 20 run, 3.8 against 3.7 (2026-10-06, 10 seeds).
 - [x] The three strategy documents carry a dated local result for every robot.
-- [ ] A larger-sample follow-up for the 1v1 robots whose paired difference is not resolved.
+- [x] A larger-sample follow-up for the 1v1 robots whose paired difference is not resolved (2026-10-07, 100 seeds, 3.8.5 vs 3.8).
 - [ ] A findings write-up per arena, with the cloud figures alongside. (Melee and team: `local/2026-10-06_melee-team-findings.md`; the cloud figures are not yet alongside.)
 - [ ] Issue #102's checklist updated and the branch merged, with the owner's go-ahead.
 
@@ -150,3 +150,4 @@ should change. Record changes below.
   into `data/catalog.tsv`, `history.tsv` and the trend chart, which marks runs that differ from the usual; reports
   list opponents that failed at least half their battles under "Excluded or failing opponents". `data/tools/compare_conditions.py`
   says whether two runs are comparable. Tooling and data only; no change to the robot.
+- 2026-10-07: 3.8.5 overnight bench done (issue #117). 3.8.5 is level with 3.8 in 1v1 (100 seeds, -0.32 clustered -0.71 to +0.07), melee and team; the one resolved regression is 3.4 to 3.5.1 on the live-loser set. Findings in `local/2026-10-07_385-findings.md`. Child JVM heap capped at 2G and memory guarded after an uncapped run exhausted the host. A3 one-pagers are published to the Pages site for 1v1 only, at the owner's request.
