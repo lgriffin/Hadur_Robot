@@ -1,0 +1,24 @@
+# 3.9 (RAM-3, the rammer trial) against the released 3.8.5: the gates before a release.
+# Run from master once 3.9 is merged:  ./queue.sh run candidate-39   (or  .\queue.ps1 run candidate-39)
+# The first step builds 3.9 from this checkout; the others reuse that jar.
+
+set HEAP = --child-heap 2G
+set E = --engine 1.11.1
+set COMMON = --skip-fetch --rounds 35 --cpu-constant 1488498 ${HEAP} ${E}
+set C39 = --robot-jar ../hadur-robot/target/hadur2.Hadur_3.9.jar --robot "hadur2.Hadur 3.9"
+set B385 = --baseline bisect/hadur2.Hadur_3.8.5.jar --baseline-robot "hadur2.Hadur 3.8.5"
+
+prep | (cd .. && mvn -q -B package -DskipTests) && curl -fsSL -o bisect/hadur2.Hadur_3.8.5.jar https://github.com/lgriffin/Hadur_Robot/releases/download/v3.8.5/hadur2.Hadur_3.8.5.jar && ./fetch-opponents.sh --set live-losers-385.txt && ./fetch-opponents.sh --set weak-leak.txt && ./fetch-opponents.sh --set leak-38.txt && ./fetch-opponents.sh --set top20.txt
+
+# 1. The live losers come back (RAM-2's cost), 8 seeds.
+ll-39     | ./bench-top20.sh --skip-build ${COMMON} --set live-losers-385.txt --seeds 8 ${C39} ${B385} --label ll-39-v385
+  after: prep
+# 2. R9's rammers are kept (RAM-2's gain), 16 seeds.
+weak-39   | ./bench-top20.sh --skip-build ${COMMON} --set weak-leak.txt --seeds 16 ${C39} ${B385} --label weak-39-v385
+  after: prep
+# 3. The unselected field is not lower, 16 seeds.
+leak-39   | ./bench-top20.sh --skip-build ${COMMON} --set leak-38.txt --seeds 16 ${C39} ${B385} --label leak-39-v385
+  after: prep
+# 4. The top 20 does not move, 10 seeds.
+top20-39  | ./bench-top20.sh --skip-build ${COMMON} --set top20.txt --seeds 10 ${C39} ${B385} --label top20-39-v385
+  after: prep
