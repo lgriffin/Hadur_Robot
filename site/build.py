@@ -239,7 +239,7 @@ def page(title, body, active, depth=0, mermaid=False):
     up = "../" * depth
     nav = [("index.html", "Home"), ("requirements.html", "Requirements"),
            ("docs/architecture.html", "Architecture"), ("docs/testing.html", "Testing"),
-           ("api/index.html", "Javadoc")]
+           ("bench/index.html", "Bench analysis"), ("api/index.html", "Javadoc")]
     links = "".join('<a href="%s%s"%s>%s</a>' % (up, href, ' aria-current="page"' if href == active else "", label)
                     for href, label in nav)
     script = ""
@@ -386,7 +386,7 @@ hexagonal core that never imports <code>robocode.*</code>. Every behaviour is an
 <a href="requirements.html">EARS requirement</a>, cited in the code that implements it and tagged on the tests that prove it.</p>
 <div class="stats"><div><b>%d</b><span>live requirements</span></div><div><b>%d</b><span>with a tagged test</span></div>
 <div><b>%d</b><span>classes citing one</span></div></div>
-<p class="cta"><a class="button" href="api/index.html">Browse the Javadoc</a> <a class="button ghost" href="requirements.html">Requirement map</a></p>
+<p class="cta"><a class="button" href="api/index.html">Browse the Javadoc</a> <a class="button ghost" href="requirements.html">Requirement map</a> <a class="button ghost" href="bench/index.html">Bench analysis</a></p>
 </section>
 <section><h2>What it does</h2>%s</section>
 <section><h2>Reading the code</h2>

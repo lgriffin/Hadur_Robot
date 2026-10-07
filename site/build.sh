@@ -29,8 +29,15 @@ if [[ "${1:-}" == "--publish" ]]; then
     git worktree add -q --detach "$tmp"
     git -C "$tmp" checkout -q --orphan gh-pages
   fi
+  # bench/ holds the bench analysis published after each harness run (data/tools/publish_run.py);
+  # this script owns everything else on the branch, so keep bench/ across the wipe.
+  keep="$(mktemp -d)"
+  if [[ -d "$tmp/bench" ]]; then cp -r "$tmp/bench" "$keep/bench"; fi
   git -C "$tmp" rm -rfq --ignore-unmatch . >/dev/null
   cp -r "$out/." "$tmp/"
+  if [[ -d "$keep/bench" ]]; then rm -rf "$tmp/bench"; cp -r "$keep/bench" "$tmp/bench"; fi
+  rm -rf "$keep"
+  python3 data/tools/publish_run.py index --site-dir "$tmp" --repo "$root"
   git -C "$tmp" add -A
   if git -C "$tmp" diff --cached --quiet; then
     echo "gh-pages already matches $rev"
