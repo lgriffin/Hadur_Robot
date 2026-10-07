@@ -127,6 +127,31 @@
    "published": "2026-10-07T15:22Z"
   },
   {
+   "id": "2026-10-07_tail-knight-v39",
+   "date": "2026-10-07",
+   "label": "tail-knight-v39",
+   "kind": "solo",
+   "set": "tail-39.txt",
+   "engine": "1.11.1",
+   "source": "work directory",
+   "candidate": "rsalesc.mega.Knight 0.6.28",
+   "baseline": "hadur2.Hadur 3.9",
+   "seeds": 8,
+   "rounds": 35,
+   "gate": "CAUTION",
+   "verdict": "up",
+   "diff": 1.1993269230769232,
+   "ci95": [
+    0.5461794285793462,
+    1.8524744175745003
+   ],
+   "n": 312,
+   "opponents": 39,
+   "host": "AMD Ryzen Threadripper PRO 9965WX 24-Cores, 48 logical cores, Windows 11 10.0, no other Robocode JVMs running",
+   "path": "runs/2026-10-07_tail-knight-v39/",
+   "published": "2026-10-07T22:23Z"
+  },
+  {
    "id": "2026-10-07_tail-39-v34",
    "date": "2026-10-07",
    "label": "tail-39-v34",
