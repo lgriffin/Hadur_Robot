@@ -277,6 +277,31 @@
    "published": "2026-10-07T23:12Z"
   },
   {
+   "id": "2026-10-07_mid-null-list-v39",
+   "date": "2026-10-07",
+   "label": "mid-null-list-v39",
+   "kind": "solo",
+   "set": "mid-shield-39.txt",
+   "engine": "1.11.1",
+   "source": "work directory",
+   "candidate": "jd.Nullstride 2.3.3",
+   "baseline": "hadur2.Hadur 3.9",
+   "seeds": 8,
+   "rounds": 35,
+   "gate": "NOT_TRUSTED",
+   "verdict": "up",
+   "diff": 17.840625,
+   "ci95": [
+    15.408546096206788,
+    20.27270390379321
+   ],
+   "n": 240,
+   "opponents": 30,
+   "host": "AMD Ryzen Threadripper PRO 9965WX 24-Cores, 48 logical cores, Windows 11 10.0, no other Robocode JVMs running",
+   "path": "runs/2026-10-07_mid-null-list-v39/",
+   "published": "2026-10-07T23:12Z"
+  },
+  {
    "id": "2026-10-07_mid-39-v34",
    "date": "2026-10-07",
    "label": "mid-39-v34",
