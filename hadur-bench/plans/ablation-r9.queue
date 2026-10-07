@@ -1,0 +1,45 @@
+# R9 ablation (3.8.5 with 3.5's RAM-2 and MIR-1 switched off), after the live-loser bisect
+# (docs/bench/local/2026-10-07_live-loser-bisect.md): 3.5.1 lost 6.4 points to 3.4 on the live
+# losers, and RAM-2 (the rammer escape) and MIR-1 (the mirror drive) are 3.5's only behaviour
+# changes. This says which one costs it, and what switching it off gives back on the field it
+# was built for (weak-leak.txt, where 3.5 gained).
+#   ./queue.sh run ablation-r9        (or  .\queue.ps1 run ablation-r9)
+# The ablation jars are built from this checkout by build-ablation.sh (versions 3.8.5nr, 3.8.5nm,
+# 3.8.5nrnm); the baselines are the released 3.8.5 and 3.4.
+
+set HEAP = --child-heap 2G
+set E = --engine 1.11.1
+set COMMON = --skip-build --skip-fetch --rounds 35 --cpu-constant 1488498 ${HEAP} ${E}
+set B385 = --baseline bisect/hadur2.Hadur_3.8.5.jar --baseline-robot "hadur2.Hadur 3.8.5"
+set B34 = --baseline bisect/hadur2.Hadur_3.4.jar --baseline-robot "hadur2.Hadur 3.4"
+set NR = --robot-jar bisect/hadur2.Hadur_3.8.5nr.jar --robot "hadur2.Hadur 3.8.5nr"
+set NM = --robot-jar bisect/hadur2.Hadur_3.8.5nm.jar --robot "hadur2.Hadur 3.8.5nm"
+set NRNM = --robot-jar bisect/hadur2.Hadur_3.8.5nrnm.jar --robot "hadur2.Hadur 3.8.5nrnm"
+
+# One preparation step: build the three ablations from the v3.8.5 tag (git fetch --tags first),
+# download the two released baselines, fetch the opponents.
+prep | git fetch --tags origin && ./build-ablation.sh --ref v3.8.5 ram2 && ./build-ablation.sh --ref v3.8.5 mir1 && ./build-ablation.sh --ref v3.8.5 ram2,mir1 && curl -fsSL -o bisect/hadur2.Hadur_3.8.5.jar https://github.com/lgriffin/Hadur_Robot/releases/download/v3.8.5/hadur2.Hadur_3.8.5.jar && curl -fsSL -o bisect/hadur2.Hadur_3.4.jar https://github.com/lgriffin/Hadur_Robot/releases/download/v3.4/hadur2.Hadur_3.4.jar && ./fetch-opponents.sh --set live-losers-385.txt && ./fetch-opponents.sh --set weak-leak.txt && ./fetch-opponents.sh --set leak-38.txt && ./fetch-opponents.sh --set top20.txt
+
+# 1. Which switch gives the live losers back? Each against the released 3.8.5, 8 seeds.
+ll-nrnm | ./bench-top20.sh ${COMMON} --set live-losers-385.txt --seeds 8 ${NRNM} ${B385} --label ll-nrnm-v385
+  after: prep
+ll-nr   | ./bench-top20.sh ${COMMON} --set live-losers-385.txt --seeds 8 ${NR} ${B385} --label ll-nr-v385
+  after: prep
+ll-nm   | ./bench-top20.sh ${COMMON} --set live-losers-385.txt --seeds 8 ${NM} ${B385} --label ll-nm-v385
+  after: prep
+
+# 2. What it gives away: R9's own set, where 3.5 gained (rammers and mirror movers), 16 seeds.
+weak-nrnm | ./bench-top20.sh ${COMMON} --set weak-leak.txt --seeds 16 ${NRNM} ${B385} --label weak-nrnm-v385
+  after: prep
+weak-nr   | ./bench-top20.sh ${COMMON} --set weak-leak.txt --seeds 16 ${NR} ${B385} --label weak-nr-v385
+  after: prep
+
+# 3. Does it close the gap to 3.4 on the live losers, and is the unselected field level?
+ll-nrnm-v34 | ./bench-top20.sh ${COMMON} --set live-losers-385.txt --seeds 8 ${NRNM} ${B34} --label ll-nrnm-v34
+  after: prep
+leak-nrnm   | ./bench-top20.sh ${COMMON} --set leak-38.txt --seeds 16 ${NRNM} ${B385} --label leak-nrnm-v385
+  after: prep
+
+# 4. The top 20 should not move (RAM-2's confirmation never fires there); 10 seeds as a check.
+top20-nrnm | ./bench-top20.sh ${COMMON} --set top20.txt --seeds 10 ${NRNM} ${B385} --label top20-nrnm-v385
+  after: prep
