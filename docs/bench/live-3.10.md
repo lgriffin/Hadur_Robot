@@ -250,3 +250,13 @@ compliance check. 68 have never been benched.
    part of the 1.25 if the offset is the pass, not the robot.
 5. **Gate 3.11 on the BENCHSEES list** (movement and ram handling against simple guns and
    rammers), measured on the fixed bench.
+
+## Second pass (17:33 UTC)
+
+Leigh's save at 17:33 (`data/rumble/pages/2026-10-08T1733Z_*`): **87.33 APS, 13th**, 4,253 battles,
+1,164 of 1,215 pairings with two or more battles, survival 94.80. Tomcat 3.68 is 10th at 87.70, so
+the gap is 0.37 APS. The first pass's collapses averaged out: `live_passes.py collapses` finds 0 in
+the 50 single-battle pairings left (30 in the morning page). Against 3.9's page (`drift`), the 97
+shield-list pairings are +8.78 a pairing (+0.70 APS) and the other 1,116 are -0.56 ± 0.23 (-0.52
+APS): 3.9's 13th was a single-battle pass, and averaging pulls the same code down about half a
+point. The clean-pass projection of 87.7 was 0.4 high.
