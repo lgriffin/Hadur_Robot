@@ -1,0 +1,16 @@
+# The 11 opponents the Windows bench crippled from 2026-10-06 to 2026-10-08 (docs/bench/live-3.10.md):
+# their first java.time lookup read META-INF/services from target/classes, Robocode denied it and
+# drained them. BENCH-83 (JdkWarmup) fixes it; plans/confirm-fix-310.queue checks it on the PC.
+# Role: Hadur 3.10's live APS on the 2026-10-08 12:38 UTC page / its crippled bench mean.
+#   <robot name as Robocode lists it> | <role> | <jar file in opponents/>
+xander.cat.XanderCat 12.9 | live-66.1-bench-56.7 | xander.cat.XanderCat_12.9.jar
+ne.Chimera 1.2 | live-81.0-bench-97.9 | ne.Chimera_1.2.jar
+Krabb.krabby.Krabby 1.18b | live-80.8-bench-88.8 | Krabb.krabby.Krabby_1.18b.jar
+pez.mini.VertiLeach 0.4.0 | live-75.2-bench-98.7 | pez.mini.VertiLeach_0.4.0.jar
+apv.TheBrainPi 0.5fix | live-80.9-bench-75.7 | apv.TheBrainPi_0.5fix.jar
+bayen.nut.Squirrel 1.621 | live-95.9-bench-89.0 | bayen.nut.Squirrel_1.621.jar
+cx.Princess 1.0 | live-66.9-bench-95.3 | cx.Princess_1.0.jar
+apv.LauLectrik 1.2 | live-78.3-bench-99.3 | apv.LauLectrik_1.2.jar
+pez.frankie.Frankie 0.9.6.1 | live-70.7-bench-98.9 | pez.frankie.Frankie_0.9.6.1.jar
+cbot.agile.Nibbler 0.2 | live-83.1-bench-98.5 | cbot.agile.Nibbler_0.2.jar
+wiki.mini.Griffon 0.1 | live-80.5-bench-99.2 | wiki.mini.Griffon_0.1.jar
