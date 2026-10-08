@@ -5,14 +5,18 @@
 # +0.75 APS of room lives. 4 seeds of 35 rounds, 3.10 alone. Close the RoboRumble client first.
 # Run from hadur-bench:  .\queue.ps1 run peergap-310   (or ./queue.sh)
 #
-# Read it with: python3 ../data/tools/live_passes.py classify ... --bench '../data/bench/*peergap-310*_cold.tsv'
-# (the command in docs/bench/live-3.10.md); a bot whose bench share sits 5+ under the peers'
-# median joins the 3.11 gate list.
+# The export step writes data/bench/2026-10-08_hadur-peergap-310-local_cold.tsv (and _rounds); read it
+# with live_passes.py classify ... --bench '../data/bench/*peergap-310*_cold.tsv' (the command in
+# docs/bench/live-3.10.md). A bot whose bench share sits 5+ under the peers' median joins the 3.11
+# gate list.
 
 set COMMON = --skip-fetch --rounds 35 --cpu-constant 1488498 --child-heap 2G --engine 1.11.1
 set C310 = --robot-jar ../hadur-robot/target/hadur2.Hadur_3.10.jar --robot "hadur2.Hadur 3.10"
 
 prep | (cd .. && mvn -q -B package -DskipTests) && ./fetch-opponents.sh --set peergap-310.txt
 
-peergap-310 | ./bench-top20.sh --skip-build ${COMMON} --set peergap-310.txt --seeds 4 ${C310} --label peergap-310
+peergap-310 | ./bench-top20.sh --skip-build ${COMMON} --set peergap-310.txt --seeds 4 ${C310} --label peergap-310 --out work/peergap-310
   after: prep
+
+export | python3 ../data/tools/export_battles.py --work work/peergap-310 --set peergap-310.txt --build "hadur2.Hadur 3.10" --share --out ../data/bench/2026-10-08_hadur-peergap-310-local_cold.tsv --rounds-out ../data/bench/2026-10-08_hadur-peergap-310-local_cold_rounds.tsv
+  after: peergap-310
