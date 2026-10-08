@@ -27,6 +27,31 @@
    "published": "2026-10-08T02:39Z"
   },
   {
+   "id": "2026-10-08_shield-sweep-low-v39",
+   "date": "2026-10-08",
+   "label": "shield-sweep-low-v39",
+   "kind": "solo",
+   "set": "shield-sweep-low.txt",
+   "engine": "1.11.1",
+   "source": "work directory",
+   "candidate": "hadur2.Hadur 3.9sa",
+   "baseline": "hadur2.Hadur 3.9",
+   "seeds": 8,
+   "rounds": 35,
+   "gate": "CAUTION",
+   "verdict": "down",
+   "diff": -2.399107142857143,
+   "ci95": [
+    -3.740594245922974,
+    -1.0576200397913118
+   ],
+   "n": 728,
+   "opponents": 91,
+   "host": "AMD Ryzen Threadripper PRO 9965WX 24-Cores, 48 logical cores, Windows 11 10.0, no other Robocode JVMs running",
+   "path": "runs/2026-10-08_shield-sweep-low-v39/",
+   "published": "2026-10-08T02:39Z"
+  },
+  {
    "id": "2026-10-07_weak-39r-v385",
    "date": "2026-10-07",
    "label": "weak-39r-v385",
