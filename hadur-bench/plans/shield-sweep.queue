@@ -15,7 +15,7 @@ set CPU = --cpu-constant 1488498
 set B39 = --baseline bisect/hadur2.Hadur_3.9.jar --baseline-robot "hadur2.Hadur 3.9"
 set SA39 = --robot-jar bisect/hadur2.Hadur_3.9sa.jar --robot "hadur2.Hadur 3.9sa"
 
-prep | mkdir -p bisect opponents && { [ -s bisect/hadur2.Hadur_3.9.jar ] || curl -fsSL -o bisect/hadur2.Hadur_3.9.jar https://github.com/lgriffin/Hadur_Robot/releases/download/v3.9/hadur2.Hadur_3.9.jar; } && ./fetch-opponents.sh --set shield-sweep-mid.txt && ./fetch-opponents.sh --set shield-sweep-low.txt && { [ -s bisect/hadur2.Hadur_3.9sa.jar ] || ./build-ablation.sh --ref v3.9 shield-all; }
+prep | mkdir -p bisect opponents && { [ -s bisect/hadur2.Hadur_3.9.jar ] || curl -fsSL -o bisect/hadur2.Hadur_3.9.jar https://github.com/lgriffin/Hadur_Robot/releases/download/v3.9/hadur2.Hadur_3.9.jar; } && ./fetch-opponents.sh --set shield-sweep-mid.txt && ./fetch-opponents.sh --set shield-sweep-low.txt && { [ -s bisect/hadur2.Hadur_3.9sa.jar ] || { git fetch --tags origin && ./build-ablation.sh --ref v3.9 shield-all; }; }
 
 # 1. Ranks 51-400 (109 bots): Hadur scores about 73 to 80 here and Nullstride 15 to 23 more.
 sweep-mid | ./bench-top20.sh ${COMMON} ${CPU} --set shield-sweep-mid.txt --seeds 8 ${SA39} ${B39} --label shield-sweep-mid-v39
