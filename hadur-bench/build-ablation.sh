@@ -49,8 +49,8 @@ IFS=, read -ra list <<< "$1"
 for a in "${list[@]}"; do
     case "$a" in
         ram2)
-            edit "$duel" "ramEscaping = rammer.escape(e.distance(), enemyClosingSpeed, in.energy(), e.energy());" \
-                "ramEscaping = rammer.escape(e.distance(), enemyClosingSpeed, in.energy(), e.energy()) && false;"
+            # Since RAM-3 (3.9) the escape line ends with the trial arm's condition.
+            edit "$duel" "&& trialRound && trialArm == EscapeTrial.Arm.ESCAPE;" "&& false;"
             version="${version}nr" ;;
         mir1)
             edit "$duel" "java.util.Arrays.copyOf(xs, n), java.util.Arrays.copyOf(ys, n), ourEnergy, enemyEnergy);" \
