@@ -1,0 +1,25 @@
+# 3.11 part 2: the flattener switched off (build-ablation.sh flat) against the released 3.10, on
+# the 30 simple-gun bots it was found on and on the two sets it must not hurt. docs/bench/plan-3.11.md.
+# Run from the PR #160 branch (or master once merged):  ./queue.sh run flat-311   (or  .\queue.ps1 run flat-311)
+#
+# The cloud read +1.0 ± 0.75 a bot on gungap-311 (3 seeds); step 1 re-reads it on fresh seeds.
+# Steps 2 and 3 decide the rule: level there and 3.11 ships the flattener off against these guns;
+# down on the top 20 and it stays on until the enemy's hits show a learning gun.
+
+set HEAP = --child-heap 2G
+set E = --engine 1.11.1
+set COMMON = --skip-fetch --rounds 35 --cpu-constant 1488498 ${HEAP} ${E}
+set CNF = --robot-jar bisect/hadur2.Hadur_3.10nf.jar --robot "hadur2.Hadur 3.10nf"
+set B310 = --baseline bisect/hadur2.Hadur_3.10.jar --baseline-robot "hadur2.Hadur 3.10"
+
+prep | mkdir -p bisect && { [ -s bisect/hadur2.Hadur_3.10.jar ] || curl -fsSL -o bisect/hadur2.Hadur_3.10.jar https://github.com/lgriffin/Hadur_Robot/releases/download/v3.10/hadur2.Hadur_3.10.jar; } && bash ./build-ablation.sh --ref v3.10 flat && ./fetch-opponents.sh --set gungap-311.txt && ./fetch-opponents.sh --set top20.txt && ./fetch-opponents.sh --set tail-39.txt
+
+# 1. The 30 simple-gun bots, fresh seeds (101-108). Pass: the pooled difference's interval above 0.
+gungap-nf | ./bench-top20.sh --skip-build ${COMMON} --set gungap-311.txt --seeds 8 --seed-base 100 ${CNF} ${B310} --label gungap-310nf-v310-pc
+  after: prep
+# 2. The top 20, where the flattener answers learning guns, 5 seeds. Must stay level.
+top20-nf  | ./bench-top20.sh --skip-build ${COMMON} --set top20.txt --seeds 5 ${CNF} ${B310} --label top20-310nf-v310-pc
+  after: prep
+# 3. The weak tail, 4 seeds. Must stay level.
+tail-nf   | ./bench-top20.sh --skip-build ${COMMON} --set tail-39.txt --seeds 4 ${CNF} ${B310} --label tail-310nf-v310-pc
+  after: prep
