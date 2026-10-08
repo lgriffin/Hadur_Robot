@@ -1,0 +1,22 @@
+% Score share against Shadow 3.83c by stage, cold bench, 35 rounds x 5 seeds,
+% mean and 95% interval. Source: docs/strategy-evolution.md "Results by stage".
+\begin{tikzpicture}
+\begin{axis}[
+  width=\columnwidth, height=4.6cm,
+  symbolic x coords={S0,S1,S2,S3,S4,S5,S6},
+  xtick=data,
+  xticklabels={S0 (1.20), S1, S2, S3, S4, S5, S6},
+  ylabel={Score share vs Shadow (\%)},
+  ymin=30, ymax=65,
+  ymajorgrids, grid style={black!12},
+  tick label style={font=\scriptsize}, label style={font=\footnotesize},
+]
+\addplot[only marks, mark=square*, mark size=1.8pt, color=hblue,
+  error bars/.cd, y dir=both, y explicit, error bar style={thick}] coordinates {
+  (S0,40.8) +- (0,8.3) (S1,46.2) +- (0,6.4) (S2,43.7) +- (0,4.6) (S3,45.1) +- (0,8.9)
+  (S4,44.3) +- (0,5.5) (S5,46.3) +- (0,4.5) (S6,57.4) +- (0,5.0)
+};
+\addplot[dashed, color=black!50] coordinates {(S0,50) (S6,50)};
+\node[font=\scriptsize, anchor=west, align=left] at (axis cs:S2,60.5) {S6: bullet shadows, checked\\against engine truth};
+\end{axis}
+\end{tikzpicture}
