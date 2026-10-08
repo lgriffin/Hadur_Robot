@@ -1,0 +1,37 @@
+% Hadur 3.9: an outer hexagon (adapter, guard, ports) around an identity kernel with
+% three strands. Source: docs/architecture.md, docs/architecture-evolution.md.
+\begin{tikzpicture}[
+  font=\footnotesize,
+  box/.style={draw=hblue, fill=hblue!8, rounded corners=2pt, align=center, minimum height=9mm},
+  ext/.style={draw=black!50, fill=black!5, rounded corners=2pt, align=center, minimum height=9mm},
+  strand/.style={draw=horange, fill=horange!12, rounded corners=2pt, align=center,
+    minimum height=9mm, text width=30mm},
+  arr/.style={-{Stealth[length=1.8mm]}, black!65},
+  lbl/.style={font=\scriptsize, black!70},
+]
+\node[ext, text width=17mm] (eng) {Robocode\\engine 1.9.5.6};
+\node[box, right=9mm of eng, text width=23mm] (adp) {Adapter\\\texttt{hadur2.Hadur}\\(a TeamRobot)};
+\node[box, right=16mm of adp, text width=18mm] (guard) {Guard\\safe orders\\on a fault};
+\node[box, right=12mm of guard, text width=34mm, minimum height=24mm] (kern)
+  {\textbf{Identity kernel}\\[2pt] Charter, fixed at tick 0\\ RoleResolver: Team $\rightarrow$ Melee\\$\rightarrow$ Duel, never back up\\ World (one battlefield)\\ physics, KNN, memory};
+\node[strand, right=11mm of kern, yshift=11mm] (duel) {\textbf{Duel}: energy ledger, wave surf, KNN guns, shadows, shield mode};
+\node[strand, below=2mm of duel] (melee) {\textbf{Melee}: minimum-risk move, field gun, sentry rules};
+\node[strand, below=2mm of melee] (team) {\textbf{Team}: link codec, teammate fence, fire lane};
+\draw[arr] ([yshift=2mm]eng.east) -- node[lbl, above]{events} ([yshift=2mm]adp.west);
+\draw[arr] ([yshift=-2mm]adp.west) -- node[lbl, below]{setters} ([yshift=-2mm]eng.east);
+\draw[arr] ([yshift=2mm]adp.east) -- node[lbl, above]{BotInput} ([yshift=2mm]guard.west);
+\draw[arr] ([yshift=-2mm]guard.west) -- node[lbl, below]{BotOrders} ([yshift=-2mm]adp.east);
+\draw[arr] ([yshift=2mm]guard.east) -- ([yshift=2mm]kern.west);
+\draw[arr] ([yshift=-2mm]kern.west) -- ([yshift=-2mm]guard.east);
+\foreach \s in {duel,melee,team} \draw[arr] (kern.east) -- (\s.west);
+\node[ext, below=12mm of adp, text width=23mm, minimum height=7mm] (store) {ProfileStore port\\(200\,KB data dir)};
+\node[ext, below=12mm of guard, text width=18mm, minimum height=7mm] (tel) {Telemetry port\\(line records)};
+\coordinate (bus) at ($(kern.south)+(0,-3mm)$);
+\draw[black!65] (kern.south) -- (bus) -- (bus -| store.north);
+\draw[arr] (bus -| tel.north) -- (tel.north);
+\draw[arr] (bus -| store.north) -- (store.north);
+\begin{scope}[on background layer]
+\node[draw=black!40, dashed, rounded corners=5pt, fit=(guard)(kern)(duel)(team), inner sep=3mm,
+  label={[lbl, anchor=south east]north east:\texttt{hadur-core}: no Robocode, randomness, clock, I/O or threads (ArchUnit)}] {};
+\end{scope}
+\end{tikzpicture}

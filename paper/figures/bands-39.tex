@@ -1,0 +1,24 @@
+% 3.9 minus 3.8.5 per live pairing, by opponent rank band, 95% interval.
+% Source: docs/bench/live-3.9.md. The paired bench gate on the 32-bot leak set read
+% -0.02 (level); live on the same bots read +2.14 +- 1.04.
+\begin{tikzpicture}
+\begin{axis}[
+  width=\columnwidth, height=4.6cm,
+  symbolic x coords={1-10,11-20,21-50,51-150,151-400,401-700,701+},
+  xtick=data,
+  xlabel={Opponent rank band (pairings: 10, 9, 29, 100, 248, 297, 513)},
+  ylabel={3.9 $-$ 3.8.5 (points)},
+  ymin=-7.5, ymax=6.5,
+  ymajorgrids, grid style={black!12},
+  tick label style={font=\scriptsize}, label style={font=\footnotesize},
+  ybar, bar width=9pt,
+]
+\addplot[fill=hblue!70, draw=hblue,
+  error bars/.cd, y dir=both, y explicit] coordinates {
+  (1-10,-0.37) +- (0,6.42) (11-20,-0.56) +- (0,3.43) (21-50,0.19) +- (0,2.17)
+  (51-150,2.43) +- (0,1.31) (151-400,2.89) +- (0,0.73) (401-700,2.39) +- (0,0.59)
+  (701+,2.24) +- (0,0.30)
+};
+\draw[black!60] (rel axis cs:0,0) -- (rel axis cs:1,0);
+\end{axis}
+\end{tikzpicture}
