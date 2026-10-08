@@ -33,8 +33,8 @@ file	date	label	mode	candidate	baseline	engine	rounds	child_heap	cpu_constant	pa
 2026-10-07_hadur-mid-39-v34-local_cold.tsv	2026-10-07	hadur-mid-39-v34-local_cold	duel	2.Hadur 3.9	2.Hadur 3.4	1.11.1	35			12		8	40	320	-0.01	-0.64	0.62	11.7	12.0	0	640
 2026-10-07_hadur-mid-null-list-v39-local_cold.tsv	2026-10-07	hadur-mid-null-list-v39-local_cold	duel	2.Hadur 3.9	jd.Nullstride 2.3.3	1.11.1	35			12		8	30	240	-17.84	-18.53	-17.15	12.7	32.9	0	480
 2026-10-07_hadur-mid-null-v39-local_cold.tsv	2026-10-07	hadur-mid-null-v39-local_cold	duel	2.Hadur 3.9	jd.Nullstride 2.3.3	1.11.1	35			12		8	40	320	-10.95	-11.51	-10.39	12.1	46.1	0	640
-2026-10-07_hadur-mid-shieldall-list-v39-local_cold.tsv	2026-10-07	hadur-mid-shieldall-list-v39-local_cold	duel	2.Hadur 3.9	2.Hadur 3.9sa	1.11.1	35			12		8	30	240	-8.05	-8.91	-7.19	12.3	11.7	0	480
-2026-10-07_hadur-mid-shieldall-v39-local_cold.tsv	2026-10-07	hadur-mid-shieldall-v39-local_cold	duel	2.Hadur 3.9	2.Hadur 3.9sa	1.11.1	35			12		8	40	320	1.24	0.53	1.95	11.9	12.3	0	640
+2026-10-07_hadur-mid-shieldall-list-v39-local_cold.tsv	2026-10-07	hadur-mid-shieldall-list-v39-local_cold	duel	2.Hadur 3.9sa	2.Hadur 3.9	1.11.1	35			12		8	30	240	8.05	7.19	8.91	11.7	12.3	0	480
+2026-10-07_hadur-mid-shieldall-v39-local_cold.tsv	2026-10-07	hadur-mid-shieldall-v39-local_cold	duel	2.Hadur 3.9sa	2.Hadur 3.9	1.11.1	35			12		8	40	320	-1.24	-1.95	-0.53	12.3	11.9	0	640
 2026-10-07_hadur-score-leak-39-v34-local_cold.tsv	2026-10-07	hadur-score-leak-39-v34-local_cold	duel	2.Hadur 3.9	2.Hadur 3.4	1.11.1	35			12		8	32	256	5.71	5.23	6.19	10.5	11.1	0	512
 2026-10-07_hadur-tail-39-v34-local_cold.tsv	2026-10-07	hadur-tail-39-v34-local_cold	duel	2.Hadur 3.9	2.Hadur 3.4	1.11.1	35			12		8	39	312	0.16	-0.13	0.44	11.5	11.1	16	640
 2026-10-07_hadur-tail-knight-v39-local_cold.tsv	2026-10-07	hadur-tail-knight-v39-local_cold	duel	2.Hadur 3.9	rsalesc.mega.Knight 0.6.28	1.11.1	35			12		8	39	312	-1.20	-1.54	-0.86	10.8	1.9	16	640
@@ -48,8 +48,8 @@ file	date	label	mode	candidate	baseline	engine	rounds	child_heap	cpu_constant	pa
 2026-10-07_hadur-weak-39-v385-local_cold.tsv	2026-10-07	hadur-weak-39-v385-local_cold	duel	2.Hadur 3.9	2.Hadur 3.8.5	1.11.1	35			12		16	11	176	-0.69	-1.86	0.48	10.8	10.7	0	352
 2026-10-07_hadur-weak-39r-v385-local_cold.tsv	2026-10-07	hadur-weak-39r-v385-local_cold	duel	2.Hadur 3.9	2.Hadur 3.8.5	1.11.1	35			12		16	11	176	0.06	-0.79	0.92	10.9	10.9	0	352
 2026-10-08_hadur-shield-310-v39-local_cold.tsv	2026-10-08	hadur-shield-310-v39-local_cold	duel	2.Hadur 3.10	2.Hadur 3.9	1.11.1	35			12		8	83	664	11.74	11.27	12.21	11.6	13.4	0	1328
-2026-10-08_hadur-shield-confirm-v39-local_cold.tsv	2026-10-08	hadur-shield-confirm-v39-local_cold	duel	2.Hadur 3.9	2.Hadur 3.9sa	1.11.1	35			12		16	65	1040	-10.94	-11.33	-10.54	12.5	11.2	0	2080
-2026-10-08_hadur-shield-sweep-low-v39-local_cold.tsv	2026-10-08	hadur-shield-sweep-low-v39-local_cold	duel	2.Hadur 3.9	2.Hadur 3.9sa	1.11.1	35			12		8	91	728	2.40	2.08	2.72	11.9	12.0	0	1456
-2026-10-08_hadur-shield-sweep-mid-v39-local_cold.tsv	2026-10-08	hadur-shield-sweep-mid-v39-local_cold	duel	2.Hadur 3.9	2.Hadur 3.9sa	1.11.1	35			12		8	109	872	-4.70	-5.14	-4.26	13.4	13.0	0	1744
+2026-10-08_hadur-shield-confirm-v39-local_cold.tsv	2026-10-08	hadur-shield-confirm-v39-local_cold	duel	2.Hadur 3.9sa	2.Hadur 3.9	1.11.1	35			12		16	65	1040	10.94	10.54	11.33	11.2	12.5	0	2080
+2026-10-08_hadur-shield-sweep-low-v39-local_cold.tsv	2026-10-08	hadur-shield-sweep-low-v39-local_cold	duel	2.Hadur 3.9sa	2.Hadur 3.9	1.11.1	35			12		8	91	728	-2.40	-2.72	-2.08	12.0	11.9	0	1456
+2026-10-08_hadur-shield-sweep-mid-v39-local_cold.tsv	2026-10-08	hadur-shield-sweep-mid-v39-local_cold	duel	2.Hadur 3.9sa	2.Hadur 3.9	1.11.1	35			12		8	109	872	4.70	4.26	5.14	13.0	13.4	0	1744
 2026-10-08_hadur-tail-310-v39-local_cold.tsv	2026-10-08	hadur-tail-310-v39-local_cold	duel	2.Hadur 3.10	2.Hadur 3.9	1.11.1	35			12		4	39	156	-0.13	-0.62	0.36	12.1	11.9	0	312
 2026-10-08_hadur-top20-310-v39-local_cold.tsv	2026-10-08	hadur-top20-310-v39-local_cold	duel	2.Hadur 3.10	2.Hadur 3.9	1.11.1	35			12		5	20	100	-0.82	-2.15	0.51	21.7	23.0	0	200

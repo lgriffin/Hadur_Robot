@@ -489,6 +489,18 @@ A list entry names one robot by its exact version, so every other robot meets 3.
 gate (`hadur-bench/plans/candidate-310.queue`) reruns the 83 on fresh seeds (`--seed-base`,
 BENCH-72) and checks the top 20 and the tail are level.
 
+## 3.10 live: a rough pass, and a bench that crippled 11 bots
+
+3.10's first pass read 86.42, 20th, 0.73 under 3.9. Off the shield list 3.10 is 3.9's code, and
+there the pass ran 1.35 a pairing lower (-1.25 APS): a tail of collapsed battles (26 against
+3.9's none) of the kind a loaded host produces. The list itself added +0.51 APS, two thirds of
+the gate's +0.78. The same reading closed issue #151's leak-38 puzzle: on a typical pass the live
+difference is what the bench said. A Windows-only bench defect had crippled 11 opponents since
+2026-10-06 (a JDK service lookup the security manager punishes); BENCH-83 and BENCH-84 fix it.
+Every opponent is now classed (`docs/bench/opponents-3.10.tsv`): the room against the 8th to
+11th bots is +0.76 APS, all below rank 400, and 35 of the gaps are ones the bench reproduces,
+mostly rammers ([live notes](bench/live-3.10.md), L-45 to L-47).
+
 ## What comes next
 
 Every EARS requirement up to R2, bar TIER-1 (above), is implemented and traced. R3 to R5

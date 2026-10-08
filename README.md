@@ -4,8 +4,9 @@
 a 1v1 duelist that remembers each opponent across battles, with a melee brain for
 free-for-alls, a five-robot team entry, and a core that has no idea it is inside Robocode.
 
-**Hadur 3.9 is ranked 13th of 1,216 in the RoboRumble 1v1**, 19th in the MeleeRumble and
-12th in the TeamRumble, the highest-ranked robot flying the Irish flag. It was designed, written, tested and tuned by Claude agents working
+**Hadur 3.10 is ranked 20th of 1,216 in the RoboRumble 1v1** after its first pass (3.9 reached
+13th; [why 3.10 reads lower](docs/bench/live-3.10.md)), 19th in the MeleeRumble and 12th in the
+TeamRumble, the highest-ranked robot flying the Irish flag. It was designed, written, tested and tuned by Claude agents working
 in a shared project with one human, Leigh Griffin, who set the goals and ran the live
 entries. This page covers what the robot does, how it is built, and how it was built.
 
@@ -67,6 +68,7 @@ by BENCH-5. The saved page is archived in [`data/rumble/`](data/rumble/).
 | 3.8 | 2026-10-06 | 84.58 | 91.8% | 29th (16th melee, 12th team) | D1-D5, the DrussGT route, and T1, teammates that no longer collide |
 | 3.8.5 | 2026-10-06 | 84.79 | 92.0% | 24th | MATCH-1/2: the DrussGT aim and shield latch only in duels Hadur is not already winning |
 | 3.9 | 2026-10-07 | **87.15** | **95.0%** | **13th (19th melee, 12th team)** | RAM-3, the rammer trial: escape a rammer only where its rounds show it pays |
+| 3.10 | 2026-10-08 | 86.42 | 93.9% | 20th | The shield sweep: 83 more robots on the shield list (+0.51 APS live); the pass ran 1.25 APS under 3.9's on unchanged code ([live notes](docs/bench/live-3.10.md)) |
 
 3.0 and 3.1 both started near 85.7 APS and slid by 5 to 8 points within hours on live
 clients, which the bench could not reproduce. R7's one-JVM session bench and R8 traced it to

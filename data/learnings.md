@@ -288,3 +288,26 @@ the 1,171 opponents outside the top 20 and off the shield list (794 down, 370 up
 survival (-2.3). The loss is spread evenly over time. The D5 shield list gains +0.14 APS live. A
 12-bot weak set cannot resolve a leak of this size. Not yet attributed among D1 to D4. Evidence:
 `docs/bench/live-3.8.md`. Owner: ladder plan.
+
+**L-45 · confirmed (live, two full passes).** A live pass carries an offset its ± does not show.
+3.10 runs 3.9's code against the 1,118 opponents off its shield list, yet its pass scored
+-1.35 ± 0.34 a pairing (-1.25 APS) under 3.9's on them, through a tail of collapsed single
+battles (26 in 768 against 0 in 684). The other full passes collapse at 1.7 to 2.6%, so 3.9's
+13th was a clean pass. A loaded host on the PC reproduces the signature (-2.6 points, collapses
+1 to 12 in 248). On leak-38 the "+2.14 live against -0.02 bench" of issue #151 becomes +0.74 ±
+1.72 when 3.10's pass stands in for 3.9's. Read a release with `live_passes.py drift`, not its
+rank. Evidence: `docs/bench/live-3.10.md`. Owner: ladder plan.
+
+**L-46 · confirmed (bench, reproduced in a child JVM).** The PC bench crippled 11 opponents in
+every run since 2026-10-06 (989 battles): their first need of the JDK's time-zone rules made a
+`META-INF/services` read on the bench's `target/classes` directory, which Robocode's security
+manager refuses and punishes by draining the robot's energy. PC bench 89-99 against live 68-81
+(Frankie 98.9 against 71; 80.2 on Linux here). Fixed by BENCH-83 (providers loaded before the
+engine starts) and BENCH-84 (such battles untrusted). With them removed the bench matches a
+clean live pass at r = 0.94, live minus bench -0.52 ± 0.43 over 335 bots. Evidence: same report.
+
+**L-47 · open (live, five passes and three peers).** Matched against the median of Tomcat, Knight
+and Raven, Hadur's room is +0.76 APS, all of it below rank 400 (+1.19); from 51 to 150 the
+shield list already puts it 0.37 ahead. 144 bots sit 5+ under the peers in Hadur's typical
+(median) score; on 35 of them the bench shows the same gap, 12 of those rammers Hadur beats on
+rounds and leaks score to. Evidence: `docs/bench/opponents-3.10.tsv`. Owner: 3.11.

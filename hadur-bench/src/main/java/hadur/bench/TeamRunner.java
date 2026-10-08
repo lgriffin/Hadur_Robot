@@ -39,6 +39,7 @@ public final class TeamRunner {
         List<String> teams = List.of(args).subList(6, args.length);
         Files.createDirectories(battleDir);
 
+        JdkWarmup.run(); // BENCH-83: before any robot can be the first to need a JDK provider
         RobocodeEngine.setLogMessagesEnabled(false);
         RobocodeEngine engine = new RobocodeEngine(home);
         TeamHarvester harvester = new TeamHarvester(battleDir, memberClass);

@@ -199,12 +199,12 @@
 <text class="t" x="16" y="795.0">2.Hadur 3.9 vs jd.Nullstride 2.3.3  mid-null-v39 [1.11.1]</text>
 <line class="ci" x1="382.8" x2="396.7" y1="791.0" y2="791.0"/>
 <circle class="pt" cx="389.8" cy="791.0" r="4.5"><title>2026-10-07_hadur-mid-null-v39-local_cold.tsv: -10.95 pp (-11.51 to -10.39)</title></circle>
-<text class="t" x="16" y="817.0">2.Hadur 3.9 vs 2.Hadur 3.9sa  mid-shieldall-list-v39 [1.11.1]</text>
-<line class="ci" x1="415.0" x2="436.3" y1="813.0" y2="813.0"/>
-<circle class="pt" cx="425.7" cy="813.0" r="4.5"><title>2026-10-07_hadur-mid-shieldall-list-v39-local_cold.tsv: -8.05 pp (-8.91 to -7.19)</title></circle>
-<text class="t" x="16" y="839.0">2.Hadur 3.9 vs 2.Hadur 3.9sa  mid-shieldall-v39 [1.11.1]</text>
-<line class="ci" x1="532.0" x2="549.6" y1="835.0" y2="835.0"/>
-<circle class="pt" cx="540.8" cy="835.0" r="4.5"><title>2026-10-07_hadur-mid-shieldall-v39-local_cold.tsv: 1.24 pp (0.53 to 1.95)</title></circle>
+<text class="t" x="16" y="817.0">2.Hadur 3.9sa vs 2.Hadur 3.9  mid-shieldall-list-v39 [1.11.1]</text>
+<line class="ci" x1="614.5" x2="635.8" y1="813.0" y2="813.0"/>
+<circle class="pt" cx="625.2" cy="813.0" r="4.5"><title>2026-10-07_hadur-mid-shieldall-list-v39-local_cold.tsv: 8.05 pp (7.19 to 8.91)</title></circle>
+<text class="t" x="16" y="839.0">2.Hadur 3.9sa vs 2.Hadur 3.9  mid-shieldall-v39 [1.11.1]</text>
+<line class="ci" x1="501.3" x2="518.9" y1="835.0" y2="835.0"/>
+<circle class="pt" cx="510.1" cy="835.0" r="4.5"><title>2026-10-07_hadur-mid-shieldall-v39-local_cold.tsv: -1.24 pp (-1.95 to -0.53)</title></circle>
 <text class="t" x="16" y="861.0">2.Hadur 3.9 vs 2.Hadur 3.4  score-leak-39-v34 [1.11.1]</text>
 <line class="ci" x1="590.2" x2="602.1" y1="857.0" y2="857.0"/>
 <circle class="pt" cx="596.2" cy="857.0" r="4.5"><title>2026-10-07_hadur-score-leak-39-v34-local_cold.tsv: 5.71 pp (5.23 to 6.19)</title></circle>
@@ -244,15 +244,15 @@
 <text class="t" x="16" y="1125.0">2.Hadur 3.10 vs 2.Hadur 3.9  shield-310-v39 [1.11.1]</text>
 <line class="ci" x1="665.1" x2="676.7" y1="1121.0" y2="1121.0"/>
 <circle class="pt" cx="670.9" cy="1121.0" r="4.5"><title>2026-10-08_hadur-shield-310-v39-local_cold.tsv: 11.74 pp (11.27 to 12.21)</title></circle>
-<text class="t" x="16" y="1147.0">2.Hadur 3.9 vs 2.Hadur 3.9sa  shield-confirm-v39 [1.11.1]</text>
-<line class="ci" x1="385.0" x2="394.8" y1="1143.0" y2="1143.0"/>
-<circle class="pt" cx="389.9" cy="1143.0" r="4.5"><title>2026-10-08_hadur-shield-confirm-v39-local_cold.tsv: -10.94 pp (-11.33 to -10.54)</title></circle>
-<text class="t" x="16" y="1169.0">2.Hadur 3.9 vs 2.Hadur 3.9sa  shield-sweep-low-v39 [1.11.1]</text>
-<line class="ci" x1="551.2" x2="559.1" y1="1165.0" y2="1165.0"/>
-<circle class="pt" cx="555.2" cy="1165.0" r="4.5"><title>2026-10-08_hadur-shield-sweep-low-v39-local_cold.tsv: 2.40 pp (2.08 to 2.72)</title></circle>
-<text class="t" x="16" y="1191.0">2.Hadur 3.9 vs 2.Hadur 3.9sa  shield-sweep-mid-v39 [1.11.1]</text>
-<line class="ci" x1="461.7" x2="472.6" y1="1187.0" y2="1187.0"/>
-<circle class="pt" cx="467.2" cy="1187.0" r="4.5"><title>2026-10-08_hadur-shield-sweep-mid-v39-local_cold.tsv: -4.70 pp (-5.14 to -4.26)</title></circle>
+<text class="t" x="16" y="1147.0">2.Hadur 3.9sa vs 2.Hadur 3.9  shield-confirm-v39 [1.11.1]</text>
+<line class="ci" x1="656.0" x2="665.8" y1="1143.0" y2="1143.0"/>
+<circle class="pt" cx="661.0" cy="1143.0" r="4.5"><title>2026-10-08_hadur-shield-confirm-v39-local_cold.tsv: 10.94 pp (10.54 to 11.33)</title></circle>
+<text class="t" x="16" y="1169.0">2.Hadur 3.9sa vs 2.Hadur 3.9  shield-sweep-low-v39 [1.11.1]</text>
+<line class="ci" x1="491.7" x2="499.7" y1="1165.0" y2="1165.0"/>
+<circle class="pt" cx="495.7" cy="1165.0" r="4.5"><title>2026-10-08_hadur-shield-sweep-low-v39-local_cold.tsv: -2.40 pp (-2.72 to -2.08)</title></circle>
+<text class="t" x="16" y="1191.0">2.Hadur 3.9sa vs 2.Hadur 3.9  shield-sweep-mid-v39 [1.11.1]</text>
+<line class="ci" x1="578.2" x2="589.1" y1="1187.0" y2="1187.0"/>
+<circle class="pt" cx="583.7" cy="1187.0" r="4.5"><title>2026-10-08_hadur-shield-sweep-mid-v39-local_cold.tsv: 4.70 pp (4.26 to 5.14)</title></circle>
 <text class="t" x="16" y="1213.0">2.Hadur 3.10 vs 2.Hadur 3.9  tail-310-v39 [1.11.1]</text>
 <line class="ci" x1="517.8" x2="529.9" y1="1209.0" y2="1209.0"/>
 <circle class="pt" cx="523.8" cy="1209.0" r="4.5"><title>2026-10-08_hadur-tail-310-v39-local_cold.tsv: -0.13 pp (-0.62 to 0.36)</title></circle>

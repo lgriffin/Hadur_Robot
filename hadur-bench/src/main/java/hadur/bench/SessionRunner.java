@@ -68,6 +68,7 @@ public final class SessionRunner {
             }, null, null);
         }
 
+        JdkWarmup.run(); // BENCH-83: before any robot can be the first to need a JDK provider
         RobocodeEngine.setLogMessagesEnabled(false);
         RobocodeEngine engine = new RobocodeEngine(home);
         ClassLoadingMXBean classes = ManagementFactory.getClassLoadingMXBean();

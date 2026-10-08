@@ -80,7 +80,8 @@ def pooled(cells):
 
 
 def split_builds(builds):
-    ordered = sorted(builds, key=bt.version_key)
+    # Ties (3.9 and 3.9sa) break by name, so the suffixed build is the candidate on every run.
+    ordered = sorted(builds, key=lambda b: (bt.version_key(b), b))
     return ordered[-1], ordered[0]
 
 
