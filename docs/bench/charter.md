@@ -47,8 +47,9 @@ Set files and scripts live in `hadur-bench/`. Strategy documents live in `docs/b
 come from the pages saved under `data/rumble/`, dated 2026-10-05.
 
 Out of scope for now: robots below the top 20, the 1v1 top 50 (already covered by earlier
-reports), and any change of Robocode engine version. The bench uses Robocode 1.9.5.6, as the
-cloud bench does.
+reports). The bench uses Robocode 1.11.1, a release LiteRumble takes uploads from; it used
+1.9.5.6 until 2026-10-08 (issue #151, BENCH-79), so runs before then without `--engine
+1.11.1` were on the older engine.
 
 ## Outputs the owner can analyse
 

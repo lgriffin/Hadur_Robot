@@ -145,11 +145,23 @@ final class Report {
     private static String conditionsParagraph(int rounds, int runs, boolean warm, int width, int height,
                                                String cpuConstant) {
         return String.format(Locale.ROOT,
-            "%d rounds x %d %s per opponent on %dx%d. Engine Robocode %s, security manager on. "
+            "%d rounds x %d %s per opponent on %dx%d. Engine Robocode %s%s, security manager on. "
             + "Java %s, %d cores. %s.%n%n",
             rounds, runs, warm ? "consecutive battles (data kept)" : "seeds (data wiped)",
-            width, height, ENGINE, System.getProperty("java.version"),
+            width, height, ENGINE, engineNote(ENGINE), System.getProperty("java.version"),
             Runtime.getRuntime().availableProcessors(), cpuConstant);
+    }
+
+    /**
+     * BENCH-79: the engine releases LiteRumble takes uploads from (its {@code structures.py}),
+     * so a result on any other release is not what the live ladder measures (issue #151).
+     */
+    static final java.util.List<String> RUMBLE_ENGINES = java.util.List.of("1.10.3", "1.11.0", "1.11.1");
+
+    /** BENCH-79: "" for an engine the rumble accepts, else a warning to follow the version. */
+    static String engineNote(String version) {
+        return RUMBLE_ENGINES.contains(version) ? ""
+            : " (not a release the rumble accepts uploads from: " + String.join(", ", RUMBLE_ENGINES) + ")";
     }
 
     /** The engine the battles run on: the robocode.core jar on the bench's classpath. */

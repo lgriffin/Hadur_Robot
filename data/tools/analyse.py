@@ -21,6 +21,10 @@ Reports
              deviation: measured seed pairing gave about zero variance reduction (see
              repeatability.py), so planning as paired would be optimistic.
   --weights [COL]  weight each opponent by the column COL (default "weight") when present.
+  --live PAGE.csv  (issue #151) read the run the way LiteRumble would: each build's APS, CI and
+             PWIN by LiteRumble's arithmetic, the per-opponent differences projected onto the
+             live APS of the parsed BotDetails page (literumble.py), and the run's coverage of
+             the live field by rank band, with set entries whose version is not the live one.
   --json FILE      also write analysis.json (docs/bench/analysis-json.md): the numbers above, a
              trust gate (TRUSTED, CAUTION, NOT_TRUSTED), the opponents set aside, and the run's
              conditions. --conditions FILE reads the run's conditions.json for the latter.
@@ -40,6 +44,8 @@ import os
 import re
 import sys
 from collections import OrderedDict
+
+import literumble
 
 NAN = float("nan")
 
@@ -610,6 +616,36 @@ def build_json(per_opp, result, all_rows, ok_rows, candidate, baseline, margin, 
     return _j(doc)
 
 
+def live_read(page, all_rows, result, candidate, baseline, unrunnable=None):
+    """Issue #151 (A5, A6, A9): the run read as LiteRumble reads a bot. Returns dict(text, json)."""
+    pairings = literumble.read_page(page)
+    bad = literumble.read_set(unrunnable) if unrunnable and os.path.exists(unrunnable) else []
+    builds = OrderedDict()
+    for b in (candidate, baseline):
+        builds[b] = literumble.bench_summary(literumble.bench_per_opponent(all_rows, b))
+    diffs = OrderedDict((r["opponent"], (r["mean"], r["se"])) for r in result["rows"])
+    proj = literumble.project(diffs, pairings)
+    names = list(OrderedDict.fromkeys(r["opponent"] for r in all_rows))
+    cov = literumble.coverage(names, pairings, bad)
+    text = ["LITERUMBLE-STYLE (each opponent once, unweighted; not the headline above)"]
+    for b, s in builds.items():
+        if s:
+            text.append("  " + literumble.render_summary(s, b))
+    text.append("")
+    text.append(literumble.render_projection(proj))
+    text.append("")
+    text.append(literumble.render_coverage(cov))
+    doc = dict(page=os.path.basename(page), builds=builds,
+               projection=dict(direct=proj["direct"], directSe=proj["direct_se"],
+                               extrapolated=proj["extrapolated"], pairings=proj["pairings"],
+                               covered=proj["covered"], bands=proj["bands"],
+                               bandsLeftOut=proj["bands_left_out"], notLive=proj["missing"]),
+               coverage=dict(bands=[dict(band=l, pairings=n, covered=c) for l, n, c in cov["bands"]],
+                             flagged=[dict(name=n, status=st, live=lv, rank=rk)
+                                      for n, st, lv, rk in cov["entries"] if st != "live"]))
+    return dict(text="\n".join(text), json=doc)
+
+
 def plan_pooled(per_opp, halfwidth):
     """What narrows the POOLED opponent-clustered interval. The opponents' own spread (the
     between SD) is not shrunk by seeds, so the pooled half-width cannot fall below
@@ -652,7 +688,10 @@ def render(result, candidate, baseline, metric, unit, margin=None, extra=None):
     margin = result["margin"] if margin is None else margin
     extra = extra or {}
     cl, bt = result["cluster"], result["battle"]
-    out = ["%s: %s minus %s, paired by (opponent, seed), in %s" % (metric, candidate, baseline, unit), ""]
+    out = ["%s: %s minus %s, paired by (opponent, seed), in %s" % (metric, candidate, baseline, unit)]
+    if extra.get("engine"):
+        out.append("engine: Robocode %s" % extra["engine"])
+    out.append("")
     out.append("HEADLINE  %s +/- %s  [%s, %s]  opponent-clustered 95%% interval, %d opponents  -> %s" % (
         fmt(cl["mean"], 2, True), fmt(cl["half"]), fmt(cl["lo"], 2, True), fmt(cl["hi"], 2, True),
         cl["n"], pooled_verdict(cl, margin).upper()))
@@ -774,6 +813,13 @@ def main(argv=None):
                     help="the run's conditions.json, for analysis.json's conditions block")
     ap.add_argument("--label", help="run label for analysis.json (default: the TSV's name)")
     ap.add_argument("--set-name", help="opponent set name for analysis.json (default: conditions.json's)")
+    ap.add_argument("--live", metavar="PAGE.csv",
+                    help="a parsed BotDetails page: add the LiteRumble-style read (issue #151)")
+    ap.add_argument("--unrunnable", metavar="FILE",
+                    default=os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..",
+                                         "hadur-bench", "unrunnable.txt"),
+                    help="robots no build can fight, flagged in --live's coverage "
+                         "(default hadur-bench/unrunnable.txt)")
     ap.add_argument("--selected-on", choices=["baseline"],
                     help="the opponent set was chosen from the baseline's results: warn that the "
                          "gaps are likely overstated")
@@ -805,8 +851,13 @@ def main(argv=None):
     doc = build_json(per_opp, result, all_rows, rows, candidate, baseline, args.margin, cond,
                      run_meta(cond, args, args.tsv, rows), args.selected_on, args.metric)
     extra = dict(gate=doc["gate"], excluded=doc["excluded"],
-                 without_duress=doc["trust"]["withoutDuress"])
+                 without_duress=doc["trust"]["withoutDuress"], engine=doc["run"]["engine"])
     print(render(result, candidate, baseline, args.metric, unit, args.margin, extra))
+    if args.live:
+        live = live_read(args.live, all_rows, result, candidate, baseline, args.unrunnable)
+        doc["live"] = _j(live["json"])
+        print("")
+        print(live["text"])
     if args.json:
         with open(args.json, "w", encoding="utf-8") as f:
             json.dump(doc, f, indent=2)

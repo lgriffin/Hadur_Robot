@@ -1,0 +1,43 @@
+# Issue #151: the conditions where the bench and LiteRumble differ that only a run can settle.
+# All on leak-38.txt (32 bots ranked 21 and below), 3.9 against 3.8.5: live, 3.9 led by
+# +2.14 +/- 1.04 on these bots and the cold bench read -0.02. Each step changes ONE condition
+# from the reference step, so a step that moves toward +2.14 names the condition.
+#   ./queue.sh run harness-gaps        (or  .\queue.ps1 run harness-gaps)
+# Then, for each duel step:  python3 ../data/tools/analyse.py <its TSV> --live
+#   ../data/rumble/parsed/2026-10-07T2028Z_roborumble_botdetails_hadur2.Hadur_3.9.csv
+# for the live projection and coverage (BENCH-73, BENCH-74). The engine is the bench default
+# 1.11.1 (BENCH-79); the constant is this PC's own client value.
+#
+# Close the host's RoboRumble client first: steps 4 and 5 run one battle at a time and are
+# the slow, clean reads. Expect about 10 hours in all, most of it the two parallel-1 steps.
+#
+# A3 (warm at length) is folded into A1: the session fills the data directory from empty over
+# 256 battles through the robot's own saves, the real path, rather than from a synthetic prefill.
+# A8 (this PC's own client output) waits on the owner's call on whether the client stays on.
+
+set HEAP = --child-heap 2G
+set CPU = --cpu-constant 1488498
+set COMMON = --skip-build --skip-fetch --rounds 35 ${CPU}
+set C39 = --robot-jar bisect/hadur2.Hadur_3.9.jar --robot "hadur2.Hadur 3.9"
+set B385 = --baseline bisect/hadur2.Hadur_3.8.5.jar --baseline-robot "hadur2.Hadur 3.8.5"
+
+prep | mkdir -p bisect && { [ -s bisect/hadur2.Hadur_3.9.jar ] || curl -fsSL -o bisect/hadur2.Hadur_3.9.jar https://github.com/lgriffin/Hadur_Robot/releases/download/v3.9/hadur2.Hadur_3.9.jar; } && { [ -s bisect/hadur2.Hadur_3.8.5.jar ] || curl -fsSL -o bisect/hadur2.Hadur_3.8.5.jar https://github.com/lgriffin/Hadur_Robot/releases/download/v3.8.5/hadur2.Hadur_3.8.5.jar; } && ./fetch-opponents.sh --set leak-38.txt && (cd .. && mvn -q -B install -DskipTests)
+
+# 1. Reference: the bench as it is used today (parallel 12, 2G, seeded, cold), 8 seeds.
+ref       | ./bench-top20.sh ${COMMON} ${HEAP} --parallel 12 --set leak-38.txt --seeds 8 ${C39} ${B385} --label gaps-ref-39v385
+  after: prep
+# 2. A10 / gap 11: the same, unseeded, as the client runs battles.
+unseeded  | ./bench-top20.sh ${COMMON} ${HEAP} --parallel 12 --set leak-38.txt --seeds 8 --unseeded ${C39} ${B385} --label gaps-unseeded-39v385
+  after: prep
+# 3. A7: the same at the client's 512 MB heap.
+heap512   | ./bench-top20.sh ${COMMON} --child-heap 512M --parallel 12 --set leak-38.txt --seeds 8 ${C39} ${B385} --label gaps-heap512-39v385
+  after: prep
+# 4. A4: the same one battle at a time, as the client runs them.
+width1    | ./bench-top20.sh ${COMMON} ${HEAP} --parallel 1 --set leak-38.txt --seeds 8 ${C39} ${B385} --label gaps-width1-39v385
+  after: prep
+  timeout: 8h
+# 5. A1 (and A3): one engine, data kept, 512M, unseeded, the list 8 times shuffled; 3.8.5 after.
+#    Arguments in session-leak-38.args (3.9, the constant, the report path).
+session   | mvn -q exec:java -Dexec.args="@session-leak-38.args"
+  after: prep
+  timeout: 10h

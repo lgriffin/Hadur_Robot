@@ -21,6 +21,9 @@ jobs:
       - name: Bench publish tests
         run: python3 test_publish_run.py
         working-directory: data/tools
+      - name: Bench analysis and LiteRumble tests
+        run: python3 test_analyse.py && python3 test_literumble.py
+        working-directory: data/tools
       - name: Requirement coverage
         if: always()
         run: cat hadur-core/target/requirements-coverage.md >> "$GITHUB_STEP_SUMMARY" || true

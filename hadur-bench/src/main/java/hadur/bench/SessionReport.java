@@ -89,7 +89,14 @@ final class SessionReport {
     }
 
     static String render(Map<String, List<Row>> sessions, String heap, boolean fresh, boolean wipe, int rounds) {
+        return render(sessions, heap, fresh, wipe, rounds, null);
+    }
+
+    /** As above, with a conditions line (engine, CPU constant, order) under the title when given. */
+    static String render(Map<String, List<Row>> sessions, String heap, boolean fresh, boolean wipe, int rounds,
+                         String conditions) {
         StringBuilder sb = new StringBuilder("# Session bench (BENCH-6)\n\n");
+        if (conditions != null) sb.append(conditions).append("\n\n");
         sb.append(String.format(Locale.ROOT, "Heap cap %s, %s, data directory %s, %d rounds a battle, blocks of %d "
             + "battles. Weak means an opponent under %.0f APS.%n%n", heap,
             fresh ? "a fresh JVM per battle" : "one JVM for the whole session",
@@ -110,7 +117,10 @@ final class SessionReport {
                 pct(lastWeakSurvival(rows, 100)), disables(rows),
                 reproduced(rows) ? "Slide reproduced." : "No slide."));
         }
-        if (sessions.size() == 2) sb.append(sideBySide(sessions));
+        if (sessions.size() == 2) {
+            sb.append(sideBySide(sessions));
+            sb.append(perOpponent(sessions));
+        }
         return sb.toString();
     }
 
@@ -161,6 +171,48 @@ final class SessionReport {
         }
         sb.append("\nA slide the control shares belongs to the engine or the opponents; one only the robot shows is ours.\n");
         return sb.toString();
+    }
+
+    /**
+     * BENCH-77: each opponent's mean score share for the robot and the control over the
+     * battles that ran, their difference in points, and the mean of those differences with each
+     * opponent counted once, as LiteRumble's APS counts a pairing (issue #151, A1), so a session
+     * over a short set fought several times reads like a live comparison of the two versions.
+     */
+    static String perOpponent(Map<String, List<Row>> sessions) {
+        List<String> names = new ArrayList<>(sessions.keySet());
+        Map<String, double[]> a = shares(sessions.get(names.get(0)));
+        Map<String, double[]> b = shares(sessions.get(names.get(1)));
+        StringBuilder sb = new StringBuilder("\n## Per opponent (BENCH-77)\n\n");
+        sb.append("Mean score share over the battles that ran, in points; each opponent counts once in the mean.\n\n");
+        sb.append("| opponent | battles | ").append(names.get(0)).append(" | ").append(names.get(1))
+            .append(" | difference |\n|---|---|---|---|---|\n");
+        double sum = 0;
+        int n = 0;
+        for (Map.Entry<String, double[]> e : a.entrySet()) {
+            double[] other = b.get(e.getKey());
+            if (other == null) continue;
+            double x = 100 * e.getValue()[0] / e.getValue()[1], y = 100 * other[0] / other[1];
+            sb.append(String.format(Locale.ROOT, "| %s | %d / %d | %.2f | %.2f | %+.2f |%n", e.getKey(),
+                (int) e.getValue()[1], (int) other[1], x, y, x - y));
+            sum += x - y;
+            n++;
+        }
+        sb.append(String.format(Locale.ROOT, "%nMean difference over %d opponents: %s points.%n", n,
+            n == 0 ? "n/a" : String.format(Locale.ROOT, "%+.2f", sum / n)));
+        return sb.toString();
+    }
+
+    /** Opponent to {sum of score shares, battles} over the battles that ran, in first-seen order. */
+    private static Map<String, double[]> shares(List<Row> rows) {
+        Map<String, double[]> m = new LinkedHashMap<>();
+        for (Row r : rows) {
+            if (!r.ran()) continue;
+            double[] acc = m.computeIfAbsent(r.opponent(), k -> new double[2]);
+            acc[0] += r.result().scoreShare();
+            acc[1]++;
+        }
+        return m;
     }
 
     private static String pct(double v) {
