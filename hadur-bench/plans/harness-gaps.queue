@@ -8,8 +8,9 @@
 # for the live projection and coverage (BENCH-73, BENCH-74). The engine is the bench default
 # 1.11.1 (BENCH-79); the constant is this PC's own client value.
 #
-# Close the host's RoboRumble client first: steps 4 and 5 run one battle at a time and are
-# the slow, clean reads. Expect about 10 hours in all, most of it the two parallel-1 steps.
+# Close every RoboRumble client shard first and keep the host quiet for the whole queue: each step
+# reads how host conditions move the score, so client battles beside it would be an unrecorded
+# condition. Steps 4 and 5 run one battle at a time and suffer most. Expect about 11 hours.
 #
 # A3 (warm at length) is folded into A1: the session fills the data directory from empty over
 # 256 battles through the robot's own saves, the real path, rather than from a synthetic prefill.
@@ -36,6 +37,11 @@ heap512   | ./bench-top20.sh ${COMMON} --child-heap 512M --parallel 12 --set lea
 width1    | ./bench-top20.sh ${COMMON} ${HEAP} --parallel 1 --set leak-38.txt --seeds 8 ${C39} ${B385} --label gaps-width1-39v385
   after: prep
   timeout: 8h
+# 4b. A4: four battles at once, as the owner's PC runs its four client shards side by side
+#     (2026-10-08), so the live battles from this PC are fought four wide.
+width4    | ./bench-top20.sh ${COMMON} ${HEAP} --parallel 4 --set leak-38.txt --seeds 8 ${C39} ${B385} --label gaps-width4-39v385
+  after: prep
+  timeout: 4h
 # 5. A1 (and A3): one engine, data kept, 512M, unseeded, the list 8 times shuffled; 3.8.5 after.
 #    Arguments in session-leak-38.args (3.9, the constant, the report path).
 session   | mvn -q exec:java -Dexec.args="@session-leak-38.args"
