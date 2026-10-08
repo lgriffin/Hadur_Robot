@@ -2,7 +2,8 @@
 # from those ranked 401st and below on 2026-10-07, leaving out DrussGT's shield list. Live,
 # Tomcat, Knight and Raven outscore Hadur 3.9 by about one point a pairing here; on this draw by
 # 1.58. Use: bench Hadur against a reference top-10 bot on the same opponents, and see where
-# the reference keeps the points Hadur gives away.
+# the reference keeps the points Hadur gives away. e32.Omni 0.06 was dropped after the #138 run:
+# the engine cannot load it ("expected 2 robots; found 1"), so 39 bots remain.
 # Jars from https://robocode-archive.strangeautomata.com/robots/<jar>, into opponents/ (not committed).
 #   <robot name as Robocode lists it> | <role> | <jar file in opponents/>
 ers.nano.lig.LigMA 1.9 | weak | ers.nano.lig.LigMA_1.9.jar
@@ -31,7 +32,6 @@ dsw.StaticD 1.0 | weak | dsw.StaticD_1.0.jar
 sul.BlueBot 1.0 | weak | sul.BlueBot_1.0.jar
 hapiel.Spiral 0.1 | weak | hapiel.Spiral_0.1.jar
 Lo_Ian.Gandalf_V4 4.0 | weak | Lo_Ian.Gandalf_V4_4.0.jar
-e32.Omni 0.06 | weak | e32.Omni_0.06.jar
 suh.nano.CrossC 1.00 | weak | suh.nano.CrossC_1.00.jar
 hirataatsushi.Trinity 0.003 | weak | hirataatsushi.Trinity_0.003.jar
 adt.Ar2 1.0 | weak | adt.Ar2_1.0.jar
