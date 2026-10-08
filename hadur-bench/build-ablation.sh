@@ -11,6 +11,8 @@
 # Ablations (each a one-line edit of the duel, checked to apply exactly once):
 #   ram2  RAM-2 off: never escape a confirmed rammer; RAM-1's full-power rule stays (3.4's play)
 #   mir1  MIR-1 off: never recognise a mirror bot, so no mirror drive or mirror aim
+#   flat  the flattener views never switch on (MOVE-5's threshold out of reach, ADAPT-2's forcing off): is the
+#         flattener what lets simple guns hit us (docs/bench/plan-3.11.md, part 2)?
 #   shield-all  the D5 shield list matches every opponent, so each 1v1 round opens in shield
 #         mode (SHIELD-6 still takes it back where the enemy's bullets would hold the score
 #         share under 85%). Issue #140, M2: is Nullstride's mid-table score a shielding score?
@@ -24,7 +26,7 @@ set -euo pipefail
 
 ref=HEAD
 if [[ "${1:-}" == "--ref" ]]; then ref="$2"; shift 2; fi
-[[ $# -eq 1 ]] || { sed -n '2,22p' "$0"; exit 2; }
+[[ $# -eq 1 ]] || { sed -n '2,24p' "$0"; exit 2; }
 
 here="$(cd "$(dirname "$0")" && pwd)"
 repo="$(git -C "$here" rev-parse --show-toplevel)"
@@ -33,6 +35,7 @@ trap 'git -C "$repo" worktree remove --force "$work/src" >/dev/null 2>&1 || true
 git -C "$repo" worktree add --detach "$work/src" "$ref" >/dev/null
 src="$work/src"
 duel="$src/hadur-core/src/main/java/hadur2/core/duel/DuelController.java"
+move="$src/hadur-core/src/main/java/hadur2/core/move/MoveController.java"
 shields="$src/hadur-core/src/main/java/hadur2/core/shieldmode/ShieldList.java"
 
 # Replace exactly one occurrence of $2 with $3 in file $1, or fail.
@@ -63,10 +66,16 @@ for a in "${list[@]}"; do
             edit "$duel" "java.util.Arrays.copyOf(xs, n), java.util.Arrays.copyOf(ys, n), ourEnergy, enemyEnergy);" \
                 "java.util.Arrays.copyOf(xs, n), java.util.Arrays.copyOf(ys, n), ourEnergy, enemyEnergy) && false;"
             version="${version}nm" ;;
+        flat)
+            edit "$move" "public static final double FLATTENER_THRESHOLD = 4.5;" \
+                "public static final double FLATTENER_THRESHOLD = 1000.0;"
+            edit "$move" "if (flattenerFirst && view.logVisits) return true;" \
+                "if (false && flattenerFirst && view.logVisits) return true;"
+            version="${version}nf" ;;
         shield-all)
             edit "$shields" "return entries.contains(name) || entries.contains(withoutVersion(name));"                 "return true;"
             version="${version}sa" ;;
-        *) echo "unknown ablation: $a (ram2, mir1, shield-all)" >&2; exit 2 ;;
+        *) echo "unknown ablation: $a (ram2, mir1, flat, shield-all)" >&2; exit 2 ;;
     esac
 done
 

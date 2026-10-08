@@ -121,4 +121,53 @@ class RamEscapeTest {
         assertTrue(Math.abs(Angles.normalRelativeAngle(h - toRammer)) > Math.PI / 2,
             "heading " + h + " vs bearing to the rammer " + toRammer);
     }
+
+    @Test
+    @Tag("RAM-4")
+    @DisplayName("RAM-4: in open field the escape crosses the rammer's line of fire instead of running straight down it")
+    void crossesTheLineOfFire() {
+        RobotState me = state(400, 300, 0, 0, 0);
+        RobotState rammer = state(400, 120, 0, 8, 0);
+        double h = new RamEscape(FIELD, PREDICTOR).choose(me, rammer);
+        double away = DiaUtils.absoluteBearing(rammer.location, me.location);
+        double off = Math.abs(Angles.normalRelativeAngle(h - away));
+        assertTrue(off > Math.PI / 8 && off < Math.PI / 2 + 1e-9,
+            "heading " + h + " is " + Math.toDegrees(off) + " degrees off straight away; it should cross, still moving away");
+    }
+
+    @Test
+    @Tag("RAM-4")
+    @DisplayName("RAM-4: crossing never gives up more than the slack, nor the ram range, against the best run")
+    void crossingKeepsTheRammerOut() {
+        RobotState me = state(400, 300, 0, 0, 0);
+        RobotState rammer = state(400, 120, 0, 8, 0);
+        assertTrue(closestApproach(me, rammer, 60) > RamEscape.SAFE - 20,
+            "a rammer fires inside 100 px; the crossing run must still keep it out");
+    }
+
+    @Test
+    @Tag("RAM-4")
+    @DisplayName("RAM-4: over a long chase our bearing from the rammer keeps moving")
+    void bearingKeepsMoving() {
+        RamEscape escape = new RamEscape(FIELD, PREDICTOR);
+        RobotState me = state(400, 300, 0, 0, 0);
+        double ex = 400, ey = 120, eh = 0, ev = 8;
+        double moved = 0;
+        double last = Math.atan2(me.location.x - ex, me.location.y - ey);
+        for (int t = 0; t < 40; t++) {
+            BotOrders.Builder orders = BotOrders.builder();
+            escape.move(orders, me, state(ex, ey, eh, ev, t));
+            BotOrders o = orders.build();
+            me = PREDICTOR.predict(me, o.ahead(), o.bodyTurn(), o.maxVelocity(), 1, false);
+            double want = Math.atan2(me.location.x - ex, me.location.y - ey);
+            double turn = Rules.getTurnRateRadians(ev);
+            eh += DiaUtils.limit(-turn, Angles.normalRelativeAngle(want - eh), turn);
+            ex = DiaUtils.limit(18, ex + Math.sin(eh) * ev, 782);
+            ey = DiaUtils.limit(18, ey + Math.cos(eh) * ev, 582);
+            double b = Math.atan2(me.location.x - ex, me.location.y - ey);
+            moved += Math.abs(Angles.normalRelativeAngle(b - last));
+            last = b;
+        }
+        assertTrue(moved > 0.5, "bearing moved " + moved + " rad over 40 ticks");
+    }
 }
