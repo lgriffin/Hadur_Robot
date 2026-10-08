@@ -49,8 +49,15 @@ IFS=, read -ra list <<< "$1"
 for a in "${list[@]}"; do
     case "$a" in
         ram2)
-            # Since RAM-3 (3.9) the escape line ends with the trial arm's condition.
-            edit "$duel" "&& trialRound && trialArm == EscapeTrial.Arm.ESCAPE;" "&& false;"
+            # Since RAM-3 (3.9) the escape line ends with the trial arm's condition; before it
+            # (3.5 to 3.8.5) the call ends the line.
+            ram3="&& trialRound && trialArm == EscapeTrial.Arm.ESCAPE;"
+            if grep -qF -- "$ram3" "$duel"; then
+                edit "$duel" "$ram3" "&& false;"
+            else
+                edit "$duel" "ramEscaping = rammer.escape(e.distance(), enemyClosingSpeed, in.energy(), e.energy());" \
+                    "ramEscaping = rammer.escape(e.distance(), enemyClosingSpeed, in.energy(), e.energy()) && false;"
+            fi
             version="${version}nr" ;;
         mir1)
             edit "$duel" "java.util.Arrays.copyOf(xs, n), java.util.Arrays.copyOf(ys, n), ourEnergy, enemyEnergy);" \
