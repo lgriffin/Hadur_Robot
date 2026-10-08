@@ -488,7 +488,7 @@ def gate(trust, floor, floor_reasons, ok_rows, host_load, other_jvms, selected_o
     """TRUSTED, CAUTION or NOT_TRUSTED with the reasons.
 
     NOT_TRUSTED: no pairs, more than a quarter of the pairs untrusted (duress, missing R records,
-    over 2 skipped turns a round), or the two builds skipping very different numbers of turns
+    over 2 skipped turns a round, a JDK resource denied to a robot), or the two builds skipping very different numbers of turns
     (over 1.5 times and 10 more a battle: they ran under different load).
     CAUTION: any untrusted pairs, a floor effect, mixed rounds, the host busier than 85% or other
     Robocode JVMs running, or a set selected from the baseline's results."""
@@ -498,7 +498,8 @@ def gate(trust, floor, floor_reasons, ok_rows, host_load, other_jvms, selected_o
     else:
         share = trust["untrusted"] / trust["pairs"]
         if share > 0.25:
-            bad.append("%.0f%% of pairs are untrusted (duress, skipped turns or R records)"
+            bad.append("%.0f%% of pairs are untrusted (duress, skipped turns, R records or a JDK resource "
+                       "denied)"
                        % (100 * share))
         elif trust["untrusted"]:
             caution.append("%d of %d pairs are untrusted (%.0f%%)" % (

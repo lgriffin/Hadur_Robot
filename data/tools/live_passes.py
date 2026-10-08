@@ -35,6 +35,9 @@ import re
 import statistics as st
 import sys
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import analyse  # noqa: E402
+
 Z95 = 1.96
 P_DEFAULT = 1215
 
@@ -55,6 +58,27 @@ RAM_DAMAGE = 100.0          # rammer: their ram damage score averages this much 
 def version_of(path):
     m = re.search(r"Hadur_([0-9][0-9A-Za-z.]*)\.csv$", os.path.basename(path))
     return m.group(1) if m else os.path.basename(path)
+
+
+def page_labels(paths):
+    """path -> a unique label: the version, or version@capture time when two pages share a version
+    (the two saved 3.1 pages), so no page overwrites another."""
+    versions = [version_of(p) for p in paths]
+    out = {}
+    for p, v in zip(paths, versions):
+        label = v
+        if versions.count(v) > 1:
+            stamp = os.path.basename(p).split("_")[0]
+            label = "%s@%s" % (v, stamp)
+        if label in out.values():
+            raise SystemExit("two pages with the same label %s: %s" % (label, p))
+        out[p] = label
+    return out
+
+
+def read_pages(paths):
+    """label -> page, in the order given (the newest page last)."""
+    return {label: read_page(p) for p, label in page_labels(paths).items()}
 
 
 def _f(x):
@@ -82,8 +106,9 @@ def read_compare(path):
 
 
 def peer_of(path):
+    """The peer's name and version, Knight_0.6.28, so two versions of one peer stay apart."""
     m = re.search(r"botcompare_(.+?)_vs_", os.path.basename(path))
-    return m.group(1).split("_")[0] if m else os.path.basename(path)
+    return m.group(1) if m else os.path.basename(path)
 
 
 def shield_entries(java_path):
@@ -134,7 +159,9 @@ def drift(new, old, changed=()):
 
 def collapses(pages, below=12.0):
     """version -> list of (time, name, points under the other pages' median), one-battle pairings
-    only, over the opponents every page has."""
+    only, over the opponents every page has. Needs at least two pages: one has nothing to compare."""
+    if len(pages) < 2:
+        raise ValueError("collapses needs at least two pages, got %d" % len(pages))
     common = set.intersection(*[set(p) for p in pages.values()])
     out = {}
     for v, page in pages.items():
@@ -153,7 +180,9 @@ def collapses(pages, below=12.0):
 
 
 def bench_rows(paths, builds):
-    """opponent -> dict of lists (share, survival, their ram damage, skipped) over the given builds."""
+    """opponent -> dict of lists (share, survival, their ram damage, skipped) over the given builds,
+    trusted rows only: the bench's own rule (analyse.untrusted_reasons), which includes a JDK
+    resource denied to the opponent (BENCH-84)."""
     csv.field_size_limit(10 ** 9)
     out = {}
     for path in paths:
@@ -161,8 +190,8 @@ def bench_rows(paths, builds):
             for r in csv.DictReader(f, delimiter="\t"):
                 if r.get("ok") != "true" or r.get("build") not in builds or not r.get("score_share"):
                     continue
-                if "META-INF" in (r.get("errors") or ""):
-                    continue  # BENCH-84: the opponent was crippled by the bench's class path
+                if analyse.untrusted_reasons(r):
+                    continue
                 o = out.setdefault(r["opponent"], dict(share=[], survival=[], ram=[], skipped=[]))
                 o["share"].append(100.0 * float(r["score_share"]))
                 if r.get("survival_share"):
@@ -363,15 +392,21 @@ def main(argv=None):
                   % (label, r["pairings"], r["mean"], r["ci"], r["survival"], r["aps"], r["down5"], r["up5"]))
         return 0
     if a.cmd == "collapses":
-        pages = {version_of(p): read_page(p) for p in a.pages}
+        if len(a.pages) < 2:
+            ap.error("collapses needs at least two pages")
+        pages = read_pages(a.pages)
         for v, r in collapses(pages, a.below).items():
             print("%-8s %3d collapses in %d single-battle pairings (of %d common opponents)"
                   % (v, len(r["collapses"]), r["singles"], r["common"]))
             for t, n, dd in r["collapses"]:
                 print("    %s  %+6.1f  %s" % (t, dd, n))
         return 0
-    pages = {version_of(p): read_page(p) for p in a.pages}
-    peers = {peer_of(p): read_compare(p) for p in a.peers}
+    pages = read_pages(a.pages)
+    peers = {}
+    for p in a.peers:
+        if peer_of(p) in peers:
+            ap.error("two compare pages for %s" % peer_of(p))
+        peers[peer_of(p)] = read_compare(p)
     paths = [x for pat in a.bench for x in sorted(glob.glob(pat))]
     bench = bench_rows(paths, set(a.builds))
     sets = {os.path.splitext(os.path.basename(s))[0]: set(read_names(s)) for s in a.sets}

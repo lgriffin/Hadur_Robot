@@ -309,5 +309,5 @@ clean live pass at r = 0.94, live minus bench -0.52 ± 0.43 over 335 bots. Evide
 **L-47 · open (live, five passes and three peers).** Matched against the median of Tomcat, Knight
 and Raven, Hadur's room is +0.76 APS, all of it below rank 400 (+1.19); from 51 to 150 the
 shield list already puts it 0.37 ahead. 144 bots sit 5+ under the peers in Hadur's typical
-(median) score; on 34 of them the bench shows the same gap, 12 of those rammers Hadur beats on
+(median) score; on 35 of them the bench shows the same gap, 12 of those rammers Hadur beats on
 rounds and leaks score to. Evidence: `docs/bench/opponents-3.10.tsv`. Owner: 3.11.

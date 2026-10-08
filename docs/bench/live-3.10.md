@@ -185,7 +185,8 @@ One row per opponent ([`opponents-3.10.tsv`](opponents-3.10.tsv)): its rank and 
 score in each of the five passes, a pooled score (3.9 and 3.10 passes battle-weighted, the 3.10
 pass alone for listed bots), the median over passes ("typical"), the three peers ranked 8th to
 11th (Tomcat 3.68, Knight 0.6.28, Raven 3.56j8, from their compare pages), the bench's score
-with the crippled battles dropped, the bench sets that hold it, and these classes:
+over its trusted battles only (the crippled ones dropped, and any with duress, skipped turns or
+missing records), the bench sets that hold it, and these classes:
 
 - **Tier**, by pooled APS: sweep 95+, farm 85-95, mid 70-85, contest 50-70, loss under 50.
 - **Tags**: ROUNDS (survival under 90), LEAK (survival 95+ but APS under 85), VOLATILE (passes
@@ -214,7 +215,7 @@ signed so that single-battle noise cancels.
 | LEAK | 90 | 81.1 | +0.11 |
 | VOLATILE | 72 | 78.6 | -0.26 |
 | PEERGAP | 144 | 81.4 | +0.75 |
-| of which BENCHSEES | 34 | 75.9 | +0.23 |
+| of which BENCHSEES | 35 | 75.7 | +0.23 |
 | BENCHGAP | 36 | 83.3 | -0.29 |
 | none | 781 | 92.6 | +0.39 |
 
@@ -223,13 +224,13 @@ The shield list put Hadur ahead of the peers from 51 to 150 (-0.37); the room is
 over five passes is 5+ under the peers, so one bad pass cannot put a bot there. VOLATILE bots
 are the opposite, collapses that the other passes do not repeat, and carry no room (-0.26).
 
-The bench-confirmed gaps (PEERGAP and BENCHSEES, 34 bots) are the work list for 3.11, because a
+The bench-confirmed gaps (PEERGAP and BENCHSEES, 35 bots) are the work list for 3.11, because a
 change can be gated on them, and on them the bench and live agree almost exactly (bench within
-2 points of Hadur's typical live score on 25 of the 34). 12 are rammers by their bench ram
+2 points of Hadur's typical live score on 27 of the 35). 12 are rammers by their bench ram
 damage, most tagged LEAK: Hadur wins the rounds and gives away a fifth of the score (Sabreur,
 SabreuseNano, Machete, FollowFire, Caligula, RammingC, Galaxy03, nanoPri, Sanguijuela, Fusion,
 SuperRamFire, ButtHead). The rest are simple guns that hit Hadur more than they hit the peers
-(Neutrino, NanoDeath, Bicephal, GrubbmThree, PinkPanther, Impact, SledgeHammer, MaxRisk). 42
+(Neutrino, NanoDeath, Bicephal, GrubbmThree, PinkPanther, Impact, SledgeHammer, MaxRisk). 41
 more PEERGAP bots have bench rows that do not show the gap; after the fix those are the next
 compliance check. 68 have never been benched.
 

@@ -498,7 +498,7 @@ the gate's +0.78. The same reading closed issue #151's leak-38 puzzle: on a typi
 difference is what the bench said. A Windows-only bench defect had crippled 11 opponents since
 2026-10-06 (a JDK service lookup the security manager punishes); BENCH-83 and BENCH-84 fix it.
 Every opponent is now classed (`docs/bench/opponents-3.10.tsv`): the room against the 8th to
-11th bots is +0.76 APS, all below rank 400, and 34 of the gaps are ones the bench reproduces,
+11th bots is +0.76 APS, all below rank 400, and 35 of the gaps are ones the bench reproduces,
 mostly rammers ([live notes](bench/live-3.10.md), L-45 to L-47).
 
 ## What comes next

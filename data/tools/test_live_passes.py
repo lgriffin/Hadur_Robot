@@ -68,6 +68,28 @@ class CollapsesTest(unittest.TestCase):
         self.assertEqual(c["1"]["collapses"], [])
         self.assertEqual(c["3"]["singles"], 1)
 
+    def test_one_page_is_an_error_not_a_crash(self):
+        with self.assertRaises(ValueError):
+            lp.collapses({"1": page([("a 1", 90, 99, 1, 50)])})
+        with self.assertRaises(SystemExit):
+            lp.main(["collapses", PAGE_310])
+
+
+class LabelTest(unittest.TestCase):
+    """Pages and peers keep their identity: two pages of one version, two versions of one peer."""
+
+    def test_two_pages_of_one_version_both_survive(self):
+        a = "2026-09-30T1146Z_roborumble_botdetails_hadur2.Hadur_3.1.csv"
+        b = "2026-09-30T1443Z_roborumble_botdetails_hadur2.Hadur_3.1.csv"
+        c = "2026-10-08T1238Z_roborumble_botdetails_hadur2.Hadur_3.10.csv"
+        labels = lp.page_labels([a, b, c])
+        self.assertEqual([labels[x] for x in (a, b, c)], ["3.1@2026-09-30T1146Z", "3.1@2026-09-30T1443Z", "3.10"])
+        self.assertEqual(labels[c], "3.10")
+
+    def test_peer_keeps_its_version(self):
+        self.assertEqual(lp.peer_of("2026-10-07T2046Z_roborumble_botcompare_Knight_0.6.28_vs_hadur2.Hadur_3.9.csv"),
+                         "Knight_0.6.28")
+
 
 class ClassifyTest(unittest.TestCase):
     """BENCH-82: one row per opponent with tier, tags and the room at the peers' median."""
@@ -126,6 +148,19 @@ class HostDenialTest(unittest.TestCase):
         self.assertEqual(an.untrusted_reasons(row), ["JDK resource denied"])
         row["errors"] = 'Preventing x.Y 1 from access: ("java.io.FilePermission" "C:\\x.txt" "write").'
         self.assertEqual(an.untrusted_reasons(row), [])
+
+    def test_bench_rows_skip_untrusted_rows(self):
+        head = "build\topponent\tok\tscore_share\tsurvival_share\ttheirRamDamage\tskippedTurns\trounds\troundRecords\tduressTicks\terrors"
+        good = "hadur2.Hadur 3.10\tx.X 1\ttrue\t0.8\t0.9\t0\t3\t35\t35\t0\t"
+        denied = ("hadur2.Hadur 3.10\tx.X 1\ttrue\t0.99\t1.0\t0\t3\t35\t35\t0\t"
+                  'Preventing x.X 1 from access: ("java.io.FilePermission" "C:\\b\\META-INF\\services\\z" "read").')
+        duress = "hadur2.Hadur 3.10\tx.X 1\ttrue\t0.5\t0.5\t0\t3\t35\t35\t4\t"
+        with tempfile.TemporaryDirectory() as d:
+            path = os.path.join(d, "b.tsv")
+            with open(path, "w", encoding="utf-8") as f:
+                f.write("\n".join([head, good, denied, duress]) + "\n")
+            rows = lp.bench_rows([path], {"hadur2.Hadur 3.10"})
+        self.assertEqual(rows["x.X 1"]["share"], [80.0])
 
 
 if __name__ == "__main__":
