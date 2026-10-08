@@ -39,6 +39,9 @@
 .PARAMETER SeedBase
   Engine seeds are SeedBase+1..SeedBase+Seeds (--seed-base, BENCH-72): fresh seeds for a
   confirmation run. Default 0.
+.PARAMETER Unseeded
+  Pass no -DRANDOMSEED to any battle, as the rumble client runs them (--unseeded, BENCH-76);
+  the seed number stays a label for pairing.
 
 .PARAMETER CpuConstant
   Pin robocode.cpu.constant (--cpu-constant NANOS) in every worker home. Default: if
@@ -106,6 +109,7 @@ param(
     [string]$PerOpponent = "",
     [int]$Repeat = 0,
     [int]$SeedBase = 0,
+    [switch]$Unseeded,
     [switch]$ColdWarm,
     [int]$Retries = -1,
     [string]$Field = "",
@@ -187,6 +191,7 @@ if ($Baseline) {
 if ($CpuConstant) { $parts += @("--cpu-constant", $CpuConstant) }
 if ($Repeat -gt 0) { $parts += @("--repeat", $Repeat) }
 if ($SeedBase -ne 0) { $parts += @("--seed-base", $SeedBase) }
+if ($Unseeded) { $parts += @("--unseeded", "true") }
 if ($ColdWarm) { $parts += @("--cold-warm", "true") }
 if ($Retries -ge 0) { $parts += @("--retries", $Retries) }
 if ($Field) { $parts += @("--field", $Field) }

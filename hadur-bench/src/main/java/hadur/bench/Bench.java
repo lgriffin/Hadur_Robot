@@ -120,6 +120,8 @@ public final class Bench {
     private final int parallel;
     /** BENCH-72: added to each seed before it reaches the engine, so seeds 1..N can be fresh ones. */
     private final int seedBase;
+    /** BENCH-76: no {@code -DRANDOMSEED} for any battle, as the rumble client runs them (issue #151). */
+    private final boolean unseeded;
     private final boolean warm;
     /** Where replay fixtures go, or null when not recording. */
     private final Path record;
@@ -181,6 +183,7 @@ public final class Bench {
         this.parallel = Integer.parseInt(opts.getOrDefault("parallel", "1"));
         if (parallel < 1) throw new IllegalArgumentException("--parallel must be at least 1, not " + parallel);
         this.seedBase = Integer.parseInt(opts.getOrDefault("seed-base", "0"));
+        this.unseeded = Boolean.parseBoolean(opts.getOrDefault("unseeded", "false"));
         if (seedBase < 0 || seedBase > Integer.MAX_VALUE - Math.max(runs, 1)) {
             throw new IllegalArgumentException("--seed-base must be 0 or more and leave room for " + runs
                 + " seeds, not " + seedBase);
@@ -386,7 +389,8 @@ public final class Bench {
             + " (" + baselineJar + ")"));
         System.out.println("  set " + opts.getOrDefault("set", "reference-set.txt") + ": " + opponents.size() + " opponents; "
             + battles + " battles of " + rounds + " rounds on " + width + "x" + height
-            + ", parallel " + parallel + ", retries " + retries + (seedBase == 0 ? "" : ", seed base " + seedBase));
+            + ", parallel " + parallel + ", retries " + retries + (seedBase == 0 ? "" : ", seed base " + seedBase)
+            + (unseeded ? ", unseeded" : ""));
         System.out.println("  child flags " + childFlags() + ", cpu constant "
             + (opts.containsKey("cpu-constant") ? opts.get("cpu-constant") : "engine's own") + ", out " + out);
         System.out.println("  memory: " + Memory.check(Memory.freeMb(), parallel, childHeap()).message());
@@ -581,6 +585,7 @@ public final class Bench {
             m.put("field", width + "x" + height);
             m.put("retries", retries);
             m.put("repeat", repeat);
+            m.put("unseeded", unseeded);
             m.put("set", opts.getOrDefault("set", "reference-set.txt"));
             m.put("opponents", opponents.size());
             m.put("options", new TreeMap<>(opts));
@@ -645,6 +650,17 @@ public final class Bench {
      */
     static int engineSeed(int seed, int seedBase) {
         return Math.addExact(seedBase, seed);
+    }
+
+    /**
+     * BENCH-76: the JVM flags that seed a battle's engine. The RoboRumble client sets
+     * {@code RANDOMSEED=none} before every batch ("In tournaments, robots should not be
+     * deterministic!", RoboRumbleAtHome), so with {@code --unseeded true} the bench passes no seed
+     * and the seed number is only a label for pairing and rows.
+     */
+    static List<String> seedFlags(int seed, int seedBase, boolean unseeded) {
+        int engine = engineSeed(seed, seedBase);
+        return unseeded ? List.of() : List.of("-DRANDOMSEED=" + engine);
     }
 
     /** BENCH-52: the candidate goes first on odd seeds, the baseline on even ones. */
@@ -764,7 +780,7 @@ public final class Bench {
     /** The duel report's conditions: the melee and team reports' line, less its closing full stop (the report adds it). */
     String duelHostLine(int workers) {
         String line = hostLine(reportedCpuConstant(), Host.describe(), workers, childFlags());
-        return line.substring(0, line.length() - 1);
+        return line.substring(0, line.length() - 1) + seedingNote(unseeded);
     }
 
     private static synchronized void say(String line) {
@@ -913,7 +929,7 @@ public final class Bench {
         cmd.add(javaBin);
         cmd.addAll(JVM_FLAGS);
         cmd.addAll(childFlags());
-        cmd.add("-DRANDOMSEED=" + engineSeed(seed, seedBase));
+        cmd.addAll(seedFlags(seed, seedBase, unseeded));
         Path transcript = dir.resolve("transcript.txt");
         if (record != null) {
             // The recorder writes its transcript straight to disk.
@@ -1028,6 +1044,7 @@ public final class Bench {
         List<MeleeReport.Battle> battles = Arrays.asList(cand);
         List<MeleeReport.Battle> baseBattles = base == null ? null : Arrays.asList(base);
         String host = hostLine(reportedCpuConstant(), Host.describe(), homes.size(), childFlags());
+        if (unseeded) host = host.substring(0, host.length() - 1) + seedingNote(true) + ".";
         String label = opts.get("label");
         String r = MeleeReport.render(label, robot, others, sentries, battles, rounds,
             width, height, sentryBorder, host);
@@ -1099,7 +1116,7 @@ public final class Bench {
             cmd.add(defaultJavaBin());
             cmd.addAll(JVM_FLAGS);
             cmd.addAll(childFlags());
-            cmd.add("-DRANDOMSEED=" + engineSeed(seed, seedBase));
+            cmd.addAll(seedFlags(seed, seedBase, unseeded));
             cmd.add("-Dhadur.sentries=" + String.join(",", sentries));
             Path transcript = dir.resolve("transcript.txt");
             if (record != null && candidate) {
@@ -1185,6 +1202,7 @@ public final class Bench {
             if (baseResults != null) baseResults.put(opponents.get(oi), new ArrayList<>(Arrays.asList(base[oi])));
         }
         String host = hostLine(reportedCpuConstant(), Host.describe(), homes.size(), childFlags());
+        if (unseeded) host = host.substring(0, host.length() - 1) + seedingNote(true) + ".";
         String label = opts.get("label");
         String r = TeamReport.render(label, robot, results, rounds, width, height, host);
         if (baseResults != null) {
@@ -1234,7 +1252,7 @@ public final class Bench {
             cmd.add(defaultJavaBin());
             cmd.addAll(JVM_FLAGS);
             cmd.addAll(childFlags());
-            cmd.add("-DRANDOMSEED=" + engineSeed(seed, seedBase));
+            cmd.addAll(seedFlags(seed, seedBase, unseeded));
             Path transcript = dir.resolve("transcript.txt");
             boolean recording = record != null && candidate;
             if (recording) {
@@ -1414,6 +1432,15 @@ public final class Bench {
         writeCpuConstant(home, nanos);
     }
 
+    /**
+     * BENCH-78: a session runs in the main home, not in worker homes, so a constant pinned with
+     * {@code --cpu-constant} is written there; without one the home is left to the engine.
+     */
+    static void pinSessionCpuConstant(Map<String, String> opts, Path h) throws IOException {
+        String pinned = opts.get("cpu-constant");
+        if (pinned != null && !pinned.isBlank()) writeCpuConstant(h, Long.parseLong(pinned.trim()));
+    }
+
     private static void writeCpuConstant(Path h, long nanos) throws IOException {
         Path props = h.resolve("config/robocode.properties");
         Files.createDirectories(props.getParent());
@@ -1566,6 +1593,8 @@ public final class Bench {
             opponents = new ArrayList<>(opponents.subList(0, Math.min(opponents.size(), Integer.parseInt(opts.get("limit")))));
         }
         installRobots(opponents, true);
+        opponents = sf.order(opponents);
+        pinSessionCpuConstant(opts, home);
         if (sf.controlJar() != null) {
             Path jar = Path.of(sf.controlJar()).toAbsolutePath();
             Files.copy(jar, home.resolve("robots").resolve(jar.getFileName()), StandardCopyOption.REPLACE_EXISTING);
@@ -1583,7 +1612,9 @@ public final class Bench {
             List<String> lines = new ArrayList<>();
             for (int i = 0; i < opponents.size(); i++) lines.add(opponents.get(i).name + "\t" + (i + 1));
             Files.write(list, lines);
-            System.out.println("== session: " + r + " (" + opponents.size() + " battles, heap " + sf.heap() + ")");
+            System.out.println("== session: " + r + " (" + opponents.size() + " battles, heap " + sf.heap()
+                + (sf.repeat() > 1 ? ", list x" + sf.repeat() : "") + (sf.shuffle() != null ? ", shuffled " + sf.shuffle() : "")
+                + ", " + reportedCpuConstant() + ")");
             if (sf.fresh()) {
                 for (int i = 0; i < lines.size(); i++) {
                     Path one = dir.resolve("one.tsv");
@@ -1600,7 +1631,8 @@ public final class Bench {
             }
             sessions.put(r, rows);
         }
-        String report = SessionReport.render(sessions, sf.heap(), sf.fresh(), sf.wipe(), rounds);
+        String report = SessionReport.render(sessions, sf.heap(), sf.fresh(), sf.wipe(), rounds,
+            sessionConditions(sf, opponents.size(), Report.ENGINE, reportedCpuConstant()));
         Files.createDirectories(out);
         Files.writeString(out.resolve("report.md"), report);
         if (opts.containsKey("report")) {
@@ -1611,6 +1643,13 @@ public final class Bench {
         System.out.println();
         System.out.println(report);
         return status;
+    }
+
+    /** BENCH-77/78/79: the session report's conditions line: engine, CPU constant and battle order. */
+    static String sessionConditions(SessionFile sf, int battles, String engine, String cpuConstant) {
+        return "Engine Robocode " + engine + Report.engineNote(engine) + ". " + cpuConstant + ". "
+            + battles + " battles a robot" + (sf.repeat() > 1 ? ", the list fought " + sf.repeat() + " times" : "")
+            + (sf.shuffle() != null ? ", shuffled with seed " + sf.shuffle() : ", in list order") + ".";
     }
 
     /** Runs one session child; false when it timed out or exited nonzero. The partial output is kept. */
@@ -1754,6 +1793,12 @@ public final class Bench {
      * ({@link Host#describe()}), the number of worker homes and the child JVM flags, if any
      * (issue #102: a report that does not say so cannot be compared with another host's).
      */
+    /** BENCH-76: what a report says about seeding, so an unseeded report never reads as a seeded one. */
+    static String seedingNote(boolean unseeded) {
+        return unseeded ? ". Unseeded: no -DRANDOMSEED was passed, as the rumble client runs battles (BENCH-76); "
+            + "seed numbers are labels" : "";
+    }
+
     static String hostLine(String cpuConstant, String host, int workers, List<String> childFlags) {
         String line = cpuConstant + ". Host: " + host + ", parallel " + workers;
         if (!childFlags.isEmpty()) line += ". Battle JVM flags: " + String.join(" ", childFlags);

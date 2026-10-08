@@ -3,9 +3,17 @@
 Headless Robocode battles for measuring Hadur (stage S0 of the Hadur 2 plan), and the
 recorder that captures the core's replay fixtures (S1).
 
-The bench runs the full Robocode 1.9.5.6 engine from Maven Central, with the security
-manager on. Each battle runs in its own JVM with `-DRANDOMSEED=<battle number>`, so the
-same command gives the same result every time.
+The bench runs the full Robocode 1.11.1 engine from Maven Central (BENCH-79), one of the
+releases LiteRumble takes uploads from (1.10.3, 1.11.0, 1.11.1); `-Drobocode.version=...`
+(the scripts' `--engine`) swaps it, and every report names the engine it ran, flagging any
+release the rumble does not take. Until 2026-10-08 the default was 1.9.5.6, so earlier
+reports without an `--engine` ran on that (issue #151). The security manager is on.
+
+Each battle runs in its own JVM with `-DRANDOMSEED=<battle number>`. That does **not** make a
+battle repeatable: the same jar, opponent and seed varies by 3-5 points of score share between
+sessions (`docs/bench/charter.md`, principle 1), so a seed is a label for pairing, not a
+replay. The RoboRumble client sets `RANDOMSEED=none` for every battle; `--unseeded true`
+(BENCH-76) does the same here.
 
 ## Running
 
@@ -25,6 +33,7 @@ mvn exec:java -Dexec.args="--mode cold --rounds 35 --seeds 5"
 | `--repeat K` | | (BENCH-53) fight each (jar, opponent, seed) K times, K at least 2, cold duel only; writes `repeat.tsv` and prints the score-share SD, per opponent and pooled, which is what the host alone does to one battle |
 | `--cold-warm true` | | (BENCH-54) fight each seed cold (data wiped), then warm on the shelf that battle left, per build; writes `cold-warm.tsv` pairing the two with the shelf the warm battle started on; cold duel only |
 | `--retries N` | 1 | (BENCH-55) run a battle that failed again, up to N more times; battles still failed are listed at the end of the run and under "Failed battles" in the report. 0 turns it off |
+| `--unseeded true` | | (BENCH-76) pass no `-DRANDOMSEED` to any battle, as the RoboRumble client runs them; the seed number stays a label for pairing and rows, and `conditions.json` records `unseeded` |
 | `--dry-run true` | | (BENCH-56) say what would run (mode, set, battle count, field, flags, constant) and exit 0 without installing a robot or starting a battle |
 | `@FILE` | | (BENCH-59) as the only argument, read the arguments from FILE, one per line (blank lines and `#` lines skipped), so a value with a space needs no quoting; the PowerShell scripts use it |
 | `--robot-jar FILE` | follows `robot.release` in hadur-robot/pom.xml (3.8 today) | the robot jar |
@@ -437,8 +446,14 @@ lines: `opponents=FILE` (a set, `name | rumble APS | jar`, fought once each in l
 `heap=512M` or `heap=none`, `rounds=N`, `fresh=true` (a fresh JVM per battle, data kept),
 `wipe=true` (the data directory emptied before each battle) and `control=ROBOT` with an
 optional `control-jar=JAR` (BENCH-7: the same session again with a robot that cannot be the
-cause, `sample.Tracker` by default). Opponents whose jar is missing are dropped with a
-line; `--limit N` runs only the first N.
+cause, `sample.Tracker` by default). `repeat=N` fights the list N times over and
+`shuffle=SEED` fights it in an order shuffled with that seed, the same order for the control
+(BENCH-77), so a short set such as `leak-38.txt` makes a session as long as a client's.
+Opponents whose jar is missing are dropped with a line; `--limit N` runs only the first N.
+`--cpu-constant NANOS` is pinned in the session's home (BENCH-78), and the report opens with
+the engine, the constant and the order. With a control (an older release, say) the report
+ends with a per-opponent table of both robots' mean score share and the mean difference with
+each opponent counted once, the way LiteRumble's APS counts a pairing.
 
 `SessionRunner` is the child. It writes one `session.csv` row per battle as it goes, so a
 session that dies still leaves its rows (index, opponent, ok, live heap in MB after a full
@@ -543,3 +558,32 @@ matching every opponent, issue #140) under its own version (`3.8.5nr`, `3.8.5nm`
 `3.9sa`) into `bisect/`, for a paired run against the release it came from. It works in a
 temporary git worktree and skips tests. `plans/ablation-r9.queue` runs the R9 ablation set.
 
+## Reading a run the way LiteRumble does (issue #151)
+
+`data/tools/literumble.py` holds LiteRumble's arithmetic, checked against the saved 3.9
+BotDetails page, whose header it reproduces from the 1,215 pairing rows (APS 87.15, CI
+&plusmn;0.19, PWIN 99.34, survival 95.04, 1,885 battles): APS is the unweighted mean of
+pairing APS, a pairing's variance is shrunk to a prior of 16 with weight 3, PWIN is the share
+of pairings above 50, and survival is rounds won (the client uploads `getFirsts()`).
+
+```sh
+python3 data/tools/literumble.py summary data/rumble/parsed/<page>.csv       # a page's header
+python3 data/tools/literumble.py coverage hadur-bench/leak-38.txt <page>.csv  # set vs the live field
+python3 data/tools/literumble.py score data/bench/<run>.tsv                    # LiteRumble-style per build
+python3 data/tools/analyse.py data/bench/<run>.tsv --live <page>.csv           # all of it, after the headline
+```
+
+`analyse.py --live` (BENCH-73 to 75) adds, after its own headline: each build's
+LiteRumble-style APS, CI and PWIN; the projection of the per-opponent differences onto live
+APS (their sum over the page's pairings, the rest of the field unchanged, and a band
+extrapolation that applies each rank band's mean to the whole band where at least three
+opponents cover it); and the run's coverage of the field by rank band, naming opponents that
+are not a live pairing (absent, another version live, or listed in `unrunnable.txt`).
+`analysis.json` carries the same under `live`. The bench's own headline stays the
+opponent-clustered paired interval.
+
+The battle rules match the client's without a flag: it builds
+`new BattleSpecification(rounds, field, robots)`, the constructor `BattleRunner` uses
+(inactivity 450, gun cooling 0.1). The run plan for the conditions the bench cannot settle on
+its own (one long session, width, heap, seeding, warm at length) is
+`plans/harness-gaps.queue`.
