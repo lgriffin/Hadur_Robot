@@ -238,7 +238,8 @@ compliance check. 68 have never been benched.
 
 1. **Merge the bench fix** (BENCH-83, BENCH-84), then on the PC, client shards off, run the 11
    crippled bots for 4 seeds with 3.10: the denials should be gone and the scores should fall
-   from 89-99 to the live 70-80s. That is the check that the fix holds on Windows.
+   from 89-99 to the live 70-80s. That is the check that the fix holds on Windows
+   (`hadur-bench/plans/confirm-fix-310.queue`, set `hadur-bench/crippled-310.txt`).
 2. **Keep the client off while the bench runs, and the bench off while a new release's first
    pass runs.** The client's battles count on the ladder; a loaded PC costs Hadur there (inferred
    from the loaded-host run above).
