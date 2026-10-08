@@ -47,3 +47,5 @@ file	date	label	mode	candidate	baseline	engine	rounds	child_heap	cpu_constant	pa
 2026-10-07_hadur-top20big-385-local_cold.tsv	2026-10-07	hadur-top20big-385-local_cold	duel	3.8.5	3.8	1.11.1	35			12		100	20	2000	-0.32	-0.63	-0.01	22.8	22.9	0	4000
 2026-10-07_hadur-weak-39-v385-local_cold.tsv	2026-10-07	hadur-weak-39-v385-local_cold	duel	2.Hadur 3.9	2.Hadur 3.8.5	1.11.1	35			12		16	11	176	-0.69	-1.86	0.48	10.8	10.7	0	352
 2026-10-07_hadur-weak-39r-v385-local_cold.tsv	2026-10-07	hadur-weak-39r-v385-local_cold	duel	2.Hadur 3.9	2.Hadur 3.8.5	1.11.1	35			12		16	11	176	0.06	-0.79	0.92	10.9	10.9	0	352
+2026-10-08_hadur-shield-sweep-low-v39-local_cold.tsv	2026-10-08	hadur-shield-sweep-low-v39-local_cold	duel	2.Hadur 3.9	2.Hadur 3.9sa	1.11.1	35			12		8	91	728	2.40	2.08	2.72	11.9	12.0	0	1456
+2026-10-08_hadur-shield-sweep-mid-v39-local_cold.tsv	2026-10-08	hadur-shield-sweep-mid-v39-local_cold	duel	2.Hadur 3.9	2.Hadur 3.9sa	1.11.1	35			12		8	109	872	-4.70	-5.14	-4.26	13.4	13.0	0	1744
