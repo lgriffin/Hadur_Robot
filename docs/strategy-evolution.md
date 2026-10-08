@@ -478,6 +478,17 @@ bot by bot from a sweep of the 200 remaining list bots in ranks 51-700
 (`hadur-bench/plans/shield-sweep.queue`), a data-only change that cannot touch off-list bots;
 then movement against simple guns, gated on bullet damage taken on the tail.
 
+## 3.10: the shield sweep list
+
+The sweep (issue #146, `docs/bench/local/2026-10-08_shield-sweep.md`) ran shield mode on against
+off on the 200 remaining DrussGT-list robots of ranks 51-700: +4.70 over the 109 mid-table ones,
+-2.40 over the 91 from 401-700. Robot by robot, 64 cleared the D5 rule, and one more was open with
+a mean gain over 9; with the 18 from the #140 run, 3.10 adds 83 robots to the list (97 in all).
+On the sweep's own seeds they are worth +0.80 APS, +0.76 shrunk for picking winners on 8 seeds.
+A list entry names one robot by its exact version, so every other robot meets 3.9's play; the
+gate (`hadur-bench/plans/candidate-310.queue`) reruns the 83 on fresh seeds (`--seed-base`,
+BENCH-72) and checks the top 20 and the tail are level.
+
 ## What comes next
 
 Every EARS requirement up to R2, bar TIER-1 (above), is implemented and traced. R3 to R5

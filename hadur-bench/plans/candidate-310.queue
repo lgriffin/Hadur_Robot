@@ -1,0 +1,28 @@
+# 3.10 (83 robots added to the shield list) against the released 3.9: the gates before a release.
+# Run from master once 3.10 is merged:  ./queue.sh run candidate-310   (or  .\queue.ps1 run candidate-310)
+# The first step builds 3.10 from this checkout; the others reuse that jar.
+#
+# A shield-list entry names one robot by its exact version, so 3.10 plays every other robot as 3.9
+# does. The gate is therefore on the listed robots, on seeds the sweep did not use (--seed-base 100:
+# engine seeds 101-108), because a list picked from 8-seed winners looks better on those 8 seeds
+# than it is. The other two steps check that nothing else moved.
+
+set HEAP = --child-heap 2G
+set E = --engine 1.11.1
+set COMMON = --skip-fetch --rounds 35 --cpu-constant 1488498 ${HEAP} ${E}
+set C310 = --robot-jar ../hadur-robot/target/hadur2.Hadur_3.10.jar --robot "hadur2.Hadur 3.10"
+set B39 = --baseline bisect/hadur2.Hadur_3.9.jar --baseline-robot "hadur2.Hadur 3.9"
+
+prep | (cd .. && mvn -q -B package -DskipTests) && mkdir -p bisect && { [ -s bisect/hadur2.Hadur_3.9.jar ] || curl -fsSL -o bisect/hadur2.Hadur_3.9.jar https://github.com/lgriffin/Hadur_Robot/releases/download/v3.9/hadur2.Hadur_3.9.jar; } && ./fetch-opponents.sh --set shield-310.txt && ./fetch-opponents.sh --set top20.txt && ./fetch-opponents.sh --set tail-39.txt
+
+# 1. The listed robots, fresh seeds. Pass: the pooled difference's interval lies above 0. The sweep
+#    read +11.7 a robot on its own seeds (+0.80 APS over 1,215 pairings); shrunk for the selection,
+#    about +11 (+0.76 APS). A robot that comes back significantly down is taken off before release.
+list-310  | ./bench-top20.sh --skip-build ${COMMON} --set shield-310.txt --seeds 8 --seed-base 100 ${C310} ${B39} --label shield-310-v39
+  after: prep
+# 2. The top 20 does not move (none of it is on the list), 5 seeds.
+top20-310 | ./bench-top20.sh --skip-build ${COMMON} --set top20.txt --seeds 5 ${C310} ${B39} --label top20-310-v39
+  after: prep
+# 3. The weak tail does not move (none of it is on the list), 4 seeds.
+tail-310  | ./bench-top20.sh --skip-build ${COMMON} --set tail-39.txt --seeds 4 ${C310} ${B39} --label tail-310-v39
+  after: prep

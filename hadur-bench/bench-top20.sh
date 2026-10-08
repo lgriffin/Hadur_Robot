@@ -16,6 +16,7 @@
 # Options (all optional):
 #   --set FILE             opponent set file, default top20.txt
 #   --seeds N              battles per opponent, default 5
+#   --seed-base B          engine seeds are B+1..B+N, fresh ones for a confirmation run (BENCH-72)
 #   --rounds N              rounds per battle, default 35
 #   --parallel N           battles at once, default a quarter of the logical cores, floored, min 1 (see docs/bench/local/2026-10-06_parallel-ladder.md)
 #   --robot-jar FILE       the robot jar (bench default follows robot.release)
@@ -68,12 +69,14 @@ if [ "${HADUR_BENCH_PUBLISH:-}" = "1" ]; then PUBLISH=1; fi
 ENGINE=""
 CHILD_HEAP=""
 CHILD_CPUS=""
+SEED_BASE=""
 FORCE_MEMORY=0
 
 while [ $# -gt 0 ]; do
     case "$1" in
         --set) SET="${2:?--set needs a file}"; shift 2 ;;
         --seeds) SEEDS="${2:?--seeds needs a number}"; shift 2 ;;
+        --seed-base) SEED_BASE="${2:?--seed-base needs a number}"; shift 2 ;;
         --rounds) ROUNDS="${2:?--rounds needs a number}"; shift 2 ;;
         --parallel) PARALLEL="${2:?--parallel needs a number}"; shift 2 ;;
         --robot-jar) ROBOT_JAR="${2:?--robot-jar needs a file}"; shift 2 ;;
@@ -147,6 +150,7 @@ if [ -n "$ROBOT_JAR" ]; then ARGS="$ARGS --robot-jar $ROBOT_JAR"; fi
 if [ -n "$ROBOT" ]; then ARGS="$ARGS --robot \"$ROBOT\""; fi
 if [ -n "$BASELINE" ]; then ARGS="$ARGS --baseline $BASELINE --baseline-robot \"$BASELINE_ROBOT\""; fi
 if [ -n "$CPU_CONSTANT" ]; then ARGS="$ARGS --cpu-constant $CPU_CONSTANT"; fi
+if [ -n "$SEED_BASE" ]; then ARGS="$ARGS --seed-base $SEED_BASE"; fi
 if [ -n "$REPEAT" ]; then ARGS="$ARGS --repeat $REPEAT"; fi
 if [ "$COLD_WARM" -eq 1 ]; then ARGS="$ARGS --cold-warm true"; fi
 if [ -n "$RETRIES" ]; then ARGS="$ARGS --retries $RETRIES"; fi

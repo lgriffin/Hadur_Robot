@@ -123,6 +123,7 @@ EARS requirements from the Hadur 2 technical direction. This file is the source 
 | BENCH-69 | Ubiquitous | The bench shall write `reference`, `ramDamage`, `ramDamageBonus`, `bulletDamageBonus` and `lastSurvivorBonus` (and the `their` form of each) from the engine's battle results as the last columns of `result.csv`, after `otherJvms`, and shall read a row without them as NaN. | R9 |
 | BENCH-70 | Ubiquitous | Every duel report shall carry a table "Where their points come from", the opponent's score pooled over the battles as shares of survival, bullet damage, ram damage and bonuses, with "-" for a row that has no split. | R9 |
 | BENCH-71 | Ubiquitous | The bench shall record the engine's mean ticks per round for any build, from the round-ended events, as `engineRoundTicks`, and the duel report shall show it per opponent. | R9 |
+| BENCH-72 | Optional | Where `--seed-base B` is given, the bench shall give the engine seed B + n for its seed n, so that a confirmation run fights seeds no earlier run used. | R9 |
 | RES-10 | Ubiquitous | The robot shall leave no reference to its classes in the process after a battle, so that the number of classes loaded in one JVM stays flat across a session of battles. | R7 |
 | MOVE-3 | Ubiquitous | Movement shall score a wave's danger only over the part of the intersection not in a certain bullet shadow, at half weight inside a possible shadow. | R6 |
 | MOVE-4 | Ubiquitous | Movement shall score a wave's danger as the danger density integrated over the firing angles of the precise intersection. | R6 |
@@ -973,7 +974,12 @@ strand, in the `shieldmode` package, and applies to a 1v1 battle only.
   `apv.test.Virus 0.6.1` matches that version only, and `apv.test.Virus` matches every version.
   Matching is exact and case-sensitive, never a prefix. A list that cannot be loaded is an empty
   list. It ships with 14 robots: the 8 the BENCH-11 probe marked "wins" and 6 "open" ones with a
-  mean gain of 9 points or more (docs/bench/d5-probe.md, docs/bench/d5-gate.md). A name goes on only
+  mean gain of 9 points or more (docs/bench/d5-probe.md, docs/bench/d5-gate.md). 3.10 adds 83: every
+  robot of DrussGT's shield list ranked 51st to 700th that shield mode beat at 8 seeds by the same
+  rule, from the #140 mid-table run and the shield sweep (docs/bench/local/2026-10-08_shield-sweep.md).
+  Each entry carries its version. The sweep also found where shield mode loses: on 58 of those
+  robots the interval lay below 0, and over ranks 401-700 as a whole it cost 2.4 points, so the
+  list is chosen robot by robot, never by rank. A name goes on only
   after the paired bench shows shield mode beats normal mode for that robot, or an expected gain
   that APS, the objective, counts; SHIELD-6 bounds the cost. Fixtures whose opponent is not on the
   list replay unchanged.
