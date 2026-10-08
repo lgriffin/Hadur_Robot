@@ -86,12 +86,48 @@ so efficiency against weak bots (damage taken, how fast they die) is where 10th 
 3. Gates were sized for per-bot effects on the list, not for APS over the whole field, so a
    change could pass its gate and still be worth under 0.05 APS.
 
+## Status and what runs where
+
+| Stage | Where | State |
+|---|---|---|
+| M0 size the instrument | PC | **Done** 2026-10-08 ([m0-sizing](bench/local/2026-10-08_m0-sizing.md), PR #164). G0 met. |
+| M1 census, 3.10 and Tomcat | PC | **Next.** `hadur-bench/plans/census-311.queue`, about 2.5 hours (+1.2 optional) |
+| M2 noise budget | Claude, from M1 rows | after M1 |
+| M3 deficit ledger | Claude, from M1 rows | after M2; G3 picks what gets code |
+| M4 candidates | PC queues, Claude builds | only for clusters that pass G3 |
+| M5 release | Leigh | only if G4 and the +0.3 margin hold |
+
+### Running M1 on the PC
+
+1. Stop the RoboRumble workers and close anything else heavy. `jps -l` should show no Robocode JVM.
+2. Pull master with this plan merged, then from `hadur-bench\`:
+   `.\queue.ps1 run census-311`
+   The queue fetches the 3.10 release jar and any missing opponents, then runs three steps that
+   resume on their own if interrupted (`.\queue.ps1 status census-311` shows progress):
+   - `tail`: Tomcat 3.68 vs 3.10, paired, on the 1,016 bots ranked 201 and below, 4 seeds (201-204). About 1.5 hours.
+   - `top`: the same on ranks 1-200 (198 bots). About 1 hour.
+   - `ceiling` (optional): Nullstride 2.3.3 alone on the census, same seeds. About 1.2 hours.
+     Stop the queue after `top` if the night is short.
+3. Commit two files per step: `data/bench/<date>_hadur-census-311-*_cold.tsv` (rows)
+   and `docs/bench/local/<date>_census-311-*.md` (report). Leave the per-opponent folders and the
+   `_rounds.tsv` files out (about 1,200 files and 30 MB). Open a PR or post the branch here.
+
+Rules fixed before the data comes in:
+- Rows with security denials, `otherJvms` above 0, or duress after round 0 are dropped and
+  counted. Round-0 start-up duress (the fixed 298-tick count M0 saw in 10 of 48 battles) is kept.
+- Tomcat's own pairing is left out (it cannot fight itself), so the census is 1,214 opponents.
+- G1 is judged on the census as run; opponents that fail to load are listed and excluded, not rerun.
+
 ## The plan
 
 The PC (Threadripper PRO 9965WX, 48 threads, parallel 12, engine 1.11.1, CPU constant 1488498,
 JdkWarmup on) runs everything. The PC's RoboRumble client stays off during every stage.
 
-### M0. Size the instrument (no code)
+### M0. Size the instrument (no code), done
+
+Result: 48 battles in 133 s at parallel 12; one census pass is 18.4 minutes a seed a subject, so
+M1 is 9,720 battles in about 2.5 hours. 0 denials, 0 other JVMs; census set `hadur-bench/census-311.txt`.
+
 
 - Time 48 battles of 3.10 at parallel 12 against a random 48 from the participant list, to get
   battles an hour and to size M1 and M2 in hours.
