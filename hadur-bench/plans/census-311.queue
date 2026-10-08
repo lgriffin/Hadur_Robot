@@ -1,0 +1,29 @@
+# 3.11 stage M1: the census (docs/plan-3.11-census.md, sized in docs/bench/local/2026-10-08_m0-sizing.md).
+# Every 1v1 participant, 4 seeds (201-204), 35 rounds, Hadur 3.10 against lxx.Tomcat 3.68 (10th).
+# Tomcat is the candidate and the released 3.10 the baseline, so each battle pair reads
+# Tomcat minus Hadur on the same opponent and seed: the bench's gap to 10th, with no pass offset.
+#   ./queue.sh run census-311        (or  .\queue.ps1 run census-311)
+# Stop the RoboRumble workers first and keep the PC otherwise idle. About 2.5 hours for steps 1-2
+# (9,700 battles at parallel 12), 1.2 more for step 3. Steps resume independently.
+# Tomcat cannot fight itself, so its own pairing is left out of both set files (1,214 opponents).
+
+set HEAP = --child-heap 2G
+set E = --engine 1.11.1
+set COMMON = --skip-build --skip-fetch --rounds 35 --parallel 12 --cpu-constant 1488498 ${HEAP} ${E}
+set SEEDS = --seeds 4 --seed-base 200
+set TOMCAT = --robot-jar opponents/lxx.Tomcat_3.68.jar --robot "lxx.Tomcat 3.68"
+set B310 = --baseline bisect/hadur2.Hadur_3.10.jar --baseline-robot "hadur2.Hadur 3.10"
+set NULL = --robot-jar opponents/jd.Nullstride_2.3.3.jar --robot "jd.Nullstride 2.3.3"
+
+prep | mkdir -p bisect && { [ -s bisect/hadur2.Hadur_3.10.jar ] || curl -fsSL -o bisect/hadur2.Hadur_3.10.jar https://github.com/lgriffin/Hadur_Robot/releases/download/v3.10/hadur2.Hadur_3.10.jar; } && ./fetch-opponents.sh --set census-311.txt
+
+# 1. Ranks 201 and below (1,016 bots, the band that holds the gap). Short battles, about 1.5 hours.
+tail | ./bench-top20.sh ${COMMON} ${SEEDS} --set census-311-tail.txt ${TOMCAT} ${B310} --label census-311-tail
+  after: prep
+# 2. Ranks 1-200 (198 bots). Long battles against the top, about 1 hour.
+top  | ./bench-top20.sh ${COMMON} ${SEEDS} --set census-311-top.txt ${TOMCAT} ${B310} --label census-311-top
+  after: tail
+# 3. Optional ceiling: Nullstride (1st) alone on the whole census, same seeds, about 1.2 hours.
+#    Skip it (./queue.sh stop census-311 after step 2) if the night is short.
+ceiling | ./bench-top20.sh ${COMMON} ${SEEDS} --set census-311-ceiling.txt ${NULL} --label census-311-nullstride
+  after: top

@@ -63,7 +63,7 @@ the next 20 ticks", a near-straight line, which a head-on or linear gun at 180 p
    hold on fresh seeds, so the flattener stays on and the mid-field step (`flat-311` step 4) is
    not needed.
 
-**Outcome: no 3.11.** Neither change clears its own measure, so there is nothing to release.
+**Outcome: no 3.11.** The next plan, census first, is [docs/plan-3.11-census.md](../plan-3.11-census.md). Neither change clears its own measure, so there is nothing to release.
 3.10 stays live; its own clean pass (about +1.2 if the 87.7 reading holds) is the next mover.
 3. **Gate:** `gate-311.txt` (45 bots), 8 seeds paired against 3.10: the pooled difference's
    interval above 0. The top 20 and the weak tail (`top20.txt`, `tail-39.txt`) stay level.
