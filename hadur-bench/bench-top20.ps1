@@ -186,7 +186,7 @@ if ($Baseline) {
 }
 if ($CpuConstant) { $parts += @("--cpu-constant", $CpuConstant) }
 if ($Repeat -gt 0) { $parts += @("--repeat", $Repeat) }
-if ($SeedBase -gt 0) { $parts += @("--seed-base", $SeedBase) }
+if ($SeedBase -ne 0) { $parts += @("--seed-base", $SeedBase) }
 if ($ColdWarm) { $parts += @("--cold-warm", "true") }
 if ($Retries -ge 0) { $parts += @("--retries", $Retries) }
 if ($Field) { $parts += @("--field", $Field) }

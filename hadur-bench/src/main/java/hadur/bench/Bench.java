@@ -181,7 +181,10 @@ public final class Bench {
         this.parallel = Integer.parseInt(opts.getOrDefault("parallel", "1"));
         if (parallel < 1) throw new IllegalArgumentException("--parallel must be at least 1, not " + parallel);
         this.seedBase = Integer.parseInt(opts.getOrDefault("seed-base", "0"));
-        if (seedBase < 0) throw new IllegalArgumentException("--seed-base must be 0 or more, not " + seedBase);
+        if (seedBase < 0 || seedBase > Integer.MAX_VALUE - Math.max(runs, 1)) {
+            throw new IllegalArgumentException("--seed-base must be 0 or more and leave room for " + runs
+                + " seeds, not " + seedBase);
+        }
         int[] field = parseField(opts.getOrDefault("field", "800x600"));
         this.width = field[0];
         this.height = field[1];

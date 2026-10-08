@@ -2,6 +2,9 @@ package hadur.bench;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.Map;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -34,5 +37,22 @@ class SeedBaseTest {
     @DisplayName("a base that would overflow the engine's seed is refused, not wrapped")
     void overflowIsRefused() {
         assertThrows(ArithmeticException.class, () -> Bench.engineSeed(1, Integer.MAX_VALUE));
+    }
+
+    @Test
+    @Tag("BENCH-72")
+    @DisplayName("a base the run's seeds would overflow is refused before any battle starts")
+    void overflowingBaseIsRefusedUpFront() {
+        Map<String, String> opts = Map.of("seeds", "8", "seed-base", String.valueOf(Integer.MAX_VALUE - 7));
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> new Bench(opts));
+        assertTrue(e.getMessage().contains("--seed-base"));
+        new Bench(Map.of("seeds", "8", "seed-base", String.valueOf(Integer.MAX_VALUE - 8))); // the last seed fits
+    }
+
+    @Test
+    @Tag("BENCH-72")
+    @DisplayName("a negative base is refused")
+    void negativeBaseIsRefused() {
+        assertThrows(IllegalArgumentException.class, () -> new Bench(Map.of("seed-base", "-1")));
     }
 }
