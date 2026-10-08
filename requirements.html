@@ -12,7 +12,7 @@
 <h1>EARS requirements</h1>
 <p class="lede">Every requirement from <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/docs/requirements.md">docs/requirements.md</a>, the source of truth. <em>Implemented in</em> lists
 the classes whose documentation cites the ID; <em>Verified by</em> lists the tests tagged with it, the same tags the build's
-traceability check reads. 172 of 172 live requirements have a tagged test. The readings behind the numbers are in
+traceability check reads. 177 of 177 live requirements have a tagged test. The readings behind the numbers are in
 <a href="docs/requirements-notes.html">Requirement readings</a>.</p>
 <nav class="toc"><a href="#group-CORE">Core</a> <a href="#group-RES">Resilience</a> <a href="#group-REL">Release</a> <a href="#group-WAVE">Waves</a> <a href="#group-RADAR">Radar</a> <a href="#group-MEM">Memory</a> <a href="#group-ADAPT">Adapt</a> <a href="#group-DIAL">Dials</a> <a href="#group-DIST">Distance</a> <a href="#group-POW">Power</a> <a href="#group-END">Endgame</a> <a href="#group-MOVE">Movement</a> <a href="#group-TIME">Time budget</a> <a href="#group-SHIELD">Bullet shielding</a> <a href="#group-MELEE">Melee (2.1)</a> <a href="#group-GATE">Posture gate</a> <a href="#group-MRADAR">Melee radar</a> <a href="#group-MSENSE">Melee sensing</a> <a href="#group-MMOVE">Melee movement</a> <a href="#group-MGUN">Melee gun</a> <a href="#group-MMEM">Melee memory</a></nav><h2 id="group-CORE">Core</h2>
 <article class="req-card" id="CORE-1">
@@ -690,6 +690,31 @@ traceability check reads. 172 of 172 live requirements have a tagged test. The r
 <div class="req-head"><span class="rid">BENCH-79</span><span class="badge">Ubiquitous</span><span class="badge stage">R9</span></div>
 <p>The bench shall run Robocode 1.11.1 unless <code>-Drobocode.version</code> names another release, and every duel and session report shall name the engine, flagging a release LiteRumble takes no uploads from (issue #151, A2).</p>
 <dl><dt>Implemented in</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/Report.java" title="hadur.bench.Report">Report</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/HarnessGapsTest.java">HarnessGapsTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="BENCH-80">
+<div class="req-head"><span class="rid">BENCH-80</span><span class="badge">Optional</span><span class="badge stage">R9</span></div>
+<p>Where <code>live_passes.py drift NEW OLD</code> is given two parsed BotDetails pages and the opponents the change touched (<code>--changed</code>, or <code>--shield-java</code> for the shield list&#x27;s entries), the tool shall report the mean pairing difference with its 95% interval separately for the touched and the untouched opponents, so that a drift on the untouched ones is read as the live environment, not the code (issue #151).</p>
+<dl><dt>Implemented in</dt><dd><span class="none">no citation in the sources</span></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/LiveToolsTest.java">LiveToolsTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="BENCH-81">
+<div class="req-head"><span class="rid">BENCH-81</span><span class="badge">Optional</span><span class="badge stage">R9</span></div>
+<p>Where <code>live_passes.py collapses</code> is given several pages, the tool shall list per page the single-battle pairings scoring <code>--below</code> points (12 by default) or more under the median of the other pages against the same opponent, with their battle times (issue #151).</p>
+<dl><dt>Implemented in</dt><dd><span class="none">no citation in the sources</span></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/LiveToolsTest.java">LiveToolsTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="BENCH-82">
+<div class="req-head"><span class="rid">BENCH-82</span><span class="badge">Optional</span><span class="badge stage">R9</span></div>
+<p>Where <code>live_passes.py classify</code> is given pages, peers&#x27; BotCompare pages, bench TSVs, set files and the shield list, the tool shall write one row per opponent of the newest page with every pass, a pooled score over the newest two passes (the newest alone for a listed bot), the peers&#x27; scores, the bench&#x27;s, set membership, an outcome tier, problem tags (ROUNDS, LEAK, VOLATILE, PEERGAP, BENCHSEES, BENCHGAP) and a robot kind, and a summary of each class&#x27;s APS and its net room at the peers&#x27; median (issue #151).</p>
+<dl><dt>Implemented in</dt><dd><span class="none">no citation in the sources</span></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/LiveToolsTest.java">LiveToolsTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="BENCH-83">
+<div class="req-head"><span class="rid">BENCH-83</span><span class="badge">Ubiquitous</span><span class="badge stage">R9</span></div>
+<p>Every battle child (duel, melee, team, session and the inactivity check) shall load the JDK&#x27;s lazily found providers (time-zone rules, zip entry times, locale formats) in its own thread before the engine starts, so that no robot is the first to need one and is denied the class-path read by the security manager (issue #151).</p>
+<dl><dt>Implemented in</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/BattleResult.java" title="hadur.bench.BattleResult">BattleResult</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/BattleRunner.java" title="hadur.bench.BattleRunner">BattleRunner</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/InactivityCheck.java" title="hadur.bench.InactivityCheck">InactivityCheck</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/JdkWarmup.java" title="hadur.bench.JdkWarmup">JdkWarmup</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/MeleeRunner.java" title="hadur.bench.MeleeRunner">MeleeRunner</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/SessionRunner.java" title="hadur.bench.SessionRunner">SessionRunner</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/TeamRunner.java" title="hadur.bench.TeamRunner">TeamRunner</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/JdkWarmupTest.java">JdkWarmupTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="BENCH-84">
+<div class="req-head"><span class="rid">BENCH-84</span><span class="badge">Unwanted</span><span class="badge stage">R9</span></div>
+<p>If a battle&#x27;s engine errors hold a security-manager denial of a <code>META-INF</code> resource on the class path, then the bench and <code>analyse.py</code> shall not trust that battle and shall name the reason &quot;JDK resource denied&quot; (issue #151).</p>
+<dl><dt>Implemented in</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/BattleResult.java" title="hadur.bench.BattleResult">BattleResult</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/JdkWarmupTest.java">JdkWarmupTest.java</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/LiveToolsTest.java">LiveToolsTest.java</a></dd></dl>
 </article>
 <h2 id="group-GUN">GUN</h2>
 <article class="req-card" id="GUN-1">
