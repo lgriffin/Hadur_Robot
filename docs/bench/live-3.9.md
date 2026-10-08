@@ -126,7 +126,53 @@ scores 90 against the score-leak and lost-rounds bots (Hadur 78 and 74) and 97.1
 (Hadur 92.8), so the close-range bots that cost the 10th-place group as much as Hadur do not
 cost Nullstride.
 
+## What the overnight runs found
+
+Two PC runs answered the open questions: issue #138 (`docs/bench/local/2026-10-07_overnight-39-findings.md`)
+and the mid-table side track, issue #140 (`docs/bench/local/2026-10-07_nullstride-mid-results.md`). All
+figures are opponent-clustered 95% intervals in points of score share, 8 seeds a bot.
+
+| Run | Compare | Result | Reading |
+|---|---|---|---|
+| tail-knight | Knight 0.6.28 vs 3.9, 39 tail bots | **+1.20** [+0.55, +1.85] | The bench sees the gap to the bots above us |
+| tail | 3.9 vs 3.4, same 39 | +0.16 [-0.34, +0.66] | Level |
+| leak-score | 3.9 vs 3.4, 32 rammers | **+5.71** [+3.51, +7.92] | The ram fix works; 85% of what they still score is bullets |
+| lost-rounds | 3.9 vs 3.4, 32 bots | +1.70 [+0.15, +3.25] | Survival still under 95% on 18 of 32 |
+| calib-warm, calib-cpu | 3.9 vs 3.8.5, leak-38 | +0.28 to +0.60, not resolved | Neither condition reproduces the live +2.1 |
+| mid-shieldall-list | 3.9sa vs 3.9, 30 mid bots on DrussGT's list | **+8.05** [+4.06, +12.04] | Shielding pays on list bots; 22 up, 5 significantly down |
+| mid-shieldall | 3.9sa vs 3.9, 40 mid bots off the list | -1.24 [-3.46, +0.98] | Do not shield everyone |
+| mid-null, mid-null-list | Nullstride vs 3.9, off and on the list | +10.95 and +17.84 | Nullstride is hit 52% and 80% less |
+
+- **The tail gap is movement against simple guns.** Per battle Knight takes 295 bullet damage to
+  Hadur's 344 and deals the same (2407 against 2424), with rounds no shorter. Seven tail bots are
+  significant for Knight: Sanguijuela, Ihivatar, Fusion, claire, MilkyWay, Trinity, CannonfodderNano.
+- **The mid-table gap is not being hit, and on DrussGT's list most of it is shielding.** With shield
+  mode on, Hadur's bullet damage taken on the list bots halves (866 to 428), closing about 45% of
+  Nullstride's lead there. Off the list shielding costs, so entries go on one bot at a time.
+- **The bench still cannot see a field-wide change** (calib). A change that by construction only
+  touches named bots, such as a shield-list entry, is what the bench can gate.
+
+Sizing, inferred: 18 of the 30 measured list bots clear the D5 rule (interval above 0), worth +9.0
+a pairing averaged over all 30. The runnable list holds 139 bots off D5 in ranks 51-400 and 91 in
+401-700. At that rate the 30 already measured are worth about +0.2 APS, the other 109 mid bots
++0.6 to +0.8, and the 91 from 401-700, where Hadur already scores 87, perhaps +0.2. Allowing for
+the winner's curse of picking on 8 seeds, the list alone is +0.6 to +1.1 APS, against 0.56 to 10th.
+
 ## Next
+
+3.10 in two stages:
+
+1. **The shield sweep** (`hadur-bench/plans/shield-sweep.queue`): 3.9sa against 3.9, 8 seeds, on the
+   109 unmeasured list bots of ranks 51-400 (`shield-sweep-mid.txt`) and the 91 of ranks 401-700
+   (`shield-sweep-low.txt`). Each bot that clears the D5 rule goes on `ShieldListData` with its exact
+   version, with the 18 already measured. Off-list bots cannot be affected, so the guard sets hold
+   by construction; the gate is the list bots themselves, rerun with the new list.
+2. **Movement against simple guns**: bullet damage taken on `tail-39.txt` toward Knight's, with the
+   top 20 and leak sets held level.
+
+Then a live pass, with the Tomcat, Knight, Raven and Nullstride compare pages saved again.
+
+### Before: the plan for the #138 run
 
 `hadur-bench/plans/overnight-39.queue` (issue for the overnight run):
 

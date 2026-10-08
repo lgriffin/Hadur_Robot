@@ -466,6 +466,18 @@ the same survival, and match or trail Hadur above rank 150: the whole 0.57 is po
 gives away to weak bots in rounds it wins. The close-range group turned out to cost the top 10
 nearly as much as Hadur, so the next stage aims at the weak tail first.
 
+The overnight runs (issue #138, `docs/bench/local/2026-10-07_overnight-39-findings.md`) and the
+mid-table runs (issue #140, `2026-10-07_nullstride-mid-results.md`) then named the mechanism.
+On the weak tail the bench sees the gap to Knight (+1.20): Knight takes 14% less bullet damage
+and deals the same, so it is movement against simple guns, not kill speed. The ram fix works
+(+5.71 over 3.4 on the rammers; 85% of what they still score is bullets). And in the mid-table,
+Nullstride's lead is not being hit: on bots from DrussGT's shield list, switching Hadur's own
+shield mode on for everyone gained +8.05 a pairing (22 of 30 up, 5 significantly down), while
+off that list it cost about a point. So 3.10 has two stages: first extend Hadur's shield list
+bot by bot from a sweep of the 200 remaining list bots in ranks 51-700
+(`hadur-bench/plans/shield-sweep.queue`), a data-only change that cannot touch off-list bots;
+then movement against simple guns, gated on bullet damage taken on the tail.
+
 ## What comes next
 
 Every EARS requirement up to R2, bar TIER-1 (above), is implemented and traced. R3 to R5
