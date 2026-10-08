@@ -36,6 +36,10 @@
   A baseline jar for a paired A/B run (--baseline, BENCH-2). Requires -BaselineRobot.
 .PARAMETER BaselineRobot
   The baseline robot's name as Robocode lists it (--baseline-robot), distinct from -Robot.
+.PARAMETER SeedBase
+  Engine seeds are SeedBase+1..SeedBase+Seeds (--seed-base, BENCH-72): fresh seeds for a
+  confirmation run. Default 0.
+
 .PARAMETER CpuConstant
   Pin robocode.cpu.constant (--cpu-constant NANOS) in every worker home. Default: if
   C:\robocode\config\robocode.properties exists, read robocode.cpu.constant from it (and say
@@ -101,6 +105,7 @@ param(
     [string]$Report = "",
     [string]$PerOpponent = "",
     [int]$Repeat = 0,
+    [int]$SeedBase = 0,
     [switch]$ColdWarm,
     [int]$Retries = -1,
     [string]$Field = "",
@@ -181,6 +186,7 @@ if ($Baseline) {
 }
 if ($CpuConstant) { $parts += @("--cpu-constant", $CpuConstant) }
 if ($Repeat -gt 0) { $parts += @("--repeat", $Repeat) }
+if ($SeedBase -gt 0) { $parts += @("--seed-base", $SeedBase) }
 if ($ColdWarm) { $parts += @("--cold-warm", "true") }
 if ($Retries -ge 0) { $parts += @("--retries", $Retries) }
 if ($Field) { $parts += @("--field", $Field) }

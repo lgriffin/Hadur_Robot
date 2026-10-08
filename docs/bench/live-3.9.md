@@ -172,6 +172,10 @@ the winner's curse of picking on 8 seeds, the list alone is +0.6 to +1.1 APS, ag
 
 Then a live pass, with the Tomcat, Knight, Raven and Nullstride compare pages saved again.
 
+The sweep ran on 2026-10-08 (`docs/bench/local/2026-10-08_shield-sweep.md`): 64 robots cleared the
+rule and 1 more was open with a mean over 9, so 3.10 adds 83 robots with the #140 run's 18. The
+confirmation gate is `hadur-bench/plans/candidate-310.queue`.
+
 ### Before: the plan for the #138 run
 
 `hadur-bench/plans/overnight-39.queue` (issue for the overnight run):
