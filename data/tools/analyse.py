@@ -623,10 +623,20 @@ def live_read(page, all_rows, result, candidate, baseline, unrunnable=None):
     builds = OrderedDict()
     for b in (candidate, baseline):
         builds[b] = literumble.bench_summary(literumble.bench_per_opponent(all_rows, b))
-    diffs = OrderedDict((r["opponent"], (r["mean"], r["se"])) for r in result["rows"])
+    # The projection is in APS points whatever --metric and --scale the headline used: score
+    # share, scaled to 0-100, paired over the usable battles.
+    shares = []
+    for r in all_rows:
+        if r["ok"] == "false":
+            continue
+        share = literumble.row_share(r)
+        if share is not None:
+            shares.append(dict(r, _aps=repr(share)))
+    paired = pair(shares, "_aps", candidate, baseline, 1.0)
+    diffs = OrderedDict((r["opponent"], (r["mean"], r["se"])) for r in analyse(paired, 1.0)["rows"])
     proj = literumble.project(diffs, pairings)
     names = list(OrderedDict.fromkeys(r["opponent"] for r in all_rows))
-    cov = literumble.coverage(names, pairings, bad)
+    cov = literumble.coverage(names, pairings, bad, measured=set(diffs))
     text = ["LITERUMBLE-STYLE (each opponent once, unweighted; not the headline above)"]
     for b, s in builds.items():
         if s:

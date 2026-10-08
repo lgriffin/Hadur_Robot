@@ -30,6 +30,14 @@ class HarnessGapsTest {
 
     @Test
     @Tag("BENCH-76")
+    @DisplayName("an unseeded run's reports say so; a seeded run's add nothing")
+    void reportsNameUnseeded() {
+        assertEquals("", Bench.seedingNote(false));
+        assertTrue(Bench.seedingNote(true).contains("Unseeded: no -DRANDOMSEED"));
+    }
+
+    @Test
+    @Tag("BENCH-76")
     @DisplayName("--unseeded is accepted with the other duel options and shows in the dry run")
     void unseededOptionParses() throws Exception {
         Bench b = new Bench(Map.of("unseeded", "true", "dry-run", "true", "set", "reference-set.txt"));

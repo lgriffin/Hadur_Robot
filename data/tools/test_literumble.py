@@ -110,6 +110,14 @@ class ProjectionTest(unittest.TestCase):
         self.assertAlmostEqual(pr["extrapolated"], 0.1)
         self.assertIn("701+", pr["bands_left_out"])
 
+    def test_ranks_leave_the_bots_own_ladder_place(self):
+        # The saved 3.9 page: Hadur is 13th at 87.15 and dft.Cardigan 1.09 51st on the ladder.
+        r = lr.ranks(lr.read_page(PAGE_39))
+        self.assertEqual(r["dft.Cardigan 1.09"], 51)
+        self.assertEqual(lr.band_label(lr.band_of(r["dft.Cardigan 1.09"])), "51-200")
+        self.assertEqual(max(r.values()), 1216)
+        self.assertNotIn(13, r.values())
+
     def test_ranks_follow_the_opponents_own_aps(self):
         pairings = [dict(name="lo 1", opponent_aps=10.0), dict(name="hi 1", opponent_aps=90.0)]
         self.assertEqual(lr.ranks(pairings), {"hi 1": 1, "lo 1": 2})
@@ -137,6 +145,14 @@ class CoverageTest(unittest.TestCase):
         self.assertEqual(status["e32.Omni 0.06"][0], "unrunnable")
         self.assertEqual(cov["bands"][0], ("1-50", 50, 1))
         self.assertEqual(cov["bands"][1], ("51-200", 10, 0))
+
+    def test_an_opponent_without_a_usable_pair_is_not_covered(self):
+        pairings = [dict(name=n, aps=a, ci=c, survival=s, battles=b, opponent_aps=o)
+                    for n, a, c, s, b, o in field(60)]
+        cov = lr.coverage(["b.Bot0 1.0", "b.Bot1 1.0"], pairings, measured={"b.Bot0 1.0"})
+        status = {e[0]: e[1] for e in cov["entries"]}
+        self.assertEqual(status, {"b.Bot0 1.0": "live", "b.Bot1 1.0": "unmeasured"})
+        self.assertEqual(cov["bands"][0][2], 1)
 
     def test_split_name_and_set_reading(self):
         self.assertEqual(lr.split_name("pkg.Bot 1.2b"), ("pkg.Bot", "1.2b"))
@@ -184,6 +200,30 @@ class AnalyseLiveTest(unittest.TestCase):
             self.assertEqual(live["builds"]["new"]["pairings"], 3)
             self.assertEqual(live["builds"]["new"]["pwin"], 100.0 * 2.5 / 3)
             self.assertEqual(live["coverage"]["flagged"][0]["status"], "absent")
+
+    def test_projection_is_in_aps_points_whatever_the_metric(self):
+        with tempfile.TemporaryDirectory() as d:
+            page = os.path.join(d, "page.csv")
+            write_page(page, field(100))
+            tsv = os.path.join(d, "run.tsv")
+            with open(tsv, "w") as f:
+                f.write("build\topponent\tseed\tok\tscore\ttheirScore\tfirsts\trounds\n")
+                for seed in (1, 2):
+                    f.write("new\tb.Bot0 1.0\t%d\ttrue\t80\t20\t30\t35\n" % seed)
+                    f.write("old\tb.Bot0 1.0\t%d\ttrue\t70\t30\t%d\t35\n" % (seed, 20 + seed))
+                    # a failed battle: no pair, so b.Bot1 is not covered
+                    f.write("new\tb.Bot1 1.0\t%d\tfalse\t\t\t\t35\n" % seed)
+                    f.write("old\tb.Bot1 1.0\t%d\ttrue\t50\t50\t10\t35\n" % seed)
+            for extra in (["--metric", "firsts"], ["--scale", "1"]):
+                out = os.path.join(d, "a.json")
+                with contextlib.redirect_stdout(io.StringIO()):
+                    an.main([tsv, "--candidate", "new", "--baseline", "old", "--json", out,
+                             "--live", page] + extra)
+                with open(out) as f:
+                    live = json.load(f)["live"]
+                self.assertAlmostEqual(live["projection"]["direct"], 10.0 / 100, msg=extra)
+                self.assertEqual(live["projection"]["covered"], 1)
+                self.assertEqual(live["coverage"]["flagged"][0]["status"], "unmeasured")
 
     def test_engine_line_when_known(self):
         res = an.analyse({"a": dict(diffs=[1.0, 2.0], weight=1.0)}, 1.0)

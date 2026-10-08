@@ -116,12 +116,19 @@ def bench_summary(per_opponent):
                 battles=sum(len(o["shares"]) for o in per_opponent.values()))
 
 
-def ranks(pairings):
-    """name -> the opponent's rank among this bot's opponents, by their own APS (the page's
-    opponent APS column), so a band needs no separate rankings page. The bot itself is not in
-    its own page, so ranks below it read one higher than the ladder's."""
+def ranks(pairings, self_aps=None):
+    """name -> the opponent's ladder rank, by their own APS (the page's opponent APS column), so
+    a band needs no separate rankings page. The page's own bot is not among its pairings, so it
+    takes its place by its APS (self_aps, by default the page's own, the mean pairing APS) and
+    every opponent below it moves down one, as on the ladder."""
+    if self_aps is None:
+        self_aps = sum(x["aps"] for x in pairings) / len(pairings) if pairings and "aps" in pairings[0] else None
     order = sorted(pairings, key=lambda x: -x["opponent_aps"])
-    return {x["name"]: i + 1 for i, x in enumerate(order)}
+    out = {}
+    for i, x in enumerate(order):
+        below_self = self_aps is not None and x["opponent_aps"] < self_aps
+        out[x["name"]] = i + (2 if below_self else 1)
+    return out
 
 
 def split_name(name):
@@ -143,10 +150,12 @@ def read_set(path):
     return names
 
 
-def coverage(names, pairings, unrunnable=()):
+def coverage(names, pairings, unrunnable=(), measured=None):
     """How a bench set sits on the live field (A6). Returns dict(entries, bands): each entry is
     (name, status, live_name, rank) with status live, drift (same robot, other version live),
-    absent or unrunnable; bands are (label, live pairings, covered) over the whole field."""
+    absent, unrunnable, or unmeasured (a live pairing the run has no usable pair for, when
+    measured names the opponents it does); bands are (label, live pairings, covered) over the
+    whole field, counting only measured opponents."""
     by_name = {x["name"]: x for x in pairings}
     by_base = {}
     for x in pairings:
@@ -157,6 +166,8 @@ def coverage(names, pairings, unrunnable=()):
     for n in names:
         if n in bad:
             entries.append((n, "unrunnable", by_name.get(n, {}).get("name"), rank.get(n)))
+        elif n in by_name and measured is not None and n not in measured:
+            entries.append((n, "unmeasured", n, rank[n]))
         elif n in by_name:
             entries.append((n, "live", n, rank[n]))
             covered.add(n)
@@ -245,6 +256,16 @@ def render_coverage(cov):
     return "\n".join(out)
 
 
+def row_share(r):
+    """A bench row's score share in points (0-100), from score_share or score/theirScore, or None."""
+    if r.get("score_share", "") not in ("", None):
+        return 100.0 * float(r["score_share"])
+    if r.get("score", "") in ("", None) or r.get("theirScore", "") in ("", None):
+        return None
+    s, t = float(r["score"]), float(r["theirScore"])
+    return 100.0 * s / (s + t) if s + t > 0 else None
+
+
 def bench_per_opponent(rows, build):
     """name -> dict(shares, survival) for one build's ok rows of a bench TSV (score_share or
     score/theirScore; survival from firsts over rounds, the rumble's own survival)."""
@@ -252,13 +273,9 @@ def bench_per_opponent(rows, build):
     for r in rows:
         if r.get("build") != build or r.get("ok", "true").strip().lower() == "false":
             continue
-        if r.get("score_share", "") not in ("", None):
-            share = 100.0 * float(r["score_share"])
-        else:
-            s, t = float(r["score"]), float(r["theirScore"])
-            if s + t <= 0:
-                continue
-            share = 100.0 * s / (s + t)
+        share = row_share(r)
+        if share is None:
+            continue
         o = out.setdefault(r["opponent"], dict(shares=[], survival=[]))
         o["shares"].append(share)
         if r.get("firsts", "") not in ("", None) and r.get("rounds", "") not in ("", None):

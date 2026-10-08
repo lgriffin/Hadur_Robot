@@ -780,7 +780,7 @@ public final class Bench {
     /** The duel report's conditions: the melee and team reports' line, less its closing full stop (the report adds it). */
     String duelHostLine(int workers) {
         String line = hostLine(reportedCpuConstant(), Host.describe(), workers, childFlags());
-        return line.substring(0, line.length() - 1);
+        return line.substring(0, line.length() - 1) + seedingNote(unseeded);
     }
 
     private static synchronized void say(String line) {
@@ -1044,6 +1044,7 @@ public final class Bench {
         List<MeleeReport.Battle> battles = Arrays.asList(cand);
         List<MeleeReport.Battle> baseBattles = base == null ? null : Arrays.asList(base);
         String host = hostLine(reportedCpuConstant(), Host.describe(), homes.size(), childFlags());
+        if (unseeded) host = host.substring(0, host.length() - 1) + seedingNote(true) + ".";
         String label = opts.get("label");
         String r = MeleeReport.render(label, robot, others, sentries, battles, rounds,
             width, height, sentryBorder, host);
@@ -1201,6 +1202,7 @@ public final class Bench {
             if (baseResults != null) baseResults.put(opponents.get(oi), new ArrayList<>(Arrays.asList(base[oi])));
         }
         String host = hostLine(reportedCpuConstant(), Host.describe(), homes.size(), childFlags());
+        if (unseeded) host = host.substring(0, host.length() - 1) + seedingNote(true) + ".";
         String label = opts.get("label");
         String r = TeamReport.render(label, robot, results, rounds, width, height, host);
         if (baseResults != null) {
@@ -1791,6 +1793,12 @@ public final class Bench {
      * ({@link Host#describe()}), the number of worker homes and the child JVM flags, if any
      * (issue #102: a report that does not say so cannot be compared with another host's).
      */
+    /** BENCH-76: what a report says about seeding, so an unseeded report never reads as a seeded one. */
+    static String seedingNote(boolean unseeded) {
+        return unseeded ? ". Unseeded: no -DRANDOMSEED was passed, as the rumble client runs battles (BENCH-76); "
+            + "seed numbers are labels" : "";
+    }
+
     static String hostLine(String cpuConstant, String host, int workers, List<String> childFlags) {
         String line = cpuConstant + ". Host: " + host + ", parallel " + workers;
         if (!childFlags.isEmpty()) line += ". Battle JVM flags: " + String.join(" ", childFlags);
