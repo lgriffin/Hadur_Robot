@@ -49,6 +49,11 @@ the next 20 ticks", a near-straight line, which a head-on or linear gun at 180 p
    357 px, three times the rate of the rest. Check what the surf does in the first waves against a
    head-on or linear shooter (the danger it gives to GF 0 and to the linear angle) before changing
    anything.
+   **Result (flattener off, `build-ablation.sh flat`, 3.10nf against 3.10, the 30 bots, 3 seeds,
+   cloud, `data/bench/2026-10-08_hadur-gungap-310nf-v310-cloud_cold.tsv`): +1.0 ± 0.75 a bot**,
+   21 of 30 up; their hit rate 0.165 to 0.153, bullet damage 984 to 917. The flattener's visits
+   dilute the hits that head-on, linear and pattern guns leave in one place. Whether the top 20
+   (learning guns, where the flattener earns its keep) pays for it is benched next.
 3. **Gate:** `gate-311.txt` (45 bots), 8 seeds paired against 3.10: the pooled difference's
    interval above 0. The top 20 and the weak tail (`top20.txt`, `tail-39.txt`) stay level.
 
