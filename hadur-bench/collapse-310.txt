@@ -1,0 +1,30 @@
+# 3.10's live collapses (docs/bench/live-3.10.md): the 26 single-battle pairings of the 2026-10-08
+# 12:38 UTC pass that scored 12 or more points under the median of Hadur's four other full passes
+# (3.4, 3.8, 3.8.5, 3.9) against the same bot. Used to test whether host load reproduces them.
+#   <robot name as Robocode lists it> | <role> | <jar file in opponents/>
+ers.nano.gokdeniz.Gokdeniz 1.5b | collapse | ers.nano.gokdeniz.Gokdeniz_1.5b.jar
+voidious.perceptual.RetroGirl 1.0.0 | collapse | voidious.perceptual.RetroGirl_1.0.0.jar
+dz.GalbaMini 0.121 | collapse | dz.GalbaMini_0.121.jar
+davidalves.Phoenix 1.02 | collapse | davidalves.Phoenix_1.02.jar
+voidious.mini.Komarious 1.88 | collapse | voidious.mini.Komarious_1.88.jar
+kawigi.sbf.FloodSonnet 0.9 | collapse | kawigi.sbf.FloodSonnet_0.9.jar
+mladjo.iRobot 0.3 | collapse | mladjo.iRobot_0.3.jar
+nat.Samekh 0.4 | collapse | nat.Samekh_0.4.jar
+cb.Domogled 1.2 | collapse | cb.Domogled_1.2.jar
+penguin.Joker .611wr | collapse | penguin.Joker_.611wr.jar
+pi.Dark 10 | collapse | pi.Dark_10.jar
+starpkg.StarViewerZ 1.26 | collapse | starpkg.StarViewerZ_1.26.jar
+lrem.Spectre 0.4.4 | collapse | lrem.Spectre_0.4.4.jar
+cb.fire.Firestarter 2.0f | collapse | cb.fire.Firestarter_2.0f.jar
+oog.mega.saguaro.Saguaro 1.0 | collapse | oog.mega.saguaro.Saguaro_1.0.jar
+bvh.mini.Wodan 0.50 | collapse | bvh.mini.Wodan_0.50.jar
+stelo.Mirror 1.1 | collapse | stelo.Mirror_1.1.jar
+slugzilla.Parallax 0.1 | collapse | slugzilla.Parallax_0.1.jar
+sheldor.micro.Epeeist 3.7 | collapse | sheldor.micro.Epeeist_3.7.jar
+suh.nano.MirrorH 1.01 | collapse | suh.nano.MirrorH_1.01.jar
+hp.Athena 0.1 | collapse | hp.Athena_0.1.jar
+wcsv.PowerHouse.PowerHouse 1.7e3 | collapse | wcsv.PowerHouse.PowerHouse_1.7e3.jar
+voidious.Dookious 1.573c | collapse | voidious.Dookious_1.573c.jar
+jk.mini.CunobelinDC 1.2 | collapse | jk.mini.CunobelinDC_1.2.jar
+kawigi.sbf.FloodMini 1.4 | collapse | kawigi.sbf.FloodMini_1.4.jar
+catcat20.Rabbit 0.001 | collapse | catcat20.Rabbit_0.001.jar

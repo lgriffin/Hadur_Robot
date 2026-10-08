@@ -1,0 +1,1216 @@
+rank	name	opponent_aps	tier	tags	kind	shield	pooled_aps	pooled_survival	pooled_battles	live_3.4	live_3.8	live_3.8.5	live_3.9	live_3.10	typical	spread	collapse	peer_Tomcat	peer_Knight	peer_Raven	peer_median	peer_gap	bench_aps	bench_battles	bench_skipped	sets
+1	kc.mega.BeepBoop 2.0	95.02	loss	ROUNDS	mega		20.29	7.14	2	16.53	25.94	16.67	23.14	17.43	17.43	9.41		19.95	19.60	21.72	19.95	-0.34	24.63	40	25.4	gate-r5-set,roborumble-top10,roborumble-top50,roborumble-top50-part3,rumble-sample,top19,top20
+2	jd.Nullstride 2.3.3	94.94	loss	ROUNDS			21.43	7.62	3		26.89	22.48	26.21	19.04	24.34	7.85		19.09	18.00	21.62	19.09	-2.34		0		
+3	jk.mega.DrussGT 3.1.16	92.58	contest	ROUNDS,VOLATILE	mega		50.45	54.29	3	38.31	49.88	33.45	55.83	47.76	47.76	22.38		42.17	43.97	36.47	42.17	-8.28	47.17	40	37.8	drussgt,gate-r5-set,melee-strong,roborumble-top10,roborumble-top50,roborumble-top50-part4,rumble-sample,top19,top20
+4	oog.mega.saguaro.Saguaro 1.0	91.88	contest	ROUNDS,VOLATILE	mega		67.04	80.00	3	70.56	79.96	79.07	72.10	56.91	72.10	23.05	yes	56.66	61.27	55.35	56.66	-10.38	72.79	40	11.1	collapse-310,gate-r5-set,roborumble-top10,roborumble-top50,roborumble-top50-part1,rumble-sample,top19,top20
+5	aaa.r.ScalarR 0.005h.053-noshield	91.26	loss	ROUNDS			31.29	24.76	3	30.90	27.37	42.68	32.40	29.07	30.90	15.31		31.79	22.97	26.96	26.96	-4.33	32.99	40	35.2	gate-r5-set,melee-strong,roborumble-top10,roborumble-top50,roborumble-top50-part2,rumble-sample,top19,top20
+6	voidious.Diamond 1.8.22	90.16	contest	ROUNDS,VOLATILE			51.08	58.57	2	33.25	45.00	55.42	50.26	51.91	50.26	22.17		36.14	44.92	30.13	36.14	-14.94	48.09	40	30.3	gate-r5-set,melee-strong,roborumble-top10,roborumble-top50,roborumble-top50-part1,rumble-sample,session-300-opponents,top19,top20
+7	cb.fire.Firestarter 2.0f	88.14	loss	ROUNDS,VOLATILE,BENCHGAP			35.81	30.00	2	34.80	55.38	54.74	40.60	31.03	40.60	24.35	yes	33.88	55.64	38.78	38.78	+2.97	51.23	40	31.4	collapse-310,gate-r5-set,melee-top10,melee-top20-c,melee-top20-d,melee-top20-set,roborumble-top10,roborumble-top50,roborumble-top50-part3,rumble-sample,top19,top20
+8	dsekercioglu.mega.Raven 3.56j8	87.75	contest	ROUNDS	mega		56.22	70.48	3	59.55	61.68	59.28	55.72	57.23	59.28	5.96		55.55	57.00		56.27	+0.05	55.18	40	13.8	gate-r5-set,roborumble-top10,roborumble-top50,roborumble-top50-part2,rumble-sample,top19,top20
+9	xander.cat.XanderCat 12.9	87.73	contest	ROUNDS			62.88	70.00	2	59.18	53.64	55.44	59.66	66.09	59.18	12.45		55.40	54.91	53.40	54.91	-7.97		0		gate-r5-set,roborumble-top10,roborumble-top50,roborumble-top50-part2,rumble-sample,session-300-opponents,top19,top20
+10	lxx.Tomcat 3.68	87.71	contest	ROUNDS			51.30	61.43	2	59.33	45.65	50.30	49.88	52.73	50.30	13.68			53.26	44.45	48.86	-2.45	54.20	40	31.6	gate-r5-set,roborumble-top10,roborumble-top50,roborumble-top50-part4,rumble-sample,top19,top20
+11	rsalesc.mega.Knight 0.6.28	87.70	contest	ROUNDS	mega		58.44	65.72	2	46.44	52.66	58.14	59.86	57.02	57.02	13.42		46.74		43.00	44.87	-13.57	54.59	40	34.0	gate-r5-set,roborumble-top10,roborumble-top50,roborumble-top50-part1,rumble-sample,top19,top20
+12	aw.Gilgalad 1.99.5c	87.63	loss	ROUNDS			46.84	57.14	3	42.17	52.25	44.97	40.28	50.12	44.97	11.97		48.02	55.29	46.15	48.02	+1.18	47.80	40	27.5	gate-r5-set,roborumble-top50,roborumble-top50-part3,top19,top20
+13	pc.Wavelet 1.5	87.04	contest	ROUNDS,VOLATILE			50.43	51.43	2	30.65	42.95	49.92	44.34	56.52	44.34	25.87		38.66	51.48	46.95	46.95	-3.48	48.19	40	16.0	gate-r5-set,roborumble-top50,roborumble-top50-part3,top19,top20
+14	gh.GresSuffurd 0.4.13	86.69	contest	ROUNDS			59.33	70.00	2	65.41	62.52	62.11	56.13	62.52	62.52	9.28		62.12	62.48	52.37	62.12	+2.79	60.08	40	17.3	gate-r5-set,roborumble-top50,roborumble-top50-part4,top19,top20
+15	kc.serpent.WaveSerpent 2.11	86.67	contest	ROUNDS			62.80	84.28	2	55.54	44.80	51.16	61.63	63.96	55.54	19.16		59.72	59.80	54.32	59.72	-3.08	59.08	40	12.1	gate-r5-set,roborumble-top50,roborumble-top50-part4,top19,top20
+16	dsekercioglu.mega.WhiteFang 2.8.1	86.64	contest	ROUNDS	mega		66.07	81.91	3	73.50	66.70	66.62	66.60	65.02	66.62	8.48		64.44	67.61	55.26	64.44	-1.63	67.09	40	15.6	gate-r5-set,roborumble-top50,roborumble-top50-part1,top19,top20
+17	cs.Nene 1.0.5	86.63	contest	ROUNDS			55.64	71.43	2	55.81	59.53	61.94	58.41	52.88	58.41	9.06		56.24	58.30	57.24	57.24	+1.60	58.00	40	12.3	gate-r5-set,roborumble-top50,roborumble-top50-part1,top19,top20
+18	jk.melee.Neuromancer 7.12	86.58	contest	ROUNDS			50.16	54.28	6	51.57	47.48	54.61	54.13	46.20	51.57	8.41		46.45	59.42	50.19	50.19	+0.02	50.87	40	41.5	gate-r5-set,melee-top10,melee-top20-a,melee-top20-b,melee-top20-e,melee-top20-set,roborumble-top50,roborumble-top50-part2,top19,top20
+19	voidious.Dookious 1.573c	86.43	contest	ROUNDS,VOLATILE			50.77	65.72	2	65.09	61.93	55.86	58.87	42.68	58.87	22.41	yes	61.77	60.15	55.16	60.15	+9.38	60.23	40	11.8	collapse-310,gate-r5-set,roborumble-top50,roborumble-top50-part2,top19,top20
+21	davidalves.Phoenix 1.02	85.79	contest	ROUNDS,VOLATILE			52.42	66.66	3	54.85	55.42	54.13	58.17	40.92	54.85	17.25	yes	59.44	64.29	55.90	59.44	+7.02	57.71	40	13.5	collapse-310,gate-r5-set,roborumble-top50,roborumble-top50-part3,top20
+22	rsalesc.roborio.Roborio 1.2.4	85.34	contest	ROUNDS			68.17	71.90	6	56.08	53.37	64.45	68.78	66.94	64.45	15.41		57.12	61.73	55.71	57.12	-11.05	61.15	40	26.5	gate-r5-set,roborumble-top50,roborumble-top50-part3,session-300-opponents,tier2,top20
+23	cb.Domogled 1.2	85.14	loss	ROUNDS,VOLATILE			47.65	38.57	2	66.04	69.08	50.95	59.45	35.85	59.45	33.23	yes	51.29	69.15	62.45	62.45	+14.80		0		collapse-310,gate-r5-set,roborumble-top50,roborumble-top50-part4
+24	mue.Ascendant 1.2.27	84.91	contest	ROUNDS			54.26	68.57	3	56.30	62.68	57.12	55.26	52.25	56.30	10.43		54.95	59.52	56.53	56.53	+2.27		0		gate-r5-set,melee-classic,melee-strong,roborumble-top50,roborumble-top50-part1
+25	abc.Shadow 3.83c	84.72	contest	ROUNDS			59.08	77.14	3	63.49	62.96	53.77	60.73	55.77	60.73	9.72		52.29	54.27	57.11	54.27	-4.81		0		gate-r5-set,melee-handoff-fixture,melee-strong,reference-set,roborumble-top50,roborumble-top50-part4,rumble-sample,session-300-opponents
+26	darkcanuck.Pris 0.92	84.72	contest	ROUNDS,VOLATILE			65.35	79.28	4	71.01	49.86	68.45	59.64	71.06	68.45	21.20		64.39	58.89	53.33	58.89	-6.46		0		gate-r5-set,roborumble-top50,roborumble-top50-part1,session-300-opponents
+27	fromHell.BlackBox 0.0.2	84.64	contest	ROUNDS			68.30	80.00	3	62.32	61.83	70.25	66.21	72.48	66.21	10.65		69.73	69.17	58.89	69.17	+0.87		0		gate-r5-set,roborumble-top50,roborumble-top50-part2,tier2
+28	jk.precise.Wintermute 0.8	84.60	contest	ROUNDS			58.87	80.00	3	71.44	60.81	63.37	59.80	57.01	60.81	14.43		63.90	65.54	58.94	63.90	+5.03		0		gate-r5-set,roborumble-top50,roborumble-top50-part3
+29	kc.serpent.Hydra 0.21	84.60	contest	ROUNDS			57.69	76.19	3	56.14	60.97	57.46	53.72	59.67	57.46	7.25		55.27	64.23	60.26	60.26	+2.57		0		gate-r5-set,roborumble-top50,roborumble-top50-part2,session-300-opponents,shield-list
+30	davidalves.Firebird 0.25	84.24	contest	ROUNDS			64.16	78.57	2	68.52	54.96	60.95	57.66	70.67	60.95	15.71		65.19	68.31	60.67	65.19	+1.03	56.76	8	10.0	gate-r5-set,live-losers-385,roborumble-top50,roborumble-top50-part4
+31	pulsar.PulsarMax 0.8.9	84.15	contest	ROUNDS			60.38	80.00	2	51.20	62.05	51.01	59.58	61.19	59.58	11.04		63.26	63.95	60.32	63.26	+2.88		0		gate-r5-set,roborumble-top50,roborumble-top50-part3,tier2
+32	zyx.mega.YersiniaPestis 3.0	84.05	contest	ROUNDS,PEERGAP	mega		52.76	64.28	2	55.35	45.90	56.95	54.06	51.45	54.06	11.05		63.08	60.10	54.56	60.10	+7.34		0		gate-r5-set,roborumble-top50,roborumble-top50-part4
+33	ags.Midboss 1q.fast	83.76	mid				75.62	90.00	2	69.76	69.85	71.12	79.25	71.98	71.12	9.49		70.43	72.85	63.13	70.43	-5.19	71.96	56	23.8	gate-r5-set,leak-38,roborumble-top50,roborumble-top50-part1
+34	zen.Mirage 0.9.5	83.72	contest	ROUNDS			65.86	71.43	2	54.79	68.55	74.58	64.61	67.11	67.11	19.79		61.23	65.67	58.29	61.23	-4.63		0		gate-r5-set,roborumble-top50,roborumble-top50-part1
+35	pez.rumble.CassiusClay 2rho.02no	83.60	contest	ROUNDS			56.62	57.86	4	56.45	57.32	57.39	53.09	57.80	57.32	4.71		60.31	59.34	55.29	59.34	+2.72		0		gate-r5-set,roborumble-top50,roborumble-top50-part2,tier2
+36	Krabb.sliNk.Garm 0.9u	83.60	mid	ROUNDS			70.15	87.62	3	64.73	67.37	69.35	70.09	70.27	69.35	5.54		70.18	64.39	61.88	64.39	-5.76		0		gate-r5-set,roborumble-top50,roborumble-top50-part3
+37	axeBots.SilverSurfer 2.53.33fix	83.29	contest	ROUNDS			62.50	72.86	4	64.29	56.62	67.55	63.82	61.19	63.82	10.93		62.00	68.33	63.31	63.31	+0.81		0		gate-r5-set,roborumble-top50,roborumble-top50-part4
+38	mn.Combat 3.25.0	83.24	contest	ROUNDS			62.51	78.10	3	64.96	52.03	62.33	66.71	60.41	62.33	14.68		58.13	60.07	52.56	58.13	-4.38		0		gate-r5-set,melee-top20-d,melee-top20-e,melee-top20-set,roborumble-top50,roborumble-top50-part2
+39	cs.s2.Seraphim 2.3.1	83.13	mid				74.32	90.48	3	67.54	72.29	67.56	75.08	72.80	72.29	7.54		67.72	64.15	60.21	64.15	-10.17		0		gate-r5-set,roborumble-top50,roborumble-top50-part1
+40	fromHell.CHCl3 1.4.2	83.07	contest	ROUNDS			66.69	78.57	4	71.79	64.72	66.58	72.04	61.34	66.58	10.70		66.63	68.31	63.91	66.63	-0.06		0		gate-r5-set,roborumble-top50,roborumble-top50-part3
+41	jk.mini.CunobelinDC 1.2	82.97	contest	ROUNDS,VOLATILE	mini		63.87	75.24	3	72.55	65.07	76.45	69.48	52.65	69.48	23.80	yes	68.96	70.54	65.97	68.96	+5.09		0		collapse-310,gate-r5-set,roborumble-top50,roborumble-top50-part4
+42	sheldor.mini.Foilist 1.3.1	82.95	contest	ROUNDS	mini		62.99	77.15	2	65.98	55.29	60.20	59.36	66.63	60.20	11.34		61.71	66.60	62.73	62.73	-0.27		0		gate-r5-set,roborumble-top50,roborumble-top50-part1,tier2
+43	florent.test.Toad 0.14t	82.89	contest	ROUNDS			57.77	74.28	2	65.71	66.70	61.58	58.61	56.94	61.58	9.76		60.15	62.47	58.71	60.15	+2.38		0		gate-r5-set,roborumble-top50,roborumble-top50-part2
+44	ar.horizon.Horizon 1.2.2	82.89	contest	ROUNDS			60.66	76.43	4	62.06	58.03	55.56	69.40	57.74	58.03	13.84		65.19	62.79	57.61	62.79	+2.13		0		gate-r5-set,roborumble-top50,roborumble-top50-part3,shield-list
+45	cjm.chalk.Chalk 2.6.Be	82.79	contest	ROUNDS			63.61	78.57	2	61.44			67.42	59.80	61.44	7.62		65.61	65.27	57.11	65.27	+1.66		0		gate-r5-set,roborumble-top50,roborumble-top50-part2
+46	wcsv.PowerHouse.PowerHouse 1.7e3	82.70	loss	ROUNDS,VOLATILE,PEERGAP,BENCHGAP			48.98	60.00	2	65.78	60.74	57.79	53.87	44.09	57.79	21.69	yes	61.43	66.09	65.37	65.37	+16.39	62.97	56	11.7	collapse-310,gate-r5-set,leak-38,roborumble-top50,roborumble-top50-part4,shield-list
+47	sheldor.mini.FoilistMC 1.0	82.70	mid	ROUNDS	mini		72.47	84.28	2	78.00	64.33	71.29	70.37	74.57	71.29	13.67		70.19	75.57	71.38	71.38	-1.09	72.58	8	18.1	gate-r5-set,live-losers-385,roborumble-top50,roborumble-top50-part3,tier2
+48	pez.rumble.Ali 0.4.9	82.47	contest	ROUNDS			64.17	81.43	2	66.74	59.65	71.22	63.93	64.40	64.40	11.57		60.89	64.08	63.76	63.76	-0.41		0		gate-r5-set,roborumble-top50,roborumble-top50-part1,shield-list
+49	catcat20.Lambda 0.017	82.45	contest	ROUNDS			65.47	80.00	2	62.43	60.15	64.88	65.05	65.90	64.88	5.75		64.78	63.95	64.45	64.45	-1.02		0		
+50	florent.XSeries.X2 0.17	82.45	contest	ROUNDS			63.60	77.15	2	69.78	58.88	63.13	64.99	62.22	63.13	10.90		65.23	65.57	60.35	65.23	+1.63		0		gate-r5-set,roborumble-top50,roborumble-top50-part1
+51	dft.Cardigan 1.09	82.43	mid	ROUNDS			71.98	88.57	3	70.86	65.26	69.48	72.71	71.61	70.86	7.45		65.04	69.22	64.31	65.04	-6.94		0		gate-r5-set,roborumble-top50,roborumble-top50-part4,tier2
+52	tjk.deBroglie rev0108	82.41	loss	ROUNDS			48.10	55.24	3	57.42	48.68	55.06	41.99	60.32	55.06	18.33		54.39	59.73	52.01	54.39	+6.29		0		
+53	ags.rougedc.RougeDC willow	82.37	contest	ROUNDS			67.42	71.43	4	66.58	66.76	69.53	68.86	63.09	66.76	6.44		65.78	62.82	57.31	62.82	-4.60		0		gate-r5-set,roborumble-top50,roborumble-top50-part2
+54	darkcanuck.Holden 1.13a	82.36	contest	ROUNDS			63.15	75.72	4	63.94	62.89	63.90	60.34	65.96	63.90	5.62		64.08	60.47	61.34	61.34	-1.81	66.47	8	11.5	shield-list,shield-sweep-mid
+55	dft.Cyanide 1.90	82.33	contest	ROUNDS,BENCHGAP		yes	60.27	74.29	1	66.60	67.18	74.48	69.20	60.27	60.27	14.21		63.89	65.17	60.66	63.89	+3.62	72.92	32	11.2	mid-shield-39,session-300-opponents,shield-310,shield-list
+56	wcsv.Engineer.Engineer 0.5.4	82.28	contest	ROUNDS,PEERGAP		yes	56.61	71.43	1	72.15	62.96	60.26	64.66	56.61	56.61	15.54		62.34	62.83	61.34	62.34	+5.73	64.80	48	11.9	live-losers-385,shield-310,shield-confirm,shield-list,shield-sweep-mid,tier2
+57	jam.RaikoMX 0.32	82.24	contest	ROUNDS			62.76	81.90	3	70.04	63.48	66.13	57.67	65.31	65.31	12.37		67.09	67.62	66.19	67.09	+4.33		0		
+58	tide.pear.Pear 0.62.1	82.21	mid	LEAK,VOLATILE,BENCHGAP		yes	84.42	95.71	2	67.69	59.93	55.20	64.96	84.42	84.42	29.22		63.90	60.21	57.20	60.21	-24.21	68.08	48	11.2	live-losers-385,shield-310,shield-confirm,shield-list,shield-sweep-mid
+59	davidalves.PhoenixOS 1.1	81.92	contest	ROUNDS			69.37	82.86	2	68.02	68.76	61.82	69.08	69.66	68.76	7.84		64.97	66.78	65.88	65.88	-3.49	68.30	24	11.5	mid-39,session-300-opponents
+60	damij.mega.Boque aaah	81.88	contest	ROUNDS	mega		66.45	77.14	3	64.08	60.90	67.51	66.78	65.80	65.80	6.61		62.31	66.96	62.43	62.43	-4.02		0		
+61	zen.Ronin 1.0.0	81.84	contest	ROUNDS			62.66	68.57	2	73.74	55.78	64.18	66.89	58.43	64.18	17.96		70.06	60.68	62.58	62.58	-0.08		0		live-losers-385,tier2
+62	ouroboros.Dragon 0.0.3	81.56	mid	ROUNDS			74.56	85.72	3	74.25	73.50	81.50	73.95	75.77	74.25	8.00		74.67	73.87	68.30	73.87	-0.69	77.60	8	17.2	session-300-opponents,shield-list,shield-sweep-mid
+63	positive.Portia 1.26e	81.53	mid	ROUNDS			70.08	84.28	4	70.35	66.70	57.32	64.75	75.41	66.70	18.09		68.01	66.67	61.74	66.67	-3.41		0		handoff-duel,melee-handoff,melee-top10,melee-top20-a,melee-top20-d,melee-top20-set
+64	simonton.mini.WeeksOnEnd 1.10.4	81.50	farm	VOLATILE,BENCHGAP	mini	yes	92.63	98.57	2	68.15	57.84	61.24	65.04	92.63	92.63	34.79		62.68	67.13	62.13	62.68	-29.95	67.71	40	14.9	shield-310,shield-confirm,shield-list,shield-sweep-mid
+65	voidious.mini.Komarious 1.88	81.46	contest	ROUNDS,VOLATILE,BENCHGAP	mini		64.37	74.29	3	79.90	75.82	75.49	70.37	52.36	75.49	27.54	yes	75.06	72.12	71.58	72.12	+7.75	76.59	8	16.2	collapse-310,shield-list,shield-sweep-mid
+66	eem.zapper v6.03	81.26	contest	ROUNDS			68.12	83.58	4	73.31	64.22	73.10	67.71	68.53	68.53	9.09		69.00	65.74	63.36	65.74	-2.38	70.74	24	16.2	mid-39,tier2
+67	justin.DemonicRage 3.20	81.07	contest	ROUNDS,VOLATILE			67.75	87.62	3	82.82	60.85	63.52	77.60	62.82	63.52	21.97		64.67	67.73	68.90	67.73	-0.02	73.27	8	13.4	live-losers-385
+68	simonton.beta.LifelongObsession 0.5.1	81.01	farm	VOLATILE,BENCHGAP		yes	90.50	95.71	2	59.20	57.15	47.84	56.02	90.50	90.50	42.66		61.44	63.68	60.93	61.44	-29.06	66.22	40	17.9	shield-310,shield-confirm,shield-list,shield-sweep-mid
+69	ary.Help 1.0	80.57	mid	LEAK			81.21	97.14	3	82.40	79.91	80.51	83.66	79.99	80.51	3.75		74.45	72.64	70.14	72.64	-8.57	81.27	8	25.5	session-300-opponents,shield-list,shield-sweep-mid
+70	rh.Intra 2.1DomoKN	80.57	mid				75.08	90.00	2	66.34	68.90	66.24	76.69	73.47	68.90	10.45		67.32	67.94	64.54	67.32	-7.76		0		
+71	DM.mega.Regicide 2.0rrr	80.53	contest	ROUNDS	mega		63.89	74.29	4	70.17	75.15	69.23	61.01	72.53	70.17	14.14		75.87	70.70	61.65	70.70	+6.81		0		tier2
+72	simonton.mega.SniperFrog 1.0.fix2	80.51	sweep	VOLATILE	mega	yes	97.74	100.00	1	68.11	88.06	79.36	95.33	97.74	97.74	29.63		65.00	73.15	68.71	68.71	-29.03		0		session-300-opponents,shield-list,shield-panel
+73	pez.mini2.Pugilist 2.5.15	80.32	contest	ROUNDS			65.95	68.58	2	64.27	72.15	65.21	62.07	69.83	65.21	10.08		66.34	83.90	63.49	66.34	+0.39		0		
+74	eem.EvBotNG v12.8	80.14	contest	ROUNDS			62.70	71.43	2	58.91	62.77	65.78	58.67	66.72	62.77	8.05		64.80	62.57	65.99	64.80	+2.10		0		
+75	cf.proto.Shiva 2.2	80.14	farm	VOLATILE,BENCHGAP		yes	88.92	97.14	2	72.52	61.31	67.39	67.99	88.92	88.92	27.61		68.83	70.06	66.36	68.83	-20.09	73.80	32	12.4	mid-shield-39,shield-310,shield-list
+76	dft.Immortal 1.40	80.03	contest	ROUNDS			67.89	82.86	3	79.05	64.65	70.04	65.81	72.04	70.04	14.40		70.10	68.55	65.94	68.55	+0.66	71.42	32	11.6	live-losers-385,mid-39,tier2
+77	wcsv.mega.PowerHouse2 0.2	80.02	contest	ROUNDS	mega		69.21	82.86	3	70.96	73.22	67.46	67.98	69.82	69.82	5.76		62.84	68.75	66.57	66.57	-2.64	73.79	8	12.1	shield-list,shield-panel,shield-sweep-mid
+78	apv.test.Virus 0.6.1	79.73	mid	VOLATILE		yes	82.08	93.33	3	67.96	78.18	89.39	89.01	82.08	82.08	21.43		64.00	64.01	60.69	64.00	-18.08		0		shield-list,shield-panel
+79	darkcanuck.Gaff 1.50	79.64	contest	ROUNDS			69.75	82.28	5	64.43	71.61	68.41	70.78	69.07	69.07	7.18		69.05	63.82	64.72	64.72	-5.03		0		
+80	catcat20.shape.Theta 0.018	79.19	contest	ROUNDS			66.04	77.14	3	62.94	69.02	73.64	72.83	62.65	69.02	10.99		66.63	67.57	62.43	66.63	+0.59		0		tier2
+81	ary.SMG 1.01	79.18	mid			yes	77.44	91.43	1	66.60	62.39	73.05	72.69	77.44	77.44	15.05		69.34	69.50	66.61	69.34	-8.10	73.73	32	14.1	mid-shield-39,shield-310,shield-list
+82	rz.Aleph 0.34	79.04	farm	VOLATILE,BENCHGAP		yes	88.18	97.14	1	73.91	64.34	63.76	77.99	88.18	88.18	24.42		65.48	68.83	68.88	68.83	-19.35	74.01	48	12.5	live-losers-385,melee-classic,melee-reference,melee-top20-b,melee-top20-e,melee-top20-set,session-300-opponents,shield-310,shield-confirm,shield-list,shield-sweep-mid
+83	ags.Glacier 0.3.2	78.91	contest	ROUNDS			68.56	87.15	2	62.86	67.86	60.26	70.39	66.73	66.73	10.13		69.30	69.95	64.40	69.30	+0.74	64.28	24	16.0	mid-39
+84	synapse.rsim.GeomancyBS 0.11	78.76	mid				75.06	90.00	2	65.80	73.64	68.77	68.90	81.23	68.90	15.43		74.66	72.13	68.53	72.13	-2.94	74.48	16	12.2	mid-shield-39,shield-list
+85	stelo.PastFuture 2.3.2	78.49	contest	ROUNDS			66.84	80.72	4	61.73	55.63	66.41	66.43	67.25	66.41	11.62		67.41	64.28	62.25	64.28	-2.56	63.66	24	10.3	melee-top20-a,melee-top20-b,melee-top20-set,mid-39
+86	DM.mega.Bezier 1.618fprrr	78.22	sweep	VOLATILE,BENCHGAP	mega	yes	95.45	100.00	1	78.53	79.33	72.94	75.04	95.45	95.45	22.51		75.82	73.62	69.09	73.62	-21.83	80.31	40	21.1	session-300-opponents,shield-310,shield-confirm,shield-list,shield-sweep-mid,tier2
+87	jcs.Decepticon 2.5.3	78.19	contest	ROUNDS		yes	67.62	80.00	1	70.88	76.97	66.18	79.40	67.62	67.62	13.22		71.88	72.90	70.71	71.88	+4.26	75.83	40	10.8	shield-310,shield-confirm,shield-list,shield-sweep-mid
+88	rdt.AgentSmith.AgentSmith 0.5	78.15	farm	BENCHGAP		yes	85.12	94.29	1	72.68	67.76	69.81	69.65	85.12	85.12	17.36		67.26	66.47	64.85	66.47	-18.65	74.51	40	12.8	shield-310,shield-confirm,shield-list,shield-sweep-mid
+89	slugzilla.Basilisk 3.9	78.13	mid				71.91	92.86	2	71.23	73.15	71.12	72.98	70.83	71.23	2.32		71.54	71.71	71.57	71.57	-0.34		0		
+90	pe.SandboxDT 3.02	78.09	mid	ROUNDS			71.91	87.15	4	66.92	68.24	70.19	77.57	66.25	68.24	11.32		64.71	64.91	65.91	64.91	-7.00		0		
+91	jk.micro.Cotillion 0.8	77.76	contest	ROUNDS	micro		62.73	78.57	2	63.52	57.52	72.66	56.51	68.96	63.52	16.15		61.63	67.40	67.91	67.40	+4.67	65.95	24	10.6	mid-39,tier2
+92	oog.PricklyPear 1.0.6	77.76	mid	ROUNDS			75.47	85.71	2	73.44	73.95	74.37	77.12	73.82	73.95	3.68		76.42	75.25	73.75	75.25	-0.22		0		
+93	lancel.Lynx 1.09	77.70	contest	ROUNDS			68.77	85.72	2	63.33	66.83	62.27	72.18	65.36	65.36	9.91		63.97	64.95	63.95	63.97	-4.80		0		session-300-opponents
+94	EFD.AdvancedEFD 0.4.5a	77.63	contest	ROUNDS			63.48	68.57	3	65.29	71.39	56.67	65.70	59.04	65.29	14.72		65.84	70.08	68.10	68.10	+4.62		0		
+95	trab.Crusader 0.1.7	77.59	contest	ROUNDS,PEERGAP,BENCHGAP		yes	58.28	74.29	1	67.22	62.72	54.25	61.90	58.28	58.28	12.97		69.24	65.63	67.63	67.63	+9.35	69.48	32	13.1	mid-shield-39,shield-310,shield-list
+96	sheldor.micro.Continuation 1.1	77.57	mid	ROUNDS	micro		71.50	85.72	2	72.32	71.52	65.45	66.84	76.16	71.52	10.71		64.99	67.14	66.28	66.28	-5.22		0		tier2
+97	theo.real.Ahab 1.0	77.56	contest	ROUNDS		yes	68.62	80.00	1	71.00	60.41	57.02	68.44	68.62	68.62	13.98		67.43	65.14	62.77	65.14	-3.48	70.46	40	12.6	live-losers-385,mid-shield-39,shield-310,shield-list
+98	jcs.Megatron 1.2	77.48	mid	ROUNDS			78.70	88.57	2	80.54	75.17	74.81	80.14	77.26	77.26	5.73		73.14	74.50	69.27	73.14	-5.56	78.43	8	12.1	session-300-opponents,shield-list,shield-sweep-mid
+99	lucasslf.Wiggins 0.6	77.06	farm	VOLATILE,BENCHGAP		yes	92.58	98.57	2	79.38	69.92	80.30	68.35	92.58	92.58	24.23		77.19	71.81	69.67	71.81	-20.77	80.32	40	14.6	shield-310,shield-confirm,shield-list,shield-sweep-mid
+100	sheldor.micro.Epeeist 3.7	77.01	contest	ROUNDS,VOLATILE	micro		62.41	70.00	2	73.56	75.77	69.03	75.09	49.72	73.56	26.05	yes	71.18	72.72	71.07	71.18	+8.78		0		collapse-310
+101	kc.micro.WaveShark 0.5	76.93	mid		micro		77.26	91.43	3	69.79	74.04	72.57	70.79	80.50	72.57	10.71		73.49	73.62	69.46	73.49	-3.77		0		
+102	jekl.DarkHallow .90.9	76.66	farm	VOLATILE,BENCHGAP		yes	93.13	97.14	1	69.66	66.04	58.46	71.03	93.13	93.13	34.67		72.20	68.95	71.06	71.06	-22.07	72.19	40	11.0	shield-310,shield-confirm,shield-list,shield-sweep-mid
+103	rz.Apollon 0.23	76.59	mid	ROUNDS,PEERGAP			74.82	88.57	3	69.73	64.92	65.65	83.75	70.36	69.73	18.83		81.45	76.51	74.36	76.51	+1.69		0		
+104	axeBots.Okami 1.04	76.53	mid	ROUNDS			75.86	84.76	3	70.61	73.21	76.15	77.37	75.11	75.11	6.76		65.55	71.18	69.56	69.56	-6.30	75.20	24	26.8	mid-39,session-300-opponents
+105	sheldor.micro.EpeeistDC 3.0	76.50	contest	ROUNDS	micro		63.42	74.28	2	70.47	69.31	73.31	68.89	57.95	69.31	15.36		70.96	67.87	71.09	70.96	+7.54	72.41	24	12.7	mid-39
+106	kenran.Bakko v1.0.1	76.38	contest	ROUNDS,PEERGAP			63.63	72.86	2	61.77	64.76	59.67	65.85	61.42	61.77	6.18		74.71	68.99	64.21	68.99	+5.35		0		
+107	stelo.MatchupWS 1.2c	76.26	mid	ROUNDS			74.61	87.14	2	72.11	61.15	65.86	73.54	75.68	72.11	14.53		71.23	69.59	64.02	69.59	-5.02	77.74	8	10.5	shield-list,shield-sweep-mid
+108	nat.Samekh 0.4	76.18	contest	ROUNDS,VOLATILE			59.87	75.71	2	74.67	63.13	59.47	68.64	51.09	63.13	23.58	yes	66.07	66.62	67.02	66.62	+6.76	67.28	32	13.2	collapse-310,live-losers-385,mid-39,session-300-opponents
+109	stelo.Spread 0.9	76.09	mid				75.96	91.43	2	67.09	71.48	70.98	76.79	75.13	71.48	9.70		73.95	69.28	67.44	69.28	-6.68		0		melee-top20-b,melee-top20-d,melee-top20-set
+110	synapse.Geomancy 15	76.08	mid	ROUNDS			70.34	82.86	3	70.63	73.92	73.87	71.09	69.96	71.09	3.96		72.16	71.41	64.38	71.41	+1.07		0		session-300-opponents
+111	kid.Gladiator .7.2	75.93	farm			yes	93.08	96.19	3	77.83	89.19	88.16	92.28	93.08	93.08	15.25		76.27	78.61	74.67	76.27	-16.81		0		shield-list,shield-panel
+112	mue.Hyperion 0.8	75.77	contest	ROUNDS			69.77	78.58	2	67.27	68.61	65.01	70.34	69.20	68.61	5.33		64.22	66.41	68.30	66.41	-3.36	72.19	8	12.9	shield-list,shield-panel,shield-sweep-mid
+113	stefw.Tigger 0.0.23	75.75	farm	VOLATILE,BENCHGAP		yes	88.85	97.14	2	69.53	69.34	70.28	62.49	88.85	88.85	26.36		68.19	68.48	66.25	68.19	-20.66	74.97	40	11.7	shield-310,shield-confirm,shield-list,shield-sweep-mid
+114	nz.jdc.micro.HedgehogGF 1.5	75.75	mid	ROUNDS	micro		76.20	89.53	3	84.38	71.02	78.73	79.40	69.81	78.73	14.57		76.15	78.11	77.57	77.57	+1.37	76.41	8	12.9	session-300-opponents,shield-list,shield-sweep-mid
+115	ur4n0.UR4NO 1.0	75.60	mid	ROUNDS			71.09	85.71	2	75.20	72.77	60.19	72.19	69.99	72.19	15.01		72.67	72.50	68.96	72.50	+1.41		0		
+116	kc.micro.Thorn 1.252	75.55	mid		micro	yes	77.96	94.29	1	77.83	68.72	70.94	74.03	77.96	77.96	9.24		70.57	72.08	72.84	72.08	-5.88	76.00	40	15.3	session-300-opponents,shield-310,shield-confirm,shield-list,shield-sweep-mid
+117	catcat20.atom.Atom 0.51	75.54	mid	ROUNDS,PEERGAP			77.48	86.67	3	78.90	72.42	75.38	75.23	81.98	75.38	9.56		75.93	80.90	87.43	80.90	+3.42		0		
+118	cx.Lacrimas 1.36	75.06	contest	ROUNDS			67.08	84.76	3	77.97	65.96	73.84	70.93	65.16	70.93	12.81		74.98	65.56	66.42	66.42	-0.66		0		
+119	wcsv.Stampede2.Stampede2 1.1.0	74.70	mid				76.28	90.85	5	77.30	74.54	80.71	79.73	73.98	77.30	6.73		78.82	75.99	76.43	76.43	+0.15		0		
+120	ej.ChocolateBar 1.1	74.70	sweep	VOLATILE		yes	95.19	100.00	1	69.87	87.81	82.54	93.13	95.19	95.19	25.32		72.29	72.56	70.77	72.29	-22.90		0		shield-list,shield-panel
+121	trm.Wrekt 1.1.6.f	74.69	mid	ROUNDS		yes	74.43	88.57	1	75.39	73.31	67.41	70.81	74.43	74.43	7.98		71.30	73.22	75.76	73.22	-1.21	74.02	40	13.0	shield-310,shield-confirm,shield-list,shield-sweep-mid
+122	slugzilla.Basilite 0.13	74.57	mid	ROUNDS			73.41	86.67	3	69.79	67.98	68.42	77.52	71.36	69.79	9.54		70.24	77.33	73.66	73.66	+0.25		0		
+123	rc.yoda.Yoda 1.0.6c.fix	74.46	mid	ROUNDS			77.42	86.67	3	80.43	79.26	76.61	79.53	73.20	79.26	7.23		77.81	76.22	70.67	76.22	-1.20	76.73	8	20.0	shield-list,shield-sweep-mid
+124	jam.mini.Raiko 0.43	74.40	mid	ROUNDS	mini	yes	72.17	80.00	2	68.12	68.46	70.05	68.20	72.17	72.17	4.05		71.93	74.12	72.00	72.00	-0.17	75.56	40	14.5	shield-310,shield-confirm,shield-list,shield-sweep-mid
+125	nat.BlackHole 2.0gamma	74.36	mid	ROUNDS			71.05	88.57	3	72.88	72.57	67.59	68.60	75.95	72.57	8.36		74.88	66.68	67.73	67.73	-3.32		0		session-300-opponents
+126	stelo.Liblix 0.3.1	74.32	mid	ROUNDS			70.80	85.71	3	69.28	69.27	68.96	67.60	72.40	69.27	4.80		70.73	69.51	65.30	69.51	-1.29		0		
+127	florent.FloatingTadpole 1.2.6	74.31	mid	LEAK			84.00	98.57	2	75.74	79.38	77.09	82.31	85.70	79.38	9.96		81.50	77.65	75.94	77.65	-6.35		0		
+128	florent.small.LittleAngel 1.8	74.29	farm			yes	86.07	98.57	2	77.16	74.30	66.91	70.36	86.07	86.07	19.16		76.59	73.57	67.96	73.57	-12.50	77.56	40	12.5	shield-310,shield-confirm,shield-list,shield-sweep-mid
+129	cx.BlestPain 1.41	74.00	mid	ROUNDS			72.07	88.58	2	75.40	67.54	70.35	75.80	68.35	70.35	8.26		76.09	70.87	70.21	70.87	-1.20		0		
+130	theo.Tungsten 1.0a	73.95	mid	LEAK		yes	84.12	97.14	2	76.35	79.78	71.83	76.93	84.12	84.12	12.29		75.50	71.52	71.87	71.87	-12.25	77.01	40	11.2	shield-310,shield-confirm,shield-list,shield-panel,shield-sweep-mid
+131	stelo.Chord 1.0	73.93	mid				78.48	93.71	5	77.55	78.20	84.98	81.32	74.22	78.20	10.76		83.36	80.67	75.17	80.67	+2.19	80.18	24	10.0	mid-39
+132	ary.mini.Nimi 1.0	73.92	farm	VOLATILE,BENCHGAP	mini	yes	94.69	100.00	1	78.19	68.22	70.27	69.29	94.69	94.69	26.47		71.05	70.31	70.28	70.31	-24.38	79.80	32	12.0	mid-shield-39,shield-310,shield-list
+133	ary.FourWD 1.3d	73.86	contest	ROUNDS,PEERGAP			68.89	80.95	3	75.96	71.79	77.10	69.76	67.15	71.79	9.95		81.23	77.67	75.80	77.67	+8.78		0		
+134	da.NewBGank 1.4	73.81	mid	ROUNDS			73.88	87.62	3	71.43	70.85	72.75	72.92	75.81	72.75	4.96		76.08	77.80	72.75	76.08	+2.20	75.86	8	10.9	shield-list,shield-sweep-mid
+135	whind.StrengthBee 0.6.4	73.39	mid				76.28	90.48	3	75.97	70.65	69.43	77.17	74.50	74.50	7.74		66.99	70.34	69.60	69.60	-6.68		0		
+136	simonton.micro.WeeklongObsession 3.4.1	73.34	contest	ROUNDS	micro		69.83	84.28	2	75.05	71.47	65.20	70.57	69.09	70.57	9.85		67.99	72.12	70.29	70.29	+0.46		0		session-300-opponents
+137	rh.abs.Xwing 2.1	73.04	contest	ROUNDS			69.91	82.86	3	69.69	72.50	72.04	70.13	69.46	70.13	3.04		72.64	73.46	69.82	72.64	+2.73		0		
+138	kawigi.sbf.FloodHT 0.9.2	73.03	contest	ROUNDS			68.18	85.00	4	73.44	71.36	64.28	66.17	74.22	71.36	9.94		74.07	67.96	67.89	67.96	-0.22	75.18	8	12.8	melee-handoff,melee-reference,shield-list,shield-sweep-mid
+139	ebo.Tahoe 1.1.79	73.00	contest	ROUNDS,PEERGAP			66.02	77.14	4	63.97	57.75	72.52	75.36	62.91	63.97	17.61		71.84	71.15	73.93	71.84	+5.82		0		
+140	kms.Golden 0.10	72.98	mid	BENCHGAP		yes	84.89	94.29	1	65.93	72.14	70.61	74.81	84.89	84.89	18.96		71.88	72.23	73.11	72.23	-12.66	73.25	32	10.9	mid-shield-39,shield-310,shield-list
+141	ry.VirtualGunExperiment 1.2.0	72.97	mid	LEAK			82.23	96.19	3	82.71	81.95	75.71	82.20	82.29	82.20	7.00		81.26	78.70	77.14	78.70	-3.53	81.91	24	12.2	mid-39
+142	kenran.mega.Pantheist 1.1	72.72	mid		mega		77.06	94.28	2	68.32	65.01	61.73	76.05	78.06	68.32	16.33		71.26	70.88	69.04	70.88	-6.18		0		
+143	pkbots.BoyTDSurfer 1.0	72.53	mid			yes	83.29	94.29	1	78.86	66.29	74.73	76.11	83.29	83.29	17.00		74.20	73.19	72.15	73.19	-10.10	76.32	40	14.3	session-300-opponents,shield-310,shield-confirm,shield-list,shield-sweep-mid
+144	pez.mini.Tityus 0.9.1	72.45	mid	ROUNDS	mini		70.66	88.57	3	63.61	69.40	59.16	72.97	69.51	69.40	13.81		77.44	73.14	73.30	73.30	+2.64		0		
+145	rdt.Wraith.Wraith 0.3	72.27	farm				92.67	98.57	2	85.79	87.33	85.24	85.35	100.00	85.79	14.76		82.84	82.26	82.39	82.39	-10.28		0		
+146	theo.avenge.Pequod 1.0	71.92	farm	VOLATILE,BENCHGAP		yes	87.35	97.14	1	71.86	65.08	58.67	66.53	87.35	87.35	28.68		71.89	65.63	82.54	71.89	-15.46	71.26	40	11.3	live-losers-385,mid-shield-39,shield-310,shield-list
+147	oog.micro.Claudius 1.11	71.92	mid	ROUNDS	micro		72.85	87.62	3	76.41	78.07	77.44	71.78	73.38	76.41	6.29		75.83	76.76	74.04	75.83	+2.98		0		
+148	gh.GrubbmGrb 1.2.4	71.89	sweep	BENCHGAP		yes	97.59	100.00	3	85.36	84.30	82.70	84.37	97.59	97.59	14.89		86.52	86.86	83.10	86.52	-11.07	85.47	40	13.5	shield-310,shield-confirm,shield-list,shield-panel,shield-sweep-mid
+149	kid.Toa .0.5	71.81	farm			yes	85.28	94.29	1	79.56	82.94	80.72	82.71	85.28	85.28	5.72		83.04	80.40	80.35	80.40	-4.88	85.68	32	10.5	mid-shield-39,session-300-opponents,shield-310,shield-list
+150	catcat20.helios.Helios 1.5	71.75	mid	ROUNDS			78.05	87.62	3	75.40	80.27	85.24	75.28	83.59	80.27	9.96		78.05	80.46	81.63	80.46	+2.41		0		
+151	jam.micro.RaikoMicro 1.44	71.70	sweep	VOLATILE	micro	yes	97.83	100.00	1	70.24	78.32	88.63	95.34	97.83	97.83	27.59		74.72	72.13	73.06	73.06	-24.77		0		shield-list,shield-panel
+152	ary.micro.Weak 1.2	71.68	mid		micro		76.94	91.43	2	78.42	70.27	73.62	73.75	80.12	73.75	9.85		73.33	78.55	75.79	75.79	-1.14	73.17	8	12.5	shield-list,shield-sweep-mid
+153	vic.Locke 0.7.5.5	71.66	sweep	VOLATILE		yes	95.68	100.00	1	68.06	89.32	77.85	93.08	95.68	95.68	27.62		68.31	65.56	66.85	66.85	-28.83		0		session-300-opponents,shield-list,shield-panel
+154	cf.star.Star2 1.23	71.59	contest	ROUNDS,PEERGAP			59.28	75.71	4	72.09	73.43	56.78	59.71	58.85	59.71	16.65		73.69	76.34	72.70	73.69	+14.41		0		session-300-opponents
+155	ab.DengerousRoBatra 1.3	71.45	mid	PEERGAP			77.43	92.85	2	73.39	69.35	79.60	72.47	82.39	73.39	13.04		83.02	85.49	81.96	83.02	+5.59	81.68	8	11.6	shield-list,shield-sweep-mid
+156	axeBots.Musashi 2.18	71.27	mid	ROUNDS			76.74	89.52	3	78.27	76.21	73.60	75.18	77.52	76.21	4.67		70.63	76.05	72.43	72.43	-4.31	76.34	24	12.9	mid-39
+157	pedersen.Ugluk 1.0	71.06	mid				76.65	90.72	4	77.64	78.08	71.67	77.14	75.16	77.14	6.41		74.55	74.81	74.94	74.81	-1.84		0		melee-classic,melee-strong,session-300-opponents
+158	simonton.micro.GFMicro 1.0	70.96	sweep	BENCHGAP	micro	yes	95.89	100.00	1	84.41	77.34	79.41	83.91	95.89	95.89	18.55		81.28	83.67	83.53	83.53	-12.36	84.41	40	12.8	session-300-opponents,shield-310,shield-confirm,shield-list,shield-sweep-mid
+159	cuoq.Kakera 1.0	70.91	mid	ROUNDS			70.78	80.95	3	80.47	73.04	78.09	77.44	67.45	77.44	13.02		73.45	74.45	71.80	73.45	+2.67	77.05	8	11.0	shield-list,shield-sweep-mid
+160	mladjo.iRobot 0.3	70.80	contest	ROUNDS,VOLATILE,PEERGAP			66.59	80.00	2	75.76	79.89	84.76	76.68	56.50	76.68	28.26	yes	84.54	85.05	78.04	84.54	+17.95		0		collapse-310,session-300-opponents
+161	wiki.BasicGFSurfer 1.02	70.58	mid	LEAK			81.84	98.57	2	84.88	73.84	79.87	82.46	81.22	81.22	11.04		81.25	84.32	80.21	81.25	-0.59	78.26	8	13.8	session-300-opponents,shield-list,shield-panel,shield-sweep-mid
+162	theo.QuarkSoup 1.5fga	70.37	contest	ROUNDS			69.37	82.86	4	82.87	75.55	63.43	69.19	69.55	69.55	19.44		70.09	70.80	69.20	70.09	+0.72	72.76	16	11.8	live-losers-385,session-300-opponents,shield-list,shield-sweep-mid
+163	deo.CloudBot 1.3	70.37	mid	PEERGAP			81.91	94.29	2	73.89	76.32	66.46	82.43	81.39	76.32	15.97		85.00	84.41	79.47	84.41	+2.50	80.26	24	14.1	mid-39
+164	brainfade.Fallen 0.63	70.28	farm	VOLATILE,BENCHGAP		yes	90.47	97.14	2	67.69	71.48	65.46	75.27	90.47	90.47	25.01		67.61	71.83	73.87	71.83	-18.64	75.72	32	13.1	mid-shield-39,shield-310,shield-list
+165	dsekercioglu.mini.Partial 0.1.3	70.23	mid		mini		78.49	91.43	2	79.72	81.00	69.24	75.14	81.84	79.72	12.60		84.78	79.85	78.22	79.85	+1.36		0		
+166	lxx.ConceptA 0.8	70.16	mid	LEAK,PEERGAP			82.83	95.24	3	79.80	83.13	78.82	85.84	81.32	81.32	7.02		87.42	85.60	88.85	87.42	+4.59		0		
+167	ad.Quest 0.10	70.13	farm			yes	87.36	94.29	1	75.64	76.85	78.37	79.29	87.36	87.36	11.72		80.26	75.30	79.30	79.30	-8.06	81.09	40	14.8	shield-310,shield-confirm,shield-list,shield-sweep-mid
+168	element.Earth 1.1	70.13	mid				79.45	90.48	3	83.20	69.64	75.29	81.38	78.48	78.48	13.56		81.88	75.98	75.59	75.98	-3.47	75.98	16	11.7	live-losers-385,session-300-opponents,shield-list,shield-sweep-mid
+169	barontrozo.BaronTrozo 1.7.6	70.05	mid	ROUNDS			71.88	85.00	4	67.73	69.83	72.10	72.68	69.49	69.83	4.95		66.78	65.21	67.78	66.78	-5.10		0		session-300-opponents
+170	paulk.PaulV3 1.7	70.03	mid				76.13	90.48	3	74.31	73.30	73.60	76.10	76.20	74.31	2.90		76.93	74.23	72.66	74.23	-1.90		0		
+171	oog.mini.AlphaDragon 0.1	70.02	mid	LEAK	mini		80.31	98.57	2	81.22	71.59	71.15	76.41	84.20	76.41	13.05		75.95	77.66	75.40	75.95	-4.36	76.74	16	13.1	live-losers-385,shield-list,shield-sweep-mid
+172	ers.micro.speusippus.Speusippus 0.3	69.97	mid	ROUNDS	micro		76.03	85.72	5	70.86	67.43	76.51	74.68	81.41	74.68	13.98		75.98	78.29	74.64	75.98	-0.05		0		
+173	lucasslf.HariSeldon 0.2.1	69.94	sweep	BENCHGAP		yes	95.09	99.05	3	82.96	76.61	75.26	77.84	95.09	95.09	19.83		80.51	78.89	78.41	78.89	-16.20	83.93	40	10.7	shield-310,shield-confirm,shield-list,shield-sweep-mid
+174	penguin.MrFreeze 1.0a	69.93	farm				87.45	96.57	5	85.94	85.04	84.87	89.02	86.41	85.94	4.15		83.77	76.81	80.56	80.56	-6.89	87.12	24	15.5	mid-39
+175	theo.simple.Lucid 1.0	69.93	mid	ROUNDS			73.67	89.52	3	74.76	82.05	70.38	67.91	76.55	74.76	14.14		69.22	66.65	70.95	69.22	-4.45	70.75	8	12.5	session-300-opponents,shield-list,shield-sweep-mid
+176	bayen.nut.Squirrel 1.621	69.84	mid	VOLATILE			82.20	93.33	3	79.54	73.38	75.53	75.35	95.90	75.53	22.52		85.91	76.81	76.35	76.81	-5.39		0		mid-shield-39,session-300-opponents,shield-list
+177	gre.svman4.Morfeas 1.4.3	69.78	mid	ROUNDS			76.52	84.28	2	78.72	73.47	75.78	75.14	77.89	75.78	5.25		79.47	76.40	76.18	76.40	-0.11		0		
+178	cw.megas.Silhouette 1.1	69.75	mid	ROUNDS			70.25	85.71	3	68.22	67.96	67.00	71.77	69.49	68.22	4.77		70.68	72.11	69.96	70.68	+0.43	72.89	64	10.4	leak-38,shield-list,shield-sweep-mid
+179	gh.mini.Grimmig 0.3.6	69.74	farm		mini		85.81	95.72	2	87.65	86.79	89.04	82.27	89.35	87.65	7.08		90.17	89.71	86.80	89.71	+3.90		0		
+180	penguin.Joker .611wr	69.66	contest	ROUNDS,VOLATILE			68.60	78.10	3	80.44	70.01	74.86	77.72	50.36	74.86	30.08	yes	72.37	82.25	64.99	72.37	+3.77		0		collapse-310,session-300-opponents
+181	ags.polished.PolishedRuby 1	69.65	farm				92.20	100.00	3	74.13	90.49	92.57	92.29	92.01	92.01	18.44		71.47	73.48	64.94	71.47	-20.73		0		
+182	cx.mini.Cigaret 1.31	69.53	mid	ROUNDS	mini		70.76	86.43	4	73.09	66.06	75.58	76.96	68.69	73.09	10.90		73.83	66.81	72.14	72.14	+1.38	74.43	24	11.8	melee-classic,melee-reference,mid-39
+183	kc.micro.Needle 0.101	69.37	mid	ROUNDS	micro		70.92	83.81	3	75.11	74.16	77.08	72.01	70.38	74.16	6.70		75.83	81.19	78.07	78.07	+7.15	77.31	56	9.9	leak-38
+184	ds.Versatile RB1.0.1	69.34	mid				79.09	90.48	3	82.40	78.54	81.60	80.42	76.44	80.42	5.96		86.50	82.01	83.09	83.09	+4.00		0		
+185	demetrix.ForceMajeure 0.75	69.30	mid	ROUNDS			74.83	87.62	3	74.69	74.73	70.34	73.35	77.80	74.69	7.46		73.75	76.35	78.58	76.35	+1.52		0		
+186	lazarecki.mega.PinkerStinker 0.7	69.27	mid	ROUNDS	mega		75.67	86.43	4	81.30	77.70	78.20	78.31	73.03	78.20	8.27		78.56	72.78	70.47	72.78	-2.89	75.73	24	16.0	mid-39
+187	jab.avk.ManuelGallegus 0.6	69.26	mid	ROUNDS,PEERGAP			72.83	85.72	2	72.97	71.23	67.55	81.34	64.31	71.23	17.03		78.49	77.68	75.98	77.68	+4.86		0		
+188	gf.Centaur.Centaur 0.6.7	69.19	farm				86.75	98.09	3	85.26	79.73	84.00	87.88	86.19	85.26	8.15		82.79	80.09	77.68	80.09	-6.66		0		
+189	theo.Hydrogen 2.1r	69.07	mid	ROUNDS			75.41	88.57	2	73.57	72.06	76.01	84.55	66.27	73.57	18.28		82.01	72.08	71.59	72.08	-3.33		0		session-300-opponents
+190	fromHell.C4H10O 1.5.1	69.05	contest	ROUNDS			68.91	80.00	3	68.04	73.90	73.77	72.44	61.84	72.44	12.06		70.34	74.40	75.17	74.40	+5.49		0		
+191	lxx.Emerald 0.6.5	69.03	farm				89.09	91.43	3	92.58	92.62	94.87	89.61	88.04	92.58	6.83		94.28	96.64	92.98	94.28	+5.19		0		
+192	alpha.RainingFire 1.0	69.01	mid	ROUNDS			72.87	85.72	2	73.05	74.91	72.27	72.33	73.40	73.05	2.64		76.76	71.87	74.65	74.65	+1.78		0		
+193	wilson.Chameleon 0.91	68.94	sweep	BENCHGAP		yes	97.35	100.00	1	80.11	80.32	82.37	83.65	97.35	97.35	17.24		79.51	77.36	76.94	77.36	-19.99	83.39	40	11.8	shield-310,shield-confirm,shield-list,shield-sweep-mid
+194	wiki.mini.Sedan 1.0	68.92	farm		mini	yes	85.52	94.29	2	79.69	70.29	76.94	81.93	85.52	85.52	15.23		80.28	73.28	76.29	76.29	-9.23	82.65	32	11.2	mid-shield-39,shield-310,shield-list
+195	suh.mega.WaveSurferPG 1.06	68.88	mid	ROUNDS	mega		77.55	83.81	3	78.51	79.16	69.35	80.66	75.99	78.51	11.31		81.17	83.54	78.55	81.17	+3.62	76.92	16	14.4	mid-shield-39,shield-list
+196	pez.micro.Aristocles 0.3.9	68.87	mid	ROUNDS	micro		74.47	88.57	3	67.97	66.22	74.02	77.32	73.05	73.05	11.10		75.83	76.31	75.63	75.83	+1.36		0		
+197	cx.CigaretBH 1.03	68.86	mid	ROUNDS			72.23	84.28	2	71.12	74.28	72.36	77.78	66.68	72.36	11.10		74.72	68.73	72.20	72.20	-0.03	75.63	8	11.8	session-300-opponents,shield-list,shield-sweep-mid
+198	cf.mini.Chiva 1.0	68.78	mid	LEAK,VOLATILE	mini	yes	83.97	97.14	1	67.88	85.53	74.50	88.46	83.97	83.97	20.58		83.67	83.57	80.69	83.57	-0.40	82.28	32	11.9	mid-shield-39,session-300-opponents,shield-310,shield-list,shield-panel
+199	voidious.micro.Jen 1.11	68.76	mid	PEERGAP	micro		77.53	91.43	2	75.24	70.35	78.70	76.52	78.55	76.52	8.35		81.88	82.07	82.31	82.07	+4.53	79.43	8	12.0	session-300-opponents,shield-list,shield-sweep-mid
+200	ph.mini.Archer 0.6.6	68.69	mid	ROUNDS	mini	yes	74.90	88.57	1	66.42	68.75	65.84	66.54	74.90	74.90	9.06		69.90	69.27	69.32	69.32	-5.58	72.01	48	12.7	lost-rounds-39,session-300-opponents,shield-310,shield-confirm,shield-list,shield-sweep-mid
+201	bing2.Melody 1.3.1	68.68	mid	LEAK			83.50	97.14	4	83.16	85.85	81.41	83.13	83.87	83.16	4.44		84.98	84.89	81.77	84.89	+1.39		0		
+202	catcat20.Rabbit 0.001	68.66	mid	ROUNDS,VOLATILE			77.32	84.29	2	75.29	81.74	84.07	84.50	70.14	81.74	14.36	yes	83.11	86.15	82.79	83.11	+5.79		0		collapse-310
+203	pedersen.Hubris 2.4	68.64	mid	ROUNDS			77.71	88.57	3	83.01	79.80	83.15	83.34	74.90	83.01	8.44		83.47	80.44	82.63	82.63	+4.92	81.96	16	12.3	mid-shield-39,shield-list,shield-panel
+204	oog.micro.SavantMicro 1.1	68.62	mid	ROUNDS	micro		75.33	87.85	4	77.96	76.30	64.61	74.72	75.93	75.93	13.35		75.36	75.95	74.21	75.36	+0.03	75.06	8	11.0	shield-list,shield-sweep-mid
+205	sheldor.micro.PointInLineRRAL 1.0	68.62	farm	PEERGAP	micro		85.03	95.71	4	81.76	81.10	80.05	84.18	85.32	81.76	5.27		88.39	87.37	85.43	87.37	+2.34	85.66	24	11.2	mid-39
+206	nkn.mini.Jskr0 0.1	68.62	farm		mini	yes	88.02	96.19	3	82.78	88.78	86.41	96.95	88.02	88.02	14.17		84.31	85.45	80.70	84.31	-3.71		0		shield-list,shield-panel
+207	cx.Princess 1.0	68.48	contest	ROUNDS			69.61	81.90	3	63.20	68.29	69.40	75.00	66.92	68.29	11.80		73.03	68.10	68.95	68.95	-0.66		0		lost-rounds-39,shield-list,shield-panel,shield-sweep-mid
+208	theo.simple.Bones 1.0	68.47	mid	ROUNDS			71.84	81.90	3	75.00	74.20	72.20	70.00	75.53	74.20	5.53		75.26	75.46	74.79	75.26	+3.42	73.76	8	11.0	session-300-opponents,shield-list,shield-sweep-mid
+209	kcn.unnamed.Unnamed 1.21	68.40	sweep	VOLATILE		yes	98.17	100.00	1	69.81	89.91	86.62	93.57	98.17	98.17	28.36		78.44	80.74	78.21	78.44	-19.73		0		shield-list,shield-panel
+210	metal.small.dna2.MCoolDNA 1.5	68.36	farm	VOLATILE,BENCHGAP		yes	92.10	100.00	1	77.19	71.56	73.40	76.33	92.10	92.10	20.54		72.69	75.31	77.49	75.31	-16.79	78.05	40	12.0	shield-310,shield-confirm,shield-list,shield-sweep-mid
+211	ph.musketeer.Musketeer 0.6	68.20	farm	VOLATILE		yes	90.72	97.14	1	69.57	74.96	84.51	78.30	90.72	90.72	21.15		67.14	68.95	69.21	68.95	-21.77		0		shield-list,shield-panel
+212	stelo.MatchupAGF 1.1	68.09	mid	ROUNDS			73.72	84.28	2	64.53	79.02	71.08	74.35	73.08	73.08	14.49		65.59	75.19	61.18	65.59	-8.12	71.56	8	14.1	lost-rounds-39
+213	spinnercat.mega.Tardis 1.2	68.00	mid	ROUNDS,PEERGAP	mega		73.86	86.67	3	77.14	69.56	71.53	66.29	77.64	71.53	11.35		80.77	72.92	77.64	77.64	+3.78		0		session-300-opponents
+214	suh.mega.WaveSurferGF 1.04	68.00	mid	ROUNDS,PEERGAP	mega		72.94	77.71	5	82.12	74.61	73.92	79.07	68.86	74.61	13.26		83.58	87.97	81.26	83.58	+10.64	80.50	8	14.0	session-300-opponents,shield-list,shield-sweep-mid
+215	jekl.Jekyl .70	67.98	mid			yes	81.32	94.29	1	86.05	81.04	76.10	84.17	81.32	81.32	9.95		82.82	76.83	78.36	78.36	-2.96	82.41	40	13.1	shield-310,shield-confirm,shield-list,shield-sweep-mid
+216	rampancy.Durandal 2.2d	67.93	mid				79.90	92.86	4	76.92	73.87	81.15	79.48	81.17	79.48	7.30		77.96	75.09	75.30	75.30	-4.60	76.51	24	10.5	mid-39
+217	mladjo.Grrrrr 0.9	67.90	contest	ROUNDS,PEERGAP,BENCHGAP		yes	61.69	77.14	1	61.63	61.53	69.17	72.05	61.69	61.69	10.52		67.89	73.64	72.22	72.22	+10.53	74.56	40	12.1	lost-rounds-39,mid-shield-39,shield-310,shield-list
+218	ak.Fermat 2.0	67.89	mid				81.65	93.58	4	84.24	76.65	84.48	81.04	82.25	82.25	7.83		83.81	81.15	80.31	81.15	-0.50	82.57	16	12.4	mid-shield-39,shield-list
+219	pez.mini.VertiLeach 0.4.0	67.75	mid		mini		78.28	90.00	4	72.94	81.86	71.41	81.40	75.15	75.15	10.45		77.74	76.93	80.28	77.74	-0.54		0		mid-39,session-300-opponents
+220	nat.Hikari dev0001	67.63	mid	ROUNDS,PEERGAP		yes	76.01	88.57	1	76.42	81.02	79.41	83.49	76.01	76.01	7.48		85.34	86.71	84.01	85.34	+9.33	82.83	96	11.2	leak-38,shield-310,shield-confirm,shield-list,shield-panel,shield-sweep-mid
+221	eem.EvBot v4.6.4	67.50	farm				89.46	99.05	3	79.85	84.95	85.74	88.37	90.01	85.74	10.16		88.46	85.75	85.01	85.75	-3.71		0		
+222	dz.GalbaMini 0.121	67.40	contest	ROUNDS,VOLATILE			63.39	76.19	3	76.49	71.00	68.15	66.59	56.99	68.15	19.50	yes	72.10	71.03	72.71	72.10	+8.71	71.18	24	11.4	collapse-310,mid-39,session-300-opponents
+223	deo.FlowerBot 1.0	67.05	mid				76.57	91.43	2	75.71	73.27	68.77	73.42	79.72	73.42	10.95		83.23	74.52	72.65	74.52	-2.05	78.46	8	11.8	session-300-opponents,shield-list,shield-sweep-mid
+224	chase.pm.Pytko 1.0	67.01	contest	ROUNDS			64.94	77.14	2	66.60	63.63	64.95	72.40	57.48	64.95	14.92		66.65	67.51	68.65	67.51	+2.57	70.83	16	11.6	mid-shield-39,session-300-opponents,shield-list
+225	xander.cat.SamAxe 1.1	66.96	farm	PEERGAP			88.06	99.05	3	84.07	79.95	78.59	88.52	87.14	84.07	9.93		89.70	90.13	85.25	89.70	+1.64	85.30	24	9.6	mid-39
+226	infovk.s_schwarzm16.silverbird 1.0	66.95	mid				79.61	92.85	2	81.46	82.17	80.29	84.39	74.83	81.46	9.56		83.36	78.01	76.14	78.01	-1.60		0		session-300-opponents
+227	xander.cat.Fiona 1.4	66.94	farm	PEERGAP			85.93	96.19	3	81.20	81.93	81.48	87.49	82.82	81.93	6.29		88.94	89.61	83.43	88.94	+3.01		0		
+228	xander.cat.Mikey 1.2	66.92	mid	PEERGAP			83.13	94.28	2	77.74	83.86	86.29	82.48	83.78	83.78	8.55		89.84	89.97	83.65	89.84	+6.71		0		
+229	rz.GlowBlowAPM 1.0	66.85	mid				77.38	92.86	2	78.34	72.93	75.50	82.61	72.16	75.50	10.45		78.74	78.07	80.60	78.74	+1.36	79.95	8	16.6	session-300-opponents,shield-list,shield-sweep-mid
+230	pez.gloom.GloomyDark 0.9.2	66.84	farm			yes	86.56	97.14	1	77.07	88.49	82.81	91.84	86.56	86.56	14.77		79.84	76.13	76.55	76.55	-10.01		0		session-300-opponents,shield-list,shield-panel
+231	pe.SandboxLump 1.52	66.82	mid	LEAK			83.27	96.19	3	77.08	74.31	76.96	84.00	82.90	77.08	9.69		78.30	81.09	82.08	81.09	-2.18	80.18	24	12.4	mid-39
+232	jekl.mini.BlackPearl .91	66.74	sweep	VOLATILE,BENCHGAP	mini	yes	96.13	100.00	2	78.07	75.45	71.46	73.73	96.13	96.13	24.67		77.72	75.69	78.72	77.72	-18.41	81.02	40	11.7	shield-310,shield-confirm,shield-list,shield-sweep-mid
+233	cx.micro.Smoke 0.96	66.73	mid		micro	yes	80.89	94.29	1	78.91	75.01	73.38	77.55	80.89	80.89	7.51		74.01	68.62	72.42	72.42	-8.47		0		shield-list,shield-panel
+234	bvh.fry.Freya 0.82	66.66	mid				76.32	90.00	4	77.57	76.20	74.56	76.57	76.08	76.20	3.01		81.15	80.39	82.24	81.15	+4.83		0		session-300-opponents
+235	oog.micro.MagicD3 0.41	66.63	mid	ROUNDS	micro		74.22	84.28	2	75.45	71.21	77.04	75.30	73.15	75.30	5.83		70.46	73.49	73.53	73.49	-0.73	74.69	8	11.0	shield-list,shield-sweep-mid
+236	TCMI.Enyo 0.4	66.63	farm				91.35	97.14	3	94.94	83.48	93.12	94.33	89.86	93.12	11.46		98.02	97.28	96.18	97.28	+5.93	93.75	8	11.6	shield-list,shield-sweep-mid
+237	bts.wiki.RipCurl 0.9b	66.63	mid				76.81	94.29	3	73.19	76.16	79.66	75.39	79.64	76.16	6.47		80.08	80.54	81.60	80.54	+3.73		0		
+238	cjm.Chomsky 1.5	66.52	mid				82.27	91.43	2	78.57		83.51	82.80	81.74	82.27	4.94		80.81	82.24	77.26	80.81	-1.46		0		melee-classic
+239	ph.micro.Pikeman 0.4.5	66.46	sweep	VOLATILE,BENCHGAP	micro	yes	96.55	100.00	2	76.52	73.58	68.50	68.71	96.55	96.55	28.05		78.51	78.08	74.69	78.08	-18.47	80.34	32	12.3	mid-shield-39,shield-310,shield-list
+240	gh.micro.Grinnik 1.0	66.42	mid		micro		84.73	94.28	4	87.36	83.14	87.06	88.32	83.53	87.06	5.18		90.87	92.17	89.22	90.87	+6.14		0		
+241	slugzilla.RandomPattern 1.0	66.40	contest	ROUNDS,PEERGAP			65.64	80.71	4	72.09	74.87	69.10	67.68	59.51	69.10	15.36		76.67	78.42	78.38	78.38	+12.74	75.49	8	10.6	lost-rounds-39
+242	wiki.mini.BlackDestroyer 0.9.0	66.40	farm	BENCHGAP	mini	yes	93.75	100.00	1	82.84	80.42	76.31	76.29	93.75	93.75	17.46		81.86	78.95	78.91	78.95	-14.80	79.04	40	11.9	shield-310,shield-confirm,shield-list,shield-sweep-mid
+243	rsim.mini.BulletCatcher 0.4	66.33	mid	ROUNDS,PEERGAP	mini		80.43	86.66	3	78.46	76.99	84.19	80.04	81.20	80.04	7.20		86.76	83.92	87.71	86.76	+6.33	82.69	8	26.8	shield-list,shield-panel,shield-sweep-mid
+244	kawigi.sbf.FloodMini 1.4	66.24	mid	ROUNDS,VOLATILE			73.80	85.72	2	80.87	77.96	78.97	83.83	63.77	78.97	20.06	yes	82.33	80.49	81.43	81.43	+7.63	81.63	16	13.0	collapse-310,melee-classic,melee-strong,mid-shield-39,session-300-opponents,shield-list
+245	slugzilla.RandomGF 1.0	66.09	mid	PEERGAP,BENCHSEES			77.21	94.28	2	76.88	79.96	71.16	79.37	75.04	76.88	8.80		83.62	85.92	84.06	84.06	+6.85	78.57	24	11.3	mid-39
+246	sheldor.nano.Sabreur 1.1.2	66.02	mid	LEAK,PEERGAP,BENCHSEES	rammer		71.14	98.09	3	64.62	71.18	70.77	71.28	70.87	70.87	6.66		70.44	80.34	78.92	78.92	+7.78	68.61	8	10.6	score-leak-39,session-300-opponents
+247	oog.micro.Maui 1.2	66.00	mid	LEAK	micro		83.60	97.15	2	83.78	84.02	80.12	81.69	85.51	83.78	5.39		78.99	81.58	79.73	79.73	-3.87	81.96	8	12.0	shield-list,shield-sweep-mid
+248	rz.GlowBlow 2.31	65.94	mid				74.23	90.00	2	71.99	75.33	75.45	74.35	74.11	74.35	3.46		77.36	75.23	78.96	77.36	+3.13	76.71	8	15.9	shield-list,shield-sweep-mid
+249	nz.jdc.micro.HedgehogP 1.2	65.92	mid	ROUNDS	micro		77.52	87.14	2	81.49	76.82	77.45	74.20	80.83	77.45	7.29		77.59	78.19	80.26	78.19	+0.67		0		
+250	slugzilla.ButtHead 2.0	65.85	contest	PEERGAP,BENCHSEES	rammer		69.31	94.28	2	62.41	70.83	70.17	71.07	67.55	70.17	8.66		74.68	79.52	78.70	78.70	+9.39	69.12	32	10.4	mid-39,score-leak-39
+251	apv.Aspid 1.7	65.82	mid				78.23	94.29	3	79.14	76.18	69.51	77.61	79.48	77.61	9.97		78.74	75.76	78.26	78.26	+0.03		0		
+252	pez.clean.Swiffer 0.2.9	65.78	farm	VOLATILE,BENCHGAP		yes	86.11	100.00	1	67.65	66.57	51.00	80.20	86.11	86.11	35.11		79.78	79.75	77.94	79.75	-6.36	71.40	40	13.2	shield-310,shield-confirm,shield-list,shield-sweep-mid
+253	cjm.Che 1.2	65.70	mid	ROUNDS,PEERGAP			74.41	83.81	3	75.09	73.47	76.64	79.84	71.70	75.09	8.14		76.76	82.17	81.08	81.08	+6.67	78.05	8	11.6	session-300-opponents,shield-list,shield-sweep-mid
+254	robar.micro.Gladius 1.15	65.64	mid	PEERGAP	micro		81.99	92.38	3	75.97	78.25	73.57	82.40	81.79	78.25	8.83		83.50	83.99	82.05	83.50	+1.51		0		
+255	wiki.mini.Griffon 0.1	65.62	mid		mini		80.62	94.29	2	79.86	77.95	81.12	80.74	80.50	80.50	3.17		84.38	81.33	81.54	81.54	+0.92		0		shield-list,shield-sweep-mid
+256	jk.sheldor.nano.Yatagan 1.2.3	65.60	mid	ROUNDS,PEERGAP	nano		74.58	84.00	5	76.71	71.81	73.88	73.54	75.27	73.88	4.90		76.34	79.53	79.31	79.31	+4.73	77.71	24	8.8	mid-39
+257	SHAM.WOW 1.4	65.54	mid	ROUNDS			78.35	87.14	2	80.01	77.37	81.65	84.36	72.35	80.01	12.01		79.75	81.64	77.72	79.75	+1.40		0		
+258	wompi.Numbat 1.9	65.50	farm				85.24	97.15	2	79.60	83.39	77.99	86.97	83.51	83.39	8.98		84.97	82.40	84.16	84.16	-1.08		0		
+259	pez.mini.ChironexFleckeri 0.5	65.50	mid	LEAK	mini		82.44	96.19	3	83.60	77.28	82.52	85.29	76.73	82.52	8.56		81.83	80.73	78.93	80.73	-1.71		0		session-300-opponents
+260	ers.micro.ISuck.ISuckMicro 0.1f	65.48	mid	ROUNDS	micro		78.90	87.62	3	79.36	82.56	81.47	82.87	70.96	81.47	11.91		80.98	84.44	78.10	80.98	+2.08		0		
+261	cx.mini.Nimrod 0.55	65.43	mid	ROUNDS	mini		75.06	87.15	2	77.73	83.07	72.19	80.96	69.15	77.73	13.92		78.01	77.49	81.85	78.01	+2.95		0		
+262	rz.GlowBlowMelee 1.4	65.39	mid				77.36	92.38	3	70.21	78.68	79.86	77.41	77.25	77.41	9.65		78.61	75.87	80.18	78.61	+1.25	79.35	8	19.5	session-300-opponents,shield-list,shield-sweep-mid
+263	AIR.iRobot 1.0	65.26	sweep	VOLATILE,BENCHGAP		yes	97.25	100.00	2	80.00	78.27	75.89	77.27	97.25	97.25	21.36		83.16	84.12	79.20	83.16	-14.09	84.59	40	12.6	shield-310,shield-confirm,shield-list,shield-sweep-mid
+264	nz.jdc.nano.NeophytePattern 1.1	65.21	mid	ROUNDS	nano		76.24	86.67	3	83.71	76.40	77.36	86.94	70.89	77.36	16.05		79.43	80.98	78.11	79.43	+3.19	83.34	16	11.1	mid-shield-39,session-300-opponents,shield-list
+265	sos.SOS 1.0	65.21	mid				84.11	90.00	4	88.28	84.69	90.80	89.70	82.25	88.28	8.55		90.01	89.59	88.47	89.59	+5.48	89.26	24	11.8	mid-39
+266	rdt.AgentSmith.AgentSmithRedux 0.02	65.18	farm	PEERGAP			89.78	97.15	2	93.87	89.10	90.57	92.25	87.30	90.57	6.57		95.75	95.39	95.68	95.68	+5.91		0		
+267	apv.ScruchiPu 1.0	65.13	mid				77.14	92.14	4	72.77	70.71	75.74	84.42	74.71	74.71	13.71		77.64	74.09	78.31	77.64	+0.50		0		
+268	mladjo.GnuKlub 0.1	65.12	farm				85.18	96.19	3	87.06	88.19	83.29	87.11	84.22	87.06	4.90		86.98	84.18	81.79	84.18	-1.00		0		
+269	dft.Virgin 1.25	65.12	farm			yes	91.50	97.14	1	78.01	85.45	90.66	90.01	91.50	91.50	13.49		75.56	72.95	75.71	75.56	-15.94		0		shield-list,shield-panel
+270	intruder.PrairieWolf 2.61	65.12	mid	ROUNDS			82.49	89.52	3	70.47	79.16	78.45	82.38	82.70	79.16	12.23		79.53	81.58	76.75	79.53	-2.96	82.30	8	15.2	session-300-opponents,shield-list,shield-sweep-mid
+271	apv.MicroAspid 1.8	65.07	mid				72.94	90.00	2	68.48	68.46	64.31	68.00	77.89	68.46	13.58		71.68	70.50	73.01	71.68	-1.26	71.89	16	12.1	lost-rounds-39,session-300-opponents,shield-list,shield-sweep-mid
+272	davidalves.net.DuelistMini 1.1	65.06	mid	LEAK		yes	84.65	97.14	1	84.18	81.77	79.47	84.26	84.65	84.65	5.18		83.23	78.19	81.32	81.32	-3.33	83.25	40	13.0	session-300-opponents,shield-310,shield-confirm,shield-list,shield-sweep-mid
+273	davidalves.net.DuelistMicro 1.22	65.00	mid	LEAK			83.11	98.09	3	84.62	83.73	77.45	82.68	83.97	83.73	7.17		83.47	78.27	80.64	80.64	-2.47		0		
+274	oog.nano.Caligula 1.15	65.00	mid	LEAK,PEERGAP,BENCHSEES	rammer		76.08	95.71	4	65.47	72.08	77.95	75.88	76.15	75.88	12.48		78.05	81.57	83.73	81.57	+5.49	73.61	8	10.2	score-leak-39
+275	nz.jdc.nano.PralDeGuerre 1.2	64.99	mid	ROUNDS,PEERGAP	nano		71.17	81.42	2	79.83	70.59	75.00	75.54	66.80	75.00	13.03		77.24	80.15	82.50	80.15	+8.98		0		
+276	cx.mini.BlackSwans 0.60	64.98	mid		mini		79.06	92.86	2	73.66	66.84	76.11	78.98	79.13	76.11	12.29		78.78	77.48	79.81	78.78	-0.28	74.85	8	11.8	shield-list,shield-sweep-mid
+277	penguin.Ivy 1.1r	64.95	farm				85.05	94.28	2	87.35	86.34	79.39	83.94	86.16	86.16	7.96		80.92	80.08	80.21	80.21	-4.84	86.26	24	11.9	mid-39,session-300-opponents
+278	origin.SleepSiphon 1.7b	64.94	farm				91.23	97.14	3	90.82	87.68	85.45	94.18	89.76	89.76	8.73		93.96	93.45	93.71	93.71	+2.48	90.96	24	11.5	mid-39
+279	ers.nano.sunderer.Sunderer 1.23a	64.93	mid	LEAK,PEERGAP,BENCHSEES	nano		72.67	96.19	3	62.96	72.64	72.33	70.00	74.00	72.33	11.04		77.01	82.65	81.89	81.89	+9.22	72.71	8	11.5	lost-rounds-39
+280	kawigi.mini.Fhqwhgads 1.1	64.85	farm	VOLATILE	mini	yes	90.69	98.10	3	81.69	79.09	68.32	81.06	90.69	90.69	22.37		78.70	80.48	82.67	80.48	-10.21	83.09	32	12.0	mid-shield-39,session-300-opponents,shield-310,shield-list,shield-panel
+281	jcs.AutoBot 4.2.1	64.82	mid				76.31	90.71	4	82.96	72.23	65.49	77.69	72.17	72.23	17.47		74.41	76.60	78.96	76.60	+0.29	74.58	8	11.1	live-losers-385
+282	cx.micro.Spark 0.6	64.74	mid		micro		80.55	92.86	2	75.34	78.57	71.24	79.28	81.81	78.57	10.57		78.47	75.07	77.86	77.86	-2.69	79.89	24	10.7	mid-39
+283	rz.Artist 0.2	64.73	mid	LEAK,PEERGAP			80.44	95.72	2	76.34	75.21	83.33	78.30	82.59	78.30	8.12		83.16	85.37	84.55	84.55	+4.11	81.13	8	14.5	shield-list,shield-sweep-mid
+284	stelo.MatchupMini 1.1	64.68	mid	ROUNDS			70.57	85.71	5	72.08	72.68	74.57	71.12	70.20	72.08	4.37		67.77	70.96	70.27	70.27	-0.30	69.29	16	10.8	lost-rounds-39,shield-list,shield-panel,shield-sweep-mid
+285	whind.Strength 0.6.4	64.66	mid	LEAK			82.50	96.19	3	84.35	83.57	86.93	81.21	85.09	84.35	5.72		80.80	82.40	81.17	81.17	-1.33		0		
+286	ntc.Cannon 1.12test	64.66	contest	ROUNDS			69.94	82.85	2	72.72	71.67	70.97	73.61	66.28	71.67	7.33		72.68	74.47	75.59	74.47	+4.53		0		session-300-opponents
+287	pez.frankie.Frankie 0.9.6.1	64.60	mid	ROUNDS			73.39	89.52	3	71.17	69.48	71.90	78.74	70.71	71.17	9.26		72.85	76.02	76.42	76.02	+2.63		0		score-leak-39,shield-list,shield-sweep-mid
+288	TJ.Exupery 1.39	64.59	mid	ROUNDS			81.45	89.72	5	76.69	77.52	83.34	80.72	84.37	80.72	7.68		80.27	79.87	82.36	80.27	-1.18		0		session-300-opponents
+289	tcf.Drifter 29	64.59	contest	ROUNDS			67.44	80.96	3	73.62	78.82	65.07	78.01	62.15	73.62	16.67		76.56	76.08	66.05	76.08	+8.64		0		
+290	ara.Shera 0.88	64.58	mid	ROUNDS			73.89	87.86	4	87.32	76.97	74.05	69.11	75.49	75.49	18.21		78.54	76.23	80.52	78.54	+4.65	78.45	8	10.8	live-losers-385
+291	kawigi.f.FhqwhgadsMicro 1.0	64.50	mid				80.94	93.33	6	80.73	82.01	71.92	81.27	80.29	80.73	10.09		82.97	82.60	85.41	82.97	+2.03		0		
+292	reaper.Reaper 1.1	64.49	farm			yes	87.70	93.57	4	83.54	86.01	91.86	98.33	87.70	87.70	14.79		83.09	84.07	86.14	84.07	-3.63		0		shield-list,shield-panel
+293	myl.micro.Avipes 1.00	64.49	mid		micro		75.80	90.00	4	83.72	80.62	78.05	72.72	78.88	78.88	11.00		83.70	81.91	83.59	83.59	+7.79		0		session-300-opponents
+294	gh.GrypRepetyf 0.13	64.44	farm				92.34	100.00	2	92.99	91.57	89.43	91.85	92.83	91.85	3.56		89.45	92.14	93.78	92.14	-0.20		0		session-300-opponents
+295	Polkwane.Intensive 1.0	64.43	mid	LEAK			82.03	98.57	2	84.22			84.69	79.38	84.22	5.31		82.79	85.59	83.19	83.19	+1.16		0		
+296	KiraNL.Chupacabra 0.5	64.36	mid				76.54	92.38	3	76.92	76.19	76.12	81.99	73.82	76.19	8.17		78.14	75.00	77.49	77.49	+0.95		0		session-300-opponents
+297	cjm.Charo 1.1	64.35	farm				85.19	98.57	2	76.51			83.86	86.52	83.86	10.01		80.11	77.01	82.66	80.11	-5.08	77.86	24	9.5	mid-39
+298	cbot.agile.Nibbler 0.2	64.33	mid	LEAK			81.25	95.72	2	75.68	75.15	68.28	79.36	83.14	75.68	14.86		75.33	74.79	79.24	75.33	-5.92		0		shield-list,shield-sweep-mid
+299	areb.Union 1.06	64.27	mid	ROUNDS			76.69	84.57	5	80.52	70.62	76.93	80.14	71.51	76.93	9.90		77.55	79.85	79.08	79.08	+2.39		0		
+300	arthord.micro.Muffin 0.6.1	64.27	mid	LEAK	micro		80.24	95.24	3	81.16	74.79	74.65	80.10	80.31	80.10	6.51		80.69	77.48	82.94	80.69	+0.45		0		
+301	can.Pookie 1.1	64.23	mid				79.99	94.29	3	74.92	80.71	78.91	78.58	82.82	78.91	7.90		80.77	83.57	83.19	83.19	+3.20	80.93	16	11.1	mid-shield-39,shield-list
+302	hlavko.micro.Flex 1.5	64.21	mid		micro		77.94	90.00	4	80.46	78.05	80.23	77.17	78.70	78.70	3.29		81.22	80.78	83.60	81.22	+3.28	81.94	24	9.5	mid-39
+303	dmh.robocode.robot.BlackDeath 9.2	64.14	farm				87.56	97.14	5	80.76	85.81	85.89	87.86	87.11	85.89	7.10		90.65	86.84	90.46	90.46	+2.90	87.19	24	11.8	mid-39
+304	arthord.KostyaTszyu Beta2	64.12	mid			yes	79.73	92.86	2	80.49	76.53	80.64	84.46	79.73	79.73	7.93		82.67	78.32	79.72	79.72	-0.01	80.97	40	12.9	session-300-opponents,shield-310,shield-confirm,shield-list,shield-sweep-mid
+305	ers.nano.nekolh.Nekolh 1.4d	64.10	mid	ROUNDS	nano		77.03	87.62	3	71.39	75.75	76.93	78.54	76.28	76.28	7.15		78.05	80.44	80.72	80.44	+3.41		0		
+306	jbot.Rabbit2 1.1	64.07	mid	ROUNDS			78.71	89.53	3	78.22	74.90	75.73	73.97	81.08	75.73	7.11		77.27	80.63	80.29	80.29	+1.58	77.41	8	12.1	shield-list,shield-sweep-mid
+307	doka.Shinigami 2.2	64.02	farm				89.31	99.05	3	87.30	83.26	79.80	89.23	89.46	87.30	9.66		90.04	88.60	89.59	89.59	+0.28		0		
+308	mk.Alpha 0.2.1	63.99	sweep			yes	97.25	100.00	1	91.22	89.22	87.91	87.09	97.25	97.25	10.16		91.06	89.07	89.69	89.69	-7.56	90.84	32	11.2	mid-shield-39,session-300-opponents,shield-310,shield-list
+309	davidalves.net.Duelist 0.1.6src	63.97	farm				85.40	98.57	2	81.22	81.05	81.46	84.43	86.36	81.46	5.31		85.85	81.23	82.72	82.72	-2.68		0		session-300-opponents
+310	mld.Moebius 2.9.3	63.96	mid	LEAK			83.47	96.19	3	80.10	80.30	79.61	83.96	82.48	80.30	4.35		78.83	83.10	81.30	81.30	-2.17		0		session-300-opponents
+311	sheldor.nano.FoilistNano 3.2	63.95	mid	ROUNDS	nano		75.38	84.28	2	74.61	68.91	73.05	72.39	78.36	73.05	9.45		71.73	77.82	80.84	77.82	+2.44	74.99	24	9.8	mid-39
+312	bvh.mini.Wodan 0.50	63.89	contest	ROUNDS,VOLATILE	mini		64.03	74.28	2	70.71	75.87	76.94	74.29	53.77	74.29	23.17	yes	76.86	75.04	77.41	76.86	+12.83		0		collapse-310,session-300-opponents
+313	spinnercat.Robovirus 2.718	63.87	farm				86.00	94.29	2	86.07	80.91	86.56	83.63	88.36	86.07	7.45		84.75	84.65	83.41	84.65	-1.34		0		session-300-opponents
+314	oog.nano.Fuatisha 1.1	63.87	mid	ROUNDS	nano		76.25	89.52	3	77.70	76.07	73.69	76.45	75.85	76.07	4.01		78.33	77.62	76.44	77.62	+1.37		0		
+315	ahf.r2d2.R2d2 0.86	63.75	farm			yes	92.98	100.00	1	81.92	80.69	82.48	76.11	92.98	92.98	16.87		87.47	86.40	86.94	86.94	-6.04	83.91	40	11.2	shield-310,shield-confirm,shield-list,shield-sweep-mid
+316	tad.Dalek98 0.98	63.69	mid	LEAK			83.38	97.14	2	87.91	76.53	77.44	85.24	81.52	81.52	11.38		83.09	81.42	84.36	83.09	-0.29	83.23	8	10.9	live-losers-385,session-300-opponents
+317	jwst.DAD.DarkAndDarker 1.1	63.60	mid				84.58	91.43	2	84.79	77.99	67.55	86.72	82.43	82.43	19.17		88.50	87.18	85.09	87.18	+2.61	85.91	8	10.0	live-losers-385,session-300-opponents
+318	rcb.Vanessa03 0	63.58	mid	ROUNDS		yes	76.41	88.57	3	80.04	79.68	79.07	81.70	76.41	76.41	5.29		81.58	75.62	80.69	80.69	+4.28	81.54	40	11.2	shield-310,shield-confirm,shield-list,shield-sweep-mid
+319	kawigi.mini.Coriantumr 1.1	63.48	farm		mini	yes	92.50	97.14	1	89.30	85.76	88.29	91.32	92.50	92.50	6.74		89.49	88.57	87.80	88.57	-3.93	91.09	40	11.8	melee-classic,melee-handoff,melee-reference,session-300-opponents,shield-310,shield-confirm,shield-list,shield-sweep-mid
+320	wompi.Kowari 1.6	63.44	contest	ROUNDS,PEERGAP	rammer		66.51	88.57	2	67.36	69.27	75.37	73.56	59.46	69.27	15.91		69.32	77.57	77.56	77.56	+11.05	74.15	8	12.1	score-leak-39
+321	sheldor.nano.SabreuseNano 1.1	63.40	mid	LEAK,PEERGAP,BENCHSEES	rammer		70.72	96.19	3	65.20	70.75	69.49	70.21	71.73	70.21	6.53		73.82	80.17	78.33	78.33	+7.61	69.57	8	12.4	score-leak-39
+322	bvh.frg.Friga 0.112dev	63.35	farm			yes	85.50	94.29	1	84.25	83.02	86.74	84.94	85.50	85.50	3.72		88.65	88.06	90.59	88.65	+3.15	88.84	40	11.2	session-300-opponents,shield-310,shield-confirm,shield-list,shield-sweep-mid
+323	kawigi.sbf.FloodSonnet 0.9	63.32	mid	VOLATILE			75.16	91.42	2	76.20	82.05	78.38	82.63	67.69	78.38	14.94	yes	82.85	76.57	79.03	79.03	+3.87	80.87	16	11.9	collapse-310,score-leak-39,shield-list,shield-sweep-mid
+324	drm.CobraBora 1.12	63.30	mid	ROUNDS			77.78	88.57	2	74.19	75.55	71.67	80.07	75.49	75.49	8.40		76.15	75.73	76.59	76.15	-1.63		0		
+325	tm.Yuugao 1.0	63.28	mid	ROUNDS			76.14	87.62	3	75.71	75.91	76.01	81.53	65.35	75.91	16.18		75.96	73.75	76.21	75.96	-0.18	77.42	16	12.9	mid-shield-39,shield-list
+326	robar.micro.Topaz 0.25	63.28	mid	ROUNDS	micro		79.18	89.52	3	68.22	76.73	74.33	78.09	81.36	76.73	13.14		76.86	77.09	78.86	77.09	-2.09	75.03	8	12.4	shield-list,shield-sweep-mid
+327	ers.nano.meroka.Meroka 1.8a	63.15	mid	LEAK	nano		84.78	98.57	2	80.80	84.25	82.19	82.95	86.60	82.95	5.80		82.48	85.04	79.90	82.48	-2.30		0		
+328	deo.virtual.RainbowBot 1.0	63.12	mid	LEAK			84.56	95.24	3	78.26	79.52	76.79	88.30	77.07	78.26	11.51		82.91	76.80	73.95	76.80	-7.76	77.89	8	11.1	session-300-opponents,shield-list,shield-sweep-mid
+329	nz.jdc.nano.NeophytePRAL 1.4	63.11	farm		nano		91.00	100.00	2	90.27	85.29	87.06	90.32	91.67	90.27	6.38		87.92	88.61	86.10	87.92	-3.08	89.63	24	10.4	mid-39,session-300-opponents
+330	staticline.whiskey.Whiskey 0.6	63.10	mid				79.30	91.43	4	82.50	81.76	80.58	77.13	80.02	80.58	5.37		82.98	81.17	85.18	82.98	+3.68		0		session-300-opponents
+331	mnt.SurferBot 0.2.5	63.08	mid				83.25	92.38	3	84.60	81.54	88.96	86.54	81.60	84.60	7.42		87.62	89.75	87.54	87.62	+4.37	87.43	8	11.1	session-300-opponents,shield-list,shield-sweep-mid
+332	gadsky.Gadsky 1.01	63.07	mid	LEAK			83.32	95.43	5	80.30	73.15	83.04	84.12	83.12	83.04	10.97		81.94	82.57	83.41	82.57	-0.75		0		session-300-opponents
+333	ags.micro.Carpet 1.1	63.07	farm		micro	yes	89.88	97.14	2	80.75	79.67	82.09	78.50	89.88	89.88	11.38		86.38	82.67	85.74	85.74	-4.14	83.16	40	12.1	session-300-opponents,shield-310,shield-confirm,shield-list,shield-sweep-mid
+334	nz.jdc.nano.PatternAdept 1.0	62.85	mid	LEAK	nano		83.79	95.72	2	84.16	80.84	84.08	85.49	82.09	84.08	4.65		84.67	85.33	81.89	84.67	+0.88	84.41	8	12.0	session-300-opponents,shield-list,shield-sweep-mid
+335	lj.Dapps 0.2	62.80	mid				77.80	90.00	2	82.25	80.03	85.08	80.34	75.26	80.34	9.82		85.22	83.60	86.19	85.22	+7.42	81.96	24	11.4	mid-39,session-300-opponents
+336	bvh.fnr.Fenrir 0.36l	62.80	mid				80.13	92.15	4	72.93	67.03	78.77	80.81	79.45	78.77	13.78		76.42	74.05	81.75	76.42	-3.71	76.02	56	15.6	leak-38
+337	dft.Cyprus 3.0	62.79	mid				80.38	92.38	3	75.34	80.69	76.04	79.70	80.72	79.70	5.38		84.23	82.08	84.59	84.23	+3.85		0		session-300-opponents
+338	bvh.mini.Freya 0.55	62.78	sweep	BENCHGAP	mini	yes	97.66	100.00	1	80.61	82.47	83.46	78.14	97.66	97.66	19.52		83.78	77.96	83.24	83.24	-14.42	85.48	40	12.6	session-300-opponents,shield-310,shield-confirm,shield-list,shield-sweep-mid
+339	shinh.Entangled 0.3	62.77	farm				85.87	94.28	3	85.63	80.99	87.03	85.51	86.60	85.63	6.04		85.76	82.54	82.67	82.67	-3.20	86.00	8	13.6	shield-list,shield-panel,shield-sweep-mid
+340	alk.lap.LoudAndProud 2.23	62.76	mid				78.44	92.15	4	83.00	85.63	79.82	81.33	75.55	81.33	10.08		80.91	77.75	82.27	80.91	+2.47	81.18	24	10.9	mid-39
+341	robar.micro.Kirbyi 1.0	62.75	mid		micro	yes	79.71	91.43	2	73.33	78.76	74.07	77.62	79.71	79.71	6.38		72.23	77.75	78.02	77.75	-1.96	78.17	40	12.3	shield-310,shield-confirm,shield-list,shield-sweep-mid
+342	jk.nano.Machete 2.0	62.71	mid	LEAK,PEERGAP,BENCHSEES	rammer		72.14	97.14	4	63.60	74.46	72.47	72.02	72.48	72.47	10.86		75.15	80.53	79.92	79.92	+7.78	72.46	8	12.2	score-leak-39
+343	apv.AspidReloaded 0.6	62.58	mid	ROUNDS			73.01	87.62	3	78.61	78.86	77.97	76.74	71.15	77.97	7.71		76.94	79.24	82.22	79.24	+6.23	75.88	8	13.0	shield-list,shield-sweep-mid
+344	rdm.Dueler 0.4x	62.45	mid	PEERGAP			84.22	94.29	2	89.78	83.52	82.45	83.08	85.36	83.52	7.33		85.79	91.40	89.75	89.75	+5.53		0		
+345	davidalves.net.DuelistMicroMkII 1.1	62.44	mid			yes	80.11	94.29	1	76.75	76.38	75.05	76.47	80.11	80.11	5.06		80.38	77.44	79.46	79.46	-0.65	78.99	40	13.9	shield-310,shield-confirm,shield-list,shield-sweep-mid
+346	ers.nano.gokdeniz.Gokdeniz 1.5b	62.41	mid	ROUNDS,VOLATILE	nano		70.65	80.00	3	73.23	75.10	76.16	76.32	59.30	75.10	17.02	yes	73.43	77.38	78.02	77.38	+6.73		0		collapse-310
+347	fromHell.C22H30N2O2S 2.2	62.38	mid	ROUNDS			75.75	89.52	3	75.88	75.43	72.84	74.54	78.18	75.43	5.34		78.26	77.31	78.96	78.26	+2.51	76.83	24	12.0	mid-39
+348	exauge.LemonDrop 1.6.130	62.36	mid	ROUNDS			72.88	84.28	2	75.81	75.53	75.76	65.83	79.93	75.76	14.10		77.72	76.10	75.55	76.10	+3.22	77.99	8	13.4	shield-list,shield-sweep-mid
+349	qohnil.blot.BlotBot 3.61	62.36	farm				86.76	97.55	7	86.16	83.94	88.64	88.15	85.71	86.16	4.70		76.92	82.22	83.35	82.22	-4.54		0		
+350	learn.ISmart 2.0s	62.35	mid				74.84	90.48	3	79.98	77.23	73.79	72.71	79.11	77.23	7.27		81.99	73.66	66.86	73.66	-1.18		0		
+351	pl.Patton.GeneralPatton 1.54	62.33	mid	ROUNDS			77.61	86.66	3	80.96	68.89	67.10	77.81	77.22	77.22	13.86		87.58	81.69	81.11	81.69	+4.08	80.59	8	9.5	live-losers-385
+352	ry.LightningBug 1.0	62.24	mid	LEAK			84.76	97.14	3	81.00	83.00	85.24	84.07	86.13	84.07	5.13		85.41	86.47	84.92	85.41	+0.65	83.95	8	14.6	session-300-opponents,shield-list,shield-sweep-mid
+353	mnt.AHEB 0.6a	62.14	mid			yes	82.04	94.29	1	76.66	75.66	77.90	75.58	82.04	82.04	6.46		77.25	74.90	76.74	76.74	-5.30	80.13	40	11.1	shield-310,shield-confirm,shield-list,shield-sweep-mid
+354	stelo.Mirror 1.1	62.03	contest	ROUNDS,VOLATILE	mirror		66.59	72.86	2	62.15	89.56	89.12	92.86	40.31	89.12	52.55	yes	67.03	70.97	67.29	67.29	+0.70		0		collapse-310
+355	EH.kms.LightningStorm 0.11B	61.97	mid	ROUNDS			74.55	88.57	3	77.72	71.32	74.70	74.72	74.20	74.70	6.40		77.72	79.66	77.94	77.94	+3.39	76.73	8	11.9	shield-list,shield-sweep-mid
+356	ers.nano.iSuck.ISuckNano 1.0a	61.96	mid		nano		81.48	93.34	3	80.98	80.17	82.41	82.51	79.41	80.98	3.10		80.56	81.30	81.41	81.30	-0.18		0		
+357	stelo.Randomness 1.1	61.93	farm			yes	87.83	98.57	2	80.77	80.25	80.31	82.79	87.83	87.83	7.58		86.14	87.87	86.49	86.49	-1.34	82.41	40	12.8	session-300-opponents,shield-310,shield-confirm,shield-list,shield-sweep-mid
+358	lucasslf.Dodger 1.0	61.90	farm			yes	91.21	97.14	1	80.34	78.12	78.83	81.23	91.21	91.21	13.09		80.83	85.02	83.92	83.92	-7.29	82.59	32	10.9	mid-shield-39,shield-310,shield-list,shield-panel
+359	slugzilla.SquirmyToad 3.9	61.82	mid	LEAK			79.19	95.72	2	73.56	79.19	69.18	76.56	81.82	76.56	12.64		80.34	77.94	79.68	79.68	+0.49		0		
+360	tw.Exterminator 1.0	61.80	mid	ROUNDS		yes	82.19	85.71	3	74.52	73.98	79.07	74.15	82.19	82.19	8.21		84.78	87.30	80.56	84.78	+2.59	81.02	40	25.5	shield-310,shield-confirm,shield-list,shield-sweep-mid
+361	timmit.mini.TimVA 0.43	61.70	mid		mini		78.23	92.86	2	76.83	73.80	78.10	76.65	79.82	76.83	6.02		81.87	79.88	80.83	80.83	+2.59		0		
+362	Krabb.krabby.Krabby 1.18b	61.70	mid			yes	80.78	94.29	1	83.42	85.77	73.22	74.82	80.78	80.78	12.55		84.66	80.65	85.96	84.66	+3.88		0		shield-310,shield-confirm,shield-list,shield-sweep-mid
+363	apv.LauLectrik 1.2	61.63	mid	LEAK			80.37	95.72	2	70.90	77.49	75.79	82.49	78.25	77.49	11.59		77.96	76.61	80.84	77.96	-2.41		0		score-leak-39,shield-list,shield-sweep-mid
+364	robar.nano.Pugio 1.49	61.60	mid		nano		79.50	92.86	2	74.80	80.64	78.77	81.20	77.81	78.77	6.40		83.00	80.51	81.74	81.74	+2.23	82.48	8	14.9	shield-list,shield-sweep-mid
+365	drm.Magazine 0.39	61.49	mid	ROUNDS			76.41	89.52	3	72.47	78.15	80.41	78.54	72.15	78.15	8.26		77.56	74.57	78.14	77.56	+1.15	77.95	24	11.5	mid-39,session-300-opponents
+366	tcf.Repat3 2	61.47	farm				85.11	95.24	3	82.41	84.54	82.35	85.60	84.87	84.54	3.25		86.22	83.63	87.93	86.22	+1.11	86.40	8	12.0	shield-list,shield-sweep-mid
+367	ebo.Sparse 0.02	61.46	mid	ROUNDS			76.19	86.67	3	72.07	87.28	81.30	82.02	73.27	81.30	15.21		79.65	78.13	79.84	79.65	+3.46		0		session-300-opponents
+368	kvk.HebusLeTroll 0.41	61.46	mid	LEAK			83.09	95.72	2	82.66	81.08	83.96	84.38	81.81	82.66	3.30		85.09	87.39	87.13	87.13	+4.03		0		
+369	css.Delitioner 0.11	61.43	mid				80.48	92.38	3	79.40	77.94	80.45	81.65	79.89	79.89	3.71		77.98	79.37	78.78	78.78	-1.70	80.28	16	12.2	mid-shield-39,session-300-opponents,shield-list
+370	DTF.Kludgy 1.2b	61.43	mid	ROUNDS			75.20	82.14	4	65.80	72.92	79.35	75.48	74.37	74.37	13.55		77.32	79.14	80.36	79.14	+3.94	76.13	8	15.9	lost-rounds-39,session-300-opponents
+371	pez.mako.Mako 1.5	61.42	mid			yes	80.82	90.00	2	81.14	80.55	74.40	79.96	80.82	80.82	6.74		83.11	78.69	82.48	82.48	+1.66	82.09	40	13.3	session-300-opponents,shield-310,shield-confirm,shield-list,shield-sweep-mid
+372	divineomega.DivineBot 1.9.5	61.42	farm				90.84	94.28	2	92.74	88.72	90.90	88.22	93.47	90.90	5.25		92.95	93.39	94.36	93.39	+2.55		0		
+373	dz.GalbaMicro 0.11	61.37	mid	LEAK			80.82	96.19	3	85.37	82.29	81.79	85.78	78.34	82.29	7.44		85.21	85.53	86.14	85.53	+4.71		0		
+374	stelo.RamTrackSurfer 1.2	61.29	mid	ROUNDS	rammer?		77.85	88.57	3	81.54	73.17	81.83	86.70	73.42	81.54	13.53		86.06	80.90	80.76	80.90	+3.05		0		
+375	cs.PumpkinPie 1.0	61.22	mid				77.22	90.72	4	76.81	69.30	72.67	78.62	75.82	75.82	9.32		75.63	73.01	75.76	75.63	-1.59		0		
+376	ary.Crisis 1.0	61.18	farm				87.36	96.19	3	87.08	79.80	87.34	87.08	87.91	87.08	8.11		89.09	85.62	86.12	86.12	-1.24		0		
+377	sheldor.nano.Feint 1.2.1	61.17	mid	LEAK	nano		81.62	96.19	3	82.31	74.00	79.29	80.37	84.11	80.37	10.11		77.96	78.35	79.13	78.35	-3.27		0		
+378	emp.Yngwie 1.11	61.09	mid				82.78	91.42	2	77.61	82.06	79.71	78.98	86.57	79.71	8.96		78.26	83.88	85.34	83.88	+1.10		0		
+379	dz.OthoMini 0.15	61.05	mid	ROUNDS			73.47	87.86	4	76.36	67.56	77.57	83.12	70.25	76.36	15.56		76.13	75.98	80.72	76.13	+2.66		0		
+380	dz.Caedo 1.4	61.03	farm				87.34	93.33	3	93.76	80.84	79.42	87.28	87.45	87.28	14.34		83.94	83.69	86.60	83.94	-3.40	85.44	24	12.0	live-losers-385,mid-shield-39,shield-list,shield-panel
+381	pe.mini.SandboxMini 1.2	60.99	farm		mini	yes	88.34	97.14	2	81.37	79.20	80.67	79.22	88.34	88.34	9.14		83.09	79.11	83.15	83.09	-5.25	81.73	40	10.8	shield-310,shield-confirm,shield-list,shield-sweep-mid
+382	kronenthaler.Basilisk 1.0	60.98	sweep				95.55	94.28	2	97.88	93.15	87.20	98.66	92.44	93.15	11.46		98.57	97.17	97.20	97.20	+1.65		0		
+383	dragonbyte.Neutrino 4	60.96	mid	ROUNDS			75.26	44.76	3	87.36	82.88	68.63	74.81	75.48	75.48	18.73		80.37	97.90	76.65	80.37	+5.11	81.61	24	9.2	mid-39
+384	sqTank.waveSurfing.LionWWSVMvoid 0.01	60.95	sweep				97.04	95.24	3	99.70	97.07	97.44	100.00	95.56	97.44	4.44		99.05	99.62	99.25	99.25	+2.21	99.68	8	10.2	shield-list,shield-sweep-mid
+385	dmh.robocode.robot.PinkPanther 1.1	60.88	contest	ROUNDS,PEERGAP,BENCHSEES			61.32	85.71	3	73.79	60.22	64.12	63.57	56.83	63.57	16.96		69.57	72.30	71.97	71.97	+10.65	65.58	16	13.2	live-losers-385,lost-rounds-39
+386	cw.megas.Blade 0.8	60.77	mid	LEAK			82.75	95.72	2	80.57	77.87	83.07	82.24	83.26	82.24	5.39		83.29	81.29	81.40	81.40	-1.35	82.67	8	9.9	shield-list,shield-sweep-mid
+387	wiki.WaveRammer 1.0	60.60	mid	VOLATILE,PEERGAP,BENCHSEES			74.20	90.00	2	72.99	52.68	45.66	74.97	73.44	72.99	29.31		78.93	83.63	81.49	81.49	+7.28	73.27	8	14.9	live-losers-385
+388	pa3k.Viper 5.03	60.59	mid				81.61	92.14	4	86.85	79.46	81.40	82.23	79.75	81.40	7.39		85.57	84.92	85.15	85.15	+3.54	80.01	56	10.7	leak-38
+389	synnalagma.NeuralPremier 0.51	60.53	farm				85.32	95.72	2	82.95	83.69	80.55	82.69	87.95	82.95	7.40		85.16	80.35	81.30	81.30	-4.02	83.94	24	10.1	mid-39
+390	pl.Drum 0.1	60.50	mid	VOLATILE			84.08	94.29	2	79.74	59.48	56.23	83.37	84.79	79.74	28.56		87.41	84.65	83.84	84.65	+0.57	83.37	8	12.2	live-losers-385
+391	zezinho.QuerMePegarKKKK 1.0	60.48	mid	ROUNDS,PEERGAP,BENCHSEES			75.91	87.15	2	78.36	64.42	68.07	78.91	72.91	72.91	14.49		80.63	83.25	82.97	82.97	+7.06	76.53	8	12.4	live-losers-385
+392	tornyil.bottomup.BottomUp 1.05	60.40	mid				79.77	94.29	2	85.69	76.55	76.84	80.06	79.47	79.47	9.14		82.46	77.97	77.85	77.97	-1.80	77.45	8	18.5	shield-list,shield-sweep-mid
+393	suh.micro.MirrorPM 1.00	60.37	farm	VOLATILE	mirror	yes	93.39	97.86	4	67.81	96.79	97.50	96.18	93.39	93.39	29.69		71.37	77.11	67.94	71.37	-22.02		0		shield-list,shield-panel
+394	bjl.LoneDragon 0.5	60.22	farm	PEERGAP			92.07	94.28	4	85.68	87.52	84.49	93.71	90.44	87.52	9.22		92.46	93.84	95.66	93.84	+1.77		0		session-300-opponents
+395	robar.nano.BlackWidow 1.3	60.18	mid		nano		75.95	91.43	2	76.10	73.04	77.10	78.20	73.71	76.10	5.16		80.06	77.88	78.91	78.91	+2.95	75.77	8	12.6	shield-list,shield-sweep-mid
+396	nat.nano.OcnirpSNG 1.0b	60.16	mid		nano		77.76	92.86	4	79.29	76.74	80.74	77.71	77.82	77.82	4.00		78.98	76.96	79.44	78.98	+1.22	80.38	8	12.0	session-300-opponents,shield-list,shield-sweep-mid
+397	KiraNL.ChupaLite 0.4	60.13	mid			yes	82.53	94.29	1	81.33	75.37	77.16	77.29	82.53	82.53	7.16		78.97	80.11	80.06	80.06	-2.47	82.11	32	17.2	mid-shield-39,shield-310,shield-list
+398	seed.Weed 3.0.2	60.07	farm	PEERGAP			88.82	98.57	2	85.29	83.83	82.92	87.17	90.47	85.29	7.55		91.42	89.45	96.74	91.42	+2.60		0		
+399	non.mega.NaN 0.1	60.07	mid	VOLATILE,PEERGAP,BENCHGAP	mega		71.38	90.47	3	70.11	82.99	26.98	61.21	91.73	70.11	64.75		81.04	78.44	78.05	78.44	+7.06	88.84	8	10.4	lost-rounds-39
+400	muf.CrazyKitten 0.9	59.91	farm				87.43	98.09	3	82.29	84.71	83.54	88.02	87.14	84.71	5.73		84.67	80.91	89.81	84.67	-2.76		0		
+401	zen.Lindada 0.2	59.79	farm			yes	91.97	100.00	1	77.37	83.79	80.08	77.46	91.97	91.97	14.60		79.65	77.83	82.91	79.65	-12.32	83.91	40	11.6	shield-310,shield-confirm,shield-list,shield-sweep-low
+402	kawigi.sbf.Teancum 1.3	59.63	mid				79.62	90.85	5	76.86	78.51	78.47	80.92	77.66	78.47	4.06		76.32	77.90	81.27	77.90	-1.72		0		
+403	scheronimus.AntiRebel 1.1	59.61	farm	PEERGAP			91.67	98.57	2	88.20			96.05	87.29	88.20	8.76		96.62	95.13	96.32	96.32	+4.65		0		
+404	ds.OoV4 0.3b	59.59	mid	PEERGAP,BENCHGAP		yes	81.09	91.43	1	88.03	87.83	88.05	92.71	81.09	81.09	11.62		90.67	91.27	91.13	91.13	+10.04	91.45	40	13.7	shield-310,shield-confirm,shield-list,shield-sweep-low
+405	cx.micro.Blur 0.2	59.47	mid	LEAK	micro		82.78	96.19	3	74.50	82.26	74.75	84.33	79.67	79.67	9.83		83.72	85.86	83.99	83.99	+1.21		0		session-300-opponents
+406	mb.Monte 0.1.0	59.44	mid				84.84	94.29	2	87.72	82.68	84.39	86.11	83.58	84.39	5.04		88.83	89.76	88.26	88.83	+3.98	86.56	8	9.6	session-300-opponents,shield-list,shield-sweep-low
+407	dummy.mini.Parakeet 2.40	59.35	mid	LEAK	mini		82.21	95.24	3	73.01	72.07	77.68	79.00	83.82	77.68	11.75		80.35	79.08	78.38	79.08	-3.13		0		
+408	nz.jdc.nano.NeophyteSRAL 1.3	59.18	sweep		nano		97.60	99.43	5	94.26	95.08	93.08	97.94	97.37	95.08	4.86		98.40	97.29	97.92	97.92	+0.32		0		
+409	dam.MogBot 2.9	59.02	farm				85.69	98.57	2	78.59	80.87	78.50	82.97	88.41	80.87	9.91		80.28	78.33	80.32	80.28	-5.41		0		
+410	ms.Ares 0.19	58.98	farm				92.53	96.19	3	87.22	89.20	90.95	94.58	91.51	90.95	7.36		93.72	95.05	95.04	95.04	+2.51		0		
+411	squidM.SurfinUSA 1.0	58.97	sweep				97.53	100.00	2	98.04	89.14	94.64	98.37	96.68	96.68	9.23		97.56	98.22	98.01	98.01	+0.48		0		
+412	urdos.URDOS 1.3	58.97	farm				88.25	95.72	2	86.25	86.25	81.38	86.91	89.58	86.25	8.20		92.05	89.28	90.61	90.61	+2.36		0		
+413	simonton.nano.WeekendObsession_S 1.7	58.96	farm		nano	yes	87.93	97.14	1	83.78	78.01	83.49	86.26	87.93	87.93	9.92		84.29	82.30	86.12	84.29	-3.64	84.59	40	11.0	shield-310,shield-confirm,shield-list,shield-sweep-low
+414	jw.Booring 1.11	58.95	mid	ROUNDS			71.55	78.58	2	80.86	68.29	75.35	69.19	73.91	73.91	12.57		78.15	73.58	76.43	76.43	+4.88		0		
+415	jcz.linio.Linio 2.0.H	58.94	farm				93.22	100.00	4	89.45	89.14	87.23	93.48	92.96	89.45	6.25		91.91	93.18	93.55	93.18	-0.04		0		
+416	jp.Perpy 16.0	58.92	mid				83.84	92.15	4	86.21	78.73	87.30	82.18	85.51	85.51	8.57		86.25	83.70	84.89	84.89	+1.05	85.60	8	11.8	session-300-opponents,shield-list,shield-sweep-low
+417	qwaker00.Ahchoo 1.6	58.91	mid				82.95	92.38	3	82.30	84.60	72.51	83.25	82.34	82.34	12.09		80.06	83.18	85.44	83.18	+0.23	81.97	8	11.5	shield-list,shield-sweep-low
+418	apv.NanoLauLectrik 1.0	58.90	mid				78.44	94.29	4	77.55	79.71	76.80	79.95	77.94	77.94	3.15		82.25	78.98	81.22	81.22	+2.78	79.59	64	11.1	leak-38,shield-list,shield-sweep-low
+419	ers.nano.lig.LigMA 1.9	58.79	mid		nano		83.93	92.14	4	81.42	87.64	84.52	82.41	85.45	84.52	6.22		87.76	85.38	86.01	86.01	+2.08	87.77	24	14.6	tail-39
+420	amk.ChumbaWumba 0.3	58.79	farm			yes	86.67	95.71	2	80.82	75.45	74.00	77.39	86.67	86.67	12.67		84.43	82.46	84.52	84.43	-2.24	82.81	40	12.0	shield-310,shield-confirm,shield-list,shield-panel,shield-sweep-low
+421	amk.ChumbaMini 0.2	58.74	mid	LEAK			84.48	97.14	3	77.06	81.17	73.51	86.70	80.05	80.05	13.19		84.20	84.73	87.03	84.73	+0.25	80.26	8	22.6	shield-list,shield-panel,shield-sweep-low
+422	kinsen.nano.Charp 1.0	58.69	mid		nano		73.97	91.43	2	73.16	74.78	74.32	74.16	73.77	74.16	1.62		77.93	75.49	79.83	77.93	+3.97		0		
+423	timmit.micro.TimXJ 0.22	58.66	mid	PEERGAP	micro		77.22	91.43	2	84.97	75.87	74.76	80.17	74.26	75.87	10.71		83.65	79.68	83.58	83.58	+6.36		0		
+424	tzu.TheArtOfWar 1.2	58.60	sweep			yes	98.79	100.00	1	86.58	88.17	91.13	90.20	98.79	98.79	12.21		87.61	90.64	87.43	87.61	-11.18	91.52	40	12.9	shield-310,shield-confirm,shield-list,shield-sweep-low
+425	spinnercat.Kitten 1.6	58.59	mid	LEAK			82.11	96.19	3	82.17	83.91	80.83	82.50	81.91	82.17	3.08		80.48	79.13	82.63	80.48	-1.63	83.30	8	10.2	shield-list,shield-sweep-low
+426	suh.nano.RandomPM 1.02	58.57	mid		nano	yes	76.13	91.43	1	80.70	79.30	71.97	78.38	76.13	76.13	8.73		78.36	76.50	75.50	76.50	+0.37	78.42	40	13.3	shield-310,shield-confirm,shield-list,shield-sweep-low
+427	apv.TheBrainPi 0.5fix	58.57	mid				75.33	91.43	4	74.80	75.37	68.11	73.47	80.89	74.80	12.78		75.03	75.50	81.94	75.50	+0.17		0		session-300-opponents,tail-39
+428	bts.mega.Gnarly 1.4	58.54	mid	LEAK	mega		83.35	98.57	2	84.60	87.59	81.77	82.61	84.09	84.09	5.82		83.87	86.08	83.76	83.87	+0.52		0		
+429	Polkwane.Piyane 0.7b	58.44	farm	PEERGAP			87.28	97.14	4	84.44	85.85	91.01	85.89	91.45	85.89	7.01		91.12	96.38	94.79	94.79	+7.51		0		
+430	kinsen.nano.Quarrelet 1.0	58.42	mid		nano		78.21	93.34	3	77.78	67.38	67.66	77.93	78.35	77.78	10.97		78.92	77.02	80.10	78.92	+0.71	77.70	72	11.5	leak-38,live-losers-385,shield-list,shield-sweep-low
+431	exauge.GateKeeper 1.1.121g	58.40	mid	LEAK			82.41	97.15	2	79.59	73.39	73.96	78.05	86.77	78.05	13.38		76.86	75.90	76.97	76.86	-5.55	78.25	64	11.0	leak-38,session-300-opponents,shield-list,shield-sweep-low
+432	nat.nano.OcnirpPM 1.0	58.37	mid		nano	yes	79.99	90.00	2	79.93	80.64	75.15	78.67	79.99	79.99	5.49		76.96	75.09	78.85	76.96	-3.03	80.00	40	12.6	shield-310,shield-confirm,shield-list,shield-sweep-low
+433	lrem.micro.FalseProphet Alpha	58.28	farm		micro		85.84	98.09	3	87.86	85.91	83.46	86.01	85.50	85.91	4.40		77.21	85.08	83.25	83.25	-2.59	86.89	8	11.6	shield-list,shield-sweep-low
+434	ha2.T3 0.2	58.19	mid	PEERGAP			83.28	94.28	4	82.56	83.08	84.99	86.93	79.64	83.08	7.29		87.70	88.63	89.36	88.63	+5.34	87.03	8	12.4	session-300-opponents,shield-list,shield-sweep-low
+435	labg.Cataclysm 2.05	58.16	farm				90.54	100.00	3	88.26	85.22	87.19	90.35	90.63	88.26	5.41		86.83	87.13	87.38	87.13	-3.41		0		
+436	zyx.micro.Ant 1.1	58.16	farm		micro		92.42	100.00	2	92.84	90.93	89.37	93.32	91.53	91.53	3.95		91.47	90.17	89.40	90.17	-2.25		0		session-300-opponents
+437	kc.nano.Splinter 1.2	58.10	mid	LEAK	nano		84.70	97.14	5	82.30	82.72	77.24	83.30	86.80	82.72	9.56		86.82	84.17	89.08	86.82	+2.12		0		
+438	nat.nano.Ocnirp 1.73	58.08	mid		nano	yes	81.07	94.29	1	80.58	76.34	76.55	77.67	81.07	81.07	4.73		78.20	75.82	79.57	78.20	-2.87	78.92	40	12.2	session-300-opponents,shield-310,shield-confirm,shield-list,shield-sweep-low
+439	KiraNL.Cataris 1.0	58.03	mid				77.68	91.43	3	78.76	79.44	76.48	74.27	84.51	78.76	10.24		78.49	76.65	75.29	76.65	-1.03	77.02	8	13.9	shield-list,shield-sweep-low
+440	robar.nano.MosquitoPM 1.0	57.92	mid	LEAK	nano		82.38	95.24	3	84.21	75.81	84.44	84.33	81.40	84.21	8.63		83.58	83.54	81.20	83.54	+1.16	83.27	64	11.7	leak-38,shield-list,shield-sweep-low
+441	jmcd.BeoWulf 2.8	57.89	farm				85.98	97.14	2	84.83	80.24	78.67	87.24	84.72	84.72	8.57		84.73	85.36	87.86	85.36	-0.62	84.14	24	13.0	session-300-opponents,tail-39
+442	serenity.nonSense 1.39	57.86	mid	LEAK,PEERGAP			84.51	96.19	3	81.06	80.04	78.89	86.42	80.69	80.69	7.53		88.45	89.33	88.21	88.45	+3.94		0		
+443	rdt199.Warlord 0.73	57.86	mid	LEAK			83.28	95.43	5	83.68	77.91	78.94	82.35	87.02	82.35	9.11		83.49	81.94	89.02	83.49	+0.21	85.33	8	13.6	shield-list,shield-sweep-low
+444	kawigi.nano.FunkyChicken 1.1	57.84	mid	LEAK	nano		80.40	96.19	3	85.31	81.03	81.45	87.77	76.71	81.45	11.06		82.11	82.23	85.47	82.23	+1.83	84.84	8	11.0	shield-list,shield-sweep-low
+445	divineomega.TrialBot 0.003	57.78	mid	LEAK,VOLATILE			84.14	97.15	2	80.66	67.69	84.78	88.10	80.19	80.66	20.41		82.82	83.82	87.80	83.82	-0.33		0		
+446	arthord.NanoSatan Mu	57.76	mid				78.86	92.86	2	82.51	78.70	81.98	75.53	82.19	81.98	6.98		84.99	84.04	86.02	84.99	+6.13		0		
+447	supersample.SuperMercutio 1.0	57.74	farm				86.04	99.05	3	86.44	84.98	85.13	87.27	83.57	85.13	3.70		86.09	81.37	83.81	83.81	-2.23		0		
+448	rtk.Tachikoma 1.0	57.70	mid				79.98	92.38	3	83.00	71.62	72.39	80.50	78.93	78.93	11.38		81.45	78.55	90.73	81.45	+1.47	78.76	16	11.6	live-losers-385,session-300-opponents,shield-list,shield-sweep-low
+449	cf.OldMan.OldManXP 0.1	57.69	contest	ROUNDS,VOLATILE,BENCHGAP			61.59	80.41	7	73.81	86.02	86.97	51.85	65.48	73.81	35.12		75.01	75.97	75.72	75.72	+14.13	82.78	8	14.1	lost-rounds-39
+450	serenity.serenityFire 1.29	57.67	farm				87.48	97.14	3	86.07	88.68	89.53	85.73	88.36	88.36	3.80		91.08	92.55	94.20	92.55	+5.07		0		
+451	boe.Minerva 0.80	57.61	farm				89.60	99.05	3	86.64	88.66	87.99	90.67	87.47	87.99	4.03		87.31	89.17	88.41	88.41	-1.19		0		session-300-opponents
+452	bvh.mini.Fenrir 0.39	57.60	mid	ROUNDS	mini		76.89	88.58	2	78.99	73.80	77.93	79.97	73.82	77.93	6.17		82.71	80.72	81.92	81.92	+5.03	79.34	8	13.9	session-300-opponents,shield-list,shield-panel,shield-sweep-low
+453	dcs.PM.Eater_of_Worlds_PM 1.2	57.60	mid	ROUNDS,PEERGAP			73.66	87.62	3	69.93	76.28	71.15	75.44	70.09	71.15	6.35		79.75	74.08	77.37	77.37	+3.71	76.61	8	10.6	lost-rounds-39
+454	krzysiek.robbo2.Robbo 1.0.0	57.54	farm				85.27	95.00	4	84.08	87.82	83.52	87.36	79.02	84.08	8.80		88.44	87.32	90.17	88.44	+3.17	89.68	8	17.8	session-300-opponents,shield-list,shield-sweep-low
+455	nz.jdc.nano.AralR 1.1	57.48	farm		nano		89.65	98.57	2	92.10	92.12	90.28	90.79	88.50	90.79	3.62		90.15	90.30	88.65	90.15	+0.50	90.20	56	11.5	leak-38,session-300-opponents
+456	lrem.magic.TormentedAngel Antiquitie	57.37	farm			yes	86.11	97.14	1	85.33	82.17	77.84	81.69	86.11	86.11	8.27		86.47	79.99	82.19	82.19	-3.92	83.76	40	13.3	shield-310,shield-confirm,shield-list,shield-sweep-low
+457	sheldor.nano.PointInLineRRAL 1.0.0	57.31	farm		nano		88.58	99.43	5	85.14	84.20	84.76	88.74	88.34	85.14	4.54		87.37	87.45	88.51	87.45	-1.13	88.86	8	10.8	session-300-opponents,shield-list,shield-sweep-low
+458	shrub.Vapour v159	57.27	mid	PEERGAP			82.21	91.43	4	82.17	76.80	81.87	83.37	78.74	81.87	6.57		84.69	86.91	89.05	86.91	+4.70		0		
+459	CharlieN.Omega.Omega 1.03	57.26	mid	ROUNDS			76.27	89.28	4	83.63	83.03	82.86	71.77	80.76	82.86	11.86		86.06	87.47	87.82	87.47	+11.20	83.61	8	10.9	session-300-opponents,shield-list,shield-sweep-low
+460	spinnercat.CopyKat 1.2.3	57.19	farm			yes	91.31	95.71	2	83.70	78.42	79.56	78.52	91.31	91.31	12.89		82.71	79.90	81.00	81.00	-10.31	82.19	40	10.8	shield-310,shield-confirm,shield-list,shield-sweep-low
+461	stelo.MatchupMicro 1.2	57.12	mid	LEAK			83.42	95.00	4	86.11	79.99	79.75	82.69	85.61	82.69	6.36		86.81	85.60	86.69	86.69	+3.27	82.54	8	10.9	shield-list,shield-sweep-low
+462	robar.nano.Prestige 1.0	57.11	mid	ROUNDS	nano		75.09	89.53	3	75.35	70.73	72.45	78.69	67.89	72.45	10.80		77.19	74.23	74.40	74.40	-0.69	72.53	8	10.6	shield-list,shield-sweep-low
+463	nz.jdc.nano.AralT 1.1	57.07	farm		nano		87.68	98.09	3	89.90	89.28	87.20	87.71	87.62	87.71	2.70		88.99	89.94	90.76	89.94	+2.26		0		session-300-opponents
+464	cre.Karolos 0.32	57.06	farm				90.94	97.14	2	88.09	88.15	89.32	92.33	89.54	89.32	4.24		92.62	90.57	89.77	90.57	-0.37		0		session-300-opponents
+465	ngf.nano.Sparky 0.1.5	56.97	mid		nano		83.95	94.28	4	81.48	83.26	88.76	82.71	87.68	83.26	7.28		81.40	85.28	85.15	85.15	+1.20		0		session-300-opponents
+466	And.BasicSurfer FF1.6	56.92	sweep				98.56	100.00	3	98.56	95.88	91.21	98.59	98.49	98.49	7.38		99.40	98.54	98.42	98.54	-0.02		0		
+467	jasolo.Sonda 0.55	56.90	mid	LEAK			84.81	95.72	2	88.48	84.48	92.43	85.05	84.58	85.05	7.95		89.44	89.06	88.26	89.06	+4.25		0		session-300-opponents
+468	ary.nano.ColorNanoP 1.1	56.88	farm		nano		88.58	100.00	4	83.99	88.00	87.70	90.49	87.94	87.94	6.50		88.21	87.18	88.44	88.21	-0.37	88.51	8	10.6	shield-list,shield-sweep-low
+469	DM.Mijit .3	56.80	farm				87.82	98.10	3	86.50	90.19	87.73	90.59	82.27	87.73	8.32		89.94	89.90	90.32	89.94	+2.12	89.78	24	11.1	tail-39
+470	gh.micro.GrubbmThree 1.01	56.78	contest	PEERGAP,BENCHSEES	micro		64.81	91.43	4	60.80	60.05	65.05	66.73	62.90	62.90	6.68		66.81	75.10	74.87	74.87	+10.06	64.59	8	10.5	lost-rounds-39
+471	steff.Rebel 2.1	56.78	sweep				95.10	100.00	3	93.27			95.86	93.58	93.58	2.59		93.44	94.11	92.64	93.44	-1.66		0		
+472	ultra.Defender 1.2	56.77	farm				87.60	96.43	4	88.39	85.76	83.89	90.38	84.83	85.76	6.49		89.17	88.85	89.41	89.17	+1.57		0		
+473	kinsen.melee.Angsaichmophobia 1.8c	56.73	farm				91.38	98.57	2	85.40	88.85	89.18	91.38	91.37	89.18	5.98		88.53	89.46	90.18	89.46	-1.92		0		
+474	lrem.Spectre 0.4.4	56.61	mid	ROUNDS,VOLATILE			77.88	88.57	2	87.94	88.78	84.89	87.62	68.13	87.62	20.65	yes	91.98	88.07	88.90	88.90	+11.03		0		collapse-310
+475	robar.nano.Assertive 0.3	56.53	mid		nano		80.43	90.00	2	84.39	79.78	80.75	81.69	79.17	80.75	5.22		81.52	82.73	83.82	82.73	+2.30		0		session-300-opponents
+476	arthord.micro.Apoptygma 0.4	56.51	mid	LEAK	micro		80.22	95.72	2	82.83	82.40	76.83	77.22	83.23	82.40	6.40		86.09	80.67	84.99	84.99	+4.77		0		
+477	sul.Bicephal 1.2	56.49	contest	PEERGAP,BENCHSEES			67.40	91.43	2	64.76	67.03	68.52	67.06	67.74	67.06	3.76		71.68	78.01	78.42	78.01	+10.61	67.19	8	9.8	lost-rounds-39,session-300-opponents
+478	axeBots.HataMoto 3.09	56.49	farm				85.59	94.29	3	87.93	85.38	86.24	86.69	85.04	86.24	2.89		87.42	84.92	88.15	87.42	+1.83		0		
+479	kc.micro.rammer.MaxRisk 0.6	56.44	contest	ROUNDS,PEERGAP,BENCHSEES	micro		66.77	89.29	4	63.33	64.78	69.27	70.05	65.67	65.67	6.72		68.33	75.84	76.06	75.84	+9.08	67.48	8	10.1	lost-rounds-39
+480	nova.Snow 1.0	56.41	mid	ROUNDS			78.01	87.62	3	81.35	77.57	80.78	74.04	80.00	80.00	7.31		77.74	81.95	81.89	81.89	+3.88	77.56	8	11.8	session-300-opponents,shield-list,shield-sweep-low
+481	bvh.mini.Mjolnir 0.3	56.36	mid	LEAK	rammer		74.49	97.14	4	72.08	77.92	75.30	77.53	65.38	75.30	12.54		76.86	84.56	78.69	78.69	+4.20	78.52	8	12.1	score-leak-39
+482	tobe.Saturn lambda	56.36	mid	LEAK			81.71	95.24	3	79.14	81.13	82.85	82.85	79.42	81.13	3.71		80.98	77.00	80.32	80.32	-1.39	81.09	8	11.2	session-300-opponents,shield-list,shield-sweep-low
+483	robar.nano.Vespa 0.95	56.32	farm		nano		88.70	98.57	2	87.64	89.59	87.00	89.34	88.06	88.06	2.59		88.70	87.14	88.92	88.70	+0.00	91.19	8	10.8	shield-list,shield-sweep-low
+484	buba.Archivist 0.1	56.31	mid	LEAK			84.45	97.14	3	86.30	80.75	79.25	83.76	85.83	83.76	7.05		82.78	82.65	80.94	82.65	-1.80	84.20	8	10.2	shield-list,shield-sweep-low
+485	syl.Centipede 0.5	56.29	sweep			yes	98.51	100.00	2	88.27	84.50	82.64	86.74	98.51	98.51	15.87		87.66	87.09	88.88	87.66	-10.85	88.55	40	11.1	session-300-opponents,shield-310,shield-confirm,shield-list,shield-sweep-low
+486	nan.Ihivatar_Mk_1 1.0	56.28	farm	PEERGAP,BENCHSEES			87.14	97.14	4	88.42	89.20	82.09	94.08	84.83	88.42	11.99		94.81	95.72	94.52	94.81	+7.67	88.46	24	11.3	tail-39
+487	jk.precise.EnergyDome 1.8	56.27	sweep				100.00	100.00	3	100.00	98.96	98.96	100.00	100.00	100.00	1.04		99.88	99.87	99.98	99.88	-0.12		0		
+488	test.Fuzzer 1.0.1	56.25	farm	PEERGAP			89.38	98.10	3	82.33	88.45	82.04	92.03	84.09	84.09	9.99		88.85	89.84	89.99	89.84	+0.46		0		
+489	dft.Freddie 1.32	56.22	farm				93.66	99.28	4	96.94	88.55	87.54	93.80	93.53	93.53	9.40		94.22	93.13	93.03	93.13	-0.53		0		
+490	simonton.GFNano_D 3.1b	56.22	farm				89.73	99.29	4	90.31	88.24	89.47	89.83	89.44	89.47	2.07		90.43	88.61	91.34	90.43	+0.70	86.27	8	10.6	shield-list,shield-sweep-low
+491	eat.HumblePieLite 1.0	56.20	farm				91.80	99.43	5	78.04	93.25	91.11	93.08	89.89	91.11	15.21		83.86	83.54	82.40	83.54	-8.26	92.15	56	11.7	leak-38
+492	alpha.BlackIce 1.0	56.18	mid	PEERGAP			80.28	93.57	4	70.11	76.68	82.21	85.07	78.69	78.69	14.96		83.51	86.41	86.54	86.41	+6.12	83.43	8	11.5	shield-list,shield-sweep-low
+493	myl.micro.NekoNinja 1.30	56.17	farm		micro	yes	93.48	98.10	3	80.67	83.62	85.03	88.60	93.48	93.48	12.81		87.65	86.46	95.57	87.65	-5.83	87.66	40	12.4	shield-310,shield-confirm,shield-list,shield-sweep-low
+494	pez.mini.Gouldingi 1.5	56.13	farm		mini		92.86	100.00	3	90.51	79.98	87.65	93.49	91.60	90.51	13.51		91.81	91.31	91.97	91.81	-1.05	90.61	8	9.9	shield-list,shield-sweep-low
+495	wiki.nano.RaikoNano 1.1	56.07	mid		nano		79.95	94.29	3	84.06	82.12	73.85	86.35	76.75	82.12	12.50		83.03	84.79	83.46	83.46	+3.51	77.58	8	12.5	shield-list,shield-sweep-low
+496	cbot.cbot.CBot 0.8	55.92	mid				81.88	94.28	2	75.79	76.36	82.19	78.38	85.37	78.38	9.58		81.25	80.45	83.02	81.25	-0.62		0		
+497	ins.MobyNano 0.8	55.81	farm			yes	86.29	97.14	2	83.17	78.20	83.44	83.43	86.29	86.29	8.09		81.80	82.31	85.08	82.31	-3.98	83.84	40	11.2	session-300-opponents,shield-310,shield-confirm,shield-list,shield-sweep-low
+498	kneels.nano.Derp 0.2	55.78	mid		nano		78.15	94.29	3	82.73	76.76	69.25	80.20	77.12	77.12	13.48		80.22	77.26	80.01	80.01	+1.86		0		
+499	slugzilla.Parallax 0.1	55.72	mid	VOLATILE			75.71	93.33	3	82.16	87.50	78.78	81.27	64.60	81.27	22.90	yes	83.96	83.18	79.77	83.18	+7.47		0		collapse-310
+500	hp.Athena 0.1	55.47	mid	ROUNDS,VOLATILE,PEERGAP			74.08	85.72	3	76.13	74.93	80.77	79.41	63.41	76.13	17.36	yes	88.11	86.35	87.05	87.05	+12.97		0		collapse-310
+501	jab.micro.Sanguijuela 0.8	55.46	contest	LEAK,PEERGAP,BENCHSEES	rammer		69.42	96.19	3	61.87	70.71	69.98	73.55	67.35	69.98	11.68		69.45	77.71	78.48	77.71	+8.29	70.44	32	9.8	score-leak-39,tail-39
+502	mn.nano.perceptual.Impact 1.3.0	55.44	contest	PEERGAP,BENCHSEES	nano		67.17	93.34	3	63.23	66.66	66.70	67.59	66.96	66.70	4.36		68.58	77.15	75.50	75.50	+8.33	65.50	8	9.8	lost-rounds-39
+503	dz.OthoMicro 0.12	55.42	mid				78.72	93.33	3	71.05	77.96	75.15	82.51	71.13	75.15	11.46		78.26	76.80	80.45	78.26	-0.46	78.28	8	10.4	score-leak-39
+504	cw.megas.Gridd 0.4	55.30	mid				80.12	92.38	3	81.25	72.16	73.63	80.42	79.52	79.52	9.09		79.18	78.07	79.69	79.18	-0.94		0		
+505	jaara.LambdaBot 1.1	55.26	mid				77.73	90.00	2	81.25	81.12	84.72	80.55	74.92	81.12	9.80		85.36	84.55	83.98	84.55	+6.81		0		
+506	pi.Dark 10	55.15	mid	ROUNDS,VOLATILE			74.70	86.66	3	80.85	81.18	82.05	82.81	58.49	81.18	24.32	yes	83.49	75.61	84.43	83.49	+8.79		0		collapse-310
+507	fushi.PvP1.PvP1 2004-02-16	55.13	mid	ROUNDS			84.35	88.57	3	88.22	79.53	84.51	89.59	81.73	84.51	10.06		88.54	86.49	86.21	86.49	+2.14		0		
+508	asm.Statistas 0.1	55.05	mid	LEAK			78.37	96.42	4	76.05	82.92	81.35	78.55	78.18	78.55	6.87		82.65	78.10	82.74	82.65	+4.28	80.59	16	11.9	score-leak-39,shield-list,shield-sweep-low
+509	cb.mega.RandomBot 1.0	54.93	contest	ROUNDS	mega		67.54	80.72	4	77.06	71.10	66.16	69.17	67.00	69.17	10.90		70.47	70.21	73.74	70.47	+2.93	70.16	8	10.2	lost-rounds-39
+510	cw.megas.Polar 3.2	54.92	mid				82.58	94.28	3	74.77	77.13	81.13	83.41	80.91	80.91	8.64		79.25	78.50	79.06	79.06	-3.52		0		session-300-opponents
+511	whind.Constitution 0.7.1	54.79	mid				80.41	92.86	2	83.88	82.22	82.86	82.35	78.46	82.35	5.42		84.83	82.36	85.49	84.83	+4.42	84.82	8	12.0	shield-list,shield-sweep-low
+512	apc.LeeroyJenkins2 1.0	54.78	farm				85.45	97.14	3	82.24	82.81	81.12	83.16	86.60	82.81	5.48		83.70	84.56	85.68	84.56	-0.89		0		
+513	mz.NanoDeath 2.56	54.74	contest	PEERGAP,BENCHSEES			66.72	90.00	2	62.69	60.40	69.30	66.14	67.29	66.14	8.90		71.83	79.10	78.67	78.67	+11.95	67.10	40	9.7	lost-rounds-39,session-300-opponents,weak-leak
+514	nat.micro.Reepicheep 0.1a	54.74	farm		micro		87.91	100.00	2	87.23	85.01	82.55	86.08	89.73	86.08	7.18		86.08	89.72	89.85	89.72	+1.81		0		session-300-opponents
+515	Krabb.fe4r.Fe4r 0.4	54.68	farm				89.98	96.57	5	92.42	89.47	89.80	89.69	90.18	89.80	2.95		92.50	91.71	93.33	92.50	+2.52		0		
+516	lechu.Ala 0.0.4	54.68	farm				85.91	94.29	2	74.07	76.89	84.10	87.05	84.76	84.10	12.98		84.54	86.04	83.13	84.54	-1.36	81.73	8	14.5	session-300-opponents,shield-list,shield-sweep-low
+517	gu.MicroScoob 1.3	54.59	farm				89.61	98.09	6	88.76	84.29	84.11	90.94	88.27	88.27	6.83		91.30	91.48	91.59	91.48	+1.88	90.05	8	11.1	shield-list,shield-sweep-low
+518	rsk1.RSK1 4.0	54.53	farm				90.00	98.57	2	91.76	86.89	85.43	90.02	89.99	89.99	6.33		90.40	90.34	91.42	90.40	+0.40	87.97	8	11.9	shield-list,shield-panel,shield-sweep-low
+519	lrem.quickhack.QuickHack 1.0	54.51	farm				89.30	96.57	5	90.67	81.70	85.77	89.35	89.29	89.29	8.97		88.93	91.96	91.31	91.31	+2.01	88.47	8	12.6	session-300-opponents,shield-list,shield-panel,shield-sweep-low
+520	dsx724.VSAB_EP3a 1.0	54.48	sweep				98.05	100.00	2	95.34	95.85	93.93	98.01	98.08	95.85	4.15		98.66	97.90	98.38	98.38	+0.33	96.79	8	10.8	shield-list,shield-sweep-low
+521	PkKillers.PkAssassin 1.0	54.44	farm				90.77	100.00	4	89.48	84.82	89.68	90.89	90.65	89.68	6.07		89.65	88.71	90.77	89.65	-1.12	90.65	8	12.6	shield-list,shield-sweep-low
+522	jab.DiamondStealer 5	54.34	mid	LEAK			84.53	97.14	3	78.00	81.06	83.39	84.09	85.41	83.39	7.41		87.16	83.40	86.35	86.35	+1.82		0		
+523	demetrix.nano.SledgeHammer 0.22	54.24	contest	LEAK,PEERGAP,BENCHSEES	nano		69.23	97.14	3	61.01	66.68	64.43	70.61	66.47	66.47	9.60		70.37	77.82	77.35	77.35	+8.12	68.52	40	10.5	score-leak-39,session-300-opponents,weak-leak
+524	mladjo.AIR 0.7	54.22	mid				77.23	90.47	3	81.85	78.80	81.88	82.33	74.68	81.85	7.65		86.78	85.55	85.61	85.61	+8.38	83.09	16	11.8	score-leak-39,shield-list,shield-sweep-low
+525	sL300.Mozart life	54.10	mid	ROUNDS,PEERGAP			75.59	88.57	2	76.96	73.72	64.55	79.17	72.02	73.72	14.62		80.60	83.32	84.02	83.32	+7.72		0		
+526	wiki.mako.MakoHT 1.2.2.1	54.07	farm				90.88	99.05	3	92.09	90.87	85.88	90.82	90.91	90.87	6.21		91.35	92.59	95.11	92.59	+1.71	92.38	8	9.6	shield-list,shield-sweep-low
+527	rdm.Grasshopper 0.5e	54.05	farm				92.45	100.00	3	93.04	89.24	88.06	92.12	93.11	92.12	5.05		93.56	96.30	96.10	96.10	+3.65		0		
+528	metal.small.MCool 1.21	54.04	mid	ROUNDS,PEERGAP,BENCHGAP		yes	79.75	88.57	1	83.94	86.98	85.33	89.30	79.75	79.75	9.55		89.72	88.35	88.30	88.35	+8.60	90.82	40	10.9	shield-310,shield-confirm,shield-list,shield-sweep-low
+529	wiki.nano.Flick 1.0	53.95	farm	ROUNDS	nano		91.61	80.00	3	91.52	95.16	93.78	95.12	89.86	93.78	5.30		94.52	99.20	97.42	97.42	+5.81		0		
+530	starpkg.StarViewerZ 1.26	53.88	mid	ROUNDS,VOLATILE,PEERGAP,BENCHGAP		yes	73.26	85.71	1	88.62	87.04	88.31	92.33	73.26	73.26	19.07	yes	90.40	90.44	90.49	90.44	+17.18	92.46	40	11.9	collapse-310,shield-310,shield-confirm,shield-list,shield-sweep-low
+531	dsx724.VSAB_EP3_ATR 1.1	53.84	farm				94.79	98.09	3	94.06	87.68	90.53	95.05	94.27	94.06	7.37		98.47	98.23	96.50	98.23	+3.44		0		
+532	as.xbots 1.0	53.76	mid				76.45	94.29	2	68.28	76.22	78.81	77.33	75.57	76.22	10.53		76.52	78.77	84.75	78.77	+2.32	73.85	8	11.0	lost-rounds-39,session-300-opponents
+533	wcsv.Stampede 1.3.3	53.74	mid	LEAK			83.86	95.72	2	88.06	81.12	83.75	90.34	77.38	83.75	12.96		86.12	84.47	86.61	86.12	+2.26		0		
+534	tobe.Fusion 1.0	53.70	farm				86.55	94.28	2	81.95	82.10	86.60	83.31	89.79	83.31	7.84		83.95	82.45	84.11	83.95	-2.60		0		session-300-opponents
+535	traker.Eraser 1	53.60	sweep				98.33	99.28	4	97.06	97.91	97.49	98.74	97.11	97.49	1.68		99.00	98.84	98.96	98.96	+0.63		0		
+536	agd.Mooserwirt2 2.7	53.54	farm	PEERGAP			93.20	99.05	3	88.58	87.92	91.75	93.28	93.16	91.75	5.36		96.35	97.45	97.08	97.08	+3.88		0		
+537	apv.NanoLauLectrikTheCannibal 1.1	53.53	farm			yes	86.75	100.00	1	86.95	85.30	82.22	89.44	86.75	86.75	7.22		86.98	83.44	85.29	85.29	-1.46	86.90	40	11.9	shield-310,shield-confirm,shield-list,shield-sweep-low
+538	dk.stable.Gorgatron 1.1	53.43	farm				85.47	96.43	4	87.51	75.63	77.80	84.31	86.64	84.31	11.88		88.90	88.59	91.73	88.90	+3.43	83.94	8	13.5	live-losers-385
+539	tjk.AFlatNatural 1.0	53.43	farm				90.59	98.57	2	88.72	87.95	89.82	92.14	89.03	89.03	4.19		84.95	91.40	89.43	89.43	-1.16		0		session-300-opponents
+540	morbid.MorbidPriest 1.0	53.41	mid	PEERGAP			83.46	92.38	3	90.09	89.56	86.48	84.88	80.61	86.48	9.48		90.96	94.60	93.51	93.51	+10.05		0		
+541	unarmedlad.nano.VirginSteele 2.2	53.36	mid	PEERGAP	nano		81.97	92.38	3	81.21	75.86	82.86	80.64	82.63	81.21	7.00		88.89	90.16	85.12	88.89	+6.92		0		
+542	frag.FragBot 1.0	53.35	farm				93.11	100.00	2	92.35	88.14	86.45	91.78	94.44	91.78	7.99		93.59	94.43	95.87	94.43	+1.32	89.54	8	11.0	shield-list,shield-sweep-low
+543	ajs.Solveit 1.3	53.29	farm				91.88	98.57	2	87.62	88.67	90.09	90.62	93.14	90.09	5.52		90.97	92.15	92.25	92.15	+0.27		0		
+544	doka.ShinigamiKNN 1.0	53.27	sweep				95.84	100.00	3	95.67	92.61	96.49	95.15	97.23	95.67	4.62		97.28	97.92	99.06	97.92	+2.08		0		
+545	timmit.TimmiT 0.22	53.25	farm				86.93	100.00	2	88.33	87.34	88.99	85.06	88.79	88.33	3.93		94.23	92.97	92.53	92.97	+6.04		0		
+546	cx.nano.Smog 2.6	53.22	farm		nano		91.55	99.29	4	90.50	88.58	86.29	91.02	93.15	90.50	6.86		93.16	93.65	91.66	93.16	+1.61		0		
+547	pa3k.Quark 1.02	53.19	mid	ROUNDS			79.93	89.14	5	86.82	86.70	88.08	79.78	80.03	86.70	8.30		89.01	88.27	87.07	88.27	+8.34		0		
+548	mladjo.Startko 1.0	53.06	farm				86.94	97.85	4	85.63	84.68	83.83	88.87	85.00	85.00	5.04		87.13	88.92	89.45	88.92	+1.98	86.04	8	11.0	shield-list,shield-sweep-low
+549	slugzilla.SNGPattern 1.0	53.00	farm				93.80	100.00	3	91.76	91.50	91.89	94.01	93.37	91.89	2.51		93.09	95.05	93.65	93.65	-0.15		0		
+550	non.mega.NoName 0.0	52.96	mid		mega		81.17	90.00	2	84.83	81.38	79.72	86.19	76.15	81.38	10.04		87.37	82.51	86.33	86.33	+5.16		0		
+551	dft.Guppy 1.0	52.88	farm				91.21	100.00	3	93.80	90.01	84.01	90.66	91.49	90.66	9.79		92.02	93.70	89.75	92.02	+0.81		0		session-300-opponents
+552	serenity.moonlightBat 1.17	52.87	sweep				95.69	97.85	4	97.50	94.64	95.56	94.88	96.50	95.56	2.86		97.93	96.36	98.29	97.93	+2.24	96.76	24	10.4	session-300-opponents,tail-39
+553	mld.jdc.nano.LittleBlackBook 1.0	52.85	farm		nano		93.99	100.00	3	95.17	92.92	93.08	94.00	93.98	93.98	2.25		92.06	94.83	95.13	94.83	+0.84	94.36	8	17.8	shield-list,shield-sweep-low
+554	az.Ololobot 0.2.4	52.84	farm				88.96	93.57	4	88.40	91.90	90.30	89.01	88.82	89.01	3.50		91.90	90.77	91.05	91.05	+2.09		0		
+555	myl.nano.Kakuru 1.20	52.80	mid	LEAK	nano		81.04	98.57	2	79.81	77.97	81.24	80.01	82.07	80.01	4.10		82.59	77.97	80.69	80.69	-0.35	78.06	32	10.5	score-leak-39,tail-39
+556	ahr.ice.Ice 1.0	52.77	farm	VOLATILE,PEERGAP			85.78	95.00	4	82.31	60.70	51.73	83.67	87.88	82.31	36.15		90.43	90.07	88.38	90.07	+4.29	86.88	8	11.2	live-losers-385
+557	et.Predator 1.8	52.76	farm	PEERGAP			86.35	98.09	3	85.59	82.93	88.60	83.39	92.28	85.59	9.35		91.03	89.83	91.17	91.03	+4.68	87.32	8	11.0	shield-list,shield-sweep-low
+558	trab.nano.AinippeNano 1.3	52.70	farm		nano		85.56	97.14	3	87.23	80.33	81.43	84.31	88.07	84.31	7.74		87.29	81.69	86.43	86.43	+0.87	85.19	8	11.0	shield-list,shield-sweep-low
+559	slugzilla.SNGGF 1.0	52.66	sweep				95.07	100.00	4	96.03	95.70	93.83	95.38	94.76	95.38	2.20		94.77	96.29	94.98	94.98	-0.09		0		
+560	EH.mini.Panther 0.2	52.54	farm		mini		94.65	91.43	4	95.89	93.00	95.20	96.62	88.74	95.20	7.88		99.50	99.15	98.98	99.15	+4.50		0		
+561	maribo.Omicron 1.0	52.51	farm	PEERGAP			91.36	98.09	3	93.96	89.11	90.08	91.71	90.65	90.65	4.85		97.12	95.76	95.69	95.76	+4.40		0		session-300-opponents
+562	ne.Chimera 1.2	52.43	mid	PEERGAP			83.55	92.85	2	76.12	84.16	81.46	86.11	80.98	81.46	9.99		88.08	87.95	87.63	87.95	+4.41		0		leak-38
+563	doka.KillerRabbit 1.0	52.39	mid				82.30	94.29	4	82.67	83.20	73.77	82.11	82.88	82.67	9.43		83.13	83.12	84.06	83.13	+0.83		0		
+564	stf.PanzerGeneral 0.1	52.27	farm				86.70	97.15	2	86.28	83.67	79.83	85.80	87.61	85.80	7.78		88.08	89.12	89.72	89.12	+2.42		0		
+565	tkt.RedShift 1.1.CS.0	52.24	sweep				96.42	100.00	2	96.75	96.35	95.56	96.91	95.93	96.35	1.35		95.48	97.81	95.35	95.48	-0.94		0		
+566	benhorner.PureAggression 0.2.6	52.16	mid	LEAK	rammer		76.24	98.57	2	64.30	72.28	73.87	76.61	75.87	73.87	12.31		70.78	78.71	80.01	78.71	+2.47	75.62	8	10.8	score-leak-39,session-300-opponents
+567	pkdeken.Paladin 1.0	51.95	farm				93.83	100.00	3	94.05	88.88	91.62	93.25	94.12	93.25	5.24		92.69	91.47	92.30	92.30	-1.53		0		session-300-opponents
+568	robar.nano.Mosquito 1.1	51.93	sweep		nano		95.88	98.57	2	97.81	90.75	95.02	93.97	97.78	95.02	7.06		98.37	98.39	97.68	98.37	+2.50		0		
+569	slugzilla.OrbitGF 1.0	51.92	farm				93.97	100.00	3	90.18	92.58	90.64	95.89	90.14	90.64	5.75		94.29	94.27	93.96	94.27	+0.30		0		
+570	ar.TheoryOfEverything 1.2.1	51.88	farm				88.16	100.00	2	86.63	87.07	78.96	86.42	89.89	86.63	10.93		88.36	86.76	88.80	88.36	+0.20		0		
+571	de.erdega.robocode.Polyphemos 0.4	51.87	farm				86.81	97.14	3	77.57	87.95	82.90	88.36	86.03	86.03	10.79		85.72	85.74	88.38	85.74	-1.07		0		
+572	brainfade.melee.Dusk 0.44	51.78	farm				91.35	97.14	3	92.84	91.66	89.75	91.36	91.34	91.36	3.09		96.08	94.39	95.67	95.67	+4.32	92.79	8	12.1	shield-list,shield-sweep-low
+573	whind.Wisdom 0.5.1	51.76	mid				74.67	91.43	2	74.57	83.42	77.01	73.90	75.43	75.43	9.52		78.63	75.94	78.75	78.63	+3.96	80.09	8	9.0	lost-rounds-39
+574	mcb.Audace 1.3	51.75	farm				93.30	100.00	3	90.03	90.32	93.94	92.36	95.18	92.36	5.15		92.23	95.22	92.19	92.23	-1.07	93.82	24	10.7	tail-39
+575	ary.nano.AceSurf 1.2	51.71	farm		nano		85.13	94.28	3	86.43	88.20	92.48	86.90	81.60	86.90	10.88		90.21	89.04	90.65	90.21	+5.08		0		
+576	radnor.RamRod 1.0	51.69	mid	LEAK	rammer		76.58	95.43	5	65.65	75.65	82.11	76.70	76.55	76.55	16.46		73.86	78.90	80.52	78.90	+2.32	79.21	8	10.8	score-leak-39
+577	tobe.Relativity 3.9	51.63	farm				91.19	98.86	5	86.62	89.85	91.83	91.44	90.81	90.81	5.21		91.34	91.22	93.41	91.34	+0.15		0		
+578	slugzilla.OrbitPattern 1.1	51.62	farm				90.90	99.43	5	90.21	90.11	91.26	91.21	90.43	90.43	1.15		92.57	93.13	92.51	92.57	+1.67		0		
+579	stelo.UntouchableNano 1.4	51.60	mid	LEAK			84.35	95.72	4	85.45	85.59	83.25	84.02	84.68	84.68	2.34		86.73	85.70	90.71	86.73	+2.38		0		session-300-opponents
+580	mld.LittleBlackBook 1.69e	51.58	farm				94.62	100.00	4	95.67	93.89	91.40	94.05	96.32	94.05	4.92		91.78	94.67	94.83	94.67	+0.05	95.29	8	15.9	shield-list,shield-sweep-low
+581	dz.MostlyHarmlessNano 2.1	51.57	farm				94.55	99.05	3	93.69	91.26	91.30	95.18	94.23	93.69	3.92		94.61	95.09	94.06	94.61	+0.06	93.41	8	11.5	session-300-opponents,shield-list,shield-sweep-low
+582	shu.nitro.LENIN .T34	51.54	farm				87.59	92.86	4	88.52	86.74	78.82	89.87	85.31	86.74	11.05		90.08	89.86	90.60	90.08	+2.49		0		session-300-opponents
+583	sgp.JollyNinja 3.53	51.49	mid				82.18	91.43	2	80.46	86.37	84.50	85.73	78.62	84.50	7.75		86.26	86.68	88.51	86.68	+4.50		0		
+584	myl.micro.Predator 1.50	51.49	sweep		micro		97.27	100.00	2	94.34	95.19	82.48	96.59	97.95	95.19	15.47		97.60	95.83	98.42	97.60	+0.33	97.03	8	10.6	shield-list,shield-sweep-low
+585	m3thos.Eva02 0.7.1	51.48	farm				88.75	94.28	2	90.96	82.47	92.28	86.18	91.32	90.96	9.81		93.08	92.94	93.51	93.08	+4.33		0		
+586	oog.melee.Capulet 1.2	51.48	farm	PEERGAP			92.53	100.00	2	86.42	84.08	86.56	91.49	93.57	86.56	9.49		91.94	90.49	94.22	91.94	-0.59		0		session-300-opponents
+587	ajs.Guessit 1.3	51.47	farm				90.47	95.24	6	93.72	91.45	94.66	92.26	88.68	92.26	5.98		93.56	94.21	94.35	94.21	+3.74		0		
+588	deith.Czolgzilla 0.11	51.37	farm				93.81	98.09	3	91.59	85.86	90.38	94.04	93.69	91.59	8.18		97.27	95.43	95.82	95.82	+2.01		0		
+589	demetrix.nano.Neutrino 0.27	51.33	mid	PEERGAP,BENCHSEES	nano		75.50	91.42	2	76.85	81.30	75.23	71.59	79.42	76.85	9.71		85.12	88.09	88.83	88.09	+12.59	81.03	16	11.2	lost-rounds-39,shield-list,shield-sweep-low
+590	rz.SmallDevil 1.502	51.26	farm				86.55	94.28	2	94.72	89.34	91.02	90.97	82.13	90.97	12.59		93.33	95.37	94.38	94.38	+7.83	94.24	8	11.0	session-300-opponents,shield-list,shield-sweep-low
+591	dy.LevelOne 2.0	51.15	sweep				95.65	100.00	2	93.91	94.69	95.11	96.70	94.60	94.69	2.79		97.36	96.60	97.10	97.10	+1.45	96.95	8	10.6	session-300-opponents,shield-list,shield-sweep-low
+592	Legend.X_FireFly 1.3	51.08	farm	PEERGAP			89.52	96.19	3	92.53	87.77	85.26	95.59	86.49	87.77	10.33		95.49	95.68	93.85	95.49	+5.97		0		
+593	stelo.SteloTestNano 1.0	51.03	farm			yes	87.22	95.00	4	85.18	83.65	85.36	87.47	87.22	87.22	3.82		90.15	86.58	91.08	90.15	+2.93	87.19	40	12.1	session-300-opponents,shield-310,shield-confirm,shield-list,shield-panel,shield-sweep-low
+594	lrem.micro.MoggFanatic 0.2	50.98	farm		micro		90.14	100.00	3	89.94	89.03	90.58	90.18	90.07	90.07	1.55		92.80	91.65	94.36	92.80	+2.66		0		
+595	nic.Nicator 2.4	50.96	farm				93.93	100.00	3	90.71	89.89	86.91	94.40	93.70	90.71	7.49		93.66	95.20	94.88	94.88	+0.95		0		
+596	supersample.SuperRamFire 1.0	50.95	mid	LEAK,PEERGAP,BENCHSEES	rammer		81.45	96.19	3	76.97	77.44	76.76	82.09	80.18	77.44	5.33		84.76	88.84	93.63	88.84	+7.39	82.82	8	9.9	score-leak-39
+597	mz.AdeptBSB 1.03	50.89	sweep				98.82	100.00	3	98.57	93.75	95.97	98.86	98.74	98.57	5.11		98.95	98.95	99.41	98.95	+0.13	98.29	8	11.4	shield-list,shield-sweep-low
+598	sm.Devil 7.3	50.77	mid	ROUNDS			77.32	87.62	3	76.93	76.94	80.06	79.23	76.37	76.94	3.69		89.46	81.29	80.72	81.29	+3.97	80.68	16	20.1	lost-rounds-39,shield-list,shield-sweep-low
+599	satan.White 0.26	50.73	farm				90.32	100.00	2	88.40	85.31	89.73	91.15	89.49	89.49	5.84		89.17	86.97	89.55	89.17	-1.15	91.07	8	11.1	shield-list,shield-sweep-low
+600	radnor.DoctorBob 1.42	50.71	sweep				99.19	100.00	2	97.79	96.05	93.35	99.28	99.09	97.79	5.93		99.39	99.46	99.60	99.46	+0.27		0		
+601	wiki.mini.GouldingiHT 1.0	50.57	sweep		mini		96.89	100.00	3	95.60	91.89	94.46	98.32	96.18	95.60	6.43		96.29	96.30	96.99	96.30	-0.59		0		
+602	apc.botM 3.0	50.56	mid	LEAK			84.46	95.71	4	90.26	82.57	88.67	81.68	87.23	87.23	8.58		92.62	90.96	90.96	90.96	+6.50	88.24	8	10.9	shield-list,shield-sweep-low
+603	sheldor.nano.PointInLine 1.0	50.55	mid	LEAK	nano		80.88	95.72	4	87.40	72.68	86.84	82.57	79.18	82.57	14.72		83.07	79.15	83.51	83.07	+2.19	81.01	8	12.8	shield-list,shield-sweep-low
+604	robar.nano.Scytodes 0.3	50.52	farm		nano		94.60	100.00	4	95.77	91.84	92.72	96.05	94.12	94.12	4.21		91.99	94.27	93.62	93.62	-0.98	94.55	64	11.3	leak-38,shield-list,shield-sweep-low
+605	stelo.MirrorMicro 1.1	50.50	mid	LEAK,VOLATILE	mirror		82.13	98.10	6	73.16	92.42	49.02	81.16	84.06	81.16	43.40		79.72	89.90	82.11	82.11	-0.02	87.74	40	10.6	score-leak-39,session-300-opponents,weak-leak
+606	pulsar.PulsarNano 0.2.4	50.49	sweep				97.93	100.00	3	97.08	90.07	96.52	98.71	97.54	97.08	8.64		97.49	97.02	97.98	97.49	-0.44		0		session-300-opponents
+607	pfvicm.Sobieski 7.2.3b	50.49	sweep				97.31	100.00	2	92.01	91.03	94.84	96.94	97.69	94.84	6.66		96.08	97.24	94.94	96.08	-1.23		0		
+608	mz.Adept 2.65	50.47	farm				89.47	98.57	4	93.46	88.78	87.44	90.88	88.06	88.78	6.02		90.89	92.99	90.49	90.89	+1.42	89.86	8	11.4	shield-list,shield-panel,shield-sweep-low
+609	mahrgell.mahrram 1.3	50.47	mid	LEAK,PEERGAP			79.97	98.29	5	65.00	80.63	77.67	81.11	75.43	77.67	16.11		79.28	83.98	83.96	83.96	+3.99	79.26	40	10.9	score-leak-39,weak-leak
+610	krillr.mini.JointStrike 2.0.0	50.42	farm		mini		88.97	99.05	3	85.44	84.12	89.41	90.43	86.06	86.06	6.31		88.27	86.08	89.36	88.27	-0.70		0		
+611	dummy.micro.HummingBird 2.14	50.36	mid	LEAK	micro		81.89	95.43	5	86.46	77.24	84.30	84.29	78.28	84.29	9.22		85.50	84.77	87.93	85.50	+3.61		0		
+612	pulsar.Nanis 0.3	50.26	farm				94.97	100.00	4	93.98	93.58	93.30	94.81	95.45	93.98	2.15		93.96	94.74	94.99	94.74	-0.23		0		
+613	timmit.nano.TimDog 0.33	50.24	farm		nano		94.92	97.72	5	90.04	95.61	94.61	97.62	84.13	94.61	13.49		99.19	98.98	98.66	98.98	+4.06		0		session-300-opponents
+614	synnalagma.test.MiniNeural 1.1	50.17	farm				91.95	100.00	2	81.36	89.48	84.23	92.41	91.50	89.48	11.05		91.15	92.81	94.81	92.81	+0.86		0		
+615	suzushin7.nano.Galaxy03 1.01	50.13	mid	LEAK,PEERGAP,BENCHSEES	rammer		72.88	96.19	3	69.77	68.39	72.95	73.05	72.53	72.53	4.66		74.86	82.81	83.36	82.81	+9.93	72.41	8	10.8	score-leak-39
+616	bayen.nano.Squirrel 0.2	50.12	mid	LEAK	nano		83.97	95.00	4	87.67	84.95	87.13	82.05	85.88	85.88	5.62		90.30	88.45	88.91	88.91	+4.94		0		
+617	dmh.robocode.robot.YellowBird 0.12	50.12	sweep				95.06	100.00	4	96.19	89.55	94.37	94.90	95.21	94.90	6.64		97.19	96.76	95.13	96.76	+1.70		0		
+618	amarok.Rookie 1.1	50.06	farm				94.77	100.00	2	90.67	92.17	86.93	94.48	95.06	92.17	8.13		93.32	95.11	95.25	95.11	+0.34		0		
+619	dummy.micro.Sparrow 2.5	49.92	farm		micro		88.04	96.43	4	88.76	86.94	83.68	87.65	88.43	87.65	5.08		88.29	89.70	90.44	89.70	+1.66	88.09	8	10.8	shield-list,shield-sweep-low
+620	mz.NanoGod 2.02	49.90	sweep	PEERGAP			97.83	100.00	3	91.77	89.34	90.23	97.18	98.16	91.77	8.82		98.43	98.73	99.04	98.73	+0.90		0		
+621	kano.gamma.KanoGamma 1.8	49.78	farm				89.28	98.57	4	81.34	84.90	88.19	90.10	88.45	88.19	8.76		86.04	91.28	90.98	90.98	+1.70		0		
+622	klein.GottesKrieger 1.1	49.76	farm				94.23	100.00	4	93.98	92.52	92.65	94.58	93.88	93.88	2.06		94.46	92.55	93.27	93.27	-0.96		0		session-300-opponents
+623	bayen.UbaRamLT 1.0	49.75	mid	LEAK	rammer		80.91	98.09	3	67.72	74.25	79.47	82.46	80.13	79.47	14.74		76.69	82.72	83.07	82.72	+1.81	80.40	8	9.5	score-leak-39
+624	kinsen.nano.Hoplomachy 1.6	49.69	sweep		nano		97.46	100.00	2	97.44	93.59	95.17	97.89	97.03	97.03	4.30		96.87	97.51	95.52	96.87	-0.59		0		session-300-opponents
+625	voidious.perceptual.RetroGirl 1.0.0	49.68	farm	VOLATILE			86.76	92.38	3	94.47	89.59	87.32	92.66	74.96	89.59	19.51	yes	92.65	91.78	93.22	92.65	+5.89		0		collapse-310
+626	oog.nano.SavantVS 1.1	49.63	sweep		nano		96.79	100.00	3	95.70	93.39	90.81	96.26	97.85	95.70	7.04		98.14	97.62	97.85	97.85	+1.06		0		
+627	suh.micro.WallPM 1.00	49.60	farm		micro		85.39	95.24	3	84.14	81.21	88.92	84.64	85.76	84.64	7.71		86.98	84.11	83.96	84.11	-1.28	82.34	24	13.9	session-300-opponents,tail-39
+628	lk.nano.Avesnar 1.1	49.50	sweep		nano		96.28	100.00	3	96.70	88.64	91.04	95.54	97.76	95.54	9.12		97.06	95.98	96.38	96.38	+0.10		0		
+629	dmp.micro.Aurora 1.41	49.48	mid		micro		80.40	94.29	2	80.83	85.93	86.79	80.50	80.29	80.83	6.50		84.62	83.63	86.83	84.62	+4.22	84.18	8	9.5	lost-rounds-39,melee-classic
+630	deewiant.Anomaly 0.2	49.47	sweep				95.60	100.00	3	94.35			96.38	94.03	94.35	2.35		98.37	98.33	98.07	98.33	+2.73		0		
+631	gh.nano.Grofvuil 0.2	49.44	sweep		nano		99.31	100.00	2	95.95	94.40	95.17	99.40	99.22	95.95	5.00		97.79	98.56	98.44	98.44	-0.87	98.24	64	11.3	leak-38,shield-list,shield-panel,shield-sweep-low
+632	slugzilla.RandomLinear 1.0	49.29	farm				94.48	100.00	2	96.57	91.12	94.51	96.37	92.60	94.51	5.45		98.81	98.38	98.29	98.38	+3.89		0		
+633	sgp.MadHatter 4.13	49.26	farm				94.34	100.00	2	93.01	91.01	91.89	94.65	94.03	93.01	3.64		93.18	94.32	95.51	94.32	-0.02		0		
+634	mc2.enemy.Original 0.9	49.25	farm	PEERGAP			93.60	93.33	3	89.50	89.37	91.36	92.58	95.64	91.36	6.27		97.81	97.43	96.97	97.43	+3.83		0		
+635	Legend.Biogon 1.5	49.21	sweep				96.92	100.00	3	99.04	89.15	96.57	98.37	96.19	96.57	9.89		98.50	98.23	97.79	98.23	+1.31		0		
+636	casey.Flee 1.0	49.21	farm			yes	86.81	97.14	1	87.44	77.49	87.10	82.26	86.81	86.81	9.95		87.38	85.74	88.40	87.38	+0.57	84.77	40	11.9	session-300-opponents,shield-310,shield-confirm,shield-list,shield-panel,shield-sweep-low
+637	suh.nano.RammingC 1.00	49.20	mid	LEAK,PEERGAP,BENCHSEES	rammer		72.66	100.00	2	71.37	71.20	73.09	73.16	72.17	72.17	1.96		75.61	82.90	82.82	82.82	+10.16	73.78	8	10.5	score-leak-39
+638	stelo.PianistNano 1.3	49.20	mid	LEAK			81.42	95.24	3	81.90	77.69	75.93	81.96	80.35	80.35	6.03		82.87	80.88	85.06	82.87	+1.45	82.50	16	10.4	score-leak-39,shield-list,shield-sweep-low
+639	ntc.Knowledge 1.1	49.13	farm				90.23	98.57	4	87.96	93.15	92.75	90.35	89.88	90.35	5.19		90.97	91.79	92.74	91.79	+1.56		0		
+640	josago.Jorgito 0.16	49.09	farm				85.19	92.38	3	91.33	88.60	87.42	88.49	83.54	88.49	7.79		90.01	90.06	90.16	90.06	+4.87		0		
+641	tvv.micro.Antares 1.1.1	48.99	sweep		micro		95.70	98.09	3	98.40	93.90	92.31	96.53	94.05	94.05	6.09		98.22	98.16	98.34	98.22	+2.52		0		session-300-opponents
+642	qwaker00.Gandhi 1.2	48.92	farm				94.33	100.00	2	95.37	91.70	95.04	93.67	94.98	94.98	3.67		95.76	96.62	96.06	96.06	+1.73		0		
+643	awl.Locutus 1.5	48.85	farm				91.97	98.09	3	91.11	93.54	87.39	92.63	91.64	91.64	6.15		91.99	92.58	90.02	91.99	+0.02		0		session-300-opponents
+644	usa.nano.Nemo 2.0	48.83	sweep		nano		95.16	100.00	2	91.38	89.62	93.65	96.77	93.56	93.56	7.15		91.98	92.16	89.88	91.98	-3.18		0		
+645	csm.NthGeneration 0.04	48.80	farm	PEERGAP			90.51	98.09	3	92.44	92.02	90.07	89.70	90.92	90.92	2.74		97.94	96.17	97.20	97.20	+6.69	94.93	8	11.1	shield-list,shield-sweep-low
+646	fm.claire 1.7	48.80	farm				92.77	99.05	3	92.34	89.11	91.40	92.18	93.96	92.18	4.85		97.00	94.99	95.39	95.39	+2.62	93.20	24	10.3	tail-39
+647	rcp.Kuramatron 1.0	48.79	farm	PEERGAP	rammer?		85.81	100.00	4	74.05	80.12	79.92	86.10	85.51	80.12	12.05		78.45	87.17	87.49	87.17	+1.36		0		
+648	slugzilla.OscillatePattern 1.0	48.78	farm				91.92	98.57	2	89.99	91.18	90.64	90.58	93.27	90.64	3.28		94.06	93.72	93.30	93.72	+1.80		0		
+649	ethdsy.Malacka 2.4	48.76	farm				92.41	99.05	3	95.73	84.90	83.27	93.71	89.82	89.82	12.46		91.43	93.78	95.90	93.78	+1.37	93.57	8	10.4	live-losers-385
+650	fnc.bandit2002.Bandit2002 4.0.2	48.75	mid	PEERGAP			84.34	94.28	2	78.71	77.75	79.69	86.16	82.52	79.69	8.41		88.03	84.85	87.50	87.50	+3.16	82.75	8	10.6	shield-list,shield-sweep-low
+651	erdnis.Rover 0.3	48.67	mid				83.33	93.33	3	86.44	83.69	89.50	87.04	75.91	86.44	13.59		89.81	88.81	90.99	89.81	+6.48		0		
+652	maribo.FollowFire 1.11	48.62	mid	LEAK,PEERGAP,BENCHSEES	rammer		72.43	95.24	3	64.76	68.47	70.40	71.99	73.30	70.40	8.54		73.66	79.54	77.43	77.43	+5.00	69.72	8	9.9	score-leak-39
+653	vuen.Fractal 0.55	48.62	sweep			yes	95.73	99.29	4	87.95	79.56	83.44	90.24	95.73	95.73	16.17		91.20	88.23	86.44	88.23	-7.50	86.12	40	10.8	shield-310,shield-confirm,shield-list,shield-sweep-low
+654	cw.megas.GhostShell GT	48.55	farm				86.27	97.14	3	87.47	84.49	84.38	86.18	86.45	86.18	3.09		84.37	85.20	84.89	84.89	-1.38		0		session-300-opponents
+655	md.Pasta 1.1	48.44	farm				85.76	97.15	2	85.54	87.54	92.52	88.82	82.70	87.54	9.82		85.74	84.37	87.92	85.74	-0.02		0		
+656	toz.Gnome 1.1	48.40	farm	PEERGAP			88.54	96.19	3	88.04	88.00	82.18	90.60	87.51	88.00	8.42		96.99	94.10	96.35	96.35	+7.81		0		session-300-opponents
+657	sadoner.killer 0.2	48.39	farm				87.85	100.00	2	86.55	75.85	80.90	86.39	89.31	86.39	13.46		90.30	90.91	92.43	90.91	+3.06	84.86	56	11.5	leak-38
+658	ha2.T2b 0.2b	48.38	sweep				95.16	99.05	3	92.33	92.98	90.88	95.31	95.09	92.98	4.43		97.96	97.61	97.43	97.61	+2.45		0		session-300-opponents
+659	dft.Calliope 5.6	48.38	sweep				95.38	100.00	2	90.30	94.09	88.65	96.08	94.68	94.09	7.43		92.90	95.18	93.90	93.90	-1.48		0		
+660	slugzilla.OscillateGF 1.0	48.37	farm				94.60	100.00	2	94.35	90.61	92.66	94.35	94.86	94.35	4.25		95.28	95.64	94.62	95.28	+0.68		0		
+661	sam.ChipmunkDuelist 1.0	48.36	farm				92.79	98.57	4	93.10	88.90	88.26	91.54	93.20	91.54	4.94		92.37	94.57	93.29	93.29	+0.50		0		
+662	com.cohesiva.robocode.ManOwaR 1.0	48.33	farm				94.75	100.00	2	95.32	89.15	92.43	94.88	94.61	94.61	6.17		95.83	95.68	94.55	95.68	+0.94		0		session-300-opponents
+663	rc.RCBot 2.0	48.32	farm				92.49	100.00	4	92.36	93.38	91.83	92.93	92.04	92.36	1.55		95.20	94.60	95.98	95.20	+2.71		0		session-300-opponents
+664	step.NanoBidu 1.0	48.30	farm				92.09	98.57	2	90.19	87.21	91.59	94.52	89.66	90.19	7.31		94.94	93.67	96.15	94.94	+2.85		0		
+665	lessonz.robocode.Oz 0.5.0	48.26	farm				94.62	97.14	4	97.80	94.04	96.18	94.75	94.24	94.75	3.76		98.62	97.58	98.40	98.40	+3.78	97.44	8	10.4	shield-list,shield-sweep-low
+666	ahf.Acero 1.0	48.24	farm	PEERGAP			93.13	98.09	3	97.07	91.13	89.60	95.50	91.94	91.94	7.47		97.03	96.56	97.22	97.03	+3.90		0		
+667	rjw.RabidWombat 0.71	48.20	farm				94.84	100.00	2	90.36	93.54	90.57	95.16	94.53	93.54	4.80		94.96	95.00	96.11	95.00	+0.16	95.04	8	11.0	session-300-opponents,shield-list,shield-sweep-low
+668	dmh.robocode.robot.GreenDragon 1.0	48.16	farm				89.51	100.00	3	90.51	90.15	84.30	90.45	89.04	90.15	6.21		94.57	93.12	94.51	94.51	+5.00	90.36	24	12.0	tail-39
+669	tango.Recrimpo 2.51	48.15	farm				88.32	97.14	5	85.10	71.22	82.39	88.78	88.01	85.10	17.56		88.96	88.86	90.14	88.96	+0.64		0		
+670	bigpete.Stewie 1.0	48.11	farm				92.51	96.19	3	94.75	93.96	94.30	94.30	88.94	94.30	5.81		98.46	97.30	97.78	97.78	+5.27	96.26	8	11.0	session-300-opponents,shield-list,shield-sweep-low
+671	banshee.micro.Nexus6 0.3.0	48.09	farm		micro		94.44	100.00	3	94.84	95.09	87.43	93.58	96.15	94.84	8.72		97.51	95.72	96.42	96.42	+1.98		0		session-300-opponents
+672	elloco.Flower 0.1r1	48.02	farm				93.60	98.09	3	91.69	90.85	90.93	92.27	96.27	91.69	5.42		97.59	96.64	95.99	96.64	+3.04		0		
+673	KiraNL.SpaceKees 0.1	48.02	farm				89.70	98.09	3	90.47	86.60	87.15	90.47	89.31	89.31	3.87		90.65	89.56	88.16	89.56	-0.14		0		session-300-opponents
+674	mb.Beast 0.4.1	47.98	sweep				95.81	98.09	3	99.04	92.16	96.53	97.07	93.29	96.53	6.88		98.26	97.31	98.26	98.26	+2.45		0		session-300-opponents
+675	oog.melee.Mercutio 1.0	47.95	farm				91.54	95.24	3	94.95	94.64	96.63	88.50	97.62	94.95	9.12		97.12	96.76	97.40	97.12	+5.58	96.58	24	11.5	tail-39
+676	step.nanoPri 1.0	47.94	mid	LEAK,PEERGAP,BENCHSEES	rammer		74.03	99.28	4	74.04	74.16	74.85	75.67	72.40	74.16	3.27		76.26	82.75	84.08	82.75	+8.72	74.31	8	11.6	score-leak-39
+677	blir.mini.oops.Splooshlu 2.0	47.93	sweep		mini		96.26	98.10	3	97.54	97.02	97.08	98.26	92.27	97.08	5.99		98.75	99.09	98.53	98.75	+2.49		0		session-300-opponents
+678	djc.Aardvark 0.3.6	47.88	mid				81.70	91.43	2	91.13	79.29	86.30	85.42	77.99	85.42	13.14		88.20	88.40	89.89	88.40	+6.70		0		session-300-opponents
+679	robar.nano.Breeze 0.3	47.88	mid	PEERGAP	nano		82.64	94.28	2	80.26	87.78	83.65	77.79	87.49	83.65	9.99		90.35	88.17	92.04	90.35	+7.71	87.45	8	10.0	lost-rounds-39,session-300-opponents
+680	exauge.Leopard 1.1.019	47.86	mid	LEAK			82.57	100.00	2	68.38	81.05	82.27	82.81	82.33	82.27	14.43		78.08	86.28	84.94	84.94	+2.37	82.64	64	11.1	leak-38,score-leak-39
+681	ratosh.Nobo 0.21	47.86	farm				91.52	96.19	3	96.06	94.61	92.70	97.82	88.37	94.61	9.45		97.70	97.25	96.51	97.25	+5.73	96.51	8	11.5	session-300-opponents,shield-list,shield-sweep-low
+682	EE.LittleBig 1.0	47.85	farm	PEERGAP			89.18	100.00	3	79.40	79.78	80.70	90.00	88.77	80.70	10.60		86.84	85.08	86.56	86.56	-2.62		0		
+683	dmp.nano.Eve 3.41	47.79	farm		nano		93.41	100.00	2	90.93	92.45	89.35	93.68	93.14	92.45	4.33		93.28	92.80	93.57	93.28	-0.13	93.33	8	11.0	shield-list,shield-sweep-low
+684	rz.HawkOnFire 0.1	47.78	sweep				100.00	100.00	4	95.57	97.01	95.95	100.00	100.00	97.01	4.43		97.72	99.85	99.58	99.58	-0.42		0		melee-challenge,melee-handoff,melee-reference
+685	fcr.First 1.0	47.73	sweep				97.96	100.00	2	96.40	97.49	94.84	98.68	97.23	97.23	3.84		98.31	98.75	98.15	98.31	+0.35	98.27	8	11.4	session-300-opponents,shield-list,shield-sweep-low
+686	kinsen.nano.Senticous 1.0	47.62	mid	LEAK	nano		83.59	97.15	2	83.98	83.15	84.55	86.72	80.45	83.98	6.27		84.33	83.20	86.42	84.33	+0.74		0		
+687	hamilton.Hamilton 1.0	47.56	mid	ROUNDS			81.46	87.14	4	87.67	89.60	86.02	85.71	80.04	86.02	9.56		88.17	88.92	91.74	88.92	+7.46	84.71	8	11.8	shield-list,shield-sweep-low
+688	awesomeness.Elite 1.0	47.54	sweep				97.46	100.00	3	95.99	91.85	95.16	97.17	97.61	95.99	5.76		98.77	98.30	97.67	98.30	+0.84		0		session-300-opponents
+689	alex.Diabolo5 1.1	47.53	mid	LEAK,PEERGAP			84.52	95.72	2	91.67	87.79	93.69	88.67	80.37	88.67	13.32		91.89	94.34	96.04	94.34	+9.82		0		session-300-opponents
+690	casey.Flump 1.0	47.52	farm				86.21	98.57	4	84.64	78.05	86.18	85.39	88.65	85.39	10.60		89.28	87.75	91.16	89.28	+3.07		0		
+691	pe.minimelee.SandboxMiniMelee 1.1	47.43	sweep				97.48	100.00	2	91.01	93.41	91.47	96.11	98.86	93.41	7.85		97.21	96.46	96.56	96.56	-0.92		0		
+692	wiki.nano.DevilFISH 1.0	47.39	sweep		nano		95.36	98.10	3	96.17	96.54	96.99	98.22	89.64	96.54	8.58		98.38	98.32	97.98	98.32	+2.96		0		session-300-opponents
+693	rapture.Rapture 2.13	47.36	sweep				96.52	98.57	2	96.01	95.97	98.08	97.54	95.49	96.01	2.59		98.20	97.12	98.12	98.12	+1.61	97.34	56	11.4	leak-38
+694	oog.nano.MagicD2 2.4	47.29	farm		nano		85.13	94.28	4	90.73	91.11	91.80	91.90	78.36	91.11	13.54		92.59	92.37	94.25	92.59	+7.46		0		
+695	kawigi.sbf.Barracuda 1.0	47.29	sweep				99.32	100.00	2	97.92	92.95	94.14	99.10	99.54	97.92	6.59		97.84	98.61	98.81	98.61	-0.71	97.61	8	10.2	gate-r5-set,session-300-opponents,shield-list,shield-sweep-low,weak-pbi
+696	js.PinBall 1.6	47.28	farm	PEERGAP			92.95	95.72	4	95.30	92.31	92.79	95.63	90.27	92.79	5.36		98.56	97.93	97.97	97.97	+5.02	95.28	24	11.0	session-300-opponents,tail-39
+697	conscience.Electron 1.3g	47.24	farm				93.85	98.57	4	91.10	91.90	92.69	94.03	93.79	92.69	2.93		96.57	95.66	96.80	96.57	+2.72		0		session-300-opponents
+698	ratosh.nano.Debo 1.36	47.17	farm		nano		88.47	98.57	2	88.37	84.49	80.22	90.44	86.51	86.51	10.22		87.52	90.52	91.12	90.52	+2.05		0		session-300-opponents
+699	ntc.Lasers.Lasers 0.9	47.16	farm				92.50	100.00	2	89.54	89.77	89.12	91.40	93.60	89.77	4.48		88.97	91.66	92.16	91.66	-0.84		0		
+700	kawigi.nano.ThnikkaBot 0.9	47.14	sweep		nano		95.44	100.00	3	96.15	93.24	92.51	95.11	96.11	95.11	3.64		99.07	98.89	97.46	98.89	+3.45		0		
+701	kawigi.sbf.FloodMicro 1.5	47.14	sweep				96.02	98.57	4	100.00	93.07	97.88	97.98	94.05	97.88	6.93		98.90	98.27	98.54	98.54	+2.53		0		
+702	bayen.UbaMicro 1.4	47.00	farm				94.22	99.43	5	96.90	94.71	93.06	92.67	95.25	94.71	4.23		94.48	96.84	94.85	94.85	+0.63		0		shield-list
+703	ahf.NanoAndrew .4	46.95	sweep				95.42	95.72	2	96.65	96.19	98.09	99.66	91.19	96.65	8.47		99.33	99.52	99.22	99.33	+3.91		0		shield-list
+704	stelo.UnfoolableNano 1.0	46.86	farm				87.13	99.05	3	81.02	82.19	78.26	83.86	88.76	82.19	10.50		86.45	80.67	85.28	85.28	-1.85		0		shield-list
+705	EH.Fusion 0.32	46.84	mid	LEAK,PEERGAP,BENCHSEES	rammer		79.87	98.57	2	76.14	78.08	78.90	80.09	79.64	78.90	3.95		77.76	86.40	88.35	86.40	+6.53	80.72	32	11.2	score-leak-39,tail-39
+706	ghent.ArthurPanzergon 1.0.0	46.83	farm	PEERGAP			85.78	97.14	2	88.93	82.24	82.89	88.78	82.79	82.89	6.69		89.60	88.72	93.75	89.60	+3.81		0		
+707	froh.micro.Aversari 0.31	46.82	sweep		micro		96.82	98.57	2	98.51	95.21	95.73	97.96	95.69	95.73	3.30		98.42	98.53	98.01	98.42	+1.60		0		
+708	tvv.nano.Polaris 1.2	46.78	farm		nano		94.03	97.15	2	95.50	95.64	96.74	97.34	90.73	95.64	6.61		97.28	97.49	97.14	97.28	+3.25		0		
+709	mz.Movement 1.8	46.72	farm	PEERGAP			91.37	99.05	3	90.57	91.06	93.95	90.25	91.93	91.06	3.70		94.71	97.09	97.05	97.05	+5.68		0		
+710	ratosh.Wesco 1.4	46.63	farm	PEERGAP			88.55	93.58	4	94.94	92.03	95.09	89.33	86.21	92.03	8.88		96.69	97.79	97.19	97.19	+8.64	96.73	24	11.5	tail-39
+711	xander.cat.Spitfire 1.4	46.62	sweep				100.00	100.00	4	99.02	99.01	99.02	100.00	99.99	99.02	0.99		99.98	99.93	100.00	99.98	-0.02	99.99	24	11.0	tail-39
+712	zeze2.OperatorZeze 1.05	46.60	farm				86.23	95.00	4	89.09	81.43	84.52	86.56	85.24	85.24	7.66		85.72	83.78	85.65	85.65	-0.58		0		shield-list
+713	nosteel.Welby 0.0.3	46.60	farm				92.57	100.00	2	94.51	88.62	91.38	94.80	90.34	91.38	6.18		93.37	94.91	95.31	94.91	+2.34		0		
+714	scheronimus.ScheroBot 2.3	46.59	sweep				95.79	100.00	2	97.10			97.63	93.96	97.10	3.67		98.72	97.60	98.39	98.39	+2.60		0		
+715	romz.robot.guessfactor.TeasingFox 0.2	46.57	farm				88.25	97.14	3	87.42	89.22	84.12	88.28	88.20	88.20	5.10		89.46	88.86	90.78	89.46	+1.21		0		
+716	techdude.Class2C.Class2C 0.1	46.55	farm				93.02	99.29	4	93.88	86.36	89.10	89.14	94.32	89.14	7.96		90.03	93.63	92.90	92.90	-0.12		0		
+717	strider.Festis 1.2.1	46.53	farm	PEERGAP			92.00	98.57	2	88.84	88.33	81.87	87.44	96.56	88.33	14.69		94.33	93.33	94.79	94.33	+2.33		0		shield-list
+718	romz.robot.circular.WildRabbit 0.9.6	46.44	farm				93.00	100.00	3	92.03	89.44	91.66	94.20	92.40	92.03	4.76		93.90	94.58	94.96	94.58	+1.58		0		session-300-opponents
+719	marksteam.Phoenix 1.0	46.44	farm				89.91	99.29	4	88.11	90.66	88.66	93.26	88.80	88.80	5.15		93.51	92.82	94.10	93.51	+3.60	92.65	24	11.2	tail-39
+720	tornyil.Lajcsi2.Lajcsi2sm 1.0	46.36	mid	PEERGAP			83.16	92.85	2	90.28	79.30	85.48	86.97	79.34	85.48	10.98		92.55	90.90	92.85	92.55	+9.39		0		
+721	suh.nano.OscillatorL 1.00	46.34	farm		nano		92.84	94.28	2	97.17	94.68	94.96	99.23	86.44	94.96	12.79		99.34	99.25	98.50	99.25	+6.41		0		shield-list,shield-panel
+722	arthord.MannyPacquiao Delta2	46.31	mid	LEAK			83.34	98.57	2	81.37	79.09	76.78	83.82	82.86	81.37	7.04		81.25	82.44	81.94	81.94	-1.40		0		session-300-opponents
+723	ndn.DyslexicMonkey 1.1	46.30	farm				92.83	98.09	3	94.46	80.27	89.72	92.42	93.65	92.42	14.19		97.19	96.73	96.48	96.73	+3.90	94.90	24	11.1	tail-39
+724	fullsail.LaxativeTeaTwo 1.0	46.28	farm				91.78	95.72	2	94.13	91.59	92.14	95.30	88.26	92.14	7.04		96.29	95.70	95.43	95.70	+3.92		0		session-300-opponents
+725	takeBot.SpinSpiral 1.2	46.25	farm				94.91	98.09	3	98.09	96.34	98.14	96.74	94.00	96.74	4.14		96.81	98.47	97.93	97.93	+3.02		0		
+726	SuperSample.SuperCrazy 1.0	46.20	farm				90.81	98.57	2	88.47	82.03	86.17	89.86	91.75	88.47	9.72		90.91	93.02	92.51	92.51	+1.70		0		melee-challenge,shield-list
+727	krillr.mega.Psyche 0.0.3	46.18	sweep		mega		96.44	100.00	2	93.55	91.10	94.63	95.95	96.94	94.63	5.84		97.69	98.60	97.42	97.69	+1.25		0		
+728	conscience.Bulldozer 1.0a	46.17	farm				87.70	98.10	3	76.11	88.24	89.82	90.05	83.00	88.24	13.94		79.30	84.66	89.21	84.66	-3.04		0		
+729	joe.ADinosaur 1.0	46.16	farm				91.18	98.10	3	94.07	93.24	91.60	94.55	84.45	93.24	10.10		96.64	97.95	96.38	96.64	+5.46		0		
+730	fire219.cymba.Cymba 1.8	46.06	farm				88.80	97.85	4	88.97	83.14	89.12	90.11	87.48	88.97	6.97		94.46	92.34	92.68	92.68	+3.89		0		
+731	pez.nano.Icarus 0.3	46.01	farm	PEERGAP	nano		93.29	96.43	4	90.85	91.90	95.41	94.99	88.20	91.90	7.21		97.44	96.57	98.00	97.44	+4.15	97.40	56	10.6	leak-38
+732	mrm.MightyMoose .2	46.00	sweep	PEERGAP			95.41	100.00	4	91.92	91.80	89.55	95.12	95.50	91.92	5.95		97.19	97.25	97.07	97.19	+1.78		0		shield-list
+733	takeBot.WeavingWiggle 1.1	45.86	sweep				95.55	99.05	3	94.49	96.57	94.97	96.77	93.10	94.97	3.67		96.58	98.38	97.88	97.88	+2.33		0		
+734	pa3k.Manta 1.20	45.76	farm				92.40	99.05	3	96.11	88.91	85.63	91.48	92.86	91.48	10.48		88.13	89.89	89.45	89.45	-2.95		0		
+735	bwbaugh.nano.Tirunculus 0.0.0a	45.70	mid	LEAK	nano		83.89	100.00	2	67.11	85.29	82.99	82.59	85.18	82.99	18.18		73.29	84.63	85.02	84.63	+0.74	84.24	40	10.6	score-leak-39,session-300-opponents,weak-leak
+736	populations.TrainStoopidbot 0.01	45.69	farm				89.84	95.24	3	93.75	93.13	93.35	91.19	89.17	93.13	4.58		97.28	97.53	97.83	97.53	+7.69		0		
+737	racso.Crono 1.0	45.63	farm				86.18	94.28	2	87.10	89.61	86.31	94.38	77.98	87.10	16.40		88.48	88.10	91.01	88.48	+2.30		0		gate-r5-set,shield-list,weak-pbi
+738	jje.BagPuss 1.2	45.58	farm	PEERGAP			91.17	97.86	4	92.90	88.75	84.22	94.12	90.18	90.18	9.90		96.31	96.68	96.59	96.59	+5.42		0		session-300-opponents
+739	stelo.FretNano 1.1	45.42	farm				89.34	100.00	2	84.65	79.25	81.43	88.27	90.42	84.65	11.17		90.66	86.78	87.67	87.67	-1.67		0		
+740	strider.Mer 1.1.0	45.39	farm				94.35	100.00	3	95.63	90.30	90.66	95.50	93.78	93.78	5.33		95.24	95.05	93.90	95.05	+0.70		0		
+741	myl.micro.Troodon 1.10	45.28	sweep		micro		98.95	100.00	3	98.78	96.49	94.63	98.94	98.96	98.78	4.33		99.57	98.84	98.96	98.96	+0.01		0		session-300-opponents
+742	Gecko.ultimateGeckoBot 1.0	45.27	sweep				98.72	100.00	2	98.55	96.35	98.88	98.41	99.03	98.55	2.68		98.49	98.54	98.12	98.49	-0.23		0		
+743	sul.NanoR2 1.32	45.20	sweep				96.64	100.00	4	93.84	92.18	93.08	97.43	95.85	93.84	5.25		95.76	95.26	96.95	95.76	-0.88		0		session-300-opponents
+744	kawigi.sbf.FloodNano 1.2	45.20	farm				87.05	97.14	3	94.39	87.16	88.21	91.98	84.59	88.21	9.80		90.25	89.61	94.50	90.25	+3.20		0		
+745	sul.Pinkbot 1.1	45.19	farm				94.97	98.57	2	94.50	94.35	94.89	95.69	94.26	94.50	1.43		98.75	97.72	97.31	97.72	+2.75		0		shield-list
+746	yagami.Tidus 0.11	45.18	sweep				99.89	100.00	4	100.00	96.48	98.20	99.54	100.00	99.54	3.52		99.24	99.48	99.79	99.48	-0.41		0		
+747	kawigi.spare.SpareParts 0.7.6nosnd	45.14	farm				92.79	100.00	2	96.78	92.01	89.33	91.63	93.96	92.01	7.45		93.89	94.99	95.16	94.99	+2.20		0		session-300-opponents
+748	sch.Simone 0.3d	44.99	sweep				96.91	100.00	2	97.61	94.36	95.38	99.81	94.00	95.38	5.81		98.61	98.27	98.45	98.45	+1.55		0		
+749	romz.robot.Test 0.1.0	44.96	farm				88.81	100.00	2	87.31	86.11	86.10	89.61	88.02	87.31	3.51		89.02	89.31	90.95	89.31	+0.50		0		
+750	racso.Frog 0.9	44.76	farm				88.31	96.43	4	87.76	87.86	89.31	90.09	87.72	87.86	2.37		90.40	89.08	90.80	90.40	+2.09		0		session-300-opponents,shield-list
+751	fowl3628800.LightningBolt 2.6.0	44.75	sweep				99.40	100.00	2	99.34	95.52	96.97	99.43	99.37	99.34	3.91		99.57	99.52	99.50	99.52	+0.12		0		session-300-opponents
+752	Legend.BoulderZY 1.4.9	44.73	sweep				97.69	100.00	2	94.51	91.09	96.35	97.27	98.10	96.35	7.01		97.50	98.12	97.58	97.58	-0.11		0		
+753	davidalves.net.DuelistNano 1.0	44.72	mid	LEAK,PEERGAP,BENCHSEES			81.10	95.72	2	84.89	78.76	80.18	81.90	80.30	80.30	6.13		89.06	87.86	91.90	89.06	+7.96	81.97	8	11.0	lost-rounds-39
+754	jaw.Mouse 0.11	44.65	sweep				96.13	99.52	6	93.40	94.33	94.58	94.35	97.02	94.35	3.62		97.38	97.53	97.98	97.53	+1.40		0		
+755	jep.Terrible 0.4.1	44.61	farm				91.63	97.14	3	95.84	93.42	95.51	96.35	89.27	95.51	7.08		97.53	96.50	97.54	97.53	+5.90		0		
+756	am.Miedzix 3.0	44.57	farm	PEERGAP			85.35	95.24	3	87.68	82.92	82.05	86.68	84.69	84.69	5.63		87.17	92.20	93.03	92.20	+6.85		0		session-300-opponents
+757	myl.nano.KomoriNinja 1.1	44.56	sweep		nano		96.76	100.00	6	93.47	94.21	91.37	97.03	96.22	94.21	5.66		97.32	97.61	96.42	97.32	+0.56		0		
+758	rfj.Sunburn 1.1	44.53	farm	PEERGAP			88.77	98.57	2	85.38	85.79	86.78	88.51	89.02	86.78	3.64		91.11	91.87	92.33	91.87	+3.11		0		
+759	kurios.DOSexe .9a	44.50	farm				88.53	98.57	2	78.75	84.73	88.44	87.49	89.58	87.49	10.83		85.55	91.67	90.08	90.08	+1.55		0		
+760	lechu.Lechu 1.1	44.49	sweep				96.98	100.00	4	92.54	94.33	95.34	96.84	97.39	95.34	4.85		96.94	97.00	97.85	97.00	+0.02		0		session-300-opponents
+761	ph.Thinker 0.2.5	44.41	farm	PEERGAP			91.77	99.05	3	85.82	90.76	87.57	92.66	89.98	89.98	6.84		95.30	95.48	95.74	95.48	+3.71		0		
+762	agrach.RobotSlayer 1.0	44.41	sweep				97.25	98.57	2	95.62	93.79	96.00	99.02	95.49	95.62	5.23		99.46	99.36	98.92	99.36	+2.11		0		
+763	kms.Royal 0.15M	44.40	farm				93.20	100.00	2	94.60	91.82	91.50	91.67	94.73	91.82	3.23		91.12	94.66	94.98	94.66	+1.46		0		session-300-opponents
+764	bvh.micro.Freya 0.3	44.39	farm		micro		93.40	98.86	5	96.45	84.10	92.87	94.19	90.22	92.87	12.35		96.28	94.64	95.75	95.75	+2.35		0		
+765	GarmBox.Oranges 1.0.1	44.32	farm	PEERGAP			87.85	96.43	4	92.03	79.51	76.91	88.56	85.72	85.72	15.12		93.93	92.51	91.31	92.51	+4.66	89.98	8	11.5	live-losers-385
+766	supersample.SuperCorners 1.0	44.29	farm	PEERGAP			88.30	94.29	4	91.37	85.55	87.97	88.64	87.28	87.97	5.82		92.62	93.18	96.52	93.18	+4.88	90.16	24	10.9	tail-39
+767	pla.Memnoch 0.5	44.28	farm				94.39	100.00	4	96.60	94.74	97.30	94.84	93.05	94.84	4.25		97.51	95.51	96.47	96.47	+2.08		0		session-300-opponents
+768	zzx.Ignohis 8.0	44.25	sweep				97.90	100.00	2	91.92	95.57	93.94	98.29	97.51	95.57	6.37		98.98	98.14	98.30	98.30	+0.40		0		session-300-opponents
+769	com.arsenic.NewTest 1.0	44.18	farm				91.40	98.57	2	89.60	92.04	93.19	90.54	92.25	92.04	3.59		96.06	94.90	94.91	94.91	+3.51		0		
+770	satan.R0 0.2	44.15	farm				90.63	100.00	2	88.01	87.31	87.63	88.30	92.97	88.01	5.66		89.24	89.02	89.92	89.24	-1.39		0		session-300-opponents
+771	blir.nano.Bruce R1.0.0	44.14	mid	LEAK,PEERGAP,BENCHSEES	nano		80.04	100.00	3	75.11	76.14	82.86	79.50	81.11	79.50	7.75		79.02	87.08	86.77	86.77	+6.73	79.23	8	10.0	score-leak-39
+772	caimano.Furia_Ceca 0.22	44.10	sweep				97.40	99.28	4	93.91	93.81	96.26	97.75	97.05	96.26	3.94		97.68	97.14	98.04	97.68	+0.28		0		
+773	com.spp.robocode.MostlyHarmless 010	44.04	sweep				95.17	100.00	4	92.73	93.41	95.58	94.59	95.75	94.59	3.02		96.44	94.16	95.23	95.23	+0.06		0		
+774	agrach.Dalek 1.0	44.04	sweep	PEERGAP			96.81	100.00	4	98.70	90.70	91.15	98.20	92.66	92.66	8.00		99.34	99.11	98.50	99.11	+2.30		0		
+775	bots.UnterExBot 1.0	44.01	sweep				99.30	100.00	2	95.67	95.83	95.27	99.36	99.23	95.83	4.09		98.68	97.79	98.18	98.18	-1.11	98.29	24	11.5	tail-39
+776	ar.QuantumChromodynamics 1.2.1	44.00	farm				94.42	100.00	3	90.69	86.92	80.89	95.42	93.92	90.69	14.53		94.38	94.18	92.26	94.18	-0.24		0		session-300-opponents
+777	janm.Jammy 1.0	43.92	mid	LEAK,PEERGAP,BENCHSEES			82.55	95.24	3	80.78	86.13	85.67	82.42	82.62	82.62	5.35		92.53	91.21	94.83	92.53	+9.98	83.82	8	9.8	lost-rounds-39
+778	mld.Wisdom 1.0	43.89	sweep				96.56	100.00	4	98.82	95.90	93.28	97.80	95.33	95.90	5.54		97.41	97.89	97.87	97.87	+1.31		0		shield-list
+779	ruc.nano.Zealot 0.2	43.89	farm		nano		94.41	98.57	2	89.99	95.33	92.95	96.41	92.41	92.95	6.42		95.52	95.81	96.28	95.81	+1.40		0		session-300-opponents
+780	bots.UnterBot 1.0	43.85	sweep				96.30	100.00	2	96.89	94.94	88.18	96.27	96.33	96.27	8.71		95.54	97.17	95.35	95.54	-0.76		0		session-300-opponents
+781	timmit.nano.TimCat 0.13	43.83	sweep		nano		96.90	99.05	3	88.74	90.62	94.29	96.35	97.18	94.29	8.44		97.89	97.17	99.08	97.89	+0.99		0		shield-list,shield-panel
+782	slugzilla.SNGLinear 1.0	43.82	sweep				99.33	100.00	3	98.74	95.87	97.62	99.27	99.45	98.74	3.58		99.22	99.25	99.08	99.22	-0.11		0		
+783	blir.micro.blixi.Blixi 1.2	43.81	sweep		micro		98.61	100.00	3	97.14	95.81	95.58	98.96	98.43	97.14	3.38		98.96	99.21	98.95	98.96	+0.35		0		
+784	Ex.Survival 3.7	43.77	sweep				95.73	99.28	4	92.38	87.81	92.51	96.73	94.73	92.51	8.92		98.23	97.39	96.59	97.39	+1.66		0		
+785	sigterm.Sigterm 1.0	43.62	farm				93.71	100.00	2	91.70	89.84	84.30	93.29	94.12	91.70	9.82		92.31	92.30	93.84	92.31	-1.40		0		
+786	marcinek.TopGun 1.3	43.57	farm	VOLATILE,PEERGAP			92.32	97.85	4	94.89	67.71	63.17	95.62	89.02	89.02	32.45		97.26	96.74	96.81	96.81	+4.49	92.30	8	13.0	live-losers-385,session-300-opponents
+787	buba.Buba 0.3	43.55	sweep				96.02	99.05	3	95.97	94.15	96.18	94.57	98.91	95.97	4.76		98.15	98.44	98.49	98.44	+2.42		0		
+788	md.November 1.0	43.49	mid	PEERGAP			82.38	94.29	3	82.57	83.27	88.91	82.19	82.77	82.77	6.72		90.97	84.36	89.36	89.36	+6.98	86.21	8	12.4	lost-rounds-39,session-300-opponents
+789	geep.mini.GPBotA 1.0	43.45	sweep		mini		97.16	99.05	3	95.81	96.35	93.79	99.07	96.21	96.21	5.28		99.01	98.91	98.32	98.91	+1.75		0		
+790	suh.nano.AntiGravityL 1.01	43.42	sweep		nano		98.99	100.00	4	97.54	96.99	96.54	98.93	99.18	97.54	2.64		99.67	99.20	99.33	99.33	+0.34		0		shield-list
+791	kjc.etc.Dharok 1.0	43.36	farm				89.78	95.24	3	84.37	93.22	94.41	94.35	87.49	93.22	10.04		95.91	96.19	95.64	95.91	+6.13		0		
+792	fnc.bandit.Bandit 5.2.0	43.33	farm				94.32	100.00	3	90.75	93.57	92.73	92.10	95.43	92.73	4.68		95.29	94.92	94.81	94.92	+0.60		0		
+793	stelo.MoojukNano 1.2	43.26	farm				85.99	97.14	3	84.45	82.57	88.66	85.21	87.54	85.21	6.09		89.88	85.67	86.91	86.91	+0.92		0		
+794	suh.nano.StopAndGoL 1.01	43.26	sweep		nano		99.34	100.00	4	97.69	97.81	95.58	99.52	99.17	97.81	3.94		99.58	99.47	99.28	99.47	+0.12		0		
+795	grybgoofy.GoofyBot 0.10	43.26	farm				89.37	97.14	3	90.89	89.45	88.47	92.02	88.05	89.45	3.97		90.58	90.36	91.59	90.58	+1.21		0		
+796	banshee.mini.Nexus6 0.2.0	43.23	sweep		mini		98.72	99.05	3	99.39	95.53	97.49	98.37	99.41	98.37	3.88		99.68	99.53	99.47	99.53	+0.81		0		session-300-opponents
+797	omens.CannonfodderMicro 1.4	43.11	farm				89.20	92.85	2	94.75	92.26	88.11	95.08	83.33	92.26	11.75		97.64	97.22	93.94	97.22	+8.02		0		
+798	kawam.kmBot9 1.0	43.10	sweep				95.52	100.00	3	93.88	93.13	92.42	94.99	96.57	93.88	4.15		97.42	98.36	97.60	97.60	+2.08		0		session-300-opponents
+799	jaybot.adv.bots.JayBot 2.0	43.09	farm				92.56	98.57	2	93.94	90.78	94.46	91.36	93.76	93.76	3.68		95.23	94.70	95.98	95.23	+2.67		0		shield-list
+800	lorneswork.Predator 1.0	42.96	farm	VOLATILE,PEERGAP,BENCHSEES			88.03	95.72	2	89.44	77.21	63.22	89.41	86.64	86.64	26.22		98.47	96.34	97.94	97.94	+9.91	90.15	8	10.1	live-losers-385,session-300-opponents
+801	jrm.Test0 1.0	42.96	sweep				96.47	100.00	3	93.60	96.11	95.01	96.45	96.48	96.11	2.88		96.64	96.32	96.51	96.51	+0.04		0		session-300-opponents
+802	stelo.MirrorNano 1.4	42.86	farm	VOLATILE	mirror		92.01	100.00	4	70.67	90.67	91.32	90.63	93.39	90.67	22.72		87.74	89.94	84.56	87.74	-4.27	91.66	32	11.3	weak-leak
+803	WarfaJibril.Jibril_Warfa_Andromeda 1.11	42.82	farm				85.56	96.43	4	83.07	85.52	81.74	85.79	85.48	85.48	4.05		91.54	89.69	90.22	90.22	+4.66		0		shield-list
+804	bumblebee.Bumblebee 1.0	42.82	farm				88.93	98.57	2	90.80	90.09	86.24	89.28	88.58	89.28	4.56		91.77	88.98	92.27	91.77	+2.84		0		
+805	dft.Krazy 1.5	42.75	farm				89.05	97.14	4	90.27	89.61	89.21	90.54	84.58	89.61	5.96		92.00	90.44	91.98	91.98	+2.93		0		
+806	supersample.SuperSpinBot 1.0	42.68	farm	PEERGAP			87.18	96.19	3	88.98	86.60	83.97	94.58	83.48	86.60	11.10		95.78	94.91	95.29	95.29	+8.11		0		melee-challenge
+807	throxbot.ThroxBot 0.1	42.68	farm				93.74	98.57	2	90.72	90.60	92.54	95.04	92.43	92.43	4.44		93.43	94.31	94.06	94.06	+0.32		0		session-300-opponents,shield-list,shield-panel
+808	scheronimus.NanoScheroBot 1.0	42.66	sweep				96.76	100.00	2	92.85			98.34	95.18	95.18	5.49		98.95	98.58	98.85	98.85	+2.09		0		
+809	blir.nano.Cabbage R1.0.1	42.65	sweep		nano		97.23	100.00	2	97.41	90.29	96.52	98.07	96.40	96.52	7.78		97.96	98.44	98.21	98.21	+0.97		0		
+810	jaemcrb.nano.M1Abrams 1.0	42.65	sweep		rammer?		95.82	100.00	4	93.81	91.46	94.50	96.05	95.59	94.50	4.59		95.08	95.88	95.91	95.88	+0.06		0		
+811	sheldor.melee.nano.TestMelee 0.1	42.64	farm		nano		94.28	100.00	4	94.02	90.86	92.23	95.21	91.47	92.23	4.35		95.96	94.87	93.82	94.87	+0.59		0		
+812	bndl.LostLion 1.2	42.63	farm				92.48	99.29	4	93.86	92.73	91.02	92.22	93.28	92.73	2.84		92.97	93.45	92.32	92.97	+0.49		0		session-300-opponents,shield-list,shield-panel
+813	ntc.Evader 1.2	42.58	sweep				97.17	100.00	2	94.45	96.32	95.58	98.13	96.22	96.22	3.68		98.70	98.15	98.33	98.33	+1.16		0		
+814	maribo.melee.BMV 0.1	42.52	sweep				95.26	100.00	4	97.58	93.36	91.56	98.29	94.25	94.25	6.73		98.92	98.24	98.04	98.24	+2.98		0		
+815	lion.Kresnanano 1.0	42.41	farm				89.29	98.57	2	93.71	86.56	90.32	90.62	87.96	90.32	7.15		94.79	93.79	94.57	94.57	+5.28		0		
+816	Legend.Qetro 1.6	42.39	sweep				96.38	98.57	2	94.89	92.89	97.01	94.05	98.71	94.89	5.82		98.84	98.48	98.25	98.48	+2.10		0		shield-list
+817	ntc.Swim 0.9	42.37	farm				87.42	93.34	3	89.07	90.70	87.96	86.91	88.43	88.43	3.79		88.82	88.24	88.59	88.59	+1.17		0		
+818	mmb.Roskilde 0.5	42.36	sweep				97.40	100.00	2	94.49	91.54	97.36	99.31	95.49	95.49	7.77		99.06	98.91	98.99	98.99	+1.59		0		session-300-opponents
+819	hlavko.nano.Ringo 2.0	42.25	sweep		nano		98.63	100.00	3	96.14	91.97	90.70	98.14	99.62	96.14	8.92		97.33	98.61	98.26	98.26	-0.37	97.19	24	10.8	gate-r5-set,session-300-opponents,tail-39,weak-pbi
+820	maribo.IotaCT 1.0	42.15	farm				93.41	98.57	2	95.69	82.08	80.10	93.47	93.34	93.34	15.59		95.43	95.87	95.79	95.79	+2.39	92.93	8	11.0	live-losers-385
+821	eem.IWillFireNoBullet v2.4	42.14	farm	ROUNDS,PEERGAP			94.30	85.72	2	99.03	92.09	90.59	97.06	91.54	92.09	8.44		97.56	99.72	99.19	99.19	+4.89		0		
+822	stranger.nano.TestBot 1.0	42.13	farm	PEERGAP	nano		89.23	100.00	3	86.35	85.41	88.39	86.00	90.85	86.35	5.44		96.37	94.74	95.89	95.89	+6.66		0		session-300-opponents
+823	kawigi.robot.Girl 1.2	42.07	farm				91.81	95.72	2	94.14	90.26	93.68	91.60	92.02	92.02	3.88		94.76	93.11	95.06	94.76	+2.95		0		session-300-opponents
+824	zzx.Gron 1.14	42.06	farm				94.82	98.09	3	98.19	94.41	94.42	94.77	94.84	94.77	3.78		97.27	97.14	98.61	97.27	+2.45		0		gate-r5-set,weak-pbi
+825	NDH.GuessFactor 1.0	41.99	mid	LEAK			80.80	95.00	4	79.02	82.24	84.37	83.76	77.83	82.24	6.54		84.84	83.91	86.52	84.84	+4.05		0		
+826	ntc.Plains 0.9	41.93	sweep				97.07	100.00	2	95.16	84.13	90.86	97.94	96.20	95.16	13.81		95.99	98.53	98.75	98.53	+1.46		0		
+827	vjik.UnViolation 1.1	41.89	farm	PEERGAP,BENCHSEES			91.37	100.00	2	93.75	82.87	80.09	88.72	94.02	88.72	13.93		95.23	93.53	97.08	95.23	+3.86	90.00	8	9.8	live-losers-385
+828	pez.nano.LittleEvilBrother 0.1	41.81	sweep		nano		98.55	100.00	3	95.95	85.84	93.95	98.34	98.98	95.95	13.14		98.36	97.98	98.18	98.18	-0.37		0		
+829	robo.PartsBot 1.1	41.71	sweep				95.64	97.14	3	98.95	97.75	97.57	95.37	95.78	97.57	3.58		99.34	98.77	99.27	99.27	+3.63		0		session-300-opponents
+830	mld.DustBunny 3.8	41.67	sweep				98.89	100.00	4	97.34	94.56	93.52	98.77	99.01	97.34	5.49		98.83	98.29	96.97	98.29	-0.60		0		
+831	suh.nano.MirrorL 1.00	41.66	sweep		mirror		96.19	100.00	2	99.30	94.10	92.47	94.99	97.38	94.99	6.83		99.65	99.49	99.19	99.49	+3.30		0		session-300-opponents
+832	pmc.SniperBot 1.0	41.45	farm				93.89	100.00	3	80.86	88.80	90.19	94.25	93.17	90.19	13.39		94.76	92.04	93.56	93.56	-0.33		0		
+833	bvh.tyr.Tyr 1.74	41.43	farm	PEERGAP			89.28	98.57	4	94.14	78.61	85.29	84.82	90.77	85.29	15.53		94.48	94.31	96.80	94.48	+5.20	89.72	8	10.8	live-losers-385
+834	tobe.calypso.Calypso 4.1	41.34	farm				86.20	97.14	3	86.24	80.62	85.92	83.51	91.57	85.92	10.95		87.67	84.71	89.51	87.67	+1.47		0		shield-list
+835	sgp.SleepingGoat 1.1	41.21	farm				90.35	100.00	2	89.61	87.60	92.83	89.84	90.86	89.84	5.23		93.17	92.31	93.98	93.17	+2.82		0		
+836	dsw.StaticD 1.0	41.20	sweep				97.31	99.29	4	99.03	97.08	97.34	98.62	96.87	97.34	2.16		99.45	99.09	99.31	99.31	+2.00	99.03	24	10.7	tail-39
+837	nexus.Experimental 0.2	41.18	sweep				98.22	100.00	2	95.64	94.93	93.37	98.14	98.31	95.64	4.94		99.56	98.24	97.32	98.24	+0.02		0		
+838	hvilela.HVilela 0.9	41.17	sweep				95.90	98.57	2	96.36	89.60	90.62	97.03	94.77	94.77	7.43		97.43	96.70	96.61	96.70	+0.80		0		
+839	slugzilla.OrbitLinear 1.1	41.17	sweep				97.13	99.43	5	96.44	95.29	98.38	97.97	96.57	96.57	3.09		99.36	98.97	98.96	98.97	+1.84		0		
+840	panzer.Panzer 0.2	41.16	farm	PEERGAP			88.07	98.57	2	93.62	84.99	88.29	87.86	88.28	88.28	8.63		95.77	94.11	94.08	94.11	+6.04		0		
+841	fm.mammillarias 1.3	41.11	sweep				99.93	100.00	5	99.84	97.04	98.66	100.00	99.88	99.84	2.96		99.87	99.68	99.51	99.68	-0.25		0		
+842	squidM.SquidmanNano 1.0	41.11	farm	PEERGAP			93.36	100.00	2	96.75	87.87	90.03	97.95	88.77	90.03	10.08		97.27	97.97	97.51	97.51	+4.15		0		session-300-opponents
+843	mld.Infinity 2.2	41.09	sweep				98.25	100.00	2	97.82	94.62	95.68	98.99	97.50	97.50	4.37		97.95	97.23	95.81	97.23	-1.02		0		session-300-opponents
+844	sgp.nano.FurryLeech 1.0	41.00	sweep		nano		97.17	98.57	4	99.97	96.82	94.09	98.54	95.80	96.82	5.88		99.44	99.10	99.59	99.44	+2.27		0		
+845	m3thos.Eva00 1.1	41.00	sweep				99.27	100.00	3	99.98	96.81	98.90	98.91	100.00	98.91	3.19		99.81	99.29	99.21	99.29	+0.02		0		
+846	vStar.RAFzilla 2.15	40.92	sweep				97.29	99.29	4	98.69	97.40	95.35	97.60	96.37	97.40	3.34		98.67	98.17	98.88	98.67	+1.38		0		
+847	stuff.Vlad 0.1	40.88	farm				90.07	98.57	4	90.02	85.74	90.07	89.55	91.65	90.02	5.91		87.78	88.15	91.46	88.15	-1.92		0		
+848	mdouet.BotKicker 2.0	40.85	farm				94.38	100.00	4	95.97	90.77	95.83	94.46	94.31	94.46	5.20		95.30	94.58	95.46	95.30	+0.92		0		
+849	rdm.WallRider 0.5c	40.77	farm				93.86	100.00	3	87.82	91.77	94.08	95.75	92.92	92.92	7.93		91.13	94.82	95.10	94.82	+0.96		0		
+850	dmh.robocode.robot.BlueBerry 0.5	40.77	farm				92.34	99.05	3	91.17	90.60	90.93	93.97	89.07	90.93	4.90		96.42	93.42	94.91	94.91	+2.57		0		
+851	kawigi.micro.Shiz 1.1	40.75	sweep		micro		98.25	100.00	2	96.30	95.06	97.62	96.85	99.66	96.85	4.60		99.26	99.00	99.66	99.26	+1.01		0		melee-challenge
+852	gg.Wolverine 2.0	40.64	farm				89.89	100.00	3	90.69	87.03	83.84	90.76	88.16	88.16	6.92		87.50	93.14	98.13	93.14	+3.25		0		
+853	cyragia.Bot 1.1	40.53	sweep				98.53	100.00	4	99.23	93.36	94.60	98.49	98.64	98.49	5.87		99.07	98.78	99.32	99.07	+0.54		0		session-300-opponents
+854	bots.UberBot 1.2c	40.52	sweep				97.51	100.00	2	96.73	95.34	94.01	97.96	97.06	96.73	3.95		97.10	97.82	96.28	97.10	-0.41		0		
+855	sgp.ShiningBeetle 1.1	40.51	farm				93.47	100.00	2	92.10	85.48	92.01	92.27	94.67	92.10	9.19		94.74	91.68	93.70	93.70	+0.23		0		
+856	ha2.T2 0.2	40.46	sweep				96.78	100.00	4	98.30	96.81	94.71	96.94	96.62	96.81	3.59		98.37	98.53	98.58	98.53	+1.75		0		shield-list
+857	zyx.nano.RedBull 1.0	40.43	farm		nano		93.62	99.29	4	77.09	90.67	91.97	95.91	92.86	91.97	18.82		95.84	91.58	97.55	95.84	+2.22	93.68	32	9.8	weak-leak
+858	extra.LightSauce 0.01	40.43	sweep				97.85	98.57	6	95.98	92.72	97.64	99.54	94.47	95.98	6.82		99.71	99.40	99.34	99.40	+1.55		0		
+859	agrach.MicroDalek 1.0	40.35	sweep				96.02	98.57	2	98.40	97.48	92.80	97.84	94.20	97.48	5.60		98.99	98.94	98.49	98.94	+2.92		0		
+860	amc.ROBv203 1.0	40.35	sweep				98.40	100.00	2	93.96	95.63	90.91	97.85	98.95	95.63	8.04		98.91	98.80	98.89	98.89	+0.49		0		
+861	extra.Sauce .01	40.33	sweep				99.53	100.00	3	94.98	97.03	96.56	99.30	99.98	97.03	5.00		99.77	99.19	99.23	99.23	-0.30		0		session-300-opponents
+862	suh.nano.CornerRL 1.00	40.33	farm		nano		93.76	100.00	3	91.38	94.77	93.47	95.06	93.11	93.47	3.68		96.72	94.53	95.16	95.16	+1.40		0		
+863	yarghard.Y101 1.0	40.27	sweep				99.55	100.00	2	98.23	98.21	95.71	99.20	99.90	98.23	4.19		99.52	99.56	98.88	99.52	-0.03		0		
+864	wiki.Wolverine 2.1	40.27	farm				91.73	100.00	4	90.23	89.92	90.99	91.31	93.01	90.99	3.09		91.25	94.09	97.96	94.09	+2.36		0		shield-list
+865	bzdp.BoxCar 2.0	40.27	farm				90.72	100.00	2	89.89	86.11	89.27	90.44	90.99	89.89	4.88		93.82	92.84	95.37	93.82	+3.10		0		session-300-opponents
+866	projectx.ProjectNano 2.0	40.25	farm				93.81	98.57	2	92.31	84.34	90.73	94.73	92.88	92.31	10.39		96.70	95.98	97.56	96.70	+2.89		0		shield-list
+867	sul.BlueBot 1.0	39.93	sweep				99.32	100.00	3	100.00	97.42	97.38	99.17	99.63	99.17	2.62		99.50	99.54	99.65	99.54	+0.22	99.55	24	11.0	tail-39
+868	wit.Chuliath 1.0	39.82	sweep				97.16	100.00	2	97.17	95.01	95.64	96.28	98.04	96.28	3.03		98.88	98.49	98.04	98.49	+1.33		0		
+869	disan.Chair 2.2.0	39.79	sweep				98.07	100.00	3	96.99	95.66	96.91	97.19	98.51	96.99	2.85		99.11	98.65	98.06	98.65	+0.58		0		
+870	cs.Wren 1.0	39.73	sweep				99.12	100.00	3	98.19	93.84	97.41	99.28	98.81	98.19	5.44		99.46	98.97	98.11	98.97	-0.15		0		session-300-opponents,shield-list
+871	djdjdj.NanoSkunk10 1.0	39.71	farm				94.67	99.43	5	99.62	95.97	95.22	94.63	94.72	95.22	4.99		98.79	98.56	99.03	98.79	+4.12		0		session-300-opponents
+872	apollokidd.ApolloKidd 0.9	39.67	sweep				97.62	100.00	4	94.46	96.03	95.65	96.52	98.73	96.03	4.27		97.79	98.44	99.19	98.44	+0.81		0		session-300-opponents
+873	shrub.Silver v048	39.66	farm	VOLATILE,PEERGAP			93.81	96.43	4	96.09	77.79	72.17	96.15	91.46	91.46	23.98		97.95	97.48	98.77	97.95	+4.14	96.17	8	10.2	live-losers-385,session-300-opponents
+874	winamp32.micro.MicroMacro 1.0	39.61	sweep		micro		96.44	100.00	2	97.51	93.36	95.65	95.69	97.18	95.69	4.15		96.63	97.05	97.23	97.05	+0.61		0		
+875	nexus.One 1.0	39.42	sweep				98.34	100.00	3	97.62	94.84	93.62	98.45	98.11	97.62	4.83		98.90	97.31	96.33	97.31	-1.03		0		
+876	tobe.mini.Charon 0.9	39.31	sweep		mini		97.73	100.00	3	98.05	94.08	92.96	97.19	98.81	97.19	5.85		98.61	98.32	99.11	98.61	+0.88		0		
+877	suh.nano.AngularMirrorC 1.00	39.22	farm		mirror		91.16	98.57	2	96.67	89.32	93.46	96.95	85.36	93.46	11.59		95.80	96.91	96.69	96.69	+5.53		0		shield-list
+878	jep.nano.Hotspur 0.1	39.19	sweep		nano		99.13	100.00	3	99.11	94.84	95.60	98.76	99.88	98.76	5.04		99.46	99.03	99.21	99.21	+0.08		0		
+879	bons.NanoStalker 1.2	39.15	sweep				97.20	100.00	3	97.59	93.13	94.74	97.31	97.15	97.15	4.46		97.12	96.96	98.49	97.12	-0.08		0		gate-r5-set,weak-pbi
+880	hapiel.Spiral 0.1	39.12	sweep				95.29	99.43	5	96.03	93.07	93.28	96.84	94.25	94.25	3.77		96.38	96.56	96.74	96.56	+1.27	95.73	24	11.8	session-300-opponents,tail-39
+881	asd.Cthulhu 1.2	39.11	farm				92.71	99.05	3	95.62	93.06	88.93	92.66	92.81	92.81	6.69		93.00	94.52	93.13	93.13	+0.42		0		
+882	knackibot.KnackOnOne 0.8.1	39.08	farm	PEERGAP			93.85	97.14	3	90.27	89.53	97.35	96.44	92.56	92.56	7.82		98.32	99.02	93.52	98.32	+4.47		0		
+883	EH.Pegasus 0.113	39.07	farm				94.39	100.00	3	91.01	93.98	92.60	95.10	94.03	93.98	4.09		93.77	96.18	94.89	94.89	+0.50		0		
+884	slugzilla.OscillateLinear 1.0	39.06	sweep				98.19	100.00	3	95.71	94.44	93.68	99.62	97.47	95.71	5.94		99.29	99.33	99.10	99.29	+1.10		0		
+885	lundal.Mark8 2012.09.15	38.98	sweep				98.02	100.00	3	99.08	91.35	96.66	97.95	98.16	97.95	7.73		99.09	98.55	98.22	98.55	+0.53		0		
+886	nanoskank.NanoSkank 1.0	38.92	farm				92.56	98.57	4	86.73	90.65	92.64	92.74	92.04	92.04	6.01		93.95	93.10	95.30	93.95	+1.39		0		
+887	m3thos.mini.Eva01 0.5.5	38.91	farm		mini		92.02	98.57	4	95.23	92.15	94.40	92.84	89.58	92.84	5.65		94.49	94.57	94.59	94.57	+2.55		0		
+888	Lo_Ian.Gandalf_V4 4.0	38.89	sweep				98.42	100.00	2	99.15	94.27	95.97	98.55	98.30	98.30	4.88		99.24	98.56	99.34	99.24	+0.81	98.48	24	11.2	tail-39
+889	supersample.SuperBoxBot 1.0	38.77	sweep				98.09	100.00	2	99.98	96.59	97.47	97.10	99.08	97.47	3.39		99.70	99.30	98.38	99.30	+1.21		0		
+890	supersample.SuperTracker 1.0	38.77	farm				92.22	100.00	2	93.17	92.73	92.30	93.99	90.46	92.73	3.53		97.75	97.55	96.68	97.55	+5.33		0		melee-challenge
+891	arthord.NanoSatanMelee Beta	38.72	farm				88.05	97.15	2	88.13	77.68	80.68	85.25	90.85	85.25	13.17		88.32	88.11	92.84	88.32	+0.27	86.59	8	11.2	lost-rounds-39
+892	taqho.taqbot 1.0	38.65	farm				90.44	99.28	4	84.88	83.49	87.41	91.22	89.66	87.41	7.73		91.39	90.95	93.13	91.39	+0.95		0		session-300-opponents
+893	hlavko.nano.Phoenix 1.0	38.64	sweep	PEERGAP	nano		96.22	99.28	4	90.53	87.17	89.86	96.02	96.41	90.53	9.24		98.95	99.05	98.74	98.95	+2.73		0		
+894	vishius.Orbiter 1.0	38.57	sweep				97.83	100.00	4	98.83	96.40	97.15	97.46	98.96	97.46	2.56		98.56	99.09	99.01	99.01	+1.18		0		
+895	pl.robocode.Pacyfista 1.0	38.51	sweep				99.00	100.00	2	98.38	98.20	98.00	98.13	99.87	98.20	1.87		99.52	99.27	99.83	99.52	+0.52		0		
+896	suzushin7.nano.Galaxy02 1.01	38.47	sweep		nano		98.78	100.00	4	96.64	88.65	95.66	99.20	98.36	96.64	10.55		99.02	98.69	98.94	98.94	+0.16		0		
+897	t3.Ripper 1.0	38.43	sweep				98.16	100.00	3	98.03	97.60	93.90	99.27	97.61	97.61	5.37		98.33	98.99	98.75	98.75	+0.59		0		
+898	robar.haiku.Spike 1.0	38.39	farm				94.51	100.00	2	93.56	93.41	91.62	95.11	93.91	93.56	3.49		94.72	91.91	96.09	94.72	+0.21		0		
+899	jwirde.Gort 2.0	38.38	sweep				98.22	100.00	4	98.66	95.43	97.53	98.09	98.36	98.09	3.23		98.69	99.27	98.45	98.69	+0.47		0		
+900	nammyung.ModelT 0.23	38.36	sweep				99.79	100.00	2	97.89	97.86	98.38	99.75	99.83	98.38	1.97		99.74	99.84	99.79	99.79	+0.00		0		
+901	tlp.ThreeLeggedPig 1	38.36	sweep				96.07	100.00	2	87.99	96.80	92.63	95.98	96.16	95.98	8.81		96.72	97.24	97.06	97.06	+0.99		0		
+902	microtestbotpack.MicroTestBot 1.0	38.33	sweep				99.38	100.00	3	98.12	96.80	97.58	99.81	99.17	98.12	3.01		99.52	99.57	99.58	99.57	+0.19		0		
+903	spin.Bugstard 0.012b	38.25	sweep				96.75	100.00	2	94.22	94.03	91.63	96.08	97.43	94.22	5.80		94.16	90.96	93.72	93.72	-3.03		0		session-300-opponents
+904	velas.Beta_2_0 2.0	38.24	farm				91.05	99.05	3	94.80	84.53	92.28	92.11	88.94	92.11	10.27		95.50	94.43	95.47	95.47	+4.42		0		
+905	dukie.Ambassador 1.0	38.17	sweep				96.26	99.05	3	91.14	94.27	95.31	98.11	95.33	95.31	6.97		97.48	97.00	98.44	97.48	+1.22		0		
+906	stordy.StordyBot 1.0	38.17	sweep				98.62	100.00	2	96.58	94.68	93.39	98.98	98.25	96.58	5.59		98.00	97.98	97.80	97.98	-0.64		0		
+907	vft.Valkyrie 1.0	38.10	farm				89.76	98.09	3	85.72	89.94	89.07	93.55	87.87	89.07	7.83		89.73	87.80	92.22	89.73	-0.03		0		session-300-opponents
+908	PK.Twardy 0.4.2	38.06	sweep				96.82	99.05	3	96.74	85.48	92.60	97.89	96.28	96.28	12.41		98.89	97.71	98.34	98.34	+1.52		0		
+909	EH.nano.NightBird M	38.02	sweep		nano		97.15	100.00	3	92.32	93.61	92.81	98.07	96.69	93.61	5.75		98.30	98.48	98.43	98.43	+1.28		0		session-300-opponents
+910	jep.nano.Hawkwing 0.4.1	37.95	sweep	PEERGAP	nano		96.19	99.43	5	90.85	89.30	92.86	97.28	95.47	92.86	7.98		98.78	98.94	99.42	98.94	+2.75		0		gate-r5-set,weak-pbi
+911	supersample.SuperWalls 1.0	37.95	sweep				95.56	98.57	2	94.86	93.11	90.67	96.15	94.98	94.86	5.48		97.84	96.59	96.30	96.59	+1.03		0		melee-challenge
+912	WidowMakersAtWar.EpicCow 1.0	37.94	sweep				99.39	100.00	4	98.58	95.50	96.48	99.05	99.73	98.58	4.23		99.60	99.61	99.37	99.60	+0.21		0		session-300-opponents
+913	nexus.Two 0.2	37.89	sweep				97.82	100.00	5	97.22	93.45	93.62	97.99	97.56	97.22	4.54		96.89	96.90	96.74	96.89	-0.93		0		gate-r5-set,weak-pbi
+914	e32.Omni 0.06	37.78	farm				94.61	100.00	3	95.12	94.73	95.80	95.02	93.80	95.02	2.00		96.59	97.00	94.96	96.59	+1.98		0		unrunnable
+915	pl.mskiba.Hilton 0.4	37.77	sweep				99.97	100.00	3	99.73	96.55	99.56	99.95	100.00	99.73	3.45		99.92	99.85	99.86	99.86	-0.11		0		session-300-opponents,shield-list
+916	ejbots.AngryGrandpappy 1.2	37.60	sweep				95.11	99.29	4	97.47	96.57	90.91	97.50	94.32	96.57	6.59		97.95	97.52	97.27	97.52	+2.41		0		
+917	codemojo.nano.Woot 1.0	37.44	farm		nano		93.54	99.05	3	93.05	92.59	91.77	92.86	94.90	92.86	3.13		95.01	95.71	95.31	95.31	+1.77		0		session-300-opponents
+918	patson.PatsonTestBot 1.0	37.37	farm				93.41	100.00	3	94.76	87.66	89.15	94.54	92.84	92.84	7.10		94.31	94.57	95.49	94.57	+1.16		0		session-300-opponents
+919	germ.TheMind .2	37.28	sweep				97.59	99.28	4	100.00	93.40	98.52	99.86	90.80	98.52	9.20		99.57	99.52	99.01	99.52	+1.92		0		session-300-opponents
+920	rus.vv.Dzhigit 1.1	37.27	sweep				96.67	99.05	3	92.04	94.88	95.90	96.54	96.94	95.90	4.90		98.56	98.40	98.78	98.56	+1.89		0		session-300-opponents
+921	eld.Hmm 1.0	37.26	farm	ROUNDS,PEERGAP			90.58	89.72	5	93.60	88.88	89.45	89.56	91.26	89.56	4.72		96.50	96.35	97.04	96.50	+5.92		0		
+922	suh.nano.MirrorH 1.01	37.20	mid	ROUNDS,VOLATILE	mirror		71.59	78.10	3	96.61	95.73	94.05	96.03	22.71	95.73	73.90	yes	99.85	99.91	100.00	99.91	+28.32		0		collapse-310
+923	apc.Colossus2 0.12	37.11	farm	PEERGAP,BENCHSEES			90.00	99.05	3	89.86	78.32	77.66	93.17	88.41	88.41	15.51		97.93	94.70	95.13	95.13	+5.13	89.00	8	10.8	live-losers-385
+924	repositorio.NanoStep 1.0	36.97	sweep				96.32	99.05	3	97.80	92.04	95.53	95.63	97.70	95.63	5.76		99.31	98.79	98.94	98.94	+2.62	97.64	56	11.3	leak-38,session-300-opponents
+925	bbo.TheRoof 1.4.3	36.92	farm				93.99	98.10	3	93.93	93.77	93.95	96.04	89.88	93.93	6.16		95.93	94.26	94.03	94.26	+0.27		0		session-300-opponents
+926	takeBot.SpiralCrash 1.0	36.91	sweep				96.34	100.00	2	94.93	95.06	93.55	96.86	95.83	95.06	3.31		94.57	95.90	97.29	95.90	-0.44		0		
+927	jcs.Seth 1.8	36.87	sweep				96.65	98.09	3	98.14	95.42	95.49	95.80	98.35	95.80	2.93		97.92	98.45	97.77	97.92	+1.27		0		session-300-opponents
+928	acid.Bl4ck 1.0	36.86	farm				94.34	98.09	6	95.80	89.82	92.84	94.47	93.70	93.70	5.98		96.53	97.34	97.92	97.34	+3.00		0		
+929	bvh.loki.Loki 0.5	36.77	sweep				96.17	100.00	2	96.59	90.18	96.19	95.69	96.66	96.19	6.48		98.27	97.75	97.84	97.84	+1.67		0		session-300-opponents
+930	dans.Cinnamon 1.2	36.77	farm				93.42	100.00	2	90.12	91.05	88.20	94.27	92.57	91.05	6.07		95.16	94.37	94.59	94.59	+1.17		0		
+931	ICS4U1.Patrick_White_Schrodinger 1.1	36.73	sweep				95.28	100.00	5	96.77	93.67	94.81	95.13	95.50	95.13	3.10		96.40	96.30	96.84	96.40	+1.12		0		shield-list
+932	acid.Null 1.0	36.70	farm				94.98	100.00	3	96.84	91.55	95.79	95.20	94.87	95.20	5.29		93.78	96.64	96.74	96.64	+1.66		0		
+933	cli.Dancer 1.1	36.62	sweep				99.80	100.00	4	99.93	98.65	98.46	99.83	99.70	99.70	1.47		99.79	99.59	99.88	99.79	-0.01		0		
+934	dggp.haiku.gpBot_0 1.1	36.57	farm				94.36	99.28	4	96.41	94.59	94.22	94.60	94.12	94.59	2.29		95.89	94.97	96.81	95.89	+1.53	93.51	56	13.5	leak-38
+935	whitesquare.robots.SkynetAdvanced 1.1	36.40	sweep				95.58	98.09	3	96.97	92.93	90.13	94.09	96.33	94.09	6.84		97.64	97.25	98.02	97.64	+2.06		0		
+936	pak.JakeTheTestingRobot .1b	36.30	farm				94.02	100.00	3	96.49	93.04	94.42	93.81	94.45	94.42	3.45		97.98	97.38	97.08	97.38	+3.36		0		
+937	bvh.micro.Svadilfari 0.2	36.27	sweep		micro		99.10	100.00	5	96.79	95.73	92.05	99.50	98.50	96.79	7.45		99.61	99.04	99.29	99.29	+0.19		0		session-300-opponents
+938	lunchie.Lunchbox 0.93	36.26	farm				93.16	100.00	2	93.32	92.04	94.89	95.49	90.83	93.32	4.66		95.10	94.33	95.91	95.10	+1.94		0		
+939	jeremyreeder.Bully 1	36.22	farm				93.66	98.57	2	87.49	92.13	91.76	94.71	92.62	92.13	7.22		94.92	95.27	98.16	95.27	+1.61	94.97	56	12.2	leak-38
+940	zyx.nano.Ant 1.1	36.21	sweep		nano		98.15	100.00	3	97.42	94.41	92.06	98.39	97.66	97.42	6.33		99.17	98.86	99.00	99.00	+0.85		0		
+941	baal.nano.N 1.42	36.14	sweep		nano		97.64	100.00	3	98.23	96.01	97.31	98.45	97.23	97.31	2.44		98.48	98.69	98.17	98.48	+0.84		0		shield-list
+942	kcn.percept.PerceptBot 2.3	36.00	sweep				98.44	100.00	2	97.47	96.57	98.12	98.08	98.81	98.08	2.24		99.12	98.36	99.52	99.12	+0.68		0		
+943	matt.advanced.Katana 1.0	35.98	farm				91.74	97.14	3	94.71	93.46	89.18	91.27	91.98	91.98	5.53		94.93	94.37	95.62	94.93	+3.19		0		session-300-opponents
+944	divineomega.PatrollerBot 1.0	35.95	farm				89.03	95.43	5	90.92	85.40	86.71	94.35	85.48	86.71	8.95		87.58	91.48	94.35	91.48	+2.45		0		
+945	yarhoslav.YaroBot 1.2	35.90	farm				93.93	99.05	3	92.97	92.48	90.37	95.30	91.20	92.48	4.93		95.93	95.61	95.81	95.81	+1.88		0		
+946	elloco.Kabuto 0.2r	35.85	farm				89.49	95.24	3	88.65	83.12	91.96	88.05	92.37	88.65	9.25		90.93	89.70	93.48	90.93	+1.44		0		
+947	av.RobAtHome 1.2	35.79	farm				91.12	97.15	2	92.09			94.78	87.46	92.09	7.32		96.45	95.96	96.27	96.27	+5.15		0		
+948	ua.kiiv.kosyak.robocode.tn1.Tn1 2.0	35.76	farm				92.08	100.00	4	90.95	93.84	91.12	92.01	92.14	92.01	2.89		96.38	95.58	96.26	96.26	+4.19		0		
+949	lmk.ACPFinal 0.2	35.73	sweep				97.85	100.00	3	98.40	95.20	95.28	98.77	97.39	97.39	3.57		99.00	98.92	98.91	98.92	+1.07		0		
+950	jeremyreeder.Vincent 2011.12.09	35.63	sweep				97.19	100.00	3	96.22	94.65	90.95	98.79	96.39	96.22	7.84		98.42	98.27	98.21	98.27	+1.08		0		
+951	mn.micro.perceptual.Mimic 1.0.0	35.57	farm	VOLATILE	mirror		94.31	100.00	3	71.67	94.65	94.37	93.06	94.93	94.37	23.26		79.59	82.67	76.81	79.59	-14.72		0		
+952	uccc.Dorito 1.12	35.48	sweep				95.07	97.71	5	95.13	96.53	94.93	95.59	94.29	95.13	2.24		97.65	98.57	99.09	98.57	+3.50		0		
+953	com.syncleus.robocode.Dreadnaught 0.1	35.47	mid	LEAK,PEERGAP,BENCHSEES			84.36	98.57	4	87.64	74.10	75.77	84.58	83.70	83.70	13.54		92.89	92.98	95.73	92.98	+8.62	84.42	8	10.9	live-losers-385
+954	paolord.TheHulk 1.0	35.47	sweep				97.37	99.05	3	98.26	97.42	98.91	98.44	95.22	98.26	3.69		99.78	99.66	99.90	99.78	+2.41		0		
+955	myl.nano.Graviton 1.10	35.47	sweep		nano		98.00	99.05	3	97.74	98.15	97.83	99.53	97.24	97.83	2.29		99.75	99.56	98.75	99.56	+1.56		0		
+956	evd.X1 0.01	35.44	farm	PEERGAP			92.43	98.09	3	94.32	91.36	89.20	96.06	90.62	91.36	6.86		98.97	98.17	98.84	98.84	+6.41		0		session-300-opponents
+957	oog.nano.SavantWS 0.1	35.43	sweep		nano		96.36	100.00	4	94.79	95.55	95.16	96.13	97.06	95.55	2.27		97.47	96.41	96.89	96.89	+0.53		0		session-300-opponents
+958	sng.arco.Arco 0.0	35.41	sweep				97.17	98.09	3	98.76	90.41	92.64	98.23	95.04	95.04	8.35		99.77	99.16	99.47	99.47	+2.30		0		session-300-opponents
+959	DM.Chicken 4.0	35.39	sweep				98.34	100.00	3	97.83	95.47	98.05	99.18	97.92	97.92	3.71		99.11	99.10	98.87	99.10	+0.76		0		
+960	fala.robocode.FalaRobot 1.0	35.36	sweep				96.45	100.00	4	93.82	92.83	93.12	96.00	96.91	93.82	4.08		95.30	97.82	97.45	97.45	+1.00		0		
+961	japs.Sjonniebot 0.9.1	35.35	farm				91.94	99.28	4	95.77	86.88	86.07	92.10	91.77	91.77	9.70		92.47	93.90	94.84	93.90	+1.97		0		
+962	NG.LegatusLegionis 1.2	35.24	sweep				96.70	99.05	3	96.33	94.34	94.76	97.59	96.26	96.26	3.25		95.60	96.86	97.64	96.86	+0.16		0		session-300-opponents
+963	jdw.Hornet 1.0	35.11	sweep				96.81	100.00	5	96.69	91.70	94.76	96.94	96.31	96.31	5.24		98.99	97.86	98.17	98.17	+1.36		0		
+964	Noran.BitchingElk 0.054	35.04	farm	ROUNDS,PEERGAP			89.27	84.76	3	91.05	86.71	90.37	91.59	88.11	90.37	4.88		95.30	96.42	98.70	96.42	+7.15		0		shield-list
+965	csp.Eagle 3.30	34.96	sweep				97.19	100.00	2	93.61	95.82	94.72	96.98	97.39	95.82	3.78		97.59	96.84	97.08	97.08	-0.11		0		session-300-opponents
+966	hirataatsushi.Neo 1.6	34.95	sweep				95.02	100.00	2	97.38	95.31	96.14	97.22	92.81	96.14	4.57		98.32	98.58	99.20	98.58	+3.56		0		
+967	jgap.JGAP7958 1.0	34.91	farm	PEERGAP			87.22	97.85	4	85.17	86.77	88.36	87.76	86.69	86.77	3.19		91.90	90.33	92.49	91.90	+4.68		0		session-300-opponents
+968	supersample.SuperTrackFire 1.0	34.70	farm	PEERGAP			90.04	98.57	4	97.73	83.56	84.97	83.64	92.17	84.97	14.17		95.38	94.83	95.84	95.38	+5.34	95.76	8	10.9	live-losers-385
+969	vft.Hrist 1.0	34.65	farm	PEERGAP			89.31	95.72	2	91.04	86.69	87.34	92.60	86.03	87.34	6.57		94.35	91.74	94.45	94.35	+5.03		0		
+970	testantiswapgun.AntiSwap 1.0	34.60	farm				94.49	99.05	3	99.00	93.78	93.53	94.04	95.40	94.04	5.47		98.76	98.69	98.41	98.69	+4.20		0		
+971	doka.Test 1.0	34.44	farm	PEERGAP			86.02	95.72	2	84.87	81.52	77.54	85.76	86.28	84.87	8.74		90.66	86.22	90.94	90.66	+4.64	86.36	8	10.5	lost-rounds-39,session-300-opponents
+972	uccc.RingDing 1.12	34.33	sweep				99.63	100.00	3	98.71	97.56	98.50	99.56	99.67	98.71	2.11		99.68	99.47	99.49	99.49	-0.14		0		
+973	amk.ShizzleStiX.ShizzleStiX 0.6	34.17	farm				88.36	100.00	2	96.43	91.50	93.93	88.15	88.56	91.50	8.28		94.12	94.72	93.82	94.12	+5.77		0		
+974	spinnercat.haiku.Refrigerator 1.1	34.08	farm				88.69	98.57	2	86.08	84.98	86.91	87.81	89.58	86.91	4.60		89.67	89.50	91.03	89.67	+0.98		0		
+975	suh.nano.CrossC 1.00	34.00	sweep		nano		97.59	100.00	2	98.40	94.38	96.68	97.97	97.21	97.21	4.02		98.72	98.83	98.56	98.72	+1.13	97.82	24	11.3	tail-39
+976	jf.Dodger 1.3	33.99	sweep				97.52	100.00	4	99.11	95.94	95.95	99.38	96.90	96.90	3.44		99.59	99.16	99.54	99.54	+2.02		0		
+977	fullsail.SweetTea 1.1	33.98	sweep				99.82	100.00	3	100.00	97.67	98.68	99.96	99.54	99.54	2.33		99.81	99.90	99.63	99.81	-0.01		0		
+978	DM.Capriite 3.7.2	33.98	sweep				95.92	100.00	2	95.88	97.10	93.98	98.83	93.01	95.88	5.82		99.22	98.77	99.37	99.22	+3.30		0		
+979	nexus.Prototype 1.0	33.95	farm				90.24	100.00	2	84.51	87.49	90.28	90.36	90.12	90.12	5.85		94.84	93.17	95.96	94.84	+4.60		0		
+980	amc.ROBv400 1.0	33.86	sweep				96.52	100.00	3	94.95	93.07	95.88	96.22	97.12	95.88	4.05		98.28	98.91	99.39	98.91	+2.39		0		
+981	hirataatsushi.Trinity 0.003	33.85	farm				94.29	100.00	4	91.96	94.27	95.53	94.35	94.12	94.27	3.57		96.30	96.99	97.80	96.99	+2.70	95.14	24	11.8	tail-39
+982	amc.ROBv301 1.1	33.82	sweep				96.06	100.00	3	96.56	96.60	94.28	96.21	95.99	96.21	2.32		98.54	99.12	99.43	99.12	+3.06		0		session-300-opponents
+983	gtf.robocode.Strafer 2.1.1	33.72	farm				90.22	97.14	2	92.92	88.47	94.29	89.44	91.01	91.01	5.82		94.39	93.31	96.16	94.39	+4.17		0		
+984	eskimo.micro.Echo 0.1	33.69	sweep		micro		99.86	100.00	4	99.80	96.31	97.47	99.87	99.81	99.80	3.56		99.69	99.42	99.45	99.45	-0.41		0		session-300-opponents
+985	zyx.nano.EscherichiaColi 1.0	33.65	farm		nano		92.36	99.28	4	89.74	87.19	92.52	91.57	93.15	91.57	5.96		91.78	90.49	93.74	91.78	-0.58		0		session-300-opponents
+986	conscience.Idem 1.0a	33.61	sweep				95.50	100.00	2	96.22	87.59	96.87	97.03	93.97	96.22	9.44		98.27	98.02	97.92	98.02	+2.52		0		
+987	yk.JahRoslav 1.1	33.44	farm				92.53	98.57	2	89.57	88.21	92.29	92.67	92.38	92.29	4.46		95.71	94.94	96.65	95.71	+3.18		0		session-300-opponents
+988	ender.EnderRobot 1.1	33.35	farm	PEERGAP			87.09	98.09	3	87.57	84.98	83.36	86.59	88.09	86.59	4.73		96.18	94.22	97.07	96.18	+9.09		0		
+989	kneels.ToNoone 0.2	33.31	farm	PEERGAP			92.28	98.10	3	95.60	87.75	88.28	94.05	88.75	88.75	7.85		97.64	97.48	98.01	97.64	+5.36		0		
+990	robots.Lucky 1.2	33.30	farm				94.99	98.86	5	96.73	97.59	93.49	97.10	94.46	96.73	4.10		97.57	97.38	97.38	97.38	+2.39		0		
+991	stelo.Lifestealer 1.0	33.29	mid	LEAK,PEERGAP,BENCHSEES			79.88	98.09	3	74.50	80.51	77.69	78.80	80.42	78.80	6.01		85.78	88.20	89.86	88.20	+8.32	80.91	8	10.0	score-leak-39
+992	sam.Samspin 1.0	33.26	sweep				95.68	99.28	4	97.23	90.72	94.01	98.23	93.12	94.01	7.51		98.87	98.92	98.77	98.87	+3.19		0		
+993	matt.BlueMind 0.8.00	33.20	sweep				96.52	100.00	4	97.97	93.42	92.91	96.72	95.91	95.91	5.06		97.67	97.86	98.24	97.86	+1.34		0		session-300-opponents
+994	gre.svman4.Leonidas 1.3.2	33.17	sweep				98.55	100.00	2	97.16	97.15	96.94	98.26	98.83	97.16	1.89		98.50	98.27	99.22	98.50	-0.05		0		
+995	rampancy.micro.Epiphron 1.0	33.15	sweep		micro		99.25	100.00	2	98.92	96.61	99.15	98.93	99.56	98.93	2.95		99.17	97.93	98.27	98.27	-0.98		0		
+996	com.timothyveletta.FuzzyBot 1.1	33.05	sweep				98.41	100.00	5	98.36	95.69	95.26	98.83	97.78	97.78	3.57		97.89	98.67	96.90	97.89	-0.52		0		
+997	dsekercioglu.shield.ColdBreath 1.0	32.93	sweep				100.00	100.00	4	100.00	98.94	98.94	100.00	100.00	100.00	1.06		99.93	99.93	99.97	99.93	-0.07		0		
+998	amc.ROBv300 1.1	32.85	sweep				97.28	100.00	3	97.10	95.45	96.93	97.44	96.96	96.96	1.99		99.38	99.31	99.64	99.38	+2.10		0		
+999	Fenix.FenixTrack 1.0	32.83	sweep				97.06	100.00	2	96.18	93.79	87.52	97.59	96.54	96.18	10.07		98.62	98.14	98.37	98.37	+1.31		0		
+1000	el33t.EL33tGangstarr2 2.0	32.81	farm				94.38	100.00	2	92.05	92.07	94.75	96.78	91.98	92.07	4.80		94.01	95.12	95.64	95.12	+0.74		0		session-300-opponents
+1001	seed.Anastasia 1.0	32.76	farm				88.42	94.28	4	82.82	90.27	94.53	84.73	89.65	89.65	11.71		91.17	92.96	92.87	92.87	+4.45	93.03	8	9.9	lost-rounds-39
+1002	pak.Dargon 1.0b	32.67	sweep				99.09	100.00	3	99.29	98.03	98.86	99.40	98.48	98.86	1.37		97.29	99.12	99.78	99.12	+0.03		0		
+1003	reeder.colin.WallGuy3 1.0	32.65	farm				92.31	98.57	4	92.72	90.61	95.59	93.53	91.09	92.72	4.98		97.22	92.35	95.46	95.46	+3.15		0		session-300-opponents
+1004	cjk.Merkava 0.1.1	32.64	sweep				97.03	100.00	4	99.27	95.91	90.79	97.31	96.21	96.21	8.48		94.90	97.94	99.03	97.94	+0.91		0		
+1005	adt.Ar2 1.0	32.63	farm				94.37	100.00	2	96.00	91.61	90.48	95.06	93.67	93.67	5.52		95.43	93.09	96.22	95.43	+1.06	94.63	24	11.9	tail-39
+1006	TCMI.nano.Copper 0.2	32.54	sweep		nano		96.90	100.00	2	91.94	92.96	94.09	96.62	97.17	94.09	5.23		98.59	98.17	98.18	98.18	+1.28		0		
+1007	acid.Syzygy 1.0.4	32.53	sweep				95.39	100.00	2	97.18	95.39	95.25	94.54	96.23	95.39	2.64		99.28	98.68	98.32	98.68	+3.30		0		
+1008	fowl3628800.SitAndGo 1.0.0	32.51	sweep				98.70	100.00	3	99.37	97.91	96.38	98.57	98.96	98.57	2.99		99.48	99.25	99.17	99.25	+0.55	99.10	56	12.5	leak-38
+1009	ntw.Sigsys 1.6	32.48	farm				94.63	99.05	3	95.73	85.27	92.04	93.74	96.42	93.74	11.15		96.40	95.14	97.41	96.40	+1.77		0		
+1010	dcs.Eater_of_Worlds_Mini 1.0	32.33	sweep				97.61	100.00	2	99.29	84.68	88.23	98.30	96.92	96.92	14.61		99.37	98.78	99.55	99.37	+1.76	97.64	8	10.4	live-losers-385
+1011	nic.SnippetBot 1.0	32.19	sweep				98.28	100.00	2	98.79	97.76	96.91	98.66	97.91	97.91	1.88		99.12	99.17	99.23	99.17	+0.89		0		
+1012	jgap.JGAP6139 1.0	32.18	farm				86.38	97.15	2	90.54	84.45	86.07	89.64	83.11	86.07	7.43		89.82	89.78	92.44	89.82	+3.44		0		
+1013	jeremyreeder.collective.Prophet 5	32.18	sweep				98.95	100.00	3	95.92	93.23	94.05	99.06	98.72	95.92	5.83		99.49	98.17	98.59	98.59	-0.36		0		
+1014	fullsail.TimbotNoPrediction 1.0	32.02	farm				90.80	100.00	2	92.39	88.89	89.20	88.51	93.09	89.20	4.58		90.73	89.13	91.17	90.73	-0.07		0		session-300-opponents
+1015	suh.nano.CrossL 1.00	31.95	sweep		nano		98.58	100.00	4	99.02	96.40	96.09	99.51	98.27	98.27	3.42		98.99	99.45	99.20	99.20	+0.62		0		
+1016	tex.Longbot 0.4	31.78	sweep				95.17	100.00	3	96.85	91.59	89.89	95.65	94.20	94.20	6.96		95.97	96.02	96.47	96.02	+0.85		0		session-300-opponents
+1017	Grystrion.RandomTrackerNOREV 1.0	31.68	farm				94.22	100.00	3	88.79	91.72	91.39	95.01	93.83	91.72	6.22		95.21	93.73	94.94	94.94	+0.72		0		
+1018	amk.jointstrike.JointStrike 0.2	31.68	farm				94.55	100.00	3	91.79	92.08	88.89	94.05	95.54	92.08	6.65		96.16	95.91	96.44	96.16	+1.61		0		session-300-opponents
+1019	matt.UnderDark3 2.4.34	31.65	sweep				95.88	98.09	3	95.48	95.90	95.97	96.07	95.79	95.90	0.59		97.86	97.31	98.55	97.86	+1.98		0		
+1020	EBBU.Sim2 1.02	31.65	farm	PEERGAP			90.79	99.05	3	94.25	90.79	90.93	92.03	90.17	90.93	4.08		97.79	98.24	97.74	97.79	+7.00		0		
+1021	franzor.Lizt 1.3.1	31.56	sweep				99.67	100.00	2	98.21	97.65	96.95	99.67	99.67	98.21	2.72		99.56	99.52	99.78	99.56	-0.11		0		
+1022	test.Podgy 4.0	31.44	mid	PEERGAP			81.45	93.33	3	82.28	82.11	90.36	76.83	83.76	82.28	13.53		87.98	86.48	89.58	87.98	+6.53	86.73	8	13.9	lost-rounds-39
+1023	ntw.Sighup 1.5	31.38	farm				90.52	97.14	3	84.42	87.47	90.96	90.78	89.99	89.99	6.54		92.85	91.83	94.74	92.85	+2.33	90.87	56	12.4	leak-38
+1024	jaw.KarenCain 0.11	31.30	sweep				98.96	100.00	3	99.07	96.94	97.80	98.75	99.38	98.75	2.44		99.59	99.12	98.90	99.12	+0.16		0		
+1025	leb.ShootAnArrow 0.1	31.24	farm				92.59	98.57	4	92.04	89.30	87.27	90.17	95.00	90.17	7.73		94.68	94.96	96.05	94.96	+2.37		0		session-300-opponents
+1026	yk.JahMicro 1.0	31.19	farm				94.89	100.00	3	91.94	92.83	90.45	95.26	94.16	92.83	4.81		95.91	95.19	97.49	95.91	+1.02	93.39	80	12.3	leak-38,tail-39
+1027	gio.RealGioBot 1.0	31.12	sweep				96.92	100.00	4	94.86	89.59	92.49	96.88	96.96	94.86	7.37		99.07	98.86	98.94	98.94	+2.02		0		
+1028	fowl3628800.ThunderStruck 3.0.0	31.12	sweep				99.73	100.00	2	97.46	98.48	96.78	99.74	99.72	98.48	2.96		99.37	99.44	99.78	99.44	-0.29		0		
+1029	dks.MicroDanMK2 1.0	31.10	sweep				98.50	100.00	2	99.20	92.40	95.80	99.12	97.89	97.89	6.80		98.99	98.73	99.03	98.99	+0.48		0		
+1030	discan.mini.Exode 0.25	31.10	sweep		mini		98.16	100.00	2	94.91	92.90	93.01	97.74	98.59	94.91	5.69		98.56	98.13	98.72	98.56	+0.40		0		session-300-opponents
+1031	nzeemin.Izh 0.5	30.98	sweep				99.11	100.00	4	95.44	96.81	96.46	98.69	99.25	96.81	3.81		99.37	98.53	98.83	98.83	-0.28		0		session-300-opponents
+1032	fowl3628800.StopAndGo 1.0.0	30.94	sweep				97.18	98.57	4	98.80	96.86	96.92	99.67	96.35	96.92	3.32		99.54	99.27	99.14	99.27	+2.09		0		session-300-opponents
+1033	mme.NikeEnhanced 2.0	30.86	sweep				97.49	100.00	3	97.62	97.52	96.32	98.76	94.94	97.52	3.82		98.83	98.99	99.24	98.99	+1.50		0		
+1034	uccc.MilkyWay 1.01	30.78	sweep				97.44	100.00	2	96.31	92.27	93.73	97.06	97.81	96.31	5.54		98.82	99.13	99.34	99.13	+1.69	97.12	24	11.1	tail-39
+1035	rus.vv.Snezhok 1.1	30.65	farm				92.87	96.19	3	94.99	88.86	94.47	93.91	92.35	93.91	6.13		97.80	97.26	97.35	97.35	+4.48		0		
+1036	bp.Kuma 1.0	30.61	sweep				99.85	100.00	2	99.74	98.24	95.65	99.70	100.00	99.70	4.35		99.68	99.76	99.47	99.68	-0.17		0		
+1037	Grystrion.TrackerWO 1.0	30.49	farm				93.97	100.00	2	93.33	89.48	91.74	91.96	95.97	91.96	6.49		96.34	94.66	96.49	96.34	+2.38		0		
+1038	projectx.TestNano 1.0	30.32	farm				89.43	99.05	3	88.87	88.28	86.91	90.34	88.98	88.87	3.43		93.83	91.04	93.53	93.53	+4.10		0		session-300-opponents
+1039	adt.Ar1 2.1	30.13	sweep				99.66	100.00	4	99.15	98.10	95.51	99.79	99.53	99.15	4.28		99.47	96.48	99.62	99.47	-0.19		0		
+1040	amk.superstrike.SuperStrike 0.3	30.13	sweep				97.23	100.00	2	94.12	94.28	96.33	97.60	96.87	96.33	3.48		96.77	97.07	96.33	96.77	-0.47	97.10	24	12.5	tail-39
+1041	xiongan.Xiongan 1.1	29.87	sweep				96.22	100.00	3	96.58	90.74	91.06	96.23	96.21	96.21	5.84		99.22	98.02	97.22	98.02	+1.80		0		session-300-opponents
+1042	ao.T100 0.9	29.81	sweep				99.40	100.00	2	99.69	98.08	98.10	99.40	99.40	99.40	1.61		99.72	99.31	99.70	99.70	+0.30		0		
+1043	povik.nano.Smilee 0.2.1	29.80	farm		nano		88.03	98.57	2	90.20	81.29	85.63	89.45	86.62	86.62	8.91		88.04	86.59	88.80	88.04	+0.01		0		
+1044	vort.Chaser 0.0.3	29.70	farm	VOLATILE,PEERGAP,BENCHSEES			94.37	99.05	3	74.67	93.81	89.87	95.30	92.51	92.51	20.63		98.60	96.94	98.92	98.60	+4.23	93.35	32	12.1	weak-leak
+1045	gjr.Cephalosporin 0.2	29.41	farm				94.89	100.00	3	91.46	92.15	93.63	95.03	94.60	93.63	3.57		95.80	96.32	95.45	95.80	+0.91		0		session-300-opponents
+1046	sp.AstherNano 1.0	29.21	sweep				97.18	100.00	3	96.52	98.01	97.30	98.59	96.47	97.30	2.12		98.71	98.30	98.71	98.71	+1.53		0		
+1047	gg.Squaraus 0.6	29.05	sweep				96.94	100.00	2	92.32	95.38	94.77	98.19	95.68	95.38	5.87		98.54	96.75	98.58	98.54	+1.61		0		session-300-opponents
+1048	bbo.RamboT 0.3	28.89	sweep				96.52	100.00	2	79.78	95.79	97.52	96.17	96.86	96.17	17.74		99.51	97.97	99.64	99.51	+3.00	96.23	32	11.3	weak-leak
+1049	rsim.micro.uCatcher 0.1	28.83	sweep		micro		100.00	100.00	4	100.00	98.89	99.02	100.00	99.99	99.99	1.11		99.95	99.89	99.99	99.95	-0.05		0		session-300-opponents
+1050	amc.ROBv202 1.01	28.77	sweep				97.92	99.05	3	99.18	97.20	98.14	98.91	95.94	98.14	3.24		99.37	99.85	99.97	99.85	+1.93		0		
+1051	sanyi.mikrobi.Roberto 1.0	28.77	farm				93.94	100.00	2	94.31	88.17	88.01	94.95	92.93	92.93	6.94		96.20	96.17	97.90	96.20	+2.26		0		session-300-opponents
+1052	jp.SineWall 1.0	28.74	sweep				97.56	100.00	4	94.51	95.75	96.33	97.72	97.41	96.33	3.21		97.89	97.82	98.12	97.89	+0.33		0		session-300-opponents
+1053	Noran.RandomTargeting 0.02	28.57	sweep				99.48	100.00	4	99.93	97.36	98.21	99.38	99.79	99.38	2.57		99.88	99.78	99.69	99.78	+0.30		0		shield-list,shield-panel
+1054	robin.SCALPBot 1.0	28.49	sweep				95.56	100.00	2	94.69	93.99	95.44	98.41	92.70	94.69	5.71		97.46	95.57	97.83	97.46	+1.90		0		session-300-opponents
+1055	qualidafial.MajorDick 1.0.1	28.45	sweep				97.06	100.00	4	96.10	96.22	99.16	96.93	97.19	96.93	3.06		99.43	99.42	99.69	99.43	+2.37		0		
+1056	robin.ScalpBotC 1.0	28.43	sweep				97.19	100.00	2	95.13	94.40	92.84	97.62	96.76	95.13	4.78		97.33	94.25	98.63	97.33	+0.14		0		
+1057	dcs.Eater_of_Worlds 1.1.3-A	28.36	sweep	PEERGAP			96.02	99.05	3	91.52	91.05	89.33	95.10	97.85	91.52	8.52		98.26	96.68	98.89	98.26	+2.24		0		
+1058	zch.Hirkan 0.11	28.10	sweep				97.94	100.00	4	95.85	94.48	96.65	98.41	97.47	96.65	3.93		98.77	98.24	99.10	98.77	+0.83		0		
+1059	Queens_teamrobot.UltraRazor 1.0	28.07	sweep				99.14	100.00	5	97.49	97.32	98.36	99.28	98.93	98.36	1.96		99.37	99.49	99.81	99.49	+0.35		0		
+1060	pa.Improved 1.1	27.96	sweep				97.75	98.09	3	99.21	92.69	88.99	97.62	98.02	97.62	10.22		99.67	99.41	99.78	99.67	+1.92		0		gate-r5-set,session-300-opponents,weak-pbi
+1061	fw.Number1 1.0b	27.85	sweep				96.79	100.00	3	91.76	95.02	93.09	97.80	96.29	95.02	6.04		98.92	95.66	99.07	98.92	+2.13		0		
+1062	dittman.BlindSquirl Retired	27.74	sweep				97.45	100.00	2	97.62	95.53	96.26	97.20	97.71	97.20	2.18		97.62	97.90	98.45	97.90	+0.45		0		gate-r5-set,weak-pbi
+1063	jgap.JGAP23423 1.0	27.60	farm				93.92	100.00	2	97.31	89.29	93.49	94.66	93.19	93.49	8.02		96.65	96.46	97.62	96.65	+2.73		0		session-300-opponents
+1064	oa.weak.BotherBot 0.1	27.55	sweep				95.81	98.57	2	96.87	96.18	96.96	97.12	94.49	96.87	2.63		98.78	98.19	97.72	98.19	+2.38		0		
+1065	suh.nano.CrossH 1.00	27.22	sweep		nano		98.79	100.00	3	100.00	96.65	97.09	99.68	97.01	97.09	3.35		99.79	99.75	99.70	99.75	+0.96		0		
+1066	GarmBox.Anger 1.0	27.18	farm				91.97	100.00	2	87.65	91.79	91.83	93.60	90.35	91.79	5.95		93.00	91.46	94.30	93.00	+1.03		0		
+1067	omens.CannonfodderNano 1.4	26.84	sweep				96.52	100.00	5	97.15	94.74	93.57	97.03	95.75	95.75	3.58		97.81	97.89	98.30	97.89	+1.37	97.23	24	11.7	tail-39
+1068	acogdev.alpha 0.2	26.64	sweep				97.55	100.00	3	99.26	95.40	95.67	96.48	98.08	96.48	3.86		99.72	99.24	99.29	99.29	+1.74		0		
+1069	suh.nano.MyFirstAdvancedRobot 1.00	26.62	sweep		nano		97.79	100.00	2	99.23	97.41	97.94	98.45	97.13	97.94	2.10		99.75	99.49	99.71	99.71	+1.92		0		
+1070	Heal.TekitokaBot 1.0	26.41	sweep				97.42	100.00	2	96.46	95.11	95.92	96.71	98.14	96.46	3.03		98.51	97.96	98.75	98.51	+1.09		0		
+1071	braaropolis.Abot 1.0	26.32	farm				94.79	100.00	3	96.41	95.33	94.52	91.64	96.37	95.33	4.77		98.28	97.70	98.60	98.28	+3.49		0		
+1072	genprog.Gajeel 1.0	26.22	sweep				95.39	100.00	5	96.62	91.26	94.85	95.84	94.72	94.85	5.36		97.77	97.05	97.74	97.74	+2.35		0		
+1073	PSW.Relentless 0.1	25.95	sweep				97.75	100.00	3	83.31	96.28	95.23	98.08	97.08	96.28	14.77		98.44	98.03	99.67	98.44	+0.69	97.55	32	11.5	weak-leak
+1074	ola.Puffin 1.0	25.88	sweep				98.53	100.00	2	97.01	97.34	95.68	98.41	98.66	97.34	2.98		99.33	98.56	99.45	99.33	+0.80	97.89	56	11.9	leak-38,session-300-opponents
+1075	jsal.Jsalbot 1.0	25.83	sweep				96.85	100.00	3	97.10	95.65	95.06	97.35	95.86	95.86	2.29		94.74	97.70	97.33	97.33	+0.48		0		session-300-opponents
+1076	mbro.Detektor3 0.1.1	25.68	sweep				95.36	98.09	3	92.97	96.02	95.62	93.66	98.76	95.62	5.79		99.58	99.36	99.13	99.36	+4.00		0		session-300-opponents
+1077	genprog.Rinmorikazu 1.0	25.60	sweep				95.50	100.00	4	93.81	93.28	93.64	95.27	96.17	93.81	2.89		97.67	96.94	97.26	97.26	+1.77		0		
+1078	gimp.GimpBot 0.1	25.55	sweep				97.21	100.00	4	98.12	96.08	96.39	97.98	96.95	96.95	2.04		97.70	97.50	97.29	97.50	+0.29		0		session-300-opponents
+1079	md.VelociRaptor 1.3	25.50	farm				94.88	100.00	2	90.11	94.38	93.36	93.75	96.00	93.75	5.89		94.93	94.36	97.00	94.93	+0.06		0		session-300-opponents
+1080	FatalFlaw.FatalFlaw 1.0.5	25.45	farm				94.79	100.00	5	93.87	92.43	90.02	94.84	94.57	93.87	4.82		95.87	94.89	96.63	95.87	+1.08		0		session-300-opponents
+1081	geep.mini.GPBotB 1.1	25.40	farm		mini		93.82	100.00	3	94.63	93.06	88.09	93.91	93.65	93.65	6.54		94.75	93.17	98.12	94.75	+0.93		0		
+1082	mbro.BelajarBot 0.0.3	25.35	sweep				97.60	100.00	5	97.27	96.41	97.60	97.14	97.90	97.27	1.49		99.29	99.32	99.39	99.32	+1.72		0		
+1083	jaybot.bots.Oddball 4.0	25.13	sweep				99.37	100.00	6	95.55	97.90	97.26	99.39	99.34	97.90	3.84		99.33	99.34	99.63	99.34	-0.03		0		
+1084	jt.SpearmintCT Alpha	25.12	sweep				95.80	99.43	5	98.13	93.51	94.52	97.56	94.62	94.62	4.62		97.73	97.16	97.98	97.73	+1.93		0		session-300-opponents,shield-list
+1085	techdude.kombat.FlamingKombat 1.5	25.11	sweep				99.16	100.00	2	95.33	97.22	98.30	99.14	99.18	98.30	3.85		99.54	99.57	99.51	99.54	+0.38		0		
+1086	genprog.Zafaran 1.0	25.00	farm				93.08	98.57	2	96.64	88.87	94.75	96.07	90.10	94.75	7.77		97.34	97.33	97.57	97.34	+4.26		0		
+1087	cb.nano.Insomnia 1.0	25.00	farm		nano		93.90	100.00	2	93.10	95.00	92.54	95.11	92.69	93.10	2.57		95.42	94.02	93.71	94.02	+0.12		0		
+1088	oa.weak.FlyMk1 0.1	24.87	sweep				96.91	99.28	4	96.96	94.19	95.72	95.92	97.91	95.92	3.72		99.42	98.74	98.67	98.74	+1.83		0		
+1089	mbh.Mbh 0.1	24.85	sweep				97.69	100.00	3	89.44	93.74	96.07	98.14	96.80	96.07	8.70		98.98	98.43	99.58	98.98	+1.29		0		
+1090	jgap.JGAP130166 1.0	24.71	farm				94.40	98.57	4	86.76	95.44	96.75	98.69	92.97	95.44	11.93		99.56	98.66	99.57	99.56	+5.16		0		
+1091	dvogon.GangBang 1.0	24.38	sweep				98.28	100.00	4	93.49	96.05	96.48	98.09	98.85	96.48	5.36		98.69	98.24	99.02	98.69	+0.41		0		
+1092	zzx.Serunyr 2.0.2	24.21	sweep				97.06	100.00	2	98.39	96.88	97.03	97.47	96.64	97.03	1.75		97.75	98.28	98.16	98.16	+1.10		0		
+1093	stelo.PatternRobot 1.0	23.90	sweep				99.97	100.00	2	100.00	98.86	97.72	100.00	99.95	99.95	2.28		99.96	99.79	99.92	99.92	-0.05		0		
+1094	spinnercat.Limit .01	23.67	sweep				98.69	100.00	2	95.83	96.20	96.44	99.33	98.04	96.44	3.50		98.89	98.70	98.85	98.85	+0.16		0		
+1095	abud.ThirdRobo 1.0	23.59	sweep				98.09	100.00	3	94.50	96.60	96.77	97.66	98.95	96.77	4.45		99.73	98.05	99.60	99.60	+1.51		0		gate-r5-set,weak-pbi
+1096	AD.CodaFirst 1.1	23.58	sweep				98.17	99.28	4	97.97	97.35	96.23	99.10	97.24	97.35	2.87		99.46	98.78	99.96	99.46	+1.29	99.25	24	10.8	tail-39
+1097	velas.Alpha 1.0	23.54	sweep				95.70	100.00	3	97.99	93.85	93.02	97.12	94.99	94.99	4.97		99.06	97.81	99.33	99.06	+3.36		0		
+1098	goblin.Bender 2.4	22.91	sweep				96.87	100.00	2	95.51	96.84	97.61	97.39	96.34	96.84	2.10		99.79	99.60	99.69	99.69	+2.82		0		session-300-opponents
+1099	elvbot.ElverionBot 0.3	22.77	sweep				99.99	100.00	2	100.00	98.81	98.82	99.98	100.00	99.98	1.19		99.97	99.84	99.94	99.94	-0.05		0		
+1100	hs.SimpleHBot 1.3	22.66	sweep				96.04	99.05	3	97.70	96.71	92.27	98.25	94.94	96.71	5.98		97.89	98.17	98.02	98.02	+1.98		0		
+1101	kanishk.Fr0z3n 1.1	22.49	sweep				99.68	100.00	3	98.81	98.71	99.55	99.91	99.23	99.23	1.20		99.92	99.75	99.95	99.92	+0.24		0		
+1102	suzushin7.nano.TargetC 1.00	22.48	sweep		nano		98.17	100.00	3	98.83	95.84	95.93	98.12	98.26	98.12	2.99		97.76	98.54	98.45	98.45	+0.28		0		
+1103	fire219.CatBot 1.0	22.46	sweep				99.43	100.00	2	98.42	95.97	91.33	99.35	99.51	98.42	8.18		99.12	98.49	99.78	99.12	-0.31		0		
+1104	madmath.Cow 0.1.1	22.45	sweep				97.15	100.00	3	95.07	95.67	95.81	97.21	97.02	95.81	2.14		97.89	96.88	97.93	97.89	+0.74	97.19	24	11.8	tail-39
+1105	quietus.NarrowRadar 0.1	22.39	sweep				98.84	100.00	3	95.57	95.15	95.83	98.84	98.84	95.83	3.69		97.03	98.98	97.44	97.44	-1.40		0		gate-r5-set,shield-list,weak-pbi
+1106	kjc.MailManX 2.0	22.36	farm				93.48	98.57	2	93.99	93.14	93.57	94.57	92.39	93.57	2.18		96.72	95.47	96.45	96.45	+2.97		0		
+1107	wit.Deep7 2.0	22.15	sweep				99.37	100.00	3	99.47	98.17	97.82	99.50	99.10	99.10	1.68		99.60	99.47	99.89	99.60	+0.23		0		
+1108	kjc.Karaykan 1.0	22.05	sweep				96.18	100.00	3	96.96	92.25	96.33	95.87	96.79	96.33	4.71		95.84	95.52	97.16	95.84	-0.34	94.74	24	11.4	tail-39
+1109	suh.nano.TargetC 1.00	21.75	sweep		nano		97.78	100.00	4	98.14	95.11	98.83	97.43	98.83	98.14	3.72		97.93	98.43	98.42	98.42	+0.64		0		
+1110	zch.David 0.21	21.65	sweep				98.27	100.00	2	87.79	96.93	96.20	98.54	98.00	96.93	10.75		99.24	98.64	99.81	99.24	+0.97		0		
+1111	bvh.hdr.Hodur 0.4	21.47	farm				92.79	99.05	3	94.57	96.11	97.09	89.53	94.42	94.57	7.56		93.99	95.65	97.00	95.65	+2.86		0		
+1112	pbg.NinjaX 1.2	21.30	sweep				99.22	100.00	4	97.25	98.88	97.45	99.48	98.45	98.45	2.23		99.73	99.55	99.73	99.73	+0.51		0		
+1113	ayk.WallHugger 1.0	21.05	sweep				98.33	100.00	2	98.89	93.69	94.92	97.88	98.78	97.88	5.20		98.94	96.25	98.71	98.71	+0.38		0		
+1114	sample.Walls 1.0	21.02	sweep				98.84	99.29	4	99.48	97.78	97.79	99.14	98.74	98.74	1.70		99.97	99.93	99.97	99.97	+1.13		0		
+1115	aetos.AetosFirstBot 1.0	21.00	sweep				98.84	100.00	5	99.84	96.83	98.22	99.48	98.41	98.41	3.01		99.85	99.23	99.81	99.81	+0.97		0		
+1116	blir.nano.inch.Inchworm 1.0	20.75	sweep		nano		98.19	100.00	2	96.17	97.79	98.87	97.53	98.86	97.79	2.70		98.08	98.44	98.96	98.44	+0.25		0		
+1117	bzdp.Pansy 2.1	20.62	sweep				99.10	100.00	4	99.20	97.87	96.24	99.49	98.71	98.71	3.25		98.61	98.72	98.95	98.72	-0.38		0		session-300-opponents
+1118	tk.BotOX 0.3	20.56	sweep				98.62	100.00	2	92.44	98.40	93.00	98.27	98.98	98.27	6.54		98.42	95.70	98.15	98.15	-0.47		0		
+1119	skm.butterfly 1.0	20.49	sweep				99.93	100.00	4	99.30	96.30	97.41	100.00	99.86	99.30	3.70		99.73	99.63	99.84	99.73	-0.20		0		
+1120	matt.UnderDark4 0.4.00	20.49	sweep				98.40	100.00	2	97.21	97.85	96.01	97.83	98.97	97.83	2.96		98.21	98.21	98.84	98.21	-0.19		0		shield-list
+1121	gwah.GBotMarkIV 1.0	20.37	sweep				99.49	100.00	2	98.93	97.10	96.82	99.39	99.59	98.93	2.77		99.57	98.65	99.95	99.57	+0.08	99.24	56	12.0	leak-38
+1122	etienne72230.Wall_street 1.0	20.17	sweep				99.27	100.00	4	98.95	98.60	98.02	99.03	100.00	98.95	1.98		99.67	99.89	99.93	99.89	+0.62		0		
+1123	suh.nano.TargetL 1.00	19.84	sweep		nano		98.47	100.00	3	98.44	96.33	97.46	98.43	98.55	98.43	2.22		98.38	99.10	98.54	98.54	+0.07		0		
+1124	WdV.Lesserbee 0.01	19.80	sweep				95.98	100.00	6	96.46	93.28	93.21	96.25	95.45	95.45	3.25		95.48	96.37	97.71	96.37	+0.39		0		shield-list
+1125	apc.Caan 1.0	19.48	farm				93.92	98.57	2	96.08	90.09	94.78	91.95	95.89	94.78	5.99		96.40	95.47	95.93	95.93	+2.01		0		session-300-opponents
+1126	rijteam.SmartDodge 1.1	19.42	sweep				98.13	100.00	2	97.81	95.65	95.18	98.79	97.47	97.47	3.61		99.28	99.01	98.75	99.01	+0.88		0		session-300-opponents
+1127	pac.ABC 2.1	19.06	sweep				99.59	100.00	4	97.83	98.27	99.24	99.51	99.62	99.24	1.79		99.37	99.42	99.83	99.42	-0.17	99.60	24	11.5	session-300-opponents,tail-39
+1128	suh.nano.TargetH 1.00	18.97	sweep		nano		100.00	100.00	2	96.94	97.12	97.47	100.00	100.00	97.47	3.06		99.29	99.95	99.89	99.89	-0.11		0		
+1129	mwj.A1176183 1.0	18.93	sweep				99.81	100.00	3	98.38	98.38	98.94	99.82	99.79	98.94	1.44		99.94	99.77	99.90	99.90	+0.09		0		session-300-opponents
+1130	pb.Oscillator 1.0	18.65	sweep				95.93	99.29	4	95.51	96.47	96.10	95.89	96.06	96.06	0.96		98.35	97.78	98.91	98.35	+2.42		0		
+1131	wiki.BasicBulletShielder 1.0	18.59	sweep				99.99	100.00	2	99.50	99.02	99.97	99.98	100.00	99.97	0.98		99.99	99.98	100.00	99.99	-0.00		0		
+1132	blr.Chicken001 0.1	18.28	sweep				98.61	100.00	4	93.34	96.46	98.62	98.43	99.14	98.43	5.80		98.88	99.06	99.73	99.06	+0.45		0		session-300-opponents
+1133	SK.SimpleKiller 1.0	18.15	sweep				96.38	100.00	2	96.58	95.19	94.93	97.89	94.88	95.19	3.01		97.33	96.46	98.14	97.33	+0.95		0		session-300-opponents
+1134	de.simpleworks.robocode.bots.swiBot 1.1	18.10	sweep				99.27	100.00	2	99.07	96.77	95.30	99.03	99.50	99.03	4.20		99.13	98.79	99.51	99.13	-0.14		0		
+1135	sanja.First 0.1	18.04	sweep				99.15	100.00	2	97.03	98.27	94.64	99.00	99.29	98.27	4.65		99.14	98.71	99.35	99.14	-0.01		0		
+1136	bk.Shooter 1.0	18.02	sweep				98.61	100.00	3	98.39	97.12	97.10	98.87	98.48	98.39	1.77		98.36	99.02	99.33	99.02	+0.41	98.53	24	11.3	tail-39
+1137	dhn.Immortal 1.0	17.92	sweep				96.67	96.57	5	97.34	96.58	97.69	97.76	95.04	97.34	2.72		98.55	97.85	98.61	98.55	+1.88		0		
+1138	ma.is.fon.rs.RobotA 0.01	17.85	sweep				99.85	100.00	2	99.70	96.27	97.97	100.00	99.70	99.70	3.73		99.91	99.50	99.89	99.89	+0.04		0		
+1139	sample.SpinBot 1.0	17.64	sweep				99.94	100.00	5	99.93	98.63	99.69	99.84	100.00	99.84	1.37		99.91	99.74	99.70	99.74	-0.20		0		
+1140	com.blogspot.malinkody.DestrobotMalin 1.0	17.32	sweep				99.80	100.00	2	98.44	98.97	98.49	100.00	99.60	98.97	1.56		99.91	99.74	99.98	99.91	+0.11		0		
+1141	zh.UnderDog 0.0.2	16.95	sweep				99.79	100.00	3	98.68	98.71	99.74	99.77	99.82	99.74	1.14		99.65	99.88	99.80	99.80	+0.01		0		
+1142	jgap.JGAP7247_2 1.0	16.78	sweep				96.26	100.00	3	95.56	93.32	94.96	96.58	96.10	95.56	3.26		95.74	96.44	96.71	96.44	+0.18	95.69	56	12.5	leak-38
+1143	rnatest.MendelBot 1.0	16.60	sweep				96.50	100.00	3	96.57	96.82	95.00	95.64	98.21	96.57	3.21		97.31	96.80	98.60	97.31	+0.81		0		
+1144	ch.rhj.rbc.RHJ1 1.0	16.28	sweep				99.67	100.00	3	98.39	98.56	98.60	99.69	99.64	98.60	1.30		99.77	99.77	99.67	99.77	+0.10		0		
+1145	reeder.caden.Elmo 1	16.08	sweep				99.46	100.00	3	99.14	97.00	98.98	99.89	98.61	98.98	2.89		99.74	99.72	99.68	99.72	+0.26		0		session-300-opponents
+1146	reeder.caden.Grover 1.0	16.07	sweep				99.87	100.00	4	98.65	98.17	97.49	99.83	99.98	98.65	2.49		99.63	99.55	99.88	99.63	-0.24		0		
+1147	zignd.ZigIndexOutOfRange 1.1	15.95	sweep				99.73	100.00	3	99.47	96.68	97.85	99.87	99.46	99.46	3.19		99.85	99.61	100.00	99.85	+0.12		0		
+1148	mae.Mae1 1.1	15.93	sweep				99.60	100.00	3	100.00	98.69	98.88	99.82	99.49	99.49	1.31		99.62	99.65	99.82	99.65	+0.05		0		session-300-opponents
+1149	skm.Ryubot 1.0	15.56	sweep				99.16	100.00	3	99.90	92.21	97.19	98.88	99.73	98.88	7.69		99.87	99.64	100.00	99.87	+0.71		0		
+1150	donjezza.Muncho 1.0	15.55	sweep				99.42	100.00	3	99.73	95.87	97.28	99.18	99.91	99.18	4.04		99.50	99.37	99.63	99.50	+0.08		0		
+1151	homerbots.h1 1.0	15.48	sweep				100.00	100.00	3	99.73	96.07	98.94	100.00	100.00	99.73	3.93		99.98	99.79	99.95	99.95	-0.05		0		shield-list
+1152	sample.VelociRobot 1.0	15.13	sweep				98.80	100.00	2	97.95	97.27	97.66	98.75	98.84	97.95	1.57		99.12	98.34	99.66	99.12	+0.33		0		
+1153	sample.MyFirstJuniorRobot 1.0	14.99	sweep				99.31	100.00	3	96.73	96.37	95.59	99.54	98.86	96.73	3.95		99.28	98.88	99.34	99.28	-0.03		0		
+1154	ap.Frederick 1.1	14.98	sweep				100.00	100.00	2	98.06	99.03	99.03	100.00	100.00	99.03	1.94		99.99	100.00	99.83	99.99	-0.01		0		
+1155	ep.MyFirstRobot 1.0	14.74	sweep				97.34	100.00	5	94.29	97.63	95.89	97.15	97.46	97.15	3.34		99.90	99.64	99.96	99.90	+2.56		0		
+1156	suh.nano.TargetR 1.00	14.66	sweep		nano		96.53	100.00	3	96.76	95.35	94.23	96.88	96.35	96.35	2.65		93.77	95.78	96.83	95.78	-0.75		0		
+1157	el.JumpShoot 0.2	14.62	sweep				100.00	100.00	2	100.00	98.05	97.26	100.00	100.00	100.00	2.74		99.52	99.66	99.98	99.66	-0.34		0		
+1158	sample.RamFire 1.0	14.00	sweep		rammer?		98.90	100.00	2	88.90	98.36	96.27	98.74	99.06	98.36	10.16		98.97	99.68	100.00	99.68	+0.78		0		
+1159	ag.Gir 0.99	13.95	sweep				99.50	100.00	2	99.48	98.44	98.98	99.38	99.61	99.38	1.17		99.23	99.88	99.86	99.86	+0.36		0		
+1160	quietus.Invader 0.1	13.88	sweep				100.00	100.00	3	99.51	99.03	99.03	100.00	100.00	99.51	0.97		99.99	100.00	100.00	100.00	+0.00		0		shield-list
+1161	sample.TrackFire 1.0	13.74	sweep				99.82	100.00	4	100.00	97.84	98.97	99.94	99.70	99.70	2.16		99.73	99.69	99.93	99.73	-0.09		0		
+1162	SFS.SamsSecondRobot 1.0	13.63	sweep				98.72	100.00	4	99.90	97.04	97.18	99.19	98.25	98.25	2.86		98.79	99.06	99.87	99.06	+0.34		0		
+1163	skm.PateranBotlock2 1.0	13.61	sweep				99.95	100.00	3	99.95	97.90	98.81	100.00	99.92	99.92	2.10		99.95	99.67	99.96	99.95	+0.00		0		session-300-opponents
+1164	kb.PingPong 1.0	13.59	sweep				99.71	100.00	3	99.65	98.69	98.99	99.56	100.00	99.56	1.31		99.98	99.86	99.95	99.95	+0.24		0		session-300-opponents
+1165	donjezza.Jezza 1.0	13.47	sweep				99.92	100.00	2	99.93	98.51	97.23	99.85	100.00	99.85	2.77		99.89	99.87	99.91	99.89	-0.03		0		
+1166	fruits.NanoStrawbery 1.3	13.45	sweep				98.79	100.00	2	98.85	97.58	99.08	98.46	99.12	98.85	1.54		98.91	99.00	99.30	99.00	+0.21		0		
+1167	sample.MyFirstRobot 1.0	13.39	sweep				99.97	100.00	5	98.47	98.87	99.14	99.98	99.96	99.14	1.51		99.95	99.96	99.97	99.96	-0.01		0		
+1168	is.fon.rs.Kamikaza 1.0	13.38	sweep				99.90	100.00	3	95.30	98.88	97.11	99.99	99.73	98.88	4.69		99.93	99.88	99.89	99.89	-0.01		0		
+1169	gwah.GerryBotMkII 1.5.1	12.67	sweep				99.07	100.00	2	98.66	96.52	95.42	99.15	98.99	98.66	3.73		98.40	98.76	98.79	98.76	-0.31		0		
+1170	spartancompany.Spartan2 1.0	12.45	sweep				99.74	100.00	2	99.99	97.76	91.20	99.48	100.00	99.48	8.80		99.72	99.77	99.75	99.75	+0.01		0		
+1171	McS.Spanky_test 0.1a	12.04	sweep				99.80	100.00	2	98.60	97.67	98.91	99.93	99.67	98.91	2.26		99.91	99.95	99.99	99.95	+0.15	99.85	24	10.0	session-300-opponents,tail-39
+1172	sample.Tracker 1.0	11.66	sweep				99.83	100.00	5	100.00	99.01	97.92	99.86	99.81	99.81	2.08		99.89	99.82	99.92	99.89	+0.06		0		
+1173	bh.PencilRain 0.01	11.57	sweep				99.93	100.00	2	99.97	96.87	98.93	99.98	99.87	99.87	3.11		99.94	99.97	99.93	99.94	+0.01		0		session-300-opponents
+1174	RobotMarco.MarcoV 0.1	11.35	sweep				99.91	100.00	3	99.99	98.13	98.53	100.00	99.86	99.86	1.87		99.88	99.85	99.97	99.88	-0.03	99.95	56	12.4	gate-r5-set,leak-38,session-300-opponents,weak-pbi
+1175	jcw.ArcherOne 1.0	11.35	sweep				99.47	100.00	6	98.41	97.61	98.19	99.62	98.73	98.41	2.01		99.61	99.63	99.86	99.63	+0.16		0		
+1176	mym.EdgeStalker 1.0	11.35	sweep				99.69	100.00	2	99.69	97.99	96.60	99.58	99.81	99.58	3.21		99.96	99.77	99.99	99.96	+0.27		0		session-300-opponents
+1177	mc.Messapia 0.1.8	11.30	sweep				99.75	100.00	3	99.12	98.03	99.76	99.60	99.83	99.60	1.80		99.97	99.91	99.96	99.96	+0.21		0		session-300-opponents
+1178	daemons.DizzyA 1.0	11.10	sweep				99.09	100.00	3	97.95	98.47	97.84	98.82	99.62	98.47	1.78		99.63	99.69	100.00	99.69	+0.60		0		session-300-opponents
+1179	sample.Corners 1.0	10.92	sweep				100.00	100.00	2	99.00	99.00	97.06	100.00	100.00	99.00	2.94		99.97	99.94	99.92	99.94	-0.06		0		
+1180	japs.Serenity 1.0	10.33	sweep				99.15	100.00	2	95.58	98.32	98.07	98.98	99.31	98.32	3.73		99.88	99.96	99.97	99.96	+0.81	98.78	56	12.9	leak-38
+1181	snowman.Snowman 1.0	10.00	sweep				100.00	100.00	3	99.84	99.02	98.85	100.00	100.00	99.84	1.15		99.86	100.00	99.98	99.98	-0.02		0		
+1182	amk.Punbot.Punbot 0.01	9.99	sweep				99.47	100.00	2	98.63	98.09	98.38	99.45	99.50	98.63	1.41		98.93	99.27	99.21	99.21	-0.27		0		
+1183	ncj.MoxieBot 1.0	9.93	farm	ROUNDS			92.28	82.86	2	98.81	98.89	96.44	96.77	87.80	96.77	11.09		96.54	97.86	97.99	97.86	+5.58		0		
+1184	mjhjd.MattHussey1 1.1	9.87	sweep				99.76	100.00	2	99.81	98.68	99.01	99.52	100.00	99.52	1.32		99.96	99.89	99.99	99.96	+0.20		0		
+1185	is.fon.rs.FonDestroyer3084 1.0	9.75	sweep				99.69	100.00	6	99.86	97.40	99.94	99.58	99.79	99.79	2.54		99.91	99.88	99.98	99.91	+0.22		0		
+1186	maye.SlashBot 1.0	9.71	sweep				99.29	100.00	2	99.61	98.29	98.60	99.10	99.49	99.10	1.32		99.97	99.93	99.96	99.96	+0.67		0		session-300-opponents
+1187	sample.Crazy 1.0	9.66	sweep				98.81	100.00	3	98.42	98.05	97.85	99.06	98.32	98.32	1.21		99.86	99.63	99.89	99.86	+1.05		0		session-300-opponents
+1188	el.Attackr 0.1	9.33	sweep				99.34	100.00	4	99.72	95.20	97.31	99.06	99.63	99.06	4.52		98.86	98.89	99.32	98.89	-0.45		0		
+1189	chickenfuego.UrChicken2 1.0	9.12	sweep				99.96	100.00	3	99.98	99.00	98.81	99.97	99.93	99.93	1.17		99.95	99.93	99.98	99.95	-0.01		0		session-300-opponents
+1190	paket.MojRobot 1.0	9.03	sweep				100.00	100.00	2	100.00	98.91	97.96	100.00	100.00	100.00	2.04		99.92	99.97	99.95	99.95	-0.05		0		
+1191	hfgrobots.HFG 1.0	8.85	sweep				99.85	100.00	4	99.77	98.85	98.71	99.80	100.00	99.77	1.29		99.74	99.93	99.97	99.93	+0.08		0		
+1192	yabot.YaBot 0.1	8.67	sweep				99.90	100.00	4	99.80	98.53	98.02	99.87	100.00	99.80	1.98		99.96	99.86	99.96	99.96	+0.06		0		
+1193	sample.Fire 1.0	8.30	sweep				99.97	100.00	4	100.00	98.71	98.87	99.98	99.93	99.93	1.29		99.91	99.93	99.98	99.93	-0.04		0		
+1194	lw.LuthersTest 0.1	8.09	sweep				99.84	100.00	4	100.00	98.92	98.69	99.85	99.84	99.84	1.31		99.94	99.94	99.96	99.94	+0.09		0		session-300-opponents
+1195	jgap.JGAP12584 1.0	6.63	sweep				99.30	100.00	3	98.13	97.66	97.45	99.13	99.65	98.13	2.20		98.78	99.18	99.21	99.18	-0.12		0		session-300-opponents
+1196	drd.Dreadknoght 0.9	6.55	sweep				99.99	100.00	5	98.87	98.73	98.90	99.99	99.99	98.90	1.26		99.98	99.96	99.99	99.98	-0.01		0		
+1197	nz.A7Ibwenape A7Ibwen1.0	5.43	sweep				99.07	100.00	2	99.48	97.62	97.95	98.83	99.32	98.83	1.86		99.38	99.26	99.48	99.38	+0.31		0		
+1198	logiblocs.Fire 1.0	4.27	sweep				98.71	100.00	2	98.84	97.95	97.99	97.71	99.71	97.99	2.00		98.34	99.04	98.99	98.99	+0.28		0		
+1199	disan.Ghost .01	3.92	sweep				100.00	100.00	2	99.67	98.99	99.00	100.00	100.00	99.67	1.01		100.00	100.00	99.96	100.00	+0.00		0		session-300-opponents,shield-list
+1200	logiblocs.SittingDroid 1.0	3.25	sweep				100.00	100.00	3	100.00	99.14	99.14	100.00	100.00	100.00	0.86		100.00	100.00	100.00	100.00	+0.00		0		shield-list,shield-panel
+1201	davv.DOne b002	3.05	sweep				99.87	100.00	5	99.00	98.94	99.01	99.98	99.79	99.01	1.04		99.90	99.86	99.83	99.86	-0.01		0		session-300-opponents
+1202	ad.last.Bottom 1.0	2.58	sweep				99.95	100.00	5	99.97	99.00	99.46	99.94	99.96	99.94	0.97		99.84	99.97	99.97	99.97	+0.02		0		
+1203	ArchAlpha.ArchimedesAlpha 1.0	2.55	sweep				100.00	100.00	2	100.00	99.03	99.03	100.00	100.00	100.00	0.97		100.00	100.00	100.00	100.00	+0.00		0		
+1204	com.sociesc.T1000 1.0.0	2.55	sweep				100.00	100.00	4	100.00	99.03	99.51	99.99	100.00	99.99	0.97		100.00	100.00	100.00	100.00	+0.00		0		shield-list
+1205	sample.SittingDuck 1.0	2.44	sweep				100.00	100.00	2	100.00	99.03	99.03	100.00	100.00	100.00	0.97		100.00	100.00	100.00	100.00	+0.00		0		
+1206	wiki.SuperSampleBot.SuperSittingDuck 1.0	2.34	sweep				99.82	100.00	5	99.72	99.01	100.00	99.71	99.98	99.72	0.99		99.96	99.99	99.99	99.99	+0.17		0		
+1207	sample.Target 1.0	2.32	sweep				100.00	100.00	5	100.00	99.02	99.02	100.00	100.00	100.00	0.98		100.00	100.00	100.00	100.00	+0.00	100.00	56	10.7	leak-38,session-300-opponents
+1208	uccc.Scrapple 1.0	2.21	sweep				97.44	100.00	2	100.00	97.10	98.68	96.20	98.67	98.67	3.80		99.99	99.95	99.98	99.98	+2.55		0		
+1209	cli.WasteOfAmmo 1.0	1.52	sweep				100.00	100.00	2	98.89	98.89	98.90	100.00	100.00	98.90	1.11		99.72	100.00	99.76	99.76	-0.24		0		shield-list,shield-panel
+1210	conscience.Suicidal 1.1	0.87	sweep				100.00	100.00	2	98.70	98.72	98.70	100.00	100.00	98.72	1.30		100.00	100.00	100.00	100.00	+0.00		0		shield-list
+1211	ry.Worst 1.0	0.59	sweep				100.00	100.00	3	98.81	98.81	98.80	100.00	100.00	98.81	1.20		100.00	100.00	99.96	100.00	+0.00		0		shield-list
+1212	sheldor.nano.Retreat 1.0	0.44	sweep		nano		100.00	100.00	2	100.00	98.83	98.83	100.00	100.00	100.00	1.17		100.00	100.00	100.00	100.00	+0.00		0		shield-list
+1213	eem.awful v1.2	0.44	sweep				100.00	100.00	3	100.00	97.16	97.07	100.00	100.00	100.00	2.93		100.00	100.00	100.00	100.00	+0.00		0		
+1214	suh.nano.Worst 1.02	0.41	sweep		nano		100.00	100.00	2	100.00	98.89	98.90	100.00	100.00	100.00	1.11		100.00	100.00	100.00	100.00	+0.00		0		session-300-opponents,shield-list
+1215	suzushin7.nano.Galaxy01 1.01	0.39	sweep		nano		100.00	100.00	4	98.89	98.89	99.26	100.00	100.00	99.26	1.11		100.00	100.00	100.00	100.00	+0.00		0		shield-list
+1216	mn.nano.SkippedTurns 1.1.0	0.00	sweep		nano		100.00	100.00	3	100.00	100.00	100.00	100.00	100.00	100.00	0.00		100.00	100.00	100.00	100.00	+0.00		0		

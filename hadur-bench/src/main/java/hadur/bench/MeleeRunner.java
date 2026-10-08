@@ -39,6 +39,7 @@ public final class MeleeRunner {
         List<String> names = List.of(args).subList(6, args.length);
         Files.createDirectories(battleDir);
 
+        JdkWarmup.run(); // BENCH-83: before any robot can be the first to need a JDK provider
         RobocodeEngine.setLogMessagesEnabled(false);
         RobocodeEngine engine = new RobocodeEngine(home);
         java.util.Set<String> sentries = new java.util.HashSet<>();

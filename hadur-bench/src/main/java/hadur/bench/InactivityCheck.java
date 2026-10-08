@@ -83,6 +83,7 @@ public final class InactivityCheck {
             install(robots, name, spender(name, p));
             names.add(name);
         }
+        JdkWarmup.run(); // BENCH-83: before any robot can be the first to need a JDK provider
         RobocodeEngine.setLogMessagesEnabled(false);
         RobocodeEngine engine = new RobocodeEngine(home.toFile());
         System.out.println("engine " + engine.getVersion());

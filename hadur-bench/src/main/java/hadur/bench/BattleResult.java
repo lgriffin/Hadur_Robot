@@ -92,11 +92,13 @@ public final class BattleResult {
      * ticks in duress (unknown counts as none), skipped at most {@code skipsPerRound} turns a
      * round on average, and delivered an R record for every round. A reference build (issue
      * #138) writes no R records, so the record rule is not applied to it and the engine's own
-     * skipped-turn count stands in.
+     * skipped-turn count stands in. A battle where the security manager denied a robot one of
+     * the JDK's own class-path resources is not trusted either (BENCH-84): that is the bench's
+     * class path talking, not the robot, and the robot it happens to has stopped playing.
      */
     boolean trusted(double skipsPerRound) {
         return ok && duressTicks <= 0 && (reference || roundRecords == rounds)
-            && skippedTurns <= skipsPerRound * rounds;
+            && skippedTurns <= skipsPerRound * rounds && hostDenials(errors) == 0;
     }
 
     boolean trusted() { return trusted(skipsPerRoundLimit()); }
@@ -108,7 +110,25 @@ public final class BattleResult {
         if (duressTicks > 0) why.add("duress");
         if (!reference && roundRecords != rounds) why.add("R records");
         if (skippedTurns > skipsPerRound * rounds) why.add("skips");
+        if (hostDenials(errors) > 0) why.add("JDK resource denied");
         return why;
+    }
+
+    /**
+     * BENCH-84: how many of the security manager's denials name a JDK service resource on the
+     * class path ({@code META-INF/...} under a bench directory), which only the bench's class
+     * path causes (BENCH-83, issue #151). A robot denied its own excess (a write over quota, a
+     * file outside its directory) is playing as it would live and is not counted.
+     */
+    static int hostDenials(String errors) {
+        if (errors == null) return 0;
+        int n = 0;
+        for (int i = errors.indexOf("Preventing "); i >= 0; i = errors.indexOf("Preventing ", i + 1)) {
+            int end = errors.indexOf("Preventing ", i + 1);
+            String one = errors.substring(i, end < 0 ? errors.length() : end);
+            if (one.contains("META-INF")) n++;
+        }
+        return n;
     }
 
     /** How many security-manager denials an engine error text holds (each reads "Preventing X from access"). */

@@ -250,7 +250,8 @@ def _num(row, key):
 
 def untrusted_reasons(row, skips_per_round=2.0):
     """Why a battle row is not trusted, mirroring BattleResult.trusted(): duress ticks, a missing
-    R record, or more than skips_per_round skipped turns a round. The one exception is the last
+    R record, more than skips_per_round skipped turns a round, or a JDK resource denied to a robot
+    (BENCH-84). The one exception is the last
     round's record that never arrives on this engine (finalRMissing, G14), which both builds
     share and which is not held against a row; with no rShortfall column any record short of
     the rounds counts. Columns the TSV lacks are not held against the row. A reference build
@@ -272,7 +273,17 @@ def untrusted_reasons(row, skips_per_round=2.0):
     skips = _num(row, "skippedTurns")
     if rounds is not None and skips is not None and skips > skips_per_round * rounds:
         why.append("skips")
+    if host_denials(row.get("errors", "")) > 0:
+        why.append("JDK resource denied")
     return why
+
+
+def host_denials(errors):
+    """BENCH-84, as BattleResult.hostDenials(): security-manager denials naming a JDK service
+    resource (META-INF/...) on the bench's class path, which cripple the robot they hit and never
+    happen on a RoboRumble client (issue #151)."""
+    parts = str(errors or "").split("Preventing ")[1:]
+    return sum(1 for p in parts if "META-INF" in p)
 
 
 def pair(rows, metric, candidate, baseline, scale, weight_col=None):

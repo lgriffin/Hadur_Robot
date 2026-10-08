@@ -36,6 +36,7 @@ public final class BattleRunner {
         String them = args[6];
         Files.createDirectories(battleDir);
 
+        JdkWarmup.run(); // BENCH-83: before any robot can be the first to need a JDK provider
         RobocodeEngine.setLogMessagesEnabled(false);
         RobocodeEngine engine = new RobocodeEngine(home);
         LogHarvester harvester = new LogHarvester(battleDir, us);

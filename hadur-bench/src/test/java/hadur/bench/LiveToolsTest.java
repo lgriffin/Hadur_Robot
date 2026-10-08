@@ -51,6 +51,34 @@ class LiveToolsTest {
         assertEquals(0, unittest("test_literumble.AnalyseLiveTest"));
     }
 
+    @Test
+    @Tag("BENCH-80")
+    @DisplayName("two live passes compared off the opponents the change touched, with the drift's interval")
+    void drift() throws Exception {
+        assertEquals(0, unittest("test_live_passes.DriftTest"));
+    }
+
+    @Test
+    @Tag("BENCH-81")
+    @DisplayName("single-battle pairings far under Hadur's other passes, per pass")
+    void collapses() throws Exception {
+        assertEquals(0, unittest("test_live_passes.CollapsesTest"));
+    }
+
+    @Test
+    @Tag("BENCH-82")
+    @DisplayName("every opponent classed by tier, problem tags, kind and the room at the peers' median")
+    void classify() throws Exception {
+        assertEquals(0, unittest("test_live_passes.ClassifyTest"));
+    }
+
+    @Test
+    @Tag("BENCH-84")
+    @DisplayName("analyse.py does not trust a battle where a robot was denied a JDK class-path resource")
+    void hostDenial() throws Exception {
+        assertEquals(0, unittest("test_live_passes.HostDenialTest"));
+    }
+
     private static int unittest(String target) throws IOException, InterruptedException {
         assumeTrue(python(), "python3 is not on the PATH");
         Path log = Files.createTempFile("literumble", ".log");
