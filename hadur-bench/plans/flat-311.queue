@@ -23,3 +23,8 @@ top20-nf  | ./bench-top20.sh --skip-build ${COMMON} --set top20.txt --seeds 5 ${
 # 3. The weak tail, 4 seeds. Must stay level.
 tail-nf   | ./bench-top20.sh --skip-build ${COMMON} --set tail-39.txt --seeds 4 ${CNF} ${B310} --label tail-310nf-v310-pc
   after: prep
+# 4. Added after the cloud top-20 read (-1.8 ± 2.3, 13 of 20 down): the 32 random bots ranked 21st
+#    and below (leak-38.txt), 3 seeds. The mid-field is most of the 1,215 pairings, so it decides
+#    whether the flattener goes off for everyone or only by a rule.
+mid-nf    | ./fetch-opponents.sh --set leak-38.txt && ./bench-top20.sh --skip-build ${COMMON} --set leak-38.txt --seeds 3 ${CNF} ${B310} --label mid-310nf-v310-pc
+  after: prep

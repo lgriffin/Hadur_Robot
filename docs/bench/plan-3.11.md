@@ -54,6 +54,10 @@ the next 20 ticks", a near-straight line, which a head-on or linear gun at 180 p
    21 of 30 up; their hit rate 0.165 to 0.153, bullet damage 984 to 917. The flattener's visits
    dilute the hits that head-on, linear and pattern guns leave in one place. Whether the top 20
    (learning guns, where the flattener earns its keep) pays for it is benched next.
+   **Top 20 (cloud, 3 seeds, `data/bench/2026-10-08_hadur-top20-310nf-v310-cloud_cold.tsv`):
+   -1.8 ± 2.3 a bot, 13 of 20 down.** The gain on the 30 does not follow the enemy's hit rate
+   (it is spread from 3% to 66%), so no hit-rate threshold separates the two groups. The mid-field
+   sample (`leak-38.txt`) on Leigh's PC decides between off for everyone and a narrower rule.
 3. **Gate:** `gate-311.txt` (45 bots), 8 seeds paired against 3.10: the pooled difference's
    interval above 0. The top 20 and the weak tail (`top20.txt`, `tail-39.txt`) stay level.
 
