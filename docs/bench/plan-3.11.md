@@ -40,6 +40,11 @@ the next 20 ticks", a near-straight line, which a head-on or linear gun at 180 p
    distance goal, but choose among headings that keep the pursuer out of ram range the one with
    the least danger from the enemy's waves (head-on and linear first), so the run is not a
    straight line. Measure: their hit rate during escape, from 0.47 down.
+   **Result (RAM-4, 3.11 against 3.10, same 15 rammers, 4 seeds, cloud,
+   `data/bench/2026-10-08_hadur-rammers-311a-v310-cloud_cold.tsv`): level, +0.14 ± 1.15 a bot;
+   their hit rate 0.47 to 0.46, bullet damage 2,112 to 2,046.** With the escape off (3.10nr) the
+   rammers also hit 0.48, so the escape's path is not where they hit Hadur: the hits come at
+   ranges where no path dodges. RAM-4 is harmless and stays only if 3.11 ships for another reason.
 2. **Movement against simple guns (30 bots, +0.18 APS).** They hit Hadur 17% of the time at
    357 px, three times the rate of the rest. Check what the surf does in the first waves against a
    head-on or linear shooter (the danger it gives to GF 0 and to the linear angle) before changing
