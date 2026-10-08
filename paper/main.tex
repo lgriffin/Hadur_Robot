@@ -147,8 +147,8 @@ pace safe.
 \begin{figure}[t]
 \centering
 \resizebox{\columnwidth}{!}{\input{figures/steel-thread}}
-\caption{The steel thread. Every stage of every plan ran this loop. Orange steps are the human's;
-blue steps were done by agents. A failed gate returns to the plan, not to the code.}
+\caption{The steel thread. Every stage ran the loop from plan to gate; each release, which often
+bundled several stages, ran the rest. Orange steps are the human's; blue steps were done by agents. A failed gate returns to the plan, not to the code.}
 \label{fig:thread}
 \end{figure}
 
@@ -187,8 +187,9 @@ tests and code from drifting apart. None is new. Together they let an agent chan
 
 \begin{table}[t]
 \centering
-\caption{The layers that keep strategy, requirements and code aligned. Each fails the build or
-the merge when it is violated.}
+\caption{The layers that keep strategy, requirements and code aligned. The first seven fail the
+build; the last two are process gates, read before a merge or after a release, and a release can
+go ahead of its bench gate (3.8.5 did).}
 \label{tab:honesty}
 \small
 \begin{tabularx}{\columnwidth}{@{}lX@{}}
@@ -336,7 +337,7 @@ plan aimed at DrussGT, a long-time leader. The bench showed both robots' guns hi
 break-even against each other, so the robot firing lighter bullets keeps its lead; D1 taught the
 duel that, and the gate rose 12 points against DrussGT. 3.8 shipped five such stages. Live, it
 gained 5.2 points per pairing against the top 10, where it was aimed, and fell to 29th. Against
-every opponent ranked 21st and below it lost 1.55 points per pairing, mostly through lost rounds,
+opponents ranked 21st and below it lost 1.55 points per pairing on average, mostly through lost rounds,
 and with about 1,200 such pairings that outweighed the gain at the top. 3.8.5 scoped the route to
 duels the robot was not already winning on the guns and recovered a fifth of the loss. A bisect of
 releases on the opponents that had beaten 3.4 then put the remaining loss in 3.5's rammer escape,
