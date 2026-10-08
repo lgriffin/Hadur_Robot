@@ -77,6 +77,31 @@
    "published": "2026-10-08T08:45Z"
   },
   {
+   "id": "2026-10-08_shield-310-v39",
+   "date": "2026-10-08",
+   "label": "shield-310-v39",
+   "kind": "solo",
+   "set": "shield-310.txt",
+   "engine": "1.11.1",
+   "source": "work directory",
+   "candidate": "hadur2.Hadur 3.10",
+   "baseline": "hadur2.Hadur 3.9",
+   "seeds": 8,
+   "rounds": 35,
+   "gate": "CAUTION",
+   "verdict": "up",
+   "diff": 11.740873493975904,
+   "ci95": [
+    10.217239382279681,
+    13.264507605672128
+   ],
+   "n": 664,
+   "opponents": 83,
+   "host": "AMD Ryzen Threadripper PRO 9965WX 24-Cores, 48 logical cores, Windows 11 10.0, no other Robocode JVMs running",
+   "path": "runs/2026-10-08_shield-310-v39/",
+   "published": "2026-10-08T08:45Z"
+  },
+  {
    "id": "2026-10-07_weak-39r-v385",
    "date": "2026-10-07",
    "label": "weak-39r-v385",
