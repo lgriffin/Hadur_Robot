@@ -1,7 +1,7 @@
 # 3.11: what to attack, and the gate
 
 2026-10-08, after [peergap-310](local/2026-10-08_peergap-310-findings.md) and
-[live-3.10](live-3.10.md). No robot code is changed here.
+[live-3.10](live-3.10.md). No robot code is changed here: both candidates below were built, benched and left out.
 
 ## Where the score goes
 
@@ -44,7 +44,7 @@ the next 20 ticks", a near-straight line, which a head-on or linear gun at 180 p
    `data/bench/2026-10-08_hadur-rammers-311a-v310-cloud_cold.tsv`): level, +0.14 ± 1.15 a bot;
    their hit rate 0.47 to 0.46, bullet damage 2,112 to 2,046.** With the escape off (3.10nr) the
    rammers also hit 0.48, so the escape's path is not where they hit Hadur: the hits come at
-   ranges where no path dodges. RAM-4 is harmless and stays only if 3.11 ships for another reason.
+   ranges where no path dodges. RAM-4 is not shipped; its code is commit e2520468 on this branch's history.
 2. **Movement against simple guns (30 bots, +0.18 APS).** They hit Hadur 17% of the time at
    357 px, three times the rate of the rest. Check what the surf does in the first waves against a
    head-on or linear shooter (the danger it gives to GF 0 and to the linear angle) before changing
@@ -58,6 +58,13 @@ the next 20 ticks", a near-straight line, which a head-on or linear gun at 180 p
    -1.8 ± 2.3 a bot, 13 of 20 down.** The gain on the 30 does not follow the enemy's hit rate
    (it is spread from 3% to 66%), so no hit-rate threshold separates the two groups. The mid-field
    sample (`leak-38.txt`) on Leigh's PC decides between off for everyone and a narrower rule.
+   **Leigh's PC (PR #161, 8 fresh seeds on the 30, 5 on the top 20, 4 on the tail): the 30
+   +0.31 [-0.60, +1.22], the top 20 -1.06 [-2.98, +0.87], the tail level.** The cloud's +1.0 did not
+   hold on fresh seeds, so the flattener stays on and the mid-field step (`flat-311` step 4) is
+   not needed.
+
+**Outcome: no 3.11.** Neither change clears its own measure, so there is nothing to release.
+3.10 stays live; its own clean pass (about +1.2 if the 87.7 reading holds) is the next mover.
 3. **Gate:** `gate-311.txt` (45 bots), 8 seeds paired against 3.10: the pooled difference's
    interval above 0. The top 20 and the weak tail (`top20.txt`, `tail-39.txt`) stay level.
 

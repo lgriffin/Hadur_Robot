@@ -1084,26 +1084,6 @@ pure rammers (docs/bench/r9-weak-leak.md), so it is tried, not dropped.
   first, so a battle plays as 3.5 did from the fifth ram round. Against a fighter that 3.4 beat,
   two escape rounds are the cost before Hadur fights again.
 
-### D9: the escape that crosses (release 3.11)
-
-[plan-3.11](bench/plan-3.11.md): against the 15 BENCHSEES rammers the escape keeps its rounds
-(switched off it loses 4.8 points a bot) but the rammer still hits 47% of its shots, because
-the heading that keeps it furthest away is a near-straight run along its line of fire.
-
-| ID | Pattern | Requirement | Stage |
-|---|---|---|---|
-| RAM-4 | State | While RAM-2's escape drives, when the heading that keeps the pursuer furthest away keeps it at least 140 px away over the next 20 ticks, movement shall drive, among the headings that keep it within 40 px of that distance at closest and within 15 px of its distance at the end, the one whose run crosses the enemy's line of fire most; otherwise it shall drive RAM-2's heading. | D9 |
-
-#### D9 notes
-
-- **RAM-4** is `move.RamEscape.choose`: every candidate heading is played for `HORIZON` ticks
-  against the pursuer, scoring its closest approach, its mean distance and `cross`, the mean
-  `|sin|` of the angle between our travel and the line from the enemy to us. With room
-  (`SAFE + SLACK` = 140 px at best), the widest crossing within `SLACK` of the best minimum and
-  `END_SLACK` of the best end distance wins; without it, RAM-2's order (larger minimum, larger
-  mean, smaller turn). Crossing the line moves our bearing from the rammer every tick, which a
-  head-on or linear gun at 180 px does not follow.
-
 ## The Team plan (T1)
 
 [team-plan-t1.md](team-plan-t1.md) answers the A5 baseline's teammate collisions and friendly fire
