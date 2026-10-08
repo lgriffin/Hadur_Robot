@@ -118,6 +118,8 @@ public final class Bench {
      * home so their data directories never meet; 1 runs them one after another, as before.
      */
     private final int parallel;
+    /** BENCH-72: added to each seed before it reaches the engine, so seeds 1..N can be fresh ones. */
+    private final int seedBase;
     private final boolean warm;
     /** Where replay fixtures go, or null when not recording. */
     private final Path record;
@@ -178,6 +180,11 @@ public final class Bench {
                                           : opts.getOrDefault("seeds", "5"));
         this.parallel = Integer.parseInt(opts.getOrDefault("parallel", "1"));
         if (parallel < 1) throw new IllegalArgumentException("--parallel must be at least 1, not " + parallel);
+        this.seedBase = Integer.parseInt(opts.getOrDefault("seed-base", "0"));
+        if (seedBase < 0 || seedBase > Integer.MAX_VALUE - Math.max(runs, 1)) {
+            throw new IllegalArgumentException("--seed-base must be 0 or more and leave room for " + runs
+                + " seeds, not " + seedBase);
+        }
         int[] field = parseField(opts.getOrDefault("field", "800x600"));
         this.width = field[0];
         this.height = field[1];
@@ -379,7 +386,7 @@ public final class Bench {
             + " (" + baselineJar + ")"));
         System.out.println("  set " + opts.getOrDefault("set", "reference-set.txt") + ": " + opponents.size() + " opponents; "
             + battles + " battles of " + rounds + " rounds on " + width + "x" + height
-            + ", parallel " + parallel + ", retries " + retries);
+            + ", parallel " + parallel + ", retries " + retries + (seedBase == 0 ? "" : ", seed base " + seedBase));
         System.out.println("  child flags " + childFlags() + ", cpu constant "
             + (opts.containsKey("cpu-constant") ? opts.get("cpu-constant") : "engine's own") + ", out " + out);
         System.out.println("  memory: " + Memory.check(Memory.freeMb(), parallel, childHeap()).message());
@@ -629,6 +636,15 @@ public final class Bench {
             if (!warm) wipeData(h);
             fightCandidate(h, o, seed, cand, stored, index);
         }
+    }
+
+    /**
+     * BENCH-72: the engine's random seed for the bench's seed {@code seed} (1..N). With
+     * {@code --seed-base B} it is {@code B + seed}, so a confirmation run can fight seeds no
+     * earlier run used while rows, pairing and reports still count seeds from 1.
+     */
+    static int engineSeed(int seed, int seedBase) {
+        return Math.addExact(seedBase, seed);
     }
 
     /** BENCH-52: the candidate goes first on odd seeds, the baseline on even ones. */
@@ -897,7 +913,7 @@ public final class Bench {
         cmd.add(javaBin);
         cmd.addAll(JVM_FLAGS);
         cmd.addAll(childFlags());
-        cmd.add("-DRANDOMSEED=" + seed);
+        cmd.add("-DRANDOMSEED=" + engineSeed(seed, seedBase));
         Path transcript = dir.resolve("transcript.txt");
         if (record != null) {
             // The recorder writes its transcript straight to disk.
@@ -1083,7 +1099,7 @@ public final class Bench {
             cmd.add(defaultJavaBin());
             cmd.addAll(JVM_FLAGS);
             cmd.addAll(childFlags());
-            cmd.add("-DRANDOMSEED=" + seed);
+            cmd.add("-DRANDOMSEED=" + engineSeed(seed, seedBase));
             cmd.add("-Dhadur.sentries=" + String.join(",", sentries));
             Path transcript = dir.resolve("transcript.txt");
             if (record != null && candidate) {
@@ -1218,7 +1234,7 @@ public final class Bench {
             cmd.add(defaultJavaBin());
             cmd.addAll(JVM_FLAGS);
             cmd.addAll(childFlags());
-            cmd.add("-DRANDOMSEED=" + seed);
+            cmd.add("-DRANDOMSEED=" + engineSeed(seed, seedBase));
             Path transcript = dir.resolve("transcript.txt");
             boolean recording = record != null && candidate;
             if (recording) {

@@ -14,8 +14,8 @@ import org.junit.jupiter.api.Test;
  * SHIELD-5: Hadur's own shield list ships as a class of the robot jar, {@link ShieldListData},
  * because Robocode's sandbox denies a robot the read of a resource in its own jar (found by
  * the bench's smoke run). Whatever names are on it, every entry must be a robot name the core
- * can match, and the list holds exactly the 14 robots the BENCH-11 probe (docs/bench/d5-probe.md)
- * chose.
+ * can match, and the list holds the 14 robots the BENCH-11 probe (docs/bench/d5-probe.md) chose
+ * and the 83 the 3.10 shield sweep (docs/bench/local/2026-10-08_shield-sweep.md) admitted.
  */
 @Tag("SHIELD-5")
 class ShieldListResourceTest {
@@ -44,7 +44,7 @@ class ShieldListResourceTest {
     @DisplayName("the list holds the 14 robots of the D5 probe and nobody the probe lost against")
     void listHoldsTheProbedRobots() {
         ShieldList list = ShieldList.parse(Arrays.asList(ShieldListData.lines()));
-        assertEquals(14, list.size());
+        assertEquals(14 + 83, list.size());
         for (String name : new String[] {
             "apv.test.Virus 0.6.1", "kcn.unnamed.Unnamed 1.21", "simonton.mega.SniperFrog 1.0.fix2",
             "vic.Locke 0.7.5.5", "cx.micro.Smoke 0.96", "dft.Virgin 1.25", "kid.Gladiator .7.2",
@@ -58,6 +58,28 @@ class ShieldListResourceTest {
             "gh.nano.Grofvuil 0.2", "sample.Fire", "suh.nano.OscillatorL 1.00"}) {
             assertTrue(!list.matches(name), name);
         }
+    }
+
+    @Test
+    @DisplayName("the list holds the sweep's admitted robots and none of the robots shield mode lost to")
+    void listHoldsTheSweptRobots() {
+        ShieldList list = ShieldList.parse(Arrays.asList(ShieldListData.lines()));
+        // The sweep's largest gains in each group: the #140 thirty, ranks 51-400, ranks 401-700.
+        for (String name : new String[] {
+            "dft.Cyanide 1.90", "cf.proto.Shiva 2.2", "simonton.beta.LifelongObsession 0.5.1",
+            "simonton.mini.WeeksOnEnd 1.10.4", "pez.clean.Swiffer 0.2.9", "vuen.Fractal 0.55",
+            "zen.Lindada 0.2"}) {
+            assertTrue(list.matches(name), name);
+        }
+        // Robots whose interval lay below 0: shield mode costs points on them.
+        for (String name : new String[] {
+            "css.Delitioner 0.11", "dz.Caedo 1.4", "pedersen.Hubris 2.4",
+            "sqTank.waveSurfing.LionWWSVMvoid 0.01", "suh.mega.WaveSurferGF 1.04", "rz.Artist 0.2",
+            "ratosh.Nobo 0.21", "dy.LevelOne 2.0", "rjw.RabidWombat 0.71"}) {
+            assertTrue(!list.matches(name), name);
+        }
+        // Entries carry a version: a robot's next release is not on the list until benched.
+        assertTrue(!list.matches("dft.Cyanide 1.91"));
     }
 
     @Test
