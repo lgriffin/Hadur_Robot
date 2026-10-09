@@ -94,10 +94,31 @@ so efficiency against weak bots (damage taken, how fast they die) is where 10th 
 | M1 census, 3.10 and Tomcat | PC | **Done** 2026-10-09 ([findings](bench/local/2026-10-09_census-311-findings.md), PR #165). Bench gap -0.48 vs live -0.35; G1 met overall. |
 | M2 noise budget | from M1 rows | **Done.** A/A +0.05 (-0.20 to +0.30); M4 threshold 0.25 APS. |
 | M3 deficit ledger | from M1 rows | **Done.** Two clusters pass G3 (ranks 701+ -0.47, 401-700 -0.23). Follow-up: [start-up duress](bench/local/2026-10-09_census-311-duress.md) costs about 0.62 APS on the bench. |
-| M4 candidates | PC | **Next.** `hadur-bench/plans/m4-311.queue`: duress off, TIME-3 off, both, on a 400-bot screen; plus a parallel-4 load check. About 4.5 hours. |
-| M5 release | Leigh | only if G4 and the +0.3 margin hold |
+| M4 screen | PC | **Done** 2026-10-09 ([findings](bench/local/2026-10-09_screen-311-findings.md), PR #167). Duress off (`nd`) +0.72 APS (+0.38 to +1.06); TIME-3 off nothing; the duress cost is all in round 0. |
+| M4 full census, slow-client check, M5 bench gate | PC | **Next.** `hadur-bench/plans/census-312.queue`: `nd` against 3.10 with half the CPU constant, then against 3.10 on the whole field, then Tomcat against `nd`. About 11 hours, an overnight run. |
+| M5 release | Leigh | only if all three steps pass |
 
-### Running M4 on the PC
+### Running census-312 on the PC
+
+1. Stop the RoboRumble workers; `jps -l` shows no Robocode JVM.
+2. Pull master, then from `hadur-bench\`: `.\queue.ps1 run census-312`. Steps `slow`, `g4` and
+   `m5` each depend only on `prep` and run in that order; `slow` is about an hour, so its answer
+   comes first.
+3. Read each step with `python3 data/tools/screen_paired.py <rows.tsv> <rounds.tsv> --candidate ...
+   --baseline ... --set ...` (sets: `screen-311.txt` for `slow`, `census-312.txt` for `g4`,
+   `census-312-tomcat.txt` for `m5`), commit rows and reports as before, and post the branch here.
+
+Pass rules, fixed before the data:
+- `slow` (RES-9's own case: turns skipped all battle long): `nd` at least -0.10 APS against 3.10,
+  with 3.10's duress rate well above the 32 to 36% the screen showed. If `nd` loses here, the
+  candidate becomes "no duress from round-0 warm-up skips" rather than "no duress".
+- `g4` (G4 at 4 seeds, ±0.14 APS): gain at least +0.25 with the 95% lower bound above 0, no band
+  below -0.05 APS, and at least half the screen's gain (+0.36), which is G4's fresh-seed rerun.
+- `m5`: `nd` ahead of Tomcat by +0.3 APS or more on the bench. The census read 3.10 at -0.48, so
+  this needs about +0.8 from `nd`; short of it, the release call is Leigh's, with the expected
+  live range stated.
+
+### Running M4 on the PC (done)
 
 1. Stop the RoboRumble workers; `jps -l` shows no Robocode JVM.
 2. Pull master, then from `hadur-bench\`: `.\queue.ps1 run m4-311`. Steps `nd`, `nl`, `ndnl`
