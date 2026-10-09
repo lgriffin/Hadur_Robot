@@ -2,8 +2,9 @@
 
 Date: 2026-10-09. Reads the M1 census rows (PR #165) again for one question the findings left open:
 what the round-0 duress in 63% of Hadur's battles costs. Analysis only; no robot code changed.
-Script: `python3 data/tools/census_duress.py` (all completed rows; with the "another JVM" rows
-dropped the total reads 0.60 instead of 0.62).
+Script: `python3 data/tools/census_duress.py`. It applies the census row rules first (drops the 612
+"another JVM" rows and the 35 further battles with duress after round 0); `--keep-all` keeps them
+and reads 0.69 instead of 0.62.
 
 ## What duress is
 
@@ -23,16 +24,21 @@ drop too.
 
 | Band | Opponents with both | Hadur share, duress minus none (95%) | Damage Hadur takes, extra a battle | Tomcat, same seeds (95%) | Battles with duress | APS cost |
 |---|---:|---:|---:|---:|---:|---:|
-| 3 (51-200) | 130 | -1.67 (±1.24) | - | -0.01 (±0.81) | 44% | 0.09 |
-| 4 (201-400) | 164 | -1.60 (±0.72) | +38 | +0.52 (±0.54) | 61% | 0.18 |
-| 5 (401-700) | 233 | -1.39 (±0.54) | +51 | -0.18 (±0.30) | 61% | 0.16 |
-| 6 (701+) | 391 | -0.76 (±0.18) | +27 | -0.06 (±0.11) | 67% | 0.17 |
-| All bands | | | | | 61% | **0.62** |
+| 3 (51-200) | 123 | -1.58 (±1.26) | - | -0.01 (±0.82) | 44% | 0.08 |
+| 4 (201-400) | 139 | -1.59 (±0.81) | +38 | +0.58 (±0.60) | 61% | 0.19 |
+| 5 (401-700) | 217 | -1.30 (±0.56) | +52 | -0.14 (±0.32) | 61% | 0.17 |
+| 6 (701+) | 334 | -0.72 (±0.21) | +27 | -0.05 (±0.12) | 68% | 0.17 |
+| All bands | | | | | 61% | **0.62** (0.45 to 0.62) |
+
+APS cost: each opponent's share of battles with duress times its band's within-opponent
+difference (gap to Tomcat, duress minus none), summed over the band's opponents, over 1,215.
+Opponents with duress in every battle or in none have no difference of their own and take the
+band's; counting only the opponents that have both kinds of battle gives the lower bound, 0.45.
 
 - Tomcat is level on the seeds where Hadur hit duress, so the loss is Hadur's, not the seed's or
   the slot's.
-- Split by duress, the gap to Tomcat in band 4 is -1.18 with duress and +1.09 without; in band 6
-  -1.72 and -1.04. Without duress Hadur still trails in ranks 401 and below (about -0.4 APS of the
+- Split by duress, the gap to Tomcat in band 4 is -1.34 with duress and +0.92 without; in band 6
+  -1.69 and -1.03. Without duress Hadur still trails in ranks 401 and below (about -0.4 APS of the
   gap), so duress is one mechanism, not all of it.
 - Skipped turns alone barely matter within an opponent (r -0.07 to -0.08 against share in bands 5
   and 6); the cost comes with the switch to duress.

@@ -8,14 +8,35 @@ Reads the census rows (tail and top steps) from data/bench/. Every comparison is
 opponent: its duress battles against its battles without, so opponent difficulty cancels.
 Prints, per band, the battle conditions, the within-opponent difference in Hadur's score share
 and in the damage Hadur took, Tomcat's difference on the same seeds (the control), and the APS
-that the duress battles cost (difference times the share of battles with duress, summed over
-opponents, over 1,215). Standard library only.
+that the duress battles cost: for every opponent in the band, the band's within-opponent
+difference times that opponent's own share of battles with duress, summed and divided by 1,215
+(opponents with duress in every battle or in none have no difference of their own, so they take
+the band's). The sum over matched opponents alone is printed beside it as a lower bound.
+
+Applies the census row rules first (docs/bench/local/2026-10-09_census-311-findings.md): drops
+rows with security denials or another Robocode JVM, and the battles with duress after round 0
+(data/bench/2026-10-09_hadur-census-311-late-duress.tsv), and prints how many went. --keep-all
+keeps them, as a sensitivity check. Standard library only.
 """
-import csv,statistics as st,math,collections as C
+import argparse,csv,statistics as st,math,collections as C
+ap=argparse.ArgumentParser(description=__doc__.splitlines()[0])
+ap.add_argument('--keep-all',action='store_true',help='skip the census row rules')
+args=ap.parse_args()
+FILES={'tail':'data/bench/2026-10-08_hadur-census-311-tail-local_cold.tsv','top':'data/bench/2026-10-09_hadur-census-311-top-local_cold.tsv'}
+late={(r['step'],r['build'],r['opponent'],r['seed']) for r in csv.DictReader(open('data/bench/2026-10-09_hadur-census-311-late-duress.tsv'),delimiter='\t')}
 R=[]
-for f in ['data/bench/2026-10-08_hadur-census-311-tail-local_cold.tsv','data/bench/2026-10-09_hadur-census-311-top-local_cold.tsv']:
-    R+=list(csv.DictReader(open(f),delimiter='\t'))
+for step,f in FILES.items():
+    for r in csv.DictReader(open(f),delimiter='\t'):
+        r['step']=step; R.append(r)
 R=[r for r in R if r['ok']=='true' and r['rounds']=='35']
+def flagged(r):
+    if (r.get('securityErrors') or '0') not in ('','0'): return 'security'
+    if (r.get('otherJvms') or '0') not in ('','0','-1'): return 'otherJvms'
+    if (r['step'],r['build'],r['opponent'],r['seed']) in late: return 'late duress'
+    return None
+drop=C.Counter(flagged(r) for r in R if flagged(r))
+print('rows excluded by the census rules' + (' (kept: --keep-all)' if args.keep_all else ''),dict(drop))
+if not args.keep_all: R=[r for r in R if not flagged(r)]
 def fl(x):
     try: v=float(x); return None if math.isnan(v) else v
     except: return None
@@ -60,7 +81,7 @@ for b in [5,6]:
     cov=sum((a-mx)*(b_-my) for a,b_ in zip(xs,ys))/len(xs); 
     print('band',b,'within-opp slope share per skipped turn',round(cov/st.pvariance(xs),3),'r',round(cov/math.sqrt(st.pvariance(xs)*st.pvariance(ys)),3))
 print('--- gap to Tomcat on pairs split by Hadur duress, and APS worth of removing duress')
-tot=0
+tot=0; totm=0
 for b in range(1,7):
     P=[p for p in pairs if band(p[0])==b]
     g=C.defaultdict(lambda:{'d':[],'n':[]})
@@ -69,11 +90,13 @@ for b in range(1,7):
         g[h['opponent']][k].append((float(h['score_share'])-float(t['score_share']))*100)
     dd=[st.mean(v['d']) for v in g.values() if v['d']]; nn=[st.mean(v['n']) for v in g.values() if v['n']]
     both=[(st.mean(v['d'])-st.mean(v['n']), len(v['d'])/(len(v['d'])+len(v['n']))) for v in g.values() if v['d'] and v['n']]
-    worth=sum(-x*f for x,f in both)/len(both)*len(g)/1215 if both else 0
-    tot+=worth
+    effect=st.mean(x for x,_ in both) if both else 0
+    worth=sum(-effect*len(v['d'])/(len(v['d'])+len(v['n'])) for v in g.values())/1215
+    matched=sum(-x*f for x,f in both)/1215
+    tot+=worth; totm+=matched
     se=1.96*st.stdev([x for x,_ in both])/math.sqrt(len(both)) if len(both)>2 else float('nan')
-    print(b,'opps',len(g),'gap dur',round(st.mean(dd),2) if dd else None,'gap none',round(st.mean(nn),2) if nn else None,'within',round(st.mean([x for x,_ in both]),2) if both else None,'+-',round(se,2),'worth APS',round(worth,3))
-print('total worth',round(tot,3))
+    print(b,'opps',len(g),'gap dur',round(st.mean(dd),2) if dd else None,'gap none',round(st.mean(nn),2) if nn else None,'within',round(st.mean([x for x,_ in both]),2) if both else None,'+-',round(se,2),'worth APS',round(worth,3),'matched only',round(matched,3))
+print('total worth',round(tot,3),'matched only',round(totm,3))
 # duress ticks distribution
 dt=C.Counter(int(fl(h['duressTicks']) or 0) for h,t in pairs)
 print(dt.most_common(8))

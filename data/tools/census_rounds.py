@@ -5,13 +5,13 @@
         [--set hadur-bench/census-311.txt]
 
 ROUNDS.tsv is a bench rounds table (BENCH-23: one row per battle and round, with role, round,
-won, damageDealt, damageTaken, duressTicks, skips). The band comes from the row's role
-when it has one, else from --set (a bench set file whose roles read rank<N>-band<B>). A battle counts as "duress" when any of its
-rounds spent ticks in duress. For each rank band (from the role, rank<N>-band<B>) the table gives
-round 0, round 1 and rounds 2-34 separately: mean damage taken and dealt, rounds lost per 100,
-and mean skipped turns, for battles with and without duress. If the duress battles lose their
-extra damage in round 0 only, the start-up skips are the cause; if every round is worse, the
-battle (or its host slot) is. Standard library only.
+won, damageDealt, damageTaken, duressTicks, skips). The band comes from the row's role when it
+names one (rank<N>-band<B>), else from the opponent's role in --set. A battle counts as "duress"
+when any of its rounds spent ticks in duress. For each band the table gives round 0, round 1 and
+rounds 2-34 separately: mean damage taken and dealt, rounds lost per 100 (rounds with no outcome
+record are left out and counted), and mean skipped turns, for battles with and without duress.
+If the duress battles lose their extra damage in round 0 only, the start-up skips are the cause;
+if every round is worse, the battle (or its host slot) is. Standard library only.
 """
 import argparse, collections, csv, re, statistics
 
@@ -36,8 +36,10 @@ def main():
                 battles[(f, r["opponent"], r["seed"])].append(r)
     num = lambda x: float(x) if x not in ("", "NaN", None) else 0.0
     cells = collections.defaultdict(lambda: collections.defaultdict(list))
+    unknown = 0
     for rs in battles.values():
-        m = re.search(r"band(\d+)", rs[0].get("role") or roles.get(rs[0]["opponent"], ""))
+        m = (re.search(r"band(\d+)", rs[0].get("role") or "")
+             or re.search(r"band(\d+)", roles.get(rs[0]["opponent"], "")))
         band = m.group(1) if m else "?"
         kind = "duress" if any(num(r["duressTicks"]) > 0 for r in rs) else "none"
         for r in rs:
@@ -45,7 +47,13 @@ def main():
             phase = "0" if i == 0 else "1" if i == 1 else "2-34"
             c = cells[(band, kind, phase)]
             c["taken"].append(num(r["damageTaken"])); c["dealt"].append(num(r["damageDealt"]))
-            c["lost"].append(0.0 if str(r["won"]).lower() in ("true", "1") else 100.0)
+            won = str(r["won"]).strip().lower()
+            if won in ("true", "1"):
+                c["lost"].append(0.0)
+            elif won in ("false", "0"):
+                c["lost"].append(100.0)
+            else:
+                unknown += 1
             c["skips"].append(num(r["skips"]))
     print("| Band | Battles | Round | Taken (duress / none) | Dealt (duress / none) | Lost per 100 (duress / none) | Skips (duress / none) |")
     print("|---|---|---|---|---|---|---|")
@@ -55,9 +63,11 @@ def main():
             if not d["taken"] or not n["taken"]:
                 continue
             nb = len(cells[(band, "duress", "0")]["taken"]) + len(cells[(band, "none", "0")]["taken"])
-            f = lambda c, k: f"{statistics.mean(c[k]):.1f}"
+            f = lambda c, k: f"{statistics.mean(c[k]):.1f}" if c[k] else "-"
             print(f"| {band} | {nb} | {phase} | {f(d,'taken')} / {f(n,'taken')} | {f(d,'dealt')} / {f(n,'dealt')} | "
                   f"{f(d,'lost')} / {f(n,'lost')} | {f(d,'skips')} / {f(n,'skips')} |")
+    if unknown:
+        print(f"\n{unknown} rounds had no outcome record (blank won); they are left out of Lost per 100.")
 
 if __name__ == "__main__":
     main()
