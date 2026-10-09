@@ -1,102 +1,102 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1451" width="900" height="1451" role="img" aria-label="Candidate minus baseline score share by bench run">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1495" width="900" height="1495" role="img" aria-label="Candidate minus baseline score share by bench run">
 <style>.bg{fill:#fff}.t{fill:#1f2328;font:12px sans-serif}.m{fill:#59636e;font:11px sans-serif}.g{stroke:#d1d9e0}.z{stroke:#59636e}.ci{stroke:#0b6bcb;stroke-width:2}.pt{fill:#0b6bcb;stroke:#fff;stroke-width:2}.pt.open{fill:#fff;stroke:#0b6bcb}@media (prefers-color-scheme:dark){.bg{fill:#0d1117}.t{fill:#e6edf3}.m{fill:#9198a1}.g{stroke:#30363d}.z{stroke:#9198a1}.ci{stroke:#58a6ff}.pt{fill:#58a6ff;stroke:#0d1117}.pt.open{fill:#0d1117;stroke:#58a6ff}}</style>
-<rect class="bg" width="900" height="1451"/>
+<rect class="bg" width="900" height="1495"/>
 <text class="t" x="16" y="22" font-weight="bold">Candidate minus baseline score share, by committed bench run</text>
 <text class="m" x="16" y="38">Percentage points, pooled over opponents, 95% interval. Right of zero means the candidate scored more.</text>
-<line class="g" x1="290.0" x2="290.0" y1="48" y2="1324"/>
-<text class="m" x="290.0" y="1340" text-anchor="middle">-19</text>
-<line class="g" x1="302.4" x2="302.4" y1="48" y2="1324"/>
-<text class="m" x="302.4" y="1340" text-anchor="middle">-18</text>
-<line class="g" x1="314.8" x2="314.8" y1="48" y2="1324"/>
-<text class="m" x="314.8" y="1340" text-anchor="middle">-17</text>
-<line class="g" x1="327.2" x2="327.2" y1="48" y2="1324"/>
-<text class="m" x="327.2" y="1340" text-anchor="middle">-16</text>
-<line class="g" x1="339.6" x2="339.6" y1="48" y2="1324"/>
-<text class="m" x="339.6" y="1340" text-anchor="middle">-15</text>
-<line class="g" x1="352.0" x2="352.0" y1="48" y2="1324"/>
-<text class="m" x="352.0" y="1340" text-anchor="middle">-14</text>
-<line class="g" x1="364.3" x2="364.3" y1="48" y2="1324"/>
-<text class="m" x="364.3" y="1340" text-anchor="middle">-13</text>
-<line class="g" x1="376.7" x2="376.7" y1="48" y2="1324"/>
-<text class="m" x="376.7" y="1340" text-anchor="middle">-12</text>
-<line class="g" x1="389.1" x2="389.1" y1="48" y2="1324"/>
-<text class="m" x="389.1" y="1340" text-anchor="middle">-11</text>
-<line class="g" x1="401.5" x2="401.5" y1="48" y2="1324"/>
-<text class="m" x="401.5" y="1340" text-anchor="middle">-10</text>
-<line class="g" x1="413.9" x2="413.9" y1="48" y2="1324"/>
-<text class="m" x="413.9" y="1340" text-anchor="middle">-9</text>
-<line class="g" x1="426.3" x2="426.3" y1="48" y2="1324"/>
-<text class="m" x="426.3" y="1340" text-anchor="middle">-8</text>
-<line class="g" x1="438.7" x2="438.7" y1="48" y2="1324"/>
-<text class="m" x="438.7" y="1340" text-anchor="middle">-7</text>
-<line class="g" x1="451.1" x2="451.1" y1="48" y2="1324"/>
-<text class="m" x="451.1" y="1340" text-anchor="middle">-6</text>
-<line class="g" x1="463.5" x2="463.5" y1="48" y2="1324"/>
-<text class="m" x="463.5" y="1340" text-anchor="middle">-5</text>
-<line class="g" x1="475.9" x2="475.9" y1="48" y2="1324"/>
-<text class="m" x="475.9" y="1340" text-anchor="middle">-4</text>
-<line class="g" x1="488.3" x2="488.3" y1="48" y2="1324"/>
-<text class="m" x="488.3" y="1340" text-anchor="middle">-3</text>
-<line class="g" x1="500.7" x2="500.7" y1="48" y2="1324"/>
-<text class="m" x="500.7" y="1340" text-anchor="middle">-2</text>
-<line class="g" x1="513.0" x2="513.0" y1="48" y2="1324"/>
-<text class="m" x="513.0" y="1340" text-anchor="middle">-1</text>
-<line class="z" x1="525.4" x2="525.4" y1="48" y2="1324"/>
-<text class="m" x="525.4" y="1340" text-anchor="middle">0</text>
-<line class="g" x1="537.8" x2="537.8" y1="48" y2="1324"/>
-<text class="m" x="537.8" y="1340" text-anchor="middle">+1</text>
-<line class="g" x1="550.2" x2="550.2" y1="48" y2="1324"/>
-<text class="m" x="550.2" y="1340" text-anchor="middle">+2</text>
-<line class="g" x1="562.6" x2="562.6" y1="48" y2="1324"/>
-<text class="m" x="562.6" y="1340" text-anchor="middle">+3</text>
-<line class="g" x1="575.0" x2="575.0" y1="48" y2="1324"/>
-<text class="m" x="575.0" y="1340" text-anchor="middle">+4</text>
-<line class="g" x1="587.4" x2="587.4" y1="48" y2="1324"/>
-<text class="m" x="587.4" y="1340" text-anchor="middle">+5</text>
-<line class="g" x1="599.8" x2="599.8" y1="48" y2="1324"/>
-<text class="m" x="599.8" y="1340" text-anchor="middle">+6</text>
-<line class="g" x1="612.2" x2="612.2" y1="48" y2="1324"/>
-<text class="m" x="612.2" y="1340" text-anchor="middle">+7</text>
-<line class="g" x1="624.6" x2="624.6" y1="48" y2="1324"/>
-<text class="m" x="624.6" y="1340" text-anchor="middle">+8</text>
-<line class="g" x1="637.0" x2="637.0" y1="48" y2="1324"/>
-<text class="m" x="637.0" y="1340" text-anchor="middle">+9</text>
-<line class="g" x1="649.3" x2="649.3" y1="48" y2="1324"/>
-<text class="m" x="649.3" y="1340" text-anchor="middle">+10</text>
-<line class="g" x1="661.7" x2="661.7" y1="48" y2="1324"/>
-<text class="m" x="661.7" y="1340" text-anchor="middle">+11</text>
-<line class="g" x1="674.1" x2="674.1" y1="48" y2="1324"/>
-<text class="m" x="674.1" y="1340" text-anchor="middle">+12</text>
-<line class="g" x1="686.5" x2="686.5" y1="48" y2="1324"/>
-<text class="m" x="686.5" y="1340" text-anchor="middle">+13</text>
-<line class="g" x1="698.9" x2="698.9" y1="48" y2="1324"/>
-<text class="m" x="698.9" y="1340" text-anchor="middle">+14</text>
-<line class="g" x1="711.3" x2="711.3" y1="48" y2="1324"/>
-<text class="m" x="711.3" y="1340" text-anchor="middle">+15</text>
-<line class="g" x1="723.7" x2="723.7" y1="48" y2="1324"/>
-<text class="m" x="723.7" y="1340" text-anchor="middle">+16</text>
-<line class="g" x1="736.1" x2="736.1" y1="48" y2="1324"/>
-<text class="m" x="736.1" y="1340" text-anchor="middle">+17</text>
-<line class="g" x1="748.5" x2="748.5" y1="48" y2="1324"/>
-<text class="m" x="748.5" y="1340" text-anchor="middle">+18</text>
-<line class="g" x1="760.9" x2="760.9" y1="48" y2="1324"/>
-<text class="m" x="760.9" y="1340" text-anchor="middle">+19</text>
-<line class="g" x1="773.3" x2="773.3" y1="48" y2="1324"/>
-<text class="m" x="773.3" y="1340" text-anchor="middle">+20</text>
-<line class="g" x1="785.7" x2="785.7" y1="48" y2="1324"/>
-<text class="m" x="785.7" y="1340" text-anchor="middle">+21</text>
-<line class="g" x1="798.0" x2="798.0" y1="48" y2="1324"/>
-<text class="m" x="798.0" y="1340" text-anchor="middle">+22</text>
-<line class="g" x1="810.4" x2="810.4" y1="48" y2="1324"/>
-<text class="m" x="810.4" y="1340" text-anchor="middle">+23</text>
-<line class="g" x1="822.8" x2="822.8" y1="48" y2="1324"/>
-<text class="m" x="822.8" y="1340" text-anchor="middle">+24</text>
-<line class="g" x1="835.2" x2="835.2" y1="48" y2="1324"/>
-<text class="m" x="835.2" y="1340" text-anchor="middle">+25</text>
-<line class="g" x1="847.6" x2="847.6" y1="48" y2="1324"/>
-<text class="m" x="847.6" y="1340" text-anchor="middle">+26</text>
-<line class="g" x1="860.0" x2="860.0" y1="48" y2="1324"/>
-<text class="m" x="860.0" y="1340" text-anchor="middle">+27</text>
+<line class="g" x1="290.0" x2="290.0" y1="48" y2="1368"/>
+<text class="m" x="290.0" y="1384" text-anchor="middle">-19</text>
+<line class="g" x1="302.4" x2="302.4" y1="48" y2="1368"/>
+<text class="m" x="302.4" y="1384" text-anchor="middle">-18</text>
+<line class="g" x1="314.8" x2="314.8" y1="48" y2="1368"/>
+<text class="m" x="314.8" y="1384" text-anchor="middle">-17</text>
+<line class="g" x1="327.2" x2="327.2" y1="48" y2="1368"/>
+<text class="m" x="327.2" y="1384" text-anchor="middle">-16</text>
+<line class="g" x1="339.6" x2="339.6" y1="48" y2="1368"/>
+<text class="m" x="339.6" y="1384" text-anchor="middle">-15</text>
+<line class="g" x1="352.0" x2="352.0" y1="48" y2="1368"/>
+<text class="m" x="352.0" y="1384" text-anchor="middle">-14</text>
+<line class="g" x1="364.3" x2="364.3" y1="48" y2="1368"/>
+<text class="m" x="364.3" y="1384" text-anchor="middle">-13</text>
+<line class="g" x1="376.7" x2="376.7" y1="48" y2="1368"/>
+<text class="m" x="376.7" y="1384" text-anchor="middle">-12</text>
+<line class="g" x1="389.1" x2="389.1" y1="48" y2="1368"/>
+<text class="m" x="389.1" y="1384" text-anchor="middle">-11</text>
+<line class="g" x1="401.5" x2="401.5" y1="48" y2="1368"/>
+<text class="m" x="401.5" y="1384" text-anchor="middle">-10</text>
+<line class="g" x1="413.9" x2="413.9" y1="48" y2="1368"/>
+<text class="m" x="413.9" y="1384" text-anchor="middle">-9</text>
+<line class="g" x1="426.3" x2="426.3" y1="48" y2="1368"/>
+<text class="m" x="426.3" y="1384" text-anchor="middle">-8</text>
+<line class="g" x1="438.7" x2="438.7" y1="48" y2="1368"/>
+<text class="m" x="438.7" y="1384" text-anchor="middle">-7</text>
+<line class="g" x1="451.1" x2="451.1" y1="48" y2="1368"/>
+<text class="m" x="451.1" y="1384" text-anchor="middle">-6</text>
+<line class="g" x1="463.5" x2="463.5" y1="48" y2="1368"/>
+<text class="m" x="463.5" y="1384" text-anchor="middle">-5</text>
+<line class="g" x1="475.9" x2="475.9" y1="48" y2="1368"/>
+<text class="m" x="475.9" y="1384" text-anchor="middle">-4</text>
+<line class="g" x1="488.3" x2="488.3" y1="48" y2="1368"/>
+<text class="m" x="488.3" y="1384" text-anchor="middle">-3</text>
+<line class="g" x1="500.7" x2="500.7" y1="48" y2="1368"/>
+<text class="m" x="500.7" y="1384" text-anchor="middle">-2</text>
+<line class="g" x1="513.0" x2="513.0" y1="48" y2="1368"/>
+<text class="m" x="513.0" y="1384" text-anchor="middle">-1</text>
+<line class="z" x1="525.4" x2="525.4" y1="48" y2="1368"/>
+<text class="m" x="525.4" y="1384" text-anchor="middle">0</text>
+<line class="g" x1="537.8" x2="537.8" y1="48" y2="1368"/>
+<text class="m" x="537.8" y="1384" text-anchor="middle">+1</text>
+<line class="g" x1="550.2" x2="550.2" y1="48" y2="1368"/>
+<text class="m" x="550.2" y="1384" text-anchor="middle">+2</text>
+<line class="g" x1="562.6" x2="562.6" y1="48" y2="1368"/>
+<text class="m" x="562.6" y="1384" text-anchor="middle">+3</text>
+<line class="g" x1="575.0" x2="575.0" y1="48" y2="1368"/>
+<text class="m" x="575.0" y="1384" text-anchor="middle">+4</text>
+<line class="g" x1="587.4" x2="587.4" y1="48" y2="1368"/>
+<text class="m" x="587.4" y="1384" text-anchor="middle">+5</text>
+<line class="g" x1="599.8" x2="599.8" y1="48" y2="1368"/>
+<text class="m" x="599.8" y="1384" text-anchor="middle">+6</text>
+<line class="g" x1="612.2" x2="612.2" y1="48" y2="1368"/>
+<text class="m" x="612.2" y="1384" text-anchor="middle">+7</text>
+<line class="g" x1="624.6" x2="624.6" y1="48" y2="1368"/>
+<text class="m" x="624.6" y="1384" text-anchor="middle">+8</text>
+<line class="g" x1="637.0" x2="637.0" y1="48" y2="1368"/>
+<text class="m" x="637.0" y="1384" text-anchor="middle">+9</text>
+<line class="g" x1="649.3" x2="649.3" y1="48" y2="1368"/>
+<text class="m" x="649.3" y="1384" text-anchor="middle">+10</text>
+<line class="g" x1="661.7" x2="661.7" y1="48" y2="1368"/>
+<text class="m" x="661.7" y="1384" text-anchor="middle">+11</text>
+<line class="g" x1="674.1" x2="674.1" y1="48" y2="1368"/>
+<text class="m" x="674.1" y="1384" text-anchor="middle">+12</text>
+<line class="g" x1="686.5" x2="686.5" y1="48" y2="1368"/>
+<text class="m" x="686.5" y="1384" text-anchor="middle">+13</text>
+<line class="g" x1="698.9" x2="698.9" y1="48" y2="1368"/>
+<text class="m" x="698.9" y="1384" text-anchor="middle">+14</text>
+<line class="g" x1="711.3" x2="711.3" y1="48" y2="1368"/>
+<text class="m" x="711.3" y="1384" text-anchor="middle">+15</text>
+<line class="g" x1="723.7" x2="723.7" y1="48" y2="1368"/>
+<text class="m" x="723.7" y="1384" text-anchor="middle">+16</text>
+<line class="g" x1="736.1" x2="736.1" y1="48" y2="1368"/>
+<text class="m" x="736.1" y="1384" text-anchor="middle">+17</text>
+<line class="g" x1="748.5" x2="748.5" y1="48" y2="1368"/>
+<text class="m" x="748.5" y="1384" text-anchor="middle">+18</text>
+<line class="g" x1="760.9" x2="760.9" y1="48" y2="1368"/>
+<text class="m" x="760.9" y="1384" text-anchor="middle">+19</text>
+<line class="g" x1="773.3" x2="773.3" y1="48" y2="1368"/>
+<text class="m" x="773.3" y="1384" text-anchor="middle">+20</text>
+<line class="g" x1="785.7" x2="785.7" y1="48" y2="1368"/>
+<text class="m" x="785.7" y="1384" text-anchor="middle">+21</text>
+<line class="g" x1="798.0" x2="798.0" y1="48" y2="1368"/>
+<text class="m" x="798.0" y="1384" text-anchor="middle">+22</text>
+<line class="g" x1="810.4" x2="810.4" y1="48" y2="1368"/>
+<text class="m" x="810.4" y="1384" text-anchor="middle">+23</text>
+<line class="g" x1="822.8" x2="822.8" y1="48" y2="1368"/>
+<text class="m" x="822.8" y="1384" text-anchor="middle">+24</text>
+<line class="g" x1="835.2" x2="835.2" y1="48" y2="1368"/>
+<text class="m" x="835.2" y="1384" text-anchor="middle">+25</text>
+<line class="g" x1="847.6" x2="847.6" y1="48" y2="1368"/>
+<text class="m" x="847.6" y="1384" text-anchor="middle">+26</text>
+<line class="g" x1="860.0" x2="860.0" y1="48" y2="1368"/>
+<text class="m" x="860.0" y="1384" text-anchor="middle">+27</text>
 <text class="t" x="16" y="69.0">3.8 vs 3.7  drussgt40</text>
 <line class="ci" x1="657.7" x2="720.5" y1="65.0" y2="65.0"/>
 <circle class="pt open" cx="689.1" cy="65.0" r="4.5"><title>2026-10-06_hadur-3.8_drussgt40-local_cold.tsv: 13.21 pp (10.67 to 15.74); conditions differ from the usual: engine 1.9.5.6</title></circle>
@@ -241,37 +241,43 @@
 <text class="t" x="16" y="1103.0">2.Hadur 3.9 vs 2.Hadur 3.8.5  weak-39r-v385 [1.11.1]</text>
 <line class="ci" x1="515.6" x2="536.8" y1="1099.0" y2="1099.0"/>
 <circle class="pt" cx="526.2" cy="1099.0" r="4.5"><title>2026-10-07_hadur-weak-39r-v385-local_cold.tsv: 0.06 pp (-0.79 to 0.92)</title></circle>
-<text class="t" x="16" y="1125.0">2.Hadur 3.10nf vs 2.Hadur 3.10  gungap-310nf-v310-pc [1.11.1]</text>
-<line class="ci" x1="521.1" x2="537.5" y1="1121.0" y2="1121.0"/>
-<circle class="pt" cx="529.3" cy="1121.0" r="4.5"><title>2026-10-08_hadur-gungap-310nf-v310-pc-local_cold.tsv: 0.31 pp (-0.35 to 0.97)</title></circle>
-<text class="t" x="16" y="1147.0">2.Hadur 3.10 vs 2.Hadur 3.9  shield-310-v39 [1.11.1]</text>
-<line class="ci" x1="665.1" x2="676.7" y1="1143.0" y2="1143.0"/>
-<circle class="pt" cx="670.9" cy="1143.0" r="4.5"><title>2026-10-08_hadur-shield-310-v39-local_cold.tsv: 11.74 pp (11.27 to 12.21)</title></circle>
-<text class="t" x="16" y="1169.0">2.Hadur 3.9sa vs 2.Hadur 3.9  shield-confirm-v39 [1.11.1]</text>
-<line class="ci" x1="656.0" x2="665.8" y1="1165.0" y2="1165.0"/>
-<circle class="pt" cx="661.0" cy="1165.0" r="4.5"><title>2026-10-08_hadur-shield-confirm-v39-local_cold.tsv: 10.94 pp (10.54 to 11.33)</title></circle>
-<text class="t" x="16" y="1191.0">2.Hadur 3.9sa vs 2.Hadur 3.9  shield-sweep-low-v39 [1.11.1]</text>
-<line class="ci" x1="491.7" x2="499.7" y1="1187.0" y2="1187.0"/>
-<circle class="pt" cx="495.7" cy="1187.0" r="4.5"><title>2026-10-08_hadur-shield-sweep-low-v39-local_cold.tsv: -2.40 pp (-2.72 to -2.08)</title></circle>
-<text class="t" x="16" y="1213.0">2.Hadur 3.9sa vs 2.Hadur 3.9  shield-sweep-mid-v39 [1.11.1]</text>
-<line class="ci" x1="578.2" x2="589.1" y1="1209.0" y2="1209.0"/>
-<circle class="pt" cx="583.7" cy="1209.0" r="4.5"><title>2026-10-08_hadur-shield-sweep-mid-v39-local_cold.tsv: 4.70 pp (4.26 to 5.14)</title></circle>
-<text class="t" x="16" y="1235.0">2.Hadur 3.10 vs 2.Hadur 3.9  tail-310-v39 [1.11.1]</text>
-<line class="ci" x1="517.8" x2="529.9" y1="1231.0" y2="1231.0"/>
-<circle class="pt" cx="523.8" cy="1231.0" r="4.5"><title>2026-10-08_hadur-tail-310-v39-local_cold.tsv: -0.13 pp (-0.62 to 0.36)</title></circle>
-<text class="t" x="16" y="1257.0">2.Hadur 3.10nf vs 2.Hadur 3.10  tail-310nf-v310-pc [1.11.1]</text>
-<line class="ci" x1="522.6" x2="535.5" y1="1253.0" y2="1253.0"/>
-<circle class="pt" cx="529.0" cy="1253.0" r="4.5"><title>2026-10-08_hadur-tail-310nf-v310-pc-local_cold.tsv: 0.29 pp (-0.23 to 0.81)</title></circle>
-<text class="t" x="16" y="1279.0">2.Hadur 3.10 vs 2.Hadur 3.9  top20-310-v39 [1.11.1]</text>
-<line class="ci" x1="498.8" x2="531.8" y1="1275.0" y2="1275.0"/>
-<circle class="pt" cx="515.3" cy="1275.0" r="4.5"><title>2026-10-08_hadur-top20-310-v39-local_cold.tsv: -0.82 pp (-2.15 to 0.51)</title></circle>
-<text class="t" x="16" y="1301.0">2.Hadur 3.10nf vs 2.Hadur 3.10  top20-310nf-v310-pc [1.11.1]</text>
-<line class="ci" x1="493.3" x2="531.4" y1="1297.0" y2="1297.0"/>
-<circle class="pt" cx="512.3" cy="1297.0" r="4.5"><title>2026-10-08_hadur-top20-310nf-v310-pc-local_cold.tsv: -1.06 pp (-2.59 to 0.48)</title></circle>
-<text class="m" x="16" y="1356">Open circle: a condition that differs from the usual one for this chart (a blank is not recorded, not assumed).</text>
-<text class="m" x="16" y="1372">rounds per battle 10 (usual 35): 1 run</text>
-<text class="m" x="16" y="1387">engine 1.9.5.6 (usual 1.11.1): 14 runs</text>
-<text class="m" x="16" y="1402">parallel width 16 (usual 12): 2 runs</text>
-<text class="m" x="16" y="1417">parallel width 4 (usual 12): 2 runs</text>
-<text class="m" x="16" y="1432">parallel width 5 (usual 12): 2 runs</text>
+<text class="t" x="16" y="1125.0">lxx.Tomcat 3.68 vs 2.Hadur 3.10  census-311-tail [1.11.1]</text>
+<line class="ci" x1="540.2" x2="542.9" y1="1121.0" y2="1121.0"/>
+<circle class="pt" cx="541.5" cy="1121.0" r="4.5"><title>2026-10-08_hadur-census-311-tail-local_cold.tsv: 1.30 pp (1.19 to 1.41)</title></circle>
+<text class="t" x="16" y="1147.0">2.Hadur 3.10nf vs 2.Hadur 3.10  gungap-310nf-v310-pc [1.11.1]</text>
+<line class="ci" x1="521.1" x2="537.5" y1="1143.0" y2="1143.0"/>
+<circle class="pt" cx="529.3" cy="1143.0" r="4.5"><title>2026-10-08_hadur-gungap-310nf-v310-pc-local_cold.tsv: 0.31 pp (-0.35 to 0.97)</title></circle>
+<text class="t" x="16" y="1169.0">2.Hadur 3.10 vs 2.Hadur 3.9  shield-310-v39 [1.11.1]</text>
+<line class="ci" x1="665.1" x2="676.7" y1="1165.0" y2="1165.0"/>
+<circle class="pt" cx="670.9" cy="1165.0" r="4.5"><title>2026-10-08_hadur-shield-310-v39-local_cold.tsv: 11.74 pp (11.27 to 12.21)</title></circle>
+<text class="t" x="16" y="1191.0">2.Hadur 3.9sa vs 2.Hadur 3.9  shield-confirm-v39 [1.11.1]</text>
+<line class="ci" x1="656.0" x2="665.8" y1="1187.0" y2="1187.0"/>
+<circle class="pt" cx="661.0" cy="1187.0" r="4.5"><title>2026-10-08_hadur-shield-confirm-v39-local_cold.tsv: 10.94 pp (10.54 to 11.33)</title></circle>
+<text class="t" x="16" y="1213.0">2.Hadur 3.9sa vs 2.Hadur 3.9  shield-sweep-low-v39 [1.11.1]</text>
+<line class="ci" x1="491.7" x2="499.7" y1="1209.0" y2="1209.0"/>
+<circle class="pt" cx="495.7" cy="1209.0" r="4.5"><title>2026-10-08_hadur-shield-sweep-low-v39-local_cold.tsv: -2.40 pp (-2.72 to -2.08)</title></circle>
+<text class="t" x="16" y="1235.0">2.Hadur 3.9sa vs 2.Hadur 3.9  shield-sweep-mid-v39 [1.11.1]</text>
+<line class="ci" x1="578.2" x2="589.1" y1="1231.0" y2="1231.0"/>
+<circle class="pt" cx="583.7" cy="1231.0" r="4.5"><title>2026-10-08_hadur-shield-sweep-mid-v39-local_cold.tsv: 4.70 pp (4.26 to 5.14)</title></circle>
+<text class="t" x="16" y="1257.0">2.Hadur 3.10 vs 2.Hadur 3.9  tail-310-v39 [1.11.1]</text>
+<line class="ci" x1="517.8" x2="529.9" y1="1253.0" y2="1253.0"/>
+<circle class="pt" cx="523.8" cy="1253.0" r="4.5"><title>2026-10-08_hadur-tail-310-v39-local_cold.tsv: -0.13 pp (-0.62 to 0.36)</title></circle>
+<text class="t" x="16" y="1279.0">2.Hadur 3.10nf vs 2.Hadur 3.10  tail-310nf-v310-pc [1.11.1]</text>
+<line class="ci" x1="522.6" x2="535.5" y1="1275.0" y2="1275.0"/>
+<circle class="pt" cx="529.0" cy="1275.0" r="4.5"><title>2026-10-08_hadur-tail-310nf-v310-pc-local_cold.tsv: 0.29 pp (-0.23 to 0.81)</title></circle>
+<text class="t" x="16" y="1301.0">2.Hadur 3.10 vs 2.Hadur 3.9  top20-310-v39 [1.11.1]</text>
+<line class="ci" x1="498.8" x2="531.8" y1="1297.0" y2="1297.0"/>
+<circle class="pt" cx="515.3" cy="1297.0" r="4.5"><title>2026-10-08_hadur-top20-310-v39-local_cold.tsv: -0.82 pp (-2.15 to 0.51)</title></circle>
+<text class="t" x="16" y="1323.0">2.Hadur 3.10nf vs 2.Hadur 3.10  top20-310nf-v310-pc [1.11.1]</text>
+<line class="ci" x1="493.3" x2="531.4" y1="1319.0" y2="1319.0"/>
+<circle class="pt" cx="512.3" cy="1319.0" r="4.5"><title>2026-10-08_hadur-top20-310nf-v310-pc-local_cold.tsv: -1.06 pp (-2.59 to 0.48)</title></circle>
+<text class="t" x="16" y="1345.0">lxx.Tomcat 3.68 vs 2.Hadur 3.10  census-311-top [1.11.1]</text>
+<line class="ci" x1="477.2" x2="489.5" y1="1341.0" y2="1341.0"/>
+<circle class="pt" cx="483.4" cy="1341.0" r="4.5"><title>2026-10-09_hadur-census-311-top-local_cold.tsv: -3.39 pp (-3.89 to -2.90)</title></circle>
+<text class="m" x="16" y="1400">Open circle: a condition that differs from the usual one for this chart (a blank is not recorded, not assumed).</text>
+<text class="m" x="16" y="1416">rounds per battle 10 (usual 35): 1 run</text>
+<text class="m" x="16" y="1431">engine 1.9.5.6 (usual 1.11.1): 14 runs</text>
+<text class="m" x="16" y="1446">parallel width 16 (usual 12): 2 runs</text>
+<text class="m" x="16" y="1461">parallel width 4 (usual 12): 2 runs</text>
+<text class="m" x="16" y="1476">parallel width 5 (usual 12): 2 runs</text>
 </svg>
