@@ -1,0 +1,37 @@
+# 3.11 stage M4 full census and M5 bench check for 3.10nd (docs/plan-3.11-census.md).
+# The M4 screen (PR #167) found RES-9 duress off worth +0.72 APS (+0.38 to +1.06) on 400 bots,
+# and the round-by-round table puts the whole cost in round 0. TIME-3 off added nothing, so the
+# candidate is nd alone. Three steps, each independent of the others:
+#   slow  Slow-client check: nd against 3.10 with the CPU constant halved, so turns are skipped all
+#         battle long, the case RES-9 exists for. Pass: nd at least -0.10 APS against 3.10 and
+#         3.10's duress rate well above the 32 to 36% the screen showed at the full constant.
+#   g4    G4: nd against 3.10 on the whole field (census-312.txt, 1,212 bots), 4 fresh seeds.
+#         Pass: at least +0.25 APS with the 95% lower bound above 0, no band below -0.05 APS,
+#         and at least half the screen's gain (+0.36).
+#   m5    M5 bench gate: Tomcat 3.68 against nd on the same field less Tomcat, 4 seeds (the
+#         census's M1 layout with nd in 3.10's place). Pass: nd ahead of Tomcat by +0.3 APS or more.
+#   ./queue.sh run census-312        (or  .\queue.ps1 run census-312)
+# About 1 h for slow (1,600 battles), 3.5 h for g4 (9,696 at the screen's 47 a minute) and up to
+# 7 h for m5 (9,688 at the census's 24 a minute with Tomcat): about 11 h. RoboRumble workers stopped.
+# Read each with data/tools/screen_paired.py on its rows and rounds export, --set as below.
+
+set HEAP = --child-heap 2G
+set E = --engine 1.11.1
+set COMMON = --skip-build --skip-fetch --rounds 35 --parallel 12 ${HEAP} ${E}
+set CPU = --cpu-constant 1488498
+set ND = --robot-jar bisect/hadur2.Hadur_3.10nd.jar --robot "hadur2.Hadur 3.10nd"
+set B310 = --baseline bisect/hadur2.Hadur_3.10.jar --baseline-robot "hadur2.Hadur 3.10"
+set TOMCAT = --robot-jar opponents/lxx.Tomcat_3.68.jar --robot "lxx.Tomcat 3.68"
+set BND = --baseline bisect/hadur2.Hadur_3.10nd.jar --baseline-robot "hadur2.Hadur 3.10nd"
+
+prep | mkdir -p bisect && { [ -s bisect/hadur2.Hadur_3.10.jar ] || curl -fsSL -o bisect/hadur2.Hadur_3.10.jar https://github.com/lgriffin/Hadur_Robot/releases/download/v3.10/hadur2.Hadur_3.10.jar; } && { [ -s bisect/hadur2.Hadur_3.10nd.jar ] || bash ./build-ablation.sh --ref v3.10 nodur; } && ./fetch-opponents.sh --set census-312.txt
+
+# 1. Slow client: half the CPU constant, screen set, 2 seeds.
+slow | ./bench-top20.sh ${COMMON} --cpu-constant 744249 --seeds 2 --seed-base 400 --set screen-311.txt ${ND} ${B310} --label census-312-slow
+  after: prep
+# 2. G4, whole field, fresh seeds.
+g4   | ./bench-top20.sh ${COMMON} ${CPU} --seeds 4 --seed-base 400 --set census-312.txt ${ND} ${B310} --label census-312-g4
+  after: prep
+# 3. M5, Tomcat against nd, same seeds.
+m5   | ./bench-top20.sh ${COMMON} ${CPU} --seeds 4 --seed-base 400 --set census-312-tomcat.txt ${TOMCAT} ${BND} --label census-312-m5
+  after: prep
