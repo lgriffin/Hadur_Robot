@@ -47,6 +47,7 @@ file	date	label	mode	candidate	baseline	engine	rounds	child_heap	cpu_constant	pa
 2026-10-07_hadur-top20big-385-local_cold.tsv	2026-10-07	hadur-top20big-385-local_cold	duel	3.8.5	3.8	1.11.1	35			12		100	20	2000	-0.32	-0.63	-0.01	22.8	22.9	0	4000
 2026-10-07_hadur-weak-39-v385-local_cold.tsv	2026-10-07	hadur-weak-39-v385-local_cold	duel	2.Hadur 3.9	2.Hadur 3.8.5	1.11.1	35			12		16	11	176	-0.69	-1.86	0.48	10.8	10.7	0	352
 2026-10-07_hadur-weak-39r-v385-local_cold.tsv	2026-10-07	hadur-weak-39r-v385-local_cold	duel	2.Hadur 3.9	2.Hadur 3.8.5	1.11.1	35			12		16	11	176	0.06	-0.79	0.92	10.9	10.9	0	352
+2026-10-08_hadur-census-311-tail-local_cold.tsv	2026-10-08	hadur-census-311-tail-local_cold	duel	lxx.Tomcat 3.68	2.Hadur 3.10	1.11.1	35	0	1488498	12	2	4	1015	4060	1.30	1.19	1.41	7.5	32.1	8	8128
 2026-10-08_hadur-gungap-310nf-v310-pc-local_cold.tsv	2026-10-08	hadur-gungap-310nf-v310-pc-local_cold	duel	2.Hadur 3.10nf	2.Hadur 3.10	1.11.1	35			12		8	30	240	0.31	-0.35	0.97	12.0	12.8	0	480
 2026-10-08_hadur-shield-310-v39-local_cold.tsv	2026-10-08	hadur-shield-310-v39-local_cold	duel	2.Hadur 3.10	2.Hadur 3.9	1.11.1	35			12		8	83	664	11.74	11.27	12.21	11.6	13.4	0	1328
 2026-10-08_hadur-shield-confirm-v39-local_cold.tsv	2026-10-08	hadur-shield-confirm-v39-local_cold	duel	2.Hadur 3.9sa	2.Hadur 3.9	1.11.1	35			12		16	65	1040	10.94	10.54	11.33	11.2	12.5	0	2080
@@ -56,3 +57,4 @@ file	date	label	mode	candidate	baseline	engine	rounds	child_heap	cpu_constant	pa
 2026-10-08_hadur-tail-310nf-v310-pc-local_cold.tsv	2026-10-08	hadur-tail-310nf-v310-pc-local_cold	duel	2.Hadur 3.10nf	2.Hadur 3.10	1.11.1	35			12		4	39	156	0.29	-0.23	0.81	11.4	11.5	0	312
 2026-10-08_hadur-top20-310-v39-local_cold.tsv	2026-10-08	hadur-top20-310-v39-local_cold	duel	2.Hadur 3.10	2.Hadur 3.9	1.11.1	35			12		5	20	100	-0.82	-2.15	0.51	21.7	23.0	0	200
 2026-10-08_hadur-top20-310nf-v310-pc-local_cold.tsv	2026-10-08	hadur-top20-310nf-v310-pc-local_cold	duel	2.Hadur 3.10nf	2.Hadur 3.10	1.11.1	35			12		5	20	100	-1.06	-2.59	0.48	16.7	21.9	0	200
+2026-10-09_hadur-census-311-top-local_cold.tsv	2026-10-09	hadur-census-311-top-local_cold	duel	lxx.Tomcat 3.68	2.Hadur 3.10	1.11.1	35	0	1488498	12	2	4	196	784	-3.39	-3.89	-2.90	41.6	30.0	16	1584
