@@ -16,6 +16,11 @@
 #   shield-all  the D5 shield list matches every opponent, so each 1v1 round opens in shield
 #         mode (SHIELD-6 still takes it back where the enemy's bullets would hold the score
 #         share under 85%). Issue #140, M2: is Nullstride's mid-table score a shielding score?
+#   nodur  RES-9 duress never switches on: skipped turns still shed levels (TIME-2) but the
+#         round never drops to the orbit-and-head-on fallback. 3.11 M4 (docs/plan-3.11-census.md):
+#         the census lost 0.62 APS in battles with start-up duress.
+#   nolearn  TIME-3 never learns an allowance from a skipped turn, so a round-0 warm-up skip
+#         does not set the shedding threshold for the rest of the battle.
 #
 # The build runs in a temporary git worktree of REF (default HEAD), so the checkout is not
 # touched. The robot version is REF's version plus one suffix per ablation (nr, nm), so the
@@ -26,7 +31,7 @@ set -euo pipefail
 
 ref=HEAD
 if [[ "${1:-}" == "--ref" ]]; then ref="$2"; shift 2; fi
-[[ $# -eq 1 ]] || { sed -n '2,24p' "$0"; exit 2; }
+[[ $# -eq 1 ]] || { sed -n '2,29p' "$0"; exit 2; }
 
 here="$(cd "$(dirname "$0")" && pwd)"
 repo="$(git -C "$here" rev-parse --show-toplevel)"
@@ -37,6 +42,7 @@ src="$work/src"
 duel="$src/hadur-core/src/main/java/hadur2/core/duel/DuelController.java"
 move="$src/hadur-core/src/main/java/hadur2/core/move/MoveController.java"
 shields="$src/hadur-core/src/main/java/hadur2/core/shieldmode/ShieldList.java"
+budget="$src/hadur-core/src/main/java/hadur2/core/policy/TickBudget.java"
 
 # Replace exactly one occurrence of $2 with $3 in file $1, or fail.
 edit() {
@@ -75,7 +81,15 @@ for a in "${list[@]}"; do
         shield-all)
             edit "$shields" "return entries.contains(name) || entries.contains(withoutVersion(name));"                 "return true;"
             version="${version}sa" ;;
-        *) echo "unknown ablation: $a (ram2, mir1, flat, shield-all)" >&2; exit 2 ;;
+        nodur)
+            edit "$budget" "return skipsThisRound >= DURESS_SKIPS && now - lastSkip < DURESS_QUIET_TICKS;" \
+                "return false && skipsThisRound >= DURESS_SKIPS && now - lastSkip < DURESS_QUIET_TICKS;"
+            version="${version}nd" ;;
+        nolearn)
+            edit "$budget" "if (learnedAllowanceNanos <= 0 && lastUsedNanos > 0" \
+                "if (false && learnedAllowanceNanos <= 0 && lastUsedNanos > 0"
+            version="${version}nl" ;;
+        *) echo "unknown ablation: $a (ram2, mir1, flat, shield-all, nodur, nolearn)" >&2; exit 2 ;;
     esac
 done
 

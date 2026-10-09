@@ -91,11 +91,22 @@ so efficiency against weak bots (damage taken, how fast they die) is where 10th 
 | Stage | Where | State |
 |---|---|---|
 | M0 size the instrument | PC | **Done** 2026-10-08 ([m0-sizing](bench/local/2026-10-08_m0-sizing.md), PR #164). G0 met. |
-| M1 census, 3.10 and Tomcat | PC | **Next.** `hadur-bench/plans/census-311.queue`, about 2.5 hours (+1.2 optional) |
-| M2 noise budget | Claude, from M1 rows | after M1 |
-| M3 deficit ledger | Claude, from M1 rows | after M2; G3 picks what gets code |
-| M4 candidates | PC queues, Claude builds | only for clusters that pass G3 |
+| M1 census, 3.10 and Tomcat | PC | **Done** 2026-10-09 ([findings](bench/local/2026-10-09_census-311-findings.md), PR #165). Bench gap -0.48 vs live -0.35; G1 met overall. |
+| M2 noise budget | from M1 rows | **Done.** A/A +0.05 (-0.20 to +0.30); M4 threshold 0.25 APS. |
+| M3 deficit ledger | from M1 rows | **Done.** Two clusters pass G3 (ranks 701+ -0.47, 401-700 -0.23). Follow-up: [start-up duress](bench/local/2026-10-09_census-311-duress.md) costs about 0.62 APS on the bench. |
+| M4 candidates | PC | **Next.** `hadur-bench/plans/m4-311.queue`: duress off, TIME-3 off, both, on a 400-bot screen; plus a parallel-4 load check. About 4.5 hours. |
 | M5 release | Leigh | only if G4 and the +0.3 margin hold |
+
+### Running M4 on the PC
+
+1. Stop the RoboRumble workers; `jps -l` shows no Robocode JVM.
+2. Pull master, then from `hadur-bench\`: `.\queue.ps1 run m4-311`. Steps `nd`, `nl`, `ndnl`
+   and `p4` each depend only on `prep`, so one failing step does not block the rest.
+3. Also run, once, on the census rounds files exported last night:
+   `python3 data/tools/census_rounds.py <tail rounds.tsv> <top rounds.tsv>` and paste its table
+   into the PR. It says whether the duress battles lose in round 0 only.
+4. Commit each step's rows TSV and report (not the per-opponent folders or rounds files) and post
+   the branch here.
 
 ### Running M1 on the PC
 
