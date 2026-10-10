@@ -1,292 +1,321 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1561" width="900" height="1561" role="img" aria-label="Candidate minus baseline score share by bench run">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1620" width="900" height="1620" role="img" aria-label="Candidate minus baseline score share by bench run">
 <style>.bg{fill:#fff}.t{fill:#1f2328;font:12px sans-serif}.m{fill:#59636e;font:11px sans-serif}.g{stroke:#d1d9e0}.z{stroke:#59636e}.ci{stroke:#0b6bcb;stroke-width:2}.pt{fill:#0b6bcb;stroke:#fff;stroke-width:2}.pt.open{fill:#fff;stroke:#0b6bcb}@media (prefers-color-scheme:dark){.bg{fill:#0d1117}.t{fill:#e6edf3}.m{fill:#9198a1}.g{stroke:#30363d}.z{stroke:#9198a1}.ci{stroke:#58a6ff}.pt{fill:#58a6ff;stroke:#0d1117}.pt.open{fill:#0d1117;stroke:#58a6ff}}</style>
-<rect class="bg" width="900" height="1561"/>
+<rect class="bg" width="900" height="1620"/>
 <text class="t" x="16" y="22" font-weight="bold">Candidate minus baseline score share, by committed bench run</text>
 <text class="m" x="16" y="38">Percentage points, pooled over opponents, 95% interval. Right of zero means the candidate scored more.</text>
-<line class="g" x1="290.0" x2="290.0" y1="48" y2="1434"/>
-<text class="m" x="290.0" y="1450" text-anchor="middle">-19</text>
-<line class="g" x1="302.4" x2="302.4" y1="48" y2="1434"/>
-<text class="m" x="302.4" y="1450" text-anchor="middle">-18</text>
-<line class="g" x1="314.8" x2="314.8" y1="48" y2="1434"/>
-<text class="m" x="314.8" y="1450" text-anchor="middle">-17</text>
-<line class="g" x1="327.2" x2="327.2" y1="48" y2="1434"/>
-<text class="m" x="327.2" y="1450" text-anchor="middle">-16</text>
-<line class="g" x1="339.6" x2="339.6" y1="48" y2="1434"/>
-<text class="m" x="339.6" y="1450" text-anchor="middle">-15</text>
-<line class="g" x1="352.0" x2="352.0" y1="48" y2="1434"/>
-<text class="m" x="352.0" y="1450" text-anchor="middle">-14</text>
-<line class="g" x1="364.3" x2="364.3" y1="48" y2="1434"/>
-<text class="m" x="364.3" y="1450" text-anchor="middle">-13</text>
-<line class="g" x1="376.7" x2="376.7" y1="48" y2="1434"/>
-<text class="m" x="376.7" y="1450" text-anchor="middle">-12</text>
-<line class="g" x1="389.1" x2="389.1" y1="48" y2="1434"/>
-<text class="m" x="389.1" y="1450" text-anchor="middle">-11</text>
-<line class="g" x1="401.5" x2="401.5" y1="48" y2="1434"/>
-<text class="m" x="401.5" y="1450" text-anchor="middle">-10</text>
-<line class="g" x1="413.9" x2="413.9" y1="48" y2="1434"/>
-<text class="m" x="413.9" y="1450" text-anchor="middle">-9</text>
-<line class="g" x1="426.3" x2="426.3" y1="48" y2="1434"/>
-<text class="m" x="426.3" y="1450" text-anchor="middle">-8</text>
-<line class="g" x1="438.7" x2="438.7" y1="48" y2="1434"/>
-<text class="m" x="438.7" y="1450" text-anchor="middle">-7</text>
-<line class="g" x1="451.1" x2="451.1" y1="48" y2="1434"/>
-<text class="m" x="451.1" y="1450" text-anchor="middle">-6</text>
-<line class="g" x1="463.5" x2="463.5" y1="48" y2="1434"/>
-<text class="m" x="463.5" y="1450" text-anchor="middle">-5</text>
-<line class="g" x1="475.9" x2="475.9" y1="48" y2="1434"/>
-<text class="m" x="475.9" y="1450" text-anchor="middle">-4</text>
-<line class="g" x1="488.3" x2="488.3" y1="48" y2="1434"/>
-<text class="m" x="488.3" y="1450" text-anchor="middle">-3</text>
-<line class="g" x1="500.7" x2="500.7" y1="48" y2="1434"/>
-<text class="m" x="500.7" y="1450" text-anchor="middle">-2</text>
-<line class="g" x1="513.0" x2="513.0" y1="48" y2="1434"/>
-<text class="m" x="513.0" y="1450" text-anchor="middle">-1</text>
-<line class="z" x1="525.4" x2="525.4" y1="48" y2="1434"/>
-<text class="m" x="525.4" y="1450" text-anchor="middle">0</text>
-<line class="g" x1="537.8" x2="537.8" y1="48" y2="1434"/>
-<text class="m" x="537.8" y="1450" text-anchor="middle">+1</text>
-<line class="g" x1="550.2" x2="550.2" y1="48" y2="1434"/>
-<text class="m" x="550.2" y="1450" text-anchor="middle">+2</text>
-<line class="g" x1="562.6" x2="562.6" y1="48" y2="1434"/>
-<text class="m" x="562.6" y="1450" text-anchor="middle">+3</text>
-<line class="g" x1="575.0" x2="575.0" y1="48" y2="1434"/>
-<text class="m" x="575.0" y="1450" text-anchor="middle">+4</text>
-<line class="g" x1="587.4" x2="587.4" y1="48" y2="1434"/>
-<text class="m" x="587.4" y="1450" text-anchor="middle">+5</text>
-<line class="g" x1="599.8" x2="599.8" y1="48" y2="1434"/>
-<text class="m" x="599.8" y="1450" text-anchor="middle">+6</text>
-<line class="g" x1="612.2" x2="612.2" y1="48" y2="1434"/>
-<text class="m" x="612.2" y="1450" text-anchor="middle">+7</text>
-<line class="g" x1="624.6" x2="624.6" y1="48" y2="1434"/>
-<text class="m" x="624.6" y="1450" text-anchor="middle">+8</text>
-<line class="g" x1="637.0" x2="637.0" y1="48" y2="1434"/>
-<text class="m" x="637.0" y="1450" text-anchor="middle">+9</text>
-<line class="g" x1="649.3" x2="649.3" y1="48" y2="1434"/>
-<text class="m" x="649.3" y="1450" text-anchor="middle">+10</text>
-<line class="g" x1="661.7" x2="661.7" y1="48" y2="1434"/>
-<text class="m" x="661.7" y="1450" text-anchor="middle">+11</text>
-<line class="g" x1="674.1" x2="674.1" y1="48" y2="1434"/>
-<text class="m" x="674.1" y="1450" text-anchor="middle">+12</text>
-<line class="g" x1="686.5" x2="686.5" y1="48" y2="1434"/>
-<text class="m" x="686.5" y="1450" text-anchor="middle">+13</text>
-<line class="g" x1="698.9" x2="698.9" y1="48" y2="1434"/>
-<text class="m" x="698.9" y="1450" text-anchor="middle">+14</text>
-<line class="g" x1="711.3" x2="711.3" y1="48" y2="1434"/>
-<text class="m" x="711.3" y="1450" text-anchor="middle">+15</text>
-<line class="g" x1="723.7" x2="723.7" y1="48" y2="1434"/>
-<text class="m" x="723.7" y="1450" text-anchor="middle">+16</text>
-<line class="g" x1="736.1" x2="736.1" y1="48" y2="1434"/>
-<text class="m" x="736.1" y="1450" text-anchor="middle">+17</text>
-<line class="g" x1="748.5" x2="748.5" y1="48" y2="1434"/>
-<text class="m" x="748.5" y="1450" text-anchor="middle">+18</text>
-<line class="g" x1="760.9" x2="760.9" y1="48" y2="1434"/>
-<text class="m" x="760.9" y="1450" text-anchor="middle">+19</text>
-<line class="g" x1="773.3" x2="773.3" y1="48" y2="1434"/>
-<text class="m" x="773.3" y="1450" text-anchor="middle">+20</text>
-<line class="g" x1="785.7" x2="785.7" y1="48" y2="1434"/>
-<text class="m" x="785.7" y="1450" text-anchor="middle">+21</text>
-<line class="g" x1="798.0" x2="798.0" y1="48" y2="1434"/>
-<text class="m" x="798.0" y="1450" text-anchor="middle">+22</text>
-<line class="g" x1="810.4" x2="810.4" y1="48" y2="1434"/>
-<text class="m" x="810.4" y="1450" text-anchor="middle">+23</text>
-<line class="g" x1="822.8" x2="822.8" y1="48" y2="1434"/>
-<text class="m" x="822.8" y="1450" text-anchor="middle">+24</text>
-<line class="g" x1="835.2" x2="835.2" y1="48" y2="1434"/>
-<text class="m" x="835.2" y="1450" text-anchor="middle">+25</text>
-<line class="g" x1="847.6" x2="847.6" y1="48" y2="1434"/>
-<text class="m" x="847.6" y="1450" text-anchor="middle">+26</text>
-<line class="g" x1="860.0" x2="860.0" y1="48" y2="1434"/>
-<text class="m" x="860.0" y="1450" text-anchor="middle">+27</text>
+<line class="g" x1="290.0" x2="290.0" y1="48" y2="1478"/>
+<text class="m" x="290.0" y="1494" text-anchor="middle">-19</text>
+<line class="g" x1="300.0" x2="300.0" y1="48" y2="1478"/>
+<text class="m" x="300.0" y="1494" text-anchor="middle">-18</text>
+<line class="g" x1="310.0" x2="310.0" y1="48" y2="1478"/>
+<text class="m" x="310.0" y="1494" text-anchor="middle">-17</text>
+<line class="g" x1="320.0" x2="320.0" y1="48" y2="1478"/>
+<text class="m" x="320.0" y="1494" text-anchor="middle">-16</text>
+<line class="g" x1="330.0" x2="330.0" y1="48" y2="1478"/>
+<text class="m" x="330.0" y="1494" text-anchor="middle">-15</text>
+<line class="g" x1="340.0" x2="340.0" y1="48" y2="1478"/>
+<text class="m" x="340.0" y="1494" text-anchor="middle">-14</text>
+<line class="g" x1="350.0" x2="350.0" y1="48" y2="1478"/>
+<text class="m" x="350.0" y="1494" text-anchor="middle">-13</text>
+<line class="g" x1="360.0" x2="360.0" y1="48" y2="1478"/>
+<text class="m" x="360.0" y="1494" text-anchor="middle">-12</text>
+<line class="g" x1="370.0" x2="370.0" y1="48" y2="1478"/>
+<text class="m" x="370.0" y="1494" text-anchor="middle">-11</text>
+<line class="g" x1="380.0" x2="380.0" y1="48" y2="1478"/>
+<text class="m" x="380.0" y="1494" text-anchor="middle">-10</text>
+<line class="g" x1="390.0" x2="390.0" y1="48" y2="1478"/>
+<text class="m" x="390.0" y="1494" text-anchor="middle">-9</text>
+<line class="g" x1="400.0" x2="400.0" y1="48" y2="1478"/>
+<text class="m" x="400.0" y="1494" text-anchor="middle">-8</text>
+<line class="g" x1="410.0" x2="410.0" y1="48" y2="1478"/>
+<text class="m" x="410.0" y="1494" text-anchor="middle">-7</text>
+<line class="g" x1="420.0" x2="420.0" y1="48" y2="1478"/>
+<text class="m" x="420.0" y="1494" text-anchor="middle">-6</text>
+<line class="g" x1="430.0" x2="430.0" y1="48" y2="1478"/>
+<text class="m" x="430.0" y="1494" text-anchor="middle">-5</text>
+<line class="g" x1="440.0" x2="440.0" y1="48" y2="1478"/>
+<text class="m" x="440.0" y="1494" text-anchor="middle">-4</text>
+<line class="g" x1="450.0" x2="450.0" y1="48" y2="1478"/>
+<text class="m" x="450.0" y="1494" text-anchor="middle">-3</text>
+<line class="g" x1="460.0" x2="460.0" y1="48" y2="1478"/>
+<text class="m" x="460.0" y="1494" text-anchor="middle">-2</text>
+<line class="g" x1="470.0" x2="470.0" y1="48" y2="1478"/>
+<text class="m" x="470.0" y="1494" text-anchor="middle">-1</text>
+<line class="z" x1="480.0" x2="480.0" y1="48" y2="1478"/>
+<text class="m" x="480.0" y="1494" text-anchor="middle">0</text>
+<line class="g" x1="490.0" x2="490.0" y1="48" y2="1478"/>
+<text class="m" x="490.0" y="1494" text-anchor="middle">+1</text>
+<line class="g" x1="500.0" x2="500.0" y1="48" y2="1478"/>
+<text class="m" x="500.0" y="1494" text-anchor="middle">+2</text>
+<line class="g" x1="510.0" x2="510.0" y1="48" y2="1478"/>
+<text class="m" x="510.0" y="1494" text-anchor="middle">+3</text>
+<line class="g" x1="520.0" x2="520.0" y1="48" y2="1478"/>
+<text class="m" x="520.0" y="1494" text-anchor="middle">+4</text>
+<line class="g" x1="530.0" x2="530.0" y1="48" y2="1478"/>
+<text class="m" x="530.0" y="1494" text-anchor="middle">+5</text>
+<line class="g" x1="540.0" x2="540.0" y1="48" y2="1478"/>
+<text class="m" x="540.0" y="1494" text-anchor="middle">+6</text>
+<line class="g" x1="550.0" x2="550.0" y1="48" y2="1478"/>
+<text class="m" x="550.0" y="1494" text-anchor="middle">+7</text>
+<line class="g" x1="560.0" x2="560.0" y1="48" y2="1478"/>
+<text class="m" x="560.0" y="1494" text-anchor="middle">+8</text>
+<line class="g" x1="570.0" x2="570.0" y1="48" y2="1478"/>
+<text class="m" x="570.0" y="1494" text-anchor="middle">+9</text>
+<line class="g" x1="580.0" x2="580.0" y1="48" y2="1478"/>
+<text class="m" x="580.0" y="1494" text-anchor="middle">+10</text>
+<line class="g" x1="590.0" x2="590.0" y1="48" y2="1478"/>
+<text class="m" x="590.0" y="1494" text-anchor="middle">+11</text>
+<line class="g" x1="600.0" x2="600.0" y1="48" y2="1478"/>
+<text class="m" x="600.0" y="1494" text-anchor="middle">+12</text>
+<line class="g" x1="610.0" x2="610.0" y1="48" y2="1478"/>
+<text class="m" x="610.0" y="1494" text-anchor="middle">+13</text>
+<line class="g" x1="620.0" x2="620.0" y1="48" y2="1478"/>
+<text class="m" x="620.0" y="1494" text-anchor="middle">+14</text>
+<line class="g" x1="630.0" x2="630.0" y1="48" y2="1478"/>
+<text class="m" x="630.0" y="1494" text-anchor="middle">+15</text>
+<line class="g" x1="640.0" x2="640.0" y1="48" y2="1478"/>
+<text class="m" x="640.0" y="1494" text-anchor="middle">+16</text>
+<line class="g" x1="650.0" x2="650.0" y1="48" y2="1478"/>
+<text class="m" x="650.0" y="1494" text-anchor="middle">+17</text>
+<line class="g" x1="660.0" x2="660.0" y1="48" y2="1478"/>
+<text class="m" x="660.0" y="1494" text-anchor="middle">+18</text>
+<line class="g" x1="670.0" x2="670.0" y1="48" y2="1478"/>
+<text class="m" x="670.0" y="1494" text-anchor="middle">+19</text>
+<line class="g" x1="680.0" x2="680.0" y1="48" y2="1478"/>
+<text class="m" x="680.0" y="1494" text-anchor="middle">+20</text>
+<line class="g" x1="690.0" x2="690.0" y1="48" y2="1478"/>
+<text class="m" x="690.0" y="1494" text-anchor="middle">+21</text>
+<line class="g" x1="700.0" x2="700.0" y1="48" y2="1478"/>
+<text class="m" x="700.0" y="1494" text-anchor="middle">+22</text>
+<line class="g" x1="710.0" x2="710.0" y1="48" y2="1478"/>
+<text class="m" x="710.0" y="1494" text-anchor="middle">+23</text>
+<line class="g" x1="720.0" x2="720.0" y1="48" y2="1478"/>
+<text class="m" x="720.0" y="1494" text-anchor="middle">+24</text>
+<line class="g" x1="730.0" x2="730.0" y1="48" y2="1478"/>
+<text class="m" x="730.0" y="1494" text-anchor="middle">+25</text>
+<line class="g" x1="740.0" x2="740.0" y1="48" y2="1478"/>
+<text class="m" x="740.0" y="1494" text-anchor="middle">+26</text>
+<line class="g" x1="750.0" x2="750.0" y1="48" y2="1478"/>
+<text class="m" x="750.0" y="1494" text-anchor="middle">+27</text>
+<line class="g" x1="760.0" x2="760.0" y1="48" y2="1478"/>
+<text class="m" x="760.0" y="1494" text-anchor="middle">+28</text>
+<line class="g" x1="770.0" x2="770.0" y1="48" y2="1478"/>
+<text class="m" x="770.0" y="1494" text-anchor="middle">+29</text>
+<line class="g" x1="780.0" x2="780.0" y1="48" y2="1478"/>
+<text class="m" x="780.0" y="1494" text-anchor="middle">+30</text>
+<line class="g" x1="790.0" x2="790.0" y1="48" y2="1478"/>
+<text class="m" x="790.0" y="1494" text-anchor="middle">+31</text>
+<line class="g" x1="800.0" x2="800.0" y1="48" y2="1478"/>
+<text class="m" x="800.0" y="1494" text-anchor="middle">+32</text>
+<line class="g" x1="810.0" x2="810.0" y1="48" y2="1478"/>
+<text class="m" x="810.0" y="1494" text-anchor="middle">+33</text>
+<line class="g" x1="820.0" x2="820.0" y1="48" y2="1478"/>
+<text class="m" x="820.0" y="1494" text-anchor="middle">+34</text>
+<line class="g" x1="830.0" x2="830.0" y1="48" y2="1478"/>
+<text class="m" x="830.0" y="1494" text-anchor="middle">+35</text>
+<line class="g" x1="840.0" x2="840.0" y1="48" y2="1478"/>
+<text class="m" x="840.0" y="1494" text-anchor="middle">+36</text>
+<line class="g" x1="850.0" x2="850.0" y1="48" y2="1478"/>
+<text class="m" x="850.0" y="1494" text-anchor="middle">+37</text>
+<line class="g" x1="860.0" x2="860.0" y1="48" y2="1478"/>
+<text class="m" x="860.0" y="1494" text-anchor="middle">+38</text>
 <text class="t" x="16" y="69.0">3.8 vs 3.7  drussgt40</text>
-<line class="ci" x1="657.7" x2="720.5" y1="65.0" y2="65.0"/>
-<circle class="pt open" cx="689.1" cy="65.0" r="4.5"><title>2026-10-06_hadur-3.8_drussgt40-local_cold.tsv: 13.21 pp (10.67 to 15.74); conditions differ from the usual: engine 1.9.5.6</title></circle>
+<line class="ci" x1="586.7" x2="637.4" y1="65.0" y2="65.0"/>
+<circle class="pt open" cx="612.1" cy="65.0" r="4.5"><title>2026-10-06_hadur-3.8_drussgt40-local_cold.tsv: 13.21 pp (10.67 to 15.74); conditions differ from the usual: engine 1.9.5.6</title></circle>
 <text class="t" x="16" y="91.0">3.8 vs 3.7  top20</text>
-<line class="ci" x1="543.3" x2="577.9" y1="87.0" y2="87.0"/>
-<circle class="pt open" cx="560.6" cy="87.0" r="4.5"><title>2026-10-06_hadur-3.8_top20-local_cold.tsv: 2.84 pp (1.44 to 4.23); conditions differ from the usual: engine 1.9.5.6</title></circle>
+<line class="ci" x1="494.4" x2="522.3" y1="87.0" y2="87.0"/>
+<circle class="pt open" cx="508.4" cy="87.0" r="4.5"><title>2026-10-06_hadur-3.8_top20-local_cold.tsv: 2.84 pp (1.44 to 4.23); conditions differ from the usual: engine 1.9.5.6</title></circle>
 <text class="t" x="16" y="113.0">3.8.5 vs 3.8  druss-385 [1.11.1]</text>
-<line class="ci" x1="474.9" x2="565.7" y1="109.0" y2="109.0"/>
-<circle class="pt" cx="520.4" cy="109.0" r="4.5"><title>2026-10-06_hadur-druss-385-local_cold.tsv: -0.41 pp (-4.08 to 3.25)</title></circle>
+<line class="ci" x1="439.2" x2="512.5" y1="109.0" y2="109.0"/>
+<circle class="pt" cx="475.9" cy="109.0" r="4.5"><title>2026-10-06_hadur-druss-385-local_cold.tsv: -0.41 pp (-4.08 to 3.25)</title></circle>
 <text class="t" x="16" y="135.0">3.8.5 vs 3.8  leak38-385 [1.11.1]</text>
-<line class="ci" x1="517.8" x2="526.5" y1="131.0" y2="131.0"/>
-<circle class="pt" cx="522.2" cy="131.0" r="4.5"><title>2026-10-06_hadur-leak38-385-local_cold.tsv: -0.26 pp (-0.62 to 0.09)</title></circle>
+<line class="ci" x1="473.8" x2="480.9" y1="131.0" y2="131.0"/>
+<circle class="pt" cx="477.4" cy="131.0" r="4.5"><title>2026-10-06_hadur-leak38-385-local_cold.tsv: -0.26 pp (-0.62 to 0.09)</title></circle>
 <text class="t" x="16" y="157.0">3.8 vs 3.4  leak38-38v34 [1.11.1]</text>
-<line class="ci" x1="529.5" x2="537.7" y1="153.0" y2="153.0"/>
-<circle class="pt" cx="533.6" cy="153.0" r="4.5"><title>2026-10-06_hadur-leak38-38v34-local_cold.tsv: 0.66 pp (0.33 to 0.99)</title></circle>
+<line class="ci" x1="483.3" x2="489.9" y1="153.0" y2="153.0"/>
+<circle class="pt" cx="486.6" cy="153.0" r="4.5"><title>2026-10-06_hadur-leak38-38v34-local_cold.tsv: 0.66 pp (0.33 to 0.99)</title></circle>
 <text class="t" x="16" y="179.0">3.8 vs 3.7  leak38-step1-16seeds</text>
-<line class="ci" x1="519.1" x2="528.3" y1="175.0" y2="175.0"/>
-<circle class="pt open" cx="523.7" cy="175.0" r="4.5"><title>2026-10-06_hadur-leak38-step1-16seeds-local_cold.tsv: -0.14 pp (-0.51 to 0.23); conditions differ from the usual: engine 1.9.5.6, parallel width 16</title></circle>
+<line class="ci" x1="474.9" x2="482.3" y1="175.0" y2="175.0"/>
+<circle class="pt open" cx="478.6" cy="175.0" r="4.5"><title>2026-10-06_hadur-leak38-step1-16seeds-local_cold.tsv: -0.14 pp (-0.51 to 0.23); conditions differ from the usual: engine 1.9.5.6, parallel width 16</title></circle>
 <text class="t" x="16" y="201.0">3.8 vs 3.7  leak38-step1-e1111 [1.11.1]</text>
-<line class="ci" x1="523.3" x2="532.4" y1="197.0" y2="197.0"/>
-<circle class="pt" cx="527.8" cy="197.0" r="4.5"><title>2026-10-06_hadur-leak38-step1-e1111-local_cold.tsv: 0.19 pp (-0.17 to 0.56)</title></circle>
+<line class="ci" x1="478.3" x2="485.6" y1="197.0" y2="197.0"/>
+<circle class="pt" cx="481.9" cy="197.0" r="4.5"><title>2026-10-06_hadur-leak38-step1-e1111-local_cold.tsv: 0.19 pp (-0.17 to 0.56)</title></circle>
 <text class="t" x="16" y="223.0">3.8 vs 3.7  leak38-step1-loaded</text>
-<line class="ci" x1="518.6" x2="540.6" y1="219.0" y2="219.0"/>
-<circle class="pt open" cx="529.6" cy="219.0" r="4.5"><title>2026-10-06_hadur-leak38-step1-loaded-local_cold.tsv: 0.34 pp (-0.55 to 1.22); conditions differ from the usual: engine 1.9.5.6</title></circle>
+<line class="ci" x1="474.5" x2="492.2" y1="219.0" y2="219.0"/>
+<circle class="pt open" cx="483.4" cy="219.0" r="4.5"><title>2026-10-06_hadur-leak38-step1-loaded-local_cold.tsv: 0.34 pp (-0.55 to 1.22); conditions differ from the usual: engine 1.9.5.6</title></circle>
 <text class="t" x="16" y="245.0">3.8 vs 3.7  leak38-step1</text>
-<line class="ci" x1="511.6" x2="528.5" y1="241.0" y2="241.0"/>
-<circle class="pt open" cx="520.1" cy="241.0" r="4.5"><title>2026-10-06_hadur-leak38-step1-local_cold.tsv: -0.43 pp (-1.12 to 0.25); conditions differ from the usual: engine 1.9.5.6</title></circle>
+<line class="ci" x1="468.8" x2="482.5" y1="241.0" y2="241.0"/>
+<circle class="pt open" cx="475.7" cy="241.0" r="4.5"><title>2026-10-06_hadur-leak38-step1-local_cold.tsv: -0.43 pp (-1.12 to 0.25); conditions differ from the usual: engine 1.9.5.6</title></circle>
 <text class="t" x="16" y="267.0">3.8.1 vs 3.7  leak38-step2-16seeds</text>
-<line class="ci" x1="516.1" x2="525.7" y1="263.0" y2="263.0"/>
-<circle class="pt open" cx="521.0" cy="263.0" r="4.5"><title>2026-10-06_hadur-leak38-step2-16seeds-local_cold.tsv: -0.36 pp (-0.75 to 0.02); conditions differ from the usual: engine 1.9.5.6, parallel width 16</title></circle>
+<line class="ci" x1="472.5" x2="480.2" y1="263.0" y2="263.0"/>
+<circle class="pt open" cx="476.4" cy="263.0" r="4.5"><title>2026-10-06_hadur-leak38-step2-16seeds-local_cold.tsv: -0.36 pp (-0.75 to 0.02); conditions differ from the usual: engine 1.9.5.6, parallel width 16</title></circle>
 <text class="t" x="16" y="289.0">3.8.1 vs 3.7  leak38-step2</text>
-<line class="ci" x1="516.8" x2="535.6" y1="285.0" y2="285.0"/>
-<circle class="pt open" cx="526.2" cy="285.0" r="4.5"><title>2026-10-06_hadur-leak38-step2-local_cold.tsv: 0.06 pp (-0.70 to 0.82); conditions differ from the usual: engine 1.9.5.6</title></circle>
+<line class="ci" x1="473.0" x2="488.2" y1="285.0" y2="285.0"/>
+<circle class="pt open" cx="480.6" cy="285.0" r="4.5"><title>2026-10-06_hadur-leak38-step2-local_cold.tsv: 0.06 pp (-0.70 to 0.82); conditions differ from the usual: engine 1.9.5.6</title></circle>
 <text class="t" x="16" y="311.0">3.8.1 vs 3.8  leak38-step3</text>
-<line class="ci" x1="520.5" x2="535.5" y1="307.0" y2="307.0"/>
-<circle class="pt open" cx="528.0" cy="307.0" r="4.5"><title>2026-10-06_hadur-leak38-step3-local_cold.tsv: 0.21 pp (-0.40 to 0.81); conditions differ from the usual: engine 1.9.5.6</title></circle>
+<line class="ci" x1="476.0" x2="488.1" y1="307.0" y2="307.0"/>
+<circle class="pt open" cx="482.1" cy="307.0" r="4.5"><title>2026-10-06_hadur-leak38-step3-local_cold.tsv: 0.21 pp (-0.40 to 0.81); conditions differ from the usual: engine 1.9.5.6</title></circle>
 <text class="t" x="16" y="333.0">3.5.1 vs 3.4  ll-351v34 [1.11.1]</text>
-<line class="ci" x1="437.6" x2="455.3" y1="329.0" y2="329.0"/>
-<circle class="pt" cx="446.5" cy="329.0" r="4.5"><title>2026-10-06_hadur-ll-351v34-local_cold.tsv: -6.37 pp (-7.09 to -5.66)</title></circle>
+<line class="ci" x1="409.1" x2="423.4" y1="329.0" y2="329.0"/>
+<circle class="pt" cx="416.3" cy="329.0" r="4.5"><title>2026-10-06_hadur-ll-351v34-local_cold.tsv: -6.37 pp (-7.09 to -5.66)</title></circle>
 <text class="t" x="16" y="355.0">3.7 vs 3.5.1  ll-37v351 [1.11.1]</text>
-<line class="ci" x1="509.6" x2="532.6" y1="351.0" y2="351.0"/>
-<circle class="pt" cx="521.1" cy="351.0" r="4.5"><title>2026-10-06_hadur-ll-37v351-local_cold.tsv: -0.35 pp (-1.28 to 0.58)</title></circle>
+<line class="ci" x1="467.2" x2="485.8" y1="351.0" y2="351.0"/>
+<circle class="pt" cx="476.5" cy="351.0" r="4.5"><title>2026-10-06_hadur-ll-37v351-local_cold.tsv: -0.35 pp (-1.28 to 0.58)</title></circle>
 <text class="t" x="16" y="377.0">3.7 vs 3.5.1  ll-37v351-tight [1.11.1]</text>
-<line class="ci" x1="526.7" x2="541.5" y1="373.0" y2="373.0"/>
-<circle class="pt" cx="534.1" cy="373.0" r="4.5"><title>2026-10-06_hadur-ll-37v351-tight-local_cold.tsv: 0.70 pp (0.10 to 1.30)</title></circle>
+<line class="ci" x1="481.0" x2="493.0" y1="373.0" y2="373.0"/>
+<circle class="pt" cx="487.0" cy="373.0" r="4.5"><title>2026-10-06_hadur-ll-37v351-tight-local_cold.tsv: 0.70 pp (0.10 to 1.30)</title></circle>
 <text class="t" x="16" y="399.0">3.8.5 vs 3.4  ll-385v34 [1.11.1]</text>
-<line class="ci" x1="433.9" x2="450.1" y1="395.0" y2="395.0"/>
-<circle class="pt" cx="441.9" cy="395.0" r="4.5"><title>2026-10-06_hadur-ll-385v34-local_cold.tsv: -6.74 pp (-7.39 to -6.08)</title></circle>
+<line class="ci" x1="406.1" x2="419.2" y1="395.0" y2="395.0"/>
+<circle class="pt" cx="412.6" cy="395.0" r="4.5"><title>2026-10-06_hadur-ll-385v34-local_cold.tsv: -6.74 pp (-7.39 to -6.08)</title></circle>
 <text class="t" x="16" y="421.0">3.8.5 vs 3.4  ll-385v34-tight [1.11.1]</text>
-<line class="ci" x1="544.0" x2="560.1" y1="417.0" y2="417.0"/>
-<circle class="pt" cx="552.1" cy="417.0" r="4.5"><title>2026-10-06_hadur-ll-385v34-tight-local_cold.tsv: 2.15 pp (1.50 to 2.80)</title></circle>
+<line class="ci" x1="495.0" x2="508.0" y1="417.0" y2="417.0"/>
+<circle class="pt" cx="501.5" cy="417.0" r="4.5"><title>2026-10-06_hadur-ll-385v34-tight-local_cold.tsv: 2.15 pp (1.50 to 2.80)</title></circle>
 <text class="t" x="16" y="443.0">3.8.5 vs 3.7  ll-385v37 [1.11.1]</text>
-<line class="ci" x1="505.2" x2="526.2" y1="439.0" y2="439.0"/>
-<circle class="pt" cx="515.6" cy="439.0" r="4.5"><title>2026-10-06_hadur-ll-385v37-local_cold.tsv: -0.79 pp (-1.63 to 0.06)</title></circle>
+<line class="ci" x1="463.7" x2="480.6" y1="439.0" y2="439.0"/>
+<circle class="pt" cx="472.1" cy="439.0" r="4.5"><title>2026-10-06_hadur-ll-385v37-local_cold.tsv: -0.79 pp (-1.63 to 0.06)</title></circle>
 <text class="t" x="16" y="465.0">3.8 vs 3.7  melee-top20</text>
-<line class="ci" x1="515.3" x2="523.3" y1="461.0" y2="461.0"/>
-<circle class="pt open" cx="519.2" cy="461.0" r="4.5"><title>2026-10-06_hadur-melee-top20-local_cold.tsv: -0.50 pp (-0.82 to -0.17); conditions differ from the usual: engine 1.9.5.6</title></circle>
+<line class="ci" x1="471.8" x2="478.3" y1="461.0" y2="461.0"/>
+<circle class="pt open" cx="475.0" cy="461.0" r="4.5"><title>2026-10-06_hadur-melee-top20-local_cold.tsv: -0.50 pp (-0.82 to -0.17); conditions differ from the usual: engine 1.9.5.6</title></circle>
 <text class="t" x="16" y="487.0">3.8 vs 3.7  team-top20</text>
-<line class="ci" x1="829.3" x2="853.1" y1="483.0" y2="483.0"/>
-<circle class="pt open" cx="841.2" cy="483.0" r="4.5"><title>2026-10-06_hadur-team-top20-local_cold.tsv: 25.48 pp (24.52 to 26.44); conditions differ from the usual: rounds per battle 10, engine 1.9.5.6</title></circle>
+<line class="ci" x1="725.2" x2="744.4" y1="483.0" y2="483.0"/>
+<circle class="pt open" cx="734.8" cy="483.0" r="4.5"><title>2026-10-06_hadur-team-top20-local_cold.tsv: 25.48 pp (24.52 to 26.44); conditions differ from the usual: rounds per battle 10, engine 1.9.5.6</title></circle>
 <text class="t" x="16" y="509.0">3.8.5 vs 3.8  top20-385 [1.11.1]</text>
-<line class="ci" x1="493.2" x2="530.0" y1="505.0" y2="505.0"/>
-<circle class="pt" cx="511.6" cy="505.0" r="4.5"><title>2026-10-06_hadur-top20-385-local_cold.tsv: -1.12 pp (-2.60 to 0.37)</title></circle>
+<line class="ci" x1="454.0" x2="483.7" y1="505.0" y2="505.0"/>
+<circle class="pt" cx="468.8" cy="505.0" r="4.5"><title>2026-10-06_hadur-top20-385-local_cold.tsv: -1.12 pp (-2.60 to 0.37)</title></circle>
 <text class="t" x="16" y="531.0">3.8 vs 3.7  top20-e1111 [1.11.1]</text>
-<line class="ci" x1="546.9" x2="579.7" y1="527.0" y2="527.0"/>
-<circle class="pt" cx="563.2" cy="527.0" r="4.5"><title>2026-10-06_hadur-top20-e1111-local_cold.tsv: 3.05 pp (1.73 to 4.38)</title></circle>
+<line class="ci" x1="497.3" x2="523.8" y1="527.0" y2="527.0"/>
+<circle class="pt" cx="510.5" cy="527.0" r="4.5"><title>2026-10-06_hadur-top20-e1111-local_cold.tsv: 3.05 pp (1.73 to 4.38)</title></circle>
 <text class="t" x="16" y="553.0">2.Hadur 3.9 vs 2.Hadur 3.8.5  calib-cpu1m-39-v385 [1.11.1]</text>
-<line class="ci" x1="524.9" x2="532.9" y1="549.0" y2="549.0"/>
-<circle class="pt" cx="528.9" cy="549.0" r="4.5"><title>2026-10-07_hadur-calib-cpu1m-39-v385-local_cold.tsv: 0.28 pp (-0.04 to 0.60)</title></circle>
+<line class="ci" x1="479.6" x2="486.0" y1="549.0" y2="549.0"/>
+<circle class="pt" cx="482.8" cy="549.0" r="4.5"><title>2026-10-07_hadur-calib-cpu1m-39-v385-local_cold.tsv: 0.28 pp (-0.04 to 0.60)</title></circle>
 <text class="t" x="16" y="575.0">2.Hadur 3.9 vs 2.Hadur 3.8.5  calib-warm-39-v385 [1.11.1]</text>
-<line class="ci" x1="523.9" x2="540.4" y1="571.0" y2="571.0"/>
-<circle class="pt" cx="532.1" cy="571.0" r="4.5"><title>2026-10-07_hadur-calib-warm-39-v385-local_cold.tsv: 0.54 pp (-0.12 to 1.21)</title></circle>
+<line class="ci" x1="478.8" x2="492.1" y1="571.0" y2="571.0"/>
+<circle class="pt" cx="485.4" cy="571.0" r="4.5"><title>2026-10-07_hadur-calib-warm-39-v385-local_cold.tsv: 0.54 pp (-0.12 to 1.21)</title></circle>
 <text class="t" x="16" y="597.0">2.Hadur 3.9 vs 2.Hadur 3.8.5  calib-warm-39-v385-local_warm [1.11.1]</text>
-<line class="ci" x1="521.7" x2="543.9" y1="593.0" y2="593.0"/>
-<circle class="pt" cx="532.9" cy="593.0" r="4.5"><title>2026-10-07_hadur-calib-warm-39-v385-local_warm.tsv: 0.60 pp (-0.30 to 1.49)</title></circle>
+<line class="ci" x1="477.0" x2="494.9" y1="593.0" y2="593.0"/>
+<circle class="pt" cx="486.0" cy="593.0" r="4.5"><title>2026-10-07_hadur-calib-warm-39-v385-local_warm.tsv: 0.60 pp (-0.30 to 1.49)</title></circle>
 <text class="t" x="16" y="619.0">2.Hadur 3.9 vs 2.Hadur 3.8.5  leak-39-v385 [1.11.1]</text>
-<line class="ci" x1="522.0" x2="530.9" y1="615.0" y2="615.0"/>
-<circle class="pt" cx="526.4" cy="615.0" r="4.5"><title>2026-10-07_hadur-leak-39-v385-local_cold.tsv: 0.08 pp (-0.28 to 0.44)</title></circle>
+<line class="ci" x1="477.2" x2="484.4" y1="615.0" y2="615.0"/>
+<circle class="pt" cx="480.8" cy="615.0" r="4.5"><title>2026-10-07_hadur-leak-39-v385-local_cold.tsv: 0.08 pp (-0.28 to 0.44)</title></circle>
 <text class="t" x="16" y="641.0">2.Hadur 3.9 vs 2.Hadur 3.8.5  leak-39r-v385 [1.11.1]</text>
-<line class="ci" x1="520.5" x2="529.9" y1="637.0" y2="637.0"/>
-<circle class="pt" cx="525.2" cy="637.0" r="4.5"><title>2026-10-07_hadur-leak-39r-v385-local_cold.tsv: -0.02 pp (-0.40 to 0.36)</title></circle>
+<line class="ci" x1="476.0" x2="483.6" y1="637.0" y2="637.0"/>
+<circle class="pt" cx="479.8" cy="637.0" r="4.5"><title>2026-10-07_hadur-leak-39r-v385-local_cold.tsv: -0.02 pp (-0.40 to 0.36)</title></circle>
 <text class="t" x="16" y="663.0">2.Hadur 3.9 vs 2.Hadur 3.8.5  ll-39-v385 [1.11.1]</text>
-<line class="ci" x1="584.2" x2="602.1" y1="659.0" y2="659.0"/>
-<circle class="pt" cx="593.1" cy="659.0" r="4.5"><title>2026-10-07_hadur-ll-39-v385-local_cold.tsv: 5.46 pp (4.74 to 6.19)</title></circle>
+<line class="ci" x1="527.4" x2="541.9" y1="659.0" y2="659.0"/>
+<circle class="pt" cx="534.6" cy="659.0" r="4.5"><title>2026-10-07_hadur-ll-39-v385-local_cold.tsv: 5.46 pp (4.74 to 6.19)</title></circle>
 <text class="t" x="16" y="685.0">2.Hadur 3.9 vs 2.Hadur 3.4  lost-rounds-39-v34 [1.11.1]</text>
-<line class="ci" x1="537.1" x2="555.9" y1="681.0" y2="681.0"/>
-<circle class="pt" cx="546.5" cy="681.0" r="4.5"><title>2026-10-07_hadur-lost-rounds-39-v34-local_cold.tsv: 1.70 pp (0.94 to 2.46)</title></circle>
+<line class="ci" x1="489.4" x2="504.6" y1="681.0" y2="681.0"/>
+<circle class="pt" cx="497.0" cy="681.0" r="4.5"><title>2026-10-07_hadur-lost-rounds-39-v34-local_cold.tsv: 1.70 pp (0.94 to 2.46)</title></circle>
 <text class="t" x="16" y="707.0">3.8.5 vs 3.7  melee-top20-385-vs-37</text>
-<line class="ci" x1="524.4" x2="531.9" y1="703.0" y2="703.0"/>
-<circle class="pt open" cx="528.2" cy="703.0" r="4.5"><title>2026-10-07_hadur-melee-top20-385-vs-37-local_cold.tsv: 0.22 pp (-0.08 to 0.52); conditions differ from the usual: engine 1.9.5.6, parallel width 5</title></circle>
+<line class="ci" x1="479.2" x2="485.2" y1="703.0" y2="703.0"/>
+<circle class="pt open" cx="482.2" cy="703.0" r="4.5"><title>2026-10-07_hadur-melee-top20-385-vs-37-local_cold.tsv: 0.22 pp (-0.08 to 0.52); conditions differ from the usual: engine 1.9.5.6, parallel width 5</title></circle>
 <text class="t" x="16" y="729.0">3.8.5 vs 3.8  melee-top20-385-vs-38</text>
-<line class="ci" x1="522.8" x2="532.9" y1="725.0" y2="725.0"/>
-<circle class="pt open" cx="527.9" cy="725.0" r="4.5"><title>2026-10-07_hadur-melee-top20-385-vs-38-local_cold.tsv: 0.20 pp (-0.21 to 0.60); conditions differ from the usual: engine 1.9.5.6, parallel width 5</title></circle>
+<line class="ci" x1="477.9" x2="486.0" y1="725.0" y2="725.0"/>
+<circle class="pt open" cx="482.0" cy="725.0" r="4.5"><title>2026-10-07_hadur-melee-top20-385-vs-38-local_cold.tsv: 0.20 pp (-0.21 to 0.60); conditions differ from the usual: engine 1.9.5.6, parallel width 5</title></circle>
 <text class="t" x="16" y="751.0">2.Hadur 3.9 vs 2.Hadur 3.4  mid-39-v34 [1.11.1]</text>
-<line class="ci" x1="517.5" x2="533.1" y1="747.0" y2="747.0"/>
-<circle class="pt" cx="525.3" cy="747.0" r="4.5"><title>2026-10-07_hadur-mid-39-v34-local_cold.tsv: -0.01 pp (-0.64 to 0.62)</title></circle>
+<line class="ci" x1="473.6" x2="486.2" y1="747.0" y2="747.0"/>
+<circle class="pt" cx="479.9" cy="747.0" r="4.5"><title>2026-10-07_hadur-mid-39-v34-local_cold.tsv: -0.01 pp (-0.64 to 0.62)</title></circle>
 <text class="t" x="16" y="773.0">2.Hadur 3.9 vs jd.Nullstride 2.3.3  mid-null-list-v39 [1.11.1]</text>
-<line class="ci" x1="295.8" x2="312.9" y1="769.0" y2="769.0"/>
-<circle class="pt" cx="304.4" cy="769.0" r="4.5"><title>2026-10-07_hadur-mid-null-list-v39-local_cold.tsv: -17.84 pp (-18.53 to -17.15)</title></circle>
+<line class="ci" x1="294.7" x2="308.5" y1="769.0" y2="769.0"/>
+<circle class="pt" cx="301.6" cy="769.0" r="4.5"><title>2026-10-07_hadur-mid-null-list-v39-local_cold.tsv: -17.84 pp (-18.53 to -17.15)</title></circle>
 <text class="t" x="16" y="795.0">2.Hadur 3.9 vs jd.Nullstride 2.3.3  mid-null-v39 [1.11.1]</text>
-<line class="ci" x1="382.8" x2="396.7" y1="791.0" y2="791.0"/>
-<circle class="pt" cx="389.8" cy="791.0" r="4.5"><title>2026-10-07_hadur-mid-null-v39-local_cold.tsv: -10.95 pp (-11.51 to -10.39)</title></circle>
+<line class="ci" x1="364.9" x2="376.1" y1="791.0" y2="791.0"/>
+<circle class="pt" cx="370.5" cy="791.0" r="4.5"><title>2026-10-07_hadur-mid-null-v39-local_cold.tsv: -10.95 pp (-11.51 to -10.39)</title></circle>
 <text class="t" x="16" y="817.0">2.Hadur 3.9sa vs 2.Hadur 3.9  mid-shieldall-list-v39 [1.11.1]</text>
-<line class="ci" x1="614.5" x2="635.8" y1="813.0" y2="813.0"/>
-<circle class="pt" cx="625.2" cy="813.0" r="4.5"><title>2026-10-07_hadur-mid-shieldall-list-v39-local_cold.tsv: 8.05 pp (7.19 to 8.91)</title></circle>
+<line class="ci" x1="551.9" x2="569.1" y1="813.0" y2="813.0"/>
+<circle class="pt" cx="560.5" cy="813.0" r="4.5"><title>2026-10-07_hadur-mid-shieldall-list-v39-local_cold.tsv: 8.05 pp (7.19 to 8.91)</title></circle>
 <text class="t" x="16" y="839.0">2.Hadur 3.9sa vs 2.Hadur 3.9  mid-shieldall-v39 [1.11.1]</text>
-<line class="ci" x1="501.3" x2="518.9" y1="835.0" y2="835.0"/>
-<circle class="pt" cx="510.1" cy="835.0" r="4.5"><title>2026-10-07_hadur-mid-shieldall-v39-local_cold.tsv: -1.24 pp (-1.95 to -0.53)</title></circle>
+<line class="ci" x1="460.5" x2="474.7" y1="835.0" y2="835.0"/>
+<circle class="pt" cx="467.6" cy="835.0" r="4.5"><title>2026-10-07_hadur-mid-shieldall-v39-local_cold.tsv: -1.24 pp (-1.95 to -0.53)</title></circle>
 <text class="t" x="16" y="861.0">2.Hadur 3.9 vs 2.Hadur 3.4  score-leak-39-v34 [1.11.1]</text>
-<line class="ci" x1="590.2" x2="602.1" y1="857.0" y2="857.0"/>
-<circle class="pt" cx="596.2" cy="857.0" r="4.5"><title>2026-10-07_hadur-score-leak-39-v34-local_cold.tsv: 5.71 pp (5.23 to 6.19)</title></circle>
+<line class="ci" x1="532.3" x2="541.9" y1="857.0" y2="857.0"/>
+<circle class="pt" cx="537.1" cy="857.0" r="4.5"><title>2026-10-07_hadur-score-leak-39-v34-local_cold.tsv: 5.71 pp (5.23 to 6.19)</title></circle>
 <text class="t" x="16" y="883.0">2.Hadur 3.9 vs 2.Hadur 3.4  tail-39-v34 [1.11.1]</text>
-<line class="ci" x1="523.8" x2="530.9" y1="879.0" y2="879.0"/>
-<circle class="pt" cx="527.4" cy="879.0" r="4.5"><title>2026-10-07_hadur-tail-39-v34-local_cold.tsv: 0.16 pp (-0.13 to 0.44)</title></circle>
+<line class="ci" x1="478.7" x2="484.4" y1="879.0" y2="879.0"/>
+<circle class="pt" cx="481.6" cy="879.0" r="4.5"><title>2026-10-07_hadur-tail-39-v34-local_cold.tsv: 0.16 pp (-0.13 to 0.44)</title></circle>
 <text class="t" x="16" y="905.0">2.Hadur 3.9 vs rsalesc.mega.Knight 0.6.28  tail-knight-v39 [1.11.1]</text>
-<line class="ci" x1="506.4" x2="514.8" y1="901.0" y2="901.0"/>
-<circle class="pt" cx="510.6" cy="901.0" r="4.5"><title>2026-10-07_hadur-tail-knight-v39-local_cold.tsv: -1.20 pp (-1.54 to -0.86)</title></circle>
+<line class="ci" x1="464.6" x2="471.4" y1="901.0" y2="901.0"/>
+<circle class="pt" cx="468.0" cy="901.0" r="4.5"><title>2026-10-07_hadur-tail-knight-v39-local_cold.tsv: -1.20 pp (-1.54 to -0.86)</title></circle>
 <text class="t" x="16" y="927.0">3.8.5 vs 3.7  team-top20-385-vs-37</text>
-<line class="ci" x1="830.4" x2="843.3" y1="923.0" y2="923.0"/>
-<circle class="pt open" cx="836.8" cy="923.0" r="4.5"><title>2026-10-07_hadur-team-top20-385-vs-37-local_cold.tsv: 25.13 pp (24.61 to 25.65); conditions differ from the usual: engine 1.9.5.6, parallel width 4</title></circle>
+<line class="ci" x1="726.1" x2="736.5" y1="923.0" y2="923.0"/>
+<circle class="pt open" cx="731.3" cy="923.0" r="4.5"><title>2026-10-07_hadur-team-top20-385-vs-37-local_cold.tsv: 25.13 pp (24.61 to 25.65); conditions differ from the usual: engine 1.9.5.6, parallel width 4</title></circle>
 <text class="t" x="16" y="949.0">3.8.5 vs 3.8  team-top20-385-vs-38</text>
-<line class="ci" x1="515.4" x2="532.9" y1="945.0" y2="945.0"/>
-<circle class="pt open" cx="524.2" cy="945.0" r="4.5"><title>2026-10-07_hadur-team-top20-385-vs-38-local_cold.tsv: -0.10 pp (-0.81 to 0.60); conditions differ from the usual: engine 1.9.5.6, parallel width 4</title></circle>
+<line class="ci" x1="471.9" x2="486.0" y1="945.0" y2="945.0"/>
+<circle class="pt open" cx="479.0" cy="945.0" r="4.5"><title>2026-10-07_hadur-team-top20-385-vs-38-local_cold.tsv: -0.10 pp (-0.81 to 0.60); conditions differ from the usual: engine 1.9.5.6, parallel width 4</title></circle>
 <text class="t" x="16" y="971.0">3.8.5 vs 3.8  tier2-385 [1.11.1]</text>
-<line class="ci" x1="511.7" x2="531.9" y1="967.0" y2="967.0"/>
-<circle class="pt" cx="521.8" cy="967.0" r="4.5"><title>2026-10-07_hadur-tier2-385-local_cold.tsv: -0.29 pp (-1.11 to 0.52)</title></circle>
+<line class="ci" x1="468.9" x2="485.2" y1="967.0" y2="967.0"/>
+<circle class="pt" cx="477.1" cy="967.0" r="4.5"><title>2026-10-07_hadur-tier2-385-local_cold.tsv: -0.29 pp (-1.11 to 0.52)</title></circle>
 <text class="t" x="16" y="993.0">3.8.5 vs 3.7  top20-385-vs-37 [1.11.1]</text>
-<line class="ci" x1="545.1" x2="563.1" y1="989.0" y2="989.0"/>
-<circle class="pt" cx="554.2" cy="989.0" r="4.5"><title>2026-10-07_hadur-top20-385-vs-37-local_cold.tsv: 2.32 pp (1.59 to 3.04)</title></circle>
+<line class="ci" x1="495.9" x2="510.4" y1="989.0" y2="989.0"/>
+<circle class="pt" cx="503.2" cy="989.0" r="4.5"><title>2026-10-07_hadur-top20-385-vs-37-local_cold.tsv: 2.32 pp (1.59 to 3.04)</title></circle>
 <text class="t" x="16" y="1015.0">2.Hadur 3.9 vs 2.Hadur 3.8.5  top20-39-v385 [1.11.1]</text>
-<line class="ci" x1="512.5" x2="538.4" y1="1011.0" y2="1011.0"/>
-<circle class="pt" cx="525.4" cy="1011.0" r="4.5"><title>2026-10-07_hadur-top20-39-v385-local_cold.tsv: 0.00 pp (-1.04 to 1.05)</title></circle>
+<line class="ci" x1="469.6" x2="490.5" y1="1011.0" y2="1011.0"/>
+<circle class="pt" cx="480.0" cy="1011.0" r="4.5"><title>2026-10-07_hadur-top20-39-v385-local_cold.tsv: 0.00 pp (-1.04 to 1.05)</title></circle>
 <text class="t" x="16" y="1037.0">2.Hadur 3.9 vs 2.Hadur 3.8.5  top20-39r-v385 [1.11.1]</text>
-<line class="ci" x1="519.4" x2="536.8" y1="1033.0" y2="1033.0"/>
-<circle class="pt" cx="528.2" cy="1033.0" r="4.5"><title>2026-10-07_hadur-top20-39r-v385-local_cold.tsv: 0.22 pp (-0.49 to 0.92)</title></circle>
+<line class="ci" x1="475.1" x2="489.2" y1="1033.0" y2="1033.0"/>
+<circle class="pt" cx="482.2" cy="1033.0" r="4.5"><title>2026-10-07_hadur-top20-39r-v385-local_cold.tsv: 0.22 pp (-0.49 to 0.92)</title></circle>
 <text class="t" x="16" y="1059.0">3.8.5 vs 3.8  top20big-385 [1.11.1]</text>
-<line class="ci" x1="517.6" x2="525.3" y1="1055.0" y2="1055.0"/>
-<circle class="pt" cx="521.5" cy="1055.0" r="4.5"><title>2026-10-07_hadur-top20big-385-local_cold.tsv: -0.32 pp (-0.63 to -0.01)</title></circle>
+<line class="ci" x1="473.7" x2="479.9" y1="1055.0" y2="1055.0"/>
+<circle class="pt" cx="476.8" cy="1055.0" r="4.5"><title>2026-10-07_hadur-top20big-385-local_cold.tsv: -0.32 pp (-0.63 to -0.01)</title></circle>
 <text class="t" x="16" y="1081.0">2.Hadur 3.9 vs 2.Hadur 3.8.5  weak-39-v385 [1.11.1]</text>
-<line class="ci" x1="502.4" x2="531.4" y1="1077.0" y2="1077.0"/>
-<circle class="pt" cx="516.9" cy="1077.0" r="4.5"><title>2026-10-07_hadur-weak-39-v385-local_cold.tsv: -0.69 pp (-1.86 to 0.48)</title></circle>
+<line class="ci" x1="461.4" x2="484.8" y1="1077.0" y2="1077.0"/>
+<circle class="pt" cx="473.1" cy="1077.0" r="4.5"><title>2026-10-07_hadur-weak-39-v385-local_cold.tsv: -0.69 pp (-1.86 to 0.48)</title></circle>
 <text class="t" x="16" y="1103.0">2.Hadur 3.9 vs 2.Hadur 3.8.5  weak-39r-v385 [1.11.1]</text>
-<line class="ci" x1="515.6" x2="536.8" y1="1099.0" y2="1099.0"/>
-<circle class="pt" cx="526.2" cy="1099.0" r="4.5"><title>2026-10-07_hadur-weak-39r-v385-local_cold.tsv: 0.06 pp (-0.79 to 0.92)</title></circle>
+<line class="ci" x1="472.1" x2="489.2" y1="1099.0" y2="1099.0"/>
+<circle class="pt" cx="480.6" cy="1099.0" r="4.5"><title>2026-10-07_hadur-weak-39r-v385-local_cold.tsv: 0.06 pp (-0.79 to 0.92)</title></circle>
 <text class="t" x="16" y="1125.0">lxx.Tomcat 3.68 vs 2.Hadur 3.10  census-311-tail [1.11.1]</text>
-<line class="ci" x1="540.2" x2="542.9" y1="1121.0" y2="1121.0"/>
-<circle class="pt" cx="541.5" cy="1121.0" r="4.5"><title>2026-10-08_hadur-census-311-tail-local_cold.tsv: 1.30 pp (1.19 to 1.41)</title></circle>
+<line class="ci" x1="491.9" x2="494.1" y1="1121.0" y2="1121.0"/>
+<circle class="pt" cx="493.0" cy="1121.0" r="4.5"><title>2026-10-08_hadur-census-311-tail-local_cold.tsv: 1.30 pp (1.19 to 1.41)</title></circle>
 <text class="t" x="16" y="1147.0">2.Hadur 3.10nf vs 2.Hadur 3.10  gungap-310nf-v310-pc [1.11.1]</text>
-<line class="ci" x1="521.1" x2="537.5" y1="1143.0" y2="1143.0"/>
-<circle class="pt" cx="529.3" cy="1143.0" r="4.5"><title>2026-10-08_hadur-gungap-310nf-v310-pc-local_cold.tsv: 0.31 pp (-0.35 to 0.97)</title></circle>
+<line class="ci" x1="476.5" x2="489.7" y1="1143.0" y2="1143.0"/>
+<circle class="pt" cx="483.1" cy="1143.0" r="4.5"><title>2026-10-08_hadur-gungap-310nf-v310-pc-local_cold.tsv: 0.31 pp (-0.35 to 0.97)</title></circle>
 <text class="t" x="16" y="1169.0">2.Hadur 3.10 vs 2.Hadur 3.9  shield-310-v39 [1.11.1]</text>
-<line class="ci" x1="665.1" x2="676.7" y1="1165.0" y2="1165.0"/>
-<circle class="pt" cx="670.9" cy="1165.0" r="4.5"><title>2026-10-08_hadur-shield-310-v39-local_cold.tsv: 11.74 pp (11.27 to 12.21)</title></circle>
+<line class="ci" x1="592.7" x2="602.1" y1="1165.0" y2="1165.0"/>
+<circle class="pt" cx="597.4" cy="1165.0" r="4.5"><title>2026-10-08_hadur-shield-310-v39-local_cold.tsv: 11.74 pp (11.27 to 12.21)</title></circle>
 <text class="t" x="16" y="1191.0">2.Hadur 3.9sa vs 2.Hadur 3.9  shield-confirm-v39 [1.11.1]</text>
-<line class="ci" x1="656.0" x2="665.8" y1="1187.0" y2="1187.0"/>
-<circle class="pt" cx="661.0" cy="1187.0" r="4.5"><title>2026-10-08_hadur-shield-confirm-v39-local_cold.tsv: 10.94 pp (10.54 to 11.33)</title></circle>
+<line class="ci" x1="585.4" x2="593.3" y1="1187.0" y2="1187.0"/>
+<circle class="pt" cx="589.4" cy="1187.0" r="4.5"><title>2026-10-08_hadur-shield-confirm-v39-local_cold.tsv: 10.94 pp (10.54 to 11.33)</title></circle>
 <text class="t" x="16" y="1213.0">2.Hadur 3.9sa vs 2.Hadur 3.9  shield-sweep-low-v39 [1.11.1]</text>
-<line class="ci" x1="491.7" x2="499.7" y1="1209.0" y2="1209.0"/>
-<circle class="pt" cx="495.7" cy="1209.0" r="4.5"><title>2026-10-08_hadur-shield-sweep-low-v39-local_cold.tsv: -2.40 pp (-2.72 to -2.08)</title></circle>
+<line class="ci" x1="452.8" x2="459.2" y1="1209.0" y2="1209.0"/>
+<circle class="pt" cx="456.0" cy="1209.0" r="4.5"><title>2026-10-08_hadur-shield-sweep-low-v39-local_cold.tsv: -2.40 pp (-2.72 to -2.08)</title></circle>
 <text class="t" x="16" y="1235.0">2.Hadur 3.9sa vs 2.Hadur 3.9  shield-sweep-mid-v39 [1.11.1]</text>
-<line class="ci" x1="578.2" x2="589.1" y1="1231.0" y2="1231.0"/>
-<circle class="pt" cx="583.7" cy="1231.0" r="4.5"><title>2026-10-08_hadur-shield-sweep-mid-v39-local_cold.tsv: 4.70 pp (4.26 to 5.14)</title></circle>
+<line class="ci" x1="522.6" x2="531.4" y1="1231.0" y2="1231.0"/>
+<circle class="pt" cx="527.0" cy="1231.0" r="4.5"><title>2026-10-08_hadur-shield-sweep-mid-v39-local_cold.tsv: 4.70 pp (4.26 to 5.14)</title></circle>
 <text class="t" x="16" y="1257.0">2.Hadur 3.10 vs 2.Hadur 3.9  tail-310-v39 [1.11.1]</text>
-<line class="ci" x1="517.8" x2="529.9" y1="1253.0" y2="1253.0"/>
-<circle class="pt" cx="523.8" cy="1253.0" r="4.5"><title>2026-10-08_hadur-tail-310-v39-local_cold.tsv: -0.13 pp (-0.62 to 0.36)</title></circle>
+<line class="ci" x1="473.8" x2="483.6" y1="1253.0" y2="1253.0"/>
+<circle class="pt" cx="478.7" cy="1253.0" r="4.5"><title>2026-10-08_hadur-tail-310-v39-local_cold.tsv: -0.13 pp (-0.62 to 0.36)</title></circle>
 <text class="t" x="16" y="1279.0">2.Hadur 3.10nf vs 2.Hadur 3.10  tail-310nf-v310-pc [1.11.1]</text>
-<line class="ci" x1="522.6" x2="535.5" y1="1275.0" y2="1275.0"/>
-<circle class="pt" cx="529.0" cy="1275.0" r="4.5"><title>2026-10-08_hadur-tail-310nf-v310-pc-local_cold.tsv: 0.29 pp (-0.23 to 0.81)</title></circle>
+<line class="ci" x1="477.7" x2="488.1" y1="1275.0" y2="1275.0"/>
+<circle class="pt" cx="482.9" cy="1275.0" r="4.5"><title>2026-10-08_hadur-tail-310nf-v310-pc-local_cold.tsv: 0.29 pp (-0.23 to 0.81)</title></circle>
 <text class="t" x="16" y="1301.0">2.Hadur 3.10 vs 2.Hadur 3.9  top20-310-v39 [1.11.1]</text>
-<line class="ci" x1="498.8" x2="531.8" y1="1297.0" y2="1297.0"/>
-<circle class="pt" cx="515.3" cy="1297.0" r="4.5"><title>2026-10-08_hadur-top20-310-v39-local_cold.tsv: -0.82 pp (-2.15 to 0.51)</title></circle>
+<line class="ci" x1="458.5" x2="485.1" y1="1297.0" y2="1297.0"/>
+<circle class="pt" cx="471.8" cy="1297.0" r="4.5"><title>2026-10-08_hadur-top20-310-v39-local_cold.tsv: -0.82 pp (-2.15 to 0.51)</title></circle>
 <text class="t" x="16" y="1323.0">2.Hadur 3.10nf vs 2.Hadur 3.10  top20-310nf-v310-pc [1.11.1]</text>
-<line class="ci" x1="493.3" x2="531.4" y1="1319.0" y2="1319.0"/>
-<circle class="pt" cx="512.3" cy="1319.0" r="4.5"><title>2026-10-08_hadur-top20-310nf-v310-pc-local_cold.tsv: -1.06 pp (-2.59 to 0.48)</title></circle>
+<line class="ci" x1="454.1" x2="484.8" y1="1319.0" y2="1319.0"/>
+<circle class="pt" cx="469.4" cy="1319.0" r="4.5"><title>2026-10-08_hadur-top20-310nf-v310-pc-local_cold.tsv: -1.06 pp (-2.59 to 0.48)</title></circle>
 <text class="t" x="16" y="1345.0">lxx.Tomcat 3.68 vs 2.Hadur 3.10  census-311-top [1.11.1]</text>
-<line class="ci" x1="477.2" x2="489.5" y1="1341.0" y2="1341.0"/>
-<circle class="pt" cx="483.4" cy="1341.0" r="4.5"><title>2026-10-09_hadur-census-311-top-local_cold.tsv: -3.39 pp (-3.89 to -2.90)</title></circle>
-<text class="t" x="16" y="1367.0">2.Hadur 3.10nd vs 2.Hadur 3.10  screen-311-nd [1.11.1]</text>
-<line class="ci" x1="528.2" x2="536.2" y1="1363.0" y2="1363.0"/>
-<circle class="pt" cx="532.1" cy="1363.0" r="4.5"><title>2026-10-09_hadur-screen-311-nd-local_cold.tsv: 0.54 pp (0.22 to 0.87)</title></circle>
-<text class="t" x="16" y="1389.0">2.Hadur 3.10ndnl vs 2.Hadur 3.10  screen-311-ndnl [1.11.1]</text>
-<line class="ci" x1="530.3" x2="539.2" y1="1385.0" y2="1385.0"/>
-<circle class="pt" cx="534.7" cy="1385.0" r="4.5"><title>2026-10-09_hadur-screen-311-ndnl-local_cold.tsv: 0.75 pp (0.39 to 1.11)</title></circle>
-<text class="t" x="16" y="1411.0">2.Hadur 3.10nl vs 2.Hadur 3.10  screen-311-nl [1.11.1]</text>
-<line class="ci" x1="521.7" x2="530.6" y1="1407.0" y2="1407.0"/>
-<circle class="pt" cx="526.2" cy="1407.0" r="4.5"><title>2026-10-09_hadur-screen-311-nl-local_cold.tsv: 0.06 pp (-0.30 to 0.42)</title></circle>
-<text class="m" x="16" y="1466">Open circle: a condition that differs from the usual one for this chart (a blank is not recorded, not assumed).</text>
-<text class="m" x="16" y="1482">rounds per battle 10 (usual 35): 1 run</text>
-<text class="m" x="16" y="1497">engine 1.9.5.6 (usual 1.11.1): 14 runs</text>
-<text class="m" x="16" y="1512">parallel width 16 (usual 12): 2 runs</text>
-<text class="m" x="16" y="1527">parallel width 4 (usual 12): 2 runs</text>
-<text class="m" x="16" y="1542">parallel width 5 (usual 12): 2 runs</text>
+<line class="ci" x1="441.1" x2="451.0" y1="1341.0" y2="1341.0"/>
+<circle class="pt" cx="446.1" cy="1341.0" r="4.5"><title>2026-10-09_hadur-census-311-top-local_cold.tsv: -3.39 pp (-3.89 to -2.90)</title></circle>
+<text class="t" x="16" y="1367.0">2.Hadur 3.10nd vs 2.Hadur 3.10  census-312-g4 [1.11.1]</text>
+<line class="ci" x1="486.0" x2="488.6" y1="1363.0" y2="1363.0"/>
+<circle class="pt" cx="487.3" cy="1363.0" r="4.5"><title>2026-10-09_hadur-census-312-g4-local_cold.tsv: 0.73 pp (0.60 to 0.86)</title></circle>
+<text class="t" x="16" y="1389.0">2.Hadur 3.10nd vs 2.Hadur 3.10  census-312-slow [1.11.1]</text>
+<line class="ci" x1="843.5" x2="852.3" y1="1385.0" y2="1385.0"/>
+<circle class="pt open" cx="847.9" cy="1385.0" r="4.5"><title>2026-10-09_hadur-census-312-slow-local_cold.tsv: 36.79 pp (36.35 to 37.23); conditions differ from the usual: CPU constant 744249</title></circle>
+<text class="t" x="16" y="1411.0">2.Hadur 3.10nd vs 2.Hadur 3.10  screen-311-nd [1.11.1]</text>
+<line class="ci" x1="482.2" x2="488.7" y1="1407.0" y2="1407.0"/>
+<circle class="pt" cx="485.4" cy="1407.0" r="4.5"><title>2026-10-09_hadur-screen-311-nd-local_cold.tsv: 0.54 pp (0.22 to 0.87)</title></circle>
+<text class="t" x="16" y="1433.0">2.Hadur 3.10ndnl vs 2.Hadur 3.10  screen-311-ndnl [1.11.1]</text>
+<line class="ci" x1="483.9" x2="491.1" y1="1429.0" y2="1429.0"/>
+<circle class="pt" cx="487.5" cy="1429.0" r="4.5"><title>2026-10-09_hadur-screen-311-ndnl-local_cold.tsv: 0.75 pp (0.39 to 1.11)</title></circle>
+<text class="t" x="16" y="1455.0">2.Hadur 3.10nl vs 2.Hadur 3.10  screen-311-nl [1.11.1]</text>
+<line class="ci" x1="477.0" x2="484.2" y1="1451.0" y2="1451.0"/>
+<circle class="pt" cx="480.6" cy="1451.0" r="4.5"><title>2026-10-09_hadur-screen-311-nl-local_cold.tsv: 0.06 pp (-0.30 to 0.42)</title></circle>
+<text class="m" x="16" y="1510">Open circle: a condition that differs from the usual one for this chart (a blank is not recorded, not assumed).</text>
+<text class="m" x="16" y="1526">rounds per battle 10 (usual 35): 1 run</text>
+<text class="m" x="16" y="1541">engine 1.9.5.6 (usual 1.11.1): 14 runs</text>
+<text class="m" x="16" y="1556">CPU constant 744249 (usual 1488498): 1 run</text>
+<text class="m" x="16" y="1571">parallel width 16 (usual 12): 2 runs</text>
+<text class="m" x="16" y="1586">parallel width 4 (usual 12): 2 runs</text>
+<text class="m" x="16" y="1601">parallel width 5 (usual 12): 2 runs</text>
 </svg>

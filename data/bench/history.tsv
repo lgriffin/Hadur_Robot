@@ -58,6 +58,8 @@ file	date	label	mode	candidate	baseline	engine	rounds	child_heap	cpu_constant	pa
 2026-10-08_hadur-top20-310-v39-local_cold.tsv	2026-10-08	hadur-top20-310-v39-local_cold	duel	2.Hadur 3.10	2.Hadur 3.9	1.11.1	35			12		5	20	100	-0.82	-2.15	0.51	21.7	23.0	0	200
 2026-10-08_hadur-top20-310nf-v310-pc-local_cold.tsv	2026-10-08	hadur-top20-310nf-v310-pc-local_cold	duel	2.Hadur 3.10nf	2.Hadur 3.10	1.11.1	35			12		5	20	100	-1.06	-2.59	0.48	16.7	21.9	0	200
 2026-10-09_hadur-census-311-top-local_cold.tsv	2026-10-09	hadur-census-311-top-local_cold	duel	lxx.Tomcat 3.68	2.Hadur 3.10	1.11.1	35	0	1488498	12	2	4	196	784	-3.39	-3.89	-2.90	41.6	30.0	16	1584
+2026-10-09_hadur-census-312-g4-local_cold.tsv	2026-10-09	hadur-census-312-g4-local_cold	duel	2.Hadur 3.10nd	2.Hadur 3.10	1.11.1	35	0	1488498	12	2	4	1212	4848	0.73	0.60	0.86	34.5	35.2	0	9696
+2026-10-09_hadur-census-312-slow-local_cold.tsv	2026-10-09	hadur-census-312-slow-local_cold	duel	2.Hadur 3.10nd	2.Hadur 3.10	1.11.1	35	0	744249	12	2	2	400	800	36.79	36.35	37.23	563.0	166.8	0	1600
 2026-10-09_hadur-screen-311-nd-local_cold.tsv	2026-10-09	hadur-screen-311-nd-local_cold	duel	2.Hadur 3.10nd	2.Hadur 3.10	1.11.1	35	0	1488498	12	2	2	400	800	0.54	0.22	0.87	18.5	18.9	0	1600
 2026-10-09_hadur-screen-311-ndnl-local_cold.tsv	2026-10-09	hadur-screen-311-ndnl-local_cold	duel	2.Hadur 3.10ndnl	2.Hadur 3.10	1.11.1	35	0	1488498	12	2	2	400	800	0.75	0.39	1.11	19.0	18.9	0	1600
 2026-10-09_hadur-screen-311-nl-local_cold.tsv	2026-10-09	hadur-screen-311-nl-local_cold	duel	2.Hadur 3.10nl	2.Hadur 3.10	1.11.1	35	0	1488498	12	2	2	400	800	0.06	-0.30	0.42	17.7	18.6	0	1600
