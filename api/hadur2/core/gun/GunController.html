@@ -257,148 +257,143 @@ loadScripts(document, 'script');</script>
  lead-aware regime's call.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#discardPendingVirtualBullets()" class="member-name-link">discardPendingVirtualBullets</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">RES-14: forgets the virtual bullets still in flight, without touching what the views learned.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#fireVirtualBullets(hadur2.core.model.Wave,java.awt.geom.Point2D.Double,long)" class="member-name-link">fireVirtualBullets</a><wbr>(<a href="../model/Wave.html" title="class in hadur2.core.model">Wave</a>&nbsp;w,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#fireVirtualBullets(hadur2.core.model.Wave,java.awt.geom.Point2D.Double,long)" class="member-name-link">fireVirtualBullets</a><wbr>(<a href="../model/Wave.html" title="class in hadur2.core.model">Wave</a>&nbsp;w,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;myNextLocation,
  long&nbsp;currentTime)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Fires one virtual bullet for each of the three guns along with a real bullet: records
  the angle each gun would have fired on <code>w</code>, to be scored when the wave breaks.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#fireVirtualBullets(hadur2.core.model.Wave,java.awt.geom.Point2D.Double,long,double)" class="member-name-link">fireVirtualBullets</a><wbr>(<a href="../model/Wave.html" title="class in hadur2.core.model">Wave</a>&nbsp;w,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#fireVirtualBullets(hadur2.core.model.Wave,java.awt.geom.Point2D.Double,long,double)" class="member-name-link">fireVirtualBullets</a><wbr>(<a href="../model/Wave.html" title="class in hadur2.core.model">Wave</a>&nbsp;w,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;myNextLocation,
  long&nbsp;currentTime,
  double&nbsp;firedPower)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">As <a href="#fireVirtualBullets(hadur2.core.model.Wave,java.awt.geom.Point2D.Double,long)"><code>fireVirtualBullets(Wave, Point2D.Double, long)</code></a>, for a real bullet that went
  out at <code>firedPower</code>: GUN-5 rates the virtual guns in the table of that bullet's
  class.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../knn/KnnView.html" title="class in hadur2.core.knn">KnnView</a>&lt;<a href="../model/TimestampedFiringAngle.html" title="class in hadur2.core.model">TimestampedFiringAngle</a>&gt;&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getOrCreateViews(java.lang.String)" class="member-name-link">getOrCreateViews</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;botName)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../knn/KnnView.html" title="class in hadur2.core.knn">KnnView</a>&lt;<a href="../model/TimestampedFiringAngle.html" title="class in hadur2.core.model">TimestampedFiringAngle</a>&gt;&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getOrCreateViews(java.lang.String)" class="member-name-link">getOrCreateViews</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;botName)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">The gun views for <code>botName</code>, made on first use: the main view, then the four
  anti-surfer views, each at the current k share.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#initRound()" class="member-name-link">initRound</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#initRound()" class="member-name-link">initRound</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Starts a round: drops the virtual bullets still in flight (their waves will never
  break) and the views' neighbour caches.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#isLight(double)" class="member-name-link">isLight</a><wbr>(double&nbsp;power)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#isLight(double)" class="member-name-link">isLight</a><wbr>(double&nbsp;power)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">GUN-5: whether a bullet of <code>power</code> is in the light class.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) <a href="GunController.Opening.html" title="enum class in hadur2.core.gun">GunController.Opening</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#liveVerdict(java.lang.String)" class="member-name-link">liveVerdict</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;botName)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) <a href="GunController.Opening.html" title="enum class in hadur2.core.gun">GunController.Opening</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#liveVerdict(java.lang.String)" class="member-name-link">liveVerdict</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;botName)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../../../requirements.html#GUN-1">GUN-1</a>, <a class="req" href="../../../../requirements.html#GUN-4">GUN-4</a>: the gun the live virtual ratings pick, or null while no gun clears every
  other candidate's margin of error (Agresti-Coull, 95%; <a class="req" href="../../../../requirements.html#DIAL-1">DIAL-1</a>).</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) <a href="GunController.Opening.html" title="enum class in hadur2.core.gun">GunController.Opening</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#liveVerdict(java.lang.String,boolean)" class="member-name-link">liveVerdict</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;botName,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) <a href="GunController.Opening.html" title="enum class in hadur2.core.gun">GunController.Opening</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#liveVerdict(java.lang.String,boolean)" class="member-name-link">liveVerdict</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;botName,
  boolean&nbsp;light)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">GUN-5: <a href="#liveVerdict(java.lang.String)"><code>liveVerdict(String)</code></a> for one power class: the ratings of bullets under
  0.2 when <code>light</code>, of the rest otherwise.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static double</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#margin(double,double)" class="member-name-link">margin</a><wbr>(double&nbsp;hits,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static double</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#margin(double,double)" class="member-name-link">margin</a><wbr>(double&nbsp;hits,
  double&nbsp;n)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">The 95% margin of error of a rate of <code>hits</code> in <code>n</code> (Agresti-Coull).</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onWaveBreak(hadur2.core.model.Wave,java.util.List)" class="member-name-link">onWaveBreak</a><wbr>(<a href="../model/Wave.html" title="class in hadur2.core.model">Wave</a>&nbsp;w,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onWaveBreak(hadur2.core.model.Wave,java.util.List)" class="member-name-link">onWaveBreak</a><wbr>(<a href="../model/Wave.html" title="class in hadur2.core.model">Wave</a>&nbsp;w,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../model/RobotState.html" title="class in hadur2.core.model">RobotState</a>&gt;&nbsp;waveBreakStates)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">A gun wave has passed the target: scores its virtual bullets (a real bullet's wave in
  a duel) and logs where the target went into every view that learns from it.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="GunController.Opening.html" title="enum class in hadur2.core.gun">GunController.Opening</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#opening()" class="member-name-link">opening</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="GunController.Opening.html" title="enum class in hadur2.core.gun">GunController.Opening</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#opening()" class="member-name-link">opening</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">The opening gun in force, or null when 1.20's rule picks the gun.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) double</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#ratedShotsForTest(java.lang.String,boolean)" class="member-name-link">ratedShotsForTest</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;botName,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) double</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#ratedShotsForTest(java.lang.String,boolean)" class="member-name-link">ratedShotsForTest</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;botName,
  boolean&nbsp;light)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Test seam: how many virtual shots have been rated for a class (the main gun's count).</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#recordVirtualShotForTest(java.lang.String,hadur2.core.gun.GunController.Opening,double)" class="member-name-link">recordVirtualShotForTest</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;botName,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#recordVirtualShotForTest(java.lang.String,hadur2.core.gun.GunController.Opening,double)" class="member-name-link">recordVirtualShotForTest</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;botName,
  <a href="GunController.Opening.html" title="enum class in hadur2.core.gun">GunController.Opening</a>&nbsp;gun,
  double&nbsp;hitScore)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Test seam: records one virtual bullet's weighted hit score directly against
  <code>botName</code> for <code>gun</code>, bypassing the KNN aim and precise-intersection
  machinery <a href="#fireVirtualBullets(hadur2.core.model.Wave,java.awt.geom.Point2D.Double,long)"><code>fireVirtualBullets(hadur2.core.model.Wave, java.awt.geom.Point2D.Double, long)</code></a>/<a href="#onWaveBreak(hadur2.core.model.Wave,java.util.List)"><code>onWaveBreak(hadur2.core.model.Wave, java.util.List&lt;hadur2.core.model.RobotState&gt;)</code></a> normally go through, so a
  test can drive <a class="req" href="../../../../requirements.html#GUN-1">GUN-1</a>'s decay and <a class="req" href="../../../../requirements.html#GUN-4">GUN-4</a>'s gate with a controlled hit/miss sequence
  instead of engineering wave geometry to produce one.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#recordVirtualShotForTest(java.lang.String,hadur2.core.gun.GunController.Opening,double,boolean)" class="member-name-link">recordVirtualShotForTest</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;botName,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#recordVirtualShotForTest(java.lang.String,hadur2.core.gun.GunController.Opening,double,boolean)" class="member-name-link">recordVirtualShotForTest</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;botName,
  <a href="GunController.Opening.html" title="enum class in hadur2.core.gun">GunController.Opening</a>&nbsp;gun,
  double&nbsp;hitScore,
  boolean&nbsp;light)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">GUN-5's test seam: as above, into the light class's table when <code>light</code>.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) double</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#samplePhaseForTest()" class="member-name-link">samplePhaseForTest</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) double</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#samplePhaseForTest()" class="member-name-link">samplePhaseForTest</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Test seam: the sampled gun's phase, in [0, 1).</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#seed(java.lang.String,double%5B%5D,hadur2.core.model.SeedWeight)" class="member-name-link">seed</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;botName,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#seed(java.lang.String,double%5B%5D,hadur2.core.model.SeedWeight)" class="member-name-link">seed</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;botName,
  double[]&nbsp;sample,
  <a href="../model/SeedWeight.html" title="class in hadur2.core.model">SeedWeight</a>&nbsp;weight)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../../../requirements.html#ADAPT-3">ADAPT-3</a>: adds a seeded sample (as the sample sink produced it) to every gun view for
  <code>botName</code>.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setKShare(double)" class="member-name-link">setKShare</a><wbr>(double&nbsp;kShare)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setKShare(double)" class="member-name-link">setKShare</a><wbr>(double&nbsp;kShare)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../../../requirements.html#TIME-1">TIME-1</a>, <a class="req" href="../../../../requirements.html#TIME-2">TIME-2</a>: the share of k every gun view uses; 1 is all of it.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setOpening(hadur2.core.gun.GunController.Opening)" class="member-name-link">setOpening</a><wbr>(<a href="GunController.Opening.html" title="enum class in hadur2.core.gun">GunController.Opening</a>&nbsp;opening)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setOpening(hadur2.core.gun.GunController.Opening)" class="member-name-link">setOpening</a><wbr>(<a href="GunController.Opening.html" title="enum class in hadur2.core.gun">GunController.Opening</a>&nbsp;opening)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../../../requirements.html#ADAPT-1">ADAPT-1</a>: the gun to use from the first firing wave, until the live virtual-gun ratings
  disagree by more than their margin of error.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSampleSink(java.util.function.Consumer)" class="member-name-link">setSampleSink</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;double[]&gt;&nbsp;sampleSink)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSampleSink(java.util.function.Consumer)" class="member-name-link">setSampleSink</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;double[]&gt;&nbsp;sampleSink)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Receives one <a href="#SAMPLE_WIDTH"><code>SAMPLE_WIDTH</code></a>-value sample per real bullet's wave as it breaks.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#shieldAttackFired(hadur2.core.model.Wave,java.awt.geom.Point2D.Double,long,double,boolean)" class="member-name-link">shieldAttackFired</a><wbr>(<a href="../model/Wave.html" title="class in hadur2.core.model">Wave</a>&nbsp;w,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#shieldAttackFired(hadur2.core.model.Wave,java.awt.geom.Point2D.Double,long,double,boolean)" class="member-name-link">shieldAttackFired</a><wbr>(<a href="../model/Wave.html" title="class in hadur2.core.model">Wave</a>&nbsp;w,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;myLocation,
  long&nbsp;currentTime,
  double&nbsp;firedPower,
  boolean&nbsp;virtualGuns)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">SHIELD-6, GUN-5: a real shield-mode attack shot went out at <code>firedPower</code>, which the
  shield may have cut from the wave's.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#shotFired()" class="member-name-link">shotFired</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#shotFired()" class="member-name-link">shotFired</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">GUN-5: a real shot went out.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double[]</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#virtualGunScores(java.lang.String)" class="member-name-link">virtualGunScores</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;botName)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double[]</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#virtualGunScores(java.lang.String)" class="member-name-link">virtualGunScores</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;botName)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">The virtual guns' battle totals against <code>botName</code>: main-gun waves, main weighted
  hits, anti-surfer waves, anti-surfer weighted hits.</div>
 </div>
@@ -552,13 +547,6 @@ loadScripts(document, 'script');</script>
 <dt>Throws:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - if the sample is not <a href="#SAMPLE_WIDTH"><code>SAMPLE_WIDTH</code></a> long</dd>
 </dl>
-</section>
-</li>
-<li>
-<section class="detail" id="discardPendingVirtualBullets()">
-<h3>discardPendingVirtualBullets</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">discardPendingVirtualBullets</span>()</div>
-<div class="block">RES-14: forgets the virtual bullets still in flight, without touching what the views learned.</div>
 </section>
 </li>
 <li>

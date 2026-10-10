@@ -132,17 +132,6 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Field</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code>static final int</code></div>
-<div class="col-second even-row-color"><code><a href="#DURESS_QUIET_TICKS" class="member-name-link">DURESS_QUIET_TICKS</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">RES-14: the ticks without a skipped turn after which duress ends, counted from the last
- skipped turn (never from the round's clock, <a class="req" href="../../../../requirements.html#DIAL-2">DIAL-2</a>).</div>
-</div>
-<div class="col-first odd-row-color"><code>static final int</code></div>
-<div class="col-second odd-row-color"><code><a href="#DURESS_SKIPS" class="member-name-link">DURESS_SKIPS</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block">RES-9: the skipped turns in one round after which the core runs the rest of it in duress.</div>
-</div>
-<div class="col-first even-row-color"><code>static final int</code></div>
 <div class="col-second even-row-color"><code><a href="#MAX_LEVEL" class="member-name-link">MAX_LEVEL</a></code></div>
 <div class="col-last even-row-color">
 <div class="block">The deepest level: everything that can be shed is shed.</div>
@@ -184,68 +173,56 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#duress()" class="member-name-link">duress</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">RES-9, RES-14: whether the engine has skipped <a href="#DURESS_SKIPS"><code>DURESS_SKIPS</code></a> turns this round and
- fewer than <a href="#DURESS_QUIET_TICKS"><code>DURESS_QUIET_TICKS</code></a> ticks have passed since the last one, so the tick
- runs at the duress level, below <a href="#MAX_LEVEL"><code>MAX_LEVEL</code></a>: no samples, no tree.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#goToAllowed(int)" class="member-name-link">goToAllowed</a><wbr>(int&nbsp;level)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#goToAllowed(int)" class="member-name-link">goToAllowed</a><wbr>(int&nbsp;level)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Go-to surfing only at full computation; it costs the most.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static double</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#kShare(int)" class="member-name-link">kShare</a><wbr>(int&nbsp;level)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static double</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#kShare(int)" class="member-name-link">kShare</a><wbr>(int&nbsp;level)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">The share of each view's k to use: half from level 2.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>long</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#learnedAllowanceNanos()" class="member-name-link">learnedAllowanceNanos</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>long</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#learnedAllowanceNanos()" class="member-name-link">learnedAllowanceNanos</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../../../requirements.html#TIME-3">TIME-3</a>: the allowance learned from a skip, or -1 if none has happened yet.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#level()" class="member-name-link">level</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#level()" class="member-name-link">level</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">The level for this tick: the round's level, one more after a slow tick, at most <a href="#MAX_LEVEL"><code>MAX_LEVEL</code></a>.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#maxLevel()" class="member-name-link">maxLevel</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#maxLevel()" class="member-name-link">maxLevel</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">The highest level this round has used.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#newRound()" class="member-name-link">newRound</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#newRound()" class="member-name-link">newRound</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">A new round starts at full computation (<a class="req" href="../../../../requirements.html#TIME-2">TIME-2</a>'s "for the remainder of the round").</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#roundLevel()" class="member-name-link">roundLevel</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#roundLevel()" class="member-name-link">roundLevel</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">The level the round is held at by skipped turns alone.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#shadowAim(int)" class="member-name-link">shadowAim</a><wbr>(int&nbsp;level)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#shadowAim(int)" class="member-name-link">shadowAim</a><wbr>(int&nbsp;level)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">GUN-7: the shadow-aware aim, which builds a shadow value and weighs up to 13 candidates,
  is shed from level 2, with the halving of k.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#skippedTurn(long)" class="member-name-link">skippedTurn</a><wbr>(long&nbsp;skippedTime)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#skippedTurn(long)" class="member-name-link">skippedTurn</a><wbr>(long&nbsp;skippedTime)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../../../requirements.html#TIME-2">TIME-2</a>: the engine skipped a turn.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#slowTicks()" class="member-name-link">slowTicks</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Ticks this round that went over the threshold.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#tickBegan(long)" class="member-name-link">tickBegan</a><wbr>(long&nbsp;time)</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#slowTicks()" class="member-name-link">slowTicks</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">RES-14: a tick begins.</div>
+<div class="block">Ticks this round that went over the threshold.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#tickTook(long,long)" class="member-name-link">tickTook</a><wbr>(long&nbsp;usedNanos,
@@ -311,39 +288,6 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="DURESS_SKIPS">
-<h3>DURESS_SKIPS</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">DURESS_SKIPS</span></div>
-<div class="block">RES-9: the skipped turns in one round after which the core runs the rest of it in duress.</div>
-<dl class="notes">
-<dt>See Also:</dt>
-<dd>
-<ul class="tag-list">
-<li><a href="../../../constant-values.html#hadur2.core.policy.TickBudget.DURESS_SKIPS">Constant Field Values</a></li>
-</ul>
-</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="DURESS_QUIET_TICKS">
-<h3>DURESS_QUIET_TICKS</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">DURESS_QUIET_TICKS</span></div>
-<div class="block">RES-14: the ticks without a skipped turn after which duress ends, counted from the last
- skipped turn (never from the round's clock, <a class="req" href="../../../../requirements.html#DIAL-2">DIAL-2</a>). A longer round no longer stays in
- duress for its remainder: its trigger was met in 1 of 350 baseline rounds and the robot
- lost 7 of the 11 such rounds it fought, one of them from 52 energy ahead.</div>
-<dl class="notes">
-<dt>See Also:</dt>
-<dd>
-<ul class="tag-list">
-<li><a href="../../../constant-values.html#hadur2.core.policy.TickBudget.DURESS_QUIET_TICKS">Constant Field Values</a></li>
-</ul>
-</dd>
-</dl>
-</section>
-</li>
-<li>
 <section class="detail" id="MIN_LEARNED_SHARE">
 <h3>MIN_LEARNED_SHARE</h3>
 <div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">MIN_LEARNED_SHARE</span></div>
@@ -388,19 +332,6 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="tickBegan(long)">
-<h3>tickBegan</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">tickBegan</span><wbr><span class="parameters">(long&nbsp;time)</span></div>
-<div class="block">RES-14: a tick begins. The core tells the budget which tick it is before it asks whether
- the tick runs in duress, so the quiet stretch since the last skipped turn is measured in
- ticks the engine ran, skipped ones included.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>time</code> - the engine's tick, as the input carries it</dd>
-</dl>
-</section>
-</li>
-<li>
 <section class="detail" id="tickTook(long,long)">
 <h3>tickTook</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">tickTook</span><wbr><span class="parameters">(long&nbsp;usedNanos,
@@ -431,26 +362,10 @@ loadScripts(document, 'script');</script>
  the turn for (a round-end checkpoint's write, a GC pause), so a skip can arrive
  right after a measured tick that had nothing to do with it; without the floor, that
  unrelated short measurement would become a battle-long allowance and shed far more
- computation than the client actually needs to. RES-14: the quiet stretch counts from
- the tick the engine skipped, not the tick this event is processed on, which can be later.</div>
+ computation than the client actually needs to.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>skippedTime</code> - the tick the engine skipped, as the event carries it</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="duress()">
-<h3>duress</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">duress</span>()</div>
-<div class="block">RES-9, RES-14: whether the engine has skipped <a href="#DURESS_SKIPS"><code>DURESS_SKIPS</code></a> turns this round and
- fewer than <a href="#DURESS_QUIET_TICKS"><code>DURESS_QUIET_TICKS</code></a> ticks have passed since the last one, so the tick
- runs at the duress level, below <a href="#MAX_LEVEL"><code>MAX_LEVEL</code></a>: no samples, no tree. Another skipped
- turn after duress has ended starts it again, and the round's skip count is not cleared.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>true from the third skipped turn of a round until 300 ticks pass without another,
-     or the round ends</dd>
 </dl>
 </section>
 </li>

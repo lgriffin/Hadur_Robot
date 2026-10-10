@@ -232,19 +232,6 @@ loadScripts(document, 'script');</script>
  radar.</div>
 </div>
 <div class="col-first even-row-color"><code>void</code></div>
-<div class="col-second even-row-color"><span class="type-name-label">DuelController.</span><code><a href="../../duel/DuelController.html#duressDrive(hadur2.core.model.BotInput,hadur2.core.model.BotOrders.Builder,boolean)" class="member-name-link">duressDrive</a><wbr>(<a href="../BotInput.html" title="class in hadur2.core.model">BotInput</a>&nbsp;in,
- <a href="../BotOrders.Builder.html" title="class in hadur2.core.model">BotOrders.Builder</a>&nbsp;orders,
- boolean&nbsp;mayFire)</code></div>
-<div class="col-last even-row-color">
-<div class="block">RES-9: orbit at the distance floor, fire head-on, lock the radar; nothing else.</div>
-</div>
-<div class="col-first odd-row-color"><code>void</code></div>
-<div class="col-second odd-row-color"><span class="type-name-label">DuelController.</span><code><a href="../../duel/DuelController.html#duressScan(hadur2.core.model.BotInput,hadur2.core.model.BotEvent.Scan)" class="member-name-link">duressScan</a><wbr>(<a href="../BotInput.html" title="class in hadur2.core.model">BotInput</a>&nbsp;in,
- <a href="../BotEvent.Scan.html" title="class in hadur2.core.model">BotEvent.Scan</a>&nbsp;e)</code></div>
-<div class="col-last odd-row-color">
-<div class="block">RES-9: a scan in duress only moves where the enemy is thought to be.</div>
-</div>
-<div class="col-first even-row-color"><code>void</code></div>
 <div class="col-second even-row-color"><span class="type-name-label">DuelController.</span><code><a href="../../duel/DuelController.html#hitByBullet(hadur2.core.model.BotInput,hadur2.core.model.BotEvent.HitByBullet,boolean,boolean)" class="member-name-link">hitByBullet</a><wbr>(<a href="../BotInput.html" title="class in hadur2.core.model">BotInput</a>&nbsp;in,
  <a href="../BotEvent.HitByBullet.html" title="class in hadur2.core.model">BotEvent.HitByBullet</a>&nbsp;e,
  boolean&nbsp;driving,
@@ -253,41 +240,18 @@ loadScripts(document, 'script');</script>
 <div class="block">An enemy bullet hit us.</div>
 </div>
 <div class="col-first odd-row-color"><code>void</code></div>
-<div class="col-second odd-row-color"><span class="type-name-label">DuelController.</span><code><a href="../../duel/DuelController.html#hitInDuress(hadur2.core.model.BotInput,hadur2.core.model.BotEvent.HitByBullet)" class="member-name-link">hitInDuress</a><wbr>(<a href="../BotInput.html" title="class in hadur2.core.model">BotInput</a>&nbsp;in,
- <a href="../BotEvent.HitByBullet.html" title="class in hadur2.core.model">BotEvent.HitByBullet</a>&nbsp;e)</code></div>
-<div class="col-last odd-row-color">
-<div class="block">RES-9, SHIELD-6: an enemy bullet hit us while the conductor held the Duel in duress.</div>
-</div>
-<div class="col-first even-row-color"><code>boolean</code></div>
-<div class="col-second even-row-color"><span class="type-name-label">Duress.</span><code><a href="../../duel/Duress.html#orders(hadur2.core.model.BotInput,java.awt.geom.Point2D.Double,boolean,hadur2.core.model.BotOrders.Builder)" class="member-name-link">orders</a><wbr>(<a href="../BotInput.html" title="class in hadur2.core.model">BotInput</a>&nbsp;in,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;enemy,
- boolean&nbsp;stale,
- <a href="../BotOrders.Builder.html" title="class in hadur2.core.model">BotOrders.Builder</a>&nbsp;orders)</code></div>
-<div class="col-last even-row-color">
-<div class="block">As <a href="../../duel/Duress.html#orders(hadur2.core.model.BotInput,java.awt.geom.Point2D.Double,hadur2.core.model.BotOrders.Builder)"><code>Duress.orders(BotInput, Point2D.Double, BotOrders.Builder)</code></a>, but a stale position
- (the enemy has not scanned for more than a tick, likely a turn skipped) sweeps the
- radar to find it again and holds fire, rather than shooting at an empty spot.</div>
-</div>
-<div class="col-first odd-row-color"><code>boolean</code></div>
-<div class="col-second odd-row-color"><span class="type-name-label">Duress.</span><code><a href="../../duel/Duress.html#orders(hadur2.core.model.BotInput,java.awt.geom.Point2D.Double,hadur2.core.model.BotOrders.Builder)" class="member-name-link">orders</a><wbr>(<a href="../BotInput.html" title="class in hadur2.core.model">BotInput</a>&nbsp;in,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;enemy,
- <a href="../BotOrders.Builder.html" title="class in hadur2.core.model">BotOrders.Builder</a>&nbsp;orders)</code></div>
-<div class="col-last odd-row-color">
-<div class="block">The orders for this tick: orbit, hold the distance, fire head-on, lock the radar.</div>
-</div>
-<div class="col-first even-row-color"><code>void</code></div>
-<div class="col-second even-row-color"><span class="type-name-label">DuelController.</span><code><a href="../../duel/DuelController.html#scan(hadur2.core.model.BotInput,hadur2.core.model.BotEvent.Scan)" class="member-name-link">scan</a><wbr>(<a href="../BotInput.html" title="class in hadur2.core.model">BotInput</a>&nbsp;in,
+<div class="col-second odd-row-color"><span class="type-name-label">DuelController.</span><code><a href="../../duel/DuelController.html#scan(hadur2.core.model.BotInput,hadur2.core.model.BotEvent.Scan)" class="member-name-link">scan</a><wbr>(<a href="../BotInput.html" title="class in hadur2.core.model">BotInput</a>&nbsp;in,
  <a href="../BotEvent.Scan.html" title="class in hadur2.core.model">BotEvent.Scan</a>&nbsp;e)</code></div>
-<div class="col-last even-row-color">
+<div class="col-last odd-row-color">
 <div class="block">The scan of the Duel's opponent, after <a href="../../duel/DuelController.html#switchOpponent(java.lang.String)"><code>DuelController.switchOpponent(java.lang.String)</code></a> (and, on a hand-off, after
  <a href="../../duel/DuelController.html#take(hadur2.core.model.BotInput,hadur2.core.model.Baton,java.lang.String,double)"><code>DuelController.take(hadur2.core.model.BotInput, hadur2.core.model.Baton, java.lang.String, double)</code></a>).</div>
 </div>
-<div class="col-first odd-row-color"><code>void</code></div>
-<div class="col-second odd-row-color"><span class="type-name-label">DuelController.</span><code><a href="../../duel/DuelController.html#take(hadur2.core.model.BotInput,hadur2.core.model.Baton,java.lang.String,double)" class="member-name-link">take</a><wbr>(<a href="../BotInput.html" title="class in hadur2.core.model">BotInput</a>&nbsp;in,
+<div class="col-first even-row-color"><code>void</code></div>
+<div class="col-second even-row-color"><span class="type-name-label">DuelController.</span><code><a href="../../duel/DuelController.html#take(hadur2.core.model.BotInput,hadur2.core.model.Baton,java.lang.String,double)" class="member-name-link">take</a><wbr>(<a href="../BotInput.html" title="class in hadur2.core.model">BotInput</a>&nbsp;in,
  <a href="../Baton.html" title="class in hadur2.core.model">Baton</a>&nbsp;baton,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;survivor,
  double&nbsp;survivorEnergy)</code></div>
-<div class="col-last odd-row-color">
+<div class="col-last even-row-color">
 <div class="block"><a class="req" href="../../../../../requirements.html#MMEM-2">MMEM-2</a>: takes the melee's baton inside the survivor's first duel scan, after
  <a href="../../duel/DuelController.html#switchOpponent(java.lang.String)"><code>DuelController.switchOpponent(java.lang.String)</code></a> and before <a href="../../duel/DuelController.html#scan(hadur2.core.model.BotInput,hadur2.core.model.BotEvent.Scan)"><code>DuelController.scan(hadur2.core.model.BotInput, hadur2.core.model.BotEvent.Scan)</code></a>.</div>
 </div>
@@ -358,12 +322,11 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Constructor</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code>&nbsp;</code></div>
-<div class="col-second even-row-color"><code><a href="../../role/Tick.html#%3Cinit%3E(hadur2.core.model.BotInput,hadur2.core.role.RoleId,boolean,hadur2.core.role.DuelFocus,java.util.function.Predicate,boolean)" class="member-name-link">Tick</a><wbr>(<a href="../BotInput.html" title="class in hadur2.core.model">BotInput</a>&nbsp;in,
+<div class="col-second even-row-color"><code><a href="../../role/Tick.html#%3Cinit%3E(hadur2.core.model.BotInput,hadur2.core.role.RoleId,boolean,hadur2.core.role.DuelFocus,java.util.function.Predicate)" class="member-name-link">Tick</a><wbr>(<a href="../BotInput.html" title="class in hadur2.core.model">BotInput</a>&nbsp;in,
  <a href="../../role/RoleId.html" title="enum class in hadur2.core.role">RoleId</a>&nbsp;driving,
  boolean&nbsp;focusing,
  <a href="../../role/DuelFocus.html" title="class in hadur2.core.role">DuelFocus</a>&nbsp;focus,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Predicate.html" title="class or interface in java.util.function" class="external-link">Predicate</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;sentry,
- boolean&nbsp;duress)</code></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Predicate.html" title="class or interface in java.util.function" class="external-link">Predicate</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;sentry)</code></div>
 <div class="col-last even-row-color">
 <div class="block">A tick as its events are offered.</div>
 </div>

@@ -128,30 +128,6 @@ loadScripts(document, 'script');</script>
 <div class="block">The Duel's main body, once its opponent has been scanned; before that it only spins the
  radar.</div>
 </div>
-<div class="col-first odd-row-color"><code>void</code></div>
-<div class="col-second odd-row-color"><span class="type-name-label">DuelController.</span><code><a href="../../duel/DuelController.html#duressDrive(hadur2.core.model.BotInput,hadur2.core.model.BotOrders.Builder,boolean)" class="member-name-link">duressDrive</a><wbr>(<a href="../BotInput.html" title="class in hadur2.core.model">BotInput</a>&nbsp;in,
- <a href="../BotOrders.Builder.html" title="class in hadur2.core.model">BotOrders.Builder</a>&nbsp;orders,
- boolean&nbsp;mayFire)</code></div>
-<div class="col-last odd-row-color">
-<div class="block">RES-9: orbit at the distance floor, fire head-on, lock the radar; nothing else.</div>
-</div>
-<div class="col-first even-row-color"><code>boolean</code></div>
-<div class="col-second even-row-color"><span class="type-name-label">Duress.</span><code><a href="../../duel/Duress.html#orders(hadur2.core.model.BotInput,java.awt.geom.Point2D.Double,boolean,hadur2.core.model.BotOrders.Builder)" class="member-name-link">orders</a><wbr>(<a href="../BotInput.html" title="class in hadur2.core.model">BotInput</a>&nbsp;in,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;enemy,
- boolean&nbsp;stale,
- <a href="../BotOrders.Builder.html" title="class in hadur2.core.model">BotOrders.Builder</a>&nbsp;orders)</code></div>
-<div class="col-last even-row-color">
-<div class="block">As <a href="../../duel/Duress.html#orders(hadur2.core.model.BotInput,java.awt.geom.Point2D.Double,hadur2.core.model.BotOrders.Builder)"><code>Duress.orders(BotInput, Point2D.Double, BotOrders.Builder)</code></a>, but a stale position
- (the enemy has not scanned for more than a tick, likely a turn skipped) sweeps the
- radar to find it again and holds fire, rather than shooting at an empty spot.</div>
-</div>
-<div class="col-first odd-row-color"><code>boolean</code></div>
-<div class="col-second odd-row-color"><span class="type-name-label">Duress.</span><code><a href="../../duel/Duress.html#orders(hadur2.core.model.BotInput,java.awt.geom.Point2D.Double,hadur2.core.model.BotOrders.Builder)" class="member-name-link">orders</a><wbr>(<a href="../BotInput.html" title="class in hadur2.core.model">BotInput</a>&nbsp;in,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;enemy,
- <a href="../BotOrders.Builder.html" title="class in hadur2.core.model">BotOrders.Builder</a>&nbsp;orders)</code></div>
-<div class="col-last odd-row-color">
-<div class="block">The orders for this tick: orbit, hold the distance, fire head-on, lock the radar.</div>
-</div>
 </div>
 </section>
 </li>

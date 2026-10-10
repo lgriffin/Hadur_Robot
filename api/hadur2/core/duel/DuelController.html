@@ -95,8 +95,7 @@ loadScripts(document, 'script');</script>
 <div class="block">The Duel strand's brain (A2): everything Hadur does against one opponent, lifted out of
  <code>HadurCore</code> as it stood, to stand beside the melee brain. It is the duel subsystems'
  owner: the guns, the surf, the waves and state logs, the energy ledger, the shield, the
- S4 opening and its seeds, the S5 and S6 policies, the rammer and mirror responses, and
- <a href="Duress.html" title="class in hadur2.core.duel"><code>Duress</code></a>.
+ S4 opening and its seeds, the S5 and S6 policies, and the rammer and mirror responses.
 
  <p>It never decides which role drives, whom to focus on among several opponents, or
  whether a bullet outcome is its own: the conductor's Duel seam answers those and passes
@@ -175,67 +174,42 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">One of our bullets left the field: its shadow goes, and a duel bullet counts as a miss.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#canFightInDuress()" class="member-name-link">canFightInDuress</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#dangerViewsOn()" class="member-name-link">dangerViewsOn</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">RES-9: whether the Duel can fight a round in duress: its opponent has been scanned, so
- there is someone to orbit.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#dangerViewsOn()" class="member-name-link">dangerViewsOn</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">The surf's danger views whose thresholds are met now (<a class="req" href="../../../../requirements.html#ADAPT-2">ADAPT-2</a>, <a class="req" href="../../../../requirements.html#DIAL-1">DIAL-1</a>).</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#drive(hadur2.core.model.BotInput,hadur2.core.model.BotOrders.Builder,int,boolean)" class="member-name-link">drive</a><wbr>(<a href="../model/BotInput.html" title="class in hadur2.core.model">BotInput</a>&nbsp;in,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#drive(hadur2.core.model.BotInput,hadur2.core.model.BotOrders.Builder,int,boolean)" class="member-name-link">drive</a><wbr>(<a href="../model/BotInput.html" title="class in hadur2.core.model">BotInput</a>&nbsp;in,
  <a href="../model/BotOrders.Builder.html" title="class in hadur2.core.model">BotOrders.Builder</a>&nbsp;orders,
  int&nbsp;level,
  boolean&nbsp;mayFire)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">The Duel's main body, once its opponent has been scanned; before that it only spins the
  radar.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#duressDrive(hadur2.core.model.BotInput,hadur2.core.model.BotOrders.Builder,boolean)" class="member-name-link">duressDrive</a><wbr>(<a href="../model/BotInput.html" title="class in hadur2.core.model">BotInput</a>&nbsp;in,
- <a href="../model/BotOrders.Builder.html" title="class in hadur2.core.model">BotOrders.Builder</a>&nbsp;orders,
- boolean&nbsp;mayFire)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">RES-9: orbit at the distance floor, fire head-on, lock the radar; nothing else.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#duressScan(hadur2.core.model.BotInput,hadur2.core.model.BotEvent.Scan)" class="member-name-link">duressScan</a><wbr>(<a href="../model/BotInput.html" title="class in hadur2.core.model">BotInput</a>&nbsp;in,
- <a href="../model/BotEvent.Scan.html" title="class in hadur2.core.model">BotEvent.Scan</a>&nbsp;e)</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../policy/Endgame.State.html" title="enum class in hadur2.core.policy">Endgame.State</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#endgame()" class="member-name-link">endgame</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">RES-9: a scan in duress only moves where the enemy is thought to be.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../policy/Endgame.State.html" title="enum class in hadur2.core.policy">Endgame.State</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#endgame()" class="member-name-link">endgame</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">S5: the endgame state as of the last duel tick.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#found1v1()" class="member-name-link">found1v1</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#found1v1()" class="member-name-link">found1v1</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Whether the last <a href="#take(hadur2.core.model.BotInput,hadur2.core.model.Baton,java.lang.String,double)"><code>take(hadur2.core.model.BotInput, hadur2.core.model.Baton, java.lang.String, double)</code></a> found the survivor's 1v1 profile.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#gunSeedWeight()" class="member-name-link">gunSeedWeight</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#gunSeedWeight()" class="member-name-link">gunSeedWeight</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">The gun seed's weight now (<a class="req" href="../../../../requirements.html#ADAPT-3">ADAPT-3</a>, <a class="req" href="../../../../requirements.html#RES-4">RES-4</a>), or NaN without a profile.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hitByBullet(hadur2.core.model.BotInput,hadur2.core.model.BotEvent.HitByBullet,boolean,boolean)" class="member-name-link">hitByBullet</a><wbr>(<a href="../model/BotInput.html" title="class in hadur2.core.model">BotInput</a>&nbsp;in,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hitByBullet(hadur2.core.model.BotInput,hadur2.core.model.BotEvent.HitByBullet,boolean,boolean)" class="member-name-link">hitByBullet</a><wbr>(<a href="../model/BotInput.html" title="class in hadur2.core.model">BotInput</a>&nbsp;in,
  <a href="../model/BotEvent.HitByBullet.html" title="class in hadur2.core.model">BotEvent.HitByBullet</a>&nbsp;e,
  boolean&nbsp;driving,
  boolean&nbsp;shooterDead)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">An enemy bullet hit us.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hitInDuress(hadur2.core.model.BotInput,hadur2.core.model.BotEvent.HitByBullet)" class="member-name-link">hitInDuress</a><wbr>(<a href="../model/BotInput.html" title="class in hadur2.core.model">BotInput</a>&nbsp;in,
- <a href="../model/BotEvent.HitByBullet.html" title="class in hadur2.core.model">BotEvent.HitByBullet</a>&nbsp;e)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">RES-9, SHIELD-6: an enemy bullet hit us while the conductor held the Duel in duress.</div>
+<div class="block">An enemy bullet hit us.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#injected()" class="member-name-link">injected</a>()</code></div>
@@ -324,102 +298,97 @@ loadScripts(document, 'script');</script>
 <div class="block">Forgets the duel's view of the enemy, at a round's start and when the Duel takes over mid-round.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#resumeAfterDuress()" class="member-name-link">resumeAfterDuress</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#robotsCollided()" class="member-name-link">robotsCollided</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">RES-14: duress has ended.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#robotsCollided()" class="member-name-link">robotsCollided</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../../../requirements.html#WAVE-1">WAVE-1</a>: a collision with the duel's enemy costs it energy too.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#roundEnded(long,boolean)" class="member-name-link">roundEnded</a><wbr>(long&nbsp;tick,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#roundEnded(long,boolean)" class="member-name-link">roundEnded</a><wbr>(long&nbsp;tick,
  boolean&nbsp;won)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">The round is over: the Duel's counters go into the round's statistics and the round
  into the opponent's profile (<a class="req" href="../../../../requirements.html#MEM-2">MEM-2</a>).</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#save(long,boolean)" class="member-name-link">save</a><wbr>(long&nbsp;tick,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#save(long,boolean)" class="member-name-link">save</a><wbr>(long&nbsp;tick,
  boolean&nbsp;statsOnly)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../../../requirements.html#MEM-3">MEM-3</a>, <a class="req" href="../../../../requirements.html#TIME-4">TIME-4</a>: writes the profile, in full or its statistics only.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#scan(hadur2.core.model.BotInput,hadur2.core.model.BotEvent.Scan)" class="member-name-link">scan</a><wbr>(<a href="../model/BotInput.html" title="class in hadur2.core.model">BotInput</a>&nbsp;in,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#scan(hadur2.core.model.BotInput,hadur2.core.model.BotEvent.Scan)" class="member-name-link">scan</a><wbr>(<a href="../model/BotInput.html" title="class in hadur2.core.model">BotInput</a>&nbsp;in,
  <a href="../model/BotEvent.Scan.html" title="class in hadur2.core.model">BotEvent.Scan</a>&nbsp;e)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">The scan of the Duel's opponent, after <a href="#switchOpponent(java.lang.String)"><code>switchOpponent(java.lang.String)</code></a> (and, on a hand-off, after
  <a href="#take(hadur2.core.model.BotInput,hadur2.core.model.Baton,java.lang.String,double)"><code>take(hadur2.core.model.BotInput, hadur2.core.model.Baton, java.lang.String, double)</code></a>).</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#seedsLoading()" class="member-name-link">seedsLoading</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#seedsLoading()" class="member-name-link">seedsLoading</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Whether seeds are still being replayed into the views.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#seedsReplayed()" class="member-name-link">seedsReplayed</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#seedsReplayed()" class="member-name-link">seedsReplayed</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Seed samples replayed into the views so far this battle (<a class="req" href="../../../../requirements.html#ADAPT-3">ADAPT-3</a>).</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#shadowComputations()" class="member-name-link">shadowComputations</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#shadowComputations()" class="member-name-link">shadowComputations</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../../../requirements.html#MOVE-1">MOVE-1</a>: how many times a wave's shadows were computed this round.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#shadowedWaves()" class="member-name-link">shadowedWaves</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#shadowedWaves()" class="member-name-link">shadowedWaves</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">S6: enemy firing waves one of our bullets has shadowed this round (<a class="req" href="../../../../requirements.html#MOVE-1">MOVE-1</a>).</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../move/SurfMover.Mode.html" title="enum class in hadur2.core.move">SurfMover.Mode</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#surfMode()" class="member-name-link">surfMode</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../move/SurfMover.Mode.html" title="enum class in hadur2.core.move">SurfMover.Mode</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#surfMode()" class="member-name-link">surfMode</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">S6: how the surf picks its spot for the wave being surfed.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#surfSeedWeight()" class="member-name-link">surfSeedWeight</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#surfSeedWeight()" class="member-name-link">surfSeedWeight</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">The surf seed's weight now, or NaN without a profile (<a class="req" href="../../../../requirements.html#ADAPT-3">ADAPT-3</a>, <a class="req" href="../../../../requirements.html#RES-4">RES-4</a>).</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#survivorFailures()" class="member-name-link">survivorFailures</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#survivorFailures()" class="member-name-link">survivorFailures</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Failures reading melee survivors' 1v1 profiles this battle (<a class="req" href="../../../../requirements.html#RES-5">RES-5</a>).</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#switchOpponent(java.lang.String)" class="member-name-link">switchOpponent</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#switchOpponent(java.lang.String)" class="member-name-link">switchOpponent</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">The Duel fights <code>name</code> from this scan on.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#take(hadur2.core.model.BotInput,hadur2.core.model.Baton,java.lang.String,double)" class="member-name-link">take</a><wbr>(<a href="../model/BotInput.html" title="class in hadur2.core.model">BotInput</a>&nbsp;in,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#take(hadur2.core.model.BotInput,hadur2.core.model.Baton,java.lang.String,double)" class="member-name-link">take</a><wbr>(<a href="../model/BotInput.html" title="class in hadur2.core.model">BotInput</a>&nbsp;in,
  <a href="../model/Baton.html" title="class in hadur2.core.model">Baton</a>&nbsp;baton,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;survivor,
  double&nbsp;survivorEnergy)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../../../requirements.html#MMEM-2">MMEM-2</a>: takes the melee's baton inside the survivor's first duel scan, after
  <a href="#switchOpponent(java.lang.String)"><code>switchOpponent(java.lang.String)</code></a> and before <a href="#scan(hadur2.core.model.BotInput,hadur2.core.model.BotEvent.Scan)"><code>scan(hadur2.core.model.BotInput, hadur2.core.model.BotEvent.Scan)</code></a>.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#targetDistance()" class="member-name-link">targetDistance</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#targetDistance()" class="member-name-link">targetDistance</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">S5: the distance the surf is steering to now.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../memory/Estimate.html" title="class in hadur2.core.memory">Estimate</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#theirBattleHitRate()" class="member-name-link">theirBattleHitRate</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../memory/Estimate.html" title="class in hadur2.core.memory">Estimate</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#theirBattleHitRate()" class="member-name-link">theirBattleHitRate</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">POW-11: their battle-long hit rate over all their resolved bullets.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../policy/BattleHitRates.html" title="class in hadur2.core.policy">BattleHitRates</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#theirBattleRates()" class="member-name-link">theirBattleRates</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../policy/BattleHitRates.html" title="class in hadur2.core.policy">BattleHitRates</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#theirBattleRates()" class="member-name-link">theirBattleRates</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">POW-11: their battle-long counts by power class.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../memory/Estimate.html" title="class in hadur2.core.memory">Estimate</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#theirRollingHitRate()" class="member-name-link">theirRollingHitRate</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../memory/Estimate.html" title="class in hadur2.core.memory">Estimate</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#theirRollingHitRate()" class="member-name-link">theirRollingHitRate</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">S5: their rolling hit rate, over their last firing waves to break on us (<a class="req" href="../../../../requirements.html#DIST-1">DIST-1</a>, <a class="req" href="../../../../requirements.html#POW-2">POW-2</a>).</div>
 </div>
 </div>
@@ -502,30 +471,10 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="resumeAfterDuress()">
-<h3>resumeAfterDuress</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">resumeAfterDuress</span>()</div>
-<div class="block">RES-14: duress has ended. The waves of both managers, and the per-wave state that goes
- with them (the gun's virtual bullets, the surf's wave and our bullets' shadows), are from
- before an interval that went unobserved: processed on the next scan they would be
- judged against it. They are discarded, and the duel's view of the enemy starts afresh;
- what the battle learned (the gun's and surf's trees, the ratings, the battle's hit rates)
- stays.</div>
-</section>
-</li>
-<li>
 <section class="detail" id="beginTick()">
 <h3>beginTick</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">beginTick</span>()</div>
 <div class="block">A tick begins: a lock asked for on a tick that never finished is dropped.</div>
-</section>
-</li>
-<li>
-<section class="detail" id="canFightInDuress()">
-<h3>canFightInDuress</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">canFightInDuress</span>()</div>
-<div class="block">RES-9: whether the Duel can fight a round in duress: its opponent has been scanned, so
- there is someone to orbit.</div>
 </section>
 </li>
 <li>
@@ -568,33 +517,10 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="duressScan(hadur2.core.model.BotInput,hadur2.core.model.BotEvent.Scan)">
-<h3>duressScan</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">duressScan</span><wbr><span class="parameters">(<a href="../model/BotInput.html" title="class in hadur2.core.model">BotInput</a>&nbsp;in,
- <a href="../model/BotEvent.Scan.html" title="class in hadur2.core.model">BotEvent.Scan</a>&nbsp;e)</span></div>
-<div class="block">RES-9: a scan in duress only moves where the enemy is thought to be. Everything the
- normal scan feeds (the state logs, both waves, the ledger, the gun's and the surf's
- trees) is skipped, since none of it can finish in the time the engine allows.</div>
-</section>
-</li>
-<li>
 <section class="detail" id="replaySeeds()">
 <h3>replaySeeds</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">replaySeeds</span>()</div>
 <div class="block"><a class="req" href="../../../../requirements.html#ADAPT-3">ADAPT-3</a>: a few seed samples a tick, so no one tick pays for the whole seed.</div>
-</section>
-</li>
-<li>
-<section class="detail" id="duressDrive(hadur2.core.model.BotInput,hadur2.core.model.BotOrders.Builder,boolean)">
-<h3>duressDrive</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">duressDrive</span><wbr><span class="parameters">(<a href="../model/BotInput.html" title="class in hadur2.core.model">BotInput</a>&nbsp;in,
- <a href="../model/BotOrders.Builder.html" title="class in hadur2.core.model">BotOrders.Builder</a>&nbsp;orders,
- boolean&nbsp;mayFire)</span></div>
-<div class="block">RES-9: orbit at the distance floor, fire head-on, lock the radar; nothing else.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>mayFire</code> - <a class="req" href="../../../../requirements.html#WEAVE-3">WEAVE-3</a>: whether a shot may leave this tick</dd>
-</dl>
 </section>
 </li>
 <li>
@@ -793,21 +719,6 @@ loadScripts(document, 'script');</script>
 <dt>Parameters:</dt>
 <dd><code>time</code> - the tick</dd>
 <dd><code>ex</code> - what went wrong</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="hitInDuress(hadur2.core.model.BotInput,hadur2.core.model.BotEvent.HitByBullet)">
-<h3>hitInDuress</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">hitInDuress</span><wbr><span class="parameters">(<a href="../model/BotInput.html" title="class in hadur2.core.model">BotInput</a>&nbsp;in,
- <a href="../model/BotEvent.HitByBullet.html" title="class in hadur2.core.model">BotEvent.HitByBullet</a>&nbsp;e)</span></div>
-<div class="block">RES-9, SHIELD-6: an enemy bullet hit us while the conductor held the Duel in duress. Only
- the shield's budget hears of it: the damage counts against the battle's allowance, as
- <a href="#hitByBullet(hadur2.core.model.BotInput,hadur2.core.model.BotEvent.HitByBullet,boolean,boolean)"><code>hitByBullet(hadur2.core.model.BotInput, hadur2.core.model.BotEvent.HitByBullet, boolean, boolean)</code></a> counts it.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>in</code> - the tick's input</dd>
-<dd><code>e</code> - the hit</dd>
 </dl>
 </section>
 </li>

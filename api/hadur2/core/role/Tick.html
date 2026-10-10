@@ -93,9 +93,8 @@ loadScripts(document, 'script');</script>
 <div class="type-signature"><span class="modifiers">public final class </span><span class="element-name type-name-label">Tick</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
 <div class="block">What the conductor hands a role on every call of a tick (A2): the input, which role drives
- this tick, the Duel's focus as it stands, which names are sentries, and whether the tick is
- in duress (RES-9). For <a href="Role.html#drive(hadur2.core.role.Tick,hadur2.core.model.BotOrders.Builder)"><code>Role.drive(hadur2.core.role.Tick, hadur2.core.model.BotOrders.Builder)</code></a> it also carries the budget level as it stands
- after the events and the fire permission (<a class="req" href="../../../../requirements.html#WEAVE-3">WEAVE-3</a>); until A5 the permission is always given.
+ this tick, the Duel's focus as it stands, which names are sentries. For <a href="Role.html#drive(hadur2.core.role.Tick,hadur2.core.model.BotOrders.Builder)"><code>Role.drive(hadur2.core.role.Tick, hadur2.core.model.BotOrders.Builder)</code></a> it also carries the budget level as it
+ stands after the events and the fire permission (<a class="req" href="../../../../requirements.html#WEAVE-3">WEAVE-3</a>); until A5 the permission is always given.
 
  <p>The focus is the conductor's live <a href="DuelFocus.html" title="class in hadur2.core.role"><code>DuelFocus</code></a>: a scan can re-choose it mid-tick,
  and the next event sees the new choice, as it did before A2.</p></div>
@@ -110,12 +109,11 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(hadur2.core.model.BotInput,hadur2.core.role.RoleId,boolean,hadur2.core.role.DuelFocus,java.util.function.Predicate,boolean)" class="member-name-link">Tick</a><wbr>(<a href="../model/BotInput.html" title="class in hadur2.core.model">BotInput</a>&nbsp;in,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(hadur2.core.model.BotInput,hadur2.core.role.RoleId,boolean,hadur2.core.role.DuelFocus,java.util.function.Predicate)" class="member-name-link">Tick</a><wbr>(<a href="../model/BotInput.html" title="class in hadur2.core.model">BotInput</a>&nbsp;in,
  <a href="RoleId.html" title="enum class in hadur2.core.role">RoleId</a>&nbsp;driving,
  boolean&nbsp;focusing,
  <a href="DuelFocus.html" title="class in hadur2.core.role">DuelFocus</a>&nbsp;focus,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Predicate.html" title="class or interface in java.util.function" class="external-link">Predicate</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;sentry,
- boolean&nbsp;duress)</code></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Predicate.html" title="class or interface in java.util.function" class="external-link">Predicate</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;sentry)</code></div>
 <div class="col-last even-row-color">
 <div class="block">A tick as its events are offered.</div>
 </div>
@@ -138,51 +136,46 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">The role that drives this tick.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#duress()" class="member-name-link">duress</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="DuelFocus.html" title="class in hadur2.core.role">DuelFocus</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#focus()" class="member-name-link">focus</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Whether the tick runs in duress (RES-9).</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="DuelFocus.html" title="class in hadur2.core.role">DuelFocus</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#focus()" class="member-name-link">focus</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">The Duel's focus, as it stands.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#focusing()" class="member-name-link">focusing</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#focusing()" class="member-name-link">focusing</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Whether the Duel fights one of several opponents alive.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="Tick.html" title="class in hadur2.core.role">Tick</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#forDrive(hadur2.core.role.RoleId,boolean,int,boolean)" class="member-name-link">forDrive</a><wbr>(<a href="RoleId.html" title="enum class in hadur2.core.role">RoleId</a>&nbsp;driving,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="Tick.html" title="class in hadur2.core.role">Tick</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#forDrive(hadur2.core.role.RoleId,boolean,int,boolean)" class="member-name-link">forDrive</a><wbr>(<a href="RoleId.html" title="enum class in hadur2.core.role">RoleId</a>&nbsp;driving,
  boolean&nbsp;focusing,
  int&nbsp;level,
  boolean&nbsp;mayFire)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">The tick as the driving role drives it.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#foreign(java.lang.String)" class="member-name-link">foreign</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#foreign(java.lang.String)" class="member-name-link">foreign</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Whether an event naming <code>name</code> is outside the duel: a sentry, or, while the duel
  fights one of several opponents, anyone but that one.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../model/BotInput.html" title="class in hadur2.core.model">BotInput</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#in()" class="member-name-link">in</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isSentry(java.lang.String)" class="member-name-link">isSentry</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../model/BotInput.html" title="class in hadur2.core.model">BotInput</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#in()" class="member-name-link">in</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isSentry(java.lang.String)" class="member-name-link">isSentry</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Whether <code>name</code> is a sentry seen this battle.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#level()" class="member-name-link">level</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#level()" class="member-name-link">level</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">The budget level after the events; -1 before <a href="#forDrive(hadur2.core.role.RoleId,boolean,int,boolean)"><code>forDrive(hadur2.core.role.RoleId, boolean, int, boolean)</code></a>.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#mayFire()" class="member-name-link">mayFire</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#mayFire()" class="member-name-link">mayFire</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../../../requirements.html#WEAVE-3">WEAVE-3</a>: whether a shot may leave this tick; false before <a href="#forDrive(hadur2.core.role.RoleId,boolean,int,boolean)"><code>forDrive(hadur2.core.role.RoleId, boolean, int, boolean)</code></a>.</div>
 </div>
 </div>
@@ -203,14 +196,13 @@ loadScripts(document, 'script');</script>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(hadur2.core.model.BotInput,hadur2.core.role.RoleId,boolean,hadur2.core.role.DuelFocus,java.util.function.Predicate,boolean)">
+<section class="detail" id="&lt;init&gt;(hadur2.core.model.BotInput,hadur2.core.role.RoleId,boolean,hadur2.core.role.DuelFocus,java.util.function.Predicate)">
 <h3>Tick</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">Tick</span><wbr><span class="parameters">(<a href="../model/BotInput.html" title="class in hadur2.core.model">BotInput</a>&nbsp;in,
  <a href="RoleId.html" title="enum class in hadur2.core.role">RoleId</a>&nbsp;driving,
  boolean&nbsp;focusing,
  <a href="DuelFocus.html" title="class in hadur2.core.role">DuelFocus</a>&nbsp;focus,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Predicate.html" title="class or interface in java.util.function" class="external-link">Predicate</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;sentry,
- boolean&nbsp;duress)</span></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Predicate.html" title="class or interface in java.util.function" class="external-link">Predicate</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;sentry)</span></div>
 <div class="block">A tick as its events are offered.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -219,7 +211,6 @@ loadScripts(document, 'script');</script>
 <dd><code>focusing</code> - whether the Duel fights one of several opponents</dd>
 <dd><code>focus</code> - the Duel's focus, live</dd>
 <dd><code>sentry</code> - which names are sentries (<a class="req" href="../../../../requirements.html#GATE-5">GATE-5</a>)</dd>
-<dd><code>duress</code> - whether the tick runs in duress</dd>
 </dl>
 </section>
 </li>
@@ -290,13 +281,6 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">foreign</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</span></div>
 <div class="block">Whether an event naming <code>name</code> is outside the duel: a sentry, or, while the duel
  fights one of several opponents, anyone but that one.</div>
-</section>
-</li>
-<li>
-<section class="detail" id="duress()">
-<h3>duress</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">duress</span>()</div>
-<div class="block">Whether the tick runs in duress (RES-9).</div>
 </section>
 </li>
 <li>

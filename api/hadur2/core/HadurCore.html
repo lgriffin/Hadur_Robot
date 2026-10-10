@@ -125,10 +125,9 @@ loadScripts(document, 'script');</script>
  <ol>
  <li>Resolve. Sentry scans are noted, then the resolver picks this tick's role from the
      charter, the counts, the vetoes and the latch. If Melee has just stopped driving, the
-     Duel is reset and full speed ordered before any event is handled (<a class="req" href="../../../requirements.html#MELEE-2">MELEE-2</a>). Whether
-     the tick runs in duress (RES-9) is settled here.</li>
+     Duel is reset and full speed ordered before any event is handled (<a class="req" href="../../../requirements.html#MELEE-2">MELEE-2</a>).</li>
  <li>Observe. Each event, in the engine's order, is offered to the charter's roles, Melee
-     before Duel (<a class="req" href="../../../requirements.html#ROLE-5">ROLE-5</a>). In duress a scan only moves the Duel's fix on its opponent.</li>
+     before Duel (<a class="req" href="../../../requirements.html#ROLE-5">ROLE-5</a>).</li>
  <li>Drive. The Duel replays a few seed samples; a melee event fault takes effect; the
      conductor gives the fire permission, and the driving role fills the orders (<a class="req" href="../../../requirements.html#WEAVE-1">WEAVE-1</a>,
      <a class="req" href="../../../requirements.html#WEAVE-3">WEAVE-3</a>). A shot without the permission is that role's fault (<a class="req" href="../../../requirements.html#WEAVE-6">WEAVE-6</a>).</li>
