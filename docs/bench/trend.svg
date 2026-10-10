@@ -1,124 +1,124 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1620" width="900" height="1620" role="img" aria-label="Candidate minus baseline score share by bench run">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1642" width="900" height="1642" role="img" aria-label="Candidate minus baseline score share by bench run">
 <style>.bg{fill:#fff}.t{fill:#1f2328;font:12px sans-serif}.m{fill:#59636e;font:11px sans-serif}.g{stroke:#d1d9e0}.z{stroke:#59636e}.ci{stroke:#0b6bcb;stroke-width:2}.pt{fill:#0b6bcb;stroke:#fff;stroke-width:2}.pt.open{fill:#fff;stroke:#0b6bcb}@media (prefers-color-scheme:dark){.bg{fill:#0d1117}.t{fill:#e6edf3}.m{fill:#9198a1}.g{stroke:#30363d}.z{stroke:#9198a1}.ci{stroke:#58a6ff}.pt{fill:#58a6ff;stroke:#0d1117}.pt.open{fill:#0d1117;stroke:#58a6ff}}</style>
-<rect class="bg" width="900" height="1620"/>
+<rect class="bg" width="900" height="1642"/>
 <text class="t" x="16" y="22" font-weight="bold">Candidate minus baseline score share, by committed bench run</text>
 <text class="m" x="16" y="38">Percentage points, pooled over opponents, 95% interval. Right of zero means the candidate scored more.</text>
-<line class="g" x1="290.0" x2="290.0" y1="48" y2="1478"/>
-<text class="m" x="290.0" y="1494" text-anchor="middle">-19</text>
-<line class="g" x1="300.0" x2="300.0" y1="48" y2="1478"/>
-<text class="m" x="300.0" y="1494" text-anchor="middle">-18</text>
-<line class="g" x1="310.0" x2="310.0" y1="48" y2="1478"/>
-<text class="m" x="310.0" y="1494" text-anchor="middle">-17</text>
-<line class="g" x1="320.0" x2="320.0" y1="48" y2="1478"/>
-<text class="m" x="320.0" y="1494" text-anchor="middle">-16</text>
-<line class="g" x1="330.0" x2="330.0" y1="48" y2="1478"/>
-<text class="m" x="330.0" y="1494" text-anchor="middle">-15</text>
-<line class="g" x1="340.0" x2="340.0" y1="48" y2="1478"/>
-<text class="m" x="340.0" y="1494" text-anchor="middle">-14</text>
-<line class="g" x1="350.0" x2="350.0" y1="48" y2="1478"/>
-<text class="m" x="350.0" y="1494" text-anchor="middle">-13</text>
-<line class="g" x1="360.0" x2="360.0" y1="48" y2="1478"/>
-<text class="m" x="360.0" y="1494" text-anchor="middle">-12</text>
-<line class="g" x1="370.0" x2="370.0" y1="48" y2="1478"/>
-<text class="m" x="370.0" y="1494" text-anchor="middle">-11</text>
-<line class="g" x1="380.0" x2="380.0" y1="48" y2="1478"/>
-<text class="m" x="380.0" y="1494" text-anchor="middle">-10</text>
-<line class="g" x1="390.0" x2="390.0" y1="48" y2="1478"/>
-<text class="m" x="390.0" y="1494" text-anchor="middle">-9</text>
-<line class="g" x1="400.0" x2="400.0" y1="48" y2="1478"/>
-<text class="m" x="400.0" y="1494" text-anchor="middle">-8</text>
-<line class="g" x1="410.0" x2="410.0" y1="48" y2="1478"/>
-<text class="m" x="410.0" y="1494" text-anchor="middle">-7</text>
-<line class="g" x1="420.0" x2="420.0" y1="48" y2="1478"/>
-<text class="m" x="420.0" y="1494" text-anchor="middle">-6</text>
-<line class="g" x1="430.0" x2="430.0" y1="48" y2="1478"/>
-<text class="m" x="430.0" y="1494" text-anchor="middle">-5</text>
-<line class="g" x1="440.0" x2="440.0" y1="48" y2="1478"/>
-<text class="m" x="440.0" y="1494" text-anchor="middle">-4</text>
-<line class="g" x1="450.0" x2="450.0" y1="48" y2="1478"/>
-<text class="m" x="450.0" y="1494" text-anchor="middle">-3</text>
-<line class="g" x1="460.0" x2="460.0" y1="48" y2="1478"/>
-<text class="m" x="460.0" y="1494" text-anchor="middle">-2</text>
-<line class="g" x1="470.0" x2="470.0" y1="48" y2="1478"/>
-<text class="m" x="470.0" y="1494" text-anchor="middle">-1</text>
-<line class="z" x1="480.0" x2="480.0" y1="48" y2="1478"/>
-<text class="m" x="480.0" y="1494" text-anchor="middle">0</text>
-<line class="g" x1="490.0" x2="490.0" y1="48" y2="1478"/>
-<text class="m" x="490.0" y="1494" text-anchor="middle">+1</text>
-<line class="g" x1="500.0" x2="500.0" y1="48" y2="1478"/>
-<text class="m" x="500.0" y="1494" text-anchor="middle">+2</text>
-<line class="g" x1="510.0" x2="510.0" y1="48" y2="1478"/>
-<text class="m" x="510.0" y="1494" text-anchor="middle">+3</text>
-<line class="g" x1="520.0" x2="520.0" y1="48" y2="1478"/>
-<text class="m" x="520.0" y="1494" text-anchor="middle">+4</text>
-<line class="g" x1="530.0" x2="530.0" y1="48" y2="1478"/>
-<text class="m" x="530.0" y="1494" text-anchor="middle">+5</text>
-<line class="g" x1="540.0" x2="540.0" y1="48" y2="1478"/>
-<text class="m" x="540.0" y="1494" text-anchor="middle">+6</text>
-<line class="g" x1="550.0" x2="550.0" y1="48" y2="1478"/>
-<text class="m" x="550.0" y="1494" text-anchor="middle">+7</text>
-<line class="g" x1="560.0" x2="560.0" y1="48" y2="1478"/>
-<text class="m" x="560.0" y="1494" text-anchor="middle">+8</text>
-<line class="g" x1="570.0" x2="570.0" y1="48" y2="1478"/>
-<text class="m" x="570.0" y="1494" text-anchor="middle">+9</text>
-<line class="g" x1="580.0" x2="580.0" y1="48" y2="1478"/>
-<text class="m" x="580.0" y="1494" text-anchor="middle">+10</text>
-<line class="g" x1="590.0" x2="590.0" y1="48" y2="1478"/>
-<text class="m" x="590.0" y="1494" text-anchor="middle">+11</text>
-<line class="g" x1="600.0" x2="600.0" y1="48" y2="1478"/>
-<text class="m" x="600.0" y="1494" text-anchor="middle">+12</text>
-<line class="g" x1="610.0" x2="610.0" y1="48" y2="1478"/>
-<text class="m" x="610.0" y="1494" text-anchor="middle">+13</text>
-<line class="g" x1="620.0" x2="620.0" y1="48" y2="1478"/>
-<text class="m" x="620.0" y="1494" text-anchor="middle">+14</text>
-<line class="g" x1="630.0" x2="630.0" y1="48" y2="1478"/>
-<text class="m" x="630.0" y="1494" text-anchor="middle">+15</text>
-<line class="g" x1="640.0" x2="640.0" y1="48" y2="1478"/>
-<text class="m" x="640.0" y="1494" text-anchor="middle">+16</text>
-<line class="g" x1="650.0" x2="650.0" y1="48" y2="1478"/>
-<text class="m" x="650.0" y="1494" text-anchor="middle">+17</text>
-<line class="g" x1="660.0" x2="660.0" y1="48" y2="1478"/>
-<text class="m" x="660.0" y="1494" text-anchor="middle">+18</text>
-<line class="g" x1="670.0" x2="670.0" y1="48" y2="1478"/>
-<text class="m" x="670.0" y="1494" text-anchor="middle">+19</text>
-<line class="g" x1="680.0" x2="680.0" y1="48" y2="1478"/>
-<text class="m" x="680.0" y="1494" text-anchor="middle">+20</text>
-<line class="g" x1="690.0" x2="690.0" y1="48" y2="1478"/>
-<text class="m" x="690.0" y="1494" text-anchor="middle">+21</text>
-<line class="g" x1="700.0" x2="700.0" y1="48" y2="1478"/>
-<text class="m" x="700.0" y="1494" text-anchor="middle">+22</text>
-<line class="g" x1="710.0" x2="710.0" y1="48" y2="1478"/>
-<text class="m" x="710.0" y="1494" text-anchor="middle">+23</text>
-<line class="g" x1="720.0" x2="720.0" y1="48" y2="1478"/>
-<text class="m" x="720.0" y="1494" text-anchor="middle">+24</text>
-<line class="g" x1="730.0" x2="730.0" y1="48" y2="1478"/>
-<text class="m" x="730.0" y="1494" text-anchor="middle">+25</text>
-<line class="g" x1="740.0" x2="740.0" y1="48" y2="1478"/>
-<text class="m" x="740.0" y="1494" text-anchor="middle">+26</text>
-<line class="g" x1="750.0" x2="750.0" y1="48" y2="1478"/>
-<text class="m" x="750.0" y="1494" text-anchor="middle">+27</text>
-<line class="g" x1="760.0" x2="760.0" y1="48" y2="1478"/>
-<text class="m" x="760.0" y="1494" text-anchor="middle">+28</text>
-<line class="g" x1="770.0" x2="770.0" y1="48" y2="1478"/>
-<text class="m" x="770.0" y="1494" text-anchor="middle">+29</text>
-<line class="g" x1="780.0" x2="780.0" y1="48" y2="1478"/>
-<text class="m" x="780.0" y="1494" text-anchor="middle">+30</text>
-<line class="g" x1="790.0" x2="790.0" y1="48" y2="1478"/>
-<text class="m" x="790.0" y="1494" text-anchor="middle">+31</text>
-<line class="g" x1="800.0" x2="800.0" y1="48" y2="1478"/>
-<text class="m" x="800.0" y="1494" text-anchor="middle">+32</text>
-<line class="g" x1="810.0" x2="810.0" y1="48" y2="1478"/>
-<text class="m" x="810.0" y="1494" text-anchor="middle">+33</text>
-<line class="g" x1="820.0" x2="820.0" y1="48" y2="1478"/>
-<text class="m" x="820.0" y="1494" text-anchor="middle">+34</text>
-<line class="g" x1="830.0" x2="830.0" y1="48" y2="1478"/>
-<text class="m" x="830.0" y="1494" text-anchor="middle">+35</text>
-<line class="g" x1="840.0" x2="840.0" y1="48" y2="1478"/>
-<text class="m" x="840.0" y="1494" text-anchor="middle">+36</text>
-<line class="g" x1="850.0" x2="850.0" y1="48" y2="1478"/>
-<text class="m" x="850.0" y="1494" text-anchor="middle">+37</text>
-<line class="g" x1="860.0" x2="860.0" y1="48" y2="1478"/>
-<text class="m" x="860.0" y="1494" text-anchor="middle">+38</text>
+<line class="g" x1="290.0" x2="290.0" y1="48" y2="1500"/>
+<text class="m" x="290.0" y="1516" text-anchor="middle">-19</text>
+<line class="g" x1="300.0" x2="300.0" y1="48" y2="1500"/>
+<text class="m" x="300.0" y="1516" text-anchor="middle">-18</text>
+<line class="g" x1="310.0" x2="310.0" y1="48" y2="1500"/>
+<text class="m" x="310.0" y="1516" text-anchor="middle">-17</text>
+<line class="g" x1="320.0" x2="320.0" y1="48" y2="1500"/>
+<text class="m" x="320.0" y="1516" text-anchor="middle">-16</text>
+<line class="g" x1="330.0" x2="330.0" y1="48" y2="1500"/>
+<text class="m" x="330.0" y="1516" text-anchor="middle">-15</text>
+<line class="g" x1="340.0" x2="340.0" y1="48" y2="1500"/>
+<text class="m" x="340.0" y="1516" text-anchor="middle">-14</text>
+<line class="g" x1="350.0" x2="350.0" y1="48" y2="1500"/>
+<text class="m" x="350.0" y="1516" text-anchor="middle">-13</text>
+<line class="g" x1="360.0" x2="360.0" y1="48" y2="1500"/>
+<text class="m" x="360.0" y="1516" text-anchor="middle">-12</text>
+<line class="g" x1="370.0" x2="370.0" y1="48" y2="1500"/>
+<text class="m" x="370.0" y="1516" text-anchor="middle">-11</text>
+<line class="g" x1="380.0" x2="380.0" y1="48" y2="1500"/>
+<text class="m" x="380.0" y="1516" text-anchor="middle">-10</text>
+<line class="g" x1="390.0" x2="390.0" y1="48" y2="1500"/>
+<text class="m" x="390.0" y="1516" text-anchor="middle">-9</text>
+<line class="g" x1="400.0" x2="400.0" y1="48" y2="1500"/>
+<text class="m" x="400.0" y="1516" text-anchor="middle">-8</text>
+<line class="g" x1="410.0" x2="410.0" y1="48" y2="1500"/>
+<text class="m" x="410.0" y="1516" text-anchor="middle">-7</text>
+<line class="g" x1="420.0" x2="420.0" y1="48" y2="1500"/>
+<text class="m" x="420.0" y="1516" text-anchor="middle">-6</text>
+<line class="g" x1="430.0" x2="430.0" y1="48" y2="1500"/>
+<text class="m" x="430.0" y="1516" text-anchor="middle">-5</text>
+<line class="g" x1="440.0" x2="440.0" y1="48" y2="1500"/>
+<text class="m" x="440.0" y="1516" text-anchor="middle">-4</text>
+<line class="g" x1="450.0" x2="450.0" y1="48" y2="1500"/>
+<text class="m" x="450.0" y="1516" text-anchor="middle">-3</text>
+<line class="g" x1="460.0" x2="460.0" y1="48" y2="1500"/>
+<text class="m" x="460.0" y="1516" text-anchor="middle">-2</text>
+<line class="g" x1="470.0" x2="470.0" y1="48" y2="1500"/>
+<text class="m" x="470.0" y="1516" text-anchor="middle">-1</text>
+<line class="z" x1="480.0" x2="480.0" y1="48" y2="1500"/>
+<text class="m" x="480.0" y="1516" text-anchor="middle">0</text>
+<line class="g" x1="490.0" x2="490.0" y1="48" y2="1500"/>
+<text class="m" x="490.0" y="1516" text-anchor="middle">+1</text>
+<line class="g" x1="500.0" x2="500.0" y1="48" y2="1500"/>
+<text class="m" x="500.0" y="1516" text-anchor="middle">+2</text>
+<line class="g" x1="510.0" x2="510.0" y1="48" y2="1500"/>
+<text class="m" x="510.0" y="1516" text-anchor="middle">+3</text>
+<line class="g" x1="520.0" x2="520.0" y1="48" y2="1500"/>
+<text class="m" x="520.0" y="1516" text-anchor="middle">+4</text>
+<line class="g" x1="530.0" x2="530.0" y1="48" y2="1500"/>
+<text class="m" x="530.0" y="1516" text-anchor="middle">+5</text>
+<line class="g" x1="540.0" x2="540.0" y1="48" y2="1500"/>
+<text class="m" x="540.0" y="1516" text-anchor="middle">+6</text>
+<line class="g" x1="550.0" x2="550.0" y1="48" y2="1500"/>
+<text class="m" x="550.0" y="1516" text-anchor="middle">+7</text>
+<line class="g" x1="560.0" x2="560.0" y1="48" y2="1500"/>
+<text class="m" x="560.0" y="1516" text-anchor="middle">+8</text>
+<line class="g" x1="570.0" x2="570.0" y1="48" y2="1500"/>
+<text class="m" x="570.0" y="1516" text-anchor="middle">+9</text>
+<line class="g" x1="580.0" x2="580.0" y1="48" y2="1500"/>
+<text class="m" x="580.0" y="1516" text-anchor="middle">+10</text>
+<line class="g" x1="590.0" x2="590.0" y1="48" y2="1500"/>
+<text class="m" x="590.0" y="1516" text-anchor="middle">+11</text>
+<line class="g" x1="600.0" x2="600.0" y1="48" y2="1500"/>
+<text class="m" x="600.0" y="1516" text-anchor="middle">+12</text>
+<line class="g" x1="610.0" x2="610.0" y1="48" y2="1500"/>
+<text class="m" x="610.0" y="1516" text-anchor="middle">+13</text>
+<line class="g" x1="620.0" x2="620.0" y1="48" y2="1500"/>
+<text class="m" x="620.0" y="1516" text-anchor="middle">+14</text>
+<line class="g" x1="630.0" x2="630.0" y1="48" y2="1500"/>
+<text class="m" x="630.0" y="1516" text-anchor="middle">+15</text>
+<line class="g" x1="640.0" x2="640.0" y1="48" y2="1500"/>
+<text class="m" x="640.0" y="1516" text-anchor="middle">+16</text>
+<line class="g" x1="650.0" x2="650.0" y1="48" y2="1500"/>
+<text class="m" x="650.0" y="1516" text-anchor="middle">+17</text>
+<line class="g" x1="660.0" x2="660.0" y1="48" y2="1500"/>
+<text class="m" x="660.0" y="1516" text-anchor="middle">+18</text>
+<line class="g" x1="670.0" x2="670.0" y1="48" y2="1500"/>
+<text class="m" x="670.0" y="1516" text-anchor="middle">+19</text>
+<line class="g" x1="680.0" x2="680.0" y1="48" y2="1500"/>
+<text class="m" x="680.0" y="1516" text-anchor="middle">+20</text>
+<line class="g" x1="690.0" x2="690.0" y1="48" y2="1500"/>
+<text class="m" x="690.0" y="1516" text-anchor="middle">+21</text>
+<line class="g" x1="700.0" x2="700.0" y1="48" y2="1500"/>
+<text class="m" x="700.0" y="1516" text-anchor="middle">+22</text>
+<line class="g" x1="710.0" x2="710.0" y1="48" y2="1500"/>
+<text class="m" x="710.0" y="1516" text-anchor="middle">+23</text>
+<line class="g" x1="720.0" x2="720.0" y1="48" y2="1500"/>
+<text class="m" x="720.0" y="1516" text-anchor="middle">+24</text>
+<line class="g" x1="730.0" x2="730.0" y1="48" y2="1500"/>
+<text class="m" x="730.0" y="1516" text-anchor="middle">+25</text>
+<line class="g" x1="740.0" x2="740.0" y1="48" y2="1500"/>
+<text class="m" x="740.0" y="1516" text-anchor="middle">+26</text>
+<line class="g" x1="750.0" x2="750.0" y1="48" y2="1500"/>
+<text class="m" x="750.0" y="1516" text-anchor="middle">+27</text>
+<line class="g" x1="760.0" x2="760.0" y1="48" y2="1500"/>
+<text class="m" x="760.0" y="1516" text-anchor="middle">+28</text>
+<line class="g" x1="770.0" x2="770.0" y1="48" y2="1500"/>
+<text class="m" x="770.0" y="1516" text-anchor="middle">+29</text>
+<line class="g" x1="780.0" x2="780.0" y1="48" y2="1500"/>
+<text class="m" x="780.0" y="1516" text-anchor="middle">+30</text>
+<line class="g" x1="790.0" x2="790.0" y1="48" y2="1500"/>
+<text class="m" x="790.0" y="1516" text-anchor="middle">+31</text>
+<line class="g" x1="800.0" x2="800.0" y1="48" y2="1500"/>
+<text class="m" x="800.0" y="1516" text-anchor="middle">+32</text>
+<line class="g" x1="810.0" x2="810.0" y1="48" y2="1500"/>
+<text class="m" x="810.0" y="1516" text-anchor="middle">+33</text>
+<line class="g" x1="820.0" x2="820.0" y1="48" y2="1500"/>
+<text class="m" x="820.0" y="1516" text-anchor="middle">+34</text>
+<line class="g" x1="830.0" x2="830.0" y1="48" y2="1500"/>
+<text class="m" x="830.0" y="1516" text-anchor="middle">+35</text>
+<line class="g" x1="840.0" x2="840.0" y1="48" y2="1500"/>
+<text class="m" x="840.0" y="1516" text-anchor="middle">+36</text>
+<line class="g" x1="850.0" x2="850.0" y1="48" y2="1500"/>
+<text class="m" x="850.0" y="1516" text-anchor="middle">+37</text>
+<line class="g" x1="860.0" x2="860.0" y1="48" y2="1500"/>
+<text class="m" x="860.0" y="1516" text-anchor="middle">+38</text>
 <text class="t" x="16" y="69.0">3.8 vs 3.7  drussgt40</text>
 <line class="ci" x1="586.7" x2="637.4" y1="65.0" y2="65.0"/>
 <circle class="pt open" cx="612.1" cy="65.0" r="4.5"><title>2026-10-06_hadur-3.8_drussgt40-local_cold.tsv: 13.21 pp (10.67 to 15.74); conditions differ from the usual: engine 1.9.5.6</title></circle>
@@ -311,11 +311,14 @@
 <text class="t" x="16" y="1455.0">2.Hadur 3.10nl vs 2.Hadur 3.10  screen-311-nl [1.11.1]</text>
 <line class="ci" x1="477.0" x2="484.2" y1="1451.0" y2="1451.0"/>
 <circle class="pt" cx="480.6" cy="1451.0" r="4.5"><title>2026-10-09_hadur-screen-311-nl-local_cold.tsv: 0.06 pp (-0.30 to 0.42)</title></circle>
-<text class="m" x="16" y="1510">Open circle: a condition that differs from the usual one for this chart (a blank is not recorded, not assumed).</text>
-<text class="m" x="16" y="1526">rounds per battle 10 (usual 35): 1 run</text>
-<text class="m" x="16" y="1541">engine 1.9.5.6 (usual 1.11.1): 14 runs</text>
-<text class="m" x="16" y="1556">CPU constant 744249 (usual 1488498): 1 run</text>
-<text class="m" x="16" y="1571">parallel width 16 (usual 12): 2 runs</text>
-<text class="m" x="16" y="1586">parallel width 4 (usual 12): 2 runs</text>
-<text class="m" x="16" y="1601">parallel width 5 (usual 12): 2 runs</text>
+<text class="t" x="16" y="1477.0">lxx.Tomcat 3.68 vs 2.Hadur 3.10nd  census-312-m5 [1.11.1]</text>
+<line class="ci" x1="477.9" x2="480.3" y1="1473.0" y2="1473.0"/>
+<circle class="pt" cx="479.1" cy="1473.0" r="4.5"><title>2026-10-10_hadur-census-312-m5-local_cold.tsv: -0.09 pp (-0.21 to 0.03)</title></circle>
+<text class="m" x="16" y="1532">Open circle: a condition that differs from the usual one for this chart (a blank is not recorded, not assumed).</text>
+<text class="m" x="16" y="1548">rounds per battle 10 (usual 35): 1 run</text>
+<text class="m" x="16" y="1563">engine 1.9.5.6 (usual 1.11.1): 14 runs</text>
+<text class="m" x="16" y="1578">CPU constant 744249 (usual 1488498): 1 run</text>
+<text class="m" x="16" y="1593">parallel width 16 (usual 12): 2 runs</text>
+<text class="m" x="16" y="1608">parallel width 4 (usual 12): 2 runs</text>
+<text class="m" x="16" y="1623">parallel width 5 (usual 12): 2 runs</text>
 </svg>
