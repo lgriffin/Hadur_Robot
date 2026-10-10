@@ -295,7 +295,7 @@ public final class PowerPolicy {
 
     /**
      * END-4 for a shot that does not go through the main gun's own hold: shield mode's attack
-     * shots and duress's head-on shots. The power that would really leave is the one asked for,
+     * shots. The power that would really leave is the one asked for,
      * lowered to what our energy can pay (shield mode keeps 1 of it), so that is what is tested.
      *
      * @param ourEnergy our energy now

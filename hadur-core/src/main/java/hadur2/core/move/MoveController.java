@@ -372,18 +372,6 @@ public class MoveController {
     }
 
     /**
-     * RES-14: drops every outstanding enemy wave, its state log and our bullets' shadows, after
-     * an interval the controller did not observe. The danger views and the battle's counts are
-     * kept, and so are outcomes of waves that broke before the interval.
-     */
-    public void discardWaves() {
-        waveManager.initRound();
-        ourBullets.clear();
-        bulletsVersion++;
-        clearNeighborCache();
-    }
-
-    /**
      * Starts a round, or recovers after a fault (RES-1): drops the waves, our bullets and
      * this round's counts, and the cached neighbours. What the views learned and the
      * battle's hit counts are kept.

@@ -5,9 +5,8 @@ import java.util.function.Predicate;
 
 /**
  * What the conductor hands a role on every call of a tick (A2): the input, which role drives
- * this tick, the Duel's focus as it stands, which names are sentries, and whether the tick is
- * in duress (RES-9). For {@link Role#drive} it also carries the budget level as it stands
- * after the events and the fire permission (WEAVE-3); until A5 the permission is always given.
+ * this tick, the Duel's focus as it stands, which names are sentries. For {@link Role#drive} it also carries the budget level as it
+ * stands after the events and the fire permission (WEAVE-3); until A5 the permission is always given.
  *
  * <p>The focus is the conductor's live {@link DuelFocus}: a scan can re-choose it mid-tick,
  * and the next event sees the new choice, as it did before A2.</p>
@@ -19,7 +18,6 @@ public final class Tick {
     private final boolean focusing;
     private final DuelFocus focus;
     private final Predicate<String> sentry;
-    private final boolean duress;
     private final int level;
     private final boolean mayFire;
 
@@ -31,21 +29,18 @@ public final class Tick {
      * @param focusing whether the Duel fights one of several opponents
      * @param focus the Duel's focus, live
      * @param sentry which names are sentries (GATE-5)
-     * @param duress whether the tick runs in duress
      */
-    public Tick(BotInput in, RoleId driving, boolean focusing, DuelFocus focus, Predicate<String> sentry,
-                boolean duress) {
-        this(in, driving, focusing, focus, sentry, duress, -1, false);
+    public Tick(BotInput in, RoleId driving, boolean focusing, DuelFocus focus, Predicate<String> sentry) {
+        this(in, driving, focusing, focus, sentry, -1, false);
     }
 
     private Tick(BotInput in, RoleId driving, boolean focusing, DuelFocus focus, Predicate<String> sentry,
-                 boolean duress, int level, boolean mayFire) {
+                 int level, boolean mayFire) {
         this.in = in;
         this.driving = driving;
         this.focusing = focusing;
         this.focus = focus;
         this.sentry = sentry;
-        this.duress = duress;
         this.level = level;
         this.mayFire = mayFire;
     }
@@ -60,7 +55,7 @@ public final class Tick {
      * @return the tick for {@link Role#drive}
      */
     public Tick forDrive(RoleId driving, boolean focusing, int level, boolean mayFire) {
-        return new Tick(in, driving, focusing, focus, sentry, duress, level, mayFire);
+        return new Tick(in, driving, focusing, focus, sentry, level, mayFire);
     }
 
     public BotInput in() {
@@ -94,11 +89,6 @@ public final class Tick {
     public boolean foreign(String name) {
         if (sentry.test(name)) return true;
         return focusing && !name.equals(focus.target());
-    }
-
-    /** Whether the tick runs in duress (RES-9). */
-    public boolean duress() {
-        return duress;
     }
 
     /** The budget level after the events; -1 before {@link #forDrive}. */

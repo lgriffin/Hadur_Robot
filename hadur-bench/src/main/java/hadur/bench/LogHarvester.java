@@ -46,7 +46,7 @@ public class LogHarvester extends BattleAdaptor {
     private int turns;
     private int skippedTurns;
     private int engineDisables;
-    /** RES-9: ticks that ran in duress, from the R records. */
+    /** Ticks that ran in duress, from the R records; always 0 from 3.11, which retired RES-9. */
     private int duressTicks;
     private int roundRecords, faults, faultRecords, phantomWaves;
     /** Enemy bullets as the engine saw them, and the waves Hadur inferred (S2 wave fidelity). */
@@ -531,7 +531,7 @@ public class LogHarvester extends BattleAdaptor {
         return sorted[Math.max(0, i)] / 1e6;
     }
 
-    /** RES-9: ticks the robot ran in duress, summed over its R records. */
+    /** Ticks the robot ran in duress, summed over its R records; 0 from 3.11 (RES-9 retired). */
     public int duressTicks() {
         return duressTicks;
     }

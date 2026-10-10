@@ -684,9 +684,9 @@ Every requirement group belongs to one owner, the same owner as the code it gove
 | ROLE-2 | Ubiquitous | The core shall choose each tick's role from the charter, the counts of enemies, teammates and sentries alive, the round's vetoes and the roles that have already driven this round, and from nothing else. | A1 |
 | ROLE-3 | State | While the Team role's own conditions do not hold, the Melee role is built and has not failed this round, two or more enemies are alive, no sentry robot is alive or has been scanned this round, and the Duel role has not driven this round, the core shall drive the robot with the Melee role. | A1 |
 | ROLE-4 | State | While a role has driven in the current round, the core shall not drive with a role above it in the order Team, Melee, Duel. | A1 |
-| ROLE-5 | State | While a tick is not in duress (RES-9), the core shall offer each of its events to the roles of the charter, Melee before Duel, in the engine's order, except that a sentry's scan and a sentry's bullet are offered to no role (GATE-5) and Hadur's hit on a robot the Duel is ignoring is not offered to the Melee role. | A2 |
+| ROLE-5 | Ubiquitous | The core shall offer each of its events to the roles of the charter, Melee before Duel, in the engine's order, except that a sentry's scan and a sentry's bullet are offered to no role (GATE-5) and Hadur's hit on a robot the Duel is ignoring is not offered to the Melee role. | A2 |
 | ROLE-6 | Ubiquitous | The core shall hold no role outside its charter. | A3 |
-| WORLD-1 | State | While a tick is not in duress (RES-9), the core shall feed one model of the field with every scan, hit and death that ROLE-5 offers the Melee role, before any role is offered it. | A3 |
+| WORLD-1 | Ubiquitous | The core shall feed one model of the field with every scan, hit and death that ROLE-5 offers the Melee role, before any role is offered it. | A3 |
 | WORLD-2 | Ubiquitous | The core shall report to a role, as its count of others, the engine's count off a team and the count of enemies alive that WORLD-8 defines on a team. | A5 |
 | WORLD-3 | Unwanted | If a teammate has sent no report for a set number of ticks while the engine's count of others has fallen, then the core shall count it dead. | A5 |
 | WORLD-4 | Event | When teammates' reports arrive, the core shall merge each report once, in the order of their stated ticks, and keep the newer of two sightings of a robot. | A5 |
@@ -912,7 +912,6 @@ The plan is [docs/druss-route-plan.md](druss-route-plan.md): the findings of the
 | POW-9 | State | While both robots' energy exceeds 60, the gun shall fire its default power whatever POW-7 would choose. | D1 |
 | POW-10 | Ubiquitous | The gun shall fire every duel shot that our energy can pay for, lowering the power where a rule saves energy, except where END-4 holds the shot. | D1 |
 | ADAPT-5 | Event | When a profile that records POW-7's hit-rate condition as met loads, the core shall apply POW-7 to POW-9 from the first shot, until this battle's rates contradict it by more than their margins. | D1 |
-| RES-14 | Unwanted | If the engine has skipped three turns in a round, then the core shall run at the duress level RES-9 defines until 300 ticks have passed without a skipped turn. | D1 |
 | SHIELD-3 | Event | When one of our bullets is destroyed by a bullet from an enemy that has not moved since the round began, the core shall treat the enemy as a bullet shielder from the next shot, and shall keep that verdict in the opponent's profile so that the next battle starts with it. | D2 |
 | SHIELD-4 | State | While the enemy is treated as a bullet shielder and has not moved in the last 10 ticks, the gun shall fire power 3.0, capped by END-3, with SHIELD-2's aim offset on. | D2 |
 | END-4 | State | While the enemy's energy is below the smallest bullet power it has fired this battle, the gun shall not fire a shot that would leave our energy less than 0.3 above the enemy's. | D2 |
@@ -920,7 +919,7 @@ The plan is [docs/druss-route-plan.md](druss-route-plan.md): the findings of the
 | MOVE-8 | Ubiquitous | Movement shall publish, for each enemy wave in the air, the guess-factor interval its current plan occupies when that wave arrives, as a read-only value the gun can read through the duel's internal seam. | D4 |
 | GUN-7 | Ubiquitous | The gun shall choose each firing angle from its candidates by the expected damage of a hit plus the expected damage avoided by the bullet's shadows on the intervals MOVE-8 publishes. | D4 |
 
-POW-7 to POW-9 apply to a duel only. POW-1 to POW-5, RAM-1 and END-3 keep precedence over them. RES-14 retires RES-9 (see the retired table).
+POW-7 to POW-9 apply to a duel only. POW-1 to POW-5, RAM-1 and END-3 keep precedence over them. RES-14 retired RES-9 in D1, and 3.11 retired RES-14 (see the retired table).
 
 ### D1 notes
 
@@ -1022,7 +1021,7 @@ strand, in the `shieldmode` package, and applies to a 1v1 battle only.
 - **The round's safety exits** leave shield mode for the rest of that round only, and the next
   round opens in it again: the enemy within 100 px (`close`), a collision (`rammed`), two enemy
   bullets that hit us with no predictor exact (`unpredicted`), three hits taken and more than we
-  shot down (`outhit`), no enemy shot for 120 ticks (`quiet`) and RES-14's duress (`duress`). Each is
+  shot down (`outhit`) and no enemy shot for 120 ticks (`quiet`); until 3.10 RES-14's duress (`duress`) was a seventh, and 3.11 retired it. Each is
   an `SH,round,tick,exit,reason` record. The battle's exit is `SH,round,tick,off,budget`.
 - **Records** are written only for a listed opponent, so a battle without the list writes none and
   the round record `R` is unchanged: `SH` as above, and at each round's end `SR,round,tick,
@@ -1123,6 +1122,30 @@ MMOVE-8 the melee strand, WEAVE-7 and WEAVE-8 the conductor.
   drives it replaced.
 - Solo play is untouched: every term is reached through the team link or an empty teammate list.
 
+## 3.11: duress retired (RES-9, RES-14)
+
+3.11 is 3.10 with duress gone. The census (docs/plan-3.11-census.md) benched the same build with
+`TickBudget.duress()` never true: +0.73 APS (+0.59 to +0.87) on the whole 1,212-bot field, and on a
+client with the CPU constant halved 3.10, in duress every battle, scored 48% share against 85% for the
+build without it. RES-14 is retired, and with it RES-9's use (see the retired table).
+
+- **What went.** `TickBudget.duress()`, `tickBegan`, `DURESS_SKIPS` and `DURESS_QUIET_TICKS`; the
+  `Duress` class; the conductor's duress branch (`observeInDuress`, `wasInDuress`) and
+  `Tick.duress()`; `DuelController.duressDrive`, `duressScan`, `hitInDuress`, `canFightInDuress`,
+  `resumeAfterDuress` and the seam's `afterDuress`; `ShieldMode.onDuress` (the `duress` exit);
+  `MoveController.discardWaves` and `GunController.discardPendingVirtualBullets`, which only the
+  resume used.
+- **What stayed.** A skipped turn still sheds a level for the rest of the round (TIME-2) and the first
+  one still teaches the allowance (TIME-3); the round simply never leaves the full Duel. The R record's
+  `duressTicks` column (index 33) and the bench's duress columns (BENCH-20, BENCH-21, BENCH-23) keep
+  their place and now always read 0, so old and new rows still join.
+- **Re-recorded and re-pinned.** Only `duress-sample.Walls` (and its telemetry snapshot) diverged; it was
+  re-recorded with the bench command in `hadur-bench/README.md` (a 0.15 ms CPU constant, 9 skipped turns)
+  and still holds skipped turns, now without duress. The other twelve fixtures replay unchanged. Pins:
+  `kernel`, `duel`, `conductor` (`-Dhadur.pin=kernel,duel,conductor`) and `duel-sources.sha256`.
+- **ROLE-5 and WORLD-1** lose their "while a tick is not in duress" condition; they held on every tick
+  that was not, and now that is every tick.
+
 ## Retired requirements
 
 A retired requirement keeps its ID; no new requirement reuses it.
@@ -1136,7 +1159,8 @@ A retired requirement keeps its ID; no new requirement reuses it.
 | MELEE-5 | While in melee, the gun shall target the opponent with the lowest score of energy, distance and gun turn, and shall switch from a living current target only when another scores at least 20% lower and the gun can reach it within 4 ticks. | M4 | MGUN-1 (the field gun aims at the peak of every opponent's solutions, so there is no single target to hold) |
 | MELEE-6 | The melee gun shall aim with circular prediction, fall back to linear prediction while the target's turn rate is unknown, and fire no more power than needed to kill the target. | M4 | MGUN-1, MGUN-2, MGUN-3 (learned play-it-forward aim, circular and linear only as the fallback; the energy table and exact kill power) |
 | MELEE-8 | While two opponents within 300 px of each other, and further from us than from each other, are both losing energy to others, the strategy shall keep clear of their fight and halve fire power. | M6 | MMOVE-5 (keep clear, unchanged), MGUN-5 (full power: the M6 sweep found the posture's power cuts and holds cost score) |
-| RES-9 | If the engine has skipped three turns in a round, then the core shall run the rest of the round at a duress level that adds no samples, builds no waves, reads no neighbour tree, orbits at the distance floor and fires head-on at power 1.0 whenever the gun is cool and the fire permission is given (WEAVE-3). | D1 | RES-14 (the same duress level, which now ends after 300 ticks without a skipped turn; the trigger of three skipped turns in a round is unchanged) |
+| RES-9 | If the engine has skipped three turns in a round, then the core shall run the rest of the round at a duress level that adds no samples, builds no waves, reads no neighbour tree, orbits at the distance floor and fires head-on at power 1.0 whenever the gun is cool and the fire permission is given (WEAVE-3). | D1 | RES-14 (the same duress level, which ended after 300 ticks without a skipped turn), itself retired in 3.11 (below) |
+| RES-14 | If the engine has skipped three turns in a round, then the core shall run at the duress level RES-9 defines until 300 ticks have passed without a skipped turn. | 3.11 | none: a round is never in duress, and skipped turns still shed levels (TIME-2) and teach the allowance (TIME-3). 3.11 census (docs/plan-3.11-census.md): duress cost +0.73 APS on the whole field and 37 points of share on a slow client |
 
 ### R6 notes
 

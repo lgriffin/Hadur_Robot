@@ -81,7 +81,7 @@ public final class MeleeReport {
         return b;
     }
 
-    /** R,round,tick,result,...: field 33 is the round's duress ticks (RES-9); older logs stop short of it. */
+    /** R,round,tick,result,...: field 33 is the round's duress ticks (always 0 from 3.11); older logs stop short of it. */
     private static void addDuress(Battle b, String[] r) {
         if (r.length < 34) return;
         try {

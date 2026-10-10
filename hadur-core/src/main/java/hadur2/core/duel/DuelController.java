@@ -47,8 +47,7 @@ import java.util.Map;
  * The Duel strand's brain (A2): everything Hadur does against one opponent, lifted out of
  * {@code HadurCore} as it stood, to stand beside the melee brain. It is the duel subsystems'
  * owner: the guns, the surf, the waves and state logs, the energy ledger, the shield, the
- * S4 opening and its seeds, the S5 and S6 policies, the rammer and mirror responses, and
- * {@link Duress}.
+ * S4 opening and its seeds, the S5 and S6 policies, and the rammer and mirror responses.
  *
  * <p>It never decides which role drives, whom to focus on among several opponents, or
  * whether a bullet outcome is its own: the conductor's Duel seam answers those and passes
@@ -191,8 +190,6 @@ public final class DuelController {
     private boolean ram1Active;
     /** The robot the windows and the distance controller are about; null before a duel scan. */
     private String duelOpponent;
-    /** RES-9: the rest of a round after the engine has skipped three of its turns. */
-    private final Duress duress;
     /** R2: recognising and countering a charging rammer, no profile needed (RAM-1). */
     private final RammerPolicy rammer = new RammerPolicy();
     /** RAM-1: whether the rammer response is active, as of the last scan. */
@@ -297,7 +294,6 @@ public final class DuelController {
                           ProfileLibrary library, ProfileLibrary survivorLibrary, RoundStats stats,
                           ShieldList shieldList, int rounds) {
         this.battleField = new BattleField(fieldWidth, fieldHeight);
-        this.duress = new Duress(battleField);
         this.predictor = new MovementPredictor(battleField);
         this.gunController = new GunController(battleField, enemiesTotal);
         this.moveController = new MoveController(battleField, predictor);
@@ -335,7 +331,6 @@ public final class DuelController {
         // The history of the enemy's movement starts with the round; recover() marked it unknown.
         stillness.newRound();
         if (enemyGunHeat != null) enemyGunHeat.newRound();
-        duress.newRound(round);
         // RAM-3: a confirmed rammer's round plays one arm from its start.
         trialRound = rammer.confirmed();
         trialArm = trialRound ? escapeTrial.choose() : EscapeTrial.Arm.FIGHT;
@@ -395,34 +390,9 @@ public final class DuelController {
         radarLock = Double.NaN;
     }
 
-    /**
-     * RES-14: duress has ended. The waves of both managers, and the per-wave state that goes
-     * with them (the gun's virtual bullets, the surf's wave and our bullets' shadows), are from
-     * before an interval that went unobserved: processed on the next scan they would be
-     * judged against it. They are discarded, and the duel's view of the enemy starts afresh;
-     * what the battle learned (the gun's and surf's trees, the ratings, the battle's hit rates)
-     * stays.
-     */
-    public void resumeAfterDuress() {
-        gunWaveManager.initRound();
-        gunController.discardPendingVirtualBullets();
-        moveController.discardWaves();
-        surfMover.initRound();
-        aimCarriesJitter = false;
-        resetTracking();
-    }
-
     /** A tick begins: a lock asked for on a tick that never finished is dropped. */
     public void beginTick() {
         radarLock = Double.NaN;
-    }
-
-    /**
-     * RES-9: whether the Duel can fight a round in duress: its opponent has been scanned, so
-     * there is someone to orbit.
-     */
-    public boolean canFightInDuress() {
-        return announced && lastEnemyLocation != null;
     }
 
     /** The robot the Duel fights, or null before its first scan. */
@@ -703,51 +673,11 @@ public final class DuelController {
         prevMyVelocity = myVel;
     }
 
-    /**
-     * RES-9: a scan in duress only moves where the enemy is thought to be. Everything the
-     * normal scan feeds (the state logs, both waves, the ledger, the gun's and the surf's
-     * trees) is skipped, since none of it can finish in the time the engine allows.
-     */
-    public void duressScan(BotInput in, BotEvent.Scan e) {
-        double absBearing = Angles.normalAbsoluteAngle(in.heading() + e.bearing());
-        lastScanTime = in.time();
-        lastEnemyAbsBearing = absBearing;
-        lastEnemyLocation = DiaUtils.project(in.location(), absBearing, e.distance());
-        lastEnemyEnergy = e.energy();
-        lastEnemyDistance = e.distance();
-    }
-
     /** ADAPT-3: a few seed samples a tick, so no one tick pays for the whole seed. */
     public void replaySeeds() {
         if (seedLoader != null) {
             seedsReplayed += seedLoader.step();
             if (seedLoader.done()) seedLoader = null;
-        }
-    }
-
-    /**
-     * RES-9: orbit at the distance floor, fire head-on, lock the radar; nothing else.
-     *
-     * @param mayFire WEAVE-3: whether a shot may leave this tick
-     */
-    public void duressDrive(BotInput in, BotOrders.Builder orders, boolean mayFire) {
-        if (!Double.isNaN(radarLock)) orders.turnRadarRight(radarLock);
-        // SHIELD-5: the shield's timing cannot be trusted once turns are being skipped.
-        if (shield != null) shield.onDuress(in.time());
-        stats.duressTicks++;
-        // A scan gap over one tick means the spot is stale: sweep the radar, hold fire.
-        boolean fired = duress.orders(in, lastEnemyLocation, in.time() - lastScanTime > 1, orders);
-        // END-4: duress's head-on shot keeps the last of our lead as the main gun's does.
-        boolean holdLast = fired && PowerPolicy.holdsShotAt(in.energy(), Duress.POWER, 0.1,
-            lastEnemyEnergy, smallestEnemyPower);
-        // WEAVE-3: without the permission the shot is held, and so is its count.
-        if (fired && (!mayFire || holdLast)) {
-            orders.fire(0);
-            fired = false;
-        }
-        if (fired) {
-            stats.shotsFired++;
-            lastRealBulletFireTime = in.time();
         }
     }
 
@@ -1478,7 +1408,7 @@ public final class DuelController {
             ShadowValue shadow = null;
             // The plan is the one published on the tick before: the surf runs after the aim
             // within a tick, so it is the latest there is, and a plan older than that (a
-            // tick the shield or duress drove, or the surf did not publish) is not used.
+            // tick the shield drove, or the surf did not publish) is not used.
             // TIME-1, TIME-2: shed at level 2 and up.
             if (GunController.SHADOW_AIM && shadowAim && planTime == in.time() - 1
                     && !moveController.planIntervals().isEmpty()) {
@@ -1611,18 +1541,6 @@ public final class DuelController {
             // A hit was counted when its HitByBullet event arrived.
             if (!outcomes.get(i)) countTheirs(powers.get(i), false);
         }
-    }
-
-    /**
-     * RES-9, SHIELD-6: an enemy bullet hit us while the conductor held the Duel in duress. Only
-     * the shield's budget hears of it: the damage counts against the battle's allowance, as
-     * {@link #hitByBullet} counts it.
-     *
-     * @param in the tick's input
-     * @param e the hit
-     */
-    public void hitInDuress(BotInput in, BotEvent.HitByBullet e) {
-        if (shield != null) shield.onHitByBullet(in.time(), e.power(), e.x(), e.y(), e.heading());
     }
 
     /**

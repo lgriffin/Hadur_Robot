@@ -501,6 +501,15 @@ Every opponent is now classed (`docs/bench/opponents-3.10.tsv`): the room agains
 11th bots is +0.76 APS, all below rank 400, and 35 of the gaps are ones the bench reproduces,
 mostly rammers ([live notes](bench/live-3.10.md), L-45 to L-47).
 
+## 3.11: duress retired
+
+3.10 ran the rest of a round at the duress level after three skipped turns (RES-9, RES-14). The 3.11
+census (`docs/plan-3.11-census.md`) benched the same code with duress never entered: +0.73 APS (+0.59
+to +0.87) on the whole 1,212-bot field. With the CPU constant halved, 3.10 sat in duress in every battle
+and scored 48% share against 85% for the build without it. Skipped turns still shed levels (TIME-2) and
+teach the allowance (TIME-3); the round never drops to the head-on orbit. 3.11 removes the mode and its
+code; its only difference from the benched "3.10nd" build is that the dead code is gone.
+
 ## What comes next
 
 Every EARS requirement up to R2, bar TIER-1 (above), is implemented and traced. R3 to R5

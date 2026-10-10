@@ -85,10 +85,9 @@ import java.util.function.Predicate;
  * <ol>
  * <li>Resolve. Sentry scans are noted, then the resolver picks this tick's role from the
  *     charter, the counts, the vetoes and the latch. If Melee has just stopped driving, the
- *     Duel is reset and full speed ordered before any event is handled (MELEE-2). Whether
- *     the tick runs in duress (RES-9) is settled here.</li>
+ *     Duel is reset and full speed ordered before any event is handled (MELEE-2).</li>
  * <li>Observe. Each event, in the engine's order, is offered to the charter's roles, Melee
- *     before Duel (ROLE-5). In duress a scan only moves the Duel's fix on its opponent.</li>
+ *     before Duel (ROLE-5).</li>
  * <li>Drive. The Duel replays a few seed samples; a melee event fault takes effect; the
  *     conductor gives the fire permission, and the driving role fills the orders (WEAVE-1,
  *     WEAVE-3). A shot without the permission is that role's fault (WEAVE-6).</li>
@@ -150,8 +149,6 @@ public final class HadurCore {
     private boolean handOffPending;
     /** S6: the tick budget (TIME-1, TIME-2), the conductor's; its level goes to the driving role. */
     private final TickBudget budget = new TickBudget();
-    /** RES-14: whether the last tick ran in duress, so the tick that leaves it can start the Duel's view afresh. */
-    private boolean wasInDuress;
     /** WEAVE-3: whether a shot may leave this tick; until A5 always. */
     private Predicate<BotInput> firePermission = in -> true;
     /** The tick being processed, for records written from event handlers. */
@@ -352,7 +349,6 @@ public final class HadurCore {
         budget.newRound();
         gate.newRound();
         lastRole = null;
-        wasInDuress = false;
         meleeTicks = duelTicks = focusTicks = meleeFaults = sentryHits = 0;
         deadThisRound.clear();
         handOffPending = false;
@@ -432,29 +428,17 @@ public final class HadurCore {
         focusing = !melee && in.others() >= 2;
         if (wasFocusing && !focusing) focus.clear();
 
-        // RES-9: three skipped turns in a round put the rest of it in duress, which runs
-        // none of the learning below: no samples, no waves, no tree. Only a duel's known
-        // opponent is fought this way; before its first scan there is nothing to orbit.
-        // RES-14: and only until 300 ticks pass without a skipped turn, counted from the last one.
-        budget.tickBegan(in.time());
-        boolean inDuress = !melee && duel.canFightInDuress() && budget.duress();
-        // RES-14: what the Duel knew before duress is stale once duress ends (the ledger has
-        // missed every drop, the logs every state), so it starts its view of the enemy afresh and drops the waves from before it.
-        if (wasInDuress && !inDuress && !melee) duelSeam.afterDuress();
-        wasInDuress = inDuress;
-        Tick tick = new Tick(in, melee ? RoleId.MELEE : RoleId.DUEL, focusing, focus, gate::isSentry,
-            inDuress);
+        Tick tick = new Tick(in, melee ? RoleId.MELEE : RoleId.DUEL, focusing, focus, gate::isSentry);
 
         // The events in the order the adapter queued them, which is the engine's own. HitWall
         // needs no handling: the ledger infers the enemy's wall hits, and our own wall damage
         // does not change what the enemy's energy says.
         for (BotEvent e : in.events()) {
-            if (inDuress) observeInDuress(e, tick);
-            else observe(e, tick);
+            observe(e, tick);
         }
 
         // ADAPT-3: a few seed samples a tick, so no one tick pays for the whole seed.
-        if (!melee && !inDuress) duel.replaySeeds();
+        if (!melee) duel.replaySeeds();
 
         RuntimeException eventFault = meleeSeam == null ? null : meleeSeam.takeFault();
         if (eventFault != null) {
@@ -592,37 +576,6 @@ public final class HadurCore {
     /** The shot the World inferred from the scan being offered, or null. */
     EnemyShot scanShot() {
         return scanShot;
-    }
-
-    /**
-     * RES-9: in duress a scan only moves the Duel's fix on its opponent, and a bullet's
-     * outcome is only counted in the round's statistics. Deaths and the budget's events are
-     * handled as usual; nothing else reaches a brain or the count of bullets in flight.
-     */
-    private void observeInDuress(BotEvent e, Tick tick) {
-        // A teammate's report is read in duress too: the engine queues messages apart.
-        if (e instanceof BotEvent.Message) linkReceived((BotEvent.Message) e, tick);
-        else if (e instanceof BotEvent.Scan) {
-            BotEvent.Scan scan = (BotEvent.Scan) e;
-            if (scan.sentry() || gate.isSentry(scan.name())) return;
-            duelSeam.observeInDuress(scan, tick);
-        }
-        else if (e instanceof BotEvent.BulletHit) stats.shotsHit++;
-        else if (e instanceof BotEvent.HitByBullet) {
-            stats.hitsTaken++;
-            // SHIELD-6: the damage still counts against the shield's budget.
-            duelSeam.hitInDuress((BotEvent.HitByBullet) e, tick);
-        }
-        else if (e instanceof BotEvent.BulletHitBullet) stats.bulletsIntercepted++;
-        else if (e instanceof BotEvent.SkippedTurn) onSkippedTurn(tick.in(), ((BotEvent.SkippedTurn) e).skippedTime());
-        else if (e instanceof BotEvent.TickTime) onTickTime((BotEvent.TickTime) e);
-        else if (e instanceof BotEvent.RobotDeath) {
-            robotDied(((BotEvent.RobotDeath) e).name());
-            if (meleeSeam != null) {
-                boolean fed = feedWorld(e, tick);
-                meleeSeam.observe(e, tick, fed);
-            }
-        }
     }
 
     /** A message the roles were offered: off a team none arrives, and none is a role's. */

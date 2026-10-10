@@ -81,15 +81,15 @@ class ShieldCoreTest {
         assertTrue(fired, "a settled aim gets its shot");
     }
 
-    // ---- SHIELD-6: hits taken in duress count against the budget
+    // ---- SHIELD-6: hits taken after skipped turns count against the budget
 
     @Test
     @Tag("SHIELD-6")
-    @DisplayName("a bullet that hits us while the duel is in duress still counts against the shield's budget")
-    void duressHitReachesTheBudget() {
+    @DisplayName("a bullet that hits us after three skipped turns still counts against the shield's budget")
+    void hitAfterSkipsReachesTheBudget() {
         start(1);
         tick(0, 100, 400);
-        // Three skipped turns put the rest of the round in duress, from the next tick.
+        // Three skipped turns shed levels for the rest of the round (TIME-2); no duress since 3.11.
         tick(0, 100, 400, new BotEvent.SkippedTurn(1), new BotEvent.SkippedTurn(2),
             new BotEvent.SkippedTurn(3));
         // A one-round battle allows about 10.6; a full-power hit is 16.

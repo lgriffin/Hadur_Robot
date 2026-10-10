@@ -138,7 +138,7 @@ class StrandContractTest {
         // Straight through the role contract, past the conductor's feed: the World's last
         // scan is a's, so b's scan must not be booked as a's.
         MeleeSeam seam = new MeleeSeam(core, melee, null, false, new hadur2.core.model.RoundStats());
-        Tick t = new Tick(input(2, 2, 0, List.of()), RoleId.MELEE, false, new DuelFocus(), n -> false, false);
+        Tick t = new Tick(input(2, 2, 0, List.of()), RoleId.MELEE, false, new DuelFocus(), n -> false);
         seam.observe(scan("b", 2.0, 300, false), t);
         assertFalse(seen.stream().anyMatch(s -> s.startsWith("scan:")), seen.toString());
     }
@@ -243,7 +243,7 @@ class StrandContractTest {
         for (Method m : DuelController.class.getMethods()) {
             if (Arrays.asList(m.getParameterTypes()).contains(BotOrders.Builder.class)) duelWriters.add(m.getName());
         }
-        assertEquals(Set.of("drive", "duressDrive"), duelWriters);
+        assertEquals(Set.of("drive"), duelWriters);
         for (Method m : MeleeController.class.getMethods()) {
             assertFalse(Arrays.asList(m.getParameterTypes()).contains(BotOrders.Builder.class), m.toString());
         }
@@ -301,7 +301,7 @@ class StrandContractTest {
     }
 
     private static Tick tick(boolean mayFire) {
-        Tick t = new Tick(input(1, 1, 0, List.of()), RoleId.DUEL, false, new DuelFocus(), n -> false, false);
+        Tick t = new Tick(input(1, 1, 0, List.of()), RoleId.DUEL, false, new DuelFocus(), n -> false);
         return t.forDrive(RoleId.DUEL, false, 0, mayFire);
     }
 
