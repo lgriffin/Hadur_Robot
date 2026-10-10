@@ -95,8 +95,8 @@ so efficiency against weak bots (damage taken, how fast they die) is where 10th 
 | M2 noise budget | from M1 rows | **Done.** A/A +0.05 (-0.20 to +0.30); M4 threshold 0.25 APS. |
 | M3 deficit ledger | from M1 rows | **Done.** Two clusters pass G3 (ranks 701+ -0.47, 401-700 -0.23). Follow-up: [start-up duress](bench/local/2026-10-09_census-311-duress.md) costs about 0.62 APS on the bench. |
 | M4 screen | PC | **Done** 2026-10-09 ([findings](bench/local/2026-10-09_screen-311-findings.md), PR #167). Duress off (`nd`) +0.72 APS (+0.38 to +1.06); TIME-3 off nothing; the duress cost is all in round 0. |
-| M4 full census, slow-client check, M5 bench gate | PC | **Next.** `hadur-bench/plans/census-312.queue`: `nd` against 3.10 with half the CPU constant, then against 3.10 on the whole field, then Tomcat against `nd`. About 11 hours, an overnight run. |
-| M5 release | Leigh | only if all three steps pass |
+| M4 full census, slow-client check, M5 bench gate | PC | **Done** 2026-10-10 ([findings](bench/local/2026-10-09_census-312-findings.md), PRs #170). G4 met: `nd` +0.73 APS (+0.59 to +0.87) over 3.10 on 1,212 bots. Slow client met: duress costs 37 points there. M5 not met: `nd` ahead of Tomcat by +0.08 (-0.20 to +0.36), short of +0.3; ahead in ranks 1-400 (+0.73), behind from 401 (-0.65, bullets taken). |
+| M5 release | Leigh | 3.11 = duress retired (PR #171), a strict gain over 3.10 that does not by itself clear the Tomcat margin; the release is Leigh's call. Next work: the ranks 401+ gap. |
 
 ### Running census-312 on the PC
 
