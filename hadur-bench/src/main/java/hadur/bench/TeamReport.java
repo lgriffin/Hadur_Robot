@@ -134,7 +134,7 @@ public final class TeamReport {
                             mine[5] += v;
                         }
                     } else if (text.startsWith("R,")) {
-                        // RES-9: field 33 is the round's duress ticks; older logs stop short of it.
+                        // Field 33 is the round's duress ticks; older logs stop short of it.
                         String[] f = text.split(",");
                         if (f.length >= 34) {
                             try {

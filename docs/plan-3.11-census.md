@@ -98,7 +98,7 @@ so efficiency against weak bots (damage taken, how fast they die) is where 10th 
 | M4 full census (`g4`) | PC | **Done** 2026-10-10 ([findings](bench/local/2026-10-09_census-312-findings.md), PR #170). G4 met on the bench: `nd` +0.72 APS (+0.56 to +0.87) on 1,212 bots, no band below -0.05, top 50 +0.18 a pairing, all of the screen's gain kept. |
 | M4 slow-client check (`slow`) | PC | **Done** 2026-10-10 (PR #170). Met: with half the CPU constant 3.10 is in duress in 100% of battles and `nd` gains +36.8 APS; duress costs score there on the bench. |
 | M5 bench gate (`m5`) | PC | **Done** 2026-10-10 (PR #170). **Not met:** `nd` ahead of Tomcat by +0.08 APS (-0.20 to +0.36) against the +0.3 line. Ahead in ranks 1-400 (+0.73), behind from 401 (-0.65); duress off leaves the tail gap. |
-| M5 release | Leigh | **Open.** `nd` is a bench gain of about 0.7 APS but short of M5; the release call and any tail work are Leigh's. Nothing released. |
+| M5 release | Leigh | **Released as 3.11** on Leigh's call (2026-10-10), short of the M5 margin: duress retired (PR #171), a strict bench gain over 3.10. Read live after second battles. Next work: the ranks 401+ gap. |
 
 ### Running census-312 on the PC (done)
 

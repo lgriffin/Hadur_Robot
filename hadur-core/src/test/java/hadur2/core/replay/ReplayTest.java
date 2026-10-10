@@ -34,14 +34,14 @@ import org.junit.jupiter.params.provider.MethodSource;
  * telemetry must match the snapshot it replayed to when it was pinned
  * ({@code replay/telemetry/}), and a fixture recorded with its store must leave exactly the
  * files the live robot left. A0 added a melee, a sentry, a hand-off on a store, a warm duel
- * on a seeded store and a duress fixture to the six S1 duels. A snapshot is re-taken with
+ * on a seeded store and a fixture of a duel with skipped turns (once the duress fixture) to the six S1 duels. A snapshot is re-taken with
  * {@code -Dhadur.replay.snapshot=write}, only by a stage allowed to change play.</p>
  */
 @Tag("CORE-2")
 class ReplayTest {
 
     static final Path TELEMETRY = FixtureReplay.TELEMETRY;
-    /** The R record's duressTicks field (RoundStats#toRecord), counted from the R. */
+    /** The R record's duressTicks field (RoundStats#toRecord), counted from the R; 0 since 3.11. */
     static final int DURESS_TICKS = 33;
 
     static Stream<Path> fixtures() {
@@ -60,7 +60,7 @@ class ReplayTest {
 
     @Test
     @Tag("STRAND-4")
-    @DisplayName("STRAND-4: the duel, melee, sentry, hand-off, warm and duress fixtures are all there")
+    @DisplayName("STRAND-4: the duel, melee, sentry, hand-off, warm and skipped-turns fixtures are all there")
     void everyKindOfBattleHasAFixture() {
         List<String> names = Fixtures.all().stream().map(Fixtures::opponent).toList();
         for (String expected : List.of("melee-samples", "melee-sentry", "melee-handoff",
@@ -68,9 +68,10 @@ class ReplayTest {
             assertTrue(names.contains(expected), "missing replay fixture " + expected);
         }
         FixtureReplay.Result duress = FixtureReplay.run(Fixtures.lines(Fixtures.DIR.resolve("duress-sample.Walls.txt.gz")));
-        assertTrue(duress.telemetry.stream().anyMatch(l -> l.startsWith("R,")
+        assertTrue(FixtureReplay.skipsTurns(duress), "the fixture still holds the engine's skipped turns");
+        assertTrue(duress.telemetry.stream().noneMatch(l -> l.startsWith("R,")
                 && Integer.parseInt(l.split(",")[DURESS_TICKS]) > 0),
-            "the duress fixture must hold a round in duress (RES-9)");
+            "since 3.11 no round replays in duress (RES-9, RES-14 retired)");
         FixtureReplay.Result warm = FixtureReplay.run(Fixtures.lines(Fixtures.DIR.resolve("warm-abc.Shadow_3.83c.txt.gz")));
         assertTrue(warm.telemetry.stream().anyMatch(l -> l.startsWith("B,") && l.split(",")[6].equals("1")),
             "the warm fixture must find its opponent's profile (MEM-1)");

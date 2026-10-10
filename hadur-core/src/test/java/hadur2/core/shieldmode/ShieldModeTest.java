@@ -64,7 +64,6 @@ class ShieldModeTest {
         mode.onHitByBullet(20, 1.9, MY_X, MY_Y, Math.PI);
         mode.onIntercepted(21, 1.0, 400, 300);
         mode.onRammed();
-        mode.onDuress(30);
         mode.onRoundEnded(100);
         assertFalse(mode.active());
         assertEquals(List.of(), records);
@@ -138,16 +137,6 @@ class ShieldModeTest {
         mode.onRammed();
         assertFalse(mode.active());
         assertEquals("SH,0,1,exit,rammed", records.get(records.size() - 1));
-    }
-
-    @Test
-    @Tag("SHIELD-5")
-    @DisplayName("duress ends it for the round")
-    void duressExit() {
-        scan(1);
-        mode.onDuress(10);
-        assertFalse(mode.active());
-        assertEquals("SH,0,10,exit,duress", records.get(records.size() - 1));
     }
 
     @Test

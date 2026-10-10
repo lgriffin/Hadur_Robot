@@ -202,17 +202,12 @@ public class GunController {
     /** TIME-1, TIME-2: the k share every gun view uses, kept for views made later. */
     private double kShare = 1.0;
 
-    /** RES-14: forgets the virtual bullets still in flight, without touching what the views learned. */
-    public void discardPendingVirtualBullets() {
-        virtualBullets.clear();
-    }
-
     /**
      * Starts a round: drops the virtual bullets still in flight (their waves will never
      * break) and the views' neighbour caches. What the views have learned is kept.
      */
     public void initRound() {
-        discardPendingVirtualBullets();
+        virtualBullets.clear();
         for (Map<String, KnnView<TimestampedFiringAngle>> views : enemyViews.values()) {
             for (KnnView<TimestampedFiringAngle> view : views.values()) {
                 view.clearCache();

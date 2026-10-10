@@ -256,15 +256,4 @@ public class ArchitectureTest {
             .should().dependOnClassesThat().resideInAPackage("hadur2.core.policy..")
             .check(core);
     }
-
-    @Test
-    @Tag("RES-14")
-    @DisplayName("RES-14: duress reads no tree, no wave and no memory")
-    void duressLearnsNothing() {
-        noClasses().that().haveFullyQualifiedName("hadur2.core.duel.Duress")
-            .should().dependOnClassesThat().resideInAnyPackage("hadur2.core.gun..", "hadur2.core.move..",
-                "hadur2.core.knn..", "hadur2.core.ledger..", "hadur2.core.memory..", "hadur2.core.adapt..",
-                "hadur2.core.melee..")
-            .check(core);
-    }
 }

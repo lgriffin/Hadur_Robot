@@ -87,7 +87,7 @@ public final class RoundStats {
      * moved out.
      */
     public int flavourStep;
-    /** RES-9: ticks this round that ran at the duress level. */
+    /** Always 0 since 3.11 retired duress (RES-9, RES-14); kept so the R record and the bench columns do not move. */
     public int duressTicks;
     /** 3.5: duel ticks spent running from a charging rammer (RAM-2). */
     public int ramEscapeTicks;

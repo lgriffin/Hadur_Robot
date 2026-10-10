@@ -43,41 +43,28 @@ Feature: Unhittable
     When the next round starts
     Then the computation level is 0
 
-  @RES-14
-  Scenario: Three skipped turns put the rest of the round in duress
+  @TIME-2
+  Scenario: Three skipped turns shed three levels and the round never enters duress
     Given Hadur in a duel, 300 px from the enemy
     When the engine skips a turn
     And the engine skips a turn
     And the engine skips a turn
     And Hadur plays 10 ticks with a cool gun
-    Then 10 ticks of the round ran in duress
-    And every one of them fired at power 1.0 head-on
-    When the next round starts
-    And Hadur plays 1 ticks with a cool gun
+    Then the computation level is 3
+    And 0 ticks of the round ran in duress
+
+  @TIME-2
+  Scenario: Still no duress, and the shed level held, 300 ticks after the last skipped turn
+    Given Hadur in a duel, 300 px from the enemy
+    When the engine skips a turn
+    And the engine skips a turn
+    And the engine skips a turn
+    And Hadur plays 320 ticks with a cool gun
+    Then the computation level is 3
+    And 0 ticks of the round ran in duress
+    When the engine skips a turn
+    And Hadur plays 10 ticks with a cool gun
     Then 0 ticks of the round ran in duress
-
-  @RES-14
-  Scenario: Duress ends after 300 ticks without a skipped turn
-    Given Hadur in a duel, 300 px from the enemy
-    When the engine skips a turn
-    And the engine skips a turn
-    And the engine skips a turn
-    And Hadur plays 298 ticks with a cool gun
-    Then 298 ticks of the round ran in duress
-    When Hadur plays 20 ticks with a cool gun
-    Then 298 ticks of the round ran in duress
-
-  @RES-14
-  Scenario: A skipped turn after duress has ended starts it again
-    Given Hadur in a duel, 300 px from the enemy
-    When the engine skips a turn
-    And the engine skips a turn
-    And the engine skips a turn
-    And Hadur plays 300 ticks with a cool gun
-    Then 298 ticks of the round ran in duress
-    When the engine skips a turn
-    And Hadur plays 10 ticks with a cool gun
-    Then 308 ticks of the round ran in duress
 
   @MOVE-2 @DIAL-1
   Scenario: A gun hitting well above its profile's rate changes the movement's flavour

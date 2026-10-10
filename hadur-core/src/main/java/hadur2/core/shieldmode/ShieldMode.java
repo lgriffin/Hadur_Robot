@@ -41,7 +41,6 @@ import java.util.Locale;
  *         than we shot down;</li>
  *     <li>{@code quiet}: it has fired nothing for {@link #QUIET_TICKS} ticks, so there is
  *         nothing to shield against and the gun is better used by the duel;</li>
- *     <li>{@code duress}: the engine has skipped turns and the duel is in RES-14's duress.</li>
  *     </ul></li>
  * </ul>
  *
@@ -532,16 +531,6 @@ public final class ShieldMode {
     /** The enemy drove into us, or we into it: a rammer is no target for a shield. */
     public void onRammed() {
         if (active()) leaveRound(now, "rammed");
-    }
-
-    /**
-     * The engine has skipped turns and the duel is in duress (RES-14): the predictions'
-     * timing can no longer be trusted, so the round leaves shield mode.
-     *
-     * @param time the tick
-     */
-    public void onDuress(long time) {
-        if (active()) leaveRound(time, "duress");
     }
 
     /**

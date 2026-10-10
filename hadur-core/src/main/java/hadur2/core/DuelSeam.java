@@ -103,34 +103,15 @@ final class DuelSeam implements Role {
         }
     }
 
-    /** RES-9: in duress a scan only moves the Duel's fix on its opponent. */
-    void observeInDuress(BotEvent.Scan e, Tick tick) {
-        if (!e.name().equals(duel.opponent())) return;
-        if (tick.focusing() && !e.name().equals(core.focusTarget(tick.in().location()))) return;
-        duel.duressScan(tick.in(), e);
-    }
-
-    /** RES-9, SHIELD-6: a hit taken in duress still counts against the shield's budget. */
-    void hitInDuress(BotEvent.HitByBullet e, Tick tick) {
-        if (tick.focusing() && !e.name().equals(tick.focus().target())) return;
-        duel.hitInDuress(tick.in(), e);
-    }
-
     @Override
     public void drive(Tick tick, BotOrders.Builder out) {
-        if (tick.duress()) duel.duressDrive(tick.in(), out, tick.mayFire());
-        else duel.drive(tick.in(), out, tick.level(), tick.mayFire());
+        duel.drive(tick.in(), out, tick.level(), tick.mayFire());
     }
 
     /** MELEE-2: the survivor was never tracked as a duel opponent; start fresh. */
     @Override
     public void reset() {
         duel.resetTracking();
-    }
-
-    /** RES-14: duress ended; the Duel drops its pre-duress waves and starts its view afresh. */
-    void afterDuress() {
-        duel.resumeAfterDuress();
     }
 
     /** The Duel is the floor: it never hands over. */

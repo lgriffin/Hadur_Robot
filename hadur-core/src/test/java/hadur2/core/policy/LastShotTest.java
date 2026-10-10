@@ -40,7 +40,7 @@ class LastShotTest {
 
     @Test
     @Tag("END-4")
-    @DisplayName("END-4: shield mode's and duress's shots are held by the same rule, at the power that would leave")
+    @DisplayName("END-4: shield mode's shots are held by the same rule, at the power that would leave")
     void holdsOtherShots() {
         // Shield mode keeps 1 of its energy: 1.3 energy fires 0.3; the enemy (0.1 left, fired 0.15 at least) is 1.2 behind.
         assertFalse(PowerPolicy.holdsShotAt(1.3, 3.0, 1, 0.1, 0.15), "0.3 off 1.3 leaves 0.9 above");
