@@ -2,13 +2,13 @@
 
 Pages saved by Leigh at 02:23 UTC: Hadur 3.11's BotDetails page and the 1v1 rankings, archived
 in `data/rumble/pages/2026-10-11T0223Z_*` and parsed to `data/rumble/parsed/2026-10-11T0223Z_*`.
-All 1,216 pairings are in, 4,224 battles (3.5 a pairing; only 51 pairings still have one battle).
+All 1,216 pairings are in, 4,306 battles (3.5 a pairing; only 51 pairings still have one battle).
 The first battle was at 14:59 UTC on 2026-10-10. Leigh's chart of the late slide:
 https://claude.ai/artifact/XYCmFu9uZp5gFvxt6Sh1i2.
 
 | Release | APS | Rank | Battles |
 |---|---|---|---|
-| 3.11 | **87.56** | **13th** | 4,224 |
+| 3.11 | **87.56** | **13th** | 4,306 |
 | 3.10, second pass | 87.33 | 13th | |
 | 3.9 | 87.15 | 13th | 1,885 |
 
@@ -36,8 +36,8 @@ Two things move a reading before the pass settles:
   ±0.15 (one standard error, finite population). 7th or 8th at about 1,000 pairings needs
   87.75, which is 0.19 above the final figure: about one standard error.
 - **Thin pairings filling in.** Leigh's chart shows the last stretch from 87.70 (10th, 2,764
-  battles, 1,207 pairings) to 87.56 at 4,306 battles (its last point, a ratings-file reading
-  after this page's 4,224). The nine late pairings cost 0.02. The rest
+  battles, 1,207 pairings) to 87.56 at 4,306 battles (its last point, the same reading as
+  this page). The nine late pairings cost 0.02. The rest
   came from second and third battles on pairings that had one or two: Mimic, MatchupMini and
   Wintermute each dropped 9 to 26 points.
 

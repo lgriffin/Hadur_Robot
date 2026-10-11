@@ -4,35 +4,42 @@
 a 1v1 duelist that remembers each opponent across battles, with a melee brain for
 free-for-alls, a five-robot team entry, and a core that has no idea it is inside Robocode.
 
-**Hadur 3.10 is ranked 20th of 1,216 in the RoboRumble 1v1** after its first pass (3.9 reached
-13th; [why 3.10 reads lower](docs/bench/live-3.10.md)), 19th in the MeleeRumble and 12th in the
-TeamRumble, the highest-ranked robot flying the Irish flag. It was designed, written, tested and tuned by Claude agents working
+**Hadur 3.11 is ranked 13th of 1,216 in the RoboRumble 1v1** (87.56 APS, its best score),
+17th in the MeleeRumble and 12th in the TeamRumble, the highest-ranked robot flying the Irish flag. It was designed, written, tested and tuned by Claude agents working
 in a shared project with one human, Leigh Griffin, who set the goals and ran the live
 entries. This page covers what the robot does, how it is built, and how it was built.
 
 ## Standing
 
-**3.9 was released on 2026-10-07** and its first full 1v1 pass, saved 2026-10-07 20:28 UTC
-with every pairing filled, puts `hadur2.Hadur 3.9` 13th, Hadur's best score:
+**3.11 was released on 2026-10-10** and its first full 1v1 pass, saved 2026-10-11 02:23 UTC
+with every pairing filled, puts `hadur2.Hadur 3.11` 13th with Hadur's best score yet:
 
 | Rank | APS | PWIN | ANPP | Survival | Pairings | Battles |
 |---|---|---|---|---|---|---|
-| **13th of 1,216** | **87.15** ± 0.19 | 99.34 | 90.31 | 95.04% | 1,215 | 1,885 |
+| **13th of 1,216** | **87.56** ± 0.13 | 99.42 | 90.82 | 95.05% | 1,216 | 4,306 |
 
-- **19th in the MeleeRumble** (65.07 APS) and **12th in the TeamRumble** (`hadur2.HadurTeam
-  3.9`, 63.97 APS). 3.9 did not change melee or team play.
-- **The rammer trial paid off.** 3.8 had fallen to 29th and 3.8.5 to 24th. An overnight
-  bisect traced the loss to 3.5's rammer escape (RAM-2), which also ran from ordinary
-  close-range fighters and got Hadur hit two to seven times as often. 3.9 (RAM-3) keeps the
-  escape only where the battle's own rounds show it pays. It gained 2.36 APS over 3.8.5, evenly
-  across every band from rank 51 down ([live notes](docs/bench/live-3.9.md)).
-- **10th is 0.56 APS away.** Tomcat 3.68 is 10th at 87.71, and ranks 8 to 12 sit within 0.11
-  of each other. Compared opponent by opponent, Tomcat, Knight and Raven score below Hadur
-  against the top 150 and about a point a pairing above it against the bots ranked 401st and
-  below, which is the whole gap ([the bots above us](docs/bench/live-3.9.md#the-bots-above-us)).
+- **17th in the MeleeRumble** (65.65 APS, up from 19th and 65.07 for 3.9) and **12th in the
+  TeamRumble** (`hadur2.HadurTeam 3.11`, 64.61 APS, up from 63.97), read 2026-10-11 07:16 UTC.
+- **3.11 retired start-up duress (RES-9).** The bench showed the round-0 warm-up skipping
+  turns put Hadur into duress in up to 60% of battles; without it 3.11 gained 0.73 APS on the
+  bench and 0.25 live over 3.10's second pass (87.33, 13th), mostly in ranks 201 to 400 and 701+
+  ([census plan](docs/plan-3.11-census.md), [live notes](docs/bench/live-3.11.md)).
+- **10th is 0.12 APS away.** Knight 0.6.28 is 10th at 87.68, and ranks 8 to 13 sit within
+  0.16 APS, inside the noise floor of a reading (about ±0.14). Against Tomcat, Knight and
+  Raven, Hadur is ahead in ranks 51 to 200 and about a point a pairing behind against the
+  817 bots ranked 401st and below, where it is hit more by simple guns.
+- **Next: 3.12** ([plan](docs/plan-3.12.md)): a fix for battles where the gun falls silent
+  against mirror bots once a false bullet-shield verdict latches, and a test of never closing
+  in, one rule for the whole field.
 
-The pages are archived in [`data/rumble/`](data/rumble/). The road to the top 10 is
-[issue #135](https://github.com/lgriffin/Hadur_Robot/issues/135) and the plan in the live notes.
+The pages are archived in [`data/rumble/`](data/rumble/).
+
+### 3.9 at 13th
+
+`hadur2.Hadur 3.9`'s first full pass, saved 2026-10-07 20:28 UTC: 13th, 87.15 ± 0.19, PWIN
+99.34, survival 95.04%, 1,885 battles; 19th in melee and 12th in team. RAM-3 kept the rammer
+escape only where the battle's own rounds show it pays, and gained 2.36 APS over 3.8.5
+([live notes](docs/bench/live-3.9.md)).
 
 ### 3.4 at 20th
 
@@ -67,8 +74,9 @@ by BENCH-5. The saved page is archived in [`data/rumble/`](data/rumble/).
 | 3.7 | 2026-10-05 | 85.67 | | 21st (18th melee, 32nd team) | A0-A5, the architecture evolution, and the first team entry |
 | 3.8 | 2026-10-06 | 84.58 | 91.8% | 29th (16th melee, 12th team) | D1-D5, the DrussGT route, and T1, teammates that no longer collide |
 | 3.8.5 | 2026-10-06 | 84.79 | 92.0% | 24th | MATCH-1/2: the DrussGT aim and shield latch only in duels Hadur is not already winning |
-| 3.9 | 2026-10-07 | **87.15** | **95.0%** | **13th (19th melee, 12th team)** | RAM-3, the rammer trial: escape a rammer only where its rounds show it pays |
-| 3.10 | 2026-10-08 | 86.42 | 93.9% | 20th | The shield sweep: 83 more robots on the shield list (+0.51 APS live); the pass ran 1.25 APS under 3.9's on unchanged code ([live notes](docs/bench/live-3.10.md)) |
+| 3.9 | 2026-10-07 | 87.15 | 95.0% | 13th (19th melee, 12th team) | RAM-3, the rammer trial: escape a rammer only where its rounds show it pays |
+| 3.10 | 2026-10-08 | 86.42 | 93.9% | 20th, 13th on its second pass (87.33) | The shield sweep: 83 more robots on the shield list (+0.51 APS live); the pass ran 1.25 APS under 3.9's on unchanged code ([live notes](docs/bench/live-3.10.md)) |
+| 3.11 | 2026-10-10 | **87.56** | **95.1%** | **13th (17th melee, 12th team)** | Census-led: start-up duress (RES-9) retired, +0.25 APS live over 3.10 ([live notes](docs/bench/live-3.11.md)) |
 
 3.0 and 3.1 both started near 85.7 APS and slid by 5 to 8 points within hours on live
 clients, which the bench could not reproduce. R7's one-JVM session bench and R8 traced it to

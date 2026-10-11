@@ -13,3 +13,6 @@ __pycache__/
 # Tutors course build output
 course/json/
 course/html/
+
+# live_client.py watch: raw page snapshots stay on the PC (about 400 KB each)
+data/live/**/pages/
