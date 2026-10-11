@@ -15,8 +15,9 @@
 #
 # Step 3 (S2): the best step-1 build with every opponent shielded (shield-all), on the 198
 # robots Nullstride shields that Hadur does not (shield-ns-sweep.txt, from PR #190's list), 8 seeds against 3.12; a robot joins the
-# list by the D5 rule (interval above 0, or open with a mean gain of 9 or more). snull is the
-# default here; change S2B to the step-1 winner before running if another build wins.
+# list by the D5 rule (interval above 0, or open with a mean gain of 9 or more). S2B is the cloud
+# screen's step-1 winner, shslsmss (+5.9 pp on the 89, docs/bench/local/2026-10-11_plan90-s1-cloud.md);
+# change it if the PC's step 1 picks another.
 #
 # Step 5: Diamond 1.8.22 and ScalarR no-shield as census subjects on the census-311 seeds
 # (201-204), so they pair with the Hadur, Tomcat and Nullstride census rows. About 1.2 hours each.
@@ -26,8 +27,8 @@ set E = --engine 1.11.1
 set COMMON = --skip-build --skip-fetch --rounds 35 --parallel 12 --cpu-constant 1488498 ${HEAP} ${E}
 set S1 = --seeds 8 --seed-base 900 --set shield-null-both.txt
 set B312 = --baseline bisect/hadur2.Hadur_3.12.jar --baseline-robot "hadur2.Hadur 3.12"
-set S2B = snull,shield-all
-set S2 = --robot-jar bisect/hadur2.Hadur_3.12snsa.jar --robot "hadur2.Hadur 3.12snsa"
+set S2B = shold,slearn,smode,sstay,shield-all
+set S2 = --robot-jar bisect/hadur2.Hadur_3.12shslsmsssa.jar --robot "hadur2.Hadur 3.12shslsmsssa"
 
 prep | mkdir -p bisect && { [ -s bisect/hadur2.Hadur_3.12.jar ] || curl -fsSL -o bisect/hadur2.Hadur_3.12.jar https://github.com/lgriffin/Hadur_Robot/releases/download/v3.12/hadur2.Hadur_3.12.jar; } && bash ./build-ablation.sh shold && bash ./build-ablation.sh shold,slearn,smode && bash ./build-ablation.sh shold,slearn,smode,sstay && bash ./build-ablation.sh snull && bash ./build-ablation.sh ${S2B} && ./fetch-opponents.sh --set shield-null-both.txt && ./fetch-opponents.sh --set shield-ns-sweep.txt && ./fetch-opponents.sh --set census-311.txt
 
