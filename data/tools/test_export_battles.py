@@ -156,6 +156,48 @@ class ScoreSplitColumnsTest(unittest.TestCase):
                          ("", "", ""))
 
 
+class WarmTest(unittest.TestCase):
+    """A --cold-warm run's second battles (<dir>-warm, BENCH-54) export only with --warm."""
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.tmp.cleanup)
+        self.work = build_work(os.path.join(self.tmp.name, "work"))
+        battles = os.path.join(self.work, "battles")
+        _write(os.path.join(battles, "abc.Alpha_1.0-1-warm", "result.csv"),
+               HEADER + "\n" + "true,35,90,70,9,6,\n")
+        _write(os.path.join(battles, "abc.Alpha_1.0-1-baseline-warm", "result.csv"),
+               HEADER + "\n" + "true,35,60,90,6,9,\n")
+        _write(os.path.join(battles, "abc.Alpha_1.0-1-warm", "rounds.tsv"),
+               _rounds_text("x\tabc.Alpha 1.0\t1\t0\t1\t1\t900\t100\t20\t0.2\t0\t0"))
+        self.set_file = os.path.join(self.tmp.name, "set.txt")
+        _write(self.set_file, SET_FILE)
+
+    def test_regex_reads_warm_suffix_after_seed_and_baseline(self):
+        m = eb.DIR_RE.match("abc.Alpha_1.0-1-baseline-warm")
+        self.assertEqual((m.group("slug"), m.group("seed"), m.group("baseline"), m.group("warm")),
+                         ("abc.Alpha_1.0", "1", "-baseline", "-warm"))
+
+    def test_cold_export_leaves_warm_battles_out(self):
+        _, rows, candidates, baselines, unmatched = eb.collect(self.work, self.set_file, "3.8", "3.7", False)
+        self.assertEqual((candidates, baselines), (3, 1))
+        self.assertEqual(unmatched, ["unknown.Bot_9.0-1"])
+        self.assertEqual({r["score"] for r in rows if r["seed"] == "1" and r["opponent"] == "abc.Alpha 1.0"},
+                         {"100", "80"})
+
+    def test_warm_export_takes_only_warm_battles_under_the_same_labels(self):
+        _, rows, candidates, baselines, _ = eb.collect(self.work, self.set_file, "3.8", "3.7", False, warm=True)
+        self.assertEqual((candidates, baselines), (1, 1))
+        self.assertEqual([(r["build"], r["opponent"], r["seed"], r["score"]) for r in rows],
+                         [("3.8", "abc.Alpha 1.0", "1", "90"), ("3.7", "abc.Alpha 1.0", "1", "60")])
+
+    def test_warm_rounds_follow_the_flag(self):
+        _, cold = eb.collect_rounds(self.work, self.set_file, "3.8", "3.7")
+        _, warm = eb.collect_rounds(self.work, self.set_file, "3.8", "3.7", warm=True)
+        self.assertEqual(cold, [])
+        self.assertEqual([(r["build"], r["seed"], r["ticks"]) for r in warm], [("3.8", "1", "900")])
+
+
 class WriteTsvTest(unittest.TestCase):
 
     def test_writes_tab_separated_rows_with_lf_endings(self):

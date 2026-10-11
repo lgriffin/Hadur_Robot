@@ -179,5 +179,5 @@ the same profile files (format 3, one data folder per robot class), so a stricte
 | `wmfs5ns` | 3.11mfs5ns | `mfire`, `s50` and `nostore`: the 3.12 candidate | screen, 2 seeds, cold then warm |
 
 `hadur-bench/plans/p312d.queue`, after p312c, about 2.3 h. The warm battles are what a live
-client plays (BENCH-54). Gates as P1, read on the warm rows; `wns`'s cold rows should be level,
+client plays (BENCH-54). Gates as P1, read on the warm rows (`export_battles.py --warm`, then `screen_paired.py`); `wns`'s cold rows should be level,
 since nothing is stored before the cold battle.

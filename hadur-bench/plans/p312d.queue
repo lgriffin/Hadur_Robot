@@ -11,9 +11,11 @@
 #   mfs5ns  the 3.12 candidate: p312b's mirror fix and stricter detector (mfire, s50), and the
 #           stored verdict ignored, so 3.11's stored verdicts do not carry into 3.12
 #   ./queue.sh run p312d        (or  .\queue.ps1 run p312d)
-# Run after p312c, RoboRumble workers stopped. About 70 min a step. Read the warm rows with
-# data/tools/screen_paired.py: pass is the warm gain at least +0.15 APS with its interval above
-# 0 and no band below -0.05; the cold rows of ns should be level (nothing is stored yet).
+# Run after p312c, RoboRumble workers stopped. About 70 min a step. Read the warm rows by
+# exporting them with data/tools/export_battles.py --warm (same --build labels, --rounds-out too)
+# and pairing with data/tools/screen_paired.py; the export without --warm gives the cold rows.
+# Pass is the warm gain at least +0.15 APS with its interval above 0 and no band below -0.05;
+# the cold rows of ns should be level (nothing is stored yet).
 
 set HEAP = --child-heap 2G
 set E = --engine 1.11.1
