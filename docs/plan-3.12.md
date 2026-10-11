@@ -97,3 +97,7 @@ Not retested: the flattener (off lost 1.06 on the top 20, PR #161), duress (gone
    on `prep`. About 3.6 hours.
 3. Commit each step's rows TSV, report and rounds file for `vol` (not the per-opponent folders)
    and post the branch in the thread.
+
+## Status
+
+P1 and P2 ran 2026-10-11 (`docs/bench/local/2026-10-11_p312-findings.md`). No candidate meets the P1 gate: `ne` +0.11 APS (-0.25 to +0.46), `f5` -0.13, `nef5` -0.03; `nm` on the volatile bots -2.0 points of score share (-4.7 to +0.7). Nothing goes to P3 on this evidence; nothing is released.
