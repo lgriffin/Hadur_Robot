@@ -1,0 +1,972 @@
+From: <Saved by Blink>
+Snapshot-Content-Location: https://rumble.robowiki.net/BotDetails?game=roborumble&name=hadur2.Hadur%203.5.1&limit=50
+Subject: LiteRumble - Hadur in roborumble
+Date: Sat, 03 Oct 2026 23:30:36 GMT
+MIME-Version: 1.0
+Content-Type: multipart/related;
+	type="text/html";
+	boundary="----MultipartBoundary--78qfrsupO2SUIAZf5ZLXCs1ZgYZ0jG2FNxqZ0LS7x0----"
+
+
+------MultipartBoundary--78qfrsupO2SUIAZf5ZLXCs1ZgYZ0jG2FNxqZ0LS7x0----
+Content-Type: text/html
+Content-ID: <frame-1A459094B8224325360D523021266B2B@mhtml.blink>
+Content-Transfer-Encoding: binary
+Content-Location: https://rumble.robowiki.net/BotDetails?game=roborumble&name=hadur2.Hadur%203.5.1&limit=50
+
+<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><title>LiteRumble - Hadur in roborumble</title><link rel="stylesheet" type="text/css" media="all" href="https://rumble.robowiki.net/style.css"></head><body><h3>Bot details of <b>hadur2.Hadur 3.5.1</b> in <a href="https://rumble.robowiki.net/Rankings?game=roborumble">roborumble</a> vs. 259 bots.</h3><table>
+<tbody><tr>
+<th>Name</th>
+<td>
+<a href="https://robowiki.net/wiki/Hadur">hadur2.Hadur 3.5.1</a></td>
+<th>APS</th><th>Survival</th><th>KNNPBI</th></tr><tr>
+<th>Flag</th>
+<td>
+<img id="flag" src="https://rumble.robowiki.net/flags/IRL.gif">  Republic of Ireland</td><td rowspan="11"><canvas id="distAPS" width="231" height="231" style="border: black 1px solid;"></canvas></td><td rowspan="11"><canvas id="distSurvival" width="231" height="231" style="border: black 1px solid;"></canvas></td><td rowspan="11"><canvas id="distKNNPBI" width="231" height="231" style="border: black 1px solid;"></canvas></td></tr><tr>
+<th>APS</th>
+<td>
+85.54</td></tr><tr>
+<th>APS CI</th>
+<td>
+Â±0.49</td></tr><tr>
+<th>PWIN</th>
+<td>
+98.84</td></tr><tr>
+<th>ANPP</th>
+<td>
+89.21</td></tr><tr>
+<th>Vote</th>
+<td>
+3.61</td></tr><tr>
+<th>Survival</th>
+<td>
+93.83</td></tr><tr>
+<th>Pairings</th>
+<td>
+259</td></tr><tr>
+<th>Battles</th>
+<td>
+259</td></tr><tr>
+<th>Latest Battle</th>
+<td>
+2026-10-03 22:03:06 UTC</td></tr><tr>
+<td colspan="2"><form name="input" action="https://rumble.robowiki.net/BotCompare" method="get"><input type="text" name="botb" value="hadur2.Hadur 3.5.1"><input type="submit" value="Compare"></form></td></tr></tbody></table>
+<table>
+<tbody><tr>
+
+<th><a href="https://rumble.robowiki.net/BotDetails?game=roborumble&amp;name=hadur2.Hadur%203.5.1&amp;order=-%20%20">  </a></th>
+<th><a href="https://rumble.robowiki.net/BotDetails?game=roborumble&amp;name=hadur2.Hadur%203.5.1&amp;order=-Flag">Flag</a></th>
+<th class="sortedby"><a href="https://rumble.robowiki.net/BotDetails?game=roborumble&amp;name=hadur2.Hadur%203.5.1&amp;order=Name">Name</a></th>
+<th><a href="https://rumble.robowiki.net/BotDetails?game=roborumble&amp;name=hadur2.Hadur%203.5.1&amp;order=-"></a></th>
+<th><a href="https://rumble.robowiki.net/BotDetails?game=roborumble&amp;name=hadur2.Hadur%203.5.1&amp;order=-APS">APS</a></th>
+<th><a href="https://rumble.robowiki.net/BotDetails?game=roborumble&amp;name=hadur2.Hadur%203.5.1&amp;order=-APS%20CI">APS CI</a></th>
+<th><a href="https://rumble.robowiki.net/BotDetails?game=roborumble&amp;name=hadur2.Hadur%203.5.1&amp;order=-NPP">NPP</a></th>
+<th><a href="https://rumble.robowiki.net/BotDetails?game=roborumble&amp;name=hadur2.Hadur%203.5.1&amp;order=-Survival">Survival</a></th>
+<th><a href="https://rumble.robowiki.net/BotDetails?game=roborumble&amp;name=hadur2.Hadur%203.5.1&amp;order=-KNNPBI">KNNPBI</a></th>
+<th><a href="https://rumble.robowiki.net/BotDetails?game=roborumble&amp;name=hadur2.Hadur%203.5.1&amp;order=-Battles">Battles</a></th>
+<th><a href="https://rumble.robowiki.net/BotDetails?game=roborumble&amp;name=hadur2.Hadur%203.5.1&amp;order=-Latest%20Battle">Latest Battle</a></th>
+<th><a href="https://rumble.robowiki.net/BotDetails?game=roborumble&amp;name=hadur2.Hadur%203.5.1&amp;order=-Opponent%20APS">Opponent APS</a></th>
+<th><a href="https://rumble.robowiki.net/BotDetails?game=roborumble&amp;name=hadur2.Hadur%203.5.1&amp;order=-Opponent%20Survival">Opponent Survival</a></th>
+</tr>
+<tr>
+<td>1</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/USA.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=roborumble&amp;name=DM.Mijit%20.3">DM.Mijit .3 </a></td>
+<td><a rel="nofollow" href="https://rumble.robowiki.net/BotCompare?game=roborumble&amp;bota=hadur2.Hadur%203.5.1&amp;botb=DM.Mijit%20.3">compare</a></td>
+<td class="green">92.41</td>
+<td>Â±7.84</td>
+<td class="green">97.56</td>
+<td class="green">100.00</td>
+<td class="green">3.63</td>
+<td>1</td>
+<td>2026-10-03 19:42:07</td>
+<td>56.83</td>
+<td>54.24</td>
+</tr>
+<tr>
+<td>2</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/USA.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=roborumble&amp;name=EH.Pegasus%200.113">EH.Pegasus 0.113 </a></td>
+<td><a rel="nofollow" href="https://rumble.robowiki.net/BotCompare?game=roborumble&amp;bota=hadur2.Hadur%203.5.1&amp;botb=EH.Pegasus%200.113">compare</a></td>
+<td class="green">91.25</td>
+<td>Â±7.84</td>
+<td class="green">91.90</td>
+<td class="green">100.00</td>
+<td class="red">-3.90</td>
+<td>1</td>
+<td>2026-10-03 19:19:45</td>
+<td class="red">39.10</td>
+<td class="red">33.54</td>
+</tr>
+<tr>
+<td>3</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/USA.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=roborumble&amp;name=EH.nano.NightBird%20M">EH.nano.NightBird M </a></td>
+<td><a rel="nofollow" href="https://rumble.robowiki.net/BotCompare?game=roborumble&amp;bota=hadur2.Hadur%203.5.1&amp;botb=EH.nano.NightBird%20M">compare</a></td>
+<td class="green">93.59</td>
+<td>Â±7.84</td>
+<td class="green">93.89</td>
+<td class="green">100.00</td>
+<td class="red">-3.81</td>
+<td>1</td>
+<td>2026-10-03 19:44:02</td>
+<td class="red">38.05</td>
+<td class="red">31.97</td>
+</tr>
+<tr>
+<td>4</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/NONE.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=roborumble&amp;name=GarmBox.Oranges%201.0.1">GarmBox.Oranges 1.0.1 </a></td>
+<td><a rel="nofollow" href="https://rumble.robowiki.net/BotCompare?game=roborumble&amp;bota=hadur2.Hadur%203.5.1&amp;botb=GarmBox.Oranges%201.0.1">compare</a></td>
+<td class="green">74.14</td>
+<td>Â±7.84</td>
+<td class="green">75.01</td>
+<td class="green">82.86</td>
+<td class="red">-17.50</td>
+<td>1</td>
+<td>2026-10-03 21:25:11</td>
+<td>44.36</td>
+<td class="red">37.22</td>
+</tr>
+<tr>
+<td>5</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/NONE.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=roborumble&amp;name=Heal.TekitokaBot%201.0">Heal.TekitokaBot 1.0 </a></td>
+<td><a rel="nofollow" href="https://rumble.robowiki.net/BotCompare?game=roborumble&amp;bota=hadur2.Hadur%203.5.1&amp;botb=Heal.TekitokaBot%201.0">compare</a></td>
+<td class="green">97.19</td>
+<td>Â±7.84</td>
+<td class="green">97.70</td>
+<td class="green">100.00</td>
+<td class="red">-0.81</td>
+<td>1</td>
+<td>2026-10-03 21:50:58</td>
+<td class="red">26.44</td>
+<td class="red">15.90</td>
+</tr>
+<tr>
+<td>6</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/NLD.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=roborumble&amp;name=KiraNL.ChupaLite%200.4">KiraNL.ChupaLite 0.4 </a></td>
+<td><a rel="nofollow" href="https://rumble.robowiki.net/BotCompare?game=roborumble&amp;bota=hadur2.Hadur%203.5.1&amp;botb=KiraNL.ChupaLite%200.4">compare</a></td>
+<td class="green">76.80</td>
+<td>Â±7.84</td>
+<td class="green">77.18</td>
+<td class="green">91.43</td>
+<td class="red">-2.54</td>
+<td>1</td>
+<td>2026-10-03 20:54:09</td>
+<td class="green">60.18</td>
+<td class="green">62.41</td>
+</tr>
+<tr>
+<td>7</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/NLD.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=roborumble&amp;name=KiraNL.Chupacabra%200.5">KiraNL.Chupacabra 0.5 </a></td>
+<td><a rel="nofollow" href="https://rumble.robowiki.net/BotCompare?game=roborumble&amp;bota=hadur2.Hadur%203.5.1&amp;botb=KiraNL.Chupacabra%200.5">compare</a></td>
+<td class="green">76.15</td>
+<td>Â±7.84</td>
+<td class="green">76.18</td>
+<td class="green">91.43</td>
+<td>-0.09</td>
+<td>1</td>
+<td>2026-10-03 19:09:45</td>
+<td class="green">64.41</td>
+<td class="green">67.83</td>
+</tr>
+<tr>
+<td>8</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/NONE.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=roborumble&amp;name=Legend.BoulderZY%201.4.9">Legend.BoulderZY 1.4.9 </a></td>
+<td><a rel="nofollow" href="https://rumble.robowiki.net/BotCompare?game=roborumble&amp;bota=hadur2.Hadur%203.5.1&amp;botb=Legend.BoulderZY%201.4.9">compare</a></td>
+<td class="green">98.44</td>
+<td>Â±7.84</td>
+<td class="green">98.95</td>
+<td class="green">100.00</td>
+<td class="green">2.33</td>
+<td>1</td>
+<td>2026-10-03 19:11:00</td>
+<td>44.76</td>
+<td>44.69</td>
+</tr>
+<tr>
+<td>9</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/NONE.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=roborumble&amp;name=Legend.Qetro%201.6">Legend.Qetro 1.6 </a></td>
+<td><a rel="nofollow" href="https://rumble.robowiki.net/BotCompare?game=roborumble&amp;bota=hadur2.Hadur%203.5.1&amp;botb=Legend.Qetro%201.6">compare</a></td>
+<td class="green">98.71</td>
+<td>Â±7.84</td>
+<td class="green">98.84</td>
+<td class="green">100.00</td>
+<td class="green">0.31</td>
+<td>1</td>
+<td>2026-10-03 21:47:42</td>
+<td>42.43</td>
+<td class="red">35.71</td>
+</tr>
+<tr>
+<td>10</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/NONE.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=roborumble&amp;name=Lo_Ian.Gandalf_V4%204.0">Lo_Ian.Gandalf_V4 4.0 </a></td>
+<td><a rel="nofollow" href="https://rumble.robowiki.net/BotCompare?game=roborumble&amp;bota=hadur2.Hadur%203.5.1&amp;botb=Lo_Ian.Gandalf_V4%204.0">compare</a></td>
+<td class="green">96.39</td>
+<td>Â±7.84</td>
+<td class="green">96.53</td>
+<td class="green">100.00</td>
+<td class="red">-2.01</td>
+<td>1</td>
+<td>2026-10-03 20:05:23</td>
+<td class="red">38.93</td>
+<td class="red">35.45</td>
+</tr>
+<tr>
+<td>11</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/ARG.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=roborumble&amp;name=Polkwane.Piyane%200.7b">Polkwane.Piyane 0.7b </a></td>
+<td><a rel="nofollow" href="https://rumble.robowiki.net/BotCompare?game=roborumble&amp;bota=hadur2.Hadur%203.5.1&amp;botb=Polkwane.Piyane%200.7b">compare</a></td>
+<td class="green">94.39</td>
+<td>Â±7.84</td>
+<td class="green">94.61</td>
+<td class="green">100.00</td>
+<td class="green">0.25</td>
+<td>1</td>
+<td>2026-10-03 21:59:04</td>
+<td>58.49</td>
+<td>55.61</td>
+</tr>
+<tr>
+<td>12</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/NONE.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=roborumble&amp;name=SK.SimpleKiller%201.0">SK.SimpleKiller 1.0 </a></td>
+<td><a rel="nofollow" href="https://rumble.robowiki.net/BotCompare?game=roborumble&amp;bota=hadur2.Hadur%203.5.1&amp;botb=SK.SimpleKiller%201.0">compare</a></td>
+<td class="green">96.76</td>
+<td>Â±7.84</td>
+<td class="green">98.23</td>
+<td class="green">100.00</td>
+<td class="red">-0.38</td>
+<td>1</td>
+<td>2026-10-03 19:12:35</td>
+<td class="red">18.16</td>
+<td class="red">10.66</td>
+</tr>
+<tr>
+<td>13</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/NONE.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=roborumble&amp;name=TCMI.Enyo%200.4">TCMI.Enyo 0.4 </a></td>
+<td><a rel="nofollow" href="https://rumble.robowiki.net/BotCompare?game=roborumble&amp;bota=hadur2.Hadur%203.5.1&amp;botb=TCMI.Enyo%200.4">compare</a></td>
+<td class="green">92.61</td>
+<td>Â±7.84</td>
+<td class="green">92.61</td>
+<td class="green">100.00</td>
+<td class="red">-4.01</td>
+<td>1</td>
+<td>2026-10-03 20:22:03</td>
+<td class="green">66.68</td>
+<td class="green">70.54</td>
+</tr>
+<tr>
+<td>14</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/NONE.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=roborumble&amp;name=WarfaJibril.Jibril_Warfa_Andromeda%201.11">WarfaJibril.Jibril_Warfa_Andromeda 1.11 </a></td>
+<td><a rel="nofollow" href="https://rumble.robowiki.net/BotCompare?game=roborumble&amp;bota=hadur2.Hadur%203.5.1&amp;botb=WarfaJibril.Jibril_Warfa_Andromeda%201.11">compare</a></td>
+<td class="green">79.56</td>
+<td>Â±7.84</td>
+<td class="green">79.56</td>
+<td class="green">88.57</td>
+<td class="red">-9.76</td>
+<td>1</td>
+<td>2026-10-03 21:26:46</td>
+<td>42.82</td>
+<td class="red">35.96</td>
+</tr>
+<tr>
+<td>15</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/CAN.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=roborumble&amp;name=ags.Glacier%200.3.2">ags.Glacier 0.3.2 </a></td>
+<td><a rel="nofollow" href="https://rumble.robowiki.net/BotCompare?game=roborumble&amp;bota=hadur2.Hadur%203.5.1&amp;botb=ags.Glacier%200.3.2">compare</a></td>
+<td class="green">62.23</td>
+<td>Â±7.84</td>
+<td class="green">81.59</td>
+<td class="green">74.29</td>
+<td class="green">0.24</td>
+<td>1</td>
+<td>2026-10-03 22:01:45</td>
+<td class="green">78.93</td>
+<td class="green">84.58</td>
+</tr>
+<tr>
+<td>16</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/CAN.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=roborumble&amp;name=ags.Midboss%201q.fast">ags.Midboss 1q.fast </a></td>
+<td><a rel="nofollow" href="https://rumble.robowiki.net/BotCompare?game=roborumble&amp;bota=hadur2.Hadur%203.5.1&amp;botb=ags.Midboss%201q.fast">compare</a></td>
+<td class="green">75.19</td>
+<td>Â±7.84</td>
+<td class="green">88.17</td>
+<td class="green">91.43</td>
+<td class="green">14.54</td>
+<td>1</td>
+<td>2026-10-03 20:38:02</td>
+<td class="green">83.82</td>
+<td class="green">89.97</td>
+</tr>
+<tr>
+<td>17</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/CAN.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=roborumble&amp;name=ags.micro.Carpet%201.1">ags.micro.Carpet 1.1 </a></td>
+<td><a rel="nofollow" href="https://rumble.robowiki.net/BotCompare?game=roborumble&amp;bota=hadur2.Hadur%203.5.1&amp;botb=ags.micro.Carpet%201.1">compare</a></td>
+<td class="green">80.95</td>
+<td>Â±7.84</td>
+<td class="green">81.14</td>
+<td class="green">97.14</td>
+<td class="red">-3.45</td>
+<td>1</td>
+<td>2026-10-03 19:39:02</td>
+<td class="green">63.12</td>
+<td class="green">62.86</td>
+</tr>
+<tr>
+<td>18</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/NONE.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=roborumble&amp;name=alk.lap.LoudAndProud%202.23">alk.lap.LoudAndProud 2.23 </a></td>
+<td><a rel="nofollow" href="https://rumble.robowiki.net/BotCompare?game=roborumble&amp;bota=hadur2.Hadur%203.5.1&amp;botb=alk.lap.LoudAndProud%202.23">compare</a></td>
+<td class="green">87.77</td>
+<td>Â±7.84</td>
+<td class="green">100.00</td>
+<td class="green">100.00</td>
+<td class="green">9.94</td>
+<td>1</td>
+<td>2026-10-03 19:10:06</td>
+<td class="green">62.75</td>
+<td>58.76</td>
+</tr>
+<tr>
+<td>19</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/USA.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=roborumble&amp;name=alpha.BlackIce%201.0">alpha.BlackIce 1.0 </a></td>
+<td><a rel="nofollow" href="https://rumble.robowiki.net/BotCompare?game=roborumble&amp;bota=hadur2.Hadur%203.5.1&amp;botb=alpha.BlackIce%201.0">compare</a></td>
+<td class="green">76.81</td>
+<td>Â±7.84</td>
+<td class="green">77.50</td>
+<td class="green">88.57</td>
+<td class="red">-8.08</td>
+<td>1</td>
+<td>2026-10-03 19:27:59</td>
+<td>56.23</td>
+<td>54.80</td>
+</tr>
+<tr>
+<td>20</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/NONE.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=roborumble&amp;name=am.Miedzix%203.0">am.Miedzix 3.0 </a></td>
+<td><a rel="nofollow" href="https://rumble.robowiki.net/BotCompare?game=roborumble&amp;bota=hadur2.Hadur%203.5.1&amp;botb=am.Miedzix%203.0">compare</a></td>
+<td class="green">87.85</td>
+<td>Â±7.84</td>
+<td class="green">90.14</td>
+<td class="green">97.14</td>
+<td class="red">-1.10</td>
+<td>1</td>
+<td>2026-10-03 19:36:03</td>
+<td>44.56</td>
+<td class="red">36.75</td>
+</tr>
+<tr>
+<td>21</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/ESP.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=roborumble&amp;name=apv.LauLectrik%201.2">apv.LauLectrik 1.2 </a></td>
+<td><a rel="nofollow" href="https://rumble.robowiki.net/BotCompare?game=roborumble&amp;bota=hadur2.Hadur%203.5.1&amp;botb=apv.LauLectrik%201.2">compare</a></td>
+<td class="green">77.62</td>
+<td>Â±7.84</td>
+<td class="green">89.24</td>
+<td class="green">94.29</td>
+<td class="green">0.82</td>
+<td>1</td>
+<td>2026-10-03 19:20:05</td>
+<td class="green">61.67</td>
+<td class="green">61.24</td>
+</tr>
+<tr>
+<td>22</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/ESP.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=roborumble&amp;name=apv.NanoLauLectrik%201.0">apv.NanoLauLectrik 1.0 </a></td>
+<td><a rel="nofollow" href="https://rumble.robowiki.net/BotCompare?game=roborumble&amp;bota=hadur2.Hadur%203.5.1&amp;botb=apv.NanoLauLectrik%201.0">compare</a></td>
+<td class="green">82.52</td>
+<td>Â±7.84</td>
+<td class="green">84.51</td>
+<td class="green">94.29</td>
+<td class="green">3.88</td>
+<td>1</td>
+<td>2026-10-03 20:40:58</td>
+<td>58.94</td>
+<td>53.72</td>
+</tr>
+<tr>
+<td>23</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/CAN.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=roborumble&amp;name=areb.Union%201.06">areb.Union 1.06 </a></td>
+<td><a rel="nofollow" href="https://rumble.robowiki.net/BotCompare?game=roborumble&amp;bota=hadur2.Hadur%203.5.1&amp;botb=areb.Union%201.06">compare</a></td>
+<td class="green">69.00</td>
+<td>Â±7.84</td>
+<td class="green">71.47</td>
+<td class="green">74.29</td>
+<td class="red">-7.64</td>
+<td>1</td>
+<td>2026-10-03 21:38:38</td>
+<td class="green">64.27</td>
+<td class="green">71.42</td>
+</tr>
+<tr>
+<td>24</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/SGP.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=roborumble&amp;name=ary.Crisis%201.0">ary.Crisis 1.0 </a></td>
+<td><a rel="nofollow" href="https://rumble.robowiki.net/BotCompare?game=roborumble&amp;bota=hadur2.Hadur%203.5.1&amp;botb=ary.Crisis%201.0">compare</a></td>
+<td class="green">89.84</td>
+<td>Â±7.84</td>
+<td class="green">92.85</td>
+<td class="green">97.14</td>
+<td class="green">3.70</td>
+<td>1</td>
+<td>2026-10-03 21:57:58</td>
+<td class="green">61.22</td>
+<td class="green">65.45</td>
+</tr>
+<tr>
+<td>25</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/SGP.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=roborumble&amp;name=ary.Help%201.0">ary.Help 1.0 </a></td>
+<td><a rel="nofollow" href="https://rumble.robowiki.net/BotCompare?game=roborumble&amp;bota=hadur2.Hadur%203.5.1&amp;botb=ary.Help%201.0">compare</a></td>
+<td class="green">78.34</td>
+<td>Â±7.84</td>
+<td class="green">80.79</td>
+<td class="green">94.29</td>
+<td class="green">7.95</td>
+<td>1</td>
+<td>2026-10-03 20:37:14</td>
+<td class="green">80.64</td>
+<td class="green">86.93</td>
+</tr>
+<tr>
+<td>26</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/SGP.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=roborumble&amp;name=ary.nano.AceSurf%201.2">ary.nano.AceSurf 1.2 </a></td>
+<td><a rel="nofollow" href="https://rumble.robowiki.net/BotCompare?game=roborumble&amp;bota=hadur2.Hadur%203.5.1&amp;botb=ary.nano.AceSurf%201.2">compare</a></td>
+<td class="green">91.55</td>
+<td>Â±7.84</td>
+<td class="green">95.57</td>
+<td class="green">100.00</td>
+<td class="green">2.65</td>
+<td>1</td>
+<td>2026-10-03 19:11:27</td>
+<td>51.74</td>
+<td>45.80</td>
+</tr>
+<tr>
+<td>27</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/NONE.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=roborumble&amp;name=awl.Locutus%201.5">awl.Locutus 1.5 </a></td>
+<td><a rel="nofollow" href="https://rumble.robowiki.net/BotCompare?game=roborumble&amp;bota=hadur2.Hadur%203.5.1&amp;botb=awl.Locutus%201.5">compare</a></td>
+<td class="green">93.26</td>
+<td>Â±7.84</td>
+<td class="green">96.08</td>
+<td class="green">97.14</td>
+<td class="green">1.75</td>
+<td>1</td>
+<td>2026-10-03 21:44:47</td>
+<td>48.89</td>
+<td>45.80</td>
+</tr>
+<tr>
+<td>28</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/BRA.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=roborumble&amp;name=axeBots.HataMoto%203.09">axeBots.HataMoto 3.09 </a></td>
+<td><a rel="nofollow" href="https://rumble.robowiki.net/BotCompare?game=roborumble&amp;bota=hadur2.Hadur%203.5.1&amp;botb=axeBots.HataMoto%203.09">compare</a></td>
+<td class="green">76.50</td>
+<td>Â±7.84</td>
+<td class="green">85.09</td>
+<td class="green">85.71</td>
+<td class="red">-6.14</td>
+<td>1</td>
+<td>2026-10-03 21:13:48</td>
+<td>56.54</td>
+<td>55.90</td>
+</tr>
+<tr>
+<td>29</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/BRA.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=roborumble&amp;name=axeBots.SilverSurfer%202.53.33fix">axeBots.SilverSurfer 2.53.33fix </a></td>
+<td><a rel="nofollow" href="https://rumble.robowiki.net/BotCompare?game=roborumble&amp;bota=hadur2.Hadur%203.5.1&amp;botb=axeBots.SilverSurfer%202.53.33fix">compare</a></td>
+<td class="green">64.99</td>
+<td>Â±7.84</td>
+<td class="green">80.67</td>
+<td class="green">80.00</td>
+<td class="green">6.08</td>
+<td>1</td>
+<td>2026-10-03 19:32:20</td>
+<td class="green">83.34</td>
+<td class="green">89.76</td>
+</tr>
+<tr>
+<td>30</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/NONE.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=roborumble&amp;name=bayen.nano.Squirrel%200.2">bayen.nano.Squirrel 0.2 </a></td>
+<td><a rel="nofollow" href="https://rumble.robowiki.net/BotCompare?game=roborumble&amp;bota=hadur2.Hadur%203.5.1&amp;botb=bayen.nano.Squirrel%200.2">compare</a></td>
+<td class="green">89.34</td>
+<td>Â±7.84</td>
+<td class="green">95.25</td>
+<td class="green">100.00</td>
+<td class="green">2.07</td>
+<td>1</td>
+<td>2026-10-03 21:52:16</td>
+<td>50.12</td>
+<td class="red">38.69</td>
+</tr>
+<tr>
+<td>31</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/NONE.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=roborumble&amp;name=bh.PencilRain%200.01">bh.PencilRain 0.01 </a></td>
+<td><a rel="nofollow" href="https://rumble.robowiki.net/BotCompare?game=roborumble&amp;bota=hadur2.Hadur%203.5.1&amp;botb=bh.PencilRain%200.01">compare</a></td>
+<td class="green">99.97</td>
+<td>Â±7.84</td>
+<td class="green">99.99</td>
+<td class="green">100.00</td>
+<td class="green">1.19</td>
+<td>1</td>
+<td>2026-10-03 21:36:20</td>
+<td class="red">11.58</td>
+<td class="red">12.78</td>
+</tr>
+<tr>
+<td>32</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/NONE.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=roborumble&amp;name=bjl.LoneDragon%200.5">bjl.LoneDragon 0.5 </a></td>
+<td><a rel="nofollow" href="https://rumble.robowiki.net/BotCompare?game=roborumble&amp;bota=hadur2.Hadur%203.5.1&amp;botb=bjl.LoneDragon%200.5">compare</a></td>
+<td class="green">93.22</td>
+<td>Â±7.84</td>
+<td class="green">96.84</td>
+<td class="green">94.29</td>
+<td class="green">3.15</td>
+<td>1</td>
+<td>2026-10-03 19:57:02</td>
+<td class="green">60.26</td>
+<td class="green">63.70</td>
+</tr>
+<tr>
+<td>33</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/USA.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=roborumble&amp;name=blir.nano.inch.Inchworm%201.0">blir.nano.inch.Inchworm 1.0 </a></td>
+<td><a rel="nofollow" href="https://rumble.robowiki.net/BotCompare?game=roborumble&amp;bota=hadur2.Hadur%203.5.1&amp;botb=blir.nano.inch.Inchworm%201.0">compare</a></td>
+<td class="green">98.34</td>
+<td>Â±7.84</td>
+<td class="green">99.19</td>
+<td class="green">100.00</td>
+<td class="green">0.19</td>
+<td>1</td>
+<td>2026-10-03 19:26:37</td>
+<td class="red">20.77</td>
+<td class="red">15.84</td>
+</tr>
+<tr>
+<td>34</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/NONE.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=roborumble&amp;name=blr.Chicken001%200.1">blr.Chicken001 0.1 </a></td>
+<td><a rel="nofollow" href="https://rumble.robowiki.net/BotCompare?game=roborumble&amp;bota=hadur2.Hadur%203.5.1&amp;botb=blr.Chicken001%200.1">compare</a></td>
+<td class="green">99.34</td>
+<td>Â±7.84</td>
+<td class="green">99.52</td>
+<td class="green">100.00</td>
+<td class="green">0.65</td>
+<td>1</td>
+<td>2026-10-03 20:46:16</td>
+<td class="red">18.28</td>
+<td class="red">11.06</td>
+</tr>
+<tr>
+<td>35</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/NONE.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=roborumble&amp;name=bp.Kuma%201.0">bp.Kuma 1.0 </a></td>
+<td><a rel="nofollow" href="https://rumble.robowiki.net/BotCompare?game=roborumble&amp;bota=hadur2.Hadur%203.5.1&amp;botb=bp.Kuma%201.0">compare</a></td>
+<td class="green">99.93</td>
+<td>Â±7.84</td>
+<td class="green">99.95</td>
+<td class="green">100.00</td>
+<td class="green">0.73</td>
+<td>1</td>
+<td>2026-10-03 20:58:49</td>
+<td class="red">30.63</td>
+<td class="red">24.51</td>
+</tr>
+<tr>
+<td>36</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/GBR.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=roborumble&amp;name=brainfade.Fallen%200.63">brainfade.Fallen 0.63 </a></td>
+<td><a rel="nofollow" href="https://rumble.robowiki.net/BotCompare?game=roborumble&amp;bota=hadur2.Hadur%203.5.1&amp;botb=brainfade.Fallen%200.63">compare</a></td>
+<td class="green">71.70</td>
+<td>Â±7.84</td>
+<td class="green">73.75</td>
+<td class="green">85.71</td>
+<td class="red">-2.10</td>
+<td>1</td>
+<td>2026-10-03 21:23:08</td>
+<td class="green">70.35</td>
+<td class="green">76.25</td>
+</tr>
+<tr>
+<td>37</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/NONE.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=roborumble&amp;name=buba.Archivist%200.1">buba.Archivist 0.1 </a></td>
+<td><a rel="nofollow" href="https://rumble.robowiki.net/BotCompare?game=roborumble&amp;bota=hadur2.Hadur%203.5.1&amp;botb=buba.Archivist%200.1">compare</a></td>
+<td class="green">78.82</td>
+<td>Â±7.84</td>
+<td class="green">79.73</td>
+<td class="green">91.43</td>
+<td class="red">-1.53</td>
+<td>1</td>
+<td>2026-10-03 21:46:04</td>
+<td>56.36</td>
+<td>51.60</td>
+</tr>
+<tr>
+<td>38</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/NLD.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=roborumble&amp;name=bvh.frg.Friga%200.112dev">bvh.frg.Friga 0.112dev </a></td>
+<td><a rel="nofollow" href="https://rumble.robowiki.net/BotCompare?game=roborumble&amp;bota=hadur2.Hadur%203.5.1&amp;botb=bvh.frg.Friga%200.112dev">compare</a></td>
+<td class="green">89.38</td>
+<td>Â±7.84</td>
+<td class="green">89.42</td>
+<td class="green">100.00</td>
+<td class="green">0.21</td>
+<td>1</td>
+<td>2026-10-03 20:10:07</td>
+<td class="green">63.40</td>
+<td class="green">64.38</td>
+</tr>
+<tr>
+<td>39</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/ITA.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=roborumble&amp;name=caimano.Furia_Ceca%200.22">caimano.Furia_Ceca 0.22 </a></td>
+<td><a rel="nofollow" href="https://rumble.robowiki.net/BotCompare?game=roborumble&amp;bota=hadur2.Hadur%203.5.1&amp;botb=caimano.Furia_Ceca%200.22">compare</a></td>
+<td class="green">89.78</td>
+<td>Â±7.84</td>
+<td class="green">89.95</td>
+<td class="green">94.29</td>
+<td class="red">-7.97</td>
+<td>1</td>
+<td>2026-10-03 21:55:44</td>
+<td>44.11</td>
+<td class="red">37.72</td>
+</tr>
+<tr>
+<td>40</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/USA.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=roborumble&amp;name=casey.Flump%201.0">casey.Flump 1.0 </a></td>
+<td><a rel="nofollow" href="https://rumble.robowiki.net/BotCompare?game=roborumble&amp;bota=hadur2.Hadur%203.5.1&amp;botb=casey.Flump%201.0">compare</a></td>
+<td class="green">87.17</td>
+<td>Â±7.84</td>
+<td class="green">94.82</td>
+<td class="green">100.00</td>
+<td class="green">0.62</td>
+<td>1</td>
+<td>2026-10-03 21:48:07</td>
+<td>47.55</td>
+<td class="red">37.19</td>
+</tr>
+<tr>
+<td>41</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/JPN.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=roborumble&amp;name=catcat20.Lambda%200.017">catcat20.Lambda 0.017 </a></td>
+<td><a rel="nofollow" href="https://rumble.robowiki.net/BotCompare?game=roborumble&amp;bota=hadur2.Hadur%203.5.1&amp;botb=catcat20.Lambda%200.017">compare</a></td>
+<td class="green">66.48</td>
+<td>Â±7.84</td>
+<td class="green">83.24</td>
+<td class="green">77.14</td>
+<td class="green">7.26</td>
+<td>1</td>
+<td>2026-10-03 20:31:31</td>
+<td class="green">82.51</td>
+<td class="green">88.68</td>
+</tr>
+<tr>
+<td>42</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/JPN.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=roborumble&amp;name=catcat20.shape.Theta%200.018">catcat20.shape.Theta 0.018 </a></td>
+<td><a rel="nofollow" href="https://rumble.robowiki.net/BotCompare?game=roborumble&amp;bota=hadur2.Hadur%203.5.1&amp;botb=catcat20.shape.Theta%200.018">compare</a></td>
+<td class="green">60.15</td>
+<td>Â±7.84</td>
+<td class="green">75.51</td>
+<td class="green">71.43</td>
+<td class="red">-0.70</td>
+<td>1</td>
+<td>2026-10-03 21:08:00</td>
+<td class="green">79.24</td>
+<td class="green">86.37</td>
+</tr>
+<tr>
+<td>43</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/DEU.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=roborumble&amp;name=cb.fire.Firestarter%202.0f">cb.fire.Firestarter 2.0f </a></td>
+<td><a rel="nofollow" href="https://rumble.robowiki.net/BotCompare?game=roborumble&amp;bota=hadur2.Hadur%203.5.1&amp;botb=cb.fire.Firestarter%202.0f">compare</a></td>
+<td class="red">38.64</td>
+<td>Â±7.84</td>
+<td>47.84</td>
+<td class="red">22.86</td>
+<td class="red">-4.01</td>
+<td>1</td>
+<td>2026-10-03 20:57:40</td>
+<td class="green">88.18</td>
+<td class="green">96.70</td>
+</tr>
+<tr>
+<td>44</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/DEU.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=roborumble&amp;name=cb.nano.Insomnia%201.0">cb.nano.Insomnia 1.0 </a></td>
+<td><a rel="nofollow" href="https://rumble.robowiki.net/BotCompare?game=roborumble&amp;bota=hadur2.Hadur%203.5.1&amp;botb=cb.nano.Insomnia%201.0">compare</a></td>
+<td class="green">94.37</td>
+<td>Â±7.84</td>
+<td class="green">95.04</td>
+<td class="green">100.00</td>
+<td class="green">1.90</td>
+<td>1</td>
+<td>2026-10-03 20:50:40</td>
+<td class="red">25.01</td>
+<td class="red">15.26</td>
+</tr>
+<tr>
+<td>45</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/SWE.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=roborumble&amp;name=cbot.agile.Nibbler%200.2">cbot.agile.Nibbler 0.2 </a></td>
+<td><a rel="nofollow" href="https://rumble.robowiki.net/BotCompare?game=roborumble&amp;bota=hadur2.Hadur%203.5.1&amp;botb=cbot.agile.Nibbler%200.2">compare</a></td>
+<td class="green">79.80</td>
+<td>Â±7.84</td>
+<td class="green">81.06</td>
+<td class="green">94.29</td>
+<td class="green">5.01</td>
+<td>1</td>
+<td>2026-10-03 19:31:42</td>
+<td class="green">64.33</td>
+<td class="green">65.90</td>
+</tr>
+<tr>
+<td>46</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/SWE.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=roborumble&amp;name=cbot.cbot.CBot%200.8">cbot.cbot.CBot 0.8 </a></td>
+<td><a rel="nofollow" href="https://rumble.robowiki.net/BotCompare?game=roborumble&amp;bota=hadur2.Hadur%203.5.1&amp;botb=cbot.cbot.CBot%200.8">compare</a></td>
+<td class="green">81.11</td>
+<td>Â±7.84</td>
+<td class="green">94.50</td>
+<td class="green">94.29</td>
+<td class="green">3.41</td>
+<td>1</td>
+<td>2026-10-03 19:28:36</td>
+<td>55.96</td>
+<td>52.96</td>
+</tr>
+<tr>
+<td>47</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/DEU.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=roborumble&amp;name=cf.proto.Shiva%202.2">cf.proto.Shiva 2.2 </a></td>
+<td><a rel="nofollow" href="https://rumble.robowiki.net/BotCompare?game=roborumble&amp;bota=hadur2.Hadur%203.5.1&amp;botb=cf.proto.Shiva%202.2">compare</a></td>
+<td>59.14</td>
+<td>Â±7.84</td>
+<td>63.52</td>
+<td class="green">74.29</td>
+<td class="red">-9.84</td>
+<td>1</td>
+<td>2026-10-03 21:50:21</td>
+<td class="green">80.22</td>
+<td class="green">85.98</td>
+</tr>
+<tr>
+<td>48</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/JPN.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=roborumble&amp;name=chase.pm.Pytko%201.0">chase.pm.Pytko 1.0 </a></td>
+<td><a rel="nofollow" href="https://rumble.robowiki.net/BotCompare?game=roborumble&amp;bota=hadur2.Hadur%203.5.1&amp;botb=chase.pm.Pytko%201.0">compare</a></td>
+<td class="green">75.54</td>
+<td>Â±7.84</td>
+<td class="green">76.22</td>
+<td class="green">88.57</td>
+<td class="green">9.26</td>
+<td>1</td>
+<td>2026-10-03 20:17:30</td>
+<td class="green">67.00</td>
+<td class="green">72.50</td>
+</tr>
+<tr>
+<td>49</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/NONE.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=roborumble&amp;name=codemojo.nano.Woot%201.0">codemojo.nano.Woot 1.0 </a></td>
+<td><a rel="nofollow" href="https://rumble.robowiki.net/BotCompare?game=roborumble&amp;bota=hadur2.Hadur%203.5.1&amp;botb=codemojo.nano.Woot%201.0">compare</a></td>
+<td class="green">94.90</td>
+<td>Â±7.84</td>
+<td class="green">95.87</td>
+<td class="green">100.00</td>
+<td class="green">0.73</td>
+<td>1</td>
+<td>2026-10-03 21:48:45</td>
+<td class="red">37.47</td>
+<td class="red">25.35</td>
+</tr>
+<tr>
+<td>50</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/JPN.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=roborumble&amp;name=cs.Nene%201.0.5">cs.Nene 1.0.5 </a></td>
+<td><a rel="nofollow" href="https://rumble.robowiki.net/BotCompare?game=roborumble&amp;bota=hadur2.Hadur%203.5.1&amp;botb=cs.Nene%201.0.5">compare</a></td>
+<td class="green">64.70</td>
+<td>Â±7.84</td>
+<td class="green">85.44</td>
+<td class="green">82.86</td>
+<td class="green">13.67</td>
+<td>1</td>
+<td>2026-10-03 21:43:52</td>
+<td class="green">86.68</td>
+<td class="green">92.49</td>
+</tr></tbody></table><div id="tip" style="position:fixed;padding:1px 4px;font-size:12px;pointer-events:none;display:none"></div>
+</body></html>
+------MultipartBoundary--78qfrsupO2SUIAZf5ZLXCs1ZgYZ0jG2FNxqZ0LS7x0----
+Content-Type: image/gif
+Content-Transfer-Encoding: binary
+Content-Location: https://rumble.robowiki.net/flags/SWE.gif
+
+GIF87a  ˆ   R“şË ,       .„¡íƒÊŠÛÍ|sì}TØIæ‰¦êÊ¶î›ã"‚t=+x>íé3 ƒÃJ ;
+------MultipartBoundary--78qfrsupO2SUIAZf5ZLXCs1ZgYZ0jG2FNxqZ0LS7x0----
+Content-Type: image/gif
+Content-Transfer-Encoding: binary
+Content-Location: https://rumble.robowiki.net/flags/DEU.gif
+
+GIF87a  ™  İ     ÿÎ    ,       'Œ©Ëí£œ´Ú²Ş¼û†âH–æ‰¦ À¶îÇòL×öçúÎÏ ;
+------MultipartBoundary--78qfrsupO2SUIAZf5ZLXCs1ZgYZ0jG2FNxqZ0LS7x0----
+Content-Type: image/gif
+Content-Transfer-Encoding: binary
+Content-Location: https://rumble.robowiki.net/flags/JPN.gif
+
+GIF87a  ™ şşş½3á¡öŞä,       2„©Ëíã¡!Ù°<dÕußA…6šbªZÛzp;¥ŠÎa}¨/o¸]€ŠÁˆL*
+ ;
+------MultipartBoundary--78qfrsupO2SUIAZf5ZLXCs1ZgYZ0jG2FNxqZ0LS7x0----
+Content-Type: image/gif
+Content-Transfer-Encoding: binary
+Content-Location: https://rumble.robowiki.net/flags/ITA.gif
+
+GIF87a  ™  Î+7ÿÿÿ ’F   ,       <”¡Ëà‘¬ˆÁLvå¸÷9¡8^¥v¦jyRéÊ†.ßk>ïmûpÂÑüğ†>$3è467ºR ;
+------MultipartBoundary--78qfrsupO2SUIAZf5ZLXCs1ZgYZ0jG2FNxqZ0LS7x0----
+Content-Type: image/gif
+Content-Transfer-Encoding: binary
+Content-Location: https://rumble.robowiki.net/flags/GBR.gif
+
+GIF87a  ™  Ï+ÿÿÿ $}   ,       XL„©§¢y&&æ êÛ}çe˜-˜7®´>­)
+ä¿´Š÷¤çÃu†Ä¢ñˆL*—Ì&1èAq<šôVÓ5N¹–†]„ªÛ°d,ùQ,#ôfrbÛÜlC ;
+------MultipartBoundary--78qfrsupO2SUIAZf5ZLXCs1ZgYZ0jG2FNxqZ0LS7x0----
+Content-Type: image/gif
+Content-Transfer-Encoding: binary
+Content-Location: https://rumble.robowiki.net/flags/BRA.gif
+
+GIF87a  »   ’?øÃ (o5$w)š4¤²b¥&éÀ×³‘¢®X?]–;˜t3[[º!Å˜,       ÈI«½’;6A`x$@ aˆp¥µÂ(
+ƒK;GÀÀ #p•^!Gp)p„p^*A¥6@Eª¨¥
+à aÅ¢RÖ„ĞKLÁ8Ñx¸‰j	Á«’‹±r	mOyR!aX€rZ!\HJ‹•NP%R?KC:H246˜9:'n+¨!F­… ;
+------MultipartBoundary--78qfrsupO2SUIAZf5ZLXCs1ZgYZ0jG2FNxqZ0LS7x0----
+Content-Type: image/gif
+Content-Transfer-Encoding: binary
+Content-Location: https://rumble.robowiki.net/flags/SGP.gif
+
+GIF87a  »  í)9ÿÿÿüùùòhsïGUí-<î7Fî0?öš¡üÚİô}‡ø©¯úÂÆö‘™şôõıèé,       [ÈI«½·Œ6
+ş‘<ƒD€(P$Î	Œ—bJ€hF~Æl-Ò¢¤b¸| 	ª! !zdBY'D¶j‘¬ G.£è´zÍn£ğ¸|N¯Ûïø¼~Ïïûù ;
+------MultipartBoundary--78qfrsupO2SUIAZf5ZLXCs1ZgYZ0jG2FNxqZ0LS7x0----
+Content-Type: image/gif
+Content-Transfer-Encoding: binary
+Content-Location: https://rumble.robowiki.net/flags/ESP.gif
+
+GIF87a  Ì  ÆÿÄ ºcî­ïÇA­ÌÌÌÈ®%Èv
+íÇIç­ ü¿Ş–Ş½=½9mWVéÂLÀ¦(Â«(ï®­×¶Eå«#eGt’ 2´AD©¹ÊÚ½D·Pñ±ëÇRã¬,,       Y  dihª®lë¾A,ÏtmßÁ2ìÃ‚ÿ´`( QÀ˜
+K¡`0|O!QÀhBö¶å<.ˆx\kl†”B¥Á®$„Ã9Ôÿ@/‚ƒ„…†/! ;
+------MultipartBoundary--78qfrsupO2SUIAZf5ZLXCs1ZgYZ0jG2FNxqZ0LS7x0----
+Content-Type: image/gif
+Content-Transfer-Encoding: binary
+Content-Location: https://rumble.robowiki.net/flags/CAN.gif
+
+GIF87a  »  ÿ  ÿÿÿÿøøÿÅÅÿ““ÿrrÿaaÿ¨¨ÿÍÍÿ††ÿÿµµÿÿççÿ½½ÿ,       yÈª½ØÎÍs‚p$ „XvX#(ŠĞdë–Š¤t-]¡Ç&ÒøLÅ"‘@l„ÄâP9"	“Â¦À$ªÇŠó8 û*+o´5CÑzyt9Œ”ñ|oÖ{5„t*meŒ”=|" ;
+------MultipartBoundary--78qfrsupO2SUIAZf5ZLXCs1ZgYZ0jG2FNxqZ0LS7x0----
+Content-Type: image/gif
+Content-Transfer-Encoding: binary
+Content-Location: https://rumble.robowiki.net/flags/ARG.gif
+
+GIF87a  ª  t¬ßÿÿÿÖ™0ğâÑâÅŸİ¸ˆ÷ñëöïè,       3ºÜş0ÊI«½8ëºÿ`(â@©†F!…±ÎÁğ¾)­¶oqè+
+HœmÈ¤r‰L  ;
+------MultipartBoundary--78qfrsupO2SUIAZf5ZLXCs1ZgYZ0jG2FNxqZ0LS7x0----
+Content-Type: image/gif
+Content-Transfer-Encoding: binary
+Content-Location: https://rumble.robowiki.net/flags/NLD.gif
+
+GIF87a  ™  ®(ÿÿÿ!F‹   ,       '„©Ëí£œ´Ú²Ş¼û†âH–æ‰¦ À¶îÇòL×öçúÎÏ ;
+------MultipartBoundary--78qfrsupO2SUIAZf5ZLXCs1ZgYZ0jG2FNxqZ0LS7x0----
+Content-Type: image/gif
+Content-Transfer-Encoding: binary
+Content-Location: https://rumble.robowiki.net/flags/NONE.gif
+
+GIF89a  ğ        !ù
+   ,       „©Ëí£œ´Ú‹³Ş¼û†âHB ;
+------MultipartBoundary--78qfrsupO2SUIAZf5ZLXCs1ZgYZ0jG2FNxqZ0LS7x0----
+Content-Type: image/gif
+Content-Transfer-Encoding: binary
+Content-Location: https://rumble.robowiki.net/flags/USA.gif
+
+GIF87a  ™  ÿÿÿ»> &d   ,       <”Ëí-@œ²‚‹³Æ¦Ró„ÏçYÛ™u$(¶ÁZ¢²³nX›ó–ô·¸~D‡ğˆ)*Hä²Ø<>‰Qa ;
+------MultipartBoundary--78qfrsupO2SUIAZf5ZLXCs1ZgYZ0jG2FNxqZ0LS7x0----
+Content-Type: image/gif
+Content-Transfer-Encoding: binary
+Content-Location: https://rumble.robowiki.net/flags/IRL.gif
+
+GIF87a  ™   šIÿy ÿÿÿ   ,       <„¢Ëá‘¬
+ˆÃLvå¸÷9¡8^¥v¦jyRéÊ†.ßk>ïmûpÂÑüğ†>$3è467ºR ;
+------MultipartBoundary--78qfrsupO2SUIAZf5ZLXCs1ZgYZ0jG2FNxqZ0LS7x0----
+Content-Type: text/css
+Content-Transfer-Encoding: binary
+Content-Location: https://rumble.robowiki.net/style.css
+
+@charset "utf-8";
+
+html { font-family: helvetica, arial, sans-serif; }
+
+table, td, th { border: 1px solid rgb(211, 211, 211); border-collapse: collapse; padding: 2px 4px; margin-bottom: 1em; }
+
+th > a, th > a:active, th > a:visited { color: rgb(0, 0, 0); text-decoration: none; }
+
+th { text-align: left; padding-right: 1em; }
+
+tr:nth-child(2n+1), tr.dim { background-color: rgb(244, 244, 244); }
+
+table.rumble td:nth-child(3) { text-align: center; }
+
+th.sortedby { font-style: italic; text-decoration: underline; }
+
+h3 { font-weight: normal; }
+
+form[action="BotCompare"] { margin: 0px; text-align: center; }
+
+td.green { background-color: rgb(153, 204, 0); }
+
+td.red { background-color: rgb(255, 102, 0); }
+
+.header { position: absolute; }
+
+#flag { width: 30px; height: 18px; }
+
+#distribution { position: relative; height: 220px; width: auto; border: 1px solid black; }
+
+#distribution2 { position: relative; height: 170px; width: auto; border: 1px solid black; }
+
+body.dark { background-color: rgb(30, 30, 30); color: rgb(221, 221, 221); }
+
+body.dark table, body.dark td, body.dark th { border-color: rgb(68, 68, 68); }
+
+body.dark th > a, body.dark th > a:active, body.dark th > a:visited { color: rgb(221, 221, 221); }
+
+body.dark a, body.dark a:visited { color: rgb(108, 182, 255); }
+
+body.dark tr:nth-child(2n+1), body.dark tr.dim { background-color: rgb(42, 42, 42); }
+
+body.dark td.green { background-color: rgb(76, 107, 0); }
+
+body.dark td.red { background-color: rgb(163, 59, 0); }
+
+body.dark #distribution, body.dark #distribution2 { border-color: rgb(221, 221, 221); }
+
+#tip { background: rgb(255, 255, 238); border: 1px solid rgb(153, 153, 153); }
+
+body.dark #tip { background: rgb(51, 51, 51); border-color: rgb(102, 102, 102); }
+------MultipartBoundary--78qfrsupO2SUIAZf5ZLXCs1ZgYZ0jG2FNxqZ0LS7x0------

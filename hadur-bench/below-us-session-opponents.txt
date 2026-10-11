@@ -1,0 +1,53 @@
+# R10 below-us panel as a BENCH-6 session (docs/rumble-climb-top15-plan.md): the robots of
+# below-us-panel.txt in the same order, with field 2 = the opponent's own APS on the 3.4 page of
+# 2026-10-01, which the session report uses for its weak-opponent check.
+#   <robot name as Robocode lists it> | <opponent APS> | <jar file in opponents/>
+alpha.BlackIce 1.0 | 56.19 | alpha.BlackIce_1.0.jar
+cf.mini.Chiva 1.0 | 68.79 | cf.mini.Chiva_1.0.jar
+ers.nano.sunderer.Sunderer 1.23a | 64.94 | ers.nano.sunderer.Sunderer_1.23a.jar
+slugzilla.ButtHead 2.0 | 65.85 | slugzilla.ButtHead_2.0.jar
+exauge.Leopard 1.1.019 | 47.87 | exauge.Leopard_1.1.019.jar
+pez.clean.Swiffer 0.2.9 | 65.79 | pez.clean.Swiffer_0.2.9.jar
+kjc.etc.Dharok 1.0 | 43.37 | kjc.etc.Dharok_1.0.jar
+janm.Jammy 1.0 | 43.92 | janm.Jammy_1.0.jar
+jk.nano.Machete 2.0 | 62.72 | jk.nano.Machete_2.0.jar
+cx.micro.Blur 0.2 | 59.47 | cx.micro.Blur_0.2.jar
+pmc.SniperBot 1.0 | 41.46 | pmc.SniperBot_1.0.jar
+oog.nano.Caligula 1.15 | 65.00 | oog.nano.Caligula_1.15.jar
+maribo.FollowFire 1.11 | 48.63 | maribo.FollowFire_1.11.jar
+mladjo.Grrrrr 0.9 | 67.89 | mladjo.Grrrrr_0.9.jar
+synnalagma.test.MiniNeural 1.1 | 50.17 | synnalagma.test.MiniNeural_1.1.jar
+benhorner.PureAggression 0.2.6 | 52.17 | benhorner.PureAggression_0.2.6.jar
+bayen.UbaRamLT 1.0 | 49.76 | bayen.UbaRamLT_1.0.jar
+jab.micro.Sanguijuela 0.8 | 55.47 | jab.micro.Sanguijuela_0.8.jar
+Polkwane.Piyane 0.7b | 58.45 | Polkwane.Piyane_0.7b.jar
+kcn.unnamed.Unnamed 1.21 | 68.43 | kcn.unnamed.Unnamed_1.21.jar
+radnor.RamRod 1.0 | 51.69 | radnor.RamRod_1.0.jar
+hp.Athena 0.1 | 55.46 | hp.Athena_0.1.jar
+tw.Exterminator 1.0 | 61.81 | tw.Exterminator_1.0.jar
+ne.Chimera 1.2 | 52.43 | ne.Chimera_1.2.jar
+de.erdega.robocode.Polyphemos 0.4 | 51.88 | de.erdega.robocode.Polyphemos_0.4.jar
+gh.micro.GrubbmThree 1.01 | 56.78 | gh.micro.GrubbmThree_1.01.jar
+demetrix.nano.Neutrino 0.27 | 51.33 | demetrix.nano.Neutrino_0.27.jar
+sheldor.nano.Sabreur 1.1.2 | 66.03 | sheldor.nano.Sabreur_1.1.2.jar
+ph.Thinker 0.2.5 | 44.42 | ph.Thinker_0.2.5.jar
+supersample.SuperRamFire 1.0 | 50.95 | supersample.SuperRamFire_1.0.jar
+stelo.Lifestealer 1.0 | 33.29 | stelo.Lifestealer_1.0.jar
+zch.David 0.21 | 21.66 | zch.David_0.21.jar
+nexus.Prototype 1.0 | 33.96 | nexus.Prototype_1.0.jar
+seed.Anastasia 1.0 | 32.77 | seed.Anastasia_1.0.jar
+mn.micro.perceptual.Mimic 1.0.0 | 35.59 | mn.micro.perceptual.Mimic_1.0.0.jar
+ntw.Sighup 1.5 | 31.38 | ntw.Sighup_1.5.jar
+jep.nano.Hawkwing 0.4.1 | 37.96 | jep.nano.Hawkwing_0.4.1.jar
+hlavko.nano.Phoenix 1.0 | 38.65 | hlavko.nano.Phoenix_1.0.jar
+tlp.ThreeLeggedPig 1 | 38.36 | tlp.ThreeLeggedPig_1.jar
+jeremyreeder.Bully 1 | 36.22 | jeremyreeder.Bully_1.jar
+GarmBox.Oranges 1.0.1 | 44.31 | GarmBox.Oranges_1.0.1.jar
+cf.proto.Shiva 2.2 | 80.15 | cf.proto.Shiva_2.2.jar
+areb.Union 1.06 | 64.26 | areb.Union_1.06.jar
+axeBots.HataMoto 3.09 | 56.49 | axeBots.HataMoto_3.09.jar
+buba.Archivist 0.1 | 56.30 | buba.Archivist_0.1.jar
+maribo.melee.BMV 0.1 | 42.52 | maribo.melee.BMV_0.1.jar
+steff.Rebel 2.1 | 56.78 | steff.Rebel_2.1.jar
+klein.GottesKrieger 1.1 | 49.76 | klein.GottesKrieger_1.1.jar
+blir.nano.Cabbage R1.0.1 | 42.65 | blir.nano.Cabbage_R1.0.1.jar
