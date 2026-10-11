@@ -1,0 +1,37 @@
+# 3.12 stage P4 (docs/plan-3.12.md, "P4: the silent battles"). P2's rounds file showed every bad
+# battle against the volatile bots latching a SHIELD-1 shield verdict; against a mirror bot the
+# MIR-1 mirror aim carries no SHIELD-2 jitter, so fireIfGunTurned's hold never lets it fire and
+# the gun goes silent for the rest of the battle. Candidates, one-line edits of v3.11 made by
+# build-ablation.sh, each paired against the released 3.11:
+#   mf    mfire: the hold skips a mirror aim
+#   s5    s50: SHIELD-1 needs 10 of the last 20 bullets intercepted and half of them (4 and 25%)
+#   mfs5  both
+#   ./queue.sh run p312b        (or  .\queue.ps1 run p312b)
+# About 70 min for each screen step (4 seeds), 10 to 20 min for each volatile step: about 3 h.
+# RoboRumble workers stopped. Pass to P3 (full census): screen gain at least +0.15 APS with the
+# 95% interval above 0, no band below -0.05 APS. Read with data/tools/screen_paired.py.
+
+set HEAP = --child-heap 2G
+set E = --engine 1.11.1
+set COMMON = --skip-build --skip-fetch --rounds 35 --cpu-constant 1488498 --parallel 12 ${HEAP} ${E}
+set B311 = --baseline bisect/hadur2.Hadur_3.11.jar --baseline-robot "hadur2.Hadur 3.11"
+set MF = --robot-jar bisect/hadur2.Hadur_3.11mf.jar --robot "hadur2.Hadur 3.11mf"
+set S5 = --robot-jar bisect/hadur2.Hadur_3.11s5.jar --robot "hadur2.Hadur 3.11s5"
+set MFS5 = --robot-jar bisect/hadur2.Hadur_3.11mfs5.jar --robot "hadur2.Hadur 3.11mfs5"
+
+prep | mkdir -p bisect && { [ -s bisect/hadur2.Hadur_3.11.jar ] || curl -fsSL -o bisect/hadur2.Hadur_3.11.jar https://github.com/lgriffin/Hadur_Robot/releases/download/v3.11/hadur2.Hadur_3.11.jar; } && bash ./build-ablation.sh --ref v3.11 mfire && bash ./build-ablation.sh --ref v3.11 s50 && bash ./build-ablation.sh --ref v3.11 mfire,s50 && ./fetch-opponents.sh --set screen-311.txt && ./fetch-opponents.sh --set volatile-312.txt
+
+# 1. The volatile bots, 8 fresh seeds, cold.
+mfv  | ./bench-top20.sh ${COMMON} --seeds 8 --seed-base 600 --set volatile-312.txt ${MF} ${B311} --label p312b-mfv
+  after: prep
+s5v  | ./bench-top20.sh ${COMMON} --seeds 8 --seed-base 600 --set volatile-312.txt ${S5} ${B311} --label p312b-s5v
+  after: prep
+# 2. The volatile bots cold then warm (BENCH-54): a live client keeps the profile, and SHIELD-3
+#    starts the next battle with the stored shield verdict.
+mfw  | ./bench-top20.sh ${COMMON} --seeds 4 --seed-base 610 --cold-warm --set volatile-312.txt ${MF} ${B311} --label p312b-mfw
+  after: prep
+# 3. The whole-field screen, 4 fresh seeds.
+mf   | ./bench-top20.sh ${COMMON} --seeds 4 --seed-base 600 --set screen-311.txt ${MF} ${B311} --label p312b-mf
+  after: prep
+mfs5 | ./bench-top20.sh ${COMMON} --seeds 4 --seed-base 600 --set screen-311.txt ${MFS5} ${B311} --label p312b-mfs5
+  after: prep

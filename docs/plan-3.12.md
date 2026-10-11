@@ -101,3 +101,46 @@ Not retested: the flattener (off lost 1.06 on the top 20, PR #161), duress (gone
 ## Status
 
 P1 and P2 ran 2026-10-11 (`docs/bench/local/2026-10-11_p312-findings.md`). No candidate meets the P1 gate: `ne` +0.11 APS (-0.25 to +0.46), `f5` -0.13, `nef5` -0.03; `nm` on the volatile bots -2.0 points of score share (-4.7 to +0.7). Nothing goes to P3 on this evidence; nothing is released.
+
+## Why P1 found nothing
+
+`f5` raised the controller's target in ranks 701+ from 411 to 506 px, but the mean distance
+only went from 397 to 423 px; `ne` left it at 399. Against the weak bots the distance is set
+mostly by the opponent closing in, not by DIST-1 or END-1, so P1 never really tested distance.
+(From the P1 rows TSVs, per band, candidate against 3.11 on the same seeds.)
+
+## P4: the silent battles
+
+P2's rows put every bad 3.11 battle against the volatile bots in one shape. From some round on,
+Hadur deals no damage, its hit rate falls to 0 to 20%, rounds last 1,000 to 1,700 ticks
+instead of 350, and it still wins most of them slowly: MirrorMicro seed 6 scored 32% with 22
+of 35 rounds won and 188 shots in 48,000 ticks (430 shots in 12,800 ticks on the other seven
+seeds). In all 8 battles below 60% share, and in no good battle of the same bots,
+`jitteredShots` is above 0, which means SHIELD-1 had latched a shield verdict (4 of the last 20
+bullets met by enemy bullets).
+
+The cause, in `DuelController`: once the verdict holds, `fireIfGunTurned` holds any aim that
+does not carry SHIELD-2's jitter (`predictable = shielded && !aimCarriesJitter`), and a MIR-1
+mirror aim never carries it (`aimCarriesJitter = shielded && !aimIsMirror`). So against a bot
+MIR-1 recognises as a mirror, a shield verdict silences the main gun for the rest of the
+battle. On a live client SHIELD-3 then stores the verdict in the profile, and every later
+battle on that client starts silent, which fits the live pages' 40-point swings on these bots.
+
+The verdict itself latches far more often than real shields exist: in census-312 G4, 2,367 of
+4,848 3.10nd battles latched, and 356 opponents latched in every battle (among them
+BasicSurfer, Shadow and ScalarR noshield). Against bots where it latched in some seeds and not
+others, the latched battles cost 0.10 APS on the bench. Hadur's own surf steers into the
+shadows of its bullets (MOVE-1), which puts enemy bullets aimed at it in the path of its
+bullets, so collisions are no evidence of a shield at 4 in 20.
+
+| Step | Candidate | Edit (from v3.11) | Set |
+|---|---|---|---|
+| `mfv` | 3.11mf | the hold skips a mirror aim | volatile, 8 seeds |
+| `s5v` | 3.11s5 | SHIELD-1 needs 10 in 20 and half | volatile, 8 seeds |
+| `mfw` | 3.11mf | as `mfv`, each seed cold then warm on the cold battle's profile | volatile, 4 seeds |
+| `mf` | 3.11mf | | screen, 4 seeds |
+| `mfs5` | 3.11mfs5 | both | screen, 4 seeds |
+
+`hadur-bench/plans/p312b.queue`, about 3 h. Gates as P1 (screen +0.15 APS, interval above 0, no
+band below -0.05); the volatile steps are read per bot and for the bad-battle count. `mf` is a
+bug fix, so it can ship on a level screen if the volatile steps show the silent battles gone.
