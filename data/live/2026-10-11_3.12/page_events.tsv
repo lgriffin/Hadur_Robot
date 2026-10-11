@@ -1,0 +1,958 @@
+utc	game	opponent	new_battles	inferred_score	pairing_before	pairing_after	battles_after	latest_battle	flag
+2026-10-11T15:10:13Z	roborumble	pe.SandboxDT 3.02	1	69.75		69.75	1	2026-10-11 14:52:21	
+2026-10-11T15:10:13Z	roborumble	frag.FragBot 1.0	1	89.41		89.41	1	2026-10-11 14:52:26	
+2026-10-11T15:10:13Z	roborumble	bons.NanoStalker 1.2	1	97.84		97.84	1	2026-10-11 14:52:29	
+2026-10-11T15:10:13Z	roborumble	ncj.MoxieBot 1.0	1	98.53		98.53	1	2026-10-11 14:52:35	
+2026-10-11T15:10:13Z	roborumble	ary.Crisis 1.0	1	89.18		89.18	1	2026-10-11 14:52:39	
+2026-10-11T15:10:13Z	roborumble	josago.Jorgito 0.16	1	86.76		86.76	1	2026-10-11 14:52:48	
+2026-10-11T15:10:13Z	roborumble	sul.Pinkbot 1.1	1	97.11	93.25	95.18	2	2026-10-11 14:52:51	
+2026-10-11T15:10:13Z	roborumble	davidalves.net.DuelistNano 1.0	1	87.72		87.72	1	2026-10-11 14:52:57	
+2026-10-11T15:10:13Z	roborumble	scheronimus.NanoScheroBot 1.0	1	95.43		95.43	1	2026-10-11 14:53:06	
+2026-10-11T15:10:13Z	roborumble	wiki.mini.GouldingiHT 1.0	1	95.68		95.68	1	2026-10-11 14:53:08	
+2026-10-11T15:10:13Z	roborumble	robar.nano.Mosquito 1.1	1	98.61		98.61	1	2026-10-11 14:53:15	
+2026-10-11T15:10:13Z	roborumble	theo.Tungsten 1.0a	1	83.57		83.57	1	2026-10-11 14:53:15	
+2026-10-11T15:10:13Z	roborumble	metal.small.MCool 1.21	1	94.51		94.51	1	2026-10-11 14:53:23	
+2026-10-11T15:10:13Z	roborumble	drm.CobraBora 1.12	1	74.42		74.42	1	2026-10-11 14:53:24	
+2026-10-11T15:10:13Z	roborumble	divineomega.TrialBot 0.003	1	81.77		81.77	1	2026-10-11 14:53:31	
+2026-10-11T15:10:13Z	roborumble	tornyil.Lajcsi2.Lajcsi2sm 1.0	1	89.51		89.51	1	2026-10-11 14:53:35	
+2026-10-11T15:10:13Z	roborumble	Grystrion.RandomTrackerNOREV 1.0	1	94.47		94.47	1	2026-10-11 14:53:39	
+2026-10-11T15:10:13Z	roborumble	pez.mini.Tityus 0.9.1	1	74.83		74.83	1	2026-10-11 14:53:39	
+2026-10-11T15:10:13Z	roborumble	suh.nano.StopAndGoL 1.01	1	97.88	99.68	98.78	2	2026-10-11 14:53:43	
+2026-10-11T15:10:13Z	roborumble	amk.jointstrike.JointStrike 0.2	1	96.54	93.34	94.94	2	2026-10-11 14:53:52	
+2026-10-11T15:10:13Z	roborumble	voidious.mini.Komarious 1.88	1	70.23		70.23	1	2026-10-11 14:53:53	
+2026-10-11T15:10:13Z	roborumble	pl.Drum 0.1	1	84.11		84.11	1	2026-10-11 14:53:59	
+2026-10-11T15:10:13Z	roborumble	mb.Beast 0.4.1	1	98.27		98.27	1	2026-10-11 14:54:00	
+2026-10-11T15:10:13Z	roborumble	jaw.Mouse 0.11	1	98.36		98.36	1	2026-10-11 14:54:01	
+2026-10-11T15:10:13Z	roborumble	romz.robot.Test 0.1.0	1	90.91		90.91	1	2026-10-11 14:54:03	
+2026-10-11T15:10:13Z	roborumble	mb.Monte 0.1.0	1	89.67		89.67	1	2026-10-11 14:54:04	
+2026-10-11T15:10:13Z	roborumble	pl.robocode.Pacyfista 1.0	1	99.7		99.7	1	2026-10-11 14:54:05	
+2026-10-11T15:10:13Z	roborumble	gre.svman4.Morfeas 1.4.3	1	79.82		79.82	1	2026-10-11 14:54:10	
+2026-10-11T15:10:13Z	roborumble	yk.JahRoslav 1.1	1	95.25		95.25	1	2026-10-11 14:54:13	
+2026-10-11T15:10:13Z	roborumble	bbo.TheRoof 1.4.3	1	94.29		94.29	1	2026-10-11 14:54:16	
+2026-10-11T15:10:13Z	roborumble	hp.Athena 0.1	1	82.52		82.52	1	2026-10-11 14:54:16	
+2026-10-11T15:10:13Z	roborumble	cx.mini.Cigaret 1.31	1	66.69	81.49	74.09	2	2026-10-11 14:54:17	
+2026-10-11T15:10:13Z	roborumble	jwirde.Gort 2.0	1	99.08		99.08	1	2026-10-11 14:54:19	
+2026-10-11T15:10:13Z	roborumble	gf.Centaur.Centaur 0.6.7	1	88.39		88.39	1	2026-10-11 14:54:21	
+2026-10-11T15:10:13Z	roborumble	populations.TrainStoopidbot 0.01	1	96.44		96.44	1	2026-10-11 14:54:24	
+2026-10-11T15:10:13Z	roborumble	blr.Chicken001 0.1	1	99.19		99.19	1	2026-10-11 14:54:25	
+2026-10-11T15:10:13Z	roborumble	pulsar.Nanis 0.3	1	94.0		94.0	1	2026-10-11 14:54:27	
+2026-10-11T15:10:13Z	roborumble	wiki.nano.RaikoNano 1.1	1	69.83	71.23	70.53	2	2026-10-11 14:54:32	
+2026-10-11T15:10:13Z	roborumble	com.arsenic.NewTest 1.0	1	94.73		94.73	1	2026-10-11 14:54:36	
+2026-10-11T15:10:13Z	roborumble	arthord.micro.Apoptygma 0.4	1	85.17		85.17	1	2026-10-11 14:54:37	
+2026-10-11T15:10:13Z	roborumble	suh.nano.RammingC 1.00	1	75.05		75.05	1	2026-10-11 14:54:39	
+2026-10-11T15:10:13Z	roborumble	suh.nano.RandomPM 1.02	1	79.69		79.69	1	2026-10-11 14:54:43	
+2026-10-11T15:10:13Z	roborumble	acid.Syzygy 1.0.4	1	97.41		97.41	1	2026-10-11 14:54:44	
+2026-10-11T15:10:13Z	roborumble	test.Fuzzer 1.0.1	1	87.74		87.74	1	2026-10-11 14:54:45	
+2026-10-11T15:10:13Z	roborumble	jrm.Test0 1.0	1	95.15		95.15	1	2026-10-11 14:54:46	
+2026-10-11T15:10:13Z	roborumble	fire219.cymba.Cymba 1.8	1	93.54		93.54	1	2026-10-11 14:54:49	
+2026-10-11T15:10:13Z	roborumble	stelo.MirrorNano 1.4	2	94.44		94.44	2	2026-10-11 14:54:50	
+2026-10-11T15:10:13Z	roborumble	Gecko.ultimateGeckoBot 1.0	2	97.96		97.96	2	2026-10-11 14:54:52	
+2026-10-11T15:10:13Z	roborumble	jeremyreeder.collective.Prophet 5	1	99.68		99.68	1	2026-10-11 14:54:53	
+2026-10-11T15:10:13Z	roborumble	catcat20.helios.Helios 1.5	1	80.52		80.52	1	2026-10-11 14:54:55	
+2026-10-11T15:10:13Z	roborumble	jep.nano.Hotspur 0.1	1	98.88		98.88	1	2026-10-11 14:54:56	
+2026-10-11T15:10:13Z	roborumble	tide.pear.Pear 0.62.1	1	85.03		85.03	1	2026-10-11 14:54:58	
+2026-10-11T15:10:13Z	roborumble	dz.GalbaMicro 0.11	1	87.71		87.71	1	2026-10-11 14:55:01	
+2026-10-11T15:10:13Z	roborumble	voidious.micro.Jen 1.11	1	79.97		79.97	1	2026-10-11 14:55:02	
+2026-10-11T15:10:13Z	roborumble	ej.ChocolateBar 1.1	1	92.07		92.07	1	2026-10-11 14:55:03	
+2026-10-11T15:10:13Z	roborumble	hlavko.nano.Ringo 2.0	1	97.99		97.99	1	2026-10-11 14:55:05	
+2026-10-11T15:10:13Z	roborumble	mcb.Audace 1.3	1	95.45		95.45	1	2026-10-11 14:55:06	
+2026-10-11T15:10:13Z	roborumble	uccc.Dorito 1.12	1	94.99		94.99	1	2026-10-11 14:55:06	
+2026-10-11T15:10:13Z	roborumble	genprog.Rinmorikazu 1.0	1	96.77		96.77	1	2026-10-11 14:55:08	
+2026-10-11T15:10:13Z	roborumble	agrach.RobotSlayer 1.0	1	99.64		99.64	1	2026-10-11 14:55:10	
+2026-10-11T15:10:13Z	roborumble	el.Attackr 0.1	1	99.72		99.72	1	2026-10-11 14:55:11	
+2026-10-11T15:10:13Z	roborumble	shinh.Entangled 0.3	1	85.91		85.91	1	2026-10-11 14:55:12	
+2026-10-11T15:10:13Z	roborumble	bzdp.Pansy 2.1	1	98.99		98.99	1	2026-10-11 14:55:13	
+2026-10-11T15:10:13Z	roborumble	bzdp.BoxCar 2.0	1	89.71		89.71	1	2026-10-11 14:55:14	
+2026-10-11T15:10:13Z	roborumble	elloco.Kabuto 0.2r	1	86.43		86.43	1	2026-10-11 14:55:17	
+2026-10-11T15:10:13Z	roborumble	yarghard.Y101 1.0	1	99.62	100.0	99.81	2	2026-10-11 14:55:18	
+2026-10-11T15:10:13Z	roborumble	amc.ROBv400 1.0	1	95.98		95.98	1	2026-10-11 14:55:22	
+2026-10-11T15:10:13Z	roborumble	xander.cat.Spitfire 1.4	1	99.98		99.98	1	2026-10-11 14:55:25	
+2026-10-11T15:10:13Z	roborumble	mjhjd.MattHussey1 1.1	1	100.0		100.0	1	2026-10-11 14:55:27	
+2026-10-11T15:10:13Z	roborumble	suh.mega.WaveSurferPG 1.06	1	74.08		74.08	1	2026-10-11 14:55:27	
+2026-10-11T15:10:13Z	roborumble	suzushin7.nano.Galaxy03 1.01	1	73.53		73.53	1	2026-10-11 14:55:27	
+2026-10-11T15:10:13Z	roborumble	rh.abs.Xwing 2.1	2	65.66		65.66	2	2026-10-11 14:55:28	
+2026-10-11T15:10:13Z	roborumble	ha2.T2b 0.2b	2	96.63		96.63	2	2026-10-11 14:55:32	
+2026-10-11T15:10:13Z	roborumble	sample.Fire 1.0	2	100.0		100.0	2	2026-10-11 14:55:35	
+2026-10-11T15:10:13Z	roborumble	rus.vv.Snezhok 1.1	1	89.16		89.16	1	2026-10-11 14:55:36	
+2026-10-11T15:10:13Z	roborumble	wiki.mini.Sedan 1.0	1	98.92		98.92	1	2026-10-11 14:55:40	
+2026-10-11T15:10:13Z	roborumble	robar.nano.BlackWidow 1.3	2	75.8		75.8	2	2026-10-11 14:55:42	
+2026-10-11T15:10:13Z	roborumble	can.Pookie 1.1	1	80.14		80.14	1	2026-10-11 14:55:43	
+2026-10-11T15:10:13Z	roborumble	tobe.Relativity 3.9	1	91.01		91.01	1	2026-10-11 14:55:46	
+2026-10-11T15:10:13Z	roborumble	amc.ROBv300 1.1	1	98.03		98.03	1	2026-10-11 14:55:47	
+2026-10-11T15:10:13Z	roborumble	matt.BlueMind 0.8.00	1	95.18		95.18	1	2026-10-11 14:55:52	
+2026-10-11T15:10:13Z	roborumble	reeder.caden.Elmo 1	1	99.89		99.89	1	2026-10-11 14:55:53	
+2026-10-11T15:10:13Z	roborumble	slugzilla.RandomLinear 1.0	1	92.64		92.64	1	2026-10-11 14:55:54	
+2026-10-11T15:10:13Z	roborumble	lrem.quickhack.QuickHack 1.0	1	92.39		92.39	1	2026-10-11 14:56:01	
+2026-10-11T15:10:13Z	roborumble	kawigi.f.FhqwhgadsMicro 1.0	1	84.56		84.56	1	2026-10-11 14:56:02	
+2026-10-11T15:10:13Z	roborumble	extra.LightSauce 0.01	1	98.03		98.03	1	2026-10-11 14:56:06	
+2026-10-11T15:10:13Z	roborumble	agd.Mooserwirt2 2.7	1	93.0		93.0	1	2026-10-11 14:56:10	
+2026-10-11T15:10:13Z	roborumble	bayen.UbaRamLT 1.0	1	80.44		80.44	1	2026-10-11 14:56:14	
+2026-10-11T15:10:13Z	roborumble	ins.MobyNano 0.8	1	84.87		84.87	1	2026-10-11 14:56:17	
+2026-10-11T15:10:13Z	roborumble	fromHell.BlackBox 0.0.2	1	64.52		64.52	1	2026-10-11 14:56:32	
+2026-10-11T15:10:13Z	roborumble	arthord.MannyPacquiao Delta2	1	80.23		80.23	1	2026-10-11 14:56:33	
+2026-10-11T15:10:13Z	roborumble	davv.DOne b002	1	99.58		99.58	1	2026-10-11 14:56:37	
+2026-10-11T15:10:13Z	roborumble	ahf.Acero 1.0	1	96.39		96.39	1	2026-10-11 14:56:38	
+2026-10-11T15:10:13Z	roborumble	techdude.Class2C.Class2C 0.1	2	95.78		95.78	2	2026-10-11 14:56:41	
+2026-10-11T15:10:13Z	roborumble	fowl3628800.LightningBolt 2.6.0	1	99.62		99.62	1	2026-10-11 14:56:44	
+2026-10-11T15:10:13Z	roborumble	kawigi.sbf.FloodSonnet 0.9	2	77.27		77.27	2	2026-10-11 14:56:55	
+2026-10-11T15:10:13Z	roborumble	sample.Walls 1.0	1	99.43		99.43	1	2026-10-11 14:56:56	
+2026-10-11T15:10:13Z	roborumble	cf.proto.Shiva 2.2	1	92.72		92.72	1	2026-10-11 14:56:57	
+2026-10-11T15:10:13Z	roborumble	apv.NanoLauLectrikTheCannibal 1.1	1	91.68		91.68	1	2026-10-11 14:57:00	
+2026-10-11T15:10:13Z	roborumble	jbot.Rabbit2 1.1	1	79.91		79.91	1	2026-10-11 14:57:02	
+2026-10-11T15:10:13Z	roborumble	rsalesc.mega.Knight 0.6.28	1	50.01		50.01	1	2026-10-11 14:57:03	
+2026-10-11T15:10:13Z	roborumble	gh.micro.Grinnik 1.0	1	87.53		87.53	1	2026-10-11 14:57:06	
+2026-10-11T15:10:13Z	roborumble	com.timothyveletta.FuzzyBot 1.1	1	97.58		97.58	1	2026-10-11 14:57:08	
+2026-10-11T15:10:13Z	roborumble	whitesquare.robots.SkynetAdvanced 1.1	1	97.79		97.79	1	2026-10-11 14:57:09	
+2026-10-11T15:10:13Z	roborumble	djdjdj.NanoSkunk10 1.0	1	97.91		97.91	1	2026-10-11 14:57:12	
+2026-10-11T15:10:13Z	roborumble	slugzilla.SNGGF 1.0	1	95.85		95.85	1	2026-10-11 14:57:12	
+2026-10-11T15:10:13Z	roborumble	elloco.Flower 0.1r1	2	90.82		90.82	2	2026-10-11 14:57:15	
+2026-10-11T15:10:13Z	roborumble	ap.Frederick 1.1	1	100.0		100.0	1	2026-10-11 14:57:18	
+2026-10-11T15:10:13Z	roborumble	cs.s2.Succubus 1.0	1	68.86		68.86	1	2026-10-11 14:57:19	
+2026-10-11T15:10:13Z	roborumble	lazarecki.mega.PinkerStinker 0.7	1	70.07		70.07	1	2026-10-11 14:57:22	
+2026-10-11T15:10:13Z	roborumble	skm.butterfly 1.0	2	100.0		100.0	2	2026-10-11 14:57:24	
+2026-10-11T15:10:13Z	roborumble	pak.Dargon 1.0b	1	99.39		99.39	1	2026-10-11 14:57:25	
+2026-10-11T15:10:13Z	roborumble	oog.melee.Capulet 1.2	1	89.8		89.8	1	2026-10-11 14:57:26	
+2026-10-11T15:10:13Z	roborumble	am.Miedzix 3.0	1	87.54		87.54	1	2026-10-11 14:57:29	
+2026-10-11T15:10:13Z	roborumble	spinnercat.mega.Tardis 1.2	1	81.9		81.9	1	2026-10-11 14:57:31	
+2026-10-11T15:10:13Z	roborumble	xander.cat.Fiona 1.4	1	86.4		86.4	1	2026-10-11 14:57:32	
+2026-10-11T15:10:13Z	roborumble	cjm.chalk.Chalk 2.6.Be	1	68.69		68.69	1	2026-10-11 14:57:35	
+2026-10-11T15:10:13Z	roborumble	spartancompany.Spartan2 1.0	1	100.0		100.0	1	2026-10-11 14:57:38	
+2026-10-11T15:10:13Z	roborumble	robar.micro.Kirbyi 1.0	2	82.01		82.01	2	2026-10-11 14:57:39	
+2026-10-11T15:10:13Z	roborumble	erdnis.Rover 0.3	1	90.79		90.79	1	2026-10-11 14:57:40	
+2026-10-11T15:10:13Z	roborumble	kjc.Karaykan 1.0	1	96.61		96.61	1	2026-10-11 14:57:41	
+2026-10-11T15:10:13Z	roborumble	matt.UnderDark4 0.4.00	1	98.1		98.1	1	2026-10-11 14:57:41	
+2026-10-11T15:10:13Z	roborumble	satan.R0 0.2	1	92.68		92.68	1	2026-10-11 14:57:41	
+2026-10-11T15:10:13Z	roborumble	gg.Wolverine 2.0	1	91.09		91.09	1	2026-10-11 14:57:48	
+2026-10-11T15:10:13Z	roborumble	dft.Freddie 1.32	1	96.45		96.45	1	2026-10-11 14:57:55	
+2026-10-11T15:10:13Z	roborumble	PK.Twardy 0.4.2	1	98.17		98.17	1	2026-10-11 14:57:58	
+2026-10-11T15:10:13Z	roborumble	tornyil.bottomup.BottomUp 1.05	1	80.21		80.21	1	2026-10-11 14:57:59	
+2026-10-11T15:10:13Z	roborumble	axeBots.Okami 1.04	1	76.97		76.97	1	2026-10-11 14:58:00	
+2026-10-11T15:10:13Z	roborumble	dft.Immortal 1.40	2	70.02		70.02	2	2026-10-11 14:58:10	
+2026-10-11T15:10:13Z	roborumble	sanja.First 0.1	1	96.82		96.82	1	2026-10-11 14:58:10	
+2026-10-11T15:10:13Z	roborumble	stelo.RamTrackSurfer 1.2	1	80.13		80.13	1	2026-10-11 14:58:12	
+2026-10-11T15:10:13Z	roborumble	paket.MojRobot 1.0	1	100.0		100.0	1	2026-10-11 14:58:13	
+2026-10-11T15:10:13Z	roborumble	sanyi.mikrobi.Roberto 1.0	1	94.39		94.39	1	2026-10-11 14:58:16	
+2026-10-11T15:10:13Z	roborumble	supersample.SuperRamFire 1.0	1	81.84		81.84	1	2026-10-11 14:58:16	
+2026-10-11T15:10:13Z	roborumble	toz.Gnome 1.1	2	93.32		93.32	2	2026-10-11 14:58:18	
+2026-10-11T15:10:13Z	roborumble	rnatest.MendelBot 1.0	1	96.17		96.17	1	2026-10-11 14:58:20	
+2026-10-11T15:10:13Z	roborumble	kc.micro.rammer.MaxRisk 0.6	1	68.43		68.43	1	2026-10-11 14:58:23	
+2026-10-11T15:10:13Z	roborumble	leb.ShootAnArrow 0.1	2	91.48		91.48	2	2026-10-11 14:58:25	
+2026-10-11T15:10:13Z	roborumble	stelo.MatchupMini 1.1	1	71.47		71.47	1	2026-10-11 14:58:28	
+2026-10-11T15:10:13Z	roborumble	mn.Combat 3.25.0	1	52.58		52.58	1	2026-10-11 14:58:29	
+2026-10-11T15:10:13Z	roborumble	mbro.Detektor3 0.1.1	1	97.58		97.58	1	2026-10-11 14:58:33	
+2026-10-11T15:10:13Z	roborumble	vStar.RAFzilla 2.15	2	98.09		98.09	2	2026-10-11 14:58:34	
+2026-10-11T15:10:13Z	roborumble	simonton.micro.GFMicro 1.0	1	92.25		92.25	1	2026-10-11 14:58:36	
+2026-10-11T15:10:13Z	roborumble	ar.TheoryOfEverything 1.2.1	1	83.75		83.75	1	2026-10-11 14:58:38	
+2026-10-11T15:10:13Z	roborumble	urdos.URDOS 1.3	1	85.25		85.25	1	2026-10-11 14:58:41	
+2026-10-11T15:10:13Z	roborumble	stuff.Vlad 0.1	2	88.71		88.71	2	2026-10-11 14:58:42	
+2026-10-11T15:10:13Z	roborumble	hirataatsushi.Trinity 0.003	1	96.04		96.04	1	2026-10-11 14:58:48	
+2026-10-11T15:10:13Z	roborumble	exauge.GateKeeper 1.1.121g	1	84.76		84.76	1	2026-10-11 14:58:51	
+2026-10-11T15:10:13Z	roborumble	bvh.mini.Freya 0.55	1	96.07		96.07	1	2026-10-11 14:58:53	
+2026-10-11T15:10:13Z	roborumble	deo.CloudBot 1.3	1	74.64		74.64	1	2026-10-11 14:58:57	
+2026-10-11T15:10:13Z	roborumble	tobe.mini.Charon 0.9	1	99.18		99.18	1	2026-10-11 14:58:58	
+2026-10-11T15:10:13Z	roborumble	mladjo.Startko 1.0	1	82.09		82.09	1	2026-10-11 14:59:01	
+2026-10-11T15:10:13Z	roborumble	darkcanuck.Pris 0.92	1	60.6		60.6	1	2026-10-11 14:59:06	
+2026-10-11T15:10:13Z	roborumble	franzor.Lizt 1.3.1	1	99.98		99.98	1	2026-10-11 14:59:07	
+2026-10-11T15:10:13Z	roborumble	positive.Portia 1.26e	1	58.98		58.98	1	2026-10-11 14:59:09	
+2026-10-11T15:10:13Z	roborumble	ejbots.AngryGrandpappy 1.2	1	94.82		94.82	1	2026-10-11 14:59:11	
+2026-10-11T15:10:13Z	roborumble	bvh.mini.Mjolnir 0.3	1	74.76		74.76	1	2026-10-11 14:59:12	
+2026-10-11T15:10:13Z	roborumble	alex.Diabolo5 1.1	1	89.97		89.97	1	2026-10-11 14:59:13	
+2026-10-11T15:10:13Z	roborumble	lj.Dapps 0.2	1	85.4		85.4	1	2026-10-11 14:59:14	
+2026-10-11T15:10:13Z	roborumble	conscience.Idem 1.0a	1	93.48		93.48	1	2026-10-11 14:59:17	
+2026-10-11T15:10:13Z	roborumble	sheldor.nano.PointInLine 1.0	1	77.7		77.7	1	2026-10-11 14:59:20	
+2026-10-11T15:10:13Z	roborumble	kinsen.nano.Quarrelet 1.0	1	81.91		81.91	1	2026-10-11 14:59:26	
+2026-10-11T15:10:13Z	roborumble	barontrozo.BaronTrozo 1.7.6	1	66.17		66.17	1	2026-10-11 14:59:27	
+2026-10-11T15:10:13Z	roborumble	fire219.CatBot 1.0	1	99.8		99.8	1	2026-10-11 14:59:30	
+2026-10-11T15:10:13Z	roborumble	simonton.micro.WeeklongObsession 3.4.1	1	66.6		66.6	1	2026-10-11 14:59:31	
+2026-10-11T15:10:13Z	roborumble	slugzilla.Basilite 0.13	1	75.64		75.64	1	2026-10-11 14:59:36	
+2026-10-11T15:10:13Z	roborumble	bts.mega.Gnarly 1.4	1	85.34		85.34	1	2026-10-11 14:59:38	
+2026-10-11T15:10:13Z	roborumble	dft.Guppy 1.0	1	94.99		94.99	1	2026-10-11 14:59:42	
+2026-10-11T15:10:13Z	roborumble	cre.Karolos 0.32	1	89.07		89.07	1	2026-10-11 14:59:43	
+2026-10-11T15:10:13Z	roborumble	PkKillers.PkAssassin 1.0	1	91.96		91.96	1	2026-10-11 14:59:47	
+2026-10-11T15:10:13Z	roborumble	ers.nano.lig.LigMA 1.9	2	91.69		91.69	2	2026-10-11 14:59:47	
+2026-10-11T15:10:13Z	roborumble	ds.OoV4 0.3b	1	93.21		93.21	1	2026-10-11 14:59:49	
+2026-10-11T15:10:13Z	roborumble	davidalves.Phoenix 1.02	1	50.61		50.61	1	2026-10-11 14:59:56	
+2026-10-11T15:10:13Z	roborumble	step.nanoPri 1.0	1	77.46		77.46	1	2026-10-11 14:59:58	
+2026-10-11T15:10:13Z	roborumble	gtf.robocode.Strafer 2.1.1	2	93.32		93.32	2	2026-10-11 14:59:59	
+2026-10-11T15:10:13Z	roborumble	stelo.FretNano 1.1	1	86.16		86.16	1	2026-10-11 15:00:00	
+2026-10-11T15:10:13Z	roborumble	alpha.BlackIce 1.0	1	86.82		86.82	1	2026-10-11 15:00:04	
+2026-10-11T15:10:13Z	roborumble	kawigi.sbf.FloodMini 1.4	2	83.04		83.04	2	2026-10-11 15:00:08	
+2026-10-11T15:10:13Z	roborumble	penguin.Joker .611wr	1	75.48		75.48	1	2026-10-11 15:00:10	
+2026-10-11T15:10:13Z	roborumble	acid.Null 1.0	1	94.99		94.99	1	2026-10-11 15:00:11	
+2026-10-11T15:10:13Z	roborumble	bayen.UbaMicro 1.4	1	95.41		95.41	1	2026-10-11 15:00:11	
+2026-10-11T15:10:13Z	roborumble	EH.Pegasus 0.113	1	89.53		89.53	1	2026-10-11 15:00:17	
+2026-10-11T15:10:13Z	roborumble	EH.mini.Panther 0.2	1	98.92		98.92	1	2026-10-11 15:00:19	
+2026-10-11T15:10:13Z	roborumble	davidalves.net.DuelistMini 1.1	2	90.51		90.51	2	2026-10-11 15:00:23	
+2026-10-11T15:10:13Z	roborumble	wiki.SuperSampleBot.SuperSittingDuck 1.0	1	99.52		99.52	1	2026-10-11 15:00:26	
+2026-10-11T15:10:13Z	roborumble	ntc.Lasers.Lasers 0.9	1	92.55		92.55	1	2026-10-11 15:00:27	
+2026-10-11T15:10:13Z	roborumble	snowman.Snowman 1.0	1	100.0		100.0	1	2026-10-11 15:00:28	
+2026-10-11T15:10:13Z	roborumble	ratosh.nano.Debo 1.36	1	83.55		83.55	1	2026-10-11 15:00:32	
+2026-10-11T15:10:13Z	roborumble	fnc.bandit2002.Bandit2002 4.0.2	1	86.23		86.23	1	2026-10-11 15:00:37	
+2026-10-11T15:10:13Z	roborumble	lorneswork.Predator 1.0	1	90.93		90.93	1	2026-10-11 15:00:38	
+2026-10-11T15:10:13Z	roborumble	tad.Dalek98 0.98	1	82.5		82.5	1	2026-10-11 15:00:40	
+2026-10-11T15:10:13Z	roborumble	com.blogspot.malinkody.DestrobotMalin 1.0	1	99.64		99.64	1	2026-10-11 15:00:41	
+2026-10-11T15:10:13Z	roborumble	vft.Valkyrie 1.0	1	91.38		91.38	1	2026-10-11 15:00:43	
+2026-10-11T15:10:13Z	roborumble	Queens_teamrobot.UltraRazor 1.0	1	99.21		99.21	1	2026-10-11 15:00:45	
+2026-10-11T15:10:13Z	roborumble	intruder.PrairieWolf 2.61	1	79.47		79.47	1	2026-10-11 15:00:48	
+2026-10-11T15:10:13Z	roborumble	wompi.Kowari 1.6	2	74.27		74.27	2	2026-10-11 15:00:48	
+2026-10-11T15:10:13Z	roborumble	pez.mini.VertiLeach 0.4.0	1	77.83		77.83	1	2026-10-11 15:00:51	
+2026-10-11T15:10:13Z	roborumble	m3thos.mini.Eva01 0.5.5	1	94.91		94.91	1	2026-10-11 15:00:54	
+2026-10-11T15:10:13Z	roborumble	robar.micro.Topaz 0.25	1	68.52		68.52	1	2026-10-11 15:01:04	
+2026-10-11T15:10:13Z	roborumble	supersample.SuperSpinBot 1.0	1	91.48		91.48	1	2026-10-11 15:01:04	
+2026-10-11T15:10:13Z	roborumble	blir.micro.blixi.Blixi 1.2	1	96.85		96.85	1	2026-10-11 15:01:06	
+2026-10-11T15:10:13Z	roborumble	oog.nano.MagicD2 2.4	1	90.09		90.09	1	2026-10-11 15:01:09	
+2026-10-11T15:10:13Z	roborumble	hlavko.micro.Flex 1.5	2	76.9		76.9	2	2026-10-11 15:01:11	
+2026-10-11T15:10:13Z	roborumble	demetrix.nano.Neutrino 0.27	1	76.61		76.61	1	2026-10-11 15:01:12	
+2026-10-11T15:10:13Z	roborumble	timmit.micro.TimXJ 0.22	1	78.17		78.17	1	2026-10-11 15:01:18	
+2026-10-11T15:10:13Z	roborumble	winamp32.micro.MicroMacro 1.0	2	95.78		95.78	2	2026-10-11 15:01:18	
+2026-10-11T15:10:13Z	roborumble	disan.Chair 2.2.0	2	98.33		98.33	2	2026-10-11 15:01:22	
+2026-10-11T15:10:13Z	roborumble	nz.jdc.nano.NeophytePRAL 1.4	1	88.96		88.96	1	2026-10-11 15:01:24	
+2026-10-11T15:10:13Z	roborumble	goblin.Bender 2.4	1	98.75		98.75	1	2026-10-11 15:01:26	
+2026-10-11T15:10:13Z	roborumble	asd.Cthulhu 1.2	2	91.78		91.78	2	2026-10-11 15:01:27	
+2026-10-11T15:10:13Z	roborumble	supersample.SuperTracker 1.0	1	95.44		95.44	1	2026-10-11 15:01:33	
+2026-10-11T15:10:13Z	roborumble	taqho.taqbot 1.0	1	88.61		88.61	1	2026-10-11 15:01:33	
+2026-10-11T15:10:13Z	roborumble	kronenthaler.Basilisk 1.0	1	91.61		91.61	1	2026-10-11 15:01:40	
+2026-10-11T15:10:13Z	roborumble	nz.jdc.nano.PralDeGuerre 1.2	1	73.33		73.33	1	2026-10-11 15:01:41	
+2026-10-11T15:10:13Z	roborumble	paolord.TheHulk 1.0	2	99.84		99.84	2	2026-10-11 15:01:43	
+2026-10-11T15:10:13Z	roborumble	suh.nano.AntiGravityL 1.01	1	99.63		99.63	1	2026-10-11 15:01:46	
+2026-10-11T15:10:13Z	roborumble	jf.Dodger 1.3	1	99.4		99.4	1	2026-10-11 15:01:48	
+2026-10-11T15:10:13Z	roborumble	shu.nitro.LENIN .T34	2	89.22		89.22	2	2026-10-11 15:01:49	
+2026-10-11T15:10:13Z	roborumble	homerbots.h1 1.0	1	99.18		99.18	1	2026-10-11 15:01:51	
+2026-10-11T15:10:13Z	roborumble	pez.gloom.GloomyDark 0.9.2	1	86.82		86.82	1	2026-10-11 15:01:53	
+2026-10-11T15:10:13Z	roborumble	hamilton.Hamilton 1.0	1	84.7		84.7	1	2026-10-11 15:01:58	
+2026-10-11T15:10:13Z	roborumble	techdude.kombat.FlamingKombat 1.5	1	99.61		99.61	1	2026-10-11 15:02:02	
+2026-10-11T15:10:13Z	roborumble	rz.SmallDevil 1.502	2	92.98		92.98	2	2026-10-11 15:02:09	
+2026-10-11T15:10:13Z	roborumble	oog.micro.MagicD3 0.41	1	68.57		68.57	1	2026-10-11 15:02:11	
+2026-10-11T15:10:13Z	roborumble	florent.FloatingTadpole 1.2.6	1	78.43		78.43	1	2026-10-11 15:02:12	
+2026-10-11T15:10:13Z	roborumble	bvh.tyr.Tyr 1.74	1	93.84		93.84	1	2026-10-11 15:02:14	
+2026-10-11T15:10:13Z	roborumble	apollokidd.ApolloKidd 0.9	1	96.44		96.44	1	2026-10-11 15:02:20	
+2026-10-11T15:10:13Z	roborumble	spinnercat.Kitten 1.6	2	84.75		84.75	2	2026-10-11 15:02:23	
+2026-10-11T15:10:13Z	roborumble	fruits.NanoStrawbery 1.3	1	99.32		99.32	1	2026-10-11 15:02:25	
+2026-10-11T15:10:13Z	roborumble	WarfaJibril.Jibril_Warfa_Andromeda 1.11	1	85.59		85.59	1	2026-10-11 15:02:26	
+2026-10-11T15:10:13Z	roborumble	bvh.micro.Freya 0.3	2	92.4		92.4	2	2026-10-11 15:02:28	
+2026-10-11T15:10:13Z	roborumble	sp.AstherNano 1.0	1	98.12		98.12	1	2026-10-11 15:02:29	
+2026-10-11T15:10:13Z	roborumble	EBBU.Sim2 1.02	1	91.75		91.75	1	2026-10-11 15:02:31	
+2026-10-11T15:10:13Z	roborumble	suzushin7.nano.TargetC 1.00	2	98.47		98.47	2	2026-10-11 15:02:32	
+2026-10-11T15:10:13Z	roborumble	areb.Union 1.06	1	77.93		77.93	1	2026-10-11 15:02:42	
+2026-10-11T15:10:13Z	roborumble	rsim.mini.BulletCatcher 0.4	1	78.81		78.81	1	2026-10-11 15:02:43	
+2026-10-11T15:10:13Z	roborumble	adt.Ar2 1.0	1	95.57		95.57	1	2026-10-11 15:02:48	
+2026-10-11T15:10:13Z	roborumble	stelo.SteloTestNano 1.0	1	88.31		88.31	1	2026-10-11 15:02:50	
+2026-10-11T15:10:13Z	roborumble	gimp.GimpBot 0.1	1	97.48		97.48	1	2026-10-11 15:02:51	
+2026-10-11T15:10:13Z	roborumble	metal.small.dna2.MCoolDNA 1.5	1	92.12		92.12	1	2026-10-11 15:02:52	
+2026-10-11T15:10:13Z	roborumble	matt.advanced.Katana 1.0	1	93.42		93.42	1	2026-10-11 15:02:56	
+2026-10-11T15:10:13Z	roborumble	fullsail.TimbotNoPrediction 1.0	3	91.39		91.39	3	2026-10-11 15:02:57	
+2026-10-11T15:10:13Z	roborumble	mld.jdc.nano.LittleBlackBook 1.0	1	93.85		93.85	1	2026-10-11 15:02:59	
+2026-10-11T15:10:13Z	roborumble	non.mega.NaN 0.1	1	93.23		93.23	1	2026-10-11 15:02:59	
+2026-10-11T15:10:13Z	roborumble	cjm.Che 1.2	1	72.99		72.99	1	2026-10-11 15:03:00	
+2026-10-11T15:10:13Z	roborumble	dsx724.VSAB_EP3_ATR 1.1	1	96.71		96.71	1	2026-10-11 15:03:03	
+2026-10-11T15:10:13Z	roborumble	rc.RCBot 2.0	1	93.93		93.93	1	2026-10-11 15:03:06	
+2026-10-11T15:10:13Z	roborumble	wiki.nano.Flick 1.0	1	96.44		96.44	1	2026-10-11 15:03:09	
+2026-10-11T15:10:13Z	roborumble	rampancy.Durandal 2.2d	1	80.01		80.01	1	2026-10-11 15:03:12	
+2026-10-11T15:10:13Z	roborumble	rdt.AgentSmith.AgentSmith 0.5	1	96.1		96.1	1	2026-10-11 15:03:13	
+2026-10-11T15:10:13Z	roborumble	jt.SpearmintCT Alpha	1	97.24		97.24	1	2026-10-11 15:03:15	
+2026-10-11T15:10:13Z	roborumble	myl.micro.NekoNinja 1.30	1	95.19		95.19	1	2026-10-11 15:03:19	
+2026-10-11T15:10:13Z	roborumble	slugzilla.OscillatePattern 1.0	1	93.52		93.52	1	2026-10-11 15:03:19	
+2026-10-11T15:10:13Z	roborumble	kneels.nano.Derp 0.2	1	73.49		73.49	1	2026-10-11 15:03:26	
+2026-10-11T15:10:13Z	roborumble	seed.Weed 3.0.2	1	85.07		85.07	1	2026-10-11 15:03:32	
+2026-10-11T15:10:13Z	roborumble	cuoq.Kakera 1.0	1	76.15		76.15	1	2026-10-11 15:03:34	
+2026-10-11T15:10:13Z	roborumble	supersample.SuperWalls 1.0	1	96.22		96.22	1	2026-10-11 15:03:34	
+2026-10-11T15:10:13Z	roborumble	kinsen.nano.Charp 1.0	1	73.55		73.55	1	2026-10-11 15:03:39	
+2026-10-11T15:10:13Z	roborumble	exauge.Leopard 1.1.019	1	81.6		81.6	1	2026-10-11 15:03:40	
+2026-10-11T15:10:13Z	roborumble	ur4n0.UR4NO 1.0	1	65.55		65.55	1	2026-10-11 15:03:41	
+2026-10-11T15:10:13Z	roborumble	nexus.Experimental 0.2	1	99.63		99.63	1	2026-10-11 15:03:44	
+2026-10-11T15:10:13Z	roborumble	grybgoofy.GoofyBot 0.10	1	91.8		91.8	1	2026-10-11 15:03:45	
+2026-10-11T15:10:13Z	roborumble	EH.kms.LightningStorm 0.11B	1	78.17		78.17	1	2026-10-11 15:03:52	
+2026-10-11T15:10:13Z	roborumble	robar.haiku.Spike 1.0	1	95.44		95.44	1	2026-10-11 15:03:52	
+2026-10-11T15:10:13Z	roborumble	lxx.Emerald 0.6.5	1	94.84		94.84	1	2026-10-11 15:03:55	
+2026-10-11T15:10:13Z	roborumble	fushi.PvP1.PvP1 2004-02-16	1	85.91		85.91	1	2026-10-11 15:03:56	
+2026-10-11T15:10:13Z	roborumble	buba.Archivist 0.1	1	87.07		87.07	1	2026-10-11 15:03:58	
+2026-10-11T15:10:13Z	roborumble	tk.BotOX 0.3	1	98.82		98.82	1	2026-10-11 15:03:58	
+2026-10-11T15:10:13Z	roborumble	benhorner.PureAggression 0.2.6	2	77.41		77.41	2	2026-10-11 15:04:01	
+2026-10-11T15:10:13Z	roborumble	cx.micro.Spark 0.6	1	85.31		85.31	1	2026-10-11 15:04:04	
+2026-10-11T15:10:13Z	roborumble	el33t.EL33tGangstarr2 2.0	2	95.05		95.05	2	2026-10-11 15:04:12	
+2026-10-11T15:10:13Z	roborumble	kc.serpent.Hydra 0.21	1	50.83		50.83	1	2026-10-11 15:04:15	
+2026-10-11T15:10:13Z	roborumble	sample.MyFirstJuniorRobot 1.0	1	98.59		98.59	1	2026-10-11 15:04:18	
+2026-10-11T15:10:13Z	roborumble	justin.DemonicRage 3.20	1	65.48		65.48	1	2026-10-11 15:04:19	
+2026-10-11T15:10:13Z	roborumble	ry.LightningBug 1.0	2	85.34		85.34	2	2026-10-11 15:04:19	
+2026-10-11T15:10:13Z	roborumble	velas.Alpha 1.0	1	96.39		96.39	1	2026-10-11 15:04:19	
+2026-10-11T15:10:13Z	roborumble	nz.jdc.nano.PatternAdept 1.0	1	87.58		87.58	1	2026-10-11 15:04:24	
+2026-10-11T15:10:13Z	roborumble	suh.nano.OscillatorL 1.00	1	96.58		96.58	1	2026-10-11 15:04:30	
+2026-10-11T15:10:13Z	roborumble	kb.PingPong 1.0	1	99.72		99.72	1	2026-10-11 15:04:32	
+2026-10-11T15:10:13Z	roborumble	slugzilla.SquirmyToad 3.9	2	75.93		75.93	2	2026-10-11 15:04:32	
+2026-10-11T15:10:13Z	roborumble	supersample.SuperMercutio 1.0	2	86.9		86.9	2	2026-10-11 15:04:38	
+2026-10-11T15:10:13Z	roborumble	stelo.Randomness 1.1	1	82.09		82.09	1	2026-10-11 15:04:39	
+2026-10-11T15:10:13Z	roborumble	slugzilla.OscillateLinear 1.0	1	98.86		98.86	1	2026-10-11 15:04:42	
+2026-10-11T15:10:13Z	roborumble	axeBots.SilverSurfer 2.53.33fix	1	60.49		60.49	1	2026-10-11 15:04:46	
+2026-10-11T15:10:13Z	roborumble	hlavko.nano.Phoenix 1.0	1	99.22		99.22	1	2026-10-11 15:04:48	
+2026-10-11T15:10:13Z	roborumble	blir.nano.Cabbage R1.0.1	1	96.81		96.81	1	2026-10-11 15:04:51	
+2026-10-11T15:10:13Z	roborumble	doka.ShinigamiKNN 1.0	1	97.23		97.23	1	2026-10-11 15:04:56	
+2026-10-11T15:10:13Z	roborumble	tw.Exterminator 1.0	2	87.69		87.69	2	2026-10-11 15:04:57	
+2026-10-11T15:10:13Z	roborumble	axeBots.HataMoto 3.09	1	79.91		79.91	1	2026-10-11 15:04:59	
+2026-10-11T15:10:13Z	roborumble	ph.mini.Archer 0.6.6	1	85.5		85.5	1	2026-10-11 15:05:03	
+2026-10-11T15:10:13Z	roborumble	csp.Eagle 3.30	1	96.28		96.28	1	2026-10-11 15:05:08	
+2026-10-11T15:10:13Z	roborumble	as.xbots 1.0	1	77.14		77.14	1	2026-10-11 15:05:09	
+2026-10-11T15:10:13Z	roborumble	doka.Shinigami 2.2	2	91.3		91.3	2	2026-10-11 15:05:15	
+2026-10-11T15:10:13Z	roborumble	rdt.AgentSmith.AgentSmithRedux 0.02	1	93.21		93.21	1	2026-10-11 15:05:19	
+2026-10-11T15:10:13Z	roborumble	demetrix.nano.SledgeHammer 0.22	1	65.37		65.37	1	2026-10-11 15:05:22	
+2026-10-11T15:10:13Z	roborumble	wompi.Numbat 1.9	1	87.78		87.78	1	2026-10-11 15:05:28	
+2026-10-11T15:10:13Z	roborumble	gh.GresSuffurd 0.4.13	1	64.15		64.15	1	2026-10-11 15:05:36	
+2026-10-11T15:10:13Z	roborumble	pedersen.Hubris 2.4	1	78.17		78.17	1	2026-10-11 15:05:37	
+2026-10-11T15:10:13Z	roborumble	romz.robot.circular.WildRabbit 0.9.6	1	95.63		95.63	1	2026-10-11 15:05:44	
+2026-10-11T15:10:13Z	roborumble	arthord.NanoSatanMelee Beta	2	81.93		81.93	2	2026-10-11 15:05:45	
+2026-10-11T15:10:13Z	roborumble	eem.awful v1.2	1	100.0		100.0	1	2026-10-11 15:05:46	
+2026-10-11T15:10:13Z	roborumble	ndn.DyslexicMonkey 1.1	2	95.1		95.1	2	2026-10-11 15:05:49	
+2026-10-11T15:10:13Z	roborumble	ary.nano.ColorNanoP 1.1	1	88.55		88.55	1	2026-10-11 15:05:54	
+2026-10-11T15:10:13Z	roborumble	maribo.Omicron 1.0	1	93.17		93.17	1	2026-10-11 15:05:55	
+2026-10-11T15:10:13Z	roborumble	ntc.Cannon 1.12test	1	78.23		78.23	1	2026-10-11 15:05:56	
+2026-10-11T15:10:13Z	roborumble	slugzilla.SNGPattern 1.0	1	95.19		95.19	1	2026-10-11 15:05:58	
+2026-10-11T15:10:13Z	roborumble	dvogon.GangBang 1.0	1	99.44		99.44	1	2026-10-11 15:05:59	
+2026-10-11T15:10:13Z	roborumble	fullsail.SweetTea 1.1	1	100.0		100.0	1	2026-10-11 15:06:00	
+2026-10-11T15:10:13Z	roborumble	quietus.Invader 0.1	1	100.0		100.0	1	2026-10-11 15:06:02	
+2026-10-11T15:10:13Z	roborumble	slugzilla.OrbitGF 1.0	1	91.91		91.91	1	2026-10-11 15:06:04	
+2026-10-11T15:10:13Z	roborumble	kms.Royal 0.15M	2	93.68		93.68	2	2026-10-11 15:06:05	
+2026-10-11T15:10:13Z	roborumble	simonton.beta.LifelongObsession 0.5.1	1	91.19		91.19	1	2026-10-11 15:06:07	
+2026-10-11T15:10:13Z	roborumble	timmit.nano.TimCat 0.13	1	99.2		99.2	1	2026-10-11 15:06:12	
+2026-10-11T15:10:13Z	roborumble	nzeemin.Izh 0.5	2	99.01		99.01	2	2026-10-11 15:06:13	
+2026-10-11T15:10:13Z	roborumble	nic.SnippetBot 1.0	1	98.62		98.62	1	2026-10-11 15:06:14	
+2026-10-11T15:10:13Z	roborumble	t3.Ripper 1.0	1	98.92		98.92	1	2026-10-11 15:06:19	
+2026-10-11T15:10:13Z	roborumble	mladjo.Grrrrr 0.9	1	89.77		89.77	1	2026-10-11 15:06:20	
+2026-10-11T15:10:13Z	roborumble	bots.UberBot 1.2c	1	97.07		97.07	1	2026-10-11 15:06:24	
+2026-10-11T15:10:13Z	roborumble	sheldor.nano.SabreuseNano 1.1	1	70.9		70.9	1	2026-10-11 15:06:25	
+2026-10-11T15:10:13Z	roborumble	bvh.micro.Svadilfari 0.2	1	98.13		98.13	1	2026-10-11 15:06:29	
+2026-10-11T15:10:13Z	roborumble	jgap.JGAP7247_2 1.0	1	96.16		96.16	1	2026-10-11 15:06:32	
+2026-10-11T15:10:13Z	roborumble	oog.mega.saguaro.Saguaro 1.0	1	75.1		75.1	1	2026-10-11 15:06:34	
+2026-10-11T15:10:13Z	roborumble	robar.nano.MosquitoPM 1.0	1	78.39		78.39	1	2026-10-11 15:06:36	
+2026-10-11T15:10:13Z	roborumble	dcs.Eater_of_Worlds 1.1.3-A	1	95.9		95.9	1	2026-10-11 15:06:40	
+2026-10-11T15:10:13Z	roborumble	mld.DustBunny 3.8	2	98.74		98.74	2	2026-10-11 15:06:44	
+2026-10-11T15:10:13Z	roborumble	zezinho.QuerMePegarKKKK 1.0	1	73.51		73.51	1	2026-10-11 15:06:48	
+2026-10-11T15:10:13Z	roborumble	ArchAlpha.ArchimedesAlpha 1.0	1	100.0		100.0	1	2026-10-11 15:06:50	
+2026-10-11T15:10:13Z	roborumble	And.BasicSurfer FF1.6	1	98.9		98.9	1	2026-10-11 15:06:55	
+2026-10-11T15:10:13Z	roborumble	ags.Glacier 0.3.2	2	68.47		68.47	2	2026-10-11 15:06:56	
+2026-10-11T15:10:13Z	roborumble	davidalves.PhoenixOS 1.1	1	65.93		65.93	1	2026-10-11 15:06:56	
+2026-10-11T15:10:13Z	roborumble	mk.Alpha 0.2.1	1	96.3		96.3	1	2026-10-11 15:07:03	
+2026-10-11T15:10:13Z	roborumble	com.cohesiva.robocode.ManOwaR 1.0	1	87.97		87.97	1	2026-10-11 15:07:13	
+2026-10-11T15:10:13Z	roborumble	kc.micro.Needle 0.101	1	76.04		76.04	1	2026-10-11 15:07:17	
+2026-10-11T15:10:13Z	roborumble	DTF.Kludgy 1.2b	2	77.62		77.62	2	2026-10-11 15:07:19	
+2026-10-11T15:10:13Z	roborumble	geep.mini.GPBotB 1.1	2	92.22		92.22	2	2026-10-11 15:07:24	
+2026-10-11T15:10:13Z	roborumble	fromHell.C22H30N2O2S 2.2	1	80.14		80.14	1	2026-10-11 15:07:26	
+2026-10-11T15:10:13Z	roborumble	suh.mega.WaveSurferGF 1.04	1	76.91		76.91	1	2026-10-11 15:07:27	
+2026-10-11T15:10:13Z	roborumble	sample.VelociRobot 1.0	2	98.81		98.81	2	2026-10-11 15:07:34	
+2026-10-11T15:10:13Z	roborumble	pa3k.Viper 5.03	1	75.36		75.36	1	2026-10-11 15:07:38	
+2026-10-11T15:10:13Z	roborumble	timmit.TimmiT 0.22	1	88.93		88.93	1	2026-10-11 15:07:39	
+2026-10-11T15:10:13Z	roborumble	sheldor.micro.Continuation 1.1	1	68.26		68.26	1	2026-10-11 15:07:42	
+2026-10-11T15:10:13Z	roborumble	etienne72230.Wall_street 1.0	1	99.34		99.34	1	2026-10-11 15:07:45	
+2026-10-11T15:10:13Z	roborumble	dmp.nano.Eve 3.41	1	94.12		94.12	1	2026-10-11 15:07:49	
+2026-10-11T15:10:13Z	roborumble	apv.AspidReloaded 0.6	2	74.83		74.83	2	2026-10-11 15:07:52	
+2026-10-11T15:10:13Z	roborumble	cx.micro.Blur 0.2	1	89.65		89.65	1	2026-10-11 15:07:53	
+2026-10-11T15:10:13Z	roborumble	robar.nano.Scytodes 0.3	2	93.87		93.87	2	2026-10-11 15:07:55	
+2026-10-11T15:10:13Z	roborumble	fw.Number1 1.0b	1	96.01		96.01	1	2026-10-11 15:07:56	
+2026-10-11T15:10:13Z	roborumble	pkdeken.Paladin 1.0	1	95.12		95.12	1	2026-10-11 15:08:00	
+2026-10-11T15:10:13Z	roborumble	myl.nano.Graviton 1.10	1	99.33		99.33	1	2026-10-11 15:08:06	
+2026-10-11T15:10:13Z	roborumble	kurios.DOSexe .9a	2	90.06		90.06	2	2026-10-11 15:08:09	
+2026-10-11T15:10:13Z	roborumble	uccc.MilkyWay 1.01	1	97.27		97.27	1	2026-10-11 15:08:12	
+2026-10-11T15:10:13Z	roborumble	AD.CodaFirst 1.1	1	98.59		98.59	1	2026-10-11 15:08:15	
+2026-10-11T15:10:13Z	roborumble	seed.Anastasia 1.0	1	90.64		90.64	1	2026-10-11 15:08:17	
+2026-10-11T15:10:13Z	roborumble	kjc.etc.Dharok 1.0	1	89.9		89.9	1	2026-10-11 15:08:18	
+2026-10-11T15:10:13Z	roborumble	cjm.Charo 1.1	1	84.46		84.46	1	2026-10-11 15:08:27	
+2026-10-11T15:10:13Z	roborumble	ua.kiiv.kosyak.robocode.tn1.Tn1 2.0	3	92.6		92.6	3	2026-10-11 15:08:30	
+2026-10-11T15:10:13Z	roborumble	fromHell.CHCl3 1.4.2	1	79.0		79.0	1	2026-10-11 15:08:31	
+2026-10-11T15:10:13Z	roborumble	starpkg.StarViewerZ 1.26	2	93.98		93.98	2	2026-10-11 15:08:32	
+2026-10-11T15:10:13Z	roborumble	braaropolis.Abot 1.0	1	96.61		96.61	1	2026-10-11 15:08:38	
+2026-10-11T15:10:13Z	roborumble	theo.real.Ahab 1.0	1	87.8		87.8	1	2026-10-11 15:08:47	
+2026-10-11T15:10:13Z	roborumble	ag.Gir 0.99	1	99.75		99.75	1	2026-10-11 15:08:49	
+2026-10-11T15:10:13Z	roborumble	ahf.NanoAndrew .4	1	99.33		99.33	1	2026-10-11 15:08:53	
+2026-10-11T15:10:13Z	roborumble	yagami.Tidus 0.11	1	99.64		99.64	1	2026-10-11 15:08:54	
+2026-10-11T15:10:13Z	roborumble	kenran.Bakko v1.0.1	1	78.96		78.96	1	2026-10-11 15:09:05	
+2026-10-11T15:10:13Z	roborumble	strider.Festis 1.2.1	1	81.81		81.81	1	2026-10-11 15:09:14	
+2026-10-11T15:25:22Z	roborumble	rz.GlowBlowMelee 1.4	1	78.51		78.51	1	2026-10-11 15:04:55	
+2026-10-11T15:25:22Z	roborumble	suh.nano.OscillatorL 1.00	1	97.68	96.58	97.13	2	2026-10-11 15:04:59	
+2026-10-11T15:25:22Z	roborumble	omens.CannonfodderMicro 1.4	1	97.33		97.33	1	2026-10-11 15:05:04	
+2026-10-11T15:25:22Z	roborumble	drm.Magazine 0.39	1	78.09		78.09	1	2026-10-11 15:05:15	
+2026-10-11T15:25:22Z	roborumble	ghent.ArthurPanzergon 1.0.0	1	82.3		82.3	1	2026-10-11 15:05:24	
+2026-10-11T15:25:22Z	roborumble	sample.TrackFire 1.0	1	100.0		100.0	1	2026-10-11 15:05:30	
+2026-10-11T15:25:22Z	roborumble	bts.wiki.RipCurl 0.9b	1	81.11		81.11	1	2026-10-11 15:05:38	
+2026-10-11T15:25:22Z	roborumble	gadsky.Gadsky 1.01	1	81.89		81.89	1	2026-10-11 15:05:51	
+2026-10-11T15:25:22Z	roborumble	damij.mega.Boque aaah	1	63.34		63.34	1	2026-10-11 15:06:14	
+2026-10-11T15:25:22Z	roborumble	simonton.nano.WeekendObsession_S 1.7	1	90.66		90.66	1	2026-10-11 15:06:19	
+2026-10-11T15:25:22Z	roborumble	kawigi.sbf.Barracuda 1.0	1	97.73		97.73	1	2026-10-11 15:06:25	
+2026-10-11T15:25:22Z	roborumble	cx.nano.Smog 2.6	1	93.19		93.19	1	2026-10-11 15:06:31	
+2026-10-11T15:25:22Z	roborumble	apv.LauLectrik 1.2	1	80.97		80.97	1	2026-10-11 15:06:39	
+2026-10-11T15:25:22Z	roborumble	scheronimus.AntiRebel 1.1	1	82.58		82.58	1	2026-10-11 15:06:54	
+2026-10-11T15:25:22Z	roborumble	ntc.Swim 0.9	1	88.0		88.0	1	2026-10-11 15:07:05	
+2026-10-11T15:25:22Z	roborumble	ratosh.Wesco 1.4	1	99.18		99.18	1	2026-10-11 15:07:14	
+2026-10-11T15:25:22Z	roborumble	demetrix.nano.SledgeHammer 0.22	1	68.31	65.37	66.84	2	2026-10-11 15:07:21	
+2026-10-11T15:25:22Z	roborumble	sheldor.nano.PointInLineRRAL 1.0.0	1	90.22		90.22	1	2026-10-11 15:07:31	
+2026-10-11T15:25:22Z	roborumble	mz.Movement 1.8	1	94.88		94.88	1	2026-10-11 15:07:40	
+2026-10-11T15:25:22Z	roborumble	nat.nano.OcnirpSNG 1.0b	1	76.81		76.81	1	2026-10-11 15:07:47	
+2026-10-11T15:25:22Z	roborumble	kvk.HebusLeTroll 0.41	1	86.16		86.16	1	2026-10-11 15:07:54	
+2026-10-11T15:25:22Z	roborumble	jk.melee.Neuromancer 7.12	1	54.44		54.44	1	2026-10-11 15:08:48	
+2026-10-11T15:25:22Z	roborumble	ary.Help 1.0	1	77.55		77.55	1	2026-10-11 15:08:56	
+2026-10-11T15:25:22Z	roborumble	jaybot.bots.Oddball 4.0	1	99.79		99.79	1	2026-10-11 15:08:56	
+2026-10-11T15:25:22Z	roborumble	zch.Hirkan 0.11	1	98.56		98.56	1	2026-10-11 15:08:59	
+2026-10-11T15:25:22Z	roborumble	cbot.cbot.CBot 0.8	1	86.22		86.22	1	2026-10-11 15:09:05	
+2026-10-11T15:25:22Z	roborumble	fullsail.SweetTea 1.1	2	100.0	100.0	100.0	3	2026-10-11 15:09:05	
+2026-10-11T15:25:22Z	roborumble	casey.Flee 1.0	1	84.6		84.6	1	2026-10-11 15:09:10	
+2026-10-11T15:25:22Z	roborumble	cw.megas.Blade 0.8	1	79.56		79.56	1	2026-10-11 15:09:10	
+2026-10-11T15:25:22Z	roborumble	davidalves.net.Duelist 0.1.6src	1	79.47		79.47	1	2026-10-11 15:09:15	
+2026-10-11T15:25:22Z	roborumble	davidalves.net.DuelistMicroMkII 1.1	1	90.41		90.41	1	2026-10-11 15:09:17	
+2026-10-11T15:25:22Z	roborumble	cw.megas.GhostShell GT	1	88.26		88.26	1	2026-10-11 15:09:22	
+2026-10-11T15:25:22Z	roborumble	NG.LegatusLegionis 1.2	1	91.84		91.84	1	2026-10-11 15:09:24	
+2026-10-11T15:25:22Z	roborumble	ers.nano.sunderer.Sunderer 1.23a	1	72.74		72.74	1	2026-10-11 15:09:24	
+2026-10-11T15:25:22Z	roborumble	kjc.MailManX 2.0	1	95.29		95.29	1	2026-10-11 15:09:29	
+2026-10-11T15:25:22Z	roborumble	pe.mini.SandboxMini 1.2	1	82.74		82.74	1	2026-10-11 15:09:29	
+2026-10-11T15:25:22Z	roborumble	apc.Caan 1.0	1	94.6		94.6	1	2026-10-11 15:09:35	
+2026-10-11T15:25:22Z	roborumble	jk.mini.CunobelinDC 1.2	1	75.42		75.42	1	2026-10-11 15:09:39	
+2026-10-11T15:25:22Z	roborumble	catcat20.Lambda 0.017	1	73.09		73.09	1	2026-10-11 15:09:41	
+2026-10-11T15:25:22Z	roborumble	mc2.enemy.Original 0.9	1	91.19		91.19	1	2026-10-11 15:09:41	
+2026-10-11T15:25:22Z	roborumble	dggp.haiku.gpBot_0 1.1	2	92.87		92.87	2	2026-10-11 15:09:42	
+2026-10-11T15:25:22Z	roborumble	buba.Buba 0.3	1	98.24		98.24	1	2026-10-11 15:09:48	
+2026-10-11T15:25:22Z	roborumble	testantiswapgun.AntiSwap 1.0	1	95.31		95.31	1	2026-10-11 15:09:51	
+2026-10-11T15:25:22Z	roborumble	tobe.Saturn lambda	1	81.94		81.94	1	2026-10-11 15:09:53	
+2026-10-11T15:25:22Z	roborumble	kanishk.Fr0z3n 1.1	1	99.4		99.4	1	2026-10-11 15:09:55	
+2026-10-11T15:25:22Z	roborumble	radnor.RamRod 1.0	1	80.91		80.91	1	2026-10-11 15:10:01	
+2026-10-11T15:25:22Z	roborumble	kawigi.nano.FunkyChicken 1.1	2	83.64		83.64	2	2026-10-11 15:10:04	
+2026-10-11T15:25:22Z	roborumble	lrem.micro.FalseProphet Alpha	1	88.46		88.46	1	2026-10-11 15:10:05	
+2026-10-11T15:25:22Z	roborumble	dummy.micro.Sparrow 2.5	1	89.96		89.96	1	2026-10-11 15:10:08	
+2026-10-11T15:25:22Z	roborumble	romz.robot.guessfactor.TeasingFox 0.2	2	85.59		85.59	2	2026-10-11 15:10:10	
+2026-10-11T15:25:22Z	roborumble	maye.SlashBot 1.0	1	99.59		99.59	1	2026-10-11 15:10:12	
+2026-10-11T15:25:22Z	roborumble	spinnercat.Limit .01	2	100.0		100.0	2	2026-10-11 15:10:12	
+2026-10-11T15:25:22Z	roborumble	zeze2.OperatorZeze 1.05	1	83.75		83.75	1	2026-10-11 15:10:16	
+2026-10-11T15:25:22Z	roborumble	sgp.SleepingGoat 1.1	1	91.12		91.12	1	2026-10-11 15:10:17	
+2026-10-11T15:25:22Z	roborumble	velas.Beta_2_0 2.0	1	93.2		93.2	1	2026-10-11 15:10:17	
+2026-10-11T15:25:22Z	roborumble	janm.Jammy 1.0	1	87.45		87.45	1	2026-10-11 15:10:21	
+2026-10-11T15:25:22Z	roborumble	voidious.Dookious 1.573c	1	62.41		62.41	1	2026-10-11 15:10:23	
+2026-10-11T15:25:22Z	roborumble	vic.Locke 0.7.5.5	1	91.19		91.19	1	2026-10-11 15:10:27	
+2026-10-11T15:25:22Z	roborumble	rdt199.Warlord 0.73	1	86.86		86.86	1	2026-10-11 15:10:32	
+2026-10-11T15:25:22Z	roborumble	amc.ROBv203 1.0	1	97.21		97.21	1	2026-10-11 15:10:33	
+2026-10-11T15:25:22Z	roborumble	theo.real.Ahab 1.0	1	84.9	87.8	86.35	2	2026-10-11 15:10:34	
+2026-10-11T15:25:22Z	roborumble	ntc.Evader 1.2	1	97.63		97.63	1	2026-10-11 15:10:36	
+2026-10-11T15:25:22Z	roborumble	ch.rhj.rbc.RHJ1 1.0	1	99.71		99.71	1	2026-10-11 15:10:37	
+2026-10-11T15:25:22Z	roborumble	awesomeness.Elite 1.0	1	98.9		98.9	1	2026-10-11 15:10:39	
+2026-10-11T15:25:22Z	roborumble	kinsen.melee.Angsaichmophobia 1.8c	1	87.69		87.69	1	2026-10-11 15:10:40	
+2026-10-11T15:25:22Z	roborumble	asm.Statistas 0.1	1	78.32		78.32	1	2026-10-11 15:10:45	
+2026-10-11T15:25:22Z	roborumble	oa.weak.FlyMk1 0.1	1	98.03		98.03	1	2026-10-11 15:10:47	
+2026-10-11T15:25:22Z	roborumble	maribo.IotaCT 1.0	1	93.95		93.95	1	2026-10-11 15:10:49	
+2026-10-11T15:25:22Z	roborumble	dz.OthoMini 0.15	1	74.97		74.97	1	2026-10-11 15:10:51	
+2026-10-11T15:25:22Z	roborumble	zch.David 0.21	2	97.86		97.86	2	2026-10-11 15:10:51	
+2026-10-11T15:25:22Z	roborumble	mld.Moebius 2.9.3	2	83.43		83.43	2	2026-10-11 15:10:52	
+2026-10-11T15:25:22Z	roborumble	SFS.SamsSecondRobot 1.0	1	99.67		99.67	1	2026-10-11 15:10:55	
+2026-10-11T15:25:22Z	roborumble	amarok.Rookie 1.1	1	95.92		95.92	1	2026-10-11 15:10:59	
+2026-10-11T15:25:22Z	roborumble	traker.Eraser 1	1	95.65		95.65	1	2026-10-11 15:10:59	
+2026-10-11T15:25:22Z	roborumble	mladjo.GnuKlub 0.1	1	90.49		90.49	1	2026-10-11 15:11:02	
+2026-10-11T15:25:22Z	roborumble	myl.nano.Graviton 1.10	1	98.51	99.33	98.92	2	2026-10-11 15:11:07	
+2026-10-11T15:25:22Z	roborumble	cb.nano.Insomnia 1.0	1	92.44		92.44	1	2026-10-11 15:11:08	
+2026-10-11T15:25:22Z	roborumble	pez.rumble.CassiusClay 2rho.02no	1	59.95		59.95	1	2026-10-11 15:11:08	
+2026-10-11T15:25:22Z	roborumble	conscience.Bulldozer 1.0a	1	87.96		87.96	1	2026-10-11 15:11:12	
+2026-10-11T15:25:22Z	roborumble	nkn.mini.Jskr0 0.1	1	93.02		93.02	1	2026-10-11 15:11:15	
+2026-10-11T15:25:22Z	roborumble	lxx.ConceptA 0.8	1	74.73		74.73	1	2026-10-11 15:11:19	
+2026-10-11T15:25:22Z	roborumble	brainfade.Fallen 0.63	1	87.85		87.85	1	2026-10-11 15:11:25	
+2026-10-11T15:25:22Z	roborumble	step.NanoBidu 1.0	1	90.56		90.56	1	2026-10-11 15:11:26	
+2026-10-11T15:25:22Z	roborumble	chase.pm.Pytko 1.0	1	74.77		74.77	1	2026-10-11 15:11:29	
+2026-10-11T15:25:22Z	roborumble	braaropolis.Abot 1.0	2	95.45	96.61	95.84	3	2026-10-11 15:11:35	
+2026-10-11T15:25:22Z	roborumble	whind.Strength 0.6.4	3	81.47		81.47	3	2026-10-11 15:11:37	
+2026-10-11T15:25:22Z	roborumble	alk.lap.LoudAndProud 2.23	1	82.29		82.29	1	2026-10-11 15:11:39	
+2026-10-11T15:25:22Z	roborumble	ntw.Sigsys 1.6	1	96.23		96.23	1	2026-10-11 15:11:42	
+2026-10-11T15:25:22Z	roborumble	lrem.magic.TormentedAngel Antiquitie	1	89.09		89.09	1	2026-10-11 15:11:43	
+2026-10-11T15:25:22Z	roborumble	stelo.UnfoolableNano 1.0	1	77.34		77.34	1	2026-10-11 15:11:43	
+2026-10-11T15:25:22Z	roborumble	baal.nano.N 1.42	1	98.35		98.35	1	2026-10-11 15:11:47	
+2026-10-11T15:25:22Z	roborumble	pez.nano.Icarus 0.3	1	97.02		97.02	1	2026-10-11 15:11:51	
+2026-10-11T15:25:22Z	roborumble	sheldor.micro.EpeeistDC 3.0	1	72.66		72.66	1	2026-10-11 15:11:54	
+2026-10-11T15:25:22Z	roborumble	vft.Hrist 1.0	1	94.49		94.49	1	2026-10-11 15:11:57	
+2026-10-11T15:25:22Z	roborumble	bots.UberBot 1.2c	2	95.99	97.07	96.35	3	2026-10-11 15:11:58	
+2026-10-11T15:25:22Z	roborumble	ArchAlpha.ArchimedesAlpha 1.0	1	100.0	100.0	100.0	2	2026-10-11 15:12:01	
+2026-10-11T15:25:22Z	roborumble	mld.Wisdom 1.0	1	98.96		98.96	1	2026-10-11 15:12:02	
+2026-10-11T15:25:22Z	roborumble	hvilela.HVilela 0.9	1	97.19		97.19	1	2026-10-11 15:12:04	
+2026-10-11T15:25:22Z	roborumble	cf.mini.Chiva 1.0	1	82.74		82.74	1	2026-10-11 15:12:05	
+2026-10-11T15:25:22Z	roborumble	froh.micro.Aversari 0.31	1	98.16		98.16	1	2026-10-11 15:12:05	
+2026-10-11T15:25:22Z	roborumble	EE.LittleBig 1.0	1	82.41		82.41	1	2026-10-11 15:12:12	
+2026-10-11T15:25:22Z	roborumble	quietus.NarrowRadar 0.1	2	97.31		97.31	2	2026-10-11 15:12:12	
+2026-10-11T15:25:22Z	roborumble	ary.nano.AceSurf 1.2	1	89.5		89.5	1	2026-10-11 15:12:18	
+2026-10-11T15:25:22Z	roborumble	js.PinBall 1.6	1	97.2		97.2	1	2026-10-11 15:12:18	
+2026-10-11T15:25:22Z	roborumble	supersample.SuperTrackFire 1.0	1	96.98		96.98	1	2026-10-11 15:12:24	
+2026-10-11T15:25:22Z	roborumble	nexus.Prototype 1.0	1	91.6		91.6	1	2026-10-11 15:12:30	
+2026-10-11T15:25:22Z	roborumble	robin.ScalpBotC 1.0	1	96.93		96.93	1	2026-10-11 15:12:31	
+2026-10-11T15:25:22Z	roborumble	shrub.Vapour v159	1	79.3		79.3	1	2026-10-11 15:12:33	
+2026-10-11T15:25:22Z	roborumble	metal.small.MCool 1.21	1	92.57	94.51	93.54	2	2026-10-11 15:12:41	
+2026-10-11T15:25:22Z	roborumble	gh.GresSuffurd 0.4.13	1	54.19	64.15	59.17	2	2026-10-11 15:12:42	
+2026-10-11T15:25:22Z	roborumble	tobe.Fusion 1.0	1	80.26		80.26	1	2026-10-11 15:12:43	
+2026-10-11T15:25:22Z	roborumble	cx.mini.BlackSwans 0.60	1	66.68		66.68	1	2026-10-11 15:12:47	
+2026-10-11T15:25:22Z	roborumble	pa3k.Manta 1.20	1	93.93	87.97	90.95	2	2026-10-11 15:12:50	
+2026-10-11T15:25:22Z	roborumble	kjc.etc.Dharok 1.0	1	94.68	89.9	92.29	2	2026-10-11 15:12:55	
+2026-10-11T15:25:22Z	roborumble	m3thos.Eva00 1.1	1	100.0		100.0	1	2026-10-11 15:12:58	
+2026-10-11T15:25:22Z	roborumble	element.Earth 1.1	1	83.48		83.48	1	2026-10-11 15:12:59	
+2026-10-11T15:25:22Z	roborumble	ntc.Plains 0.9	1	97.23		97.23	1	2026-10-11 15:13:01	
+2026-10-11T15:25:22Z	roborumble	tm.Yuugao 1.0	1	75.74		75.74	1	2026-10-11 15:13:02	
+2026-10-11T15:25:22Z	roborumble	pkdeken.Paladin 1.0	1	94.48	95.12	94.8	2	2026-10-11 15:13:04	
+2026-10-11T15:25:22Z	roborumble	muf.CrazyKitten 0.9	2	81.42		81.42	2	2026-10-11 15:13:11	
+2026-10-11T15:25:22Z	roborumble	wcsv.Engineer.Engineer 0.5.4	1	72.84		72.84	1	2026-10-11 15:13:11	
+2026-10-11T15:25:22Z	roborumble	takeBot.SpiralCrash 1.0	1	95.96		95.96	1	2026-10-11 15:13:14	
+2026-10-11T15:25:22Z	roborumble	is.fon.rs.Kamikaza 1.0	1	98.2		98.2	1	2026-10-11 15:13:15	
+2026-10-11T15:25:22Z	roborumble	nz.A7Ibwenape A7Ibwen1.0	1	99.22		99.22	1	2026-10-11 15:13:16	
+2026-10-11T15:25:22Z	roborumble	zen.Ronin 1.0.0	1	68.65		68.65	1	2026-10-11 15:13:22	
+2026-10-11T15:25:22Z	roborumble	supersample.SuperWalls 1.0	1	94.24	96.22	95.23	2	2026-10-11 15:13:24	
+2026-10-11T15:25:22Z	roborumble	jp.SineWall 1.0	2	97.88		97.88	2	2026-10-11 15:13:25	
+2026-10-11T15:25:22Z	roborumble	mme.NikeEnhanced 2.0	1	97.74		97.74	1	2026-10-11 15:13:29	
+2026-10-11T15:25:22Z	roborumble	And.BasicSurfer FF1.6	1	98.26	98.9	98.58	2	2026-10-11 15:13:32	
+2026-10-11T15:25:22Z	roborumble	ola.Puffin 1.0	1	98.41		98.41	1	2026-10-11 15:13:32	
+2026-10-11T15:25:22Z	roborumble	blir.nano.Bruce R1.0.0	1	77.22		77.22	1	2026-10-11 15:13:35	
+2026-10-11T15:25:22Z	roborumble	dft.Cyprus 3.0	1	80.56		80.56	1	2026-10-11 15:13:37	
+2026-10-11T15:25:22Z	roborumble	doka.KillerRabbit 1.0	1	84.0	86.36	85.18	2	2026-10-11 15:13:41	
+2026-10-11T15:25:22Z	roborumble	zzx.Ignohis 8.0	2	97.96		97.96	2	2026-10-11 15:13:41	
+2026-10-11T15:25:22Z	roborumble	suh.nano.CornerRL 1.00	1	92.63		92.63	1	2026-10-11 15:13:42	
+2026-10-11T15:25:22Z	roborumble	bigpete.Stewie 1.0	2	96.63		96.63	2	2026-10-11 15:13:48	
+2026-10-11T15:25:22Z	roborumble	bayen.UbaMicro 1.4	1	96.21	95.41	95.81	2	2026-10-11 15:13:55	
+2026-10-11T15:25:22Z	roborumble	whitesquare.robots.SkynetAdvanced 1.1	1	96.41	97.79	97.1	2	2026-10-11 15:14:01	
+2026-10-11T15:25:22Z	roborumble	timmit.TimmiT 0.22	2	88.72	88.93	88.79	3	2026-10-11 15:14:07	
+2026-10-11T15:25:22Z	roborumble	nova.Snow 1.0	1	71.74		71.74	1	2026-10-11 15:14:10	
+2026-10-11T15:25:22Z	roborumble	ua.kiiv.kosyak.robocode.tn1.Tn1 2.0	1	89.68	92.6	91.87	4	2026-10-11 15:14:13	
+2026-10-11T15:25:22Z	roborumble	bh.PencilRain 0.01	1	99.98		99.98	1	2026-10-11 15:14:24	
+2026-10-11T15:25:22Z	roborumble	kawigi.sbf.FloodMicro 1.5	1	99.97		99.97	1	2026-10-11 15:14:35	
+2026-10-11T15:25:22Z	roborumble	ers.micro.ISuck.ISuckMicro 0.1f	1	78.79		78.79	1	2026-10-11 15:14:44	
+2026-10-11T15:25:22Z	roborumble	EH.mini.Panther 0.2	1	89.5	98.92	94.21	2	2026-10-11 15:14:58	
+2026-10-11T15:25:22Z	roborumble	supersample.SuperTracker 1.0	1	96.66	95.44	96.05	2	2026-10-11 15:15:07	
+2026-10-11T15:25:22Z	roborumble	gtf.robocode.Strafer 2.1.1	1	90.86	93.32	92.5	3	2026-10-11 15:15:13	
+2026-10-11T15:25:22Z	roborumble	dragonbyte.Neutrino 4	1	72.55		72.55	1	2026-10-11 15:15:33	
+2026-10-11T15:25:22Z	roborumble	amk.ShizzleStiX.ShizzleStiX 0.6	2	86.49		86.49	2	2026-10-11 15:15:45	
+2026-10-11T15:25:22Z	roborumble	suh.nano.MirrorL 1.00	1	96.05		96.05	1	2026-10-11 15:15:57	
+2026-10-11T15:25:22Z	roborumble	theo.QuarkSoup 1.5fga	1	67.61		67.61	1	2026-10-11 15:16:14	
+2026-10-11T15:25:22Z	roborumble	EH.Fusion 0.32	2	78.64		78.64	2	2026-10-11 15:16:22	
+2026-10-11T15:25:22Z	roborumble	can.Pookie 1.1	1	74.76	80.14	77.45	2	2026-10-11 15:16:46	
+2026-10-11T15:25:22Z	roborumble	acid.Bl4ck 1.0	1	92.98	96.36	94.67	2	2026-10-11 15:16:54	
+2026-10-11T15:25:22Z	roborumble	lmk.ACPFinal 0.2	2	98.8		98.8	2	2026-10-11 15:17:07	
+2026-10-11T15:41:23Z	roborumble	deo.virtual.RainbowBot 1.0	1	76.84		76.84	1	2026-10-11 15:18:08	
+2026-10-11T15:41:23Z	roborumble	slugzilla.Basilisk 3.9	1	67.51		67.51	1	2026-10-11 15:18:29	
+2026-10-11T15:41:23Z	roborumble	lunchie.Lunchbox 0.93	1	94.92		94.92	1	2026-10-11 15:18:38	
+2026-10-11T15:41:23Z	roborumble	yarhoslav.YaroBot 1.2	1	86.62		86.62	1	2026-10-11 15:18:47	
+2026-10-11T15:41:23Z	roborumble	emp.Yngwie 1.11	1	79.31		79.31	1	2026-10-11 15:19:04	
+2026-10-11T15:41:23Z	roborumble	traker.Eraser 1	1	98.07	95.65	96.86	2	2026-10-11 15:19:15	
+2026-10-11T15:41:23Z	roborumble	nat.micro.Reepicheep 0.1a	1	91.77		91.77	1	2026-10-11 15:19:26	
+2026-10-11T15:41:23Z	roborumble	ags.polished.PolishedRuby 1	1	93.44		93.44	1	2026-10-11 15:19:33	
+2026-10-11T15:41:23Z	roborumble	slugzilla.RandomPattern 1.0	1	72.62		72.62	1	2026-10-11 15:19:48	
+2026-10-11T15:41:23Z	roborumble	pl.mskiba.Hilton 0.4	1	99.98		99.98	1	2026-10-11 15:20:10	
+2026-10-11T15:41:23Z	roborumble	stelo.Chord 1.0	1	82.18		82.18	1	2026-10-11 15:20:12	
+2026-10-11T15:41:23Z	roborumble	fm.mammillarias 1.3	1	100.0		100.0	1	2026-10-11 15:20:16	
+2026-10-11T15:41:23Z	roborumble	el.Attackr 0.1	1	98.48	99.72	99.1	2	2026-10-11 15:20:23	
+2026-10-11T15:41:23Z	roborumble	infovk.s_schwarzm16.silverbird 1.0	1	79.79		79.79	1	2026-10-11 15:20:41	
+2026-10-11T15:41:23Z	roborumble	jab.avk.ManuelGallegus 0.6	1	78.49		78.49	1	2026-10-11 15:20:51	
+2026-10-11T15:41:23Z	roborumble	DM.Mijit .3	1	92.37		92.37	1	2026-10-11 15:21:00	
+2026-10-11T15:41:23Z	roborumble	dz.MostlyHarmlessNano 2.1	1	91.82		91.82	1	2026-10-11 15:21:08	
+2026-10-11T15:41:23Z	roborumble	jcs.Seth 1.8	1	97.07		97.07	1	2026-10-11 15:21:28	
+2026-10-11T15:41:23Z	roborumble	dam.MogBot 2.9	1	82.84		82.84	1	2026-10-11 15:21:30	
+2026-10-11T15:41:23Z	roborumble	as.xbots 1.0	1	74.78	77.14	75.96	2	2026-10-11 15:21:35	
+2026-10-11T15:41:23Z	roborumble	oog.nano.Caligula 1.15	1	70.69		70.69	1	2026-10-11 15:21:36	
+2026-10-11T15:41:23Z	roborumble	kawigi.sbf.FloodNano 1.2	1	91.8		91.8	1	2026-10-11 15:21:59	
+2026-10-11T15:41:23Z	roborumble	wiki.WaveRammer 1.0	1	78.06	74.96	76.51	2	2026-10-11 15:22:19	
+2026-10-11T15:41:23Z	roborumble	cb.Domogled 1.2	1	63.44		63.44	1	2026-10-11 15:22:44	
+2026-10-11T15:41:23Z	roborumble	sgp.MadHatter 4.13	1	93.13		93.13	1	2026-10-11 15:22:50	
+2026-10-11T15:41:23Z	roborumble	amc.ROBv300 1.1	1	97.07	98.03	97.55	2	2026-10-11 15:22:55	
+2026-10-11T15:41:23Z	roborumble	vort.Chaser 0.0.3	1	95.24		95.24	1	2026-10-11 15:22:58	
+2026-10-11T15:41:23Z	roborumble	bvh.fnr.Fenrir 0.36l	1	78.54		78.54	1	2026-10-11 15:23:13	
+2026-10-11T15:41:23Z	roborumble	codemojo.nano.Woot 1.0	1	95.08		95.08	1	2026-10-11 15:23:21	
+2026-10-11T15:41:23Z	roborumble	tcf.Repat3 2	1	82.76		82.76	1	2026-10-11 15:23:53	
+2026-10-11T15:41:23Z	roborumble	sheldor.mini.FoilistMC 1.0	1	70.25		70.25	1	2026-10-11 15:24:29	
+2026-10-11T15:41:23Z	roborumble	nosteel.Welby 0.0.3	1	89.78		89.78	1	2026-10-11 15:24:44	
+2026-10-11T15:41:23Z	roborumble	sch.Simone 0.3d	1	96.66		96.66	1	2026-10-11 15:24:56	
+2026-10-11T15:41:23Z	roborumble	fowl3628800.SitAndGo 1.0.0	1	98.66		98.66	1	2026-10-11 15:25:19	
+2026-10-11T15:41:23Z	roborumble	stordy.StordyBot 1.0	1	97.16		97.16	1	2026-10-11 15:25:30	
+2026-10-11T15:41:23Z	roborumble	nammyung.ModelT 0.23	1	99.49		99.49	1	2026-10-11 15:25:54	
+2026-10-11T15:41:23Z	roborumble	rsalesc.roborio.Roborio 1.2.4	1	53.03		53.03	1	2026-10-11 15:26:12	
+2026-10-11T15:41:23Z	roborumble	suh.nano.CrossH 1.00	1	100.0		100.0	1	2026-10-11 15:26:50	
+2026-10-11T15:41:23Z	roborumble	jekl.mini.BlackPearl .91	1	83.55		83.55	1	2026-10-11 15:27:06	
+2026-10-11T15:41:23Z	roborumble	lk.nano.Avesnar 1.1	1	94.07		94.07	1	2026-10-11 15:27:18	
+2026-10-11T15:41:23Z	roborumble	oog.melee.Mercutio 1.0	1	94.89		94.89	1	2026-10-11 15:27:45	
+2026-10-11T15:41:23Z	roborumble	marcinek.TopGun 1.3	1	95.07		95.07	1	2026-10-11 15:27:54	
+2026-10-11T15:41:23Z	roborumble	donjezza.Jezza 1.0	1	99.46		99.46	1	2026-10-11 15:28:04	
+2026-10-11T15:41:23Z	roborumble	ebo.Sparse 0.02	1	78.82		78.82	1	2026-10-11 15:28:19	
+2026-10-11T15:41:23Z	roborumble	ratosh.Wesco 1.4	1	89.84	99.18	94.51	2	2026-10-11 15:28:40	
+2026-10-11T15:41:23Z	roborumble	ngf.nano.Sparky 0.1.5	1	86.04	90.08	88.06	2	2026-10-11 15:28:51	
+2026-10-11T15:41:23Z	roborumble	ph.musketeer.Musketeer 0.6	1	62.16		62.16	1	2026-10-11 15:29:20	
+2026-10-11T15:41:23Z	roborumble	hirataatsushi.Trinity 0.003	1	95.18	96.04	95.61	2	2026-10-11 15:29:34	
+2026-10-11T15:41:23Z	roborumble	amk.ChumbaMini 0.2	1	78.83		78.83	1	2026-10-11 15:30:06	
+2026-10-11T15:41:23Z	roborumble	sam.Samspin 1.0	1	98.24		98.24	1	2026-10-11 15:30:17	
+2026-10-11T15:58:34Z	roborumble	rdm.Grasshopper 0.5e	1	93.69		93.69	1	2026-10-11 15:35:46	
+2026-10-11T15:58:34Z	roborumble	projectx.TestNano 1.0	1	92.6		92.6	1	2026-10-11 15:36:06	
+2026-10-11T15:58:34Z	roborumble	sample.SpinBot 1.0	1	100.0		100.0	1	2026-10-11 15:36:19	
+2026-10-11T15:58:34Z	roborumble	nz.jdc.nano.NeophyteSRAL 1.3	1	95.52		95.52	1	2026-10-11 15:37:24	
+2026-10-11T15:58:34Z	roborumble	pedersen.Ugluk 1.0	2	76.69		76.69	2	2026-10-11 15:37:54	
+2026-10-11T15:58:34Z	roborumble	cli.Dancer 1.1	1	99.86		99.86	1	2026-10-11 15:38:08	
+2026-10-11T15:58:34Z	roborumble	ar.QuantumChromodynamics 1.2.1	1	93.49		93.49	1	2026-10-11 15:38:29	
+2026-10-11T15:58:34Z	roborumble	RobotMarco.MarcoV 0.1	1	99.98	100.0	99.99	2	2026-10-11 15:38:46	
+2026-10-11T15:58:34Z	roborumble	blir.mini.oops.Splooshlu 2.0	1	94.74		94.74	1	2026-10-11 15:39:03	
+2026-10-11T15:58:34Z	roborumble	fromHell.C4H10O 1.5.1	1	66.24		66.24	1	2026-10-11 15:39:43	
+2026-10-11T15:58:34Z	roborumble	test.Podgy 4.0	1	89.46		89.46	1	2026-10-11 15:40:02	
+2026-10-11T15:58:34Z	roborumble	cw.megas.Gridd 0.4	1	76.88		76.88	1	2026-10-11 15:40:22	
+2026-10-11T15:58:34Z	roborumble	wcsv.Stampede 1.3.3	1	85.06		85.06	1	2026-10-11 15:41:11	
+2026-10-11T15:58:34Z	roborumble	cb.fire.Firestarter 2.0f	1	49.65		49.65	1	2026-10-11 15:44:26	DROP
+2026-10-11T15:58:34Z	roborumble	learn.ISmart 2.0s	1	75.44		75.44	1	2026-10-11 15:44:57	
+2026-10-11T15:58:34Z	roborumble	zignd.ZigIndexOutOfRange 1.1	1	100.0		100.0	1	2026-10-11 15:45:07	
+2026-10-11T15:58:34Z	roborumble	cbot.agile.Nibbler 0.2	1	83.0		83.0	1	2026-10-11 15:45:44	
+2026-10-11T15:58:34Z	roborumble	alpha.RainingFire 1.0	1	80.31		80.31	1	2026-10-11 15:46:21	
+2026-10-11T15:58:34Z	roborumble	qwaker00.Gandhi 1.2	1	95.58		95.58	1	2026-10-11 15:46:35	
+2026-10-11T15:58:34Z	roborumble	kinsen.nano.Hoplomachy 1.6	1	97.92		97.92	1	2026-10-11 15:48:05	
+2026-10-11T15:58:34Z	roborumble	patson.PatsonTestBot 1.0	1	90.59		90.59	1	2026-10-11 15:48:51	
+2026-10-11T15:58:34Z	roborumble	reaper.Reaper 1.1	1	81.68		81.68	1	2026-10-11 15:49:29	
+2026-10-11T15:58:34Z	roborumble	mn.micro.perceptual.Mimic 1.0.0	1	92.98		92.98	1	2026-10-11 15:49:45	
+2026-10-11T15:58:34Z	roborumble	trab.Crusader 0.1.7	1	84.23		84.23	1	2026-10-11 15:50:30	
+2026-10-11T15:58:34Z	roborumble	xiongan.Xiongan 1.1	1	93.52		93.52	1	2026-10-11 15:51:05	
+2026-10-11T15:58:34Z	roborumble	tkt.RedShift 1.1.CS.0	1	95.74		95.74	1	2026-10-11 15:51:16	
+2026-10-11T15:58:34Z	roborumble	doka.Test 1.0	3	84.99		84.99	3	2026-10-11 15:51:34	
+2026-10-11T15:58:34Z	roborumble	lessonz.robocode.Oz 0.5.0	1	96.65		96.65	1	2026-10-11 15:51:54	
+2026-10-11T15:58:34Z	roborumble	blir.nano.inch.Inchworm 1.0	1	98.77		98.77	1	2026-10-11 15:52:11	
+2026-10-11T15:58:34Z	roborumble	cf.OldMan.OldManXP 0.1	1	82.44		82.44	1	2026-10-11 15:52:27	
+2026-10-11T15:58:34Z	roborumble	conscience.Electron 1.3g	1	79.39		79.39	1	2026-10-11 15:52:41	
+2026-10-11T15:58:34Z	roborumble	nexus.Two 0.2	1	97.29		97.29	1	2026-10-11 15:52:57	
+2026-10-11T15:58:34Z	roborumble	voidious.perceptual.RetroGirl 1.0.0	1	92.3		92.3	1	2026-10-11 15:53:20	
+2026-10-11T15:58:34Z	roborumble	kid.Toa .0.5	1	86.36		86.36	1	2026-10-11 15:54:05	
+2026-10-11T15:58:34Z	roborumble	hfgrobots.HFG 1.0	1	99.98		99.98	1	2026-10-11 15:54:20	
+2026-10-11T15:58:34Z	roborumble	eem.EvBot v4.6.4	1	84.35		84.35	1	2026-10-11 15:55:14	
+2026-10-11T15:58:34Z	roborumble	rcb.Vanessa03 0	1	72.46		72.46	1	2026-10-11 15:55:37	
+2026-10-11T15:58:34Z	roborumble	zen.Mirage 0.9.5	1	67.26		67.26	1	2026-10-11 15:56:56	
+2026-10-11T16:14:00Z	roborumble	skm.Ryubot 1.0	1	99.57		99.57	1	2026-10-11 15:57:44	
+2026-10-11T16:14:00Z	roborumble	dans.Cinnamon 1.2	1	94.99		94.99	1	2026-10-11 15:58:07	
+2026-10-11T16:14:00Z	roborumble	myl.micro.Troodon 1.10	1	97.94		97.94	1	2026-10-11 15:58:29	
+2026-10-11T16:14:00Z	roborumble	zyx.mega.YersiniaPestis 3.0	1	53.15		53.15	1	2026-10-11 15:59:26	
+2026-10-11T16:14:00Z	roborumble	eskimo.micro.Echo 0.1	1	99.8		99.8	1	2026-10-11 15:59:44	
+2026-10-11T16:14:00Z	roborumble	jmcd.BeoWulf 2.8	1	87.22		87.22	1	2026-10-11 16:00:13	
+2026-10-11T16:14:00Z	roborumble	yabot.YaBot 0.1	1	99.67		99.67	1	2026-10-11 16:00:22	
+2026-10-11T16:14:00Z	roborumble	stf.PanzerGeneral 0.1	1	88.88		88.88	1	2026-10-11 16:00:42	
+2026-10-11T16:14:00Z	roborumble	pmc.SniperBot 1.0	1	94.82		94.82	1	2026-10-11 16:00:55	
+2026-10-11T16:14:00Z	roborumble	pfvicm.Sobieski 7.2.3b	1	94.1		94.1	1	2026-10-11 16:01:11	
+2026-10-11T16:14:00Z	roborumble	slugzilla.OrbitLinear 1.1	1	97.59		97.59	1	2026-10-11 16:01:46	
+2026-10-11T16:14:00Z	roborumble	dukie.Ambassador 1.0	1	97.06		97.06	1	2026-10-11 16:02:24	
+2026-10-11T16:14:00Z	roborumble	jje.BagPuss 1.2	1	92.94		92.94	1	2026-10-11 16:03:05	
+2026-10-11T16:14:00Z	roborumble	sample.SittingDuck 1.0	1	100.0		100.0	1	2026-10-11 16:03:13	
+2026-10-11T16:29:17Z	roborumble	kid.Toa .0.5	1	72.48	86.36	79.42	2	2026-10-11 15:17:59	
+2026-10-11T16:29:17Z	roborumble	wiki.mini.Griffon 0.1	1	83.61		83.61	1	2026-10-11 15:18:11	
+2026-10-11T16:29:17Z	roborumble	supersample.SuperBoxBot 1.0	1	99.72		99.72	1	2026-10-11 15:18:18	
+2026-10-11T16:29:17Z	roborumble	emp.Yngwie 1.11	1	84.59	79.31	81.95	2	2026-10-11 15:18:32	
+2026-10-11T16:29:17Z	roborumble	ar.horizon.Horizon 1.2.2	1	47.91		47.91	1	2026-10-11 15:19:13	DROP
+2026-10-11T16:29:17Z	roborumble	cb.Domogled 1.2	1	58.48	63.44	60.96	2	2026-10-11 15:20:18	
+2026-10-11T16:29:17Z	roborumble	cf.star.Star2 1.23	1	78.04		78.04	1	2026-10-11 15:20:30	
+2026-10-11T16:29:17Z	roborumble	EH.nano.NightBird M	1	96.96		96.96	1	2026-10-11 15:20:43	
+2026-10-11T16:29:17Z	roborumble	sigterm.Sigterm 1.0	2	91.87		91.87	2	2026-10-11 15:21:01	
+2026-10-11T16:29:17Z	roborumble	cf.OldMan.OldManXP 0.1	1	86.54	82.44	84.49	2	2026-10-11 15:21:07	
+2026-10-11T16:29:17Z	roborumble	sch.Simone 0.3d	1	98.92	96.66	97.79	2	2026-10-11 15:21:14	
+2026-10-11T16:29:17Z	roborumble	rz.GlowBlowAPM 1.0	1	75.84		75.84	1	2026-10-11 15:21:33	
+2026-10-11T16:29:17Z	roborumble	bvh.fnr.Fenrir 0.36l	1	87.96	78.54	83.25	2	2026-10-11 15:21:46	
+2026-10-11T16:29:17Z	roborumble	cx.micro.Smoke 0.96	1	76.59		76.59	1	2026-10-11 15:22:02	
+2026-10-11T16:29:17Z	roborumble	dmh.robocode.robot.BlueBerry 0.5	1	93.74		93.74	1	2026-10-11 15:22:19	
+2026-10-11T16:29:17Z	roborumble	Polkwane.Intensive 1.0	1	71.34		71.34	1	2026-10-11 15:22:59	
+2026-10-11T16:29:17Z	roborumble	stelo.MatchupMicro 1.2	1	87.82		87.82	1	2026-10-11 15:23:40	
+2026-10-11T16:29:17Z	roborumble	tvv.nano.Polaris 1.2	1	96.32		96.32	1	2026-10-11 15:23:57	
+2026-10-11T16:29:17Z	roborumble	dz.Caedo 1.4	1	83.56		83.56	1	2026-10-11 15:24:47	
+2026-10-11T16:29:17Z	roborumble	ary.SMG 1.01	1	66.72		66.72	1	2026-10-11 15:26:12	
+2026-10-11T16:29:17Z	roborumble	cli.WasteOfAmmo 1.0	1	100.0		100.0	1	2026-10-11 15:26:45	
+2026-10-11T16:29:17Z	roborumble	boe.Minerva 0.80	1	87.61		87.61	1	2026-10-11 15:28:01	
+2026-10-11T16:29:17Z	roborumble	de.erdega.robocode.Polyphemos 0.4	1	87.64		87.64	1	2026-10-11 15:28:46	
+2026-10-11T16:29:17Z	roborumble	TCMI.Enyo 0.4	1	85.77		85.77	1	2026-10-11 15:30:21	
+2026-10-11T16:29:17Z	roborumble	rz.Apollon 0.23	1	65.01		65.01	1	2026-10-11 15:37:48	
+2026-10-11T16:29:17Z	roborumble	stefw.Tigger 0.0.23	1	74.54		74.54	1	2026-10-11 15:42:39	
+2026-10-11T16:29:17Z	roborumble	wcsv.Stampede2.Stampede2 1.1.0	1	69.05		69.05	1	2026-10-11 15:49:11	
+2026-10-11T16:29:17Z	roborumble	stelo.MatchupWS 1.2c	1	88.57		88.57	1	2026-10-11 16:03:58	
+2026-10-11T16:29:17Z	roborumble	SHAM.WOW 1.4	1	68.29		68.29	1	2026-10-11 16:04:20	
+2026-10-11T16:29:17Z	roborumble	trm.Wrekt 1.1.6.f	1	83.66		83.66	1	2026-10-11 16:05:16	
+2026-10-11T16:29:17Z	roborumble	ajs.Solveit 1.3	1	92.43		92.43	1	2026-10-11 16:05:50	
+2026-10-11T16:29:17Z	roborumble	oog.micro.Maui 1.2	1	85.12		85.12	1	2026-10-11 16:06:30	
+2026-10-11T16:29:17Z	roborumble	pl.Patton.GeneralPatton 1.54	1	82.36		82.36	1	2026-10-11 16:07:10	
+2026-10-11T16:29:17Z	roborumble	slugzilla.RandomGF 1.0	1	79.66		79.66	1	2026-10-11 16:07:34	
+2026-10-11T16:29:17Z	roborumble	simonton.mini.WeeksOnEnd 1.10.4	1	78.12		78.12	1	2026-10-11 16:08:20	
+2026-10-11T16:29:17Z	roborumble	rdm.Dueler 0.4x	1	81.44		81.44	1	2026-10-11 16:08:47	
+2026-10-11T16:29:17Z	roborumble	dy.LevelOne 2.0	1	98.74		98.74	1	2026-10-11 16:09:00	
+2026-10-11T16:29:17Z	roborumble	WdV.Lesserbee 0.01	1	95.34		95.34	1	2026-10-11 16:09:39	
+2026-10-11T16:29:17Z	roborumble	Krabb.fe4r.Fe4r 0.4	1	91.04		91.04	1	2026-10-11 16:10:02	
+2026-10-11T16:29:17Z	roborumble	Krabb.sliNk.Garm 0.9u	1	68.69		68.69	1	2026-10-11 16:10:46	
+2026-10-11T16:29:17Z	roborumble	oog.micro.Claudius 1.11	1	69.56		69.56	1	2026-10-11 16:11:30	
+2026-10-11T16:29:17Z	roborumble	darkcanuck.Holden 1.13a	1	62.98		62.98	1	2026-10-11 16:12:20	
+2026-10-11T16:29:17Z	roborumble	kcn.percept.PerceptBot 2.3	1	99.18		99.18	1	2026-10-11 16:13:21	
+2026-10-11T16:29:17Z	roborumble	amc.ROBv301 1.1	1	96.86		96.86	1	2026-10-11 16:13:36	
+2026-10-11T16:29:17Z	roborumble	jaemcrb.nano.M1Abrams 1.0	1	94.66		94.66	1	2026-10-11 16:13:58	
+2026-10-11T16:29:17Z	roborumble	md.VelociRaptor 1.3	2	92.95		92.95	2	2026-10-11 16:14:16	
+2026-10-11T16:29:17Z	roborumble	jeremyreeder.collective.Prophet 5	1	98.16	99.68	98.92	2	2026-10-11 16:14:32	
+2026-10-11T16:29:17Z	roborumble	amk.ChumbaWumba 0.3	1	82.7		82.7	1	2026-10-11 16:14:53	
+2026-10-11T16:29:17Z	roborumble	pez.mini.VertiLeach 0.4.0	1	82.21	77.83	80.02	2	2026-10-11 16:15:15	
+2026-10-11T16:29:17Z	roborumble	labg.Cataclysm 2.05	1	88.2		88.2	1	2026-10-11 16:15:51	
+2026-10-11T16:29:17Z	roborumble	bing2.Melody 1.3.1	1	87.0		87.0	1	2026-10-11 16:16:28	
+2026-10-11T16:29:17Z	roborumble	zignd.ZigIndexOutOfRange 1.1	1	100.0	100.0	100.0	2	2026-10-11 16:16:38	
+2026-10-11T16:29:17Z	roborumble	dks.MicroDanMK2 1.0	1	95.02		95.02	1	2026-10-11 16:17:03	
+2026-10-11T16:29:17Z	roborumble	kc.mega.BeepBoop 2.0	1	19.57		19.57	1	2026-10-11 16:19:11	DROP
+2026-10-11T16:29:17Z	roborumble	maribo.melee.BMV 0.1	1	89.35		89.35	1	2026-10-11 16:19:30	
+2026-10-11T16:29:17Z	roborumble	mue.Hyperion 0.8	1	71.97		71.97	1	2026-10-11 16:20:42	
+2026-10-11T16:29:17Z	roborumble	xander.cat.XanderCat 12.9	1	60.01		60.01	1	2026-10-11 16:21:50	
+2026-10-11T16:29:17Z	roborumble	tango.Recrimpo 2.51	1	85.6		85.6	1	2026-10-11 16:22:07	
+2026-10-11T16:29:17Z	roborumble	trab.Crusader 0.1.7	1	84.55	84.23	84.39	2	2026-10-11 16:22:45	
+2026-10-11T16:29:17Z	roborumble	gwah.GerryBotMkII 1.5.1	2	96.57		96.57	2	2026-10-11 16:27:30	
+2026-10-11T17:45:03Z	roborumble	Krabb.krabby.Krabby 1.18b	1	90.53		90.53	1	2026-10-11 15:13:50	
+2026-10-11T17:45:03Z	roborumble	jep.nano.Hawkwing 0.4.1	1	94.62	96.86	95.74	2	2026-10-11 15:14:12	
+2026-10-11T17:45:03Z	roborumble	asd.Cthulhu 1.2	1	91.45	91.78	91.67	3	2026-10-11 15:15:14	
+2026-10-11T17:45:03Z	roborumble	theo.simple.Lucid 1.0	1	70.35		70.35	1	2026-10-11 15:16:23	
+2026-10-11T17:45:03Z	roborumble	repositorio.NanoStep 1.0	1	98.49		98.49	1	2026-10-11 15:26:10	
+2026-10-11T17:45:03Z	roborumble	ultra.Defender 1.2	1	85.56	84.18	84.64	3	2026-10-11 15:26:46	
+2026-10-11T17:45:03Z	roborumble	nz.jdc.nano.NeophyteSRAL 1.3	1	99.12	95.52	97.32	2	2026-10-11 15:27:00	
+2026-10-11T17:45:03Z	roborumble	rjw.RabidWombat 0.71	1	95.27		95.27	1	2026-10-11 15:27:13	
+2026-10-11T17:45:03Z	roborumble	dans.Cinnamon 1.2	2	93.86	94.99	94.24	3	2026-10-11 15:27:47	
+2026-10-11T17:45:03Z	roborumble	Legend.BoulderZY 1.4.9	1	87.74	98.64	93.19	2	2026-10-11 15:27:51	
+2026-10-11T17:45:03Z	roborumble	lrem.micro.MoggFanatic 0.2	1	92.15	89.79	90.97	2	2026-10-11 15:28:05	
+2026-10-11T17:45:03Z	roborumble	theo.Hydrogen 2.1r	1	77.44		77.44	1	2026-10-11 15:28:54	
+2026-10-11T17:45:03Z	roborumble	unarmedlad.nano.VirginSteele 2.2	1	78.43	90.25	84.34	2	2026-10-11 15:32:11	
+2026-10-11T17:45:03Z	roborumble	rc.yoda.Yoda 1.0.6c.fix	1	75.3		75.3	1	2026-10-11 15:32:14	
+2026-10-11T17:45:03Z	roborumble	nz.jdc.nano.NeophytePattern 1.1	1	82.12		82.12	1	2026-10-11 15:32:37	
+2026-10-11T17:45:03Z	roborumble	pez.gloom.GloomyDark 0.9.2	1	65.54	86.82	76.18	2	2026-10-11 15:33:11	
+2026-10-11T17:45:03Z	roborumble	eat.HumblePieLite 1.0	1	92.35		92.35	1	2026-10-11 15:33:24	
+2026-10-11T17:45:03Z	roborumble	kcn.unnamed.Unnamed 1.21	1	74.0		74.0	1	2026-10-11 15:33:56	
+2026-10-11T17:45:03Z	roborumble	lucasslf.Wiggins 0.6	1	71.7		71.7	1	2026-10-11 15:34:49	
+2026-10-11T17:45:03Z	roborumble	omens.CannonfodderNano 1.4	1	97.13		97.13	1	2026-10-11 15:35:06	
+2026-10-11T17:45:03Z	roborumble	xander.cat.Fiona 1.4	1	87.48	86.4	86.94	2	2026-10-11 15:35:17	
+2026-10-11T17:45:03Z	roborumble	myl.micro.NekoNinja 1.30	1	69.17	95.19	82.18	2	2026-10-11 15:36:08	DROP
+2026-10-11T17:45:03Z	roborumble	pulsar.PulsarNano 0.2.4	1	96.31		96.31	1	2026-10-11 15:36:42	
+2026-10-11T17:45:03Z	roborumble	eem.EvBotNG v12.8	1	72.02	68.14	70.08	2	2026-10-11 15:39:14	
+2026-10-11T17:45:03Z	roborumble	pe.SandboxLump 1.52	1	76.95		76.95	1	2026-10-11 15:39:44	
+2026-10-11T17:45:03Z	roborumble	fromHell.CHCl3 1.4.2	1	67.28	79.0	73.14	2	2026-10-11 15:41:39	
+2026-10-11T17:45:03Z	roborumble	mc.Messapia 0.1.8	2	99.78		99.78	2	2026-10-11 15:43:35	
+2026-10-11T17:45:03Z	roborumble	oog.nano.SavantVS 1.1	1	95.36		95.36	1	2026-10-11 15:44:32	
+2026-10-11T17:45:03Z	roborumble	hapiel.Spiral 0.1	1	87.05		87.05	1	2026-10-11 16:39:00	
+2026-10-11T17:45:03Z	roborumble	tzu.TheArtOfWar 1.2	1	73.56		73.56	1	2026-10-11 16:42:39	
+2026-10-11T17:45:03Z	roborumble	ry.Worst 1.0	1	100.0		100.0	1	2026-10-11 16:45:48	
+2026-10-11T17:45:03Z	roborumble	SHAM.WOW 1.4	1	70.87	68.29	69.58	2	2026-10-11 16:47:50	
+2026-10-11T17:45:03Z	roborumble	gjr.Cephalosporin 0.2	1	90.37		90.37	1	2026-10-11 16:48:18	
+2026-10-11T17:45:03Z	roborumble	ch.rhj.rbc.RHJ1 1.0	1	98.49	99.71	99.1	2	2026-10-11 16:50:09	
+2026-10-11T17:45:03Z	roborumble	ndn.DyslexicMonkey 1.1	1	88.92	95.1	93.04	3	2026-10-11 16:51:07	
+2026-10-11T17:45:03Z	roborumble	stf.PanzerGeneral 0.1	1	88.5	88.88	88.69	2	2026-10-11 16:53:02	
+2026-10-11T17:45:03Z	roborumble	mdouet.BotKicker 2.0	1	88.93		88.93	1	2026-10-11 16:54:06	
+2026-10-11T17:45:03Z	roborumble	dummy.micro.HummingBird 2.14	1	85.87		85.87	1	2026-10-11 16:56:08	
+2026-10-11T17:45:03Z	roborumble	jcs.Decepticon 2.5.3	2	69.1		69.1	2	2026-10-11 16:59:14	
+2026-10-11T17:45:03Z	roborumble	jgap.JGAP6139 1.0	1	85.95		85.95	1	2026-10-11 17:05:17	
+2026-10-11T17:45:03Z	roborumble	aaa.r.ScalarR 0.005h.053-noshield	5	37.67		37.67	5	2026-10-11 17:27:28	DROP
+2026-10-11T17:45:03Z	roborumble	abc.Shadow 3.83c	4	56.33		56.33	4	2026-10-11 17:27:41	
+2026-10-11T17:45:03Z	roborumble	ad.Quest 0.10	4	89.89		89.89	4	2026-10-11 17:27:48	
+2026-10-11T17:45:03Z	roborumble	adt.Ar1 2.1	4	99.57		99.57	4	2026-10-11 17:27:50	
+2026-10-11T17:45:03Z	roborumble	aetos.AetosFirstBot 1.0	4	99.85		99.85	4	2026-10-11 17:27:52	
+2026-10-11T17:45:03Z	roborumble	agrach.Dalek 1.0	4	98.01		98.01	4	2026-10-11 17:27:54	
+2026-10-11T17:45:03Z	roborumble	agrach.MicroDalek 1.0	4	96.49		96.49	4	2026-10-11 17:27:57	
+2026-10-11T17:45:03Z	roborumble	ags.Midboss 1q.fast	4	76.04		76.04	4	2026-10-11 17:28:11	
+2026-10-11T17:45:03Z	roborumble	ags.rougedc.RougeDC willow	4	63.63		63.63	4	2026-10-11 17:28:26	
+2026-10-11T17:45:03Z	roborumble	ahf.r2d2.R2d2 0.86	4	91.16		91.16	4	2026-10-11 17:28:31	
+2026-10-11T17:45:03Z	roborumble	ahr.ice.Ice 1.0	4	86.21		86.21	4	2026-10-11 17:28:36	
+2026-10-11T17:45:03Z	roborumble	ajs.Guessit 1.3	4	92.99		92.99	4	2026-10-11 17:28:40	
+2026-10-11T17:45:03Z	roborumble	ak.Fermat 2.0	4	83.28		83.28	4	2026-10-11 17:28:50	
+2026-10-11T17:45:03Z	roborumble	apv.Aspid 1.7	4	75.36		75.36	4	2026-10-11 17:29:05	
+2026-10-11T17:45:03Z	roborumble	apv.ScruchiPu 1.0	4	75.39		75.39	4	2026-10-11 17:29:13	
+2026-10-11T17:45:03Z	roborumble	arthord.KostyaTszyu Beta2	4	87.71		87.71	4	2026-10-11 17:29:23	
+2026-10-11T17:45:03Z	roborumble	arthord.NanoSatan Mu	5	81.86		81.86	5	2026-10-11 17:29:27	
+2026-10-11T17:45:03Z	roborumble	ary.FourWD 1.3d	4	76.25		76.25	4	2026-10-11 17:29:34	
+2026-10-11T17:45:03Z	roborumble	awl.Locutus 1.5	4	91.74		91.74	4	2026-10-11 17:29:50	
+2026-10-11T17:45:03Z	roborumble	axeBots.Musashi 2.18	4	78.6		78.6	4	2026-10-11 17:29:59	
+2026-10-11T17:45:03Z	roborumble	ayk.WallHugger 1.0	4	99.0		99.0	4	2026-10-11 17:30:01	
+2026-10-11T17:45:03Z	roborumble	az.Ololobot 0.2.4	4	90.98		90.98	4	2026-10-11 17:30:10	
+2026-10-11T17:45:03Z	roborumble	banshee.mini.Nexus6 0.2.0	4	99.39		99.39	4	2026-10-11 17:30:13	
+2026-10-11T17:45:03Z	roborumble	bk.Shooter 1.0	4	98.23		98.23	4	2026-10-11 17:30:28	
+2026-10-11T17:45:03Z	roborumble	bndl.LostLion 1.2	4	93.56		93.56	4	2026-10-11 17:30:37	
+2026-10-11T17:45:03Z	roborumble	bvh.fry.Freya 0.82	4	77.84		77.84	4	2026-10-11 17:30:45	
+2026-10-11T17:45:03Z	roborumble	bvh.hdr.Hodur 0.4	4	96.54		96.54	4	2026-10-11 17:30:48	
+2026-10-11T17:45:03Z	roborumble	bvh.mini.Fenrir 0.39	4	78.62		78.62	4	2026-10-11 17:30:53	
+2026-10-11T17:45:03Z	roborumble	bwbaugh.nano.Tirunculus 0.0.0a	4	85.27		85.27	4	2026-10-11 17:30:55	
+2026-10-11T17:45:03Z	roborumble	casey.Flump 1.0	4	88.9		88.9	4	2026-10-11 17:31:02	
+2026-10-11T17:45:03Z	roborumble	catcat20.Rabbit 0.001	4	84.83		84.83	4	2026-10-11 17:32:18	
+2026-10-11T17:45:03Z	roborumble	cjm.Chomsky 1.5	4	81.05		81.05	4	2026-10-11 17:32:53	
+2026-10-11T17:45:03Z	roborumble	com.syncleus.robocode.Dreadnaught 0.1	4	84.74		84.74	4	2026-10-11 17:32:56	
+2026-10-11T17:45:03Z	roborumble	conscience.Suicidal 1.1	4	100.0		100.0	4	2026-10-11 17:32:57	
+2026-10-11T17:45:03Z	roborumble	cs.Wren 1.0	4	98.78		98.78	4	2026-10-11 17:33:13	
+2026-10-11T17:45:03Z	roborumble	css.Delitioner 0.11	4	83.55		83.55	4	2026-10-11 17:33:19	
+2026-10-11T17:45:03Z	roborumble	cx.BlestPain 1.41	5	68.38		68.38	5	2026-10-11 17:33:26	
+2026-10-11T17:45:03Z	roborumble	pez.nano.LittleEvilBrother 0.1	1	96.54		96.54	1	2026-10-11 17:33:35	
+2026-10-11T17:45:03Z	roborumble	cx.CigaretBH 1.03	4	72.67		72.67	4	2026-10-11 17:33:44	
+2026-10-11T17:45:03Z	roborumble	hs.SimpleHBot 1.3	2	97.96		97.96	2	2026-10-11 17:33:55	
+2026-10-11T17:45:03Z	roborumble	bayen.nut.Squirrel 1.621	5	85.33		85.33	5	2026-10-11 17:33:58	
+2026-10-11T17:45:03Z	roborumble	suh.nano.MirrorH 1.01	2	96.29		96.29	2	2026-10-11 17:33:59	
+2026-10-11T17:45:03Z	roborumble	kneels.ToNoone 0.2	1	92.94		92.94	1	2026-10-11 17:34:01	
+2026-10-11T17:45:03Z	roborumble	reeder.colin.WallGuy3 1.0	2	96.06		96.06	2	2026-10-11 17:34:04	
+2026-10-11T17:45:03Z	roborumble	lancel.Lynx 1.09	1	73.68		73.68	1	2026-10-11 17:34:08	
+2026-10-11T17:45:03Z	roborumble	GarmBox.Anger 1.0	1	96.94		96.94	1	2026-10-11 17:34:09	
+2026-10-11T17:45:03Z	roborumble	fnc.bandit.Bandit 5.2.0	1	94.05		94.05	1	2026-10-11 17:34:13	
+2026-10-11T17:45:03Z	roborumble	rsk1.RSK1 4.0	2	90.76		90.76	2	2026-10-11 17:34:13	
+2026-10-11T17:45:03Z	roborumble	sheldor.nano.Feint 1.2.1	1	82.86		82.86	1	2026-10-11 17:34:13	
+2026-10-11T17:45:03Z	roborumble	wit.Chuliath 1.0	1	97.74		97.74	1	2026-10-11 17:34:13	
+2026-10-11T17:45:03Z	roborumble	da.NewBGank 1.4	1	72.74		72.74	1	2026-10-11 17:34:21	
+2026-10-11T17:45:03Z	roborumble	japs.Sjonniebot 0.9.1	1	94.62		94.62	1	2026-10-11 17:34:23	
+2026-10-11T17:45:03Z	roborumble	sample.SittingDuck 1.0	1	100.0	100.0	100.0	2	2026-10-11 17:34:23	
+2026-10-11T17:45:03Z	roborumble	lrem.Spectre 0.4.4	2	87.52		87.52	2	2026-10-11 17:34:25	
+2026-10-11T17:45:03Z	roborumble	synapse.Geomancy 15	1	70.72		70.72	1	2026-10-11 17:34:25	
+2026-10-11T17:45:03Z	roborumble	Legend.Qetro 1.6	1	98.21		98.21	1	2026-10-11 17:34:26	
+2026-10-11T17:45:03Z	roborumble	ers.nano.nekolh.Nekolh 1.4d	1	76.23		76.23	1	2026-10-11 17:34:29	
+2026-10-11T17:45:03Z	roborumble	ajs.Solveit 1.3	2	89.59	92.43	90.54	3	2026-10-11 17:34:30	
+2026-10-11T17:45:03Z	roborumble	abud.ThirdRobo 1.0	5	97.98		97.98	5	2026-10-11 17:34:33	
+2026-10-11T17:45:03Z	roborumble	qwaker00.Ahchoo 1.6	2	81.28		81.28	2	2026-10-11 17:34:39	
+2026-10-11T17:45:03Z	roborumble	timmit.mini.TimVA 0.43	1	88.0		88.0	1	2026-10-11 17:34:39	
+2026-10-11T17:45:03Z	roborumble	cx.mini.Nimrod 0.55	5	76.26		76.26	5	2026-10-11 17:34:41	
+2026-10-11T17:45:03Z	roborumble	fcr.First 1.0	1	98.66		98.66	1	2026-10-11 17:34:41	
+2026-10-11T17:45:03Z	roborumble	synapse.rsim.GeomancyBS 0.11	1	77.69		77.69	1	2026-10-11 17:34:41	
+2026-10-11T17:45:03Z	roborumble	fowl3628800.StopAndGo 1.0.0	1	98.71		98.71	1	2026-10-11 17:34:44	
+2026-10-11T17:45:03Z	roborumble	bayen.nano.Squirrel 0.2	5	88.25		88.25	5	2026-10-11 17:34:53	
+2026-10-11T17:45:03Z	roborumble	uccc.RingDing 1.12	2	99.18		99.18	2	2026-10-11 17:34:54	
+2026-10-11T17:45:03Z	roborumble	jwst.DAD.DarkAndDarker 1.1	1	87.85		87.85	1	2026-10-11 17:34:55	
+2026-10-11T17:45:03Z	roborumble	dsx724.VSAB_EP3a 1.0	1	97.71		97.71	1	2026-10-11 17:35:00	
+2026-10-11T17:45:03Z	roborumble	stranger.nano.TestBot 1.0	2	85.5		85.5	2	2026-10-11 17:35:01	
+2026-10-11T17:45:03Z	roborumble	Legend.X_FireFly 1.3	1	95.15		95.15	1	2026-10-11 17:35:04	
+2026-10-11T17:45:03Z	roborumble	mnt.AHEB 0.6a	1	88.65		88.65	1	2026-10-11 17:35:07	
+2026-10-11T17:45:03Z	roborumble	oog.micro.Claudius 1.11	1	73.52	69.56	71.54	2	2026-10-11 17:35:08	
+2026-10-11T17:45:03Z	roborumble	pak.JakeTheTestingRobot .1b	1	95.28		95.28	1	2026-10-11 17:35:10	
+2026-10-11T17:45:03Z	roborumble	reeder.caden.Grover 1.0	1	99.82		99.82	1	2026-10-11 17:35:10	
+2026-10-11T17:45:03Z	roborumble	elvbot.ElverionBot 0.3	2	100.0		100.0	2	2026-10-11 17:35:13	
+2026-10-11T17:45:03Z	roborumble	jasolo.Sonda 0.55	1	84.29		84.29	1	2026-10-11 17:35:15	
+2026-10-11T17:45:03Z	roborumble	slugzilla.ButtHead 2.0	2	69.94		69.94	2	2026-10-11 17:35:16	
+2026-10-11T17:45:03Z	roborumble	shrub.Vapour v159	1	91.78	79.3	85.54	2	2026-10-11 17:35:26	
+2026-10-11T17:45:03Z	roborumble	Polkwane.Piyane 0.7b	1	96.16		96.16	1	2026-10-11 17:35:28	
+2026-10-11T17:45:03Z	roborumble	lxx.ConceptA 0.8	2	79.77	74.73	78.09	3	2026-10-11 17:35:34	
+2026-10-11T17:45:03Z	roborumble	tobe.calypso.Calypso 4.1	1	89.87		89.87	1	2026-10-11 17:35:35	
+2026-10-11T17:45:03Z	roborumble	rz.GlowBlowAPM 1.0	2	75.1	75.84	75.35	3	2026-10-11 17:35:42	
+2026-10-11T17:45:03Z	roborumble	rcb.Vanessa03 0	1	82.66	72.46	77.56	2	2026-10-11 17:35:43	
+2026-10-11T17:45:03Z	roborumble	ouroboros.Dragon 0.0.3	2	73.6		73.6	2	2026-10-11 17:35:45	
+2026-10-11T17:45:03Z	roborumble	lxx.Tomcat 3.68	2	74.15		74.15	2	2026-10-11 17:35:47	
+2026-10-11T17:45:03Z	roborumble	yk.JahMicro 1.0	2	91.95		91.95	2	2026-10-11 17:35:49	
+2026-10-11T17:45:03Z	roborumble	cw.megas.Gridd 0.4	1	81.62	76.88	79.25	2	2026-10-11 17:35:50	
+2026-10-11T17:45:03Z	roborumble	sul.Bicephal 1.2	1	65.39		65.39	1	2026-10-11 17:35:50	
+2026-10-11T17:45:03Z	roborumble	caimano.Furia_Ceca 0.22	5	97.1		97.1	5	2026-10-11 17:35:58	
+2026-10-11T17:45:03Z	roborumble	krzysiek.robbo2.Robbo 1.0.0	2	83.51		83.51	2	2026-10-11 17:35:58	
+2026-10-11T17:45:03Z	roborumble	kid.Toa .0.5	1	94.54	79.42	84.46	3	2026-10-11 17:36:01	
+2026-10-11T17:45:03Z	roborumble	racso.Crono 1.0	1	83.43		83.43	1	2026-10-11 17:36:04	
+2026-10-11T17:45:03Z	roborumble	robar.nano.Pugio 1.49	2	76.11		76.11	2	2026-10-11 17:36:04	
+2026-10-11T17:45:03Z	roborumble	ary.micro.Weak 1.2	5	74.13		74.13	5	2026-10-11 17:36:05	
+2026-10-11T17:45:03Z	roborumble	ha2.T2 0.2	2	97.82		97.82	2	2026-10-11 17:36:06	
+2026-10-11T17:45:03Z	roborumble	dittman.BlindSquirl Retired	2	97.0		97.0	2	2026-10-11 17:36:10	
+2026-10-11T17:45:03Z	roborumble	wcsv.PowerHouse.PowerHouse 1.7e3	1	60.31		60.31	1	2026-10-11 17:36:13	
+2026-10-11T17:45:03Z	roborumble	kawigi.mini.Coriantumr 1.1	1	98.71		98.71	1	2026-10-11 17:36:15	
+2026-10-11T17:45:03Z	roborumble	fm.claire 1.7	2	90.48		90.48	2	2026-10-11 17:36:16	
+2026-10-11T17:45:03Z	roborumble	cs.PumpkinPie 1.0	5	76.7		76.7	5	2026-10-11 17:36:22	
+2026-10-11T17:45:03Z	roborumble	projectx.TestNano 1.0	1	92.2	92.6	92.4	2	2026-10-11 17:36:28	
+2026-10-11T17:45:03Z	roborumble	bing2.Melody 1.3.1	1	86.7	87.0	86.85	2	2026-10-11 17:36:29	
+2026-10-11T17:45:03Z	roborumble	extra.Sauce .01	1	99.96		99.96	1	2026-10-11 17:36:32	
+2026-10-11T17:45:03Z	roborumble	jcs.Megatron 1.2	2	75.57		75.57	2	2026-10-11 17:36:36	
+2026-10-11T17:45:03Z	roborumble	is.fon.rs.FonDestroyer3084 1.0	1	99.94		99.94	1	2026-10-11 17:36:37	
+2026-10-11T17:45:03Z	roborumble	cbot.agile.Nibbler 0.2	2	77.7	83.0	79.47	3	2026-10-11 17:36:38	
+2026-10-11T17:45:03Z	roborumble	Legend.Biogon 1.5	2	97.07		97.07	2	2026-10-11 17:36:39	
+2026-10-11T17:45:03Z	roborumble	slugzilla.SNGLinear 1.0	1	98.88		98.88	1	2026-10-11 17:36:42	
+2026-10-11T17:45:03Z	roborumble	hirataatsushi.Neo 1.6	2	97.36		97.36	2	2026-10-11 17:36:44	
+2026-10-11T17:45:03Z	roborumble	jgap.JGAP7958 1.0	1	91.43		91.43	1	2026-10-11 17:36:44	
+2026-10-11T17:45:03Z	roborumble	vic.Locke 0.7.5.5	1	96.59	91.19	93.89	2	2026-10-11 17:36:46	
+2026-10-11T17:45:03Z	roborumble	wiki.nano.DevilFISH 1.0	1	95.9		95.9	1	2026-10-11 17:36:48	
+2026-10-11T17:45:03Z	roborumble	WdV.Lesserbee 0.01	1	97.98	95.34	96.66	2	2026-10-11 17:36:52	
+2026-10-11T17:45:03Z	roborumble	sigterm.Sigterm 1.0	1	91.27	91.87	91.67	3	2026-10-11 17:36:53	
+2026-10-11T17:45:03Z	roborumble	demetrix.ForceMajeure 0.75	1	75.9		75.9	1	2026-10-11 17:36:58	
+2026-10-11T17:45:03Z	roborumble	oog.mini.AlphaDragon 0.1	1	79.29		79.29	1	2026-10-11 17:36:58	
+2026-10-11T17:45:03Z	roborumble	mym.EdgeStalker 1.0	1	99.77		99.77	1	2026-10-11 17:37:00	
+2026-10-11T17:45:03Z	roborumble	ICS4U1.Patrick_White_Schrodinger 1.1	1	95.56		95.56	1	2026-10-11 17:37:01	
+2026-10-11T17:45:03Z	roborumble	spinnercat.Robovirus 2.718	1	85.59		85.59	1	2026-10-11 17:37:04	
+2026-10-11T17:45:03Z	roborumble	apv.test.Virus 0.6.1	6	87.55		87.55	6	2026-10-11 17:37:05	
+2026-10-11T17:45:03Z	roborumble	amc.ROBv301 1.1	1	97.56	96.86	97.21	2	2026-10-11 17:37:06	
+2026-10-11T17:45:03Z	roborumble	sample.Target 1.0	2	100.0		100.0	2	2026-10-11 17:37:10	
+2026-10-11T17:45:03Z	roborumble	codemojo.nano.Woot 1.0	1	95.8	95.08	95.44	2	2026-10-11 17:37:14	
+2026-10-11T17:45:03Z	roborumble	KiraNL.Chupacabra 0.5	1	84.16		84.16	1	2026-10-11 17:37:17	
+2026-10-11T17:45:03Z	roborumble	jk.mini.CunobelinDC 1.2	1	76.34	75.42	75.88	2	2026-10-11 17:37:18	
+2026-10-11T17:45:03Z	roborumble	ao.T100 0.9	5	99.23		99.23	5	2026-10-11 17:37:20	
+2026-10-11T17:45:03Z	roborumble	dks.MicroDanMK2 1.0	1	98.48	95.02	96.75	2	2026-10-11 17:37:22	
+2026-10-11T17:45:03Z	roborumble	dcs.Eater_of_Worlds_Mini 1.0	1	98.13		98.13	1	2026-10-11 17:37:23	
+2026-10-11T17:45:03Z	roborumble	catcat20.atom.Atom 0.51	6	77.09		77.09	6	2026-10-11 17:37:25	
+2026-10-11T17:45:03Z	roborumble	cyragia.Bot 1.1	1	99.19		99.19	1	2026-10-11 17:37:25	
+2026-10-11T17:45:03Z	roborumble	SuperSample.SuperCrazy 1.0	1	91.04		91.04	1	2026-10-11 17:37:30	
+2026-10-11T17:45:03Z	roborumble	dz.GalbaMini 0.121	1	67.78		67.78	1	2026-10-11 17:37:37	
+2026-10-11T17:45:03Z	roborumble	kano.gamma.KanoGamma 1.8	2	87.19		87.19	2	2026-10-11 17:37:38	
+2026-10-11T17:45:03Z	roborumble	sheldor.nano.Retreat 1.0	1	100.0		100.0	1	2026-10-11 17:37:39	
+2026-10-11T17:45:03Z	roborumble	oog.nano.SavantWS 0.1	1	94.54		94.54	1	2026-10-11 17:37:42	
+2026-10-11T17:45:03Z	roborumble	qohnil.blot.BlotBot 3.61	2	86.44		86.44	2	2026-10-11 17:37:47	
+2026-10-11T17:45:03Z	roborumble	PSW.Relentless 0.1	1	98.18		98.18	1	2026-10-11 17:37:48	
+2026-10-11T17:45:03Z	roborumble	DM.mega.Regicide 2.0rrr	2	67.91		67.91	2	2026-10-11 17:37:49	
+2026-10-11T17:45:03Z	roborumble	donjezza.Muncho 1.0	1	99.33		99.33	1	2026-10-11 17:37:51	
+2026-10-11T17:45:03Z	roborumble	robar.nano.Assertive 0.3	1	84.67		84.67	1	2026-10-11 17:37:52	
+2026-10-11T17:45:03Z	roborumble	genprog.Gajeel 1.0	1	96.25		96.25	1	2026-10-11 17:38:00	
+2026-10-11T17:45:03Z	roborumble	KiraNL.Cataris 1.0	3	81.6		81.6	3	2026-10-11 17:38:06	
+2026-10-11T17:45:03Z	roborumble	robin.SCALPBot 1.0	1	95.11		95.11	1	2026-10-11 17:38:09	
+2026-10-11T17:45:03Z	roborumble	daemons.DizzyA 1.0	1	98.86		98.86	1	2026-10-11 17:38:10	
+2026-10-11T17:45:03Z	roborumble	dmh.robocode.robot.BlackDeath 9.2	1	88.13		88.13	1	2026-10-11 17:38:15	
+2026-10-11T17:45:03Z	roborumble	wiki.BasicGFSurfer 1.02	2	82.4		82.4	2	2026-10-11 17:38:15	
+2026-10-11T17:45:03Z	roborumble	eem.zapper v6.03	1	76.39		76.39	1	2026-10-11 17:38:16	
+2026-10-11T17:45:03Z	roborumble	mz.AdeptBSB 1.03	3	97.42		97.42	3	2026-10-11 17:38:18	
+2026-10-11T17:45:03Z	roborumble	catcat20.shape.Theta 0.018	5	65.15		65.15	5	2026-10-11 17:38:22	
+2026-10-11T17:45:03Z	roborumble	myl.micro.Avipes 1.00	2	84.43		84.43	2	2026-10-11 17:38:22	
+2026-10-11T17:45:03Z	roborumble	sample.Tracker 1.0	3	99.72		99.72	3	2026-10-11 17:38:23	
+2026-10-11T17:45:03Z	roborumble	lucasslf.Dodger 1.0	2	91.87		91.87	2	2026-10-11 17:38:27	
+2026-10-11T17:45:03Z	roborumble	ha2.T3 0.2	1	80.9		80.9	1	2026-10-11 17:38:28	
+2026-10-11T17:45:03Z	roborumble	blir.nano.inch.Inchworm 1.0	1	99.99	98.77	99.38	2	2026-10-11 17:38:30	
+2026-10-11T17:45:03Z	roborumble	zyx.nano.Ant 1.1	2	99.14		99.14	2	2026-10-11 17:38:35	
+2026-10-11T17:45:03Z	roborumble	spin.Bugstard 0.012b	1	96.24		96.24	1	2026-10-11 17:38:38	
+2026-10-11T17:45:03Z	roborumble	jsal.Jsalbot 1.0	3	96.65		96.65	3	2026-10-11 17:38:44	
+2026-10-11T17:45:03Z	roborumble	mahrgell.mahrram 1.3	1	77.18		77.18	1	2026-10-11 17:38:45	
+2026-10-11T17:45:03Z	roborumble	apc.LeeroyJenkins2 1.0	5	84.06		84.06	5	2026-10-11 17:38:48	
+2026-10-11T17:45:03Z	roborumble	japs.Serenity 1.0	1	99.01		99.01	1	2026-10-11 17:38:50	
+2026-10-11T17:45:03Z	roborumble	myl.nano.Kakuru 1.20	2	78.91		78.91	2	2026-10-11 17:38:51	
+2026-10-11T17:45:03Z	roborumble	gh.nano.Grofvuil 0.2	1	97.36		97.36	1	2026-10-11 17:38:55	
+2026-10-11T17:45:03Z	roborumble	sheldor.melee.nano.TestMelee 0.1	1	95.91		95.91	1	2026-10-11 17:38:58	
+2026-10-11T17:45:03Z	roborumble	stelo.Mirror 1.1	3	92.64		92.64	3	2026-10-11 17:39:00	
+2026-10-11T17:45:03Z	roborumble	jeremyreeder.Bully 1	3	96.81		96.81	3	2026-10-11 17:39:05	
+2026-10-11T17:45:03Z	roborumble	kc.nano.Splinter 1.2	3	81.08		81.08	3	2026-10-11 17:39:05	
+2026-10-11T17:45:03Z	roborumble	tjk.deBroglie rev0108	1	53.51		53.51	1	2026-10-11 17:39:08	
+2026-10-11T17:45:03Z	roborumble	pkbots.BoyTDSurfer 1.0	1	91.88		91.88	1	2026-10-11 17:39:11	
+2026-10-11T17:45:03Z	roborumble	ender.EnderRobot 1.1	1	90.47		90.47	1	2026-10-11 17:39:13	
+2026-10-11T17:45:03Z	roborumble	serenity.nonSense 1.39	3	84.89		84.89	3	2026-10-11 17:39:18	
+2026-10-11T17:45:03Z	roborumble	e32.Omni 0.06	1	96.68		96.68	1	2026-10-11 17:39:19	
+2026-10-11T17:45:03Z	roborumble	Fenix.FenixTrack 1.0	2	92.93		92.93	2	2026-10-11 17:39:21	
+2026-10-11T17:45:03Z	roborumble	kawigi.mini.Fhqwhgads 1.1	1	91.87		91.87	1	2026-10-11 17:39:25	
+2026-10-11T17:45:03Z	roborumble	ethdsy.Malacka 2.4	3	90.83		90.83	3	2026-10-11 17:39:32	
+2026-10-11T17:45:03Z	roborumble	slugzilla.Parallax 0.1	3	75.7		75.7	3	2026-10-11 17:39:33	
+2026-10-11T17:45:03Z	roborumble	m3thos.Eva02 0.7.1	1	92.79		92.79	1	2026-10-11 17:39:37	
+2026-10-11T17:45:03Z	roborumble	rz.Artist 0.2	1	79.2		79.2	1	2026-10-11 17:39:38	
+2026-10-11T17:45:03Z	roborumble	pez.clean.Swiffer 0.2.9	1	94.12		94.12	1	2026-10-11 17:39:39	
+2026-10-11T17:45:03Z	roborumble	mz.Adept 2.65	1	92.12		92.12	1	2026-10-11 17:39:46	
+2026-10-11T17:45:03Z	roborumble	disan.Ghost .01	2	100.0		100.0	2	2026-10-11 17:39:50	
+2026-10-11T17:45:03Z	roborumble	kc.micro.WaveShark 0.5	2	75.71		75.71	2	2026-10-11 17:39:51	
+2026-10-11T17:45:03Z	roborumble	staticline.whiskey.Whiskey 0.6	2	82.45		82.45	2	2026-10-11 17:39:52	
+2026-10-11T17:45:03Z	roborumble	scheronimus.ScheroBot 2.3	2	95.88		95.88	2	2026-10-11 17:39:54	
+2026-10-11T17:45:03Z	roborumble	nic.Nicator 2.4	1	95.69		95.69	1	2026-10-11 17:40:00	
+2026-10-11T17:45:03Z	roborumble	xander.cat.Mikey 1.2	1	85.94		85.94	1	2026-10-11 17:40:05	
+2026-10-11T17:45:03Z	roborumble	stelo.MatchupAGF 1.1	1	78.22		78.22	1	2026-10-11 17:40:08	
+2026-10-11T17:45:03Z	roborumble	ntc.Knowledge 1.1	3	94.24		94.24	3	2026-10-11 17:40:09	
+2026-10-11T17:45:03Z	roborumble	projectx.ProjectNano 2.0	1	93.51		93.51	1	2026-10-11 17:40:12	
+2026-10-11T17:45:03Z	roborumble	rsalesc.mega.Knight 0.6.28	1	57.91	50.01	53.96	2	2026-10-11 17:40:13	
+2026-10-11T17:45:03Z	roborumble	strider.Mer 1.1.0	1	93.36		93.36	1	2026-10-11 17:40:14	
+2026-10-11T17:45:03Z	roborumble	pa.Improved 1.1	2	98.54		98.54	2	2026-10-11 17:40:16	
+2026-10-11T17:45:03Z	roborumble	sgp.nano.FurryLeech 1.0	1	99.54	99.48	99.51	2	2026-10-11 17:40:18	
+2026-10-11T17:45:03Z	roborumble	whind.Wisdom 0.5.1	1	76.64		76.64	1	2026-10-11 17:40:23	
+2026-10-11T17:45:03Z	roborumble	nammyung.ModelT 0.23	1	99.87	99.49	99.68	2	2026-10-11 17:40:29	
+2026-10-11T17:45:03Z	roborumble	dmh.robocode.robot.PinkPanther 1.1	1	72.33		72.33	1	2026-10-11 17:40:32	
+2026-10-11T17:45:03Z	roborumble	ds.Versatile RB1.0.1	1	81.48		81.48	1	2026-10-11 17:40:32	
+2026-10-11T17:45:03Z	roborumble	sqTank.waveSurfing.LionWWSVMvoid 0.01	2	99.99		99.99	2	2026-10-11 17:40:33	
+2026-10-11T17:45:03Z	roborumble	donjezza.Jezza 1.0	2	99.42	99.46	99.43	3	2026-10-11 17:40:41	
+2026-10-11T17:45:03Z	roborumble	penguin.Ivy 1.1r	1	86.24		86.24	1	2026-10-11 17:40:44	
+2026-10-11T17:45:03Z	roborumble	dft.Cyanide 1.90	2	93.61		93.61	2	2026-10-11 17:40:47	
+2026-10-11T17:45:03Z	roborumble	md.Pasta 1.1	1	90.25		90.25	1	2026-10-11 17:40:47	
+2026-10-11T17:45:03Z	roborumble	stelo.MirrorMicro 1.1	3	92.67		92.67	3	2026-10-11 17:40:49	
+2026-10-11T17:45:03Z	roborumble	dmh.robocode.robot.GreenDragon 1.0	1	91.27		91.27	1	2026-10-11 17:40:50	
+2026-10-11T17:45:03Z	roborumble	kawigi.spare.SpareParts 0.7.6nosnd	4	94.31		94.31	4	2026-10-11 17:40:53	
+2026-10-11T17:45:03Z	roborumble	robo.PartsBot 1.1	2	98.78		98.78	2	2026-10-11 17:40:55	
+2026-10-11T17:45:03Z	roborumble	gh.GrubbmGrb 1.2.4	1	96.59		96.59	1	2026-10-11 17:41:00	
+2026-10-11T17:45:03Z	roborumble	eld.Hmm 1.0	1	90.45		90.45	1	2026-10-11 17:41:05	
+2026-10-11T17:45:03Z	roborumble	stelo.Liblix 0.3.1	2	77.54		77.54	2	2026-10-11 17:41:06	
+2026-10-11T17:45:03Z	roborumble	nz.jdc.micro.HedgehogGF 1.5	1	85.48		85.48	1	2026-10-11 17:41:07	
+2026-10-11T17:45:03Z	roborumble	suh.nano.TargetH 1.00	1	100.0		100.0	1	2026-10-11 17:41:09	
+2026-10-11T17:45:03Z	roborumble	vuen.Fractal 0.55	1	95.23		95.23	1	2026-10-11 17:41:14	
+2026-10-11T17:45:03Z	roborumble	cx.Princess 1.0	1	64.22		64.22	1	2026-10-11 17:41:25	
+2026-10-11T17:45:03Z	roborumble	kawigi.sbf.Teancum 1.3	1	74.26		74.26	1	2026-10-11 17:41:33	
+2026-10-11T17:45:03Z	roborumble	ne.Chimera 1.2	1	92.41		92.41	1	2026-10-11 17:41:38	
+2026-10-11T17:45:03Z	roborumble	gh.mini.Grimmig 0.3.6	1	88.41		88.41	1	2026-10-11 17:41:44	
+2026-10-11T17:45:03Z	roborumble	non.mega.NoName 0.0	3	83.45		83.45	3	2026-10-11 17:41:49	
+2026-10-11T17:45:03Z	roborumble	throxbot.ThroxBot 0.1	2	92.0		92.0	2	2026-10-11 17:41:53	
+2026-10-11T17:45:03Z	roborumble	jekl.Jekyl .70	3	92.63		92.63	3	2026-10-11 17:42:03	
+2026-10-11T17:45:03Z	roborumble	paulk.PaulV3 1.7	3	74.12		74.12	3	2026-10-11 17:42:11	
+2026-10-11T17:45:03Z	roborumble	TCMI.nano.Copper 0.2	2	96.07		96.07	2	2026-10-11 17:42:16	
+2026-10-11T17:45:03Z	roborumble	rcp.Kuramatron 1.0	1	86.38		86.38	1	2026-10-11 17:42:18	
+2026-10-11T17:45:03Z	roborumble	florent.small.LittleAngel 1.8	2	83.19		83.19	2	2026-10-11 17:42:26	
+2026-10-11T17:45:03Z	roborumble	jekl.DarkHallow .90.9	1	91.77		91.77	1	2026-10-11 17:42:35	
+2026-10-11T17:45:03Z	roborumble	sul.BlueBot 1.0	1	99.26		99.26	1	2026-10-11 17:42:37	
+2026-10-11T17:45:03Z	roborumble	jaybot.adv.bots.JayBot 2.0	2	94.39		94.39	2	2026-10-11 17:42:42	
+2026-10-11T17:45:03Z	roborumble	nexus.One 1.0	1	97.59		97.59	1	2026-10-11 17:42:45	
+2026-10-11T17:45:03Z	roborumble	evd.X1 0.01	1	95.42		95.42	1	2026-10-11 17:42:48	
+2026-10-11T17:45:03Z	roborumble	Noran.RandomTargeting 0.02	3	98.76		98.76	3	2026-10-11 17:42:54	
+2026-10-11T17:45:03Z	roborumble	sheldor.mini.Foilist 1.3.1	2	61.41		61.41	2	2026-10-11 17:43:21	
+2026-10-11T17:45:03Z	roborumble	myl.nano.KomoriNinja 1.1	2	97.73		97.73	2	2026-10-11 17:43:24	
+2026-10-11T17:45:03Z	roborumble	pb.Oscillator 1.0	2	94.69		94.69	2	2026-10-11 17:43:27	
+2026-10-11T17:45:03Z	roborumble	whind.Constitution 0.7.1	1	89.79	82.29	86.04	2	2026-10-11 17:43:32	
+2026-10-11T17:45:03Z	roborumble	pc.Wavelet 1.5	1	47.58	44.36	45.97	2	2026-10-11 17:44:03	DROP
+2026-10-11T17:45:03Z	roborumble	deo.virtual.RainbowBot 1.0	1	83.56	76.84	80.2	2	2026-10-11 17:44:08	
