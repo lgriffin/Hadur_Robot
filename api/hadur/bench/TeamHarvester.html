@@ -109,6 +109,12 @@ loadScripts(document, 'script');</script>
      bullet snapshots, our bullets that hit one of our own members (T1's friendly fire).</li>
  <li><code>friendly.log</code>: one line for each of those, with the bullet's power and how far
      it flew, so a hit can be read against the lane that was kept.</li>
+ <li><code>bullets.log</code>: every bullet in the battle, ours and the enemies', as
+     <code>round,turn,F,id,owner,power,x,y,heading,members</code> when the engine first shows it
+     (for an enemy bullet, <code>members</code> lists each living member of ours as
+     <code>name:x:y:heading:velocity</code>, ';'-separated; <code>-</code> for ours) and
+     <code>round,turn,H,id,owner,victim,power</code> when it hits a robot, so the shots members
+     infer from energy drops can be matched to the engine's truth.</li>
  </ul>
 
  <p><code>focusFireRatio</code> (the last column, <a class="req" href="../../../requirements.html#BENCH-42">BENCH-42</a>) is, from the engine's bullet snapshots,
