@@ -1150,6 +1150,24 @@ build without it. RES-14 is retired, and with it RES-9's use (see the retired ta
 - **ROLE-5 and WORLD-1** lose their "while a tick is not in duress" condition; they held on every tick
   that was not, and now that is every tick.
 
+## 3.12: the mirror aim fires against a shielder (SHIELD-7)
+
+| ID | Pattern | Requirement | Stage |
+|---|---|---|---|
+| SHIELD-7 | State | While the enemy is treated as a bullet shielder and the gun aims MIR-1's mirror aim, the gun shall fire that aim when it is ready instead of holding it under SHIELD-2. | R9 |
+
+- **The fault.** MIR-1's mirror aim carries no SHIELD-2 offset (`aimCarriesJitter` is false for
+  it by design), and SHIELD-2's hold fired only aims that carried one, so once a shield verdict
+  latched against a mirror bot the gun never fired again that battle. SHIELD-3 stores the verdict,
+  so later battles started silent. 3.12 P4 (docs/plan-3.12.md,
+  docs/bench/local/2026-10-11_p312bcd-findings.md): on 38 volatile bots the battles under 60%
+  share fell from 14 of 152 to none in the warm replay, +4.4 to +5.7 points; the 400-bot screen
+  was level (+0.03 APS).
+- **Where.** `AimJitter.holdsShot(shielded, aimCarriesJitter, mirrorAim)`, called where
+  `DuelController.fireIfGunTurned` decides to hold. The detector, the stored verdict and the
+  jitter itself are unchanged (P4's stricter detector and P6's ignored verdict were level on the
+  screen and are not in 3.12).
+
 ## Retired requirements
 
 A retired requirement keeps its ID; no new requirement reuses it.

@@ -70,6 +70,17 @@ public final class AimJitter {
         return Math.signum(u) * magnitude * MAX_FRACTION * halfWidth;
     }
 
+    /**
+     * SHIELD-2's hold: once a shielder is found, the gun holds an aim that carries no offset,
+     * since that is the aim a shielder predicts. A MIR-1 mirror aim is never held (SHIELD-7):
+     * it carries no offset by design and is not the settled aim a shielder reads, so holding it
+     * left the gun silent for the rest of a battle once a verdict latched (3.12 P4,
+     * docs/plan-3.12.md).
+     */
+    public static boolean holdsShot(boolean shielded, boolean aimCarriesJitter, boolean mirrorAim) {
+        return shielded && !aimCarriesJitter && !mirrorAim;
+    }
+
     /** A shot went out with the current offset; the next shot gets a new one. */
     public void shotFired() {
         // Next term of the sequence: phase = (phase + GOLDEN) mod 1.

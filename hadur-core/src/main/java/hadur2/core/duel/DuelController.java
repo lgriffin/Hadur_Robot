@@ -1578,8 +1578,8 @@ public final class DuelController {
         // 1.20 compared getGunTurnRemaining(), which is in degrees, with 0.05, so the gun
         // has to be within 0.05 degrees. Kept exactly as it was; S1 changes no behaviour.
         // SHIELD-2: once a shielder is found, hold the shot the gun settled on before, since
-        // that aim is the predictable one.
-        boolean predictable = shieldDetector.shielded() && !aimCarriesJitter;
+        // that aim is the predictable one. SHIELD-7: a mirror aim is never held.
+        boolean predictable = AimJitter.holdsShot(shieldDetector.shielded(), aimCarriesJitter, aimIsMirror);
         // POW-10: the shot goes at the aimed power, lowered to what our energy can pay for if a
         // hit on us since the aim has made it dear, and only held when no power can be paid for.
         // The holds that stay are intentional: SHIELD-2's (a shielder predicts the settled
