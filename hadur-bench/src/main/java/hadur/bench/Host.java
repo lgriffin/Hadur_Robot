@@ -62,6 +62,16 @@ final class Host {
      */
     static java.util.Map<String, Integer> robocodeJvms(List<String> jpsLines, long self,
                                                         java.util.Set<Long> own) {
+        return robocodeJvms(jpsLines, self, own, pid -> true);
+    }
+
+    /**
+     * As {@link #robocodeJvms(List, long, java.util.Set)}, also leaving out every pid that
+     * {@code foreign} rejects (BENCH-89: gone by the time it is checked, or this bench's own).
+     */
+    static java.util.Map<String, Integer> robocodeJvms(List<String> jpsLines, long self,
+                                                        java.util.Set<Long> own,
+                                                        java.util.function.LongPredicate foreign) {
         java.util.Map<String, Integer> byMain = new java.util.TreeMap<>();
         for (String line : jpsLines) {
             String[] f = line.trim().split("\\s+", 2);
@@ -76,6 +86,7 @@ final class Host {
             String main = f[1];
             String lower = main.toLowerCase(Locale.ROOT);
             if (!(lower.contains("robocode") || lower.contains("roborumble") || lower.startsWith("hadur.bench."))) continue;
+            if (!foreign.test(pid)) continue;
             byMain.merge(main, 1, Integer::sum);
         }
         return byMain;
@@ -187,6 +198,11 @@ final class Host {
 
     /** Other Robocode JVMs right now, not counting this bench's own battle children; -1 when {@code jps} is unavailable. */
     static int countOtherJvms() {
+        // BENCH-89: the bench's own battles are taken before and after the listing, so a battle
+        // that ends or starts while jps runs is still known as ours, and a JVM that is gone by
+        // the time it is checked, or that descends from this bench, is not counted.
+        java.util.Set<Long> own = new java.util.HashSet<>();
+        ProcessHandle.current().descendants().forEach(h -> own.add(h.pid()));
         List<String> lines;
         try {
             lines = runAll(List.of("jps", "-l"));
@@ -194,10 +210,22 @@ final class Host {
             return -1;
         }
         if (lines == null) return -1;
-        java.util.Set<Long> own = new java.util.HashSet<>();
         ProcessHandle.current().descendants().forEach(h -> own.add(h.pid()));
-        return robocodeJvms(lines, ProcessHandle.current().pid(), own).values().stream()
+        long self = ProcessHandle.current().pid();
+        return robocodeJvms(lines, self, own, pid -> isForeignAndAlive(pid, self)).values().stream()
             .mapToInt(Integer::intValue).sum();
+    }
+
+    /** Whether {@code pid} is a live process that is not this JVM's descendant (BENCH-89). */
+    static boolean isForeignAndAlive(long pid, long self) {
+        java.util.Optional<ProcessHandle> h = ProcessHandle.of(pid);
+        if (h.isEmpty() || !h.get().isAlive()) return false;
+        java.util.Optional<ProcessHandle> p = h.get().parent();
+        for (int depth = 0; p.isPresent() && depth < 64; depth++) {
+            if (p.get().pid() == self) return false;
+            p = p.get().parent();
+        }
+        return true;
     }
 
     /** Every line a command prints within a few seconds, or null when it cannot run. */
