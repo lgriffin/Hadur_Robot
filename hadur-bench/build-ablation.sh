@@ -21,6 +21,11 @@
 #         the census lost 0.62 APS in battles with start-up duress.
 #   nolearn  TIME-3 never learns an allowance from a skipped turn, so a round-0 warm-up skip
 #         does not set the shedding threshold for the rest of the battle.
+#   fin   END-1 finishing keeps the controller's distance instead of closing to 150 px (END-2's
+#         ram on a disabled enemy stays). 3.12 P1 (docs/plan-3.12.md): does closing in to finish
+#         weak bots let their simple guns hit us?
+#   fl5   DIST-1 never walks in closer than 500 px (the floor is 400). 3.12 P1: does the walk-in
+#         against bots we out-hit cost more bullets than it wins?
 #
 # The build runs in a temporary git worktree of REF (default HEAD), so the checkout is not
 # touched. The robot version is REF's version plus one suffix per ablation (nr, nm), so the
@@ -31,7 +36,7 @@ set -euo pipefail
 
 ref=HEAD
 if [[ "${1:-}" == "--ref" ]]; then ref="$2"; shift 2; fi
-[[ $# -eq 1 ]] || { sed -n '2,29p' "$0"; exit 2; }
+[[ $# -eq 1 ]] || { sed -n '2,34p' "$0"; exit 2; }
 
 here="$(cd "$(dirname "$0")" && pwd)"
 repo="$(git -C "$here" rev-parse --show-toplevel)"
@@ -43,6 +48,7 @@ duel="$src/hadur-core/src/main/java/hadur2/core/duel/DuelController.java"
 move="$src/hadur-core/src/main/java/hadur2/core/move/MoveController.java"
 shields="$src/hadur-core/src/main/java/hadur2/core/shieldmode/ShieldList.java"
 budget="$src/hadur-core/src/main/java/hadur2/core/policy/TickBudget.java"
+dist="$src/hadur-core/src/main/java/hadur2/core/policy/DistancePolicy.java"
 
 # Replace exactly one occurrence of $2 with $3 in file $1, or fail.
 edit() {
@@ -89,7 +95,13 @@ for a in "${list[@]}"; do
             edit "$budget" "if (learnedAllowanceNanos <= 0 && lastUsedNanos > 0" \
                 "if (false && learnedAllowanceNanos <= 0 && lastUsedNanos > 0"
             version="${version}nl" ;;
-        *) echo "unknown ablation: $a (ram2, mir1, flat, shield-all, nodur, nolearn)" >&2; exit 2 ;;
+        fin)
+            edit "$dist" "return finishing ? FINISH : target;" "return target;"
+            version="${version}ne" ;;
+        fl5)
+            edit "$dist" "target = Math.max(FLOOR, target - STEP);" "target = Math.max(Math.max(FLOOR, 500), target - STEP);"
+            version="${version}f5" ;;
+        *) echo "unknown ablation: $a (ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5)" >&2; exit 2 ;;
     esac
 done
 
