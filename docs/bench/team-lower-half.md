@@ -170,4 +170,6 @@ team fixtures may be re-recorded.
   MambaTeam, which is in both, listed once), 6 seeds, 10
   rounds, 1.11.1. Gate: mean paired difference over 45 teams at least +1.0 point (about +1 APS),
   interval above zero, no team worse beyond its 6-seed spread.
+- Both steps, plus the 3.11 whole-field census as the pairing baseline, are queued in
+  `hadur-bench/plans/team-confirm.queue` (`.\queue.ps1 run team-confirm`).
 - The PC is not needed for screens: a cloud container fights a Hadur team battle in about 75 seconds.
