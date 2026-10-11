@@ -1,0 +1,19 @@
+# 3.12 stage P5 (docs/plan-3.12.md, "P5: never close in"). One global rule, tested on the whole
+# field at once: 3.11aw (build-ablation.sh away, from v3.11) against the released 3.11. DIST-1
+# never steps in, END-1 keeps the distance, and the surf corrects being too close with the
+# orbit's 1.65 gain instead of 0.6. Run it after p312b, not beside it: two queues at once load
+# the host and change the skipped turns both measure.
+#   ./queue.sh run p312c        (or  .\queue.ps1 run p312c)
+# About 70 min. Pass: screen gain at least +0.15 APS with the 95% interval above 0, no band
+# below -0.05 APS; also read the per-band mean distance and their bullet damage, since P1
+# moved the target without moving the distance.
+
+set HEAP = --child-heap 2G
+set E = --engine 1.11.1
+set COMMON = --skip-build --skip-fetch --rounds 35 --cpu-constant 1488498 --parallel 12 ${HEAP} ${E}
+set B311 = --baseline bisect/hadur2.Hadur_3.11.jar --baseline-robot "hadur2.Hadur 3.11"
+
+prep | mkdir -p bisect && { [ -s bisect/hadur2.Hadur_3.11.jar ] || curl -fsSL -o bisect/hadur2.Hadur_3.11.jar https://github.com/lgriffin/Hadur_Robot/releases/download/v3.11/hadur2.Hadur_3.11.jar; } && bash ./build-ablation.sh --ref v3.11 away && ./fetch-opponents.sh --set screen-311.txt
+
+aw   | ./bench-top20.sh ${COMMON} --seeds 4 --seed-base 600 --set screen-311.txt --robot-jar bisect/hadur2.Hadur_3.11aw.jar --robot "hadur2.Hadur 3.11aw" ${B311} --label p312c-aw
+  after: prep

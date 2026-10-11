@@ -29,6 +29,9 @@
 #   mfire SHIELD-2's hold of the settled aim skips a MIR-1 mirror aim, which carries no jitter and
 #         so was never fired once a shield verdict latched. 3.12 P4 (docs/plan-3.12.md): the
 #         silent battles against mirror bots.
+#   away  "never close in" (3.12 P5): DIST-1 never steps in (the target stays at the opening's,
+#         650 px for a stranger), END-1 keeps that distance, and the surf corrects being too
+#         close with the orbit's 1.65 gain instead of 0.6.
 #   s50   SHIELD-1 needs 10 of the last 20 bullets intercepted, and half of them, not 4 and a
 #         quarter. 3.12 P4: half of all census battles latch a shield verdict.
 #
@@ -41,7 +44,7 @@ set -euo pipefail
 
 ref=HEAD
 if [[ "${1:-}" == "--ref" ]]; then ref="$2"; shift 2; fi
-[[ $# -eq 1 ]] || { sed -n '2,39p' "$0"; exit 2; }
+[[ $# -eq 1 ]] || { sed -n '2,42p' "$0"; exit 2; }
 
 here="$(cd "$(dirname "$0")" && pwd)"
 repo="$(git -C "$here" rev-parse --show-toplevel)"
@@ -55,6 +58,7 @@ shields="$src/hadur-core/src/main/java/hadur2/core/shieldmode/ShieldList.java"
 budget="$src/hadur-core/src/main/java/hadur2/core/policy/TickBudget.java"
 dist="$src/hadur-core/src/main/java/hadur2/core/policy/DistancePolicy.java"
 detector="$src/hadur-core/src/main/java/hadur2/core/shield/ShieldDetector.java"
+surf="$src/hadur-core/src/main/java/hadur2/core/move/SurfMover.java"
 
 # Replace exactly one occurrence of $2 with $3 in file $1, or fail.
 edit() {
@@ -111,11 +115,18 @@ for a in "${list[@]}"; do
             edit "$duel" "boolean predictable = shieldDetector.shielded() && !aimCarriesJitter;" \
                 "boolean predictable = shieldDetector.shielded() && !aimCarriesJitter && !aimIsMirror;"
             version="${version}mf" ;;
+        away)
+            edit "$dist" "if (gap >= GAP && certainLead(ours, theirs) && target > FLOOR) {" \
+                "if (false && gap >= GAP && certainLead(ours, theirs) && target > FLOOR) {"
+            edit "$dist" "return finishing ? FINISH : target;" "return target;"
+            edit "$surf" "return DiaUtils.limit(-MAX_ATTACK_ANGLE, factor * 0.6, MAX_ATTACK_ANGLE);" \
+                "return DiaUtils.limit(-MAX_ATTACK_ANGLE, factor * (factor < 0 ? 1.65 : 0.6), MAX_ATTACK_ANGLE);"
+            version="${version}aw" ;;
         s50)
             edit "$detector" "public static final int MIN_INTERCEPTS = 4;" "public static final int MIN_INTERCEPTS = 10;"
             edit "$detector" "public static final double MIN_SHARE = 0.25;" "public static final double MIN_SHARE = 0.5;"
             version="${version}s5" ;;
-        *) echo "unknown ablation: $a (ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50)" >&2; exit 2 ;;
+        *) echo "unknown ablation: $a (ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away)" >&2; exit 2 ;;
     esac
 done
 
