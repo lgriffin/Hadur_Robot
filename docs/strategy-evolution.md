@@ -510,6 +510,19 @@ and scored 48% share against 85% for the build without it. Skipped turns still s
 teach the allowance (TIME-3); the round never drops to the head-on orbit. 3.11 removes the mode and its
 code; its only difference from the benched "3.10nd" build is that the dead code is gone.
 
+## 3.12: the mirror aim fires against a shielder
+
+Once SHIELD-1 or a stored SHIELD-3 verdict latched, SHIELD-2 held every aim that carried no offset,
+and MIR-1's mirror aim never carries one, so against a mirror bot the gun went silent for the rest of
+the battle; the stored verdict carried that into later battles (MirrorMicro seed 6: 188 shots in 48k
+ticks). 3.12 fires the mirror aim (SHIELD-7, `AimJitter.holdsShot`). On 38 volatile bots the battles
+under 60% share fell from 14 of 152 to none in the warm replay, +4.4 to +5.7 points; the 400-bot
+screen was level (+0.03 APS), about +0.05 APS over the field by arithmetic
+(`docs/bench/local/2026-10-11_p312bcd-findings.md`). The other 3.12 ideas did not pass the screen:
+never closing in (P5) cost band 5, a stricter detector (P4, pooled over six seeds +0.08) and ignoring
+the stored verdict (P6) were level. Re-pinned: `pins/duel.sha256` (`-Dhadur.pin=duel`) and
+`duel-sources.sha256`; all replay fixtures unchanged.
+
 ## What comes next
 
 Every EARS requirement up to R2, bar TIER-1 (above), is implemented and traced. R3 to R5
