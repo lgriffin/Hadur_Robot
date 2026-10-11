@@ -12,7 +12,7 @@
 <h1>EARS requirements</h1>
 <p class="lede">Every requirement from <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/docs/requirements.md">docs/requirements.md</a>, the source of truth. <em>Implemented in</em> lists
 the classes whose documentation cites the ID; <em>Verified by</em> lists the tests tagged with it, the same tags the build's
-traceability check reads. 177 of 177 live requirements have a tagged test. The readings behind the numbers are in
+traceability check reads. 181 of 181 live requirements have a tagged test. The readings behind the numbers are in
 <a href="docs/requirements-notes.html">Requirement readings</a>.</p>
 <nav class="toc"><a href="#group-CORE">Core</a> <a href="#group-RES">Resilience</a> <a href="#group-REL">Release</a> <a href="#group-WAVE">Waves</a> <a href="#group-RADAR">Radar</a> <a href="#group-MEM">Memory</a> <a href="#group-ADAPT">Adapt</a> <a href="#group-DIAL">Dials</a> <a href="#group-DIST">Distance</a> <a href="#group-POW">Power</a> <a href="#group-END">Endgame</a> <a href="#group-MOVE">Movement</a> <a href="#group-TIME">Time budget</a> <a href="#group-SHIELD">Bullet shielding</a> <a href="#group-MELEE">Melee (2.1)</a> <a href="#group-GATE">Posture gate</a> <a href="#group-MRADAR">Melee radar</a> <a href="#group-MSENSE">Melee sensing</a> <a href="#group-MMOVE">Melee movement</a> <a href="#group-MGUN">Melee gun</a> <a href="#group-MMEM">Melee memory</a></nav><h2 id="group-CORE">Core</h2>
 <article class="req-card" id="CORE-1">
@@ -715,6 +715,26 @@ traceability check reads. 177 of 177 live requirements have a tagged test. The r
 <div class="req-head"><span class="rid">BENCH-84</span><span class="badge">Unwanted</span><span class="badge stage">R9</span></div>
 <p>If a battle&#x27;s engine errors hold a security-manager denial of a <code>META-INF</code> resource on the class path, then the bench and <code>analyse.py</code> shall not trust that battle and shall name the reason &quot;JDK resource denied&quot; (issue #151).</p>
 <dl><dt>Implemented in</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/BattleResult.java" title="hadur.bench.BattleResult">BattleResult</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/JdkWarmupTest.java">JdkWarmupTest.java</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/LiveToolsTest.java">LiveToolsTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="BENCH-85">
+<div class="req-head"><span class="rid">BENCH-85</span><span class="badge">Optional</span><span class="badge stage">R9</span></div>
+<p>Where <code>live_client.py profiles DIR</code> is given a Hadur data folder, the tool shall decode the newest-format profile of each opponent with ProfileCodec&#x27;s checks and list its key, battles, rounds, last outcome, ADAPT-5&#x27;s and SHIELD-3&#x27;s stored verdicts and seed sizes, counting damaged files apart, so that the shield verdicts a live client carries into later battles can be counted (3.12 plan, P4).</p>
+<dl><dt>Implemented in</dt><dd><span class="none">no citation in the sources</span></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/LiveToolsTest.java">LiveToolsTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="BENCH-86">
+<div class="req-head"><span class="rid">BENCH-86</span><span class="badge">Event</span><span class="badge stage">R9</span></div>
+<p>When a live client&#x27;s results file (its <code>OUTPUT=</code>) or Hadur&#x27;s <code>health.hc</code> (<a class="req" href="requirements.html#RES-8">RES-8</a>) changes during <code>live_client.py watch</code>, the tool shall append each battle with a hadur2 robot once (score share, rounds won, bullet damage) and each new health record with the opponent and shield verdict of the profile saved at the same battle end, keeping battles already recorded across uploads and restarts (3.12 plan).</p>
+<dl><dt>Implemented in</dt><dd><span class="none">no citation in the sources</span></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/LiveToolsTest.java">LiveToolsTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="BENCH-87">
+<div class="req-head"><span class="rid">BENCH-87</span><span class="badge">Event</span><span class="badge stage">R9</span></div>
+<p>When <code>live_client.py watch</code> reads a LiteRumble BotDetails page (or <code>page-diff</code> is given two), the tool shall save the page, record its header and infer the mean score of each pairing&#x27;s newly uploaded battles from the pairing&#x27;s mean and battle count before and after, flagging any under 50 or 25 points or more under the pairing&#x27;s earlier mean; a failed fetch shall be logged and never stop the watch (3.12 plan).</p>
+<dl><dt>Implemented in</dt><dd><span class="none">no citation in the sources</span></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/LiveToolsTest.java">LiveToolsTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="BENCH-88">
+<div class="req-head"><span class="rid">BENCH-88</span><span class="badge">Optional</span><span class="badge stage">R9</span></div>
+<p>Where <code>live_client.py report OUT</code> is given a watch folder, the tool shall summarise the client&#x27;s battles per game, the health records&#x27; skipped turns, faults and stored shield verdicts, each 1v1 battle under 70% share joined to its health record, the latest profile snapshot and the live page&#x27;s movement and flagged drops (3.12 plan).</p>
+<dl><dt>Implemented in</dt><dd><span class="none">no citation in the sources</span></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/LiveToolsTest.java">LiveToolsTest.java</a></dd></dl>
 </article>
 <h2 id="group-GUN">GUN</h2>
 <article class="req-card" id="GUN-1">
