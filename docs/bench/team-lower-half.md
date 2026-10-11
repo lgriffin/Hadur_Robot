@@ -211,3 +211,33 @@ building anything.
   and the shooter-gain and collision cases another 9%, mostly against two teams. Members are hit
   by bullets they saw fired. The gap is in how members move away from detected shots, not in
   detecting them. Candidate 1 is retired.
+
+## 10. Same dodging, less firepower (2026-10-11, cloud)
+
+With detection ruled out, the same 13 teams were fought by 3.12ts and by HOFSwarm as the subject,
+3 seeds each, with `bullets.log` now also holding where every member stood when an enemy bullet
+first showed (`hadur-bench/tools/team_aim.py`; output in
+`docs/bench/local/2026-10-11_team-aim-312ts-vs-hof.txt`).
+
+| | HadurTeam 3.12ts | HOFSwarm 1.1 |
+|---|---:|---:|
+| Enemy bullets fired at the team | 74,063 | 56,619 |
+| Hits on members per 100 enemy bullets | 17.1 | 16.0 |
+| Hits on members | 12,676 | 9,072 |
+| Our bullets fired | 76,685 | 76,306 |
+| Our hit rate | 25.9% | 23.0% |
+| Our mean bullet power | 1.35 | 1.93 |
+| Our bullet damage per battle | 3,726 | 4,988 |
+| Mean round length (ticks) | 1,022 | 768 |
+
+- **Members dodge as well as HOFSwarm's.** Per enemy bullet, Hadur's members are hit about as often
+  (17.1 against 16.0 per 100), less than HOFSwarm against TeamDeath and ImpactTeam. Head-on and
+  linear aims together are 12% of the hits on Hadur and 19% on HOFSwarm.
+- **Hadur's guns hit more often but hit lighter.** MGUN-3's melee table fires 1.0 beyond 500 px and
+  1.5 at 300-500 px, the right table for a ten-bot free-for-all. On a team, members fire mean power
+  1.35 against HOFSwarm's 1.93 (HOFSwarm fires 3.0 a quarter of the time), and do 25% less damage
+  a battle. Rounds run a third longer, the enemies fire 31% more bullets, and members take 40% more
+  hits. That is the members dying early in section 4.
+- **Candidate (team only): fire harder on a team.** Screens `tpow` (a member with 30 energy or
+  more fires 3.0, or what kills the target) and `tpowb` (each band of the table one power higher),
+  gated on `s.teammates` like the earlier screens.
