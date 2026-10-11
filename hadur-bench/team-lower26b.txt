@@ -1,0 +1,15 @@
+# TeamRumble ranks 21-46 (2026-10-11), the lower half Hadur already beats; cloud measure of margins.
+# Source: data/rumble/parsed/2026-10-11T0716Z_teamrumble_rankings.tsv
+CharlieN.OmegaTeam.OmegaTeam 1.0 | team | CharlieN.OmegaTeam.OmegaTeam_1.0.jar
+jeremyreeder.collective.FourProphetsAndADiscliple 5 | team | jeremyreeder.collective.FourProphetsAndADiscliple_5.jar
+dummy_team.BlindFighters 1.01 | team | dummy_team.BlindFighters_1.01.jar
+lxx.ConceptATeam 0.8 | team | lxx.ConceptATeam_0.8.jar
+sp.Minis.GeneBotUpgrade 1.1 | team | sp.Minis.GeneBotUpgrade_1.1.jar
+ms.AresHaikuTeam 0.3 | team | ms.AresHaikuTeam_0.3.jar
+gimp.GimpTeam 0.1 | team | gimp.GimpTeam_0.1.jar
+ntc.slippery.Slippery 1.0 | team | ntc.slippery.Slippery_1.0.jar
+bugger.BuggerHive 1.0 | team | bugger.BuggerHive_1.0.jar
+Polkwane.PTeam 1.0 | team | Polkwane.PTeam_1.0.jar
+sampleteam.MyFirstTeam | team | -
+logiblocs.SittingDroidTeam 1.0 | team | logiblocs.SittingDroidTeam_1.0.jar
+mn.SuperSittingDuckTeam 1.0.2 | team | mn.SuperSittingDuckTeam_1.0.2.jar
