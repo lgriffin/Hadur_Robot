@@ -1,0 +1,25 @@
+# team-confirm: rz.HOFSwarm 1.1 (10th) as the subject vs the same set and seeds
+--team
+true
+--seeds
+6
+--rounds
+10
+--parallel
+4
+--child-heap
+2G
+--cpu-constant
+1488498
+--set
+team-lower26a.txt
+--robot-jar
+opponents/rz.HOFSwarm_1.1.jar
+--robot
+rz.HOFSwarm 1.1
+--member
+rz.HOFMember
+--out
+work/team-confirm-hof
+--report
+../docs/bench/local/2026-10-11_team-confirm-hof.md

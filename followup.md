@@ -46,6 +46,11 @@ MeleeRumble and TeamRumble on 2026-10-05. Open after A5:
   - **Bullet on a teammate's bullet** rose 2,598 to 3,557 (the plan's RC5): the shared-target
     item, with a shared target and formation.
 - **Droids** (a leader with radar-less members) are left to the Team plan.
+- **Team ladder gap, 3.11 (2026-10-11)**, [docs/bench/team-lower-half.md](docs/bench/team-lower-half.md):
+  the 2.07 APS to 10th is lost to ranks 21-33 (Hadur 65.6% against 75-78% for HOFSwarm, ArmyOfShiz
+  and Phoenix), where members die early to simple guns. A shared target scored worse (-2.2); the melee
+  posture off (+0.7) and the teammate fence off (-1.1) scored nothing. Next: measure enemy shots detected on a team (the link carries
+  no hits, so teammates' hits hide enemy shots), then the whole-field team census on the PC.
 - **Stale comments.** Comments in the nine pinned packages that name `HadurCore` are out
   of date since A2. Fixing them is one optional, comment-only re-pin.
 - **The Tutors course** (`course/`) was aligned with 3.9 on 2026-10-07: the hexagon note has

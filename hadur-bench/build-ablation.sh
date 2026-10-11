@@ -32,6 +32,13 @@
 #   away  "never close in" (3.12 P5): DIST-1 never steps in (the target stays at the opening's,
 #         650 px for a stranger), END-1 keeps that distance, and the surf corrects being too
 #         close with the orbit's 1.65 gain instead of 0.6.
+#   tpost (team only) the melee posture is always NORMAL while Hadur has living teammates: on a team,
+#         two enemies hit by our own members read as "fighting each other", so LET_THEM_FIGHT backs
+#         this member away from its teammates' fight (docs/bench/team-lower-half.md).
+#   tfocus (team only) every member's gun weights the lowest-energy enemy three times over, so
+#         members that share eyes converge on one target (docs/bench/team-lower-half.md).
+#   tfence (team only) the WEAVE-8 teammate fence never replaces a drive (members may collide):
+#         does braking or reversing for a mate leave members standing in simple guns' fire?
 #   s50   SHIELD-1 needs 10 of the last 20 bullets intercepted, and half of them, not 4 and a
 #         quarter. 3.12 P4: half of all census battles latch a shield verdict.
 #   nostore  SHIELD-3 no longer starts a battle from the profile's stored shield verdict: each
@@ -48,7 +55,7 @@ set -euo pipefail
 
 ref=HEAD
 if [[ "${1:-}" == "--ref" ]]; then ref="$2"; shift 2; fi
-[[ $# -eq 1 ]] || { sed -n '2,46p' "$0"; exit 2; }
+[[ $# -eq 1 ]] || { sed -n '2,53p' "$0"; exit 2; }
 
 here="$(cd "$(dirname "$0")" && pwd)"
 repo="$(git -C "$here" rev-parse --show-toplevel)"
@@ -64,6 +71,9 @@ budget="$src/hadur-core/src/main/java/hadur2/core/policy/TickBudget.java"
 dist="$src/hadur-core/src/main/java/hadur2/core/policy/DistancePolicy.java"
 detector="$src/hadur-core/src/main/java/hadur2/core/shield/ShieldDetector.java"
 surf="$src/hadur-core/src/main/java/hadur2/core/move/SurfMover.java"
+mctl="$src/hadur-core/src/main/java/hadur2/core/melee/MeleeController.java"
+tlink="$src/hadur-core/src/main/java/hadur2/core/TeamLink.java"
+fgun="$src/hadur-core/src/main/java/hadur2/core/melee/FieldGun.java"
 
 # Replace exactly one occurrence of $2 with $3 in file $1, or fail.
 edit() {
@@ -131,11 +141,26 @@ for a in "${list[@]}"; do
             edit "$detector" "public static final int MIN_INTERCEPTS = 4;" "public static final int MIN_INTERCEPTS = 10;"
             edit "$detector" "public static final double MIN_SHARE = 0.25;" "public static final double MIN_SHARE = 0.5;"
             version="${version}s5" ;;
+        tpost)
+            edit "$mctl" "MeleeStrategy.Plan plan = strategy.evaluate(tracker, s.me, s.energy, s.others, s.time);" \
+                "MeleeStrategy.Plan plan = s.teammates.isEmpty() ? strategy.evaluate(tracker, s.me, s.energy, s.others, s.time) : MeleeStrategy.Plan.normal();"
+            version="${version}tp" ;;
+        tfocus)
+            edit "$mctl" "FieldGun.Aim aim = gun.aim(s.me, s.energy, s.others, alive, s.time);" \
+                "gun.teamFocus = !s.teammates.isEmpty(); FieldGun.Aim aim = gun.aim(s.me, s.energy, s.others, alive, s.time);"
+            edit "$fgun" "static final double SHOOTER_BOOST = 1.5;" \
+                "static final double SHOOTER_BOOST = 1.5; public boolean teamFocus;"
+            edit "$fgun" "if (isolated(e, alive)) w *= ISOLATED_BOOST;" \
+                "if (isolated(e, alive)) w *= ISOLATED_BOOST; if (teamFocus) { boolean low = true; for (EnemyInfo o : alive) if (o.energy < e.energy) low = false; if (low) w *= 3.0; }"
+            version="${version}tf" ;;
+        tfence)
+            edit "$tlink" "if (living.isEmpty()) return built;" "if (true || living.isEmpty()) return built;"
+            version="${version}tn" ;;
         nostore)
             edit "$book" "distance(gunTier), profile.leadAware(), profile.shielder());" \
                 "distance(gunTier), profile.leadAware(), false);"
             version="${version}ns" ;;
-        *) echo "unknown ablation: $a (ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, nostore)" >&2; exit 2 ;;
+        *) echo "unknown ablation: $a (ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, nostore, tpost, tfocus, tfence)" >&2; exit 2 ;;
     esac
 done
 
@@ -152,4 +177,6 @@ python3 -c 'import sys,zipfile; print(zipfile.ZipFile(sys.argv[1]).read("hadur2/
     || { echo "built jar does not carry robot.version=$version" >&2; exit 1; }
 mkdir -p "$here/bisect"
 cp "$jar" "$here/bisect/"
+teamjar="$src/hadur-robot/target/hadur2.HadurTeam_${version}.jar"
+[[ -f "$teamjar" ]] && cp "$teamjar" "$here/bisect/"
 echo "built bisect/hadur2.Hadur_${version}.jar  --robot \"hadur2.Hadur ${version}\""
