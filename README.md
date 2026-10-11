@@ -4,7 +4,7 @@
 a 1v1 duelist that remembers each opponent across battles, with a melee brain for
 free-for-alls, a five-robot team entry, and a core that has no idea it is inside Robocode.
 
-**Hadur 3.12 is ranked 9th of 1,217 in the RoboRumble 1v1** (87.72 APS, its best score and its first top-10 place),
+**Hadur 3.12 is ranked 9th of 1,218 in the RoboRumble 1v1** (87.72 APS, its best score and its first top-10 place),
 17th in the MeleeRumble and 12th in the TeamRumble, the highest-ranked robot flying the Irish flag. It was designed, written, tested and tuned by Claude agents working
 in a shared project with one human, Leigh Griffin, who set the goals and ran the live
 entries. This page covers what the robot does, how it is built, and how it was built.
@@ -16,7 +16,7 @@ with every pairing filled, puts `hadur2.Hadur 3.12` **9th**, Hadur's first top-1
 
 | Rank | APS | PWIN | ANPP | Survival | Pairings | Battles |
 |---|---|---|---|---|---|---|
-| **9th of 1,217** | **87.72** ± 0.20 | 99.42 | 90.98 | 95.27% | 1,217 | 1,949 |
+| **9th of 1,218** | **87.72** ± 0.20 | 99.42 | 90.98 | 95.27% | 1,217 | 1,949 |
 
 - **The fix behind it.** 3.12 is 3.11 with one change (SHIELD-7): the gun fires its mirror aim
   even after deciding the enemy shoots bullets down. Before, a latched shield verdict silenced
@@ -31,7 +31,7 @@ with every pairing filled, puts `hadur2.Hadur 3.12` **9th**, Hadur's first top-1
   64.61 APS), both read for 3.11 on 2026-10-11 07:16 UTC.
 - **Tested and dropped for 3.12:** never closing in on weak bots cost score in ranks 401 to 700
   even though it held the distance; a stricter shield detector and ignoring stored verdicts were
-  level on the 400-bot screen ([findings](docs/bench/local/2026-10-11_p312bcd-findings.md)).
+  level on the 400-bot screen ([findings, PR #182](https://github.com/lgriffin/Hadur_Robot/pull/182)).
 
 The pages are archived in [`data/rumble/`](data/rumble/).
 

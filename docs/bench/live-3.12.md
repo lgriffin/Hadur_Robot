@@ -1,4 +1,4 @@
-# 3.12 live (2026-10-11 17:59 UTC): 9th, the first top-10 place
+# 3.12 live (2026-10-11 17:59 UTC): 9th of 1,218, the first top-10 place
 
 Pages saved by Leigh at 17:59 UTC: Hadur 3.12's BotDetails page and the 1v1 rankings, archived in
 `data/rumble/pages/2026-10-11T1759Z_*` and parsed to `data/rumble/parsed/2026-10-11T1759Z_*`.
@@ -53,12 +53,12 @@ since those pairings no longer swing.
 The watch joined 969 battles to Hadur's own end-of-battle record. Battles ending with a stored
 verdict scored 82.5% against 87.8% without, but that is the opponent mix: verdicts sit on
 stronger bots. Within the same opponent (90 opponents with both kinds) the difference is
--0.8 ± 1.1 points, level, which matches p312d's bench finding that ignoring the verdict gains
-nothing.
+-0.8 ± 1.1 points, level, which matches the p312d bench run (PR #182, https://github.com/lgriffin/Hadur_Robot/pull/182): ignoring the verdict on load was
+level, 0.00 APS warm on the 400-bot screen.
 
 ## 4. What it leaves
 
 The gap to the pack is still the weak tail: against Tomcat, Knight and Raven, Hadur is behind
 from rank 401 down (hit more by simple guns), ahead in ranks 51 to 200. Four whole-field ideas
 for that gap (distance, never closing in, a stricter detector, ignoring stored verdicts) were
-level or worse on the bench, so the next 1v1 stage needs a different lever.
+level or worse on the bench (p312, PR #176 and PR #182), so the next 1v1 stage needs a different lever.
