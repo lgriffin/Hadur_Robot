@@ -1,0 +1,36 @@
+delta 0
+window kind                             n=1     det% n>=2 det% |      n=0 falseDet%
+clean                                296150     98.5      0.0 |  2224644      1.0
+mateHit                               11737      1.4      0.0 |    42421      6.3
+mateHit+otherHit                        169      0.0      0.0 |      345      0.0
+mateHit+otherHit+xGained                 35      0.0      0.0 |       29     13.8
+mateHit+ownHit                          212      0.9      0.0 |      427      3.3
+mateHit+xGained                         938     33.2      0.0 |     1727     19.9
+otherHit                               2308     27.9      0.0 |     7353     28.7
+otherHit+xGained                        369     27.4      0.0 |      633     22.3
+ownHit                                 3176     98.2      0.0 |    12368      1.4
+ownHit+otherHit                          46     32.6      0.0 |       97     16.5
+ownHit+xGained                          244      3.3      0.0 |      480      0.0
+xGained                               13958      2.9      0.0 |    46008      0.3
+ALL                                  329377     90.0      0.0 |  2336578      1.2
+enemy bullets that hit a member: 12817
+  detected                11022  86.0%
+  missed:shooterGained      677   5.3%
+  missed:other              464   3.6%
+  missed:mateHit            319   2.5%
+  missed:otherHit           121   0.9%
+  unseen                    114   0.9%
+  inferred, other power     100   0.8%
+  amz.TeamDeathTeam_1                        989 det  66.3% mateHit  0.5% unseen  2.5%
+  apvteam.MambaTeam_0.7.5                    839 det  94.6% mateHit  1.4% unseen  0.2%
+  ethdsy.MalackaTeam_1.2                    1166 det  90.1% mateHit  1.7% unseen  0.9%
+  gh.nano.GrofGroup_1.1                     1296 det  90.3% mateHit  1.4% unseen  0.8%
+  jab.DiamondStealers_5                      834 det  90.2% mateHit  3.5% unseen  0.1%
+  jab.Enjambre_3                             886 det  81.0% mateHit  0.7% unseen  2.5%
+  kawigi.sbf.TidalWave_0.8                  1156 det  91.9% mateHit  3.0% unseen  0.5%
+  mn.nano.perceptual.ImpactTeam_1.3.0       1154 det  68.3% mateHit  1.8% unseen  1.8%
+  mskwik.BumblingIdiots_1.0                  640 det  89.4% mateHit  4.8% unseen  0.5%
+  pedersen.ImWithDroidTeam_1.3               598 det  88.1% mateHit  6.4% unseen  0.2%
+  pedersen.ImWithStupidTeam_1.3              534 det  92.1% mateHit  4.1% unseen  0.0%
+  sgp.DrunkenTeam_1.12                      1101 det  91.0% mateHit  3.8% unseen  0.5%
+  vuen.Bakery_2.51                          1624 det  88.5% mateHit  2.5% unseen  0.5%

@@ -187,3 +187,81 @@ workers stopped. Reports: `docs/bench/local/2026-10-11_team-{confirm-311,confirm
   the confirm run, the same battles repeated. Any team candidate is paired against these rows.
 - No faults, no duress, no LINK rejects. Hadur skipped 7.1 turns a battle.
 
+
+## 9. Do teammates' hits hide enemy shots? No (2026-10-11, cloud)
+
+Candidate 1 rested on a guess: the link carries no hits, so a teammate's hit on an enemy, landing
+between two of a member's scans, would hide that enemy's shot from MSENSE-2. Measured before
+building anything.
+
+- **Method.** A measurement build (`build-ablation.sh tshots`, behaviour unchanged) prints every
+  update of an enemy in each member's tracker: its own scans (`SC`) and teammates' sightings merged
+  over the link (`SL`), with the shot inferred. `TeamHarvester` now writes `bullets.log`, the
+  engine's record of every bullet fired and every hit. `hadur-bench/tools/team_shots.py` matches
+  the two. 3.12ts against ranks 21-33 (`team-lower26a.txt`), 3 seeds, 39 battles.
+- **Detection is good.** In an update window where the enemy fired once and nothing else touched
+  it, the shot is inferred 98.5% of the time (296,150 windows), with 1.0% false shots in windows
+  with no fire. Teammates' sightings matter: counting own scans only, half the shots looked missed,
+  because a teammate's sighting had already taken the drop.
+- **Of the 12,817 enemy bullets that hit a member, the member had inferred 86.0%** (a shot of that
+  bullet's power in the window holding its fire; another 0.8% inferred a shot of a different power). The misses:
+  the shooter gaining energy from another hit in the same window 5.3%, a collision costing the
+  shooter 0.6 energy in the same window 3.6% (mostly TeamDeath and ImpactTeam), a teammate's hit
+  2.5%, a third party's hit 0.9%, never updated 0.9%.
+- **Verdict.** Sharing hits over the link would recover at most 2.5% of the bullets that hit us,
+  and the shooter-gain and collision cases another 9%, mostly against two teams. Members are hit
+  by bullets they saw fired. The gap is in how members move away from detected shots, not in
+  detecting them. Candidate 1 is retired.
+
+## 10. Same dodging, less firepower (2026-10-11, cloud)
+
+With detection ruled out, the same 13 teams were fought by 3.12ts and by HOFSwarm as the subject,
+3 seeds each, with `bullets.log` now also holding where every member stood when an enemy bullet
+first showed (`hadur-bench/tools/team_aim.py`; output in
+`docs/bench/local/2026-10-11_team-aim-312ts-vs-hof.txt`).
+
+| | HadurTeam 3.12ts | HOFSwarm 1.1 |
+|---|---:|---:|
+| Enemy bullets fired at the team | 74,063 | 56,619 |
+| Hits on members per 100 enemy bullets | 17.1 | 16.0 |
+| Hits on members | 12,676 | 9,072 |
+| Our bullets fired | 76,685 | 76,306 |
+| Our hit rate | 25.9% | 23.0% |
+| Our mean bullet power | 1.35 | 1.93 |
+| Our bullet damage per battle | 3,726 | 4,988 |
+| Mean round length (ticks) | 1,022 | 768 |
+
+- **Members dodge as well as HOFSwarm's.** Per enemy bullet, Hadur's members are hit about as often
+  (17.1 against 16.0 per 100), less than HOFSwarm against TeamDeath and ImpactTeam. Head-on and
+  linear aims together are 12% of the hits on Hadur and 19% on HOFSwarm.
+- **Hadur's guns hit more often but hit lighter.** MGUN-3's melee table fires 1.0 beyond 500 px and
+  1.5 at 300-500 px, the right table for a ten-bot free-for-all. On a team, members fire mean power
+  1.35 against HOFSwarm's 1.93 (HOFSwarm fires 3.0 a quarter of the time), and do 25% less damage
+  a battle. Rounds run a third longer, the enemies fire 31% more bullets, and members take 40% more
+  hits. That is the members dying early in section 4.
+- **Candidate (team only): fire harder on a team.** Screens `tpow` (a member with 30 energy or
+  more fires 3.0, or what kills the target) and `tpowb` (one power above the table, same 30-energy
+  gate), gated on `s.teammates` like the earlier screens. Both replace the table's result outright,
+  so MGUN-3's lead cap (never drop below the target's energy) and its two-left duel row do not
+  apply while a member has 30 energy; the screens measure that whole change.
+
+## 11. Firepower screens (2026-10-11, cloud)
+
+Ranks 21-33 (`team-lower26a.txt`), 3 seeds, 10 rounds, paired by team against 3.12 (the release
+jar, 65.9%). Rows in `data/bench/2026-10-11_team-lower-half-cloud.tsv`.
+
+| Screen | Mean share | Paired vs 3.12 (95%) | Mean power | Enemy bullets fired |
+|---|---:|---:|---:|---:|
+| 3.12 | 65.9% | | 1.37 | 74,728 |
+| `tpow` (3.0 from 30 energy up) | 70.6% | **+4.7 ± 2.5** | 1.96 | 60,856 |
+| `tpowb` (one power above the table) | 69.7% | **+3.8 ± 1.6** | 1.76 | 63,403 |
+| HOFSwarm 1.1, for scale | 75.1% | +9.2 ± 9.6 | 1.93 | |
+
+- Both are the first team screens clear of zero: `tpow` 12 of 13 teams up (Malacka -1), `tpowb`
+  11 of 13 (TeamDeath -1, Enjambre 0). Rounds shorten and the enemies fire a fifth fewer bullets.
+- Gate on the PC (section 7's rule, whole field): `hadur-bench/plans/team-power.queue` builds both
+  ablations from 3.12, then runs `tpow` and `tpowb` against all 45 teams, 6 seeds, each paired with
+  3.12 at the same opponent and seed (`--baseline`).
+- If one passes, the release change is a team-only power rule that does exactly what the screen did
+  (replace the table, lead cap and duel row included, from 30 energy), reached only while the
+  member has living teammates; 1v1 and melee fixtures stay bit-identical.

@@ -33,6 +33,12 @@ import robocode.control.snapshot.ITurnSnapshot;
  *     bullet snapshots, our bullets that hit one of our own members (T1's friendly fire).</li>
  * <li>{@code friendly.log}: one line for each of those, with the bullet's power and how far
  *     it flew, so a hit can be read against the lane that was kept.</li>
+ * <li>{@code bullets.log}: every bullet in the battle, ours and the enemies', as
+ *     {@code round,turn,F,id,owner,power,x,y,heading,members} when the engine first shows it
+ *     (for an enemy bullet, {@code members} lists each living member of ours as
+ *     {@code name:x:y:heading:velocity}, ';'-separated; {@code -} for ours) and
+ *     {@code round,turn,H,id,owner,victim,power} when it hits a robot, so the shots members
+ *     infer from energy drops can be matched to the engine's truth.</li>
  * </ul>
  *
  * <p>{@code focusFireRatio} (the last column, BENCH-42) is, from the engine's bullet snapshots,
@@ -56,6 +62,8 @@ public class TeamHarvester extends BattleAdaptor {
     private final Set<Integer> damaging = new HashSet<>();
     private final Map<Integer, Double> damageByEnemy = new HashMap<>();
     private final BufferedWriter debug;
+    private final BufferedWriter bulletLog;
+    private final Set<Integer> hits = new HashSet<>();
     private int round;
     private int ourTeam = -1;
     private int membersAlive, enemiesAlive, shots, inLane, belowTruth, countReports, bulletsOnMates;
@@ -66,6 +74,7 @@ public class TeamHarvester extends BattleAdaptor {
         this.rounds = Files.newBufferedWriter(dir.resolve("rounds.csv"), StandardCharsets.UTF_8);
         rounds.write(HEADER + "\n");
         this.debug = Files.newBufferedWriter(dir.resolve("friendly.log"), StandardCharsets.UTF_8);
+        this.bulletLog = Files.newBufferedWriter(dir.resolve("bullets.log"), StandardCharsets.UTF_8);
     }
 
     @Override
@@ -73,6 +82,7 @@ public class TeamHarvester extends BattleAdaptor {
         round = e.getRound();
         bullets.clear();
         friendly.clear();
+        hits.clear();
         firstSeen.clear();
         damaging.clear();
         damageByEnemy.clear();
@@ -115,6 +125,7 @@ public class TeamHarvester extends BattleAdaptor {
         }
         for (IBulletSnapshot b : snap.getBullets()) {
             firstSeen.putIfAbsent(b.getBulletId(), new double[] {b.getX(), b.getY()});
+            logBullet(b, robots, turn);
             // The engine's own record of a bullet of ours that ended on one of our members.
             if (b.getState() == BulletState.HIT_VICTIM && b.getVictimIndex() >= 0
                     && b.getVictimIndex() < robots.length && b.getOwnerIndex() >= 0
@@ -170,6 +181,30 @@ public class TeamHarvester extends BattleAdaptor {
             bulletsOnMates, total > 0 ? String.format(Locale.ROOT, "%.4f", most / total) : "-"));
     }
 
+    private void logBullet(IBulletSnapshot b, IRobotSnapshot[] robots, int turn) {
+        int o = b.getOwnerIndex();
+        String owner = o >= 0 && o < robots.length ? robots[o].getName() : "-";
+        if (!bullets.contains(b.getBulletId())) {
+            StringBuilder members = new StringBuilder();
+            if (o >= 0 && o < robots.length && robots[o].getTeamIndex() != ourTeam) {
+                for (IRobotSnapshot r : robots) {
+                    if (r.getTeamIndex() != ourTeam || !r.getState().isAlive()) continue;
+                    if (members.length() > 0) members.append(';');
+                    members.append(String.format(Locale.ROOT, "%s:%.1f:%.1f:%.4f:%.2f", r.getName(), r.getX(), r.getY(),
+                        r.getBodyHeading(), r.getVelocity()));
+                }
+            }
+            write(bulletLog, String.format(Locale.ROOT, "%d,%d,F,%d,%s,%.2f,%.1f,%.1f,%.4f,%s%n", round, turn,
+                b.getBulletId(), owner, b.getPower(), b.getX(), b.getY(), b.getHeading(),
+                members.length() > 0 ? members : "-"));
+        }
+        int v = b.getVictimIndex();
+        if (b.getState() == BulletState.HIT_VICTIM && v >= 0 && v < robots.length && hits.add(b.getBulletId())) {
+            write(bulletLog, String.format(Locale.ROOT, "%d,%d,H,%d,%s,%s,%.2f%n", round, turn, b.getBulletId(),
+                owner, robots[v].getName(), b.getPower()));
+        }
+    }
+
     private BufferedWriter log(int robotIndex) {
         return logs.computeIfAbsent(robotIndex, i -> {
             try {
@@ -191,6 +226,7 @@ public class TeamHarvester extends BattleAdaptor {
     public void close() throws IOException {
         rounds.close();
         debug.close();
+        bulletLog.close();
         for (BufferedWriter w : logs.values()) w.close();
     }
 }
