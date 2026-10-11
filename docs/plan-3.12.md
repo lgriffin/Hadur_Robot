@@ -156,3 +156,28 @@ the opening distance" (650 px for a stranger): beyond it the surf still steers b
 650 as today, since drifting off to the corners is not the hunch being tested. `hadur-bench/plans/p312c.queue`,
 about 70 min, run after p312b. Gates as P1, and the step is also read for whether the mean
 distance really rose.
+
+## P6: stored shield verdicts
+
+Leigh decoded the Hadur profiles on the PC's six rumble workers with `live_client.py profiles`
+(2026-10-11, `data/live/profiles-3.11-*.tsv`): 453 to 548 profiles each, none damaged, and
+**53 to 57% of them carry a stored SHIELD-3 shield verdict** (243 to 309 a worker). The same
+bots show as shielders on several workers (DM.mega.Bezier, DM.mega.Regicide, DM.Capriite,
+CharlieN.Omega.Omega, AIR.iRobot), and some of them were won 35 of 35 rounds in their last battle.
+
+A stored verdict never clears. `OpeningBook` passes it to the duel, which latches the detector
+from the first shot (`DuelController`, `knownShielder()`), and the battle-end save writes the
+still-latched verdict back (`folder.shielder(shieldDetector.shielded())`). So on a live client,
+every battle after the first latch against an opponent starts in shield handling: a mirror bot
+gets the silent gun (P4), and every other bot gets SHIELD-2's aim offset on every shot. 3.12 reads
+the same profile files (format 3, one data folder per robot class), so a stricter detector
+(`s50`) would not clear the verdicts 3.11 has already stored.
+
+| Step | Candidate | Edit (from v3.11) | Set |
+|---|---|---|---|
+| `wns` | 3.11ns | the stored verdict is ignored on load (`nostore`); each battle decides from its own bullets | screen, 2 seeds, cold then warm |
+| `wmfs5ns` | 3.11mfs5ns | `mfire`, `s50` and `nostore`: the 3.12 candidate | screen, 2 seeds, cold then warm |
+
+`hadur-bench/plans/p312d.queue`, after p312c, about 2.3 h. The warm battles are what a live
+client plays (BENCH-54). Gates as P1, read on the warm rows (`export_battles.py --warm`, then `screen_paired.py`); `wns`'s cold rows should be level,
+since nothing is stored before the cold battle.

@@ -151,7 +151,7 @@ def collect(work, set_file, build, baseline_build, team):
     for dirname in dirnames:
         m = eb.DIR_RE.match(dirname)
         opp = opponents.get(m.group("slug")) if m else None
-        if opp is None:
+        if opp is None or m.group("warm"):
             unmatched.append(dirname)
             continue
         baseline = m.group("baseline") is not None

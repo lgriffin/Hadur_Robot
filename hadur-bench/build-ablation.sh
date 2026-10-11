@@ -34,6 +34,10 @@
 #         close with the orbit's 1.65 gain instead of 0.6.
 #   s50   SHIELD-1 needs 10 of the last 20 bullets intercepted, and half of them, not 4 and a
 #         quarter. 3.12 P4: half of all census battles latch a shield verdict.
+#   nostore  SHIELD-3 no longer starts a battle from the profile's stored shield verdict: each
+#         battle decides from its own bullets (the verdict is still saved). 3.12 P6: live
+#         clients carry a stored verdict for about 55% of their opponents, and 3.12 would load
+#         3.11's.
 #
 # The build runs in a temporary git worktree of REF (default HEAD), so the checkout is not
 # touched. The robot version is REF's version plus one suffix per ablation (nr, nm), so the
@@ -44,7 +48,7 @@ set -euo pipefail
 
 ref=HEAD
 if [[ "${1:-}" == "--ref" ]]; then ref="$2"; shift 2; fi
-[[ $# -eq 1 ]] || { sed -n '2,42p' "$0"; exit 2; }
+[[ $# -eq 1 ]] || { sed -n '2,46p' "$0"; exit 2; }
 
 here="$(cd "$(dirname "$0")" && pwd)"
 repo="$(git -C "$here" rev-parse --show-toplevel)"
@@ -54,6 +58,7 @@ git -C "$repo" worktree add --detach "$work/src" "$ref" >/dev/null
 src="$work/src"
 duel="$src/hadur-core/src/main/java/hadur2/core/duel/DuelController.java"
 move="$src/hadur-core/src/main/java/hadur2/core/move/MoveController.java"
+book="$src/hadur-core/src/main/java/hadur2/core/adapt/OpeningBook.java"
 shields="$src/hadur-core/src/main/java/hadur2/core/shieldmode/ShieldList.java"
 budget="$src/hadur-core/src/main/java/hadur2/core/policy/TickBudget.java"
 dist="$src/hadur-core/src/main/java/hadur2/core/policy/DistancePolicy.java"
@@ -126,7 +131,11 @@ for a in "${list[@]}"; do
             edit "$detector" "public static final int MIN_INTERCEPTS = 4;" "public static final int MIN_INTERCEPTS = 10;"
             edit "$detector" "public static final double MIN_SHARE = 0.25;" "public static final double MIN_SHARE = 0.5;"
             version="${version}s5" ;;
-        *) echo "unknown ablation: $a (ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away)" >&2; exit 2 ;;
+        nostore)
+            edit "$book" "distance(gunTier), profile.leadAware(), profile.shielder());" \
+                "distance(gunTier), profile.leadAware(), false);"
+            version="${version}ns" ;;
+        *) echo "unknown ablation: $a (ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, nostore)" >&2; exit 2 ;;
     esac
 done
 

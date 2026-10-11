@@ -1,0 +1,30 @@
+# 3.12 stage P6 (docs/plan-3.12.md, "P6: stored shield verdicts"). Leigh's six rumble workers
+# carry a stored SHIELD-3 shield verdict for 53 to 57% of the opponents they have met
+# (data/live/profiles-3.11-*.tsv), and a stored verdict latches the detector from the first shot
+# of every later battle and is saved again at its end, so it never clears. 3.12 loads 3.11's
+# profiles (same format, same data folder), so a stricter detector alone would not clear them.
+# Each step plays every seed cold, then warm on the profile the cold battle left (BENCH-54),
+# which is what a live client plays: 3.11's warm battle starts latched wherever its cold battle
+# latched (about half). Candidates against the released 3.11:
+#   ns      3.11 with the stored verdict ignored on load (nostore): the warm difference is what
+#           the stored verdict costs today's clients
+#   mfs5ns  the 3.12 candidate: p312b's mirror fix and stricter detector (mfire, s50), and the
+#           stored verdict ignored, so 3.11's stored verdicts do not carry into 3.12
+#   ./queue.sh run p312d        (or  .\queue.ps1 run p312d)
+# Run after p312c, RoboRumble workers stopped. About 70 min a step. Read the warm rows by
+# exporting them with data/tools/export_battles.py --warm (same --build labels, --rounds-out too)
+# and pairing with data/tools/screen_paired.py; the export without --warm gives the cold rows.
+# Pass is the warm gain at least +0.15 APS with its interval above 0 and no band below -0.05;
+# the cold rows of ns should be level (nothing is stored yet).
+
+set HEAP = --child-heap 2G
+set E = --engine 1.11.1
+set COMMON = --skip-build --skip-fetch --rounds 35 --cpu-constant 1488498 --parallel 12 ${HEAP} ${E}
+set B311 = --baseline bisect/hadur2.Hadur_3.11.jar --baseline-robot "hadur2.Hadur 3.11"
+
+prep | mkdir -p bisect && { [ -s bisect/hadur2.Hadur_3.11.jar ] || curl -fsSL -o bisect/hadur2.Hadur_3.11.jar https://github.com/lgriffin/Hadur_Robot/releases/download/v3.11/hadur2.Hadur_3.11.jar; } && bash ./build-ablation.sh --ref v3.11 nostore && bash ./build-ablation.sh --ref v3.11 mfire,s50,nostore && ./fetch-opponents.sh --set screen-311.txt
+
+wns     | ./bench-top20.sh ${COMMON} --seeds 2 --seed-base 620 --cold-warm --set screen-311.txt --robot-jar bisect/hadur2.Hadur_3.11ns.jar --robot "hadur2.Hadur 3.11ns" ${B311} --label p312d-wns
+  after: prep
+wmfs5ns | ./bench-top20.sh ${COMMON} --seeds 2 --seed-base 620 --cold-warm --set screen-311.txt --robot-jar bisect/hadur2.Hadur_3.11mfs5ns.jar --robot "hadur2.Hadur 3.11mfs5ns" ${B311} --label p312d-wmfs5ns
+  after: prep
