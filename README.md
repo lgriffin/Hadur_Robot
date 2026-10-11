@@ -4,35 +4,42 @@
 a 1v1 duelist that remembers each opponent across battles, with a melee brain for
 free-for-alls, a five-robot team entry, and a core that has no idea it is inside Robocode.
 
-**Hadur 3.11 is ranked 13th of 1,216 in the RoboRumble 1v1** (87.56 APS, its best score),
+**Hadur 3.12 is ranked 9th of 1,218 in the RoboRumble 1v1** (87.72 APS, its best score and its first top-10 place),
 17th in the MeleeRumble and 12th in the TeamRumble, the highest-ranked robot flying the Irish flag. It was designed, written, tested and tuned by Claude agents working
 in a shared project with one human, Leigh Griffin, who set the goals and ran the live
 entries. This page covers what the robot does, how it is built, and how it was built.
 
 ## Standing
 
-**3.11 was released on 2026-10-10** and its first full 1v1 pass, saved 2026-10-11 02:23 UTC
-with every pairing filled, puts `hadur2.Hadur 3.11` 13th with Hadur's best score yet:
+**3.12 was released on 2026-10-11** and its first full 1v1 pass, saved 2026-10-11 17:59 UTC
+with every pairing filled, puts `hadur2.Hadur 3.12` **9th**, Hadur's first top-10 place:
 
 | Rank | APS | PWIN | ANPP | Survival | Pairings | Battles |
 |---|---|---|---|---|---|---|
-| **13th of 1,216** | **87.56** ± 0.13 | 99.42 | 90.82 | 95.05% | 1,216 | 4,306 |
+| **9th of 1,218** | **87.72** ± 0.20 | 99.42 | 90.98 | 95.27% | 1,217 | 1,949 |
 
-- **17th in the MeleeRumble** (65.65 APS, up from 19th and 65.07 for 3.9) and **12th in the
-  TeamRumble** (`hadur2.HadurTeam 3.11`, 64.61 APS, up from 63.97), read 2026-10-11 07:16 UTC.
-- **3.11 retired start-up duress (RES-9).** The bench showed the round-0 warm-up skipping
-  turns put Hadur into duress in up to 60% of battles; without it 3.11 gained 0.73 APS on the
-  bench and 0.25 live over 3.10's second pass (87.33, 13th), mostly in ranks 201 to 400 and 701+
-  ([census plan](docs/plan-3.11-census.md), [live notes](docs/bench/live-3.11.md)).
-- **10th is 0.12 APS away.** Knight 0.6.28 is 10th at 87.68, and ranks 8 to 13 sit within
-  0.16 APS, inside the noise floor of a reading (about ±0.14). Against Tomcat, Knight and
-  Raven, Hadur is ahead in ranks 51 to 200 and about a point a pairing behind against the
-  817 bots ranked 401st and below, where it is hit more by simple guns.
-- **Next: 3.12** ([plan](docs/plan-3.12.md)): a fix for battles where the gun falls silent
-  against mirror bots once a false bullet-shield verdict latches, and a test of never closing
-  in, one rule for the whole field.
+- **The fix behind it.** 3.12 is 3.11 with one change (SHIELD-7): the gun fires its mirror aim
+  even after deciding the enemy shoots bullets down. Before, a latched shield verdict silenced
+  the gun against mirror bots for the rest of the battle and the stored verdict carried it into
+  later ones. The three mirror bots went from 42.5, 62.5 and 70.6 to about 93 each (MirrorMicro,
+  NaN, Mimic), worth +0.09 APS on their own; the whole page is +0.15 over 3.11's
+  ([plan](docs/plan-3.12.md), [live notes](docs/bench/live-3.12.md)).
+- **A tight pack.** Raven (8th) and Hadur share 87.72, and XanderCat, Knight, Tomcat and
+  Gilgalad follow within 0.10 APS, half the page's own ±0.20. Most pairings have one or two
+  battles yet, so the place can move either way as the second pass fills in.
+- **17th in the MeleeRumble** (65.65 APS) and **12th in the TeamRumble** (`hadur2.HadurTeam`,
+  64.61 APS), both read for 3.11 on 2026-10-11 07:16 UTC.
+- **Tested and dropped for 3.12:** never closing in on weak bots cost score in ranks 401 to 700
+  even though it held the distance; a stricter shield detector and ignoring stored verdicts were
+  level on the 400-bot screen ([findings, PR #182](https://github.com/lgriffin/Hadur_Robot/pull/182)).
 
 The pages are archived in [`data/rumble/`](data/rumble/).
+
+### 3.11 at 13th
+
+`hadur2.Hadur 3.11`'s first full pass, saved 2026-10-11 02:23 UTC: 13th, 87.56 ± 0.13, PWIN
+99.42, survival 95.05%, 4,306 battles. Retiring start-up duress (RES-9) gained 0.73 APS on the
+bench and 0.25 live over 3.10's second pass ([live notes](docs/bench/live-3.11.md)).
 
 ### 3.9 at 13th
 
@@ -76,7 +83,8 @@ by BENCH-5. The saved page is archived in [`data/rumble/`](data/rumble/).
 | 3.8.5 | 2026-10-06 | 84.79 | 92.0% | 24th | MATCH-1/2: the DrussGT aim and shield latch only in duels Hadur is not already winning |
 | 3.9 | 2026-10-07 | 87.15 | 95.0% | 13th (19th melee, 12th team) | RAM-3, the rammer trial: escape a rammer only where its rounds show it pays |
 | 3.10 | 2026-10-08 | 86.42 | 93.9% | 20th, 13th on its second pass (87.33) | The shield sweep: 83 more robots on the shield list (+0.51 APS live); the pass ran 1.25 APS under 3.9's on unchanged code ([live notes](docs/bench/live-3.10.md)) |
-| 3.11 | 2026-10-10 | **87.56** | **95.1%** | **13th (17th melee, 12th team)** | Census-led: start-up duress (RES-9) retired, +0.25 APS live over 3.10 ([live notes](docs/bench/live-3.11.md)) |
+| 3.11 | 2026-10-10 | 87.56 | 95.1% | 13th (17th melee, 12th team) | Census-led: start-up duress (RES-9) retired, +0.25 APS live over 3.10 ([live notes](docs/bench/live-3.11.md)) |
+| 3.12 | 2026-10-11 | **87.72** | **95.3%** | **9th** | SHIELD-7: the mirror aim fires against a shielder, so the gun no longer falls silent against mirror bots ([live notes](docs/bench/live-3.12.md)) |
 
 3.0 and 3.1 both started near 85.7 APS and slid by 5 to 8 points within hours on live
 clients, which the bench could not reproduce. R7's one-JVM session bench and R8 traced it to
@@ -300,7 +308,7 @@ Hadur 2 is as much an experiment in how AI agents build software as it is a robo
 1.x (up to 1.20) was evolved release by release, by feel. Hadur 2 was rebuilt from 2026-09-26
 to 2026-10-01 by Claude sessions working in one shared project: 50 merged pull requests, about
 24,000 lines of production Java and 12,000 of tests, from a 64th-place 3.0 to a 20th-place
-3.4 (and, by 2026-10-07, a 13th-place 3.9). Leigh set the goals, made the calls only a human could (what "good" means, when to
+3.4 (and, by 2026-10-11, a 9th-place 3.12). Leigh set the goals, made the calls only a human could (what "good" means, when to
 enter the rumble), and carried the live entries; everything else was done by agents. What
 follows is what made that work, and where it did not.
 
@@ -420,6 +428,7 @@ tests that prove it.
 | D1-D5 | The DrussGT route: power by the lead, shield openers and the last shot, light-bullet aim, shadow-aware aim, and a shield list of 14 opponents | released as 3.8 ([plan](docs/druss-route-plan.md); gates [D1](docs/bench/d1-gate.md), [D5](docs/bench/d5-gate.md), [D2](docs/bench/d2-gate.md), [D3](docs/bench/d3-gate.md), [D4](docs/bench/d4-gate.md), [stack](docs/bench/stack-gate.md)); D6 stays research |
 | MATCH | The matchup gate: switch the DrussGT aim and shield latch off once a duel is clearly won | released as 3.8.5; 24th live ([notes](docs/bench/live-3.8.5.md)) |
 | R9 bisect, D8 | The 3.8 leak traced to RAM-2 by an overnight release bisect and ablation; RAM-3, the rammer trial | released as 3.9 ([bisect](docs/bench/local/2026-10-07_live-loser-bisect.md), [gate](docs/bench/local/2026-10-07_candidate-39-gate.md), [notes](docs/releases/v3.9.md)): 13th live ([live notes](docs/bench/live-3.9.md)) |
+| Census, 3.12 | Whole-field census against Tomcat; start-up duress retired; the silent gun against mirror bots found and fixed (SHIELD-7) | released as 3.11 ([census plan](docs/plan-3.11-census.md)): 13th live; and 3.12 ([plan](docs/plan-3.12.md), [notes](docs/releases/v3.12.md)): 9th live ([live notes](docs/bench/live-3.12.md)) |
 | T1 | The Team plan's first stage: teammates seen, predicted and fenced, so they stop colliding; the fire lane covers the bullet's flight | released as 3.8 ([plan](docs/team-plan-t1.md), [gate](docs/bench/t1-team.md)): collisions -99.9%, team share 28.8% to 48.2% |
 
 The plan's S7 was "cut melee". Release 2.1 had already put melee in the core for the

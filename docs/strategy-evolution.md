@@ -518,7 +518,7 @@ the battle; the stored verdict carried that into later battles (MirrorMicro seed
 ticks). 3.12 fires the mirror aim (SHIELD-7, `AimJitter.holdsShot`). On 38 volatile bots the battles
 under 60% share fell from 14 of 152 to none in the warm replay, +4.4 to +5.7 points; the 400-bot
 screen was level (+0.03 APS), about +0.05 APS over the field by arithmetic
-(`docs/bench/local/2026-10-11_p312bcd-findings.md`). The other 3.12 ideas did not pass the screen:
+(the p312b/c/d findings, PR #182). The other 3.12 ideas did not pass the screen:
 never closing in (P5) cost band 5, a stricter detector (P4, pooled over six seeds +0.08) and ignoring
 the stored verdict (P6) were level. Re-pinned: `pins/duel.sha256` (`-Dhadur.pin=duel`) and
 `duel-sources.sha256`; all replay fixtures unchanged.

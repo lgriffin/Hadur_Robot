@@ -1160,7 +1160,7 @@ build without it. RES-14 is retired, and with it RES-9's use (see the retired ta
   it by design), and SHIELD-2's hold fired only aims that carried one, so once a shield verdict
   latched against a mirror bot the gun never fired again that battle. SHIELD-3 stores the verdict,
   so later battles started silent. 3.12 P4 (docs/plan-3.12.md,
-  docs/bench/local/2026-10-11_p312bcd-findings.md): on 38 volatile bots the battles under 60%
+  the p312b/c/d findings in PR #182): on 38 volatile bots the battles under 60%
   share fell from 14 of 152 to none in the warm replay, +4.4 to +5.7 points; the 400-bot screen
   was level (+0.03 APS).
 - **Where.** `AimJitter.holdsShot(shielded, aimCarriesJitter, mirrorAim)`, called where
