@@ -151,6 +151,8 @@ Leigh's hunch (2026-10-11): closing distance draws Hadur into the opponent's str
 should not close in under any circumstances. P1 could not test that, because the target moved
 and the real distance did not. P5 tests it as one global rule on the whole screen, not per bot:
 `away` keeps DIST-1 from ever stepping in, keeps END-1 at that distance, and makes the surf
-correct being too close at the orbit's gain (1.65) instead of 0.6. `hadur-bench/plans/p312c.queue`,
+correct being too close at the orbit's gain (1.65) instead of 0.6. The rule is "never close in below
+the opening distance" (650 px for a stranger): beyond it the surf still steers back toward
+650 as today, since drifting off to the corners is not the hunch being tested. `hadur-bench/plans/p312c.queue`,
 about 70 min, run after p312b. Gates as P1, and the step is also read for whether the mean
 distance really rose.
