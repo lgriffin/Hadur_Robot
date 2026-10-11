@@ -1,0 +1,105 @@
+---
+marp: true
+theme: default
+paginate: true
+---
+
+<!-- footer: "Sources: docs/bench/rumble-3.0-details.md, live-details-3.0.md, data/learnings.md (L-01, L-02, L-04, L-05)" -->
+
+# 3.0: 64th, and what the rumble measures
+
+The first live page
+
+Unit 3, talk 1
+
+---
+
+## The RoboRumble in two lines
+
+- A ladder of **1,216** robots fighting 1v1 pairings all day on volunteers' machines
+- A robot's APS is its average share of the pair's total score across its pairings
+
+*A pairing's share is "the same quantity as a rumble pairing's APS" (intro of data/learnings.md)*
+
+---
+
+## Where 3.0 landed
+
+From Leigh's saved page, 507 of about 1,216 pairings, 2026-09-28:
+
+| APS | PWIN | ANPP | Survival | Rank |
+|---|---|---|---|---|
+| **81.57 ± 0.35** | 98.42 | 84.62 | 82.58 | **64th** |
+
+That evening, rank 40 needed **83.07** APS and rank 50 needed 82.46. The top-40 goal was +1.5 APS.
+
+---
+
+## A second number: PBI
+
+- LiteRumble's PBI is the opponent-adjusted score: our APS against an opponent minus what bots of our strength usually get against it
+- Positive means we beat expectation. Negative means we fell short.
+- It lets you ask where the points went without being fooled by easy or hard opponents
+
+---
+
+## Where the points were lost
+
+| Opponent APS band | Pairings | Our APS | Mean PBI |
+|---|---|---|---|
+| 0-40 (weak) | 156 | 90.71 | -5.19 |
+| 40-50 | 103 | 85.03 | -4.36 |
+| 50-60 | 90 | 81.90 | +0.54 |
+| 70-80 | 40 | 68.36 | +8.47 |
+| 80-101 (strong) | 32 | 57.74 | +14.93 |
+
+Strong bots: better than expected. Weak bots: worse.
+
+---
+
+## The plan's central argument
+
+- 151 pairings had PBI below -5, and 84 below -10
+- Mostly nano, mini and micro bots, so each row is noisy
+- But as a population it is consistent: the negative PBI against weak bots costs more than the gap to the top 10
+- This is what R2 (full share against weak bots) set out to fix
+
+---
+
+## Does the bench predict the rumble?
+
+- On 20 top-50 opponents fought both on the bench and live, live APS tracks the bench share: correlation **0.84** (L-02)
+- For the 10 fought before 08:30 UTC, live minus bench averaged **-0.1** points
+- For the 10 fought after, **-5.9**
+
+So a bench share is a fair stand-in for a healthy live pairing. But something changed at 08:30.
+
+---
+
+## The cliff at 08:30 UTC
+
+| 2026-09-28 | Pairings | APS | Survival |
+|---|---|---|---|
+| Before 08:30 | 268 | **85.5** | 91.6 |
+| After 08:30 | 239 | **77.2** | 72.5 |
+
+- Every opponent band lost 6 to 10 APS at once
+- Without the drop, 3.0 would sit near 85.9 APS, about rank 21 (L-01)
+- The bench could not reproduce it
+
+---
+
+## What it taught us
+
+- Read the live page the way you read a bench report: by band, by hour, before and after
+- Opponent-adjusted scores (PBI) show where the points go
+- The bench is a good guide, until live conditions differ from bench conditions
+- A sudden step change, with the same opponents on both sides, is a signal. It is not noise.
+
+---
+
+## Sources
+
+- [docs/bench/rumble-3.0-details.md](https://github.com/lgriffin/Hadur_Robot/blob/a9ee021/docs/bench/rumble-3.0-details.md)
+- [docs/bench/live-details-3.0.md](https://github.com/lgriffin/Hadur_Robot/blob/a9ee021/docs/bench/live-details-3.0.md)
+- [data/learnings.md](https://github.com/lgriffin/Hadur_Robot/blob/a9ee021/data/learnings.md): L-01, L-02, L-04, L-05, L-20

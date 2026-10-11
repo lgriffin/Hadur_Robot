@@ -1,0 +1,166 @@
+---
+marp: true
+theme: default
+paginate: true
+---
+
+# Rules that do not rely on anyone remembering them
+
+**Topic 05: Guardrails in the build**
+
+After this talk you can turn a design rule into a failing test, and say which of Hadur's rules protect determinism.
+
+Java skills: annotations (`@Test`, `@Tag`, `@DisplayName`), fluent APIs, `static final`, hashing with `MessageDigest`.
+
+---
+
+# The problem
+
+A rule that lives in a document gets forgotten. A rule that lives in someone's head leaves with them.
+
+Hadur was built by agents that start every session with no memory. The README says it directly: "Rules that live only in a prompt get lost, so the important ones are enforced by the build."
+
+So each important rule is a test. Break the rule and `mvn verify` fails.
+
+*Source: `README.md`, "Guardrails that do not depend on the agent remembering them".*
+
+---
+
+# ArchUnit reads compiled classes
+
+ArchUnit imports your `.class` files and lets you write rules about packages and dependencies in plain Java:
+
+```java
+static JavaClasses importCore() {
+    return new ClassFileImporter()
+        .withImportOption(ImportOption.Predefined.DO_NOT_INCLUDE_TESTS)
+        .importPackages("hadur2.core");
+}
+```
+
+Rules then run against that set, and fail with a list of offending classes and lines.
+
+*Source: `hadur2.core.arch.ArchitectureTest`.*
+
+---
+
+# Rule 1: no Robocode in the core
+
+```java
+@Test
+@Tag("CORE-1")
+@DisplayName("CORE-1: the core does not depend on robocode.*")
+void coreHasNoRobocode() {
+    noClasses().that().resideInAPackage(CORE)
+        .should().dependOnClassesThat().resideInAnyPackage("robocode..", "net.sf.robocode..")
+        .check(core);
+}
+```
+
+Read it aloud: "No classes that reside in the core should depend on classes that reside in `robocode..`". The `@Tag` ties the test to requirement CORE-1. Topic 07 uses that tag.
+
+---
+
+# Rule 2: only the JDK and itself
+
+```java
+noClasses().that().resideInAPackage(CORE)
+    .should().dependOnClassesThat().resideOutsideOfPackages(
+        "hadur2.core..", "java.lang..", "java.util..", "java.awt.geom..")
+    .check(core);
+```
+
+This is an **allow list**. Rule 1 names one thing that is banned. Rule 2 names what is allowed and bans the rest. An allow list also catches a library nobody thought of.
+
+---
+
+# Rule 3: determinism
+
+For a replay to work, the same inputs must give the same orders (CORE-2). So Hadur bans everything that makes a run differ:
+
+```java
+noClasses().that().resideInAPackage(CORE)
+    .should().callMethod(Math.class, "random")
+    .orShould().dependOnClassesThat().haveFullyQualifiedName("java.util.Random")
+    .orShould().dependOnClassesThat().haveFullyQualifiedName("java.util.UUID");
+```
+
+Also banned: threads and `java.util.concurrent`, reflection, `java.io` and `java.nio`, `System.currentTimeMillis`, `System.nanoTime`. Randomness, time, I/O and thread timing are exactly what varies between runs.
+
+*Source: `ArchitectureTest`, rules tagged RES-6.*
+
+---
+
+# Rule 4: no mutable statics
+
+```java
+fields().that().areDeclaredInClassesThat().resideInAPackage(CORE)
+    .and().areStatic()
+    .should().beFinal()
+    .check(core);
+```
+
+A mutable static is state two cores would share. The adapter has statics on purpose, because they survive from round to round. The core does not, so two cores in one JVM never interfere.
+
+*Source: `ArchitectureTest.noMutableStatics` (CORE-2).*
+
+---
+
+# Rule 5: a direction for packages
+
+```java
+@Test
+@DisplayName("gun and movement are independent of each other")
+void gunAndMoveIndependent() {
+    slices().matching("hadur2.core.(gun|move)..").should().notDependOnEachOther().check(core);
+}
+```
+
+Other rules: the ledger depends only on physics. Memory touches storage only through the port. The adapt and policy packages cannot see `BotInput`, so they cannot decide from the clock (DIAL-2).
+
+Each rule keeps a package a **leaf** that can be understood on its own.
+
+---
+
+# The duel is pinned
+
+Melee was added without touching the duel. The test makes that a promise the build keeps: a hash of every duel source file, taken at stage M0.
+
+```java
+static final List<String> DUEL_PACKAGES = List.of(
+    "adapt", "gun", "knn", "ledger", "memory", "move", "physics", "policy", "shield");
+```
+
+```java
+byte[] d = MessageDigest.getInstance("SHA-256").digest(s.getBytes(StandardCharsets.UTF_8));
+```
+
+Edit a duel file and the test fails with "edited ...". To change the duel on purpose, run with `-Dhadur.duel.snapshot=write` and say why in the pull request.
+
+*Source: `DuelIdentityTest`.*
+
+---
+
+# Break each rule on purpose
+
+A guardrail you have never seen fail is a guess. In Lab 05 you break each rule once:
+
+1. add `import robocode.util.Utils;` to a core class
+2. call `Math.random()`
+3. add a mutable `static int` field
+4. make gun import move
+
+Read the failure message each time. Good ArchUnit output names the class, the line and the rule.
+
+Hadur adds one more guard: `mvn verify` runs Javadoc with doclint, so a broken `@param` fails the build too.
+
+---
+
+# Recap
+
+- A design rule is only real if a test fails when it breaks.
+- Use allow lists where you can, and tie each test to a requirement ID with `@Tag`.
+- Determinism needs bans on randomness, time, I/O and threads.
+- A source hash can pin code that must not change.
+
+Lab 05 writes the rules for Hadurling and a determinism test.

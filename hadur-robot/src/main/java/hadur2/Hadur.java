@@ -2,14 +2,22 @@ package hadur2;
 
 import hadur2.core.Guard;
 import hadur2.core.HadurCore;
+import hadur2.core.model.BattleFacts;
 import hadur2.core.model.BotEvent;
 import hadur2.core.model.BotInput;
 import hadur2.core.model.BotOrders;
 import hadur2.core.port.ProfileStore;
+import hadur2.core.role.Charter;
+import hadur2.core.role.RoleId;
+import hadur2.core.shieldmode.ShieldList;
 import java.awt.Color;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.List;
+import java.util.Set;
 import robocode.*;
 
 /**
@@ -19,6 +27,11 @@ import robocode.*;
  *
  * <p>The core is static so what it learns survives from round to round, as Robocode
  * creates a new robot instance each round.</p>
+ *
+ * <p>From A4 the adapter is a {@code TeamRobot}, so one class plays all three ladders and
+ * one memory serves them: it passes the roster into the battle's facts, hands teammates'
+ * messages to the core and broadcasts the core's. Off a team {@code getTeammates()} is null,
+ * no message arrives and none is sent, so it behaves as the {@code AdvancedRobot} it was.</p>
  *
  * <p>One turn, as the engine runs it:</p>
  * <ol>
@@ -43,7 +56,7 @@ import robocode.*;
  * CORE-2's ban on them covers {@code hadur2.core} only, and here they are the point: a
  * static survives the new robot instance Robocode creates each round.</p>
  */
-public class Hadur extends AdvancedRobot {
+public class Hadur extends TeamRobot {
 
     /** The brain for the whole battle; built on the first round's {@code run()}. */
     private static HadurCore core;
@@ -51,6 +64,8 @@ public class Hadur extends AdvancedRobot {
     private static Guard guard;
     /** This round's console; telemetry goes to whichever round is running. */
     private static PrintStream console;
+    /** Whether this battle is a team's (A5): fixed with the core on the first round. */
+    private static boolean team;
     /** RES-8: rounds fought this battle, for the health record. */
     private static int battleRounds;
     /** RES-8: rounds this battle that were not a loss. */
@@ -93,12 +108,16 @@ public class Hadur extends AdvancedRobot {
             warmUp(getBattleFieldWidth(), getBattleFieldHeight(), getOthers());
             // First round of the battle. The telemetry lambdas go through the static
             // console rather than capturing this round's `out`.
-            core = new HadurCore(getBattleFieldWidth(), getBattleFieldHeight(), getOthers(),
-                line -> console.println(line), profileStore());
+            // ROLE-1: the battle's facts before the first tick fix its charter. As a
+            // TeamRobot (A4) Hadur can ask for its teammates; off a team there are none.
+            BattleFacts facts = facts();
+            core = new HadurCore(facts, line -> console.println(line), profileStore(), null, shieldList());
             // File I/O and class loading now, not in the first scan's turn.
             core.prepareMemory();
-            guard = new Guard(core::tick, core::recover, line -> console.println(line));
-            battleStarted(getBattleFieldWidth(), getBattleFieldHeight(), getOthers());
+            // WEAVE-5: on a team the guard's safe orders hold fire.
+            team = core.charter() == Charter.TEAM;
+            guard = new Guard(core::tick, core::recover, line -> console.println(line), team);
+            battleStarted(facts);
         }
         core.newRound(getRoundNum());
         guard.newRound();
@@ -131,30 +150,64 @@ public class Hadur extends AdvancedRobot {
     }
 
     /**
-     * TIME-5: runs one tick through a throwaway core and guard before the real battle
-     * begins, so that class loading and JIT warm-up land here rather than on the round's
-     * first real tick. No store (nothing is read or written) and no telemetry from the
-     * throwaway core itself; the core, guard and result are all discarded, and nothing
-     * they do reaches the real core.
+     * TIME-5: runs one tick for each role of the charter through a throwaway core and guard
+     * before the real battle begins, so that class loading and JIT warm-up land here rather
+     * than on the first real tick a role drives. No store (nothing is read or written) and no
+     * telemetry from the throwaway core itself; the core, guard and result are all discarded,
+     * and nothing they do reaches the real core.
      *
-     * <p>The tick carries a synthetic scan, not just a bare one: a tick with no scan takes
+     * <p>Each tick carries a synthetic scan, not just a bare one: a tick with no scan takes
      * only the "enemy not seen yet" branch, which never reaches the aiming, movement and
      * memory-adjacent code the real first scan will actually run, so it would warm little
-     * of what needs it. A failure here is logged, not silent: it never stops the battle
-     * (a cold real tick still runs correctly), but it is worth knowing about.</p>
+     * of what needs it. In a melee the Melee drives the first tick with every opponent
+     * alive, and the Duel the second with one left, the hand-off included (A3). A failure
+     * here is logged, not silent: it never stops the battle (a cold real tick still runs
+     * correctly), but it is worth knowing about.</p>
+     *
+     * @return the roles that drove a warm-up tick
      */
-    static void warmUp(double width, double height, int others) {
+    static Set<RoleId> warmUp(double width, double height, int others) {
+        Set<RoleId> driven = EnumSet.noneOf(RoleId.class);
         try {
-            HadurCore warm = new HadurCore(width, height, others, line -> {}, null);
+            List<String> lines = new ArrayList<>();
+            HadurCore warm = new HadurCore(width, height, others, lines::add, null);
             warm.newRound(0);
             Guard warmGuard = new Guard(warm::tick, warm::recover, line -> {});
-            warmGuard.tick(new BotInput(0, 0, width / 2, height / 2, 0, 0, 100, 0, 0, 0, 0, 0, others,
-                List.of(new BotEvent.Scan("warmup.Enemy", 0, width / 4, 100, 0, 0))));
+            List<Integer> counts = new ArrayList<>();
+            if (warm.charter().has(RoleId.MELEE)) counts.add(others);
+            counts.add(1);
+            long time = 0;
+            for (int left : counts) {
+                // The engine's cooling rate: a rate of 0 is refused, and faults the tick.
+                warmGuard.tick(new BotInput(time++, 0, width / 2, height / 2, 0, 0, 100, 0, 0.1, 0, 0, 0, left,
+                    List.of(new BotEvent.Scan("warmup.Enemy", 0, width / 4, 100, 0, 0))));
+            }
+            for (String line : lines) {
+                if (line.startsWith("ROLE,")) driven.add(RoleId.valueOf(line.split(",")[3]));
+            }
             if (warmGuard.faultsThisRound() > 0 && console != null) {
                 console.println("WARM,0,0,fault," + warmGuard.faultsThisRound());
             }
         } catch (RuntimeException e) {
             if (console != null) console.println("WARM,0,0,exception," + e);
+        }
+        return driven;
+    }
+
+    /**
+     * SHIELD-5: Hadur's own shield list, from {@link ShieldListData} in the robot jar. It is a
+     * class, not a text resource, because Robocode's sandbox refuses a robot the read of its
+     * own jar (a resource stream raises a security violation and the robot is killed); class
+     * loading is the one way a robot's jar content reaches it. The core does no I/O and takes
+     * only the lines. A list that cannot be read is an empty list, with a {@code SH} line:
+     * shield mode then never starts and Hadur fights as it did before the list existed.
+     */
+    private ShieldList shieldList() {
+        try {
+            return ShieldList.parse(Arrays.asList(ShieldListData.lines()));
+        } catch (RuntimeException | LinkageError e) {
+            out.println("SH," + getRoundNum() + "," + getTime() + ",list-failed," + e);
+            return ShieldList.NONE;
         }
     }
 
@@ -176,13 +229,25 @@ public class Hadur extends AdvancedRobot {
     // The robot itself does nothing in them.
 
     /**
+     * The engine's facts before the first tick (ROLE-1): the field, the others, the roster
+     * ({@code getTeammates()} is null off a team), our name, our starting energy, which says
+     * whether we lead, and the sentry border.
+     */
+    private BattleFacts facts() {
+        String[] teammates = getTeammates();
+        return new BattleFacts(getBattleFieldWidth(), getBattleFieldHeight(), getOthers(),
+            teammates == null ? List.of() : Arrays.asList(teammates), getName(), getEnergy(),
+            getNumSentries() > 0 ? getSentryBorderSize() : 0, getNumRounds());
+    }
+
+    /**
      * Called once per battle, after the core is built.
      *
-     * @param width the battlefield's width in px
-     * @param height the battlefield's height in px
-     * @param enemies opponents alive at the start (sentries excluded, as {@code getOthers()} counts)
+     * @param facts the facts the core was built from: the field, the others at the start
+     *     (sentries excluded, as {@code getOthers()} counts), and on a team the roster, our
+     *     name, our starting energy and the sentry border
      */
-    protected void battleStarted(double width, double height, int enemies) {}
+    protected void battleStarted(BattleFacts facts) {}
 
     /**
      * Called at the start of every round, after the core's and guard's {@code newRound}.
@@ -228,6 +293,14 @@ public class Hadur extends AdvancedRobot {
         if (!Double.isNaN(o.gunTurn())) setTurnGunRightRadians(o.gunTurn());
         if (!Double.isNaN(o.radarTurn())) setTurnRadarRightRadians(o.radarTurn());
         if (o.firePower() > 0) setFire(o.firePower());
+        // A4: the tick's reports to teammates; the engine delivers them on the next tick.
+        for (byte[] message : o.messages()) {
+            try {
+                broadcastMessage(message);
+            } catch (IOException | RuntimeException e) {
+                if (console != null) console.println("LINK," + getRoundNum() + "," + getTime() + ",send-failed," + e);
+            }
+        }
     }
 
     // Events arrive during execute(), in the engine's priority order, and are handed to
@@ -267,7 +340,18 @@ public class Hadur extends AdvancedRobot {
     public void onBulletHitBullet(BulletHitBulletEvent e) {
         Bullet hit = e.getHitBullet();
         pending.add(new BotEvent.BulletHitBullet(e.getBullet().getPower(), hit.getX(), hit.getY(),
-            hit.getPower(), e.getBullet().getHeadingRadians()));
+            hit.getPower(), e.getBullet().getHeadingRadians(), hit.getName()));
+    }
+
+    /**
+     * A teammate's message (A4). Hadur's reports are byte arrays; anything else is passed on
+     * as no bytes, which the core's link codec refuses and counts (LINK-2).
+     */
+    @Override
+    public void onMessageReceived(MessageEvent e) {
+        Object message = e.getMessage();
+        pending.add(new BotEvent.Message(e.getSender(),
+            message instanceof byte[] ? (byte[]) message : new byte[0]));
     }
 
     /** One of our bullets reached a wall. */
@@ -322,7 +406,14 @@ public class Hadur extends AdvancedRobot {
     @Override
     public void onRoundEnded(RoundEndedEvent e) {
         // The engine can deliver this before WinEvent in the round's last batch.
-        reportRound(getEnergy() <= 0 ? "loss" : getOthers() == 0 ? "win" : "draw");
+        if (!team) {
+            reportRound(getEnergy() <= 0 ? "loss" : getOthers() == 0 ? "win" : "draw");
+        } else if (getEnergy() > 0) {
+            // A5: a living teammate keeps getOthers() above 0, so on a team a member alive
+            // at the round's end is on the winning side. At energy 0 the win or death event
+            // that follows in the same batch says which it was.
+            reportRound("win");
+        }
         // A checkpoint: the robot may not get to the battle's end (MEM-3), and TIME-4
         // caps what each one writes. File I/O is safe here, unlike in onWin and onDeath.
         // Only when alive: a dead robot's thread that stops to write keeps it in the

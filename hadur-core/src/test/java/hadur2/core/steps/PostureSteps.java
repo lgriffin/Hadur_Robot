@@ -3,17 +3,18 @@ package hadur2.core.steps;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import hadur2.core.HadurCore;
-import hadur2.core.melee.EnemyInfo;
+import hadur2.core.world.EnemyInfo;
 import hadur2.core.melee.MeleeController;
 import hadur2.core.model.BotEvent;
 import hadur2.core.model.BotInput;
 import hadur2.core.model.BotOrders;
 import hadur2.core.physics.BattleField;
-import hadur2.core.posture.Posture;
-import hadur2.core.posture.SentryFence;
+import hadur2.core.role.Posture;
+import hadur2.core.role.SentryFence;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -121,6 +122,27 @@ public class PostureSteps {
         tick(List.of(new BotEvent.RobotDeath("opp" + k)));
     }
 
+    @When("the sentry dies unscanned")
+    public void sentryDies() {
+        sentries = 0;
+        List<BotEvent> events = new ArrayList<>();
+        for (int k = 1; k <= others; k++) events.add(opponent(k));
+        events.add(new BotEvent.RobotDeath("samplesentry.BorderGuard"));
+        tick(events);
+    }
+
+    @Then("the battle's charter is {string}")
+    public void charterIs(String charter) {
+        assertEquals(charter, core.charter().name());
+    }
+
+    @Then("the round's ROLE records name {string}")
+    public void roleRecords(String roles) {
+        List<String> named = new ArrayList<>();
+        for (String l : telemetry) if (l.startsWith("ROLE," + round + ",")) named.add(l.split(",")[3]);
+        assertEquals(roles, String.join(" ", named));
+    }
+
     @When("the next melee round starts")
     public void nextRound() {
         round++;
@@ -173,7 +195,7 @@ public class PostureSteps {
 
     @Then("the sentry is never tracked as an opponent")
     public void sentryNeverTracked() {
-        for (EnemyInfo e : core.melee().tracker.all()) {
+        for (EnemyInfo e : core.world().all()) {
             assertFalse(e.name.contains("BorderGuard"), "tracked " + e.name);
         }
         assertNotNull(core.duelFocus());
@@ -185,6 +207,41 @@ public class PostureSteps {
         for (BotOrders o : orders) {
             assertTrue(fence.staysSafe(MY_X, MY_Y, 0, 0, o, border), o.toString());
         }
+    }
+
+    @Given("the conductor withholds the fire permission")
+    public void withholdFire() {
+        core.firePermission(in -> false);
+    }
+
+    @Then("no order fires")
+    public void noOrderFires() {
+        for (BotOrders o : orders) assertEquals(0.0, o.firePower(), o.toString());
+    }
+
+    @Then("some order fires")
+    public void someOrderFires() {
+        assertTrue(orders.stream().anyMatch(o -> o.firePower() > 0), orders.toString());
+    }
+
+    @Then("the World tracks {string}")
+    public void worldTracks(String name) {
+        assertTrue(core.world().all().stream().anyMatch(e -> e.name.equals(name)),
+            core.world().all().toString());
+    }
+
+    @Then("the World never saw the sentry")
+    public void worldNeverSawSentry() {
+        assertNotNull(core.duel().opponent());
+        for (EnemyInfo e : core.world().all()) {
+            assertFalse(e.name.contains("BorderGuard"), "tracked " + e.name);
+        }
+    }
+
+    @Then("the battle built no melee brain and no World")
+    public void noMeleeNoWorld() {
+        assertNull(core.melee());
+        assertNull(core.world());
     }
 
     @Then("the round's veto is {string}")

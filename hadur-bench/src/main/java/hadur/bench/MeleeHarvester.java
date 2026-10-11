@@ -26,13 +26,16 @@ import robocode.control.snapshot.ITurnSnapshot;
  * <li>{@code rounds.csv}: one row per round ({@link #HEADER}): Hadur's finishing place among
  *     the non-sentry robots, who was left when the field thinned to Hadur and one other
  *     (the duel the melee handed over to) and whether Hadur won it, sentry bullets that hit
- *     Hadur and Hadur bullets that hit a sentry, and skipped turns.</li>
+ *     Hadur and Hadur bullets that hit a sentry, and skipped turns. When Hadur died, also
+ *     the tick it died, its killer and the last robot to hit it ({@link #HEADER}'s last
+ *     three columns, {@code -} when it lived or nothing hit it).</li>
  * </ul>
  */
 public class MeleeHarvester extends BattleAdaptor {
 
     public static final String HEADER =
-        "round,place,fielded,duelOpponent,duelWon,sentryHitsTaken,sentryHitsGiven,skippedTurns";
+        "round,place,fielded,duelOpponent,duelWon,sentryHitsTaken,sentryHitsGiven,skippedTurns,"
+        + "deathTick,killer,lastHit";
 
     private final String us;
     /** Sentry names: the snapshots' own sentry flag is not reliable in 1.9.5.6. */
@@ -47,6 +50,8 @@ public class MeleeHarvester extends BattleAdaptor {
     private String duelOpponent;
     private int sentryHitsTaken, sentryHitsGiven, skippedTurns;
     private boolean placed;
+    private int deathTick, lastHitTick;
+    private String killer, lastHit;
     private final Set<Integer> counted = new HashSet<>();
 
     public MeleeHarvester(Path dir, String us, Set<String> sentries) throws IOException {
@@ -66,6 +71,8 @@ public class MeleeHarvester extends BattleAdaptor {
         duelOpponent = null;
         sentryHitsTaken = sentryHitsGiven = skippedTurns = 0;
         placed = false;
+        deathTick = lastHitTick = -1;
+        killer = lastHit = null;
         counted.clear();
     }
 
@@ -90,7 +97,8 @@ public class MeleeHarvester extends BattleAdaptor {
         fielded = fighters;
         aliveAtEnd = alive;
         boolean meAlive = me.getState() != robocode.control.snapshot.RobotState.DEAD;
-        if (!placed && !meAlive) {
+        boolean diedNow = !placed && !meAlive;
+        if (diedNow) {
             // Hadur died this turn: it placed behind everyone still alive.
             place = alive + 1;
             placed = true;
@@ -104,12 +112,44 @@ public class MeleeHarvester extends BattleAdaptor {
             if (owner == null || victim == null) continue;
             if (isSentry(owner) && victim == me) sentryHitsTaken++;
             if (owner == me && isSentry(victim)) sentryHitsGiven++;
+            if (victim == me && owner != me) {
+                lastHit = owner.getName();
+                lastHitTick = snap.getTurn();
+            }
+        }
+        if (diedNow) {
+            deathTick = snap.getTurn();
+            killer = killerOf(me, robots, deathTick);
         }
         try {
             harvestConsole(me, snap.getTurn());
         } catch (IOException ex) {
             throw new UncheckedIOException(ex);
         }
+    }
+
+    /**
+     * The killer rule: the owner of the bullet that last hit Hadur, if it landed on the death
+     * turn or the one before (the snapshot can lag a tick); otherwise the nearest fighter
+     * still alive, taken to have rammed it. Null when neither exists (it died with the field).
+     */
+    private String killerOf(IRobotSnapshot me, IRobotSnapshot[] robots, int turn) {
+        if (lastHit != null && lastHitTick >= turn - 1) return lastHit;
+        IRobotSnapshot nearest = null;
+        double best = Double.MAX_VALUE;
+        for (IRobotSnapshot r : robots) {
+            if (r == me || isSentry(r) || r.getState() == robocode.control.snapshot.RobotState.DEAD) continue;
+            double d = Math.hypot(r.getX() - me.getX(), r.getY() - me.getY());
+            if (d < best) {
+                best = d;
+                nearest = r;
+            }
+        }
+        return nearest == null ? null : nearest.getName();
+    }
+
+    private static String field(String name) {
+        return name == null ? "-" : name.replace(',', ';');
     }
 
     private boolean isSentry(IRobotSnapshot r) {
@@ -142,9 +182,9 @@ public class MeleeHarvester extends BattleAdaptor {
         // Won the duel it was handed if it was one of the last two and came first.
         String duelWon = duelOpponent == null ? "-" : place == 1 ? "1" : "0";
         try {
-            rounds.write(String.format(Locale.ROOT, "%d,%d,%d,%s,%s,%d,%d,%d%n", round, place,
-                fielded, duelOpponent == null ? "-" : duelOpponent.replace(',', ';'), duelWon,
-                sentryHitsTaken, sentryHitsGiven, skippedTurns));
+            rounds.write(String.format(Locale.ROOT, "%d,%d,%d,%s,%s,%d,%d,%d,%s,%s,%s%n", round, place,
+                fielded, field(duelOpponent), duelWon, sentryHitsTaken, sentryHitsGiven, skippedTurns,
+                deathTick < 0 ? "-" : String.valueOf(deathTick), field(killer), field(lastHit)));
         } catch (IOException ex) {
             throw new UncheckedIOException(ex);
         }

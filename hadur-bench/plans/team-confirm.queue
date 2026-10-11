@@ -1,0 +1,20 @@
+# Team ladder (docs/bench/team-lower-half.md, section 7). No robot code: the released 3.11 team
+# jar and rz.HOFSwarm 1.1 (10th) as subjects. TeamRumble settings: 1200x1200, 10 rounds, engine
+# 1.11.1 (Bench default), 6 seeds, cold, four battles at once.
+#   ./queue.sh run team-confirm        (or  .\queue.ps1 run team-confirm)
+# Run after p312d, RoboRumble workers stopped.
+#   t311, thof  confirm the cloud finding on ranks 21-33 (13 teams, 78 battles each). Pass: Hadur's
+#               mean share is at least 5 points a team below HOFSwarm's (cloud: 65.6% vs 74.9%).
+#   census      3.11 against all 45 opponents (270 battles), the baseline any team candidate is
+#               paired with later (same seeds), and the first whole-field team figure at 10 rounds.
+# Reports go to docs/bench/local/2026-10-11_team-{confirm-311,confirm-hof,census-311}.md, with
+# per-team files beside them; commit those and the queue log.
+
+prep   | mkdir -p bisect && { [ -s bisect/hadur2.HadurTeam_3.11.jar ] || curl -fsSL -o bisect/hadur2.HadurTeam_3.11.jar https://github.com/lgriffin/Hadur_Robot/releases/download/v3.11/hadur2.HadurTeam_3.11.jar; } && ./fetch-opponents.sh --set team-census45.txt && mvn -q compile
+
+t311   | mvn -q exec:java "-Dexec.args=@plans/team-confirm-311.args"
+  after: prep
+thof   | mvn -q exec:java "-Dexec.args=@plans/team-confirm-hof.args"
+  after: t311
+census | mvn -q exec:java "-Dexec.args=@plans/team-census-311.args"
+  after: thof

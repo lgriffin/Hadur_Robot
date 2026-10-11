@@ -1,0 +1,108 @@
+---
+marp: true
+theme: default
+paginate: true
+---
+
+<!-- footer: "Sources: docs/releases/v3.1.md, v3.2.md, docs/rumble-climb-top30-plan.md (section 1), docs/bench/live-details-3.1.md, data/learnings.md (L-21 to L-23)" -->
+
+# 3.1: 16th for an hour, then 65th
+
+Good news, and then the same slide again
+
+Unit 3, talk 2
+
+---
+
+## What 3.1 contained
+
+R1 to R3 of the climb, released so live rating could start accruing:
+
+- **R1 client reliability:** learn the real tick allowance, cap round-end writes, warm up before the first tick
+- **R2 full share against weak bots:** more full-power rules, a rammer response
+- **R3 a gun for surfers:** decaying ratings, 9 to 12 features, a hybrid gun
+
+---
+
+## The first hour
+
+- At 11:45 UTC on 2026-09-30, 3.1 was **16th** at 86.74 APS
+- That was only its first 53 pairings
+- The same 53 opponents still average 86.74 in the complete page, so nothing about them was lucky
+- The first-hour rate would be rank 21 over a full pass
+
+---
+
+## Then the slide
+
+| Hour (UTC) | Pairings | APS | Survival |
+|---|---|---|---|
+| 11:00 | 97 | 85.7 | 91.8 |
+| 12:00 | 171 | 82.1 | 85.2 |
+| 13:00 | 154 | 79.7 | 79.1 |
+| 14:00 | 90 | 78.6 | 76.1 |
+
+Mean opponent APS was 49.5 in every hour. It was not the opponent mix.
+
+---
+
+## The final standing
+
+- 512 pairings, **81.46 APS**, survival 83.0%, rank **65th**
+- Rank 30 that day needed 84.30 APS, rank 40 needed 83.11
+- To reach the top 30, Hadur needed **+2.9 APS**
+- Had every pairing been fought at the first hour's PBI, 3.1 would have 84.3 APS, exactly rank 30 (L-23)
+
+---
+
+## It was 3.0 again
+
+| | 3.0 before / after | 3.1 first hour / from 13:20 |
+|---|---|---|
+| APS | 85.5 / 77.2 | 85.7 / 78.2 |
+| Survival | 91.6 / 72.5 | 91.8 / 75.9 |
+
+- Every band lost 6 to 8 APS
+- Head to head on 213 common opponents, 3.1 was **+0.6** over 3.0: noise
+- R1 had not fixed it (L-22)
+
+---
+
+## Trying to reproduce it (3.2, R4)
+
+A client-conditions bench (BENCH-4) varied:
+
+- a shared, never-wiped data directory
+- CPU constant forced to 1.0 ms and 0.3 ms
+- four background-load threads
+- a data directory built like a real client's
+
+Survival stayed **97 to 100%** every time. The drop to 71-77% did not appear (L-21).
+
+---
+
+## Shipping a fallback anyway
+
+3.2 shipped what could cap the damage of an unknown cause:
+
+- **RES-7:** after three faulting ticks, fire power 1.0 instead of holding fire forever
+- **RES-8:** a small health record at battle end, so a client run is self-describing
+- **BENCH-5:** a reader that turns a saved live page into the band and hour reports you saw here
+
+---
+
+## What it taught us
+
+- A great first hour is a measurement of the early state, not of the robot
+- Compare the same opponents across time to separate a slide from a change in the mix
+- When a fix does not move the live number, say so (L-22 "refutes the hope")
+- When the bench cannot reproduce a problem, the bench is missing something. That was the next question.
+
+---
+
+## Sources
+
+- [docs/releases/v3.1.md](https://github.com/lgriffin/Hadur_Robot/blob/a9ee021/docs/releases/v3.1.md) and [v3.2.md](https://github.com/lgriffin/Hadur_Robot/blob/a9ee021/docs/releases/v3.2.md)
+- [docs/rumble-climb-top30-plan.md](https://github.com/lgriffin/Hadur_Robot/blob/a9ee021/docs/rumble-climb-top30-plan.md): section 1
+- [docs/bench/live-details-3.1.md](https://github.com/lgriffin/Hadur_Robot/blob/a9ee021/docs/bench/live-details-3.1.md)
+- [data/learnings.md](https://github.com/lgriffin/Hadur_Robot/blob/a9ee021/data/learnings.md): L-21, L-22, L-23

@@ -1,0 +1,49 @@
+# 3.11's gate list: the 45 BENCHSEES opponents of 3.10 after peergap-310 (2026-10-08): live, Hadur's
+# typical score is 5+ under the median of Tomcat 3.68, Knight 0.6.28 and Raven 3.56j8, and the fixed
+# bench shows the same gap. None is on the shield list. Role: <rammer|gun>-gap<live peer gap>.
+#   <robot name as Robocode lists it> | <role> | <jar file in opponents/>
+hp.Athena 0.1 | gun-gap13.0 | hp.Athena_0.1.jar
+demetrix.nano.Neutrino 0.27 | gun-gap12.6 | demetrix.nano.Neutrino_0.27.jar
+mz.NanoDeath 2.56 | gun-gap11.9 | mz.NanoDeath_2.56.jar
+dmh.robocode.robot.PinkPanther 1.1 | gun-gap10.7 | dmh.robocode.robot.PinkPanther_1.1.jar
+sul.Bicephal 1.2 | rammer-gap10.6 | sul.Bicephal_1.2.jar
+suh.nano.RammingC 1.00 | rammer-gap10.2 | suh.nano.RammingC_1.00.jar
+gh.micro.GrubbmThree 1.01 | rammer-gap10.1 | gh.micro.GrubbmThree_1.01.jar
+janm.Jammy 1.0 | gun-gap10.0 | janm.Jammy_1.0.jar
+suzushin7.nano.Galaxy03 1.01 | rammer-gap9.9 | suzushin7.nano.Galaxy03_1.01.jar
+lorneswork.Predator 1.0 | gun-gap9.9 | lorneswork.Predator_1.0.jar
+slugzilla.ButtHead 2.0 | rammer-gap9.4 | slugzilla.ButtHead_2.0.jar
+ers.nano.sunderer.Sunderer 1.23a | gun-gap9.2 | ers.nano.sunderer.Sunderer_1.23a.jar
+ender.EnderRobot 1.1 | gun-gap9.1 | ender.EnderRobot_1.1.jar
+kc.micro.rammer.MaxRisk 0.6 | rammer-gap9.1 | kc.micro.rammer.MaxRisk_0.6.jar
+step.nanoPri 1.0 | rammer-gap8.7 | step.nanoPri_1.0.jar
+com.syncleus.robocode.Dreadnaught 0.1 | gun-gap8.6 | com.syncleus.robocode.Dreadnaught_0.1.jar
+mn.nano.perceptual.Impact 1.3.0 | gun-gap8.3 | mn.nano.perceptual.Impact_1.3.0.jar
+stelo.Lifestealer 1.0 | gun-gap8.3 | stelo.Lifestealer_1.0.jar
+jab.micro.Sanguijuela 0.8 | rammer-gap8.3 | jab.micro.Sanguijuela_0.8.jar
+demetrix.nano.SledgeHammer 0.22 | gun-gap8.1 | demetrix.nano.SledgeHammer_0.22.jar
+davidalves.net.DuelistNano 1.0 | gun-gap8.0 | davidalves.net.DuelistNano_1.0.jar
+sheldor.nano.Sabreur 1.1.2 | rammer-gap7.8 | sheldor.nano.Sabreur_1.1.2.jar
+jk.nano.Machete 2.0 | rammer-gap7.8 | jk.nano.Machete_2.0.jar
+sL300.Mozart life | gun-gap7.7 | sL300.Mozart_life.jar
+nan.Ihivatar_Mk_1 1.0 | gun-gap7.7 | nan.Ihivatar_Mk_1_1.0.jar
+sheldor.nano.SabreuseNano 1.1 | rammer-gap7.6 | sheldor.nano.SabreuseNano_1.1.jar
+supersample.SuperRamFire 1.0 | rammer-gap7.4 | supersample.SuperRamFire_1.0.jar
+wiki.WaveRammer 1.0 | gun-gap7.3 | wiki.WaveRammer_1.0.jar
+Noran.BitchingElk 0.054 | gun-gap7.2 | Noran.BitchingElk_0.054.jar
+slugzilla.RandomGF 1.0 | gun-gap6.8 | slugzilla.RandomGF_1.0.jar
+blir.nano.Bruce R1.0.0 | gun-gap6.7 | blir.nano.Bruce_R1.0.0.jar
+xander.cat.Mikey 1.2 | gun-gap6.7 | xander.cat.Mikey_1.2.jar
+stranger.nano.TestBot 1.0 | gun-gap6.7 | stranger.nano.TestBot_1.0.jar
+EH.Fusion 0.32 | rammer-gap6.5 | EH.Fusion_0.32.jar
+alpha.BlackIce 1.0 | gun-gap6.1 | alpha.BlackIce_1.0.jar
+oog.nano.Caligula 1.15 | rammer-gap5.5 | oog.nano.Caligula_1.15.jar
+kneels.ToNoone 0.2 | gun-gap5.4 | kneels.ToNoone_0.2.jar
+apc.Colossus2 0.12 | gun-gap5.1 | apc.Colossus2_0.12.jar
+maribo.FollowFire 1.11 | rammer-gap5.0 | maribo.FollowFire_1.11.jar
+lxx.ConceptA 0.8 | gun-gap4.6 | lxx.ConceptA_0.8.jar
+serenity.nonSense 1.39 | gun-gap3.9 | serenity.nonSense_1.39.jar
+agd.Mooserwirt2 2.7 | gun-gap3.9 | agd.Mooserwirt2_2.7.jar
+vjik.UnViolation 1.1 | gun-gap3.9 | vjik.UnViolation_1.1.jar
+fnc.bandit2002.Bandit2002 4.0.2 | gun-gap3.2 | fnc.bandit2002.Bandit2002_4.0.2.jar
+strider.Festis 1.2.1 | gun-gap2.3 | strider.Festis_1.2.1.jar

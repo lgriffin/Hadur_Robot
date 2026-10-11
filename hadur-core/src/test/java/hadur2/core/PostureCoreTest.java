@@ -9,11 +9,12 @@ import hadur2.core.model.BotInput;
 import hadur2.core.model.BotOrders;
 import hadur2.core.port.MemoryProfileStore;
 import hadur2.core.port.Telemetry;
-import hadur2.core.melee.EnemyInfo;
+import hadur2.core.world.EnemyInfo;
+import hadur2.core.world.EnemyShot;
 import hadur2.core.melee.MeleeController;
 import hadur2.core.physics.BattleField;
-import hadur2.core.posture.Posture;
-import hadur2.core.posture.PostureGate;
+import hadur2.core.role.Posture;
+import hadur2.core.role.Veto;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
@@ -94,16 +95,15 @@ class PostureCoreTest {
     private static MeleeController throwing(String handler, long from) {
         return new MeleeController(new BattleField(1000, 1000)) {
             @Override
-            public EnemyInfo onScan(String name, Point2D.Double location, double distance,
-                                    double energy, double heading, double velocity, long time) {
+            public void scanned(EnemyInfo info, EnemyShot shot, double distance, double velocity, long time) {
                 if (handler.equals("scan") && time >= from) throw new IllegalStateException("scan");
-                return super.onScan(name, location, distance, energy, heading, velocity, time);
+                super.scanned(info, shot, distance, velocity, time);
             }
 
             @Override
-            public void onRobotDeath(String name, boolean sentry) {
+            public void died(String name, boolean sentry) {
                 if (handler.equals("death")) throw new IllegalStateException("death");
-                super.onRobotDeath(name, sentry);
+                super.died(name, sentry);
             }
         };
     }
@@ -122,7 +122,7 @@ class PostureCoreTest {
         core.tick(input(1, 3, 0, threeScans()));
         assertEquals(Posture.MELEE, core.posture());
         BotOrders o = core.tick(input(2, 3, 0, threeScans()));
-        assertEquals(PostureGate.Veto.FAULT, core.veto());
+        assertEquals(Veto.FAULT, core.veto());
         assertTrue(telemetry.stream().anyMatch(l -> l.startsWith("FAULT,0,2,melee,")), telemetry.toString());
         assertTrue(Double.isInfinite(o.radarTurn()));
         core.tick(input(3, 3, 0, List.of()));
@@ -141,7 +141,7 @@ class PostureCoreTest {
         core.newRound(0);
         core.tick(input(1, 3, 0, threeScans()));
         core.tick(input(2, 2, 0, List.of(new BotEvent.RobotDeath("c"))));
-        assertEquals(PostureGate.Veto.FAULT, core.veto());
+        assertEquals(Veto.FAULT, core.veto());
         assertEquals(Posture.DUEL, core.posture());
     }
 }

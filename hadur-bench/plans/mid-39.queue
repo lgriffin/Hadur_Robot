@@ -1,0 +1,41 @@
+# The mid-table side track (issue #140): why Nullstride 2.3.3 does not lose rounds in ranks 51-400,
+# where it scores 13.85 a pairing more than Hadur 3.9. Run after overnight-39 (#138) is in.
+#   ./queue.sh run mid-39        (or  .\queue.ps1 run mid-39)
+# Needs #138's reference-bot support (Nullstride is the candidate; its battles are trusted on
+# skipped turns alone) and its score split (ramDamage, bonuses, in result.csv and the report).
+#
+# mid / mid-shieldall / mid-null answer, in the issue's words:
+#   M1, M3, M4  mid: Hadur's own per-round hit rate (BENCH-20..25), round length and lost-round
+#               autopsy (BENCH-9), 3.9 against 3.4, on bots Nullstride beats by 12 a pairing.
+#   M2          mid-shieldall: the D5 shield list on for every opponent, against plain 3.9.
+#               mid-null: where Nullstride's points come from, by the A2 split.
+# The "-list" steps repeat the last two on the 30 mid bots from DrussGT's shield list, where
+# Nullstride's gap is 17.1 against 11.3 off the list and 8 of the 10 worst pairings sit.
+# Nullstride has no archive jar: prep copies it from the RoboRumble client's robots directory.
+
+set HEAP = --child-heap 2G
+set E = --engine 1.11.1
+set COMMON = --skip-build --skip-fetch --rounds 35 ${HEAP} ${E}
+set CPU = --cpu-constant 1488498
+set C39 = --robot-jar bisect/hadur2.Hadur_3.9.jar --robot "hadur2.Hadur 3.9"
+set B39 = --baseline bisect/hadur2.Hadur_3.9.jar --baseline-robot "hadur2.Hadur 3.9"
+set B34 = --baseline bisect/hadur2.Hadur_3.4.jar --baseline-robot "hadur2.Hadur 3.4"
+set SA39 = --robot-jar bisect/hadur2.Hadur_3.9sa.jar --robot "hadur2.Hadur 3.9sa"
+set NULL = --robot-jar opponents/jd.Nullstride_2.3.3.jar --robot "jd.Nullstride 2.3.3"
+
+prep | mkdir -p bisect opponents && { [ -s bisect/hadur2.Hadur_3.9.jar ] || curl -fsSL -o bisect/hadur2.Hadur_3.9.jar https://github.com/lgriffin/Hadur_Robot/releases/download/v3.9/hadur2.Hadur_3.9.jar; } && { [ -s bisect/hadur2.Hadur_3.4.jar ] || curl -fsSL -o bisect/hadur2.Hadur_3.4.jar https://github.com/lgriffin/Hadur_Robot/releases/download/v3.4/hadur2.Hadur_3.4.jar; } && ./fetch-opponents.sh --set mid-39.txt && ./fetch-opponents.sh --set mid-shield-39.txt && { [ -s opponents/jd.Nullstride_2.3.3.jar ] || cp /c/robocode/robots/jd.Nullstride_2.3.3.jar opponents/; } && { [ -s bisect/hadur2.Hadur_3.9sa.jar ] || ./build-ablation.sh --ref v3.9 shield-all; }
+
+mid | ./bench-top20.sh ${COMMON} ${CPU} --set mid-39.txt --seeds 8 ${C39} ${B34} --label mid-39-v34
+  after: prep
+
+mid-shieldall | ./bench-top20.sh ${COMMON} ${CPU} --set mid-39.txt --seeds 8 ${SA39} ${B39} --label mid-shieldall-v39
+  after: prep
+
+mid-shieldall-list | ./bench-top20.sh ${COMMON} ${CPU} --set mid-shield-39.txt --seeds 8 ${SA39} ${B39} --label mid-shieldall-list-v39
+  after: prep
+
+mid-null | ./bench-top20.sh ${COMMON} ${CPU} --set mid-39.txt --seeds 8 ${NULL} ${B39} --label mid-null-v39
+  after: prep
+
+mid-null-list | ./bench-top20.sh ${COMMON} ${CPU} --set mid-shield-39.txt --seeds 8 ${NULL} ${B39} --label mid-null-list-v39
+  after: prep

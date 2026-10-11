@@ -1,0 +1,28 @@
+% The steel thread: one loop per stage. Human-owned steps are shaded orange.
+\begin{tikzpicture}[
+  node distance=4mm and 5mm,
+  box/.style={draw=hblue, fill=hblue!8, rounded corners=2pt, align=center,
+    font=\scriptsize, minimum height=8.5mm, text width=19mm},
+  hum/.style={box, draw=horange, fill=horange!15},
+  arr/.style={-{Stealth[length=1.8mm]}, thick, black!65},
+]
+\node[hum] (goal) {Goal and framing\\(rank target, plan brief)};
+\node[box, right=of goal] (plan) {Staged plan\\(planning agent)};
+\node[box, right=of plan] (ears) {EARS rows,\\gate per stage};
+\node[box, below=of ears] (impl) {Stage PR: code,\\tagged tests, pins};
+\node[box, left=of impl] (gate) {Bench gate:\\paired seeds, CI};
+\node[hum, left=of gate] (merge) {Merge, release,\\upload jar};
+\node[box, below=of merge] (live) {Live rumble pass\\($\approx$1,215 pairings)};
+\node[box, right=of live] (read) {Read by band;\\learnings ledger};
+\node[hum, right=of read] (decide) {Decide next\\goal or pivot};
+\draw[arr] (goal) -- (plan);
+\draw[arr] (plan) -- (ears);
+\draw[arr] (ears) -- (impl);
+\draw[arr] (impl) -- (gate);
+\draw[arr] (gate) -- (merge);
+\draw[arr] (merge) -- (live);
+\draw[arr] (live) -- (read);
+\draw[arr] (read) -- (decide);
+\draw[arr] (decide.east) -- ++(3mm,0) |- ([yshift=2mm]impl.east) node[pos=0.25, right, font=\tiny, align=left] {next\\stage};
+\draw[arr, dashed] (gate.north) -- node[left, font=\tiny] {fails} (plan.south);
+\end{tikzpicture}

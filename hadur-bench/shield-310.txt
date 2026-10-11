@@ -1,0 +1,91 @@
+# The 83 robots 3.10 adds to Hadur's shield list (ShieldListData): every robot of DrussGT's
+# shield list ranked 51st to 700th on 2026-10-07 that shield mode beat at 8 seeds, by the D5
+# rule (interval above 0, or open with a mean gain of 9 or more). 18 from the #140 mid-table
+# run, 46 from the sweep's ranks 51-400 and 19 from its ranks 401-700
+# (docs/bench/local/2026-10-08_shield-sweep.md). Use: 3.10 against 3.9 on fresh seeds
+# (--seed-base), so the confirmation is not the run that chose them.
+# Jars from https://robocode-archive.strangeautomata.com/robots/<jar>, into opponents/ (not committed).
+#   <robot name as Robocode lists it> | <role> | <jar file in opponents/>
+AIR.iRobot 1.0 | shield-310 | AIR.iRobot_1.0.jar
+DM.mega.Bezier 1.618fprrr | shield-310 | DM.mega.Bezier_1.618fprrr.jar
+KiraNL.ChupaLite 0.4 | shield-310 | KiraNL.ChupaLite_0.4.jar
+Krabb.krabby.Krabby 1.18b | shield-310 | Krabb.krabby.Krabby_1.18b.jar
+ad.Quest 0.10 | shield-310 | ad.Quest_0.10.jar
+ags.micro.Carpet 1.1 | shield-310 | ags.micro.Carpet_1.1.jar
+ahf.r2d2.R2d2 0.86 | shield-310 | ahf.r2d2.R2d2_0.86.jar
+amk.ChumbaWumba 0.3 | shield-310 | amk.ChumbaWumba_0.3.jar
+apv.NanoLauLectrikTheCannibal 1.1 | shield-310 | apv.NanoLauLectrikTheCannibal_1.1.jar
+arthord.KostyaTszyu Beta2 | shield-310 | arthord.KostyaTszyu_Beta2.jar
+ary.SMG 1.01 | shield-310 | ary.SMG_1.01.jar
+ary.mini.Nimi 1.0 | shield-310 | ary.mini.Nimi_1.0.jar
+brainfade.Fallen 0.63 | shield-310 | brainfade.Fallen_0.63.jar
+bvh.frg.Friga 0.112dev | shield-310 | bvh.frg.Friga_0.112dev.jar
+bvh.mini.Freya 0.55 | shield-310 | bvh.mini.Freya_0.55.jar
+casey.Flee 1.0 | shield-310 | casey.Flee_1.0.jar
+cf.mini.Chiva 1.0 | shield-310 | cf.mini.Chiva_1.0.jar
+cf.proto.Shiva 2.2 | shield-310 | cf.proto.Shiva_2.2.jar
+davidalves.net.DuelistMicroMkII 1.1 | shield-310 | davidalves.net.DuelistMicroMkII_1.1.jar
+davidalves.net.DuelistMini 1.1 | shield-310 | davidalves.net.DuelistMini_1.1.jar
+dft.Cyanide 1.90 | shield-310 | dft.Cyanide_1.90.jar
+ds.OoV4 0.3b | shield-310 | ds.OoV4_0.3b.jar
+florent.small.LittleAngel 1.8 | shield-310 | florent.small.LittleAngel_1.8.jar
+gh.GrubbmGrb 1.2.4 | shield-310 | gh.GrubbmGrb_1.2.4.jar
+ins.MobyNano 0.8 | shield-310 | ins.MobyNano_0.8.jar
+jam.mini.Raiko 0.43 | shield-310 | jam.mini.Raiko_0.43.jar
+jcs.Decepticon 2.5.3 | shield-310 | jcs.Decepticon_2.5.3.jar
+jekl.DarkHallow .90.9 | shield-310 | jekl.DarkHallow_.90.9.jar
+jekl.Jekyl .70 | shield-310 | jekl.Jekyl_.70.jar
+jekl.mini.BlackPearl .91 | shield-310 | jekl.mini.BlackPearl_.91.jar
+kawigi.mini.Coriantumr 1.1 | shield-310 | kawigi.mini.Coriantumr_1.1.jar
+kawigi.mini.Fhqwhgads 1.1 | shield-310 | kawigi.mini.Fhqwhgads_1.1.jar
+kc.micro.Thorn 1.252 | shield-310 | kc.micro.Thorn_1.252.jar
+kid.Toa .0.5 | shield-310 | kid.Toa_.0.5.jar
+kms.Golden 0.10 | shield-310 | kms.Golden_0.10.jar
+lrem.magic.TormentedAngel Antiquitie | shield-310 | lrem.magic.TormentedAngel_Antiquitie.jar
+lucasslf.Dodger 1.0 | shield-310 | lucasslf.Dodger_1.0.jar
+lucasslf.HariSeldon 0.2.1 | shield-310 | lucasslf.HariSeldon_0.2.1.jar
+lucasslf.Wiggins 0.6 | shield-310 | lucasslf.Wiggins_0.6.jar
+metal.small.MCool 1.21 | shield-310 | metal.small.MCool_1.21.jar
+metal.small.dna2.MCoolDNA 1.5 | shield-310 | metal.small.dna2.MCoolDNA_1.5.jar
+mk.Alpha 0.2.1 | shield-310 | mk.Alpha_0.2.1.jar
+mladjo.Grrrrr 0.9 | shield-310 | mladjo.Grrrrr_0.9.jar
+mnt.AHEB 0.6a | shield-310 | mnt.AHEB_0.6a.jar
+myl.micro.NekoNinja 1.30 | shield-310 | myl.micro.NekoNinja_1.30.jar
+nat.Hikari dev0001 | shield-310 | nat.Hikari_dev0001.jar
+nat.nano.Ocnirp 1.73 | shield-310 | nat.nano.Ocnirp_1.73.jar
+nat.nano.OcnirpPM 1.0 | shield-310 | nat.nano.OcnirpPM_1.0.jar
+pe.mini.SandboxMini 1.2 | shield-310 | pe.mini.SandboxMini_1.2.jar
+pez.clean.Swiffer 0.2.9 | shield-310 | pez.clean.Swiffer_0.2.9.jar
+pez.mako.Mako 1.5 | shield-310 | pez.mako.Mako_1.5.jar
+ph.micro.Pikeman 0.4.5 | shield-310 | ph.micro.Pikeman_0.4.5.jar
+ph.mini.Archer 0.6.6 | shield-310 | ph.mini.Archer_0.6.6.jar
+pkbots.BoyTDSurfer 1.0 | shield-310 | pkbots.BoyTDSurfer_1.0.jar
+rcb.Vanessa03 0 | shield-310 | rcb.Vanessa03_0.jar
+rdt.AgentSmith.AgentSmith 0.5 | shield-310 | rdt.AgentSmith.AgentSmith_0.5.jar
+robar.micro.Kirbyi 1.0 | shield-310 | robar.micro.Kirbyi_1.0.jar
+rz.Aleph 0.34 | shield-310 | rz.Aleph_0.34.jar
+simonton.beta.LifelongObsession 0.5.1 | shield-310 | simonton.beta.LifelongObsession_0.5.1.jar
+simonton.micro.GFMicro 1.0 | shield-310 | simonton.micro.GFMicro_1.0.jar
+simonton.mini.WeeksOnEnd 1.10.4 | shield-310 | simonton.mini.WeeksOnEnd_1.10.4.jar
+simonton.nano.WeekendObsession_S 1.7 | shield-310 | simonton.nano.WeekendObsession_S_1.7.jar
+spinnercat.CopyKat 1.2.3 | shield-310 | spinnercat.CopyKat_1.2.3.jar
+starpkg.StarViewerZ 1.26 | shield-310 | starpkg.StarViewerZ_1.26.jar
+stefw.Tigger 0.0.23 | shield-310 | stefw.Tigger_0.0.23.jar
+stelo.Randomness 1.1 | shield-310 | stelo.Randomness_1.1.jar
+stelo.SteloTestNano 1.0 | shield-310 | stelo.SteloTestNano_1.0.jar
+suh.nano.RandomPM 1.02 | shield-310 | suh.nano.RandomPM_1.02.jar
+syl.Centipede 0.5 | shield-310 | syl.Centipede_0.5.jar
+theo.Tungsten 1.0a | shield-310 | theo.Tungsten_1.0a.jar
+theo.avenge.Pequod 1.0 | shield-310 | theo.avenge.Pequod_1.0.jar
+theo.real.Ahab 1.0 | shield-310 | theo.real.Ahab_1.0.jar
+tide.pear.Pear 0.62.1 | shield-310 | tide.pear.Pear_0.62.1.jar
+trab.Crusader 0.1.7 | shield-310 | trab.Crusader_0.1.7.jar
+trm.Wrekt 1.1.6.f | shield-310 | trm.Wrekt_1.1.6.f.jar
+tw.Exterminator 1.0 | shield-310 | tw.Exterminator_1.0.jar
+tzu.TheArtOfWar 1.2 | shield-310 | tzu.TheArtOfWar_1.2.jar
+vuen.Fractal 0.55 | shield-310 | vuen.Fractal_0.55.jar
+wcsv.Engineer.Engineer 0.5.4 | shield-310 | wcsv.Engineer.Engineer_0.5.4.jar
+wiki.mini.BlackDestroyer 0.9.0 | shield-310 | wiki.mini.BlackDestroyer_0.9.0.jar
+wiki.mini.Sedan 1.0 | shield-310 | wiki.mini.Sedan_1.0.jar
+wilson.Chameleon 0.91 | shield-310 | wilson.Chameleon_0.91.jar
+zen.Lindada 0.2 | shield-310 | zen.Lindada_0.2.jar

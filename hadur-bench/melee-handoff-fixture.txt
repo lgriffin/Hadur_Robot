@@ -1,0 +1,7 @@
+# A0's hand-off fixture (STRAND-4): a small melee on a store that already holds a 1v1
+# profile of Shadow, recorded with --keep-data true after a warm duel against it, so the
+# survivor's 1v1 profile is found when the melee hands it to the duel (MMEM-2).
+abc.Shadow 3.83c | melee | abc.Shadow_3.83c.jar
+sample.SpinBot | melee | -
+sample.Tracker | melee | -
+sample.Fire | melee | -

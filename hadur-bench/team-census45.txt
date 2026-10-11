@@ -1,0 +1,48 @@
+# The whole TeamRumble field for HadurTeam (2026-10-11): team-top20.txt plus team-lower26.txt,
+# with apvteam.MambaTeam 0.7.5 (in both) listed once. 45 opponents, 1200x1200, 10 rounds.
+#   <team name as Robocode lists it> | team | <jar file in opponents/>
+mn.CombatTeam 3.25.0 | team-1 | mn.CombatTeam_3.25.0.jar
+cb.fire.FirestarterTeam 2.0 | team-2 | cb.fire.FirestarterTeam_2.0.jar
+abc.ShadowTeam 3.83 | team-3 | abc.ShadowTeam_3.83.jar
+rz.AlephTeam 0.34 | team-4 | rz.AlephTeam_0.34.jar
+ustimaw.NightmareTeam 3.3 | team-5 | ustimaw.NightmareTeam_3.3.jar
+florent.XSeries.Xmen 0.9 | team-6 | florent.XSeries.Xmen_0.9.jar
+ags.polylunar.Polylunar 1.6 | team-7 | ags.polylunar.Polylunar_1.6.jar
+rz.GlowingHawks 0.2 | team-8 | rz.GlowingHawks_0.2.jar
+kawigi.micro.ArmyOfShiz 1.1 | team-9 | kawigi.micro.ArmyOfShiz_1.1.jar
+rz.HOFSwarm 1.1 | team-10 | rz.HOFSwarm_1.1.jar
+davidalves.PhoenixTeam 0.54 | team-11 | davidalves.PhoenixTeam_0.54.jar
+kid.team.OmegaSquad .0.2 | team-12 | kid.team.OmegaSquad_.0.2.jar
+cx.mini.DemoniacNimrods 0.50 | team-13 | cx.mini.DemoniacNimrods_0.50.jar
+tmnr.TMNR 1.01 | team-14 | tmnr.TMNR_1.01.jar
+myl.micro.TroodonPack 1.10 | team-15 | myl.micro.TroodonPack_1.10.jar
+Krabb.sliNk.SlartibartfassTeam 0.5 | team-16 | Krabb.sliNk.SlartibartfassTeam_0.5.jar
+bvh.team.Valkiries 1.0 | team-17 | bvh.team.Valkiries_1.0.jar
+radnor.RadnorMedSchool 1.0 | team-18 | radnor.RadnorMedSchool_1.0.jar
+gh.mini.GrubbmGroup 0.4 | team-19 | gh.mini.GrubbmGroup_0.4.jar
+apvteam.MambaTeam 0.7.5 | team-20 | apvteam.MambaTeam_0.7.5.jar
+kawigi.sbf.TidalWave 0.8 | team | kawigi.sbf.TidalWave_0.8.jar
+gh.nano.GrofGroup 1.1 | team | gh.nano.GrofGroup_1.1.jar
+jab.DiamondStealers 5 | team | jab.DiamondStealers_5.jar
+ethdsy.MalackaTeam 1.2 | team | ethdsy.MalackaTeam_1.2.jar
+amz.TeamDeathTeam 1 | team | amz.TeamDeathTeam_1.jar
+jab.Enjambre 3 | team | jab.Enjambre_3.jar
+vuen.Bakery 2.51 | team | vuen.Bakery_2.51.jar
+mn.nano.perceptual.ImpactTeam 1.3.0 | team | mn.nano.perceptual.ImpactTeam_1.3.0.jar
+pedersen.ImWithStupidTeam 1.3 | team | pedersen.ImWithStupidTeam_1.3.jar
+pedersen.ImWithDroidTeam 1.3 | team | pedersen.ImWithDroidTeam_1.3.jar
+mskwik.BumblingIdiots 1.0 | team | mskwik.BumblingIdiots_1.0.jar
+sgp.DrunkenTeam 1.12 | team | sgp.DrunkenTeam_1.12.jar
+CharlieN.OmegaTeam.OmegaTeam 1.0 | team | CharlieN.OmegaTeam.OmegaTeam_1.0.jar
+jeremyreeder.collective.FourProphetsAndADiscliple 5 | team | jeremyreeder.collective.FourProphetsAndADiscliple_5.jar
+dummy_team.BlindFighters 1.01 | team | dummy_team.BlindFighters_1.01.jar
+lxx.ConceptATeam 0.8 | team | lxx.ConceptATeam_0.8.jar
+sp.Minis.GeneBotUpgrade 1.1 | team | sp.Minis.GeneBotUpgrade_1.1.jar
+ms.AresHaikuTeam 0.3 | team | ms.AresHaikuTeam_0.3.jar
+gimp.GimpTeam 0.1 | team | gimp.GimpTeam_0.1.jar
+ntc.slippery.Slippery 1.0 | team | ntc.slippery.Slippery_1.0.jar
+bugger.BuggerHive 1.0 | team | bugger.BuggerHive_1.0.jar
+Polkwane.PTeam 1.0 | team | Polkwane.PTeam_1.0.jar
+sampleteam.MyFirstTeam | team | -
+logiblocs.SittingDroidTeam 1.0 | team | logiblocs.SittingDroidTeam_1.0.jar
+mn.SuperSittingDuckTeam 1.0.2 | team | mn.SuperSittingDuckTeam_1.0.2.jar

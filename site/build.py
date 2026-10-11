@@ -32,14 +32,17 @@ DOCS = [
     ("docs/strategy-evolution.md", "strategy-evolution.html", "Strategy evolution"),
     ("docs/bullet-shielding.md", "bullet-shielding.html", "Bullet shielding"),
     ("docs/requirements.md", "requirements-notes.html", "Requirement readings"),
+    ("docs/architecture-evolution.md", "architecture-evolution.html", "Architecture evolution"),
+    ("docs/bench/expected-3.7.md", "expected-3.7.html", "What 3.7 should score"),
     ("docs/rumble-submission.md", "rumble-submission.html", "Rumble entry"),
     ("docs/releases/v3.0.md", "release-3.0.html", "Release 3.0"),
+    ("docs/releases/v3.7.md", "release-3.7.html", "Release 3.7"),
     ("followup.md", "followup.html", "Follow-ups"),
 ]
 
 ID = r"[A-Z]+-\d+"
-ROW = re.compile(r"^\|\s*(" + ID + r")\s*\|\s*([^|]+?)\s*\|\s*(.+?)\s*\|\s*(S\d|M\d)\s*\|\s*$")
-RETIRED = re.compile(r"^\|\s*(" + ID + r")\s*\|\s*(.+?)\s*\|\s*(M\d|S\d)\s*\|\s*(.+?)\s*\|\s*$")
+ROW = re.compile(r"^\|\s*(" + ID + r")\s*\|\s*([^|]+?)\s*\|\s*(.+?)\s*\|\s*([SMRA]\d+)\s*\|\s*$")
+RETIRED = re.compile(r"^\|\s*(" + ID + r")\s*\|\s*(.+?)\s*\|\s*([SMRA]\d+)\s*\|\s*(.+?)\s*\|\s*$")
 JAVA_TAG = re.compile(r'@Tag\("(' + ID + r')"\)')
 FEATURE_TAG = re.compile(r"@(" + ID + r")\b")
 
@@ -236,7 +239,7 @@ def page(title, body, active, depth=0, mermaid=False):
     up = "../" * depth
     nav = [("index.html", "Home"), ("requirements.html", "Requirements"),
            ("docs/architecture.html", "Architecture"), ("docs/testing.html", "Testing"),
-           ("api/index.html", "Javadoc")]
+           ("bench/index.html", "Bench analysis"), ("api/index.html", "Javadoc")]
     links = "".join('<a href="%s%s"%s>%s</a>' % (up, href, ' aria-current="page"' if href == active else "", label)
                     for href, label in nav)
     script = ""
@@ -295,22 +298,22 @@ def build(root, out):
 
     rendered = {src: "docs/" + pg for src, pg, _ in DOCS}
 
-    def linker_for(prefix, from_docs):
-        """Resolves a Markdown link target: a rendered doc becomes its page (relative to
-        the linking page), any other repository path a GitHub link."""
+    def linker_for(prefix, base):
+        """Resolves a Markdown link target, relative to the directory `base` of the source
+        it appears in: a rendered doc becomes its page (relative to the linking page), any
+        other repository path a GitHub link."""
         def page_for(target):
             if re.match(r"^[a-z]+:", target) or target.startswith("#"):
                 return target
             path, _, frag = target.partition("#")
-            norm = os.path.normpath(os.path.join("docs", path)) if from_docs else os.path.normpath(path)
+            norm = os.path.normpath(os.path.join(base, path))
             tail = "#" + frag if frag else ""
             if norm in rendered:
                 return prefix + os.path.basename(rendered[norm]) + tail
             return BLOB + norm.replace(os.sep, "/") + tail
         return page_for
 
-    page_for_doc = linker_for("docs/", False)
-    page_in_docs = linker_for("", True)
+    page_for_doc = linker_for("docs/", "")
 
     # Requirement traceability page.
     by_group = defaultdict(list)
@@ -364,7 +367,7 @@ traceability check reads. %d of %d live requirements have a tagged test. The rea
         if not os.path.exists(p):
             continue
         text = read(p)
-        body = markdown(text, linker1, page_in_docs)
+        body = markdown(text, linker1, linker_for("", os.path.dirname(src)))
         body += '<p class="source">Source: <a href="%s">%s</a></p>' % (BLOB + src, src)
         write(os.path.join(out, "docs", pg), page(title, body, "docs/" + pg, depth=1, mermaid="```mermaid" in text))
 
@@ -383,7 +386,7 @@ hexagonal core that never imports <code>robocode.*</code>. Every behaviour is an
 <a href="requirements.html">EARS requirement</a>, cited in the code that implements it and tagged on the tests that prove it.</p>
 <div class="stats"><div><b>%d</b><span>live requirements</span></div><div><b>%d</b><span>with a tagged test</span></div>
 <div><b>%d</b><span>classes citing one</span></div></div>
-<p class="cta"><a class="button" href="api/index.html">Browse the Javadoc</a> <a class="button ghost" href="requirements.html">Requirement map</a></p>
+<p class="cta"><a class="button" href="api/index.html">Browse the Javadoc</a> <a class="button ghost" href="requirements.html">Requirement map</a> <a class="button ghost" href="bench/index.html">Bench analysis</a></p>
 </section>
 <section><h2>What it does</h2>%s</section>
 <section><h2>Reading the code</h2>

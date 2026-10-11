@@ -12,7 +12,12 @@ public final class BattleResult {
         + "profileFound,memoryFailures,seedsEvicted,bulletsIntercepted,jitteredShots,shotsFired,"
         + "tiers,openingGun,gunSeed,surfSeed,seedDecays,"
         + "openingDistance,meanDistance,targetDistance,roundTicks,finishTicks,ramTicks,fullPowerShots,"
-        + "maxLevel,slowTicks,shadowedWaves,interceptsShadowed,flavourChanges,flavourStep,errors";
+        + "maxLevel,slowTicks,shadowedWaves,interceptsShadowed,flavourChanges,flavourStep,errors,"
+        + "duressTicks,engineDisables,securityErrors,rShortfall,finalRMissing,"
+        + "hostCpuMin,hostCpuMean,hostCpuMax,otherJvms,"
+        + "reference,ramDamage,theirRamDamage,ramDamageBonus,theirRamDamageBonus,"
+        + "bulletDamageBonus,theirBulletDamageBonus,lastSurvivorBonus,theirLastSurvivorBonus,"
+        + "engineRoundTicks";
 
     public boolean ok;
     public int rounds, firsts, skippedTurns, turns;
@@ -36,9 +41,102 @@ public final class BattleResult {
     public int finishTicks, ramTicks, fullPowerShots;
     /** Unhittable (S6): highest computation level, slow ticks, shadowed waves, intercepts in a shadow, flavour changes and step. */
     public int maxLevel, slowTicks, shadowedWaves, interceptsShadowed, flavourChanges, flavourStep;
+    /**
+     * Host load while this battle ran (BENCH-50), set by the bench from its sampler, not by the
+     * battle's own JVM: system CPU utilisation 0..1 (NaN when never sampled) and the most other
+     * Robocode JVMs seen on the host (-1 when unknown).
+     */
+    public double hostCpuMin = Double.NaN, hostCpuMean = Double.NaN, hostCpuMax = Double.NaN;
+    public int otherJvms = -1;
+    /**
+     * Issue #138, A1: true when the robot is not a Hadur build (a reference bot), so it writes no
+     * R records and only the engine-side signals can vouch for the battle.
+     */
+    public boolean reference;
+    /**
+     * Issue #138, A2: the rest of the score split from {@code robocode.BattleResults}, for both
+     * sides. NaN on a row written before the columns existed.
+     */
+    public double ramDamage = Double.NaN, theirRamDamage = Double.NaN;
+    public double ramDamageBonus = Double.NaN, theirRamDamageBonus = Double.NaN;
+    public double bulletDamageBonus = Double.NaN, theirBulletDamageBonus = Double.NaN;
+    public double lastSurvivorBonus = Double.NaN, theirLastSurvivorBonus = Double.NaN;
+    /** Issue #138, A3: mean ticks per round from the engine's round-ended events, for any build. NaN when unknown. */
+    public double engineRoundTicks = Double.NaN;
     public double score, theirScore, survival, theirSurvival, bulletDamage, theirBulletDamage;
     public double turnP50Ms, turnP95Ms, turnMaxMs;
     public String errors = "";
+    /**
+     * Trust signals (issue #117, G2). {@code duressTicks} is -1 on a row written before the
+     * column existed, meaning unknown. {@code rShortfall} is rounds with no R record and
+     * {@code finalRMissing} is 1 when the last round's record is the one that never arrived (G14).
+     */
+    public int duressTicks = -1, engineDisables, securityErrors, rShortfall, finalRMissing;
+
+    /** Default ceiling on engine-announced skipped turns per round for a battle to count as trusted. */
+    static final double DEFAULT_SKIPS_PER_ROUND = 2.0;
+
+    /** The skips-per-round ceiling: {@code -Dhadur.bench.trust.skips=<n>} overrides {@link #DEFAULT_SKIPS_PER_ROUND}. */
+    static double skipsPerRoundLimit() {
+        String v = System.getProperty("hadur.bench.trust.skips");
+        if (v == null) return DEFAULT_SKIPS_PER_ROUND;
+        try {
+            return Double.parseDouble(v);
+        } catch (NumberFormatException e) {
+            return DEFAULT_SKIPS_PER_ROUND;
+        }
+    }
+
+    /**
+     * A battle whose numbers measure the robot rather than the host: it finished, ran no
+     * ticks in duress (unknown counts as none), skipped at most {@code skipsPerRound} turns a
+     * round on average, and delivered an R record for every round. A reference build (issue
+     * #138) writes no R records, so the record rule is not applied to it and the engine's own
+     * skipped-turn count stands in. A battle where the security manager denied a robot one of
+     * the JDK's own class-path resources is not trusted either (BENCH-84): that is the bench's
+     * class path talking, not the robot, and the robot it happens to has stopped playing.
+     */
+    boolean trusted(double skipsPerRound) {
+        return ok && duressTicks <= 0 && (reference || roundRecords == rounds)
+            && skippedTurns <= skipsPerRound * rounds && hostDenials(errors) == 0;
+    }
+
+    boolean trusted() { return trusted(skipsPerRoundLimit()); }
+
+    /** The reasons {@link #trusted()} fails, as short words (empty when trusted). */
+    java.util.List<String> untrustedReasons(double skipsPerRound) {
+        java.util.List<String> why = new java.util.ArrayList<>();
+        if (!ok) why.add("failed");
+        if (duressTicks > 0) why.add("duress");
+        if (!reference && roundRecords != rounds) why.add("R records");
+        if (skippedTurns > skipsPerRound * rounds) why.add("skips");
+        if (hostDenials(errors) > 0) why.add("JDK resource denied");
+        return why;
+    }
+
+    /**
+     * BENCH-84: how many of the security manager's denials name a JDK service resource on the
+     * class path ({@code META-INF/...} under a bench directory), which only the bench's class
+     * path causes (BENCH-83, issue #151). A robot denied its own excess (a write over quota, a
+     * file outside its directory) is playing as it would live and is not counted.
+     */
+    static int hostDenials(String errors) {
+        if (errors == null) return 0;
+        int n = 0;
+        for (int i = errors.indexOf("Preventing "); i >= 0; i = errors.indexOf("Preventing ", i + 1)) {
+            int end = errors.indexOf("Preventing ", i + 1);
+            String one = errors.substring(i, end < 0 ? errors.length() : end);
+            if (one.contains("META-INF")) n++;
+        }
+        return n;
+    }
+
+    /** How many security-manager denials an engine error text holds (each reads "Preventing X from access"). */
+    static int securityErrorCount(String errors) {
+        int n = 0;
+        for (int i = errors.indexOf("Preventing "); i >= 0; i = errors.indexOf("Preventing ", i + 1)) n++;
+        return n;
+    }
 
     static BattleResult of(BattleResults us, BattleResults them, int rounds,
                            LogHarvester h, String errors) {
@@ -93,12 +191,28 @@ public final class BattleResult {
         r.interceptsShadowed = h.interceptsShadowed();
         r.flavourChanges = h.flavourChanges();
         r.flavourStep = h.flavourStep();
+        r.ramDamage = us.getRamDamage();
+        r.theirRamDamage = them.getRamDamage();
+        r.ramDamageBonus = us.getRamDamageBonus();
+        r.theirRamDamageBonus = them.getRamDamageBonus();
+        r.bulletDamageBonus = us.getBulletDamageBonus();
+        r.theirBulletDamageBonus = them.getBulletDamageBonus();
+        r.lastSurvivorBonus = us.getLastSurvivorBonus();
+        r.theirLastSurvivorBonus = them.getLastSurvivorBonus();
         r.errors = errors.trim();
+        r.duressTicks = h.duressTicks();
+        r.engineDisables = h.engineDisables();
+        r.securityErrors = securityErrorCount(r.errors);
+        r.rShortfall = Math.max(0, rounds - r.roundRecords);
+        r.finalRMissing = h.finalRecordMissing(rounds) ? 1 : 0;
         return r;
     }
 
+    /** The columns of a failed row that follow {@code otherJvms}: not a reference build, nothing measured. */
+    static final String FAILED_TAIL = ",0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,NaN,NaN";
+
     static String failed(String why) {
-        return "false,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NaN,NaN,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,0,0,0,-,NaN,NaN,NaN,0,0,0,0,0,0,0,0,0," + sanitize(why);
+        return "false,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NaN,NaN,0,0,0,0,0,0,0,0,0,0,0,0,0,-,-,0,0,0,-,NaN,NaN,NaN,0,0,0,0,0,0,0,0,0," + sanitize(why) + ",0,0,0,0,0,NaN,NaN,NaN,-1" + FAILED_TAIL;
     }
 
     String toCsv() {
@@ -120,11 +234,17 @@ public final class BattleResult {
             String.valueOf(finishTicks), String.valueOf(ramTicks), String.valueOf(fullPowerShots),
             String.valueOf(maxLevel), String.valueOf(slowTicks), String.valueOf(shadowedWaves),
             String.valueOf(interceptsShadowed), String.valueOf(flavourChanges),
-            String.valueOf(flavourStep), sanitize(errors));
+            String.valueOf(flavourStep), sanitize(errors), String.valueOf(duressTicks),
+            String.valueOf(engineDisables), String.valueOf(securityErrors),
+            String.valueOf(rShortfall), String.valueOf(finalRMissing),
+            num(hostCpuMin), num(hostCpuMean), num(hostCpuMax), String.valueOf(otherJvms),
+            reference ? "1" : "0", num(ramDamage), num(theirRamDamage), num(ramDamageBonus),
+            num(theirRamDamageBonus), num(bulletDamageBonus), num(theirBulletDamageBonus),
+            num(lastSurvivorBonus), num(theirLastSurvivorBonus), num(engineRoundTicks));
     }
 
     static BattleResult parse(String line) {
-        String[] f = line.split(",", 51);
+        String[] f = line.split(",", -1);
         BattleResult r = new BattleResult();
         r.ok = Boolean.parseBoolean(f[0]);
         r.rounds = Integer.parseInt(f[1]);
@@ -177,12 +297,49 @@ public final class BattleResult {
         r.flavourChanges = Integer.parseInt(f[48]);
         r.flavourStep = Integer.parseInt(f[49]);
         r.errors = f.length > 50 ? f[50] : "";
+        if (f.length >= 56) {
+            r.duressTicks = Integer.parseInt(f[51]);
+            r.engineDisables = Integer.parseInt(f[52]);
+            r.securityErrors = Integer.parseInt(f[53]);
+            r.rShortfall = Integer.parseInt(f[54]);
+            r.finalRMissing = Integer.parseInt(f[55]);
+        }
+        if (f.length >= 60) {
+            r.hostCpuMin = Double.parseDouble(f[56]);
+            r.hostCpuMean = Double.parseDouble(f[57]);
+            r.hostCpuMax = Double.parseDouble(f[58]);
+            r.otherJvms = Integer.parseInt(f[59]);
+        }
+        if (f.length >= 70) {
+            r.reference = f[60].equals("1");
+            r.ramDamage = Double.parseDouble(f[61]);
+            r.theirRamDamage = Double.parseDouble(f[62]);
+            r.ramDamageBonus = Double.parseDouble(f[63]);
+            r.theirRamDamageBonus = Double.parseDouble(f[64]);
+            r.bulletDamageBonus = Double.parseDouble(f[65]);
+            r.theirBulletDamageBonus = Double.parseDouble(f[66]);
+            r.lastSurvivorBonus = Double.parseDouble(f[67]);
+            r.theirLastSurvivorBonus = Double.parseDouble(f[68]);
+            r.engineRoundTicks = Double.parseDouble(f[69]);
+        }
         return r;
     }
 
     double scoreShare() { return share(score, theirScore); }
     double survivalShare() { return share(survival, theirSurvival); }
     double bulletDamageShare() { return share(bulletDamage, theirBulletDamage); }
+
+    /** Whether a robot name is a Hadur build, the only kind that writes R records (issue #138). */
+    static boolean isHadur(String robotName) {
+        return robotName != null && robotName.startsWith("hadur");
+    }
+
+    /** The opponent's points by source (survival, bullet damage, ram damage, bonuses), or null on an old row. */
+    double[] theirScoreSplit() {
+        double bonuses = theirLastSurvivorBonus + theirBulletDamageBonus + theirRamDamageBonus;
+        if (Double.isNaN(bonuses) || Double.isNaN(theirRamDamage)) return null;
+        return new double[] {theirSurvival, theirBulletDamage, theirRamDamage, bonuses};
+    }
 
     private static double share(double a, double b) {
         return a + b == 0 ? 0.5 : a / (a + b);

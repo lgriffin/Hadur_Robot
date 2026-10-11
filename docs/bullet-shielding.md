@@ -39,6 +39,12 @@ The shield depends on knowing our heading to within about 1e-5 rad. `hadur2.core
   half-width, on the golden-ratio sequence: always on a still target's body, never on the
   head-on line, with no mean offset to learn, and deterministic (RES-6, CORE-2). The offset
   holds until the shot goes out so the gun can settle on it.
+- D2 adds two ways in and one rule (SHIELD-3, SHIELD-4). One of our bullets destroyed by an
+  enemy that has not moved since the round began latches the detector at once, without the
+  four in twenty; the verdict is kept in the profile, so the next battle starts with it
+  (`EnemyStillness`, the profile's flags byte). While latched and the enemy has not moved in
+  the last 10 ticks, the gun fires power 3.0 (END-3 still caps it), since a shielder's bullet
+  scales with ours and a heavier shot makes its shield dearer.
 
 Bench, 5 seeds x 35 rounds (docs/bench/shield-counter-saguaro.md): score share
 **1.7% to 68.8%**, rounds won 0 to 142 of 175, our hit rate 0.5% to 19.4%. Saguaro still

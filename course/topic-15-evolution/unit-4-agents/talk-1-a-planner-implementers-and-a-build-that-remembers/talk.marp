@@ -1,0 +1,122 @@
+---
+marp: true
+theme: default
+paginate: true
+---
+
+<!-- footer: "Source: README.md (Built by agents) and docs/skipped-turns-plan.md" -->
+
+# A planner, implementers and a build that remembers
+
+How agents built Hadur 2
+
+Unit 4, talk 1
+
+---
+
+## The experiment
+
+- Hadur 1.x was evolved by feel. Hadur 2 was rebuilt from 2026-09-26 to 2026-10-01 by Claude sessions in one shared project.
+- **50** merged pull requests
+- About **24,000** lines of production Java and **12,000** of tests
+- From a 64th-place 3.0 to a 20th-place 3.4
+
+---
+
+## Who did what
+
+- **Leigh:** set the goals, decided what "good" means, chose when to enter the rumble, carried the live entries
+- **A planner** (Fable): read the evidence and wrote each plan
+- **Implementers** (Sonnet): built each plan stage by stage, one PR per stage
+- **A coordinator:** watched the project chat, started a thread per ask, kept the shared memory
+
+---
+
+## The planner also reviews
+
+The skipped-turns plan checked an implementer's diagnosis against the raw session logs and the engine source.
+
+- It confirmed the cause
+- It corrected **four** points before the code was written
+
+Different roles catch different mistakes.
+
+---
+
+## Requirements as the contract
+
+- Every behaviour is an **EARS** requirement: Ubiquitous, Event, State, Unwanted, Optional
+- More than a hundred, each with a stable ID that never changes meaning
+- A planner can name `MEM-12`. An implementer days later, in a fresh session, knows what done means.
+- A traceability test **fails `mvn verify`** if any ID has no test
+- Every Cucumber scenario is tagged with the IDs it proves, and Javadoc cites the IDs next to the code
+
+---
+
+## Guardrails that do not rely on remembering
+
+Agents start cold, so rules live in the build:
+
+- **ArchUnit** keeps the hexagon: no Robocode, randomness, threads, I/O or clock in the core
+- **"1v1 is sacred":** `DuelIdentityTest` pins a hash of every duel source file
+- **Replay fixtures** fail on any unintended change of play
+- **Doclint** fails on a broken Javadoc link
+
+---
+
+## The bench as ground truth
+
+Agents are fluent and confident. A bench is neither.
+
+- Every stage had a numeric gate with 95% intervals over seeds
+- A stage merged only when the bench showed it
+- The bench grew with the questions: cold and warm, paired A/B, client conditions, a 300-battle session
+- TIME-6 was built, measured as harmful, and removed
+
+---
+
+## Memory across sessions
+
+A session ends. The project does not.
+
+- **The repository:** plans, bench reports, release notes
+- **`data/`:** saved rumble pages byte for byte, parsed tables, and a learnings ledger with evidence and status
+- **Project memory:** a shared note store every session reads at start
+
+---
+
+## Review by agents, for agents
+
+On PR #61 the automated review caught:
+
+- a power margin so tight the rule could never fire live, while its tests passed
+- a kill-power cap that could cost a low-energy gun its shot
+- a rammer detector reading our own movement as theirs
+
+The implementing thread treated each finding as a bug report.
+
+---
+
+## What was hard
+
+- **Bench and rumble disagreed for three days.** The cause was a save that grew with the data directory. Widening the simulation was the fix.
+- **Sessions cannot reach everything.** No tag pushes, no rumble wiki, no real client. Leigh saved live pages and carried entries.
+- **Speed against evidence.** R5, R7 and R6 shipped together as 3.3, and their long gates moved to one end-of-plan pass.
+
+---
+
+## What it taught us
+
+- Split work by kind: plan, build, review
+- Give agents a stable ID to deliver, and a build that checks it
+- Put the important rules in the build, not the prompt
+- Write findings down with their evidence, so the next session starts from fact
+- Say where it did not work
+
+---
+
+## Sources
+
+- [README.md](https://github.com/lgriffin/Hadur_Robot/blob/a9ee021/README.md): Built by agents
+- [docs/skipped-turns-plan.md](https://github.com/lgriffin/Hadur_Robot/blob/a9ee021/docs/skipped-turns-plan.md)
+- [docs/requirements.md](https://github.com/lgriffin/Hadur_Robot/blob/a9ee021/docs/requirements.md) and [data/learnings.md](https://github.com/lgriffin/Hadur_Robot/blob/a9ee021/data/learnings.md)

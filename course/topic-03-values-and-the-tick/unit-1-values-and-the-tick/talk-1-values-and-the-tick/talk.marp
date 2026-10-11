@@ -1,0 +1,183 @@
+---
+marp: true
+theme: default
+paginate: true
+---
+
+# Values and the tick
+
+**Topic 03: Values and the tick**
+
+After this talk you can design a small immutable value class, explain why `equals` needs care with doubles, and say how a closed set of types works on Java 11.
+
+Java skills: `final` fields, factory methods and builders, `equals` and `hashCode`, defensive copies, `List.copyOf`, interfaces.
+
+---
+
+# What the brain sees, and what it says
+
+```mermaid
+flowchart LR
+    A["Adapter<br/>getters and handlers"] -- BotInput --> C["Core<br/>one tick"]
+    C -- BotOrders --> A
+```
+
+- **BotInput**: our state and the events of this tick. Plain data.
+- **BotOrders**: what to do this tick. Plain data.
+
+Nothing else crosses the boundary. A whole battle is a list of these pairs.
+
+---
+
+# An immutable value
+
+```java
+public final class BotInput {
+    private final long time;
+    private final int round;
+    private final double x;
+    private final double y;
+    // ...
+    private final List<BotEvent> events;
+```
+
+*Source: `hadur2.core.model.BotInput`.*
+
+`final` class: nobody extends it. `final` fields: set once, in the constructor. There are no setters. Once built, a `BotInput` cannot change, so it is safe to record, share and compare.
+
+---
+
+# Defensive copy
+
+The constructor receives a list that the adapter will reuse and clear next tick. If the input kept that same list, its events would vanish.
+
+```java
+// An unmodifiable copy, so the caller's queue can be reused without changing a
+// recorded input. List.copyOf also rejects null events.
+this.events = List.copyOf(events);
+```
+
+`List.copyOf` (Java 10) returns an unmodifiable list and throws on a null element. It is how an immutable class holds a mutable argument.
+
+*Source: `BotInput` constructor.*
+
+---
+
+# NaN means "leave it alone"
+
+Robocode setters are sticky: if you do not call `setAhead` this tick, the last order stands. The core needs a way to say "no new order" too.
+
+```java
+ * What the robot should do this tick. A field left as {@code NaN} means "leave the
+ * previous setting in place", as when an {@code AdvancedRobot} does not call the setter.
+ * A {@code firePower} of 0 means do not fire.
+```
+
+The adapter honours it:
+
+```java
+if (!Double.isNaN(o.ahead())) setAhead(o.ahead());
+```
+
+*Sources: `BotOrders` Javadoc, `Hadur.apply`.*
+
+---
+
+# Builder and a constant
+
+Six doubles in a constructor are easy to mix up, so the core builds orders by name:
+
+```java
+private double bodyTurn = Double.NaN;
+private double ahead = Double.NaN;
+private double maxVelocity = Double.NaN;
+// ...
+private double firePower;
+```
+
+```java
+/** Orders that change nothing and hold fire: every setting {@code NaN}, power 0. */
+public static final BotOrders NONE = new Builder().build();
+```
+
+Defaults are the safe ones: change nothing, do not fire. Later calls win, like Robocode setters.
+
+*Source: `BotOrders.Builder`.*
+
+---
+
+# A closed set without sealed types
+
+Events are a fixed list of ten: `Scan`, `HitByBullet`, `BulletHit`, `BulletHitBullet`, `BulletMissed`, `HitWall`, `HitRobot`, `RobotDeath`, `SkippedTurn`, `TickTime`.
+
+```java
+public interface BotEvent {
+    // ...
+    public static final class SkippedTurn implements BotEvent {
+```
+
+Java 11 has no `sealed` and no `record`, and the robot must run on Java 11 (REL-1). So each event is a `final` nested class, and the "closed" part is a rule. The class comment says: "these ten are all there are."
+
+---
+
+# Closed by convention, checked by failing loudly
+
+Code that handles every event type ends with a branch that refuses the unknown:
+
+```java
+        } else if (e instanceof BotEvent.TickTime) {
+            BotEvent.TickTime t = (BotEvent.TickTime) e;
+            return join("Q", t.usedNanos(), t.allowanceNanos());
+        }
+        throw new IllegalArgumentException("Unknown event " + e);
+```
+
+If someone adds an eleventh event and forgets this method, the first replay of it throws. A `sealed` interface would catch it at compile time. Where you cannot use one, a loud failure is the next best thing.
+
+*Source: `hadur2.core.replay.LineCodec.encode`.*
+
+---
+
+# equals and hashCode
+
+```java
+return Double.compare(bodyTurn, that.bodyTurn) == 0
+    && Double.compare(ahead, that.ahead) == 0
+    && Double.compare(maxVelocity, that.maxVelocity) == 0
+    // ...
+```
+
+With `==`, `NaN == NaN` is false, so two identical "leave it alone" orders would differ. `Double.compare` treats NaN as equal to itself.
+
+That is what lets the replay test say "recorded orders equal replayed orders". Override `hashCode` with the same fields, or hash-based collections break.
+
+*Source: `BotOrders.equals`.*
+
+---
+
+# Events in the engine's order
+
+The adapter turns each engine event into a value in a plain list, then builds the input once per tick:
+
+```java
+BotInput in = new BotInput(getTime(), getRoundNum(), getX(), getY(),
+    getHeadingRadians(), getVelocity(), getEnergy(), getGunHeat(),
+    // ...
+pending.clear();
+return in;
+```
+
+The list order is the engine's priority order, and the core walks it in that order. Because the input copied the list, `pending.clear()` is safe.
+
+*Source: `Hadur.input`.*
+
+---
+
+# Recap
+
+- Make the values final, with no setters, and copy mutable arguments.
+- One value in, one value out. Everything else is a detail.
+- NaN is a deliberate "no change", so compare doubles with `Double.compare`.
+- On Java 11, a closed hierarchy is final classes plus a check that fails loudly.
+
+Lab 03 builds Hadurling's own `Input`, `Event` and `Orders`.

@@ -1,0 +1,90 @@
+---
+marp: true
+theme: default
+paginate: true
+---
+
+<!-- footer: "Source: docs/bench/s0-baseline-1.20-cold.md and docs/strategy-evolution.md (S0)" -->
+
+# S0: measure before changing anything
+
+The headless bench and the 1.20 baseline
+
+Unit 1, talk 2
+
+---
+
+## The rule of S0
+
+- Change nothing about how Hadur plays
+- Build the ruler, then measure the robot you have
+- Everything later is compared with this number
+
+---
+
+## How the bench works
+
+- Runs the full Robocode 1.9.5.6 engine from Maven, headless
+- One JVM per battle, a fixed random seed, security manager on
+- A cold run: **35 rounds x 5 seeds** per opponent, learned data wiped
+- The same command gives the same result, while no turn is skipped
+
+---
+
+## Ground truth on every turn
+
+- The bench logs both robots' true position, energy and live bullets
+- Later stages can be scored against what really happened
+- Not what the robot thought happened
+
+---
+
+## The baseline table
+
+| Opponent | Score share | Rounds won |
+|---|---|---|
+| sample.SpinBot | 99.2% | 174 / 175 |
+| sample.Tracker | 99.5% | 175 / 175 |
+| sample.Crazy | 99.8% | 175 / 175 |
+| sample.Walls | 99.6% | 174 / 175 |
+| sample.RamFire | 97.2% | 174 / 175 |
+| **abc.Shadow 3.83c** | **40.8% ± 8.3** | **82 / 175** |
+
+*Mean ± 95% interval over 5 seeds*
+
+---
+
+## The key finding
+
+- Hadur wins **47%** of rounds against Shadow
+- Yet it takes only **40.8%** of the score
+- Shadow wins on damage (**36.5%** bullet-damage share for Hadur), even in rounds it loses
+
+So score share became the headline metric. Shadow is the reference opponent. The sample bots are sanity checks.
+
+---
+
+## A problem the bench found early
+
+- 1.20 skipped **44 turns** across 30 battles
+- **31** of them against Shadow, about one every six rounds
+- Some turns spiked to 43 ms
+
+A skipped turn changes the robot's behaviour, so repeat runs with skips drift slightly. This became S6's tick-budget work.
+
+---
+
+## What it taught us
+
+- Pick the metric that matches the goal before you tune anything
+- A fixed seed turns a battle into an experiment you can repeat
+- The bench finds problems nobody asked about (skipped turns)
+- Honest intervals matter: 40.8% ± 8.3 is a wide band, so small changes will not show
+
+---
+
+## Sources
+
+- [docs/bench/s0-baseline-1.20-cold.md](https://github.com/lgriffin/Hadur_Robot/blob/a9ee021/docs/bench/s0-baseline-1.20-cold.md)
+- [docs/strategy-evolution.md](https://github.com/lgriffin/Hadur_Robot/blob/a9ee021/docs/strategy-evolution.md): S0
+- [hadur-bench/README.md](https://github.com/lgriffin/Hadur_Robot/blob/a9ee021/hadur-bench/README.md)

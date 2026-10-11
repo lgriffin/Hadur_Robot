@@ -1,0 +1,50 @@
+SLF4J(W): No SLF4J providers were found.
+SLF4J(W): Defaulting to no-operation (NOP) logger implementation
+SLF4J(W): See https://www.slf4j.org/codes.html#noProviders for further details.
+176 of 176 requirements due by S7, M6, R9, A5, D7 and T1 are covered; see D:\code\H117-int\hadur-core\target\requirements-coverage.md
+
+147 Scenarios (147 passed)
+658 Steps (658 passed)
+0m6.392s
+
+
+Oct 06, 2026 8:50:23 P.M. net.jqwik.engine.properties.RandomizedShrinkablesGenerator logEdgeCasesOutnumberTriesIfApplicable
+INFO: Edge case generation exceeds number of tries. Stopped after 150 generated cases.
+Oct 06, 2026 8:50:23 P.M. net.jqwik.engine.properties.RandomizedShrinkablesGenerator logEdgeCasesOutnumberTriesIfApplicable
+INFO: Edge case generation exceeds number of tries. Stopped after 1000 generated cases.
+Oct 06, 2026 8:50:24 P.M. net.jqwik.engine.properties.RandomizedShrinkablesGenerator logEdgeCasesOutnumberTriesIfApplicable
+INFO: Edge case generation exceeds number of tries. Stopped after 300 generated cases.
+Oct 06, 2026 8:50:24 P.M. net.jqwik.engine.properties.RandomizedShrinkablesGenerator logEdgeCasesOutnumberTriesIfApplicable
+INFO: Edge case generation exceeds number of tries. Stopped after 300 generated cases.
+Oct 06, 2026 8:50:24 P.M. net.jqwik.engine.properties.RandomizedShrinkablesGenerator logEdgeCasesOutnumberTriesIfApplicable
+INFO: Edge case generation exceeds number of tries. Stopped after 400 generated cases.
+Oct 06, 2026 8:50:24 P.M. net.jqwik.engine.properties.RandomizedShrinkablesGenerator logEdgeCasesOutnumberTriesIfApplicable
+INFO: Edge case generation exceeds number of tries. Stopped after 112 generated cases.
+Oct 06, 2026 8:50:24 P.M. net.jqwik.engine.properties.RandomizedShrinkablesGenerator logEdgeCasesOutnumberTriesIfApplicable
+INFO: Edge case generation exceeds number of tries. Stopped after 225 generated cases.
+Oct 06, 2026 8:50:25 P.M. net.jqwik.engine.properties.RandomizedShrinkablesGenerator logEdgeCasesOutnumberTriesIfApplicable
+INFO: Edge case generation exceeds number of tries. Stopped after 336 generated cases.
+Oct 06, 2026 8:50:38 P.M. net.jqwik.engine.properties.RandomizedShrinkablesGenerator logEdgeCasesOutnumberTriesIfApplicable
+INFO: Edge case generation exceeds number of tries. Stopped after 1000 generated cases.
+Oct 06, 2026 8:50:38 P.M. net.jqwik.engine.properties.RandomizedShrinkablesGenerator logEdgeCasesOutnumberTriesIfApplicable
+INFO: Edge case generation exceeds number of tries. Stopped after 1458 generated cases.
+Oct 06, 2026 8:50:38 P.M. net.jqwik.engine.properties.RandomizedShrinkablesGenerator logEdgeCasesOutnumberTriesIfApplicable
+INFO: Edge case generation exceeds number of tries. Stopped after 1000 generated cases.
+Oct 06, 2026 8:50:38 P.M. net.jqwik.engine.properties.RandomizedShrinkablesGenerator logEdgeCasesOutnumberTriesIfApplicable
+INFO: Edge case generation exceeds number of tries. Stopped after 392 generated cases.
+Oct 06, 2026 8:50:40 P.M. net.jqwik.engine.properties.RandomizedShrinkablesGenerator logEdgeCasesOutnumberTriesIfApplicable
+INFO: Edge case generation exceeds number of tries. Stopped after 294 generated cases.
+Oct 06, 2026 8:50:41 P.M. net.jqwik.engine.properties.RandomizedShrinkablesGenerator logEdgeCasesOutnumberTriesIfApplicable
+INFO: Edge case generation exceeds number of tries. Stopped after 343 generated cases.
+Oct 06, 2026 8:50:41 P.M. net.jqwik.engine.properties.RandomizedShrinkablesGenerator logEdgeCasesOutnumberTriesIfApplicable
+INFO: Edge case generation exceeds number of tries. Stopped after 686 generated cases.
+Oct 06, 2026 8:50:41 P.M. net.jqwik.engine.properties.RandomizedShrinkablesGenerator logEdgeCasesOutnumberTriesIfApplicable
+INFO: Edge case generation exceeds number of tries. Stopped after 2000 generated cases.
+Oct 06, 2026 8:50:41 P.M. net.jqwik.engine.properties.RandomizedShrinkablesGenerator logEdgeCasesOutnumberTriesIfApplicable
+INFO: Edge case generation exceeds number of tries. Stopped after 2000 generated cases.
+Oct 06, 2026 8:50:41 P.M. net.jqwik.engine.properties.RandomizedShrinkablesGenerator logEdgeCasesOutnumberTriesIfApplicable
+INFO: Edge case generation exceeds number of tries. Stopped after 2000 generated cases.
+Oct 06, 2026 8:50:41 P.M. net.jqwik.engine.properties.RandomizedShrinkablesGenerator logEdgeCasesOutnumberTriesIfApplicable
+INFO: Edge case generation exceeds number of tries. Stopped after 1050 generated cases.
+Oct 06, 2026 8:50:41 P.M. net.jqwik.engine.properties.RandomizedShrinkablesGenerator logEdgeCasesOutnumberTriesIfApplicable
+INFO: Edge case generation exceeds number of tries. Stopped after 2000 generated cases.

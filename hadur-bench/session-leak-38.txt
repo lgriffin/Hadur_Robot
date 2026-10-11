@@ -1,0 +1,14 @@
+# Issue #151, A1: the leak-38 set (32 bots, ranks 21 and below) as a rumble client fights it:
+# one engine process under the client's 512 MB cap, the data directory kept throughout, the list
+# fought 8 times over (256 battles) in one shuffled order that 3.8.5, the control, shares.
+# Live, 3.9 beat 3.8.5 on these bots by +2.14 +/- 1.04; the cold bench read -0.02. The report's
+# per-opponent table (BENCH-77) gives the session's own 3.9 minus 3.8.5 to set beside both.
+opponents=leak-38.txt
+heap=512M
+rounds=35
+fresh=false
+wipe=false
+repeat=8
+shuffle=151
+control=hadur2.Hadur 3.8.5
+control-jar=bisect/hadur2.Hadur_3.8.5.jar

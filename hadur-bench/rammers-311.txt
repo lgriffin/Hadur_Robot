@@ -1,0 +1,17 @@
+# The 15 rammers among 3.10's BENCHSEES bots after peergap-310 (docs/bench/local/2026-10-08_peergap-310-findings.md).
+#   <robot name as Robocode lists it> | <role> | <jar file in opponents/>
+sheldor.nano.Sabreur 1.1.2 | rammer | sheldor.nano.Sabreur_1.1.2.jar
+slugzilla.ButtHead 2.0 | rammer | slugzilla.ButtHead_2.0.jar
+oog.nano.Caligula 1.15 | rammer | oog.nano.Caligula_1.15.jar
+sheldor.nano.SabreuseNano 1.1 | rammer | sheldor.nano.SabreuseNano_1.1.jar
+jk.nano.Machete 2.0 | rammer | jk.nano.Machete_2.0.jar
+gh.micro.GrubbmThree 1.01 | rammer | gh.micro.GrubbmThree_1.01.jar
+sul.Bicephal 1.2 | rammer | sul.Bicephal_1.2.jar
+kc.micro.rammer.MaxRisk 0.6 | rammer | kc.micro.rammer.MaxRisk_0.6.jar
+jab.micro.Sanguijuela 0.8 | rammer | jab.micro.Sanguijuela_0.8.jar
+supersample.SuperRamFire 1.0 | rammer | supersample.SuperRamFire_1.0.jar
+suzushin7.nano.Galaxy03 1.01 | rammer | suzushin7.nano.Galaxy03_1.01.jar
+suh.nano.RammingC 1.00 | rammer | suh.nano.RammingC_1.00.jar
+maribo.FollowFire 1.11 | rammer | maribo.FollowFire_1.11.jar
+step.nanoPri 1.0 | rammer | step.nanoPri_1.0.jar
+EH.Fusion 0.32 | rammer | EH.Fusion_0.32.jar

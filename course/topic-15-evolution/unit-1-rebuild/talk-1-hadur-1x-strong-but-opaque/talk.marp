@@ -1,0 +1,110 @@
+---
+marp: true
+theme: default
+paginate: true
+---
+
+<!-- footer: "Source: docs/strategy-evolution.md (Starting point) and docs/bench/s0-baseline-1.20-cold.md" -->
+
+# Hadur 1.x: strong but opaque
+
+Where the rebuild started
+
+How Hadur evolved, unit 1, talk 1
+
+---
+
+## What Hadur 1.x was
+
+- A Robocode robot that fought duels and melee in one class
+- Grew release by release, from 1.x to 1.20
+- Each release added a technique and tuned it by intuition
+
+---
+
+## What it did well: movement
+
+- **Wave surfing**: it read an enemy shot from any energy drop of 0.1 to 3.0
+- Then it dodged a multi-model danger ensemble
+- A real duelist's movement, not a toy
+
+---
+
+## What it did well: guns and power
+
+- KNN guess-factor guns on a 13-dimension feature space
+- An anti-surfer gun array
+- A distance-aware gun selector
+- Energy-ratio fire power and bullet shadows (1.18 to 1.20)
+
+---
+
+## The proof that it was strong
+
+- Against the five sample bots, 1.20 won **872 of 875** rounds
+- Against Shadow 3.83c, the reference duelist, it won **82 of 175** rounds (47%)
+- So it looked fine. The next slides show why that was not enough.
+
+*Source: s0-baseline-1.20-cold.md*
+
+---
+
+## Weakness 1: nothing measured it
+
+- Changes were judged by watching battles
+- Nobody could tell a gain from noise
+- A robot you cannot measure is a robot you cannot improve on purpose
+
+---
+
+## Weakness 2: strategy and engine were fused
+
+- Tactics lived inside the Robocode robot class
+- No unit tests, no replay, no way to run the brain without the engine
+- To test an idea you had to start a whole battle
+
+---
+
+## Weakness 3: a noisy picture of the enemy
+
+- Our own bullet hits, wall hits and collisions all looked like enemy shots
+- So Hadur surfed waves that never existed
+- It also missed shots hidden by the enemy's hit refund
+
+---
+
+## The headline problem
+
+Against Shadow, 1.20 won about half its rounds but only **40.8%** of the score.
+
+- Shadow out-damaged it: **36.5%** bullet-damage share
+- Even in rounds Shadow lost, it dealt more damage
+
+Rounds won was the wrong number to watch.
+
+*Source: s0-baseline-1.20-cold.md*
+
+---
+
+## The decision: Hadur 2
+
+- Rebuild as a 1v1 duelist that is measured at every step
+- A staged plan, S0 to S7, each stage with a bench gate and EARS requirements
+- A stage merges only when its gate is met
+- Melee was parked on 2026-09-26 (it came back in 2.1)
+
+---
+
+## What it taught us
+
+- A strong robot can still be opaque. Strength is not understanding.
+- Measure first, with a number that matches the goal (score share, not rounds won)
+- Separate the brain from the engine, or you cannot test the brain
+- Know what the enemy really did before you react to it
+
+---
+
+## Sources
+
+- [docs/strategy-evolution.md](https://github.com/lgriffin/Hadur_Robot/blob/a9ee021/docs/strategy-evolution.md): Starting point
+- [docs/bench/s0-baseline-1.20-cold.md](https://github.com/lgriffin/Hadur_Robot/blob/a9ee021/docs/bench/s0-baseline-1.20-cold.md)

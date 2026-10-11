@@ -273,3 +273,59 @@ in L-28, a round in duress, a round-start cost). Unconfirmed until the R10 panel
 leak into bench-reproduced and live-only rounds. Evidence: the 3.4 page,
 `docs/rumble-climb-top15-plan.md` section 3, `docs/bench/rumble-3.2-weak-pbi.md`.
 Owner: R10.
+
+**L-38 · confirmed (live, pass 92% complete).** The ram approach (R9, 3.5.1: RAM-2 runs from a
+confirmed rammer, MIR-1 plans a path and aim against a mirror mover) gained more live than the
+weak-set bench predicted. The rankings page saved 2026-10-05 05:51 UTC has 3.5.1 16th of
+1,216 at 86.65 ± 0.23 APS after 1,119 of 1,215 pairings, against 3.4's complete 85.90 (20th):
++0.75 APS, where the 11-bot bench forecast +0.1 and +0.5 at best. Survival 93.92% → 94.36%,
+PWIN 99.26 → 99.02. Leigh reports the MeleeRumble at 18th, up from 28th; R9 is a duel
+change (one enemy), so that move is recorded but not attributed to it. The 21st read on
+2026-10-03 (259 pairings) was noise, as the top-15 plan (PR #83) found. Lesson: a weak-tier
+fix generalises past the benched bots when the behaviour it targets (charging, mirroring) is common among the bots below us. Evidence:
+`data/rumble/pages/2026-10-05T0551Z_roborumble_rankings.mht`. Owner: R9.
+
+**L-39 · confirmed (bench, 10 battles each).** Against DrussGT 3.1.16 the gap is bullet power, not aim. Both guns hit below break-even (Hadur 7.47%, DrussGT 9.69%) and Hadur's shooting costs 39.6 energy lead a round against 27.8. A lead-aware power rule (0.1 while level or ahead) took the score share from 37.53% ± 3.49 to 50.69% ± 3.39, paired +13.16 ± 4.18, outright wins 86 to 188 of 350. Evidence: `docs/bench/d0-drussgt-probes.md`. Owner: POW.
+
+**L-40 · confirmed (bench).** Rounds are decided by the early energy lead: released 3.5.1 won 75.6% of rounds ahead at tick 1000 and 9.0% of rounds not ahead. Lead-aware shifted that to 86.1% and 5.7%. Evidence: same report.
+
+**L-41 · open (5 and 3 battles).** Random gun (34.17%), all chaff (29.94%) and hold fire (24.55%) all score below the released build or the lead-aware rule; none is a fallback. Sampled aim added +0.74 ± 3.96 over lead-aware: not confirmed.
+
+**L-42 · decision (2026-10-05).** APS is the objective and a shield list is agreed (D5). Hadur 3.4 averaged 82.27% over the 357 pairings on DrussGT's shield list: +1.68 APS at 88%, +2.27 at 90%, +2.86 at 92%. The list is built from the bench, not DrussGT's names alone. Evidence: `docs/druss-route-plan.md`, `data/rumble/parsed/2026-10-05_drussgt-3.1.16_shield-targets_vs_hadur-3.4.tsv`. Owner: SHIELD. IDs L-39 to L-42 may be renumbered if PR #83 merges first.
+
+**L-43 · open (live, pass 99% complete).** 3.7 reads 85.67 ± 0.18 APS in the 1v1 (21st), 0.98
+below 3.5.1's partial 86.65 and 0.43 below the range the A-stage benches predicted, with every
+3.5.1 fixture replaying unchanged. Survival 94.36% → 93.06%. Melee is level (65.25 against
+65.31) and the first TeamRumble pass reads 39.43 (32nd of 46), above the bench's 28% forecast.
+Not yet attributed: the live slide seen on 3.1 or a cost below the benches' 0.5-point
+resolution. Evidence: `docs/bench/live-3.7.md`. Owner: ladder plan.
+
+**L-44 · open (live, pass 99% complete).** 3.8 reads 84.58 ± 0.20 APS in the 1v1 (29th). Matched
+pairing by pairing with 3.4's full pass, it is +5.2 against the top 10 and -1.55 ± 0.15 against
+the 1,171 opponents outside the top 20 and off the shield list (794 down, 370 up), through
+survival (-2.3). The loss is spread evenly over time. The D5 shield list gains +0.14 APS live. A
+12-bot weak set cannot resolve a leak of this size. Not yet attributed among D1 to D4. Evidence:
+`docs/bench/live-3.8.md`. Owner: ladder plan.
+
+**L-45 · confirmed (live, two full passes).** A live pass carries an offset its ± does not show.
+3.10 runs 3.9's code against the 1,118 opponents off its shield list, yet its pass scored
+-1.35 ± 0.34 a pairing (-1.25 APS) under 3.9's on them, through a tail of collapsed single
+battles (26 in 768 against 0 in 684). The other full passes collapse at 1.7 to 2.6%, so 3.9's
+13th was a clean pass. A loaded host on the PC reproduces the signature (-2.6 points, collapses
+1 to 12 in 248). On leak-38 the "+2.14 live against -0.02 bench" of issue #151 becomes +0.74 ±
+1.72 when 3.10's pass stands in for 3.9's. Read a release with `live_passes.py drift`, not its
+rank. Evidence: `docs/bench/live-3.10.md`. Owner: ladder plan.
+
+**L-46 · confirmed (bench, reproduced in a child JVM).** The PC bench crippled 11 opponents in
+every run since 2026-10-06 (989 battles): their first need of the JDK's time-zone rules made a
+`META-INF/services` read on the bench's `target/classes` directory, which Robocode's security
+manager refuses and punishes by draining the robot's energy. PC bench 89-99 against live 68-81
+(Frankie 98.9 against 71; 80.2 on Linux here). Fixed by BENCH-83 (providers loaded before the
+engine starts) and BENCH-84 (such battles untrusted). With them removed the bench matches a
+clean live pass at r = 0.94, live minus bench -0.52 ± 0.43 over 335 bots. Evidence: same report.
+
+**L-47 · open (live, five passes and three peers).** Matched against the median of Tomcat, Knight
+and Raven, Hadur's room is +0.76 APS, all of it below rank 400 (+1.19); from 51 to 150 the
+shield list already puts it 0.37 ahead. 144 bots sit 5+ under the peers in Hadur's typical
+(median) score; on 35 of them the bench shows the same gap, 12 of those rammers Hadur beats on
+rounds and leaks score to. Evidence: `docs/bench/opponents-3.10.tsv`. Owner: 3.11.

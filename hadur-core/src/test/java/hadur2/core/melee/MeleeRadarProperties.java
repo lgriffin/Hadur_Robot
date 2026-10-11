@@ -1,5 +1,6 @@
 package hadur2.core.melee;
 
+import hadur2.core.world.EnemyTracker;
 import static hadur2.core.melee.Fixtures.pt;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 

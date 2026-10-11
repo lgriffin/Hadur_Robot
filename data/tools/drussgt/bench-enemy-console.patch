@@ -1,0 +1,40 @@
+diff --git a/hadur-bench/src/main/java/hadur/bench/LogHarvester.java b/hadur-bench/src/main/java/hadur/bench/LogHarvester.java
+index 60dacc6..315bc05 100644
+--- a/hadur-bench/src/main/java/hadur/bench/LogHarvester.java
++++ b/hadur-bench/src/main/java/hadur/bench/LogHarvester.java
+@@ -40,6 +40,7 @@ public class LogHarvester extends BattleAdaptor {
+     private final String us;
+     private final BufferedWriter hadurLog;
+     private final BufferedWriter truthLog;
++    private final BufferedWriter enemyLog;
+     private int round;
+     private long lastTurnNanos;
+     private long[] turnNanos = new long[4096];
+@@ -79,6 +80,7 @@ public class LogHarvester extends BattleAdaptor {
+         this.truthLog = new BufferedWriter(new OutputStreamWriter(new GZIPOutputStream(
+             Files.newOutputStream(dir.resolve("truth.log.gz"))), StandardCharsets.UTF_8));
+         truthLog.write("V,1\n");
++        this.enemyLog = Files.newBufferedWriter(dir.resolve("enemy.log"), StandardCharsets.UTF_8);
+     }
+ 
+     @Override
+@@ -104,6 +106,10 @@ public class LogHarvester extends BattleAdaptor {
+         }
+         try {
+             if (me != null) harvestConsole(me, turn);
++            if (enemy != null) {
++                String eo = enemy.getOutputStreamSnapshot();
++                if (eo != null && !eo.isEmpty()) for (String l : eo.split("\\R")) if (!l.isEmpty()) enemyLog.write(round + "," + turn + "," + l + "\n");
++            }
+             if (me != null && enemy != null) writeTruth(snap, me, enemy, turn);
+         } catch (IOException ex) {
+             throw new UncheckedIOException(ex);
+@@ -462,6 +468,8 @@ public class LogHarvester extends BattleAdaptor {
+     }
+ 
+     public void close() throws IOException {
++        try { enemyLog.close(); } catch (IOException ignored) { }
++
+         hadurLog.close();
+         truthLog.close();
+     }

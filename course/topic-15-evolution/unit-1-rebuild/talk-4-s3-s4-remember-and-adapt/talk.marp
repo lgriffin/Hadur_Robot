@@ -1,0 +1,105 @@
+---
+marp: true
+theme: default
+paginate: true
+---
+
+<!-- footer: "Sources: docs/bench/s3-2.1-cold.md, s3-2.1-warm.md, s4-2.1-cold.md, s4-2.1-warm.md, docs/strategy-evolution.md" -->
+
+# S3-S4: remember and adapt
+
+A profile per opponent, then a robot that reads it
+
+Unit 1, talk 4
+
+---
+
+## S3: remember each opponent
+
+- One small profile per opponent, in Robocode's data directory
+- Loaded on the first scan of every battle
+- Records how the opponent shoots, how it moves, how our guns did
+- By design, **nothing reads it yet**. S3 only had to store and reload safely.
+
+---
+
+## S3: how it stays safe
+
+- **One profile per lineage (MEM-1):** `abc.Shadow 3.84 (2)` shares `abc.Shadow`
+- **CRC-32 and crash-safety (MEM-4, RES-3):** a bad file becomes "a stranger"; tests kill a save at every byte
+- **Within quota (MEM-5):** 200 KB; a profile was about 300 bytes then
+- **Duels only:** a melee battle never touches the store
+
+---
+
+## S3: two costs the bench found
+
+1. **First scan too slow.** Loading took 7 to 10 ms, mostly Java setting up string joins. Fix: compile string joins the old way and do the file work before the first tick. Now about 0.3 ms.
+2. **Writing from a dead robot.** The enemy kept shooting it, and its last bullets refunded energy (1.5% of Shadow's shots missed instead of 0.4%). Fix: checkpoint only when Hadur survives the round.
+
+---
+
+## S3 result
+
+- Shadow **45.1% ± 8.9** cold, **47.1% ± 9.8** over five warm battles
+- Every sample-bot round won
+- 24 of 24 warm starts reloaded their profile, 0 memory failures
+- Skipped turns: 15 (against 18 before)
+
+---
+
+## S4: the first stage where memory changes play
+
+- Every rate in the profile is an estimate with a 95% margin (DIAL-1)
+- A tier is named only when the margin is at most 3 points, else "unknown"
+- An **opening book** turns the profile into choices: opening gun, surf prior, flattener
+- A stranger is played exactly as before, so replays still match bit for bit
+
+---
+
+## S4: seeds, and live evidence wins
+
+- A profile keeps up to **600** gun and **300** surf samples (about 20 KB)
+- Replayed at **half weight**, so the first waves already have neighbours
+- If live data disagrees beyond the margins, the seed loses 1/20 of its weight per wave (RES-4)
+- Once, Shadow's live hit rate climbed to 12.5% against a stored 9.5%, and the seed faded as designed
+
+---
+
+## S4: a quota bug only the bench saw
+
+- Robocode charges quota for every byte written and refunds nothing on delete
+- The crash-safe save (write a copy, delete later) leaked quota
+- With 20 KB seeds, **38 saves failed** within a few battles
+- Fix: empty a file before deleting it, which Robocode does refund. A test now simulates the quota rules.
+
+---
+
+## S4 result: no measurable gain yet
+
+| Shadow | S3 | S4 |
+|---|---|---|
+| Cold | 45.1% | 44.3% ± 5.5 |
+| Warm | 47.1% | 45.0% ± 10.3 |
+
+Against Saguaro, the bullet shielder: **73.4% ± 7.0** warm. Sample bots all won. 0 memory failures.
+
+Memory works, and it has not yet paid off against Shadow.
+
+---
+
+## What it taught us
+
+- Build the plumbing first, read it second. S3 changed nothing on purpose.
+- Every stored number needs a margin of error, and a rule for when to ignore it
+- Live evidence must be able to overrule memory
+- Say plainly when a feature has not shown a gain (this stayed open as L-13)
+
+---
+
+## Sources
+
+- [docs/bench/s3-2.1-cold.md](https://github.com/lgriffin/Hadur_Robot/blob/a9ee021/docs/bench/s3-2.1-cold.md) and [warm](https://github.com/lgriffin/Hadur_Robot/blob/a9ee021/docs/bench/s3-2.1-warm.md)
+- [docs/bench/s4-2.1-cold.md](https://github.com/lgriffin/Hadur_Robot/blob/a9ee021/docs/bench/s4-2.1-cold.md) and [warm](https://github.com/lgriffin/Hadur_Robot/blob/a9ee021/docs/bench/s4-2.1-warm.md)
+- [docs/strategy-evolution.md](https://github.com/lgriffin/Hadur_Robot/blob/a9ee021/docs/strategy-evolution.md): S3, S4
+- [data/learnings.md](https://github.com/lgriffin/Hadur_Robot/blob/a9ee021/data/learnings.md): L-13

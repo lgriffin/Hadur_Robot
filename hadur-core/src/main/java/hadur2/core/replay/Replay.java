@@ -2,10 +2,12 @@ package hadur2.core.replay;
 
 import hadur2.core.Guard;
 import hadur2.core.HadurCore;
+import hadur2.core.model.BattleFacts;
 import hadur2.core.model.BotInput;
 import hadur2.core.model.BotOrders;
 import hadur2.core.port.ProfileStore;
 import hadur2.core.port.Telemetry;
+import hadur2.core.role.Charter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +15,8 @@ import java.util.List;
  * Runs a recorded battle back through a fresh core and guard, the same way the robot
  * drives them, and returns the orders for every tick (CORE-2).
  *
- * <p>A recording is a list of lines: {@code F,width,height,enemies} once, {@code N,round}
+ * <p>A recording is a list of lines: {@code F,width,height,enemies} once (a team member's
+ * carries more, see {@link #facts}), {@code N,round}
  * at each round start, then an {@code I} line per tick, each followed by the {@code O}
  * line the live robot issued. Other lines are ignored.</p>
  *
@@ -29,6 +32,25 @@ import java.util.List;
  * {@code prepareMemory}, {@code saveProfile} and end-of-round calls are not replayed.</p>
  */
 public final class Replay {
+
+    /**
+     * The battle's facts from an {@code F} line: {@code F,width,height,others}, and for a
+     * team member (A5, STRAND-5) {@code ,name,startingEnergy,sentryBorder,mate;mate;...}.
+     *
+     * @throws IllegalArgumentException if the line does not parse
+     */
+    public static BattleFacts facts(String line) {
+        String[] f = line.split(",", -1);
+        try {
+            double w = Double.parseDouble(f[1]), h = Double.parseDouble(f[2]);
+            int others = Integer.parseInt(f[3]);
+            if (f.length < 8) return BattleFacts.solo(w, h, others);
+            return new BattleFacts(w, h, others, f[7].isEmpty() ? List.of() : List.of(f[7].split(";")), f[4],
+                Double.parseDouble(f[5]), Double.parseDouble(f[6]));
+        } catch (RuntimeException e) {
+            throw new IllegalArgumentException("bad F line: " + line, e);
+        }
+    }
 
     /** One replayed tick: what the live robot issued and what the replay produced. */
     public static final class Tick {
@@ -127,11 +149,10 @@ public final class Replay {
         for (int i = 0; i < lines.size(); i++) {
             String line = lines.get(i);
             if (line.startsWith("F,")) {
-                String[] f = line.split(",");
-                core = new HadurCore(Double.parseDouble(f[1]), Double.parseDouble(f[2]),
-                    Integer.parseInt(f[3]), telemetry, store);
+                core = new HadurCore(facts(line), telemetry, store);
                 HadurCore c = core;
-                guard = new Guard(c::tick, c::recover, telemetry);
+                // WEAVE-5: on a team the guard's safe orders hold fire, as the robot's do.
+                guard = new Guard(c::tick, c::recover, telemetry, c.charter() == Charter.TEAM);
             } else if (line.startsWith("N,")) {
                 requireStarted(core, i);
                 core.newRound(Integer.parseInt(line.substring(2)));

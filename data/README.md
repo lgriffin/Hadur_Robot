@@ -16,15 +16,26 @@ data/
   rumble/
     pages/    saved web pages, byte for byte as the browser wrote them (.mht)
     parsed/   one table per saved page, parsed from it
+  live/
+    <date>_<label>/  one live_client.py watch (TSVs, report.md, watch.log; raw pages stay on the PC)
   bench/
     <date>_hadur-<version>_<set>_<cold|warm>.tsv   raw per-opponent rows of one bench run
     duel-history.tsv    every duel table of every docs/bench report, one row per opponent
                         (a failed matchup keeps its row, with the status in `note`)
     melee-history.tsv   Hadur's summary row from every melee table
     melee-field.tsv     every melee standings table, one row per entrant
+    history.tsv         one headline row per committed per-battle run (written by tools/trend.py)
   tools/
     harvest_bench.py    rebuilds the three *-history/field files from docs/bench/*.md
+    trend.py            appends each committed run's headline to bench/history.tsv, draws docs/bench/trend.svg
+    calibrate.py        regresses bench share per opponent on the live per-opponent figure
+    bench_tables.py     shared readers for the per-battle tables (used by the two above)
+    drussgt/            DrussGT bench analysis, energy model and shield-list tools (see its README)
     parse_rumble_page.py  parses a saved BotDetails or Rankings page into rumble/parsed/
+    analyse.py          pooled paired difference, Holm/BH, TOST non-inferiority and a seeds planner for a bench TSV
+    repeatability.py    per-battle SD, ICC and pairing check from repeated runs of the same jar and seeds
+    compare_conditions.py  says whether two runs (work dirs or conditions.json) were made under comparable conditions
+    live_client.py      watches a live RoboRumble client and the live page: battles, health records, stored shield verdicts
 ```
 
 The bench reports themselves stay in [`docs/bench/`](../docs/bench/) as the readable record;
@@ -42,6 +53,12 @@ Sites: `roborumble` is the LiteRumble server (rumble.robowiki.net: `BotDetails`,
 `Rankings`), `robowiki` the wiki (`RoboRumble/Participants`, `Country_Flags`).
 
 ## Adding data
+
+Every `catalog.tsv` row may also carry six condition columns, `rounds`, `engine`, `child_heap` (MB, or
+`uncapped`), `cpu_constant`, `parallel` and `child_cpus`. Blank means not recorded, never assumed. The three
+`export_*.py` tools print the values to paste from the run's `conditions.json`, `harvest_bench.py` reads
+them from each report's conditions sentence, and `trend.py` marks any run that differs from the chart's
+usual conditions as an open circle with a footnote.
 
 1. **A saved page** (Leigh saves it in the browser as "Webpage, single file" and uploads it to
    the project): copy it into `rumble/pages/` under the naming rule, parse it into
@@ -67,10 +84,43 @@ up; `python3 data/tools/harvest_bench.py --check` says whether the history files
 python3 -m unittest discover -s data/tools
 ```
 
+`tools/analyse.py` and `tools/repeatability.py` (standard library only, tests beside them) read the
+bench TSVs. `analyse.py FILE.tsv` pools the paired candidate-minus-baseline difference over all
+opponents (per battle and opponent-clustered 95% t intervals, `--weights [COL]` for an opponent
+weight column), gives Holm and Benjamini-Hochberg adjusted p-values across opponents and a TOST
+non-inferiority verdict (`--margin`, default 1.0 point), and `--plan --halfwidth H` prints the seeds
+per opponent needed for a target half-width from the unpaired SD. `repeatability.py A.tsv B.tsv`
+takes two or more runs of the same jar and seeds and reports per-battle SD, identical pairs, ICC and
+the per-opponent candidate/baseline correlation that shows whether seed pairing cancels noise
+(measured: it does not, see `docs/bench/charter.md`).
+
 They are not wired into CI on purpose, so that a new bench report can never turn a stage PR
 red. Code the build depends on belongs in `hadur-bench` with its own tests, and copies any
 fixture it needs from here into `src/test/resources/`. The planned BENCH-5 live-details
 reader (`hadur.bench.LiveDetails`, R4) is the first such case.
+
+## Trend, calibration and the second tier
+
+All three are records for a person to read. None gates anything, and nothing in CI runs them.
+
+- **`tools/trend.py`** reads the per-battle tables that `catalog.tsv` lists as `bench table` or
+  `bench run` and writes one row each to `bench/history.tsv`: date, label, candidate and baseline
+  (the baseline is the lowest version in the table), engine (from the catalog subject, else
+  1.9.5.6), seeds, pooled paired score-share difference in points with its 95% interval, mean
+  skipped turns per battle for each build, failed battles, rows. Opponents are weighted equally;
+  each opponent's variance comes from its own paired differences. Melee tables use Hadur's share of the points in
+  a battle, paired by field and seed. Re-running replaces a run's row and never duplicates it;
+  `--check` says whether `history.tsv` and `docs/bench/trend.svg` are stale. Probe tables are
+  skipped. The tables carry no duress column, so skipped turns are the only trust signal.
+- **`tools/calibrate.py`** joins the bench score share per opponent to Hadur's APS against that
+  opponent on a saved BotDetails page of the same version, and reports the bench-to-rumble
+  offset, the fitted slope and the residual SD beside the SD that sampling noise alone would
+  give. `live-3.7.md` and `live-3.8.md` hold ladder-level figures only, so the join uses the
+  BotDetails CSVs they cite; a build with no saved page (3.7) gets no calibration, and a join
+  under eight opponents is reported as too thin. `--list` shows every opponent.
+- **`hadur-bench/tier2.txt`** is a second-tier 1v1 set: every fifth robot ranked 21 to 100 on
+  2026-10-06 (ranks 21, 26, ... 96, 16 robots). The header gives the rule and the jar naming
+  rule. Run it with `--set tier2.txt`; the jars are fetched like any other set's.
 
 ## Parsed page formats
 

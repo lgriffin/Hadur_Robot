@@ -1,0 +1,189 @@
+---
+marp: true
+theme: default
+paginate: true
+---
+
+# One robot, two brains
+
+Topic 14
+
+After this talk you can:
+
+- explain how a gate chooses between two sets of subsystems
+- say what "fail closed" means and where Hadur does it
+- describe minimum-risk movement and a field gun in a sentence each
+
+---
+
+## Two games, one robot
+
+A duel (one opponent) and a free-for-all (up to nine) need different play.
+
+Duel: lock the radar, surf one enemy's waves, learn its profile.
+
+Melee: sweep the radar, keep away from crowds, shoot whoever is cheapest to kill.
+
+Hadur is a duelist first. The duel was measured, tuned and ranked 20th of 1,216. Melee must not be allowed to damage it.
+
+---
+
+## "1v1 is sacred"
+
+The melee work added packages and routed around the duel. It never edited it.
+
+A test enforces that. It hashes every source file in the duel's packages and compares with a stored snapshot.
+
+```java
+static final List<String> DUEL_PACKAGES = List.of(
+    "adapt", "gun", "knn", "ledger", "memory",
+    "move", "physics", "policy", "shield");
+```
+
+(`DuelIdentityTest`.) Add, edit or remove a duel file and the build fails with the name of the file. A duel stage re-pins deliberately, with `-Dhadur.duel.snapshot=write`.
+
+---
+
+## The gate
+
+Two postures, `DUEL` and `MELEE`, never mixed in one tick. One set of subsystems drives and produces the orders.
+
+```java
+public Posture evaluate(int others, int numSentries) {
+    return others >= 2 && numSentries == 0 && veto == Veto.NONE
+        ? Posture.MELEE : Posture.DUEL;
+}
+```
+
+Melee needs all of: two or more opponents, no sentry alive, and no veto this round. Anything else is the duel.
+
+That shape is "fail closed". The default answer is the safe one. The risky one needs every condition to hold.
+
+---
+
+## Vetoes
+
+A veto lasts for the rest of the round (GATE-3, GATE-4).
+
+```java
+public void sentryScanned(String name) {
+    if (sentries.size() < MAX_SENTRIES) sentries.add(name);
+    if (veto == Veto.NONE) veto = Veto.SENTRY;
+}
+public void meleeFailed() { veto = Veto.FAULT; }
+```
+
+- A sentry robot (a guard on the field's border) vetoes melee. Its name is remembered for the whole battle (GATE-5).
+- A fault in the melee code vetoes melee. A sentry seen after a fault does not hide the fault.
+- The set of sentry names is capped at 32 (RES-2).
+
+---
+
+## Catch, record, hand over
+
+If the melee code throws, the core catches it and gives that same tick to the duel.
+
+```java
+try {
+    meleeTick(in, orders);
+} catch (RuntimeException ex) {
+    // GATE-4: fail closed. The duel takes this tick
+    // and the rest of the round.
+    orders = meleeFailed(in, ex);
+}
+```
+
+`meleeFailed` records the fault, tells the gate, resets the duel's tracking and returns fresh orders. The robot never stalls. In the M6 melee benches: 0 melee faults.
+
+---
+
+## Strategy pattern, and what Hadur actually does
+
+The textbook pattern: an interface, two implementations, a context that holds one.
+
+```java
+interface Brain { BotOrders tick(BotInput in); }
+// Brain duel = ...; Brain melee = ...;
+// Brain active = gate.evaluate(...) == MELEE ? melee : duel;
+```
+
+(A teaching sketch, not Hadur code.)
+
+Hadur uses an enum and a branch in `HadurCore.tick` instead, because the two sets of subsystems share state (the tracker, the profile hand-off, the tick budget). The point is the same: choose one behaviour per tick, behind one decision, with a safe default.
+
+---
+
+## Minimum-risk movement
+
+Each tick, score 160 points on rings around Hadur (32 angles by 5 rings). Go to the least risky.
+
+```java
+for (Point2D.Double p : candidates) {
+    double r = risk(p, v);
+    if (r < bestRisk) { bestRisk = r; best = p; }
+}
+if (destination != null && destination.distance(me) > REACHED
+        && bestRisk >= SWITCH_GAIN * risk(destination, v)) {
+    return destination;      // keep going unless a point is 10% safer
+}
+```
+
+Risk: each opponent's energy over distance squared, doubled if Hadur would be its closest robot, plus virtual bullets from every recorded shot, plus walls, corners and the centre.
+
+---
+
+## What mattered (M6 sweep)
+
+Reference field, 35 rounds by 10 seeds (docs/bench/m6-gates.md):
+
+| Build | APS | Survival |
+|---|---|---|
+| baseline | 54.0 | 63.3 |
+| no virtual bullets | 50.9 | 56.6 |
+| bullet weight 2.0 | 51.8 | 58.5 |
+| most other weights | 52.9 to 54.0 | 61.4 to 63.9 |
+
+The weights sit at a local optimum. The one that matters is the virtual-bullet term: remove it and APS falls 3 points and survival 7.
+
+---
+
+## A gun that aims at everyone at once
+
+The field gun gives each opponent scanned in the last 8 ticks three firing solutions, replayed from its history. Each solution covers its angle plus or minus the robot's half-width, weighted by distance, energy and recent behaviour.
+
+```java
+for (Solution o : all) {
+    if (Math.abs(Angles.normalRelativeAngle(
+            s.angle - o.angle)) <= o.tolerance) {
+        density += o.weight;
+    }
+}
+```
+
+It fires where the summed density peaks. A shot that could hit two opponents beats a shot at one.
+
+---
+
+## The result
+
+Cold, 1000 by 1000, from `docs/bench/m6-gates.md` and the README:
+
+| Melee bench | 2.2 | 3.0 (M6) |
+|---|---|---|
+| Reference field (9 melee bots), APS | 37.9 | 52.7 to 54.6 |
+| Reference, survival | 32.6 | 59.5 to 63.4 |
+| Challenge field (9 sample bots), firsts of 100 | 33 | 72 |
+
+The plan's gate, reference APS 60, was not met, and the report says so. Hadur is 28th in the MeleeRumble (Leigh, 2026-10-01), and the duel's Shadow share moved from 57.4% to 54.5% ± 4.5, inside the noise of both.
+
+---
+
+## Recap
+
+- Choose behaviour in one place, with a safe default.
+- Failing closed: the risky path needs every condition, and any fault hands over to the proven path.
+- Protect the part that works with a test that cannot be argued with.
+- Minimum risk is a loop over candidates and a function that scores them.
+- Write down the gate you missed.
+
+<!-- Code excerpts are trimmed and re-wrapped to fit a slide; the linked source files are exact. -->

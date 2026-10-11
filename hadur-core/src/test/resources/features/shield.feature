@@ -15,7 +15,8 @@ Feature: Bullet shielding
 
   @SHIELD-1
   Scenario: A bullet shot down by accident changes nothing
-    When 1 of our bullets is shot down among 19 misses
+    When the enemy has stirred once
+    And 1 of our bullets is shot down among 19 misses
     And the enemy is scanned again with the gun still hot
     Then the gun aims head-on
 

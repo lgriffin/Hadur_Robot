@@ -1,0 +1,4 @@
+# A5 team gate suite, run from hadur-bench/:
+#   mvn -q exec:java -Dexec.args="--suite team-gates.txt --report ../docs/bench/<name>.md"
+# HadurTeam (five hadur2.Hadur) against each reference team, TeamRumble settings.
+team | --set team-reference.txt --team true --seeds 3 --rounds 10

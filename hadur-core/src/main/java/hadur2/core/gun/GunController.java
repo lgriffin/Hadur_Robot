@@ -36,6 +36,14 @@ import java.util.function.Consumer;
  * the other two (see {@link #fireVirtualBullets}), gate open or not, so it already has a
  * history once the gate opens. Every live rating decays each shot with a 100-shot half-life
  * (GUN-1), so a surfer that changes its movement mid-battle can flip the choice again.</p>
+ * <p>GUN-5 splits all of that by the power class of the shot. Every real duel bullet rates the
+ * virtual guns, in the table of its own class: bullets under 0.2 ({@link #LIGHT_BELOW}) in the
+ * light table, the rest in the other. The gun for a shot is read from the table of the class
+ * the shot's wave carries (the core decides the power before it aims), so light bullets, which
+ * are about nine shots in ten under the lead-aware rule, no longer share a verdict with the
+ * rare heavy ones. {@link SampledGun} is the light class's fourth candidate. A class with no
+ * verdict yet fires as the combined rule did with none: the opening gun, else the main gun.
+ * Ratings are not kept in the profile (see docs/requirements.md, D3 notes).</p>
  * <p>With several opponents at the battle's start only the main gun aims and no virtual
  * guns are scored.</p>
  *
@@ -51,7 +59,25 @@ public class GunController {
      * main and anti-surfer ratings from a profile): it is GUN-4's third gun, chosen live,
      * within a battle, once it rates above the other two outside the margin of error.
      */
-    public enum Opening { MAIN, ANTI_SURFER, HYBRID }
+    public enum Opening {
+        MAIN, ANTI_SURFER, HYBRID,
+        /** GUN-5: {@link SampledGun}, a candidate for light bullets only; never an opening. */
+        SAMPLED
+    }
+
+    /** GUN-5: bullets under this power are the light class, rated apart (the same 0.2 as POW-11's class 0). */
+    public static final double LIGHT_BELOW = 0.2;
+
+    /** GUN-5: whether a bullet of {@code power} is in the light class. */
+    public static boolean isLight(double power) {
+        return power < LIGHT_BELOW;
+    }
+
+    /**
+     * GUN-7: whether the aim weighs shadows at all. On in the release; a constant so the gate
+     * can build an A/B without the term (set false and the aim is D3's, exactly).
+     */
+    public static final boolean SHADOW_AIM = true;
 
     /** A gun seed sample: the main view's 10 data-point values, the guess factor, the displacement. */
     public static final int SAMPLE_WIDTH = 13;
@@ -72,14 +98,17 @@ public class GunController {
     /** Per opponent name: the main view, then the four anti-surfer views, by view name. */
     private final Map<String, Map<String, KnnView<TimestampedFiringAngle>>> enemyViews =
         new HashMap<>();
-    /** Per opponent name: the main gun's virtual record. */
-    private final Map<String, GunStats> mainGunStats = new HashMap<>();
-    /** Per opponent name: the anti-surfer gun's virtual record. */
-    private final Map<String, GunStats> antiSurferStats = new HashMap<>();
-    /** GUN-4: per opponent name: the hybrid gun's virtual record. */
-    private final Map<String, GunStats> hybridStats = new HashMap<>();
-    /** Each real bullet's wave, until it breaks: the main, anti-surfer and hybrid angles, in that order. */
-    private final Map<Wave, double[]> virtualBullets = new HashMap<>();
+    /**
+     * GUN-5: per opponent name, the virtual guns' records for bullets of power 0.2 and over
+     * (the rest class). A real shot is rated in the table of its own class only.
+     */
+    private final Map<String, Ratings> restRatings = new HashMap<>();
+    /** GUN-5: per opponent name, the virtual guns' records for bullets under 0.2. */
+    private final Map<String, Ratings> lightRatings = new HashMap<>();
+    /** GUN-5: the light class's fourth gun; its phase is core state and moves with real shots. */
+    private final SampledGun sampledGun = new SampledGun();
+    /** Each real bullet's wave, until it breaks: the angles each gun would have fired and the shot's class. */
+    private final Map<Wave, VirtualShot> virtualBullets = new HashMap<>();
     /** Builds the seed samples' first ten values, in the main view's space. */
     private final GunFormula sampleFormula;
     private Opening opening;
@@ -228,15 +257,56 @@ public class GunController {
      * @return an absolute bearing in radians
      */
     public double aim(Wave w, Point2D.Double myNextLocation, long currentTime) {
+        return aim(w, myNextLocation, currentTime, null);
+    }
+
+    /**
+     * GUN-7: {@link #aim(Wave, Point2D.Double, long)}, then the shot's angle chosen among a few
+     * nearby candidates by the damage a hit would do plus the damage the bullet's shadows save
+     * us ({@link ShadowAim}). The chosen gun still decides which angle is the centre of the
+     * choice; the virtual guns are rated on their own angles, not on the shifted one.
+     *
+     * <p>Without a shadow term, with {@link #SHADOW_AIM} off, while no wave has a published
+     * interval, and in the head-on warm-up, the answer is the plain aim's, exactly.</p>
+     *
+     * @param w the latest gun wave at the target
+     * @param myNextLocation where we will be when the bullet leaves, the next tick
+     * @param currentTime the present tick
+     * @param shadow what a firing angle's shadows are worth, or null for none
+     * @return an absolute bearing in radians
+     */
+    public double aim(Wave w, Point2D.Double myNextLocation, long currentTime, ShadowValue shadow) {
+        boolean shadowed = SHADOW_AIM && shadow != null && shadow.active();
+        aimedGun = null;
+        aimMass = null;
+        wantMass = shadowed;
+        double base = plainAim(w, myNextLocation, currentTime);
+        if (!shadowed || aimedGun == null) return base;
+        double halfWidth = DiaUtils.botWidthAimAngle(myNextLocation.distance(w.targetLocation));
+        ShadowAim.Mass mass = aimMass != null ? aimMass : ShadowAim.Mass.around(base, 2.0 * halfWidth);
+        return ShadowAim.choose(base, mass, halfWidth, w.bulletPower(), shadow);
+    }
+
+    /** GUN-7: the gun that aimed last, null in the head-on warm-up; read by {@link #aim(Wave, Point2D.Double, long, ShadowValue)}. */
+    private Opening aimedGun;
+    /** GUN-7: the main gun's mass for the last aim, when it aimed and one was asked for. */
+    private ShadowAim.Mass aimMass;
+    /** GUN-7: whether the main gun is to keep its mass for this aim. */
+    private boolean wantMass;
+
+    private double plainAim(Wave w, Point2D.Double myNextLocation, long currentTime) {
         Map<String, KnnView<TimestampedFiringAngle>> views = getOrCreateViews(w.botName);
         KnnView<TimestampedFiringAngle> mainView = views.get(MainGun.viewName());
+        // GUN-5: the wave carries the power the shot will go at (D1 decides power before aim),
+        // so the class is known here and the gun is picked from that class's ratings.
+        boolean light = isLight(w.bulletPower());
 
         if (is1v1 && opening != null) {
             // ADAPT-1: the profile's gun from the first wave, unless the live ratings disagree
             // (GUN-1) or GUN-4's third gun rates above both. There is no head-on warm-up here:
             // the seeds are the data, and each gun falls back to head-on by itself while it
             // has none.
-            Opening live = liveVerdict(w.botName);
+            Opening live = liveVerdict(w.botName, light);
             return fireWith(live != null ? live : opening, w, views, mainView, myNextLocation, currentTime);
         }
 
@@ -249,7 +319,7 @@ public class GunController {
         // GUN-1: 1.20's rule (main unless another gun rates strictly higher) is now
         // margin-gated like every other DIAL-1 comparison, through the same liveVerdict this
         // gun uses once an opening is set, so ties and noise-sized gaps no longer flip it.
-        Opening live = is1v1 ? liveVerdict(w.botName) : null;
+        Opening live = is1v1 ? liveVerdict(w.botName, light) : null;
         return fireWith(live != null ? live : Opening.MAIN, w, views, mainView, myNextLocation, currentTime);
     }
 
@@ -257,11 +327,21 @@ public class GunController {
     private double fireWith(Opening use, Wave w, Map<String, KnnView<TimestampedFiringAngle>> views,
                             KnnView<TimestampedFiringAngle> mainView, Point2D.Double myNextLocation,
                             long currentTime) {
+        aimedGun = use;
+        if (use == Opening.SAMPLED) {
+            return sampledGun.aim(w, views.get(HybridGun.viewName()), myNextLocation);
+        }
         if (use == Opening.HYBRID) {
             return hybridGun.aim(w, views.get(HybridGun.viewName()), myNextLocation, currentTime);
         }
         if (use == Opening.ANTI_SURFER) {
             return antiSurferGun.aim(w, views, myNextLocation, currentTime);
+        }
+        if (wantMass) {
+            // GUN-7: the same angle as aim() gives, with the mass behind it, from one search.
+            MainGun.Aimed aimed = mainGun.aimWithMass(w, mainView, myNextLocation, currentTime);
+            aimMass = aimed.mass;
+            return aimed.angle;
         }
         return mainGun.aim(w, mainView, myNextLocation, currentTime);
     }
@@ -279,17 +359,34 @@ public class GunController {
      *     margin
      */
     Opening liveVerdict(String botName) {
-        GunStats m = mainGunStats.get(botName);
-        GunStats a = antiSurferStats.get(botName);
-        if (m == null || a == null || m.shotsFired == 0) return null;
+        return liveVerdict(botName, false);
+    }
+
+    /**
+     * GUN-5: {@link #liveVerdict(String)} for one power class: the ratings of bullets under
+     * 0.2 when {@code light}, of the rest otherwise. {@link Opening#SAMPLED} is a candidate in
+     * the light class only.
+     *
+     * @param botName the opponent
+     * @param light the class of the shot about to be fired
+     * @return the best-rated gun for that class, or null while the gap to every other
+     *     candidate is within margin
+     */
+    Opening liveVerdict(String botName, boolean light) {
+        Ratings table = (light ? lightRatings : restRatings).get(botName);
+        if (table == null) return null;
+        GunStats m = table.main;
+        GunStats a = table.antiSurfer;
+        if (m.shotsFired == 0) return null;
 
         Map<Opening, GunStats> candidates = new EnumMap<>(Opening.class);
         candidates.put(Opening.MAIN, m);
         candidates.put(Opening.ANTI_SURFER, a);
         if (hybridGateOpen(m, a)) {
-            GunStats h = hybridStats.get(botName);
-            if (h != null && h.shotsFired > 0) candidates.put(Opening.HYBRID, h);
+            GunStats h = table.hybrid;
+            if (h.shotsFired > 0) candidates.put(Opening.HYBRID, h);
         }
+        if (light && table.sampled.shotsFired > 0) candidates.put(Opening.SAMPLED, table.sampled);
 
         Opening best = null;
         double bestRating = Double.NEGATIVE_INFINITY;
@@ -360,9 +457,24 @@ public class GunController {
      * @param hitScore the weighted hit score, as {@link #score} would compute it
      */
     void recordVirtualShotForTest(String botName, Opening gun, double hitScore) {
-        Map<String, GunStats> stats = gun == Opening.HYBRID ? hybridStats
-            : gun == Opening.ANTI_SURFER ? antiSurferStats : mainGunStats;
-        stats.computeIfAbsent(botName, k -> new GunStats()).record(hitScore);
+        recordVirtualShotForTest(botName, gun, hitScore, false);
+    }
+
+    /** GUN-5's test seam: as above, into the light class's table when {@code light}. */
+    void recordVirtualShotForTest(String botName, Opening gun, double hitScore, boolean light) {
+        Ratings table = (light ? lightRatings : restRatings).computeIfAbsent(botName, k -> new Ratings());
+        table.of(gun).record(hitScore);
+    }
+
+    /** Test seam: how many virtual shots have been rated for a class (the main gun's count). */
+    double ratedShotsForTest(String botName, boolean light) {
+        Ratings table = (light ? lightRatings : restRatings).get(botName);
+        return table == null ? 0 : table.main.lifetimeFired;
+    }
+
+    /** Test seam: the sampled gun's phase, in [0, 1). */
+    double samplePhaseForTest() {
+        return sampledGun.phase();
     }
 
     /**
@@ -392,7 +504,23 @@ public class GunController {
      */
     public void fireVirtualBullets(Wave w, Point2D.Double myNextLocation,
                                     long currentTime) {
+        fireVirtualBullets(w, myNextLocation, currentTime, w.bulletPower());
+    }
+
+    /**
+     * As {@link #fireVirtualBullets(Wave, Point2D.Double, long)}, for a real bullet that went
+     * out at {@code firedPower}: GUN-5 rates the virtual guns in the table of that bullet's
+     * class. The light class is also rated for the {@link SampledGun}.
+     *
+     * @param w the wave the real bullet rides
+     * @param myNextLocation where we will be when the bullet leaves
+     * @param currentTime the present tick
+     * @param firedPower the power the real bullet was fired at
+     */
+    public void fireVirtualBullets(Wave w, Point2D.Double myNextLocation,
+                                    long currentTime, double firedPower) {
         if (!is1v1) return;
+        boolean light = isLight(firedPower);
 
         Map<String, KnnView<TimestampedFiringAngle>> views = getOrCreateViews(w.botName);
         // Each gun's own choice, whichever gun actually aimed the real bullet.
@@ -400,12 +528,39 @@ public class GunController {
             myNextLocation, currentTime);
         double asAngle = antiSurferGun.aim(w, views, myNextLocation, currentTime);
         double hybridAngle = hybridGun.aim(w, views.get(HybridGun.viewName()), myNextLocation, currentTime);
-        virtualBullets.put(w, new double[]{mainAngle, asAngle, hybridAngle});
+        double sampledAngle = light
+            ? sampledGun.aim(w, views.get(HybridGun.viewName()), myNextLocation) : Double.NaN;
+        virtualBullets.put(w, new VirtualShot(light, mainAngle, asAngle, hybridAngle, sampledAngle));
 
         // Records exist from the first virtual bullet, so liveVerdict can read them.
-        mainGunStats.computeIfAbsent(w.botName, k -> new GunStats());
-        antiSurferStats.computeIfAbsent(w.botName, k -> new GunStats());
-        hybridStats.computeIfAbsent(w.botName, k -> new GunStats());
+        (light ? lightRatings : restRatings).computeIfAbsent(w.botName, k -> new Ratings());
+    }
+
+    /**
+     * SHIELD-6, GUN-5: a real shield-mode attack shot went out at {@code firedPower}, which the
+     * shield may have cut from the wave's. The virtual guns are rated in the class of that
+     * power (unless the tick budget has shed them) and the sampled gun's phase moves on. An
+     * intercept bullet, shot at an enemy bullet, is no attack and does not come here.
+     *
+     * @param w the wave the real bullet rides
+     * @param myLocation where the bullet leaves from
+     * @param currentTime the present tick
+     * @param firedPower the power the real bullet was fired at
+     * @param virtualGuns whether the virtual guns are scored this tick (TIME-1, TIME-2)
+     */
+    public void shieldAttackFired(Wave w, Point2D.Double myLocation, long currentTime,
+                                  double firedPower, boolean virtualGuns) {
+        if (virtualGuns) fireVirtualBullets(w, myLocation, currentTime, firedPower);
+        shotFired();
+    }
+
+    /**
+     * GUN-5: a real shot went out. The sampled gun's phase moves on, so the next shot
+     * samples a different neighbour; called once per real duel bullet, whether or not the
+     * virtual guns were fired for it.
+     */
+    public void shotFired() {
+        sampledGun.shotFired();
     }
 
     /**
@@ -444,8 +599,10 @@ public class GunController {
      * (nearer) one less. So a rating can exceed 1.</p>
      */
     private void scoreVirtualGuns(Wave w, List<RobotState> waveBreakStates) {
-        double[] vbAngles = virtualBullets.remove(w);
-        if (vbAngles == null) return;
+        VirtualShot vb = virtualBullets.remove(w);
+        if (vb == null) return;
+        Ratings table = (vb.light ? lightRatings : restRatings).get(w.botName);
+        if (table == null) return;
 
         Wave.Intersection intersection = w.preciseIntersection(waveBreakStates);
         if (intersection == null) return;
@@ -458,9 +615,10 @@ public class GunController {
         // 0.1 / width * range / 0.9 = (range / width) / 9.
         double hitWeight = 0.1 / angularBotWidth * (w.escapeAngleRange() / 0.9);
 
-        score(mainGunStats.get(w.botName), vbAngles[0], hitAngle, tolerance, hitWeight);
-        score(antiSurferStats.get(w.botName), vbAngles[1], hitAngle, tolerance, hitWeight);
-        score(hybridStats.get(w.botName), vbAngles[2], hitAngle, tolerance, hitWeight);
+        score(table.main, vb.main, hitAngle, tolerance, hitWeight);
+        score(table.antiSurfer, vb.antiSurfer, hitAngle, tolerance, hitWeight);
+        score(table.hybrid, vb.hybrid, hitAngle, tolerance, hitWeight);
+        if (vb.light) score(table.sampled, vb.sampled, hitAngle, tolerance, hitWeight);
     }
 
     /** Scores one gun's virtual bullet against the precise intersection; see {@link #scoreVirtualGuns}. */
@@ -518,6 +676,14 @@ public class GunController {
     }
 
     /**
+     * How the lead-aware regime (POW-7 to POW-9, decided by the core's power policy) bears on
+     * the duel's own power: {@code NORMAL} keeps 1.20's choice, power-down included;
+     * {@code CHAFF} fires the minimum power; {@code DEFAULT} fires the base power (1.95, or
+     * 2.95 inside 150 px) without the cubic power-down, the one thing the regime replaces.
+     */
+    public enum Stakes { NORMAL, CHAFF, DEFAULT }
+
+    /**
      * The bullet power for the next gun wave, before the core's power policy.
      *
      * @param distance the distance to the target, px
@@ -528,8 +694,24 @@ public class GunController {
      */
     public double calculateBulletPower(double distance, double myEnergy,
                                         double enemyEnergy, int enemiesAlive) {
+        return calculateBulletPower(distance, myEnergy, enemyEnergy, enemiesAlive, Stakes.NORMAL);
+    }
+
+    /**
+     * The bullet power for the next gun wave, before the core's power policy, under the
+     * lead-aware regime's call. In a melee battle {@code stakes} is ignored.
+     *
+     * @param distance the distance to the target, px
+     * @param myEnergy our energy
+     * @param enemyEnergy the target's energy
+     * @param enemiesAlive the opponents alive
+     * @param stakes what the lead-aware regime asks of the power (POW-7 to POW-9)
+     * @return the power; at least 0.1 unless our energy is lower, and never above it
+     */
+    public double calculateBulletPower(double distance, double myEnergy,
+                                        double enemyEnergy, int enemiesAlive, Stakes stakes) {
         if (is1v1) {
-            return calculate1v1BulletPower(distance, myEnergy, enemyEnergy);
+            return calculate1v1BulletPower(distance, myEnergy, enemyEnergy, stakes);
         }
         return calculateMeleeBulletPower(distance, myEnergy, enemyEnergy, enemiesAlive);
     }
@@ -538,15 +720,19 @@ public class GunController {
      * 1.20's duel power: 1.95, or 2.95 inside 150 px; beyond 325 px, cut while our energy
      * is below a threshold of 63 (4 lower per point of energy we lead by, never below 35),
      * to 1.95 times the cube of our energy's share of that threshold. Then capped at a quarter of the enemy's
-     * energy, floored at 0.1 and capped at our own energy.
+     * energy, floored at 0.1 and capped at our own energy. Under the lead-aware regime the
+     * power-down is skipped ({@link Stakes#DEFAULT}) or the base power is replaced by the
+     * minimum ({@link Stakes#CHAFF}); the caps and the floor still apply.
      */
     private double calculate1v1BulletPower(double distance, double myEnergy,
-                                            double enemyEnergy) {
+                                            double enemyEnergy, Stakes stakes) {
         double bulletPower = 1.95;
         if (distance < 150.0) {
             bulletPower = 2.95;
         }
-        if (distance > 325.0) {
+        if (stakes == Stakes.CHAFF) {
+            bulletPower = Rules.MIN_BULLET_POWER;
+        } else if (stakes == Stakes.NORMAL && distance > 325.0) {
             // 63 at an even or worse energy balance, 4 lower per point we lead, never below 35.
             double powerDownPoint = DiaUtils.limit(35.0,
                 63.0 + (enemyEnergy - myEnergy) * 4.0, 63.0);
@@ -603,11 +789,17 @@ public class GunController {
      * @return four totals, as above
      */
     public double[] virtualGunScores(String botName) {
-        GunStats m = mainGunStats.get(botName);
-        GunStats a = antiSurferStats.get(botName);
-        return new double[] {
-            m == null ? 0 : m.lifetimeFired, m == null ? 0 : m.lifetimeHit,
-            a == null ? 0 : a.lifetimeFired, a == null ? 0 : a.lifetimeHit};
+        // Both classes' lifetime totals add up: the profile's counts are per battle, not per class.
+        double mFired = 0, mHit = 0, aFired = 0, aHit = 0;
+        for (Map<String, Ratings> classTable : List.of(restRatings, lightRatings)) {
+            Ratings r = classTable.get(botName);
+            if (r == null) continue;
+            mFired += r.main.lifetimeFired;
+            mHit += r.main.lifetimeHit;
+            aFired += r.antiSurfer.lifetimeFired;
+            aHit += r.antiSurfer.lifetimeHit;
+        }
+        return new double[] {mFired, mHit, aFired, aHit};
     }
 
     /**
@@ -619,16 +811,55 @@ public class GunController {
      */
     public String bestGunLabel(String botName) {
         if (!is1v1) return mainGun.getLabel();
-        Opening best = liveVerdict(botName);
+        // GUN-5: the class with more rated shots is the one most shots are fired in.
+        Ratings rest = restRatings.get(botName);
+        Ratings lightTable = lightRatings.get(botName);
+        boolean light = lightTable != null
+            && lightTable.main.lifetimeFired >= (rest == null ? 0 : rest.main.lifetimeFired);
+        Opening best = liveVerdict(botName, light);
+        if (best == Opening.SAMPLED) return sampledGun.getLabel();
         if (best == Opening.HYBRID) return hybridGun.getLabel();
         if (best == Opening.ANTI_SURFER) return antiSurferGun.getLabel();
         if (best == Opening.MAIN) return mainGun.getLabel();
         // No verdict yet, or the gap is within margin: fall back to the raw ratings, as before.
-        GunStats mStats = mainGunStats.get(botName);
-        GunStats aStats = antiSurferStats.get(botName);
+        Ratings shown = light ? lightTable : rest;
+        GunStats mStats = shown == null ? null : shown.main;
+        GunStats aStats = shown == null ? null : shown.antiSurfer;
         double mainRating = mStats != null ? mStats.gunRating() : 0;
         double asRating = aStats != null ? aStats.gunRating() : 0;
         return asRating > mainRating ? antiSurferGun.getLabel() : mainGun.getLabel();
+    }
+
+    /** One real bullet's virtual guns' angles and its power class, until its wave breaks. */
+    private static final class VirtualShot {
+        final boolean light;
+        final double main, antiSurfer, hybrid, sampled;
+
+        VirtualShot(boolean light, double main, double antiSurfer, double hybrid, double sampled) {
+            this.light = light;
+            this.main = main;
+            this.antiSurfer = antiSurfer;
+            this.hybrid = hybrid;
+            this.sampled = sampled;
+        }
+    }
+
+    /** GUN-5: the virtual guns' records against one opponent for one power class. */
+    private static final class Ratings {
+        final GunStats main = new GunStats();
+        final GunStats antiSurfer = new GunStats();
+        final GunStats hybrid = new GunStats();
+        /** Rated for the light class only. */
+        final GunStats sampled = new GunStats();
+
+        GunStats of(Opening gun) {
+            switch (gun) {
+                case ANTI_SURFER: return antiSurfer;
+                case HYBRID: return hybrid;
+                case SAMPLED: return sampled;
+                default: return main;
+            }
+        }
     }
 
     /**

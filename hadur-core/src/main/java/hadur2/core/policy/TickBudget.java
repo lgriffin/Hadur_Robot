@@ -6,7 +6,8 @@ package hadur2.core.policy;
  *
  * <ol>
  * <li>surf only the nearest wave, with the three options (no second wave, no go-to);</li>
- * <li>also halve k in every KNN view the gun and the surf read;</li>
+ * <li>also halve k in every KNN view the gun and the surf read, and aim without the
+ * shadow weighing (GUN-7: plain D3 aim);</li>
  * <li>also stop scoring the virtual guns (their ratings hold where they were).</li>
  * </ol>
  *
@@ -22,7 +23,7 @@ package hadur2.core.policy;
  * for this client, so from then on {@link #tickTook} ignores the passed-in allowance and
  * uses the tick that caused the skip as the real one, for the rest of the battle (not just
  * the round, so it survives {@link #newRound}). A {@code SkippedTurn} event goes to
- * {@link #skippedTurn()}. The core then reads {@link #level()} and asks the static methods
+ * {@link #skippedTurn(long)}. The core then reads {@link #level()} and asks the static methods
  * what that level allows.</p>
  *
  * <p>{@link #maxLevel()} and {@link #slowTicks()} are this round's degradation counters,
@@ -35,13 +36,8 @@ public final class TickBudget {
     /** The deepest level: everything that can be shed is shed. Levels are capped here. */
     public static final int MAX_LEVEL = 3;
 
-    /** RES-9: the skipped turns in one round after which the core runs the rest of it in duress. */
-    public static final int DURESS_SKIPS = 3;
-
     /** Levels held for the rest of the round by skipped turns (TIME-2). */
     private int roundLevel;
-    /** Turns the engine has skipped this round (RES-9). */
-    private int skipsThisRound;
     /** Whether the last measured tick went over the threshold: one more level (TIME-1). */
     private boolean slow;
     private int maxLevel;
@@ -62,7 +58,6 @@ public final class TickBudget {
     /** A new round starts at full computation (TIME-2's "for the remainder of the round"). */
     public void newRound() {
         roundLevel = 0;
-        skipsThisRound = 0;
         slow = false;
         maxLevel = 0;
         slowTicks = 0;
@@ -99,25 +94,16 @@ public final class TickBudget {
      * right after a measured tick that had nothing to do with it; without the floor, that
      * unrelated short measurement would become a battle-long allowance and shed far more
      * computation than the client actually needs to.
+     *
+     * @param skippedTime the tick the engine skipped, as the event carries it
      */
-    public void skippedTurn() {
+    public void skippedTurn(long skippedTime) {
         if (learnedAllowanceNanos <= 0 && lastUsedNanos > 0
                 && (guessedAllowanceNanos < 0 || lastUsedNanos >= MIN_LEARNED_SHARE * guessedAllowanceNanos)) {
             learnedAllowanceNanos = lastUsedNanos;
         }
         roundLevel = Math.min(MAX_LEVEL, roundLevel + 1);
-        skipsThisRound++;
         maxLevel = Math.max(maxLevel, level());
-    }
-
-    /**
-     * RES-9: whether the engine has skipped {@link #DURESS_SKIPS} turns this round, so the
-     * rest of it runs at the duress level, below {@link #MAX_LEVEL}: no samples, no tree.
-     *
-     * @return true from the third skipped turn of a round until the round ends
-     */
-    public boolean duress() {
-        return skipsThisRound >= DURESS_SKIPS;
     }
 
     /** TIME-3: the allowance learned from a skip, or -1 if none has happened yet. */
@@ -183,5 +169,16 @@ public final class TickBudget {
      */
     public static boolean virtualGuns(int level) {
         return level < 3;
+    }
+
+    /**
+     * GUN-7: the shadow-aware aim, which builds a shadow value and weighs up to 13 candidates,
+     * is shed from level 2, with the halving of k.
+     *
+     * @param level a computation level
+     * @return whether the gun may weigh shadows this tick
+     */
+    public static boolean shadowAim(int level) {
+        return level < 2;
     }
 }

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>course.hadurling</groupId>
+    <artifactId>hadurling-lab00</artifactId>
+    <version>0.1</version>
+    <packaging>jar</packaging>
+
+    <name>Hadurling (lab 00)</name>
+    <description>The Building Hadur course robot: a skeleton that only spins its radar.</description>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- Robots run on every RoboRumble client, which is Java 11; tests can be newer. -->
+        <maven.compiler.release>11</maven.compiler.release>
+        <maven.compiler.testRelease>17</maven.compiler.testRelease>
+        <junit.version>5.11.4</junit.version>
+        <robocode.version>1.9.5.6</robocode.version>
+    </properties>
+
+    <dependencies>
+        <!-- The engine's API. Robocode provides it at run time, so it is not packaged. -->
+        <dependency>
+            <groupId>net.sf.robocode</groupId>
+            <artifactId>robocode.api</artifactId>
+            <version>${robocode.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <!-- Robocode's naming: package.RobotName_version.jar -->
+        <finalName>hadurling.Hadurling_${project.version}</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.13.0</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.5.2</version>
+                <configuration>
+                    <includes>
+                        <include>**/*Test.java</include>
+                        <include>**/*Tests.java</include>
+                        <include>**/*Properties.java</include>
+                    </includes>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

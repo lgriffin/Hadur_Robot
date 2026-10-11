@@ -1,0 +1,179 @@
+---
+marp: true
+theme: default
+paginate: true
+---
+
+# The Robocode model
+
+**Topic 01: A first robot**
+
+After this talk you can say what happens in one tick, which of your methods the engine calls, and why Hadur keeps its brain in `static` fields.
+
+Java skills: classes, inheritance, overriding, `static` versus instance.
+
+---
+
+# A battle is rounds, a round is ticks
+
+- A **battle** is a number of **rounds**. A round ends when one robot is left.
+- A round is a series of **ticks**, also called turns.
+- On each tick the engine lets every robot act once, then moves bullets and robots.
+
+Your robot is a Java class. The engine creates it, starts a thread, and calls `run()`.
+
+---
+
+# A robot is a class that extends AdvancedRobot
+
+```java
+public class Tiny extends AdvancedRobot {
+    @Override
+    public void run() {
+        while (true) {
+            setTurnRadarRightRadians(Double.POSITIVE_INFINITY);
+            execute();
+        }
+    }
+}
+```
+
+`extends` gives you everything `AdvancedRobot` already does. `@Override` says that `run()` replaces the version in the parent.
+
+This sample is ours, not Hadur's. Hadur's `run()` is the same shape.
+
+---
+
+# Setters queue, execute() acts
+
+`setAhead(100)` does not move the robot. It writes down an order.
+
+`execute()` ends your turn. The engine then carries out every queued order for one tick and comes back.
+
+Hadur applies its orders in one place:
+
+```java
+if (!Double.isNaN(o.maxVelocity())) setMaxVelocity(o.maxVelocity());
+if (!Double.isNaN(o.bodyTurn())) setTurnRightRadians(o.bodyTurn());
+if (!Double.isNaN(o.ahead())) setAhead(o.ahead());
+// ...
+if (o.firePower() > 0) setFire(o.firePower());
+```
+
+*Source: `hadur2.Hadur.apply`.*
+
+---
+
+# Events are methods the engine calls
+
+You override a handler and the engine calls it when something happens.
+
+```java
+@Override
+public void onScannedRobot(ScannedRobotEvent e) {
+    pending.add(new BotEvent.Scan(e.getName(), e.getBearingRadians(), e.getDistance(),
+        e.getEnergy(), e.getHeadingRadians(), e.getVelocity(), e.isSentryRobot()));
+}
+```
+
+*Source: `hadur2.Hadur.onScannedRobot`.*
+
+Handlers run during `execute()`, in the engine's own priority order. Hadur does almost nothing inside them. It turns the event into a value and queues it.
+
+---
+
+# One tick, as Hadur sees it
+
+```mermaid
+flowchart LR
+    X["execute()"] --> H["engine calls handlers<br/>onScannedRobot, onHitByBullet, ..."]
+    H --> Q["handlers queue events"]
+    Q --> L["run() loop: read getters,<br/>build input, get orders"]
+    L --> S["setters queue orders"]
+    S --> X
+```
+
+Everything the robot knows arrives by getters and handlers. Everything it does leaves by setters.
+
+---
+
+# Coordinates and headings
+
+- The origin is the **bottom-left** corner. `y` grows upward.
+- Heading 0 is **north**. Angles grow **clockwise**, so east is a quarter turn.
+- A **bearing** is relative to your own heading. A heading is absolute.
+
+Hadur's `BattleField` documents the maths:
+
+```java
+ * and angles are radians with 0 north and growing clockwise, so a point at angle {@code a}
+ * and distance {@code d} from {@code p} is {@code (p.x + sin(a) d, p.y + cos(a) d)}.</p>
+```
+
+The absolute direction of a scanned enemy is `heading + bearing`. Hadur's guard does exactly that.
+
+---
+
+# Turn limits come from the rules
+
+| Part | Turn rate |
+|---|---|
+| Body | 10 degrees per tick, less 0.75 per px/tick of speed |
+| Gun | 20 degrees per tick, on top of the body |
+| Radar | 45 degrees per tick, on top of the gun |
+
+Hadur sets two flags so the three turn independently:
+
+```java
+setAdjustGunForRobotTurn(true);
+setAdjustRadarForGunTurn(true);
+```
+
+*Sources: `hadur2.core.physics.Rules`, `hadur2.Hadur.run`.*
+
+---
+
+# New object each round, so use static
+
+The engine makes a **new robot object** every round. Instance fields start empty each time.
+
+Anything the robot must remember across rounds goes in `static` fields:
+
+```java
+/** The brain for the whole battle; built on the first round's {@code run()}. */
+private static HadurCore core;
+/** Wraps every core tick (RES-1); lives as long as the core. */
+private static Guard guard;
+```
+
+Per-round state, such as the queue of pending events, stays an instance field.
+
+---
+
+# Hadur's loop, in full
+
+```java
+while (true) {
+    BotInput in = input();
+    // ...
+    BotOrders orders = guard.tick(in);
+    // ...
+    apply(orders);
+    execute();
+}
+```
+
+Build the input, ask the brain, apply the orders, end the turn. Lab 01 builds this loop in miniature.
+
+*Source: `hadur2.Hadur.run`, with comments and timing code left out.*
+
+---
+
+# Recap
+
+- A robot extends `AdvancedRobot`; the engine calls `run()` and your handlers.
+- Setters queue; `execute()` ends the turn.
+- Headings: 0 is north, clockwise, radians.
+- New robot object every round, so long-lived state is `static`.
+
+Next: the lab, then the reading note on Hadur's adapter.

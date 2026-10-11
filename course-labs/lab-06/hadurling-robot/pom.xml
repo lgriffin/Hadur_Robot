@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>course.hadurling</groupId>
+        <artifactId>hadurling-lab06</artifactId>
+        <version>0.1</version>
+    </parent>
+
+    <artifactId>hadurling-lab06-robot</artifactId>
+    <name>Hadurling robot (lab 06)</name>
+    <description>The Robocode adapter: engine events in, core orders out.</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>course.hadurling</groupId>
+            <artifactId>hadurling-lab06-core</artifactId>
+        </dependency>
+        <!-- The engine's API. Robocode provides it at run time, so it is not packaged. -->
+        <dependency>
+            <groupId>net.sf.robocode</groupId>
+            <artifactId>robocode.api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <!-- Robocode's naming: package.RobotName_version.jar -->
+        <finalName>hadurling.Hadurling_${project.version}</finalName>
+        <plugins>
+            <!-- Robocode loads one jar per robot, so the core is copied into the robot's jar. -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.6.0</version>
+                <executions>
+                    <execution>
+                        <id>robot</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <artifactSet>
+                                <includes>
+                                    <include>course.hadurling:hadurling-lab06-core</include>
+                                </includes>
+                            </artifactSet>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

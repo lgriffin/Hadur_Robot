@@ -5,14 +5,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import hadur2.core.melee.EnemyShot;
+import hadur2.core.world.EnemyShot;
 import hadur2.core.melee.MeleeProfile;
 import hadur2.core.melee.MeleeProfileCodec;
 import hadur2.core.memory.ProfileLibrary;
 import hadur2.core.model.BotEvent;
 import hadur2.core.model.BotInput;
 import hadur2.core.port.MemoryProfileStore;
-import hadur2.core.posture.Posture;
+import hadur2.core.role.Posture;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -88,6 +88,18 @@ class HandOffCoreTest {
             && s.travelled(30) < 400 - 25).count();
         assertEquals(1, unreached);
         assertEquals("H,0,30," + A + ",0,0," + unreached, record("H"));
+    }
+
+    @Test
+    @Tag("SHIELD-3")
+    @DisplayName("SHIELD-3: a survivor whose stored profile records a shielder is treated as one from the handoff")
+    void survivorShielderVerdictApplies() {
+        MemoryProfileStore store = new MemoryProfileStore(200_000);
+        new ProfileLibrary(store).save(hadur2.core.memory.Profiles.shielder(
+            hadur2.core.memory.Profiles.sample(A, 9, 0, 0), true));
+        meleeToDuel(store);
+        assertTrue(telemetry.stream().anyMatch(l -> l.startsWith("P,0,30,shield,") && l.endsWith(",shield_3_profile")),
+            telemetry.toString());
     }
 
     @Test

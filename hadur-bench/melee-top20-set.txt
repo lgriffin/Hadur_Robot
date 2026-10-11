@@ -1,0 +1,31 @@
+# The MeleeRumble top 20 opponents (2026-10-05), less hadur2.Hadur itself (rank 18) and
+# jd.Nullstride 2.3.1 (rank 4, no archive copy): ranks 1-3, 5-17, 19-22. Ranks 21 and 22
+# (stelo.PastFuture, stelo.Spread) stand in for the two missing, so there are 20 opponents,
+# as in top20.txt.
+# Source: data/rumble/parsed/2026-10-05T1546Z_meleerumble_rankings.tsv
+# This file lists the distinct opponents for fetching and for reading per-robot results; no
+# run uses it as one field (a melee battle holds about 10 robots). The runs use the five
+# overlapping fields melee-top20-a.txt .. melee-top20-e.txt, driven by the suite
+# melee-top20.txt. Jars from https://robocode-archive.strangeautomata.com/robots/<jar>, into
+# opponents/.
+#   <robot name as Robocode lists it> | <role> | <jar file in opponents/>
+aaa.r.ScalarR 0.005g.047 | melee-1 | aaa.r.ScalarR_0.005g.047.jar
+jk.melee.Neuromancer 7.12 | melee-2 | jk.melee.Neuromancer_7.12.jar
+cb.fire.Firestarter 2.0f | melee-3 | cb.fire.Firestarter_2.0f.jar
+voidious.Diamond 1.8.28 | melee-5 | voidious.Diamond_1.8.28.jar
+justin.DemonicRage 3.4 | melee-6 | justin.DemonicRage_3.4.jar
+positive.Portia 1.26e | melee-7 | positive.Portia_1.26e.jar
+abc.Shadow 3.84i | melee-8 | abc.Shadow_3.84i.jar
+ags.Glacier 0.2.11 | melee-9 | ags.Glacier_0.2.11.jar
+kc.mini.Mirage 0.2 | melee-10 | kc.mini.Mirage_0.2.jar
+rsalesc.melee.Medina 0.4.5 | melee-11 | rsalesc.melee.Medina_0.4.5.jar
+mn.Combat 3.25.0 | melee-12 | mn.Combat_3.25.0.jar
+rz.Aleph 0.34 | melee-13 | rz.Aleph_0.34.jar
+catcat20.Matcha 0.006 | melee-14 | catcat20.Matcha_0.006.jar
+wompi.Numbat 2.1 | melee-15 | wompi.Numbat_2.1.jar
+justin.Mallais 14.0 | melee-16 | justin.Mallais_14.0.jar
+kc.micro.Figment 1.0 | melee-17 | kc.micro.Figment_1.0.jar
+catcat20.Lambda 0.024 | melee-19 | catcat20.Lambda_0.024.jar
+wompi.Wallaby 5.1 | melee-20 | wompi.Wallaby_5.1.jar
+stelo.PastFuture 2.3.2 | melee-21 | stelo.PastFuture_2.3.2.jar
+stelo.Spread 0.9 | melee-22 | stelo.Spread_0.9.jar

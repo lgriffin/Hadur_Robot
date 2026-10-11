@@ -1,0 +1,108 @@
+---
+marp: true
+theme: default
+paginate: true
+---
+
+<!-- footer: "Sources: docs/architecture-evolution.md, docs/releases/v3.6 to v3.9, docs/bench/live-3.8.md, live-3.9.md, docs/strategy-evolution.md, data/learnings.md (L-43, L-44)" -->
+
+# 3.6 to 3.9: three strands, a dip, and 13th
+
+Restructure first, then climb
+
+Unit 3, talk 6
+
+---
+
+## Why restructure at 16th?
+
+3.5.1 was 16th in the 1v1 and 18th in melee, with no team entry. Adding a team meant a third set of branches in a 2,100-line `HadurCore`:
+
+- the posture was `DUEL` or `MELEE`, and in a team battle a teammate counts as an opponent
+- the duel and melee each kept their own picture of the field
+- the guardrails pinned the duel only
+
+An ownership problem, not a speed problem. So: one identity, three strands, before any ladder-specific work.
+
+---
+
+## A0 to A5: one kernel, three strands
+
+| Stage | What moved |
+|---|---|
+| A0 | every package gets one owner and a hash pin; five new replay fixtures |
+| A1 | `Charter` at tick 0 and `RoleResolver` with a latch replace the posture gate |
+| A2 | the duel lifted out into `duel.DuelController`; `HadurCore` becomes the conductor (**3.6**) |
+| A3 | melee's tracker promoted to the kernel's `world` |
+| A4 | ports for messages; the adapter becomes a `TeamRobot` |
+| A5 | the team baseline and `hadur2.HadurTeam` (**3.7**) |
+
+Every recorded battle replayed to the same orders, telemetry and files at every stage.
+
+---
+
+## Did it cost anything?
+
+- The benches said level, within noise, at every stage
+- Live, 3.7 read **85.67, 21st**: 0.98 under 3.5.1's partial pass, survival down 1.3 points (L-43)
+- Melee level; the first TeamRumble pass put the team **32nd of 46**
+
+Not attributed at the time. The next release would make it worse before anyone knew why.
+
+---
+
+## 3.8: the DrussGT route, and a slide
+
+D1 to D5 targeted one strong opponent: power by the lead, light-bullet aim, bullets as armour, a shield list. T1 stopped teammates driving into each other (collisions 101,322 to 65).
+
+- On the bench: **+10.5** against DrussGT, **+7.2** on the top 10
+- Live: **84.58, 29th**. +5.2 against the top 10, but **-1.55 a pairing** against the 1,171 robots outside the top 20 (L-44)
+
+A 12-bot weak set cannot resolve a leak of 1.5 points spread over a thousand opponents.
+
+---
+
+## 3.8.5: scope the route, and keep looking
+
+- MATCH-1/2: once the hit rates clearly favour Hadur, play as 3.7 did
+- Live: **84.79, 24th**. About a fifth of the leak back
+- No bench condition reproduced the live loss: two engines, slow CPU, each stage alone, a 300-opponent session
+
+So the bench was asked a different question: bisect the releases on the bots that lost to 3.4 live.
+
+---
+
+## The bisect: it was 3.5
+
+- The only resolved regression since 3.4 was in **3.5**, not 3.8
+- An ablation put it on **RAM-2**, the rammer escape: close-range fighters confirmed as rammers, and running from them Hadur was hit two to seven times as often
+- RAM-2's gate covered the top 19 and 11 weak bots, not the hundreds of ordinary bots in between
+
+---
+
+## 3.9: let the battle decide (RAM-3)
+
+- A confirmed rammer gets the escape for two rounds, then whichever way, escape or fight, has ended rounds with the better energy margin
+- Gate: live losers **+5.46**, leak set and top 20 level
+- Live, 7 October: **87.15, 13th**, Hadur's best 1v1 score. +2.32 APS over 3.8.5, even across every band from 51st down
+
+The field gave six times the gain the gate estimated.
+
+---
+
+## What it taught us
+
+- Restructure while ahead, and prove the move with replay, not with the bench alone
+- A bench set is a sample. A leak spread thinly over a thousand opponents hides in any small set
+- When the bench cannot reproduce a live loss, bisect the releases on the live losers
+- A rule that fits most opponents can still cost the field: let the battle's own rounds choose
+
+---
+
+## Sources
+
+- [docs/architecture-evolution.md](https://github.com/lgriffin/Hadur_Robot/blob/df731e8/docs/architecture-evolution.md), stage log
+- [docs/releases/](https://github.com/lgriffin/Hadur_Robot/tree/df731e8/docs/releases): v3.6, v3.7, v3.8, v3.8.5, v3.9
+- [docs/bench/live-3.8.md](https://github.com/lgriffin/Hadur_Robot/blob/master/docs/bench/live-3.8.md) and [live-3.9.md](https://github.com/lgriffin/Hadur_Robot/blob/master/docs/bench/live-3.9.md)
+- [docs/strategy-evolution.md](https://github.com/lgriffin/Hadur_Robot/blob/master/docs/strategy-evolution.md): every release's rank
+- [data/learnings.md](https://github.com/lgriffin/Hadur_Robot/blob/master/data/learnings.md): L-43, L-44

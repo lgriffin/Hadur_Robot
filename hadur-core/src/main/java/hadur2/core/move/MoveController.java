@@ -348,6 +348,20 @@ public class MoveController {
     }
 
     /**
+     * The bullet power of each firing wave that broke on us since the last call, in the order
+     * the waves broke and one for each outcome {@link #takeBrokenWaveOutcomes} hands over, so a
+     * caller drains both together (POW-11 counts each outcome in its power class). The list is
+     * handed over and emptied.
+     *
+     * @return a new list of powers, as the waves carried them
+     */
+    public List<Double> takeBrokenWavePowers() {
+        List<Double> taken = new ArrayList<>(brokenWavePowers);
+        brokenWavePowers.clear();
+        return taken;
+    }
+
+    /**
      * Their hits on us over those waves, each weighted by our angular width (normalised).
      *
      * @return the weighted hit count this battle; divided by {@link #enemyFiringWaves} it is
@@ -369,7 +383,9 @@ public class MoveController {
         weighted1v1ShotsHitThisRound = 0;
         lastBulletPower = 0;
         brokenWaveOutcomes.clear();
+        brokenWavePowers.clear();
         ourBullets.clear();
+        plan = List.of();
         shadowedWaves = 0;
         shadowComputations = 0;
         // A new version, so no wave can match a stale one and skip its shadow computation.
@@ -383,8 +399,12 @@ public class MoveController {
     private double weighted1v1ShotsHitThisRound;
     /** Whether each firing wave broken since the last {@link #takeBrokenWaveOutcomes} hit us. */
     private final List<Boolean> brokenWaveOutcomes = new ArrayList<>();
+    /** The power of each wave in {@link #brokenWaveOutcomes}, in the same order (POW-11). */
+    private final List<Double> brokenWavePowers = new ArrayList<>();
     /** MOVE-1: our bullets in flight, oldest first, for the shadows they cast. */
     private final List<OurBullet> ourBullets = new ArrayList<>();
+    /** MOVE-8: where the surf's plan puts us on each wave in the air; empty when it has none. */
+    private List<PlanInterval> plan = List.of();
     /** MOVE-1: waves that have had a shadow this round. */
     private int shadowedWaves;
     /** Bumped whenever the bullets in flight change; a wave's shadows are current at one version. */
@@ -464,6 +484,32 @@ public class MoveController {
                 return;
             }
         }
+    }
+
+    /**
+     * MOVE-8: the surf publishes the intervals its plan occupies, one per enemy wave in the
+     * air that it scored, nearest wave first. Replaces the last tick's.
+     *
+     * @param intervals the plan's intervals; copied
+     */
+    public void publishPlan(List<PlanInterval> intervals) {
+        plan = intervals.isEmpty() ? List.of() : List.copyOf(intervals);
+    }
+
+    /** MOVE-8: withdraws the plan, for a tick on which the surf does not drive. */
+    public void clearPlan() {
+        plan = List.of();
+    }
+
+    /**
+     * MOVE-8: the guess-factor interval, as the absolute bearing interval from each wave's
+     * source, that the current plan occupies when that wave arrives, for each enemy wave in
+     * the air the surf scored. Read-only; the duel's gun reads it (GUN-7).
+     *
+     * @return an unmodifiable list, empty when the surf has no plan on any wave
+     */
+    public List<PlanInterval> planIntervals() {
+        return plan;
     }
 
     /** MOVE-1: our bullets still in flight, as far as the events and the field edge tell. */
@@ -579,6 +625,7 @@ public class MoveController {
             raw1v1ShotsFired++;
             raw1v1ShotsFiredThisRound++;
             brokenWaveOutcomes.add(w.hitByBullet);
+            brokenWavePowers.add(w.bulletPower());
             if (w.hitByBullet) {
                 // Normalise the hit: it counts (range / width) * (0.1 / 0.98), where width is
                 // our full angular width at the intersection and range the wave's precise

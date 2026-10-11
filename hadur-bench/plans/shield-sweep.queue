@@ -1,0 +1,26 @@
+# The shield sweep (docs/bench/live-3.9.md, "What the overnight runs found"), first stage of 3.10.
+# On 30 mid-table bots from DrussGT's shield list, 3.9 with shield mode on for everyone (3.9sa)
+# scored +8.05 [+4.06, +12.04] over 3.9 (issue #140), with 5 bots significantly down. This
+# measures every other runnable list bot ranked 51st to 700th the same way, so each one can be
+# added to Hadur's list (ShieldListData) on its own result, by the D5 rule: interval above 0,
+# or open with a mean gain of 9 points or more.
+#   ./queue.sh run shield-sweep        (or  .\queue.ps1 run shield-sweep)
+# Builds are the released 3.9 and the shield-all ablation of v3.9, so the checkout's own build
+# is not used.
+
+set HEAP = --child-heap 2G
+set E = --engine 1.11.1
+set COMMON = --skip-build --skip-fetch --rounds 35 ${HEAP} ${E}
+set CPU = --cpu-constant 1488498
+set B39 = --baseline bisect/hadur2.Hadur_3.9.jar --baseline-robot "hadur2.Hadur 3.9"
+set SA39 = --robot-jar bisect/hadur2.Hadur_3.9sa.jar --robot "hadur2.Hadur 3.9sa"
+
+prep | mkdir -p bisect opponents && { [ -s bisect/hadur2.Hadur_3.9.jar ] || curl -fsSL -o bisect/hadur2.Hadur_3.9.jar https://github.com/lgriffin/Hadur_Robot/releases/download/v3.9/hadur2.Hadur_3.9.jar; } && ./fetch-opponents.sh --set shield-sweep-mid.txt && ./fetch-opponents.sh --set shield-sweep-low.txt && { [ -s bisect/hadur2.Hadur_3.9sa.jar ] || { git fetch --tags origin && ./build-ablation.sh --ref v3.9 shield-all; }; }
+
+# 1. Ranks 51-400 (109 bots): Hadur scores about 73 to 80 here and Nullstride 15 to 23 more.
+sweep-mid | ./bench-top20.sh ${COMMON} ${CPU} --set shield-sweep-mid.txt --seeds 8 ${SA39} ${B39} --label shield-sweep-mid-v39
+  after: prep
+
+# 2. Ranks 401-700 (91 bots): Hadur scores about 87 here and Nullstride 10 more.
+sweep-low | ./bench-top20.sh ${COMMON} ${CPU} --set shield-sweep-low.txt --seeds 8 ${SA39} ${B39} --label shield-sweep-low-v39
+  after: prep

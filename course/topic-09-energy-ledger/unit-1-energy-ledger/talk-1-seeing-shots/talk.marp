@@ -1,0 +1,165 @@
+---
+marp: true
+theme: default
+paginate: true
+---
+
+# An energy drop is not always a shot
+
+Topic 09
+
+After this talk you can:
+
+- list what else changes an enemy's energy
+- say in what order Hadur's ledger corrects a drop, and why
+- read `EnergyLedger.scan` and the properties that test it
+
+---
+
+## The 1.20 rule, and what was wrong with it
+
+Hadur 1.20 treated every drop in [0.1, 3.0] as a shot, and surfed a wave for it.
+
+That is wrong whenever the drop has another cause. In the S2 bench, 1,820 drops that 1.20 would have surfed as phantom waves were explained away across all opponents.
+
+A phantom wave is not harmless. The surfer dodges a bullet that was never fired, and moves into real ones.
+
+Source: `docs/strategy-evolution.md`, S2.
+
+---
+
+## Five reasons an energy number moves
+
+Between two scans, the enemy's energy changes because:
+
+1. it fired a bullet (this is the one we want)
+2. one of our bullets hit it (it loses the damage)
+3. one of its bullets hit us (it gains 3 times the power back)
+4. it drove into a wall (damage depends on speed)
+5. the robots collided (both lose a little)
+
+The hit events for 2, 3 and 5 arrive on the same tick as the scan that shows their effect. A wall hit has no event at all.
+
+---
+
+## The correction, in order (WAVE-1)
+
+```java
+long elapsed = Math.max(1, time - lastTime);
+double raw = lastEnergy - energy;
+double explained = raw - ourDamage + theirRefund - collisionDamage;
+double wall = collisionDamage == 0
+    ? wallDamage(explained, lastVelocity, velocity, x, y, elapsed)
+    : 0;
+double corrected = explained - wall;
+```
+
+Drop, minus our damage, plus their refund (it hid part of the shot), minus collision damage, then minus wall damage. What is left is `corrected`.
+
+---
+
+## What counts as a shot (WAVE-2)
+
+Bullet power is between 0.1 and 3.0. Energies are doubles, so a 0.1 shot can read 0.09999999999999998.
+
+```java
+static final double EPSILON = 1e-6;
+
+public static boolean isShot(double drop) {
+    return drop >= MIN_SHOT - EPSILON
+        && drop <= MAX_SHOT + EPSILON;
+}
+```
+
+The slack is far below the 0.1 step between powers, so it cannot turn a non-shot into a shot. This is the topic 02 lesson (floating point and tolerance) in a real place.
+
+---
+
+## Wall hits have no event
+
+The ledger infers them. A robot brakes by at most 2 per tick, so stopping dead beside a wall means it crashed unless it had time to brake.
+
+```java
+if (velocity != 0 || previousVelocity == 0) return 0;
+boolean nearWall = x <= WALL_MARGIN || y <= WALL_MARGIN
+    || x >= fieldWidth - WALL_MARGIN
+    || y >= fieldHeight - WALL_MARGIN;
+if (!nearWall) return 0;
+```
+
+Then it tries candidate impact speeds, nearest the scanned speed first, and takes the one whose damage explains the drop. The engine applies acceleration before its wall check, which is why this is a list of speeds and not one.
+
+---
+
+## A small state machine
+
+```mermaid
+stateDiagram-v2
+    [*] --> Unseen: newRound()
+    Unseen --> Seen: first scan (baseline, no shot)
+    Seen --> Seen: scan (compare, then remember)
+    Seen --> Unseen: newRound()
+```
+
+Held corrections (`ourDamage`, `theirRefund`, `collisionDamage`) are added by events and cleared by the next scan, in `remember`. Each one applies to one scan only.
+
+A fixed handful of fields, so nothing grows over a battle (RES-2).
+
+---
+
+## Test it with every mix of events
+
+A jqwik property generates a shot, up to two of our hits, an optional refund and a starting energy. Whatever the mix, the ledger must recover the exact power.
+
+```java
+@Property @Tag("WAVE-1")
+void recoversTheShotUnderAnyMixOfEffects(
+        @ForAll @IntRange(min = 1, max = 30) int shotTenths,
+        @ForAll @IntRange(min = 0, max = 2) int ourHits,
+        @ForAll boolean theyHitUs, /* ... */) {
+    // ... build the scans, apply the events ...
+    assertTrue(r.shot());
+    assertEquals(power(shotTenths), r.corrected(), 1e-9);
+}
+```
+
+A second property says the opposite: any explained drop never becomes a wave.
+
+---
+
+## Review found what the properties had not
+
+An automated review of S2 found five real edge cases, now fixed and tested. Two examples:
+
+- braking over a gap of several scans was mistaken for a wall hit
+- a shot fired while striking a wall was missed
+
+WAVE-3 came later: when a wall hit and a shot share one interval, the split is a guess. The reading is flagged `uncertain`, clamped to a legal power, and the surf trusts it at half weight.
+
+The ledger may depend only on physics. An ArchUnit rule says so (`ledgerIsLeaf`).
+
+---
+
+## What it bought
+
+Against Shadow 3.83c, cold (docs/bench/s2-2.0-cold.md and s6-2.1-cold.md):
+
+| Stage | Shots found as waves | False waves |
+|---|---|---|
+| S2 | 99.4% | 0 |
+| S6 | 99.8% (9,540 of 9,562 real shots matched) | 2 |
+
+Against the five sample bots at S2, 8 of 12,144 inferred waves were false. Score share did not move at S2 (43.7% ± 4.6), as expected: seeing shots clearly is what the later stages stand on.
+
+---
+
+## Recap
+
+- Do not trust a raw number. List every other cause, subtract them in a fixed order.
+- Keep the rules in one small class that depends only on physics.
+- Say the rule as properties, not just examples.
+- Mark what you are unsure of (`uncertain`) and let the user of the answer decide how far to trust it.
+
+Next: the note walks through the class at its S2 commit, and the lab builds the ledger test first.
+
+<!-- Code excerpts are trimmed and re-wrapped to fit a slide; the linked source files are exact. -->

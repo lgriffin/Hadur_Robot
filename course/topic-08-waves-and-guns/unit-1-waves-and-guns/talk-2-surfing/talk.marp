@@ -1,0 +1,157 @@
+---
+marp: true
+theme: default
+paginate: true
+---
+
+# Surfing
+
+Topic 08, talk 2
+
+After this talk you can:
+
+- say what "danger" means for a guess factor
+- explain how a surfer chooses between three moves
+- read `SurfMover.waveDanger` and say what each factor does
+
+---
+
+## The gun's idea, turned around
+
+A gun asks: where will the target be?
+
+A surfer asks: where will the enemy's bullet be aimed, and how do I not be there?
+
+Same wave, same guess factor, same nearest-neighbour search. The difference is whose history you learn from. The surfer learns where the enemy has shot at us before (or where its shots hit).
+
+---
+
+## Danger over guess factors
+
+For each wave the enemy has fired, we know its bullet's speed and the angle it was fired from.
+
+Every position we could be in when the wave reaches us has a guess factor. The danger of that position comes from the past waves most like this one: the closer their recorded guess factors are to ours, the more danger.
+
+Hadur reads this from KNN "views". The surf calls `moveCtrl.getDangerScore(wave, intersection, index)`, which returns a kernel-weighted average.
+
+---
+
+## Three options, simulated
+
+Each tick Hadur has three choices: keep orbiting one way, keep orbiting the other way, or stop.
+
+For each, it predicts where it would be when the wave breaks and scores the danger there.
+
+```java
+double ccwDanger = surfOptionDangers.getOrDefault(
+    SurfOption.COUNTER_CLOCKWISE, 0.0);
+double stopDanger = surfOptionDangers.getOrDefault(
+    SurfOption.STOP, 0.0);
+double cwDanger = surfOptionDangers.getOrDefault(
+    SurfOption.CLOCKWISE, 0.0);
+```
+
+(`SurfMover.surf`.)
+
+---
+
+## The decision is a plain comparison
+
+```java
+if (stopDanger <= ccwDanger && stopDanger <= cwDanger) {
+    orders.maxVelocity(0.0);          // stop
+} else {
+    orders.maxVelocity(8.0);
+    lastSurfOption = cwDanger < ccwDanger
+        ? SurfOption.CLOCKWISE
+        : SurfOption.COUNTER_CLOCKWISE;
+}
+```
+
+Ties go to stopping, then to counter-clockwise. A fixed tie rule is part of why a replay gives the same orders every time.
+
+---
+
+## What goes into one wave's danger
+
+```java
+double danger = hitRate * (1 - shadowed)
+    + moveCtrl.getDangerScore(surfWave, intersection, surfWaveIndex);
+danger *= Rules.getBulletDamage(surfWave.bulletPower());
+if (surfWave.uncertain) danger *= 0.5;
+danger /= timeToImpact;
+danger *= distancingDanger(start, passed, surfWave.sourceLocation);
+```
+
+- hit rate: an enemy that hits us often counts for more everywhere
+- damage: a power 3 shot matters more than a power 0.1 shot
+- `uncertain`: a wave from a wall-hit guess (WAVE-3) is trusted at half
+- time to impact: a wave about to arrive weighs more than a far one
+
+---
+
+## Looking at more than one wave
+
+The danger of a move is the danger now plus the best you can do against the next wave.
+
+```java
+if (surfWaveIndex + 1 < numWaves && danger < cutoff) {
+    double nextCcw = checkDanger(/* ... */);
+    double nextStop = checkDanger(/* ... */);
+    double nextCw = checkDanger(/* ... */);
+    danger += Math.min(nextCcw, Math.min(nextStop, nextCw));
+}
+```
+
+`cutoff` is the best total found so far. An option already worse than that is not looked at past its first wave. That is pruning again, as in the KD-tree.
+
+---
+
+## Bullet shadows: use your own bullets as cover
+
+An enemy bullet and one of ours that cross in flight destroy each other. So for each enemy wave Hadur works out which firing angles are blocked by its own bullets (`BulletShadows`, MOVE-1).
+
+- certain shadow: the bullets meet in every engine move order
+- possible shadow: they meet only if the engine moves one bullet first (counts as half)
+
+The surf keeps `1 - (certain + possible / 2)` of a wave's danger at an angle that is shadowed.
+
+---
+
+## Proving it against the engine
+
+Shadows are geometry, and geometry is easy to get subtly wrong. Hadur checks it two ways.
+
+- A jqwik property flies an enemy bullet at many angles, turn by turn, and requires the colliding angles to be exactly the shadows (`BulletShadowsProperties`).
+- The bench logs every enemy bullet that one of ours destroyed. In the S6 cold bench, all 927 against Shadow fell inside a shadow Hadur had computed.
+
+Source: `docs/strategy-evolution.md`, S6.
+
+---
+
+## What it was worth
+
+Against Shadow 3.83c, cold, 35 rounds by 5 seeds (docs/strategy-evolution.md):
+
+| Stage | Score share |
+|---|---|
+| S5 | 46.3% ± 4.5 |
+| S6 (bullet shadows) | 57.4% ± 5.0 |
+
+Their hit rate on Hadur fell from 9.9% to 7.9%. It was the first stage to move the score outside the noise.
+
+A cleverer move lost its A/B: go-to surfing scored 51.8% ± 5.1 against 54.8% ± 3.7 for the three options, so it stayed in reserve.
+
+---
+
+## Recap
+
+- A surfer is a gun played backwards: same waves, same neighbours.
+- Danger is a product of simple factors, each one with a reason.
+- Choosing is a comparison with a fixed tie rule.
+- Pruning (`cutoff`) keeps the lookahead affordable, and the tick budget (topic 13) sheds it when time runs short.
+- Your own bullets are cover, and the build proves the geometry.
+
+Next: the note walks through the real classes, then the lab builds a small surfer.
+
+<!-- Code excerpts are trimmed and re-wrapped to fit a slide; the linked source files are exact. -->

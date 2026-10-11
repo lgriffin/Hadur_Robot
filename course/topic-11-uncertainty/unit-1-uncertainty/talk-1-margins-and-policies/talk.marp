@@ -1,0 +1,168 @@
+---
+marp: true
+theme: default
+paginate: true
+---
+
+# Every number carries a margin
+
+Topic 11
+
+After this talk you can:
+
+- compute a rate with a margin of error that stays honest for small samples
+- write a policy that keeps its safe setting until the evidence is certain
+- read a bug report that says "this rule can never fire", and test for it
+
+---
+
+## The requirement
+
+> DIAL-1 (Ubiquitous): Every policy input shall carry a value and a margin of error, and each policy shall select its conservative setting while the margin exceeds the policy's threshold.
+
+(`docs/requirements.md`)
+
+"Their gun hits 15% of the time" and "it hit 1 of 6 shots" are different facts. Hadur must tell them apart, because it changes its distance, its bullet power and its opening gun from these numbers.
+
+---
+
+## A rate and its margin
+
+`Estimate` is an immutable value: the raw rate, the 95% margin, and the sample count.
+
+```java
+public static Estimate of(double hits, double n) {
+    if (!(n > 0) || Double.isInfinite(n)
+            || !(hits >= 0) || Double.isInfinite(hits)) return NONE;
+    double h = Math.min(hits, n);
+    double p = (h + 2) / (n + 4);
+    return new Estimate(h / n,
+        1.96 * Math.sqrt(p * (1 - p) / (n + 4)), n);
+}
+```
+
+Note `!(n > 0)` rather than `n <= 0`: it also rejects NaN. And `NONE` is a named value, so "nothing known" is explicit.
+
+---
+
+## Why add two hits and two misses
+
+This is the Agresti-Coull interval: add two successes and two failures, then use the usual formula.
+
+- 1 hit in 6 shots: margin about 28 points.
+- 20 hits in 100 shots: margin about 7.9 points.
+- 0 hits in 5 shots: still wide, where the plain formula says "exactly 0, no doubt".
+
+A rate of 0 or 1 over few samples is exactly where the plain formula is overconfident. Hadur's weighted hits (a close hit counts for more) make this even more important.
+
+---
+
+## A rolling window
+
+Rates move with the distance Hadur chooses, so the window is the last 100 outcomes, not the battle total.
+
+```java
+public void record(boolean hit) {
+    if (size == outcomes.length) {
+        if (outcomes[next]) hits--;   // the slot we overwrite is the oldest
+    } else {
+        size++;
+    }
+    outcomes[next] = hit;
+    if (hit) hits++;
+    next = (next + 1) % outcomes.length;
+}
+```
+
+A ring buffer with a running count: `estimate()` costs nothing to read, and the window is bounded by construction (RES-2).
+
+---
+
+## Named tiers, only when certain
+
+A profile is turned into tiers: how good their gun is (T0 to T3) and how hard they are to hit (M0 to M3). A tier is named only if the margin is at most 3 points.
+
+```java
+public static final double MAX_MARGIN = 0.03;
+```
+
+Otherwise the tier is `UNKNOWN`, and an unknown tier gets 1.20's defaults. So Hadur is never worse than 1.20 against an opponent it knows too little about.
+
+---
+
+## A policy that waits for evidence (POW-2)
+
+Fire full power only when our hit rate is certainly above 20% and theirs certainly below 10%.
+
+```java
+if (!Double.isNaN(ours.value()) && !Double.isNaN(theirs.value())
+        && ours.center() - ours.margin() > OUR_RATE
+        && theirs.center() + theirs.margin() < THEIR_RATE) {
+    return Reason.POW_2;
+}
+```
+
+Each bound is checked with its margin on the cautious side. The test `uncertainLeadKeepsTheGun` feeds in "30% of 20 shots" and "5% of 20 shots" and requires the gun's own power.
+
+---
+
+## Live evidence beats the profile (RES-4)
+
+A stored seed can be wrong: a new version, or a different bot under an old name. `SeedTrust` watches each seed against the live data, one wave at a time.
+
+```java
+if (!live.within(MAX_LIVE_MARGIN)
+        || Double.isNaN(profile.value())) return false;
+double margin = Math.max(live.margin(), profile.margin());
+if (!Double.isFinite(margin)) return true;
+return Math.abs(live.value() - profile.value()) > margin;
+```
+
+When they disagree by more than the wider margin, the seed loses a twentieth of its weight per wave and is worth nothing after twenty. Agreement neither lowers it nor restores it.
+
+---
+
+## A rule that could never fire
+
+R2 added POW-4: when both rates are known within a margin, pick full power or the gun's own power by expected value. The first cut set that margin to 5 points.
+
+A review on PR #61 found the flaw. A real 100-outcome window cannot get a margin that small anywhere that full power wins. The rule passed its unit tests, which used wider, unrealistic windows, and would never have fired live.
+
+The fix: margin 0.10, and a test that builds the estimate the way the core does.
+
+```java
+static Estimate hitWindowEstimate(int hits, int of) {
+    HitWindow w = new HitWindow(100);
+    for (int i = 0; i < of; i++) w.record(i < hits);
+    return w.estimate();
+}
+```
+
+---
+
+## The lesson
+
+- Build test inputs the way production builds them.
+- A threshold is a claim about reachability. Test that it can be reached.
+- The same review found END-3 replacing a low-energy gun's choice outright instead of capping it, and RAM-1 reading a raw distance change instead of the enemy's own velocity.
+
+Three rules, four bugs (RAM-1 had two), none caught by the first tests. Source: `docs/strategy-evolution.md` (R2) and the Javadoc of `PowerPolicy.POW_4_MARGIN`.
+
+---
+
+## DIAL-2: no policy reads the clock
+
+Policies and the opening book decide from evidence, never from time alone. The build enforces it.
+
+```java
+noClasses().that().resideInAPackage("hadur2.core.adapt..")
+    .should().dependOnClassesThat().haveNameMatching(
+        "hadur2\\.core\\.model\\.Bot(Input|Event)(\\$.*)?")
+    .check(core);
+```
+
+The adapt package cannot even name `BotInput`, where ticks and rounds live. A policy that cannot see time cannot misuse it.
+
+Next: the note, then the lab builds `Estimate`, a hit window and a power policy.
+
+<!-- Code excerpts are trimmed and re-wrapped to fit a slide; the linked source files are exact. -->

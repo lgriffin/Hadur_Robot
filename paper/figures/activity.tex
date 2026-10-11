@@ -1,0 +1,25 @@
+% Pull requests merged to master per day, from `git log --first-parent`. Both eras used
+% Claude (26 commits in May carry a Claude co-author line); the second used the multi-agent
+% project and the steel thread. Days with no merges are omitted.
+\begin{tikzpicture}
+\begin{axis}[
+  width=\columnwidth, height=4.4cm,
+  ybar, bar width=4.2pt,
+  symbolic x coords={05-06,05-08,05-09,05-11,05-12,05-13,05-15,gap,09-26,09-27,09-28,09-29,10-01,10-03,10-04,10-05,10-06,10-07},
+  xtick={05-06,05-08,05-11,05-13,05-15,09-26,09-28,10-01,10-04,10-06},
+  xticklabel style={rotate=60, anchor=east, font=\tiny},
+  ylabel={PRs merged per day},
+  ymin=0, ymax=23,
+  ymajorgrids, grid style={black!12},
+  tick label style={font=\scriptsize}, label style={font=\footnotesize},
+  enlarge x limits=0.03,
+  clip=false,
+]
+\addplot[fill=black!35, draw=black!50, bar shift=0pt] coordinates {
+  (05-06,1) (05-08,5) (05-09,2) (05-11,2) (05-12,1) (05-13,2) (05-15,3) };
+\addplot[fill=hblue!75, draw=hblue, bar shift=0pt] coordinates {
+  (09-26,8) (09-27,16) (09-28,8) (09-29,6) (10-01,11) (10-03,2) (10-04,2) (10-05,12) (10-06,19) (10-07,20) };
+\node[font=\scriptsize, align=center, anchor=south] at (axis cs:05-11,9) {May: one assistant,\\by feel, 16 PRs};
+\node[font=\scriptsize, align=center, anchor=south, color=hblue] at (axis cs:09-28,17.5) {Sep--Oct: multi-agent,\\steel thread, 104 PRs};
+\end{axis}
+\end{tikzpicture}

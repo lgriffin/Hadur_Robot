@@ -1,0 +1,66 @@
+file	date	label	mode	candidate	baseline	engine	rounds	child_heap	cpu_constant	parallel	child_cpus	seeds	units	pairs	diff_pp	ci_lo	ci_hi	skipped_cand	skipped_base	failed	rows
+2026-10-06_hadur-3.8_drussgt40-local_cold.tsv	2026-10-06	hadur-3.8_drussgt40-local_cold	duel	3.8	3.7	1.9.5.6	35			12		40	1	40	13.21	10.67	15.74	53.5	44.2	0	80
+2026-10-06_hadur-3.8_top20-local_cold.tsv	2026-10-06	hadur-3.8_top20-local_cold	duel	3.8	3.7	1.9.5.6	35			12		5	20	100	2.84	1.44	4.23	33.1	32.9	0	200
+2026-10-06_hadur-druss-385-local_cold.tsv	2026-10-06	hadur-druss-385-local_cold	duel	3.8.5	3.8	1.11.1	35			12		20	1	20	-0.41	-4.08	3.25	42.2	38.1	0	40
+2026-10-06_hadur-leak38-385-local_cold.tsv	2026-10-06	hadur-leak38-385-local_cold	duel	3.8.5	3.8	1.11.1	35			12		16	32	512	-0.26	-0.62	0.09	16.7	16.7	0	1024
+2026-10-06_hadur-leak38-38v34-local_cold.tsv	2026-10-06	hadur-leak38-38v34-local_cold	duel	3.8	3.4	1.11.1	35			12		16	32	512	0.66	0.33	0.99	11.3	11.7	0	1024
+2026-10-06_hadur-leak38-step1-16seeds-local_cold.tsv	2026-10-06	hadur-leak38-step1-16seeds-local_cold	duel	3.8	3.7	1.9.5.6	35			16		16	32	512	-0.14	-0.51	0.23	14.1	13.8	0	1024
+2026-10-06_hadur-leak38-step1-e1111-local_cold.tsv	2026-10-06	hadur-leak38-step1-e1111-local_cold	duel	3.8	3.7	1.11.1	35			12		16	32	512	0.19	-0.17	0.56	11.7	11.1	0	1024
+2026-10-06_hadur-leak38-step1-loaded-local_cold.tsv	2026-10-06	hadur-leak38-step1-loaded-local_cold	duel	3.8	3.7	1.9.5.6	35					4	32	128	0.34	-0.55	1.22	43.5	37.4	0	256
+2026-10-06_hadur-leak38-step1-local_cold.tsv	2026-10-06	hadur-leak38-step1-local_cold	duel	3.8	3.7	1.9.5.6	35			12		4	32	128	-0.43	-1.12	0.25	12.3	11.3	0	256
+2026-10-06_hadur-leak38-step2-16seeds-local_cold.tsv	2026-10-06	hadur-leak38-step2-16seeds-local_cold	duel	3.8.1	3.7	1.9.5.6	35			16		16	32	512	-0.36	-0.75	0.02	13.7	14.3	0	1024
+2026-10-06_hadur-leak38-step2-local_cold.tsv	2026-10-06	hadur-leak38-step2-local_cold	duel	3.8.1	3.7	1.9.5.6	35					4	32	128	0.06	-0.70	0.82	10.8	10.1	0	256
+2026-10-06_hadur-leak38-step3-local_cold.tsv	2026-10-06	hadur-leak38-step3-local_cold	duel	3.8.1	3.8	1.9.5.6	35					4	32	128	0.21	-0.40	0.81	11.4	11.4	0	256
+2026-10-06_hadur-ll-351v34-local_cold.tsv	2026-10-06	hadur-ll-351v34-local_cold	duel	3.5.1	3.4	1.11.1	35					8	39	312	-6.37	-7.09	-5.66	11.2	11.2	16	640
+2026-10-06_hadur-ll-37v351-local_cold.tsv	2026-10-06	hadur-ll-37v351-local_cold	duel	3.7	3.5.1	1.11.1	35					8	39	312	-0.35	-1.28	0.58	10.8	11.6	16	640
+2026-10-06_hadur-ll-37v351-tight-local_cold.tsv	2026-10-06	hadur-ll-37v351-tight-local_cold	duel	3.7	3.5.1	1.11.1	35					8	39	312	0.70	0.10	1.30	115.2	115.3	16	640
+2026-10-06_hadur-ll-385v34-local_cold.tsv	2026-10-06	hadur-ll-385v34-local_cold	duel	3.8.5	3.4	1.11.1	35					8	39	312	-6.74	-7.39	-6.08	11.6	11.3	16	640
+2026-10-06_hadur-ll-385v34-tight-local_cold.tsv	2026-10-06	hadur-ll-385v34-tight-local_cold	duel	3.8.5	3.4	1.11.1	35					8	39	312	2.15	1.50	2.80	146.6	116.4	16	640
+2026-10-06_hadur-ll-385v37-local_cold.tsv	2026-10-06	hadur-ll-385v37-local_cold	duel	3.8.5	3.7	1.11.1	35					8	39	312	-0.79	-1.63	0.06	11.8	10.7	16	640
+2026-10-06_hadur-melee-top20-local_cold.tsv	2026-10-06	hadur-melee-top20-local_cold	melee	3.8	3.7	1.9.5.6						10	5	50	-0.50	-0.82	-0.17			0	1000
+2026-10-06_hadur-team-top20-local_cold.tsv	2026-10-06	hadur-team-top20-local_cold	duel	3.8	3.7	1.9.5.6	10					10	20	199	25.48	24.52	26.44	6.4	2.1	1	400
+2026-10-06_hadur-top20-385-local_cold.tsv	2026-10-06	hadur-top20-385-local_cold	duel	3.8.5	3.8	1.11.1	35			12		5	20	100	-1.12	-2.60	0.37	28.0	27.2	0	200
+2026-10-06_hadur-top20-e1111-local_cold.tsv	2026-10-06	hadur-top20-e1111-local_cold	duel	3.8	3.7	1.11.1	35			12		5	20	100	3.05	1.73	4.38	21.1	20.9	0	200
+2026-10-07_hadur-calib-cpu1m-39-v385-local_cold.tsv	2026-10-07	hadur-calib-cpu1m-39-v385-local_cold	duel	2.Hadur 3.9	2.Hadur 3.8.5	1.11.1	35			12		16	32	512	0.28	-0.04	0.60	11.6	11.7	0	1024
+2026-10-07_hadur-calib-warm-39-v385-local_cold.tsv	2026-10-07	hadur-calib-warm-39-v385-local_cold	duel	2.Hadur 3.9	2.Hadur 3.8.5	1.11.1	35			12		8	32	256	0.54	-0.12	1.21	11.6	12.3	0	512
+2026-10-07_hadur-calib-warm-39-v385-local_warm.tsv	2026-10-07	hadur-calib-warm-39-v385-local_warm	duel	2.Hadur 3.9	2.Hadur 3.8.5	1.11.1	35			12		8	32	256	0.60	-0.30	1.49	13.7	13.4	0	512
+2026-10-07_hadur-leak-39-v385-local_cold.tsv	2026-10-07	hadur-leak-39-v385-local_cold	duel	2.Hadur 3.9	2.Hadur 3.8.5	1.11.1	35			12		16	32	512	0.08	-0.28	0.44	12.8	12.9	0	1024
+2026-10-07_hadur-leak-39r-v385-local_cold.tsv	2026-10-07	hadur-leak-39r-v385-local_cold	duel	2.Hadur 3.9	2.Hadur 3.8.5	1.11.1	35			12		16	32	512	-0.02	-0.40	0.36	11.4	11.4	0	1024
+2026-10-07_hadur-ll-39-v385-local_cold.tsv	2026-10-07	hadur-ll-39-v385-local_cold	duel	2.Hadur 3.9	2.Hadur 3.8.5	1.11.1	35			12		8	39	312	5.46	4.74	6.19	11.7	12.2	16	640
+2026-10-07_hadur-lost-rounds-39-v34-local_cold.tsv	2026-10-07	hadur-lost-rounds-39-v34-local_cold	duel	2.Hadur 3.9	2.Hadur 3.4	1.11.1	35			12		8	32	256	1.70	0.94	2.46	11.2	11.8	0	512
+2026-10-07_hadur-melee-top20-385-vs-37-local_cold.tsv	2026-10-07	hadur-melee-top20-385-vs-37-local_cold	melee	3.8.5	3.7	1.9.5.6				5		10	5	50	0.22	-0.08	0.52			0	1000
+2026-10-07_hadur-melee-top20-385-vs-38-local_cold.tsv	2026-10-07	hadur-melee-top20-385-vs-38-local_cold	melee	3.8.5	3.8	1.9.5.6				5		10	5	50	0.20	-0.21	0.60			0	1000
+2026-10-07_hadur-mid-39-v34-local_cold.tsv	2026-10-07	hadur-mid-39-v34-local_cold	duel	2.Hadur 3.9	2.Hadur 3.4	1.11.1	35			12		8	40	320	-0.01	-0.64	0.62	11.7	12.0	0	640
+2026-10-07_hadur-mid-null-list-v39-local_cold.tsv	2026-10-07	hadur-mid-null-list-v39-local_cold	duel	2.Hadur 3.9	jd.Nullstride 2.3.3	1.11.1	35			12		8	30	240	-17.84	-18.53	-17.15	12.7	32.9	0	480
+2026-10-07_hadur-mid-null-v39-local_cold.tsv	2026-10-07	hadur-mid-null-v39-local_cold	duel	2.Hadur 3.9	jd.Nullstride 2.3.3	1.11.1	35			12		8	40	320	-10.95	-11.51	-10.39	12.1	46.1	0	640
+2026-10-07_hadur-mid-shieldall-list-v39-local_cold.tsv	2026-10-07	hadur-mid-shieldall-list-v39-local_cold	duel	2.Hadur 3.9sa	2.Hadur 3.9	1.11.1	35			12		8	30	240	8.05	7.19	8.91	11.7	12.3	0	480
+2026-10-07_hadur-mid-shieldall-v39-local_cold.tsv	2026-10-07	hadur-mid-shieldall-v39-local_cold	duel	2.Hadur 3.9sa	2.Hadur 3.9	1.11.1	35			12		8	40	320	-1.24	-1.95	-0.53	12.3	11.9	0	640
+2026-10-07_hadur-score-leak-39-v34-local_cold.tsv	2026-10-07	hadur-score-leak-39-v34-local_cold	duel	2.Hadur 3.9	2.Hadur 3.4	1.11.1	35			12		8	32	256	5.71	5.23	6.19	10.5	11.1	0	512
+2026-10-07_hadur-tail-39-v34-local_cold.tsv	2026-10-07	hadur-tail-39-v34-local_cold	duel	2.Hadur 3.9	2.Hadur 3.4	1.11.1	35			12		8	39	312	0.16	-0.13	0.44	11.5	11.1	16	640
+2026-10-07_hadur-tail-knight-v39-local_cold.tsv	2026-10-07	hadur-tail-knight-v39-local_cold	duel	2.Hadur 3.9	rsalesc.mega.Knight 0.6.28	1.11.1	35			12		8	39	312	-1.20	-1.54	-0.86	10.8	1.9	16	640
+2026-10-07_hadur-team-top20-385-vs-37-local_cold.tsv	2026-10-07	hadur-team-top20-385-vs-37-local_cold	duel	3.8.5	3.7	1.9.5.6	35			4		10	20	200	25.13	24.61	25.65	7.5	3.8	0	400
+2026-10-07_hadur-team-top20-385-vs-38-local_cold.tsv	2026-10-07	hadur-team-top20-385-vs-38-local_cold	duel	3.8.5	3.8	1.9.5.6	35			4		10	20	200	-0.10	-0.81	0.60	7.8	7.7	0	400
+2026-10-07_hadur-tier2-385-local_cold.tsv	2026-10-07	hadur-tier2-385-local_cold	duel	3.8.5	3.8	1.11.1	35			12		20	15	300	-0.29	-1.11	0.52	16.1	16.7	40	640
+2026-10-07_hadur-top20-385-vs-37-local_cold.tsv	2026-10-07	hadur-top20-385-vs-37-local_cold	duel	3.8.5	3.7	1.11.1	35			12		20	20	400	2.32	1.59	3.04	22.3	20.5	0	800
+2026-10-07_hadur-top20-39-v385-local_cold.tsv	2026-10-07	hadur-top20-39-v385-local_cold	duel	2.Hadur 3.9	2.Hadur 3.8.5	1.11.1	35			12		10	20	200	0.00	-1.04	1.05	23.8	22.9	0	400
+2026-10-07_hadur-top20-39r-v385-local_cold.tsv	2026-10-07	hadur-top20-39r-v385-local_cold	duel	2.Hadur 3.9	2.Hadur 3.8.5	1.11.1	35			12		20	20	400	0.22	-0.49	0.92	23.3	23.5	0	800
+2026-10-07_hadur-top20big-385-local_cold.tsv	2026-10-07	hadur-top20big-385-local_cold	duel	3.8.5	3.8	1.11.1	35			12		100	20	2000	-0.32	-0.63	-0.01	22.8	22.9	0	4000
+2026-10-07_hadur-weak-39-v385-local_cold.tsv	2026-10-07	hadur-weak-39-v385-local_cold	duel	2.Hadur 3.9	2.Hadur 3.8.5	1.11.1	35			12		16	11	176	-0.69	-1.86	0.48	10.8	10.7	0	352
+2026-10-07_hadur-weak-39r-v385-local_cold.tsv	2026-10-07	hadur-weak-39r-v385-local_cold	duel	2.Hadur 3.9	2.Hadur 3.8.5	1.11.1	35			12		16	11	176	0.06	-0.79	0.92	10.9	10.9	0	352
+2026-10-08_hadur-census-311-tail-local_cold.tsv	2026-10-08	hadur-census-311-tail-local_cold	duel	lxx.Tomcat 3.68	2.Hadur 3.10	1.11.1	35	0	1488498	12	2	4	1015	4060	1.30	1.19	1.41	7.5	32.1	8	8128
+2026-10-08_hadur-gungap-310nf-v310-pc-local_cold.tsv	2026-10-08	hadur-gungap-310nf-v310-pc-local_cold	duel	2.Hadur 3.10nf	2.Hadur 3.10	1.11.1	35			12		8	30	240	0.31	-0.35	0.97	12.0	12.8	0	480
+2026-10-08_hadur-shield-310-v39-local_cold.tsv	2026-10-08	hadur-shield-310-v39-local_cold	duel	2.Hadur 3.10	2.Hadur 3.9	1.11.1	35			12		8	83	664	11.74	11.27	12.21	11.6	13.4	0	1328
+2026-10-08_hadur-shield-confirm-v39-local_cold.tsv	2026-10-08	hadur-shield-confirm-v39-local_cold	duel	2.Hadur 3.9sa	2.Hadur 3.9	1.11.1	35			12		16	65	1040	10.94	10.54	11.33	11.2	12.5	0	2080
+2026-10-08_hadur-shield-sweep-low-v39-local_cold.tsv	2026-10-08	hadur-shield-sweep-low-v39-local_cold	duel	2.Hadur 3.9sa	2.Hadur 3.9	1.11.1	35			12		8	91	728	-2.40	-2.72	-2.08	12.0	11.9	0	1456
+2026-10-08_hadur-shield-sweep-mid-v39-local_cold.tsv	2026-10-08	hadur-shield-sweep-mid-v39-local_cold	duel	2.Hadur 3.9sa	2.Hadur 3.9	1.11.1	35			12		8	109	872	4.70	4.26	5.14	13.0	13.4	0	1744
+2026-10-08_hadur-tail-310-v39-local_cold.tsv	2026-10-08	hadur-tail-310-v39-local_cold	duel	2.Hadur 3.10	2.Hadur 3.9	1.11.1	35			12		4	39	156	-0.13	-0.62	0.36	12.1	11.9	0	312
+2026-10-08_hadur-tail-310nf-v310-pc-local_cold.tsv	2026-10-08	hadur-tail-310nf-v310-pc-local_cold	duel	2.Hadur 3.10nf	2.Hadur 3.10	1.11.1	35			12		4	39	156	0.29	-0.23	0.81	11.4	11.5	0	312
+2026-10-08_hadur-top20-310-v39-local_cold.tsv	2026-10-08	hadur-top20-310-v39-local_cold	duel	2.Hadur 3.10	2.Hadur 3.9	1.11.1	35			12		5	20	100	-0.82	-2.15	0.51	21.7	23.0	0	200
+2026-10-08_hadur-top20-310nf-v310-pc-local_cold.tsv	2026-10-08	hadur-top20-310nf-v310-pc-local_cold	duel	2.Hadur 3.10nf	2.Hadur 3.10	1.11.1	35			12		5	20	100	-1.06	-2.59	0.48	16.7	21.9	0	200
+2026-10-09_hadur-census-311-top-local_cold.tsv	2026-10-09	hadur-census-311-top-local_cold	duel	lxx.Tomcat 3.68	2.Hadur 3.10	1.11.1	35	0	1488498	12	2	4	196	784	-3.39	-3.89	-2.90	41.6	30.0	16	1584
+2026-10-09_hadur-census-312-g4-local_cold.tsv	2026-10-09	hadur-census-312-g4-local_cold	duel	2.Hadur 3.10nd	2.Hadur 3.10	1.11.1	35	0	1488498	12	2	4	1212	4848	0.73	0.60	0.86	34.5	35.2	0	9696
+2026-10-09_hadur-census-312-slow-local_cold.tsv	2026-10-09	hadur-census-312-slow-local_cold	duel	2.Hadur 3.10nd	2.Hadur 3.10	1.11.1	35	0	744249	12	2	2	400	800	36.79	36.35	37.23	563.0	166.8	0	1600
+2026-10-09_hadur-screen-311-nd-local_cold.tsv	2026-10-09	hadur-screen-311-nd-local_cold	duel	2.Hadur 3.10nd	2.Hadur 3.10	1.11.1	35	0	1488498	12	2	2	400	800	0.54	0.22	0.87	18.5	18.9	0	1600
+2026-10-09_hadur-screen-311-ndnl-local_cold.tsv	2026-10-09	hadur-screen-311-ndnl-local_cold	duel	2.Hadur 3.10ndnl	2.Hadur 3.10	1.11.1	35	0	1488498	12	2	2	400	800	0.75	0.39	1.11	19.0	18.9	0	1600
+2026-10-09_hadur-screen-311-nl-local_cold.tsv	2026-10-09	hadur-screen-311-nl-local_cold	duel	2.Hadur 3.10nl	2.Hadur 3.10	1.11.1	35	0	1488498	12	2	2	400	800	0.06	-0.30	0.42	17.7	18.6	0	1600
+2026-10-10_hadur-census-312-m5-local_cold.tsv	2026-10-10	hadur-census-312-m5-local_cold	duel	lxx.Tomcat 3.68	2.Hadur 3.10nd	1.11.1	35	0	1488498	12	2	4	1211	4844	-0.09	-0.21	0.03	12.3	38.5	0	9688

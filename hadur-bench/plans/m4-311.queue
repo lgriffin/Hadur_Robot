@@ -1,0 +1,35 @@
+# 3.11 stage M4, first screen (docs/plan-3.11-census.md, "M3 follow-up: start-up duress").
+# The census lost about 0.62 APS in Hadur battles that hit RES-9 duress at start-up (Tomcat on the
+# same opponents and seeds was unaffected). Three candidates, each a one-line edit made by
+# build-ablation.sh from the v3.10 tag, paired against the released 3.10:
+#   nd    RES-9 duress never switches on
+#   nl    TIME-3 learns no allowance from a skipped turn
+#   ndnl  both
+# Set: screen-311.txt, 400 census bots in proportion to band size, so a mean difference is an APS
+# difference. 2 fresh seeds (301-302), 35 rounds, parallel 12, RoboRumble workers stopped.
+#   ./queue.sh run m4-311        (or  .\queue.ps1 run m4-311)
+# About 1.1 hours a paired step at the census's 24 battles a minute; 4.5 hours in all.
+# Pass to the full census (G4): the paired mean at least +0.25 with its 95% interval above 0,
+# no band below -0.05 APS. Step 4 says how much of the duress is the bench's load.
+
+set HEAP = --child-heap 2G
+set E = --engine 1.11.1
+set COMMON = --skip-build --skip-fetch --rounds 35 --cpu-constant 1488498 ${HEAP} ${E}
+set SEEDS = --seeds 2 --seed-base 300
+set B310 = --baseline bisect/hadur2.Hadur_3.10.jar --baseline-robot "hadur2.Hadur 3.10"
+
+prep | mkdir -p bisect && { [ -s bisect/hadur2.Hadur_3.10.jar ] || curl -fsSL -o bisect/hadur2.Hadur_3.10.jar https://github.com/lgriffin/Hadur_Robot/releases/download/v3.10/hadur2.Hadur_3.10.jar; } && bash ./build-ablation.sh --ref v3.10 nodur && bash ./build-ablation.sh --ref v3.10 nolearn && bash ./build-ablation.sh --ref v3.10 nodur,nolearn && ./fetch-opponents.sh --set screen-311.txt
+
+# 1. Duress off.
+nd   | ./bench-top20.sh ${COMMON} --parallel 12 ${SEEDS} --set screen-311.txt --robot-jar bisect/hadur2.Hadur_3.10nd.jar --robot "hadur2.Hadur 3.10nd" ${B310} --label screen-311-nd
+  after: prep
+# 2. No learned allowance.
+nl   | ./bench-top20.sh ${COMMON} --parallel 12 ${SEEDS} --set screen-311.txt --robot-jar bisect/hadur2.Hadur_3.10nl.jar --robot "hadur2.Hadur 3.10nl" ${B310} --label screen-311-nl
+  after: prep
+# 3. Both.
+ndnl | ./bench-top20.sh ${COMMON} --parallel 12 ${SEEDS} --set screen-311.txt --robot-jar bisect/hadur2.Hadur_3.10ndnl.jar --robot "hadur2.Hadur 3.10ndnl" ${B310} --label screen-311-ndnl
+  after: prep
+# 4. Load check: 3.10 alone at parallel 4, 1 seed. Its duress rate against the census's 63% at
+#    parallel 12 says how much of the start-up duress comes from the bench's own load.
+p4   | ./bench-top20.sh ${COMMON} --parallel 4 --seeds 1 --seed-base 300 --set screen-311.txt --robot-jar bisect/hadur2.Hadur_3.10.jar --robot "hadur2.Hadur 3.10" --label screen-311-p4
+  after: prep

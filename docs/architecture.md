@@ -18,7 +18,11 @@ graph LR
         GC[gun]
         MC[move]
         ML[melee]
-        PT[posture]
+        W[world]
+        TL[TeamLink]
+        LK[link]
+        PT[role]
+        DU[duel]
         M[model / physics / knn]
         T[port.Telemetry]
         MEM[memory]
@@ -33,9 +37,15 @@ graph LR
     E -- events, getters --> A
     A -- BotInput --> G
     G --> C
-    C --> GC & MC
+    C --> DU
+    DU --> GC & MC
     C --> PT
     C --> ML
+    C --> W
+    C --> TL
+    TL --> LK
+    TL --> W
+    ML --> W
     ML --> M
     GC & MC --> M
     C -- BotOrders --> G
@@ -44,9 +54,10 @@ graph LR
     C -. line records .-> T
     T -. console .-> A
     C --> MEM
-    C --> AD
-    C --> PO
-    C --> SH
+    DU --> MEM
+    DU --> AD
+    DU --> PO
+    DU --> SH
     PO --> MEM
     AD --> MEM
     MEM --> PS
@@ -58,12 +69,13 @@ graph LR
 | Module | Holds | Built for |
 |---|---|---|
 | `hadur-core` | the brain, as plain Java: every package listed below | Java 11 |
-| `hadur-robot` | the adapter `hadur2.Hadur`, `hadur2.FileProfileStore`, and `hadur2.HadurRecorder` (the robot plus a transcript of its inputs and orders, for replay fixtures) | Java 11 |
+| `hadur-robot` | the adapter `hadur2.Hadur` (a `TeamRobot` from A4, so one class plays all three ladders; from A5 a second jar, `hadur2.HadurTeam`, fields five of it as a team), `hadur2.FileProfileStore`, and `hadur2.HadurRecorder` (the robot plus a transcript of its inputs and orders, for replay fixtures) | Java 11 |
 | `hadur-bench` | headless battles in the real engine, the report, wave fidelity against the engine's truth | Java 17 |
 
-`hadur-robot` shades the core into two jars. `hadur2.Hadur_3.0.jar` is the competition
+`hadur-robot` shades the core into three jars. `hadur2.Hadur_<version>.jar` is the competition
 jar, with the recorder left out; the `recorder` jar keeps it, and only the bench's
-`--record` mode loads it. The Robocode API is `provided`: the engine supplies it at run
+`--record` mode loads it. From A5 `hadur2.HadurTeam_<version>.jar` is the same classes as
+the competition jar plus `hadur2/HadurTeam.team`, five `hadur2.Hadur` of that version. The Robocode API is `provided`: the engine supplies it at run
 time, and the build compiles against the vendored 1.9.3.0 API in `repo/` (the bench runs
 the 1.9.5.6 engine from Maven Central).
 
@@ -102,46 +114,95 @@ data directory through `RobocodeFileOutputStream`.
 
 | Package | Holds |
 |---|---|
-| `hadur2.core` | `HadurCore` (the brain), `Guard` (RES-1), `RoundStats` (RES-5), `MeleeMemory` (the melee blocks in the profile store, MMEM-1) |
-| `model` | the port values, robot states and their logs, waves and the wave manager |
+| `hadur2.core` | `HadurCore` (the conductor), `Guard` (RES-1), the seams `DuelSeam` and `MeleeSeam` (A2), `MeleeMemory` (the melee blocks in the profile store, MMEM-1), `Archive` (A4: each brain's shelf by charter, behind the store's gate, SHELF-1, SHELF-3; A5: only the scribe writes, SHELF-2), `TeamLink` (A5: the input a role sees on a team, the merge of teammates' reports, the fire lane and our own report) |
+| `duel` | the Duel's brain (A2): `DuelController`, everything the duel does against one opponent, lifted out of `HadurCore`, and `Duress` (RES-9) |
+| `model` | the port values, robot states and their logs, waves and the wave manager, the battle's facts, the round's counters (`RoundStats`, RES-5) and the baton one role hands the next |
 | `ledger` | `EnergyLedger`: explains the enemy's energy changes between scans so only bullet spending becomes a wave (WAVE-1, WAVE-2) |
 | `physics` | `Angles` and `Rules` (bit-identical to Robocode's), battle field, movement prediction |
 | `knn` | KD-tree and KNN views |
 | `gun` | main KNN gun, anti-surfer gun, gun selection |
 | `move` | wave-surfing movement and its danger formulas; our bullets in flight and the shadows they cast (MOVE-1); go-to surfing; the rammer escape (`RamEscape`, RAM-2) and the planned path against a mirror mover (`MirrorDrive`, MIR-1) |
-| `posture` | the melee extension's gate (GATE-1..5): `PostureGate` (melee or duel, failing closed), `DuelFocus` (the one opponent the duel fights while several are alive) and `SentryFence` (the sentry border as a wall for the duel's movement) |
-| `melee` | the melee brain (MELEE-2..8, MRADAR, MSENSE, MMOVE, MGUN): battlefield model with shot detection, sweep radar, minimum-risk movement with virtual bullets, field gun with a play-it-forward history per opponent, energy table, targeting waves, posture strategy, battle-long opponent stats; the melee profile block, its round folder and its binary codec (MMEM-1) |
+| `role` | the role contract and its resolution (ROLE, WEAVE, GATE-2..5): `Role`, `Tick`, the battle's `Charter`, the `RoleResolver` with its latch (A1, in place of the melee extension's `PostureGate`), `DuelFocus` (the one opponent the duel fights while several are alive), `SentryFence` (the sentry border as a wall for the duel's movement) and `TeammateFence` (T1: a drive that would run into a living teammate is replaced by a brake or a reversal, whichever role drives; WEAVE-8) |
+| `world` | the World (A3, WORLD-1): one picture of the field, `EnemyTracker` with each robot's `EnemyInfo` and the enemy shots it infers (`EnemyShot`), fed by the conductor before any role; the melee brain reads it. A5 adds the `Roster` of teammates and the count of enemies alive (WORLD-3, WORLD-8), and the shot lifetime from the field |
+| `melee` | the melee brain (MELEE-2..8, MRADAR, MSENSE, MMOVE, MGUN): sweep radar, minimum-risk movement with virtual bullets, field gun with a play-it-forward history per opponent, energy table, targeting waves, posture strategy, battle-long opponent stats; the melee profile block, its round folder and its binary codec (MMEM-1) |
 | `memory` | opponent memory (MEM-1..5, RES-3): lineage keys, the profile, its binary codec, the round folder and the library that loads, saves and evicts; estimates with margins of error, the tiers and the seed layout |
 | `adapt` | recognise and adapt (ADAPT-1..3, DIAL-1..2, RES-4): the opening book, the seed loader and the seed trust |
 | `policy` | aggressive (DIST-1, POW-1, POW-2, END-1, END-2): rolling hit-rate windows, the distance controller, the power policy, the endgame states and the enemy gun-heat estimate; unhittable (MOVE-2, TIME-1, TIME-2): the movement flavour and the tick budget; recognising a rammer (`RammerPolicy`, RAM-1, RAM-2) and a mirror mover (`MirrorDetector`, MIR-1) |
 | `shield` | the bullet-shielding counter (SHIELD-1, SHIELD-2): the shield detector and the anti-shield aim jitter |
 | `replay` | the line codec and replay driver for recorded battles (CORE-2) |
-| `port` | outbound interfaces |
+| `link` | teammates' reports as bytes (A4, LINK-1, LINK-2): `Report` and `LinkCodec`, versioned and checksummed |
+| `port` | outbound interfaces, and `GatedProfileStore` (A4), a store with a gate on writes and deletes |
 
 ArchUnit enforces the boundary on every build: no `robocode.*` in the core, only JDK
 `java.lang`, `java.util` and `java.awt.geom`; no randomness, threads, reflection, I/O or
 clock; no mutable static fields; model, physics and ports never depend on gun, movement
 or replay; gun and movement never depend on each other; the ledger depends only on
 physics, so nothing but the engine's rules decides which drops become waves; melee depends
-only on the model and physics, and no duel package depends on melee; memory depends only on
+only on the model, physics, the kd-tree and the World, which reads no strand; no duel package depends on melee; memory depends only on
 itself and the ports, and no gun, movement, melee, ledger or model code depends on memory;
 the adapt and policy packages see neither `BotInput` nor `BotEvent` (DIAL-2), and no gun,
-movement or lower package depends on them; the posture gate depends only on the model and
-physics, and only `HadurCore` sees it.
+movement or lower package depends on them; the `role` package depends only on the model and
+physics, and no brain or kernel package sees it.
 
 `DuelIdentityTest` adds the melee extension's rule that "1v1 is sacred": it pins a hash of
 every source file in the duel's packages (adapt, gun, knn, ledger, memory, move, physics,
 policy, shield), taken at M0, so melee work that edits one fails the build.
 
+## Owners: one identity, three strands
+
+The architecture evolution ([architecture-evolution.md](architecture-evolution.md), stages
+A0 to A5) adds a second boundary inside the core, between what Hadur is and how it fights
+in each kind of battle. From A0 every package has exactly one owner, written in
+`hadur-core/src/test/resources/ownership.txt` and enforced by `StrandOwnershipTest`:
+
+| Owner | Packages | Rule |
+|---|---|---|
+| Kernel | `model`, `physics`, `knn`, `ledger`, `memory`, `port`, `world` (A3), `link` (A4) | depends on no strand and not on the conductor (STRAND-2) |
+| Duel strand | `gun`, `move`, `adapt`, `policy`, `shield`, `duel` (A2) | sees only the kernel and itself |
+| Melee strand | `melee` | sees only the kernel and itself |
+| Team strand | none yet (the A5 baseline lives in the conductor's `TeamLink`) | from the Team plan |
+| Conductor | the root package, `role`, `replay` | runs the tick and owns the seams |
+
+```mermaid
+graph TB
+    subgraph Conductor
+        HC[HadurCore, Guard, seams, role, replay]
+    end
+    subgraph Strands
+        D[Duel: duel, gun, move, adapt, policy, shield]
+        M[Melee: melee]
+        T[Team: later]
+    end
+    subgraph Kernel
+        K[model, physics, knn, ledger, memory, port, world, link]
+    end
+    HC --> D
+    HC --> M
+    HC --> K
+    D --> K
+    M --> K
+    T -.-> K
+```
+
+A package with no owner fails the build (STRAND-1). Each owner's sources are pinned by hash
+in `pins/<owner>.sha256` (STRAND-3), and a stage re-pins only the owners it names. Every
+replay fixture, duel and melee alike, must reproduce the live robot's orders, the telemetry
+it was pinned with and the files the live robot left in its store (STRAND-4).
+
 ## Melee and duel
 
-Melee is a second posture of the same robot, and the duel is the default. Each tick,
-before handling events, `HadurCore` asks the `posture.PostureGate` which set of subsystems
-drives, and never mixes them:
+Melee is a second role of the same robot, and the duel is the default. Each tick,
+before handling events, `HadurCore` asks the `role.RoleResolver` which role drives, and
+never mixes them. Since A2 each role is a brain behind the `role.Role` contract, driven
+through the conductor's seam for it: `duel.DuelController` through `DuelSeam`, and
+`melee.MeleeController` through `MeleeSeam`. Every event is offered to the charter's roles,
+Melee before Duel (ROLE-5); only the driving role writes orders (WEAVE-1), and only with the
+conductor's fire permission (WEAVE-3).
 
-- **Melee** (GATE-1) while two or more opponents are alive, no sentry robot is alive or has
+- **Melee** (ROLE-3) while two or more opponents are alive, no sentry robot is alive or has
   been scanned this round, and the melee subsystems have not thrown this round. Every
-  scan, hit and death then goes to `melee.MeleeController`, which returns the radar sweep, a
+  scan, hit and death goes first to the World (`world.EnemyTracker`, WORLD-1), whichever
+  role drives, and then to `melee.MeleeController`, which returns the radar sweep, a
   destination and the aim; the duel's waves, ledger and guns are not fed.
 - **The duel** otherwise, from the same tick (GATE-2). When melee hands over, the core
   forgets its duel tracking and lifts the melee speed limit (MELEE-2), and the duel starts
@@ -149,25 +210,26 @@ drives, and never mixes them:
 
 Robocode leaves sentries out of `getOthers()`. A scanned sentry vetoes melee for the rest
 of the round (GATE-3), as does a melee exception, which is caught, recorded as a `FAULT`
-line and counted (GATE-4). Sentries are never passed to the melee tracker, the duel or
+line and counted (GATE-4). Sentries are never passed to the World, the duel or
 opponent memory, and their bullets never reach the duel's ledger (GATE-5).
 
-When the duel drives with several opponents alive (a vetoed melee), `posture.DuelFocus`
+When the duel drives with several opponents alive (a vetoed melee), `role.DuelFocus`
 names the one it fights: the closest when the duel takes over, kept until it dies. Scans
-and hits of the others go only to the melee tracker, so the duel's model is about one robot.
-With sentries on the field, `posture.SentryFence` checks the duel's orders by simulating 12
+and hits of the others go only to the World and the melee brain, so the duel's model is about one robot.
+With sentries on the field, `role.SentryFence` checks the duel's orders by simulating 12
 ticks of the engine's movement, and replaces them with a drive to the centre if they would
-come within 30 px of the border zone.
+come within 30 px of the border zone. The fence only replaces the drive: the gun, the
+radar and the fire order pass through untouched (WEAVE-2).
 
-A 1v1 battle never enters melee, and none of this routing runs in one: the duel's replay
-fixtures are unchanged. Each round of a battle with several opponents or sentries ends
+A 1v1 battle never enters melee, and since A3 holds only the Duel's brain: no melee brain,
+no World and no melee seam are built (ROLE-6), so none of this routing runs in one. Each round of a battle with several opponents or sentries ends
 with an `M` record: ticks per posture, the veto, melee faults, the longest scan gap, ticks
 aimed at a dead robot, our bullets that hit a sentry, the longest gap while four or more
 were alive, and robots dropped as dead without a death event.
 
 ### Melee sensing
 
-`melee.EnemyTracker` is the melee brain's battlefield model: every opponent's last
+`world.EnemyTracker` (in `melee` until A3) is the World the melee brain reads: every opponent's last
 position, heading, velocity, energy and scan tick. A death takes an opponent out of the
 movement's risk and the gun's targets on the same tick (MSENSE-1). While more are tracked
 than the engine counts alive, a death the core never heard of, the one scanned longest ago
@@ -267,6 +329,54 @@ alone (the virtual guns only run in a 1v1 battle). A bullet from a robot that di
 is no longer credited to the survivor's energy in the ledger. An `H` record
 (`H,round,tick,survivor,found1v1,foundMelee,wavesInjected`) says what was handed over. A
 melee vetoed by a sentry or a fault hands nothing over.
+
+## The team baseline
+
+From A5 Hadur can fight as one of five. `hadur2.HadurTeam` is five `hadur2.Hadur` of the
+same version, and nothing in the strands knows it is on a team. The conductor's `TeamLink`
+does the work around them, so the Team strand is still empty: its tactics come from the
+Team plan.
+
+- **The roster.** `BattleFacts` names our teammates at tick 0, and the World's `Roster`
+  keeps their last known positions. A teammate silent for 20 ticks while the engine's
+  count of others has fallen is counted dead (WORLD-3).
+- **The filtered input.** Each tick `TeamLink` takes teammates' scans, hits and deaths out
+  of the input the roles see (WORLD-2, WORLD-6, WORLD-7), so no brain targets or counts a
+  teammate. A role sees only enemies, and Melee drives while two or more of them live.
+- **Shared eyes.** Every member sends one `link.Report` a tick while a teammate lives
+  (LINK-4): its own state, its fresh sightings, the deaths it knows of and its bullet
+  events, versioned and checksummed (LINK-1, LINK-2). Reports merge into the World once,
+  in the order of their ticks, keeping the newer sighting (WORLD-4). A reported death
+  closes that robot's books only once.
+- **A count that errs upward.** On a team the count of enemies alive is the smaller of
+  two upper bounds: the engine's others less the teammates heard from, and the starting
+  enemies less those known dead (WORLD-8). It is never below the truth, so Melee never
+  hands over to the Duel too early. With no report at all the role still resolves from
+  the engine's facts (LINK-3).
+- **The fire lane.** A shot is held while a living teammate lies in the lane ahead of the
+  gun's present heading: within 24 px of it, plus 8 px for each tick since that teammate's
+  last known position (WEAVE-4). A position older than the WORLD-3 window (20 ticks) is not
+  checked. On a team the Guard holds fire rather than firing blind (WEAVE-5).
+- **One scribe.** Only the team leader writes to the store, and in a team battle it
+  writes only its health record (SHELF-2), so five members never race for the same files.
+
+```mermaid
+flowchart LR
+    IN["BotInput from the engine"] --> F["TeamLink.filter:<br/>teammates out"]
+    MSG["Teammates' reports<br/>(one tick old)"] --> M["merge, by tick<br/>(WORLD-4)"]
+    F --> W["World: enemies, roster,<br/>count of enemies alive"]
+    M --> W
+    W --> R["Role resolver"] --> B["Melee or Duel brain"]
+    B --> L{"Teammate in the fire lane?<br/>(TeamLink.laneClear)"}
+    L -- yes --> H["Hold the shot"]
+    L -- no --> O["BotOrders"]
+    H --> O
+    W --> REP["Our report"] --> O
+```
+
+The bench's team mode (`--team true`) runs the team jar against `team-reference.txt` with
+one transcript per member. The baseline on record is 28.1% of the score over eight real
+teams, with no faults and no undercount ([bench/a5-team.md](bench/a5-team.md)).
 
 ## Opponent memory
 
@@ -394,6 +504,15 @@ Given the same inputs, the core issues the same orders (CORE-2). The ArchUnit ru
 the usual sources of drift, the 1.20 code's `Math.random` view names and a global view
 counter were removed, and the replay tests check the property end to end against battles
 recorded from the real robot in the real engine.
+
+Since A0 the check covers the whole robot, not only the orders. The recorder also logs the
+store the battle started on, the adapter's round-end, checkpoint, battle-end and
+health-record calls, and the files the battle left; the tests' `FixtureReplay` makes the
+same calls with its own guard, and `ReplayTest` compares orders with the live robot's,
+telemetry with a pinned snapshot (`replay/telemetry/`) and the store with the live robot's
+files. Eleven fixtures cover the six S1 duels, a ten-robot melee, a melee with a border
+sentry, a melee that hands a known survivor to the duel, a warm duel on a seeded store and a
+duel in RES-9's duress (STRAND-4).
 
 ## Bounded growth
 

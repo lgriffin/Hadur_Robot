@@ -1,0 +1,10 @@
+# The architecture evolution's gate suite (A0 baseline, A2 A/B), run from hadur-bench/:
+#   mvn -q exec:java -Dexec.args="--suite arch-gates.txt --robot-jar JAR --report ../docs/bench/<name>.md"
+# The duel sets, the melee gates and the hand-off gates, sized so one pass fits a session.
+duel | --set reference-set.txt --seeds 5 --rounds 35
+top19 | --set top19.txt --seeds 1 --rounds 35
+weak | --set weak-leak.txt --seeds 1 --rounds 35
+sentry | --set melee-sentry.txt --melee true --field 1000x1000 --rounds 3 --seeds 3 --sentry-border 100
+reference | --set melee-reference.txt --melee true --field 1000x1000 --rounds 35 --seeds 3
+handoff | --set melee-handoff.txt --melee true --field 1000x1000 --rounds 35 --seeds 3
+clean | --set handoff-duel.txt --seeds 3 --rounds 35

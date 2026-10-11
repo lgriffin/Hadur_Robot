@@ -1,0 +1,14 @@
+# Confirmation of the shield sweep's candidates (issue #146, docs/bench/local/2026-10-08_shield-sweep.md).
+# The 65 bots the sweep screened in are fought again, 16 seeds, 3.9sa against 3.9, for a second
+# estimate that does not carry the selection effect of picking winners from 200 bots.
+#   ./queue.sh run shield-confirm
+# Opponent jars are the ones the sweep fetched (opponents/); the 3.9 jars come from the sweep's prep.
+
+set HEAP = --child-heap 2G
+set E = --engine 1.11.1
+set COMMON = --skip-build --skip-fetch --rounds 35 ${HEAP} ${E}
+set CPU = --cpu-constant 1488498
+set B39 = --baseline bisect/hadur2.Hadur_3.9.jar --baseline-robot "hadur2.Hadur 3.9"
+set SA39 = --robot-jar bisect/hadur2.Hadur_3.9sa.jar --robot "hadur2.Hadur 3.9sa"
+
+confirm | ./bench-top20.sh ${COMMON} ${CPU} --set shield-confirm.txt --seeds 16 ${SA39} ${B39} --label shield-confirm-v39

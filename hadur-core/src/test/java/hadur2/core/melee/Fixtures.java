@@ -1,5 +1,7 @@
 package hadur2.core.melee;
 
+import hadur2.core.world.EnemyTracker;
+import hadur2.core.world.EnemyInfo;
 import hadur2.core.physics.BattleField;
 import java.awt.geom.Point2D;
 

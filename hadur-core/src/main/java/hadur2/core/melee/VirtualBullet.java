@@ -1,5 +1,6 @@
 package hadur2.core.melee;
 
+import hadur2.core.world.EnemyShot;
 import hadur2.core.physics.DiaUtils;
 import java.awt.geom.Point2D;
 

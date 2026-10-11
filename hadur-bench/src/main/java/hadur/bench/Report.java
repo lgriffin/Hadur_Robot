@@ -26,13 +26,14 @@ final class Report {
                          int rounds, int runs, int width, int height, String cpuConstant) {
         StringBuilder b = new StringBuilder();
         b.append("# Bench: ").append(robot).append(warm ? " (warm)" : " (cold)").append("\n\n");
-        b.append(String.format(Locale.ROOT,
-            "%d rounds x %d %s per opponent on %dx%d. Engine Robocode 1.9.5.6, security manager on. "
-            + "Java %s, %d cores. %s.%n%n",
-            rounds, runs, warm ? "consecutive battles (data kept)" : "seeds (data wiped)",
-            width, height, System.getProperty("java.version"),
-            Runtime.getRuntime().availableProcessors(), cpuConstant));
-        b.append("Shares are Hadur's fraction of the two robots' total, mean ± 95% interval over battles.\n\n");
+        b.append(conditionsParagraph(rounds, runs, warm, width, height, cpuConstant));
+        boolean reference = allReference(results);
+        b.append(reference
+            ? "Shares are the robot's fraction of the two robots' total, mean ± 95% interval over battles. "
+                + "It is a reference build, not Hadur: it writes no R records, so the columns that come "
+                + "from them show \"-\" and the battle's trust rests on the engine's skipped turns alone.\n\n"
+            : "Shares are Hadur's fraction of the two robots' total, mean ± 95% interval over battles.\n\n");
+        b.append(skippedTurnsLine(results));
         String aps = weightedApsLine(robot, results);
         if (!aps.isEmpty()) b.append(aps).append("\n");
         b.append("| Opponent | Role | Score share | Survival share | Bullet-damage share | Rounds won | Our hit rate | Their hit rate | Skipped turns | Faults | Turn p95 / max (ms) |\n");
@@ -66,9 +67,12 @@ final class Report {
                 Stats.of(surv).percent(), Stats.of(dmg).percent(), won, played,
                 ourHr.isEmpty() ? "-" : Stats.of(ourHr).percent(),
                 theirHr.isEmpty() ? "-" : Stats.of(theirHr).percent(), skipped,
-                faultRounds == 0 ? "0" : faults + " in " + faultRounds + " round(s)", p95, max,
+                reference ? "-" : faultRounds == 0 ? "0" : faults + " in " + faultRounds + " round(s)", p95, max,
                 failed > 0 ? " " + failed + " battle(s) failed" : ""));
         }
+        theirPoints(b, results);
+        trust(b, results);
+        if (reference) return b.toString();
         b.append("\n## Wave fidelity\n\n")
          .append("How well Hadur's inferred enemy waves match the bullets the enemy really fired "
             + "(from the engine's ground truth). A found wave matches a real bullet within "
@@ -135,6 +139,144 @@ final class Report {
             + "Hit rates and faults come from Hadur's own R and FAULT records (RES-5); hit rates are "
             + "per-round means, and \"-\" means the robot wrote no R records.\n");
         return b.toString();
+    }
+
+    /** The rounds/runs/engine/CPU paragraph shared by {@link #render} and {@link #renderOpponent}. */
+    private static String conditionsParagraph(int rounds, int runs, boolean warm, int width, int height,
+                                               String cpuConstant) {
+        return String.format(Locale.ROOT,
+            "%d rounds x %d %s per opponent on %dx%d. Engine Robocode %s%s, security manager on. "
+            + "Java %s, %d cores. %s.%n%n",
+            rounds, runs, warm ? "consecutive battles (data kept)" : "seeds (data wiped)",
+            width, height, ENGINE, engineNote(ENGINE), System.getProperty("java.version"),
+            Runtime.getRuntime().availableProcessors(), cpuConstant);
+    }
+
+    /**
+     * BENCH-79: the engine releases LiteRumble takes uploads from (its {@code structures.py}),
+     * so a result on any other release is not what the live ladder measures (issue #151).
+     */
+    static final java.util.List<String> RUMBLE_ENGINES = java.util.List.of("1.10.3", "1.11.0", "1.11.1");
+
+    /** BENCH-79: "" for an engine the rumble accepts, else a warning to follow the version. */
+    static String engineNote(String version) {
+        return RUMBLE_ENGINES.contains(version) ? ""
+            : " (not a release the rumble accepts uploads from: " + String.join(", ", RUMBLE_ENGINES) + ")";
+    }
+
+    /** The engine the battles run on: the robocode.core jar on the bench's classpath. */
+    static final String ENGINE = engineVersion(readClasspath());
+
+    private static String readClasspath() {
+        try {
+            return java.nio.file.Files.readString(java.nio.file.Path.of("target/classpath.txt"));
+        } catch (java.io.IOException | RuntimeException e) {
+            return "";
+        }
+    }
+
+    /**
+     * The Robocode version in a classpath string, read from its robocode.core jar's name
+     * (Maven's {@code robocode.core-<version>.jar}), or "unknown" when there is none. The
+     * engine can be swapped with {@code -Drobocode.version=...} (issue #109), so the report
+     * says which one ran rather than assuming the pom's default.
+     */
+    static String engineVersion(String classpath) {
+        java.util.regex.Matcher m = java.util.regex.Pattern
+            .compile("robocode\\.core-([0-9][0-9A-Za-z.\\-]*)\\.jar").matcher(classpath);
+        return m.find() ? m.group(1) : "unknown";
+    }
+
+    /**
+     * BENCH-12: skipped turns totalled over every ok battle in {@code results}, with the
+     * mean per battle and the worst single battle, so a reader can tell a high mean from one
+     * bad battle apart. Issue #102 is the harness's own note that a parallel run is only
+     * trusted when this mean stays close to the sequential run's.
+     */
+    /** True when every battle that ran was fought by a reference build (issue #138), not a Hadur one. */
+    static boolean allReference(Map<Opponent, List<BattleResult>> results) {
+        boolean any = false;
+        for (List<BattleResult> rs : results.values()) {
+            for (BattleResult r : rs) {
+                if (!r.ok) continue;
+                if (!r.reference) return false;
+                any = true;
+            }
+        }
+        return any;
+    }
+
+    /**
+     * Issue #138, A2: where the opponent's points came from, pooled over the battles that carry
+     * the split: survival, bullet damage, ram damage and the three bonuses, each as a share of
+     * the opponent's total. Beside it the engine's mean ticks per round (A3), which bounds how
+     * many survival points a round can pay. A row written before the columns existed is left out.
+     */
+    private static void theirPoints(StringBuilder b, Map<Opponent, List<BattleResult>> results) {
+        b.append("\n## Where their points come from\n\n")
+         .append("The opponent's score split by source, pooled over the battles: survival, bullet "
+            + "damage, ram damage, and the bonuses (last survivor, bullet-damage and ram-damage), each "
+            + "as a share of the opponent's total. A robot that scores mostly from survival is "
+            + "outliving us; one that scores from bullet damage is out-shooting us; a share in ram "
+            + "damage means it is ramming. \"-\" means no battle carried the split (rows from before "
+            + "issue #138). Ticks per round are the engine's own count, for any build.\n\n")
+         .append("| Opponent | Battles | Their score | Survival | Bullet damage | Ram damage | Bonuses | Ticks / round |\n")
+         .append("|---|---|---|---|---|---|---|---|\n");
+        for (Map.Entry<Opponent, List<BattleResult>> e : results.entrySet()) {
+            double[] sum = new double[4];
+            int counted = 0;
+            List<Double> ticks = new ArrayList<>();
+            for (BattleResult r : e.getValue()) {
+                if (!r.ok) continue;
+                if (!Double.isNaN(r.engineRoundTicks)) ticks.add(r.engineRoundTicks);
+                double[] split = r.theirScoreSplit();
+                if (split == null) continue;
+                for (int i = 0; i < sum.length; i++) sum[i] += split[i];
+                counted++;
+            }
+            double total = sum[0] + sum[1] + sum[2] + sum[3];
+            String tick = ticks.isEmpty() ? "-" : mean(ticks, "%.0f");
+            if (counted == 0 || total <= 0) {
+                b.append(String.format(Locale.ROOT, "| %s | %d | - | - | - | - | - | %s |%n",
+                    e.getKey().name, counted, tick));
+            } else {
+                b.append(String.format(Locale.ROOT, "| %s | %d | %.0f | %.1f%% | %.1f%% | %.1f%% | %.1f%% | %s |%n",
+                    e.getKey().name, counted, total / counted, 100 * sum[0] / total,
+                    100 * sum[1] / total, 100 * sum[2] / total, 100 * sum[3] / total, tick));
+            }
+        }
+    }
+
+    private static String skippedTurnsLine(Map<Opponent, List<BattleResult>> results) {
+        List<Integer> perBattle = new ArrayList<>();
+        for (List<BattleResult> rs : results.values()) {
+            for (BattleResult r : rs) {
+                if (r.ok) perBattle.add(r.skippedTurns);
+            }
+        }
+        return tallyLine("Skipped turns", perBattle, TRUST_NOTE);
+    }
+
+    /** The sentence the skipped-turns line ends with in every report that carries it. */
+    static final String TRUST_NOTE =
+        "Issue #102 trusts a parallel run when the mean stays near the sequential run's.";
+
+    /**
+     * A per-battle count (skipped turns, duress ticks) as the report's one-line tally: the
+     * total over the battles, the mean per battle and the worst single battle. Shared by the
+     * duel, melee and team reports so the three read alike (issue #102, BENCH-12).
+     */
+    static String tallyLine(String label, List<Integer> perBattle, String trailer) {
+        if (perBattle.isEmpty()) return label + ": none recorded (no battle completed).\n\n";
+        long total = 0;
+        int worst = 0;
+        for (int n : perBattle) {
+            total += n;
+            worst = Math.max(worst, n);
+        }
+        return String.format(Locale.ROOT, "%s: %d over %d battles (%.1f per battle, most in one battle %d).",
+            label, total, perBattle.size(), (double) total / perBattle.size(), worst)
+            + (trailer.isEmpty() ? "" : " " + trailer) + "\n\n";
     }
 
     /** S5: how close Hadur fought, how hard it shot, and how quickly rounds ended. */
@@ -220,6 +362,59 @@ final class Report {
     }
 
     /**
+     * BENCH-2: the paired score-share difference (candidate minus baseline) over one
+     * opponent's seeds. The lists are paired by seed index (both are seed 1..runs, in order)
+     * and only the seeds where both jars produced a battle are kept, so a lone failure on one
+     * side cannot shift every later seed's pairing out of alignment.
+     */
+    static Stats pairedDiff(List<BattleResult> candidate, List<BattleResult> baseline) {
+        return pairedDiff(candidate, baseline, BattleResult::scoreShare, false);
+    }
+
+    /**
+     * The same pairing for any per-battle metric. With {@code trustedOnly} a pair is kept only
+     * when both battles are trusted (issue #117, G2), which is the sensitivity check.
+     */
+    static Stats pairedDiff(List<BattleResult> candidate, List<BattleResult> baseline,
+                            java.util.function.ToDoubleFunction<BattleResult> metric, boolean trustedOnly) {
+        List<Double> candPaired = new ArrayList<>(), basePaired = new ArrayList<>();
+        collectPairs(candidate, baseline, metric, trustedOnly, candPaired, basePaired);
+        return Stats.pairedDiff(candPaired, basePaired);
+    }
+
+    private static void collectPairs(List<BattleResult> candidate, List<BattleResult> baseline,
+                                     java.util.function.ToDoubleFunction<BattleResult> metric,
+                                     boolean trustedOnly, List<Double> candOut, List<Double> baseOut) {
+        int n = Math.min(candidate.size(), baseline.size());
+        for (int i = 0; i < n; i++) {
+            BattleResult cr = candidate.get(i), br = baseline.get(i);
+            if (cr.ok && br.ok && (!trustedOnly || (cr.trusted() && br.trusted()))) {
+                candOut.add(metric.applyAsDouble(cr));
+                baseOut.add(metric.applyAsDouble(br));
+            }
+        }
+    }
+
+    private static double winRate(BattleResult r) {
+        return r.rounds == 0 ? 0.5 : (double) r.firsts / r.rounds;
+    }
+
+    /** {@code pairedDiff(candidate, baseline)} formatted as "+1.2 ± 3.4" or "n/a" with no pairs. */
+    private static String pairedDiffStr(List<BattleResult> candidate, List<BattleResult> baseline) {
+        return signedDiff(pairedDiff(candidate, baseline), 100);
+    }
+
+    /**
+     * A paired difference as "+1.2 ± 3.4" (the BENCH-2 convention: mean, then the 95%
+     * half-width when two or more pairs exist), or "n/a" with no pairs. {@code scale} turns a
+     * fraction into points (100) or leaves points alone (1).
+     */
+    static String signedDiff(Stats diff, double scale) {
+        return diff.n == 0 ? "n/a" : String.format(Locale.ROOT, "%+.1f%s", diff.mean * scale,
+            Double.isNaN(diff.halfWidth) ? "" : String.format(Locale.ROOT, " ± %.1f", diff.halfWidth * scale));
+    }
+
+    /**
      * BENCH-2: the paired score-share difference per opponent between the candidate and
      * baseline jars, seed for seed, plus a BENCH-1 stratified APS estimate for each jar
      * from the set's opponent weights (0 when the set carries none).
@@ -244,23 +439,8 @@ final class Report {
             candidateStats.add(cs);
             baselineStats.add(bs);
             weights.add(o.weight);
-            // Pair by seed index (both lists are seed 1..runs, in order) and keep only the
-            // seeds where both jars produced a battle, so a lone failure on one side cannot
-            // shift every later seed's pairing out of alignment.
-            List<Double> candPaired = new ArrayList<>(), basePaired = new ArrayList<>();
-            int n = Math.min(candResults.size(), baseResults.size());
-            for (int i = 0; i < n; i++) {
-                BattleResult cr = candResults.get(i), br = baseResults.get(i);
-                if (cr.ok && br.ok) {
-                    candPaired.add(cr.scoreShare());
-                    basePaired.add(br.scoreShare());
-                }
-            }
-            Stats diff = Stats.pairedDiff(candPaired, basePaired);
             b.append(String.format(Locale.ROOT, "| %s | %s | %s | %s |%n",
-                o.name, cs.percent(), bs.percent(),
-                diff.n == 0 ? "n/a" : String.format(Locale.ROOT, "%+.1f%s", diff.mean * 100,
-                    Double.isNaN(diff.halfWidth) ? "" : String.format(Locale.ROOT, " ± %.1f", diff.halfWidth * 100))));
+                o.name, cs.percent(), bs.percent(), pairedDiffStr(candResults, baseResults)));
         }
         boolean anyWeighted = weights.stream().anyMatch(w -> w != null && w > 0);
         if (anyWeighted) {
@@ -270,6 +450,310 @@ final class Report {
                 "%n**Stratified APS estimate (BENCH-1):** candidate %s, baseline %s.%n",
                 candAps.percent(), baseAps.percent()));
         }
+        pairedMetrics(b, candidate, baseline);
+        pairedSensitivity(b, candidate, baseline);
+        return b.toString();
+    }
+
+    /**
+     * G7: the paired candidate-minus-baseline difference, with its 95% interval, for score
+     * share, survival share, win rate and bullet-damage share, per opponent and pooled over
+     * every pair. Positive is better for the candidate.
+     */
+    private static void pairedMetrics(StringBuilder b, Map<Opponent, List<BattleResult>> candidate,
+                                      Map<Opponent, List<BattleResult>> baseline) {
+        b.append("\n### Paired intervals by metric (pp)\n\n")
+         .append("The same seed-for-seed pairing on four metrics: mean candidate-minus-baseline "
+            + "difference in points, with the 95% interval over seeds.\n\n")
+         .append("| Opponent | Score share | Survival share | Win rate | Bullet-damage share |\n")
+         .append("|---|---|---|---|---|\n");
+        List<java.util.function.ToDoubleFunction<BattleResult>> metrics = List.of(
+            BattleResult::scoreShare, BattleResult::survivalShare, Report::winRate,
+            BattleResult::bulletDamageShare);
+        List<List<Double>> pooledC = new ArrayList<>(), pooledB = new ArrayList<>();
+        for (int m = 0; m < metrics.size(); m++) {
+            pooledC.add(new ArrayList<>());
+            pooledB.add(new ArrayList<>());
+        }
+        for (Opponent o : candidate.keySet()) {
+            List<BattleResult> cs = candidate.get(o), bs = baseline.getOrDefault(o, List.of());
+            b.append("| ").append(o.name);
+            for (int m = 0; m < metrics.size(); m++) {
+                b.append(" | ").append(signedDiff(pairedDiff(cs, bs, metrics.get(m), false), 100));
+                collectPairs(cs, bs, metrics.get(m), false, pooledC.get(m), pooledB.get(m));
+            }
+            b.append(" |\n");
+        }
+        b.append("| All pairs");
+        for (int m = 0; m < metrics.size(); m++) {
+            b.append(" | ").append(signedDiff(Stats.pairedDiff(pooledC.get(m), pooledB.get(m)), 100));
+        }
+        b.append(" |\n");
+    }
+
+    /**
+     * G2: the score-share paired difference again with every pair dropped in which either
+     * battle is untrusted (duress, many skipped turns, a missing R record), beside the
+     * unfiltered one, so a reader can see how much of a difference is the host.
+     */
+    private static void pairedSensitivity(StringBuilder b, Map<Opponent, List<BattleResult>> candidate,
+                                          Map<Opponent, List<BattleResult>> baseline) {
+        b.append("\n### Sensitivity: trusted pairs only\n\n")
+         .append("Score-share paired difference (pp) with every pair dropped in which either battle "
+            + "is untrusted (see the Trust section: duress, skips over ")
+         .append(String.format(Locale.ROOT, "%.1f", BattleResult.skipsPerRoundLimit()))
+         .append(" a round, or, for a Hadur build, a round without an R record).\n\n")
+         .append("| Opponent | Pairs | Trusted pairs | All pairs (pp) | Trusted pairs only (pp) |\n")
+         .append("|---|---|---|---|---|\n");
+        List<Double> allC = new ArrayList<>(), allB = new ArrayList<>();
+        List<Double> trustC = new ArrayList<>(), trustB = new ArrayList<>();
+        for (Opponent o : candidate.keySet()) {
+            List<BattleResult> cs = candidate.get(o), bs = baseline.getOrDefault(o, List.of());
+            List<Double> ac = new ArrayList<>(), ab = new ArrayList<>(), tc = new ArrayList<>(), tb = new ArrayList<>();
+            collectPairs(cs, bs, BattleResult::scoreShare, false, ac, ab);
+            collectPairs(cs, bs, BattleResult::scoreShare, true, tc, tb);
+            allC.addAll(ac);
+            allB.addAll(ab);
+            trustC.addAll(tc);
+            trustB.addAll(tb);
+            b.append(String.format(Locale.ROOT, "| %s | %d | %d | %s | %s |%n", o.name, ac.size(), tc.size(),
+                signedDiff(Stats.pairedDiff(ac, ab), 100), signedDiff(Stats.pairedDiff(tc, tb), 100)));
+        }
+        b.append(String.format(Locale.ROOT, "| All pairs | %d | %d | %s | %s |%n", allC.size(), trustC.size(),
+            signedDiff(Stats.pairedDiff(allC, allB), 100), signedDiff(Stats.pairedDiff(trustC, trustB), 100)));
+    }
+
+    /**
+     * G2: how far each opponent's numbers can be taken at face value. Duress ticks, engine
+     * disables and a missing R record all mean the battle ran under load or lost data, and the
+     * robot sheds work under duress, so a loaded battle measures a different robot.
+     */
+    private static void trust(StringBuilder b, Map<Opponent, List<BattleResult>> results) {
+        double limit = BattleResult.skipsPerRoundLimit();
+        b.append("\n## Trust\n\n")
+         .append(String.format(Locale.ROOT,
+            "A battle is trusted when it finished, spent no ticks in duress, skipped at most %.1f "
+            + "turns a round on average and delivered an R record for every round. A reference build "
+            + "(not Hadur, issue #138) writes no R records, so it is held to the engine's skipped "
+            + "turns alone, and its duress is \"n/a\", as it is for battles written before the column existed.%n%n", limit))
+         .append("| Opponent | Battles | Trusted | Duress ticks | Engine disables | Skips / round | Rounds without R | Final R missing | Security errors |\n")
+         .append("|---|---|---|---|---|---|---|---|---|\n");
+        int allBattles = 0, allTrusted = 0;
+        for (Map.Entry<Opponent, List<BattleResult>> e : results.entrySet()) {
+            int battles = 0, trusted = 0, duress = 0, unknown = 0, disables = 0, skips = 0, rounds = 0,
+                missing = 0, finalMissing = 0, security = 0;
+            for (BattleResult r : e.getValue()) {
+                battles++;
+                if (!r.ok) continue;
+                if (r.trusted(limit)) trusted++;
+                if (r.duressTicks < 0) unknown++;
+                else duress += r.duressTicks;
+                disables += r.engineDisables;
+                skips += r.skippedTurns;
+                rounds += r.rounds;
+                if (!r.reference) {
+                    missing += Math.max(0, r.rounds - r.roundRecords);
+                    if (r.roundRecords < r.rounds && r.finalRMissing == 1) finalMissing++;
+                }
+                security += r.securityErrors;
+            }
+            allBattles += battles;
+            allTrusted += trusted;
+            b.append(String.format(Locale.ROOT, "| %s | %d | %d | %s | %d | %.2f | %d | %d | %d |%n",
+                e.getKey().name, battles, trusted, unknown == battles && battles > 0 ? "n/a" : String.valueOf(duress),
+                disables, rounds == 0 ? 0.0 : (double) skips / rounds, missing, finalMissing, security));
+        }
+        b.append(String.format(Locale.ROOT, "%n%d of %d battles trusted.%n", allTrusted, allBattles));
+    }
+
+    /**
+     * G3: the first rounds of a battle against the last ones, per opponent, from the per-round
+     * series (see {@link RoundSeries}). Hadur learns within a battle, so a change can help the
+     * cold start, the mature model, or both. Battles shorter than 15 rounds are left out so the
+     * two windows never overlap. {@code baseline} may be null.
+     */
+    static String renderRoundSplit(List<RoundSeries.Row> rows, String candidate, String baseline) {
+        final int first = 5, last = 10;
+        Map<String, Map<String, java.util.TreeMap<Integer, List<RoundSeries.Row>>>> byOpp =
+            new java.util.LinkedHashMap<>();
+        for (RoundSeries.Row r : rows) {
+            if (!r.build.equals(candidate) && !r.build.equals(baseline)) continue;
+            byOpp.computeIfAbsent(r.opponent, k -> new java.util.LinkedHashMap<>())
+                .computeIfAbsent(r.build, k -> new java.util.TreeMap<>())
+                .computeIfAbsent(r.seed, k -> new ArrayList<>()).add(r);
+        }
+        StringBuilder b = new StringBuilder("\n## First rounds against last rounds\n\n");
+        b.append("Per battle, the first " + first + " rounds against the last " + last + ", then the "
+            + "paired difference (last minus first) over battles with its 95% interval. Win rate is "
+            + "rounds won over rounds with an R record; damage share is bullet damage dealt over "
+            + "dealt plus taken. Positive means the robot does better late in the battle.\n\n")
+         .append("| Opponent | Build | Battles | Win rate, first " + first + " | Win rate, last " + last
+            + " | Late minus early (pp) | Damage share, first " + first + " | Damage share, last " + last
+            + " | Late minus early (pp) |\n")
+         .append("|---|---|---|---|---|---|---|---|---|\n");
+        StringBuilder gap = new StringBuilder();
+        for (Map.Entry<String, Map<String, java.util.TreeMap<Integer, List<RoundSeries.Row>>>> oe : byOpp.entrySet()) {
+            Map<String, java.util.TreeMap<Integer, double[]>> windows = new java.util.LinkedHashMap<>();
+            for (String build : new String[] {candidate, baseline}) {
+                if (build == null || !oe.getValue().containsKey(build)) continue;
+                java.util.TreeMap<Integer, double[]> perSeed = new java.util.TreeMap<>();
+                for (Map.Entry<Integer, List<RoundSeries.Row>> se : oe.getValue().get(build).entrySet()) {
+                    double[] w = windows(se.getValue(), first, last);
+                    if (w != null) perSeed.put(se.getKey(), w);
+                }
+                windows.put(build, perSeed);
+                List<Double> fw = new ArrayList<>(), lw = new ArrayList<>(), fd = new ArrayList<>(),
+                    ld = new ArrayList<>();
+                List<Double> pfw = new ArrayList<>(), plw = new ArrayList<>(), pfd = new ArrayList<>(),
+                    pld = new ArrayList<>();
+                for (double[] w : perSeed.values()) {
+                    fw.add(w[0]);
+                    lw.add(w[1]);
+                    fd.add(w[2]);
+                    ld.add(w[3]);
+                    if (!Double.isNaN(w[0]) && !Double.isNaN(w[1])) {
+                        pfw.add(w[0]);
+                        plw.add(w[1]);
+                    }
+                    if (!Double.isNaN(w[2]) && !Double.isNaN(w[3])) {
+                        pfd.add(w[2]);
+                        pld.add(w[3]);
+                    }
+                }
+                b.append(String.format(Locale.ROOT, "| %s | %s | %d | %s | %s | %s | %s | %s | %s |%n",
+                    oe.getKey(), build, perSeed.size(), percentOrDash(fw), percentOrDash(lw),
+                    signedDiff(Stats.pairedDiff(plw, pfw), 100), percentOrDash(fd), percentOrDash(ld),
+                    signedDiff(Stats.pairedDiff(pld, pfd), 100)));
+            }
+            if (baseline != null && windows.containsKey(candidate) && windows.containsKey(baseline)) {
+                List<List<Double>> c = new ArrayList<>(), bb = new ArrayList<>();
+                for (int i = 0; i < 4; i++) {
+                    c.add(new ArrayList<>());
+                    bb.add(new ArrayList<>());
+                }
+                for (Map.Entry<Integer, double[]> ce : windows.get(candidate).entrySet()) {
+                    double[] base = windows.get(baseline).get(ce.getKey());
+                    if (base == null) continue;
+                    for (int i = 0; i < 4; i++) {
+                        if (!Double.isNaN(ce.getValue()[i]) && !Double.isNaN(base[i])) {
+                            c.get(i).add(ce.getValue()[i]);
+                            bb.get(i).add(base[i]);
+                        }
+                    }
+                }
+                gap.append(String.format(Locale.ROOT, "| %s | %s | %s | %s | %s |%n", oe.getKey(),
+                    signedDiff(Stats.pairedDiff(c.get(0), bb.get(0)), 100),
+                    signedDiff(Stats.pairedDiff(c.get(1), bb.get(1)), 100),
+                    signedDiff(Stats.pairedDiff(c.get(2), bb.get(2)), 100),
+                    signedDiff(Stats.pairedDiff(c.get(3), bb.get(3)), 100)));
+            }
+        }
+        if (gap.length() > 0) {
+            b.append("\n### Candidate minus baseline, by window (pp)\n\n")
+             .append("Seed for seed, so it shows whether the change helped the cold start, the "
+                + "mature model, or both.\n\n")
+             .append("| Opponent | Win rate, first " + first + " | Win rate, last " + last
+                + " | Damage share, first " + first + " | Damage share, last " + last + " |\n")
+             .append("|---|---|---|---|---|\n").append(gap);
+        }
+        return b.toString();
+    }
+
+    /**
+     * One battle's {win rate first, win rate last, damage share first, damage share last}, NaN
+     * where a window holds no data, or null when the battle is too short for two windows.
+     */
+    private static double[] windows(List<RoundSeries.Row> rows, int first, int last) {
+        int total = 0;
+        for (RoundSeries.Row r : rows) total = Math.max(total, r.round + 1);
+        if (total < first + last) return null;
+        double[] wins = new double[2], known = new double[2], dealt = new double[2], taken = new double[2];
+        for (RoundSeries.Row r : rows) {
+            int w = r.round < first ? 0 : r.round >= total - last ? 1 : -1;
+            if (w < 0) continue;
+            if (r.won >= 0) {
+                known[w]++;
+                wins[w] += r.won;
+            }
+            dealt[w] += r.damageDealt;
+            taken[w] += r.damageTaken;
+        }
+        double[] out = new double[4];
+        for (int w = 0; w < 2; w++) {
+            out[w] = known[w] == 0 ? Double.NaN : wins[w] / known[w];
+            out[2 + w] = dealt[w] + taken[w] == 0 ? Double.NaN : dealt[w] / (dealt[w] + taken[w]);
+        }
+        return out;
+    }
+
+    private static String percentOrDash(List<Double> xs) {
+        List<Double> kept = new ArrayList<>();
+        for (double x : xs) if (!Double.isNaN(x)) kept.add(x);
+        return kept.isEmpty() ? "-" : Stats.of(kept).percent();
+    }
+
+    /** One opponent's own report: a per-battle table (seed by seed, with the baseline and the paired difference when a baseline ran), then every section of the full report for that opponent alone. */
+    static String renderOpponent(Opponent o, List<BattleResult> candidate, List<BattleResult> baseline,
+                                 OpponentProfile profile, String robot, String baselineRobot, boolean warm,
+                                 int rounds, int runs, int width, int height, String cpuConstant) {
+        StringBuilder b = new StringBuilder();
+        b.append("# ").append(o.name).append(" (").append(o.role).append(") vs ").append(robot).append("\n\n");
+        b.append(conditionsParagraph(rounds, runs, warm, width, height, cpuConstant));
+        b.append("## Battles\n\n");
+        boolean paired = baseline != null;
+        List<String> headers = new ArrayList<>(List.of("Seed", "Score share", "Survival share",
+            "Bullet-damage share", "Rounds won", "Our hit rate", "Their hit rate", "Skipped turns",
+            "Faults", "Turn p95 / max (ms)"));
+        if (paired) headers.addAll(List.of("Baseline share", "Paired diff (pp)"));
+        b.append('|');
+        for (String h : headers) b.append(' ').append(h).append(" |");
+        b.append('\n').append('|');
+        for (int i = 0; i < headers.size(); i++) b.append("---|");
+        b.append('\n');
+        for (int i = 0; i < candidate.size(); i++) {
+            BattleResult r = candidate.get(i);
+            List<String> cells = new ArrayList<>();
+            cells.add(String.valueOf(i + 1));
+            if (!r.ok) {
+                cells.add("failed: " + r.errors);
+                for (int k = 0; k < 8; k++) cells.add("-");
+            } else {
+                cells.add(String.format(Locale.ROOT, "%.1f%%", r.scoreShare() * 100));
+                cells.add(String.format(Locale.ROOT, "%.1f%%", r.survivalShare() * 100));
+                cells.add(String.format(Locale.ROOT, "%.1f%%", r.bulletDamageShare() * 100));
+                cells.add(r.firsts + " / " + r.rounds);
+                cells.add(Double.isNaN(r.ourHitRate) ? "-" : String.format(Locale.ROOT, "%.1f%%", r.ourHitRate * 100));
+                cells.add(Double.isNaN(r.theirHitRate) ? "-" : String.format(Locale.ROOT, "%.1f%%", r.theirHitRate * 100));
+                cells.add(String.valueOf(r.skippedTurns));
+                cells.add(r.reference ? "-" : r.faultRecords == 0 ? "0" : r.faults + " in " + r.faultRecords + " round(s)");
+                cells.add(String.format(Locale.ROOT, "%.2f / %.1f", r.turnP95Ms, r.turnMaxMs));
+            }
+            if (paired) {
+                BattleResult br = i < baseline.size() ? baseline.get(i) : null;
+                boolean baseOk = br != null && br.ok;
+                cells.add(baseOk ? String.format(Locale.ROOT, "%.1f%%", br.scoreShare() * 100) : "-");
+                cells.add(r.ok && baseOk
+                    ? String.format(Locale.ROOT, "%+.1f", (r.scoreShare() - br.scoreShare()) * 100)
+                    : "-");
+            }
+            b.append('|');
+            for (String c : cells) b.append(' ').append(c).append(" |");
+            b.append('\n');
+        }
+        b.append('\n');
+        List<Double> candShares = shares(candidate);
+        b.append("Mean score share ").append(Stats.of(candShares).percent());
+        if (paired) {
+            List<Double> baseShares = shares(baseline);
+            b.append(", baseline ").append(Stats.of(baseShares).percent())
+             .append(", paired diff ").append(pairedDiffStr(candidate, baseline));
+        }
+        b.append(".\n\n");
+        Map<Opponent, List<BattleResult>> oneResult = Map.of(o, candidate);
+        Map<Opponent, OpponentProfile> oneProfile = profile != null ? Map.of(o, profile) : Map.of();
+        String full = render(oneResult, oneProfile, robot, warm, rounds, runs, width, height, cpuConstant);
+        full = full.replaceFirst("^[^\\n]*\\n", "## Full report\n");
+        b.append(full);
         return b.toString();
     }
 
@@ -334,7 +818,7 @@ final class Report {
         return b.toString();
     }
 
-    private static List<Double> shares(List<BattleResult> rs) {
+    static List<Double> shares(List<BattleResult> rs) {
         List<Double> out = new ArrayList<>();
         for (BattleResult r : rs) if (r.ok) out.add(r.scoreShare());
         return out;

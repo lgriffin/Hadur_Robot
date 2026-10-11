@@ -1,0 +1,30 @@
+# The RoboRumble TeamRumble top 20 (2026-10-05), five-member teams, fought one at a time
+# by HadurTeam (five hadur2.Hadur) at TeamRumble settings: 1200x1200, 10 rounds.
+# Source: data/rumble/parsed/2026-10-05T1546Z_teamrumble_rankings.tsv
+# Ranks 1-20 as listed there; hadur2.HadurTeam 3.7 is rank 32 so nothing is skipped, and
+# every team has an archive jar (checked 2026-10-06), so no replacement was taken.
+# Jars from https://robocode-archive.strangeautomata.com/robots/<jar>, into opponents/.
+# Versions are exactly the ranked ones: cb.fire.FirestarterTeam 2.0 is not the older
+# cb.mega.FirestarterTeam 1.14 in team-reference.txt.
+# Run with: --set team-top20.txt --team true   (see bench-team-top20.sh)
+#   <team name as Robocode lists it> | team | <jar file in opponents/>
+mn.CombatTeam 3.25.0 | team-1 | mn.CombatTeam_3.25.0.jar
+cb.fire.FirestarterTeam 2.0 | team-2 | cb.fire.FirestarterTeam_2.0.jar
+abc.ShadowTeam 3.83 | team-3 | abc.ShadowTeam_3.83.jar
+rz.AlephTeam 0.34 | team-4 | rz.AlephTeam_0.34.jar
+ustimaw.NightmareTeam 3.3 | team-5 | ustimaw.NightmareTeam_3.3.jar
+florent.XSeries.Xmen 0.9 | team-6 | florent.XSeries.Xmen_0.9.jar
+ags.polylunar.Polylunar 1.6 | team-7 | ags.polylunar.Polylunar_1.6.jar
+rz.GlowingHawks 0.2 | team-8 | rz.GlowingHawks_0.2.jar
+kawigi.micro.ArmyOfShiz 1.1 | team-9 | kawigi.micro.ArmyOfShiz_1.1.jar
+rz.HOFSwarm 1.1 | team-10 | rz.HOFSwarm_1.1.jar
+davidalves.PhoenixTeam 0.54 | team-11 | davidalves.PhoenixTeam_0.54.jar
+kid.team.OmegaSquad .0.2 | team-12 | kid.team.OmegaSquad_.0.2.jar
+cx.mini.DemoniacNimrods 0.50 | team-13 | cx.mini.DemoniacNimrods_0.50.jar
+tmnr.TMNR 1.01 | team-14 | tmnr.TMNR_1.01.jar
+myl.micro.TroodonPack 1.10 | team-15 | myl.micro.TroodonPack_1.10.jar
+Krabb.sliNk.SlartibartfassTeam 0.5 | team-16 | Krabb.sliNk.SlartibartfassTeam_0.5.jar
+bvh.team.Valkiries 1.0 | team-17 | bvh.team.Valkiries_1.0.jar
+radnor.RadnorMedSchool 1.0 | team-18 | radnor.RadnorMedSchool_1.0.jar
+gh.mini.GrubbmGroup 0.4 | team-19 | gh.mini.GrubbmGroup_0.4.jar
+apvteam.MambaTeam 0.7.5 | team-20 | apvteam.MambaTeam_0.7.5.jar

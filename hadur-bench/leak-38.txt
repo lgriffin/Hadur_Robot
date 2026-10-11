@@ -1,0 +1,37 @@
+# 3.8's live leak (docs/bench/live-3.8.md): 32 opponents drawn at random (seed 38) from the
+# RoboRumble bots ranked 21st and below on 2026-10-06, leaving out the D5 shield list. Live, 3.8
+# fell 1.55 points per pairing against this population; this draw fell -0.66.
+# Jars from https://robocode-archive.strangeautomata.com/robots/<jar>, into opponents/ (not committed).
+#   <robot name as Robocode lists it> | <role> | <jar file in opponents/>
+ags.Midboss 1q.fast | mid | ags.Midboss_1q.fast.jar
+wcsv.PowerHouse.PowerHouse 1.7e3 | mid | wcsv.PowerHouse.PowerHouse_1.7e3.jar
+cw.megas.Silhouette 1.1 | mid | cw.megas.Silhouette_1.1.jar
+kc.micro.Needle 0.101 | mid | kc.micro.Needle_0.101.jar
+nat.Hikari dev0001 | lower | nat.Hikari_dev0001.jar
+bvh.fnr.Fenrir 0.36l | lower | bvh.fnr.Fenrir_0.36l.jar
+pa3k.Viper 5.03 | lower | pa3k.Viper_5.03.jar
+apv.NanoLauLectrik 1.0 | lower | apv.NanoLauLectrik_1.0.jar
+kinsen.nano.Quarrelet 1.0 | lower | kinsen.nano.Quarrelet_1.0.jar
+exauge.GateKeeper 1.1.121g | lower | exauge.GateKeeper_1.1.121g.jar
+robar.nano.MosquitoPM 1.0 | lower | robar.nano.MosquitoPM_1.0.jar
+nz.jdc.nano.AralR 1.1 | lower | nz.jdc.nano.AralR_1.1.jar
+eat.HumblePieLite 1.0 | lower | eat.HumblePieLite_1.0.jar
+ne.Chimera 1.2 | lower | ne.Chimera_1.2.jar
+robar.nano.Scytodes 0.3 | weak | robar.nano.Scytodes_0.3.jar
+gh.nano.Grofvuil 0.2 | weak | gh.nano.Grofvuil_0.2.jar
+sadoner.killer 0.2 | weak | sadoner.killer_0.2.jar
+exauge.Leopard 1.1.019 | weak | exauge.Leopard_1.1.019.jar
+rapture.Rapture 2.13 | weak | rapture.Rapture_2.13.jar
+pez.nano.Icarus 0.3 | weak | pez.nano.Icarus_0.3.jar
+repositorio.NanoStep 1.0 | weak | repositorio.NanoStep_1.0.jar
+dggp.haiku.gpBot_0 1.1 | weak | dggp.haiku.gpBot_0_1.1.jar
+jeremyreeder.Bully 1 | weak | jeremyreeder.Bully_1.jar
+fowl3628800.SitAndGo 1.0.0 | weak | fowl3628800.SitAndGo_1.0.0.jar
+ntw.Sighup 1.5 | weak | ntw.Sighup_1.5.jar
+yk.JahMicro 1.0 | weak | yk.JahMicro_1.0.jar
+ola.Puffin 1.0 | weak | ola.Puffin_1.0.jar
+gwah.GBotMarkIV 1.0 | weak | gwah.GBotMarkIV_1.0.jar
+jgap.JGAP7247_2 1.0 | weak | jgap.JGAP7247_2_1.0.jar
+RobotMarco.MarcoV 0.1 | weak | RobotMarco.MarcoV_0.1.jar
+japs.Serenity 1.0 | weak | japs.Serenity_1.0.jar
+sample.Target 1.0 | weak | sample.Target_1.0.jar

@@ -20,13 +20,18 @@
  * same orders (CORE-2). This package itself holds the three classes the adapter talks to.</p>
  *
  * <ul>
- * <li>{@link hadur2.core.HadurCore}: the brain. One instance lives for the whole battle
+ * <li>{@link hadur2.core.HadurCore}: the conductor. One instance lives for the whole battle
  *     (Robocode makes a new robot object each round, so the adapter keeps it static), which
- *     is how learning survives from round to round.</li>
+ *     is how learning survives from round to round. Since A2 it drives two brains, the
+ *     {@link hadur2.core.duel.DuelController} and the {@link hadur2.core.melee.MeleeController},
+ *     each through the conductor's seam for it, behind the {@link hadur2.core.role.Role}
+ *     contract.</li>
  * <li>{@link hadur2.core.Guard}: wraps every core tick and returns safe orders if the core
  *     throws or returns nothing (RES-1).</li>
- * <li>{@link hadur2.core.RoundStats}: the round's counters and the {@code R} record that
- *     carries every fault and degradation counter to the bench report (RES-5).</li>
+ * <li>{@link hadur2.core.model.RoundStats}: the round's counters and the {@code R} record that
+ *     carries every fault and degradation counter to the bench report (RES-5). A2 moved it to
+ *     the kernel's {@code model}, so the Duel keeps its counters without seeing the
+ *     conductor.</li>
  * </ul>
  *
  * <p><b>The tick.</b> Robocode runs a robot's event handlers inside {@code execute()} and then
@@ -35,17 +40,19 @@
  * {@link hadur2.core.HadurCore#tick}:</p>
  *
  * <ol>
- * <li>The {@link hadur2.core.posture.PostureGate} picks the tick's subsystems, failing closed
- *     to the duel: melee only while two or more opponents are alive, no sentry is alive or
- *     has been scanned this round, and melee has not thrown this round (GATE-1 to GATE-4). A
+ * <li>The {@link hadur2.core.role.RoleResolver} picks the tick's role, failing closed to the
+ *     duel: melee only in a Melee-charter battle while two or more opponents are alive, no
+ *     sentry is alive or has been scanned this round, melee has not thrown this round and the
+ *     duel has not yet driven this round (ROLE-2 to ROLE-4, GATE-2 to GATE-4). A
  *     melee that has just ended hands over to a clean duel at full speed (MELEE-2).</li>
- * <li>The events. Every non-sentry scan and death goes to the melee tracker (GATE-5 keeps
- *     sentries out of everything). In the duel posture, the duel opponent's scan makes a gun
+ * <li>The events. In a Melee charter every non-sentry scan, hit and death goes first to
+ *     the World (WORLD-1; GATE-5 keeps sentries out of everything); each event is offered to the roles of the charter, Melee
+ *     before Duel (ROLE-5). While the Duel drives, the duel opponent's scan makes a gun
  *     wave and a candidate enemy wave, and the energy ledger turns only unexplained energy
  *     drops into firing waves (WAVE-1, WAVE-2). Bullet events feed the ledger, the hit
  *     windows, the shield detector and the bullet shadows; the adapter's {@code TickTime}
  *     and skipped turns feed the tick budget (TIME-1, TIME-2).</li>
- * <li>The driving posture's main body. Melee: the melee brain's radar, destination and aim.
+ * <li>The driving role's main body, with the conductor's fire permission (WEAVE-3). Melee: the melee brain's radar, destination and aim.
  *     Duel: fire the shot aimed last tick and aim the next, break the waves that have passed
  *     us, check the profile's seeds against live evidence (RES-4), step the distance,
  *     endgame and flavour policies, update the shadows, surf (or ram), and sweep the radar
@@ -106,17 +113,20 @@
  * <li>{@code shield}: the bullet-shielding counter (SHIELD-1, SHIELD-2): the
  *     {@link hadur2.core.shield.ShieldDetector} and the deterministic
  *     {@link hadur2.core.shield.AimJitter}.</li>
- * <li>{@code posture}: the melee extension's gate (GATE-1 to GATE-5). The
- *     {@link hadur2.core.posture.PostureGate} picks melee or duel each tick and remembers
- *     sentry names for the battle; the {@link hadur2.core.posture.DuelFocus} names the one
+ * <li>{@code role}: the role contract's routing (ROLE-1 to ROLE-4, GATE-2 to GATE-5), folded
+ *     in from the melee extension's {@code posture} at A1. The
+ *     {@link hadur2.core.role.Charter} is fixed from the battle's facts before the first tick;
+ *     the {@link hadur2.core.role.RoleResolver} picks the role each tick, latches the round
+ *     so the role only steps down, and remembers sentry names for the battle; the
+ *     {@link hadur2.core.role.DuelFocus} names the one
  *     opponent the duel fights while several are alive (the closest when the duel takes
- *     over, kept until it dies); the {@link hadur2.core.posture.SentryFence} simulates the
+ *     over, kept until it dies); the {@link hadur2.core.role.SentryFence} simulates the
  *     duel's orders a few ticks ahead and replaces them with a drive to the centre if they
  *     would take the robot near the sentries' border. A leaf on the model and physics that
- *     only this package sees, so neither brain can tell which posture is on.</li>
+ *     only this package sees, so neither brain can tell which role is on.</li>
  * <li>{@code melee}: the melee brain, driven each tick by the
- *     {@link hadur2.core.melee.MeleeController}. A per-round tracker of every opponent that
- *     drops the dead at once and infers shots from unexplained energy drops of 0.1 to 3.0
+ *     {@link hadur2.core.melee.MeleeController}. It reads the World, {@code world}'s per-round
+ *     tracker of every opponent that drops the dead at once and infers shots from unexplained energy drops of 0.1 to 3.0
  *     (MSENSE-1, MSENSE-2); a radar that spins with four or more opponents alive and turns
  *     toward the one scanned longest ago with two or three (MRADAR-1, MRADAR-2);
  *     minimum-risk movement over a ring of candidate points, weighting the points where

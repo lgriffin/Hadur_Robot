@@ -1,0 +1,120 @@
+---
+marp: true
+theme: default
+paginate: true
+---
+
+<!-- footer: "Sources: docs/bench/r9-weak-leak.md, docs/releases/v3.5.md, v3.5.1.md, docs/top20-analysis.md, data/learnings.md (L-30 to L-35)" -->
+
+# 3.5: the weak-bot leak and what is next
+
+Where the next ranks are
+
+Unit 3, talk 5
+
+---
+
+## The leak
+
+At 20th, 3.4's performance index is:
+
+- **+5.1** against the top 100
+- **-1.7** against the 716 robots ranked below 500
+
+That deficit costs about **1.0 APS**, twice the gap to 19th place. Lifting every negative weak-tier PBI to zero was worth 1.26 APS, about rank 13.
+
+---
+
+## Is it live-only? No
+
+Hypothesis 0: if it were live-only stalls, the bench would not show it.
+
+- The bench shows it. 3.4 scored 75.9% against vort.Chaser on the bench, 74.7% live.
+- 3.4 lost **203 of 3,850** rounds to 11 weak bots
+- Against rammers it spent most of every round within 100 px, where they fire power 3
+
+So it is tactics, and tactics can be fixed.
+
+---
+
+## RAM-2: run from a rammer
+
+- Once a robot has charged to within 120 px in **two different rounds**, run from it for the rest of the battle
+- Each tick, drive the heading that keeps a pursuing robot furthest away over the next 20 ticks
+- Fire full power
+- Rammers gained +7.1 to +20.1 points. Rounds lost: 36 to 4.
+
+---
+
+## MIR-1: plan a path against a mirror
+
+A mirror mover drives to the reflection of our position through the centre.
+
+Offline, on the truth logs, aiming at that reflection hit very differently:
+
+| Aim | MirrorNano | MirrorMicro |
+|---|---|---|
+| Head-on | 30% | 18% |
+| Reflection of a straight-line guess | 15% | 9% |
+| Reflection of our real path, 2 ticks late | **71%** | **86%** |
+
+So MIR-1 plans our path 110 ticks ahead and follows it exactly.
+
+---
+
+## The weak-set result
+
+| 11 weak bots, 10 battles each | 3.4 | 3.5 |
+|---|---|---|
+| Mean share | 74.8% | **86.8%** |
+| Rounds lost of 3,850 | 203 | **69** |
+
+MirrorNano +16.2, MirrorMicro +15.3. Not fixed: SledgeHammer (+2.3) and NanoDeath (+1.4). Running keeps them out of point-blank range, not out of their guns'.
+
+---
+
+## The first cut failed its own gate
+
+A rule for weak bots must not fire against strong ones. The first cut did:
+
+- Top-19 mean share fell from **48.6% to 43.6%** (Raven -14.4, Neuromancer -15.2)
+- Replaying the detectors over 81 top-19 battles' truth logs showed what separates them: no top-19 robot rammed in more than one round of a battle, while every rammer did in 13 to 35 of 35
+- The final rule: ram in two rounds, or 120 mirror scans. Top 19: **48.8%**, detectors off.
+
+---
+
+## 3.5.1: review fixes
+
+Review findings in 3.5's weak-bot responses (R9):
+
+- MIR-1 now aims from where the plan puts Hadur *next* tick, not a straight-line guess
+- RAM-2 models a rammer charging while driving backward in its real direction
+
+On the same 11-bot set, the mean rose from **86.7% to 88.3%**. MirrorMicro 83.3% to 91.7%, RedBull 87.4% to 93.7%.
+
+---
+
+## What is next
+
+- **3.5.1 has not been rated live in the archive yet.** The latest saved page is 3.4's.
+- The weak tier, SledgeHammer-style nanos, and the 447 opponents at 50 to 70 APS (they cost 6.78 of the 14.1 APS Hadur gives up; the top 19 cost 0.82)
+- Warm memory has never shown a measured gain over cold (L-13, issue #49)
+- Issue #80 tracks the leak. MEM-14, TIME-7 and RES-11 were left for later.
+
+---
+
+## What it taught us
+
+- Read the PBI by tier: the strong are fine, the next ranks are in the weak
+- Prove a leak is reproducible before you fix it
+- Gate a rule on behaviour the strong never show, and check it offline first
+- A failed first cut is data. Report it, then tighten the rule.
+
+---
+
+## Sources
+
+- [docs/bench/r9-weak-leak.md](https://github.com/lgriffin/Hadur_Robot/blob/a9ee021/docs/bench/r9-weak-leak.md)
+- [docs/releases/v3.5.md](https://github.com/lgriffin/Hadur_Robot/blob/a9ee021/docs/releases/v3.5.md) and [v3.5.1.md](https://github.com/lgriffin/Hadur_Robot/blob/a9ee021/docs/releases/v3.5.1.md)
+- [docs/top20-analysis.md](https://github.com/lgriffin/Hadur_Robot/blob/a9ee021/docs/top20-analysis.md)
+- [data/learnings.md](https://github.com/lgriffin/Hadur_Robot/blob/a9ee021/data/learnings.md): L-30 to L-35

@@ -1,0 +1,5 @@
+# D1 gate suite (DrussGT route), run from hadur-bench/ with --baseline JAR --baseline-robot NAME:
+#   20 battles against DrussGT, then the top-10 set and the weak set, paired by seed (BENCH-2).
+druss | --set drussgt.txt --seeds 20 --rounds 35
+top10 | --set roborumble-top10.txt --seeds 3 --rounds 35
+weak | --set weak-leak.txt --seeds 2 --rounds 35

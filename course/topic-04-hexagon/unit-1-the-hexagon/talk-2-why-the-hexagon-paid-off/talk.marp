@@ -1,0 +1,123 @@
+---
+marp: true
+theme: default
+paginate: true
+---
+
+# Why the hexagon paid for itself
+
+**Topic 04: The hexagon**
+
+After this talk you can list what a core with no engine lets you do, and name what the split cost.
+
+Everything here is something that Hadur could not have done if its strategy called Robocode directly.
+
+---
+
+# One decision, five uses
+
+The core takes plain values in and gives plain values out. That single choice opened up:
+
+1. **Replay**: run a recorded battle with no engine
+2. **Properties**: generate inputs and check rules
+3. **Fault injection**: make the core, or its storage, fail on purpose
+4. **The bench**: run many battles and read the telemetry
+5. **Warm-up**: run a throwaway core before the real one
+
+*Source: `README.md`, "Hexagonal".*
+
+---
+
+# 1. Replay
+
+A recording is a list of lines: an `I` line for each input and the `O` line the live robot issued. The replay driver feeds them to a fresh core:
+
+```java
+BotInput in = LineCodec.decodeInput(line);
+// ...
+ticks.add(new Tick(i + 1, in, recorded, guard.tick(in)));
+```
+
+The test then asks that recorded equals replayed, for every tick of every fixture. No engine involved.
+
+*Source: `hadur2.core.replay.Replay.run`.*
+
+---
+
+# 2. Properties
+
+Because inputs are values, a generator can build them.
+
+```java
+@Property
+void inputsRoundTrip(@ForAll("inputs") BotInput in) {
+    assertEquals(in, LineCodec.decodeInput(LineCodec.encode(in)));
+}
+```
+
+The generator makes inputs full of NaN, infinities and negative zero. The same trick tests the energy ledger, the shadows and the profile codec. Topic 06 goes deeper.
+
+*Source: `LineCodecProperties`.*
+
+---
+
+# 3. Fault injection
+
+Two examples of failing on purpose, both impossible against a real engine:
+
+- A core that throws on every tick: `guard(in -> { throw new RuntimeException(); })`
+- A profile store that is killed in the middle of a write: `MemoryProfileStore` "can simulate a robot killed in the middle of a write, so the core's crash-safety (RES-3) can be tested"
+
+Both are small fakes, because the core only sees ports.
+
+*Sources: `GuardTest`, `MemoryProfileStore` Javadoc.*
+
+---
+
+# 4. The bench
+
+`hadur-bench` runs real battles in the engine, headless, and reads what Hadur prints through the telemetry port: shots found, hit rates, faults, round length.
+
+The core never knows. It writes lines to a `Telemetry`, and in the robot those lines go to the console. The bench parses them into its report.
+
+Topic 12 covers the bench. The point here is that a clean port made it a separate program.
+
+*Source: `docs/testing.md`, "The bench".*
+
+---
+
+# 5. Warm-up
+
+Class loading and JIT compilation make the first tick slow. Hadur runs one tick through a throwaway core first:
+
+```java
+HadurCore warm = new HadurCore(width, height, others, line -> {}, null);
+warm.newRound(0);
+Guard warmGuard = new Guard(warm::tick, warm::recover, line -> {});
+```
+
+No store and no telemetry (`null` and a no-op lambda). The adapter can build a core with nothing attached, and discard it.
+
+*Source: `hadur2.Hadur.warmUp` (TIME-5).*
+
+---
+
+# What it cost
+
+- **Copies.** The core cannot call `robocode.Rules`, so it carries its own copy, and a property test keeps it honest (Topic 02).
+- **Translation.** Every engine event is turned into a value and back. The values are verbose on Java 11 (Topic 03).
+- **A thin untested adapter.** The testing document says it plainly: "The adapter has no unit tests of its own" beyond the profile store. It is covered by replay fixtures recorded through it, and by the bench.
+
+*Source: `docs/testing.md`, "What is not tested".*
+
+---
+
+# The numbers
+
+At release 3.0 the build ran **504 tests: 483 in the core, 5 in the robot and 16 in the bench**.
+
+Almost all of the tests sit on the core side of the line, which is the side that can be tested without an engine.
+
+*Source: `docs/testing.md`, "Traceability".*
+
+Lab 04 gives Hadurling the same split, a `Guard`, and a `Telemetry` port.

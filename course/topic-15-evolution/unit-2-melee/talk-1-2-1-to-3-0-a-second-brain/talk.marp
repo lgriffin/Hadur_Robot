@@ -1,0 +1,129 @@
+---
+marp: true
+theme: default
+paginate: true
+---
+
+<!-- footer: "Sources: docs/releases/v2.1.md, v3.0.md, docs/bench/m1 to m6-gates.md, docs/strategy-evolution.md" -->
+
+# 2.1 to 3.0: a second brain without touching the first
+
+Melee, from release 2.1 to the Melee Extension (M0 to M6)
+
+Unit 2, talk 1
+
+---
+
+## Release 2.1: fight melee too
+
+- The plan was a pure duelist, and S7 was to cut melee
+- But the MeleeRumble is 10-robot free-for-alls on 1000x1000
+- 2.1 ported the 1.x melee brain into the core, and the jar dropped to Java 11 so every rumble client can load it
+- It runs only while two or more opponents are alive (MELEE-1)
+
+---
+
+## 2.1 result: mid-field
+
+| Melee bench (35 rounds) | Mean place of 10 | Score share |
+|---|---|---|
+| 9 sample bots | 1.0 | 23.0% |
+| 9 established melee bots | 4.4 | 10.1% |
+| 9 strong bots | 5.7 | 8.6% |
+
+It survives reasonably, but deals about half the bullet damage of the leaders. Its melee gun did not learn.
+
+---
+
+## The rule: 1v1 is sacred
+
+- `DuelIdentityTest` pins a hash of every duel source file
+- Melee work that touches the duel fails the build unless the PR re-pins it and says why
+- **The gate (M0, M1):** each tick decides which half drives. It fails closed to the duel on a sentry or a melee fault.
+
+```mermaid
+flowchart LR
+    T[Each tick] --> G{2+ opponents,<br/>no sentry, no fault?}
+    G -- yes --> M[Melee brain]
+    G -- no --> D[Duel brain]
+```
+
+---
+
+## M2: sensing
+
+- A radar that keeps spinning with four or more alive (MRADAR-1)
+- Robots the engine already removed are dropped at once (MRADAR-2)
+- Opponents' shots read from their energy drops
+- Result: the longest scan gap fell from **526** ticks (M1) to **24** (M2). The ghost half of the gate was met.
+- The 8-tick gate was not: a full radar turn alone takes 8 ticks.
+
+---
+
+## M3: minimum-risk movement
+
+- 160 candidate points a tick
+- Risk is opponents' energy over distance squared, doubled where Hadur would be an opponent's closest robot
+- Plus virtual bullets from every recorded shot
+
+| Measure | M2 | M3 |
+|---|---|---|
+| Reference survival | 31.5 | **55.0** |
+| Challenge firsts of 100 | 34 | **71** |
+
+---
+
+## M4: a learning field gun
+
+- One aim per opponent from a shared kd-tree of their movement
+- An energy table with exact kill shots, and targeting waves that score the aim without firing
+- Reference APS: 50.6 (M3) to 55.0 before review, **53.1** as merged
+- A review change (scoring bullets along the route) cost about 4 APS even in a solo run (50.2), so it was reverted. Guessed paths hem Hadur in.
+
+---
+
+## M5: memory and the hand-off
+
+- A melee profile per opponent beside its 1v1 profile
+- When one opponent is left, its 1v1 profile and its shots in flight go to the duel
+- Gate: win the hand-off duels within 5 points of a clean 1v1
+- Result: **31%** (8 of 26) against **57%**. Not met, and the sample is small.
+- The cold bench cannot show the profile half. It needs a warm run.
+
+---
+
+## M6: tuning, and an honest null
+
+- Swept the movement weights at 10 seeds (5 seeds hold about 2 APS of noise)
+- They sit at a local optimum. Without virtual bullets, APS drops 3.
+- The posture used to cut power and hold fire. Removing that raised bullet damage about **15%** at the same APS, so 3.0 keeps the simpler rule (MGUN-5).
+
+---
+
+## Release 3.0: the numbers
+
+| Melee, cold, 1000x1000 | 2.2 | 3.0 |
+|---|---|---|
+| Reference field, APS | 37.9 | **52.7 to 54.6** |
+| Reference field, survival | 32.6 | 59.5 to 63.4 |
+| Challenge field, firsts of 100 | 33 | **72** |
+
+The duel is unchanged: Shadow 54.5% ± 4.5 (2.2: 57.4% ± 5.0), within the interval. The plan's last gate, reference APS 60, was **not met**.
+
+---
+
+## What it taught us
+
+- Protect what works with a build check (a hash), not a promise
+- Fail closed: when unsure, fall back to the proven brain
+- Reverse a change that the bench says hurts, even if a reviewer suggested it
+- A correction counts: the M5 report blamed long duels for skipped turns, and M6 showed they were the round-end profile write
+- Ship the release and say which gate it missed
+
+---
+
+## Sources
+
+- [docs/releases/v2.1.md](https://github.com/lgriffin/Hadur_Robot/blob/a9ee021/docs/releases/v2.1.md) and [v3.0.md](https://github.com/lgriffin/Hadur_Robot/blob/a9ee021/docs/releases/v3.0.md)
+- [docs/bench/m1-gates.md](https://github.com/lgriffin/Hadur_Robot/blob/a9ee021/docs/bench/m1-gates.md), [m2](https://github.com/lgriffin/Hadur_Robot/blob/a9ee021/docs/bench/m2-gates.md), [m3](https://github.com/lgriffin/Hadur_Robot/blob/a9ee021/docs/bench/m3-gates.md), [m4](https://github.com/lgriffin/Hadur_Robot/blob/a9ee021/docs/bench/m4-gates.md), [m5](https://github.com/lgriffin/Hadur_Robot/blob/a9ee021/docs/bench/m5-gates.md), [m6](https://github.com/lgriffin/Hadur_Robot/blob/a9ee021/docs/bench/m6-gates.md)
+- [docs/strategy-evolution.md](https://github.com/lgriffin/Hadur_Robot/blob/a9ee021/docs/strategy-evolution.md)

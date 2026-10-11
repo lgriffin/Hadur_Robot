@@ -1,0 +1,38 @@
+work/gf-ts: enemy bullets fired 74063, hits on members 12676 (17.1 per 100)
+  other                            7796  61.5%
+  member barely moving across      3332  26.3%
+  linear                           1037   8.2%
+  head-on                           511   4.0%
+  guess factor of hits: -1.0:20 -0.8:33 -0.6:163 -0.4:458 -0.2:998 +0.0:2511 +0.2:2294 +0.4:2100 +0.6:1920 +0.8:1695 +1.0:484
+  amz.TeamDeathTeam_1                      fired  2735 hit 1002 (36.6/100) head-on   23 linear   24 slow  448 other  507
+  apvteam.MambaTeam_0.7.5                  fired  6088 hit  822 (13.5/100) head-on   15 linear   33 slow  165 other  609
+  ethdsy.MalackaTeam_1.2                   fired  4858 hit  981 (20.2/100) head-on   31 linear   98 slow  213 other  639
+  gh.nano.GrofGroup_1.1                    fired  7241 hit 1238 (17.1/100) head-on   14 linear  192 slow  250 other  782
+  jab.DiamondStealers_5                    fired  5239 hit  779 (14.9/100) head-on   23 linear   66 slow  119 other  571
+  jab.Enjambre_3                           fired  3984 hit 1033 (25.9/100) head-on   46 linear   49 slow  438 other  500
+  kawigi.sbf.TidalWave_0.8                 fired  7926 hit 1076 (13.6/100) head-on   37 linear   63 slow  264 other  712
+  mn.nano.perceptual.ImpactTeam_1.3.0      fired  3735 hit 1116 (29.9/100) head-on   15 linear  236 slow  362 other  503
+  mskwik.BumblingIdiots_1.0                fired  4022 hit  623 (15.5/100) head-on   25 linear   40 slow  110 other  448
+  pedersen.ImWithDroidTeam_1.3             fired  5970 hit  670 (11.2/100) head-on   35 linear   30 slow  145 other  460
+  pedersen.ImWithStupidTeam_1.3            fired  5105 hit  630 (12.3/100) head-on   49 linear   31 slow  127 other  423
+  sgp.DrunkenTeam_1.12                     fired  5945 hit 1106 (18.6/100) head-on   41 linear  100 slow  202 other  763
+  vuen.Bakery_2.51                         fired 11215 hit 1600 (14.3/100) head-on  157 linear   75 slow  489 other  879
+work/gf-hof: enemy bullets fired 56619, hits on members 9072 (16.0 per 100)
+  other                            4861  53.6%
+  member barely moving across      2512  27.7%
+  linear                           1178  13.0%
+  head-on                           521   5.7%
+  guess factor of hits: -1.0:15 -0.8:14 -0.6:79 -0.4:255 -0.2:763 +0.0:2643 +0.2:1334 +0.4:1016 +0.6:1040 +0.8:1266 +1.0:647
+  amz.TeamDeathTeam_1                      fired  1790 hit  742 (41.5/100) head-on   17 linear   19 slow  390 other  316
+  apvteam.MambaTeam_0.7.5                  fired  3880 hit  449 (11.6/100) head-on   26 linear   17 slow   74 other  332
+  ethdsy.MalackaTeam_1.2                   fired  4536 hit 1016 (22.4/100) head-on   31 linear  154 slow  205 other  626
+  gh.nano.GrofGroup_1.1                    fired  6251 hit  948 (15.2/100) head-on   14 linear  187 slow  206 other  541
+  jab.DiamondStealers_5                    fired  3178 hit  436 (13.7/100) head-on   21 linear   51 slow   38 other  326
+  jab.Enjambre_3                           fired  1911 hit  508 (26.6/100) head-on   20 linear   57 slow  217 other  214
+  kawigi.sbf.TidalWave_0.8                 fired  5440 hit  746 (13.7/100) head-on   83 linear   32 slow  233 other  398
+  mn.nano.perceptual.ImpactTeam_1.3.0      fired  2698 hit 1044 (38.7/100) head-on   10 linear  441 slow  283 other  310
+  mskwik.BumblingIdiots_1.0                fired  6915 hit  756 (10.9/100) head-on   16 linear   77 slow  195 other  468
+  pedersen.ImWithDroidTeam_1.3             fired  3343 hit  380 (11.4/100) head-on   48 linear    6 slow   94 other  232
+  pedersen.ImWithStupidTeam_1.3            fired  3230 hit  399 (12.4/100) head-on   79 linear   36 slow   84 other  200
+  sgp.DrunkenTeam_1.12                     fired  3411 hit  605 (17.7/100) head-on   23 linear   82 slow  128 other  372
+  vuen.Bakery_2.51                         fired 10036 hit 1043 (10.4/100) head-on  133 linear   19 slow  365 other  526

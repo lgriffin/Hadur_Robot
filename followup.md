@@ -4,6 +4,61 @@ Open items from the Hadur 2 stages, newest stage first. The open ones are tracke
 [GitHub issues](https://github.com/lgriffin/Hadur_Robot/issues) (#44 to #56, opened
 2026-09-28); the notes below are the detail behind them.
 
+## The DrussGT route D1 to D5 and T1 (release 3.8)
+
+D1, D5, T1, D2 and D3 with D4 merged (#98, #99, #100, #101, #104); D6 stays research. Open:
+
+- **D3's own measure is unmet.** The light-bullet hit rate stayed at 7.6% (the probe reached
+  9.3%), and the `R` records do not say how often the sampled gun is chosen for a light shot.
+  Log the chosen gun per class, then decide whether the sampled gun competes or fires outright.
+- **D4 costs CPU.** Slow ticks rose tenfold on the DrussGT gate (skipped turns 564 to 616 over
+  700 rounds); the review fixes shed the shadow term at TickBudget level 2 and up. Watch 3.8's
+  live survival and skipped turns. DrussGT's hit rate fell 0.3 points, not the plan's one.
+- **The one-tick plan lag.** The shadow aim reads the surf plan published on the previous tick
+  (the surf runs after the aim). On a reversal tick the shadow is scored on the side being left.
+- **Gates at 20 battles, not 40.** D3 and D4 were each level on DrussGT within ±4.3; the merge
+  rests on the stack gate (+3.5 ± 3.2 on the top 10). Re-run the D4 and stack gates at 40
+  battles on a local machine (issue #102).
+- **The review fixes on D2 to D4 came after their gates**; the 3.8-against-3.7 release check
+  is the bench that covers the shipped code.
+
+## Architecture evolution A0 to A5 (releases 3.6 and 3.7)
+
+All six stages merged (#87, #88, #89, #92, #93, #94), and 3.7 was entered on the RoboRumble,
+MeleeRumble and TeamRumble on 2026-10-05. Open after A5:
+
+- **3.7's passes, read** in [docs/bench/live-3.7.md](docs/bench/live-3.7.md): the 1v1 at
+  85.67 (21st) is 0.43 below the predicted range and not yet attributed (L-43); melee 65.25
+  (18th) is level; the first team pass reads 39.43 (32nd of 46).
+- **Teammate collisions: done in T1** ([team-plan-t1.md](docs/team-plan-t1.md), 3.8; gate in
+  [docs/bench/t1-team.md](docs/bench/t1-team.md)). Collisions fell from 101,322 to 65 over the
+  gate suite (-99.9%) and the team's score share rose from 28.8% to 48.2%. Follow-ups the gate
+  opened:
+  - **Friendly fire.** Our bullets on a teammate fell 1,015 to 328 (-68%), short of the plan's
+    80% bar (177). `TURN_SLACK` is 3 px a tick (it was 1.5 in the first smoke
+    test; widening it cut friendly hits): wider holds more shots and hits a teammate less, narrower
+    does the reverse. Space members that share a target.
+  - **Held shots.** Shots held for the lane rose 5,188 to 19,286 (3.7x, above the plan's flag of
+    about 3x); `TURN_SLACK` is the knob, to be set against the friendly-fire count
+    (wider: more holds, fewer friendly hits). The lane check now also asks that bullet and
+    teammate coincide along the lane in time (a mate that crosses and is gone before any bullet
+    arrives no longer holds the shot), which addresses the held-shot count without narrowing it.
+  - **Bullet on a teammate's bullet** rose 2,598 to 3,557 (the plan's RC5): the shared-target
+    item, with a shared target and formation.
+- **Droids** (a leader with radar-less members) are left to the Team plan.
+- **Team ladder gap, 3.11 (2026-10-11)**, [docs/bench/team-lower-half.md](docs/bench/team-lower-half.md):
+  the 2.07 APS to 10th is lost to ranks 21-33 (Hadur 65.6% against 75-78% for HOFSwarm, ArmyOfShiz
+  and Phoenix), where members die early to simple guns. A shared target scored worse (-2.2); the melee
+  posture off (+0.7) and the teammate fence off (-1.1) scored nothing. Next: measure enemy shots detected on a team (the link carries
+  no hits, so teammates' hits hide enemy shots), then the whole-field team census on the PC.
+- **Stale comments.** Comments in the nine pinned packages that name `HadurCore` are out
+  of date since A2. Fixing them is one optional, comment-only re-pin.
+- **The Tutors course** (`course/`) was aligned with 3.9 on 2026-10-07: the hexagon note has
+  the kernel, strands and conductor; the melee note and quiz cover the role resolver; the
+  capstone points at RAM-3 and the resolver; Topic 15 has a 3.6 to 3.9 talk. Still open: the
+  labs (Hadurling) have no role resolver or team, and the notes' code links stay pinned to the
+  commits that introduced each idea.
+
 ## Rumble climb R5 and R7 (rumble-safe memory, session bench, duress)
 
 - **R5** (PR #70, merged): MEM-8 to MEM-10 and ADAPT-4. Profiles are stats-only except for

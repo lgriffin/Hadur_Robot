@@ -1,0 +1,189 @@
+---
+marp: true
+theme: default
+paginate: true
+---
+
+# Waves, guess factors and a KD-tree
+
+Topic 08, talk 1
+
+After this talk you can:
+
+- draw a bullet as a wave and say what a guess factor measures
+- explain why a KD-tree beats a scan of every past wave
+- read Hadur's `Wave`, `KdTree` and `MainGun`
+
+---
+
+## A bullet is a circle
+
+When a robot fires, the bullet leaves from one point at a fixed speed.
+
+- Speed is `20 - 3 * power` pixels per tick (power 3 is 11 px/tick).
+- After `t` ticks the bullet is somewhere on a circle of radius `speed * t`.
+- You do not know where on the circle. That is the whole problem.
+
+Hadur keeps this in one class, `hadur2.core.model.Wave`.
+
+```java
+public double distanceTraveled(long currentTime) {
+    return (currentTime - fireTime) * bulletSpeed;
+}
+```
+
+---
+
+## The target cannot be anywhere
+
+The target can only move so far sideways before the bullet arrives.
+
+At top speed (8 px/tick) moving square to the line of fire, the farthest it gets off the line is `asin(8 / bulletSpeed)`.
+
+```java
+this.bulletSpeed = 20.0 - 3.0 * power;
+this.maxEscapeAngle = Math.asin(8.0 / bulletSpeed);
+```
+
+(`Wave.java`, in `setBulletPower`.)
+
+A power 3 bullet gives about 0.81 radians. A power 1 bullet gives about 0.49.
+
+---
+
+## The guess factor
+
+Measure the angle from the head-on line, then divide by the escape angle.
+
+- `0` means the target stayed on the head-on line.
+- `+1` means it went the full escape angle the way it was already orbiting.
+- `-1` means the full escape angle the other way.
+
+```java
+public double guessAngle(double bearingToTarget) {
+    return orbitDirection
+        * Angles.normalRelativeAngle(bearingToTarget - absBearing);
+}
+public double guessFactor(double bearingToTarget) {
+    return guessAngle(bearingToTarget) / maxEscapeAngle;
+}
+```
+
+---
+
+## Why scale and mirror?
+
+Two reasons, both in the Javadoc of `Wave`.
+
+- Scaling by the escape angle lets a shot at power 1 teach a shot at power 3.
+- Mirroring by the orbit direction lets a clockwise sample teach a counter-clockwise one.
+
+So the gun gets more use out of every sample it has.
+
+The reverse mapping is one line:
+
+```java
+public double firingAngle(double guessFactor) {
+    return absBearing + guessFactor * orbitDirection * maxEscapeAngle;
+}
+```
+
+---
+
+## Learning from a wave
+
+The loop for a gun is short.
+
+1. Fire (or imagine firing) and store a wave with a snapshot of the situation.
+2. When the wave reaches the target, work out where the target really was.
+3. Save that outcome next to the snapshot.
+4. Next time, find past waves with a similar snapshot and aim where their outcomes cluster.
+
+Step 4 is a nearest-neighbour search. Everything else is bookkeeping.
+
+---
+
+## Hadur stores displacement, not just a factor
+
+Hadur's `MainGun` keeps where the target went as a displacement vector and replays it from the new position. A projected point outside the field is dropped.
+
+```java
+Point2D.Double projected = w.projectLocationBlind(
+    myNextLocation, dispVector, currentTime);
+if (battleField.rectangle.contains(projected)) {
+    firingAngles[i] = DiaUtils.absoluteBearing(
+        myNextLocation, projected);
+    valid[i] = true;
+}
+```
+
+A guess factor cannot say "that point is in a wall". A replayed path can. The anti-surfer gun and the surf's danger views use guess factors.
+
+---
+
+## k nearest neighbours
+
+A situation is a short list of numbers: distance, speed, lateral speed, wall distances. The "most like this one" waves are the k closest points.
+
+Brute force compares the query with every stored wave. That is O(n) per query, and Hadur asks every tick.
+
+A KD-tree splits the points by space so most of them are never looked at.
+
+- Leaves hold a bucket of up to 24 points.
+- A full leaf splits at the midpoint of its widest axis.
+- Every node keeps a bounding box of what is below it.
+
+---
+
+## The search skips whole subtrees
+
+Go down the side of each split the query is on. On the way back up, visit the other side only if its bounding box could hold something nearer than the k-th best so far.
+
+```java
+if (cursor.status == Status.ALLVISITED
+        && (nextCursor.locationCount == 0
+        || (!nextCursor.singularity
+        && root.pointRegionDist(location,
+            nextCursor.minLimit, nextCursor.maxLimit) > range))) {
+    continue;   // prune this subtree
+}
+```
+
+The k best so far live in a max-heap, so the worst of them is always at index 0 (`range = resultHeap.getMaxDist()`).
+
+---
+
+## The heap is plain arrays
+
+Hadur's `ResultHeap` is two parallel arrays, kept as a max-heap on distance.
+
+```java
+void addValue(double dist, Object value) {
+    if (this.values < this.size) {
+        this.data[this.values] = value;
+        this.distance[this.values] = dist;
+        upHeapify(this.values);
+        this.values++;
+    } else if (dist < this.distance[0]) {
+        this.data[0] = value;
+        this.distance[0] = dist;
+        downHeapify(0);
+    }
+}
+```
+
+In the lab you will use `PriorityQueue` with a reversed `Comparator` for the same job. Same idea, less code, more boxing.
+
+---
+
+## Bounded, deterministic, tested
+
+- A size limit makes the tree a FIFO: the oldest point goes first. That keeps every view bounded (RES-2).
+- Results depend only on the points and their order, so replays stay exact (CORE-2).
+- Distances are squared and weighted: `sum(((a[i] - b[i]) * w[i])^2)`, no square root.
+
+In the lab you prove your tree right the way Hadur proves its shadows right: a jqwik property that compares it with a brute-force search on random points.
+
+Source: `hadur-core/.../knn/KdTree.java`, `.../model/Wave.java`, `.../gun/MainGun.java`.
+
+<!-- Code excerpts are trimmed and re-wrapped to fit a slide; the linked source files are exact. -->

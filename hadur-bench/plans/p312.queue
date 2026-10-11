@@ -1,0 +1,33 @@
+# 3.12 stage P1 and P2 (docs/plan-3.12.md). Candidates are one-line edits of v3.11 made by
+# build-ablation.sh, each paired against the released 3.11:
+#   ne    END-1 finishing keeps the fighting distance instead of closing to 150 px
+#   f5    DIST-1 never walks in closer than 500 px (floor 400)
+#   nef5  both
+#   nm    MIR-1 off (no mirror drive or mirror aim), on the volatile set only
+# P1 runs on screen-311.txt (400 bots in proportion to band size, so a mean paired difference is an
+# APS difference), 2 fresh seeds (501-502). P2 runs the 38 all-or-nothing bots, 8 seeds.
+#   ./queue.sh run p312        (or  .\queue.ps1 run p312)
+# About 1.1 h for each P1 step at the census's 24 paired battles a minute, 15 min for P2: about
+# 3.6 h. RoboRumble workers stopped.
+# Pass to P3 (full census): paired mean at least +0.15 APS with its 95% interval above 0, no band
+# below -0.05 APS. Read each with data/tools/screen_paired.py on its rows, --set as below.
+
+set HEAP = --child-heap 2G
+set E = --engine 1.11.1
+set COMMON = --skip-build --skip-fetch --rounds 35 --cpu-constant 1488498 --parallel 12 ${HEAP} ${E}
+set SEEDS = --seeds 2 --seed-base 500
+set B311 = --baseline bisect/hadur2.Hadur_3.11.jar --baseline-robot "hadur2.Hadur 3.11"
+
+prep | mkdir -p bisect && { [ -s bisect/hadur2.Hadur_3.11.jar ] || curl -fsSL -o bisect/hadur2.Hadur_3.11.jar https://github.com/lgriffin/Hadur_Robot/releases/download/v3.11/hadur2.Hadur_3.11.jar; } && bash ./build-ablation.sh --ref v3.11 fin && bash ./build-ablation.sh --ref v3.11 fl5 && bash ./build-ablation.sh --ref v3.11 fin,fl5 && bash ./build-ablation.sh --ref v3.11 mir1 && ./fetch-opponents.sh --set screen-311.txt && ./fetch-opponents.sh --set volatile-312.txt
+
+# P1. Distance against bots we out-hit.
+ne   | ./bench-top20.sh ${COMMON} ${SEEDS} --set screen-311.txt --robot-jar bisect/hadur2.Hadur_3.11ne.jar --robot "hadur2.Hadur 3.11ne" ${B311} --label p312-ne
+  after: prep
+f5   | ./bench-top20.sh ${COMMON} ${SEEDS} --set screen-311.txt --robot-jar bisect/hadur2.Hadur_3.11f5.jar --robot "hadur2.Hadur 3.11f5" ${B311} --label p312-f5
+  after: prep
+nef5 | ./bench-top20.sh ${COMMON} ${SEEDS} --set screen-311.txt --robot-jar bisect/hadur2.Hadur_3.11nef5.jar --robot "hadur2.Hadur 3.11nef5" ${B311} --label p312-nef5
+  after: prep
+# P2. The all-or-nothing pairings: 8 seeds of 3.11 (its rounds file holds the bad battles) paired
+#     with MIR-1 off.
+vol  | ./bench-top20.sh ${COMMON} --seeds 8 --seed-base 500 --set volatile-312.txt --robot-jar bisect/hadur2.Hadur_3.11nm.jar --robot "hadur2.Hadur 3.11nm" ${B311} --label p312-vol
+  after: prep

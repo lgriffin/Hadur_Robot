@@ -1,0 +1,3 @@
+# D2 to D4 stage gates (DrussGT route), run from hadur-bench/ with --baseline set to the previous stage:
+#   20 battles against DrussGT, paired by seed (BENCH-2).
+druss | --set drussgt.txt --seeds 20 --rounds 35

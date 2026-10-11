@@ -1,0 +1,47 @@
+# The mid-table (issue #140): 40 bots drawn at random (seed 39) from those ranked 51st to 400th
+# on 2026-10-07, leaving out DrussGT's shield list (shield-list.txt) and Hadur's own D5 list.
+# Nullstride 2.3.3 scores 12.3 a pairing more than Hadur 3.9 on this draw (13.85 over all 350 of
+# ranks 51-400); Hadur wins 89.4% of rounds here. Use: 3.9 against 3.4 for the per-round picture
+# (M1, M3, M4), and Nullstride against 3.9 for the score split (M2).
+# Jars from https://robocode-archive.strangeautomata.com/robots/<jar>, into opponents/ (not committed).
+#   <robot name as Robocode lists it> | <role> | <jar file in opponents/>
+ags.Glacier 0.3.2 | mid | ags.Glacier_0.3.2.jar
+alk.lap.LoudAndProud 2.23 | mid | alk.lap.LoudAndProud_2.23.jar
+axeBots.Musashi 2.18 | mid | axeBots.Musashi_2.18.jar
+axeBots.Okami 1.04 | mid | axeBots.Okami_1.04.jar
+cjm.Charo 1.1 | mid | cjm.Charo_1.1.jar
+cx.micro.Spark 0.6 | mid | cx.micro.Spark_0.6.jar
+cx.mini.Cigaret 1.31 | mid | cx.mini.Cigaret_1.31.jar
+davidalves.PhoenixOS 1.1 | mid | davidalves.PhoenixOS_1.1.jar
+deo.CloudBot 1.3 | mid | deo.CloudBot_1.3.jar
+dft.Immortal 1.40 | mid | dft.Immortal_1.40.jar
+dmh.robocode.robot.BlackDeath 9.2 | mid | dmh.robocode.robot.BlackDeath_9.2.jar
+dragonbyte.Neutrino 4 | mid | dragonbyte.Neutrino_4.jar
+drm.Magazine 0.39 | mid | drm.Magazine_0.39.jar
+dz.GalbaMini 0.121 | mid | dz.GalbaMini_0.121.jar
+eem.zapper v6.03 | mid | eem.zapper_v6.03.jar
+fromHell.C22H30N2O2S 2.2 | mid | fromHell.C22H30N2O2S_2.2.jar
+hlavko.micro.Flex 1.5 | mid | hlavko.micro.Flex_1.5.jar
+jk.micro.Cotillion 0.8 | mid | jk.micro.Cotillion_0.8.jar
+jk.sheldor.nano.Yatagan 1.2.3 | mid | jk.sheldor.nano.Yatagan_1.2.3.jar
+lazarecki.mega.PinkerStinker 0.7 | mid | lazarecki.mega.PinkerStinker_0.7.jar
+lj.Dapps 0.2 | mid | lj.Dapps_0.2.jar
+nat.Samekh 0.4 | mid | nat.Samekh_0.4.jar
+nz.jdc.nano.NeophytePRAL 1.4 | mid | nz.jdc.nano.NeophytePRAL_1.4.jar
+origin.SleepSiphon 1.7b | mid | origin.SleepSiphon_1.7b.jar
+pe.SandboxLump 1.52 | mid | pe.SandboxLump_1.52.jar
+penguin.Ivy 1.1r | mid | penguin.Ivy_1.1r.jar
+penguin.MrFreeze 1.0a | mid | penguin.MrFreeze_1.0a.jar
+pez.mini.VertiLeach 0.4.0 | mid | pez.mini.VertiLeach_0.4.0.jar
+rampancy.Durandal 2.2d | mid | rampancy.Durandal_2.2d.jar
+ry.VirtualGunExperiment 1.2.0 | mid | ry.VirtualGunExperiment_1.2.0.jar
+sheldor.micro.EpeeistDC 3.0 | mid | sheldor.micro.EpeeistDC_3.0.jar
+sheldor.micro.PointInLineRRAL 1.0 | mid | sheldor.micro.PointInLineRRAL_1.0.jar
+sheldor.nano.FoilistNano 3.2 | mid | sheldor.nano.FoilistNano_3.2.jar
+slugzilla.ButtHead 2.0 | mid | slugzilla.ButtHead_2.0.jar
+slugzilla.RandomGF 1.0 | mid | slugzilla.RandomGF_1.0.jar
+sos.SOS 1.0 | mid | sos.SOS_1.0.jar
+stelo.Chord 1.0 | mid | stelo.Chord_1.0.jar
+stelo.PastFuture 2.3.2 | mid | stelo.PastFuture_2.3.2.jar
+synnalagma.NeuralPremier 0.51 | mid | synnalagma.NeuralPremier_0.51.jar
+xander.cat.SamAxe 1.1 | mid | xander.cat.SamAxe_1.1.jar

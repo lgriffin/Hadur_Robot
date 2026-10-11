@@ -1,0 +1,108 @@
+---
+marp: true
+theme: default
+paginate: true
+---
+
+<!-- footer: "Sources: docs/bench/s5-2.1-cold.md, s5-2.1-warm.md, s6-2.1-cold.md, s6-2.1-warm.md, docs/strategy-evolution.md" -->
+
+# S5-S6: press when ahead, be harder to hit
+
+The first score gain outside the noise
+
+Unit 1, talk 5
+
+---
+
+## S5: a distance controller (DIST-1)
+
+- 1.20 always stood off at 650 px
+- Now Hadur keeps the last 100 shots of each side as rolling hit rates
+- While ours leads theirs by 5 points beyond the margin, it comes in 25 px
+- While theirs leads by 5 points, it goes back out
+- A stranger starts at 650 px
+
+---
+
+## S5: the bench moved the floor
+
+| Closest distance | Effect on sample bots |
+|---|---|
+| 150 px | Their head-on guns took 0.4 to 2 points of share |
+| 300 px | A little still lost |
+| **400 px** | Every share back at its S4 level |
+
+The floor went from 150 to **400 px**. The bench, not intuition, set it.
+
+---
+
+## S5: power and the endgame
+
+- **Full power (POW-1, POW-2):** against a gun the profile rates T0, or when we clearly out-hit them, fire power 3. Landing it refunds 9 energy.
+- **Finish and ram (END-1, END-2):** when the enemy is under 16 energy and we have over 40, close to 150 px. A disabled enemy is rammed.
+- Neither applies at 12 energy or less.
+
+---
+
+## S5 result
+
+- Shadow **46.3% ± 4.5** cold, **48.5% ± 2.5** warm (S4 re-run: 45.5% and 44.0%)
+- Sample bots: rounds end sooner (Crazy's rounds 459 to 399 ticks) without losing share
+- Against Shadow the controller mostly stays out
+- Warm beat cold for the first time, but the intervals still overlap
+
+---
+
+## S6: go after the other half of the damage
+
+Shadow's hits on Hadur.
+
+- **Bullet shadows (MOVE-1):** Hadur follows its own bullets in flight and works out which enemy firing angles they would block. The surf treats those angles as safer.
+- A **tick budget (TIME-1, TIME-2)** sheds work after a slow tick or a skipped turn
+
+---
+
+## S6: checking the geometry against the engine
+
+- Check: did every enemy bullet that ours destroyed fall inside a computed shadow?
+- Result: **927 of 927** in the cold bench
+- It took three rounds of fixes against the truth logs: **35%, then 83%, then 100%**
+- The engine moves bullets in a random order each tick, so some shadows are certain and some count as half
+
+---
+
+## S6: what lost, and what did not show
+
+- **Go-to surfing** lost its A/B: 51.8% ± 5.1 against 54.8% ± 3.7 for three options. Kept only in reserve.
+- **Movement changes when hit (MOVE-2)** fired 8 times warm, but the score was the same with it off (54.6% against 55.2%).
+
+Ideas that do not win the A/B do not become the default.
+
+---
+
+## S6 result: the first real move
+
+| Shadow, cold | S5 | S6 |
+|---|---|---|
+| Score share | 46.3% | **57.4% ± 5.0** |
+| Their hit rate on Hadur | 9.9% | **7.9%** |
+| Rounds won | 99 / 175 | **125 / 175** |
+
+Samples still 875 of 875. Skipped turns 72, not the zero the gate wanted.
+
+---
+
+## What it taught us
+
+- Attack the other half of the exchange: fewer hits taken is as good as more hits landed
+- Check a geometric idea against ground truth until it reaches 100%
+- Run the A/B. Two clever ideas lost theirs.
+- Report the gate you missed (zero skipped turns). It became the next work.
+
+---
+
+## Sources
+
+- [docs/bench/s5-2.1-cold.md](https://github.com/lgriffin/Hadur_Robot/blob/a9ee021/docs/bench/s5-2.1-cold.md) and [warm](https://github.com/lgriffin/Hadur_Robot/blob/a9ee021/docs/bench/s5-2.1-warm.md)
+- [docs/bench/s6-2.1-cold.md](https://github.com/lgriffin/Hadur_Robot/blob/a9ee021/docs/bench/s6-2.1-cold.md) and [warm](https://github.com/lgriffin/Hadur_Robot/blob/a9ee021/docs/bench/s6-2.1-warm.md)
+- [docs/strategy-evolution.md](https://github.com/lgriffin/Hadur_Robot/blob/a9ee021/docs/strategy-evolution.md): S5, S6 and Results by stage

@@ -1,0 +1,39 @@
+# Score leak (docs/bench/live-3.9.md): 32 bots ranked 151st and below that 3.9 beat in at
+# least 95% of rounds live yet scored under 85% against, and that 3.4 also scored more than
+# 4 points under Hadur's own trend for their rank. Worst 3.9 score first. Mostly nano and
+# micro rammers and close-range fighters: Hadur wins the rounds and gives the points away.
+# Use: does the bench see the leak, and where the points go (damage taken per round won).
+# Jars from https://robocode-archive.strangeautomata.com/robots/<jar>, into opponents/ (not committed).
+#   <robot name as Robocode lists it> | <role> | <jar file in opponents/>
+sheldor.nano.SabreuseNano 1.1 | weak | sheldor.nano.SabreuseNano_1.1.jar
+demetrix.nano.SledgeHammer 0.22 | weak | demetrix.nano.SledgeHammer_0.22.jar
+slugzilla.ButtHead 2.0 | weak | slugzilla.ButtHead_2.0.jar
+sheldor.nano.Sabreur 1.1.2 | weak | sheldor.nano.Sabreur_1.1.2.jar
+maribo.FollowFire 1.11 | weak | maribo.FollowFire_1.11.jar
+jk.nano.Machete 2.0 | weak | jk.nano.Machete_2.0.jar
+suzushin7.nano.Galaxy03 1.01 | weak | suzushin7.nano.Galaxy03_1.01.jar
+suh.nano.RammingC 1.00 | weak | suh.nano.RammingC_1.00.jar
+jab.micro.Sanguijuela 0.8 | weak | jab.micro.Sanguijuela_0.8.jar
+wompi.Kowari 1.6 | weak | wompi.Kowari_1.6.jar
+step.nanoPri 1.0 | weak | step.nanoPri_1.0.jar
+oog.nano.Caligula 1.15 | weak | oog.nano.Caligula_1.15.jar
+benhorner.PureAggression 0.2.6 | weak | benhorner.PureAggression_0.2.6.jar
+radnor.RamRod 1.0 | weak | radnor.RamRod_1.0.jar
+bvh.mini.Mjolnir 0.3 | weak | bvh.mini.Mjolnir_0.3.jar
+asm.Statistas 0.1 | weak | asm.Statistas_0.1.jar
+pez.frankie.Frankie 0.9.6.1 | weak | pez.frankie.Frankie_0.9.6.1.jar
+stelo.Lifestealer 1.0 | weak | stelo.Lifestealer_1.0.jar
+blir.nano.Bruce R1.0.0 | weak | blir.nano.Bruce_R1.0.0.jar
+myl.nano.Kakuru 1.20 | weak | myl.nano.Kakuru_1.20.jar
+EH.Fusion 0.32 | weak | EH.Fusion_0.32.jar
+mahrgell.mahrram 1.3 | weak | mahrgell.mahrram_1.3.jar
+stelo.MirrorMicro 1.1 | weak | stelo.MirrorMicro_1.1.jar
+stelo.PianistNano 1.3 | weak | stelo.PianistNano_1.3.jar
+supersample.SuperRamFire 1.0 | weak | supersample.SuperRamFire_1.0.jar
+mladjo.AIR 0.7 | weak | mladjo.AIR_0.7.jar
+bayen.UbaRamLT 1.0 | weak | bayen.UbaRamLT_1.0.jar
+apv.LauLectrik 1.2 | weak | apv.LauLectrik_1.2.jar
+dz.OthoMicro 0.12 | weak | dz.OthoMicro_0.12.jar
+bwbaugh.nano.Tirunculus 0.0.0a | weak | bwbaugh.nano.Tirunculus_0.0.0a.jar
+kawigi.sbf.FloodSonnet 0.9 | weak | kawigi.sbf.FloodSonnet_0.9.jar
+exauge.Leopard 1.1.019 | weak | exauge.Leopard_1.1.019.jar

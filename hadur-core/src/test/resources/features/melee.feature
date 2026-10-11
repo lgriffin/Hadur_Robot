@@ -6,13 +6,13 @@ Feature: Melee
   Background:
     Given a core in an 800 by 600 battle against 3 opponents
 
-  @GATE-1
+  @ROLE-3
   Scenario: With two or more opponents alive the melee brain drives
     When it scans opponents at bearings 0, 120 and 240 degrees, 300 px away
     Then it keeps sweeping the radar
     And it drives toward a destination
 
-  @GATE-1 @MGUN-3
+  @ROLE-3 @MGUN-3
   Scenario: A fresh target is shot at
     When it scans opponents at bearings 0, 120 and 240 degrees, 300 px away, every tick for 5 ticks
     Then it fires within those ticks

@@ -1,0 +1,165 @@
+---
+marp: true
+theme: default
+paginate: true
+---
+
+# The five EARS patterns
+
+**Topic 07: Requirements as code**
+
+After this talk you can classify a requirement by its EARS pattern, write one, and explain how Hadur's build checks that every requirement has a test.
+
+Java skills: regular expressions, file scanning with `java.nio.file`, annotations and reflection, Cucumber tags.
+
+---
+
+# Why a template
+
+"The robot should dodge well" cannot be tested. "The robot shall..." with a trigger, a state or a condition can.
+
+**EARS** is the Easy Approach to Requirements Syntax, from Mavin and colleagues at Rolls-Royce. It gives five sentence shapes. Each starts with a keyword that says when the requirement applies.
+
+Hadur has more than a hundred requirements, every one in `docs/requirements.md` in one of these shapes.
+
+*Source: `README.md`, "Requirements as the contract between agents".*
+
+---
+
+# 1. Ubiquitous: always true
+
+> The <system> shall <response>.
+
+No keyword. It holds at all times.
+
+> **CORE-1** The core shall not import any class from `robocode.*`.
+
+It is checked by an ArchUnit rule (Topic 05).
+
+---
+
+# 2. Event-driven: When
+
+> When <trigger>, the <system> shall <response>.
+
+> **MEM-1** When the first scan of a battle names an opponent, the core shall load the profile for that opponent's lineage key before producing orders for that tick.
+
+An event happens once, and the system reacts. Handlers in Topic 01 are the code shape of this pattern.
+
+---
+
+# 3. State-driven: While
+
+> While <state>, the <system> shall <response>.
+
+> **DIST-1** While our rolling hit rate exceeds the enemy's by 5 points or more, the distance policy shall reduce the target distance by 25 px per wave, not below 400 px.
+
+A state lasts for a while, and the response holds as long as it does. The word "while" is the test: could you say "the whole time that"?
+
+---
+
+# 4. Unwanted behaviour: If, then
+
+> If <condition>, then the <system> shall <response>.
+
+> **WAVE-2** If a corrected energy drop is outside [0.1, 3.0], then the core shall not create a firing wave.
+
+This is how you write what to do when things go wrong: a failure, a bad input, a fault. `RES-1`, `MEM-4` and `GATE-4` use it too.
+
+---
+
+# 5. Optional feature: Where
+
+> Where <feature is present>, the <system> shall <response>.
+
+> **POW-1** Where the profile's gun tier is T0 and enemy energy exceeds 12, the gun shall fire power 3.0.
+
+"Where" is for something that is only sometimes included or configured. It is the rarest pattern: Hadur's table has exactly one, POW-1.
+
+Quick test for all five: look at the first word. "The" is ubiquitous, "When" event, "While" state, "If" unwanted, "Where" optional.
+
+---
+
+# A stable ID is a contract
+
+Each row has an ID, a pattern, the sentence and the stage that first delivers it.
+
+```
+| ID | Pattern | Requirement | Stage |
+| CORE-2 | Ubiquitous | The core shall produce identical `BotOrders` for identical ... | S1 |
+```
+
+IDs never change meaning. A retired requirement keeps its ID, and "no new requirement reuses it". A planner can write `MEM-12` and an implementer, days later in a fresh session, knows what done means.
+
+*Source: `docs/requirements.md`, "Retired requirements".*
+
+---
+
+# Tests name the requirement
+
+A JUnit or jqwik test carries a tag. A Cucumber scenario carries a tag too.
+
+```java
+@Test
+@Tag("CORE-1")
+@DisplayName("CORE-1: the core does not depend on robocode.*")
+```
+
+```
+@WAVE-1
+Scenario: Hitting a wall is not a shot
+```
+
+*Sources: `ArchitectureTest`, `features/waves.feature`.*
+
+---
+
+# The traceability test
+
+It reads the table with a regular expression, and the test sources with another:
+
+```java
+static final Pattern ROW = Pattern.compile(
+    "^\\|\\s*([A-Z]+-\\d+)\\s*\\|[^|]*\\|[^|]*\\|\\s*([SMR]\\d)\\s*\\|\\s*$");
+static final Pattern JAVA_TAG = Pattern.compile("@Tag\\(\"([A-Z]+-\\d+)\"\\)");
+```
+
+It walks the test folders with `Files.walk`, collects every tag, then fails if:
+
+- a due requirement is named by **no** test
+- a tag names an ID that **is not** a requirement
+
+*Source: `hadur2.core.trace.RequirementsTraceabilityTest`.*
+
+---
+
+# The two checks in code
+
+```java
+requirements.forEach((id, s) -> {
+    if (due(s) && !coverage.containsKey(id)) missing.add(id + " (" + s + ")");
+});
+```
+
+```java
+Set<String> unknown = new TreeSet<>(coverage.keySet());
+unknown.removeAll(requirements.keySet());
+```
+
+"Due" means the requirement's stage is at or before the build's stage in the root pom. A future requirement can be in the table before it has a test.
+
+---
+
+# Reflection, and why Hadur reads text
+
+JUnit finds `@Tag` at run time with reflection. You could do the same:
+
+```java
+Tag t = method.getAnnotation(Tag.class);
+```
+
+That is our sketch, not Hadur's. Hadur's test reads source **text** with a regex instead. One pass covers JUnit, jqwik and Cucumber `.feature` files, which are not Java at all. And the core itself bans reflection (RES-6).
+
+The result also goes to `target/requirements-coverage.md`, a table of each requirement and the tests that name it.
+
+Lab 07 writes this test for Hadurling.

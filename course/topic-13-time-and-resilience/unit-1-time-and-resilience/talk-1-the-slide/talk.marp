@@ -1,0 +1,202 @@
+---
+marp: true
+theme: default
+paginate: true
+---
+
+# The slide
+
+Topic 13
+
+After this talk you can:
+
+- measure a tick without letting the core read a clock
+- shed work in levels when the budget is short
+- explain why a long single-process session finds what short runs miss
+
+---
+
+## The symptom
+
+3.0 and 3.1 started near 85.7 APS and lost 5 to 8 points within hours on live clients. The bench could not reproduce it.
+
+3.1's first full pass, hour by hour (L-22):
+
+| Hour | APS | Survival |
+|---|---|---|
+| first | 85.7 | 91.8% |
+| second | 82.1 | 85.2% |
+| third | 79.7 | 79.1% |
+| last 40 min | 78.6 | 76.1% |
+
+The opponent strength was constant. It finished 65th after being 16th in its first hour.
+
+Source: `data/learnings.md` L-22, README.
+
+---
+
+## First defence: a tick budget
+
+Robocode skips a robot's turn if it takes too long. A skipped turn can mean a missed shot, a missed scan, or a lost round.
+
+Hadur times its own core call in the adapter, and hands the measurement in as an event on the next tick.
+
+```java
+if (lastTickNanos >= 0)
+    pending.add(0, new BotEvent.TickTime(lastTickNanos, TICK_ALLOWANCE_NANOS));
+BotInput in = input();
+long start = System.nanoTime();
+BotOrders orders = guard.tick(in);
+lastTickNanos = System.nanoTime() - start;
+```
+
+(`hadur2/Hadur.java`.) The adapter may read the clock. The core may not (RES-6), so a replay sees the same times (CORE-2).
+
+---
+
+## Shed work in levels (TIME-1, TIME-2)
+
+```java
+public static int wavesToSurf(int level) { return level >= 1 ? 1 : 2; }
+public static boolean goToAllowed(int level) { return level == 0; }
+public static double kShare(int level) { return level >= 2 ? 0.5 : 1.0; }
+public static boolean virtualGuns(int level) { return level < 3; }
+```
+
+- A tick over 70% of the allowance sheds one level for the next tick.
+- A skipped turn sheds one level for the rest of the round.
+- Level 1: surf one wave. Level 2: also halve k. Level 3: also stop scoring virtual guns.
+
+Decisions follow what happened, never the clock or the round number (DIAL-2).
+
+---
+
+## Learn the real allowance (TIME-3)
+
+The adapter guesses 3 ms, the bench machine's constant. A rumble client may be quicker.
+
+The first skipped turn proves the guess was too high. From then on the tick that caused it is the allowance.
+
+```java
+if (learnedAllowanceNanos <= 0 && lastUsedNanos > 0
+        && (guessedAllowanceNanos < 0
+            || lastUsedNanos >= MIN_LEARNED_SHARE * guessedAllowanceNanos)) {
+    learnedAllowanceNanos = lastUsedNanos;
+}
+```
+
+The floor (`MIN_LEARNED_SHARE`, 0.2) exists because the adapter times only its own call. A skip can follow an unrelated short tick, and that must not become a battle-long allowance.
+
+---
+
+## Last resort: duress (RES-9)
+
+After three skipped turns in a round, the rest of the round runs in duress: no waves, no samples, no tree. Orbit the enemy, fire head-on at power 1 when the gun is cool, keep the radar on it.
+
+```java
+seed = 0x9E3779B97F4A7C15L ^ (round * 0xBF58476D1CE4E5B9L);
+// ...
+private int nextInt(int bound) {      // xorshift
+    seed ^= seed << 13;
+    seed ^= seed >>> 7;
+    seed ^= seed << 17;
+    return (int) Long.remainderUnsigned(seed, bound);
+}
+```
+
+Reversals are pseudo-random but seeded from the round, so a replay is identical. A robot that cannot finish a tick dies when it stops moving, not when it aims badly.
+
+---
+
+## The session bench
+
+Every bench so far forked a fresh JVM per battle against at most 60 opponents. A rumble client runs a session in one process against hundreds.
+
+R7 added a session: 300 battles, one engine process, a control robot (sample.Tracker) beside Hadur.
+
+| Battles | Skipped turns per battle |
+|---|---|
+| 1 to 25 | 10.0 |
+| 101 to 125 | 39.5 |
+| 276 to 300 | 89.6 |
+
+The control stayed at 0.0 to 0.1. Survival, heap and live classes were flat.
+
+Source: `docs/bench/r7-session.md`.
+
+---
+
+## Where the skips were
+
+Skips were classified by position against each round's record: start, mid-round, decided.
+
+| Battles | start | mid | decided |
+|---|---|---|---|
+| 1 to 25 | 0.0 | 4.1 | 5.9 |
+| 276 to 300 | 0.0 | 3.9 | 85.8 |
+
+Mid-round skips stayed flat. All the growth sat on the decided turn, one tick after a round ended: the profile save. Wiping the data directory before each battle held skips flat; a fresh JVM per battle with the directory kept grew the same way.
+
+Source: `docs/skipped-turns-plan.md`, section 2.
+
+---
+
+## The cause
+
+The round-end save walked the data directory.
+
+- `bytesUsed` listed every file.
+- Above 90% of the quota it read and decoded every profile of its own version to find seeds to drop.
+
+That is work proportional to the number of opponents met, and a client that has met most of the field has hundreds. Prefilling 1,000 stats-only profiles cost 21 to 31 skipped turns per save; 2,000 cost 42 to 53.
+
+Past about 700 profiles (275 bytes each, 200 KB quota) every save was skipped ("275 bytes do not fit"): nothing persisted at all (L-27).
+
+---
+
+## The fix: one listing, an index (R8)
+
+MEM-11 to MEM-13: no save does work proportional to the files on disk.
+
+```java
+private Map<String, long[]> index() {
+    if (index == null) adopt(list(dir));
+    return index;
+}
+```
+
+- The directory is listed once per battle, into an index of length and modification time.
+- Writes and deletes keep the index current.
+- Only files bigger than any stats-only profile are ever read to look for seeds (MEM-12).
+- A save that still does not fit forgets the least recently written whole profiles (MEM-13).
+
+Test: `listsOnce`. A file added behind the store's back is not seen, because nothing lists again.
+
+---
+
+## Did it work
+
+R8 bench, 4 weak bots, 1 ms client constant, a directory of 698 stats-only profiles (docs/bench/r8-memory-scale.md):
+
+| Jar | Skipped turns per battle |
+|---|---|
+| 3.3 | 188 to 224 |
+| 3.4 | 10 to 26 |
+
+3.4 did not slide live: its mean APS held 86.2 to 86.7 for four hours after an early dip (L-29).
+
+The honest caveat: L-27 says the directory explains the lost memory and the skipped-turn growth, not necessarily the whole slide, and L-28 (three silent freezes) is still open.
+
+---
+
+## Recap
+
+- Time the work at the edge; keep the core clock-free.
+- Shed work in ordered levels, driven by events.
+- Have a last-resort mode that is simple, bounded and deterministic.
+- A cost that grows with data shows up only when the data grows. Bench for that.
+- Never let a routine operation scale with everything you have ever stored.
+
+Next: the note walks the classes, then the lab reproduces the slide in miniature.
+
+<!-- Code excerpts are trimmed and re-wrapped to fit a slide; the linked source files are exact. -->

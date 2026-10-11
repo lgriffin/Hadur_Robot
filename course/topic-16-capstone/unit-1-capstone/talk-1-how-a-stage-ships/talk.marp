@@ -1,0 +1,167 @@
+---
+marp: true
+theme: default
+paginate: true
+---
+
+# How a stage ships
+
+Topic 16
+
+After this talk you can:
+
+- name the seven steps a Hadur stage goes through
+- say what evidence each step leaves behind
+- plan your own capstone feature in the same order
+
+---
+
+## The loop
+
+```mermaid
+flowchart LR
+    P["Plan<br/>staged, with gates"] --> REQ["EARS requirements<br/>docs/requirements.md"]
+    REQ --> IMP["Implement<br/>one PR per stage"]
+    IMP --> TST["Tests: ArchUnit, jqwik, unit,<br/>replay, Cucumber,<br/>traceability"]
+    TST --> BEN["Bench gate<br/>cold, warm, A/B,<br/>client conditions, session"]
+    BEN --> REV["Bot code review"]
+    REV --> REL["Release workflow<br/>jar + notes"]
+    REL --> LIVE["RoboRumble"]
+    LIVE --> PAGE["Saved BotDetails page"]
+    PAGE --> DATA["data/ archive,<br/>learnings ledger"]
+    DATA --> P
+```
+
+From the README, "The bench and the loop around it". Nothing merges on a hunch.
+
+---
+
+## 1. Plan: a stage and its gate
+
+Every stage names a focus and a gate before any code. S0 to S7, M0 to M6, R0 to R9.
+
+| Stage | Focus | Merged |
+|---|---|---|
+| S2 | Energy ledger, radar reacquire | PR #20 |
+| S6 | Unhittable movement, tick budget | PR #31 |
+| M1 | Posture gate | PR #35 |
+| R9 | Run from rammers, plan against mirrors | PR #81 |
+
+The gate is a bench number, written before the work: what must improve, and what must not get worse.
+
+Source: `docs/strategy-evolution.md`, `docs/course-plan.md` section 5.
+
+---
+
+## 2. Requirements first, in EARS
+
+> RAM-2 (State): Once charges ... have come within 120 px, with both robots above 20 energy, in two different rounds, for the rest of the battle, while the enemy has closed for two scans running within 500 px ... movement shall drive the heading that keeps a pursuing enemy furthest away over the next 20 ticks ...
+
+(`docs/requirements.md`, abridged.)
+
+- Five patterns: Ubiquitous, Event, State, Unwanted, Optional.
+- A stable ID that never changes meaning.
+- One sentence a test can check.
+
+A planner can name `RAM-2`, and an implementer in a fresh session knows what done means.
+
+---
+
+## 3. Tests, tagged with the ID
+
+Write the tests before the code, one tag per requirement.
+
+```java
+@Test
+@Tag("GATE-4")
+@DisplayName("GATE-4: a melee fault vetoes melee for the rest of the round")
+void faultVetoesTheRound() {
+    gate.meleeFailed();
+    assertEquals(PostureGate.Veto.FAULT, gate.veto());
+    assertEquals(Posture.DUEL, gate.evaluate(7, 0));
+}
+```
+
+Cucumber scenarios carry `@GATE-4`. A jqwik property uses jqwik's own tag, or jqwik silently skips it.
+
+`RequirementsTraceabilityTest` fails `mvn verify` if any due requirement has no test, or any tag is unknown.
+
+---
+
+## 4. Implement under the guardrails
+
+The build remembers what an agent, or you next month, forgets.
+
+- ArchUnit: no Robocode, randomness, threads, I/O or clock in the core. A fixed direction between packages.
+- `DuelIdentityTest`: a hash of the duel's sources. "1v1 is sacred."
+- Replay: recorded battles reproduce the live robot's orders bit for bit.
+- Determinism: the same inputs give the same orders.
+
+If the guardrails are green and the tests are green, the change is safe to measure.
+
+---
+
+## 5. The bench gate, with an interval
+
+Cold, 35 rounds by 5 seeds, mean ± 95% interval. Compare candidate and baseline, paired if you can.
+
+| Result | Meaning |
+|---|---|
+| interval excludes 0 | the change is real |
+| interval spans 0, change is simpler | keep it, say it is neutral (M6 `gpost`) |
+| a regression set got worse | do not ship; tighten the trigger |
+
+S6: 57.4% ± 5.0 against 46.3% ± 4.5 (outside the noise). M6: reference APS 60 not met (52.7 to 54.6) and the report says so.
+
+---
+
+## 6. The gate that caught a bad first cut
+
+RAM-2's first version ran from any robot that closed in four scans within 500 px.
+
+- Weak set (11 bots): 74.8% to 87.9%. Great.
+- Top 19: strong robots close in like that all the time. Up to 15 points lost (Raven 60% to 45%).
+
+The fix was a confirmation found by replaying the engine's truth logs: no top-19 robot ever charged to within 120 px with both above 20 energy, in two rounds. Final: weak set 86.8%, top 19 unchanged (48.6% to 48.8%, noise).
+
+Source: `data/learnings.md` L-35, `docs/bench/r9-weak-leak.md`.
+
+---
+
+## 7. Review, then release notes
+
+Bot review of PR #61 found real bugs in three rules that the first tests had missed, including one that could never fire (topic 11).
+
+Release notes (`docs/releases/v3.5.md`) have a fixed shape:
+
+- **Why:** the evidence that started the stage
+- **What changed:** each requirement ID, in a sentence
+- **Bench:** a before and after table with conditions
+- **Download and how to enter it**
+
+A reader who was not there should be able to decide whether to upgrade.
+
+---
+
+## Close the loop
+
+The live pages come back into the repo as data. L-34: with RAM-2 and MIR-1, the 11-bot weak bench rose from 74.8% to 86.8% and rounds lost fell from 203 to 69.
+
+What did not work is written down too: two nanos that shoot well at mid range gained little (SledgeHammer +2.3, NanoDeath +1.4).
+
+The next plan starts from that evidence.
+
+---
+
+## Your turn
+
+Choose one feature for Hadurling:
+
+1. run from a rammer (Hadur: RAM-2)
+2. bullet-shadow scoring (Hadur: MOVE-1)
+3. a mirror-mover detector (Hadur: MIR-1)
+4. a two-posture gate (Hadur: GATE-1 to GATE-5)
+
+Deliver it in this order, then open the real code and compare.
+
+<!-- Code excerpts are trimmed and re-wrapped to fit a slide; the linked source files are exact. -->

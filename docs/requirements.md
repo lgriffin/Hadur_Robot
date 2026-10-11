@@ -28,10 +28,9 @@ EARS requirements from the Hadur 2 technical direction. This file is the source 
 | END-2 | State | While enemy energy is 0, movement shall drive directly at the enemy. | S5 |
 | TIME-1 | Unwanted | If the previous tick exceeded 70% of the tick allowance, then the core shall reduce its computation level for the next tick. | S6 |
 | TIME-2 | Event | When a skipped-turn event is received, the core shall drop one computation level for the remainder of the round and record it. | S6 |
-| MELEE-2 | Event | When the number of opponents alive falls from two or more to one, the core shall discard its duel tracking and restore full speed before handling that tick's scans. | S2 |
+| MELEE-2 | Event | When the number of enemies alive as the core counts them (WORLD-8) falls from two or more to one, the core shall discard its duel tracking and restore full speed before handling that tick's scans. | S2 |
 | MELEE-7 | Unwanted | If the melee target's last scan is more than 5 ticks old, then the core shall not fire at it. | S2 |
-| GATE-1 | State | While two or more opponents are alive, no sentry robot is alive, no sentry has been scanned this round and the melee subsystems have not failed this round, the core shall drive the robot with the melee subsystems instead of the duel subsystems. | M1 |
-| GATE-2 | Unwanted | If fewer than two opponents are alive, then the core shall drive the robot with the duel subsystems from that same tick. | M1 |
+| GATE-2 | Unwanted | If fewer than two enemies are alive as the core counts them (WORLD-8), then the core shall drive the robot with the duel subsystems from that same tick. | M1 |
 | GATE-3 | Unwanted | If a scanned robot reports that it is a sentry, then the core shall use the duel subsystems for the rest of the round and shall treat the sentry border as a wall. | M1 |
 | GATE-4 | Unwanted | If the melee subsystems throw, then the core shall record the fault and use the duel subsystems for the rest of the round. | M1 |
 | GATE-5 | Ubiquitous | The core shall never target, count or profile a sentry robot as an opponent. | M1 |
@@ -49,8 +48,8 @@ EARS requirements from the Hadur 2 technical direction. This file is the source 
 | MGUN-3 | State | While in melee, the gun shall choose bullet power by distance, own energy and target energy per the energy table, and shall not fire while its own energy is below 1.0. | M4 |
 | MGUN-4 | State | While in melee, the core shall emit a targeting wave at every opponent on every gun-heat cycle. | M4 |
 | MGUN-5 | Ubiquitous | The melee strategy's posture shall not lower the gun's bullet power or hold its fire. | M6 |
-| MMEM-1 | Event | When a round of a melee battle ends, the store shall persist each opponent's melee profile block alongside its 1v1 profile. | M5 |
-| MMEM-2 | Event | When the number of opponents alive falls to one, the core shall hand the survivor's profile and the waves in flight to the duel subsystems. | M5 |
+| MMEM-1 | Event | When a round of a Melee-charter battle ends, the store shall persist each opponent's melee profile block alongside its 1v1 profile. | M5 |
+| MMEM-2 | Event | When the number of enemies alive as the core counts them (WORLD-8) falls to one, the core shall hand the survivor's profile and the waves in flight to the duel subsystems. | M5 |
 | REL-1 | Ubiquitous | The robot jar shall contain only class files that a Java 11 runtime can load, so that every RoboRumble client can run it. | S2 |
 | SHIELD-1 | State | While at least 4 of our last 20 resolved duel bullets, and at least a quarter of them, were destroyed by enemy bullets, the core shall treat the enemy as a bullet shielder for the rest of the battle. | S2 |
 | SHIELD-2 | State | While the enemy is treated as a bullet shielder, the gun shall offset each shot's aim by between 15% and 50% of the target's angular half-width, varying the offset deterministically from shot to shot and holding it from aiming until the shot is fired. | S2 |
@@ -65,7 +64,7 @@ EARS requirements from the Hadur 2 technical direction. This file is the source 
 | BENCH-3 | Ubiquitous | The bench shall report per opponent our hit rate, their hit rate, skipped turns, faults, round length and damage per round for both jars. | R0 |
 | TIME-3 | Event | When the engine skips a turn for the first time in a battle, the core shall learn the tick allowance from the tick that caused it and use that allowance, not the adapter's guess, for the rest of the battle. | R1 |
 | TIME-4 | Ubiquitous | The core shall cap the bytes written at a round's end and shall write seeds only at battle end or on every tenth surviving round. | R1 |
-| TIME-5 | Ubiquitous | The adapter shall run one warm-up tick through a discarded core before the first round, so that class loading and JIT warm-up do not cost the first real tick. | R1 |
+| TIME-5 | Ubiquitous | The adapter shall run one warm-up tick for each role of the charter through a discarded core before the first round, so that class loading and JIT warm-up do not cost the first real tick a role drives. | R1 |
 | MEM-6 | Ubiquitous | The store shall keep statistics loadable at quota by evicting seeds from every profile before any statistics are skipped. | R1 |
 | MEM-7 | Ubiquitous | The profile codec shall be able to write a profile in the format a previous release can read. | R1 |
 | DIAL-3 | Unwanted | If a margin used in a policy comparison is not a finite number, then the policy shall take its conservative branch rather than treat the comparison as settled. | R1 |
@@ -81,7 +80,7 @@ EARS requirements from the Hadur 2 technical direction. This file is the source 
 | POW-5 | State | While the enemy's gun tier is T3 and their distance exceeds 500 px, the gun shall fire no more than 1.7 unless a full-power rule applies. | R3 |
 | BENCH-4 | Event | When a client-conditions file is given, the bench shall run each listed condition (shared or prefilled data directory, CPU constant, background load, engine version, JVM) as its own pass and report survival and skipped turns per opponent and per condition. | R4 |
 | BENCH-5 | Event | When a saved LiteRumble BotDetails page is given, the bench shall report APS and survival by opponent-APS band and by UTC hour, a before/after split at a given time, and live minus bench share for every opponent in a given bench report. | R4 |
-| RES-7 | Unwanted | If the core has faulted on three ticks of a round, then the guard's safe orders shall also fire power 1.0 at the enemy's last scanned bearing whenever the gun is cool. | R4 |
+| RES-7 | Unwanted | If the core has faulted on three ticks of a round off a team (WEAVE-5), then the guard's safe orders shall also fire power 1.0 at the enemy's last scanned bearing whenever the gun is cool. | R4 |
 | RES-8 | Event | When a battle ends, the adapter shall write a battle-health record of at most 64 bytes with rounds, rounds survived, faults, skipped turns, memory failures and the learned tick allowance. | R4 |
 | MEM-8 | Ubiquitous | The store shall keep seeds only for at most five opponents met at least twice with a recorded score share under 60%, and shall keep every other profile as statistics of at most 1 KB. | R5 |
 | MEM-9 | Ubiquitous | The store shall keep its files under a subdirectory named for the profile-format version and shall not read or write another version's subdirectory except to carry tiers forward once. | R5 |
@@ -89,7 +88,58 @@ EARS requirements from the Hadur 2 technical direction. This file is the source 
 | ADAPT-4 | Event | When a profile with a known gun tier and no seeds loads, the core shall apply the opening book's choices from the first tick without replaying samples. | R5 |
 | BENCH-6 | Event | When a session file is given, the bench shall run its battles in order through one engine process under the file's heap cap, keeping the data directory, and shall report per battle its survival share, score share, skipped turns, faults, engine disables, heap after collection, longest pause and loaded classes. | R7 |
 | BENCH-7 | Event | When a session file names a control robot, the bench shall run the same session with the control robot and report the two side by side by blocks of 25 battles. | R7 |
-| RES-9 | Unwanted | If the engine has skipped three turns in a round, then the core shall run the rest of the round at a duress level that adds no samples, builds no waves, reads no neighbour tree, orbits at the distance floor and fires head-on at power 1.0 whenever the gun is cool. | R7 |
+| BENCH-12 | Ubiquitous | The bench shall default to the robot release named in `hadur-robot/pom.xml`, shall run battles in parallel on a pinned CPU constant with a bounded child JVM, and shall name the host, the skipped turns and the duress ticks in every report, so that a run on a loaded machine can be recognised. | R9 |
+| BENCH-38 | Ubiquitous | The bench shall compute every 95% interval from Student's t at the sample's own degrees of freedom, accurate to 1e-3 for any df, with no table limit and no normal fallback. | R9 |
+| BENCH-39 | Event | When asked for a bootstrap interval of a difference of two samples, the bench shall return the 2.5th to 97.5th percentile of the resampled difference of means, reproducibly for a given seed. | R9 |
+| BENCH-40 | Event | When a melee round ends, the bench shall record in `rounds.csv` the tick Hadur died, the robot that killed it (the one whose bullet hit on the death tick, else the nearest robot still alive) and the last robot to hit it, and the melee report shall name who kills Hadur most and the mean death tick. | R9 |
+| BENCH-41 | Event | When a team run has a baseline, the team report shall give the pooled candidate-minus-baseline paired difference, with its interval, for rounds won, survival, in-lane shots, focus fire and bullets on own members. | R9 |
+| BENCH-42 | Event | When a team round ends, the bench shall record in `rounds.csv` the share of our bullet damage that landed on the round's most-hit enemy, and the team report shall show it per opponent and overall. | R9 |
+| BENCH-43 | Ubiquitous | The paired reports shall state how many battles of each build were used against each opponent and shall flag a pair that is uneven because a battle failed. | R9 |
+| BENCH-20 | Ubiquitous | The bench shall record per battle its duress ticks, engine disables, security-manager denials and the rounds whose R record is missing, appended after the existing result columns, and shall keep reading rows written without them. | R9 |
+| BENCH-21 | State | While a battle finished with no ticks in duress, at most a configured number of skipped turns per round and an R record for every round, the bench shall call it trusted, and its report shall give the trusted count per opponent and the paired score-share difference again over trusted pairs only. | R9 |
+| BENCH-22 | Event | When a battle ends, the bench shall wait, within a bound, for the engine to finish reporting before it closes the robot's log, and shall record how many R records are missing and whether the last round's is one of them. | R9 |
+| BENCH-23 | Event | When a battle ends, the bench shall write each round's outcome, survival, ticks, bullet damage dealt and taken, hit rate, duress ticks and skipped turns to a rounds file in the battle's directory, and shall merge a run's rounds files into one table. | R9 |
+| BENCH-24 | Ubiquitous | The bench shall report per opponent the first five rounds of a battle against the last ten, by win rate and bullet-damage share, with the paired late-minus-early difference and its 95% interval. | R9 |
+| BENCH-25 | Ubiquitous | The paired A/B report shall give the paired difference and its 95% interval for score share, survival share, win rate and bullet-damage share, per opponent and over all pairs. | R9 |
+| BENCH-50 | Ubiquitous | The bench shall sample the host's CPU utilisation and the number of other Robocode JVMs while it runs, and shall record the minimum, mean and maximum utilisation and the most other JVMs seen during each battle as four columns appended to the battle's result row, so that a run on a busy machine can be told from one on an idle one; a row without the columns shall still be read. | R9 |
+| BENCH-51 | Event | When a run starts and again when it ends, the bench shall write `conditions.json` into the run's directory with the commit, the jar checksums, the parallelism, the child CPUs and JVM flags, the CPU constant, the engine version, the host sample summary and the size and checksum of the data directory the run began on. | R9 |
+| BENCH-52 | Ubiquitous | The duel report shall carry the child JVM flags in its conditions line as the melee and team reports do, and a paired duel shall fight the candidate first on odd seeds and the baseline first on even seeds, so that a drift in the host's load does not favour one build. | R9 |
+| BENCH-53 | Optional | Where `--repeat K` is given, the bench shall fight each jar, opponent and seed K times, write every battle to `repeat.tsv` and print the score-share standard deviation per opponent and pooled. | R9 |
+| BENCH-54 | Optional | Where `--cold-warm` is given, the bench shall fight each seed cold with the data directory empty and then warm on the shelf the cold battle left, and shall write the pairing with the shelf's size and checksum to `cold-warm.tsv`. | R9 |
+| BENCH-55 | Event | When a battle fails, the bench shall run it again up to `--retries` times (default 1), and shall list every battle that still failed at the end of the run and in the report's footer. | R9 |
+| BENCH-56 | Optional | Where `--dry-run true` is given, the bench shall describe the battles its options and set add up to and shall start no robot and no battle; each bench script shall take `--dry-run` and run no build, fetch or bench. | R9 |
+| BENCH-57 | Ubiquitous | The bench shall take the arena as `--field WIDTHxHEIGHT` in every mode and shall refuse a value that is not two positive whole numbers. | R9 |
+| BENCH-58 | Event | When `sweep-cpu-constant.sh` runs a set, it shall run it once at each multiplier of one CPU constant, with the derived constant and a label naming the multiplier, and shall start nothing under `--dry-run`. | R9 |
+| BENCH-59 | Ubiquitous | The bench shall read its arguments from a file when its only argument is `@FILE` (one argument per line), and the PowerShell bench scripts shall pass them that way, so that a value with a space reaches it intact on Windows PowerShell 5.1. | R9 |
+| BENCH-60 | Ubiquitous | The bench shall cap each battle JVM's heap at 2G unless `--child-heap` names another size, shall leave the heap uncapped for `--child-heap none`, and every run wrapper shall pass `--child-heap` through. | R9 |
+| BENCH-61 | Unwanted | If the battle JVMs a run plans (parallel x heap plus about 300 MB each, or 7500 MB each when uncapped) exceed 70% of the host's free memory, the bench shall refuse to start, name a `--parallel` that fits, and start only when `--force-memory true` is given; `--dry-run true` shall show the estimate. | R9 |
+| BENCH-62 | Event | When a run starts and ends, the bench shall record the effective child heap cap and the planned memory in `conditions.json`. | R9 |
+| BENCH-63 | Ubiquitous | The bench shall list, under the heading "Excluded or failing opponents" near the top of a duel, melee or team report, every opponent that failed at least half of its battles, with the number failed of the number fought and the first failure's reason, and shall add nothing when no opponent did. | R9 |
+| BENCH-64 | Ubiquitous | The bench shall place that block after the report's title and leave the rest of the report unchanged. | R9 |
+| BENCH-65 | Event | When a run ends with opponents that failed at least half of their battles, the bench shall name them, with their failed and fought counts, in one line of its console output. | R9 |
+| BENCH-66 | Ubiquitous | The bench shall list those opponents under `excluded` in the run's `conditions.json`, so a later tool can tell a shrunken set from a full one. | R9 |
+| BENCH-67 | Ubiquitous | The bench shall give a failure's reason as the first line of the battle's error text, cut to 160 characters, and "no result" when there is none. | R9 |
+| BENCH-68 | Ubiquitous | The bench shall judge a battle fought by a robot that is not a Hadur build (a reference build) on the engine's own signals alone (it finished, skipped no more turns than the limit, spent no ticks in duress where known), shall not apply the R-record rule to it, and shall show the columns that come from R records as "-" and leave out the Hadur-only report sections. | R9 |
+| BENCH-69 | Ubiquitous | The bench shall write `reference`, `ramDamage`, `ramDamageBonus`, `bulletDamageBonus` and `lastSurvivorBonus` (and the `their` form of each) from the engine's battle results as the last columns of `result.csv`, after `otherJvms`, and shall read a row without them as NaN. | R9 |
+| BENCH-70 | Ubiquitous | Every duel report shall carry a table "Where their points come from", the opponent's score pooled over the battles as shares of survival, bullet damage, ram damage and bonuses, with "-" for a row that has no split. | R9 |
+| BENCH-71 | Ubiquitous | The bench shall record the engine's mean ticks per round for any build, from the round-ended events, as `engineRoundTicks`, and the duel report shall show it per opponent. | R9 |
+| BENCH-72 | Optional | Where `--seed-base B` is given, the bench shall give the engine seed B + n for its seed n, so that a confirmation run fights seeds no earlier run used. | R9 |
+| BENCH-73 | Optional | Where `analyse.py --live PAGE` is given a parsed BotDetails page, the analysis shall project each opponent's paired difference onto the live APS as the sum of the differences over the page's pairings (the rest of the field unchanged), and beside it a band extrapolation that applies each rank band's mean to all its pairings only where the band has at least three covered opponents (issue #151, A5). | R9 |
+| BENCH-74 | Optional | Where a live page is given, the analysis shall report the run's coverage of the live field by rank band (ranks from the page's opponent APS) and name each opponent that is not a live pairing as absent, version drift (another version is live) or unrunnable (listed in `hadur-bench/unrunnable.txt`) (issue #151, A6). | R9 |
+| BENCH-75 | Ubiquitous | The LiteRumble arithmetic shall reproduce a saved BotDetails page's APS, APS CI, PWIN, survival, pairings and battles from its pairing rows, and shall give a bench build the same APS, CI (variance shrunk to a prior of 16 with weight 3), PWIN and rounds-won survival, labelled as LiteRumble-style (issue #151, A9). | R9 |
+| BENCH-76 | Optional | Where `--unseeded true` is given, the bench shall start every battle without `-DRANDOMSEED`, as the RoboRumble client does, keeping the seed number as a label for pairing and rows (issue #151, gap 11). | R9 |
+| BENCH-77 | Optional | Where a session file gives `repeat=N` or `shuffle=SEED`, the session shall fight its list N times over in one engine, in an order shuffled with SEED that the control shares, and with a control the report shall give each opponent's mean score share for both robots and the mean difference with each opponent counted once (issue #151, A1). | R9 |
+| BENCH-78 | Optional | Where `--cpu-constant` is given to a session, the bench shall pin it in the home the session runs in, and the session report shall name the constant (issue #151, gap 13). | R9 |
+| BENCH-79 | Ubiquitous | The bench shall run Robocode 1.11.1 unless `-Drobocode.version` names another release, and every duel and session report shall name the engine, flagging a release LiteRumble takes no uploads from (issue #151, A2). | R9 |
+| BENCH-80 | Optional | Where `live_passes.py drift NEW OLD` is given two parsed BotDetails pages and the opponents the change touched (`--changed`, or `--shield-java` for the shield list's entries), the tool shall report the mean pairing difference with its 95% interval separately for the touched and the untouched opponents, so that a drift on the untouched ones is read as the live environment, not the code (issue #151). | R9 |
+| BENCH-81 | Optional | Where `live_passes.py collapses` is given several pages, the tool shall list per page the single-battle pairings scoring `--below` points (12 by default) or more under the median of the other pages against the same opponent, with their battle times (issue #151). | R9 |
+| BENCH-82 | Optional | Where `live_passes.py classify` is given pages, peers' BotCompare pages, bench TSVs, set files and the shield list, the tool shall write one row per opponent of the newest page with every pass, a pooled score over the newest two passes (the newest alone for a listed bot), the peers' scores, the bench's, set membership, an outcome tier, problem tags (ROUNDS, LEAK, VOLATILE, PEERGAP, BENCHSEES, BENCHGAP) and a robot kind, and a summary of each class's APS and its net room at the peers' median (issue #151). | R9 |
+| BENCH-83 | Ubiquitous | Every battle child (duel, melee, team, session and the inactivity check) shall load the JDK's lazily found providers (time-zone rules, zip entry times, locale formats) in its own thread before the engine starts, so that no robot is the first to need one and is denied the class-path read by the security manager (issue #151). | R9 |
+| BENCH-84 | Unwanted | If a battle's engine errors hold a security-manager denial of a `META-INF` resource on the class path, then the bench and `analyse.py` shall not trust that battle and shall name the reason "JDK resource denied" (issue #151). | R9 |
+| BENCH-85 | Optional | Where `live_client.py profiles DIR` is given a Hadur data folder, the tool shall decode the newest-format profile of each opponent with ProfileCodec's checks and list its key, battles, rounds, last outcome, ADAPT-5's and SHIELD-3's stored verdicts and seed sizes, counting damaged files apart, so that the shield verdicts a live client carries into later battles can be counted (3.12 plan, P4). | R9 |
+| BENCH-86 | Event | When a live client's results file (its `OUTPUT=`) or Hadur's `health.hc` (RES-8) changes during `live_client.py watch`, the tool shall append each battle with a hadur2 robot once (score share, rounds won, bullet damage) and each new health record with the opponent and shield verdict of the profile saved at the same battle end, keeping battles already recorded across uploads and restarts (3.12 plan). | R9 |
+| BENCH-87 | Event | When `live_client.py watch` reads a LiteRumble BotDetails page (or `page-diff` is given two), the tool shall save the page, record its header and infer the mean score of each pairing's newly uploaded battles from the pairing's mean and battle count before and after, flagging any under 50 or 25 points or more under the pairing's earlier mean; a failed fetch shall be logged and never stop the watch (3.12 plan). | R9 |
+| BENCH-88 | Optional | Where `live_client.py report OUT` is given a watch folder, the tool shall summarise the client's battles per game, the health records' skipped turns, faults and stored shield verdicts, each 1v1 battle under 70% share joined to its health record, the latest profile snapshot and the live page's movement and flagged drops (3.12 plan). | R9 |
 | RES-10 | Ubiquitous | The robot shall leave no reference to its classes in the process after a battle, so that the number of classes loaded in one JVM stays flat across a session of battles. | R7 |
 | MOVE-3 | Ubiquitous | Movement shall score a wave's danger only over the part of the intersection not in a certain bullet shadow, at half weight inside a possible shadow. | R6 |
 | MOVE-4 | Ubiquitous | Movement shall score a wave's danger as the danger density integrated over the firing angles of the precise intersection. | R6 |
@@ -201,8 +251,8 @@ The S6 group (MOVE-1, MOVE-2, TIME-1, TIME-2) was implemented with these reading
   clock, so a replay takes the same decisions (CORE-2). The allowance is taken as 3 ms, the
   bench machine's CPU constant; Robocode does not tell a robot its own.
 - **A computation level sheds work in a fixed order**: level 1 surfs one wave and no
-  go-to; level 2 also halves k in every KNN view; level 3 also stops scoring the virtual
-  guns. TIME-2's skipped turn holds a level for the rest of the round; TIME-1's slow tick
+  go-to; level 2 also halves k in every KNN view and drops GUN-7's shadow weighing (the aim is
+  D3's plain aim); level 3 also stops scoring the virtual guns. TIME-2's skipped turn holds a level for the rest of the round; TIME-1's slow tick
   adds one for the next tick only. Levels are capped at 3.
 - **MOVE-2's baseline is the profile's raw hit rate** on us, and the rolling rate is a window
   cleared at each change, so each flavour is judged on its own waves. A change needs the live
@@ -609,18 +659,530 @@ tactics, not live-only stalls. See `docs/bench/r9-weak-leak.md`.
 - The round record gained `ramEscapeTicks` and `mirrorShots` (fields 35 and 36); fields are
   only ever appended.
 
+## The architecture evolution (A0–A5)
+
+The plan is [docs/architecture-evolution.md](architecture-evolution.md): one identity kernel
+and three strands (Duel, Melee, Team) behind one role contract. Its stages are compared with
+`hadur.arch.stage` in the root pom. Six new groups carry it: ROLE, WORLD, WEAVE, LINK, SHELF
+and STRAND. IDs keep their meaning; only the owner of each group is new.
+
+### Owners
+
+Every requirement group belongs to one owner, the same owner as the code it governs
+(`hadur-core/src/test/resources/ownership.txt` maps the packages).
+
+| Owner | Packages | Requirement groups |
+|---|---|---|
+| Kernel | `model`, `physics`, `knn`, `ledger`, `memory`, `port`, `world` (from A3), `link` (from A4) | CORE, WAVE, MEM, PHYS, WORLD, LINK, SHELF |
+| Duel strand | `gun`, `move`, `adapt`, `policy`, `shield`, `shieldmode` (from D5), `duel` (from A2) | ADAPT, GUN, DIST, POW, MOVE, END, DIAL, RADAR, SHIELD, TIME, RAM, MIR |
+| Melee strand | `melee` | MELEE, MRADAR, MMOVE, MGUN, MSENSE, MMEM |
+| Team strand | `team`, from the Team plan | none yet |
+| Conductor | the root package, `role` (`posture` until A1), `replay` | GATE, ROLE, WEAVE, RES, STRAND |
+| Bench and release | `hadur-bench`, the adapter | BENCH, REL |
+
+### Requirements
+
+| ID | Pattern | Requirement | Stage |
+|---|---|---|---|
+| ROLE-1 | Event | When a battle starts, the core shall fix the battle's charter from the battle facts before the first tick. | A1 |
+| ROLE-2 | Ubiquitous | The core shall choose each tick's role from the charter, the counts of enemies, teammates and sentries alive, the round's vetoes and the roles that have already driven this round, and from nothing else. | A1 |
+| ROLE-3 | State | While the Team role's own conditions do not hold, the Melee role is built and has not failed this round, two or more enemies are alive, no sentry robot is alive or has been scanned this round, and the Duel role has not driven this round, the core shall drive the robot with the Melee role. | A1 |
+| ROLE-4 | State | While a role has driven in the current round, the core shall not drive with a role above it in the order Team, Melee, Duel. | A1 |
+| ROLE-5 | Ubiquitous | The core shall offer each of its events to the roles of the charter, Melee before Duel, in the engine's order, except that a sentry's scan and a sentry's bullet are offered to no role (GATE-5) and Hadur's hit on a robot the Duel is ignoring is not offered to the Melee role. | A2 |
+| ROLE-6 | Ubiquitous | The core shall hold no role outside its charter. | A3 |
+| WORLD-1 | Ubiquitous | The core shall feed one model of the field with every scan, hit and death that ROLE-5 offers the Melee role, before any role is offered it. | A3 |
+| WORLD-2 | Ubiquitous | The core shall report to a role, as its count of others, the engine's count off a team and the count of enemies alive that WORLD-8 defines on a team. | A5 |
+| WORLD-3 | Unwanted | If a teammate has sent no report for a set number of ticks while the engine's count of others has fallen, then the core shall count it dead. | A5 |
+| WORLD-4 | Event | When teammates' reports arrive, the core shall merge each report once, in the order of their stated ticks, and keep the newer of two sightings of a robot. | A5 |
+| WORLD-5 | Event | When a role hands over with bullets of its own still in flight, the core shall keep the first bullet outcomes that follow, one for each of those bullets, out of the next role's gun evidence. | A2 |
+| WORLD-6 | Event | When one of our bullets ends on a teammate or on a teammate's bullet, the core shall report it to the role that fired it as a bullet that missed. | A5 |
+| WORLD-7 | Ubiquitous | The core shall offer an event that names a teammate to the World alone. | A5 |
+| WORLD-8 | State | While in a team battle, the core shall take as its count of enemies alive the smaller of the engine's count of others less the teammates heard from on that tick, and the enemies at the start less the distinct enemies known dead that round. | A5 |
+| WEAVE-1 | Ubiquitous | Only the driving role shall originate a tick's body, gun, radar and fire orders, apart from the full-speed order the conductor gives at a change of role. | A2 |
+| WEAVE-2 | Ubiquitous | A fence shall only replace a drive; it shall never touch the gun, the radar, the fire order or the messages. | A2 |
+| WEAVE-3 | Ubiquitous | The driving role shall order a shot only on a tick for which the conductor has given the fire permission. | A2 |
+| WEAVE-4 | State | While a living teammate's last known position is no older than the WORLD-3 window and lies in the fire lane, the conductor shall withhold the fire permission. | A5 |
+| WEAVE-5 | State | While in a team battle, the Guard's safe orders shall hold fire. | A5 |
+| WEAVE-6 | Unwanted | If the driving role orders a shot on a tick without the fire permission, then the core shall treat it as that role's fault. | A2 |
+| LINK-1 | Ubiquitous | Team messages shall be byte arrays in a versioned, checksummed format that the core encodes and decodes. | A4 |
+| LINK-2 | Unwanted | If a message fails its checksum or carries an unknown version, then the core shall ignore it and count it. | A4 |
+| LINK-3 | Unwanted | If no teammate's report has arrived, then the core shall still resolve its role from the engine's facts alone. | A5 |
+| LINK-4 | State | While it has a living teammate, the core shall broadcast its own state, its fresh sightings, the deaths it knows of this round and its bullet events with the orders of every tick it completes. | A5 |
+| SHELF-1 | Ubiquitous | A shelf shall be written only on behalf of its own strand's role. | A4 |
+| SHELF-2 | State | While in a team battle, a member that is not the team's leader shall neither write to nor delete from the store. | A5 |
+| SHELF-3 | Ubiquitous | The `.hp` shelf shall be written only in a Duel-charter battle, the `.hm` shelf only in a Melee-charter battle and the `.ht` shelf only in a Team-charter battle. | A4 |
+| SHELF-4 | Ubiquitous | The `.hm` and `.ht` shelves shall each stay within a fixed byte budget. | A4 |
+| STRAND-1 | Ubiquitous | Every package of the core shall have exactly one owner: the kernel, one strand, or the conductor. | A0 |
+| STRAND-2 | Ubiquitous | No strand's package shall depend on another strand's or on the conductor's, and no kernel package on a strand's or the conductor's. | A0 |
+| STRAND-3 | Ubiquitous | Each owner's sources shall be pinned by hash. | A0 |
+| STRAND-4 | Ubiquitous | A recorded duel battle and a recorded melee battle shall each replay to identical orders, telemetry and store files. | A0 |
+| STRAND-5 | Ubiquitous | A recorded team battle shall replay to identical orders and telemetry for each recorded member. | A5 |
+
+### A5 notes
+
+- **The team baseline.** Five `hadur2.Hadur` make `hadur2.HadurTeam`, built from the same
+  commit and classes as the solo jar (a second shade of the robot jar with the team file
+  added). Each member plays Melee, then Duel, with teammates off its books, shared eyes
+  and a clear fire lane; there is no Team strand yet, and no member writes a profile.
+- **The filtered input** is the conductor's `TeamLink`, built only in a Team-charter
+  battle, so a duel or a melee sees the raw input and every older fixture replays
+  unchanged. A teammate's scan, hit, collision or death goes to the World's roster alone
+  (WORLD-7); our bullet that ends on a teammate, or on a teammate's bullet, reaches the
+  role as a miss (WORLD-6); and the role's `others` is the World's count of enemies
+  alive (WORLD-2).
+- **The roster** (`world.Roster`) keeps each teammate's last known position, the tick it
+  last reported, and its death. WORLD-3's window is `SILENT_WINDOW`, 20 ticks: a teammate
+  silent that long while the engine's count of others has fallen since its last report
+  is presumed dead. WORLD-8's count is
+  `max(0, min(others - teammates heard this tick, enemies at start - enemies known dead))`;
+  a death the engine announces counts a teammate's only when the name is the roster's,
+  and a sighting withdraws a presumed death, so the count errs upward.
+- **WORLD-4.** Each report is merged once (a report delivered again after a skipped turn
+  is not), in the order of its stated tick; a sighting newer than the World's goes in
+  through the World's own scan, the deaths it carries are applied, and the sender's own
+  position refreshes the roster.
+- **LINK-3, LINK-4.** With no report the count still comes from the engine's count and
+  the deaths it announced. While a teammate lives, every tick's orders carry our report:
+  own state, the tick's fresh sightings, the round's deaths we know of and the shot this
+  tick orders, if any.
+- **WEAVE-4, the fire lane**, runs from Hadur along the gun's heading. Its half-width is
+  24 px at a fresh position (a robot's half-width and a few px of slack) and grows by
+  8 px per tick of age; positions older than the WORLD-3 window are left out. A shot the
+  lane holds back is counted. **WEAVE-5**: the Guard's safe orders hold fire on a team.
+- **SHELF-2.** The Archive is told at tick 0 whether this member is the scribe: off a
+  team always, on a team only the leader (200 starting energy). A non-scribe neither
+  writes nor deletes, the health record included.
+- **The World's shot lifetime** is `max(130, ceil(diagonal / 11))` ticks, the time the
+  slowest bullet takes to cross the field: 130 on 1000 x 1000, 155 on 1200 x 1200.
+- **Records.** `T,round,tick,teammateHits,teammateBulletHits,collisions,blockedShots,reportsMerged,linkRejected,enemiesAlive`
+  at each round's end, and `E,round,tick,count` each time a team member's count of
+  enemies alive changes, which the team bench checks against the engine's truth.
+- **The team bench** (`--team true`, `team-reference.txt`, `team-gates.txt`) fights each
+  reference team in turn at TeamRumble settings and reports score share, rounds won,
+  survival, faults, skipped turns, LINK rejects, the share of shots that left with a
+  living teammate truly in the lane, the count against the truth, the members' `T`
+  sums and the data files the battle left. `--record` records five recorders, one
+  transcript per member.
+- **STRAND-5.** A member's `F` line carries the rest of its battle facts (name, starting
+  energy, sentry border, roster), and the shipped `Replay` and the tests'
+  `FixtureReplay` build the core from them with the guard that holds fire. The team
+  fixtures are the leader and one droid of a battle against `sampleteam.MyFirstTeam`.
+- **Reworded:** GATE-2, MELEE-2 and MMEM-2 read "enemies alive as the core counts them";
+  RES-9's shot waits for the fire permission; RES-7 applies off a team. Off a team every
+  one of them reads as before.
+
+### A4 notes
+
+- **The ports.** `BotEvent.Message` carries a teammate's bytes and its sender; the
+  bullet-meets-bullet event names the other bullet's owner; `BotOrders.messages` carries
+  the tick's reports to broadcast, and `BotOrders.withDrive` replaces a drive and keeps
+  the gun, radar, fire and messages, which is how `SentryFence` now builds its orders
+  (WEAVE-2, whose property now covers the messages). `BattleFacts` gains our name, our
+  starting energy (`leads()`: only a team's leader starts with 200) and the sentry border.
+  The replay codec appends a `G` event, the owner on `X` and the messages on `O`, each
+  only when present, so every older transcript reads and writes back the same.
+- **LINK-1, LINK-2** are the kernel's new `link` package: a `Report` (own state, fresh
+  sightings, the round's deaths, the bullets fired) and `LinkCodec`, big-endian with a
+  version byte and a CRC-32. A message that fails the checksum, carries another version,
+  is cut short or runs long is refused whole; the conductor counts it and writes a
+  `LINK,round,tick,rejected,sender,reason` record. A good report is kept per teammate
+  for A5 to merge. No role is offered a message.
+- **SHELF-1, SHELF-3** are the conductor's `Archive` and the port's `GatedProfileStore`.
+  Each file belongs to one shelf by name (`.hp` and the battle clock to the Duel, `.hm`
+  to Melee, `.ht` to Team, anything else to the conductor), and a battle writes or
+  deletes only its own charter's shelf and the conductor's files. The melee seam asks
+  the Archive before it saves, so a team battle never tries to write `.hm`; a delete a
+  library makes on its own, such as the 1v1 library's clean-up in a melee, is refused
+  quietly and counted in a `MEM,…,gated,n` record at the battle's end. Every shelf
+  may still be read in any charter.
+- **SHELF-4**: the `.hm` blocks were already capped at 16 KB (MMEM-1's `CAP`); the `.ht`
+  shelf comes with the Team plan.
+- **The adapter is a `TeamRobot`.** It passes the roster from `getTeammates()` (null off
+  a team), hands teammates' byte-array messages to the core (anything else arrives as no
+  bytes and is refused) and broadcasts the core's. A team battle is now a Team charter:
+  until the Team strand exists it builds Melee and Duel, reads every shelf and writes
+  none but the health record, and a teammate still reads as an opponent until A5.
+- **MMEM-1** reads "a Melee-charter battle".
+- **The gate.** All eleven fixtures replay to identical orders, telemetry and store files,
+  none re-recorded.
+
+### A3 notes
+
+- **The World.** `melee.EnemyTracker`, `EnemyInfo` and `EnemyShot` moved to the kernel's
+  `world` package, unchanged but for three members made public for the melee brain to read.
+  `ArchitectureTest.worldReadsNoStrand` keeps it to `physics` and `model`, and
+  `meleeIsSeparateFromDuel` now lets `melee` see `world`. The melee pin changed once, as the
+  donor (imports only, and the books-only handlers below); the nine pinned packages did not.
+- **WORLD-1** is the conductor's `feedWorld`: every scan, hit and death ROLE-5 offers Melee
+  goes to the World first, then the melee brain's own books take it through the new
+  books-only handlers (`scanned`, `bulletHit`, `hitByBullet`, `died`). A failure feeding the
+  World is the Melee role's, as it was inside the tracker (GATE-4). The `on*` handlers stay
+  for the melee's own tests and feed its tracker first, as before. The focus and the baton's
+  shots read the World.
+- **ROLE-6.** A Duel charter builds no `MeleeController`, no World and no melee seam; a melee
+  brain handed to a 1v1 core is dropped. The ROLE-5 scenario and tests that heard the melee
+  brain in a 1v1 now use a Melee charter with one opponent left, where the Duel drives.
+- **TIME-5** runs one warm-up tick per role of the charter: in a melee, the Melee with every
+  opponent alive, then the Duel with one left, the hand-off included. The warm-up passed a
+  gun cooling rate of 0, which the core refuses, so since R1 the warm-up tick has faulted
+  before reaching the guns; it now passes the engine's 0.1, and `HadurWarmUpTest` checks that
+  each role drives a tick, which a faulted tick never does.
+- **The gate.** All eleven fixtures replay to identical orders, telemetry and store files,
+  none re-recorded.
+
+### A2 notes
+
+- **The Duel is lifted.** `duel.DuelController` holds everything the duel did inside
+  `HadurCore`, moved verbatim: the guns, the surf, the waves and state logs, the ledger, the
+  shield, the S4 opening and seeds, the S5 and S6 policies, the rammer and mirror responses,
+  and `Duress`, which moved with it. `RoundStats` moved to the kernel's `model`, so the Duel
+  fills in its counters without seeing the conductor. The duel pin only gains the two files;
+  `DuelIdentityTest` shows no file in the nine pinned packages changed.
+- **The contract.** `role.Role` is the plan's interface, with `Tick`, `RoundFacts` and
+  `RoundResult`. The conductor drives each brain through its seam in the root package:
+  `DuelSeam` and `MeleeSeam` (today's `meleeTick` and `goTo`, the melee half of the `M`
+  record and the `.hm` shelf). Each seam is handed its shelf by charter: the `.hp` library in
+  a Duel charter, the melee blocks and the survivors' 1v1 profiles in a Melee charter. The
+  baton (`model.Baton`) carries the melee's shots and Hadur's path, so `duel` imports
+  nothing from `melee`. `HadurCore` keeps every public method and accessor it had.
+- **ROLE-5** is the conductor's `observe`: its own bookkeeping first (round counters,
+  deaths, the budget's events), then the Melee seam, then the Duel seam. Sentry scans and a
+  sentry's bullets stop there (GATE-5); the Melee seam skips Hadur's hit on a robot the Duel
+  ignores. The hand-off happens inside the Duel seam's scan, after the opponent switch and
+  before the scan is logged.
+- **WORLD-5** is the conductor's count of melee bullets in flight, unchanged; the Duel seam
+  asks it once per outcome.
+- **WEAVE-1**: `Role.observe` is handed no orders, and the Duel holds a scan's radar lock
+  until `drive`, which writes it first, where the scan used to. **WEAVE-2** is a property:
+  the sentry fence keeps the gun, radar and fire orders bit for bit. **WEAVE-3**: the
+  conductor gives the fire permission before the role drives (always, until A5's fire lane;
+  `HadurCore.firePermission` lets tests withhold it), and both seams hold their shot and its
+  count without it. **WEAVE-6**: a shot ordered without it is the driving role's fault, a
+  melee fault (GATE-4) in Melee and the Guard's in the Duel.
+- **The gate.** All eleven fixtures replay to identical orders, telemetry and store files,
+  none re-recorded. One shelf rule now reads the charter instead of a count: a battle that
+  starts with no opponent at all would be a Duel charter with a `.hp` shelf. Robocode never
+  starts one.
+
+### A1 notes
+
+- **ROLE-1** is `Charter.of(BattleFacts)`, fixed in `HadurCore`'s constructor. The adapter
+  passes `BattleFacts.solo(width, height, getOthers())`: an `AdvancedRobot` cannot ask for
+  teammates, so until A4 the roster is empty and no battle is a Team charter.
+- **ROLE-2 to ROLE-4** are `RoleResolver`, in the new `role` package (the melee extension's
+  `posture` folded in; `Posture` and `Veto` keep their constants, so only imports change at
+  their call sites). The resolver latches the lowest role that completed a tick; a tick the
+  Guard covers never completes, so it leaves the latch as it stands. Off a team the enemies
+  are the engine's `getOthers()`.
+- **GATE-1 is retired** for ROLE-3, which carries the same conditions plus the latch. Its ten
+  tags moved: six scenario tags and two `RoleResolverTest` tests to ROLE-3, and the two
+  ArchUnit rules to STRAND-2. `sentryAliveKeepsTheDuel` now expects the duel to stay once it
+  has driven. The one change in play: a sentry that dies unscanned no longer hands the round
+  back to melee. No fixture holds such a round, and every fixture's orders, store files and
+  telemetry (less the new `ROLE` lines, which the comparison sets aside) are unchanged.
+- The **`ROLE` record**: `ROLE,round,tick,role,charter,enemies,sentries,veto`, at a round's
+  first completed tick and at each change of role.
+
+### A0 notes
+
+- **STRAND-1 and STRAND-2** are `hadur2.core.arch.StrandOwnershipTest`, reading
+  `ownership.txt`. A package with no owner, or an owner the map does not know, fails the
+  build. The layers are checked on the compiled classes with ArchUnit.
+- **STRAND-3** pins each owner's sources in `src/test/resources/pins/<owner>.sha256`. A
+  stage re-pins only the owners it names (`-Dhadur.pin=duel,conductor`), and its pull request
+  says which. `DuelIdentityTest` still pins the nine packages the evolution may not edit.
+- **STRAND-4** is `ReplayTest`, driven by the test-side `FixtureReplay`. The recorder now
+  logs the store the battle started on, the adapter's round-end, checkpoint, battle-end and
+  health-record calls, and the files the battle left. The replay makes those calls with its
+  own guard and compares orders with the live robot's, telemetry with the snapshot under
+  `replay/telemetry/`, and the store with the live robot's files. A0 recorded five fixtures
+  on 3.5.1 beside the six S1 duels: `melee-samples`, `melee-sentry`, `melee-handoff` (on a
+  store holding Shadow's 1v1 profile), `warm-abc.Shadow_3.83c` (the second of two warm
+  battles) and `duress-sample.Walls` (a duel at a 0.15 ms CPU constant, with rounds in
+  RES-9's duress). From A1 to A4 no fixture is re-recorded; where a requirement's wording
+  and a fixture disagree, the fixture wins and the difference is raised as its own change.
+
+## The DrussGT route (D1 to D6)
+
+The plan is [docs/druss-route-plan.md](druss-route-plan.md): the findings of the 4 and 5 October 2026 probes against DrussGT 3.1.16 and the stages D0 to D6 that follow from them. Its stages are compared with `hadur.druss.stage` in the root pom, which is `D5`. The plan's draft IDs were renumbered here because open PR #83 reserves BENCH-9, BENCH-10, POW-6, RES-12, RES-13, GUN-6 and DIST-2: the plan's POW-6 is **POW-11** and its RES-12 is **RES-14**; POW-7 to POW-10 and ADAPT-5 keep their numbers. The requirements of D2 to D6 stay in the plan until their stages are built.
+
+### Requirements
+
+| ID | Pattern | Requirement | Stage |
+|---|---|---|---|
+| POW-11 | Ubiquitous | The core shall keep battle-long hit rates for both robots in three bullet power classes (under 0.2, 0.2 to 1.2, above 1.2) and over all their bullets, each with its margin of error. | D1 |
+| POW-7 | State | While both robots' battle-long hit rates over all their bullets are below 12.5% by more than their margins, and our energy is no more than 3 below the enemy's, the gun shall fire power 0.1. | D1 |
+| POW-8 | State | While POW-7's hit-rate condition holds, our energy is more than 3 below the enemy's and our energy exceeds 10, the gun shall fire its default power. | D1 |
+| POW-9 | State | While both robots' energy exceeds 60, the gun shall fire its default power whatever POW-7 would choose. | D1 |
+| POW-10 | Ubiquitous | The gun shall fire every duel shot that our energy can pay for, lowering the power where a rule saves energy, except where END-4 holds the shot. | D1 |
+| ADAPT-5 | Event | When a profile that records POW-7's hit-rate condition as met loads, the core shall apply POW-7 to POW-9 from the first shot, until this battle's rates contradict it by more than their margins. | D1 |
+| SHIELD-3 | Event | When one of our bullets is destroyed by a bullet from an enemy that has not moved since the round began, the core shall treat the enemy as a bullet shielder from the next shot, and shall keep that verdict in the opponent's profile so that the next battle starts with it. | D2 |
+| SHIELD-4 | State | While the enemy is treated as a bullet shielder and has not moved in the last 10 ticks, the gun shall fire power 3.0, capped by END-3, with SHIELD-2's aim offset on. | D2 |
+| END-4 | State | While the enemy's energy is below the smallest bullet power it has fired this battle, the gun shall not fire a shot that would leave our energy less than 0.3 above the enemy's. | D2 |
+| GUN-5 | Ubiquitous | The gun shall rate its virtual guns separately for bullets of power under 0.2, and fire the gun rated highest for the power class of the shot. | D3 |
+| MOVE-8 | Ubiquitous | Movement shall publish, for each enemy wave in the air, the guess-factor interval its current plan occupies when that wave arrives, as a read-only value the gun can read through the duel's internal seam. | D4 |
+| GUN-7 | Ubiquitous | The gun shall choose each firing angle from its candidates by the expected damage of a hit plus the expected damage avoided by the bullet's shadows on the intervals MOVE-8 publishes. | D4 |
+
+POW-7 to POW-9 apply to a duel only. POW-1 to POW-5, RAM-1 and END-3 keep precedence over them. RES-14 retired RES-9 in D1, and 3.11 retired RES-14 (see the retired table).
+
+### D1 notes
+
+- **POW-11** is `policy.BattleHitRates`, one per robot (`DuelController.ourBattleRates`, `theirBattleRates`): shots and hits in the classes under 0.2, 0.2 to 1.2 and above 1.2, with `Estimate`'s Agresti-Coull margin (the codebase's convention, DIAL-1) for each class and for all bullets. They are never windowed and are cleared only when a different robot becomes the duel opponent (a melee's survivor). Our bullets count at their outcome (hit, miss, or shot down by an enemy bullet, which the 100-outcome window also counts as a miss). Their bullets count where the energy ledger's firing waves resolve: a wave that breaks on us counts as a hit or a miss at the power the energy drop gave, and an enemy bullet our bullet destroyed counts as a miss when its wave is found (the wave's own break skips it, so it is not counted twice). Outcomes in duress are not counted, as nothing is learned there. The round record (`R`) gains twelve appended fields (48 in all): this round's resolved bullets and hits for us and then for them in classes 0, 1 and 2 (`oS0,oH0,oS1,oH1,oS2,oH2,tS0,tH0,tS1,tH1,tS2,tH2`), so a gate reads per-round and battle-long rates, per class, for both robots from the telemetry alone.
+- **POW-7 to POW-9** are `PowerPolicy.applies`, `conditionStands` and `lead`. The condition reads "below by more than the margin" as POW-2 does, from the estimate's centre: the centre plus the margin is under `PowerPolicy.BREAK_EVEN`, **12.5%**. The plan's note says POW-7 uses the lower of the two break-even figures (14.3% at power 1 and below, 12.5% at 1.95) for every bullet, so the stricter 12.5% is the constant, and both robots' all-bullet rates must clear it. With either rate unknown the condition does not hold. In the regime, POW-9 comes first (both energies above 60: the default), then POW-7 (no more than 3 behind: the minimum power, 0.1), then POW-8 (more than 3 behind with more than 10 energy: the default). More than 3 behind with 10 or less energy matches no rule, and the gun fires the minimum power, 0.1, as the probe did. (1.20's power-down is not relied on: it applies only beyond 325 px, so a nearly dead robot closer in would fire 1.95 or 2.95.)
+- **"Default power"** is the gun's base power, 1.95, or 2.95 inside 150 px, without 1.20's cubic power-down. This is the only thing the regime replaces: `GunController.calculateBulletPower(..., Stakes)` skips the cubic under `DEFAULT` and starts from the minimum under `CHAFF`, and the quarter-of-their-energy cap, the floor and the cap at our energy still apply. The probe fired a flat 1.95; the 2.95 inside 150 px is the existing close-range rule, kept. POW-5's cap, POW-1 to POW-4 (which raise with a maximum), RAM-1 and END-3 (which lowers) run after it in their old order, so each takes the precedence it had. Melee battles never enter the regime.
+- **POW-10.** The duel withheld a shot whenever our energy was not above the power chosen, and the chosen power was capped at our energy, so below 1.95 energy within 325 px every shot was held. `PowerPolicy.payable` lowers a power the energy cannot pay for to 0.1 less than the energy (never below the engine's 0.1), and holds only when even 0.1 would leave nothing (energy at most 0.1). It is applied at the scan, to the wave's power, and again when the shot leaves, since a hit on us in between can make the aimed power dear. The holds that stay are intentional: SHIELD-2's (a shielder predicts the aim the gun settled on), the conductor's fire permission (WEAVE-3), a gun that is hot or off target, and duress. END-4 (D2) adds its hold where the shot leaves (see the D2 notes).
+- **ADAPT-5.** The profile format moves to **version 3**: one u8 after the normalised group, the verdict `OpponentProfile.leadAware`, written at every round fold and so, after a battle's last round, the battle's end. The verdict is what the rule itself holds at that point (`PowerPolicy.applies`): true when this battle's rates satisfy POW-7's condition, or when the profile's verdict stood and this battle never contradicted it. Contradicting means either robot's rate is above 12.5% by more than its margin (the centre less the margin is over the figure). `OpeningBook.read` passes the verdict through as `Opening.leadAware()`, and the Duel applies POW-7 to POW-9 from the first shot while it stands. Under MEM-9 a version keeps its own store names: version 3 files are `<stem>-v3.hp`, a version 2 file is read once, stats only, with the verdict false (its seeds are not carried over, as for any other version), and encoding at version 2 or 1 (MEM-7) leaves the byte out. The profile grows by one byte, so MEM-5, MEM-8's 1 KB stats and MEM-10's 2 KB are unchanged in kind.
+- **RES-14** is `TickBudget.duress()`: three skipped turns in the round and fewer than `DURESS_QUIET_TICKS` (300) ticks since the last. `HadurCore` tells the budget the tick (`tickBegan`) before it asks, so the 300 ticks are engine ticks counted from the last skipped turn, never the round clock (DIAL-2). Another skipped turn after duress has ended starts it again, since the round already holds three. When duress ends, the Duel's view of the enemy is stale (the ledger has missed every energy drop, the logs every state), so the conductor resets it once (`DuelSeam.afterDuress`, `DuelController.resumeAfterDuress`) and the first normal scan starts afresh. That reset also discards both wave managers' outstanding waves (the gun's and the surf's), the gun's virtual bullets and the surf's per-wave state, since they would otherwise be judged against the unobserved interval; the battle-long learning (the trees, ratings and hit rates) stays. The 300 ticks count from the tick the engine skipped (the event's `skippedTime`), not the tick the event is handled on. Duress itself, the level RES-9 defined, is unchanged. ROLE-5 and WORLD-1 still read "(RES-9)" for the same condition; they mean the duress level.
+- **Re-pinned.** This stage changes the duel's play where POW-7 triggers, where POW-10 now fires, and where duress now ends, so the replay fixtures that diverged were re-recorded and the snapshots and source pins re-taken: see the stage notes in [strategy-evolution.md](strategy-evolution.md#d1) for exactly which.
+
+### D2 notes
+
+- **SHIELD-3** is three small pieces. `shield.EnemyStillness` reads each scan: the enemy has moved when its velocity is not zero or its position differs from the previous scan's by more than 0.5 px (scan rounding, nothing more), and, for the whole-round question, when its position differs from where it was first seen. `DuelController.bulletHitBullet` asks it when one of our duel bullets meets an enemy bullet and passes the answer to `ShieldDetector.bulletIntercepted(enemyStill)`, which latches the shielder at once, alongside SHIELD-1's four in twenty (the latch is the same one, and it holds for the battle). The history is only known from a round's start: a recovery, or the Duel taking over in mid-round (after duress, or the melee's survivor), marks the enemy as having moved, so SHIELD-3 and SHIELD-4 never act on a guess. The latch is duel-only (a melee's bullets are no evidence). A `P,...,shield,...,shield_3` record marks the latch, `shield_3_profile` the profile's. SHIELD-1's own latch keeps its old silence, so the telemetry of battles that SHIELD-1 already caught is unchanged.
+- **The profile keeps it** in version 3, not a new version: version 3 is not released, so its verdict byte (ADAPT-5's, 0 or 1) is now a set of flags, bit 0 the lead-aware verdict and bit 1 the shielder flag. The D1 golden file `profiles/v3.hp` has bit 1 clear and still loads unchanged; a byte above 3 is rejected. `OpponentProfile.shielder` is replaced at every fold with what the detector holds as the round ends (`ProfileFolder.shielder`), so after a battle's last round it is the battle's end, and `OpeningBook.read` passes it through as `Opening.shielder()`. When it stands the detector is latched as the battle opens, so SHIELD-2's aim jitter is on from the first shot. A profile written at version 2 or 1 (MEM-7) leaves the flag out. The size of the profile is unchanged. A flag that was latched in error (a different robot behind the same name, or a robot that stopped shielding) is never lifted by the battle; the cost is small, since the jitter stays on the body and the 3.0 shots are only fired at a robot that stands still.
+- **SHIELD-4** is `PowerPolicy.shieldPower`, applied at the scan after POW-1 to POW-4 and before END-3 (so END-3 caps it, as the requirement asks), and before RAM-1 and POW-10 as everything is. It replaces what the lead-aware regime chose (3.0 against a still shielder wins over POW-7's 0.1): the plan's reasoning is that a shielder's bullet scales with ours, so a heavier shot makes its shield dearer. Like every full-power rule it does not apply at 12 energy or less (`PowerPolicy.MIN_OUR_ENERGY`): a shielder destroys the shot and there is no refund. END-4 also holds shield mode's attack shots and duress's head-on shot (`PowerPolicy.holdsShotAt`), not only the main gun's. SHIELD-3's one-bullet latch needs the round's history known: a first scan after tick 10 (`EnemyStillness.KNOWN_FROM`) counts the enemy as having moved, and a survivor's stored shielder verdict applies at the melee-to-duel handoff. "Not moved in the last 10 ticks" is `EnemyStillness.stillForTenTicks`: ten ticks since the last scan that showed movement, or since the first scan of the round. Duel only.
+- **END-4** is `PowerPolicy.holdsLastShot`, applied where the shot leaves (`fireIfGunTurned`), to the power POW-10 would fire: every scan still makes its wave, which teaches the gun. The smallest bullet power the enemy has fired this battle is the smallest corrected drop the ledger has read as a shot (`DuelController.smallestEnemyPower`), cleared when a different robot becomes the duel opponent. The enemy "can no longer fire" when its energy is below that figure, and the shot is held when it would leave our energy less than `END_4_MARGIN`, 0.3, above the enemy's. One reading is added to the requirement's words: the shot is held only while our energy is above the enemy's. When level or behind there is no lead to keep, and holding would lose to the inactivity rule for certain, so the shot goes (POW-10). A `P,...,power,...,end_4` record marks each change.
+- **The inactivity rule, checked on Robocode 1.9.5.6.** `hadur.bench.InactivityCheck` compiles two tiny robots into a scratch Robocode home and runs one-round battles through the engine the bench uses: an Idler that never acts, and a Spender that waits for a cool gun, fires one bullet of a fixed power at the nearest wall and then idles. Neither can damage the other, so only the inactivity penalty can end the round. Result, run on 5 October 2026: with a gap of 0.1, 0.3, 1.0 or 3.0 energy the robot with more energy survived in every case (the round ended at tick 1,451, 1,449, 1,442 and 1,422, the Spender dying first, the Idler alive); with no gap both died on tick 1,452. So the penalty takes the lower robot first (the round lasts about 1,450 ticks from 100 energy each, which fits 0.1 energy a tick for both robots after 450 ticks without a bullet hit), and a gap of even one penalty step is enough; END-4's 0.3 is conservative, not necessary. Reproduce: see the class's Javadoc.
+- **Re-pinned and re-recorded.** The profile files, the duel and the conductor changed: see [strategy-evolution.md](strategy-evolution.md#d2) for exactly which pins and fixtures.
+
+### D3 notes
+
+- **GUN-5** is `GunController`'s ratings split in two and one new virtual gun. Every real duel bullet rates the virtual guns, in the table of the class of the power it was fired at: bullets under 0.2 (`GunController.LIGHT_BELOW`, the line POW-11's class 0 uses) in the light table, the rest in the other. This is the second of the two options the plan left open (rate every wave and key two tables by the real shot's class), and the sound one: a wave only exists with a real bullet on it in a duel, so there is exactly one class to key by and no wave is rated twice. Each table is GUN-1's, unchanged inside: 100-shot half-life, Agresti-Coull margin, the gun named only when it clears every other candidate's margin (so "rated highest" reads, as in GUN-1, "highest beyond the margin of error"; the main gun, or the opening's gun, fires while none does). GUN-4's gate reads the table of the shot's class too.
+- **The class is known when the gun is chosen.** D1 decides the power at the scan, before aiming, and the gun wave carries it (`Wave.bulletPower()`), so `GunController.aim` reads the class from the wave. The virtual bullets are rated in the class of the power the shot actually went at (`fireVirtualBullets(..., firedPower)`): POW-10 can lower the power between the aim and the shot, which changes the class only for a shot at the 0.2 line, and then the rating follows what was fired.
+- **The new gun, `SampledGun`,** is the probe's "sampled aim" (`data/tools/drussgt/build_probe.sh`, GUN=2): one neighbour of the hybrid view, picked by `floor(phase * n)`, and its guess factor scaled by the precise escape angle on its side. It is a candidate for light bullets only (`Opening.SAMPLED`); for heavy bullets it is neither rated nor fired, so the rest class plays exactly as D2 did. The probe fired it unconditionally; here it competes, so it is used only against opponents where it rates highest, which is the part of the plan's warning ("the gate counts both sides") that a rating can see. One departure from the probe: with no neighbours at all the probe fired a uniform guess factor, and this gun fires head-on (`w.absBearing`, as the hybrid gun does).
+- **Determinism (RES-6, CORE-2).** The phase is the golden-ratio sequence, the codebase's way (`shield.AimJitter`, `move.MirrorDrive`): no `java.util.Random`. It starts at the golden ratio's fractional part in every core and lives in the `SampledGun` the `GunController` owns, so a replayed battle repeats it. It advances only when a real shot goes out (`GunController.shotFired`, called from `fireIfGunTurned` whether or not the virtual guns are fired), so the several ticks the gun spends aiming one shot all sample the same neighbour, and the virtual bullet scored for the shot is aimed at the same phase as the shot.
+- **The profile does not keep the ratings.** The profile stays at format version 3 and the same size (MEM-5, MEM-8's 1 KB statistics and MEM-10's 2 KB): `virtualGunScores` still reports the main and anti-surfer guns' lifetime totals, now added over both classes, which is what MEM-2 folds. Persisting per-class ratings of four guns would spend profile bytes (MEM-5, MEM-8, MEM-10 are tight) and a format change on a verdict the battle reaches itself within tens of shots (about nine shots in ten are light under the lead-aware rule); a stored rating would also have to be decayed and distrusted like a seed (RES-4) so that it could not hold the gun to the last battle's version of an opponent. Nothing here proves that cost is not worth paying: it is deferred, not ruled out. ADAPT-1's opening gun still decides the first light and heavy shots alike.
+- **Observability.** No new telemetry record: the `R` records already carry per-class hit rates for both robots (POW-11), which is what D3's gate reads. `GunController.bestGunLabel` now reads the class with more rated shots.
+- **Re-pinned.** Only the duel changed (`DuelController`, `GunController`, the new `SampledGun`): `pins/duel.sha256` and `duel-sources.sha256`. No fixture diverged, so none was re-recorded and no snapshot changed: the fixtures' opponents are fought at ordinary power, where the rest class's table is the combined table D2 had, and the sampled gun is never fired before it has been rated best over light shots.
+- **Not measured.** The probe's 7.9% to 9.3% light-bullet hit rate is for an unconditional sampled aim; the rated version is expected to land between that and the density peak, and the D3 gate (40 battles, DrussGT's hit rate as well as ours) has not been run.
+
+### D4 notes
+
+- **MOVE-8** is `move.PlanInterval`, published through `MoveController.planIntervals()` (a read-only list, empty when there is no plan). One interval per enemy wave the surf scored on its last drive, nearest wave first: the wave, the absolute bearing interval from the wave's source that would hit the plan's arrival (`angle +/- bandwidth` of the precise intersection of the states the wave crosses us in, so it holds the bearing to the arrival position), and `danger`, the surf's chance that a bullet fired inside it hits (the views' score plus the enemy's hit rate, as `SurfMover.waveDanger` adds them before the damage scaling, cut to [0, 1]). "Guess-factor interval" is published as the equivalent absolute angle interval, which the requirement's text allows and which needs no escape-angle assumption. The plan is the option the surf chose: for the three-option surf, the chosen option's interval on the first wave and, along the cheapest of the three options after it, on the second; for go-to surfing, the kept candidate's. `SurfMover` records each leg's interval as `checkDanger` and `goToDanger` score it, so no extra prediction is run. The Duel clears the plan before each tick's movement and the surf republishes it, so a tick on which the surf does not drive (ram, mirror, rammer escape) publishes nothing and the gun sees no stale plan. The round start clears it too.
+- **GUN-7** is `GunController.aim(wave, myNext, time, ShadowValue)`: the plain aim (D3's, with its per-class rating choice) is made first and stays the centre of the choice, then `gun.ShadowAim` weighs a small set of candidates by `P(hit) * damage(power) + avoided`. Candidates, at most 13: the gun's own angle (first, and the winner of every tie, so a shadow worth nothing changes nothing); four offsets of 0.45 and 0.9 of the target's half-width on either side (the bullet still hits where the gun's mass is, but its path crosses other enemy bullets); and, when the main gun aims, up to 8 of its neighbours' own angles within two half-widths of its choice (the "kernel samples"). The other virtual guns' angles are **not** candidates: they are computed only when a real bullet leaves, and a KNN search per gun per aiming tick is the cost this stage was told to avoid.
+- **P(hit).** For the main gun it is `0.399 * (sum of weight * exp(-u^2 / 2)) / (sum of weights)` over the neighbours `MainGun.aim` scored (the same projection and validity tests, from one neighbour search: `MainGun.aimWithMass`), `u` the angle from the candidate in units of the main gun's bandwidth (twice the half-width): the gun's own kernel density, read as a probability that a bot's width of bullets lands. For any other gun (anti-surfer, hybrid, sampled, an opening's gun) its neighbours are not read, and the mass is one Gaussian of the same width at the gun's angle with peak 0.15, a typical hit rate against a surfer. Both are constants of this stage (`ShadowAim.KERNEL_SCALE`, `FALLBACK_PEAK`), not measurements.
+- **The shadow value** is `duel.ShadowAvoidance`, the one seam between gun and movement (the gun and move packages may not depend on each other, so the Duel builds the gun's `ShadowValue` out of movement's published intervals and `move.ShadowGain`). For each interval, a candidate `OurBullet` leaves from where the gun will be on the tick after the aim, along the candidate angle, at the wave's power's speed; `BulletShadows.of` gives its certain and possible shadows on the wave, `ShadowGain.shares` unions them with the shadows of our bullets already in flight (brought up to date before the aim, so a shot fired this very tick counts) and returns the share of the interval newly stopped, the certain part counting fully and the possible part half (MOVE-1's rule). The saving is `danger * damage(wave power) * newlyStopped / (1 - alreadyStopped)`: the surf's danger was computed with the old shadows in place, so it is spread over the part of the interval nothing yet stops. A wave of uncertain power counts half (WAVE-3). Intervals on waves already past the shot's source are dropped. `ShadowValue.ceiling` (every interval wholly newly stopped) lets the gun skip a candidate whose hit value plus the ceiling cannot beat the best so far, before any geometry is run.
+- **Exact when there is nothing to shadow.** With no published interval (no wave in the air, or a tick the surf did not drive), in the head-on warm-up, or with `GunController.SHADOW_AIM` false, the angle returned is the plain aim's, bit for bit; the Duel does not even build the seam. The virtual guns' bullets and ratings are still the guns' own angles, not the shifted one, so the ratings keep saying how good each gun is. The constant `GunController.SHADOW_AIM` ships `true`; setting it false is the A/B the gate may want.
+- **What a shadow looks like.** A bullet exactly collinear with the enemy's has a shadow of one bearing, which has no width; the shadow of a slightly oblique path is a narrow range, a few thousandths of a radian against a bot's 0.08 or so, so one bullet usually stops a few percent of an interval, and the term is small. It matters where the gun's mass is flat over a bot width, which is when the offsets cost little. Nothing here says it moves DrussGT's hit rate: that is the stage's bench gate.
+- **Cost.** One more KNN-free pass per aiming tick at most: up to 13 candidates by at most two waves, each one `BulletShadows.of` (at most 120 turns, with the cheap rejections), and the main gun's mass from the neighbours its aim already searched. `GunController.aim` is called only within three ticks of a cool gun. The measured micro-benchmark is in the stage notes of [strategy-evolution.md](strategy-evolution.md#d4).
+- **Re-pinned and re-recorded.** See [strategy-evolution.md](strategy-evolution.md#d4) for exactly which.
+
+### D5: the shield list
+
+Shield mode is Hadur's own bullet shield (SHIELD-5, SHIELD-6), the other half of the SHIELD
+group's counter to an enemy that shields (SHIELD-1, SHIELD-2). It is a mode of the Duel
+strand, in the `shieldmode` package, and applies to a 1v1 battle only.
+
+| ID | Pattern | Requirement | Stage |
+|---|---|---|---|
+| BENCH-11 | Event | When a candidate list is given, the bench shall run each named opponent with shield mode on and off over the same seeds and report the paired difference. | D5 |
+| SHIELD-5 | Optional | Where the opponent is on the shield list, the core shall open each round in shield mode. | D5 |
+| SHIELD-6 | Unwanted | If the enemy's bullet damage in a battle exceeds the amount that would hold our score share below 85%, then the core shall leave shield mode for the rest of that battle. | D5 |
+
+#### D5 notes
+
+- **The list ships in the robot jar as a class**, `hadur2.ShieldListData` (`hadur-robot/src/main/java/hadur2/ShieldListData.java`),
+  one robot per string, `#` for comments. It is a class and not a text resource because
+  Robocode's sandbox denies a robot the read of its own jar: `getResourceAsStream` raises a
+  security violation and the robot is killed (seen in the BENCH-11 smoke run), while class
+  loading always works. The adapter passes the lines on and the core only parses them
+  (`ShieldList`; RES-6 keeps I/O out of the core). A line is a robot's name as Robocode lists it:
+  `apv.test.Virus 0.6.1` matches that version only, and `apv.test.Virus` matches every version.
+  Matching is exact and case-sensitive, never a prefix. A list that cannot be loaded is an empty
+  list. It ships with 14 robots: the 8 the BENCH-11 probe marked "wins" and 6 "open" ones with a
+  mean gain of 9 points or more (docs/bench/d5-probe.md, docs/bench/d5-gate.md). 3.10 adds 83: every
+  robot of DrussGT's shield list ranked 51st to 700th that shield mode beat at 8 seeds by the same
+  rule, from the #140 mid-table run and the shield sweep (docs/bench/local/2026-10-08_shield-sweep.md).
+  Each entry carries its version. The sweep also found where shield mode loses: on 58 of those
+  robots the interval lay below 0, and over ranks 401-700 as a whole it cost 2.4 points, so the
+  list is chosen robot by robot, never by rank. A name goes on only
+  after the paired bench shows shield mode beats normal mode for that robot, or an expected gain
+  that APS, the objective, counts; SHIELD-6 bounds the cost. Fixtures whose opponent is not on the
+  list replay unchanged.
+- **Where it applies.** Only a Duel charter (one opponent, no teammates) is given the list; a melee,
+  a team or a sentry battle never has shield mode. The list is asked once, with the opponent's
+  name at the first scan. For a listed opponent every round opens in shield mode (a `SH,round,tick,on`
+  record); the duel's gun and movement take over when it is left.
+- **What shield mode does.** It sits still, predicts each enemy bullet's heading from twelve
+  head-on predictors (four head-on bases, each plain, plus a learned offset, plus a learned offset
+  times our lateral direction) and fires a lighter bullet that meets it in mid-air, stepping 0.1 px
+  aside the tick before so the two paths are not collinear (`ShieldGeometry` is the engine's rule
+  for two bullets destroying each other). Between shields it fires the main gun at the enemy only
+  when its gun will be cool again in time for the enemy's next shot. Our shield bullets are not
+  evidence for SHIELD-1's detector, the hit-rate windows or the bullet shadows.
+- **SHIELD-6's amount** (`ShieldBudget`). The score share is ours over the pair's total, read over
+  the whole battle: ours = 60 for each round of the battle (a round's survival and last-survivor
+  bonuses) plus the bullet damage we have dealt so far, and the enemy's score is its bullet damage.
+  Our share stays at 85% or more exactly while the enemy's damage is at most
+  `allowed = 15/85 * (60 * rounds + our damage dealt)`; past it, shield mode is off for the rest of
+  the battle and the duel plays on. Shield mode is there to win the rounds, so the battle is read as
+  won and the budget asks what that can afford. A 35-round battle allows about 370 damage from its
+  first tick (35 * 60 * 15/85), DrussGT's own limit for its list of 357 robots; each point of
+  damage we deal adds 0.18. The allowance does not move with rounds won or lost: a lost round
+  already shows in the damage taken. The round count is the engine's `getNumRounds()`, carried in
+  `BattleFacts.rounds()` (0 when not known, such as a replayed transcript, and 35 is assumed). Damage
+  counts in or out of shield mode. Kill bonuses are left out of both sides, so the allowance is a
+  lower bound and errs towards leaving.
+- **The round's safety exits** leave shield mode for the rest of that round only, and the next
+  round opens in it again: the enemy within 100 px (`close`), a collision (`rammed`), two enemy
+  bullets that hit us with no predictor exact (`unpredicted`), three hits taken and more than we
+  shot down (`outhit`) and no enemy shot for 120 ticks (`quiet`); until 3.10 RES-14's duress (`duress`) was a seventh, and 3.11 retired it. Each is
+  an `SH,round,tick,exit,reason` record. The battle's exit is `SH,round,tick,off,budget`.
+- **Records** are written only for a listed opponent, so a battle without the list writes none and
+  the round record `R` is unchanged: `SH` as above, and at each round's end `SR,round,tick,
+  shieldShots,intercepts,hitsTaken,unpredicted,attackShots,damageTaken,allowed,exit`.
+- **BENCH-11** is the bench's `--shield-probe FILE`: it repacks the candidate jar twice, with the
+  list naming every opponent of FILE ("on") and an empty list ("off"), under the versions
+  `<version>-on` and `<version>-off`, and runs the pair through the paired machinery of BENCH-2.
+  The report gives each opponent's paired difference with its interval, a verdict, what shield mode
+  did (rounds, shield shots, bullets met, hits taken, early exits, budget exits), the weighted mean
+  difference over the file's weights (BENCH-1) and the opponents that win, as list lines.
+
+### D7: the route's scope (release 3.8.5)
+
+Live, 3.8 gained on the top 10 and lost about 1.5 points a pairing on the field below the top
+20, with no bench condition yet reproducing the loss ([leak-38-plan.md](leak-38-plan.md), Track
+B). The route's parts that act on every duel are scoped to the duels it was built for: those
+whose guns out-hit Hadur's or match them.
+
+| ID | Pattern | Requirement | Stage |
+|---|---|---|---|
+| MATCH-1 | State | While both robots have resolved at least 30 duel bullets this battle and our battle-long hit rate's lower bound is above the enemy's upper bound, the core shall treat the duel as won on the guns, until our lower bound falls to the enemy's raw rate. | D7 |
+| MATCH-2 | State | While the duel is won on the guns (MATCH-1), the gun shall not weigh our bullets' shadows (GUN-7), and a bullet destroyed by a still enemy's shall not make it a shielder by itself (SHIELD-3). | D7 |
+
+#### D7 notes
+
+- **MATCH-1** is `policy.Matchup`, read by `DuelController.updateMatchup` at the top of each
+  driven tick from POW-11's battle-long rates, and marked by a `P,...,match,...` record
+  (`match_won` or `match_open`) on each change. Against the top 10 our gun hits 5% to 8% and
+  theirs 9% to 14% on the local bench, so they never read as won. Unknown rates (fewer than 30
+  bullets on either side) read as open, so the first round plays as 3.8 did.
+- **MATCH-2** passes `shadowAim && !matchWon` to the aim and `still && !matchWon` to SHIELD-3's
+  latch. D1's POW-7 and D3's GUN-5 are left as they are: POW-7 already needs both guns below
+  break-even, and GUN-5's light class only fires under POW-7. SHIELD-1's four in twenty, D5's
+  shield list and SHIELD-4 on a latched shielder are unchanged. `RoundStats.shadowAims` counts
+  the aims that weighed shadows; it is not in the round record.
+
+### D8: the rammer trial (release 3.9)
+
+The live-loser bisect ([live-loser-bisect](bench/local/2026-10-07_live-loser-bisect.md)) put the
+one resolved regression since 3.4 in 3.5: 3.5.1 scores 6.4 points below 3.4 on the live losers,
+14 opponents down. Building 3.8.5 with RAM-2 off wins them back (+14 to +25 points on six of
+them, PR #129): close-range fighters such as TopGun, Silver and Ice confirm as rammers, and
+running from them, Hadur is hit two to seven times as often. RAM-2 still wins rounds back from
+pure rammers (docs/bench/r9-weak-leak.md), so it is tried, not dropped.
+
+| ID | Pattern | Requirement | Stage |
+|---|---|---|---|
+| RAM-3 | State | While the enemy is a confirmed rammer (RAM-2), each round shall play one arm from its start, the escape (RAM-2) or the fight (RAM-1 only, as 3.4 plays): the escape until it has played two rounds, then the arm whose rounds have the higher mean energy margin (our energy at the round's end less the enemy's), the escape on a tie; a round with a ram before the confirmation counts for the fight. | D8 |
+
+#### D8 notes
+
+- **RAM-3** is `policy.EscapeTrial`, held by `DuelController`. The arm is chosen in `newRound`
+  when `RammerPolicy.confirmed()` and marked by a `P,<round>,0,ram-trial,<fight mean>,<escape
+  mean>,<arm>` record; RAM-2's escape is passed through only in an escape round. The round that
+  confirms a rammer is now fought to its end (3.5 started the escape at the confirming ram).
+  `roundEnded` records the margin from the last scan's energies, ours 0 on a loss and theirs 0 on
+  a win. The samples are battle-long and go with the opponent (`forget`).
+- Against a pure rammer, two fought rounds (the confirming ones) and two escape rounds come
+  first, so a battle plays as 3.5 did from the fifth ram round. Against a fighter that 3.4 beat,
+  two escape rounds are the cost before Hadur fights again.
+
+## The Team plan (T1)
+
+[team-plan-t1.md](team-plan-t1.md) answers the A5 baseline's teammate collisions and friendly fire
+([bench/a5-team.md](bench/a5-team.md)). Its stage letter is `T`; the requirements are built
+from `hadur.team.stage` in the root pom (`T1`). Owners: WORLD-9 the kernel, MMOVE-6 to
+MMOVE-8 the melee strand, WEAVE-7 and WEAVE-8 the conductor.
+
+| ID | Pattern | Requirement | Stage |
+|---|---|---|---|
+| WORLD-9 | Event | When a teammate's state is scanned or reported, the World shall keep its heading and velocity with its position and shall predict its position at a later tick from them, moved no further than a robot's top speed allows. | T1 |
+| MMOVE-6 | State | While in melee on a team, movement shall add to each candidate point's risk a term for every living teammate whose position is no older than the WORLD-3 window, rising with the inverse square of the distance between the point and the teammate's predicted position when Hadur would arrive. | T1 |
+| MMOVE-7 | State | While in melee on a team, movement shall score the path to each candidate against each such teammate's predicted track, and shall cap the candidate ring at the same fraction of the nearest teammate's distance as of the nearest opponent's. | T1 |
+| MMOVE-8 | State | While on a team, each member's movement noise field shall differ from its teammates' by the member's place in the roster; off a team the field shall be the one MMOVE-1 uses. | T1 |
+| WEAVE-7 | State | While a living teammate's predicted track, over the time a bullet of any power would take to pass it, comes within the fire lane's half-width of the lane, the conductor shall withhold the fire permission. | T1 |
+| WEAVE-8 | Unwanted | If the driving role's drive, simulated a set number of ticks ahead, would bring Hadur within a robot's width and a margin of a living teammate's predicted position, then the conductor shall replace the drive with the nearest of a brake or a reversal that stays clear, keeping the gun, radar, fire and message orders. | T1 |
+
+### T1 notes
+
+- **WORLD-9.** `Roster.Mate` keeps the heading and velocity a scan, a report or a teammate's
+  sighting states with the position. `at(tick)` moves the last known point `velocity` px for
+  each tick since, along the heading, no more than 8 px a tick. `Roster.living(now)` lists the
+  living teammates whose position is no older than `SILENT_WINDOW`.
+- **MMOVE-6 to MMOVE-8.** `MinimumRiskMovement.teammateRisk` adds `MATE_K` (0.6) over the
+  square of the distance (floored at 36 px) to the teammate's predicted point at arrival, and
+  `MATE_PATH_K` (0.3) for a path within 60 px of its predicted track; the ring is capped by
+  the nearest teammate as by the nearest opponent. The noise hash is salted with
+  `mix(place + 1)` on a team and 0 off one, so a solo field is bit for bit what it was, and the
+  opening spots fan out along the wall by 120 px a place. The place is the member's rank among
+  the team's names in sorted order.
+- **WEAVE-7.** The lane also holds while a teammate's predicted track, between the times the
+  fastest and the slowest bullet take to cover its distance, passes within the half-width plus
+  3 px for each tick of flight (`TeamLink.TURN_SLACK`).
+- **WEAVE-8.** `TeammateFence` simulates the built drive six ticks ahead and compares each
+  tick with the teammate's predicted point; within 46 px, and nearer than now, is a predicted
+  collision. It tries the drive as given, a brake, a reversal, and keeps the first that stays
+  clear, else the one with the greatest closest approach. The `T` record's last field counts the
+  drives it replaced.
+- Solo play is untouched: every term is reached through the team link or an empty teammate list.
+
+## 3.11: duress retired (RES-9, RES-14)
+
+3.11 is 3.10 with duress gone. The census (docs/plan-3.11-census.md) benched the same build with
+`TickBudget.duress()` never true: +0.73 APS (+0.59 to +0.87) on the whole 1,212-bot field, and on a
+client with the CPU constant halved 3.10, in duress every battle, scored 48% share against 85% for the
+build without it. RES-14 is retired, and with it RES-9's use (see the retired table).
+
+- **What went.** `TickBudget.duress()`, `tickBegan`, `DURESS_SKIPS` and `DURESS_QUIET_TICKS`; the
+  `Duress` class; the conductor's duress branch (`observeInDuress`, `wasInDuress`) and
+  `Tick.duress()`; `DuelController.duressDrive`, `duressScan`, `hitInDuress`, `canFightInDuress`,
+  `resumeAfterDuress` and the seam's `afterDuress`; `ShieldMode.onDuress` (the `duress` exit);
+  `MoveController.discardWaves` and `GunController.discardPendingVirtualBullets`, which only the
+  resume used.
+- **What stayed.** A skipped turn still sheds a level for the rest of the round (TIME-2) and the first
+  one still teaches the allowance (TIME-3); the round simply never leaves the full Duel. The R record's
+  `duressTicks` column (index 33) and the bench's duress columns (BENCH-20, BENCH-21, BENCH-23) keep
+  their place and now always read 0, so old and new rows still join.
+- **Re-recorded and re-pinned.** Only `duress-sample.Walls` (and its telemetry snapshot) diverged; it was
+  re-recorded with the bench command in `hadur-bench/README.md` (a 0.15 ms CPU constant, 9 skipped turns)
+  and still holds skipped turns, now without duress. The other twelve fixtures replay unchanged. Pins:
+  `kernel`, `duel`, `conductor` (`-Dhadur.pin=kernel,duel,conductor`) and `duel-sources.sha256`.
+- **ROLE-5 and WORLD-1** lose their "while a tick is not in duress" condition; they held on every tick
+  that was not, and now that is every tick.
+
+## 3.12: the mirror aim fires against a shielder (SHIELD-7)
+
+| ID | Pattern | Requirement | Stage |
+|---|---|---|---|
+| SHIELD-7 | State | While the enemy is treated as a bullet shielder and the gun aims MIR-1's mirror aim, the gun shall fire that aim when it is ready instead of holding it under SHIELD-2. | R9 |
+
+- **The fault.** MIR-1's mirror aim carries no SHIELD-2 offset (`aimCarriesJitter` is false for
+  it by design), and SHIELD-2's hold fired only aims that carried one, so once a shield verdict
+  latched against a mirror bot the gun never fired again that battle. SHIELD-3 stores the verdict,
+  so later battles started silent. 3.12 P4 (docs/plan-3.12.md,
+  the p312b/c/d findings in PR #182): on 38 volatile bots the battles under 60%
+  share fell from 14 of 152 to none in the warm replay, +4.4 to +5.7 points; the 400-bot screen
+  was level (+0.03 APS).
+- **Where.** `AimJitter.holdsShot(shielded, aimCarriesJitter, mirrorAim)`, called where
+  `DuelController.fireIfGunTurned` decides to hold. The detector, the stored verdict and the
+  jitter itself are unchanged (P4's stricter detector and P6's ignored verdict were level on the
+  screen and are not in 3.12).
+
 ## Retired requirements
 
 A retired requirement keeps its ID; no new requirement reuses it.
 
 | ID | Requirement | Retired | Replaced by |
 |---|---|---|---|
+| GATE-1 | While two or more opponents are alive, no sentry robot is alive, no sentry has been scanned this round and the melee subsystems have not failed this round, the core shall drive the robot with the melee subsystems instead of the duel subsystems. | A1 | ROLE-3 (the same conditions, plus the latch: once the duel has driven in a round, melee does not return) |
 | MELEE-1 | While two or more opponents are alive, the core shall drive the robot with the melee subsystems (sweep radar, minimum-risk movement, melee gun) instead of the duel subsystems. | M1 | GATE-1, GATE-2 (sentries and melee faults now keep the duel) |
 | MELEE-3 | While in melee, the radar shall sweep the full circle until every living opponent has been scanned, then keep turning toward the opponent scanned longest ago. | M2 | MRADAR-1, MRADAR-2 (the sweep now keeps spinning with four or more alive and rescans a weak target) |
 | MELEE-4 | While in melee, movement shall head for the candidate point of least risk, where risk grows with each opponent's energy over distance squared, near walls and corners, between two opponents, and with fewer escape routes. | M3 | MMOVE-1 to MMOVE-4 (minimum risk over 160 points with the closest-robot term and virtual bullets) |
 | MELEE-5 | While in melee, the gun shall target the opponent with the lowest score of energy, distance and gun turn, and shall switch from a living current target only when another scores at least 20% lower and the gun can reach it within 4 ticks. | M4 | MGUN-1 (the field gun aims at the peak of every opponent's solutions, so there is no single target to hold) |
 | MELEE-6 | The melee gun shall aim with circular prediction, fall back to linear prediction while the target's turn rate is unknown, and fire no more power than needed to kill the target. | M4 | MGUN-1, MGUN-2, MGUN-3 (learned play-it-forward aim, circular and linear only as the fallback; the energy table and exact kill power) |
 | MELEE-8 | While two opponents within 300 px of each other, and further from us than from each other, are both losing energy to others, the strategy shall keep clear of their fight and halve fire power. | M6 | MMOVE-5 (keep clear, unchanged), MGUN-5 (full power: the M6 sweep found the posture's power cuts and holds cost score) |
+| RES-9 | If the engine has skipped three turns in a round, then the core shall run the rest of the round at a duress level that adds no samples, builds no waves, reads no neighbour tree, orbits at the distance floor and fires head-on at power 1.0 whenever the gun is cool and the fire permission is given (WEAVE-3). | D1 | RES-14 (the same duress level, which ended after 300 ticks without a skipped turn), itself retired in 3.11 (below) |
+| RES-14 | If the engine has skipped three turns in a round, then the core shall run at the duress level RES-9 defines until 300 ticks have passed without a skipped turn. | 3.11 | none: a round is never in duress, and skipped turns still shed levels (TIME-2) and teach the allowance (TIME-3). 3.11 census (docs/plan-3.11-census.md): duress cost +0.73 APS on the whole field and 37 points of share on a slow client |
 
 ### R6 notes
 

@@ -1,0 +1,188 @@
+---
+marp: true
+theme: default
+paginate: true
+---
+
+# Ports and adapters
+
+**Topic 04: The hexagon**
+
+After this talk you can draw the dependency arrows of a hexagonal design, write a port as an interface, and explain why Hadur's core cannot import Robocode.
+
+Java skills: packages, interfaces as ports, functional interfaces, exceptions as a boundary, multi-module Maven.
+
+---
+
+# The picture
+
+```mermaid
+graph LR
+    subgraph Robocode
+        E[Engine]
+    end
+    subgraph "hadur-robot (adapter)"
+        A["hadur2.Hadur"]
+        FS["FileProfileStore"]
+    end
+    subgraph "hadur-core (plain Java 11)"
+        G["Guard"]
+        C[HadurCore]
+        PS(["port: ProfileStore"])
+        T(["port: Telemetry"])
+    end
+    E -- "events, getters" --> A
+    A -- BotInput --> G --> C
+    C -- BotOrders --> G -- BotOrders --> A
+    A -- "setters, execute()" --> E
+    PS -. implemented by .-> FS
+```
+
+The middle is the **core**. The edge is the **adapter**. The arrows between are **ports**.
+
+---
+
+# Two modules, one direction
+
+Hadur is a Maven project with modules:
+
+| Module | Holds |
+|---|---|
+| `hadur-core` | the brain, plain Java |
+| `hadur-robot` | the adapter `hadur2.Hadur` and `FileProfileStore` |
+| `hadur-bench` | headless battles in the real engine |
+
+`hadur-robot` depends on `hadur-core`. The core depends on nothing of Robocode's, so it cannot even compile a line that mentions it. The compiler enforces the direction before any test runs.
+
+*Source: `docs/architecture.md`, "Modules".*
+
+---
+
+# A port is an interface the core owns
+
+The core needs somewhere to send telemetry, and it may not print:
+
+```java
+@FunctionalInterface
+public interface Telemetry {
+
+    /** A telemetry sink that discards every line. */
+    Telemetry NONE = line -> { };
+
+    void emit(String line);
+}
+```
+
+One method, so a lambda is an adapter: `line -> console.println(line)` in the robot, `telemetry::add` in a test.
+
+*Source: `hadur2.core.port.Telemetry`.*
+
+---
+
+# A bigger port: ProfileStore
+
+```java
+public interface ProfileStore {
+    byte[] read(String name);
+    void write(String name, byte[] bytes);
+    void delete(String name);
+    List<String> names();
+    long bytesUsed();
+    long quota();
+```
+
+Named blobs and a quota. The Javadoc says it is "deliberately dumb": the core owns the format and the checksums.
+
+Two adapters implement it: `MemoryProfileStore` for tests and the bench, and `FileProfileStore` in the robot, on Robocode's data directory.
+
+*Source: `hadur2.core.port.ProfileStore` (methods shown without their comments).*
+
+---
+
+# Injecting behaviour, not just objects
+
+The guard needs the core's tick, but it does not name the core class:
+
+```java
+/** The core's tick; in the robot, {@link HadurCore#tick}. */
+private final Function<BotInput, BotOrders> core;
+/** Asks the core to drop its transient round state; in the robot, {@link HadurCore#recover}. */
+private final Runnable recover;
+```
+
+In the robot, the adapter wires it up:
+
+```java
+guard = new Guard(core::tick, core::recover, line -> console.println(line));
+```
+
+A method reference is an adapter in one token.
+
+---
+
+# Exceptions as a boundary
+
+If the brain throws, the robot must still move. The guard catches everything at the edge:
+
+```java
+        } catch (Throwable t) {
+            faultsThisRound++;
+            recoverOnNextScan = true;
+            // ...
+            return safeOrders(in, lastEnemyAbsBearing, faultsThisRound);
+        }
+```
+
+`Throwable`, not `Exception`: even a `StackOverflowError` must not stop the robot. A `null` result counts as a fault too. The fault is logged once per round through the telemetry port.
+
+*Source: `hadur2.core.Guard.tick`.*
+
+---
+
+# Safe orders
+
+When the core fails the guard still has to give orders. It keeps them simple:
+
+- orbit the enemy, side-on to its last bearing
+- lock the radar on that bearing, or spin it if unseen
+- hold fire, until the third fault in a round, then fire power 1.0
+
+The guard holds almost no state of its own, "so that it cannot itself be the thing that fails". It remembers the enemy's last bearing itself rather than asking a core that has just crashed.
+
+*Source: `Guard` class comment and `safeOrders`.*
+
+---
+
+# Testing the boundary with a test double
+
+A test double is a stand-in for a real collaborator. A lambda that throws is the whole fake:
+
+```java
+@Test
+@DisplayName("a throwing core gets safe orders, a fault count and one FAULT record")
+void throwingCoreGetsSafeOrders() {
+    Guard g = guard(in -> { throw new IllegalStateException("boom, with a comma"); });
+    BotOrders a = g.tick(input(7, 5));
+    BotOrders b = g.tick(input(8, 5));
+    assertEquals(2, g.faultsThisRound());
+```
+
+No Robocode. No real core. The test runs in milliseconds.
+
+*Source: `GuardTest`.*
+
+---
+
+# The rule that holds it up
+
+The boundary is a test, not a hope:
+
+```java
+noClasses().that().resideInAPackage(CORE)
+    .should().dependOnClassesThat().resideInAnyPackage("robocode..", "net.sf.robocode..")
+    .check(core);
+```
+
+That is requirement CORE-1: "The core shall not import any class from `robocode.*`." Topic 05 shows how it is enforced. Lab 04 splits Hadurling into the same two modules.
+
+*Sources: `docs/requirements.md`, `ArchitectureTest`.*

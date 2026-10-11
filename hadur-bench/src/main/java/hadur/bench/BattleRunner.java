@@ -1,6 +1,7 @@
 package hadur.bench;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -12,6 +13,7 @@ import robocode.control.RobotSpecification;
 import robocode.control.events.BattleAdaptor;
 import robocode.control.events.BattleCompletedEvent;
 import robocode.control.events.BattleErrorEvent;
+import robocode.control.events.RoundEndedEvent;
 
 /**
  * Runs one battle in this JVM and writes {@code result.csv} into the battle directory.
@@ -34,6 +36,7 @@ public final class BattleRunner {
         String them = args[6];
         Files.createDirectories(battleDir);
 
+        JdkWarmup.run(); // BENCH-83: before any robot can be the first to need a JDK provider
         RobocodeEngine.setLogMessagesEnabled(false);
         RobocodeEngine engine = new RobocodeEngine(home);
         LogHarvester harvester = new LogHarvester(battleDir, us);
@@ -41,6 +44,7 @@ public final class BattleRunner {
         StringBuilder errors = new StringBuilder();
         BattleResults[] results = new BattleResults[1];
         BattleResults[] theirs = new BattleResults[1];
+        long[] roundTurns = new long[2];
         engine.addBattleListener(new BattleAdaptor() {
             @Override
             public void onBattleCompleted(BattleCompletedEvent e) {
@@ -48,6 +52,12 @@ public final class BattleRunner {
                     if (r.getTeamLeaderName().equals(us)) results[0] = r;
                     else theirs[0] = r;
                 }
+            }
+
+            @Override
+            public void onRoundEnded(RoundEndedEvent e) {
+                roundTurns[0] += e.getTurns();
+                roundTurns[1]++;
             }
 
             @Override
@@ -69,13 +79,25 @@ public final class BattleRunner {
             } else {
                 engine.runBattle(new BattleSpecification(rounds,
                     new BattlefieldSpecification(width, height), robots), true);
+                // G14: let the engine finish reporting before the log is read and closed.
+                harvester.awaitDrain(5000, 250);
                 harvester.close();
+                try {
+                    RoundSeries.write(battleDir, us, them, Integer.getInteger("RANDOMSEED", 0),
+                        harvester.rounds());
+                } catch (IOException e) {
+                    System.err.println("rounds.tsv not written: " + e);
+                }
                 if (results[0] == null || theirs[0] == null) {
                     out.println(BattleResult.failed("no results " + errors));
                     exit = 3;
                 } else {
-                    out.println(BattleResult.of(results[0], theirs[0], rounds, harvester,
-                        errors.toString()).toCsv());
+                    BattleResult row = BattleResult.of(results[0], theirs[0], rounds, harvester,
+                        errors.toString());
+                    row.reference = !BattleResult.isHadur(us);
+                    if (row.reference) row.duressTicks = -1;
+                    row.engineRoundTicks = roundTurns[1] == 0 ? Double.NaN : (double) roundTurns[0] / roundTurns[1];
+                    out.println(row.toCsv());
                 }
             }
         }

@@ -22,11 +22,15 @@ class ProfileCodecProperties {
     @Tag("MEM-3")
     void roundTrips(@ForAll String name, @ForAll @IntRange(min = 0, max = 100000) int battle,
                     @ForAll @IntRange(min = 0, max = 600) int gunSeed,
-                    @ForAll @IntRange(min = 0, max = 300) int surfSeed) {
-        OpponentProfile p = Profiles.sample(name, battle, gunSeed, surfSeed);
+                    @ForAll @IntRange(min = 0, max = 300) int surfSeed,
+                    @ForAll boolean leadAware, @ForAll boolean shielder) {
+        OpponentProfile p = Profiles.shielder(
+            Profiles.leadAware(Profiles.sample(name, battle, gunSeed, surfSeed), leadAware), shielder);
         byte[] bytes = ProfileCodec.encode(p);
         OpponentProfile back = ProfileCodec.decode(bytes);
         assertEquals(p, back);
+        assertEquals(leadAware, back.leadAware(), "ADAPT-5's verdict round-trips");
+        assertEquals(shielder, back.shielder(), "SHIELD-3's flag round-trips");
         assertArrayEquals(bytes, ProfileCodec.encode(back), "encoding is canonical");
     }
 

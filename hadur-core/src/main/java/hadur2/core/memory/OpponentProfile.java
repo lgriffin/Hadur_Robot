@@ -150,6 +150,19 @@ public final class OpponentProfile {
      * by our angular width as seen from the shooter: the normalised hit rate (S4, format v2).
      */
     final float[] normalised = new float[2];
+    /**
+     * ADAPT-5 (format v3): whether the lead-aware power rule's hit-rate condition (POW-7) stood
+     * when the last battle's last round was folded. A verdict, not a count: it is replaced at
+     * every fold and never decays.
+     */
+    boolean leadAware;
+    /**
+     * SHIELD-3 (format v3, the second bit of the verdict byte): whether the enemy was treated as
+     * a bullet shielder when the last battle's last round was folded. Once the core latches it
+     * (SHIELD-1 or SHIELD-3) it stays latched for the battle, so the profile's value only ever
+     * rises within one battle.
+     */
+    boolean shielder;
 
     // Their movement: how well our guns do against it.
     /** Virtual-gun waves and weighted hits for the main gun [0] and the anti-surfer gun [1]. */
@@ -369,6 +382,22 @@ public final class OpponentProfile {
         return normalised[0] == 0 ? Double.NaN : normalised[1] / normalised[0];
     }
 
+    /**
+     * ADAPT-5: whether the last battle ended with POW-7's hit-rate condition standing, so the
+     * lead-aware power rule applies from the next battle's first shot.
+     */
+    public boolean leadAware() {
+        return leadAware;
+    }
+
+    /**
+     * SHIELD-3: whether the last battle ended with the enemy treated as a bullet shielder, so
+     * the next battle starts with it.
+     */
+    public boolean shielder() {
+        return shielder;
+    }
+
     /** The share of their shots in each power bin; all zero before any shot. */
     public double[] powerShares() {
         double total = sum(powerHistogram);
@@ -507,7 +536,7 @@ public final class OpponentProfile {
             && Arrays.equals(shotsByMotion, p.shotsByMotion)
             && Arrays.equals(hitsByMotion, p.hitsByMotion)
             && Arrays.equals(powerHistogram, p.powerHistogram)
-            && Arrays.equals(normalised, p.normalised)
+            && Arrays.equals(normalised, p.normalised) && leadAware == p.leadAware && shielder == p.shielder
             && Arrays.equals(virtualFired, p.virtualFired)
             && Arrays.equals(virtualHits, p.virtualHits)
             && Arrays.equals(ourShots, p.ourShots) && Arrays.equals(ourHits, p.ourHits)

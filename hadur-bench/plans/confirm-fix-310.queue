@@ -1,0 +1,16 @@
+# BENCH-83 confirmation on the Windows PC (issue #151, docs/bench/live-3.10.md): the 11 opponents
+# the bench crippled, against 3.10 built from master, 4 seeds of 35 rounds. Close the RoboRumble
+# client shards first.  Run from hadur-bench:  .\queue.ps1 run confirm-fix-310   (or ./queue.sh)
+#
+# Pass: no battle logs "Preventing ... META-INF" (analyse.py marks such a row "JDK resource
+# denied"), and each robot's score moves from its crippled bench mean towards its live score
+# (the role column of crippled-310.txt holds both). Frankie, VertiLeach, Princess, LauLectrik,
+# Nibbler and Griffon were 15 to 28 points easier on the crippled bench than live.
+
+set COMMON = --skip-fetch --rounds 35 --cpu-constant 1488498 --child-heap 2G --engine 1.11.1
+set C310 = --robot-jar ../hadur-robot/target/hadur2.Hadur_3.10.jar --robot "hadur2.Hadur 3.10"
+
+prep | (cd .. && mvn -q -B package -DskipTests) && ./fetch-opponents.sh --set crippled-310.txt
+
+confirm-310 | ./bench-top20.sh --skip-build ${COMMON} --set crippled-310.txt --seeds 4 ${C310} --label confirm-fix-310
+  after: prep

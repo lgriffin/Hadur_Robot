@@ -1,0 +1,174 @@
+---
+marp: true
+theme: default
+paginate: true
+---
+
+# Nothing merges on a hunch
+
+Topic 12, talk 1
+
+After this talk you can:
+
+- run an engine headless and collect results per battle
+- report a mean with a 95% interval, and say what overlap means
+- decide a change with a paired A/B on the same seeds
+
+---
+
+## Why a bench at all
+
+Hadur 1.x was judged by watching battles. There was no way to tell a gain from noise.
+
+S0 built a bench and measured 1.20 for the first time. The finding: Hadur wins about half its rounds against Shadow (82 of 175) but takes only 40.8% of the score, because Shadow deals more bullet damage (36.5% damage share) even in rounds Shadow loses.
+
+So the headline metric became score share, not rounds won.
+
+Source: `docs/strategy-evolution.md`, S0.
+
+---
+
+## One JVM per battle, one seed per battle
+
+```java
+cmd.add(javaBin);
+cmd.addAll(JVM_FLAGS);
+cmd.add("-DRANDOMSEED=" + seed);
+cmd.add("-cp");
+cmd.add(cp);
+cmd.add(BattleRunner.class.getName());
+// ... then home, dir, rounds, width, height, our robot, the opponent
+Process p = new ProcessBuilder(cmd)
+    .redirectErrorStream(true)
+    .redirectOutput(dir.resolve("engine.log").toFile())
+    .start();
+```
+
+(`Bench.runBattle`.) Robocode's `RANDOMSEED` property makes a battle repeatable: the same command gives the same result. A child process isolates one battle from the next and can be killed after 30 minutes.
+
+---
+
+## Headless means the control API
+
+`robocode.control` runs a battle from code. No window.
+
+```java
+RobocodeEngine engine = new RobocodeEngine(home);
+engine.addBattleListener(new BattleAdaptor() {
+    @Override
+    public void onBattleCompleted(BattleCompletedEvent e) {
+        for (BattleResults r : e.getSortedResults()) { /* ... */ }
+    }
+});
+RobotSpecification[] robots =
+    engine.getLocalRepository(us + "," + them);
+engine.runBattle(new BattleSpecification(rounds,
+    new BattlefieldSpecification(width, height), robots), true);
+```
+
+(`BattleRunner`.) The listener is an anonymous subclass of an adapter: override only what you need.
+
+---
+
+## A mean and an interval
+
+One battle is noisy. Five seeds give a mean and a 95% interval (Student's t, because n is small).
+
+```java
+double mean = sum / n;
+double sd = Math.sqrt(ss / (n - 1));
+double t = n - 1 < T975.length ? T975[n - 1] : 1.96;
+return new Stats(n, mean, t * sd / Math.sqrt(n));
+```
+
+(`Stats.of`.) With 5 seeds, t is 2.776, not 1.96. Using the normal value would make every interval too narrow.
+
+The report prints `57.4% ± 5.0`: the mean and the half-width.
+
+---
+
+## Reading an interval
+
+Cold bench against Shadow 3.83c, 35 rounds by 5 seeds:
+
+| Stage | Score share |
+|---|---|
+| S0 (1.20) | 40.8% ± 8.3 |
+| S1 | 46.2% ± 6.4 |
+| S5 | 46.3% ± 4.5 |
+| S6 | 57.4% ± 5.0 |
+
+S0 and S1 overlap: within the noise, as S1 intended (it changed no play). S5 and S6 do not overlap: S6 is the first stage to move the score outside the noise.
+
+Source: `docs/strategy-evolution.md`, "Results by stage".
+
+---
+
+## Noise is bigger than you think
+
+From the learnings ledger (L-19):
+
+- single opponents move 3 to 14 points between 5 by 35 runs
+- so per-bot changes under about 8 points are noise
+- compare at 10 seeds, or use the paired A/B
+- running `mvn` during a bench inflates skipped turns
+
+In M6 a weight sweep was run at 10 seeds because the same jar gave 51.3 and 53.7 on 5 seeds earlier. Nothing was compared at fewer than 10.
+
+---
+
+## Pair the seeds (BENCH-2)
+
+The candidate and the baseline fight the same opponent on the same seed. Subtract per seed, then take the mean and interval of the differences.
+
+```java
+public static Stats pairedDiff(List<Double> candidate,
+                               List<Double> baseline) {
+    int n = Math.min(candidate.size(), baseline.size());
+    List<Double> diffs = new java.util.ArrayList<>();
+    for (int i = 0; i < n; i++) {
+        diffs.add(candidate.get(i) - baseline.get(i));
+    }
+    return of(diffs);
+}
+```
+
+Whatever the seed did to both (a lucky opening, a hard field) cancels. If the interval of the differences excludes 0, the change is real.
+
+---
+
+## Gates, written down
+
+Each stage names a gate before it starts, and the bench report says whether it was met.
+
+S6's gate had two halves.
+
+- Score outside the noise: met (57.4% ± 5.0).
+- Zero skipped turns: not met. 72 over the whole bench, 26 against Shadow.
+
+The report says so. The next thing to try is named (move the checkpoint write off the round's last turn). A gate that fails is evidence too.
+
+M6's gate, reference APS 60, was also not met: 52.7 to 54.6.
+
+---
+
+## Ground truth makes fixes specific
+
+The bench logs both robots' true positions, energy and live bullets every turn. Later stages are scored against what really happened.
+
+- Waves found vs the engine's real bullets: S2 turned "the surf is a bit off" into three specific fixes.
+- Bullet shadows: every one of the 927 enemy bullets that Hadur's own bullets destroyed in the S6 cold bench fell inside a shadow Hadur had computed.
+
+When a check says 35%, then 83%, then 100%, you know you are converging.
+
+---
+
+## Conditions are part of the result
+
+Cold: data wiped before every battle. Warm: kept across consecutive battles. Client conditions (`--client`): a forced CPU constant, a shared data directory, background load. Session: 300 battles in one engine process.
+
+Every report says which. A number without its conditions is half a number.
+
+Next talk: does any of this predict the live rumble?
+
+<!-- Code excerpts are trimmed and re-wrapped to fit a slide; the linked source files are exact. -->

@@ -1,0 +1,10 @@
+# Example: run the top 20 and publish its analysis to the project site (issue #102).
+# The wrapper's own --publish does the same in one step; a separate step lets the queue keep
+# going and the publish be redone alone:  ./queue.sh run publish-example --only publish
+# `publish` never touches the run, and a failed publish leaves the queue's other steps alone.
+
+set HEAP = --child-heap 2G
+
+top20 | ./bench-top20.sh --skip-build --seeds 10 --rounds 35 ${HEAP} --label top20-nightly
+publish | python3 ../data/tools/publish_run.py run --work "$(ls -dt work/top20-nightly-* | head -1)" --set top20.txt --label top20-nightly
+  after: top20

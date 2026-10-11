@@ -64,6 +64,36 @@ class LineCodecProperties {
         assertEquals(sentry, LineCodec.decodeEvent(LineCodec.encode(sentry)));
     }
 
+    @Property
+    @Tag("LINK-1")
+    void messagesRoundTrip(@ForAll("bytes") List<byte[]> messages, @ForAll("bytes") List<byte[]> received) {
+        BotOrders o = new BotOrders(1, 2, 8, 0.5, Double.POSITIVE_INFINITY, 1.5, messages);
+        assertEquals(o, LineCodec.decodeOrders(LineCodec.encode(o)));
+        for (byte[] r : received) {
+            BotEvent m = new BotEvent.Message("team.Mate (2)", r);
+            assertEquals(m, LineCodec.decodeEvent(LineCodec.encode(m)));
+        }
+    }
+
+    @Provide
+    Arbitrary<List<byte[]>> bytes() {
+        return Arbitraries.bytes().array(byte[].class).ofMaxSize(300).list().ofMaxSize(4);
+    }
+
+    @Example
+    @Tag("LINK-1")
+    void linesWithoutMessagesOrOwnersReadAsBefore() {
+        // Lines written before A4: an O line of 7 fields, an X event without its owner.
+        String old = "O,0.1,NaN,8.0,NaN,Infinity,0.0";
+        assertEquals(old, LineCodec.encode(LineCodec.decodeOrders(old)));
+        assertEquals(0, LineCodec.decodeOrders(old).messages().size());
+        BotEvent.BulletHitBullet x = (BotEvent.BulletHitBullet) LineCodec.decodeEvent("X:1.0:2.0:3.0:1.5:0.5");
+        assertEquals(null, x.owner());
+        assertEquals("X:1.0:2.0:3.0:1.5:0.5", LineCodec.encode(x));
+        BotEvent.BulletHitBullet owned = new BotEvent.BulletHitBullet(1, 2, 3, 1.5, Double.NaN, "a,b:c");
+        assertEquals(owned, LineCodec.decodeEvent(LineCodec.encode(owned)));
+    }
+
     @Provide
     Arbitrary<Integer> sentries() {
         return Arbitraries.integers().between(0, 3);

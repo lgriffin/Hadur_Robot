@@ -1,0 +1,846 @@
+From: <Saved by Blink>
+Snapshot-Content-Location: https://rumble.robowiki.net/Rankings?game=teamrumble
+Subject: LiteRumble - teamrumble
+Date: Wed, 07 Oct 2026 20:28:55 GMT
+MIME-Version: 1.0
+Content-Type: multipart/related;
+	type="text/html";
+	boundary="----MultipartBoundary--tALmaaXsrFThP0mf0vsxrY0WURy8GOdiZOecEPPnaE----"
+
+
+------MultipartBoundary--tALmaaXsrFThP0mf0vsxrY0WURy8GOdiZOecEPPnaE----
+Content-Type: text/html
+Content-ID: <frame-E83A084E46F0A254A967AA4069468CB8@mhtml.blink>
+Content-Transfer-Encoding: binary
+Content-Location: https://rumble.robowiki.net/Rankings?game=teamrumble
+
+<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><title>LiteRumble - teamrumble</title><link rel="stylesheet" type="text/css" media="all" href="https://rumble.robowiki.net/style.css"></head><body><h3><a href="https://rumble.robowiki.net/">LITERUMBLE</a> RANKINGS - TEAMRUMBLE WITH 46 BOTS</h3><big>Rankings Not Stable</big>
+<table>
+<tbody><tr>
+<th><a href="https://rumble.robowiki.net/Rankings?game=teamrumble&amp;order="></a></th>
+<th><a href="https://rumble.robowiki.net/Rankings?game=teamrumble&amp;order=Flag">Flag</a></th>
+<th><a href="https://rumble.robowiki.net/Rankings?game=teamrumble&amp;order=Competitor">Competitor</a></th>
+<th class="sortedby"><a href="https://rumble.robowiki.net/Rankings?game=teamrumble&amp;order=-APS">-APS</a></th>
+<th><a href="https://rumble.robowiki.net/Rankings?game=teamrumble&amp;order=APS%20CI">APS CI</a></th>
+<th><a href="https://rumble.robowiki.net/Rankings?game=teamrumble&amp;order=PWIN">PWIN</a></th>
+<th><a href="https://rumble.robowiki.net/Rankings?game=teamrumble&amp;order=ANPP">ANPP</a></th>
+<th><a href="https://rumble.robowiki.net/Rankings?game=teamrumble&amp;order=Vote">Vote</a></th>
+<th><a href="https://rumble.robowiki.net/Rankings?game=teamrumble&amp;order=Survival">Survival</a></th>
+<th><a href="https://rumble.robowiki.net/Rankings?game=teamrumble&amp;order=Pairings">Pairings</a></th>
+<th><a href="https://rumble.robowiki.net/Rankings?game=teamrumble&amp;order=Battles">Battles</a></th>
+<th><a href="https://rumble.robowiki.net/Rankings?game=teamrumble&amp;order=Latest%20Battle">Latest Battle</a></th>
+</tr>
+<tr>
+<td>1</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/BRA.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=teamrumble&amp;name=mn.CombatTeam%203.25.0">mn.CombatTeam 3.25.0</a></td>
+<td>83.38</td>
+<td>Â±0.37</td>
+<td>97.78</td>
+<td>96.84</td>
+<td>40.19</td>
+<td>93.18</td>
+<td>45</td>
+<td>583</td>
+<td>2026-10-07 18:43:09</td>
+</tr>
+<tr>
+<td>2</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/DEU.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=teamrumble&amp;name=cb.fire.FirestarterTeam%202.0">cb.fire.FirestarterTeam 2.0</a></td>
+<td>83.02</td>
+<td>Â±0.31</td>
+<td>95.56</td>
+<td>96.14</td>
+<td>29.01</td>
+<td>94.15</td>
+<td>45</td>
+<td>612</td>
+<td>2026-10-07 17:52:59</td>
+</tr>
+<tr>
+<td>3</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/PRT.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=teamrumble&amp;name=abc.ShadowTeam%203.83">abc.ShadowTeam 3.83</a></td>
+<td>80.51</td>
+<td>Â±0.57</td>
+<td>84.09</td>
+<td>92.99</td>
+<td>11.68</td>
+<td>92.45</td>
+<td>44</td>
+<td>321</td>
+<td>2026-05-12 07:40:54</td>
+</tr>
+<tr>
+<td>4</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/NONE.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=teamrumble&amp;name=ustimaw.NightmareTeam%203.3">ustimaw.NightmareTeam 3.3</a></td>
+<td>78.44</td>
+<td>Â±0.24</td>
+<td>100.00</td>
+<td>91.31</td>
+<td>17.78</td>
+<td>82.22</td>
+<td>45</td>
+<td>707</td>
+<td>2026-10-07 16:49:11</td>
+</tr>
+<tr>
+<td>5</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/CHE.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=teamrumble&amp;name=rz.AlephTeam%200.34">rz.AlephTeam 0.34</a></td>
+<td>78.21</td>
+<td>Â±0.27</td>
+<td>88.89</td>
+<td>90.13</td>
+<td>0.19</td>
+<td>88.16</td>
+<td>45</td>
+<td>626</td>
+<td>2026-10-07 18:19:48</td>
+</tr>
+<tr>
+<td>6</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/FRA.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=teamrumble&amp;name=florent.XSeries.Xmen%200.9">florent.XSeries.Xmen 0.9</a></td>
+<td>72.18</td>
+<td>Â±0.29</td>
+<td>86.67</td>
+<td>82.92</td>
+<td>0.00</td>
+<td>73.17</td>
+<td>45</td>
+<td>595</td>
+<td>2026-10-07 16:01:27</td>
+</tr>
+<tr>
+<td>7</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/CAN.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=teamrumble&amp;name=ags.polylunar.Polylunar%201.6">ags.polylunar.Polylunar 1.6</a></td>
+<td>69.85</td>
+<td>Â±0.27</td>
+<td>91.11</td>
+<td>79.16</td>
+<td>0.00</td>
+<td>78.85</td>
+<td>45</td>
+<td>623</td>
+<td>2026-10-07 17:34:49</td>
+</tr>
+<tr>
+<td>8</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/CHE.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=teamrumble&amp;name=rz.GlowingHawks%200.2">rz.GlowingHawks 0.2</a></td>
+<td>68.71</td>
+<td>Â±0.27</td>
+<td>80.00</td>
+<td>77.89</td>
+<td>0.31</td>
+<td>75.56</td>
+<td>45</td>
+<td>635</td>
+<td>2026-10-07 18:59:39</td>
+</tr>
+<tr>
+<td>9</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/USA.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=teamrumble&amp;name=kawigi.micro.ArmyOfShiz%201.1">kawigi.micro.ArmyOfShiz 1.1</a></td>
+<td>67.13</td>
+<td>Â±0.32</td>
+<td>77.78</td>
+<td>76.66</td>
+<td>0.12</td>
+<td>72.75</td>
+<td>45</td>
+<td>597</td>
+<td>2026-10-07 17:00:51</td>
+</tr>
+<tr>
+<td>10</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/CHE.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=teamrumble&amp;name=rz.HOFSwarm%201.1">rz.HOFSwarm 1.1</a></td>
+<td>66.46</td>
+<td>Â±0.42</td>
+<td>73.33</td>
+<td>76.12</td>
+<td>0.12</td>
+<td>69.72</td>
+<td>45</td>
+<td>618</td>
+<td>2026-10-07 17:13:42</td>
+</tr>
+<tr>
+<td>11</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/USA.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=teamrumble&amp;name=davidalves.PhoenixTeam%200.54">davidalves.PhoenixTeam 0.54</a></td>
+<td>64.69</td>
+<td>Â±0.24</td>
+<td>71.11</td>
+<td>73.69</td>
+<td>0.00</td>
+<td>71.78</td>
+<td>45</td>
+<td>666</td>
+<td>2026-10-07 16:26:43</td>
+</tr>
+<tr>
+<td>12</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/IRL.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=teamrumble&amp;name=hadur2.HadurTeam%203.9">hadur2.HadurTeam 3.9</a></td>
+<td>63.97</td>
+<td>Â±0.70</td>
+<td>79.55</td>
+<td>72.19</td>
+<td>0.13</td>
+<td>69.43</td>
+<td>44</td>
+<td>165</td>
+<td>2026-10-07 19:35:15</td>
+</tr>
+<tr>
+<td>13</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/USA.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=teamrumble&amp;name=kid.team.OmegaSquad%20.0.2">kid.team.OmegaSquad .0.2</a></td>
+<td>63.27</td>
+<td>Â±0.29</td>
+<td>66.67</td>
+<td>71.92</td>
+<td>0.12</td>
+<td>67.39</td>
+<td>45</td>
+<td>646</td>
+<td>2026-10-07 18:26:31</td>
+</tr>
+<tr>
+<td>14</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/CHN.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=teamrumble&amp;name=cx.mini.DemoniacNimrods%200.50">cx.mini.DemoniacNimrods 0.50</a></td>
+<td>63.13</td>
+<td>Â±0.29</td>
+<td>71.11</td>
+<td>71.79</td>
+<td>0.31</td>
+<td>68.17</td>
+<td>45</td>
+<td>634</td>
+<td>2026-10-07 16:22:59</td>
+</tr>
+<tr>
+<td>15</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/NONE.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=teamrumble&amp;name=tmnr.TMNR%201.01">tmnr.TMNR 1.01</a></td>
+<td>62.84</td>
+<td>Â±0.33</td>
+<td>68.89</td>
+<td>71.57</td>
+<td>0.00</td>
+<td>63.25</td>
+<td>45</td>
+<td>646</td>
+<td>2026-10-07 18:12:35</td>
+</tr>
+<tr>
+<td>16</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/NOR.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=teamrumble&amp;name=myl.micro.TroodonPack%201.10">myl.micro.TroodonPack 1.10</a></td>
+<td>61.95</td>
+<td>Â±0.53</td>
+<td>66.67</td>
+<td>70.15</td>
+<td>0.19</td>
+<td>61.82</td>
+<td>45</td>
+<td>651</td>
+<td>2026-10-07 17:37:51</td>
+</tr>
+<tr>
+<td>17</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/DEU.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=teamrumble&amp;name=Krabb.sliNk.SlartibartfassTeam%200.5">Krabb.sliNk.SlartibartfassTeam 0.5</a></td>
+<td>61.42</td>
+<td>Â±0.26</td>
+<td>62.22</td>
+<td>69.51</td>
+<td>0.00</td>
+<td>63.40</td>
+<td>45</td>
+<td>619</td>
+<td>2026-10-07 18:49:08</td>
+</tr>
+<tr>
+<td>18</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/USA.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=teamrumble&amp;name=radnor.RadnorMedSchool%201.0">radnor.RadnorMedSchool 1.0</a></td>
+<td>60.63</td>
+<td>Â±0.33</td>
+<td>68.89</td>
+<td>68.76</td>
+<td>0.19</td>
+<td>70.48</td>
+<td>45</td>
+<td>608</td>
+<td>2026-10-07 15:45:09</td>
+</tr>
+<tr>
+<td>19</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/NLD.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=teamrumble&amp;name=bvh.team.Valkiries%201.0">bvh.team.Valkiries 1.0</a></td>
+<td>60.29</td>
+<td>Â±0.27</td>
+<td>64.44</td>
+<td>68.21</td>
+<td>0.00</td>
+<td>60.57</td>
+<td>45</td>
+<td>635</td>
+<td>2026-10-07 19:10:54</td>
+</tr>
+<tr>
+<td>20</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/NLD.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=teamrumble&amp;name=gh.mini.GrubbmGroup%200.4">gh.mini.GrubbmGroup 0.4</a></td>
+<td>60.21</td>
+<td>Â±0.30</td>
+<td>60.00</td>
+<td>68.54</td>
+<td>0.12</td>
+<td>65.81</td>
+<td>45</td>
+<td>616</td>
+<td>2026-10-07 18:54:00</td>
+</tr>
+<tr>
+<td>21</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/NONE.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=teamrumble&amp;name=apvteam.MambaTeam%200.7.5">apvteam.MambaTeam 0.7.5</a></td>
+<td>58.75</td>
+<td>Â±0.31</td>
+<td>55.56</td>
+<td>66.61</td>
+<td>0.12</td>
+<td>57.77</td>
+<td>45</td>
+<td>659</td>
+<td>2026-10-07 17:56:38</td>
+</tr>
+<tr>
+<td>22</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/USA.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=teamrumble&amp;name=kawigi.sbf.TidalWave%200.8">kawigi.sbf.TidalWave 0.8</a></td>
+<td>57.27</td>
+<td>Â±0.30</td>
+<td>55.56</td>
+<td>64.76</td>
+<td>0.19</td>
+<td>59.02</td>
+<td>45</td>
+<td>639</td>
+<td>2026-10-07 18:16:22</td>
+</tr>
+<tr>
+<td>23</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/NLD.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=teamrumble&amp;name=gh.nano.GrofGroup%201.1">gh.nano.GrofGroup 1.1</a></td>
+<td>53.16</td>
+<td>Â±0.31</td>
+<td>53.33</td>
+<td>60.26</td>
+<td>0.12</td>
+<td>54.96</td>
+<td>45</td>
+<td>645</td>
+<td>2026-10-07 19:20:42</td>
+</tr>
+<tr>
+<td>24</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/NONE.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=teamrumble&amp;name=jab.DiamondStealers%205">jab.DiamondStealers 5</a></td>
+<td>52.02</td>
+<td>Â±0.29</td>
+<td>48.89</td>
+<td>59.23</td>
+<td>0.19</td>
+<td>49.17</td>
+<td>45</td>
+<td>649</td>
+<td>2026-10-07 19:24:23</td>
+</tr>
+<tr>
+<td>25</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/FRA.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=teamrumble&amp;name=ethdsy.MalackaTeam%201.2">ethdsy.MalackaTeam 1.2</a></td>
+<td>51.40</td>
+<td>Â±0.28</td>
+<td>53.33</td>
+<td>58.03</td>
+<td>0.00</td>
+<td>52.64</td>
+<td>45</td>
+<td>638</td>
+<td>2026-10-07 18:09:40</td>
+</tr>
+<tr>
+<td>26</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/NONE.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=teamrumble&amp;name=amz.TeamDeathTeam%201">amz.TeamDeathTeam 1</a></td>
+<td>47.41</td>
+<td>Â±0.26</td>
+<td>37.78</td>
+<td>54.59</td>
+<td>0.00</td>
+<td>30.17</td>
+<td>45</td>
+<td>671</td>
+<td>2026-10-07 19:06:43</td>
+</tr>
+<tr>
+<td>27</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/NONE.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=teamrumble&amp;name=jab.Enjambre%203">jab.Enjambre 3</a></td>
+<td>45.86</td>
+<td>Â±0.26</td>
+<td>37.78</td>
+<td>52.21</td>
+<td>0.00</td>
+<td>42.80</td>
+<td>45</td>
+<td>640</td>
+<td>2026-10-07 18:29:14</td>
+</tr>
+<tr>
+<td>28</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/CAN.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=teamrumble&amp;name=vuen.Bakery%202.51">vuen.Bakery 2.51</a></td>
+<td>45.61</td>
+<td>Â±0.27</td>
+<td>46.67</td>
+<td>50.83</td>
+<td>0.00</td>
+<td>46.93</td>
+<td>45</td>
+<td>648</td>
+<td>2026-10-07 16:13:50</td>
+</tr>
+<tr>
+<td>29</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/BRA.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=teamrumble&amp;name=mn.nano.perceptual.ImpactTeam%201.3.0">mn.nano.perceptual.ImpactTeam 1.3.0</a></td>
+<td>41.62</td>
+<td>Â±0.35</td>
+<td>22.22</td>
+<td>47.64</td>
+<td>0.00</td>
+<td>22.83</td>
+<td>45</td>
+<td>618</td>
+<td>2026-10-07 15:14:23</td>
+</tr>
+<tr>
+<td>30</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/USA.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=teamrumble&amp;name=pedersen.ImWithStupidTeam%201.3">pedersen.ImWithStupidTeam 1.3</a></td>
+<td>40.52</td>
+<td>Â±0.43</td>
+<td>31.11</td>
+<td>45.53</td>
+<td>0.12</td>
+<td>36.66</td>
+<td>45</td>
+<td>424</td>
+<td>2026-10-07 15:56:46</td>
+</tr>
+<tr>
+<td>31</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/USA.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=teamrumble&amp;name=pedersen.ImWithDroidTeam%201.3">pedersen.ImWithDroidTeam 1.3</a></td>
+<td>40.00</td>
+<td>Â±0.44</td>
+<td>28.89</td>
+<td>45.09</td>
+<td>0.00</td>
+<td>33.67</td>
+<td>45</td>
+<td>459</td>
+<td>2026-10-07 16:27:41</td>
+</tr>
+<tr>
+<td>32</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/NONE.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=teamrumble&amp;name=mskwik.BumblingIdiots%201.0">mskwik.BumblingIdiots 1.0</a></td>
+<td>39.32</td>
+<td>Â±0.27</td>
+<td>31.11</td>
+<td>43.93</td>
+<td>0.19</td>
+<td>34.31</td>
+<td>45</td>
+<td>676</td>
+<td>2026-10-07 16:30:27</td>
+</tr>
+<tr>
+<td>33</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/AUS.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=teamrumble&amp;name=sgp.DrunkenTeam%201.12">sgp.DrunkenTeam 1.12</a></td>
+<td>38.85</td>
+<td>Â±0.37</td>
+<td>35.56</td>
+<td>43.79</td>
+<td>0.19</td>
+<td>33.00</td>
+<td>45</td>
+<td>462</td>
+<td>2026-10-07 15:49:31</td>
+</tr>
+<tr>
+<td>34</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/NONE.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=teamrumble&amp;name=CharlieN.OmegaTeam.OmegaTeam%201.0">CharlieN.OmegaTeam.OmegaTeam 1.0</a></td>
+<td>37.68</td>
+<td>Â±0.31</td>
+<td>31.11</td>
+<td>42.03</td>
+<td>0.12</td>
+<td>36.00</td>
+<td>45</td>
+<td>677</td>
+<td>2026-10-07 19:14:39</td>
+</tr>
+<tr>
+<td>35</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/USA.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=teamrumble&amp;name=jeremyreeder.collective.FourProphetsAndADiscliple%205">jeremyreeder.collective.FourProphetsAndADiscliple 5</a></td>
+<td>37.00</td>
+<td>Â±0.28</td>
+<td>24.44</td>
+<td>41.44</td>
+<td>0.00</td>
+<td>25.92</td>
+<td>45</td>
+<td>670</td>
+<td>2026-10-07 19:31:10</td>
+</tr>
+<tr>
+<td>36</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/NONE.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=teamrumble&amp;name=dummy_team.BlindFighters%201.01">dummy_team.BlindFighters 1.01</a></td>
+<td>34.64</td>
+<td>Â±0.27</td>
+<td>33.33</td>
+<td>38.53</td>
+<td>0.12</td>
+<td>29.18</td>
+<td>45</td>
+<td>657</td>
+<td>2026-10-07 16:30:04</td>
+</tr>
+<tr>
+<td>37</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/RUS.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=teamrumble&amp;name=lxx.ConceptATeam%200.8">lxx.ConceptATeam 0.8</a></td>
+<td>33.31</td>
+<td>Â±0.25</td>
+<td>17.78</td>
+<td>37.26</td>
+<td>0.00</td>
+<td>18.61</td>
+<td>45</td>
+<td>674</td>
+<td>2026-10-07 17:29:52</td>
+</tr>
+<tr>
+<td>38</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/NONE.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=teamrumble&amp;name=sp.Minis.GeneBotUpgrade%201.1">sp.Minis.GeneBotUpgrade 1.1</a></td>
+<td>32.17</td>
+<td>Â±0.43</td>
+<td>15.56</td>
+<td>36.01</td>
+<td>0.12</td>
+<td>26.07</td>
+<td>45</td>
+<td>408</td>
+<td>2026-10-07 18:32:05</td>
+</tr>
+<tr>
+<td>39</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/DEU.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=teamrumble&amp;name=ms.AresHaikuTeam%200.3">ms.AresHaikuTeam 0.3</a></td>
+<td>31.27</td>
+<td>Â±0.43</td>
+<td>22.22</td>
+<td>35.19</td>
+<td>0.12</td>
+<td>24.36</td>
+<td>45</td>
+<td>399</td>
+<td>2026-10-07 19:27:23</td>
+</tr>
+<tr>
+<td>40</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/NONE.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=teamrumble&amp;name=gimp.GimpTeam%200.1">gimp.GimpTeam 0.1</a></td>
+<td>30.98</td>
+<td>Â±0.29</td>
+<td>24.44</td>
+<td>34.17</td>
+<td>0.19</td>
+<td>24.76</td>
+<td>45</td>
+<td>653</td>
+<td>2026-10-07 19:05:19</td>
+</tr>
+<tr>
+<td>41</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/NONE.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=teamrumble&amp;name=ntc.slippery.Slippery%201.0">ntc.slippery.Slippery 1.0</a></td>
+<td>25.44</td>
+<td>Â±0.27</td>
+<td>11.11</td>
+<td>28.01</td>
+<td>0.00</td>
+<td>17.21</td>
+<td>45</td>
+<td>655</td>
+<td>2026-10-07 16:25:38</td>
+</tr>
+<tr>
+<td>42</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/NONE.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=teamrumble&amp;name=bugger.BuggerHive%201.0">bugger.BuggerHive 1.0</a></td>
+<td>22.78</td>
+<td>Â±0.24</td>
+<td>8.89</td>
+<td>25.03</td>
+<td>0.12</td>
+<td>12.05</td>
+<td>45</td>
+<td>684</td>
+<td>2026-10-07 19:35:15</td>
+</tr>
+<tr>
+<td>43</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/ARG.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=teamrumble&amp;name=Polkwane.PTeam%201.0">Polkwane.PTeam 1.0</a></td>
+<td>15.34</td>
+<td>Â±0.24</td>
+<td>4.44</td>
+<td>17.08</td>
+<td>0.00</td>
+<td>5.69</td>
+<td>45</td>
+<td>713</td>
+<td>2026-10-07 19:32:59</td>
+</tr>
+<tr>
+<td>44</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/WIKI.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=teamrumble&amp;name=sampleteam.MyFirstTeam%201.0">sampleteam.MyFirstTeam 1.0</a></td>
+<td>15.04</td>
+<td>Â±0.34</td>
+<td>6.67</td>
+<td>16.33</td>
+<td>0.00</td>
+<td>10.02</td>
+<td>45</td>
+<td>410</td>
+<td>2026-10-07 16:09:32</td>
+</tr>
+<tr>
+<td>45</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/GBR.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=teamrumble&amp;name=logiblocs.SittingDroidTeam%201.0">logiblocs.SittingDroidTeam 1.0</a></td>
+<td>3.13</td>
+<td>Â±0.22</td>
+<td>2.22</td>
+<td>3.13</td>
+<td>0.12</td>
+<td>2.52</td>
+<td>45</td>
+<td>702</td>
+<td>2026-10-07 16:27:53</td>
+</tr>
+<tr>
+<td>46</td>
+<td><img id="flag" src="https://rumble.robowiki.net/flags/BRA.gif"></td>
+<td><a href="https://rumble.robowiki.net/BotDetails?game=teamrumble&amp;name=mn.SuperSittingDuckTeam%201.0.2">mn.SuperSittingDuckTeam 1.0.2</a></td>
+<td>0.14</td>
+<td>Â±0.25</td>
+<td>0.00</td>
+<td>0.00</td>
+<td>0.00</td>
+<td>0.60</td>
+<td>45</td>
+<td>656</td>
+<td>2026-10-07 17:56:58</td>
+</tr></tbody></table></body></html>
+------MultipartBoundary--tALmaaXsrFThP0mf0vsxrY0WURy8GOdiZOecEPPnaE----
+Content-Type: image/gif
+Content-Transfer-Encoding: binary
+Content-Location: https://rumble.robowiki.net/flags/GBR.gif
+
+GIF87a  ™  Ï+ÿÿÿ $}   ,       XL„©§¢y&&æ êÛ}çe˜-˜7®´>­)
+ä¿´Š÷¤çÃu†Ä¢ñˆL*—Ì&1èAq<šôVÓ5N¹–†]„ªÛ°d,ùQ,#ôfrbÛÜlC ;
+------MultipartBoundary--tALmaaXsrFThP0mf0vsxrY0WURy8GOdiZOecEPPnaE----
+Content-Type: image/gif
+Content-Transfer-Encoding: binary
+Content-Location: https://rumble.robowiki.net/flags/WIKI.gif
+
+GIF87a  ª  :yÌL‰ÕläÛè÷±ËîŠ³å×æ÷kÜ,       Äºí'j{+kQJ=NPD”HZZÃdU”`ŒòP¤ËÁdéÖ…[Ù,‚ˆ$p(€ƒÁ†	¯æ¤cà”„ÌB0˜!–¹R˜32#´‘Y´¦¡›
+L=dOu]L"{b„FvLS-/+Š
+m3N,<0{P82OIOL'O UO¨1¨¨•m;J0¿RS38+W/% W¹p™3^`Ä)Ô„„¤Í×Ö²ß	 ;
+------MultipartBoundary--tALmaaXsrFThP0mf0vsxrY0WURy8GOdiZOecEPPnaE----
+Content-Type: image/gif
+Content-Transfer-Encoding: binary
+Content-Location: https://rumble.robowiki.net/flags/ARG.gif
+
+GIF87a  ª  t¬ßÿÿÿÖ™0ğâÑâÅŸİ¸ˆ÷ñëöïè,       3ºÜş0ÊI«½8ëºÿ`(â@©†F!…±ÎÁğ¾)­¶oqè+
+HœmÈ¤r‰L  ;
+------MultipartBoundary--tALmaaXsrFThP0mf0vsxrY0WURy8GOdiZOecEPPnaE----
+Content-Type: image/gif
+Content-Transfer-Encoding: binary
+Content-Location: https://rumble.robowiki.net/flags/RUS.gif
+
+GIF87a  ™    ÿÿ  ÿÿÿ   ,       '”©Ëí£œ´Ú²Ş¼û†âH–æ‰¦`À¶îÇòL×öçúÎÏ ;
+------MultipartBoundary--tALmaaXsrFThP0mf0vsxrY0WURy8GOdiZOecEPPnaE----
+Content-Type: image/gif
+Content-Transfer-Encoding: binary
+Content-Location: https://rumble.robowiki.net/flags/AUS.gif
+
+GIF87a  »    ‹ÿ——ÿ  ü\^–áØè¸¸ß¾ƒ¦CCªÆ…T–==§RR°ÿ±±Ö”ª,       ‘5 @Ù±ˆ³`(	É•Œi4cvÎñO7Uãp£€p˜ˆQá78ŸĞhŒ'BkR †
+q{„°f „ášÂhstH…{hjv a
+~\,’l^0m“=˜™!K•ŸJa
+¤SL	Œ\K©¥=³µ ;
+------MultipartBoundary--tALmaaXsrFThP0mf0vsxrY0WURy8GOdiZOecEPPnaE----
+Content-Type: image/gif
+Content-Transfer-Encoding: binary
+Content-Location: https://rumble.robowiki.net/flags/NLD.gif
+
+GIF87a  ™  ®(ÿÿÿ!F‹   ,       '„©Ëí£œ´Ú²Ş¼û†âH–æ‰¦ À¶îÇòL×öçúÎÏ ;
+------MultipartBoundary--tALmaaXsrFThP0mf0vsxrY0WURy8GOdiZOecEPPnaE----
+Content-Type: image/gif
+Content-Transfer-Encoding: binary
+Content-Location: https://rumble.robowiki.net/flags/NOR.gif
+
+GIF87a  ™  ï+-ÿÿÿ (h   ,       @„o"ŠcZ-Ès¸ÏmyV‰#Å™ÊÊ¢íÇ®3öçúÎ÷9¢	[ÁáJBJ™2®å%rB R&¨:m. ;
+------MultipartBoundary--tALmaaXsrFThP0mf0vsxrY0WURy8GOdiZOecEPPnaE----
+Content-Type: image/gif
+Content-Transfer-Encoding: binary
+Content-Location: https://rumble.robowiki.net/flags/CHN.gif
+
+GIF87a  ˆ  ÿ  ÿÿ ,       #„©«Îâ+YØ¹?>yÍ‰bi¦êÊ¶îÇòL×¶Y  ;
+------MultipartBoundary--tALmaaXsrFThP0mf0vsxrY0WURy8GOdiZOecEPPnaE----
+Content-Type: image/gif
+Content-Transfer-Encoding: binary
+Content-Location: https://rumble.robowiki.net/flags/IRL.gif
+
+GIF87a  ™   šIÿy ÿÿÿ   ,       <„¢Ëá‘¬
+ˆÃLvå¸÷9¡8^¥v¦jyRéÊ†.ßk>ïmûpÂÑüğ†>$3è467ºR ;
+------MultipartBoundary--tALmaaXsrFThP0mf0vsxrY0WURy8GOdiZOecEPPnaE----
+Content-Type: image/gif
+Content-Transfer-Encoding: binary
+Content-Location: https://rumble.robowiki.net/flags/USA.gif
+
+GIF87a  ™  ÿÿÿ»> &d   ,       <”Ëí-@œ²‚‹³Æ¦Ró„ÏçYÛ™u$(¶ÁZ¢²³nX›ó–ô·¸~D‡ğˆ)*Hä²Ø<>‰Qa ;
+------MultipartBoundary--tALmaaXsrFThP0mf0vsxrY0WURy8GOdiZOecEPPnaE----
+Content-Type: image/gif
+Content-Transfer-Encoding: binary
+Content-Location: https://rumble.robowiki.net/flags/CAN.gif
+
+GIF87a  »  ÿ  ÿÿÿÿøøÿÅÅÿ““ÿrrÿaaÿ¨¨ÿÍÍÿ††ÿÿµµÿÿççÿ½½ÿ,       yÈª½ØÎÍs‚p$ „XvX#(ŠĞdë–Š¤t-]¡Ç&ÒøLÅ"‘@l„ÄâP9"	“Â¦À$ªÇŠó8 û*+o´5CÑzyt9Œ”ñ|oÖ{5„t*meŒ”=|" ;
+------MultipartBoundary--tALmaaXsrFThP0mf0vsxrY0WURy8GOdiZOecEPPnaE----
+Content-Type: image/gif
+Content-Transfer-Encoding: binary
+Content-Location: https://rumble.robowiki.net/flags/FRA.gif
+
+GIF87a  ™   #•ÿÿÿí)9   ,       <„¡Ëâ‘¬ˆÅLvå¸÷9¡8^¥v¦jyRéÊ†.ßk>ïmûpÂÑüğ†>$3è467ºR ;
+------MultipartBoundary--tALmaaXsrFThP0mf0vsxrY0WURy8GOdiZOecEPPnaE----
+Content-Type: image/gif
+Content-Transfer-Encoding: binary
+Content-Location: https://rumble.robowiki.net/flags/CHE.gif
+
+GIF87a  ˆ  Õ+ÿÿÿ,       („©Ëí#4ÈYï«V7î%Ü˜y$cª–¡¾J,#t»øÎ÷J ;
+------MultipartBoundary--tALmaaXsrFThP0mf0vsxrY0WURy8GOdiZOecEPPnaE----
+Content-Type: image/gif
+Content-Transfer-Encoding: binary
+Content-Location: https://rumble.robowiki.net/flags/NONE.gif
+
+GIF89a  ğ        !ù
+   ,       „©Ëí£œ´Ú‹³Ş¼û†âHB ;
+------MultipartBoundary--tALmaaXsrFThP0mf0vsxrY0WURy8GOdiZOecEPPnaE----
+Content-Type: image/gif
+Content-Transfer-Encoding: binary
+Content-Location: https://rumble.robowiki.net/flags/PRT.gif
+
+GIF87a  » ÿ   f ß_ÈµÆê.h–·l"Úœ e ïŒ¦×È9‚ j_ş     ,       t0ÈI%¸8k\{Ø æUa	Œ”S‡@8*çJcI\_Æb'$¾šG±HƒAğó,èÀ 8$”E ªDAÈn»T0¥µ(ìÌºƒ+4Ìqri.LF_{i?,ŠŒ6(‘'“”‘ ;
+------MultipartBoundary--tALmaaXsrFThP0mf0vsxrY0WURy8GOdiZOecEPPnaE----
+Content-Type: image/gif
+Content-Transfer-Encoding: binary
+Content-Location: https://rumble.robowiki.net/flags/DEU.gif
+
+GIF87a  ™  İ     ÿÎ    ,       'Œ©Ëí£œ´Ú²Ş¼û†âH–æ‰¦ À¶îÇòL×öçúÎÏ ;
+------MultipartBoundary--tALmaaXsrFThP0mf0vsxrY0WURy8GOdiZOecEPPnaE----
+Content-Type: image/gif
+Content-Transfer-Encoding: binary
+Content-Location: https://rumble.robowiki.net/flags/BRA.gif
+
+GIF87a  »   ’?øÃ (o5$w)š4¤²b¥&éÀ×³‘¢®X?]–;˜t3[[º!Å˜,       ÈI«½’;6A`x$@ aˆp¥µÂ(
+ƒK;GÀÀ #p•^!Gp)p„p^*A¥6@Eª¨¥
+à aÅ¢RÖ„ĞKLÁ8Ñx¸‰j	Á«’‹±r	mOyR!aX€rZ!\HJ‹•NP%R?KC:H246˜9:'n+¨!F­… ;
+------MultipartBoundary--tALmaaXsrFThP0mf0vsxrY0WURy8GOdiZOecEPPnaE----
+Content-Type: text/css
+Content-Transfer-Encoding: binary
+Content-Location: https://rumble.robowiki.net/style.css
+
+@charset "utf-8";
+
+html { font-family: helvetica, arial, sans-serif; }
+
+table, td, th { border: 1px solid rgb(211, 211, 211); border-collapse: collapse; padding: 2px 4px; margin-bottom: 1em; }
+
+th > a, th > a:active, th > a:visited { color: rgb(0, 0, 0); text-decoration: none; }
+
+th { text-align: left; padding-right: 1em; }
+
+tr:nth-child(2n+1), tr.dim { background-color: rgb(244, 244, 244); }
+
+table.rumble td:nth-child(3) { text-align: center; }
+
+th.sortedby { font-style: italic; text-decoration: underline; }
+
+h3 { font-weight: normal; }
+
+form[action="BotCompare"] { margin: 0px; text-align: center; }
+
+td.green { background-color: rgb(153, 204, 0); }
+
+td.red { background-color: rgb(255, 102, 0); }
+
+.header { position: absolute; }
+
+#flag { width: 30px; height: 18px; }
+
+#distribution { position: relative; height: 220px; width: auto; border: 1px solid black; }
+
+#distribution2 { position: relative; height: 170px; width: auto; border: 1px solid black; }
+
+body.dark { background-color: rgb(30, 30, 30); color: rgb(221, 221, 221); }
+
+body.dark table, body.dark td, body.dark th { border-color: rgb(68, 68, 68); }
+
+body.dark th > a, body.dark th > a:active, body.dark th > a:visited { color: rgb(221, 221, 221); }
+
+body.dark a, body.dark a:visited { color: rgb(108, 182, 255); }
+
+body.dark tr:nth-child(2n+1), body.dark tr.dim { background-color: rgb(42, 42, 42); }
+
+body.dark td.green { background-color: rgb(76, 107, 0); }
+
+body.dark td.red { background-color: rgb(163, 59, 0); }
+
+body.dark #distribution, body.dark #distribution2 { border-color: rgb(221, 221, 221); }
+
+#tip { background: rgb(255, 255, 238); border: 1px solid rgb(153, 153, 153); }
+
+body.dark #tip { background: rgb(51, 51, 51); border-color: rgb(102, 102, 102); }
+------MultipartBoundary--tALmaaXsrFThP0mf0vsxrY0WURy8GOdiZOecEPPnaE------

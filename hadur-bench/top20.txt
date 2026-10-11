@@ -1,0 +1,25 @@
+# The RoboRumble 1v1 top 20 (2026-10-05), less hadur2.Hadur itself (rank 16) and
+# jd.Nullstride 2.3.1 (rank 2, no archive copy): ranks 1,3-15,17-22.
+# Source: data/rumble/parsed/2026-10-05T0551Z_roborumble_rankings.tsv
+# Jars from https://robocode-archive.strangeautomata.com/robots/<jar>, into opponents/.
+#   <robot name as Robocode lists it> | <role> | <jar file in opponents/>
+kc.mega.BeepBoop 2.0 | rumble-1 | kc.mega.BeepBoop_2.0.jar
+jk.mega.DrussGT 3.1.16 | rumble-3 | jk.mega.DrussGT_3.1.16.jar
+oog.mega.saguaro.Saguaro 1.0 | rumble-4 | oog.mega.saguaro.Saguaro_1.0.jar
+aaa.r.ScalarR 0.005h.053-noshield | rumble-5 | aaa.r.ScalarR_0.005h.053-noshield.jar
+voidious.Diamond 1.8.22 | rumble-6 | voidious.Diamond_1.8.22.jar
+cb.fire.Firestarter 2.0f | rumble-7 | cb.fire.Firestarter_2.0f.jar
+dsekercioglu.mega.Raven 3.56j8 | rumble-8 | dsekercioglu.mega.Raven_3.56j8.jar
+xander.cat.XanderCat 12.9 | rumble-9 | xander.cat.XanderCat_12.9.jar
+lxx.Tomcat 3.68 | rumble-10 | lxx.Tomcat_3.68.jar
+rsalesc.mega.Knight 0.6.28 | rumble-11 | rsalesc.mega.Knight_0.6.28.jar
+aw.Gilgalad 1.99.5c | rumble-12 | aw.Gilgalad_1.99.5c.jar
+pc.Wavelet 1.5 | rumble-13 | pc.Wavelet_1.5.jar
+gh.GresSuffurd 0.4.13 | rumble-14 | gh.GresSuffurd_0.4.13.jar
+kc.serpent.WaveSerpent 2.11 | rumble-15 | kc.serpent.WaveSerpent_2.11.jar
+dsekercioglu.mega.WhiteFang 2.8.1 | rumble-17 | dsekercioglu.mega.WhiteFang_2.8.1.jar
+cs.Nene 1.0.5 | rumble-18 | cs.Nene_1.0.5.jar
+jk.melee.Neuromancer 7.12 | rumble-19 | jk.melee.Neuromancer_7.12.jar
+voidious.Dookious 1.573c | rumble-20 | voidious.Dookious_1.573c.jar
+davidalves.Phoenix 1.02 | rumble-21 | davidalves.Phoenix_1.02.jar
+rsalesc.roborio.Roborio 1.2.4 | rumble-22 | rsalesc.roborio.Roborio_1.2.4.jar

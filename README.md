@@ -2,14 +2,53 @@
 
 **Hadur** (the Hungarian god of war) is a [Robocode](https://robocode.sourceforge.io/) robot:
 a 1v1 duelist that remembers each opponent across battles, with a melee brain for
-free-for-alls, and a core that has no idea it is inside Robocode.
+free-for-alls, a five-robot team entry, and a core that has no idea it is inside Robocode.
 
-**Hadur 3.4 is ranked 20th of 1,216 in the RoboRumble 1v1** and 28th in the MeleeRumble,
-the highest-ranked robot flying the Irish flag. It was designed, written, tested and tuned by Claude agents working
+**Hadur 3.12 is ranked 9th of 1,218 in the RoboRumble 1v1** (87.72 APS, its best score and its first top-10 place),
+17th in the MeleeRumble and 12th in the TeamRumble, the highest-ranked robot flying the Irish flag. It was designed, written, tested and tuned by Claude agents working
 in a shared project with one human, Leigh Griffin, who set the goals and ran the live
 entries. This page covers what the robot does, how it is built, and how it was built.
 
 ## Standing
+
+**3.12 was released on 2026-10-11** and its first full 1v1 pass, saved 2026-10-11 17:59 UTC
+with every pairing filled, puts `hadur2.Hadur 3.12` **9th**, Hadur's first top-10 place:
+
+| Rank | APS | PWIN | ANPP | Survival | Pairings | Battles |
+|---|---|---|---|---|---|---|
+| **9th of 1,218** | **87.72** ± 0.20 | 99.42 | 90.98 | 95.27% | 1,217 | 1,949 |
+
+- **The fix behind it.** 3.12 is 3.11 with one change (SHIELD-7): the gun fires its mirror aim
+  even after deciding the enemy shoots bullets down. Before, a latched shield verdict silenced
+  the gun against mirror bots for the rest of the battle and the stored verdict carried it into
+  later ones. The three mirror bots went from 42.5, 62.5 and 70.6 to about 93 each (MirrorMicro,
+  NaN, Mimic), worth +0.09 APS on their own; the whole page is +0.15 over 3.11's
+  ([plan](docs/plan-3.12.md), [live notes](docs/bench/live-3.12.md)).
+- **A tight pack.** Raven (8th) and Hadur share 87.72, and XanderCat, Knight, Tomcat and
+  Gilgalad follow within 0.10 APS, half the page's own ±0.20. Most pairings have one or two
+  battles yet, so the place can move either way as the second pass fills in.
+- **17th in the MeleeRumble** (65.65 APS) and **12th in the TeamRumble** (`hadur2.HadurTeam`,
+  64.61 APS), both read for 3.11 on 2026-10-11 07:16 UTC.
+- **Tested and dropped for 3.12:** never closing in on weak bots cost score in ranks 401 to 700
+  even though it held the distance; a stricter shield detector and ignoring stored verdicts were
+  level on the 400-bot screen ([findings, PR #182](https://github.com/lgriffin/Hadur_Robot/pull/182)).
+
+The pages are archived in [`data/rumble/`](data/rumble/).
+
+### 3.11 at 13th
+
+`hadur2.Hadur 3.11`'s first full pass, saved 2026-10-11 02:23 UTC: 13th, 87.56 ± 0.13, PWIN
+99.42, survival 95.05%, 4,306 battles. Retiring start-up duress (RES-9) gained 0.73 APS on the
+bench and 0.25 live over 3.10's second pass ([live notes](docs/bench/live-3.11.md)).
+
+### 3.9 at 13th
+
+`hadur2.Hadur 3.9`'s first full pass, saved 2026-10-07 20:28 UTC: 13th, 87.15 ± 0.19, PWIN
+99.34, survival 95.04%, 1,885 battles; 19th in melee and 12th in team. RAM-3 kept the rammer
+escape only where the battle's own rounds show it pays, and gained 2.36 APS over 3.8.5
+([live notes](docs/bench/live-3.9.md)).
+
+### 3.4 at 20th
 
 The live LiteRumble record for `hadur2.Hadur 3.4`, saved 2026-10-01 20:20 UTC with every
 pairing filled:
@@ -31,11 +70,21 @@ pairing filled:
 above it, and [the band and hour report](docs/bench/live-details-3.4.md) the same page read
 by BENCH-5. The saved page is archived in [`data/rumble/`](data/rumble/).
 
+### Rank history
+
 | Release | Date | Live APS | Survival | Rank | What changed |
 |---|---|---|---|---|---|
 | 3.0 | 2026-09-28 | 81.57 | 82.6% | 64th | Hadur 2 duelist (S0-S6) and the rebuilt melee brain (M0-M6) |
 | 3.1 | 2026-09-30 | 81.46 | 83.0% | 16th in its first hour, 65th at the end | R1-R3: client reliability, full power vs weak bots, a gun for surfers |
-| 3.4 | 2026-10-01 | **85.90** | **93.9%** | **20th** | R5-R8: rumble-safe memory, duress mode, movement, memory that stays cheap |
+| 3.4 | 2026-10-01 | 85.90 | 93.9% | 20th (28th melee) | R5-R8: rumble-safe memory, duress mode, movement, memory that stays cheap |
+| 3.5.1 | 2026-10-03 | 86.65 | 94.4% | 16th (18th melee) | R9, the ram approach: run from rammers (RAM-2), a planned path against mirror movers (MIR-1) |
+| 3.7 | 2026-10-05 | 85.67 | | 21st (18th melee, 32nd team) | A0-A5, the architecture evolution, and the first team entry |
+| 3.8 | 2026-10-06 | 84.58 | 91.8% | 29th (16th melee, 12th team) | D1-D5, the DrussGT route, and T1, teammates that no longer collide |
+| 3.8.5 | 2026-10-06 | 84.79 | 92.0% | 24th | MATCH-1/2: the DrussGT aim and shield latch only in duels Hadur is not already winning |
+| 3.9 | 2026-10-07 | 87.15 | 95.0% | 13th (19th melee, 12th team) | RAM-3, the rammer trial: escape a rammer only where its rounds show it pays |
+| 3.10 | 2026-10-08 | 86.42 | 93.9% | 20th, 13th on its second pass (87.33) | The shield sweep: 83 more robots on the shield list (+0.51 APS live); the pass ran 1.25 APS under 3.9's on unchanged code ([live notes](docs/bench/live-3.10.md)) |
+| 3.11 | 2026-10-10 | 87.56 | 95.1% | 13th (17th melee, 12th team) | Census-led: start-up duress (RES-9) retired, +0.25 APS live over 3.10 ([live notes](docs/bench/live-3.11.md)) |
+| 3.12 | 2026-10-11 | **87.72** | **95.3%** | **9th** | SHIELD-7: the mirror aim fires against a shielder, so the gun no longer falls silent against mirror bots ([live notes](docs/bench/live-3.12.md)) |
 
 3.0 and 3.1 both started near 85.7 APS and slid by 5 to 8 points within hours on live
 clients, which the bench could not reproduce. R7's one-JVM session bench and R8 traced it to
@@ -125,31 +174,42 @@ graph LR
         E[Engine]
     end
     subgraph "hadur-robot (adapter)"
-        A["hadur2.Hadur"]
+        A["hadur2.Hadur (TeamRobot)"]
         FS["FileProfileStore"]
     end
     subgraph "hadur-core (plain Java 11)"
         G["Guard (RES-1)"]
-        C[HadurCore]
-        L["ledger: energy ledger"]
-        GUN["gun: KNN main + anti-surfer"]
-        MV["move: wave surfing, bullet shadows"]
-        PO["policy: distance, power, endgame, tick budget"]
-        AD["adapt: opening book, seed trust"]
-        SH["shield: anti-shield aim"]
-        ML["melee + posture gate"]
-        MEM["memory: profiles, library"]
-        PS(["port: ProfileStore"])
-        T(["port: Telemetry"])
+        C["HadurCore: the conductor"]
+        R["role: charter and resolver"]
+        TL["TeamLink: reports, fire lane"]
+        subgraph "Duel strand"
+            DU["duel: DuelController"]
+            DS["gun, move, policy, adapt, shield"]
+        end
+        subgraph "Melee strand"
+            ML["melee: MeleeController"]
+        end
+        subgraph Kernel
+            W["world: the World, roster"]
+            LK["link: report codec"]
+            L["ledger, physics, knn, model"]
+            MEM["memory: profiles, library"]
+            PS(["port: ProfileStore"])
+            T(["port: Telemetry"])
+        end
     end
     D[("data directory")]
-    E -- "events, getters" --> A
+    E -- "events, getters, messages" --> A
     A -- BotInput --> G --> C
-    C --> L & GUN & MV & PO & AD & SH & ML
-    AD & PO --> MEM
+    C --> R
+    C --> TL --> LK
+    C --> W
+    C --> DU --> DS
+    C --> ML --> W
+    DS --> L & MEM
     MEM --> PS
     C -- BotOrders --> G -- BotOrders --> A
-    A -- "setters, execute()" --> E
+    A -- "setters, messages, execute()" --> E
     PS -. implemented by .-> FS --> D
     C -. "line records" .-> T
 ```
@@ -157,21 +217,25 @@ graph LR
 ### One tick
 
 The adapter queues each event in the engine's priority order, builds a `BotInput`, and
-calls the guard. The core picks a posture first (a sentry scanned this tick vetoes melee),
-then handles the events and returns orders. If the core throws, the guard returns safe orders
-(keep orbiting, radar on the enemy, hold fire; from the third faulting tick in a round it
-fires power 1.0 at the enemy's last bearing when the gun is cool, RES-7), so the robot never
-stalls.
+calls the guard. On a team, the conductor first takes teammates out of the input and merges
+their reports. It feeds the World, then the role resolver picks the role that drives this
+tick: Melee or Duel, never both, and only ever stepping down within a round (a sentry
+scanned this tick vetoes melee). That role handles the events and returns orders. On a
+team, a shot is held while a teammate stands in the fire lane. If the core throws, the guard returns safe orders
+(keep orbiting, radar on the enemy, hold fire; off a team, from the third faulting tick in
+a round it fires power 1.0 at the enemy's last bearing when the gun is cool, RES-7; on a
+team it always holds fire, WEAVE-5), so the robot never stalls.
 
 ```mermaid
 flowchart TD
     EV["Engine events<br/>onScannedRobot, onHitByBullet, ..."] --> Q["Adapter queues BotEvents"]
     Q --> IN["BotInput: own state + events"]
     IN --> GU{"Guard.tick"}
-    GU -- "core throws" --> SAFE["Safe orders: orbit, radar on enemy,<br/>hold fire; power 1.0 from the 3rd fault (RES-7)"]
-    GU --> SEN["Sentry scans this tick veto melee (GATE-3)"]
-    SEN --> GATE{"Posture gate<br/>(GATE-1, GATE-2)"}
-    GATE -- "2+ opponents, no sentry" --> MEL["Melee: sweep radar,<br/>minimum-risk movement, field gun"]
+    GU -- "core throws" --> SAFE["Safe orders: orbit, radar on enemy,<br/>hold fire; off a team, power 1.0 from<br/>the 3rd fault (RES-7); on a team, hold (WEAVE-5)"]
+    GU --> TEAM["On a team: teammates filtered out,<br/>their reports merged (WORLD-2, WORLD-4)"]
+    TEAM --> WLD["The World fed first (WORLD-1);<br/>sentry scans veto melee (GATE-3)"]
+    WLD --> GATE{"Role resolver<br/>(ROLE-3, the latch)"}
+    GATE -- "2+ enemies, no sentry" --> MEL["Melee: sweep radar,<br/>minimum-risk movement, field gun"]
     GATE -- "duel, or fail closed" --> DUR{"3+ skipped turns<br/>this round? (RES-9)"}
     DUR -- yes --> CHEAP["Duress: events counted only;<br/>cheap orbit, head-on power 1.0"]
     DUR -- no --> EVH["Handle events in engine order"]
@@ -180,7 +244,8 @@ flowchart TD
     LED --> LVL["Tick budget picks<br/>computation level 0-3 (TIME-1, TIME-2)"]
     LVL --> GN["Gun: KNN main / anti-surfer,<br/>power policy (POW, END, RAM)"]
     LVL --> MO["Movement: surf waves with bullet shadows,<br/>distance policy, flavours (MOVE, DIST)"]
-    MEL & CHEAP & GN & MO & SAFE --> OUT["BotOrders"]
+    MEL & CHEAP & GN & MO --> LANE["On a team: hold fire while a teammate<br/>is in the fire lane (WEAVE-4)"]
+    LANE & SAFE --> OUT["BotOrders"]
     OUT --> EX["Adapter applies setters, execute()"]
 ```
 
@@ -243,7 +308,7 @@ Hadur 2 is as much an experiment in how AI agents build software as it is a robo
 1.x (up to 1.20) was evolved release by release, by feel. Hadur 2 was rebuilt from 2026-09-26
 to 2026-10-01 by Claude sessions working in one shared project: 50 merged pull requests, about
 24,000 lines of production Java and 12,000 of tests, from a 64th-place 3.0 to a 20th-place
-3.4. Leigh set the goals, made the calls only a human could (what "good" means, when to
+3.4 (and, by 2026-10-11, a 9th-place 3.12). Leigh set the goals, made the calls only a human could (what "good" means, when to
 enter the rumble), and carried the live entries; everything else was done by agents. What
 follows is what made that work, and where it did not.
 
@@ -358,7 +423,13 @@ tests that prove it.
 | R3.5-R4 | Rumble climb: release 3.1, client-conditions bench, return fire and health record; release 3.2 | done ([plan](docs/rumble-climb-r4-r6-plan.md)) |
 | R5, R7, R6 | Top 30: rumble-safe memory, the long-session bench and duress, movement precision | released as 3.3 ([plan](docs/rumble-climb-top30-plan.md), [session bench](docs/bench/r7-session.md)) |
 | R8 | Memory at rumble scale: one directory listing per battle, forget the oldest | released as 3.4 ([plan](docs/rumble-memory-scale-plan.md), [gate](docs/bench/r8-memory-scale.md)); 20th live |
-| R9 | The weak-bot leak: run from rammers (RAM-2), plan a path against mirror movers (MIR-1) | released as 3.5, review fixes as 3.5.1 ([issue #80](https://github.com/lgriffin/Hadur_Robot/issues/80), [bench](docs/bench/r9-weak-leak.md)): weak set 74.8% to 86.8%, top 19 unchanged |
+| R9 | The weak-bot leak: run from rammers (RAM-2), plan a path against mirror movers (MIR-1) | released as 3.5, review fixes as 3.5.1 ([issue #80](https://github.com/lgriffin/Hadur_Robot/issues/80), [bench](docs/bench/r9-weak-leak.md)): weak set 74.8% to 86.8%, top 19 unchanged; 16th live, 18th melee |
+| A0-A5 | Architecture evolution: one identity kernel, three strands (Duel, Melee, Team), the World, team messages and the team baseline | released as 3.6 (A2) and 3.7 (A5, with the team jar) ([plan](docs/architecture-evolution.md), [stage log](docs/architecture-evolution.md#stage-log), [team gate](docs/bench/a5-team.md), [expected APS](docs/bench/expected-3.7.md)) |
+| D1-D5 | The DrussGT route: power by the lead, shield openers and the last shot, light-bullet aim, shadow-aware aim, and a shield list of 14 opponents | released as 3.8 ([plan](docs/druss-route-plan.md); gates [D1](docs/bench/d1-gate.md), [D5](docs/bench/d5-gate.md), [D2](docs/bench/d2-gate.md), [D3](docs/bench/d3-gate.md), [D4](docs/bench/d4-gate.md), [stack](docs/bench/stack-gate.md)); D6 stays research |
+| MATCH | The matchup gate: switch the DrussGT aim and shield latch off once a duel is clearly won | released as 3.8.5; 24th live ([notes](docs/bench/live-3.8.5.md)) |
+| R9 bisect, D8 | The 3.8 leak traced to RAM-2 by an overnight release bisect and ablation; RAM-3, the rammer trial | released as 3.9 ([bisect](docs/bench/local/2026-10-07_live-loser-bisect.md), [gate](docs/bench/local/2026-10-07_candidate-39-gate.md), [notes](docs/releases/v3.9.md)): 13th live ([live notes](docs/bench/live-3.9.md)) |
+| Census, 3.12 | Whole-field census against Tomcat; start-up duress retired; the silent gun against mirror bots found and fixed (SHIELD-7) | released as 3.11 ([census plan](docs/plan-3.11-census.md)): 13th live; and 3.12 ([plan](docs/plan-3.12.md), [notes](docs/releases/v3.12.md)): 9th live ([live notes](docs/bench/live-3.12.md)) |
+| T1 | The Team plan's first stage: teammates seen, predicted and fenced, so they stop colliding; the fire lane covers the bullet's flight | released as 3.8 ([plan](docs/team-plan-t1.md), [gate](docs/bench/t1-team.md)): collisions -99.9%, team share 28.8% to 48.2% |
 
 The plan's S7 was "cut melee". Release 2.1 had already put melee in the core for the
 MeleeRumble, and it costs the duel nothing (it runs only while two or more opponents are
@@ -367,9 +438,11 @@ alive), so S7 keeps it. Open items are in [followup.md](followup.md).
 ## Layout
 
 ```
-hadur-core/    the brain: physics, waves, KNN, guns, movement, memory, policies, melee.
+hadur-core/    the brain: a kernel (physics, waves, KNN, memory, the World, the team link),
+               the Duel and Melee strands, and the conductor that picks the role each tick.
                Plain Java, no Robocode.
-hadur-robot/   the Robocode adapter (hadur2.Hadur): events in, orders out, profile files.
+hadur-robot/   the Robocode adapter (hadur2.Hadur, a TeamRobot): events in, orders out,
+               profile files; and the team jar hadur2.HadurTeam, five of it.
 hadur-bench/   headless battles, the bench report, and the replay recorder.
 docs/          requirements, architecture, testing, strategy, bench reports, release notes,
                rumble entry.
@@ -392,11 +465,12 @@ client can load it (REL-1).
 mvn verify                  # all modules: tests, traceability, robot jar
 ```
 
-The robot jar is `hadur-robot/target/hadur2.Hadur_3.5.1.jar`; drop it into a Robocode
-`robots/` directory. The core is bundled inside it. Pushing a `v*` tag runs the release
+The robot jar is `hadur-robot/target/hadur2.Hadur_3.8.jar`, and the team jar
+`hadur2.HadurTeam_3.8.jar` sits beside it; drop either into a Robocode `robots/` directory. The core is bundled inside it. Pushing a `v*` tag runs the release
 workflow, as does running it by hand with a version: it builds, checks that the jar
 matches the version, and publishes a GitHub release with `docs/releases/<tag>.md` as its
-notes. The latest release's asset is the jar the RoboRumble downloads. 2.2 and 3.0 were built
+notes, with the team jar attached beside the solo one. The latest release's assets are the
+jars the rumbles download. 2.2 and 3.0 were built
 locally while Actions was not running jobs.
 
 The tests are layered: ArchUnit rules, jqwik properties, unit tests, replay of recorded
@@ -408,7 +482,7 @@ how to run them, and how to re-record the replay fixtures.
 
 Every class in the core and the adapter carries Javadoc that explains how it works, why,
 and which EARS requirements it implements, with the IDs cited next to the code that
-meets them. `mvn verify` runs doclint over all of it, the melee and posture packages
+meets them. `mvn verify` runs doclint over all of it, the melee and role packages
 included (a broken link or a wrong `@param` fails the build).
 
 `site/build.sh` builds the docs site into `target/site-pages`: the Javadoc, a requirement

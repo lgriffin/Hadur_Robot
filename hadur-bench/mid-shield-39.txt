@@ -1,0 +1,38 @@
+# The mid-table bots on DrussGT's shield list (issue #140, M2): 30 drawn at random (seed 39) from
+# those ranked 51st to 400th on 2026-10-07 that are on shield-list.txt but not on Hadur's D5 list.
+# 153 of the 350 bots of ranks 51-400 are on DrussGT's list. Nullstride's gap to Hadur 3.9 is
+# 17.1 a pairing on them and 11.3 off them; 8 of the 10 worst pairings are on it. On this draw
+# the gap is 18.8 and Hadur wins 90.5% of rounds. Use: 3.9 with the shield list on for everyone
+# (build-ablation.sh shield-all) against 3.9.
+# Jars from https://robocode-archive.strangeautomata.com/robots/<jar>, into opponents/ (not committed).
+#   <robot name as Robocode lists it> | <role> | <jar file in opponents/>
+KiraNL.ChupaLite 0.4 | mid-shield | KiraNL.ChupaLite_0.4.jar
+ak.Fermat 2.0 | mid-shield | ak.Fermat_2.0.jar
+ary.SMG 1.01 | mid-shield | ary.SMG_1.01.jar
+ary.mini.Nimi 1.0 | mid-shield | ary.mini.Nimi_1.0.jar
+bayen.nut.Squirrel 1.621 | mid-shield | bayen.nut.Squirrel_1.621.jar
+brainfade.Fallen 0.63 | mid-shield | brainfade.Fallen_0.63.jar
+can.Pookie 1.1 | mid-shield | can.Pookie_1.1.jar
+cf.mini.Chiva 1.0 | mid-shield | cf.mini.Chiva_1.0.jar
+cf.proto.Shiva 2.2 | mid-shield | cf.proto.Shiva_2.2.jar
+chase.pm.Pytko 1.0 | mid-shield | chase.pm.Pytko_1.0.jar
+css.Delitioner 0.11 | mid-shield | css.Delitioner_0.11.jar
+dft.Cyanide 1.90 | mid-shield | dft.Cyanide_1.90.jar
+dz.Caedo 1.4 | mid-shield | dz.Caedo_1.4.jar
+kawigi.mini.Fhqwhgads 1.1 | mid-shield | kawigi.mini.Fhqwhgads_1.1.jar
+kawigi.sbf.FloodMini 1.4 | mid-shield | kawigi.sbf.FloodMini_1.4.jar
+kid.Toa .0.5 | mid-shield | kid.Toa_.0.5.jar
+kms.Golden 0.10 | mid-shield | kms.Golden_0.10.jar
+lucasslf.Dodger 1.0 | mid-shield | lucasslf.Dodger_1.0.jar
+mk.Alpha 0.2.1 | mid-shield | mk.Alpha_0.2.1.jar
+mladjo.Grrrrr 0.9 | mid-shield | mladjo.Grrrrr_0.9.jar
+nz.jdc.nano.NeophytePattern 1.1 | mid-shield | nz.jdc.nano.NeophytePattern_1.1.jar
+pedersen.Hubris 2.4 | mid-shield | pedersen.Hubris_2.4.jar
+ph.micro.Pikeman 0.4.5 | mid-shield | ph.micro.Pikeman_0.4.5.jar
+suh.mega.WaveSurferPG 1.06 | mid-shield | suh.mega.WaveSurferPG_1.06.jar
+synapse.rsim.GeomancyBS 0.11 | mid-shield | synapse.rsim.GeomancyBS_0.11.jar
+theo.avenge.Pequod 1.0 | mid-shield | theo.avenge.Pequod_1.0.jar
+theo.real.Ahab 1.0 | mid-shield | theo.real.Ahab_1.0.jar
+tm.Yuugao 1.0 | mid-shield | tm.Yuugao_1.0.jar
+trab.Crusader 0.1.7 | mid-shield | trab.Crusader_0.1.7.jar
+wiki.mini.Sedan 1.0 | mid-shield | wiki.mini.Sedan_1.0.jar

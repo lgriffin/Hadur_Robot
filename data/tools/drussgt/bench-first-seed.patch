@@ -1,0 +1,14 @@
+diff --git a/hadur-bench/src/main/java/hadur/bench/Bench.java b/hadur-bench/src/main/java/hadur/bench/Bench.java
+index 00ca13b..d2af722 100644
+--- a/hadur-bench/src/main/java/hadur/bench/Bench.java
++++ b/hadur-bench/src/main/java/hadur/bench/Bench.java
+@@ -198,7 +198,8 @@ public final class Bench {
+             List<BattleResult> baselineList = baselineResults != null ? new ArrayList<>() : null;
+             if (baselineResults != null) baselineResults.put(o, baselineList);
+             if (warm) wipeData();
+-            for (int i = 1; i <= runs; i++) {
++            int first = Integer.parseInt(opts.getOrDefault("first", "1"));
++            for (int i = first; i < first + runs; i++) {
+                 if (!warm) wipeData();
+                 Path dir = out.resolve("battles").resolve(o.slug() + "-" + i);
+                 System.out.printf("%s battle %d/%d ...%n", o.name, i, runs);

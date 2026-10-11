@@ -1,0 +1,11 @@
+# Issue #151, A1: arguments for the session step of plans/harness-gaps.queue (BENCH-59: one per line).
+--session
+session-leak-38.txt
+--robot-jar
+bisect/hadur2.Hadur_3.9.jar
+--robot
+hadur2.Hadur 3.9
+--cpu-constant
+1488498
+--report
+../docs/bench/local/harness-gaps-session-39v385.md

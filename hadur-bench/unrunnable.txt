@@ -1,0 +1,4 @@
+# Robots no build can fight (issue #151, A6). analyse.py --live and literumble.py coverage flag
+# them; a set that lists one loses that opponent to failed battles in every build.
+#   <robot name as Robocode lists it> | <why> | <date seen>
+e32.Omni 0.06 | every battle fails in every build | 2026-10-07

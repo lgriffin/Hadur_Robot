@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>course.hadurling</groupId>
+        <artifactId>hadurling-lab13</artifactId>
+        <version>0.1</version>
+    </parent>
+
+    <artifactId>hadurling-lab13-bench</artifactId>
+    <name>Hadurling bench (lab 13)</name>
+    <description>Headless Robocode battles for measuring Hadurling: seeded, with a 95% interval and a paired A/B.</description>
+
+    <properties>
+        <!-- The bench never ships to a RoboRumble client, so it can use a newer Java than the robot. -->
+        <maven.compiler.release>17</maven.compiler.release>
+    </properties>
+
+    <dependencies>
+        <!-- The full engine from Maven Central. Robots built against the 1.9.5.6 API run on it. -->
+        <dependency>
+            <groupId>net.sf.robocode</groupId>
+            <artifactId>robocode.api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.robocode</groupId>
+            <artifactId>robocode.core</artifactId>
+            <version>${robocode.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.robocode</groupId>
+            <artifactId>robocode.host</artifactId>
+            <version>${robocode.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.robocode</groupId>
+            <artifactId>robocode.battle</artifactId>
+            <version>${robocode.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.robocode</groupId>
+            <artifactId>robocode.repository</artifactId>
+            <version>${robocode.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.robocode</groupId>
+            <artifactId>robocode.samples</artifactId>
+            <version>${robocode.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.8.1</version>
+                <executions>
+                    <!-- Each battle runs in its own JVM (Robocode reads RANDOMSEED once per JVM),
+                         so the bench needs the runtime classpath written out. -->
+                    <execution>
+                        <id>classpath</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>build-classpath</goal>
+                        </goals>
+                        <configuration>
+                            <outputFile>${project.build.directory}/classpath.txt</outputFile>
+                            <includeScope>runtime</includeScope>
+                        </configuration>
+                    </execution>
+                    <!-- The sample robots ship in a jar of their own; the bench copies it into
+                         each battle's robots folder. -->
+                    <execution>
+                        <id>samples</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>net.sf.robocode</groupId>
+                                    <artifactId>robocode.samples</artifactId>
+                                    <version>${robocode.version}</version>
+                                </artifactItem>
+                            </artifactItems>
+                            <outputDirectory>${project.build.directory}/samples</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.5.0</version>
+                <configuration>
+                    <mainClass>hadurling.bench.Bench</mainClass>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

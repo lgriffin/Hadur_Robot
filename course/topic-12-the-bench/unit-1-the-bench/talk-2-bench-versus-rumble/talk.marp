@@ -1,0 +1,125 @@
+---
+marp: true
+theme: default
+paginate: true
+---
+
+# Bench versus rumble
+
+Topic 12, talk 2
+
+After this talk you can:
+
+- compare a model with the thing it models
+- say what a bench can and cannot reproduce
+- turn "it did not reproduce" into a change to the bench
+
+---
+
+## What the rumble reports
+
+Each RoboRumble pairing is one battle. A robot's rating is its average percentage score (APS) over all pairings, with survival and win rate beside it.
+
+3.4 sits 20th of 1,216 at 85.90 APS ± 0.20, from 1,215 pairings and 1,628 battles.
+
+One pairing is noisy: about ±7.8 APS. So the live page is a lot of noisy rows, and a bench share is a fair stand-in for a pairing only if you check.
+
+Source: README "Standing"; `data/learnings.md` L-02.
+
+---
+
+## L-02: the bench predicted the rumble
+
+On the 20 top-50 opponents that were both benched and fought live:
+
+- live APS tracks bench share, correlation 0.84
+- for the 10 fought before the collapse, live minus bench averages -0.1 points
+- for the 10 fought after it, -5.9
+
+Later, on the top 19 above 3.4: r = 0.96 over 18 of them, live minus bench +1.0 (SD 4.4) (L-30).
+
+A bench share is a fair stand-in for a healthy live pairing.
+
+---
+
+## Then the live rating collapsed (L-01)
+
+3.0 on 2026-09-28:
+
+| | Pairings | APS | Survival |
+|---|---|---|---|
+| before 08:30 UTC | 268 | 85.5 | 92.6% |
+| after | 239 | 77.2 | 71.2% |
+
+Same opponent strength. Every APS band lost 6 to 10 points at once.
+
+The bench had 3.0 healthy. The model said fine and the world said not fine.
+
+---
+
+## It did not reproduce (L-03, L-21)
+
+The worst live rows were nano and mini bots that Hadur lost 30 to 40% of rounds to. On the bench they were 35 of 35.
+
+The bench was then given a way to vary the client: a forced CPU constant down to 0.3 ms (up to 112 skipped turns a battle), a shared never-wiped data directory, four background-load threads, a data directory built like a long-lived client's.
+
+Survival stayed 97 to 100% in every condition, against a live drop to 71 to 77%.
+
+Each of these ruled something out. That is progress, even with no fix.
+
+---
+
+## What the bench still did differently (L-24)
+
+Every bench pass forked a fresh JVM per battle and met at most 60 distinct opponents.
+
+A rumble client runs a whole session in one process under `-Xmx512M`, against hundreds of opponents.
+
+That difference had never been benched. And it matched the live signature: healthy at first, degrading over an hour or a few hundred battles.
+
+So the bench changed: a session mode (BENCH-6, BENCH-7), 300 battles in one engine process with a control robot.
+
+---
+
+## The session bench finds something (L-26)
+
+3.2 jar, 300 battles in one process, control robot sample.Tracker:
+
+- skipped turns per battle climbed from 10 to 90
+- the control stayed at 0
+- survival, heap, live classes and turn p95 stayed flat
+
+Every added skip sat one tick after a round's end: the profile save, whose cost grew with the files in the data directory. Wiping the directory between battles held skips flat.
+
+Source: `docs/bench/r7-session.md`. Topic 13 is the full story.
+
+---
+
+## And it was honest about the limit
+
+The session reproduced the skip growth. It did not reproduce the live survival collapse (99.4 to 100% in every block against a live fall from 91.8% to 76.1%).
+
+`docs/skipped-turns-plan.md` says so plainly, narrows the open question to three silent freezes in 10,500 rounds (L-28), and names the next experiment.
+
+When the bench cannot show the effect, write down that it cannot, and say what would.
+
+---
+
+## 3.4 did not slide
+
+3.4's first full pass: 1,215 pairings in 7 hours. Mean APS dipped to 82 to 84 in hours 1 and 2 and then held 86.2 to 86.7 for four hours (L-29). Its last 400 pairings average 86.3 APS against 84.7 for its first 400 (README).
+
+The fix (R8: list the data directory once per battle, keep an index) was benched before it shipped (`docs/bench/r8-memory-scale.md`): 3.3 took 188 to 224 skipped turns per battle on a 700-profile directory at a 1 ms client; 3.4 took 10 to 26.
+
+---
+
+## Lessons
+
+1. A model earns trust by being checked against reality. Do it with numbers (r, mean difference).
+2. When it fails, ask what the model leaves out, not what is wrong with reality.
+3. Change the bench so it can fail the way the world did.
+4. Keep the open items open in writing. L-13 (memory has not paid off against Shadow) and L-28 are still marked open.
+
+Next: the note walks through the bench classes, then the lab builds a small one.
+
+<!-- Code excerpts are trimmed and re-wrapped to fit a slide; the linked source files are exact. -->

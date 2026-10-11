@@ -4,6 +4,7 @@ import hadur2.core.model.BotEvent;
 import hadur2.core.model.BotInput;
 import hadur2.core.model.BotOrders;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 /**
@@ -14,8 +15,11 @@ import java.util.List;
  * <pre>
  * I,time,round,x,y,heading,velocity,energy,gunHeat,gunCoolingRate,gunHeading,
  *   gunTurnRemaining,radarHeading,others,event;event;...[,numSentries,sentryBorderSize]
- * O,bodyTurn,ahead,maxVelocity,gunTurn,radarTurn,firePower
+ * O,bodyTurn,ahead,maxVelocity,gunTurn,radarTurn,firePower[,message;message;...]
  * </pre>
+ *
+ * <p>An {@code O} line carries the tick's messages to teammates (A4) only when there are
+ * any, each in Base64, so every line written off a team reads as before.</p>
  *
  * <p>The sentry fields (M1) are written only when there are sentries, and a scan's sentry
  * flag only when it is set, so lines from battles without sentries, and the fixtures
@@ -31,7 +35,7 @@ import java.util.List;
  * <li>{@code H}: hit by a bullet; shooter's name, power, bullet x, y, heading.</li>
  * <li>{@code B}: our bullet hit; victim's name, power, victim's energy, bullet heading.</li>
  * <li>{@code X}: our bullet hit a bullet; our power, x, y, the other bullet's power, our
- *     bullet's heading.</li>
+ *     bullet's heading, and from A4 the other bullet's owner when known.</li>
  * <li>{@code M}: our bullet missed; power, bullet heading.</li>
  * <li>{@code W}: we hit a wall; bearing.</li>
  * <li>{@code R}: we hit a robot; name, bearing, its energy, whether it was our fault.</li>
@@ -39,6 +43,7 @@ import java.util.List;
  * <li>{@code K}: a skipped turn; the skipped tick (TIME-2).</li>
  * <li>{@code Q}: the last core tick's duration and the allowance, in nanoseconds
  *     (TIME-1).</li>
+ * <li>{@code G}: a teammate's message (A4); the sender's name and the bytes in Base64.</li>
  * </ul>
  *
  * <p>Formats only ever grow by appending optional fields, and the decoder treats a missing
@@ -84,8 +89,16 @@ public final class LineCodec {
      * @return the line, without a line terminator
      */
     public static String encode(BotOrders o) {
-        return "O," + o.bodyTurn() + "," + o.ahead() + "," + o.maxVelocity() + ","
+        String line = "O," + o.bodyTurn() + "," + o.ahead() + "," + o.maxVelocity() + ","
             + o.gunTurn() + "," + o.radarTurn() + "," + o.firePower();
+        List<byte[]> messages = o.messages();
+        if (messages.isEmpty()) return line;
+        StringBuilder b = new StringBuilder(line).append(',');
+        for (int i = 0; i < messages.size(); i++) {
+            if (i > 0) b.append(';');
+            b.append(Base64.getEncoder().encodeToString(messages.get(i)));
+        }
+        return b.toString();
     }
 
     /**
@@ -121,10 +134,14 @@ public final class LineCodec {
      */
     public static BotOrders decodeOrders(String line) {
         String[] f = line.split(",", -1);
-        if (f.length != 7 || !f[0].equals("O")) {
+        if ((f.length != 7 && f.length != 8) || !f[0].equals("O")) {
             throw new IllegalArgumentException("Not an orders line: " + line);
         }
-        return new BotOrders(d(f[1]), d(f[2]), d(f[3]), d(f[4]), d(f[5]), d(f[6]));
+        List<byte[]> messages = new ArrayList<>();
+        if (f.length == 8) {
+            for (String m : f[7].split(";", -1)) messages.add(Base64.getDecoder().decode(m));
+        }
+        return new BotOrders(d(f[1]), d(f[2]), d(f[3]), d(f[4]), d(f[5]), d(f[6]), messages);
     }
 
     /**
@@ -150,6 +167,9 @@ public final class LineCodec {
                 : join("B", esc(b.name()), b.power(), b.energy(), b.bulletHeading());
         } else if (e instanceof BotEvent.BulletHitBullet) {
             BotEvent.BulletHitBullet b = (BotEvent.BulletHitBullet) e;
+            if (b.owner() != null) {
+                return join("X", b.power(), b.x(), b.y(), b.enemyPower(), b.bulletHeading(), esc(b.owner()));
+            }
             return Double.isNaN(b.bulletHeading())
                 ? join("X", b.power(), b.x(), b.y(), b.enemyPower())
                 : join("X", b.power(), b.x(), b.y(), b.enemyPower(), b.bulletHeading());
@@ -173,6 +193,9 @@ public final class LineCodec {
         } else if (e instanceof BotEvent.TickTime) {
             BotEvent.TickTime t = (BotEvent.TickTime) e;
             return join("Q", t.usedNanos(), t.allowanceNanos());
+        } else if (e instanceof BotEvent.Message) {
+            BotEvent.Message m = (BotEvent.Message) e;
+            return join("G", esc(m.sender()), Base64.getEncoder().encodeToString(m.bytes()));
         }
         throw new IllegalArgumentException("Unknown event " + e);
     }
@@ -186,7 +209,8 @@ public final class LineCodec {
             case "H": return new BotEvent.HitByBullet(unesc(f[1]), d(f[2]), d(f[3]), d(f[4]), d(f[5]));
             // S6 appended our bullet's heading to B, X and M; older fixtures lack it.
             case "B": return new BotEvent.BulletHit(unesc(f[1]), d(f[2]), d(f[3]), opt(f, 4));
-            case "X": return new BotEvent.BulletHitBullet(d(f[1]), d(f[2]), d(f[3]), d(f[4]), opt(f, 5));
+            case "X": return new BotEvent.BulletHitBullet(d(f[1]), d(f[2]), d(f[3]), d(f[4]), opt(f, 5),
+                f.length > 6 ? unesc(f[6]) : null);
             case "M": return new BotEvent.BulletMissed(d(f[1]), opt(f, 2));
             case "W": return new BotEvent.HitWall(d(f[1]));
             case "R": return new BotEvent.HitRobot(unesc(f[1]), d(f[2]), d(f[3]),
@@ -194,6 +218,7 @@ public final class LineCodec {
             case "D": return new BotEvent.RobotDeath(unesc(f[1]));
             case "K": return new BotEvent.SkippedTurn(Long.parseLong(f[1]));
             case "Q": return new BotEvent.TickTime(Long.parseLong(f[1]), Long.parseLong(f[2]));
+            case "G": return new BotEvent.Message(unesc(f[1]), Base64.getDecoder().decode(f[2]));
             default: throw new IllegalArgumentException("Unknown event " + s);
         }
     }

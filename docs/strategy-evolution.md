@@ -1,6 +1,6 @@
 # Hadur 2: evolution of strategy
 
-As of 2026-09-27 (after S7, release 2.2). The living copy is the [Claude Doc](https://claude.ai/code/artifact/bc581157-b352-49c9-acaf-9f77035202c5); this file is its snapshot for evaluation.
+As of 2026-09-27 (after S7, release 2.2). The living copy is the [Claude Doc](https://claude.ai/code/artifact/bc581157-b352-49c9-acaf-9f77035202c5); this file is its snapshot for evaluation. The living copy also covers the melee extension, R9, the top-15 plan and the architecture evolution (A0 to A5, releases 3.6 and 3.7). For the stages since this snapshot, see the stage log in [architecture-evolution.md](architecture-evolution.md#stage-log) and [what 3.7 should score](bench/expected-3.7.md).
 
 ## Summary
 
@@ -287,6 +287,241 @@ robot that just drives at us.
 - **TIER-1 is not in this release.** Calibrating the T1/T2 gun-tier bounds needs real
   mid-table opponents to bench against, and every bot benched so far reads either T0 or T3 —
   issue #53 tracks getting that bench run. It lands once that data exists, not before.
+
+## The DrussGT route (D1 to D6)
+
+The plan is [druss-route-plan.md](druss-route-plan.md); the requirements are in [requirements.md](requirements.md#the-drussgt-route-d1-to-d6).
+
+<a id="d1"></a>
+
+### D1: power by the lead
+
+Release 3.8. Against DrussGT both guns hit below break-even, so each shot costs its owner more energy than it takes, and the robot firing the lighter bullet keeps its lead (D0's probes, `docs/bench/d0-drussgt-probes.md`). D1 teaches the duel that, and nothing else yet.
+
+- **POW-11** keeps battle-long shot and hit counts for both robots in three power classes and overall, with margins, and the `R` record gains twelve appended fields (`oS0 oH0 oS1 oH1 oS2 oH2 tS0 ... tH2`).
+- **POW-7 to POW-9** fire the minimum power while both robots are certainly below break-even and Hadur is level or ahead, and 1.20's default power (without its cubic power-down) when behind by more than 3 with more than 10 energy, or while both exceed 60. POW-1 to POW-5, RAM-1 and END-3 keep precedence.
+- **POW-10** never holds a shot Hadur can pay for: it is lowered to what energy allows. The END-4 hook is left for a later stage.
+- **ADAPT-5** stores the verdict in the profile (format version 3, so `-v3.hp` file names; a version 2 profile loads its stats only).
+- **RES-14** ends duress 300 ticks after the last skipped turn, and retires RES-9.
+- **Re-recorded fixtures:** `abc.Shadow_3.83c`, `warm-abc.Shadow_3.83c` (the second battle's transcript, `-2`), `duress-sample.Walls` and `melee-sentry`, with the bench `--record` commands in `hadur-bench/README.md`. The other nine did not diverge in orders and were kept.
+- **Review fixes (PR #98):** the fired power is carried on the firing wave (POW-10), enemy hits are counted from the `HitByBullet` event (POW-11), duress exit discards both managers' outstanding waves (RES-14), the RES-14 clock reads the skipped tick the event carries, and a nearly dead trailing robot fires the minimum power (POW-8). The first of these changes orders wherever the shot's power differs from the tick's wave, so eight fixtures were re-recorded again (`abc.Shadow_3.83c`, `warm-abc.Shadow_3.83c`, `duress-sample.Walls`, `melee-samples`, `melee-sentry`, `sample.Tracker`, `sample.Walls` and the team pair `m1`/`m2`), their telemetry snapshots rewritten, and the duel and conductor pins and `duel-sources.sha256` re-pinned.
+- **Re-snapshotted:** the telemetry snapshots of all thirteen fixtures (`-Dhadur.replay.snapshot=write`), because the `R` record is longer.
+- **Re-pinned:** `pins/kernel.sha256`, `pins/duel.sha256`, `pins/conductor.sha256` (`-Dhadur.pin=kernel,duel,conductor`) and `duel-sources.sha256` (`-Dhadur.duel.snapshot=write`). The melee and team pins did not change.
+- **Gate** ([d1-gate.md](bench/d1-gate.md)), paired against 3.7: DrussGT **+12.0 ± 4.3** points (48.2% against 36.2%, 20 battles), the top 10 +6.7 on average (Firestarter +21.3, Diamond +14.1, Knight +11.6), the weak set level. The rule pays against surfers whose power follows ours down, not only DrussGT.
+<a id="d2"></a>
+
+### D2: shield openers caught, the last shot kept
+
+Still release 3.8 (D1 and D2 ship together). Two small rules and one engine check; `hadur.druss.stage` was `D2` when this stage was built (it is `D5` once D5 has merged: D5 is the highest stage and every D row is due).
+
+- **SHIELD-3** latches the shielder flag on the first of our bullets destroyed by an enemy that has not moved since the round began, instead of waiting for SHIELD-1's four in twenty. The flag goes into the profile, so battle two starts with it and with SHIELD-2's aim jitter on. The profile stays at format version 3 (not yet released): the verdict byte D1 added is now a set of flags, bit 0 ADAPT-5's verdict and bit 1 the shielder, so the D1 golden file loads unchanged and no new byte is added.
+- **SHIELD-4** fires 3.0 at a latched shielder that has not moved in the last 10 ticks, with END-3 still capping it. This is the part of the probe that fired 3.0 at a still target; the plan notes the gain is not yet established, so D2's gate is the bench, not this entry.
+- **END-4** holds the shot that would leave Hadur less than 0.3 energy above an enemy that can no longer fire. It holds only while Hadur is ahead (when level or behind the shot goes): a deliberate narrowing of the requirement's wording, described in the requirements notes.
+- **Engine check.** `hadur.bench.InactivityCheck` ran two tiny robots that never hit each other through Robocode 1.9.5.6: the one with more energy survived the inactivity penalty at every gap tried (0.1, 0.3, 1.0 and 3.0); with equal energy both died on the same tick. A gap of 0.1 is enough, so the 0.3 margin is conservative.
+- **Re-recorded fixture:** `warm-abc.Shadow_3.83c` (the second battle's transcript, with the `-2` command in `hadur-bench/README.md`): SHIELD-3 latches on Shadow in round 0 of the warm battle. The other twelve fixtures did not diverge, and their telemetry is unchanged.
+- **Re-snapshotted:** the telemetry snapshot of `warm-abc.Shadow_3.83c` only.
+- **Re-pinned:** `pins/kernel.sha256` and `pins/duel.sha256` (`-Dhadur.pin=kernel,duel`) and `duel-sources.sha256` (`-Dhadur.duel.snapshot=write`). The conductor, melee and team pins did not change.
+- **Changed scenario:** `shield.feature`'s "a bullet shot down by accident changes nothing" now has the enemy stir first, since against a still enemy one bullet is SHIELD-3's evidence.
+- **Gate** ([d2-gate.md](bench/d2-gate.md)), paired against D1 (3.8.1): DrussGT **+1.0 ± 3.8** points (47.6% against 46.6%, 20 battles), level and not below. The stage jars were built on the D1 base before D5 and T1 merged. The top-10 and weak sets are measured once for the whole D2 to D4 stack ([stack gate](bench/stack-gate.md): top 10 +3.5 ± 3.2, weak set level). The report shows no direct evidence for SHIELD-3 or SHIELD-4 against DrussGT, which does not stand still.
+
+<a id="d3"></a>
+
+### D3: light bullets get their own aim
+
+Still release 3.8; `hadur.druss.stage` was `D3` when this stage was built (it stays `D5` with D5 merged). One requirement and one gun.
+
+- **GUN-5** rates the virtual guns separately for bullets under 0.2 and for the rest, and fires the gun rated highest for the class of the shot about to be fired. The duel decides power before it aims (D1), so the gun wave already carries the class when `GunController.aim` runs. Each class keeps GUN-1's decayed ratings and margin gate; the combined table of D2 is now the rest class's.
+- **The new gun** is `SampledGun`, the probe's sampled aim (one neighbour of the hybrid view picked by a golden-ratio phase, its guess factor scaled by the escape angle). It competes for light bullets only, so it is used where it rates highest rather than unconditionally as in the probe. The phase is core state and advances with real shots, so replays are deterministic.
+- **Not kept in the profile:** the format and its size are unchanged; see the D3 notes in `docs/requirements.md` for why.
+- **Re-recorded fixtures:** none. All 68 replay checks pass unchanged: the fixtures' opponents are fought at ordinary power, where the rest class's table is what D2's single table was, and the sampled gun is never fired before it is rated best.
+- **Re-snapshotted:** nothing.
+- **Re-pinned:** `pins/duel.sha256` (`-Dhadur.pin=duel`) and `duel-sources.sha256` (`-Dhadur.duel.snapshot=write`). The kernel, conductor, melee and team pins did not change.
+- **Gate** ([d3-gate.md](bench/d3-gate.md)), paired against D2 (3.8.2): DrussGT **+0.5 ± 4.2** points (45.8% against 45.3%, 20 battles), level and not below. The stage's own measure is **not met**: Hadur's light-bullet hit rate is 7.63% ± 0.18 against 7.60% ± 0.13 for D2 (paired +0.03 ± 0.21), where the plan's probe reached 9.3%; DrussGT's light bullets hit 10.25%. The `R` records do not show how often the sampled gun was chosen. The top-10 and weak sets are measured once for the whole D2 to D4 stack ([stack gate](bench/stack-gate.md)). D3 merged on that stack result, its own measure unmet.
+
+<a id="d4"></a>
+
+### D4: bullets are armour
+
+Still release 3.8; `hadur.druss.stage` was `D4` when this stage was built (it stays `D5` with D5 merged). Two requirements: movement publishes where its plan is, and the gun weighs the shadow of each candidate shot.
+
+- **MOVE-8** publishes, for each enemy wave in the air that the surf scored, the absolute bearing interval from the wave's source that would hit us where the chosen plan puts us when the wave arrives (the equivalent of a guess-factor interval, with no escape-angle assumption), and the surf's own chance that a bullet fired inside it hits. It is recorded as the surf scores its options, so it costs no extra prediction, and it is withdrawn on every tick the surf does not drive.
+- **GUN-7** picks the firing angle among at most 13 candidates (the gun's own angle, four offsets of 0.45 and 0.9 half-widths, and up to eight of the main gun's own neighbour angles within two half-widths) by `P(hit) * damage + damage avoided`. The avoided damage is the share of the published interval a candidate bullet's shadow newly stops (`BulletShadows`' geometry, over what our bullets in flight already stop), times the surf's chance of a hit there and the enemy bullet's damage. The gun's own angle wins every tie. The shadow term is `GunController.SHADOW_AIM`, shipped `true`; with nothing to shadow the angle is D3's exactly.
+- **Not done:** the other virtual guns' angles are not candidates (they are computed only when a real bullet leaves, and each is a KNN search), and nothing here uses a per-wave fraction of our bullets' certain and possible shadows beyond what MOVE-1 already counts.
+- **Cost:** `hadur2.core.duel.ShadowAimBench` (test scope, run by hand) times one aiming tick with 400 learned samples, two enemy waves in the air and two of our bullets in flight: the plain aim took 4.8 ms (the machine was running a gate bench, so only the difference means anything) and the shadow term added 0.09 to 0.10 ms, about 2%, to each aiming tick (two passes of 20,000 aims: 88.0 and 99.4 microseconds). The gun aims on at most four ticks per shot (within three ticks of a cool gun), so the term adds under 0.4 ms per shot and nothing on ticks that do not aim; Hadur's skipped turns were not expected to rise. The gate showed otherwise: slow ticks rose tenfold against D3, so the review fixes shed the shadow term at TickBudget level 2 and up (below).
+- **Re-recorded fixtures:** eleven of thirteen diverged, because an enemy wave is in the air for most of a duel, so the shot is shifted wherever a shadow is worth more than the hit it costs: `sample.SpinBot`, `sample.Tracker`, `sample.Crazy`, `sample.Walls`, `sample.RamFire`, `abc.Shadow_3.83c`, `warm-abc.Shadow_3.83c` (the second battle's transcript), `duress-sample.Walls`, `melee-samples`, `melee-sentry` and `melee-handoff` (the three melee fixtures end in duels, or run one with sentries about). Recorded with the commands in `hadur-bench/README.md`, one `--record` run each, on a machine running a gate bench. The two team fixtures did not diverge.
+- **Re-snapshotted:** the telemetry of those eleven.
+- **Re-pinned:** `pins/duel.sha256` (`-Dhadur.pin=duel`) and `duel-sources.sha256` (`-Dhadur.duel.snapshot=write`). The kernel, conductor, melee and team pins did not change.
+- **Gate** ([d4-gate.md](bench/d4-gate.md)), paired against D3 (3.8.3): DrussGT **+1.2 ± 4.3** points (47.3% against 46.1%, 20 battles), level and not below. Its own measure moved the right way but short of the plan's level: DrussGT's hit rate **9.9% against 10.2%** (the plan looks for a point lower), while ours rose from 7.2% to 7.5%. Slow ticks rose from 2,822 to 27,900 and skipped turns from 564 to 616 over 700 rounds.
+- **Stack gate** ([stack-gate.md](bench/stack-gate.md)), D4 (with D2 and D3) against D1 on the plan's other sets: top 10 at 3 seeds **+3.5 ± 3.2** points (20 of 30 pairs up; BeepBoop +6.9, ScalarR +6.8, DrussGT +6.6), weak set at 2 seeds **-0.1 ± 0.6**, skipped turns level (746 against 737). D3 and D4 merged on this (PR #104).
+- **Review fixes (PR #104):** the shadow aim uses the surf's plan only when it was published on the previous tick, so a tick the shield, duress, ram or mirror drove supplies none (the surf runs after the aim within a tick; the one-tick lag on a reversal tick is accepted, see the PR); a shield-mode attack is rated in the class of the power it actually fired at and advances the sampled gun's phase; `SampledGun` drops zero-weight seeds and picks in proportion to weight; and `TickBudget.shadowAim` sheds the shadow term at level 2 and up. Five fixtures re-recorded (`sample.Crazy`, `sample.RamFire`, `duress-sample.Walls`, `melee-samples`, `melee-handoff`), duel pins re-pinned. These fixes came after the gates.
+
+## D5: the shield list (DrussGT route)
+
+Hadur opens each round in shield mode against the opponents on a list of its own (SHIELD-5): it sits
+still, predicts the enemy's bullet from head-on predictors and fires a lighter bullet that meets it
+mid-air (`hadur2.core.shieldmode`, ported from the c6d4d7a prototype). SHIELD-6 bounds the cost: once
+the enemy's bullet damage exceeds what would hold our score share at 85%, shield mode is off for the
+rest of the battle (allowance 15/85 * (60 * the battle's rounds + damage dealt), about 370 for 35 rounds). Per-round exits
+(close, rammed, unpredicted, outhit, quiet, duress) hand the round back to the normal duel. The list
+ships in robot 3.8 with 14 names, chosen from BENCH-11's paired probe (`--shield-probe`,
+[d5-probe.md](bench/d5-probe.md), gate in [d5-gate.md](bench/d5-gate.md)): the 8 it shows shield mode
+winning against and 6 more with a mean gain of 9 points or more. It ships as a class, `hadur2.ShieldListData`, because Robocode's
+sandbox kills a robot that reads a resource of its own jar. Requirements are in the D5 subsection of
+`docs/requirements.md`.
+
+- **Gate** ([d5-gate.md](bench/d5-gate.md)): 46 panel robots, 3 seeds of 35 rounds, shield mode on against off, paired: weighted mean **+2.9 ± 2.7** points over the panel (stratified APS 86.8 against 83.9). Eight robots win; the list takes those and six more at +9 or better, and leaves off the seven it loses against (Hubris, TimCat, RSK1, ThroxBot, Grofvuil, sample.Fire, OscillatorL). D6 is not built: it stays a research item.
+
+## The Team plan (T1): teammates stop running into each other (3.8)
+
+[team-plan-t1.md](team-plan-t1.md) is the first stage of the Team plan, answering the A5
+baseline's two team-only faults: about 440 collisions a round and 884 of our bullets on a
+teammate. The cause was that neither mover could see a teammate (the World held enemies
+only), the five members shared eyes and so one noise field and one choice of destination, and
+the fire lane judged only the moment of firing, though about 92% of the friendly hits were a
+teammate entering the lane during the flight.
+
+What changed (WORLD-9, MMOVE-6 to MMOVE-8, WEAVE-7, WEAVE-8): the roster keeps each
+teammate's heading and velocity and predicts its position; the melee movement adds an
+inverse-square term and a path term for each living teammate, caps its ring by the nearest
+one and salts its noise field and opening spot by the member's place in the roster; the
+conductor's `TeammateFence` replaces a drive that would run into a teammate within six ticks
+by a brake or a reversal, whichever role drives (so the duel's endgame is covered without
+touching the pinned duel packages); and the fire lane holds while a teammate's predicted
+track crosses it over the time a bullet takes to pass.
+
+Smoke bench, 1200 x 1200, seed 1 (3.7 against 3.8 on the same machine and load):
+
+| | 3.7 | 3.8 |
+|---|---|---|
+| MyFirstTeam, 10 rounds: teammate collisions | 7,287 | 2 |
+| MyFirstTeam, 10 rounds: our bullets on a teammate (engine) | 41 | 7 |
+| MyFirstTeam, 10 rounds: score share | 82.1% | 95.8% |
+| ConceptA, 3 rounds x 2 seeds: teammate collisions | 1,456 | 0 |
+| ConceptA, 3 rounds x 2 seeds: our bullets on a teammate | 48 | 7 |
+
+The first fire-lane slack (1.5 px a tick of flight) left 14 friendly hits in the 10 rounds;
+3 px cut them to 7 for 17% more held shots. A smoke is not the gate.
+
+- **Gate** ([t1-team.md](bench/t1-team.md)), `team-gates.txt` against 3.7 (3 seeds x 8 teams x 10 rounds): score share **48.2% against 28.8%** (+19.4, every team up), teammate collisions 101,322 to 65 (-99.9%), our bullets on a teammate 1,015 to 328 (-68%, **short of the 80% bar**), shots held for the lane 5,188 to 19,286 (3.7x), 0 faults, 0 LINK rejects. Merged on score share and collisions; narrowing `TURN_SLACK` and spacing members on a shared target are follow-ups.
+
+## Release 3.8
+
+3.8 ships D1, D2, D3, D4 and D5 of the DrussGT route and T1 of the Team plan; D6 stays
+research. The stage gates ran on jars built before the later stages and the review fixes
+merged, so the shipped build was benched once against 3.7 ([release-check-3.8.md](bench/release-check-3.8.md)):
+DrussGT **+10.5 ± 3.1** points over 10 battles (10 of 10 up), the top-10 set **+7.2 ± 6.3**
+over 20 (14 up). Skipped turns against DrussGT rose from 314 to 447 over 350 rounds (the top 10 was 298 against 335), the cost to watch live.
+Open items are in `followup.md` under the DrussGT route.
+
+## 3.8 live: the top rose, the field fell
+
+The first full 1v1 pass ([live-3.8.md](bench/live-3.8.md), 6 October 2026, 1,205 of 1,215
+pairings) puts 3.8 at **84.58 APS, 29th**, down from 3.7's 85.67 (21st) and 3.4's 85.90 (20th).
+Melee rose to **16th** (from 18th) and the team to **12th** (from 32nd of 46). In the 1v1,
+Nullstride 2.3.3 took 1st from BeepBoop 2.0.
+
+Compared pairing by pairing with 3.4's full pass, the top 10 rose +5.2 points per pairing,
+which is where the DrussGT route was aimed. Everyone ranked 21st and below fell 1.55 ± 0.15,
+mostly through lost survival (-2.3), and that costs 1.5 APS. D5's shield list gained live.
+Holding 3.4's level outside the top 20 would put 3.8 at about 86.0, 20th. So the next work
+fixes the leak against the weak and mid field, and keeps the strategy. A paired bench of the
+D1 to D4 stage jars against 3.7 on a large weak and mid set comes first.
+
+## 3.8.5 live: a fifth of the leak back
+
+3.8.5 scopes the DrussGT route to duels Hadur is not already winning on the guns (MATCH-1,
+MATCH-2): once the battle's hit rates clearly favour Hadur, shadow-weighted aim and the
+one-bullet shielder latch switch off. Its first pass ([live-3.8.5.md](bench/live-3.8.5.md),
+6 October 2026, 1,206 pairings) puts it at **84.79 APS, 24th**, up from 3.8's 84.58 (29th).
+The gain came where the gate aims, +0.36 per pairing against bots ranked 401st and below, and
+the top 10 held. But that is about a fifth of the leak. Against 3.4, 3.8.5 still loses 1.1 APS,
+mostly as lost survival (-2) against the weak field. 3.7 was already 0.23 below 3.4, so part of
+the leak may predate the DrussGT route. The next measure is a release bisect, 3.4 against
+3.5.1, 3.7, 3.8 and 3.8.5, on the bots that lost to 3.4 in both live passes.
+
+## 3.9 live: the rammer trial, 13th
+
+The bisect put the whole leak in 3.4 to 3.5.1, and an ablation put it on RAM-2, the rammer escape:
+close-range fighters confirm as rammers, and running from them got Hadur hit two to seven times as
+often. 3.9 (RAM-3, the rammer trial) keeps the escape only where the battle's own rounds say it
+pays: two escape rounds after confirmation, then whichever arm has the better energy margin.
+
+Its first full pass ([live-3.9.md](bench/live-3.9.md), 7 October 2026, 1,215 pairings) puts it at
+**87.15 APS, 13th**, Hadur's best 1v1 score, 0.56 under Tomcat 3.68 in 10th. Melee is 19th and the
+team 12th, with no change to their play. The gain over 3.8.5 is +2.32 APS, even across every band
+from 51st down (+2.2 to +2.9 per pairing, survival +3), six times the gate's estimate: RAM-2 had
+been running from ordinary bots across the field, not only from the 40 live losers. 3.9 now beats
+3.4 below rank 150. The PC bench read 3.9 level with 3.8.5 on the same random bots where live
+shows +2.1, so the bench cannot yet see a field-wide change like this one.
+
+What is left is about 1.8 APS of persistent shortfall below Hadur's own trend, all below rank 20,
+mostly against nano and micro rammers and close-range fighters: Hadur wins the rounds and gives a
+fifth of the score away, or loses rounds to simple guns. The overnight plan
+(`hadur-bench/plans/overnight-39.queue`) checks those two groups on the bench and tests which live
+condition the bench is missing.
+
+The compare pages against Tomcat, Knight and Raven then moved the target. All three score
+about a point a pairing more than Hadur against the bots ranked 401st and below, with almost
+the same survival, and match or trail Hadur above rank 150: the whole 0.57 is points Hadur
+gives away to weak bots in rounds it wins. The close-range group turned out to cost the top 10
+nearly as much as Hadur, so the next stage aims at the weak tail first.
+
+The overnight runs (issue #138, `docs/bench/local/2026-10-07_overnight-39-findings.md`) and the
+mid-table runs (issue #140, `2026-10-07_nullstride-mid-results.md`) then named the mechanism.
+On the weak tail the bench sees the gap to Knight (+1.20): Knight takes 14% less bullet damage
+and deals the same, so it is movement against simple guns, not kill speed. The ram fix works
+(+5.71 over 3.4 on the rammers; 85% of what they still score is bullets). And in the mid-table,
+Nullstride's lead is not being hit: on bots from DrussGT's shield list, switching Hadur's own
+shield mode on for everyone gained +8.05 a pairing (22 of 30 up, 5 significantly down), while
+off that list it cost about a point. So 3.10 has two stages: first extend Hadur's shield list
+bot by bot from a sweep of the 200 remaining list bots in ranks 51-700
+(`hadur-bench/plans/shield-sweep.queue`), a data-only change that cannot touch off-list bots;
+then movement against simple guns, gated on bullet damage taken on the tail.
+
+## 3.10: the shield sweep list
+
+The sweep (issue #146, `docs/bench/local/2026-10-08_shield-sweep.md`) ran shield mode on against
+off on the 200 remaining DrussGT-list robots of ranks 51-700: +4.70 over the 109 mid-table ones,
+-2.40 over the 91 from 401-700. Robot by robot, 64 cleared the D5 rule, and one more was open with
+a mean gain over 9; with the 18 from the #140 run, 3.10 adds 83 robots to the list (97 in all).
+On the sweep's own seeds they are worth +0.80 APS, +0.76 shrunk for picking winners on 8 seeds.
+A list entry names one robot by its exact version, so every other robot meets 3.9's play; the
+gate (`hadur-bench/plans/candidate-310.queue`) reruns the 83 on fresh seeds (`--seed-base`,
+BENCH-72) and checks the top 20 and the tail are level.
+
+## 3.10 live: a rough pass, and a bench that crippled 11 bots
+
+3.10's first pass read 86.42, 20th, 0.73 under 3.9. Off the shield list 3.10 is 3.9's code, and
+there the pass ran 1.35 a pairing lower (-1.25 APS): a tail of collapsed battles (26 against
+3.9's none) of the kind a loaded host produces. The list itself added +0.51 APS, two thirds of
+the gate's +0.78. The same reading closed issue #151's leak-38 puzzle: on a typical pass the live
+difference is what the bench said. A Windows-only bench defect had crippled 11 opponents since
+2026-10-06 (a JDK service lookup the security manager punishes); BENCH-83 and BENCH-84 fix it.
+Every opponent is now classed (`docs/bench/opponents-3.10.tsv`): the room against the 8th to
+11th bots is +0.76 APS, all below rank 400, and 35 of the gaps are ones the bench reproduces,
+mostly rammers ([live notes](bench/live-3.10.md), L-45 to L-47).
+
+## 3.11: duress retired
+
+3.10 ran the rest of a round at the duress level after three skipped turns (RES-9, RES-14). The 3.11
+census (`docs/plan-3.11-census.md`) benched the same code with duress never entered: +0.73 APS (+0.59
+to +0.87) on the whole 1,212-bot field. With the CPU constant halved, 3.10 sat in duress in every battle
+and scored 48% share against 85% for the build without it. Skipped turns still shed levels (TIME-2) and
+teach the allowance (TIME-3); the round never drops to the head-on orbit. 3.11 removes the mode and its
+code; its only difference from the benched "3.10nd" build is that the dead code is gone.
+
+## 3.12: the mirror aim fires against a shielder
+
+Once SHIELD-1 or a stored SHIELD-3 verdict latched, SHIELD-2 held every aim that carried no offset,
+and MIR-1's mirror aim never carries one, so against a mirror bot the gun went silent for the rest of
+the battle; the stored verdict carried that into later battles (MirrorMicro seed 6: 188 shots in 48k
+ticks). 3.12 fires the mirror aim (SHIELD-7, `AimJitter.holdsShot`). On 38 volatile bots the battles
+under 60% share fell from 14 of 152 to none in the warm replay, +4.4 to +5.7 points; the 400-bot
+screen was level (+0.03 APS), about +0.05 APS over the field by arithmetic
+(the p312b/c/d findings, PR #182). The other 3.12 ideas did not pass the screen:
+never closing in (P5) cost band 5, a stricter detector (P4, pooled over six seeds +0.08) and ignoring
+the stored verdict (P6) were level. Re-pinned: `pins/duel.sha256` (`-Dhadur.pin=duel`) and
+`duel-sources.sha256`; all replay fixtures unchanged.
 
 ## What comes next
 

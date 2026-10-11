@@ -1,0 +1,2 @@
+# 3.8 leak bisect (docs/bench/live-3.8.md), run from hadur-bench/ with --baseline set per step.
+leak | --set leak-38.txt --seeds 2 --rounds 35
