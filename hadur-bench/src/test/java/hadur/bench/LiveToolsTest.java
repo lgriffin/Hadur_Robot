@@ -79,6 +79,34 @@ class LiveToolsTest {
         assertEquals(0, unittest("test_live_passes.HostDenialTest"));
     }
 
+    @Test
+    @Tag("BENCH-85")
+    @DisplayName("Hadur's profiles decoded with the codec's checks, counting stored shield verdicts")
+    void clientProfiles() throws Exception {
+        assertEquals(0, unittest("test_live_client.ProfilesTest"));
+    }
+
+    @Test
+    @Tag("BENCH-86")
+    @DisplayName("a live client's battles and health records harvested once each, across uploads and restarts")
+    void clientFiles() throws Exception {
+        assertEquals(0, unittest("test_live_client.ClientFilesTest"));
+    }
+
+    @Test
+    @Tag("BENCH-87")
+    @DisplayName("each newly uploaded battle's score inferred from two live pages, drops flagged")
+    void livePage() throws Exception {
+        assertEquals(0, unittest("test_live_client.PageTest"));
+    }
+
+    @Test
+    @Tag("BENCH-88")
+    @DisplayName("a watch folder summarised, 1v1 battles joined to their health records")
+    void clientReport() throws Exception {
+        assertEquals(0, unittest("test_live_client.ReportTest"));
+    }
+
     private static int unittest(String target) throws IOException, InterruptedException {
         assumeTrue(python(), "python3 is not on the PATH");
         Path log = Files.createTempFile("literumble", ".log");

@@ -16,6 +16,8 @@ data/
   rumble/
     pages/    saved web pages, byte for byte as the browser wrote them (.mht)
     parsed/   one table per saved page, parsed from it
+  live/
+    <date>_<label>/  one live_client.py watch (TSVs, report.md, watch.log; raw pages stay on the PC)
   bench/
     <date>_hadur-<version>_<set>_<cold|warm>.tsv   raw per-opponent rows of one bench run
     duel-history.tsv    every duel table of every docs/bench report, one row per opponent
@@ -33,6 +35,7 @@ data/
     analyse.py          pooled paired difference, Holm/BH, TOST non-inferiority and a seeds planner for a bench TSV
     repeatability.py    per-battle SD, ICC and pairing check from repeated runs of the same jar and seeds
     compare_conditions.py  says whether two runs (work dirs or conditions.json) were made under comparable conditions
+    live_client.py      watches a live RoboRumble client and the live page: battles, health records, stored shield verdicts
 ```
 
 The bench reports themselves stay in [`docs/bench/`](../docs/bench/) as the readable record;
