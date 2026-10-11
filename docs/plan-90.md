@@ -26,20 +26,18 @@ shield is what falls short. The decompiled jar shows one design with seven diffe
 
 | Step | What | State |
 |---|---|---|
-| 1 | Ablate toward Nullstride's shield, one difference at a time, on the bots both list, 8 seeds, against 3.12 | Switches in `shieldmode.ShieldDesign` (SHIELD-8 to SHIELD-12, shipped off); `build-ablation.sh shold`, `slearn`, `smode`, `sstay`, `sturn`, `snull`. Cloud screen at 3 seeds on the 97 listed bots; PC run `plan90` steps `sh` to `sn` |
+| 1 | Ablate toward Nullstride's shield, one difference at a time, on the bots both list, 8 seeds, against 3.12 | Switches in `shieldmode.ShieldDesign` (SHIELD-8 to SHIELD-12, shipped off); `build-ablation.sh shold`, `slearn`, `smode`, `sstay`, `sturn`, `snull`. Cloud screen at 3 seeds on the 97 listed bots; PC run `plan90` steps `sh` to `sn` on the 89 both list |
 | 2 | Classify the bullets that still get through | `SB` record per hit (first, unshielded, missed, nowave, off); `data/tools/shield_leaks.py` reads them with the zero-damage rounds and the paired difference |
-| 3 | Sweep the rest of Nullstride's list with the best step-1 build in shield-all, D5 rule | `shield-ns-sweep.txt` (180 robots, the bench's proxy for the list); PC step `s2` |
+| 3 | Sweep the rest of Nullstride's list with the best step-1 build in shield-all, D5 rule | `shield-ns-sweep.txt` (198 robots, from PR #190); PC step `s2` |
 | 4 | Census the result, 4 seeds, against 3.12 | after step 3 |
 | 5 | Diamond 1.8.22 and ScalarR no-shield as census subjects | `census-311-diamond.txt`, `census-311-scalarr.txt`; PC steps `diamond`, `scalarr` |
 | 6 | Fix the `otherJvms` count | BENCH-89: own battles read before and after `jps`, gone or descendant pids left out |
 
-## Nullstride's list without the jar
+## Nullstride's list
 
-The jar is not on the archive mirror, and its author's site is not reachable from the cloud, so
-`nullstride-shield-list.tsv` (recovered from the jar on the PC) is not yet in the repo. Until it
-is, `hadur-bench/shield-ns-proxy.txt` stands in: the opponents of the Nullstride census
-(2026-10-09, 4 seeds) against which it dealt under 2 points of bullet damage a round in at least
-one battle, since it fires nothing but shield bullets while shielding. That rule gives 266 robots
-(231 with a mean under 1, as the plan counts): 86 on Hadur's list too (the plan's 89), 180 not on
-it (the plan's 198) and 11 on Hadur's alone (the plan's 8). It misses a listed robot whose bullets
-pass 150 damage in every battle. When the tsv lands, the sweep set should be rebuilt from it.
+PR #190 recovered the list from the jar: 287 rumble robots (`hadur-bench/shield-nullstride.txt`),
+89 also on Hadur's list (`shield-null-both.txt`, step 1) and 198 not (`shield-ns-sweep.txt`,
+step 3). Before it landed, a proxy from the Nullstride census (it dealt under 2 points of bullet
+damage a round in at least one battle) found 177 of those 198 with 3 false positives, so the
+damage signature reads the list well. The cloud step-1 screen ran on Hadur's 97 listed bots;
+`shield_leaks.py --set shield-null-both.txt` reads it on the 89.

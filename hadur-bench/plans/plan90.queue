@@ -3,8 +3,8 @@
 #   ./queue.sh run plan90        (or  .\queue.ps1 run plan90)
 # Stop the RoboRumble workers first and keep the PC otherwise idle; one queue at a time.
 #
-# Step 1 (S1): Nullstride's shield differences, one at a time, on Hadur's 97 listed bots
-# (shield-listed.txt), 8 seeds, each build paired with the released 3.12 on the same seeds:
+# Step 1 (S1): Nullstride's shield differences, one at a time, on the 89 bots both robots shield
+# (shield-null-both.txt), 8 seeds, each build paired with the released 3.12 on the same seeds:
 #   sh       SHIELD-8 no attack shots while shielding
 #   shslsm   + SHIELD-9 learn from intercepted bullets, SHIELD-10 most frequent offset
 #   shslsmss + SHIELD-11 no in-round exits, battle exit at 150 damage or a silent enemy
@@ -13,9 +13,8 @@
 # bots from 89.6% toward 95%). Gate for shipping a switch: score share up with the interval
 # above 0 on the listed set, and no band below -0.5 pp.
 #
-# Step 3 (S2): the best step-1 build with every opponent shielded (shield-all), on the 180
-# robots Nullstride shields that Hadur does not (shield-ns-sweep.txt, the bench's proxy for its
-# list until nullstride-shield-list.tsv is in the repo), 8 seeds against 3.12; a robot joins the
+# Step 3 (S2): the best step-1 build with every opponent shielded (shield-all), on the 198
+# robots Nullstride shields that Hadur does not (shield-ns-sweep.txt, from PR #190's list), 8 seeds against 3.12; a robot joins the
 # list by the D5 rule (interval above 0, or open with a mean gain of 9 or more). snull is the
 # default here; change S2B to the step-1 winner before running if another build wins.
 #
@@ -25,12 +24,12 @@
 set HEAP = --child-heap 2G
 set E = --engine 1.11.1
 set COMMON = --skip-build --skip-fetch --rounds 35 --parallel 12 --cpu-constant 1488498 ${HEAP} ${E}
-set S1 = --seeds 8 --seed-base 900 --set shield-listed.txt
+set S1 = --seeds 8 --seed-base 900 --set shield-null-both.txt
 set B312 = --baseline bisect/hadur2.Hadur_3.12.jar --baseline-robot "hadur2.Hadur 3.12"
 set S2B = snull,shield-all
 set S2 = --robot-jar bisect/hadur2.Hadur_3.12snsa.jar --robot "hadur2.Hadur 3.12snsa"
 
-prep | mkdir -p bisect && { [ -s bisect/hadur2.Hadur_3.12.jar ] || curl -fsSL -o bisect/hadur2.Hadur_3.12.jar https://github.com/lgriffin/Hadur_Robot/releases/download/v3.12/hadur2.Hadur_3.12.jar; } && bash ./build-ablation.sh shold && bash ./build-ablation.sh shold,slearn,smode && bash ./build-ablation.sh shold,slearn,smode,sstay && bash ./build-ablation.sh snull && bash ./build-ablation.sh ${S2B} && ./fetch-opponents.sh --set shield-listed.txt && ./fetch-opponents.sh --set shield-ns-sweep.txt && ./fetch-opponents.sh --set census-311.txt
+prep | mkdir -p bisect && { [ -s bisect/hadur2.Hadur_3.12.jar ] || curl -fsSL -o bisect/hadur2.Hadur_3.12.jar https://github.com/lgriffin/Hadur_Robot/releases/download/v3.12/hadur2.Hadur_3.12.jar; } && bash ./build-ablation.sh shold && bash ./build-ablation.sh shold,slearn,smode && bash ./build-ablation.sh shold,slearn,smode,sstay && bash ./build-ablation.sh snull && bash ./build-ablation.sh ${S2B} && ./fetch-opponents.sh --set shield-null-both.txt && ./fetch-opponents.sh --set shield-ns-sweep.txt && ./fetch-opponents.sh --set census-311.txt
 
 # Step 1: about 25 minutes a build.
 sh       | ./bench-top20.sh ${COMMON} ${S1} --robot-jar bisect/hadur2.Hadur_3.12sh.jar --robot "hadur2.Hadur 3.12sh" ${B312} --label plan90-s1-sh
