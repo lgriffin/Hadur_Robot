@@ -173,3 +173,17 @@ team fixtures may be re-recorded.
 - Both steps, plus the 3.11 whole-field census as the pairing baseline, are queued in
   `hadur-bench/plans/team-confirm.queue` (`.\queue.ps1 run team-confirm`).
 - The PC is not needed for screens: a cloud container fights a Hadur team battle in about 75 seconds.
+
+## 8. PC confirmation (2026-10-11, PR #184)
+
+`team-confirm` ran on the PC: 1200x1200, 10 rounds, 1.11.1, 6 seeds, four battles at once, rumble
+workers stopped. Reports: `docs/bench/local/2026-10-11_team-{confirm-311,confirm-hof,census-311}.md`.
+
+- **The finding holds.** On ranks 21-33, 3.11 takes 66.5% and HOFSwarm 75.5%, a 9.0-point gap (the
+  gate asked for 5; cloud 65.6% against 74.9%). HOFSwarm is ahead on 9 of the 13 teams, by most
+  against TeamDeath (74.1 against 36.3), Enjambre (84.4 against 50.1) and Mamba (77.2 against 49.3).
+- **Whole-field baseline.** 3.11 against all 45 opponents (`team-census45.txt`, 270 battles) scores
+  63.2%, against 64.61 APS live. The 13 teams of ranks 21-33 read 66.0% in the census and 66.5% in
+  the confirm run, the same battles repeated. Any team candidate is paired against these rows.
+- No faults, no duress, no LINK rejects. Hadur skipped 7.1 turns a battle.
+
