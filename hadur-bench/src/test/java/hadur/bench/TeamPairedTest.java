@@ -110,7 +110,7 @@ class TeamPairedTest {
                 case "getName" -> name;
                 case "getRobotIndex" -> index;
                 case "getTeamIndex" -> team;
-                case "getX", "getY", "getVelocity" -> 0.0;
+                case "getX", "getY", "getVelocity", "getBodyHeading" -> 0.0;
                 case "getState" -> alive ? RobotState.ACTIVE : RobotState.DEAD;
                 case "isSentryRobot" -> false;
                 case "getOutputStreamSnapshot" -> "";
@@ -166,5 +166,12 @@ class TeamPairedTest {
         String[] first = lines.get(1).split(",", -1), second = lines.get(2).split(",", -1);
         assertEquals("0.6667", first[9]);
         assertEquals("-", second[9]);
+        // bullets.log: each bullet once when first shown, the enemy's with our living members, and each hit.
+        List<String> bullets = Files.readAllLines(dir.resolve("bullets.log"));
+        assertEquals(6 + 6, bullets.size(), String.join("\n", bullets));
+        assertEquals("0,1,F,5,kc.Opp 1,3.00,0.0,0.0,0.0000," + MEMBER + " 1:0.0:0.0:0.0000:0.00;" + MEMBER
+            + " 2:0.0:0.0:0.0000:0.00", bullets.get(8));
+        assertEquals("0,1,F,1," + MEMBER + " 1,1.00,0.0,0.0,0.0000,-", bullets.get(0));
+        assertEquals("0,1,H,1," + MEMBER + " 1,kc.Opp 1,1.00", bullets.get(1));
     }
 }
