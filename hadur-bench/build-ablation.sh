@@ -26,6 +26,11 @@
 #         weak bots let their simple guns hit us?
 #   fl5   DIST-1 never walks in closer than 500 px (the floor is 400). 3.12 P1: does the walk-in
 #         against bots we out-hit cost more bullets than it wins?
+#   mfire SHIELD-2's hold of the settled aim skips a MIR-1 mirror aim, which carries no jitter and
+#         so was never fired once a shield verdict latched. 3.12 P4 (docs/plan-3.12.md): the
+#         silent battles against mirror bots.
+#   s50   SHIELD-1 needs 10 of the last 20 bullets intercepted, and half of them, not 4 and a
+#         quarter. 3.12 P4: half of all census battles latch a shield verdict.
 #
 # The build runs in a temporary git worktree of REF (default HEAD), so the checkout is not
 # touched. The robot version is REF's version plus one suffix per ablation (nr, nm), so the
@@ -36,7 +41,7 @@ set -euo pipefail
 
 ref=HEAD
 if [[ "${1:-}" == "--ref" ]]; then ref="$2"; shift 2; fi
-[[ $# -eq 1 ]] || { sed -n '2,34p' "$0"; exit 2; }
+[[ $# -eq 1 ]] || { sed -n '2,39p' "$0"; exit 2; }
 
 here="$(cd "$(dirname "$0")" && pwd)"
 repo="$(git -C "$here" rev-parse --show-toplevel)"
@@ -49,6 +54,7 @@ move="$src/hadur-core/src/main/java/hadur2/core/move/MoveController.java"
 shields="$src/hadur-core/src/main/java/hadur2/core/shieldmode/ShieldList.java"
 budget="$src/hadur-core/src/main/java/hadur2/core/policy/TickBudget.java"
 dist="$src/hadur-core/src/main/java/hadur2/core/policy/DistancePolicy.java"
+detector="$src/hadur-core/src/main/java/hadur2/core/shield/ShieldDetector.java"
 
 # Replace exactly one occurrence of $2 with $3 in file $1, or fail.
 edit() {
@@ -101,7 +107,15 @@ for a in "${list[@]}"; do
         fl5)
             edit "$dist" "target = Math.max(FLOOR, target - STEP);" "target = Math.max(Math.max(FLOOR, 500), target - STEP);"
             version="${version}f5" ;;
-        *) echo "unknown ablation: $a (ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5)" >&2; exit 2 ;;
+        mfire)
+            edit "$duel" "boolean predictable = shieldDetector.shielded() && !aimCarriesJitter;" \
+                "boolean predictable = shieldDetector.shielded() && !aimCarriesJitter && !aimIsMirror;"
+            version="${version}mf" ;;
+        s50)
+            edit "$detector" "public static final int MIN_INTERCEPTS = 4;" "public static final int MIN_INTERCEPTS = 10;"
+            edit "$detector" "public static final double MIN_SHARE = 0.25;" "public static final double MIN_SHARE = 0.5;"
+            version="${version}s5" ;;
+        *) echo "unknown ablation: $a (ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50)" >&2; exit 2 ;;
     esac
 done
 
