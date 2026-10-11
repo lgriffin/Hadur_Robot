@@ -187,3 +187,27 @@ workers stopped. Reports: `docs/bench/local/2026-10-11_team-{confirm-311,confirm
   the confirm run, the same battles repeated. Any team candidate is paired against these rows.
 - No faults, no duress, no LINK rejects. Hadur skipped 7.1 turns a battle.
 
+
+## 9. Do teammates' hits hide enemy shots? No (2026-10-11, cloud)
+
+Candidate 1 rested on a guess: the link carries no hits, so a teammate's hit on an enemy, landing
+between two of a member's scans, would hide that enemy's shot from MSENSE-2. Measured before
+building anything.
+
+- **Method.** A measurement build (`build-ablation.sh tshots`, behaviour unchanged) prints every
+  update of an enemy in each member's tracker: its own scans (`SC`) and teammates' sightings merged
+  over the link (`SL`), with the shot inferred. `TeamHarvester` now writes `bullets.log`, the
+  engine's record of every bullet fired and every hit. `hadur-bench/tools/team_shots.py` matches
+  the two. 3.12ts against ranks 21-33 (`team-lower26a.txt`), 3 seeds, 39 battles.
+- **Detection is good.** In an update window where the enemy fired once and nothing else touched
+  it, the shot is inferred 98.5% of the time (296,150 windows), with 1.0% false shots in windows
+  with no fire. Teammates' sightings matter: counting own scans only, half the shots looked missed,
+  because a teammate's sighting had already taken the drop.
+- **Of the 12,817 enemy bullets that hit a member, the member had inferred 86.8%.** The misses:
+  the shooter gaining energy from another hit in the same window 5.3%, a collision costing the
+  shooter 0.6 energy in the same window 3.6% (mostly TeamDeath and ImpactTeam), a teammate's hit
+  2.5%, a third party's hit 0.9%, never updated 0.9%.
+- **Verdict.** Sharing hits over the link would recover at most 2.5% of the bullets that hit us,
+  and the shooter-gain and collision cases another 9%, mostly against two teams. Members are hit
+  by bullets they saw fired. The gap is in how members move away from detected shots, not in
+  detecting them. Candidate 1 is retired.
