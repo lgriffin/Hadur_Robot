@@ -128,8 +128,11 @@ class _Reader:
             raise FormatError(f"{what} {v}")
         return v
 
-    def floats(self, what):
-        return [self.count(what) for _ in range(self.u8())]
+    def floats(self, what, size):
+        n = self.u8()
+        if n != size:
+            raise FormatError(f"{what} has {n} values, expected {size}")
+        return [self.count(what) for _ in range(n)]
 
     def str(self):
         n = self.u8()
@@ -138,8 +141,13 @@ class _Reader:
 
 
 SAMPLE_WIDTH = 13
-GROUPS = ("shots_at_us", "hits_on_us", "shots_by_motion", "hits_by_motion", "power_histogram",
-          "virtual_fired", "virtual_hits", "our_shots", "our_hits", "motion")
+MAX_PAYLOAD = 64 * 1024
+MAX_OUTCOMES = 10
+MAX_SEED = {"gun_seed": 600, "surf_seed": 300}
+# OpponentProfile's fixed group sizes (BANDS 5, POWER_BINS 6); Bytes.Reader.floats rejects any other.
+GROUPS = (("shots_at_us", 5), ("hits_on_us", 5), ("shots_by_motion", 2), ("hits_by_motion", 2),
+          ("power_histogram", 6), ("virtual_fired", 2), ("virtual_hits", 2), ("our_shots", 5),
+          ("our_hits", 5), ("motion", 5))
 
 
 def decode_profile(data):
@@ -152,7 +160,7 @@ def decode_profile(data):
     if version < 1 or version > 3:
         raise FormatError(f"unknown version {version}")
     length = struct.unpack_from(">i", data, 3)[0]
-    if length < 0 or 7 + length + 4 != len(data):
+    if length < 0 or length > MAX_PAYLOAD or 7 + length + 4 != len(data):
         raise FormatError(f"length {length} does not fit {len(data)} bytes")
     stored = struct.unpack_from(">i", data, 7 + length)[0]
     crc = zlib.crc32(data[:7 + length]) & 0xFFFFFFFF
@@ -166,15 +174,18 @@ def decode_profile(data):
     if p["battles"] < 0 or p["rounds"] < 0 or p["last_fought"] < 0:
         raise FormatError("negative count")
     outcomes = []
-    for _ in range(r.u8()):
+    count = r.u8()
+    if count > MAX_OUTCOMES:
+        raise FormatError(f"{count} outcomes")
+    for _ in range(count):
         rounds, wins = r.u16(), r.u16()
         if wins > rounds:
             raise FormatError("more wins than rounds")
         outcomes.append((rounds, wins, r.count("our damage"), r.count("their damage")))
     p["outcomes"] = outcomes
-    for g in GROUPS:
-        p[g] = r.floats(g)
-    p["normalised"] = r.floats("normalised") if version >= 2 else []
+    for g, size in GROUPS:
+        p[g] = r.floats(g, size)
+    p["normalised"] = r.floats("normalised", 2) if version >= 2 else []
     p["lead_aware"] = p["shielder"] = False
     if version >= 3:
         p["verdict_at"] = r.pos
@@ -184,8 +195,8 @@ def decode_profile(data):
         p["lead_aware"], p["shielder"] = bool(verdict & 1), bool(verdict & 2)
     for seed in ("gun_seed", "surf_seed"):
         n, width = r.u16(), r.u8()
-        if width != SAMPLE_WIDTH:
-            raise FormatError(f"{seed}: width {width}")
+        if n > MAX_SEED[seed] or width != SAMPLE_WIDTH:
+            raise FormatError(f"{seed}: {n} samples of {width}")
         r.need(2 * width * n)
         r.pos += 2 * width * n
         p[seed] = 0 if version == 1 else n
@@ -307,7 +318,9 @@ def hadur_data_dirs(client):
 
 def parse_results(text):
     """The client's results file: a header line game,rounds,field,user,millis[,runonly], then
-    the two robots as name,score,bulletDamage,firsts (BattlesRunner.dumpResults)."""
+    two robots as name,score,bulletDamage,firsts (BattlesRunner.dumpResults). A melee or team
+    battle is written the same way, one such record for each pair of entrants, which is how the
+    rumble scores it; so every record holds exactly two robots."""
     lines = [l.strip() for l in text.splitlines() if l.strip()]
     battles = []
     i = 0
@@ -485,6 +498,11 @@ def cmd_page_diff(args):
     return 0
 
 
+def page_tag(game, name):
+    """A file-name part naming one page: the game and the robot, unsafe characters as _."""
+    return re.sub(r"[^A-Za-z0-9.-]", "_", f"{game}_{name}")
+
+
 def fetch(url, timeout=60):
     req = urllib.request.Request(url, headers={"User-Agent": "hadur-live-client/1"})
     with urllib.request.urlopen(req, timeout=timeout) as r:
@@ -518,6 +536,14 @@ class Watch:
         self.seen = {r["key"] for r in read_tsv(os.path.join(out, "battles.tsv"))}
         self.health_mtime = {}
         self.last_page = {}
+        # The records already on disk are from battles before the watch; a folder or record
+        # that appears later is a battle fought during it.
+        for client in clients:
+            for folder in hadur_data_dirs(client):
+                try:
+                    self.health_mtime[folder] = os.stat(os.path.join(folder, "health.hc")).st_mtime
+                except OSError:
+                    self.health_mtime[folder] = None
 
     def label(self, client):
         return os.path.basename(os.path.normpath(client)) or client
@@ -554,10 +580,7 @@ class Watch:
                     continue
                 if self.health_mtime.get(folder) == mtime:
                     continue
-                first = folder not in self.health_mtime
                 self.health_mtime[folder] = mtime
-                if first:
-                    continue  # the record already there is from before the watch
                 # Let the battle-end profile save land beside the record.
                 time.sleep(1.0)
                 rec, _ = health_row(folder, os.path.relpath(folder, client))
@@ -582,8 +605,9 @@ class Watch:
             now = utc_now()
             folder = os.path.join(self.out, "pages")
             os.makedirs(folder, exist_ok=True)
-            stem = now.replace(":", "")
-            with open(os.path.join(folder, f"{stem}_{game}.html"), "w", encoding="utf-8") as f:
+            tag = page_tag(game, name)
+            current = f"{now.replace(':', '')}_{tag}.html"
+            with open(os.path.join(folder, current), "w", encoding="utf-8") as f:
                 f.write(doc)
             head, rows = page_header(doc), page_rows(doc)
             if head is None or not rows:
@@ -594,7 +618,7 @@ class Watch:
                        [dict(head, utc=now, game=game, bot=name)])
             prev = self.last_page.get(spec)
             if prev is None:
-                prev = self._previous_saved(folder, game, f"{stem}_{game}.html")
+                prev = self._previous_saved(folder, tag, current)
             if prev is not None:
                 ev = page_events(prev, rows)
                 for e in ev:
@@ -610,8 +634,8 @@ class Watch:
                 self.log(f"{now} page {game}: APS {head['aps']:.2f}, {head['battles']} battles (first read)")
             self.last_page[spec] = rows
 
-    def _previous_saved(self, folder, game, current):
-        saved = sorted(n for n in os.listdir(folder) if n.endswith(f"_{game}.html") and n != current)
+    def _previous_saved(self, folder, tag, current):
+        saved = sorted(n for n in os.listdir(folder) if n.endswith(f"_{tag}.html") and n != current)
         if not saved:
             return None
         with open(os.path.join(folder, saved[-1]), encoding="utf-8", errors="replace") as f:
@@ -709,7 +733,7 @@ def report(out):
         by_game.setdefault(b["game"], []).append(b)
     lines.append("## This client's battles")
     lines.append("")
-    lines.append("| Game | Battles | Mean share | Under 70% | Rounds won |")
+    lines.append("| Game | Battles (pairs in melee and team) | Mean share | Under 70% | Rounds won |")
     lines.append("|---|---:|---:|---:|---:|")
     for game, bs in sorted(by_game.items()):
         shares = [b["share"] for b in bs if b["share"] is not None]
@@ -754,11 +778,16 @@ def report(out):
             lines.append(f"Without it: {sum(clean) / len(clean):.2f} over {len(clean)}.")
         lines.append("")
     if profiles:
-        p = profiles[-1]
+        latest = {}
+        for p in profiles:
+            latest[p["folder"]] = p  # rows are appended in time order
         lines.append("## Stored profiles")
         lines.append("")
-        lines.append(f"Latest snapshot {p['utc']} ({p['folder']}): {p['files']} profiles, {p['shielders']} with a "
-                     f"stored shield verdict, {p['seeded']} seeded, {p['damaged']} damaged.")
+        lines.append("Latest snapshot of each data folder:")
+        lines.append("")
+        for folder, p in sorted(latest.items()):
+            lines.append(f"- {folder} at {p['utc']}: {p['files']} profiles, {p['shielders']} with a stored "
+                         f"shield verdict, {p['seeded']} seeded, {p['damaged']} damaged.")
         lines.append("")
     if page:
         lines.append("## Live page")

@@ -10,6 +10,7 @@ import struct
 import tempfile
 import time
 import unittest
+import urllib.parse
 import zlib
 
 import live_client as lc
@@ -63,6 +64,18 @@ class ProfilesTest(unittest.TestCase):
             lc.decode_profile(bytes(b))
         with self.assertRaises(lc.FormatError):
             lc.decode_profile(golden(3)[:-1])
+
+    def test_codec_limits_hold_on_a_valid_checksum(self):
+        # A group of the wrong size, re-checksummed: ProfileCodec rejects it, so must this.
+        p = lc.decode_profile(golden(3))
+        b = bytearray(golden(3))
+        # The first group (shots at us) follows the key, name, battles, rounds, lastFought and outcomes.
+        at = 7 + 1 + 2 * len(p["key"]) + 1 + 2 * len(p["last_name"]) + 16 + 1 + 12 * len(p["outcomes"])
+        self.assertEqual(b[at], 5)
+        b[at] = 4
+        body = bytes(b[:-4])
+        with self.assertRaises(lc.FormatError):
+            lc.decode_profile(body + struct.pack(">I", zlib.crc32(body) & 0xFFFFFFFF))
 
     def test_folder_keeps_newest_version_and_counts(self):
         def put(name, data):
@@ -141,10 +154,10 @@ class ClientFilesTest(unittest.TestCase):
     def test_health_record_names_its_opponent_and_verdict(self):
         self.assertEqual(lc.parse_health("HEALTH,35,33,2,7,0,3100000")["skipped"], 7)
         self.assertIsNone(lc.parse_health("garbage"))
-        w = lc.Watch([self.client], self.out, log=self.lines.append)
         health = os.path.join(self.data, "health.hc")
         with open(health, "w") as f:
             f.write("HEALTH,35,35,0,0,0,0")
+        w = lc.Watch([self.client], self.out, log=self.lines.append)
         self.assertEqual(w.poll_health(), [], "the record found at start is from before the watch")
         prof = os.path.join(self.data, "abc.Shadow-1-v3.hp")
         old = os.path.join(self.data, "b.Old-2-v3.hp")
@@ -162,6 +175,26 @@ class ClientFilesTest(unittest.TestCase):
         self.assertEqual(len(rows), 1)
         self.assertEqual((rows[0]["opponent_key"], rows[0]["shielder"], rows[0]["skipped"]), ("abc.Shadow", 1, 12))
         self.assertEqual(w.poll_health(), [], "an unchanged record is not read twice")
+
+    def test_first_record_written_during_the_watch_is_kept(self):
+        w = lc.Watch([self.client], self.out, log=self.lines.append)  # no health.hc yet
+        self.assertEqual(w.poll_health(), [])
+        with open(os.path.join(self.data, "health.hc"), "w") as f:
+            f.write("HEALTH,35,34,0,3,0,0")
+        rows = w.poll_health()
+        self.assertEqual([r["skipped"] for r in rows], [3], "Hadur's first battle on a fresh client counts")
+
+    def test_melee_battles_are_pair_records(self):
+        # dumpResults writes one header and two robots for each pair that includes a dumped bot.
+        melee = ("meleerumble,35,1000x1000,leigh,1760166300000,SERVER\n"
+                 "a.First 1,3000,1000,10\nhadur2.Hadur 3.11,2000,900,8\n"
+                 "meleerumble,35,1000x1000,leigh,1760166300000,SERVER\n"
+                 "hadur2.Hadur 3.11,2000,900,8\nc.Third 1,1000,400,2\n"
+                 "meleerumble,35,1000x1000,leigh,1760166300000,SERVER\n"
+                 "a.First 1,3000,1000,10\nc.Third 1,1000,400,2\n")
+        rows = [r for r in (lc.battle_row(b, "c") for b in lc.parse_results(melee)) if r]
+        self.assertEqual([(r["opponent"], r["share"]) for r in rows], [("a.First 1", 40.0), ("c.Third 1", 66.67)])
+        self.assertEqual(len({r["key"] for r in rows}), 2, "each pair is its own battle record")
 
 
 def fake_page(rows, aps="87.56", battles=4306):
@@ -215,6 +248,25 @@ class PageTest(unittest.TestCase):
         finally:
             shutil.rmtree(out)
 
+    def test_two_robots_on_one_ladder_keep_their_own_history(self):
+        out = tempfile.mkdtemp()
+        try:
+            pages = {"A": [fake_page([("x.A 1", "90.00", 2, "t1")]), fake_page([("x.A 1", "90.00", 3, "t2")])],
+                     "B": [fake_page([("x.A 1", "40.00", 2, "t1")]), fake_page([("x.A 1", "40.00", 3, "t2")])]}
+
+            def fetcher(url):
+                return pages["A" if "3.11" in urllib.parse.unquote(url) else "B"].pop(0)
+            specs = ["roborumble:hadur2.Hadur 3.11", "roborumble:hadur2.Hadur 3.12"]
+            lc.Watch([], out, pages=specs, log=lambda l: None).poll_pages(fetcher=fetcher)
+            time.sleep(1.1)
+            # A restarted watch must compare each robot's page with its own last snapshot.
+            lc.Watch([], out, pages=specs, log=lambda l: None).poll_pages(fetcher=fetcher)
+            ev = lc.read_tsv(os.path.join(out, "page_events.tsv"))
+            self.assertEqual(sorted(float(e["inferred_score"]) for e in ev), [40.0, 90.0])
+            self.assertEqual(len(os.listdir(os.path.join(out, "pages"))), 4)
+        finally:
+            shutil.rmtree(out)
+
 
 class ReportTest(unittest.TestCase):
     """BENCH-88: battles joined to their health records, and the summary."""
@@ -242,6 +294,14 @@ class ReportTest(unittest.TestCase):
             self.assertIn("| 2026-10-11T08:00:30Z | stelo.MirrorMicro 1.1 | 32.0 | 22-13 | 3 | 1 |", text)
             self.assertIn("2 of 2 1v1 battles joined", text)
             self.assertIn("| meleerumble | 1 |", text)
+            summary = ["utc", "folder", "files", "damaged", "shielders", "lead_aware", "seeded"]
+            lc.append_tsv(os.path.join(out, "profiles.tsv"), summary, [
+                dict(utc="t1", folder="pc1", files=10, damaged=0, shielders=1, lead_aware=0, seeded=0),
+                dict(utc="t1", folder="pc2", files=20, damaged=0, shielders=2, lead_aware=0, seeded=0),
+                dict(utc="t2", folder="pc1", files=11, damaged=0, shielders=3, lead_aware=0, seeded=0)])
+            text = lc.report(out)
+            self.assertIn("- pc1 at t2: 11 profiles, 3 with a stored", text)
+            self.assertIn("- pc2 at t1: 20 profiles, 2 with a stored", text)
         finally:
             shutil.rmtree(out)
 
