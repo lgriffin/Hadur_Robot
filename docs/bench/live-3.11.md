@@ -36,7 +36,8 @@ Two things move a reading before the pass settles:
   ±0.15 (one standard error, finite population). 7th or 8th at about 1,000 pairings needs
   87.75, which is 0.19 above the final figure: about one standard error.
 - **Thin pairings filling in.** Leigh's chart shows the last stretch from 87.70 (10th, 2,764
-  battles, 1,207 pairings) to 87.56 (4,306 battles). The nine late pairings cost 0.02. The rest
+  battles, 1,207 pairings) to 87.56 at 4,306 battles (its last point, a ratings-file reading
+  after this page's 4,224). The nine late pairings cost 0.02. The rest
   came from second and third battles on pairings that had one or two: Mimic, MatchupMini and
   Wintermute each dropped 9 to 26 points.
 
@@ -58,9 +59,11 @@ Same opponents (1,215), 3.11 minus 3.10's second pass, against what the bench pr
 | 6 (701+) | 517 | 95.78 | 95.54 | +0.24 | +0.101 | +0.211 |
 | All | 1,215 | | | +0.25 | **+0.25** | **+0.73** |
 
-3.11 gained a third of what the bench measured. That is the outcome the census warned of: the
-bench lost 0.7 APS to round-0 warm-up duress because the PC skipped turns in 61% of its battles
-under bench load, and live clients skip far fewer, so removing duress returns less there. Band 4
+3.11 gained a third of what the bench measured. The census flagged this risk without settling
+it: the PC went into start-up duress in 60% of its battles under bench load, and live clients
+likely skip fewer, which would shrink what removing duress returns. But the G4 gain did not grow
+with the bench's duress rate (+0.72 at 32 to 36%, +0.72 at 60%), so lighter live load is a
+possible explanation, not a shown one. Band 4
 gained as forecast; bands 3 and 5, where the bench put 0.38 of the gain, are flat.
 
 ## 3. Three volatile pairings worth half the gap to 10th
