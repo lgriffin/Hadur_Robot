@@ -166,7 +166,8 @@ team fixtures may be re-recorded.
   `team-lower26a.txt`, 6 seeds, 10 rounds, engine 1.11.1, width 1 or the team width the PC trusts.
   About 160 battles. Gate: Hadur's deficit to HOFSwarm on ranks 21-33 stays above 5 points a pairing.
 - **Gate any candidate on the whole team field.** The ladder has only 45 opponents, so a full census
-  is cheap: candidate and 3.11 paired against `team-top20.txt` plus `team-lower26.txt`, 6 seeds, 10
+  is cheap: candidate and 3.11 paired against `team-census45.txt` (the top 20 and the lower 26 with
+  MambaTeam, which is in both, listed once), 6 seeds, 10
   rounds, 1.11.1. Gate: mean paired difference over 45 teams at least +1.0 point (about +1 APS),
   interval above zero, no team worse beyond its 6-seed spread.
 - The PC is not needed for screens: a cloud container fights a Hadur team battle in about 75 seconds.
