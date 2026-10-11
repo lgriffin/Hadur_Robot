@@ -1,0 +1,25 @@
+# team-power: HadurTeam 3.12tw against all 45 TeamRumble opponents (Bench @FILE, one argument a line)
+--team
+true
+--seeds
+6
+--rounds
+10
+--parallel
+4
+--child-heap
+2G
+--cpu-constant
+1488498
+--set
+team-census45.txt
+--robot-jar
+bisect/hadur2.HadurTeam_3.12tw.jar
+--robot
+hadur2.HadurTeam 3.12tw
+--member
+hadur2.Hadur
+--out
+work/team-census-tw
+--report
+../docs/bench/local/2026-10-12_team-census-tw.md

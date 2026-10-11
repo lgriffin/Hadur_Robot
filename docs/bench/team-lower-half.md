@@ -241,3 +241,22 @@ first showed (`hadur-bench/tools/team_aim.py`; output in
 - **Candidate (team only): fire harder on a team.** Screens `tpow` (a member with 30 energy or
   more fires 3.0, or what kills the target) and `tpowb` (each band of the table one power higher),
   gated on `s.teammates` like the earlier screens.
+
+## 11. Firepower screens (2026-10-11, cloud)
+
+Ranks 21-33 (`team-lower26a.txt`), 3 seeds, 10 rounds, paired by team against 3.12 (the release
+jar, 65.9%). Rows in `data/bench/2026-10-11_team-lower-half-cloud.tsv`.
+
+| Screen | Mean share | Paired vs 3.12 (95%) | Mean power | Enemy bullets fired |
+|---|---:|---:|---:|---:|
+| 3.12 | 65.9% | | 1.37 | 74,728 |
+| `tpow` (3.0 from 30 energy up) | 70.6% | **+4.7 ± 2.5** | 1.96 | 60,856 |
+| `tpowb` (table one power up) | 69.7% | **+3.8 ± 1.6** | 1.76 | 63,403 |
+| HOFSwarm 1.1, for scale | 75.1% | +9.2 ± 9.6 | 1.93 | |
+
+- Both are the first team screens clear of zero: `tpow` 12 of 13 teams up (Malacka -1), `tpowb`
+  11 of 13 (TeamDeath -1, Enjambre 0). Rounds shorten and the enemies fire a fifth fewer bullets.
+- Gate on the PC (section 7's rule, whole field): `hadur-bench/plans/team-power.queue` builds both
+  ablations from 3.12, then runs `tpow`, `tpowb` and 3.12 against all 45 teams, 6 seeds.
+- If one passes, the release change is one team-only row in MGUN-3 (power on a team), reached only
+  while the member has living teammates; 1v1 and melee fixtures stay bit-identical.
