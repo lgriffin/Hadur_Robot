@@ -821,7 +821,7 @@ public final class DuelController {
         // SHIELD-5: our own shield bullets are meant to meet theirs; that is not SHIELD-1's
         // evidence of an enemy shield, nor a miss, nor a bullet the shadows know of.
         boolean shieldShot = shield != null && shield.ownBulletResolved(e.power(), e.bulletHeading());
-        if (shield != null) shield.onIntercepted(in.time(), e.enemyPower(), e.x(), e.y());
+        if (shield != null) shield.onIntercepted(in.time(), e.enemyPower(), e.x(), e.y(), e.enemyHeading());
         if (!shieldShot) moveController.ourBulletGone(e.bulletHeading(), e.power());
         // SHIELD-1: in a duel, a bullet that meets ours may be a shield.
         if (ownOutcome && !shieldShot) {

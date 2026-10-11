@@ -55,6 +55,13 @@
 #         battle decides from its own bullets (the verdict is still saved). 3.12 P6: live
 #         clients carry a stored verdict for about 55% of their opponents, and 3.12 would load
 #         3.11's.
+#   shold  SHIELD-8 (docs/plan-90.md step 1): shield mode never fires at a living enemy.
+#   slearn SHIELD-9: an intercepted enemy bullet's heading teaches the predictors.
+#   smode  SHIELD-10: learned offsets are the most frequent error, not the mean.
+#   sstay  SHIELD-11: no exit inside a round; off for the battle past 150 damage or a silent enemy.
+#   sturn  SHIELD-12: the body-turn head-on base.
+#   snull  all five at once: Nullstride's design as read from its jar.
+#         The shield switches combine: shold,slearn,smode is one build (suffix shslsm).
 #
 # The build runs in a temporary git worktree of REF (default HEAD), so the checkout is not
 # touched. The robot version is REF's version plus one suffix per ablation (nr, nm), so the
@@ -65,7 +72,7 @@ set -euo pipefail
 
 ref=HEAD
 if [[ "${1:-}" == "--ref" ]]; then ref="$2"; shift 2; fi
-[[ $# -eq 1 ]] || { sed -n '2,63p' "$0"; exit 2; }
+[[ $# -eq 1 ]] || { sed -n '2,71p' "$0"; exit 2; }
 
 here="$(cd "$(dirname "$0")" && pwd)"
 repo="$(git -C "$here" rev-parse --show-toplevel)"
@@ -77,6 +84,7 @@ duel="$src/hadur-core/src/main/java/hadur2/core/duel/DuelController.java"
 move="$src/hadur-core/src/main/java/hadur2/core/move/MoveController.java"
 book="$src/hadur-core/src/main/java/hadur2/core/adapt/OpeningBook.java"
 shields="$src/hadur-core/src/main/java/hadur2/core/shieldmode/ShieldList.java"
+design="$src/hadur-core/src/main/java/hadur2/core/shieldmode/ShieldDesign.java"
 budget="$src/hadur-core/src/main/java/hadur2/core/policy/TickBudget.java"
 dist="$src/hadur-core/src/main/java/hadur2/core/policy/DistancePolicy.java"
 detector="$src/hadur-core/src/main/java/hadur2/core/shield/ShieldDetector.java"
@@ -185,7 +193,20 @@ for a in "${list[@]}"; do
             edit "$book" "distance(gunTier), profile.leadAware(), profile.shielder());" \
                 "distance(gunTier), profile.leadAware(), false);"
             version="${version}ns" ;;
-        *) echo "unknown ablation: $a (ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb)" >&2; exit 2 ;;
+        shold|slearn|smode|sstay|sturn|snull)
+            # One switch of shieldmode.ShieldDesign (SHIELD-8 to SHIELD-12) added to SHIPPED.
+            case "$a" in
+                shold) flag=hold; suffix=sh ;;
+                slearn) flag=learn; suffix=sl ;;
+                smode) flag=mode; suffix=sm ;;
+                sstay) flag=stay; suffix=ss ;;
+                sturn) flag=turn; suffix=st ;;
+                snull) flag=all; suffix=sn ;;
+            esac
+            edit "$design" 'public static final ShieldDesign SHIPPED = parse("' \
+                "public static final ShieldDesign SHIPPED = parse(\"$flag,"
+            version="${version}${suffix}" ;;
+        *) echo "unknown ablation: $a (ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, shold, slearn, smode, sstay, sturn, snull)" >&2; exit 2 ;;
     esac
 done
 

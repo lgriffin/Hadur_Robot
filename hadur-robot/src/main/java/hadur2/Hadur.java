@@ -334,13 +334,14 @@ public class Hadur extends TeamRobot {
 
     /**
      * One of our bullets met an enemy bullet: our power, where they met, the enemy
-     * bullet's power, and our bullet's heading (SHIELD-1, MOVE-1).
+     * bullet's power, our bullet's heading (SHIELD-1, MOVE-1) and the enemy bullet's (SHIELD-9).
      */
     @Override
     public void onBulletHitBullet(BulletHitBulletEvent e) {
         Bullet hit = e.getHitBullet();
         pending.add(new BotEvent.BulletHitBullet(e.getBullet().getPower(), hit.getX(), hit.getY(),
-            hit.getPower(), e.getBullet().getHeadingRadians(), hit.getName()));
+            hit.getPower(), e.getBullet().getHeadingRadians(), hit.getName(),
+            hit.getHeadingRadians()));
     }
 
     /**

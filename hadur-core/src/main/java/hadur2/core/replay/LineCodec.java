@@ -167,6 +167,11 @@ public final class LineCodec {
                 : join("B", esc(b.name()), b.power(), b.energy(), b.bulletHeading());
         } else if (e instanceof BotEvent.BulletHitBullet) {
             BotEvent.BulletHitBullet b = (BotEvent.BulletHitBullet) e;
+            // SHIELD-9 appended the enemy bullet's heading after the owner; older lines lack it.
+            if (!Double.isNaN(b.enemyHeading())) {
+                return join("X", b.power(), b.x(), b.y(), b.enemyPower(), b.bulletHeading(),
+                    esc(b.owner() == null ? "" : b.owner()), b.enemyHeading());
+            }
             if (b.owner() != null) {
                 return join("X", b.power(), b.x(), b.y(), b.enemyPower(), b.bulletHeading(), esc(b.owner()));
             }
@@ -210,7 +215,7 @@ public final class LineCodec {
             // S6 appended our bullet's heading to B, X and M; older fixtures lack it.
             case "B": return new BotEvent.BulletHit(unesc(f[1]), d(f[2]), d(f[3]), opt(f, 4));
             case "X": return new BotEvent.BulletHitBullet(d(f[1]), d(f[2]), d(f[3]), d(f[4]), opt(f, 5),
-                f.length > 6 ? unesc(f[6]) : null);
+                f.length > 6 && !(f.length > 7 && f[6].isEmpty()) ? unesc(f[6]) : null, opt(f, 7));
             case "M": return new BotEvent.BulletMissed(d(f[1]), opt(f, 2));
             case "W": return new BotEvent.HitWall(d(f[1]));
             case "R": return new BotEvent.HitRobot(unesc(f[1]), d(f[2]), d(f[3]),
