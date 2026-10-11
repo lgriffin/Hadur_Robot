@@ -181,3 +181,7 @@ the same profile files (format 3, one data folder per robot class), so a stricte
 `hadur-bench/plans/p312d.queue`, after p312c, about 2.3 h. The warm battles are what a live
 client plays (BENCH-54). Gates as P1, read on the warm rows (`export_battles.py --warm`, then `screen_paired.py`); `wns`'s cold rows should be level,
 since nothing is stored before the cold battle.
+
+## Status, P4 to P6
+
+P4, P5 and P6 ran 2026-10-11 (`docs/bench/local/2026-10-11_p312bcd-findings.md`). On the volatile bots `mf` and `s5` each remove the silent battles (battles below 60% share: 7 to 2 and 5 to 0 cold; 14 to 0 warm for `mf`) and lift the bots by 1.3 to 2.0 points cold, `mf` by 4.4 to 5.7 warm. On the 400-bot screen `mfs5` is nearest the gate at +0.19 APS (-0.06 to +0.44; +0.14 keep-all), `mf` +0.03, `aw` -0.22 (band 5 significantly negative; mean distance up from 414 to 465 px), `ns` +0.06 cold and 0.00 warm, `mfs5ns` 0.00 cold and +0.23 warm. No candidate passes the screen gate; nothing is released.
