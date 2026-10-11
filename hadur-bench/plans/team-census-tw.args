@@ -23,3 +23,7 @@ hadur2.Hadur
 work/team-census-tw
 --report
 ../docs/bench/local/2026-10-12_team-census-tw.md
+--baseline
+bisect/hadur2.HadurTeam_3.12.jar
+--baseline-robot
+hadur2.HadurTeam 3.12

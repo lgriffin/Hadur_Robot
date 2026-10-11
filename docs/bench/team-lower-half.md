@@ -203,7 +203,8 @@ building anything.
   it, the shot is inferred 98.5% of the time (296,150 windows), with 1.0% false shots in windows
   with no fire. Teammates' sightings matter: counting own scans only, half the shots looked missed,
   because a teammate's sighting had already taken the drop.
-- **Of the 12,817 enemy bullets that hit a member, the member had inferred 86.8%.** The misses:
+- **Of the 12,817 enemy bullets that hit a member, the member had inferred 86.0%** (a shot of that
+  bullet's power in the window holding its fire; another 0.8% inferred a shot of a different power). The misses:
   the shooter gaining energy from another hit in the same window 5.3%, a collision costing the
   shooter 0.6 energy in the same window 3.6% (mostly TeamDeath and ImpactTeam), a teammate's hit
   2.5%, a third party's hit 0.9%, never updated 0.9%.
@@ -239,8 +240,10 @@ first showed (`hadur-bench/tools/team_aim.py`; output in
   a battle. Rounds run a third longer, the enemies fire 31% more bullets, and members take 40% more
   hits. That is the members dying early in section 4.
 - **Candidate (team only): fire harder on a team.** Screens `tpow` (a member with 30 energy or
-  more fires 3.0, or what kills the target) and `tpowb` (each band of the table one power higher),
-  gated on `s.teammates` like the earlier screens.
+  more fires 3.0, or what kills the target) and `tpowb` (one power above the table, same 30-energy
+  gate), gated on `s.teammates` like the earlier screens. Both replace the table's result outright,
+  so MGUN-3's lead cap (never drop below the target's energy) and its two-left duel row do not
+  apply while a member has 30 energy; the screens measure that whole change.
 
 ## 11. Firepower screens (2026-10-11, cloud)
 
@@ -251,12 +254,14 @@ jar, 65.9%). Rows in `data/bench/2026-10-11_team-lower-half-cloud.tsv`.
 |---|---:|---:|---:|---:|
 | 3.12 | 65.9% | | 1.37 | 74,728 |
 | `tpow` (3.0 from 30 energy up) | 70.6% | **+4.7 ± 2.5** | 1.96 | 60,856 |
-| `tpowb` (table one power up) | 69.7% | **+3.8 ± 1.6** | 1.76 | 63,403 |
+| `tpowb` (one power above the table) | 69.7% | **+3.8 ± 1.6** | 1.76 | 63,403 |
 | HOFSwarm 1.1, for scale | 75.1% | +9.2 ± 9.6 | 1.93 | |
 
 - Both are the first team screens clear of zero: `tpow` 12 of 13 teams up (Malacka -1), `tpowb`
   11 of 13 (TeamDeath -1, Enjambre 0). Rounds shorten and the enemies fire a fifth fewer bullets.
 - Gate on the PC (section 7's rule, whole field): `hadur-bench/plans/team-power.queue` builds both
-  ablations from 3.12, then runs `tpow`, `tpowb` and 3.12 against all 45 teams, 6 seeds.
-- If one passes, the release change is one team-only row in MGUN-3 (power on a team), reached only
-  while the member has living teammates; 1v1 and melee fixtures stay bit-identical.
+  ablations from 3.12, then runs `tpow` and `tpowb` against all 45 teams, 6 seeds, each paired with
+  3.12 at the same opponent and seed (`--baseline`).
+- If one passes, the release change is a team-only power rule that does exactly what the screen did
+  (replace the table, lead cap and duel row included, from 30 energy), reached only while the
+  member has living teammates; 1v1 and melee fixtures stay bit-identical.

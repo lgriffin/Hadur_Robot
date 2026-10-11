@@ -46,7 +46,9 @@
 #   tpow  (team only) a member with 30 energy or more fires power 3 (or what kills the target) at
 #         every target: on ranks 21-33 HadurTeam fires mean power 1.35 against HOFSwarm's 1.93,
 #         and its rounds last a third longer (docs/bench/team-lower-half.md section 10).
-#   tpowb (team only) as tpow, but one power step: each band of MGUN-3's table one power higher.
+#   tpowb (team only) as tpow, but one power step: a member with 30 energy or more fires one power
+#         above MGUN-3's table (at most 3, or what kills the target). Both replace the table's
+#         result outright, so MGUN-3's lead cap and two-left duel row do not apply then.
 #   s50   SHIELD-1 needs 10 of the last 20 bullets intercepted, and half of them, not 4 and a
 #         quarter. 3.12 P4: half of all census battles latch a shield verdict.
 #   nostore  SHIELD-3 no longer starts a battle from the profile's stored shield verdict: each
@@ -63,7 +65,7 @@ set -euo pipefail
 
 ref=HEAD
 if [[ "${1:-}" == "--ref" ]]; then ref="$2"; shift 2; fi
-[[ $# -eq 1 ]] || { sed -n '2,61p' "$0"; exit 2; }
+[[ $# -eq 1 ]] || { sed -n '2,63p' "$0"; exit 2; }
 
 here="$(cd "$(dirname "$0")" && pwd)"
 repo="$(git -C "$here" rev-parse --show-toplevel)"
@@ -172,8 +174,8 @@ for a in "${list[@]}"; do
                 "world.onScan(s.name, at, s.energy, s.heading, s.velocity, s.tick, at.distance(in.x(), in.y())); System.out.println(\"SL,\" + in.round() + \",\" + s.tick + \",\" + s.name + \",\" + s.energy + \",\" + (world.lastScanShot() == null ? \"-\" : String.valueOf(world.lastScanShot().power)));"
             version="${version}ts" ;;
         tpow|tpowb)
-            edit "$mctl" "FieldGun.Aim aim = gun.aim(s.me, s.energy, s.others, alive, s.time);" \
-                "gun.teamPower = !s.teammates.isEmpty(); FieldGun.Aim aim = gun.aim(s.me, s.energy, s.others, alive, s.time);"
+            edit "$mctl" "waves.tick(s.me, s.time, s.gunHeat, alive, gun, s.energy, s.others);" \
+                "gun.teamPower = !s.teammates.isEmpty(); waves.tick(s.me, s.time, s.gunHeat, alive, gun, s.energy, s.others);"
             edit "$fgun" "public List<Solution> solutions(" "public boolean teamPower; public List<Solution> solutions("
             if [[ "$a" == tpow ]]; then raise="3.0"; version="${version}tw"; else raise="power + 1.0"; version="${version}tb"; fi
             edit "$fgun" "if (power <= 0) continue;" \

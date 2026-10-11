@@ -4,7 +4,8 @@ Needs a team bench run of a `tshots` build (build-ablation.sh): each member's lo
 scan) and SL (teammate sighting merged over the link) records, and TeamHarvester writes
 bullets.log. Usage: python3 tools/team_shots.py work/RUN [delta...]
 
-Prints, per update window (two consecutive updates of one enemy in one member's EnemyTracker),
+A hit counts as detected only when the window holding its fire inferred a shot of that bullet's
+power (within 0.05). Prints, per update window (two consecutive updates of one enemy in one member's EnemyTracker),
 how often a single enemy shot was inferred, split by what else happened to that enemy in the
 window; then, for every enemy bullet that hit a member, whether that member inferred the shot.
 """
@@ -86,21 +87,23 @@ def hits_on_us(dirs, by_opp=False):
         fid = {}
         for line in open(os.path.join(d, 'bullets.log')):
             f = line.rstrip('\n').split(',')
-            if f[2] == 'F': fid[(int(f[0]), int(f[3]))] = int(f[1])
+            if f[2] == 'F': fid[(int(f[0]), int(f[3]))] = (int(f[1]), float(f[5]))
         for line in open(os.path.join(d, 'bullets.log')):
             f = line.rstrip('\n').split(',')
             if f[2] != 'H': continue
             r, bid, owner, victim = int(f[0]), int(f[3]), f[4], f[5]
             if owner.startswith(OURS) or not victim.startswith(OURS): continue
             m = int(victim.rsplit('(', 1)[1].rstrip(')')) - 1
-            ft = fid.get((r, bid))
+            ft, power = fid.get((r, bid))
             ss = scans.get((r, m, owner), [])
             res = 'unseen'
             for (t1, e1, _), (t2, e2, shot) in zip(ss, ss[1:]):
                 if t1 < ft <= t2:
                     hs = between(hits[(r, owner)], t1, t2); gs = between(gains[(r, owner)], t1, t2)
                     mate = [h for h in hs if h[1].startswith(OURS) and not h[1].endswith('(%d)' % (m + 1))]
-                    if shot is not None: res = 'detected'
+                    # Detected only when the shot inferred has this bullet's power.
+                    if shot is not None and abs(shot - power) <= 0.05: res = 'detected'
+                    elif shot is not None: res = 'inferred, other power'
                     elif t2 - t1 > 10: res = 'missed:gap'
                     elif mate: res = 'missed:mateHit'
                     elif gs: res = 'missed:shooterGained'

@@ -1,16 +1,19 @@
 # Team firepower (docs/bench/team-lower-half.md, section 10). Team-only ablations of 3.12
 # (build-ablation.sh tpow, tpowb: edits apply only while a member has living teammates, so 1v1 and
 # melee are untouched). TeamRumble settings: 1200x1200, 10 rounds, engine 1.11.1, 6 seeds, cold,
-# four battles at once, against all 45 opponents (team-census45.txt), 270 battles a step.
+# four battles at once, against all 45 opponents (team-census45.txt).
 #   ./queue.sh run team-power        (or  .\queue.ps1 run team-power)
 # Run with RoboRumble workers stopped, from a checkout whose robot version is 3.12.
 #   tw    tpow: a member with 30 energy or more fires 3.0, or what kills the target.
-#   tb    tpowb: each band of MGUN-3's power table one power higher.
-#   base  3.12 itself, the pairing baseline (3.11's census, 63.2%, is the fallback: the team
-#         plays the same code bar SHIELD-7 in a last 1v1).
+#   tb    tpowb: a member with 30 energy or more fires one power above MGUN-3's table (at most 3,
+#         or what kills the target).
+#   Both replace the table's result outright while the member has 30 energy: MGUN-3's lead cap
+#   (never drop below the target's energy) and its two-left duel row do not apply then.
+#   Each step fights 3.12 (--baseline) at the same opponent and seed, so its report carries the
+#   paired table the gate reads: 540 battles a step.
 # Gate (section 7): mean paired difference over the 45 teams at least +1.0 point, interval above
 # zero, no team worse beyond its 6-seed spread. Cloud screen on ranks 21-33, 3 seeds: tw +4.7 ± 2.5,
-# tb +3.8 ± 1.6. Reports go to docs/bench/local/2026-10-12_team-census-{tw,tb,312}.md; commit those
+# tb +3.8 ± 1.6. Reports go to docs/bench/local/2026-10-12_team-census-{tw,tb}.md; commit those
 # and the queue log.
 
 prep | mkdir -p bisect && { [ -s bisect/hadur2.HadurTeam_3.12.jar ] || curl -fsSL -o bisect/hadur2.HadurTeam_3.12.jar https://github.com/lgriffin/Hadur_Robot/releases/download/v3.12/hadur2.HadurTeam_3.12.jar; } && { [ -s bisect/hadur2.Hadur_3.12.jar ] || curl -fsSL -o bisect/hadur2.Hadur_3.12.jar https://github.com/lgriffin/Hadur_Robot/releases/download/v3.12/hadur2.Hadur_3.12.jar; } && ./build-ablation.sh tpow && ./build-ablation.sh tpowb && ./fetch-opponents.sh --set team-census45.txt && mvn -q compile
@@ -19,5 +22,3 @@ tw   | mvn -q exec:java "-Dexec.args=@plans/team-census-tw.args"
   after: prep
 tb   | mvn -q exec:java "-Dexec.args=@plans/team-census-tb.args"
   after: tw
-base | mvn -q exec:java "-Dexec.args=@plans/team-census-312.args"
-  after: tb
