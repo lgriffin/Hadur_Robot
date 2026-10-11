@@ -4,7 +4,9 @@
 hadur-bench leaves one `result.csv` per battle under `<workdir>/battles/`, named
 `<opponent slug>-<seed>` for the candidate robot and `<opponent slug>-<seed>-baseline`
 for the baseline robot of a paired run (see hadur.bench.BattleResult and Opponent in
-hadur-bench). This script walks those files, maps each slug back to the opponent name
+hadur-bench). A --cold-warm run also leaves each battle's warm replay beside it, named with
+"-warm" after either; those rows are exported only with --warm (and then only they are), under
+the same build labels, so a warm export pairs with screen_paired.py like a cold one. This script walks those files, maps each slug back to the opponent name
 and role from a set file (hadur-bench/top20.txt and friends), and writes one row per
 battle so bench runs can be joined and analysed outside the JVM.
 
@@ -40,10 +42,11 @@ FALLBACK_HEADER = (
 # hadur.bench.Opponent.slug(): runs of characters outside [A-Za-z0-9.] become one "_".
 _SLUG_RUN = re.compile(r"[^A-Za-z0-9.]+")
 
-# A battle directory name: <slug>-<seed> or <slug>-<seed>-baseline. The slug may itself
-# contain digits and dots, so this relies on regex backtracking to find the LAST "-<digits>"
-# run (optionally followed by "-baseline") rather than the first.
-DIR_RE = re.compile(r"^(?P<slug>.+)-(?P<seed>\d+)(?P<baseline>-baseline)?$")
+# A battle directory name: <slug>-<seed> or <slug>-<seed>-baseline, with "-warm" after either
+# for the second battle of a --cold-warm pair (BENCH-54). The slug may itself contain digits and
+# dots, so this relies on regex backtracking to find the LAST "-<digits>" run (optionally
+# followed by "-baseline" and "-warm") rather than the first.
+DIR_RE = re.compile(r"^(?P<slug>.+)-(?P<seed>\d+)(?P<baseline>-baseline)?(?P<warm>-warm)?$")
 
 RANK_RE = re.compile(r"^rumble-(\d+)$")
 
@@ -115,7 +118,7 @@ def share(row, numer, denom):
     return "%.4f" % (a / total)
 
 
-def collect(work, set_file, build, baseline_build, want_share):
+def collect(work, set_file, build, baseline_build, want_share, warm=False):
     battles_dir = os.path.join(work, "battles")
     try:
         dirnames = sorted(
@@ -140,6 +143,8 @@ def collect(work, set_file, build, baseline_build, want_share):
         m = DIR_RE.match(dirname)
         if not m:
             unmatched.append(dirname)
+            continue
+        if bool(m.group("warm")) != warm:
             continue
         opp = opponents.get(m.group("slug"))
         if opp is None:
@@ -197,7 +202,7 @@ def read_rounds(path):
     return header, [dict(zip(header, line.split("\t"))) for line in lines[1:] if line]
 
 
-def collect_rounds(work, set_file, build, baseline_build):
+def collect_rounds(work, set_file, build, baseline_build, warm=False):
     """One row per round of every battle that left a rounds.tsv (hadur.bench.RoundSeries).
 
     The build, opponent and seed columns come from the directory name and the set file, as
@@ -216,7 +221,7 @@ def collect_rounds(work, set_file, build, baseline_build):
     for dirname in dirnames:
         m = DIR_RE.match(dirname)
         opp = opponents.get(m.group("slug")) if m else None
-        if opp is None:
+        if opp is None or bool(m.group("warm")) != warm:
             continue
         is_baseline = m.group("baseline") is not None
         if is_baseline and not baseline_build:
@@ -259,10 +264,12 @@ def main():
     parser.add_argument("--share", action="store_true", help="add score_share and survival_share columns")
     parser.add_argument("--rounds-out", default="",
                         help="also write the per-round rows (each battle's rounds.tsv) to this TSV")
+    parser.add_argument("--warm", action="store_true",
+                        help="export the warm battles of a --cold-warm run (<dir>-warm) instead of the cold ones")
     args = parser.parse_args()
 
     columns, rows, candidate_count, baseline_count, unmatched = collect(
-        args.work, args.set, args.build, args.baseline_build, args.share
+        args.work, args.set, args.build, args.baseline_build, args.share, args.warm
     )
     write_tsv(args.out, columns, rows)
 
@@ -274,7 +281,7 @@ def main():
     print(summary)
     print(compare_conditions.catalog_note(args.work))
     if args.rounds_out:
-        r_columns, r_rows = collect_rounds(args.work, args.set, args.build, args.baseline_build)
+        r_columns, r_rows = collect_rounds(args.work, args.set, args.build, args.baseline_build, args.warm)
         write_tsv(args.rounds_out, r_columns, r_rows)
         print("wrote %d round rows to %s" % (len(r_rows), args.rounds_out))
     return 0
