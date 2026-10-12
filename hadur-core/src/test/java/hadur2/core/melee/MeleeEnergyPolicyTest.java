@@ -60,4 +60,26 @@ class MeleeEnergyPolicyTest {
         assertEquals(3.0, MeleeEnergyPolicy.power(600, 100, 16, 5), 1e-9);
         assertEquals(0.1, MeleeEnergyPolicy.killPower(0.0), 1e-9);
     }
+
+    @Test
+    @Tag("MGUN-6")
+    @DisplayName("MGUN-6: on a team, from 30 own energy, every shot is 3 or what kills the target")
+    void teamFullPower() {
+        // The table's 1.0 beyond 500 px, its lead cap and its two-left row all give way.
+        assertEquals(3.0, MeleeEnergyPolicy.teamPower(MeleeEnergyPolicy.power(600, 100, 80, 5), 100, 80), 1e-9);
+        assertEquals(3.0, MeleeEnergyPolicy.teamPower(MeleeEnergyPolicy.power(100, 60, 59, 5), 60, 59), 1e-9);
+        assertEquals(3.0, MeleeEnergyPolicy.teamPower(MeleeEnergyPolicy.power(400, 100, 80, 2), 100, 80), 1e-9);
+        assertEquals(3.0, MeleeEnergyPolicy.teamPower(1.5, MeleeEnergyPolicy.TEAM_FULL_POWER_ENERGY, 80), 1e-9);
+        // Never more than kills the target.
+        assertEquals(MeleeEnergyPolicy.killPower(10), MeleeEnergyPolicy.teamPower(1.0, 100, 10), 1e-9);
+    }
+
+    @Test
+    @Tag("MGUN-6")
+    @DisplayName("MGUN-6: on a team, below 30 own energy or on a hold, the table stands")
+    void teamTableStands() {
+        assertEquals(1.0, MeleeEnergyPolicy.teamPower(1.0, 29.9, 80), 1e-9);
+        assertEquals(0.5, MeleeEnergyPolicy.teamPower(0.5, 9, 80), 1e-9);
+        assertEquals(0, MeleeEnergyPolicy.teamPower(0, 100, 99.95));
+    }
 }

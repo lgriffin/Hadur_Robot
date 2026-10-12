@@ -15,6 +15,11 @@ package hadur2.core.melee;
  * <p>Nothing is fired below {@link #MIN_OWN_ENERGY}, a shot never costs more than what kills
  * the target, and while Hadur leads the target on energy a shot never drops it below the
  * target's.</p>
+ *
+ * <p>On a team (MGUN-6, {@link #teamPower}) a member with {@link #TEAM_FULL_POWER_ENERGY} or
+ * more fires 3, or what kills the target, in place of the table: the table is a free-for-all's,
+ * and on the team ladder its light shots let rounds run a third longer than a team firing hard
+ * (docs/bench/team-lower-half.md, sections 10 and 11).</p>
  */
 public final class MeleeEnergyPolicy {
 
@@ -22,6 +27,8 @@ public final class MeleeEnergyPolicy {
     public static final double MIN_OWN_ENERGY = 1.0;
     static final double MIN_POWER = 0.1;
     static final double MAX_POWER = 3.0;
+    /** MGUN-6: the own energy from which a member on a team fires full power. */
+    public static final double TEAM_FULL_POWER_ENERGY = 30.0;
 
     private MeleeEnergyPolicy() {}
 
@@ -51,6 +58,17 @@ public final class MeleeEnergyPolicy {
         }
         p = Math.max(p, MIN_POWER);
         return Math.min(p, ownEnergy);
+    }
+
+    /**
+     * MGUN-6: the power a member on a team fires, given the table's {@code tablePower}. A hold
+     * (0) stands; with {@link #TEAM_FULL_POWER_ENERGY} or more own energy the shot is 3, or what
+     * kills the target, whatever the table said (its lead cap and two-left row included);
+     * below that the table stands.
+     */
+    public static double teamPower(double tablePower, double ownEnergy, double targetEnergy) {
+        if (tablePower <= 0 || ownEnergy < TEAM_FULL_POWER_ENERGY) return tablePower;
+        return Math.min(MAX_POWER, killPower(targetEnergy));
     }
 
     /** The duel gun's 1v1 table, mirrored here: melee code does not reach into the duel. */

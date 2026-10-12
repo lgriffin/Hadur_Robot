@@ -252,6 +252,7 @@ public class MeleeController {
         mover.updateBullets(tracker.shots(s.time), myPath, s.me, s.time);
         c.destination = alive.isEmpty() ? null
             : mover.chooseDestination(s.me, s.energy, s.others, alive, s.time, plan, s.teammates);
+        gun.onTeam(!s.teammates.isEmpty());
         waves.tick(s.me, s.time, s.gunHeat, alive, gun, s.energy, s.others);
 
         // MGUN-1: the peak of every opponent's firing solutions.

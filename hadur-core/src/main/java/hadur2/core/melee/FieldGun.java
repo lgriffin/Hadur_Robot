@@ -75,6 +75,8 @@ public class FieldGun {
     private final BattleField field;
     private final MeleeGun fallback;
     private final Map<String, EnemyHistory> histories = new LinkedHashMap<>();
+    /** MGUN-6: whether Hadur has a living teammate this tick; false off a team. */
+    private boolean onTeam;
 
     public FieldGun(BattleField field) {
         this.field = field;
@@ -93,6 +95,11 @@ public class FieldGun {
             histories.put(name, h);
         }
         return h;
+    }
+
+    /** MGUN-6: whether Hadur has a living teammate this tick, set before any aim of the tick. */
+    public void onTeam(boolean onTeam) {
+        this.onTeam = onTeam;
     }
 
     /** An opponent was scanned {@code distance} from Hadur. */
@@ -115,6 +122,7 @@ public class FieldGun {
             if (!finisher && rams(e, me)) continue;
             double power = MeleeEnergyPolicy.power(distance, energy, e.energy, others);
             if (power <= 0) continue;
+            if (onTeam) power = MeleeEnergyPolicy.teamPower(power, energy, e.energy);
             double weight = weight(e, me, alive, now);
             EnemyHistory h = history(e.name);
             double[] attributes = h == null ? null : h.current();
