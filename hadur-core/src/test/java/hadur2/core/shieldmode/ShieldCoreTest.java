@@ -67,18 +67,17 @@ class ShieldCoreTest {
     }
 
     @Test
-    @Tag("SHIELD-5")
-    @DisplayName("a gun that follows its orders onto the aim fires from it, as the main gun does")
-    void gunOnTheAimFires() {
+    @Tag("SHIELD-8")
+    @Tag("SHIELD-13")
+    @DisplayName("a gun that follows its orders onto the aim still holds its shot: 3.13 ships no attack shots while shielding")
+    void gunOnTheAimHolds() {
         double gun = 0;
-        boolean fired = false;
-        for (int i = 0; i < 80 && !fired; i++) {
+        for (int i = 0; i < 80; i++) {
             BotOrders o = tick(gun, 100, 400);
-            fired = o.firePower() > 0;
+            assertEquals(0.0, o.firePower(), 0, "tick " + time + " fired an attack shot at a living enemy");
             // The engine turns the gun by the order; the next tick sees it settled on the aim.
             gun += o.gunTurn();
         }
-        assertTrue(fired, "a settled aim gets its shot");
     }
 
     // ---- SHIELD-6: hits taken after skipped turns count against the budget

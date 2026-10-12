@@ -61,7 +61,9 @@
 #   sstay  SHIELD-11: no exit inside a round; off for the battle past 150 damage or a silent enemy.
 #   sturn  SHIELD-12: the body-turn head-on base.
 #   snull  all five at once: Nullstride's design as read from its jar.
-#         The shield switches combine: shold,slearn,smode is one build (suffix shslsm).
+#         The shield switches combine: shold,slearn,smode is one build (suffix shslsm). Each
+#         adds to SHIPPED, which since 3.13 holds hold, learn, mode and stay (SHIELD-13): from
+#         3.13 on, only sturn changes the robot; use --ref v3.12 for the 3.12 ablations.
 #
 # The build runs in a temporary git worktree of REF (default HEAD), so the checkout is not
 # touched. The robot version is REF's version plus one suffix per ablation (nr, nm), so the
@@ -72,7 +74,7 @@ set -euo pipefail
 
 ref=HEAD
 if [[ "${1:-}" == "--ref" ]]; then ref="$2"; shift 2; fi
-[[ $# -eq 1 ]] || { sed -n '2,71p' "$0"; exit 2; }
+[[ $# -eq 1 ]] || { sed -n '2,72p' "$0"; exit 2; }
 
 here="$(cd "$(dirname "$0")" && pwd)"
 repo="$(git -C "$here" rev-parse --show-toplevel)"

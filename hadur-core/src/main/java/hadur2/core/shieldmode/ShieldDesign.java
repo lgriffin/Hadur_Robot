@@ -6,7 +6,9 @@ import java.util.Locale;
  * Which of Nullstride's shield differences shield mode takes (SHIELD-8 to SHIELD-12). Each is
  * one switch, so they can be benched one at a time against the shipped mode
  * (docs/plan-90.md, step 1; {@code hadur-bench/build-ablation.sh}). {@link #SHIPPED} is what
- * the robot runs: with every switch off, shield mode is exactly 3.12's.
+ * the robot runs (SHIELD-13): since 3.13, {@code hold}, {@code learn}, {@code mode} and
+ * {@code stay}, the build plan-90's step 3 swept Nullstride's list with; {@code turn} stays
+ * off. With every switch off ({@link #NONE}), shield mode is exactly 3.12's.
  *
  * <ul>
  * <li>{@code hold} (SHIELD-8): never fire at the enemy while shielding; the gun points at it
@@ -34,8 +36,8 @@ public final class ShieldDesign {
     /** 3.12's shield: every switch off. */
     public static final ShieldDesign NONE = new ShieldDesign(false, false, false, false, false);
 
-    /** The design the robot ships. The ablation builds edit this one line. */
-    public static final ShieldDesign SHIPPED = parse("");
+    /** The design the robot ships (SHIELD-13). The ablation builds edit this one line. */
+    public static final ShieldDesign SHIPPED = parse("hold,learn,mode,stay");
 
     /** SHIELD-8: no attack shots while shielding. */
     public final boolean hold;
@@ -79,6 +81,7 @@ public final class ShieldDesign {
                 default: throw new IllegalArgumentException("unknown shield switch: " + raw);
             }
         }
+        if (!(hold || learn || mode || stay || turn)) return NONE;
         return new ShieldDesign(hold, learn, mode, stay, turn);
     }
 

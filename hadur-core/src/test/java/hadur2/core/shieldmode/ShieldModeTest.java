@@ -27,7 +27,7 @@ class ShieldModeTest {
 
     @BeforeEach
     void setUp() {
-        mode = new ShieldMode(ShieldList.parse(List.of("list.Target")), records::add);
+        mode = new ShieldMode(ShieldList.parse(List.of("list.Target")), records::add, 0, ShieldDesign.NONE);
     }
 
     private void scan(String name, long time, double enemyY) {
@@ -233,7 +233,7 @@ class ShieldModeTest {
     @DisplayName("damage past what holds the share at 85% leaves shield mode for the battle")
     void budgetExit() {
         // A one-round battle allows 60 * 15/85, about 10.6 damage: one hit of 1.95 (9.7) is within, two (19.4) are over.
-        mode = new ShieldMode(ShieldList.parse(List.of("list.Target")), records::add, 1);
+        mode = new ShieldMode(ShieldList.parse(List.of("list.Target")), records::add, 1, ShieldDesign.NONE);
         scan(1);
         mode.onHitByBullet(30, 1.95, MY_X, MY_Y, Math.PI);
         assertFalse(mode.battleOff(), "9.7 damage is within 10.6");
@@ -247,7 +247,7 @@ class ShieldModeTest {
     @Tag("SHIELD-6")
     @DisplayName("once left for the battle it stays left at every later round")
     void budgetExitLastsTheBattle() {
-        mode = new ShieldMode(ShieldList.parse(List.of("list.Target")), records::add, 1);
+        mode = new ShieldMode(ShieldList.parse(List.of("list.Target")), records::add, 1, ShieldDesign.NONE);
         scan(1);
         mode.onHitByBullet(30, 3.0, MY_X, MY_Y, Math.PI);
         assertTrue(mode.battleOff());

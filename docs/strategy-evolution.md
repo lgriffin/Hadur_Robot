@@ -523,6 +523,21 @@ never closing in (P5) cost band 5, a stricter detector (P4, pooled over six seed
 the stored verdict (P6) were level. Re-pinned: `pins/duel.sha256` (`-Dhadur.pin=duel`) and
 `duel-sources.sha256`; all replay fixtures unchanged.
 
+## 3.13: Nullstride's shield on Nullstride's list
+
+The plan "the road from 87.7 to 90" (docs/plan-90.md) found the gap to 90 APS in bullet
+shielding. It built each difference between Hadur's shield and the decompiled Nullstride 2.3.3's as
+one switch (SHIELD-8 to SHIELD-12, `shieldmode.ShieldDesign`). On the PC at 8 seeds, on the 89 robots
+both lists shield, holding fire while shielding (SHIELD-8) was worth +4 points a robot. Learning from
+intercepted bullets, the most frequent offset, staying in the mode and the body-turn base were each
+level with it. 3.13 ships hold, learn, mode and stay (SHIELD-13), the build step 3 swept the 198
+robots on Nullstride's list only with. Of those 198, 103 passed the D5 rule and joined the list, worth
++1.11 APS on independent seeds. Bands 2 and 3 gain most: Phoenix, Hydra, Firebird and Chalk each +34
+to +40. About +1.4 APS on the bench in all; shield mode acts on nobody off the list
+(docs/bench/local/2026-10-12_plan90-pc-read.md). The team carries MGUN-6 (PR #192): with a living
+teammate and 30 energy or more, a member fires power 3. That was +5.7 points a team on the 45-team
+bench, with 1v1 and melee untouched. Re-pinned: `pins/duel.sha256`.
+
 ## What comes next
 
 Every EARS requirement up to R2, bar TIER-1 (above), is implemented and traced. R3 to R5

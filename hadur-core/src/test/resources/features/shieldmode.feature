@@ -31,11 +31,12 @@ Feature: Shield mode and its list (D5)
     When both are scanned for 40 ticks
     Then the telemetry holds no shield record
 
-  @SHIELD-5
-  Scenario: A rammer ends shield mode for the round and the next round opens in it again
+  @SHIELD-11 @SHIELD-13
+  Scenario: A close enemy no longer ends shield mode inside the round, and the next round opens in it too
     Given a duel against "list.Target 1.0" and a shield list naming "list.Target"
     When the enemy is scanned 80 px due east
-    Then the telemetry says shield mode was left in round 0 because "close"
+    Then the telemetry says shield mode is on in round 0
+    And the telemetry holds no round exit
     When the next round starts and the enemy is scanned 400 px due east
     Then the telemetry says shield mode is on in round 1
 

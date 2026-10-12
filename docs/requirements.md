@@ -1186,13 +1186,14 @@ build without it. RES-14 is retired, and with it RES-9's use (see the retired ta
   jitter itself are unchanged (P4's stricter detector and P6's ignored verdict were level on the
   screen and are not in 3.12).
 
-## Toward Nullstride's shield (SHIELD-8 to SHIELD-12)
+## Toward Nullstride's shield (SHIELD-8 to SHIELD-13)
 
 The plan "Hadur: the road from 87.7 to 90 APS" (2026-10-11, docs/plan-90.md) reads Nullstride
 2.3.3's decompiled shield beside Hadur's and lists where they differ. Each difference is one
 switch of `shieldmode.ShieldDesign`, so each can be benched on its own (step 1 of that plan).
-`ShieldDesign.SHIPPED` has every switch off: until a bench gate passes, the robot plays 3.12's
-shield, and each requirement below holds where its switch is on.
+Each requirement below holds where its switch is on. 3.12 shipped every switch off; since 3.13
+the robot ships hold, learn, mode and stay (SHIELD-13), the build the PC's 8-seed step 3 swept
+Nullstride's list with (docs/bench/local/2026-10-12_plan90-pc-read.md).
 
 | ID | Pattern | Requirement | Stage |
 |---|---|---|---|
@@ -1201,6 +1202,7 @@ shield, and each requirement below holds where its switch is on.
 | SHIELD-10 | State | While the mode switch is on, each learned offset shall be the heading error that recurs most often, within 1e-5 rad, among the last 500 kept for that base, instead of the running mean. | R9 |
 | SHIELD-11 | State | While the stay switch is on, shield mode shall take no exit inside a round, and shall be left for the rest of the battle once the enemy's bullets have done more than 150 damage in it, or when the enemy has not fired by tick 300 of a round. | R9 |
 | SHIELD-12 | Optional | Where the turn switch is on, the heading predictors shall include a fifth head-on base: the firing-point base turned by the enemy's body turn on the firing tick. | R9 |
+| SHIELD-13 | Ubiquitous | The robot shall ship shield mode with the hold, learn, mode and stay switches on and the turn switch off, and its shield list shall hold the 103 robots of Nullstride 2.3.3's list that the 8-seed step 3 sweep admitted by the D5 rule, beside the 97 it held in 3.12. | R9 |
 
 - **Switches** (`ShieldDesign.parse`): `hold`, `learn`, `mode`, `stay`, `turn`, or `all`. The
   ablation builds edit the one line `SHIPPED = parse("")` (`hadur-bench/build-ablation.sh`:
@@ -1218,6 +1220,13 @@ shield, and each requirement below holds where its switch is on.
 - **SHIELD-12** is a reconstruction: the decompiled method is obfuscated, and the tick the
   enemy's body turn is read from is my reading of it. It is a predictor like the others and is
   used only while it has matched the most bullets.
+- **SHIELD-13** (3.13). On the PC at 8 seeds against 3.12, the four step-1 builds were level
+  with each other on the 89 robots both lists name (hold alone +4.1 points a robot; learn, mode
+  and stay each within ±1.4 of it; turn +0.1), so the robot ships the build step 3 measured,
+  not a combination it never ran. Step 3: +6.6 points a robot on the 198 (+1.07 APS unpicked);
+  103 admitted, worth +1.17 APS on the seeds that chose them. Every switch acts only while shield
+  mode is on, which needs a listed opponent in a duel, so no other opponent, and no melee or
+  team battle, plays differently.
 - **SB records** (measurement, every design): each bullet that hits us from a listed opponent
   writes `SB,round,tick,class,ordinal,predicted,power`, class `off`, `nowave`, `missed`
   (a shield bullet was fired at it), `first` or `unshielded`, so the plan's step 2 can classify

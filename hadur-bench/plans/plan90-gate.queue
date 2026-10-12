@@ -1,0 +1,28 @@
+# Plan "the road from 87.7 to 90 APS" step 4: the 3.13 candidate against the released 3.12.
+# 3.13 = 3.12 with SHIELD-13 (shield switches hold, learn, mode and stay on; 103 robots of
+# Nullstride's list added to the shield list; docs/bench/local/2026-10-12_plan90-pc-read.md) and
+# MGUN-6 (team only, already gated on the team bench). Build from this checkout.
+#   ./queue.sh run plan90-gate        (or  .\queue.ps1 run plan90-gate)
+# Stop the RoboRumble workers first and keep the PC otherwise idle; one queue at a time.
+#
+#   listed  The 200 robots on 3.13's list (shield-313.txt), 8 fresh seeds (921-928). Shield mode
+#           acts on nobody else, so this is where the whole change is. About 1 hour.
+#           Pass: at least +0.6 APS over the field with the 95% interval above 0, the 103 new
+#           robots positive together, and no band below -0.05 APS.
+#   census  The whole field (census-312.txt, 1,212 robots), 4 fresh seeds (931-934): the census
+#           confirmation Leigh's standing rule asks for. Robots off the list should read level.
+#           About 3.5 hours.
+# Read each with data/tools/screen_paired.py on its rows export, --set as below.
+
+set HEAP = --child-heap 2G
+set E = --engine 1.11.1
+set COMMON = --skip-build --skip-fetch --rounds 35 --parallel 12 --cpu-constant 1488498 ${HEAP} ${E}
+set C313 = --robot-jar bisect/hadur2.Hadur_3.13.jar --robot "hadur2.Hadur 3.13"
+set B312 = --baseline bisect/hadur2.Hadur_3.12.jar --baseline-robot "hadur2.Hadur 3.12"
+
+prep | mkdir -p bisect && { [ -s bisect/hadur2.Hadur_3.12.jar ] || curl -fsSL -o bisect/hadur2.Hadur_3.12.jar https://github.com/lgriffin/Hadur_Robot/releases/download/v3.12/hadur2.Hadur_3.12.jar; } && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur2.Hadur_3.13.jar bisect/ && ./fetch-opponents.sh --set shield-313.txt && ./fetch-opponents.sh --set census-312.txt
+
+listed | ./bench-top20.sh ${COMMON} --seeds 8 --seed-base 920 --set shield-313.txt ${C313} ${B312} --label plan90-gate-listed
+  after: prep
+census | ./bench-top20.sh ${COMMON} --seeds 4 --seed-base 930 --set census-312.txt ${C313} ${B312} --label plan90-gate-census
+  after: listed

@@ -71,18 +71,31 @@ class ShieldDesignTest {
     // ---- the design itself
 
     @Test
+    @Tag("SHIELD-13")
+    @DisplayName("the robot ships hold, learn, mode and stay with turn off, and the plain constructor uses it")
+    void shippedIsStep3Build() {
+        ShieldDesign shipped = ShieldDesign.SHIPPED;
+        assertTrue(shipped.hold && shipped.learn && shipped.mode && shipped.stay);
+        assertFalse(shipped.turn);
+        assertEquals("hold,learn,mode,stay", shipped.toString());
+        assertEquals(ShieldMode.BASES, shipped.bases());
+        assertSame(ShieldDesign.SHIPPED, new ShieldMode(ShieldList.NONE, records::add, 35).design());
+    }
+
+    @Test
     @Tag("SHIELD-8")
     @Tag("SHIELD-9")
     @Tag("SHIELD-10")
     @Tag("SHIELD-11")
     @Tag("SHIELD-12")
-    @DisplayName("the robot ships 3.12's shield: every switch off, and the plain constructor uses it")
-    void shippedIsNone() {
-        ShieldDesign shipped = ShieldDesign.SHIPPED;
-        assertFalse(shipped.hold || shipped.learn || shipped.mode || shipped.stay || shipped.turn);
-        assertEquals("none", shipped.toString());
-        assertEquals(ShieldMode.BASES, shipped.bases());
-        assertSame(ShieldDesign.SHIPPED, new ShieldMode(ShieldList.NONE, records::add, 35).design());
+    @DisplayName("NONE is 3.12's shield: every switch off, and a null design means NONE")
+    void noneIs312() {
+        ShieldDesign none = ShieldDesign.NONE;
+        assertFalse(none.hold || none.learn || none.mode || none.stay || none.turn);
+        assertEquals("none", none.toString());
+        assertEquals(ShieldMode.BASES, none.bases());
+        assertSame(ShieldDesign.NONE, ShieldDesign.parse(""));
+        assertSame(ShieldDesign.NONE, new ShieldMode(ShieldList.NONE, records::add, 35, null).design());
     }
 
     @Test
