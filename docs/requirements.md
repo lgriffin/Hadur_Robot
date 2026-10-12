@@ -1103,7 +1103,7 @@ MMOVE-8 the melee strand, WEAVE-7 and WEAVE-8 the conductor.
 | MMOVE-8 | State | While on a team, each member's movement noise field shall differ from its teammates' by the member's place in the roster; off a team the field shall be the one MMOVE-1 uses. | T1 |
 | WEAVE-7 | State | While a living teammate's predicted track, over the time a bullet of any power would take to pass it, comes within the fire lane's half-width of the lane, the conductor shall withhold the fire permission. | T1 |
 | WEAVE-8 | Unwanted | If the driving role's drive, simulated a set number of ticks ahead, would bring Hadur within a robot's width and a margin of a living teammate's predicted position, then the conductor shall replace the drive with the nearest of a brake or a reversal that stays clear, keeping the gun, radar, fire and message orders. | T1 |
-| MGUN-6 | State | While in melee on a team with a living teammate and at least 30 energy of its own, the gun shall fire power 3, or the power that kills its target if less, in place of the MGUN-3 table. | T2 |
+| MGUN-6 | State | While in melee on a team with a living teammate whose position is no older than the WORLD-3 window, and at least 30 energy of its own, the gun shall fire power 3, or the power that kills its target if less, in place of the MGUN-3 table. | T2 |
 
 ### T1 notes
 
@@ -1138,7 +1138,9 @@ MMOVE-8 the melee strand, WEAVE-7 and WEAVE-8 the conductor.
   team worse beyond its spread (PR #191, `docs/bench/local/2026-10-12_team-census-tw.md`).
 - **Where.** `MeleeEnergyPolicy.teamPower` replaces the table's result in
   `FieldGun.solutions` while `FieldGun.onTeam` is set; `MeleeController` sets it each tick,
-  before the targeting waves, from the living teammates (MMOVE-6's list, empty off a team). The
+  before the targeting waves, from the living teammates (MMOVE-6's list, empty off a team). A
+  teammate silent past the window drops out of that list, and with it full power; the gated
+  `tpow` build read the same list, so this is the behaviour the gate measured. The
   MGUN-3 table, its lead cap and its two-left row stand off a team and below 30 energy.
 - Solo play is untouched: off a team `onTeam` is never set, so 1v1 and melee replay bit for bit.
 
