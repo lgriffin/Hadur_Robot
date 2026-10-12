@@ -140,4 +140,26 @@ class FieldGunTest {
         assertArrayEquals(new double[]{80, -20}, EnemyHistory.offset(t, 15), 1e-9);
         assertArrayEquals(new double[]{80, -40}, EnemyHistory.offset(t, 50), 1e-9);
     }
+
+    @Test
+    @Tag("MGUN-6")
+    @DisplayName("MGUN-6: on a team every solution carries full power; off a team the table's, as before")
+    void teamPowerOnlyOnATeam() {
+        scanned("far", 500, 950, 100, 0, 0, 5);
+        scanned("near", 500 + 250, 500, 100, 0, 0, 5);
+        List<FieldGun.Solution> solo = gun.solutions(me, 100, 5, tracker.alive(), 6);
+        assertEquals(2, solo.size());
+        for (FieldGun.Solution s : solo) {
+            assertEquals(MeleeEnergyPolicy.power(me.distance(tracker.get(s.target).location), 100, 100, 5), s.power, 1e-9);
+            assertTrue(s.power < 3.0, s.target + " " + s.power);
+        }
+        gun.onTeam(true);
+        for (FieldGun.Solution s : gun.solutions(me, 100, 5, tracker.alive(), 6)) assertEquals(3.0, s.power, 1e-9);
+        // Below 30 own energy the table stands on a team too.
+        for (FieldGun.Solution s : gun.solutions(me, 29, 5, tracker.alive(), 6)) {
+            assertEquals(MeleeEnergyPolicy.power(me.distance(tracker.get(s.target).location), 29, 100, 5), s.power, 1e-9);
+        }
+        gun.onTeam(false);
+        for (FieldGun.Solution s : gun.solutions(me, 100, 5, tracker.alive(), 6)) assertTrue(s.power < 3.0);
+    }
 }

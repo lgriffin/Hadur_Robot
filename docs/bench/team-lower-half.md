@@ -265,3 +265,18 @@ jar, 65.9%). Rows in `data/bench/2026-10-11_team-lower-half-cloud.tsv`.
 - If one passes, the release change is a team-only power rule that does exactly what the screen did
   (replace the table, lead cap and duel row included, from 30 energy), reached only while the
   member has living teammates; 1v1 and melee fixtures stay bit-identical.
+
+## 12. PC gate passed; MGUN-6 ships `tpow` (2026-10-12)
+
+`team-power` on the PC, all 45 teams, 6 seeds, each battle paired with 3.12 (PR #191):
+
+| Candidate | Share | 3.12 | Paired diff |
+|---|---:|---:|---:|
+| `tpow` | 69.2% | 63.5% | **+5.7 ± 1.1** |
+| `tpowb` | 68.0% | 63.4% | +4.6 ± 0.8 |
+
+`tpow` gains most against the top teams (CombatTeam +28, Firestarter +19, GlowingHawks +16, Xmen
++14); no team is worse beyond its 6-seed spread (TroodonPack −6.9 ± 7.9). It ships as MGUN-6
+(team plan stage T2, docs/requirements.md), reached only while a member has a living teammate;
+the 1v1 and melee replay fixtures replay unchanged, and only the two team fixtures were
+re-recorded.

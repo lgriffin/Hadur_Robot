@@ -43,8 +43,8 @@
         <hadur.arch.stage>A5</hadur.arch.stage>
         <!-- The DrussGT route's stage (D1-D7, docs/druss-route-plan.md): its requirements up to here must be covered too. -->
         <hadur.druss.stage>D8</hadur.druss.stage>
-        <!-- The Team plan's stage (T1, docs/team-plan-t1.md). -->
-        <hadur.team.stage>T1</hadur.team.stage>
+        <!-- The Team plan's stage (T1-T2, docs/team-plan-t1.md; T2 in docs/requirements.md). -->
+        <hadur.team.stage>T2</hadur.team.stage>
     </properties>
 
     <repositories>
