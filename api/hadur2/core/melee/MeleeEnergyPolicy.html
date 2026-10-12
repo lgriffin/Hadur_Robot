@@ -105,7 +105,12 @@ loadScripts(document, 'script');</script>
 
  <p>Nothing is fired below <a href="#MIN_OWN_ENERGY"><code>MIN_OWN_ENERGY</code></a>, a shot never costs more than what kills
  the target, and while Hadur leads the target on energy a shot never drops it below the
- target's.</p></div>
+ target's.</p>
+
+ <p>On a team (MGUN-6, <a href="#teamPower(double,double,double)"><code>teamPower(double, double, double)</code></a>) a member with <a href="#TEAM_FULL_POWER_ENERGY"><code>TEAM_FULL_POWER_ENERGY</code></a> or
+ more fires 3, or what kills the target, in place of the table: the table is a free-for-all's,
+ and on the team ladder its light shots let rounds run a third longer than a team firing hard
+ (docs/bench/team-lower-half.md, sections 10 and 11).</p></div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -130,6 +135,11 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color"><code>(package private) static final double</code></div>
 <div class="col-second odd-row-color"><code><a href="#MIN_POWER" class="member-name-link">MIN_POWER</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>static final double</code></div>
+<div class="col-second even-row-color"><code><a href="#TEAM_FULL_POWER_ENERGY" class="member-name-link">TEAM_FULL_POWER_ENERGY</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">MGUN-6: the own energy from which a member on a team fires full power.</div>
+</div>
 </div>
 </section>
 </li>
@@ -164,6 +174,13 @@ loadScripts(document, 'script');</script>
  int&nbsp;others)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">The power to fire at a target <code>distance</code> away with <code>targetEnergy</code>, or 0 to hold.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static double</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#teamPower(double,double,double)" class="member-name-link">teamPower</a><wbr>(double&nbsp;tablePower,
+ double&nbsp;ownEnergy,
+ double&nbsp;targetEnergy)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">MGUN-6: the power a member on a team fires, given the table's <code>tablePower</code>.</div>
 </div>
 </div>
 </div>
@@ -238,6 +255,21 @@ loadScripts(document, 'script');</script>
 </dl>
 </section>
 </li>
+<li>
+<section class="detail" id="TEAM_FULL_POWER_ENERGY">
+<h3>TEAM_FULL_POWER_ENERGY</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">TEAM_FULL_POWER_ENERGY</span></div>
+<div class="block">MGUN-6: the own energy from which a member on a team fires full power.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur2.core.melee.MeleeEnergyPolicy.TEAM_FULL_POWER_ENERGY">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
 </ul>
 </section>
 </li>
@@ -254,6 +286,18 @@ loadScripts(document, 'script');</script>
  double&nbsp;targetEnergy,
  int&nbsp;others)</span></div>
 <div class="block">The power to fire at a target <code>distance</code> away with <code>targetEnergy</code>, or 0 to hold.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="teamPower(double,double,double)">
+<h3>teamPower</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">teamPower</span><wbr><span class="parameters">(double&nbsp;tablePower,
+ double&nbsp;ownEnergy,
+ double&nbsp;targetEnergy)</span></div>
+<div class="block">MGUN-6: the power a member on a team fires, given the table's <code>tablePower</code>. A hold
+ (0) stands; with <a href="#TEAM_FULL_POWER_ENERGY"><code>TEAM_FULL_POWER_ENERGY</code></a> or more own energy the shot is 3, or what
+ kills the target, whatever the table said (its lead cap and two-left row included);
+ below that the table stands.</div>
 </section>
 </li>
 <li>
