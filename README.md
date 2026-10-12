@@ -9,6 +9,14 @@ free-for-alls, a five-robot team entry, and a core that has no idea it is inside
 in a shared project with one human, Leigh Griffin, who set the goals and ran the live
 entries. This page covers what the robot does, how it is built, and how it was built.
 
+## In homage to Deep7
+
+Hadur owes its start to [**wit.Deep7**](http://robocode-archive.strangeautomata.com/robots/wit.Deep7_2.0.jar),
+the robot that won the **2004 Irish Robocode championship**. Deep7 was designed by
+Bill Malone, Leigh Griffin and Patrick Ffrench as part of the Applied Computing course
+at Waterford Institute of Technology (the `wit` in its name). Building it is how we
+learned Java, and it was the original inspiration for everything on this page.
+
 ## Standing
 
 **3.12 was released on 2026-10-11** and its first full 1v1 pass, saved 2026-10-11 17:59 UTC
