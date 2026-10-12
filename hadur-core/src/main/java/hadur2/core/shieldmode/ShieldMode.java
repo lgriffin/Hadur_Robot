@@ -49,6 +49,17 @@ import java.util.Locale;
  * at each round's end {@code SR,round,tick,shieldShots,intercepts,hitsTaken,unpredicted,
  * attackShots,damageTaken,allowed,exit}.</p>
  *
+ * <p><b>Toward Nullstride's shield (SHIELD-8 to SHIELD-12).</b> {@link ShieldDesign} switches
+ * each difference the decompiled Nullstride 2.3.3 showed on or off, so each can be benched on
+ * its own; {@link ShieldDesign#SHIPPED} has them all off, which is the mode described above.</p>
+ *
+ * <p>For each enemy bullet that hits us while the opponent is listed, an {@code
+ * SB,round,tick,class,ordinal,predicted,power} record says why it got through: {@code off}
+ * (shield mode was not on), {@code nowave} (no wave of ours matched it), {@code missed} (a
+ * shield bullet was fired at it), {@code first} (the round's first enemy bullet, with no shield
+ * fired) or {@code unshielded} (no shield fired at a later bullet); {@code ordinal} counts the
+ * round's enemy bullets from 0 and {@code predicted} is 1 when a predictor was exact.</p>
+ *
  * <p>Plain Java and the engine's physics only; deterministic (CORE-2, RES-6), and every
  * list is bounded (RES-2).</p>
  */
@@ -62,6 +73,8 @@ public final class ShieldMode {
      * flips its tiny offset with the way we last moved).
      */
     public static final int PREDICTORS = 3 * BASES;
+    /** Head-on bases with SHIELD-12's body-turn base. */
+    public static final int MAX_BASES = BASES + 1;
     /** How close a predicted heading must be to count as exact. */
     public static final double EXACT = 1e-5;
     /** The sideways step taken on the tick before a shield fires. */
@@ -172,10 +185,12 @@ public final class ShieldMode {
         double oy;
         double power;
         double speed;
-        final double[] headings = new double[BASES];
+        final double[] headings = new double[MAX_BASES];
         double direction = 1;
         boolean shieldTried;
+        boolean shieldFired;
         boolean resolved;
+        int ordinal;
     }
 
     private static final class Plan {
@@ -192,6 +207,9 @@ public final class ShieldMode {
     private final ShieldList list;
     private final Telemetry telemetry;
     private final ShieldBudget budget;
+    private final ShieldDesign design;
+    private final int bases;
+    private final int predictors;
 
     private final long[] scanTime = new long[HISTORY];
     private final double[][] scan = new double[HISTORY][7];
@@ -199,10 +217,13 @@ public final class ShieldMode {
     private final List<EnemyWave> waves = new ArrayList<>();
     /** Our shield bullets in flight: {power, heading}, oldest first. */
     private final List<double[]> ownBullets = new ArrayList<>();
-    private final int[] exactHits = new int[PREDICTORS];
-    private final double[] offsets = new double[BASES];
-    private final double[] directionalOffsets = new double[BASES];
+    private final int[] exactHits = new int[3 * MAX_BASES];
+    private final double[] offsets = new double[MAX_BASES];
+    private final double[] directionalOffsets = new double[MAX_BASES];
     private int offsetSamples;
+    /** SHIELD-10: the kept errors per base, plain and times the lateral direction. */
+    private final ModalOffset[] modal = new ModalOffset[MAX_BASES];
+    private final ModalOffset[] directionalModal = new ModalOffset[MAX_BASES];
     private double lateralDirection = 1;
     private Plan plan;
     private long enemyNextFire;
@@ -218,6 +239,7 @@ public final class ShieldMode {
     private boolean battleOff;
     private boolean roundOff;
     private String exitReason = "-";
+    private String battleExit = "budget";
     private boolean announced;
     private int round;
     private long now;
@@ -227,6 +249,8 @@ public final class ShieldMode {
     private int interceptsThisRound;
     private int shieldShotsThisRound;
     private int attackShotsThisRound;
+    private int enemyShotsThisRound;
+    private boolean enemyFiredThisRound;
 
     /**
      * A shield mode for one battle.
@@ -246,10 +270,40 @@ public final class ShieldMode {
      * @param rounds the battle's number of rounds, for SHIELD-6's budget; 0 when not known
      */
     public ShieldMode(ShieldList list, Telemetry telemetry, int rounds) {
+        this(list, telemetry, rounds, ShieldDesign.SHIPPED);
+    }
+
+    /**
+     * A shield mode for one battle of a known length, with a chosen design.
+     *
+     * @param list the opponents it applies to; null or empty for none
+     * @param telemetry where its records go
+     * @param rounds the battle's number of rounds, for SHIELD-6's budget; 0 when not known
+     * @param design which of SHIELD-8 to SHIELD-12 it takes; null for {@link ShieldDesign#NONE}
+     */
+    public ShieldMode(ShieldList list, Telemetry telemetry, int rounds, ShieldDesign design) {
         this.list = list == null ? ShieldList.NONE : list;
         this.telemetry = telemetry;
         this.budget = new ShieldBudget(rounds);
+        this.design = design == null ? ShieldDesign.NONE : design;
+        this.bases = this.design.bases();
+        this.predictors = 3 * bases;
+        if (this.design.mode) {
+            for (int b = 0; b < MAX_BASES; b++) {
+                modal[b] = new ModalOffset(ShieldDesign.KEPT_ERRORS, EXACT);
+                directionalModal[b] = new ModalOffset(ShieldDesign.KEPT_ERRORS, EXACT);
+            }
+        }
         newRound(0);
+    }
+
+    /**
+     * The design this mode runs.
+     *
+     * @return its SHIELD-8 to SHIELD-12 switches
+     */
+    public ShieldDesign design() {
+        return design;
     }
 
     /**
@@ -277,6 +331,8 @@ public final class ShieldMode {
         interceptsThisRound = 0;
         shieldShotsThisRound = 0;
         attackShotsThisRound = 0;
+        enemyShotsThisRound = 0;
+        enemyFiredThisRound = false;
     }
 
     /**
@@ -337,7 +393,7 @@ public final class ShieldMode {
     /** The predictor that has matched the most enemy bullets exactly. */
     int bestPredictor() {
         int best = 0;
-        for (int i = 1; i < PREDICTORS; i++) {
+        for (int i = 1; i < predictors; i++) {
             if (exactHits[i] > exactHits[best]) best = i;
         }
         return best;
@@ -410,6 +466,7 @@ public final class ShieldMode {
     public void onEnemyShot(long fireTime, double power) {
         if (!listed) return;
         lastEnemyShot = fireTime;
+        enemyFiredThisRound = true;
         lastEnemyPower = power;
         enemyNextFire = fireTime + (long) Math.ceil((1 + power / 5) / coolingRate - 1e-9);
         if (!active()) return;
@@ -440,7 +497,11 @@ public final class ShieldMode {
         double projY = before[3] + Math.cos(before[4]) * before[5];
         w.headings[2] = ShieldGeometry.bearing(projX, projY, before[0], before[1]);
         w.headings[3] = ShieldGeometry.bearing(at[2], at[3], at[0], at[1]);
+        // SHIELD-12: the firing-point base turned by the enemy's body turn on the firing tick.
+        w.headings[4] = Angles.normalAbsoluteAngle(
+            w.headings[1] + Angles.normalRelativeAngle(at[4] - before[4]));
         w.direction = before[6];
+        w.ordinal = enemyShotsThisRound++;
         if (waves.size() >= MAX_WAVES) waves.remove(0);
         waves.add(w);
     }
@@ -458,32 +519,31 @@ public final class ShieldMode {
     public void onHitByBullet(long time, double power, double x, double y, double heading) {
         if (!listed) return;
         now = time;
+        boolean wasActive = active();
         EnemyWave w = findWave(time, power, x, y);
         boolean predicted = false;
         if (w != null) {
             w.resolved = true;
-            for (int i = 0; i < PREDICTORS; i++) {
-                if (Math.abs(Angles.normalRelativeAngle(heading - predicted(w, i))) < EXACT) {
-                    exactHits[i]++;
-                    predicted = true;
-                }
-            }
-            for (int b = 0; b < BASES; b++) {
-                double err = Angles.normalRelativeAngle(heading - w.headings[b]);
-                offsets[b] = (offsets[b] * offsetSamples + err) / (offsetSamples + 1);
-                directionalOffsets[b] = (directionalOffsets[b] * offsetSamples + err * w.direction)
-                    / (offsetSamples + 1);
-            }
-            offsetSamples++;
+            predicted = learn(w, heading);
         }
+        telemetry.emit(String.format(Locale.ROOT, "SB,%d,%d,%s,%d,%d,%.2f", round, time,
+            hitClass(wasActive, w), w == null ? -1 : w.ordinal, predicted ? 1 : 0, power));
         budget.damageTaken(power);
         if (!battleOff && budget.exceeded()) {
-            battleOff = true;
-            plan = null;
-            telemetry.emit("SH," + round + "," + time + ",off,budget");
+            leaveBattle(time, "budget");
+            return;
+        }
+        if (!battleOff && design.stay && budget.taken() > ShieldDesign.STAY_DAMAGE) {
+            leaveBattle(time, "damage");
             return;
         }
         if (!active()) return;
+        // SHIELD-11: no exit inside the round.
+        if (design.stay) {
+            hitsThisRound++;
+            if (!predicted) unpredictedThisRound++;
+            return;
+        }
         hitsThisRound++;
         if (!predicted) unpredictedThisRound++;
         if (unpredictedThisRound >= MAX_UNPREDICTED_HITS) {
@@ -493,10 +553,48 @@ public final class ShieldMode {
         }
     }
 
+    /** Why a bullet that hit us got through, for its {@code SB} record. */
+    private static String hitClass(boolean wasActive, EnemyWave w) {
+        if (!wasActive) return "off";
+        if (w == null) return "nowave";
+        if (w.shieldFired) return "missed";
+        return w.ordinal == 0 ? "first" : "unshielded";
+    }
+
+    /**
+     * The true heading of one of the enemy's bullets scores the predictors that were exact
+     * for it and teaches the offsets.
+     *
+     * @return whether any predictor was exact
+     */
+    private boolean learn(EnemyWave w, double heading) {
+        boolean predicted = false;
+        for (int i = 0; i < predictors; i++) {
+            if (Math.abs(Angles.normalRelativeAngle(heading - predicted(w, i))) < EXACT) {
+                exactHits[i]++;
+                predicted = true;
+            }
+        }
+        for (int b = 0; b < bases; b++) {
+            double err = Angles.normalRelativeAngle(heading - w.headings[b]);
+            if (design.mode) {
+                // SHIELD-10: the error that recurs most often, not the mean.
+                offsets[b] = modal[b].add(err);
+                directionalOffsets[b] = directionalModal[b].add(err * w.direction);
+            } else {
+                offsets[b] = (offsets[b] * offsetSamples + err) / (offsetSamples + 1);
+                directionalOffsets[b] = (directionalOffsets[b] * offsetSamples + err * w.direction)
+                    / (offsetSamples + 1);
+            }
+        }
+        offsetSamples++;
+        return predicted;
+    }
+
     /** SHIELD-5, SHIELD-6: predictor {@code i}'s heading for wave {@code w}. */
     private double predicted(EnemyWave w, int i) {
-        int b = i % BASES;
-        switch (i / BASES) {
+        int b = i % bases;
+        switch (i / bases) {
             case 0: return w.headings[b];
             case 1: return w.headings[b] + offsets[b];
             default: return w.headings[b] + w.direction * directionalOffsets[b];
@@ -512,10 +610,27 @@ public final class ShieldMode {
      * @param y where they met, y
      */
     public void onIntercepted(long time, double enemyPower, double x, double y) {
+        onIntercepted(time, enemyPower, x, y, Double.NaN);
+    }
+
+    /**
+     * One of our bullets met an enemy bullet whose heading is known. With SHIELD-9 on, that
+     * heading teaches the predictors as a hit's does.
+     *
+     * @param time the tick
+     * @param enemyPower the enemy bullet's power
+     * @param x where they met, x
+     * @param y where they met, y
+     * @param enemyHeading the enemy bullet's heading, radians, or NaN when unknown
+     */
+    public void onIntercepted(long time, double enemyPower, double x, double y, double enemyHeading) {
         if (!listed) return;
         now = time;
         EnemyWave w = findWave(time, enemyPower, x, y);
-        if (w != null) w.resolved = true;
+        if (w != null) {
+            w.resolved = true;
+            if (design.learn && !Double.isNaN(enemyHeading)) learn(w, enemyHeading);
+        }
         if (active()) interceptsThisRound++;
     }
 
@@ -530,7 +645,7 @@ public final class ShieldMode {
 
     /** The enemy drove into us, or we into it: a rammer is no target for a shield. */
     public void onRammed() {
-        if (active()) leaveRound(now, "rammed");
+        if (active() && !design.stay) leaveRound(now, "rammed");
     }
 
     /**
@@ -544,12 +659,8 @@ public final class ShieldMode {
         telemetry.emit(String.format(Locale.ROOT, "SR,%d,%d,%d,%d,%d,%d,%d,%.1f,%.1f,%s",
             round, tick, shieldShotsThisRound, interceptsThisRound, hitsThisRound,
             unpredictedThisRound, attackShotsThisRound, budget.taken(), budget.allowed(),
-            battleOff ? "budget" : exitReason));
-        if (!battleOff && budget.exceeded()) {
-            battleOff = true;
-            plan = null;
-            telemetry.emit("SH," + round + "," + tick + ",off,budget");
-        }
+            battleOff ? battleExit : exitReason));
+        if (!battleOff && budget.exceeded()) leaveBattle(tick, "budget");
     }
 
     /**
@@ -575,6 +686,14 @@ public final class ShieldMode {
             return true;
         }
         return false;
+    }
+
+    /** SHIELD-6, SHIELD-11: off for the rest of the battle. */
+    private void leaveBattle(long time, String reason) {
+        battleOff = true;
+        plan = null;
+        battleExit = reason;
+        telemetry.emit("SH," + round + "," + time + ",off," + reason);
     }
 
     private void leaveRound(long time, String reason) {
@@ -609,13 +728,22 @@ public final class ShieldMode {
     public Command tick(Situation s) {
         now = s.time;
         coolingRate = s.coolingRate;
-        if (Math.hypot(s.enemyX - s.x, s.enemyY - s.y) < CLOSE_RANGE) {
-            leaveRound(s.time, "close");
-            return null;
-        }
-        if (s.time - lastEnemyShot >= QUIET_TICKS) {
-            leaveRound(s.time, "quiet");
-            return null;
+        if (design.stay) {
+            // SHIELD-11: no exit inside the round; an enemy that has not fired by tick 300
+            // ends the mode for the battle.
+            if (!enemyFiredThisRound && s.time >= ShieldDesign.SILENT_TICKS) {
+                leaveBattle(s.time, "silent");
+                return null;
+            }
+        } else {
+            if (Math.hypot(s.enemyX - s.x, s.enemyY - s.y) < CLOSE_RANGE) {
+                leaveRound(s.time, "close");
+                return null;
+            }
+            if (s.time - lastEnemyShot >= QUIET_TICKS) {
+                leaveRound(s.time, "quiet");
+                return null;
+            }
         }
         prune(s);
         double back = 0;
@@ -626,6 +754,7 @@ public final class ShieldMode {
             p.wave.shieldTried = true;
             if (canFire(p, s)) {
                 shieldShotsThisRound++;
+                p.wave.shieldFired = true;
                 if (ownBullets.size() >= MAX_OWN_BULLETS) ownBullets.remove(0);
                 ownBullets.add(new double[] {p.power, s.gunHeading});
                 wiggleSide = -wiggleSide;
@@ -752,6 +881,8 @@ public final class ShieldMode {
      * gun cool again in time to shield its next possible shot.
      */
     private double attackPower(Situation s) {
+        // SHIELD-8: no shot at a living enemy while shielding; a disabled one cannot fire back.
+        if (design.hold && s.enemyEnergy > 0) return 0;
         if (!s.mayFire || s.gunHeat > 0 || !s.gunOnTarget || s.attackPower < 0.1) return 0;
         double power = Math.min(s.attackPower, s.energy - 1);
         if (power < 0.1) return 0;

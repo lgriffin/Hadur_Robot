@@ -140,6 +140,7 @@ EARS requirements from the Hadur 2 technical direction. This file is the source 
 | BENCH-86 | Event | When a live client's results file (its `OUTPUT=`) or Hadur's `health.hc` (RES-8) changes during `live_client.py watch`, the tool shall append each battle with a hadur2 robot once (score share, rounds won, bullet damage) and each new health record with the opponent and shield verdict of the profile saved at the same battle end, keeping battles already recorded across uploads and restarts (3.12 plan). | R9 |
 | BENCH-87 | Event | When `live_client.py watch` reads a LiteRumble BotDetails page (or `page-diff` is given two), the tool shall save the page, record its header and infer the mean score of each pairing's newly uploaded battles from the pairing's mean and battle count before and after, flagging any under 50 or 25 points or more under the pairing's earlier mean; a failed fetch shall be logged and never stop the watch (3.12 plan). | R9 |
 | BENCH-88 | Optional | Where `live_client.py report OUT` is given a watch folder, the tool shall summarise the client's battles per game, the health records' skipped turns, faults and stored shield verdicts, each 1v1 battle under 70% share joined to its health record, the latest profile snapshot and the live page's movement and flagged drops (3.12 plan). | R9 |
+| BENCH-89 | Unwanted | If a JVM that `jps` lists ends, starts or is this bench's own battle while the other-JVM count is taken, then the bench shall not count it as another Robocode JVM: its own battles are read before and after the listing, and a listed process that is gone or descends from the bench is left out (plan-90 step 6: the count dropped 22 to 32% of screen pairs). | R9 |
 | RES-10 | Ubiquitous | The robot shall leave no reference to its classes in the process after a battle, so that the number of classes loaded in one JVM stays flat across a session of battles. | R7 |
 | MOVE-3 | Ubiquitous | Movement shall score a wave's danger only over the part of the intersection not in a certain bullet shadow, at half weight inside a possible shadow. | R6 |
 | MOVE-4 | Ubiquitous | Movement shall score a wave's danger as the danger density integrated over the firing angles of the precise intersection. | R6 |
@@ -1167,6 +1168,43 @@ build without it. RES-14 is retired, and with it RES-9's use (see the retired ta
   `DuelController.fireIfGunTurned` decides to hold. The detector, the stored verdict and the
   jitter itself are unchanged (P4's stricter detector and P6's ignored verdict were level on the
   screen and are not in 3.12).
+
+## Toward Nullstride's shield (SHIELD-8 to SHIELD-12)
+
+The plan "Hadur: the road from 87.7 to 90 APS" (2026-10-11, docs/plan-90.md) reads Nullstride
+2.3.3's decompiled shield beside Hadur's and lists where they differ. Each difference is one
+switch of `shieldmode.ShieldDesign`, so each can be benched on its own (step 1 of that plan).
+`ShieldDesign.SHIPPED` has every switch off: until a bench gate passes, the robot plays 3.12's
+shield, and each requirement below holds where its switch is on.
+
+| ID | Pattern | Requirement | Stage |
+|---|---|---|---|
+| SHIELD-8 | State | While shield mode is on with the hold switch, the core shall not fire at a living enemy, and shall keep the gun pointed at it between shields. | R9 |
+| SHIELD-9 | Event | When one of our shield bullets meets an enemy bullet whose heading is known and the learn switch is on, the core shall score the heading predictors and update the learned offsets with that heading as it does for a bullet that hit us. | R9 |
+| SHIELD-10 | State | While the mode switch is on, each learned offset shall be the heading error that recurs most often, within 1e-5 rad, among the last 500 kept for that base, instead of the running mean. | R9 |
+| SHIELD-11 | State | While the stay switch is on, shield mode shall take no exit inside a round, and shall be left for the rest of the battle once the enemy's bullets have done more than 150 damage in it, or when the enemy has not fired by tick 300 of a round. | R9 |
+| SHIELD-12 | Optional | Where the turn switch is on, the heading predictors shall include a fifth head-on base: the firing-point base turned by the enemy's body turn on the firing tick. | R9 |
+
+- **Switches** (`ShieldDesign.parse`): `hold`, `learn`, `mode`, `stay`, `turn`, or `all`. The
+  ablation builds edit the one line `SHIPPED = parse("")` (`hadur-bench/build-ablation.sh`:
+  `shold`, `slearn`, `smode`, `sstay`, `sturn`, `snull` for all five).
+- **SHIELD-8.** A disabled enemy (energy 0) is still shot: it cannot fire back. 3.12 fires the
+  main gun between shields and at tick 32 of a quiet enemy; in a simulation of Hadur's own
+  classes those attack shots were what let bullets through inside about 420 px.
+- **SHIELD-9.** The engine's `BulletHitBulletEvent` carries the other bullet, so the adapter
+  passes its heading (`BotEvent.BulletHitBullet.enemyHeading`, appended to the transcript's `X`
+  line after the owner; older lines read it as NaN and teach nothing).
+- **SHIELD-10** is `shieldmode.ModalOffset`: each kept error carries how many kept errors lie
+  within the tolerance of it, so an add is linear in the 500 kept; a tie goes to the latest.
+- **SHIELD-11.** `SH,round,tick,off,damage` and `SH,round,tick,off,silent` are the new battle
+  exits; SHIELD-6's budget still applies. The 150 is Nullstride's.
+- **SHIELD-12** is a reconstruction: the decompiled method is obfuscated, and the tick the
+  enemy's body turn is read from is my reading of it. It is a predictor like the others and is
+  used only while it has matched the most bullets.
+- **SB records** (measurement, every design): each bullet that hits us from a listed opponent
+  writes `SB,round,tick,class,ordinal,predicted,power`, class `off`, `nowave`, `missed`
+  (a shield bullet was fired at it), `first` or `unshielded`, so the plan's step 2 can classify
+  what still gets through from the battle logs (`data/tools/shield_leaks.py`).
 
 ## Retired requirements
 

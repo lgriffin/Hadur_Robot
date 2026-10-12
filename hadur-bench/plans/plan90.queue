@@ -1,0 +1,53 @@
+# Plan "the road from 87.7 to 90 APS" (docs/plan-90.md). The PC half of steps 1, 3 and 5; the
+# cloud ran a 3-seed screen of step 1 first (docs/bench/local/2026-10-11_plan90-s1-cloud.md).
+#   ./queue.sh run plan90        (or  .\queue.ps1 run plan90)
+# Stop the RoboRumble workers first and keep the PC otherwise idle; one queue at a time.
+#
+# Step 1 (S1): Nullstride's shield differences, one at a time, on the 89 bots both robots shield
+# (shield-null-both.txt), 8 seeds, each build paired with the released 3.12 on the same seeds:
+#   sh       SHIELD-8 no attack shots while shielding
+#   shslsm   + SHIELD-9 learn from intercepted bullets, SHIELD-10 most frequent offset
+#   shslsmss + SHIELD-11 no in-round exits, battle exit at 150 damage or a silent enemy
+#   sn       all five, with SHIELD-12's body-turn base
+# Read each with data/tools/shield_leaks.py (zero-damage rounds from 40% toward 90%; listed
+# bots from 89.6% toward 95%). Gate for shipping a switch: score share up with the interval
+# above 0 on the listed set, and no band below -0.5 pp.
+#
+# Step 3 (S2): the best step-1 build with every opponent shielded (shield-all), on the 198
+# robots Nullstride shields that Hadur does not (shield-ns-sweep.txt, from PR #190's list), 8 seeds against 3.12; a robot joins the
+# list by the D5 rule (interval above 0, or open with a mean gain of 9 or more). S2B is the cloud
+# screen's step-1 winner, shslsmss (+5.9 pp on the 89, docs/bench/local/2026-10-11_plan90-s1-cloud.md);
+# change it if the PC's step 1 picks another.
+#
+# Step 5: Diamond 1.8.22 and ScalarR no-shield as census subjects on the census-311 seeds
+# (201-204), so they pair with the Hadur, Tomcat and Nullstride census rows. About 1.2 hours each.
+
+set HEAP = --child-heap 2G
+set E = --engine 1.11.1
+set COMMON = --skip-build --skip-fetch --rounds 35 --parallel 12 --cpu-constant 1488498 ${HEAP} ${E}
+set S1 = --seeds 8 --seed-base 910 --set shield-null-both.txt
+set B312 = --baseline bisect/hadur2.Hadur_3.12.jar --baseline-robot "hadur2.Hadur 3.12"
+set S2B = shold,slearn,smode,sstay,shield-all
+set S2 = --robot-jar bisect/hadur2.Hadur_3.12shslsmsssa.jar --robot "hadur2.Hadur 3.12shslsmsssa"
+
+prep | mkdir -p bisect && { [ -s bisect/hadur2.Hadur_3.12.jar ] || curl -fsSL -o bisect/hadur2.Hadur_3.12.jar https://github.com/lgriffin/Hadur_Robot/releases/download/v3.12/hadur2.Hadur_3.12.jar; } && bash ./build-ablation.sh shold && bash ./build-ablation.sh shold,slearn,smode && bash ./build-ablation.sh shold,slearn,smode,sstay && bash ./build-ablation.sh snull && bash ./build-ablation.sh ${S2B} && ./fetch-opponents.sh --set shield-null-both.txt && ./fetch-opponents.sh --set shield-ns-sweep.txt && ./fetch-opponents.sh --set census-311.txt
+
+# Step 1: about 25 minutes a build.
+sh       | ./bench-top20.sh ${COMMON} ${S1} --robot-jar bisect/hadur2.Hadur_3.12sh.jar --robot "hadur2.Hadur 3.12sh" ${B312} --label plan90-s1-sh
+  after: prep
+shslsm   | ./bench-top20.sh ${COMMON} ${S1} --robot-jar bisect/hadur2.Hadur_3.12shslsm.jar --robot "hadur2.Hadur 3.12shslsm" ${B312} --label plan90-s1-shslsm
+  after: sh
+shslsmss | ./bench-top20.sh ${COMMON} ${S1} --robot-jar bisect/hadur2.Hadur_3.12shslsmss.jar --robot "hadur2.Hadur 3.12shslsmss" ${B312} --label plan90-s1-shslsmss
+  after: shslsm
+sn       | ./bench-top20.sh ${COMMON} ${S1} --robot-jar bisect/hadur2.Hadur_3.12sn.jar --robot "hadur2.Hadur 3.12sn" ${B312} --label plan90-s1-sn
+  after: shslsmss
+
+# Step 3: about 45 minutes.
+s2 | ./bench-top20.sh ${COMMON} --seeds 8 --seed-base 910 --set shield-ns-sweep.txt ${S2} ${B312} --label plan90-s2
+  after: sn
+
+# Step 5: about 1.2 hours each.
+diamond | ./bench-top20.sh ${COMMON} --seeds 4 --seed-base 200 --set census-311-diamond.txt --robot-jar opponents/voidious.Diamond_1.8.22.jar --robot "voidious.Diamond 1.8.22" --label plan90-census-diamond
+  after: s2
+scalarr | ./bench-top20.sh ${COMMON} --seeds 4 --seed-base 200 --set census-311-scalarr.txt --robot-jar opponents/aaa.r.ScalarR_0.005h.053-noshield.jar --robot "aaa.r.ScalarR 0.005h.053-noshield" --label plan90-census-scalarr
+  after: diamond

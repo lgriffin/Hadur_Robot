@@ -101,6 +101,43 @@ class HostSamplerTest {
     }
 
     @Test
+    @Tag("BENCH-89")
+    @DisplayName("a pid the foreign test rejects is not counted, though it is in neither own snapshot")
+    void foreignTestLeavesOutRacedPids() {
+        List<String> jps = List.of(
+            "200 roborumble.RoboRumbleAtHome",
+            "301 hadur.bench.BattleRunner",
+            "302 robocode.Robocode");
+        // 301 ended between the listing and the snapshots; 302 is a rumble client's.
+        Map<String, Integer> found = Host.robocodeJvms(jps, 100, Set.of(), pid -> pid != 301);
+        assertEquals(Map.of("roborumble.RoboRumbleAtHome", 1, "robocode.Robocode", 1), found);
+    }
+
+    /** A child JVM that only waits, for the foreign test. */
+    public static final class Sleeper {
+        public static void main(String[] args) throws InterruptedException {
+            Thread.sleep(30_000);
+        }
+    }
+
+    @Test
+    @Tag("BENCH-89")
+    @DisplayName("a live child of this JVM and a pid that is gone are not foreign; an unrelated live JVM is")
+    void isForeignAndAlive() throws Exception {
+        long self = ProcessHandle.current().pid();
+        String java = ProcessHandle.current().info().command().orElse("java");
+        Process child = new ProcessBuilder(java, "-cp", System.getProperty("java.class.path"),
+            Sleeper.class.getName()).start();
+        try {
+            assertFalse(Host.isForeignAndAlive(child.pid(), self), "our own child");
+            assertTrue(Host.isForeignAndAlive(child.pid(), -1), "seen from another JVM, it is foreign");
+        } finally {
+            child.destroyForcibly().waitFor();
+        }
+        assertFalse(Host.isForeignAndAlive(child.pid(), -1), "a process that has ended is not load");
+    }
+
+    @Test
     @DisplayName("a result row carries the four host columns, appended to the header")
     void rowCarriesTheHostColumns() {
         assertTrue(BattleResult.HEADER.contains(",hostCpuMin,hostCpuMean,hostCpuMax,otherJvms,"));

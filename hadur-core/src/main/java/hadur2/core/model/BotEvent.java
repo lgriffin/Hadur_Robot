@@ -319,6 +319,7 @@ public interface BotEvent {
         private final double enemyPower;
         private final double bulletHeading;
         private final String owner;
+        private final double enemyHeading;
 
         /**
          * A collision whose bullet heading is unknown (older transcripts).
@@ -358,12 +359,35 @@ public interface BotEvent {
          */
         public BulletHitBullet(double power, double x, double y, double enemyPower,
                                double bulletHeading, String owner) {
+            this(power, x, y, enemyPower, bulletHeading, owner, Double.NaN);
+        }
+
+        /**
+         * A collision between one of our bullets and another robot's whose heading is known
+         * (SHIELD-9).
+         *
+         * @param power our bullet's power
+         * @param x the other bullet's x at the collision, pixels
+         * @param y the other bullet's y at the collision, pixels
+         * @param enemyPower the other bullet's power
+         * @param bulletHeading our bullet's absolute heading, radians, or NaN when unknown
+         * @param owner the robot that fired the other bullet, or null when unknown
+         * @param enemyHeading the other bullet's absolute heading, radians, or NaN when unknown
+         */
+        public BulletHitBullet(double power, double x, double y, double enemyPower,
+                               double bulletHeading, String owner, double enemyHeading) {
             this.power = power;
             this.x = x;
             this.y = y;
             this.enemyPower = enemyPower;
             this.bulletHeading = bulletHeading;
             this.owner = owner;
+            this.enemyHeading = enemyHeading;
+        }
+
+        /** The other bullet's absolute heading, radians; NaN when unknown (older transcripts). */
+        public double enemyHeading() {
+            return enemyHeading;
         }
 
         /**
@@ -409,18 +433,20 @@ public interface BotEvent {
                 && Double.compare(y, that.y) == 0
                 && Double.compare(enemyPower, that.enemyPower) == 0
                 && Double.compare(bulletHeading, that.bulletHeading) == 0
-                && java.util.Objects.equals(owner, that.owner);
+                && java.util.Objects.equals(owner, that.owner)
+                && Double.compare(enemyHeading, that.enemyHeading) == 0;
         }
 
         @Override
         public int hashCode() {
-            return java.util.Objects.hash(power, x, y, enemyPower, bulletHeading, owner);
+            return java.util.Objects.hash(power, x, y, enemyPower, bulletHeading, owner, enemyHeading);
         }
 
         @Override
         public String toString() {
             return "BulletHitBullet[power=" + power + ", x=" + x + ", y=" + y + ", enemyPower="
-                + enemyPower + ", bulletHeading=" + bulletHeading + ", owner=" + owner + "]";
+                + enemyPower + ", bulletHeading=" + bulletHeading + ", owner=" + owner
+                + ", enemyHeading=" + enemyHeading + "]";
         }
     }
 

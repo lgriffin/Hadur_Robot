@@ -1,6 +1,7 @@
 package hadur2.core.replay;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import hadur2.core.model.BotEvent;
 import hadur2.core.model.BotInput;
@@ -92,6 +93,19 @@ class LineCodecProperties {
         assertEquals("X:1.0:2.0:3.0:1.5:0.5", LineCodec.encode(x));
         BotEvent.BulletHitBullet owned = new BotEvent.BulletHitBullet(1, 2, 3, 1.5, Double.NaN, "a,b:c");
         assertEquals(owned, LineCodec.decodeEvent(LineCodec.encode(owned)));
+    }
+
+    @Example
+    @Tag("SHIELD-9")
+    void theEnemyBulletsHeadingRoundTripsAndOlderLinesLackIt() {
+        BotEvent.BulletHitBullet withHeading =
+            new BotEvent.BulletHitBullet(1, 2, 3, 1.5, 0.5, "jd.Target 1.0", 2.25);
+        assertEquals(withHeading, LineCodec.decodeEvent(LineCodec.encode(withHeading)));
+        BotEvent.BulletHitBullet noOwner = new BotEvent.BulletHitBullet(1, 2, 3, 1.5, 0.5, null, 2.25);
+        assertEquals(noOwner, LineCodec.decodeEvent(LineCodec.encode(noOwner)));
+        BotEvent.BulletHitBullet old = (BotEvent.BulletHitBullet) LineCodec.decodeEvent("X:1.0:2.0:3.0:1.5:0.5:a");
+        assertTrue(Double.isNaN(old.enemyHeading()));
+        assertEquals("a", old.owner());
     }
 
     @Provide
