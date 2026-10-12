@@ -1,0 +1,18 @@
+09:05:18 start prep
+09:06:42 prep exit=0 in 84 s
+09:06:42 start sh
+09:33:41 sh exit=0 in 1619 s
+09:33:41 start shslsm
+10:00:56 shslsm exit=0 in 1634 s
+10:00:56 start shslsmss
+10:28:38 shslsmss exit=0 in 1662 s
+10:28:38 start sn
+10:56:25 sn exit=0 in 1667 s
+10:56:25 start s2
+11:55:10 s2 exit=0 in 3524 s
+11:55:10 start diamond
+16:30:39 diamond exit=1 in 16528 s
+16:30:39 skip scalarr (after diamond, which has not finished exit=0)
+16:30:39 ALLDONE
+16:57:14 skip scalarr (after diamond, which has not finished exit=0)
+16:57:14 ALLDONE
