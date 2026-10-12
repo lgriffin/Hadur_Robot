@@ -651,7 +651,10 @@ public final class DuelController {
                 reading.corrected(), reading.uncertain());
             stats.enemyShotsDetected++;
             // SHIELD-5: a shot whose wall hit was inferred on the same interval has no sure power.
-            if (shield != null && !reading.uncertain()) shield.onEnemyShot(fireTime, reading.corrected());
+            if (shield != null) {
+                if (reading.uncertain()) shield.onEnemyFired();
+                else shield.onEnemyShot(fireTime, reading.corrected());
+            }
             // END-4: the smallest bullet the enemy has fired this battle.
             if (Double.isNaN(smallestEnemyPower) || reading.corrected() < smallestEnemyPower) {
                 smallestEnemyPower = reading.corrected();

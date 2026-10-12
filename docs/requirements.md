@@ -1216,7 +1216,9 @@ Nullstride's list with (docs/bench/local/2026-10-12_plan90-pc-read.md).
 - **SHIELD-10** is `shieldmode.ModalOffset`: each kept error carries how many kept errors lie
   within the tolerance of it, so an add is linear in the 500 kept; a tie goes to the latest.
 - **SHIELD-11.** `SH,round,tick,off,damage` and `SH,round,tick,off,silent` are the new battle
-  exits; SHIELD-6's budget still applies. The 150 is Nullstride's.
+  exits; SHIELD-6's budget still applies. The 150 is Nullstride's. A shot whose power the
+  ledger is unsure of (a wall hit inferred on the same interval) builds no wave but still counts
+  as the enemy having fired (`ShieldMode.onEnemyFired`).
 - **SHIELD-12** is a reconstruction: the decompiled method is obfuscated, and the tick the
   enemy's body turn is read from is my reading of it. It is a predictor like the others and is
   used only while it has matched the most bullets.

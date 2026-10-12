@@ -280,6 +280,18 @@ class ShieldDesignTest {
         assertTrue(mode.active());
     }
 
+    @Test
+    @Tag("SHIELD-11")
+    @DisplayName("a shot of unsure power (a wall hit on the same interval) still means the enemy is not silent")
+    void unsureShotIsNotSilent() {
+        mode("stay");
+        scan(1);
+        mode.onEnemyFired();
+        assertNotNull(mode.tick(situation(400, ENEMY_Y, 100)));
+        assertTrue(mode.active());
+        assertFalse(mode.battleOff());
+    }
+
     // ---- SHIELD-12: the body-turn base
 
     @Test

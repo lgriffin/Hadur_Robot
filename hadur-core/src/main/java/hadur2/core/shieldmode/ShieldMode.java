@@ -455,6 +455,14 @@ public final class ShieldMode {
     }
 
     /**
+     * The enemy fired a bullet whose power is not sure (a wall hit inferred on the same scan
+     * interval): no wave is built from it, but the enemy is not silent (SHIELD-11).
+     */
+    public void onEnemyFired() {
+        if (listed) enemyFiredThisRound = true;
+    }
+
+    /**
      * An enemy bullet of {@code power} fired in the enemy's tick {@code fireTime}, from where
      * it stood at that tick. Its heading is predicted four ways, all head-on at where we
      * stood on the tick before: from where the enemy stood then (0), from its firing point
