@@ -25,7 +25,7 @@
 set HEAP = --child-heap 2G
 set E = --engine 1.11.1
 set COMMON = --skip-build --skip-fetch --rounds 35 --parallel 12 --cpu-constant 1488498 ${HEAP} ${E}
-set S1 = --seeds 8 --seed-base 900 --set shield-null-both.txt
+set S1 = --seeds 8 --seed-base 910 --set shield-null-both.txt
 set B312 = --baseline bisect/hadur2.Hadur_3.12.jar --baseline-robot "hadur2.Hadur 3.12"
 set S2B = shold,slearn,smode,sstay,shield-all
 set S2 = --robot-jar bisect/hadur2.Hadur_3.12shslsmsssa.jar --robot "hadur2.Hadur 3.12shslsmsssa"
@@ -43,7 +43,7 @@ sn       | ./bench-top20.sh ${COMMON} ${S1} --robot-jar bisect/hadur2.Hadur_3.12
   after: shslsmss
 
 # Step 3: about 45 minutes.
-s2 | ./bench-top20.sh ${COMMON} --seeds 8 --seed-base 900 --set shield-ns-sweep.txt ${S2} ${B312} --label plan90-s2
+s2 | ./bench-top20.sh ${COMMON} --seeds 8 --seed-base 910 --set shield-ns-sweep.txt ${S2} ${B312} --label plan90-s2
   after: sn
 
 # Step 5: about 1.2 hours each.
