@@ -148,21 +148,36 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">e.g.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#otherJvms()" class="member-name-link">otherJvms</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#isForeignAndAlive(long,long)" class="member-name-link">isForeignAndAlive</a><wbr>(long&nbsp;pid,
+ long&nbsp;self)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Whether <code>pid</code> is a live process that is not this JVM's descendant (<a class="req" href="../../../requirements.html#BENCH-89">BENCH-89</a>).</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#otherJvms()" class="member-name-link">otherJvms</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">The other Java processes on the host that look like Robocode work (<code>jps -l</code>
  lines naming robocode, roborumble or the bench's own runners), summarised by main
  class; "other Robocode JVMs unknown" when <code>jps</code> is not on the PATH.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#robocodeJvms(java.util.List,long,java.util.Set)" class="member-name-link">robocodeJvms</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;jpsLines,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#robocodeJvms(java.util.List,long,java.util.Set)" class="member-name-link">robocodeJvms</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;jpsLines,
  long&nbsp;self,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a>&gt;&nbsp;own)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">The Robocode-looking JVMs in <code>jps -l</code> output, by main class, leaving out the JVM
  <code>self</code> and every pid in <code>own</code> (the bench's own battle children, which the
  sampler must not count as somebody else's load).</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#robocodeJvms(java.util.List,long,java.util.Set,java.util.function.LongPredicate)" class="member-name-link">robocodeJvms</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;jpsLines,
+ long&nbsp;self,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a>&gt;&nbsp;own,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/LongPredicate.html" title="class or interface in java.util.function" class="external-link">LongPredicate</a>&nbsp;foreign)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">As <a href="#robocodeJvms(java.util.List,long,java.util.Set)"><code>robocodeJvms(List, long, java.util.Set)</code></a>, also leaving out every pid that
+ <code>foreign</code> rejects (<a class="req" href="../../../requirements.html#BENCH-89">BENCH-89</a>: gone by the time it is checked, or this bench's own).</div>
 </div>
 </div>
 </div>
@@ -213,10 +228,29 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="robocodeJvms(java.util.List,long,java.util.Set,java.util.function.LongPredicate)">
+<h3>robocodeJvms</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&gt;</span>&nbsp;<span class="element-name">robocodeJvms</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;jpsLines,
+ long&nbsp;self,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a>&gt;&nbsp;own,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/LongPredicate.html" title="class or interface in java.util.function" class="external-link">LongPredicate</a>&nbsp;foreign)</span></div>
+<div class="block">As <a href="#robocodeJvms(java.util.List,long,java.util.Set)"><code>robocodeJvms(List, long, java.util.Set)</code></a>, also leaving out every pid that
+ <code>foreign</code> rejects (<a class="req" href="../../../requirements.html#BENCH-89">BENCH-89</a>: gone by the time it is checked, or this bench's own).</div>
+</section>
+</li>
+<li>
 <section class="detail" id="countOtherJvms()">
 <h3>countOtherJvms</h3>
 <div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">countOtherJvms</span>()</div>
 <div class="block">Other Robocode JVMs right now, not counting this bench's own battle children; -1 when <code>jps</code> is unavailable.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="isForeignAndAlive(long,long)">
+<h3>isForeignAndAlive</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isForeignAndAlive</span><wbr><span class="parameters">(long&nbsp;pid,
+ long&nbsp;self)</span></div>
+<div class="block">Whether <code>pid</code> is a live process that is not this JVM's descendant (<a class="req" href="../../../requirements.html#BENCH-89">BENCH-89</a>).</div>
 </section>
 </li>
 <li>

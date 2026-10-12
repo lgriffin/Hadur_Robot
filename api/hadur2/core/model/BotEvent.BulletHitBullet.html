@@ -152,6 +152,17 @@ implements <a href="BotEvent.html" title="interface in hadur2.core.model">BotEve
 <div class="col-last even-row-color">
 <div class="block">A collision between one of our bullets and another robot's (A4).</div>
 </div>
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(double,double,double,double,double,java.lang.String,double)" class="member-name-link">BulletHitBullet</a><wbr>(double&nbsp;power,
+ double&nbsp;x,
+ double&nbsp;y,
+ double&nbsp;enemyPower,
+ double&nbsp;bulletHeading,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;owner,
+ double&nbsp;enemyHeading)</code></div>
+<div class="col-last odd-row-color">
+<div class="block">A collision between one of our bullets and another robot's whose heading is known
+ (<a class="req" href="../../../../requirements.html#SHIELD-9">SHIELD-9</a>).</div>
+</div>
 </div>
 </section>
 </li>
@@ -172,38 +183,43 @@ implements <a href="BotEvent.html" title="interface in hadur2.core.model">BotEve
 <div class="block">Our bullet's absolute heading, radians (0 = north, clockwise); NaN when unknown.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#enemyPower()" class="member-name-link">enemyPower</a>()</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#enemyHeading()" class="member-name-link">enemyHeading</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">The other bullet's absolute heading, radians; NaN when unknown (older transcripts).</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#enemyPower()" class="member-name-link">enemyPower</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">The enemy bullet's power, which picks out the enemy wave it came from.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#equals(java.lang.Object)" class="member-name-link">equals</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;o)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#equals(java.lang.Object)" class="member-name-link">equals</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;o)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#owner()" class="member-name-link">owner</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#owner()" class="member-name-link">owner</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">The robot that fired the other bullet, so a teammate's can be told from an enemy's
  (<a class="req" href="../../../../requirements.html#WORLD-6">WORLD-6</a>); null when unknown (older transcripts).</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#power()" class="member-name-link">power</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#power()" class="member-name-link">power</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Our bullet's power.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#x()" class="member-name-link">x</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#x()" class="member-name-link">x</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">The enemy bullet's x at the collision, pixels.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#y()" class="member-name-link">y</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#y()" class="member-name-link">y</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">The enemy bullet's y at the collision, pixels.</div>
 </div>
 </div>
@@ -280,6 +296,30 @@ implements <a href="BotEvent.html" title="interface in hadur2.core.model">BotEve
 </dl>
 </section>
 </li>
+<li>
+<section class="detail" id="&lt;init&gt;(double,double,double,double,double,java.lang.String,double)">
+<h3>BulletHitBullet</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">BulletHitBullet</span><wbr><span class="parameters">(double&nbsp;power,
+ double&nbsp;x,
+ double&nbsp;y,
+ double&nbsp;enemyPower,
+ double&nbsp;bulletHeading,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;owner,
+ double&nbsp;enemyHeading)</span></div>
+<div class="block">A collision between one of our bullets and another robot's whose heading is known
+ (<a class="req" href="../../../../requirements.html#SHIELD-9">SHIELD-9</a>).</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>power</code> - our bullet's power</dd>
+<dd><code>x</code> - the other bullet's x at the collision, pixels</dd>
+<dd><code>y</code> - the other bullet's y at the collision, pixels</dd>
+<dd><code>enemyPower</code> - the other bullet's power</dd>
+<dd><code>bulletHeading</code> - our bullet's absolute heading, radians, or NaN when unknown</dd>
+<dd><code>owner</code> - the robot that fired the other bullet, or null when unknown</dd>
+<dd><code>enemyHeading</code> - the other bullet's absolute heading, radians, or NaN when unknown</dd>
+</dl>
+</section>
+</li>
 </ul>
 </section>
 </li>
@@ -288,6 +328,13 @@ implements <a href="BotEvent.html" title="interface in hadur2.core.model">BotEve
 <section class="method-details" id="method-detail">
 <h2>Method Details</h2>
 <ul class="member-list">
+<li>
+<section class="detail" id="enemyHeading()">
+<h3>enemyHeading</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">enemyHeading</span>()</div>
+<div class="block">The other bullet's absolute heading, radians; NaN when unknown (older transcripts).</div>
+</section>
+</li>
 <li>
 <section class="detail" id="owner()">
 <h3>owner</h3>
