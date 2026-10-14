@@ -51,7 +51,8 @@ import java.util.Locale;
  *
  * <p><b>Toward Nullstride's shield (SHIELD-8 to SHIELD-12).</b> {@link ShieldDesign} switches
  * each difference the decompiled Nullstride 2.3.3 showed on or off, so each can be benched on
- * its own; {@link ShieldDesign#SHIPPED} has them all off, which is the mode described above.</p>
+ * its own; {@link ShieldDesign#NONE} has them all off, which is the mode described above.
+ * {@link ShieldDesign#SHIPPED} (SHIELD-13, since 3.13) turns on hold, learn, mode and stay.</p>
  *
  * <p>For each enemy bullet that hits us while the opponent is listed, an {@code
  * SB,round,tick,class,ordinal,predicted,power} record says why it got through: {@code off}
@@ -451,6 +452,14 @@ public final class ShieldMode {
             if (scanTime[i] <= time && (best < 0 || scanTime[i] > scanTime[best])) best = i;
         }
         return best;
+    }
+
+    /**
+     * The enemy fired a bullet whose power is not sure (a wall hit inferred on the same scan
+     * interval): no wave is built from it, but the enemy is not silent (SHIELD-11).
+     */
+    public void onEnemyFired() {
+        if (listed) enemyFiredThisRound = true;
     }
 
     /**

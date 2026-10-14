@@ -14,8 +14,10 @@ import org.junit.jupiter.api.Test;
  * SHIELD-5: Hadur's own shield list ships as a class of the robot jar, {@link ShieldListData},
  * because Robocode's sandbox denies a robot the read of a resource in its own jar (found by
  * the bench's smoke run). Whatever names are on it, every entry must be a robot name the core
- * can match, and the list holds the 14 robots the BENCH-11 probe (docs/bench/d5-probe.md) chose
- * and the 83 the 3.10 shield sweep (docs/bench/local/2026-10-08_shield-sweep.md) admitted.
+ * can match, and the list holds the 14 robots the BENCH-11 probe (docs/bench/d5-probe.md) chose,
+ * the 83 the 3.10 shield sweep (docs/bench/local/2026-10-08_shield-sweep.md) admitted and the 103
+ * the 3.13 sweep of Nullstride's list admitted (SHIELD-13,
+ * docs/bench/local/2026-10-12_plan90-pc-read.md).
  */
 @Tag("SHIELD-5")
 class ShieldListResourceTest {
@@ -41,10 +43,10 @@ class ShieldListResourceTest {
     }
 
     @Test
-    @DisplayName("the list holds the 14 robots of the D5 probe and nobody the probe lost against")
+    @DisplayName("the list holds the 14 robots of the D5 probe and nobody the probe lost against since")
     void listHoldsTheProbedRobots() {
         ShieldList list = ShieldList.parse(Arrays.asList(ShieldListData.lines()));
-        assertEquals(14 + 83, list.size());
+        assertEquals(14 + 83 + 103, list.size());
         for (String name : new String[] {
             "apv.test.Virus 0.6.1", "kcn.unnamed.Unnamed 1.21", "simonton.mega.SniperFrog 1.0.fix2",
             "vic.Locke 0.7.5.5", "cx.micro.Smoke 0.96", "dft.Virgin 1.25", "kid.Gladiator .7.2",
@@ -54,8 +56,8 @@ class ShieldListResourceTest {
             assertTrue(list.matches(name), name);
         }
         for (String name : new String[] {
-            "pedersen.Hubris 2.4", "timmit.nano.TimCat 0.13", "rsk1.RSK1 4.0", "throxbot.ThroxBot 0.1",
-            "gh.nano.Grofvuil 0.2", "sample.Fire", "suh.nano.OscillatorL 1.00"}) {
+            // Hubris, RSK1 and ThroxBot lost to 3.12's shield and joined in 3.13 (SHIELD-13).
+            "timmit.nano.TimCat 0.13", "gh.nano.Grofvuil 0.2", "sample.Fire", "suh.nano.OscillatorL 1.00"}) {
             assertTrue(!list.matches(name), name);
         }
     }
@@ -73,13 +75,32 @@ class ShieldListResourceTest {
         }
         // Robots whose interval lay below 0: shield mode costs points on them.
         for (String name : new String[] {
-            "css.Delitioner 0.11", "dz.Caedo 1.4", "pedersen.Hubris 2.4",
-            "sqTank.waveSurfing.LionWWSVMvoid 0.01", "suh.mega.WaveSurferGF 1.04", "rz.Artist 0.2",
+            "dz.Caedo 1.4", "sqTank.waveSurfing.LionWWSVMvoid 0.01", "suh.mega.WaveSurferGF 1.04", "rz.Artist 0.2",
             "ratosh.Nobo 0.21", "dy.LevelOne 2.0", "rjw.RabidWombat 0.71"}) {
             assertTrue(!list.matches(name), name);
         }
         // Entries carry a version: a robot's next release is not on the list until benched.
         assertTrue(!list.matches("dft.Cyanide 1.91"));
+    }
+
+    @Test
+    @Tag("SHIELD-13")
+    @DisplayName("the list holds the 3.13 sweep's admitted robots, and none it left out")
+    void listHoldsTheNullstrideSweep() {
+        ShieldList list = ShieldList.parse(Arrays.asList(ShieldListData.lines()));
+        // The largest gains of the 8-seed sweep, and robots 3.12's shield lost to that 3.13's wins.
+        for (String name : new String[] {
+            "davidalves.Phoenix 1.02", "kc.serpent.Hydra 0.21", "cjm.chalk.Chalk 2.6.Be",
+            "wcsv.PowerHouse.PowerHouse 1.7e3", "pez.rumble.Ali 0.4.9", "css.Delitioner 0.11",
+            "pedersen.Hubris 2.4", "rsk1.RSK1 4.0"}) {
+            assertTrue(list.matches(name), name);
+        }
+        // Robots of Nullstride's list the sweep found worse or open with a small mean.
+        for (String name : new String[] {
+            "aaa.r.ScalarR 0.005h.053-noshield", "theo.Hydrogen 2.1r", "stelo.MatchupMicro 1.2",
+            "cx.mini.BlackSwans 0.60", "dz.Caedo 1.4"}) {
+            assertTrue(!list.matches(name), name);
+        }
     }
 
     @Test

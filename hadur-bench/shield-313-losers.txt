@@ -1,0 +1,26 @@
+# The 22 robots on 3.13's shield list that 3.13 lost to against 3.12 in both plan90-gate runs
+# (docs/bench/local/2026-10-13_plan90-gate-read.md). plans/plan90-trim.queue: shield on (3.13) against
+# off (3.13tr) on these robots alone.
+#   <robot name as Robocode lists it> | <role> | <jar file in opponents/>
+cx.micro.Smoke 0.96 | rank233-band4 | cx.micro.Smoke_0.96.jar
+suh.micro.MirrorPM 1.00 | rank393-band4 | suh.micro.MirrorPM_1.00.jar
+cf.proto.Shiva 2.2 | rank75-band3 | cf.proto.Shiva_2.2.jar
+brainfade.Fallen 0.63 | rank164-band3 | brainfade.Fallen_0.63.jar
+ary.mini.Nimi 1.0 | rank132-band3 | ary.mini.Nimi_1.0.jar
+ary.SMG 1.01 | rank81-band3 | ary.SMG_1.01.jar
+mladjo.Grrrrr 0.9 | rank217-band4 | mladjo.Grrrrr_0.9.jar
+trab.Crusader 0.1.7 | rank95-band3 | trab.Crusader_0.1.7.jar
+kid.Toa .0.5 | rank149-band3 | kid.Toa_.0.5.jar
+DM.mega.Bezier 1.618fprrr | rank86-band3 | DM.mega.Bezier_1.618fprrr.jar
+wilson.Chameleon 0.91 | rank193-band3 | wilson.Chameleon_0.91.jar
+AIR.iRobot 1.0 | rank263-band4 | AIR.iRobot_1.0.jar
+simonton.micro.GFMicro 1.0 | rank158-band3 | simonton.micro.GFMicro_1.0.jar
+mnt.AHEB 0.6a | rank353-band4 | mnt.AHEB_0.6a.jar
+rcb.Vanessa03 0 | rank318-band4 | rcb.Vanessa03_0.jar
+tw.Exterminator 1.0 | rank360-band4 | tw.Exterminator_1.0.jar
+davidalves.net.DuelistMicroMkII 1.1 | rank345-band4 | davidalves.net.DuelistMicroMkII_1.1.jar
+kawigi.mini.Coriantumr 1.1 | rank319-band4 | kawigi.mini.Coriantumr_1.1.jar
+stelo.Randomness 1.1 | rank357-band4 | stelo.Randomness_1.1.jar
+nat.Hikari dev0001 | rank220-band4 | nat.Hikari_dev0001.jar
+apv.NanoLauLectrikTheCannibal 1.1 | rank537-band5 | apv.NanoLauLectrikTheCannibal_1.1.jar
+starpkg.StarViewerZ 1.26 | rank530-band5 | starpkg.StarViewerZ_1.26.jar

@@ -157,6 +157,11 @@ public class ShieldModeSteps {
         assertFalse(has("SH," + r + ",") || has("SR," + r + ","), records.toString());
     }
 
+    @Then("the telemetry holds no round exit")
+    public void noRoundExit() {
+        assertTrue(records.stream().noneMatch(r -> r.matches("SH,\\d+,\\d+,exit,.*")), records.toString());
+    }
+
     @Then("the telemetry holds no budget exit")
     public void noBudgetExit() {
         assertFalse(records.stream().anyMatch(rec -> rec.contains(",off,budget")), records.toString());

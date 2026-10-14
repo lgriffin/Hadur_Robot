@@ -15,7 +15,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 PARSED = os.path.join(HERE, "..", "rumble", "parsed")
 PAGE_39 = os.path.join(PARSED, "2026-10-07T2028Z_roborumble_botdetails_hadur2.Hadur_3.9.csv")
 PAGE_310 = os.path.join(PARSED, "2026-10-08T1238Z_roborumble_botdetails_hadur2.Hadur_3.10.csv")
-SHIELD_JAVA = os.path.join(HERE, "..", "..", "hadur-robot", "src", "main", "java", "hadur2", "ShieldListData.java")
+# 3.10's list (97 entries, as 3.11 and 3.12 shipped it): the drift test reads the 3.10 pages.
+SHIELD_JAVA = os.path.join(HERE, "fixtures", "ShieldListData-3.10.java")
 
 
 def page(rows):

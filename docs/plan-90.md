@@ -26,11 +26,11 @@ shield is what falls short. The decompiled jar shows one design with seven diffe
 
 | Step | What | State |
 |---|---|---|
-| 1 | Ablate toward Nullstride's shield, one difference at a time, on the bots both list, 8 seeds, against 3.12 | Switches in `shieldmode.ShieldDesign` (SHIELD-8 to SHIELD-12, shipped off); `build-ablation.sh shold`, `slearn`, `smode`, `sstay`, `sturn`, `snull`. Cloud screen at 3 seeds on the 97 listed bots; PC run `plan90` steps `sh` to `sn` on the 89 both list |
+| 1 | Ablate toward Nullstride's shield, one difference at a time, on the bots both list, 8 seeds, against 3.12 | Done. Switches in `shieldmode.ShieldDesign` (SHIELD-8 to SHIELD-12). PC, 8 seeds: hold +4.1 points a robot, the others level with it; 3.13 ships hold, learn, mode and stay (SHIELD-13) |
 | 2 | Classify the bullets that still get through | `SB` record per hit (first, unshielded, missed, nowave, off); `data/tools/shield_leaks.py` reads them with the zero-damage rounds and the paired difference |
-| 3 | Sweep the rest of Nullstride's list with the best step-1 build in shield-all, D5 rule | `shield-ns-sweep.txt` (198 robots, from PR #190); PC step `s2` |
-| 4 | Census the result, 4 seeds, against 3.12 | after step 3 |
-| 5 | Diamond 1.8.22 and ScalarR no-shield as census subjects | `census-311-diamond.txt`, `census-311-scalarr.txt`; PC steps `diamond`, `scalarr` |
+| 3 | Sweep the rest of Nullstride's list with the best step-1 build in shield-all, D5 rule | Done. +6.6 points a robot unpicked (+1.07 APS); 103 admitted (+1.11 APS on independent seeds), on 3.13's list |
+| 4 | Census the result, 4 seeds, against 3.12 | `plans/plan90-gate.queue`: the 200 listed robots at 8 seeds, then the whole field at 4 |
+| 5 | Diamond 1.8.22 and ScalarR no-shield as census subjects | Done. Diamond 90.5% and ScalarR 91.3% mean share, against Hadur 87.6% and Nullstride 94.9% |
 | 6 | Fix the `otherJvms` count | BENCH-89: own battles read before and after `jps`, gone or descendant pids left out |
 
 ## Nullstride's list
@@ -41,3 +41,9 @@ step 3). Before it landed, a proxy from the Nullstride census (it dealt under 2 
 damage a round in at least one battle) found 177 of those 198 with 3 false positives, so the
 damage signature reads the list well. The cloud step-1 screen ran on Hadur's 97 listed bots;
 `shield_leaks.py --set shield-null-both.txt` reads it on the 89.
+
+## Where it stands (2026-10-12)
+
+The PC's 8 seeds (PR #191) are read in docs/bench/local/2026-10-12_plan90-pc-read.md. The 3.13
+candidate is 3.12 plus SHIELD-13 (and the team's MGUN-6), about +1.4 APS on the bench, gated by
+`plans/plan90-gate.queue` before release.
