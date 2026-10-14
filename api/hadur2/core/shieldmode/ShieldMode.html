@@ -136,7 +136,8 @@ loadScripts(document, 'script');</script>
 
  <p><b>Toward Nullstride's shield (<a class="req" href="../../../../requirements.html#SHIELD-8">SHIELD-8</a> to <a class="req" href="../../../../requirements.html#SHIELD-12">SHIELD-12</a>).</b> <a href="ShieldDesign.html" title="class in hadur2.core.shieldmode"><code>ShieldDesign</code></a> switches
  each difference the decompiled Nullstride 2.3.3 showed on or off, so each can be benched on
- its own; <a href="ShieldDesign.html#SHIPPED"><code>ShieldDesign.SHIPPED</code></a> has them all off, which is the mode described above.</p>
+ its own; <a href="ShieldDesign.html#NONE"><code>ShieldDesign.NONE</code></a> has them all off, which is the mode described above.
+ <a href="ShieldDesign.html#SHIPPED"><code>ShieldDesign.SHIPPED</code></a> (<a class="req" href="../../../../requirements.html#SHIELD-13">SHIELD-13</a>, since 3.13) turns on hold, learn, mode and stay.</p>
 
  <p>For each enemy bullet that hits us while the opponent is listed, an <code>
  SB,round,tick,class,ordinal,predicted,power</code> record says why it got through: <code>off</code>
@@ -319,56 +320,62 @@ loadScripts(document, 'script');</script>
  and the battle's verdict.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onEnemyShot(long,double)" class="member-name-link">onEnemyShot</a><wbr>(long&nbsp;fireTime,
- double&nbsp;power)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onEnemyFired()" class="member-name-link">onEnemyFired</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">The enemy fired a bullet whose power is not sure (a wall hit inferred on the same scan
+ interval): no wave is built from it, but the enemy is not silent (<a class="req" href="../../../../requirements.html#SHIELD-11">SHIELD-11</a>).</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onEnemyShot(long,double)" class="member-name-link">onEnemyShot</a><wbr>(long&nbsp;fireTime,
+ double&nbsp;power)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">An enemy bullet of <code>power</code> fired in the enemy's tick <code>fireTime</code>, from where
  it stood at that tick.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onHitByBullet(long,double,double,double,double)" class="member-name-link">onHitByBullet</a><wbr>(long&nbsp;time,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onHitByBullet(long,double,double,double,double)" class="member-name-link">onHitByBullet</a><wbr>(long&nbsp;time,
  double&nbsp;power,
  double&nbsp;x,
  double&nbsp;y,
  double&nbsp;heading)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">An enemy bullet hit us: its damage goes to SHIELD-6's budget, and its heading scores
  the predictors.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onIntercepted(long,double,double,double)" class="member-name-link">onIntercepted</a><wbr>(long&nbsp;time,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onIntercepted(long,double,double,double)" class="member-name-link">onIntercepted</a><wbr>(long&nbsp;time,
  double&nbsp;enemyPower,
  double&nbsp;x,
  double&nbsp;y)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">One of our bullets met an enemy bullet.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onIntercepted(long,double,double,double,double)" class="member-name-link">onIntercepted</a><wbr>(long&nbsp;time,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onIntercepted(long,double,double,double,double)" class="member-name-link">onIntercepted</a><wbr>(long&nbsp;time,
  double&nbsp;enemyPower,
  double&nbsp;x,
  double&nbsp;y,
  double&nbsp;enemyHeading)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">One of our bullets met an enemy bullet whose heading is known.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onOurBulletHit(double)" class="member-name-link">onOurBulletHit</a><wbr>(double&nbsp;power)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onOurBulletHit(double)" class="member-name-link">onOurBulletHit</a><wbr>(double&nbsp;power)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">One of our bullets hit the enemy: the damage is ours in SHIELD-6's budget.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onRammed()" class="member-name-link">onRammed</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onRammed()" class="member-name-link">onRammed</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">The enemy drove into us, or we into it: a rammer is no target for a shield.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onRoundEnded(long)" class="member-name-link">onRoundEnded</a><wbr>(long&nbsp;tick)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onRoundEnded(long)" class="member-name-link">onRoundEnded</a><wbr>(long&nbsp;tick)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">A round ended: the round's record is written and the budget is checked.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onScan(java.lang.String,long,double,double,double,double,double,double,double,double)" class="member-name-link">onScan</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onScan(java.lang.String,long,double,double,double,double,double,double,double,double)" class="member-name-link">onScan</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
  long&nbsp;time,
  double&nbsp;myX,
  double&nbsp;myY,
@@ -378,31 +385,31 @@ loadScripts(document, 'script');</script>
  double&nbsp;enemyY,
  double&nbsp;enemyHeading,
  double&nbsp;enemyVelocity)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">One scan of the enemy.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#ownBulletResolved(double,double)" class="member-name-link">ownBulletResolved</a><wbr>(double&nbsp;power,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#ownBulletResolved(double,double)" class="member-name-link">ownBulletResolved</a><wbr>(double&nbsp;power,
  double&nbsp;heading)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Whether a bullet of ours that has just hit, missed or met a bullet is one this mode shot
  at an enemy bullet, and so no evidence about the enemy's aim (not <a class="req" href="../../../../requirements.html#SHIELD-1">SHIELD-1</a>'s detector's,
  not the hit rate's).</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#shieldShots()" class="member-name-link">shieldShots</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#shieldShots()" class="member-name-link">shieldShots</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">The shield bullets fired this round.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ShieldMode.Command.html" title="class in hadur2.core.shieldmode">ShieldMode.Command</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#tick(hadur2.core.shieldmode.ShieldMode.Situation)" class="member-name-link">tick</a><wbr>(<a href="ShieldMode.Situation.html" title="class in hadur2.core.shieldmode">ShieldMode.Situation</a>&nbsp;s)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ShieldMode.Command.html" title="class in hadur2.core.shieldmode">ShieldMode.Command</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#tick(hadur2.core.shieldmode.ShieldMode.Situation)" class="member-name-link">tick</a><wbr>(<a href="ShieldMode.Situation.html" title="class in hadur2.core.shieldmode">ShieldMode.Situation</a>&nbsp;s)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">One tick of shield mode.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static long</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#ticksUntilCool(double,double)" class="member-name-link">ticksUntilCool</a><wbr>(double&nbsp;heat,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static long</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#ticksUntilCool(double,double)" class="member-name-link">ticksUntilCool</a><wbr>(double&nbsp;heat,
  double&nbsp;coolingRate)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Ticks until a gun at <code>heat</code> can fire, erring late when the division is near whole.</div>
 </div>
 </div>
@@ -759,6 +766,14 @@ loadScripts(document, 'script');</script>
 <dd><code>enemyHeading</code> - the enemy's heading, radians</dd>
 <dd><code>enemyVelocity</code> - the enemy's velocity</dd>
 </dl>
+</section>
+</li>
+<li>
+<section class="detail" id="onEnemyFired()">
+<h3>onEnemyFired</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">onEnemyFired</span>()</div>
+<div class="block">The enemy fired a bullet whose power is not sure (a wall hit inferred on the same scan
+ interval): no wave is built from it, but the enemy is not silent (<a class="req" href="../../../../requirements.html#SHIELD-11">SHIELD-11</a>).</div>
 </section>
 </li>
 <li>

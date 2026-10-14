@@ -95,7 +95,9 @@ loadScripts(document, 'script');</script>
 <div class="block">Which of Nullstride's shield differences shield mode takes (<a class="req" href="../../../../requirements.html#SHIELD-8">SHIELD-8</a> to <a class="req" href="../../../../requirements.html#SHIELD-12">SHIELD-12</a>). Each is
  one switch, so they can be benched one at a time against the shipped mode
  (docs/plan-90.md, step 1; <code>hadur-bench/build-ablation.sh</code>). <a href="#SHIPPED"><code>SHIPPED</code></a> is what
- the robot runs: with every switch off, shield mode is exactly 3.12's.
+ the robot runs (<a class="req" href="../../../../requirements.html#SHIELD-13">SHIELD-13</a>): since 3.13, <code>hold</code>, <code>learn</code>, <code>mode</code> and
+ <code>stay</code>, the build plan-90's step 3 swept Nullstride's list with; <code>turn</code> stays
+ off. With every switch off (<a href="#NONE"><code>NONE</code></a>), shield mode is exactly 3.12's.
 
  <ul>
  <li><code>hold</code> (<a class="req" href="../../../../requirements.html#SHIELD-8">SHIELD-8</a>): never fire at the enemy while shielding; the gun points at it
@@ -150,7 +152,7 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color"><code>static final <a href="ShieldDesign.html" title="class in hadur2.core.shieldmode">ShieldDesign</a></code></div>
 <div class="col-second odd-row-color"><code><a href="#SHIPPED" class="member-name-link">SHIPPED</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">The design the robot ships.</div>
+<div class="block">The design the robot ships (<a class="req" href="../../../../requirements.html#SHIELD-13">SHIELD-13</a>).</div>
 </div>
 <div class="col-first even-row-color"><code>static final long</code></div>
 <div class="col-second even-row-color"><code><a href="#SILENT_TICKS" class="member-name-link">SILENT_TICKS</a></code></div>
@@ -273,7 +275,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="SHIPPED">
 <h3>SHIPPED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ShieldDesign.html" title="class in hadur2.core.shieldmode">ShieldDesign</a></span>&nbsp;<span class="element-name">SHIPPED</span></div>
-<div class="block">The design the robot ships. The ablation builds edit this one line.</div>
+<div class="block">The design the robot ships (<a class="req" href="../../../../requirements.html#SHIELD-13">SHIELD-13</a>). The ablation builds edit this one line.</div>
 </section>
 </li>
 <li>
