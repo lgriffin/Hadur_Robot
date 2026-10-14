@@ -1,9 +1,14 @@
 # Plan-90 trim: 3.13's shield on against off for the 22 robots it lost to against 3.12
 
-**Result: the list stays as it is.** Against 20 of the 22 robots, 3.13 does better with the
-shield on than with it off. Crusader is the clearest case: 98.4% on, 66.2% off. Exterminator
-(+8.3 ± 6.0 points off) and MirrorPM (+5.7 ± 5.4) pass D5's rule for coming off. Together they
-are worth +0.012 APS, within the noise of a cloud run, so 3.13 ships with all 200 robots.
+**Result: the list stays as it is.** Against 17 of the 22 robots, 3.13 does better with the
+shield on than with it off. Crusader is the clearest case: 98.4% on, 66.2% off. Three more
+(Smoke, Toa, Grrrrr) read slightly better off, with intervals that cross zero. Exterminator
+(+8.3 ± 6.0 points off) and MirrorPM (+5.7 ± 5.4) pass the queue's D5 rule for coming off.
+
+They stay on anyway, which departs from that rule. Two reasons: with 22 robots each tested at
+95%, about one false pass is expected by chance, and the two together are worth +0.012 APS,
+within the noise of a cloud run. Changing the list would also need a new build and gate after
+the PC gate passed. They are the first robots to re-test on fresh seeds after 3.13 goes live.
 
 The gate losses against 3.12 on these robots are therefore not the shield costing points. 3.12's
 shield, with its in-round exits, did better on them than 3.13's does.
