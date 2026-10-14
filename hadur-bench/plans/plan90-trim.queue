@@ -1,0 +1,18 @@
+# Plan-90 after the 3.13 gate: does 3.13's shield still pay against the 22 listed robots it lost to
+# against 3.12 in both gate runs (docs/bench/local/2026-10-13_plan90-gate-read.md)? 3.13 with these
+# robots off its list (3.13tr, normal mode against them) against 3.13 (shield on), 8 fresh seeds.
+#   ./queue.sh run plan90-trim        (or  .\queue.ps1 run plan90-trim)
+# Stop the RoboRumble workers first and keep the PC otherwise idle; one queue at a time.
+# About 15 minutes (352 battles). Run on master once 3.13 is merged (the checkout builds 3.13).
+# Rule per robot: it leaves the list when off beats on by D5's rule (interval above 0, or open
+# with a mean gain of 9 points or more). Read with data/tools/screen_paired.py or the report's
+# Paired A/B table.
+
+set HEAP = --child-heap 2G
+set E = --engine 1.11.1
+set COMMON = --skip-build --skip-fetch --rounds 35 --parallel 12 --cpu-constant 1488498 ${HEAP} ${E}
+
+prep | mkdir -p bisect && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur2.Hadur_3.13.jar bisect/ && bash ./build-ablation.sh strim && ./fetch-opponents.sh --set shield-313-losers.txt
+
+trim | ./bench-top20.sh ${COMMON} --seeds 8 --seed-base 940 --set shield-313-losers.txt --robot-jar bisect/hadur2.Hadur_3.13tr.jar --robot "hadur2.Hadur 3.13tr" --baseline bisect/hadur2.Hadur_3.13.jar --baseline-robot "hadur2.Hadur 3.13" --label plan90-trim
+  after: prep

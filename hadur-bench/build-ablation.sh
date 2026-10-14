@@ -61,6 +61,9 @@
 #   sstay  SHIELD-11: no exit inside a round; off for the battle past 150 damage or a silent enemy.
 #   sturn  SHIELD-12: the body-turn head-on base.
 #   snull  all five at once: Nullstride's design as read from its jar.
+#   strim (3.13) the 22 listed robots that 3.13 lost to in both plan90-gate runs come off the shield
+#         list, so they are fought in normal mode: does the shield still pay against them
+#         (docs/bench/local/2026-10-13_plan90-gate-read.md)? Suffix tr.
 #         The shield switches combine: shold,slearn,smode is one build (suffix shslsm). Each
 #         adds to SHIPPED, which since 3.13 holds hold, learn, mode and stay (SHIELD-13): from
 #         3.13 on, only sturn changes the robot; use --ref v3.12 for the 3.12 ablations.
@@ -74,7 +77,7 @@ set -euo pipefail
 
 ref=HEAD
 if [[ "${1:-}" == "--ref" ]]; then ref="$2"; shift 2; fi
-[[ $# -eq 1 ]] || { sed -n '2,72p' "$0"; exit 2; }
+[[ $# -eq 1 ]] || { sed -n '2,75p' "$0"; exit 2; }
 
 here="$(cd "$(dirname "$0")" && pwd)"
 repo="$(git -C "$here" rev-parse --show-toplevel)"
@@ -87,6 +90,7 @@ move="$src/hadur-core/src/main/java/hadur2/core/move/MoveController.java"
 book="$src/hadur-core/src/main/java/hadur2/core/adapt/OpeningBook.java"
 shields="$src/hadur-core/src/main/java/hadur2/core/shieldmode/ShieldList.java"
 design="$src/hadur-core/src/main/java/hadur2/core/shieldmode/ShieldDesign.java"
+listdata="$src/hadur-robot/src/main/java/hadur2/ShieldListData.java"
 budget="$src/hadur-core/src/main/java/hadur2/core/policy/TickBudget.java"
 dist="$src/hadur-core/src/main/java/hadur2/core/policy/DistancePolicy.java"
 detector="$src/hadur-core/src/main/java/hadur2/core/shield/ShieldDetector.java"
@@ -195,6 +199,12 @@ for a in "${list[@]}"; do
             edit "$book" "distance(gunTier), profile.leadAware(), profile.shielder());" \
                 "distance(gunTier), profile.leadAware(), false);"
             version="${version}ns" ;;
+        strim)
+            # 3.13: the 22 robots 3.13's shield lost to in both gate runs leave the list.
+            for r in "trab.Crusader 0.1.7" "kid.Toa .0.5" "mladjo.Grrrrr 0.9" "tw.Exterminator 1.0" "suh.micro.MirrorPM 1.00" "cf.proto.Shiva 2.2" "ary.SMG 1.01" "wilson.Chameleon 0.91" "cx.micro.Smoke 0.96" "davidalves.net.DuelistMicroMkII 1.1" "AIR.iRobot 1.0" "starpkg.StarViewerZ 1.26" "rcb.Vanessa03 0" "kawigi.mini.Coriantumr 1.1" "ary.mini.Nimi 1.0" "DM.mega.Bezier 1.618fprrr" "brainfade.Fallen 0.63" "stelo.Randomness 1.1" "simonton.micro.GFMicro 1.0" "apv.NanoLauLectrikTheCannibal 1.1" "mnt.AHEB 0.6a" "nat.Hikari dev0001"; do
+                edit "$listdata" "\"$r\"," '"",'
+            done
+            version="${version}tr" ;;
         shold|slearn|smode|sstay|sturn|snull)
             # One switch of shieldmode.ShieldDesign (SHIELD-8 to SHIELD-12) added to SHIPPED.
             case "$a" in
@@ -208,7 +218,7 @@ for a in "${list[@]}"; do
             edit "$design" 'public static final ShieldDesign SHIPPED = parse("' \
                 "public static final ShieldDesign SHIPPED = parse(\"$flag,"
             version="${version}${suffix}" ;;
-        *) echo "unknown ablation: $a (ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, shold, slearn, smode, sstay, sturn, snull)" >&2; exit 2 ;;
+        *) echo "unknown ablation: $a (ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, shold, slearn, smode, sstay, sturn, snull, strim)" >&2; exit 2 ;;
     esac
 done
 
