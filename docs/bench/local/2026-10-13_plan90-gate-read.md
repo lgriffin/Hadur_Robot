@@ -32,6 +32,6 @@ positive together, and no band below -0.05 APS. All three hold.
   both runs. Together that is about -0.03 to -0.04 APS. Taking them off the list plays them
   without a shield, which neither run measured.
 - **Five robots from 3.10's list lose 12 to 19 points in both runs:** Toa, Crusader,
-  Exterminator, Grrrrr and Shiva. These are robots whose aim moves once their bullets are met.
+  Exterminator, Grrrrr and Shiva. Why is not yet read from the logs.
   3.12's exits suited them better. A per-robot sweep, shield on against shield off, under the
   3.13 design would settle whether they stay.
