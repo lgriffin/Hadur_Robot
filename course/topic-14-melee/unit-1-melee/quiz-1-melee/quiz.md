@@ -94,4 +94,13 @@ options:
   - The opponent's saved profile
   - A setting in the robot's properties file
 correct: 0
+---
+question: What did the team ladder analysis find was HadurTeam's gap to the teams above it?
+type: multiple-choice
+options:
+  - Members failed to detect enemy shots
+  - Members were hit far more often per enemy bullet
+  - Members fired lighter bullets, so rounds ran longer and members died early
+  - Teammates shot each other
+correct: 2
 ```

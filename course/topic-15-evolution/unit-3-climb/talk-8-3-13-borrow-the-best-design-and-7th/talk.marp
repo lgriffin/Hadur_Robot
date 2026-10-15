@@ -1,0 +1,159 @@
+---
+marp: true
+theme: default
+paginate: true
+---
+
+<!-- footer: "Sources: docs/plan-90.md, docs/releases/v3.13.md, docs/bench/live-3.13.md, team-lower-half.md; full list on the last slide" -->
+
+# 3.13: borrow the best design, and 7th
+
+One lever, measured one switch at a time
+
+Unit 3, talk 8
+
+---
+
+## After 9th: where are the next 2.3 points?
+
+3.12 was 87.72. Four whole-field ideas had come back level. Leigh's plan, "the road from 87.7 to 90", asked the data where 90 was.
+
+The answer was one place: **bullet shielding**.
+
+- Nullstride 2.3.3 shields **287** rumble robots and scores **96.9%** against them live
+- Hadur 3.12 scores **84.2%** against the same robots
+- Matching it there is worth **+2.99 APS**
+
+On the 172 both had been benched shielding, Hadur 84.9% and Nullstride 97.4%. The opponents are shieldable; the shield falls short.
+
+---
+
+## Bullet shielding in one slide
+
+An enemy's bullet is predictable when it was aimed head-on or with a simple lead. Fire your own bullet so the two paths cross, and it never reaches you.
+
+- Works against simple, deterministic guns, and only those: a list says who
+- Every shield bullet costs energy, so a shield that misses loses twice
+- Hadur has had a shield mode and a list since the DrussGT route (3.8), and lengthened the list in 3.10
+
+---
+
+## Read the leader's design, then split it into switches
+
+<style scoped>table { font-size: 0.8em; }</style>
+
+The decompiled Nullstride jar showed one design and a longer list. The design differences became five switches in `shieldmode.ShieldDesign`, off by default, so 3.12 stayed 3.12:
+
+| Switch | Nullstride does |
+|---|---|
+| SHIELD-8 `hold` | never fires at the enemy while shielding |
+| SHIELD-9 `learn` | learns from every enemy bullet it meets, not only the ones that hit |
+| SHIELD-10 `mode` | aims with the most frequent error, not the mean |
+| SHIELD-11 `stay` | no exits inside a round; off for the battle at 150 damage or a silent enemy |
+| SHIELD-12 `turn` | adds a base that uses the enemy's body turn |
+
+---
+
+## Step 1: one switch at a time (8 seeds, 89 robots both list)
+
+| Build against 3.12 | Points a robot |
+|---|---:|
+| hold | **+4.05** (+2.94 to +5.16) |
+| + learn, mode | +4.19 |
+| + stay | +3.92 |
+| + turn | +4.29 |
+
+Each build against the one before it: **-0.05, -0.04, +0.08**. All level.
+
+Holding fire is the whole gain. The cleverer differences measure nothing. 3.13 ships hold, learn, mode and stay (SHIELD-13), the build the list was swept with; turn stays off.
+
+---
+
+## Step 3: the list is the bigger lever
+
+<style scoped>section { font-size: 24px; } table { font-size: 0.85em; }</style>
+
+The step-1 build with shield mode on for everyone, on the **198** robots only Nullstride lists:
+
+- Unpicked: **+6.55 points a robot**, +1.07 APS; 134 of 198 up
+- The D5 rule (interval above zero, or open with a mean gain of 9 or more) picked **103**
+- On independent seeds the same 103 are worth **+1.11 APS**: not a fluke of the seeds
+
+| Opponent ranks | Robots | Points a robot |
+|---|---:|---:|
+| 11 to 50 | 8 | **+29.1** |
+| 51 to 200 | 22 | +12.0 |
+| 201 to 400 | 65 | +8.0 |
+| 401 to 700 | 74 | +3.0 |
+
+Phoenix, Hydra, Firebird and Chalk: each +34 to +40.
+
+---
+
+## The gate: the list, then the whole field
+
+| Run | Seeds | Against 3.12 |
+|---|---:|---:|
+| The 200 listed robots | 8 | **+1.40 APS** (+1.18 to +1.61) |
+| The whole 1,212-bot field | 4 | **+1.46 APS** (+1.15 to +1.76) |
+| The 1,012 off the list | 4 | -0.006 APS |
+
+Shield mode acts on nobody off the list, and the census agrees. The team's MGUN-6 rode along on its own, team-only path.
+
+Expectation: live kept about 70% of 3.10's shield gain, so about **+1.0**.
+
+---
+
+## Live: 7th of 1,218
+
+**89.50 ± 0.19, 7th**, behind ScalarR (91.23) and Diamond (90.15). +1.78 over 3.12.
+
+| Opponents | Count | Points | APS |
+|---|---:|---:|---:|
+| 3.12's 97 listed | 97 | +4.82 | +0.38 |
+| 103 added for 3.13 | 103 | **+14.13** | **+1.20** |
+| Unlisted | 1,016 | +0.25 | +0.21 (noise) |
+
+The listed robots gave **+1.58**, more than the gate's +1.40. This time the live pass kept all of it.
+
+---
+
+## The team: same dodging, less firepower
+
+TeamRumble, 3.11: 12th. Measured against HOFSwarm on the same 13 teams:
+
+| | HadurTeam | HOFSwarm |
+|---|---:|---:|
+| Hits taken per 100 enemy bullets | 17.1 | 16.0 |
+| Mean bullet power | **1.35** | **1.93** |
+| Mean round length (ticks) | 1,022 | 768 |
+
+Members dodged as well but hit lighter: melee's power table suits ten-bot free-for-alls. MGUN-6: with a living teammate and 30 energy, fire power 3 (+5.7 a team, 45 teams, 6 seeds). Live: **68.30, 9th**. 1v1 and melee never take that path.
+
+---
+
+## What it taught us
+
+- Ask where the points are before choosing a change: one lever held most of the gap to 90
+- Copy a leader's design as switches, and bench each one. Most of the cleverness measured nothing
+- Who you apply a technique to can matter more than how well you do it: the list gave four times what the design did
+- Pick by a rule (D5), then re-measure the picks on fresh seeds to strip the luck of choosing
+- A ladder-specific change gets its own code path, so the other ladders cannot move
+
+---
+
+## What is left
+
+- Melee: **17th** at 65.58, unchanged code. The ladder still outside the top 10
+- 1v1: the largest shield leak left is `nowave`, enemy shots never detected
+- Engine warnings against zen.Mirage are worth a bench look
+
+---
+
+## Sources
+
+- [docs/plan-90.md](https://github.com/lgriffin/Hadur_Robot/blob/97796d8/docs/plan-90.md) and [docs/releases/v3.13.md](https://github.com/lgriffin/Hadur_Robot/blob/97796d8/docs/releases/v3.13.md)
+- [`shieldmode.ShieldDesign`](https://github.com/lgriffin/Hadur_Robot/blob/97796d8/hadur-core/src/main/java/hadur2/core/shieldmode/ShieldDesign.java), SHIELD-8 to SHIELD-13
+- [PC read-out](https://github.com/lgriffin/Hadur_Robot/blob/97796d8/docs/bench/local/2026-10-12_plan90-pc-read.md) and [gate read-out](https://github.com/lgriffin/Hadur_Robot/blob/97796d8/docs/bench/local/2026-10-13_plan90-gate-read.md)
+- [docs/bench/live-3.13.md](https://github.com/lgriffin/Hadur_Robot/blob/master/docs/bench/live-3.13.md)
+- [docs/bench/team-lower-half.md](https://github.com/lgriffin/Hadur_Robot/blob/97796d8/docs/bench/team-lower-half.md), sections 10 to 12, and [`MeleeEnergyPolicy.teamPower`](https://github.com/lgriffin/Hadur_Robot/blob/97796d8/hadur-core/src/main/java/hadur2/core/melee/MeleeEnergyPolicy.java), MGUN-6

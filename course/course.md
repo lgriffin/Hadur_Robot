@@ -1,10 +1,10 @@
 # Building Hadur
 
-From a first Robocode robot to the RoboRumble top 20: an advanced Java course built on the Hadur robot.
+From a first Robocode robot to the RoboRumble top 10: an advanced Java course built on the Hadur robot.
 
-Hadur is a [Robocode](https://robocode.sourceforge.io/) robot in the top 20 of the 1v1 RoboRumble's 1,216 robots, and one jar that also plays the MeleeRumble and, as a team of five, the TeamRumble. This course teaches how it was built: a hexagonal core that does not know it is inside Robocode, tests in layers from ArchUnit rules to replayed battles, requirements written in EARS and traced to the tests that prove them, the strategy (waves, guess factors, nearest neighbours, an energy ledger, opponent memory, policies that respect their margin of error), and the evidence-driven climb that took it from 64th into the top 20. The rank of every release is recorded in [docs/strategy-evolution.md](https://github.com/lgriffin/Hadur_Robot/blob/master/docs/strategy-evolution.md).
+Hadur is a [Robocode](https://robocode.sourceforge.io/) robot, 7th of the 1v1 RoboRumble's 1,218 robots, and one jar that also plays the MeleeRumble and, as a team of five, the TeamRumble. This course teaches how it was built: a hexagonal core that does not know it is inside Robocode, tests in layers from ArchUnit rules to replayed battles, requirements written in EARS and traced to the tests that prove them, the strategy (waves, guess factors, nearest neighbours, an energy ledger, opponent memory, policies that respect their margin of error), and the evidence-driven climb that took it from 64th to 7th. The rank of every release is recorded in [docs/strategy-evolution.md](https://github.com/lgriffin/Hadur_Robot/blob/master/docs/strategy-evolution.md).
 
-The course was last aligned with Hadur 3.9 (October 2026): the role contract that replaced the posture gate, the duel lifted out of the core into its own strand, and the team entry are covered in Topics 04, 14 and 15.
+The course was last aligned with Hadur 3.13 (October 2026): the role contract that replaced the posture gate, the duel lifted out of the core into its own strand, and the team entry are covered in Topics 04, 14 and 15. The climb from 13th to 7th (reading a live pass for drift, the whole-field census that retired duress, the mirror-bot fix, Nullstride's shield design and the team's firepower) is in Topics 12 to 15.
 
 It is also a Java course. It starts from a learner who can write a class and a loop, and ends at the level the Hadur codebase is written at.
 
