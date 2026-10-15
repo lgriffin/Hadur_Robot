@@ -1,0 +1,21 @@
+# Plan top 3, stage 1 (docs/top3-movement-study.md): the movement switches on the 400-bot screen.
+#   ./queue.sh run top3-s1        (or  .\queue.ps1 run top3-s1)
+# Stop the RoboRumble workers first and keep the PC otherwise idle; one queue at a time.
+#
+#   heat     MOVE-11 gun-heat wave (3.13hw) against 3.13 on screen-311, 8 fresh seeds 951-958.
+#            The cloud screen at 2 seeds read +0.23 APS (-0.07 to +0.54). About 2 hours.
+#   wallesc  MOVE-12 escape-room position term (3.13we) likewise. About 2 hours.
+# Read: data/tools/screen_paired.py on export_battles.py output (docs/bench/local/2026-10-15_top3-s1-heat-read.md).
+
+set HEAP = --child-heap 2G
+set E = --engine 1.11.1
+set COMMON = --skip-build --skip-fetch --rounds 35 --parallel 12 --cpu-constant 1488498 ${HEAP} ${E}
+set SEEDS = --seeds 8 --seed-base 950
+set BASE = --baseline bisect/hadur2.Hadur_3.13.jar --baseline-robot "hadur2.Hadur 3.13"
+
+prep | mkdir -p bisect && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur2.Hadur_3.13.jar bisect/ && bash ./build-ablation.sh heat && bash ./build-ablation.sh wallesc && ./fetch-opponents.sh --set screen-311.txt
+
+heat    | ./bench-top20.sh ${COMMON} ${SEEDS} --set screen-311.txt --robot-jar bisect/hadur2.Hadur_3.13hw.jar --robot "hadur2.Hadur 3.13hw" ${BASE} --label top3-s1-heat
+  after: prep
+wallesc | ./bench-top20.sh ${COMMON} ${SEEDS} --set screen-311.txt --robot-jar bisect/hadur2.Hadur_3.13we.jar --robot "hadur2.Hadur 3.13we" ${BASE} --label top3-s1-wallesc
+  after: heat
