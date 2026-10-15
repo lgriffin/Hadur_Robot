@@ -1234,6 +1234,25 @@ Nullstride's list with (docs/bench/local/2026-10-12_plan90-pc-read.md).
   (a shield bullet was fired at it), `first` or `unshielded`, so the plan's step 2 can classify
   what still gets through from the battle logs (`data/tools/shield_leaks.py`).
 
+## Top 3, stage 0: where the hits come from (MOVE-9)
+
+The plan "from 7th to top 3" (2026-10-15, docs/plan-top3.md) finds the 1v1 gap to the robots
+above is bullet damage taken from robots on no shield list. Stage 0 measures why those bullets
+get through before any movement change is tried. MOVE-9 writes a record and changes no order:
+the replay fixtures' orders are unchanged, and their telemetry snapshots differ only by the HF
+lines.
+
+| ID | Pattern | Requirement | Stage |
+|---|---|---|---|
+| MOVE-9 | Event | When an enemy bullet hits us in a duel, the core shall write an HF record of the hit's class (`headon`, `linear`, `learned`, or `nowave` when no firing wave carried it), its guess factor, where a linear gun would have aimed, the share of the wave's guess factors the danger views scored less dangerous than the hit's, the distance at fire time, the power, whether the Duel drove, and where the hit lay against the surf's last plan on that wave (its offset in plan half-widths, the plan's danger and its age in ticks), read before the hit teaches the views and without changing the surf's neighbour cache. | R9 |
+
+- **HF record**: `HF,round,tick,class,gf,linearGf,dangerPct,distance,power,driving,planOffset,planDanger,planAge`
+  (`move.HitForensics`). An offset of at most 1 means the bullet hit inside the interval the surf's
+  plan expected us to occupy (`MoveController.lastPlanFor` keeps each wave's last published plan for the round). A hit is `linear` within our half-width (18 px seen from the source)
+  of `asin(lateral velocity / bullet speed) / escape angle`, else `headon` within it of 0. The
+  percentile samples 41 guess factors in [-1, 1] with the surf's own danger score; near 0 the
+  views thought the angle safe, near 1 they knew it was dangerous.
+
 ## Retired requirements
 
 A retired requirement keeps its ID; no new requirement reuses it.
