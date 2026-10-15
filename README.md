@@ -4,7 +4,7 @@
 a 1v1 duelist that remembers each opponent across battles, with a melee brain for
 free-for-alls, a five-robot team entry, and a core that has no idea it is inside Robocode.
 
-**Hadur 3.12 is ranked 9th of 1,218 in the RoboRumble 1v1** (87.72 APS, its best score and its first top-10 place),
+**Hadur 3.13 is ranked 7th of 1,218 in the RoboRumble 1v1** (89.50 APS, its best score and place),
 17th in the MeleeRumble and 12th in the TeamRumble, the highest-ranked robot flying the Irish flag. It was designed, written, tested and tuned by Claude agents working
 in a shared project with one human, Leigh Griffin, who set the goals and ran the live
 entries. This page covers what the robot does, how it is built, and how it was built.
@@ -19,29 +19,32 @@ learned Java, and it was the original inspiration for everything on this page.
 
 ## Standing
 
-**3.12 was released on 2026-10-11** and its first full 1v1 pass, saved 2026-10-11 17:59 UTC
-with every pairing filled, puts `hadur2.Hadur 3.12` **9th**, Hadur's first top-10 place:
+**3.13 was released on 2026-10-14** and its first full 1v1 pass, saved 2026-10-15 05:56 UTC
+with every pairing filled, puts `hadur2.Hadur 3.13` **7th**, 1.78 APS above 3.12:
 
 | Rank | APS | PWIN | ANPP | Survival | Pairings | Battles |
 |---|---|---|---|---|---|---|
-| **9th of 1,218** | **87.72** ± 0.20 | 99.42 | 90.98 | 95.27% | 1,217 | 1,949 |
+| **7th of 1,218** | **89.50** ± 0.19 | 99.51 | 92.85 | 95.92% | 1,217 | 1,968 |
 
-- **The fix behind it.** 3.12 is 3.11 with one change (SHIELD-7): the gun fires its mirror aim
-  even after deciding the enemy shoots bullets down. Before, a latched shield verdict silenced
-  the gun against mirror bots for the rest of the battle and the stored verdict carried it into
-  later ones. The three mirror bots went from 42.5, 62.5 and 70.6 to about 93 each (MirrorMicro,
-  NaN, Mimic), worth +0.09 APS on their own; the whole page is +0.15 over 3.11's
-  ([plan](docs/plan-3.12.md), [live notes](docs/bench/live-3.12.md)).
-- **A tight pack.** Raven (8th) and Hadur share 87.72, and XanderCat, Knight, Tomcat and
-  Gilgalad follow within 0.10 APS, half the page's own ±0.20. Most pairings have one or two
-  battles yet, so the place can move either way as the second pass fills in.
+- **The change behind it.** 3.13 shields against 200 listed robots instead of 97, and shield mode
+  holds its fire, learns intercepted headings, aims at the most frequent offset and stays shielding
+  for the round (SHIELD-8..13, [plan](docs/plan-90.md)). The listed robots carry +1.58 of the
+  +1.78: the 103 new ones went up 14.1 points each on average, the old 97 up 4.8
+  ([live notes](docs/bench/live-3.13.md)).
+- **Clear of the pack.** Firestarter (8th) is 1.40 behind and Diamond (6th) 0.65 ahead, so the
+  place is unlikely to move as the second pass fills in.
 - **17th in the MeleeRumble** (65.65 APS) and **12th in the TeamRumble** (`hadur2.HadurTeam`,
-  64.61 APS), both read for 3.11 on 2026-10-11 07:16 UTC.
-- **Tested and dropped for 3.12:** never closing in on weak bots cost score in ranks 401 to 700
-  even though it held the distance; a stricter shield detector and ignoring stored verdicts were
-  level on the 400-bot screen ([findings, PR #182](https://github.com/lgriffin/Hadur_Robot/pull/182)).
+  64.61 APS), both read for 3.11 on 2026-10-11 07:16 UTC. HadurTeam 3.13 carries full team
+  firepower (MGUN-6) and is running its first team pass.
 
 The pages are archived in [`data/rumble/`](data/rumble/).
+
+### 3.12 at 9th
+
+`hadur2.Hadur 3.12`'s first full pass, saved 2026-10-11 17:59 UTC: 9th, 87.72 ± 0.20, PWIN
+99.42, survival 95.27%, 1,949 battles, the first top-10 place. SHIELD-7 let the gun fire its mirror
+aim after a shield verdict, lifting the three mirror bots from 42-71 to about 93
+([live notes](docs/bench/live-3.12.md)).
 
 ### 3.11 at 13th
 
