@@ -53,7 +53,8 @@
 #         kills the target) at every target: on the melee top-20 fields Hadur fires about 1.5 in the
 #         crowd against the field's 2.4-2.8 and has the lowest bullet damage of all 21 robots
 #         (docs/bench/melee-gap-3.13.md). The two-left row and the duel are untouched.
-#   mpowb (melee only) as mpow, but one power step above MGUN-3's table (at most 3).
+#   mpowb (melee only) as mpow, but one power step above MGUN-3's table (at most 3). mpow and mpowb
+#         are alternatives and do not combine; either combines with mrate, mhold and the rest.
 #   mrate (melee and team) fire more often: the controller fires on a scan up to 8 ticks old (was 5;
 #         the field gun already aims on 8, the radar's sweep is 10-11), and with three or more
 #         opponents left the lead cap (never drop below the target's energy) no longer holds or
@@ -89,7 +90,7 @@ set -euo pipefail
 
 ref=HEAD
 if [[ "${1:-}" == "--ref" ]]; then ref="$2"; shift 2; fi
-[[ $# -eq 1 ]] || { sed -n '2,92p' "$0"; exit 2; }
+[[ $# -eq 1 ]] || { sed -n '2,/^set -euo/{/^#/p}' "$0"; exit 2; }
 
 here="$(cd "$(dirname "$0")" && pwd)"
 repo="$(git -C "$here" rev-parse --show-toplevel)"
@@ -215,13 +216,13 @@ for a in "${list[@]}"; do
             ;;
         mhold)
             version="${version}mh"
-            edit "$fgun" "if (power <= 0) continue;" \
-                "if (power <= 0) continue; if (!onTeam && others >= 3 && !finisher) continue;"
+            edit "$fgun" "if (!finisher && rams(e, me)) continue;" \
+                "if (!finisher && rams(e, me)) continue; if (!onTeam && others >= 3 && !finisher) continue;"
             ;;
         mpow|mpowb)
             if [[ "$a" == mpow ]]; then raise="3.0"; version="${version}mw"; else raise="power + 1.0"; version="${version}mb"; fi
-            edit "$fgun" "if (power <= 0) continue;" \
-                "if (power <= 0) continue; if (!onTeam && others >= 3 && energy >= 30) power = Math.min(Math.min(3.0, $raise), MeleeEnergyPolicy.killPower(e.energy));"
+            edit "$fgun" "if (onTeam) power = MeleeEnergyPolicy.teamPower(power, energy, e.energy);" \
+                "if (onTeam) power = MeleeEnergyPolicy.teamPower(power, energy, e.energy); if (!onTeam && others >= 3 && energy >= 30) power = Math.min(Math.min(3.0, $raise), MeleeEnergyPolicy.killPower(e.energy));"
             ;;
         nostore)
             edit "$book" "distance(gunTier), profile.leadAware(), profile.shielder());" \

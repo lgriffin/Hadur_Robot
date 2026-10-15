@@ -38,6 +38,11 @@ class MeleeHarvesterTest {
     }
 
     private static IRobotSnapshot robot(int index, String name, double x, double y, boolean alive, double heat) {
+        return robot(index, name, x, y, alive, heat, 50.0);
+    }
+
+    private static IRobotSnapshot robot(int index, String name, double x, double y, boolean alive, double heat,
+                                        double energy) {
         return (IRobotSnapshot) Proxy.newProxyInstance(IRobotSnapshot.class.getClassLoader(),
             new Class<?>[] {IRobotSnapshot.class}, (p, m, a) -> switch (m.getName()) {
                 case "getName" -> name;
@@ -48,7 +53,7 @@ class MeleeHarvesterTest {
                 case "isSentryRobot" -> false;
                 case "getOutputStreamSnapshot" -> "";
                 case "getGunHeat" -> heat;
-                case "getEnergy" -> 50.0;
+                case "getEnergy" -> energy;
                 default -> throw new UnsupportedOperationException(m.getName());
             });
     }
@@ -154,14 +159,37 @@ class MeleeHarvesterTest {
             // Hadur's bullet hits Alpha, seen on two turns but counted once; Alpha's meets a bullet
             turn(2, crowd, List.of(bullet(1, 0, 1, 1.5, BulletState.HIT_VICTIM),
                 bullet(2, 1, -1, 3.0, BulletState.HIT_BULLET))),
+            // three die at the end of turn 3; the shot Hadur fired in it left while they lived
             turn(3, List.of(me, a, deadC2, deadC3, deadC4),
                 List.of(bullet(1, 0, 1, 1.5, BulletState.HIT_VICTIM), bullet(3, 0, -1, 2.0, BulletState.FIRED))),
-            turn(4, List.of(me, a, deadC2, deadC3, deadC4), List.of(bullet(3, 0, 1, 2.0, BulletState.HIT_VICTIM))))));
+            turn(4, List.of(me, a, deadC2, deadC3, deadC4), List.of(bullet(3, 0, 1, 2.0, BulletState.HIT_VICTIM))),
+            // with two left, a new shot is no crowd shot
+            turn(5, List.of(me, a, deadC2, deadC3, deadC4), List.of(bullet(4, 0, -1, 1.0, BulletState.FIRED))))));
         List<String> lines = Files.readAllLines(dir.resolve("bullets.csv"));
         assertEquals(MeleeHarvester.BULLET_HEADER, lines.get(0));
-        assertEquals("0,hadur2.Hadur 3.8,2,3.50,2,17.00,0,1,1.50,1,7.00,4,4", lines.get(1));
-        assertEquals("0,a.Alpha 1.0,1,3.00,0,0.00,1,1,3.00,0,0.00,4,0", lines.get(2));
+        assertEquals("0,hadur2.Hadur 3.8,3,4.50,2,17.00,0,2,3.50,2,17.00,5,5", lines.get(1));
+        assertEquals("0,a.Alpha 1.0,1,3.00,0,0.00,1,1,3.00,0,0.00,5,0", lines.get(2));
         assertEquals("0,c.C2 1.0,0,0.00,0,0.00,0,0,0.00,0,0.00,2,0", lines.get(3));
+    }
+
+    @Test
+    @Tag("BENCH-90")
+    @DisplayName("a killing blow scores no more damage than the victim had left, and a sentry hit none")
+    void killingBlowCapped() throws IOException {
+        IRobotSnapshot me = robot(0, US, 100, 100, true, 1.0, 80.0);
+        IRobotSnapshot weak = robot(1, "a.Alpha 1.0", 500, 500, true, 1.0, 3.0);
+        IRobotSnapshot dead = robot(1, "a.Alpha 1.0", 500, 500, false, 1.0, 0.0);
+        IRobotSnapshot sentry = robot(2, "s.Sentry 1.0", 900, 900, true, 1.0, 100.0);
+        MeleeHarvester h = new MeleeHarvester(dir, US, Set.of("s.Sentry 1.0"));
+        h.onRoundStarted(new RoundStartedEvent(null, 0, null));
+        h.onTurnEnded(turn(1, List.of(me, weak, sentry), List.of(bullet(1, 0, -1, 3.0, BulletState.FIRED),
+            bullet(2, 0, -1, 1.0, BulletState.FIRED))));
+        h.onTurnEnded(turn(2, List.of(me, dead, sentry), List.of(bullet(1, 0, 1, 3.0, BulletState.HIT_VICTIM),
+            bullet(2, 0, 2, 1.0, BulletState.HIT_VICTIM))));
+        h.onRoundEnded(new RoundEndedEvent(0, 0, 0));
+        h.close();
+        List<String> lines = Files.readAllLines(dir.resolve("bullets.csv"));
+        assertEquals("0,hadur2.Hadur 3.8,2,4.00,1,3.00,0,0,0.00,0,0.00,2,0", lines.get(1));
     }
 
     @Test

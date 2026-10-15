@@ -32,9 +32,10 @@ import robocode.control.snapshot.ITurnSnapshot;
  *     the tick it died, its killer and the last robot to hit it ({@link #HEADER}'s last
  *     three columns, {@code -} when it lived or nothing hit it).</li>
  * <li>{@code bullets.csv}: one row per robot per round ({@link #BULLET_HEADER}): every
- *     fighter's shots, their summed power, hits on a robot, the damage those did and shots
- *     lost to another bullet; the {@code crowd} columns count only shots fired while five or
- *     more fighters were alive; then the ticks it was alive and, of those, the ticks its gun
+ *     fighter's shots, their summed power, hits on a fighter, the damage those scored (capped
+ *     at the victim's energy, as the score caps it) and shots lost to another bullet; the
+ *     {@code crowd} columns count only shots fired while five or more fighters were alive
+ *     (counted before the turn's deaths); then the ticks it was alive and, of those, the ticks its gun
  *     was cool (heat 0) with energy to fire, so a robot that could shoot but held is seen. It
  *     is how Hadur's firepower is read against the field's.</li>
  * </ul>
@@ -54,6 +55,10 @@ public class MeleeHarvester extends BattleAdaptor {
     private final Map<String, double[]> tally = new LinkedHashMap<>();
     private final Set<Integer> seenShots = new HashSet<>();
     private final Set<Integer> endedShots = new HashSet<>();
+    /** Fighters alive at the end of the previous turn: a shot first seen now left with them. */
+    private int aliveBefore;
+    /** Each robot's energy at the end of the previous turn, by index: a hit scores at most that. */
+    private final Map<Integer, Double> energyBefore = new java.util.HashMap<>();
     /** Bullet id to whether it was fired in a crowd. */
     private final Map<Integer, Boolean> crowdShot = new java.util.HashMap<>();
     /** Sentry names: the snapshots' own sentry flag is not reliable in 1.9.5.6. */
@@ -98,6 +103,8 @@ public class MeleeHarvester extends BattleAdaptor {
         seenShots.clear();
         endedShots.clear();
         crowdShot.clear();
+        aliveBefore = 0;
+        energyBefore.clear();
     }
 
     @Override
@@ -186,7 +193,9 @@ public class MeleeHarvester extends BattleAdaptor {
             double[] t = tally.computeIfAbsent(owner.getName(), k -> new double[11]);
             int id = b.getBulletId();
             if (seenShots.add(id)) {
-                boolean crowd = alive >= 5;
+                // Deaths land at the end of a turn, so a shot first seen now left while the
+                // previous turn's fighters were still alive.
+                boolean crowd = Math.max(alive, aliveBefore) >= 5;
                 crowdShot.put(id, crowd);
                 t[0]++;
                 t[1] += b.getPower();
@@ -201,7 +210,12 @@ public class MeleeHarvester extends BattleAdaptor {
                 if (st == BulletState.HIT_BULLET) {
                     t[4]++;
                 } else {
+                    IRobotSnapshot victim = byIndex(robots, b.getVictimIndex());
+                    if (victim == null || isSentry(victim)) continue;
+                    // The score counts no more damage than the victim had energy left.
+                    Double left = energyBefore.get(victim.getRobotIndex());
                     double dmg = robocode.Rules.getBulletDamage(b.getPower());
+                    if (left != null) dmg = Math.min(dmg, left);
                     t[2]++;
                     t[3] += dmg;
                     if (crowd) {
@@ -211,6 +225,8 @@ public class MeleeHarvester extends BattleAdaptor {
                 }
             }
         }
+        aliveBefore = alive;
+        for (IRobotSnapshot r : robots) energyBefore.put(r.getRobotIndex(), r.getEnergy());
     }
 
     private static String field(String name) {

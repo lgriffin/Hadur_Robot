@@ -10,7 +10,8 @@ more fighters were alive (the "crowd"). This script pools those rows per robot a
 
 Hadur's rows carry the build's version in the robot name, so a paired run (candidate and
 baseline) gives one row per build; opponents pool over both. A cut-off last row (a battle
-still running) is skipped. Columns: robot, battles, shots per round,
+still running) is skipped, as is any battle directory without the melee.csv a completed battle
+writes. Columns: robot, battles, shots per round,
 mean power, hit rate (hits / shots), damage per round, mean power and hit rate in the crowd,
 crowd damage per round, the share of shots lost to bullets, shots per 100 ticks alive, and
 the share of ticks alive the gun sat cool and unfired (ready_idle; nan for older files).
@@ -28,8 +29,10 @@ TICKS = ["aliveTicks", "readyTicks"]
 
 
 def battle_dirs(work):
+    # melee.csv (the final standings) is written only when a battle completes, so a failed
+    # or still-running battle's partial bullets.csv is left out.
     for root, _dirs, files in os.walk(work):
-        if "bullets.csv" in files:
+        if "bullets.csv" in files and "melee.csv" in files:
             yield root
 
 
@@ -47,9 +50,12 @@ def pool(work):
                 t = out[robot]
                 for k in FIELDS:
                     t[k] += float(row[k])
-                for k in TICKS:
-                    if row.get(k) not in (None, ""):
+                if all(row.get(k) not in (None, "") for k in TICKS):
+                    # Tick rates divide only the shots of rows that carry ticks, so a work
+                    # directory mixing old and new files keeps numerator and denominator alike.
+                    for k in TICKS:
                         t[k] += float(row[k])
+                    t["tickShots"] += float(row["shots"])
                 rounds.add((robot, row["round"]))
                 seen.add(robot)
         for robot in seen:
@@ -78,7 +84,7 @@ def rows(pooled):
             "crowd_hit_rate": ratio(t["crowdHits"], t["crowdShots"]),
             "crowd_damage_per_round": ratio(t["crowdDamage"], r),
             "lost_to_bullets": ratio(t["bulletHits"], t["shots"]),
-            "shots_per_100_ticks": 100 * ratio(t["shots"], t["aliveTicks"]),
+            "shots_per_100_ticks": 100 * ratio(t["tickShots"], t["aliveTicks"]),
             "ready_idle": ratio(t["readyTicks"], t["aliveTicks"]),
         })
     table.sort(key=lambda x: -x["damage_per_round"])

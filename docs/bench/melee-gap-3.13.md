@@ -100,6 +100,11 @@ the baseline build's row; the opponents pool both builds' battles):
 | wompi.Numbat | 6.8 | 13% | 1.32 | 22.9% | 1.48 | 25.9% | 61 |
 | **hadur2.Hadur 3.13** | **5.9** | **21%** | **1.43** | **19.8%** | **1.62** | **23.5%** | **54** |
 
+- The damage column in this table and in section 4 is the first version of the count, which
+  added a bullet's full damage on every hit: killing blows were not capped at the victim's
+  energy, so it runs about 6-7% above the scored damage (Hadur 54 a round here against 50.5 in
+  the battle reports). The count now caps them (review of PR #200); the comparison between
+  robots stands, though heavy finishing guns gain a little from the old count.
 - Hadur does the least damage per round of all 21 robots, again, on this engine and build.
 - **Its gun sits cool and unfired 21% of the ticks it is alive, the most of the 21.** Mirage,
   Diamond and Medina sit 9-12%. Hadur fires 5.9 shots per 100 ticks; Mirage, at the same mean
