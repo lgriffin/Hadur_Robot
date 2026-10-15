@@ -386,6 +386,8 @@ public class MoveController {
         brokenWavePowers.clear();
         ourBullets.clear();
         plan = List.of();
+        lastPlans.clear();
+        lastPlanTimes.clear();
         shadowedWaves = 0;
         shadowComputations = 0;
         // A new version, so no wave can match a stale one and skip its shadow computation.
@@ -405,6 +407,12 @@ public class MoveController {
     private final List<OurBullet> ourBullets = new ArrayList<>();
     /** MOVE-8: where the surf's plan puts us on each wave in the air; empty when it has none. */
     private List<PlanInterval> plan = List.of();
+    /** MOVE-9: the last plan interval published for each wave this round, by identity. */
+    private final Map<Wave, PlanInterval> lastPlans = new IdentityHashMap<>();
+    /** MOVE-9: the tick each of {@link #lastPlans} was published. */
+    private final Map<Wave, Long> lastPlanTimes = new IdentityHashMap<>();
+    /** The tick of the latest {@link #checkWaves}, the duel tick a plan is published on. */
+    private long lastCheckTime = -1;
     /** MOVE-1: waves that have had a shadow this round. */
     private int shadowedWaves;
     /** Bumped whenever the bullets in flight change; a wave's shadows are current at one version. */
@@ -494,6 +502,25 @@ public class MoveController {
      */
     public void publishPlan(List<PlanInterval> intervals) {
         plan = intervals.isEmpty() ? List.of() : List.copyOf(intervals);
+        // MOVE-9: the latest plan on each wave, kept after it stops being published.
+        for (PlanInterval i : plan) {
+            lastPlans.put(i.wave, i);
+            lastPlanTimes.put(i.wave, lastCheckTime);
+        }
+    }
+
+    /**
+     * MOVE-9: the last interval the surf published for wave {@code w} this round, or null when
+     * it never planned on it.
+     */
+    public PlanInterval lastPlanFor(Wave w) {
+        return lastPlans.get(w);
+    }
+
+    /** MOVE-9: the tick {@link #lastPlanFor} was published, or -1 when there is none. */
+    public long lastPlanTime(Wave w) {
+        Long t = lastPlanTimes.get(w);
+        return t == null ? -1 : t;
     }
 
     /** MOVE-8: withdraws the plan, for a tick on which the surf does not drive. */
@@ -588,6 +615,7 @@ public class MoveController {
      * @param myLocation our position this tick, in px
      */
     public void checkWaves(long currentTime, Point2D.Double myLocation) {
+        lastCheckTime = currentTime;
         // Only location and time matter here: a wave's position test and the precise
         // intersection read our 36 x 36 px hit box, which Robocode keeps axis-aligned
         // whatever our heading.

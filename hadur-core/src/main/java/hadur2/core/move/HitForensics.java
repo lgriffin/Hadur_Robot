@@ -1,5 +1,6 @@
 package hadur2.core.move;
 
+import hadur2.core.physics.DiaUtils;
 import java.util.Locale;
 
 /**
@@ -77,12 +78,31 @@ public final class HitForensics {
     }
 
     /**
-     * The HF record: {@code HF,round,tick,class,gf,linearGf,dangerPct,distance,power,driving},
-     * NaN for what a {@code nowave} hit cannot know.
+     * How far the hit lies from the surf's last plan on its wave, in the plan interval's
+     * half-widths from its centre: at most 1 inside the plan. NaN with no plan.
+     *
+     * @param plan the last interval the surf published for the wave, or null
+     * @param hitAngle the absolute bearing the bullet was fired at, radians
+     */
+    public static double planOffset(PlanInterval plan, double hitAngle) {
+        if (plan == null) return Double.NaN;
+        double centre = (plan.low + plan.high) / 2;
+        double half = Math.max(plan.width() / 2, 1e-9);
+        return Math.abs(DiaUtils.normalizeAngle(hitAngle, centre) - centre) / half;
+    }
+
+    /**
+     * The HF record: {@code HF,round,tick,class,gf,linearGf,dangerPct,distance,power,driving,
+     * planOffset,planDanger,planAge}, NaN (or -1 for the age) for what a hit cannot know.
+     * The plan fields read the surf's last plan on the hit's wave: how far off it the hit was
+     * ({@link #planOffset}), the danger the surf gave it, and how many ticks before the hit it
+     * was published.
      */
     public static String record(int round, long tick, String cls, double gf, double linearGf,
-                                double dangerPct, double distance, double power, boolean driving) {
-        return String.format(Locale.ROOT, "HF,%d,%d,%s,%.3f,%.3f,%.3f,%.1f,%.2f,%d", round, tick,
-            cls, gf, linearGf, dangerPct, distance, power, driving ? 1 : 0);
+                                double dangerPct, double distance, double power, boolean driving,
+                                double planOffset, double planDanger, long planAge) {
+        return String.format(Locale.ROOT, "HF,%d,%d,%s,%.3f,%.3f,%.3f,%.1f,%.2f,%d,%.2f,%.3f,%d",
+            round, tick, cls, gf, linearGf, dangerPct, distance, power, driving ? 1 : 0,
+            planOffset, planDanger, planAge);
     }
 }

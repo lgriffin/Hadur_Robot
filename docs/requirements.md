@@ -1244,10 +1244,11 @@ lines.
 
 | ID | Pattern | Requirement | Stage |
 |---|---|---|---|
-| MOVE-9 | Event | When an enemy bullet hits us in a duel, the core shall write an HF record of the hit's class (`headon`, `linear`, `learned`, or `nowave` when no firing wave carried it), its guess factor, where a linear gun would have aimed, the share of the wave's guess factors the danger views scored less dangerous than the hit's, the distance at fire time, the power and whether the Duel drove, read before the hit teaches the views and without changing the surf's neighbour cache. | R9 |
+| MOVE-9 | Event | When an enemy bullet hits us in a duel, the core shall write an HF record of the hit's class (`headon`, `linear`, `learned`, or `nowave` when no firing wave carried it), its guess factor, where a linear gun would have aimed, the share of the wave's guess factors the danger views scored less dangerous than the hit's, the distance at fire time, the power, whether the Duel drove, and where the hit lay against the surf's last plan on that wave (its offset in plan half-widths, the plan's danger and its age in ticks), read before the hit teaches the views and without changing the surf's neighbour cache. | R9 |
 
-- **HF record**: `HF,round,tick,class,gf,linearGf,dangerPct,distance,power,driving`
-  (`move.HitForensics`). A hit is `linear` within our half-width (18 px seen from the source)
+- **HF record**: `HF,round,tick,class,gf,linearGf,dangerPct,distance,power,driving,planOffset,planDanger,planAge`
+  (`move.HitForensics`). An offset of at most 1 means the bullet hit inside the interval the surf's
+  plan expected us to occupy (`MoveController.lastPlanFor` keeps each wave's last published plan for the round). A hit is `linear` within our half-width (18 px seen from the source)
   of `asin(lateral velocity / bullet speed) / escape angle`, else `headon` within it of 0. The
   percentile samples 41 guess factors in [-1, 1] with the surf's own danger score; near 0 the
   views thought the angle safe, near 1 they knew it was dangerous.

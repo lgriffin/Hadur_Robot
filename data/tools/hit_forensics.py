@@ -13,7 +13,9 @@ Only hits while the Duel drove count (shield mode drives listed robots).
 Prints, by rank band and over all, the bullet damage taken a round split by class (headon,
 linear, learned, nowave) and by how the danger views rated the angle the bullet came from:
 safe (percentile under 1/3: the views did not expect it), mid, and known (2/3 and over: the
-views knew it was dangerous, so the surf could not or did not get away).
+views knew it was dangerous, so the surf could not or did not get away), and by the surf's last
+plan on the bullet's wave: on (the hit lay inside the interval the plan expected us to occupy:
+the surf chose to be there), off (we were somewhere the plan did not put us) or none.
 
 Standard library only.
 """
@@ -27,6 +29,7 @@ from collections import defaultdict
 BANDS = ((1, 50), (51, 200), (201, 400), (401, 800), (801, None))
 CLASSES = ("headon", "linear", "learned", "nowave")
 RATINGS = ("safe", "mid", "known", "n/a")
+PLANS = ("on", "off", "none")
 
 
 def slug(name):
@@ -81,11 +84,22 @@ def read_list(path):
 
 
 def parse_hf(line):
-    """(class, gf, linearGf, dangerPct, distance, power, driving) of an HF line, or None."""
+    """(class, gf, linearGf, dangerPct, distance, power, driving) of an HF line, or None.
+    Lines with the plan fields (13 values) read the same; plan_fields() reads those."""
     p = line.strip().split(",")
-    if len(p) != 10 or p[0] != "HF":
+    if len(p) not in (10, 13) or p[0] != "HF":
         return None
     return (p[3], float(p[4]), float(p[5]), float(p[6]), float(p[7]), float(p[8]), p[9] == "1")
+
+
+def plan_of(line):
+    """'on' when the hit lay inside the surf's last plan on its wave (offset at most 1),
+    'off' outside it, 'none' with no plan or an older record without the plan fields."""
+    p = line.strip().split(",")
+    if len(p) != 13:
+        return "none"
+    off = float(p[10])
+    return "none" if off != off else "on" if off <= 1.0 else "off"
 
 
 def read_battle(bdir):
@@ -105,7 +119,7 @@ def read_battle(bdir):
                 if i == 0 or (i > 0 and line[i - 1] == ","):
                     h = parse_hf(line[i:])
                     if h:
-                        hits.append(h)
+                        hits.append(h + (plan_of(line[i:]),))
     return rounds, hits
 
 
@@ -126,16 +140,18 @@ def tally(work, roles, skip=frozenset()):
         for b in (band_label(band_of(rank)), "all"):
             out[b]["rounds"] += rounds
             out[b]["opponents:" + key] = 1
-            for cls, gf, lin, pct, dist, power, driving in hits:
+            for cls, gf, lin, pct, dist, power, driving, plan in hits:
                 if driving:
                     out[b][(cls, rating(pct))] += damage(power)
+                    out[b]["plan:" + plan] += damage(power)
     return out
 
 
 def render(t):
     rows = ["| Ranks | Opponents | Taken a round | " + " | ".join(CLASSES) + " | "
-            + " | ".join("views: " + r for r in RATINGS[:3]) + " |",
-            "|---|---|---|" + "---|" * (len(CLASSES) + 3)]
+            + " | ".join("views: " + r for r in RATINGS[:3]) + " | "
+            + " | ".join("plan: " + p for p in PLANS) + " |",
+            "|---|---|---|" + "---|" * (len(CLASSES) + 3 + len(PLANS))]
     for b in [band_label(x) for x in BANDS] + ["all"]:
         if b not in t:
             continue
@@ -146,9 +162,10 @@ def render(t):
                   for k in CLASSES}
         by_rat = {r: sum(v for kk, v in c.items() if isinstance(kk, tuple) and kk[1] == r) / n
                   for r in RATINGS}
-        rows.append("| %s | %d | %.1f | %s | %s |" % (
+        rows.append("| %s | %d | %.1f | %s | %s | %s |" % (
             b, opps, sum(by_cls.values()), " | ".join("%.1f" % by_cls[k] for k in CLASSES),
-            " | ".join("%.1f" % by_rat[r] for r in RATINGS[:3])))
+            " | ".join("%.1f" % by_rat[r] for r in RATINGS[:3]),
+            " | ".join("%.1f" % (c["plan:" + p] / n) for p in PLANS)))
     return "\n".join(rows)
 
 

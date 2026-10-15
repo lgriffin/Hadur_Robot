@@ -54,10 +54,44 @@ class HitForensicsTest {
     @Tag("MOVE-9")
     @DisplayName("the record names class, guess factors, percentile, distance, power and who drove")
     void record() {
-        assertEquals("HF,3,250,linear,0.620,0.600,0.150,412.0,1.95,1",
-            HitForensics.record(3, 250, "linear", 0.62, 0.6, 0.15, 412, 1.95, true));
-        assertEquals("HF,0,40,nowave,NaN,NaN,NaN,300.0,3.00,0",
-            HitForensics.record(0, 40, "nowave", Double.NaN, Double.NaN, Double.NaN, 300, 3, false));
+        assertEquals("HF,3,250,linear,0.620,0.600,0.150,412.0,1.95,1,0.50,0.120,4",
+            HitForensics.record(3, 250, "linear", 0.62, 0.6, 0.15, 412, 1.95, true, 0.5, 0.12, 4));
+        assertEquals("HF,0,40,nowave,NaN,NaN,NaN,300.0,3.00,0,NaN,NaN,-1",
+            HitForensics.record(0, 40, "nowave", Double.NaN, Double.NaN, Double.NaN, 300, 3, false,
+                Double.NaN, Double.NaN, -1));
+    }
+
+    @Test
+    @Tag("MOVE-9")
+    @DisplayName("the plan offset is the hit's distance from the plan's centre in half-widths")
+    void planOffset() {
+        PlanInterval plan = new PlanInterval(null, 1.0, 1.2, 0.3);
+        assertEquals(0.0, HitForensics.planOffset(plan, 1.1), 1e-9);
+        assertEquals(1.0, HitForensics.planOffset(plan, 1.2), 1e-9);
+        assertEquals(3.0, HitForensics.planOffset(plan, 0.8), 1e-9);
+        // The short way round: 1.1 + 2 pi is the same bearing.
+        assertEquals(0.0, HitForensics.planOffset(plan, 1.1 + 2 * Math.PI), 1e-9);
+        assertTrue(Double.isNaN(HitForensics.planOffset(null, 1.1)));
+    }
+
+    @Test
+    @Tag("MOVE-9")
+    @DisplayName("the surf's last plan on each wave is kept after the next tick replaces it, until the round ends")
+    void lastPlanKeptPerWave() {
+        MoveController m = SurfOpeningTest.controller();
+        Wave a = DangerIntegrationTest.wave(1.95, 400, 450);
+        Wave b = DangerIntegrationTest.wave(1.0, 150, 550);
+        m.checkWaves(40, new java.awt.geom.Point2D.Double(400, 100));
+        PlanInterval pa = new PlanInterval(a, 0.1, 0.2, 0.4);
+        m.publishPlan(java.util.List.of(pa));
+        m.checkWaves(41, new java.awt.geom.Point2D.Double(400, 100));
+        m.publishPlan(java.util.List.of(new PlanInterval(b, 0.3, 0.4, 0.1)));
+        assertEquals(pa, m.lastPlanFor(a));
+        assertEquals(40, m.lastPlanTime(a));
+        assertEquals(41, m.lastPlanTime(b));
+        m.initRound();
+        assertEquals(null, m.lastPlanFor(a));
+        assertEquals(-1, m.lastPlanTime(b));
     }
 
     @Test

@@ -17,6 +17,7 @@ import hadur2.core.model.*;
 import hadur2.core.move.HitForensics;
 import hadur2.core.move.MoveController;
 import hadur2.core.move.OurBullet;
+import hadur2.core.move.PlanInterval;
 import hadur2.core.move.MirrorDrive;
 import hadur2.core.move.RamEscape;
 import hadur2.core.move.SurfMover;
@@ -809,7 +810,7 @@ public final class DuelController {
                               Point2D.Double bulletLoc, boolean driving) {
         if (hitWave == null) {
             telemetry.emit(HitForensics.record(round, in.time(), "nowave", Double.NaN, Double.NaN,
-                Double.NaN, lastEnemyDistance, e.power(), driving));
+                Double.NaN, lastEnemyDistance, e.power(), driving, Double.NaN, Double.NaN, -1));
             return;
         }
         double gf = hitWave.guessFactor(bulletLoc);
@@ -817,8 +818,12 @@ public final class DuelController {
             hitWave.bulletSpeed(), hitWave.maxEscapeAngle());
         String cls = HitForensics.classify(gf, linearGf,
             HitForensics.tolerance(hitWave.targetDistance, hitWave.maxEscapeAngle()));
+        PlanInterval plan = moveController.lastPlanFor(hitWave);
+        long planTime = moveController.lastPlanTime(hitWave);
         telemetry.emit(HitForensics.record(round, in.time(), cls, gf, linearGf,
-            moveController.dangerPercentile(hitWave, gf), hitWave.targetDistance, e.power(), driving));
+            moveController.dangerPercentile(hitWave, gf), hitWave.targetDistance, e.power(), driving,
+            HitForensics.planOffset(plan, DiaUtils.absoluteBearing(hitWave.sourceLocation, bulletLoc)),
+            plan == null ? Double.NaN : plan.danger, planTime < 0 ? -1 : in.time() - planTime));
     }
 
     /**
