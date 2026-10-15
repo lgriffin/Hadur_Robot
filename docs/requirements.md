@@ -1235,6 +1235,28 @@ Nullstride's list with (docs/bench/local/2026-10-12_plan90-pc-read.md).
   (a shield bullet was fired at it), `first` or `unshielded`, so the plan's step 2 can classify
   what still gets through from the battle logs (`data/tools/shield_leaks.py`).
 
+## The melee gun in the crowd (MGUN-7, M7)
+
+The melee gap read (docs/bench/melee-gap-3.13.md) found Hadur 3.13 17th in the MeleeRumble with
+the lowest bullet damage of the top-20 fields: its gun sat cool and unfired on 21% of its
+ticks. Cheap power and fire-rate switches were level or worse, so M7 changes the gun itself.
+Every M7 requirement holds only in free-for-all melee: off a team, where MGUN-6's
+`FieldGun.onTeam` is false. A 1v1 battle never reaches the field gun, and a team keeps MGUN-1's
+gun as it was (docs/bench/melee-gun-3.13.md).
+
+| ID | Pattern | Requirement | Stage |
+|---|---|---|---|
+| MGUN-7 | State | While in melee off a team, the field gun shall give each opponent with at least twelve learned situations twelve firing solutions from its most similar situations, sharing the opponent's weight, and an opponent with fewer one circular or linear solution; on a team it shall keep MGUN-1's three. | M7 |
+
+- **MGUN-7.** `FieldGun.MELEE_K` (12) beside `FieldGun.K` (3), chosen by `FieldGun.k()` from
+  `onTeam`. More situations spread each opponent over the angles it is likely to reach, so the
+  summed density peaks where several opponents' futures overlap. Gate: the `gk` ablation of
+  3.13 on the five top-20 melee fields, 3 seeds each, paired with 3.13: ahead on every field
+  (+0.2, +1.3, +1.0, +0.8, +2.2), +1.1 APS pooled; damage a round 54.7 to 56.7, hit rate in the
+  crowd 24.6% to 25.2% (`docs/bench/local/2026-10-15_melee-top20-gk-vs-313.md`). A second run
+  of fresh battles: +1.3, -1.7, +1.6, +0.4, +1.3, +0.6 pooled, damage +8% (`...-gk2-vs-313.md`);
+  +0.85 APS over both.
+
 ## Retired requirements
 
 A retired requirement keeps its ID; no new requirement reuses it.
