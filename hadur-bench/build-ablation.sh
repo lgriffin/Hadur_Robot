@@ -70,6 +70,12 @@
 #         to settle on a peak that moves each tick (gwhy: "gun still turning" is half the idle ticks).
 #   gk    (melee and team; sources before MGUN-7 only, so --ref v3.13) the field gun's kNN takes 12
 #         situations per opponent, not 3. MGUN-7 ships it off a team.
+#   tk12, tk21 (team only) T3, the field gun's kNN depth on a team: 12 or 21 situations per opponent,
+#         not 3 (FieldGun.K is read only while a teammate lives; MGUN-7's 12 off a team stays).
+#         CombatTeam takes 21 (docs/bench/combatteam-3.25.md).
+#   tlane0 (team only) T4, no fire lane: a member fires whatever teammates lie ahead, as CombatTeam does.
+#   tlane4 (team only) T4, WEAVE-4's lane alone: a teammate's last known point still holds the shot,
+#         its predicted track (WEAVE-7) no longer does.
 #   mrate (melee and team) fire more often: the controller fires on a scan up to 8 ticks old (was 5;
 #         the field gun already aims on 8, the radar's sweep is 10-11), and with three or more
 #         opponents left the lead cap (never drop below the target's energy) no longer holds or
@@ -258,6 +264,20 @@ for a in "${list[@]}"; do
                 "        if (!firedNow && c.fireNow > 0 && in.gunHeat() == 0 && in.energy() > c.fireNow && tick.mayFire()) { orders.fire(c.fireNow); stats.shotsFired++; core.meleeShotFired(); }
         if (c.target != null && core.diedThisRound(c.target)) ghostTicks++;"
             ;;
+        tk12|tk21)
+            k="${a#tk}"
+            version="${version}k${k}"
+            edit "$fgun" "public static final int K = 3;" "public static final int K = ${k};"
+            ;;
+        tlane0)
+            version="${version}l0"
+            edit "$core" "boolean laneClear = teamLink == null || teamLink.laneClear(raw);" "boolean laneClear = true;"
+            ;;
+        tlane4)
+            version="${version}l4"
+            edit "$tlink" "            if (across <= half) return false;" "            if (across <= half) return false;
+            if (true) continue;"
+            ;;
         gk)
             # MGUN-7 ships twelve situations off a team, so on its sources this would change
             # only the team's depth: the screen it stands for is 3.13's (--ref v3.13).
@@ -304,7 +324,7 @@ for a in "${list[@]}"; do
             edit "$design" 'public static final ShieldDesign SHIPPED = parse("' \
                 "public static final ShieldDesign SHIPPED = parse(\"$flag,"
             version="${version}${suffix}" ;;
-        *) echo "unknown ablation: $a (ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, gtol, gstick, gwhy, gwin, gk, shold, slearn, smode, sstay, sturn, snull, strim)" >&2; exit 2 ;;
+        *) echo "unknown ablation: $a (ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tlane0, tlane4, gtol, gstick, gwhy, gwin, gk, shold, slearn, smode, sstay, sturn, snull, strim)" >&2; exit 2 ;;
     esac
 done
 
