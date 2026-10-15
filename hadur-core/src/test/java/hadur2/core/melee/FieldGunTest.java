@@ -41,14 +41,46 @@ class FieldGunTest {
 
     @Test
     @Tag("MGUN-1")
-    @DisplayName("MGUN-1: with history an opponent gets three solutions from its most similar situations")
+    @DisplayName("MGUN-1: on a team an opponent with history gets three solutions from its most similar situations")
     void threeLearnedSolutions() {
         for (long t = 0; t <= 200; t++) scanned("a", 500, 800, 100, Math.PI / 2, 8, t);
+        gun.onTeam(true);
         assertTrue(gun.history("a").size() >= FieldGun.K);
         List<FieldGun.Solution> s = gun.solutions(me, 100, 5, tracker.alive(), 200);
         assertEquals(FieldGun.K, s.size());
+        assertEquals(3, FieldGun.K);
         double total = s.stream().mapToDouble(x -> x.weight).sum();
         assertEquals(gun.weight(tracker.get("a"), me, tracker.alive(), 200), total, 1e-9);
+    }
+
+    @Test
+    @Tag("MGUN-7")
+    @DisplayName("MGUN-7: off a team an opponent with history gets twelve solutions, sharing its weight")
+    void twelveLearnedSolutionsOffATeam() {
+        for (long t = 0; t <= 200; t++) scanned("a", 500, 800, 100, Math.PI / 2, 8, t);
+        List<FieldGun.Solution> s = gun.solutions(me, 100, 5, tracker.alive(), 200);
+        assertEquals(12, FieldGun.MELEE_K);
+        assertEquals(FieldGun.MELEE_K, s.size());
+        double total = s.stream().mapToDouble(x -> x.weight).sum();
+        assertEquals(gun.weight(tracker.get("a"), me, tracker.alive(), 200), total, 1e-9);
+        assertTrue(gun.aim(me, 100, 5, tracker.alive(), 200).learned);
+        gun.onTeam(true);
+        assertEquals(FieldGun.K, gun.solutions(me, 100, 5, tracker.alive(), 200).size());
+        gun.onTeam(false);
+        assertEquals(FieldGun.MELEE_K, gun.solutions(me, 100, 5, tracker.alive(), 200).size());
+    }
+
+    @Test
+    @Tag("MGUN-7")
+    @DisplayName("MGUN-7: off a team, fewer than twelve situations fall back to one predicted solution")
+    void shortHistoryFallsBackOffATeam() {
+        for (long t = 0; t <= 95; t++) scanned("a", 500, 800, 100, Math.PI / 2, 8, t);
+        int size = gun.history("a").size();
+        assertTrue(size >= FieldGun.K && size < FieldGun.MELEE_K, "history " + size);
+        assertEquals(1, gun.solutions(me, 100, 5, tracker.alive(), 95).size());
+        assertFalse(gun.aim(me, 100, 5, tracker.alive(), 95).learned);
+        gun.onTeam(true);
+        assertEquals(FieldGun.K, gun.solutions(me, 100, 5, tracker.alive(), 95).size());
     }
 
     @Test
