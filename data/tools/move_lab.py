@@ -74,6 +74,16 @@ def read_workdir(work, names, build=None):
             p = os.path.join(bdir, d, "rounds.tsv")
             if os.path.isfile(p) and not d.endswith("-baseline"):
                 rows += read_tsv(p)
+    # Which battle directory holds each (opponent, seed): the bench names them 1, 2, ... per
+    # opponent, while the rounds carry the seed itself (301, ...).
+    dirs = {}
+    bdir = os.path.join(work, "battles")
+    for d in sorted(os.listdir(bdir)) if os.path.isdir(bdir) else []:
+        p = os.path.join(bdir, d, "rounds.tsv")
+        if os.path.isfile(p) and not d.endswith("-baseline"):
+            first = read_tsv(p)[:1]
+            if first:
+                dirs[(first[0]["opponent"], first[0]["seed"])] = d
     builds = sorted({r["build"] for r in rows})
     if build is None and len(builds) > 1:
         raise SystemExit(f"{work}: rounds of several builds {builds}; pick one with --build")
@@ -90,13 +100,13 @@ def read_workdir(work, names, build=None):
                 damage=st.mean(float(r["damageTaken"]) for r in rs),
                 survived=st.mean(float(r["survived"]) for r in rs),
                 rounds=len(rs),
-                theirHit=their_hit_rate(work, opp, seed))
+                theirHit=their_hit_rate(work, opp, seed, dirs.get((opp, seed))))
     return out
 
 
-def their_hit_rate(work, opp, seed):
+def their_hit_rate(work, opp, seed, battle_dir=None):
     """theirHitRate of the battle's result.csv (the shooter's hits over its shots), or None."""
-    p = os.path.join(work, "battles", f"{slug(opp)}-{seed}", "result.csv")
+    p = os.path.join(work, "battles", battle_dir or f"{slug(opp)}-{seed}", "result.csv")
     try:
         with open(p, newline="", encoding="utf-8") as f:
             rows = list(csv.DictReader(f))

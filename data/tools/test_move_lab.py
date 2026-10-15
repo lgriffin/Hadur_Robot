@@ -38,6 +38,18 @@ class MoveLabTest(unittest.TestCase):
             f.writelines(rows)
         return w
 
+    def test_hit_rate_found_when_battle_dirs_count_seeds(self):
+        # The bench names battle directories 1, 2, ... while the rounds carry the seed (301, ...).
+        w = os.path.join(self.tmp, "real")
+        bd = os.path.join(w, "battles", "lab.Knn_1.0-1")
+        os.makedirs(bd)
+        with open(os.path.join(bd, "rounds.tsv"), "w") as f:
+            f.write(HEADER + "hadur2.Hadur 3.13si\tlab.Knn 1.0\t301\t0\t1\t1\t900\t0.0\t30\t0.0\t0\t0\n")
+        with open(os.path.join(bd, "result.csv"), "w") as f:
+            f.write("ok,rounds,theirHitRate\ntrue,1,0.12\n")
+        d = ml.read_workdir(w, ["lab.Knn 1.0"])
+        self.assertAlmostEqual(d["lab.Knn 1.0"]["301"]["theirHit"], 0.12)
+
     def test_set_file_names_in_order(self):
         self.assertEqual(ml.load_set(self.set), [("lab.Knn 1.0", "lab-knn"), ("lab.HeadOn 1.0", "lab-headon")])
 
