@@ -1,0 +1,9 @@
+# Movement lab panel (docs/bench/move-lab.md): six reference shooters that differ only in their gun.
+# Identical orbit movement, fixed power 2.0. Built by lab/build-lab.sh into opponents/.
+#   <robot name as Robocode lists it> | <role> | <jar file in opponents/>
+lab.HeadOn 1.0 | lab-headon | lab.HeadOn_1.0.jar
+lab.Linear 1.0 | lab-linear | lab.Linear_1.0.jar
+lab.Circular 1.0 | lab-circular | lab.Circular_1.0.jar
+lab.GFHist 1.0 | lab-gfhist | lab.GFHist_1.0.jar
+lab.Knn 1.0 | lab-knn | lab.Knn_1.0.jar
+lab.PatternMatch 1.0 | lab-patternmatch | lab.PatternMatch_1.0.jar

@@ -1261,6 +1261,17 @@ lines.
   hit): by the tick before arrival every option leads to the same place, so later ones always
   read `hhh`.
 
+## Top 3: the movement lab
+
+Hadur's movement is tested apart from its gun: a silent Hadur (`build-ablation.sh silent`, which
+combines with the other ablations as `silent,<x>`) fights six reference shooters that differ only in
+their gun, and its score is the damage it takes. [docs/bench/move-lab.md](bench/move-lab.md) says how
+to build, run and read it.
+
+| ID | Pattern | Requirement | Stage |
+|---|---|---|---|
+| BENCH-90 | Ubiquitous | The bench shall carry the movement lab: `hadur-bench/lab-panel.txt`, a set file naming the six reference shooters `lab.HeadOn`, `lab.Linear`, `lab.Circular`, `lab.GFHist`, `lab.Knn` and `lab.PatternMatch` at version 1.0 with their jars in `opponents/` (built by `lab/build-lab.sh`), and `data/tools/move_lab.py`, which for each `LABEL=WORKDIR` reports per opponent the damage Hadur took per round, the rounds it survived and the shooter's hit rate, and for two labels the second minus the first over the seeds both fought, as mean and 95% interval. | R9 |
+
 ## Retired requirements
 
 A retired requirement keeps its ID; no new requirement reuses it.

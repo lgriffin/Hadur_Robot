@@ -7,6 +7,8 @@
 #   ./build-ablation.sh mir1            # ... 3.8.5nm
 #   ./build-ablation.sh ram2,mir1       # ... 3.8.5nrnm
 #   ./build-ablation.sh shield-all      # ... 3.8.5sa
+#   ./build-ablation.sh silent          # ... no gun at all, for the movement lab (lab variants: silent,<x>)
+#   ./build-ablation.sh silent,heat     # ... 3.13sihw: the lab's silent Hadur with the MOVE-11 heat wave
 #
 # Ablations (each a one-line edit of the duel, checked to apply exactly once):
 #   ram2  RAM-2 off: never escape a confirmed rammer; RAM-1's full-power rule stays (3.4's play)
@@ -34,6 +36,12 @@
 #         close with the orbit's 1.65 gain instead of 0.6.
 #   heat  MOVE-11: the gun-heat wave is on: when the enemy's gun is about to be cool and fewer than two
 #         firing waves are in the air, the surf also dodges the shot it has not fired yet. Suffix hw.
+#   silent  the Duel never fires: drive() is entered with WEAVE-3's fire permission withdrawn (mayFire = false),
+#         which both of the duel's fire sites (the aimed shot and the shield's) honour; the radar,
+#         aim, waves and movement all still run. Hadur then scores only by survival, which is what
+#         the movement lab measures (docs/bench/move-lab.md). Melee and team play are unchanged.
+#         Suffix si. Lab variants are built as silent,<x>, e.g. ./build-ablation.sh silent,heat
+#         (suffix sihw), and fought against lab-panel.txt.
 #   tpost (team only) the melee posture is always NORMAL while Hadur has living teammates: on a team,
 #         two enemies hit by our own members read as "fighting each other", so LET_THEM_FIGHT backs
 #         this member away from its teammates' fight (docs/bench/team-lower-half.md).
@@ -79,7 +87,7 @@ set -euo pipefail
 
 ref=HEAD
 if [[ "${1:-}" == "--ref" ]]; then ref="$2"; shift 2; fi
-[[ $# -eq 1 ]] || { sed -n '2,75p' "$0"; exit 2; }
+[[ $# -eq 1 ]] || { sed -n '2,84p' "$0"; exit 2; }
 
 here="$(cd "$(dirname "$0")" && pwd)"
 repo="$(git -C "$here" rev-parse --show-toplevel)"
@@ -172,6 +180,10 @@ for a in "${list[@]}"; do
         heat)
             edit "$movedesign" "static final boolean HEAT_WAVE = false;" "static final boolean HEAT_WAVE = true;"
             version="${version}hw" ;;
+        silent)
+            edit "$duel" "public void drive(BotInput in, BotOrders.Builder orders, int level, boolean mayFire) {" \
+                "public void drive(BotInput in, BotOrders.Builder orders, int level, boolean mayFire) { mayFire = false;"
+            version="${version}si" ;;
         tpost)
             edit "$mctl" "MeleeStrategy.Plan plan = strategy.evaluate(tracker, s.me, s.energy, s.others, s.time);" \
                 "MeleeStrategy.Plan plan = s.teammates.isEmpty() ? strategy.evaluate(tracker, s.me, s.energy, s.others, s.time) : MeleeStrategy.Plan.normal();"
@@ -224,7 +236,7 @@ for a in "${list[@]}"; do
             edit "$design" 'public static final ShieldDesign SHIPPED = parse("' \
                 "public static final ShieldDesign SHIPPED = parse(\"$flag,"
             version="${version}${suffix}" ;;
-        *) echo "unknown ablation: $a (ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, shold, slearn, smode, sstay, sturn, snull, strim)" >&2; exit 2 ;;
+        *) echo "unknown ablation: $a (ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, silent, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, shold, slearn, smode, sstay, sturn, snull, strim)" >&2; exit 2 ;;
     esac
 done
 
