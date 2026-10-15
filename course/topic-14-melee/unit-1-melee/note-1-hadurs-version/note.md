@@ -139,6 +139,18 @@ The brains moved too. In A2 the duel was lifted out of `HadurCore` into [`duel.D
 
 The team entry, `hadur2.HadurTeam` (3.7, with T1 in 3.8), is five Hadurs that share sightings through the kernel's `link` codec, never count or target each other, and hold a shot while a teammate stands in the fire lane. There is no Team brain yet: a team battle runs Melee and then Duel, on an input the conductor's `TeamLink` has filtered to enemies only. Read [`architecture.md`, "The team baseline"](https://github.com/lgriffin/Hadur_Robot/blob/df731e8/docs/architecture.md) for the details.
 
+## 7. 3.13: the team fires harder (MGUN-6)
+
+The team entry reached 12th in the TeamRumble on the melee brain alone. The gap to the teams above it was not where it was first looked for ([`docs/bench/team-lower-half.md`](https://github.com/lgriffin/Hadur_Robot/blob/97796d8/docs/bench/team-lower-half.md), sections 9 to 12):
+
+- **Not detection.** Members inferred 86% of the enemy bullets that hit them; sharing hits over the link would recover at most 2.5%.
+- **Not dodging.** Against the same 13 teams, members were hit 17.1 times per 100 enemy bullets, HOFSwarm's 16.0.
+- **Firepower.** MGUN-3's table is a ten-bot free-for-all's: 1.0 beyond 500 px, 1.5 at 300 to 500 px. Members fired mean power 1.35 against HOFSwarm's 1.93, so rounds ran a third longer (1,022 ticks against 768), the enemies fired 31% more bullets and members died early.
+
+MGUN-6 is one function, [`MeleeEnergyPolicy.teamPower`](https://github.com/lgriffin/Hadur_Robot/blob/97796d8/hadur-core/src/main/java/hadur2/core/melee/MeleeEnergyPolicy.java): with 30 energy or more, a member fires power 3, or the power that kills, in place of the table. [`FieldGun`](https://github.com/lgriffin/Hadur_Robot/blob/97796d8/hadur-core/src/main/java/hadur2/core/melee/FieldGun.java) calls it only while Hadur has a living teammate whose position is fresh, so a 1v1 or a melee never reaches it. On all 45 teams, 6 seeds, paired with 3.12, it was **+5.7 ± 1.1** points a team; live, HadurTeam 3.13 went from 12th to **9th** (68.30).
+
+Notice how the rule is kept from the other ladders. Leigh's rule for team work was that it must not move 1v1 behaviour at all, so the change is a team-only path, not a retuned table: the 1v1 and melee replay fixtures replay unchanged, and only the two team fixtures were re-recorded. When one codebase plays three ladders, a change for one of them is gated by proving the other two did not move.
+
 ## Try this
 
 1. In `PostureGate`, change `others >= 2` to `others >= 1`. Which test in `PostureGateTest` fails, and which requirement does it name?
@@ -147,3 +159,4 @@ The team entry, `hadur2.HadurTeam` (3.7, with T1 in 3.8), is five Hadurs that sh
 4. Write the Strategy interface for the two brains as in the talk, and list what state the two would need to share. Do you still prefer the interface?
 5. Compare your answer to 4 with `role.Role` and the two seams at 3.9. Where did the shared state you listed end up: in the kernel's `world`, in the baton, or in the conductor?
 6. In `RoleResolver.resolve`, delete the latch check. Which of the three promises in `alwaysAnswersNeverMovesUpAtMostTwoChanges` breaks, and what round of counts does jqwik shrink the failure to?
+7. MGUN-6 could have been a new row in MGUN-3's table instead of a separate function. Which tests would then have to change, and why does that make the separate path safer for the 1v1 and melee ladders?

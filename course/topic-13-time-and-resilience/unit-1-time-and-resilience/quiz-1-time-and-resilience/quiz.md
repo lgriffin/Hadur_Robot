@@ -76,4 +76,13 @@ options:
   - Profiles are compressed
   - Profiles are read in parallel
 correct: 0
+---
+question: Why did Hadur 3.11 remove duress mode?
+type: multiple-choice
+options:
+  - It caused exceptions on Java 21
+  - A whole-field census found it cost about 0.7 APS, mostly entered on round-0 warm-up skips
+  - The RoboRumble banned fallback modes
+  - The tick budget had stopped shedding levels
+correct: 1
 ```

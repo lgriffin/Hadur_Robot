@@ -55,7 +55,10 @@ MeleeRumble and TeamRumble on 2026-10-05. Open after A5:
   of date since A2. Fixing them is one optional, comment-only re-pin.
 - **The Tutors course** (`course/`) was aligned with 3.9 on 2026-10-07: the hexagon note has
   the kernel, strands and conductor; the melee note and quiz cover the role resolver; the
-  capstone points at RAM-3 and the resolver; Topic 15 has a 3.6 to 3.9 talk. Still open: the
+  capstone points at RAM-3 and the resolver; Topic 15 has a 3.6 to 3.9 talk. Aligned with 3.13
+  on 2026-10-15: Topic 15 talks 7 (3.10 to 3.12, live drift, census, SHIELD-7, 9th) and 8 (3.13,
+  Nullstride's shield as switches, MGUN-6, 7th); Topic 12 talk 2 has L-45 and L-46; Topic 13
+  records duress retired in 3.11; Topic 14 section 7 covers MGUN-6. Still open: the
   labs (Hadurling) have no role resolver or team, and the notes' code links stay pinned to the
   commits that introduced each idea.
 
