@@ -5,7 +5,7 @@
         [--list hadur-bench/shield-313.txt] [--other-list hadur-bench/shield-nullstride.txt] [--all]
 
 WORKDIR is a cold bench run of a build that writes HF records: WORKDIR/battles/<slug>-<seed>/
-holds hadur.log (one `HF,round,tick,class,gf,linearGf,dangerPct,distance,power,driving` line
+holds hadur.log (each line prefixed `round,tick,`; one `HF,round,tick,class,gf,linearGf,dangerPct,distance,power,driving` line
 per bullet that hit us in a duel) and rounds.tsv (one row per round). By default only the
 opponents on neither shield list are read, since the plan's gap is there; --all reads every one.
 Only hits while the Duel drove count (shield mode drives listed robots).
@@ -100,8 +100,10 @@ def read_battle(bdir):
     if os.path.exists(lpath):
         with open(lpath, encoding="utf-8", errors="replace") as f:
             for line in f:
-                if line.startswith("HF,"):
-                    h = parse_hf(line)
+                # The robot's log prefixes each record with the round and tick it was written.
+                i = line.find("HF,")
+                if i == 0 or (i > 0 and line[i - 1] == ","):
+                    h = parse_hf(line[i:])
                     if h:
                         hits.append(h)
     return rounds, hits
