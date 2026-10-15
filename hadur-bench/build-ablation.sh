@@ -61,13 +61,15 @@
 #         settles on a moving peak stops holding fire (3.13's gun idles 21% of ticks).
 #   gstick (melee only, 3+ opponents, no teammates) for the last three ticks before the gun is cool,
 #         aim only at last tick's target, so the gun converges instead of chasing a new peak.
-#   gwhy  (measurement) each tick the gun is cool, print GW,<why>: F fired, A gun still turning, H the
-#         brain held fire at a target, T no target, N no command yet, E too little energy.
+#   gwhy  (measurement) each tick the gun is cool, print GW,<why>: F fired, A gun still turning (past
+#         the seam's tolerance, gtol's when combined), H the brain held fire at a target, T no target,
+#         N no command yet, E too little energy, P the conductor withheld fire permission.
 #   gwin  (melee only, 3+ opponents, no teammates) the fire window: on a tick the gun is cool, fire at
 #         once along the gun's present heading when the firing solutions it covers hold 70% or more of
 #         the peak's density (the target there fresh, energy to spare), instead of waiting for the gun
 #         to settle on a peak that moves each tick (gwhy: "gun still turning" is half the idle ticks).
-#   gk    (melee and team) the field gun's kNN takes 12 situations per opponent, not 3.
+#   gk    (melee and team; sources before MGUN-7 only, so --ref v3.13) the field gun's kNN takes 12
+#         situations per opponent, not 3. MGUN-7 ships it off a team.
 #   mrate (melee and team) fire more often: the controller fires on a scan up to 8 ticks old (was 5;
 #         the field gun already aims on 8, the radar's sweep is 10-11), and with three or more
 #         opponents left the lead cap (never drop below the target's energy) no longer holds or
@@ -138,6 +140,9 @@ edit() {
 base="$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' "$src/hadur-robot/pom.xml")"
 version="$base"
 IFS=, read -ra list <<< "$1"
+# The fire seam's turn tolerance, which gtol widens; gwhy reads the same one.
+gtolerance="0.05"
+[[ ",$1," == *,gtol,* ]] && gtolerance="(in.others() >= 3 && core.livingTeammates().isEmpty() ? 2.0 : 0.05)"
 for a in "${list[@]}"; do
     case "$a" in
         ram2)
@@ -225,7 +230,7 @@ for a in "${list[@]}"; do
         gtol)
             version="${version}gt"
             edit "$mseam" "&& Math.abs(Math.toDegrees(in.gunTurnRemaining())) < 0.05" \
-                "&& Math.abs(Math.toDegrees(in.gunTurnRemaining())) < (in.others() >= 3 && core.livingTeammates().isEmpty() ? 2.0 : 0.05)"
+                "&& Math.abs(Math.toDegrees(in.gunTurnRemaining())) < $gtolerance"
             ;;
         gstick)
             version="${version}gs"
@@ -235,7 +240,7 @@ for a in "${list[@]}"; do
         gwhy)
             version="${version}gw"
             edit "$mseam" "        MeleeController.Command c = melee.tick(new MeleeController.Situation(" \
-                "        if (in.gunHeat() == 0 && in.energy() > 0.1) System.out.println(\"GW,\" + (previous == null ? \"N\" : previous.firePower <= 0 ? (previous.target == null ? \"T\" : \"H\") : Math.abs(Math.toDegrees(in.gunTurnRemaining())) >= 0.05 ? \"A\" : in.energy() <= previous.firePower ? \"E\" : \"F\"));
+                "        if (in.gunHeat() == 0 && in.energy() > 0.1) System.out.println(\"GW,\" + (previous == null ? \"N\" : previous.firePower <= 0 ? (previous.target == null ? \"T\" : \"H\") : Math.abs(Math.toDegrees(in.gunTurnRemaining())) >= $gtolerance ? \"A\" : in.energy() <= previous.firePower ? \"E\" : !tick.mayFire() ? \"P\" : \"F\"));
         MeleeController.Command c = melee.tick(new MeleeController.Situation("
             ;;
         gwin)
@@ -254,6 +259,9 @@ for a in "${list[@]}"; do
         if (c.target != null && core.diedThisRound(c.target)) ghostTicks++;"
             ;;
         gk)
+            # MGUN-7 ships twelve situations off a team, so on its sources this would change
+            # only the team's depth: the screen it stands for is 3.13's (--ref v3.13).
+            grep -qF "MELEE_K" "$fgun" && { echo "gk applies to sources before MGUN-7 (use --ref v3.13)" >&2; exit 2; }
             version="${version}gk"
             edit "$fgun" "public static final int K = 3;" "public static final int K = 12;"
             ;;
