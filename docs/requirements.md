@@ -1253,7 +1253,9 @@ gun as it was (docs/bench/melee-gun-3.13.md).
   summed density peaks where several opponents' futures overlap. Gate: the `gk` ablation of
   3.13 on the five top-20 melee fields, 3 seeds each, paired with 3.13: ahead on every field
   (+0.2, +1.3, +1.0, +0.8, +2.2), +1.1 APS pooled; damage a round 54.7 to 56.7, hit rate in the
-  crowd 24.6% to 25.2% (`docs/bench/local/2026-10-15_melee-top20-gk-vs-313.md`).
+  crowd 24.6% to 25.2% (`docs/bench/local/2026-10-15_melee-top20-gk-vs-313.md`). A second run
+  of fresh battles: +1.3, -1.7, +1.6, +0.4, +1.3, +0.6 pooled, damage +8% (`...-gk2-vs-313.md`);
+  +0.85 APS over both.
 
 ## Retired requirements
 

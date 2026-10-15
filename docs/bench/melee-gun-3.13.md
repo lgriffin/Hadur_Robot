@@ -33,17 +33,20 @@ ablations of 3.13 (`hadur-bench/build-ablation.sh`).
 |---|---|---|---|---|---|---|
 | gtol + gstick (`gtgs`) | fire within 2° of the aim, and lock the target in the last three cooling ticks | 50.0 vs 50.3 | 18.1% vs 20.8% | 18.7% vs 19.4% | -2.3, -0.5, 0.0, +1.4, +1.5 | **+0.0** |
 | gk | K 3 to 12 situations per opponent | 56.7 vs 54.7 | 19.5% vs 21.1% | 20.6% vs 20.4% | +0.2, +1.3, +1.0, +0.8, +2.2 | **+1.1** |
+| gk, second run (`gk2`) | the same build, fresh battles | 55.5 vs 51.4 | 19.5% vs 20.9% | 20.4% vs 19.9% | +1.3, -1.7, +1.6, +0.4, +1.3 | **+0.6** |
 | gwin (`gn`) | fire window: shoot at once along the gun's heading when it covers 70% of the peak's density | 52.3 vs 52.2 | 19.6% vs 20.5% | 19.6% vs 18.9% | +0.4, -1.6, -0.3, +0.8, -2.1 | **-0.6** |
 
 - **Firing sooner does not pay** (gtgs, gwin). Both cut the idle gun by one to three points and
   added shots, but the extra shots were the poor ones, so damage stayed level.
-- **A wider kNN does** (gk): the only gun change ahead on every field. Twelve situations spread
+- **A wider kNN does** (gk): the only gun change ahead on every field in its first run, and on
+  four of five in a second run of fresh battles; over both runs +0.85 APS, ahead in 9 of 10 field
+  runs, damage a round +4% and +8%. Twelve situations spread
   each opponent over the angles it is likely to reach, so the density peaks where several
   opponents' futures overlap, which is what a gun in a crowd is for; damage a round rose 4% and
   the crowd hit rate 24.6% to 25.2%. Diamond's and Neuromancer's melee guns also draw many
   situations an opponent.
 
-Reports: `docs/bench/local/2026-10-15_melee-top20-{gtgs,gk,gn}-vs-313.md`, firepower tables in
+Reports: `docs/bench/local/2026-10-15_melee-top20-{gtgs,gk,gk2,gn}-vs-313.md`, firepower tables in
 `data/bench/2026-10-15_melee-top20-*-vs-313_firepower.tsv`.
 
 ## 3. What ships: MGUN-7
