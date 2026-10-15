@@ -55,8 +55,9 @@ class MoveLabTest(unittest.TestCase):
         a = self.workdir("a", {("lab.Knn 1.0", "1"): [50], ("lab.Knn 1.0", "2"): [70], ("lab.Knn 1.0", "3"): [90]})
         b = self.workdir("b", {("lab.Knn 1.0", "1"): [40], ("lab.Knn 1.0", "2"): [50], ("lab.Knn 1.0", "9"): [0]})
         da, db = (ml.read_workdir(x, ["lab.Knn 1.0"])["lab.Knn 1.0"] for x in (a, b))
-        dd, _ = ml.paired(da, db)
+        dd, _, hd = ml.paired(da, db)
         self.assertEqual(sorted(dd), [-20.0, -10.0])
+        self.assertEqual(len(hd), 2)  # the shooter's hit rate, where both battles report one
         m, h, n = ml.mean_ci(dd)
         self.assertAlmostEqual(m, -15.0)
         self.assertEqual(n, 2)

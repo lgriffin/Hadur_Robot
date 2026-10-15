@@ -25,6 +25,7 @@ firing at 2 energy, so it can run dry against a mover that is rarely hit.
 `--set lab-panel.txt`) prints a markdown table. Per opponent and label: Hadur's damage taken per round (rounds.tsv
 `damageTaken`), rounds survived %, and the shooter's hit rate (result.csv `theirHitRate`). With two labels it adds
 the second minus the first over the seeds both fought, mean and 95% interval (Student's t), then an All row over
-the opponents. Negative damage means the second label moves better. Seeds are labels, not replays (charter,
+the opponents. The shooter's hit rate is the headline: damage per round also counts how long the shooter can keep
+firing before it runs dry, so it understates a better mover. Negative means the second label moves better. Seeds are labels, not replays (charter,
 principle 1): read the interval, not the point.
 Tests: `python3 data/tools/test_move_lab.py`; `LabPanelTest` (BENCH-90) loads the set file.

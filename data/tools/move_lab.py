@@ -129,10 +129,13 @@ def summary(seeds):
 
 
 def paired(a, b):
-    """Per common seed, b minus a: ([damage differences], [survival differences in points])."""
+    """Per common seed, b minus a: ([damage differences], [survival differences in points],
+    [shooter hit-rate differences in points, where both battles report one])."""
     common = sorted(set(a) & set(b))
     return ([b[s]["damage"] - a[s]["damage"] for s in common],
-            [100 * (b[s]["survived"] - a[s]["survived"]) for s in common])
+            [100 * (b[s]["survived"] - a[s]["survived"]) for s in common],
+            [100 * (b[s]["theirHit"] - a[s]["theirHit"]) for s in common
+             if a[s]["theirHit"] is not None and b[s]["theirHit"] is not None])
 
 
 def pm(m, h, digits=1):
@@ -148,9 +151,10 @@ def table(labels, data, panel):
     for lab in labels:
         head += [f"{lab} dmg/round", f"{lab} survived %", f"{lab} their hit %"]
     if two:
-        head += ["Seeds", f"{labels[1]} − {labels[0]} dmg/round (95% CI)", "Survived (pp)"]
+        head += ["Seeds", f"{labels[1]} − {labels[0]} their hit % (95% CI)",
+                 "dmg/round", "Survived (pp)"]
     lines = ["| " + " | ".join(head) + " |", "|" + "---|" * len(head)]
-    dmg_means, surv_means = [], []
+    dmg_means, surv_means, hit_means = [], [], []
     for name, _role in panel:
         cells = [name]
         for lab in labels:
@@ -161,19 +165,23 @@ def table(labels, data, panel):
                 cells += [f"{s['damage']:.1f}", f"{s['survived']:.0f}",
                           "-" if s["hit"] is None else f"{s['hit']:.1f}"]
         if two:
-            dd, sd = paired(data[labels[0]].get(name, {}), data[labels[1]].get(name, {}))
+            dd, sd, hd = paired(data[labels[0]].get(name, {}), data[labels[1]].get(name, {}))
             m, h, n = mean_ci(dd)
             ms, hs, _ = mean_ci(sd)
+            mh, hh, nh = mean_ci(hd)
             if n:
                 dmg_means.append(m)
                 surv_means.append(ms)
-            cells += [str(n), pm(m, h), pm(ms, hs, 0)]
+            if nh:
+                hit_means.append(mh)
+            cells += [str(n), pm(mh, hh, 2) if nh else "-", pm(m, h), pm(ms, hs, 0)]
         lines.append("| " + " | ".join(cells) + " |")
     if two and dmg_means:
         m, h, n = mean_ci(dmg_means)
         ms, hs, _ = mean_ci(surv_means)
+        mh, hh, nh = mean_ci(hit_means)
         lines.append("| **All, over the opponents' means** |" + " |" * (3 * len(labels))
-                     + f" {n} opponents | {pm(m, h)} | {pm(ms, hs, 0)} |")
+                     + f" {n} opponents | {pm(mh, hh, 2) if nh else '-'} | {pm(m, h)} | {pm(ms, hs, 0)} |")
     return lines
 
 
