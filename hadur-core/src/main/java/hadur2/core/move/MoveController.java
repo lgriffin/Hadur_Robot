@@ -673,6 +673,36 @@ public class MoveController {
         }
     }
 
+    /** MOVE-9: the neighbour-cache key the HF danger reading uses, apart from every surf index. */
+    private static final int FORENSICS_CACHE = -1;
+
+    /**
+     * MOVE-9: how the danger views rate the angle a bullet came from, as the share of the
+     * wave's guess factors in [-1, 1] ({@link HitForensics#SAMPLES} of them) they score less
+     * dangerous. Call it before {@link #logBulletHit} so the hit itself does not teach the
+     * reading. It uses a cache slot of its own and empties it after, so the surf's cached
+     * neighbours and its choices are untouched.
+     *
+     * @param w the wave that carried the bullet
+     * @param hitGf the guess factor the bullet was fired at
+     * @return the percentile in [0, 1]
+     */
+    public double dangerPercentile(Wave w, double hitGf) {
+        double bandwidth = Math.atan(HitForensics.HALF_WIDTH / Math.max(w.targetDistance, HitForensics.HALF_WIDTH));
+        double[] samples = new double[HitForensics.SAMPLES];
+        try {
+            double at = getDangerScore(w, new Wave.Intersection(w.firingAngle(hitGf), bandwidth), FORENSICS_CACHE);
+            for (int i = 0; i < samples.length; i++) {
+                samples[i] = getDangerScore(w, new Wave.Intersection(
+                    w.firingAngle(HitForensics.sampleGuessFactor(i)), bandwidth), FORENSICS_CACHE);
+            }
+            return HitForensics.percentile(samples, at);
+        } finally {
+            for (KnnView<TimestampedGuessFactor> view : views) view.cachedNeighbors.remove(FORENSICS_CACHE);
+            cacheOwners.remove(FORENSICS_CACHE);
+        }
+    }
+
     /**
      * The firing wave a bullet of {@code bulletPower} at {@code bulletLocation} belongs to:
      * the one whose radius this tick is nearest the bullet's distance from its source,

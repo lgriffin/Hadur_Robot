@@ -14,6 +14,7 @@ import hadur2.core.memory.ProfileFolder;
 import hadur2.core.memory.ProfileLibrary;
 import hadur2.core.memory.Tiers;
 import hadur2.core.model.*;
+import hadur2.core.move.HitForensics;
 import hadur2.core.move.MoveController;
 import hadur2.core.move.OurBullet;
 import hadur2.core.move.MirrorDrive;
@@ -784,6 +785,8 @@ public final class DuelController {
         // The firing wave of this robot and power whose front is closest to the bullet.
         Point2D.Double bulletLoc = new Point2D.Double(e.x(), e.y());
         Wave hitWave = moveController.findBulletWave(bulletLoc, in.time(), e.name(), e.power());
+        // MOVE-9: why it got through, read before the hit teaches the views.
+        if (enemiesTotal <= 1) hitForensics(in, e, hitWave, bulletLoc, driving);
         if (hitWave != null) {
             hitWave.hitByBullet = true;
             moveController.logBulletHit(hitWave, bulletLoc, round, in.time());
@@ -795,6 +798,27 @@ public final class DuelController {
                 (found ? hitWave.targetVelocity : in.velocity()) != 0,
                 Rules.getBulletDamage(e.power()));
         }
+    }
+
+    /**
+     * MOVE-9: the HF record of a bullet that hit us in a duel: its class, the guess factor it
+     * came from, where a linear gun would have aimed, and how the danger views rated that angle
+     * (see {@link HitForensics}). Measurement only; nothing it computes is kept.
+     */
+    private void hitForensics(BotInput in, BotEvent.HitByBullet e, Wave hitWave,
+                              Point2D.Double bulletLoc, boolean driving) {
+        if (hitWave == null) {
+            telemetry.emit(HitForensics.record(round, in.time(), "nowave", Double.NaN, Double.NaN,
+                Double.NaN, lastEnemyDistance, e.power(), driving));
+            return;
+        }
+        double gf = hitWave.guessFactor(bulletLoc);
+        double linearGf = HitForensics.linearGuessFactor(hitWave.lateralVelocity(),
+            hitWave.bulletSpeed(), hitWave.maxEscapeAngle());
+        String cls = HitForensics.classify(gf, linearGf,
+            HitForensics.tolerance(hitWave.targetDistance, hitWave.maxEscapeAngle()));
+        telemetry.emit(HitForensics.record(round, in.time(), cls, gf, linearGf,
+            moveController.dangerPercentile(hitWave, gf), hitWave.targetDistance, e.power(), driving));
     }
 
     /**
