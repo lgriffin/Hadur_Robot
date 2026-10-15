@@ -7,7 +7,9 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 import robocode.control.events.BattleAdaptor;
 import robocode.control.events.RoundEndedEvent;
@@ -29,6 +31,12 @@ import robocode.control.snapshot.ITurnSnapshot;
  *     Hadur and Hadur bullets that hit a sentry, and skipped turns. When Hadur died, also
  *     the tick it died, its killer and the last robot to hit it ({@link #HEADER}'s last
  *     three columns, {@code -} when it lived or nothing hit it).</li>
+ * <li>{@code bullets.csv}: one row per robot per round ({@link #BULLET_HEADER}): every
+ *     fighter's shots, their summed power, hits on a robot, the damage those did and shots
+ *     lost to another bullet; the {@code crowd} columns count only shots fired while five or
+ *     more fighters were alive; then the ticks it was alive and, of those, the ticks its gun
+ *     was cool (heat 0) with energy to fire, so a robot that could shoot but held is seen. It
+ *     is how Hadur's firepower is read against the field's.</li>
  * </ul>
  */
 public class MeleeHarvester extends BattleAdaptor {
@@ -37,7 +45,17 @@ public class MeleeHarvester extends BattleAdaptor {
         "round,place,fielded,duelOpponent,duelWon,sentryHitsTaken,sentryHitsGiven,skippedTurns,"
         + "deathTick,killer,lastHit";
 
+    public static final String BULLET_HEADER =
+        "round,robot,shots,power,hits,damage,bulletHits,crowdShots,crowdPower,crowdHits,crowdDamage,aliveTicks,readyTicks";
+
     private final String us;
+    private final BufferedWriter bullets;
+    /** Per robot this round: shots, power, hits, damage, bullet hits, the crowd four, alive and ready ticks. */
+    private final Map<String, double[]> tally = new LinkedHashMap<>();
+    private final Set<Integer> seenShots = new HashSet<>();
+    private final Set<Integer> endedShots = new HashSet<>();
+    /** Bullet id to whether it was fired in a crowd. */
+    private final Map<Integer, Boolean> crowdShot = new java.util.HashMap<>();
     /** Sentry names: the snapshots' own sentry flag is not reliable in 1.9.5.6. */
     private final Set<String> sentries;
     private final BufferedWriter hadurLog;
@@ -60,6 +78,8 @@ public class MeleeHarvester extends BattleAdaptor {
         this.hadurLog = Files.newBufferedWriter(dir.resolve("hadur.log"), StandardCharsets.UTF_8);
         this.rounds = Files.newBufferedWriter(dir.resolve("rounds.csv"), StandardCharsets.UTF_8);
         rounds.write(HEADER + "\n");
+        this.bullets = Files.newBufferedWriter(dir.resolve("bullets.csv"), StandardCharsets.UTF_8);
+        bullets.write(BULLET_HEADER + "\n");
     }
 
     @Override
@@ -74,6 +94,10 @@ public class MeleeHarvester extends BattleAdaptor {
         deathTick = lastHitTick = -1;
         killer = lastHit = null;
         counted.clear();
+        tally.clear();
+        seenShots.clear();
+        endedShots.clear();
+        crowdShot.clear();
     }
 
     @Override
@@ -117,6 +141,7 @@ public class MeleeHarvester extends BattleAdaptor {
                 lastHitTick = snap.getTurn();
             }
         }
+        tallyBullets(robots, snap.getBullets(), alive);
         if (diedNow) {
             deathTick = snap.getTurn();
             killer = killerOf(me, robots, deathTick);
@@ -146,6 +171,46 @@ public class MeleeHarvester extends BattleAdaptor {
             }
         }
         return nearest == null ? null : nearest.getName();
+    }
+
+    private void tallyBullets(IRobotSnapshot[] robots, IBulletSnapshot[] shots, int alive) {
+        for (IRobotSnapshot r : robots) {
+            if (isSentry(r) || r.getState() == robocode.control.snapshot.RobotState.DEAD) continue;
+            double[] t = tally.computeIfAbsent(r.getName(), k -> new double[11]);
+            t[9]++;
+            if (r.getGunHeat() <= 0 && r.getEnergy() > 0.1) t[10]++;
+        }
+        for (IBulletSnapshot b : shots) {
+            IRobotSnapshot owner = byIndex(robots, b.getOwnerIndex());
+            if (owner == null || isSentry(owner)) continue;
+            double[] t = tally.computeIfAbsent(owner.getName(), k -> new double[11]);
+            int id = b.getBulletId();
+            if (seenShots.add(id)) {
+                boolean crowd = alive >= 5;
+                crowdShot.put(id, crowd);
+                t[0]++;
+                t[1] += b.getPower();
+                if (crowd) {
+                    t[5]++;
+                    t[6] += b.getPower();
+                }
+            }
+            BulletState st = b.getState();
+            if ((st == BulletState.HIT_VICTIM || st == BulletState.HIT_BULLET) && endedShots.add(id)) {
+                boolean crowd = Boolean.TRUE.equals(crowdShot.get(id));
+                if (st == BulletState.HIT_BULLET) {
+                    t[4]++;
+                } else {
+                    double dmg = robocode.Rules.getBulletDamage(b.getPower());
+                    t[2]++;
+                    t[3] += dmg;
+                    if (crowd) {
+                        t[7]++;
+                        t[8] += dmg;
+                    }
+                }
+            }
+        }
     }
 
     private static String field(String name) {
@@ -185,6 +250,12 @@ public class MeleeHarvester extends BattleAdaptor {
             rounds.write(String.format(Locale.ROOT, "%d,%d,%d,%s,%s,%d,%d,%d,%s,%s,%s%n", round, place,
                 fielded, field(duelOpponent), duelWon, sentryHitsTaken, sentryHitsGiven, skippedTurns,
                 deathTick < 0 ? "-" : String.valueOf(deathTick), field(killer), field(lastHit)));
+            for (Map.Entry<String, double[]> en : tally.entrySet()) {
+                double[] t = en.getValue();
+                bullets.write(String.format(Locale.ROOT, "%d,%s,%d,%.2f,%d,%.2f,%d,%d,%.2f,%d,%.2f,%d,%d%n", round,
+                    field(en.getKey()), (long) t[0], t[1], (long) t[2], t[3], (long) t[4], (long) t[5], t[6],
+                    (long) t[7], t[8], (long) t[9], (long) t[10]));
+            }
         } catch (IOException ex) {
             throw new UncheckedIOException(ex);
         }
@@ -193,5 +264,6 @@ public class MeleeHarvester extends BattleAdaptor {
     public void close() throws IOException {
         hadurLog.close();
         rounds.close();
+        bullets.close();
     }
 }

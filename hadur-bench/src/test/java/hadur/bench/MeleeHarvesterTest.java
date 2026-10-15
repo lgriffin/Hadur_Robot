@@ -34,6 +34,10 @@ class MeleeHarvesterTest {
     Path dir;
 
     private static IRobotSnapshot robot(int index, String name, double x, double y, boolean alive) {
+        return robot(index, name, x, y, alive, 1.0);
+    }
+
+    private static IRobotSnapshot robot(int index, String name, double x, double y, boolean alive, double heat) {
         return (IRobotSnapshot) Proxy.newProxyInstance(IRobotSnapshot.class.getClassLoader(),
             new Class<?>[] {IRobotSnapshot.class}, (p, m, a) -> switch (m.getName()) {
                 case "getName" -> name;
@@ -43,17 +47,24 @@ class MeleeHarvesterTest {
                 case "getState" -> alive ? RobotState.ACTIVE : RobotState.DEAD;
                 case "isSentryRobot" -> false;
                 case "getOutputStreamSnapshot" -> "";
+                case "getGunHeat" -> heat;
+                case "getEnergy" -> 50.0;
                 default -> throw new UnsupportedOperationException(m.getName());
             });
     }
 
     private static IBulletSnapshot hit(int id, int owner, int victim) {
+        return bullet(id, owner, victim, 1.0, BulletState.HIT_VICTIM);
+    }
+
+    private static IBulletSnapshot bullet(int id, int owner, int victim, double power, BulletState state) {
         return (IBulletSnapshot) Proxy.newProxyInstance(IBulletSnapshot.class.getClassLoader(),
             new Class<?>[] {IBulletSnapshot.class}, (p, m, a) -> switch (m.getName()) {
-                case "getState" -> BulletState.HIT_VICTIM;
+                case "getState" -> state;
                 case "getBulletId" -> id;
                 case "getOwnerIndex" -> owner;
                 case "getVictimIndex" -> victim;
+                case "getPower" -> power;
                 default -> throw new UnsupportedOperationException(m.getName());
             });
     }
@@ -124,6 +135,33 @@ class MeleeHarvesterTest {
             List.of(turn(5, List.of(me, a, deadB), List.of()))));
         assertEquals(List.of("-", "-", "a.Alpha 1.0"), List.of(rows.get(0)[8], rows.get(0)[9], rows.get(0)[10]));
         assertEquals(List.of("-", "-", "-"), List.of(rows.get(1)[8], rows.get(1)[9], rows.get(1)[10]));
+    }
+
+    @Test
+    @Tag("BENCH-90")
+    @DisplayName("bullets.csv counts each robot's shots, power and hits once, and the crowd's apart")
+    void bulletTally() throws IOException {
+        IRobotSnapshot me = robot(0, US, 100, 100, true, 0.0);
+        IRobotSnapshot a = robot(1, "a.Alpha 1.0", 500, 500, true);
+        java.util.List<IRobotSnapshot> crowd = new java.util.ArrayList<>(List.of(me, a));
+        for (int i = 2; i < 5; i++) crowd.add(robot(i, "c.C" + i + " 1.0", 300, 300 + i, true));
+        IRobotSnapshot deadC2 = robot(2, "c.C2 1.0", 300, 302, false);
+        IRobotSnapshot deadC3 = robot(3, "c.C3 1.0", 300, 303, false);
+        IRobotSnapshot deadC4 = robot(4, "c.C4 1.0", 300, 304, false);
+        harvest(List.of(List.of(
+            // five alive: Hadur fires 1.5 (moving), Alpha fires 3.0
+            turn(1, crowd, List.of(bullet(1, 0, -1, 1.5, BulletState.MOVING), bullet(2, 1, -1, 3.0, BulletState.FIRED))),
+            // Hadur's bullet hits Alpha, seen on two turns but counted once; Alpha's meets a bullet
+            turn(2, crowd, List.of(bullet(1, 0, 1, 1.5, BulletState.HIT_VICTIM),
+                bullet(2, 1, -1, 3.0, BulletState.HIT_BULLET))),
+            turn(3, List.of(me, a, deadC2, deadC3, deadC4),
+                List.of(bullet(1, 0, 1, 1.5, BulletState.HIT_VICTIM), bullet(3, 0, -1, 2.0, BulletState.FIRED))),
+            turn(4, List.of(me, a, deadC2, deadC3, deadC4), List.of(bullet(3, 0, 1, 2.0, BulletState.HIT_VICTIM))))));
+        List<String> lines = Files.readAllLines(dir.resolve("bullets.csv"));
+        assertEquals(MeleeHarvester.BULLET_HEADER, lines.get(0));
+        assertEquals("0,hadur2.Hadur 3.8,2,3.50,2,17.00,0,1,1.50,1,7.00,4,4", lines.get(1));
+        assertEquals("0,a.Alpha 1.0,1,3.00,0,0.00,1,1,3.00,0,0.00,4,0", lines.get(2));
+        assertEquals("0,c.C2 1.0,0,0.00,0,0.00,0,0,0.00,0,0.00,2,0", lines.get(3));
     }
 
     @Test
