@@ -390,6 +390,7 @@ public class MoveController {
         lastPlanTimes.clear();
         lastOptions.clear();
         lastChosen.clear();
+        lastOptionTimes.clear();
         shadowedWaves = 0;
         shadowComputations = 0;
         // A new version, so no wave can match a stale one and skip its shadow computation.
@@ -413,10 +414,15 @@ public class MoveController {
     private final Map<Wave, PlanInterval> lastPlans = new IdentityHashMap<>();
     /** MOVE-9: the tick each of {@link #lastPlans} was published. */
     private final Map<Wave, Long> lastPlanTimes = new IdentityHashMap<>();
-    /** MOVE-10: each three-option surf option's last plan on a wave, by option ordinal. */
+    /**
+     * MOVE-10: each three-option surf option's first plan on a wave, by option ordinal: the
+     * first tick the wave was surfed, when the options were furthest apart.
+     */
     private final Map<Wave, PlanInterval[]> lastOptions = new IdentityHashMap<>();
     /** MOVE-10: the ordinal of the option taken when {@link #lastOptions} was published. */
     private final Map<Wave, Integer> lastChosen = new IdentityHashMap<>();
+    /** MOVE-10: the tick {@link #lastOptions} was published. */
+    private final Map<Wave, Long> lastOptionTimes = new IdentityHashMap<>();
     /** The tick of the latest {@link #checkWaves}, the duel tick a plan is published on. */
     private long lastCheckTime = -1;
     /** MOVE-1: waves that have had a shadow this round. */
@@ -526,8 +532,9 @@ public class MoveController {
     /**
      * MOVE-10: the three-option surf's plan on its first wave for every option it rated this
      * tick, by option ordinal (a null slot for an option with no plan there), and the ordinal
-     * it took. Kept per wave until the round ends, so a hit can ask whether another option's
-     * plan would have been hit too. Measurement only.
+     * it took. Only the first publication on each wave is kept, until the round ends: by the
+     * tick before a wave arrives every option leads to the same place, so only the first
+     * says whether another option would have dodged a hit. Measurement only.
      *
      * @param options one interval or null per option, all on the same wave; copied
      * @param chosen the ordinal of the option taken
@@ -536,8 +543,16 @@ public class MoveController {
         Wave w = null;
         for (PlanInterval i : options) if (i != null) w = i.wave;
         if (w == null) return;
+        if (lastOptions.containsKey(w)) return;
         lastOptions.put(w, options.clone());
         lastChosen.put(w, chosen);
+        lastOptionTimes.put(w, lastCheckTime);
+    }
+
+    /** MOVE-10: the tick {@link #lastOptionsFor} was published, or -1 when there is none. */
+    public long lastOptionTime(Wave w) {
+        Long t = lastOptionTimes.get(w);
+        return t == null ? -1 : t;
     }
 
     /** MOVE-10: the options last published for wave {@code w}, or null when there are none. */

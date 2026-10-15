@@ -1245,9 +1245,9 @@ lines.
 | ID | Pattern | Requirement | Stage |
 |---|---|---|---|
 | MOVE-9 | Event | When an enemy bullet hits us in a duel, the core shall write an HF record of the hit's class (`headon`, `linear`, `learned`, or `nowave` when no firing wave carried it), its guess factor, where a linear gun would have aimed, the share of the wave's guess factors the danger views scored less dangerous than the hit's, the distance at fire time, the power, whether the Duel drove, and where the hit lay against the surf's last plan on that wave (its offset in plan half-widths, the plan's danger and its age in ticks), read before the hit teaches the views and without changing the surf's neighbour cache. | R9 |
-| MOVE-10 | Event | When an enemy bullet hits us in a duel, the HF record shall also say, for each of the three-option surf's options (counter-clockwise, stop, clockwise) last rated on that wave, whether the hit lay inside that option's plan interval, marking the option taken. | R9 |
+| MOVE-10 | Event | When an enemy bullet hits us in a duel, the HF record shall also say, for each of the three-option surf's options (counter-clockwise, stop, clockwise) as first rated on that wave, whether the hit lay inside that option's plan interval, marking the option taken, and how many ticks before the hit they were rated. | R9 |
 
-- **HF record**: `HF,round,tick,class,gf,linearGf,dangerPct,distance,power,driving,planOffset,planDanger,planAge,options`
+- **HF record**: `HF,round,tick,class,gf,linearGf,dangerPct,distance,power,driving,planOffset,planDanger,planAge,options,optionsAge`
   (`move.HitForensics`). An offset of at most 1 means the bullet hit inside the interval the surf's
   plan expected us to occupy (`MoveController.lastPlanFor` keeps each wave's last published plan for the round). A hit is `linear` within our half-width (18 px seen from the source)
   of `asin(lateral velocity / bullet speed) / escape angle`, else `headon` within it of 0. The
@@ -1256,6 +1256,9 @@ lines.
   `HitForensics.optionFlags`) is three characters, counter-clockwise, stop, clockwise: `h` the
   bullet lay inside that option's plan, `m` outside, `-` no plan; the option taken in capitals.
   A hit with a lower-case `m` beside a capital `H` is one another option would have dodged.
+  The options are those of the first tick the wave was surfed (`optionsAge` ticks before the
+  hit): by the tick before arrival every option leads to the same place, so later ones always
+  read `hhh`.
 
 ## Retired requirements
 

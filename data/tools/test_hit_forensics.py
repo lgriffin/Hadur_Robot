@@ -32,7 +32,7 @@ class HitForensicsToolTest(unittest.TestCase):
     def test_damage_by_class_and_rating_per_round(self):
         self.battle("weak.Bot_1.0-1", 2, [
             "0,100,HF,0,100,headon,0.010,0.500,0.100,400.0,3.00,1",   # 16 damage, safe
-            "HF,0,200,learned,0.400,0.500,0.900,400.0,1.00,1,0.40,0.200,2,mHh",  # 4, known, on plan, dodge
+            "HF,0,200,learned,0.400,0.500,0.900,400.0,1.00,1,0.40,0.200,2,mHh,30",  # 4, known, on plan, dodge
             "HF,1,50,nowave,NaN,NaN,NaN,300.0,2.00,1",          # 10, n/a
             "HF,1,60,learned,0.400,0.500,0.500,400.0,1.00,0",   # shield drove: not counted
         ])

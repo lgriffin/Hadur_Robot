@@ -810,7 +810,7 @@ public final class DuelController {
                               Point2D.Double bulletLoc, boolean driving) {
         if (hitWave == null) {
             telemetry.emit(HitForensics.record(round, in.time(), "nowave", Double.NaN, Double.NaN,
-                Double.NaN, lastEnemyDistance, e.power(), driving, Double.NaN, Double.NaN, -1, "---"));
+                Double.NaN, lastEnemyDistance, e.power(), driving, Double.NaN, Double.NaN, -1, "---", -1));
             return;
         }
         double gf = hitWave.guessFactor(bulletLoc);
@@ -820,13 +820,15 @@ public final class DuelController {
             HitForensics.tolerance(hitWave.targetDistance, hitWave.maxEscapeAngle()));
         PlanInterval plan = moveController.lastPlanFor(hitWave);
         long planTime = moveController.lastPlanTime(hitWave);
+        long optionTime = moveController.lastOptionTime(hitWave);
         double hitAngle = DiaUtils.absoluteBearing(hitWave.sourceLocation, bulletLoc);
         telemetry.emit(HitForensics.record(round, in.time(), cls, gf, linearGf,
             moveController.dangerPercentile(hitWave, gf), hitWave.targetDistance, e.power(), driving,
             HitForensics.planOffset(plan, hitAngle),
             plan == null ? Double.NaN : plan.danger, planTime < 0 ? -1 : in.time() - planTime,
             HitForensics.optionFlags(moveController.lastOptionsFor(hitWave),
-                moveController.lastChosenFor(hitWave), hitAngle)));
+                moveController.lastChosenFor(hitWave), hitAngle),
+            optionTime < 0 ? -1 : in.time() - optionTime));
     }
 
     /**

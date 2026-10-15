@@ -113,17 +113,18 @@ public final class HitForensics {
 
     /**
      * The HF record: {@code HF,round,tick,class,gf,linearGf,dangerPct,distance,power,driving,
-     * planOffset,planDanger,planAge,options}, NaN (or -1 for the age) for what a hit cannot know.
+     * planOffset,planDanger,planAge,options,optionsAge}, NaN (or -1 for the age) for what a hit cannot know.
      * The plan fields read the surf's last plan on the hit's wave: how far off it the hit was
      * ({@link #planOffset}), the danger the surf gave it, and how many ticks before the hit it
-     * was published. {@code options} is {@link #optionFlags} (MOVE-10).
+     * was published. {@code options} is {@link #optionFlags} on the wave's first options, published
+     * {@code optionsAge} ticks before the hit (MOVE-10).
      */
     public static String record(int round, long tick, String cls, double gf, double linearGf,
                                 double dangerPct, double distance, double power, boolean driving,
                                 double planOffset, double planDanger, long planAge,
-                                String options) {
-        return String.format(Locale.ROOT, "HF,%d,%d,%s,%.3f,%.3f,%.3f,%.1f,%.2f,%d,%.2f,%.3f,%d,%s",
+                                String options, long optionsAge) {
+        return String.format(Locale.ROOT, "HF,%d,%d,%s,%.3f,%.3f,%.3f,%.1f,%.2f,%d,%.2f,%.3f,%d,%s,%d",
             round, tick, cls, gf, linearGf, dangerPct, distance, power, driving ? 1 : 0,
-            planOffset, planDanger, planAge, options);
+            planOffset, planDanger, planAge, options, optionsAge);
     }
 }

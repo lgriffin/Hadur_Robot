@@ -88,10 +88,10 @@ def read_list(path):
 
 def parse_hf(line):
     """(class, gf, linearGf, dangerPct, distance, power, driving) of an HF line, or None.
-    Lines with the plan fields (13 values) or option flags (14) read the same; plan_of() and
+    Lines with the plan fields (13 values) or option flags (14, 15 with their age) read the same; plan_of() and
     options_of() read those."""
     p = line.strip().split(",")
-    if len(p) not in (10, 13, 14) or p[0] != "HF":
+    if len(p) not in (10, 13, 14, 15) or p[0] != "HF":
         return None
     return (p[3], float(p[4]), float(p[5]), float(p[6]), float(p[7]), float(p[8]), p[9] == "1")
 
@@ -100,7 +100,7 @@ def plan_of(line):
     """'on' when the hit lay inside the surf's last plan on its wave (offset at most 1),
     'off' outside it, 'none' with no plan or an older record without the plan fields."""
     p = line.strip().split(",")
-    if len(p) not in (13, 14):
+    if len(p) not in (13, 14, 15):
         return "none"
     off = float(p[10])
     return "none" if off != off else "on" if off <= 1.0 else "off"
@@ -111,7 +111,7 @@ def options_of(line):
     option's plan would have missed (m), 'trapped' when the taken option was hit and no other
     would have missed, 'n/a' otherwise (no flags, or the taken option's plan was missed)."""
     p = line.strip().split(",")
-    if len(p) != 14 or "H" not in p[13]:
+    if len(p) not in (14, 15) or "H" not in p[13]:
         return "n/a"
     return "dodge" if "m" in p[13] else "trapped"
 
