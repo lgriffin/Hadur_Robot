@@ -5,7 +5,7 @@ a 1v1 duelist that remembers each opponent across battles, with a melee brain fo
 free-for-alls, a five-robot team entry, and a core that has no idea it is inside Robocode.
 
 **Hadur 3.13 is ranked 7th of 1,218 in the RoboRumble 1v1** (89.50 APS, its best score and place),
-17th in the MeleeRumble and 12th in the TeamRumble, the highest-ranked robot flying the Irish flag. It was designed, written, tested and tuned by Claude agents working
+17th in the MeleeRumble and 9th in the TeamRumble, the highest-ranked robot flying the Irish flag. It was designed, written, tested and tuned by Claude agents working
 in a shared project with one human, Leigh Griffin, who set the goals and ran the live
 entries. This page covers what the robot does, how it is built, and how it was built.
 
@@ -33,9 +33,11 @@ with every pairing filled, puts `hadur2.Hadur 3.13` **7th**, 1.78 APS above 3.12
   ([live notes](docs/bench/live-3.13.md)).
 - **Clear of the pack.** Firestarter (8th) is 1.40 behind and Diamond (6th) 0.65 ahead, so the
   place is unlikely to move as the second pass fills in.
-- **17th in the MeleeRumble** (65.65 APS) and **12th in the TeamRumble** (`hadur2.HadurTeam`,
-  64.61 APS), both read for 3.11 on 2026-10-11 07:16 UTC. HadurTeam 3.13 carries full team
-  firepower (MGUN-6) and is running its first team pass.
+- **9th in the TeamRumble.** `hadur2.HadurTeam 3.13`'s first full team pass (45 pairings, 2026-10-15
+  07:10 UTC) scores 68.30, up from 3.11's 12th at 64.61. The gain is team full firepower (MGUN-6),
+  which the bench put at +5.7 on the 45 teams; it changes nothing in 1v1 or melee.
+- **17th in the MeleeRumble** (65.65 APS, read for 3.11 on 2026-10-11 07:16 UTC). 3.13's first
+  melee pass is running.
 
 The pages are archived in [`data/rumble/`](data/rumble/).
 
