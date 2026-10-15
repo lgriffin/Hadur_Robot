@@ -21,7 +21,7 @@ All 1,217 pairings are in, 1,968 battles. Two cloud clients (Robocode 1.11.1, `-
 
 ## Where the +1.78 came from
 
-Per opponent, 3.13's page minus 3.12's (1,216 opponents on both), as APS (sum over the group
+Per opponent, 3.13's page minus 3.12's (1,216 opponents on both, plus KurtBot's version change), as APS (sum over the group
 divided by 1,217). The groups are the shield list in `hadur-bench/shield-313.txt`:
 
 | Opponents | Count | Mean change (points) | APS |
@@ -29,6 +29,10 @@ divided by 1,217). The groups are the shield list in `hadur-bench/shield-313.txt
 | 3.12's 97 listed robots | 97 | +4.82 | +0.38 |
 | 103 robots added for 3.13 | 103 | +14.13 | +1.20 |
 | Unlisted | 1,016 | +0.25 | +0.21 |
+| KurtBot 0.2 in place of 0.1 (83.25 vs 3.12's 88.97) | 1 | -5.72 | -0.005 |
+
+The four rows sum to the page's +1.78. KurtBot is the one opponent not on both pages: 0.2 replaced
+0.1 between the two passes.
 
 The listed robots carry +1.58 of it, against the plan90 gate's bench estimate of +1.40 for the
 listed 200 (`docs/bench/local/2026-10-13_plan90-gate-read.md`). Shield mode acts only on listed
