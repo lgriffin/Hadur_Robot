@@ -34,11 +34,11 @@ answers the option question. From the 302 unlisted robots, of 12.8 a round taken
 |---|---|---|---|---|
 | 10.2 | 1.1 | 1.5 | **6.1** | 0.6 |
 
-When the surf first rated the wave, the bullet was already in flight, and for 6.1 of the 10.2 a round
-taken on-plan one of the two options it passed over would have missed it. Only 0.6 had no escape.
+When the surf first rated the wave, the bullet was already in flight. For 6.1 of the 12.8 a round,
+the option taken then would be hit and one of the two it passed over would have missed. Only 0.6 had no escape.
 So most of the damage is a ranking failure among the three options, not a lack of reach: the danger
 model rated the option that was hit as the cheapest. That is where the next levers aim (the masters'
 sharper kernel and later flattener, replicator weights for the views, `docs/top3-movement-study.md`).
-The rest of the on-plan damage (3.5) carries no reading: the first option taken would have missed
+The rest (6.1 a round) carries no dodge reading: the first option taken would have missed
 the bullet and a later change of mind walked into it, or the wave was never rated with the three
 options.
