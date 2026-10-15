@@ -36,6 +36,14 @@ The four static methods at the bottom (`wavesToSurf`, `goToAllowed`, `kShare`, `
 
 The test [`DuressTest`](https://github.com/lgriffin/Hadur_Robot/blob/e53c8f5/hadur-core/src/test/java/hadur2/core/DuressTest.java) covers the transition (the third skip, and leaving with the round), firing only when the gun is cool and aimed, and a stale enemy position sweeping the radar and holding fire.
 
+### Since 3.11: duress is gone
+
+Duress no longer exists in Hadur. The 3.11 census (`docs/plan-3.11-census.md`, [findings](https://github.com/lgriffin/Hadur_Robot/blob/97796d8/docs/bench/local/2026-10-09_census-312-findings.md)) benched the whole 1,212-bot field, 4 seeds, with duress never entered: **+0.73 APS** (+0.59 to +0.87), no rank band worse beyond noise. It fired mostly on warm-up skips in round 0, when nothing was wrong with the round, and the head-on orbit then threw the round away. With the CPU constant halved, 3.10 sat in duress in every battle and scored 48% share against 85% without it. 3.11 deleted `Duress` and RES-9 and RES-14 were retired; the tick budget's levels (TIME-2) and the learned allowance (TIME-3) still handle a slow client.
+
+Live, 3.11 gained +0.25 APS over 3.10, a third of the bench's figure. A live client probably skips fewer turns than a loaded bench, which shrinks what removing duress returns; that is a likely reason, not a shown one ([`docs/bench/live-3.11.md`](https://github.com/lgriffin/Hadur_Robot/blob/master/docs/bench/live-3.11.md)).
+
+The code above is still worth reading: a seeded fallback that replays exactly is the right way to build one. What changed is the evidence for having one at all.
+
 ## The session bench and what it found
 
 [`SessionRunner.java`](https://github.com/lgriffin/Hadur_Robot/blob/e53c8f5/hadur-bench/src/main/java/hadur/bench/SessionRunner.java) runs hundreds of battles in one engine process. Read [`docs/bench/r7-session.md`](https://github.com/lgriffin/Hadur_Robot/blob/a9ee021/docs/bench/r7-session.md) for the tables and [`docs/skipped-turns-plan.md`](https://github.com/lgriffin/Hadur_Robot/blob/a9ee021/docs/skipped-turns-plan.md) for the review that checked the evidence against the raw logs and the engine source. That plan lists four corrections to the first diagnosis. A good example of a second reader earning their keep.
@@ -65,3 +73,4 @@ It also records a change that was tried and dropped (TIME-6, calling `execute()`
 1. In `TickBudget.tickTook`, find the line that makes an unknown allowance never shed. Why is that the safe choice?
 2. A rumble client has hit 2,000 opponents. Which of `ProfileLibrary`'s methods still scale with that number, and which no longer do?
 3. Write the property you would use to show that `forgetOldest` frees at least `needed` bytes when it can.
+4. Duress passed the gate it was built under and lost 0.73 APS on the whole field. Name the bench set that would have caught it at R7, and the cost of running it then.

@@ -113,12 +113,38 @@ The fix (R8: list the data directory once per battle, keep an index) was benched
 
 ---
 
+## 3.10: the ladder was the noisy instrument (L-45)
+
+3.10 added 83 robots to the shield list and nothing else, so against the other 1,118 it ran 3.9's code byte for byte. First pass: 86.42, 20th (3.9: 87.15, 13th).
+
+| Opponents | 3.10 minus 3.9 a pairing | APS |
+|---|---:|---:|
+| On the list (code changed) | +6.43 ± 2.05 | +0.51 |
+| Off the list (same code) | -1.35 ± 0.34 | -1.25 |
+
+Same code, 1.25 APS lower: the pass, not the robot, through 26 collapsed single battles (3.9 had none). One pass shares its clients and hours, so its ± cannot show this.
+
+Read a release with `live_passes.py drift`, not its rank (`docs/bench/live-3.10.md`).
+
+---
+
+## And the bench had a fault of its own (L-46)
+
+The same check, turned on the bench, found that the PC had crippled **11 opponents** in every run for two days: a time-zone lookup read `META-INF/services` from the bench's classes folder, and Robocode's security manager drains a robot that does that. Frankie scored 98.9 on the bench and 71 live.
+
+BENCH-83 loads the providers before the engine starts; BENCH-84 marks such battles untrusted. After the fix, bench and a clean live pass agree at **r = 0.94** over 335 bots, live minus bench -0.52 ± 0.43.
+
+Two instruments, each checked against the other, each wrong once.
+
+---
+
 ## Lessons
 
 1. A model earns trust by being checked against reality. Do it with numbers (r, mean difference).
 2. When it fails, ask what the model leaves out, not what is wrong with reality.
 3. Change the bench so it can fail the way the world did.
-4. Keep the open items open in writing. L-13 (memory has not paid off against Shadow) and L-28 are still marked open.
+4. Check the live pass too: hold the unchanged code fixed and see whether the pass itself moved.
+5. Keep the open items open in writing. L-13 (memory has not paid off against Shadow) and L-28 are still marked open.
 
 Next: the note walks through the bench classes, then the lab builds a small one.
 

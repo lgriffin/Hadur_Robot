@@ -108,6 +108,21 @@ Reversals are pseudo-random but seeded from the round, so a replay is identical.
 
 ---
 
+## Postscript: 3.11 retired duress
+
+Duress was gated on the slow-client battles it was built for. The 3.11 census benched the whole 1,212-bot field with it never entered:
+
+| | 3.10 (duress) | Never entered |
+|---|---|---|
+| Whole field, 4 seeds | | **+0.73 APS** (+0.59 to +0.87) |
+| Slow client (CPU constant halved), share | 48%, in duress every battle | 85% |
+
+It fired mostly on round 0's warm-up skips and gave the rest of the round away. 3.11 deleted `Duress`; skipped turns still shed levels (TIME-2).
+
+A last resort is still a rule: gate it on the whole field.
+
+---
+
 ## The session bench
 
 Every bench so far forked a fresh JVM per battle against at most 60 opponents. A rumble client runs a session in one process against hundreds.
@@ -193,7 +208,7 @@ The honest caveat: L-27 says the directory explains the lost memory and the skip
 
 - Time the work at the edge; keep the core clock-free.
 - Shed work in ordered levels, driven by events.
-- Have a last-resort mode that is simple, bounded and deterministic.
+- A last-resort mode must be simple, bounded and deterministic, and must earn its place on the whole field. Hadur's did not, and 3.11 removed it.
 - A cost that grows with data shows up only when the data grows. Bench for that.
 - Never let a routine operation scale with everything you have ever stored.
 

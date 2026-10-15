@@ -1,0 +1,145 @@
+---
+marp: true
+theme: default
+paginate: true
+---
+
+<!-- footer: "Sources: docs/releases/v3.10 to v3.12, docs/bench/live-3.10 to 3.12, data/learnings.md L-45 to L-47; full list on the last slide" -->
+
+# 3.10 to 3.12: reading the ladder, and 9th
+
+A rough pass, a census, a silent gun
+
+Unit 3, talk 7
+
+---
+
+## Where 3.9 left off
+
+3.9 was 13th at 87.15. The issue #140 runs against Nullstride had found the mid-table lever: on robots from DrussGT's shield list, switching Hadur's own shield mode on for everyone gained **+8.05 a pairing**, while off that list it cost about a point.
+
+So the plan was data first: lengthen the shield list bot by bot, a change that cannot touch any robot off the list.
+
+---
+
+## 3.10: the shield sweep
+
+- Shield mode on against off, on the 200 remaining DrussGT-list robots of ranks 51 to 700
+- 64 cleared the D5 rule; with Swiffer and 18 from the #140 run, **83 added, 97 listed**
+- Gate on fresh seeds: the 83 at **+11.74**, all positive; tail level; top 20 not resolved
+- Projection from 3.9's live page: **+0.80 APS**, about 87.9
+
+A list entry names one robot by its exact version. Every other robot meets 3.9's code, byte for byte.
+
+---
+
+## Live: 20th
+
+First pass: **86.42, 20th**, 0.73 under 3.9.
+
+That looked like the change failing. But the list made the pass a natural experiment:
+
+| Opponents | Pairings | 3.10 minus 3.9 | APS |
+|---|---:|---:|---:|
+| On the list (code changed) | 97 | **+6.43** ± 2.05 | **+0.51** |
+| Off the list (same code) | 1,118 | **-1.35** ± 0.34 | **-1.25** |
+
+The same code lost 1.25 APS between passes. That is the ladder, not the robot.
+
+---
+
+## A pass carries an offset its ± does not show (L-45)
+
+- A **collapse**: a single-battle pairing 12 or more points under Hadur's median against that bot
+- 3.4, 3.8, 3.8.5 passes: 1.7 to 2.6% collapsed. 3.10: **3.4%**. 3.9: **0 in 684**
+- At the usual rate, 0 in 684 has a chance of about one in ten million
+
+So 3.9's 13th was a clean pass, and 3.10's 20th a rough one. A loaded host on the PC reproduces the signature. The second pass read 87.33, 13th.
+
+Read a release with `live_passes.py drift`, not with its rank.
+
+---
+
+## And the bench had its own fault (L-46)
+
+The PC bench had crippled **11 opponents** in every run since 2026-10-06: their first time-zone lookup read `META-INF/services` from the bench's classes folder, and Robocode's security manager punished it by draining the robot.
+
+- Frankie: 98.9 on the PC bench, 71 live
+- Fixed by BENCH-83 and BENCH-84; then bench and clean live passes agree at **r = 0.94**
+
+Two instruments, both checked against each other, both found wanting. Fix the instrument before the robot.
+
+---
+
+## 3.11: a census, not a hunch
+
+Classing every opponent (L-47) put the room against the 8th to 11th robots below rank 400. The census plan then benched the whole 1,212-bot field, 4 seeds, one switch at a time.
+
+- **Duress** (RES-9): after three skipped turns, the rest of the round ran head-on at power 1
+- Never entering it: **+0.73 APS** on the whole field; on a slow client, 85% share against 48%
+- 3.11 removes the mode. Skipped turns still shed levels (TIME-2)
+
+Live: **87.56, 13th**, +0.25 against 3.10. A third of the bench gain.
+
+---
+
+## The pack is inside the noise
+
+Ranks 8 to 13 sat within **0.16 APS**; a reading's noise floor is about ±0.14.
+
+Three pairings swung the reading by more than any change:
+
+| Opponent | 3.11 | 3.10 | Bench |
+|---|---:|---:|---:|
+| MirrorMicro 1.1 | 42.5 | 85.2 | 92% |
+| NaN 0.1 | 62.5 | 91.3 | 91% |
+| Mimic 1.0.0 | 70.6 | 94.5 | 94% |
+
+All-or-nothing pairings. Read the bad battles round by round before guessing.
+
+---
+
+## 3.12: the gun went silent (SHIELD-7)
+
+The bad battles showed one fault:
+
+- Once Hadur decided an opponent shoots bullets down (SHIELD-1), the gun held every aim without an anti-shield offset
+- The mirror aim (MIR-1) never carries one, so against a mirror bot the gun went **quiet for the battle**: on one MirrorMicro bench seed, 188 shots in 48,000 ticks
+- The verdict was stored in the profile, so later battles started silent
+
+3.12 fires the mirror aim. On 38 volatile bots, battles under 60% share went from 14 of 152 to none.
+
+---
+
+## Live: 9th, the first top 10
+
+**87.72 ± 0.20, 9th of 1,218**, level with Raven in 8th.
+
+| Opponents | APS change vs 3.11 |
+|---|---:|
+| MirrorMicro, NaN, Mimic | **+0.085** |
+| Everyone else | +0.07, noise |
+
+MirrorMicro 42.5 to 92.7, NaN 62.5 to 93.2, Mimic 70.6 to 93.0. The fix showed exactly where the bench said.
+
+Four whole-field ideas tried beside it (distance, never closing in, a stricter detector, ignoring stored verdicts) were level or worse, and did not ship.
+
+---
+
+## What it taught us
+
+- A live pass is one sample of clients and hours. Compare the code that did not change before blaming the code that did
+- Check the bench against clean live passes, and fix it when it disagrees
+- A census of the whole field beats a hand-picked set for a whole-field change
+- A large swing on a few opponents is a fault to find, not noise to average away
+- At the top, the order inside the pack is a coin toss: only a gain larger than the noise moves you out of it
+
+---
+
+## Sources
+
+- [docs/releases/](https://github.com/lgriffin/Hadur_Robot/tree/97796d8/docs/releases): v3.10, v3.11, v3.12
+- [docs/bench/live-3.10.md](https://github.com/lgriffin/Hadur_Robot/blob/master/docs/bench/live-3.10.md), [live-3.11.md](https://github.com/lgriffin/Hadur_Robot/blob/master/docs/bench/live-3.11.md) and [live-3.12.md](https://github.com/lgriffin/Hadur_Robot/blob/master/docs/bench/live-3.12.md)
+- [docs/plan-3.11-census.md](https://github.com/lgriffin/Hadur_Robot/blob/97796d8/docs/plan-3.11-census.md) and [docs/plan-3.12.md](https://github.com/lgriffin/Hadur_Robot/blob/97796d8/docs/plan-3.12.md)
+- [`AimJitter.holdsShot`](https://github.com/lgriffin/Hadur_Robot/blob/97796d8/hadur-core/src/main/java/hadur2/core/shield/AimJitter.java), SHIELD-7
+- [data/learnings.md](https://github.com/lgriffin/Hadur_Robot/blob/master/data/learnings.md): L-45, L-46, L-47
