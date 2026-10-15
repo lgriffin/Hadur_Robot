@@ -12,7 +12,7 @@
 <h1>EARS requirements</h1>
 <p class="lede">Every requirement from <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/docs/requirements.md">docs/requirements.md</a>, the source of truth. <em>Implemented in</em> lists
 the classes whose documentation cites the ID; <em>Verified by</em> lists the tests tagged with it, the same tags the build's
-traceability check reads. 190 of 190 live requirements have a tagged test. The readings behind the numbers are in
+traceability check reads. 191 of 191 live requirements have a tagged test. The readings behind the numbers are in
 <a href="docs/requirements-notes.html">Requirement readings</a>.</p>
 <nav class="toc"><a href="#group-CORE">Core</a> <a href="#group-RES">Resilience</a> <a href="#group-REL">Release</a> <a href="#group-WAVE">Waves</a> <a href="#group-RADAR">Radar</a> <a href="#group-MEM">Memory</a> <a href="#group-ADAPT">Adapt</a> <a href="#group-DIAL">Dials</a> <a href="#group-DIST">Distance</a> <a href="#group-POW">Power</a> <a href="#group-END">Endgame</a> <a href="#group-MOVE">Movement</a> <a href="#group-TIME">Time budget</a> <a href="#group-SHIELD">Bullet shielding</a> <a href="#group-MELEE">Melee (2.1)</a> <a href="#group-GATE">Posture gate</a> <a href="#group-MRADAR">Melee radar</a> <a href="#group-MSENSE">Melee sensing</a> <a href="#group-MMOVE">Melee movement</a> <a href="#group-MGUN">Melee gun</a> <a href="#group-MMEM">Melee memory</a></nav><h2 id="group-CORE">Core</h2>
 <article class="req-card" id="CORE-1">
@@ -463,6 +463,11 @@ traceability check reads. 190 of 190 live requirements have a tagged test. The r
 <div class="req-head"><span class="rid">MGUN-5</span><span class="badge">Ubiquitous</span><span class="badge stage">M6</span></div>
 <p>The melee strategy&#x27;s posture shall not lower the gun&#x27;s bullet power or hold its fire.</p>
 <dl><dt>Implemented in</dt><dd><a href="api/hadur2/core/melee/MeleeController.html" title="hadur2.core.melee.MeleeController">MeleeController</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-core/src/test/java/hadur2/core/melee/MeleeControllerTest.java">MeleeControllerTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="MGUN-7">
+<div class="req-head"><span class="rid">MGUN-7</span><span class="badge">State</span><span class="badge stage">M7</span></div>
+<p>While in melee off a team, the field gun shall give each opponent with at least twelve learned situations twelve firing solutions from its most similar situations, sharing the opponent&#x27;s weight, and an opponent with fewer one circular or linear solution; on a team it shall keep <a class="req" href="requirements.html#MGUN-1">MGUN-1</a>&#x27;s three.</p>
+<dl><dt>Implemented in</dt><dd><a href="api/hadur2/core/melee/FieldGun.html" title="hadur2.core.melee.FieldGun">FieldGun</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-core/src/test/java/hadur2/core/melee/FieldGunTest.java">FieldGunTest.java</a></dd></dl>
 </article>
 <h2 id="group-MMEM">Melee memory</h2>
 <article class="req-card" id="MMEM-1">

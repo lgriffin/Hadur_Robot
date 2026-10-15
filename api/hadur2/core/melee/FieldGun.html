@@ -94,7 +94,8 @@ loadScripts(document, 'script');</script>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
 <div class="block">The melee gun (<a class="req" href="../../../../requirements.html#MGUN-1">MGUN-1</a>, <a class="req" href="../../../../requirements.html#MGUN-2">MGUN-2</a>): Shadow's melee gun, as Diamond and Neuromancer use it.
 
- <p>Every opponent scanned within <a href="#MAX_AGE"><code>MAX_AGE</code></a> ticks gets <a href="#K"><code>K</code></a> firing solutions,
+ <p>Every opponent scanned within <a href="#MAX_AGE"><code>MAX_AGE</code></a> ticks gets <a href="#MELEE_K"><code>MELEE_K</code></a> firing solutions
+ off a team (<a class="req" href="../../../../requirements.html#MGUN-7">MGUN-7</a>) and <a href="#K"><code>K</code></a> on one,
  each one of its <a href="EnemyHistory.html" title="class in hadur2.core.melee"><code>EnemyHistory</code></a> situations most like its present one played forward
  until Hadur's bullet (at the power the <a href="MeleeEnergyPolicy.html" title="class in hadur2.core.melee"><code>MeleeEnergyPolicy</code></a> gives that opponent) would
  reach it. A solution covers its angle plus or minus the robot's half-width at that range,
@@ -150,27 +151,34 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code>static final int</code></div>
 <div class="col-second odd-row-color"><code><a href="#K" class="member-name-link">K</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">The kNN depth on a team (<a class="req" href="../../../../requirements.html#MGUN-1">MGUN-1</a>'s three situations; HadurTeam keeps them).</div>
+</div>
 <div class="col-first even-row-color"><code>static final long</code></div>
 <div class="col-second even-row-color"><code><a href="#MAX_AGE" class="member-name-link">MAX_AGE</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code>(package private) static final int</code></div>
 <div class="col-second odd-row-color"><code><a href="#MAX_OPPONENTS" class="member-name-link">MAX_OPPONENTS</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>(package private) static final double</code></div>
-<div class="col-second even-row-color"><code><a href="#RAMMER_CLOSING" class="member-name-link">RAMMER_CLOSING</a></code></div>
+<div class="col-first even-row-color"><code>static final int</code></div>
+<div class="col-second even-row-color"><code><a href="#MELEE_K" class="member-name-link">MELEE_K</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">Closing speed above which a robot inside <a href="#RAMMER_RANGE"><code>RAMMER_RANGE</code></a> counts as ramming.</div>
+<div class="block"><a class="req" href="../../../../requirements.html#MGUN-7">MGUN-7</a>: the kNN depth off a team.</div>
 </div>
 <div class="col-first odd-row-color"><code>(package private) static final double</code></div>
-<div class="col-second odd-row-color"><code><a href="#RAMMER_RANGE" class="member-name-link">RAMMER_RANGE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-second odd-row-color"><code><a href="#RAMMER_CLOSING" class="member-name-link">RAMMER_CLOSING</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Closing speed above which a robot inside <a href="#RAMMER_RANGE"><code>RAMMER_RANGE</code></a> counts as ramming.</div>
+</div>
 <div class="col-first even-row-color"><code>(package private) static final double</code></div>
-<div class="col-second even-row-color"><code><a href="#SHOOTER_BOOST" class="member-name-link">SHOOTER_BOOST</a></code></div>
+<div class="col-second even-row-color"><code><a href="#RAMMER_RANGE" class="member-name-link">RAMMER_RANGE</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>(package private) static final long</code></div>
-<div class="col-second odd-row-color"><code><a href="#SHOOTER_WINDOW" class="member-name-link">SHOOTER_WINDOW</a></code></div>
+<div class="col-first odd-row-color"><code>(package private) static final double</code></div>
+<div class="col-second odd-row-color"><code><a href="#SHOOTER_BOOST" class="member-name-link">SHOOTER_BOOST</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>(package private) static final long</code></div>
+<div class="col-second even-row-color"><code><a href="#SHOOTER_WINDOW" class="member-name-link">SHOOTER_WINDOW</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
 </div>
 </section>
 </li>
@@ -214,58 +222,63 @@ loadScripts(document, 'script');</script>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#isolated(hadur2.core.world.EnemyInfo,java.util.List)" class="member-name-link">isolated</a><wbr>(<a href="../world/EnemyInfo.html" title="class in hadur2.core.world">EnemyInfo</a>&nbsp;e,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../world/EnemyInfo.html" title="class in hadur2.core.world">EnemyInfo</a>&gt;&nbsp;alive)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#newRound()" class="member-name-link">newRound</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#k()" class="member-name-link">k</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Ends the round's logs; the situations learned stay for the battle.</div>
+<div class="block"><a class="req" href="../../../../requirements.html#MGUN-7">MGUN-7</a>: the kNN depth this tick, <a href="#K"><code>K</code></a> on a team and <a href="#MELEE_K"><code>MELEE_K</code></a> off one.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onScan(hadur2.core.world.EnemyInfo,double,long)" class="member-name-link">onScan</a><wbr>(<a href="../world/EnemyInfo.html" title="class in hadur2.core.world">EnemyInfo</a>&nbsp;e,
- double&nbsp;distance,
- long&nbsp;time)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#newRound()" class="member-name-link">newRound</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">An opponent was scanned <code>distance</code> from Hadur.</div>
+<div class="block">Ends the round's logs; the situations learned stay for the battle.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onTeam(boolean)" class="member-name-link">onTeam</a><wbr>(boolean&nbsp;onTeam)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onScan(hadur2.core.world.EnemyInfo,double,long)" class="member-name-link">onScan</a><wbr>(<a href="../world/EnemyInfo.html" title="class in hadur2.core.world">EnemyInfo</a>&nbsp;e,
+ double&nbsp;distance,
+ long&nbsp;time)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">An opponent was scanned <code>distance</code> from Hadur.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onTeam(boolean)" class="member-name-link">onTeam</a><wbr>(boolean&nbsp;onTeam)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">MGUN-6: whether Hadur has a living teammate this tick, set before any aim of the tick.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#playForward(java.awt.geom.Point2D.Double,hadur2.core.world.EnemyInfo,float%5B%5D,double,long)" class="member-name-link">playForward</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#playForward(java.awt.geom.Point2D.Double,hadur2.core.world.EnemyInfo,float%5B%5D,double,long)" class="member-name-link">playForward</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
  <a href="../world/EnemyInfo.html" title="class in hadur2.core.world">EnemyInfo</a>&nbsp;e,
  float[]&nbsp;t,
  double&nbsp;power,
  long&nbsp;now)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Plays trajectory <code>t</code> forward from <code>e</code>'s last scan until a bullet of
  <code>power</code> fired from <code>me</code> now would reach it; stays inside the walls.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#rams(hadur2.core.world.EnemyInfo,java.awt.geom.Point2D.Double)" class="member-name-link">rams</a><wbr>(<a href="../world/EnemyInfo.html" title="class in hadur2.core.world">EnemyInfo</a>&nbsp;e,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#rams(hadur2.core.world.EnemyInfo,java.awt.geom.Point2D.Double)" class="member-name-link">rams</a><wbr>(<a href="../world/EnemyInfo.html" title="class in hadur2.core.world">EnemyInfo</a>&nbsp;e,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Coming at Hadur inside <a href="#RAMMER_RANGE"><code>RAMMER_RANGE</code></a>.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="FieldGun.Solution.html" title="class in hadur2.core.melee">FieldGun.Solution</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#solutions(java.awt.geom.Point2D.Double,double,int,java.util.List,long)" class="member-name-link">solutions</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="FieldGun.Solution.html" title="class in hadur2.core.melee">FieldGun.Solution</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#solutions(java.awt.geom.Point2D.Double,double,int,java.util.List,long)" class="member-name-link">solutions</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
  double&nbsp;energy,
  int&nbsp;others,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../world/EnemyInfo.html" title="class in hadur2.core.world">EnemyInfo</a>&gt;&nbsp;alive,
  long&nbsp;now)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Every firing solution this tick, for every opponent fresh enough to shoot at.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static double</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#tolerance(java.awt.geom.Point2D.Double,java.awt.geom.Point2D.Double)" class="member-name-link">tolerance</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static double</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#tolerance(java.awt.geom.Point2D.Double,java.awt.geom.Point2D.Double)" class="member-name-link">tolerance</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;p)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) double</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#weight(hadur2.core.world.EnemyInfo,java.awt.geom.Point2D.Double,java.util.List,long)" class="member-name-link">weight</a><wbr>(<a href="../world/EnemyInfo.html" title="class in hadur2.core.world">EnemyInfo</a>&nbsp;e,
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) double</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#weight(hadur2.core.world.EnemyInfo,java.awt.geom.Point2D.Double,java.util.List,long)" class="member-name-link">weight</a><wbr>(<a href="../world/EnemyInfo.html" title="class in hadur2.core.world">EnemyInfo</a>&nbsp;e,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../world/EnemyInfo.html" title="class in hadur2.core.world">EnemyInfo</a>&gt;&nbsp;alive,
  long&nbsp;now)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">An opponent's weight: 1/distance, leaning toward weak opponents, boosted for a finisher
  (<a class="req" href="../../../../requirements.html#MGUN-2">MGUN-2</a>), an isolated opponent and a recent shooter.</div>
 </div>
@@ -290,11 +303,29 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="K">
 <h3>K</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">K</span></div>
+<div class="block">The kNN depth on a team (<a class="req" href="../../../../requirements.html#MGUN-1">MGUN-1</a>'s three situations; HadurTeam keeps them).</div>
 <dl class="notes">
 <dt>See Also:</dt>
 <dd>
 <ul class="tag-list">
 <li><a href="../../../constant-values.html#hadur2.core.melee.FieldGun.K">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="MELEE_K">
+<h3>MELEE_K</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">MELEE_K</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#MGUN-7">MGUN-7</a>: the kNN depth off a team. Twelve situations spread each opponent over more
+ likely angles, so the summed density peaks where several opponents' futures overlap,
+ which is what a crowd gun is for (docs/bench/melee-gun-3.13.md).</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur2.core.melee.FieldGun.MELEE_K">Constant Field Values</a></li>
 </ul>
 </dd>
 </dl>
@@ -467,6 +498,13 @@ loadScripts(document, 'script');</script>
 <h3>onTeam</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">onTeam</span><wbr><span class="parameters">(boolean&nbsp;onTeam)</span></div>
 <div class="block">MGUN-6: whether Hadur has a living teammate this tick, set before any aim of the tick.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="k()">
+<h3>k</h3>
+<div class="member-signature"><span class="return-type">int</span>&nbsp;<span class="element-name">k</span>()</div>
+<div class="block"><a class="req" href="../../../../requirements.html#MGUN-7">MGUN-7</a>: the kNN depth this tick, <a href="#K"><code>K</code></a> on a team and <a href="#MELEE_K"><code>MELEE_K</code></a> off one.</div>
 </section>
 </li>
 <li>
