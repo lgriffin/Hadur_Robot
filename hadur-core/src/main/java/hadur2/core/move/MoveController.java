@@ -388,6 +388,8 @@ public class MoveController {
         plan = List.of();
         lastPlans.clear();
         lastPlanTimes.clear();
+        lastOptions.clear();
+        lastChosen.clear();
         shadowedWaves = 0;
         shadowComputations = 0;
         // A new version, so no wave can match a stale one and skip its shadow computation.
@@ -411,6 +413,10 @@ public class MoveController {
     private final Map<Wave, PlanInterval> lastPlans = new IdentityHashMap<>();
     /** MOVE-9: the tick each of {@link #lastPlans} was published. */
     private final Map<Wave, Long> lastPlanTimes = new IdentityHashMap<>();
+    /** MOVE-10: each three-option surf option's last plan on a wave, by option ordinal. */
+    private final Map<Wave, PlanInterval[]> lastOptions = new IdentityHashMap<>();
+    /** MOVE-10: the ordinal of the option taken when {@link #lastOptions} was published. */
+    private final Map<Wave, Integer> lastChosen = new IdentityHashMap<>();
     /** The tick of the latest {@link #checkWaves}, the duel tick a plan is published on. */
     private long lastCheckTime = -1;
     /** MOVE-1: waves that have had a shadow this round. */
@@ -515,6 +521,35 @@ public class MoveController {
      */
     public PlanInterval lastPlanFor(Wave w) {
         return lastPlans.get(w);
+    }
+
+    /**
+     * MOVE-10: the three-option surf's plan on its first wave for every option it rated this
+     * tick, by option ordinal (a null slot for an option with no plan there), and the ordinal
+     * it took. Kept per wave until the round ends, so a hit can ask whether another option's
+     * plan would have been hit too. Measurement only.
+     *
+     * @param options one interval or null per option, all on the same wave; copied
+     * @param chosen the ordinal of the option taken
+     */
+    public void publishOptions(PlanInterval[] options, int chosen) {
+        Wave w = null;
+        for (PlanInterval i : options) if (i != null) w = i.wave;
+        if (w == null) return;
+        lastOptions.put(w, options.clone());
+        lastChosen.put(w, chosen);
+    }
+
+    /** MOVE-10: the options last published for wave {@code w}, or null when there are none. */
+    public PlanInterval[] lastOptionsFor(Wave w) {
+        PlanInterval[] o = lastOptions.get(w);
+        return o == null ? null : o.clone();
+    }
+
+    /** MOVE-10: the ordinal of the option taken with {@link #lastOptionsFor}, or -1. */
+    public int lastChosenFor(Wave w) {
+        Integer c = lastChosen.get(w);
+        return c == null ? -1 : c;
     }
 
     /** MOVE-9: the tick {@link #lastPlanFor} was published, or -1 when there is none. */

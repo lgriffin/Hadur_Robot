@@ -92,17 +92,38 @@ public final class HitForensics {
     }
 
     /**
+     * MOVE-10: whether the hit would also have hit each option's plan, one character per
+     * option in ordinal order (counter-clockwise, stop, clockwise): {@code h} inside the
+     * option's plan interval, {@code m} outside it, {@code -} no plan; upper case for the
+     * option taken. {@code ---} with no options.
+     *
+     * @param options the options' intervals by ordinal, or null
+     * @param chosen the ordinal of the option taken, or -1
+     * @param hitAngle the absolute bearing the bullet was fired at, radians
+     */
+    public static String optionFlags(PlanInterval[] options, int chosen, double hitAngle) {
+        StringBuilder b = new StringBuilder(3);
+        for (int i = 0; i < 3; i++) {
+            PlanInterval p = options == null || i >= options.length ? null : options[i];
+            char c = p == null ? '-' : planOffset(p, hitAngle) <= 1 ? 'h' : 'm';
+            b.append(i == chosen ? Character.toUpperCase(c) : c);
+        }
+        return b.toString();
+    }
+
+    /**
      * The HF record: {@code HF,round,tick,class,gf,linearGf,dangerPct,distance,power,driving,
-     * planOffset,planDanger,planAge}, NaN (or -1 for the age) for what a hit cannot know.
+     * planOffset,planDanger,planAge,options}, NaN (or -1 for the age) for what a hit cannot know.
      * The plan fields read the surf's last plan on the hit's wave: how far off it the hit was
      * ({@link #planOffset}), the danger the surf gave it, and how many ticks before the hit it
-     * was published.
+     * was published. {@code options} is {@link #optionFlags} (MOVE-10).
      */
     public static String record(int round, long tick, String cls, double gf, double linearGf,
                                 double dangerPct, double distance, double power, boolean driving,
-                                double planOffset, double planDanger, long planAge) {
-        return String.format(Locale.ROOT, "HF,%d,%d,%s,%.3f,%.3f,%.3f,%.1f,%.2f,%d,%.2f,%.3f,%d",
+                                double planOffset, double planDanger, long planAge,
+                                String options) {
+        return String.format(Locale.ROOT, "HF,%d,%d,%s,%.3f,%.3f,%.3f,%.1f,%.2f,%d,%.2f,%.3f,%d,%s",
             round, tick, cls, gf, linearGf, dangerPct, distance, power, driving ? 1 : 0,
-            planOffset, planDanger, planAge);
+            planOffset, planDanger, planAge, options);
     }
 }

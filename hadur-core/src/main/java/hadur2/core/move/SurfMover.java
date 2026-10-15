@@ -316,6 +316,13 @@ public class SurfMover {
 
         // MOVE-8: the plan just chosen, for the gun to read.
         moveCtrl.publishPlan(surfOptionChains.getOrDefault(chosen, List.of()));
+        // MOVE-10: what each option planned on this wave, for the hit forensics.
+        PlanInterval[] firsts = new PlanInterval[SurfOption.values().length];
+        for (SurfOption o : SurfOption.values()) {
+            List<PlanInterval> c = surfOptionChains.getOrDefault(o, List.of());
+            if (!c.isEmpty() && c.get(0).wave == surfWave) firsts[o.ordinal()] = c.get(0);
+        }
+        moveCtrl.publishOptions(firsts, chosen.ordinal());
 
         // Drive the same way the prediction did: toward the destination, wall-smoothed on
         // the orbit's side, reversing rather than turning more than 90 degrees.

@@ -54,11 +54,11 @@ class HitForensicsTest {
     @Tag("MOVE-9")
     @DisplayName("the record names class, guess factors, percentile, distance, power and who drove")
     void record() {
-        assertEquals("HF,3,250,linear,0.620,0.600,0.150,412.0,1.95,1,0.50,0.120,4",
-            HitForensics.record(3, 250, "linear", 0.62, 0.6, 0.15, 412, 1.95, true, 0.5, 0.12, 4));
-        assertEquals("HF,0,40,nowave,NaN,NaN,NaN,300.0,3.00,0,NaN,NaN,-1",
+        assertEquals("HF,3,250,linear,0.620,0.600,0.150,412.0,1.95,1,0.50,0.120,4,mHh",
+            HitForensics.record(3, 250, "linear", 0.62, 0.6, 0.15, 412, 1.95, true, 0.5, 0.12, 4, "mHh"));
+        assertEquals("HF,0,40,nowave,NaN,NaN,NaN,300.0,3.00,0,NaN,NaN,-1,---",
             HitForensics.record(0, 40, "nowave", Double.NaN, Double.NaN, Double.NaN, 300, 3, false,
-                Double.NaN, Double.NaN, -1));
+                Double.NaN, Double.NaN, -1, "---"));
     }
 
     @Test
@@ -108,5 +108,36 @@ class HitForensicsTest {
         assertTrue(m.dangerPercentile(w, 0.5) > 0.9, "learned angle");
         assertTrue(m.dangerPercentile(w, -0.8) < 0.5, "far from it");
         assertEquals(before, m.getDangerScore(w, at, 0), 1e-12);
+    }
+
+    @Test
+    @Tag("MOVE-10")
+    @DisplayName("each option is marked hit or missed by the bullet, the one taken in capitals")
+    void optionFlags() {
+        PlanInterval[] o = {
+            new PlanInterval(null, 0.0, 0.2, 0.1),
+            new PlanInterval(null, 1.0, 1.2, 0.3),
+            null};
+        assertEquals("mH-", HitForensics.optionFlags(o, 1, 1.1));
+        assertEquals("Hm-", HitForensics.optionFlags(o, 0, 0.1));
+        assertEquals("---", HitForensics.optionFlags(null, -1, 0.1));
+    }
+
+    @Test
+    @Tag("MOVE-10")
+    @DisplayName("the options are kept per wave with the one taken, until the round ends")
+    void lastOptionsKeptPerWave() {
+        MoveController m = SurfOpeningTest.controller();
+        Wave a = DangerIntegrationTest.wave(1.95, 400, 450);
+        PlanInterval[] o = {new PlanInterval(a, 0.1, 0.2, 0.4), null, new PlanInterval(a, 0.5, 0.6, 0.2)};
+        m.publishOptions(o, 2);
+        o[0] = null;
+        assertEquals(0.1, m.lastOptionsFor(a)[0].low, 1e-12);
+        assertEquals(2, m.lastChosenFor(a));
+        m.publishOptions(new PlanInterval[3], 0);
+        assertEquals(2, m.lastChosenFor(a));
+        m.initRound();
+        assertEquals(null, m.lastOptionsFor(a));
+        assertEquals(-1, m.lastChosenFor(a));
     }
 }

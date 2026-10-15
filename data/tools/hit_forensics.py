@@ -5,7 +5,7 @@
         [--list hadur-bench/shield-313.txt] [--other-list hadur-bench/shield-nullstride.txt] [--all]
 
 WORKDIR is a cold bench run of a build that writes HF records: WORKDIR/battles/<slug>-<seed>/
-holds hadur.log (each line prefixed `round,tick,`; one `HF,round,tick,class,gf,linearGf,dangerPct,distance,power,driving` line
+holds hadur.log (each line prefixed `round,tick,`; one `HF,round,tick,class,...` line (docs/requirements.md MOVE-9, MOVE-10)
 per bullet that hit us in a duel) and rounds.tsv (one row per round). By default only the
 opponents on neither shield list are read, since the plan's gap is there; --all reads every one.
 Only hits while the Duel drove count (shield mode drives listed robots).
@@ -15,7 +15,9 @@ linear, learned, nowave) and by how the danger views rated the angle the bullet 
 safe (percentile under 1/3: the views did not expect it), mid, and known (2/3 and over: the
 views knew it was dangerous, so the surf could not or did not get away), and by the surf's last
 plan on the bullet's wave: on (the hit lay inside the interval the plan expected us to occupy:
-the surf chose to be there), off (we were somewhere the plan did not put us) or none.
+the surf chose to be there), off (we were somewhere the plan did not put us) or none; and, from
+MOVE-10's option flags, whether another of the three options' plans would have dodged a hit the
+option taken was planned into (dodge), none would (trapped), or there is no such reading (n/a).
 
 Standard library only.
 """
@@ -30,6 +32,7 @@ BANDS = ((1, 50), (51, 200), (201, 400), (401, 800), (801, None))
 CLASSES = ("headon", "linear", "learned", "nowave")
 RATINGS = ("safe", "mid", "known", "n/a")
 PLANS = ("on", "off", "none")
+OPTIONS = ("dodge", "trapped")
 
 
 def slug(name):
@@ -85,9 +88,10 @@ def read_list(path):
 
 def parse_hf(line):
     """(class, gf, linearGf, dangerPct, distance, power, driving) of an HF line, or None.
-    Lines with the plan fields (13 values) read the same; plan_fields() reads those."""
+    Lines with the plan fields (13 values) or option flags (14) read the same; plan_of() and
+    options_of() read those."""
     p = line.strip().split(",")
-    if len(p) not in (10, 13) or p[0] != "HF":
+    if len(p) not in (10, 13, 14) or p[0] != "HF":
         return None
     return (p[3], float(p[4]), float(p[5]), float(p[6]), float(p[7]), float(p[8]), p[9] == "1")
 
@@ -96,10 +100,20 @@ def plan_of(line):
     """'on' when the hit lay inside the surf's last plan on its wave (offset at most 1),
     'off' outside it, 'none' with no plan or an older record without the plan fields."""
     p = line.strip().split(",")
-    if len(p) != 13:
+    if len(p) not in (13, 14):
         return "none"
     off = float(p[10])
     return "none" if off != off else "on" if off <= 1.0 else "off"
+
+
+def options_of(line):
+    """MOVE-10: 'dodge' when the option taken was hit inside its plan (capital H) and another
+    option's plan would have missed (m), 'trapped' when the taken option was hit and no other
+    would have missed, 'n/a' otherwise (no flags, or the taken option's plan was missed)."""
+    p = line.strip().split(",")
+    if len(p) != 14 or "H" not in p[13]:
+        return "n/a"
+    return "dodge" if "m" in p[13] else "trapped"
 
 
 def read_battle(bdir):
@@ -119,7 +133,7 @@ def read_battle(bdir):
                 if i == 0 or (i > 0 and line[i - 1] == ","):
                     h = parse_hf(line[i:])
                     if h:
-                        hits.append(h + (plan_of(line[i:]),))
+                        hits.append(h + (plan_of(line[i:]), options_of(line[i:])))
     return rounds, hits
 
 
@@ -140,18 +154,20 @@ def tally(work, roles, skip=frozenset()):
         for b in (band_label(band_of(rank)), "all"):
             out[b]["rounds"] += rounds
             out[b]["opponents:" + key] = 1
-            for cls, gf, lin, pct, dist, power, driving, plan in hits:
+            for cls, gf, lin, pct, dist, power, driving, plan, opt in hits:
                 if driving:
                     out[b][(cls, rating(pct))] += damage(power)
                     out[b]["plan:" + plan] += damage(power)
+                    out[b]["options:" + opt] += damage(power)
     return out
 
 
 def render(t):
     rows = ["| Ranks | Opponents | Taken a round | " + " | ".join(CLASSES) + " | "
             + " | ".join("views: " + r for r in RATINGS[:3]) + " | "
-            + " | ".join("plan: " + p for p in PLANS) + " |",
-            "|---|---|---|" + "---|" * (len(CLASSES) + 3 + len(PLANS))]
+            + " | ".join("plan: " + p for p in PLANS) + " | "
+            + " | ".join("options: " + o for o in OPTIONS) + " |",
+            "|---|---|---|" + "---|" * (len(CLASSES) + 3 + len(PLANS) + len(OPTIONS))]
     for b in [band_label(x) for x in BANDS] + ["all"]:
         if b not in t:
             continue
@@ -162,10 +178,11 @@ def render(t):
                   for k in CLASSES}
         by_rat = {r: sum(v for kk, v in c.items() if isinstance(kk, tuple) and kk[1] == r) / n
                   for r in RATINGS}
-        rows.append("| %s | %d | %.1f | %s | %s | %s |" % (
+        rows.append("| %s | %d | %.1f | %s | %s | %s | %s |" % (
             b, opps, sum(by_cls.values()), " | ".join("%.1f" % by_cls[k] for k in CLASSES),
             " | ".join("%.1f" % by_rat[r] for r in RATINGS[:3]),
-            " | ".join("%.1f" % (c["plan:" + p] / n) for p in PLANS)))
+            " | ".join("%.1f" % (c["plan:" + p] / n) for p in PLANS),
+            " | ".join("%.1f" % (c["options:" + o] / n) for o in OPTIONS)))
     return "\n".join(rows)
 
 
