@@ -300,6 +300,7 @@ public final class DuelController {
         this.gunController = new GunController(battleField, enemiesTotal);
         this.moveController = new MoveController(battleField, predictor);
         this.surfMover = new SurfMover(battleField, predictor);
+        this.surfMover.setEscapeRoomTerm(MoveDesign.ESCAPE_ROOM);
         this.shadowAvoidance = new ShadowAvoidance(fieldWidth, fieldHeight);
         this.ramEscape = new RamEscape(battleField, predictor);
         this.mirror = new MirrorDetector(fieldWidth, fieldHeight);

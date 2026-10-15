@@ -77,6 +77,9 @@ public class SurfMover {
     private final Map<SurfOption, Point2D.Double> surfOptionDestinations = new HashMap<>();
     /** The wave surfed last tick; a different one resets the destinations and the cache. */
     private Wave lastWaveSurfed;
+    /** MOVE-12: whether the escape-room position term scales the first wave's danger (off by default). */
+    private boolean escapeRoomTerm;
+
     /** The distance, in px, the attack angles steer toward. */
     private double desiredDistance = DEFAULT_DISTANCE;
     /** The surf mode for the wave being surfed, and the one the next wave starts with (MOVE-2). */
@@ -113,6 +116,18 @@ public class SurfMover {
      */
     public void setDesiredDistance(double desiredDistance) {
         this.desiredDistance = desiredDistance;
+    }
+
+    /**
+     * MOVE-12: whether the first wave's danger, in the three-option mode and in go-to
+     * surfing alike, is also multiplied by {@link EscapeRoom#multiplier} at the move's end
+     * (where the wave passes), the wave's source and its bullet speed. Off by default; when
+     * off the scores are those without the term.
+     *
+     * @param on whether the position term is applied
+     */
+    public void setEscapeRoomTerm(boolean on) {
+        this.escapeRoomTerm = on;
     }
 
     /** The target distance, in px, last set. */
@@ -519,6 +534,11 @@ public class SurfMover {
         danger /= timeToImpact;
 
         danger *= distancingDanger(start, passed, surfWave.sourceLocation);
+        // MOVE-12: prefer ends where we keep our escape angle and the enemy loses his.
+        if (escapeRoomTerm && surfWaveIndex == 0) {
+            danger *= EscapeRoom.multiplier(passed, surfWave.sourceLocation,
+                surfWave.bulletSpeed(), battleField);
+        }
         return danger;
     }
 
