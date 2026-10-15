@@ -1,0 +1,8 @@
+# Movement-map shooter ladder (data/tools/move_map.py): bench a rival as the subject
+# (--robot-jar opponents/<jar> --robot "<name ver>") against this set, then draw its maps.
+# No gun, head-on gun, mid-table gun, a strong gun every rival shares, our own gun.
+sample.SittingDuck | ladder | -
+sample.TrackFire | ladder | -
+dz.GalbaMini 0.121 | ladder | dz.GalbaMini_0.121.jar
+abc.Shadow 3.83c | ladder | abc.Shadow_3.83c.jar
+hadur2.Hadur 3.13 | ladder | hadur2.Hadur_3.13.jar
