@@ -798,6 +798,11 @@ public class MoveController {
             true, botName, bulletPower);
     }
 
+    /** The movement wave added last (MOVE-11's candidate). */
+    private Wave newestWave;
+    /** The tick whose newest wave may be surfed as a provisional one, or -1 (MOVE-11). */
+    private long provisionalTime = -1;
+
     /**
      * Adds an enemy wave. {@code HadurCore} adds one every scan, at the power the enemy last
      * fired; only the one {@link #updateFiringWave} marks becomes a firing wave.
@@ -806,6 +811,29 @@ public class MoveController {
      */
     public void addWave(Wave w) {
         waveManager.addWave(w);
+        newestWave = w;
+    }
+
+    /**
+     * MOVE-11: whether this tick's newest movement wave may be surfed as the enemy's next
+     * shot. The duel decides (the enemy's gun is about to be cool, the switch is on) and
+     * says so each tick; the move package never reads the enemy's gun heat.
+     *
+     * @param ready whether the gun-heat wave is wanted this tick
+     * @param time the tick
+     */
+    public void setProvisionalReady(boolean ready, long time) {
+        provisionalTime = ready ? time : -1;
+    }
+
+    /** The movement wave surfed in place of a bullet not yet fired, or null (MOVE-11). */
+    private Wave provisionalWave() {
+        Wave w = newestWave;
+        if (provisionalTime < 0 || w == null || w.firingWave || w.altWave
+            || w.fireTime != provisionalTime) {
+            return null;
+        }
+        return w;
     }
 
     /**
@@ -856,8 +884,20 @@ public class MoveController {
     public Wave findSurfableWave(int surfIndex, RobotState myState) {
         // BREAKING_CENTER is the first unsurfable position: once the wave's front will pass
         // our centre next tick it is too late to dodge it.
-        return waveManager.findSurfableWave(surfIndex, myState,
+        Wave real = waveManager.findSurfableWave(surfIndex, myState,
             Wave.WavePosition.BREAKING_CENTER);
+        if (real != null || provisionalTime < 0) return real;
+        // MOVE-11: with fewer than two real waves in the air, the next shot's wave follows
+        // them. It is a movement wave still, so no statistic ever counts it.
+        if (surfIndex >= 2) return null;
+        if (surfIndex > 0 && waveManager.findSurfableWave(surfIndex - 1, myState,
+            Wave.WavePosition.BREAKING_CENTER) == null) {
+            return null;
+        }
+        Wave p = provisionalWave();
+        if (p == null) return null;
+        return p.checkWavePosition(myState, Wave.WavePosition.BREAKING_CENTER).getIndex()
+            >= Wave.WavePosition.BREAKING_CENTER.getIndex() ? null : p;
     }
 
     /**

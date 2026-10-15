@@ -32,6 +32,8 @@
 #   away  "never close in" (3.12 P5): DIST-1 never steps in (the target stays at the opening's,
 #         650 px for a stranger), END-1 keeps that distance, and the surf corrects being too
 #         close with the orbit's 1.65 gain instead of 0.6.
+#   heat  MOVE-11: the gun-heat wave is on: when the enemy's gun is about to be cool and fewer than two
+#         firing waves are in the air, the surf also dodges the shot it has not fired yet. Suffix hw.
 #   tpost (team only) the melee posture is always NORMAL while Hadur has living teammates: on a team,
 #         two enemies hit by our own members read as "fighting each other", so LET_THEM_FIGHT backs
 #         this member away from its teammates' fight (docs/bench/team-lower-half.md).
@@ -90,6 +92,7 @@ move="$src/hadur-core/src/main/java/hadur2/core/move/MoveController.java"
 book="$src/hadur-core/src/main/java/hadur2/core/adapt/OpeningBook.java"
 shields="$src/hadur-core/src/main/java/hadur2/core/shieldmode/ShieldList.java"
 design="$src/hadur-core/src/main/java/hadur2/core/shieldmode/ShieldDesign.java"
+movedesign="$src/hadur-core/src/main/java/hadur2/core/duel/MoveDesign.java"
 listdata="$src/hadur-robot/src/main/java/hadur2/ShieldListData.java"
 budget="$src/hadur-core/src/main/java/hadur2/core/policy/TickBudget.java"
 dist="$src/hadur-core/src/main/java/hadur2/core/policy/DistancePolicy.java"
@@ -166,6 +169,9 @@ for a in "${list[@]}"; do
             edit "$detector" "public static final int MIN_INTERCEPTS = 4;" "public static final int MIN_INTERCEPTS = 10;"
             edit "$detector" "public static final double MIN_SHARE = 0.25;" "public static final double MIN_SHARE = 0.5;"
             version="${version}s5" ;;
+        heat)
+            edit "$movedesign" "static final boolean HEAT_WAVE = false;" "static final boolean HEAT_WAVE = true;"
+            version="${version}hw" ;;
         tpost)
             edit "$mctl" "MeleeStrategy.Plan plan = strategy.evaluate(tracker, s.me, s.energy, s.others, s.time);" \
                 "MeleeStrategy.Plan plan = s.teammates.isEmpty() ? strategy.evaluate(tracker, s.me, s.energy, s.others, s.time) : MeleeStrategy.Plan.normal();"
