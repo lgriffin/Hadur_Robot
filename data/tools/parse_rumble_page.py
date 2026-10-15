@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Parse a saved LiteRumble page (.mht) into the archive's table format.
+"""Parse a saved LiteRumble page (.mht, or the plain .html a fetch saves) into the archive's table format.
 
     python3 data/tools/parse_rumble_page.py PAGE.mht [OUT]
 
@@ -23,6 +23,8 @@ CELL = re.compile(r"<td[^>]*>(.*?)</td>", re.DOTALL)
 
 
 def page_html(path):
+    if Path(path).suffix.lower() in (".html", ".htm"):
+        return Path(path).read_bytes().decode("utf-8", "replace")
     with open(path, "rb") as f:
         msg = email.message_from_binary_file(f)
     for part in msg.walk():
