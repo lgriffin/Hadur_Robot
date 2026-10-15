@@ -108,6 +108,13 @@ loadScripts(document, 'script');</script>
      Hadur and Hadur bullets that hit a sentry, and skipped turns. When Hadur died, also
      the tick it died, its killer and the last robot to hit it (<a href="#HEADER"><code>HEADER</code></a>'s last
      three columns, <code>-</code> when it lived or nothing hit it).</li>
+ <li><code>bullets.csv</code>: one row per robot per round (<a href="#BULLET_HEADER"><code>BULLET_HEADER</code></a>): every
+     fighter's shots, their summed power, hits on a fighter, the damage those scored (capped
+     at the victim's energy, as the score caps it) and shots lost to another bullet; the
+     <code>crowd</code> columns count only shots fired while five or more fighters were alive
+     (counted before the turn's deaths); then the ticks it was alive and, of those, the ticks its gun
+     was cool (heat 0) with energy to fire, so a robot that could shoot but held is seen. It
+     is how Hadur's firepower is read against the field's.</li>
  </ul></div>
 </section>
 <section class="summary">
@@ -122,8 +129,11 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Field</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color"><code><a href="#HEADER" class="member-name-link">HEADER</a></code></div>
+<div class="col-second even-row-color"><code><a href="#BULLET_HEADER" class="member-name-link">BULLET_HEADER</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#HEADER" class="member-name-link">HEADER</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
 </div>
 </section>
 </li>
@@ -194,6 +204,20 @@ loadScripts(document, 'script');</script>
 <dd>
 <ul class="tag-list">
 <li><a href="../../constant-values.html#hadur.bench.MeleeHarvester.HEADER">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="BULLET_HEADER">
+<h3>BULLET_HEADER</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">BULLET_HEADER</span></div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../constant-values.html#hadur.bench.MeleeHarvester.BULLET_HEADER">Constant Field Values</a></li>
 </ul>
 </dd>
 </dl>
