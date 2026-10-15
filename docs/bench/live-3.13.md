@@ -42,6 +42,17 @@ two battles.
 By the opponent's rank: ranks 1-50 +4.1 points, 51-200 +3.9, 201-400 +3.7, 401-800 +1.2,
 801-1,218 +0.4.
 
+## Team and melee
+
+| Rumble | Entry | APS | Rank | Pairings | Previous |
+|---|---|---|---|---|---|
+| Team | `hadur2.HadurTeam 3.13` | 68.30 | 9th | 45 | 3.11: 64.61, 12th |
+| Melee | `hadur2.Hadur 3.13` | 65.58 | 17th | 414 (1,233 battles) | 3.11: 65.65, 17th |
+
+Team gained 3.7 APS from full firepower (MGUN-6), against a bench estimate of +5.7 on the 45 teams.
+Melee is level, as expected with no melee change. BotDetails pages were saved by the client at
+07:10 UTC (team) and 09:42 UTC (melee) in the project's data folder.
+
 ## Notes from the client
 
 - Three Kotlin robots (e32.Omni, zen.Mirage, zen.Ronin) need `kotlin-stdlib` on the client's

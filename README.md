@@ -36,8 +36,9 @@ with every pairing filled, puts `hadur2.Hadur 3.13` **7th**, 1.78 APS above 3.12
 - **9th in the TeamRumble.** `hadur2.HadurTeam 3.13`'s first full team pass (45 pairings, 2026-10-15
   07:10 UTC) scores 68.30, up from 3.11's 12th at 64.61. The gain is team full firepower (MGUN-6),
   which the bench put at +5.7 on the 45 teams; it changes nothing in 1v1 or melee.
-- **17th in the MeleeRumble** (65.65 APS, read for 3.11 on 2026-10-11 07:16 UTC). 3.13's first
-  melee pass is running.
+- **17th in the MeleeRumble.** `hadur2.Hadur 3.13`'s first full melee pass (414 pairings, 1,233
+  battles, 2026-10-15 09:39 UTC) scores 65.58, level with 3.11's 17th at 65.65: no melee code
+  changed, and the 1v1 shield list does not act in melee.
 
 The pages are archived in [`data/rumble/`](data/rumble/).
 
