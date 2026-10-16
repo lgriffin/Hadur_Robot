@@ -203,8 +203,11 @@ drawn from the same die, geometric with mean `τ̄`:
     τ = 1 + floor( ln(u_{n+1}) / ln(1 − 1/τ̄) )
 
 A new pick is drawn when the dwell runs out, when the window opens, or when a new wave is first
-surfed. `τ̄ = 1` reproduces MOVE-13's every-tick re-pick, and larger `τ̄` gives longer, smoother legs.
-So one parameter places the movement anywhere between today's stop-and-start and plain surfing.
+surfed. `τ̄ = 1` re-picks every tick and larger `τ̄` gives longer, smoother legs. How erratic the
+movement is also depends on the temperature: the lab (`docs/bench/local/2026-10-16_lab-protean-read.md`)
+found that at `c = 1` the pick nearly always takes the safest option, so it moves more smoothly than
+MOVE-13's stop-and-start at any dwell. The stop-and-start's churn comes from re-rating against a new
+imaginary wave each tick, not from a random choice.
 
 ### The whole pick, per tick
 

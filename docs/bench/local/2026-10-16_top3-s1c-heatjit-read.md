@@ -35,7 +35,8 @@ Damage taken a round 12.10 to 11.86; damage dealt level (53.13, 53.14); skipped 
   stays a rule for the whole field.
 - **The gate.** It is short of the plan's +0.3 APS gate (`docs/plan-top3.md`), though positive in
   both screens. It is the base the protean pick (`docs/top3-movement-study.md`) is screened
-  against: at a mean dwell of 1 tick the protean pick reproduces it, so it either beats it or
-  falls back to it.
+  against. (An earlier version of this note said the protean pick reproduces it at a mean dwell of
+  1 tick. The lab shows it does not: at c = 1 the pick is cold and smoother than plain surfing,
+  `2026-10-16_lab-protean-read.md`.)
 
 Next: the escape-room screen (MOVE-12, chunks `s1c-we-*`, running), then the protean pick in the lab.
