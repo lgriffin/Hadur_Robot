@@ -1,0 +1,21 @@
+# Team gun depth, stage T3 (docs/bench/combatteam-3.25.md section 4, cloud screen
+# docs/bench/local/2026-10-16_team-t3-t4-screen.md). Team-only ablations of 3.13
+# (build-ablation.sh tk12, tk21: FieldGun.K is read only while a member has a living teammate, so
+# 1v1 and melee are untouched). TeamRumble settings: 1200x1200, 10 rounds, engine 1.11.1, 6 seeds,
+# cold, four battles at once, against all 45 opponents (team-census45.txt).
+#   ./queue.sh run team-depth        (or  .\queue.ps1 run team-depth)
+# Run with RoboRumble workers stopped, from a checkout whose robot version is 3.13.
+#   k12   the team field gun takes 12 situations per opponent (MGUN-7's melee depth), not 3.
+#   k21   21 situations, CombatTeam's depth.
+#   Each step fights 3.13 (--baseline) at the same opponent and seed: 540 battles a step.
+# Gate (T2's): mean paired difference over the 45 teams at least +1.0 point, interval above zero,
+# no team worse beyond its 6-seed spread. Cloud screen on the top 20, 3 seeds: k12 +3.5 ± 2.2,
+# k21 +3.7 ± 1.9 (k21 - k12 +0.2 ± 2.0). Reports go to
+# docs/bench/local/2026-10-16_team-census-{k12,k21}.md; commit those and the queue log.
+
+prep | mkdir -p bisect && { [ -s bisect/hadur2.HadurTeam_3.13.jar ] || curl -fsSL -o bisect/hadur2.HadurTeam_3.13.jar https://github.com/lgriffin/Hadur_Robot/releases/download/v3.13/hadur2.HadurTeam_3.13.jar; } && ./build-ablation.sh tk12 && ./build-ablation.sh tk21 && ./fetch-opponents.sh --set team-census45.txt && mvn -q compile
+
+k12  | mvn -q exec:java "-Dexec.args=@plans/team-census-k12.args"
+  after: prep
+k21  | mvn -q exec:java "-Dexec.args=@plans/team-census-k21.args"
+  after: k12
