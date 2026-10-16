@@ -23,7 +23,7 @@ firing at 2 energy, so it can run dry against a mover that is rarely hit.
 
 **Read.** `python3 data/tools/move_lab.py silent=work/lab-si-... heat=work/lab-sihw-...` (from `hadur-bench`; add
 `--set lab-panel.txt`) prints a markdown table. Per opponent and label: Hadur's damage taken per round (rounds.tsv
-`damageTaken`), rounds survived %, and the shooter's hit rate (result.csv `theirHitRate`). With two labels it adds
+`damageTaken`), rounds survived %, and the shooter's true hit rate (result.csv `theirBulletDamage` over 10 a hit, over `enemyShots`; the `theirHitRate` column is Hadur's own normalised estimate, not a hit rate). With two labels it adds
 the second minus the first over the seeds both fought, mean and 95% interval (Student's t), then an All row over
 the opponents. The shooter's hit rate is the headline: damage per round also counts how long the shooter can keep
 firing before it runs dry, so it understates a better mover. Negative means the second label moves better. Seeds are labels, not replays (charter,

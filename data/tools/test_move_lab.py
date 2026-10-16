@@ -33,7 +33,7 @@ class MoveLabTest(unittest.TestCase):
             bd = os.path.join(w, "battles", f"{ml.slug(opp)}-{seed}")
             os.makedirs(bd)
             with open(os.path.join(bd, "result.csv"), "w") as f:
-                f.write(f"ok,rounds,theirHitRate\ntrue,{len(ds)},{hit}\n")
+                f.write(f"ok,rounds,theirBulletDamage,enemyShots\ntrue,{len(ds)},{hit * 1000},100\n")
         with open(os.path.join(w, "rounds.tsv"), "w") as f:
             f.writelines(rows)
         return w
@@ -46,7 +46,7 @@ class MoveLabTest(unittest.TestCase):
         with open(os.path.join(bd, "rounds.tsv"), "w") as f:
             f.write(HEADER + "hadur2.Hadur 3.13si\tlab.Knn 1.0\t301\t0\t1\t1\t900\t0.0\t30\t0.0\t0\t0\n")
         with open(os.path.join(bd, "result.csv"), "w") as f:
-            f.write("ok,rounds,theirHitRate\ntrue,1,0.12\n")
+            f.write("ok,rounds,theirBulletDamage,enemyShots\ntrue,1,120,100\n")
         d = ml.read_workdir(w, ["lab.Knn 1.0"])
         self.assertAlmostEqual(d["lab.Knn 1.0"]["301"]["theirHit"], 0.12)
 

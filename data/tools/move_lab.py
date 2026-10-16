@@ -104,14 +104,22 @@ def read_workdir(work, names, build=None):
     return out
 
 
+# Every lab shooter fires power 2.0 (hadur-bench/lab/lab/LabBase.java): 4p + 2(p - 1) = 10 a hit.
+LAB_HIT_DAMAGE = 10.0
+
+
 def their_hit_rate(work, opp, seed, battle_dir=None):
-    """theirHitRate of the battle's result.csv (the shooter's hits over its shots), or None."""
+    """The shooter's true hit rate in the battle: its bullet damage on us over 10 a hit, over the
+    shots we saw it fire (result.csv theirBulletDamage / enemyShots), or None. Not result.csv's
+    theirHitRate, which is Hadur's own normalised estimate (R records), not a hit rate."""
     p = os.path.join(work, "battles", battle_dir or f"{slug(opp)}-{seed}", "result.csv")
     try:
         with open(p, newline="", encoding="utf-8") as f:
             rows = list(csv.DictReader(f))
-        if rows and rows[0].get("ok") == "true" and rows[0].get("theirHitRate") not in (None, ""):
-            return float(rows[0]["theirHitRate"])
+        r = rows[0] if rows else {}
+        shots = float(r.get("enemyShots") or 0)
+        if r.get("ok") == "true" and shots > 0 and r.get("theirBulletDamage") not in (None, ""):
+            return float(r["theirBulletDamage"]) / LAB_HIT_DAMAGE / shots
     except (OSError, ValueError):
         pass
     return None
