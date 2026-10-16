@@ -105,6 +105,135 @@ enemy changes gun. Against a head-on or linear gun the view that sees it takes o
 bullets, which is where 4.2 of our 13.1 damage a round comes from (head-on plus linear, first HF
 read).
 
+## The protean pick, as an algorithm
+
+2026-10-16, after the stop-and-start finding (MOVE-13, `docs/bench/local/2026-10-16_top3-s1-heat2-read.md`):
+the surf's erratic re-picking while the enemy's gun is cool gained about +0.25 APS by accident. The
+protean pick is the designed version: the same window, a controlled amount of randomness, a bounded
+cost, and a die that replays.
+
+### Notation
+
+- Options `o ∈ O = {ccw, stop, cw}`, `K = |O| = 3`.
+- Danger views `i = 1..m` (`m = 11`), with the surf's existing weights `w_i ≥ 0`, `Σ w_i = 1`.
+- `d_{o,i} ∈ [0, 1]`: view `i`'s danger for option `o` (its kernel estimate of the chance the
+  bullet's angle falls in the option's interval), before the shadow, damage and time factors.
+- `D_o`: the surf's total danger for option `o` as it is computed today (the weighted mean of
+  `d_{o,i}`, times the shadow, damage and 1/time factors, plus the second wave's least danger).
+  Today's surf takes `argmin_o D_o`.
+- `D* = min_o D_o`, and `ΔD_o = D_o − D* ≥ 0`.
+
+### 1. When it acts: the protean window
+
+The pick is protean only in the window `W`. That is the window MOVE-13 found: the enemy's estimated
+gun heat is at most one tick's cooling and no firing wave in the air is within `t_min` ticks of
+impact (start with `t_min = 10`). Outside `W` (a bullet about to arrive, or the gun still hot) the surf
+takes `argmin_o D_o`, exactly as now. So the randomness is spent only where the enemy's next aim is
+being formed, never when a real bullet is about to land.
+
+### 2. How unsure the views are: the spread
+
+For each option, the weighted disagreement of the views:
+
+    μ_o = Σ_i w_i d_{o,i}
+    s_o = sqrt( Σ_i w_i (d_{o,i} − μ_o)² )
+
+and the spread over the options, normalised by the danger scale so it is unitless:
+
+    S = (1/K) Σ_o s_o / (μ̄ + ε),    μ̄ = (1/K) Σ_o μ_o,    ε = 1e-6
+
+`S` near 0 means the views agree on every option; `S` near 1 means they disagree by as much as the
+danger itself.
+
+### 3. Temperature
+
+    T = c · S · D* + T_0
+
+`c` (start at 1) sets how much the disagreement buys, and `D*` scales `T` to the danger in play.
+`T_0` is a small floor (start at 0.02·D*) so a near tie is always broken at random. With
+`T → 0`, the pick below becomes the argmin.
+
+### 4. Which options may be drawn: the safety cap
+
+    A = { o : ΔD_o ≤ δ · D* + δ_0 }    (start with δ = 0.5, δ_0 = 0.01)
+
+An option more than 50% more dangerous than the best is never drawn, whatever the die says. The
+best option is always in `A`.
+
+### 5. The protean distribution (Gibbs, softmin)
+
+    P(o) = exp(−ΔD_o / T) / Z,   o ∈ A;   P(o) = 0 otherwise;   Z = Σ_{o∈A} exp(−ΔD_o / T)
+
+What it costs: the Gibbs distribution minimises expected danger minus `T` times entropy. So the
+expected danger is at most the best plus `T` times the entropy of the pick:
+
+    E_P[D] − D* ≤ T · H(P) ≤ T · ln K = 1.10 · T
+
+The cost of being unpredictable is bounded and set by one number. What it buys: a gun that
+has learned our argmin is right with probability `max_o P(o)` instead of 1.
+
+### 6. The die: the logistic map, made uniform
+
+    x_{n+1} = 4 x_n (1 − x_n)
+
+It is chaotic (Lyapunov exponent `ln 2`: a difference of `10⁻¹⁵` grows to order 1 in about 50
+steps), but its values are not uniform. Their density is `1 / (π √(x(1−x)))`, piled up near 0 and 1.
+The map is conjugate to the tent map through `x = sin²(πu/2)`, so the uniform draw is
+
+    u_n = (2/π) · arcsin( √x_n )    ∈ [0, 1], uniform
+
+In floating point the orbit can fall into 0 or the fixed point 3/4, or into a short cycle. Guard:
+if `x_n ∈ {0, 0.75, 1}`, or `x_n` repeats within the last 64 draws, set `x_n ← frac(x_n + φ)`, with
+`φ = (√5 − 1)/2`. Seed per battle and round from a hash of the enemy's name and the round number,
+mapped into `(0, 1)` away from 0, 1/4, 1/2, 3/4 and 1. The enemy never sees `x`, so to it the draws are
+fair; to us they replay exactly, so the replay fixtures stay deterministic and the core keeps its
+ban on `java.util.Random`.
+
+### 7. Sampling
+
+Order `A` by `ΔD_o` (best first) and take the first option whose cumulative probability reaches `u_n`:
+
+    o_pick = min{ o_k : Σ_{j≤k} P(o_j) ≥ u_n }
+
+### 8. How long a pick stands: the dwell
+
+The stop-and-start re-picked every tick. The protean pick holds its choice for a dwell of `τ` ticks,
+drawn from the same die, geometric with mean `τ̄`:
+
+    τ = 1 + floor( ln(u_{n+1}) / ln(1 − 1/τ̄) )
+
+A new pick is drawn when the dwell runs out, when the window opens, or when a new wave is first
+surfed. `τ̄ = 1` reproduces MOVE-13's every-tick re-pick, and larger `τ̄` gives longer, smoother legs.
+So one parameter places the movement anywhere between today's stop-and-start and plain surfing.
+
+### The whole pick, per tick
+
+    if not in W:                    take argmin_o D_o
+    elif dwell > 0:                 keep the last pick; dwell −= 1
+    else:
+        compute D_o, d_{o,i}        (the surf already computes these)
+        S, T, A, P                  (steps 2–5)
+        u ← die; o ← sample(P, u)   (steps 6–7)
+        dwell ← τ from the die      (step 8)
+        take o
+
+Cost per pick: 3 options × 11 views of numbers the surf already has, a few `exp`s and one `arcsin`,
+well under a millisecond.
+
+### Parameters to screen
+
+| Parameter | Start | Meaning |
+|---|---|---|
+| `c` | 1 | how much the views' disagreement raises the temperature |
+| `T_0` | 0.02·D* | the floor that breaks near ties at random |
+| `δ`, `δ_0` | 0.5, 0.01 | the cap on how much worse a drawn option may be |
+| `τ̄` | 1, 3, 8 | the mean dwell: re-pick rate |
+| `t_min` | 10 | no protean pick when a real bullet is this close |
+
+Test plan: lab first (silent Hadur against the six shooters, looking for lower hit rates from the
+learning guns with no new hole), then the 400-bot screen against MOVE-13's stop-and-start at
+`τ̄ = 1, 3, 8`. It is a duel-only switch, off by default, and the gate is +0.3 APS over 3.13.
+
 ## Test order
 
 1. **Gun-heat wave**: what all three masters do. The largest expected gain.
