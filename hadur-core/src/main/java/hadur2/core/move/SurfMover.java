@@ -157,6 +157,16 @@ public class SurfMover {
     }
 
     /**
+     * MOVE-15: whether the protean pick uses its hot setting ({@link ProteanPick#setHot}). Off
+     * by default.
+     *
+     * @param hot whether to use the hot setting
+     */
+    public void setProteanHot(boolean hot) {
+        protean.setHot(hot);
+    }
+
+    /**
      * MOVE-14: whether this tick is in the protean window (the enemy's gun is cool and no real
      * bullet is close). The duel says so each tick; closing the window drops the pick held, so
      * the next window draws afresh.

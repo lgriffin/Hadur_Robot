@@ -49,6 +49,11 @@
 #   pc10  MOVE-14 protean's temperature gain c raised from 1 to 10 (combine with protean). Suffix pc.
 #   phot  MOVE-14 protean near-uniform over the options at most twice the best's danger: the
 #         temperature floor 0.02 -> 0.5 of the best danger, the cap 0.5 -> 1.0 (combine with protean). Suffix ph.
+#   split  MOVE-15: movement by the enemy's gun: once 6 of the enemy's hits on us this battle are counted and
+#         60% are of the learned class, the surf holds the gun-heat wave and takes the hot protean pick
+#         (floor 0.5, cap 1.0, dwell 1); until then it takes the wave afresh each tick (stop-and-start).
+#         Sets HEAT_WAVE and GUN_SPLIT, so build it alone: not combined with heat or heatjit (they edit the
+#         same HEAT_WAVE line, which the second edit would not find), nor with protean or phot (unneeded). Suffix sp.
 #   silent  the Duel never fires: drive() is entered with WEAVE-3's fire permission withdrawn (mayFire = false),
 #         which both of the duel's fire sites (the aimed shot and the shield's) honour; the radar,
 #         aim, waves and movement all still run. Hadur then scores only by survival, which is what
@@ -198,6 +203,10 @@ for a in "${list[@]}"; do
             edit "$movedesign" "static final boolean HEAT_WAVE = false;" "static final boolean HEAT_WAVE = true;"
             edit "$movedesign" "static final boolean HEAT_HOLD = true;" "static final boolean HEAT_HOLD = false;"
             version="${version}hj" ;;
+        split)
+            edit "$movedesign" "static final boolean HEAT_WAVE = false;" "static final boolean HEAT_WAVE = true;"
+            edit "$movedesign" "static final boolean GUN_SPLIT = false;" "static final boolean GUN_SPLIT = true;"
+            version="${version}sp" ;;
         wallesc)
             edit "$movedesign" "static final boolean ESCAPE_ROOM = false;" "static final boolean ESCAPE_ROOM = true;"
             version="${version}we" ;;
@@ -275,7 +284,7 @@ for a in "${list[@]}"; do
             edit "$design" 'public static final ShieldDesign SHIPPED = parse("' \
                 "public static final ShieldDesign SHIPPED = parse(\"$flag,"
             version="${version}${suffix}" ;;
-        *) echo "unknown ablation: $a (ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, wallesc, protean, pdw3, pdw8, pc10, phot, silent, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, shold, slearn, smode, sstay, sturn, snull, strim)" >&2; exit 2 ;;
+        *) echo "unknown ablation: $a (ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, split, wallesc, protean, pdw3, pdw8, pc10, phot, silent, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, shold, slearn, smode, sstay, sturn, snull, strim)" >&2; exit 2 ;;
     esac
 done
 

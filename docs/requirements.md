@@ -1235,7 +1235,7 @@ Nullstride's list with (docs/bench/local/2026-10-12_plan90-pc-read.md).
   (a shield bullet was fired at it), `first` or `unshielded`, so the plan's step 2 can classify
   what still gets through from the battle logs (`data/tools/shield_leaks.py`).
 
-## Top 3, stage 0: where the hits come from (MOVE-9 to MOVE-14)
+## Top 3, stage 0: where the hits come from (MOVE-9 to MOVE-15)
 
 The plan "from 7th to top 3" (2026-10-15, docs/plan-top3.md) finds the 1v1 gap to the robots
 above is bullet damage taken from robots on no shield list. Stage 0 measures why those bullets
@@ -1251,6 +1251,7 @@ lines.
 | MOVE-12 | State | While the escape-room switch is on, in a duel, the surf shall multiply the danger it scores for the first surfable wave, in the three-option and the go-to modes alike, by the ratio of our enemy's in-field escape room to the square of ours: `restriction(our end, enemy)` over `restriction(enemy, our end)` squared, where `restriction` is the in-field maximum escape angles on both sides summed over twice `asin(8 / bullet speed)`, our end being where we are when the wave reaches our centre; with the switch off the surf's scores shall be unchanged. | R9 |
 | MOVE-13 | State | While the gun-heat wave switch is on and its hold switch is off, in a duel, the surf shall take this tick's newest movement wave as the provisional wave on every ready tick instead of holding one; with the hold switch on the surf shall hold it as MOVE-11 states. | R9 |
 | MOVE-14 | State | While the protean switch is on, in a duel, and the enemy's estimated gun heat is no more than one tick's cooling with no firing wave within 10 ticks of us, the surf shall choose among its three options by the protean pick: the options whose danger is within half the least danger plus 0.01 of it are drawn with Gibbs probabilities `exp(-excess / T)`, best first, by a replaying logistic-map die seeded from the enemy's name and the round, where `T` is the views' weighted spread over their mean danger times the least danger, plus 0.02 of the least danger; a pick stands for a dwell drawn geometrically around the configured mean, and a new one is drawn when the dwell runs out, when the window opens, or when a new wave is first surfed; outside that window, or with the switch off, the surf shall take the least-danger option. | R9 |
+| MOVE-15 | State | While the gun-split switch is on, in a duel, the surf shall take the protean pick at the hot setting (the temperature floor at half the least danger and the cap at the least danger plus 0.01, dwell 1, MOVE-14's window) on the held gun-heat wave (MOVE-11) once at least 6 of the enemy's hits on us in this battle are counted, across its rounds, and at least 60% of them are of the learned class (MOVE-9), and shall take the gun-heat wave afresh each tick (MOVE-13) with no protean pick otherwise; with the switch off, the hold and protean switches shall decide as MOVE-11, MOVE-13 and MOVE-14 state. | R9 |
 
 - **HF record**: `HF,round,tick,class,gf,linearGf,dangerPct,distance,power,driving,planOffset,planDanger,planAge,options,optionsAge`
   (`move.HitForensics`). An offset of at most 1 means the bullet hit inside the interval the surf's

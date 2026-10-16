@@ -14,6 +14,7 @@ import hadur2.core.memory.ProfileFolder;
 import hadur2.core.memory.ProfileLibrary;
 import hadur2.core.memory.Tiers;
 import hadur2.core.model.*;
+import hadur2.core.move.GunClassifier;
 import hadur2.core.move.HitForensics;
 import hadur2.core.move.MoveController;
 import hadur2.core.move.OurBullet;
@@ -736,10 +737,17 @@ public final class DuelController {
             ramEscape.move(orders, currentState(in), lastEnemyState);
         } else {
             // MOVE-11: the enemy's gun is cool by now or next tick, and the wave it will leave is surfed too.
-            moveController.setProvisionalHold(MoveDesign.HEAT_HOLD);
+            // MOVE-15: the enemy's gun decides the hold and the protean pick when the split is on.
+            boolean split = MoveDesign.GUN_SPLIT;
+            boolean learning = split && gunClassifier.learning();
+            moveController.setProvisionalHold(split ? learning : MoveDesign.HEAT_HOLD);
             moveController.setProvisionalReady(MoveDesign.HEAT_WAVE
                 && enemyGunHeat(in).at(in.time()) <= in.gunCoolingRate(), in.time());
-            if (MoveDesign.PROTEAN) proteanWindow(in);
+            if (split) {
+                surfMover.setProtean(learning, MoveDesign.PROTEAN_DWELL);
+                surfMover.setProteanHot(learning);
+            }
+            if (split ? learning : MoveDesign.PROTEAN) proteanWindow(in);
             surfMover.move(orders, currentState(in), moveController, lastEnemyLocation,
                 TickBudget.wavesToSurf(level), TickBudget.goToAllowed(level));
         }
@@ -748,6 +756,13 @@ public final class DuelController {
         // RADAR-1: no scan this tick or the one before, so the lock has lost it.
         if (in.time() - lastScanTime > 1) reacquire(in, orders);
     }
+
+    /**
+     * MOVE-15: the classes of the bullets that hit us in the duel this battle. This controller
+     * lives for the battle (it is built once and {@link #newRound} does not rebuild it), so the
+     * count runs across its rounds and starts empty with the next battle's controller.
+     */
+    private final GunClassifier gunClassifier = new GunClassifier();
 
     /** MOVE-14: no protean pick when a real bullet is this many ticks from reaching us. */
     private static final double PROTEAN_MIN_TICKS = 10.0;
@@ -848,6 +863,7 @@ public final class DuelController {
             hitWave.bulletSpeed(), hitWave.maxEscapeAngle());
         String cls = HitForensics.classify(gf, linearGf,
             HitForensics.tolerance(hitWave.targetDistance, hitWave.maxEscapeAngle()));
+        if (MoveDesign.GUN_SPLIT) gunClassifier.record(cls);
         PlanInterval plan = moveController.lastPlanFor(hitWave);
         long planTime = moveController.lastPlanTime(hitWave);
         long optionTime = moveController.lastOptionTime(hitWave);

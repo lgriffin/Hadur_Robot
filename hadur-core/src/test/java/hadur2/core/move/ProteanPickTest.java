@@ -1,6 +1,7 @@
 package hadur2.core.move;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.DisplayName;
@@ -157,5 +158,63 @@ class ProteanPickTest {
         }
         ProteanPick p = seeded();
         for (int i = 0; i < 100; i++) assertEquals(1, p.dwell(1));
+    }
+
+    @Test
+    @Tag("MOVE-15")
+    @DisplayName("the hot setting is off by default and the default pick is unchanged by it")
+    void hotOffByDefault() {
+        ProteanPick p = seeded();
+        assertFalse(p.hot());
+        p.setHot(true);
+        assertTrue(p.hot());
+        p.setHot(false);
+        assertFalse(p.hot());
+        double[] dangers = {0.20, 0.25, 0.90};
+        double[] spread = {0.1, 0.1, 0.1};
+        ProteanPick a = seeded();
+        ProteanPick b = seeded();
+        b.setHot(true);
+        b.setHot(false);
+        for (int i = 0; i < 200; i++) {
+            assertEquals(a.pick(dangers, spread, 0.3), b.pick(dangers, spread, 0.3), "pick " + i);
+        }
+    }
+
+    @Test
+    @Tag("MOVE-15")
+    @DisplayName("the hot setting raises the floor to half the least danger and the cap to twice it")
+    void hotTemperatureAndCap() {
+        double[] dangers = {0.20, 0.30, 0.40};
+        double[] spread = {0, 0, 0};
+        assertEquals(0.02 * 0.20, ProteanPick.temperature(dangers, spread, 0.3), 1e-12);
+        assertEquals(0.5 * 0.20, ProteanPick.temperature(dangers, spread, 0.3, ProteanPick.HOT_T0_SHARE), 1e-12);
+
+        // Default: the cap 0.5 * 0.20 + 0.01 = 0.11 excludes the excess 0.20, and at T = 0.004 the
+        // best takes all but e^-25 of the weight; the hot cap 1.0 * 0.20 + 0.01 = 0.21 admits all three.
+        double[] def = ProteanPick.probabilities(dangers, spread, 0.3);
+        assertEquals(1.0, def[0], 1e-9);
+        assertEquals(0.0, def[2], 0.0);
+        double[] hot = ProteanPick.probabilities(dangers, spread, 0.3, ProteanPick.HOT_T0_SHARE, ProteanPick.HOT_DELTA);
+        assertTrue(hot[0] > hot[1] && hot[1] > hot[2] && hot[2] > 0, "all three drawable, best first");
+        assertEquals(1.0, hot[0] + hot[1] + hot[2], 1e-12);
+    }
+
+    @Test
+    @Tag("MOVE-15")
+    @DisplayName("a hot pick draws the second option the default never does, and none beyond twice the best")
+    void hotPickSpreads() {
+        double[] dangers = {0.20, 0.30, 0.90};
+        double[] spread = {0, 0, 0};
+        ProteanPick cold = seeded();
+        ProteanPick hot = seeded();
+        hot.setHot(true);
+        int[] counts = new int[3];
+        for (int i = 0; i < 2000; i++) {
+            assertEquals(0, cold.pick(dangers, spread, 0.3));
+            counts[hot.pick(dangers, spread, 0.3)]++;
+        }
+        assertTrue(counts[0] > 0 && counts[1] > 0, "both options in the hot cap are drawn");
+        assertEquals(0, counts[2]);
     }
 }

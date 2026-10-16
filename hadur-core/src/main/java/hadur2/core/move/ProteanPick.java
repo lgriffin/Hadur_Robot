@@ -29,6 +29,10 @@ public final class ProteanPick {
     /** The cap: an option is drawable when its excess is at most {@code DELTA * D* + DELTA0}. */
     static final double DELTA = 0.5;
     static final double DELTA0 = 0.01;
+    /** MOVE-15: the hot setting's floor share, so a learning gun meets a near-uniform draw. */
+    static final double HOT_T0_SHARE = 0.5;
+    /** MOVE-15: the hot setting's cap share. */
+    static final double HOT_DELTA = 1.0;
     /** Keeps the spread's denominator off 0. */
     static final double EPSILON = 1e-6;
     /** How many past states the die compares a new one with. */
@@ -44,6 +48,27 @@ public final class ProteanPick {
     private final double[] recent = new double[HISTORY];
     private int recentCount;
     private int recentNext;
+    /** The floor share and cap share this pick uses; the defaults unless {@link #setHot} is called. */
+    private double t0Share = T0_SHARE;
+    private double delta = DELTA;
+
+    /**
+     * MOVE-15: switches the pick between its default setting (floor {@value #T0_SHARE}, cap
+     * {@value #DELTA}) and the hot one (floor {@value #HOT_T0_SHARE}, cap {@value #HOT_DELTA}),
+     * which draws near-uniformly over the options at most twice the best's danger. The die is
+     * untouched.
+     *
+     * @param hot whether to use the hot setting
+     */
+    public void setHot(boolean hot) {
+        t0Share = hot ? HOT_T0_SHARE : T0_SHARE;
+        delta = hot ? HOT_DELTA : DELTA;
+    }
+
+    /** Whether the hot setting is on; a seam for tests. */
+    boolean hot() {
+        return t0Share == HOT_T0_SHARE && delta == HOT_DELTA;
+    }
 
     /**
      * Seeds the die from a hash of the enemy's name and the round number, into (0, 1) away
@@ -124,11 +149,20 @@ public final class ProteanPick {
      * @return the temperature, above 0
      */
     static double temperature(double[] dangers, double[] spread, double meanViewDanger) {
+        return temperature(dangers, spread, meanViewDanger, T0_SHARE);
+    }
+
+    /**
+     * {@link #temperature(double[], double[], double)} with the floor share given.
+     *
+     * @param t0Share the floor as a share of the least danger
+     */
+    static double temperature(double[] dangers, double[] spread, double meanViewDanger, double t0Share) {
         double best = min(dangers);
         double sum = 0;
         for (double s : spread) sum += s;
         double spreadShare = spread.length == 0 ? 0 : sum / spread.length / (meanViewDanger + EPSILON);
-        double t0 = best > 0 ? T0_SHARE * best : T0_ZERO;
+        double t0 = best > 0 ? t0Share * best : T0_ZERO;
         return C * spreadShare * best + t0;
     }
 
@@ -141,9 +175,20 @@ public final class ProteanPick {
      * @return the probability of each option, in the order of {@code dangers}; sums to 1
      */
     static double[] probabilities(double[] dangers, double[] spread, double meanViewDanger) {
+        return probabilities(dangers, spread, meanViewDanger, T0_SHARE, DELTA);
+    }
+
+    /**
+     * {@link #probabilities(double[], double[], double)} with the floor share and cap share given.
+     *
+     * @param t0Share the floor as a share of the least danger
+     * @param delta the cap as a share of the least danger
+     */
+    static double[] probabilities(double[] dangers, double[] spread, double meanViewDanger,
+                                  double t0Share, double delta) {
         double best = min(dangers);
-        double t = temperature(dangers, spread, meanViewDanger);
-        double cap = DELTA * best + DELTA0;
+        double t = temperature(dangers, spread, meanViewDanger, t0Share);
+        double cap = delta * best + DELTA0;
         double[] p = new double[dangers.length];
         double z = 0;
         for (int i = 0; i < p.length; i++) {
@@ -166,7 +211,7 @@ public final class ProteanPick {
      * @return the index of the option drawn
      */
     public int pick(double[] dangers, double[] spread, double meanViewDanger) {
-        return pick(dangers, spread, meanViewDanger, next());
+        return pick(dangers, spread, meanViewDanger, next(), t0Share, delta);
     }
 
     /**
@@ -180,7 +225,18 @@ public final class ProteanPick {
      * @return the index of the option picked
      */
     static int pick(double[] dangers, double[] spread, double meanViewDanger, double u) {
-        double[] p = probabilities(dangers, spread, meanViewDanger);
+        return pick(dangers, spread, meanViewDanger, u, T0_SHARE, DELTA);
+    }
+
+    /**
+     * {@link #pick(double[], double[], double, double)} with the floor share and cap share given.
+     *
+     * @param t0Share the floor as a share of the least danger
+     * @param delta the cap as a share of the least danger
+     */
+    static int pick(double[] dangers, double[] spread, double meanViewDanger, double u,
+                    double t0Share, double delta) {
+        double[] p = probabilities(dangers, spread, meanViewDanger, t0Share, delta);
         Integer[] order = new Integer[dangers.length];
         for (int i = 0; i < order.length; i++) order[i] = i;
         java.util.Arrays.sort(order, (a, b) -> Double.compare(dangers[a], dangers[b]));

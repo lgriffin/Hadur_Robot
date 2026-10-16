@@ -24,5 +24,14 @@ final class MoveDesign {
     /** MOVE-14: the protean pick's mean dwell, in ticks; 1 re-picks every tick. */
     static final int PROTEAN_DWELL = 1;
 
+    /**
+     * MOVE-15: movement by the enemy's gun (meant to be built with {@link #HEAT_WAVE}). Once enough
+     * of the enemy's hits on us are of the learned class, the surf takes the protean pick at the
+     * hot setting on the held gun-heat wave; until then it takes the gun-heat wave afresh each
+     * tick (the stop-and-start), which does well against simple guns. When true it decides the
+     * hold and the protean switch; {@link #HEAT_HOLD} and {@link #PROTEAN} are then not read.
+     */
+    static final boolean GUN_SPLIT = false;
+
     private MoveDesign() { }
 }
