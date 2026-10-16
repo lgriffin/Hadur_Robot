@@ -70,8 +70,8 @@ Isolation:
 
 Leigh's PC was unavailable, so the census ran on the cloud container (4 cores, two battles at a
 time, CPU constant pinned): every opponent on 3.13's 2026-10-15 MeleeRumble BotDetails page, 413
-of 414 (`jd.Nullstride 2.3.3` has no jar in the robot archive), shuffled into 46 fields of nine
-(`hadur-bench/melee-census-313.txt`), 2 seeds of 35 rounds each, the `gk` build paired with 3.13
+of 414 (`jd.Nullstride 2.3.3` has no jar in the robot archive), shuffled into 46 fields: 45 of nine
+and one of eight, F27, where Nullstride stood (`hadur-bench/melee-census-313.txt`), 2 seeds of 35 rounds each, the `gk` build paired with 3.13
 on the same seeds: 184 battles.
 
 | | 3.13 + MGUN-7 | 3.13 |

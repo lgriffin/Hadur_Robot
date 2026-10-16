@@ -1,6 +1,7 @@
 # Melee census of 3.13's live field (2026-10-15 BotDetails, 414 opponents): each opponent once,
 # shuffled (seed 313) into fields of nine; the last field is topped up from the first.
-# (jd.Nullstride 2.3.3 dropped: its jar is not in the robot archive, so this field has eight.)
+# jd.Nullstride 2.3.3 was dropped from F27 (its jar is not in the robot archive), so F27 has eight:
+# 45 fields of nine and one of eight.
 # Role melee-<rank> is the opponent's rank by its own melee APS on that page.
 F01 | --set melee-census/f01.txt --melee true --field 1000x1000
 F02 | --set melee-census/f02.txt --melee true --field 1000x1000
