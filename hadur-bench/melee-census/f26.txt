@@ -1,0 +1,10 @@
+# Melee census field f26 (see melee-census-313.txt)
+stelo.PianistNano 1.2 | melee-383 | stelo.PianistNano_1.2.jar
+spinnercat.micro.Tyger 0.1 | melee-98 | spinnercat.micro.Tyger_0.1.jar
+bvh.mini.Freya 0.55 | melee-63 | bvh.mini.Freya_0.55.jar
+repositorio.NanoStep 1.0 | melee-369 | repositorio.NanoStep_1.0.jar
+gg.Squaraus 0.6 | melee-302 | gg.Squaraus_0.6.jar
+sheldor.melee.nano.NaturalScience 1.2.1 | melee-81 | sheldor.melee.nano.NaturalScience_1.2.1.jar
+vStar.RAFzilla 2.15 | melee-160 | vStar.RAFzilla_2.15.jar
+simonton.micro.Sprout 1.1.3 | melee-45 | simonton.micro.Sprout_1.1.3.jar
+nat.PallasHawk 1.0 | melee-37 | nat.PallasHawk_1.0.jar

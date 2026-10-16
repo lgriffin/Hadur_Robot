@@ -1,0 +1,10 @@
+# Melee census field f24 (see melee-census-313.txt)
+catcat20.shape.Theta 0.018 | melee-52 | catcat20.shape.Theta_0.018.jar
+ayk.WallHugger 1.0 | melee-316 | ayk.WallHugger_1.0.jar
+djc.DynaBot 0.1.1 | melee-124 | djc.DynaBot_0.1.1.jar
+apc.Colossus2 0.17 | melee-201 | apc.Colossus2_0.17.jar
+jje.BagPuss 1.2 | melee-136 | jje.BagPuss_1.2.jar
+sample.Walls 1.0 | melee-348 | sample.Walls_1.0.jar
+jrm.Test0 1.0 | melee-221 | jrm.Test0_1.0.jar
+lmk.ACPFinal 0.1 | melee-340 | lmk.ACPFinal_0.1.jar
+TNT.TNT 0.99.1 | melee-162 | TNT.TNT_0.99.1.jar

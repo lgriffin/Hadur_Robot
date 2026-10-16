@@ -1,0 +1,10 @@
+# Melee census field f19 (see melee-census-313.txt)
+fullsail.LaxativeTeaTwo 1.0 | melee-296 | fullsail.LaxativeTeaTwo_1.0.jar
+stelo.MyAgileRobot 0.2 | melee-345 | stelo.MyAgileRobot_0.2.jar
+cs.sheldor.Talon 1.1 | melee-254 | cs.sheldor.Talon_1.1.jar
+rz.HawkOnFire 0.1 | melee-64 | rz.HawkOnFire_0.1.jar
+cx.BlestPain 1.41 | melee-94 | cx.BlestPain_1.41.jar
+agd.Mooserwirt2 2.7 | melee-92 | agd.Mooserwirt2_2.7.jar
+edu.otg.spr.TheTeacher 1.2 | melee-336 | edu.otg.spr.TheTeacher_1.2.jar
+pedersen.Moron 2.0 | melee-412 | pedersen.Moron_2.0.jar
+fire219.CatBot 1.0 | melee-389 | fire219.CatBot_1.0.jar

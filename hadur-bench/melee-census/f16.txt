@@ -1,0 +1,10 @@
+# Melee census field f16 (see melee-census-313.txt)
+sadoner.killer 0.2 | melee-198 | sadoner.killer_0.2.jar
+ahf.NanoAndrew .4 | melee-161 | ahf.NanoAndrew_.4.jar
+ags.surreptitious.MiniSurreptitious 0.0.1 | melee-90 | ags.surreptitious.MiniSurreptitious_0.0.1.jar
+gh.mini.Gruwel 0.9 | melee-39 | gh.mini.Gruwel_0.9.jar
+vjik.UnViolation 1.1 | melee-143 | vjik.UnViolation_1.1.jar
+mz.AntiGrav 1.0 | melee-110 | mz.AntiGrav_1.0.jar
+kc.mini.Mirage 0.2 | melee-10 | kc.mini.Mirage_0.2.jar
+inonit.robocode.javascript.MyFirstRobot 1.1 | melee-407 | inonit.robocode.javascript.MyFirstRobot_1.1.jar
+PSW.Relentless 0.1 | melee-395 | PSW.Relentless_0.1.jar

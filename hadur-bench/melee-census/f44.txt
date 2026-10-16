@@ -1,0 +1,10 @@
+# Melee census field f44 (see melee-census-313.txt)
+stelo.IntrinsicVolatility 1.4 | melee-258 | stelo.IntrinsicVolatility_1.4.jar
+Queens_teamrobot.UltraRazor 1.0 | melee-322 | Queens_teamrobot.UltraRazor_1.0.jar
+jk.melee.Neuromancer 7.12 | melee-2 | jk.melee.Neuromancer_7.12.jar
+stf.PanzerGeneral 0.1 | melee-257 | stf.PanzerGeneral_0.1.jar
+mk.Alpha 0.2.1 | melee-44 | mk.Alpha_0.2.1.jar
+bzdp.Pansy 2.1 | melee-114 | bzdp.Pansy_2.1.jar
+winamp32.micro.MicroMacro 1.0 | melee-178 | winamp32.micro.MicroMacro_1.0.jar
+rsalesc.roborio.RoborioPorradeiro 1.1b | melee-66 | rsalesc.roborio.RoborioPorradeiro_1.1b.jar
+mb.Beast 0.1 | melee-379 | mb.Beast_0.1.jar

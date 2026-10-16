@@ -1,0 +1,10 @@
+# Melee census field f03 (see melee-census-313.txt)
+apc.LeeroyJenkins2 1.0 | melee-78 | apc.LeeroyJenkins2_1.0.jar
+pbg.R2D2 1.0 | melee-387 | pbg.R2D2_1.0.jar
+techdude.kombat.FlamingKombat 1.5 | melee-208 | techdude.kombat.FlamingKombat_1.5.jar
+m3thos.Eva00 1.1 | melee-222 | m3thos.Eva00_1.1.jar
+sheldor.melee.nano.TestMelee 0.1 | melee-150 | sheldor.melee.nano.TestMelee_0.1.jar
+catcat20.Matcha 0.006 | melee-14 | catcat20.Matcha_0.006.jar
+ejb.Polaris 1.0.1 | melee-131 | ejb.Polaris_1.0.1.jar
+tlp.ThreeLeggedPig 1 | melee-325 | tlp.ThreeLeggedPig_1.jar
+ratosh.Nobo 0.21 | melee-193 | ratosh.Nobo_0.21.jar

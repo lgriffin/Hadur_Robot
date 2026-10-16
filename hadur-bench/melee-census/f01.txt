@@ -1,0 +1,10 @@
+# Melee census field f01 (see melee-census-313.txt)
+uji.YellohFellah 1.0 | melee-200 | uji.YellohFellah_1.0.jar
+rtk.Tachikoma 1.0 | melee-76 | rtk.Tachikoma_1.0.jar
+maribo.melee.BMV 0.1 | melee-195 | maribo.melee.BMV_0.1.jar
+justin.DemonicRage 3.4 | melee-6 | justin.DemonicRage_3.4.jar
+kawigi.mini.Coriantumr 1.1 | melee-33 | kawigi.mini.Coriantumr_1.1.jar
+exauge.GateKeeper 1.1.121g | melee-327 | exauge.GateKeeper_1.1.121g.jar
+skm.butterfly 1.0 | melee-391 | skm.butterfly_1.0.jar
+matt.UnderDark3 2.4.34 | melee-367 | matt.UnderDark3_2.4.34.jar
+wompi.Wallaby 5.1 | melee-19 | wompi.Wallaby_5.1.jar

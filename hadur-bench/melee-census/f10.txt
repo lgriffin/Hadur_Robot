@@ -1,0 +1,10 @@
+# Melee census field f10 (see melee-census-313.txt)
+fullsail.TimbotNoPrediction 1.0 | melee-299 | fullsail.TimbotNoPrediction_1.0.jar
+amk.ShizzleStiX.ShizzleStiX 0.6 | melee-287 | amk.ShizzleStiX.ShizzleStiX_0.6.jar
+brainfade.melee.Genghis 0.36 | melee-107 | brainfade.melee.Genghis_0.36.jar
+mld.Infinity 2.2 | melee-139 | mld.Infinity_2.2.jar
+mc2.enemy.Original 0.9 | melee-117 | mc2.enemy.Original_0.9.jar
+arthord.NanoSatanMelee Beta | melee-237 | arthord.NanoSatanMelee_Beta.jar
+positive.Portia 1.26e | melee-7 | positive.Portia_1.26e.jar
+dl.BetterWalls 1.0 | melee-350 | dl.BetterWalls_1.0.jar
+kawigi.mini.Fhqwhgads 1.1 | melee-260 | kawigi.mini.Fhqwhgads_1.1.jar

@@ -1,0 +1,10 @@
+# Melee census field f43 (see melee-census-313.txt)
+js.PinBall 1.6 | melee-147 | js.PinBall_1.6.jar
+rz.GlowBlowMelee 1.4 | melee-22 | rz.GlowBlowMelee_1.4.jar
+pedersen.Grishnakh 1.0 | melee-97 | pedersen.Grishnakh_1.0.jar
+fowl3628800.LightningBolt 2.6.0 | melee-173 | fowl3628800.LightningBolt_2.6.0.jar
+GarmBox.Anger 1.0 | melee-365 | GarmBox.Anger_1.0.jar
+ne.Chimera 1.2 | melee-113 | ne.Chimera_1.2.jar
+sigterm.Sigterm 1.0 | melee-215 | sigterm.Sigterm_1.0.jar
+step.nanoPri 1.0 | melee-268 | step.nanoPri_1.0.jar
+dummy.mini.Scimitar 1.01 | melee-102 | dummy.mini.Scimitar_1.01.jar

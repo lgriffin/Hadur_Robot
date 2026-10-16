@@ -1,0 +1,10 @@
+# Melee census field f33 (see melee-census-313.txt)
+pulsar.PulsarMax 0.8.9 | melee-67 | pulsar.PulsarMax_0.8.9.jar
+bigpete.Stewie 1.0 | melee-141 | bigpete.Stewie_1.0.jar
+cx.mini.Nimrod 0.55 | melee-46 | cx.mini.Nimrod_0.55.jar
+wompi.Quokka 1.6 | melee-180 | wompi.Quokka_1.6.jar
+catcat20.Rabbit 0.001 | melee-79 | catcat20.Rabbit_0.001.jar
+rdt199.Warlord 0.73 | melee-130 | rdt199.Warlord_0.73.jar
+apc.botM 3.0 | melee-163 | apc.botM_3.0.jar
+maribo.mini.MiniQuester 0.1 | melee-42 | maribo.mini.MiniQuester_0.1.jar
+abud.ThirdRobo 1.0 | melee-362 | abud.ThirdRobo_1.0.jar

@@ -1,0 +1,10 @@
+# Melee census field f13 (see melee-census-313.txt)
+jp.Perpy 16.0 | melee-236 | jp.Perpy_16.0.jar
+stelo.Mirror 1.1 | melee-304 | stelo.Mirror_1.1.jar
+logiblocs.SittingDroid 1.0 | melee-411 | logiblocs.SittingDroid_1.0.jar
+fm.claire 1.7 | melee-225 | fm.claire_1.7.jar
+az.Ololobot 0.2.4 | melee-62 | az.Ololobot_0.2.4.jar
+cre.Karolos 0.32 | melee-171 | cre.Karolos_0.32.jar
+supersample.SuperBoxBot 1.0 | melee-202 | supersample.SuperBoxBot_1.0.jar
+rrh.Iwillfindyou 2.0 | melee-402 | rrh.Iwillfindyou_2.0.jar
+dans.Cinnamon 1.2 | melee-368 | dans.Cinnamon_1.2.jar

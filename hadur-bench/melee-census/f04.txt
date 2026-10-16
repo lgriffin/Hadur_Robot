@@ -1,0 +1,10 @@
+# Melee census field f04 (see melee-census-313.txt)
+gimp.GimpBot 0.1 | melee-220 | gimp.GimpBot_0.1.jar
+hvilela.HVilela 0.9 | melee-229 | hvilela.HVilela_0.9.jar
+mz.Cork 0.1 | melee-153 | mz.Cork_0.1.jar
+skm.Ryubot 1.0 | melee-401 | skm.Ryubot_1.0.jar
+cs.Wren 1.0 | melee-104 | cs.Wren_1.0.jar
+myl.micro.Troodon 1.10 | melee-86 | myl.micro.Troodon_1.10.jar
+cli.Dancer 1.1 | melee-214 | cli.Dancer_1.1.jar
+tripphippy.Alice 1.1 | melee-176 | tripphippy.Alice_1.1.jar
+kurios.DOSexe .9b | melee-360 | kurios.DOSexe_.9b.jar

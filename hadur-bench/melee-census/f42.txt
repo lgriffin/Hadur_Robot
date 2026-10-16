@@ -1,0 +1,10 @@
+# Melee census field f42 (see melee-census-313.txt)
+gh.micro.Gruweltje 0.7 | melee-89 | gh.micro.Gruweltje_0.7.jar
+alpha.RainingFire 1.0 | melee-118 | alpha.RainingFire_1.0.jar
+bayen.UbaMicro 1.4 | melee-252 | bayen.UbaMicro_1.4.jar
+wee.Gem 1.8.4 | melee-148 | wee.Gem_1.8.4.jar
+kawigi.sbf.FloodHT 0.9.2 | melee-41 | kawigi.sbf.FloodHT_0.9.2.jar
+lrem.micro.MoggFanatic 0.2 | melee-317 | lrem.micro.MoggFanatic_0.2.jar
+ap.Frederick 1.1 | melee-390 | ap.Frederick_1.1.jar
+pfvicm.Sobieski 7.2.3b | melee-196 | pfvicm.Sobieski_7.2.3b.jar
+stelo.Wang 1.0 | melee-253 | stelo.Wang_1.0.jar

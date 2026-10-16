@@ -1,0 +1,10 @@
+# Melee census field f05 (see melee-census-313.txt)
+GarmBox.Oranges 1.0 | melee-359 | GarmBox.Oranges_1.0.jar
+kawigi.spare.SpareParts 0.7.6nosnd | melee-265 | kawigi.spare.SpareParts_0.7.6nosnd.jar
+oog.melee.CapuletDroid 1.1 | melee-168 | oog.melee.CapuletDroid_1.1.jar
+adt.Ar2 1.1 | melee-259 | adt.Ar2_1.1.jar
+wit.Deep7 2.0 | melee-329 | wit.Deep7_2.0.jar
+shrub.Silver v048 | melee-177 | shrub.Silver_v048.jar
+urdos.URDOS 1.3 | melee-274 | urdos.URDOS_1.3.jar
+drd.Dreadknoght 0.9 | melee-408 | drd.Dreadknoght_0.9.jar
+bzdp.BoxCar 2.0 | melee-337 | bzdp.BoxCar_2.0.jar

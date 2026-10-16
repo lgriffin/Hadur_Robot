@@ -1,0 +1,10 @@
+# Melee census field f30 (see melee-census-313.txt)
+ntc.Opposite 1.5 | melee-170 | ntc.Opposite_1.5.jar
+stelo.SoJNanoMelee 1.1 | melee-232 | stelo.SoJNanoMelee_1.1.jar
+wompi.Numbat 2.1 | melee-15 | wompi.Numbat_2.1.jar
+brainfade.melee.Dusk 0.44 | melee-47 | brainfade.melee.Dusk_0.44.jar
+axeBots.HataMoto 3.09 | melee-106 | axeBots.HataMoto_3.09.jar
+sanyi.mikrobi.Roberto 1.0 | melee-238 | sanyi.mikrobi.Roberto_1.0.jar
+maribo.IotaCT 1.1 | melee-249 | maribo.IotaCT_1.1.jar
+maribo.Quester 0.3 | melee-26 | maribo.Quester_0.3.jar
+cf.RiO.RiOx 4.2.1 | melee-174 | cf.RiO.RiOx_4.2.1.jar

@@ -1,0 +1,10 @@
+# Melee census field f21 (see melee-census-313.txt)
+dsw.StaticD 1.0 | melee-277 | dsw.StaticD_1.0.jar
+tzu.TheArtOfWar 1.2 | melee-61 | tzu.TheArtOfWar_1.2.jar
+jwst.DAD.DarkAndDarker 1.1 | melee-187 | jwst.DAD.DarkAndDarker_1.1.jar
+sgp.JollyNinja 3.53 | melee-194 | sgp.JollyNinja_3.53.jar
+shu.nitro.LENIN .T34 | melee-123 | shu.nitro.LENIN_.T34.jar
+bayen.nut.Squirrel 1.615 | melee-269 | bayen.nut.Squirrel_1.615.jar
+nz.jdc.nano.GridFu 1.0 | melee-128 | nz.jdc.nano.GridFu_1.0.jar
+catcat20.Lambda 0.024 | melee-18 | catcat20.Lambda_0.024.jar
+florent.XSeries.X2 0.12 | melee-31 | florent.XSeries.X2_0.12.jar

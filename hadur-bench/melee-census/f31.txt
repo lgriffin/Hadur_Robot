@@ -1,0 +1,10 @@
+# Melee census field f31 (see melee-census-313.txt)
+bts.wiki.RipCurl 0.9b | melee-50 | bts.wiki.RipCurl_0.9b.jar
+alpha.BlackIce 1.0 | melee-244 | alpha.BlackIce_1.0.jar
+davidalves.Phoenix 0.54 | melee-29 | davidalves.Phoenix_0.54.jar
+Gecko.ultimateGeckoBot 1.0 | melee-285 | Gecko.ultimateGeckoBot_1.0.jar
+simonton.nano.MeleeSeed 1.8 | melee-129 | simonton.nano.MeleeSeed_1.8.jar
+stelo.Spread 0.9 | melee-21 | stelo.Spread_0.9.jar
+yk.JahRoslav 1.1 | melee-294 | yk.JahRoslav_1.1.jar
+voidious.mini.BrokenSword 2.0.3 | melee-70 | voidious.mini.BrokenSword_2.0.3.jar
+myl.nano.KomoriNinja 1.1 | melee-159 | myl.nano.KomoriNinja_1.1.jar

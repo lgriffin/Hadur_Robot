@@ -1,0 +1,10 @@
+# Melee census field f36 (see melee-census-313.txt)
+Polkwane.SmashMelee 1.0 | melee-146 | Polkwane.SmashMelee_1.0.jar
+qualidafial.MajorDick 1.0.1 | melee-270 | qualidafial.MajorDick_1.0.1.jar
+WarfaJibril.Jibril_Warfa_Andromeda 1.11 | melee-310 | WarfaJibril.Jibril_Warfa_Andromeda_1.11.jar
+Grystrion.RandomTrackerNOREV 1.0 | melee-321 | Grystrion.RandomTrackerNOREV_1.0.jar
+DBall.NUKE 0.1 | melee-279 | DBall.NUKE_0.1.jar
+conscience.Electron 1.3g | melee-291 | conscience.Electron_1.3g.jar
+kvk.HebusLeTroll 0.35 | melee-60 | kvk.HebusLeTroll_0.35.jar
+EBBU.Sim2 1.02 | melee-284 | EBBU.Sim2_1.02.jar
+zyx.micro.Ant 1.1 | melee-293 | zyx.micro.Ant_1.1.jar
