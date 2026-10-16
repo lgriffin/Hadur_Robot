@@ -42,6 +42,9 @@ import java.util.Map;
  * <li>WEAVE-8 (T1): the driving role's drive is replaced when it would bring Hadur into a
  *     living teammate ({@link TeammateFence}); the replacements are counted.</li>
  * <li>LINK-4: while a teammate lives, every completed tick's orders carry our report.</li>
+ * <li>MGUN-8 (T5): each teammate's sighting the World takes is kept for the tick, as it was
+ *     stated, so the melee strand's field gun learns the enemy's movement from every member's
+ *     radar.</li>
  * </ul>
  */
 final class TeamLink {
@@ -69,6 +72,31 @@ final class TeamLink {
     private final Map<String, Long> merged = new HashMap<>();
     /** This tick's fresh sightings of enemies, for our report. */
     private final List<Report.Sighting> fresh = new ArrayList<>();
+    /** MGUN-8: this tick's teammates' sightings the World took, in the order it took them. */
+    private final List<MateSighting> mateSightings = new ArrayList<>();
+
+    /**
+     * MGUN-8: one teammate's sighting of an enemy as the World took it: where and how it moved
+     * at the stated tick, its turn rate from the World's scans then (NaN while unknown), and
+     * its distance from us when the report was merged.
+     */
+    static final class MateSighting {
+        final String name;
+        final long tick;
+        final double x, y, heading, velocity, turnRate, distance;
+
+        MateSighting(String name, long tick, double x, double y, double heading, double velocity,
+                     double turnRate, double distance) {
+            this.name = name;
+            this.tick = tick;
+            this.x = x;
+            this.y = y;
+            this.heading = heading;
+            this.velocity = velocity;
+            this.turnRate = turnRate;
+            this.distance = distance;
+        }
+    }
 
     int teammateHits;
     int teammateBulletHits;
@@ -107,6 +135,7 @@ final class TeamLink {
         long now = in.time();
         roster.beginTick(now);
         fresh.clear();
+        mateSightings.clear();
         boolean sentries = in.numSentries() > 0;
         List<Report> reports = new ArrayList<>();
         List<String> senders = new ArrayList<>();
@@ -204,7 +233,10 @@ final class TeamLink {
                 if (known != null && known.lastScanTime >= s.tick) continue;
                 if (roster.enemyDead(s.name)) continue;
                 Point2D.Double at = new Point2D.Double(s.x, s.y);
-                world.onScan(s.name, at, s.energy, s.heading, s.velocity, s.tick, at.distance(in.x(), in.y()));
+                double distance = at.distance(in.x(), in.y());
+                EnemyInfo taken = world.onScan(s.name, at, s.energy, s.heading, s.velocity, s.tick, distance);
+                mateSightings.add(new MateSighting(s.name, s.tick, s.x, s.y, s.heading, s.velocity,
+                    taken.turnRate(), distance));
             }
             for (String dead : r.deaths()) {
                 if (dead.equals(facts.name())) continue;
@@ -273,6 +305,11 @@ final class TeamLink {
         boolean hold = !clear && in.gunHeat() == 0;
         if (hold && !holding) blockedShots++;
         holding = hold;
+    }
+
+    /** MGUN-8: this tick's teammates' sightings the World took, in the order it took them. */
+    List<MateSighting> mateSightings() {
+        return mateSightings;
     }
 
     /** WORLD-9: the living teammates with a fresh position, as of this tick's input. */
