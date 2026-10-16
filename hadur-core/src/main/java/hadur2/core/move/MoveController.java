@@ -1008,6 +1008,83 @@ public class MoveController {
     }
 
     /**
+     * MOVE-14: each danger view's own score at {@code intersection}, and its share of the
+     * average, for the protean pick's spread. The views are the ones {@link #getDangerScore}
+     * averages, with the same kernel and shadows: view {@code i}'s danger is its density over
+     * its scan weight, and its share is its weight times its scan weight, normalised to sum
+     * to 1, so the weighted mean of the dangers is {@link #getDangerScore} (less its no-data
+     * fallback). Read-only: it only reads the neighbour cache, as {@link #getDangerScore} does.
+     *
+     * @param w the wave being surfed
+     * @param intersection the firing angles that would hit us
+     * @param surfWaveIndex the wave's index among the surfable waves, which keys the cache
+     * @param dangers receives each counted view's danger; at least as long as the view list
+     * @param weights receives each counted view's normalised weight; same length
+     * @return how many views were counted (0 when none is on with data)
+     */
+    int viewDangers(Wave w, Wave.Intersection intersection, int surfWaveIndex,
+                    double[] dangers, double[] weights) {
+        double dangerAngle = intersection.angle;
+        double bandwidth = intersection.bandwidth;
+        validateCache(w, surfWaveIndex);
+        List<double[]> segments = w.transmission(intersection);
+        double[] estimate = viewEstimate();
+        int n = 0;
+        double total = 0;
+        for (KnnView<TimestampedGuessFactor> view : views) {
+            if (view.effectiveSize() == 0 || !viewOn(view, estimate)) continue;
+            List<KdTree.Entry<TimestampedGuessFactor>> neighbors =
+                getNearestNeighbors(view, w, surfWaveIndex);
+            Map<Timestamped, Double> weightMap = view.getDecayWeights(neighbors);
+            double density = 0;
+            double viewScanWeight = 0;
+            for (KdTree.Entry<TimestampedGuessFactor> entry : neighbors) {
+                TimestampedGuessFactor tsgf = entry.value;
+                double scanWeight = weightMap.get(tsgf)
+                    / Math.sqrt(Math.max(entry.distance, MIN_DISTANCE)) * tsgf.weight();
+                double xFiringAngle = DiaUtils.normalizeAngle(
+                    w.firingAngle(tsgf.guessFactor), dangerAngle);
+                density += scanWeight * kernelMass(xFiringAngle, bandwidth, segments);
+                viewScanWeight += scanWeight;
+            }
+            // !(x > 0) also catches NaN: such a view adds nothing to the average either.
+            if (!(viewScanWeight > 0)) continue;
+            dangers[n] = density / viewScanWeight;
+            weights[n] = view.weight * viewScanWeight;
+            total += weights[n];
+            n++;
+        }
+        if (!(total > 0)) return 0;
+        for (int i = 0; i < n; i++) weights[i] /= total;
+        return n;
+    }
+
+    /** MOVE-14: how many danger views there are, the size of {@link #viewDangers}' arrays. */
+    int viewCount() {
+        return views.size();
+    }
+
+    /**
+     * MOVE-14: the fewest ticks before a real (firing) wave that has not yet hit us or met
+     * one of our bullets reaches our centre, as we stand now; infinity when there is none.
+     * A wave already past our centre is not counted. Read-only.
+     *
+     * @param myState our state now
+     * @return the ticks, 0 or more, or {@link Double#POSITIVE_INFINITY}
+     */
+    public double soonestFiringImpact(RobotState myState) {
+        double[] soonest = {Double.POSITIVE_INFINITY};
+        waveManager.forAllWaves(w -> {
+            if (!w.firingWave || w.processedBulletHit()) return;
+            double remaining = myState.location.distance(w.sourceLocation)
+                - w.distanceTraveled(myState.time);
+            if (remaining < 0) return;
+            soonest[0] = Math.min(soonest[0], remaining / w.bulletSpeed());
+        });
+        return soonest[0];
+    }
+
+    /**
      * The view's neighbours for wave {@code w}, searched once per surfed-wave index and then
      * cached: a wave's features are fixed, and the surf asks for the same wave many times a
      * tick (every option, every predicted tick). {@link #clearNeighborCache} empties it.

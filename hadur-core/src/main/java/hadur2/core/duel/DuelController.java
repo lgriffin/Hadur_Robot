@@ -44,6 +44,7 @@ import java.awt.geom.Point2D;
 import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * The Duel strand's brain (A2): everything Hadur does against one opponent, lifted out of
@@ -301,6 +302,7 @@ public final class DuelController {
         this.moveController = new MoveController(battleField, predictor);
         this.surfMover = new SurfMover(battleField, predictor);
         this.surfMover.setEscapeRoomTerm(MoveDesign.ESCAPE_ROOM);
+        this.surfMover.setProtean(MoveDesign.PROTEAN, MoveDesign.PROTEAN_DWELL);
         this.shadowAvoidance = new ShadowAvoidance(fieldWidth, fieldHeight);
         this.ramEscape = new RamEscape(battleField, predictor);
         this.mirror = new MirrorDetector(fieldWidth, fieldHeight);
@@ -737,6 +739,7 @@ public final class DuelController {
             moveController.setProvisionalHold(MoveDesign.HEAT_HOLD);
             moveController.setProvisionalReady(MoveDesign.HEAT_WAVE
                 && enemyGunHeat(in).at(in.time()) <= in.gunCoolingRate(), in.time());
+            if (MoveDesign.PROTEAN) proteanWindow(in);
             surfMover.move(orders, currentState(in), moveController, lastEnemyLocation,
                 TickBudget.wavesToSurf(level), TickBudget.goToAllowed(level));
         }
@@ -744,6 +747,28 @@ public final class DuelController {
         if (!moveController.planIntervals().isEmpty()) planTime = in.time();
         // RADAR-1: no scan this tick or the one before, so the lock has lost it.
         if (in.time() - lastScanTime > 1) reacquire(in, orders);
+    }
+
+    /** MOVE-14: no protean pick when a real bullet is this many ticks from reaching us. */
+    private static final double PROTEAN_MIN_TICKS = 10.0;
+    /** MOVE-14: the round and enemy the protean die was last seeded for. */
+    private int proteanSeedRound = -1;
+    private String proteanSeedName;
+
+    /**
+     * MOVE-14: tells the surf whether the protean pick may act this tick: the enemy's gun heat
+     * is no more than one tick's cooling (MOVE-11's test) and no real wave reaches us within
+     * {@link #PROTEAN_MIN_TICKS} ticks. The die is seeded per round from the enemy's name.
+     */
+    private void proteanWindow(BotInput in) {
+        if (proteanSeedRound != round || !Objects.equals(proteanSeedName, opponentName)) {
+            proteanSeedRound = round;
+            proteanSeedName = opponentName;
+            surfMover.seedProtean(opponentName, round);
+        }
+        boolean cool = enemyGunHeat(in).at(in.time()) <= in.gunCoolingRate();
+        boolean clear = moveController.soonestFiringImpact(currentState(in)) > PROTEAN_MIN_TICKS;
+        surfMover.setProteanWindow(cool && clear);
     }
 
     /**

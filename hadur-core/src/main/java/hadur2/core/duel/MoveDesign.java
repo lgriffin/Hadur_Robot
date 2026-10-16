@@ -14,5 +14,15 @@ final class MoveDesign {
     /** MOVE-12: the first wave's danger is scaled by the escape-angle position term (BeepBoop's). */
     static final boolean ESCAPE_ROOM = false;
 
+    /**
+     * MOVE-14: while the enemy's gun is cool and no real bullet is within 10 ticks, the surf draws
+     * its option from the protean pick (a softmin over the option dangers, a replaying chaotic die)
+     * instead of taking the least danger.
+     */
+    static final boolean PROTEAN = false;
+
+    /** MOVE-14: the protean pick's mean dwell, in ticks; 1 re-picks every tick. */
+    static final int PROTEAN_DWELL = 1;
+
     private MoveDesign() { }
 }

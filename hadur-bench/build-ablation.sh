@@ -40,6 +40,12 @@
 #         re-ranks every tick while the enemy's gun is ready and stops and starts. Suffix hj.
 #   wallesc  MOVE-12: the first wave's danger is also multiplied by BeepBoop's escape-angle position term
 #         (our escape room against his, at the move's end), in the three options and in go-to. Suffix we.
+#   protean  MOVE-14: the protean pick: while the enemy's gun is cool and no real bullet is within 10 ticks,
+#         the surf draws its option from a softmin over the three dangers (temperature from the views'
+#         disagreement, safety-capped) with a replaying chaotic die, instead of taking the least danger;
+#         the dwell stays 1 tick (re-pick every tick). Suffix pr.
+#   pdw3  MOVE-14: protean with a mean dwell of 3 ticks. Suffix p3.
+#   pdw8  MOVE-14: protean with a mean dwell of 8 ticks. Suffix p8.
 #   silent  the Duel never fires: drive() is entered with WEAVE-3's fire permission withdrawn (mayFire = false),
 #         which both of the duel's fire sites (the aimed shot and the shield's) honour; the radar,
 #         aim, waves and movement all still run. Hadur then scores only by survival, which is what
@@ -191,6 +197,17 @@ for a in "${list[@]}"; do
         wallesc)
             edit "$movedesign" "static final boolean ESCAPE_ROOM = false;" "static final boolean ESCAPE_ROOM = true;"
             version="${version}we" ;;
+        protean)
+            edit "$movedesign" "static final boolean PROTEAN = false;" "static final boolean PROTEAN = true;"
+            version="${version}pr" ;;
+        pdw3)
+            edit "$movedesign" "static final boolean PROTEAN = false;" "static final boolean PROTEAN = true;"
+            edit "$movedesign" "static final int PROTEAN_DWELL = 1;" "static final int PROTEAN_DWELL = 3;"
+            version="${version}p3" ;;
+        pdw8)
+            edit "$movedesign" "static final boolean PROTEAN = false;" "static final boolean PROTEAN = true;"
+            edit "$movedesign" "static final int PROTEAN_DWELL = 1;" "static final int PROTEAN_DWELL = 8;"
+            version="${version}p8" ;;
         silent)
             edit "$duel" "public void drive(BotInput in, BotOrders.Builder orders, int level, boolean mayFire) {" \
                 "public void drive(BotInput in, BotOrders.Builder orders, int level, boolean mayFire) { mayFire = false;"
@@ -247,7 +264,7 @@ for a in "${list[@]}"; do
             edit "$design" 'public static final ShieldDesign SHIPPED = parse("' \
                 "public static final ShieldDesign SHIPPED = parse(\"$flag,"
             version="${version}${suffix}" ;;
-        *) echo "unknown ablation: $a (ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, wallesc, silent, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, shold, slearn, smode, sstay, sturn, snull, strim)" >&2; exit 2 ;;
+        *) echo "unknown ablation: $a (ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, wallesc, protean, pdw3, pdw8, silent, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, shold, slearn, smode, sstay, sturn, snull, strim)" >&2; exit 2 ;;
     esac
 done
 
