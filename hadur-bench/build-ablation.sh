@@ -46,6 +46,9 @@
 #         the dwell stays 1 tick (re-pick every tick). Suffix pr.
 #   pdw3  MOVE-14: protean with a mean dwell of 3 ticks. Suffix p3.
 #   pdw8  MOVE-14: protean with a mean dwell of 8 ticks. Suffix p8.
+#   pc10  MOVE-14 protean's temperature gain c raised from 1 to 10 (combine with protean). Suffix pc.
+#   phot  MOVE-14 protean near-uniform over the options at most twice the best's danger: the
+#         temperature floor 0.02 -> 0.5 of the best danger, the cap 0.5 -> 1.0 (combine with protean). Suffix ph.
 #   silent  the Duel never fires: drive() is entered with WEAVE-3's fire permission withdrawn (mayFire = false),
 #         which both of the duel's fire sites (the aimed shot and the shield's) honour; the radar,
 #         aim, waves and movement all still run. Hadur then scores only by survival, which is what
@@ -111,6 +114,7 @@ book="$src/hadur-core/src/main/java/hadur2/core/adapt/OpeningBook.java"
 shields="$src/hadur-core/src/main/java/hadur2/core/shieldmode/ShieldList.java"
 design="$src/hadur-core/src/main/java/hadur2/core/shieldmode/ShieldDesign.java"
 movedesign="$src/hadur-core/src/main/java/hadur2/core/duel/MoveDesign.java"
+protean="$src/hadur-core/src/main/java/hadur2/core/move/ProteanPick.java"
 listdata="$src/hadur-robot/src/main/java/hadur2/ShieldListData.java"
 budget="$src/hadur-core/src/main/java/hadur2/core/policy/TickBudget.java"
 dist="$src/hadur-core/src/main/java/hadur2/core/policy/DistancePolicy.java"
@@ -204,6 +208,13 @@ for a in "${list[@]}"; do
             edit "$movedesign" "static final boolean PROTEAN = false;" "static final boolean PROTEAN = true;"
             edit "$movedesign" "static final int PROTEAN_DWELL = 1;" "static final int PROTEAN_DWELL = 3;"
             version="${version}p3" ;;
+        pc10)
+            edit "$protean" "static final double C = 1.0;" "static final double C = 10.0;"
+            version="${version}pc" ;;
+        phot)
+            edit "$protean" "static final double T0_SHARE = 0.02;" "static final double T0_SHARE = 0.5;"
+            edit "$protean" "static final double DELTA = 0.5;" "static final double DELTA = 1.0;"
+            version="${version}ph" ;;
         pdw8)
             edit "$movedesign" "static final boolean PROTEAN = false;" "static final boolean PROTEAN = true;"
             edit "$movedesign" "static final int PROTEAN_DWELL = 1;" "static final int PROTEAN_DWELL = 8;"
@@ -264,7 +275,7 @@ for a in "${list[@]}"; do
             edit "$design" 'public static final ShieldDesign SHIPPED = parse("' \
                 "public static final ShieldDesign SHIPPED = parse(\"$flag,"
             version="${version}${suffix}" ;;
-        *) echo "unknown ablation: $a (ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, wallesc, protean, pdw3, pdw8, silent, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, shold, slearn, smode, sstay, sturn, snull, strim)" >&2; exit 2 ;;
+        *) echo "unknown ablation: $a (ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, wallesc, protean, pdw3, pdw8, pc10, phot, silent, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, shold, slearn, smode, sstay, sturn, snull, strim)" >&2; exit 2 ;;
     esac
 done
 
