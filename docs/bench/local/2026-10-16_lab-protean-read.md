@@ -61,3 +61,25 @@ Damage taken a round, 95% intervals. Reversals per 1,000 ticks: pc10 22-36, phot
 - That points to splitting by the enemy's gun rather than by name: protean against learning guns,
   the stop-and-start against the rest. Hadur already rates each enemy's gun (ADAPT tiers), so this
   is one rule for the whole field.
+
+## The gun-based split (MOVE-15)
+
+`silent,split` (3.13sisp, 54115811): hot protean on the held wave once the enemy's hits read as a
+learning gun, the stop-and-start otherwise. Same seeds.
+
+| Shooter | split − stop-and-start | split − plain surfing |
+|---|---|---|
+| HeadOn | -0.2 ± 4.1 | -0.3 ± 2.2 |
+| Linear | -0.2 ± 0.4 | -1.4 ± 0.7 |
+| Circular | **+3.8 ± 1.7** | +3.2 ± 2.0 |
+| GFHist | +0.3 ± 4.2 | +3.3 ± 3.4 |
+| Knn | -2.9 ± 4.8 | -6.0 ± 5.3 |
+| PatternMatch | -2.3 ± 3.7 | -3.9 ± 4.2 |
+
+- It keeps the protean gain against the learning guns and the stop-and-start's level against
+  head-on and linear guns, as designed.
+- **Circular is misread as a learning gun.** The HF class only tells head-on and linear apart from
+  everything else, so a circular gun's hits count as "learned" and get the protean pick, which
+  circular aim punishes (+3.8 a round). A circular class in the classifier is the obvious fix.
+- Overall level with the stop-and-start in the lab (-0.2 ± 2.5 a round). The 400-bot screen
+  (`s1c-sp-*`, running) decides.
