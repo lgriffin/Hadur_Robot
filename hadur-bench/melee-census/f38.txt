@@ -1,0 +1,10 @@
+# Melee census field f38 (see melee-census-313.txt)
+eld.Hmm 1.0 | melee-288 | eld.Hmm_1.0.jar
+mme.NikeEnhanced 2.0 | melee-318 | mme.NikeEnhanced_2.0.jar
+kano.gamma.KanoGamma 1.8 | melee-95 | kano.gamma.KanoGamma_1.8.jar
+sample.SpinBot 1.0 | melee-380 | sample.SpinBot_1.0.jar
+baal.nano.N 1.42 | melee-206 | baal.nano.N_1.42.jar
+kawigi.nano.Lib 1.0 | melee-96 | kawigi.nano.Lib_1.0.jar
+aaa.r.ScalarR 0.005g.047 | melee-1 | aaa.r.ScalarR_0.005g.047.jar
+justin.Mallais 14.0 | melee-16 | justin.Mallais_14.0.jar
+uji.Antique 1.0 | melee-137 | uji.Antique_1.0.jar

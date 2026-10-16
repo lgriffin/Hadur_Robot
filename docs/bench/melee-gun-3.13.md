@@ -66,9 +66,47 @@ Isolation:
   (`melee-samples`, `melee-handoff`) were re-recorded with the `hadur-bench/README.md` commands,
   their telemetry snapshots rewritten, and the melee pin re-pinned. `melee-sentry` did not diverge.
 
-## 4. Next
+## 4. Census of the live field (cloud, 2026-10-16)
 
-- A PC census of the MeleeRumble field (one queue at a time) before a release, as 3.13's shield
-  had: the cloud fields are the top 20 only, and the live gap is ranks 11-300.
+Leigh's PC was unavailable, so the census ran on the cloud container (4 cores, two battles at a
+time, CPU constant pinned): every opponent on 3.13's 2026-10-15 MeleeRumble BotDetails page, 413
+of 414 (`jd.Nullstride 2.3.3` has no jar in the robot archive), shuffled into 46 fields: 45 of nine
+and one of eight, F27, where Nullstride stood (`hadur-bench/melee-census-313.txt`), 2 seeds of 35 rounds each, the `gk` build paired with 3.13
+on the same seeds: 184 battles.
+
+| | 3.13 + MGUN-7 | 3.13 |
+|---|---|---|
+| Paired APS difference, mean of 46 fields | **+0.88 ± 0.19** (SE; 34 of 46 fields ahead) | |
+| Damage a round | 124.4 | 115.4 (+8%) |
+| Hit rate | 25.6% | 24.1% |
+| Hit rate in the crowd (5+ alive) | 40.2% | 36.6% |
+| Gun cool and unfired | 14.4% | 15.1% |
+
+By the opponent's own melee rank (Hadur's pairwise share against it, paired difference averaged
+per opponent):
+
+| Ranks | Opponents | Paired difference |
+|---|---|---|
+| 1-10 | 9 | -0.89 ± 0.46 |
+| 11-50 | 40 | +1.32 ± 0.40 |
+| 51-100 | 50 | +0.74 ± 0.38 |
+| 101-200 | 100 | +0.92 ± 0.28 |
+| 201-300 | 100 | +0.86 ± 0.22 |
+| 301-414 | 114 | +0.91 ± 0.20 |
+
+- The gain is the same order as the two top-20 screens (+1.1, +0.6) and holds across the field,
+  ranks 11-414 alike: the bands where 3.13 lost its 2.4 APS to tenth.
+- Against the top 10 it is slightly down on 9 opponents, 18 battles each side, which is about two
+  standard errors; the top-20 screens, whose fields held six of the top 10, were ahead. Watch it in
+  the live pairings rather than act on it.
+- Size: +0.88 of the 2.73 APS to tenth, about a third of the gap; the live pass decides the rank.
+  Skipped turns were 1,875 over the 184 battles, both builds together (the cloud's usual rate).
+
+Report: `docs/bench/local/2026-10-16_melee-census-gk-vs-313.md`, firepower table
+`data/bench/2026-10-16_melee-census-gk-vs-313_firepower.tsv`.
+
+## 5. Next
+
+- A release with MGUN-7 (release.yml) and a live melee pass.
 - The other idle causes remain: scans too old to fire on (H) and no fresh opponent (T), about a
   third of idle ticks. Both are radar questions (the sweep revisits a robot every 10-11 ticks).

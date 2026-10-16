@@ -1,0 +1,10 @@
+# Melee census field f46 (see melee-census-313.txt)
+pe.SandboxDT 2.71m | melee-28 | pe.SandboxDT_2.71m.jar
+davidalves.net.DuelistMiniMelee 1.2 | melee-72 | davidalves.net.DuelistMiniMelee_1.2.jar
+eem.EvBotNG v12.8 | melee-99 | eem.EvBotNG_v12.8.jar
+ags.Glacier 0.2.11 | melee-9 | ags.Glacier_0.2.11.jar
+joe.ADinosaur 1.0 | melee-245 | joe.ADinosaur_1.0.jar
+dft.Calliope 5.6 | melee-219 | dft.Calliope_5.6.jar
+evd.X1 0.01 | melee-342 | evd.X1_0.01.jar
+DTF.Kludgy 1.2b | melee-84 | DTF.Kludgy_1.2b.jar
+adt.Ar1 2.1 | melee-290 | adt.Ar1_2.1.jar

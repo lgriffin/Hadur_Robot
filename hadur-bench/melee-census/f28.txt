@@ -1,0 +1,10 @@
+# Melee census field f28 (see melee-census-313.txt)
+maribo.FollowFire 1 | melee-358 | maribo.FollowFire_1.jar
+spin.Bugstard 0.012b | melee-400 | spin.Bugstard_0.012b.jar
+origin.SleepSiphon 1.7b | melee-58 | origin.SleepSiphon_1.7b.jar
+mbro.Detektor3 0.1.1 | melee-386 | mbro.Detektor3_0.1.1.jar
+kdf.KoulDestroyer 1.0 | melee-108 | kdf.KoulDestroyer_1.0.jar
+co.edu.usb.rc.LidisTron 1.0 | melee-239 | co.edu.usb.rc.LidisTron_1.0.jar
+davidalves.net.DuelistNanoMelee 1.01 | melee-181 | davidalves.net.DuelistNanoMelee_1.01.jar
+gre.svman4.Morfeas 1.4.1 | melee-210 | gre.svman4.Morfeas_1.4.1.jar
+jab.DiamondStealer 5 | melee-189 | jab.DiamondStealer_5.jar

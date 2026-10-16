@@ -1,0 +1,10 @@
+# Melee census field f07 (see melee-census-313.txt)
+trm.Wrekt 1.1.6.f | melee-40 | trm.Wrekt_1.1.6.f.jar
+stelo.AreaTargetingBot 1.1 | melee-188 | stelo.AreaTargetingBot_1.1.jar
+morbid.MorbidPriest 1.0 | melee-83 | morbid.MorbidPriest_1.0.jar
+uji.DBH 1.1 | melee-120 | uji.DBH_1.1.jar
+ara.Shera 0.88 | melee-82 | ara.Shera_0.88.jar
+ph.melee.ArcherME 0.3 | melee-192 | ph.melee.ArcherME_0.3.jar
+intruder.PrairieWolf 2.61 | melee-105 | intruder.PrairieWolf_2.61.jar
+com.spp.robocode.MostlyHarmless 010 | melee-191 | com.spp.robocode.MostlyHarmless_010.jar
+tcf.Reach 3 | melee-156 | tcf.Reach_3.jar

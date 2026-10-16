@@ -1,0 +1,10 @@
+# Melee census field f17 (see melee-census-313.txt)
+davidalves.net.DuelistMicroMelee 1.4 | melee-155 | davidalves.net.DuelistMicroMelee_1.4.jar
+dmh.robocode.robot.RedDwarf 0.4 | melee-241 | dmh.robocode.robot.RedDwarf_0.4.jar
+lrem.Spectre 0.4.4 | melee-109 | lrem.Spectre_0.4.4.jar
+pe.SandboxLump 1.52 | melee-38 | pe.SandboxLump_1.52.jar
+djdjdj.NanoSkunk10 1.0 | melee-280 | djdjdj.NanoSkunk10_1.0.jar
+ratosh.Wesco 1.4 | melee-255 | ratosh.Wesco_1.4.jar
+josago.Jorgito 0.16 | melee-213 | josago.Jorgito_0.16.jar
+sample.MyFirstRobot 1.0 | melee-396 | sample.MyFirstRobot_1.0.jar
+sample.Fire 1.0 | melee-403 | sample.Fire_1.0.jar

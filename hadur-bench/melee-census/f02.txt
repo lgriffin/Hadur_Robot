@@ -1,0 +1,10 @@
+# Melee census field f02 (see melee-census-313.txt)
+radnor.DoctorBob 1.42 | melee-93 | radnor.DoctorBob_1.42.jar
+mn.nano.perceptual.Impact 1.3.0 | melee-343 | mn.nano.perceptual.Impact_1.3.0.jar
+bwbaugh.nano.Tirunculus 0.0.0a | melee-385 | bwbaugh.nano.Tirunculus_0.0.0a.jar
+darkcanuck.B26354 1.06 | melee-56 | darkcanuck.B26354_1.06.jar
+kc.micro.Figment 1.0 | melee-17 | kc.micro.Figment_1.0.jar
+panzer.Panzer 0.2 | melee-262 | panzer.Panzer_0.2.jar
+stelo.Randomness 1.0 | melee-183 | stelo.Randomness_1.0.jar
+sample.Crazy 1.0 | melee-364 | sample.Crazy_1.0.jar
+skm.PateranBotlock2 1.0 | melee-399 | skm.PateranBotlock2_1.0.jar

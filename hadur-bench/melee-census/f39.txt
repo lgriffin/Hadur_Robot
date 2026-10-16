@@ -1,0 +1,10 @@
+# Melee census field f39 (see melee-census-313.txt)
+jangs.ns51 1.0 | melee-374 | jangs.ns51_1.0.jar
+cs.Grudge 1.0 | melee-388 | cs.Grudge_1.0.jar
+tj.zombie1n 1.0.1 | melee-246 | tj.zombie1n_1.0.1.jar
+el.JumpShoot 0.2 | melee-378 | el.JumpShoot_0.2.jar
+gg.Wolverine 2.0 | melee-217 | gg.Wolverine_2.0.jar
+rdm.Dueler 0.4x | melee-370 | rdm.Dueler_0.4x.jar
+lessonz.robocode.Oz 0.5.0 | melee-80 | lessonz.robocode.Oz_0.5.0.jar
+disan.Chair 2.2.0 | melee-251 | disan.Chair_2.2.0.jar
+de.simpleworks.robocode.bots.swiBot 1.1 | melee-353 | de.simpleworks.robocode.bots.swiBot_1.1.jar

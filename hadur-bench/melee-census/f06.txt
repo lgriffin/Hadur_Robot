@@ -1,0 +1,10 @@
+# Melee census field f06 (see melee-census-313.txt)
+ghent.ArthurPanzergon 1.0.0 | melee-351 | ghent.ArthurPanzergon_1.0.0.jar
+amk.superstrike.SuperStrike 0.3 | melee-326 | amk.superstrike.SuperStrike_0.3.jar
+wit.Chuliath 1.0 | melee-256 | wit.Chuliath_1.0.jar
+yk.JahMicro 1.0 | melee-289 | yk.JahMicro_1.0.jar
+stuff.Vlad 0.1 | melee-333 | stuff.Vlad_0.1.jar
+mld.DustBunny 3.8 | melee-77 | mld.DustBunny_3.8.jar
+gre.svman4.Leonidas 1.3.2 | melee-122 | gre.svman4.Leonidas_1.3.2.jar
+tm.Yuugao 1.0 | melee-54 | tm.Yuugao_1.0.jar
+fwb.Nine 1.0.1 | melee-112 | fwb.Nine_1.0.1.jar

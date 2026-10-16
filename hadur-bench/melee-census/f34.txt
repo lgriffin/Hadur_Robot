@@ -1,0 +1,10 @@
+# Melee census field f34 (see melee-census-313.txt)
+robar.nano.Assertive_Melee 0.2 | melee-312 | robar.nano.Assertive_Melee_0.2.jar
+sheldor.micro.PointInLineRRAL 1.0 | melee-281 | sheldor.micro.PointInLineRRAL_1.0.jar
+br2.MobyDickBot 1.6 | melee-151 | br2.MobyDickBot_1.6.jar
+squidM.TentalceMeleeNano 1.1 | melee-352 | squidM.TentalceMeleeNano_1.1.jar
+Krabb.akim2.Akim2 1.1b | melee-152 | Krabb.akim2.Akim2_1.1b.jar
+whitesquare.robots.SkynetAdvanced 1.1 | melee-248 | whitesquare.robots.SkynetAdvanced_1.1.jar
+pez.mini.ChironexFleckeri 0.5 | melee-243 | pez.mini.ChironexFleckeri_0.5.jar
+stelo.RamTrackSurfer 1.2 | melee-314 | stelo.RamTrackSurfer_1.2.jar
+sp.Nanos.Ember 1.1 | melee-356 | sp.Nanos.Ember_1.1.jar
