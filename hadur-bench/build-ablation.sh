@@ -36,6 +36,8 @@
 #         close with the orbit's 1.65 gain instead of 0.6.
 #   heat  MOVE-11: the gun-heat wave is on: when the enemy's gun is about to be cool and fewer than two
 #         firing waves are in the air, the surf also dodges the shot it has not fired yet. Suffix hw.
+#   heatjit  MOVE-13: the gun-heat wave taken afresh each tick (the first MOVE-11 build): the surf
+#         re-ranks every tick while the enemy's gun is ready and stops and starts. Suffix hj.
 #   wallesc  MOVE-12: the first wave's danger is also multiplied by BeepBoop's escape-angle position term
 #         (our escape room against his, at the move's end), in the three options and in go-to. Suffix we.
 #   silent  the Duel never fires: drive() is entered with WEAVE-3's fire permission withdrawn (mayFire = false),
@@ -182,6 +184,10 @@ for a in "${list[@]}"; do
         heat)
             edit "$movedesign" "static final boolean HEAT_WAVE = false;" "static final boolean HEAT_WAVE = true;"
             version="${version}hw" ;;
+        heatjit)
+            edit "$movedesign" "static final boolean HEAT_WAVE = false;" "static final boolean HEAT_WAVE = true;"
+            edit "$movedesign" "static final boolean HEAT_HOLD = true;" "static final boolean HEAT_HOLD = false;"
+            version="${version}hj" ;;
         wallesc)
             edit "$movedesign" "static final boolean ESCAPE_ROOM = false;" "static final boolean ESCAPE_ROOM = true;"
             version="${version}we" ;;
@@ -241,7 +247,7 @@ for a in "${list[@]}"; do
             edit "$design" 'public static final ShieldDesign SHIPPED = parse("' \
                 "public static final ShieldDesign SHIPPED = parse(\"$flag,"
             version="${version}${suffix}" ;;
-        *) echo "unknown ablation: $a (ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, wallesc, silent, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, shold, slearn, smode, sstay, sturn, snull, strim)" >&2; exit 2 ;;
+        *) echo "unknown ablation: $a (ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, wallesc, silent, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, shold, slearn, smode, sstay, sturn, snull, strim)" >&2; exit 2 ;;
     esac
 done
 

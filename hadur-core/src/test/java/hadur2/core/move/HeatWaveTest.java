@@ -64,6 +64,19 @@ class HeatWaveTest {
     }
 
     @Test
+    @Tag("MOVE-13")
+    @DisplayName("hold off: each ready tick's newest wave is surfed")
+    void unheldTakesEachTicksWave() {
+        MoveController m = FiringWaveTest.controller();
+        m.setProvisionalHold(false);
+        for (long t = 6; t <= 9; t++) {
+            Wave w = FiringWaveTest.add(m, t);
+            m.setProvisionalReady(true, t);
+            assertSame(w, m.findSurfableWave(0, me(t)), "tick " + t);
+        }
+    }
+
+    @Test
     @Tag("MOVE-11")
     @DisplayName("a held wave that has gone is replaced by the newest one")
     void replacesAGoneWave() {

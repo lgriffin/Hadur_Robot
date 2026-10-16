@@ -811,6 +811,8 @@ public class MoveController {
      * than a new one each tick (which made it reverse almost every tick).
      */
     private long provisionalAnchor = -1;
+    /** MOVE-13: whether the provisional wave is held (true) or taken afresh each tick. */
+    private boolean provisionalHold = true;
 
     /**
      * Adds an enemy wave. {@code HadurCore} adds one every scan, at the power the enemy last
@@ -831,6 +833,16 @@ public class MoveController {
      * @param ready whether the gun-heat wave is wanted this tick
      * @param time the tick
      */
+    /**
+     * MOVE-13: whether the provisional wave is held while the gun stays ready (MOVE-11) or taken
+     * afresh each tick, which makes the surf re-rank its options every tick.
+     *
+     * @param hold true to hold
+     */
+    public void setProvisionalHold(boolean hold) {
+        provisionalHold = hold;
+    }
+
     public void setProvisionalReady(boolean ready, long time) {
         provisionalTime = ready ? time : -1;
         if (!ready) provisionalAnchor = -1;
@@ -844,6 +856,7 @@ public class MoveController {
      * never moves the hold.
      */
     private Wave provisionalWave(RobotState myState) {
+        if (!provisionalHold) provisionalAnchor = -1;
         Wave held = provisionalAnchor < 0 ? null : waveManager.getWaveByFireTime(provisionalAnchor);
         if (held == null || held.firingWave || held.altWave) {
             held = null;

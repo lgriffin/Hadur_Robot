@@ -734,6 +734,7 @@ public final class DuelController {
             ramEscape.move(orders, currentState(in), lastEnemyState);
         } else {
             // MOVE-11: the enemy's gun is cool by now or next tick, and the wave it will leave is surfed too.
+            moveController.setProvisionalHold(MoveDesign.HEAT_HOLD);
             moveController.setProvisionalReady(MoveDesign.HEAT_WAVE
                 && enemyGunHeat(in).at(in.time()) <= in.gunCoolingRate(), in.time());
             surfMover.move(orders, currentState(in), moveController, lastEnemyLocation,

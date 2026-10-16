@@ -1235,7 +1235,7 @@ Nullstride's list with (docs/bench/local/2026-10-12_plan90-pc-read.md).
   (a shield bullet was fired at it), `first` or `unshielded`, so the plan's step 2 can classify
   what still gets through from the battle logs (`data/tools/shield_leaks.py`).
 
-## Top 3, stage 0: where the hits come from (MOVE-9, MOVE-10, MOVE-11, MOVE-12)
+## Top 3, stage 0: where the hits come from (MOVE-9 to MOVE-13)
 
 The plan "from 7th to top 3" (2026-10-15, docs/plan-top3.md) finds the 1v1 gap to the robots
 above is bullet damage taken from robots on no shield list. Stage 0 measures why those bullets
@@ -1249,6 +1249,7 @@ lines.
 | MOVE-10 | Event | When an enemy bullet hits us in a duel, the HF record shall also say, for each of the three-option surf's options (counter-clockwise, stop, clockwise) as first rated on that wave, whether the hit lay inside that option's plan interval, marking the option taken, and how many ticks before the hit they were rated. | R9 |
 | MOVE-11 | State | While the gun-heat wave switch is on, in a duel, and the enemy's estimated gun heat is no more than one tick's cooling, with fewer than two firing waves surfable, the surf shall treat the movement wave of the first tick of that ready spell (held until it has gone or is found to be a real shot, then the newest wave), at the power of the enemy's last detected shot (1.9 before the first), as one more wave to surf after the firing waves, and that wave shall feed no hit-rate, flattener or HF record; with the switch off the surf shall be unchanged. | R9 |
 | MOVE-12 | State | While the escape-room switch is on, in a duel, the surf shall multiply the danger it scores for the first surfable wave, in the three-option and the go-to modes alike, by the ratio of our enemy's in-field escape room to the square of ours: `restriction(our end, enemy)` over `restriction(enemy, our end)` squared, where `restriction` is the in-field maximum escape angles on both sides summed over twice `asin(8 / bullet speed)`, our end being where we are when the wave reaches our centre; with the switch off the surf's scores shall be unchanged. | R9 |
+| MOVE-13 | State | While the gun-heat wave switch is on and its hold switch is off, in a duel, the surf shall take this tick's newest movement wave as the provisional wave on every ready tick instead of holding one; with the hold switch on the surf shall hold it as MOVE-11 states. | R9 |
 
 - **HF record**: `HF,round,tick,class,gf,linearGf,dangerPct,distance,power,driving,planOffset,planDanger,planAge,options,optionsAge`
   (`move.HitForensics`). An offset of at most 1 means the bullet hit inside the interval the surf's
