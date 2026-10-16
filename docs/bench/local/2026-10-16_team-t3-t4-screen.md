@@ -24,7 +24,7 @@ k21 minus k12, paired directly: +0.21 ± 1.95.
 
 **Read.**
 - **T3 passes the screen.** Both depths gain about 3.5 points of score share. Both intervals
-  are above zero, and 16 of 20 teams improve under each. Against the top 5, k21 gains
+  are above zero, and 16 of 20 teams improve under k12 (17 under k21). Against the top 5, k21 gains
   CombatTeam +4.7, Firestarter +2.6, Shadow +0.4, Nightmare +6.0 and Aleph +0.1. k12 and k21
   are within noise of each other. k21 costs more skipped turns (4.9 against 3.2 a battle,
   worst battle 23), so the PC census decides between them.
