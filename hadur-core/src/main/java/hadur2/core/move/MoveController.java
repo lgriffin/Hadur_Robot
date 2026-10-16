@@ -391,6 +391,9 @@ public class MoveController {
         lastOptions.clear();
         lastChosen.clear();
         lastOptionTimes.clear();
+        newestWave = null;
+        provisionalTime = -1;
+        provisionalAnchor = -1;
         shadowedWaves = 0;
         shadowComputations = 0;
         // A new version, so no wave can match a stale one and skip its shadow computation.
@@ -802,6 +805,12 @@ public class MoveController {
     private Wave newestWave;
     /** The tick whose newest wave may be surfed as a provisional one, or -1 (MOVE-11). */
     private long provisionalTime = -1;
+    /**
+     * MOVE-11: the fire time of the movement wave held as the provisional one, or -1. It is
+     * held while the gun stays ready, so the surf ranks its options against one wave rather
+     * than a new one each tick (which made it reverse almost every tick).
+     */
+    private long provisionalAnchor = -1;
 
     /**
      * Adds an enemy wave. {@code HadurCore} adds one every scan, at the power the enemy last
@@ -824,16 +833,30 @@ public class MoveController {
      */
     public void setProvisionalReady(boolean ready, long time) {
         provisionalTime = ready ? time : -1;
+        if (!ready) provisionalAnchor = -1;
     }
 
-    /** The movement wave surfed in place of a bullet not yet fired, or null (MOVE-11). */
-    private Wave provisionalWave() {
-        Wave w = newestWave;
-        if (provisionalTime < 0 || w == null || w.firingWave || w.altWave
-            || w.fireTime != provisionalTime) {
-            return null;
+    /**
+     * The movement wave surfed in place of a bullet not yet fired, or null (MOVE-11). The wave
+     * of the first ready tick is held while the gun stays ready; once it has gone or been found
+     * to be a real shot, this tick's newest wave takes its place. A held wave about to pass
+     * {@code myState} is not offered, but stays held until it has gone, so a predicted state
+     * never moves the hold.
+     */
+    private Wave provisionalWave(RobotState myState) {
+        Wave held = provisionalAnchor < 0 ? null : waveManager.getWaveByFireTime(provisionalAnchor);
+        if (held == null || held.firingWave || held.altWave) {
+            held = null;
+            provisionalAnchor = -1;
+            Wave w = newestWave;
+            if (w != null && w.fireTime == provisionalTime && !w.firingWave && !w.altWave) {
+                held = w;
+                provisionalAnchor = w.fireTime;
+            }
         }
-        return w;
+        if (held == null) return null;
+        return held.checkWavePosition(myState, Wave.WavePosition.BREAKING_CENTER).getIndex()
+            >= Wave.WavePosition.BREAKING_CENTER.getIndex() ? null : held;
     }
 
     /**
@@ -894,10 +917,7 @@ public class MoveController {
             Wave.WavePosition.BREAKING_CENTER) == null) {
             return null;
         }
-        Wave p = provisionalWave();
-        if (p == null) return null;
-        return p.checkWavePosition(myState, Wave.WavePosition.BREAKING_CENTER).getIndex()
-            >= Wave.WavePosition.BREAKING_CENTER.getIndex() ? null : p;
+        return provisionalWave(myState);
     }
 
     /**

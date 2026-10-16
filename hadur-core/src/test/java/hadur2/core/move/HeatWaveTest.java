@@ -43,6 +43,43 @@ class HeatWaveTest {
 
     @Test
     @Tag("MOVE-11")
+    @DisplayName("while the gun stays ready the first ready tick's wave is held, not each tick's newest")
+    void holdsTheFirstReadyWave() {
+        MoveController m = FiringWaveTest.controller();
+        Wave first = FiringWaveTest.add(m, 6);
+        m.setProvisionalReady(true, 6);
+        assertSame(first, m.findSurfableWave(0, me(6)));
+        for (long t = 7; t <= 10; t++) {
+            FiringWaveTest.add(m, t);
+            m.setProvisionalReady(true, t);
+            assertSame(first, m.findSurfableWave(0, me(t)), "tick " + t);
+        }
+        // The gun is no longer ready (it fired, or heat rose): the hold is dropped, and the
+        // next ready tick holds its own wave.
+        m.setProvisionalReady(false, 11);
+        assertNull(m.findSurfableWave(0, me(11)));
+        Wave later = FiringWaveTest.add(m, 12);
+        m.setProvisionalReady(true, 12);
+        assertSame(later, m.findSurfableWave(0, me(12)));
+    }
+
+    @Test
+    @Tag("MOVE-11")
+    @DisplayName("a held wave that has gone is replaced by the newest one")
+    void replacesAGoneWave() {
+        MoveController m = FiringWaveTest.controller();
+        FiringWaveTest.add(m, 6);
+        m.setProvisionalReady(true, 6);
+        m.findSurfableWave(0, me(6));
+        for (long t = 7; t < 80; t++) m.checkWaves(t, new Point2D.Double(400, 200));
+        assertEquals(0, m.getWaveManager().size(), "the held wave has passed and gone");
+        Wave fresh = FiringWaveTest.add(m, 80);
+        m.setProvisionalReady(true, 80);
+        assertSame(fresh, m.findSurfableWave(0, me(80)));
+    }
+
+    @Test
+    @Tag("MOVE-11")
     @DisplayName("off: no provisional wave")
     void offMeansNone() {
         MoveController m = FiringWaveTest.controller();
