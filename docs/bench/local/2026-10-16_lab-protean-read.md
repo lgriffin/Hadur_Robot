@@ -31,3 +31,33 @@ Knn 93); protean 18-35 at every dwell, below plain surfing's 22-57.
   none of it clearly outside the noise.
 - Next: hotter temperatures in the lab (`pc10`: c = 10; `phot`: near-uniform over options within
   twice the best danger), checking reversal rates and the learning guns before any 400-bot screen.
+
+## Hotter temperatures (pc10, phot)
+
+Same seeds, both at mean dwell 1 on the held gun-heat wave: `pc10` (c = 10, 3.13sihwprpc) and `phot`
+(temperature floor 0.5 of the best danger and cap at twice it: near-uniform over the options in
+the cap, 3.13sihwprph).
+
+| Shooter | pc10 − stop-and-start | phot − stop-and-start | phot − plain surfing (si) |
+|---|---|---|---|
+| HeadOn | -0.3 ± 3.9 | -0.1 ± 4.2 | -0.2 ± 1.9 |
+| Linear | (starved) | (starved) | +2.5 ± 1.1 |
+| Circular | +2.1 ± 2.5 | +3.6 ± 2.3 | +3.0 ± 2.0 |
+| GFHist | -0.2 ± 3.4 | +1.2 ± 4.1 | +4.2 ± 3.1 |
+| Knn | +1.1 ± 3.9 | -2.8 ± 4.3 | **-6.0 ± 3.8** |
+| PatternMatch | -1.5 ± 3.7 | -2.8 ± 3.7 | -4.4 ± 4.3 |
+
+Damage taken a round, 95% intervals. Reversals per 1,000 ticks: pc10 22-36, phot 25-44.
+
+- **The protean trade shows up at phot.** Against plain surfing it cuts the k-NN gun's hit rate from
+  13.3% by 1.4 points (-6.0 damage a round) and leans the same way against the pattern matcher, and
+  it costs against the simple and statistical guns (Linear +2.5, Circular +3.0, GFHist +4.2). That
+  is what unpredictability should do: it hurts guns that learn our choice and helps guns that only
+  extrapolate our motion.
+- Even near-uniform, it reverses little: the cap often leaves one option, and the window (gun cool,
+  no real bullet within 10 ticks) is a small share of the time.
+- Neither hot version beats the stop-and-start overall. Because the APS gap is mostly the weak tail,
+  where simple guns dominate, phot alone would likely lose on the 400 bots.
+- That points to splitting by the enemy's gun rather than by name: protean against learning guns,
+  the stop-and-start against the rest. Hadur already rates each enemy's gun (ADAPT tiers), so this
+  is one rule for the whole field.
