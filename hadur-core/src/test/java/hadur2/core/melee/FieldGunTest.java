@@ -54,6 +54,23 @@ class FieldGunTest {
     }
 
     @Test
+    @Tag("MGUN-8")
+    @DisplayName("MGUN-8: a teammate's sighting joins the opponent's history as Hadur's own scan would")
+    void teammateSightingsJoinTheHistory() {
+        FieldGun own = new FieldGun(field(1000, 1000));
+        FieldGun shared = new FieldGun(field(1000, 1000));
+        for (long t = 0; t <= 200; t++) {
+            EnemyInfo e = scan(tracker, "a", 500 + t, 800, 100, Math.PI / 2, 8, t);
+            own.onScan(e, e.distance(me), t);
+            shared.onSighting("a", t, e.location.x, e.location.y, e.heading, e.velocity, e.distance(me),
+                e.turnRate());
+        }
+        assertTrue(shared.history("a").size() > 0);
+        assertEquals(own.history("a").size(), shared.history("a").size());
+        assertArrayEquals(own.history("a").current(), shared.history("a").current(), 0);
+    }
+
+    @Test
     @Tag("MGUN-7")
     @DisplayName("MGUN-7: off a team an opponent with history gets twelve solutions, sharing its weight")
     void twelveLearnedSolutionsOffATeam() {

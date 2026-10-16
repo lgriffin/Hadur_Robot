@@ -124,6 +124,16 @@ public class FieldGun {
         }
     }
 
+    /**
+     * MGUN-8: a teammate's sighting of {@code name}, {@code distance} from Hadur, joins its
+     * movement history as one of Hadur's own scans would.
+     */
+    public void onSighting(String name, long time, double x, double y, double heading, double velocity,
+                           double distance, double turnRate) {
+        EnemyHistory h = history(name);
+        if (h != null) h.onScan(time, x, y, heading, velocity, distance, turnRate, field);
+    }
+
     /** Every firing solution this tick, for every opponent fresh enough to shoot at. */
     public List<Solution> solutions(Point2D.Double me, double energy, int others,
                                     List<EnemyInfo> alive, long now) {
