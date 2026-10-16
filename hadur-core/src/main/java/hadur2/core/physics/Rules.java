@@ -31,6 +31,9 @@ public final class Rules {
     public static final double RADAR_TURN_RATE = 45.0;
     /** The weakest bullet the engine fires, in energy; the lower bound of a shot (WAVE-2). */
     public static final double MIN_BULLET_POWER = 0.1;
+
+    /** The energy every robot loses on a turn of the engine's inactivity rule (WAVE-5). */
+    public static final double INACTIVITY_DRAIN = 0.1;
     /** The strongest bullet the engine fires, in energy; the upper bound of a shot (WAVE-2). */
     public static final double MAX_BULLET_POWER = 3.0;
     /** Energy each robot loses when two robots collide. */

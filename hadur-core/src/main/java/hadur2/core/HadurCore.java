@@ -153,6 +153,8 @@ public final class HadurCore {
     private Predicate<BotInput> firePermission = in -> true;
     /** The tick being processed, for records written from event handlers. */
     private long lastTickTime;
+    /** WAVE-5: whether last tick's orders asked to fire. */
+    private boolean firedLastTick;
 
     /** The current round, from 0. */
     private int round;
@@ -430,6 +432,10 @@ public final class HadurCore {
 
         Tick tick = new Tick(in, melee ? RoleId.MELEE : RoleId.DUEL, focusing, focus, gate::isSentry);
 
+        // WAVE-5: in a duel, our energy every tick (scanned or not) lets the ledger see the
+        // engine's inactivity drain. Melee never feeds the ledger.
+        if (!melee) duel.ourTick(in, ourEnergyExplained(in));
+
         // The events in the order the adapter queued them, which is the engine's own. HitWall
         // needs no handling: the ledger infers the enemy's wall hits, and our own wall damage
         // does not change what the enemy's energy says.
@@ -492,7 +498,25 @@ public final class HadurCore {
             telemetry.emit("E," + round + "," + in.time() + "," + in.others());
         }
         lastEnemiesAlive = in.others();
+        firedLastTick = built.firePower() > 0;
         return built;
+    }
+
+    /**
+     * WAVE-5: whether something other than the inactivity drain moves our energy this tick: a
+     * shot ordered last tick (leaves now), or a bullet hit us or ours hit, or we hit a wall
+     * or a robot. A shot ordered but not fired (hot gun) counts too, so a drain is never
+     * claimed where it is doubtful.
+     */
+    private boolean ourEnergyExplained(BotInput in) {
+        if (firedLastTick) return true;
+        for (BotEvent e : in.events()) {
+            if (e instanceof BotEvent.HitByBullet || e instanceof BotEvent.BulletHit
+                    || e instanceof BotEvent.HitWall || e instanceof BotEvent.HitRobot) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

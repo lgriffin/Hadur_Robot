@@ -897,6 +897,17 @@ public final class DuelController {
         }
     }
 
+    /**
+     * WAVE-5: our energy this tick, for the ledger's inactivity-drain correction. Called every
+     * tick the duel is on, not only on scan ticks; never in a melee.
+     *
+     * @param in the tick's input
+     * @param explained whether a shot of ours left or one of our energy events arrived
+     */
+    public void ourTick(BotInput in, boolean explained) {
+        ledger.ourTick(in.time(), in.energy(), explained);
+    }
+
     /** WAVE-1: a collision with the duel's enemy costs it energy too. */
     public void robotsCollided() {
         ledger.robotsCollided();

@@ -242,4 +242,87 @@ class EnergyLedgerTest {
             assertTrue(EnergyLedger.isShot(0.09999999999999998));
         }
     }
+
+    /** Offers our energy for the next tick(s) of a duel and scans the enemy on the last one. */
+    @Nested
+    @Tag("WAVE-5")
+    @DisplayName("WAVE-5: the inactivity drain")
+    class InactivityDrain {
+
+        private void ours(long time, double energy, boolean explained) {
+            ledger.ourTick(time, energy, explained);
+        }
+
+        @Test
+        @DisplayName("a drain turn takes 0.1 off the enemy's drop: no phantom shot")
+        void drainIsNotAShot() {
+            ours(1, 100, false);
+            ours(2, 99.9, false);
+            EnergyLedger.Reading r = ledger.scan(2, 99.9, 8, MID_X, MID_Y);
+            assertFalse(r.shot());
+            assertEquals(0.1, r.raw(), DELTA);
+            assertTrue(r.phantom());
+        }
+
+        @Test
+        @DisplayName("a 2.0 shot during the drain reads as 2.0, not 2.1")
+        void shotDuringDrain() {
+            ours(1, 100, false);
+            ours(2, 99.9, false);
+            EnergyLedger.Reading r = ledger.scan(2, 97.9, 8, MID_X, MID_Y);
+            assertTrue(r.shot());
+            assertEquals(2.0, r.corrected(), DELTA);
+        }
+
+        @Test
+        @DisplayName("our own 0.1 shot explains our drop: not a drain")
+        void ourShotIsNotDrain() {
+            ours(1, 100, false);
+            ours(2, 99.9, true);
+            EnergyLedger.Reading r = ledger.scan(2, 99.9, 8, MID_X, MID_Y);
+            assertTrue(r.shot());
+            assertEquals(0.1, r.corrected(), DELTA);
+        }
+
+        @Test
+        @DisplayName("no drain when our energy did not fall by 0.1")
+        void noDrop() {
+            ours(1, 100, false);
+            ours(2, 100, false);
+            assertTrue(ledger.scan(2, 99.9, 8, MID_X, MID_Y).shot());
+            ours(3, 99.5, false);
+            assertTrue(ledger.scan(3, 99.4, 8, MID_X, MID_Y).shot());
+        }
+
+        @Test
+        @DisplayName("scans skipping ticks: each drain tick since the last scan counts")
+        void gapOfSeveralTicks() {
+            ours(1, 100, false);
+            ours(2, 99.9, false);
+            ours(3, 99.8, false);
+            ours(4, 99.7, false);
+            // Three drain ticks (0.3) and a 1.5 shot, enemy scanned only on tick 4.
+            EnergyLedger.Reading r = ledger.scan(4, 100 - 0.3 - 1.5, 8, MID_X, MID_Y);
+            assertTrue(r.shot());
+            assertEquals(1.5, r.corrected(), DELTA);
+        }
+
+        @Test
+        @DisplayName("drain ticks are used by one scan only")
+        void clearedByScan() {
+            ours(1, 100, false);
+            ours(2, 99.9, false);
+            ledger.scan(2, 99.9, 8, MID_X, MID_Y);
+            ours(3, 99.9, false);
+            assertTrue(ledger.scan(3, 99.8, 8, MID_X, MID_Y).shot());
+        }
+
+        @Test
+        @DisplayName("a tick we were not offered is not compared across the gap")
+        void gapInOurTicks() {
+            ours(1, 100, false);
+            ours(5, 99.9, false);
+            assertTrue(ledger.scan(5, 99.9, 8, MID_X, MID_Y).shot());
+        }
+    }
 }

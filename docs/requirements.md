@@ -148,6 +148,7 @@ EARS requirements from the Hadur 2 technical direction. This file is the source 
 | MOVE-7 | Event | When a wave in flight is removed or reordered, movement shall discard the neighbour cache of every wave whose surf index changed. | R6 |
 | PHYS-1 | Ubiquitous | The movement predictor shall stop a predicted robot at a wall as the engine does. | R6 |
 | WAVE-4 | Event | When a movement wave's bullet power is updated, its wall distances shall be recomputed. | R6 |
+| WAVE-5 | Event | When our own energy falls by exactly 0.1 on a tick of a duel and no shot of ours, bullet hit, wall hit or robot hit explains it, the core shall take 0.1 off the enemy's energy drop for that tick (the engine's inactivity drain) before classifying the drop as a fired bullet, for every such tick since the last scan. | R9 |
 | MEM-11 | Ubiquitous | The adapter shall list the data directory at most once per battle and answer every later name, size and age question from an index it keeps current. | R8 |
 | MEM-12 | Ubiquitous | The library shall read a stored profile to look for seeds only when its file is larger than 1 KB. | R8 |
 | MEM-13 | Unwanted | If a save would take the store past 90% of its quota after every other seed is gone, then the library shall delete the least recently written profiles until it fits, and write. | R8 |

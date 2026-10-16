@@ -170,6 +170,11 @@ public final class EnergyLedger {
     private double ourDamage;
     private double theirRefund;
     private double collisionDamage;
+    /** WAVE-5: our energy and tick at the last {@link #ourTick}, and the drain ticks since the last scan. */
+    private boolean ourSeen;
+    private double lastOurEnergy;
+    private long lastOurTime;
+    private int drainTicks;
 
     /**
      * A ledger for a field of the given size.
@@ -188,6 +193,31 @@ public final class EnergyLedger {
         ourDamage = 0;
         theirRefund = 0;
         collisionDamage = 0;
+        ourSeen = false;
+        drainTicks = 0;
+    }
+
+    /**
+     * WAVE-5: our own energy at {@code time}, offered every tick of a duel (scanned or not).
+     * Robocode's inactivity rule takes {@link Rules#INACTIVITY_DRAIN} from every robot on a
+     * turn when none has been damaged for a long while. If ours fell by exactly that since
+     * the previous tick and nothing of ours explains it, this is a drain turn, and the enemy
+     * lost the same 0.1 on it: the next {@link #scan} takes it off the enemy's drop, so it
+     * is not read as a 0.1 shot and does not turn a real shot into a different power.
+     *
+     * @param time the tick
+     * @param energy our energy this tick
+     * @param explained whether something of ours moves our energy: a shot left last tick, or
+     *     a bullet hit us, our bullet hit, or a wall or robot was hit this tick
+     */
+    public void ourTick(long time, double energy, boolean explained) {
+        if (ourSeen && time == lastOurTime + 1 && !explained
+                && Math.abs((lastOurEnergy - energy) - Rules.INACTIVITY_DRAIN) < EPSILON) {
+            drainTicks++;
+        }
+        ourSeen = true;
+        lastOurEnergy = energy;
+        lastOurTime = time;
     }
 
     /**
@@ -221,7 +251,7 @@ public final class EnergyLedger {
      *
      * <p>The drop since the last scan is corrected in this order (WAVE-1): our bullets'
      * damage and collision damage are taken off it, the enemy's refund for hitting us is
-     * added back to it, and then any wall damage is taken off. What is left is a shot only
+     * added back to it, the inactivity drain of WAVE-5 is taken off, and then any wall damage is taken off. What is left is a shot only
      * if it lies in [0.1, 3.0] (WAVE-2). The held corrections are cleared either way, so each
      * applies to one scan only.</p>
      *
@@ -243,7 +273,9 @@ public final class EnergyLedger {
         // needs it to tell braking from a crash.
         long elapsed = Math.max(1, time - lastTime);
         double raw = lastEnergy - energy;
-        double explained = raw - ourDamage + theirRefund - collisionDamage;
+        // WAVE-5: each drain tick since the last scan took 0.1 off the enemy too.
+        double explained = raw - ourDamage + theirRefund - collisionDamage
+            - drainTicks * Rules.INACTIVITY_DRAIN;
         // A collision can stop the enemy as dead as a wall can, and the two cannot be told
         // apart, so no wall hit is inferred on a scan that follows a collision.
         double wall = collisionDamage == 0
@@ -362,5 +394,6 @@ public final class EnergyLedger {
         ourDamage = 0;
         theirRefund = 0;
         collisionDamage = 0;
+        drainTicks = 0;
     }
 }
