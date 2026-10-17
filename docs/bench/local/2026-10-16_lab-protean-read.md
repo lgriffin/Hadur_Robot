@@ -83,3 +83,10 @@ learning gun, the stop-and-start otherwise. Same seeds.
   circular aim punishes (+3.8 a round). A circular class in the classifier is the obvious fix.
 - Overall level with the stop-and-start in the lab (-0.2 ± 2.5 a round). The 400-bot screen
   (`s1c-sp-*`, running) decides.
+
+## Replicator weights for the danger views (MOVE-16), on the stop-and-start
+
+`silent,heatjit,repl` (3.13sihjrp, 502fd91a) against `silent,heatjit` (sihj), same seeds. Damage taken
+a round, replicator minus stop-and-start: HeadOn -1.2 ± 4.8, Linear +0.5 ± 1.8, Circular -0.0 ± 2.3,
+GFHist +3.2 ± 4.3, Knn +3.1 ± 4.3, PatternMatch -2.2 ± 3.9; over the six +0.6 ± 2.3. Level, with no
+hole; the 400-bot screen against 3.13hj (`s1c-hjrp-*`) decides.
