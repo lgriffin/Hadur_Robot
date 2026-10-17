@@ -1,0 +1,35 @@
+# Style lab subjects (data/tools/style_lab): each robot is benched as the subject against
+# style-shooter.txt so its movement trace can be exported. Top 20 plus a spread of styles.
+hadur2.Hadur 3.13 | self | hadur2.Hadur_3.13.jar
+axeBots.Musashi 2.18 | mid | axeBots.Musashi_2.18.jar
+cx.mini.Cigaret 1.31 | mid | cx.mini.Cigaret_1.31.jar
+ags.Glacier 0.3.2 | mid | ags.Glacier_0.3.2.jar
+axeBots.Okami 1.04 | mid | axeBots.Okami_1.04.jar
+cx.micro.Spark 0.6 | mid | cx.micro.Spark_0.6.jar
+dragonbyte.Neutrino 4 | mid | dragonbyte.Neutrino_4.jar
+deo.CloudBot 1.3 | mid | deo.CloudBot_1.3.jar
+dft.Immortal 1.40 | mid | dft.Immortal_1.40.jar
+suh.micro.WallPM 1.00 | weak | suh.micro.WallPM_1.00.jar
+js.PinBall 1.6 | weak | js.PinBall_1.6.jar
+myl.nano.Kakuru 1.20 | weak | myl.nano.Kakuru_1.20.jar
+ers.nano.lig.LigMA 1.9 | weak | ers.nano.lig.LigMA_1.9.jar
+kc.mega.BeepBoop 2.0 | rumble-1 | kc.mega.BeepBoop_2.0.jar
+jk.mega.DrussGT 3.1.16 | rumble-3 | jk.mega.DrussGT_3.1.16.jar
+oog.mega.saguaro.Saguaro 1.0 | rumble-4 | oog.mega.saguaro.Saguaro_1.0.jar
+aaa.r.ScalarR 0.005h.053-noshield | rumble-5 | aaa.r.ScalarR_0.005h.053-noshield.jar
+voidious.Diamond 1.8.22 | rumble-6 | voidious.Diamond_1.8.22.jar
+cb.fire.Firestarter 2.0f | rumble-7 | cb.fire.Firestarter_2.0f.jar
+dsekercioglu.mega.Raven 3.56j8 | rumble-8 | dsekercioglu.mega.Raven_3.56j8.jar
+xander.cat.XanderCat 12.9 | rumble-9 | xander.cat.XanderCat_12.9.jar
+lxx.Tomcat 3.68 | rumble-10 | lxx.Tomcat_3.68.jar
+rsalesc.mega.Knight 0.6.28 | rumble-11 | rsalesc.mega.Knight_0.6.28.jar
+aw.Gilgalad 1.99.5c | rumble-12 | aw.Gilgalad_1.99.5c.jar
+pc.Wavelet 1.5 | rumble-13 | pc.Wavelet_1.5.jar
+gh.GresSuffurd 0.4.13 | rumble-14 | gh.GresSuffurd_0.4.13.jar
+kc.serpent.WaveSerpent 2.11 | rumble-15 | kc.serpent.WaveSerpent_2.11.jar
+dsekercioglu.mega.WhiteFang 2.8.1 | rumble-17 | dsekercioglu.mega.WhiteFang_2.8.1.jar
+cs.Nene 1.0.5 | rumble-18 | cs.Nene_1.0.5.jar
+jk.melee.Neuromancer 7.12 | rumble-19 | jk.melee.Neuromancer_7.12.jar
+voidious.Dookious 1.573c | rumble-20 | voidious.Dookious_1.573c.jar
+davidalves.Phoenix 1.02 | rumble-21 | davidalves.Phoenix_1.02.jar
+rsalesc.roborio.Roborio 1.2.4 | rumble-22 | rsalesc.roborio.Roborio_1.2.4.jar
