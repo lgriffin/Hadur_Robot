@@ -1,0 +1,24 @@
+# PC queue: MOVE-17 regime switch (thread "Movement as pattern design", docs/bench/style-lab.md).
+# Start only after pc-1017's ALLDONE, never alongside it (Leigh's rule: one bench queue on the PC,
+# RoboRumble workers at 0 until ALLDONE). Run from this branch (claude/project-thread-9lx52t):
+#   ./queue.sh run pc-regime        (or  .\queue.ps1 run pc-regime)
+# Resumable: a restart skips the steps that exited 0.
+#
+# The switch lives on the 1v1 branch's code (claude/project-thread-du09qh, PR #199) plus the patch
+# in plans/move17-regime.patch (MOVE-17, duel only, off by default; the off path is unchanged).
+# prep builds both jars from that tree: 3.13hj (the stack's base) and 3.13hjrg (hj + regime).
+#   hjrg  the regime switch on top of the stop-and-start, paired against 3.13hj on the 400-bot
+#         screen (screen-311.txt), 8 fresh seeds 981-988.                      about 2 hours
+#   Gate: the stack's rule, about +0.06 APS over hj with no band below -0.05; then census-312.
+# Read: data/tools/screen_paired.py on export_battles.py output.
+
+set HEAP = --child-heap 2G
+set E = --engine 1.11.1
+set COMMON = --skip-build --skip-fetch --rounds 35 --parallel 12 --cpu-constant 1488498 ${HEAP} ${E}
+set SEEDS = --seeds 8 --seed-base 980
+set HJ = --baseline bisect/hadur2.Hadur_3.13hj.jar --baseline-robot "hadur2.Hadur 3.13hj"
+
+prep | mkdir -p bisect && git fetch -q origin claude/project-thread-du09qh && { git worktree remove --force ../../hadur-regime 2>/dev/null || true; } && git worktree add --force --detach ../../hadur-regime FETCH_HEAD && git -C ../../hadur-regime -c user.name=bench -c user.email=bench@localhost am -q "$(pwd)/plans/move17-regime.patch" && (cd ../../hadur-regime/hadur-bench && bash ./build-ablation.sh heatjit && bash ./build-ablation.sh heatjit,regime) && cp ../../hadur-regime/hadur-bench/bisect/hadur2.Hadur_3.13hj.jar ../../hadur-regime/hadur-bench/bisect/hadur2.Hadur_3.13hjrg.jar bisect/ && ./fetch-opponents.sh --set screen-311.txt && mvn -q compile
+
+hjrg | ./bench-top20.sh ${COMMON} ${SEEDS} --set screen-311.txt --robot-jar bisect/hadur2.Hadur_3.13hjrg.jar --robot "hadur2.Hadur 3.13hjrg" ${HJ} --label pc-regime-hjrg
+  after: prep
