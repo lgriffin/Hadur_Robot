@@ -301,6 +301,7 @@ public final class DuelController {
         this.predictor = new MovementPredictor(battleField);
         this.gunController = new GunController(battleField, enemiesTotal);
         this.moveController = new MoveController(battleField, predictor);
+        this.moveController.setReplicator(MoveDesign.REPLICATOR);
         this.surfMover = new SurfMover(battleField, predictor);
         this.surfMover.setEscapeRoomTerm(MoveDesign.ESCAPE_ROOM);
         this.surfMover.setProtean(MoveDesign.PROTEAN, MoveDesign.PROTEAN_DWELL);

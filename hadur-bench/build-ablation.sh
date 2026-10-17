@@ -56,6 +56,9 @@
 #         (floor 0.5, cap 1.0, dwell 1); until then it takes the wave afresh each tick (stop-and-start).
 #         Sets HEAT_WAVE and GUN_SPLIT, so build it alone: not combined with heat or heatjit (they edit the
 #         same HEAT_WAVE line, which the second edit would not find), nor with protean or phot (unneeded). Suffix sp.
+#   repl  MOVE-16: the danger views' weights evolve by the replicator equation: each enemy bullet that hits us
+#         multiplies a view's weight by how well it predicted the bullet's angle against the weighted average
+#         (every view keeps 2% of the share), so the view that reads this gun takes over. Suffix rp.
 #   silent  the Duel never fires: drive() is entered with WEAVE-3's fire permission withdrawn (mayFire = false),
 #         which both of the duel's fire sites (the aimed shot and the shield's) honour; the radar,
 #         aim, waves and movement all still run. Hadur then scores only by survival, which is what
@@ -215,6 +218,9 @@ for a in "${list[@]}"; do
             edit "$movedesign" "static final boolean HEAT_WAVE = false;" "static final boolean HEAT_WAVE = true;"
             edit "$movedesign" "static final boolean GUN_SPLIT = false;" "static final boolean GUN_SPLIT = true;"
             version="${version}sp" ;;
+        repl)
+            edit "$movedesign" "static final boolean REPLICATOR = false;" "static final boolean REPLICATOR = true;"
+            version="${version}rp" ;;
         wallesc)
             edit "$movedesign" "static final boolean ESCAPE_ROOM = false;" "static final boolean ESCAPE_ROOM = true;"
             version="${version}we" ;;
@@ -292,7 +298,7 @@ for a in "${list[@]}"; do
             edit "$design" 'public static final ShieldDesign SHIPPED = parse("' \
                 "public static final ShieldDesign SHIPPED = parse(\"$flag,"
             version="${version}${suffix}" ;;
-        *) echo "unknown ablation: $a (ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, flt59, flt8, split, wallesc, protean, pdw3, pdw8, pc10, phot, silent, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, shold, slearn, smode, sstay, sturn, snull, strim)" >&2; exit 2 ;;
+        *) echo "unknown ablation: $a (ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, flt59, flt8, split, wallesc, protean, pdw3, pdw8, pc10, phot, repl, silent, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, shold, slearn, smode, sstay, sturn, snull, strim)" >&2; exit 2 ;;
     esac
 done
 

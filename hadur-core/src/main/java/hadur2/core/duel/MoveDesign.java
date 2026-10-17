@@ -33,5 +33,12 @@ final class MoveDesign {
      */
     static final boolean GUN_SPLIT = false;
 
+    /**
+     * MOVE-16: the danger views' weights evolve by the replicator equation. Each enemy bullet that
+     * hits us multiplies a view's weight by how well it predicted the bullet's angle relative to
+     * the weighted average, with every view's share kept at 2% or more; off, the weights are fixed.
+     */
+    static final boolean REPLICATOR = false;
+
     private MoveDesign() { }
 }

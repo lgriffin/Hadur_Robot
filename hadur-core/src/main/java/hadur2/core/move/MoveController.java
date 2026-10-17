@@ -106,6 +106,10 @@ public class MoveController {
     private final FlattenerFormula sampleFormula = new FlattenerFormula();
     /** Where hits on us go, for the opponent profile's surf seed; null until the opening sets it. */
     private Consumer<double[]> sampleSink;
+    /** MOVE-16: the views' multipliers, kept for the battle (not reset by {@link #initRound}). */
+    private final ReplicatorWeights replicatorWeights;
+    /** MOVE-16: whether the multipliers are learned and applied; off, the weights are fixed. */
+    private boolean replicator;
 
     /**
      * A controller with empty views and no waves, for a battle on {@code battleField}.
@@ -118,6 +122,29 @@ public class MoveController {
         this.predictor = predictor;
         this.waveManager = new WaveManager();
         initSurfViews();
+        this.replicatorWeights = new ReplicatorWeights(views.size());
+    }
+
+    /**
+     * MOVE-16: whether each enemy bullet that hits us moves the danger views' weights toward the
+     * views that predicted it (the replicator equation, {@link ReplicatorWeights}). Off, the
+     * weights stay fixed and the multipliers are never read.
+     *
+     * @param on true to learn and apply the multipliers
+     */
+    public void setReplicator(boolean on) {
+        this.replicator = on;
+    }
+
+    /** MOVE-16: each view's multiplier, in the order the views were built; all 1 until learned. */
+    double[] replicatorMultipliers() {
+        return replicatorWeights.multipliers();
+    }
+
+    /** MOVE-16: the view's weight in the danger average: its own, times its multiplier when on. */
+    private double effectiveWeight(int i) {
+        KnnView<TimestampedGuessFactor> view = views.get(i);
+        return replicator ? view.weight * replicatorWeights.multiplier(i) : view.weight;
     }
 
     /**
@@ -740,6 +767,8 @@ public class MoveController {
         // The bullet lies on its firing line, so its bearing from the source is the exact
         // angle it was fired at.
         double hitGF = hitWave.guessFactor(bulletLocation);
+        // MOVE-16: rate the hit before any view learns it, so each view is judged on a prediction.
+        if (replicator) updateReplicator(hitWave, hitGF);
         for (KnnView<TimestampedGuessFactor> view : views) {
             if (!view.logBulletHits) continue;
             view.logWave(hitWave, new TimestampedGuessFactor(
@@ -752,6 +781,61 @@ public class MoveController {
             sample[12] = hitGF;
             sampleSink.accept(sample);
         }
+    }
+
+    /**
+     * MOVE-16: the replicator step for a bullet fired at {@code hitGf} on wave {@code w}. Each view
+     * that is on with data (the test {@link #getDangerScore} applies) is rated by its density at
+     * that guess factor, normalised over the {@link HitForensics#SAMPLES} guess factors in
+     * [-1, 1]; {@link ReplicatorWeights#update} moves the multipliers. Read-only on the views:
+     * it uses the cache slot of {@link #dangerPercentile} and empties it after.
+     */
+    private void updateReplicator(Wave w, double hitGf) {
+        int n = views.size();
+        double bandwidth = Math.atan(HitForensics.HALF_WIDTH / Math.max(w.targetDistance, HitForensics.HALF_WIDTH));
+        double[] estimate = viewEstimate();
+        double[] weights = new double[n];
+        double[] densities = new double[n];
+        boolean[] on = new boolean[n];
+        try {
+            validateCache(w, FORENSICS_CACHE);
+            for (int i = 0; i < n; i++) {
+                KnnView<TimestampedGuessFactor> view = views.get(i);
+                weights[i] = view.weight;
+                if (view.effectiveSize() == 0 || !viewOn(view, estimate)) continue;
+                on[i] = true;
+                List<KdTree.Entry<TimestampedGuessFactor>> neighbors =
+                    getNearestNeighbors(view, w, FORENSICS_CACHE);
+                Map<Timestamped, Double> weightMap = view.getDecayWeights(neighbors);
+                double[] scan = new double[neighbors.size()];
+                double[] angle = new double[neighbors.size()];
+                for (int k = 0; k < scan.length; k++) {
+                    KdTree.Entry<TimestampedGuessFactor> entry = neighbors.get(k);
+                    scan[k] = weightMap.get(entry.value)
+                        / Math.sqrt(Math.max(entry.distance, MIN_DISTANCE)) * entry.value.weight();
+                    angle[k] = w.firingAngle(entry.value.guessFactor);
+                }
+                double[] grid = new double[HitForensics.SAMPLES];
+                for (int g = 0; g < grid.length; g++) {
+                    grid[g] = kernelSum(w, scan, angle, HitForensics.sampleGuessFactor(g), bandwidth);
+                }
+                densities[i] = ReplicatorWeights.density(kernelSum(w, scan, angle, hitGf, bandwidth), grid);
+            }
+            replicatorWeights.update(weights, on, densities);
+        } finally {
+            for (KnnView<TimestampedGuessFactor> view : views) view.cachedNeighbors.remove(FORENSICS_CACHE);
+            cacheOwners.remove(FORENSICS_CACHE);
+        }
+    }
+
+    /** MOVE-16: the neighbours' point kernels {@code 2^-|u|} summed at guess factor {@code gf} (u in half-widths). */
+    private static double kernelSum(Wave w, double[] scan, double[] angle, double gf, double bandwidth) {
+        double at = w.firingAngle(gf);
+        double sum = 0;
+        for (int k = 0; k < scan.length; k++) {
+            sum += scan[k] * Math.pow(2.0, -Math.abs(DiaUtils.normalizeAngle(angle[k], at) - at) / bandwidth);
+        }
+        return sum;
     }
 
     /** MOVE-9: the neighbour-cache key the HF danger reading uses, apart from every surf index. */
@@ -968,9 +1052,11 @@ public class MoveController {
         int enabledSize = 0;
         double[] estimate = viewEstimate();
 
-        for (KnnView<TimestampedGuessFactor> view : views) {
+        for (int vi = 0; vi < views.size(); vi++) {
+            KnnView<TimestampedGuessFactor> view = views.get(vi);
             // RES-4: a view holding only faded seeds is as good as empty.
             if (view.effectiveSize() == 0 || !viewOn(view, estimate)) continue;
+            double viewWeight = effectiveWeight(vi);
             enabledSize += view.effectiveSize();
 
             List<KdTree.Entry<TimestampedGuessFactor>> neighbors =
@@ -996,8 +1082,8 @@ public class MoveController {
                 density += scanWeight * kernelMass(xFiringAngle, bandwidth, segments);
                 viewScanWeight += scanWeight;
             }
-            totalScanWeight += viewScanWeight * view.weight;
-            totalDanger += view.weight * density;
+            totalScanWeight += viewScanWeight * viewWeight;
+            totalDanger += viewWeight * density;
         }
 
         // !(x > 0) also catches NaN.
@@ -1031,7 +1117,8 @@ public class MoveController {
         double[] estimate = viewEstimate();
         int n = 0;
         double total = 0;
-        for (KnnView<TimestampedGuessFactor> view : views) {
+        for (int vi = 0; vi < views.size(); vi++) {
+            KnnView<TimestampedGuessFactor> view = views.get(vi);
             if (view.effectiveSize() == 0 || !viewOn(view, estimate)) continue;
             List<KdTree.Entry<TimestampedGuessFactor>> neighbors =
                 getNearestNeighbors(view, w, surfWaveIndex);
@@ -1050,7 +1137,7 @@ public class MoveController {
             // !(x > 0) also catches NaN: such a view adds nothing to the average either.
             if (!(viewScanWeight > 0)) continue;
             dangers[n] = density / viewScanWeight;
-            weights[n] = view.weight * viewScanWeight;
+            weights[n] = effectiveWeight(vi) * viewScanWeight;
             total += weights[n];
             n++;
         }
