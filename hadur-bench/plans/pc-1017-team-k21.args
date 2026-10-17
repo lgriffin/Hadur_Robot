@@ -1,0 +1,29 @@
+# PC card 2026-10-17, team T3: HadurTeam 3.14k21 against all 45 TeamRumble opponents (Bench @FILE, one argument a line)
+--team
+true
+--seeds
+6
+--rounds
+10
+--parallel
+4
+--child-heap
+2G
+--cpu-constant
+1488498
+--set
+team-census45.txt
+--robot-jar
+bisect/hadur2.HadurTeam_3.14k21.jar
+--robot
+hadur2.HadurTeam 3.14k21
+--member
+hadur2.Hadur
+--out
+work/pc-1017-team-k21
+--report
+../docs/bench/local/2026-10-17_team-census-k21.md
+--baseline
+bisect/hadur2.HadurTeam_3.14.jar
+--baseline-robot
+hadur2.HadurTeam 3.14
