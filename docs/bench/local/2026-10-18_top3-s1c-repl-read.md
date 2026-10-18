@@ -16,7 +16,7 @@ cloud. Read with `export_battles.py` per chunk and `data/tools/screen_paired.py`
 
 Damage taken a round 12.13 -> 11.94; dealt 53.21 -> 53.04.
 
-Level overall. The weights trade: band 3 (ranks 66-200, stronger learning guns) loses about as much
+Level overall. The weights trade: band 3 (the stronger, mostly learning guns) loses about as much
 as band 4 gains. Band 3 clears the -0.05 floor the wrong way, so MOVE-16 stays off and is not banked
 on the stack. The lab read (level, no hole) agreed. A likely reason: against adaptive guns the view
 that predicted the last hit is the one the enemy is about to move away from, so chasing it lags.
