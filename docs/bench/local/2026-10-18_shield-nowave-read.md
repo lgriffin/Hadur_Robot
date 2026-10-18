@@ -43,5 +43,12 @@ enemy's last sure shot), and match such a wave to a hit by distance and time at 
 It targets about 5,000 of the 6,932 nowave damage, so at most about +0.08 APS; the shield blocks most
 bullets it has a wave for. Screen: 3.13hjsw vs 3.13hj on the 200 listed robots.
 
-The leak that matters more is `off` (58 damage a battle after the mode is left) and the re-sweep of
-Nullstride's other 95 robots (plan Stage 2), which come next.
+## The re-sweep of Nullstride's other 95 is not worth a run
+
+Plan Stage 2's second half was to re-sweep the 95 robots on Nullstride's list but not ours
+(`hadur-bench/shield-ns-only-313.txt`). They are exactly the robots plan-90 step 3 swept at 8 seeds
+and left off (`data/bench/2026-10-12_hadur-plan90-s2-local_perbot.tsv`): shielding all 95 lost
+130 points in total, and the 31 that leaned positive sum to +81 points, **+0.07 APS** at most, before
+any regression to the mean. DrussGT's +0.56 APS on that group (plan-top3, "Where the 3.04 lives") is
+its movement and gun, not a shield. So Stage 2's expected +0.4 to +0.6 is not there: SHIELD-14 is
+worth up to +0.08, and the re-sweep up to +0.07. The 3 APS has to come from the unlisted field.
