@@ -106,3 +106,17 @@ open loop, since there is no bullet to dodge.
 The natural next step is to close the loop: give the generator a surf (dodging the panel's own
 bullets with the same danger model Hadur uses), so the lab can judge reaction as well as pattern
 and a whole Hadur movement can be tuned offline before any battle.
+
+## The regime switch on the PC (MOVE-17): closed
+
+2026-10-18. The lab's regime switch was built into the surf as MOVE-17 (on each new enemy shot,
+40% chance to flip between the free surf and a steady one that keeps its way round unless
+reversing is 30% safer; patch `hadur-bench/plans/move17-regime.patch`) and screened on the PC:
+3.13hjrg against 3.13hj, 400 opponents, 8 seeds. **-0.23 ± 0.16 pp score share, 153 opponents
+better and 207 worse**; the weakest band is resolved negative (-0.16 ± 0.09). It fails the gate
+and stays out of the stack. Report: `docs/bench/local/2026-10-18_pc-regime-hjrg.md`.
+
+Why it does not carry over: the surf's reversals are chosen by danger, not by a clock, so holding
+a reversal means taking the more dangerous option. The open-loop lab could not see that cost, which
+is the reaction part it already said it was blind to. Pattern-level ideas from the lab need the
+closed-loop lab (a generator with a surf) before they go to the PC.
