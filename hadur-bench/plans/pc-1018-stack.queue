@@ -1,0 +1,22 @@
+# PC card 2026-10-18 (Leigh approved, thread "PC runs for all three styles"): the 1v1 census of the
+# top-3 stack, one step at a time (one bench queue on the PC, RoboRumble workers at 0 until ALLDONE).
+#   ./queue.sh run pc-1018-stack        (or  .\queue.ps1 run pc-1018-stack)
+# Resumable: a restart skips the steps that exited 0.
+#
+# 1v1 (thread "Road to top 3", PR #199). The stack is 3.13hjsw: MOVE-13's stop-and-start (+0.24 APS
+#   on the 400-bot cloud screen vs 3.13) plus SHIELD-14, shield waves for wall-hit shots (+0.12 on
+#   the 200 listed robots vs 3.13hj). Built from the 1v1 branch in a side worktree (its ablations
+#   live there). Paired against the 3.13 release on census-312.txt (1,212 robots), 4 fresh seeds
+#   991-994. Gate: +0.3 APS over the whole field, no band below -0.05.
+# Read: data/tools/screen_paired.py on export_battles.py output (--build 3.13hjsw --baseline-build 3.13).
+
+set HEAP = --child-heap 2G
+set E = --engine 1.11.1
+set COMMON = --skip-build --skip-fetch --rounds 35 --parallel 12 --cpu-constant 1488498 ${HEAP} ${E}
+set SEEDS = --seeds 4 --seed-base 990
+set R313 = --baseline bisect/hadur2.Hadur_3.13.jar --baseline-robot "hadur2.Hadur 3.13"
+
+prep | mkdir -p bisect && { [ -s bisect/hadur2.Hadur_3.13.jar ] || curl -fsSL -o bisect/hadur2.Hadur_3.13.jar https://github.com/lgriffin/Hadur_Robot/releases/download/v3.13/hadur2.Hadur_3.13.jar; } && git fetch -q origin claude/project-thread-du09qh && { git worktree remove --force ../../hadur-top3 2>/dev/null || true; } && git worktree add --force --detach ../../hadur-top3 FETCH_HEAD && (cd ../../hadur-top3/hadur-bench && bash ./build-ablation.sh heatjit,swall) && cp ../../hadur-top3/hadur-bench/bisect/hadur2.Hadur_3.13hjsw.jar bisect/ && ./fetch-opponents.sh --set census-312.txt && mvn -q compile
+
+census | ./bench-top20.sh ${COMMON} ${SEEDS} --set census-312.txt --robot-jar bisect/hadur2.Hadur_3.13hjsw.jar --robot "hadur2.Hadur 3.13hjsw" ${R313} --label pc-1018-stack-census
+  after: prep
