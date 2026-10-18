@@ -659,7 +659,11 @@ public final class DuelController {
             stats.enemyShotsDetected++;
             // SHIELD-5: a shot whose wall hit was inferred on the same interval has no sure power.
             if (shield != null) {
-                if (reading.uncertain()) shield.onEnemyFired();
+                if (reading.uncertain()) {
+                    // SHIELD-14: with the wall switch, an uncertain shot still builds a wave, at the ledger's guess.
+                    if (shield.design().wall) shield.onEnemyShot(fireTime, reading.guess(), true);
+                    else shield.onEnemyFired();
+                }
                 else shield.onEnemyShot(fireTime, reading.corrected());
             }
             // END-4: the smallest bullet the enemy has fired this battle.

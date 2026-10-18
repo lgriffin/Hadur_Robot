@@ -69,6 +69,54 @@ class EnergyLedgerTest {
         assertFalse(r.uncertain());
     }
 
+    /** A ledger whose enemy fired a sure shot of {@code sure} and now moves at 6 px/tick. */
+    private EnergyLedger afterSureShot(double sure) {
+        EnergyLedger l = new EnergyLedger(800, 600);
+        l.newRound();
+        next(l, 100, 6, MID_X, MID_Y);
+        if (sure > 0) {
+            EnergyLedger.Reading r = next(l, 100 - sure, 6, MID_X, MID_Y);
+            assertTrue(r.shot() && !r.uncertain());
+        }
+        return l;
+    }
+
+    @Test
+    @Tag("SHIELD-14")
+    @DisplayName("SHIELD-14: an uncertain shot's guess is the wall split nearest the last sure shot")
+    void guessFollowsLastSureShot() {
+        EnergyLedger l = afterSureShot(2.2031);
+        double energy = 100 - 2.2031 - 3.1947;
+        EnergyLedger.Reading r = next(l, energy, 0, 18, MID_Y);
+        assertTrue(r.uncertain());
+        assertEquals(1.1947, r.corrected(), 1e-4); // wall 2.0 at the scanned speed 6
+        assertEquals(2.1947, r.guess(), 1e-4);     // wall 1.0 at impact speed 4
+    }
+
+    @Test
+    @Tag("SHIELD-14")
+    @DisplayName("SHIELD-14: with no sure shot yet the guess is the corrected power")
+    void guessWithoutReference() {
+        EnergyLedger l = afterSureShot(0);
+        EnergyLedger.Reading r = next(l, 100 - 3.1947, 0, 18, MID_Y);
+        assertTrue(r.uncertain());
+        assertEquals(r.corrected(), r.guess(), 0);
+    }
+
+    @Test
+    @Tag("SHIELD-14")
+    @DisplayName("SHIELD-14: a sure reading's guess is its corrected power, and a new round forgets the sure shot")
+    void guessOfSureReadingAndReset() {
+        EnergyLedger l = afterSureShot(0);
+        EnergyLedger.Reading sure = next(l, 100 - 1.9, 6, MID_X, MID_Y);
+        assertEquals(sure.corrected(), sure.guess(), 0);
+        l.newRound();
+        next(l, 100, 6, MID_X, MID_Y);
+        EnergyLedger.Reading r = next(l, 100 - 3.1947, 0, 18, MID_Y);
+        assertTrue(r.uncertain());
+        assertEquals(r.corrected(), r.guess(), 0);
+    }
+
     @Nested
     @Tag("WAVE-1")
     @DisplayName("explained drops")

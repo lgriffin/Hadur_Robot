@@ -62,6 +62,7 @@ public final class EnergyLedger {
         private final boolean phantom;
         private final boolean hidden;
         private final boolean uncertain;
+        private final double guess;
 
         /**
          * A reading as {@link EnergyLedger#scan} makes it.
@@ -76,6 +77,17 @@ public final class EnergyLedger {
          */
         public Reading(double raw, double corrected, double wallDamage, boolean shot, boolean phantom,
                        boolean hidden, boolean uncertain) {
+            this(raw, corrected, wallDamage, shot, phantom, hidden, uncertain, corrected);
+        }
+
+        /**
+         * A reading with a best-guess power (SHIELD-14), as {@link EnergyLedger#scan} makes it.
+         *
+         * @param guess the power the ledger thinks an uncertain shot most likely had; {@code corrected} otherwise
+         */
+        public Reading(double raw, double corrected, double wallDamage, boolean shot, boolean phantom,
+                       boolean hidden, boolean uncertain, double guess) {
+            this.guess = guess;
             this.raw = raw;
             this.corrected = corrected;
             this.wallDamage = wallDamage;
@@ -124,6 +136,16 @@ public final class EnergyLedger {
             return uncertain;
         }
 
+        /**
+         * SHIELD-14: the power an uncertain shot most likely had: of the powers left by each
+         * impact speed the wall hit could have had, the one nearest the enemy's last sure shot.
+         * Equals {@link #corrected()} for a shot that is not uncertain, and when there is no
+         * previous sure shot this round or no legal candidate.
+         */
+        public double guess() {
+            return guess;
+        }
+
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
@@ -135,19 +157,20 @@ public final class EnergyLedger {
                 && shot == that.shot
                 && phantom == that.phantom
                 && hidden == that.hidden
-                && uncertain == that.uncertain;
+                && uncertain == that.uncertain
+                && Double.compare(guess, that.guess) == 0;
         }
 
         @Override
         public int hashCode() {
-            return java.util.Objects.hash(raw, corrected, wallDamage, shot, phantom, hidden, uncertain);
+            return java.util.Objects.hash(raw, corrected, wallDamage, shot, phantom, hidden, uncertain, guess);
         }
 
         @Override
         public String toString() {
             return "Reading[raw=" + raw + ", corrected=" + corrected + ", wallDamage=" + wallDamage
                 + ", shot=" + shot + ", phantom=" + phantom + ", hidden=" + hidden
-                + ", uncertain=" + uncertain + "]";
+                + ", uncertain=" + uncertain + ", guess=" + guess + "]";
         }
 
         /** The reading for a round's first scan: nothing to compare with, so no shot. */
@@ -175,6 +198,8 @@ public final class EnergyLedger {
     private double lastOurEnergy;
     private long lastOurTime;
     private int drainTicks;
+    /** SHIELD-14: the corrected power of the latest sure shot this round, or NaN. */
+    private double lastSurePower = Double.NaN;
 
     /**
      * A ledger for a field of the given size.
@@ -190,6 +215,7 @@ public final class EnergyLedger {
     /** Forgets the last scan; the next scan only sets the baseline. */
     public void newRound() {
         seen = false;
+        lastSurePower = Double.NaN;
         ourDamage = 0;
         theirRefund = 0;
         collisionDamage = 0;
@@ -287,8 +313,32 @@ public final class EnergyLedger {
         // the split between the two is a guess; clamp to the nearest legal power and flag it.
         boolean uncertain = shot && wall > 0;
         if (uncertain) corrected = Math.max(MIN_SHOT, Math.min(MAX_SHOT, corrected));
+        double guess = uncertain ? guessPower(explained, lastVelocity, elapsed, corrected) : corrected;
+        if (shot && !uncertain) lastSurePower = corrected;
         remember(time, energy, velocity);
-        return new Reading(raw, corrected, wall, shot, rawShot && !shot, shot && !rawShot, uncertain);
+        return new Reading(raw, corrected, wall, shot, rawShot && !shot, shot && !rawShot, uncertain, guess);
+    }
+
+    /**
+     * SHIELD-14: for an uncertain shot, the candidate power {@code explained - wallDamage(impact)}
+     * over the impact speeds {@link #impactSpeeds} lists (for one tick: 1 faster, as scanned,
+     * 1 and 2 slower), kept if it is a legal bullet power, nearest the last sure shot's power.
+     * Falls back to {@code corrected} with no sure shot yet or no legal candidate.
+     */
+    private double guessPower(double explained, double previousVelocity, long elapsed, double corrected) {
+        if (Double.isNaN(lastSurePower)) return corrected;
+        double best = corrected;
+        double bestGap = Double.POSITIVE_INFINITY;
+        for (double impact : impactSpeeds(Math.abs(previousVelocity), elapsed)) {
+            double candidate = explained - Rules.getWallHitDamage(impact);
+            if (candidate < MIN_SHOT - EPSILON || candidate > MAX_SHOT + EPSILON) continue;
+            double gap = Math.abs(candidate - lastSurePower);
+            if (gap < bestGap - EPSILON) {
+                bestGap = gap;
+                best = Math.max(MIN_SHOT, Math.min(MAX_SHOT, candidate));
+            }
+        }
+        return best;
     }
 
     /**

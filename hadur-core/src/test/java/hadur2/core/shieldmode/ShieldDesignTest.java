@@ -313,6 +313,54 @@ class ShieldDesignTest {
         }
     }
 
+    // ---- SHIELD-14: waves from uncertain shots
+
+    @Test
+    @Tag("SHIELD-14")
+    @DisplayName("SHIELD-14: the wall switch parses, stays out of 'all', and leaves SHIPPED off")
+    void wallParses() {
+        ShieldDesign d = ShieldDesign.parse("hold,wall");
+        assertTrue(d.hold && d.wall);
+        assertEquals("hold,wall", d.toString());
+        assertFalse(ShieldDesign.parse("all").wall);
+        assertFalse(ShieldDesign.SHIPPED.wall);
+        assertFalse(ShieldDesign.NONE.wall);
+        assertSame(ShieldDesign.NONE, ShieldDesign.parse(""));
+    }
+
+    @Test
+    @Tag("SHIELD-14")
+    @DisplayName("SHIELD-14: an uncertain wave matches a hit of another power by distance and time")
+    void uncertainWaveMatchesByDistance() {
+        mode("");
+        scan(1);
+        for (long t = 9; t <= 11; t++) scan(t);
+        mode.onEnemyShot(10, 1.0, true); // guessed 1.0
+        double[] p = headOnAt(10, 30, 2.0); // truly a power-2 bullet
+        mode.onHitByBullet(30, 2.0, p[0], p[1], Math.PI);
+        assertTrue(lastSb().startsWith("SB,0,30,first,0,"), lastSb());
+    }
+
+    @Test
+    @Tag("SHIELD-14")
+    @DisplayName("SHIELD-14: a sure wave still needs the exact power; an uncertain one is still limited by distance")
+    void sureWaveNeedsPower() {
+        mode("");
+        scan(1);
+        for (long t = 9; t <= 11; t++) scan(t);
+        mode.onEnemyShot(10, 1.0);
+        double[] p = headOnAt(10, 30, 2.0);
+        mode.onHitByBullet(30, 2.0, p[0], p[1], Math.PI);
+        assertTrue(lastSb().contains(",nowave,"), lastSb());
+
+        mode("");
+        scan(1);
+        for (long t = 9; t <= 11; t++) scan(t);
+        mode.onEnemyShot(10, 1.0, true);
+        mode.onHitByBullet(30, 2.0, MY_X, MY_Y + 300, Math.PI); // far from where the wave is
+        assertTrue(lastSb().contains(",nowave,"), lastSb());
+    }
+
     // ---- the SB record
 
     @Test

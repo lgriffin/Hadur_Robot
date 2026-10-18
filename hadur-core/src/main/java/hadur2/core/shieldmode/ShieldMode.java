@@ -191,6 +191,8 @@ public final class ShieldMode {
         boolean shieldTried;
         boolean shieldFired;
         boolean resolved;
+        /** SHIELD-14: built from an uncertain shot; its power is a guess. */
+        boolean uncertain;
         int ordinal;
     }
 
@@ -473,6 +475,19 @@ public final class ShieldMode {
      * @param power the bullet's power
      */
     public void onEnemyShot(long fireTime, double power) {
+        onEnemyShot(fireTime, power, false);
+    }
+
+    /**
+     * As {@link #onEnemyShot(long, double)}; {@code uncertain} marks a power that is the
+     * ledger's best guess (SHIELD-14), so the wave matches a hit or interception by distance
+     * and time and not by power.
+     *
+     * @param fireTime the tick the bullet left
+     * @param power the bullet's power, or the ledger's guess
+     * @param uncertain whether the power is a guess
+     */
+    public void onEnemyShot(long fireTime, double power, boolean uncertain) {
         if (!listed) return;
         lastEnemyShot = fireTime;
         enemyFiredThisRound = true;
@@ -499,6 +514,7 @@ public final class ShieldMode {
         w.ox = at[2];
         w.oy = at[3];
         w.power = power;
+        w.uncertain = uncertain;
         w.speed = 20 - 3 * power;
         w.headings[0] = ShieldGeometry.bearing(before[2], before[3], before[0], before[1]);
         w.headings[1] = ShieldGeometry.bearing(at[2], at[3], before[0], before[1]);
@@ -716,14 +732,23 @@ public final class ShieldMode {
         EnemyWave best = null;
         double bestErr = Double.POSITIVE_INFINITY;
         for (EnemyWave w : waves) {
-            if (w.resolved || Math.abs(w.power - power) > 0.001) continue;
-            double err = Math.abs(Math.hypot(x - w.ox, y - w.oy) - w.speed * (time - w.time));
+            if (w.resolved) continue;
+            double speed = w.speed;
+            if (w.uncertain) {
+                // SHIELD-14: the wave's power is a guess; judge it by the hit's own speed.
+                speed = 20 - 3 * power;
+            } else if (Math.abs(w.power - power) > 0.001) {
+                continue;
+            }
+            double err = Math.abs(Math.hypot(x - w.ox, y - w.oy) - speed * (time - w.time));
             if (err < bestErr) {
                 bestErr = err;
                 best = w;
             }
         }
-        return best != null && bestErr <= 1.5 * best.speed ? best : null;
+        if (best == null) return null;
+        double tolerance = 1.5 * (best.uncertain ? 20 - 3 * power : best.speed);
+        return bestErr <= tolerance ? best : null;
     }
 
     /**

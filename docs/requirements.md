@@ -1187,7 +1187,7 @@ build without it. RES-14 is retired, and with it RES-9's use (see the retired ta
   jitter itself are unchanged (P4's stricter detector and P6's ignored verdict were level on the
   screen and are not in 3.12).
 
-## Toward Nullstride's shield (SHIELD-8 to SHIELD-13)
+## Toward Nullstride's shield (SHIELD-8 to SHIELD-14)
 
 The plan "Hadur: the road from 87.7 to 90 APS" (2026-10-11, docs/plan-90.md) reads Nullstride
 2.3.3's decompiled shield beside Hadur's and lists where they differ. Each difference is one
@@ -1204,10 +1204,11 @@ Nullstride's list with (docs/bench/local/2026-10-12_plan90-pc-read.md).
 | SHIELD-11 | State | While the stay switch is on, shield mode shall take no exit inside a round, and shall be left for the rest of the battle once the enemy's bullets have done more than 150 damage in it, or when the enemy has not fired by tick 300 of a round. | R9 |
 | SHIELD-12 | Optional | Where the turn switch is on, the heading predictors shall include a fifth head-on base: the firing-point base turned by the enemy's body turn on the firing tick. | R9 |
 | SHIELD-13 | Ubiquitous | The robot shall ship shield mode with the hold, learn, mode and stay switches on and the turn switch off, and its shield list shall hold the 103 robots of Nullstride 2.3.3's list that the 8-seed step 3 sweep admitted by the D5 rule, beside the 97 it held in 3.12. | R9 |
+| SHIELD-14 | Optional | Where the wall switch is on, when the ledger's read of an enemy shot is uncertain (a wall hit inferred on the same scan interval), the core shall build a shield wave at the ledger's best-guess power, the wall-split power nearest the enemy's last sure shot, and match that wave to a hit or an intercepted bullet by distance and time without its power, instead of building none. | R9 |
 
-- **Switches** (`ShieldDesign.parse`): `hold`, `learn`, `mode`, `stay`, `turn`, or `all`. The
+- **Switches** (`ShieldDesign.parse`): `hold`, `learn`, `mode`, `stay`, `turn`, `wall`, or `all` (the first five; `wall` is not in `all`). The
   ablation builds edit the one line `SHIPPED = parse("")` (`hadur-bench/build-ablation.sh`:
-  `shold`, `slearn`, `smode`, `sstay`, `sturn`, `snull` for all five).
+  `shold`, `slearn`, `smode`, `sstay`, `sturn`, `swall`, `snull` for all five).
 - **SHIELD-8.** A disabled enemy (energy 0) is still shot: it cannot fire back. 3.12 fires the
   main gun between shields and at tick 32 of a quiet enemy; in a simulation of Hadur's own
   classes those attack shots were what let bullets through inside about 420 px.
@@ -1230,6 +1231,15 @@ Nullstride's list with (docs/bench/local/2026-10-12_plan90-pc-read.md).
   103 admitted, worth +1.17 APS on the seeds that chose them. Every switch acts only while shield
   mode is on, which needs a listed opponent in a duel, so no other opponent, and no melee or
   team battle, plays differently.
+- **SHIELD-14** (off by default). On the 200 listed robots most of the real `nowave` damage
+  came from uncertain shots (SHIELD-5 builds no wave for them): about 3,046 of 6,932 in 400
+  battles were shots whose corrected power was right, and 1,979 were shots whose wall split
+  picked the wrong impact speed. `EnergyLedger.Reading.guess()` tries `explained - wallDamage(v)`
+  over the impact speeds `impactSpeeds` lists (one tick: scanned, +1, -1, -2), keeps legal
+  powers in [0.1, 3.0], and takes the one nearest the corrected power of the latest sure shot
+  this round; it equals `corrected` for a sure reading and when there is no such reference or
+  candidate. `corrected` and every WAVE-3 behaviour are unchanged. The uncertain wave skips
+  `findWave`'s power filter and measures the hit's distance error at the hit's own speed.
 - **SB records** (measurement, every design): each bullet that hits us from a listed opponent
   writes `SB,round,tick,class,ordinal,predicted,power`, class `off`, `nowave`, `missed`
   (a shield bullet was fired at it), `first` or `unshielded`, so the plan's step 2 can classify
