@@ -18,7 +18,7 @@ set COMMON = --skip-build --skip-fetch --rounds 35 --parallel 12 --cpu-constant 
 set SEEDS = --seeds 8 --seed-base 980
 set HJ = --baseline bisect/hadur2.Hadur_3.13hj.jar --baseline-robot "hadur2.Hadur 3.13hj"
 
-prep | mkdir -p bisect && git fetch -q origin claude/project-thread-du09qh && { git worktree remove --force ../../hadur-regime 2>/dev/null || true; } && git worktree add --force --detach ../../hadur-regime FETCH_HEAD && git -C ../../hadur-regime -c user.name=bench -c user.email=bench@localhost am -q "$(pwd)/plans/move17-regime.patch" && (cd ../../hadur-regime/hadur-bench && bash ./build-ablation.sh heatjit && bash ./build-ablation.sh heatjit,regime) && cp ../../hadur-regime/hadur-bench/bisect/hadur2.Hadur_3.13hj.jar ../../hadur-regime/hadur-bench/bisect/hadur2.Hadur_3.13hjrg.jar bisect/ && ./fetch-opponents.sh --set screen-311.txt && mvn -q compile
+prep | mkdir -p bisect && git fetch -q origin claude/project-thread-du09qh && { git worktree remove --force ../../hadur-regime 2>/dev/null || true; } && git worktree add --force --detach ../../hadur-regime b7aefc0f3 && git -C ../../hadur-regime -c user.name=bench -c user.email=bench@localhost am -q "$(pwd)/plans/move17-regime.patch" && (cd ../../hadur-regime/hadur-bench && bash ./build-ablation.sh heatjit && bash ./build-ablation.sh heatjit,regime) && cp ../../hadur-regime/hadur-bench/bisect/hadur2.Hadur_3.13hj.jar ../../hadur-regime/hadur-bench/bisect/hadur2.Hadur_3.13hjrg.jar bisect/ && ./fetch-opponents.sh --set screen-311.txt && mvn -q compile
 
 hjrg | ./bench-top20.sh ${COMMON} ${SEEDS} --set screen-311.txt --robot-jar bisect/hadur2.Hadur_3.13hjrg.jar --robot "hadur2.Hadur 3.13hjrg" ${HJ} --label pc-regime-hjrg
   after: prep
