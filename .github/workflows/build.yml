@@ -22,7 +22,7 @@ jobs:
         run: python3 test_publish_run.py
         working-directory: data/tools
       - name: Bench analysis and LiteRumble tests
-        run: python3 test_analyse.py && python3 test_literumble.py && python3 test_live_client.py && python3 test_peer_gap.py && python3 test_melee_firepower.py
+        run: python3 test_analyse.py && python3 test_literumble.py && python3 test_live_client.py && python3 test_peer_gap.py && python3 test_melee_firepower.py && python3 test_census_classify.py
         working-directory: data/tools
       - name: Requirement coverage
         if: always()
