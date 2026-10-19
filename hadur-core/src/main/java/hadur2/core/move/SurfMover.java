@@ -77,6 +77,22 @@ public class SurfMover {
     private final Map<SurfOption, Point2D.Double> surfOptionDestinations = new HashMap<>();
     /** The wave surfed last tick; a different one resets the destinations and the cache. */
     private Wave lastWaveSurfed;
+    /** MOVE-12: whether the escape-room position term scales the first wave's danger (off by default). */
+    private boolean escapeRoomTerm;
+    /** MOVE-14: whether the protean pick may replace the least-danger option (off by default). */
+    private boolean proteanOn;
+    /** MOVE-14: the mean dwell of a protean pick, in ticks. */
+    private int proteanMeanDwell = 1;
+    /** MOVE-14: whether this tick is in the protean window; set by the duel each tick. */
+    private boolean proteanWindow;
+    /** MOVE-14: the replaying die the pick and its dwell are drawn from. */
+    private final ProteanPick protean = new ProteanPick();
+    /** MOVE-14: whether {@link #proteanOption} is a live pick; false when the window is closed. */
+    private boolean proteanHeld;
+    /** MOVE-14: the pick being kept, and the ticks it still stands including this one. */
+    private SurfOption proteanOption = SurfOption.STOP;
+    private int proteanDwellLeft;
+
     /** The distance, in px, the attack angles steer toward. */
     private double desiredDistance = DEFAULT_DISTANCE;
     /** The surf mode for the wave being surfed, and the one the next wave starts with (MOVE-2). */
@@ -113,6 +129,64 @@ public class SurfMover {
      */
     public void setDesiredDistance(double desiredDistance) {
         this.desiredDistance = desiredDistance;
+    }
+
+    /**
+     * MOVE-12: whether the first wave's danger, in the three-option mode and in go-to
+     * surfing alike, is also multiplied by {@link EscapeRoom#multiplier} at the move's end
+     * (where the wave passes), the wave's source and its bullet speed. Off by default; when
+     * off the scores are those without the term.
+     *
+     * @param on whether the position term is applied
+     */
+    public void setEscapeRoomTerm(boolean on) {
+        this.escapeRoomTerm = on;
+    }
+
+    /**
+     * MOVE-14: whether the protean pick replaces the least-danger option while the window is
+     * open ({@link #setProteanWindow}), and the mean dwell of a pick in ticks. Off by default;
+     * when off, or outside the window, the surf takes the least-danger option as before.
+     *
+     * @param on whether the protean pick is used
+     * @param meanDwell the mean ticks a pick stands; 1 or less re-picks every tick
+     */
+    public void setProtean(boolean on, int meanDwell) {
+        this.proteanOn = on;
+        this.proteanMeanDwell = meanDwell;
+    }
+
+    /**
+     * MOVE-15: whether the protean pick uses its hot setting ({@link ProteanPick#setHot}). Off
+     * by default.
+     *
+     * @param hot whether to use the hot setting
+     */
+    public void setProteanHot(boolean hot) {
+        protean.setHot(hot);
+    }
+
+    /**
+     * MOVE-14: whether this tick is in the protean window (the enemy's gun is cool and no real
+     * bullet is close). The duel says so each tick; closing the window drops the pick held, so
+     * the next window draws afresh.
+     *
+     * @param inWindow whether the protean pick may act this tick
+     */
+    public void setProteanWindow(boolean inWindow) {
+        this.proteanWindow = inWindow;
+        if (!inWindow) proteanHeld = false;
+    }
+
+    /**
+     * MOVE-14: seeds the protean die from the enemy's name and the round, so the draws replay.
+     *
+     * @param enemyName the opponent's name
+     * @param round the round number
+     */
+    public void seedProtean(String enemyName, int round) {
+        protean.seed(enemyName, round);
+        proteanHeld = false;
     }
 
     /** The target distance, in px, last set. */
@@ -182,6 +256,7 @@ public class SurfMover {
         lastWaveSurfed = null;
         goToPoint = null;
         rammerActive = false;
+        proteanHeld = false;
     }
 
     /**
@@ -277,24 +352,37 @@ public class SurfMover {
      */
     private void surf(BotOrders.Builder orders, RobotState myState,
                       MoveController moveCtrl, Wave surfWave, int wavesToSurf) {
+        // MOVE-14: the pick is spent only in the window, with the switch on.
+        boolean proteanNow = proteanOn && proteanWindow;
         // A new wave: its neighbours differ and last wave's destinations no longer apply.
         if (surfWave != lastWaveSurfed) {
             moveCtrl.clearNeighborCache();
             lastWaveSurfed = surfWave;
             lastSurfDestination = null;
             stopDestination = null;
+            // MOVE-14: a wave first surfed draws a new pick.
+            proteanHeld = false;
         }
 
         boolean goingClockwise = lastSurfOption == SurfOption.CLOCKWISE;
-        updateSurfDangers(myState, moveCtrl, wavesToSurf, goingClockwise);
+        // MOVE-14: the protean pick needs every option's danger complete, so none is cut off.
+        updateSurfDangers(myState, moveCtrl, wavesToSurf, goingClockwise, proteanNow);
 
         double ccwDanger = surfOptionDangers.getOrDefault(SurfOption.COUNTER_CLOCKWISE, 0.0);
         double stopDanger = surfOptionDangers.getOrDefault(SurfOption.STOP, 0.0);
         double cwDanger = surfOptionDangers.getOrDefault(SurfOption.CLOCKWISE, 0.0);
 
+        boolean takeStop = stopDanger <= ccwDanger && stopDanger <= cwDanger;
+        boolean takeClockwise = cwDanger < ccwDanger;
+        if (proteanNow) {
+            SurfOption drawn = proteanOption(moveCtrl, surfWave, ccwDanger, stopDanger, cwDanger);
+            takeStop = drawn == SurfOption.STOP;
+            takeClockwise = drawn == SurfOption.CLOCKWISE;
+        }
+
         Point2D.Double surfDest;
         SurfOption chosen;
-        if (stopDanger <= ccwDanger && stopDanger <= cwDanger) {
+        if (takeStop) {
             chosen = SurfOption.STOP;
             // Stop: speed 0, still turned toward the last orbit's destination. The point is
             // fixed while the stop lasts, so the stop predicted next tick is the same stop.
@@ -306,7 +394,7 @@ public class SurfMover {
             lastSurfDestination = null;
         } else {
             orders.maxVelocity(8.0);
-            lastSurfOption = cwDanger < ccwDanger
+            lastSurfOption = takeClockwise
                 ? SurfOption.CLOCKWISE : SurfOption.COUNTER_CLOCKWISE;
             chosen = lastSurfOption;
             lastSurfDestination = surfOptionDestinations.get(lastSurfOption);
@@ -316,6 +404,13 @@ public class SurfMover {
 
         // MOVE-8: the plan just chosen, for the gun to read.
         moveCtrl.publishPlan(surfOptionChains.getOrDefault(chosen, List.of()));
+        // MOVE-10: what each option planned on this wave, for the hit forensics.
+        PlanInterval[] firsts = new PlanInterval[SurfOption.values().length];
+        for (SurfOption o : SurfOption.values()) {
+            List<PlanInterval> c = surfOptionChains.getOrDefault(o, List.of());
+            if (!c.isEmpty() && c.get(0).wave == surfWave) firsts[o.ordinal()] = c.get(0);
+        }
+        moveCtrl.publishOptions(firsts, chosen.ordinal());
 
         // Drive the same way the prediction did: toward the destination, wall-smoothed on
         // the orbit's side, reversing rather than turning more than 90 degrees.
@@ -328,18 +423,64 @@ public class SurfMover {
     /**
      * Rates the three options from where we stand. Each option's total is passed on as the
      * cutoff for the next, so an option already worse than the best so far is not looked
-     * at beyond its first wave.
+     * at beyond its first wave; with {@code complete} (MOVE-14) none is cut off, so every
+     * option's total is whole.
      */
     private void updateSurfDangers(RobotState myState, MoveController moveCtrl,
-                                    int wavesToSurf, boolean goingClockwise) {
+                                    int wavesToSurf, boolean goingClockwise, boolean complete) {
         double bestDanger = Double.POSITIVE_INFINITY;
         for (SurfOption option : SurfOption.values()) {
             double danger = checkDanger(myState, moveCtrl, myState, option,
                 goingClockwise, 0, wavesToSurf, bestDanger, new RobotStateLog());
             surfOptionDangers.put(option, danger);
             surfOptionChains.put(option, lastChain);
-            bestDanger = Math.min(bestDanger, danger);
+            if (!complete) bestDanger = Math.min(bestDanger, danger);
         }
+    }
+
+    /**
+     * MOVE-14: the option the protean pick takes this tick: the one kept while its dwell
+     * stands, else a new draw from {@link ProteanPick} over the three totals, with the views'
+     * disagreement on each option's first-wave interval as its spread, and a new dwell.
+     *
+     * @param moveCtrl the danger views
+     * @param surfWave the first wave
+     * @param ccwDanger the counter-clockwise total
+     * @param stopDanger the stop's total
+     * @param cwDanger the clockwise total
+     * @return the option to take, never null
+     */
+    private SurfOption proteanOption(MoveController moveCtrl, Wave surfWave,
+                                      double ccwDanger, double stopDanger, double cwDanger) {
+        if (proteanHeld && proteanDwellLeft > 1) {
+            proteanDwellLeft--;
+            return proteanOption;
+        }
+        SurfOption[] options = SurfOption.values();
+        double[] dangers = {ccwDanger, stopDanger, cwDanger};
+        double[] spread = new double[options.length];
+        double meanViewDanger = 0;
+        double[] d = new double[moveCtrl.viewCount()];
+        double[] w = new double[d.length];
+        for (SurfOption o : options) {
+            List<PlanInterval> c = surfOptionChains.getOrDefault(o, List.of());
+            if (c.isEmpty() || c.get(0).wave != surfWave) continue;
+            PlanInterval first = c.get(0);
+            // The interval is angle +/- bandwidth, as the surf scored it.
+            Wave.Intersection x = new Wave.Intersection(
+                (first.low + first.high) / 2, (first.high - first.low) / 2);
+            int n = moveCtrl.viewDangers(surfWave, x, 0, d, w);
+            double mean = 0;
+            for (int i = 0; i < n; i++) mean += w[i] * d[i];
+            double variance = 0;
+            for (int i = 0; i < n; i++) variance += w[i] * (d[i] - mean) * (d[i] - mean);
+            spread[o.ordinal()] = Math.sqrt(variance);
+            meanViewDanger += mean / options.length;
+        }
+        proteanOption = options[protean.pick(dangers, spread, meanViewDanger)];
+        proteanDwellLeft = protean.dwell(proteanMeanDwell);
+        proteanHeld = true;
+        return proteanOption;
     }
 
     /**
@@ -512,6 +653,11 @@ public class SurfMover {
         danger /= timeToImpact;
 
         danger *= distancingDanger(start, passed, surfWave.sourceLocation);
+        // MOVE-12: prefer ends where we keep our escape angle and the enemy loses his.
+        if (escapeRoomTerm && surfWaveIndex == 0) {
+            danger *= EscapeRoom.multiplier(passed, surfWave.sourceLocation,
+                surfWave.bulletSpeed(), battleField);
+        }
         return danger;
     }
 

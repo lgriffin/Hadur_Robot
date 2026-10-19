@@ -1,0 +1,26 @@
+# Plan top 3, stage 0 (docs/plan-top3.md): where the bullets that hit Hadur come from.
+# No behaviour change: this checkout's robot is 3.13 plus MOVE-9's HF record (one line per bullet
+# that hits us in a duel; the replay fixtures' orders are unchanged).
+#   ./queue.sh run top3-s0        (or  .\queue.ps1 run top3-s0)
+# Stop the RoboRumble workers first and keep the PC otherwise idle; one queue at a time.
+#
+#   hf        Hadur 3.13 with HF records on the whole field (census-312.txt), 4 seeds 931-934: the
+#             gate census's seeds, so its rows pair with 3.13's gate rows. Read with
+#             data/tools/hit_forensics.py. About 2 hours.
+#   drussgt   DrussGT 3.1.16 as a census subject on the same field and seeds. About 2 hours.
+#   beepboop  BeepBoop 2.0 likewise. About 2 hours.
+# Damage taken per opponent, Hadur against each subject: data/tools/peer_gap.py bench.
+
+set HEAP = --child-heap 2G
+set E = --engine 1.11.1
+set COMMON = --skip-build --skip-fetch --rounds 35 --parallel 12 --cpu-constant 1488498 ${HEAP} ${E}
+set SEEDS = --seeds 4 --seed-base 930
+
+prep | mkdir -p bisect && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur2.Hadur_3.13.jar bisect/hadur2.Hadur_3.13hf.jar && ./fetch-opponents.sh --set census-312.txt
+
+hf       | ./bench-top20.sh ${COMMON} ${SEEDS} --set census-312.txt --robot-jar bisect/hadur2.Hadur_3.13hf.jar --robot "hadur2.Hadur 3.13" --label top3-s0-hf
+  after: prep
+drussgt  | ./bench-top20.sh ${COMMON} ${SEEDS} --set census-312-drussgt.txt --robot-jar opponents/jk.mega.DrussGT_3.1.16.jar --robot "jk.mega.DrussGT 3.1.16" --label top3-s0-drussgt
+  after: hf
+beepboop | ./bench-top20.sh ${COMMON} ${SEEDS} --set census-312-beepboop.txt --robot-jar opponents/kc.mega.BeepBoop_2.0.jar --robot "kc.mega.BeepBoop 2.0" --label top3-s0-beepboop
+  after: drussgt

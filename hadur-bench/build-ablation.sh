@@ -7,6 +7,8 @@
 #   ./build-ablation.sh mir1            # ... 3.8.5nm
 #   ./build-ablation.sh ram2,mir1       # ... 3.8.5nrnm
 #   ./build-ablation.sh shield-all      # ... 3.8.5sa
+#   ./build-ablation.sh silent          # ... no gun at all, for the movement lab (lab variants: silent,<x>)
+#   ./build-ablation.sh silent,heat     # ... 3.13sihw: the lab's silent Hadur with the MOVE-11 heat wave
 #
 # Ablations (each a one-line edit of the duel, checked to apply exactly once):
 #   ram2  RAM-2 off: never escape a confirmed rammer; RAM-1's full-power rule stays (3.4's play)
@@ -32,6 +34,50 @@
 #   away  "never close in" (3.12 P5): DIST-1 never steps in (the target stays at the opening's,
 #         650 px for a stranger), END-1 keeps that distance, and the surf corrects being too
 #         close with the orbit's 1.65 gain instead of 0.6.
+#   heat  MOVE-11: the gun-heat wave is on: when the enemy's gun is about to be cool and fewer than two
+#         firing waves are in the air, the surf also dodges the shot it has not fired yet. Suffix hw.
+#   flt59  MOVE-5's flattener threshold 4.5% -> 5.9% (Diamond's). Suffix f5.
+#   flt8  MOVE-5's flattener threshold 4.5% -> 8% (near DrussGT's 8-9%). Suffix f8.
+#   heatjit  MOVE-13: the gun-heat wave taken afresh each tick (the first MOVE-11 build): the surf
+#         re-ranks every tick while the enemy's gun is ready and stops and starts. Suffix hj.
+#   wallesc  MOVE-12: the first wave's danger is also multiplied by BeepBoop's escape-angle position term
+#         (our escape room against his, at the move's end), in the three options and in go-to. Suffix we.
+#   protean  MOVE-14: the protean pick: while the enemy's gun is cool and no real bullet is within 10 ticks,
+#         the surf draws its option from a softmin over the three dangers (temperature from the views'
+#         disagreement, safety-capped) with a replaying chaotic die, instead of taking the least danger;
+#         the dwell stays 1 tick (re-pick every tick). Suffix pr.
+#   pdw3  MOVE-14: protean with a mean dwell of 3 ticks. Suffix p3.
+#   pdw8  MOVE-14: protean with a mean dwell of 8 ticks. Suffix p8.
+#   pc10  MOVE-14 protean's temperature gain c raised from 1 to 10 (combine with protean). Suffix pc.
+#   phot  MOVE-14 protean near-uniform over the options at most twice the best's danger: the
+#         temperature floor 0.02 -> 0.5 of the best danger, the cap 0.5 -> 1.0 (combine with protean). Suffix ph.
+#   split  MOVE-15: movement by the enemy's gun: once 6 of the enemy's hits on us this battle are counted and
+#         60% are of the learned class, the surf holds the gun-heat wave and takes the hot protean pick
+#         (floor 0.5, cap 1.0, dwell 1); until then it takes the wave afresh each tick (stop-and-start).
+#         Sets HEAT_WAVE and GUN_SPLIT, so build it alone: not combined with heat or heatjit (they edit the
+#         same HEAT_WAVE line, which the second edit would not find), nor with protean or phot (unneeded). Suffix sp.
+#   gungate  MOVE-17: the gun-heat wave is dropped once the enemy's gun is called learning (MOVE-15's count: 6 hits,
+#         60% learned), so the stop-and-start runs only against other guns. Meant to combine with heatjit
+#         (heatjit,gungate -> hjgg); sets only GUN_GATE. With split the split wins. Suffix gg.
+#   pressure  POW-12 (the plan's POW-11): while our rolling hit rate less its margin is at least 12%, theirs plus its margin at
+#         most 9%, and our energy is above 12, the duel gun skips the cubic power-down and fires a base power of 2.5
+#         beyond 150 px (2.95 inside stays); the lead-aware regime wins where it holds. Sets PRESSURE only; combines
+#         with heatjit,swall,flt8. Suffix pw.
+#   pdown  POW-12's weaker form: under the same gate only the power-down is skipped, the base power stays 1.95. Sets
+#         PRESSURE and PRESSURE_BASE_ONLY_POWERDOWN, so build it alone: not with pressure. Suffix pd.
+#   pwall  POW-12 gate variant: pressure power on every duel aim with no rate gate (energy floor and lead-regime yield kept).
+#         Sets PRESSURE and PRESSURE_ALWAYS; build it alone: not with pressure or pdown; wins over pwc. Suffix pa.
+#   pwc  POW-12 gate variant: the window centres only (ours >= 12%, theirs <= 9%, both windows >= 30 outcomes, no margins).
+#         Sets PRESSURE and PRESSURE_CENTRES; build it alone: not with pressure, pdown or pwall. Suffix pz (pc is pc10's).
+#   repl  MOVE-16: the danger views' weights evolve by the replicator equation: each enemy bullet that hits us
+#         multiplies a view's weight by how well it predicted the bullet's angle against the weighted average
+#         (every view keeps 2% of the share), so the view that reads this gun takes over. Suffix rp.
+#   silent  the Duel never fires: drive() is entered with WEAVE-3's fire permission withdrawn (mayFire = false),
+#         which both of the duel's fire sites (the aimed shot and the shield's) honour; the radar,
+#         aim, waves and movement all still run. Hadur then scores only by survival, which is what
+#         the movement lab measures (docs/bench/move-lab.md). Melee and team play are unchanged.
+#         Suffix si. Lab variants are built as silent,<x>, e.g. ./build-ablation.sh silent,heat
+#         (suffix sihw), and fought against lab-panel.txt.
 #   tpost (team only) the melee posture is always NORMAL while Hadur has living teammates: on a team,
 #         two enemies hit by our own members read as "fighting each other", so LET_THEM_FIGHT backs
 #         this member away from its teammates' fight (docs/bench/team-lower-half.md).
@@ -96,6 +142,8 @@
 #   smode  SHIELD-10: learned offsets are the most frequent error, not the mean.
 #   sstay  SHIELD-11: no exit inside a round; off for the battle past 150 damage or a silent enemy.
 #   sturn  SHIELD-12: the body-turn head-on base.
+#   swall  SHIELD-14: a shot whose power the ledger is unsure of (a wall hit inferred on its scan
+#         interval) builds a shield wave at the ledger's best-guess power instead of none. Suffix sw.
 #   snull  all five at once: Nullstride's design as read from its jar.
 #   strim (3.13) the 22 listed robots that 3.13 lost to in both plan90-gate runs come off the shield
 #         list, so they are fought in normal mode: does the shield still pay against them
@@ -126,6 +174,9 @@ move="$src/hadur-core/src/main/java/hadur2/core/move/MoveController.java"
 book="$src/hadur-core/src/main/java/hadur2/core/adapt/OpeningBook.java"
 shields="$src/hadur-core/src/main/java/hadur2/core/shieldmode/ShieldList.java"
 design="$src/hadur-core/src/main/java/hadur2/core/shieldmode/ShieldDesign.java"
+movedesign="$src/hadur-core/src/main/java/hadur2/core/duel/MoveDesign.java"
+powerdesign="$src/hadur-core/src/main/java/hadur2/core/duel/PowerDesign.java"
+protean="$src/hadur-core/src/main/java/hadur2/core/move/ProteanPick.java"
 listdata="$src/hadur-robot/src/main/java/hadur2/ShieldListData.java"
 budget="$src/hadur-core/src/main/java/hadur2/core/policy/TickBudget.java"
 dist="$src/hadur-core/src/main/java/hadur2/core/policy/DistancePolicy.java"
@@ -206,6 +257,69 @@ for a in "${list[@]}"; do
             edit "$detector" "public static final int MIN_INTERCEPTS = 4;" "public static final int MIN_INTERCEPTS = 10;"
             edit "$detector" "public static final double MIN_SHARE = 0.25;" "public static final double MIN_SHARE = 0.5;"
             version="${version}s5" ;;
+        heat)
+            edit "$movedesign" "static final boolean HEAT_WAVE = false;" "static final boolean HEAT_WAVE = true;"
+            version="${version}hw" ;;
+        flt59)
+            edit "$move" "public static final double FLATTENER_THRESHOLD = 4.5;" "public static final double FLATTENER_THRESHOLD = 5.9;"
+            version="${version}f5" ;;
+        flt8)
+            edit "$move" "public static final double FLATTENER_THRESHOLD = 4.5;" "public static final double FLATTENER_THRESHOLD = 8.0;"
+            version="${version}f8" ;;
+        heatjit)
+            edit "$movedesign" "static final boolean HEAT_WAVE = false;" "static final boolean HEAT_WAVE = true;"
+            edit "$movedesign" "static final boolean HEAT_HOLD = true;" "static final boolean HEAT_HOLD = false;"
+            version="${version}hj" ;;
+        split)
+            edit "$movedesign" "static final boolean HEAT_WAVE = false;" "static final boolean HEAT_WAVE = true;"
+            edit "$movedesign" "static final boolean GUN_SPLIT = false;" "static final boolean GUN_SPLIT = true;"
+            version="${version}sp" ;;
+        gungate)
+            edit "$movedesign" "static final boolean GUN_GATE = false;" "static final boolean GUN_GATE = true;"
+            version="${version}gg" ;;
+        pressure)
+            edit "$powerdesign" "static final boolean PRESSURE = false;" "static final boolean PRESSURE = true;"
+            version="${version}pw" ;;
+        pdown)
+            edit "$powerdesign" "static final boolean PRESSURE = false;" "static final boolean PRESSURE = true;"
+            edit "$powerdesign" "static final boolean PRESSURE_BASE_ONLY_POWERDOWN = false;" "static final boolean PRESSURE_BASE_ONLY_POWERDOWN = true;"
+            version="${version}pd" ;;
+        pwall)
+            edit "$powerdesign" "static final boolean PRESSURE = false;" "static final boolean PRESSURE = true;"
+            edit "$powerdesign" "static final boolean PRESSURE_ALWAYS = false;" "static final boolean PRESSURE_ALWAYS = true;"
+            version="${version}pa" ;;
+        pwc)
+            edit "$powerdesign" "static final boolean PRESSURE = false;" "static final boolean PRESSURE = true;"
+            edit "$powerdesign" "static final boolean PRESSURE_CENTRES = false;" "static final boolean PRESSURE_CENTRES = true;"
+            version="${version}pz" ;;
+        repl)
+            edit "$movedesign" "static final boolean REPLICATOR = false;" "static final boolean REPLICATOR = true;"
+            version="${version}rp" ;;
+        wallesc)
+            edit "$movedesign" "static final boolean ESCAPE_ROOM = false;" "static final boolean ESCAPE_ROOM = true;"
+            version="${version}we" ;;
+        protean)
+            edit "$movedesign" "static final boolean PROTEAN = false;" "static final boolean PROTEAN = true;"
+            version="${version}pr" ;;
+        pdw3)
+            edit "$movedesign" "static final boolean PROTEAN = false;" "static final boolean PROTEAN = true;"
+            edit "$movedesign" "static final int PROTEAN_DWELL = 1;" "static final int PROTEAN_DWELL = 3;"
+            version="${version}p3" ;;
+        pc10)
+            edit "$protean" "static final double C = 1.0;" "static final double C = 10.0;"
+            version="${version}pc" ;;
+        phot)
+            edit "$protean" "static final double T0_SHARE = 0.02;" "static final double T0_SHARE = 0.5;"
+            edit "$protean" "static final double DELTA = 0.5;" "static final double DELTA = 1.0;"
+            version="${version}ph" ;;
+        pdw8)
+            edit "$movedesign" "static final boolean PROTEAN = false;" "static final boolean PROTEAN = true;"
+            edit "$movedesign" "static final int PROTEAN_DWELL = 1;" "static final int PROTEAN_DWELL = 8;"
+            version="${version}p8" ;;
+        silent)
+            edit "$duel" "public void drive(BotInput in, BotOrders.Builder orders, int level, boolean mayFire) {" \
+                "public void drive(BotInput in, BotOrders.Builder orders, int level, boolean mayFire) { mayFire = false;"
+            version="${version}si" ;;
         tpost)
             edit "$mctl" "MeleeStrategy.Plan plan = strategy.evaluate(tracker, s.me, s.energy, s.others, s.time);" \
                 "MeleeStrategy.Plan plan = s.teammates.isEmpty() ? strategy.evaluate(tracker, s.me, s.energy, s.others, s.time) : MeleeStrategy.Plan.normal();"
@@ -318,7 +432,7 @@ for a in "${list[@]}"; do
                 edit "$listdata" "\"$r\"," '"",'
             done
             version="${version}tr" ;;
-        shold|slearn|smode|sstay|sturn|snull)
+        shold|slearn|smode|sstay|sturn|swall|snull)
             # One switch of shieldmode.ShieldDesign (SHIELD-8 to SHIELD-12) added to SHIPPED.
             case "$a" in
                 shold) flag=hold; suffix=sh ;;
@@ -326,12 +440,13 @@ for a in "${list[@]}"; do
                 smode) flag=mode; suffix=sm ;;
                 sstay) flag=stay; suffix=ss ;;
                 sturn) flag=turn; suffix=st ;;
+                swall) flag=wall; suffix=sw ;;
                 snull) flag=all; suffix=sn ;;
             esac
             edit "$design" 'public static final ShieldDesign SHIPPED = parse("' \
                 "public static final ShieldDesign SHIPPED = parse(\"$flag,"
             version="${version}${suffix}" ;;
-        *) echo "unknown ablation: $a (ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, gtol, gstick, gwhy, gwin, gk, shold, slearn, smode, sstay, sturn, snull, strim)" >&2; exit 2 ;;
+        *) echo "unknown ablation: $a (ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, flt59, flt8, split, wallesc, protean, pdw3, pdw8, pc10, phot, repl, pressure, pdown, pwall, pwc, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, gtol, gstick, gwhy, gwin, gk, shold, slearn, smode, sstay, sturn, snull, strim)" >&2; exit 2 ;;
     esac
 done
 

@@ -106,6 +106,10 @@ public class MoveController {
     private final FlattenerFormula sampleFormula = new FlattenerFormula();
     /** Where hits on us go, for the opponent profile's surf seed; null until the opening sets it. */
     private Consumer<double[]> sampleSink;
+    /** MOVE-16: the views' multipliers, kept for the battle (not reset by {@link #initRound}). */
+    private final ReplicatorWeights replicatorWeights;
+    /** MOVE-16: whether the multipliers are learned and applied; off, the weights are fixed. */
+    private boolean replicator;
 
     /**
      * A controller with empty views and no waves, for a battle on {@code battleField}.
@@ -118,6 +122,29 @@ public class MoveController {
         this.predictor = predictor;
         this.waveManager = new WaveManager();
         initSurfViews();
+        this.replicatorWeights = new ReplicatorWeights(views.size());
+    }
+
+    /**
+     * MOVE-16: whether each enemy bullet that hits us moves the danger views' weights toward the
+     * views that predicted it (the replicator equation, {@link ReplicatorWeights}). Off, the
+     * weights stay fixed and the multipliers are never read.
+     *
+     * @param on true to learn and apply the multipliers
+     */
+    public void setReplicator(boolean on) {
+        this.replicator = on;
+    }
+
+    /** MOVE-16: each view's multiplier, in the order the views were built; all 1 until learned. */
+    double[] replicatorMultipliers() {
+        return replicatorWeights.multipliers();
+    }
+
+    /** MOVE-16: the view's weight in the danger average: its own, times its multiplier when on. */
+    private double effectiveWeight(int i) {
+        KnnView<TimestampedGuessFactor> view = views.get(i);
+        return replicator ? view.weight * replicatorWeights.multiplier(i) : view.weight;
     }
 
     /**
@@ -386,6 +413,14 @@ public class MoveController {
         brokenWavePowers.clear();
         ourBullets.clear();
         plan = List.of();
+        lastPlans.clear();
+        lastPlanTimes.clear();
+        lastOptions.clear();
+        lastChosen.clear();
+        lastOptionTimes.clear();
+        newestWave = null;
+        provisionalTime = -1;
+        provisionalAnchor = -1;
         shadowedWaves = 0;
         shadowComputations = 0;
         // A new version, so no wave can match a stale one and skip its shadow computation.
@@ -405,6 +440,21 @@ public class MoveController {
     private final List<OurBullet> ourBullets = new ArrayList<>();
     /** MOVE-8: where the surf's plan puts us on each wave in the air; empty when it has none. */
     private List<PlanInterval> plan = List.of();
+    /** MOVE-9: the last plan interval published for each wave this round, by identity. */
+    private final Map<Wave, PlanInterval> lastPlans = new IdentityHashMap<>();
+    /** MOVE-9: the tick each of {@link #lastPlans} was published. */
+    private final Map<Wave, Long> lastPlanTimes = new IdentityHashMap<>();
+    /**
+     * MOVE-10: each three-option surf option's first plan on a wave, by option ordinal: the
+     * first tick the wave was surfed, when the options were furthest apart.
+     */
+    private final Map<Wave, PlanInterval[]> lastOptions = new IdentityHashMap<>();
+    /** MOVE-10: the ordinal of the option taken when {@link #lastOptions} was published. */
+    private final Map<Wave, Integer> lastChosen = new IdentityHashMap<>();
+    /** MOVE-10: the tick {@link #lastOptions} was published. */
+    private final Map<Wave, Long> lastOptionTimes = new IdentityHashMap<>();
+    /** The tick of the latest {@link #checkWaves}, the duel tick a plan is published on. */
+    private long lastCheckTime = -1;
     /** MOVE-1: waves that have had a shadow this round. */
     private int shadowedWaves;
     /** Bumped whenever the bullets in flight change; a wave's shadows are current at one version. */
@@ -494,6 +544,63 @@ public class MoveController {
      */
     public void publishPlan(List<PlanInterval> intervals) {
         plan = intervals.isEmpty() ? List.of() : List.copyOf(intervals);
+        // MOVE-9: the latest plan on each wave, kept after it stops being published.
+        for (PlanInterval i : plan) {
+            lastPlans.put(i.wave, i);
+            lastPlanTimes.put(i.wave, lastCheckTime);
+        }
+    }
+
+    /**
+     * MOVE-9: the last interval the surf published for wave {@code w} this round, or null when
+     * it never planned on it.
+     */
+    public PlanInterval lastPlanFor(Wave w) {
+        return lastPlans.get(w);
+    }
+
+    /**
+     * MOVE-10: the three-option surf's plan on its first wave for every option it rated this
+     * tick, by option ordinal (a null slot for an option with no plan there), and the ordinal
+     * it took. Only the first publication on each wave is kept, until the round ends: by the
+     * tick before a wave arrives every option leads to the same place, so only the first
+     * says whether another option would have dodged a hit. Measurement only.
+     *
+     * @param options one interval or null per option, all on the same wave; copied
+     * @param chosen the ordinal of the option taken
+     */
+    public void publishOptions(PlanInterval[] options, int chosen) {
+        Wave w = null;
+        for (PlanInterval i : options) if (i != null) w = i.wave;
+        if (w == null) return;
+        if (lastOptions.containsKey(w)) return;
+        lastOptions.put(w, options.clone());
+        lastChosen.put(w, chosen);
+        lastOptionTimes.put(w, lastCheckTime);
+    }
+
+    /** MOVE-10: the tick {@link #lastOptionsFor} was published, or -1 when there is none. */
+    public long lastOptionTime(Wave w) {
+        Long t = lastOptionTimes.get(w);
+        return t == null ? -1 : t;
+    }
+
+    /** MOVE-10: the options last published for wave {@code w}, or null when there are none. */
+    public PlanInterval[] lastOptionsFor(Wave w) {
+        PlanInterval[] o = lastOptions.get(w);
+        return o == null ? null : o.clone();
+    }
+
+    /** MOVE-10: the ordinal of the option taken with {@link #lastOptionsFor}, or -1. */
+    public int lastChosenFor(Wave w) {
+        Integer c = lastChosen.get(w);
+        return c == null ? -1 : c;
+    }
+
+    /** MOVE-9: the tick {@link #lastPlanFor} was published, or -1 when there is none. */
+    public long lastPlanTime(Wave w) {
+        Long t = lastPlanTimes.get(w);
+        return t == null ? -1 : t;
     }
 
     /** MOVE-8: withdraws the plan, for a tick on which the surf does not drive. */
@@ -588,6 +695,7 @@ public class MoveController {
      * @param myLocation our position this tick, in px
      */
     public void checkWaves(long currentTime, Point2D.Double myLocation) {
+        lastCheckTime = currentTime;
         // Only location and time matter here: a wave's position test and the precise
         // intersection read our 36 x 36 px hit box, which Robocode keeps axis-aligned
         // whatever our heading.
@@ -659,6 +767,8 @@ public class MoveController {
         // The bullet lies on its firing line, so its bearing from the source is the exact
         // angle it was fired at.
         double hitGF = hitWave.guessFactor(bulletLocation);
+        // MOVE-16: rate the hit before any view learns it, so each view is judged on a prediction.
+        if (replicator) updateReplicator(hitWave, hitGF);
         for (KnnView<TimestampedGuessFactor> view : views) {
             if (!view.logBulletHits) continue;
             view.logWave(hitWave, new TimestampedGuessFactor(
@@ -670,6 +780,91 @@ public class MoveController {
             sample[11] = (hitWave.lateralVelocity() + 0.1) / 8.1;
             sample[12] = hitGF;
             sampleSink.accept(sample);
+        }
+    }
+
+    /**
+     * MOVE-16: the replicator step for a bullet fired at {@code hitGf} on wave {@code w}. Each view
+     * that is on with data (the test {@link #getDangerScore} applies) is rated by its density at
+     * that guess factor, normalised over the {@link HitForensics#SAMPLES} guess factors in
+     * [-1, 1]; {@link ReplicatorWeights#update} moves the multipliers. Read-only on the views:
+     * it uses the cache slot of {@link #dangerPercentile} and empties it after.
+     */
+    private void updateReplicator(Wave w, double hitGf) {
+        int n = views.size();
+        double bandwidth = Math.atan(HitForensics.HALF_WIDTH / Math.max(w.targetDistance, HitForensics.HALF_WIDTH));
+        double[] estimate = viewEstimate();
+        double[] weights = new double[n];
+        double[] densities = new double[n];
+        boolean[] on = new boolean[n];
+        try {
+            validateCache(w, FORENSICS_CACHE);
+            for (int i = 0; i < n; i++) {
+                KnnView<TimestampedGuessFactor> view = views.get(i);
+                weights[i] = view.weight;
+                if (view.effectiveSize() == 0 || !viewOn(view, estimate)) continue;
+                on[i] = true;
+                List<KdTree.Entry<TimestampedGuessFactor>> neighbors =
+                    getNearestNeighbors(view, w, FORENSICS_CACHE);
+                Map<Timestamped, Double> weightMap = view.getDecayWeights(neighbors);
+                double[] scan = new double[neighbors.size()];
+                double[] angle = new double[neighbors.size()];
+                for (int k = 0; k < scan.length; k++) {
+                    KdTree.Entry<TimestampedGuessFactor> entry = neighbors.get(k);
+                    scan[k] = weightMap.get(entry.value)
+                        / Math.sqrt(Math.max(entry.distance, MIN_DISTANCE)) * entry.value.weight();
+                    angle[k] = w.firingAngle(entry.value.guessFactor);
+                }
+                double[] grid = new double[HitForensics.SAMPLES];
+                for (int g = 0; g < grid.length; g++) {
+                    grid[g] = kernelSum(w, scan, angle, HitForensics.sampleGuessFactor(g), bandwidth);
+                }
+                densities[i] = ReplicatorWeights.density(kernelSum(w, scan, angle, hitGf, bandwidth), grid);
+            }
+            replicatorWeights.update(weights, on, densities);
+        } finally {
+            for (KnnView<TimestampedGuessFactor> view : views) view.cachedNeighbors.remove(FORENSICS_CACHE);
+            cacheOwners.remove(FORENSICS_CACHE);
+        }
+    }
+
+    /** MOVE-16: the neighbours' point kernels {@code 2^-|u|} summed at guess factor {@code gf} (u in half-widths). */
+    private static double kernelSum(Wave w, double[] scan, double[] angle, double gf, double bandwidth) {
+        double at = w.firingAngle(gf);
+        double sum = 0;
+        for (int k = 0; k < scan.length; k++) {
+            sum += scan[k] * Math.pow(2.0, -Math.abs(DiaUtils.normalizeAngle(angle[k], at) - at) / bandwidth);
+        }
+        return sum;
+    }
+
+    /** MOVE-9: the neighbour-cache key the HF danger reading uses, apart from every surf index. */
+    private static final int FORENSICS_CACHE = -1;
+
+    /**
+     * MOVE-9: how the danger views rate the angle a bullet came from, as the share of the
+     * wave's guess factors in [-1, 1] ({@link HitForensics#SAMPLES} of them) they score less
+     * dangerous. Call it before {@link #logBulletHit} so the hit itself does not teach the
+     * reading. It uses a cache slot of its own and empties it after, so the surf's cached
+     * neighbours and its choices are untouched.
+     *
+     * @param w the wave that carried the bullet
+     * @param hitGf the guess factor the bullet was fired at
+     * @return the percentile in [0, 1]
+     */
+    public double dangerPercentile(Wave w, double hitGf) {
+        double bandwidth = Math.atan(HitForensics.HALF_WIDTH / Math.max(w.targetDistance, HitForensics.HALF_WIDTH));
+        double[] samples = new double[HitForensics.SAMPLES];
+        try {
+            double at = getDangerScore(w, new Wave.Intersection(w.firingAngle(hitGf), bandwidth), FORENSICS_CACHE);
+            for (int i = 0; i < samples.length; i++) {
+                samples[i] = getDangerScore(w, new Wave.Intersection(
+                    w.firingAngle(HitForensics.sampleGuessFactor(i)), bandwidth), FORENSICS_CACHE);
+            }
+            return HitForensics.percentile(samples, at);
+        } finally {
+            for (KnnView<TimestampedGuessFactor> view : views) view.cachedNeighbors.remove(FORENSICS_CACHE);
+            cacheOwners.remove(FORENSICS_CACHE);
         }
     }
 
@@ -690,6 +885,19 @@ public class MoveController {
             true, botName, bulletPower);
     }
 
+    /** The movement wave added last (MOVE-11's candidate). */
+    private Wave newestWave;
+    /** The tick whose newest wave may be surfed as a provisional one, or -1 (MOVE-11). */
+    private long provisionalTime = -1;
+    /**
+     * MOVE-11: the fire time of the movement wave held as the provisional one, or -1. It is
+     * held while the gun stays ready, so the surf ranks its options against one wave rather
+     * than a new one each tick (which made it reverse almost every tick).
+     */
+    private long provisionalAnchor = -1;
+    /** MOVE-13: whether the provisional wave is held (true) or taken afresh each tick. */
+    private boolean provisionalHold = true;
+
     /**
      * Adds an enemy wave. {@code HadurCore} adds one every scan, at the power the enemy last
      * fired; only the one {@link #updateFiringWave} marks becomes a firing wave.
@@ -698,6 +906,54 @@ public class MoveController {
      */
     public void addWave(Wave w) {
         waveManager.addWave(w);
+        newestWave = w;
+    }
+
+    /**
+     * MOVE-11: whether this tick's newest movement wave may be surfed as the enemy's next
+     * shot. The duel decides (the enemy's gun is about to be cool, the switch is on) and
+     * says so each tick; the move package never reads the enemy's gun heat.
+     *
+     * @param ready whether the gun-heat wave is wanted this tick
+     * @param time the tick
+     */
+    /**
+     * MOVE-13: whether the provisional wave is held while the gun stays ready (MOVE-11) or taken
+     * afresh each tick, which makes the surf re-rank its options every tick.
+     *
+     * @param hold true to hold
+     */
+    public void setProvisionalHold(boolean hold) {
+        provisionalHold = hold;
+    }
+
+    public void setProvisionalReady(boolean ready, long time) {
+        provisionalTime = ready ? time : -1;
+        if (!ready) provisionalAnchor = -1;
+    }
+
+    /**
+     * The movement wave surfed in place of a bullet not yet fired, or null (MOVE-11). The wave
+     * of the first ready tick is held while the gun stays ready; once it has gone or been found
+     * to be a real shot, this tick's newest wave takes its place. A held wave about to pass
+     * {@code myState} is not offered, but stays held until it has gone, so a predicted state
+     * never moves the hold.
+     */
+    private Wave provisionalWave(RobotState myState) {
+        if (!provisionalHold) provisionalAnchor = -1;
+        Wave held = provisionalAnchor < 0 ? null : waveManager.getWaveByFireTime(provisionalAnchor);
+        if (held == null || held.firingWave || held.altWave) {
+            held = null;
+            provisionalAnchor = -1;
+            Wave w = newestWave;
+            if (w != null && w.fireTime == provisionalTime && !w.firingWave && !w.altWave) {
+                held = w;
+                provisionalAnchor = w.fireTime;
+            }
+        }
+        if (held == null) return null;
+        return held.checkWavePosition(myState, Wave.WavePosition.BREAKING_CENTER).getIndex()
+            >= Wave.WavePosition.BREAKING_CENTER.getIndex() ? null : held;
     }
 
     /**
@@ -748,8 +1004,17 @@ public class MoveController {
     public Wave findSurfableWave(int surfIndex, RobotState myState) {
         // BREAKING_CENTER is the first unsurfable position: once the wave's front will pass
         // our centre next tick it is too late to dodge it.
-        return waveManager.findSurfableWave(surfIndex, myState,
+        Wave real = waveManager.findSurfableWave(surfIndex, myState,
             Wave.WavePosition.BREAKING_CENTER);
+        if (real != null || provisionalTime < 0) return real;
+        // MOVE-11: with fewer than two real waves in the air, the next shot's wave follows
+        // them. It is a movement wave still, so no statistic ever counts it.
+        if (surfIndex >= 2) return null;
+        if (surfIndex > 0 && waveManager.findSurfableWave(surfIndex - 1, myState,
+            Wave.WavePosition.BREAKING_CENTER) == null) {
+            return null;
+        }
+        return provisionalWave(myState);
     }
 
     /**
@@ -787,9 +1052,11 @@ public class MoveController {
         int enabledSize = 0;
         double[] estimate = viewEstimate();
 
-        for (KnnView<TimestampedGuessFactor> view : views) {
+        for (int vi = 0; vi < views.size(); vi++) {
+            KnnView<TimestampedGuessFactor> view = views.get(vi);
             // RES-4: a view holding only faded seeds is as good as empty.
             if (view.effectiveSize() == 0 || !viewOn(view, estimate)) continue;
+            double viewWeight = effectiveWeight(vi);
             enabledSize += view.effectiveSize();
 
             List<KdTree.Entry<TimestampedGuessFactor>> neighbors =
@@ -815,8 +1082,8 @@ public class MoveController {
                 density += scanWeight * kernelMass(xFiringAngle, bandwidth, segments);
                 viewScanWeight += scanWeight;
             }
-            totalScanWeight += viewScanWeight * view.weight;
-            totalDanger += view.weight * density;
+            totalScanWeight += viewScanWeight * viewWeight;
+            totalDanger += viewWeight * density;
         }
 
         // !(x > 0) also catches NaN.
@@ -824,6 +1091,84 @@ public class MoveController {
             return defaultDanger(w, segments, bandwidth);
         }
         return totalDanger / totalScanWeight;
+    }
+
+    /**
+     * MOVE-14: each danger view's own score at {@code intersection}, and its share of the
+     * average, for the protean pick's spread. The views are the ones {@link #getDangerScore}
+     * averages, with the same kernel and shadows: view {@code i}'s danger is its density over
+     * its scan weight, and its share is its weight times its scan weight, normalised to sum
+     * to 1, so the weighted mean of the dangers is {@link #getDangerScore} (less its no-data
+     * fallback). Read-only: it only reads the neighbour cache, as {@link #getDangerScore} does.
+     *
+     * @param w the wave being surfed
+     * @param intersection the firing angles that would hit us
+     * @param surfWaveIndex the wave's index among the surfable waves, which keys the cache
+     * @param dangers receives each counted view's danger; at least as long as the view list
+     * @param weights receives each counted view's normalised weight; same length
+     * @return how many views were counted (0 when none is on with data)
+     */
+    int viewDangers(Wave w, Wave.Intersection intersection, int surfWaveIndex,
+                    double[] dangers, double[] weights) {
+        double dangerAngle = intersection.angle;
+        double bandwidth = intersection.bandwidth;
+        validateCache(w, surfWaveIndex);
+        List<double[]> segments = w.transmission(intersection);
+        double[] estimate = viewEstimate();
+        int n = 0;
+        double total = 0;
+        for (int vi = 0; vi < views.size(); vi++) {
+            KnnView<TimestampedGuessFactor> view = views.get(vi);
+            if (view.effectiveSize() == 0 || !viewOn(view, estimate)) continue;
+            List<KdTree.Entry<TimestampedGuessFactor>> neighbors =
+                getNearestNeighbors(view, w, surfWaveIndex);
+            Map<Timestamped, Double> weightMap = view.getDecayWeights(neighbors);
+            double density = 0;
+            double viewScanWeight = 0;
+            for (KdTree.Entry<TimestampedGuessFactor> entry : neighbors) {
+                TimestampedGuessFactor tsgf = entry.value;
+                double scanWeight = weightMap.get(tsgf)
+                    / Math.sqrt(Math.max(entry.distance, MIN_DISTANCE)) * tsgf.weight();
+                double xFiringAngle = DiaUtils.normalizeAngle(
+                    w.firingAngle(tsgf.guessFactor), dangerAngle);
+                density += scanWeight * kernelMass(xFiringAngle, bandwidth, segments);
+                viewScanWeight += scanWeight;
+            }
+            // !(x > 0) also catches NaN: such a view adds nothing to the average either.
+            if (!(viewScanWeight > 0)) continue;
+            dangers[n] = density / viewScanWeight;
+            weights[n] = effectiveWeight(vi) * viewScanWeight;
+            total += weights[n];
+            n++;
+        }
+        if (!(total > 0)) return 0;
+        for (int i = 0; i < n; i++) weights[i] /= total;
+        return n;
+    }
+
+    /** MOVE-14: how many danger views there are, the size of {@link #viewDangers}' arrays. */
+    int viewCount() {
+        return views.size();
+    }
+
+    /**
+     * MOVE-14: the fewest ticks before a real (firing) wave that has not yet hit us or met
+     * one of our bullets reaches our centre, as we stand now; infinity when there is none.
+     * A wave already past our centre is not counted. Read-only.
+     *
+     * @param myState our state now
+     * @return the ticks, 0 or more, or {@link Double#POSITIVE_INFINITY}
+     */
+    public double soonestFiringImpact(RobotState myState) {
+        double[] soonest = {Double.POSITIVE_INFINITY};
+        waveManager.forAllWaves(w -> {
+            if (!w.firingWave || w.processedBulletHit()) return;
+            double remaining = myState.location.distance(w.sourceLocation)
+                - w.distanceTraveled(myState.time);
+            if (remaining < 0) return;
+            soonest[0] = Math.min(soonest[0], remaining / w.bulletSpeed());
+        });
+        return soonest[0];
     }
 
     /**

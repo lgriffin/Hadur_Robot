@@ -22,6 +22,9 @@ import java.util.Locale;
  *     {@link #SILENT_TICKS} of a round.</li>
  * <li>{@code turn} (SHIELD-12): a fifth head-on base that adds the enemy's body turn on the
  *     firing tick.</li>
+ * <li>{@code wall} (SHIELD-14): a shot whose power is uncertain (a wall hit inferred on its scan
+ *     interval) builds a wave at the ledger's best-guess power instead of none. Not part of
+ *     {@code all}, which stays Nullstride's five.</li>
  * </ul>
  */
 public final class ShieldDesign {
@@ -34,7 +37,7 @@ public final class ShieldDesign {
     public static final long SILENT_TICKS = 300;
 
     /** 3.12's shield: every switch off. */
-    public static final ShieldDesign NONE = new ShieldDesign(false, false, false, false, false);
+    public static final ShieldDesign NONE = new ShieldDesign(false, false, false, false, false, false);
 
     /** The design the robot ships (SHIELD-13). The ablation builds edit this one line. */
     public static final ShieldDesign SHIPPED = parse("hold,learn,mode,stay");
@@ -49,25 +52,30 @@ public final class ShieldDesign {
     public final boolean stay;
     /** SHIELD-12: the body-turn base. */
     public final boolean turn;
+    /** SHIELD-14: an uncertain shot (a wall hit inferred on its interval) builds a wave at the ledger's best-guess power. */
+    public final boolean wall;
 
-    private ShieldDesign(boolean hold, boolean learn, boolean mode, boolean stay, boolean turn) {
+    private ShieldDesign(boolean hold, boolean learn, boolean mode, boolean stay, boolean turn,
+                         boolean wall) {
         this.hold = hold;
         this.learn = learn;
         this.mode = mode;
         this.stay = stay;
         this.turn = turn;
+        this.wall = wall;
     }
 
     /**
      * The design a comma-separated list of switch names turns on ({@code hold}, {@code learn},
-     * {@code mode}, {@code stay}, {@code turn}, or {@code all}); blank is {@link #NONE}.
+     * {@code mode}, {@code stay}, {@code turn}, {@code wall}, or {@code all}); blank is {@link #NONE}.
      *
      * @param flags the switches
      * @return the design
      * @throws IllegalArgumentException for an unknown name
      */
     public static ShieldDesign parse(String flags) {
-        boolean hold = false, learn = false, mode = false, stay = false, turn = false;
+        boolean hold = false, learn = false, mode = false, stay = false, turn = false,
+            wall = false;
         for (String raw : flags.split(",")) {
             String f = raw.trim().toLowerCase(Locale.ROOT);
             switch (f) {
@@ -77,12 +85,13 @@ public final class ShieldDesign {
                 case "mode": mode = true; break;
                 case "stay": stay = true; break;
                 case "turn": turn = true; break;
+                case "wall": wall = true; break;
                 case "all": hold = learn = mode = stay = turn = true; break;
                 default: throw new IllegalArgumentException("unknown shield switch: " + raw);
             }
         }
-        if (!(hold || learn || mode || stay || turn)) return NONE;
-        return new ShieldDesign(hold, learn, mode, stay, turn);
+        if (!(hold || learn || mode || stay || turn || wall)) return NONE;
+        return new ShieldDesign(hold, learn, mode, stay, turn, wall);
     }
 
     /** The head-on bases the predictors use: four, or five with the body-turn base. */
@@ -98,6 +107,7 @@ public final class ShieldDesign {
         if (mode) b.append(",mode");
         if (stay) b.append(",stay");
         if (turn) b.append(",turn");
+        if (wall) b.append(",wall");
         return b.length() == 0 ? "none" : b.substring(1);
     }
 }

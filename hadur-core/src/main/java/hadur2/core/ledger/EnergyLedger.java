@@ -62,6 +62,7 @@ public final class EnergyLedger {
         private final boolean phantom;
         private final boolean hidden;
         private final boolean uncertain;
+        private final double guess;
 
         /**
          * A reading as {@link EnergyLedger#scan} makes it.
@@ -76,6 +77,17 @@ public final class EnergyLedger {
          */
         public Reading(double raw, double corrected, double wallDamage, boolean shot, boolean phantom,
                        boolean hidden, boolean uncertain) {
+            this(raw, corrected, wallDamage, shot, phantom, hidden, uncertain, corrected);
+        }
+
+        /**
+         * A reading with a best-guess power (SHIELD-14), as {@link EnergyLedger#scan} makes it.
+         *
+         * @param guess the power the ledger thinks an uncertain shot most likely had; {@code corrected} otherwise
+         */
+        public Reading(double raw, double corrected, double wallDamage, boolean shot, boolean phantom,
+                       boolean hidden, boolean uncertain, double guess) {
+            this.guess = guess;
             this.raw = raw;
             this.corrected = corrected;
             this.wallDamage = wallDamage;
@@ -124,6 +136,16 @@ public final class EnergyLedger {
             return uncertain;
         }
 
+        /**
+         * SHIELD-14: the power an uncertain shot most likely had: of the powers left by each
+         * impact speed the wall hit could have had, the one nearest the enemy's last sure shot.
+         * Equals {@link #corrected()} for a shot that is not uncertain, and when there is no
+         * previous sure shot this round or no legal candidate.
+         */
+        public double guess() {
+            return guess;
+        }
+
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
@@ -135,19 +157,20 @@ public final class EnergyLedger {
                 && shot == that.shot
                 && phantom == that.phantom
                 && hidden == that.hidden
-                && uncertain == that.uncertain;
+                && uncertain == that.uncertain
+                && Double.compare(guess, that.guess) == 0;
         }
 
         @Override
         public int hashCode() {
-            return java.util.Objects.hash(raw, corrected, wallDamage, shot, phantom, hidden, uncertain);
+            return java.util.Objects.hash(raw, corrected, wallDamage, shot, phantom, hidden, uncertain, guess);
         }
 
         @Override
         public String toString() {
             return "Reading[raw=" + raw + ", corrected=" + corrected + ", wallDamage=" + wallDamage
                 + ", shot=" + shot + ", phantom=" + phantom + ", hidden=" + hidden
-                + ", uncertain=" + uncertain + "]";
+                + ", uncertain=" + uncertain + ", guess=" + guess + "]";
         }
 
         /** The reading for a round's first scan: nothing to compare with, so no shot. */
@@ -170,6 +193,13 @@ public final class EnergyLedger {
     private double ourDamage;
     private double theirRefund;
     private double collisionDamage;
+    /** WAVE-5: our energy and tick at the last {@link #ourTick}, and the drain ticks since the last scan. */
+    private boolean ourSeen;
+    private double lastOurEnergy;
+    private long lastOurTime;
+    private int drainTicks;
+    /** SHIELD-14: the corrected power of the latest sure shot this round, or NaN. */
+    private double lastSurePower = Double.NaN;
 
     /**
      * A ledger for a field of the given size.
@@ -185,9 +215,35 @@ public final class EnergyLedger {
     /** Forgets the last scan; the next scan only sets the baseline. */
     public void newRound() {
         seen = false;
+        lastSurePower = Double.NaN;
         ourDamage = 0;
         theirRefund = 0;
         collisionDamage = 0;
+        ourSeen = false;
+        drainTicks = 0;
+    }
+
+    /**
+     * WAVE-5: our own energy at {@code time}, offered every tick of a duel (scanned or not).
+     * Robocode's inactivity rule takes {@link Rules#INACTIVITY_DRAIN} from every robot on a
+     * turn when none has been damaged for a long while. If ours fell by exactly that since
+     * the previous tick and nothing of ours explains it, this is a drain turn, and the enemy
+     * lost the same 0.1 on it: the next {@link #scan} takes it off the enemy's drop, so it
+     * is not read as a 0.1 shot and does not turn a real shot into a different power.
+     *
+     * @param time the tick
+     * @param energy our energy this tick
+     * @param explained whether something of ours moves our energy: a shot left last tick, or
+     *     a bullet hit us, our bullet hit, or a wall or robot was hit this tick
+     */
+    public void ourTick(long time, double energy, boolean explained) {
+        if (ourSeen && time == lastOurTime + 1 && !explained
+                && Math.abs((lastOurEnergy - energy) - Rules.INACTIVITY_DRAIN) < EPSILON) {
+            drainTicks++;
+        }
+        ourSeen = true;
+        lastOurEnergy = energy;
+        lastOurTime = time;
     }
 
     /**
@@ -221,7 +277,7 @@ public final class EnergyLedger {
      *
      * <p>The drop since the last scan is corrected in this order (WAVE-1): our bullets'
      * damage and collision damage are taken off it, the enemy's refund for hitting us is
-     * added back to it, and then any wall damage is taken off. What is left is a shot only
+     * added back to it, the inactivity drain of WAVE-5 is taken off, and then any wall damage is taken off. What is left is a shot only
      * if it lies in [0.1, 3.0] (WAVE-2). The held corrections are cleared either way, so each
      * applies to one scan only.</p>
      *
@@ -243,7 +299,9 @@ public final class EnergyLedger {
         // needs it to tell braking from a crash.
         long elapsed = Math.max(1, time - lastTime);
         double raw = lastEnergy - energy;
-        double explained = raw - ourDamage + theirRefund - collisionDamage;
+        // WAVE-5: each drain tick since the last scan took 0.1 off the enemy too.
+        double explained = raw - ourDamage + theirRefund - collisionDamage
+            - drainTicks * Rules.INACTIVITY_DRAIN;
         // A collision can stop the enemy as dead as a wall can, and the two cannot be told
         // apart, so no wall hit is inferred on a scan that follows a collision.
         double wall = collisionDamage == 0
@@ -255,8 +313,32 @@ public final class EnergyLedger {
         // the split between the two is a guess; clamp to the nearest legal power and flag it.
         boolean uncertain = shot && wall > 0;
         if (uncertain) corrected = Math.max(MIN_SHOT, Math.min(MAX_SHOT, corrected));
+        double guess = uncertain ? guessPower(explained, lastVelocity, elapsed, corrected) : corrected;
+        if (shot && !uncertain) lastSurePower = corrected;
         remember(time, energy, velocity);
-        return new Reading(raw, corrected, wall, shot, rawShot && !shot, shot && !rawShot, uncertain);
+        return new Reading(raw, corrected, wall, shot, rawShot && !shot, shot && !rawShot, uncertain, guess);
+    }
+
+    /**
+     * SHIELD-14: for an uncertain shot, the candidate power {@code explained - wallDamage(impact)}
+     * over the impact speeds {@link #impactSpeeds} lists (for one tick: 1 faster, as scanned,
+     * 1 and 2 slower), kept if it is a legal bullet power, nearest the last sure shot's power.
+     * Falls back to {@code corrected} with no sure shot yet or no legal candidate.
+     */
+    private double guessPower(double explained, double previousVelocity, long elapsed, double corrected) {
+        if (Double.isNaN(lastSurePower)) return corrected;
+        double best = corrected;
+        double bestGap = Double.POSITIVE_INFINITY;
+        for (double impact : impactSpeeds(Math.abs(previousVelocity), elapsed)) {
+            double candidate = explained - Rules.getWallHitDamage(impact);
+            if (candidate < MIN_SHOT - EPSILON || candidate > MAX_SHOT + EPSILON) continue;
+            double gap = Math.abs(candidate - lastSurePower);
+            if (gap < bestGap - EPSILON) {
+                bestGap = gap;
+                best = Math.max(MIN_SHOT, Math.min(MAX_SHOT, candidate));
+            }
+        }
+        return best;
     }
 
     /**
@@ -362,5 +444,6 @@ public final class EnergyLedger {
         ourDamage = 0;
         theirRefund = 0;
         collisionDamage = 0;
+        drainTicks = 0;
     }
 }

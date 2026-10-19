@@ -149,6 +149,7 @@ EARS requirements from the Hadur 2 technical direction. This file is the source 
 | MOVE-7 | Event | When a wave in flight is removed or reordered, movement shall discard the neighbour cache of every wave whose surf index changed. | R6 |
 | PHYS-1 | Ubiquitous | The movement predictor shall stop a predicted robot at a wall as the engine does. | R6 |
 | WAVE-4 | Event | When a movement wave's bullet power is updated, its wall distances shall be recomputed. | R6 |
+| WAVE-5 | Event | When our own energy falls by exactly 0.1 on a tick of a duel and no shot of ours, bullet hit, wall hit or robot hit explains it, the core shall take 0.1 off the enemy's energy drop for that tick (the engine's inactivity drain) before classifying the drop as a fired bullet, for every such tick since the last scan. | R9 |
 | MEM-11 | Ubiquitous | The adapter shall list the data directory at most once per battle and answer every later name, size and age question from an index it keeps current. | R8 |
 | MEM-12 | Ubiquitous | The library shall read a stored profile to look for seeds only when its file is larger than 1 KB. | R8 |
 | MEM-13 | Unwanted | If a save would take the store past 90% of its quota after every other seed is gone, then the library shall delete the least recently written profiles until it fits, and write. | R8 |
@@ -1204,7 +1205,7 @@ build without it. RES-14 is retired, and with it RES-9's use (see the retired ta
   jitter itself are unchanged (P4's stricter detector and P6's ignored verdict were level on the
   screen and are not in 3.12).
 
-## Toward Nullstride's shield (SHIELD-8 to SHIELD-13)
+## Toward Nullstride's shield (SHIELD-8 to SHIELD-14)
 
 The plan "Hadur: the road from 87.7 to 90 APS" (2026-10-11, docs/plan-90.md) reads Nullstride
 2.3.3's decompiled shield beside Hadur's and lists where they differ. Each difference is one
@@ -1221,10 +1222,11 @@ Nullstride's list with (docs/bench/local/2026-10-12_plan90-pc-read.md).
 | SHIELD-11 | State | While the stay switch is on, shield mode shall take no exit inside a round, and shall be left for the rest of the battle once the enemy's bullets have done more than 150 damage in it, or when the enemy has not fired by tick 300 of a round. | R9 |
 | SHIELD-12 | Optional | Where the turn switch is on, the heading predictors shall include a fifth head-on base: the firing-point base turned by the enemy's body turn on the firing tick. | R9 |
 | SHIELD-13 | Ubiquitous | The robot shall ship shield mode with the hold, learn, mode and stay switches on and the turn switch off, and its shield list shall hold the 103 robots of Nullstride 2.3.3's list that the 8-seed step 3 sweep admitted by the D5 rule, beside the 97 it held in 3.12. | R9 |
+| SHIELD-14 | Optional | Where the wall switch is on, when the ledger's read of an enemy shot is uncertain (a wall hit inferred on the same scan interval), the core shall build a shield wave at the ledger's best-guess power, the wall-split power nearest the enemy's last sure shot, and match that wave to a hit or an intercepted bullet by distance and time without its power, instead of building none. | R9 |
 
-- **Switches** (`ShieldDesign.parse`): `hold`, `learn`, `mode`, `stay`, `turn`, or `all`. The
+- **Switches** (`ShieldDesign.parse`): `hold`, `learn`, `mode`, `stay`, `turn`, `wall`, or `all` (the first five; `wall` is not in `all`). The
   ablation builds edit the one line `SHIPPED = parse("")` (`hadur-bench/build-ablation.sh`:
-  `shold`, `slearn`, `smode`, `sstay`, `sturn`, `snull` for all five).
+  `shold`, `slearn`, `smode`, `sstay`, `sturn`, `swall`, `snull` for all five).
 - **SHIELD-8.** A disabled enemy (energy 0) is still shot: it cannot fire back. 3.12 fires the
   main gun between shields and at tick 32 of a quiet enemy; in a simulation of Hadur's own
   classes those attack shots were what let bullets through inside about 420 px.
@@ -1247,10 +1249,65 @@ Nullstride's list with (docs/bench/local/2026-10-12_plan90-pc-read.md).
   103 admitted, worth +1.17 APS on the seeds that chose them. Every switch acts only while shield
   mode is on, which needs a listed opponent in a duel, so no other opponent, and no melee or
   team battle, plays differently.
+- **SHIELD-14** (off by default). On the 200 listed robots most of the real `nowave` damage
+  came from uncertain shots (SHIELD-5 builds no wave for them): about 3,046 of 6,932 in 400
+  battles were shots whose corrected power was right, and 1,979 were shots whose wall split
+  picked the wrong impact speed. `EnergyLedger.Reading.guess()` tries `explained - wallDamage(v)`
+  over the impact speeds `impactSpeeds` lists (one tick: scanned, +1, -1, -2), keeps legal
+  powers in [0.1, 3.0], and takes the one nearest the corrected power of the latest sure shot
+  this round; it equals `corrected` for a sure reading and when there is no such reference or
+  candidate. `corrected` and every WAVE-3 behaviour are unchanged. The uncertain wave skips
+  `findWave`'s power filter and measures the hit's distance error at the hit's own speed.
 - **SB records** (measurement, every design): each bullet that hits us from a listed opponent
   writes `SB,round,tick,class,ordinal,predicted,power`, class `off`, `nowave`, `missed`
   (a shield bullet was fired at it), `first` or `unshielded`, so the plan's step 2 can classify
   what still gets through from the battle logs (`data/tools/shield_leaks.py`).
+
+## Top 3, stage 0: where the hits come from (MOVE-9 to MOVE-17, POW-12)
+
+The plan "from 7th to top 3" (2026-10-15, docs/plan-top3.md) finds the 1v1 gap to the robots
+above is bullet damage taken from robots on no shield list. Stage 0 measures why those bullets
+get through before any movement change is tried. MOVE-9 writes a record and changes no order:
+the replay fixtures' orders are unchanged, and their telemetry snapshots differ only by the HF
+lines.
+
+| ID | Pattern | Requirement | Stage |
+|---|---|---|---|
+| MOVE-9 | Event | When an enemy bullet hits us in a duel, the core shall write an HF record of the hit's class (`headon`, `linear`, `learned`, or `nowave` when no firing wave carried it), its guess factor, where a linear gun would have aimed, the share of the wave's guess factors the danger views scored less dangerous than the hit's, the distance at fire time, the power, whether the Duel drove, and where the hit lay against the surf's last plan on that wave (its offset in plan half-widths, the plan's danger and its age in ticks), read before the hit teaches the views and without changing the surf's neighbour cache. | R9 |
+| MOVE-10 | Event | When an enemy bullet hits us in a duel, the HF record shall also say, for each of the three-option surf's options (counter-clockwise, stop, clockwise) as first rated on that wave, whether the hit lay inside that option's plan interval, marking the option taken, and how many ticks before the hit they were rated. | R9 |
+| MOVE-11 | State | While the gun-heat wave switch is on, in a duel, and the enemy's estimated gun heat is no more than one tick's cooling, with fewer than two firing waves surfable, the surf shall treat the movement wave of the first tick of that ready spell (held until it has gone or is found to be a real shot, then the newest wave), at the power of the enemy's last detected shot (1.9 before the first), as one more wave to surf after the firing waves, and that wave shall feed no hit-rate, flattener or HF record; with the switch off the surf shall be unchanged. | R9 |
+| MOVE-12 | State | While the escape-room switch is on, in a duel, the surf shall multiply the danger it scores for the first surfable wave, in the three-option and the go-to modes alike, by the ratio of our enemy's in-field escape room to the square of ours: `restriction(our end, enemy)` over `restriction(enemy, our end)` squared, where `restriction` is the in-field maximum escape angles on both sides summed over twice `asin(8 / bullet speed)`, our end being where we are when the wave reaches our centre; with the switch off the surf's scores shall be unchanged. | R9 |
+| MOVE-13 | State | While the gun-heat wave switch is on and its hold switch is off, in a duel, the surf shall take this tick's newest movement wave as the provisional wave on every ready tick instead of holding one; with the hold switch on the surf shall hold it as MOVE-11 states. | R9 |
+| MOVE-14 | State | While the protean switch is on, in a duel, and the enemy's estimated gun heat is no more than one tick's cooling with no firing wave within 10 ticks of us, the surf shall choose among its three options by the protean pick: the options whose danger is within half the least danger plus 0.01 of it are drawn with Gibbs probabilities `exp(-excess / T)`, best first, by a replaying logistic-map die seeded from the enemy's name and the round, where `T` is the views' weighted spread over their mean danger times the least danger, plus 0.02 of the least danger; a pick stands for a dwell drawn geometrically around the configured mean, and a new one is drawn when the dwell runs out, when the window opens, or when a new wave is first surfed; outside that window, or with the switch off, the surf shall take the least-danger option. | R9 |
+| MOVE-15 | State | While the gun-split switch is on, in a duel, the surf shall take the protean pick at the hot setting (the temperature floor at half the least danger and the cap at the least danger plus 0.01, dwell 1, MOVE-14's window) on the held gun-heat wave (MOVE-11) once at least 6 of the enemy's hits on us in this battle are counted, across its rounds, and at least 60% of them are of the learned class (MOVE-9), and shall take the gun-heat wave afresh each tick (MOVE-13) with no protean pick otherwise; with the switch off, the hold and protean switches shall decide as MOVE-11, MOVE-13 and MOVE-14 state. | R9 |
+| MOVE-16 | State | While the replicator switch is on, in a duel, when an enemy bullet's true angle becomes known, the movement shall multiply each danger view's weight by how well that view predicted the bullet relative to the weighted average (the replicator equation), keeping every view's share at least 2%; with the switch off the views' weights shall be fixed. | R9 |
+| MOVE-17 | State | While the gun-gate switch is on and the gun-split switch is off, in a duel, the surf shall offer the gun-heat wave (MOVE-11) only while the enemy's gun is not called learning by MOVE-15's count (at least 6 of its hits on us in this battle counted and at least 60% of them of the learned class), and once it is called learning shall surf as with the gun-heat wave switch off, dropping any held provisional wave; with the switch off, or the gun-split switch on, the gun-heat wave shall be offered as MOVE-11 and MOVE-15 state. | R9 |
+| POW-12 | State | While the pressure-power switch is on, in a duel, our energy exceeds 12, the lead-aware regime (POW-7 to POW-9) is not in force, and this battle's rolling hit rates (the estimates POW-2 and POW-4 read) are known with our rate less its margin at least 12% and theirs plus its margin at most 9%, the gun shall skip the cubic power-down and fire a base power of 2.5 beyond 150 px (2.95 inside 150 px stays), and POW-1 to POW-5, the quarter-of-their-energy cap, END-3, END-4, RAM-1 and SHIELD-4 shall apply to that power in their present order; with the weaker form of the switch on, only the power-down shall be skipped and the base power 1.95 kept; with the switch off, or in a melee or team battle, the gun's power shall be as before. Two gate variants (each off by default) replace the rate test only, keeping the energy floor and the yield to the lead-aware regime: the "always" variant (`pwall`) shall apply pressure power on every duel aim, and the "centres" variant (`pwc`) shall apply it while our rolling hit rate is at least 12% and theirs at most 9% by their centres, each window holding at least 30 outcomes; with both on, "always" wins. | R9 |
+
+- **POW-12** (pressure power, docs/plan-midrange.md stage 1; the plan calls it POW-11, which D1 already holds for the battle-long hit rates) is `PowerPolicy.pressure`, read in `DuelController` through `PowerDesign.PRESSURE` (off) and `PRESSURE_BASE_ONLY_POWERDOWN` (off). The gate reads `ourWindow` and `theirWindow`, the estimates POW-2 and POW-4 read, and yields to the lead-aware regime explicitly, because that regime reads the battle-long rates or the profile's verdict and the two could otherwise overlap. It changes only the gun's base through `GunController.Stakes.PRESSURE` / `PRESSURE_DOWN`; every rule after the gun's choice runs unchanged. Duel only: `enemiesTotal <= 1` gates it and the melee gun ignores `Stakes`. Ablations `pressure` (pw) and `pdown` (pd) in `build-ablation.sh`. The margin gate cannot open over the 100-shot window (the Agresti-Coull margins, about 7 points ours and 5 theirs, need 21+ hits and at most 3 against), so two switchable gates exist: `PowerPolicy.pressureAlways` (`PowerDesign.PRESSURE_ALWAYS`, ablation `pwall`, suffix pa) and `PowerPolicy.pressureCentres` (`PowerDesign.PRESSURE_CENTRES`, ablation `pwc`, suffix pz because pc is pc10's). Precedence in `PowerDesign.pressureHolds`: always, then centres, then the margin gate; all need `PRESSURE`, which the ablations set.
+- **HF record**: `HF,round,tick,class,gf,linearGf,dangerPct,distance,power,driving,planOffset,planDanger,planAge,options,optionsAge`
+  (`move.HitForensics`). An offset of at most 1 means the bullet hit inside the interval the surf's
+  plan expected us to occupy (`MoveController.lastPlanFor` keeps each wave's last published plan for the round). A hit is `linear` within our half-width (18 px seen from the source)
+  of `asin(lateral velocity / bullet speed) / escape angle`, else `headon` within it of 0. The
+  percentile samples 41 guess factors in [-1, 1] with the surf's own danger score; near 0 the
+  views thought the angle safe, near 1 they knew it was dangerous. `options` (MOVE-10,
+  `HitForensics.optionFlags`) is three characters, counter-clockwise, stop, clockwise: `h` the
+  bullet lay inside that option's plan, `m` outside, `-` no plan; the option taken in capitals.
+  A hit with a lower-case `m` beside a capital `H` is one another option would have dodged.
+  The options are those of the first tick the wave was surfed (`optionsAge` ticks before the
+  hit): by the tick before arrival every option leads to the same place, so later ones always
+  read `hhh`.
+
+## Top 3: the movement lab
+
+Hadur's movement is tested apart from its gun: a silent Hadur (`build-ablation.sh silent`, which
+combines with the other ablations as `silent,<x>`) fights six reference shooters that differ only in
+their gun, and its score is the damage it takes. [docs/bench/move-lab.md](bench/move-lab.md) says how
+to build, run and read it.
+
+| ID | Pattern | Requirement | Stage |
+|---|---|---|---|
+| BENCH-90 | Ubiquitous | The bench shall carry the movement lab: `hadur-bench/lab-panel.txt`, a set file naming the six reference shooters `lab.HeadOn`, `lab.Linear`, `lab.Circular`, `lab.GFHist`, `lab.Knn` and `lab.PatternMatch` at version 1.0 with their jars in `opponents/` (built by `lab/build-lab.sh`), and `data/tools/move_lab.py`, which for each `LABEL=WORKDIR` reports per opponent the damage Hadur took per round, the rounds it survived and the shooter's hit rate, and for two labels the second minus the first over the seeds both fought, as mean and 95% interval. | R9 |
 
 ## The melee gun in the crowd (MGUN-7, M7)
 

@@ -14,8 +14,11 @@ import hadur2.core.memory.ProfileFolder;
 import hadur2.core.memory.ProfileLibrary;
 import hadur2.core.memory.Tiers;
 import hadur2.core.model.*;
+import hadur2.core.move.GunClassifier;
+import hadur2.core.move.HitForensics;
 import hadur2.core.move.MoveController;
 import hadur2.core.move.OurBullet;
+import hadur2.core.move.PlanInterval;
 import hadur2.core.move.MirrorDrive;
 import hadur2.core.move.RamEscape;
 import hadur2.core.move.SurfMover;
@@ -42,6 +45,7 @@ import java.awt.geom.Point2D;
 import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * The Duel strand's brain (A2): everything Hadur does against one opponent, lifted out of
@@ -161,6 +165,8 @@ public final class DuelController {
      * S5: our duel bullets' outcomes and their waves' outcomes, rolling, across rounds while
      * the duel opponent stays the same one.
      */
+    /** POW-12: whether the pressure gate held at the last duel aim, for the policy record. */
+    private boolean pressureApplied;
     private final HitWindow ourWindow = new HitWindow();
     /** S5: the outcomes of their firing waves as they break on us, rolling (DIST-1, POW-2). */
     private final HitWindow theirWindow = new HitWindow();
@@ -297,7 +303,10 @@ public final class DuelController {
         this.predictor = new MovementPredictor(battleField);
         this.gunController = new GunController(battleField, enemiesTotal);
         this.moveController = new MoveController(battleField, predictor);
+        this.moveController.setReplicator(MoveDesign.REPLICATOR);
         this.surfMover = new SurfMover(battleField, predictor);
+        this.surfMover.setEscapeRoomTerm(MoveDesign.ESCAPE_ROOM);
+        this.surfMover.setProtean(MoveDesign.PROTEAN, MoveDesign.PROTEAN_DWELL);
         this.shadowAvoidance = new ShadowAvoidance(fieldWidth, fieldHeight);
         this.ramEscape = new RamEscape(battleField, predictor);
         this.mirror = new MirrorDetector(fieldWidth, fieldHeight);
@@ -531,8 +540,17 @@ public final class DuelController {
             emitPolicy(round, time, "lead", ours.value(), ours.margin(), leadApplies ? "lead_on" : "lead_off");
         }
         PowerPolicy.Lead lead = PowerPolicy.lead(leadApplies, in.energy(), e.energy());
+        // POW-12: pressure power, duel only and never while the lead-aware regime holds.
+        boolean pressure = enemiesTotal <= 1 && PowerDesign.pressureHolds(
+            lead != PowerPolicy.Lead.OFF, in.energy(), ourWindow, theirWindow);
+        if (pressure != pressureApplied) {
+            pressureApplied = pressure;
+            Estimate ours = ourWindow.estimate();
+            emitPolicy(round, time, "pressure", ours.value(), ours.margin(), pressure ? "pressure_on" : "pressure_off");
+        }
         double bulletPower = gunController.calculateBulletPower(
-            e.distance(), in.energy(), e.energy(), in.others(), stakes(lead));
+            e.distance(), in.energy(), e.energy(), in.others(),
+            pressure ? PowerDesign.pressureStakes() : stakes(lead));
         // POW-5: cap the shot against a T3 gun beyond 500 px, unless a full-power rule below
         // applies - applied first so POW-1..4's Math.max can still override it upward.
         bulletPower = PowerPolicy.capPower(opening.gunTier(), e.distance(), bulletPower);
@@ -652,7 +670,11 @@ public final class DuelController {
             stats.enemyShotsDetected++;
             // SHIELD-5: a shot whose wall hit was inferred on the same interval has no sure power.
             if (shield != null) {
-                if (reading.uncertain()) shield.onEnemyFired();
+                if (reading.uncertain()) {
+                    // SHIELD-14: with the wall switch, an uncertain shot still builds a wave, at the ledger's guess.
+                    if (shield.design().wall) shield.onEnemyShot(fireTime, reading.guess(), true);
+                    else shield.onEnemyFired();
+                }
                 else shield.onEnemyShot(fireTime, reading.corrected());
             }
             // END-4: the smallest bullet the enemy has fired this battle.
@@ -730,6 +752,20 @@ public final class DuelController {
             stats.ramEscapeTicks++;
             ramEscape.move(orders, currentState(in), lastEnemyState);
         } else {
+            // MOVE-11: the enemy's gun is cool by now or next tick, and the wave it will leave is surfed too.
+            // MOVE-15: the enemy's gun decides the hold and the protean pick when the split is on.
+            boolean split = MoveDesign.GUN_SPLIT;
+            boolean learning = split && gunClassifier.learning();
+            moveController.setProvisionalHold(split ? learning : MoveDesign.HEAT_HOLD);
+            // MOVE-17: the gate closes the gun-heat wave once the gun is called learning (the split wins).
+            moveController.setProvisionalReady(provisionalOffered(MoveDesign.HEAT_WAVE,
+                MoveDesign.GUN_GATE && !split, gunClassifier.learning(),
+                enemyGunHeat(in).at(in.time()) <= in.gunCoolingRate()), in.time());
+            if (split) {
+                surfMover.setProtean(learning, MoveDesign.PROTEAN_DWELL);
+                surfMover.setProteanHot(learning);
+            }
+            if (split ? learning : MoveDesign.PROTEAN) proteanWindow(in);
             surfMover.move(orders, currentState(in), moveController, lastEnemyLocation,
                 TickBudget.wavesToSurf(level), TickBudget.goToAllowed(level));
         }
@@ -737,6 +773,43 @@ public final class DuelController {
         if (!moveController.planIntervals().isEmpty()) planTime = in.time();
         // RADAR-1: no scan this tick or the one before, so the lock has lost it.
         if (in.time() - lastScanTime > 1) reacquire(in, orders);
+    }
+
+    /**
+     * MOVE-11, MOVE-17: whether the gun-heat wave is offered this tick: the switch is on, the gate
+     * (if on) has not closed it because the gun is learning, and the gun is cool by now or next tick.
+     */
+    static boolean provisionalOffered(boolean heatWave, boolean gate, boolean learning, boolean gunReady) {
+        return heatWave && !(gate && learning) && gunReady;
+    }
+
+    /**
+     * MOVE-15: the classes of the bullets that hit us in the duel this battle. This controller
+     * lives for the battle (it is built once and {@link #newRound} does not rebuild it), so the
+     * count runs across its rounds and starts empty with the next battle's controller.
+     */
+    private final GunClassifier gunClassifier = new GunClassifier();
+
+    /** MOVE-14: no protean pick when a real bullet is this many ticks from reaching us. */
+    private static final double PROTEAN_MIN_TICKS = 10.0;
+    /** MOVE-14: the round and enemy the protean die was last seeded for. */
+    private int proteanSeedRound = -1;
+    private String proteanSeedName;
+
+    /**
+     * MOVE-14: tells the surf whether the protean pick may act this tick: the enemy's gun heat
+     * is no more than one tick's cooling (MOVE-11's test) and no real wave reaches us within
+     * {@link #PROTEAN_MIN_TICKS} ticks. The die is seeded per round from the enemy's name.
+     */
+    private void proteanWindow(BotInput in) {
+        if (proteanSeedRound != round || !Objects.equals(proteanSeedName, opponentName)) {
+            proteanSeedRound = round;
+            proteanSeedName = opponentName;
+            surfMover.seedProtean(opponentName, round);
+        }
+        boolean cool = enemyGunHeat(in).at(in.time()) <= in.gunCoolingRate();
+        boolean clear = moveController.soonestFiringImpact(currentState(in)) > PROTEAN_MIN_TICKS;
+        surfMover.setProteanWindow(cool && clear);
     }
 
     /**
@@ -784,6 +857,8 @@ public final class DuelController {
         // The firing wave of this robot and power whose front is closest to the bullet.
         Point2D.Double bulletLoc = new Point2D.Double(e.x(), e.y());
         Wave hitWave = moveController.findBulletWave(bulletLoc, in.time(), e.name(), e.power());
+        // MOVE-9: why it got through, read before the hit teaches the views.
+        if (enemiesTotal <= 1) hitForensics(in, e, hitWave, bulletLoc, driving);
         if (hitWave != null) {
             hitWave.hitByBullet = true;
             moveController.logBulletHit(hitWave, bulletLoc, round, in.time());
@@ -795,6 +870,37 @@ public final class DuelController {
                 (found ? hitWave.targetVelocity : in.velocity()) != 0,
                 Rules.getBulletDamage(e.power()));
         }
+    }
+
+    /**
+     * MOVE-9: the HF record of a bullet that hit us in a duel: its class, the guess factor it
+     * came from, where a linear gun would have aimed, and how the danger views rated that angle
+     * (see {@link HitForensics}). Measurement only; nothing it computes is kept.
+     */
+    private void hitForensics(BotInput in, BotEvent.HitByBullet e, Wave hitWave,
+                              Point2D.Double bulletLoc, boolean driving) {
+        if (hitWave == null) {
+            telemetry.emit(HitForensics.record(round, in.time(), "nowave", Double.NaN, Double.NaN,
+                Double.NaN, lastEnemyDistance, e.power(), driving, Double.NaN, Double.NaN, -1, "---", -1));
+            return;
+        }
+        double gf = hitWave.guessFactor(bulletLoc);
+        double linearGf = HitForensics.linearGuessFactor(hitWave.lateralVelocity(),
+            hitWave.bulletSpeed(), hitWave.maxEscapeAngle());
+        String cls = HitForensics.classify(gf, linearGf,
+            HitForensics.tolerance(hitWave.targetDistance, hitWave.maxEscapeAngle()));
+        if (MoveDesign.GUN_SPLIT || MoveDesign.GUN_GATE) gunClassifier.record(cls);
+        PlanInterval plan = moveController.lastPlanFor(hitWave);
+        long planTime = moveController.lastPlanTime(hitWave);
+        long optionTime = moveController.lastOptionTime(hitWave);
+        double hitAngle = DiaUtils.absoluteBearing(hitWave.sourceLocation, bulletLoc);
+        telemetry.emit(HitForensics.record(round, in.time(), cls, gf, linearGf,
+            moveController.dangerPercentile(hitWave, gf), hitWave.targetDistance, e.power(), driving,
+            HitForensics.planOffset(plan, hitAngle),
+            plan == null ? Double.NaN : plan.danger, planTime < 0 ? -1 : in.time() - planTime,
+            HitForensics.optionFlags(moveController.lastOptionsFor(hitWave),
+                moveController.lastChosenFor(hitWave), hitAngle),
+            optionTime < 0 ? -1 : in.time() - optionTime));
     }
 
     /**
@@ -857,6 +963,17 @@ public final class DuelController {
             }
             hitWave.bulletHitBullet = true;
         }
+    }
+
+    /**
+     * WAVE-5: our energy this tick, for the ledger's inactivity-drain correction. Called every
+     * tick the duel is on, not only on scan ticks; never in a melee.
+     *
+     * @param in the tick's input
+     * @param explained whether a shot of ours left or one of our energy events arrived
+     */
+    public void ourTick(BotInput in, boolean explained) {
+        ledger.ourTick(in.time(), in.energy(), explained);
     }
 
     /** WAVE-1: a collision with the duel's enemy costs it energy too. */

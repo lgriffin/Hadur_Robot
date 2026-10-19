@@ -69,6 +69,54 @@ class EnergyLedgerTest {
         assertFalse(r.uncertain());
     }
 
+    /** A ledger whose enemy fired a sure shot of {@code sure} and now moves at 6 px/tick. */
+    private EnergyLedger afterSureShot(double sure) {
+        EnergyLedger l = new EnergyLedger(800, 600);
+        l.newRound();
+        next(l, 100, 6, MID_X, MID_Y);
+        if (sure > 0) {
+            EnergyLedger.Reading r = next(l, 100 - sure, 6, MID_X, MID_Y);
+            assertTrue(r.shot() && !r.uncertain());
+        }
+        return l;
+    }
+
+    @Test
+    @Tag("SHIELD-14")
+    @DisplayName("SHIELD-14: an uncertain shot's guess is the wall split nearest the last sure shot")
+    void guessFollowsLastSureShot() {
+        EnergyLedger l = afterSureShot(2.2031);
+        double energy = 100 - 2.2031 - 3.1947;
+        EnergyLedger.Reading r = next(l, energy, 0, 18, MID_Y);
+        assertTrue(r.uncertain());
+        assertEquals(1.1947, r.corrected(), 1e-4); // wall 2.0 at the scanned speed 6
+        assertEquals(2.1947, r.guess(), 1e-4);     // wall 1.0 at impact speed 4
+    }
+
+    @Test
+    @Tag("SHIELD-14")
+    @DisplayName("SHIELD-14: with no sure shot yet the guess is the corrected power")
+    void guessWithoutReference() {
+        EnergyLedger l = afterSureShot(0);
+        EnergyLedger.Reading r = next(l, 100 - 3.1947, 0, 18, MID_Y);
+        assertTrue(r.uncertain());
+        assertEquals(r.corrected(), r.guess(), 0);
+    }
+
+    @Test
+    @Tag("SHIELD-14")
+    @DisplayName("SHIELD-14: a sure reading's guess is its corrected power, and a new round forgets the sure shot")
+    void guessOfSureReadingAndReset() {
+        EnergyLedger l = afterSureShot(0);
+        EnergyLedger.Reading sure = next(l, 100 - 1.9, 6, MID_X, MID_Y);
+        assertEquals(sure.corrected(), sure.guess(), 0);
+        l.newRound();
+        next(l, 100, 6, MID_X, MID_Y);
+        EnergyLedger.Reading r = next(l, 100 - 3.1947, 0, 18, MID_Y);
+        assertTrue(r.uncertain());
+        assertEquals(r.corrected(), r.guess(), 0);
+    }
+
     @Nested
     @Tag("WAVE-1")
     @DisplayName("explained drops")
@@ -240,6 +288,89 @@ class EnergyLedgerTest {
             next(l, 0.30000000000000004, 8, MID_X, MID_Y);
             assertTrue(next(l, 0.2, 8, MID_X, MID_Y).shot());
             assertTrue(EnergyLedger.isShot(0.09999999999999998));
+        }
+    }
+
+    /** Offers our energy for the next tick(s) of a duel and scans the enemy on the last one. */
+    @Nested
+    @Tag("WAVE-5")
+    @DisplayName("WAVE-5: the inactivity drain")
+    class InactivityDrain {
+
+        private void ours(long time, double energy, boolean explained) {
+            ledger.ourTick(time, energy, explained);
+        }
+
+        @Test
+        @DisplayName("a drain turn takes 0.1 off the enemy's drop: no phantom shot")
+        void drainIsNotAShot() {
+            ours(1, 100, false);
+            ours(2, 99.9, false);
+            EnergyLedger.Reading r = ledger.scan(2, 99.9, 8, MID_X, MID_Y);
+            assertFalse(r.shot());
+            assertEquals(0.1, r.raw(), DELTA);
+            assertTrue(r.phantom());
+        }
+
+        @Test
+        @DisplayName("a 2.0 shot during the drain reads as 2.0, not 2.1")
+        void shotDuringDrain() {
+            ours(1, 100, false);
+            ours(2, 99.9, false);
+            EnergyLedger.Reading r = ledger.scan(2, 97.9, 8, MID_X, MID_Y);
+            assertTrue(r.shot());
+            assertEquals(2.0, r.corrected(), DELTA);
+        }
+
+        @Test
+        @DisplayName("our own 0.1 shot explains our drop: not a drain")
+        void ourShotIsNotDrain() {
+            ours(1, 100, false);
+            ours(2, 99.9, true);
+            EnergyLedger.Reading r = ledger.scan(2, 99.9, 8, MID_X, MID_Y);
+            assertTrue(r.shot());
+            assertEquals(0.1, r.corrected(), DELTA);
+        }
+
+        @Test
+        @DisplayName("no drain when our energy did not fall by 0.1")
+        void noDrop() {
+            ours(1, 100, false);
+            ours(2, 100, false);
+            assertTrue(ledger.scan(2, 99.9, 8, MID_X, MID_Y).shot());
+            ours(3, 99.5, false);
+            assertTrue(ledger.scan(3, 99.4, 8, MID_X, MID_Y).shot());
+        }
+
+        @Test
+        @DisplayName("scans skipping ticks: each drain tick since the last scan counts")
+        void gapOfSeveralTicks() {
+            ours(1, 100, false);
+            ours(2, 99.9, false);
+            ours(3, 99.8, false);
+            ours(4, 99.7, false);
+            // Three drain ticks (0.3) and a 1.5 shot, enemy scanned only on tick 4.
+            EnergyLedger.Reading r = ledger.scan(4, 100 - 0.3 - 1.5, 8, MID_X, MID_Y);
+            assertTrue(r.shot());
+            assertEquals(1.5, r.corrected(), DELTA);
+        }
+
+        @Test
+        @DisplayName("drain ticks are used by one scan only")
+        void clearedByScan() {
+            ours(1, 100, false);
+            ours(2, 99.9, false);
+            ledger.scan(2, 99.9, 8, MID_X, MID_Y);
+            ours(3, 99.9, false);
+            assertTrue(ledger.scan(3, 99.8, 8, MID_X, MID_Y).shot());
+        }
+
+        @Test
+        @DisplayName("a tick we were not offered is not compared across the gap")
+        void gapInOurTicks() {
+            ours(1, 100, false);
+            ours(5, 99.9, false);
+            assertTrue(ledger.scan(5, 99.9, 8, MID_X, MID_Y).shot());
         }
     }
 }
