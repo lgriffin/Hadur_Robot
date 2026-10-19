@@ -122,6 +122,16 @@ better under any blend, and the remaining movement lever is new information (a b
 of the enemy gun), not search. 15% of the class's avoidable damage is the smallest cut that,
 after the usual lab-to-engine shrinkage, could still reach +2 points on the class.
 
+### Early cloud read (2026-10-19): Kill 1 looks out of reach
+
+48 class bots at one seed on the cloud (`docs/bench/local/2026-10-19_aes-cloud-read.md`): parity
+100%, the taken option is hit on 9.5% of waves against about 13% for each option, almost every hit
+was avoidable, but the best refit cuts damage by only 7-12% on the bots it was fitted to and by
+1-5% on the held-out half, with no interval clear of zero and the halves' parameters disagreeing in
+direction. The in-sample cut bounds the held-out one from above, so more data is unlikely to reach
+15%. The PC queue would make that a verdict on 432 bots at 4 seeds; a class-only record at 2 seeds
+(about 2.5 hours) would do the same more cheaply.
+
 ### Step 4: engine screen (PC, about 3 hours)
 
 If Kill 1 passes: build MOVE-22 with the weights fitted on all 432, and run the 400-bot screen
