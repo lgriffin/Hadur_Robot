@@ -1309,6 +1309,26 @@ to build, run and read it.
 |---|---|---|---|
 | BENCH-90 | Ubiquitous | The bench shall carry the movement lab: `hadur-bench/lab-panel.txt`, a set file naming the six reference shooters `lab.HeadOn`, `lab.Linear`, `lab.Circular`, `lab.GFHist`, `lab.Knn` and `lab.PatternMatch` at version 1.0 with their jars in `opponents/` (built by `lab/build-lab.sh`), and `data/tools/move_lab.py`, which for each `LABEL=WORKDIR` reports per opponent the damage Hadur took per round, the rounds it survived and the shooter's hit rate, and for two labels the second minus the first over the seeds both fought, as mean and 95% interval. | R9 |
 
+## AES: refitting the surf's danger blend (AES-1, MOVE-22)
+
+The AES assessment (docs/plan-aes.md) keeps one experiment: fit the weights that blend the surf's
+danger terms offline, against the bullets the engine says were fired, on the flat-mover x
+learning-gun bots. AES-1 records the terms; `data/tools/aes_rank.py` joins them to the truth log,
+checks the re-blend picks what the surf picked, and fits.
+
+| ID | Pattern | Requirement | Stage |
+|---|---|---|---|
+| AES-1 | State | While the AES-record switch is on, in a duel, at the first tick the three-option surf publishes its options on a wave (MOVE-10), the duel shall emit one `AES` telemetry record holding the wave's fire time, power, whether a real bullet rides it, its source, the option taken, the number of danger views, and for each option with a plan on the wave its total danger, its plan interval, its first wave's danger, and every term `SurfMover` blends into it (hit-rate term, shadowed share, views' score, damage, uncertain flag, time to impact, distancing quotient, escape multiplier, and each view's weighted density and weighted scan weight, or the fallback's danger); that tick's rating shall be made without the cutoff, and the option taken shall be the one the surf takes with the switch off. With the switch off no record is made. | R9 |
+
+- **AES record**: `AES,round,tick,fireTime,power,firing,sourceX,sourceY,chosen,views,` then per option
+  (counter-clockwise, stop, clockwise) `0` for no plan, or `1,total,` and the `AesRecord.FIXED`
+  terms (`low,high,first,hitRate,shadowed,viewScore,damage,uncertain,timeToImpact,distQuotient,escape`)
+  followed by `2 * views + 1` view parts (weighted densities, weighted scan weights, fallback or
+  `nan`). The views' score is the first `views` parts' sum over the next `views`; the first wave's
+  danger is `(hitRate * (1 - shadowed) + viewScore) * damage * (uncertain ? 0.5 : 1) / timeToImpact
+  * 2.5^distQuotient / 2.5 * escape`; the total adds the cheapest next-wave danger. Ablation
+  `aesrec` (suffix ar) in `build-ablation.sh`; `MoveDesign.AES_RECORD` is off in every shipped jar.
+
 ## The melee gun in the crowd (MGUN-7, M7)
 
 The melee gap read (docs/bench/melee-gap-3.13.md) found Hadur 3.13 17th in the MeleeRumble with
