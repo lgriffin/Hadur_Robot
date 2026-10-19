@@ -79,6 +79,13 @@ class TeamLinkTest {
         }
 
         @Override
+        public void mateSighting(String name, long time, double x, double y, double heading, double velocity,
+                                 double distance, double turnRate) {
+            seen.add("mate:" + name + "@" + time);
+            super.mateSighting(name, time, x, y, heading, velocity, distance, turnRate);
+        }
+
+        @Override
         public Command tick(Situation s) {
             seen.add("others:" + s.others);
             return super.tick(s);
@@ -450,5 +457,25 @@ class TeamLinkTest {
             names.sort(null);
             assertEquals(leads ? List.of("health.hc", "old.hp") : List.of("old.hp"), names, "leads " + leads);
         }
+    }
+
+    @Test
+    @Tag("MGUN-8")
+    @DisplayName("MGUN-8: a teammate's sighting the World takes reaches the melee gun before our own scans of the tick")
+    void teammateSightingsReachTheGun() {
+        Recording melee = new Recording();
+        HadurCore core = new HadurCore(facts(), line -> {}, null, melee);
+        core.newRound(0);
+        core.tick(input(1, 5, enemies()));
+        List<BotEvent> events = new ArrayList<>();
+        // e.A at tick 1 is no newer than our own scan of it: the World drops it, so the gun never sees it.
+        events.add(report(MATE, 1, 600, 800, List.of(new Report.Sighting("e.A", 1, 100, 100, 0, 0, 100),
+            new Report.Sighting("e.D", 1, 1000, 1000, 0, 8, 100)), List.of()));
+        events.addAll(enemies());
+        melee.seen.clear();
+        core.tick(input(2, 6, events));
+        assertEquals(List.of("mate:e.D@1"), melee.seen.stream().filter(x -> x.startsWith("mate:")).toList());
+        assertTrue(melee.seen.indexOf("mate:e.D@1") < melee.seen.indexOf("scan:e.A"), melee.seen.toString());
+        assertTrue(melee.gun().history("e.D").current() != null);
     }
 }

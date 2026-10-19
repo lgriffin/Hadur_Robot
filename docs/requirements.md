@@ -1105,6 +1105,7 @@ MMOVE-8 the melee strand, WEAVE-7 and WEAVE-8 the conductor.
 | WEAVE-7 | State | While a living teammate's predicted track, over the time a bullet of any power would take to pass it, comes within the fire lane's half-width of the lane, the conductor shall withhold the fire permission. | T1 |
 | WEAVE-8 | Unwanted | If the driving role's drive, simulated a set number of ticks ahead, would bring Hadur within a robot's width and a margin of a living teammate's predicted position, then the conductor shall replace the drive with the nearest of a brake or a reversal that stays clear, keeping the gun, radar, fire and message orders. | T1 |
 | MGUN-6 | State | While in melee on a team with a living teammate whose position is no older than the WORLD-3 window, and at least 30 energy of its own, the gun shall fire power 3, or the power that kills its target if less, in place of the MGUN-3 table. | T2 |
+| MGUN-8 | Event | When the World takes a teammate's reported sighting of an enemy, the field gun shall add it to that enemy's movement history as one of Hadur's own scans, before Hadur's own scans of the same tick. | T5 |
 
 ### T1 notes
 
@@ -1128,6 +1129,22 @@ MMOVE-8 the melee strand, WEAVE-7 and WEAVE-8 the conductor.
   clear, else the one with the greatest closest approach. The `T` record's last field counts the
   drives it replaced.
 - Solo play is untouched: every term is reached through the team link or an empty teammate list.
+
+### T5 notes: shared gun learning (MGUN-8)
+
+- **Why.** mn.CombatTeam, first in the TeamRumble, trains every member's gun on all five
+  members' data (docs/bench/combatteam-3.25.md). Hadur's members already share their scans
+  (WORLD-4), but only the World took them. Each member's field-gun history (`EnemyHistory`,
+  MGUN-1) learnt only from its own radar.
+- **Where.** `TeamLink.merge` keeps each sighting the World takes as a `MateSighting` (as it was
+  stated, with the World's turn rate then and the distance from us at merge). `HadurCore.tick`
+  hands them to `MeleeSeam.mateSightings` before the tick's events, and so before our own
+  scans. `MeleeController.mateSighting` feeds `FieldGun.onSighting` alone, which adds the
+  sighting to the history as `onScan` would. The World only takes a sighting newer than what it
+  holds, so each history stays in time order. The profiles, the danger book and the targeting
+  waves keep to our own radar.
+- Solo play is untouched: the sightings come only through the team link, which exists only on a
+  team.
 
 ### T2 notes: team firepower (MGUN-6)
 

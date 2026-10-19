@@ -73,6 +73,8 @@
 #   tk12, tk21 (team only) T3, the field gun's kNN depth on a team: 12 or 21 situations per opponent,
 #         not 3 (FieldGun.K is read only while a teammate lives; MGUN-7's 12 off a team stays).
 #         CombatTeam takes 21 (docs/bench/combatteam-3.25.md).
+#   tshare0 (team only) MGUN-8 off: teammates' sightings no longer reach the field gun's histories
+#         (the World still takes them), so each member learns only from its own radar, as 3.13.
 #   tlane0 (team only) T4, no fire lane: a member fires whatever teammates lie ahead, as CombatTeam does.
 #   tlane4 (team only) T4, WEAVE-4's lane alone: a teammate's last known point still holds the shot,
 #         its predicted track (WEAVE-7) no longer does.
@@ -269,6 +271,11 @@ for a in "${list[@]}"; do
             version="${version}k${k}"
             edit "$fgun" "public static final int K = 3;" "public static final int K = ${k};"
             ;;
+        tshare0)
+            version="${version}s0"
+            edit "$core" "if (teamLink != null && meleeSeam != null) meleeSeam.mateSightings(teamLink.mateSightings());" \
+                "if (false && teamLink != null && meleeSeam != null) meleeSeam.mateSightings(teamLink.mateSightings());"
+            ;;
         tlane0)
             version="${version}l0"
             edit "$core" "boolean laneClear = teamLink == null || teamLink.laneClear(raw);" "boolean laneClear = true;"
@@ -324,7 +331,7 @@ for a in "${list[@]}"; do
             edit "$design" 'public static final ShieldDesign SHIPPED = parse("' \
                 "public static final ShieldDesign SHIPPED = parse(\"$flag,"
             version="${version}${suffix}" ;;
-        *) echo "unknown ablation: $a (ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tlane0, tlane4, gtol, gstick, gwhy, gwin, gk, shold, slearn, smode, sstay, sturn, snull, strim)" >&2; exit 2 ;;
+        *) echo "unknown ablation: $a (ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, gtol, gstick, gwhy, gwin, gk, shold, slearn, smode, sstay, sturn, snull, strim)" >&2; exit 2 ;;
     esac
 done
 
