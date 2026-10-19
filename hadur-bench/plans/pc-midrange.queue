@@ -1,0 +1,49 @@
+# PC queue for docs/plan-midrange.md (thread "Midrange census plan"): the 149 random movers with
+# guess-factor guns ranked 51-400 that hold the midrange loss, paired on 8 fresh seeds. One bench
+# queue on the PC, RoboRumble workers at 0 until ALLDONE.
+#   ./queue.sh run pc-midrange        (or  .\queue.ps1 run pc-midrange)
+# Resumable: a restart skips the steps that exited 0.
+#
+# Base: 3.13hjsw, the stack the census measured (stop-and-start + SHIELD-14), built from the 1v1
+#   branch claude/project-thread-du09qh as pc-1018-stack did. To pair against the 3.13 release
+#   instead (if the stack is dropped), set BASE to bisect/hadur2.Hadur_3.13.jar / "hadur2.Hadur 3.13"
+#   and build the candidates without heatjit,swall.
+# Candidates (ablation codes in build-ablation.sh on du09qh since 8f325cdb; each a duel-only
+#   switch, off by default, yields to the lead-aware power regime):
+#   pressure (suffix pw)  POW-12: against a gun we out-hit by a margin, no cubic power-down and a
+#                         2.5 base power beyond 150 px (gun base power via GunController.Stakes).
+#   pdown    (suffix pd)  POW-12's weaker form: the power-down skipped, base power 1.95 kept
+#                         (built alone, never together with pressure).
+#   flt8     (suffix f8)  MOVE-5 flattener threshold 4.5% -> 8% (exists).
+# Read each step with data/tools/screen_paired.py on export_battles.py output, --set the step's
+#   set file; the "All" row is the mean over the set's robots in points (not an APS). Class gate:
+#   +2.0 points with the interval above 0 (= +0.24 APS on these 149), guard no worse than -0.5.
+
+set HEAP = --child-heap 2G
+set E = --engine 1.11.1
+set COMMON = --skip-build --skip-fetch --rounds 35 --parallel 12 --cpu-constant 1488498 ${HEAP} ${E}
+set SEEDS8 = --seeds 8 --seed-base 1010
+set SEEDS4 = --seeds 4 --seed-base 1020
+set BASE = --baseline bisect/hadur2.Hadur_3.13hjsw.jar --baseline-robot "hadur2.Hadur 3.13hjsw"
+
+prep | mkdir -p bisect && { [ -s bisect/hadur2.Hadur_3.13.jar ] || curl -fsSL -o bisect/hadur2.Hadur_3.13.jar https://github.com/lgriffin/Hadur_Robot/releases/download/v3.13/hadur2.Hadur_3.13.jar; } && git fetch -q origin claude/project-thread-du09qh && { git worktree remove --force ../../hadur-top3 2>/dev/null || true; } && git worktree add --force --detach ../../hadur-top3 FETCH_HEAD && (cd ../../hadur-top3/hadur-bench && bash ./build-ablation.sh heatjit,swall && bash ./build-ablation.sh heatjit,swall,pressure && bash ./build-ablation.sh heatjit,swall,flt8 && bash ./build-ablation.sh heatjit,swall,pressure,flt8 && bash ./build-ablation.sh heatjit,swall,pdown) && cp ../../hadur-top3/hadur-bench/bisect/hadur2.Hadur_3.13hjsw*.jar bisect/ && ./fetch-opponents.sh --set flat-gf-mid.txt && ./fetch-opponents.sh --set guard-top50.txt && mvn -q compile
+
+pw | ./bench-top20.sh ${COMMON} ${SEEDS8} --set flat-gf-mid.txt --robot-jar bisect/hadur2.Hadur_3.13hjswpw.jar --robot "hadur2.Hadur 3.13hjswpw" ${BASE} --label pc-midrange-pw
+  after: prep
+
+f8 | ./bench-top20.sh ${COMMON} ${SEEDS8} --set flat-gf-mid.txt --robot-jar bisect/hadur2.Hadur_3.13hjswf8.jar --robot "hadur2.Hadur 3.13hjswf8" ${BASE} --label pc-midrange-f8
+  after: pw
+
+pwf8 | ./bench-top20.sh ${COMMON} ${SEEDS8} --set flat-gf-mid.txt --robot-jar bisect/hadur2.Hadur_3.13hjswpwf8.jar --robot "hadur2.Hadur 3.13hjswpwf8" ${BASE} --label pc-midrange-pwf8
+  after: f8
+
+guard | ./bench-top20.sh ${COMMON} ${SEEDS4} --set guard-top50.txt --robot-jar bisect/hadur2.Hadur_3.13hjswpwf8.jar --robot "hadur2.Hadur 3.13hjswpwf8" ${BASE} --label pc-midrange-guard
+  after: pwf8
+
+pd | ./bench-top20.sh ${COMMON} ${SEEDS8} --set flat-gf-mid.txt --robot-jar bisect/hadur2.Hadur_3.13hjswpd.jar --robot "hadur2.Hadur 3.13hjswpd" ${BASE} --label pc-midrange-pd
+  after: guard
+
+# Census gate, once a candidate clears the class gate and the guard: the whole field at 4 seeds,
+# as pc-1018-stack ran it (about 13 hours). Uncomment and name the winning jar.
+# census | ./bench-top20.sh ${COMMON} --seeds 4 --seed-base 1030 --set census-312.txt --robot-jar bisect/hadur2.Hadur_3.13hjswpwf8.jar --robot "hadur2.Hadur 3.13hjswpwf8" --baseline bisect/hadur2.Hadur_3.13.jar --baseline-robot "hadur2.Hadur 3.13" --label pc-midrange-census
+#   after: pd
