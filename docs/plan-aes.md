@@ -67,40 +67,53 @@ All of it is duel-only and off by default; team and melee are untouched. It wait
 pc-midrange-3 (draft PR #212): the base for every step is 3.14hjsw plus whatever pc-midrange-3
 keeps, because weights fitted on one base belong to that base.
 
-### Step 1: build (cloud, no PC time)
+### Step 1: build (cloud, done)
 
-- **AES-1, the decision record.** A bench-only recorder flag (like `HadurRecorder`, never in
-  the competition jar): at each wave's first three-option rating (the MOVE-10 point), write one
-  row per option with the wave's fire tick and power, the option's plan interval, and each term
-  of `waveDanger` before blending (eleven view densities with their on flags, hit-rate term,
-  shadow share, damage, uncertain flag, time to impact, distancing, escape term, next-wave
-  minimum). About 1 MB a battle.
-- **Truth join.** `data/tools/aes_rank.py join`: match each row to the enemy bullet fired on
-  that tick in the bench truth log and mark each option hit or missed by its plan interval.
-  Waves with no real bullet are dropped.
-- **Parity check (AES's P2).** Re-blend the logged terms at today's weights and confirm the
-  re-blend picks the option Hadur took on at least 99% of waves. Below that, the record is
-  wrong and nothing after it counts.
-- **Fitter.** `aes_rank.py fit`: CMA-ES (or a plain evolution strategy if `cma` is not
-  installed) over about 10 normalised weights: four view families (simple, normal, decaying,
-  flattener), hit-rate term, shadow share, damage exponent, time-to-impact exponent, distancing
-  base, next-wave weight. Objective: damage of the picked option summed over waves. Unit tests
-  on a fixture battle, in CI with the other `data/tools` tests.
-- **Switch MOVE-22 (`aesw`)**, built only if step 3 passes: the fitted weights as a duel-only
+- **AES-1, the decision record** (`hadur-core/.../move/AesRecord.java`, `MoveDesign.AES_RECORD`,
+  ablation `aesrec`, suffix ar; docs/requirements.md AES-1). At each wave's first three-option
+  rating (the MOVE-10 point) the duel prints one `AES` line: the wave's fire tick, power, whether
+  a real bullet rides it and its source, the option taken, and per option its total, plan
+  interval, first-wave danger and every term `waveDanger` blends (hit-rate term, shadow share,
+  views' score, damage, uncertain flag, time to impact, distancing quotient, escape term, and each
+  of the eleven views' weighted density and weighted scan weight). The recording tick is rated
+  without the cutoff so every total is whole; the option taken is unchanged (`AesRecordTest`).
+  Behaviour is otherwise untouched and the switch is off in every shipped jar.
+- **Truth join** (`data/tools/aes_rank.py join`). Each record on a real wave is matched to the
+  enemy bullet that appears in the truth log one tick after the wave's fire time at the same
+  power, and each option is marked hit when the bullet's heading lies inside its plan interval.
+  On six smoke battles 8,827 of 8,980 real-wave records matched (98%), covering 74% of all enemy
+  bullets; most of the rest are one opponent's 1,855, which Hadur met without surfing (no
+  record at all), the others waves that were never the first one surfed.
+- **Parity check.** The re-blend at today's weights picks the option the surf took on **100%**
+  of the smoke waves (gate 99%).
+- **Fitter** (`aes_rank.py fit`). A plain CMA-ES (no extra package; numpy only) over ten
+  parameters: four view-group multipliers relative to the simple view (normal, the six recent
+  views, the light flattener, the two flatteners), or ten single-view multipliers with
+  `--groups view`; the hit-rate term's weight; the damage and time-to-impact exponents; the
+  distancing base; the next-wave weight; the uncertain-wave factor. Each is kept in a box. The
+  objective is bullet damage taken per recorded wave, each opponent weighted equally. Tests:
+  `data/tools/test_aes_rank.py`, in CI.
+- **Switch MOVE-22 (`aesw`)**, built only if Kill 1 passes: the fitted weights as a duel-only
   `MoveDesign` switch, off by default.
 
-### Step 2: record (PC, about 2 hours)
+### Step 2: record (PC, about 7-8 hours, queue `hadur-bench/plans/pc-aes.queue`)
 
-The 432 flat x learning bots from `docs/bench/local/2026-10-18_census-classes.tsv`, split by
-identity into two halves of 216 (alternating by rank, so both halves span every band).
-Base build with AES-1 on, 2 seeds (1071-1072), 35 rounds, truth logs kept: 864 battles. Rumble
-workers at 0.
+Leigh asked for as much data as the run can give, so the record covers the whole census rather
+than the class alone: the base with AES-1 on, `census-312.txt` (1,212 bots), 4 fresh seeds
+(1071-1074), 35 rounds, no baseline: 4,848 battles, about 7-8 hours at the census rate. That is
+four times the data on the 432 flat x learning bots the plan first sized (2 seeds), gives the
+fit the other classes for a no-harm read, and doubles as a 4-seed census of the base. It needs
+the base fixed first (`ABL` in the queue: today `heatjit,swall`, plus whatever pc-midrange-3
+keeps). Disk: about 3-5 MB of hadur.log a battle on top of the truth logs.
 
-### Step 3: fit and the offline kill test (cloud or PC, minutes)
+### Step 3: fit and the offline kill test (PC, the same queue, about 5 hours)
 
-Fit on half A, score on half B, then the reverse. Report, for each half, the avoidable damage
-(the picked option was hit and another would have missed) at today's weights and at the fitted
-weights, with a bot-level bootstrap interval.
+`fit-class` fits on the 432 (`hadur-bench/aes-flat-learning.txt`), split by identity into two
+halves alternating by rank so both span every band: fit on half A, score on half B, then the
+reverse, by view group and by single view. `fit-field` repeats it on all 1,212. Each report
+gives, per half, the held-out damage per wave and the avoidable part (the picked option was hit
+and another would have missed) at today's weights and fitted, with a bootstrap interval over
+opponents, the two halves' fitted parameters side by side, and a fit on everything for MOVE-22.
 
 **Kill 1.** Stop here, and close AES, if the fitted weights cut held-out avoidable damage by
 less than 15%, or the interval crosses zero, or the two halves' fitted weights disagree in
@@ -130,10 +143,10 @@ adversarial gun training and runtime selectors stay closed on the evidence above
 
 | Step | Where | Time |
 |---|---|---|
-| Build AES-1, join, parity, fitter | cloud | one session |
-| Record, 432 bots x 2 seeds | PC, after pc-midrange-3 | about 2 h |
-| Fit and Kill 1 | cloud or PC | minutes |
+| Build AES-1, join, parity, fitter | cloud | done |
+| Record, 1,212 bots x 4 seeds (`pc-aes` record) | PC, after pc-midrange-3 | about 7-8 h |
+| Join, fit and Kill 1 (`pc-aes` join, fit-class, fit-field) | PC, same queue | about 5 h |
 | Screen, 400 bots x 8 seeds x 2 builds | PC | about 3 h |
 | Census, only on a pass | PC | about 15 h |
 
-Five PC hours decide it either way before the census.
+About 13 PC hours, one overnight queue, decide Kill 1; three more decide Kill 2.
