@@ -40,5 +40,14 @@ final class MoveDesign {
      */
     static final boolean REPLICATOR = false;
 
+    /**
+     * MOVE-17: the gun-heat wave (meant to be built with {@link #HEAT_WAVE} and
+     * {@link #HEAT_HOLD} false) is offered only while the enemy's gun is not a learning one by
+     * MOVE-15's count, so the stop-and-start is dropped against learning guns. Once the gun is
+     * called learning the surf is as with the gun-heat wave off. {@link #GUN_SPLIT}, if on, wins:
+     * the gate is then not read.
+     */
+    static final boolean GUN_GATE = false;
+
     private MoveDesign() { }
 }

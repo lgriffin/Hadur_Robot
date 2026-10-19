@@ -56,6 +56,9 @@
 #         (floor 0.5, cap 1.0, dwell 1); until then it takes the wave afresh each tick (stop-and-start).
 #         Sets HEAT_WAVE and GUN_SPLIT, so build it alone: not combined with heat or heatjit (they edit the
 #         same HEAT_WAVE line, which the second edit would not find), nor with protean or phot (unneeded). Suffix sp.
+#   gungate  MOVE-17: the gun-heat wave is dropped once the enemy's gun is called learning (MOVE-15's count: 6 hits,
+#         60% learned), so the stop-and-start runs only against other guns. Meant to combine with heatjit
+#         (heatjit,gungate -> hjgg); sets only GUN_GATE. With split the split wins. Suffix gg.
 #   repl  MOVE-16: the danger views' weights evolve by the replicator equation: each enemy bullet that hits us
 #         multiplies a view's weight by how well it predicted the bullet's angle against the weighted average
 #         (every view keeps 2% of the share), so the view that reads this gun takes over. Suffix rp.
@@ -220,6 +223,9 @@ for a in "${list[@]}"; do
             edit "$movedesign" "static final boolean HEAT_WAVE = false;" "static final boolean HEAT_WAVE = true;"
             edit "$movedesign" "static final boolean GUN_SPLIT = false;" "static final boolean GUN_SPLIT = true;"
             version="${version}sp" ;;
+        gungate)
+            edit "$movedesign" "static final boolean GUN_GATE = false;" "static final boolean GUN_GATE = true;"
+            version="${version}gg" ;;
         repl)
             edit "$movedesign" "static final boolean REPLICATOR = false;" "static final boolean REPLICATOR = true;"
             version="${version}rp" ;;

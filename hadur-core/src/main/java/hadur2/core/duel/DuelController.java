@@ -746,8 +746,10 @@ public final class DuelController {
             boolean split = MoveDesign.GUN_SPLIT;
             boolean learning = split && gunClassifier.learning();
             moveController.setProvisionalHold(split ? learning : MoveDesign.HEAT_HOLD);
-            moveController.setProvisionalReady(MoveDesign.HEAT_WAVE
-                && enemyGunHeat(in).at(in.time()) <= in.gunCoolingRate(), in.time());
+            // MOVE-17: the gate closes the gun-heat wave once the gun is called learning (the split wins).
+            moveController.setProvisionalReady(provisionalOffered(MoveDesign.HEAT_WAVE,
+                MoveDesign.GUN_GATE && !split, gunClassifier.learning(),
+                enemyGunHeat(in).at(in.time()) <= in.gunCoolingRate()), in.time());
             if (split) {
                 surfMover.setProtean(learning, MoveDesign.PROTEAN_DWELL);
                 surfMover.setProteanHot(learning);
@@ -760,6 +762,14 @@ public final class DuelController {
         if (!moveController.planIntervals().isEmpty()) planTime = in.time();
         // RADAR-1: no scan this tick or the one before, so the lock has lost it.
         if (in.time() - lastScanTime > 1) reacquire(in, orders);
+    }
+
+    /**
+     * MOVE-11, MOVE-17: whether the gun-heat wave is offered this tick: the switch is on, the gate
+     * (if on) has not closed it because the gun is learning, and the gun is cool by now or next tick.
+     */
+    static boolean provisionalOffered(boolean heatWave, boolean gate, boolean learning, boolean gunReady) {
+        return heatWave && !(gate && learning) && gunReady;
     }
 
     /**
@@ -868,7 +878,7 @@ public final class DuelController {
             hitWave.bulletSpeed(), hitWave.maxEscapeAngle());
         String cls = HitForensics.classify(gf, linearGf,
             HitForensics.tolerance(hitWave.targetDistance, hitWave.maxEscapeAngle()));
-        if (MoveDesign.GUN_SPLIT) gunClassifier.record(cls);
+        if (MoveDesign.GUN_SPLIT || MoveDesign.GUN_GATE) gunClassifier.record(cls);
         PlanInterval plan = moveController.lastPlanFor(hitWave);
         long planTime = moveController.lastPlanTime(hitWave);
         long optionTime = moveController.lastOptionTime(hitWave);
