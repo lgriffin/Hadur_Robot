@@ -59,6 +59,18 @@
 #   gungate  MOVE-17: the gun-heat wave is dropped once the enemy's gun is called learning (MOVE-15's count: 6 hits,
 #         60% learned), so the stop-and-start runs only against other guns. Meant to combine with heatjit
 #         (heatjit,gungate -> hjgg); sets only GUN_GATE. With split the split wins. Suffix gg.
+#   hold650  DIST-2: no DIST-1 walk-in in a duel; the desired distance stays at the opening's (650 for a stranger).
+#         END-1's finish is unchanged. Sets only HOLD_650. Suffix d6.
+#   dfac     MOVE-18: the surf's distancing factor is measured to the enemy's last scanned position, as Diamond does,
+#         not to the wave's source. Sets only DISTANCING_TO_ENEMY. Suffix df.
+#   bhb      MOVE-19: a bullet of ours that destroys an enemy bullet teaches the hit views that bullet's guess factor,
+#         as Diamond's onBulletHitBullet does. Sets only BULLET_HIT_BULLET_LOG. Suffix bh.
+#   hitclr   MOVE-20: every hit on us and every intercept clears the cached neighbour searches, not only a change of the
+#         surfed wave. Sets only HIT_CLEARS_CACHE. Suffix hc.
+#   pkern    MOVE-21: the danger kernel is the point value 2^-abs(u) at the intersection centre (Diamond's) instead of
+#         MOVE-4's integral over it. Sets only POINT_KERNEL. Suffix pk.
+#   keep2    TIME-6: a skipped turn no longer drops the surf's second wave for the rest of the round (dropped from level 2;
+#         the k halving and go-to shedding stay). Sets only KEEP_SECOND_WAVE. Suffix w2.
 #   pressure  POW-12 (the plan's POW-11): while our rolling hit rate less its margin is at least 12%, theirs plus its margin at
 #         most 9%, and our energy is above 12, the duel gun skips the cubic power-down and fires a base power of 2.5
 #         beyond 150 px (2.95 inside stays); the lead-aware regime wins where it holds. Sets PRESSURE only; combines
@@ -277,6 +289,24 @@ for a in "${list[@]}"; do
         gungate)
             edit "$movedesign" "static final boolean GUN_GATE = false;" "static final boolean GUN_GATE = true;"
             version="${version}gg" ;;
+        hold650)
+            edit "$movedesign" "static final boolean HOLD_650 = false;" "static final boolean HOLD_650 = true;"
+            version="${version}d6" ;;
+        dfac)
+            edit "$movedesign" "static final boolean DISTANCING_TO_ENEMY = false;" "static final boolean DISTANCING_TO_ENEMY = true;"
+            version="${version}df" ;;
+        bhb)
+            edit "$movedesign" "static final boolean BULLET_HIT_BULLET_LOG = false;" "static final boolean BULLET_HIT_BULLET_LOG = true;"
+            version="${version}bh" ;;
+        hitclr)
+            edit "$movedesign" "static final boolean HIT_CLEARS_CACHE = false;" "static final boolean HIT_CLEARS_CACHE = true;"
+            version="${version}hc" ;;
+        pkern)
+            edit "$movedesign" "static final boolean POINT_KERNEL = false;" "static final boolean POINT_KERNEL = true;"
+            version="${version}pk" ;;
+        keep2)
+            edit "$movedesign" "static final boolean KEEP_SECOND_WAVE = false;" "static final boolean KEEP_SECOND_WAVE = true;"
+            version="${version}w2" ;;
         pressure)
             edit "$powerdesign" "static final boolean PRESSURE = false;" "static final boolean PRESSURE = true;"
             version="${version}pw" ;;
@@ -446,7 +476,7 @@ for a in "${list[@]}"; do
             edit "$design" 'public static final ShieldDesign SHIPPED = parse("' \
                 "public static final ShieldDesign SHIPPED = parse(\"$flag,"
             version="${version}${suffix}" ;;
-        *) echo "unknown ablation: $a (ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, flt59, flt8, split, wallesc, protean, pdw3, pdw8, pc10, phot, repl, pressure, pdown, pwall, pwc, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, gtol, gstick, gwhy, gwin, gk, shold, slearn, smode, sstay, sturn, snull, strim)" >&2; exit 2 ;;
+        *) echo "unknown ablation: $a (ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, flt59, flt8, split, wallesc, gungate, hold650, dfac, bhb, hitclr, pkern, keep2, protean, pdw3, pdw8, pc10, phot, repl, pressure, pdown, pwall, pwc, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, gtol, gstick, gwhy, gwin, gk, shold, slearn, smode, sstay, sturn, snull, strim)" >&2; exit 2 ;;
     esac
 done
 

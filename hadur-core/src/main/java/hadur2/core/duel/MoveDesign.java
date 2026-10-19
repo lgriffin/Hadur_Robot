@@ -49,5 +49,41 @@ final class MoveDesign {
      */
     static final boolean GUN_GATE = false;
 
+    /**
+     * DIST-2: no DIST-1 walk-in in a duel. The desired distance stays at the opening's (650 for a
+     * stranger) for the whole battle; END-1's finishing distance is unchanged.
+     */
+    static final boolean HOLD_650 = false;
+
+    /**
+     * MOVE-18: the surf's distancing factor is measured to the enemy's last scanned position
+     * (as Diamond does) rather than to the wave's source.
+     */
+    static final boolean DISTANCING_TO_ENEMY = false;
+
+    /**
+     * MOVE-19: an enemy bullet our bullet destroys teaches the hit views the guess factor it
+     * was fired at, as a hit on us does (Diamond's onBulletHitBullet).
+     */
+    static final boolean BULLET_HIT_BULLET_LOG = false;
+
+    /**
+     * MOVE-20: every hit on us and every intercept clears the surf's cached neighbour searches,
+     * not only a change of the surfed wave.
+     */
+    static final boolean HIT_CLEARS_CACHE = false;
+
+    /**
+     * MOVE-21: the danger kernel is the point value 2^-|u| at the intersection's centre
+     * (Diamond's), not MOVE-4's integral over the intersection.
+     */
+    static final boolean POINT_KERNEL = false;
+
+    /**
+     * TIME-6: a skipped turn (level 1) no longer drops the surf's second wave for the rest of
+     * the round; it is dropped from level 2, where the k halving and the go-to shedding also stay.
+     */
+    static final boolean KEEP_SECOND_WAVE = false;
+
     private MoveDesign() { }
 }

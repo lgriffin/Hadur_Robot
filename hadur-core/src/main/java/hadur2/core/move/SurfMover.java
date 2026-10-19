@@ -77,6 +77,10 @@ public class SurfMover {
     private final Map<SurfOption, Point2D.Double> surfOptionDestinations = new HashMap<>();
     /** The wave surfed last tick; a different one resets the destinations and the cache. */
     private Wave lastWaveSurfed;
+    /** MOVE-18: whether the distancing factor is measured to the enemy's last scanned position (off by default). */
+    private boolean distancingToEnemy;
+    /** The enemy's last known position, as the last {@link #move} was given it; null before the first. */
+    private Point2D.Double enemyAt;
     /** MOVE-12: whether the escape-room position term scales the first wave's danger (off by default). */
     private boolean escapeRoomTerm;
     /** MOVE-14: whether the protean pick may replace the least-danger option (off by default). */
@@ -129,6 +133,20 @@ public class SurfMover {
      */
     public void setDesiredDistance(double desiredDistance) {
         this.desiredDistance = desiredDistance;
+    }
+
+    /** MOVE-18: whether the distancing factor is measured to the enemy's last scanned position (off by default). */
+    public void setDistancingToEnemy(boolean on) {
+        this.distancingToEnemy = on;
+    }
+
+    /** MOVE-18: the point the distancing factor measures to: the enemy's last position when on and known, else the wave's source. */
+    void noteEnemyAt(Point2D.Double enemyLocation) {
+        this.enemyAt = enemyLocation;
+    }
+
+    Point2D.Double distancingPoint(Wave surfWave) {
+        return distancingToEnemy && enemyAt != null ? enemyAt : surfWave.sourceLocation;
     }
 
     /**
@@ -275,6 +293,7 @@ public class SurfMover {
     public void move(BotOrders.Builder orders, RobotState myState,
                      MoveController moveCtrl, Point2D.Double enemyLocation,
                      int wavesToSurf, boolean goToAllowed) {
+        noteEnemyAt(enemyLocation);
         Wave surfWave = moveCtrl.findSurfableWave(0, myState);
         if (surfWave == null) {
             orbit(orders, myState.heading, myState.location, enemyLocation);
@@ -652,7 +671,7 @@ public class SurfMover {
         double timeToImpact = Math.max(1.0, currentWaveDist / surfWave.bulletSpeed());
         danger /= timeToImpact;
 
-        danger *= distancingDanger(start, passed, surfWave.sourceLocation);
+        danger *= distancingDanger(start, passed, distancingPoint(surfWave));
         // MOVE-12: prefer ends where we keep our escape angle and the enemy loses his.
         if (escapeRoomTerm && surfWaveIndex == 0) {
             danger *= EscapeRoom.multiplier(passed, surfWave.sourceLocation,

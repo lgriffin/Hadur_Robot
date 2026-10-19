@@ -140,4 +140,20 @@ class TickBudgetTest {
         b.skippedTurn(0);
         assertEquals(1_000_000L, b.learnedAllowanceNanos());
     }
+
+    @Test
+    @Tag("TIME-6")
+    @DisplayName("TIME-6: keep2 surfs two waves at level 1 and drops the second from level 2; off drops it at level 1")
+    void keepSecondWave() {
+        assertEquals(2, TickBudget.wavesToSurf(0, true));
+        assertEquals(2, TickBudget.wavesToSurf(1, true));
+        assertEquals(1, TickBudget.wavesToSurf(2, true));
+        assertEquals(1, TickBudget.wavesToSurf(3, true));
+        for (int level = 0; level <= TickBudget.MAX_LEVEL; level++) {
+            assertEquals(TickBudget.wavesToSurf(level), TickBudget.wavesToSurf(level, false));
+        }
+        // The k halving and the go-to shedding are not touched.
+        assertEquals(0.5, TickBudget.kShare(2));
+        assertFalse(TickBudget.goToAllowed(1));
+    }
 }

@@ -304,8 +304,10 @@ public final class DuelController {
         this.gunController = new GunController(battleField, enemiesTotal);
         this.moveController = new MoveController(battleField, predictor);
         this.moveController.setReplicator(MoveDesign.REPLICATOR);
+        this.moveController.setPointKernel(MoveDesign.POINT_KERNEL);
         this.surfMover = new SurfMover(battleField, predictor);
         this.surfMover.setEscapeRoomTerm(MoveDesign.ESCAPE_ROOM);
+        this.surfMover.setDistancingToEnemy(MoveDesign.DISTANCING_TO_ENEMY);
         this.surfMover.setProtean(MoveDesign.PROTEAN, MoveDesign.PROTEAN_DWELL);
         this.shadowAvoidance = new ShadowAvoidance(fieldWidth, fieldHeight);
         this.ramEscape = new RamEscape(battleField, predictor);
@@ -767,12 +769,27 @@ public final class DuelController {
             }
             if (split ? learning : MoveDesign.PROTEAN) proteanWindow(in);
             surfMover.move(orders, currentState(in), moveController, lastEnemyLocation,
-                TickBudget.wavesToSurf(level), TickBudget.goToAllowed(level));
+                TickBudget.wavesToSurf(level, MoveDesign.KEEP_SECOND_WAVE), TickBudget.goToAllowed(level));
         }
         // GUN-7: the next aim may read this plan, one tick on, if the surf published one.
         if (!moveController.planIntervals().isEmpty()) planTime = in.time();
         // RADAR-1: no scan this tick or the one before, so the lock has lost it.
         if (in.time() - lastScanTime > 1) reacquire(in, orders);
+    }
+
+    /** DIST-2: whether DIST-1 may move the target: not with the hold-650 switch on. */
+    static boolean distanceMoves(boolean hold650) {
+        return !hold650;
+    }
+
+    /** MOVE-19: whether an intercept teaches the hit views: the switch is on and the enemy bullet's wave was found. */
+    static boolean logsIntercept(boolean switchOn, Wave interceptedWave) {
+        return switchOn && interceptedWave != null;
+    }
+
+    /** MOVE-20: whether a hit or an intercept clears the cached neighbour searches. */
+    static boolean clearsCacheOnHit(boolean switchOn) {
+        return switchOn;
     }
 
     /**
@@ -863,6 +880,8 @@ public final class DuelController {
             hitWave.hitByBullet = true;
             moveController.logBulletHit(hitWave, bulletLoc, round, in.time());
         }
+        // MOVE-20: a hit is a new sample for the next wave's neighbours too.
+        if (clearsCacheOnHit(MoveDesign.HIT_CLEARS_CACHE)) moveController.clearNeighborCache();
         if (folder != null && driving) {
             // File the hit under the distance and movement at the wave's fire time when known.
             boolean found = hitWave != null;
@@ -962,7 +981,13 @@ public final class DuelController {
                 stats.interceptsShadowed++;
             }
             hitWave.bulletHitBullet = true;
+            // MOVE-19: the bullet's angle is a sample of the enemy gun's aim, as a hit would be.
+            if (logsIntercept(MoveDesign.BULLET_HIT_BULLET_LOG, hitWave)) {
+                moveController.logBulletHit(hitWave, hitLoc, round, in.time());
+            }
         }
+        // MOVE-20: an intercept clears the cached searches, as a hit does.
+        if (clearsCacheOnHit(MoveDesign.HIT_CLEARS_CACHE)) moveController.clearNeighborCache();
     }
 
     /**
@@ -1398,7 +1423,8 @@ public final class DuelController {
             if (added != null) changeFlavour(in, added);
             Estimate ours = ourWindow.estimate();
             Estimate theirs = theirWindow.estimate();
-            if (distance.onWave(ours, theirs) != DistancePolicy.Step.HOLD) {
+            // DIST-2: held at the opening distance, no walk in or out.
+            if (distanceMoves(MoveDesign.HOLD_650) && distance.onWave(ours, theirs) != DistancePolicy.Step.HOLD) {
                 // The gap's margin: the two estimates' margins combined in quadrature.
                 emitPolicy(round, in.time(), "distance", ours.value() - theirs.value(),
                     Math.hypot(ours.margin(), theirs.margin()),

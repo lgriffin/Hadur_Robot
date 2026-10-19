@@ -110,6 +110,8 @@ public class MoveController {
     private final ReplicatorWeights replicatorWeights;
     /** MOVE-16: whether the multipliers are learned and applied; off, the weights are fixed. */
     private boolean replicator;
+    /** MOVE-21: whether the danger kernel is the point value at the intersection centre (off by default). */
+    private boolean pointKernel;
 
     /**
      * A controller with empty views and no waves, for a battle on {@code battleField}.
@@ -134,6 +136,30 @@ public class MoveController {
      */
     public void setReplicator(boolean on) {
         this.replicator = on;
+    }
+
+    /** MOVE-21: the danger kernel is the point value at the intersection centre (Diamond's); off, MOVE-4's integral. */
+    public void setPointKernel(boolean on) {
+        this.pointKernel = on;
+    }
+
+    /**
+     * MOVE-4 or MOVE-21: the kernel's weight for a neighbour at angle {@code at}: the integrated
+     * mass, or with the point kernel on, {@code 2^-|u|} at the intersection's centre
+     * ({@code u} in bandwidths), scaled by the share of the intersection the shadows leave.
+     */
+    double kernel(double at, double bandwidth, List<double[]> segments) {
+        return pointKernel ? pointKernelValue(at, bandwidth, segments) : kernelMass(at, bandwidth, segments);
+    }
+
+    static double pointKernelValue(double at, double bandwidth, List<double[]> segments) {
+        double from = segments.get(0)[0];
+        double to = segments.get(segments.size() - 1)[1];
+        double open = 0;
+        for (double[] s : segments) open += s[2] * (s[1] - s[0]);
+        double through = to > from ? open / (to - from) : 1.0;
+        double centre = (from + to) / 2;
+        return through * Math.pow(2.0, -Math.abs(at - centre) / bandwidth);
     }
 
     /** MOVE-16: each view's multiplier, in the order the views were built; all 1 until learned. */
@@ -1079,7 +1105,7 @@ public class MoveController {
                     w.firingAngle(tsgf.guessFactor), dangerAngle);
                 // MOVE-4: the kernel's mass over the whole intersection, not its height at the
                 // centre; MOVE-3: counting only what the shadows let through.
-                density += scanWeight * kernelMass(xFiringAngle, bandwidth, segments);
+                density += scanWeight * kernel(xFiringAngle, bandwidth, segments);
                 viewScanWeight += scanWeight;
             }
             totalScanWeight += viewScanWeight * viewWeight;
@@ -1131,7 +1157,7 @@ public class MoveController {
                     / Math.sqrt(Math.max(entry.distance, MIN_DISTANCE)) * tsgf.weight();
                 double xFiringAngle = DiaUtils.normalizeAngle(
                     w.firingAngle(tsgf.guessFactor), dangerAngle);
-                density += scanWeight * kernelMass(xFiringAngle, bandwidth, segments);
+                density += scanWeight * kernel(xFiringAngle, bandwidth, segments);
                 viewScanWeight += scanWeight;
             }
             // !(x > 0) also catches NaN: such a view adds nothing to the average either.
@@ -1192,14 +1218,14 @@ public class MoveController {
      * averaged) over two assumed guns: head-on (guess factor 0, weight 3) and one firing at
      * 0.85 of the escape angle toward our direction of travel (weight 1).
      */
-    private static double defaultDanger(Wave w, List<double[]> segments, double bandwidth) {
+    private double defaultDanger(Wave w, List<double[]> segments, double bandwidth) {
         double[] guessFactors = {0.0, 0.85};
         double[] weights = {3.0, 1.0};
         double danger = 0;
         for (int i = 0; i < guessFactors.length; i++) {
             double firingAngle = w.firingAngle(guessFactors[i]);
             double centre = (segments.get(0)[0] + segments.get(segments.size() - 1)[1]) / 2;
-            danger += weights[i] * kernelMass(DiaUtils.normalizeAngle(firingAngle, centre), bandwidth, segments);
+            danger += weights[i] * kernel(DiaUtils.normalizeAngle(firingAngle, centre), bandwidth, segments);
         }
         return danger;
     }
