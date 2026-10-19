@@ -1,0 +1,9 @@
+08:01:52 start prep
+08:02:00 prep exit=128 in 7 s
+08:02:00 skip hjrg (after prep, which has not finished exit=0)
+08:02:00 ALLDONE
+08:03:05 start prep
+08:04:09 prep exit=0 in 63 s
+08:04:09 start hjrg
+10:50:18 hjrg exit=0 in 9969 s
+10:50:18 ALLDONE

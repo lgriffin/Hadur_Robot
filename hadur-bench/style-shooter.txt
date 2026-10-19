@@ -1,0 +1,2 @@
+# Style lab shooter: the strong gun every subject faces (as in movemap-ladder.txt).
+abc.Shadow 3.83c | shooter | abc.Shadow_3.83c.jar

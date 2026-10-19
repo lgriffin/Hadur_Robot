@@ -1,0 +1,391 @@
+From 2544adc4a279535296cb56d59ec355da407ddc1b Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Sat, 17 Oct 2026 16:49:14 +0000
+Subject: [PATCH] MOVE-17: regime switch from the style lab (duel only, switch
+ off)
+
+On each new enemy shot the surf flips, with probability 0.4 from a
+replaying die, between its free regime and a steady one that reverses
+only when reversing is 30% safer than keeping on. MoveDesign.REGIME is
+false, so the off path is unchanged (replay fixtures untouched; only the
+duel pins are re-written). Ablation: regime (suffix rg).
+
+Co-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01EegM1B4Sn9cDNUrYMC6ktf
+---
+ docs/requirements.md                          |  1 +
+ hadur-bench/build-ablation.sh                 |  6 ++
+ .../java/hadur2/core/duel/DuelController.java | 15 ++++
+ .../java/hadur2/core/duel/MoveDesign.java     |  7 ++
+ .../java/hadur2/core/move/RegimeClock.java    | 66 +++++++++++++++++
+ .../main/java/hadur2/core/move/SurfMover.java | 38 +++++++++-
+ .../hadur2/core/move/RegimeClockTest.java     | 74 +++++++++++++++++++
+ .../src/test/resources/duel-sources.sha256    |  3 +-
+ .../src/test/resources/pins/duel.sha256       |  7 +-
+ 9 files changed, 211 insertions(+), 6 deletions(-)
+ create mode 100644 hadur-core/src/main/java/hadur2/core/move/RegimeClock.java
+ create mode 100644 hadur-core/src/test/java/hadur2/core/move/RegimeClockTest.java
+
+diff --git a/docs/requirements.md b/docs/requirements.md
+index d491b29f..f5b79a28 100644
+--- a/docs/requirements.md
++++ b/docs/requirements.md
+@@ -1253,6 +1253,7 @@ lines.
+ | MOVE-14 | State | While the protean switch is on, in a duel, and the enemy's estimated gun heat is no more than one tick's cooling with no firing wave within 10 ticks of us, the surf shall choose among its three options by the protean pick: the options whose danger is within half the least danger plus 0.01 of it are drawn with Gibbs probabilities `exp(-excess / T)`, best first, by a replaying logistic-map die seeded from the enemy's name and the round, where `T` is the views' weighted spread over their mean danger times the least danger, plus 0.02 of the least danger; a pick stands for a dwell drawn geometrically around the configured mean, and a new one is drawn when the dwell runs out, when the window opens, or when a new wave is first surfed; outside that window, or with the switch off, the surf shall take the least-danger option. | R9 |
+ | MOVE-15 | State | While the gun-split switch is on, in a duel, the surf shall take the protean pick at the hot setting (the temperature floor at half the least danger and the cap at the least danger plus 0.01, dwell 1, MOVE-14's window) on the held gun-heat wave (MOVE-11) once at least 6 of the enemy's hits on us in this battle are counted, across its rounds, and at least 60% of them are of the learned class (MOVE-9), and shall take the gun-heat wave afresh each tick (MOVE-13) with no protean pick otherwise; with the switch off, the hold and protean switches shall decide as MOVE-11, MOVE-13 and MOVE-14 state. | R9 |
+ | MOVE-16 | State | While the replicator switch is on, in a duel, when an enemy bullet's true angle becomes known, the movement shall multiply each danger view's weight by how well that view predicted the bullet relative to the weighted average (the replicator equation), keeping every view's share at least 2%; with the switch off the views' weights shall be fixed. | R9 |
++| MOVE-17 | State | While the regime switch is on, in a duel, the surf shall start each round in the free regime and, when it first surfs a real enemy shot fired after the last one counted, flip between the free and steady regimes with probability 0.4 drawn from a replaying die seeded from the enemy's name and the round; in the steady regime, when the least-danger option is to orbit the other way round, the surf shall keep its way round unless reversing is at least 30% less dangerous; with the switch off, or in the free regime, the surf shall take the least-danger option. | R9 |
+ 
+ - **HF record**: `HF,round,tick,class,gf,linearGf,dangerPct,distance,power,driving,planOffset,planDanger,planAge,options,optionsAge`
+   (`move.HitForensics`). An offset of at most 1 means the bullet hit inside the interval the surf's
+diff --git a/hadur-bench/build-ablation.sh b/hadur-bench/build-ablation.sh
+index 1037283f..52ec34a4 100755
+--- a/hadur-bench/build-ablation.sh
++++ b/hadur-bench/build-ablation.sh
+@@ -59,6 +59,9 @@
+ #   repl  MOVE-16: the danger views' weights evolve by the replicator equation: each enemy bullet that hits us
+ #         multiplies a view's weight by how well it predicted the bullet's angle against the weighted average
+ #         (every view keeps 2% of the share), so the view that reads this gun takes over. Suffix rp.
++#   regime  MOVE-17: the regime switch from the style lab (docs/bench/style-lab.md): on each new enemy shot the
++#         surf flips, with probability 0.4 from a replaying die, between reversing freely and a steady regime
++#         that reverses only when reversing is 30% safer than keeping on. Combine with heatjit. Suffix rg.
+ #   silent  the Duel never fires: drive() is entered with WEAVE-3's fire permission withdrawn (mayFire = false),
+ #         which both of the duel's fire sites (the aimed shot and the shield's) honour; the radar,
+ #         aim, waves and movement all still run. Hadur then scores only by survival, which is what
+@@ -218,6 +221,9 @@ for a in "${list[@]}"; do
+             edit "$movedesign" "static final boolean HEAT_WAVE = false;" "static final boolean HEAT_WAVE = true;"
+             edit "$movedesign" "static final boolean GUN_SPLIT = false;" "static final boolean GUN_SPLIT = true;"
+             version="${version}sp" ;;
++        regime)
++            edit "$movedesign" "static final boolean REGIME = false;" "static final boolean REGIME = true;"
++            version="${version}rg" ;;
+         repl)
+             edit "$movedesign" "static final boolean REPLICATOR = false;" "static final boolean REPLICATOR = true;"
+             version="${version}rp" ;;
+diff --git a/hadur-core/src/main/java/hadur2/core/duel/DuelController.java b/hadur-core/src/main/java/hadur2/core/duel/DuelController.java
+index 147b5552..3fd06c0e 100644
+--- a/hadur-core/src/main/java/hadur2/core/duel/DuelController.java
++++ b/hadur-core/src/main/java/hadur2/core/duel/DuelController.java
+@@ -305,6 +305,7 @@ public final class DuelController {
+         this.surfMover = new SurfMover(battleField, predictor);
+         this.surfMover.setEscapeRoomTerm(MoveDesign.ESCAPE_ROOM);
+         this.surfMover.setProtean(MoveDesign.PROTEAN, MoveDesign.PROTEAN_DWELL);
++        this.surfMover.setRegime(MoveDesign.REGIME);
+         this.shadowAvoidance = new ShadowAvoidance(fieldWidth, fieldHeight);
+         this.ramEscape = new RamEscape(battleField, predictor);
+         this.mirror = new MirrorDetector(fieldWidth, fieldHeight);
+@@ -749,6 +750,7 @@ public final class DuelController {
+                 surfMover.setProteanHot(learning);
+             }
+             if (split ? learning : MoveDesign.PROTEAN) proteanWindow(in);
++            if (MoveDesign.REGIME) regimeSeed();
+             surfMover.move(orders, currentState(in), moveController, lastEnemyLocation,
+                 TickBudget.wavesToSurf(level), TickBudget.goToAllowed(level));
+         }
+@@ -771,6 +773,19 @@ public final class DuelController {
+     private int proteanSeedRound = -1;
+     private String proteanSeedName;
+ 
++    /** MOVE-17: the round and enemy the regime die was last seeded for. */
++    private int regimeSeedRound = -1;
++    private String regimeSeedName;
++
++    /** MOVE-17: seeds the regime die once per round and enemy, from the enemy's name. */
++    private void regimeSeed() {
++        if (regimeSeedRound != round || !Objects.equals(regimeSeedName, opponentName)) {
++            regimeSeedRound = round;
++            regimeSeedName = opponentName;
++            surfMover.seedRegime(opponentName, round);
++        }
++    }
++
+     /**
+      * MOVE-14: tells the surf whether the protean pick may act this tick: the enemy's gun heat
+      * is no more than one tick's cooling (MOVE-11's test) and no real wave reaches us within
+diff --git a/hadur-core/src/main/java/hadur2/core/duel/MoveDesign.java b/hadur-core/src/main/java/hadur2/core/duel/MoveDesign.java
+index 94c94489..f88aa993 100644
+--- a/hadur-core/src/main/java/hadur2/core/duel/MoveDesign.java
++++ b/hadur-core/src/main/java/hadur2/core/duel/MoveDesign.java
+@@ -40,5 +40,12 @@ final class MoveDesign {
+      */
+     static final boolean REPLICATOR = false;
+ 
++    /**
++     * MOVE-17: the regime switch (docs/bench/style-lab.md). On each new enemy shot the surf flips,
++     * with probability 0.4 from a replaying die, between its free regime (reverse whenever
++     * reversing is least danger) and a steady one (reverse only when 30% safer than keeping on).
++     */
++    static final boolean REGIME = false;
++
+     private MoveDesign() { }
+ }
+diff --git a/hadur-core/src/main/java/hadur2/core/move/RegimeClock.java b/hadur-core/src/main/java/hadur2/core/move/RegimeClock.java
+new file mode 100644
+index 00000000..1fce12e7
+--- /dev/null
++++ b/hadur-core/src/main/java/hadur2/core/move/RegimeClock.java
+@@ -0,0 +1,66 @@
++package hadur2.core.move;
++
++/**
++ * MOVE-17: the regime switch, from the style lab (docs/bench/style-lab.md). The surf has two
++ * temperaments: free, where it reverses whenever reversing is the least danger (as without the
++ * switch), and steady, where it keeps its way round unless reversing is clearly safer, which
++ * lengthens the runs between reversals. On each new enemy shot the clock flips from one to the
++ * other with probability {@link #FLIP}, drawn from a replaying die ({@link ProteanPick}), so a
++ * gun that has learned how long we keep going one way is right less often.
++ *
++ * <p>Pure: no engine types, no clock. The surf tells it of each new real shot and asks whether
++ * a reversal should be held.</p>
++ */
++public final class RegimeClock {
++
++    /** The chance a new enemy shot flips the regime; the lab's best style flipped on 38%. */
++    static final double FLIP = 0.4;
++    /** In the steady regime, a reversal is taken only when it is this share safer than keeping on. */
++    static final double MARGIN = 0.3;
++
++    private final ProteanPick die = new ProteanPick();
++    private boolean steady;
++    private long lastShot = Long.MIN_VALUE;
++
++    /**
++     * Seeds the die from the enemy's name and the round, so the regimes replay, and starts the
++     * round free.
++     *
++     * @param enemyName the opponent's name
++     * @param round the round number
++     */
++    public void seed(String enemyName, int round) {
++        die.seed(enemyName, round);
++        steady = false;
++        lastShot = Long.MIN_VALUE;
++    }
++
++    /**
++     * Tells the clock of the real enemy shot being surfed. A shot newer than the last one seen
++     * draws once from the die; an older or the same one draws nothing.
++     *
++     * @param fireTime the tick the shot was fired
++     */
++    public void shot(long fireTime) {
++        if (fireTime <= lastShot) return;
++        lastShot = fireTime;
++        if (die.next() < FLIP) steady = !steady;
++    }
++
++    /** Whether the surf is in the steady regime. */
++    public boolean steady() {
++        return steady;
++    }
++
++    /**
++     * Whether a reversal should be held: in the steady regime, when reversing is not at least
++     * {@link #MARGIN} safer than keeping on; never in the free regime.
++     *
++     * @param keepDanger the danger of keeping on the way round we are going
++     * @param reverseDanger the danger of reversing
++     * @return true to keep on instead of reversing
++     */
++    public boolean holdReversal(double keepDanger, double reverseDanger) {
++        return steady && reverseDanger > keepDanger * (1 - MARGIN);
++    }
++}
+diff --git a/hadur-core/src/main/java/hadur2/core/move/SurfMover.java b/hadur-core/src/main/java/hadur2/core/move/SurfMover.java
+index 3c713df8..583e1c06 100644
+--- a/hadur-core/src/main/java/hadur2/core/move/SurfMover.java
++++ b/hadur-core/src/main/java/hadur2/core/move/SurfMover.java
+@@ -92,6 +92,10 @@ public class SurfMover {
+     /** MOVE-14: the pick being kept, and the ticks it still stands including this one. */
+     private SurfOption proteanOption = SurfOption.STOP;
+     private int proteanDwellLeft;
++    /** MOVE-17: whether the regime switch may hold a reversal (off by default). */
++    private boolean regimeOn;
++    /** MOVE-17: the free and steady regimes and the die that flips them. */
++    private final RegimeClock regime = new RegimeClock();
+ 
+     /** The distance, in px, the attack angles steer toward. */
+     private double desiredDistance = DEFAULT_DISTANCE;
+@@ -189,6 +193,27 @@ public class SurfMover {
+         proteanHeld = false;
+     }
+ 
++    /**
++     * MOVE-17: whether the regime switch is on. Off by default; when off the surf reverses
++     * whenever reversing is the least danger, as before.
++     *
++     * @param on whether the regime switch is used
++     */
++    public void setRegime(boolean on) {
++        this.regimeOn = on;
++    }
++
++    /**
++     * MOVE-17: seeds the regime die from the enemy's name and the round, and starts the round
++     * in the free regime.
++     *
++     * @param enemyName the opponent's name
++     * @param round the round number
++     */
++    public void seedRegime(String enemyName, int round) {
++        regime.seed(enemyName, round);
++    }
++
+     /** The target distance, in px, last set. */
+     public double desiredDistance() {
+         return desiredDistance;
+@@ -365,8 +390,12 @@ public class SurfMover {
+         }
+ 
+         boolean goingClockwise = lastSurfOption == SurfOption.CLOCKWISE;
+-        // MOVE-14: the protean pick needs every option's danger complete, so none is cut off.
+-        updateSurfDangers(myState, moveCtrl, wavesToSurf, goingClockwise, proteanNow);
++        // MOVE-17: a new real shot may flip the regime.
++        if (regimeOn && surfWave.firingWave) regime.shot(surfWave.fireTime);
++        // MOVE-14: the protean pick needs every option's danger complete, so none is cut off;
++        // MOVE-17 compares keeping on with reversing, so it needs both whole too.
++        updateSurfDangers(myState, moveCtrl, wavesToSurf, goingClockwise,
++            proteanNow || (regimeOn && regime.steady()));
+ 
+         double ccwDanger = surfOptionDangers.getOrDefault(SurfOption.COUNTER_CLOCKWISE, 0.0);
+         double stopDanger = surfOptionDangers.getOrDefault(SurfOption.STOP, 0.0);
+@@ -378,6 +407,11 @@ public class SurfMover {
+             SurfOption drawn = proteanOption(moveCtrl, surfWave, ccwDanger, stopDanger, cwDanger);
+             takeStop = drawn == SurfOption.STOP;
+             takeClockwise = drawn == SurfOption.CLOCKWISE;
++        } else if (regimeOn && !takeStop && takeClockwise != goingClockwise) {
++            // MOVE-17: in the steady regime a reversal must be clearly safer than keeping on.
++            double keep = goingClockwise ? cwDanger : ccwDanger;
++            double reverse = goingClockwise ? ccwDanger : cwDanger;
++            if (regime.holdReversal(keep, reverse)) takeClockwise = goingClockwise;
+         }
+ 
+         Point2D.Double surfDest;
+diff --git a/hadur-core/src/test/java/hadur2/core/move/RegimeClockTest.java b/hadur-core/src/test/java/hadur2/core/move/RegimeClockTest.java
+new file mode 100644
+index 00000000..b6a940d5
+--- /dev/null
++++ b/hadur-core/src/test/java/hadur2/core/move/RegimeClockTest.java
+@@ -0,0 +1,74 @@
++package hadur2.core.move;
++
++import static org.junit.jupiter.api.Assertions.assertEquals;
++import static org.junit.jupiter.api.Assertions.assertFalse;
++import static org.junit.jupiter.api.Assertions.assertTrue;
++
++import org.junit.jupiter.api.DisplayName;
++import org.junit.jupiter.api.Tag;
++import org.junit.jupiter.api.Test;
++
++/** MOVE-17: the regime clock. */
++class RegimeClockTest {
++
++    static RegimeClock seeded() {
++        RegimeClock c = new RegimeClock();
++        c.seed("sample.Enemy 1.0", 3);
++        return c;
++    }
++
++    @Test
++    @Tag("MOVE-17")
++    @DisplayName("a round starts free, and the free regime never holds a reversal")
++    void startsFree() {
++        RegimeClock c = seeded();
++        assertFalse(c.steady());
++        assertFalse(c.holdReversal(1.0, 0.99));
++        assertFalse(c.holdReversal(0.1, 5.0));
++    }
++
++    @Test
++    @Tag("MOVE-17")
++    @DisplayName("each new shot flips the regime about 40% of the time; a shot seen again draws nothing")
++    void flipsOnNewShots() {
++        RegimeClock c = seeded();
++        int flips = 0;
++        boolean last = c.steady();
++        for (long t = 1; t <= 5000; t++) {
++            c.shot(t * 14);
++            c.shot(t * 14);
++            c.shot(t * 14 - 3);
++            if (c.steady() != last) flips++;
++            last = c.steady();
++        }
++        assertEquals(0.4, flips / 5000.0, 0.03);
++    }
++
++    @Test
++    @Tag("MOVE-17")
++    @DisplayName("the steady regime keeps on unless reversing is at least 30% safer")
++    void steadyHoldsUnlessClearlySafer() {
++        RegimeClock c = seeded();
++        long t = 0;
++        while (!c.steady()) c.shot(++t);
++        assertTrue(c.holdReversal(1.0, 0.8));
++        assertTrue(c.holdReversal(1.0, 0.71));
++        assertFalse(c.holdReversal(1.0, 0.69));
++        assertFalse(c.holdReversal(0.0, 0.0));
++    }
++
++    @Test
++    @Tag("MOVE-17")
++    @DisplayName("the regimes replay from the same seed, and a new seed starts the round free")
++    void replays() {
++        RegimeClock a = seeded();
++        RegimeClock b = seeded();
++        for (long t = 1; t <= 500; t++) {
++            a.shot(t);
++            b.shot(t);
++            assertEquals(a.steady(), b.steady(), "shot " + t);
++        }
++        a.seed("sample.Enemy 1.0", 4);
++        assertFalse(a.steady());
++    }
++}
+diff --git a/hadur-core/src/test/resources/duel-sources.sha256 b/hadur-core/src/test/resources/duel-sources.sha256
+index ef663d97..1cb221ea 100644
+--- a/hadur-core/src/test/resources/duel-sources.sha256
++++ b/hadur-core/src/test/resources/duel-sources.sha256
+@@ -42,10 +42,11 @@ e22d48340da2f07577935f066b1a05799dba4dcc687350e9479f34ea18bc915f  hadur2/core/mo
+ 40ad68c4f4bc1489fe37a51546aa913769123c8bfc953a546970e5d8aba98771  hadur2/core/move/PlanInterval.java
+ f4ebc67ff1deac6e7fe54b2f39d9d841b877762cfeeee5ff57946e546efda3fe  hadur2/core/move/ProteanPick.java
+ 560b5082ffcb33b61589444f63b069ea97f238cb2ead70e4f513f2da4687d887  hadur2/core/move/RamEscape.java
++7f0143b614292c4c3865faaf37d3c771e7ba8613448af76a0f5df52f7ef65a3e  hadur2/core/move/RegimeClock.java
+ 8e2e042944979aaad6281f6d7128d8d9183235a1ea82e9555544e636cd0dc1f0  hadur2/core/move/ReplicatorWeights.java
+ 99f2f8ec7ac50f1148ff778a6eb6790a9339a5e5a6886bf68a8e0dc0f11d72e0  hadur2/core/move/ShadowGain.java
+ 46b93a63d1b53ccde31dc62b8027a04e3315fcc653f46335cc72e0363a9894e2  hadur2/core/move/SimpleFormula.java
+-b4bfcb50ef2677a4aa12cc553d3f16214282a2340fe39cb4a32ef608274ed6b3  hadur2/core/move/SurfMover.java
++1309cc98ca38fa735ed807645bd7cc4454682fbd964650fec8a32bf6603323c4  hadur2/core/move/SurfMover.java
+ 504bb29615ea08ac6e8ca6aa2684300d23e3948d5a707264f6ceff95434b1f9f  hadur2/core/move/package-info.java
+ 57c09265ba0e601b1190609955f63c7ebb88625ffbd568db7a282fbf191d880e  hadur2/core/physics/Angles.java
+ 438dbc0a84c37efbf9535db59606a02ad3f436898a055d1bce0556dadc64d784  hadur2/core/physics/BattleField.java
+diff --git a/hadur-core/src/test/resources/pins/duel.sha256 b/hadur-core/src/test/resources/pins/duel.sha256
+index 67b85295..48c963d8 100644
+--- a/hadur-core/src/test/resources/pins/duel.sha256
++++ b/hadur-core/src/test/resources/pins/duel.sha256
+@@ -3,8 +3,8 @@
+ 0fccc25010505e9646c78fa7eeb4a077d45847d34496f9174c9fb80420dbce13  hadur2/core/adapt/SeedLoader.java
+ 4aa6c3ce79edbd06fdfaae2a1ea9c83b2f7f6ce5551937500970a3f610af3ace  hadur2/core/adapt/SeedTrust.java
+ 360efeccd1996f98064d93cb7cd4202e063790bb4ff28f939a0fe69027814d9b  hadur2/core/adapt/package-info.java
+-8b69cd7c9e2798e2be5c32da455ea5427427f3807a31cc598c6818f450a14828  hadur2/core/duel/DuelController.java
+-6171c3bbbaea94dd20f2442554804fe5d8a3f8d032118be6b01f04e92af13202  hadur2/core/duel/MoveDesign.java
++76dce8be586c2b7677a613c366cace45d83edb794a19707676ab3768970ad855  hadur2/core/duel/DuelController.java
++18f528888dd7e2267cee55cd10bf7d1d5ec7d5027c0042976a182a7b6d9a2b31  hadur2/core/duel/MoveDesign.java
+ 07cc6dd90cb5c111fb5c5c016cc7736a15f319365adfed90857505ff5872188b  hadur2/core/duel/ShadowAvoidance.java
+ 82ec69613f69270f8e69f7abe7061517c0c6b1f301fb21fdd1e454c69f078945  hadur2/core/gun/AntiSurferFormula.java
+ afd4939c6e60ad10db3ee0f1d015c8a3fd57be88c92a3f9fb6fcdb3fb79f221a  hadur2/core/gun/AntiSurferGun.java
+@@ -28,10 +28,11 @@ e22d48340da2f07577935f066b1a05799dba4dcc687350e9479f34ea18bc915f  hadur2/core/mo
+ 40ad68c4f4bc1489fe37a51546aa913769123c8bfc953a546970e5d8aba98771  hadur2/core/move/PlanInterval.java
+ f4ebc67ff1deac6e7fe54b2f39d9d841b877762cfeeee5ff57946e546efda3fe  hadur2/core/move/ProteanPick.java
+ 560b5082ffcb33b61589444f63b069ea97f238cb2ead70e4f513f2da4687d887  hadur2/core/move/RamEscape.java
++7f0143b614292c4c3865faaf37d3c771e7ba8613448af76a0f5df52f7ef65a3e  hadur2/core/move/RegimeClock.java
+ 8e2e042944979aaad6281f6d7128d8d9183235a1ea82e9555544e636cd0dc1f0  hadur2/core/move/ReplicatorWeights.java
+ 99f2f8ec7ac50f1148ff778a6eb6790a9339a5e5a6886bf68a8e0dc0f11d72e0  hadur2/core/move/ShadowGain.java
+ 46b93a63d1b53ccde31dc62b8027a04e3315fcc653f46335cc72e0363a9894e2  hadur2/core/move/SimpleFormula.java
+-b4bfcb50ef2677a4aa12cc553d3f16214282a2340fe39cb4a32ef608274ed6b3  hadur2/core/move/SurfMover.java
++1309cc98ca38fa735ed807645bd7cc4454682fbd964650fec8a32bf6603323c4  hadur2/core/move/SurfMover.java
+ 504bb29615ea08ac6e8ca6aa2684300d23e3948d5a707264f6ceff95434b1f9f  hadur2/core/move/package-info.java
+ 567ab938175edde8512e610deecb50c6987e1406a8de558e8ed2a596e4d1968b  hadur2/core/policy/BattleHitRates.java
+ e180c00bb97685be135f6bfe0b5b62930e25faefa68d48099a30b403baa9b916  hadur2/core/policy/DistancePolicy.java
+-- 
+2.43.0
+
