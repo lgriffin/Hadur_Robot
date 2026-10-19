@@ -43,6 +43,20 @@ class RatesTest(unittest.TestCase):
         self.assertTrue(buckets["r1-2"] != buckets["r1-2"])  # nan: no such round
 
 
+class ReadRoundsTest(unittest.TestCase):
+
+    def test_rounds_of_failed_battles_are_dropped_with_ok_keys(self):
+        with tempfile.TemporaryDirectory() as d:
+            rounds = os.path.join(d, "r_rounds.tsv")
+            with open(rounds, "w", encoding="utf-8") as f:
+                f.write("build\topponent\tseed\tround\tticks\tdamageDealt\tdamageTaken\n")
+                f.write("H\ta.A 1.0\t1\t0\t10\t1\t1\n")
+                f.write("H\ta.A 1.0\t2\t0\t10\t1\t1\n")
+            ok = {("H", "a.A", "1")}
+            self.assertEqual(len(mg.read_rounds(rounds, "H")), 2)
+            self.assertEqual([r["seed"] for r in mg.read_rounds(rounds, "H", ok)], ["1"])
+
+
 class SplitTest(unittest.TestCase):
 
     def test_split_scores_the_pick_on_the_other_seeds(self):

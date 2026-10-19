@@ -168,12 +168,15 @@ def read_rows(path, build=None):
     return out
 
 
-def read_rounds(path, build=None):
-    """export_battles --rounds-out rows, one build."""
+def read_rounds(path, build=None, ok_keys=None):
+    """export_battles --rounds-out rows, one build; with ok_keys, only the rounds of the
+    battles whose (build, opponent, seed) is in it (the ok rows of the companion rows file)."""
     out = []
     with open(path, encoding="utf-8", newline="") as f:
         for r in csv.DictReader(f, delimiter="\t"):
             if build and r["build"] != build:
+                continue
+            if ok_keys is not None and (r["build"], base(r["opponent"]), r["seed"]) not in ok_keys:
                 continue
             out.append(r)
     return out
@@ -299,7 +302,8 @@ def main(argv=None):
             if "@" in path:
                 path, build = path.split("@", 1)
             rounds_path = path[:-4] + "_rounds.tsv" if path.endswith(".tsv") else path + "_rounds.tsv"
-            res = rates(read_rounds(rounds_path, build), names, a.from_round)
+            ok_keys = set(read_rows(path, build))
+            res = rates(read_rounds(rounds_path, build, ok_keys), names, a.from_round)
             if res is None:
                 print("| %s | none | | | | |" % label)
                 continue

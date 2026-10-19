@@ -158,7 +158,7 @@ The queue is `hadur-bench/plans/pc-midrange.queue`: prep builds 3.13hjsw (the st
 measured) and the candidates from the 1v1 branch (`claude/project-thread-du09qh`, where the
 `pressure`, `pdown` ablation codes are added by the implementation), then on
 `hadur-bench/flat-gf-mid.txt` (the 149) at 8 fresh seeds (1011-1018), each paired against
-3.13hjsw: `pw`, `f8`, `pwf8` (about 3 hours each at the census's rate), then `guard` (the top 50,
+3.13hjsw: `pw`, `f8`, `pwf8` (about 3 hours each at the census's rate), then `guard` (the census top 50,
 `hadur-bench/guard-top50.txt`, 4 seeds, on `pwf8`), then `pd`. Read each with
 `data/tools/screen_paired.py ROWS ROUNDS --candidate ... --baseline "hadur2.Hadur 3.13hjsw" --set
 hadur-bench/flat-gf-mid.txt`; the "All" row is the mean over the 149 in points. If the stack is
