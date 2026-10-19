@@ -1,0 +1,34 @@
+# Second PC queue for docs/plan-midrange.md (thread "Midrange census plan"), after
+# docs/bench/local/2026-10-19_pc-midrange-read.md: the POW-12 gate never opened on the 149 (100-shot
+# window margins), so this queue tests the power change itself and a gate that opens. Same set, same
+# base, fresh seeds. One bench queue on the PC, RoboRumble workers at 0 until ALLDONE.
+#   ./queue.sh run pc-midrange-2        (or  .\queue.ps1 run pc-midrange-2)
+# Resumable: a restart skips the steps that exited 0.
+#
+# Base: 3.13hjsw (stop-and-start + SHIELD-14), built from the 1v1 branch claude/project-thread-du09qh.
+# Candidates (build-ablation.sh on du09qh since 37e3f10b; duel-only, off by default, energy floor and
+#   lead-regime yield kept):
+#   pwall (suffix pa)  POW-12 with no rate gate: base 2.5 beyond 150 px and no power-down on every duel
+#                      aim. Bounds what the power change is worth on the class.
+#   pwc   (suffix pz)  POW-12 gated on the window centres only: ours >= 12%, theirs <= 9%, both windows
+#                      holding at least 30 outcomes. Opens at about the class mean (15% vs 7%).
+# Read each step as before (screen_paired.py, --set flat-gf-mid.txt). Class gate: +2.0 points with the
+#   interval above 0; guard no worse than -0.5.
+
+set HEAP = --child-heap 2G
+set E = --engine 1.11.1
+set COMMON = --skip-build --skip-fetch --rounds 35 --parallel 12 --cpu-constant 1488498 ${HEAP} ${E}
+set SEEDS8 = --seeds 8 --seed-base 1040
+set SEEDS4 = --seeds 4 --seed-base 1050
+set BASE = --baseline bisect/hadur2.Hadur_3.13hjsw.jar --baseline-robot "hadur2.Hadur 3.13hjsw"
+
+prep | mkdir -p bisect && git fetch -q origin claude/project-thread-du09qh && { git worktree remove --force ../../hadur-top3 2>/dev/null || true; } && git worktree add --force --detach ../../hadur-top3 FETCH_HEAD && (cd ../../hadur-top3/hadur-bench && bash ./build-ablation.sh heatjit,swall && bash ./build-ablation.sh heatjit,swall,pwall && bash ./build-ablation.sh heatjit,swall,pwc) && cp ../../hadur-top3/hadur-bench/bisect/hadur2.Hadur_3.13hjsw*.jar bisect/ && ./fetch-opponents.sh --set flat-gf-mid.txt && ./fetch-opponents.sh --set guard-top50.txt && mvn -q compile
+
+pa | ./bench-top20.sh ${COMMON} ${SEEDS8} --set flat-gf-mid.txt --robot-jar bisect/hadur2.Hadur_3.13hjswpa.jar --robot "hadur2.Hadur 3.13hjswpa" ${BASE} --label pc-midrange2-pa
+  after: prep
+
+pz | ./bench-top20.sh ${COMMON} ${SEEDS8} --set flat-gf-mid.txt --robot-jar bisect/hadur2.Hadur_3.13hjswpz.jar --robot "hadur2.Hadur 3.13hjswpz" ${BASE} --label pc-midrange2-pz
+  after: pa
+
+guard | ./bench-top20.sh ${COMMON} ${SEEDS4} --set guard-top50.txt --robot-jar bisect/hadur2.Hadur_3.13hjswpa.jar --robot "hadur2.Hadur 3.13hjswpa" ${BASE} --label pc-midrange2-guard
+  after: pz
