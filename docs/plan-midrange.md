@@ -135,28 +135,33 @@ robot with the interval above zero** (that is +0.24 APS on the 149 and about +0.
 the class if it carries), the guard sets no worse than -0.5, and then the usual whole-field
 census at +0.3 APS, no band below -0.05.
 
-### Stage 1: pressure power (POW-11) and the flattener threshold, on the PC
+### Stage 1: pressure power (POW-12) and the flattener threshold, on the PC
 
-**POW-11, "pressure power"** (`PowerPolicy`, a new `Reason`; ablation `pressure`, suffix `pw`):
+**POW-12, "pressure power"** (built on the 1v1 branch at 8f325cdb as a `GunController.Stakes`
+level, `PRESSURE`, that sets the gun's base power, not a `PowerPolicy` `Reason`; switch
+`PowerDesign.PRESSURE`, off by default; ablation `pressure`, suffix `pw`):
 while this battle's rolling estimates say our hit rate less its margin is at least 12% and their
 hit rate plus its margin is at most 9% (the DIAL-1 estimates POW-2 and POW-4 already read), and
 our energy is above `MIN_OUR_ENERGY`, the 1v1 gun power skips the cubic power-down and uses a
 base power of 2.5 beyond 150 px (2.95 inside stays). Everything downstream is unchanged: POW-1
 to POW-4 may still raise it to 3.0, POW-5's T3 cap, the quarter-of-their-energy kill cap, END-3,
-END-4, RAM-1, SHIELD-4 and the lead-aware regime (POW-7 to POW-9, which only holds while both
-rates are under 12.5%, so the two never overlap) all apply in their present order. A weaker form,
-**`pdown`** (suffix `pd`): the power-down skipped under the same gate, base power 1.95 kept.
+END-4, RAM-1, SHIELD-4 and the lead-aware regime (POW-7 to POW-9) all apply in their present
+order. The gate also requires the lead regime to be off: when both hold at once (its 12.5% bound
+is on the central estimates, the pressure gate on the margins, so they can overlap) the pressure
+rule yields, so the lead regime's power is never changed. A weaker form, **`pdown`** (suffix
+`pd`, `PowerDesign.PRESSURE_BASE_ONLY_POWERDOWN`, built alone, never with `pressure`): the
+power-down skipped under the same gate, base power 1.95 kept.
 Expected on the 149: dealt per tick up 20-35%, rounds 10-15% shorter, taken per round down with
 them: +2 to +4 points a robot if the energy holds, which the gate's margins are there to ensure.
 Risk: an energy war against a gun that starts hitting us later; the gate drops the rule as soon
 as their rate climbs, and the guard set (the top 50) checks it.
 
 **MOVE-5 flattener at 8%** (`flt8`, exists): the one movement switch with a consistent sign on
-this class. Screened alone and stacked with POW-11.
+this class. Screened alone and stacked with POW-12.
 
 The queue is `hadur-bench/plans/pc-midrange.queue`: prep builds 3.13hjsw (the stack the census
 measured) and the candidates from the 1v1 branch (`claude/project-thread-du09qh`, where the
-`pressure`, `pdown` ablation codes are added by the implementation), then on
+`pressure`, `pdown` ablation codes are in `build-ablation.sh` since 8f325cdb), then on
 `hadur-bench/flat-gf-mid.txt` (the 149) at 8 fresh seeds (1011-1018), each paired against
 3.13hjsw: `pw`, `f8`, `pwf8` (about 3 hours each at the census's rate), then `guard` (the census top 50,
 `hadur-bench/guard-top50.txt`, 4 seeds, on `pwf8`), then `pd`. Read each with
@@ -166,11 +171,11 @@ dropped in favour of 3.13, the queue's `BASE` line and the candidate builds chan
 else. A candidate that clears the class gate and the guard goes to the whole-field census (the
 commented `census` step, 13 hours), paired against the 3.13 release as `pc-1018-stack` was.
 
-Implementation (Sonnet, on the 1v1 branch, PR #199 or a branch off it): the `PowerPolicy`
-rule and its `Reason`, the switch in a design constant (off by default), the `pressure` and
-`pdown` lines in `build-ablation.sh`, unit tests for the gate (on, off at the margins, off while
-the lead regime holds, off under `MIN_OUR_ENERGY`), and EARS lines POW-11 in
-`docs/requirements.md`.
+Implementation (done on the 1v1 branch, commit 8f325cdb, tests green): `Stakes.PRESSURE` and
+`PRESSURE_DOWN` in `GunController`, the switches in `PowerDesign` (off by default), the
+`pressure` and `pdown` lines in `build-ablation.sh`, unit tests for the gate (on, off at the
+margins, off while the lead regime holds, off under the energy floor of 12), and EARS lines
+POW-12 in `docs/requirements.md`.
 
 ### Stage 2: the surf's fidelity to Diamond, in the cloud
 
@@ -197,7 +202,7 @@ Hadur added on top of the port.
 
 ### Stage 3: the gun against random movers (if stage 1 leaves dealt short)
 
-After POW-11, if Hadur's dealt rate on the class is still under ScalarR's, the main gun's kernel
+After POW-12, if Hadur's dealt rate on the class is still under ScalarR's, the main gun's kernel
 width and k against flat movers: the offline guess-factor gun hits these movers 11.2% and
 Hadur's 15.2%, so the gun is already better than a plain histogram, and this stage is a
 measurement first (hit rate by distance band against the 149, against the segmented offline gun's
@@ -207,8 +212,8 @@ measurement first (hit rate by distance band against the 149, against the segmen
 
 | Lever | Scope | Expected | Gate |
 |---|---|---|---|
-| POW-11 pressure power | 149, then the 432 of the class | +0.3 to +0.6 APS | class +2.0, guard, census +0.3 |
-| flattener 8% | the same | +0.05 to +0.1 | with POW-11 |
+| POW-12 pressure power | 149, then the 432 of the class | +0.3 to +0.6 APS | class +2.0, guard, census +0.3 |
+| flattener 8% | the same | +0.05 to +0.1 | with POW-12 |
 | surf fidelity (stage 2) | the 184 unlisted midrange and below | +0.3 to +0.8 | per switch |
 
 Together they are the midrange's 0.9 APS to DrussGT if all of it comes in, which is the largest
