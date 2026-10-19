@@ -1,5 +1,7 @@
 # AES: assessment and a first PC plan
 
+**Closed 2026-10-19: Kill 1 failed on the PC (pc-aes-class).** See "PC result" below.
+
 2026-10-19. Leigh asked whether the proposal "AES: Adversarial Evolutionary Surfing" (v0.1,
 19 October 2026) has merit, and for a PC plan to test it. This note judges it against what the
 project has already measured and keeps only the part the evidence leaves open.
@@ -132,7 +134,34 @@ direction. The in-sample cut bounds the held-out one from above, so more data is
 15%. The PC queue would make that a verdict on 432 bots at 4 seeds; a class-only record at 2 seeds
 (about 2.5 hours) would do the same more cheaply.
 
-### Step 4: engine screen (PC, about 3 hours)
+### PC result (2026-10-19, pc-aes-class): Kill 1 fails, AES closed
+
+Leigh ran `pc-aes-class` on the PC: base 3.14hjsw with the recorder, the 432 flat x learning bots
+at 2 seeds (864 battles), 915,214 recorded waves over 372 opponents (the other 60 left no matched
+record, as Hadur met them without a surfed real wave; even at the in-sample cut they could not move
+the verdict). Reports: `docs/bench/local/2026-10-19_aes-fit-class-family.md`, `-view.md` and
+`2026-10-19_pc-aes-class-record.md`.
+
+| Groups | Parity | Held-out avoidable cut, fit on A | Fit on B | Train-side cut |
+|---|---|---|---|---|
+| family (5) | 100.00% | 6.1% | 4.7% | 5.7% / 6.5% |
+| view (11) | 100.00% | 6.6% | 5.9% | 6.9% / 7.4% |
+
+The intervals clear zero, so the gain is real but small: a static re-weighting of the terms the
+surf already computes removes about 5% of the class's avoidable damage, a third of the 15% bar,
+and the in-sample cut is no larger, so more data cannot reach it. Several fitted parameters sit
+on their bounds (hit-rate weight to zero, damage exponent up, time-to-impact exponent to zero),
+the sign of a weakly identified blend rather than a better ranking. With the usual one-step to
+engine shrinkage, 5% is worth well under the +1.0 point Kill 2 asks of the class, so no engine
+screen runs and MOVE-22 is not built.
+
+What it settles: the surf's danger terms are not mis-weighted; they lack the information to tell
+the three options apart against learning guns. The remaining movement lever is a better model
+of the enemy gun (new information), not search over how today's information is blended. AES's
+trajectory, MAP-Elites, adversarial-gun and selector parts stay closed with it. The AES-1
+recorder stays in the code, off by default, for any later ranking study.
+
+### Step 4: engine screen (PC, about 3 hours, not run)
 
 If Kill 1 passes: build MOVE-22 with the weights fitted on all 432, and run the 400-bot screen
 (`screen-311`, 8 seeds 1081-1088, paired against the base in the same run), as pc-regime ran.
