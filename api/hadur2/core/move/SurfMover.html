@@ -313,9 +313,22 @@ loadScripts(document, 'script');</script>
  less turning.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setDesiredDistance(double)" class="member-name-link">setDesiredDistance</a><wbr>(double&nbsp;desiredDistance)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#seedProtean(java.lang.String,int)" class="member-name-link">seedProtean</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;enemyName,
+ int&nbsp;round)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../../../requirements.html#MOVE-14">MOVE-14</a>: seeds the protean die from the enemy's name and the round, so the draws replay.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setDesiredDistance(double)" class="member-name-link">setDesiredDistance</a><wbr>(double&nbsp;desiredDistance)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">The distance the surf's and the orbit's attack angles steer toward.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setEscapeRoomTerm(boolean)" class="member-name-link">setEscapeRoomTerm</a><wbr>(boolean&nbsp;on)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../../../requirements.html#MOVE-12">MOVE-12</a>: whether the first wave's danger, in the three-option mode and in go-to
+ surfing alike, is also multiplied by <a href="EscapeRoom.html#multiplier(java.awt.geom.Point2D.Double,java.awt.geom.Point2D.Double,double,hadur2.core.physics.BattleField)"><code>EscapeRoom.multiplier(java.awt.geom.Point2D.Double, java.awt.geom.Point2D.Double, double, hadur2.core.physics.BattleField)</code></a> at the move's end
+ (where the wave passes), the wave's source and its bullet speed.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setMode(hadur2.core.move.SurfMover.Mode)" class="member-name-link">setMode</a><wbr>(<a href="SurfMover.Mode.html" title="enum class in hadur2.core.move">SurfMover.Mode</a>&nbsp;mode)</code></div>
@@ -324,8 +337,26 @@ loadScripts(document, 'script');</script>
  being surfed keeps its mode.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setRammerActive(boolean)" class="member-name-link">setRammerActive</a><wbr>(boolean&nbsp;active)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setProtean(boolean,int)" class="member-name-link">setProtean</a><wbr>(boolean&nbsp;on,
+ int&nbsp;meanDwell)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../../../requirements.html#MOVE-14">MOVE-14</a>: whether the protean pick replaces the least-danger option while the window is
+ open (<a href="#setProteanWindow(boolean)"><code>setProteanWindow(boolean)</code></a>), and the mean dwell of a pick in ticks.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setProteanHot(boolean)" class="member-name-link">setProteanHot</a><wbr>(boolean&nbsp;hot)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../../../requirements.html#MOVE-15">MOVE-15</a>: whether the protean pick uses its hot setting (<a href="ProteanPick.html#setHot(boolean)"><code>ProteanPick.setHot(boolean)</code></a>).</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setProteanWindow(boolean)" class="member-name-link">setProteanWindow</a><wbr>(boolean&nbsp;inWindow)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../../../requirements.html#MOVE-14">MOVE-14</a>: whether this tick is in the protean window (the enemy's gun is cool and no real
+ bullet is close).</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setRammerActive(boolean)" class="member-name-link">setRammerActive</a><wbr>(boolean&nbsp;active)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../../../requirements.html#RAM-1">RAM-1</a>: while active, the no-wave orbit (<code>orbit(hadur2.core.model.BotOrders.Builder, double, java.awt.geom.Point2D.Double, java.awt.geom.Point2D.Double)</code>) picks the side it would
  otherwise reject, rather than whichever wall-smoothed heading points more directly
  away from the enemy.</div>
@@ -431,6 +462,73 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>desiredDistance</code> - the target distance, in px</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setEscapeRoomTerm(boolean)">
+<h3>setEscapeRoomTerm</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setEscapeRoomTerm</span><wbr><span class="parameters">(boolean&nbsp;on)</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#MOVE-12">MOVE-12</a>: whether the first wave's danger, in the three-option mode and in go-to
+ surfing alike, is also multiplied by <a href="EscapeRoom.html#multiplier(java.awt.geom.Point2D.Double,java.awt.geom.Point2D.Double,double,hadur2.core.physics.BattleField)"><code>EscapeRoom.multiplier(java.awt.geom.Point2D.Double, java.awt.geom.Point2D.Double, double, hadur2.core.physics.BattleField)</code></a> at the move's end
+ (where the wave passes), the wave's source and its bullet speed. Off by default; when
+ off the scores are those without the term.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>on</code> - whether the position term is applied</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setProtean(boolean,int)">
+<h3>setProtean</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setProtean</span><wbr><span class="parameters">(boolean&nbsp;on,
+ int&nbsp;meanDwell)</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#MOVE-14">MOVE-14</a>: whether the protean pick replaces the least-danger option while the window is
+ open (<a href="#setProteanWindow(boolean)"><code>setProteanWindow(boolean)</code></a>), and the mean dwell of a pick in ticks. Off by default;
+ when off, or outside the window, the surf takes the least-danger option as before.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>on</code> - whether the protean pick is used</dd>
+<dd><code>meanDwell</code> - the mean ticks a pick stands; 1 or less re-picks every tick</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setProteanHot(boolean)">
+<h3>setProteanHot</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setProteanHot</span><wbr><span class="parameters">(boolean&nbsp;hot)</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#MOVE-15">MOVE-15</a>: whether the protean pick uses its hot setting (<a href="ProteanPick.html#setHot(boolean)"><code>ProteanPick.setHot(boolean)</code></a>). Off
+ by default.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>hot</code> - whether to use the hot setting</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setProteanWindow(boolean)">
+<h3>setProteanWindow</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setProteanWindow</span><wbr><span class="parameters">(boolean&nbsp;inWindow)</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#MOVE-14">MOVE-14</a>: whether this tick is in the protean window (the enemy's gun is cool and no real
+ bullet is close). The duel says so each tick; closing the window drops the pick held, so
+ the next window draws afresh.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>inWindow</code> - whether the protean pick may act this tick</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="seedProtean(java.lang.String,int)">
+<h3>seedProtean</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">seedProtean</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;enemyName,
+ int&nbsp;round)</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#MOVE-14">MOVE-14</a>: seeds the protean die from the enemy's name and the round, so the draws replay.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>enemyName</code> - the opponent's name</dd>
+<dd><code>round</code> - the round number</dd>
 </dl>
 </section>
 </li>

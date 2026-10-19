@@ -202,6 +202,38 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="hadur2.core.move">
 <h2>Uses of <a href="../BattleField.html" title="class in hadur2.core.physics">BattleField</a> in <a href="../../move/package-summary.html">hadur2.core.move</a></h2>
+<div class="caption"><span>Methods in <a href="../../move/package-summary.html">hadur2.core.move</a> with parameters of type <a href="../BattleField.html" title="class in hadur2.core.physics">BattleField</a></span></div>
+<div class="summary-table three-column-summary">
+<div class="table-header col-first">Modifier and Type</div>
+<div class="table-header col-second">Method</div>
+<div class="table-header col-last">Description</div>
+<div class="col-first even-row-color"><code>static double[]</code></div>
+<div class="col-second even-row-color"><span class="type-name-label">EscapeRoom.</span><code><a href="../../move/EscapeRoom.html#inFieldAngles(java.awt.geom.Point2D.Double,java.awt.geom.Point2D.Double,double,hadur2.core.physics.BattleField)" class="member-name-link">inFieldAngles</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;source,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;target,
+ double&nbsp;bulletSpeed,
+ <a href="../BattleField.html" title="class in hadur2.core.physics">BattleField</a>&nbsp;field)</code></div>
+<div class="col-last even-row-color">
+<div class="block">The in-field escape angles of a target from a source's bullets.</div>
+</div>
+<div class="col-first odd-row-color"><code>static double</code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">EscapeRoom.</span><code><a href="../../move/EscapeRoom.html#multiplier(java.awt.geom.Point2D.Double,java.awt.geom.Point2D.Double,double,hadur2.core.physics.BattleField)" class="member-name-link">multiplier</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;ourEnd,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;enemy,
+ double&nbsp;bulletSpeed,
+ <a href="../BattleField.html" title="class in hadur2.core.physics">BattleField</a>&nbsp;field)</code></div>
+<div class="col-last odd-row-color">
+<div class="block">The position term: <code>restriction(ourEnd, enemy)</code> over <code>restriction(enemy,
+ ourEnd)</code> squared.</div>
+</div>
+<div class="col-first even-row-color"><code>static double</code></div>
+<div class="col-second even-row-color"><span class="type-name-label">EscapeRoom.</span><code><a href="../../move/EscapeRoom.html#restriction(java.awt.geom.Point2D.Double,java.awt.geom.Point2D.Double,double,hadur2.core.physics.BattleField)" class="member-name-link">restriction</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;source,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;target,
+ double&nbsp;bulletSpeed,
+ <a href="../BattleField.html" title="class in hadur2.core.physics">BattleField</a>&nbsp;field)</code></div>
+<div class="col-last even-row-color">
+<div class="block">How much of the open-field escape angle <code>target</code> keeps against <code>source</code>'s
+ bullets: the two in-field angles summed over twice <code>asin(8 / bulletSpeed)</code>.</div>
+</div>
+</div>
 <div class="caption"><span>Constructors in <a href="../../move/package-summary.html">hadur2.core.move</a> with parameters of type <a href="../BattleField.html" title="class in hadur2.core.physics">BattleField</a></span></div>
 <div class="summary-table three-column-summary">
 <div class="table-header col-first">Modifier</div>

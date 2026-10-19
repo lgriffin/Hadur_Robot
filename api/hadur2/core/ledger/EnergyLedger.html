@@ -232,27 +232,34 @@ loadScripts(document, 'script');</script>
  <a href="../physics/Rules.html#getBulletDamage(double)"><code>Rules.getBulletDamage(double)</code></a>, is part of the next drop.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#robotsCollided()" class="member-name-link">robotsCollided</a>()</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#ourTick(long,double,boolean)" class="member-name-link">ourTick</a><wbr>(long&nbsp;time,
+ double&nbsp;energy,
+ boolean&nbsp;explained)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../../../requirements.html#WAVE-5">WAVE-5</a>: our own energy at <code>time</code>, offered every tick of a duel (scanned or not).</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#robotsCollided()" class="member-name-link">robotsCollided</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">The robots collided; each loses <a href="../physics/Rules.html#ROBOT_HIT_DAMAGE"><code>Rules.ROBOT_HIT_DAMAGE</code></a>.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="EnergyLedger.Reading.html" title="class in hadur2.core.ledger">EnergyLedger.Reading</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#scan(long,double,double,double,double)" class="member-name-link">scan</a><wbr>(long&nbsp;time,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="EnergyLedger.Reading.html" title="class in hadur2.core.ledger">EnergyLedger.Reading</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#scan(long,double,double,double,double)" class="member-name-link">scan</a><wbr>(long&nbsp;time,
  double&nbsp;energy,
  double&nbsp;velocity,
  double&nbsp;x,
  double&nbsp;y)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Reads the enemy's energy from a scan at <code>time</code>.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) double</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#wallDamage(double,double,double,double,double,long)" class="member-name-link">wallDamage</a><wbr>(double&nbsp;unexplained,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) double</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#wallDamage(double,double,double,double,double,long)" class="member-name-link">wallDamage</a><wbr>(double&nbsp;unexplained,
  double&nbsp;previousVelocity,
  double&nbsp;velocity,
  double&nbsp;x,
  double&nbsp;y,
  long&nbsp;elapsed)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Damage from a wall hit since the last scan, <code>elapsed</code> ticks ago, or 0.</div>
 </div>
 </div>
@@ -370,6 +377,27 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="ourTick(long,double,boolean)">
+<h3>ourTick</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">ourTick</span><wbr><span class="parameters">(long&nbsp;time,
+ double&nbsp;energy,
+ boolean&nbsp;explained)</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#WAVE-5">WAVE-5</a>: our own energy at <code>time</code>, offered every tick of a duel (scanned or not).
+ Robocode's inactivity rule takes <a href="../physics/Rules.html#INACTIVITY_DRAIN"><code>Rules.INACTIVITY_DRAIN</code></a> from every robot on a
+ turn when none has been damaged for a long while. If ours fell by exactly that since
+ the previous tick and nothing of ours explains it, this is a drain turn, and the enemy
+ lost the same 0.1 on it: the next <a href="#scan(long,double,double,double,double)"><code>scan(long, double, double, double, double)</code></a> takes it off the enemy's drop, so it
+ is not read as a 0.1 shot and does not turn a real shot into a different power.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>time</code> - the tick</dd>
+<dd><code>energy</code> - our energy this tick</dd>
+<dd><code>explained</code> - whether something of ours moves our energy: a shot left last tick, or
+     a bullet hit us, our bullet hit, or a wall or robot was hit this tick</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="ourBulletHit(double)">
 <h3>ourBulletHit</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">ourBulletHit</span><wbr><span class="parameters">(double&nbsp;power)</span></div>
@@ -413,7 +441,7 @@ loadScripts(document, 'script');</script>
 
  <p>The drop since the last scan is corrected in this order (<a class="req" href="../../../../requirements.html#WAVE-1">WAVE-1</a>): our bullets'
  damage and collision damage are taken off it, the enemy's refund for hitting us is
- added back to it, and then any wall damage is taken off. What is left is a shot only
+ added back to it, the inactivity drain of <a class="req" href="../../../../requirements.html#WAVE-5">WAVE-5</a> is taken off, and then any wall damage is taken off. What is left is a shot only
  if it lies in [0.1, 3.0] (<a class="req" href="../../../../requirements.html#WAVE-2">WAVE-2</a>). The held corrections are cleared either way, so each
  applies to one scan only.</p></div>
 <dl class="notes">

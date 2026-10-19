@@ -140,6 +140,11 @@ loadScripts(document, 'script');</script>
  and <a class="req" href="../../../../requirements.html#END-3">END-3</a> still apply to what the regime chose, in the order <code>DuelController</code>
  runs them, so the full-power rules raise it and <a class="req" href="../../../../requirements.html#END-3">END-3</a> lowers it as before.</p>
 
+ <p><a class="req" href="../../../../requirements.html#POW-12">POW-12</a> (pressure power, off by default): while <a href="#pressure(boolean,double,hadur2.core.memory.Estimate,hadur2.core.memory.Estimate)"><code>pressure(boolean, double, hadur2.core.memory.Estimate, hadur2.core.memory.Estimate)</code></a> holds, the duel gun skips the
+ cubic power-down and fires a base of <a href="#PRESSURE_BASE"><code>PRESSURE_BASE</code></a> beyond 150 px; everything after the
+ gun's choice applies unchanged. It is a change to the gun's base, like the regime, not a
+ <a href="PowerPolicy.Reason.html" title="enum class in hadur2.core.policy"><code>PowerPolicy.Reason</code></a> (a Reason raises the shot to full power).</p>
+
  <p>POW-10: <a href="#payable(double,double)"><code>payable(double, double)</code></a> lowers a power that the energy cannot pay for instead of
  holding the shot. END-4 (<a href="#holdsLastShot(double,double,double,double)"><code>holdsLastShot(double, double, double, double)</code></a>) is the one exception that holds a shot we
  could pay for. SHIELD-4 (<a href="#shieldPower(boolean,boolean,double,double)"><code>shieldPower(boolean, boolean, double, double)</code></a>) raises the power to 3.0 against a still
@@ -282,6 +287,26 @@ loadScripts(document, 'script');</script>
 <div class="block"><a class="req" href="../../../../requirements.html#POW-5">POW-5</a>: their distance must exceed this, in px, for the cap to apply.</div>
 </div>
 <div class="col-first odd-row-color"><code>static final double</code></div>
+<div class="col-second odd-row-color"><code><a href="#PRESSURE_BASE" class="member-name-link">PRESSURE_BASE</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block"><a class="req" href="../../../../requirements.html#POW-12">POW-12</a>: the gun's base power beyond 150 px while the pressure gate holds (1.20's is 1.95).</div>
+</div>
+<div class="col-first even-row-color"><code>static final int</code></div>
+<div class="col-second even-row-color"><code><a href="#PRESSURE_MIN_OUTCOMES" class="member-name-link">PRESSURE_MIN_OUTCOMES</a></code></div>
+<div class="col-last even-row-color">
+<div class="block"><a class="req" href="../../../../requirements.html#POW-12">POW-12</a>, centres gate: each window must hold at least this many outcomes.</div>
+</div>
+<div class="col-first odd-row-color"><code>static final double</code></div>
+<div class="col-second odd-row-color"><code><a href="#PRESSURE_OUR_RATE" class="member-name-link">PRESSURE_OUR_RATE</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block"><a class="req" href="../../../../requirements.html#POW-12">POW-12</a> (pressure power): our rolling hit rate less its margin must be at least this ...</div>
+</div>
+<div class="col-first even-row-color"><code>static final double</code></div>
+<div class="col-second even-row-color"><code><a href="#PRESSURE_THEIR_RATE" class="member-name-link">PRESSURE_THEIR_RATE</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">... and theirs plus its margin at most this.</div>
+</div>
+<div class="col-first odd-row-color"><code>static final double</code></div>
 <div class="col-second odd-row-color"><code><a href="#RESERVE" class="member-name-link">RESERVE</a></code></div>
 <div class="col-last odd-row-color">
 <div class="block">POW-10: the energy left in hand when a shot is lowered to what we can pay for.</div>
@@ -391,23 +416,52 @@ loadScripts(document, 'script');</script>
 <div class="block">The power to fire: <code>gunPower</code> unless a reason applies, then <a href="#FULL_POWER"><code>FULL_POWER</code></a>
  capped at a quarter of their energy, never below the gun's own choice.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="PowerPolicy.Reason.html" title="enum class in hadur2.core.policy">PowerPolicy.Reason</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#reason(hadur2.core.memory.Tiers.Gun,double,double,double,double,hadur2.core.memory.Estimate,hadur2.core.memory.Estimate)" class="member-name-link">reason</a><wbr>(<a href="../memory/Tiers.Gun.html" title="enum class in hadur2.core.memory">Tiers.Gun</a>&nbsp;gunTier,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#pressure(boolean,double,hadur2.core.memory.Estimate,hadur2.core.memory.Estimate)" class="member-name-link">pressure</a><wbr>(boolean&nbsp;leadHolds,
+ double&nbsp;ourEnergy,
+ <a href="../memory/Estimate.html" title="class in hadur2.core.memory">Estimate</a>&nbsp;ours,
+ <a href="../memory/Estimate.html" title="class in hadur2.core.memory">Estimate</a>&nbsp;theirs)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../../../requirements.html#POW-12">POW-12</a>, the gate of "pressure power": this battle's rolling rates (the estimates <a class="req" href="../../../../requirements.html#POW-2">POW-2</a> and
+ <a class="req" href="../../../../requirements.html#POW-4">POW-4</a> read) say we out-hit them by a margin, our energy is above <a href="#MIN_OUR_ENERGY"><code>MIN_OUR_ENERGY</code></a>, and
+ the lead-aware regime (POW-7 to POW-9) is not in force.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#pressureAlways(boolean,double)" class="member-name-link">pressureAlways</a><wbr>(boolean&nbsp;leadHolds,
+ double&nbsp;ourEnergy)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../../../requirements.html#POW-12">POW-12</a>, "always" variant: no rate gate; holds whenever our energy is above <a href="#MIN_OUR_ENERGY"><code>MIN_OUR_ENERGY</code></a>
+ and the lead-aware regime is not in force.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#pressureCentres(boolean,double,hadur2.core.memory.Estimate,hadur2.core.memory.Estimate,int,int)" class="member-name-link">pressureCentres</a><wbr>(boolean&nbsp;leadHolds,
+ double&nbsp;ourEnergy,
+ <a href="../memory/Estimate.html" title="class in hadur2.core.memory">Estimate</a>&nbsp;ours,
+ <a href="../memory/Estimate.html" title="class in hadur2.core.memory">Estimate</a>&nbsp;theirs,
+ int&nbsp;oursSize,
+ int&nbsp;theirsSize)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../../../requirements.html#POW-12">POW-12</a>, "centres" variant: as <a href="#pressure(boolean,double,hadur2.core.memory.Estimate,hadur2.core.memory.Estimate)"><code>pressure(boolean, double, hadur2.core.memory.Estimate, hadur2.core.memory.Estimate)</code></a> but on the window centres alone, with no margin
+ (ours at least <a href="#PRESSURE_OUR_RATE"><code>PRESSURE_OUR_RATE</code></a>, theirs at most <a href="#PRESSURE_THEIR_RATE"><code>PRESSURE_THEIR_RATE</code></a>), and only
+ once both windows hold at least <a href="#PRESSURE_MIN_OUTCOMES"><code>PRESSURE_MIN_OUTCOMES</code></a> outcomes.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="PowerPolicy.Reason.html" title="enum class in hadur2.core.policy">PowerPolicy.Reason</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#reason(hadur2.core.memory.Tiers.Gun,double,double,double,double,hadur2.core.memory.Estimate,hadur2.core.memory.Estimate)" class="member-name-link">reason</a><wbr>(<a href="../memory/Tiers.Gun.html" title="enum class in hadur2.core.memory">Tiers.Gun</a>&nbsp;gunTier,
  double&nbsp;enemyEnergy,
  double&nbsp;ourEnergy,
  double&nbsp;enemyDistance,
  double&nbsp;gunPower,
  <a href="../memory/Estimate.html" title="class in hadur2.core.memory">Estimate</a>&nbsp;ours,
  <a href="../memory/Estimate.html" title="class in hadur2.core.memory">Estimate</a>&nbsp;theirs)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">The reason full power applies, or <a href="PowerPolicy.Reason.html#GUN"><code>PowerPolicy.Reason.GUN</code></a> to keep the gun's choice.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static double</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#shieldPower(boolean,boolean,double,double)" class="member-name-link">shieldPower</a><wbr>(boolean&nbsp;shielder,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static double</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#shieldPower(boolean,boolean,double,double)" class="member-name-link">shieldPower</a><wbr>(boolean&nbsp;shielder,
  boolean&nbsp;stillForTenTicks,
  double&nbsp;power,
  double&nbsp;ourEnergy)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">SHIELD-4: the power to fire at a bullet shielder that has not moved in the last 10 ticks:
  <a href="#FULL_POWER"><code>FULL_POWER</code></a>, never below what the rules before it chose.</div>
 </div>
@@ -632,6 +686,51 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="PRESSURE_OUR_RATE">
+<h3>PRESSURE_OUR_RATE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">PRESSURE_OUR_RATE</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#POW-12">POW-12</a> (pressure power): our rolling hit rate less its margin must be at least this ...</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur2.core.policy.PowerPolicy.PRESSURE_OUR_RATE">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="PRESSURE_THEIR_RATE">
+<h3>PRESSURE_THEIR_RATE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">PRESSURE_THEIR_RATE</span></div>
+<div class="block">... and theirs plus its margin at most this.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur2.core.policy.PowerPolicy.PRESSURE_THEIR_RATE">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="PRESSURE_BASE">
+<h3>PRESSURE_BASE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">PRESSURE_BASE</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#POW-12">POW-12</a>: the gun's base power beyond 150 px while the pressure gate holds (1.20's is 1.95).</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur2.core.policy.PowerPolicy.PRESSURE_BASE">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="RESERVE">
 <h3>RESERVE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">RESERVE</span></div>
@@ -656,6 +755,21 @@ loadScripts(document, 'script');</script>
 <dd>
 <ul class="tag-list">
 <li><a href="../../../constant-values.html#hadur2.core.policy.PowerPolicy.END_4_MARGIN">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="PRESSURE_MIN_OUTCOMES">
+<h3>PRESSURE_MIN_OUTCOMES</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">PRESSURE_MIN_OUTCOMES</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#POW-12">POW-12</a>, centres gate: each window must hold at least this many outcomes.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur2.core.policy.PowerPolicy.PRESSURE_MIN_OUTCOMES">Constant Field Values</a></li>
 </ul>
 </dd>
 </dl>
@@ -846,6 +960,72 @@ loadScripts(document, 'script');</script>
 <dd><code>smallestEnemyPower</code> - the smallest bullet power they have fired this battle, or NaN if none</dd>
 <dt>Returns:</dt>
 <dd>whether to hold the shot</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="pressure(boolean,double,hadur2.core.memory.Estimate,hadur2.core.memory.Estimate)">
+<h3>pressure</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">pressure</span><wbr><span class="parameters">(boolean&nbsp;leadHolds,
+ double&nbsp;ourEnergy,
+ <a href="../memory/Estimate.html" title="class in hadur2.core.memory">Estimate</a>&nbsp;ours,
+ <a href="../memory/Estimate.html" title="class in hadur2.core.memory">Estimate</a>&nbsp;theirs)</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#POW-12">POW-12</a>, the gate of "pressure power": this battle's rolling rates (the estimates <a class="req" href="../../../../requirements.html#POW-2">POW-2</a> and
+ <a class="req" href="../../../../requirements.html#POW-4">POW-4</a> read) say we out-hit them by a margin, our energy is above <a href="#MIN_OUR_ENERGY"><code>MIN_OUR_ENERGY</code></a>, and
+ the lead-aware regime (POW-7 to POW-9) is not in force. Both rates must be known; the bounds
+ are inclusive ("at least", "at most"), measured from the estimate's centre as <a class="req" href="../../../../requirements.html#POW-2">POW-2</a> does.
+ The regime only holds while both battle-long rates are under <a href="#BREAK_EVEN"><code>BREAK_EVEN</code></a>, but it
+ reads the battle-long rates (or the profile's verdict) and this gate the rolling window, so
+ the two could overlap on a short window; the gate yields to the regime explicitly.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>leadHolds</code> - whether the lead-aware regime is in force (<a href="#lead(boolean,double,double)"><code>lead(boolean, double, double)</code></a> is not OFF)</dd>
+<dd><code>ourEnergy</code> - our energy</dd>
+<dd><code>ours</code> - our rolling hit rate on them</dd>
+<dd><code>theirs</code> - their rolling hit rate on us</dd>
+<dt>Returns:</dt>
+<dd>whether the duel gun skips the power-down and raises its base power</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="pressureAlways(boolean,double)">
+<h3>pressureAlways</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">pressureAlways</span><wbr><span class="parameters">(boolean&nbsp;leadHolds,
+ double&nbsp;ourEnergy)</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#POW-12">POW-12</a>, "always" variant: no rate gate; holds whenever our energy is above <a href="#MIN_OUR_ENERGY"><code>MIN_OUR_ENERGY</code></a>
+ and the lead-aware regime is not in force.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>leadHolds</code> - whether the lead-aware regime is in force</dd>
+<dd><code>ourEnergy</code> - our energy</dd>
+<dt>Returns:</dt>
+<dd>whether the duel gun fires pressure power</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="pressureCentres(boolean,double,hadur2.core.memory.Estimate,hadur2.core.memory.Estimate,int,int)">
+<h3>pressureCentres</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">pressureCentres</span><wbr><span class="parameters">(boolean&nbsp;leadHolds,
+ double&nbsp;ourEnergy,
+ <a href="../memory/Estimate.html" title="class in hadur2.core.memory">Estimate</a>&nbsp;ours,
+ <a href="../memory/Estimate.html" title="class in hadur2.core.memory">Estimate</a>&nbsp;theirs,
+ int&nbsp;oursSize,
+ int&nbsp;theirsSize)</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#POW-12">POW-12</a>, "centres" variant: as <a href="#pressure(boolean,double,hadur2.core.memory.Estimate,hadur2.core.memory.Estimate)"><code>pressure(boolean, double, hadur2.core.memory.Estimate, hadur2.core.memory.Estimate)</code></a> but on the window centres alone, with no margin
+ (ours at least <a href="#PRESSURE_OUR_RATE"><code>PRESSURE_OUR_RATE</code></a>, theirs at most <a href="#PRESSURE_THEIR_RATE"><code>PRESSURE_THEIR_RATE</code></a>), and only
+ once both windows hold at least <a href="#PRESSURE_MIN_OUTCOMES"><code>PRESSURE_MIN_OUTCOMES</code></a> outcomes.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>leadHolds</code> - whether the lead-aware regime is in force</dd>
+<dd><code>ourEnergy</code> - our energy</dd>
+<dd><code>ours</code> - our rolling hit rate on them</dd>
+<dd><code>theirs</code> - their rolling hit rate on us</dd>
+<dd><code>oursSize</code> - outcomes in our window</dd>
+<dd><code>theirsSize</code> - outcomes in their window</dd>
+<dt>Returns:</dt>
+<dd>whether the duel gun fires pressure power</dd>
 </dl>
 </section>
 </li>

@@ -133,33 +133,38 @@ loadScripts(document, 'script');</script>
 <div class="block">The gun's turn rate, in degrees per tick, on top of the body's turn.</div>
 </div>
 <div class="col-first odd-row-color"><code>static final double</code></div>
-<div class="col-second odd-row-color"><code><a href="#MAX_BULLET_POWER" class="member-name-link">MAX_BULLET_POWER</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#INACTIVITY_DRAIN" class="member-name-link">INACTIVITY_DRAIN</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">The energy every robot loses on a turn of the engine's inactivity rule (<a class="req" href="../../../../requirements.html#WAVE-5">WAVE-5</a>).</div>
+</div>
+<div class="col-first even-row-color"><code>static final double</code></div>
+<div class="col-second even-row-color"><code><a href="#MAX_BULLET_POWER" class="member-name-link">MAX_BULLET_POWER</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">The strongest bullet the engine fires, in energy; the upper bound of a shot (<a class="req" href="../../../../requirements.html#WAVE-2">WAVE-2</a>).</div>
 </div>
-<div class="col-first even-row-color"><code>static final double</code></div>
-<div class="col-second even-row-color"><code><a href="#MAX_TURN_RATE" class="member-name-link">MAX_TURN_RATE</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code>static final double</code></div>
+<div class="col-second odd-row-color"><code><a href="#MAX_TURN_RATE" class="member-name-link">MAX_TURN_RATE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">A standing robot's body turn rate, in degrees per tick; see <a href="#getTurnRate(double)"><code>getTurnRate(double)</code></a>.</div>
 </div>
-<div class="col-first odd-row-color"><code>static final double</code></div>
-<div class="col-second odd-row-color"><code><a href="#MAX_VELOCITY" class="member-name-link">MAX_VELOCITY</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code>static final double</code></div>
+<div class="col-second even-row-color"><code><a href="#MAX_VELOCITY" class="member-name-link">MAX_VELOCITY</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">A robot's top speed, in px/tick.</div>
 </div>
-<div class="col-first even-row-color"><code>static final double</code></div>
-<div class="col-second even-row-color"><code><a href="#MIN_BULLET_POWER" class="member-name-link">MIN_BULLET_POWER</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code>static final double</code></div>
+<div class="col-second odd-row-color"><code><a href="#MIN_BULLET_POWER" class="member-name-link">MIN_BULLET_POWER</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">The weakest bullet the engine fires, in energy; the lower bound of a shot (<a class="req" href="../../../../requirements.html#WAVE-2">WAVE-2</a>).</div>
 </div>
-<div class="col-first odd-row-color"><code>static final double</code></div>
-<div class="col-second odd-row-color"><code><a href="#RADAR_TURN_RATE" class="member-name-link">RADAR_TURN_RATE</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code>static final double</code></div>
+<div class="col-second even-row-color"><code><a href="#RADAR_TURN_RATE" class="member-name-link">RADAR_TURN_RATE</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">The radar's turn rate, in degrees per tick, on top of the gun's turn.</div>
 </div>
-<div class="col-first even-row-color"><code>static final double</code></div>
-<div class="col-second even-row-color"><code><a href="#ROBOT_HIT_DAMAGE" class="member-name-link">ROBOT_HIT_DAMAGE</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code>static final double</code></div>
+<div class="col-second odd-row-color"><code><a href="#ROBOT_HIT_DAMAGE" class="member-name-link">ROBOT_HIT_DAMAGE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Energy each robot loses when two robots collide.</div>
 </div>
 </div>
@@ -332,6 +337,21 @@ loadScripts(document, 'script');</script>
 <dd>
 <ul class="tag-list">
 <li><a href="../../../constant-values.html#hadur2.core.physics.Rules.MIN_BULLET_POWER">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="INACTIVITY_DRAIN">
+<h3>INACTIVITY_DRAIN</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">INACTIVITY_DRAIN</span></div>
+<div class="block">The energy every robot loses on a turn of the engine's inactivity rule (<a class="req" href="../../../../requirements.html#WAVE-5">WAVE-5</a>).</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur2.core.physics.Rules.INACTIVITY_DRAIN">Constant Field Values</a></li>
 </ul>
 </dd>
 </dl>

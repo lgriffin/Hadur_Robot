@@ -216,84 +216,118 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../../../requirements.html#RES-4">RES-4</a>: forget the profile's estimate and the flattener it asked for; live data decides.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#enemyFiringWaves()" class="member-name-link">enemyFiringWaves</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#dangerPercentile(hadur2.core.model.Wave,double)" class="member-name-link">dangerPercentile</a><wbr>(<a href="../model/Wave.html" title="class in hadur2.core.model">Wave</a>&nbsp;w,
+ double&nbsp;hitGf)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../../../requirements.html#MOVE-9">MOVE-9</a>: how the danger views rate the angle a bullet came from, as the share of the
+ wave's guess factors in [-1, 1] (<a href="HitForensics.html#SAMPLES"><code>HitForensics.SAMPLES</code></a> of them) they score less
+ dangerous.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#enemyFiringWaves()" class="member-name-link">enemyFiringWaves</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Firing waves that have broken on us this battle, bullet-hit-bullet ones aside: the
  sample size of the normalised hit rate.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#enemyWeightedHits()" class="member-name-link">enemyWeightedHits</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#enemyWeightedHits()" class="member-name-link">enemyWeightedHits</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Their hits on us over those waves, each weighted by our angular width (normalised).</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../model/Wave.html" title="class in hadur2.core.model">Wave</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findBulletWave(java.awt.geom.Point2D.Double,long,java.lang.String,double)" class="member-name-link">findBulletWave</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;bulletLocation,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../model/Wave.html" title="class in hadur2.core.model">Wave</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findBulletWave(java.awt.geom.Point2D.Double,long,java.lang.String,double)" class="member-name-link">findBulletWave</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;bulletLocation,
  long&nbsp;currentTime,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;botName,
  double&nbsp;bulletPower)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">The firing wave a bullet of <code>bulletPower</code> at <code>bulletLocation</code> belongs to:
  the one whose radius this tick is nearest the bullet's distance from its source,
  within 50 px (see <a href="../model/WaveManager.html#findClosestWave(java.awt.geom.Point2D.Double,long,boolean,java.lang.String,double)"><code>WaveManager.findClosestWave(java.awt.geom.Point2D.Double, long, boolean, java.lang.String, double)</code></a>).</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../model/Wave.html" title="class in hadur2.core.model">Wave</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findSurfableWave(int,hadur2.core.model.RobotState)" class="member-name-link">findSurfableWave</a><wbr>(int&nbsp;surfIndex,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../model/Wave.html" title="class in hadur2.core.model">Wave</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findSurfableWave(int,hadur2.core.model.RobotState)" class="member-name-link">findSurfableWave</a><wbr>(int&nbsp;surfIndex,
  <a href="../model/RobotState.html" title="class in hadur2.core.model">RobotState</a>&nbsp;myState)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">The <code>surfIndex</code>-th firing wave (0 the first) that has not yet reached our centre
  and has not already hit us or met one of our bullets.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDangerScore(hadur2.core.model.Wave,hadur2.core.model.Wave.Intersection,int)" class="member-name-link">getDangerScore</a><wbr>(<a href="../model/Wave.html" title="class in hadur2.core.model">Wave</a>&nbsp;w,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDangerScore(hadur2.core.model.Wave,hadur2.core.model.Wave.Intersection,int)" class="member-name-link">getDangerScore</a><wbr>(<a href="../model/Wave.html" title="class in hadur2.core.model">Wave</a>&nbsp;w,
  <a href="../model/Wave.Intersection.html" title="class in hadur2.core.model">Wave.Intersection</a>&nbsp;intersection,
  int&nbsp;surfWaveIndex)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">How dangerous it is to be at <code>intersection</code> when wave <code>w</code> breaks, by the
  views that are on: a weighted average, in [0, 1], of how close each neighbour's
  firing angle falls to the intersection.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>long</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLastBulletFireTime()" class="member-name-link">getLastBulletFireTime</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>long</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLastBulletFireTime()" class="member-name-link">getLastBulletFireTime</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">The fire time, in ticks, of the wave last marked as the enemy's shot.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLastBulletPower()" class="member-name-link">getLastBulletPower</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLastBulletPower()" class="member-name-link">getLastBulletPower</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">The power of the enemy's last detected shot this round; 0 before the first.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../model/WaveManager.html" title="class in hadur2.core.model">WaveManager</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getWaveManager()" class="member-name-link">getWaveManager</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../model/WaveManager.html" title="class in hadur2.core.model">WaveManager</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getWaveManager()" class="member-name-link">getWaveManager</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">The enemy waves in flight at us, firing or not.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#guessBulletPower()" class="member-name-link">guessBulletPower</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#guessBulletPower()" class="member-name-link">guessBulletPower</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">The power to give a new enemy wave before we know if it is a shot: the last shot's
  power this round, else 1.9.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hitPercentageMarginOfError()" class="member-name-link">hitPercentageMarginOfError</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hitPercentageMarginOfError()" class="member-name-link">hitPercentageMarginOfError</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">The 95% margin of error of <a href="#normalizedEnemyHitPercentage()"><code>normalizedEnemyHitPercentage()</code></a>, in percent: the
  normal approximation <code>1.96 sqrt(p (1 - p) / n)</code> over the firing waves.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#initRound()" class="member-name-link">initRound</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#initRound()" class="member-name-link">initRound</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Starts a round, or recovers after a fault (<a class="req" href="../../../../requirements.html#RES-1">RES-1</a>): drops the waves, our bullets and
  this round's counts, and the cached neighbours.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static double</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#kernelMass(double,double,java.util.List)" class="member-name-link">kernelMass</a><wbr>(double&nbsp;at,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static double</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#kernelMass(double,double,java.util.List)" class="member-name-link">kernelMass</a><wbr>(double&nbsp;at,
  double&nbsp;bandwidth,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;double[]&gt;&nbsp;segments)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../../../requirements.html#MOVE-3">MOVE-3</a>, <a class="req" href="../../../../requirements.html#MOVE-4">MOVE-4</a>: the mass of the kernel <code>2^(-|a - at| / bandwidth)</code> over the
  intersection's segments, each scaled by its transmission, and normalised so that a kernel
  centred on an unshadowed intersection scores 1 (the value the point kernel gave there).</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#lastChosenFor(hadur2.core.model.Wave)" class="member-name-link">lastChosenFor</a><wbr>(<a href="../model/Wave.html" title="class in hadur2.core.model">Wave</a>&nbsp;w)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../../../requirements.html#MOVE-10">MOVE-10</a>: the ordinal of the option taken with <a href="#lastOptionsFor(hadur2.core.model.Wave)"><code>lastOptionsFor(hadur2.core.model.Wave)</code></a>, or -1.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="PlanInterval.html" title="class in hadur2.core.move">PlanInterval</a>[]</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#lastOptionsFor(hadur2.core.model.Wave)" class="member-name-link">lastOptionsFor</a><wbr>(<a href="../model/Wave.html" title="class in hadur2.core.model">Wave</a>&nbsp;w)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../../../requirements.html#MOVE-10">MOVE-10</a>: the options last published for wave <code>w</code>, or null when there are none.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>long</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#lastOptionTime(hadur2.core.model.Wave)" class="member-name-link">lastOptionTime</a><wbr>(<a href="../model/Wave.html" title="class in hadur2.core.model">Wave</a>&nbsp;w)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../../../requirements.html#MOVE-10">MOVE-10</a>: the tick <a href="#lastOptionsFor(hadur2.core.model.Wave)"><code>lastOptionsFor(hadur2.core.model.Wave)</code></a> was published, or -1 when there is none.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="PlanInterval.html" title="class in hadur2.core.move">PlanInterval</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#lastPlanFor(hadur2.core.model.Wave)" class="member-name-link">lastPlanFor</a><wbr>(<a href="../model/Wave.html" title="class in hadur2.core.model">Wave</a>&nbsp;w)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../../../requirements.html#MOVE-9">MOVE-9</a>: the last interval the surf published for wave <code>w</code> this round, or null when
+ it never planned on it.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>long</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#lastPlanTime(hadur2.core.model.Wave)" class="member-name-link">lastPlanTime</a><wbr>(<a href="../model/Wave.html" title="class in hadur2.core.model">Wave</a>&nbsp;w)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../../../requirements.html#MOVE-9">MOVE-9</a>: the tick <a href="#lastPlanFor(hadur2.core.model.Wave)"><code>lastPlanFor(hadur2.core.model.Wave)</code></a> was published, or -1 when there is none.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#logBulletHit(hadur2.core.model.Wave,java.awt.geom.Point2D.Double,int,long)" class="member-name-link">logBulletHit</a><wbr>(<a href="../model/Wave.html" title="class in hadur2.core.model">Wave</a>&nbsp;hitWave,
@@ -345,10 +379,23 @@ loadScripts(document, 'script');</script>
  as the view estimate's).</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#publishPlan(java.util.List)" class="member-name-link">publishPlan</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="PlanInterval.html" title="class in hadur2.core.move">PlanInterval</a>&gt;&nbsp;intervals)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#publishOptions(hadur2.core.move.PlanInterval%5B%5D,int)" class="member-name-link">publishOptions</a><wbr>(<a href="PlanInterval.html" title="class in hadur2.core.move">PlanInterval</a>[]&nbsp;options,
+ int&nbsp;chosen)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../../../requirements.html#MOVE-10">MOVE-10</a>: the three-option surf's plan on its first wave for every option it rated this
+ tick, by option ordinal (a null slot for an option with no plan there), and the ordinal
+ it took.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#publishPlan(java.util.List)" class="member-name-link">publishPlan</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="PlanInterval.html" title="class in hadur2.core.move">PlanInterval</a>&gt;&nbsp;intervals)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">MOVE-8: the surf publishes the intervals its plan occupies, one per enemy wave in the
  air that it scored, nearest wave first.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) double[]</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#replicatorMultipliers()" class="member-name-link">replicatorMultipliers</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../../../requirements.html#MOVE-16">MOVE-16</a>: each view's multiplier, in the order the views were built; all 1 until learned.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#seed(double%5B%5D,hadur2.core.model.SeedWeight)" class="member-name-link">seed</a><wbr>(double[]&nbsp;sample,
@@ -374,21 +421,43 @@ loadScripts(document, 'script');</script>
 <div class="block"><a class="req" href="../../../../requirements.html#ADAPT-2">ADAPT-2</a>, <a class="req" href="../../../../requirements.html#DIAL-1">DIAL-1</a>: the enemy's normalised hit rate on us as the profile knows it.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSampleSink(java.util.function.Consumer)" class="member-name-link">setSampleSink</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;double[]&gt;&nbsp;sampleSink)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setProvisionalHold(boolean)" class="member-name-link">setProvisionalHold</a><wbr>(boolean&nbsp;hold)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../../../requirements.html#MOVE-13">MOVE-13</a>: whether the provisional wave is held while the gun stays ready (<a class="req" href="../../../../requirements.html#MOVE-11">MOVE-11</a>) or taken
+ afresh each tick, which makes the surf re-rank its options every tick.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setProvisionalReady(boolean,long)" class="member-name-link">setProvisionalReady</a><wbr>(boolean&nbsp;ready,
+ long&nbsp;time)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setReplicator(boolean)" class="member-name-link">setReplicator</a><wbr>(boolean&nbsp;on)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../../../requirements.html#MOVE-16">MOVE-16</a>: whether each enemy bullet that hits us moves the danger views' weights toward the
+ views that predicted it (the replicator equation, <a href="ReplicatorWeights.html" title="class in hadur2.core.move"><code>ReplicatorWeights</code></a>).</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSampleSink(java.util.function.Consumer)" class="member-name-link">setSampleSink</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;double[]&gt;&nbsp;sampleSink)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Receives one <a href="#SAMPLE_WIDTH"><code>SAMPLE_WIDTH</code></a>-value sample per enemy bullet that hits us: the
  <a href="FlattenerFormula.html" title="class in hadur2.core.move"><code>FlattenerFormula</code></a> point of the wave (0 to 10), the <a href="SimpleFormula.html" title="class in hadur2.core.move"><code>SimpleFormula</code></a>
  lateral-velocity value (11) and the guess factor that hit (12).</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#shadowComputations()" class="member-name-link">shadowComputations</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#shadowComputations()" class="member-name-link">shadowComputations</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../../../requirements.html#MOVE-1">MOVE-1</a>: how many times a wave's shadows were computed this round.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#shadowedWaves()" class="member-name-link">shadowedWaves</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#shadowedWaves()" class="member-name-link">shadowedWaves</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../../../requirements.html#MOVE-1">MOVE-1</a>: enemy firing waves one of our bullets shadowed this round.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#soonestFiringImpact(hadur2.core.model.RobotState)" class="member-name-link">soonestFiringImpact</a><wbr>(<a href="../model/RobotState.html" title="class in hadur2.core.model">RobotState</a>&nbsp;myState)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../../../requirements.html#MOVE-14">MOVE-14</a>: the fewest ticks before a real (firing) wave that has not yet hit us or met
+ one of our bullets reaches our centre, as we stand now; infinity when there is none.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Boolean.html" title="class or interface in java.lang" class="external-link">Boolean</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#takeBrokenWaveOutcomes()" class="member-name-link">takeBrokenWaveOutcomes</a>()</code></div>
@@ -416,6 +485,21 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../../../requirements.html#MOVE-1">MOVE-1</a>: forgets bullets that have left the field by <code>time</code> and computes the
  shadow our bullets in flight cast on each firing wave.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#viewCount()" class="member-name-link">viewCount</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../../../requirements.html#MOVE-14">MOVE-14</a>: how many danger views there are, the size of <a href="#viewDangers(hadur2.core.model.Wave,hadur2.core.model.Wave.Intersection,int,double%5B%5D,double%5B%5D)"><code>viewDangers(hadur2.core.model.Wave, hadur2.core.model.Wave.Intersection, int, double[], double[])</code></a>' arrays.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#viewDangers(hadur2.core.model.Wave,hadur2.core.model.Wave.Intersection,int,double%5B%5D,double%5B%5D)" class="member-name-link">viewDangers</a><wbr>(<a href="../model/Wave.html" title="class in hadur2.core.model">Wave</a>&nbsp;w,
+ <a href="../model/Wave.Intersection.html" title="class in hadur2.core.model">Wave.Intersection</a>&nbsp;intersection,
+ int&nbsp;surfWaveIndex,
+ double[]&nbsp;dangers,
+ double[]&nbsp;weights)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../../../requirements.html#MOVE-14">MOVE-14</a>: each danger view's own score at <code>intersection</code>, and its share of the
+ average, for the protean pick's spread.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#viewSize(java.lang.String)" class="member-name-link">viewSize</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
@@ -505,6 +589,26 @@ loadScripts(document, 'script');</script>
 <section class="method-details" id="method-detail">
 <h2>Method Details</h2>
 <ul class="member-list">
+<li>
+<section class="detail" id="setReplicator(boolean)">
+<h3>setReplicator</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setReplicator</span><wbr><span class="parameters">(boolean&nbsp;on)</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#MOVE-16">MOVE-16</a>: whether each enemy bullet that hits us moves the danger views' weights toward the
+ views that predicted it (the replicator equation, <a href="ReplicatorWeights.html" title="class in hadur2.core.move"><code>ReplicatorWeights</code></a>). Off, the
+ weights stay fixed and the multipliers are never read.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>on</code> - true to learn and apply the multipliers</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="replicatorMultipliers()">
+<h3>replicatorMultipliers</h3>
+<div class="member-signature"><span class="return-type">double[]</span>&nbsp;<span class="element-name">replicatorMultipliers</span>()</div>
+<div class="block"><a class="req" href="../../../../requirements.html#MOVE-16">MOVE-16</a>: each view's multiplier, in the order the views were built; all 1 until learned.</div>
+</section>
+</li>
 <li>
 <section class="detail" id="setPrior(double,double)">
 <h3>setPrior</h3>
@@ -732,6 +836,59 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="lastPlanFor(hadur2.core.model.Wave)">
+<h3>lastPlanFor</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="PlanInterval.html" title="class in hadur2.core.move">PlanInterval</a></span>&nbsp;<span class="element-name">lastPlanFor</span><wbr><span class="parameters">(<a href="../model/Wave.html" title="class in hadur2.core.model">Wave</a>&nbsp;w)</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#MOVE-9">MOVE-9</a>: the last interval the surf published for wave <code>w</code> this round, or null when
+ it never planned on it.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="publishOptions(hadur2.core.move.PlanInterval[],int)">
+<h3>publishOptions</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">publishOptions</span><wbr><span class="parameters">(<a href="PlanInterval.html" title="class in hadur2.core.move">PlanInterval</a>[]&nbsp;options,
+ int&nbsp;chosen)</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#MOVE-10">MOVE-10</a>: the three-option surf's plan on its first wave for every option it rated this
+ tick, by option ordinal (a null slot for an option with no plan there), and the ordinal
+ it took. Only the first publication on each wave is kept, until the round ends: by the
+ tick before a wave arrives every option leads to the same place, so only the first
+ says whether another option would have dodged a hit. Measurement only.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>options</code> - one interval or null per option, all on the same wave; copied</dd>
+<dd><code>chosen</code> - the ordinal of the option taken</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="lastOptionTime(hadur2.core.model.Wave)">
+<h3>lastOptionTime</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">long</span>&nbsp;<span class="element-name">lastOptionTime</span><wbr><span class="parameters">(<a href="../model/Wave.html" title="class in hadur2.core.model">Wave</a>&nbsp;w)</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#MOVE-10">MOVE-10</a>: the tick <a href="#lastOptionsFor(hadur2.core.model.Wave)"><code>lastOptionsFor(hadur2.core.model.Wave)</code></a> was published, or -1 when there is none.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="lastOptionsFor(hadur2.core.model.Wave)">
+<h3>lastOptionsFor</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="PlanInterval.html" title="class in hadur2.core.move">PlanInterval</a>[]</span>&nbsp;<span class="element-name">lastOptionsFor</span><wbr><span class="parameters">(<a href="../model/Wave.html" title="class in hadur2.core.model">Wave</a>&nbsp;w)</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#MOVE-10">MOVE-10</a>: the options last published for wave <code>w</code>, or null when there are none.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="lastChosenFor(hadur2.core.model.Wave)">
+<h3>lastChosenFor</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">lastChosenFor</span><wbr><span class="parameters">(<a href="../model/Wave.html" title="class in hadur2.core.model">Wave</a>&nbsp;w)</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#MOVE-10">MOVE-10</a>: the ordinal of the option taken with <a href="#lastOptionsFor(hadur2.core.model.Wave)"><code>lastOptionsFor(hadur2.core.model.Wave)</code></a>, or -1.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="lastPlanTime(hadur2.core.model.Wave)">
+<h3>lastPlanTime</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">long</span>&nbsp;<span class="element-name">lastPlanTime</span><wbr><span class="parameters">(<a href="../model/Wave.html" title="class in hadur2.core.model">Wave</a>&nbsp;w)</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#MOVE-9">MOVE-9</a>: the tick <a href="#lastPlanFor(hadur2.core.model.Wave)"><code>lastPlanFor(hadur2.core.model.Wave)</code></a> was published, or -1 when there is none.</div>
+</section>
+</li>
+<li>
 <section class="detail" id="clearPlan()">
 <h3>clearPlan</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">clearPlan</span>()</div>
@@ -842,6 +999,25 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="dangerPercentile(hadur2.core.model.Wave,double)">
+<h3>dangerPercentile</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">dangerPercentile</span><wbr><span class="parameters">(<a href="../model/Wave.html" title="class in hadur2.core.model">Wave</a>&nbsp;w,
+ double&nbsp;hitGf)</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#MOVE-9">MOVE-9</a>: how the danger views rate the angle a bullet came from, as the share of the
+ wave's guess factors in [-1, 1] (<a href="HitForensics.html#SAMPLES"><code>HitForensics.SAMPLES</code></a> of them) they score less
+ dangerous. Call it before <a href="#logBulletHit(hadur2.core.model.Wave,java.awt.geom.Point2D.Double,int,long)"><code>logBulletHit(hadur2.core.model.Wave, java.awt.geom.Point2D.Double, int, long)</code></a> so the hit itself does not teach the
+ reading. It uses a cache slot of its own and empties it after, so the surf's cached
+ neighbours and its choices are untouched.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>w</code> - the wave that carried the bullet</dd>
+<dd><code>hitGf</code> - the guess factor the bullet was fired at</dd>
+<dt>Returns:</dt>
+<dd>the percentile in [0, 1]</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="findBulletWave(java.awt.geom.Point2D.Double,long,java.lang.String,double)">
 <h3>findBulletWave</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../model/Wave.html" title="class in hadur2.core.model">Wave</a></span>&nbsp;<span class="element-name">findBulletWave</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;bulletLocation,
@@ -872,6 +1048,25 @@ loadScripts(document, 'script');</script>
 <dt>Parameters:</dt>
 <dd><code>w</code> - the wave, from the enemy's position to ours</dd>
 </dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setProvisionalHold(boolean)">
+<h3>setProvisionalHold</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setProvisionalHold</span><wbr><span class="parameters">(boolean&nbsp;hold)</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#MOVE-13">MOVE-13</a>: whether the provisional wave is held while the gun stays ready (<a class="req" href="../../../../requirements.html#MOVE-11">MOVE-11</a>) or taken
+ afresh each tick, which makes the surf re-rank its options every tick.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>hold</code> - true to hold</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setProvisionalReady(boolean,long)">
+<h3>setProvisionalReady</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setProvisionalReady</span><wbr><span class="parameters">(boolean&nbsp;ready,
+ long&nbsp;time)</span></div>
 </section>
 </li>
 <li>
@@ -945,6 +1140,54 @@ loadScripts(document, 'script');</script>
      neighbour cache</dd>
 <dt>Returns:</dt>
 <dd>the danger, in [0, 1] from the views; the fallback's sum can be up to 4</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="viewDangers(hadur2.core.model.Wave,hadur2.core.model.Wave.Intersection,int,double[],double[])">
+<h3>viewDangers</h3>
+<div class="member-signature"><span class="return-type">int</span>&nbsp;<span class="element-name">viewDangers</span><wbr><span class="parameters">(<a href="../model/Wave.html" title="class in hadur2.core.model">Wave</a>&nbsp;w,
+ <a href="../model/Wave.Intersection.html" title="class in hadur2.core.model">Wave.Intersection</a>&nbsp;intersection,
+ int&nbsp;surfWaveIndex,
+ double[]&nbsp;dangers,
+ double[]&nbsp;weights)</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#MOVE-14">MOVE-14</a>: each danger view's own score at <code>intersection</code>, and its share of the
+ average, for the protean pick's spread. The views are the ones <a href="#getDangerScore(hadur2.core.model.Wave,hadur2.core.model.Wave.Intersection,int)"><code>getDangerScore(hadur2.core.model.Wave, hadur2.core.model.Wave.Intersection, int)</code></a>
+ averages, with the same kernel and shadows: view <code>i</code>'s danger is its density over
+ its scan weight, and its share is its weight times its scan weight, normalised to sum
+ to 1, so the weighted mean of the dangers is <a href="#getDangerScore(hadur2.core.model.Wave,hadur2.core.model.Wave.Intersection,int)"><code>getDangerScore(hadur2.core.model.Wave, hadur2.core.model.Wave.Intersection, int)</code></a> (less its no-data
+ fallback). Read-only: it only reads the neighbour cache, as <a href="#getDangerScore(hadur2.core.model.Wave,hadur2.core.model.Wave.Intersection,int)"><code>getDangerScore(hadur2.core.model.Wave, hadur2.core.model.Wave.Intersection, int)</code></a> does.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>w</code> - the wave being surfed</dd>
+<dd><code>intersection</code> - the firing angles that would hit us</dd>
+<dd><code>surfWaveIndex</code> - the wave's index among the surfable waves, which keys the cache</dd>
+<dd><code>dangers</code> - receives each counted view's danger; at least as long as the view list</dd>
+<dd><code>weights</code> - receives each counted view's normalised weight; same length</dd>
+<dt>Returns:</dt>
+<dd>how many views were counted (0 when none is on with data)</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="viewCount()">
+<h3>viewCount</h3>
+<div class="member-signature"><span class="return-type">int</span>&nbsp;<span class="element-name">viewCount</span>()</div>
+<div class="block"><a class="req" href="../../../../requirements.html#MOVE-14">MOVE-14</a>: how many danger views there are, the size of <a href="#viewDangers(hadur2.core.model.Wave,hadur2.core.model.Wave.Intersection,int,double%5B%5D,double%5B%5D)"><code>viewDangers(hadur2.core.model.Wave, hadur2.core.model.Wave.Intersection, int, double[], double[])</code></a>' arrays.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="soonestFiringImpact(hadur2.core.model.RobotState)">
+<h3>soonestFiringImpact</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">soonestFiringImpact</span><wbr><span class="parameters">(<a href="../model/RobotState.html" title="class in hadur2.core.model">RobotState</a>&nbsp;myState)</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#MOVE-14">MOVE-14</a>: the fewest ticks before a real (firing) wave that has not yet hit us or met
+ one of our bullets reaches our centre, as we stand now; infinity when there is none.
+ A wave already past our centre is not counted. Read-only.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>myState</code> - our state now</dd>
+<dt>Returns:</dt>
+<dd>the ticks, 0 or more, or <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Double.html#POSITIVE_INFINITY" title="class or interface in java.lang" class="external-link"><code>Double.POSITIVE_INFINITY</code></a></dd>
 </dl>
 </section>
 </li>

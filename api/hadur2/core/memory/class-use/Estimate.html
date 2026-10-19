@@ -354,6 +354,28 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color">
 <div class="block"><a class="req" href="../../../../../requirements.html#DIST-1">DIST-1</a>: one enemy wave's step, from both rolling hit rates.</div>
 </div>
+<div class="col-first even-row-color"><code>static boolean</code></div>
+<div class="col-second even-row-color"><span class="type-name-label">PowerPolicy.</span><code><a href="../../policy/PowerPolicy.html#pressure(boolean,double,hadur2.core.memory.Estimate,hadur2.core.memory.Estimate)" class="member-name-link">pressure</a><wbr>(boolean&nbsp;leadHolds,
+ double&nbsp;ourEnergy,
+ <a href="../Estimate.html" title="class in hadur2.core.memory">Estimate</a>&nbsp;ours,
+ <a href="../Estimate.html" title="class in hadur2.core.memory">Estimate</a>&nbsp;theirs)</code></div>
+<div class="col-last even-row-color">
+<div class="block"><a class="req" href="../../../../../requirements.html#POW-12">POW-12</a>, the gate of "pressure power": this battle's rolling rates (the estimates <a class="req" href="../../../../../requirements.html#POW-2">POW-2</a> and
+ <a class="req" href="../../../../../requirements.html#POW-4">POW-4</a> read) say we out-hit them by a margin, our energy is above <a href="../../policy/PowerPolicy.html#MIN_OUR_ENERGY"><code>PowerPolicy.MIN_OUR_ENERGY</code></a>, and
+ the lead-aware regime (POW-7 to POW-9) is not in force.</div>
+</div>
+<div class="col-first odd-row-color"><code>static boolean</code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">PowerPolicy.</span><code><a href="../../policy/PowerPolicy.html#pressureCentres(boolean,double,hadur2.core.memory.Estimate,hadur2.core.memory.Estimate,int,int)" class="member-name-link">pressureCentres</a><wbr>(boolean&nbsp;leadHolds,
+ double&nbsp;ourEnergy,
+ <a href="../Estimate.html" title="class in hadur2.core.memory">Estimate</a>&nbsp;ours,
+ <a href="../Estimate.html" title="class in hadur2.core.memory">Estimate</a>&nbsp;theirs,
+ int&nbsp;oursSize,
+ int&nbsp;theirsSize)</code></div>
+<div class="col-last odd-row-color">
+<div class="block"><a class="req" href="../../../../../requirements.html#POW-12">POW-12</a>, "centres" variant: as <a href="../../policy/PowerPolicy.html#pressure(boolean,double,hadur2.core.memory.Estimate,hadur2.core.memory.Estimate)"><code>PowerPolicy.pressure(boolean, double, hadur2.core.memory.Estimate, hadur2.core.memory.Estimate)</code></a> but on the window centres alone, with no margin
+ (ours at least <a href="../../policy/PowerPolicy.html#PRESSURE_OUR_RATE"><code>PowerPolicy.PRESSURE_OUR_RATE</code></a>, theirs at most <a href="../../policy/PowerPolicy.html#PRESSURE_THEIR_RATE"><code>PowerPolicy.PRESSURE_THEIR_RATE</code></a>), and only
+ once both windows hold at least <a href="../../policy/PowerPolicy.html#PRESSURE_MIN_OUTCOMES"><code>PowerPolicy.PRESSURE_MIN_OUTCOMES</code></a> outcomes.</div>
+</div>
 <div class="col-first even-row-color"><code>static <a href="../../policy/PowerPolicy.Reason.html" title="enum class in hadur2.core.policy">PowerPolicy.Reason</a></code></div>
 <div class="col-second even-row-color"><span class="type-name-label">PowerPolicy.</span><code><a href="../../policy/PowerPolicy.html#reason(hadur2.core.memory.Tiers.Gun,double,double,double,double,hadur2.core.memory.Estimate,hadur2.core.memory.Estimate)" class="member-name-link">reason</a><wbr>(<a href="../Tiers.Gun.html" title="enum class in hadur2.core.memory">Tiers.Gun</a>&nbsp;gunTier,
  double&nbsp;enemyEnergy,

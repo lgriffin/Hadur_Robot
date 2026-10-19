@@ -90,6 +90,17 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
+<div class="col-first even-row-color"><code><a href="../PlanInterval.html" title="class in hadur2.core.move">PlanInterval</a>[]</code></div>
+<div class="col-second even-row-color"><span class="type-name-label">MoveController.</span><code><a href="../MoveController.html#lastOptionsFor(hadur2.core.model.Wave)" class="member-name-link">lastOptionsFor</a><wbr>(<a href="../../model/Wave.html" title="class in hadur2.core.model">Wave</a>&nbsp;w)</code></div>
+<div class="col-last even-row-color">
+<div class="block"><a class="req" href="../../../../../requirements.html#MOVE-10">MOVE-10</a>: the options last published for wave <code>w</code>, or null when there are none.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="../PlanInterval.html" title="class in hadur2.core.move">PlanInterval</a></code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">MoveController.</span><code><a href="../MoveController.html#lastPlanFor(hadur2.core.model.Wave)" class="member-name-link">lastPlanFor</a><wbr>(<a href="../../model/Wave.html" title="class in hadur2.core.model">Wave</a>&nbsp;w)</code></div>
+<div class="col-last odd-row-color">
+<div class="block"><a class="req" href="../../../../../requirements.html#MOVE-9">MOVE-9</a>: the last interval the surf published for wave <code>w</code> this round, or null when
+ it never planned on it.</div>
+</div>
 <div class="col-first even-row-color"><code>static <a href="../PlanInterval.html" title="class in hadur2.core.move">PlanInterval</a></code></div>
 <div class="col-second even-row-color"><span class="type-name-label">PlanInterval.</span><code><a href="../PlanInterval.html#of(hadur2.core.model.Wave,hadur2.core.model.Wave.Intersection,double)" class="member-name-link">of</a><wbr>(<a href="../../model/Wave.html" title="class in hadur2.core.model">Wave</a>&nbsp;wave,
  <a href="../../model/Wave.Intersection.html" title="class in hadur2.core.model">Wave.Intersection</a>&nbsp;intersection,
@@ -121,12 +132,37 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code>static double[]</code></div>
-<div class="col-second even-row-color"><span class="type-name-label">ShadowGain.</span><code><a href="../ShadowGain.html#shares(hadur2.core.move.PlanInterval,hadur2.core.move.OurBullet,double,double)" class="member-name-link">shares</a><wbr>(<a href="../PlanInterval.html" title="class in hadur2.core.move">PlanInterval</a>&nbsp;plan,
+<div class="col-first even-row-color"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color"><span class="type-name-label">HitForensics.</span><code><a href="../HitForensics.html#optionFlags(hadur2.core.move.PlanInterval%5B%5D,int,double)" class="member-name-link">optionFlags</a><wbr>(<a href="../PlanInterval.html" title="class in hadur2.core.move">PlanInterval</a>[]&nbsp;options,
+ int&nbsp;chosen,
+ double&nbsp;hitAngle)</code></div>
+<div class="col-last even-row-color">
+<div class="block"><a class="req" href="../../../../../requirements.html#MOVE-10">MOVE-10</a>: whether the hit would also have hit each option's plan, one character per
+ option in ordinal order (counter-clockwise, stop, clockwise): <code>h</code> inside the
+ option's plan interval, <code>m</code> outside it, <code>-</code> no plan; upper case for the
+ option taken.</div>
+</div>
+<div class="col-first odd-row-color"><code>static double</code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">HitForensics.</span><code><a href="../HitForensics.html#planOffset(hadur2.core.move.PlanInterval,double)" class="member-name-link">planOffset</a><wbr>(<a href="../PlanInterval.html" title="class in hadur2.core.move">PlanInterval</a>&nbsp;plan,
+ double&nbsp;hitAngle)</code></div>
+<div class="col-last odd-row-color">
+<div class="block">How far the hit lies from the surf's last plan on its wave, in the plan interval's
+ half-widths from its centre: at most 1 inside the plan.</div>
+</div>
+<div class="col-first even-row-color"><code>void</code></div>
+<div class="col-second even-row-color"><span class="type-name-label">MoveController.</span><code><a href="../MoveController.html#publishOptions(hadur2.core.move.PlanInterval%5B%5D,int)" class="member-name-link">publishOptions</a><wbr>(<a href="../PlanInterval.html" title="class in hadur2.core.move">PlanInterval</a>[]&nbsp;options,
+ int&nbsp;chosen)</code></div>
+<div class="col-last even-row-color">
+<div class="block"><a class="req" href="../../../../../requirements.html#MOVE-10">MOVE-10</a>: the three-option surf's plan on its first wave for every option it rated this
+ tick, by option ordinal (a null slot for an option with no plan there), and the ordinal
+ it took.</div>
+</div>
+<div class="col-first odd-row-color"><code>static double[]</code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">ShadowGain.</span><code><a href="../ShadowGain.html#shares(hadur2.core.move.PlanInterval,hadur2.core.move.OurBullet,double,double)" class="member-name-link">shares</a><wbr>(<a href="../PlanInterval.html" title="class in hadur2.core.move">PlanInterval</a>&nbsp;plan,
  <a href="../OurBullet.html" title="class in hadur2.core.move">OurBullet</a>&nbsp;candidate,
  double&nbsp;fieldWidth,
  double&nbsp;fieldHeight)</code></div>
-<div class="col-last even-row-color">
+<div class="col-last odd-row-color">
 <div class="block">What the wave's shadows stop of the interval now, and what <code>candidate</code> would add.</div>
 </div>
 </div>

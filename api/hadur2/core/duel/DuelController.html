@@ -136,7 +136,7 @@ loadScripts(document, 'script');</script>
 <section class="method-summary" id="method-summary">
 <h2>Method Summary</h2>
 <div id="method-summary-table">
-<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button></div>
+<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab1" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab1', 3)" class="table-tab">Static Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button></div>
 <div id="method-summary-table.tabpanel" role="tabpanel" aria-labelledby="method-summary-table-tab0">
 <div class="summary-table three-column-summary">
 <div class="table-header col-first">Modifier and Type</div>
@@ -273,14 +273,29 @@ loadScripts(document, 'script');</script>
 <div class="block">S5: our rolling hit rate, over our last duel bullets (<a class="req" href="../../../../requirements.html#DIST-1">DIST-1</a>, <a class="req" href="../../../../requirements.html#POW-2">POW-2</a>).</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#prepare()" class="member-name-link">prepare</a>()</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#ourTick(hadur2.core.model.BotInput,boolean)" class="member-name-link">ourTick</a><wbr>(<a href="../model/BotInput.html" title="class in hadur2.core.model">BotInput</a>&nbsp;in,
+ boolean&nbsp;explained)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../../../requirements.html#WAVE-5">WAVE-5</a>: our energy this tick, for the ledger's inactivity-drain correction.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#prepare()" class="member-name-link">prepare</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Gets the Duel's shelves ready before the battle's first tick.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../memory/OpponentProfile.html" title="class in hadur2.core.memory">OpponentProfile</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#profile()" class="member-name-link">profile</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../memory/OpponentProfile.html" title="class in hadur2.core.memory">OpponentProfile</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#profile()" class="member-name-link">profile</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">The profile of this battle's opponent, or null before the first scan or without memory.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#provisionalOffered(boolean,boolean,boolean,boolean)" class="member-name-link">provisionalOffered</a><wbr>(boolean&nbsp;heatWave,
+ boolean&nbsp;gate,
+ boolean&nbsp;learning,
+ boolean&nbsp;gunReady)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../../../requirements.html#MOVE-11">MOVE-11</a>, <a class="req" href="../../../../requirements.html#MOVE-17">MOVE-17</a>: whether the gun-heat wave is offered this tick: the switch is on, the gate
+ (if on) has not closed it because the gun is learning, and the gun is cool by now or next tick.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#recover()" class="member-name-link">recover</a>()</code></div>
@@ -543,6 +558,17 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="provisionalOffered(boolean,boolean,boolean,boolean)">
+<h3>provisionalOffered</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">provisionalOffered</span><wbr><span class="parameters">(boolean&nbsp;heatWave,
+ boolean&nbsp;gate,
+ boolean&nbsp;learning,
+ boolean&nbsp;gunReady)</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#MOVE-11">MOVE-11</a>, <a class="req" href="../../../../requirements.html#MOVE-17">MOVE-17</a>: whether the gun-heat wave is offered this tick: the switch is on, the gate
+ (if on) has not closed it because the gun is learning, and the gun is cool by now or next tick.</div>
+</section>
+</li>
+<li>
 <section class="detail" id="bulletHit(hadur2.core.model.BotEvent.BulletHit,boolean,boolean,boolean)">
 <h3>bulletHit</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">bulletHit</span><wbr><span class="parameters">(<a href="../model/BotEvent.BulletHit.html" title="class in hadur2.core.model">BotEvent.BulletHit</a>&nbsp;e,
@@ -602,6 +628,20 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>ownOutcome</code> - <a class="req" href="../../../../requirements.html#WORLD-5">WORLD-5</a>: the outcome is a Duel bullet's</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="ourTick(hadur2.core.model.BotInput,boolean)">
+<h3>ourTick</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">ourTick</span><wbr><span class="parameters">(<a href="../model/BotInput.html" title="class in hadur2.core.model">BotInput</a>&nbsp;in,
+ boolean&nbsp;explained)</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#WAVE-5">WAVE-5</a>: our energy this tick, for the ledger's inactivity-drain correction. Called every
+ tick the duel is on, not only on scan ticks; never in a melee.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>in</code> - the tick's input</dd>
+<dd><code>explained</code> - whether a shot of ours left or one of our energy events arrived</dd>
 </dl>
 </section>
 </li>
