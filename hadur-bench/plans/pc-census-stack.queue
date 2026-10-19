@@ -1,0 +1,20 @@
+# 1v1 census of the top-3 stack (thread "Road to top 3 in 1v1"; Leigh approved the PC census 2026-10-18).
+# 3.13hjsw = 3.13 + MOVE-13 stop-and-start (heatjit) + SHIELD-14 (swall), built from
+# claude/project-thread-du09qh at e7f48d4c in a side worktree, against the 3.13 release on the whole
+# field (census-311.txt, 1,215 robots), 4 fresh seeds 991-994, 35 rounds.
+#   ./queue.sh run pc-census-stack        (or  .\queue.ps1 run pc-census-stack)
+# Rumble workers at 0 and nothing else heavy; one queue at a time.
+# Screens behind it (cloud): hj +0.24 APS on 400 bots vs 3.13, sw +0.12 on the 200 listed vs hj.
+# Gate: +0.3 APS over the field, 95% interval above 0, no rank band below -0.05.
+# Read: data/tools/screen_paired.py on export_battles.py output, --set census-311.txt.
+
+set HEAP = --child-heap 2G
+set E = --engine 1.11.1
+set COMMON = --skip-build --skip-fetch --rounds 35 --parallel 12 --cpu-constant 1488498 ${HEAP} ${E}
+set B313 = --baseline bisect/hadur2.Hadur_3.13.jar --baseline-robot "hadur2.Hadur 3.13"
+
+prep | mkdir -p bisect && { [ -s bisect/hadur2.Hadur_3.13.jar ] || curl -fsSL -o bisect/hadur2.Hadur_3.13.jar https://github.com/lgriffin/Hadur_Robot/releases/download/v3.13/hadur2.Hadur_3.13.jar; } && git fetch -q origin claude/project-thread-du09qh && { git worktree remove --force ../../hadur-census 2>/dev/null || true; } && git worktree add --force --detach ../../hadur-census e7f48d4c && (cd ../../hadur-census/hadur-bench && bash ./build-ablation.sh heatjit,swall) && cp ../../hadur-census/hadur-bench/bisect/hadur2.Hadur_3.13hjsw.jar bisect/ && ./fetch-opponents.sh --set census-311.txt
+
+census | ./bench-top20.sh ${COMMON} --seeds 4 --seed-base 990 --set census-311.txt --robot-jar bisect/hadur2.Hadur_3.13hjsw.jar --robot "hadur2.Hadur 3.13hjsw" ${B313} --label pc-census-stack
+  after: prep
+  timeout: 12h

@@ -1,0 +1,44 @@
+# PC card 2026-10-17: one queue for all three styles, one step at a time (Leigh's rule: one bench
+# queue on the PC, RoboRumble workers at 0 until ALLDONE). Run from master (robot 3.14):
+#   ./queue.sh run pc-1017        (or  .\queue.ps1 run pc-1017)
+#   .\queue.ps1 status pc-1017    progress;  .\queue.ps1 stop pc-1017  stops only its own tree
+# Resumable: a restart skips the steps that exited 0.
+#
+# 1v1 (thread "Road to top 3", PR #199). The stop-and-start (MOVE-13, 3.13hj) is the base since
+#   Leigh chose to stack (2026-10-17). The later flattener on top of it, paired against 3.13hj on
+#   the 400-bot screen (screen-311.txt), 8 fresh seeds 961-968. The cloud reads flt59 at 4 seeds;
+#   the PC gives both at 8. Built from the 1v1 branch in a side worktree (its ablations live there).
+#     hjf8  flattener threshold 4.5% -> 8% (DrussGT's)      about 2 hours
+#     hjf5  flattener threshold 4.5% -> 5.9% (Diamond's)    about 2 hours
+#   Gate: the stack (hj + flattener) at +0.3 APS over 3.13, so a flattener needs about +0.06 over hj
+#   with no band below -0.05; then the census-312 run (4 seeds) follows as its own queue.
+# Team (thread "CombatTeam analysis", PR #202 merged). T3 gun depth, team only: FieldGun.K is read
+#   only while a member has a living teammate, so 1v1 and melee are untouched. All 45 TeamRumble
+#   opponents, 6 seeds, against the 3.14 team jar (team play is 3.13's: MGUN-7 is off a team).
+#     k12, k21   540 battles a step. Gate: mean paired at least +1.0 point, interval above zero.
+# Melee (MGUN-7, 3.14 on master, unreleased). PC confirmation of the cloud census (+0.88 ± 0.19 at
+#   2 seeds, PR #204): 3.14 against the 3.13 release on 3.13's live field (melee-census-313.txt,
+#   46 fields), 4 fresh seeds 971-974. Longest step; it runs last.
+#     Pass: mean paired over 46 fields above 0 with the interval above 0. Then 3.14 can ship
+#     (release.yml, version 3.14).
+# Read: 1v1 data/tools/screen_paired.py on export_battles.py output; team and melee from the reports.
+
+set HEAP = --child-heap 2G
+set E = --engine 1.11.1
+set COMMON = --skip-build --skip-fetch --rounds 35 --parallel 12 --cpu-constant 1488498 ${HEAP} ${E}
+set SEEDS = --seeds 8 --seed-base 960
+set HJ = --baseline bisect/hadur2.Hadur_3.13hj.jar --baseline-robot "hadur2.Hadur 3.13hj"
+
+prep | mkdir -p bisect && { [ -s bisect/hadur2.Hadur_3.13.jar ] || curl -fsSL -o bisect/hadur2.Hadur_3.13.jar https://github.com/lgriffin/Hadur_Robot/releases/download/v3.13/hadur2.Hadur_3.13.jar; } && git fetch -q origin claude/project-thread-du09qh && { git worktree remove --force ../../hadur-top3 2>/dev/null || true; } && git worktree add --force --detach ../../hadur-top3 FETCH_HEAD && (cd ../../hadur-top3/hadur-bench && bash ./build-ablation.sh heatjit && bash ./build-ablation.sh heatjit,flt8 && bash ./build-ablation.sh heatjit,flt59) && cp ../../hadur-top3/hadur-bench/bisect/hadur2.Hadur_3.13hj*.jar bisect/ && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur2.Hadur_3.14.jar ../hadur-robot/target/hadur2.HadurTeam_3.14.jar bisect/ && bash ./build-ablation.sh tk12 && bash ./build-ablation.sh tk21 && ./fetch-opponents.sh --set screen-311.txt && ./fetch-opponents.sh --set team-census45.txt && for f in melee-census/f*.txt; do ./fetch-opponents.sh --set "$f" || exit 1; done && mvn -q compile
+
+hjf8 | ./bench-top20.sh ${COMMON} ${SEEDS} --set screen-311.txt --robot-jar bisect/hadur2.Hadur_3.13hjf8.jar --robot "hadur2.Hadur 3.13hjf8" ${HJ} --label pc-1017-hjf8
+  after: prep
+hjf5 | ./bench-top20.sh ${COMMON} ${SEEDS} --set screen-311.txt --robot-jar bisect/hadur2.Hadur_3.13hjf5.jar --robot "hadur2.Hadur 3.13hjf5" ${HJ} --label pc-1017-hjf5
+  after: hjf8
+k12  | mvn -q exec:java "-Dexec.args=@plans/pc-1017-team-k12.args"
+  after: hjf5
+k21  | mvn -q exec:java "-Dexec.args=@plans/pc-1017-team-k21.args"
+  after: k12
+melee | mvn -q exec:java "-Dexec.args=@plans/pc-1017-melee-census.args"
+  after: k21
+  timeout: 10h
