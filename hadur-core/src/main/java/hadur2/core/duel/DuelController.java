@@ -541,8 +541,8 @@ public final class DuelController {
         }
         PowerPolicy.Lead lead = PowerPolicy.lead(leadApplies, in.energy(), e.energy());
         // POW-12: pressure power, duel only and never while the lead-aware regime holds.
-        boolean pressure = PowerDesign.PRESSURE && enemiesTotal <= 1 && PowerPolicy.pressure(
-            lead != PowerPolicy.Lead.OFF, in.energy(), ourWindow.estimate(), theirWindow.estimate());
+        boolean pressure = enemiesTotal <= 1 && PowerDesign.pressureHolds(
+            lead != PowerPolicy.Lead.OFF, in.energy(), ourWindow, theirWindow);
         if (pressure != pressureApplied) {
             pressureApplied = pressure;
             Estimate ours = ourWindow.estimate();

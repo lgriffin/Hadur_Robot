@@ -347,6 +347,42 @@ public final class PowerPolicy {
             && theirs.center() + theirs.margin() <= PRESSURE_THEIR_RATE;
     }
 
+    /** POW-12, centres gate: each window must hold at least this many outcomes. */
+    public static final int PRESSURE_MIN_OUTCOMES = 30;
+
+    /**
+     * POW-12, "always" variant: no rate gate; holds whenever our energy is above {@link #MIN_OUR_ENERGY}
+     * and the lead-aware regime is not in force.
+     *
+     * @param leadHolds whether the lead-aware regime is in force
+     * @param ourEnergy our energy
+     * @return whether the duel gun fires pressure power
+     */
+    public static boolean pressureAlways(boolean leadHolds, double ourEnergy) {
+        return !leadHolds && ourEnergy > MIN_OUR_ENERGY;
+    }
+
+    /**
+     * POW-12, "centres" variant: as {@link #pressure} but on the window centres alone, with no margin
+     * (ours at least {@link #PRESSURE_OUR_RATE}, theirs at most {@link #PRESSURE_THEIR_RATE}), and only
+     * once both windows hold at least {@link #PRESSURE_MIN_OUTCOMES} outcomes.
+     *
+     * @param leadHolds whether the lead-aware regime is in force
+     * @param ourEnergy our energy
+     * @param ours our rolling hit rate on them
+     * @param theirs their rolling hit rate on us
+     * @param oursSize outcomes in our window
+     * @param theirsSize outcomes in their window
+     * @return whether the duel gun fires pressure power
+     */
+    public static boolean pressureCentres(boolean leadHolds, double ourEnergy, Estimate ours, Estimate theirs,
+                                          int oursSize, int theirsSize) {
+        if (leadHolds || !(ourEnergy > MIN_OUR_ENERGY)) return false;
+        if (oursSize < PRESSURE_MIN_OUTCOMES || theirsSize < PRESSURE_MIN_OUTCOMES) return false;
+        if (Double.isNaN(ours.value()) || Double.isNaN(theirs.value())) return false;
+        return ours.center() >= PRESSURE_OUR_RATE && theirs.center() <= PRESSURE_THEIR_RATE;
+    }
+
     private static boolean below(Estimate e) {
         return !Double.isNaN(e.value()) && e.center() + e.margin() < BREAK_EVEN;
     }

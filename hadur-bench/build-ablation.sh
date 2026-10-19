@@ -65,6 +65,10 @@
 #         with heatjit,swall,flt8. Suffix pw.
 #   pdown  POW-12's weaker form: under the same gate only the power-down is skipped, the base power stays 1.95. Sets
 #         PRESSURE and PRESSURE_BASE_ONLY_POWERDOWN, so build it alone: not with pressure. Suffix pd.
+#   pwall  POW-12 gate variant: pressure power on every duel aim with no rate gate (energy floor and lead-regime yield kept).
+#         Sets PRESSURE and PRESSURE_ALWAYS; build it alone: not with pressure or pdown; wins over pwc. Suffix pa.
+#   pwc  POW-12 gate variant: the window centres only (ours >= 12%, theirs <= 9%, both windows >= 30 outcomes, no margins).
+#         Sets PRESSURE and PRESSURE_CENTRES; build it alone: not with pressure, pdown or pwall. Suffix pz (pc is pc10's).
 #   repl  MOVE-16: the danger views' weights evolve by the replicator equation: each enemy bullet that hits us
 #         multiplies a view's weight by how well it predicted the bullet's angle against the weighted average
 #         (every view keeps 2% of the share), so the view that reads this gun takes over. Suffix rp.
@@ -240,6 +244,14 @@ for a in "${list[@]}"; do
             edit "$powerdesign" "static final boolean PRESSURE = false;" "static final boolean PRESSURE = true;"
             edit "$powerdesign" "static final boolean PRESSURE_BASE_ONLY_POWERDOWN = false;" "static final boolean PRESSURE_BASE_ONLY_POWERDOWN = true;"
             version="${version}pd" ;;
+        pwall)
+            edit "$powerdesign" "static final boolean PRESSURE = false;" "static final boolean PRESSURE = true;"
+            edit "$powerdesign" "static final boolean PRESSURE_ALWAYS = false;" "static final boolean PRESSURE_ALWAYS = true;"
+            version="${version}pa" ;;
+        pwc)
+            edit "$powerdesign" "static final boolean PRESSURE = false;" "static final boolean PRESSURE = true;"
+            edit "$powerdesign" "static final boolean PRESSURE_CENTRES = false;" "static final boolean PRESSURE_CENTRES = true;"
+            version="${version}pz" ;;
         repl)
             edit "$movedesign" "static final boolean REPLICATOR = false;" "static final boolean REPLICATOR = true;"
             version="${version}rp" ;;
@@ -321,7 +333,7 @@ for a in "${list[@]}"; do
             edit "$design" 'public static final ShieldDesign SHIPPED = parse("' \
                 "public static final ShieldDesign SHIPPED = parse(\"$flag,"
             version="${version}${suffix}" ;;
-        *) echo "unknown ablation: $a (ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, flt59, flt8, split, wallesc, protean, pdw3, pdw8, pc10, phot, repl, pressure, pdown, silent, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, shold, slearn, smode, sstay, sturn, swall, snull, strim)" >&2; exit 2 ;;
+        *) echo "unknown ablation: $a (ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, flt59, flt8, split, wallesc, protean, pdw3, pdw8, pc10, phot, repl, pressure, pdown, pwall, pwc, silent, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, shold, slearn, smode, sstay, sturn, swall, snull, strim)" >&2; exit 2 ;;
     esac
 done
 

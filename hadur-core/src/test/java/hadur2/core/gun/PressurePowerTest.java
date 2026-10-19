@@ -126,4 +126,64 @@ class PressurePowerTest {
         assertEquals(2.5, PowerPolicy.capPower(Tiers.Gun.T3, 400, 2.5), 1e-12);
         assertEquals(PowerPolicy.leastPowerThatKills(10), 2.0, 1e-12);
     }
+
+    private static Estimate rate(int hits, int n) {
+        return Estimate.of(hits, n);
+    }
+
+    @Test
+    @Tag("POW-12")
+    @DisplayName("POW-12 pwall: on at every rate once energy is above 12 and no lead regime; off otherwise")
+    void alwaysGate() {
+        assertTrue(PowerPolicy.pressureAlways(false, 12.01));
+        assertTrue(PowerPolicy.pressureAlways(false, 100));
+        assertFalse(PowerPolicy.pressureAlways(false, PowerPolicy.MIN_OUR_ENERGY));
+        assertFalse(PowerPolicy.pressureAlways(false, 5));
+        assertFalse(PowerPolicy.pressureAlways(true, 50));
+    }
+
+    @Test
+    @Tag("POW-12")
+    @DisplayName("POW-12 pwc: centres at 12% ours and 9% theirs are inclusive, just past either is off")
+    void centresBoundaries() {
+        // Estimate.center() is the Agresti-Coull centre (hits + 2) / (n + 4): over 100, ours 11 -> 12.5%,
+        // 10 -> 11.5%; theirs 7 -> 8.65%, 8 -> 9.6%
+        assertTrue(PowerPolicy.pressureCentres(false, 50, rate(11, 100), rate(7, 100), 100, 100));
+        assertTrue(PowerPolicy.pressureCentres(false, 50, rate(15, 100), rate(7, 100), 100, 100));
+        assertFalse(PowerPolicy.pressureCentres(false, 50, rate(10, 100), rate(7, 100), 100, 100));
+        assertFalse(PowerPolicy.pressureCentres(false, 50, rate(11, 100), rate(8, 100), 100, 100));
+        // the bounds are inclusive: centre exactly 6/50 = 0.12 ours (4 of 46) and 9/100 = 0.09 theirs (7 of 96)
+        assertTrue(PowerPolicy.pressureCentres(false, 50, rate(4, 46), rate(7, 96), 100, 100));
+        assertFalse(PowerPolicy.pressureCentres(false, 50, rate(3, 46), rate(7, 96), 100, 100));
+        assertFalse(PowerPolicy.pressureCentres(false, 50, rate(4, 46), rate(8, 96), 100, 100));
+        assertFalse(PowerPolicy.pressureCentres(false, 50, Estimate.NONE, rate(7, 100), 100, 100));
+        assertFalse(PowerPolicy.pressureCentres(false, 50, rate(11, 100), Estimate.NONE, 100, 100));
+    }
+
+    @Test
+    @Tag("POW-12")
+    @DisplayName("POW-12 pwc: both windows need at least 30 outcomes")
+    void centresSize() {
+        assertTrue(PowerPolicy.pressureCentres(false, 50, rate(6, 30), rate(1, 30), 30, 30));
+        assertFalse(PowerPolicy.pressureCentres(false, 50, rate(6, 30), rate(1, 30), 29, 30));
+        assertFalse(PowerPolicy.pressureCentres(false, 50, rate(6, 30), rate(1, 30), 30, 29));
+        assertFalse(PowerPolicy.pressureCentres(false, 50, rate(2, 10), rate(0, 10), 10, 10));
+    }
+
+    @Test
+    @Tag("POW-12")
+    @DisplayName("POW-12 pwc: energy floor and lead yield apply")
+    void centresFloorAndLead() {
+        Estimate o = rate(15, 100), t = rate(5, 100);
+        assertTrue(PowerPolicy.pressureCentres(false, 12.01, o, t, 100, 100));
+        assertFalse(PowerPolicy.pressureCentres(false, PowerPolicy.MIN_OUR_ENERGY, o, t, 100, 100));
+        assertFalse(PowerPolicy.pressureCentres(true, 50, o, t, 100, 100));
+    }
+
+    @Test
+    @Tag("POW-12")
+    @DisplayName("POW-12: the margin gate stays shut at the rates the class runs over 100 shots")
+    void marginGateUnchanged() {
+        assertFalse(PowerPolicy.pressure(false, 50, rate(15, 100), rate(7, 100)));
+    }
 }
