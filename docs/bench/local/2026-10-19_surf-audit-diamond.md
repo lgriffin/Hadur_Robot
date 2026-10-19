@@ -56,4 +56,34 @@ seeds in the cloud, paired against 3.13hjsw, each alone; the survivors stacked; 
 
 ## Hit forensics on the class
 
-(to follow: 3.13hjsw against the 149 in the cloud, `hit_forensics.py` read.)
+3.13hjsw against the 149 in the cloud, 35 rounds x 1 seed (seed 301), parallel 2, CPU constant
+4138771, 4.0 skipped turns a battle; report `2026-10-19_mid-hf.md`, read with
+`hit_forensics.py --set hadur-bench/flat-gf-mid.txt --all` (the tool is on the 1v1 branch).
+Bullet damage taken a round while the Duel drove, by the bullet's class, by how the danger views
+rated the angle it came from, by whether the surf's plan put us there, and by whether another of
+the three options' plans would have missed it:
+
+| Ranks | Opponents | Taken | headon | linear | learned | nowave | views: safe | mid | known | plan: on | off | none | options: dodge | trapped |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 51-200 | 81 | 27.1 | 3.0 | 2.2 | 21.9 | 0.0 | 4.1 | 16.3 | 6.7 | 24.7 | 2.0 | 0.4 | 15.8 | 0.3 |
+| 201-400 | 68 | 22.7 | 2.9 | 1.7 | 18.0 | 0.1 | 3.4 | 13.9 | 5.4 | 20.0 | 2.0 | 0.6 | 12.5 | 0.3 |
+| all | 149 | 25.1 | 2.9 | 2.0 | 20.1 | 0.1 | 3.8 | 15.2 | 6.1 | 22.6 | 2.0 | 0.5 | 14.3 | 0.3 |
+
+What it says about the class:
+
+- **Information is not the problem.** No-wave hits are 0.1 a round (the ledger sees every shot),
+  and only 3.8 of the 25.1 (15%) came from angles the views rated safe. 85% of the damage came
+  from angles the views rated mid or known.
+- **The choice is.** 22.6 of 25.1 (90%) landed where the surf's own plan put us, and for 14.3
+  (57%) another first-tick option's plan would have missed the bullet; only 0.3 was trapped (no
+  option escaped). On the top-3 stage 0 set the same reading was 48% (6.1 of 12.8), so the class
+  is where the option ranking is weakest, by a margin.
+- **The simple guns matter too.** Head-on and linear bullets are 4.9 a round (20%) from guns
+  classed as learning; a guess-factor gun's peak at GF 0 fires head-on at a random mover, and
+  the `simple` view carries weight 3 of the 1,000-odd in the average.
+
+So the surf loses on the class by ranking the three options wrongly on angles it has already
+rated, which is what the switches above change: `pk` (how sharply the kernel separates the
+options), `df` (which distance the option keeps), `hc` and `bh` (how current the ratings are),
+`w2` (whether the second wave is in the ranking after a skip), and `d6` (how wide the three
+options look to the gun). The list stands as proposed; the PC queue `pc-midrange-3` screens it.
