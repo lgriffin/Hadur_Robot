@@ -1,0 +1,27 @@
+# PC card 2026-10-17, melee: 3.14 (MGUN-7) against the 3.13 release on 3.13's live melee field, 46 fields, 4 fresh seeds
+--suite
+melee-census-313.txt
+--seeds
+4
+--seed-base
+970
+--rounds
+35
+--parallel
+6
+--child-heap
+2G
+--cpu-constant
+1488498
+--robot-jar
+bisect/hadur2.Hadur_3.14.jar
+--robot
+hadur2.Hadur 3.14
+--baseline
+bisect/hadur2.Hadur_3.13.jar
+--baseline-robot
+hadur2.Hadur 3.13
+--out
+work/pc-1017-melee-census
+--report
+../docs/bench/local/2026-10-17_melee-census-314-vs-313.md
