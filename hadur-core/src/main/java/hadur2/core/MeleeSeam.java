@@ -151,6 +151,13 @@ final class MeleeSeam implements Role {
         observe(event, tick, true);
     }
 
+    /** MGUN-8: the teammates' sightings the World took this tick, for the field gun to learn from. */
+    void mateSightings(List<TeamLink.MateSighting> sightings) {
+        for (TeamLink.MateSighting s : sightings) {
+            guard(() -> melee.mateSighting(s.name, s.tick, s.x, s.y, s.heading, s.velocity, s.distance, s.turnRate));
+        }
+    }
+
     /**
      * As {@link #observe(BotEvent, Tick)}, after the World's feed; when the feed failed the
      * melee's own books skip the event, as they did when the tracker threw inside them.

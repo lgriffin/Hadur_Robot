@@ -1,0 +1,10 @@
+# Melee census field f12 (see melee-census-313.txt)
+acogdev.alpha 0.2 | melee-377 | acogdev.alpha_0.2.jar
+techdude.forest.FlamingForest 1.1 | melee-158 | techdude.forest.FlamingForest_1.1.jar
+sample.Target 1.0 | melee-409 | sample.Target_1.0.jar
+lxx.ConceptA 0.8 | melee-135 | lxx.ConceptA_0.8.jar
+stelo.Liblix 0.3.1 | melee-34 | stelo.Liblix_0.3.1.jar
+testantiswapgun.AntiSwap 1.0 | melee-382 | testantiswapgun.AntiSwap_1.0.jar
+qohnil.blot.BlotBot 3.61 | melee-199 | qohnil.blot.BlotBot_3.61.jar
+sample.VelociRobot 1.0 | melee-394 | sample.VelociRobot_1.0.jar
+bvh.mini.Fenrir 0.39 | melee-216 | bvh.mini.Fenrir_0.39.jar

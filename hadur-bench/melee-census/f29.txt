@@ -1,0 +1,10 @@
+# Melee census field f29 (see melee-census-313.txt)
+fnc.bandit.Bandit 5.2.0 | melee-250 | fnc.bandit.Bandit_5.2.0.jar
+m3thos.Eva02 0.7.1 | melee-166 | m3thos.Eva02_0.7.1.jar
+css.Delitioner 0.11 | melee-209 | css.Delitioner_0.11.jar
+com.syncleus.robocode.Dreadnaught 0.1 | melee-315 | com.syncleus.robocode.Dreadnaught_0.1.jar
+jekl.StoneGhost 0.7 | melee-48 | jekl.StoneGhost_0.7.jar
+eem.EvBot v4.6.16 | melee-30 | eem.EvBot_v4.6.16.jar
+de.simpleworks.robocode.bots.swiBot 1.0 | melee-393 | de.simpleworks.robocode.bots.swiBot_1.0.jar
+cx.Princess 1.0 | melee-127 | cx.Princess_1.0.jar
+amz.NanoClone 1.41 | melee-231 | amz.NanoClone_1.41.jar

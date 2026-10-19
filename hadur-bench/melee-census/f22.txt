@@ -1,0 +1,10 @@
+# Melee census field f22 (see melee-census-313.txt)
+ntc.ControlledChaos 1.1.4 | melee-324 | ntc.ControlledChaos_1.1.4.jar
+nic.Nicator 2.4 | melee-142 | nic.Nicator_2.4.jar
+myl.nano.Graviton 1.10 | melee-149 | myl.nano.Graviton_1.10.jar
+DBall.Anarchy 0.1 | melee-273 | DBall.Anarchy_0.1.jar
+sample.Corners 1.0 | melee-397 | sample.Corners_1.0.jar
+rsalesc.melee.Monk 0.3.6c | melee-121 | rsalesc.melee.Monk_0.3.6c.jar
+divineomega.DivineBot 1.9.4.5 | melee-309 | divineomega.DivineBot_1.9.4.5.jar
+shinh.Entangled 0.3 | melee-51 | shinh.Entangled_0.3.jar
+matt.advanced.Katana 1.0 | melee-357 | matt.advanced.Katana_1.0.jar

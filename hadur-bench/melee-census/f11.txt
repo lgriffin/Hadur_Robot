@@ -1,0 +1,10 @@
+# Melee census field f11 (see melee-census-313.txt)
+arthord.MannyPacquiao Beta | melee-392 | arthord.MannyPacquiao_Beta.jar
+jaybot.bots.Oddball 4.0 | melee-334 | jaybot.bots.Oddball_4.0.jar
+mn.Combat 3.25.0 | melee-12 | mn.Combat_3.25.0.jar
+com.cohesiva.robocode.ManOwaR 1.0 | melee-157 | com.cohesiva.robocode.ManOwaR_1.0.jar
+awesomeness.Elite 1.0 | melee-266 | awesomeness.Elite_1.0.jar
+oa.weak.FlyMk1 0.1 | melee-341 | oa.weak.FlyMk1_0.1.jar
+stelo.WangRobot 1.0 | melee-323 | stelo.WangRobot_1.0.jar
+d414.nano.Quantum 1.0.0 | melee-57 | d414.nano.Quantum_1.0.0.jar
+fullsail.SweetTea 1.1 | melee-347 | fullsail.SweetTea_1.1.jar

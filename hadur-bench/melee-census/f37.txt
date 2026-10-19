@@ -1,0 +1,10 @@
+# Melee census field f37 (see melee-census-313.txt)
+dummy.micro.Sparrow 2.5 | melee-101 | dummy.micro.Sparrow_2.5.jar
+m3thos.mini.Eva01 0.5.5 | melee-227 | m3thos.mini.Eva01_0.5.5.jar
+sanja.First 0.1 | melee-320 | sanja.First_0.1.jar
+pa.Improved 1.0 | melee-305 | pa.Improved_1.0.jar
+timmit.nano.TimDog 0.33 | melee-224 | timmit.nano.TimDog_0.33.jar
+cvt.Firsty 1.0 | melee-381 | cvt.Firsty_1.0.jar
+oog.melee.Capulet 1.2 | melee-35 | oog.melee.Capulet_1.2.jar
+agrach.Dalek 1.0 | melee-319 | agrach.Dalek_1.0.jar
+amk.jointstrike.JointStrike 0.2 | melee-328 | amk.jointstrike.JointStrike_0.2.jar

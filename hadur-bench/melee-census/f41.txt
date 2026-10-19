@@ -1,0 +1,10 @@
+# Melee census field f41 (see melee-census-313.txt)
+gh.Griezel 0.5.2 | melee-25 | gh.Griezel_0.5.2.jar
+ds.Oo 2.2 | melee-203 | ds.Oo_2.2.jar
+lorneswork.Predator 1.0 | melee-190 | lorneswork.Predator_1.0.jar
+kid.Gladiator .7.2 | melee-23 | kid.Gladiator_.7.2.jar
+tex.Longbot 0.4 | melee-346 | tex.Longbot_0.4.jar
+Lo_Ian.Gandalf_V4 4.0 | melee-240 | Lo_Ian.Gandalf_V4_4.0.jar
+vuen.Cake 2.51 | melee-116 | vuen.Cake_2.51.jar
+pbg.NinjaX 1.2 | melee-371 | pbg.NinjaX_1.2.jar
+germ.TheMind .2 | melee-264 | germ.TheMind_.2.jar

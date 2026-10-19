@@ -1,0 +1,10 @@
+# Melee census field f45 (see melee-census-313.txt)
+spinnercat.Robovirus 2.718 | melee-204 | spinnercat.Robovirus_2.718.jar
+divineomega.TrialBot 0.003 | melee-297 | divineomega.TrialBot_0.003.jar
+Noran.BitchingElk 0.054 | melee-242 | Noran.BitchingElk_0.054.jar
+gh.mini.GrubbmOne 1.0 | melee-207 | gh.mini.GrubbmOne_1.0.jar
+KiraNL.Chupacabra 0.4 | melee-230 | KiraNL.Chupacabra_0.4.jar
+ms.Ares 0.19 | melee-75 | ms.Ares_0.19.jar
+rsalesc.melee.Medina 0.4.5 | melee-11 | rsalesc.melee.Medina_0.4.5.jar
+sul.Lunar 1.1 | melee-169 | sul.Lunar_1.1.jar
+mld.Wisdom 1.0 | melee-179 | mld.Wisdom_1.0.jar

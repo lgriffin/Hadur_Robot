@@ -95,6 +95,42 @@
 #   tpowb (team only) as tpow, but one power step: a member with 30 energy or more fires one power
 #         above MGUN-3's table (at most 3, or what kills the target). Both replace the table's
 #         result outright, so MGUN-3's lead cap and two-left duel row do not apply then.
+#   mpow  (melee only) with three or more opponents left and 30 energy or more, fire power 3 (or what
+#         kills the target) at every target: on the melee top-20 fields Hadur fires about 1.5 in the
+#         crowd against the field's 2.4-2.8 and has the lowest bullet damage of all 21 robots
+#         (docs/bench/melee-gap-3.13.md). The two-left row and the duel are untouched.
+#   mpowb (melee only) as mpow, but one power step above MGUN-3's table (at most 3). mpow and mpowb
+#         are alternatives and do not combine; either combines with mrate, mhold and the rest.
+#   gtol  (melee only, 3+ opponents, no teammates) fire when the gun is within 2 degrees of last tick's
+#         aim (about half a robot at 500 px) instead of 0.05: the bullet leaves along the gun's
+#         heading, so a shot inside the target's width still hits, and a gun that never quite
+#         settles on a moving peak stops holding fire (3.13's gun idles 21% of ticks).
+#   gstick (melee only, 3+ opponents, no teammates) for the last three ticks before the gun is cool,
+#         aim only at last tick's target, so the gun converges instead of chasing a new peak.
+#   gwhy  (measurement) each tick the gun is cool, print GW,<why>: F fired, A gun still turning (past
+#         the seam's tolerance, gtol's when combined), H the brain held fire at a target, T no target,
+#         N no command yet, E too little energy, P the conductor withheld fire permission.
+#   gwin  (melee only, 3+ opponents, no teammates) the fire window: on a tick the gun is cool, fire at
+#         once along the gun's present heading when the firing solutions it covers hold 70% or more of
+#         the peak's density (the target there fresh, energy to spare), instead of waiting for the gun
+#         to settle on a peak that moves each tick (gwhy: "gun still turning" is half the idle ticks).
+#   gk    (melee and team; sources before MGUN-7 only, so --ref v3.13) the field gun's kNN takes 12
+#         situations per opponent, not 3. MGUN-7 ships it off a team.
+#   tk12, tk21 (team only) T3, the field gun's kNN depth on a team: 12 or 21 situations per opponent,
+#         not 3 (FieldGun.K is read only while a teammate lives; MGUN-7's 12 off a team stays).
+#         CombatTeam takes 21 (docs/bench/combatteam-3.25.md).
+#   tshare0 (team only) MGUN-8 off: teammates' sightings no longer reach the field gun's histories
+#         (the World still takes them), so each member learns only from its own radar, as 3.13.
+#   tlane0 (team only) T4, no fire lane: a member fires whatever teammates lie ahead, as CombatTeam does.
+#   tlane4 (team only) T4, WEAVE-4's lane alone: a teammate's last known point still holds the shot,
+#         its predicted track (WEAVE-7) no longer does.
+#   mrate (melee and team) fire more often: the controller fires on a scan up to 8 ticks old (was 5;
+#         the field gun already aims on 8, the radar's sweep is 10-11), and with three or more
+#         opponents left the lead cap (never drop below the target's energy) no longer holds or
+#         shrinks a shot. 3.13's gun sits cool and unfired 21% of its ticks, the most of the
+#         top-20 fields (docs/bench/melee-gap-3.13.md).
+#   mhold (melee only) the passive theory: with three or more opponents left Hadur fires only to
+#         finish a robot (16 energy or less), keeping its energy for the last two and the duel.
 #   s50   SHIELD-1 needs 10 of the last 20 bullets intercepted, and half of them, not 4 and a
 #         quarter. 3.12 P4: half of all census battles latch a shield verdict.
 #   nostore  SHIELD-3 no longer starts a battle from the profile's stored shield verdict: each
@@ -125,7 +161,7 @@ set -euo pipefail
 
 ref=HEAD
 if [[ "${1:-}" == "--ref" ]]; then ref="$2"; shift 2; fi
-[[ $# -eq 1 ]] || { sed -n '2,84p' "$0"; exit 2; }
+[[ $# -eq 1 ]] || { sed -n '2,/^set -euo/{/^#/p}' "$0"; exit 2; }
 
 here="$(cd "$(dirname "$0")" && pwd)"
 repo="$(git -C "$here" rev-parse --show-toplevel)"
@@ -150,6 +186,7 @@ mctl="$src/hadur-core/src/main/java/hadur2/core/melee/MeleeController.java"
 tlink="$src/hadur-core/src/main/java/hadur2/core/TeamLink.java"
 fgun="$src/hadur-core/src/main/java/hadur2/core/melee/FieldGun.java"
 core="$src/hadur-core/src/main/java/hadur2/core/HadurCore.java"
+mseam="$src/hadur-core/src/main/java/hadur2/core/MeleeSeam.java"
 
 # Replace exactly one occurrence of $2 with $3 in file $1, or fail.
 edit() {
@@ -162,6 +199,9 @@ edit() {
 base="$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' "$src/hadur-robot/pom.xml")"
 version="$base"
 IFS=, read -ra list <<< "$1"
+# The fire seam's turn tolerance, which gtol widens; gwhy reads the same one.
+gtolerance="0.05"
+[[ ",$1," == *,gtol,* ]] && gtolerance="(in.others() >= 3 && core.livingTeammates().isEmpty() ? 2.0 : 0.05)"
 for a in "${list[@]}"; do
     case "$a" in
         ram2)
@@ -309,6 +349,79 @@ for a in "${list[@]}"; do
             edit "$fgun" "if (power <= 0) continue;" \
                 "if (power <= 0) continue; if (teamPower && energy >= 30) power = Math.min(Math.min(3.0, $raise), MeleeEnergyPolicy.killPower(e.energy));"
             ;;
+        gtol)
+            version="${version}gt"
+            edit "$mseam" "&& Math.abs(Math.toDegrees(in.gunTurnRemaining())) < 0.05" \
+                "&& Math.abs(Math.toDegrees(in.gunTurnRemaining())) < $gtolerance"
+            ;;
+        gstick)
+            version="${version}gs"
+            edit "$mctl" "FieldGun.Aim aim = gun.aim(s.me, s.energy, s.others, alive, s.time);" \
+                "List<EnemyInfo> pool = alive; if (s.teammates.isEmpty() && s.others >= 3 && s.gunHeat > 0 && s.gunHeat <= 0.3 && last != null && alive.contains(last) && last.age(s.time) <= MAX_FIRE_AGE) pool = java.util.Collections.singletonList(last); FieldGun.Aim aim = gun.aim(s.me, s.energy, s.others, pool, s.time);"
+            ;;
+        gwhy)
+            version="${version}gw"
+            edit "$mseam" "        MeleeController.Command c = melee.tick(new MeleeController.Situation(" \
+                "        if (in.gunHeat() == 0 && in.energy() > 0.1) System.out.println(\"GW,\" + (previous == null ? \"N\" : previous.firePower <= 0 ? (previous.target == null ? \"T\" : \"H\") : Math.abs(Math.toDegrees(in.gunTurnRemaining())) >= $gtolerance ? \"A\" : in.energy() <= previous.firePower ? \"E\" : !tick.mayFire() ? \"P\" : \"F\"));
+        MeleeController.Command c = melee.tick(new MeleeController.Situation("
+            ;;
+        gwin)
+            version="${version}gn"
+            edit "$fgun" "static final double ISOLATED_RANGE = 350;" \
+                "static final double ISOLATED_RANGE = 350; List<Solution> lastAll = new ArrayList<>(); public Aim at(double angle) { double density = 0; Map<String, Double> by = new LinkedHashMap<>(); Map<String, Double> pw = new LinkedHashMap<>(); for (Solution o : lastAll) { if (Math.abs(Angles.normalRelativeAngle(angle - o.angle)) <= o.tolerance) { density += o.weight; by.merge(o.target, o.weight, Double::sum); pw.put(o.target, o.power); } } String t = null; double top = -1; for (Map.Entry<String, Double> e : by.entrySet()) if (e.getValue() > top) { top = e.getValue(); t = e.getKey(); } return t == null ? null : new Aim(angle, pw.get(t), density, t, false); }"
+            edit "$fgun" "List<Solution> all = solutions(me, energy, others, alive, now);" \
+                "List<Solution> all = solutions(me, energy, others, alive, now); lastAll = all;"
+            edit "$mctl" "public boolean learnedAim;" "public boolean learnedAim; public double fireNow;"
+            edit "$mctl" "c.firePower = hold ? 0 : power;" \
+                "c.firePower = hold ? 0 : power; if (s.teammates.isEmpty() && s.others >= 3 && s.gunHeat == 0) { FieldGun.Aim w = gun.at(s.gunHeading); if (w != null && w.density >= 0.7 * aim.density) { EnemyInfo wt = tracker.get(w.target); double wp = Math.min(w.power, MeleeEnergyPolicy.killPower(wt.energy)); if (wt.age(s.time) <= MAX_FIRE_AGE && s.energy >= MeleeEnergyPolicy.MIN_OWN_ENERGY && s.energy > wp + 0.1) c.fireNow = wp; } }"
+            edit "$mseam" "MeleeController.Command previous = lastCommand;" "MeleeController.Command previous = lastCommand; boolean firedNow = false;"
+            edit "$mseam" "orders.fire(previous.firePower);" "orders.fire(previous.firePower); firedNow = true;"
+            edit "$mseam" "        if (c.target != null && core.diedThisRound(c.target)) ghostTicks++;" \
+                "        if (!firedNow && c.fireNow > 0 && in.gunHeat() == 0 && in.energy() > c.fireNow && tick.mayFire()) { orders.fire(c.fireNow); stats.shotsFired++; core.meleeShotFired(); }
+        if (c.target != null && core.diedThisRound(c.target)) ghostTicks++;"
+            ;;
+        tk12|tk21)
+            k="${a#tk}"
+            version="${version}k${k}"
+            edit "$fgun" "public static final int K = 3;" "public static final int K = ${k};"
+            ;;
+        tshare0)
+            version="${version}s0"
+            edit "$core" "if (teamLink != null && meleeSeam != null) meleeSeam.mateSightings(teamLink.mateSightings());" \
+                "if (false && teamLink != null && meleeSeam != null) meleeSeam.mateSightings(teamLink.mateSightings());"
+            ;;
+        tlane0)
+            version="${version}l0"
+            edit "$core" "boolean laneClear = teamLink == null || teamLink.laneClear(raw);" "boolean laneClear = true;"
+            ;;
+        tlane4)
+            version="${version}l4"
+            edit "$tlink" "            if (across <= half) return false;" "            if (across <= half) return false;
+            if (true) continue;"
+            ;;
+        gk)
+            # MGUN-7 ships twelve situations off a team, so on its sources this would change
+            # only the team's depth: the screen it stands for is 3.13's (--ref v3.13).
+            grep -qF "MELEE_K" "$fgun" && { echo "gk applies to sources before MGUN-7 (use --ref v3.13)" >&2; exit 2; }
+            version="${version}gk"
+            edit "$fgun" "public static final int K = 3;" "public static final int K = 12;"
+            ;;
+        mrate)
+            version="${version}mr"
+            edit "$mctl" "static final long MAX_FIRE_AGE = 5;" "static final long MAX_FIRE_AGE = 8;"
+            edit "$src/hadur-core/src/main/java/hadur2/core/melee/MeleeEnergyPolicy.java" \
+                "if (ownEnergy > targetEnergy) {" "if (others <= 2 && ownEnergy > targetEnergy) {"
+            ;;
+        mhold)
+            version="${version}mh"
+            edit "$fgun" "if (!finisher && rams(e, me)) continue;" \
+                "if (!finisher && rams(e, me)) continue; if (!onTeam && others >= 3 && !finisher) continue;"
+            ;;
+        mpow|mpowb)
+            if [[ "$a" == mpow ]]; then raise="3.0"; version="${version}mw"; else raise="power + 1.0"; version="${version}mb"; fi
+            edit "$fgun" "if (onTeam) power = MeleeEnergyPolicy.teamPower(power, energy, e.energy);" \
+                "if (onTeam) power = MeleeEnergyPolicy.teamPower(power, energy, e.energy); if (!onTeam && others >= 3 && energy >= 30) power = Math.min(Math.min(3.0, $raise), MeleeEnergyPolicy.killPower(e.energy));"
+            ;;
         nostore)
             edit "$book" "distance(gunTier), profile.leadAware(), profile.shielder());" \
                 "distance(gunTier), profile.leadAware(), false);"
@@ -333,7 +446,7 @@ for a in "${list[@]}"; do
             edit "$design" 'public static final ShieldDesign SHIPPED = parse("' \
                 "public static final ShieldDesign SHIPPED = parse(\"$flag,"
             version="${version}${suffix}" ;;
-        *) echo "unknown ablation: $a (ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, flt59, flt8, split, wallesc, protean, pdw3, pdw8, pc10, phot, repl, pressure, pdown, pwall, pwc, silent, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, shold, slearn, smode, sstay, sturn, swall, snull, strim)" >&2; exit 2 ;;
+        *) echo "unknown ablation: $a (ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, flt59, flt8, split, wallesc, protean, pdw3, pdw8, pc10, phot, repl, pressure, pdown, pwall, pwc, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, gtol, gstick, gwhy, gwin, gk, shold, slearn, smode, sstay, sturn, snull, strim)" >&2; exit 2 ;;
     esac
 done
 

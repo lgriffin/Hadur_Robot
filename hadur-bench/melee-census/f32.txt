@@ -1,0 +1,10 @@
+# Melee census field f32 (see melee-census-313.txt)
+kid.test.NightFox .2 | melee-55 | kid.test.NightFox_.2.jar
+asd.Cthulhu 1.3 | melee-372 | asd.Cthulhu_1.3.jar
+tvv.nano.Polaris 1.2 | melee-228 | tvv.nano.Polaris_1.2.jar
+mz.NanoGod 2.02 | melee-154 | mz.NanoGod_2.02.jar
+deewiant.Anomaly 0.2 | melee-43 | deewiant.Anomaly_0.2.jar
+stelo.Lifestealer 1.0 | melee-376 | stelo.Lifestealer_1.0.jar
+ers.nano.hawk.HawkLA 3.0m | melee-278 | ers.nano.hawk.HawkLA_3.0m.jar
+sample.RamFire 1.0 | melee-405 | sample.RamFire_1.0.jar
+jok.PheonixM 0.1.2 | melee-138 | jok.PheonixM_0.1.2.jar

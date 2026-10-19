@@ -1,0 +1,10 @@
+# Melee census field f09 (see melee-census-313.txt)
+cb.fire.Firestarter 2.0f | melee-4 | cb.fire.Firestarter_2.0f.jar
+amk.ChumbaWumba 0.3 | melee-282 | amk.ChumbaWumba_0.3.jar
+EH.Eagle 1.0.6 | melee-165 | EH.Eagle_1.0.6.jar
+mym.EdgeStalker 1.0 | melee-406 | mym.EdgeStalker_1.0.jar
+shrub.Vapour v159 | melee-73 | shrub.Vapour_v159.jar
+jsal.Jsalbot 1.0 | melee-335 | jsal.Jsalbot_1.0.jar
+sam.Samspin 1.0 | melee-311 | sam.Samspin_1.0.jar
+abc.Shadow 3.84i | melee-8 | abc.Shadow_3.84i.jar
+mbh.Mbh 0.1 | melee-349 | mbh.Mbh_0.1.jar

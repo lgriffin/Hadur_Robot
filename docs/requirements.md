@@ -141,6 +141,7 @@ EARS requirements from the Hadur 2 technical direction. This file is the source 
 | BENCH-87 | Event | When `live_client.py watch` reads a LiteRumble BotDetails page (or `page-diff` is given two), the tool shall save the page, record its header and infer the mean score of each pairing's newly uploaded battles from the pairing's mean and battle count before and after, flagging any under 50 or 25 points or more under the pairing's earlier mean; a failed fetch shall be logged and never stop the watch (3.12 plan). | R9 |
 | BENCH-88 | Optional | Where `live_client.py report OUT` is given a watch folder, the tool shall summarise the client's battles per game, the health records' skipped turns, faults and stored shield verdicts, each 1v1 battle under 70% share joined to its health record, the latest profile snapshot and the live page's movement and flagged drops (3.12 plan). | R9 |
 | BENCH-89 | Unwanted | If a JVM that `jps` lists ends, starts or is this bench's own battle while the other-JVM count is taken, then the bench shall not count it as another Robocode JVM: its own battles are read before and after the listing, and a listed process that is gone or descends from the bench is left out (plan-90 step 6: the count dropped 22 to 32% of screen pairs). | R9 |
+| BENCH-90 | Event-driven | When a melee battle ends a round, the bench shall write one `bullets.csv` row per fighter with its shots, their summed power, its hits on a robot, the damage those did and its shots lost to another bullet, each bullet counted once, plus the same counts for shots fired while five or more fighters were alive (the melee gap read: Hadur's firepower against the field's). | R9 |
 | RES-10 | Ubiquitous | The robot shall leave no reference to its classes in the process after a battle, so that the number of classes loaded in one JVM stays flat across a session of battles. | R7 |
 | MOVE-3 | Ubiquitous | Movement shall score a wave's danger only over the part of the intersection not in a certain bullet shadow, at half weight inside a possible shadow. | R6 |
 | MOVE-4 | Ubiquitous | Movement shall score a wave's danger as the danger density integrated over the firing angles of the precise intersection. | R6 |
@@ -1105,6 +1106,7 @@ MMOVE-8 the melee strand, WEAVE-7 and WEAVE-8 the conductor.
 | WEAVE-7 | State | While a living teammate's predicted track, over the time a bullet of any power would take to pass it, comes within the fire lane's half-width of the lane, the conductor shall withhold the fire permission. | T1 |
 | WEAVE-8 | Unwanted | If the driving role's drive, simulated a set number of ticks ahead, would bring Hadur within a robot's width and a margin of a living teammate's predicted position, then the conductor shall replace the drive with the nearest of a brake or a reversal that stays clear, keeping the gun, radar, fire and message orders. | T1 |
 | MGUN-6 | State | While in melee on a team with a living teammate whose position is no older than the WORLD-3 window, and at least 30 energy of its own, the gun shall fire power 3, or the power that kills its target if less, in place of the MGUN-3 table. | T2 |
+| MGUN-8 | Event | When the World takes a teammate's reported sighting of an enemy, the field gun shall add it to that enemy's movement history as one of Hadur's own scans, before Hadur's own scans of the same tick. | T5 |
 
 ### T1 notes
 
@@ -1128,6 +1130,22 @@ MMOVE-8 the melee strand, WEAVE-7 and WEAVE-8 the conductor.
   clear, else the one with the greatest closest approach. The `T` record's last field counts the
   drives it replaced.
 - Solo play is untouched: every term is reached through the team link or an empty teammate list.
+
+### T5 notes: shared gun learning (MGUN-8)
+
+- **Why.** mn.CombatTeam, first in the TeamRumble, trains every member's gun on all five
+  members' data (docs/bench/combatteam-3.25.md). Hadur's members already share their scans
+  (WORLD-4), but only the World took them. Each member's field-gun history (`EnemyHistory`,
+  MGUN-1) learnt only from its own radar.
+- **Where.** `TeamLink.merge` keeps each sighting the World takes as a `MateSighting` (as it was
+  stated, with the World's turn rate then and the distance from us at merge). `HadurCore.tick`
+  hands them to `MeleeSeam.mateSightings` before the tick's events, and so before our own
+  scans. `MeleeController.mateSighting` feeds `FieldGun.onSighting` alone, which adds the
+  sighting to the history as `onScan` would. The World only takes a sighting newer than what it
+  holds, so each history stays in time order. The profiles, the danger book and the targeting
+  waves keep to our own radar.
+- Solo play is untouched: the sightings come only through the team link, which exists only on a
+  team.
 
 ### T2 notes: team firepower (MGUN-6)
 
@@ -1290,6 +1308,28 @@ to build, run and read it.
 | ID | Pattern | Requirement | Stage |
 |---|---|---|---|
 | BENCH-90 | Ubiquitous | The bench shall carry the movement lab: `hadur-bench/lab-panel.txt`, a set file naming the six reference shooters `lab.HeadOn`, `lab.Linear`, `lab.Circular`, `lab.GFHist`, `lab.Knn` and `lab.PatternMatch` at version 1.0 with their jars in `opponents/` (built by `lab/build-lab.sh`), and `data/tools/move_lab.py`, which for each `LABEL=WORKDIR` reports per opponent the damage Hadur took per round, the rounds it survived and the shooter's hit rate, and for two labels the second minus the first over the seeds both fought, as mean and 95% interval. | R9 |
+
+## The melee gun in the crowd (MGUN-7, M7)
+
+The melee gap read (docs/bench/melee-gap-3.13.md) found Hadur 3.13 17th in the MeleeRumble with
+the lowest bullet damage of the top-20 fields: its gun sat cool and unfired on 21% of its
+ticks. Cheap power and fire-rate switches were level or worse, so M7 changes the gun itself.
+Every M7 requirement holds only in free-for-all melee: off a team, where MGUN-6's
+`FieldGun.onTeam` is false. A 1v1 battle never reaches the field gun, and a team keeps MGUN-1's
+gun as it was (docs/bench/melee-gun-3.13.md).
+
+| ID | Pattern | Requirement | Stage |
+|---|---|---|---|
+| MGUN-7 | State | While in melee off a team, the field gun shall give each opponent with at least twelve learned situations twelve firing solutions from its most similar situations, sharing the opponent's weight, and an opponent with fewer one circular or linear solution; on a team it shall keep MGUN-1's three. | M7 |
+
+- **MGUN-7.** `FieldGun.MELEE_K` (12) beside `FieldGun.K` (3), chosen by `FieldGun.k()` from
+  `onTeam`. More situations spread each opponent over the angles it is likely to reach, so the
+  summed density peaks where several opponents' futures overlap. Gate: the `gk` ablation of
+  3.13 on the five top-20 melee fields, 3 seeds each, paired with 3.13: ahead on every field
+  (+0.2, +1.3, +1.0, +0.8, +2.2), +1.1 APS pooled; damage a round 54.7 to 56.7, hit rate in the
+  crowd 24.6% to 25.2% (`docs/bench/local/2026-10-15_melee-top20-gk-vs-313.md`). A second run
+  of fresh battles: +1.3, -1.7, +1.6, +0.4, +1.3, +0.6 pooled, damage +8% (`...-gk2-vs-313.md`);
+  +0.85 APS over both.
 
 ## Retired requirements
 

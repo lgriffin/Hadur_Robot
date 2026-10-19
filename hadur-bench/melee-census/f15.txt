@@ -1,0 +1,10 @@
+# Melee census field f15 (see melee-census-313.txt)
+yagami.Tidus 0.11 | melee-91 | yagami.Tidus_0.11.jar
+amk.ChumbaMini 0.2 | melee-355 | amk.ChumbaMini_0.2.jar
+krillr.mini.JointStrike 2.0.0 | melee-185 | krillr.mini.JointStrike_2.0.0.jar
+donjezza.Jezza 1.0 | melee-373 | donjezza.Jezza_1.0.jar
+kawigi.micro.Shiz 1.1 | melee-59 | kawigi.micro.Shiz_1.1.jar
+Grystrion.TrackerWO 1.0 | melee-275 | Grystrion.TrackerWO_1.0.jar
+bvh.fnr.Fenrir 0.36l | melee-211 | bvh.fnr.Fenrir_0.36l.jar
+ahr.ice.Ice 1.0.2 | melee-295 | ahr.ice.Ice_1.0.2.jar
+stelo.SoRobotNanoMelee 1.2 | melee-205 | stelo.SoRobotNanoMelee_1.2.jar

@@ -14,7 +14,8 @@ import java.util.Map;
 /**
  * The melee gun (MGUN-1, MGUN-2): Shadow's melee gun, as Diamond and Neuromancer use it.
  *
- * <p>Every opponent scanned within {@link #MAX_AGE} ticks gets {@link #K} firing solutions,
+ * <p>Every opponent scanned within {@link #MAX_AGE} ticks gets {@link #MELEE_K} firing solutions
+ * off a team (MGUN-7) and {@link #K} on one,
  * each one of its {@link EnemyHistory} situations most like its present one played forward
  * until Hadur's bullet (at the power the {@link MeleeEnergyPolicy} gives that opponent) would
  * reach it. A solution covers its angle plus or minus the robot's half-width at that range,
@@ -28,7 +29,14 @@ import java.util.Map;
  */
 public class FieldGun {
 
+    /** The kNN depth on a team (MGUN-1's three situations; HadurTeam keeps them). */
     public static final int K = 3;
+    /**
+     * MGUN-7: the kNN depth off a team. Twelve situations spread each opponent over more
+     * likely angles, so the summed density peaks where several opponents' futures overlap,
+     * which is what a crowd gun is for (docs/bench/melee-gun-3.13.md).
+     */
+    public static final int MELEE_K = 12;
     public static final long MAX_AGE = 8;
     static final double ISOLATED_RANGE = 350;
     static final double FINISHER_BOOST = 2.0;
@@ -102,6 +110,11 @@ public class FieldGun {
         this.onTeam = onTeam;
     }
 
+    /** MGUN-7: the kNN depth this tick, {@link #K} on a team and {@link #MELEE_K} off one. */
+    int k() {
+        return onTeam ? K : MELEE_K;
+    }
+
     /** An opponent was scanned {@code distance} from Hadur. */
     public void onScan(EnemyInfo e, double distance, long time) {
         EnemyHistory h = history(e.name);
@@ -109,6 +122,16 @@ public class FieldGun {
             h.onScan(time, e.location.x, e.location.y, e.heading, e.velocity, distance,
                 e.turnRate(), field);
         }
+    }
+
+    /**
+     * MGUN-8: a teammate's sighting of {@code name}, {@code distance} from Hadur, joins its
+     * movement history as one of Hadur's own scans would.
+     */
+    public void onSighting(String name, long time, double x, double y, double heading, double velocity,
+                           double distance, double turnRate) {
+        EnemyHistory h = history(name);
+        if (h != null) h.onScan(time, x, y, heading, velocity, distance, turnRate, field);
     }
 
     /** Every firing solution this tick, for every opponent fresh enough to shoot at. */
@@ -126,8 +149,8 @@ public class FieldGun {
             double weight = weight(e, me, alive, now);
             EnemyHistory h = history(e.name);
             double[] attributes = h == null ? null : h.current();
-            List<KdTree.Entry<float[]>> near = attributes == null || h.size() < K
-                ? new ArrayList<KdTree.Entry<float[]>>() : h.neighbours(attributes, K);
+            List<KdTree.Entry<float[]>> near = attributes == null || h.size() < k()
+                ? new ArrayList<KdTree.Entry<float[]>>() : h.neighbours(attributes, k());
             if (near.isEmpty()) {
                 MeleeGun.Aim a = fallback.aim(me, e, power, now);
                 out.add(new Solution(e.name, a.angle, tolerance(me, a.predicted), weight, power,
@@ -180,7 +203,7 @@ public class FieldGun {
                     }
                 }
                 EnemyHistory h = histories.get(target);
-                best = new Aim(s.angle, power, density, target, h != null && h.size() >= K);
+                best = new Aim(s.angle, power, density, target, h != null && h.size() >= k());
             }
         }
         return best;

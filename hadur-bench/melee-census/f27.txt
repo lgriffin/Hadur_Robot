@@ -1,0 +1,9 @@
+# Melee census field f27 (see melee-census-313.txt)
+simonton.nano.WeekendObsession_Melee 1.0 | melee-164 | simonton.nano.WeekendObsession_Melee_1.0.jar
+bvh.micro.Freya 0.3 | melee-172 | bvh.micro.Freya_0.3.jar
+eem.IWillFireNoBullet v2.8 | melee-132 | eem.IWillFireNoBullet_v2.8.jar
+Krabb.sliNk.Garm 0.9u | melee-125 | Krabb.sliNk.Garm_0.9u.jar
+sample.SittingDuck 1.0 | melee-413 | sample.SittingDuck_1.0.jar
+oog.melee.Mercutio 1.0 | melee-68 | oog.melee.Mercutio_1.0.jar
+dmh.robocode.robot.BlackDeath 9.2 | melee-24 | dmh.robocode.robot.BlackDeath_9.2.jar
+franzor.Lizt 1.3.1 | melee-186 | franzor.Lizt_1.3.1.jar

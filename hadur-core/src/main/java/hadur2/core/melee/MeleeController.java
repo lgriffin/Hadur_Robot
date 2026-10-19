@@ -155,6 +155,16 @@ public class MeleeController {
         waves.onScan(info, time);
     }
 
+    /**
+     * MGUN-8: a teammate saw {@code name} at {@code time}; only the field gun's history of its
+     * movement takes it. The World already has it, and the profiles, the danger book and the
+     * targeting waves keep to Hadur's own radar.
+     */
+    public void mateSighting(String name, long time, double x, double y, double heading, double velocity,
+                             double distance, double turnRate) {
+        gun.onSighting(name, time, x, y, heading, velocity, distance, turnRate);
+    }
+
     /** One of Hadur's bullets of {@code power} hit {@code name}. */
     public void onBulletHit(String name, double power) {
         tracker.onBulletHit(name, Rules.getBulletDamage(power));

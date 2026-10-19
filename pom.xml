@@ -35,8 +35,8 @@
         <robocode.api.version>1.9.3.0</robocode.api.version>
         <!-- Requirements from docs/requirements.md up to this stage must be covered by a test. -->
         <hadur.stage>S7</hadur.stage>
-        <!-- The melee extension's stage (M0-M6): its requirements up to here must be covered too. -->
-        <hadur.melee.stage>M6</hadur.melee.stage>
+        <!-- The melee extension's stage (M0-M7): its requirements up to here must be covered too. -->
+        <hadur.melee.stage>M7</hadur.melee.stage>
         <!-- The RoboRumble climb plan's stage (R0-R5): its requirements up to here must be covered too. -->
         <hadur.climb.stage>R9</hadur.climb.stage>
         <!-- The architecture evolution's stage (A0-A5, docs/architecture-evolution.md). -->
@@ -44,7 +44,7 @@
         <!-- The DrussGT route's stage (D1-D7, docs/druss-route-plan.md): its requirements up to here must be covered too. -->
         <hadur.druss.stage>D8</hadur.druss.stage>
         <!-- The Team plan's stage (T1-T2, docs/team-plan-t1.md; T2 in docs/requirements.md). -->
-        <hadur.team.stage>T2</hadur.team.stage>
+        <hadur.team.stage>T5</hadur.team.stage>
     </properties>
 
     <repositories>

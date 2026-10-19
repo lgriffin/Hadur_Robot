@@ -1,0 +1,10 @@
+# Melee census field f14 (see melee-census-313.txt)
+gh.mini.Griezel 0.2 | melee-27 | gh.mini.Griezel_0.2.jar
+gjr.Cephalosporin 0.1 | melee-261 | gjr.Cephalosporin_0.1.jar
+rz.Aleph 0.34 | melee-13 | rz.Aleph_0.34.jar
+pe.minimelee.SandboxMiniMelee 1.1 | melee-85 | pe.minimelee.SandboxMiniMelee_1.1.jar
+sample.Tracker 1.0 | melee-404 | sample.Tracker_1.0.jar
+kinsen.melee.Angsaichmophobia 1.8c | melee-182 | kinsen.melee.Angsaichmophobia_1.8c.jar
+throxbot.ThroxBot 0.1 | melee-234 | throxbot.ThroxBot_0.1.jar
+patson.PatsonTestBot 1.0 | melee-263 | patson.PatsonTestBot_1.0.jar
+wcsv.melee.EngineerMelee 0.1 | melee-100 | wcsv.melee.EngineerMelee_0.1.jar

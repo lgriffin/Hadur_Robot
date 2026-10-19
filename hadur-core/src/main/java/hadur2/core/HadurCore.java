@@ -436,6 +436,10 @@ public final class HadurCore {
         // engine's inactivity drain. Melee never feeds the ledger.
         if (!melee) duel.ourTick(in, ourEnergyExplained(in));
 
+        // MGUN-8: the teammates' sightings merged this tick reach the melee gun's histories
+        // before our own scans of this tick, so each history stays in time order.
+        if (teamLink != null && meleeSeam != null) meleeSeam.mateSightings(teamLink.mateSightings());
+
         // The events in the order the adapter queued them, which is the engine's own. HitWall
         // needs no handling: the ledger infers the enemy's wall hits, and our own wall damage
         // does not change what the enemy's energy says.

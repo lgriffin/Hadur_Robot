@@ -1,0 +1,10 @@
+# Melee census field f20 (see melee-census-313.txt)
+lambdaxy.TBot 0.1 | melee-271 | lambdaxy.TBot_0.1.jar
+erdnis.Rover 0.3 | melee-223 | erdnis.Rover_0.3.jar
+jcs.Seth 1.8 | melee-144 | jcs.Seth_1.8.jar
+adt.Ar2 1.0 | melee-272 | adt.Ar2_1.0.jar
+darwinsnightmare.DNGEN474UI85390C20S0R528 1.0 | melee-331 | darwinsnightmare.DNGEN474UI85390C20S0R528_1.0.jar
+SHAM.WOW 1.4 | melee-307 | SHAM.WOW_1.4.jar
+stelo.UntouchableNano 1.3 | melee-338 | stelo.UntouchableNano_1.3.jar
+labg.Cataclysm 2.05 | melee-111 | labg.Cataclysm_2.05.jar
+oog.melee.Corsair 1.0 | melee-115 | oog.melee.Corsair_1.0.jar

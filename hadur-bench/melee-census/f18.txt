@@ -1,0 +1,10 @@
+# Melee census field f18 (see melee-census-313.txt)
+rampancy.Durandal 2.1d | melee-300 | rampancy.Durandal_2.1d.jar
+zyx.mega.YersiniaPestis 3.1 | melee-32 | zyx.mega.YersiniaPestis_3.1.jar
+tvv.micro.Antares 1.1.1 | melee-197 | tvv.micro.Antares_1.1.1.jar
+jeremyreeder.collective.Prophet 5 | melee-286 | jeremyreeder.collective.Prophet_5.jar
+sample.TrackFire 1.0 | melee-410 | sample.TrackFire_1.0.jar
+pac.ABC 2.1 | melee-339 | pac.ABC_2.1.jar
+pedersen.Ugluk 1.1.1 | melee-74 | pedersen.Ugluk_1.1.1.jar
+jdw.Hurricane 1.4 | melee-134 | jdw.Hurricane_1.4.jar
+ak.Fermat 2.0 | melee-49 | ak.Fermat_2.0.jar

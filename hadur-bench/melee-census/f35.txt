@@ -1,0 +1,10 @@
+# Melee census field f35 (see melee-census-313.txt)
+com.cgarias.rc.AdvancedTrackerII 1.0 | melee-363 | com.cgarias.rc.AdvancedTrackerII_1.0.jar
+voidious.Diamond 1.8.28 | melee-5 | voidious.Diamond_1.8.28.jar
+cb.nano.Insomnia 1.0 | melee-126 | cb.nano.Insomnia_1.0.jar
+mz.MicroGodMelee 1 | melee-119 | mz.MicroGodMelee_1.jar
+mz.MicroSheep 1.0 | melee-103 | mz.MicroSheep_1.0.jar
+ICS4U1.Patrick_White_Schrodinger 1.1 | melee-212 | ICS4U1.Patrick_White_Schrodinger_1.1.jar
+stelo.MirrorMicro 1.0 | melee-306 | stelo.MirrorMicro_1.0.jar
+zyx.nano.BacillusComma 1.0 | melee-276 | zyx.nano.BacillusComma_1.0.jar
+jaybot.adv.bots.JayBot 2.0 | melee-184 | jaybot.adv.bots.JayBot_2.0.jar

@@ -1,0 +1,10 @@
+# Melee census field f23 (see melee-census-313.txt)
+apollokidd.ApolloKidd 0.9 | melee-226 | apollokidd.ApolloKidd_0.9.jar
+gh.nano.Grofvuil 0.2 | melee-140 | gh.nano.Grofvuil_0.2.jar
+zyx.nano.Ant 1.1 | melee-235 | zyx.nano.Ant_1.1.jar
+cli.WasteOfAmmo 1.0 | melee-414 | cli.WasteOfAmmo_1.0.jar
+voidious.micro.BlitzBat 1.05 | melee-69 | voidious.micro.BlitzBat_1.05.jar
+sample.MyFirstJuniorRobot 1.0 | melee-384 | sample.MyFirstJuniorRobot_1.0.jar
+com.blogspot.malinkody.DestrobotMalin 1.0 | melee-354 | com.blogspot.malinkody.DestrobotMalin_1.0.jar
+cw.megas.Blade 0.8 | melee-344 | cw.megas.Blade_0.8.jar
+et.Predator 1.8 | melee-71 | et.Predator_1.8.jar
