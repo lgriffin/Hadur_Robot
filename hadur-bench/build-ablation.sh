@@ -59,6 +59,12 @@
 #   gungate  MOVE-17: the gun-heat wave is dropped once the enemy's gun is called learning (MOVE-15's count: 6 hits,
 #         60% learned), so the stop-and-start runs only against other guns. Meant to combine with heatjit
 #         (heatjit,gungate -> hjgg); sets only GUN_GATE. With split the split wins. Suffix gg.
+#   pressure  POW-12 (the plan's POW-11): while our rolling hit rate less its margin is at least 12%, theirs plus its margin at
+#         most 9%, and our energy is above 12, the duel gun skips the cubic power-down and fires a base power of 2.5
+#         beyond 150 px (2.95 inside stays); the lead-aware regime wins where it holds. Sets PRESSURE only; combines
+#         with heatjit,swall,flt8. Suffix pw.
+#   pdown  POW-12's weaker form: under the same gate only the power-down is skipped, the base power stays 1.95. Sets
+#         PRESSURE and PRESSURE_BASE_ONLY_POWERDOWN, so build it alone: not with pressure. Suffix pd.
 #   repl  MOVE-16: the danger views' weights evolve by the replicator equation: each enemy bullet that hits us
 #         multiplies a view's weight by how well it predicted the bullet's angle against the weighted average
 #         (every view keeps 2% of the share), so the view that reads this gun takes over. Suffix rp.
@@ -129,6 +135,7 @@ book="$src/hadur-core/src/main/java/hadur2/core/adapt/OpeningBook.java"
 shields="$src/hadur-core/src/main/java/hadur2/core/shieldmode/ShieldList.java"
 design="$src/hadur-core/src/main/java/hadur2/core/shieldmode/ShieldDesign.java"
 movedesign="$src/hadur-core/src/main/java/hadur2/core/duel/MoveDesign.java"
+powerdesign="$src/hadur-core/src/main/java/hadur2/core/duel/PowerDesign.java"
 protean="$src/hadur-core/src/main/java/hadur2/core/move/ProteanPick.java"
 listdata="$src/hadur-robot/src/main/java/hadur2/ShieldListData.java"
 budget="$src/hadur-core/src/main/java/hadur2/core/policy/TickBudget.java"
@@ -226,6 +233,13 @@ for a in "${list[@]}"; do
         gungate)
             edit "$movedesign" "static final boolean GUN_GATE = false;" "static final boolean GUN_GATE = true;"
             version="${version}gg" ;;
+        pressure)
+            edit "$powerdesign" "static final boolean PRESSURE = false;" "static final boolean PRESSURE = true;"
+            version="${version}pw" ;;
+        pdown)
+            edit "$powerdesign" "static final boolean PRESSURE = false;" "static final boolean PRESSURE = true;"
+            edit "$powerdesign" "static final boolean PRESSURE_BASE_ONLY_POWERDOWN = false;" "static final boolean PRESSURE_BASE_ONLY_POWERDOWN = true;"
+            version="${version}pd" ;;
         repl)
             edit "$movedesign" "static final boolean REPLICATOR = false;" "static final boolean REPLICATOR = true;"
             version="${version}rp" ;;
@@ -307,7 +321,7 @@ for a in "${list[@]}"; do
             edit "$design" 'public static final ShieldDesign SHIPPED = parse("' \
                 "public static final ShieldDesign SHIPPED = parse(\"$flag,"
             version="${version}${suffix}" ;;
-        *) echo "unknown ablation: $a (ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, flt59, flt8, split, wallesc, protean, pdw3, pdw8, pc10, phot, repl, silent, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, shold, slearn, smode, sstay, sturn, swall, snull, strim)" >&2; exit 2 ;;
+        *) echo "unknown ablation: $a (ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, flt59, flt8, split, wallesc, protean, pdw3, pdw8, pc10, phot, repl, pressure, pdown, silent, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, shold, slearn, smode, sstay, sturn, swall, snull, strim)" >&2; exit 2 ;;
     esac
 done
 

@@ -165,6 +165,8 @@ public final class DuelController {
      * S5: our duel bullets' outcomes and their waves' outcomes, rolling, across rounds while
      * the duel opponent stays the same one.
      */
+    /** POW-12: whether the pressure gate held at the last duel aim, for the policy record. */
+    private boolean pressureApplied;
     private final HitWindow ourWindow = new HitWindow();
     /** S5: the outcomes of their firing waves as they break on us, rolling (DIST-1, POW-2). */
     private final HitWindow theirWindow = new HitWindow();
@@ -538,8 +540,17 @@ public final class DuelController {
             emitPolicy(round, time, "lead", ours.value(), ours.margin(), leadApplies ? "lead_on" : "lead_off");
         }
         PowerPolicy.Lead lead = PowerPolicy.lead(leadApplies, in.energy(), e.energy());
+        // POW-12: pressure power, duel only and never while the lead-aware regime holds.
+        boolean pressure = PowerDesign.PRESSURE && enemiesTotal <= 1 && PowerPolicy.pressure(
+            lead != PowerPolicy.Lead.OFF, in.energy(), ourWindow.estimate(), theirWindow.estimate());
+        if (pressure != pressureApplied) {
+            pressureApplied = pressure;
+            Estimate ours = ourWindow.estimate();
+            emitPolicy(round, time, "pressure", ours.value(), ours.margin(), pressure ? "pressure_on" : "pressure_off");
+        }
         double bulletPower = gunController.calculateBulletPower(
-            e.distance(), in.energy(), e.energy(), in.others(), stakes(lead));
+            e.distance(), in.energy(), e.energy(), in.others(),
+            pressure ? PowerDesign.pressureStakes() : stakes(lead));
         // POW-5: cap the shot against a T3 gun beyond 500 px, unless a full-power rule below
         // applies - applied first so POW-1..4's Math.max can still override it upward.
         bulletPower = PowerPolicy.capPower(opening.gunTier(), e.distance(), bulletPower);

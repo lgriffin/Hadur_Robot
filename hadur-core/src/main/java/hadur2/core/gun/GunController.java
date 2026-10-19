@@ -681,7 +681,12 @@ public class GunController {
      * {@code CHAFF} fires the minimum power; {@code DEFAULT} fires the base power (1.95, or
      * 2.95 inside 150 px) without the cubic power-down, the one thing the regime replaces.
      */
-    public enum Stakes { NORMAL, CHAFF, DEFAULT }
+    public enum Stakes {
+        NORMAL, CHAFF, DEFAULT,
+        /** POW-12: no power-down, base power 2.5 beyond 150 px (2.95 inside stays). */
+        PRESSURE,
+        /** POW-12, weaker form: no power-down, base power 1.95 kept. */
+        PRESSURE_DOWN }
 
     /**
      * The bullet power for the next gun wave, before the core's power policy.
@@ -726,13 +731,13 @@ public class GunController {
      */
     private double calculate1v1BulletPower(double distance, double myEnergy,
                                             double enemyEnergy, Stakes stakes) {
-        double bulletPower = 1.95;
+        double bulletPower = stakes == Stakes.PRESSURE ? 2.5 : 1.95;
         if (distance < 150.0) {
             bulletPower = 2.95;
         }
         if (stakes == Stakes.CHAFF) {
             bulletPower = Rules.MIN_BULLET_POWER;
-        } else if (stakes == Stakes.NORMAL && distance > 325.0) {
+        } else if (stakes == Stakes.NORMAL && distance > 325.0) { // DEFAULT, PRESSURE, PRESSURE_DOWN skip it
             // 63 at an even or worse energy balance, 4 lower per point we lead, never below 35.
             double powerDownPoint = DiaUtils.limit(35.0,
                 63.0 + (enemyEnergy - myEnergy) * 4.0, 63.0);

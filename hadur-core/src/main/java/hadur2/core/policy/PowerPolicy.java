@@ -53,6 +53,11 @@ import hadur2.core.physics.Rules;
  * and END-3 still apply to what the regime chose, in the order {@code DuelController}
  * runs them, so the full-power rules raise it and END-3 lowers it as before.</p>
  *
+ * <p>POW-12 (pressure power, off by default): while {@link #pressure} holds, the duel gun skips the
+ * cubic power-down and fires a base of {@link #PRESSURE_BASE} beyond 150 px; everything after the
+ * gun's choice applies unchanged. It is a change to the gun's base, like the regime, not a
+ * {@link Reason} (a Reason raises the shot to full power).</p>
+ *
  * <p>POW-10: {@link #payable} lowers a power that the energy cannot pay for instead of
  * holding the shot. END-4 ({@link #holdsLastShot}) is the one exception that holds a shot we
  * could pay for. SHIELD-4 ({@link #shieldPower}) raises the power to 3.0 against a still
@@ -131,6 +136,14 @@ public final class PowerPolicy {
     public static final double LEAD_MIN_ENERGY = 10;
     /** POW-9: both robots' energy must exceed this for the opening exchange to be traded at the default power. */
     public static final double OPENING_ENERGY = 60;
+    /**
+     * POW-12 (pressure power): our rolling hit rate less its margin must be at least this ...
+     */
+    public static final double PRESSURE_OUR_RATE = 0.12;
+    /** ... and theirs plus its margin at most this. */
+    public static final double PRESSURE_THEIR_RATE = 0.09;
+    /** POW-12: the gun's base power beyond 150 px while the pressure gate holds (1.20's is 1.95). */
+    public static final double PRESSURE_BASE = 2.5;
     /** POW-10: the energy left in hand when a shot is lowered to what we can pay for. */
     public static final double RESERVE = 0.1;
     /** END-4: the energy our side must keep above the enemy's once it can no longer fire. */
@@ -310,6 +323,28 @@ public final class PowerPolicy {
         double fired = Math.min(power, ourEnergy - reserve);
         return fired >= Rules.MIN_BULLET_POWER - 1e-9
             && holdsLastShot(ourEnergy, fired, enemyEnergy, smallestEnemyPower);
+    }
+
+    /**
+     * POW-12, the gate of "pressure power": this battle's rolling rates (the estimates POW-2 and
+     * POW-4 read) say we out-hit them by a margin, our energy is above {@link #MIN_OUR_ENERGY}, and
+     * the lead-aware regime (POW-7 to POW-9) is not in force. Both rates must be known; the bounds
+     * are inclusive ("at least", "at most"), measured from the estimate's centre as POW-2 does.
+     * The regime only holds while both battle-long rates are under {@link #BREAK_EVEN}, but it
+     * reads the battle-long rates (or the profile's verdict) and this gate the rolling window, so
+     * the two could overlap on a short window; the gate yields to the regime explicitly.
+     *
+     * @param leadHolds whether the lead-aware regime is in force ({@link #lead} is not OFF)
+     * @param ourEnergy our energy
+     * @param ours our rolling hit rate on them
+     * @param theirs their rolling hit rate on us
+     * @return whether the duel gun skips the power-down and raises its base power
+     */
+    public static boolean pressure(boolean leadHolds, double ourEnergy, Estimate ours, Estimate theirs) {
+        if (leadHolds || !(ourEnergy > MIN_OUR_ENERGY)) return false;
+        if (Double.isNaN(ours.value()) || Double.isNaN(theirs.value())) return false;
+        return ours.center() - ours.margin() >= PRESSURE_OUR_RATE
+            && theirs.center() + theirs.margin() <= PRESSURE_THEIR_RATE;
     }
 
     private static boolean below(Estimate e) {
