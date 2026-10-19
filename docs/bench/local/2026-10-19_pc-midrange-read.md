@@ -49,9 +49,10 @@ Two ablations on the 1v1 branch, both duel-only and off by default, queue `pc-mi
 - `pwall` (suffix pa): pressure power with no gate at all in a duel (base 2.5 beyond 150 px, no
   power-down, the lead regime still wins). Bounds the value of the power change on the 149: if
   this does not clear +2.0 points, no gate can, and firepower is not the midrange lever.
-- `pwc` (suffix pc): the gate on the window centres, `ours.center() >= 0.12 && theirs.center() <=
+- `pwc` (suffix pz): the gate on the window centres, `ours.center() >= 0.12 && theirs.center() <=
   0.09`, each window holding at least 30 outcomes. Opens on about the class mean (15% against 7%)
   and closes against a gun that hits us 10% or more.
 
-Both on the 149 at 8 fresh seeds against 3.13hjsw, then the guard on whichever is better. Class
+Both on the 149 at 8 fresh seeds (1041-1048) against 3.13hjsw, then the guard on `pwall`, the larger
+change (queue `hadur-bench/plans/pc-midrange-2.queue`, built from du09qh 37e3f10b). Class
 gate +2.0 points as before.
