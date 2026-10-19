@@ -188,6 +188,15 @@ POW-12 in `docs/requirements.md`.
 
 ### Stage 2: the surf's fidelity to Diamond, in the cloud
 
+**Result (2026-10-19, see `docs/bench/local/2026-10-19_surf-audit-diamond.md` and
+`2026-10-19_pc-midrange-3-read.md`):** the port is structurally faithful; six differences
+were switched and screened on the 149 (PR #214): hold650 +0.1, dfac -0.3, bhb 0.0, hitclr +0.4,
+pkern +0.5, keep2 +0.4 (each ± 0.5). None near the +2.0 gate. Forensics: 57% of the damage taken
+on the class had another option that would have dodged it, so the loss is option ranking on
+angles already rated. One stacked confirm (hitclr + pkern + keep2, with and without the 8%
+flattener) runs as `pc-midrange-4`; keep rule +1.0 on the class, then guard and census.
+
+
 Hadur takes 18% more per tick than Diamond against these robots with Diamond's own danger views
 and weights, so the port differs from the original somewhere that matters against a stationary
 guess-factor gun. Diamond 1.8.22's source ships in its jar (used for `docs/top3-movement-study.md`).
@@ -223,7 +232,7 @@ measurement first (hit rate by distance band against the 149, against the segmen
 |---|---|---|---|---|
 | POW-12 pressure power | 149, then the 432 of the class | +0.3 to +0.6 APS | class +2.0, guard, census +0.3 | **failed: -2.2 ± 0.4 pts ungated, -0.6 ± 0.3 gated** |
 | flattener 8% | the same | +0.05 to +0.1 | with POW-12 | +0.5 ± 0.3 pts, rides the next pass |
-| surf fidelity (stage 2) | the 184 unlisted midrange and below | +0.3 to +0.8 | per switch | next |
+| surf fidelity (stage 2) | the 184 unlisted midrange and below | +0.3 to +0.8 | per switch | six switches ≤ +0.5 each; stack hc+pk+w2 confirming |
 
 Together they are the midrange's 0.9 APS to DrussGT if all of it comes in, which is the largest
 single block left on the road to top 3.
