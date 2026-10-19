@@ -1856,6 +1856,8 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">The weighted squared distance from the query (no square root taken).</div>
 </dd>
+<dt><a href="hadur2/core/TeamLink.MateSighting.html#distance" class="member-name-link">distance</a> - Variable in class hadur2.core.<a href="hadur2/core/TeamLink.MateSighting.html" title="class in hadur2.core">TeamLink.MateSighting</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="hadur2/core/adapt/Opening.html#distance()" class="member-name-link">distance()</a> - Method in class hadur2.core.adapt.<a href="hadur2/core/adapt/Opening.html" title="class in hadur2.core.adapt">Opening</a></dt>
 <dd>
 <div class="block">S5: the distance the battle starts at, in px; the distance policy moves it from there
@@ -3886,6 +3888,8 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur2/core/shieldmode/ShieldMode.Situation.html#heading" class="member-name-link">heading</a> - Variable in class hadur2.core.shieldmode.<a href="hadur2/core/shieldmode/ShieldMode.Situation.html" title="class in hadur2.core.shieldmode">ShieldMode.Situation</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur2/core/TeamLink.MateSighting.html#heading" class="member-name-link">heading</a> - Variable in class hadur2.core.<a href="hadur2/core/TeamLink.MateSighting.html" title="class in hadur2.core">TeamLink.MateSighting</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="hadur2/core/world/EnemyInfo.html#heading" class="member-name-link">heading</a> - Variable in class hadur2.core.world.<a href="hadur2/core/world/EnemyInfo.html" title="class in hadur2.core.world">EnemyInfo</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur2/core/world/Roster.Mate.html#heading" class="member-name-link">heading</a> - Variable in class hadur2.core.world.<a href="hadur2/core/world/Roster.Mate.html" title="class in hadur2.core.world">Roster.Mate</a></dt>
@@ -5068,8 +5072,8 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur/bench/LogHarvester.html#matchedWaves()" class="member-name-link">matchedWaves()</a> - Method in class hadur.bench.<a href="hadur/bench/LogHarvester.html" title="class in hadur.bench">LogHarvester</a></dt>
 <dd>
 <div class="block">Inferred waves that match a real enemy bullet: same round, fired within
- <a href="hadur/bench/WaveMatcher.html#TICK_WINDOW"><code>TICK_WINDOW</code></a> turns of the inferred fire tick, and a power within
- <a href="hadur/bench/WaveMatcher.html#POWER_TOLERANCE"><code>POWER_TOLERANCE</code></a>.</div>
+ <a href="hadur/bench/WaveMatcher.html#TICK_WINDOW"><code>WaveMatcher.TICK_WINDOW</code></a> turns of the inferred fire tick, and a power within
+ <a href="hadur/bench/WaveMatcher.html#POWER_TOLERANCE"><code>WaveMatcher.POWER_TOLERANCE</code></a>.</div>
 </dd>
 <dt><a href="hadur2/core/shieldmode/ShieldList.html#matches(java.lang.String)" class="member-name-link">matches(String)</a> - Method in class hadur2.core.shieldmode.<a href="hadur2/core/shieldmode/ShieldList.html" title="class in hadur2.core.shieldmode">ShieldList</a></dt>
 <dd>
@@ -5117,6 +5121,21 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur2/core/world/Roster.html#mates()" class="member-name-link">mates()</a> - Method in class hadur2.core.world.<a href="hadur2/core/world/Roster.html" title="class in hadur2.core.world">Roster</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur2/core/melee/MeleeController.html#mateSighting(java.lang.String,long,double,double,double,double,double,double)" class="member-name-link">mateSighting(String, long, double, double, double, double, double, double)</a> - Method in class hadur2.core.melee.<a href="hadur2/core/melee/MeleeController.html" title="class in hadur2.core.melee">MeleeController</a></dt>
+<dd>
+<div class="block">MGUN-8: a teammate saw <code>name</code> at <code>time</code>; only the field gun's history of its
+ movement takes it.</div>
+</dd>
+<dt><a href="hadur2/core/TeamLink.MateSighting.html#%3Cinit%3E(java.lang.String,long,double,double,double,double,double,double)" class="member-name-link">MateSighting(String, long, double, double, double, double, double, double)</a> - Constructor for class hadur2.core.<a href="hadur2/core/TeamLink.MateSighting.html" title="class in hadur2.core">TeamLink.MateSighting</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="hadur2/core/TeamLink.html#mateSightings()" class="member-name-link">mateSightings()</a> - Method in class hadur2.core.<a href="hadur2/core/TeamLink.html" title="class in hadur2.core">TeamLink</a></dt>
+<dd>
+<div class="block">MGUN-8: this tick's teammates' sightings the World took, in the order it took them.</div>
+</dd>
+<dt><a href="hadur2/core/MeleeSeam.html#mateSightings(java.util.List)" class="member-name-link">mateSightings(List&lt;TeamLink.MateSighting&gt;)</a> - Method in class hadur2.core.<a href="hadur2/core/MeleeSeam.html" title="class in hadur2.core">MeleeSeam</a></dt>
+<dd>
+<div class="block">MGUN-8: the teammates' sightings the World took this tick, for the field gun to learn from.</div>
+</dd>
 <dt><a href="hadur2/core/melee/FieldGun.html#MAX_AGE" class="member-name-link">MAX_AGE</a> - Static variable in class hadur2.core.melee.<a href="hadur2/core/melee/FieldGun.html" title="class in hadur2.core.melee">FieldGun</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur2/core/shieldmode/ShieldMode.html#MAX_BASES" class="member-name-link">MAX_BASES</a> - Static variable in class hadur2.core.shieldmode.<a href="hadur2/core/shieldmode/ShieldMode.html" title="class in hadur2.core.shieldmode">ShieldMode</a></dt>
@@ -5911,6 +5930,8 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="hadur2/core/melee/OpponentStats.html#name" class="member-name-link">name</a> - Variable in class hadur2.core.melee.<a href="hadur2/core/melee/OpponentStats.html" title="class in hadur2.core.melee">OpponentStats</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur2/core/TeamLink.MateSighting.html#name" class="member-name-link">name</a> - Variable in class hadur2.core.<a href="hadur2/core/TeamLink.MateSighting.html" title="class in hadur2.core">TeamLink.MateSighting</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="hadur2/core/world/EnemyInfo.html#name" class="member-name-link">name</a> - Variable in class hadur2.core.world.<a href="hadur2/core/world/EnemyInfo.html" title="class in hadur2.core.world">EnemyInfo</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur2/core/world/Roster.Mate.html#name" class="member-name-link">name</a> - Variable in class hadur2.core.world.<a href="hadur2/core/world/Roster.Mate.html" title="class in hadur2.core.world">Roster.Mate</a></dt>
@@ -6495,6 +6516,11 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur2/Hadur.html#onScannedRobot(robocode.ScannedRobotEvent)" class="member-name-link">onScannedRobot(ScannedRobotEvent)</a> - Method in class hadur2.<a href="hadur2/Hadur.html" title="class in hadur2">Hadur</a></dt>
 <dd>
 <div class="block">A scan: bearing relative to our heading (radians), distance (px), and the robot's state.</div>
+</dd>
+<dt><a href="hadur2/core/melee/FieldGun.html#onSighting(java.lang.String,long,double,double,double,double,double,double)" class="member-name-link">onSighting(String, long, double, double, double, double, double, double)</a> - Method in class hadur2.core.melee.<a href="hadur2/core/melee/FieldGun.html" title="class in hadur2.core.melee">FieldGun</a></dt>
+<dd>
+<div class="block">MGUN-8: a teammate's sighting of <code>name</code>, <code>distance</code> from Hadur, joins its
+ movement history as one of Hadur's own scans would.</div>
 </dd>
 <dt><a href="hadur2/Hadur.html#onSkippedTurn(robocode.SkippedTurnEvent)" class="member-name-link">onSkippedTurn(SkippedTurnEvent)</a> - Method in class hadur2.<a href="hadur2/Hadur.html" title="class in hadur2">Hadur</a></dt>
 <dd>
@@ -10135,6 +10161,12 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur2/core/TeamLink.html#%3Cinit%3E(hadur2.core.HadurCore,hadur2.core.model.BattleFacts,hadur2.core.world.Roster,hadur2.core.world.EnemyTracker)" class="member-name-link">TeamLink(HadurCore, BattleFacts, Roster, EnemyTracker)</a> - Constructor for class hadur2.core.<a href="hadur2/core/TeamLink.html" title="class in hadur2.core">TeamLink</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur2/core/TeamLink.MateSighting.html" class="type-name-link" title="class in hadur2.core">TeamLink.MateSighting</a> - Class in <a href="hadur2/core/package-summary.html">hadur2.core</a></dt>
+<dd>
+<div class="block">MGUN-8: one teammate's sighting of an enemy as the World took it: where and how it moved
+ at the stated tick, its turn rate from the World's scans then (NaN while unknown), and
+ its distance from us when the report was merged.</div>
+</dd>
 <dt><a href="hadur2/core/TeamLink.html#teammateBulletHits" class="member-name-link">teammateBulletHits</a> - Variable in class hadur2.core.<a href="hadur2/core/TeamLink.html" title="class in hadur2.core">TeamLink</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur2/core/TeamLink.html#teammateCollisions" class="member-name-link">teammateCollisions</a> - Variable in class hadur2.core.<a href="hadur2/core/TeamLink.html" title="class in hadur2.core">TeamLink</a></dt>
@@ -10303,6 +10335,8 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur2/core/link/Report.Shot.html#tick" class="member-name-link">tick</a> - Variable in class hadur2.core.link.<a href="hadur2/core/link/Report.Shot.html" title="class in hadur2.core.link">Report.Shot</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur2/core/link/Report.Sighting.html#tick" class="member-name-link">tick</a> - Variable in class hadur2.core.link.<a href="hadur2/core/link/Report.Sighting.html" title="class in hadur2.core.link">Report.Sighting</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="hadur2/core/TeamLink.MateSighting.html#tick" class="member-name-link">tick</a> - Variable in class hadur2.core.<a href="hadur2/core/TeamLink.MateSighting.html" title="class in hadur2.core">TeamLink.MateSighting</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur2/core/link/Report.html#tick()" class="member-name-link">tick()</a> - Method in class hadur2.core.link.<a href="hadur2/core/link/Report.html" title="class in hadur2.core.link">Report</a></dt>
 <dd>&nbsp;</dd>
@@ -10722,6 +10756,8 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Radians, positive is clockwise.</div>
 </dd>
+<dt><a href="hadur2/core/TeamLink.MateSighting.html#turnRate" class="member-name-link">turnRate</a> - Variable in class hadur2.core.<a href="hadur2/core/TeamLink.MateSighting.html" title="class in hadur2.core">TeamLink.MateSighting</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="hadur2/core/world/EnemyInfo.html#turnRate()" class="member-name-link">turnRate()</a> - Method in class hadur2.core.world.<a href="hadur2/core/world/EnemyInfo.html" title="class in hadur2.core.world">EnemyInfo</a></dt>
 <dd>
 <div class="block">Heading change per tick between the last two scans, or NaN if unknown.</div>
@@ -11105,6 +11141,8 @@ the order they are declared.</div>
 <dd>
 <div class="block">The velocity, pixels per tick; negative while driving backwards.</div>
 </dd>
+<dt><a href="hadur2/core/TeamLink.MateSighting.html#velocity" class="member-name-link">velocity</a> - Variable in class hadur2.core.<a href="hadur2/core/TeamLink.MateSighting.html" title="class in hadur2.core">TeamLink.MateSighting</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="hadur2/core/world/EnemyInfo.html#velocity" class="member-name-link">velocity</a> - Variable in class hadur2.core.world.<a href="hadur2/core/world/EnemyInfo.html" title="class in hadur2.core.world">EnemyInfo</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur2/core/world/Roster.Mate.html#velocity" class="member-name-link">velocity</a> - Variable in class hadur2.core.world.<a href="hadur2/core/world/Roster.Mate.html" title="class in hadur2.core.world">Roster.Mate</a></dt>
@@ -11543,6 +11581,8 @@ the order they are declared.</div>
 <dd>&nbsp;</dd>
 <dt><a href="hadur2/core/shieldmode/ShieldMode.Situation.html#x" class="member-name-link">x</a> - Variable in class hadur2.core.shieldmode.<a href="hadur2/core/shieldmode/ShieldMode.Situation.html" title="class in hadur2.core.shieldmode">ShieldMode.Situation</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur2/core/TeamLink.MateSighting.html#x" class="member-name-link">x</a> - Variable in class hadur2.core.<a href="hadur2/core/TeamLink.MateSighting.html" title="class in hadur2.core">TeamLink.MateSighting</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="hadur2/core/world/Roster.Mate.html#x" class="member-name-link">x</a> - Variable in class hadur2.core.world.<a href="hadur2/core/world/Roster.Mate.html" title="class in hadur2.core.world">Roster.Mate</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur2/core/link/Report.html#x()" class="member-name-link">x()</a> - Method in class hadur2.core.link.<a href="hadur2/core/link/Report.html" title="class in hadur2.core.link">Report</a></dt>
@@ -11571,6 +11611,8 @@ the order they are declared.</div>
 <dt><a href="hadur2/core/melee/EnemyHistory.Scan.html#y" class="member-name-link">y</a> - Variable in class hadur2.core.melee.<a href="hadur2/core/melee/EnemyHistory.Scan.html" title="class in hadur2.core.melee">EnemyHistory.Scan</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur2/core/shieldmode/ShieldMode.Situation.html#y" class="member-name-link">y</a> - Variable in class hadur2.core.shieldmode.<a href="hadur2/core/shieldmode/ShieldMode.Situation.html" title="class in hadur2.core.shieldmode">ShieldMode.Situation</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="hadur2/core/TeamLink.MateSighting.html#y" class="member-name-link">y</a> - Variable in class hadur2.core.<a href="hadur2/core/TeamLink.MateSighting.html" title="class in hadur2.core">TeamLink.MateSighting</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur2/core/world/Roster.Mate.html#y" class="member-name-link">y</a> - Variable in class hadur2.core.world.<a href="hadur2/core/world/Roster.Mate.html" title="class in hadur2.core.world">Roster.Mate</a></dt>
 <dd>&nbsp;</dd>

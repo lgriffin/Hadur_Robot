@@ -38,7 +38,7 @@ loadScripts(document, 'script');</script>
 <li>
 <p>Summary:</p>
 <ul>
-<li>Nested</li>
+<li><a href="#nested-class-summary">Nested</a></li>
 <li><a href="#field-summary">Field</a></li>
 <li><a href="#constructor-summary">Constr</a></li>
 <li><a href="#method-summary">Method</a></li>
@@ -58,7 +58,7 @@ loadScripts(document, 'script');</script>
 <div id="navbar-sub-list">
 <ul class="sub-nav-list">
 <li>Summary:&nbsp;</li>
-<li>Nested&nbsp;|&nbsp;</li>
+<li><a href="#nested-class-summary">Nested</a>&nbsp;|&nbsp;</li>
 <li><a href="#field-summary">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor-summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method-summary">Method</a></li>
@@ -115,10 +115,32 @@ loadScripts(document, 'script');</script>
  <li>WEAVE-8 (T1): the driving role's drive is replaced when it would bring Hadur into a
      living teammate (<a href="role/TeammateFence.html" title="class in hadur2.core.role"><code>TeammateFence</code></a>); the replacements are counted.</li>
  <li><a class="req" href="../../../requirements.html#LINK-4">LINK-4</a>: while a teammate lives, every completed tick's orders carry our report.</li>
+ <li>MGUN-8 (T5): each teammate's sighting the World takes is kept for the tick, as it was
+     stated, so the melee strand's field gun learns the enemy's movement from every member's
+     radar.</li>
  </ul></div>
 </section>
 <section class="summary">
 <ul class="summary-list">
+<!-- ======== NESTED CLASS SUMMARY ======== -->
+<li>
+<section class="nested-class-summary" id="nested-class-summary">
+<h2>Nested Class Summary</h2>
+<div class="caption"><span>Nested Classes</span></div>
+<div class="summary-table three-column-summary">
+<div class="table-header col-first">Modifier and Type</div>
+<div class="table-header col-second">Class</div>
+<div class="table-header col-last">Description</div>
+<div class="col-first even-row-color"><code>(package private) static final class&nbsp;</code></div>
+<div class="col-second even-row-color"><code><a href="TeamLink.MateSighting.html" class="type-name-link" title="class in hadur2.core">TeamLink.MateSighting</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">MGUN-8: one teammate's sighting of an enemy as the World took it: where and how it moved
+ at the stated tick, its turn rate from the World's scans then (NaN while unknown), and
+ its distance from us when the report was merged.</div>
+</div>
+</div>
+</section>
+</li>
 <!-- =========== FIELD SUMMARY =========== -->
 <li>
 <section class="field-summary" id="field-summary">
@@ -242,21 +264,26 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">WORLD-9: the living teammates with a fresh position, as of this tick's input.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#newRound()" class="member-name-link">newRound</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#record(int,long,int,int)" class="member-name-link">record</a><wbr>(int&nbsp;round,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="TeamLink.MateSighting.html" title="class in hadur2.core">TeamLink.MateSighting</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#mateSightings()" class="member-name-link">mateSightings</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">MGUN-8: this tick's teammates' sightings the World took, in the order it took them.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#newRound()" class="member-name-link">newRound</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#record(int,long,int,int)" class="member-name-link">record</a><wbr>(int&nbsp;round,
  long&nbsp;tick,
  int&nbsp;linkRejected,
  int&nbsp;enemiesAlive)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">The team's round record: <code>T,round,tick,teammateHits,teammateBulletHits,collisions,blockedShots,reportsMerged,linkRejected,enemiesAlive,fenced</code>.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) byte[]</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#report(hadur2.core.model.BotInput,hadur2.core.model.BotOrders)" class="member-name-link">report</a><wbr>(<a href="model/BotInput.html" title="class in hadur2.core.model">BotInput</a>&nbsp;in,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) byte[]</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#report(hadur2.core.model.BotInput,hadur2.core.model.BotOrders)" class="member-name-link">report</a><wbr>(<a href="model/BotInput.html" title="class in hadur2.core.model">BotInput</a>&nbsp;in,
  <a href="model/BotOrders.html" title="class in hadur2.core.model">BotOrders</a>&nbsp;orders)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../../requirements.html#LINK-4">LINK-4</a>: this tick's report, from the raw input and the orders the tick completed with.</div>
 </div>
 </div>
@@ -465,6 +492,13 @@ loadScripts(document, 'script');</script>
  boolean&nbsp;clear)</span></div>
 <div class="block"><a class="req" href="../../../requirements.html#WEAVE-4">WEAVE-4</a>: counts a shot the lane held back. The gun is cool and the lane blocked; a held
  shot is counted once, on the tick it is first held, not again each tick it waits.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="mateSightings()">
+<h3>mateSightings</h3>
+<div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="TeamLink.MateSighting.html" title="class in hadur2.core">TeamLink.MateSighting</a>&gt;</span>&nbsp;<span class="element-name">mateSightings</span>()</div>
+<div class="block">MGUN-8: this tick's teammates' sightings the World took, in the order it took them.</div>
 </section>
 </li>
 <li>
