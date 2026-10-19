@@ -137,6 +137,15 @@ census at +0.3 APS, no band below -0.05.
 
 ### Stage 1: pressure power (POW-12) and the flattener threshold, on the PC
 
+**Result (2026-10-19, closed, see `docs/bench/local/2026-10-19_pc-midrange-read.md` and
+`2026-10-19_pc-midrange-2-read.md`): the hypothesis is wrong.** The margin gate never opened
+(0.0 ± 0.3); the power change with no gate is -2.2 ± 0.4 points on the 149 and -2.3 ± 1.1 on the
+top 50 (2.5% more damage a round, 1.9 points less hit rate from the slower bullet, 7.5 points less
+survival from the energy spent); gated on the centres -0.6 ± 0.3. The flattener at 8% is
++0.5 ± 0.3. Hadur's 1.54 average power against the class is not a leak; the dealt gap is hits and
+the taken gap is the surf, so stages 2 and 3 carry the midrange. POW-12 stays off in every form.
+
+
 **POW-12, "pressure power"** (built on the 1v1 branch at 8f325cdb as a `GunController.Stakes`
 level, `PRESSURE`, that sets the gun's base power, not a `PowerPolicy` `Reason`; switch
 `PowerDesign.PRESSURE`, off by default; ablation `pressure`, suffix `pw`):
@@ -210,11 +219,11 @@ measurement first (hit rate by distance band against the 149, against the segmen
 
 ## What to expect
 
-| Lever | Scope | Expected | Gate |
-|---|---|---|---|
-| POW-12 pressure power | 149, then the 432 of the class | +0.3 to +0.6 APS | class +2.0, guard, census +0.3 |
-| flattener 8% | the same | +0.05 to +0.1 | with POW-12 |
-| surf fidelity (stage 2) | the 184 unlisted midrange and below | +0.3 to +0.8 | per switch |
+| Lever | Scope | Expected | Gate | Result |
+|---|---|---|---|---|
+| POW-12 pressure power | 149, then the 432 of the class | +0.3 to +0.6 APS | class +2.0, guard, census +0.3 | **failed: -2.2 ± 0.4 pts ungated, -0.6 ± 0.3 gated** |
+| flattener 8% | the same | +0.05 to +0.1 | with POW-12 | +0.5 ± 0.3 pts, rides the next pass |
+| surf fidelity (stage 2) | the 184 unlisted midrange and below | +0.3 to +0.8 | per switch | next |
 
 Together they are the midrange's 0.9 APS to DrussGT if all of it comes in, which is the largest
 single block left on the road to top 3.
