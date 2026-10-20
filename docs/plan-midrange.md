@@ -203,6 +203,15 @@ for 3.13hjsw on the same census; the three surf switches add +0.03 ± 0.18 to th
 Stage 2 closed: all five switches stay off; hc+pk+w2 parked as a +0.2 stack for a combined
 gate with whatever stage 3 brings.** Stage 3 (the gun) is what is left for the class.
 
+**Rank gate on the stack (2026-10-20, Leigh: build it as a backup, like the shield list):** on both
+censuses the stack gains only below rank 200; stack on for ranks 201+ only reads +0.26 ± 0.11
+(hjsw) and +0.25 ± 0.11 (hjswhcpkw2) APS against +0.20 / +0.22 everywhere, cross-validated per
+band +0.25 both ways; the in-battle share proxy recovers nothing and per-bot lists read +0.15 out
+of sample. Built as MOVE-23 `stacklist` (`sl`): an off-list of the census top 200 by name
+(`hadur-bench/stack-off-top200.txt`, 197 versionless names, held in a `StackListData` class as
+the shield list is), duel-only, off by default; unknown opponents get the stack. Gated with the
+gun switches in the stage 3 census.
+
 
 Hadur takes 18% more per tick than Diamond against these robots with Diamond's own danger views
 and weights, so the port differs from the original somewhere that matters against a stationary
