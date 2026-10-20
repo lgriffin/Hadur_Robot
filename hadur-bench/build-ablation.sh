@@ -59,7 +59,7 @@
 #   gungate  MOVE-17: the gun-heat wave is dropped once the enemy's gun is called learning (MOVE-15's count: 6 hits,
 #         60% learned), so the stop-and-start runs only against other guns. Meant to combine with heatjit
 #         (heatjit,gungate -> hjgg); sets only GUN_GATE. With split the split wins. Suffix gg.
-#   hold650  DIST-2: no DIST-1 walk-in in a duel; the desired distance stays at the opening's (650 for a stranger).
+#   hold650  DIST-3: no DIST-1 walk-in in a duel; the desired distance stays at the opening's (650 for a stranger).
 #         END-1's finish is unchanged. Sets only HOLD_650. Suffix d6.
 #   dfac     MOVE-18: the surf's distancing factor is measured to the enemy's last scanned position, as Diamond does,
 #         not to the wave's source. Sets only DISTANCING_TO_ENEMY. Suffix df.
@@ -71,6 +71,14 @@
 #         MOVE-4's integral over it. Sets only POINT_KERNEL. Suffix pk.
 #   keep2    TIME-6: a skipped turn no longer drops the surf's second wave for the rest of the round (dropped from level 2;
 #         the k halving and go-to shedding stay). Sets only KEEP_SECOND_WAVE. Suffix w2.
+#   thgun    GUN-8: in a duel the main gun aims from a TripHammer view, Diamond 1.8.22's duel gun (its formula, weight
+#         schedule, k = size/9 up to 225, 59 candidate angles, cube kernel); the displacement view keeps logging and the
+#         main candidate's virtual bullet and rating are the TripHammer's. Sets only TRIPHAMMER. Suffix th.
+#   freegun  GUN-9: the live gun verdict is the highest-rated candidate with no margin test (Diamond's bestGun), in both
+#         power classes; GUN-4's hybrid gate is unchanged. Sets only FREE_GUN. Suffix fg.
+#   nodecay  GUN-10: gun ratings are lifetime hits over shots, without GUN-1's 100-shot half-life (Diamond's form). Sets
+#         only UNDECAYED. Suffix nk (not nd: nodur has it). Suffixes follow the order given, so stack as thgun,freegun,
+#         nodecay for th, fg, nk (heatjit,swall,thgun,freegun,nodecay -> hjswthfgnk).
 #   pressure  POW-12 (the plan's POW-11): while our rolling hit rate less its margin is at least 12%, theirs plus its margin at
 #         most 9%, and our energy is above 12, the duel gun skips the cubic power-down and fires a base power of 2.5
 #         beyond 150 px (2.95 inside stays); the lead-aware regime wins where it holds. Sets PRESSURE only; combines
@@ -187,6 +195,7 @@ book="$src/hadur-core/src/main/java/hadur2/core/adapt/OpeningBook.java"
 shields="$src/hadur-core/src/main/java/hadur2/core/shieldmode/ShieldList.java"
 design="$src/hadur-core/src/main/java/hadur2/core/shieldmode/ShieldDesign.java"
 movedesign="$src/hadur-core/src/main/java/hadur2/core/duel/MoveDesign.java"
+gundesign="$src/hadur-core/src/main/java/hadur2/core/duel/GunDesign.java"
 powerdesign="$src/hadur-core/src/main/java/hadur2/core/duel/PowerDesign.java"
 protean="$src/hadur-core/src/main/java/hadur2/core/move/ProteanPick.java"
 listdata="$src/hadur-robot/src/main/java/hadur2/ShieldListData.java"
@@ -307,6 +316,15 @@ for a in "${list[@]}"; do
         keep2)
             edit "$movedesign" "static final boolean KEEP_SECOND_WAVE = false;" "static final boolean KEEP_SECOND_WAVE = true;"
             version="${version}w2" ;;
+        thgun)
+            edit "$gundesign" "static final boolean TRIPHAMMER = false;" "static final boolean TRIPHAMMER = true;"
+            version="${version}th" ;;
+        freegun)
+            edit "$gundesign" "static final boolean FREE_GUN = false;" "static final boolean FREE_GUN = true;"
+            version="${version}fg" ;;
+        nodecay)
+            edit "$gundesign" "static final boolean UNDECAYED = false;" "static final boolean UNDECAYED = true;"
+            version="${version}nk" ;;
         pressure)
             edit "$powerdesign" "static final boolean PRESSURE = false;" "static final boolean PRESSURE = true;"
             version="${version}pw" ;;
@@ -476,7 +494,7 @@ for a in "${list[@]}"; do
             edit "$design" 'public static final ShieldDesign SHIPPED = parse("' \
                 "public static final ShieldDesign SHIPPED = parse(\"$flag,"
             version="${version}${suffix}" ;;
-        *) echo "unknown ablation: $a (ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, flt59, flt8, split, wallesc, gungate, hold650, dfac, bhb, hitclr, pkern, keep2, protean, pdw3, pdw8, pc10, phot, repl, pressure, pdown, pwall, pwc, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, gtol, gstick, gwhy, gwin, gk, shold, slearn, smode, sstay, sturn, snull, strim)" >&2; exit 2 ;;
+        *) echo "unknown ablation: $a (ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, flt59, flt8, split, wallesc, gungate, hold650, dfac, bhb, hitclr, pkern, keep2, thgun, freegun, nodecay, protean, pdw3, pdw8, pc10, phot, repl, pressure, pdown, pwall, pwc, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, gtol, gstick, gwhy, gwin, gk, shold, slearn, smode, sstay, sturn, snull, strim)" >&2; exit 2 ;;
     esac
 done
 

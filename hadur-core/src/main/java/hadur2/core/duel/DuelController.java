@@ -302,6 +302,9 @@ public final class DuelController {
         this.battleField = new BattleField(fieldWidth, fieldHeight);
         this.predictor = new MovementPredictor(battleField);
         this.gunController = new GunController(battleField, enemiesTotal);
+        this.gunController.setTripHammer(GunDesign.TRIPHAMMER);
+        this.gunController.setFreeGun(GunDesign.FREE_GUN);
+        this.gunController.setUndecayed(GunDesign.UNDECAYED);
         this.moveController = new MoveController(battleField, predictor);
         this.moveController.setReplicator(MoveDesign.REPLICATOR);
         this.moveController.setPointKernel(MoveDesign.POINT_KERNEL);
@@ -777,7 +780,7 @@ public final class DuelController {
         if (in.time() - lastScanTime > 1) reacquire(in, orders);
     }
 
-    /** DIST-2: whether DIST-1 may move the target: not with the hold-650 switch on. */
+    /** DIST-3: whether DIST-1 may move the target: not with the hold-650 switch on. */
     static boolean distanceMoves(boolean hold650) {
         return !hold650;
     }
@@ -1423,7 +1426,7 @@ public final class DuelController {
             if (added != null) changeFlavour(in, added);
             Estimate ours = ourWindow.estimate();
             Estimate theirs = theirWindow.estimate();
-            // DIST-2: held at the opening distance, no walk in or out.
+            // DIST-3: held at the opening distance, no walk in or out.
             if (distanceMoves(MoveDesign.HOLD_650) && distance.onWave(ours, theirs) != DistancePolicy.Step.HOLD) {
                 // The gap's margin: the two estimates' margins combined in quadrature.
                 emitPolicy(round, in.time(), "distance", ours.value() - theirs.value(),

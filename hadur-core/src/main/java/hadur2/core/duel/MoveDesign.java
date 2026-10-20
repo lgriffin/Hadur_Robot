@@ -50,7 +50,7 @@ final class MoveDesign {
     static final boolean GUN_GATE = false;
 
     /**
-     * DIST-2: no DIST-1 walk-in in a duel. The desired distance stays at the opening's (650 for a
+     * DIST-3: no DIST-1 walk-in in a duel. The desired distance stays at the opening's (650 for a
      * stranger) for the whole battle; END-1's finishing distance is unchanged.
      */
     static final boolean HOLD_650 = false;

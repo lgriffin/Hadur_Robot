@@ -11,7 +11,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-/** DIST-2, MOVE-19, MOVE-20: the duel decisions behind the surf-audit switches, and that they ship off. */
+/** DIST-3, MOVE-19, MOVE-20, GUN-8 to GUN-10: the duel decisions behind the audit switches, and that they ship off. */
 class DuelOnlySwitchesTest {
 
     private static Wave wave() {
@@ -21,7 +21,7 @@ class DuelOnlySwitchesTest {
     }
 
     @Test
-    @Tag("DIST-2")
+    @Tag("DIST-3")
     @DisplayName("hold650 on stops DIST-1 moving the target; off leaves it")
     void holdStopsDistance() {
         assertTrue(DuelController.distanceMoves(false));
@@ -46,7 +46,7 @@ class DuelOnlySwitchesTest {
     }
 
     @Test
-    @Tag("DIST-2")
+    @Tag("DIST-3")
     @DisplayName("every switch ships off")
     void shippedOff() {
         assertFalse(MoveDesign.HOLD_650);
@@ -55,5 +55,16 @@ class DuelOnlySwitchesTest {
         assertFalse(MoveDesign.HIT_CLEARS_CACHE);
         assertFalse(MoveDesign.POINT_KERNEL);
         assertFalse(MoveDesign.KEEP_SECOND_WAVE);
+    }
+
+    @Test
+    @Tag("GUN-8")
+    @Tag("GUN-9")
+    @Tag("GUN-10")
+    @DisplayName("the gun switches (thgun, freegun, nodecay) ship off")
+    void gunSwitchesShipOff() {
+        assertFalse(GunDesign.TRIPHAMMER);
+        assertFalse(GunDesign.FREE_GUN);
+        assertFalse(GunDesign.UNDECAYED);
     }
 }
