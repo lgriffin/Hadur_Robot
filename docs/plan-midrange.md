@@ -207,7 +207,7 @@ gate with whatever stage 3 brings.** Stage 3 (the gun) is what is left for the c
 censuses the stack gains only below rank 200; stack on for ranks 201+ only reads +0.26 ± 0.11
 (hjsw) and +0.25 ± 0.11 (hjswhcpkw2) APS against +0.20 / +0.22 everywhere, cross-validated per
 band +0.25 both ways; the in-battle share proxy recovers nothing and per-bot lists read +0.15 out
-of sample. Built as MOVE-23 `stacklist` (`sl`): an off-list of the census top 200 by name
+of sample. Built as MOVE-23 `stacklist` (`xl`): an off-list of the census top 200 by name
 (`hadur-bench/stack-off-top200.txt`, 197 versionless names, held in a `StackListData` class as
 the shield list is), duel-only, off by default; unknown opponents get the stack. Gated with the
 gun switches in the stage 3 census.

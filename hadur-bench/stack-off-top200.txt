@@ -1,4 +1,4 @@
-# Stack off-list (MOVE-23, stacklist / sl): the census top 200 by 1v1 rank on 2026-10-08 (hadur-bench/census-312.txt roles),
+# Stack off-list (MOVE-23, stacklist / xl): the census top 200 by 1v1 rank on 2026-10-08 (hadur-bench/census-312.txt roles),
 # versionless (package.Class matches every version, as ShieldListData does). Against these the stop-and-start stack
 # (MOVE-13 heatjit, SHIELD-14 swall, and the parked MOVE-20/21, TIME-6) stays off; every other opponent gets it.
 # Why: both PC censuses (2026-10-18 pc-1018-stack, 2026-10-20 pc-midrange-census) gain only below rank 200;
