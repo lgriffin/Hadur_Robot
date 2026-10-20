@@ -49,5 +49,11 @@ final class MoveDesign {
      */
     static final boolean GUN_GATE = false;
 
+    /**
+     * AES-1 (measurement): each wave's first three-option rating is printed as an {@code AES}
+     * record with every term of each option's danger (docs/plan-aes.md). Behaviour unchanged.
+     */
+    static final boolean AES_RECORD = false;
+
     private MoveDesign() { }
 }

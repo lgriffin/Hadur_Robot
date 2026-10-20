@@ -307,6 +307,7 @@ public final class DuelController {
         this.surfMover = new SurfMover(battleField, predictor);
         this.surfMover.setEscapeRoomTerm(MoveDesign.ESCAPE_ROOM);
         this.surfMover.setProtean(MoveDesign.PROTEAN, MoveDesign.PROTEAN_DWELL);
+        this.surfMover.setAesRecord(MoveDesign.AES_RECORD);
         this.shadowAvoidance = new ShadowAvoidance(fieldWidth, fieldHeight);
         this.ramEscape = new RamEscape(battleField, predictor);
         this.mirror = new MirrorDetector(fieldWidth, fieldHeight);
@@ -768,6 +769,10 @@ public final class DuelController {
             if (split ? learning : MoveDesign.PROTEAN) proteanWindow(in);
             surfMover.move(orders, currentState(in), moveController, lastEnemyLocation,
                 TickBudget.wavesToSurf(level), TickBudget.goToAllowed(level));
+            // AES-1: the decision records the surf made this tick (none unless the switch is on).
+            for (String r : surfMover.drainAesRecords()) {
+                telemetry.emit("AES," + round + "," + in.time() + "," + r);
+            }
         }
         // GUN-7: the next aim may read this plan, one tick on, if the surf published one.
         if (!moveController.planIntervals().isEmpty()) planTime = in.time();

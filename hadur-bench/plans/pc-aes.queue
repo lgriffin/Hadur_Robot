@@ -1,0 +1,43 @@
+# PC queue: AES record and offline refit (docs/plan-aes.md, thread "AES").
+# Start only after pc-midrange-3's ALLDONE, never alongside it (one bench queue on the PC, RoboRumble
+# workers at 0 until ALLDONE). Run from branch claude/aes-plan-4rkzo2:
+#   ./queue.sh run pc-aes        (or  .\queue.ps1 run pc-aes)
+# Resumable: a restart skips the steps that exited 0.
+#
+# ABL is the base the record is made on. It must be the 1v1 stack as pc-midrange-3 leaves it: today
+# heatjit,swall (3.14hjsw); add the ablation of each switch pc-midrange-3 keeps (hold650, dfac, bhb,
+# hitclr, pkern, keep2), and set JAR and ROBOT to the name build-ablation.sh prints (the suffix ends in ar).
+#   record      the base with the AES-1 recorder (aesrec, behaviour unchanged) on the whole census,
+#               census-312.txt, 4 fresh seeds 1071-1074, no baseline: 4,848 battles.   about 7-8 hours
+#               It is also a 4-seed census of the base. hadur.log grows to 3-5 MB a battle with the
+#               AES records (about 20 GB with the truth logs); keep the run, as with the census logs.
+#   join        match each record to its bullet (data/tools/aes_rank.py; needs numpy).  under 30 minutes
+#   fit-class   the refit on the 432 flat x learning bots (aes-flat-learning.txt), half against half, by
+#               view family and by single view.                                       about 2-3 hours
+#   fit-field   the same refit on every opponent, for the no-harm read.                about 3-4 hours
+# Kill 1 is in the fit-class reports (docs/bench/local/<date>_aes-fit-*.md): stop if either half cuts
+# held-out avoidable damage by under 15% or its interval reaches 0.
+
+set ABL = heatjit,swall,aesrec
+set JAR = bisect/hadur2.Hadur_3.14hjswar.jar
+set ROBOT = "hadur2.Hadur 3.14hjswar"
+set COMMON = --skip-build --skip-fetch --rounds 35 --parallel 12 --cpu-constant 1488498 --child-heap 2G --engine 1.11.1
+set OUT = work/pc-aes-record
+set DATA = work/pc-aes-record/aes.npz
+
+prep | mkdir -p bisect && bash ./build-ablation.sh ${ABL} && test -f ${JAR} && ./fetch-opponents.sh --set census-312.txt && mvn -q compile && (python3 -c "import numpy" || python3 -m pip install numpy)
+
+record | ./bench-top20.sh ${COMMON} --set census-312.txt --seeds 4 --seed-base 1070 --robot-jar ${JAR} --robot ${ROBOT} --label pc-aes-record --out ${OUT}
+  after: prep
+  timeout: 14h
+
+join | python3 ../data/tools/aes_rank.py join ${OUT} --out ${DATA} --jobs 12
+  after: record
+
+fit-class | python3 ../data/tools/aes_rank.py fit ${DATA} --set census-312.txt --bots aes-flat-learning.txt --groups family --out ../docs/bench/local/$(date +%Y-%m-%d)_aes-fit-class-family && python3 ../data/tools/aes_rank.py fit ${DATA} --set census-312.txt --bots aes-flat-learning.txt --groups view --out ../docs/bench/local/$(date +%Y-%m-%d)_aes-fit-class-view
+  after: join
+  timeout: 8h
+
+fit-field | python3 ../data/tools/aes_rank.py fit ${DATA} --set census-312.txt --groups family --out ../docs/bench/local/$(date +%Y-%m-%d)_aes-fit-field-family
+  after: fit-class
+  timeout: 8h
