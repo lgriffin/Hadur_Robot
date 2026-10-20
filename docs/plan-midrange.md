@@ -193,8 +193,11 @@ POW-12 in `docs/requirements.md`.
 were switched and screened on the 149 (PR #214): hold650 +0.1, dfac -0.3, bhb 0.0, hitclr +0.4,
 pkern +0.5, keep2 +0.4 (each ± 0.5). None near the +2.0 gate. Forensics: 57% of the damage taken
 on the class had another option that would have dodged it, so the loss is option ranking on
-angles already rated. One stacked confirm (hitclr + pkern + keep2, with and without the 8%
-flattener) runs as `pc-midrange-4`; keep rule +1.0 on the class, then guard and census.
+angles already rated. The stacked confirm (`pc-midrange-4`, PR #215, `2026-10-20_pc-midrange-4-read.md`): hitclr +
+pkern + keep2 = +0.6 ± 0.3 on the class at 8 seeds, the flattener adds nothing, the top-50
+guard +0.9 ± 1.1. Real, small, same sign on strong guns. The surf is not where the class is
+lost. Census of 3.14hjswhcpkw2 against the 3.13 release runs as `pc-midrange-census` at the
++0.3 APS release gate; stage 3 (the gun) is what is left for the class.
 
 
 Hadur takes 18% more per tick than Diamond against these robots with Diamond's own danger views
@@ -232,7 +235,7 @@ measurement first (hit rate by distance band against the 149, against the segmen
 |---|---|---|---|---|
 | POW-12 pressure power | 149, then the 432 of the class | +0.3 to +0.6 APS | class +2.0, guard, census +0.3 | **failed: -2.2 ± 0.4 pts ungated, -0.6 ± 0.3 gated** |
 | flattener 8% | the same | +0.05 to +0.1 | with POW-12 | +0.5 ± 0.3 pts, rides the next pass |
-| surf fidelity (stage 2) | the 184 unlisted midrange and below | +0.3 to +0.8 | per switch | six switches ≤ +0.5 each; stack hc+pk+w2 confirming |
+| surf fidelity (stage 2) | the 184 unlisted midrange and below | +0.3 to +0.8 | per switch | stack hc+pk+w2 +0.6 on the class, +0.9 top 50; census running |
 
 Together they are the midrange's 0.9 APS to DrussGT if all of it comes in, which is the largest
 single block left on the road to top 3.

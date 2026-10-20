@@ -1,0 +1,16 @@
+# Census queue for docs/plan-midrange.md stage 2 (thread "Midrange census plan"), after
+# docs/bench/local/2026-10-20_pc-midrange-4-read.md: the surf stack hitclr + pkern + keep2 on the
+# stop-and-start stack (3.14hjswhcpkw2) against the 3.13 release on the whole census, 4 fresh
+# seeds, the same shape as pc-1018-stack (which read 3.13hjsw at +0.20 APS). One bench queue on
+# the PC, RoboRumble workers at 0 until ALLDONE. Keep the battle logs (the classifier reads them).
+#   ./queue.sh run pc-midrange-census        (or  .\queue.ps1 run pc-midrange-census)
+# Gate: +0.3 APS over 3.13 with the interval above 0 and no rank band below -0.05.
+
+set HEAP = --child-heap 2G
+set E = --engine 1.11.1
+set COMMON = --skip-build --skip-fetch --rounds 35 --parallel 12 --cpu-constant 1488498 ${HEAP} ${E}
+
+prep | mkdir -p bisect && { [ -s bisect/hadur2.Hadur_3.13.jar ] || curl -fsSL -o bisect/hadur2.Hadur_3.13.jar https://github.com/lgriffin/Hadur_Robot/releases/download/v3.13/hadur2.Hadur_3.13.jar; } && git fetch -q origin claude/project-thread-du09qh && { git worktree remove --force ../../hadur-top3 2>/dev/null || true; } && git worktree add --force --detach ../../hadur-top3 FETCH_HEAD && (cd ../../hadur-top3/hadur-bench && bash ./build-ablation.sh heatjit,swall,hitclr,pkern,keep2) && cp ../../hadur-top3/hadur-bench/bisect/hadur2.Hadur_3.14hjswhcpkw2.jar bisect/ && ./fetch-opponents.sh --set census-312.txt && mvn -q compile
+
+census | ./bench-top20.sh ${COMMON} --seeds 4 --seed-base 1090 --set census-312.txt --robot-jar bisect/hadur2.Hadur_3.14hjswhcpkw2.jar --robot "hadur2.Hadur 3.14hjswhcpkw2" --baseline bisect/hadur2.Hadur_3.13.jar --baseline-robot "hadur2.Hadur 3.13" --label pc-midrange-census
+  after: prep
