@@ -459,13 +459,18 @@ def fit(args):
     parity = float((base_pick == d.chosen).mean())
     lines += ["## Parity", "", "Re-blend at today's weights picks the option the surf took on **%.2f%%** of waves "
               "(gate: 99%%; below it the record or the re-blend is wrong and nothing below counts)." % (100 * parity), ""]
+    if parity < 0.99:
+        sys.exit("parity %.2f%% is below the 99%% gate; the record or the re-blend is wrong, no fit written" % (100 * parity))
 
     # Bot halves: alternate by rank.
     ranks = read_ranks(args.set) if args.set else {}
-    order = sorted(range(len(d.bots)), key=lambda i: (ranks.get(d.bots[i], 10 ** 6), d.bots[i]))
+    present = sorted(set(d.bot.tolist()))
+    order = sorted(present, key=lambda i: (ranks.get(d.bots[i], 10 ** 6), d.bots[i]))
     half = np.zeros(len(d.bots), dtype=int)
     for j, i in enumerate(order):
         half[i] = j % 2
+    if len(present) < 2:
+        sys.exit("fewer than two opponents with waves; no halves to fit")
     taken_bot = lambda dd, x: per_bot(dd, pick(totals(dd, x)))
 
     rows, fitted, diffs_all = [], {}, []
