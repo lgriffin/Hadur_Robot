@@ -225,13 +225,17 @@ The first two are the likeliest: the stop-and-start and flattener results say th
 the view mix both matter a little on this class, and the walk-in is the one movement policy
 Hadur added on top of the port.
 
-### Stage 3: the gun against random movers (if stage 1 leaves dealt short)
+### Stage 3: the gun against random movers
 
-After POW-12, if Hadur's dealt rate on the class is still under ScalarR's, the main gun's kernel
-width and k against flat movers: the offline guess-factor gun hits these movers 11.2% and
-Hadur's 15.2%, so the gun is already better than a plain histogram, and this stage is a
-measurement first (hit rate by distance band against the 149, against the segmented offline gun's
-13.2%), not a switch.
+**Read (2026-10-20, `docs/bench/local/2026-10-20_gun-read.md`, no new battles):** Hadur's duel
+main gun is Diamond's *melee* displacement gun; Diamond 1.8.22 fires `TripHammerKnnGun` in
+duels (guess factor x precise escape angle, K up to 225, 1/sqrt(distance) weights, cube kernel,
+weights that slide with data), opens with a trained `PerceptualGun`, switches guns on the bare
+best rating, and does not decay ratings. On the 149 Diamond deals +2.4 a round more (ScalarR
++7.5); 47 of the 149 are mode-switchers hit 29% early and 16% from round 10, where ScalarR
+deals 80-85 a round to Hadur's 45. Switches: `th` GUN-8 TripHammer main gun, `fg` GUN-9 free
+gun choice, `nd` GUN-10 undecayed ratings; screen th, fg, nd, thfgnd on the 149 at 4 seeds
+against 3.14hjsw, guard, keep rule +1.0 on the class, then the census of the keeper at +0.3.
 
 ## What to expect
 
@@ -240,6 +244,7 @@ measurement first (hit rate by distance band against the 149, against the segmen
 | POW-12 pressure power | 149, then the 432 of the class | +0.3 to +0.6 APS | class +2.0, guard, census +0.3 | **failed: -2.2 ± 0.4 pts ungated, -0.6 ± 0.3 gated** |
 | flattener 8% | the same | +0.05 to +0.1 | with POW-12 | +0.5 ± 0.3 pts, rides the next pass |
 | surf fidelity (stage 2) | the 184 unlisted midrange and below | +0.3 to +0.8 | per switch | **closed: stack hc+pk+w2 +0.6 class screen, but census +0.03 ± 0.18 over 3.13hjsw; whole stack +0.22 vs 3.13, under the +0.3 gate** |
+| gun (stage 3): th, fg, nd | the 149, then the field | +1 pp class, +0.3 to +0.5 APS field | class +1.0, guard, census +0.3 | being built on du09qh |
 
 Together they are the midrange's 0.9 APS to DrussGT if all of it comes in, which is the largest
 single block left on the road to top 3.
