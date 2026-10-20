@@ -196,8 +196,12 @@ on the class had another option that would have dodged it, so the loss is option
 angles already rated. The stacked confirm (`pc-midrange-4`, PR #215, `2026-10-20_pc-midrange-4-read.md`): hitclr +
 pkern + keep2 = +0.6 ± 0.3 on the class at 8 seeds, the flattener adds nothing, the top-50
 guard +0.9 ± 1.1. Real, small, same sign on strong guns. The surf is not where the class is
-lost. Census of 3.14hjswhcpkw2 against the 3.13 release runs as `pc-midrange-census` at the
-+0.3 APS release gate; stage 3 (the gun) is what is left for the class.
+lost. **Census (2026-10-20, PR #216, `2026-10-20_pc-midrange-census-read.md`): 3.14hjswhcpkw2
+against the 3.13 release on all 1,212 at 4 fresh seeds = +0.22 ± 0.13 pp, against +0.20 ± 0.14
+for 3.13hjsw on the same census; the three surf switches add +0.03 ± 0.18 to the field and
++0.32 ± 0.70 on the class. Gate +0.3 not met; band 1 (-0.45) and band 3 (-0.23) under -0.05.
+Stage 2 closed: all five switches stay off; hc+pk+w2 parked as a +0.2 stack for a combined
+gate with whatever stage 3 brings.** Stage 3 (the gun) is what is left for the class.
 
 
 Hadur takes 18% more per tick than Diamond against these robots with Diamond's own danger views
@@ -235,7 +239,7 @@ measurement first (hit rate by distance band against the 149, against the segmen
 |---|---|---|---|---|
 | POW-12 pressure power | 149, then the 432 of the class | +0.3 to +0.6 APS | class +2.0, guard, census +0.3 | **failed: -2.2 ± 0.4 pts ungated, -0.6 ± 0.3 gated** |
 | flattener 8% | the same | +0.05 to +0.1 | with POW-12 | +0.5 ± 0.3 pts, rides the next pass |
-| surf fidelity (stage 2) | the 184 unlisted midrange and below | +0.3 to +0.8 | per switch | stack hc+pk+w2 +0.6 on the class, +0.9 top 50; census running |
+| surf fidelity (stage 2) | the 184 unlisted midrange and below | +0.3 to +0.8 | per switch | **closed: stack hc+pk+w2 +0.6 class screen, but census +0.03 ± 0.18 over 3.13hjsw; whole stack +0.22 vs 3.13, under the +0.3 gate** |
 
 Together they are the midrange's 0.9 APS to DrussGT if all of it comes in, which is the largest
 single block left on the road to top 3.
