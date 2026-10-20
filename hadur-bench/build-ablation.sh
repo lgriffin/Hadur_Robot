@@ -79,6 +79,11 @@
 #   nodecay  GUN-10: gun ratings are lifetime hits over shots, without GUN-1's 100-shot half-life (Diamond's form). Sets
 #         only UNDECAYED. Suffix nk (not nd: nodur has it). Suffixes follow the order given, so stack as thgun,freegun,
 #         nodecay for th, fg, nk (heatjit,swall,thgun,freegun,nodecay -> hjswthfgnk).
+#   stacklist  MOVE-23: the stop-and-start stack (heatjit, swall, and hitclr, pkern, keep2 whenever those are also named)
+#         applies only to opponents not on the stack off-list (hadur-bench/stack-off-top200.txt, held in the robot's
+#         StackListData); a listed opponent plays as if those switches were off. Sets only STACK_LIST; the stack's own
+#         codes still turn the switches on. Suffix xl (not sl: slearn has it). Last in the stack's order:
+#         heatjit,swall,thgun,freegun,nodecay,stacklist -> hjswthfgnkxl.
 #   pressure  POW-12 (the plan's POW-11): while our rolling hit rate less its margin is at least 12%, theirs plus its margin at
 #         most 9%, and our energy is above 12, the duel gun skips the cubic power-down and fires a base power of 2.5
 #         beyond 150 px (2.95 inside stays); the lead-aware regime wins where it holds. Sets PRESSURE only; combines
@@ -325,6 +330,9 @@ for a in "${list[@]}"; do
         nodecay)
             edit "$gundesign" "static final boolean UNDECAYED = false;" "static final boolean UNDECAYED = true;"
             version="${version}nk" ;;
+        stacklist)
+            edit "$movedesign" "static final boolean STACK_LIST = false;" "static final boolean STACK_LIST = true;"
+            version="${version}xl" ;;
         pressure)
             edit "$powerdesign" "static final boolean PRESSURE = false;" "static final boolean PRESSURE = true;"
             version="${version}pw" ;;
@@ -494,7 +502,7 @@ for a in "${list[@]}"; do
             edit "$design" 'public static final ShieldDesign SHIPPED = parse("' \
                 "public static final ShieldDesign SHIPPED = parse(\"$flag,"
             version="${version}${suffix}" ;;
-        *) echo "unknown ablation: $a (ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, flt59, flt8, split, wallesc, gungate, hold650, dfac, bhb, hitclr, pkern, keep2, thgun, freegun, nodecay, protean, pdw3, pdw8, pc10, phot, repl, pressure, pdown, pwall, pwc, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, gtol, gstick, gwhy, gwin, gk, shold, slearn, smode, sstay, sturn, snull, strim)" >&2; exit 2 ;;
+        *) echo "unknown ablation: $a (ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, flt59, flt8, split, wallesc, gungate, hold650, dfac, bhb, hitclr, pkern, keep2, thgun, freegun, nodecay, stacklist, protean, pdw3, pdw8, pc10, phot, repl, pressure, pdown, pwall, pwc, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, gtol, gstick, gwhy, gwin, gk, shold, slearn, smode, sstay, sturn, snull, strim)" >&2; exit 2 ;;
     esac
 done
 

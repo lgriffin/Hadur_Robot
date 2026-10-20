@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import hadur2.core.model.Wave;
 import hadur2.core.physics.BattleField;
+import hadur2.core.shieldmode.ShieldList;
 import hadur2.core.physics.MovementPredictor;
 import java.awt.geom.Point2D;
 import org.junit.jupiter.api.DisplayName;
@@ -66,5 +67,48 @@ class DuelOnlySwitchesTest {
         assertFalse(GunDesign.TRIPHAMMER);
         assertFalse(GunDesign.FREE_GUN);
         assertFalse(GunDesign.UNDECAYED);
+    }
+
+    private static ShieldList stackList() {
+        return ShieldList.parse(java.util.Arrays.asList(
+            "apv.test.Virus 0.6.1", "stack-off: kc.mega.BeepBoop", "stack-off: jk.mega.DrussGT 3.1.16"));
+    }
+
+    @Test
+    @Tag("MOVE-23")
+    @DisplayName("stacklist on: a listed name, with or without its version, turns the stack off; an unlisted or unnamed one keeps it")
+    void stackListPerOpponent() {
+        ShieldList list = stackList();
+        assertFalse(DuelController.stackApplies(true, list, "kc.mega.BeepBoop"));
+        assertFalse(DuelController.stackApplies(true, list, "kc.mega.BeepBoop 2.0"));
+        assertFalse(DuelController.stackApplies(true, list, "jk.mega.DrussGT 3.1.16"));
+        assertTrue(DuelController.stackApplies(true, list, "jk.mega.DrussGT 3.1.17"), "a versioned entry is that version only");
+        assertTrue(DuelController.stackApplies(true, list, "new.Stranger 1.0"));
+        assertTrue(DuelController.stackApplies(true, list, null));
+        assertTrue(DuelController.stackApplies(true, null, "kc.mega.BeepBoop"));
+        assertTrue(DuelController.stackApplies(true, ShieldList.NONE, "kc.mega.BeepBoop"));
+    }
+
+    @Test
+    @Tag("MOVE-23")
+    @DisplayName("stacklist off: the stack applies to everyone, listed or not")
+    void stackListOffUnchanged() {
+        ShieldList list = stackList();
+        assertTrue(DuelController.stackApplies(false, list, "kc.mega.BeepBoop"));
+        assertTrue(DuelController.stackApplies(false, list, "new.Stranger 1.0"));
+        assertFalse(MoveDesign.STACK_LIST);
+    }
+
+    @Test
+    @Tag("MOVE-23")
+    @DisplayName("stack-off lines are not shield-mode entries: the shield list's size and matches are as before")
+    void stackLinesAreNotShieldEntries() {
+        ShieldList list = stackList();
+        assertTrue(list.matches("apv.test.Virus 0.6.1"));
+        assertFalse(list.matches("kc.mega.BeepBoop"));
+        assertTrue(list.onStackOffList("kc.mega.BeepBoop 9.9"));
+        assertFalse(list.onStackOffList("apv.test.Virus 0.6.1"));
+        assertTrue(ShieldList.parse(java.util.Arrays.asList("stack-off: a.B")).isEmpty(), "no shield entry, so no shield mode");
+        assertFalse(ShieldList.parse(java.util.Arrays.asList("stack-off: a.B")).onStackOffList("c.D"));
     }
 }

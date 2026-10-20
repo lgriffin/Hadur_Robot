@@ -204,7 +204,10 @@ public class Hadur extends TeamRobot {
      */
     private ShieldList shieldList() {
         try {
-            return ShieldList.parse(Arrays.asList(ShieldListData.lines()));
+            // MOVE-23: the stack off-list rides in the same object, its lines marked.
+            java.util.List<String> lines = new java.util.ArrayList<>(Arrays.asList(ShieldListData.lines()));
+            for (String name : StackListData.lines()) lines.add(ShieldList.STACK_OFF_PREFIX + " " + name);
+            return ShieldList.parse(lines);
         } catch (RuntimeException | LinkageError e) {
             out.println("SH," + getRoundNum() + "," + getTime() + ",list-failed," + e);
             return ShieldList.NONE;

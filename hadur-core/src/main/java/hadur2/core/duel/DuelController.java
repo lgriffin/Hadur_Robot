@@ -143,6 +143,10 @@ public final class DuelController {
     private boolean profileFound;
     /** The exact name of the battle's first duel opponent, the one the profile is about. */
     private String opponentName;
+    /** MOVE-23: carries the stack off-list (the shield list object holds both). */
+    private final ShieldList stackList;
+    /** MOVE-23: whether the stop-and-start stack applies to this opponent; true until it is named. */
+    private boolean stackOn = true;
     /** The distance to the duel opponent at its last scan, in px. */
     private double lastEnemyDistance;
     /** What the opening book chose (S4); {@link Opening#STRANGER} until a profile is read. */
@@ -327,6 +331,7 @@ public final class DuelController {
         this.fieldWidth = fieldWidth;
         this.fieldHeight = fieldHeight;
         this.stats = stats;
+        this.stackList = shieldList == null ? ShieldList.NONE : shieldList;
         this.shield = enemiesTotal == 1 && shieldList != null && !shieldList.isEmpty()
             ? new ShieldMode(shieldList, telemetry, rounds) : null;
     }
@@ -677,7 +682,7 @@ public final class DuelController {
             if (shield != null) {
                 if (reading.uncertain()) {
                     // SHIELD-14: with the wall switch, an uncertain shot still builds a wave, at the ledger's guess.
-                    if (shield.design().wall) shield.onEnemyShot(fireTime, reading.guess(), true);
+                    if (shield.design().wall && stackOn) shield.onEnemyShot(fireTime, reading.guess(), true);
                     else shield.onEnemyFired();
                 }
                 else shield.onEnemyShot(fireTime, reading.corrected());
@@ -761,9 +766,10 @@ public final class DuelController {
             // MOVE-15: the enemy's gun decides the hold and the protean pick when the split is on.
             boolean split = MoveDesign.GUN_SPLIT;
             boolean learning = split && gunClassifier.learning();
-            moveController.setProvisionalHold(split ? learning : MoveDesign.HEAT_HOLD);
+            // MOVE-23: a listed opponent plays as with heatjit off (the hold on, no gun-heat wave).
+            moveController.setProvisionalHold(split ? learning : (MoveDesign.HEAT_HOLD || !stackOn));
             // MOVE-17: the gate closes the gun-heat wave once the gun is called learning (the split wins).
-            moveController.setProvisionalReady(provisionalOffered(MoveDesign.HEAT_WAVE,
+            moveController.setProvisionalReady(provisionalOffered(MoveDesign.HEAT_WAVE && stackOn,
                 MoveDesign.GUN_GATE && !split, gunClassifier.learning(),
                 enemyGunHeat(in).at(in.time()) <= in.gunCoolingRate()), in.time());
             if (split) {
@@ -772,12 +778,20 @@ public final class DuelController {
             }
             if (split ? learning : MoveDesign.PROTEAN) proteanWindow(in);
             surfMover.move(orders, currentState(in), moveController, lastEnemyLocation,
-                TickBudget.wavesToSurf(level, MoveDesign.KEEP_SECOND_WAVE), TickBudget.goToAllowed(level));
+                TickBudget.wavesToSurf(level, MoveDesign.KEEP_SECOND_WAVE && stackOn), TickBudget.goToAllowed(level));
         }
         // GUN-7: the next aim may read this plan, one tick on, if the surf published one.
         if (!moveController.planIntervals().isEmpty()) planTime = in.time();
         // RADAR-1: no scan this tick or the one before, so the lock has lost it.
         if (in.time() - lastScanTime > 1) reacquire(in, orders);
+    }
+
+    /**
+     * MOVE-23: whether the stop-and-start stack applies to {@code opponent}: always with the
+     * switch off; with it on, unless the opponent is on the stack off-list.
+     */
+    static boolean stackApplies(boolean stackListOn, ShieldList list, String opponent) {
+        return !stackListOn || list == null || !list.onStackOffList(opponent);
     }
 
     /** DIST-3: whether DIST-1 may move the target: not with the hold-650 switch on. */
@@ -884,7 +898,7 @@ public final class DuelController {
             moveController.logBulletHit(hitWave, bulletLoc, round, in.time());
         }
         // MOVE-20: a hit is a new sample for the next wave's neighbours too.
-        if (clearsCacheOnHit(MoveDesign.HIT_CLEARS_CACHE)) moveController.clearNeighborCache();
+        if (clearsCacheOnHit(MoveDesign.HIT_CLEARS_CACHE && stackOn)) moveController.clearNeighborCache();
         if (folder != null && driving) {
             // File the hit under the distance and movement at the wave's fire time when known.
             boolean found = hitWave != null;
@@ -990,7 +1004,7 @@ public final class DuelController {
             }
         }
         // MOVE-20: an intercept clears the cached searches, as a hit does.
-        if (clearsCacheOnHit(MoveDesign.HIT_CLEARS_CACHE)) moveController.clearNeighborCache();
+        if (clearsCacheOnHit(MoveDesign.HIT_CLEARS_CACHE && stackOn)) moveController.clearNeighborCache();
     }
 
     /**
@@ -1169,6 +1183,9 @@ public final class DuelController {
         int gunSeed = 0;
         int surfSeed = 0;
         opponentName = name;
+        // MOVE-23: the stack's per-opponent switches, decided now the opponent is named.
+        stackOn = stackApplies(MoveDesign.STACK_LIST, stackList, name);
+        moveController.setPointKernel(MoveDesign.POINT_KERNEL && stackOn);
         // Without memory the B record still goes out, with '-' for what memory would say.
         if (library != null) {
             // MEM-4: a missing or damaged profile loads as a stranger; load never throws.

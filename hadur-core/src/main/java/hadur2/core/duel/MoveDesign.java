@@ -85,5 +85,13 @@ final class MoveDesign {
      */
     static final boolean KEEP_SECOND_WAVE = false;
 
+    /**
+     * MOVE-23: the stop-and-start stack (MOVE-13 heatjit, SHIELD-14 swall, and MOVE-20, MOVE-21
+     * and TIME-6 whenever those are on) applies only to opponents not on the stack off-list;
+     * a listed opponent plays as if those switches were off. The decision is made per
+     * opponent at run time; with this off the switches are the compile-time ones alone.
+     */
+    static final boolean STACK_LIST = false;
+
     private MoveDesign() { }
 }
