@@ -106,48 +106,54 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Field</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code>(package private) static final boolean</code></div>
-<div class="col-second even-row-color"><code><a href="#ESCAPE_ROOM" class="member-name-link">ESCAPE_ROOM</a></code></div>
+<div class="col-second even-row-color"><code><a href="#AES_RECORD" class="member-name-link">AES_RECORD</a></code></div>
 <div class="col-last even-row-color">
-<div class="block"><a class="req" href="../../../../requirements.html#MOVE-12">MOVE-12</a>: the first wave's danger is scaled by the escape-angle position term (BeepBoop's).</div>
+<div class="block"><a class="req" href="../../../../requirements.html#AES-1">AES-1</a> (measurement): each wave's first three-option rating is printed as an <code>AES</code>
+ record with every term of each option's danger (docs/plan-aes.md).</div>
 </div>
 <div class="col-first odd-row-color"><code>(package private) static final boolean</code></div>
-<div class="col-second odd-row-color"><code><a href="#GUN_GATE" class="member-name-link">GUN_GATE</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#ESCAPE_ROOM" class="member-name-link">ESCAPE_ROOM</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block"><a class="req" href="../../../../requirements.html#MOVE-12">MOVE-12</a>: the first wave's danger is scaled by the escape-angle position term (BeepBoop's).</div>
+</div>
+<div class="col-first even-row-color"><code>(package private) static final boolean</code></div>
+<div class="col-second even-row-color"><code><a href="#GUN_GATE" class="member-name-link">GUN_GATE</a></code></div>
+<div class="col-last even-row-color">
 <div class="block"><a class="req" href="../../../../requirements.html#MOVE-17">MOVE-17</a>: the gun-heat wave (meant to be built with <a href="#HEAT_WAVE"><code>HEAT_WAVE</code></a> and
  <a href="#HEAT_HOLD"><code>HEAT_HOLD</code></a> false) is offered only while the enemy's gun is not a learning one by
  <a class="req" href="../../../../requirements.html#MOVE-15">MOVE-15</a>'s count, so the stop-and-start is dropped against learning guns.</div>
 </div>
-<div class="col-first even-row-color"><code>(package private) static final boolean</code></div>
-<div class="col-second even-row-color"><code><a href="#GUN_SPLIT" class="member-name-link">GUN_SPLIT</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code>(package private) static final boolean</code></div>
+<div class="col-second odd-row-color"><code><a href="#GUN_SPLIT" class="member-name-link">GUN_SPLIT</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block"><a class="req" href="../../../../requirements.html#MOVE-15">MOVE-15</a>: movement by the enemy's gun (meant to be built with <a href="#HEAT_WAVE"><code>HEAT_WAVE</code></a>).</div>
 </div>
-<div class="col-first odd-row-color"><code>(package private) static final boolean</code></div>
-<div class="col-second odd-row-color"><code><a href="#HEAT_HOLD" class="member-name-link">HEAT_HOLD</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code>(package private) static final boolean</code></div>
+<div class="col-second even-row-color"><code><a href="#HEAT_HOLD" class="member-name-link">HEAT_HOLD</a></code></div>
+<div class="col-last even-row-color">
 <div class="block"><a class="req" href="../../../../requirements.html#MOVE-13">MOVE-13</a>: with the gun-heat wave on, false surfs each tick's newest movement wave instead of
  holding one, so the surf re-ranks every tick and stops and starts (the first <a class="req" href="../../../../requirements.html#MOVE-11">MOVE-11</a> build).</div>
 </div>
-<div class="col-first even-row-color"><code>(package private) static final boolean</code></div>
-<div class="col-second even-row-color"><code><a href="#HEAT_WAVE" class="member-name-link">HEAT_WAVE</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code>(package private) static final boolean</code></div>
+<div class="col-second odd-row-color"><code><a href="#HEAT_WAVE" class="member-name-link">HEAT_WAVE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block"><a class="req" href="../../../../requirements.html#MOVE-11">MOVE-11</a>: surf the enemy's next shot before it leaves, when its gun is about to be cool.</div>
 </div>
-<div class="col-first odd-row-color"><code>(package private) static final boolean</code></div>
-<div class="col-second odd-row-color"><code><a href="#PROTEAN" class="member-name-link">PROTEAN</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code>(package private) static final boolean</code></div>
+<div class="col-second even-row-color"><code><a href="#PROTEAN" class="member-name-link">PROTEAN</a></code></div>
+<div class="col-last even-row-color">
 <div class="block"><a class="req" href="../../../../requirements.html#MOVE-14">MOVE-14</a>: while the enemy's gun is cool and no real bullet is within 10 ticks, the surf draws
  its option from the protean pick (a softmin over the option dangers, a replaying chaotic die)
  instead of taking the least danger.</div>
 </div>
-<div class="col-first even-row-color"><code>(package private) static final int</code></div>
-<div class="col-second even-row-color"><code><a href="#PROTEAN_DWELL" class="member-name-link">PROTEAN_DWELL</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code>(package private) static final int</code></div>
+<div class="col-second odd-row-color"><code><a href="#PROTEAN_DWELL" class="member-name-link">PROTEAN_DWELL</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block"><a class="req" href="../../../../requirements.html#MOVE-14">MOVE-14</a>: the protean pick's mean dwell, in ticks; 1 re-picks every tick.</div>
 </div>
-<div class="col-first odd-row-color"><code>(package private) static final boolean</code></div>
-<div class="col-second odd-row-color"><code><a href="#REPLICATOR" class="member-name-link">REPLICATOR</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code>(package private) static final boolean</code></div>
+<div class="col-second even-row-color"><code><a href="#REPLICATOR" class="member-name-link">REPLICATOR</a></code></div>
+<div class="col-last even-row-color">
 <div class="block"><a class="req" href="../../../../requirements.html#MOVE-16">MOVE-16</a>: the danger views' weights evolve by the replicator equation.</div>
 </div>
 </div>
@@ -299,6 +305,22 @@ loadScripts(document, 'script');</script>
 <dd>
 <ul class="tag-list">
 <li><a href="../../../constant-values.html#hadur2.core.duel.MoveDesign.GUN_GATE">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="AES_RECORD">
+<h3>AES_RECORD</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">AES_RECORD</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#AES-1">AES-1</a> (measurement): each wave's first three-option rating is printed as an <code>AES</code>
+ record with every term of each option's danger (docs/plan-aes.md). Behaviour unchanged.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur2.core.duel.MoveDesign.AES_RECORD">Constant Field Values</a></li>
 </ul>
 </dd>
 </dl>

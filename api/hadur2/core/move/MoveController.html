@@ -261,26 +261,43 @@ loadScripts(document, 'script');</script>
  views that are on: a weighted average, in [0, 1], of how close each neighbour's
  firing angle falls to the intersection.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>long</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLastBulletFireTime()" class="member-name-link">getLastBulletFireTime</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) double</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDangerScore(hadur2.core.model.Wave,hadur2.core.model.Wave.Intersection,int,double%5B%5D)" class="member-name-link">getDangerScore</a><wbr>(<a href="../model/Wave.html" title="class in hadur2.core.model">Wave</a>&nbsp;w,
+ <a href="../model/Wave.Intersection.html" title="class in hadur2.core.model">Wave.Intersection</a>&nbsp;intersection,
+ int&nbsp;surfWaveIndex,
+ double[]&nbsp;parts)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../../../requirements.html#AES-1">AES-1</a>: <a href="#getDangerScore(hadur2.core.model.Wave,hadur2.core.model.Wave.Intersection,int)"><code>getDangerScore(hadur2.core.model.Wave, hadur2.core.model.Wave.Intersection, int)</code></a>, also writing each view's two sums into <code>parts</code>
+ when it is not null: <code>parts[i]</code> is view <code>i</code>'s weight times its density,
+ <code>parts[n + i]</code> its weight times its scan weight (both 0 for a view that is off
+ or empty), and <code>parts[2n]</code> the fallback's danger when the fallback was used, else
+ NaN.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>long</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLastBulletFireTime()" class="member-name-link">getLastBulletFireTime</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">The fire time, in ticks, of the wave last marked as the enemy's shot.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLastBulletPower()" class="member-name-link">getLastBulletPower</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLastBulletPower()" class="member-name-link">getLastBulletPower</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">The power of the enemy's last detected shot this round; 0 before the first.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../model/WaveManager.html" title="class in hadur2.core.model">WaveManager</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getWaveManager()" class="member-name-link">getWaveManager</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../model/WaveManager.html" title="class in hadur2.core.model">WaveManager</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getWaveManager()" class="member-name-link">getWaveManager</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">The enemy waves in flight at us, firing or not.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#guessBulletPower()" class="member-name-link">guessBulletPower</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#guessBulletPower()" class="member-name-link">guessBulletPower</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">The power to give a new enemy wave before we know if it is a shot: the last shot's
  power this round, else 1.9.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hasOptions(hadur2.core.model.Wave)" class="member-name-link">hasOptions</a><wbr>(<a href="../model/Wave.html" title="class in hadur2.core.model">Wave</a>&nbsp;w)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../../../requirements.html#AES-1">AES-1</a>: whether wave <code>w</code> has had its first options published this round.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hitPercentageMarginOfError()" class="member-name-link">hitPercentageMarginOfError</a>()</code></div>
@@ -378,7 +395,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Whether the profile's estimate is deciding the danger views right now (the same test
  as the view estimate's).</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#publishOptions(hadur2.core.move.PlanInterval%5B%5D,int)" class="member-name-link">publishOptions</a><wbr>(<a href="PlanInterval.html" title="class in hadur2.core.move">PlanInterval</a>[]&nbsp;options,
  int&nbsp;chosen)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -846,7 +863,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="publishOptions(hadur2.core.move.PlanInterval[],int)">
 <h3>publishOptions</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">publishOptions</span><wbr><span class="parameters">(<a href="PlanInterval.html" title="class in hadur2.core.move">PlanInterval</a>[]&nbsp;options,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">publishOptions</span><wbr><span class="parameters">(<a href="PlanInterval.html" title="class in hadur2.core.move">PlanInterval</a>[]&nbsp;options,
  int&nbsp;chosen)</span></div>
 <div class="block"><a class="req" href="../../../../requirements.html#MOVE-10">MOVE-10</a>: the three-option surf's plan on its first wave for every option it rated this
  tick, by option ordinal (a null slot for an option with no plan there), and the ordinal
@@ -857,7 +874,16 @@ loadScripts(document, 'script');</script>
 <dt>Parameters:</dt>
 <dd><code>options</code> - one interval or null per option, all on the same wave; copied</dd>
 <dd><code>chosen</code> - the ordinal of the option taken</dd>
+<dt>Returns:</dt>
+<dd>true when these were the wave's first options, the ones kept</dd>
 </dl>
+</section>
+</li>
+<li>
+<section class="detail" id="hasOptions(hadur2.core.model.Wave)">
+<h3>hasOptions</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">hasOptions</span><wbr><span class="parameters">(<a href="../model/Wave.html" title="class in hadur2.core.model">Wave</a>&nbsp;w)</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#AES-1">AES-1</a>: whether wave <code>w</code> has had its first options published this round.</div>
 </section>
 </li>
 <li>
@@ -1140,6 +1166,24 @@ loadScripts(document, 'script');</script>
      neighbour cache</dd>
 <dt>Returns:</dt>
 <dd>the danger, in [0, 1] from the views; the fallback's sum can be up to 4</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getDangerScore(hadur2.core.model.Wave,hadur2.core.model.Wave.Intersection,int,double[])">
+<h3>getDangerScore</h3>
+<div class="member-signature"><span class="return-type">double</span>&nbsp;<span class="element-name">getDangerScore</span><wbr><span class="parameters">(<a href="../model/Wave.html" title="class in hadur2.core.model">Wave</a>&nbsp;w,
+ <a href="../model/Wave.Intersection.html" title="class in hadur2.core.model">Wave.Intersection</a>&nbsp;intersection,
+ int&nbsp;surfWaveIndex,
+ double[]&nbsp;parts)</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#AES-1">AES-1</a>: <a href="#getDangerScore(hadur2.core.model.Wave,hadur2.core.model.Wave.Intersection,int)"><code>getDangerScore(hadur2.core.model.Wave, hadur2.core.model.Wave.Intersection, int)</code></a>, also writing each view's two sums into <code>parts</code>
+ when it is not null: <code>parts[i]</code> is view <code>i</code>'s weight times its density,
+ <code>parts[n + i]</code> its weight times its scan weight (both 0 for a view that is off
+ or empty), and <code>parts[2n]</code> the fallback's danger when the fallback was used, else
+ NaN. The score is the sum of the first n over the sum of the next n. Measurement only.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>parts</code> - null, or at least <code>2 * viewCount() + 1</code> long</dd>
 </dl>
 </section>
 </li>
