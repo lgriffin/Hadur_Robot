@@ -849,7 +849,7 @@ public class GunController {
      * battle, since the profile is read across future battles too, where GUN-1's 100-shot
      * half-life (meant to let this battle's live choice track a surfer that changes
      * movement mid-fight) has no meaning. The core also checks the gun seed against the
-     * main gun's rating here (RES-4). The hybrid gun's rating is not folded into the profile
+     * main gun's rating here (RES-4). With the TripHammer on (GUN-8) the main pair is zero. The hybrid gun's rating is not folded into the profile
      * (GUN-4 is a live, in-battle gate only; the profile format is unchanged).</p>
      *
      * @param botName the opponent
@@ -861,8 +861,12 @@ public class GunController {
         for (Map<String, Ratings> classTable : List.of(restRatings, lightRatings)) {
             Ratings r = classTable.get(botName);
             if (r == null) continue;
-            mFired += r.main.lifetimeFired;
-            mHit += r.main.lifetimeHit;
+            // GUN-8: with the TripHammer on, the main rating is the TripHammer's, not the displacement
+            // gun the seeds and profiles describe, so it is left out (zero waves: no RES-4 check either).
+            if (!tripHammer) {
+                mFired += r.main.lifetimeFired;
+                mHit += r.main.lifetimeHit;
+            }
             aFired += r.antiSurfer.lifetimeFired;
             aHit += r.antiSurfer.lifetimeHit;
         }

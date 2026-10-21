@@ -30,6 +30,23 @@ class DuelOnlySwitchesTest {
     }
 
     @Test
+    @Tag("DIST-3")
+    @DisplayName("the new move switches act only in a duel; with enemiesTotal > 1 they read as off (hold650 gates FAR's shift too)")
+    void moveSwitchesAreDuelOnly() {
+        assertTrue(DuelController.duelOnly(true, 1));
+        assertFalse(DuelController.duelOnly(true, 2));
+        assertFalse(DuelController.duelOnly(true, 5));
+        assertFalse(DuelController.duelOnly(false, 1));
+        // The decision both onWave and the FAR shiftOut share: melee distance moves as before.
+        assertTrue(DuelController.distanceMoves(DuelController.duelOnly(true, 3)));
+        assertFalse(DuelController.distanceMoves(DuelController.duelOnly(true, 1)));
+        assertTrue(DuelController.clearsCacheOnHit(DuelController.duelOnly(true, 1)));
+        assertFalse(DuelController.clearsCacheOnHit(DuelController.duelOnly(true, 4)));
+        assertFalse(DuelController.logsIntercept(DuelController.duelOnly(true, 4), wave()));
+        assertTrue(DuelController.stackApplies(DuelController.duelOnly(true, 4), stackList(), "kc.mega.BeepBoop"));
+    }
+
+    @Test
     @Tag("MOVE-19")
     @DisplayName("bhb on logs an intercept whose wave was found; off or no wave does not")
     void interceptLogged() {

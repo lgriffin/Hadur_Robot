@@ -311,10 +311,10 @@ public final class DuelController {
         this.gunController.setUndecayed(GunDesign.UNDECAYED);
         this.moveController = new MoveController(battleField, predictor);
         this.moveController.setReplicator(MoveDesign.REPLICATOR);
-        this.moveController.setPointKernel(MoveDesign.POINT_KERNEL);
+        this.moveController.setPointKernel(duelOnly(MoveDesign.POINT_KERNEL, enemiesTotal));
         this.surfMover = new SurfMover(battleField, predictor);
         this.surfMover.setEscapeRoomTerm(MoveDesign.ESCAPE_ROOM);
-        this.surfMover.setDistancingToEnemy(MoveDesign.DISTANCING_TO_ENEMY);
+        this.surfMover.setDistancingToEnemy(duelOnly(MoveDesign.DISTANCING_TO_ENEMY, enemiesTotal));
         this.surfMover.setProtean(MoveDesign.PROTEAN, MoveDesign.PROTEAN_DWELL);
         this.surfMover.setAesRecord(MoveDesign.AES_RECORD);
         this.shadowAvoidance = new ShadowAvoidance(fieldWidth, fieldHeight);
@@ -779,7 +779,7 @@ public final class DuelController {
             }
             if (split ? learning : MoveDesign.PROTEAN) proteanWindow(in);
             surfMover.move(orders, currentState(in), moveController, lastEnemyLocation,
-                TickBudget.wavesToSurf(level, MoveDesign.KEEP_SECOND_WAVE && stackOn), TickBudget.goToAllowed(level));
+                TickBudget.wavesToSurf(level, duelOnly(MoveDesign.KEEP_SECOND_WAVE && stackOn, enemiesTotal)), TickBudget.goToAllowed(level));
             // AES-1: the decision records the surf made this tick (none unless the switch is on).
             for (String r : surfMover.drainAesRecords()) {
                 telemetry.emit("AES," + round + "," + in.time() + "," + r);
@@ -797,6 +797,11 @@ public final class DuelController {
      */
     static boolean stackApplies(boolean stackListOn, ShieldList list, String opponent) {
         return !stackListOn || list == null || !list.onStackOffList(opponent);
+    }
+
+    /** A duel-only move switch: in effect only in a duel; melee and team endgames play as with it off. */
+    static boolean duelOnly(boolean switchOn, int enemiesTotal) {
+        return switchOn && enemiesTotal <= 1;
     }
 
     /** DIST-3: whether DIST-1 may move the target: not with the hold-650 switch on. */
@@ -903,7 +908,7 @@ public final class DuelController {
             moveController.logBulletHit(hitWave, bulletLoc, round, in.time());
         }
         // MOVE-20: a hit is a new sample for the next wave's neighbours too.
-        if (clearsCacheOnHit(MoveDesign.HIT_CLEARS_CACHE && stackOn)) moveController.clearNeighborCache();
+        if (clearsCacheOnHit(duelOnly(MoveDesign.HIT_CLEARS_CACHE && stackOn, enemiesTotal))) moveController.clearNeighborCache();
         if (folder != null && driving) {
             // File the hit under the distance and movement at the wave's fire time when known.
             boolean found = hitWave != null;
@@ -1004,12 +1009,12 @@ public final class DuelController {
             }
             hitWave.bulletHitBullet = true;
             // MOVE-19: the bullet's angle is a sample of the enemy gun's aim, as a hit would be.
-            if (logsIntercept(MoveDesign.BULLET_HIT_BULLET_LOG, hitWave)) {
+            if (logsIntercept(duelOnly(MoveDesign.BULLET_HIT_BULLET_LOG, enemiesTotal), hitWave)) {
                 moveController.logBulletHit(hitWave, hitLoc, round, in.time());
             }
         }
         // MOVE-20: an intercept clears the cached searches, as a hit does.
-        if (clearsCacheOnHit(MoveDesign.HIT_CLEARS_CACHE && stackOn)) moveController.clearNeighborCache();
+        if (clearsCacheOnHit(duelOnly(MoveDesign.HIT_CLEARS_CACHE && stackOn, enemiesTotal))) moveController.clearNeighborCache();
     }
 
     /**
@@ -1189,8 +1194,8 @@ public final class DuelController {
         int surfSeed = 0;
         opponentName = name;
         // MOVE-23: the stack's per-opponent switches, decided now the opponent is named.
-        stackOn = stackApplies(MoveDesign.STACK_LIST, stackList, name);
-        moveController.setPointKernel(MoveDesign.POINT_KERNEL && stackOn);
+        stackOn = stackApplies(duelOnly(MoveDesign.STACK_LIST, enemiesTotal), stackList, name);
+        moveController.setPointKernel(duelOnly(MoveDesign.POINT_KERNEL && stackOn, enemiesTotal));
         // Without memory the B record still goes out, with '-' for what memory would say.
         if (library != null) {
             // MEM-4: a missing or damaged profile loads as a stranger; load never throws.
@@ -1449,7 +1454,7 @@ public final class DuelController {
             Estimate ours = ourWindow.estimate();
             Estimate theirs = theirWindow.estimate();
             // DIST-3: held at the opening distance, no walk in or out.
-            if (distanceMoves(MoveDesign.HOLD_650) && distance.onWave(ours, theirs) != DistancePolicy.Step.HOLD) {
+            if (distanceMoves(duelOnly(MoveDesign.HOLD_650, enemiesTotal)) && distance.onWave(ours, theirs) != DistancePolicy.Step.HOLD) {
                 // The gap's margin: the two estimates' margins combined in quadrature.
                 emitPolicy(round, in.time(), "distance", ours.value() - theirs.value(),
                     Math.hypot(ours.margin(), theirs.margin()),
@@ -1516,7 +1521,8 @@ public final class DuelController {
                 surfMover.setMode(SurfMover.Mode.GO_TO);
                 break;
             case FAR:
-                distance.shiftOut(MoveFlavour.FAR_SHIFT);
+                // DIST-3: the hold keeps the opening distance; the flavour still changes.
+                if (distanceMoves(duelOnly(MoveDesign.HOLD_650, enemiesTotal))) distance.shiftOut(MoveFlavour.FAR_SHIFT);
                 break;
             default:
                 break;

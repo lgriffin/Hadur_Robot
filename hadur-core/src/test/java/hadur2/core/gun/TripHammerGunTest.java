@@ -394,6 +394,23 @@ class TripHammerGunTest {
     }
 
     @Test
+    @Tag("GUN-8")
+    @DisplayName("with the TripHammer on, the main rating is not folded or seed-checked; the anti-surfer pair still is")
+    void mainTotalsLeftOutUnderTripHammer() {
+        GunController g = new GunController(FIELD, 1);
+        g.setTripHammer(true);
+        for (int i = 0; i < 20; i++) {
+            g.recordVirtualShotForTest(BOT, GunController.Opening.MAIN, 1.0);
+            g.recordVirtualShotForTest(BOT, GunController.Opening.ANTI_SURFER, 1.0);
+        }
+        double[] v = g.virtualGunScores(BOT);
+        assertEquals(0.0, v[0], 1e-9);
+        assertEquals(0.0, v[1], 1e-9);
+        assertEquals(20.0, v[2], 1e-9);
+        assertEquals(20.0, v[3], 1e-9);
+    }
+
+    @Test
     @Tag("GUN-10")
     @DisplayName("melee: the switch is ignored")
     void undecayedMelee() {
