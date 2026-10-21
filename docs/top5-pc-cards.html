@@ -106,11 +106,10 @@ footer { color: var(--muted); font-size: 0.9rem; display: grid; gap: 6px; }
   <article class="card">
     <div class="tag"><span class="id">CARD 1</span><h2>Check out the harness and start the queue</h2><span class="time">5 min, then hands off</span></div>
     <div class="inner">
-      <p>The multi-arm bench, pinning and the new tools are on the PR #220 branch. Once that PR is merged, use master instead.</p>
+      <p>The multi-arm bench, pinning and the new tools are on master (PR #220 merged).</p>
       <div class="cmd"><pre id="c1">cd D:\code\Hadur_Robot
-git fetch origin claude/project-thread-0lcb47
-git checkout claude/project-thread-0lcb47
-git pull origin claude/project-thread-0lcb47
+git checkout master
+git pull origin master
 cd hadur-bench
 Test-Path work\pc-1018-stack-census-20261018-105321   # must say True
 .\queue.ps1 run pc-top5</pre><button class="copy" type="button" data-for="c1">Copy</button></div>
@@ -184,7 +183,7 @@ Test-Path work\pc-1018-stack-census-20261018-105321   # must say True
       <div class="cmd"><pre id="c4">cd D:\code\Hadur_Robot
 git add docs/bench/local
 git commit -m "pc-top5: Stage F and Stage 0 reports"
-git push origin claude/project-thread-0lcb47</pre><button class="copy" type="button" data-for="c4">Copy</button></div>
+git push origin master</pre><button class="copy" type="button" data-for="c4">Copy</button></div>
       <p class="muted">The battle folders stay in <code>hadur-bench\work\top5-*</code>. Keep them, because the round-0 and hit reads come from them.</p>
     </div>
   </article>
