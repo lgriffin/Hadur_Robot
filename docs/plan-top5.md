@@ -219,6 +219,27 @@ references from their censuses; rammers taken out of the bands):
   22.2 in band 3) and loses only because they deal more. That is why firepower, surf
   fidelity and the TripHammer gun, all aimed at D, could not move the top-5 numbers.
 
+### Why it happens: what we know and what we don't
+
+The rows say what happened each round, not why the surf chose the move that was hit. The
+evidence we have points one way, but it was measured on other opponents:
+
+- On the top 50 and the 149 random movers, the hit forensics (MOVE-9/10) found 78 to 90% of the
+  damage landed on the surf's own plan, prediction off only 8% of the time, and another
+  first-tick option would have dodged 57 to 61% of it: an option-ranking failure, not a
+  prediction failure. Nobody has run that read on A, B or C.
+- B: 27-36% of the damage is head-on or linear aims, which a wave surfer should all but never
+  take. That points at how the surf weighs simple danger against its learned views, above all
+  in round 0, before it has data.
+- C: flat 25 a round all battle, so the adaptation Hadur has (flattener, view weights) changes
+  nothing against them. Their 7.2% hit rate is above the flattener's 4.5% threshold, so it is
+  probably on and not helping; its state is not in the rows, so this is unverified.
+- A: RAM-2's escape runs only where RAM-3's trial says it pays, so most rammer battles
+  probably have no escape; not checked per battle.
+
+Stage 1 (section 7) answers the why from the pc-1018-stack truth logs already on the PC, with
+no new battles.
+
 ## 5. What the runs do not tell us
 
 - **Where the run component comes from.** No census has run one build twice, so a shift that
