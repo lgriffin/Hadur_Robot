@@ -594,15 +594,22 @@ public class MoveController {
      *
      * @param options one interval or null per option, all on the same wave; copied
      * @param chosen the ordinal of the option taken
+     * @return true when these were the wave's first options, the ones kept
      */
-    public void publishOptions(PlanInterval[] options, int chosen) {
+    public boolean publishOptions(PlanInterval[] options, int chosen) {
         Wave w = null;
         for (PlanInterval i : options) if (i != null) w = i.wave;
-        if (w == null) return;
-        if (lastOptions.containsKey(w)) return;
+        if (w == null) return false;
+        if (lastOptions.containsKey(w)) return false;
         lastOptions.put(w, options.clone());
         lastChosen.put(w, chosen);
         lastOptionTimes.put(w, lastCheckTime);
+        return true;
+    }
+
+    /** AES-1: whether wave {@code w} has had its first options published this round. */
+    public boolean hasOptions(Wave w) {
+        return lastOptions.containsKey(w);
     }
 
     /** MOVE-10: the tick {@link #lastOptionsFor} was published, or -1 when there is none. */
@@ -1068,6 +1075,21 @@ public class MoveController {
      */
     public double getDangerScore(Wave w, Wave.Intersection intersection,
                                   int surfWaveIndex) {
+        return getDangerScore(w, intersection, surfWaveIndex, null);
+    }
+
+    /**
+     * AES-1: {@link #getDangerScore}, also writing each view's two sums into {@code parts}
+     * when it is not null: {@code parts[i]} is view {@code i}'s weight times its density,
+     * {@code parts[n + i]} its weight times its scan weight (both 0 for a view that is off
+     * or empty), and {@code parts[2n]} the fallback's danger when the fallback was used, else
+     * NaN. The score is the sum of the first n over the sum of the next n. Measurement only.
+     *
+     * @param parts null, or at least {@code 2 * viewCount() + 1} long
+     */
+    double getDangerScore(Wave w, Wave.Intersection intersection, int surfWaveIndex,
+                          double[] parts) {
+        if (parts != null) Arrays.fill(parts, 0, 2 * views.size(), 0.0);
         double dangerAngle = intersection.angle;
         double bandwidth = intersection.bandwidth;
         validateCache(w, surfWaveIndex);
@@ -1110,12 +1132,19 @@ public class MoveController {
             }
             totalScanWeight += viewScanWeight * viewWeight;
             totalDanger += viewWeight * density;
+            if (parts != null) {
+                parts[vi] = viewWeight * density;
+                parts[views.size() + vi] = viewWeight * viewScanWeight;
+            }
         }
 
         // !(x > 0) also catches NaN.
         if (enabledSize == 0 || !(totalScanWeight > 0)) {
-            return defaultDanger(w, segments, bandwidth);
+            double fallback = defaultDanger(w, segments, bandwidth);
+            if (parts != null) parts[2 * views.size()] = fallback;
+            return fallback;
         }
+        if (parts != null) parts[2 * views.size()] = Double.NaN;
         return totalDanger / totalScanWeight;
     }
 

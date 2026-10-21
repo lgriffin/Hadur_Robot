@@ -83,6 +83,12 @@ public class SurfMover {
     private Point2D.Double enemyAt;
     /** MOVE-12: whether the escape-room position term scales the first wave's danger (off by default). */
     private boolean escapeRoomTerm;
+    /** AES-1: whether each wave's first three-option rating is recorded (bench builds only; off by default). */
+    private boolean aesRecord;
+    /** AES-1: while an option is rated for the record, where its first wave's terms go; else null. */
+    private double[] aesCapture;
+    /** AES-1: records made since the last {@link #drainAesRecords}. */
+    private final List<String> aesRecords = new ArrayList<>();
     /** MOVE-14: whether the protean pick may replace the least-danger option (off by default). */
     private boolean proteanOn;
     /** MOVE-14: the mean dwell of a protean pick, in ticks. */
@@ -147,6 +153,23 @@ public class SurfMover {
 
     Point2D.Double distancingPoint(Wave surfWave) {
         return distancingToEnemy && enemyAt != null ? enemyAt : surfWave.sourceLocation;
+    }
+
+    /**
+     * AES-1: whether each wave's first three-option rating is recorded (see {@link AesRecord}).
+     * The rating is then made without the cutoff, so every option's total is whole; the
+     * option taken is the same, since the cutoff only skips options already worse.
+     */
+    public void setAesRecord(boolean on) {
+        this.aesRecord = on;
+    }
+
+    /** AES-1: the records made since the last call, oldest first; the list is then emptied. */
+    public List<String> drainAesRecords() {
+        if (aesRecords.isEmpty()) return List.of();
+        List<String> out = new ArrayList<>(aesRecords);
+        aesRecords.clear();
+        return out;
     }
 
     /**
@@ -384,8 +407,15 @@ public class SurfMover {
         }
 
         boolean goingClockwise = lastSurfOption == SurfOption.CLOCKWISE;
+        // AES-1: the wave's first rating is recorded, with every option's terms.
+        double[][] captures = null;
+        if (aesRecord && !moveCtrl.hasOptions(surfWave)) {
+            captures = new double[SurfOption.values().length][];
+            for (int o = 0; o < captures.length; o++) captures[o] = AesRecord.capture(moveCtrl.viewCount());
+        }
         // MOVE-14: the protean pick needs every option's danger complete, so none is cut off.
-        updateSurfDangers(myState, moveCtrl, wavesToSurf, goingClockwise, proteanNow);
+        updateSurfDangers(myState, moveCtrl, wavesToSurf, goingClockwise,
+            proteanNow || captures != null, captures);
 
         double ccwDanger = surfOptionDangers.getOrDefault(SurfOption.COUNTER_CLOCKWISE, 0.0);
         double stopDanger = surfOptionDangers.getOrDefault(SurfOption.STOP, 0.0);
@@ -429,7 +459,18 @@ public class SurfMover {
             List<PlanInterval> c = surfOptionChains.getOrDefault(o, List.of());
             if (!c.isEmpty() && c.get(0).wave == surfWave) firsts[o.ordinal()] = c.get(0);
         }
-        moveCtrl.publishOptions(firsts, chosen.ordinal());
+        boolean first = moveCtrl.publishOptions(firsts, chosen.ordinal());
+        if (first && captures != null) {
+            SurfOption[] all = SurfOption.values();
+            boolean[] present = new boolean[all.length];
+            double[] totals = new double[all.length];
+            for (SurfOption o : all) {
+                present[o.ordinal()] = firsts[o.ordinal()] != null;
+                totals[o.ordinal()] = surfOptionDangers.getOrDefault(o, Double.NaN);
+            }
+            aesRecords.add(AesRecord.line(surfWave, chosen.ordinal(), moveCtrl.viewCount(),
+                present, totals, captures));
+        }
 
         // Drive the same way the prediction did: toward the destination, wall-smoothed on
         // the orbit's side, reversing rather than turning more than 90 degrees.
@@ -443,14 +484,19 @@ public class SurfMover {
      * Rates the three options from where we stand. Each option's total is passed on as the
      * cutoff for the next, so an option already worse than the best so far is not looked
      * at beyond its first wave; with {@code complete} (MOVE-14) none is cut off, so every
-     * option's total is whole.
+     * option's total is whole. With {@code captures} (AES-1, one per option by ordinal), each
+     * option's first-wave terms are written to its capture.
      */
     private void updateSurfDangers(RobotState myState, MoveController moveCtrl,
-                                    int wavesToSurf, boolean goingClockwise, boolean complete) {
+                                    int wavesToSurf, boolean goingClockwise, boolean complete,
+                                    double[][] captures) {
         double bestDanger = Double.POSITIVE_INFINITY;
         for (SurfOption option : SurfOption.values()) {
+            // AES-1: the first wave's terms go to this option's capture, if recording.
+            aesCapture = captures == null ? null : captures[option.ordinal()];
             double danger = checkDanger(myState, moveCtrl, myState, option,
                 goingClockwise, 0, wavesToSurf, bestDanger, new RobotStateLog());
+            aesCapture = null;
             surfOptionDangers.put(option, danger);
             surfOptionChains.put(option, lastChain);
             if (!complete) bestDanger = Math.min(bestDanger, danger);
@@ -655,7 +701,10 @@ public class SurfMover {
         // views' score already counts only what the shadows let through (MOVE-3); the hit-rate
         // term, which has no angle, keeps 1 - (certain + possible / 2) of its weight.
         double shadowed = surfWave.shadowedFraction(intersection);
-        double viewScore = moveCtrl.getDangerScore(surfWave, intersection, surfWaveIndex);
+        // AES-1: the first wave's terms, when this option is being recorded.
+        double[] cap = surfWaveIndex == 0 ? aesCapture : null;
+        double[] parts = cap == null ? null : new double[2 * moveCtrl.viewCount() + 1];
+        double viewScore = moveCtrl.getDangerScore(surfWave, intersection, surfWaveIndex, parts);
         double danger = hitRate * (1 - shadowed) + viewScore;
         // MOVE-8: what the gun is told about this wave, before the damage and timing scale it.
         lastLeg = intersection == null ? null : PlanInterval.of(surfWave, intersection, danger);
@@ -671,11 +720,28 @@ public class SurfMover {
         double timeToImpact = Math.max(1.0, currentWaveDist / surfWave.bulletSpeed());
         danger /= timeToImpact;
 
-        danger *= distancingDanger(start, passed, distancingPoint(surfWave));
+        Point2D.Double distancingFrom = distancingPoint(surfWave);
+        danger *= distancingDanger(start, passed, distancingFrom);
         // MOVE-12: prefer ends where we keep our escape angle and the enemy loses his.
+        double escape = 1.0;
         if (escapeRoomTerm && surfWaveIndex == 0) {
-            danger *= EscapeRoom.multiplier(passed, surfWave.sourceLocation,
+            escape = EscapeRoom.multiplier(passed, surfWave.sourceLocation,
                 surfWave.bulletSpeed(), battleField);
+            danger *= escape;
+        }
+        if (cap != null) {
+            cap[AesRecord.LOW] = intersection == null ? Double.NaN : intersection.angle - intersection.bandwidth;
+            cap[AesRecord.HIGH] = intersection == null ? Double.NaN : intersection.angle + intersection.bandwidth;
+            cap[AesRecord.FIRST] = danger;
+            cap[AesRecord.HIT_RATE] = hitRate;
+            cap[AesRecord.SHADOWED] = shadowed;
+            cap[AesRecord.VIEW_SCORE] = viewScore;
+            cap[AesRecord.DAMAGE] = Rules.getBulletDamage(surfWave.bulletPower());
+            cap[AesRecord.UNCERTAIN] = surfWave.uncertain ? 1 : 0;
+            cap[AesRecord.TIME_TO_IMPACT] = timeToImpact;
+            cap[AesRecord.DISTANCE_QUOTIENT] = distancingFrom.distance(start) / distancingFrom.distance(passed);
+            cap[AesRecord.ESCAPE] = escape;
+            System.arraycopy(parts, 0, cap, AesRecord.FIXED, parts.length);
         }
         return danger;
     }
