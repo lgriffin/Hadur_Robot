@@ -251,8 +251,8 @@ table above (round buckets weighted by rounds):
 |---|---|---|---|---|---|---|
 | A rammers (87) | 26.9 | 9.5 | 17.4 | no surf plan on the wave: 18.9 (head-on 11.3 + linear 11.7 of all hits; views rated 23.7 "known") | 8.7 | **passes** |
 | C large losses (88) | 25.3 | 16.4 | 8.9 | on-plan hits another first-tick option would have dodged: 14.4 (learned aims 19.8, views rated 14.7 "mid") | 4.5 | **passes** |
-| B 801+ (367) | 4.3 | ~2.7 (band 6) | ~1.6 | head-on + linear aims: 1.5 | 0.8 | passes, thin |
-| B 401-800 (352) | 10.3 | ~10.7 (band 5) | ~0 | none: Hadur takes about what ScalarR takes | | **no defence gap** |
+| B 801+ (367) | 4.3 | 2.2 | 2.1 | head-on + linear aims: 1.5 | 1.05 | passes |
+| B 401-800 (352) | 10.3 | 9.2 | 1.1 | head-on + linear aims: 2.7; on-plan dodgeable: 5.2 | 0.55 | passes, but half the excess is longer rounds (see score split) |
 
 - **A is not a surfing problem; it is not surfing.** 70% of the damage comes from waves the
   surf had no plan for, from simple aims the danger views already rated as known. The damage
@@ -267,15 +267,49 @@ table above (round buckets weighted by rounds):
   w2) added +0.03 on the census; the C build differs in being gated per battle on the enemy's
   hit rate, so it can be far bolder where it is on. "Would have dodged" is an upper bound: it
   checks one bullet against the other plans, not what those plans would have met next.
-- **B's gap is not defence in ranks 401-800.** There the candidate already takes about what
-  ScalarR takes, so the 0.92 APS in B must come mostly from the other side of the score:
-  damage dealt, bullet efficiency and how fast Hadur kills (survival and kill bonus). The
-  stage-1 read cannot see that; the census rows can (Hadur's own hit rate and rounds won per
-  band against ScalarR's). In 801+ the small defence gap is the simple aims.
+- **B is defence too, plus round length in 401-800.** (Corrected the same evening: a first
+  version of this table compared B 401-800 with ScalarR's band-5 rows, which hold the C bots,
+  and read "no defence gap". Against the same 352 opponents ScalarR takes 9.2 a round.) In
+  801+ the excess is simple aims; in 401-800 half of it is rounds lasting 9% longer (the score
+  split below).
 - Caveats: the HF records are from 3.13hjsw, not 3.13 (stop-and-start and wall-hit shield on;
-  3.13's own damage rows are 1 to 2 a round higher in B, so for the released 3.13 part of the
-  401-800 gap is defence that the stop-and-start stack already closes), ScalarR's split by aim class is
+  3.13 takes 10.7 and 4.6 a round in B 401-800 and 801+), ScalarR's split by aim class is
   not observable, and flattener state is not in the HF records.
+
+### Score split (2026-10-21): what decides the share in the weak field
+
+`data/tools/score_split.py` (output `docs/bench/local/2026-10-21_score-split.md`) splits each
+segment's bench gap to ScalarR into our own score and the opponent's score (the share with
+Hadur's score swapped for ScalarR's, then theirs; the two parts sum to the gap), and the
+excess damage into damage per tick and ticks per round.
+
+| Segment | Gap (APS) | Our score side | Their score side | Their score, Hadur / ScalarR | Hadur deaths a battle (ScalarR) | Ticks a round | Excess per tick / round length |
+|---|---|---|---|---|---|---|---|
+| A rammers | +0.50 | -0.06 | +0.56 | 1027 / 353 | 0.59 (0.07) | 339 / 332 | +18.2 / +0.6 |
+| B 401-800 | +0.53 | +0.11 | +0.42 | 399 / 319 | 0.69 (0.22) | 608 / 558 | +0.7 / +0.9 |
+| B 801+ | +0.48 | 0.00 | +0.48 | 155 / 72 | 0.17 (0.01) | 450 / 463 | +2.5 / -0.1 |
+| C large losses | +0.96 | +0.31 | +0.65 | 1286 / 692 | 6.28 (2.08) | 1030 / 1107 | +10.7 / -1.9 |
+| D ranks 51-400 | -0.55 | +0.38 | -0.93 | 690 / 849 | 2.22 (1.73) | 906 / 722 | -8.9 / +3.2 |
+
+- **In A and B, Hadur's own score already equals ScalarR's; the share is decided by what the
+  opponent scores.** A point of the opponent's score moves the share as much as ten points of
+  ours in B 401-800 and thirty in 801+ (the ratio of the two scores). Of the 2.47 APS that A, B and C cost on the bench, 2.10 is the opponent's
+  side. A build for these segments has to cut what the opponent scores, and no gun or
+  firepower change can.
+- **Their score is bullet damage and Hadur's deaths.** In B 401-800 the 80-point excess is 45
+  bullet damage, 24 survival (Hadur dies 0.69 rounds a battle against 0.22) and bonuses; in 801+
+  it is 68 bullet damage and 8 survival.
+- **B 401-800 also kills slower**: rounds last 608 ticks against 558, damage dealt 0.082 a
+  tick against 0.102. Half the excess damage there is that exposure; the other half is per
+  tick.
+- **Round 0 is lost to an engine disable in 11% of 3.13's bench battles** (530 of 4,848: round
+  0 lost with under 5 damage dealt, engineDisables 1.03 a battle against 0.12 elsewhere).
+  ScalarR has 7, Diamond 25. Priced within each opponent, it costs 0.13 APS on the bench (0.09
+  on 3.13hjsw). This is "starts each battle worse" in part. Whether the live client has it is
+  not known: live minus bench is +0.05 APS with these battles in and -0.08 with them out, both
+  inside the live page's noise, so the page cannot tell. The live client runs a long-lived JVM; the
+  bench starts a cold JVM per battle with 12 at once. The skipped-turns work (TIME-6, dropped
+  in R8) covered this start grace.
 
 ## 5. What the runs do not tell us
 
