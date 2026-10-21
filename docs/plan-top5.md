@@ -240,6 +240,43 @@ evidence we have points one way, but it was measured on other opponents:
 Stage 1 (section 7) answers the why from the pc-1018-stack truth logs already on the PC, with
 no new battles.
 
+### Stage 1 result (2026-10-21): the hit read on A, B and C
+
+`hit_forensics.py --all` on the kept pc-1018-stack logs (3.13hjsw, every opponent of each
+panel, 4 battles each; outputs and summary in `docs/bench/local/2026-10-21_stage1-hf-*`).
+Bullet damage taken a round while the Duel drove, against ScalarR's whole-battle mean from the
+table above (round buckets weighted by rounds):
+
+| Segment | Hadur | ScalarR | Excess | Largest single cause | Half the excess | Verdict |
+|---|---|---|---|---|---|---|
+| A rammers (87) | 26.9 | 9.5 | 17.4 | no surf plan on the wave: 18.9 (head-on 11.3 + linear 11.7 of all hits; views rated 23.7 "known") | 8.7 | **passes** |
+| C large losses (88) | 25.3 | 16.4 | 8.9 | on-plan hits another first-tick option would have dodged: 14.4 (learned aims 19.8, views rated 14.7 "mid") | 4.5 | **passes** |
+| B 801+ (367) | 4.3 | ~2.7 (band 6) | ~1.6 | head-on + linear aims: 1.5 | 0.8 | passes, thin |
+| B 401-800 (352) | 10.3 | ~10.7 (band 5) | ~0 | none: Hadur takes about what ScalarR takes | | **no defence gap** |
+
+- **A is not a surfing problem; it is not surfing.** 70% of the damage comes from waves the
+  surf had no plan for, from simple aims the danger views already rated as known. The damage
+  sits in the 42 rammers ranked 201-800 (45 to 65 a round); the 44 ranked 801+ cost 6.7. A
+  likely reason is that at ram distance the bullet lands within a few ticks of firing, before
+  a plan exists; distance at the hit is in the HF records and is the first thing to read when
+  designing the build. Mechanism for Stage 3: when the rammer detector fires, move against
+  the simple aims (head-on and linear at close range) instead of relying on the surf.
+- **C is the option-ranking failure seen on the top 50, at full strength.** 88% of the damage
+  lands on the surf's own plan, and another option would have dodged 57% of it, against
+  learned guns at angles the views rated middling. Earlier field-wide surf switches (hc, pk,
+  w2) added +0.03 on the census; the C build differs in being gated per battle on the enemy's
+  hit rate, so it can be far bolder where it is on. "Would have dodged" is an upper bound: it
+  checks one bullet against the other plans, not what those plans would have met next.
+- **B's gap is not defence in ranks 401-800.** There the candidate already takes about what
+  ScalarR takes, so the 0.92 APS in B must come mostly from the other side of the score:
+  damage dealt, bullet efficiency and how fast Hadur kills (survival and kill bonus). The
+  stage-1 read cannot see that; the census rows can (Hadur's own hit rate and rounds won per
+  band against ScalarR's). In 801+ the small defence gap is the simple aims.
+- Caveats: the HF records are from 3.13hjsw, not 3.13 (stop-and-start and wall-hit shield on;
+  3.13's own damage rows are 1 to 2 a round higher in B, so for the released 3.13 part of the
+  401-800 gap is defence that the stop-and-start stack already closes), ScalarR's split by aim class is
+  not observable, and flattener state is not in the HF records.
+
 ## 5. What the runs do not tell us
 
 - **Where the run component comes from.** No census has run one build twice, so a shift that
@@ -373,7 +410,7 @@ they do not identify interactions.
 |---|---|---|---|---|---|
 | A rammers | 0.48 | ram damage vs bullet damage, distance and heading at contact, what RAM-1/RAM-2 do on each rammer | rammer policy gated by the rammer detector | 87 rammers x 4 seeds x 3 arms (3.13, 3.13aa, build); per-bot seed sd 2.3 pts gives ± 0.3 pts | +0.2 to +0.25 |
 | C large losses | 1.12 | for each hit: was it on the surf's plan, was another first-tick option safe, which view rated it, flattener state, distance; is the gun head-on/linear/constant GF | a per-battle "this gun keeps hitting us" response gated on the enemy's hit rate after N waves (on only where it is high, so the panel is its whole effect) | 88 bots x 4 seeds x 3 arms; seed sd 4.8 pts gives ± 0.65 pts | +0.25 to +0.4 |
-| B ranks 401+ | 0.92 | the same hit read on a random 100 of B; round 0 apart from later rounds | whatever Stage 2 and the read point to; B is 60% of the field, so its candidates are field arms in Stage 4, not panel screens | | +0.15 to +0.3 beyond Stage 2 |
+| B ranks 401+ | 0.92 | done on all 719 (section 4, Stage 1 result): no defence gap in 401-800, simple aims in 801+; next read is the scoring side from the census rows | whatever Stage 2 and the read point to; B is 60% of the field, so its candidates are field arms in Stage 4, not panel screens | | +0.15 to +0.3 beyond Stage 2 |
 
 Hit-rate and rammer detectors make A and C safe to screen on their panels: the build does
 nothing until the detector fires, so its effect outside the panel is the detector's false
