@@ -79,6 +79,8 @@ public class LogHarvester extends BattleAdaptor {
         public long ticks;
         public double damageDealt, damageTaken;
         public boolean alive;
+        /** BENCH-91: a robot has died this round, so its damage and outcome are settled. */
+        public boolean decided;
         public int skips;
         /** From the R record; {@code hasRecord} is false when it never arrived. */
         public boolean hasRecord, won;
@@ -131,7 +133,8 @@ public class LogHarvester extends BattleAdaptor {
         if (me != null && enemy != null) {
             noteTurn(round, turn, me.getScoreSnapshot().getCurrentBulletDamageScore(),
                 enemy.getScoreSnapshot().getCurrentBulletDamageScore(),
-                me.getState() != robocode.control.snapshot.RobotState.DEAD);
+                me.getState() != robocode.control.snapshot.RobotState.DEAD,
+                enemy.getState() != robocode.control.snapshot.RobotState.DEAD);
         }
         try {
             if (me != null) harvestConsole(me, turn);
@@ -141,13 +144,25 @@ public class LogHarvester extends BattleAdaptor {
         }
     }
 
-    /** The latest turn of {@code round} wins: damage so far, whether we are alive, and the tick count. */
+    /** As below, with the enemy alive. */
     void noteTurn(int round, int turn, double dealt, double taken, boolean alive) {
+        noteTurn(round, turn, dealt, taken, alive, true);
+    }
+
+    /**
+     * The latest turn of {@code round} sets the tick count. Damage and whether we are alive are
+     * taken from each turn until the first turn a robot is dead, and then kept (BENCH-91): the
+     * engine zeroes a robot's current-round score when it disables it, so a robot disabled in
+     * the turns after it won the round would otherwise read as having lost it with no damage.
+     */
+    void noteTurn(int round, int turn, double dealt, double taken, boolean alive, boolean enemyAlive) {
         RoundRow r = row(round);
         r.ticks = Math.max(r.ticks, turn + 1L);
+        if (r.decided) return;
         r.damageDealt = dealt;
         r.damageTaken = taken;
         r.alive = alive;
+        r.decided = !alive || !enemyAlive;
     }
 
     @Override

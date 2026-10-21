@@ -1,0 +1,5 @@
+# Stage F, free points (docs/plan-top5.md): the control, its A/A copy and the warm-up-off fix arm.
+# label | robot | jar, jars built by pc-top5.queue's prep step.
+c | hadur2.Hadur 3.14 | bisect/hadur2.Hadur_3.14.jar
+aa | hadur2.Hadur 3.14aa | bisect/hadur2.Hadur_3.14aa.jar
+xw | hadur2.Hadur 3.14xw | bisect/hadur2.Hadur_3.14xw.jar

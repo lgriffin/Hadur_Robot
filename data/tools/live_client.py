@@ -372,17 +372,25 @@ HEALTH_COLUMNS = ["utc", "folder", "rounds", "survived", "faults", "skipped", "m
                   "allowance_us", "opponent_key", "shielder", "lead_aware", "profile_battles"]
 
 
+# RES-15 (docs/plan-top5.md, Stage F): from 3.15 the record carries the start-up fields too.
+# They go to startup.tsv, so a health.tsv written by an older watch keeps its columns.
+STARTUP_COLUMNS = ["utc", "folder", "opponent_key", "skipped", "setup_ms", "first_turn", "max_skip_run"]
+
+
 def parse_health(text):
-    """RES-8's record: HEALTH,rounds,survived,faults,skipped,memoryFailures,allowanceNanos."""
+    """RES-8's record: HEALTH,rounds,survived,faults,skipped,memoryFailures,allowanceNanos,
+    then RES-15's optional setupMs,firstTurn,maxRun (None when absent)."""
     f = text.strip().split(",")
     if len(f) < 7 or f[0] != "HEALTH":
         return None
     try:
         n = [int(x) for x in f[1:7]]
+        extra = [int(x) for x in f[7:10]] if len(f) >= 10 else [None, None, None]
     except ValueError:
         return None
     return {"rounds": n[0], "survived": n[1], "faults": n[2], "skipped": n[3],
-            "memory_failures": n[4], "allowance_us": round(n[5] / 1000.0, 1)}
+            "memory_failures": n[4], "allowance_us": round(n[5] / 1000.0, 1),
+            "setup_ms": extra[0], "first_turn": extra[1], "max_skip_run": extra[2]}
 
 
 def health_row(folder, label):
@@ -591,6 +599,14 @@ class Watch:
                              f"{rec['faults']} faults, shield verdict {rec['shielder']}")
         if rows:
             append_tsv(os.path.join(self.out, "health.tsv"), HEALTH_COLUMNS, rows)
+            startup = [r for r in rows if r.get("setup_ms") is not None]
+            if startup:
+                append_tsv(os.path.join(self.out, "startup.tsv"), STARTUP_COLUMNS, startup)
+                for r in startup:
+                    if r["max_skip_run"] > 30:
+                        self.log(f"{r['utc']} START-UP DISABLE? {r['opponent_key'] or '?'}: "
+                                 f"{r['max_skip_run']} skipped turns in a row, setup {r['setup_ms']} ms, "
+                                 f"first turn {r['first_turn']}")
         return rows
 
     def poll_pages(self, fetcher=fetch):

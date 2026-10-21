@@ -6,7 +6,8 @@
 RUN_DIR is a bench output folder (its battles/*/ hold hadur.log, result.csv, rounds.tsv,
 engine.log). One row per battle dir:
 
-  build        baseline (the *-baseline dirs) or candidate
+  build        baseline (the *-baseline dirs) or candidate; in a multi-arm run (BENCH-92, dirs
+               <opponent>-<seed>-<arm>) the arm's label
   slot         the seed slot (the -N suffix); the worker home is not recorded per battle
   disables     the engine's "has not performed any actions" / "Robot disabled" lines, all rounds
   dis_r0       1 when one of those lines falls in round 0
@@ -24,6 +25,8 @@ engine.log). One row per battle dir:
   warm_before  1 when a WARM line appears before the first round-0 skip
   rec_before   1 when a ROLE, TICK or R record appears before the first round-0 skip
   setup_lines  count of WARM/MEM/IO/prepare/profile lines anywhere in round 0
+  setup_warm, setup_core, setup_mem, setup_ms   TIME-8's SETUP record (3.14 on), milliseconds
+  startup_disable  1 when round 0 has a disable line and no round-0 win (the robot never acted)
   start, end   engine.log creation and result.csv modification (epoch seconds)
 Standard library only.
 """
@@ -38,7 +41,7 @@ SETUP = re.compile(r"^(WARM|MEM|IO)\b|prepareMemory|profile", re.I)
 HEADER = ("dir", "opponent", "build", "slot", "disables", "dis_r0", "dis_turn", "r0_won", "r0_dmg",
           "r0_ticks", "r0_result", "r0_rtick", "dis_rounds", "r0_skips", "r0_skips_live", "r0_first", "r0_run", "r0_first_harvest", "first_rec", "first_rec_type",
           "first_tick", "r0_max_gap", "r0_gap_from", "r0_last_budget", "warm_before", "rec_before", "setup_lines", "skips_total", "turn_max_ms",
-          "host_cpu_mean", "start", "end")
+          "host_cpu_mean", "setup_warm", "setup_core", "setup_mem", "setup_ms", "startup_disable", "start", "end")
 
 
 def longest_run(ns):
@@ -56,6 +59,10 @@ def scan(d):
     build = "baseline" if name.endswith("-baseline") else "candidate"
     stem = name[:-len("-baseline")] if build == "baseline" else name
     opp, slot = stem.rsplit("-", 1)
+    if not slot.isdigit() and "-" in opp and opp.rsplit("-", 1)[1].isdigit():
+        # Multi-arm run: <opponent>-<seed>-<arm>.
+        build = slot
+        opp, slot = opp.rsplit("-", 1)
     row = dict(dir=name, opponent=opp, build=build, slot=slot, disables=0, dis_r0=0, dis_turn="",
                r0_result="", r0_rtick="", dis_rounds="", r0_skips_live=0, r0_skips=0, r0_first="", r0_run=0, r0_first_harvest="", first_rec="", first_rec_type="",
                first_tick="", r0_max_gap=0, r0_gap_from="", r0_last_budget="", warm_before=0, rec_before=0, setup_lines=0)
@@ -97,6 +104,12 @@ def scan(d):
             if body.startswith(("=", "Round ", "SYSTEM:", "WARNING:")):
                 continue
             kind = body.split(",", 1)[0]
+            if kind == "SETUP" and row.get("setup_ms") is None:
+                f2 = body.split(",")
+                try:
+                    row["setup_warm"], row["setup_core"], row["setup_mem"], row["setup_ms"] = (float(x) for x in f2[3:7])
+                except ValueError:
+                    pass
             if row["r0_rtick"] == "":
                 if last_rec is not None and turn - last_rec > row["r0_max_gap"]:
                     row["r0_max_gap"], row["r0_gap_from"] = turn - last_rec, last_rec
@@ -125,6 +138,7 @@ def scan(d):
     row["r0_skips_live"] = sum(1 for n in skips if rt == "" or n < rt)
     row["r0_first"] = min(skips) if skips else ""
     row["r0_run"] = longest_run(skips)
+    row["startup_disable"] = int(row["dis_r0"] == 1 and row["r0_result"] != "win")
     try:
         r = next(csv.DictReader(open(os.path.join(d, "result.csv"))))
         row["skips_total"] = r["skippedTurns"]

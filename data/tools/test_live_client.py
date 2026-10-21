@@ -176,6 +176,28 @@ class ClientFilesTest(unittest.TestCase):
         self.assertEqual((rows[0]["opponent_key"], rows[0]["shielder"], rows[0]["skipped"]), ("abc.Shadow", 1, 12))
         self.assertEqual(w.poll_health(), [], "an unchanged record is not read twice")
 
+    def test_start_up_fields_go_to_their_own_file(self):
+        # RES-15: the three optional fields; an older record parses with None for them.
+        rec = lc.parse_health("HEALTH,35,34,0,140,0,-1,612,105,104")
+        self.assertEqual((rec["skipped"], rec["setup_ms"], rec["first_turn"], rec["max_skip_run"]), (140, 612, 105, 104))
+        self.assertIsNone(lc.parse_health("HEALTH,35,35,0,0,0,0")["setup_ms"])
+        w = lc.Watch([self.client], self.out, log=self.lines.append)
+        with open(os.path.join(self.data, "health.hc"), "w") as f:
+            f.write("HEALTH,35,34,0,140,0,-1,612,105,104")
+        rows = w.poll_health()
+        self.assertEqual(len(rows), 1)
+        startup = lc.read_tsv(os.path.join(self.out, "startup.tsv"))
+        self.assertEqual([(r["setup_ms"], r["first_turn"], r["max_skip_run"]) for r in startup], [("612", "105", "104")])
+        health = lc.read_tsv(os.path.join(self.out, "health.tsv"))
+        self.assertEqual(list(health[0].keys()), lc.HEALTH_COLUMNS, "health.tsv keeps its columns")
+        self.assertTrue(any("START-UP DISABLE?" in l for l in self.lines))
+        with open(os.path.join(self.data, "health.hc"), "w") as f:
+            f.write("HEALTH,35,35,0,0,0,0")
+        t = time.time() + 10
+        os.utime(os.path.join(self.data, "health.hc"), (t, t))
+        w.poll_health()
+        self.assertEqual(len(lc.read_tsv(os.path.join(self.out, "startup.tsv"))), 1, "an older record adds no start-up row")
+
     def test_first_record_written_during_the_watch_is_kept(self):
         w = lc.Watch([self.client], self.out, log=self.lines.append)  # no health.hc yet
         self.assertEqual(w.poll_health(), [])

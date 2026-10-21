@@ -38,6 +38,8 @@ Numbers come from `data/tools/census_joint.py` (standard library, tests in CI); 
   13.9 against 7.9), and improves about half as fast over the battle. Against the 88 it does
   not improve at all (25 a round from round 1 to 34; ScalarR 22 falling to 16). Against
   rammers it takes 28 a round; ScalarR takes 8.
+- **Free points first.** The avoidable losses (start-up disables, live stalls) are about
+  0.05 APS in all; each has a measure and a fix rule (Stage F), and none waits on a census.
 - **The plan:** one interleaved multi-arm queue per experiment (every build on every opponent
   and seed, in random order, on CPU-pinned workers) with an A/A arm in every run; a
   calibration run that prices parallelism before anything else; a factorial census that
@@ -317,6 +319,51 @@ excess damage into damage per tick and ticks per round.
   records count skipped turns per battle only (3.12 live: 13% of battles over 30, 14 battles
   over 500 against 2 of 4,848 on the bench).
 
+### Free points (2026-10-21): avoidable losses, and how each is closed
+
+Leigh's rule: no point is lost to something avoidable. Every avoidable loss the data shows is
+listed here with its size and what closes it. Together they are small, about 0.05 APS of the
+1.74, so they do not replace the segment work, but each one is cheap to close and none needs a
+census: a census cannot resolve 0.03 APS, and each fix is judged where its fault happens.
+
+| Loss | How often | Size | Evidence | What closes it |
+|---|---|---|---|---|
+| Start-up disable: Hadur never acts in round 0 and is disabled | 39 of 4,848 bench battles (0.8%); 52 for 3.13hjsw | 0.02-0.03 APS on the bench; live unknown | `2026-10-21_round0-skips.md` | Stage F below: measure where set-up time goes (TIME-8), try the fix arm, ship it if it passes; RES-15 measures it live |
+| Mid-battle disable on a live client | 7 of 1,090 live 3.12 battles counted 33 or 34 rounds (57 to 4,993 skipped turns) | about 0.02 APS | `data/live/2026-10-11_3.12/health.tsv` | RES-15's longest skip run shows whether each is a run of more than 30 turns (a stall) or client load; a fix only if the stall is Hadur's own (collector, file work) |
+| Post-round disable after a won round 0 or the last round | 373 of 4,848 bench battles | 0: the battle totals credit the round | round-0 read | none needed; listed so it is not chased again |
+| Per-round rows that called those wins losses | 373 rows | 0 points, but it misled the first read | round-0 read | fixed: BENCH-91 |
+| Robot faults and memory failures | 0 of 1,295 live battles (3.11, 3.12) | 0 | live health records | none |
+| Skipped turns from load (bench 26% of battles over 30, live 13%) | every battle | priced by Stage 0, not a disable | round-0 read, section 6.2 | Stage 0 picks the setting; pinning is the bench fix |
+
+**Why the start-up disable happens (engine bytecode, Robocode 1.11.1).** `Battle.initializeRound`
+gives each robot min(300 x CPU constant, 10 s) to start the round: 447 ms on the bench's
+constant. Hadur's first-round set-up (TIME-5's warm-up tick, the core and the memory load) runs
+before its first `execute()`. If it takes longer than that, the engine starts the turns without
+it, skips every one, and disables Hadur at its first action after 30 skipped turns. The disabled
+battles show exactly this: every turn skipped from turn 1, first record at turn N, disabled at
+N+1. The IO robot's 240-turn allowance never applies (the flag is not copied to the peer), so
+the only fixes are a shorter set-up or a set-up that moves out of that window.
+
+**Stage F** (first in the PC queue, about 1.5 h): the opponents that had a start-up disable in
+the pc-1018-stack census (`top5_panels.py stall`, from that run's kept logs), 4 seeds, three arms
+in one multi-arm run: c (3.14, which plays 3.13's duel, with the SETUP record), aa (the same robot
+renamed) and xw (TIME-5's warm-up off, so class loading moves into the first turns instead of
+the start-up window). Same load as the census (12 workers, unpinned), at the start of a fresh run.
+
+- **What it decides.** If c reproduces start-up disables on these opponents at the start of a
+  fresh run, the cause is the opponent pairing and the SETUP record says which part of set-up
+  ran long. If it does not (under 1%), the cause is the long run (the census went in rank order),
+  not the opponents: no robot fix, and the bench's own fix is fresh worker homes between blocks.
+- **Fix rule.** xw ships in the next release, without a census, if it cuts start-up disables on
+  this panel, scores no lower than c here (interval above -0.5 points), and on Stage 0's 208
+  opponents over all five blocks scores no lower than -0.3 points with no rise in start-up
+  disables (xw rides in Stage 0 as that guard). If the SETUP record names the memory load or the
+  core rather than the warm-up, xw is the wrong fix, and the next one is built against that part
+  before any other free-points run.
+- **Live.** TIME-8 and RES-15 ship in the next release whatever Stage F finds; the live watch
+  (`live_client.py`) writes `startup.tsv` and flags every battle with a run of more than 30
+  skipped turns. That is the first live measure of round 0 we have.
+
 ## 5. What the runs do not tell us
 
 - **Where the run component comes from.** No census has run one build twice, so a shift that
@@ -373,10 +420,12 @@ Facts we have: 12 workers run about 650 battles an hour (pc-1018-stack: 9,696 ba
 h); Hadur skips 32 to 42 turns a battle at 12 workers (about one a round); 46 to 55% of
 battles meet the bench's "trusted" bar (at most 2 skips a round).
 
-Calibration, one queue, about 5 hours:
+Calibration, one queue (after Stage F), about 5.5 hours:
 
-- Panel: 240 opponents, a stratified random draw from the census (40 per band).
-- Arms: 3.13, 3.13aa, and 3.14hjswhcpkw2 (the heaviest build per turn we have).
+- Panel: 208 opponents, a stratified random draw from the census (all 10 of band 1, all 38 of
+  band 2, 40 from each other band; `top5-s0-panel.txt`).
+- Arms: 3.14 (3.13's duel), 3.14aa, 3.14hjswhcpkw2 (the heaviest build per turn we have) and
+  3.14xw (Stage F's fix arm, guarded here on ordinary opponents).
 - Blocks: 12 workers unpinned (today's setting), 12 pinned, 18 pinned, 22 pinned, then 12
   pinned again (to catch drift), 1 seed per arm per opponent each block.
 
@@ -391,16 +440,32 @@ check is the A/A arm that every later run carries). If 22 pinned passes, the PC 
 about 1.7 times today's throughput for every later stage; if nothing above 12 passes, the
 plan still gains its 4 to 8 times from the factorial design and runs at 12.
 
-### 6.3 Tooling (cloud, before any PC time)
+### 6.3 Tooling (built 2026-10-21, PR #220)
 
-- `Bench`: `--arms`, shuffled per-job arm order, `--pin` (affinity masks), the build column in
-  every rows file, the A/A arm checked in the report. Unit tests as for BENCH-52.
-- `data/tools/factorial.py`: main effects and two-way alias sets from a multi-arm rows file,
-  per segment A-E and per band, with intervals from the opponent-level differences; tests.
-- `build-ablation.sh` combinations for the 16 factorial arms, built and smoke-run in CI from
-  one commit of the 3.14 line (`ed968c98`), each ablation checked to apply once.
-- `hit_forensics`-style read of the pc-1018-stack truth logs for segments A, B and C (runs on
-  the PC from the kept logs; no battles).
+- `Bench --arms FILE` (BENCH-92): every arm on every (opponent, seed) job, cold, in an order
+  shuffled from the job; `arms.tsv`, one row per battle; the per-arm table in `report.md`.
+  `bench-top20.sh --arms FILE --pin [--pin-offset N]` passes it through.
+- `Bench --pin true` (BENCH-93): worker w bound to processors `2 + 2(w-1)` and the next
+  (PowerShell `ProcessorAffinity` on Windows, `taskset -a -p` elsewhere), refused above the
+  host's room (22 workers on the 48-processor PC); each battle's `pin.txt` says what happened.
+- `LogHarvester` (BENCH-91): a round's row is fixed at the first death, so a post-round disable
+  no longer turns a win into a loss.
+- Robot telemetry: TIME-8 prints `SETUP,0,0,warm,core,memory,total` (ms) once; RES-15 adds the
+  set-up time, first turn and longest skip run to the health record, which `live_client.py`
+  writes to `startup.tsv`.
+- `build-ablation.sh`: `aa` (the same robot renamed, the A/A arm) and `nowarm` (suffix xw); all
+  15 factorial combinations build from one commit, each ablation applying once.
+- `data/tools/multiarm.py` (BENCH-94, tests in CI): each arm against the pooled control and A/A
+  arms per opponent with 95% intervals; the A/A 1% band; per band, per segment A-E
+  (`plans/top5-segments.tsv`) and census-weighted to the field; skips, trusted share, disables;
+  battles an hour; factorial main effects from a design file; start-up disables and set-up time
+  per arm from `round0_skips.py` (which now reads multi-arm dirs and the SETUP record).
+- Panels (`tools/top5_panels.py`): `top5-s0-panel.txt` (208 bots: all 10 of band 1, all 38 of
+  band 2, 40 from each other band), the stall panel (built on the PC from the kept logs) and the
+  census halves `top5-census-half1/2.txt`.
+- Queues: `plans/pc-top5.queue` (Stage F, then Stage 0, about 7 h, one queue) and
+  `plans/pc-top5-s2.queue` (Stage 2 half 1, gated on Stage 0; 17 arms from
+  `plans/top5-factorial.arms` and `.design`). Run cards: the PC cards page.
 
 ## 7. The plan
 
@@ -408,7 +473,8 @@ plan still gains its 4 to 8 times from the factorial design and runs at 12.
 
 | Stage | Where | PC hours | What it decides |
 |---|---|---|---|
-| 0 Calibration | PC, one queue | ~5 | worker count; whether the run component is a bench defect |
+| F Free points | PC, first in the Stage 0 queue | ~1.5 | whether start-up disables come from the opponent or the long run; whether the xw fix ships |
+| 0 Calibration | PC, one queue | ~5.5 | worker count; whether the run component is a bench defect; xw's guard |
 | 1 Mechanism reads for A, B, C | cloud + PC log read (minutes) | <1 | what to build for each segment, with numbers |
 | 2 Factorial census of eight built parts | PC, one queue | 8-16 per half | which parts ship; the base for stage 4 |
 | 3 Segment builds, panel screens | PC, one queue | ~3 | whether the A and C builds work where they act |
@@ -458,6 +524,10 @@ positives, which the Stage 4 rows count directly.
 
 ### 7.4 What ends a line of work (fixed now)
 
+- **Stage F.** xw ships only by the fix rule in section 4 (fewer start-up disables on the stall
+  panel, no score cost there or on Stage 0's panel). If c shows under 1% start-up disables on
+  the stall panel at the start of a fresh run, the robot side closes and the bench restarts its
+  worker homes between blocks. Either way, TIME-8 and RES-15 ship.
 - **Stage 0.** If the A/A difference falls outside its own 95% interval in more than one of
   the five blocks, or the two 12-pinned blocks (first and last) disagree beyond their noise,
   the bench has a defect: stop the plan and find it before measuring anything else. In every
@@ -501,7 +571,7 @@ available gap to land, which is what ScalarR itself does against these bots. Eac
 point says whether that is still possible: after Stage 2 the built parts are priced; after
 Stage 3 the two concentrated segments are priced; Stage 4 is the only census verdict.
 
-PC time: Stage 0 ~5 h, Stage 2 9-16 h per half (9 at 22 pinned workers, 16 at 12), Stage 3
+PC time: Stage F ~1.5 h and Stage 0 ~5.5 h (one queue), Stage 2 9-16 h per half (9 at 22 pinned workers, 16 at 12), Stage 3
 ~3 h, Stage 4 10-17 h. Between 27 and 51 hours, plus 9 to 16 if Stage 2's second half is
 needed, against 40 hours already spent on single comparisons; every hour of it measures
 several things at once, and each stage can stop the plan.

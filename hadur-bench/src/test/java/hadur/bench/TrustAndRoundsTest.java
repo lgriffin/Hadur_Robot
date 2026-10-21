@@ -251,6 +251,27 @@ class TrustAndRoundsTest {
     }
 
     @Test
+    @Tag("BENCH-91")
+    @DisplayName("a round won and then lost to an engine disable in the post-round turns still reads as won, with its damage")
+    void roundSettlesAtFirstDeath(@TempDir Path tmp) throws IOException {
+        LogHarvester h = new LogHarvester(tmp, "us");
+        h.noteTurn(0, 400, 90, 12, true, true);
+        h.noteTurn(0, 401, 100, 12, true, false);
+        // The engine disables us 60 turns later and zeroes our current-round score.
+        h.noteTurn(0, 461, 0, 0, false, false);
+        h.noteTurn(0, 552, 0, 0, false, false);
+        h.noteTurn(1, 30, 0, 0, false, true);
+        h.noteTurn(1, 31, 0, 0, false, true);
+        h.close();
+        LogHarvester.RoundRow r0 = h.rounds().get(0), r1 = h.rounds().get(1);
+        assertTrue(r0.alive, "we outlived the enemy in round 0");
+        assertEquals(100, r0.damageDealt, 1e-9);
+        assertEquals(12, r0.damageTaken, 1e-9);
+        assertEquals(553, r0.ticks, "the round's length still counts every turn");
+        assertFalse(r1.alive, "a start-up disable is a lost round");
+    }
+
+    @Test
     @Tag("BENCH-23")
     @DisplayName("a run's battle directories merge into one file, in directory order")
     void mergesRunDirectories(@TempDir Path work) throws IOException {

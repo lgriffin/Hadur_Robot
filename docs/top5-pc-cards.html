@@ -1,0 +1,227 @@
+<title>Top-5 PC Run Cards</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one column of run cards, each a tag-like header strip over what it runs, how long, what it measures and what ends it. */
+:root {
+  --bg: #f3f5f6;
+  --surface: #ffffff;
+  --ink: #17212b;
+  --muted: #56636f;
+  --rule: #d5dde3;
+  --accent: #0b6e7f;
+  --accent-soft: #e0f0f2;
+  --code-bg: #eef2f4;
+  --go: #2f7d3e;
+  --hold: #a35a00;
+  --stop: #b3261e;
+  --display: "Barlow Condensed", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+  --body: "Source Sans 3", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #11171c; --surface: #18212a; --ink: #e4eaee; --muted: #9aa8b3; --rule: #2a3742;
+    --accent: #5cc3d3; --accent-soft: #15333a; --code-bg: #0e1418;
+    --go: #6cc47c; --hold: #e3a24a; --stop: #f08078; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #11171c; --surface: #18212a; --ink: #e4eaee; --muted: #9aa8b3; --rule: #2a3742;
+  --accent: #5cc3d3; --accent-soft: #15333a; --code-bg: #0e1418;
+  --go: #6cc47c; --hold: #e3a24a; --stop: #f08078; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 16px; line-height: 1.55;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 32px 64px;
+}
+main { max-width: 860px; margin: 0 auto; display: grid; gap: 28px; }
+h1, h2, h3 { font-family: var(--display); text-wrap: balance; margin: 0; letter-spacing: 0.01em; }
+h1 { font-size: 2.6rem; font-weight: 700; line-height: 1.05; }
+h2 { font-size: 1.55rem; font-weight: 600; }
+h3 { font-size: 1.05rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+p { margin: 0; max-width: 68ch; }
+.lede { display: grid; gap: 12px; }
+.lede p { color: var(--muted); }
+.facts { display: flex; flex-wrap: wrap; gap: 8px 20px; font-size: 0.95rem; }
+.facts span { font-variant-numeric: tabular-nums; }
+.facts b { font-weight: 600; }
+.rules { border: 1px solid var(--rule); border-left: 4px solid var(--hold); background: var(--surface); padding: 14px 18px; display: grid; gap: 6px; }
+.rules ul { margin: 0; padding-left: 1.1em; display: grid; gap: 4px; }
+.card { background: var(--surface); border: 1px solid var(--rule); border-radius: 6px; overflow: hidden; }
+.tag { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; padding: 12px 18px; background: var(--accent-soft); border-bottom: 1px solid var(--rule); }
+.tag .id { font-family: var(--mono); font-weight: 600; font-size: 0.85rem; color: var(--accent); letter-spacing: 0.04em; }
+.tag h2 { flex: 1 1 260px; min-width: 0; }
+.tag .time { font-family: var(--mono); font-size: 0.85rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+.card.gated .tag { background: transparent; }
+.card.gated .tag .id { color: var(--hold); }
+.inner { padding: 16px 18px 18px; display: grid; gap: 14px; }
+.cmd { position: relative; min-width: 0; }
+pre { margin: 0; background: var(--code-bg); border: 1px solid var(--rule); border-radius: 4px; padding: 12px 14px; padding-right: 72px; overflow-x: auto; font-family: var(--mono); font-size: 0.82rem; line-height: 1.6; }
+.copy { position: absolute; top: 8px; right: 8px; font: 600 0.75rem var(--body); color: var(--accent); background: var(--surface); border: 1px solid var(--rule); border-radius: 4px; padding: 3px 9px; cursor: pointer; }
+.copy:hover { border-color: var(--accent); }
+.copy:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px 22px; }
+.grid2 > div { min-width: 0; display: grid; gap: 6px; align-content: start; }
+ul.tight { margin: 0; padding-left: 1.1em; display: grid; gap: 4px; }
+.verdicts { display: grid; gap: 8px; }
+.v { display: grid; grid-template-columns: 76px 1fr; gap: 10px; align-items: baseline; }
+.pill { font: 600 0.72rem var(--mono); text-transform: uppercase; letter-spacing: 0.06em; padding: 2px 0; text-align: center; border-radius: 3px; border: 1px solid currentColor; }
+.pill.go { color: var(--go); } .pill.hold { color: var(--hold); } .pill.stop { color: var(--stop); }
+.tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 0.92rem; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 6px 10px; border-bottom: 1px solid var(--rule); white-space: nowrap; }
+th { font-weight: 600; color: var(--muted); font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.05em; }
+code { font-family: var(--mono); font-size: 0.86em; background: var(--code-bg); padding: 1px 4px; border-radius: 3px; overflow-wrap: anywhere; }
+.muted { color: var(--muted); }
+footer { color: var(--muted); font-size: 0.9rem; display: grid; gap: 6px; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<main>
+  <header class="lede">
+    <h1>Top-5 PC run cards</h1>
+    <p>One queue, <code>pc-top5</code>, runs Stage F (free points) and then Stage 0 (calibration) from <code>docs/plan-top5.md</code>. Card 1 starts it and Cards 2 and 3 describe what runs. Card 4 sends the reports back. Card 5 is for later: it waits on Stage 0.</p>
+    <div class="facts">
+      <span><b>Total</b> about 7 h 15 min</span>
+      <span><b>Battles</b> about 5,200</span>
+      <span><b>Arms per job</b> 3 (F), 4 (Stage 0)</span>
+      <span><b>Repo</b> D:\code\Hadur_Robot</span>
+    </div>
+  </header>
+
+  <section class="rules" aria-label="Rules for every card">
+    <h3>Every card</h3>
+    <ul>
+      <li>Set the RoboRumble workers to 0 before you start, and keep them at 0 until the log says <code>ALLDONE</code>.</li>
+      <li>Run one bench queue at a time. Nothing else should be benching while this runs.</li>
+      <li>Nothing in this queue deletes a log. Stage F reads the kept <code>pc-1018-stack</code> census logs and does not change them.</li>
+      <li>The queue can resume: after a restart, <code>.\queue.ps1 run pc-top5</code> skips the steps that already passed.</li>
+    </ul>
+  </section>
+
+  <article class="card">
+    <div class="tag"><span class="id">CARD 1</span><h2>Check out the harness and start the queue</h2><span class="time">5 min, then hands off</span></div>
+    <div class="inner">
+      <p>The multi-arm bench, pinning and the new tools are on the PR #220 branch. Once that PR is merged, use master instead.</p>
+      <div class="cmd"><pre id="c1">cd D:\code\Hadur_Robot
+git fetch origin claude/project-thread-0lcb47
+git checkout claude/project-thread-0lcb47
+git pull origin claude/project-thread-0lcb47
+cd hadur-bench
+Test-Path work\pc-1018-stack-census-20261018-105321   # must say True
+.\queue.ps1 run pc-top5</pre><button class="copy" type="button" data-for="c1">Copy</button></div>
+      <div class="grid2">
+        <div><h3>Prep step (about 15 min)</h3><p>Builds four jars from this commit: <code>3.14</code> (control), <code>3.14aa</code> (A/A copy), <code>3.14xw</code> (warm-up off) and <code>3.14hjswhcpkw2</code> (heaviest build). Then it fetches the panel's opponents.</p></div>
+        <div><h3>Watch it</h3><p><code>.\queue.ps1 status pc-top5</code>, or the log <code>hadur-bench\work-queue-pc-top5.log</code>. To pause, run <code>.\queue.ps1 stop pc-top5</code>.</p></div>
+      </div>
+    </div>
+  </article>
+
+  <article class="card">
+    <div class="tag"><span class="id">CARD 2 · STAGE F</span><h2>Free points: the start-up disable</h2><span class="time">about 1 h 30 min</span></div>
+    <div class="inner">
+      <p>In the census, Hadur was disabled at the start of round 0 in 0.8% of battles: it never took a turn in that round. The engine gives each robot 300 × the CPU constant to start a round (447 ms on the bench). If Hadur's set-up runs longer, the engine skips turns until it disables Hadur. This card finds out whether that comes from the opponents or from the long run, and tests one fix.</p>
+      <div class="grid2">
+        <div><h3>Runs</h3><ul class="tight">
+          <li><code>stall</code>: builds the panel from the census logs. It lists every opponent with a start-up disable, about 85 bots.</li>
+          <li><code>F</code>: 4 seeds, arms c, aa and xw, 12 workers unpinned (the census setting), at the start of a fresh run.</li>
+          <li><code>F-read</code>: writes <code>docs/bench/local/&lt;date&gt;_top5-F.md</code>.</li>
+        </ul></div>
+        <div><h3>Measures</h3><ul class="tight">
+          <li>Start-up disables per arm on these opponents.</li>
+          <li>Set-up time per arm from the new SETUP record, split into warm-up, core and memory.</li>
+          <li>The xw arm against c and aa: score and disables.</li>
+        </ul></div>
+      </div>
+      <div class="verdicts">
+        <h3>What the result decides</h3>
+        <div class="v"><span class="pill go">ship</span><p>xw cuts start-up disables here, scores no lower than c (interval above −0.5 points), and passes its Stage 0 guard. It goes into the next release without a census.</p></div>
+        <div class="v"><span class="pill hold">rebuild</span><p>c still stalls, but SETUP shows the long part is the core or the memory load, not the warm-up. xw is the wrong fix, so a fix for that part comes first.</p></div>
+        <div class="v"><span class="pill stop">close</span><p>c stalls in under 1% of battles at the start of a fresh run. The cause is the long run, not these opponents. No robot fix is needed, and the bench gets fresh worker homes between blocks instead.</p></div>
+      </div>
+      <p class="muted">Expected size: 0.02 to 0.03 APS on the bench. Live it is not measured yet. The next release carries the SETUP record and the start-up fields in the health record, and the live watch writes them to <code>startup.tsv</code>.</p>
+    </div>
+  </article>
+
+  <article class="card">
+    <div class="tag"><span class="id">CARD 3 · STAGE 0</span><h2>Calibration: how many workers the PC can run</h2><span class="time">about 5 h 30 min</span></div>
+    <div class="inner">
+      <p>The panel is 208 opponents: every bot in bands 1 and 2, and 40 from each other band. Each block runs the same seeds with four arms per job, in shuffled order: c, aa, hv (heaviest per turn) and xw (Stage F's fix, guarded here on ordinary opponents). The blocks run in this order:</p>
+      <div class="tablewrap"><table>
+        <thead><tr><th>Step</th><th>Workers</th><th>Pinned</th><th>Battles</th><th>About</th><th>Why</th></tr></thead>
+        <tbody>
+          <tr><td><code>s0-u12</code></td><td>12</td><td>no</td><td>832</td><td>1 h 20</td><td>today's setting</td></tr>
+          <tr><td><code>s0-p12</code></td><td>12</td><td>yes</td><td>832</td><td>1 h 20</td><td>what pinning alone does</td></tr>
+          <tr><td><code>s0-p18</code></td><td>18</td><td>yes</td><td>832</td><td>55 min</td><td>more throughput</td></tr>
+          <tr><td><code>s0-p22</code></td><td>22</td><td>yes</td><td>832</td><td>45 min</td><td>the most the 48 processors pin</td></tr>
+          <tr><td><code>s0-p12b</code></td><td>12</td><td>yes</td><td>832</td><td>1 h 20</td><td>drift check against p12</td></tr>
+        </tbody>
+      </table></div>
+      <div class="grid2">
+        <div><h3>Measures, per block</h3><ul class="tight">
+          <li>Battles an hour, skipped turns a round, share of trusted battles</li>
+          <li>Start-up disables and set-up time per arm</li>
+          <li>c's panel level, A/A difference against its band, hv and xw against the pooled reference</li>
+        </ul></div>
+        <div><h3>Output</h3><p><code>s0-read</code> writes <code>docs/bench/local/&lt;date&gt;_top5-s0.md</code>, with one section per block and a side-by-side table.</p></div>
+      </div>
+      <div class="verdicts">
+        <h3>What the result decides</h3>
+        <div class="v"><span class="pill go">pick</span><p>Use the largest worker count whose skipped turns a round stay within 15% of p12, and whose c level and hv difference agree with p12. If 22 passes, every later stage runs about 1.7 times faster.</p></div>
+        <div class="v"><span class="pill stop">stop</span><p>The A/A pair falls outside its 95% interval in more than one block, or p12 and p12b disagree beyond their noise. That is a bench defect, so the plan stops until it is found.</p></div>
+      </div>
+    </div>
+  </article>
+
+  <article class="card">
+    <div class="tag"><span class="id">CARD 4</span><h2>Send the reports back</h2><span class="time">2 min</span></div>
+    <div class="inner">
+      <p>When the log says <code>ALLDONE</code>, push the reports, or say so in the thread and I will read them over Remote Control.</p>
+      <div class="cmd"><pre id="c4">cd D:\code\Hadur_Robot
+git add docs/bench/local
+git commit -m "pc-top5: Stage F and Stage 0 reports"
+git push origin claude/project-thread-0lcb47</pre><button class="copy" type="button" data-for="c4">Copy</button></div>
+      <p class="muted">The battle folders stay in <code>hadur-bench\work\top5-*</code>. Keep them, because the round-0 and hit reads come from them.</p>
+    </div>
+  </article>
+
+  <article class="card gated">
+    <div class="tag"><span class="id">CARD 5 · STAGE 2 · WAIT</span><h2>Factorial census, half 1</h2><span class="time">9 to 16 h</span></div>
+    <div class="inner">
+      <p>Do not start this until Stage 0 has passed. It runs 17 arms on half the census (606 bots, one seed each, 10,302 battles), a 2<sup>8−4</sup> design over hj, sw, S, G, R, F, N and T. That gives each of the eight parts a main effect to ±0.13 APS in one run, which one census pair could not resolve. First set the line <code>set P = --parallel 22 --pin</code> in <code>plans/pc-top5-s2.queue</code> to the worker count Stage 0 picked.</p>
+      <div class="cmd"><pre id="c5">cd D:\code\Hadur_Robot\hadur-bench
+.\queue.ps1 run pc-top5-s2</pre><button class="copy" type="button" data-for="c5">Copy</button></div>
+      <div class="verdicts">
+        <div class="v"><span class="pill go">keep</span><p>The part's effect is at least +0.10 with its interval above 0, and no segment A to E falls below −0.05 APS.</p></div>
+        <div class="v"><span class="pill stop">drop</span><p>The part's effect is under 0.10 in size, with an interval of ±0.13 or better.</p></div>
+        <div class="v"><span class="pill hold">half 2</span><p>Run the second half only if some part sits between 0.10 and 0.25.</p></div>
+      </div>
+    </div>
+  </article>
+
+  <footer>
+    <p>Plan: <code>docs/plan-top5.md</code> (PR #220), section 4 "Free points" and sections 6 and 7. Tools: <code>data/tools/multiarm.py</code>, <code>hadur-bench/tools/top5_panels.py</code> and <code>round0_skips.py</code>.</p>
+    <p>Times assume about 650 battles an hour at 12 workers, the rate of the pc-1018-stack census.</p>
+  </footer>
+</main>
+
+<script>
+document.querySelectorAll(".copy").forEach(function (b) {
+  b.addEventListener("click", function () {
+    var pre = document.getElementById(b.getAttribute("data-for"));
+    var text = pre.textContent;
+    function done(label) { b.textContent = label; setTimeout(function () { b.textContent = "Copy"; }, 1600); }
+    function select() {
+      var r = document.createRange(); r.selectNodeContents(pre);
+      var s = window.getSelection(); s.removeAllRanges(); s.addRange(r); done("Selected");
+    }
+    try {
+      navigator.clipboard.writeText(text).then(function () { done("Copied"); }, select);
+    } catch (e) { select(); }
+  });
+});
+</script>

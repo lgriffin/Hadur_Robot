@@ -1,0 +1,64 @@
+# Top-5 plan, first PC queue (docs/plan-top5.md: Stage F, free points, then Stage 0, calibration).
+# One bench queue on the PC, RoboRumble workers at 0 until ALLDONE. Run from the branch that carries
+# the multi-arm harness (claude/project-thread-0lcb47, PR #220) or from master once that is merged:
+#   ./queue.sh run pc-top5        (or  .\queue.ps1 run pc-top5)
+# Resumable: a restart skips the steps that exited 0. Reads only: no census log is deleted.
+#
+# Stage F (about 1.6 h): the opponents that had a start-up disable in the pc-1018-stack census
+# (Hadur never acted in round 0), 4 seeds, three arms: c (3.14, 3.13's duel, with the SETUP record),
+# aa (the same robot renamed, A/A) and xw (TIME-5's warm-up off). Same load as the census (12
+# workers, unpinned) but at the start of a fresh run, so it also separates "these opponents" from
+# "late in a long run" (the census ran in rank order, so the two were confounded).
+#   Read: start-up disables per arm, setup ms per arm (warm / core / memory), xw - c.
+#   Fix rule: xw ships (as a release fix, no census) if it cuts start-up disables on this panel, its
+#   score here is no lower than c's (interval above -0.5 points), and on Stage 0's 208 bots over all
+#   five blocks it is no lower than -0.3 points with no rise in start-up disables. If c reproduces fewer than 1% start-up
+#   disables here, the cause is the long run, not the opponents: no robot fix, and the bench restarts
+#   its workers between blocks (item for the harness).
+#
+# Stage 0 (about 5.5 h): the 208-bot stratified panel (top5-s0-panel.txt: all of bands 1 and 2, 40
+# from each other band), arms c, aa, hv (3.14hjswhcpkw2, the heaviest per turn) and xw (the fix arm,
+# guarded here on ordinary opponents), 1 seed, the same seeds in every block: 12 workers unpinned
+# (today), 12 pinned, 18 pinned, 22 pinned, 12 pinned again.
+#   Read (plan 6.2): per block, battles an hour, skipped turns a round, trusted share, start-up
+#   disables, c's panel level, A/A, hv - ref. Take the largest worker count whose skips a round stay
+#   within 15% of the first 12-pinned block and whose c level and hv difference agree with it.
+#   Stop rule (plan 7.4): A/A outside its 95% interval in more than one block, or the two 12-pinned
+#   blocks disagreeing beyond their noise, means a bench defect: stop and find it.
+# Reports: ../docs/bench/local/<date>_top5-F.md, <date>_top5-s0.md (plus the bench's own per block).
+
+set HEAP = --child-heap 2G
+set E = --engine 1.11.1
+set C = --skip-build --skip-fetch --rounds 35 --cpu-constant 1488498 ${HEAP} ${E}
+set F = --set top5-stall.txt --seeds 4 --seed-base 1300 --arms plans/top5-free.arms
+set S0 = --set top5-s0-panel.txt --seeds 1 --seed-base 1200 --arms plans/top5-s0.arms
+set READ = --census census-312.txt --segments plans/top5-segments.tsv
+
+prep | mkdir -p bisect && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur2.Hadur_3.14.jar bisect/ && bash ./build-ablation.sh aa && bash ./build-ablation.sh nowarm && bash ./build-ablation.sh heatjit,swall,hitclr,pkern,keep2 && ./fetch-opponents.sh --set top5-s0-panel.txt && mvn -q compile
+
+stall | python3 tools/round0_skips.py work/pc-1018-stack-census-20261018-105321 work/round0-pc1018.tsv && python3 tools/top5_panels.py stall census-312.txt top5-stall.txt work/round0-pc1018.tsv && ./fetch-opponents.sh --set top5-stall.txt
+  after: prep
+
+F | ./bench-top20.sh ${C} ${F} --parallel 12 --out work/top5-F --label top5-F
+  after: stall
+
+F-read | python3 tools/round0_skips.py work/top5-F work/top5-F/round0.tsv && python3 ../data/tools/multiarm.py work/top5-F/arms.tsv ${READ} --out ../docs/bench/local/$(date +%Y-%m-%d)_top5-F.md
+  after: F
+
+s0-u12 | ./bench-top20.sh ${C} ${S0} --parallel 12 --out work/top5-s0-u12 --label top5-s0-u12
+  after: F-read
+
+s0-p12 | ./bench-top20.sh ${C} ${S0} --parallel 12 --pin --out work/top5-s0-p12 --label top5-s0-p12
+  after: s0-u12
+
+s0-p18 | ./bench-top20.sh ${C} ${S0} --parallel 18 --pin --out work/top5-s0-p18 --label top5-s0-p18
+  after: s0-p12
+
+s0-p22 | ./bench-top20.sh ${C} ${S0} --parallel 22 --pin --out work/top5-s0-p22 --label top5-s0-p22
+  after: s0-p18
+
+s0-p12b | ./bench-top20.sh ${C} ${S0} --parallel 12 --pin --out work/top5-s0-p12b --label top5-s0-p12b
+  after: s0-p22
+
+s0-read | for d in u12 p12 p18 p22 p12b; do python3 tools/round0_skips.py work/top5-s0-$d work/top5-s0-$d/round0.tsv || exit 1; done && python3 ../data/tools/multiarm.py work/top5-s0-u12/arms.tsv work/top5-s0-p12/arms.tsv work/top5-s0-p18/arms.tsv work/top5-s0-p22/arms.tsv work/top5-s0-p12b/arms.tsv --blocks ${READ} --out ../docs/bench/local/$(date +%Y-%m-%d)_top5-s0.md
+  after: s0-p12b
