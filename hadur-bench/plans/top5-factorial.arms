@@ -1,0 +1,19 @@
+# Stage 2 factorial arms (docs/plan-top5.md 7.2): label | robot | jar. Built by the queue's prep step
+# (./build-ablation.sh with each line's ablations; c is the plain 3.14 build). See top5-factorial.design.
+c | hadur2.Hadur 3.14 | bisect/hadur2.Hadur_3.14.jar
+aa | hadur2.Hadur 3.14aa | bisect/hadur2.Hadur_3.14aa.jar
+G.R.F.T | hadur2.Hadur 3.14thfgnknrnfnl | bisect/hadur2.Hadur_3.14thfgnknrnfnl.jar
+S.R.F.N | hadur2.Hadur 3.14hcpkw2nrnfne | bisect/hadur2.Hadur_3.14hcpkw2nrnfne.jar
+S.G.N.T | hadur2.Hadur 3.14hcpkw2thfgnknenl | bisect/hadur2.Hadur_3.14hcpkw2thfgnknenl.jar
+sw.F.N.T | hadur2.Hadur 3.14swnfnenl | bisect/hadur2.Hadur_3.14swnfnenl.jar
+sw.G.R.N | hadur2.Hadur 3.14swthfgnknrne | bisect/hadur2.Hadur_3.14swthfgnknrne.jar
+sw.S.R.T | hadur2.Hadur 3.14swhcpkw2nrnl | bisect/hadur2.Hadur_3.14swhcpkw2nrnl.jar
+sw.S.G.F | hadur2.Hadur 3.14swhcpkw2thfgnknf | bisect/hadur2.Hadur_3.14swhcpkw2thfgnknf.jar
+hj.R.N.T | hadur2.Hadur 3.14hjnrnenl | bisect/hadur2.Hadur_3.14hjnrnenl.jar
+hj.G.F.N | hadur2.Hadur 3.14hjthfgnknfne | bisect/hadur2.Hadur_3.14hjthfgnknfne.jar
+hj.S.F.T | hadur2.Hadur 3.14hjhcpkw2nfnl | bisect/hadur2.Hadur_3.14hjhcpkw2nfnl.jar
+hj.S.G.R | hadur2.Hadur 3.14hjhcpkw2thfgnknr | bisect/hadur2.Hadur_3.14hjhcpkw2thfgnknr.jar
+hj.sw.R.F | hadur2.Hadur 3.14hjswnrnf | bisect/hadur2.Hadur_3.14hjswnrnf.jar
+hj.sw.G.T | hadur2.Hadur 3.14hjswthfgnknl | bisect/hadur2.Hadur_3.14hjswthfgnknl.jar
+hj.sw.S.N | hadur2.Hadur 3.14hjswhcpkw2ne | bisect/hadur2.Hadur_3.14hjswhcpkw2ne.jar
+hj.sw.S.G.R.F.N.T | hadur2.Hadur 3.14hjswhcpkw2thfgnknrnfnenl | bisect/hadur2.Hadur_3.14hjswhcpkw2thfgnknrnfnenl.jar

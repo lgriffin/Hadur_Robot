@@ -138,6 +138,13 @@ public final class Bench {
     /** BENCH-54: fight each seed cold, then warm on the shelf the cold battle left. */
     private final boolean coldWarm;
     private final boolean dryRun;
+    /** BENCH-92: the arms of a multi-arm run ({@code --arms FILE}), or null for a one- or two-build run. */
+    private final List<Arms.Arm> arms;
+    /** BENCH-93: bind each battle JVM to its worker's own processors ({@code --pin true}). */
+    private final boolean pin;
+    private final int pinOffset;
+    /** BENCH-93: each worker home's number (1..N), for its processor mask. */
+    private final Map<Path, Integer> workerIndex = new java.util.concurrent.ConcurrentHashMap<>();
     /** Battles that stayed failed after their retries, and those that needed one (BENCH-55). */
     private final List<Failure> failures = Collections.synchronizedList(new ArrayList<>());
     private final List<String> retried = Collections.synchronizedList(new ArrayList<>());
@@ -192,6 +199,31 @@ public final class Bench {
         this.width = field[0];
         this.height = field[1];
         this.record = opts.containsKey("record") ? Path.of(opts.get("record")).toAbsolutePath() : null;
+        try {
+            this.arms = opts.containsKey("arms") ? Arms.parse(benchDir.resolve(opts.get("arms")), benchDir) : null;
+        } catch (IOException e) {
+            throw new java.io.UncheckedIOException(e);
+        }
+        if (arms != null) {
+            if (opts.containsKey("baseline") || warm || record != null || opts.containsKey("melee")
+                    || opts.containsKey("team") || opts.containsKey("session") || opts.containsKey("client")
+                    || opts.containsKey("repeat") || Boolean.parseBoolean(opts.getOrDefault("cold-warm", "false"))) {
+                throw new IllegalArgumentException("--arms is a cold-mode duel option: it does not combine with "
+                    + "--baseline, --mode warm, --record, --melee, --team, --session, --client, --repeat or --cold-warm");
+            }
+            // The first arm stands as the run's robot (its name heads the conditions and the rows).
+            opts.put("robot", arms.get(0).robot());
+            opts.put("robot-jar", arms.get(0).jar().toString());
+        }
+        this.pin = Boolean.parseBoolean(opts.getOrDefault("pin", "false"));
+        this.pinOffset = Integer.parseInt(opts.getOrDefault("pin-offset", "2"));
+        if (pin) {
+            int most = Affinity.maxWorkers(Runtime.getRuntime().availableProcessors(), pinWidth(), pinOffset);
+            if (parallel > most) {
+                throw new IllegalArgumentException("--pin with " + pinWidth() + " processors a worker from processor "
+                    + pinOffset + " fits " + most + " workers on this host, not --parallel " + parallel);
+            }
+        }
         if (record != null) {
             opts.putIfAbsent("robot", "hadur2.HadurRecorder " + release);
             opts.putIfAbsent("robot-jar", RobotJar.recorderJar());
@@ -364,6 +396,7 @@ public final class Bench {
             if (opts.containsKey("team")) return runTeam(opponents);
             if (client != null) return runClientConditions(opponents);
             if (repeat > 0) return runRepeat(opponents);
+            if (arms != null) return runArms(opponents);
             return runDuel(opponents);
         } finally {
             sampler.close();
@@ -382,11 +415,15 @@ public final class Bench {
             : repeat > 0 ? "repeat x" + repeat : coldWarm ? "cold-warm" : warm ? "warm" : "cold";
         boolean field = opts.containsKey("melee");
         int perOpponent = repeat > 0 ? runs * repeat : runs * (coldWarm ? 2 : 1);
-        int builds = baselineJar != null ? 2 : 1;
+        int builds = arms != null ? arms.size() : baselineJar != null ? 2 : 1;
         int battles = field ? runs * builds : opponents.size() * perOpponent * builds;
         System.out.println("dry run: no robot installed, no battle started");
         System.out.println("  mode " + mode + ", robot " + robot + (baselineJar == null ? "" : ", baseline " + baselineRobot
             + " (" + baselineJar + ")"));
+        if (arms != null) {
+            for (Arms.Arm a : arms) System.out.println("  arm " + a.label() + ": " + a.robot() + " (" + a.jar() + ")");
+        }
+        if (pin) System.out.println("  pinned: " + pinWidth() + " processors a worker from processor " + pinOffset);
         System.out.println("  set " + opts.getOrDefault("set", "reference-set.txt") + ": " + opponents.size() + " opponents; "
             + battles + " battles of " + rounds + " rounds on " + width + "x" + height
             + ", parallel " + parallel + ", retries " + retries + (seedBase == 0 ? "" : ", seed base " + seedBase)
@@ -396,6 +433,12 @@ public final class Bench {
         System.out.println("  memory: " + Memory.check(Memory.freeMb(), parallel, childHeap()).message());
         System.out.println("  options " + new TreeMap<>(opts));
         return 0;
+    }
+
+    /** BENCH-93: processors bound to each worker: {@code --child-cpus}, or 2. */
+    private int pinWidth() {
+        int cpus = Integer.parseInt(opts.getOrDefault("child-cpus", "2"));
+        return cpus > 0 ? cpus : 2;
     }
 
     /** The heap cap each battle JVM gets: {@code --child-heap}, or {@link Memory#DEFAULT_CHILD_HEAP}; {@code none} is uncapped. */
@@ -554,6 +597,85 @@ public final class Bench {
     }
 
     /**
+     * BENCH-92, {@code --arms FILE}: every (opponent, seed) job fights every arm on one worker
+     * home, cold each time, in the job's shuffled order ({@link Arms#order}). Every battle is a
+     * row of {@code arms.tsv}; the per-round rows merge into {@code rounds.tsv} as in a paired
+     * run. The comparisons (each arm against the control, the A/A arm's band, factorial effects)
+     * are made from those rows by {@code data/tools/multiarm.py}; the report here lists each arm's
+     * score, its engine disables and its skipped turns.
+     */
+    private int runArms(List<Opponent> opponents) throws Exception {
+        List<String> rows = Collections.synchronizedList(new ArrayList<>());
+        List<Job> jobs = new ArrayList<>();
+        for (Opponent o : opponents) {
+            for (int s = 1; s <= runs; s++) {
+                int seed = s;
+                jobs.add(h -> {
+                    List<Arms.Arm> order = Arms.order(arms, seedBase, seed, o.name);
+                    for (int pos = 0; pos < order.size(); pos++) {
+                        Arms.Arm a = order.get(pos);
+                        Path dir = out.resolve("battles").resolve(o.slug() + "-" + seed + "-" + a.label());
+                        BattleResult r = fight(h, o, seed, dir, a.robot(), true);
+                        rows.add(Arms.row(a, o, seed, workerIndex.getOrDefault(h, 1), pos + 1, r));
+                        say(String.format(Locale.ROOT, "%s seed %d %s: score share %.1f%%, skipped %d%s%s", o.name, seed,
+                            a.label(), r.scoreShare() * 100, r.skippedTurns,
+                            r.engineDisables > 0 ? ", engine disables " + r.engineDisables : "",
+                            r.ok ? "" : " FAILED: " + r.errors));
+                    }
+                });
+            }
+        }
+        List<Path> homes = workerHomes(Math.min(parallel, Math.max(1, jobs.size())));
+        workers = homes.size();
+        pinCpuConstant(homes);
+        runJobs(jobs, homes);
+
+        List<String> sorted = new ArrayList<>(rows);
+        Collections.sort(sorted);
+        Files.createDirectories(out);
+        Files.writeString(out.resolve("arms.tsv"), Arms.HEADER + "\n" + String.join("\n", sorted) + "\n");
+        List<RoundSeries.Row> roundRows = RoundSeries.readAll(out);
+        if (!roundRows.isEmpty()) Files.writeString(out.resolve("rounds.tsv"), RoundSeries.merge(roundRows));
+        String report = renderArms(sorted) + "\nConditions: " + duelHostLine(homes.size()) + (pin ? ", pinned " + pinWidth()
+            + " processors a worker from processor " + pinOffset : "") + ". Rounds " + rounds + ", field " + width + "x"
+            + height + ", " + runs + " seed(s) an arm.\n" + failureFooter(failures, retried);
+        report = Exclusions.insertAfterTitle(report, Exclusions.block(outcomes.tallies()));
+        Files.writeString(out.resolve("report.md"), report);
+        if (opts.containsKey("report")) {
+            Path copy = Path.of(opts.get("report")).toAbsolutePath();
+            Files.createDirectories(copy.getParent());
+            Files.writeString(copy, report);
+        }
+        System.out.println();
+        System.out.println(report);
+        return sorted.stream().anyMatch(r -> r.split("\t")[7].equals("false")) ? 1 : 0;
+    }
+
+    /** BENCH-92: each arm's battles, mean score share, engine disables and skipped turns, from the rows. */
+    static String renderArms(List<String> rows) {
+        Map<String, double[]> by = new LinkedHashMap<>();
+        for (String row : rows) {
+            String[] f = row.split("\t", -1);
+            double[] a = by.computeIfAbsent(f[0], k -> new double[5]);
+            a[0]++;
+            if (f[7].equals("true")) {
+                a[1]++;
+                a[2] += Double.parseDouble(f[11]);
+            }
+            a[3] += Integer.parseInt(f[21]);
+            a[4] += Integer.parseInt(f[19]);
+        }
+        StringBuilder b = new StringBuilder("# Multi-arm run\n\n| Arm | Battles | Finished | Mean score share | Engine disables | Skipped turns a battle |\n|---|---|---|---|---|---|\n");
+        for (Map.Entry<String, double[]> e : new TreeMap<>(by).entrySet()) {
+            double[] a = e.getValue();
+            b.append(String.format(Locale.ROOT, "| %s | %d | %d | %.2f%% | %d | %.1f |%n", e.getKey(), (int) a[0], (int) a[1],
+                a[1] > 0 ? 100 * a[2] / a[1] : Double.NaN, (int) a[3], a[0] > 0 ? a[4] / a[0] : Double.NaN));
+        }
+        b.append("\nPaired comparisons, the A/A band and factorial effects: `python3 data/tools/multiarm.py arms.tsv`.\n");
+        return b.toString();
+    }
+
+    /**
      * BENCH-51: {@code conditions.json}, written when the run starts and again when it ends:
      * the commit, the jars' checksums, the parallelism and child settings, the CPU constant, the
      * engine, the shelf the run began on and what the host sampler saw.
@@ -569,7 +691,10 @@ public final class Bench {
             Map<String, Object> jars = new LinkedHashMap<>();
             jars.put("candidate", installedJar(robot));
             if (baselineJar != null) jars.put("baseline", installedJar(baselineRobot));
+            if (arms != null) for (Arms.Arm a : arms) jars.put("arm " + a.label(), installedJar(a.robot()));
             m.put("jars", jars);
+            m.put("arms", arms == null ? null : arms.stream().map(Arms.Arm::label).toList());
+            m.put("pin", pin ? pinWidth() + " a worker from " + pinOffset : "off");
             m.put("robot", robot);
             m.put("baselineRobot", baselineRobot);
             m.put("engine", Report.ENGINE);
@@ -828,12 +953,14 @@ public final class Bench {
      * main home keeps the samples and jars (and the CPU constant) the workers are copied from.
      */
     private List<Path> workerHomes(int workers) throws IOException {
+        workerIndex.put(home, 1);
         if (workers == 1) return List.of(home);
         List<Path> homes = new ArrayList<>();
         for (int w = 1; w <= workers; w++) {
             Path h = out.resolve("home-" + w);
             copyTree(home.resolve("robots"), h.resolve("robots"));
             homes.add(h);
+            workerIndex.put(h, w);
         }
         return homes;
     }
@@ -946,6 +1073,7 @@ public final class Bench {
             .redirectErrorStream(true)
             .redirectOutput(dir.resolve("engine.log").toFile())
             .start();
+        if (pin) Affinity.apply(p, Affinity.mask(workerIndex.getOrDefault(h, 1), pinWidth(), pinOffset), dir);
         if (!p.waitFor(30, TimeUnit.MINUTES)) {
             p.destroyForcibly();
             return BattleResult.parse(BattleResult.failed("timed out"));
@@ -1550,6 +1678,13 @@ public final class Bench {
                 throw new IllegalStateException("No robot jar at " + jar + "; run mvn package first");
             }
             Files.copy(jar, target, StandardCopyOption.REPLACE_EXISTING);
+        }
+        if (arms != null) {
+            for (Arms.Arm a : arms.subList(1, arms.size())) {
+                if (!Files.isRegularFile(a.jar())) throw new IllegalStateException("No jar for arm " + a.label() + " at " + a.jar());
+                String[] armParts = a.robot().split(" ");
+                Files.copy(a.jar(), robots.resolve(armParts[0] + "_" + armParts[1] + ".jar"), StandardCopyOption.REPLACE_EXISTING);
+            }
         }
         if (baselineJar != null) {
             if (!Files.isRegularFile(baselineJar)) {

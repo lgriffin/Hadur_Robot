@@ -1,0 +1,8 @@
+# Stage 0, calibration (docs/plan-top5.md 6.2): the control, its A/A copy and the heaviest build per
+# turn we have (the surf stack, hj sw hc pk w2). label | robot | jar, built by pc-top5.queue's prep step.
+c | hadur2.Hadur 3.14 | bisect/hadur2.Hadur_3.14.jar
+aa | hadur2.Hadur 3.14aa | bisect/hadur2.Hadur_3.14aa.jar
+hv | hadur2.Hadur 3.14hjswhcpkw2 | bisect/hadur2.Hadur_3.14hjswhcpkw2.jar
+# The free-points fix arm rides along: its score and start-up disables across every load setting are
+# its guard on ordinary opponents (Stage F reads it on the opponents that stall).
+xw | hadur2.Hadur 3.14xw | bisect/hadur2.Hadur_3.14xw.jar

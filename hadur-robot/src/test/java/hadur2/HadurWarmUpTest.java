@@ -28,4 +28,11 @@ class HadurWarmUpTest {
         assertEquals(Set.of(RoleId.DUEL), Hadur.warmUp(800, 600, 1));
         assertEquals(Set.of(RoleId.MELEE, RoleId.DUEL), Hadur.warmUp(1000, 1000, 3));
     }
+
+    @Test
+    @Tag("TIME-8")
+    @DisplayName("TIME-8: the set-up record gives the warm-up, the core's construction, the memory and their total in ms")
+    void setupRecord() {
+        assertEquals("SETUP,0,0,212.4,35.0,3.5,250.9", Hadur.setupRecord(212_400_000L, 35_000_000L, 3_500_000L));
+    }
 }

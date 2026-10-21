@@ -1,0 +1,28 @@
+# Top-5 plan, Stage 2: the factorial census of eight built parts, half 1 (docs/plan-top5.md 7.2).
+# DO NOT START until Stage 0 (pc-top5.queue) has passed and set the worker count: edit P below to
+# the count Stage 0 chose (--parallel 12 without --pin if no pinned block passed).
+#   ./queue.sh run pc-top5-s2        (or  .\queue.ps1 run pc-top5-s2)
+# One bench queue, RoboRumble workers at 0. Resumable.
+#
+# 17 arms (plans/top5-factorial.arms: the 16 points of a 2^(8-4) design on hj sw S G R F N T, plus
+# the A/A copy of the all-low point), 1 seed, on half the census (606 bots, every other rank):
+# 10,302 battles, about 16 h at 12 workers, about 9 h at 22 pinned if Stage 0 passes that.
+#   Read: each factor's main effect, whole field (census-weighted) and per segment A-E, with the
+#   A/A arm's band. Plan 7.4: |effect| < 0.10 with interval ± 0.13 or better settles at "no
+#   effect"; half 2 (pc-top5-s2b) runs only if a factor sits between 0.10 and 0.25. A factor is
+#   kept at >= +0.10 with its interval above 0 and no segment below -0.05 APS.
+# Report: ../docs/bench/local/<date>_top5-s2-half1.md
+
+set P = --parallel 22 --pin
+set HEAP = --child-heap 2G
+set E = --engine 1.11.1
+set C = --skip-build --skip-fetch --rounds 35 --cpu-constant 1488498 ${HEAP} ${E}
+set READ = --census census-312.txt --segments plans/top5-segments.tsv --design plans/top5-factorial.design
+
+prep | mkdir -p bisect && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur2.Hadur_3.14.jar bisect/ && bash ./build-ablation.sh aa && bash ./build-ablation.sh thgun,freegun,nodecay,ram2,flat,nolearn && bash ./build-ablation.sh hitclr,pkern,keep2,ram2,flat,fin && bash ./build-ablation.sh hitclr,pkern,keep2,thgun,freegun,nodecay,fin,nolearn && bash ./build-ablation.sh swall,flat,fin,nolearn && bash ./build-ablation.sh swall,thgun,freegun,nodecay,ram2,fin && bash ./build-ablation.sh swall,hitclr,pkern,keep2,ram2,nolearn && bash ./build-ablation.sh swall,hitclr,pkern,keep2,thgun,freegun,nodecay,flat && bash ./build-ablation.sh heatjit,ram2,fin,nolearn && bash ./build-ablation.sh heatjit,thgun,freegun,nodecay,flat,fin && bash ./build-ablation.sh heatjit,hitclr,pkern,keep2,flat,nolearn && bash ./build-ablation.sh heatjit,hitclr,pkern,keep2,thgun,freegun,nodecay,ram2 && bash ./build-ablation.sh heatjit,swall,ram2,flat && bash ./build-ablation.sh heatjit,swall,thgun,freegun,nodecay,nolearn && bash ./build-ablation.sh heatjit,swall,hitclr,pkern,keep2,fin && bash ./build-ablation.sh heatjit,swall,hitclr,pkern,keep2,thgun,freegun,nodecay,ram2,flat,fin,nolearn && ./fetch-opponents.sh --set top5-census-half1.txt && mvn -q compile
+
+half1 | ./bench-top20.sh ${C} ${P} --set top5-census-half1.txt --seeds 1 --seed-base 1400 --arms plans/top5-factorial.arms --out work/top5-s2-half1 --label top5-s2-half1
+  after: prep
+
+half1-read | python3 tools/round0_skips.py work/top5-s2-half1 work/top5-s2-half1/round0.tsv && python3 ../data/tools/multiarm.py work/top5-s2-half1/arms.tsv ${READ} --out ../docs/bench/local/$(date +%Y-%m-%d)_top5-s2-half1.md
+  after: half1

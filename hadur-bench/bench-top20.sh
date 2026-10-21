@@ -40,6 +40,10 @@
 #   --skip-build           skip `mvn package` at the repo root
 #   --skip-fetch           skip fetching the set's opponent jars
 #   --engine VERSION       run the battles on this Robocode release from Maven Central (e.g. 1.11.1)
+#   --arms FILE            a multi-arm run (BENCH-92): every arm in FILE (label | robot | jar) on every
+#                          opponent and seed, in a shuffled order; writes arms.tsv. Replaces --robot/--baseline
+#   --pin                  bind each battle JVM to its worker's own processors (BENCH-93)
+#   --pin-offset N         processors left to the OS and the runner before worker 1's, Bench default 2
 set -u
 
 HERE=$(cd "$(dirname "$0")" && pwd)
@@ -73,6 +77,9 @@ CHILD_CPUS=""
 SEED_BASE=""
 UNSEEDED=0
 FORCE_MEMORY=0
+ARMS=""
+PIN=0
+PIN_OFFSET=""
 
 while [ $# -gt 0 ]; do
     case "$1" in
@@ -103,6 +110,9 @@ while [ $# -gt 0 ]; do
         --child-cpus) CHILD_CPUS="${2:?--child-cpus needs a number}"; shift 2 ;;
         --force-memory) FORCE_MEMORY=1; shift ;;
         --engine) ENGINE="${2:?--engine needs a Robocode version}"; shift 2 ;;
+        --arms) ARMS="${2:?--arms needs a file}"; shift 2 ;;
+        --pin) PIN=1; shift ;;
+        --pin-offset) PIN_OFFSET="${2:?--pin-offset needs a number}"; shift 2 ;;
         -h|--help) sed -n '2,/^set -u$/p' "$0" | sed '$d' | sed 's/^# \{0,1\}//'; exit 0 ;;
         *) echo "unknown option: $1" >&2; exit 2 ;;
     esac
@@ -162,6 +172,9 @@ if [ -n "$FIELD" ]; then ARGS="$ARGS --field $FIELD"; fi
 if [ -n "$CHILD_HEAP" ]; then ARGS="$ARGS --child-heap $CHILD_HEAP"; fi
 if [ -n "$CHILD_CPUS" ]; then ARGS="$ARGS --child-cpus $CHILD_CPUS"; fi
 if [ "$FORCE_MEMORY" -eq 1 ]; then ARGS="$ARGS --force-memory true"; fi
+if [ -n "$ARMS" ]; then ARGS="$ARGS --arms $ARMS"; fi
+if [ "$PIN" -eq 1 ]; then ARGS="$ARGS --pin true"; fi
+if [ -n "$PIN_OFFSET" ]; then ARGS="$ARGS --pin-offset $PIN_OFFSET"; fi
 
 # The engine is the bench's own Maven dependency, so another release is a property away;
 # the bench's classpath file is rebuilt with it on this compile (issue #109).

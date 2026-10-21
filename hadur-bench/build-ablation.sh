@@ -11,6 +11,10 @@
 #   ./build-ablation.sh silent,heat     # ... 3.13sihw: the lab's silent Hadur with the MOVE-11 heat wave
 #
 # Ablations (each a one-line edit of the duel, checked to apply exactly once):
+#   aa    no change: the same robot under another name (suffix aa), the A/A arm of a multi-arm run
+#         (BENCH-92, docs/plan-top5.md section 6.1), so a run prices its own noise.
+#   nowarm  TIME-5's warm-up on a throwaway core is skipped, so round 0 opens cold: the free-points
+#         fix arm for start-up disables (docs/plan-top5.md, Stage F). Suffix xw.
 #   ram2  RAM-2 off: never escape a confirmed rammer; RAM-1's full-power rule stays (3.4's play)
 #   mir1  MIR-1 off: never recognise a mirror bot, so no mirror drive or mirror aim
 #   flat  the flattener views never switch on (MOVE-5's threshold out of reach, ADAPT-2's forcing off): is the
@@ -216,6 +220,7 @@ tlink="$src/hadur-core/src/main/java/hadur2/core/TeamLink.java"
 fgun="$src/hadur-core/src/main/java/hadur2/core/melee/FieldGun.java"
 core="$src/hadur-core/src/main/java/hadur2/core/HadurCore.java"
 mseam="$src/hadur-core/src/main/java/hadur2/core/MeleeSeam.java"
+robot="$src/hadur-robot/src/main/java/hadur2/Hadur.java"
 
 # Replace exactly one occurrence of $2 with $3 in file $1, or fail.
 edit() {
@@ -233,6 +238,12 @@ gtolerance="0.05"
 [[ ",$1," == *,gtol,* ]] && gtolerance="(in.others() >= 3 && core.livingTeammates().isEmpty() ? 2.0 : 0.05)"
 for a in "${list[@]}"; do
     case "$a" in
+        aa)
+            version="${version}aa" ;;
+        nowarm)
+            edit "$robot" "            warmUp(getBattleFieldWidth(), getBattleFieldHeight(), getOthers());" \
+                "            // nowarm ablation: TIME-5's warm-up skipped."
+            version="${version}xw" ;;
         ram2)
             # Since RAM-3 (3.9) the escape line ends with the trial arm's condition; before it
             # (3.5 to 3.8.5) the call ends the line.
@@ -508,7 +519,7 @@ for a in "${list[@]}"; do
             edit "$design" 'public static final ShieldDesign SHIPPED = parse("' \
                 "public static final ShieldDesign SHIPPED = parse(\"$flag,"
             version="${version}${suffix}" ;;
-        *) echo "unknown ablation: $a (ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, flt59, flt8, split, wallesc, gungate, hold650, dfac, bhb, hitclr, pkern, keep2, thgun, freegun, nodecay, stacklist, protean, pdw3, pdw8, pc10, phot, repl, pressure, pdown, pwall, pwc, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, gtol, gstick, gwhy, gwin, gk, aesrec, shold, slearn, smode, sstay, sturn, snull, strim)" >&2; exit 2 ;;
+        *) echo "unknown ablation: $a (aa, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, flt59, flt8, split, wallesc, gungate, hold650, dfac, bhb, hitclr, pkern, keep2, thgun, freegun, nodecay, stacklist, protean, pdw3, pdw8, pc10, phot, repl, pressure, pdown, pwall, pwc, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, gtol, gstick, gwhy, gwin, gk, aesrec, shold, slearn, smode, sstay, sturn, snull, strim)" >&2; exit 2 ;;
     esac
 done
 

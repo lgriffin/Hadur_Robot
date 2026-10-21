@@ -1,0 +1,20 @@
+# Stage 2 factorial (docs/plan-top5.md 7.2): 2^(8-4), generators N = hj.sw.S, F = sw.S.G, R = hj.S.G, T = hj.sw.G.
+# The all-low point is the control c (3.14, 3.13's duel), with its A/A copy aa. multiarm.py --design.
+arm hj sw S G R F N T
+c - - - - - - - -
+aa - - - - - - - -
+G.R.F.T - - - + + + - +
+S.R.F.N - - + - + + + -
+S.G.N.T - - + + - - + +
+sw.F.N.T - + - - - + + +
+sw.G.R.N - + - + + - + -
+sw.S.R.T - + + - + - - +
+sw.S.G.F - + + + - + - -
+hj.R.N.T + - - - + - + +
+hj.G.F.N + - - + - + + -
+hj.S.F.T + - + - - + - +
+hj.S.G.R + - + + + - - -
+hj.sw.R.F + + - - + + - -
+hj.sw.G.T + + - + - - - +
+hj.sw.S.N + + + - - - + -
+hj.sw.S.G.R.F.N.T + + + + + + + +

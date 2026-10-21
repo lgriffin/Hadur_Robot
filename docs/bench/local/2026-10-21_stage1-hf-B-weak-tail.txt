@@ -1,0 +1,7 @@
+Bullet damage taken a round (driving hits), by class and by the views' rating:
+
+| Ranks | Opponents | Taken a round | headon | linear | learned | nowave | views: safe | views: mid | views: known | plan: on | plan: off | plan: none | options: dodge | options: trapped |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 401-800 | 352 | 10.3 | 1.8 | 0.9 | 7.5 | 0.1 | 1.5 | 5.9 | 2.8 | 8.6 | 1.1 | 0.7 | 5.2 | 0.3 |
+| 801+ | 367 | 4.3 | 1.1 | 0.4 | 2.7 | 0.1 | 0.7 | 2.1 | 1.5 | 3.2 | 0.6 | 0.6 | 1.8 | 0.3 |
+| all | 719 | 7.3 | 1.4 | 0.7 | 5.0 | 0.1 | 1.1 | 4.0 | 2.1 | 5.8 | 0.8 | 0.6 | 3.5 | 0.3 |

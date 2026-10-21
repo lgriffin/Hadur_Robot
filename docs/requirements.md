@@ -1371,6 +1371,35 @@ gun as it was (docs/bench/melee-gun-3.13.md).
   of fresh battles: +1.3, -1.7, +1.6, +0.4, +1.3, +0.6 pooled, damage +8% (`...-gk2-vs-313.md`);
   +0.85 APS over both.
 
+## The top-5 harness: free points and multi-arm runs (TIME-8, RES-15, BENCH-91..94, R9)
+
+The top-5 plan (docs/plan-top5.md) measures several builds side by side on the PC instead of
+one census per idea, and first takes the points Hadur loses to avoidable faults: start-up
+disables (a round-0 skip run past the engine's 30-turn limit) and rows that mislabel a round.
+None of these change how the robot plays; TIME-8 and RES-15 only report.
+
+| ID | Pattern | Requirement | Stage |
+|---|---|---|---|
+| TIME-8 | Event | When the robot finishes its first-round setup, it shall print one `SETUP,0,0,warmMs,coreMs,memoryMs,totalMs` record giving the time spent warming up, building the core and loading memory. | R9 |
+| RES-15 | Event | When a battle ends, the health record shall add the setup time, the first turn the main loop ran and the longest run of consecutive skipped turns, and stay within 64 bytes. | R9 |
+| BENCH-91 | State | While a round has a winner, the bench's per-round row shall keep the damage and survival of the turn the first robot died, so a disable after the round is decided does not turn a win into a loss. | R9 |
+| BENCH-92 | Event | When an arms file is given (`--arms FILE`), the bench shall fight every (opponent, seed) job against every arm, cold, in an order shuffled from the job, and write one row per battle to `arms.tsv` and a per-arm table to the report. | R9 |
+| BENCH-93 | Option | Where pinning is on (`--pin true`), the bench shall bind each battle's JVM to its worker's own logical processors, leaving the first `--pin-offset` to the OS, and refuse more workers than the processors allow. | R9 |
+| BENCH-94 | Ubiquitous | The bench shall carry `data/tools/multiarm.py`, which reads one or more `arms.tsv` files and reports each arm against the pooled control and A/A arms per opponent with 95% intervals, the A/A check, the split by band, engine and start-up disables per arm, and factorial main effects from a design file. | R9 |
+
+- **TIME-8.** `Hadur.setupRecord`, printed once in round 0. The PC's round-0 read
+  (`docs/bench/local/2026-10-21_round0-skips.md`) found 39 of 4,848 battles disabled at start-up,
+  the first record at median turn 105; the record says where those turns go.
+- **RES-15.** `HadurCore.writeBattleHealth` with seven arguments appends
+  `,setupMs,firstTurn,maxRun`; the four-argument form keeps the old record, so older readers and
+  the replay fixtures are unchanged. `data/tools/live_client.py` reads both shapes.
+- **BENCH-91.** `LogHarvester.noteTurn` latches a round once either robot is dead.
+- **BENCH-92.** `Arms` and `Bench.runArms`. Shuffling the order spreads load and drift over
+  every arm; an A/A arm (the control under another name) prices the run's own noise.
+- **BENCH-93.** `Affinity`: PowerShell `ProcessorAffinity` on Windows, `taskset -a -p` elsewhere;
+  best effort, written to each battle's `pin.txt`.
+- **BENCH-94.** `data/tools/multiarm.py`, tested by `data/tools/test_multiarm.py` in CI.
+
 ## Retired requirements
 
 A retired requirement keeps its ID; no new requirement reuses it.

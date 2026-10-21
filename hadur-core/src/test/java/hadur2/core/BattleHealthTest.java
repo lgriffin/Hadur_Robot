@@ -24,6 +24,18 @@ class BattleHealthTest {
     }
 
     @Test
+    @Tag("RES-15")
+    @DisplayName("RES-15: the set-up time, round 0's first turn and the longest skipped-turn run follow, when measured")
+    void writesStartUpFields() {
+        MemoryProfileStore store = new MemoryProfileStore(200_000);
+        HadurCore core = new HadurCore(800, 600, 1, line -> {}, store);
+        core.writeBattleHealth(35, 34, 0, 140, 612, 105, 104);
+        assertEquals("HEALTH,35,34,0,140,0,-1,612,105,104", new String(store.read("health.hc"), StandardCharsets.US_ASCII));
+        core.writeBattleHealth(9999, 9999, 9999, 9999, 99999, 99999, 9999);
+        assertEquals(true, store.read("health.hc").length <= 64);
+    }
+
+    @Test
     @DisplayName("at most 64 bytes")
     void staysSmall() {
         MemoryProfileStore store = new MemoryProfileStore(200_000);

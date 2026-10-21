@@ -81,6 +81,13 @@ public class Hadur extends TeamRobot {
      * of it.
      */
     static final long TICK_ALLOWANCE_NANOS = 3_000_000L;
+    /** RES-15: the battle's set-up time in milliseconds, before its first turn. */
+    private static int setupMillis;
+    /** RES-15: the turn of round 0's first tick; 1 when the set-up fit the engine's start grace. */
+    private static long firstTurn;
+    /** RES-15: the longest run of consecutive skipped turns this battle, and the run in progress. */
+    private static int longestSkipRun, skipRun;
+    private static long lastSkippedTurn;
 
     /** Events delivered since the last tick, in delivery order; cleared as each input is built. */
     private final List<BotEvent> pending = new ArrayList<>();
@@ -98,22 +105,33 @@ public class Hadur extends TeamRobot {
         // Each round's robot has its own console stream; telemetry closures read the static.
         console = out;
         if (core == null) {
+            long setupStart = System.nanoTime();
             // RES-8: fresh battle totals for the health record.
             battleRounds = 0;
             battleRoundsSurvived = 0;
             battleFaults = 0;
             battleSkippedTurns = 0;
+            firstTurn = -1;
+            longestSkipRun = 0;
+            skipRun = 0;
+            lastSkippedTurn = -2;
             // TIME-5: warm up class loading and JIT compilation on a throwaway core before
             // the real one's first tick pays for it.
             warmUp(getBattleFieldWidth(), getBattleFieldHeight(), getOthers());
+            long warmed = System.nanoTime();
             // First round of the battle. The telemetry lambdas go through the static
             // console rather than capturing this round's `out`.
             // ROLE-1: the battle's facts before the first tick fix its charter. As a
             // TeamRobot (A4) Hadur can ask for its teammates; off a team there are none.
             BattleFacts facts = facts();
             core = new HadurCore(facts, line -> console.println(line), profileStore(), null, shieldList());
+            long built = System.nanoTime();
             // File I/O and class loading now, not in the first scan's turn.
             core.prepareMemory();
+            // TIME-8: how long each part of the set-up took, before the engine's first turn.
+            long setupEnd = System.nanoTime();
+            setupMillis = (int) Math.min(Integer.MAX_VALUE, (setupEnd - setupStart) / 1_000_000L);
+            console.println(setupRecord(warmed - setupStart, built - warmed, setupEnd - built));
             // WEAVE-5: on a team the guard's safe orders hold fire.
             team = core.charter() == Charter.TEAM;
             guard = new Guard(core::tick, core::recover, line -> console.println(line), team);
@@ -135,6 +153,7 @@ public class Hadur extends TeamRobot {
         setAdjustRadarForGunTurn(true);
 
         while (true) {
+            if (firstTurn < 0) firstTurn = getTime();
             // TIME-1: the last tick's duration goes in first, ahead of the engine's events.
             // The core never reads a clock (RES-6), so a replay sees the same time (CORE-2).
             if (lastTickNanos >= 0) pending.add(0, new BotEvent.TickTime(lastTickNanos, TICK_ALLOWANCE_NANOS));
@@ -192,6 +211,16 @@ public class Hadur extends TeamRobot {
             if (console != null) console.println("WARM,0,0,exception," + e);
         }
         return driven;
+    }
+
+    /**
+     * TIME-8: {@code SETUP,0,0,warm,core,memory,total} in milliseconds: the warm-up ticks, the
+     * core's construction (facts, shield list, store) and the memory's preparation, all of which
+     * run before the battle's first {@code execute()}.
+     */
+    static String setupRecord(long warmNanos, long coreNanos, long memoryNanos) {
+        return String.format(java.util.Locale.ROOT, "SETUP,0,0,%.1f,%.1f,%.1f,%.1f", warmNanos / 1e6,
+            coreNanos / 1e6, memoryNanos / 1e6, (warmNanos + coreNanos + memoryNanos) / 1e6);
     }
 
     /**
@@ -392,6 +421,10 @@ public class Hadur extends TeamRobot {
     public void onSkippedTurn(SkippedTurnEvent e) {
         pending.add(new BotEvent.SkippedTurn(e.getSkippedTurn()));
         battleSkippedTurns++;
+        // RES-15: the engine disables a robot after more than 30 consecutive skipped turns.
+        skipRun = e.getSkippedTurn() == lastSkippedTurn + 1 ? skipRun + 1 : 1;
+        lastSkippedTurn = e.getSkippedTurn();
+        longestSkipRun = Math.max(longestSkipRun, skipRun);
     }
 
     /** We won the round. No file I/O here; the save waits for {@link #onRoundEnded}. */
@@ -431,7 +464,8 @@ public class Hadur extends TeamRobot {
     public void onBattleEnded(BattleEndedEvent e) {
         if (core == null) return;
         core.battleEnded(getTime());
-        core.writeBattleHealth(battleRounds, battleRoundsSurvived, battleFaults, battleSkippedTurns);
+        core.writeBattleHealth(battleRounds, battleRoundsSurvived, battleFaults, battleSkippedTurns, setupMillis,
+            firstTurn, longestSkipRun);
     }
 
     /** One R record per round (RES-5), from whichever end-of-round event comes first. */

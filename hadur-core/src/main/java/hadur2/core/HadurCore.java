@@ -991,11 +991,24 @@ public final class HadurCore {
      * @param skippedTurns engine-skipped-turn events this battle
      */
     public void writeBattleHealth(int rounds, int roundsSurvived, int faults, int skippedTurns) {
+        writeBattleHealth(rounds, roundsSurvived, faults, skippedTurns, -1, -1, -1);
+    }
+
+    /**
+     * RES-8 with RES-15's start-up fields, appended when {@code setupMillis} is 0 or more: how long
+     * the adapter's set-up took before the battle's first turn, the turn of its first tick in round 0
+     * (1 when the set-up fit the engine's start grace) and the longest run of consecutive skipped
+     * turns in the battle (the engine disables a robot after more than 30). The adapter measures
+     * them; the core never reads a clock (RES-6).
+     */
+    public void writeBattleHealth(int rounds, int roundsSurvived, int faults, int skippedTurns,
+                                  int setupMillis, long firstTurn, int longestSkipRun) {
         // SHELF-2: on a team only the scribe writes; the Archive asks before the gate would refuse.
         if (store == null || !archive.scribe()) return;
         int memoryFailures = meleeMemoryFailures() + duel.memoryFailures();
         String record = "HEALTH," + rounds + "," + roundsSurvived + "," + faults + ","
-            + skippedTurns + "," + memoryFailures + "," + budget.learnedAllowanceNanos();
+            + skippedTurns + "," + memoryFailures + "," + budget.learnedAllowanceNanos()
+            + (setupMillis < 0 ? "" : "," + setupMillis + "," + firstTurn + "," + longestSkipRun);
         try {
             // RES-6: no java.nio (Charset included), so the ASCII record is encoded by hand.
             byte[] bytes = new byte[record.length()];
