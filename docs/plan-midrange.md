@@ -137,6 +137,15 @@ census at +0.3 APS, no band below -0.05.
 
 ### Stage 1: pressure power (POW-12) and the flattener threshold, on the PC
 
+**Result (2026-10-19, closed, see `docs/bench/local/2026-10-19_pc-midrange-read.md` and
+`2026-10-19_pc-midrange-2-read.md`): the hypothesis is wrong.** The margin gate never opened
+(0.0 ± 0.3); the power change with no gate is -2.2 ± 0.4 points on the 149 and -2.3 ± 1.1 on the
+top 50 (2.5% more damage a round, 1.9 points less hit rate from the slower bullet, 7.5 points less
+survival from the energy spent); gated on the centres -0.6 ± 0.3. The flattener at 8% is
++0.5 ± 0.3. Hadur's 1.54 average power against the class is not a leak; the dealt gap is hits and
+the taken gap is the surf, so stages 2 and 3 carry the midrange. POW-12 stays off in every form.
+
+
 **POW-12, "pressure power"** (built on the 1v1 branch at 8f325cdb as a `GunController.Stakes`
 level, `PRESSURE`, that sets the gun's base power, not a `PowerPolicy` `Reason`; switch
 `PowerDesign.PRESSURE`, off by default; ablation `pressure`, suffix `pw`):
@@ -179,6 +188,31 @@ POW-12 in `docs/requirements.md`.
 
 ### Stage 2: the surf's fidelity to Diamond, in the cloud
 
+**Result (2026-10-19, see `docs/bench/local/2026-10-19_surf-audit-diamond.md` and
+`2026-10-19_pc-midrange-3-read.md`):** the port is structurally faithful; six differences
+were switched and screened on the 149 (PR #214): hold650 +0.1, dfac -0.3, bhb 0.0, hitclr +0.4,
+pkern +0.5, keep2 +0.4 (each ± 0.5). None near the +2.0 gate. Forensics: 57% of the damage taken
+on the class had another option that would have dodged it, so the loss is option ranking on
+angles already rated. The stacked confirm (`pc-midrange-4`, PR #215, `2026-10-20_pc-midrange-4-read.md`): hitclr +
+pkern + keep2 = +0.6 ± 0.3 on the class at 8 seeds, the flattener adds nothing, the top-50
+guard +0.9 ± 1.1. Real, small, same sign on strong guns. The surf is not where the class is
+lost. **Census (2026-10-20, PR #216, `2026-10-20_pc-midrange-census-read.md`): 3.14hjswhcpkw2
+against the 3.13 release on all 1,212 at 4 fresh seeds = +0.22 ± 0.13 pp, against +0.20 ± 0.14
+for 3.13hjsw on the same census; the three surf switches add +0.03 ± 0.18 to the field and
++0.32 ± 0.70 on the class. Gate +0.3 not met; band 1 (-0.45) and band 3 (-0.23) under -0.05.
+Stage 2 closed: all five switches stay off; hc+pk+w2 parked as a +0.2 stack for a combined
+gate with whatever stage 3 brings.** Stage 3 (the gun) is what is left for the class.
+
+**Rank gate on the stack (2026-10-20, Leigh: build it as a backup, like the shield list):** on both
+censuses the stack gains only below rank 200; stack on for ranks 201+ only reads +0.26 ± 0.11
+(hjsw) and +0.25 ± 0.11 (hjswhcpkw2) APS against +0.20 / +0.22 everywhere, cross-validated per
+band +0.25 both ways; the in-battle share proxy recovers nothing and per-bot lists read +0.15 out
+of sample. Built as MOVE-23 `stacklist` (`xl`): an off-list of the census top 200 by name
+(`hadur-bench/stack-off-top200.txt`, 197 versionless names, held in a `StackListData` class as
+the shield list is), duel-only, off by default; unknown opponents get the stack. Gated with the
+gun switches in the stage 3 census.
+
+
 Hadur takes 18% more per tick than Diamond against these robots with Diamond's own danger views
 and weights, so the port differs from the original somewhere that matters against a stationary
 guess-factor gun. Diamond 1.8.22's source ships in its jar (used for `docs/top3-movement-study.md`).
@@ -200,21 +234,61 @@ The first two are the likeliest: the stop-and-start and flattener results say th
 the view mix both matter a little on this class, and the walk-in is the one movement policy
 Hadur added on top of the port.
 
-### Stage 3: the gun against random movers (if stage 1 leaves dealt short)
+### Stage 3: the gun against random movers
 
-After POW-12, if Hadur's dealt rate on the class is still under ScalarR's, the main gun's kernel
-width and k against flat movers: the offline guess-factor gun hits these movers 11.2% and
-Hadur's 15.2%, so the gun is already better than a plain histogram, and this stage is a
-measurement first (hit rate by distance band against the 149, against the segmented offline gun's
-13.2%), not a switch.
+**Read (2026-10-20, `docs/bench/local/2026-10-20_gun-read.md`, no new battles):** Hadur's duel
+main gun is Diamond's *melee* displacement gun; Diamond 1.8.22 fires `TripHammerKnnGun` in
+duels (guess factor x precise escape angle, K up to 225, 1/sqrt(distance) weights, cube kernel,
+weights that slide with data), opens with a trained `PerceptualGun`, switches guns on the bare
+best rating, and does not decay ratings. On the 149 Diamond deals +2.4 a round more (ScalarR
++7.5); 47 of the 149 are mode-switchers hit 29% early and 16% from round 10, where ScalarR
+deals 80-85 a round to Hadur's 45. Switches: `th` GUN-8 TripHammer main gun, `fg` GUN-9 free
+gun choice, `nk` GUN-10 undecayed ratings; screen th, fg, nk, thfgnk on the 149 at 4 seeds
+against 3.14hjsw, guard, keep rule +1.0 on the class, then the census of the keeper at +0.3.
+
+**Result (2026-10-21, PR #217, `2026-10-21_pc-midrange-5-read.md`):** alone th -0.1, fg +0.2, nk
+-0.2 (each ± 0.5); stacked +0.6 ± 0.5 on the 149 (hit rate 15.9% vs 15.2%) and **+2.7 ± 1.1 on
+the top 50** (34 of 48 up; GresSuffurd +11, Wintermute, WaveSerpent, Domogled, Dookious +7 to +8,
+Nullstride +5.5, DrussGT +1.6; Diamond -2.2). The class rule is missed; the gain is against
+surfers, through the gun choice. Decision: the release-candidate form 3.14hjswthfgnkxl goes to
+the census (`pc-midrange-census-2`, seeds 1121-1124) against 3.13 at the +0.3 gate.
+
+**Census-2 (2026-10-21, PR #218): +0.09 ± 0.15 pp on 1,212, top 10 -2.86 (-4.97 to -0.75), ranks
+200 or better -0.12, below 200 +0.13. Gate missed on both counts; the top-50 guard's +2.7 did not
+reproduce. Stage 3 closed; th, fg, nk stay off.**
+
+## Close-out (2026-10-21, Leigh: pause)
+
+Three stages, five PC screens and three whole-field censuses (about 40 PC hours) bought these
+facts, each of which closes a door the earlier plans had left open:
+
+- Firepower is not the midrange lever: pressure power loses 2.2 points ungated and the gate
+  never opens (stage 1). Diamond's power-down is right.
+- The surf port is faithful: six Diamond differences switched and stacked are worth +0.6 on the
+  class and +0.03 on the field (stage 2). Distance is not where the class is lost.
+- The gun port is Diamond's melee gun, and replacing it with Diamond's duel gun, free gun choice
+  and undecayed ratings is worth +0.6 on the class and nothing on the field, with the top 10
+  down 2.9 (stage 3). A 48-robot guard at 4 seeds can read +2.7 ± 1.1 and be wrong.
+- The stop-and-start stack's +0.20 sits entirely below rank 200; a name-list gate makes it
+  +0.25, still under the release gate. The stack and the off-list stay off.
+- Class screens on the 149 predict the field poorly: +0.6 on 149 robots is +0.07 APS at best, and
+  every +0.5 to +0.9 class read here shrank to 0 on the census. The release gate is the only read
+  that counts, and it costs 14 PC hours a question.
+
+What is left of the 0.74 APS on the 149 is, on this evidence, not a port difference and not a
+switch: Hadur plays Diamond's duel surf and gun and still scores 5 points under Diamond on this
+class, so the gap is in the parts that are Hadur's own (DIST-1's walk-in, the gun seeds and
+profiles, the tick budget) or in what Diamond does that no audit here reached. Nothing in this
+plan is queued; the switches stay in PR #212, off by default, and the plan is paused.
 
 ## What to expect
 
-| Lever | Scope | Expected | Gate |
-|---|---|---|---|
-| POW-12 pressure power | 149, then the 432 of the class | +0.3 to +0.6 APS | class +2.0, guard, census +0.3 |
-| flattener 8% | the same | +0.05 to +0.1 | with POW-12 |
-| surf fidelity (stage 2) | the 184 unlisted midrange and below | +0.3 to +0.8 | per switch |
+| Lever | Scope | Expected | Gate | Result |
+|---|---|---|---|---|
+| POW-12 pressure power | 149, then the 432 of the class | +0.3 to +0.6 APS | class +2.0, guard, census +0.3 | **failed: -2.2 ± 0.4 pts ungated, -0.6 ± 0.3 gated** |
+| flattener 8% | the same | +0.05 to +0.1 | with POW-12 | +0.5 ± 0.3 pts, rides the next pass |
+| surf fidelity (stage 2) | the 184 unlisted midrange and below | +0.3 to +0.8 | per switch | **closed: stack hc+pk+w2 +0.6 class screen, but census +0.03 ± 0.18 over 3.13hjsw; whole stack +0.22 vs 3.13, under the +0.3 gate** |
+| gun (stage 3): th, fg, nk | the 149, then the field | +1 pp class, +0.3 to +0.5 APS field | class +1.0, guard, census +0.3 | **closed: +0.6 on the 149, census-2 +0.09, top 10 -2.9** |
 
 Together they are the midrange's 0.9 APS to DrussGT if all of it comes in, which is the largest
 single block left on the road to top 3.

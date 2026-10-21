@@ -1,0 +1,28 @@
+# Fourth PC queue for docs/plan-midrange.md stage 2 (thread "Midrange census plan"), after
+# docs/bench/local/2026-10-19_pc-midrange-3-read.md: the three surf switches with the same small
+# positive sign (hitclr, pkern, keep2) stacked, with and without the 8% flattener, confirmed once
+# at 8 seeds on the 149 against 3.14hjsw, then the top-50 guard on the plain stack. One bench
+# queue on the PC, RoboRumble workers at 0 until ALLDONE.
+#   ./queue.sh run pc-midrange-4        (or  .\queue.ps1 run pc-midrange-4)
+# Resumable: a restart skips the steps that exited 0.
+#
+# Keep rule: the stack goes to the census if "All pairs" is at least +1.0 points with the interval
+#   above 0 and the guard no worse than -0.5. Reports: pc-midrange4-s3, -s3f8, -guard.
+
+set HEAP = --child-heap 2G
+set E = --engine 1.11.1
+set COMMON = --skip-build --skip-fetch --rounds 35 --parallel 12 --cpu-constant 1488498 ${HEAP} ${E}
+set SEEDS8 = --seeds 8 --seed-base 1070
+set SEEDS4 = --seeds 4 --seed-base 1080
+set BASE = --baseline bisect/hadur2.Hadur_3.14hjsw.jar --baseline-robot "hadur2.Hadur 3.14hjsw"
+
+prep | mkdir -p bisect && git fetch -q origin claude/project-thread-du09qh && { git worktree remove --force ../../hadur-top3 2>/dev/null || true; } && git worktree add --force --detach ../../hadur-top3 FETCH_HEAD && (cd ../../hadur-top3/hadur-bench && bash ./build-ablation.sh heatjit,swall && bash ./build-ablation.sh heatjit,swall,hitclr,pkern,keep2 && bash ./build-ablation.sh heatjit,swall,hitclr,pkern,keep2,flt8) && cp ../../hadur-top3/hadur-bench/bisect/hadur2.Hadur_3.14hjsw*.jar bisect/ && ./fetch-opponents.sh --set flat-gf-mid.txt && ./fetch-opponents.sh --set guard-top50.txt && mvn -q compile
+
+s3 | ./bench-top20.sh ${COMMON} ${SEEDS8} --set flat-gf-mid.txt --robot-jar bisect/hadur2.Hadur_3.14hjswhcpkw2.jar --robot "hadur2.Hadur 3.14hjswhcpkw2" ${BASE} --label pc-midrange4-s3
+  after: prep
+
+s3f8 | ./bench-top20.sh ${COMMON} ${SEEDS8} --set flat-gf-mid.txt --robot-jar bisect/hadur2.Hadur_3.14hjswhcpkw2f8.jar --robot "hadur2.Hadur 3.14hjswhcpkw2f8" ${BASE} --label pc-midrange4-s3f8
+  after: s3
+
+guard | ./bench-top20.sh ${COMMON} ${SEEDS4} --set guard-top50.txt --robot-jar bisect/hadur2.Hadur_3.14hjswhcpkw2.jar --robot "hadur2.Hadur 3.14hjswhcpkw2" ${BASE} --label pc-midrange4-guard
+  after: s3f8

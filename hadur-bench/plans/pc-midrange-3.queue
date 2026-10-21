@@ -1,0 +1,45 @@
+# Third PC queue for docs/plan-midrange.md, stage 2 (thread "Midrange census plan"): the six
+# switches from the surf audit against Diamond (docs/bench/local/2026-10-19_surf-audit-diamond.md),
+# each alone on the 149 random movers with guess-factor guns, paired against 3.14hjsw, 4 fresh
+# seeds. One bench queue on the PC, RoboRumble workers at 0 until ALLDONE.
+#   ./queue.sh run pc-midrange-3        (or  .\queue.ps1 run pc-midrange-3)
+# Resumable: a restart skips the steps that exited 0.
+#
+# Base: 3.14hjsw, built from the 1v1 branch claude/project-thread-du09qh, where the six ablation
+#   codes live (duel-only, off by default, stack with heatjit,swall):
+#   hold650 (suffix d6)  no DIST-1 walk-in in a duel: the target stays at the opening distance.
+#   dfac    (suffix df)  the surf's distancing factor measured to the enemy's last position (Diamond).
+#   bhb     (suffix bh)  an intercepted enemy bullet's angle is logged to the hit views (Diamond).
+#   hitclr  (suffix hc)  the surfed waves' danger caches are cleared on every hit (Diamond).
+#   pkern   (suffix pk)  the point danger kernel at the intersection centre (Diamond), not MOVE-4's.
+#   keep2   (suffix w2)  a skipped turn no longer drops the second surfed wave for the round.
+# Read each step's "All pairs" row (paired score share, pp) as pc-midrange did. Class gate: +2.0
+#   points with the interval above 0; the fidelity fixes (df, bh, hc) are kept at any gain with the
+#   interval not below 0 since they are Diamond's own behaviour. Survivors are stacked next.
+
+set HEAP = --child-heap 2G
+set E = --engine 1.11.1
+set COMMON = --skip-build --skip-fetch --rounds 35 --parallel 12 --cpu-constant 1488498 ${HEAP} ${E}
+set SEEDS4 = --seeds 4 --seed-base 1060
+set SET = --set flat-gf-mid.txt
+set BASE = --baseline bisect/hadur2.Hadur_3.14hjsw.jar --baseline-robot "hadur2.Hadur 3.14hjsw"
+
+prep | mkdir -p bisect && git fetch -q origin claude/project-thread-du09qh && { git worktree remove --force ../../hadur-top3 2>/dev/null || true; } && git worktree add --force --detach ../../hadur-top3 FETCH_HEAD && (cd ../../hadur-top3/hadur-bench && bash ./build-ablation.sh heatjit,swall && bash ./build-ablation.sh heatjit,swall,hold650 && bash ./build-ablation.sh heatjit,swall,dfac && bash ./build-ablation.sh heatjit,swall,bhb && bash ./build-ablation.sh heatjit,swall,hitclr && bash ./build-ablation.sh heatjit,swall,pkern && bash ./build-ablation.sh heatjit,swall,keep2) && cp ../../hadur-top3/hadur-bench/bisect/hadur2.Hadur_3.14hjsw*.jar bisect/ && ./fetch-opponents.sh --set flat-gf-mid.txt && mvn -q compile
+
+d6 | ./bench-top20.sh ${COMMON} ${SEEDS4} ${SET} --robot-jar bisect/hadur2.Hadur_3.14hjswd6.jar --robot "hadur2.Hadur 3.14hjswd6" ${BASE} --label pc-midrange3-d6
+  after: prep
+
+df | ./bench-top20.sh ${COMMON} ${SEEDS4} ${SET} --robot-jar bisect/hadur2.Hadur_3.14hjswdf.jar --robot "hadur2.Hadur 3.14hjswdf" ${BASE} --label pc-midrange3-df
+  after: d6
+
+bh | ./bench-top20.sh ${COMMON} ${SEEDS4} ${SET} --robot-jar bisect/hadur2.Hadur_3.14hjswbh.jar --robot "hadur2.Hadur 3.14hjswbh" ${BASE} --label pc-midrange3-bh
+  after: df
+
+hc | ./bench-top20.sh ${COMMON} ${SEEDS4} ${SET} --robot-jar bisect/hadur2.Hadur_3.14hjswhc.jar --robot "hadur2.Hadur 3.14hjswhc" ${BASE} --label pc-midrange3-hc
+  after: bh
+
+pk | ./bench-top20.sh ${COMMON} ${SEEDS4} ${SET} --robot-jar bisect/hadur2.Hadur_3.14hjswpk.jar --robot "hadur2.Hadur 3.14hjswpk" ${BASE} --label pc-midrange3-pk
+  after: hc
+
+w2 | ./bench-top20.sh ${COMMON} ${SEEDS4} ${SET} --robot-jar bisect/hadur2.Hadur_3.14hjsww2.jar --robot "hadur2.Hadur 3.14hjsww2" ${BASE} --label pc-midrange3-w2
+  after: pk
