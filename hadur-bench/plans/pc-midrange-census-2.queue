@@ -1,0 +1,23 @@
+# Second whole-field census for docs/plan-midrange.md (thread "Midrange census plan"), after
+# docs/bench/local/2026-10-21_pc-midrange-5-read.md: the gun stack thgun + freegun + nodecay read
+# +0.6 on the 149 and +2.7 on the top 50 (PR #217). This runs the release-candidate form once:
+# the stop-and-start stack (heatjit, swall) with the top-200 off-list (stacklist, xl) and the three
+# gun switches, 3.14hjswthfgnkxl built from claude/project-thread-du09qh at ed968c98 (PR #212),
+# against the 3.13 release on every census bot at 4 fresh seeds. One bench queue on the PC,
+# RoboRumble workers at 0 until ALLDONE.
+#   ./queue.sh run pc-midrange-census-2        (or  .\queue.ps1 run pc-midrange-census-2)
+# Resumable: a restart skips the steps that exited 0.
+#
+# Gate: at least +0.3 APS over 3.13 with the interval above 0 and no rank band below -0.05. The
+#   earlier censuses (3.13hjsw +0.20, 3.14hjswhcpkw2 +0.22, both vs 3.13, same opponents and
+#   seed count) let the gun's own share be read by band: against the top 200 the off-list turns
+#   the stack off, so there the difference to 3.13 is the gun alone.
+
+set HEAP = --child-heap 2G
+set E = --engine 1.11.1
+set COMMON = --skip-build --skip-fetch --rounds 35 --parallel 12 --cpu-constant 1488498 ${HEAP} ${E}
+
+prep | mkdir -p bisect && { [ -s bisect/hadur2.Hadur_3.13.jar ] || curl -fsSL -o bisect/hadur2.Hadur_3.13.jar https://github.com/lgriffin/Hadur_Robot/releases/download/v3.13/hadur2.Hadur_3.13.jar; } && git fetch -q origin claude/project-thread-du09qh && { git worktree remove --force ../../hadur-top3 2>/dev/null || true; } && git worktree add --force --detach ../../hadur-top3 ed968c98 && (cd ../../hadur-top3/hadur-bench && bash ./build-ablation.sh heatjit,swall,thgun,freegun,nodecay,stacklist) && cp ../../hadur-top3/hadur-bench/bisect/hadur2.Hadur_3.14hjswthfgnkxl.jar bisect/ && ./fetch-opponents.sh --set census-312.txt && mvn -q compile
+
+census | ./bench-top20.sh ${COMMON} --seeds 4 --seed-base 1120 --set census-312.txt --robot-jar bisect/hadur2.Hadur_3.14hjswthfgnkxl.jar --robot "hadur2.Hadur 3.14hjswthfgnkxl" --baseline bisect/hadur2.Hadur_3.13.jar --baseline-robot "hadur2.Hadur 3.13" --label pc-midrange-census-2
+  after: prep

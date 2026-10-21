@@ -246,6 +246,13 @@ deals 80-85 a round to Hadur's 45. Switches: `th` GUN-8 TripHammer main gun, `fg
 gun choice, `nk` GUN-10 undecayed ratings; screen th, fg, nk, thfgnk on the 149 at 4 seeds
 against 3.14hjsw, guard, keep rule +1.0 on the class, then the census of the keeper at +0.3.
 
+**Result (2026-10-21, PR #217, `2026-10-21_pc-midrange-5-read.md`):** alone th -0.1, fg +0.2, nk
+-0.2 (each ± 0.5); stacked +0.6 ± 0.5 on the 149 (hit rate 15.9% vs 15.2%) and **+2.7 ± 1.1 on
+the top 50** (34 of 48 up; GresSuffurd +11, Wintermute, WaveSerpent, Domogled, Dookious +7 to +8,
+Nullstride +5.5, DrussGT +1.6; Diamond -2.2). The class rule is missed; the gain is against
+surfers, through the gun choice. Decision: the release-candidate form 3.14hjswthfgnkxl goes to
+the census (`pc-midrange-census-2`, seeds 1121-1124) against 3.13 at the +0.3 gate.
+
 ## What to expect
 
 | Lever | Scope | Expected | Gate | Result |
@@ -253,7 +260,7 @@ against 3.14hjsw, guard, keep rule +1.0 on the class, then the census of the kee
 | POW-12 pressure power | 149, then the 432 of the class | +0.3 to +0.6 APS | class +2.0, guard, census +0.3 | **failed: -2.2 ± 0.4 pts ungated, -0.6 ± 0.3 gated** |
 | flattener 8% | the same | +0.05 to +0.1 | with POW-12 | +0.5 ± 0.3 pts, rides the next pass |
 | surf fidelity (stage 2) | the 184 unlisted midrange and below | +0.3 to +0.8 | per switch | **closed: stack hc+pk+w2 +0.6 class screen, but census +0.03 ± 0.18 over 3.13hjsw; whole stack +0.22 vs 3.13, under the +0.3 gate** |
-| gun (stage 3): th, fg, nk | the 149, then the field | +1 pp class, +0.3 to +0.5 APS field | class +1.0, guard, census +0.3 | being built on du09qh |
+| gun (stage 3): th, fg, nk | the 149, then the field | +1 pp class, +0.3 to +0.5 APS field | class +1.0, guard, census +0.3 | stack +0.6 on the 149, **+2.7 on the top 50**; census-2 running as 3.14hjswthfgnkxl |
 
 Together they are the midrange's 0.9 APS to DrussGT if all of it comes in, which is the largest
 single block left on the road to top 3.
