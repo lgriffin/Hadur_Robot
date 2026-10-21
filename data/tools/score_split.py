@@ -10,9 +10,9 @@ plan90, all cold, 35 rounds x 4 seeds) and splits each segment's score-share gap
             s / (s + t) with Hadur's s swapped for ScalarR's, then t. The two parts sum to the gap.
   exposure  the damage taken per round, as damage per tick times ticks per round: how much of the
             excess is taken per tick (dodging) and how much is rounds lasting longer (kill speed).
-  round 0   battles lost at round 0 to an engine disable (round 0 lost with under 5 damage dealt;
-            the battle row's engineDisables confirms it) and their cost: per opponent, the mean
-            share of its other battles less the mean of all its battles, summed over the field.
+  Round-0 engine disables are not counted here: the per-round rows record a round won and then
+  disabled in the post-round wait as lost (docs/bench/local/2026-10-21_round0-skips.md), so
+  hadur-bench/tools/round0_skips.py reads them from the logs instead.
 
 Segments are census_joint's: A rammers, C the 88 large losses (hadur-bench/panel-large-losses.txt),
 B ranks 401+ split at 800, D ranks 51-400, E the top 50. Standard library only.
@@ -131,22 +131,6 @@ def main(argv=None):
                    f"| {35 - mean(bat, 'Hadur', opps, 'firsts'):.2f} ({35 - mean(bat, 'ScalarR', opps, 'firsts'):.2f}) "
                    f"| {tk['Hadur']:.0f} / {tk['ScalarR']:.0f} | {taken['Hadur']:.1f} / {taken['ScalarR']:.1f} "
                    f"| {per_tick:+.1f} | {length:+.1f} |")
-    out += ["", "Round 0 lost to an engine disable (round 0 lost with under 5 damage dealt):", "",
-            "| Robot | Battles | Disabled at round 0 | Their engineDisables a battle | Others' | APS cost |", "|---|---|---|---|---|---|"]
-    for name, path, build in (("Hadur 3.13",) + HADUR, ("Hadur 3.13hjsw", HADUR[0], "hadur2.Hadur 3.13hjsw")) + \
-            tuple((n, p, None) for n, p in REFS):
-        stall = {(cj.base(r["opponent"]), r["seed"]) for r in cj.git_rows(repo, path.replace("_cold.tsv", "_cold_rounds.tsv"))
-                 if (not build or r["build"] == build) and r["round"] == "0" and r["survived"] == "0"
-                 and float(r["damageDealt"] or 0) < 5}
-        rows = [r for r in cj.git_rows(repo, path) if (not build or r["build"] == build) and r["ok"] == "true"]
-        hit = [r for r in rows if (cj.base(r["opponent"]), r["seed"]) in stall]
-        rest = [r for r in rows if (cj.base(r["opponent"]), r["seed"]) not in stall]
-        per = defaultdict(lambda: ([], []))
-        for r in rows:
-            per[cj.base(r["opponent"])][(cj.base(r["opponent"]), r["seed"]) in stall].append(100 * float(r["score_share"]))
-        cost = sum(st.mean(ok) - st.mean(ok + bad) for ok, bad in per.values() if ok and bad) / n_all
-        out.append(f"| {name} | {len(rows)} | {len(hit)} | {st.mean(float(r['engineDisables']) for r in hit) if hit else 0:.2f} "
-                   f"| {st.mean(float(r['engineDisables']) for r in rest):.2f} | {cost:.3f} |")
     text = "\n".join(out) + "\n"
     print(text)
     if a.out:

@@ -11,12 +11,3 @@ Diamond 1.8.22 from plan90. Written by `data/tools/score_split.py`. APS = pp x b
 | C large losses | 87 | 72.03 | 85.44 | 80.20 | +0.963 | +0.312 | +0.651 | 1286 / 692 | 852 / 547 | 314 / 104 | 6.28 (2.08) | 1030 / 1107 | 25.0 / 16.3 | +10.7 | -1.9 |
 | D ranks 51-400, the rest | 294 | 84.67 | 82.41 | 82.61 | -0.549 | +0.379 | -0.928 | 690 / 849 | 530 / 725 | 112 / 86 | 2.22 (1.73) | 906 / 722 | 15.6 / 21.3 | -8.9 | +3.2 |
 | E ranks 1-50, the rest | 23 | 74.07 | 70.59 | 70.76 | -0.066 | +0.041 | -0.107 | 1164 / 1371 | 785 / 1001 | 270 / 262 | 5.38 (5.24) | 1068 / 918 | 22.6 / 28.9 | -9.5 | +3.2 |
-
-Round 0 lost to an engine disable (round 0 lost with under 5 damage dealt):
-
-| Robot | Battles | Disabled at round 0 | Their engineDisables a battle | Others' | APS cost |
-|---|---|---|---|---|---|
-| Hadur 3.13 | 4848 | 530 | 1.03 | 0.12 | 0.125 |
-| Hadur 3.13hjsw | 4848 | 458 | 0.92 | 0.12 | 0.088 |
-| ScalarR | 4844 | 7 | 0.14 | 0.08 | 0.007 |
-| Diamond | 4844 | 25 | 0.28 | 0.00 | 0.015 |

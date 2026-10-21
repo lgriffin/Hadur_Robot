@@ -302,14 +302,20 @@ excess damage into damage per tick and ticks per round.
 - **B 401-800 also kills slower**: rounds last 608 ticks against 558, damage dealt 0.082 a
   tick against 0.102. Half the excess damage there is that exposure; the other half is per
   tick.
-- **Round 0 is lost to an engine disable in 11% of 3.13's bench battles** (530 of 4,848: round
-  0 lost with under 5 damage dealt, engineDisables 1.03 a battle against 0.12 elsewhere).
-  ScalarR has 7, Diamond 25. Priced within each opponent, it costs 0.13 APS on the bench (0.09
-  on 3.13hjsw). This is "starts each battle worse" in part. Whether the live client has it is
-  not known: live minus bench is +0.05 APS with these battles in and -0.08 with them out, both
-  inside the live page's noise, so the page cannot tell. The live client runs a long-lived JVM; the
-  bench starts a cold JVM per battle with 12 at once. The skipped-turns work (TIME-6, dropped
-  in R8) covered this start grace.
+- **Round-0 engine disables are rare: 0.8% of battles, about 0.02-0.03 APS** (corrected after
+  the log read, `docs/bench/local/2026-10-21_round0-skips.md`). A first reading from the
+  per-round rows counted 530 of 4,848 battles (11%) as round 0 lost to a disable. The logs show
+  373 of them are round-0 *wins*: Hadur then skipped a median 59 turns in the post-round wait,
+  the engine disabled it (more than 30 consecutive skipped turns), and the harvester's per-round
+  row took the zeroed current-round score. The battle totals credit those rounds, so no score
+  was lost. Another 61 have no R record and 57 are ordinary losses. The real start-up disables
+  are 39 (3.13) and 52 (3.13hjsw): Hadur misses every turn from turn 1 until its first record
+  (median turn 105, up to 1,061) and is disabled on the next. They repeat on a few opponents
+  across seeds and builds (Frederick, T1000, PencilRain) and rise from 0% in the first hours of
+  the run to 1.8% in the last, which the rank-ordered queue cannot separate from opponent rank.
+  No live data covers round 0: the clients last ran 3.12, keep no console logs, and the health
+  records count skipped turns per battle only (3.12 live: 13% of battles over 30, 14 battles
+  over 500 against 2 of 4,848 on the bench).
 
 ## 5. What the runs do not tell us
 
