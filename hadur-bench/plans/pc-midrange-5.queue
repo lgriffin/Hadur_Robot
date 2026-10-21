@@ -1,0 +1,38 @@
+# Fifth PC queue for docs/plan-midrange.md stage 3 (thread "Midrange census plan"), after
+# docs/bench/local/2026-10-20_gun-read.md: Hadur's duel main gun is Diamond's melee gun. The three
+# gun switches built on claude/project-thread-du09qh at ed968c98 (PR #212): thgun (th, GUN-8,
+# Diamond 1.8.22's TripHammer main gun), freegun (fg, GUN-9, gun choice on the bare best rating),
+# nodecay (nk, GUN-10, undecayed ratings), each alone and all three stacked, on the 149 against
+# 3.14hjsw at 4 fresh seeds, then the top-50 guard on the full stack. One bench queue on the PC,
+# RoboRumble workers at 0 until ALLDONE.
+#   ./queue.sh run pc-midrange-5        (or  .\queue.ps1 run pc-midrange-5)
+# Resumable: a restart skips the steps that exited 0.
+#
+# Keep rule: a switch or the stack goes to the census if "All pairs" is at least +1.0 points with
+#   the interval above 0 and the guard no worse than -0.5. The census then runs the keeper with the
+#   stack and the top-200 off-list (stacklist, xl, MOVE-23) against 3.13 at the +0.3 APS gate.
+# Reports: pc-midrange5-th, -fg, -nk, -thfgnk, -guard.
+
+set HEAP = --child-heap 2G
+set E = --engine 1.11.1
+set COMMON = --skip-build --skip-fetch --rounds 35 --parallel 12 --cpu-constant 1488498 ${HEAP} ${E}
+set SEEDS4 = --seeds 4 --seed-base 1100
+set GSEEDS = --seeds 4 --seed-base 1110
+set BASE = --baseline bisect/hadur2.Hadur_3.14hjsw.jar --baseline-robot "hadur2.Hadur 3.14hjsw"
+
+prep | mkdir -p bisect && git fetch -q origin claude/project-thread-du09qh && { git worktree remove --force ../../hadur-top3 2>/dev/null || true; } && git worktree add --force --detach ../../hadur-top3 ed968c98 && (cd ../../hadur-top3/hadur-bench && bash ./build-ablation.sh heatjit,swall && bash ./build-ablation.sh heatjit,swall,thgun && bash ./build-ablation.sh heatjit,swall,freegun && bash ./build-ablation.sh heatjit,swall,nodecay && bash ./build-ablation.sh heatjit,swall,thgun,freegun,nodecay) && cp ../../hadur-top3/hadur-bench/bisect/hadur2.Hadur_3.14hjsw*.jar bisect/ && ./fetch-opponents.sh --set flat-gf-mid.txt && ./fetch-opponents.sh --set guard-top50.txt && mvn -q compile
+
+th | ./bench-top20.sh ${COMMON} ${SEEDS4} --set flat-gf-mid.txt --robot-jar bisect/hadur2.Hadur_3.14hjswth.jar --robot "hadur2.Hadur 3.14hjswth" ${BASE} --label pc-midrange5-th
+  after: prep
+
+fg | ./bench-top20.sh ${COMMON} ${SEEDS4} --set flat-gf-mid.txt --robot-jar bisect/hadur2.Hadur_3.14hjswfg.jar --robot "hadur2.Hadur 3.14hjswfg" ${BASE} --label pc-midrange5-fg
+  after: th
+
+nk | ./bench-top20.sh ${COMMON} ${SEEDS4} --set flat-gf-mid.txt --robot-jar bisect/hadur2.Hadur_3.14hjswnk.jar --robot "hadur2.Hadur 3.14hjswnk" ${BASE} --label pc-midrange5-nk
+  after: fg
+
+thfgnk | ./bench-top20.sh ${COMMON} ${SEEDS4} --set flat-gf-mid.txt --robot-jar bisect/hadur2.Hadur_3.14hjswthfgnk.jar --robot "hadur2.Hadur 3.14hjswthfgnk" ${BASE} --label pc-midrange5-thfgnk
+  after: nk
+
+guard | ./bench-top20.sh ${COMMON} ${GSEEDS} --set guard-top50.txt --robot-jar bisect/hadur2.Hadur_3.14hjswthfgnk.jar --robot "hadur2.Hadur 3.14hjswthfgnk" ${BASE} --label pc-midrange5-guard
+  after: thfgnk
