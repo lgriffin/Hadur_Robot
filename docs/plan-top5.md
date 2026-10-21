@@ -29,14 +29,14 @@ Numbers come from `data/tools/census_joint.py` (standard library, tests in CI); 
   not +0.20, +0.22 and +0.09. The surf stack (3.14hjswhcpkw2) was probably the best thing we
   built; the census verdicts were coin flips at that size.
 - **The top-5 gap is in the weak field, not the midrange.** Against ScalarR (the robot to pass
-  for 5th), ranks 51-400 favour *Hadur* by 0.64. The 1.70 sits in three segments: the 721
-  ordinary bots ranked 401+ (+0.94), 76 single bots Hadur loses by 10 to 30 points (+1.00)
-  and the 87 rammers (+0.48). The same three segments hold 2.05 of DrussGT's 3.03. The
+  for 5th), ranks 51-400 favour *Hadur* by 0.74. The 1.70 sits in three segments: the 719
+  ordinary bots ranked 401+ (+0.92), 88 single bots Hadur loses by 10 to 30 points (+1.12)
+  and the 87 rammers (+0.48). The same three segments hold 2.14 of DrussGT's 3.03. The
   midrange plan aimed at the one segment where ScalarR and Diamond are *behind* Hadur.
 - **The loss there is defence.** Against those bots Hadur takes 1.2 to 3.3 times the damage
   per round that ScalarR takes late in the battle, starts each battle worse (round 0 in band 6:
-  13.9 against 7.9), and improves about half as fast over the battle. Against the 76 it does
-  not improve at all (25 a round from round 1 to 34; ScalarR 21 falling to 15). Against
+  13.9 against 7.9), and improves about half as fast over the battle. Against the 88 it does
+  not improve at all (25 a round from round 1 to 34; ScalarR 22 falling to 16). Against
   rammers it takes 28 a round; ScalarR takes 8.
 - **The plan:** one interleaved multi-arm queue per experiment (every build on every opponent
   and seed, in random order, on CPU-pinned workers) with an A/A arm in every run; a
@@ -123,12 +123,12 @@ Per segment (section 3), against pooled 3.13, in APS:
 
 | Build | A rammers | B ranks 401+ | C large losses | D ranks 51-400 | E ranks 1-50 |
 |---|---|---|---|---|---|
-| 3.13hjsw | +0.02 | +0.13 ± 0.07 | -0.01 | -0.07 | -0.03 |
+| 3.13hjsw | +0.02 | +0.13 ± 0.07 | -0.02 | -0.06 | -0.03 |
 | 3.14hjswhcpkw2 | +0.03 | +0.18 ± 0.07 | +0.05 | +0.06 | -0.01 |
-| 3.14hjswthfgnkxl | -0.03 | +0.10 ± 0.07 | +0.07 | -0.02 | -0.01 |
+| 3.14hjswthfgnkxl | -0.03 | +0.10 ± 0.07 | +0.07 | -0.01 | -0.01 |
 
-Every build gains in B. The surf and gun stacks also gain a little in C (+0.05 ± 0.04 and
-+0.07 ± 0.05), the surf stack a little in A (+0.03 ± 0.02); nothing else moves beyond noise.
+Every build gains in B. The surf and gun stacks also gain a little in C (+0.05 ± 0.05 and
++0.07 ± 0.06), the surf stack a little in A (+0.03 ± 0.02); nothing else moves beyond noise.
 The parts we built recovered at most a fifth of B and a fifteenth of C. The "top 10 down 2.9" that stopped
 census-2 sits in a band of 10 opponents whose four 3.13 runs themselves span 46.2 to 48.5;
 it is not evidence either way.
@@ -150,10 +150,10 @@ segments that do not overlap:
 | Segment | Bots | Hadur live | DrussGT | Saguaro | ScalarR | Diamond |
 |---|---|---|---|---|---|---|
 | A rammers (census_classify) | 87 | 87.7 | +0.30 | +0.25 | +0.48 | +0.30 |
-| B ranks 401+, the rest | 721 | 94.4 | +0.99 | +1.02 | +0.94 | +0.53 |
-| C large losses: ≥10 pts behind ScalarR live and ≥5 on the bench | 76 | 69.4 | +0.76 | +0.50 | +1.00 | +0.60 |
-| D ranks 51-400, the rest | 303 | 85.0 | +0.95 | +0.78 | **-0.64** | **-0.72** |
-| E ranks 1-50, the rest | 25 | 73.1 | +0.04 | -0.20 | -0.07 | -0.09 |
+| B ranks 401+, the rest | 719 | 94.4 | +0.97 | +1.00 | +0.92 | +0.52 |
+| C large losses: ≥10 pts behind ScalarR live (chosen from live data only) | 88 | 69.5 | +0.87 | +0.57 | +1.12 | +0.71 |
+| D ranks 51-400, the rest | 294 | 85.5 | +0.86 | +0.73 | **-0.74** | **-0.80** |
+| E ranks 1-50, the rest | 24 | 73.6 | +0.03 | -0.20 | -0.08 | -0.10 |
 | **Total** | 1,212 | 89.5 | **+3.03** | **+2.34** | **+1.70** | **+0.62** |
 
 By rank band (live, APS): DrussGT 0.02 / 0.19 / 0.62 / 0.83 / 0.84 / 0.52 for bands 1-6;
@@ -161,14 +161,14 @@ ScalarR 0.10 / 0.14 / -0.14 / 0.08 / 0.67 / 0.85.
 
 Reading:
 
-- **A + B + C hold 2.42 of ScalarR's 1.70** (D gives 0.64 back), **1.77 of Saguaro's 2.34**
-  and **2.05 of DrussGT's 3.03**. Every robot in the top 5 beats Hadur by about a point and a
-  half a bot across the 721 ordinary weak bots. That is the shape of a top-5 robot, and it is
+- **A + B + C hold 2.52 of ScalarR's 1.70** (D gives 0.74 back), **1.82 of Saguaro's 2.34**
+  and **2.14 of DrussGT's 3.03**. Every robot in the top 5 beats Hadur by about a point and a
+  half a bot across the 719 ordinary weak bots. That is the shape of a top-5 robot, and it is
   where Hadur is not one yet.
 - **D is DrussGT's and Saguaro's edge, not the top 5's.** ScalarR and Diamond are behind
   Hadur there. The midrange plan (ranks 51-400, the 149 flat x learning bots) worked on the
   segment that decides 3rd place, while 5th place is decided in A, B and C.
-- **C is concentrated.** 76 bots, each worth 10 to 30 points: deo.virtual.RainbowBot (live
+- **C is concentrated.** 88 bots, each worth 10 to 30 points: deo.virtual.RainbowBot (live
   63 vs ScalarR 97), tw.Exterminator (70 vs 96), kenran.mega.Pantheist (69 vs 95),
   Polkwane.Piyane (74 vs 99), deo.CloudBot (72 vs 96), jab.avk.ManuelGallegus (74 vs 96), and
   among the strong bots cb.fire.Firestarter (40 vs 68), pc.Wavelet (39 vs 64),
@@ -191,9 +191,9 @@ references from their censuses; rammers taken out of the bands):
 | band 5 (401-700) | Hadur 3.13 | 23.9 | 14.8 | 12.6 | 12.1 | 11.6 | 11.5 | 11.4 |
 | | Diamond | 18.7 | 14.9 | 13.1 | 12.2 | 11.6 | 11.0 | 10.4 |
 | | ScalarR | 19.8 | 14.0 | 11.9 | 11.2 | 10.3 | 9.8 | 9.6 |
-| C large losses | Hadur 3.13 | 29.5 | 24.8 | 24.3 | 25.2 | 25.1 | 25.5 | **25.2** |
-| | Diamond | 21.3 | 20.2 | 19.5 | 18.8 | 19.2 | 19.0 | 19.2 |
-| | ScalarR | 21.1 | 17.3 | 15.6 | 16.3 | 15.4 | 15.3 | **15.0** |
+| C large losses | Hadur 3.13 | 29.3 | 25.4 | 24.6 | 25.1 | 25.1 | 25.2 | **24.8** |
+| | Diamond | 21.0 | 21.5 | 20.0 | 19.2 | 19.8 | 19.1 | 19.1 |
+| | ScalarR | 22.0 | 18.4 | 16.7 | 16.8 | 16.4 | 15.9 | **15.6** |
 | rammers | Hadur 3.13 | 33.4 | 27.5 | 29.5 | 28.2 | 28.9 | 28.4 | **27.6** |
 | | Diamond | 22.2 | 18.7 | 18.0 | 16.4 | 16.1 | 15.6 | 15.0 |
 | | ScalarR | 17.2 | 11.1 | 11.3 | 10.2 | 9.4 | 8.9 | **8.4** |
@@ -207,10 +207,10 @@ references from their censuses; rammers taken out of the bands):
   with the rammers it is 43%. Mean distance there is 390 px. Rounds in which Hadur skipped a turn take 4 to 5 more damage (a
   correlation; long rounds have more chances to skip). The stop-and-start stack already
   works here (+0.10 to +0.18 APS, section 2.3), which says the segment responds to movement.
-- **C:** a constant 25 a round from round 1 to round 34, where ScalarR falls from 21 to 15.
-  These bots do not out-learn Hadur over the battle; they hit it from the start (7.3% of their
-  shots, against 5.4% for the other 393 flat movers with learning guns; 76% of the damage from
-  learned aims, at bullet power 1.56) and Hadur never learns to avoid them. Hadur hits them as
+- **C:** a constant 25 a round from round 1 to round 34, where ScalarR falls from 22 to 16.
+  These bots do not out-learn Hadur over the battle; they hit it from the start (7.2% of their
+  shots, against 5.3% for the other 384 flat movers with learning guns; 77% of the damage from
+  learned aims, at bullet power 1.62) and Hadur never learns to avoid them. Hadur hits them as
   often as the rest of that class (14%), so they are not hard targets; they are hard to dodge.
 - **A:** 28 a round against 8 for ScalarR, flat over the battle. Since 3.9, RAM-2's escape
   runs only where RAM-3's per-battle trial says it pays (it had cost the weak tail in 3.5 to
@@ -253,7 +253,11 @@ the whole machine:
    a battle onto a busy one. Two cores stay free for the runner and Windows.
 3. **An A/A arm in every run.** The 3.13 release jar twice under two names
    (`hadur2.Hadur 3.13` and `hadur2.Hadur 3.13aa`). Its difference is the run's own null: if
-   it is outside ± 0.1 APS on a full census, the run is suspect, whatever the candidates say.
+   it is outside its 1% band, 2.58 x 3.2 x sqrt(1/s1 + 1/s2) / sqrt(n) points (s1, s2 its seeds per
+   opponent, n opponents: ± 0.34 APS at 1 seed each on the full census, ± 0.47 on a half), the
+   run has an arm-specific defect. That band only catches gross faults: a shift of the 0.09 size
+   seen in section 2.2 is below it. What protects the comparisons from such a shift is that all
+   arms share the run, so a run-level shift cancels in every main effect and every RC contrast.
 4. **Factorial arms, not one switch per run.** With 16 arms in one run, a 2^(8-4) design
    (resolution IV) measures eight two-level factors at once; each main effect is the
    difference between 8 arms and 8 arms over every opponent, so its precision is that of a
@@ -336,15 +340,19 @@ not apply cleanly on the 3.14 line, `mir1` (MIR-1) or `nodur` takes its place.
 
 Design: 2^(8-4), generators N = hj·sw·S, F = sw·S·G, R = hj·S·G, T = hj·sw·G. The all-low arm
 is plain 3.13, which with 3.13aa forms the A/A pair (17 arms). Two-way interactions are
-aliased in pairs; any pair that matters is resolved in Stage 4's arms.
+aliased in 7 sets of 4 (28 interactions over 7 contrasts), so Stage 2 cannot name an
+interaction, only flag a set. If a set's contrast is large (≥ 0.2), a fold-over of the 8 arms
+that split it is added to Stage 4. Stage 4's leave-one-out arms measure each part's
+contribution given the rest of the release candidate, which is what the ship decision needs;
+they do not identify interactions.
 
 ### 7.3 Stage 1 and 3: the three segments
 
 | Segment | Available against ScalarR | Mechanism read (Stage 1) | Build | Screen (Stage 3) | Expected |
 |---|---|---|---|---|---|
 | A rammers | 0.48 | ram damage vs bullet damage, distance and heading at contact, what RAM-1/RAM-2 do on each rammer | rammer policy gated by the rammer detector | 87 rammers x 4 seeds x 3 arms (3.13, 3.13aa, build); per-bot seed sd 2.3 pts gives ± 0.3 pts | +0.2 to +0.25 |
-| C large losses | 1.00 | for each hit: was it on the surf's plan, was another first-tick option safe, which view rated it, flattener state, distance; is the gun head-on/linear/constant GF | a per-battle "this gun keeps hitting us" response gated on the enemy's hit rate after N waves (on only where it is high, so the panel is its whole effect) | 76 bots x 4 seeds x 3 arms; seed sd 4.8 pts gives ± 0.7 pts | +0.25 to +0.4 |
-| B ranks 401+ | 0.94 | the same hit read on a random 100 of B; round 0 apart from later rounds | whatever Stage 2 and the read point to; B is 60% of the field, so its candidates are field arms in Stage 4, not panel screens | | +0.15 to +0.3 beyond Stage 2 |
+| C large losses | 1.12 | for each hit: was it on the surf's plan, was another first-tick option safe, which view rated it, flattener state, distance; is the gun head-on/linear/constant GF | a per-battle "this gun keeps hitting us" response gated on the enemy's hit rate after N waves (on only where it is high, so the panel is its whole effect) | 88 bots x 4 seeds x 3 arms; seed sd 4.8 pts gives ± 0.65 pts | +0.25 to +0.4 |
+| B ranks 401+ | 0.92 | the same hit read on a random 100 of B; round 0 apart from later rounds | whatever Stage 2 and the read point to; B is 60% of the field, so its candidates are field arms in Stage 4, not panel screens | | +0.15 to +0.3 beyond Stage 2 |
 
 Hit-rate and rammer detectors make A and C safe to screen on their panels: the build does
 nothing until the detector fires, so its effect outside the panel is the detector's false
@@ -355,8 +363,8 @@ positives, which the Stage 4 rows count directly.
 - **Stage 0.** If the A/A difference falls outside its own 95% interval in more than one of
   the five blocks, or the two 12-pinned blocks (first and last) disagree beyond their noise,
   the bench has a defect: stop the plan and find it before measuring anything else. In every
-  later run, an A/A difference beyond ± 0.1 APS on a full census (± 0.15 on a half) voids the
-  run.
+  later run, an A/A difference outside its 1% band (section 6.1, item 3: ± 0.34 APS at 1 seed
+  each on the full census, ± 0.47 on a half) voids the run.
 - **Stage 1.** A segment's build starts only when the read names a mechanism that accounts
   for at least half of the excess damage against ScalarR there, with the numbers. No read, no
   build; that segment closes.
@@ -365,11 +373,13 @@ positives, which the Stage 4 rows count directly.
   between 0.10 and 0.25. A factor is kept at ≥ +0.10 with its interval above 0 on the census
   and no segment A-E below -0.05 APS.
 - **Stage 3.** The rammer build needs ≥ +2.5 points mean on the 87 (interval above +1); the C
-  build ≥ +4 points on the 76 (interval above +1.5). Two design iterations per segment at
+  build ≥ +4 points on the 88 (interval above +1.5). Two design iterations per segment at
   most; then that segment closes.
 - **Stage 4.** The release candidate (Stage 2 keepers + Stage 3 keepers + any B change) runs
   against 3.13 and 3.13aa (2 seeds each) and one leave-one-out arm per new part (1 seed), on
-  the full census: about 11,000 battles, RC against 3.13 known to ± 0.16.
+  the full census: about 11,000 battles. The RC's 2 battles a bot are compared with the 4 of
+  3.13 and 3.13aa pooled, 3.2 x sqrt(1/2 + 1/4) / sqrt(1212) = 0.080 APS, so ± 0.16 at 95%
+  (± 0.18 if the controls were not pooled).
   It ships at ≥ +0.5 APS with the interval above +0.3, no segment below -0.05, and every
   leave-one-out showing its part ≥ 0. Below +0.6, top 5 is out of reach on this route: report
   that and stop adding switches.

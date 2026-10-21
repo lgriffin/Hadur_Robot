@@ -48,7 +48,7 @@ RUNS = (  # label, report directory, candidate, baseline
     ("mid2", "2026-10-21_pc-midrange-census-2", "3.14hjswthfgnkxl", "3.13"),
 )
 BANDS = ((1, 10), (11, 50), (51, 200), (201, 400), (401, 700), (701, 10 ** 6))
-SEGMENTS = {"A": "rammers", "B": "ranks 401+, the rest", "C": "large single-bot losses",
+SEGMENTS = {"A": "rammers", "B": "ranks 401+, the rest", "C": "large single-bot losses (live)",
             "D": "ranks 51-400, the rest", "E": "ranks 1-50, the rest"}
 PHASES = ((0, 0), (1, 2), (3, 5), (6, 9), (10, 14), (15, 24), (25, 34))
 LIVE = "data/rumble/parsed/"
@@ -217,11 +217,12 @@ def main(argv=None):
                 d[base(r["opponent"])].append(100 * float(r["score_share"]))
         local[name] = {k: st.mean(v) for k, v in d.items()}
 
-    # C: opponents at least 10 points behind ScalarR live and 5 behind it on the bench, not rammers.
+    # C: opponents at least 10 points behind ScalarR on the live pages, not rammers. Chosen from live
+    # data only, so the bench battles that measure the candidates and the damage curves on C are not
+    # the ones that selected it (no regression to the mean in the C rows).
     pb = {base(o): v for o, v in pool.items()}
-    large = {o for o in classes if o in hadur and o in peers["ScalarR"] and o in local["ScalarR"] and o in pb
-             and classes[o]["move_class"] != "rammer"
-             and peers["ScalarR"][o] - hadur[o] >= 10 and local["ScalarR"][o] - pb[o] >= 5}
+    large = {o for o in classes if o in hadur and o in peers["ScalarR"]
+             and classes[o]["move_class"] != "rammer" and peers["ScalarR"][o] - hadur[o] >= 10}
     seg = {o: segment(base(o), classes, large) for o in opps}
 
     # Candidates.

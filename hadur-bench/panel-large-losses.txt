@@ -1,4 +1,4 @@
-# docs/plan-top5.md: 76 non-rammer opponents at least 10 points behind ScalarR live and 5 on the bench (data/tools/census_joint.py, 2026-10-21). Lines copied from census-312.txt.
+# docs/plan-top5.md: 88 non-rammer opponents at least 10 points behind ScalarR on the live pages (data/tools/census_joint.py, 2026-10-21). Lines copied from census-312.txt.
 kc.mega.BeepBoop 2.0 | rank1-band1 | kc.mega.BeepBoop_2.0.jar
 jd.Nullstride 2.3.3 | rank2-band1 | jd.Nullstride_2.3.3.jar
 jk.mega.DrussGT 3.1.16 | rank3-band1 | jk.mega.DrussGT_3.1.16.jar
@@ -17,6 +17,7 @@ jk.precise.Wintermute 0.8 | rank28-band2 | jk.precise.Wintermute_0.8.jar
 pulsar.PulsarMax 0.8.9 | rank31-band2 | pulsar.PulsarMax_0.8.9.jar
 zyx.mega.YersiniaPestis 3.0 | rank32-band2 | zyx.mega.YersiniaPestis_3.0.jar
 pez.rumble.CassiusClay 2rho.02no | rank35-band2 | pez.rumble.CassiusClay_2rho.02no.jar
+axeBots.SilverSurfer 2.53.33fix | rank37-band2 | axeBots.SilverSurfer_2.53.33fix.jar
 mn.Combat 3.25.0 | rank38-band2 | mn.Combat_3.25.0.jar
 sheldor.mini.Foilist 1.3.1 | rank42-band2 | sheldor.mini.Foilist_1.3.1.jar
 ar.horizon.Horizon 1.2.2 | rank44-band2 | ar.horizon.Horizon_1.2.2.jar
@@ -24,7 +25,9 @@ sheldor.mini.FoilistMC 1.0 | rank47-band2 | sheldor.mini.FoilistMC_1.0.jar
 florent.XSeries.X2 0.17 | rank50-band2 | florent.XSeries.X2_0.17.jar
 dft.Cardigan 1.09 | rank51-band3 | dft.Cardigan_1.09.jar
 jam.RaikoMX 0.32 | rank57-band3 | jam.RaikoMX_0.32.jar
+DM.mega.Regicide 2.0rrr | rank71-band3 | DM.mega.Regicide_2.0rrr.jar
 pez.mini2.Pugilist 2.5.15 | rank73-band3 | pez.mini2.Pugilist_2.5.15.jar
+pe.SandboxDT 3.02 | rank90-band3 | pe.SandboxDT_3.02.jar
 trab.Crusader 0.1.7 | rank95-band3 | trab.Crusader_0.1.7.jar
 kenran.Bakko v1.0.1 | rank106-band3 | kenran.Bakko_v1.0.1.jar
 ur4n0.UR4NO 1.0 | rank115-band3 | ur4n0.UR4NO_1.0.jar
@@ -32,6 +35,7 @@ rc.yoda.Yoda 1.0.6c.fix | rank123-band3 | rc.yoda.Yoda_1.0.6c.fix.jar
 stelo.Chord 1.0 | rank131-band3 | stelo.Chord_1.0.jar
 da.NewBGank 1.4 | rank134-band3 | da.NewBGank_1.4.jar
 kenran.mega.Pantheist 1.1 | rank142-band3 | kenran.mega.Pantheist_1.1.jar
+cf.star.Star2 1.23 | rank154-band3 | cf.star.Star2_1.23.jar
 ab.DengerousRoBatra 1.3 | rank155-band3 | ab.DengerousRoBatra_1.3.jar
 mladjo.iRobot 0.3 | rank160-band3 | mladjo.iRobot_0.3.jar
 wiki.BasicGFSurfer 1.02 | rank161-band3 | wiki.BasicGFSurfer_1.02.jar
@@ -40,15 +44,21 @@ element.Earth 1.1 | rank168-band3 | element.Earth_1.1.jar
 ers.micro.speusippus.Speusippus 0.3 | rank172-band3 | ers.micro.speusippus.Speusippus_0.3.jar
 bayen.nut.Squirrel 1.621 | rank176-band3 | bayen.nut.Squirrel_1.621.jar
 penguin.Joker .611wr | rank180-band3 | penguin.Joker_.611wr.jar
+kc.micro.Needle 0.101 | rank183-band3 | kc.micro.Needle_0.101.jar
 jab.avk.ManuelGallegus 0.6 | rank187-band3 | jab.avk.ManuelGallegus_0.6.jar
 suh.mega.WaveSurferPG 1.06 | rank195-band3 | suh.mega.WaveSurferPG_1.06.jar
+cf.mini.Chiva 1.0 | rank198-band3 | cf.mini.Chiva_1.0.jar
 catcat20.Rabbit 0.001 | rank202-band4 | catcat20.Rabbit_0.001.jar
+stelo.MatchupAGF 1.1 | rank212-band4 | stelo.MatchupAGF_1.1.jar
 spinnercat.mega.Tardis 1.2 | rank213-band4 | spinnercat.mega.Tardis_1.2.jar
 suh.mega.WaveSurferGF 1.04 | rank214-band4 | suh.mega.WaveSurferGF_1.04.jar
 rampancy.Durandal 2.2d | rank216-band4 | rampancy.Durandal_2.2d.jar
 nat.Hikari dev0001 | rank220-band4 | nat.Hikari_dev0001.jar
+dz.GalbaMini 0.121 | rank222-band4 | dz.GalbaMini_0.121.jar
 deo.FlowerBot 1.0 | rank223-band4 | deo.FlowerBot_1.0.jar
+AIR.iRobot 1.0 | rank263-band4 | AIR.iRobot_1.0.jar
 ara.Shera 0.88 | rank290-band4 | ara.Shera_0.88.jar
+arthord.micro.Muffin 0.6.1 | rank300-band4 | arthord.micro.Muffin_0.6.1.jar
 spinnercat.Robovirus 2.718 | rank313-band4 | spinnercat.Robovirus_2.718.jar
 deo.virtual.RainbowBot 1.0 | rank328-band4 | deo.virtual.RainbowBot_1.0.jar
 apv.AspidReloaded 0.6 | rank343-band4 | apv.AspidReloaded_0.6.jar
@@ -62,6 +72,7 @@ zezinho.QuerMePegarKKKK 1.0 | rank391-band4 | zezinho.QuerMePegarKKKK_1.0.jar
 jw.Booring 1.11 | rank414-band5 | jw.Booring_1.11.jar
 Polkwane.Piyane 0.7b | rank429-band5 | Polkwane.Piyane_0.7b.jar
 serenity.nonSense 1.39 | rank442-band5 | serenity.nonSense_1.39.jar
+krzysiek.robbo2.Robbo 1.0.0 | rank454-band5 | krzysiek.robbo2.Robbo_1.0.0.jar
 slugzilla.Parallax 0.1 | rank499-band5 | slugzilla.Parallax_0.1.jar
 hp.Athena 0.1 | rank500-band5 | hp.Athena_0.1.jar
 demetrix.nano.Neutrino 0.27 | rank589-band5 | demetrix.nano.Neutrino_0.27.jar
@@ -74,4 +85,5 @@ stelo.FretNano 1.1 | rank739-band6 | stelo.FretNano_1.1.jar
 janm.Jammy 1.0 | rank777-band6 | janm.Jammy_1.0.jar
 stranger.nano.TestBot 1.0 | rank822-band6 | stranger.nano.TestBot_1.0.jar
 arthord.NanoSatanMelee Beta | rank891-band6 | arthord.NanoSatanMelee_Beta.jar
+vft.Valkyrie 1.0 | rank907-band6 | vft.Valkyrie_1.0.jar
 kneels.ToNoone 0.2 | rank989-band6 | kneels.ToNoone_0.2.jar
