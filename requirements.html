@@ -12,7 +12,7 @@
 <h1>EARS requirements</h1>
 <p class="lede">Every requirement from <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/docs/requirements.md">docs/requirements.md</a>, the source of truth. <em>Implemented in</em> lists
 the classes whose documentation cites the ID; <em>Verified by</em> lists the tests tagged with it, the same tags the build's
-traceability check reads. 215 of 215 live requirements have a tagged test. The readings behind the numbers are in
+traceability check reads. 221 of 221 live requirements have a tagged test. The readings behind the numbers are in
 <a href="docs/requirements-notes.html">Requirement readings</a>.</p>
 <nav class="toc"><a href="#group-CORE">Core</a> <a href="#group-RES">Resilience</a> <a href="#group-REL">Release</a> <a href="#group-WAVE">Waves</a> <a href="#group-RADAR">Radar</a> <a href="#group-MEM">Memory</a> <a href="#group-ADAPT">Adapt</a> <a href="#group-DIAL">Dials</a> <a href="#group-DIST">Distance</a> <a href="#group-POW">Power</a> <a href="#group-END">Endgame</a> <a href="#group-MOVE">Movement</a> <a href="#group-TIME">Time budget</a> <a href="#group-SHIELD">Bullet shielding</a> <a href="#group-MELEE">Melee (2.1)</a> <a href="#group-GATE">Posture gate</a> <a href="#group-MRADAR">Melee radar</a> <a href="#group-MSENSE">Melee sensing</a> <a href="#group-MMOVE">Melee movement</a> <a href="#group-MGUN">Melee gun</a> <a href="#group-MMEM">Melee memory</a></nav><h2 id="group-CORE">Core</h2>
 <article class="req-card" id="CORE-1">
@@ -70,6 +70,11 @@ traceability check reads. 215 of 215 live requirements have a tagged test. The r
 <div class="req-head"><span class="rid">RES-10</span><span class="badge">Ubiquitous</span><span class="badge stage">R7</span></div>
 <p>The robot shall leave no reference to its classes in the process after a battle, so that the number of classes loaded in one JVM stays flat across a session of battles.</p>
 <dl><dt>Implemented in</dt><dd><span class="none">no citation in the sources</span></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/RobotLoaderTest.java">RobotLoaderTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="RES-15">
+<div class="req-head"><span class="rid">RES-15</span><span class="badge">Event</span><span class="badge stage">R9</span></div>
+<p>When a battle ends, the health record shall add the setup time, the first turn the main loop ran and the longest run of consecutive skipped turns, and stay within 64 bytes.</p>
+<dl><dt>Implemented in</dt><dd><a href="api/hadur2/Hadur.html" title="hadur2.Hadur">Hadur</a>, <a href="api/hadur2/core/HadurCore.html" title="hadur2.core.HadurCore">HadurCore</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-core/src/test/java/hadur2/core/BattleHealthTest.java">BattleHealthTest.java</a></dd></dl>
 </article>
 <h2 id="group-REL">Release</h2>
 <article class="req-card" id="REL-1">
@@ -402,6 +407,11 @@ traceability check reads. 215 of 215 live requirements have a tagged test. The r
 <p>While the keep-second-wave switch is on, in a duel, a computation level of 1 (a skipped turn held for the round, or a slow tick) shall still surf two waves, the second being dropped from level 2; the k halving at level 2 and the go-to shedding at level 1 and up are unchanged; with the switch off, level 1 surfs one wave (<a class="req" href="requirements.html#TIME-1">TIME-1</a>, <a class="req" href="requirements.html#TIME-2">TIME-2</a>).</p>
 <dl><dt>Implemented in</dt><dd><a href="api/hadur2/StackListData.html" title="hadur2.StackListData">StackListData</a>, <a href="api/hadur2/core/duel/MoveDesign.html" title="hadur2.core.duel.MoveDesign">MoveDesign</a>, <a href="api/hadur2/core/policy/TickBudget.html" title="hadur2.core.policy.TickBudget">TickBudget</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-core/src/test/java/hadur2/core/policy/TickBudgetTest.java">TickBudgetTest.java</a></dd></dl>
 </article>
+<article class="req-card" id="TIME-8">
+<div class="req-head"><span class="rid">TIME-8</span><span class="badge">Event</span><span class="badge stage">R9</span></div>
+<p>When the robot finishes its first-round setup, it shall print one <code>SETUP,0,0,warmMs,coreMs,memoryMs,totalMs</code> record giving the time spent warming up, building the core and loading memory.</p>
+<dl><dt>Implemented in</dt><dd><a href="api/hadur2/Hadur.html" title="hadur2.Hadur">Hadur</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-robot/src/test/java/hadur2/HadurWarmUpTest.java">HadurWarmUpTest.java</a></dd></dl>
+</article>
 <h2 id="group-SHIELD">Bullet shielding</h2>
 <article class="req-card" id="SHIELD-1">
 <div class="req-head"><span class="rid">SHIELD-1</span><span class="badge">State</span><span class="badge stage">S2</span></div>
@@ -590,7 +600,7 @@ traceability check reads. 215 of 215 live requirements have a tagged test. The r
 <article class="req-card" id="BENCH-2">
 <div class="req-head"><span class="rid">BENCH-2</span><span class="badge">Event</span><span class="badge stage">R0</span></div>
 <p>When two robot jars are given, the bench shall run each seed with both and report the paired difference with its 95% interval.</p>
-<dl><dt>Implemented in</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/Bench.java" title="hadur.bench.Bench">Bench</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/MeleeReport.java" title="hadur.bench.MeleeReport">MeleeReport</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/Report.java" title="hadur.bench.Report">Report</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/ShieldProbe.java" title="hadur.bench.ShieldProbe">ShieldProbe</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/Stats.java" title="hadur.bench.Stats">Stats</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/TeamReport.java" title="hadur.bench.TeamReport">TeamReport</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/BenchTest.java">BenchTest.java</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/ReportTest.java">ReportTest.java</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/StatsTest.java">StatsTest.java</a></dd></dl>
+<dl><dt>Implemented in</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/Arms.java" title="hadur.bench.Arms">Arms</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/Bench.java" title="hadur.bench.Bench">Bench</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/MeleeReport.java" title="hadur.bench.MeleeReport">MeleeReport</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/Report.java" title="hadur.bench.Report">Report</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/ShieldProbe.java" title="hadur.bench.ShieldProbe">ShieldProbe</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/Stats.java" title="hadur.bench.Stats">Stats</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/TeamReport.java" title="hadur.bench.TeamReport">TeamReport</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/BenchTest.java">BenchTest.java</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/ReportTest.java">ReportTest.java</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/StatsTest.java">StatsTest.java</a></dd></dl>
 </article>
 <article class="req-card" id="BENCH-3">
 <div class="req-head"><span class="rid">BENCH-3</span><span class="badge">Ubiquitous</span><span class="badge stage">R0</span></div>
@@ -891,6 +901,26 @@ traceability check reads. 215 of 215 live requirements have a tagged test. The r
 <div class="req-head"><span class="rid">BENCH-90</span><span class="badge">Ubiquitous</span><span class="badge stage">R9</span></div>
 <p>The bench shall carry the movement lab: <code>hadur-bench/lab-panel.txt</code>, a set file naming the six reference shooters <code>lab.HeadOn</code>, <code>lab.Linear</code>, <code>lab.Circular</code>, <code>lab.GFHist</code>, <code>lab.Knn</code> and <code>lab.PatternMatch</code> at version 1.0 with their jars in <code>opponents/</code> (built by <code>lab/build-lab.sh</code>), and <code>data/tools/move_lab.py</code>, which for each <code>LABEL=WORKDIR</code> reports per opponent the damage Hadur took per round, the rounds it survived and the shooter&#x27;s hit rate, and for two labels the second minus the first over the seeds both fought, as mean and 95% interval.</p>
 <dl><dt>Implemented in</dt><dd><span class="none">no citation in the sources</span></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/LabPanelTest.java">LabPanelTest.java</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/MeleeHarvesterTest.java">MeleeHarvesterTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="BENCH-91">
+<div class="req-head"><span class="rid">BENCH-91</span><span class="badge">State</span><span class="badge stage">R9</span></div>
+<p>While a round has a winner, the bench&#x27;s per-round row shall keep the damage and survival of the turn the first robot died, so a disable after the round is decided does not turn a win into a loss.</p>
+<dl><dt>Implemented in</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/LogHarvester.java" title="hadur.bench.LogHarvester">LogHarvester</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/TrustAndRoundsTest.java">TrustAndRoundsTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="BENCH-92">
+<div class="req-head"><span class="rid">BENCH-92</span><span class="badge">Event</span><span class="badge stage">R9</span></div>
+<p>When an arms file is given (<code>--arms FILE</code>), the bench shall fight every (opponent, seed) job against every arm, cold, in an order shuffled from the job, and write one row per battle to <code>arms.tsv</code> and a per-arm table to the report.</p>
+<dl><dt>Implemented in</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/Arms.java" title="hadur.bench.Arms">Arms</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/Bench.java" title="hadur.bench.Bench">Bench</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/ArmsTest.java">ArmsTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="BENCH-93">
+<div class="req-head"><span class="rid">BENCH-93</span><span class="badge">Option</span><span class="badge stage">R9</span></div>
+<p>Where pinning is on (<code>--pin true</code>), the bench shall bind each battle&#x27;s JVM to its worker&#x27;s own logical processors, leaving the first <code>--pin-offset</code> to the OS, and refuse more workers than the processors allow.</p>
+<dl><dt>Implemented in</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/Affinity.java" title="hadur.bench.Affinity">Affinity</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/Bench.java" title="hadur.bench.Bench">Bench</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/ArmsTest.java">ArmsTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="BENCH-94">
+<div class="req-head"><span class="rid">BENCH-94</span><span class="badge">Ubiquitous</span><span class="badge stage">R9</span></div>
+<p>The bench shall carry <code>data/tools/multiarm.py</code>, which reads one or more <code>arms.tsv</code> files and reports each arm against the pooled control and A/A arms per opponent with 95% intervals, the A/A check, the split by band, engine and start-up disables per arm, and factorial main effects from a design file.</p>
+<dl><dt>Implemented in</dt><dd><span class="none">no citation in the sources</span></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/Top5PlanTest.java">Top5PlanTest.java</a></dd></dl>
 </article>
 <h2 id="group-GUN">GUN</h2>
 <article class="req-card" id="GUN-1">

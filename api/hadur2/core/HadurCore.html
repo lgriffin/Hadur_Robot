@@ -545,6 +545,20 @@ loadScripts(document, 'script');</script>
  every battle) so a client-side reproduction of a live-rumble problem is
  self-describing even without the console log.</div>
 </div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#writeBattleHealth(int,int,int,int,int,long,int)" class="member-name-link">writeBattleHealth</a><wbr>(int&nbsp;rounds,
+ int&nbsp;roundsSurvived,
+ int&nbsp;faults,
+ int&nbsp;skippedTurns,
+ int&nbsp;setupMillis,
+ long&nbsp;firstTurn,
+ int&nbsp;longestSkipRun)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../../requirements.html#RES-8">RES-8</a> with <a class="req" href="../../../requirements.html#RES-15">RES-15</a>'s start-up fields, appended when <code>setupMillis</code> is 0 or more: how long
+ the adapter's set-up took before the battle's first turn, the turn of its first tick in round 0
+ (1 when the set-up fit the engine's start grace) and the longest run of consecutive skipped
+ turns in the battle (the engine disables a robot after more than 30).</div>
+</div>
 </div>
 </div>
 </div>
@@ -1101,6 +1115,23 @@ loadScripts(document, 'script');</script>
 <dd><code>faults</code> - ticks the guard covered this battle, summed over every round</dd>
 <dd><code>skippedTurns</code> - engine-skipped-turn events this battle</dd>
 </dl>
+</section>
+</li>
+<li>
+<section class="detail" id="writeBattleHealth(int,int,int,int,int,long,int)">
+<h3>writeBattleHealth</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">writeBattleHealth</span><wbr><span class="parameters">(int&nbsp;rounds,
+ int&nbsp;roundsSurvived,
+ int&nbsp;faults,
+ int&nbsp;skippedTurns,
+ int&nbsp;setupMillis,
+ long&nbsp;firstTurn,
+ int&nbsp;longestSkipRun)</span></div>
+<div class="block"><a class="req" href="../../../requirements.html#RES-8">RES-8</a> with <a class="req" href="../../../requirements.html#RES-15">RES-15</a>'s start-up fields, appended when <code>setupMillis</code> is 0 or more: how long
+ the adapter's set-up took before the battle's first turn, the turn of its first tick in round 0
+ (1 when the set-up fit the engine's start grace) and the longest run of consecutive skipped
+ turns in the battle (the engine disables a robot after more than 30). The adapter measures
+ them; the core never reads a clock (<a class="req" href="../../../requirements.html#RES-6">RES-6</a>).</div>
 </section>
 </li>
 <li>

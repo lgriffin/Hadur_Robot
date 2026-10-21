@@ -78,207 +78,221 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Class</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="BattleResult.html" title="class in hadur.bench">BattleResult</a></div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="Affinity.html" title="class in hadur.bench">Affinity</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="block"><a class="req" href="../../../requirements.html#BENCH-93">BENCH-93</a>, <code>--pin true</code>: binds each battle JVM to its worker's own logical processors,
+ so no two battles share a core and the OS cannot move a battle onto a busy one
+ (docs/plan-top5.md section 6.1).</div>
+</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="Arms.html" title="class in hadur.bench">Arms</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="block"><a class="req" href="../../../requirements.html#BENCH-92">BENCH-92</a>: the arms of a multi-arm run (<code>--arms FILE</code>).</div>
+</div>
+<div class="col-first even-row-color class-summary class-summary-tab4"><a href="Arms.Arm.html" title="class in hadur.bench">Arms.Arm</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab4">
+<div class="block">One arm: the label rows and directories carry, the robot's Robocode name, its jar.</div>
+</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="BattleResult.html" title="class in hadur.bench">BattleResult</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">One battle's outcome from Hadur's point of view, as a CSV row.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="BattleRunner.html" title="class in hadur.bench">BattleRunner</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="BattleRunner.html" title="class in hadur.bench">BattleRunner</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">Runs one battle in this JVM and writes <code>result.csv</code> into the battle directory.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="Bench.html" title="class in hadur.bench">Bench</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="Bench.html" title="class in hadur.bench">Bench</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">Runs Hadur against the reference set and writes a score-share report.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab1"><a href="Bench.Attempt.html" title="interface in hadur.bench">Bench.Attempt</a>&lt;T&gt;</div>
-<div class="col-last odd-row-color class-summary class-summary-tab1">&nbsp;</div>
-<div class="col-first even-row-color class-summary class-summary-tab4"><a href="Bench.Failure.html" title="class in hadur.bench">Bench.Failure</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab4">
+<div class="col-first even-row-color class-summary class-summary-tab1"><a href="Bench.Attempt.html" title="interface in hadur.bench">Bench.Attempt</a>&lt;T&gt;</div>
+<div class="col-last even-row-color class-summary class-summary-tab1">&nbsp;</div>
+<div class="col-first odd-row-color class-summary class-summary-tab4"><a href="Bench.Failure.html" title="class in hadur.bench">Bench.Failure</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab4">
 <div class="block">A battle that failed on every attempt.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab4"><a href="Bench.Tried.html" title="class in hadur.bench">Bench.Tried</a>&lt;T&gt;</div>
-<div class="col-last odd-row-color class-summary class-summary-tab4">
+<div class="col-first even-row-color class-summary class-summary-tab4"><a href="Bench.Tried.html" title="class in hadur.bench">Bench.Tried</a>&lt;T&gt;</div>
+<div class="col-last even-row-color class-summary class-summary-tab4">
 <div class="block">What <code>Bench.Tried.attempts</code> ended with: the last value and how many tries it took.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="ClientConditions.html" title="class in hadur.bench">ClientConditions</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="ClientConditions.html" title="class in hadur.bench">ClientConditions</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block"><a class="req" href="../../../requirements.html#BENCH-4">BENCH-4</a>: a file of rumble-client conditions, one bench pass per line.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab4"><a href="ClientConditions.Condition.html" title="class in hadur.bench">ClientConditions.Condition</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab4">&nbsp;</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="ColdWarm.html" title="class in hadur.bench">ColdWarm</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="col-first even-row-color class-summary class-summary-tab4"><a href="ClientConditions.Condition.html" title="class in hadur.bench">ClientConditions.Condition</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab4">&nbsp;</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="ColdWarm.html" title="class in hadur.bench">ColdWarm</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block"><a class="req" href="../../../requirements.html#BENCH-54">BENCH-54</a>: <code>--cold-warm</code>.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab4"><a href="ColdWarm.Row.html" title="class in hadur.bench">ColdWarm.Row</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab4">
+<div class="col-first even-row-color class-summary class-summary-tab4"><a href="ColdWarm.Row.html" title="class in hadur.bench">ColdWarm.Row</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab4">
 <div class="block">One seed's cold and warm battles of one build, and the shelf the warm one started on.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="Conditions.html" title="class in hadur.bench">Conditions</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="Conditions.html" title="class in hadur.bench">Conditions</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block"><a class="req" href="../../../requirements.html#BENCH-51">BENCH-51</a>: the run's conditions as a <code>conditions.json</code> sidecar, so a result can be
  judged later against the build, the host and the settings that made it.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab4"><a href="Conditions.Shelf.html" title="class in hadur.bench">Conditions.Shelf</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab4">
+<div class="col-first even-row-color class-summary class-summary-tab4"><a href="Conditions.Shelf.html" title="class in hadur.bench">Conditions.Shelf</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab4">
 <div class="block">The data directory's size and checksum: sorted relative paths and bytes, hashed together.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="Exclusions.html" title="class in hadur.bench">Exclusions</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="Exclusions.html" title="class in hadur.bench">Exclusions</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block"><a class="req" href="../../../requirements.html#BENCH-63">BENCH-63</a>: the opponents that failed all, or at least half, of their battles, so a set that
  quietly shrank says so at the top of its report.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="Exclusions.Counter.html" title="class in hadur.bench">Exclusions.Counter</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="Exclusions.Counter.html" title="class in hadur.bench">Exclusions.Counter</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">Collects one outcome per battle, in the order the units first appear.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab4"><a href="Exclusions.Tally.html" title="class in hadur.bench">Exclusions.Tally</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab4">
+<div class="col-first odd-row-color class-summary class-summary-tab4"><a href="Exclusions.Tally.html" title="class in hadur.bench">Exclusions.Tally</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab4">
 <div class="block">One unit of the run (an opponent, a build against an opponent, or a melee field) and how its battles went.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="Host.html" title="class in hadur.bench">Host</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="Host.html" title="class in hadur.bench">Host</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">Describes the machine a bench ran on, for the report header (issue #102: bench numbers
  differ between hosts, so each report says which one made them).</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="Host.Sampler.html" title="class in hadur.bench">Host.Sampler</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="Host.Sampler.html" title="class in hadur.bench">Host.Sampler</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block"><a class="req" href="../../../requirements.html#BENCH-50">BENCH-50</a>: samples the host's CPU utilisation once a second and counts the other Robocode
  JVMs every few seconds, on one daemon thread, so each battle can be given the load it ran
  under (<a href="Host.Sampler.html#window(long,long)"><code>Host.Sampler.window(long, long)</code></a>).</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab4"><a href="Host.Window.html" title="class in hadur.bench">Host.Window</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab4">
+<div class="col-first even-row-color class-summary class-summary-tab4"><a href="Host.Window.html" title="class in hadur.bench">Host.Window</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab4">
 <div class="block">What the sampler saw during one battle's window (<a class="req" href="../../../requirements.html#BENCH-50">BENCH-50</a>).</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="InactivityCheck.html" title="class in hadur.bench">InactivityCheck</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="InactivityCheck.html" title="class in hadur.bench">InactivityCheck</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">D2's check on the engine (END-4): with two robots that never hit each other, does the one
  with more energy survive Robocode's inactivity penalty?</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="JdkWarmup.html" title="class in hadur.bench">JdkWarmup</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="JdkWarmup.html" title="class in hadur.bench">JdkWarmup</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block"><a class="req" href="../../../requirements.html#BENCH-83">BENCH-83</a>: loads the JDK's lazily initialised providers in a battle child's own thread, before
  any robot runs (issue #151).</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="LiveDetails.html" title="class in hadur.bench">LiveDetails</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="LiveDetails.html" title="class in hadur.bench">LiveDetails</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">Reads a saved LiteRumble <code>BotDetails</code> page (MIME, HTML table: rank, name, APS, APS
  CI, NPP, survival, KNNPBI, battles, latest battle, opponent APS, opponent survival) and
  reports APS and survival by opponent-APS band, by UTC hour of the latest battle, a
  before/after split at a given time, and, when a bench report is given, live minus bench
  share for every opponent the two have in common (<a class="req" href="../../../requirements.html#BENCH-5">BENCH-5</a>).</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab4"><a href="LiveDetails.Pairing.html" title="class in hadur.bench">LiveDetails.Pairing</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab4">
+<div class="col-first even-row-color class-summary class-summary-tab4"><a href="LiveDetails.Pairing.html" title="class in hadur.bench">LiveDetails.Pairing</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab4">
 <div class="block">One row of the BotDetails table: one live pairing against one opponent.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="LogHarvester.html" title="class in hadur.bench">LogHarvester</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="LogHarvester.html" title="class in hadur.bench">LogHarvester</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">Collects what a battle looked like from the outside.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="LogHarvester.RoundRow.html" title="class in hadur.bench">LogHarvester.RoundRow</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="LogHarvester.RoundRow.html" title="class in hadur.bench">LogHarvester.RoundRow</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">One round as the harness saw it: engine truth per turn, plus the fields of Hadur's R record when one arrived (G3).</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="MeleeHarvester.html" title="class in hadur.bench">MeleeHarvester</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="MeleeHarvester.html" title="class in hadur.bench">MeleeHarvester</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">Watches a melee battle from the outside, for the melee gates.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="MeleeReport.html" title="class in hadur.bench">MeleeReport</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="MeleeReport.html" title="class in hadur.bench">MeleeReport</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">The melee bench's report, built from each battle's <code>melee.csv</code> (the engine's final
  scores), <code>rounds.csv</code> (<a href="MeleeHarvester.html" title="class in hadur.bench"><code>MeleeHarvester</code></a>) and <code>hadur.log</code>.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="MeleeReport.Battle.html" title="class in hadur.bench">MeleeReport.Battle</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="MeleeReport.Battle.html" title="class in hadur.bench">MeleeReport.Battle</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">One battle's outcome.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="MeleeRunner.html" title="class in hadur.bench">MeleeRunner</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="MeleeRunner.html" title="class in hadur.bench">MeleeRunner</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">Runs one melee battle in this JVM and writes <code>melee.csv</code> into the battle directory:
  one row per robot in finishing order.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="Memory.html" title="class in hadur.bench">Memory</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="Memory.html" title="class in hadur.bench">Memory</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block"><a class="req" href="../../../requirements.html#BENCH-60">BENCH-60</a> and <a class="req" href="../../../requirements.html#BENCH-61">BENCH-61</a>: the battle JVM heap cap and the memory check before a run.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab4"><a href="Memory.Check.html" title="class in hadur.bench">Memory.Check</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab4">&nbsp;</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="Opponent.html" title="class in hadur.bench">Opponent</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="col-first even-row-color class-summary class-summary-tab4"><a href="Memory.Check.html" title="class in hadur.bench">Memory.Check</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab4">&nbsp;</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="Opponent.html" title="class in hadur.bench">Opponent</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">One entry of <code>reference-set.txt</code>.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="RepeatStudy.html" title="class in hadur.bench">RepeatStudy</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="RepeatStudy.html" title="class in hadur.bench">RepeatStudy</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block"><a class="req" href="../../../requirements.html#BENCH-53">BENCH-53</a>: the data and arithmetic of <code>--repeat K</code>, which fights the same (jar,
  opponent, seed) K times to measure how much a battle's score share moves when nothing but
  the host changes.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab4"><a href="RepeatStudy.Row.html" title="class in hadur.bench">RepeatStudy.Row</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab4">
+<div class="col-first odd-row-color class-summary class-summary-tab4"><a href="RepeatStudy.Row.html" title="class in hadur.bench">RepeatStudy.Row</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab4">
 <div class="block">One repeated battle.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="Report.html" title="class in hadur.bench">Report</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="Report.html" title="class in hadur.bench">Report</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">Renders bench results as Markdown.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="RobotJar.html" title="class in hadur.bench">RobotJar</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="RobotJar.html" title="class in hadur.bench">RobotJar</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">Where the built robot lives and which release it is, so that no bench default lags the
  project version (issue #102).</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="RoundSeries.html" title="class in hadur.bench">RoundSeries</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="RoundSeries.html" title="class in hadur.bench">RoundSeries</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">The per-round series of a bench run (issue #117, G3).</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="RoundSeries.Row.html" title="class in hadur.bench">RoundSeries.Row</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="RoundSeries.Row.html" title="class in hadur.bench">RoundSeries.Row</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">One round of one battle.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab4"><a href="SessionFile.html" title="class in hadur.bench">SessionFile</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab4">
+<div class="col-first even-row-color class-summary class-summary-tab4"><a href="SessionFile.html" title="class in hadur.bench">SessionFile</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab4">
 <div class="block"><a class="req" href="../../../requirements.html#BENCH-6">BENCH-6</a>: a session file says how a rumble client's session is imitated, one
  <code>key=value</code> per line (<code>#</code> comments and blanks ignored).</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="SessionReport.html" title="class in hadur.bench">SessionReport</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="SessionReport.html" title="class in hadur.bench">SessionReport</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block"><a class="req" href="../../../requirements.html#BENCH-6">BENCH-6</a> / <a class="req" href="../../../requirements.html#BENCH-7">BENCH-7</a>: reads a session's battles in blocks of 25 and says whether the slide a
  rumble client shows has reproduced.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab4"><a href="SessionReport.Row.html" title="class in hadur.bench">SessionReport.Row</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab4">
+<div class="col-first even-row-color class-summary class-summary-tab4"><a href="SessionReport.Row.html" title="class in hadur.bench">SessionReport.Row</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab4">
 <div class="block">One battle of a session.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="SessionRunner.html" title="class in hadur.bench">SessionRunner</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="SessionRunner.html" title="class in hadur.bench">SessionRunner</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block"><a class="req" href="../../../requirements.html#BENCH-6">BENCH-6</a>: runs a list of battles one after another through ONE engine in this JVM, the
  way a rumble client does, and writes a <code>result.csv</code> per battle plus one
  <code>session.csv</code> row per battle as it goes, so a session that dies still leaves its
  rows.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="ShieldProbe.html" title="class in hadur.bench">ShieldProbe</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="ShieldProbe.html" title="class in hadur.bench">ShieldProbe</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">BENCH-11: the shield probe.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="ShieldProbe.Activity.html" title="class in hadur.bench">ShieldProbe.Activity</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="ShieldProbe.Activity.html" title="class in hadur.bench">ShieldProbe.Activity</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">What shield mode did over an opponent's "on" battles, from their <code>SH</code> and <code>SR</code> records.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="Stats.html" title="class in hadur.bench">Stats</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="Stats.html" title="class in hadur.bench">Stats</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">Mean and 95% confidence half-width (Student's t) of a small sample.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab4"><a href="Stats.Interval.html" title="class in hadur.bench">Stats.Interval</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab4">
+<div class="col-first odd-row-color class-summary class-summary-tab4"><a href="Stats.Interval.html" title="class in hadur.bench">Stats.Interval</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab4">
 <div class="block">A percentile bootstrap interval for a difference of means, with the observed estimate.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="TeamHarvester.html" title="class in hadur.bench">TeamHarvester</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="TeamHarvester.html" title="class in hadur.bench">TeamHarvester</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">Watches a team battle from the outside, for A5's gate.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="TeamReport.html" title="class in hadur.bench">TeamReport</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="TeamReport.html" title="class in hadur.bench">TeamReport</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">A5's team report: per opponent team, the score share and rounds won (as the TeamRumble
  scores them), how often a member of ours lived to the round's end, and the team gate's
  counts: faults and skipped turns, link reports rejected (<a class="req" href="../../../requirements.html#LINK-3">LINK-3</a>), shots that left with a
@@ -286,17 +300,17 @@ loadScripts(document, 'script');</script>
  the truth (<a class="req" href="../../../requirements.html#WORLD-8">WORLD-8</a>), the members' own team records (<code>T</code>), and the data files the
  battle left behind (<a class="req" href="../../../requirements.html#SHELF-2">SHELF-2</a>: no duel or melee shelf, and only the leader writes).</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="TeamReport.Battle.html" title="class in hadur.bench">TeamReport.Battle</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="TeamReport.Battle.html" title="class in hadur.bench">TeamReport.Battle</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">One battle: its result and what its members printed.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="TeamRunner.html" title="class in hadur.bench">TeamRunner</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="TeamRunner.html" title="class in hadur.bench">TeamRunner</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">Runs one team battle in this JVM (A5) and writes <code>team.csv</code> into the battle
  directory: one row per team, by score.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="WaveMatcher.html" title="class in hadur.bench">WaveMatcher</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="WaveMatcher.html" title="class in hadur.bench">WaveMatcher</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">Scores the waves Hadur inferred against the bullets the enemy really fired (S2's wave
  fidelity).</div>
 </div>

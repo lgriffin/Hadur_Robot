@@ -153,6 +153,12 @@ loadScripts(document, 'script');</script>
  offline against the bullet the engine says was fired (docs/plan-aes.md,
  <code>data/tools/aes_rank.py</code>).</div>
 </dd>
+<dt><a href="hadur/bench/Affinity.html" class="type-name-link" title="class in hadur.bench">Affinity</a> - Class in <a href="hadur/bench/package-summary.html">hadur.bench</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#BENCH-93">BENCH-93</a>, <code>--pin true</code>: binds each battle JVM to its worker's own logical processors,
+ so no two battles share a core and the OS cannot move a battle onto a busy one
+ (docs/plan-top5.md section 6.1).</div>
+</dd>
 <dt><a href="hadur2/core/world/EnemyInfo.html#age(long)" class="member-name-link">age(long)</a> - Method in class hadur2.core.world.<a href="hadur2/core/world/EnemyInfo.html" title="class in hadur2.core.world">EnemyInfo</a></dt>
 <dd>
 <div class="block">Ticks since the last scan.</div>
@@ -392,6 +398,10 @@ loadScripts(document, 'script');</script>
  else the brake or reversal that does best, with <code>border</code> px the sentries' border
  (0 for none).</div>
 </dd>
+<dt><a href="hadur/bench/Affinity.html#apply(java.lang.Process,long,java.nio.file.Path)" class="member-name-link">apply(Process, long, Path)</a> - Static method in class hadur.bench.<a href="hadur/bench/Affinity.html" title="class in hadur.bench">Affinity</a></dt>
+<dd>
+<div class="block">Binds <code>process</code> to <code>mask</code> and writes what happened to <code>dir/pin.txt</code>.</div>
+</dd>
 <dt><a href="hadur/bench/LiveDetails.Pairing.html#aps()" class="member-name-link">aps()</a> - Method in record class hadur.bench.<a href="hadur/bench/LiveDetails.Pairing.html" title="class in hadur.bench">LiveDetails.Pairing</a></dt>
 <dd>
 <div class="block">Returns the value of the <code>aps</code> record component.</div>
@@ -413,6 +423,18 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="hadur2/core/Archive.html#%3Cinit%3E(hadur2.core.port.ProfileStore,hadur2.core.role.Charter,boolean)" class="member-name-link">Archive(ProfileStore, Charter, boolean)</a> - Constructor for class hadur2.core.<a href="hadur2/core/Archive.html" title="class in hadur2.core">Archive</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur/bench/Arms.Arm.html#%3Cinit%3E(java.lang.String,java.lang.String,java.nio.file.Path)" class="member-name-link">Arm(String, String, Path)</a> - Constructor for record class hadur.bench.<a href="hadur/bench/Arms.Arm.html" title="class in hadur.bench">Arms.Arm</a></dt>
+<dd>
+<div class="block">Creates an instance of a <code>Arm</code> record class.</div>
+</dd>
+<dt><a href="hadur/bench/Arms.html" class="type-name-link" title="class in hadur.bench">Arms</a> - Class in <a href="hadur/bench/package-summary.html">hadur.bench</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#BENCH-92">BENCH-92</a>: the arms of a multi-arm run (<code>--arms FILE</code>).</div>
+</dd>
+<dt><a href="hadur/bench/Arms.Arm.html" class="type-name-link" title="class in hadur.bench">Arms.Arm</a> - Record Class in <a href="hadur/bench/package-summary.html">hadur.bench</a></dt>
+<dd>
+<div class="block">One arm: the label rows and directories carry, the robot's Robocode name, its jar.</div>
+</dd>
 <dt><a href="hadur2/core/gun/ShadowAim.Mass.html#around(double,double)" class="member-name-link">around(double, double)</a> - Static method in class hadur2.core.gun.<a href="hadur2/core/gun/ShadowAim.Mass.html" title="class in hadur2.core.gun">ShadowAim.Mass</a></dt>
 <dd>
 <div class="block">A gun whose neighbours are not read: one point at <code>angle</code> of peak
@@ -1435,6 +1457,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Builds a battle's row from the session's own CSV record, for the bench's reader.</div>
 </dd>
+<dt><a href="hadur/bench/Affinity.html#command(java.lang.String,long,long)" class="member-name-link">command(String, long, long)</a> - Static method in class hadur.bench.<a href="hadur/bench/Affinity.html" title="class in hadur.bench">Affinity</a></dt>
+<dd>
+<div class="block">The command that binds process <code>pid</code> to <code>mask</code>, for <code>osName</code>.</div>
+</dd>
 <dt><a href="hadur2/core/melee/MeleeController.Command.html#%3Cinit%3E()" class="member-name-link">Command()</a> - Constructor for class hadur2.core.melee.<a href="hadur2/core/melee/MeleeController.Command.html" title="class in hadur2.core.melee">MeleeController.Command</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur2/core/shieldmode/ShieldMode.Command.html#%3Cinit%3E(double,double,double,double,boolean)" class="member-name-link">Command(double, double, double, double, boolean)</a> - Constructor for class hadur2.core.shieldmode.<a href="hadur2/core/shieldmode/ShieldMode.Command.html" title="class in hadur2.core.shieldmode">ShieldMode.Command</a></dt>
@@ -1757,6 +1783,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur2/core/physics/Rules.html#DECELERATION" class="member-name-link">DECELERATION</a> - Static variable in class hadur2.core.physics.<a href="hadur2/core/physics/Rules.html" title="class in hadur2.core.physics">Rules</a></dt>
 <dd>
 <div class="block">How much a robot can slow down in one tick, in px/tick per tick: braking is twice as fast as speeding up.</div>
+</dd>
+<dt><a href="hadur/bench/LogHarvester.RoundRow.html#decided" class="member-name-link">decided</a> - Variable in class hadur.bench.<a href="hadur/bench/LogHarvester.RoundRow.html" title="class in hadur.bench">LogHarvester.RoundRow</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#BENCH-91">BENCH-91</a>: a robot has died this round, so its damage and outcome are settled.</div>
 </dd>
 <dt><a href="hadur2/core/link/LinkCodec.html#decode(byte%5B%5D)" class="member-name-link">decode(byte[])</a> - Static method in class hadur2.core.link.<a href="hadur2/core/link/LinkCodec.html" title="class in hadur2.core.link">LinkCodec</a></dt>
 <dd>&nbsp;</dd>
@@ -2510,6 +2540,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur2/core/move/ReplicatorWeights.html#EPSILON" class="member-name-link">EPSILON</a> - Static variable in class hadur2.core.move.<a href="hadur2/core/move/ReplicatorWeights.html" title="class in hadur2.core.move">ReplicatorWeights</a></dt>
 <dd>
 <div class="block">The share of a uniform density mixed into every prediction.</div>
+</dd>
+<dt><a href="hadur/bench/Arms.Arm.html#equals(java.lang.Object)" class="member-name-link">equals(Object)</a> - Method in record class hadur.bench.<a href="hadur/bench/Arms.Arm.html" title="class in hadur.bench">Arms.Arm</a></dt>
+<dd>
+<div class="block">Indicates whether some other object is "equal to" this one.</div>
 </dd>
 <dt><a href="hadur/bench/Bench.Failure.html#equals(java.lang.Object)" class="member-name-link">equals(Object)</a> - Method in record class hadur.bench.<a href="hadur/bench/Bench.Failure.html" title="class in hadur.bench">Bench.Failure</a></dt>
 <dd>
@@ -3925,6 +3959,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Whether this charter can ask for <code>role</code>.</div>
 </dd>
+<dt><a href="hadur/bench/Arms.Arm.html#hashCode()" class="member-name-link">hashCode()</a> - Method in record class hadur.bench.<a href="hadur/bench/Arms.Arm.html" title="class in hadur.bench">Arms.Arm</a></dt>
+<dd>
+<div class="block">Returns a hash code value for this object.</div>
+</dd>
 <dt><a href="hadur/bench/Bench.Failure.html#hashCode()" class="member-name-link">hashCode()</a> - Method in record class hadur.bench.<a href="hadur/bench/Bench.Failure.html" title="class in hadur.bench">Bench.Failure</a></dt>
 <dd>
 <div class="block">Returns a hash code value for this object.</div>
@@ -4045,6 +4083,10 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="hadur2/core/melee/VirtualBullet.Aim.html#HEAD_ON" class="member-name-link">HEAD_ON</a> - Enum constant in enum class hadur2.core.melee.<a href="hadur2/core/melee/VirtualBullet.Aim.html" title="enum class in hadur2.core.melee">VirtualBullet.Aim</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur/bench/Arms.html#HEADER" class="member-name-link">HEADER</a> - Static variable in class hadur.bench.<a href="hadur/bench/Arms.html" title="class in hadur.bench">Arms</a></dt>
+<dd>
+<div class="block">The columns of <code>arms.tsv</code>, one row per battle.</div>
+</dd>
 <dt><a href="hadur/bench/BattleResult.html#HEADER" class="member-name-link">HEADER</a> - Static variable in class hadur.bench.<a href="hadur/bench/BattleResult.html" title="class in hadur.bench">BattleResult</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur/bench/ColdWarm.html#HEADER" class="member-name-link">HEADER</a> - Static variable in class hadur.bench.<a href="hadur/bench/ColdWarm.html" title="class in hadur.bench">ColdWarm</a></dt>
@@ -4650,6 +4692,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Jar in opponents/, or null for a bundled sample bot.</div>
 </dd>
+<dt><a href="hadur/bench/Arms.Arm.html#jar()" class="member-name-link">jar()</a> - Method in record class hadur.bench.<a href="hadur/bench/Arms.Arm.html" title="class in hadur.bench">Arms.Arm</a></dt>
+<dd>
+<div class="block">Returns the value of the <code>jar</code> record component.</div>
+</dd>
 <dt><a href="hadur/bench/Conditions.html#jar(java.nio.file.Path)" class="member-name-link">jar(Path)</a> - Static method in class hadur.bench.<a href="hadur/bench/Conditions.html" title="class in hadur.bench">Conditions</a></dt>
 <dd>
 <div class="block">The jar's identity: path, size and checksum, or just the path and the error when it cannot be read.</div>
@@ -4785,6 +4831,10 @@ loadScripts(document, 'script');</script>
 </dl>
 <h2 class="title" id="I:L">L</h2>
 <dl class="index">
+<dt><a href="hadur/bench/Arms.Arm.html#label()" class="member-name-link">label()</a> - Method in record class hadur.bench.<a href="hadur/bench/Arms.Arm.html" title="class in hadur.bench">Arms.Arm</a></dt>
+<dd>
+<div class="block">Returns the value of the <code>label</code> record component.</div>
+</dd>
 <dt><a href="hadur/bench/ClientConditions.Condition.html#label()" class="member-name-link">label()</a> - Method in record class hadur.bench.<a href="hadur/bench/ClientConditions.Condition.html" title="class in hadur.bench">ClientConditions.Condition</a></dt>
 <dd>
 <div class="block">Returns the value of the <code>label</code> record component.</div>
@@ -5378,6 +5428,10 @@ loadScripts(document, 'script');</script>
 <div class="block">The 95% margin of error of a proportion by the normal (Wald) approximation:
  1.96 × sqrt(p (1 - p) / n).</div>
 </dd>
+<dt><a href="hadur/bench/Affinity.html#mask(int,int,int)" class="member-name-link">mask(int, int, int)</a> - Static method in class hadur.bench.<a href="hadur/bench/Affinity.html" title="class in hadur.bench">Affinity</a></dt>
+<dd>
+<div class="block">Worker <code>worker</code>'s processor mask; refused when it would need more than 64 processors.</div>
+</dd>
 <dt><a href="hadur2/core/gun/MainGun.Aimed.html#mass" class="member-name-link">mass</a> - Variable in class hadur2.core.gun.<a href="hadur2/core/gun/MainGun.Aimed.html" title="class in hadur2.core.gun">MainGun.Aimed</a></dt>
 <dd>
 <div class="block">The probability mass over firing angles, or null when none.</div>
@@ -5689,6 +5743,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur2/core/model/BotOrders.Builder.html#maxVelocity(double)" class="member-name-link">maxVelocity(double)</a> - Method in class hadur2.core.model.<a href="hadur2/core/model/BotOrders.Builder.html" title="class in hadur2.core.model">BotOrders.Builder</a></dt>
 <dd>
 <div class="block">Pixels per tick; the engine caps it at 8.</div>
+</dd>
+<dt><a href="hadur/bench/Affinity.html#maxWorkers(int,int,int)" class="member-name-link">maxWorkers(int, int, int)</a> - Static method in class hadur.bench.<a href="hadur/bench/Affinity.html" title="class in hadur.bench">Affinity</a></dt>
+<dd>
+<div class="block">The highest worker count <code>processors</code> logical processors can pin.</div>
 </dd>
 <dt><a href="hadur2/core/shieldmode/ShieldMode.Situation.html#mayFire" class="member-name-link">mayFire</a> - Variable in class hadur2.core.shieldmode.<a href="hadur2/core/shieldmode/ShieldMode.Situation.html" title="class in hadur2.core.shieldmode">ShieldMode.Situation</a></dt>
 <dd>&nbsp;</dd>
@@ -6598,7 +6656,11 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur/bench/LogHarvester.html#noteTurn(int,int,double,double,boolean)" class="member-name-link">noteTurn(int, int, double, double, boolean)</a> - Method in class hadur.bench.<a href="hadur/bench/LogHarvester.html" title="class in hadur.bench">LogHarvester</a></dt>
 <dd>
-<div class="block">The latest turn of <code>round</code> wins: damage so far, whether we are alive, and the tick count.</div>
+<div class="block">As below, with the enemy alive.</div>
+</dd>
+<dt><a href="hadur/bench/LogHarvester.html#noteTurn(int,int,double,double,boolean,boolean)" class="member-name-link">noteTurn(int, int, double, double, boolean, boolean)</a> - Method in class hadur.bench.<a href="hadur/bench/LogHarvester.html" title="class in hadur.bench">LogHarvester</a></dt>
+<dd>
+<div class="block">The latest turn of <code>round</code> sets the tick count.</div>
 </dd>
 <dt><a href="hadur2/core/world/Roster.html#notSentry(java.lang.String)" class="member-name-link">notSentry(String)</a> - Method in class hadur2.core.world.<a href="hadur2/core/world/Roster.html" title="class in hadur2.core.world">Roster</a></dt>
 <dd>
@@ -7118,6 +7180,12 @@ loadScripts(document, 'script');</script>
  point's bearing from the source is clockwise of ours, counter-clockwise otherwise
  (our own position counts as clockwise).</div>
 </dd>
+<dt><a href="hadur/bench/Arms.html#order(java.util.List,int,int,java.lang.String)" class="member-name-link">order(List&lt;Arms.Arm&gt;, int, int, String)</a> - Static method in class hadur.bench.<a href="hadur/bench/Arms.html" title="class in hadur.bench">Arms</a></dt>
+<dd>
+<div class="block">The order a job fights its arms in: a shuffle seeded from the run's seed base, the seed and
+ the opponent, so a rerun of the same job fights them in the same order and two jobs rarely
+ share one.</div>
+</dd>
 <dt><a href="hadur/bench/SessionFile.html#order(java.util.List)" class="member-name-link">order(List&lt;T&gt;)</a> - Method in record class hadur.bench.<a href="hadur/bench/SessionFile.html" title="class in hadur.bench">SessionFile</a></dt>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#BENCH-77">BENCH-77</a>: the order the session fights <code>opponents</code> in: repeated, then shuffled when asked.</div>
@@ -7374,6 +7442,10 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="hadur/bench/SessionFile.html#parse(java.nio.file.Path)" class="member-name-link">parse(Path)</a> - Static method in record class hadur.bench.<a href="hadur/bench/SessionFile.html" title="class in hadur.bench">SessionFile</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur/bench/Arms.html#parse(java.nio.file.Path,java.nio.file.Path)" class="member-name-link">parse(Path, Path)</a> - Static method in class hadur.bench.<a href="hadur/bench/Arms.html" title="class in hadur.bench">Arms</a></dt>
+<dd>
+<div class="block">The arms in <code>file</code>, relative jar paths resolved against <code>base</code>.</div>
+</dd>
 <dt><a href="hadur/bench/LiveDetails.html#parseBenchShares(java.nio.file.Path)" class="member-name-link">parseBenchShares(Path)</a> - Static method in class hadur.bench.<a href="hadur/bench/LiveDetails.html" title="class in hadur.bench">LiveDetails</a></dt>
 <dd>
 <div class="block">Parses a bench report's summary table into opponent name -&gt; score share percent.</div>
@@ -8473,6 +8545,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">As above, with a conditions line (engine, CPU constant, order) under the title when given.</div>
 </dd>
+<dt><a href="hadur/bench/Bench.html#renderArms(java.util.List)" class="member-name-link">renderArms(List&lt;String&gt;)</a> - Static method in class hadur.bench.<a href="hadur/bench/Bench.html" title="class in hadur.bench">Bench</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#BENCH-92">BENCH-92</a>: each arm's battles, mean score share, engine disables and skipped turns, from the rows.</div>
+</dd>
 <dt><a href="hadur/bench/Report.html#renderConditions(java.util.Map,java.util.Map)" class="member-name-link">renderConditions(Map&lt;String, Map&lt;Opponent, List&lt;BattleResult&gt;&gt;&gt;, Map&lt;String, String&gt;)</a> - Static method in class hadur.bench.<a href="hadur/bench/Report.html" title="class in hadur.bench">Report</a></dt>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#BENCH-4">BENCH-4</a>: survival share and skipped turns per opponent, one section per client
@@ -8715,6 +8791,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">As <a href="hadur/bench/Host.html#robocodeJvms(java.util.List,long,java.util.Set)"><code>Host.robocodeJvms(List, long, java.util.Set)</code></a>, also leaving out every pid that
  <code>foreign</code> rejects (<a class="req" href="../requirements.html#BENCH-89">BENCH-89</a>: gone by the time it is checked, or this bench's own).</div>
+</dd>
+<dt><a href="hadur/bench/Arms.Arm.html#robot()" class="member-name-link">robot()</a> - Method in record class hadur.bench.<a href="hadur/bench/Arms.Arm.html" title="class in hadur.bench">Arms.Arm</a></dt>
+<dd>
+<div class="block">Returns the value of the <code>robot</code> record component.</div>
 </dd>
 <dt><a href="hadur2/core/world/EnemyTracker.html#ROBOT_BUMP_RANGE" class="member-name-link">ROBOT_BUMP_RANGE</a> - Static variable in class hadur2.core.world.<a href="hadur2/core/world/EnemyTracker.html" title="class in hadur2.core.world">EnemyTracker</a></dt>
 <dd>&nbsp;</dd>
@@ -8967,6 +9047,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur/bench/LogHarvester.html#roundTicks()" class="member-name-link">roundTicks()</a> - Method in class hadur.bench.<a href="hadur/bench/LogHarvester.html" title="class in hadur.bench">LogHarvester</a></dt>
 <dd>
 <div class="block">Mean round length in ticks, from the R records.</div>
+</dd>
+<dt><a href="hadur/bench/Arms.html#row(hadur.bench.Arms.Arm,hadur.bench.Opponent,int,int,int,hadur.bench.BattleResult)" class="member-name-link">row(Arms.Arm, Opponent, int, int, int, BattleResult)</a> - Static method in class hadur.bench.<a href="hadur/bench/Arms.html" title="class in hadur.bench">Arms</a></dt>
+<dd>
+<div class="block">One battle's row of <code>arms.tsv</code>; the errors column has tabs and line breaks blanked.</div>
 </dd>
 <dt><a href="hadur/bench/SessionReport.Row.html#%3Cinit%3E(int,java.lang.String,double,hadur.bench.BattleResult,double,double,int,int,int,int,boolean)" class="member-name-link">Row(int, String, double, BattleResult, double, double, int, int, int, int, boolean)</a> - Constructor for record class hadur.bench.<a href="hadur/bench/SessionReport.Row.html" title="class in hadur.bench">SessionReport.Row</a></dt>
 <dd>
@@ -9688,6 +9772,12 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#GUN-10">GUN-10</a>: in a duel, a gun's rating is its lifetime hits over shots, with no 100-shot
  half-life, as Diamond's.</div>
+</dd>
+<dt><a href="hadur2/Hadur.html#setupRecord(long,long,long)" class="member-name-link">setupRecord(long, long, long)</a> - Static method in class hadur2.<a href="hadur2/Hadur.html" title="class in hadur2">Hadur</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#TIME-8">TIME-8</a>: <code>SETUP,0,0,warm,core,memory,total</code> in milliseconds: the warm-up ticks, the
+ core's construction (facts, shield list, store) and the memory's preparation, all of which
+ run before the battle's first <code>execute()</code>.</div>
 </dd>
 <dt><a href="hadur2/core/model/Wave.html#setVchangeTime(long)" class="member-name-link">setVchangeTime(long)</a> - Method in class hadur2.core.model.<a href="hadur2/core/model/Wave.html" title="class in hadur2.core.model">Wave</a></dt>
 <dd>
@@ -11277,6 +11367,10 @@ loadScripts(document, 'script');</script>
  finishTicks,ramTicks,fullPowerShots,slowTicks,shadowedWaves,flavourChanges,flavourStep,interceptsShadowed,duressTicks,
  ramEscapeTicks,mirrorShots,oS0,oH0,oS1,oH1,oS2,oH2,tS0,tH0,tS1,tH1,tS2,tH2</code>.</div>
 </dd>
+<dt><a href="hadur/bench/Arms.Arm.html#toString()" class="member-name-link">toString()</a> - Method in record class hadur.bench.<a href="hadur/bench/Arms.Arm.html" title="class in hadur.bench">Arms.Arm</a></dt>
+<dd>
+<div class="block">Returns a string representation of this record class.</div>
+</dd>
 <dt><a href="hadur/bench/Bench.Failure.html#toString()" class="member-name-link">toString()</a> - Method in record class hadur.bench.<a href="hadur/bench/Bench.Failure.html" title="class in hadur.bench">Bench.Failure</a></dt>
 <dd>
 <div class="block">Returns a string representation of this record class.</div>
@@ -12355,6 +12449,13 @@ the order they are declared.</div>
 <div class="block"><a class="req" href="../requirements.html#RES-8">RES-8</a>: writes a small, plain-text battle-health record (at most 64 bytes, overwritten
  every battle) so a client-side reproduction of a live-rumble problem is
  self-describing even without the console log.</div>
+</dd>
+<dt><a href="hadur2/core/HadurCore.html#writeBattleHealth(int,int,int,int,int,long,int)" class="member-name-link">writeBattleHealth(int, int, int, int, int, long, int)</a> - Method in class hadur2.core.<a href="hadur2/core/HadurCore.html" title="class in hadur2.core">HadurCore</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#RES-8">RES-8</a> with <a class="req" href="../requirements.html#RES-15">RES-15</a>'s start-up fields, appended when <code>setupMillis</code> is 0 or more: how long
+ the adapter's set-up took before the battle's first turn, the turn of its first tick in round 0
+ (1 when the set-up fit the engine's start grace) and the longest run of consecutive skipped
+ turns in the battle (the engine disables a robot after more than 30).</div>
 </dd>
 <dt><a href="hadur2/core/memory/Bytes.Writer.html#%3Cinit%3E()" class="member-name-link">Writer()</a> - Constructor for class hadur2.core.memory.<a href="hadur2/core/memory/Bytes.Writer.html" title="class in hadur2.core.memory">Bytes.Writer</a></dt>
 <dd>&nbsp;</dd>
