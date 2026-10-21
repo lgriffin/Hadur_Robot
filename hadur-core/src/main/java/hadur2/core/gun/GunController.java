@@ -89,6 +89,8 @@ public class GunController {
     private final AntiSurferGun antiSurferGun;
     /** GUN-4: the third gun, rated and fired only while its gate is open. */
     private final HybridGun hybridGun;
+    /** GUN-8: Diamond's duel main gun; the main candidate's aim when {@link #tripHammer} is on. */
+    private final TripHammerGun tripHammerGun = new TripHammerGun();
     private final BattleField battleField;
     /** Opponents at the battle's start. */
     private final int enemiesTotal;
@@ -112,6 +114,12 @@ public class GunController {
     /** Builds the seed samples' first ten values, in the main view's space. */
     private final GunFormula sampleFormula;
     private Opening opening;
+    /** GUN-8: the main candidate aims from the TripHammer view (duel only; off by default). */
+    private boolean tripHammer;
+    /** GUN-9: the live verdict is the best rating with no margin test (duel only; off by default). */
+    private boolean freeGun;
+    /** GUN-10: ratings without the 100-shot half-life (duel only; off by default). */
+    private boolean undecayed;
     private Consumer<double[]> sampleSink;
     /** Seeded samples so far; their time, so they keep their order. */
     private int seedsLoaded;
@@ -130,6 +138,43 @@ public class GunController {
         this.antiSurferGun = new AntiSurferGun(battleField, is1v1);
         this.hybridGun = new HybridGun(battleField, is1v1);
         this.sampleFormula = new GunFormula(enemiesTotal);
+    }
+
+    /**
+     * GUN-8: in a duel, the main gun aims from a TripHammer view (and its virtual bullet and
+     * rating are the TripHammer's); the displacement view keeps logging. Set before the first
+     * wave; ignored with several opponents.
+     *
+     * @param on whether the TripHammer view is the main candidate's
+     */
+    public void setTripHammer(boolean on) {
+        this.tripHammer = on && is1v1;
+        if (tripHammer) {
+            for (Map<String, KnnView<TimestampedFiringAngle>> views : enemyViews.values()) {
+                views.computeIfAbsent(TripHammerGun.viewName(),
+                    k -> tripHammerGun.createView().setKShare(kShare));
+            }
+        }
+    }
+
+    /**
+     * GUN-9: in a duel, {@link #liveVerdict} returns the highest-rated candidate with no margin
+     * test, as Diamond's {@code bestGun}. The hybrid gun's gate is unchanged.
+     *
+     * @param on whether the margin test is dropped
+     */
+    public void setFreeGun(boolean on) {
+        this.freeGun = on && is1v1;
+    }
+
+    /**
+     * GUN-10: in a duel, a gun's rating is its lifetime hits over shots, with no 100-shot
+     * half-life, as Diamond's. Set before the first shot is rated.
+     *
+     * @param on whether the decay is dropped
+     */
+    public void setUndecayed(boolean on) {
+        this.undecayed = on && is1v1;
     }
 
     /**
@@ -177,6 +222,8 @@ public class GunController {
         TimestampedFiringAngle tfa = new TimestampedFiringAngle(Timestamped.SEED_ROUND, seedsLoaded++,
             sample[10], new Point2D.Double(sample[11], sample[12]), weight);
         for (KnnView<TimestampedFiringAngle> view : getOrCreateViews(botName).values()) {
+            // GUN-8: a seed sample holds the main view's features, not the TripHammer space's.
+            if (view.name.equals(TripHammerGun.viewName())) continue;
             view.logSeed(seedPoint(sample, view.formula), tfa, weight);
         }
     }
@@ -230,6 +277,7 @@ public class GunController {
                 views.put(asView.name, asView.setKShare(kShare));
             }
             views.put(HybridGun.viewName(), hybridGun.createView().setKShare(kShare));
+            if (tripHammer) views.put(TripHammerGun.viewName(), tripHammerGun.createView().setKShare(kShare));
             return views;
         });
     }
@@ -337,6 +385,16 @@ public class GunController {
         if (use == Opening.ANTI_SURFER) {
             return antiSurferGun.aim(w, views, myNextLocation, currentTime);
         }
+        if (tripHammer) {
+            // GUN-8: the TripHammer view aims for the main candidate.
+            KnnView<TimestampedFiringAngle> thView = views.get(TripHammerGun.viewName());
+            if (wantMass) {
+                TripHammerGun.Aimed aimed = tripHammerGun.aimWithMass(w, thView);
+                aimMass = aimed.mass;
+                return aimed.angle;
+            }
+            return tripHammerGun.aim(w, thView);
+        }
         if (wantMass) {
             // GUN-7: the same angle as aim() gives, with the mass behind it, from one search.
             MainGun.Aimed aimed = mainGun.aimWithMass(w, mainView, myNextLocation, currentTime);
@@ -397,6 +455,8 @@ public class GunController {
                 best = e.getKey();
             }
         }
+        // GUN-9: Diamond's bestGun, the highest rating with no margin test.
+        if (freeGun) return best;
         GunStats bestStats = candidates.get(best);
         // GUN-1: the choice changes only once it clears every other candidate's margin.
         for (Map.Entry<Opening, GunStats> e : candidates.entrySet()) {
@@ -462,7 +522,7 @@ public class GunController {
 
     /** GUN-5's test seam: as above, into the light class's table when {@code light}. */
     void recordVirtualShotForTest(String botName, Opening gun, double hitScore, boolean light) {
-        Ratings table = (light ? lightRatings : restRatings).computeIfAbsent(botName, k -> new Ratings());
+        Ratings table = (light ? lightRatings : restRatings).computeIfAbsent(botName, k -> new Ratings(undecayed));
         table.of(gun).record(hitScore);
     }
 
@@ -524,8 +584,10 @@ public class GunController {
 
         Map<String, KnnView<TimestampedFiringAngle>> views = getOrCreateViews(w.botName);
         // Each gun's own choice, whichever gun actually aimed the real bullet.
-        double mainAngle = mainGun.aim(w, views.get(MainGun.viewName()),
-            myNextLocation, currentTime);
+        // GUN-8: with the TripHammer on, the main candidate's virtual bullet is its aim.
+        double mainAngle = tripHammer
+            ? tripHammerGun.aim(w, views.get(TripHammerGun.viewName()))
+            : mainGun.aim(w, views.get(MainGun.viewName()), myNextLocation, currentTime);
         double asAngle = antiSurferGun.aim(w, views, myNextLocation, currentTime);
         double hybridAngle = hybridGun.aim(w, views.get(HybridGun.viewName()), myNextLocation, currentTime);
         double sampledAngle = light
@@ -533,7 +595,7 @@ public class GunController {
         virtualBullets.put(w, new VirtualShot(light, mainAngle, asAngle, hybridAngle, sampledAngle));
 
         // Records exist from the first virtual bullet, so liveVerdict can read them.
-        (light ? lightRatings : restRatings).computeIfAbsent(w.botName, k -> new Ratings());
+        (light ? lightRatings : restRatings).computeIfAbsent(w.botName, k -> new Ratings(undecayed));
     }
 
     /**
@@ -787,7 +849,7 @@ public class GunController {
      * battle, since the profile is read across future battles too, where GUN-1's 100-shot
      * half-life (meant to let this battle's live choice track a surfer that changes
      * movement mid-fight) has no meaning. The core also checks the gun seed against the
-     * main gun's rating here (RES-4). The hybrid gun's rating is not folded into the profile
+     * main gun's rating here (RES-4). With the TripHammer on (GUN-8) the main pair is zero. The hybrid gun's rating is not folded into the profile
      * (GUN-4 is a live, in-battle gate only; the profile format is unchanged).</p>
      *
      * @param botName the opponent
@@ -799,8 +861,12 @@ public class GunController {
         for (Map<String, Ratings> classTable : List.of(restRatings, lightRatings)) {
             Ratings r = classTable.get(botName);
             if (r == null) continue;
-            mFired += r.main.lifetimeFired;
-            mHit += r.main.lifetimeHit;
+            // GUN-8: with the TripHammer on, the main rating is the TripHammer's, not the displacement
+            // gun the seeds and profiles describe, so it is left out (zero waves: no RES-4 check either).
+            if (!tripHammer) {
+                mFired += r.main.lifetimeFired;
+                mHit += r.main.lifetimeHit;
+            }
             aFired += r.antiSurfer.lifetimeFired;
             aHit += r.antiSurfer.lifetimeHit;
         }
@@ -851,11 +917,20 @@ public class GunController {
 
     /** GUN-5: the virtual guns' records against one opponent for one power class. */
     private static final class Ratings {
-        final GunStats main = new GunStats();
-        final GunStats antiSurfer = new GunStats();
-        final GunStats hybrid = new GunStats();
+        final GunStats main;
+        final GunStats antiSurfer;
+        final GunStats hybrid;
         /** Rated for the light class only. */
-        final GunStats sampled = new GunStats();
+        final GunStats sampled;
+
+        /** @param undecayed GUN-10: whether the records drop the 100-shot half-life */
+        Ratings(boolean undecayed) {
+            double decay = undecayed ? 1.0 : GunStats.DECAY;
+            main = new GunStats(decay);
+            antiSurfer = new GunStats(decay);
+            hybrid = new GunStats(decay);
+            sampled = new GunStats(decay);
+        }
 
         GunStats of(Opening gun) {
             switch (gun) {
@@ -882,11 +957,17 @@ public class GunController {
         /** The plain lifetime totals for the battle, what {@link #virtualGunScores} reads. */
         double lifetimeFired = 0.0;
         double lifetimeHit = 0.0;
+        /** The factor the older shots are scaled by per shot: {@link #DECAY}, or 1 for GUN-10. */
+        final double decay;
+
+        GunStats(double decay) {
+            this.decay = decay;
+        }
 
         /** Records one virtual bullet's weighted hit score, decaying what came before it. */
         void record(double hitScore) {
-            shotsFired = shotsFired * DECAY + 1.0;
-            shotsHit = shotsHit * DECAY + hitScore;
+            shotsFired = shotsFired * decay + 1.0;
+            shotsHit = shotsHit * decay + hitScore;
             lifetimeFired += 1.0;
             lifetimeHit += hitScore;
         }

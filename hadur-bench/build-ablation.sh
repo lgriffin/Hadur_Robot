@@ -59,6 +59,31 @@
 #   gungate  MOVE-17: the gun-heat wave is dropped once the enemy's gun is called learning (MOVE-15's count: 6 hits,
 #         60% learned), so the stop-and-start runs only against other guns. Meant to combine with heatjit
 #         (heatjit,gungate -> hjgg); sets only GUN_GATE. With split the split wins. Suffix gg.
+#   hold650  DIST-3: no DIST-1 walk-in in a duel; the desired distance stays at the opening's (650 for a stranger).
+#         END-1's finish is unchanged. Sets only HOLD_650. Suffix d6.
+#   dfac     MOVE-18: the surf's distancing factor is measured to the enemy's last scanned position, as Diamond does,
+#         not to the wave's source. Sets only DISTANCING_TO_ENEMY. Suffix df.
+#   bhb      MOVE-19: a bullet of ours that destroys an enemy bullet teaches the hit views that bullet's guess factor,
+#         as Diamond's onBulletHitBullet does. Sets only BULLET_HIT_BULLET_LOG. Suffix bh.
+#   hitclr   MOVE-20: every hit on us and every intercept clears the cached neighbour searches, not only a change of the
+#         surfed wave. Sets only HIT_CLEARS_CACHE. Suffix hc.
+#   pkern    MOVE-21: the danger kernel is the point value 2^-abs(u) at the intersection centre (Diamond's) instead of
+#         MOVE-4's integral over it. Sets only POINT_KERNEL. Suffix pk.
+#   keep2    TIME-6: a skipped turn no longer drops the surf's second wave for the rest of the round (dropped from level 2;
+#         the k halving and go-to shedding stay). Sets only KEEP_SECOND_WAVE. Suffix w2.
+#   thgun    GUN-8: in a duel the main gun aims from a TripHammer view, Diamond 1.8.22's duel gun (its formula, weight
+#         schedule, k = size/9 up to 225, 59 candidate angles, cube kernel); the displacement view keeps logging and the
+#         main candidate's virtual bullet and rating are the TripHammer's. Sets only TRIPHAMMER. Suffix th.
+#   freegun  GUN-9: the live gun verdict is the highest-rated candidate with no margin test (Diamond's bestGun), in both
+#         power classes; GUN-4's hybrid gate is unchanged. Sets only FREE_GUN. Suffix fg.
+#   nodecay  GUN-10: gun ratings are lifetime hits over shots, without GUN-1's 100-shot half-life (Diamond's form). Sets
+#         only UNDECAYED. Suffix nk (not nd: nodur has it). Suffixes follow the order given, so stack as thgun,freegun,
+#         nodecay for th, fg, nk (heatjit,swall,thgun,freegun,nodecay -> hjswthfgnk).
+#   stacklist  MOVE-23: the stop-and-start stack (heatjit, swall, and hitclr, pkern, keep2 whenever those are also named)
+#         applies only to opponents not on the stack off-list (hadur-bench/stack-off-top200.txt, held in the robot's
+#         StackListData); a listed opponent plays as if those switches were off. Sets only STACK_LIST; the stack's own
+#         codes still turn the switches on. Suffix xl (not sl: slearn has it). Last in the stack's order:
+#         heatjit,swall,thgun,freegun,nodecay,stacklist -> hjswthfgnkxl.
 #   aesrec  AES-1 (measurement, docs/plan-aes.md): each wave's first three-option rating is printed as an AES
 #         record with every term of each option's danger, for data/tools/aes_rank.py. Sets only AES_RECORD;
 #         behaviour unchanged (the rating is made without the cutoff, which picks the same option). Suffix ar.
@@ -178,6 +203,7 @@ book="$src/hadur-core/src/main/java/hadur2/core/adapt/OpeningBook.java"
 shields="$src/hadur-core/src/main/java/hadur2/core/shieldmode/ShieldList.java"
 design="$src/hadur-core/src/main/java/hadur2/core/shieldmode/ShieldDesign.java"
 movedesign="$src/hadur-core/src/main/java/hadur2/core/duel/MoveDesign.java"
+gundesign="$src/hadur-core/src/main/java/hadur2/core/duel/GunDesign.java"
 powerdesign="$src/hadur-core/src/main/java/hadur2/core/duel/PowerDesign.java"
 protean="$src/hadur-core/src/main/java/hadur2/core/move/ProteanPick.java"
 listdata="$src/hadur-robot/src/main/java/hadur2/ShieldListData.java"
@@ -280,6 +306,36 @@ for a in "${list[@]}"; do
         gungate)
             edit "$movedesign" "static final boolean GUN_GATE = false;" "static final boolean GUN_GATE = true;"
             version="${version}gg" ;;
+        hold650)
+            edit "$movedesign" "static final boolean HOLD_650 = false;" "static final boolean HOLD_650 = true;"
+            version="${version}d6" ;;
+        dfac)
+            edit "$movedesign" "static final boolean DISTANCING_TO_ENEMY = false;" "static final boolean DISTANCING_TO_ENEMY = true;"
+            version="${version}df" ;;
+        bhb)
+            edit "$movedesign" "static final boolean BULLET_HIT_BULLET_LOG = false;" "static final boolean BULLET_HIT_BULLET_LOG = true;"
+            version="${version}bh" ;;
+        hitclr)
+            edit "$movedesign" "static final boolean HIT_CLEARS_CACHE = false;" "static final boolean HIT_CLEARS_CACHE = true;"
+            version="${version}hc" ;;
+        pkern)
+            edit "$movedesign" "static final boolean POINT_KERNEL = false;" "static final boolean POINT_KERNEL = true;"
+            version="${version}pk" ;;
+        keep2)
+            edit "$movedesign" "static final boolean KEEP_SECOND_WAVE = false;" "static final boolean KEEP_SECOND_WAVE = true;"
+            version="${version}w2" ;;
+        thgun)
+            edit "$gundesign" "static final boolean TRIPHAMMER = false;" "static final boolean TRIPHAMMER = true;"
+            version="${version}th" ;;
+        freegun)
+            edit "$gundesign" "static final boolean FREE_GUN = false;" "static final boolean FREE_GUN = true;"
+            version="${version}fg" ;;
+        nodecay)
+            edit "$gundesign" "static final boolean UNDECAYED = false;" "static final boolean UNDECAYED = true;"
+            version="${version}nk" ;;
+        stacklist)
+            edit "$movedesign" "static final boolean STACK_LIST = false;" "static final boolean STACK_LIST = true;"
+            version="${version}xl" ;;
         aesrec)
             edit "$movedesign" "static final boolean AES_RECORD = false;" "static final boolean AES_RECORD = true;"
             version="${version}ar" ;;
@@ -452,7 +508,7 @@ for a in "${list[@]}"; do
             edit "$design" 'public static final ShieldDesign SHIPPED = parse("' \
                 "public static final ShieldDesign SHIPPED = parse(\"$flag,"
             version="${version}${suffix}" ;;
-        *) echo "unknown ablation: $a (ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, flt59, flt8, split, wallesc, protean, pdw3, pdw8, pc10, phot, repl, pressure, pdown, pwall, pwc, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, gtol, gstick, gwhy, gwin, gk, aesrec, shold, slearn, smode, sstay, sturn, snull, strim)" >&2; exit 2 ;;
+        *) echo "unknown ablation: $a (ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, flt59, flt8, split, wallesc, gungate, hold650, dfac, bhb, hitclr, pkern, keep2, thgun, freegun, nodecay, stacklist, protean, pdw3, pdw8, pc10, phot, repl, pressure, pdown, pwall, pwc, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, gtol, gstick, gwhy, gwin, gk, aesrec, shold, slearn, smode, sstay, sturn, snull, strim)" >&2; exit 2 ;;
     esac
 done
 

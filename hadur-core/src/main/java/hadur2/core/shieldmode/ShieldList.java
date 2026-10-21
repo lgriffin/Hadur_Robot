@@ -26,12 +26,18 @@ public final class ShieldList {
     public static final int MAX_ENTRIES = 4096;
 
     /** The list with nobody on it: shield mode never starts. */
-    public static final ShieldList NONE = new ShieldList(Collections.<String>emptySet());
+    public static final ShieldList NONE = new ShieldList(Collections.<String>emptySet(), Collections.<String>emptySet());
+
+    /** MOVE-23: a line starting with this names an opponent on the stack off-list, not a shield-mode one. */
+    public static final String STACK_OFF_PREFIX = "stack-off:";
 
     private final Set<String> entries;
+    /** MOVE-23: the stack off-list, matched as the shield entries are. */
+    private final Set<String> stackOff;
 
-    private ShieldList(Set<String> entries) {
+    private ShieldList(Set<String> entries, Set<String> stackOff) {
         this.entries = entries;
+        this.stackOff = stackOff;
     }
 
     /**
@@ -42,16 +48,24 @@ public final class ShieldList {
      */
     public static ShieldList parse(Iterable<String> lines) {
         Set<String> entries = new TreeSet<>();
+        Set<String> stackOff = new TreeSet<>();
         if (lines != null) {
             for (String line : lines) {
                 if (line == null) continue;
                 String entry = line.trim().replaceAll("\\s+", " ");
                 if (entry.isEmpty() || entry.startsWith("#")) continue;
-                if (entries.size() >= MAX_ENTRIES) break;
+                if (entry.startsWith(STACK_OFF_PREFIX)) {
+                    // MOVE-23: carried in the same list so the adapter hands the core one object.
+                    String name = entry.substring(STACK_OFF_PREFIX.length()).trim();
+                    if (!name.isEmpty() && stackOff.size() < MAX_ENTRIES) stackOff.add(name);
+                    continue;
+                }
+                if (entries.size() >= MAX_ENTRIES) continue;
                 entries.add(entry);
             }
         }
-        return entries.isEmpty() ? NONE : new ShieldList(Collections.unmodifiableSet(entries));
+        if (entries.isEmpty() && stackOff.isEmpty()) return NONE;
+        return new ShieldList(Collections.unmodifiableSet(entries), Collections.unmodifiableSet(stackOff));
     }
 
     /**
@@ -67,7 +81,20 @@ public final class ShieldList {
         return entries.contains(name) || entries.contains(withoutVersion(name));
     }
 
-    /** Whether nobody is on the list. */
+    /**
+     * MOVE-23: whether {@code robotName} is on the stack off-list, by the same rule as
+     * {@link #matches}: its full name is, or its name without the version is.
+     *
+     * @param robotName the scanned robot's name, or null
+     * @return whether the stop-and-start stack stays off against it
+     */
+    public boolean onStackOffList(String robotName) {
+        if (robotName == null || stackOff.isEmpty()) return false;
+        String name = robotName.trim().replaceAll("\\s+", " ");
+        return stackOff.contains(name) || stackOff.contains(withoutVersion(name));
+    }
+
+    /** Whether nobody is on the (shield) list. */
     public boolean isEmpty() {
         return entries.isEmpty();
     }
