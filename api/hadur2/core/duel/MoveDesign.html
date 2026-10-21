@@ -112,6 +112,18 @@ loadScripts(document, 'script');</script>
  record with every term of each option's danger (docs/plan-aes.md).</div>
 </div>
 <div class="col-first odd-row-color"><code>(package private) static final boolean</code></div>
+<div class="col-second odd-row-color"><code><a href="#BULLET_HIT_BULLET_LOG" class="member-name-link">BULLET_HIT_BULLET_LOG</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block"><a class="req" href="../../../../requirements.html#MOVE-19">MOVE-19</a>: an enemy bullet our bullet destroys teaches the hit views the guess factor it
+ was fired at, as a hit on us does (Diamond's onBulletHitBullet).</div>
+</div>
+<div class="col-first even-row-color"><code>(package private) static final boolean</code></div>
+<div class="col-second even-row-color"><code><a href="#DISTANCING_TO_ENEMY" class="member-name-link">DISTANCING_TO_ENEMY</a></code></div>
+<div class="col-last even-row-color">
+<div class="block"><a class="req" href="../../../../requirements.html#MOVE-18">MOVE-18</a>: the surf's distancing factor is measured to the enemy's last scanned position
+ (as Diamond does) rather than to the wave's source.</div>
+</div>
+<div class="col-first odd-row-color"><code>(package private) static final boolean</code></div>
 <div class="col-second odd-row-color"><code><a href="#ESCAPE_ROOM" class="member-name-link">ESCAPE_ROOM</a></code></div>
 <div class="col-last odd-row-color">
 <div class="block"><a class="req" href="../../../../requirements.html#MOVE-12">MOVE-12</a>: the first wave's danger is scaled by the escape-angle position term (BeepBoop's).</div>
@@ -140,6 +152,29 @@ loadScripts(document, 'script');</script>
 <div class="block"><a class="req" href="../../../../requirements.html#MOVE-11">MOVE-11</a>: surf the enemy's next shot before it leaves, when its gun is about to be cool.</div>
 </div>
 <div class="col-first even-row-color"><code>(package private) static final boolean</code></div>
+<div class="col-second even-row-color"><code><a href="#HIT_CLEARS_CACHE" class="member-name-link">HIT_CLEARS_CACHE</a></code></div>
+<div class="col-last even-row-color">
+<div class="block"><a class="req" href="../../../../requirements.html#MOVE-20">MOVE-20</a>: every hit on us and every intercept clears the surf's cached neighbour searches,
+ not only a change of the surfed wave.</div>
+</div>
+<div class="col-first odd-row-color"><code>(package private) static final boolean</code></div>
+<div class="col-second odd-row-color"><code><a href="#HOLD_650" class="member-name-link">HOLD_650</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block"><a class="req" href="../../../../requirements.html#DIST-3">DIST-3</a>: no <a class="req" href="../../../../requirements.html#DIST-1">DIST-1</a> walk-in in a duel.</div>
+</div>
+<div class="col-first even-row-color"><code>(package private) static final boolean</code></div>
+<div class="col-second even-row-color"><code><a href="#KEEP_SECOND_WAVE" class="member-name-link">KEEP_SECOND_WAVE</a></code></div>
+<div class="col-last even-row-color">
+<div class="block"><a class="req" href="../../../../requirements.html#TIME-6">TIME-6</a>: a skipped turn (level 1) no longer drops the surf's second wave for the rest of
+ the round; it is dropped from level 2, where the k halving and the go-to shedding also stay.</div>
+</div>
+<div class="col-first odd-row-color"><code>(package private) static final boolean</code></div>
+<div class="col-second odd-row-color"><code><a href="#POINT_KERNEL" class="member-name-link">POINT_KERNEL</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block"><a class="req" href="../../../../requirements.html#MOVE-21">MOVE-21</a>: the danger kernel is the point value 2^-|u| at the intersection's centre
+ (Diamond's), not <a class="req" href="../../../../requirements.html#MOVE-4">MOVE-4</a>'s integral over the intersection.</div>
+</div>
+<div class="col-first even-row-color"><code>(package private) static final boolean</code></div>
 <div class="col-second even-row-color"><code><a href="#PROTEAN" class="member-name-link">PROTEAN</a></code></div>
 <div class="col-last even-row-color">
 <div class="block"><a class="req" href="../../../../requirements.html#MOVE-14">MOVE-14</a>: while the enemy's gun is cool and no real bullet is within 10 ticks, the surf draws
@@ -155,6 +190,13 @@ loadScripts(document, 'script');</script>
 <div class="col-second even-row-color"><code><a href="#REPLICATOR" class="member-name-link">REPLICATOR</a></code></div>
 <div class="col-last even-row-color">
 <div class="block"><a class="req" href="../../../../requirements.html#MOVE-16">MOVE-16</a>: the danger views' weights evolve by the replicator equation.</div>
+</div>
+<div class="col-first odd-row-color"><code>(package private) static final boolean</code></div>
+<div class="col-second odd-row-color"><code><a href="#STACK_LIST" class="member-name-link">STACK_LIST</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block"><a class="req" href="../../../../requirements.html#MOVE-23">MOVE-23</a>: the stop-and-start stack (<a class="req" href="../../../../requirements.html#MOVE-13">MOVE-13</a> heatjit, <a class="req" href="../../../../requirements.html#SHIELD-14">SHIELD-14</a> swall, and <a class="req" href="../../../../requirements.html#MOVE-20">MOVE-20</a>, <a class="req" href="../../../../requirements.html#MOVE-21">MOVE-21</a>
+ and <a class="req" href="../../../../requirements.html#TIME-6">TIME-6</a> whenever those are on) applies only to opponents not on the stack off-list;
+ a listed opponent plays as if those switches were off.</div>
 </div>
 </div>
 </section>
@@ -305,6 +347,120 @@ loadScripts(document, 'script');</script>
 <dd>
 <ul class="tag-list">
 <li><a href="../../../constant-values.html#hadur2.core.duel.MoveDesign.GUN_GATE">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="HOLD_650">
+<h3>HOLD_650</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">HOLD_650</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#DIST-3">DIST-3</a>: no <a class="req" href="../../../../requirements.html#DIST-1">DIST-1</a> walk-in in a duel. The desired distance stays at the opening's (650 for a
+ stranger) for the whole battle; <a class="req" href="../../../../requirements.html#END-1">END-1</a>'s finishing distance is unchanged.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur2.core.duel.MoveDesign.HOLD_650">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="DISTANCING_TO_ENEMY">
+<h3>DISTANCING_TO_ENEMY</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">DISTANCING_TO_ENEMY</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#MOVE-18">MOVE-18</a>: the surf's distancing factor is measured to the enemy's last scanned position
+ (as Diamond does) rather than to the wave's source.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur2.core.duel.MoveDesign.DISTANCING_TO_ENEMY">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="BULLET_HIT_BULLET_LOG">
+<h3>BULLET_HIT_BULLET_LOG</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">BULLET_HIT_BULLET_LOG</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#MOVE-19">MOVE-19</a>: an enemy bullet our bullet destroys teaches the hit views the guess factor it
+ was fired at, as a hit on us does (Diamond's onBulletHitBullet).</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur2.core.duel.MoveDesign.BULLET_HIT_BULLET_LOG">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="HIT_CLEARS_CACHE">
+<h3>HIT_CLEARS_CACHE</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">HIT_CLEARS_CACHE</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#MOVE-20">MOVE-20</a>: every hit on us and every intercept clears the surf's cached neighbour searches,
+ not only a change of the surfed wave.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur2.core.duel.MoveDesign.HIT_CLEARS_CACHE">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="POINT_KERNEL">
+<h3>POINT_KERNEL</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">POINT_KERNEL</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#MOVE-21">MOVE-21</a>: the danger kernel is the point value 2^-|u| at the intersection's centre
+ (Diamond's), not <a class="req" href="../../../../requirements.html#MOVE-4">MOVE-4</a>'s integral over the intersection.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur2.core.duel.MoveDesign.POINT_KERNEL">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="KEEP_SECOND_WAVE">
+<h3>KEEP_SECOND_WAVE</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">KEEP_SECOND_WAVE</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#TIME-6">TIME-6</a>: a skipped turn (level 1) no longer drops the surf's second wave for the rest of
+ the round; it is dropped from level 2, where the k halving and the go-to shedding also stay.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur2.core.duel.MoveDesign.KEEP_SECOND_WAVE">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="STACK_LIST">
+<h3>STACK_LIST</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">STACK_LIST</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#MOVE-23">MOVE-23</a>: the stop-and-start stack (<a class="req" href="../../../../requirements.html#MOVE-13">MOVE-13</a> heatjit, <a class="req" href="../../../../requirements.html#SHIELD-14">SHIELD-14</a> swall, and <a class="req" href="../../../../requirements.html#MOVE-20">MOVE-20</a>, <a class="req" href="../../../../requirements.html#MOVE-21">MOVE-21</a>
+ and <a class="req" href="../../../../requirements.html#TIME-6">TIME-6</a> whenever those are on) applies only to opponents not on the stack off-list;
+ a listed opponent plays as if those switches were off. The decision is made per
+ opponent at run time; with this off the switches are the compile-time ones alone.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur2.core.duel.MoveDesign.STACK_LIST">Constant Field Values</a></li>
 </ul>
 </dd>
 </dl>

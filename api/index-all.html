@@ -177,6 +177,10 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="hadur2/core/melee/VirtualBullet.html#aim" class="member-name-link">aim</a> - Variable in class hadur2.core.melee.<a href="hadur2/core/melee/VirtualBullet.html" title="class in hadur2.core.melee">VirtualBullet</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur2/core/gun/TripHammerGun.html#aim(hadur2.core.model.Wave,hadur2.core.knn.KnnView)" class="member-name-link">aim(Wave, KnnView&lt;TimestampedFiringAngle&gt;)</a> - Method in class hadur2.core.gun.<a href="hadur2/core/gun/TripHammerGun.html" title="class in hadur2.core.gun">TripHammerGun</a></dt>
+<dd>
+<div class="block">The absolute bearing to fire along, in radians.</div>
+</dd>
 <dt><a href="hadur2/core/gun/SampledGun.html#aim(hadur2.core.model.Wave,hadur2.core.knn.KnnView,java.awt.geom.Point2D.Double)" class="member-name-link">aim(Wave, KnnView&lt;TimestampedFiringAngle&gt;, Point2D.Double)</a> - Method in class hadur2.core.gun.<a href="hadur2/core/gun/SampledGun.html" title="class in hadur2.core.gun">SampledGun</a></dt>
 <dd>
 <div class="block">The absolute bearing to fire along, in radians: the picked neighbour's guess factor,
@@ -224,6 +228,8 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="hadur2/core/gun/MainGun.Aimed.html#%3Cinit%3E(double,hadur2.core.gun.ShadowAim.Mass)" class="member-name-link">Aimed(double, ShadowAim.Mass)</a> - Constructor for class hadur2.core.gun.<a href="hadur2/core/gun/MainGun.Aimed.html" title="class in hadur2.core.gun">MainGun.Aimed</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur2/core/gun/TripHammerGun.Aimed.html#%3Cinit%3E(double,hadur2.core.gun.ShadowAim.Mass)" class="member-name-link">Aimed(double, ShadowAim.Mass)</a> - Constructor for class hadur2.core.gun.<a href="hadur2/core/gun/TripHammerGun.Aimed.html" title="class in hadur2.core.gun">TripHammerGun.Aimed</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="hadur2/core/melee/MeleeProfile.html#aimHits" class="member-name-link">aimHits</a> - Variable in class hadur2.core.melee.<a href="hadur2/core/melee/MeleeProfile.html" title="class in hadur2.core.melee">MeleeProfile</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur2/core/melee/MeleeProfile.html#aimHits(hadur2.core.melee.MeleeProfile.AimClass)" class="member-name-link">aimHits(MeleeProfile.AimClass)</a> - Method in class hadur2.core.melee.<a href="hadur2/core/melee/MeleeProfile.html" title="class in hadur2.core.melee">MeleeProfile</a></dt>
@@ -237,6 +243,11 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur2/core/melee/MeleeProfile.html#aimStyle()" class="member-name-link">aimStyle()</a> - Method in class hadur2.core.melee.<a href="hadur2/core/melee/MeleeProfile.html" title="class in hadur2.core.melee">MeleeProfile</a></dt>
 <dd>
 <div class="block">How its hits on Hadur were aimed, or null until <a href="hadur2/core/melee/MeleeProfile.html#MIN_AIM_HITS"><code>MeleeProfile.MIN_AIM_HITS</code></a> are classified.</div>
+</dd>
+<dt><a href="hadur2/core/gun/TripHammerGun.html#aimWithMass(hadur2.core.model.Wave,hadur2.core.knn.KnnView)" class="member-name-link">aimWithMass(Wave, KnnView&lt;TimestampedFiringAngle&gt;)</a> - Method in class hadur2.core.gun.<a href="hadur2/core/gun/TripHammerGun.html" title="class in hadur2.core.gun">TripHammerGun</a></dt>
+<dd>
+<div class="block"><a href="hadur2/core/gun/TripHammerGun.html#aim(hadur2.core.model.Wave,hadur2.core.knn.KnnView)"><code>TripHammerGun.aim(hadur2.core.model.Wave, hadur2.core.knn.KnnView&lt;hadur2.core.model.TimestampedFiringAngle&gt;)</code></a> and the neighbours as GUN-7's mass (a Gaussian kernel at the same bandwidth
+ over the same absolute angles and weights), from one search.</div>
 </dd>
 <dt><a href="hadur2/core/gun/MainGun.html#aimWithMass(hadur2.core.model.Wave,hadur2.core.knn.KnnView,java.awt.geom.Point2D.Double,long)" class="member-name-link">aimWithMass(Wave, KnnView&lt;TimestampedFiringAngle&gt;, Point2D.Double, long)</a> - Method in class hadur2.core.gun.<a href="hadur2/core/gun/MainGun.html" title="class in hadur2.core.gun">MainGun</a></dt>
 <dd>
@@ -280,6 +291,10 @@ loadScripts(document, 'script');</script>
  lookup skip.</div>
 </dd>
 <dt><a href="hadur2/core/gun/MainGun.Aimed.html#angle" class="member-name-link">angle</a> - Variable in class hadur2.core.gun.<a href="hadur2/core/gun/MainGun.Aimed.html" title="class in hadur2.core.gun">MainGun.Aimed</a></dt>
+<dd>
+<div class="block">The bearing to fire along, absolute radians.</div>
+</dd>
+<dt><a href="hadur2/core/gun/TripHammerGun.Aimed.html#angle" class="member-name-link">angle</a> - Variable in class hadur2.core.gun.<a href="hadur2/core/gun/TripHammerGun.Aimed.html" title="class in hadur2.core.gun">TripHammerGun.Aimed</a></dt>
 <dd>
 <div class="block">The bearing to fire along, absolute radians.</div>
 </dd>
@@ -844,6 +859,11 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="hadur/bench/MeleeHarvester.html#BULLET_HEADER" class="member-name-link">BULLET_HEADER</a> - Static variable in class hadur.bench.<a href="hadur/bench/MeleeHarvester.html" title="class in hadur.bench">MeleeHarvester</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur2/core/duel/MoveDesign.html#BULLET_HIT_BULLET_LOG" class="member-name-link">BULLET_HIT_BULLET_LOG</a> - Static variable in class hadur2.core.duel.<a href="hadur2/core/duel/MoveDesign.html" title="class in hadur2.core.duel">MoveDesign</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MOVE-19">MOVE-19</a>: an enemy bullet our bullet destroys teaches the hit views the guess factor it
+ was fired at, as a hit on us does (Diamond's onBulletHitBullet).</div>
+</dd>
 <dt><a href="hadur2/core/melee/MinimumRiskMovement.html#BULLET_K" class="member-name-link">BULLET_K</a> - Static variable in class hadur2.core.melee.<a href="hadur2/core/melee/MinimumRiskMovement.html" title="class in hadur2.core.melee">MinimumRiskMovement</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur/bench/BattleResult.html#bulletDamage" class="member-name-link">bulletDamage</a> - Variable in class hadur.bench.<a href="hadur/bench/BattleResult.html" title="class in hadur.bench">BattleResult</a></dt>
@@ -1314,6 +1334,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#RES-4">RES-4</a>: forget the profile's estimate and the flattener it asked for; live data decides.</div>
 </dd>
+<dt><a href="hadur2/core/duel/DuelController.html#clearsCacheOnHit(boolean)" class="member-name-link">clearsCacheOnHit(boolean)</a> - Static method in class hadur2.core.duel.<a href="hadur2/core/duel/DuelController.html" title="class in hadur2.core.duel">DuelController</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MOVE-20">MOVE-20</a>: whether a hit or an intercept clears the cached neighbour searches.</div>
+</dd>
 <dt><a href="hadur/bench/ClientConditions.html" class="type-name-link" title="class in hadur.bench">ClientConditions</a> - Class in <a href="hadur/bench/package-summary.html">hadur.bench</a></dt>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#BENCH-4">BENCH-4</a>: a file of rumble-client conditions, one bench pass per line.</div>
@@ -1565,6 +1589,11 @@ loadScripts(document, 'script');</script>
  learning from every wave including virtual ones (never in melee: <a class="req" href="../requirements.html#GUN-4">GUN-4</a> is a duel-only
  gate, mirroring the anti-surfer gun's own melee restriction).</div>
 </dd>
+<dt><a href="hadur2/core/gun/TripHammerGun.html#createView()" class="member-name-link">createView()</a> - Method in class hadur2.core.gun.<a href="hadur2/core/gun/TripHammerGun.html" title="class in hadur2.core.gun">TripHammerGun</a></dt>
+<dd>
+<div class="block">A new TripHammer view: <a href="hadur2/core/gun/TripHammerFormula.html" title="class in hadur2.core.gun"><code>TripHammerFormula</code></a>'s space, k up to 225 at one neighbour
+ per nine points, learning from every wave including virtual ones, not in melee.</div>
+</dd>
 <dt><a href="hadur2/core/gun/MainGun.html#createView(int)" class="member-name-link">createView(int)</a> - Method in class hadur2.core.gun.<a href="hadur2/core/gun/MainGun.html" title="class in hadur2.core.gun">MainGun</a></dt>
 <dd>
 <div class="block">A new main view: the <a href="hadur2/core/gun/GunFormula.html" title="class in hadur2.core.gun"><code>GunFormula</code></a> space, k up to 100 at one neighbour per ten
@@ -1666,6 +1695,8 @@ loadScripts(document, 'script');</script>
 <div class="block">The feature point for <code>w</code>.</div>
 </dd>
 <dt><a href="hadur2/core/gun/GunFormula.html#dataPointFromWave(hadur2.core.model.Wave,boolean)" class="member-name-link">dataPointFromWave(Wave, boolean)</a> - Method in class hadur2.core.gun.<a href="hadur2/core/gun/GunFormula.html" title="class in hadur2.core.gun">GunFormula</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="hadur2/core/gun/TripHammerFormula.html#dataPointFromWave(hadur2.core.model.Wave,boolean)" class="member-name-link">dataPointFromWave(Wave, boolean)</a> - Method in class hadur2.core.gun.<a href="hadur2/core/gun/TripHammerFormula.html" title="class in hadur2.core.gun">TripHammerFormula</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur2/core/knn/DistanceFormula.html#dataPointFromWave(hadur2.core.model.Wave,boolean)" class="member-name-link">dataPointFromWave(Wave, boolean)</a> - Method in class hadur2.core.knn.<a href="hadur2/core/knn/DistanceFormula.html" title="class in hadur2.core.knn">DistanceFormula</a></dt>
 <dd>
@@ -1811,6 +1842,11 @@ loadScripts(document, 'script');</script>
  over the kernel's integral across the guess-factor grid (trapezoid rule over the evenly
  spaced samples), so a density that integrates to 1.</div>
 </dd>
+<dt><a href="hadur2/core/gun/TripHammerGun.html#density(double,double%5B%5D,double%5B%5D,double)" class="member-name-link">density(double, double[], double[], double)</a> - Static method in class hadur2.core.gun.<a href="hadur2/core/gun/TripHammerGun.html" title="class in hadur2.core.gun">TripHammerGun</a></dt>
+<dd>
+<div class="block">The cube kernel's density at <code>candidate</code> over the offsets: the sum of
+ <code>weight * (1 - |u|^3)</code> for <code>|u| &lt; 1</code>, <code>u</code> the gap over the bandwidth.</div>
+</dd>
 <dt><a href="hadur2/core/adapt/package-summary.html#dependencies-heading" class="search-tag-link">Dependencies</a> - Search tag in package hadur2.core.adapt</dt>
 <dd>Section</dd>
 <dt><a href="hadur2/core/memory/package-summary.html#dependencies-heading" class="search-tag-link">Dependencies</a> - Search tag in package hadur2.core.memory</dt>
@@ -1933,6 +1969,10 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur2/core/knn/DistanceFormula.html#%3Cinit%3E()" class="member-name-link">DistanceFormula()</a> - Constructor for class hadur2.core.knn.<a href="hadur2/core/knn/DistanceFormula.html" title="class in hadur2.core.knn">DistanceFormula</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur2/core/duel/DuelController.html#distanceMoves(boolean)" class="member-name-link">distanceMoves(boolean)</a> - Static method in class hadur2.core.duel.<a href="hadur2/core/duel/DuelController.html" title="class in hadur2.core.duel">DuelController</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#DIST-3">DIST-3</a>: whether <a class="req" href="../requirements.html#DIST-1">DIST-1</a> may move the target: not with the hold-650 switch on.</div>
+</dd>
 <dt><a href="hadur2/core/policy/DistancePolicy.html" class="type-name-link" title="class in hadur2.core.policy">DistancePolicy</a> - Class in <a href="hadur2/core/policy/package-summary.html">hadur2.core.policy</a></dt>
 <dd>
 <div class="block">The distance Hadur tries to fight at (the artifact's distance controller). 1.20 held a
@@ -1961,12 +2001,19 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">The wave's radius at <code>currentTime</code>, pixels: 0 at the fire time.</div>
 </dd>
+<dt><a href="hadur2/core/duel/MoveDesign.html#DISTANCING_TO_ENEMY" class="member-name-link">DISTANCING_TO_ENEMY</a> - Static variable in class hadur2.core.duel.<a href="hadur2/core/duel/MoveDesign.html" title="class in hadur2.core.duel">MoveDesign</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MOVE-18">MOVE-18</a>: the surf's distancing factor is measured to the enemy's last scanned position
+ (as Diamond does) rather than to the wave's source.</div>
+</dd>
 <dt><a href="hadur2/core/move/SurfMover.html#distancingDanger(java.awt.geom.Point2D.Double,java.awt.geom.Point2D.Double,java.awt.geom.Point2D.Double)" class="member-name-link">distancingDanger(Point2D.Double, Point2D.Double, Point2D.Double)</a> - Method in class hadur2.core.move.<a href="hadur2/core/move/SurfMover.html" title="class in hadur2.core.move">SurfMover</a></dt>
 <dd>
 <div class="block">How much a move from <code>start</code> to <code>predicted</code> scales a wave's danger for
  its change in distance to <code>enemy</code>: <code>2.5^(d0 / d1) / 2.5</code>, where d0 is the
  distance before and d1 after.</div>
 </dd>
+<dt><a href="hadur2/core/move/SurfMover.html#distancingPoint(hadur2.core.model.Wave)" class="member-name-link">distancingPoint(Wave)</a> - Method in class hadur2.core.move.<a href="hadur2/core/move/SurfMover.html" title="class in hadur2.core.move">SurfMover</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="hadur2/core/adapt/SeedTrust.html#distrusted()" class="member-name-link">distrusted()</a> - Method in class hadur2.core.adapt.<a href="hadur2/core/adapt/SeedTrust.html" title="class in hadur2.core.adapt">SeedTrust</a></dt>
 <dd>
 <div class="block">Whether the live data has disagreed with the profile on any wave this battle.</div>
@@ -2063,6 +2110,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur/bench/Bench.html#duelHostLine(int)" class="member-name-link">duelHostLine(int)</a> - Method in class hadur.bench.<a href="hadur/bench/Bench.html" title="class in hadur.bench">Bench</a></dt>
 <dd>
 <div class="block">The duel report's conditions: the melee and team reports' line, less its closing full stop (the report adds it).</div>
+</dd>
+<dt><a href="hadur2/core/duel/DuelController.html#duelOnly(boolean,int)" class="member-name-link">duelOnly(boolean, int)</a> - Static method in class hadur2.core.duel.<a href="hadur2/core/duel/DuelController.html" title="class in hadur2.core.duel">DuelController</a></dt>
+<dd>
+<div class="block">A duel-only move switch: in effect only in a duel; melee and team endgames play as with it off.</div>
 </dd>
 <dt><a href="hadur2/core/melee/MeleeEnergyPolicy.html#duelPower(double,double,double)" class="member-name-link">duelPower(double, double, double)</a> - Static method in class hadur2.core.melee.<a href="hadur2/core/melee/MeleeEnergyPolicy.html" title="class in hadur2.core.melee">MeleeEnergyPolicy</a></dt>
 <dd>
@@ -2877,6 +2928,14 @@ loadScripts(document, 'script');</script>
  bullets on teammates turned into misses (<a class="req" href="../requirements.html#WORLD-6">WORLD-6</a>), the reports merged (<a class="req" href="../requirements.html#WORLD-4">WORLD-4</a>) and
  the count of others replaced by the count of enemies alive (<a class="req" href="../requirements.html#WORLD-2">WORLD-2</a>, <a class="req" href="../requirements.html#WORLD-8">WORLD-8</a>).</div>
 </dd>
+<dt><a href="hadur2/core/gun/TripHammerGun.html#FINAL_TIMES" class="member-name-link">FINAL_TIMES</a> - Static variable in class hadur2.core.gun.<a href="hadur2/core/gun/TripHammerGun.html" title="class in hadur2.core.gun">TripHammerGun</a></dt>
+<dd>
+<div class="block">The view sizes at which each weight has reached its final value; 0 means from the start.</div>
+</dd>
+<dt><a href="hadur2/core/gun/TripHammerGun.html#FINAL_WEIGHTS" class="member-name-link">FINAL_WEIGHTS</a> - Static variable in class hadur2.core.gun.<a href="hadur2/core/gun/TripHammerGun.html" title="class in hadur2.core.gun">TripHammerGun</a></dt>
+<dd>
+<div class="block">Diamond's weights once the view has grown past <a href="hadur2/core/gun/TripHammerGun.html#FINAL_TIMES"><code>TripHammerGun.FINAL_TIMES</code></a>.</div>
+</dd>
 <dt><a href="hadur/bench/LogHarvester.html#finalRecordMissing(int)" class="member-name-link">finalRecordMissing(int)</a> - Method in class hadur.bench.<a href="hadur/bench/LogHarvester.html" title="class in hadur.bench">LogHarvester</a></dt>
 <dd>
 <div class="block">G14: true when rounds were played but the last round's R record never arrived.</div>
@@ -3204,6 +3263,11 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Whether the last <a href="hadur2/core/duel/DuelController.html#take(hadur2.core.model.BotInput,hadur2.core.model.Baton,java.lang.String,double)"><code>DuelController.take(hadur2.core.model.BotInput, hadur2.core.model.Baton, java.lang.String, double)</code></a> found the survivor's 1v1 profile.</div>
 </dd>
+<dt><a href="hadur2/core/duel/GunDesign.html#FREE_GUN" class="member-name-link">FREE_GUN</a> - Static variable in class hadur2.core.duel.<a href="hadur2/core/duel/GunDesign.html" title="class in hadur2.core.duel">GunDesign</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#GUN-9">GUN-9</a>: the live gun verdict is the highest-rated candidate with no margin test (Diamond's
+ bestGun), in both power classes.</div>
+</dd>
 <dt><a href="hadur/bench/Memory.Check.html#freeMb()" class="member-name-link">freeMb()</a> - Method in record class hadur.bench.<a href="hadur/bench/Memory.Check.html" title="class in hadur.bench">Memory.Check</a></dt>
 <dd>
 <div class="block">Returns the value of the <code>freeMb</code> record component.</div>
@@ -3329,6 +3393,10 @@ loadScripts(document, 'script');</script>
 <div class="block">The gun's name in the logs.</div>
 </dd>
 <dt><a href="hadur2/core/gun/SampledGun.html#getLabel()" class="member-name-link">getLabel()</a> - Method in class hadur2.core.gun.<a href="hadur2/core/gun/SampledGun.html" title="class in hadur2.core.gun">SampledGun</a></dt>
+<dd>
+<div class="block">The gun's name in the logs.</div>
+</dd>
+<dt><a href="hadur2/core/gun/TripHammerGun.html#getLabel()" class="member-name-link">getLabel()</a> - Method in class hadur2.core.gun.<a href="hadur2/core/gun/TripHammerGun.html" title="class in hadur2.core.gun">TripHammerGun</a></dt>
 <dd>
 <div class="block">The gun's name in the logs.</div>
 </dd>
@@ -3597,6 +3665,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur2/core/model/BotInput.html#gunCoolingRate()" class="member-name-link">gunCoolingRate()</a> - Method in class hadur2.core.model.<a href="hadur2/core/model/BotInput.html" title="class in hadur2.core.model">BotInput</a></dt>
 <dd>
 <div class="block">Gun heat lost per tick, set by the battle (0.1 by default).</div>
+</dd>
+<dt><a href="hadur2/core/duel/GunDesign.html" class="type-name-link" title="class in hadur2.core.duel">GunDesign</a> - Class in <a href="hadur2/core/duel/package-summary.html">hadur2.core.duel</a></dt>
+<dd>
+<div class="block">Duel-side switches for gun experiments; the gun package never reads them.</div>
 </dd>
 <dt><a href="hadur2/core/gun/GunFormula.html" class="type-name-link" title="class in hadur2.core.gun">GunFormula</a> - Class in <a href="hadur2/core/gun/package-summary.html">hadur2.core.gun</a></dt>
 <dd>
@@ -4122,6 +4194,11 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">How many past states the die compares a new one with.</div>
 </dd>
+<dt><a href="hadur2/core/duel/MoveDesign.html#HIT_CLEARS_CACHE" class="member-name-link">HIT_CLEARS_CACHE</a> - Static variable in class hadur2.core.duel.<a href="hadur2/core/duel/MoveDesign.html" title="class in hadur2.core.duel">MoveDesign</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MOVE-20">MOVE-20</a>: every hit on us and every intercept clears the surf's cached neighbour searches,
+ not only a change of the surfed wave.</div>
+</dd>
 <dt><a href="hadur2/core/melee/MinimumRiskMovement.html#HIT_RADIUS" class="member-name-link">HIT_RADIUS</a> - Static variable in class hadur2.core.melee.<a href="hadur2/core/melee/MinimumRiskMovement.html" title="class in hadur2.core.melee">MinimumRiskMovement</a></dt>
 <dd>
 <div class="block">A virtual bullet within this of a point, when Hadur would be there, is a hit.</div>
@@ -4239,6 +4316,10 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur2/core/policy/DistancePolicy.Step.html#HOLD" class="member-name-link">HOLD</a> - Enum constant in enum class hadur2.core.policy.<a href="hadur2/core/policy/DistancePolicy.Step.html" title="enum class in hadur2.core.policy">DistancePolicy.Step</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur2/core/duel/MoveDesign.html#HOLD_650" class="member-name-link">HOLD_650</a> - Static variable in class hadur2.core.duel.<a href="hadur2/core/duel/MoveDesign.html" title="class in hadur2.core.duel">MoveDesign</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#DIST-3">DIST-3</a>: no <a class="req" href="../requirements.html#DIST-1">DIST-1</a> walk-in in a duel.</div>
+</dd>
 <dt><a href="hadur2/core/shieldmode/ShieldBudget.html#HOLD_SHARE" class="member-name-link">HOLD_SHARE</a> - Static variable in class hadur2.core.shieldmode.<a href="hadur2/core/shieldmode/ShieldBudget.html" title="class in hadur2.core.shieldmode">ShieldBudget</a></dt>
 <dd>
 <div class="block">The score share shield mode must not let the battle fall below.</div>
@@ -4420,6 +4501,10 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur2/core/melee/MeleeWaves.html#inFlight()" class="member-name-link">inFlight()</a> - Method in class hadur2.core.melee.<a href="hadur2/core/melee/MeleeWaves.html" title="class in hadur2.core.melee">MeleeWaves</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur2/core/gun/TripHammerGun.html#INITIAL_WEIGHTS" class="member-name-link">INITIAL_WEIGHTS</a> - Static variable in class hadur2.core.gun.<a href="hadur2/core/gun/TripHammerGun.html" title="class in hadur2.core.gun">TripHammerGun</a></dt>
+<dd>
+<div class="block">Diamond's weights for a view of one point.</div>
+</dd>
 <dt><a href="hadur2/core/gun/GunController.html#initRound()" class="member-name-link">initRound()</a> - Method in class hadur2.core.gun.<a href="hadur2/core/gun/GunController.html" title="class in hadur2.core.gun">GunController</a></dt>
 <dd>
 <div class="block">Starts a round: drops the virtual bullets still in flight (their waves will never
@@ -4514,7 +4599,7 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur2/core/shieldmode/ShieldList.html#isEmpty()" class="member-name-link">isEmpty()</a> - Method in class hadur2.core.shieldmode.<a href="hadur2/core/shieldmode/ShieldList.html" title="class in hadur2.core.shieldmode">ShieldList</a></dt>
 <dd>
-<div class="block">Whether nobody is on the list.</div>
+<div class="block">Whether nobody is on the (shield) list.</div>
 </dd>
 <dt><a href="hadur2/core/world/Roster.html#isEmpty()" class="member-name-link">isEmpty()</a> - Method in class hadur2.core.world.<a href="hadur2/core/world/Roster.html" title="class in hadur2.core.world">Roster</a></dt>
 <dd>&nbsp;</dd>
@@ -4624,6 +4709,11 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">One search result.</div>
 </dd>
+<dt><a href="hadur2/core/duel/MoveDesign.html#KEEP_SECOND_WAVE" class="member-name-link">KEEP_SECOND_WAVE</a> - Static variable in class hadur2.core.duel.<a href="hadur2/core/duel/MoveDesign.html" title="class in hadur2.core.duel">MoveDesign</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#TIME-6">TIME-6</a>: a skipped turn (level 1) no longer drops the surf's second wave for the rest of
+ the round; it is dropped from level 2, where the k halving and the go-to shedding also stay.</div>
+</dd>
 <dt><a href="hadur2/core/shieldmode/ShieldDesign.html#KEPT_ERRORS" class="member-name-link">KEPT_ERRORS</a> - Static variable in class hadur2.core.shieldmode.<a href="hadur2/core/shieldmode/ShieldDesign.html" title="class in hadur2.core.shieldmode">ShieldDesign</a></dt>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#SHIELD-10">SHIELD-10</a>: the errors kept per base for the most frequent one.</div>
@@ -4631,6 +4721,12 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur2/core/gun/ShadowAim.Mass.html#kernel(double%5B%5D,double%5B%5D,double)" class="member-name-link">kernel(double[], double[], double)</a> - Static method in class hadur2.core.gun.<a href="hadur2/core/gun/ShadowAim.Mass.html" title="class in hadur2.core.gun">ShadowAim.Mass</a></dt>
 <dd>
 <div class="block">The main gun's own density: its valid neighbours' angles with their weights.</div>
+</dd>
+<dt><a href="hadur2/core/move/MoveController.html#kernel(double,double,java.util.List)" class="member-name-link">kernel(double, double, List&lt;double[]&gt;)</a> - Method in class hadur2.core.move.<a href="hadur2/core/move/MoveController.html" title="class in hadur2.core.move">MoveController</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MOVE-4">MOVE-4</a> or <a class="req" href="../requirements.html#MOVE-21">MOVE-21</a>: the kernel's weight for a neighbour at angle <code>at</code>: the integrated
+ mass, or with the point kernel on, <code>2^-|u|</code> at the intersection's centre
+ (<code>u</code> in bandwidths), scaled by the share of the intersection the shadows leave.</div>
 </dd>
 <dt><a href="hadur2/core/gun/ShadowAim.html#KERNEL_SCALE" class="member-name-link">KERNEL_SCALE</a> - Static variable in class hadur2.core.gun.<a href="hadur2/core/gun/ShadowAim.html" title="class in hadur2.core.gun">ShadowAim</a></dt>
 <dd>
@@ -4977,6 +5073,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">The list, one robot per element.</div>
 </dd>
+<dt><a href="hadur2/StackListData.html#lines()" class="member-name-link">lines()</a> - Static method in class hadur2.<a href="hadur2/StackListData.html" title="class in hadur2">StackListData</a></dt>
+<dd>
+<div class="block">The list, one robot per element.</div>
+</dd>
 <dt><a href="hadur2/core/link/LinkCodec.html" class="type-name-link" title="class in hadur2.core.link">LinkCodec</a> - Class in <a href="hadur2/core/link/package-summary.html">hadur2.core.link</a></dt>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#LINK-1">LINK-1</a>: a <a href="hadur2/core/link/Report.html" title="class in hadur2.core.link"><code>Report</code></a> as bytes and back.</div>
@@ -5139,6 +5239,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Adds a sample replayed from an opponent profile (<a class="req" href="../requirements.html#ADAPT-3">ADAPT-3</a>).</div>
 </dd>
+<dt><a href="hadur2/core/duel/DuelController.html#logsIntercept(boolean,hadur2.core.model.Wave)" class="member-name-link">logsIntercept(boolean, Wave)</a> - Static method in class hadur2.core.duel.<a href="hadur2/core/duel/DuelController.html" title="class in hadur2.core.duel">DuelController</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MOVE-19">MOVE-19</a>: whether an intercept teaches the hit views: the switch is on and the enemy bullet's wave was found.</div>
+</dd>
 <dt><a href="hadur2/core/knn/KnnView.html#logVirtual" class="member-name-link">logVirtual</a> - Variable in class hadur2.core.knn.<a href="hadur2/core/knn/KnnView.html" title="class in hadur2.core.knn">KnnView</a></dt>
 <dd>
 <div class="block">Whether this view also learns from virtual waves (waves no real bullet rode).</div>
@@ -5278,6 +5382,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">The probability mass over firing angles, or null when none.</div>
 </dd>
+<dt><a href="hadur2/core/gun/TripHammerGun.Aimed.html#mass" class="member-name-link">mass</a> - Variable in class hadur2.core.gun.<a href="hadur2/core/gun/TripHammerGun.Aimed.html" title="class in hadur2.core.gun">TripHammerGun.Aimed</a></dt>
+<dd>
+<div class="block">The neighbours as a probability mass, or null when the view was empty.</div>
+</dd>
 <dt><a href="hadur/bench/WaveMatcher.html#match(java.util.List,java.util.List)" class="member-name-link">match(List&lt;double[]&gt;, List&lt;double[]&gt;)</a> - Static method in class hadur.bench.<a href="hadur/bench/WaveMatcher.html" title="class in hadur.bench">WaveMatcher</a></dt>
 <dd>
 <div class="block">How many inferred waves pair with a distinct real shot.</div>
@@ -5295,8 +5403,8 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur/bench/LogHarvester.html#matchedWaves()" class="member-name-link">matchedWaves()</a> - Method in class hadur.bench.<a href="hadur/bench/LogHarvester.html" title="class in hadur.bench">LogHarvester</a></dt>
 <dd>
 <div class="block">Inferred waves that match a real enemy bullet: same round, fired within
- <a href="hadur/bench/WaveMatcher.html#TICK_WINDOW"><code>TICK_WINDOW</code></a> turns of the inferred fire tick, and a power within
- <a href="hadur/bench/WaveMatcher.html#POWER_TOLERANCE"><code>POWER_TOLERANCE</code></a>.</div>
+ <a href="hadur/bench/WaveMatcher.html#TICK_WINDOW"><code>WaveMatcher.TICK_WINDOW</code></a> turns of the inferred fire tick, and a power within
+ <a href="hadur/bench/WaveMatcher.html#POWER_TOLERANCE"><code>WaveMatcher.POWER_TOLERANCE</code></a>.</div>
 </dd>
 <dt><a href="hadur2/core/shieldmode/ShieldList.html#matches(java.lang.String)" class="member-name-link">matches(String)</a> - Method in class hadur2.core.shieldmode.<a href="hadur2/core/shieldmode/ShieldList.html" title="class in hadur2.core.shieldmode">ShieldList</a></dt>
 <dd>
@@ -6484,6 +6592,10 @@ loadScripts(document, 'script');</script>
  the sign says which way (positive is clockwise) and the magnitude is the short way
  round.</div>
 </dd>
+<dt><a href="hadur2/core/move/SurfMover.html#noteEnemyAt(java.awt.geom.Point2D.Double)" class="member-name-link">noteEnemyAt(Point2D.Double)</a> - Method in class hadur2.core.move.<a href="hadur2/core/move/SurfMover.html" title="class in hadur2.core.move">SurfMover</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MOVE-18">MOVE-18</a>: the point the distancing factor measures to: the enemy's last position when on and known, else the wave's source.</div>
+</dd>
 <dt><a href="hadur/bench/LogHarvester.html#noteTurn(int,int,double,double,boolean)" class="member-name-link">noteTurn(int, int, double, double, boolean)</a> - Method in class hadur.bench.<a href="hadur/bench/LogHarvester.html" title="class in hadur.bench">LogHarvester</a></dt>
 <dd>
 <div class="block">The latest turn of <code>round</code> wins: damage so far, whether we are alive, and the tick count.</div>
@@ -6573,6 +6685,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Offset (forward, sideways) <code>dt</code> ticks into trajectory <code>t</code>, interpolated
  between its samples; past the last sample it holds the last offset.</div>
+</dd>
+<dt><a href="hadur2/core/gun/TripHammerGun.html#offsetOf(hadur2.core.model.Wave,double)" class="member-name-link">offsetOf(Wave, double)</a> - Static method in class hadur2.core.gun.<a href="hadur2/core/gun/TripHammerGun.html" title="class in hadur2.core.gun">TripHammerGun</a></dt>
+<dd>
+<div class="block">One neighbour's firing angle relative to head-on, from its guess factor.</div>
 </dd>
 <dt><a href="hadur2/core/gun/ShadowAim.html#OFFSETS" class="member-name-link">OFFSETS</a> - Static variable in class hadur2.core.gun.<a href="hadur2/core/gun/ShadowAim.html" title="class in hadur2.core.gun">ShadowAim</a></dt>
 <dd>
@@ -6790,6 +6906,11 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur2/HadurRecorder.html#onSkippedTurn(robocode.SkippedTurnEvent)" class="member-name-link">onSkippedTurn(SkippedTurnEvent)</a> - Method in class hadur2.<a href="hadur2/HadurRecorder.html" title="class in hadur2">HadurRecorder</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur2/core/shieldmode/ShieldList.html#onStackOffList(java.lang.String)" class="member-name-link">onStackOffList(String)</a> - Method in class hadur2.core.shieldmode.<a href="hadur2/core/shieldmode/ShieldList.html" title="class in hadur2.core.shieldmode">ShieldList</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MOVE-23">MOVE-23</a>: whether <code>robotName</code> is on the stack off-list, by the same rule as
+ <a href="hadur2/core/shieldmode/ShieldList.html#matches(java.lang.String)"><code>ShieldList.matches(java.lang.String)</code></a>: its full name is, or its name without the version is.</div>
+</dd>
 <dt><a href="hadur2/core/melee/FieldGun.html#onTeam(boolean)" class="member-name-link">onTeam(boolean)</a> - Method in class hadur2.core.melee.<a href="hadur2/core/melee/FieldGun.html" title="class in hadur2.core.melee">FieldGun</a></dt>
 <dd>
 <div class="block">MGUN-6: whether Hadur has a living teammate this tick, set before any aim of the tick.</div>
@@ -7407,6 +7528,13 @@ loadScripts(document, 'script');</script>
 <div class="block">Plays trajectory <code>t</code> forward from <code>e</code>'s last scan until a bullet of
  <code>power</code> fired from <code>me</code> now would reach it; stays inside the walls.</div>
 </dd>
+<dt><a href="hadur2/core/duel/MoveDesign.html#POINT_KERNEL" class="member-name-link">POINT_KERNEL</a> - Static variable in class hadur2.core.duel.<a href="hadur2/core/duel/MoveDesign.html" title="class in hadur2.core.duel">MoveDesign</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MOVE-21">MOVE-21</a>: the danger kernel is the point value 2^-|u| at the intersection's centre
+ (Diamond's), not <a class="req" href="../requirements.html#MOVE-4">MOVE-4</a>'s integral over the intersection.</div>
+</dd>
+<dt><a href="hadur2/core/move/MoveController.html#pointKernelValue(double,double,java.util.List)" class="member-name-link">pointKernelValue(double, double, List&lt;double[]&gt;)</a> - Static method in class hadur2.core.move.<a href="hadur2/core/move/MoveController.html" title="class in hadur2.core.move">MoveController</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="hadur/bench/RepeatStudy.html#pooledSd(java.util.Collection)" class="member-name-link">pooledSd(Collection&lt;List&lt;Double&gt;&gt;)</a> - Static method in class hadur.bench.<a href="hadur/bench/RepeatStudy.html" title="class in hadur.bench">RepeatStudy</a></dt>
 <dd>
 <div class="block">The within-group standard deviation pooled over groups of repeats (each group one seed
@@ -9359,6 +9487,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Sets <a href="hadur2/core/model/Wave.html#targetDl8t"><code>Wave.targetDl8t</code></a>, pixels.</div>
 </dd>
+<dt><a href="hadur2/core/move/SurfMover.html#setDistancingToEnemy(boolean)" class="member-name-link">setDistancingToEnemy(boolean)</a> - Method in class hadur2.core.move.<a href="hadur2/core/move/SurfMover.html" title="class in hadur2.core.move">SurfMover</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MOVE-18">MOVE-18</a>: whether the distancing factor is measured to the enemy's last scanned position (off by default).</div>
+</dd>
 <dt><a href="hadur2/core/model/Wave.html#setEnemiesAlive(int)" class="member-name-link">setEnemiesAlive(int)</a> - Method in class hadur2.core.model.<a href="hadur2/core/model/Wave.html" title="class in hadur2.core.model">Wave</a></dt>
 <dd>
 <div class="block">Sets <a href="hadur2/core/model/Wave.html#enemiesAlive"><code>Wave.enemiesAlive</code></a>.</div>
@@ -9377,6 +9509,11 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#ADAPT-2">ADAPT-2</a>: while the prior stands, turn on the flattener views (the ones that learn from
  every wave, not only hits) as soon as they hold data, whatever their thresholds say.</div>
+</dd>
+<dt><a href="hadur2/core/gun/GunController.html#setFreeGun(boolean)" class="member-name-link">setFreeGun(boolean)</a> - Method in class hadur2.core.gun.<a href="hadur2/core/gun/GunController.html" title="class in hadur2.core.gun">GunController</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#GUN-9">GUN-9</a>: in a duel, <a href="hadur2/core/gun/GunController.html#liveVerdict(java.lang.String)"><code>GunController.liveVerdict(java.lang.String)</code></a> returns the highest-rated candidate with no margin
+ test, as Diamond's <code>bestGun</code>.</div>
 </dd>
 <dt><a href="hadur2/core/model/Wave.html#setGunHeat(double)" class="member-name-link">setGunHeat(double)</a> - Method in class hadur2.core.model.<a href="hadur2/core/model/Wave.html" title="class in hadur2.core.model">Wave</a></dt>
 <dd>
@@ -9462,6 +9599,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Sets <a href="hadur2/core/knn/KnnView.html#paddedHitThreshold"><code>KnnView.paddedHitThreshold</code></a>.</div>
 </dd>
+<dt><a href="hadur2/core/move/MoveController.html#setPointKernel(boolean)" class="member-name-link">setPointKernel(boolean)</a> - Method in class hadur2.core.move.<a href="hadur2/core/move/MoveController.html" title="class in hadur2.core.move">MoveController</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MOVE-21">MOVE-21</a>: the danger kernel is the point value at the intersection centre (Diamond's); off, <a class="req" href="../requirements.html#MOVE-4">MOVE-4</a>'s integral.</div>
+</dd>
 <dt><a href="hadur2/core/move/MoveController.html#setPrior(double,double)" class="member-name-link">setPrior(double, double)</a> - Method in class hadur2.core.move.<a href="hadur2/core/move/MoveController.html" title="class in hadur2.core.move">MoveController</a></dt>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#ADAPT-2">ADAPT-2</a>, <a class="req" href="../requirements.html#DIAL-1">DIAL-1</a>: the enemy's normalised hit rate on us as the profile knows it.</div>
@@ -9537,6 +9678,16 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur2/core/model/RobotState.Builder.html#setTime(long)" class="member-name-link">setTime(long)</a> - Method in class hadur2.core.model.<a href="hadur2/core/model/RobotState.Builder.html" title="class in hadur2.core.model">RobotState.Builder</a></dt>
 <dd>
 <div class="block">The tick the state describes.</div>
+</dd>
+<dt><a href="hadur2/core/gun/GunController.html#setTripHammer(boolean)" class="member-name-link">setTripHammer(boolean)</a> - Method in class hadur2.core.gun.<a href="hadur2/core/gun/GunController.html" title="class in hadur2.core.gun">GunController</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#GUN-8">GUN-8</a>: in a duel, the main gun aims from a TripHammer view (and its virtual bullet and
+ rating are the TripHammer's); the displacement view keeps logging.</div>
+</dd>
+<dt><a href="hadur2/core/gun/GunController.html#setUndecayed(boolean)" class="member-name-link">setUndecayed(boolean)</a> - Method in class hadur2.core.gun.<a href="hadur2/core/gun/GunController.html" title="class in hadur2.core.gun">GunController</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#GUN-10">GUN-10</a>: in a duel, a gun's rating is its lifetime hits over shots, with no 100-shot
+ half-life, as Diamond's.</div>
 </dd>
 <dt><a href="hadur2/core/model/Wave.html#setVchangeTime(long)" class="member-name-link">setVchangeTime(long)</a> - Method in class hadur2.core.model.<a href="hadur2/core/model/Wave.html" title="class in hadur2.core.model">Wave</a></dt>
 <dd>
@@ -10170,6 +10321,28 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur2/core/physics/DiaUtils.html#square(double)" class="member-name-link">square(double)</a> - Static method in class hadur2.core.physics.<a href="hadur2/core/physics/DiaUtils.html" title="class in hadur2.core.physics">DiaUtils</a></dt>
 <dd>
 <div class="block"><code>d × d</code>.</div>
+</dd>
+<dt><a href="hadur2/core/duel/MoveDesign.html#STACK_LIST" class="member-name-link">STACK_LIST</a> - Static variable in class hadur2.core.duel.<a href="hadur2/core/duel/MoveDesign.html" title="class in hadur2.core.duel">MoveDesign</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MOVE-23">MOVE-23</a>: the stop-and-start stack (<a class="req" href="../requirements.html#MOVE-13">MOVE-13</a> heatjit, <a class="req" href="../requirements.html#SHIELD-14">SHIELD-14</a> swall, and <a class="req" href="../requirements.html#MOVE-20">MOVE-20</a>, <a class="req" href="../requirements.html#MOVE-21">MOVE-21</a>
+ and <a class="req" href="../requirements.html#TIME-6">TIME-6</a> whenever those are on) applies only to opponents not on the stack off-list;
+ a listed opponent plays as if those switches were off.</div>
+</dd>
+<dt><a href="hadur2/core/shieldmode/ShieldList.html#STACK_OFF_PREFIX" class="member-name-link">STACK_OFF_PREFIX</a> - Static variable in class hadur2.core.shieldmode.<a href="hadur2/core/shieldmode/ShieldList.html" title="class in hadur2.core.shieldmode">ShieldList</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MOVE-23">MOVE-23</a>: a line starting with this names an opponent on the stack off-list, not a shield-mode one.</div>
+</dd>
+<dt><a href="hadur2/core/duel/DuelController.html#stackApplies(boolean,hadur2.core.shieldmode.ShieldList,java.lang.String)" class="member-name-link">stackApplies(boolean, ShieldList, String)</a> - Static method in class hadur2.core.duel.<a href="hadur2/core/duel/DuelController.html" title="class in hadur2.core.duel">DuelController</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MOVE-23">MOVE-23</a>: whether the stop-and-start stack applies to <code>opponent</code>: always with the
+ switch off; with it on, unless the opponent is on the stack off-list.</div>
+</dd>
+<dt><a href="hadur2/StackListData.html" class="type-name-link" title="class in hadur2">StackListData</a> - Class in <a href="hadur2/package-summary.html">hadur2</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MOVE-23">MOVE-23</a>: the stack off-list, the opponents against which the stop-and-start stack (<a class="req" href="../requirements.html#MOVE-13">MOVE-13</a>
+ heatjit, <a class="req" href="../requirements.html#SHIELD-14">SHIELD-14</a> swall, <a class="req" href="../requirements.html#MOVE-20">MOVE-20</a>, <a class="req" href="../requirements.html#MOVE-21">MOVE-21</a>, <a class="req" href="../requirements.html#TIME-6">TIME-6</a>) stays off when the stack-list switch is
+ on: the census top 200 by 1v1 rank on 2026-10-08, one versionless name each, so
+ <code>package.Class</code> matches every version (the rule of <a href="hadur2/ShieldListData.html" title="class in hadur2"><code>ShieldListData</code></a>).</div>
 </dd>
 <dt><a href="hadur2/core/world/EnemyInfo.html#STALE_TICKS" class="member-name-link">STALE_TICKS</a> - Static variable in class hadur2.core.world.<a href="hadur2/core/world/EnemyInfo.html" title="class in hadur2.core.world">EnemyInfo</a></dt>
 <dd>
@@ -11268,6 +11441,30 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">The live rate that made the last change, or <a href="hadur2/core/memory/Estimate.html#NONE"><code>Estimate.NONE</code></a> before any.</div>
 </dd>
+<dt><a href="hadur2/core/duel/GunDesign.html#TRIPHAMMER" class="member-name-link">TRIPHAMMER</a> - Static variable in class hadur2.core.duel.<a href="hadur2/core/duel/GunDesign.html" title="class in hadur2.core.duel">GunDesign</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#GUN-8">GUN-8</a>: in a duel the main gun aims from a TripHammer view (Diamond 1.8.22's duel gun):
+ its formula, weight schedule, k, candidate grid and cube kernel.</div>
+</dd>
+<dt><a href="hadur2/core/gun/TripHammerFormula.html" class="type-name-link" title="class in hadur2.core.gun">TripHammerFormula</a> - Class in <a href="hadur2/core/gun/package-summary.html">hadur2.core.gun</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#GUN-8">GUN-8</a>: the TripHammer gun's feature space, a port of Diamond 1.8.22's
+ <code>TripHammerFormula</code>, the view Diamond fires in a duel.</div>
+</dd>
+<dt><a href="hadur2/core/gun/TripHammerFormula.html#%3Cinit%3E()" class="member-name-link">TripHammerFormula()</a> - Constructor for class hadur2.core.gun.<a href="hadur2/core/gun/TripHammerFormula.html" title="class in hadur2.core.gun">TripHammerFormula</a></dt>
+<dd>
+<div class="block">The starting weights: Diamond's <code>TripHammerFormula</code> constructor's.</div>
+</dd>
+<dt><a href="hadur2/core/gun/TripHammerGun.html" class="type-name-link" title="class in hadur2.core.gun">TripHammerGun</a> - Class in <a href="hadur2/core/gun/package-summary.html">hadur2.core.gun</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#GUN-8">GUN-8</a>: Diamond 1.8.22's duel main gun, <code>TripHammerKnnGun</code>, ported.</div>
+</dd>
+<dt><a href="hadur2/core/gun/TripHammerGun.html#%3Cinit%3E()" class="member-name-link">TripHammerGun()</a> - Constructor for class hadur2.core.gun.<a href="hadur2/core/gun/TripHammerGun.html" title="class in hadur2.core.gun">TripHammerGun</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="hadur2/core/gun/TripHammerGun.Aimed.html" class="type-name-link" title="class in hadur2.core.gun">TripHammerGun.Aimed</a> - Class in <a href="hadur2/core/gun/package-summary.html">hadur2.core.gun</a></dt>
+<dd>
+<div class="block">An angle and the mass behind it (null for none), see <a href="hadur2/core/gun/TripHammerGun.html#aimWithMass(hadur2.core.model.Wave,hadur2.core.knn.KnnView)"><code>TripHammerGun.aimWithMass(hadur2.core.model.Wave, hadur2.core.knn.KnnView&lt;hadur2.core.model.TimestampedFiringAngle&gt;)</code></a>.</div>
+</dd>
 <dt><a href="hadur/bench/Report.html#TRUST_NOTE" class="member-name-link">TRUST_NOTE</a> - Static variable in class hadur.bench.<a href="hadur/bench/Report.html" title="class in hadur.bench">Report</a></dt>
 <dd>
 <div class="block">The sentence the skipped-turns line ends with in every report that carries it.</div>
@@ -11376,6 +11573,11 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur2/core/move/AesRecord.html#UNCERTAIN" class="member-name-link">UNCERTAIN</a> - Static variable in class hadur2.core.move.<a href="hadur2/core/move/AesRecord.html" title="class in hadur2.core.move">AesRecord</a></dt>
 <dd>
 <div class="block">1 for a <a class="req" href="../requirements.html#WAVE-3">WAVE-3</a> uncertain wave (trusted at half), else 0.</div>
+</dd>
+<dt><a href="hadur2/core/duel/GunDesign.html#UNDECAYED" class="member-name-link">UNDECAYED</a> - Static variable in class hadur2.core.duel.<a href="hadur2/core/duel/GunDesign.html" title="class in hadur2.core.duel">GunDesign</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#GUN-10">GUN-10</a>: a gun's rating is its lifetime hits over shots, without <a class="req" href="../requirements.html#GUN-1">GUN-1</a>'s 100-shot
+ half-life (Diamond's GunStats).</div>
 </dd>
 <dt><a href="hadur2/core/replay/LineCodec.html#unesc(java.lang.String)" class="member-name-link">unesc(String)</a> - Static method in class hadur2.core.replay.<a href="hadur2/core/replay/LineCodec.html" title="class in hadur2.core.replay">LineCodec</a></dt>
 <dd>
@@ -11790,6 +11992,10 @@ the order they are declared.</div>
 <dd>
 <div class="block">The main view's key in a <a href="hadur2/core/gun/GunController.html" title="class in hadur2.core.gun"><code>GunController</code></a> view map.</div>
 </dd>
+<dt><a href="hadur2/core/gun/TripHammerGun.html#viewName()" class="member-name-link">viewName()</a> - Static method in class hadur2.core.gun.<a href="hadur2/core/gun/TripHammerGun.html" title="class in hadur2.core.gun">TripHammerGun</a></dt>
+<dd>
+<div class="block">The view's key in a <a href="hadur2/core/gun/GunController.html" title="class in hadur2.core.gun"><code>GunController</code></a> view map.</div>
+</dd>
 <dt><a href="hadur2/core/gun/AntiSurferGun.html#viewNames()" class="member-name-link">viewNames()</a> - Static method in class hadur2.core.gun.<a href="hadur2/core/gun/AntiSurferGun.html" title="class in hadur2.core.gun">AntiSurferGun</a></dt>
 <dd>
 <div class="block">The anti-surfer views' keys in a <a href="hadur2/core/gun/GunController.html" title="class in hadur2.core.gun"><code>GunController</code></a> view map.</div>
@@ -11972,6 +12178,11 @@ the order they are declared.</div>
 <dd>
 <div class="block">Level 1 and up surf one wave; level 0 surfs two.</div>
 </dd>
+<dt><a href="hadur2/core/policy/TickBudget.html#wavesToSurf(int,boolean)" class="member-name-link">wavesToSurf(int, boolean)</a> - Static method in class hadur2.core.policy.<a href="hadur2/core/policy/TickBudget.html" title="class in hadur2.core.policy">TickBudget</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#TIME-6">TIME-6</a>: as <a href="hadur2/core/policy/TickBudget.html#wavesToSurf(int)"><code>TickBudget.wavesToSurf(int)</code></a> but the second wave is kept at level 1 and dropped
+ from level 2.</div>
+</dd>
 <dt><a href="hadur/bench/SessionReport.Row.html#weak()" class="member-name-link">weak()</a> - Method in record class hadur.bench.<a href="hadur/bench/SessionReport.Row.html" title="class in hadur.bench">SessionReport.Row</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur/bench/SessionReport.html#WEAK_APS" class="member-name-link">WEAK_APS</a> - Static variable in class hadur.bench.<a href="hadur/bench/SessionReport.html" title="class in hadur.bench">SessionReport</a></dt>
@@ -12024,6 +12235,12 @@ the order they are declared.</div>
 <dt><a href="hadur2/core/melee/EnemyHistory.html#WEIGHTS" class="member-name-link">WEIGHTS</a> - Static variable in class hadur2.core.melee.<a href="hadur2/core/melee/EnemyHistory.html" title="class in hadur2.core.melee">EnemyHistory</a></dt>
 <dd>
 <div class="block">Attribute weights: distance, speed, turn rate, time since reversing, wall distance.</div>
+</dd>
+<dt><a href="hadur2/core/gun/TripHammerGun.html#weightsFor(int)" class="member-name-link">weightsFor(int)</a> - Static method in class hadur2.core.gun.<a href="hadur2/core/gun/TripHammerGun.html" title="class in hadur2.core.gun">TripHammerGun</a></dt>
+<dd>
+<div class="block">The weights for a view of <code>viewSize</code> points: each slides from its initial to its
+ final value by <code>min(1, (viewSize - 1) / FINAL_TIMES[i])</code>, or is final at once when
+ that time is 0.</div>
 </dd>
 <dt><a href="hadur/bench/Bench.Failure.html#what()" class="member-name-link">what()</a> - Method in record class hadur.bench.<a href="hadur/bench/Bench.Failure.html" title="class in hadur.bench">Bench.Failure</a></dt>
 <dd>

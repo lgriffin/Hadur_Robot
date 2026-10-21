@@ -361,39 +361,57 @@ loadScripts(document, 'script');</script>
  <code>botName</code>.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setKShare(double)" class="member-name-link">setKShare</a><wbr>(double&nbsp;kShare)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setFreeGun(boolean)" class="member-name-link">setFreeGun</a><wbr>(boolean&nbsp;on)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block"><a class="req" href="../../../../requirements.html#TIME-1">TIME-1</a>, <a class="req" href="../../../../requirements.html#TIME-2">TIME-2</a>: the share of k every gun view uses; 1 is all of it.</div>
+<div class="block"><a class="req" href="../../../../requirements.html#GUN-9">GUN-9</a>: in a duel, <a href="#liveVerdict(java.lang.String)"><code>liveVerdict(java.lang.String)</code></a> returns the highest-rated candidate with no margin
+ test, as Diamond's <code>bestGun</code>.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setOpening(hadur2.core.gun.GunController.Opening)" class="member-name-link">setOpening</a><wbr>(<a href="GunController.Opening.html" title="enum class in hadur2.core.gun">GunController.Opening</a>&nbsp;opening)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setKShare(double)" class="member-name-link">setKShare</a><wbr>(double&nbsp;kShare)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../../../requirements.html#TIME-1">TIME-1</a>, <a class="req" href="../../../../requirements.html#TIME-2">TIME-2</a>: the share of k every gun view uses; 1 is all of it.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setOpening(hadur2.core.gun.GunController.Opening)" class="member-name-link">setOpening</a><wbr>(<a href="GunController.Opening.html" title="enum class in hadur2.core.gun">GunController.Opening</a>&nbsp;opening)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../../../requirements.html#ADAPT-1">ADAPT-1</a>: the gun to use from the first firing wave, until the live virtual-gun ratings
  disagree by more than their margin of error.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSampleSink(java.util.function.Consumer)" class="member-name-link">setSampleSink</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;double[]&gt;&nbsp;sampleSink)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSampleSink(java.util.function.Consumer)" class="member-name-link">setSampleSink</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;double[]&gt;&nbsp;sampleSink)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Receives one <a href="#SAMPLE_WIDTH"><code>SAMPLE_WIDTH</code></a>-value sample per real bullet's wave as it breaks.</div>
 </div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setTripHammer(boolean)" class="member-name-link">setTripHammer</a><wbr>(boolean&nbsp;on)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../../../requirements.html#GUN-8">GUN-8</a>: in a duel, the main gun aims from a TripHammer view (and its virtual bullet and
+ rating are the TripHammer's); the displacement view keeps logging.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#shieldAttackFired(hadur2.core.model.Wave,java.awt.geom.Point2D.Double,long,double,boolean)" class="member-name-link">shieldAttackFired</a><wbr>(<a href="../model/Wave.html" title="class in hadur2.core.model">Wave</a>&nbsp;w,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setUndecayed(boolean)" class="member-name-link">setUndecayed</a><wbr>(boolean&nbsp;on)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../../../requirements.html#GUN-10">GUN-10</a>: in a duel, a gun's rating is its lifetime hits over shots, with no 100-shot
+ half-life, as Diamond's.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#shieldAttackFired(hadur2.core.model.Wave,java.awt.geom.Point2D.Double,long,double,boolean)" class="member-name-link">shieldAttackFired</a><wbr>(<a href="../model/Wave.html" title="class in hadur2.core.model">Wave</a>&nbsp;w,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;myLocation,
  long&nbsp;currentTime,
  double&nbsp;firedPower,
  boolean&nbsp;virtualGuns)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">SHIELD-6, GUN-5: a real shield-mode attack shot went out at <code>firedPower</code>, which the
  shield may have cut from the wave's.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#shotFired()" class="member-name-link">shotFired</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#shotFired()" class="member-name-link">shotFired</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">GUN-5: a real shot went out.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double[]</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#virtualGunScores(java.lang.String)" class="member-name-link">virtualGunScores</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;botName)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double[]</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#virtualGunScores(java.lang.String)" class="member-name-link">virtualGunScores</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;botName)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">The virtual guns' battle totals against <code>botName</code>: main-gun waves, main weighted
  hits, anti-surfer waves, anti-surfer weighted hits.</div>
 </div>
@@ -494,6 +512,43 @@ loadScripts(document, 'script');</script>
 <h3>isLight</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isLight</span><wbr><span class="parameters">(double&nbsp;power)</span></div>
 <div class="block">GUN-5: whether a bullet of <code>power</code> is in the light class.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="setTripHammer(boolean)">
+<h3>setTripHammer</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setTripHammer</span><wbr><span class="parameters">(boolean&nbsp;on)</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#GUN-8">GUN-8</a>: in a duel, the main gun aims from a TripHammer view (and its virtual bullet and
+ rating are the TripHammer's); the displacement view keeps logging. Set before the first
+ wave; ignored with several opponents.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>on</code> - whether the TripHammer view is the main candidate's</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setFreeGun(boolean)">
+<h3>setFreeGun</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setFreeGun</span><wbr><span class="parameters">(boolean&nbsp;on)</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#GUN-9">GUN-9</a>: in a duel, <a href="#liveVerdict(java.lang.String)"><code>liveVerdict(java.lang.String)</code></a> returns the highest-rated candidate with no margin
+ test, as Diamond's <code>bestGun</code>. The hybrid gun's gate is unchanged.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>on</code> - whether the margin test is dropped</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setUndecayed(boolean)">
+<h3>setUndecayed</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setUndecayed</span><wbr><span class="parameters">(boolean&nbsp;on)</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#GUN-10">GUN-10</a>: in a duel, a gun's rating is its lifetime hits over shots, with no 100-shot
+ half-life, as Diamond's. Set before the first shot is rated.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>on</code> - whether the decay is dropped</dd>
+</dl>
 </section>
 </li>
 <li>
@@ -858,7 +913,7 @@ loadScripts(document, 'script');</script>
  battle, since the profile is read across future battles too, where <a class="req" href="../../../../requirements.html#GUN-1">GUN-1</a>'s 100-shot
  half-life (meant to let this battle's live choice track a surfer that changes
  movement mid-fight) has no meaning. The core also checks the gun seed against the
- main gun's rating here (<a class="req" href="../../../../requirements.html#RES-4">RES-4</a>). The hybrid gun's rating is not folded into the profile
+ main gun's rating here (<a class="req" href="../../../../requirements.html#RES-4">RES-4</a>). With the TripHammer on (<a class="req" href="../../../../requirements.html#GUN-8">GUN-8</a>) the main pair is zero. The hybrid gun's rating is not folded into the profile
  (<a class="req" href="../../../../requirements.html#GUN-4">GUN-4</a> is a live, in-battle gate only; the profile format is unchanged).</p></div>
 <dl class="notes">
 <dt>Parameters:</dt>

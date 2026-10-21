@@ -240,6 +240,13 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Level 1 and up surf one wave; level 0 surfs two.</div>
 </div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#wavesToSurf(int,boolean)" class="member-name-link">wavesToSurf</a><wbr>(int&nbsp;level,
+ boolean&nbsp;keepSecond)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../../../requirements.html#TIME-6">TIME-6</a>: as <a href="#wavesToSurf(int)"><code>wavesToSurf(int)</code></a> but the second wave is kept at level 1 and dropped
+ from level 2.</div>
+</div>
 </div>
 </div>
 </div>
@@ -412,6 +419,22 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>level</code> - a computation level</dd>
+<dt>Returns:</dt>
+<dd>how many waves the surf scores</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="wavesToSurf(int,boolean)">
+<h3>wavesToSurf</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">wavesToSurf</span><wbr><span class="parameters">(int&nbsp;level,
+ boolean&nbsp;keepSecond)</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#TIME-6">TIME-6</a>: as <a href="#wavesToSurf(int)"><code>wavesToSurf(int)</code></a> but the second wave is kept at level 1 and dropped
+ from level 2.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>level</code> - a computation level</dd>
+<dd><code>keepSecond</code> - whether level 1 keeps the second wave</dd>
 <dt>Returns:</dt>
 <dd>how many waves the surf scores</dd>
 </dl>

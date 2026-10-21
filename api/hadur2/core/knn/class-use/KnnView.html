@@ -89,6 +89,12 @@ loadScripts(document, 'script');</script>
 <div class="block">A new main view: the <a href="../../gun/GunFormula.html" title="class in hadur2.core.gun"><code>GunFormula</code></a> space, k up to 100 at one neighbour per ten
  points, learning from every wave, virtual waves and melee waves included.</div>
 </div>
+<div class="col-first even-row-color"><code><a href="../KnnView.html" title="class in hadur2.core.knn">KnnView</a><wbr>&lt;<a href="../../model/TimestampedFiringAngle.html" title="class in hadur2.core.model">TimestampedFiringAngle</a>&gt;</code></div>
+<div class="col-second even-row-color"><span class="type-name-label">TripHammerGun.</span><code><a href="../../gun/TripHammerGun.html#createView()" class="member-name-link">createView</a>()</code></div>
+<div class="col-last even-row-color">
+<div class="block">A new TripHammer view: <a href="../../gun/TripHammerFormula.html" title="class in hadur2.core.gun"><code>TripHammerFormula</code></a>'s space, k up to 225 at one neighbour
+ per nine points, learning from every wave including virtual ones, not in melee.</div>
+</div>
 </div>
 <div class="caption"><span>Methods in <a href="../../gun/package-summary.html">hadur2.core.gun</a> that return types with arguments of type <a href="../KnnView.html" title="class in hadur2.core.knn">KnnView</a></span></div>
 <div class="summary-table three-column-summary">
@@ -139,15 +145,28 @@ loadScripts(document, 'script');</script>
 <div class="block">The absolute bearing to fire along, in radians: the picked neighbour's guess factor,
  scaled by the precise escape angle on its side, from where the bullet will leave.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="../../gun/MainGun.Aimed.html" title="class in hadur2.core.gun">MainGun.Aimed</a></code></div>
-<div class="col-second odd-row-color"><span class="type-name-label">MainGun.</span><code><a href="../../gun/MainGun.html#aimWithMass(hadur2.core.model.Wave,hadur2.core.knn.KnnView,java.awt.geom.Point2D.Double,long)" class="member-name-link">aimWithMass</a><wbr>(<a href="../../model/Wave.html" title="class in hadur2.core.model">Wave</a>&nbsp;w,
+<div class="col-first odd-row-color"><code>double</code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">TripHammerGun.</span><code><a href="../../gun/TripHammerGun.html#aim(hadur2.core.model.Wave,hadur2.core.knn.KnnView)" class="member-name-link">aim</a><wbr>(<a href="../../model/Wave.html" title="class in hadur2.core.model">Wave</a>&nbsp;w,
+ <a href="../KnnView.html" title="class in hadur2.core.knn">KnnView</a>&lt;<a href="../../model/TimestampedFiringAngle.html" title="class in hadur2.core.model">TimestampedFiringAngle</a>&gt;&nbsp;view)</code></div>
+<div class="col-last odd-row-color">
+<div class="block">The absolute bearing to fire along, in radians.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="../../gun/MainGun.Aimed.html" title="class in hadur2.core.gun">MainGun.Aimed</a></code></div>
+<div class="col-second even-row-color"><span class="type-name-label">MainGun.</span><code><a href="../../gun/MainGun.html#aimWithMass(hadur2.core.model.Wave,hadur2.core.knn.KnnView,java.awt.geom.Point2D.Double,long)" class="member-name-link">aimWithMass</a><wbr>(<a href="../../model/Wave.html" title="class in hadur2.core.model">Wave</a>&nbsp;w,
  <a href="../KnnView.html" title="class in hadur2.core.knn">KnnView</a>&lt;<a href="../../model/TimestampedFiringAngle.html" title="class in hadur2.core.model">TimestampedFiringAngle</a>&gt;&nbsp;view,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;myNextLocation,
  long&nbsp;currentTime)</code></div>
-<div class="col-last odd-row-color">
+<div class="col-last even-row-color">
 <div class="block">GUN-7: <a href="../../gun/MainGun.html#aim(hadur2.core.model.Wave,hadur2.core.knn.KnnView,java.awt.geom.Point2D.Double,long)"><code>MainGun.aim(hadur2.core.model.Wave, hadur2.core.knn.KnnView&lt;hadur2.core.model.TimestampedFiringAngle&gt;, java.awt.geom.Point2D.Double, long)</code></a> and the probability mass of the same aim, from one neighbour
  search: the angle is exactly <code>aim</code>'s, and the mass is the kernel density of the
  neighbours that <code>aim</code> scored (valid ones, with their weights).</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="../../gun/TripHammerGun.Aimed.html" title="class in hadur2.core.gun">TripHammerGun.Aimed</a></code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">TripHammerGun.</span><code><a href="../../gun/TripHammerGun.html#aimWithMass(hadur2.core.model.Wave,hadur2.core.knn.KnnView)" class="member-name-link">aimWithMass</a><wbr>(<a href="../../model/Wave.html" title="class in hadur2.core.model">Wave</a>&nbsp;w,
+ <a href="../KnnView.html" title="class in hadur2.core.knn">KnnView</a>&lt;<a href="../../model/TimestampedFiringAngle.html" title="class in hadur2.core.model">TimestampedFiringAngle</a>&gt;&nbsp;view)</code></div>
+<div class="col-last odd-row-color">
+<div class="block"><a href="../../gun/TripHammerGun.html#aim(hadur2.core.model.Wave,hadur2.core.knn.KnnView)"><code>TripHammerGun.aim(hadur2.core.model.Wave, hadur2.core.knn.KnnView&lt;hadur2.core.model.TimestampedFiringAngle&gt;)</code></a> and the neighbours as GUN-7's mass (a Gaussian kernel at the same bandwidth
+ over the same absolute angles and weights), from one search.</div>
 </div>
 </div>
 <div class="caption"><span>Method parameters in <a href="../../gun/package-summary.html">hadur2.core.gun</a> with type arguments of type <a href="../KnnView.html" title="class in hadur2.core.knn">KnnView</a></span></div>

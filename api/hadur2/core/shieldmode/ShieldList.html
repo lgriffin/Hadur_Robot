@@ -128,6 +128,11 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color">
 <div class="block">The list with nobody on it: shield mode never starts.</div>
 </div>
+<div class="col-first even-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color"><code><a href="#STACK_OFF_PREFIX" class="member-name-link">STACK_OFF_PREFIX</a></code></div>
+<div class="col-last even-row-color">
+<div class="block"><a class="req" href="../../../../requirements.html#MOVE-23">MOVE-23</a>: a line starting with this names an opponent on the stack off-list, not a shield-mode one.</div>
+</div>
 </div>
 </section>
 </li>
@@ -145,7 +150,7 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isEmpty()" class="member-name-link">isEmpty</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Whether nobody is on the list.</div>
+<div class="block">Whether nobody is on the (shield) list.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#matches(java.lang.String)" class="member-name-link">matches</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;robotName)</code></div>
@@ -153,19 +158,25 @@ loadScripts(document, 'script');</script>
 <div class="block">Whether <code>robotName</code>, as the engine names a scanned robot (<code>package.Class
  version</code>), is on the list: its full name is, or its name without the version is.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="ShieldList.html" title="class in hadur2.core.shieldmode">ShieldList</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#parse(java.lang.Iterable)" class="member-name-link">parse</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Iterable.html" title="class or interface in java.lang" class="external-link">Iterable</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;lines)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onStackOffList(java.lang.String)" class="member-name-link">onStackOffList</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;robotName)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../../../requirements.html#MOVE-23">MOVE-23</a>: whether <code>robotName</code> is on the stack off-list, by the same rule as
+ <a href="#matches(java.lang.String)"><code>matches(java.lang.String)</code></a>: its full name is, or its name without the version is.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="ShieldList.html" title="class in hadur2.core.shieldmode">ShieldList</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#parse(java.lang.Iterable)" class="member-name-link">parse</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Iterable.html" title="class or interface in java.lang" class="external-link">Iterable</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;lines)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Reads a list from its lines.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#size()" class="member-name-link">size</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#size()" class="member-name-link">size</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">How many entries the list holds.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#withoutVersion(java.lang.String)" class="member-name-link">withoutVersion</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#withoutVersion(java.lang.String)" class="member-name-link">withoutVersion</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">The name before its first space: Robocode's class names hold none, so what follows is the version.</div>
 </div>
 </div>
@@ -207,6 +218,21 @@ loadScripts(document, 'script');</script>
 <div class="block">The list with nobody on it: shield mode never starts.</div>
 </section>
 </li>
+<li>
+<section class="detail" id="STACK_OFF_PREFIX">
+<h3>STACK_OFF_PREFIX</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">STACK_OFF_PREFIX</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#MOVE-23">MOVE-23</a>: a line starting with this names an opponent on the stack off-list, not a shield-mode one.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur2.core.shieldmode.ShieldList.STACK_OFF_PREFIX">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
 </ul>
 </section>
 </li>
@@ -243,10 +269,24 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="onStackOffList(java.lang.String)">
+<h3>onStackOffList</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">onStackOffList</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;robotName)</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#MOVE-23">MOVE-23</a>: whether <code>robotName</code> is on the stack off-list, by the same rule as
+ <a href="#matches(java.lang.String)"><code>matches(java.lang.String)</code></a>: its full name is, or its name without the version is.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>robotName</code> - the scanned robot's name, or null</dd>
+<dt>Returns:</dt>
+<dd>whether the stop-and-start stack stays off against it</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="isEmpty()">
 <h3>isEmpty</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isEmpty</span>()</div>
-<div class="block">Whether nobody is on the list.</div>
+<div class="block">Whether nobody is on the (shield) list.</div>
 </section>
 </li>
 <li>
