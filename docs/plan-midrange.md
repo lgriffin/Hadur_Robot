@@ -253,6 +253,34 @@ Nullstride +5.5, DrussGT +1.6; Diamond -2.2). The class rule is missed; the gain
 surfers, through the gun choice. Decision: the release-candidate form 3.14hjswthfgnkxl goes to
 the census (`pc-midrange-census-2`, seeds 1121-1124) against 3.13 at the +0.3 gate.
 
+**Census-2 (2026-10-21, PR #218): +0.09 ± 0.15 pp on 1,212, top 10 -2.86 (-4.97 to -0.75), ranks
+200 or better -0.12, below 200 +0.13. Gate missed on both counts; the top-50 guard's +2.7 did not
+reproduce. Stage 3 closed; th, fg, nk stay off.**
+
+## Close-out (2026-10-21, Leigh: pause)
+
+Three stages, five PC screens and three whole-field censuses (about 40 PC hours) bought these
+facts, each of which closes a door the earlier plans had left open:
+
+- Firepower is not the midrange lever: pressure power loses 2.2 points ungated and the gate
+  never opens (stage 1). Diamond's power-down is right.
+- The surf port is faithful: six Diamond differences switched and stacked are worth +0.6 on the
+  class and +0.03 on the field (stage 2). Distance is not where the class is lost.
+- The gun port is Diamond's melee gun, and replacing it with Diamond's duel gun, free gun choice
+  and undecayed ratings is worth +0.6 on the class and nothing on the field, with the top 10
+  down 2.9 (stage 3). A 48-robot guard at 4 seeds can read +2.7 ± 1.1 and be wrong.
+- The stop-and-start stack's +0.20 sits entirely below rank 200; a name-list gate makes it
+  +0.25, still under the release gate. The stack and the off-list stay off.
+- Class screens on the 149 predict the field poorly: +0.6 on 149 robots is +0.07 APS at best, and
+  every +0.5 to +0.9 class read here shrank to 0 on the census. The release gate is the only read
+  that counts, and it costs 14 PC hours a question.
+
+What is left of the 0.74 APS on the 149 is, on this evidence, not a port difference and not a
+switch: Hadur plays Diamond's duel surf and gun and still scores 5 points under Diamond on this
+class, so the gap is in the parts that are Hadur's own (DIST-1's walk-in, the gun seeds and
+profiles, the tick budget) or in what Diamond does that no audit here reached. Nothing in this
+plan is queued; the switches stay in PR #212, off by default, and the plan is paused.
+
 ## What to expect
 
 | Lever | Scope | Expected | Gate | Result |
@@ -260,7 +288,7 @@ the census (`pc-midrange-census-2`, seeds 1121-1124) against 3.13 at the +0.3 ga
 | POW-12 pressure power | 149, then the 432 of the class | +0.3 to +0.6 APS | class +2.0, guard, census +0.3 | **failed: -2.2 ± 0.4 pts ungated, -0.6 ± 0.3 gated** |
 | flattener 8% | the same | +0.05 to +0.1 | with POW-12 | +0.5 ± 0.3 pts, rides the next pass |
 | surf fidelity (stage 2) | the 184 unlisted midrange and below | +0.3 to +0.8 | per switch | **closed: stack hc+pk+w2 +0.6 class screen, but census +0.03 ± 0.18 over 3.13hjsw; whole stack +0.22 vs 3.13, under the +0.3 gate** |
-| gun (stage 3): th, fg, nk | the 149, then the field | +1 pp class, +0.3 to +0.5 APS field | class +1.0, guard, census +0.3 | stack +0.6 on the 149, **+2.7 on the top 50**; census-2 running as 3.14hjswthfgnkxl |
+| gun (stage 3): th, fg, nk | the 149, then the field | +1 pp class, +0.3 to +0.5 APS field | class +1.0, guard, census +0.3 | **closed: +0.6 on the 149, census-2 +0.09, top 10 -2.9** |
 
 Together they are the midrange's 0.9 APS to DrussGT if all of it comes in, which is the largest
 single block left on the road to top 3.
