@@ -1,0 +1,15 @@
+# Top-5 plan, drift check after Stage 0 (docs/bench/local/2026-10-22_stage0-defect.md): repeat s0-u12
+# exactly (12 workers unpinned, same panel, seed and arms) and read it beside u12. Gate: c's level minus
+# the mean of aa, hv and xw within +-1.0 point, and the A/A interval contains 0. Stage 2 waits on it.
+#   ./queue.sh run pc-top5-check        (or  .\queue.ps1 run pc-top5-check)
+
+set HEAP = --child-heap 2G
+set E = --engine 1.11.1
+set C = --skip-build --skip-fetch --rounds 35 --cpu-constant 1488498 ${HEAP} ${E}
+set S0 = --set top5-s0-panel.txt --seeds 1 --seed-base 1200 --arms plans/top5-s0.arms
+set READ = --census census-312.txt --segments plans/top5-segments.tsv
+
+u12b | ./bench-top20.sh ${C} ${S0} --parallel 12 --out work/top5-s0-u12b --label top5-s0-u12b
+
+u12b-read | python3 tools/round0_skips.py work/top5-s0-u12b work/top5-s0-u12b/round0.tsv && python3 ../data/tools/multiarm.py work/top5-s0-u12/arms.tsv work/top5-s0-u12b/arms.tsv --blocks ${READ} --out ../docs/bench/local/$(date +%Y-%m-%d)_top5-s0-u12b.md
+  after: u12b
