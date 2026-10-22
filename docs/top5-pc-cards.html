@@ -222,7 +222,7 @@ cd hadur-bench
         <div class="v"><span class="pill stop">stop</span><p>If the A/A check falls outside its band, the run is void.</p></div>
       </div>
       <h3>When the log says ALLDONE: open a PR</h3>
-      <p>Claude on the PC does this step. It commits the reports (<code>ram</code>, <code>rc</code> and any segments file) to a new branch off <code>claude/pc-top5-results</code>, pushes it and opens a pull request against <code>master</code>. The PR body carries the results and the verdict above, and notes that it builds on #221 while that PR is open. The battle folders under <code>hadur-bench\work\top5-s3-ram</code> and <code>top5-s4-rc</code> stay on the PC, uncommitted. Every later PC run sends its results the same way, as a PR.</p>
+      <p>The queue's last step, <code>pr</code>, does this itself (<code>tools/open_results_pr.sh</code>, using <code>gh</code>), so no one needs to be watching. If it can't, Claude on the PC does it by hand. It commits the reports (<code>ram</code>, <code>rc</code> and any segments file) to a new branch off <code>claude/pc-top5-results</code>, pushes it and opens a pull request against <code>master</code>. The PR body carries the results and the verdict above, and notes that it builds on #221 while that PR is open. The battle folders under <code>hadur-bench\work\top5-s3-ram</code> and <code>top5-s4-rc</code> stay on the PC, uncommitted. Every later PC run sends its results the same way, as a PR.</p>
       <div class="cmd"><pre id="c6b">cd D:\code\Hadur_Robot
 git checkout -b claude/pc-top5-s34-results
 git add docs/bench/local/*_top5-s3-ram*.md docs/bench/local/*_top5-s4-rc*.md
