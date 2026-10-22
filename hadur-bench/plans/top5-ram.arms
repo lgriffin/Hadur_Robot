@@ -1,0 +1,6 @@
+# Stage 3 rammer screen (docs/plan-top5.md 7.4): label | robot | jar. c is 3.14, aa its A/A copy,
+# hj heatjit everywhere (the factorial's arm), rh RAM-4 (heatjit only once RAM-2 confirms a rammer).
+c | hadur2.Hadur 3.14 | bisect/hadur2.Hadur_3.14.jar
+aa | hadur2.Hadur 3.14aa | bisect/hadur2.Hadur_3.14aa.jar
+hj | hadur2.Hadur 3.14hj | bisect/hadur2.Hadur_3.14hj.jar
+rh | hadur2.Hadur 3.14rh | bisect/hadur2.Hadur_3.14rh.jar

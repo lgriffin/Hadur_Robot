@@ -94,6 +94,14 @@ final class MoveDesign {
     static final boolean STACK_LIST = false;
 
     /**
+     * RAM-4: once the opponent is a confirmed rammer (RAM-2), the duel plays as with heatjit on
+     * (MOVE-11's gun-heat wave offered, MOVE-13's hold off) for the rest of the battle. The
+     * top-5 factorial put all of heatjit's gain on the rammers (+1.4 points) and a small loss on
+     * ranks 51-400, so this keeps the gain where it was measured. Off by default.
+     */
+    static final boolean RAM_HEAT = false;
+
+    /**
      * AES-1 (measurement): each wave's first three-option rating is printed as an {@code AES}
      * record with every term of each option's danger (docs/plan-aes.md). Behaviour unchanged.
      */

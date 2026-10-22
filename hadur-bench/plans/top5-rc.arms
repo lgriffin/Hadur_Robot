@@ -1,0 +1,6 @@
+# Stage 4 release-candidate census (docs/plan-top5.md 7.4): label | robot | jar. rc is 3.14 with the
+# two Stage 2 keepers, swall (sw) and flattener off (nf); rcr adds RAM-4 (rh).
+c | hadur2.Hadur 3.14 | bisect/hadur2.Hadur_3.14.jar
+aa | hadur2.Hadur 3.14aa | bisect/hadur2.Hadur_3.14aa.jar
+rc | hadur2.Hadur 3.14swnf | bisect/hadur2.Hadur_3.14swnf.jar
+rcr | hadur2.Hadur 3.14swnfrh | bisect/hadur2.Hadur_3.14swnfrh.jar

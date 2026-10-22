@@ -1,0 +1,34 @@
+# Top-5 plan, Stage 3 rammer screen then Stage 4 release-candidate census, one run (docs/plan-top5.md 7.4).
+# Stage 2 (PR #221, pooled over 1,212 bots) kept swall (+0.19 +/- 0.09 APS) and flattener off
+# (+0.12 +/- 0.10); heatjit's +0.10 was all on the rammers (+1.4 points) with ranks 51-400 at
+# -0.055 APS, so RAM-4 (ramheat) plays heatjit only once RAM-2 has confirmed a rammer.
+#   ./queue.sh run pc-top5-s34        (or  .\queue.ps1 run pc-top5-s34)
+# One bench queue, RoboRumble workers at 0, 12 workers unpinned (Stage 0). Resumable; a stop
+# mid-step restarts that step. No step needs a decision: both read at the end.
+#
+# ram (about 1 h): the 87 rammers (panel-rammers.txt), 4 seeds, arms c, aa, hj, rh: 1,392 battles.
+#   Read: rh - c and hj - c on the rammers. Plan 7.4's rammer bar is +2.5 points, interval above +1.
+# rc (about 6.5 h): the census (census-312.txt, 1,212 bots), 2 seeds, arms c, aa, rc (swall + flat
+#   off) and rcr (rc + RAM-4): 9,696 battles. Read: rc - c and rcr - c on the field, census-weighted,
+#   per segment A-E, with the A/A band. rcr - rc is RAM-4's own effect on the whole field.
+# Reports: ../docs/bench/local/<date>_top5-s3-ram.md, <date>_top5-s4-rc.md
+
+set P = --parallel 12
+set HEAP = --child-heap 2G
+set E = --engine 1.11.1
+set C = --skip-build --skip-fetch --rounds 35 --cpu-constant 1488498 ${HEAP} ${E}
+set READ = --census census-312.txt --segments plans/top5-segments.tsv
+
+prep | mkdir -p bisect && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur2.Hadur_3.14.jar bisect/ && bash ./build-ablation.sh aa && bash ./build-ablation.sh heatjit && bash ./build-ablation.sh ramheat && bash ./build-ablation.sh swall,flat && bash ./build-ablation.sh swall,flat,ramheat && ./fetch-opponents.sh --set panel-rammers.txt && ./fetch-opponents.sh --set census-312.txt && mvn -q compile
+
+ram | ./bench-top20.sh ${C} ${P} --set panel-rammers.txt --seeds 4 --seed-base 1600 --arms plans/top5-ram.arms --out work/top5-s3-ram --label top5-s3-ram
+  after: prep
+
+ram-read | python3 tools/round0_skips.py work/top5-s3-ram work/top5-s3-ram/round0.tsv && python3 ../data/tools/multiarm.py work/top5-s3-ram/arms.tsv ${READ} --out ../docs/bench/local/$(date +%Y-%m-%d)_top5-s3-ram.md
+  after: ram
+
+rc | ./bench-top20.sh ${C} ${P} --set census-312.txt --seeds 2 --seed-base 1700 --arms plans/top5-rc.arms --out work/top5-s4-rc --label top5-s4-rc
+  after: ram-read
+
+rc-read | python3 tools/round0_skips.py work/top5-s4-rc work/top5-s4-rc/round0.tsv && python3 ../data/tools/multiarm.py work/top5-s4-rc/arms.tsv ${READ} --out ../docs/bench/local/$(date +%Y-%m-%d)_top5-s4-rc.md
+  after: rc
