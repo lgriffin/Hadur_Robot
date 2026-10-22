@@ -34,8 +34,9 @@ Per-disable rows: `2026-10-22_stage0-defect-disables.tsv` (519 rows, one per eng
    - **Harmless (266):** the disable comes after "wins the round". Firsts and the survival score are
      intact in every such battle (rounds survived x 50 equals the survival score in all of them).
 4. **Pinning causes the costly disables, and they hit every arm alike.** Unpinned (u12) there is 1
-   costly disable in 832 battles. Pinned, there are 4.8-13.0 per 100 battles per arm. Each costs the arm
-   0.01-0.44 points in a block, and c is not the worst arm in any block. c had fewer costly disables in
+   costly disable in 832 battles. Pinned, there are 3.8-13.0 per 100 battles per arm. Each costs the arm
+   0.01-0.44 points in a block. c had the largest cost in p18 and p22, but at most 0.10 points more than
+   the next arm, far below its 1.24-point p12-to-p12b drop, so the conclusion stands. c had fewer costly disables in
    p12b (15) than in p12 (19), so they run against its drop. This is a separate bench defect: under
    `--pin` (2 logical CPUs a worker, from processor 2) Hadur's thread is regularly starved for 30-280
    turns mid-round.
@@ -230,7 +231,7 @@ costly disable is in the TSV (`longestSkipRun`, `silentTicks`).
   c is the reference for every "vs ref" in the multi-arm read. Its block-to-block SD (0.46) is about twice
   the other arms'.
 - Separately, pinning (`--pin`, 2 logical CPUs a worker from processor 2) makes Hadur's thread miss 31-280
-  turns mid-round in 4.8-13 battles per 100, each costing a round. Unpinned at 12 workers it happened once
+  turns mid-round in 3.8-13 battles per 100, each costing a round. Unpinned at 12 workers it happened once
   in 832 battles. It falls on every arm alike, so it adds noise rather than bias between arms, but it
   costs 0.0-0.44 points per arm per block and must be fixed or avoided before pinned blocks are trusted.
   The masks are adjacent logical-CPU pairs (for example 0xc00), likely the two SMT threads of one
