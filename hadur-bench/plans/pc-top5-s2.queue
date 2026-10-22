@@ -13,7 +13,7 @@
 #   kept at >= +0.10 with its interval above 0 and no segment below -0.05 APS.
 # Report: ../docs/bench/local/<date>_top5-s2-half1.md
 
-set P = --parallel 22 --pin
+set P = --parallel 12
 set HEAP = --child-heap 2G
 set E = --engine 1.11.1
 set C = --skip-build --skip-fetch --rounds 35 --cpu-constant 1488498 ${HEAP} ${E}
