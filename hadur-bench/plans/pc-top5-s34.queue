@@ -11,7 +11,8 @@
 # rc (about 6.5 h): the census (census-312.txt, 1,212 bots), 2 seeds, arms c, aa, rc (swall + flat
 #   off) and rcr (rc + RAM-4): 9,696 battles. Read: rc - c and rcr - c on the field, census-weighted,
 #   per segment A-E, with the A/A band. rcr - rc is RAM-4's own effect on the whole field.
-# Reports: ../docs/bench/local/<date>_top5-s3-ram.md, <date>_top5-s4-rc.md
+# Reports: ../docs/bench/local/<date>_top5-s3-ram.md, <date>_top5-s4-rc.md. When done, the PC commits them
+# to a new branch claude/pc-top5-s34-results and opens a PR against master with the verdict.
 
 set P = --parallel 12
 set HEAP = --child-heap 2G
