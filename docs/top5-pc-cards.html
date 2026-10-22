@@ -221,6 +221,14 @@ cd hadur-bench
         <div class="v"><span class="pill hold">RAM-4</span><p>It stays in if <code>rcr − rc</code> is positive on the field and <code>rh</code> beats <code>c</code> on the rammers.</p></div>
         <div class="v"><span class="pill stop">stop</span><p>If the A/A check falls outside its band, the run is void.</p></div>
       </div>
+      <h3>When the log says ALLDONE: open a PR</h3>
+      <p>Claude on the PC does this step. It commits the reports (<code>ram</code>, <code>rc</code> and any segments file) to a new branch off <code>claude/pc-top5-results</code>, pushes it and opens a pull request against <code>master</code>. The PR body carries the results and the verdict above, and notes that it builds on #221 while that PR is open. The battle folders under <code>hadur-bench\work\top5-s3-ram</code> and <code>top5-s4-rc</code> stay on the PC, uncommitted. Every later PC run sends its results the same way, as a PR.</p>
+      <div class="cmd"><pre id="c6b">cd D:\code\Hadur_Robot
+git checkout -b claude/pc-top5-s34-results
+git add docs/bench/local/*_top5-s3-ram*.md docs/bench/local/*_top5-s4-rc*.md
+git commit -m "pc-top5-s34: rammer screen and release-candidate census reports"
+git push -u origin claude/pc-top5-s34-results
+gh pr create --base master --title "Top-5 Stages 3+4: rammer screen and release-candidate census" --body-file pr-body.md</pre><button class="copy" type="button" data-for="c6b">Copy</button></div>
     </div>
   </article>
 
