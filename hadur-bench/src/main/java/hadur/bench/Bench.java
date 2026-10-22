@@ -142,6 +142,9 @@ public final class Bench {
     private final List<Arms.Arm> arms;
     /** BENCH-93: bind each battle JVM to its worker's own processors ({@code --pin true}). */
     private final boolean pin;
+    /** BENCH-95: whether a multi-arm run reads back the battles a stopped run finished ({@code --resume}, on by default). */
+    private final boolean resume;
+    private final java.util.concurrent.atomic.AtomicInteger resumedBattles = new java.util.concurrent.atomic.AtomicInteger();
     private final int pinOffset;
     /** BENCH-93: each worker home's number (1..N), for its processor mask. */
     private final Map<Path, Integer> workerIndex = new java.util.concurrent.ConcurrentHashMap<>();
@@ -216,6 +219,7 @@ public final class Bench {
             opts.put("robot-jar", arms.get(0).jar().toString());
         }
         this.pin = Boolean.parseBoolean(opts.getOrDefault("pin", "false"));
+        this.resume = Boolean.parseBoolean(opts.getOrDefault("resume", "true"));
         this.pinOffset = Integer.parseInt(opts.getOrDefault("pin-offset", "2"));
         if (pin) {
             int most = Affinity.maxWorkers(Runtime.getRuntime().availableProcessors(), pinWidth(), pinOffset);
@@ -615,8 +619,18 @@ public final class Bench {
                     for (int pos = 0; pos < order.size(); pos++) {
                         Arms.Arm a = order.get(pos);
                         Path dir = out.resolve("battles").resolve(o.slug() + "-" + seed + "-" + a.label());
+                        // BENCH-95: a battle a stopped run already finished is read back, not fought again.
+                        String kept = resume ? Arms.resumed(dir, a, o, seed) : null;
+                        if (kept != null) {
+                            rows.add(kept);
+                            resumedBattles.incrementAndGet();
+                            continue;
+                        }
                         BattleResult r = fight(h, o, seed, dir, a.robot(), true);
-                        rows.add(Arms.row(a, o, seed, workerIndex.getOrDefault(h, 1), pos + 1, r));
+                        String row = Arms.row(a, o, seed, workerIndex.getOrDefault(h, 1), pos + 1, r);
+                        rows.add(row);
+                        Files.createDirectories(dir);
+                        Files.writeString(dir.resolve(Arms.ROW_FILE), row + "\n");
                         say(String.format(Locale.ROOT, "%s seed %d %s: score share %.1f%%, skipped %d%s%s", o.name, seed,
                             a.label(), r.scoreShare() * 100, r.skippedTurns,
                             r.engineDisables > 0 ? ", engine disables " + r.engineDisables : "",
@@ -629,6 +643,7 @@ public final class Bench {
         workers = homes.size();
         pinCpuConstant(homes);
         runJobs(jobs, homes);
+        if (resumedBattles.get() > 0) say(resumedBattles.get() + " battles resumed from an earlier, stopped run (BENCH-95)");
 
         List<String> sorted = new ArrayList<>(rows);
         Collections.sort(sorted);
