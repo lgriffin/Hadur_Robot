@@ -202,9 +202,31 @@ git push origin master</pre><button class="copy" type="button" data-for="c4">Cop
     </div>
   </article>
 
+  <article class="card">
+    <div class="tag"><span class="id">CARD 6 · STAGES 3 + 4 · READY</span><h2>Rammer screen, then the release-candidate census</h2><span class="time">about 7 h 30 min, hands off</span></div>
+    <div class="inner">
+      <p>Stage 2 (both halves, 1,212 bots, PR #221) kept <code>sw</code> (+0.19 ± 0.09 APS) and flattener off (+0.12 ± 0.10). heat-jit's +0.10 came entirely from the rammers, so the new switch RAM-4 plays it only once RAM-2 has confirmed a rammer. This one queue runs both steps back to back. Nothing between them needs you.</p>
+      <div class="cmd"><pre id="c6">cd D:\code\Hadur_Robot
+git fetch origin claude/project-thread-0lcb47
+git checkout claude/pc-top5-results
+git pull --ff-only origin claude/project-thread-0lcb47
+cd hadur-bench
+.\queue.ps1 run pc-top5-s34</pre><button class="copy" type="button" data-for="c6">Copy</button></div>
+      <div class="grid2">
+        <div><h3>ram (about 1 h)</h3><p>The 87 rammers × 4 seeds × arms <code>c</code>, <code>aa</code>, <code>hj</code> (heat-jit everywhere) and <code>rh</code> (RAM-4): 1,392 battles.</p></div>
+        <div><h3>rc (about 6 h 30 min)</h3><p>The full census, 1,212 bots × 2 seeds × arms <code>c</code>, <code>aa</code>, <code>rc</code> (sw + flattener off) and <code>rcr</code> (rc + RAM-4): 9,696 battles.</p></div>
+      </div>
+      <div class="verdicts">
+        <div class="v"><span class="pill go">ship</span><p><code>rc</code> or <code>rcr</code> beats <code>c</code> on the field with its interval above 0, and no segment A to E falls below −0.05 APS. The better one becomes 3.15.</p></div>
+        <div class="v"><span class="pill hold">RAM-4</span><p>It stays in if <code>rcr − rc</code> is positive on the field and <code>rh</code> beats <code>c</code> on the rammers.</p></div>
+        <div class="v"><span class="pill stop">stop</span><p>If the A/A check falls outside its band, the run is void.</p></div>
+      </div>
+    </div>
+  </article>
+
   <footer>
     <p>Plan: <code>docs/plan-top5.md</code> (PR #220), section 4 "Free points" and sections 6 and 7. Tools: <code>data/tools/multiarm.py</code>, <code>hadur-bench/tools/top5_panels.py</code> and <code>round0_skips.py</code>.</p>
-    <p>Times assume about 650 battles an hour at 12 workers, the rate of the pc-1018-stack census.</p>
+    <p>Card 6 times use the Stage 2 rate, about 1,500 battles an hour at 12 workers unpinned.</p>
   </footer>
 </main>
 
