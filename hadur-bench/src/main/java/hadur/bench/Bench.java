@@ -1045,7 +1045,8 @@ public final class Bench {
      * default) so that twenty JVMs do not each start a 48-core machine's worth of JIT and GC
      * threads; {@code --child-cpus 0} leaves the JVM to itself. {@code --child-heap} (e.g.
      * {@code 512M}, the rumble client's) sets the heap cap, {@code 2G} when not given (BENCH-60),
-     * and {@code none} leaves it uncapped.
+     * and {@code none} leaves it uncapped. {@code --truth-log false} turns the duel truth log off
+     * (BENCH-97).
      */
     private List<String> childFlags() {
         return childFlags(opts, parallel);
@@ -1058,6 +1059,8 @@ public final class Bench {
         if (cpus > 0) flags.add("-XX:ActiveProcessorCount=" + cpus);
         String heap = opts.getOrDefault("child-heap", Memory.DEFAULT_CHILD_HEAP);
         if (!Memory.uncapped(heap)) flags.add("-Xmx" + heap);
+        // BENCH-97: --truth-log false keeps a duel battle from writing truth.log.gz.
+        if ("false".equalsIgnoreCase(opts.getOrDefault("truth-log", "true"))) flags.add("-Dhadur.bench.truth=false");
         return flags;
     }
 
