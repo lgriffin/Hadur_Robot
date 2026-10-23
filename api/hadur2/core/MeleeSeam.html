@@ -215,82 +215,92 @@ implements <a href="role/Role.html" title="interface in hadur2.core.role">Role</
 <div class="block"><a class="req" href="../../../requirements.html#MMEM-2">MMEM-2</a>: whether the melee shelf knew <code>name</code>, for the H record.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#mateSightings(java.util.List)" class="member-name-link">mateSightings</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="TeamLink.MateSighting.html" title="class in hadur2.core">TeamLink.MateSighting</a>&gt;&nbsp;sightings)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#mateDodges(java.util.List)" class="member-name-link">mateDodges</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="link/Report.Dodge.html" title="class in hadur2.core.link">Report.Dodge</a>&gt;&nbsp;dodges)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">MGUN-8: the teammates' sightings the World took this tick, for the field gun to learn from.</div>
+<div class="block">MMOVE-10: the teammates' samples of the enemies' guns, into the team's log.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#measureScanGap(long,int)" class="member-name-link">measureScanGap</a><wbr>(long&nbsp;now,
- int&nbsp;others)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#mateSightings(java.util.List)" class="member-name-link">mateSightings</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="TeamLink.MateSighting.html" title="class in hadur2.core">TeamLink.MateSighting</a>&gt;&nbsp;sightings)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">MGUN-8: the teammates' sightings the World took this tick, for the field gun to learn from.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#measureScanGap(long,int)" class="member-name-link">measureScanGap</a><wbr>(long&nbsp;now,
+ int&nbsp;others)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">M2's gate: the longest any living opponent has gone unscanned in melee this round, and
  the longest while four or more were alive, the spinning radar's case (<a class="req" href="../../../requirements.html#MRADAR-1">MRADAR-1</a>).</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#memoryFailures()" class="member-name-link">memoryFailures</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#memoryFailures()" class="member-name-link">memoryFailures</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Melee memory failures this battle (<a class="req" href="../../../requirements.html#RES-5">RES-5</a>).</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#newRound(hadur2.core.role.RoundFacts)" class="member-name-link">newRound</a><wbr>(<a href="role/RoundFacts.html" title="class in hadur2.core.role">RoundFacts</a>&nbsp;round)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#newRound(hadur2.core.role.RoundFacts)" class="member-name-link">newRound</a><wbr>(<a href="role/RoundFacts.html" title="class in hadur2.core.role">RoundFacts</a>&nbsp;round)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">A new round starts.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#observe(hadur2.core.model.BotEvent,hadur2.core.role.Tick)" class="member-name-link">observe</a><wbr>(<a href="model/BotEvent.html" title="interface in hadur2.core.model">BotEvent</a>&nbsp;event,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#observe(hadur2.core.model.BotEvent,hadur2.core.role.Tick)" class="member-name-link">observe</a><wbr>(<a href="model/BotEvent.html" title="interface in hadur2.core.model">BotEvent</a>&nbsp;event,
  <a href="role/Tick.html" title="class in hadur2.core.role">Tick</a>&nbsp;tick)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../../requirements.html#ROLE-5">ROLE-5</a>: the melee brain is fed whichever role drives: scans, deaths, the bullets that
  hit Hadur, and Hadur's own hits except on a robot the Duel is ignoring.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#observe(hadur2.core.model.BotEvent,hadur2.core.role.Tick,boolean)" class="member-name-link">observe</a><wbr>(<a href="model/BotEvent.html" title="interface in hadur2.core.model">BotEvent</a>&nbsp;event,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#observe(hadur2.core.model.BotEvent,hadur2.core.role.Tick,boolean)" class="member-name-link">observe</a><wbr>(<a href="model/BotEvent.html" title="interface in hadur2.core.model">BotEvent</a>&nbsp;event,
  <a href="role/Tick.html" title="class in hadur2.core.role">Tick</a>&nbsp;tick,
  boolean&nbsp;worldFed)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">As <a href="#observe(hadur2.core.model.BotEvent,hadur2.core.role.Tick)"><code>observe(BotEvent, Tick)</code></a>, after the World's feed; when the feed failed the
  melee's own books skip the event, as they did when the tracker threw inside them.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#prepare()" class="member-name-link">prepare</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#prepare()" class="member-name-link">prepare</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Before the first tick: open the shelf it was handed.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#recover()" class="member-name-link">recover</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#recover()" class="member-name-link">recover</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../../requirements.html#RES-1">RES-1</a>: drop transient state after a fault.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#reset()" class="member-name-link">reset</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#reset()" class="member-name-link">reset</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Melee never takes over mid-round: the role moves only down (<a class="req" href="../../../requirements.html#ROLE-4">ROLE-4</a>).</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#roundCounts()" class="member-name-link">roundCounts</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#roundCounts()" class="member-name-link">roundCounts</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">The round's ghosts dropped, targeting waves sent and resolved, and virtual hits, for the M record.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#roundEnded(hadur2.core.role.RoundResult)" class="member-name-link">roundEnded</a><wbr>(<a href="role/RoundResult.html" title="class in hadur2.core.role">RoundResult</a>&nbsp;result)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#roundEnded(hadur2.core.role.RoundResult)" class="member-name-link">roundEnded</a><wbr>(<a href="role/RoundResult.html" title="class in hadur2.core.role">RoundResult</a>&nbsp;result)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../../requirements.html#MMEM-1">MMEM-1</a>: each opponent scanned this round has the round folded into its melee block.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#save(long)" class="member-name-link">save</a><wbr>(long&nbsp;tick)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#save(long)" class="member-name-link">save</a><wbr>(long&nbsp;tick)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../../requirements.html#MMEM-1">MMEM-1</a>: writes the melee blocks folded since the last save.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#stopDriving()" class="member-name-link">stopDriving</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#stopDriving()" class="member-name-link">stopDriving</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../../requirements.html#GATE-4">GATE-4</a>: the melee failed this tick; the shot it aimed last tick never goes out.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#take(hadur2.core.model.Baton,hadur2.core.role.Tick)" class="member-name-link">take</a><wbr>(<a href="model/Baton.html" title="class in hadur2.core.model">Baton</a>&nbsp;baton,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#take(hadur2.core.model.Baton,hadur2.core.role.Tick)" class="member-name-link">take</a><wbr>(<a href="model/Baton.html" title="class in hadur2.core.model">Baton</a>&nbsp;baton,
  <a href="role/Tick.html" title="class in hadur2.core.role">Tick</a>&nbsp;tick)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Nothing is ever handed up to the Melee role.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="link/Report.Dodge.html" title="class in hadur2.core.link">Report.Dodge</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#takeDodges()" class="member-name-link">takeDodges</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">MMOVE-10: our own samples since the last report, for this tick's report.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/RuntimeException.html" title="class or interface in java.lang" class="external-link">RuntimeException</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#takeFault()" class="member-name-link">takeFault</a>()</code></div>
@@ -482,6 +492,20 @@ implements <a href="role/Role.html" title="interface in hadur2.core.role">Role</
 <h3>mateSightings</h3>
 <div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">mateSightings</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="TeamLink.MateSighting.html" title="class in hadur2.core">TeamLink.MateSighting</a>&gt;&nbsp;sightings)</span></div>
 <div class="block">MGUN-8: the teammates' sightings the World took this tick, for the field gun to learn from.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="mateDodges(java.util.List)">
+<h3>mateDodges</h3>
+<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">mateDodges</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="link/Report.Dodge.html" title="class in hadur2.core.link">Report.Dodge</a>&gt;&nbsp;dodges)</span></div>
+<div class="block">MMOVE-10: the teammates' samples of the enemies' guns, into the team's log.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="takeDodges()">
+<h3>takeDodges</h3>
+<div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="link/Report.Dodge.html" title="class in hadur2.core.link">Report.Dodge</a>&gt;</span>&nbsp;<span class="element-name">takeDodges</span>()</div>
+<div class="block">MMOVE-10: our own samples since the last report, for this tick's report.</div>
 </section>
 </li>
 <li>

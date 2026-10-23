@@ -101,12 +101,13 @@ loadScripts(document, 'script');</script>
  sightings:u8 { name tick:i64 x y heading velocity energy:f64 }
  deaths:u8 { name }
  shots:u8 { tick:i64 x y heading power:f64 }
+ [version 2 only] dodges:u8 { name distance lateral advancing wallAhead gf:f64 }
  crc:i32                      CRC-32 of every byte before it
  name = length:u8 then that many UTF-16 chars:u16
  </pre>
 
- <p><a class="req" href="../../../../requirements.html#LINK-2">LINK-2</a>: <a href="#decode(byte%5B%5D)"><code>decode(byte[])</code></a> refuses a message whose checksum fails, whose version is not
- <a href="#VERSION"><code>VERSION</code></a>, or that is cut short or runs long, by throwing <a href="LinkFormatException.html" title="class in hadur2.core.link"><code>LinkFormatException</code></a>;
+ <p><a class="req" href="../../../../requirements.html#LINK-2">LINK-2</a>: <a href="#decode(byte%5B%5D)"><code>decode(byte[])</code></a> refuses a message whose checksum fails, whose version is neither
+ <a href="#VERSION"><code>VERSION</code></a> nor <a href="#VERSION_DODGES"><code>VERSION_DODGES</code></a>, or that is cut short or runs long, by throwing <a href="LinkFormatException.html" title="class in hadur2.core.link"><code>LinkFormatException</code></a>;
  the caller ignores it and counts it. Pure byte work: no I/O (<a class="req" href="../../../../requirements.html#RES-6">RES-6</a>).</p></div>
 </section>
 <section class="summary">
@@ -133,7 +134,13 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color"><code>static final int</code></div>
 <div class="col-second even-row-color"><code><a href="#VERSION" class="member-name-link">VERSION</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">The format this build writes and the only one it reads.</div>
+<div class="block">The format this build writes for a report with no dodges; one with dodges (MMOVE-10) is
+ written as <a href="#VERSION_DODGES"><code>VERSION_DODGES</code></a>, so a team that learns nothing sends what it always did.</div>
+</div>
+<div class="col-first odd-row-color"><code>static final int</code></div>
+<div class="col-second odd-row-color"><code><a href="#VERSION_DODGES" class="member-name-link">VERSION_DODGES</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">The format of a report that carries dodges: <a href="#VERSION"><code>VERSION</code></a> with the dodges list after the shots.</div>
 </div>
 </div>
 </section>
@@ -176,12 +183,28 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="VERSION">
 <h3>VERSION</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">VERSION</span></div>
-<div class="block">The format this build writes and the only one it reads.</div>
+<div class="block">The format this build writes for a report with no dodges; one with dodges (MMOVE-10) is
+ written as <a href="#VERSION_DODGES"><code>VERSION_DODGES</code></a>, so a team that learns nothing sends what it always did.</div>
 <dl class="notes">
 <dt>See Also:</dt>
 <dd>
 <ul class="tag-list">
 <li><a href="../../../constant-values.html#hadur2.core.link.LinkCodec.VERSION">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="VERSION_DODGES">
+<h3>VERSION_DODGES</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">VERSION_DODGES</span></div>
+<div class="block">The format of a report that carries dodges: <a href="#VERSION"><code>VERSION</code></a> with the dodges list after the shots.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur2.core.link.LinkCodec.VERSION_DODGES">Constant Field Values</a></li>
 </ul>
 </dd>
 </dl>

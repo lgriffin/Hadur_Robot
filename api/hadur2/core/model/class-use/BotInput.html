@@ -152,23 +152,30 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color">
 <div class="block"><a class="req" href="../../../../../requirements.html#LINK-4">LINK-4</a>: this tick's report, from the raw input and the orders the tick completed with.</div>
 </div>
-<div class="col-first odd-row-color"><code>(package private) static <a href="../BotOrders.html" title="class in hadur2.core.model">BotOrders</a></code></div>
-<div class="col-second odd-row-color"><span class="type-name-label">Guard.</span><code><a href="../../Guard.html#safeOrders(hadur2.core.model.BotInput,double,int)" class="member-name-link">safeOrders</a><wbr>(<a href="../BotInput.html" title="class in hadur2.core.model">BotInput</a>&nbsp;in,
+<div class="col-first odd-row-color"><code>(package private) byte[]</code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">TeamLink.</span><code><a href="../../TeamLink.html#report(hadur2.core.model.BotInput,hadur2.core.model.BotOrders,java.util.List)" class="member-name-link">report</a><wbr>(<a href="../BotInput.html" title="class in hadur2.core.model">BotInput</a>&nbsp;in,
+ <a href="../BotOrders.html" title="class in hadur2.core.model">BotOrders</a>&nbsp;orders,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../link/Report.Dodge.html" title="class in hadur2.core.link">Report.Dodge</a>&gt;&nbsp;dodges)</code></div>
+<div class="col-last odd-row-color">
+<div class="block">As above, carrying <code>dodges</code>: the enemy bullets that hit us, as samples (MMOVE-10).</div>
+</div>
+<div class="col-first even-row-color"><code>(package private) static <a href="../BotOrders.html" title="class in hadur2.core.model">BotOrders</a></code></div>
+<div class="col-second even-row-color"><span class="type-name-label">Guard.</span><code><a href="../../Guard.html#safeOrders(hadur2.core.model.BotInput,double,int)" class="member-name-link">safeOrders</a><wbr>(<a href="../BotInput.html" title="class in hadur2.core.model">BotInput</a>&nbsp;in,
  double&nbsp;enemyAbsBearing,
  int&nbsp;faultsThisRound)</code></div>
-<div class="col-last odd-row-color">
+<div class="col-last even-row-color">
 <div class="block">Orbit the enemy in the current direction of travel, don't fire, and lock the radar
  on the enemy's last bearing (or sweep if it has not been seen).</div>
 </div>
-<div class="col-first even-row-color"><code><a href="../BotOrders.html" title="class in hadur2.core.model">BotOrders</a></code></div>
-<div class="col-second even-row-color"><span class="type-name-label">Guard.</span><code><a href="../../Guard.html#tick(hadur2.core.model.BotInput)" class="member-name-link">tick</a><wbr>(<a href="../BotInput.html" title="class in hadur2.core.model">BotInput</a>&nbsp;in)</code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="../BotOrders.html" title="class in hadur2.core.model">BotOrders</a></code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">Guard.</span><code><a href="../../Guard.html#tick(hadur2.core.model.BotInput)" class="member-name-link">tick</a><wbr>(<a href="../BotInput.html" title="class in hadur2.core.model">BotInput</a>&nbsp;in)</code></div>
+<div class="col-last odd-row-color">
 <div class="block">Runs one tick of the core and returns its orders, or the safe orders if it fails
  (<a class="req" href="../../../../../requirements.html#RES-1">RES-1</a>).</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="../BotOrders.html" title="class in hadur2.core.model">BotOrders</a></code></div>
-<div class="col-second odd-row-color"><span class="type-name-label">HadurCore.</span><code><a href="../../HadurCore.html#tick(hadur2.core.model.BotInput)" class="member-name-link">tick</a><wbr>(<a href="../BotInput.html" title="class in hadur2.core.model">BotInput</a>&nbsp;raw)</code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="../BotOrders.html" title="class in hadur2.core.model">BotOrders</a></code></div>
+<div class="col-second even-row-color"><span class="type-name-label">HadurCore.</span><code><a href="../../HadurCore.html#tick(hadur2.core.model.BotInput)" class="member-name-link">tick</a><wbr>(<a href="../BotInput.html" title="class in hadur2.core.model">BotInput</a>&nbsp;raw)</code></div>
+<div class="col-last even-row-color">
 <div class="block">Turns one tick's input into orders: resolve, observe, drive, fence (see the class
  comment).</div>
 </div>

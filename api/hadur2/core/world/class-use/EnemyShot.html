@@ -104,6 +104,47 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
+<div class="col-first even-row-color"><code>static boolean</code></div>
+<div class="col-second even-row-color"><span class="type-name-label">TeamDanger.</span><code><a href="../../melee/TeamDanger.html#aimedAtMe(hadur2.core.world.EnemyShot,java.awt.geom.Point2D.Double,java.util.List)" class="member-name-link">aimedAtMe</a><wbr>(<a href="../EnemyShot.html" title="class in hadur2.core.world">EnemyShot</a>&nbsp;shot,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&gt;&nbsp;mates)</code></div>
+<div class="col-last even-row-color">
+<div class="block">MMOVE-9: whether <code>shot</code> was aimed at Hadur, standing at <code>me</code> when it was
+ fired, rather than at the teammate nearest its source: a teammate takes it only when
+ <a href="../../melee/TeamDanger.html#NEAREST_MARGIN"><code>TeamDanger.NEAREST_MARGIN</code></a> times nearer.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../../melee/TeamDanger.Aim.html" title="class in hadur2.core.melee">TeamDanger.Aim</a>&gt;</code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">TeamDanger.</span><code><a href="../../melee/TeamDanger.html#aims(hadur2.core.world.EnemyShot,hadur2.core.model.RobotState)" class="member-name-link">aims</a><wbr>(<a href="../EnemyShot.html" title="class in hadur2.core.world">EnemyShot</a>&nbsp;shot,
+ <a href="../../model/RobotState.html" title="class in hadur2.core.model">RobotState</a>&nbsp;target)</code></div>
+<div class="col-last odd-row-color">
+<div class="block">The aims at Hadur, in state <code>target</code> when <code>shot</code> was fired, that the
+ <a href="../../melee/TeamDanger.html#K"><code>TeamDanger.K</code></a> nearest samples of its shooter's log give, weighted by nearness; null while
+ the log holds fewer than <a href="../../melee/TeamDanger.html#MIN_SAMPLES"><code>TeamDanger.MIN_SAMPLES</code></a>.</div>
+</div>
+<div class="col-first even-row-color"><code>(package private) static double</code></div>
+<div class="col-second even-row-color"><span class="type-name-label">TeamDanger.</span><code><a href="../../melee/TeamDanger.html#direction(hadur2.core.world.EnemyShot,hadur2.core.model.RobotState)" class="member-name-link">direction</a><wbr>(<a href="../EnemyShot.html" title="class in hadur2.core.world">EnemyShot</a>&nbsp;shot,
+ <a href="../../model/RobotState.html" title="class in hadur2.core.model">RobotState</a>&nbsp;t)</code></div>
+<div class="col-last even-row-color">
+<div class="block">+1 when the target moved clockwise round the shooter, -1 counter-clockwise; +1 when still.</div>
+</div>
+<div class="col-first odd-row-color"><code>(package private) double[]</code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">TeamDanger.</span><code><a href="../../melee/TeamDanger.html#features(hadur2.core.world.EnemyShot,hadur2.core.model.RobotState)" class="member-name-link">features</a><wbr>(<a href="../EnemyShot.html" title="class in hadur2.core.world">EnemyShot</a>&nbsp;shot,
+ <a href="../../model/RobotState.html" title="class in hadur2.core.model">RobotState</a>&nbsp;t)</code></div>
+<div class="col-last odd-row-color">
+<div class="block">The situation: distance, the speed across and towards the shooter, and how much of the
+ escape angle ahead is clear of the walls.</div>
+</div>
+<div class="col-first even-row-color"><code>(package private) static double</code></div>
+<div class="col-second even-row-color"><span class="type-name-label">TeamDanger.</span><code><a href="../../melee/TeamDanger.html#maxEscape(hadur2.core.world.EnemyShot)" class="member-name-link">maxEscape</a><wbr>(<a href="../EnemyShot.html" title="class in hadur2.core.world">EnemyShot</a>&nbsp;shot)</code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code><a href="../../melee/TeamDanger.Sample.html" title="class in hadur2.core.melee">TeamDanger.Sample</a></code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">TeamDanger.</span><code><a href="../../melee/TeamDanger.html#sample(hadur2.core.world.EnemyShot,hadur2.core.model.RobotState,double)" class="member-name-link">sample</a><wbr>(<a href="../EnemyShot.html" title="class in hadur2.core.world">EnemyShot</a>&nbsp;shot,
+ <a href="../../model/RobotState.html" title="class in hadur2.core.model">RobotState</a>&nbsp;target,
+ double&nbsp;heading)</code></div>
+<div class="col-last odd-row-color">
+<div class="block">The sample a bullet of <code>shot</code> that hit Hadur makes: Hadur's state at the shot's
+ fire tick (<code>target</code>) and the bullet's <code>heading</code>.</div>
+</div>
 <div class="col-first even-row-color"><code>void</code></div>
 <div class="col-second even-row-color"><span class="type-name-label">MeleeController.</span><code><a href="../../melee/MeleeController.html#scanned(hadur2.core.world.EnemyInfo,hadur2.core.world.EnemyShot,double,double,long)" class="member-name-link">scanned</a><wbr>(<a href="../EnemyInfo.html" title="class in hadur2.core.world">EnemyInfo</a>&nbsp;info,
  <a href="../EnemyShot.html" title="class in hadur2.core.world">EnemyShot</a>&nbsp;shot,
@@ -113,6 +154,14 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color">
 <div class="block">The World has taken a scan (<code>info</code>, and the shot it inferred, or null); the
  melee's own books take it now.</div>
+</div>
+<div class="col-first odd-row-color"><code>(package private) double</code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">TeamDanger.</span><code><a href="../../melee/TeamDanger.html#wallAhead(hadur2.core.world.EnemyShot,hadur2.core.model.RobotState,double,double)" class="member-name-link">wallAhead</a><wbr>(<a href="../EnemyShot.html" title="class in hadur2.core.world">EnemyShot</a>&nbsp;shot,
+ <a href="../../model/RobotState.html" title="class in hadur2.core.model">RobotState</a>&nbsp;t,
+ double&nbsp;bearing,
+ double&nbsp;distance)</code></div>
+<div class="col-last odd-row-color">
+<div class="block">The share of the escape angle ahead, along the circle round the shooter, inside the field.</div>
 </div>
 </div>
 <div class="caption"><span>Method parameters in <a href="../../melee/package-summary.html">hadur2.core.melee</a> with type arguments of type <a href="../EnemyShot.html" title="class in hadur2.core.world">EnemyShot</a></span></div>
@@ -130,6 +179,18 @@ loadScripts(document, 'script');</script>
  where Hadur was when they were fired, and drops the bullets that have passed Hadur
  (<a class="req" href="../../../../../requirements.html#MMOVE-3">MMOVE-3</a>).</div>
 </div>
+<div class="col-first odd-row-color"><code>void</code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">MinimumRiskMovement.</span><code><a href="../../melee/MinimumRiskMovement.html#updateBullets(java.util.List,hadur2.core.model.RobotStateLog,java.awt.geom.Point2D.Double,long,java.util.List,hadur2.core.melee.TeamDanger,boolean,boolean)" class="member-name-link">updateBullets</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../EnemyShot.html" title="class in hadur2.core.world">EnemyShot</a>&gt;&nbsp;shots,
+ <a href="../../model/RobotStateLog.html" title="class in hadur2.core.model">RobotStateLog</a>&nbsp;myPath,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
+ long&nbsp;now,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&gt;&nbsp;mates,
+ <a href="../../melee/TeamDanger.html" title="class in hadur2.core.melee">TeamDanger</a>&nbsp;danger,
+ boolean&nbsp;nearest,
+ boolean&nbsp;learned)</code></div>
+<div class="col-last odd-row-color">
+<div class="block">On a team (T6): as above, where <code>mates</code> are the living teammates' positions.</div>
+</div>
 </div>
 <div class="caption"><span>Constructors in <a href="../../melee/package-summary.html">hadur2.core.melee</a> with parameters of type <a href="../EnemyShot.html" title="class in hadur2.core.world">EnemyShot</a></span></div>
 <div class="summary-table three-column-summary">
@@ -141,6 +202,12 @@ loadScripts(document, 'script');</script>
  <a href="../../melee/VirtualBullet.Aim.html" title="enum class in hadur2.core.melee">VirtualBullet.Aim</a>&nbsp;aim,
  double&nbsp;heading)</code></div>
 <div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>&nbsp;</code></div>
+<div class="col-second odd-row-color"><code><a href="../../melee/VirtualBullet.html#%3Cinit%3E(hadur2.core.world.EnemyShot,hadur2.core.melee.VirtualBullet.Aim,double,double)" class="member-name-link">VirtualBullet</a><wbr>(<a href="../EnemyShot.html" title="class in hadur2.core.world">EnemyShot</a>&nbsp;shot,
+ <a href="../../melee/VirtualBullet.Aim.html" title="enum class in hadur2.core.melee">VirtualBullet.Aim</a>&nbsp;aim,
+ double&nbsp;heading,
+ double&nbsp;weight)</code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
 </div>
 </section>
 </li>
