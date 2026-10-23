@@ -78,7 +78,7 @@ side that turns away, where RAM-1 deliberately takes the other side.
 
 ## What this means for top 5 (+1.93 APS to ScalarR)
 
-1. **The two highest-placed rivals both model simple guns explicitly.** Saguaro dodges the exact simple
+1. **Saguaro and Ogi both model simple guns explicitly** (ScalarR is unread on this point). Saguaro dodges the exact simple
    aim on 429 bots (+0.60 there); Ogi weighs 13 simple aims in every surf decision. Hadur's surf
    has only learned views, and its hit read showed rammers and weak bots hit it with close head-on
    and linear shots. One field-wide rule: add simple-aim experts to the duel surf danger, weighted
