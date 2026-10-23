@@ -1057,7 +1057,7 @@ public final class DuelController {
         stats.seedDecays = seedDecays;
         // SHIELD-6: the round's record, and the budget is checked once more; the result of the
         // round does not move the budget, only the damage does.
-        if (shield != null) shield.onRoundEnded(tick);
+        if (shield != null) shield.onRoundEnded(tick, won);
         // RAM-3: a round the rammer played, before its confirmation (fought) or after (its arm).
         if (trialRound || rammer.rammedThisRound()) {
             double ours = won ? lastOurEnergy : 0;

@@ -25,6 +25,9 @@ import java.util.Locale;
  * <li>{@code wall} (SHIELD-14): a shot whose power is uncertain (a wall hit inferred on its scan
  *     interval) builds a wave at the ledger's best-guess power instead of none. Not part of
  *     {@code all}, which stays Nullstride's five.</li>
+ * <li>{@code trial} (SHIELD-15): every duel opponent, listed or not, starts in shield mode; an
+ *     unlisted one leaves it for the battle once the shield fails Ogi's trial (see
+ *     {@link #trialFails}). Listed opponents play as without it. Not part of {@code all}.</li>
  * </ul>
  */
 public final class ShieldDesign {
@@ -35,9 +38,21 @@ public final class ShieldDesign {
     public static final double STAY_DAMAGE = 150;
     /** SHIELD-11: a round tick by which an enemy that has not fired turns the mode off. */
     public static final long SILENT_TICKS = 300;
+    /** SHIELD-15: the bullet damage an unlisted opponent may do before the trial fails ... */
+    public static final double TRIAL_DAMAGE = 35;
+    /** SHIELD-15: ... plus this much for every shot it has fired. */
+    public static final double TRIAL_DAMAGE_PER_SHOT = 0.25;
+    /** SHIELD-15: rounds lost in shield mode after which the trial fails. */
+    public static final int TRIAL_LOST_ROUNDS = 2;
+    /** SHIELD-15: the ended enemy bullets (shot down or hit us) after which the shot-down share is judged. */
+    public static final int TRIAL_JUDGE_BULLETS = 20;
+    /** SHIELD-15: the least share of ended bullets shot down for the trial to go on. */
+    public static final double TRIAL_DOWN_SHARE = 0.5;
+    /** SHIELD-15: hits on us with none shot down after which the trial fails. */
+    public static final int TRIAL_BLANK_HITS = 6;
 
     /** 3.12's shield: every switch off. */
-    public static final ShieldDesign NONE = new ShieldDesign(false, false, false, false, false, false);
+    public static final ShieldDesign NONE = new ShieldDesign(false, false, false, false, false, false, false);
 
     /**
      * The design the robot ships (SHIELD-13; SHIELD-14's wall since 3.15, +0.19 +/- 0.09 APS in the
@@ -57,20 +72,24 @@ public final class ShieldDesign {
     public final boolean turn;
     /** SHIELD-14: an uncertain shot (a wall hit inferred on its interval) builds a wave at the ledger's best-guess power. */
     public final boolean wall;
+    /** SHIELD-15: shield mode on trial against every unlisted duel opponent. */
+    public final boolean trial;
 
     private ShieldDesign(boolean hold, boolean learn, boolean mode, boolean stay, boolean turn,
-                         boolean wall) {
+                         boolean wall, boolean trial) {
         this.hold = hold;
         this.learn = learn;
         this.mode = mode;
         this.stay = stay;
         this.turn = turn;
         this.wall = wall;
+        this.trial = trial;
     }
 
     /**
      * The design a comma-separated list of switch names turns on ({@code hold}, {@code learn},
-     * {@code mode}, {@code stay}, {@code turn}, {@code wall}, or {@code all}); blank is {@link #NONE}.
+     * {@code mode}, {@code stay}, {@code turn}, {@code wall}, {@code trial}, or {@code all}); blank
+     * is {@link #NONE}.
      *
      * @param flags the switches
      * @return the design
@@ -78,7 +97,7 @@ public final class ShieldDesign {
      */
     public static ShieldDesign parse(String flags) {
         boolean hold = false, learn = false, mode = false, stay = false, turn = false,
-            wall = false;
+            wall = false, trial = false;
         for (String raw : flags.split(",")) {
             String f = raw.trim().toLowerCase(Locale.ROOT);
             switch (f) {
@@ -89,12 +108,35 @@ public final class ShieldDesign {
                 case "stay": stay = true; break;
                 case "turn": turn = true; break;
                 case "wall": wall = true; break;
+                case "trial": trial = true; break;
                 case "all": hold = learn = mode = stay = turn = true; break;
                 default: throw new IllegalArgumentException("unknown shield switch: " + raw);
             }
         }
-        if (!(hold || learn || mode || stay || turn || wall)) return NONE;
-        return new ShieldDesign(hold, learn, mode, stay, turn, wall);
+        if (!(hold || learn || mode || stay || turn || wall || trial)) return NONE;
+        return new ShieldDesign(hold, learn, mode, stay, turn, wall, trial);
+    }
+
+    /**
+     * SHIELD-15: whether Ogi's shield trial has failed against an unlisted opponent: its bullets
+     * have done more than {@value #TRIAL_DAMAGE} plus {@value #TRIAL_DAMAGE_PER_SHOT} a shot it
+     * fired, or {@value #TRIAL_LOST_ROUNDS} rounds are lost, or of at least
+     * {@value #TRIAL_JUDGE_BULLETS} ended bullets under {@value #TRIAL_DOWN_SHARE} were shot down,
+     * or {@value #TRIAL_BLANK_HITS} hit us with none shot down. Pure.
+     *
+     * @param damage the bullet damage it has done us in the battle
+     * @param shots the shots it has fired in the battle
+     * @param lostRounds the rounds lost in shield mode
+     * @param down its bullets our shield shot down
+     * @param hits its bullets that hit us
+     * @return whether the trial has failed
+     */
+    public static boolean trialFails(double damage, int shots, int lostRounds, int down, int hits) {
+        int ended = down + hits;
+        boolean failing = ended >= TRIAL_JUDGE_BULLETS && down < TRIAL_DOWN_SHARE * ended
+            || down == 0 && hits >= TRIAL_BLANK_HITS;
+        return damage > TRIAL_DAMAGE + TRIAL_DAMAGE_PER_SHOT * shots
+            || lostRounds >= TRIAL_LOST_ROUNDS || failing;
     }
 
     /** The head-on bases the predictors use: four, or five with the body-turn base. */
@@ -111,6 +153,7 @@ public final class ShieldDesign {
         if (stay) b.append(",stay");
         if (turn) b.append(",turn");
         if (wall) b.append(",wall");
+        if (trial) b.append(",trial");
         return b.length() == 0 ? "none" : b.substring(1);
     }
 }
