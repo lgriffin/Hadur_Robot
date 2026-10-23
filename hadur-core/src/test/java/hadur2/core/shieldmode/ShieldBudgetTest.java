@@ -67,7 +67,8 @@ class ShieldBudgetTest {
         // Ours is the allowance back over (1 - hold) / hold.
         double ours = b.allowed() * ShieldBudget.HOLD_SHARE / (1 - ShieldBudget.HOLD_SHARE);
         double share = ours / (ours + b.taken());
-        if (b.exceeded()) assertTrue(share < ShieldBudget.HOLD_SHARE, "share " + share);
+        // Rounding can put a share just over the line on either side: 1e-12 either way.
+        if (b.exceeded()) assertTrue(share < ShieldBudget.HOLD_SHARE + 1e-12, "share " + share);
         else assertTrue(share >= ShieldBudget.HOLD_SHARE - 1e-12, "share " + share);
     }
 
