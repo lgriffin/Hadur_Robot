@@ -1387,7 +1387,16 @@ public final class Bench {
                                          String member, boolean candidate) throws InterruptedException {
         Path dir = out.resolve("battles").resolve(dirName);
         try {
+            // BENCH-96: a team battle a stopped run already finished is read back, not fought again.
+            TeamReport.Battle kept = resume ? resumedTeam(dir, teamRobot, member) : null;
+            if (kept != null) {
+                resumedBattles.incrementAndGet();
+                say("  " + o.name + " team battle " + seed + "/" + runs + (candidate ? "" : " baseline")
+                    + ": resumed, " + kept.summary());
+                return kept;
+            }
             Files.createDirectories(dir);
+            Files.deleteIfExists(dir.resolve(TEAM_DONE));
             Files.deleteIfExists(dir.resolve("team.csv"));
             if (parallel == 1) System.out.printf("%s team battle %d/%d%s ...%n", o.name, seed, runs,
                 candidate ? "" : " (baseline)");
@@ -1422,12 +1431,39 @@ public final class Bench {
                 }
             }
             TeamReport.Battle b = TeamReport.read(dir, teamRobot, member, dataFiles(h));
+            if (b.ok) {
+                List<String> done = new ArrayList<>();
+                done.add(teamRobot);
+                done.addAll(b.dataFiles);
+                Files.write(dir.resolve(TEAM_DONE), done, StandardCharsets.UTF_8);
+            }
             say("  " + o.name + " team battle " + seed + "/" + runs + (candidate ? "" : " baseline") + ": "
                 + (b.ok ? b.summary() : "FAILED; see " + dir.resolve("engine.log")));
             return b;
         } catch (IOException | RuntimeException e) {
             say("  " + o.name + " team battle " + seed + "/" + runs + " FAILED: bench error: " + e);
             return new TeamReport.Battle();
+        }
+    }
+
+    /** BENCH-96: written beside a finished team battle: the team that fought it, then its stray data files. */
+    static final String TEAM_DONE = "team-done.txt";
+
+    /**
+     * BENCH-96: the battle in {@code dir} if a stopped run finished it with {@code teamRobot} and it
+     * reads back as a good result, else null (the battle is fought again).
+     */
+    static TeamReport.Battle resumedTeam(Path dir, String teamRobot, String member) {
+        try {
+            Path f = dir.resolve(TEAM_DONE);
+            if (!Files.isRegularFile(f)) return null;
+            List<String> lines = Files.readAllLines(f, StandardCharsets.UTF_8);
+            if (lines.isEmpty() || !lines.get(0).equals(teamRobot)) return null;
+            TeamReport.Battle b = TeamReport.read(dir, teamRobot, member,
+                new ArrayList<>(lines.subList(1, lines.size())));
+            return b.ok ? b : null;
+        } catch (IOException | RuntimeException e) {
+            return null;
         }
     }
 
