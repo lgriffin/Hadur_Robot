@@ -2142,9 +2142,7 @@ loadScripts(document, 'script');</script>
 <div class="block">The duel report's conditions: the melee and team reports' line, less its closing full stop (the report adds it).</div>
 </dd>
 <dt><a href="hadur2/core/duel/DuelController.html#duelOnly(boolean,int)" class="member-name-link">duelOnly(boolean, int)</a> - Static method in class hadur2.core.duel.<a href="hadur2/core/duel/DuelController.html" title="class in hadur2.core.duel">DuelController</a></dt>
-<dd>
-<div class="block">A duel-only move switch: in effect only in a duel; melee and team endgames play as with it off.</div>
-</dd>
+<dd>&nbsp;</dd>
 <dt><a href="hadur2/core/melee/MeleeEnergyPolicy.html#duelPower(double,double,double)" class="member-name-link">duelPower(double, double, double)</a> - Static method in class hadur2.core.melee.<a href="hadur2/core/melee/MeleeEnergyPolicy.html" title="class in hadur2.core.melee">MeleeEnergyPolicy</a></dt>
 <dd>
 <div class="block">The duel gun's 1v1 table, mirrored here: melee code does not reach into the duel.</div>
@@ -8212,6 +8210,11 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#END-2">END-2</a>: they are disabled; drive straight at them.</div>
 </dd>
+<dt><a href="hadur2/core/duel/MoveDesign.html#RAM_HEAT" class="member-name-link">RAM_HEAT</a> - Static variable in class hadur2.core.duel.<a href="hadur2/core/duel/MoveDesign.html" title="class in hadur2.core.duel">MoveDesign</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#RAM-4">RAM-4</a>: once the opponent is a confirmed rammer (<a class="req" href="../requirements.html#RAM-2">RAM-2</a>), the duel plays as with heatjit on
+ (<a class="req" href="../requirements.html#MOVE-11">MOVE-11</a>'s gun-heat wave offered, <a class="req" href="../requirements.html#MOVE-13">MOVE-13</a>'s hold off) for the rest of the battle.</div>
+</dd>
 <dt><a href="hadur2/core/melee/MeleeProfileFolder.html#RAM_RANGE" class="member-name-link">RAM_RANGE</a> - Static variable in class hadur2.core.melee.<a href="hadur2/core/melee/MeleeProfileFolder.html" title="class in hadur2.core.melee">MeleeProfileFolder</a></dt>
 <dd>
 <div class="block">A scan this close is a robot touching, or about to touch, Hadur: a ram.</div>
@@ -8236,6 +8239,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur2/core/model/RoundStats.html#ramEscapeTicks" class="member-name-link">ramEscapeTicks</a> - Variable in class hadur2.core.model.<a href="hadur2/core/model/RoundStats.html" title="class in hadur2.core.model">RoundStats</a></dt>
 <dd>
 <div class="block">3.5: duel ticks spent running from a charging rammer (<a class="req" href="../requirements.html#RAM-2">RAM-2</a>).</div>
+</dd>
+<dt><a href="hadur2/core/duel/DuelController.html#ramHeat(boolean,boolean)" class="member-name-link">ramHeat(boolean, boolean)</a> - Static method in class hadur2.core.duel.<a href="hadur2/core/duel/DuelController.html" title="class in hadur2.core.duel">DuelController</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#RAM-4">RAM-4</a>: whether the duel plays heatjit for being against a confirmed rammer.</div>
 </dd>
 <dt><a href="hadur2/core/policy/RammerPolicy.html#rammedThisRound()" class="member-name-link">rammedThisRound()</a> - Method in class hadur2.core.policy.<a href="hadur2/core/policy/RammerPolicy.html" title="class in hadur2.core.policy">RammerPolicy</a></dt>
 <dd>
