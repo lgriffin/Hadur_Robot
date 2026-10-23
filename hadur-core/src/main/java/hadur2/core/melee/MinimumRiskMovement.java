@@ -407,6 +407,7 @@ public class MinimumRiskMovement {
         if (openingSpot == null) openingSpot = openingSpot(me);
         View v = new View(me, energy, now, others, enemies, new ArrayList<>(bullets), plan, mates);
         if (!mates.isEmpty() && !modes.isEmpty()) v.pull = pull(me, energy, others, enemies, now, mates, modes);
+        if (!mates.isEmpty() && modes.contains(TeamModes.Mode.SCREEN)) screen(v, now);
         List<Point2D.Double> candidates = candidates(me, others, enemies, now, mates);
         lastCandidates = candidates.size();
         Point2D.Double best = null;
@@ -575,6 +576,21 @@ public class MinimumRiskMovement {
         double angle = mean + (rank - (n - 1) / 2.0) * spread;
         double r = DiaUtils.limit(PACK_MIN_RADIUS, PACK_RADIUS_SHARE * nearest, PACK_MAX_RADIUS);
         return DiaUtils.project(t, angle, r);
+    }
+
+    /**
+     * TMODE-6: a teammate screens Hadur from an enemy as another enemy does: each enemy's
+     * distance to its nearest other robot, which decides whether Hadur at a point would be its
+     * closest (MMOVE-2), takes the living teammates in view too (Ogi counts every robot nearer
+     * the enemy, teammates included).
+     */
+    static void screen(View v, long now) {
+        for (int i = 0; i < v.enemies.size(); i++) {
+            Point2D.Double e = v.enemies.get(i).location;
+            for (Roster.Mate m : v.mates) {
+                v.nearestOther[i] = Math.min(v.nearestOther[i], e.distance(m.at(now)));
+            }
+        }
     }
 
     /** TMODE-3: the enemies seen lately within {@link #GANG_RANGE} of {@code p}. */
