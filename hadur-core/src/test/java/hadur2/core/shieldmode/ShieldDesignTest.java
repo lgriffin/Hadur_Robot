@@ -314,6 +314,43 @@ class ShieldDesignTest {
         }
     }
 
+    // ---- SHIELD-16: Saguaro's body-turn base
+
+    @Test
+    @Tag("SHIELD-16")
+    @DisplayName("SHIELD-16: the prior switch parses, stays out of 'all' and the shipped design, and adds the fifth base")
+    void priorParses() {
+        ShieldDesign d = ShieldDesign.parse("hold,prior");
+        assertTrue(d.hold && d.prior);
+        assertEquals("hold,prior", d.toString());
+        assertEquals(ShieldMode.MAX_BASES, d.bases());
+        assertFalse(ShieldDesign.parse("all").prior);
+        assertFalse(ShieldDesign.SHIPPED.prior);
+        assertFalse(ShieldDesign.NONE.prior);
+    }
+
+    @Test
+    @Tag("SHIELD-16")
+    @DisplayName("SHIELD-16: a gun aimed from the tick before, turned with the body, is foreseen by Saguaro's base only")
+    void priorBodyTurnBase() {
+        // The enemy steps 8 px east and turns 0.03 rad between the tick before firing and the
+        // firing tick; its bullet leaves the firing point at the heading aimed from the tick
+        // before plus that turn.
+        double heading = ShieldGeometry.bearing(ENEMY_X, ENEMY_Y, MY_X, MY_Y) + 0.03;
+        for (String flags : new String[] {"turn", "prior"}) {
+            mode(flags);
+            long fire = 20;
+            mode.onScan(ENEMY, fire - 1, MY_X, MY_Y, 0, 0, ENEMY_X, ENEMY_Y, Math.PI, 0);
+            mode.onScan(ENEMY, fire, MY_X, MY_Y, 0, 0, ENEMY_X + 8, ENEMY_Y, Math.PI + 0.03, 0);
+            mode.onEnemyShot(fire, 0.1);
+            double d = 19.7 * 20;
+            mode.onHitByBullet(fire + 20, 0.1, ENEMY_X + 8 + Math.sin(heading) * d,
+                ENEMY_Y + Math.cos(heading) * d, heading);
+            String sb = lastSb();
+            assertTrue(sb.contains(flags.equals("turn") ? ",0,0.10" : ",1,0.10"), flags + ": " + sb);
+        }
+    }
+
     // ---- SHIELD-14: waves from uncertain shots
 
     @Test

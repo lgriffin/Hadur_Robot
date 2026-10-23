@@ -28,6 +28,9 @@ import java.util.Locale;
  * <li>{@code trial} (SHIELD-15): every duel opponent, listed or not, starts in shield mode; an
  *     unlisted one leaves it for the battle once the shield fails Ogi's trial (see
  *     {@link #trialFails}). Listed opponents play as without it. Not part of {@code all}.</li>
+ * <li>{@code prior} (SHIELD-16): the body-turn base is Saguaro's: head-on from where the enemy
+ *     stood on the tick before it fired (base 0), turned by its body turn on the firing tick,
+ *     instead of from the firing point. Implies the fifth base. Not part of {@code all}.</li>
  * </ul>
  */
 public final class ShieldDesign {
@@ -52,7 +55,7 @@ public final class ShieldDesign {
     public static final int TRIAL_BLANK_HITS = 6;
 
     /** 3.12's shield: every switch off. */
-    public static final ShieldDesign NONE = new ShieldDesign(false, false, false, false, false, false, false);
+    public static final ShieldDesign NONE = new ShieldDesign(false, false, false, false, false, false, false, false);
 
     /**
      * The design the robot ships (SHIELD-13; SHIELD-14's wall since 3.15, +0.19 +/- 0.09 APS in the
@@ -74,9 +77,11 @@ public final class ShieldDesign {
     public final boolean wall;
     /** SHIELD-15: shield mode on trial against every unlisted duel opponent. */
     public final boolean trial;
+    /** SHIELD-16: the body-turn base from the enemy's position on the tick before it fired. */
+    public final boolean prior;
 
     private ShieldDesign(boolean hold, boolean learn, boolean mode, boolean stay, boolean turn,
-                         boolean wall, boolean trial) {
+                         boolean wall, boolean trial, boolean prior) {
         this.hold = hold;
         this.learn = learn;
         this.mode = mode;
@@ -84,11 +89,12 @@ public final class ShieldDesign {
         this.turn = turn;
         this.wall = wall;
         this.trial = trial;
+        this.prior = prior;
     }
 
     /**
      * The design a comma-separated list of switch names turns on ({@code hold}, {@code learn},
-     * {@code mode}, {@code stay}, {@code turn}, {@code wall}, {@code trial}, or {@code all}); blank
+     * {@code mode}, {@code stay}, {@code turn}, {@code wall}, {@code trial}, {@code prior}, or {@code all}); blank
      * is {@link #NONE}.
      *
      * @param flags the switches
@@ -97,7 +103,7 @@ public final class ShieldDesign {
      */
     public static ShieldDesign parse(String flags) {
         boolean hold = false, learn = false, mode = false, stay = false, turn = false,
-            wall = false, trial = false;
+            wall = false, trial = false, prior = false;
         for (String raw : flags.split(",")) {
             String f = raw.trim().toLowerCase(Locale.ROOT);
             switch (f) {
@@ -109,12 +115,13 @@ public final class ShieldDesign {
                 case "turn": turn = true; break;
                 case "wall": wall = true; break;
                 case "trial": trial = true; break;
+                case "prior": prior = true; break;
                 case "all": hold = learn = mode = stay = turn = true; break;
                 default: throw new IllegalArgumentException("unknown shield switch: " + raw);
             }
         }
-        if (!(hold || learn || mode || stay || turn || wall || trial)) return NONE;
-        return new ShieldDesign(hold, learn, mode, stay, turn, wall, trial);
+        if (!(hold || learn || mode || stay || turn || wall || trial || prior)) return NONE;
+        return new ShieldDesign(hold, learn, mode, stay, turn, wall, trial, prior);
     }
 
     /**
@@ -139,9 +146,9 @@ public final class ShieldDesign {
             || lostRounds >= TRIAL_LOST_ROUNDS || failing;
     }
 
-    /** The head-on bases the predictors use: four, or five with the body-turn base. */
+    /** The head-on bases the predictors use: four, or five with a body-turn base. */
     public int bases() {
-        return turn ? ShieldMode.MAX_BASES : ShieldMode.BASES;
+        return turn || prior ? ShieldMode.MAX_BASES : ShieldMode.BASES;
     }
 
     @Override
@@ -154,6 +161,7 @@ public final class ShieldDesign {
         if (turn) b.append(",turn");
         if (wall) b.append(",wall");
         if (trial) b.append(",trial");
+        if (prior) b.append(",prior");
         return b.length() == 0 ? "none" : b.substring(1);
     }
 }

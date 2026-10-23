@@ -1251,6 +1251,7 @@ Nullstride's list with (docs/bench/local/2026-10-12_plan90-pc-read.md).
 | SHIELD-13 | Ubiquitous | The robot shall ship shield mode with the hold, learn, mode and stay switches on and the turn switch off, and its shield list shall hold the 103 robots of Nullstride 2.3.3's list that the 8-seed step 3 sweep admitted by the D5 rule, beside the 97 it held in 3.12. | R9 |
 | SHIELD-14 | Optional | Where the wall switch is on, when the ledger's read of an enemy shot is uncertain (a wall hit inferred on the same scan interval), the core shall build a shield wave at the ledger's best-guess power, the wall-split power nearest the enemy's last sure shot, and match that wave to a hit or an intercepted bullet by distance and time without its power, instead of building none. | R9 |
 | SHIELD-15 | Optional | Where the trial switch is on, when a duel opponent not on the shield list is first scanned, the core shall start shield mode against it, and shall leave shield mode for the rest of the battle once its bullets have done more than 35 damage plus 0.25 for each shot it fired, or two rounds in shield mode are lost, or under half of at least 20 ended enemy bullets were shot down, or six of its bullets hit with none shot down, or it rams Hadur. Listed opponents shall play as without the switch. | R9 |
+| SHIELD-16 | Optional | Where the prior switch is on, the core shall add a fifth head-on base to the shield predictors: the bearing from where the enemy stood on the tick before it fired to where Hadur stood then, turned by the enemy's body turn on the firing tick. | R9 |
 
 - **Switches** (`ShieldDesign.parse`): `hold`, `learn`, `mode`, `stay`, `turn`, `wall`, or `all` (the first five; `wall` is not in `all`). The
   ablation builds edit the one line `SHIPPED = parse("")` (`hadur-bench/build-ablation.sh`:
@@ -1294,6 +1295,13 @@ Nullstride's list with (docs/bench/local/2026-10-12_plan90-pc-read.md).
   `onRoundEnded(tick, won)`. A ram ends the trial outright, whatever `stay` says. Purpose: the
   field-wide alternative to a longer list (docs/plan-mode-table.md, stage 4). Tests:
   `ShieldTrialTest`.
+- **SHIELD-16** (off by default; `sprior`, suffix `sp`). Saguaro 1.0's second head-on option
+  (`BulletShieldMode.buildEnemyWave`, index 1): head-on from the shooter's position on the tick
+  before it fired, plus its body turn on the firing tick. SHIELD-12's base starts from the firing
+  point instead, so it misses a gun that turns with the body while the robot moves. Saguaro's
+  shipped shield aim picks this base (options 1, 5 or 9) for SavantMicro, GateKeeper and
+  ButtHead, three of the bots our shield fails on with no predictor exact
+  (docs/plan-shield-quality.md). Tests: `ShieldDesignTest` (SHIELD-16).
 - **SB records** (measurement, every design): each bullet that hits us from a listed opponent
   writes `SB,round,tick,class,ordinal,predicted,power`, class `off`, `nowave`, `missed`
   (a shield bullet was fired at it), `first` or `unshielded`, so the plan's step 2 can classify
