@@ -8777,6 +8777,11 @@ loadScripts(document, 'script');</script>
  robot), this opponent's and this seed's, and it finished ok; otherwise null, and the battle is
  fought again.</div>
 </dd>
+<dt><a href="hadur/bench/Bench.html#resumedTeam(java.nio.file.Path,java.lang.String,java.lang.String)" class="member-name-link">resumedTeam(Path, String, String)</a> - Static method in class hadur.bench.<a href="hadur/bench/Bench.html" title="class in hadur.bench">Bench</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#BENCH-96">BENCH-96</a>: the battle in <code>dir</code> if a stopped run finished it with <code>teamRobot</code> and it
+ reads back as a good result, else null (the battle is fought again).</div>
+</dd>
 <dt><a href="hadur2/core/memory/OpponentProfile.html#reversalRate()" class="member-name-link">reversalRate()</a> - Method in class hadur2.core.memory.<a href="hadur2/core/memory/OpponentProfile.html" title="class in hadur2.core.memory">OpponentProfile</a></dt>
 <dd>
 <div class="block">Velocity reversals per scan.</div>
@@ -10978,6 +10983,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur2/core/role/RoleResolver.html#TEAM_BUILT" class="member-name-link">TEAM_BUILT</a> - Static variable in class hadur2.core.role.<a href="hadur2/core/role/RoleResolver.html" title="class in hadur2.core.role">RoleResolver</a></dt>
 <dd>
 <div class="block">Whether a Team strand exists to build; false until the Team plan adds one.</div>
+</dd>
+<dt><a href="hadur/bench/Bench.html#TEAM_DONE" class="member-name-link">TEAM_DONE</a> - Static variable in class hadur.bench.<a href="hadur/bench/Bench.html" title="class in hadur.bench">Bench</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#BENCH-96">BENCH-96</a>: written beside a finished team battle: the team that fought it, then its stray data files.</div>
 </dd>
 <dt><a href="hadur2/core/melee/MeleeEnergyPolicy.html#TEAM_FULL_POWER_ENERGY" class="member-name-link">TEAM_FULL_POWER_ENERGY</a> - Static variable in class hadur2.core.melee.<a href="hadur2/core/melee/MeleeEnergyPolicy.html" title="class in hadur2.core.melee">MeleeEnergyPolicy</a></dt>
 <dd>

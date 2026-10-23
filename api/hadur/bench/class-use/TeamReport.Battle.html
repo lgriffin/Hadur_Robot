@@ -76,6 +76,14 @@ loadScripts(document, 'script');</script>
 <div class="block">Reads one battle's directory: <code>team.csv</code> for the scores, <code>rounds.csv</code> and
  the <code>member-N.log</code> files for the rest.</div>
 </div>
+<div class="col-first odd-row-color"><code>(package private) static <a href="../TeamReport.Battle.html" title="class in hadur.bench">TeamReport.Battle</a></code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">Bench.</span><code><a href="../Bench.html#resumedTeam(java.nio.file.Path,java.lang.String,java.lang.String)" class="member-name-link">resumedTeam</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/nio/file/Path.html" title="class or interface in java.nio.file" class="external-link">Path</a>&nbsp;dir,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;teamRobot,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;member)</code></div>
+<div class="col-last odd-row-color">
+<div class="block"><a class="req" href="../../../../requirements.html#BENCH-96">BENCH-96</a>: the battle in <code>dir</code> if a stopped run finished it with <code>teamRobot</code> and it
+ reads back as a good result, else null (the battle is fought again).</div>
+</div>
 </div>
 <div class="caption"><span>Method parameters in <a href="../package-summary.html">hadur.bench</a> with type arguments of type <a href="../TeamReport.Battle.html" title="class in hadur.bench">TeamReport.Battle</a></span></div>
 <div class="summary-table three-column-summary">
