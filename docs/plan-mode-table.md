@@ -53,6 +53,13 @@ Each stage is a mode, built duel-only and off by default, chosen per opponent by
    round 1, where Hadur's `learn` starts cold every battle. Build both as shield options: opening
    reposition (`move`) and a shipped per-opponent aim. Train on the 55 bots Saguaro moving-shields
    and the ~60 Saguaro shields where Hadur's sweep rejected the shield. Expected +0.2 to +0.5.
+   **Ogi's alternative, one rule for the field:** Ogi shields every opponent from the first shot
+   and drops the shield for the battle once it fails a trial: more than 35 damage plus 0.25 a
+   shot taken, two rounds lost, under half of 20+ bullets shot down, or no bullet shot down after
+   6 hits. While shielding it steps around a home spot and retreats if the enemy comes within
+   38 px plus 3.4 times its bullet speed. A trial needs no table and no PC training; its cost is the
+   damage budget against bots the shield cannot stop. Build it as a shield option (`trial`) and
+   compare it with the trained table on the same bots before choosing.
 5. **Census of the full table against 3.15** before any release, with an A/A arm, gate +0.5 with the
    interval above +0.3 (the plan-top5 bar).
 
