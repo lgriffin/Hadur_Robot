@@ -193,4 +193,51 @@ class TeamModesTest {
         Point2D.Double d2 = solo.chooseDestination(pt(600, 600), 100, 2, near, 12, MeleeStrategy.Plan.normal());
         assertEquals(d2, d1);
     }
+
+    @Test
+    @Tag("TMODE-5")
+    @DisplayName("TMODE-5: the prey is the fresh enemy nearest the team's centre, its energy weighing 1.2 a point")
+    void preyChoice() {
+        EnemyTracker t = new EnemyTracker(field(1200, 1200));
+        scan(t, "near 1.0", 600, 800, 100, 100);
+        scan(t, "weak 1.0", 600, 900, 10, 100);
+        // near: 200 + 120 = 320; weak: 300 + 12 = 312.
+        assertEquals("weak 1.0", MinimumRiskMovement.prey(pt(600, 600), t.alive(), 100).name);
+        assertNull(MinimumRiskMovement.prey(pt(600, 600), t.alive(), 100 + MinimumRiskMovement.CAP_MAX_AGE));
+    }
+
+    @Test
+    @Tag("TMODE-5")
+    @DisplayName("TMODE-5: two members on one side of the prey take places either side of it, 70 degrees apart, at 0.74 of the nearer one's distance")
+    void pincerSlots() {
+        List<EnemyInfo> prey = enemies(pt(600, 900)).alive();
+        Point2D.Double me = pt(550, 500);
+        Point2D.Double mate = pt(650, 500);
+        Point2D.Double a = MinimumRiskMovement.pincerSlot(me, prey, 100, mates(mate));
+        Point2D.Double b = MinimumRiskMovement.pincerSlot(mate, prey, 100, mates(me));
+        double r = 0.74 * pt(600, 900).distance(me);
+        assertEquals(r, a.distance(600, 900), 1e-6);
+        assertEquals(r, b.distance(600, 900), 1e-6);
+        double ba = Math.atan2(a.x - 600, a.y - 900);
+        double bb = Math.atan2(b.x - 600, b.y - 900);
+        assertEquals(Math.toRadians(70), Math.abs(hadur2.core.physics.Angles.normalRelativeAngle(ba - bb)), 1e-9);
+        // Each keeps its own side: Hadur, west of the mate, takes the western place.
+        assertTrue(a.x < 600 && b.x > 600, a + " " + b);
+    }
+
+    @Test
+    @Tag("TMODE-5")
+    @DisplayName("TMODE-5: with PACK Hadur is drawn to its pincer place; ganged, GANG's regroup comes first; under 20 energy, no hunt")
+    void packPull() {
+        List<EnemyInfo> prey = enemies(pt(600, 1000)).alive();
+        Set<TeamModes.Mode> pack = EnumSet.of(TeamModes.Mode.PACK);
+        MinimumRiskMovement.Pull p = MinimumRiskMovement.pull(pt(600, 400), 100, 3, prey, 100, mates(pt(700, 400)), pack);
+        assertEquals(MinimumRiskMovement.pincerSlot(pt(600, 400), prey, 100, mates(pt(700, 400))), p.at);
+        assertEquals(MinimumRiskMovement.PACK_FLOOR, p.floor, 0);
+        assertNull(MinimumRiskMovement.pull(pt(600, 400), 19, 3, prey, 100, mates(pt(700, 400)), pack));
+        List<EnemyInfo> two = enemies(pt(700, 600), pt(600, 750)).alive();
+        p = MinimumRiskMovement.pull(pt(600, 600), 100, 3, two, 100, mates(pt(200, 600)),
+            EnumSet.of(TeamModes.Mode.PACK, TeamModes.Mode.GANG));
+        assertEquals(pt(200, 600), p.at);
+    }
 }

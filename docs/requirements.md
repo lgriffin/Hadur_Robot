@@ -1128,6 +1128,7 @@ MMOVE-8 the melee strand, WEAVE-7 and WEAVE-8 the conductor.
 | TMODE-2 | Optional | Where the SOFT mode is played, a detected shot's virtual bullets shall weigh 1/(1+k)² for the k living teammates nearer its source than Hadur was when it was fired, and a shot weighing under 0.1 shall make none. | T7 |
 | TMODE-3 | Optional | Where the GANG mode is played, while two or more enemies seen within the cap age are within 250 px of Hadur, each candidate's risk shall be scaled by e^(0.5 (to − from) / 100) for its and Hadur's distances to the nearest living teammate; otherwise, while that holds for a living teammate, by the same for the nearest such teammate, each distance floored at 300 px. The posture's term shall not be scaled. | T7 |
 | TMODE-4 | Optional | Where the FINISH mode is played, while the engine counts one enemy alive, that enemy was seen within the cap age, and Hadur has 30 energy or more, each candidate's risk shall be scaled by e^((to − from) / 100) for its and Hadur's distances to that enemy, each floored at 350 px, in place of TMODE-3. | T7 |
+| TMODE-5 | Optional | Where the PACK mode is played, while Hadur has 20 energy or more and is not drawn by TMODE-3's regroup or TMODE-4, each candidate's risk shall be scaled by e^((to − from) / 100), each distance floored at 40 px, toward Hadur's place in a pincer round the prey: the enemy seen within the cap age with the least distance from the members' centre plus 1.2 times its energy; the members ranked by bearing from the prey about their mean bearing and spread about it at most 70° apart, at 0.74 of the nearest member's distance, between 150 and 450 px. | T7 |
 
 ### T1 notes
 
@@ -1200,7 +1201,12 @@ MMOVE-8 the melee strand, WEAVE-7 and WEAVE-8 the conductor.
   `MeleeController.tick` reads the modes each tick on a team. SOFT is
   `MinimumRiskMovement.softWeight`; GANG and FINISH are `MinimumRiskMovement.pull`, a `Pull`
   that scales the risk in `risk`; LEARN turns on MMOVE-10 for that team.
-- **Ablations.** `build-ablation.sh tmsoft`, `tmgang`, `tmfin` and `tmlearn` force one mode on
+- **PACK (TMODE-5).** NightmareTeam's leader sends two or three members after each enemy, on
+  an arc round it. Hadur has no leader: every member works out the same prey from the
+  positions the team shares, and takes its own place on the arc by its bearing order, so the
+  places agree without orders on the link. GANG's regroup comes before the hunt; helping a
+  ganged teammate comes after it. The gun still picks its own target.
+- **Ablations.** `build-ablation.sh tmsoft`, `tmgang`, `tmfin`, `tmlearn` and `tmpack` force one mode on
   against every team. One census run of each scores that mode against all 46 teams, which is what
   the table is built from.
 - **Team only.** Off a team the controller sets no modes and calls MMOVE-3's own bullet path;

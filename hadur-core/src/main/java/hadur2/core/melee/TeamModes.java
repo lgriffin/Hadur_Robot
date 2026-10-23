@@ -30,7 +30,9 @@ public final class TeamModes {
         /** TMODE-4: against the last enemy, with energy to spare, close in. */
         FINISH,
         /** MMOVE-10 as a mode: dodge the team's learned aims. */
-        LEARN
+        LEARN,
+        /** TMODE-5: hunt as a pack: every member closes on the same enemy from its own side (NightmareTeam's pincer). */
+        PACK
     }
 
     /** Ablation switches: the mode for every team the table does not name. */
@@ -38,12 +40,13 @@ public final class TeamModes {
     public static final boolean FORCE_GANG = false;
     public static final boolean FORCE_FINISH = false;
     public static final boolean FORCE_LEARN = false;
+    public static final boolean FORCE_PACK = false;
 
     /** No modes: today's team movement. */
     public static final Set<Mode> NONE = Collections.unmodifiableSet(EnumSet.noneOf(Mode.class));
 
     /** The modes for teams the table does not name. */
-    static final Set<Mode> DEFAULT = forced(FORCE_SOFT, FORCE_GANG, FORCE_FINISH, FORCE_LEARN);
+    static final Set<Mode> DEFAULT = forced(FORCE_SOFT, FORCE_GANG, FORCE_FINISH, FORCE_LEARN, FORCE_PACK);
 
     /** Opposing member class to its team's modes; filled from the per-team screens. */
     static final Map<String, Set<Mode>> TABLE = table();
@@ -52,11 +55,16 @@ public final class TeamModes {
     }
 
     static Set<Mode> forced(boolean soft, boolean gang, boolean finish, boolean learn) {
+        return forced(soft, gang, finish, learn, false);
+    }
+
+    static Set<Mode> forced(boolean soft, boolean gang, boolean finish, boolean learn, boolean pack) {
         EnumSet<Mode> s = EnumSet.noneOf(Mode.class);
         if (soft) s.add(Mode.SOFT);
         if (gang) s.add(Mode.GANG);
         if (finish) s.add(Mode.FINISH);
         if (learn) s.add(Mode.LEARN);
+        if (pack) s.add(Mode.PACK);
         return Collections.unmodifiableSet(s);
     }
 
