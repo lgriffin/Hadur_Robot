@@ -393,7 +393,7 @@ public class MinimumRiskMovement {
         remember(me, now);
         if (openingSpot == null) openingSpot = openingSpot(me);
         View v = new View(me, energy, now, others, enemies, new ArrayList<>(bullets), plan, mates);
-        if (!mates.isEmpty() && !modes.isEmpty()) v.pull = pull(me, energy, enemies, now, mates, modes);
+        if (!mates.isEmpty() && !modes.isEmpty()) v.pull = pull(me, energy, others, enemies, now, mates, modes);
         List<Point2D.Double> candidates = candidates(me, others, enemies, now, mates);
         lastCandidates = candidates.size();
         Point2D.Double best = null;
@@ -470,14 +470,16 @@ public class MinimumRiskMovement {
 
     /**
      * TMODE-3, TMODE-4: the point a team member is drawn to, or null. With
-     * {@link TeamModes.Mode#FINISH}, one enemy left and at least {@link #FINISH_ENERGY}, that
-     * enemy, to {@link #FINISH_FLOOR}. Else with {@link TeamModes.Mode#GANG}: when
+     * {@link TeamModes.Mode#FINISH}, one enemy left by the engine's count ({@code others} less
+     * the teammates in view), seen lately, and at least {@link #FINISH_ENERGY}, that enemy, to
+     * {@link #FINISH_FLOOR}: early in a round the tracker holds only the enemies scanned so far. Else with {@link TeamModes.Mode#GANG}: when
      * {@link #GANG_SIZE} enemies are within {@link #GANG_RANGE} of Hadur, its nearest teammate;
      * when they are of a teammate, the nearest such teammate, to {@link #HELP_FLOOR}.
      */
-    static Pull pull(Point2D.Double me, double energy, List<EnemyInfo> enemies, long now,
+    static Pull pull(Point2D.Double me, double energy, int others, List<EnemyInfo> enemies, long now,
                      List<Roster.Mate> mates, Set<TeamModes.Mode> modes) {
-        if (modes.contains(TeamModes.Mode.FINISH) && enemies.size() == 1 && energy >= FINISH_ENERGY) {
+        if (modes.contains(TeamModes.Mode.FINISH) && enemies.size() == 1 && others - mates.size() == 1
+                && enemies.get(0).age(now) < CAP_MAX_AGE && energy >= FINISH_ENERGY) {
             return new Pull(enemies.get(0).location, FINISH_FLOOR, FINISH_PULL);
         }
         if (!modes.contains(TeamModes.Mode.GANG)) return null;

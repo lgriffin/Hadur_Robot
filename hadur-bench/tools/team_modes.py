@@ -24,11 +24,11 @@ from pathlib import Path
 
 MODES = ("SOFT", "GANG", "FINISH", "LEARN")
 
-ROW = re.compile(r"^\|\s*(?P<team>[^|]+?)\s*\|\s*[^|]*\|\s*[^|]*\|\s*(?P<mean>[+-]?\d+(?:\.\d+)?)\s*±\s*(?P<ci>\d+(?:\.\d+)?)\s*\|\s*$")
+ROW = re.compile(r"^\|\s*(?P<team>[^|]+?)\s*\|\s*[^|]*\|\s*[^|]*\|\s*(?P<mean>[+-]?\d+(?:\.\d+)?)(?:\s*±\s*(?P<ci>\d+(?:\.\d+)?))?\s*\|\s*$")
 
 
 def paired(report):
-    """Team name to (mean, ci) from a report's `Paired A/B` table."""
+    """Team name to (mean, ci) from a report's `Paired A/B` table; ci is inf for a single pair."""
     out = {}
     inside = False
     for line in Path(report).read_text(encoding="utf-8").splitlines():
@@ -43,7 +43,8 @@ def paired(report):
             break
         m = ROW.match(line)
         if m and not m.group("team").startswith("**"):
-            out[m.group("team")] = (float(m.group("mean")), float(m.group("ci")))
+            ci = m.group("ci")
+            out[m.group("team")] = (float(m.group("mean")), float(ci) if ci else float("inf"))
     if not out:
         raise SystemExit(f"{report}: no paired rows")
     return out
@@ -73,8 +74,12 @@ def member_classes(jar):
 
 
 def java_lines(entries, classes):
-    """`t.put(...)` lines for TeamModes.table(); a class two teams share with different modes is left out."""
+    """`t.put(...)` lines for TeamModes.table(). A class two teams share is left out unless both
+    picked the same modes: an unpicked team counts as picking none, since the entry would reach it too."""
     by_class = {}
+    for team in classes:
+        for c in classes[team]:
+            by_class.setdefault(c, set()).add(tuple(sorted(entries.get(team, ()))))
     for team, modes in entries.items():
         for c in classes.get(team, []):
             by_class.setdefault(c, set()).add(tuple(sorted(modes)))
@@ -85,6 +90,8 @@ def java_lines(entries, classes):
             clashes.append(c)
             continue
         modes = set(next(iter(picks)))
+        if not modes:
+            continue
         flags = ", ".join("true" if m in modes else "false" for m in MODES)
         lines.append(f'        t.put("{c}", forced({flags}));')
     return lines, clashes

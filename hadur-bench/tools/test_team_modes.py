@@ -80,6 +80,19 @@ class TeamModesTest(unittest.TestCase):
         self.assertEqual([], lines)
         self.assertEqual(["s.Same"], clashes)
 
+    def test_a_class_an_unpicked_team_shares_is_left_out(self):
+        lines, clashes = team_modes.java_lines({"x": {"SOFT"}}, {"x": ["s.Same", "s.Own"], "y": ["s.Same"]})
+        self.assertEqual(['        t.put("s.Own", forced(true, false, false, false));'], lines)
+        self.assertEqual(["s.Same"], clashes)
+
+    def test_a_single_pair_row_has_no_interval(self):
+        p = Path(self.d) / "one.md"
+        p.write_text("## Paired A/B: x\n\n| Opponent team | Candidate share | Baseline share | Paired diff (pp) |\n"
+                     "|---|---|---|---|\n| a.ATeam 1 | 50.0% | 48.0% | +2.0 |\n", encoding="utf-8")
+        mean, ci = team_modes.paired(str(p))["a.ATeam 1"]
+        self.assertEqual(2.0, mean)
+        self.assertEqual(float("inf"), ci)
+
 
 if __name__ == "__main__":
     unittest.main()

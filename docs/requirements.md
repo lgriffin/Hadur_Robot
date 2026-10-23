@@ -1127,7 +1127,7 @@ MMOVE-8 the melee strand, WEAVE-7 and WEAVE-8 the conductor.
 | TMODE-1 | State | While in melee on a team with a living teammate, movement shall play the team modes the mode table holds for the first living enemy whose class (its name without version or duplicate marker) the table names, or, for a team the table does not name, the modes the build forces on (none in the shipped build). | T7 |
 | TMODE-2 | Optional | Where the SOFT mode is played, a detected shot's virtual bullets shall weigh 1/(1+k)² for the k living teammates nearer its source than Hadur was when it was fired, and a shot weighing under 0.1 shall make none. | T7 |
 | TMODE-3 | Optional | Where the GANG mode is played, while two or more enemies seen within the cap age are within 250 px of Hadur, each candidate's risk shall be scaled by e^(0.5 (to − from) / 100) for its and Hadur's distances to the nearest living teammate; otherwise, while that holds for a living teammate, by the same for the nearest such teammate, each distance floored at 300 px. The posture's term shall not be scaled. | T7 |
-| TMODE-4 | Optional | Where the FINISH mode is played, while one enemy is alive and Hadur has 30 energy or more, each candidate's risk shall be scaled by e^((to − from) / 100) for its and Hadur's distances to that enemy, each floored at 350 px, in place of TMODE-3. | T7 |
+| TMODE-4 | Optional | Where the FINISH mode is played, while the engine counts one enemy alive, that enemy was seen within the cap age, and Hadur has 30 energy or more, each candidate's risk shall be scaled by e^((to − from) / 100) for its and Hadur's distances to that enemy, each floored at 350 px, in place of TMODE-3. | T7 |
 
 ### T1 notes
 

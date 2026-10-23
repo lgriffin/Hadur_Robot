@@ -108,20 +108,20 @@ class TeamModesTest {
         Point2D.Double me = pt(600, 600);
         // Ganged: two enemies near Hadur.
         List<EnemyInfo> near = enemies(pt(700, 600), pt(600, 750)).alive();
-        MinimumRiskMovement.Pull p = MinimumRiskMovement.pull(me, 100, near, 100,
+        MinimumRiskMovement.Pull p = MinimumRiskMovement.pull(me, 100, 3, near, 100,
             mates(pt(200, 600), pt(1000, 1000)), gang);
         assertEquals(pt(200, 600), p.at);
         assertEquals(0, p.floor, 0);
         // Not ganged, a teammate is: help it, to HELP_FLOOR.
         List<EnemyInfo> onMate = enemies(pt(200, 700), pt(300, 600)).alive();
-        p = MinimumRiskMovement.pull(me, 100, onMate, 100, mates(pt(200, 600), pt(1000, 1000)), gang);
+        p = MinimumRiskMovement.pull(me, 100, 3, onMate, 100, mates(pt(200, 600), pt(1000, 1000)), gang);
         assertEquals(pt(200, 600), p.at);
         assertEquals(MinimumRiskMovement.HELP_FLOOR, p.floor, 0);
         // Nobody ganged.
         List<EnemyInfo> apart = enemies(pt(100, 1100), pt(1100, 100)).alive();
-        assertNull(MinimumRiskMovement.pull(me, 100, apart, 100, mates(pt(200, 600)), gang));
+        assertNull(MinimumRiskMovement.pull(me, 100, 3, apart, 100, mates(pt(200, 600)), gang));
         // Without the mode, nothing.
-        assertNull(MinimumRiskMovement.pull(me, 100, near, 100, mates(pt(200, 600)), TeamModes.NONE));
+        assertNull(MinimumRiskMovement.pull(me, 100, 3, near, 100, mates(pt(200, 600)), TeamModes.NONE));
     }
 
     @Test
@@ -137,15 +137,20 @@ class TeamModesTest {
 
     @Test
     @Tag("TMODE-4")
-    @DisplayName("TMODE-4: with FINISH, one enemy left and 30 energy, Hadur is drawn to it, to 350 px")
+    @DisplayName("TMODE-4: with FINISH, one enemy left by the engine's count, seen lately, and 30 energy, Hadur is drawn to it, to 350 px")
     void finishPull() {
         Set<TeamModes.Mode> finish = EnumSet.of(TeamModes.Mode.FINISH);
         List<EnemyInfo> last = enemies(pt(1000, 600)).alive();
-        MinimumRiskMovement.Pull p = MinimumRiskMovement.pull(pt(600, 600), 30, last, 100, mates(pt(200, 600)), finish);
+        MinimumRiskMovement.Pull p = MinimumRiskMovement.pull(pt(600, 600), 30, 2, last, 100, mates(pt(200, 600)), finish);
         assertEquals(pt(1000, 600), p.at);
         assertEquals(MinimumRiskMovement.FINISH_FLOOR, p.floor, 0);
-        assertNull(MinimumRiskMovement.pull(pt(600, 600), 29.9, last, 100, mates(pt(200, 600)), finish));
-        assertNull(MinimumRiskMovement.pull(pt(600, 600), 100, enemies(pt(1000, 600), pt(100, 100)).alive(), 100,
+        assertNull(MinimumRiskMovement.pull(pt(600, 600), 29.9, 2, last, 100, mates(pt(200, 600)), finish));
+        assertNull(MinimumRiskMovement.pull(pt(600, 600), 100, 3, enemies(pt(1000, 600), pt(100, 100)).alive(), 100,
+            mates(pt(200, 600)), finish));
+        // Early in a round only one enemy is scanned, but the engine counts more alive.
+        assertNull(MinimumRiskMovement.pull(pt(600, 600), 100, 4, last, 100, mates(pt(200, 600)), finish));
+        // The last enemy's sighting has gone stale.
+        assertNull(MinimumRiskMovement.pull(pt(600, 600), 100, 2, last, 100 + MinimumRiskMovement.CAP_MAX_AGE,
             mates(pt(200, 600)), finish));
     }
 
