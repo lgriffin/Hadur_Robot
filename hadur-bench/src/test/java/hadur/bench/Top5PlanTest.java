@@ -38,6 +38,7 @@ class Top5PlanTest {
                 case "aa" -> "aa";
                 case "nowarm" -> "xw";
                 case "heatjit" -> "hj";
+                case "ramheat" -> "rh";
                 case "swall" -> "sw";
                 case "hitclr" -> "hc";
                 case "pkern" -> "pk";
@@ -85,7 +86,7 @@ class Top5PlanTest {
 
     @Test
     @Tag("BENCH-94")
-    @DisplayName("the factorial design is a balanced 2^(8-4) over the factorial arms, each built by pc-top5-s2.queue")
+    @DisplayName("the factorial design is a balanced 2^(8-4) over the factorial arms, each built by both Stage 2 queues")
     void factorialIsBalancedAndBuilt() throws IOException {
         List<Arms.Arm> arms = Arms.parse(Path.of("plans/top5-factorial.arms"), Path.of("").toAbsolutePath());
         List<String> design = lines("plans/top5-factorial.design");
@@ -109,8 +110,28 @@ class Top5PlanTest {
         }
         assertEquals(16, points.size());
         for (int i = 1; i < factors.length; i++) assertEquals(8, highs[i], factors[i] + " is high in half the points");
-        Set<Path> built = builtBy("plans/pc-top5-s2.queue");
-        for (Arms.Arm a : arms) assertTrue(built.contains(a.jar()), a.label() + " is built: " + a.jar());
+        for (String q : List.of("plans/pc-top5-s2.queue", "plans/pc-top5-s2b.queue")) {
+            Set<Path> built = builtBy(q);
+            for (Arms.Arm a : arms) assertTrue(built.contains(a.jar()), a.label() + " is built by " + q + ": " + a.jar());
+        }
+        assertTrue(Files.readString(Path.of("plans/pc-top5-s2b.queue")).contains("--set top5-census-half2.txt"),
+            "half 2 runs the other half of the census");
+    }
+
+    @Test
+    @Tag("BENCH-94")
+    @DisplayName("Stage 3 and 4 arms parse, and pc-top5-s34.queue builds every arm's jar and runs the rammers then the census")
+    void rammerAndCandidateQueueBuildsItsArms() throws IOException {
+        Set<Path> built = builtBy("plans/pc-top5-s34.queue");
+        String queue = Files.readString(Path.of("plans/pc-top5-s34.queue"));
+        for (String file : List.of("plans/top5-ram.arms", "plans/top5-rc.arms")) {
+            assertTrue(queue.contains("--arms " + file), "the queue runs " + file);
+            List<Arms.Arm> arms = Arms.parse(Path.of(file), Path.of("").toAbsolutePath());
+            assertEquals(List.of("c", "aa"), arms.subList(0, 2).stream().map(Arms.Arm::label).toList());
+            for (Arms.Arm a : arms) assertTrue(built.contains(a.jar()), a.label() + " is built: " + a.jar());
+        }
+        assertTrue(queue.contains("--set panel-rammers.txt") && queue.contains("--set census-312.txt"));
+        assertEquals(87, Opponent.load(Path.of("panel-rammers.txt")).size());
     }
 
     @Test
@@ -119,7 +140,7 @@ class Top5PlanTest {
     void analysisIsTested() throws IOException {
         assertTrue(Files.isRegularFile(Path.of("../data/tools/multiarm.py")));
         assertTrue(Files.readString(Path.of("../.github/workflows/build.yml")).contains("test_multiarm.py"));
-        for (String q : List.of("plans/pc-top5.queue", "plans/pc-top5-s2.queue")) {
+        for (String q : List.of("plans/pc-top5.queue", "plans/pc-top5-s2.queue", "plans/pc-top5-s2b.queue", "plans/pc-top5-s34.queue")) {
             assertTrue(Files.readString(Path.of(q)).contains("../data/tools/multiarm.py"), q);
         }
     }

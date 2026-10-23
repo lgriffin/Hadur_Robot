@@ -768,9 +768,11 @@ public final class DuelController {
             boolean split = MoveDesign.GUN_SPLIT;
             boolean learning = split && gunClassifier.learning();
             // MOVE-23: a listed opponent plays as with heatjit off (the hold on, no gun-heat wave).
-            moveController.setProvisionalHold(split ? learning : (MoveDesign.HEAT_HOLD || !stackOn));
+            // RAM-4: a confirmed rammer gets heatjit (the gun-heat wave, no hold) whatever the switches say.
+            boolean ramHeat = ramHeat(duelOnly(MoveDesign.RAM_HEAT, enemiesTotal), rammer.confirmed());
+            moveController.setProvisionalHold(split ? learning : ((MoveDesign.HEAT_HOLD && !ramHeat) || !stackOn));
             // MOVE-17: the gate closes the gun-heat wave once the gun is called learning (the split wins).
-            moveController.setProvisionalReady(provisionalOffered(MoveDesign.HEAT_WAVE && stackOn,
+            moveController.setProvisionalReady(provisionalOffered((MoveDesign.HEAT_WAVE || ramHeat) && stackOn,
                 MoveDesign.GUN_GATE && !split, gunClassifier.learning(),
                 enemyGunHeat(in).at(in.time()) <= in.gunCoolingRate()), in.time());
             if (split) {
@@ -800,6 +802,11 @@ public final class DuelController {
     }
 
     /** A duel-only move switch: in effect only in a duel; melee and team endgames play as with it off. */
+    /** RAM-4: whether the duel plays heatjit for being against a confirmed rammer. */
+    static boolean ramHeat(boolean switchOn, boolean confirmedRammer) {
+        return switchOn && confirmedRammer;
+    }
+
     static boolean duelOnly(boolean switchOn, int enemiesTotal) {
         return switchOn && enemiesTotal <= 1;
     }

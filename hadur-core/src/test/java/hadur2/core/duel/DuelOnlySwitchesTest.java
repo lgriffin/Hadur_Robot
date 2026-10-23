@@ -47,6 +47,17 @@ class DuelOnlySwitchesTest {
     }
 
     @Test
+    @Tag("RAM-4")
+    @DisplayName("ramheat on plays heatjit only against a confirmed rammer, only in a duel, and ships off")
+    void ramHeatOnlyOnConfirmedRammer() {
+        assertTrue(DuelController.ramHeat(true, true));
+        assertFalse(DuelController.ramHeat(true, false), "not before RAM-2's confirmation");
+        assertFalse(DuelController.ramHeat(false, true));
+        assertFalse(DuelController.ramHeat(DuelController.duelOnly(true, 3), true), "never in melee");
+        assertFalse(MoveDesign.RAM_HEAT, "off by default");
+    }
+
+    @Test
     @Tag("MOVE-19")
     @DisplayName("bhb on logs an intercept whose wave was found; off or no wave does not")
     void interceptLogged() {

@@ -1,0 +1,520 @@
+block	arm	opponent	seed	round	disableTick	lastOutputTick	silentTicks	won	survived	roundTicks	kind	longestSkipRun	skipsBefore	noScore	fault
+top5-F	c	bbo.TheRoof_1.4.3	4	0	430	429	1	1	1	479	harmless	101	104	y	
+top5-F	c	bzdp.BoxCar_2.0	1	34	271	270	1	1	1	312	harmless	109	109	y	
+top5-F	xw	cjm.Che_1.2	3	34	588	587	1	1	1	663	harmless	75	75	y	
+top5-F	c	kano.gamma.KanoGamma_1.8	2	0	373	372	1	1	1	490	harmless	33	35	y	
+top5-F	c	suh.nano.AntiGravityL_1.01	4	0	948	947	1	1	1	1061	harmless	37	38	y	
+top5-s0-u12	c	donjezza.Jezza_1.0	1	34	325	324	1	1	1	375	harmless	100	100	y	
+top5-s0-u12	xw	kawigi.mini.Fhqwhgads_1.1	1	34	809	808	1	1	1	875	harmless	84	84	y	
+top5-s0-u12	c	mwj.A1176183_1.0	1	0	520	519	1	1	1	633	harmless	37	42	y	
+top5-s0-u12	xw	sample.SittingDuck_1.0	1	0	292	291	1	1	1	359	harmless	83	88	y	
+top5-s0-u12	c	sheldor.mini.FoilistMC_1.0	1	34	1750	1749	1	1	1	1865	harmless	35	37	y	
+top5-s0-u12	c	sheldor.mini.Foilist_1.3.1	1	3	804	803	1	1	1	855	harmless	99	99	y	
+top5-s0-u12	c	slugzilla.OrbitLinear_1.1	1	0	91	90	1		0	243	costly	90	90	y	
+top5-s0-u12	c	spinnercat.mega.Tardis_1.2	1	0	375	374	1	1	1	442	harmless	83	87	y	
+top5-s0-p12	aa	Krabb.sliNk.Garm_0.9u	1	7	949	851	98		0	1009	costly	0	0	y	
+top5-s0-p12	hv	aaa.r.ScalarR_0.005h.053_noshield	1	27	6283	6141	142		0	6313	costly	1	2	y	
+top5-s0-p12	hv	ab.DengerousRoBatra_1.3	1	3	657	607	50		0	765	costly	1	3	y	
+top5-s0-p12	hv	abc.Shadow_3.83c	1	9	729	606	123		0	759	costly	1	1	y	
+top5-s0-p12	c	ags.Midboss_1q.fast	1	6	814	703	111		0	869	costly	4	5	y	
+top5-s0-p12	aa	ags.rougedc.RougeDC_willow	1	1	1238	1237	1	1	1	1296	harmless	92	93	y	ConcurrentModificationException
+top5-s0-p12	c	ags.rougedc.RougeDC_willow	1	8	864	732	132		0	894	costly	0	0	y	
+top5-s0-p12	c	ags.rougedc.RougeDC_willow	1	14	699	628	71		0	788	costly	0	0	y	
+top5-s0-p12	aa	alpha.RainingFire_1.0	1	22	883	753	130	0	0	913	costly	1	1	y	
+top5-s0-p12	hv	apv.ScruchiPu_1.0	1	32	674	543	131		0	704	costly	0	0	y	
+top5-s0-p12	xw	ar.horizon.Horizon_1.2.2	1	7	832	709	123		0	862	costly	1	1	y	
+top5-s0-p12	aa	aw.Gilgalad_1.99.5c	1	5	998	937	61	0	0	1090	costly	0	0	y	ConcurrentModificationException
+top5-s0-p12	c	bayen.UbaRamLT_1.0	1	1	233	111	122	0	0	263	costly	1	1	y	
+top5-s0-p12	aa	catcat20.shape.Theta_0.018	1	29	886	786	100		0	948	costly	1	1	y	
+top5-s0-p12	xw	cb.Domogled_1.2	1	3	3008	2864	144		0	3038	costly	1	1	y	
+top5-s0-p12	aa	chase.pm.Pytko_1.0	1	0	953	952	1	1	1	1018	harmless	85	92	y	
+top5-s0-p12	hv	chase.pm.Pytko_1.0	1	19	870	750	120	0	0	908	costly	0	0	y	
+top5-s0-p12	hv	chase.pm.Pytko_1.0	1	20	133	74	59		0	229	costly	0	0	y	
+top5-s0-p12	xw	chase.pm.Pytko_1.0	1	12	904	829	75	1	1	980	harmless	1	1	y	
+top5-s0-p12	xw	chase.pm.Pytko_1.0	1	28	940	807	133		0	970	costly	1	1	y	
+top5-s0-p12	aa	cs.Nene_1.0.5	1	1	913	912	1	1	1	989	harmless	74	75	y	
+top5-s0-p12	c	cs.Nene_1.0.5	1	25	722	595	127		0	756	costly	1	1	y	
+top5-s0-p12	xw	cs.Nene_1.0.5	1	9	879	749	130		0	909	costly	0	0	y	
+top5-s0-p12	hv	cuoq.Kakera_1.0	1	32	1246	1120	126		0	1276	costly	0	0		
+top5-s0-p12	xw	cw.megas.Gridd_0.4	1	31	573	512	61		0	670	costly	0	0	y	
+top5-s0-p12	c	dans.Cinnamon_1.2	1	34	298	297	1	1	1	376	harmless	72	72	y	
+top5-s0-p12	aa	davidalves.Firebird_0.25	1	26	716	586	130	0	0	746	costly	1	1	y	
+top5-s0-p12	xw	davidalves.net.DuelistMicroMkII_1.1	1	17	593	466	127		0	623	costly	0	0	y	
+top5-s0-p12	c	dsekercioglu.mega.WhiteFang_2.8.1	1	16	727	612	115		0	774	costly	0	0	y	
+top5-s0-p12	xw	dsekercioglu.mega.WhiteFang_2.8.1	1	6	852	728	124		0	882	costly	0	0	y	
+top5-s0-p12	c	dz.OthoMicro_0.12	1	22	411	279	132		0	441	costly	0	0	y	
+top5-s0-p12	hv	dz.OthoMicro_0.12	1	17	890	838	52		0	993	costly	1	1	y	
+top5-s0-p12	c	erdnis.Rover_0.3	1	32	590	497	93	1	1	648	harmless	0	0	y	
+top5-s0-p12	xw	exauge.LemonDrop_1.6.130	1	0	53	52	1		0	205	costly	52	52	y	
+top5-s0-p12	aa	fm.claire_1.7	1	34	267	266	1	1	1	381	harmless	36	36	y	
+top5-s0-p12	c	fromHell.BlackBox_0.0.2	1	6	688	625	63		0	785	costly	0	0	y	
+top5-s0-p12	xw	fromHell.BlackBox_0.0.2	1	15	826	776	50		0	938	costly	0	0	y	
+top5-s0-p12	xw	fromHell.CHCl3_1.4.2	1	6	1056	996	60		0	1158	costly	0	0	y	
+top5-s0-p12	hv	gadsky.Gadsky_1.01	1	14	1019	884	135		0	1049	costly	0	0	y	
+top5-s0-p12	hv	gh.GresSuffurd_0.4.13	1	32	721	660	61		0	815	costly	0	0	y	
+top5-s0-p12	c	gre.svman4.Morfeas_1.4.3	1	14	1004	895	109		0	1049	costly	0	0	y	
+top5-s0-p12	hv	gre.svman4.Morfeas_1.4.3	1	5	1101	1043	58		0	1200	costly	0	0	y	
+top5-s0-p12	xw	gre.svman4.Morfeas_1.4.3	1	9	729	607	122		0	759	costly	0	0	y	
+top5-s0-p12	xw	gre.svman4.Morfeas_1.4.3	1	12	738	692	46		0	848	costly	0	0	y	
+top5-s0-p12	xw	gre.svman4.Morfeas_1.4.3	1	17	613	482	131	0	0	643	costly	0	0	y	
+top5-s0-p12	aa	hlavko.micro.Flex_1.5	1	12	507	372	135		0	537	costly	0	0	y	
+top5-s0-p12	hv	hlavko.micro.Flex_1.5	1	12	991	868	123		0	1021	costly	0	0	y	
+top5-s0-p12	aa	jk.nano.Machete_2.0	1	34	249	248	1	1	1	296	harmless	103	103	y	
+top5-s0-p12	aa	kawigi.sbf.FloodSonnet_0.9	1	0	110	109	1		0	262	costly	109	109	y	
+top5-s0-p12	hv	kc.mega.BeepBoop_2.0	1	10	740	671	69		0	832	costly	0	0	y	
+top5-s0-p12	xw	kc.micro.Needle_0.101	1	9	1163	1033	130		0	1193	costly	1	1	y	
+top5-s0-p12	hv	microtestbotpack.MicroTestBot_1.0	1	34	519	518	1	1	1	619	harmless	50	50	y	
+top5-s0-p12	hv	mue.Ascendant_1.2.27	1	12	839	745	94	0	0	898	costly	0	0	y	ConcurrentModificationException
+top5-s0-p12	xw	mue.Ascendant_1.2.27	1	11	557	509	48		0	669	costly	0	0	y	
+top5-s0-p12	c	nz.jdc.nano.PatternAdept_1.0	1	34	404	403	1	1	1	477	harmless	77	77	y	
+top5-s0-p12	c	oog.mega.saguaro.Saguaro_1.0	1	0	296	295	1	1	1	333	harmless	113	115	y	
+top5-s0-p12	xw	pa3k.Viper_5.03	1	23	1019	904	115		0	1069	costly	0	0	y	
+top5-s0-p12	c	paulk.PaulV3_1.7	1	17	769	728	41		0	885	costly	0	0	y	
+top5-s0-p12	xw	paulk.PaulV3_1.7	1	17	657	524	133		0	687	costly	0	0	y	
+top5-s0-p12	xw	paulk.PaulV3_1.7	1	32	844	722	122		0	874	costly	1	1	y	
+top5-s0-p12	c	pc.Wavelet_1.5	1	5	1843	1771	72		0	1935	costly	1	1	y	
+top5-s0-p12	c	penguin.Joker_.611wr	1	14	2235	2166	69		0	2324	costly	0	0	y	
+top5-s0-p12	c	penguin.Joker_.611wr	1	19	947	821	126	0	0	977	costly	0	0	y	
+top5-s0-p12	hv	penguin.Joker_.611wr	1	4	1166	1028	138		0	1202	costly	0	0	y	
+top5-s0-p12	hv	pez.mini.Tityus_0.9.1	1	3	749	702	47		0	857	costly	0	0	y	
+top5-s0-p12	xw	pez.mini.Tityus_0.9.1	1	9	747	619	128		0	777	costly	0	0	y	
+top5-s0-p12	xw	pez.rumble.Ali_0.4.9	1	32	916	863	53		0	1021	costly	0	0	y	
+top5-s0-p12	xw	pez.rumble.CassiusClay_2rho.02no	1	4	1994	1882	112		0	2042	costly	1	1	y	
+top5-s0-p12	xw	pez.rumble.CassiusClay_2rho.02no	1	9	3308	3182	126		0	3344	costly	1	1	y	
+top5-s0-p12	c	rcb.Vanessa03_0	1	28	687	552	135		0	717	costly	0	0	y	
+top5-s0-p12	xw	robar.nano.BlackWidow_1.3	1	12	486	415	71		0	576	costly	0	0	y	
+top5-s0-p12	hv	romz.robot.guessfactor.TeasingFox_0.2	1	0	396	395	1	1	1	474	harmless	72	78	y	
+top5-s0-p12	aa	rsalesc.mega.Knight_0.6.28	1	1	2900	2792	108		0	2947	costly	1	1	y	
+top5-s0-p12	c	sheldor.micro.Continuation_1.1	1	3	943	888	55		0	1051	costly	1	1	y	
+top5-s0-p12	xw	sheldor.micro.EpeeistDC_3.0	1	3	705	661	44	0	0	813	costly	0	0	y	ConcurrentModificationException
+top5-s0-p12	xw	sheldor.micro.EpeeistDC_3.0	1	9	745	619	126		0	775	costly	0	0	y	
+top5-s0-p12	hv	sheldor.micro.Epeeist_3.7	1	8	770	647	123		0	800	costly	0	0	y	
+top5-s0-p12	c	slugzilla.Basilisk_3.9	1	7	811	689	122		0	841	costly	0	0	y	
+top5-s0-p12	xw	slugzilla.Basilisk_3.9	1	3	764	718	46		0	872	costly	0	0	y	
+top5-s0-p12	c	spinnercat.mega.Tardis_1.2	1	12	666	539	127		0	696	costly	0	0	y	
+top5-s0-p12	aa	stelo.Mirror_1.1	1	34	261	260	1	1	1	369	harmless	42	42	y	
+top5-s0-p12	aa	stelo.Spread_0.9	1	0	974	973	1	1	1	1050	harmless	74	79	y	
+top5-s0-p12	aa	suh.nano.CrossL_1.00	1	0	429	428	1	1	1	528	harmless	51	56	y	
+top5-s0-p12	aa	test.Podgy_4.0	1	33	709	617	92		0	769	costly	0	0	y	
+top5-s0-p12	xw	test.Podgy_4.0	1	34	414	413	1	1	1	518	harmless	46	46	y	
+top5-s0-p12	xw	trab.Crusader_0.1.7	1	19	1097	1049	48	0	0	1208	costly	1	1	y	
+top5-s0-p12	hv	trab.nano.AinippeNano_1.3	1	0	60	59	1		0	212	costly	59	59	y	
+top5-s0-p12	c	tw.Exterminator_1.0	1	16	2399	2270	129		0	2429	costly	0	0	y	
+top5-s0-p12	hv	tw.Exterminator_1.0	1	1	543	420	123		0	573	costly	0	0	y	
+top5-s0-p12	hv	tw.Exterminator_1.0	1	4	2257	2206	51		0	2365	costly	1	1	y	
+top5-s0-p12	hv	tw.Exterminator_1.0	1	27	3253	3131	122	0	0	3283	costly	1	1	y	
+top5-s0-p12	c	voidious.micro.Jen_1.11	1	9	667	563	104		0	719	costly	0	0	y	
+top5-s0-p12	c	wcsv.Stampede_1.3.3	1	0	537	536	1	1	1	587	harmless	100	108	y	
+top5-s0-p12	hv	wiki.Wolverine_2.1	1	1	607	606	1	1	1	726	harmless	31	31	y	
+top5-s0-p12	aa	wiki.nano.Flick_1.0	1	24	2100	2061	39		0	2217	costly	0	0	y	
+top5-s0-p12	hv	wiki.nano.Flick_1.0	1	8	2501	2375	126		0	2531	costly	0	0	y	
+top5-s0-p12	hv	xander.cat.Fiona_1.4	1	1	728	598	130		0	758	costly	0	0	y	
+top5-s0-p12	xw	yabot.YaBot_0.1	1	34	227	226	1	1	1	336	harmless	41	41	y	
+top5-s0-p18	xw	Legend.Biogon_1.5	1	0	447	446	1	1	1	554	harmless	43	48	y	
+top5-s0-p18	hv	SFS.SamsSecondRobot_1.0	1	34	238	237	1	1	1	344	harmless	44	44	y	
+top5-s0-p18	xw	SFS.SamsSecondRobot_1.0	1	0	301	300	1	1	1	380	harmless	71	77	y	
+top5-s0-p18	xw	ab.DengerousRoBatra_1.3	1	8	769	649	120	1	1	800	harmless	0	0	y	
+top5-s0-p18	xw	abc.Shadow_3.83c	1	0	1095	1094	1	1	1	1128	harmless	117	121	y	
+top5-s0-p18	aa	ad.Quest_0.10	1	34	850	849	1	1	1	957	harmless	43	43	y	
+top5-s0-p18	xw	ags.Midboss_1q.fast	1	3	910	779	131		0	940	costly	1	2	y	
+top5-s0-p18	hv	ags.micro.Carpet_1.1	1	32	986	946	40	0	0	1099	costly	0	0	y	ConcurrentModificationException
+top5-s0-p18	xw	alpha.RainingFire_1.0	1	31	986	853	133	0	0	1016	costly	0	0	y	
+top5-s0-p18	aa	apv.NanoLauLectrik_1.0	1	10	513	390	123		0	543	costly	1	1	y	
+top5-s0-p18	xw	apv.NanoLauLectrik_1.0	1	26	613	572	41	1	1	723	harmless	0	0	y	
+top5-s0-p18	hv	apv.ScruchiPu_1.0	1	3	661	527	134		0	691	costly	1	2	y	
+top5-s0-p18	c	ar.horizon.Horizon_1.2.2	1	4	1224	1139	85		0	1300	costly	0	0	y	
+top5-s0-p18	hv	ary.FourWD_1.3d	1	0	1117	1116	1	1	1	1216	harmless	51	52	y	
+top5-s0-p18	hv	brainfade.Fallen_0.63	1	0	1254	1253	1	1	1	1309	harmless	95	98	y	
+top5-s0-p18	aa	chase.pm.Pytko_1.0	1	0	153	152	1	0	0	305	costly	152	152	y	
+top5-s0-p18	aa	cuoq.Kakera_1.0	1	34	573	572	1	1	1	668	harmless	55	55	y	
+top5-s0-p18	aa	cw.megas.Gridd_0.4	1	14	826	691	135	0	0	856	costly	1	1	y	ConcurrentModificationException
+top5-s0-p18	hv	cx.micro.Blur_0.2	1	18	717	586	131		0	747	costly	0	0	y	
+top5-s0-p18	aa	damij.mega.Boque_aaah	1	34	1033	1032	1	1	1	1136	harmless	47	47	y	
+top5-s0-p18	c	damij.mega.Boque_aaah	1	34	1238	1237	1	1	1	1282	harmless	106	106	y	
+top5-s0-p18	aa	davidalves.net.Duelist_0.1.6src	1	4	726	601	125		0	756	costly	0	0	y	
+top5-s0-p18	aa	dft.Cardigan_1.09	1	14	716	591	125		0	746	costly	0	0		
+top5-s0-p18	hv	dft.Guppy_1.0	1	0	377	376	1	1	1	493	harmless	34	41	y	
+top5-s0-p18	xw	dft.Guppy_1.0	1	34	249	248	1	1	1	348	harmless	51	51	y	
+top5-s0-p18	aa	dhn.Immortal_1.0	1	34	462	461	1	1	1	575	harmless	37	37	y	
+top5-s0-p18	aa	dmh.robocode.robot.BlackDeath_9.2	1	34	1296	1295	1	1	1	1332	harmless	114	114	y	
+top5-s0-p18	xw	dmh.robocode.robot.BlackDeath_9.2	1	34	882	881	1	1	1	1001	harmless	31	31	y	
+top5-s0-p18	hv	doka.KillerRabbit_1.0	1	34	343	342	1	1	1	433	harmless	60	60	y	
+top5-s0-p18	hv	erdnis.Rover_0.3	1	9	664	527	137		0	694	costly	0	0	y	
+top5-s0-p18	aa	ethdsy.Malacka_2.4	1	0	407	406	1	1	1	487	harmless	70	73	y	
+top5-s0-p18	xw	exauge.Leopard_1.1.019	1	0	155	154	1	1	1	273	harmless	32	35	y	
+top5-s0-p18	xw	fromHell.BlackBox_0.0.2	1	2	737	686	51		0	847	costly	0	0	y	
+top5-s0-p18	xw	fromHell.CHCl3_1.4.2	1	7	629	532	97		0	702	costly	0	0	y	
+top5-s0-p18	aa	geep.mini.GPBotB_1.1	1	0	60	59	1		0	212	costly	59	59	y	
+top5-s0-p18	hv	ghent.ArthurPanzergon_1.0.0	1	34	345	344	1	1	1	454	harmless	41	42	y	
+top5-s0-p18	hv	grybgoofy.GoofyBot_0.10	1	34	795	794	1	1	1	866	harmless	79	79	y	
+top5-s0-p18	c	hamilton.Hamilton_1.0	1	0	684	683	1	1	1	784	harmless	50	54	y	
+top5-s0-p18	xw	hamilton.Hamilton_1.0	1	1	768	767	1	1	1	884	harmless	34	34	y	
+top5-s0-p18	hv	jaybot.adv.bots.JayBot_2.0	1	6	698	582	116	1	1	733	harmless	0	0	y	
+top5-s0-p18	xw	jaybot.adv.bots.JayBot_2.0	1	34	355	354	1	1	1	442	harmless	63	63	y	
+top5-s0-p18	aa	jd.Nullstride_2.3.3	1	2	877	876	1	1	1	923	harmless	104	104	y	
+top5-s0-p18	c	jd.Nullstride_2.3.3	1	3	1260	1211	49		0	1368	costly	0	0	y	
+top5-s0-p18	xw	jk.mega.DrussGT_3.1.16	1	19	1433	1303	130		0	1463	costly	1	2	y	
+top5-s0-p18	c	jk.nano.Machete_2.0	1	34	226	225	1	1	1	345	harmless	31	31	y	
+top5-s0-p18	c	jk.precise.Wintermute_0.8	1	1	982	940	42		0	1092	costly	0	0	y	
+top5-s0-p18	xw	kawigi.mini.Coriantumr_1.1	1	28	201	79	122		0	231	costly	0	0	y	
+top5-s0-p18	hv	kawigi.mini.Fhqwhgads_1.1	1	1	752	751	1	1	1	870	harmless	32	32	y	
+top5-s0-p18	xw	kawigi.sbf.FloodMicro_1.5	1	34	465	464	1	1	1	579	harmless	36	36	y	
+top5-s0-p18	hv	kb.PingPong_1.0	1	0	738	737	1	1	1	804	harmless	84	90	y	
+top5-s0-p18	xw	kc.mega.BeepBoop_2.0	1	1	844	778	66		0	938	costly	0	0	y	
+top5-s0-p18	c	kc.micro.Needle_0.101	1	17	801	678	123		0	831	costly	0	0	y	
+top5-s0-p18	xw	kinsen.melee.Angsaichmophobia_1.8c	1	0	627	626	1	1	1	721	harmless	56	60	y	
+top5-s0-p18	aa	kinsen.nano.Senticous_1.0	1	0	470	469	1	1	1	544	harmless	76	82	y	
+top5-s0-p18	hv	kinsen.nano.Senticous_1.0	1	0	611	610	1	1	1	705	harmless	56	59	y	
+top5-s0-p18	xw	kronenthaler.Basilisk_1.0	1	34	345	344	1	1	1	460	harmless	35	35	y	
+top5-s0-p18	hv	m3thos.Eva02_0.7.1	1	0	583	582	1	1	1	695	harmless	38	46	y	
+top5-s0-p18	xw	m3thos.Eva02_0.7.1	1	0	463	462	1	1	1	564	harmless	49	52	y	
+top5-s0-p18	hv	marcinek.TopGun_1.3	1	34	340	339	1	1	1	404	harmless	86	86	y	
+top5-s0-p18	aa	mc2.enemy.Original_0.9	1	0	3234	3233	1	1	1	3325	harmless	59	66	y	
+top5-s0-p18	aa	mc2.enemy.Original_0.9	1	34	1230	1229	1	1	1	1321	harmless	59	59	y	
+top5-s0-p18	hv	mc2.enemy.Original_0.9	1	0	1765	1764	1	1	1	1858	harmless	57	62	y	
+top5-s0-p18	xw	md.Pasta_1.1	1	34	390	389	1	1	1	504	harmless	36	36	y	
+top5-s0-p18	c	microtestbotpack.MicroTestBot_1.0	1	34	694	693	1	1	1	798	harmless	46	46	y	
+top5-s0-p18	xw	microtestbotpack.MicroTestBot_1.0	1	34	1143	1142	1	1	1	1257	harmless	36	36	y	
+top5-s0-p18	aa	mue.Ascendant_1.2.27	1	3	687	634	53		0	795	costly	0	0	y	
+top5-s0-p18	c	mue.Ascendant_1.2.27	1	6	993	860	133		0	1023	costly	0	0	y	
+top5-s0-p18	aa	mwj.A1176183_1.0	1	0	284	1	283		0	436	costly	283	283	y	
+top5-s0-p18	hv	myl.nano.Graviton_1.10	1	34	423	422	1	1	1	526	harmless	47	47	y	
+top5-s0-p18	c	nat.BlackHole_2.0gamma	1	3	670	615	55		0	778	costly	1	1	y	
+top5-s0-p18	aa	nz.jdc.nano.AralT_1.1	1	34	365	364	1	1	1	434	harmless	81	81	y	
+top5-s0-p18	hv	nz.jdc.nano.PatternAdept_1.0	1	0	291	290	1	1	1	395	harmless	46	52	y	
+top5-s0-p18	xw	nz.jdc.nano.PatternAdept_1.0	1	34	343	342	1	1	1	449	harmless	44	44	y	
+top5-s0-p18	hv	oog.mega.saguaro.Saguaro_1.0	1	29	856	773	83	0	0	931	costly	0	0	y	ConcurrentModificationException
+top5-s0-p18	xw	oog.mega.saguaro.Saguaro_1.0	1	16	788	654	134		0	818	costly	0	0	y	
+top5-s0-p18	aa	paulk.PaulV3_1.7	1	7	579	502	77		0	662	costly	0	0	y	
+top5-s0-p18	c	penguin.Joker_.611wr	1	5	2331	2273	58		0	2431	costly	0	0	y	
+top5-s0-p18	xw	pez.mini.Tityus_0.9.1	1	7	632	582	50		0	740	costly	0	0	y	
+top5-s0-p18	aa	pez.rumble.CassiusClay_2rho.02no	1	34	743	742	1	1	1	858	harmless	35	35	y	
+top5-s0-p18	hv	pulsar.PulsarMax_0.8.9	1	14	827	703	124		0	859	costly	0	0	y	
+top5-s0-p18	aa	ratosh.Nobo_0.21	1	0	504	503	1	1	1	622	harmless	32	36	y	
+top5-s0-p18	c	ratosh.Nobo_0.21	1	34	549	548	1	1	1	593	harmless	106	106	y	
+top5-s0-p18	c	rc.yoda.Yoda_1.0.6c.fix	1	34	601	600	1	1	1	719	harmless	32	33	y	
+top5-s0-p18	xw	rcp.Kuramatron_1.0	1	1	201	200	1	1	1	262	harmless	89	95	y	
+top5-s0-p18	hv	sadoner.killer_0.2	1	12	490	367	123		0	520	costly	0	0	y	
+top5-s0-p18	c	sgp.SleepingGoat_1.1	1	19	526	467	59		0	620	costly	0	0	y	
+top5-s0-p18	c	sgp.SleepingGoat_1.1	1	34	422	421	1	1	1	527	harmless	45	45	y	
+top5-s0-p18	c	sheldor.micro.Continuation_1.1	1	21	750	643	107		0	803	costly	1	1	y	
+top5-s0-p18	hv	sheldor.micro.Continuation_1.1	1	16	924	871	53	0	0	1024	costly	0	0	y	
+top5-s0-p18	xw	sheldor.micro.Continuation_1.1	1	8	1050	927	123		0	1080	costly	0	0	y	
+top5-s0-p18	hv	sheldor.micro.EpeeistDC_3.0	1	20	1131	1054	77		0	1211	costly	0	0	y	
+top5-s0-p18	c	sheldor.mini.Foilist_1.3.1	1	6	992	896	96		0	1055	costly	0	0	y	
+top5-s0-p18	aa	sheldor.nano.Retreat_1.0	1	0	266	265	1	1	1	311	harmless	105	112	y	
+top5-s0-p18	xw	spinnercat.haiku.Refrigerator_1.1	1	34	444	443	1	1	1	563	harmless	31	31	y	
+top5-s0-p18	c	step.NanoBidu_1.0	1	22	706	595	111		0	747	costly	0	0	y	
+top5-s0-p18	hv	sul.Bicephal_1.2	1	34	202	201	1	1	1	271	harmless	81	81	y	
+top5-s0-p18	c	synapse.rsim.GeomancyBS_0.11	1	9	780	698	82	0	0	857	costly	1	1	y	
+top5-s0-p18	aa	voidious.micro.Jen_1.11	1	20	816	703	113		0	859	costly	1	1	y	
+top5-s0-p18	hv	voidious.micro.Jen_1.11	1	0	96	95	1		0	248	costly	95	95	y	
+top5-s0-p18	hv	voidious.perceptual.RetroGirl_1.0.0	1	34	1508	1507	1	1	1	1596	harmless	62	62	y	
+top5-s0-p18	xw	voidious.perceptual.RetroGirl_1.0.0	1	34	486	485	1	1	1	559	harmless	77	77	y	
+top5-s0-p18	aa	wcsv.Stampede_1.3.3	1	31	786	664	122		0	820	costly	0	0	y	
+top5-s0-p18	hv	wcsv.Stampede_1.3.3	1	19	654	523	131		0	684	costly	0	0	y	
+top5-s0-p18	aa	wiki.nano.Flick_1.0	1	25	1058	936	122		0	1088	costly	0	0	y	
+top5-s0-p18	aa	wiki.nano.Flick_1.0	1	34	1071	1070	1	1	1	1184	harmless	37	37	y	
+top5-s0-p18	xw	wiki.nano.Flick_1.0	1	0	616	615	1	1	1	735	harmless	31	34	y	
+top5-s0-p18	hv	wompi.Numbat_1.9	1	4	1274	1135	139	1	1	1286	harmless	0	0	y	
+top5-s0-p18	hv	xander.cat.Fiona_1.4	1	17	846	724	122	0	0	876	costly	3	3	y	
+top5-s0-p18	hv	yagami.Tidus_0.11	1	0	381	380	1	1	1	498	harmless	33	37	y	
+top5-s0-p18	xw	yagami.Tidus_0.11	1	34	276	275	1	1	1	394	harmless	32	32	y	
+top5-s0-p18	xw	zyx.mega.YersiniaPestis_3.0	1	8	823	711	112		0	869	costly	1	1	y	
+top5-s0-p22	aa	Fenix.FenixTrack_1.0	1	34	247	246	1	1	1	362	harmless	35	35	y	
+top5-s0-p22	c	Legend.Biogon_1.5	1	34	372	371	1	1	1	472	harmless	50	50	y	
+top5-s0-p22	hv	Legend.Biogon_1.5	1	0	515	514	1	1	1	578	harmless	87	91	y	
+top5-s0-p22	xw	Legend.Biogon_1.5	1	34	445	444	1	1	1	524	harmless	71	72	y	
+top5-s0-p22	aa	Lo_Ian.Gandalf_V4_4.0	1	0	452	451	1	1	1	539	harmless	63	69	y	
+top5-s0-p22	aa	Lo_Ian.Gandalf_V4_4.0	1	34	302	301	1	1	1	364	harmless	88	88	y	
+top5-s0-p22	aa	Polkwane.Intensive_1.0	1	34	863	862	1	1	1	954	harmless	59	59	y	
+top5-s0-p22	xw	ab.DengerousRoBatra_1.3	1	34	666	665	1	1	1	766	harmless	50	50	y	
+top5-s0-p22	aa	abc.Shadow_3.83c	1	13	866	832	34		0	986	costly	1	2	y	
+top5-s0-p22	hv	abc.Shadow_3.83c	1	13	740	691	49		0	847	costly	0	0	y	
+top5-s0-p22	xw	ags.Midboss_1q.fast	1	27	676	638	38		0	792	costly	1	1	y	
+top5-s0-p22	aa	ags.rougedc.RougeDC_willow	1	34	493	492	1	1	1	576	harmless	67	67	y	
+top5-s0-p22	c	apv.ScruchiPu_1.0	1	0	746	745	1	1	1	852	harmless	44	60	y	
+top5-s0-p22	xw	apv.ScruchiPu_1.0	1	24	487	399	88		0	551	costly	0	0	y	
+top5-s0-p22	c	ar.horizon.Horizon_1.2.2	1	25	1160	1014	146		0	1199	costly	1	1	y	
+top5-s0-p22	c	ary.FourWD_1.3d	1	0	1160	1159	1	1	1	1216	harmless	94	95	y	
+top5-s0-p22	c	ary.mini.Nimi_1.0	1	0	1504	1503	1	1	1	1586	harmless	68	72	y	
+top5-s0-p22	aa	axeBots.SilverSurfer_2.53.33fix	1	6	865	741	124		0	895	costly	1	1	y	
+top5-s0-p22	aa	bayen.UbaRamLT_1.0	1	6	335	200	135	1	1	351	harmless	0	0	y	
+top5-s0-p22	xw	bayen.UbaRamLT_1.0	1	34	194	193	1	1	1	279	harmless	65	65	y	
+top5-s0-p22	c	boe.Minerva_0.80	1	0	561	560	1	1	1	668	harmless	43	47	y	
+top5-s0-p22	aa	buba.Buba_0.3	1	34	439	383	56	1	1	558	harmless	31	31	y	
+top5-s0-p22	hv	buba.Buba_0.3	1	0	484	483	1	1	1	539	harmless	95	98	y	
+top5-s0-p22	hv	bvh.fry.Freya_0.82	1	0	81	80	1	1	1	230	harmless	80	80	y	
+top5-s0-p22	xw	bvh.fry.Freya_0.82	1	0	939	854	85	1	1	999	harmless	5	12	y	
+top5-s0-p22	hv	catcat20.Lambda_0.017	1	34	1099	1098	1	1	1	1213	harmless	36	37	y	
+top5-s0-p22	aa	catcat20.atom.Atom_0.51	1	0	259	258	1		0	411	costly	258	258	y	
+top5-s0-p22	aa	catcat20.atom.Atom_0.51	1	34	1424	1423	1	1	1	1539	harmless	35	36	y	
+top5-s0-p22	c	chase.pm.Pytko_1.0	1	14	985	857	128		0	1015	costly	1	1	y	
+top5-s0-p22	c	chase.pm.Pytko_1.0	1	31	1036	910	126		0	1066	costly	0	0	y	
+top5-s0-p22	xw	com.cohesiva.robocode.ManOwaR_1.0	1	34	697	696	1	1	1	778	harmless	69	69	y	
+top5-s0-p22	aa	cuoq.Kakera_1.0	1	10	904	774	130		0	934	costly	0	0	y	
+top5-s0-p22	aa	cx.Princess_1.0	1	0	583	582	1	1	1	660	harmless	73	77	y	
+top5-s0-p22	c	cx.micro.Blur_0.2	1	34	291	290	1	1	1	335	harmless	106	106	y	
+top5-s0-p22	xw	cx.micro.Blur_0.2	1	34	341	340	1	1	1	455	harmless	36	36	y	
+top5-s0-p22	aa	cyragia.Bot_1.1	1	0	412	411	1	1	1	464	harmless	98	104	y	
+top5-s0-p22	aa	damij.mega.Boque_aaah	1	34	666	665	1	1	1	784	harmless	32	32	y	
+top5-s0-p22	c	dans.Cinnamon_1.2	1	0	524	523	1	1	1	616	harmless	58	62	y	
+top5-s0-p22	c	dans.Cinnamon_1.2	1	34	359	358	1	1	1	473	harmless	36	36	y	
+top5-s0-p22	xw	davidalves.net.Duelist_0.1.6src	1	7	692	645	47		0	800	costly	1	3	y	
+top5-s0-p22	c	deo.virtual.RainbowBot_1.0	1	3	422	381	41		0	539	costly	0	0	y	
+top5-s0-p22	c	deo.virtual.RainbowBot_1.0	1	34	598	597	1	1	1	709	harmless	39	39	y	
+top5-s0-p22	xw	deo.virtual.RainbowBot_1.0	1	34	598	597	1	1	1	678	harmless	70	70	y	
+top5-s0-p22	c	dft.Guppy_1.0	1	34	220	219	1	1	1	284	harmless	86	86	y	
+top5-s0-p22	aa	dhn.Immortal_1.0	1	34	366	365	1	1	1	459	harmless	57	57	y	
+top5-s0-p22	c	dmh.robocode.robot.BlueBerry_0.5	1	34	310	309	1	1	1	427	harmless	33	33	y	
+top5-s0-p22	hv	dmh.robocode.robot.BlueBerry_0.5	1	0	406	405	1	1	1	521	harmless	35	41	y	
+top5-s0-p22	hv	dmh.robocode.robot.BlueBerry_0.5	1	34	234	233	1	1	1	316	harmless	68	68	y	
+top5-s0-p22	c	dmh.robocode.robot.GreenDragon_1.0	1	0	597	596	1	1	1	714	harmless	33	38	y	
+top5-s0-p22	xw	dmh.robocode.robot.GreenDragon_1.0	1	34	230	229	1	1	1	348	harmless	32	32	y	
+top5-s0-p22	aa	doka.KillerRabbit_1.0	1	0	550	549	1	1	1	592	harmless	108	116	y	
+top5-s0-p22	aa	doka.KillerRabbit_1.0	1	14	613	485	128		0	643	costly	0	0	y	
+top5-s0-p22	hv	doka.KillerRabbit_1.0	1	9	671	579	92	0	0	736	costly	0	0	y	
+top5-s0-p22	hv	dsekercioglu.mega.Raven_3.56j8	1	27	848	719	129		0	878	costly	1	1	y	
+top5-s0-p22	aa	dz.OthoMicro_0.12	1	0	462	461	1	1	1	576	harmless	36	42	y	
+top5-s0-p22	aa	dz.OthoMicro_0.12	1	31	829	700	129		0	859	costly	1	1	y	
+top5-s0-p22	c	dz.OthoMicro_0.12	1	34	390	389	1	1	1	466	harmless	74	74	y	
+top5-s0-p22	hv	ethdsy.Malacka_2.4	1	0	268	267	1	1	1	381	harmless	37	43	y	
+top5-s0-p22	aa	exauge.Leopard_1.1.019	1	0	204	203	1	1	1	276	harmless	78	80	y	
+top5-s0-p22	aa	exauge.Leopard_1.1.019	1	34	193	192	1	1	1	283	harmless	60	60	y	
+top5-s0-p22	xw	exauge.Leopard_1.1.019	1	0	160	159	1	1	1	278	harmless	32	35	y	
+top5-s0-p22	c	florent.XSeries.X2_0.17	1	0	75	1	74	0	0	227	costly	74	74	y	
+top5-s0-p22	xw	florent.XSeries.X2_0.17	1	34	765	764	1	1	1	862	harmless	53	54	y	
+top5-s0-p22	c	florent.test.Toad_0.14t	1	1	518	474	44		0	670	costly	38	70	y	
+top5-s0-p22	c	florent.test.Toad_0.14t	1	5	94	1	93	0	0	246	costly	82	82	y	
+top5-s0-p22	hv	florent.test.Toad_0.14t	1	3	726	681	45		0	878	costly	43	104	y	
+top5-s0-p22	hv	florent.test.Toad_0.14t	1	13	142	62	80		0	294	costly	72	72	y	
+top5-s0-p22	xw	florent.test.Toad_0.14t	1	1	334	287	47		0	486	costly	37	43	y	
+top5-s0-p22	xw	florent.test.Toad_0.14t	1	7	890	850	40		0	1042	costly	38	45	y	
+top5-s0-p22	xw	fm.claire_1.7	1	34	333	332	1	1	1	414	harmless	69	69	y	
+top5-s0-p22	xw	fromHell.BlackBox_0.0.2	1	4	1049	919	130		0	1079	costly	1	1	y	
+top5-s0-p22	c	fromHell.CHCl3_1.4.2	1	34	908	907	1	1	1	941	harmless	117	117	y	
+top5-s0-p22	xw	fromHell.CHCl3_1.4.2	1	14	955	878	77		0	1044	costly	0	0	y	
+top5-s0-p22	c	gadsky.Gadsky_1.01	1	34	520	442	78	1	1	594	harmless	76	77	y	
+top5-s0-p22	c	geep.mini.GPBotB_1.1	1	34	466	465	1	1	1	543	harmless	73	76	y	
+top5-s0-p22	aa	gh.GresSuffurd_0.4.13	1	2	715	615	100		0	785	costly	0	0	y	
+top5-s0-p22	aa	ghent.ArthurPanzergon_1.0.0	1	0	315	314	1	1	1	406	harmless	59	64	y	
+top5-s0-p22	c	gre.svman4.Morfeas_1.4.3	1	15	630	577	53		0	742	costly	0	0	y	
+top5-s0-p22	hv	gre.svman4.Morfeas_1.4.3	1	0	442	441	1	1	1	503	harmless	89	91	y	
+top5-s0-p22	hv	grybgoofy.GoofyBot_0.10	1	34	698	697	1	1	1	809	harmless	39	39	y	
+top5-s0-p22	xw	grybgoofy.GoofyBot_0.10	1	34	651	650	1	1	1	713	harmless	88	88	y	
+top5-s0-p22	aa	hamilton.Hamilton_1.0	1	2	1266	1205	61	1	1	1356	harmless	0	0	y	
+top5-s0-p22	xw	hamilton.Hamilton_1.0	1	0	1108	1107	1	1	1	1215	harmless	43	49	y	
+top5-s0-p22	c	jaybot.adv.bots.JayBot_2.0	1	34	481	480	1	1	1	519	harmless	112	112	y	
+top5-s0-p22	hv	jaybot.adv.bots.JayBot_2.0	1	0	492	491	1	1	1	603	harmless	39	43	y	
+top5-s0-p22	xw	jaybot.adv.bots.JayBot_2.0	1	34	323	322	1	1	1	422	harmless	51	51	y	
+top5-s0-p22	hv	jd.Nullstride_2.3.3	1	14	3074	2949	125		0	3104	costly	1	2	y	
+top5-s0-p22	xw	jd.Nullstride_2.3.3	1	2	1104	1006	98		0	1160	costly	0	0	y	
+top5-s0-p22	hv	jk.mega.DrussGT_3.1.16	1	6	2127	1995	132		0	2157	costly	0	0	y	
+top5-s0-p22	c	jk.mini.CunobelinDC_1.2	1	34	1309	1308	1	1	1	1407	harmless	52	52	y	
+top5-s0-p22	aa	kanishk.Fr0z3n_1.1	1	34	311	310	1	1	1	416	harmless	45	45	y	
+top5-s0-p22	c	kawigi.mini.Coriantumr_1.1	1	0	1177	1176	1	1	1	1284	harmless	43	47	y	
+top5-s0-p22	hv	kawigi.mini.Coriantumr_1.1	1	0	1210	1209	1	1	1	1318	harmless	42	46	y	
+top5-s0-p22	xw	kawigi.mini.Fhqwhgads_1.1	1	34	791	790	1	1	1	910	harmless	31	32	y	
+top5-s0-p22	c	kawigi.sbf.FloodMicro_1.5	1	34	504	503	1	1	1	547	harmless	107	107	y	
+top5-s0-p22	c	kawigi.sbf.FloodSonnet_0.9	1	0	825	824	1	1	1	919	harmless	56	62	y	
+top5-s0-p22	hv	kc.micro.Needle_0.101	1	3	754	701	53		0	862	costly	0	0	y	
+top5-s0-p22	hv	kc.serpent.WaveSerpent_2.11	1	6	780	732	48		0	895	costly	1	1	y	
+top5-s0-p22	hv	kinsen.melee.Angsaichmophobia_1.8c	1	34	393	392	1	1	1	470	harmless	73	73	y	
+top5-s0-p22	hv	kinsen.nano.Senticous_1.0	1	0	490	489	1	1	1	558	harmless	82	85	y	
+top5-s0-p22	xw	klein.GottesKrieger_1.1	1	0	389	388	1	1	1	506	harmless	33	35	y	
+top5-s0-p22	xw	lxx.Emerald_0.6.5	1	9	1469	1327	142	1	1	1478	harmless	0	0	y	
+top5-s0-p22	hv	lxx.Tomcat_3.68	1	0	2661	2612	49		0	2764	costly	2	5	y	
+top5-s0-p22	hv	m3thos.Eva02_0.7.1	1	34	443	442	1	1	1	517	harmless	76	76	y	
+top5-s0-p22	aa	marcinek.TopGun_1.3	1	34	554	553	1	1	1	624	harmless	80	81	y	
+top5-s0-p22	c	marcinek.TopGun_1.3	1	34	330	329	1	1	1	436	harmless	44	44	y	
+top5-s0-p22	hv	marcinek.TopGun_1.3	1	34	581	580	1	1	1	641	harmless	90	90	y	
+top5-s0-p22	aa	mc2.enemy.Original_0.9	1	34	904	903	1	1	1	961	harmless	93	93	y	
+top5-s0-p22	hv	mc2.enemy.Original_0.9	1	34	613	612	1	1	1	691	harmless	72	72	y	
+top5-s0-p22	c	md.Pasta_1.1	1	34	456	455	1	1	1	554	harmless	52	52	y	
+top5-s0-p22	hv	md.Pasta_1.1	1	34	254	253	1	1	1	360	harmless	44	44	y	
+top5-s0-p22	c	microtestbotpack.MicroTestBot_1.0	1	0	616	615	1	1	1	731	harmless	35	38	y	
+top5-s0-p22	c	microtestbotpack.MicroTestBot_1.0	1	34	396	395	1	1	1	509	harmless	37	37	y	
+top5-s0-p22	hv	microtestbotpack.MicroTestBot_1.0	1	34	620	619	1	1	1	720	harmless	50	50	y	
+top5-s0-p22	hv	mld.Moebius_2.9.3	1	0	689	688	1	1	1	806	harmless	33	35	y	
+top5-s0-p22	c	myl.nano.Graviton_1.10	1	34	313	312	1	1	1	417	harmless	46	46	y	
+top5-s0-p22	c	nammyung.ModelT_0.23	1	34	525	524	1	1	1	628	harmless	47	47	y	
+top5-s0-p22	hv	nammyung.ModelT_0.23	1	34	610	609	1	1	1	723	harmless	37	37	y	
+top5-s0-p22	hv	nat.BlackHole_2.0gamma	1	34	620	619	1	1	1	733	harmless	37	37	y	
+top5-s0-p22	aa	ntc.Knowledge_1.1	1	34	399	398	1	1	1	481	harmless	68	68	y	
+top5-s0-p22	hv	ntc.Knowledge_1.1	1	34	400	399	1	1	1	492	harmless	58	58	y	
+top5-s0-p22	aa	nz.jdc.nano.PatternAdept_1.0	1	34	359	358	1	1	1	458	harmless	51	51	y	
+top5-s0-p22	c	omens.CannonfodderNano_1.4	1	34	315	314	1	1	1	429	harmless	36	36	y	
+top5-s0-p22	xw	omens.CannonfodderNano_1.4	1	0	602	601	1	1	1	660	harmless	92	105	y	
+top5-s0-p22	xw	omens.CannonfodderNano_1.4	1	34	372	371	1	1	1	460	harmless	62	62	y	
+top5-s0-p22	c	oog.micro.Claudius_1.11	1	13	873	751	122		0	903	costly	0	0	y	
+top5-s0-p22	xw	oog.micro.Claudius_1.11	1	34	252	251	1	1	1	312	harmless	90	90	y	
+top5-s0-p22	c	pa3k.Viper_5.03	1	1	523	522	1	1	1	637	harmless	36	37	y	
+top5-s0-p22	xw	pa3k.Viper_5.03	1	0	759	758	1	1	1	873	harmless	36	39	y	
+top5-s0-p22	xw	pa3k.Viper_5.03	1	12	1097	1000	97	0	0	1160	costly	0	0	y	
+top5-s0-p22	c	pc.Wavelet_1.5	1	3	3072	2940	132		0	3102	costly	1	2	y	
+top5-s0-p22	aa	pe.mini.SandboxMini_1.2	1	0	1102	1101	1	1	1	1187	harmless	65	75	y	
+top5-s0-p22	xw	pe.mini.SandboxMini_1.2	1	0	1041	1040	1	1	1	1139	harmless	52	57	y	
+top5-s0-p22	xw	pez.gloom.GloomyDark_0.9.2	1	34	1162	1161	1	1	1	1252	harmless	60	60	y	
+top5-s0-p22	aa	pez.mini.Tityus_0.9.1	1	0	972	971	1	1	1	1091	harmless	31	36	y	
+top5-s0-p22	aa	pulsar.PulsarNano_0.2.4	1	0	320	319	1	1	1	431	harmless	39	42	y	
+top5-s0-p22	xw	pulsar.PulsarNano_0.2.4	1	34	298	297	1	1	1	344	harmless	104	104	y	
+top5-s0-p22	aa	qwaker00.Ahchoo_1.6	1	0	1779	1778	1	1	1	1869	harmless	60	62	y	
+top5-s0-p22	c	qwaker00.Ahchoo_1.6	1	34	1515	1514	1	1	1	1602	harmless	63	63	y	
+top5-s0-p22	c	ratosh.Nobo_0.21	1	34	388	387	1	1	1	487	harmless	51	51	y	
+top5-s0-p22	xw	ratosh.Nobo_0.21	1	1	398	397	1	1	1	502	harmless	46	46	y	
+top5-s0-p22	aa	rcp.Kuramatron_1.0	1	0	144	143	1	1	1	263	harmless	31	34	y	
+top5-s0-p22	aa	rcp.Kuramatron_1.0	1	34	211	210	1	1	1	282	harmless	79	79	y	
+top5-s0-p22	aa	robar.micro.Topaz_0.25	1	0	376	375	1	1	1	457	harmless	69	73	y	
+top5-s0-p22	xw	robar.micro.Topaz_0.25	1	0	313	312	1	1	1	396	harmless	67	73	y	
+top5-s0-p22	c	robar.nano.BlackWidow_1.3	1	2	686	548	138		0	710	costly	2	3	y	
+top5-s0-p22	aa	rsalesc.mega.Knight_0.6.28	1	1	1658	1580	78		1	1791	harmless	39	45	y	
+top5-s0-p22	hv	rsalesc.roborio.Roborio_1.2.4	1	4	3196	3065	131		0	3226	costly	1	4	y	
+top5-s0-p22	aa	sadoner.killer_0.2	1	34	178	177	1	1	1	282	harmless	46	46	y	
+top5-s0-p22	xw	sample.SittingDuck_1.0	1	34	244	243	1	1	1	350	harmless	44	44	y	
+top5-s0-p22	aa	sgp.SleepingGoat_1.1	1	0	695	694	1	1	1	802	harmless	43	48	y	
+top5-s0-p22	c	slugzilla.OrbitLinear_1.1	1	0	800	799	1	1	1	912	harmless	38	41	y	
+top5-s0-p22	hv	slugzilla.SNGPattern_1.0	1	0	333	332	1	1	1	393	harmless	90	95	y	
+top5-s0-p22	c	spinnercat.haiku.Refrigerator_1.1	1	34	579	578	1	1	1	611	harmless	118	118	y	
+top5-s0-p22	xw	spinnercat.haiku.Refrigerator_1.1	1	0	707	706	1	1	1	801	harmless	56	66	y	
+top5-s0-p22	aa	spinnercat.mega.Tardis_1.2	1	9	565	489	76		0	650	costly	0	0	y	
+top5-s0-p22	c	sqTank.waveSurfing.LionWWSVMvoid_0.01	1	0	895	894	1	1	1	1009	harmless	36	39	y	
+top5-s0-p22	c	staticline.whiskey.Whiskey_0.6	1	7	1147	1059	88		0	1217	costly	1	3	y	
+top5-s0-p22	c	stelo.Mirror_1.1	1	34	240	239	1	1	1	349	harmless	41	41	y	
+top5-s0-p22	hv	step.NanoBidu_1.0	1	34	378	377	1	1	1	448	harmless	80	80	y	
+top5-s0-p22	hv	suh.micro.MirrorPM_1.00	1	0	1897	1896	1	1	1	1940	harmless	107	108	y	
+top5-s0-p22	xw	suh.micro.MirrorPM_1.00	1	34	1985	1984	1	1	1	2093	harmless	42	42	y	
+top5-s0-p22	hv	suh.nano.CrossL_1.00	1	34	298	297	1	1	1	414	harmless	34	34	y	
+top5-s0-p22	c	supersample.SuperCorners_1.0	1	34	343	342	1	1	1	418	harmless	75	75	y	
+top5-s0-p22	xw	supersample.SuperCorners_1.0	1	0	373	372	1	1	1	486	harmless	37	41	y	
+top5-s0-p22	xw	supersample.SuperCorners_1.0	1	2	248	133	115	1	1	284	harmless	52	53	y	
+top5-s0-p22	xw	supersample.SuperCorners_1.0	1	34	349	348	1	1	1	399	harmless	100	100	y	
+top5-s0-p22	c	tcf.Repat3_2	1	0	1209	1208	1	1	1	1304	harmless	55	59	y	
+top5-s0-p22	xw	theo.real.Ahab_1.0	1	18	701	655	46		0	820	costly	0	0	y	
+top5-s0-p22	xw	tobe.Fusion_1.0	1	34	869	868	1	1	1	923	harmless	96	97	y	
+top5-s0-p22	hv	trab.Crusader_0.1.7	1	9	613	488	125		0	643	costly	2	4	y	
+top5-s0-p22	xw	trab.Crusader_0.1.7	1	21	716	645	71		0	802	costly	0	0	y	
+top5-s0-p22	aa	trab.nano.AinippeNano_1.3	1	34	493	492	1	1	1	608	harmless	35	35	y	
+top5-s0-p22	xw	trab.nano.AinippeNano_1.3	1	1	376	375	1	1	1	468	harmless	58	58	y	
+top5-s0-p22	c	tvv.micro.Antares_1.1.1	1	34	226	225	1	1	1	338	harmless	38	38	y	
+top5-s0-p22	hv	tvv.micro.Antares_1.1.1	1	0	265	264	1	1	1	381	harmless	34	38	y	
+top5-s0-p22	xw	tvv.micro.Antares_1.1.1	1	34	220	219	1	1	1	324	harmless	46	46	y	
+top5-s0-p22	c	tw.Exterminator_1.0	1	34	641	640	1	1	1	700	harmless	91	91	y	
+top5-s0-p22	aa	velas.Beta_2_0_2.0	1	0	499	498	1	1	1	577	harmless	72	76	y	
+top5-s0-p22	aa	velas.Beta_2_0_2.0	1	34	421	420	1	1	1	529	harmless	42	42	y	
+top5-s0-p22	hv	velas.Beta_2_0_2.0	1	0	440	439	1	1	1	529	harmless	61	70	y	
+top5-s0-p22	hv	velas.Beta_2_0_2.0	1	34	349	348	1	1	1	464	harmless	35	35	y	
+top5-s0-p22	c	voidious.Dookious_1.573c	1	5	1041	917	124		0	1079	costly	1	2	y	
+top5-s0-p22	hv	voidious.micro.Jen_1.11	1	34	771	770	1	1	1	827	harmless	94	94	y	
+top5-s0-p22	xw	voidious.micro.Jen_1.11	1	4	978	871	107		0	1033	costly	0	0	y	
+top5-s0-p22	hv	voidious.perceptual.RetroGirl_1.0.0	1	34	431	430	1	1	1	532	harmless	49	49	y	
+top5-s0-p22	xw	wcsv.Stampede_1.3.3	1	34	446	445	1	1	1	527	harmless	69	69	y	
+top5-s0-p22	hv	wcsv.mega.PowerHouse2_0.2	1	0	843	842	1	1	1	947	harmless	46	49	y	
+top5-s0-p22	aa	wiki.Wolverine_2.1	1	0	756	755	1	1	1	792	harmless	114	115	y	
+top5-s0-p22	c	wiki.Wolverine_2.1	1	8	588	449	139		0	618	costly	1	1	y	
+top5-s0-p22	aa	wiki.nano.Flick_1.0	1	0	771	770	1	1	1	885	harmless	36	37	y	
+top5-s0-p22	aa	wompi.Numbat_1.9	1	0	680	679	1	1	1	714	harmless	116	117	y	
+top5-s0-p22	xw	wompi.Numbat_1.9	1	5	1098	1025	73		0	1185	costly	1	1	y	
+top5-s0-p22	c	yabot.YaBot_0.1	1	0	161	160	1	0	0	313	costly	160	160	y	
+top5-s0-p22	xw	yabot.YaBot_0.1	1	34	308	307	1	1	1	394	harmless	64	64	y	
+top5-s0-p22	aa	yagami.Tidus_0.11	1	34	478	477	1	1	1	516	harmless	112	112	y	
+top5-s0-p22	hv	yagami.Tidus_0.11	1	0	378	377	1	1	1	457	harmless	71	76	y	
+top5-s0-p22	hv	yagami.Tidus_0.11	1	34	246	245	1	1	1	338	harmless	58	58	y	
+top5-s0-p12b	c	Krabb.sliNk.Garm_0.9u	1	20	706	614	92	0	0	774	costly	1	1	y	ConcurrentModificationException
+top5-s0-p12b	xw	Krabb.sliNk.Garm_0.9u	1	8	969	843	126		0	999	costly	0	0	y	
+top5-s0-p12b	c	ab.DengerousRoBatra_1.3	1	4	669	535	134		0	699	costly	0	0	y	
+top5-s0-p12b	hv	abc.Shadow_3.83c	1	5	1088	1024	64		0	1179	costly	0	0	y	
+top5-s0-p12b	hv	abc.Shadow_3.83c	1	9	837	704	133		0	867	costly	1	1	y	
+top5-s0-p12b	hv	abc.Shadow_3.83c	1	10	848	792	56		0	947	costly	0	0	y	
+top5-s0-p12b	xw	abc.Shadow_3.83c	1	10	921	790	131		0	951	costly	0	0	y	
+top5-s0-p12b	c	ags.rougedc.RougeDC_willow	1	15	1094	970	124		0	1124	costly	0	0	y	
+top5-s0-p12b	c	ags.rougedc.RougeDC_willow	1	20	770	641	129	0	0	800	costly	1	1	y	
+top5-s0-p12b	hv	ags.rougedc.RougeDC_willow	1	8	866	737	129		0	896	costly	0	0	y	
+top5-s0-p12b	hv	ags.rougedc.RougeDC_willow	1	15	1278	1149	129	0	0	1308	costly	0	0	y	ConcurrentModificationException
+top5-s0-p12b	hv	ags.rougedc.RougeDC_willow	1	18	1328	1202	126		0	1358	costly	1	1	y	
+top5-s0-p12b	hv	alpha.RainingFire_1.0	1	19	853	731	122		0	883	costly	0	0	y	
+top5-s0-p12b	aa	apv.NanoLauLectrik_1.0	1	4	633	500	133		0	663	costly	1	1	y	
+top5-s0-p12b	xw	apv.ScruchiPu_1.0	1	0	60	59	1		0	212	costly	59	59	y	
+top5-s0-p12b	hv	apv.test.Virus_0.6.1	1	34	1044	1043	1	1	1	1153	harmless	41	41	y	
+top5-s0-p12b	hv	ar.horizon.Horizon_1.2.2	1	3	1234	1187	47		0	1342	costly	1	1	y	
+top5-s0-p12b	hv	ary.mini.Nimi_1.0	1	33	1197	1049	148		0	1211	costly	1	1	y	
+top5-s0-p12b	xw	bts.wiki.RipCurl_0.9b	1	13	581	535	46		0	691	costly	0	0	y	
+top5-s0-p12b	aa	catcat20.shape.Theta_0.018	1	17	721	598	123		0	751	costly	1	1	y	
+top5-s0-p12b	xw	cb.Domogled_1.2	1	18	2729	2600	129		0	2759	costly	0	0	y	
+top5-s0-p12b	aa	chase.pm.Pytko_1.0	1	17	764	635	129		0	794	costly	0	0	y	
+top5-s0-p12b	aa	chase.pm.Pytko_1.0	1	19	984	859	125		0	1014	costly	0	0	y	
+top5-s0-p12b	hv	darkcanuck.Pris_0.92	1	0	560	559	1	1	1	647	harmless	63	70	y	
+top5-s0-p12b	c	davidalves.net.DuelistMicroMkII_1.1	1	26	538	482	56		0	644	costly	0	0	y	
+top5-s0-p12b	hv	deo.virtual.RainbowBot_1.0	1	17	683	619	64		0	783	costly	0	0	y	
+top5-s0-p12b	aa	dhn.Immortal_1.0	1	11	1516	1377	139		0	1546	costly	0	0	y	
+top5-s0-p12b	xw	dk.stable.Gorgatron_1.1	1	32	380	258	122		0	410	costly	0	0	y	
+top5-s0-p12b	aa	dmh.robocode.robot.GreenDragon_1.0	1	0	511	510	1	1	1	559	harmless	102	105	y	
+top5-s0-p12b	c	doka.KillerRabbit_1.0	1	12	642	511	131		0	672	costly	0	0	y	
+top5-s0-p12b	c	donjezza.Jezza_1.0	1	0	514	513	1	1	1	625	harmless	39	42	y	
+top5-s0-p12b	c	dsekercioglu.mega.Raven_3.56j8	1	12	642	511	131		0	672	costly	1	1	y	
+top5-s0-p12b	xw	dz.OthoMicro_0.12	1	6	536	413	123		0	566	costly	0	0	y	
+top5-s0-p12b	xw	dz.OthoMicro_0.12	1	23	566	443	123		0	596	costly	0	0	y	
+top5-s0-p12b	c	erdnis.Rover_0.3	1	34	260	259	1	1	1	352	harmless	58	58	y	
+top5-s0-p12b	xw	erdnis.Rover_0.3	1	11	611	464	147	1	1	615	harmless	1	3	y	
+top5-s0-p12b	c	florent.XSeries.X2_0.17	1	11	943	820	123		0	973	costly	1	1	y	
+top5-s0-p12b	c	florent.test.Toad_0.14t	1	21	160	125	35		0	312	costly	33	39	y	
+top5-s0-p12b	hv	florent.test.Toad_0.14t	1	6	102	59	43		0	254	costly	38	38	y	
+top5-s0-p12b	aa	fromHell.BlackBox_0.0.2	1	18	720	591	129		0	750	costly	0	0	y	
+top5-s0-p12b	hv	fromHell.BlackBox_0.0.2	1	12	1029	985	44		0	1144	costly	0	0	y	
+top5-s0-p12b	c	fromHell.CHCl3_1.4.2	1	1	920	856	64		0	1014	costly	1	1	y	
+top5-s0-p12b	hv	fromHell.CHCl3_1.4.2	1	12	874	835	39		0	987	costly	0	0	y	
+top5-s0-p12b	aa	geep.mini.GPBotB_1.1	1	30	871	742	129		0	901	costly	1	1	y	
+top5-s0-p12b	c	gh.GresSuffurd_0.4.13	1	20	1704	1602	102		0	1754	costly	1	1	y	
+top5-s0-p12b	hv	gre.svman4.Morfeas_1.4.3	1	13	752	612	140		0	782	costly	0	0	y	
+top5-s0-p12b	c	jk.mega.DrussGT_3.1.16	1	2	2139	2095	44		0	2248	costly	0	0	y	
+top5-s0-p12b	xw	jk.mega.DrussGT_3.1.16	1	5	1079	1041	38		0	1194	costly	1	2	y	
+top5-s0-p12b	xw	jk.mega.DrussGT_3.1.16	1	31	1527	1403	124		0	1557	costly	1	1	y	
+top5-s0-p12b	c	kanishk.Fr0z3n_1.1	1	0	644	643	1	1	1	711	harmless	83	87	y	
+top5-s0-p12b	xw	kanishk.Fr0z3n_1.1	1	34	316	315	1	1	1	433	harmless	33	33	y	
+top5-s0-p12b	hv	kc.micro.Needle_0.101	1	1	865	731	134		0	895	costly	1	3	y	
+top5-s0-p12b	hv	kc.micro.Needle_0.101	1	10	760	681	79		0	839	costly	0	0	y	
+top5-s0-p12b	hv	kronenthaler.Basilisk_1.0	1	0	506	505	1	1	1	617	harmless	39	43	y	
+top5-s0-p12b	hv	lj.Dapps_0.2	1	7	1038	916	122		0	1068	costly	0	0	y	
+top5-s0-p12b	xw	microtestbotpack.MicroTestBot_1.0	1	34	520	519	1	1	1	552	harmless	118	118	y	
+top5-s0-p12b	aa	nammyung.ModelT_0.23	1	0	131	130	1		0	283	costly	130	130	y	
+top5-s0-p12b	xw	nat.BlackHole_2.0gamma	1	28	891	759	132		0	921	costly	0	0	y	
+top5-s0-p12b	xw	pa3k.Viper_5.03	1	16	832	710	122		0	862	costly	1	1	y	
+top5-s0-p12b	hv	pc.Wavelet_1.5	1	2	3151	3022	129		0	3181	costly	1	1	y	
+top5-s0-p12b	aa	penguin.Joker_.611wr	1	2	3581	3486	95		0	3651	costly	0	0	y	
+top5-s0-p12b	aa	penguin.Joker_.611wr	1	34	3210	3209	1	1	1	3312	harmless	48	49	y	
+top5-s0-p12b	hv	penguin.Joker_.611wr	1	0	486	485	1	1	1	598	harmless	38	41	y	
+top5-s0-p12b	c	pez.mini.Tityus_0.9.1	1	0	76	75	1		0	228	costly	75	75	y	
+top5-s0-p12b	c	pez.mini.Tityus_0.9.1	1	22	778	651	127		0	808	costly	1	1	y	
+top5-s0-p12b	aa	pez.rumble.CassiusClay_2rho.02no	1	34	2041	1911	130		0	2071	costly	1	2	y	
+top5-s0-p12b	xw	pez.rumble.CassiusClay_2rho.02no	1	5	1866	1822	44		0	1974	costly	1	1	y	
+top5-s0-p12b	xw	positive.Portia_1.26e	1	10	862	737	125		0	892	costly	0	0	y	
+top5-s0-p12b	hv	pulsar.PulsarMax_0.8.9	1	19	942	817	125		0	972	costly	0	0	y	
+top5-s0-p12b	aa	qwaker00.Ahchoo_1.6	1	15	204	81	123		0	234	costly	0	0	y	
+top5-s0-p12b	xw	robar.micro.Topaz_0.25	1	12	568	443	125		0	598	costly	0	0	y	
+top5-s0-p12b	xw	robar.micro.Topaz_0.25	1	14	1056	927	129	0	0	1086	costly	0	0	y	
+top5-s0-p12b	hv	rsalesc.mega.Knight_0.6.28	1	23	1545	1441	104		0	1596	costly	0	0	y	
+top5-s0-p12b	aa	rsalesc.roborio.Roborio_1.2.4	1	13	1458	1334	124		0	1488	costly	0	0	y	
+top5-s0-p12b	c	rsalesc.roborio.Roborio_1.2.4	1	8	1248	1126	122		0	1278	costly	1	1	y	
+top5-s0-p12b	hv	rsalesc.roborio.Roborio_1.2.4	1	20	1095	965	130		0	1125	costly	1	1	y	
+top5-s0-p12b	xw	rsalesc.roborio.Roborio_1.2.4	1	0	278	277	1	1	1	389	harmless	39	41	y	
+top5-s0-p12b	xw	rsalesc.roborio.Roborio_1.2.4	1	2	910	861	49		0	1019	costly	0	0	y	
+top5-s0-p12b	c	sgp.SleepingGoat_1.1	1	0	549	548	1	1	1	623	harmless	76	77	y	
+top5-s0-p12b	xw	sheldor.mini.FoilistMC_1.0	1	32	1003	875	128		0	1033	costly	0	0	y	
+top5-s0-p12b	aa	sheldor.mini.Foilist_1.3.1	1	34	1433	1307	126		0	1463	costly	1	1	y	
+top5-s0-p12b	xw	slugzilla.Basilisk_3.9	1	22	804	675	129		0	834	costly	1	1	y	
+top5-s0-p12b	c	slugzilla.OrbitLinear_1.1	1	0	825	824	1	1	1	912	harmless	63	66	y	
+top5-s0-p12b	c	spinnercat.haiku.Refrigerator_1.1	1	1	572	489	83	1	1	619	harmless	0	0	y	
+top5-s0-p12b	aa	spinnercat.mega.Tardis_1.2	1	14	745	705	40		0	862	costly	0	0	y	
+top5-s0-p12b	hv	spinnercat.mega.Tardis_1.2	1	23	566	442	124		0	596	costly	0	0	y	
+top5-s0-p12b	aa	stelo.Spread_0.9	1	9	1273	1136	137		0	1303	costly	0	0	y	
+top5-s0-p12b	xw	stelo.Spread_0.9	1	2	856	730	126		0	886	costly	0	0	y	
+top5-s0-p12b	xw	stelo.Spread_0.9	1	20	1225	1100	125	0	0	1255	costly	0	0	y	
+top5-s0-p12b	aa	suh.nano.CrossL_1.00	1	0	518	517	1	1	1	598	harmless	70	75	y	
+top5-s0-p12b	xw	suh.nano.TargetL_1.00	1	34	159	158	1	1	1	278	harmless	31	31	y	
+top5-s0-p12b	xw	synapse.rsim.GeomancyBS_0.11	1	0	1431	1430	1	1	1	1484	harmless	97	101	y	
+top5-s0-p12b	hv	trab.Crusader_0.1.7	1	7	1067	940	127		0	1097	costly	0	0	y	
+top5-s0-p12b	aa	tvv.micro.Antares_1.1.1	1	34	230	229	1	1	1	333	harmless	47	47	y	
+top5-s0-p12b	hv	tw.Exterminator_1.0	1	9	2018	1967	51		0	2126	costly	1	1	y	
+top5-s0-p12b	xw	tw.Exterminator_1.0	1	5	1698	1591	107		0	1747	costly	0	0	y	
+top5-s0-p12b	hv	wompi.Numbat_1.9	1	7	1062	918	144		0	1092	costly	0	0	y	
+top5-s0-p12b	hv	xander.cat.XanderCat_12.9	1	16	3617	3487	130		0	3647	costly	0	0	y	
+top5-s0-p12b	c	yagami.Tidus_0.11	1	34	272	271	1	1	1	375	harmless	47	47	y	
