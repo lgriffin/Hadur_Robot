@@ -3141,6 +3141,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">The flattener views on, whatever their thresholds say.</div>
 </dd>
+<dt><a href="hadur2/core/duel/MoveDesign.html#FLATTENER_OFF" class="member-name-link">FLATTENER_OFF</a> - Static variable in class hadur2.core.duel.<a href="hadur2/core/duel/MoveDesign.html" title="class in hadur2.core.duel">MoveDesign</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MOVE-24">MOVE-24</a>: in a duel the flattener views stay off (3.15).</div>
+</dd>
 <dt><a href="hadur2/core/move/MoveController.html#FLATTENER_THRESHOLD" class="member-name-link">FLATTENER_THRESHOLD</a> - Static variable in class hadur2.core.move.<a href="hadur2/core/move/MoveController.html" title="class in hadur2.core.move">MoveController</a></dt>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#MOVE-5">MOVE-5</a>: the padded hit rate, in percent, at which the flattener views switch on.</div>
@@ -3158,6 +3162,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur2/core/move/FlattenerFormula.html#%3Cinit%3E()" class="member-name-link">FlattenerFormula()</a> - Constructor for class hadur2.core.move.<a href="hadur2/core/move/FlattenerFormula.html" title="class in hadur2.core.move">FlattenerFormula</a></dt>
 <dd>
 <div class="block">Sets the eleven dimension weights.</div>
+</dd>
+<dt><a href="hadur2/core/move/MoveController.html#flattenerOff()" class="member-name-link">flattenerOff()</a> - Method in class hadur2.core.move.<a href="hadur2/core/move/MoveController.html" title="class in hadur2.core.move">MoveController</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MOVE-24">MOVE-24</a>: whether the flatteners are kept off.</div>
 </dd>
 <dt><a href="hadur/bench/BattleResult.html#flavourChanges" class="member-name-link">flavourChanges</a> - Variable in class hadur.bench.<a href="hadur/bench/BattleResult.html" title="class in hadur.bench">BattleResult</a></dt>
 <dd>
@@ -8763,6 +8771,12 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block"><code>win</code>, <code>loss</code> or <code>draw</code>.</div>
 </dd>
+<dt><a href="hadur/bench/Arms.html#resumed(java.nio.file.Path,hadur.bench.Arms.Arm,hadur.bench.Opponent,int)" class="member-name-link">resumed(Path, Arms.Arm, Opponent, int)</a> - Static method in class hadur.bench.<a href="hadur/bench/Arms.html" title="class in hadur.bench">Arms</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#BENCH-95">BENCH-95</a>: the row a finished battle left in <code>dir</code>, when it was this arm's (same label and
+ robot), this opponent's and this seed's, and it finished ok; otherwise null, and the battle is
+ fought again.</div>
+</dd>
 <dt><a href="hadur2/core/memory/OpponentProfile.html#reversalRate()" class="member-name-link">reversalRate()</a> - Method in class hadur2.core.memory.<a href="hadur2/core/memory/OpponentProfile.html" title="class in hadur2.core.memory">OpponentProfile</a></dt>
 <dd>
 <div class="block">Velocity reversals per scan.</div>
@@ -9072,6 +9086,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur/bench/ColdWarm.Row.html#%3Cinit%3E(java.lang.String,java.lang.String,int,hadur.bench.BattleResult,hadur.bench.BattleResult,hadur.bench.Conditions.Shelf,java.lang.String,java.lang.String)" class="member-name-link">Row(String, String, int, BattleResult, BattleResult, Conditions.Shelf, String, String)</a> - Constructor for record class hadur.bench.<a href="hadur/bench/ColdWarm.Row.html" title="class in hadur.bench">ColdWarm.Row</a></dt>
 <dd>
 <div class="block">Creates an instance of a <code>Row</code> record class.</div>
+</dd>
+<dt><a href="hadur/bench/Arms.html#ROW_FILE" class="member-name-link">ROW_FILE</a> - Static variable in class hadur.bench.<a href="hadur/bench/Arms.html" title="class in hadur.bench">Arms</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#BENCH-95">BENCH-95</a>: the file in each battle's directory that keeps that battle's row, for a resumed run.</div>
 </dd>
 <dt><a href="hadur/bench/BattleResult.html#rShortfall" class="member-name-link">rShortfall</a> - Variable in class hadur.bench.<a href="hadur/bench/BattleResult.html" title="class in hadur.bench">BattleResult</a></dt>
 <dd>
@@ -9601,6 +9619,12 @@ loadScripts(document, 'script');</script>
 <div class="block"><a class="req" href="../requirements.html#ADAPT-2">ADAPT-2</a>: while the prior stands, turn on the flattener views (the ones that learn from
  every wave, not only hits) as soon as they hold data, whatever their thresholds say.</div>
 </dd>
+<dt><a href="hadur2/core/move/MoveController.html#setFlattenerOff(boolean)" class="member-name-link">setFlattenerOff(boolean)</a> - Method in class hadur2.core.move.<a href="hadur2/core/move/MoveController.html" title="class in hadur2.core.move">MoveController</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MOVE-24">MOVE-24</a>: the two flattener views stay off whatever the hit rate, and nothing forces the
+ visit-logging views on (<a class="req" href="../requirements.html#ADAPT-2">ADAPT-2</a>'s flattener-first is not read); the other views go by their
+ thresholds.</div>
+</dd>
 <dt><a href="hadur2/core/gun/GunController.html#setFreeGun(boolean)" class="member-name-link">setFreeGun(boolean)</a> - Method in class hadur2.core.gun.<a href="hadur2/core/gun/GunController.html" title="class in hadur2.core.gun">GunController</a></dt>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#GUN-9">GUN-9</a>: in a duel, <a href="hadur2/core/gun/GunController.html#liveVerdict(java.lang.String)"><code>GunController.liveVerdict(java.lang.String)</code></a> returns the highest-rated candidate with no margin
@@ -10067,7 +10091,8 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur2/core/shieldmode/ShieldDesign.html#SHIPPED" class="member-name-link">SHIPPED</a> - Static variable in class hadur2.core.shieldmode.<a href="hadur2/core/shieldmode/ShieldDesign.html" title="class in hadur2.core.shieldmode">ShieldDesign</a></dt>
 <dd>
-<div class="block">The design the robot ships (<a class="req" href="../requirements.html#SHIELD-13">SHIELD-13</a>).</div>
+<div class="block">The design the robot ships (<a class="req" href="../requirements.html#SHIELD-13">SHIELD-13</a>; <a class="req" href="../requirements.html#SHIELD-14">SHIELD-14</a>'s wall since 3.15, +0.19 +/- 0.09 APS in the
+ top-5 factorial, PR #221).</div>
 </dd>
 <dt><a href="hadur2/core/model/Baton.Shot.html#shooter" class="member-name-link">shooter</a> - Variable in class hadur2.core.model.<a href="hadur2/core/model/Baton.Shot.html" title="class in hadur2.core.model">Baton.Shot</a></dt>
 <dd>
@@ -10472,6 +10497,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur2/core/model/BattleFacts.html#startingEnergy()" class="member-name-link">startingEnergy()</a> - Method in class hadur2.core.model.<a href="hadur2/core/model/BattleFacts.html" title="class in hadur2.core.model">BattleFacts</a></dt>
 <dd>
 <div class="block">Our energy before the first tick.</div>
+</dd>
+<dt><a href="hadur2/Hadur.html#startupFields()" class="member-name-link">startupFields()</a> - Static method in class hadur2.<a href="hadur2/Hadur.html" title="class in hadur2">Hadur</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#RES-15">RES-15</a>'s start-up fields as the health record takes them, for the recorder's transcript.</div>
 </dd>
 <dt><a href="hadur2/core/move/ProteanPick.html#state()" class="member-name-link">state()</a> - Method in class hadur2.core.move.<a href="hadur2/core/move/ProteanPick.html" title="class in hadur2.core.move">ProteanPick</a></dt>
 <dd>

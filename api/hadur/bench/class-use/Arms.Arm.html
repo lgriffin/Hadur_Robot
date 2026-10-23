@@ -90,13 +90,23 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color"><span class="type-name-label">Arms.</span><code><a href="../Arms.html#row(hadur.bench.Arms.Arm,hadur.bench.Opponent,int,int,int,hadur.bench.BattleResult)" class="member-name-link">row</a><wbr>(<a href="../Arms.Arm.html" title="class in hadur.bench">Arms.Arm</a>&nbsp;arm,
+<div class="col-second even-row-color"><span class="type-name-label">Arms.</span><code><a href="../Arms.html#resumed(java.nio.file.Path,hadur.bench.Arms.Arm,hadur.bench.Opponent,int)" class="member-name-link">resumed</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/nio/file/Path.html" title="class or interface in java.nio.file" class="external-link">Path</a>&nbsp;dir,
+ <a href="../Arms.Arm.html" title="class in hadur.bench">Arms.Arm</a>&nbsp;arm,
+ <a href="../Opponent.html" title="class in hadur.bench">Opponent</a>&nbsp;o,
+ int&nbsp;seed)</code></div>
+<div class="col-last even-row-color">
+<div class="block"><a class="req" href="../../../../requirements.html#BENCH-95">BENCH-95</a>: the row a finished battle left in <code>dir</code>, when it was this arm's (same label and
+ robot), this opponent's and this seed's, and it finished ok; otherwise null, and the battle is
+ fought again.</div>
+</div>
+<div class="col-first odd-row-color"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">Arms.</span><code><a href="../Arms.html#row(hadur.bench.Arms.Arm,hadur.bench.Opponent,int,int,int,hadur.bench.BattleResult)" class="member-name-link">row</a><wbr>(<a href="../Arms.Arm.html" title="class in hadur.bench">Arms.Arm</a>&nbsp;arm,
  <a href="../Opponent.html" title="class in hadur.bench">Opponent</a>&nbsp;o,
  int&nbsp;seed,
  int&nbsp;worker,
  int&nbsp;position,
  <a href="../BattleResult.html" title="class in hadur.bench">BattleResult</a>&nbsp;r)</code></div>
-<div class="col-last even-row-color">
+<div class="col-last odd-row-color">
 <div class="block">One battle's row of <code>arms.tsv</code>; the errors column has tabs and line breaks blanked.</div>
 </div>
 </div>

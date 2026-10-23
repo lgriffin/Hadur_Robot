@@ -134,8 +134,9 @@ loadScripts(document, 'script');</script>
  <li><code>RE,tick,result,energy</code>: the adapter's one <code>roundEnded</code> call of a round
      (the guard's fault count is the replay's own);</li>
  <li><code>CP,tick</code>: the round-end checkpoint, made only while Hadur is alive;</li>
- <li><code>BE,tick</code> and <code>HE,rounds,survived,skippedTurns</code>: the battle-end save and
-     the health record's arguments (faults again the replay's own);</li>
+ <li><code>BE,tick</code> and <code>HE,rounds,survived,skippedTurns,setupMillis,firstTurn,longestSkipRun</code>:
+     the battle-end save and the health record's arguments (faults again the replay's own;
+     the last three are <a class="req" href="../../requirements.html#RES-15">RES-15</a>'s, absent from fixtures recorded before it);</li>
  <li>one <code>S,name,base64</code> per file the battle left in the data directory.</li>
  </ul>
 
@@ -247,7 +248,7 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-hadur2.Hadur">Methods inherited from class&nbsp;hadur2.<a href="Hadur.html" title="class in hadur2">Hadur</a></h3>
-<code><a href="Hadur.html#onBulletHit(robocode.BulletHitEvent)">onBulletHit</a>, <a href="Hadur.html#onBulletHitBullet(robocode.BulletHitBulletEvent)">onBulletHitBullet</a>, <a href="Hadur.html#onBulletMissed(robocode.BulletMissedEvent)">onBulletMissed</a>, <a href="Hadur.html#onHitByBullet(robocode.HitByBulletEvent)">onHitByBullet</a>, <a href="Hadur.html#onHitRobot(robocode.HitRobotEvent)">onHitRobot</a>, <a href="Hadur.html#onHitWall(robocode.HitWallEvent)">onHitWall</a>, <a href="Hadur.html#onMessageReceived(robocode.MessageEvent)">onMessageReceived</a>, <a href="Hadur.html#onRobotDeath(robocode.RobotDeathEvent)">onRobotDeath</a>, <a href="Hadur.html#onScannedRobot(robocode.ScannedRobotEvent)">onScannedRobot</a>, <a href="Hadur.html#setupRecord(long,long,long)">setupRecord</a>, <a href="Hadur.html#warmUp(double,double,int)">warmUp</a></code></div>
+<code><a href="Hadur.html#onBulletHit(robocode.BulletHitEvent)">onBulletHit</a>, <a href="Hadur.html#onBulletHitBullet(robocode.BulletHitBulletEvent)">onBulletHitBullet</a>, <a href="Hadur.html#onBulletMissed(robocode.BulletMissedEvent)">onBulletMissed</a>, <a href="Hadur.html#onHitByBullet(robocode.HitByBulletEvent)">onHitByBullet</a>, <a href="Hadur.html#onHitRobot(robocode.HitRobotEvent)">onHitRobot</a>, <a href="Hadur.html#onHitWall(robocode.HitWallEvent)">onHitWall</a>, <a href="Hadur.html#onMessageReceived(robocode.MessageEvent)">onMessageReceived</a>, <a href="Hadur.html#onRobotDeath(robocode.RobotDeathEvent)">onRobotDeath</a>, <a href="Hadur.html#onScannedRobot(robocode.ScannedRobotEvent)">onScannedRobot</a>, <a href="Hadur.html#setupRecord(long,long,long)">setupRecord</a>, <a href="Hadur.html#startupFields()">startupFields</a>, <a href="Hadur.html#warmUp(double,double,int)">warmUp</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-robocode.TeamRobot">Methods inherited from class&nbsp;robocode.TeamRobot</h3>
 <code>broadcastMessage, getMessageEvents, getTeamEventListener, getTeammates, isTeammate, sendMessage</code></div>

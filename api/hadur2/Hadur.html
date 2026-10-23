@@ -292,17 +292,22 @@ loadScripts(document, 'script');</script>
  core's construction (facts, shield list, store) and the memory's preparation, all of which
  run before the battle's first <code>execute()</code>.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#ticked(hadur2.core.model.BotInput,hadur2.core.model.BotOrders)" class="member-name-link">ticked</a><wbr>(<a href="core/model/BotInput.html" title="class in hadur2.core.model">BotInput</a>&nbsp;in,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#startupFields()" class="member-name-link">startupFields</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../requirements.html#RES-15">RES-15</a>'s start-up fields as the health record takes them, for the recorder's transcript.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#ticked(hadur2.core.model.BotInput,hadur2.core.model.BotOrders)" class="member-name-link">ticked</a><wbr>(<a href="core/model/BotInput.html" title="class in hadur2.core.model">BotInput</a>&nbsp;in,
  <a href="core/model/BotOrders.html" title="class in hadur2.core.model">BotOrders</a>&nbsp;orders)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Called every turn after the core's tick, before the orders are applied.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a><wbr>&lt;<a href="core/role/RoleId.html" title="enum class in hadur2.core.role">RoleId</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#warmUp(double,double,int)" class="member-name-link">warmUp</a><wbr>(double&nbsp;width,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a><wbr>&lt;<a href="core/role/RoleId.html" title="enum class in hadur2.core.role">RoleId</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#warmUp(double,double,int)" class="member-name-link">warmUp</a><wbr>(double&nbsp;width,
  double&nbsp;height,
  int&nbsp;others)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../requirements.html#TIME-5">TIME-5</a>: runs one tick for each role of the charter through a throwaway core and guard
  before the real battle begins, so that class loading and JIT warm-up land here rather
  than on the first real tick a role drives.</div>
@@ -388,6 +393,13 @@ loadScripts(document, 'script');</script>
 <section class="method-details" id="method-detail">
 <h2>Method Details</h2>
 <ul class="member-list">
+<li>
+<section class="detail" id="startupFields()">
+<h3>startupFields</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">startupFields</span>()</div>
+<div class="block"><a class="req" href="../../requirements.html#RES-15">RES-15</a>'s start-up fields as the health record takes them, for the recorder's transcript.</div>
+</section>
+</li>
 <li>
 <section class="detail" id="run()">
 <h3>run</h3>

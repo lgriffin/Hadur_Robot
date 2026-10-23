@@ -12,7 +12,7 @@
 <h1>EARS requirements</h1>
 <p class="lede">Every requirement from <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/docs/requirements.md">docs/requirements.md</a>, the source of truth. <em>Implemented in</em> lists
 the classes whose documentation cites the ID; <em>Verified by</em> lists the tests tagged with it, the same tags the build's
-traceability check reads. 222 of 222 live requirements have a tagged test. The readings behind the numbers are in
+traceability check reads. 224 of 224 live requirements have a tagged test. The readings behind the numbers are in
 <a href="docs/requirements-notes.html">Requirement readings</a>.</p>
 <nav class="toc"><a href="#group-CORE">Core</a> <a href="#group-RES">Resilience</a> <a href="#group-REL">Release</a> <a href="#group-WAVE">Waves</a> <a href="#group-RADAR">Radar</a> <a href="#group-MEM">Memory</a> <a href="#group-ADAPT">Adapt</a> <a href="#group-DIAL">Dials</a> <a href="#group-DIST">Distance</a> <a href="#group-POW">Power</a> <a href="#group-END">Endgame</a> <a href="#group-MOVE">Movement</a> <a href="#group-TIME">Time budget</a> <a href="#group-SHIELD">Bullet shielding</a> <a href="#group-MELEE">Melee (2.1)</a> <a href="#group-GATE">Posture gate</a> <a href="#group-MRADAR">Melee radar</a> <a href="#group-MSENSE">Melee sensing</a> <a href="#group-MMOVE">Melee movement</a> <a href="#group-MGUN">Melee gun</a> <a href="#group-MMEM">Melee memory</a></nav><h2 id="group-CORE">Core</h2>
 <article class="req-card" id="CORE-1">
@@ -74,7 +74,7 @@ traceability check reads. 222 of 222 live requirements have a tagged test. The r
 <article class="req-card" id="RES-15">
 <div class="req-head"><span class="rid">RES-15</span><span class="badge">Event</span><span class="badge stage">R9</span></div>
 <p>When a battle ends, the health record shall add the setup time, the first turn the main loop ran and the longest run of consecutive skipped turns, and stay within 64 bytes.</p>
-<dl><dt>Implemented in</dt><dd><a href="api/hadur2/Hadur.html" title="hadur2.Hadur">Hadur</a>, <a href="api/hadur2/core/HadurCore.html" title="hadur2.core.HadurCore">HadurCore</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-core/src/test/java/hadur2/core/BattleHealthTest.java">BattleHealthTest.java</a></dd></dl>
+<dl><dt>Implemented in</dt><dd><a href="api/hadur2/Hadur.html" title="hadur2.Hadur">Hadur</a>, <a href="api/hadur2/HadurRecorder.html" title="hadur2.HadurRecorder">HadurRecorder</a>, <a href="api/hadur2/core/HadurCore.html" title="hadur2.core.HadurCore">HadurCore</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-core/src/test/java/hadur2/core/BattleHealthTest.java">BattleHealthTest.java</a></dd></dl>
 </article>
 <h2 id="group-REL">Release</h2>
 <article class="req-card" id="REL-1">
@@ -375,6 +375,11 @@ traceability check reads. 222 of 222 live requirements have a tagged test. The r
 <div class="req-head"><span class="rid">MOVE-23</span><span class="badge">State</span><span class="badge stage">R9</span></div>
 <p>While the stack-list switch is on, in a duel, the stop-and-start stack (<a class="req" href="requirements.html#MOVE-13">MOVE-13</a>&#x27;s gun-heat wave held off, <a class="req" href="requirements.html#SHIELD-14">SHIELD-14</a>&#x27;s uncertain-shot wave, and <a class="req" href="requirements.html#MOVE-20">MOVE-20</a>, <a class="req" href="requirements.html#MOVE-21">MOVE-21</a> and <a class="req" href="requirements.html#TIME-6">TIME-6</a> whenever those switches are on) shall apply only to an opponent not on the stack off-list, matched as the shield list is (<code>package.Class</code> for every version, or with a version for that one); against a listed opponent every one of those switches shall act as if it were off; an opponent not yet named or not listed gets the stack; with the switch off the switches are as their own requirements state. Off by default.</p>
 <dl><dt>Implemented in</dt><dd><a href="api/hadur2/Hadur.html" title="hadur2.Hadur">Hadur</a>, <a href="api/hadur2/StackListData.html" title="hadur2.StackListData">StackListData</a>, <a href="api/hadur2/core/duel/DuelController.html" title="hadur2.core.duel.DuelController">DuelController</a>, <a href="api/hadur2/core/duel/MoveDesign.html" title="hadur2.core.duel.MoveDesign">MoveDesign</a>, <a href="api/hadur2/core/shieldmode/ShieldList.html" title="hadur2.core.shieldmode.ShieldList">ShieldList</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-core/src/test/java/hadur2/core/duel/DuelOnlySwitchesTest.java">DuelOnlySwitchesTest.java</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-robot/src/test/java/hadur2/StackListResourceTest.java">StackListResourceTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="MOVE-24">
+<div class="req-head"><span class="rid">MOVE-24</span><span class="badge">State</span><span class="badge stage">R9</span></div>
+<p>While in a duel, the surf&#x27;s danger score shall leave the two flattener views (<code>flattener</code>, <code>flattener2</code>) off whatever the hit rate, <a class="req" href="requirements.html#ADAPT-2">ADAPT-2</a>&#x27;s flattener-first or <a class="req" href="requirements.html#MOVE-2">MOVE-2</a>&#x27;s flavour ask, and turn the other views on by their own thresholds; in melee and team the views are as <a class="req" href="requirements.html#ADAPT-2">ADAPT-2</a>, <a class="req" href="requirements.html#MOVE-2">MOVE-2</a> and <a class="req" href="requirements.html#MOVE-5">MOVE-5</a> state.</p>
+<dl><dt>Implemented in</dt><dd><a href="api/hadur2/core/duel/MoveDesign.html" title="hadur2.core.duel.MoveDesign">MoveDesign</a>, <a href="api/hadur2/core/move/MoveController.html" title="hadur2.core.move.MoveController">MoveController</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-core/src/test/java/hadur2/core/duel/DuelOnlySwitchesTest.java">DuelOnlySwitchesTest.java</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-core/src/test/java/hadur2/core/move/SurfOpeningTest.java">SurfOpeningTest.java</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-core/src/test/resources/features/adapt.feature">adapt.feature</a></dd></dl>
 </article>
 <h2 id="group-TIME">Time budget</h2>
 <article class="req-card" id="TIME-1">
@@ -921,6 +926,11 @@ traceability check reads. 222 of 222 live requirements have a tagged test. The r
 <div class="req-head"><span class="rid">BENCH-94</span><span class="badge">Ubiquitous</span><span class="badge stage">R9</span></div>
 <p>The bench shall carry <code>data/tools/multiarm.py</code>, which reads one or more <code>arms.tsv</code> files and reports each arm against the pooled control and A/A arms per opponent with 95% intervals, the A/A check, the split by band, engine and start-up disables per arm, and factorial main effects from a design file.</p>
 <dl><dt>Implemented in</dt><dd><span class="none">no citation in the sources</span></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/Top5PlanTest.java">Top5PlanTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="BENCH-95">
+<div class="req-head"><span class="rid">BENCH-95</span><span class="badge">Event</span><span class="badge stage">R9</span></div>
+<p>When a multi-arm run starts in an output folder where a stopped run already finished some battles, the bench shall read back each battle that finished ok for the same arm (label and robot), opponent and seed, and fight only the rest, unless resuming is turned off (<code>--resume false</code>, <code>--no-resume</code>).</p>
+<dl><dt>Implemented in</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/Arms.java" title="hadur.bench.Arms">Arms</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/Bench.java" title="hadur.bench.Bench">Bench</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/ArmsTest.java">ArmsTest.java</a></dd></dl>
 </article>
 <h2 id="group-GUN">GUN</h2>
 <article class="req-card" id="GUN-1">

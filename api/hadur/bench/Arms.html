@@ -131,6 +131,11 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color">
 <div class="block">The columns of <code>arms.tsv</code>, one row per battle.</div>
 </div>
+<div class="col-first odd-row-color"><code>(package private) static final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#ROW_FILE" class="member-name-link">ROW_FILE</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block"><a class="req" href="../../../requirements.html#BENCH-95">BENCH-95</a>: the file in each battle's directory that keeps that battle's row, for a resumed run.</div>
+</div>
 </div>
 </section>
 </li>
@@ -162,13 +167,23 @@ loadScripts(document, 'script');</script>
 <div class="block">The arms in <code>file</code>, relative jar paths resolved against <code>base</code>.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#row(hadur.bench.Arms.Arm,hadur.bench.Opponent,int,int,int,hadur.bench.BattleResult)" class="member-name-link">row</a><wbr>(<a href="Arms.Arm.html" title="class in hadur.bench">Arms.Arm</a>&nbsp;arm,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#resumed(java.nio.file.Path,hadur.bench.Arms.Arm,hadur.bench.Opponent,int)" class="member-name-link">resumed</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/nio/file/Path.html" title="class or interface in java.nio.file" class="external-link">Path</a>&nbsp;dir,
+ <a href="Arms.Arm.html" title="class in hadur.bench">Arms.Arm</a>&nbsp;arm,
+ <a href="Opponent.html" title="class in hadur.bench">Opponent</a>&nbsp;o,
+ int&nbsp;seed)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../../requirements.html#BENCH-95">BENCH-95</a>: the row a finished battle left in <code>dir</code>, when it was this arm's (same label and
+ robot), this opponent's and this seed's, and it finished ok; otherwise null, and the battle is
+ fought again.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#row(hadur.bench.Arms.Arm,hadur.bench.Opponent,int,int,int,hadur.bench.BattleResult)" class="member-name-link">row</a><wbr>(<a href="Arms.Arm.html" title="class in hadur.bench">Arms.Arm</a>&nbsp;arm,
  <a href="Opponent.html" title="class in hadur.bench">Opponent</a>&nbsp;o,
  int&nbsp;seed,
  int&nbsp;worker,
  int&nbsp;position,
  <a href="BattleResult.html" title="class in hadur.bench">BattleResult</a>&nbsp;r)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">One battle's row of <code>arms.tsv</code>; the errors column has tabs and line breaks blanked.</div>
 </div>
 </div>
@@ -193,6 +208,21 @@ loadScripts(document, 'script');</script>
 <h3>HEADER</h3>
 <div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">HEADER</span></div>
 <div class="block">The columns of <code>arms.tsv</code>, one row per battle.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="ROW_FILE">
+<h3>ROW_FILE</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">ROW_FILE</span></div>
+<div class="block"><a class="req" href="../../../requirements.html#BENCH-95">BENCH-95</a>: the file in each battle's directory that keeps that battle's row, for a resumed run.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../constant-values.html#hadur.bench.Arms.ROW_FILE">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
 </section>
 </li>
 </ul>
@@ -240,6 +270,18 @@ loadScripts(document, 'script');</script>
  int&nbsp;position,
  <a href="BattleResult.html" title="class in hadur.bench">BattleResult</a>&nbsp;r)</span></div>
 <div class="block">One battle's row of <code>arms.tsv</code>; the errors column has tabs and line breaks blanked.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="resumed(java.nio.file.Path,hadur.bench.Arms.Arm,hadur.bench.Opponent,int)">
+<h3>resumed</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">resumed</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/nio/file/Path.html" title="class or interface in java.nio.file" class="external-link">Path</a>&nbsp;dir,
+ <a href="Arms.Arm.html" title="class in hadur.bench">Arms.Arm</a>&nbsp;arm,
+ <a href="Opponent.html" title="class in hadur.bench">Opponent</a>&nbsp;o,
+ int&nbsp;seed)</span></div>
+<div class="block"><a class="req" href="../../../requirements.html#BENCH-95">BENCH-95</a>: the row a finished battle left in <code>dir</code>, when it was this arm's (same label and
+ robot), this opponent's and this seed's, and it finished ok; otherwise null, and the battle is
+ fought again. A failed or half-written battle never stands in for a fought one.</div>
 </section>
 </li>
 </ul>
