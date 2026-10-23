@@ -40,15 +40,15 @@ class FieldGunTest {
     }
 
     @Test
-    @Tag("MGUN-1")
-    @DisplayName("MGUN-1: on a team an opponent with history gets three solutions from its most similar situations")
-    void threeLearnedSolutions() {
+    @Tag("MGUN-9")
+    @DisplayName("MGUN-9: on a team an opponent with history gets twenty-one solutions from its most similar situations")
+    void teamLearnedSolutions() {
         for (long t = 0; t <= 200; t++) scanned("a", 500, 800, 100, Math.PI / 2, 8, t);
         gun.onTeam(true);
         assertTrue(gun.history("a").size() >= FieldGun.K);
         List<FieldGun.Solution> s = gun.solutions(me, 100, 5, tracker.alive(), 200);
         assertEquals(FieldGun.K, s.size());
-        assertEquals(3, FieldGun.K);
+        assertEquals(21, FieldGun.K);
         double total = s.stream().mapToDouble(x -> x.weight).sum();
         assertEquals(gun.weight(tracker.get("a"), me, tracker.alive(), 200), total, 1e-9);
     }
@@ -89,15 +89,15 @@ class FieldGunTest {
 
     @Test
     @Tag("MGUN-7")
-    @DisplayName("MGUN-7: off a team, fewer than twelve situations fall back to one predicted solution")
-    void shortHistoryFallsBackOffATeam() {
+    @DisplayName("MGUN-7: fewer situations than the depth fall back to one predicted solution, on a team or off it")
+    void shortHistoryFallsBack() {
         for (long t = 0; t <= 95; t++) scanned("a", 500, 800, 100, Math.PI / 2, 8, t);
         int size = gun.history("a").size();
-        assertTrue(size >= FieldGun.K && size < FieldGun.MELEE_K, "history " + size);
+        assertTrue(size > 0 && size < FieldGun.MELEE_K, "history " + size);
         assertEquals(1, gun.solutions(me, 100, 5, tracker.alive(), 95).size());
         assertFalse(gun.aim(me, 100, 5, tracker.alive(), 95).learned);
         gun.onTeam(true);
-        assertEquals(FieldGun.K, gun.solutions(me, 100, 5, tracker.alive(), 95).size());
+        assertEquals(1, gun.solutions(me, 100, 5, tracker.alive(), 95).size());
     }
 
     @Test
@@ -173,6 +173,18 @@ class FieldGunTest {
         r.energy = 100;
         r.velocity = -8;
         assertEquals(1, gun.solutions(me, 100, 5, tracker.alive(), 1).size(), "backing away");
+    }
+
+    @Test
+    @Tag("MGUN-10")
+    @DisplayName("MGUN-10: on a team a rammer inside 100 px is shot at like any other opponent")
+    void rammersOnATeam() {
+        double toMe = DiaUtils.absoluteBearing(pt(500, 580), me);
+        scanned("ram", 500, 580, 100, toMe, 8, 1);
+        gun.onTeam(true);
+        assertEquals(1, gun.solutions(me, 100, 5, tracker.alive(), 1).size());
+        gun.onTeam(false);
+        assertTrue(gun.solutions(me, 100, 5, tracker.alive(), 1).isEmpty());
     }
 
     @Test

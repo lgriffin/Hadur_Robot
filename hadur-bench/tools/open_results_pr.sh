@@ -28,10 +28,13 @@ body=$(mktemp)
     echo "Results of a PC queue run, opened by the queue's last step (\`tools/open_results_pr.sh\`)."
     echo "Claude follows up on this PR with the verdict against the run card."
     echo
+    # GitHub caps a PR body at 65,536 characters: split about 56,000 bytes over the reports.
+    per=$(( 56000 / $# ))
     for f in "$@"; do
         echo "## \`$f\`"
         echo
-        head -c 20000 "$f"
+        head -c "$per" "$f"
+        [ "$(wc -c < "$f")" -gt "$per" ] && printf '\n\n_(cut at %s bytes; the full report is in the branch)_\n' "$per"
         echo
     done
     echo

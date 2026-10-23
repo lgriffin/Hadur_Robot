@@ -24,13 +24,17 @@ import java.util.Map;
  * for an isolated opponent and 1.5 for one that has hit Hadur twice in 200 ticks. The gun
  * aims at the angle where the summed density peaks, at the power of the opponent that
  * contributes most there. An opponent with too little history gets one circular or linear
- * solution instead. A robot coming at Hadur inside {@link #RAMMER_RANGE} is not shot at
- * unless it can be finished: Hadur moves instead.</p>
+ * solution instead. Off a team, a robot coming at Hadur inside {@link #RAMMER_RANGE} is not
+ * shot at unless it can be finished: Hadur moves instead. On a team it is shot at like any
+ * other (MGUN-10).</p>
  */
 public class FieldGun {
 
-    /** The kNN depth on a team (MGUN-1's three situations; HadurTeam keeps them). */
-    public static final int K = 3;
+    /**
+     * MGUN-9: the kNN depth on a team. CombatTeam's 21 situations per opponent; the team
+     * census gained +2.4 points over MGUN-1's three (docs/plan-team-top5.md).
+     */
+    public static final int K = 21;
     /**
      * MGUN-7: the kNN depth off a team. Twelve situations spread each opponent over more
      * likely angles, so the summed density peaks where several opponents' futures overlap,
@@ -142,7 +146,7 @@ public class FieldGun {
             if (e.age(now) > MAX_AGE) continue;
             double distance = e.distance(me);
             boolean finisher = e.energy <= MeleeEnergyPolicy.FINISHER_ENERGY;
-            if (!finisher && rams(e, me)) continue;
+            if (!finisher && !onTeam && rams(e, me)) continue;
             double power = MeleeEnergyPolicy.power(distance, energy, e.energy, others);
             if (power <= 0) continue;
             if (onTeam) power = MeleeEnergyPolicy.teamPower(power, energy, e.energy);
