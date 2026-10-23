@@ -5283,6 +5283,10 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur/bench/LogHarvester.html#%3Cinit%3E(java.nio.file.Path,java.lang.String)" class="member-name-link">LogHarvester(Path, String)</a> - Constructor for class hadur.bench.<a href="hadur/bench/LogHarvester.html" title="class in hadur.bench">LogHarvester</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur/bench/LogHarvester.html#%3Cinit%3E(java.nio.file.Path,java.lang.String,boolean)" class="member-name-link">LogHarvester(Path, String, boolean)</a> - Constructor for class hadur.bench.<a href="hadur/bench/LogHarvester.html" title="class in hadur.bench">LogHarvester</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#BENCH-97">BENCH-97</a>: with <code>truth</code> false no <code>truth.log.gz</code> is written.</div>
+</dd>
 <dt><a href="hadur/bench/LogHarvester.RoundRow.html" class="type-name-link" title="class in hadur.bench">LogHarvester.RoundRow</a> - Class in <a href="hadur/bench/package-summary.html">hadur.bench</a></dt>
 <dd>
 <div class="block">One round as the harness saw it: engine truth per turn, plus the fields of Hadur's R record when one arrived (G3).</div>
@@ -11661,6 +11665,10 @@ loadScripts(document, 'script');</script>
 <div class="block">A battle whose numbers measure the robot rather than the host: it finished, ran no
  ticks in duress (unknown counts as none), skipped at most <code>skipsPerRound</code> turns a
  round on average, and delivered an R record for every round.</div>
+</dd>
+<dt><a href="hadur/bench/LogHarvester.html#truthLogOn()" class="member-name-link">truthLogOn()</a> - Static method in class hadur.bench.<a href="hadur/bench/LogHarvester.html" title="class in hadur.bench">LogHarvester</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#BENCH-97">BENCH-97</a>: whether a battle child writes the truth log (<code>-Dhadur.bench.truth=false</code> turns it off).</div>
 </dd>
 <dt><a href="hadur/bench/ColdWarm.Row.html#tsv()" class="member-name-link">tsv()</a> - Method in record class hadur.bench.<a href="hadur/bench/ColdWarm.Row.html" title="class in hadur.bench">ColdWarm.Row</a></dt>
 <dd>&nbsp;</dd>
