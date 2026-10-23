@@ -45,7 +45,14 @@ Each stage is a mode, built duel-only and off by default, chosen per opponent by
    averaged linear from its bullets, then move to where that aim cannot hit. Train on the 429 bots
    Saguaro dodges plus the rammers. Expected +0.2 to +0.4.
 3. **M3, stop-and-go against surfers.** Train on the 148 bots Saguaro poisons. Expected +0.2 to +0.4.
-4. **M4, moving shield.** The largest build; on the 55 bots Saguaro moving-shields. Expected +0.1 to +0.3.
+4. **M4, Saguaro's "moving" shield, which is a small change.** Read in its decompile: the moving
+   shield is the same standing shield with one addition. At the start of each round, until the
+   enemy's first shot, it drives away from walls and the enemy (anti-gravity) while the enemy's gun
+   cools, and stands still once that gun is 5 ticks from ready. Saguaro also ships each opponent's
+   best shield aim (one of 12 options plus an angle offset, 9 bytes) so its shield aims right from
+   round 1, where Hadur's `learn` starts cold every battle. Build both as shield options: opening
+   reposition (`move`) and a shipped per-opponent aim. Train on the 55 bots Saguaro moving-shields
+   and the ~60 Saguaro shields where Hadur's sweep rejected the shield. Expected +0.2 to +0.5.
 5. **Census of the full table against 3.15** before any release, with an A/A arm, gate +0.5 with the
    interval above +0.3 (the plan-top5 bar).
 
