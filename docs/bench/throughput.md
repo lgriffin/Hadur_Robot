@@ -61,3 +61,24 @@ d12x is faster than d12 and its counts agree, add `--no-truth-log` to census and
 
 **Expected** (estimates, not measured): team +30 to 45% at 12 workers, duel +20 to 30% at 16,
 and +8 to 10% more on strong panels with the truth log off.
+
+## Result and decision (2026-10-23, PR #232)
+
+The ladder ran on the PC from 16:54 to 18:27 PC time with nothing else running; all 12 steps
+exited 0. Report: `docs/bench/local/2026-10-23_worker-ladder.md` (A/A and c level per block in
+`..._worker-ladder-arms.md`).
+
+- Duel: 16 workers gave +15% battles an hour (2,691 against 2,345 at 12), with skips a round at
+  1.148x, just inside the 1.15x bar on one seed. 20 and 24 gave no more battles an hour and failed
+  on skips (1.69x, 1.95x) and engine disables (9.6, 12.0 a 100).
+- Team: 12 workers gave +21% (1,028 against 850 at 8) with skips at 1.06x. 16 failed on skips (1.32x).
+- Truth log off: +5% battles an hour at 12 and 16, but the 1-seed blocks also showed more skips
+  (1.14x at 12) and disables (6.5 against 3.1), which less work a tick cannot cause, so one seed
+  cannot tell those counts apart.
+- A/A sat inside its band in every duel block.
+
+**Decision (Leigh, 2026-10-23): run 12 workers for duel and team queues on the PC.** Duel 16 is
+faster but its skip margin is too thin to trust for census and release gates. `bench-top20.sh`
+already defaults to a quarter of the logical cores (12 on the PC); team `.args` files set
+`--parallel 12`. The truth log stays on by default; `--no-truth-log` is optional for runs no
+`data/tools` script will read.
