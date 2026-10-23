@@ -269,5 +269,10 @@ class TeamModesTest {
         TeamDanger apart = new TeamDanger(field(1200, 1200));
         apart.add(new TeamDanger.Sample("cz.libors.Ogi 1.0 (1)", new double[4], 0.5));
         assertEquals(0, apart.size("cz.libors.Ogi 1.0 (2)"));
+        // Samples logged before the switch flips are not lost either way.
+        apart.pool(true);
+        assertEquals(1, apart.size("cz.libors.Ogi 1.0 (2)"));
+        d.pool(false);
+        assertEquals(1, d.size("cz.libors.Ogi 1.0 (1)"));
     }
 }
