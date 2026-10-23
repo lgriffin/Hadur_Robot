@@ -5,6 +5,7 @@ import hadur2.core.world.EnemyShot;
 import hadur2.core.world.Roster;
 import hadur2.core.model.RobotState;
 import hadur2.core.model.RobotStateLog;
+import hadur2.core.physics.Angles;
 import hadur2.core.physics.BattleField;
 import hadur2.core.physics.DiaUtils;
 import java.awt.geom.Line2D;
@@ -117,6 +118,18 @@ public class MinimumRiskMovement {
     static final double FINISH_PULL = 1.0;
     static final double FINISH_FLOOR = 350;
     static final double FINISH_ENERGY = 30;
+    /** TMODE-5: the prey's cost weighs its energy this much against its distance (NightmareTeam's 1.2). */
+    static final double PACK_ENERGY_WEIGHT = 1.2;
+    /** TMODE-5: the pincer's radius as a share of the nearest member's distance (NightmareTeam's 0.74), and its bounds. */
+    static final double PACK_RADIUS_SHARE = 0.74;
+    static final double PACK_MIN_RADIUS = 150;
+    static final double PACK_MAX_RADIUS = 450;
+    /** TMODE-5: members' places are at most this far apart round the prey: 70 degrees. */
+    static final double PACK_SPREAD = Math.toRadians(70);
+    /** TMODE-5: the pull's strength, its floor, and the energy a member needs to hunt. */
+    static final double PACK_PULL = 1.0;
+    static final double PACK_FLOOR = 40;
+    static final double PACK_ENERGY = 20;
     static final double SWITCH_GAIN = 0.9;
     static final double REACHED = 20;
 
@@ -482,7 +495,8 @@ public class MinimumRiskMovement {
                 && enemies.get(0).age(now) < CAP_MAX_AGE && energy >= FINISH_ENERGY) {
             return new Pull(enemies.get(0).location, FINISH_FLOOR, FINISH_PULL);
         }
-        if (!modes.contains(TeamModes.Mode.GANG)) return null;
+        boolean gang = modes.contains(TeamModes.Mode.GANG);
+        if (!gang && !modes.contains(TeamModes.Mode.PACK)) return null;
         Point2D.Double nearest = null;
         Point2D.Double ganged = null;
         for (Roster.Mate m : mates) {
@@ -492,9 +506,75 @@ public class MinimumRiskMovement {
                 ganged = q;
             }
         }
-        if (nearest != null && enemiesNear(me, enemies, now) >= GANG_SIZE) return new Pull(nearest, 0, GANG_PULL);
-        if (ganged != null) return new Pull(ganged, HELP_FLOOR, GANG_PULL);
+        if (gang && nearest != null && enemiesNear(me, enemies, now) >= GANG_SIZE) return new Pull(nearest, 0, GANG_PULL);
+        if (modes.contains(TeamModes.Mode.PACK) && energy >= PACK_ENERGY) {
+            Point2D.Double slot = pincerSlot(me, enemies, now, mates);
+            if (slot != null) return new Pull(slot, PACK_FLOOR, PACK_PULL);
+        }
+        if (gang && ganged != null) return new Pull(ganged, HELP_FLOOR, GANG_PULL);
         return null;
+    }
+
+    /**
+     * TMODE-5: the team's prey, as every member works it out from the positions they share: the
+     * enemy seen lately with the least distance from the team's centre plus
+     * {@link #PACK_ENERGY_WEIGHT} times its energy (NightmareTeam's assignment cost). Null when
+     * none is fresh.
+     */
+    static EnemyInfo prey(Point2D.Double centre, List<EnemyInfo> enemies, long now) {
+        EnemyInfo best = null;
+        double bestCost = Double.POSITIVE_INFINITY;
+        for (EnemyInfo e : enemies) {
+            if (e.age(now) >= CAP_MAX_AGE) continue;
+            double cost = e.location.distance(centre) + PACK_ENERGY_WEIGHT * e.energy;
+            // Ties go to the name, so every member picks the same prey.
+            if (cost < bestCost || (cost == bestCost && best != null && e.name.compareTo(best.name) < 0)) {
+                bestCost = cost;
+                best = e;
+            }
+        }
+        return best;
+    }
+
+    /**
+     * TMODE-5: Hadur's place in the pincer round the prey. The members (Hadur and its teammates
+     * in view) are ranked by their bearing from the prey about the team's mean bearing, and
+     * spread over an arc about that mean, {@link #PACK_SPREAD} apart at most and never more than
+     * a full turn in all; Hadur's place is its rank's angle at {@link #PACK_RADIUS_SHARE} of the
+     * nearest member's distance, kept within {@link #PACK_MIN_RADIUS} and
+     * {@link #PACK_MAX_RADIUS}. Null with no fresh enemy.
+     */
+    static Point2D.Double pincerSlot(Point2D.Double me, List<EnemyInfo> enemies, long now, List<Roster.Mate> mates) {
+        List<Point2D.Double> pack = new ArrayList<>(mates.size() + 1);
+        pack.add(me);
+        for (Roster.Mate m : mates) pack.add(m.at(now));
+        double cx = 0, cy = 0;
+        for (Point2D.Double q : pack) {
+            cx += q.x;
+            cy += q.y;
+        }
+        EnemyInfo prey = prey(new Point2D.Double(cx / pack.size(), cy / pack.size()), enemies, now);
+        if (prey == null) return null;
+        Point2D.Double t = prey.location;
+        double sx = 0, sy = 0, nearest = Double.POSITIVE_INFINITY;
+        for (Point2D.Double q : pack) {
+            double b = DiaUtils.absoluteBearing(t, q);
+            sx += Math.sin(b);
+            sy += Math.cos(b);
+            nearest = Math.min(nearest, q.distance(t));
+        }
+        double mean = Math.atan2(sx, sy);
+        double mine = Angles.normalRelativeAngle(DiaUtils.absoluteBearing(t, me) - mean);
+        int rank = 0;
+        for (int i = 1; i < pack.size(); i++) {
+            double off = Angles.normalRelativeAngle(DiaUtils.absoluteBearing(t, pack.get(i)) - mean);
+            if (off < mine) rank++;
+        }
+        int n = pack.size();
+        double spread = Math.min(PACK_SPREAD, 2 * Math.PI / n);
+        double angle = mean + (rank - (n - 1) / 2.0) * spread;
+        double r = DiaUtils.limit(PACK_MIN_RADIUS, PACK_RADIUS_SHARE * nearest, PACK_MAX_RADIUS);
+        return DiaUtils.project(t, angle, r);
     }
 
     /** TMODE-3: the enemies seen lately within {@link #GANG_RANGE} of {@code p}. */

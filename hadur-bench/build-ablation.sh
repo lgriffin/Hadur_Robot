@@ -171,6 +171,8 @@
 #         its nearest teammate; a free one to a ganged teammate). Suffix mg.
 #   tmfin  (team only) T7, TMODE-4: the FINISH mode against every team (close on the last enemy). Suffix mf.
 #   tmlearn (team only) T7: the LEARN mode (MMOVE-10) against every team. Suffix ml.
+#   tmpack (team only) T7, TMODE-5: the PACK mode against every team (members close on one prey from
+#         their own sides, NightmareTeam's pincer). Suffix mp.
 #         One census run of each fills the per-team mode table (docs/bench/team-top-decompile.md).
 #   tmtab (team only) T7, TMODE-1: the screen's table, the t.put lines in $TEAM_MODE_TABLE (default
 #         work/team-modes-screen.java, written by tools/team_modes.py pick). Suffix mt.
@@ -535,6 +537,10 @@ for a in "${list[@]}"; do
             version="${version}ml"
             edit "$modes" "public static final boolean FORCE_LEARN = false;" "public static final boolean FORCE_LEARN = true;"
             ;;
+        tmpack)
+            version="${version}mp"
+            edit "$modes" "public static final boolean FORCE_PACK = false;" "public static final boolean FORCE_PACK = true;"
+            ;;
         tmtab|tmlock)
             if [[ "$a" == tmtab ]]; then table="${TEAM_MODE_TABLE:-$here/work/team-modes-screen.java}"; version="${version}mt"
             else table="${TEAM_MODE_LOCKED:-$here/work/team-modes-locked.java}"; version="${version}mk"; fi
@@ -610,7 +616,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(names))
             edit "$design" 'public static final ShieldDesign SHIPPED = parse("' \
                 "public static final ShieldDesign SHIPPED = parse(\"$flag,"
             version="${version}${suffix}" ;;
-        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, ramheat, flaton, nowall, flt59, flt8, split, wallesc, gungate, hold650, dfac, bhb, hitclr, pkern, keep2, thgun, freegun, nodecay, stacklist, protean, pdw3, pdw8, pc10, phot, repl, pressure, pdown, pwall, pwc, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tram, t6n, t6l, tmsoft, tmgang, tmfin, tmlearn, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, shold, slearn, smode, sstay, sturn, swall, strial, sprior, snull, strim, slistadd)" >&2; exit 2 ;;
+        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, ramheat, flaton, nowall, flt59, flt8, split, wallesc, gungate, hold650, dfac, bhb, hitclr, pkern, keep2, thgun, freegun, nodecay, stacklist, protean, pdw3, pdw8, pc10, phot, repl, pressure, pdown, pwall, pwc, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tram, t6n, t6l, tmsoft, tmgang, tmfin, tmlearn, tmpack, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, shold, slearn, smode, sstay, sturn, swall, strial, sprior, snull, strim, slistadd)" >&2; exit 2 ;;
     esac
 done
 
