@@ -1120,6 +1120,8 @@ MMOVE-8 the melee strand, WEAVE-7 and WEAVE-8 the conductor.
 | WEAVE-8 | Unwanted | If the driving role's drive, simulated a set number of ticks ahead, would bring Hadur within a robot's width and a margin of a living teammate's predicted position, then the conductor shall replace the drive with the nearest of a brake or a reversal that stays clear, keeping the gun, radar, fire and message orders. | T1 |
 | MGUN-6 | State | While in melee on a team with a living teammate whose position is no older than the WORLD-3 window, and at least 30 energy of its own, the gun shall fire power 3, or the power that kills its target if less, in place of the MGUN-3 table. | T2 |
 | MGUN-8 | Event | When the World takes a teammate's reported sighting of an enemy, the field gun shall add it to that enemy's movement history as one of Hadur's own scans, before Hadur's own scans of the same tick. | T5 |
+| MGUN-9 | State | While in melee on a team with a living teammate, the field gun shall take 21 situations per opponent from its kNN in place of MGUN-1's three. | T6 |
+| MGUN-10 | State | While in melee on a team with a living teammate, the field gun shall keep an opponent closing on Hadur within 100 px among its targets, in place of the rule that leaves it alone unless it can be finished. | T6 |
 
 ### T1 notes
 
@@ -1143,6 +1145,18 @@ MMOVE-8 the melee strand, WEAVE-7 and WEAVE-8 the conductor.
   clear, else the one with the greatest closest approach. The `T` record's last field counts the
   drives it replaced.
 - Solo play is untouched: every term is reached through the team link or an empty teammate list.
+
+### T6 notes: team gun depth and shooting rammers (MGUN-9, MGUN-10)
+
+- **Why.** The gap to 5th in the TeamRumble (~9.9 APS after 3.15) is members dying: against the
+  top 20 and against three ramming teams (TeamDeath, Enjambre, ImpactTeam). CombatTeam's gun takes
+  21 situations and shoots only the enemies within 150 px when any are that close; Hadur's took
+  three and skipped a rammer inside 100 px (docs/plan-team-top5.md).
+- **Where.** `FieldGun.K` (21, read through `k()` only while `onTeam`), and the rammer skip in
+  `FieldGun.solutions` now tests `!onTeam`. Off a team MGUN-7's 12 and the skip are unchanged.
+- **Gate.** PC card team-s1, all 46 TeamRumble opponents, 6 seeds, paired with the 3.15 release:
+  A/A +0.2 ± 0.8; `tk21` +2.4 ± 0.7; `tram` +1.2 ± 0.9; both **+3.4 ± 0.9** (PR #226).
+- Solo play is untouched: both read `onTeam`, set only while a teammate lives.
 
 ### T5 notes: shared gun learning (MGUN-8)
 

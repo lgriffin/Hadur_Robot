@@ -150,7 +150,7 @@
 #         situations per opponent, not 3. MGUN-7 ships it off a team.
 #   tk12, tk21 (team only) T3, the field gun's kNN depth on a team: 12 or 21 situations per opponent,
 #         not 3 (FieldGun.K is read only while a teammate lives; MGUN-7's 12 off a team stays).
-#         CombatTeam takes 21 (docs/bench/combatteam-3.25.md).
+#         CombatTeam takes 21 (docs/bench/combatteam-3.25.md). MGUN-9 ships 21: use --ref v3.15.
 #   tshare0 (team only) MGUN-8 off: teammates' sightings no longer reach the field gun's histories
 #         (the World still takes them), so each member learns only from its own radar, as 3.13.
 #   tlane0 (team only) T4, no fire lane: a member fires whatever teammates lie ahead, as CombatTeam does.
@@ -158,7 +158,7 @@
 #         its predicted track (WEAVE-7) no longer does.
 #   tram  (team only) TR1, shoot rammers: the field gun no longer skips an enemy closing on the member
 #         inside 100 px (FieldGun.rams). Off a team the skip stays. Three ramming teams take 1.6-2.1 APS
-#         of the gap to 5th-6th (docs/plan-team-top5.md). Suffix rm.
+#         of the gap to 5th-6th (docs/plan-team-top5.md). Suffix rm. MGUN-10 ships it: use --ref v3.15.
 #   mrate (melee and team) fire more often: the controller fires on a scan up to 8 ticks old (was 5;
 #         the field gun already aims on 8, the radar's sweep is 10-11), and with three or more
 #         opponents left the lead cap (never drop below the target's energy) no longer holds or
