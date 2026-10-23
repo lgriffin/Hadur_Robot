@@ -165,6 +165,17 @@
 #   t6l   (team only) T6, MMOVE-10: enemy bullets that hit any member teach a shared per-enemy log of
 #         its gun; members dodge its learned aims in place of head-on and linear (TeamDanger.LEARNED).
 #         Suffix dl. Both together: t6n,t6l (docs/plan-team-top5.md stage S2, card team-s2).
+#   tmsoft (team only) T7, TMODE-2: the SOFT mode against every team (a shot weighs 1/(1+k)^2 for the k
+#         teammates nearer its shooter). Suffix ms.
+#   tmgang (team only) T7, TMODE-3: the GANG mode against every team (a member near two enemies is drawn to
+#         its nearest teammate; a free one to a ganged teammate). Suffix mg.
+#   tmfin  (team only) T7, TMODE-4: the FINISH mode against every team (close on the last enemy). Suffix mf.
+#   tmlearn (team only) T7: the LEARN mode (MMOVE-10) against every team. Suffix ml.
+#         One census run of each fills the per-team mode table (docs/bench/team-top-decompile.md).
+#   tmtab (team only) T7, TMODE-1: the screen's table, the t.put lines in $TEAM_MODE_TABLE (default
+#         work/team-modes-screen.java, written by tools/team_modes.py pick). Suffix mt.
+#   tmlock (team only) the confirmed table, $TEAM_MODE_LOCKED (default work/team-modes-locked.java,
+#         written by tools/team_modes.py lock). Suffix mk.
 #   mrate (melee and team) fire more often: the controller fires on a scan up to 8 ticks old (was 5;
 #         the field gun already aims on 8, the radar's sweep is 10-11), and with three or more
 #         opponents left the lead cap (never drop below the target's energy) no longer holds or
@@ -236,6 +247,7 @@ mctl="$src/hadur-core/src/main/java/hadur2/core/melee/MeleeController.java"
 tlink="$src/hadur-core/src/main/java/hadur2/core/TeamLink.java"
 fgun="$src/hadur-core/src/main/java/hadur2/core/melee/FieldGun.java"
 danger="$src/hadur-core/src/main/java/hadur2/core/melee/TeamDanger.java"
+modes="$src/hadur-core/src/main/java/hadur2/core/melee/TeamModes.java"
 core="$src/hadur-core/src/main/java/hadur2/core/HadurCore.java"
 mseam="$src/hadur-core/src/main/java/hadur2/core/MeleeSeam.java"
 robot="$src/hadur-robot/src/main/java/hadur2/Hadur.java"
@@ -507,6 +519,29 @@ for a in "${list[@]}"; do
             version="${version}dl"
             edit "$danger" "public static final boolean LEARNED = false;" "public static final boolean LEARNED = true;"
             ;;
+        tmsoft)
+            version="${version}ms"
+            edit "$modes" "public static final boolean FORCE_SOFT = false;" "public static final boolean FORCE_SOFT = true;"
+            ;;
+        tmgang)
+            version="${version}mg"
+            edit "$modes" "public static final boolean FORCE_GANG = false;" "public static final boolean FORCE_GANG = true;"
+            ;;
+        tmfin)
+            version="${version}mf"
+            edit "$modes" "public static final boolean FORCE_FINISH = false;" "public static final boolean FORCE_FINISH = true;"
+            ;;
+        tmlearn)
+            version="${version}ml"
+            edit "$modes" "public static final boolean FORCE_LEARN = false;" "public static final boolean FORCE_LEARN = true;"
+            ;;
+        tmtab|tmlock)
+            if [[ "$a" == tmtab ]]; then table="${TEAM_MODE_TABLE:-$here/work/team-modes-screen.java}"; version="${version}mt"
+            else table="${TEAM_MODE_LOCKED:-$here/work/team-modes-locked.java}"; version="${version}mk"; fi
+            [[ -f "$table" ]] || { echo "ablation $a: no table file $table" >&2; exit 1; }
+            edit "$modes" "        Map<String, Set<Mode>> t = new HashMap<>();" "        Map<String, Set<Mode>> t = new HashMap<>();
+$(cat "$table")"
+            ;;
         tram)
             version="${version}rm"
             edit "$fgun" "if (!finisher && rams(e, me)) continue;" "if (!finisher && !onTeam && rams(e, me)) continue;"
@@ -575,7 +610,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(names))
             edit "$design" 'public static final ShieldDesign SHIPPED = parse("' \
                 "public static final ShieldDesign SHIPPED = parse(\"$flag,"
             version="${version}${suffix}" ;;
-        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, ramheat, flaton, nowall, flt59, flt8, split, wallesc, gungate, hold650, dfac, bhb, hitclr, pkern, keep2, thgun, freegun, nodecay, stacklist, protean, pdw3, pdw8, pc10, phot, repl, pressure, pdown, pwall, pwc, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tram, t6n, t6l, gtol, gstick, gwhy, gwin, gk, aesrec, shold, slearn, smode, sstay, sturn, swall, strial, sprior, snull, strim, slistadd)" >&2; exit 2 ;;
+        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, ramheat, flaton, nowall, flt59, flt8, split, wallesc, gungate, hold650, dfac, bhb, hitclr, pkern, keep2, thgun, freegun, nodecay, stacklist, protean, pdw3, pdw8, pc10, phot, repl, pressure, pdown, pwall, pwc, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tram, t6n, t6l, tmsoft, tmgang, tmfin, tmlearn, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, shold, slearn, smode, sstay, sturn, swall, strial, sprior, snull, strim, slistadd)" >&2; exit 2 ;;
     esac
 done
 

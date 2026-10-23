@@ -1,0 +1,31 @@
+# PC card team-modes (docs/bench/team-top-decompile.md section 5): the screen's table (mt) on the teams it picked, fresh seeds against master (the aa build) (Bench @FILE, one argument a line)
+--team
+true
+--seeds
+12
+--seed-base
+2700
+--rounds
+10
+--parallel
+12
+--child-heap
+2G
+--cpu-constant
+1488498
+--set
+work/team-modes-confirm.txt
+--robot-jar
+bisect/hadur2.HadurTeam_3.15mt.jar
+--robot
+hadur2.HadurTeam 3.15mt
+--member
+hadur2.Hadur
+--out
+work/team-modes-confirm
+--report
+../docs/bench/local/team-modes-confirm.md
+--baseline
+bisect/hadur2.HadurTeam_3.15aa.jar
+--baseline-robot
+hadur2.HadurTeam 3.15aa

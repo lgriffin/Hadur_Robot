@@ -1124,6 +1124,10 @@ MMOVE-8 the melee strand, WEAVE-7 and WEAVE-8 the conductor.
 | MGUN-10 | State | While in melee on a team with a living teammate, the field gun shall keep an opponent closing on Hadur within 100 px among its targets, in place of the rule that leaves it alone unless it can be finished. | T6 |
 | MMOVE-9 | Optional | Where the `NEAREST` switch is on, while in melee on a team with a living teammate, movement shall make no virtual bullets for a detected shot whose source was nearer a living teammate than 0.9 times Hadur's distance from it when it was fired. | T6 |
 | MMOVE-10 | Optional | Where the `LEARNED` switch is on, while in melee on a team with a living teammate, each enemy bullet that hits Hadur and matches a detected shot shall become a sample of that enemy's gun (Hadur's situation at the fire tick and the guess factor the bullet took), kept and sent in Hadur's report; teammates' samples shall join the same per-enemy log; and a detected shot whose shooter's log holds five samples or more shall be dodged at the aims of its nearest samples, weighted by nearness and weighing two in all, in place of MMOVE-3's head-on and linear bullets. | T6 |
+| TMODE-1 | State | While in melee on a team with a living teammate, movement shall play the team modes the mode table holds for the first living enemy whose class (its name without version or duplicate marker) the table names, or, for a team the table does not name, the modes the build forces on (none in the shipped build). | T7 |
+| TMODE-2 | Optional | Where the SOFT mode is played, a detected shot's virtual bullets shall weigh 1/(1+k)² for the k living teammates nearer its source than Hadur was when it was fired, and a shot weighing under 0.1 shall make none. | T7 |
+| TMODE-3 | Optional | Where the GANG mode is played, while two or more enemies seen within the cap age are within 250 px of Hadur, each candidate's risk shall be scaled by e^(0.5 (to − from) / 100) for its and Hadur's distances to the nearest living teammate; otherwise, while that holds for a living teammate, by the same for the nearest such teammate, each distance floored at 300 px. The posture's term shall not be scaled. | T7 |
+| TMODE-4 | Optional | Where the FINISH mode is played, while one enemy is alive and Hadur has 30 energy or more, each candidate's risk shall be scaled by e^((to − from) / 100) for its and Hadur's distances to that enemy, each floored at 350 px, in place of TMODE-3. | T7 |
 
 ### T1 notes
 
@@ -1183,6 +1187,26 @@ MMOVE-8 the melee strand, WEAVE-7 and WEAVE-8 the conductor.
   Checked with both switches turned on: every duel and melee replay fixture (Walls, Crazy, RamFire,
   SpinBot, Tracker, Shadow, warm Shadow, duress, melee samples, sentry, hand-off) replays bit for
   bit; only the two team fixtures change. Any release that turns a switch on re-runs that check.
+
+### T7 notes: the team mode table (TMODE-1 to TMODE-4)
+
+- **Why.** Leigh (2026-10-23): "There are only 44 teams in team mode, we can and should have a
+  1:1 strategy for them." The decompile read (docs/bench/team-top-decompile.md) found that the
+  top teams' movement differs from Hadur's mainly in how much of each enemy shot a member takes as
+  its own (Ogi, Firestarter), in regrouping when ganged (Ogi), and in closing on the last enemy
+  (Ogi, Combat). Different teams punish different things, so each team gets its own modes.
+- **Where.** `melee.TeamModes` holds the table (`TABLE`, empty until the per-team screens fill
+  it) and the forced default (`FORCE_SOFT`, `FORCE_GANG`, `FORCE_FINISH`, `FORCE_LEARN`, all off).
+  `MeleeController.tick` reads the modes each tick on a team. SOFT is
+  `MinimumRiskMovement.softWeight`; GANG and FINISH are `MinimumRiskMovement.pull`, a `Pull`
+  that scales the risk in `risk`; LEARN turns on MMOVE-10 for that team.
+- **Ablations.** `build-ablation.sh tmsoft`, `tmgang`, `tmfin` and `tmlearn` force one mode on
+  against every team. One census run of each scores that mode against all 46 teams, which is what
+  the table is built from.
+- **Team only.** Off a team the controller sets no modes and calls MMOVE-3's own bullet path;
+  with every mode on and no teammate, the bullets and the destination are unchanged
+  (`TeamModesTest.soloUntouched`). Checked with every mode forced on: the duel and melee replay
+  fixtures replay bit for bit.
 
 ### T5 notes: shared gun learning (MGUN-8)
 
