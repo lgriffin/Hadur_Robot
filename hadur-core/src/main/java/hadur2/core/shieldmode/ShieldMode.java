@@ -536,9 +536,10 @@ public final class ShieldMode {
         double projY = before[3] + Math.cos(before[4]) * before[5];
         w.headings[2] = ShieldGeometry.bearing(projX, projY, before[0], before[1]);
         w.headings[3] = ShieldGeometry.bearing(at[2], at[3], at[0], at[1]);
-        // SHIELD-12: the firing-point base turned by the enemy's body turn on the firing tick.
-        w.headings[4] = Angles.normalAbsoluteAngle(
-            w.headings[1] + Angles.normalRelativeAngle(at[4] - before[4]));
+        // SHIELD-12: the firing-point base turned by the enemy's body turn on the firing tick;
+        // SHIELD-16: Saguaro's, the base from the tick before turned the same way.
+        w.headings[4] = Angles.normalAbsoluteAngle(w.headings[design.prior ? 0 : 1]
+            + Angles.normalRelativeAngle(at[4] - before[4]));
         w.direction = before[6];
         w.ordinal = enemyShotsThisRound++;
         if (waves.size() >= MAX_WAVES) waves.remove(0);

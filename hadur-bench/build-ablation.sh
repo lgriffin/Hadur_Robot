@@ -183,6 +183,8 @@
 #         leaves it for the battle once the trial fails (35 damage plus 0.25 a shot, two lost
 #         rounds, under half of 20 ended bullets shot down, six hits with none shot down, or
 #         being rammed). Listed opponents play as shipped. Suffix sy.
+#   sprior SHIELD-16: Saguaro's body-turn base (head-on from the enemy's position on the tick
+#         before it fired, plus its body turn on the firing tick) as a fifth base. Suffix sq.
 #   snull  all five at once: Nullstride's design as read from its jar.
 #   strim (3.13) the 22 listed robots that 3.13 lost to in both plan90-gate runs come off the shield
 #         list, so they are fought in normal mode: does the shield still pay against them
@@ -527,7 +529,7 @@ for a in "${list[@]}"; do
                 edit "$listdata" "\"$r\"," '"",'
             done
             version="${version}tr" ;;
-        shold|slearn|smode|sstay|sturn|swall|strial|snull)
+        shold|slearn|smode|sstay|sturn|swall|strial|sprior|snull)
             # One switch of shieldmode.ShieldDesign (SHIELD-8 to SHIELD-12) added to SHIPPED.
             case "$a" in
                 shold) flag=hold; suffix=sh ;;
@@ -537,12 +539,13 @@ for a in "${list[@]}"; do
                 sturn) flag=turn; suffix=st ;;
                 swall) flag=wall; suffix=sw ;;
                 strial) flag=trial; suffix=sy ;;
+                sprior) flag=prior; suffix=sq ;;
                 snull) flag=all; suffix=sn ;;
             esac
             edit "$design" 'public static final ShieldDesign SHIPPED = parse("' \
                 "public static final ShieldDesign SHIPPED = parse(\"$flag,"
             version="${version}${suffix}" ;;
-        *) echo "unknown ablation: $a (aa, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, ramheat, flaton, nowall, flt59, flt8, split, wallesc, gungate, hold650, dfac, bhb, hitclr, pkern, keep2, thgun, freegun, nodecay, stacklist, protean, pdw3, pdw8, pc10, phot, repl, pressure, pdown, pwall, pwc, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tram, gtol, gstick, gwhy, gwin, gk, aesrec, shold, slearn, smode, sstay, sturn, swall, strial, snull, strim)" >&2; exit 2 ;;
+        *) echo "unknown ablation: $a (aa, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, ramheat, flaton, nowall, flt59, flt8, split, wallesc, gungate, hold650, dfac, bhb, hitclr, pkern, keep2, thgun, freegun, nodecay, stacklist, protean, pdw3, pdw8, pc10, phot, repl, pressure, pdown, pwall, pwc, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tram, gtol, gstick, gwhy, gwin, gk, aesrec, shold, slearn, smode, sstay, sturn, swall, strial, sprior, snull, strim)" >&2; exit 2 ;;
     esac
 done
 
