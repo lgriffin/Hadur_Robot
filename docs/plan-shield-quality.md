@@ -67,10 +67,11 @@ Against Hadur 3.15's live scores (normal mode) these 25 bots gain about +174 poi
 shield list and outside Saguaro's 126, ~886) → `screen` (c, aa, sasq x 4 seeds, ~10,600 battles,
 ~4.5 h) → `pick` (lock sasq at +5 points, interval above 0) → `confirm` (the screen's and stage 1's
 locked robots, 8 fresh seeds, ~1-1.5 h) → `final` (locked at +3 in the confirm and in a first pick)
-→ `candidate` (t1 = 3.15 + SHIELD-16 if stage 1 shows it costs the listed robots no more than 0.3
-points + the final robots on the shield list, `build-ablation.sh sprior,slistadd`) → `census`
+→ `candidate` (t1 = 3.15 + SHIELD-16, the aim every final robot won with, + the final robots on the
+shield list, `build-ablation.sh sprior,slistadd`; the census carries SHIELD-16's cost on the listed robots)
+→ `census`
 (census-312 x c, aa, t1 x 2 seeds, ~7,300 battles, ~3-4 h) → `gate` (+0.5 APS census-weighted, lower
-end above +0.3, A/A inside its band; the verdict is written either way) → `pr`.
+end above +0.3, A/A inside its band, 95% of the census read; the verdict is written either way) → `pr`.
 
 Watching it: `.\queue.ps1 status pc-table-v1`. A stop (`.\queue.ps1 stop pc-table-v1`) and a re-run
 resume where they left off; no finished battle is fought again.

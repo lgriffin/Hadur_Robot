@@ -68,10 +68,8 @@ class TableV1Test(unittest.TestCase):
         self.assertEqual(table_v1.final(confirm, [first, s1], "sasq"), ["c.Off 1.0", "d.New 1.0"])
 
     def test_candidate_spec(self):
-        self.assertEqual(table_v1.candidate_spec(True, ["x"]), ("sprior,slistadd", "sqmt"))
-        self.assertEqual(table_v1.candidate_spec(False, ["x"]), ("slistadd", "mt"))
-        self.assertEqual(table_v1.candidate_spec(True, []), ("sprior", "sq"))
-        self.assertEqual(table_v1.candidate_spec(False, []), ("", ""))
+        self.assertEqual(table_v1.candidate_spec(["x"]), ("sprior,slistadd", "sqmt"))
+        self.assertEqual(table_v1.candidate_spec([]), ("sprior", "sq"))
         self.assertIn("t1 | hadur2.Hadur 3.15sqmt | bisect/hadur2.Hadur_3.15sqmt.jar\n",
                       table_v1.candidate_arms("sqmt"))
 
@@ -84,11 +82,14 @@ class TableV1Test(unittest.TestCase):
         cost = self.file("sqcost.tsv", self.read(cost).replace("\nx\t", "\nsq\t"))
         self.assertFalse(table_v1.prior_ok(cost, -0.3)[0])
 
+    def census_of(self, opps):
+        return self.file("census-n.txt", "".join("%s | %s\n" % (o, r) for o, (r, _) in opps.items()))
+
     def test_gate_pass_and_fail(self):
-        census = self.census()
         good = {"o%d" % i: ("rank%d-band%d" % (i, 3 if i % 2 else 5), 1.0) for i in range(30)}
+        census = self.census_of(good)
         tsv = self.file("t1.tsv", self.read(self.arms("g.tsv", good)).replace("\nx\t", "\nt1\t"))
-        ok, m, ci, n, aa = table_v1.gate(tsv, census, "t1", 0.5, 0.3)
+        ok, m, ci, n, aa, total = table_v1.gate(tsv, census, "t1", 0.5, 0.3)
         self.assertTrue(ok)
         self.assertAlmostEqual(m, 1.0, delta=0.2)
         self.assertTrue(aa["ok"])
@@ -96,11 +97,19 @@ class TableV1Test(unittest.TestCase):
         tsv = self.file("t2.tsv", self.read(self.arms("s.tsv", small)).replace("\nx\t", "\nt1\t"))
         self.assertFalse(table_v1.gate(tsv, census, "t1", 0.5, 0.3)[0])
 
+    def test_gate_fails_a_partial_census(self):
+        good = {"o%d" % i: ("rank%d-band3" % i, 1.0) for i in range(30)}
+        census = self.census_of(dict(good, **{"m%d" % i: ("rank%d-band5" % i, 0.0) for i in range(5)}))
+        tsv = self.file("t1.tsv", self.read(self.arms("g.tsv", good)).replace("\nx\t", "\nt1\t"))
+        ok, m, ci, n, aa, total = table_v1.gate(tsv, census, "t1", 0.5, 0.3)
+        self.assertFalse(ok)
+        self.assertEqual((n, total), (30, 35))
+
     def test_gate_writes_verdict(self):
         good = {"o%d" % i: ("rank%d-band3" % i, 1.0) for i in range(30)}
         tsv = self.file("t1.tsv", self.read(self.arms("g.tsv", good)).replace("\nx\t", "\nt1\t"))
         out = os.path.join(self.dir, "gate.md")
-        self.assertEqual(table_v1.main(["gate", tsv, self.census(), "--out", out]), 0)
+        self.assertEqual(table_v1.main(["gate", tsv, self.census_of(good), "--out", out]), 0)
         self.assertIn("PASS: t1", self.read(out))
 
 

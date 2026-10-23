@@ -12,8 +12,9 @@
 # pick: mode_table.py, a robot locks sasq at +5 points with the 95% interval above 0.
 # confirm (about 1-1.5 h): every robot locked by the screen or by stage 1's off-list pick, 8 fresh
 #   seeds, same arms. confirm-pick at +3. final: locked in both = the robots that join the list.
-# candidate: t1 = 3.15 + SHIELD-16 (only if stage 1 showed it costs the listed robots no more than
-#   0.3 points) + the final robots on the shield list (build-ablation.sh slistadd).
+# candidate: t1 = 3.15 + SHIELD-16 (the aim every final robot was screened and confirmed with) + the
+#   final robots on the shield list (build-ablation.sh sprior,slistadd). Stage 1's read of SHIELD-16
+#   on the listed robots is printed; the census measures that cost inside t1's net.
 # census (about 3-4 h): census-312 x c, aa, t1 x 2 seeds = ~7,300 battles.
 # gate: t1 minus pooled c and aa, census-weighted: PASS at +0.5 APS with the lower end above +0.3
 #   (docs/plan-top5.md bar) and the A/A inside its band. The verdict goes in the results PR either way.

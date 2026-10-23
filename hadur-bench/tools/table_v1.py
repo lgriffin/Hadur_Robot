@@ -11,11 +11,14 @@
       prints whether SHIELD-16 (arm sq) costs the listed robots no more than MIN points against the
       pooled c and aa
   table_v1.py candidate LISTED_ARMS FINAL --out ARMS [--min -0.3]
-      builds the census candidate t1 (build-ablation.sh: sprior when prior passes, then slistadd with
-      FINAL) and writes the census arms file c, aa, t1
-  table_v1.py gate ARMS CENSUS --arm t1 --out FILE [--bar 0.5] [--low 0.3]
+      builds the census candidate t1 (build-ablation.sh: sprior, the aim every final robot was
+      screened and confirmed with, then slistadd with FINAL when it names any) and writes the census
+      arms file c, aa, t1; prior's read is printed, and the census measures SHIELD-16's cost on the
+      listed robots inside t1's net
+  table_v1.py gate ARMS CENSUS --arm t1 --out FILE [--bar 0.5] [--low 0.3] [--cover 0.95]
       the census gate: arm minus pooled c and aa, census-weighted; PASS needs the estimate at BAR
-      or more and its lower 95% end above LOW (docs/plan-top5.md bar). Writes a short verdict.
+      or more, its lower 95% end above LOW (docs/plan-top5.md bar) and at least COVER of the census
+      robots read in all three arms. Writes a short verdict.
 
 A robot matches the shield list with or without its version, as ShieldList does. Standard library
 plus data/tools/multiarm.py.
@@ -90,11 +93,10 @@ def prior_ok(arms_tsv, minimum):
     return m is not None and m >= minimum, m, ci, n
 
 
-def candidate_spec(prior, names):
-    """The build-ablation.sh spec and the jar suffix of the census candidate."""
-    spec = (["sprior"] if prior else []) + (["slistadd"] if names else [])
-    suffix = ("sq" if prior else "") + ("mt" if names else "")
-    return ",".join(spec), suffix
+def candidate_spec(names):
+    """The build-ablation.sh spec and the jar suffix of the census candidate: SHIELD-16 always, since
+    every final robot won its screen and confirm with it, plus the final robots on the list."""
+    return ("sprior,slistadd", "sqmt") if names else ("sprior", "sq")
 
 
 def candidate_arms(suffix):
@@ -104,14 +106,16 @@ def candidate_arms(suffix):
             "t1 | hadur2.Hadur 3.15%s | bisect/hadur2.Hadur_3.15%s.jar\n" % (suffix, suffix)]
 
 
-def gate(arms_tsv, census, arm, bar, low):
+def gate(arms_tsv, census, arm, bar, low, cover=0.95):
     run = multiarm.Run(multiarm.read_rows([arms_tsv]))
-    d = run.diffs(arm, ["c", "aa"])
+    d = run.diffs(arm, ["c", "aa"], run.opps(arm, "c", "aa"))
     bands = multiarm.by_group(d, lambda o: multiarm.band_of(run.role.get(o)))
     m, ci = multiarm.field_estimate(bands, multiarm.census_weights(census))
     aa = multiarm.aa_check(run, "c", "aa")
-    ok = m is not None and m >= bar and m - ci > low and aa is not None and aa["ok"]
-    return ok, m, ci, len(d), aa
+    total = len(set_rows(census))
+    ok = (m is not None and m >= bar and m - ci > low and aa is not None and aa["ok"]
+          and len(d) >= cover * total)
+    return ok, m, ci, len(d), aa, total
 
 
 def write(path, lines):
@@ -134,6 +138,7 @@ def main(argv=None):
     p = sub.add_parser("gate"); p.add_argument("arms"); p.add_argument("census")
     p.add_argument("--arm", default="t1"); p.add_argument("--out", required=True)
     p.add_argument("--bar", type=float, default=0.5); p.add_argument("--low", type=float, default=0.3)
+    p.add_argument("--cover", type=float, default=0.95)
     a = ap.parse_args(argv)
 
     if a.cmd == "panel":
@@ -159,12 +164,10 @@ def main(argv=None):
         ok, m, ci, n = prior_ok(a.arms, a.min)
         with open(a.final, encoding="utf-8") as f:
             names = [l.strip() for l in f if l.strip() and not l.startswith("#")]
-        spec, suffix = candidate_spec(ok, names)
-        print("SHIELD-16 %s (%+.2f points over %d listed robots); %d robots join the list; build: %s"
-              % ("on" if ok else "off", m if m is not None else float("nan"), n, len(names), spec or "none"))
-        if not spec:
-            sys.stderr.write("nothing to ship: SHIELD-16 stays off and no robot joins the list\n")
-            return 1
+        spec, suffix = candidate_spec(names)
+        print("SHIELD-16 on the listed robots: %+.2f points over %d (%s); %d robots join the list; build: %s"
+              % (m if m is not None else float("nan"), n, "level" if ok else "a cost the census will show",
+                 len(names), spec))
         bench = os.path.dirname(HERE)
         env = dict(os.environ, SHIELD_ADD=os.path.relpath(os.path.abspath(a.final), bench).replace(os.sep, "/"))
         code = subprocess.call(["bash", "./build-ablation.sh", spec], cwd=bench, env=env)
@@ -172,12 +175,13 @@ def main(argv=None):
             return code
         write(a.out, candidate_arms(suffix))
     elif a.cmd == "gate":
-        ok, m, ci, n, aa = gate(a.arms, a.census, a.arm, a.bar, a.low)
+        ok, m, ci, n, aa, total = gate(a.arms, a.census, a.arm, a.bar, a.low, a.cover)
         verdict = "PASS" if ok else "FAIL"
         est = "no battles" if m is None else "%+.2f +/- %.2f APS" % (m, ci)
         text = ["# Mode table v1: census gate\n\n",
-                "%s: %s - pooled c and aa = %s (census-weighted, %d robots). "
-                "Bar: %+.1f with the lower end above %+.1f.\n\n" % (verdict, a.arm, est, n, a.bar, a.low),
+                "%s: %s - pooled c and aa = %s (census-weighted, %d of %d census robots read in all three arms). "
+                "Bar: %+.1f with the lower end above %+.1f, and %.0f%% of the census read.\n\n"
+                % (verdict, a.arm, est, n, total, a.bar, a.low, 100 * a.cover),
                 "A/A: aa - c = %+.2f +/- %.2f, band +/- %.2f: %s.\n"
                 % (aa["diff"], aa["ci"], aa["band"], "inside" if aa["ok"] else "OUTSIDE, run not read")
                 if aa else "A/A: no aa arm.\n"]
