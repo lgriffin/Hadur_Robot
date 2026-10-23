@@ -155,6 +155,7 @@ class TeamReportTest {
     }
 
     @Test
+    @Tag("BENCH-96")
     @DisplayName("BENCH-96: a finished team battle is read back on resume only with its marker and the same team")
     void resumedTeamBattle() throws IOException {
         battle(600, 400, -1);
