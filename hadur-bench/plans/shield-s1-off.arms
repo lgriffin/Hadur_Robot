@@ -1,0 +1,3 @@
+# Stage 1, off-list panel: only the new arm. Its battles use M1's seeds (1900-1907), so they pool with
+# M1's c, aa, sa and sy battles in work/mode-m1/arms.tsv (PR #228) without re-running them.
+sasq | hadur2.Hadur 3.15sasq | bisect/hadur2.Hadur_3.15sasq.jar

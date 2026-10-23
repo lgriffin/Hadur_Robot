@@ -1,0 +1,5 @@
+# Stage 1 (docs/plan-shield-quality.md), listed panel: c is 3.15, aa its A/A copy, sq is 3.15 with
+# SHIELD-16 (ablation sprior), which changes play only where the shield list already shields.
+c | hadur2.Hadur 3.15 | bisect/hadur2.Hadur_3.15.jar
+aa | hadur2.Hadur 3.15aa | bisect/hadur2.Hadur_3.15aa.jar
+sq | hadur2.Hadur 3.15sq | bisect/hadur2.Hadur_3.15sq.jar

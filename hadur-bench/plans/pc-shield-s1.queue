@@ -1,0 +1,33 @@
+# Stage 1 of the 1v1 per-opponent table (docs/plan-shield-quality.md): SHIELD-16 (Saguaro's body-turn
+# shield aim base) on all of Saguaro 1.0's shield bots.
+#   ./queue.sh run pc-shield-s1        (or  .\queue.ps1 run pc-shield-s1)
+# Needs PR #230 on master and master pulled; needs work/mode-m1/arms.tsv from pc-mode-m1 (kept on the
+# PC). One bench queue, RoboRumble workers at 0, unpinned. Set P to the width pc-ladder picked.
+# Resumable; no step needs a decision.
+#
+# listed (about 1 h): the 174 Saguaro shield bots our list already shields, 4 seeds, arms c, aa, sq
+#   = 2,088 battles. Question: does SHIELD-16 cost anything where the shield already works?
+# off (about 0.5 h): the 126 off-list Saguaro shield bots, arm sasq only, M1's 8 seeds = 1,008
+#   battles; pooled with M1's c, aa, sa, sy.
+# pick: multiarm reports for both, and mode_table.py on the pooled off-list arms (sa, sy, sasq vs c+aa).
+# Reports: ../docs/bench/local/<date>_shield-s1*.md and the pick TSV; then a results PR.
+
+set P = --parallel 12
+set HEAP = --child-heap 2G
+set E = --engine 1.11.1
+set C = --skip-build --skip-fetch --rounds 35 --cpu-constant 1488498 ${HEAP} ${E}
+set READ = --census census-312.txt --segments plans/top5-segments.tsv
+
+prep | mkdir -p bisect && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur2.Hadur_3.15.jar bisect/ && bash ./build-ablation.sh aa && bash ./build-ablation.sh sprior && bash ./build-ablation.sh shield-all,sprior && ./fetch-opponents.sh --set panel-saguaro-shield-listed.txt && ./fetch-opponents.sh --set panel-saguaro-shield.txt && test -f work/mode-m1/arms.tsv && mvn -q compile
+
+listed | ./bench-top20.sh ${C} ${P} --set panel-saguaro-shield-listed.txt --seeds 4 --seed-base 1900 --arms plans/shield-s1-listed.arms --out work/shield-s1-listed --label shield-s1-listed
+  after: prep
+
+off | ./bench-top20.sh ${C} ${P} --set panel-saguaro-shield.txt --seeds 8 --seed-base 1900 --arms plans/shield-s1-off.arms --out work/shield-s1-off --label shield-s1-off
+  after: listed
+
+pick | python3 ../data/tools/multiarm.py work/shield-s1-listed/arms.tsv ${READ} --out ../docs/bench/local/$(date +%Y-%m-%d)_shield-s1-listed.md && python3 ../data/tools/multiarm.py work/mode-m1/arms.tsv work/shield-s1-off/arms.tsv ${READ} --out ../docs/bench/local/$(date +%Y-%m-%d)_shield-s1-off.md && python3 ../data/tools/mode_table.py work/mode-m1/arms.tsv work/shield-s1-off/arms.tsv --margin 5 --out-tsv ../docs/bench/local/shield-s1-pick.tsv --out ../docs/bench/local/$(date +%Y-%m-%d)_shield-s1-pick.md
+  after: off
+
+pr | bash tools/open_results_pr.sh claude/pc-shield-s1-results "Shield stage 1: SHIELD-16 on Saguaro's shield bots" ../docs/bench/local/*_shield-s1*.md ../docs/bench/local/shield-s1-pick.tsv
+  after: pick
