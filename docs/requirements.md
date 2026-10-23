@@ -1122,6 +1122,8 @@ MMOVE-8 the melee strand, WEAVE-7 and WEAVE-8 the conductor.
 | MGUN-8 | Event | When the World takes a teammate's reported sighting of an enemy, the field gun shall add it to that enemy's movement history as one of Hadur's own scans, before Hadur's own scans of the same tick. | T5 |
 | MGUN-9 | State | While in melee on a team with a living teammate, the field gun shall take 21 situations per opponent from its kNN in place of MGUN-1's three. | T6 |
 | MGUN-10 | State | While in melee on a team with a living teammate, the field gun shall keep an opponent closing on Hadur within 100 px among its targets, in place of the rule that leaves it alone unless it can be finished. | T6 |
+| MMOVE-9 | Optional | Where the `NEAREST` switch is on, while in melee on a team with a living teammate, movement shall make no virtual bullets for a detected shot whose source was nearer a living teammate than 0.9 times Hadur's distance from it when it was fired. | T6 |
+| MMOVE-10 | Optional | Where the `LEARNED` switch is on, while in melee on a team with a living teammate, each enemy bullet that hits Hadur and matches a detected shot shall become a sample of that enemy's gun (Hadur's situation at the fire tick and the guess factor the bullet took), kept and sent in Hadur's report; teammates' samples shall join the same per-enemy log; and a detected shot whose shooter's log holds five samples or more shall be dodged at the aims of its nearest samples, weighted by nearness and weighing two in all, in place of MMOVE-3's head-on and linear bullets. | T6 |
 
 ### T1 notes
 
@@ -1157,6 +1159,30 @@ MMOVE-8 the melee strand, WEAVE-7 and WEAVE-8 the conductor.
 - **Gate.** PC card team-s1, all 46 TeamRumble opponents, 6 seeds, paired with the 3.15 release:
   A/A +0.2 ± 0.8; `tk21` +2.4 ± 0.7; `tram` +1.2 ± 0.9; both **+3.4 ± 0.9** (PR #226).
 - Solo play is untouched: both read `onTeam`, set only while a teammate lives.
+
+### T6 notes: learned team danger (MMOVE-9, MMOVE-10), switches off
+
+- **Why.** Stage 2 of docs/plan-team-top5.md. After S1 the gap to 5th is mostly the top 20
+  teams, who kill Hadur's members with learning guns. Members dodged only MMOVE-3's head-on and
+  linear guesses, took every shot as aimed at themselves, and learnt nothing from the hits on
+  their teammates. CombatTeam (docs/bench/combatteam-3.25.md 2.2, 2.3) does the opposite.
+- **Where.** `melee.TeamDanger` keeps, per enemy, up to 1,000 samples of four features
+  (distance / 800, |lateral velocity| / 8, advancing velocity / 16, the share of the escape
+  angle ahead inside the walls) and the guess factor, clamped to ±1.2. `MeleeController.learn`
+  matches a hit to the World's shot of the same power whose flight fits the hit (40 px slack
+  plus the shot's fire window). `MinimumRiskMovement.updateBullets(..., mates, danger, nearest,
+  learned)` makes up to `K` (12) `LEARNED` bullets a shot with a Gaussian kernel weight
+  (`VirtualBullet.weight`, which `bulletRisk` multiplies in; 1 for MMOVE-3's), under a cap of
+  384 bullets. The link carries the samples as `Report.Dodge`; a report with dodges is written as
+  version 2 (`LinkCodec.VERSION_DODGES`), one without is version 1 byte for byte.
+- **Switches.** `TeamDanger.NEAREST` and `TeamDanger.LEARNED` are both off: the shipped team
+  plays as before. `build-ablation.sh t6n` and `t6l` turn them on for the PC gate (card team-s2).
+- **Team only (Leigh, 2026-10-23: "ONLY ... in the team capabilities and NEVER in others").** Both
+  are reached only with a living teammate; with no teammate the movement calls MMOVE-3's own path
+  (`TeamDangerTest.soloUntouched`, both switches on), and a hit is learnt only while `onTeam`.
+  Checked with both switches turned on: every duel and melee replay fixture (Walls, Crazy, RamFire,
+  SpinBot, Tracker, Shadow, warm Shadow, duress, melee samples, sentry, hand-off) replays bit for
+  bit; only the two team fixtures change. Any release that turns a switch on re-runs that check.
 
 ### T5 notes: shared gun learning (MGUN-8)
 

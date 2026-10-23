@@ -11,16 +11,23 @@ import java.awt.geom.Point2D;
 public final class VirtualBullet {
 
     /** How the shooter is assumed to have aimed. */
-    public enum Aim { HEAD_ON, LINEAR }
+    public enum Aim { HEAD_ON, LINEAR, LEARNED }
 
     public final EnemyShot shot;
     public final Aim aim;
     public final double heading;
+    /** Its share of the shot's danger: 1 for MMOVE-3's two guesses; a learned aim's kernel weight (MMOVE-10). */
+    public final double weight;
 
     public VirtualBullet(EnemyShot shot, Aim aim, double heading) {
+        this(shot, aim, heading, 1.0);
+    }
+
+    public VirtualBullet(EnemyShot shot, Aim aim, double heading, double weight) {
         this.shot = shot;
         this.aim = aim;
         this.heading = heading;
+        this.weight = weight;
     }
 
     /** Where the bullet is at tick {@code time} (at the source before it was fired). */

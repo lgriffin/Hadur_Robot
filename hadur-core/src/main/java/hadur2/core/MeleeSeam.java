@@ -1,7 +1,9 @@
 package hadur2.core;
 
+import hadur2.core.link.Report;
 import hadur2.core.melee.MeleeController;
 import hadur2.core.melee.MeleeRadar;
+import hadur2.core.melee.TeamDanger;
 import hadur2.core.model.Baton;
 import hadur2.core.model.BotEvent;
 import hadur2.core.model.BotInput;
@@ -156,6 +158,25 @@ final class MeleeSeam implements Role {
         for (TeamLink.MateSighting s : sightings) {
             guard(() -> melee.mateSighting(s.name, s.tick, s.x, s.y, s.heading, s.velocity, s.distance, s.turnRate));
         }
+    }
+
+    /** MMOVE-10: the teammates' samples of the enemies' guns, into the team's log. */
+    void mateDodges(List<Report.Dodge> dodges) {
+        for (Report.Dodge d : dodges) {
+            guard(() -> melee.mateSample(new TeamDanger.Sample(d.shooter,
+                new double[] {d.distance, d.lateral, d.advancing, d.wallAhead}, d.gf)));
+        }
+    }
+
+    /** MMOVE-10: our own samples since the last report, for this tick's report. */
+    List<Report.Dodge> takeDodges() {
+        List<TeamDanger.Sample> own = melee.takeSamples();
+        if (own.isEmpty()) return List.of();
+        List<Report.Dodge> out = new ArrayList<>(own.size());
+        for (TeamDanger.Sample s : own) {
+            out.add(new Report.Dodge(s.shooter, s.features[0], s.features[1], s.features[2], s.features[3], s.gf));
+        }
+        return out;
     }
 
     /**

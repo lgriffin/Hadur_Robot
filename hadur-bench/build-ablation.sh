@@ -13,6 +13,7 @@
 # Ablations (each a one-line edit of the duel, checked to apply exactly once):
 #   aa    no change: the same robot under another name (suffix aa), the A/A arm of a multi-arm run
 #         (BENCH-92, docs/plan-top5.md section 6.1), so a run prices its own noise.
+#   bb    no change, suffix bb: a second A/A copy, for a run whose baseline is the aa build (card team-s2).
 #   nowarm  TIME-5's warm-up on a throwaway core is skipped, so round 0 opens cold: the free-points
 #         fix arm for start-up disables (docs/plan-top5.md, Stage F). Suffix xw.
 #   ram2  RAM-2 off: never escape a confirmed rammer; RAM-1's full-power rule stays (3.4's play)
@@ -159,6 +160,11 @@
 #   tram  (team only) TR1, shoot rammers: the field gun no longer skips an enemy closing on the member
 #         inside 100 px (FieldGun.rams). Off a team the skip stays. Three ramming teams take 1.6-2.1 APS
 #         of the gap to 5th-6th (docs/plan-team-top5.md). Suffix rm. MGUN-10 ships it: use --ref v3.15.
+#   t6n   (team only) T6, MMOVE-9: a detected shot is taken as aimed at the member nearest the shooter;
+#         the others make no virtual bullets for it (TeamDanger.NEAREST). Suffix dn.
+#   t6l   (team only) T6, MMOVE-10: enemy bullets that hit any member teach a shared per-enemy log of
+#         its gun; members dodge its learned aims in place of head-on and linear (TeamDanger.LEARNED).
+#         Suffix dl. Both together: t6n,t6l (docs/plan-team-top5.md stage S2, card team-s2).
 #   mrate (melee and team) fire more often: the controller fires on a scan up to 8 ticks old (was 5;
 #         the field gun already aims on 8, the radar's sweep is 10-11), and with three or more
 #         opponents left the lead cap (never drop below the target's energy) no longer holds or
@@ -229,6 +235,7 @@ surf="$src/hadur-core/src/main/java/hadur2/core/move/SurfMover.java"
 mctl="$src/hadur-core/src/main/java/hadur2/core/melee/MeleeController.java"
 tlink="$src/hadur-core/src/main/java/hadur2/core/TeamLink.java"
 fgun="$src/hadur-core/src/main/java/hadur2/core/melee/FieldGun.java"
+danger="$src/hadur-core/src/main/java/hadur2/core/melee/TeamDanger.java"
 core="$src/hadur-core/src/main/java/hadur2/core/HadurCore.java"
 mseam="$src/hadur-core/src/main/java/hadur2/core/MeleeSeam.java"
 robot="$src/hadur-robot/src/main/java/hadur2/Hadur.java"
@@ -251,6 +258,9 @@ for a in "${list[@]}"; do
     case "$a" in
         aa)
             version="${version}aa" ;;
+        bb)
+            # A second A/A copy under its own name, for a run whose baseline is itself an aa build.
+            version="${version}bb" ;;
         nowarm)
             edit "$robot" "            warmUp(getBattleFieldWidth(), getBattleFieldHeight(), getOthers());" \
                 "            // nowarm ablation: TIME-5's warm-up skipped."
@@ -489,6 +499,14 @@ for a in "${list[@]}"; do
             version="${version}l0"
             edit "$core" "boolean laneClear = teamLink == null || teamLink.laneClear(raw);" "boolean laneClear = true;"
             ;;
+        t6n)
+            version="${version}dn"
+            edit "$danger" "public static final boolean NEAREST = false;" "public static final boolean NEAREST = true;"
+            ;;
+        t6l)
+            version="${version}dl"
+            edit "$danger" "public static final boolean LEARNED = false;" "public static final boolean LEARNED = true;"
+            ;;
         tram)
             version="${version}rm"
             edit "$fgun" "if (!finisher && rams(e, me)) continue;" "if (!finisher && !onTeam && rams(e, me)) continue;"
@@ -557,7 +575,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(names))
             edit "$design" 'public static final ShieldDesign SHIPPED = parse("' \
                 "public static final ShieldDesign SHIPPED = parse(\"$flag,"
             version="${version}${suffix}" ;;
-        *) echo "unknown ablation: $a (aa, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, ramheat, flaton, nowall, flt59, flt8, split, wallesc, gungate, hold650, dfac, bhb, hitclr, pkern, keep2, thgun, freegun, nodecay, stacklist, protean, pdw3, pdw8, pc10, phot, repl, pressure, pdown, pwall, pwc, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tram, gtol, gstick, gwhy, gwin, gk, aesrec, shold, slearn, smode, sstay, sturn, swall, strial, sprior, snull, strim, slistadd)" >&2; exit 2 ;;
+        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, ramheat, flaton, nowall, flt59, flt8, split, wallesc, gungate, hold650, dfac, bhb, hitclr, pkern, keep2, thgun, freegun, nodecay, stacklist, protean, pdw3, pdw8, pc10, phot, repl, pressure, pdown, pwall, pwc, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tram, t6n, t6l, gtol, gstick, gwhy, gwin, gk, aesrec, shold, slearn, smode, sstay, sturn, swall, strial, sprior, snull, strim, slistadd)" >&2; exit 2 ;;
     esac
 done
 

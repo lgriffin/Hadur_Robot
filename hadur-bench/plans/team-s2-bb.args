@@ -1,0 +1,31 @@
+# PC card team-s2 (docs/plan-team-top5.md stage S2): arm bb (A/A: master again under another name) against master (the aa build), all 46 TeamRumble opponents (Bench @FILE, one argument a line)
+--team
+true
+--seeds
+6
+--seed-base
+2500
+--rounds
+10
+--parallel
+12
+--child-heap
+2G
+--cpu-constant
+1488498
+--set
+team-census46.txt
+--robot-jar
+bisect/hadur2.HadurTeam_3.15bb.jar
+--robot
+hadur2.HadurTeam 3.15bb
+--member
+hadur2.Hadur
+--out
+work/team-s2-bb
+--report
+../docs/bench/local/2026-10-24_team-s2-bb.md
+--baseline
+bisect/hadur2.HadurTeam_3.15aa.jar
+--baseline-robot
+hadur2.HadurTeam 3.15aa

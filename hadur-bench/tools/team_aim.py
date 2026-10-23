@@ -39,10 +39,12 @@ def run(root):
         fires = {}
         for line in open(os.path.join(d, 'bullets.log')):
             f = line.rstrip('\n').split(',')
-            if f[2] != 'F' or len(f) < 10 or f[9] == '-':
+            if len(f) < 10 or f[2] != 'F' or f[9] == '-':
                 continue
             members = {}
             for m in f[9].split(';'):
+                if m.count(':') < 4:
+                    continue
                 name, x, y, h, v = m.rsplit(':', 4)
                 members[name] = (float(x), float(y), float(h), float(v))
             fires[(f[0], f[3])] = (float(f[5]), float(f[6]), float(f[7]), float(f[8]), members)
@@ -50,7 +52,7 @@ def run(root):
             per_opp[opp][0] += 1
         for line in open(os.path.join(d, 'bullets.log')):
             f = line.rstrip('\n').split(',')
-            if f[2] != 'H':
+            if len(f) < 6 or f[2] != 'H':
                 continue
             fire = fires.get((f[0], f[3]))
             if fire is None or f[5] not in fire[4]:

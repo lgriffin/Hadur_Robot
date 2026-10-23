@@ -74,6 +74,8 @@ final class TeamLink {
     private final List<Report.Sighting> fresh = new ArrayList<>();
     /** MGUN-8: this tick's teammates' sightings the World took, in the order it took them. */
     private final List<MateSighting> mateSightings = new ArrayList<>();
+    /** MMOVE-10 (T6): this tick's teammates' samples of the enemies' guns, in merge order. */
+    private final List<Report.Dodge> mateDodges = new ArrayList<>();
 
     /**
      * MGUN-8: one teammate's sighting of an enemy as the World took it: where and how it moved
@@ -136,6 +138,7 @@ final class TeamLink {
         roster.beginTick(now);
         fresh.clear();
         mateSightings.clear();
+        mateDodges.clear();
         boolean sentries = in.numSentries() > 0;
         List<Report> reports = new ArrayList<>();
         List<String> senders = new ArrayList<>();
@@ -238,6 +241,7 @@ final class TeamLink {
                 mateSightings.add(new MateSighting(s.name, s.tick, s.x, s.y, s.heading, s.velocity,
                     taken.turnRate(), distance));
             }
+            mateDodges.addAll(r.dodges());
             for (String dead : r.deaths()) {
                 if (dead.equals(facts.name())) continue;
                 boolean known = roster.enemyDead(dead);
@@ -312,6 +316,11 @@ final class TeamLink {
         return mateSightings;
     }
 
+    /** MMOVE-10: this tick's teammates' samples of the enemies' guns, in merge order. */
+    List<Report.Dodge> mateDodges() {
+        return mateDodges;
+    }
+
     /** WORLD-9: the living teammates with a fresh position, as of this tick's input. */
     List<Roster.Mate> living() {
         return living;
@@ -343,6 +352,11 @@ final class TeamLink {
 
     /** LINK-4: this tick's report, from the raw input and the orders the tick completed with. */
     byte[] report(BotInput in, BotOrders orders) {
+        return report(in, orders, List.of());
+    }
+
+    /** As above, carrying {@code dodges}: the enemy bullets that hit us, as samples (MMOVE-10). */
+    byte[] report(BotInput in, BotOrders orders, List<Report.Dodge> dodges) {
         List<String> deaths = new ArrayList<>(roster.deadEnemies());
         deaths.addAll(roster.deadMates());
         List<Report.Shot> shots = orders.firePower() > 0
@@ -351,7 +365,8 @@ final class TeamLink {
             : List.of();
         List<Report.Sighting> sightings = fresh.size() > 255 ? fresh.subList(0, 255) : fresh;
         return LinkCodec.encode(new Report(in.round(), in.time(), in.x(), in.y(), in.heading(), in.velocity(),
-            in.energy(), sightings, deaths.size() > 255 ? deaths.subList(0, 255) : deaths, shots));
+            in.energy(), sightings, deaths.size() > 255 ? deaths.subList(0, 255) : deaths, shots,
+            dodges.size() > 255 ? dodges.subList(0, 255) : dodges));
     }
 
     /** The team's round record: {@code T,round,tick,teammateHits,teammateBulletHits,collisions,blockedShots,reportsMerged,linkRejected,enemiesAlive,fenced}. */

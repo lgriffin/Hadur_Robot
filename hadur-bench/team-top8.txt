@@ -1,0 +1,9 @@
+# Top 8 TeamRumble teams (Stage 2 read 1)
+cz.libors.OgiTeam v1 | team-0 | cz.libors.OgiTeam_v1.jar
+mn.CombatTeam 3.25.0 | team-1 | mn.CombatTeam_3.25.0.jar
+cb.fire.FirestarterTeam 2.0 | team-2 | cb.fire.FirestarterTeam_2.0.jar
+abc.ShadowTeam 3.83 | team-3 | abc.ShadowTeam_3.83.jar
+rz.AlephTeam 0.34 | team-4 | rz.AlephTeam_0.34.jar
+ustimaw.NightmareTeam 3.3 | team-5 | ustimaw.NightmareTeam_3.3.jar
+florent.XSeries.Xmen 0.9 | team-6 | florent.XSeries.Xmen_0.9.jar
+ags.polylunar.Polylunar 1.6 | team-7 | ags.polylunar.Polylunar_1.6.jar

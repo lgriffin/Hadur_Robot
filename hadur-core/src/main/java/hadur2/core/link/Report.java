@@ -87,6 +87,48 @@ public final class Report {
         }
     }
 
+    /**
+     * MMOVE-10 (T6): an enemy bullet that hit the member, as a sample of that enemy's gun: the
+     * member's situation when it was fired (four features) and the guess factor it took.
+     */
+    public static final class Dodge {
+        public final String shooter;
+        public final double distance;
+        public final double lateral;
+        public final double advancing;
+        public final double wallAhead;
+        public final double gf;
+
+        public Dodge(String shooter, double distance, double lateral, double advancing, double wallAhead,
+                     double gf) {
+            this.shooter = Objects.requireNonNull(shooter);
+            this.distance = distance;
+            this.lateral = lateral;
+            this.advancing = advancing;
+            this.wallAhead = wallAhead;
+            this.gf = gf;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (!(o instanceof Dodge)) return false;
+            Dodge d = (Dodge) o;
+            return shooter.equals(d.shooter) && Double.compare(distance, d.distance) == 0
+                && Double.compare(lateral, d.lateral) == 0 && Double.compare(advancing, d.advancing) == 0
+                && Double.compare(wallAhead, d.wallAhead) == 0 && Double.compare(gf, d.gf) == 0;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(shooter, distance, lateral, advancing, wallAhead, gf);
+        }
+
+        @Override
+        public String toString() {
+            return "Dodge[" + shooter + " gf " + gf + "]";
+        }
+    }
+
     /** The highest round a report can carry: the wire gives the round 16 bits. */
     public static final int MAX_ROUND = 0xFFFF;
 
@@ -100,6 +142,7 @@ public final class Report {
     private final List<Sighting> sightings;
     private final List<String> deaths;
     private final List<Shot> shots;
+    private final List<Dodge> dodges;
 
     /**
      * @param round the round, from 0 to 65535 (the wire's 16 bits)
@@ -115,6 +158,12 @@ public final class Report {
      */
     public Report(int round, long tick, double x, double y, double heading, double velocity, double energy,
                   List<Sighting> sightings, List<String> deaths, List<Shot> shots) {
+        this(round, tick, x, y, heading, velocity, energy, sightings, deaths, shots, List.of());
+    }
+
+    /** As above, with {@code dodges}: the enemy bullets that hit the member on that tick (MMOVE-10). */
+    public Report(int round, long tick, double x, double y, double heading, double velocity, double energy,
+                  List<Sighting> sightings, List<String> deaths, List<Shot> shots, List<Dodge> dodges) {
         if (round < 0 || round > MAX_ROUND) throw new IllegalArgumentException("round " + round + " is not 0 to " + MAX_ROUND);
         this.round = round;
         this.tick = tick;
@@ -126,6 +175,7 @@ public final class Report {
         this.sightings = List.copyOf(sightings);
         this.deaths = List.copyOf(deaths);
         this.shots = List.copyOf(shots);
+        this.dodges = List.copyOf(dodges);
     }
 
     public int round() {
@@ -168,6 +218,10 @@ public final class Report {
         return shots;
     }
 
+    public List<Dodge> dodges() {
+        return dodges;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof Report)) return false;
@@ -175,12 +229,13 @@ public final class Report {
         return round == r.round && tick == r.tick && Double.compare(x, r.x) == 0
             && Double.compare(y, r.y) == 0 && Double.compare(heading, r.heading) == 0
             && Double.compare(velocity, r.velocity) == 0 && Double.compare(energy, r.energy) == 0
-            && sightings.equals(r.sightings) && deaths.equals(r.deaths) && shots.equals(r.shots);
+            && sightings.equals(r.sightings) && deaths.equals(r.deaths) && shots.equals(r.shots)
+            && dodges.equals(r.dodges);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(round, tick, x, y, heading, velocity, energy, sightings, deaths, shots);
+        return Objects.hash(round, tick, x, y, heading, velocity, energy, sightings, deaths, shots, dodges);
     }
 
     @Override
