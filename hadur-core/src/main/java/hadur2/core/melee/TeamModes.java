@@ -32,7 +32,11 @@ public final class TeamModes {
         /** MMOVE-10 as a mode: dodge the team's learned aims. */
         LEARN,
         /** TMODE-5: hunt as a pack: every member closes on the same enemy from its own side (NightmareTeam's pincer). */
-        PACK
+        PACK,
+        /** TMODE-6: teammates count with enemies as robots nearer an enemy than Hadur would be. */
+        SCREEN,
+        /** TMODE-7: MMOVE-10's learned aims from one log per enemy class, fed by all its copies. */
+        POOL
     }
 
     /** Ablation switches: the mode for every team the table does not name. */
@@ -41,12 +45,17 @@ public final class TeamModes {
     public static final boolean FORCE_FINISH = false;
     public static final boolean FORCE_LEARN = false;
     public static final boolean FORCE_PACK = false;
+    public static final boolean FORCE_SCREEN = false;
+    public static final boolean FORCE_POOL = false;
 
     /** No modes: today's team movement. */
     public static final Set<Mode> NONE = Collections.unmodifiableSet(EnumSet.noneOf(Mode.class));
 
     /** The modes for teams the table does not name. */
-    static final Set<Mode> DEFAULT = forced(FORCE_SOFT, FORCE_GANG, FORCE_FINISH, FORCE_LEARN, FORCE_PACK);
+    static final Set<Mode> DEFAULT = of(
+        FORCE_SOFT ? Mode.SOFT : null, FORCE_GANG ? Mode.GANG : null, FORCE_FINISH ? Mode.FINISH : null,
+        FORCE_LEARN ? Mode.LEARN : null, FORCE_PACK ? Mode.PACK : null, FORCE_SCREEN ? Mode.SCREEN : null,
+        FORCE_POOL ? Mode.POOL : null);
 
     /** Opposing member class to its team's modes; filled from the per-team screens. */
     static final Map<String, Set<Mode>> TABLE = table();
@@ -54,17 +63,12 @@ public final class TeamModes {
     private TeamModes() {
     }
 
-    static Set<Mode> forced(boolean soft, boolean gang, boolean finish, boolean learn) {
-        return forced(soft, gang, finish, learn, false);
-    }
-
-    static Set<Mode> forced(boolean soft, boolean gang, boolean finish, boolean learn, boolean pack) {
+    /** The set of {@code modes}, nulls left out; the table's entries are written with it. */
+    static Set<Mode> of(Mode... modes) {
         EnumSet<Mode> s = EnumSet.noneOf(Mode.class);
-        if (soft) s.add(Mode.SOFT);
-        if (gang) s.add(Mode.GANG);
-        if (finish) s.add(Mode.FINISH);
-        if (learn) s.add(Mode.LEARN);
-        if (pack) s.add(Mode.PACK);
+        for (Mode m : modes) {
+            if (m != null) s.add(m);
+        }
         return Collections.unmodifiableSet(s);
     }
 

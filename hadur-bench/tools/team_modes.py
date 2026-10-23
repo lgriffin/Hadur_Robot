@@ -22,7 +22,7 @@ import sys
 import zipfile
 from pathlib import Path
 
-MODES = ("SOFT", "GANG", "FINISH", "LEARN", "PACK")
+MODES = ("SOFT", "GANG", "FINISH", "LEARN", "PACK", "SCREEN", "POOL")
 
 ROW = re.compile(r"^\|\s*(?P<team>[^|]+?)\s*\|\s*[^|]*\|\s*[^|]*\|\s*(?P<mean>[+-]?\d+(?:\.\d+)?)(?:\s*±\s*(?P<ci>\d+(?:\.\d+)?))?\s*\|\s*$")
 
@@ -92,8 +92,8 @@ def java_lines(entries, classes):
         modes = set(next(iter(picks)))
         if not modes:
             continue
-        flags = ", ".join("true" if m in modes else "false" for m in MODES)
-        lines.append(f'        t.put("{c}", forced({flags}));')
+        listed = ", ".join(f"Mode.{m}" for m in MODES if m in modes)
+        lines.append(f'        t.put("{c}", of({listed}));')
     return lines, clashes
 
 

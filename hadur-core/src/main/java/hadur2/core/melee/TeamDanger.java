@@ -82,6 +82,8 @@ public final class TeamDanger {
 
     private final BattleField field;
     private final Map<String, Deque<Sample>> logs = new HashMap<>();
+    /** TMODE-7: whether logs are kept per enemy class rather than per robot. */
+    private boolean pooled;
     /** Hadur's own samples since the last report took them. */
     private final List<Sample> outgoing = new ArrayList<>();
 
@@ -89,15 +91,27 @@ public final class TeamDanger {
         this.field = field;
     }
 
+    /**
+     * TMODE-7: keep one log per enemy class ({@link TeamModes#key}), fed by every copy of it,
+     * in place of one per robot. Set before the round's first sample; a battle keeps one choice.
+     */
+    public void pool(boolean on) {
+        pooled = on;
+    }
+
+    private String log(String shooter) {
+        return pooled ? TeamModes.key(shooter) : shooter;
+    }
+
     /** The samples logged for {@code shooter}. */
     public int size(String shooter) {
-        Deque<Sample> log = logs.get(shooter);
+        Deque<Sample> log = logs.get(log(shooter));
         return log == null ? 0 : log.size();
     }
 
     /** Adds a sample, Hadur's own or a teammate's, to its shooter's log. */
     public void add(Sample s) {
-        Deque<Sample> log = logs.computeIfAbsent(s.shooter, k -> new ArrayDeque<>());
+        Deque<Sample> log = logs.computeIfAbsent(log(s.shooter), k -> new ArrayDeque<>());
         if (log.size() >= MAX_SAMPLES) log.removeFirst();
         log.addLast(s);
     }
@@ -133,7 +147,7 @@ public final class TeamDanger {
      * the log holds fewer than {@link #MIN_SAMPLES}.
      */
     public List<Aim> aims(EnemyShot shot, RobotState target) {
-        Deque<Sample> log = logs.get(shot.shooter);
+        Deque<Sample> log = logs.get(log(shot.shooter));
         if (log == null || log.size() < MIN_SAMPLES) return null;
         double[] f = features(shot, target);
         List<double[]> scored = new ArrayList<>(log.size());

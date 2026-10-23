@@ -240,4 +240,34 @@ class TeamModesTest {
             EnumSet.of(TeamModes.Mode.PACK, TeamModes.Mode.GANG));
         assertEquals(pt(200, 600), p.at);
     }
+
+    @Test
+    @Tag("TMODE-6")
+    @DisplayName("TMODE-6: with SCREEN a teammate nearer an enemy than a point keeps Hadur from counting as that enemy's closest robot")
+    void screenedByMate() {
+        List<EnemyInfo> one = enemies(pt(600, 900), pt(100, 100)).alive();
+        MinimumRiskMovement move = new MinimumRiskMovement(field(1200, 1200));
+        move.newRound();
+        List<Roster.Mate> m = mates(pt(600, 1000));
+        MinimumRiskMovement.View v = move.view(pt(600, 600), 100, 100, 4, one, MeleeStrategy.Plan.normal(), m);
+        Point2D.Double p = pt(600, 700);
+        double plain = move.enemyRisk(p, v, 0);
+        MinimumRiskMovement.screen(v, 100);
+        // The teammate is 100 px from the enemy, the point 200: Hadur there is no longer its closest.
+        assertEquals(plain / MinimumRiskMovement.CLOSEST_FACTOR, move.enemyRisk(p, v, 0), 1e-9);
+    }
+
+    @Test
+    @Tag("TMODE-7")
+    @DisplayName("TMODE-7: pooled, every copy of an enemy class feeds and reads one log")
+    void pooledLogs() {
+        TeamDanger d = new TeamDanger(field(1200, 1200));
+        d.pool(true);
+        d.add(new TeamDanger.Sample("cz.libors.Ogi 1.0 (1)", new double[4], 0.5));
+        d.add(new TeamDanger.Sample("cz.libors.Ogi 1.0 (3)", new double[4], 0.5));
+        assertEquals(2, d.size("cz.libors.Ogi 1.0 (2)"));
+        TeamDanger apart = new TeamDanger(field(1200, 1200));
+        apart.add(new TeamDanger.Sample("cz.libors.Ogi 1.0 (1)", new double[4], 0.5));
+        assertEquals(0, apart.size("cz.libors.Ogi 1.0 (2)"));
+    }
 }

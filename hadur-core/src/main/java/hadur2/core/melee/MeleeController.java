@@ -218,7 +218,9 @@ public class MeleeController {
         double headOn = DiaUtils.absoluteBearing(shooter.location, atFire.location);
         double botWidth = DiaUtils.botWidthAimAngle(distance);
         stats.recordDamageReceived(damage, heading - headOn, botWidth);
-        if (onTeam && (TeamDanger.LEARNED || modes.contains(TeamModes.Mode.LEARN))) learn(name, power, heading, me, now);
+        if (onTeam && (TeamDanger.LEARNED || modes.contains(TeamModes.Mode.LEARN) || modes.contains(TeamModes.Mode.POOL))) {
+            learn(name, power, heading, me, now);
+        }
         // The same test OpponentStats uses: within Hadur's width of head-on, else led.
         profiles.hitOnHadur(name, Math.abs(Angles.normalRelativeAngle(heading - headOn)) <= botWidth
             ? MeleeProfile.AimClass.HEAD_ON : MeleeProfile.AimClass.LINEAR);
@@ -312,11 +314,14 @@ public class MeleeController {
         if (onTeam) {
             // T7 (TMODE-1): the modes against this team.
             modes = TeamModes.against(alive);
+            // TMODE-7: POOL is LEARN with one log per enemy class.
+            danger.pool(modes.contains(TeamModes.Mode.POOL));
             // T6 (MMOVE-9, MMOVE-10): where each teammate stands, for whom a shot was aimed at.
             List<Point2D.Double> mates = new ArrayList<>(s.teammates.size());
             for (Roster.Mate m : s.teammates) mates.add(m.at(s.time));
             mover.updateBullets(tracker.shots(s.time), myPath, s.me, s.time, mates, danger,
-                TeamDanger.NEAREST, TeamDanger.LEARNED || modes.contains(TeamModes.Mode.LEARN),
+                TeamDanger.NEAREST, TeamDanger.LEARNED || modes.contains(TeamModes.Mode.LEARN)
+                    || modes.contains(TeamModes.Mode.POOL),
                 modes.contains(TeamModes.Mode.SOFT));
         } else {
             modes = TeamModes.NONE;

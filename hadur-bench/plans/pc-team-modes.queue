@@ -11,6 +11,8 @@
 #   mg     TMODE-3 GANG forced on against every team.
 #   mf     TMODE-4 FINISH forced on against every team.
 #   mp     TMODE-5 PACK forced on against every team (NightmareTeam's pincer).
+#   mx     TMODE-6 SCREEN forced on (Ogi: teammates count as robots nearer an enemy).
+#   mo     TMODE-7 POOL forced on (Ogi: learned aims from one log per enemy class).
 #   LEARN  is read from team-s2's dl report (MMOVE-10 forced on, seeds 2500), not run again.
 # Screens: 46 teams x 6 seeds x 2 = 552 battles a step (about 30-35 min at --parallel 12).
 # pick:    for each team, the mode whose paired gain has its 95% low end above zero.
@@ -18,13 +20,13 @@
 # lock:    keep a pick only where confirm gained at least +1.0 point.
 # census:  the confirmed table (mk) against all 46 teams, 6 fresh seeds, paired with aa.
 # Gate: census mean at least +3.0 points with the interval above +1.5 (bb inside +/- 1.0).
-# About 3,350-3,650 battles, 3.5 h. Every bench step resumes where it stopped (BENCH-96).
+# About 4,450-4,750 battles, 4.5 h. Every bench step resumes where it stopped (BENCH-96).
 # When done, the PC commits the reports to claude/pc-team-modes-results and opens a PR.
 
 set OUT = ../docs/bench/local
 set T = python3 tools/team_modes.py
 
-prep | bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && bash ./build-ablation.sh tmsoft && bash ./build-ablation.sh tmgang && bash ./build-ablation.sh tmfin && bash ./build-ablation.sh tmpack && ./fetch-opponents.sh --set team-census46.txt && { test -f ${OUT}/2026-10-24_team-s2-dl.md || { git fetch -q origin claude/pc-team-s2-results && git show FETCH_HEAD:docs/bench/local/2026-10-24_team-s2-dl.md > ${OUT}/2026-10-24_team-s2-dl.md; }; } && (cd .. && mvn -q -DskipTests install -pl hadur-core -am) && mvn -q compile
+prep | bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && bash ./build-ablation.sh tmsoft && bash ./build-ablation.sh tmgang && bash ./build-ablation.sh tmfin && bash ./build-ablation.sh tmpack && bash ./build-ablation.sh tmscreen && bash ./build-ablation.sh tmpool && ./fetch-opponents.sh --set team-census46.txt && { test -f ${OUT}/2026-10-24_team-s2-dl.md || { git fetch -q origin claude/pc-team-s2-results && git show FETCH_HEAD:docs/bench/local/2026-10-24_team-s2-dl.md > ${OUT}/2026-10-24_team-s2-dl.md; }; } && (cd .. && mvn -q -DskipTests install -pl hadur-core -am) && mvn -q compile
 
 bb    | mvn -q exec:java "-Dexec.args=@plans/team-modes-bb.args"
   after: prep
@@ -36,9 +38,13 @@ mf    | mvn -q exec:java "-Dexec.args=@plans/team-modes-mf.args"
   after: mg
 mp    | mvn -q exec:java "-Dexec.args=@plans/team-modes-mp.args"
   after: mf
-
-pick | ${T} pick --report SOFT=${OUT}/team-modes-ms.md --report GANG=${OUT}/team-modes-mg.md --report FINISH=${OUT}/team-modes-mf.md --report PACK=${OUT}/team-modes-mp.md --report LEARN=${OUT}/2026-10-24_team-s2-dl.md --aa ${OUT}/team-modes-bb.md --census team-census46.txt --opponents opponents --out-md ${OUT}/team-modes-pick.md --out-tsv ${OUT}/team-modes-pick.tsv --out-java work/team-modes-screen.java --out-set work/team-modes-confirm.txt && bash ./build-ablation.sh tmtab
+mx    | mvn -q exec:java "-Dexec.args=@plans/team-modes-mx.args"
   after: mp
+mo    | mvn -q exec:java "-Dexec.args=@plans/team-modes-mo.args"
+  after: mx
+
+pick | ${T} pick --report SOFT=${OUT}/team-modes-ms.md --report GANG=${OUT}/team-modes-mg.md --report FINISH=${OUT}/team-modes-mf.md --report PACK=${OUT}/team-modes-mp.md --report SCREEN=${OUT}/team-modes-mx.md --report POOL=${OUT}/team-modes-mo.md --report LEARN=${OUT}/2026-10-24_team-s2-dl.md --aa ${OUT}/team-modes-bb.md --census team-census46.txt --opponents opponents --out-md ${OUT}/team-modes-pick.md --out-tsv ${OUT}/team-modes-pick.tsv --out-java work/team-modes-screen.java --out-set work/team-modes-confirm.txt && bash ./build-ablation.sh tmtab
+  after: mo
 confirm | if grep -qv '^#' work/team-modes-confirm.txt; then mvn -q exec:java "-Dexec.args=@plans/team-modes-confirm.args"; else echo "no team picked a mode: nothing to confirm"; fi
   after: pick
 lock | if [ -f ${OUT}/team-modes-confirm.md ]; then ${T} lock --confirm ${OUT}/team-modes-confirm.md --pick-tsv ${OUT}/team-modes-pick.tsv --census team-census46.txt --opponents opponents --min-gain 1.0 --out-md ${OUT}/team-modes-lock.md --out-java work/team-modes-locked.java; else : > work/team-modes-locked.java; fi && bash ./build-ablation.sh tmlock

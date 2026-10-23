@@ -58,10 +58,10 @@ class TeamModesTest(unittest.TestCase):
         out = self.pick()
         java = (out / "t.java").read_text()
         # a: GANG +8 > SOFT +5, both clear; b: GANG +6 +/- 5 clears, SOFT does not; c: SOFT.
-        self.assertIn('t.put("a.A", forced(false, true, false, false, false));', java)
-        self.assertIn('t.put("b.Lead", forced(false, true, false, false, false));', java)
-        self.assertIn('t.put("b.Droid", forced(false, true, false, false, false));', java)
-        self.assertIn('t.put("c.C", forced(true, false, false, false, false));', java)
+        self.assertIn('t.put("a.A", of(Mode.GANG));', java)
+        self.assertIn('t.put("b.Lead", of(Mode.GANG));', java)
+        self.assertIn('t.put("b.Droid", of(Mode.GANG));', java)
+        self.assertIn('t.put("c.C", of(Mode.SOFT));', java)
         self.assertEqual(3, len([l for l in (out / "set.txt").read_text().splitlines() if not l.startswith("#")]))
 
     def test_lock_keeps_only_confirmed_gains(self):
@@ -82,7 +82,7 @@ class TeamModesTest(unittest.TestCase):
 
     def test_a_class_an_unpicked_team_shares_is_left_out(self):
         lines, clashes = team_modes.java_lines({"x": {"SOFT"}}, {"x": ["s.Same", "s.Own"], "y": ["s.Same"]})
-        self.assertEqual(['        t.put("s.Own", forced(true, false, false, false, false));'], lines)
+        self.assertEqual(['        t.put("s.Own", of(Mode.SOFT));'], lines)
         self.assertEqual(["s.Same"], clashes)
 
     def test_a_single_pair_row_has_no_interval(self):

@@ -1129,6 +1129,8 @@ MMOVE-8 the melee strand, WEAVE-7 and WEAVE-8 the conductor.
 | TMODE-3 | Optional | Where the GANG mode is played, while two or more enemies seen within the cap age are within 250 px of Hadur, each candidate's risk shall be scaled by e^(0.5 (to − from) / 100) for its and Hadur's distances to the nearest living teammate; otherwise, while that holds for a living teammate, by the same for the nearest such teammate, each distance floored at 300 px. The posture's term shall not be scaled. | T7 |
 | TMODE-4 | Optional | Where the FINISH mode is played, while the engine counts one enemy alive, that enemy was seen within the cap age, and Hadur has 30 energy or more, each candidate's risk shall be scaled by e^((to − from) / 100) for its and Hadur's distances to that enemy, each floored at 350 px, in place of TMODE-3. | T7 |
 | TMODE-5 | Optional | Where the PACK mode is played, while Hadur has 20 energy or more and is not drawn by TMODE-3's regroup or TMODE-4, each candidate's risk shall be scaled by e^((to − from) / 100), each distance floored at 40 px, toward Hadur's place in a pincer round the prey: the enemy seen within the cap age with the least distance from the members' centre plus 1.2 times its energy; the members ranked by bearing from the prey about their mean bearing and spread about it at most 70° apart, at 0.74 of the nearest member's distance, between 150 and 450 px. | T7 |
+| TMODE-6 | Optional | Where the SCREEN mode is played, each enemy's distance to its nearest other robot, by which MMOVE-2 decides whether Hadur at a candidate point would be that enemy's closest, shall take the living teammates in view as well as the other enemies. | T7 |
+| TMODE-7 | Optional | Where the POOL mode is played, MMOVE-10's learning and learned aims shall apply as for the LEARN mode, with one log per enemy class (the name without version or duplicate marker) fed by the hits of every copy of that class. | T7 |
 
 ### T1 notes
 
@@ -1206,7 +1208,10 @@ MMOVE-8 the melee strand, WEAVE-7 and WEAVE-8 the conductor.
   positions the team shares, and takes its own place on the arc by its bearing order, so the
   places agree without orders on the link. GANG's regroup comes before the hunt; helping a
   ganged teammate comes after it. The gun still picks its own target.
-- **Ablations.** `build-ablation.sh tmsoft`, `tmgang`, `tmfin`, `tmlearn` and `tmpack` force one mode on
+- **SCREEN and POOL (TMODE-6, TMODE-7).** From the Ogi deep dive (docs/bench/ogi-deep-dive.md):
+  Ogi divides an enemy's risk by the robots nearer it, teammates included, and keys its danger
+  model by class, so one model learns from all five copies of an enemy.
+- **Ablations.** `build-ablation.sh tmsoft`, `tmgang`, `tmfin`, `tmlearn`, `tmpack`, `tmscreen` and `tmpool` force one mode on
   against every team. One census run of each scores that mode against all 46 teams, which is what
   the table is built from.
 - **Team only.** Off a team the controller sets no modes and calls MMOVE-3's own bullet path;
