@@ -43,6 +43,22 @@ class SurfOpeningTest {
     }
 
     @Test
+    @Tag("MOVE-24")
+    @DisplayName("MOVE-24: flattener off keeps both flatteners off, forced or not, and leaves the rest to their thresholds")
+    void flattenerOffKeepsThemOff() {
+        MoveController m = controller();
+        m.setFlattenerOff(true);
+        m.setPrior(0.09, 0.01);
+        m.setFlattenerFirst(true);
+        List<String> on = m.viewsOn();
+        assertFalse(on.contains("flattener") || on.contains("flattener2"), on.toString());
+        assertTrue(on.containsAll(List.of("simple", "normal", "recent1", "lightFlattener")),
+            "9% less 1% still meets the light flattener's own threshold: " + on);
+        m.setFlattenerOff(false);
+        assertTrue(m.viewsOn().containsAll(FLATTENERS), "off again, ADAPT-2 forces them as before");
+    }
+
+    @Test
     @Tag("ADAPT-2")
     @DisplayName("a known lower tier hands its rate to the thresholds, with no forced flattener")
     void lowerTiersUseThresholds() {

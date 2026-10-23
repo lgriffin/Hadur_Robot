@@ -123,8 +123,13 @@ public final class FixtureReplay {
                 core.battleEnded(Long.parseLong(line.substring(3)));
             } else if (line.startsWith("HE,")) {
                 String[] h = line.split(",");
-                core.writeBattleHealth(Integer.parseInt(h[1]), Integer.parseInt(h[2]), faults,
-                    Integer.parseInt(h[3]));
+                if (h.length >= 7) {
+                    core.writeBattleHealth(Integer.parseInt(h[1]), Integer.parseInt(h[2]), faults,
+                        Integer.parseInt(h[3]), Integer.parseInt(h[4]), Long.parseLong(h[5]), Integer.parseInt(h[6]));
+                } else {
+                    core.writeBattleHealth(Integer.parseInt(h[1]), Integer.parseInt(h[2]), faults,
+                        Integer.parseInt(h[3]));
+                }
             } else if (line.startsWith("S,")) {
                 String[] s = line.split(",", 3);
                 if (r.recordedStore == null) r.recordedStore = new TreeMap<>();

@@ -1386,6 +1386,7 @@ None of these change how the robot plays; TIME-8 and RES-15 only report.
 | BENCH-92 | Event | When an arms file is given (`--arms FILE`), the bench shall fight every (opponent, seed) job against every arm, cold, in an order shuffled from the job, and write one row per battle to `arms.tsv` and a per-arm table to the report. | R9 |
 | BENCH-93 | Option | Where pinning is on (`--pin true`), the bench shall bind each battle's JVM to its worker's own logical processors, leaving the first `--pin-offset` to the OS, and refuse more workers than the processors allow. | R9 |
 | BENCH-94 | Ubiquitous | The bench shall carry `data/tools/multiarm.py`, which reads one or more `arms.tsv` files and reports each arm against the pooled control and A/A arms per opponent with 95% intervals, the A/A check, the split by band, engine and start-up disables per arm, and factorial main effects from a design file. | R9 |
+| BENCH-95 | Event | When a multi-arm run starts in an output folder where a stopped run already finished some battles, the bench shall read back each battle that finished ok for the same arm (label and robot), opponent and seed, and fight only the rest, unless resuming is turned off (`--resume false`, `--no-resume`). | R9 |
 | RAM-4 | State | While the rammer-heat switch is on, in a duel, once RAM-2 has confirmed the opponent as a rammer, the surf shall offer MOVE-11's gun-heat wave with MOVE-13's hold off (as heatjit plays) for the rest of the battle, whatever those switches are set to; before the confirmation, and in melee or team, the switches are as their own requirements state. Off by default. | R9 |
 
 - **TIME-8.** `Hadur.setupRecord`, printed once in round 0. The PC's round-0 read
@@ -1393,18 +1394,45 @@ None of these change how the robot plays; TIME-8 and RES-15 only report.
   the first record at median turn 105; the record says where those turns go.
 - **RES-15.** `HadurCore.writeBattleHealth` with seven arguments appends
   `,setupMs,firstTurn,maxRun`; the four-argument form keeps the old record, so older readers and
-  the replay fixtures are unchanged. `data/tools/live_client.py` reads both shapes.
+  the replay fixtures are unchanged (since 3.15 the recorder logs the three fields too, see below). `data/tools/live_client.py` reads both shapes.
 - **BENCH-91.** `LogHarvester.noteTurn` latches a round once either robot is dead.
 - **BENCH-92.** `Arms` and `Bench.runArms`. Shuffling the order spreads load and drift over
   every arm; an A/A arm (the control under another name) prices the run's own noise.
 - **BENCH-93.** `Affinity`: PowerShell `ProcessorAffinity` on Windows, `taskset -a -p` elsewhere;
   best effort, written to each battle's `pin.txt`.
 - **BENCH-94.** `data/tools/multiarm.py`, tested by `data/tools/test_multiarm.py` in CI.
+- **BENCH-95.** `Arms.ROW_FILE` (`arm-row.tsv`) is written in each battle's folder after it is fought;
+  `Arms.resumed` reads it back in `Bench.runArms`. Why: on 2026-10-22 a stop of the census to move it
+  onto NVMe threw away ~2,000 finished battles, because a queue step could only rerun from zero.
+  Tested in `ArmsTest`.
 - **RAM-4.** `MoveDesign.RAM_HEAT`, ablation `ramheat` (rh), read in `DuelController` as
   `ramHeat(duelOnly(RAM_HEAT, enemiesTotal), rammer.confirmed())`, which ORs into `HEAT_WAVE` and
   takes `HEAT_HOLD` off; still ANDed with MOVE-23's `stackOn`. Why: the top-5 factorial (PR #221,
   1,212 bots) put heatjit's whole +0.10 APS on the 87 rammers (+1.39 points) and -0.055 APS on
   ranks 51-400. Tested in `DuelOnlySwitchesTest`; screened and censused by `plans/pc-top5-s34.queue`.
+
+## 3.15: the census winners shipped (MOVE-24, SHIELD-14 on)
+
+| ID | Pattern | Requirement | Stage |
+|---|---|---|---|
+| MOVE-24 | State | While in a duel, the surf's danger score shall leave the two flattener views (`flattener`, `flattener2`) off whatever the hit rate, ADAPT-2's flattener-first or MOVE-2's flavour ask, and turn the other views on by their own thresholds; in melee and team the views are as ADAPT-2, MOVE-2 and MOVE-5 state. | R9 |
+
+- **MOVE-24.** `MoveDesign.FLATTENER_OFF` (true), set per battle in `DuelController`'s constructor
+  as `moveController.setFlattenerOff(duelOnly(FLATTENER_OFF, enemiesTotal))`; `MoveController.viewOn`
+  then never turns on `flattener` or `flattener2` and ignores flattener-first. In a duel this plays
+  exactly as the benched `flat` ablation (nf: threshold 1000, flattener-first off), whose light
+  flattener also kept its own 3% threshold. Ablation `flaton` (fo) undoes it. Why: the top-5
+  factorial (PR #221, 1,212 bots) put it at +0.12 ± 0.10 APS, and the release-candidate census
+  (PR #222) put it with the wall shot at +0.34 ± 0.15 APS over 3.14 (A/A −0.00 ± 0.17). In a duel
+  this supersedes ADAPT-2 and MOVE-5 for the two flatteners. Tested in `SurfOpeningTest`,
+  `DuelOnlySwitchesTest` and adapt.feature.
+- **SHIELD-14 ships on.** `ShieldDesign.SHIPPED` is `wall,hold,learn,mode,stay`. Shield mode exists
+  only in a duel, so melee and team are untouched. Ablation `nowall` (xs) undoes it. Why: +0.19 ±
+  0.09 APS in the factorial, all of it on ranks 401+.
+- **Fixtures.** `abc.Shadow_3.83c` was re-recorded on 3.15 (the only fixture whose orders moved),
+  with its telemetry snapshot; duel and owner pins re-taken. The recorder's `HE` line now carries
+  RES-15's three start-up fields, so a fixture recorded since 3.15 replays the seven-field health
+  record; older fixtures keep the four-field line.
 
 ## Retired requirements
 

@@ -100,6 +100,9 @@ public class MoveController {
     private double priorMarginOfError = Double.NaN;
     /** ADAPT-2: the flattener views are on while the prior stands, whatever the thresholds say. */
     private boolean flattenerFirst;
+    /** MOVE-24: the flattener views off (set per battle by the duel, duel only). */
+    private boolean flattenerOff;
+    private KnnView<TimestampedGuessFactor> flattener, flattener2;
     /** Seeded samples so far; their time, so the decaying views see them oldest first. */
     private int seedsLoaded;
     /** Lays out the first eleven values of each sample handed to {@link #sampleSink}. */
@@ -226,14 +229,16 @@ public class MoveController {
             .setWeight(10).setK(50).setMaxDataPoints(1000).setKDivisor(5)
             .setPaddedHitThreshold(3.0).visitsOn()
             .setName("lightFlattener"));
-        views.add(new KnnView<TimestampedGuessFactor>(new FlattenerFormula())
+        flattener = new KnnView<TimestampedGuessFactor>(new FlattenerFormula())
             .setWeight(50).setK(25).setMaxDataPoints(300).setKDivisor(12)
             .setPaddedHitThreshold(FLATTENER_THRESHOLD).visitsOn()
-            .setName("flattener"));
-        views.add(new KnnView<TimestampedGuessFactor>(new FlattenerFormula())
+            .setName("flattener");
+        views.add(flattener);
+        flattener2 = new KnnView<TimestampedGuessFactor>(new FlattenerFormula())
             .setWeight(500).setK(50).setMaxDataPoints(2000).setKDivisor(14)
             .setPaddedHitThreshold(FLATTENER_THRESHOLD).setDecayRate(DECAY_RATE).visitsOn()
-            .setName("flattener2"));
+            .setName("flattener2");
+        views.add(flattener2);
     }
 
     /**
@@ -247,6 +252,23 @@ public class MoveController {
     public void setPrior(double hitRate, double marginOfError) {
         this.priorHitPercentage = 100.0 * hitRate;
         this.priorMarginOfError = 100.0 * marginOfError;
+    }
+
+    /**
+     * MOVE-24: the two flattener views stay off whatever the hit rate, and nothing forces the
+     * visit-logging views on (ADAPT-2's flattener-first is not read); the other views go by their
+     * thresholds. The top-5 census (PR #222) measured this, as the {@code flat} ablation (nf), at part
+     * of +0.34 APS with swall. The duel sets it, in a duel only.
+     *
+     * @param flattenerOff true to keep the flatteners off
+     */
+    public void setFlattenerOff(boolean flattenerOff) {
+        this.flattenerOff = flattenerOff;
+    }
+
+    /** MOVE-24: whether the flatteners are kept off. */
+    public boolean flattenerOff() {
+        return flattenerOff;
     }
 
     /**
@@ -309,6 +331,7 @@ public class MoveController {
      * otherwise by its thresholds ({@link KnnView#thresholdsMet}).
      */
     private boolean viewOn(KnnView<TimestampedGuessFactor> view, double[] estimate) {
+        if (flattenerOff) return view != flattener && view != flattener2 && view.thresholdsMet(estimate[0], estimate[1]);
         if (flattenerFirst && view.logVisits) return true;
         return view.thresholdsMet(estimate[0], estimate[1]);
     }

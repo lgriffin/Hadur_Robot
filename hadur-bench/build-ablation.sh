@@ -306,6 +306,14 @@ for a in "${list[@]}"; do
         flt8)
             edit "$move" "public static final double FLATTENER_THRESHOLD = 4.5;" "public static final double FLATTENER_THRESHOLD = 8.0;"
             version="${version}f8" ;;
+        flaton)
+            # MOVE-24 off: 3.15's duel flattener-off undone (the flatteners as 3.14 plays them).
+            edit "$movedesign" "static final boolean FLATTENER_OFF = true;" "static final boolean FLATTENER_OFF = false;"
+            version="${version}fo" ;;
+        nowall)
+            # SHIELD-14 off: 3.15's shipped wall shot undone (the shield as 3.14 plays it).
+            edit "$design" 'parse("wall,hold,learn,mode,stay")' 'parse("hold,learn,mode,stay")'
+            version="${version}xs" ;;
         ramheat)
             edit "$movedesign" "static final boolean RAM_HEAT = false;" "static final boolean RAM_HEAT = true;"
             version="${version}rh" ;;
@@ -522,7 +530,7 @@ for a in "${list[@]}"; do
             edit "$design" 'public static final ShieldDesign SHIPPED = parse("' \
                 "public static final ShieldDesign SHIPPED = parse(\"$flag,"
             version="${version}${suffix}" ;;
-        *) echo "unknown ablation: $a (aa, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, ramheat, flt59, flt8, split, wallesc, gungate, hold650, dfac, bhb, hitclr, pkern, keep2, thgun, freegun, nodecay, stacklist, protean, pdw3, pdw8, pc10, phot, repl, pressure, pdown, pwall, pwc, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, gtol, gstick, gwhy, gwin, gk, aesrec, shold, slearn, smode, sstay, sturn, snull, strim)" >&2; exit 2 ;;
+        *) echo "unknown ablation: $a (aa, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, ramheat, flaton, nowall, flt59, flt8, split, wallesc, gungate, hold650, dfac, bhb, hitclr, pkern, keep2, thgun, freegun, nodecay, stacklist, protean, pdw3, pdw8, pc10, phot, repl, pressure, pdown, pwall, pwc, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, gtol, gstick, gwhy, gwin, gk, aesrec, shold, slearn, smode, sstay, sturn, snull, strim)" >&2; exit 2 ;;
     esac
 done
 

@@ -72,12 +72,13 @@ class ShieldDesignTest {
 
     @Test
     @Tag("SHIELD-13")
-    @DisplayName("the robot ships hold, learn, mode and stay with turn off, and the plain constructor uses it")
+    @Tag("SHIELD-14")
+    @DisplayName("the robot ships wall, hold, learn, mode and stay with turn off, and the plain constructor uses it")
     void shippedIsStep3Build() {
         ShieldDesign shipped = ShieldDesign.SHIPPED;
-        assertTrue(shipped.hold && shipped.learn && shipped.mode && shipped.stay);
+        assertTrue(shipped.wall && shipped.hold && shipped.learn && shipped.mode && shipped.stay);
         assertFalse(shipped.turn);
-        assertEquals("hold,learn,mode,stay", shipped.toString());
+        assertEquals("hold,learn,mode,stay,wall", shipped.toString());
         assertEquals(ShieldMode.BASES, shipped.bases());
         assertSame(ShieldDesign.SHIPPED, new ShieldMode(ShieldList.NONE, records::add, 35).design());
     }
@@ -317,13 +318,13 @@ class ShieldDesignTest {
 
     @Test
     @Tag("SHIELD-14")
-    @DisplayName("SHIELD-14: the wall switch parses, stays out of 'all', and leaves SHIPPED off")
+    @DisplayName("SHIELD-14: the wall switch parses, stays out of 'all', and ships on (3.15)")
     void wallParses() {
         ShieldDesign d = ShieldDesign.parse("hold,wall");
         assertTrue(d.hold && d.wall);
         assertEquals("hold,wall", d.toString());
         assertFalse(ShieldDesign.parse("all").wall);
-        assertFalse(ShieldDesign.SHIPPED.wall);
+        assertTrue(ShieldDesign.SHIPPED.wall);
         assertFalse(ShieldDesign.NONE.wall);
         assertSame(ShieldDesign.NONE, ShieldDesign.parse(""));
     }

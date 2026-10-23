@@ -84,6 +84,29 @@ final class Arms {
             String.valueOf(r.engineDisables), String.valueOf(r.duressTicks), num(r.hostCpuMean), errors);
     }
 
+    /** BENCH-95: the file in each battle's directory that keeps that battle's row, for a resumed run. */
+    static final String ROW_FILE = "arm-row.tsv";
+
+    /**
+     * BENCH-95: the row a finished battle left in {@code dir}, when it was this arm's (same label and
+     * robot), this opponent's and this seed's, and it finished ok; otherwise null, and the battle is
+     * fought again. A failed or half-written battle never stands in for a fought one.
+     */
+    static String resumed(Path dir, Arm arm, Opponent o, int seed) {
+        Path f = dir.resolve(ROW_FILE);
+        try {
+            if (!Files.isRegularFile(f)) return null;
+            String row = Files.readString(f, StandardCharsets.UTF_8).strip();
+            String[] c = row.split("\t", -1);
+            if (c.length != HEADER.split("\t").length) return null;
+            boolean same = c[0].equals(arm.label()) && c[1].equals(arm.robot()) && c[2].equals(o.name)
+                && c[4].equals(String.valueOf(seed));
+            return same && c[7].equals("true") ? row : null;
+        } catch (IOException e) {
+            return null;
+        }
+    }
+
     private static String num(double x) {
         return Double.isNaN(x) ? "NaN" : String.format(Locale.ROOT, "%.4f", x);
     }

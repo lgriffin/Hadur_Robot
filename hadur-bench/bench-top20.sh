@@ -43,6 +43,8 @@
 #   --arms FILE            a multi-arm run (BENCH-92): every arm in FILE (label | robot | jar) on every
 #                          opponent and seed, in a shuffled order; writes arms.tsv. Replaces --robot/--baseline
 #   --pin                  bind each battle JVM to its worker's own processors (BENCH-93)
+#   --no-resume            a multi-arm rerun fights every battle again (BENCH-95: by default it reads
+#                          back the battles a stopped run into the same --out already finished)
 #   --pin-offset N         processors left to the OS and the runner before worker 1's, Bench default 2
 set -u
 
@@ -79,6 +81,7 @@ UNSEEDED=0
 FORCE_MEMORY=0
 ARMS=""
 PIN=0
+RESUME=1
 PIN_OFFSET=""
 
 while [ $# -gt 0 ]; do
@@ -112,6 +115,7 @@ while [ $# -gt 0 ]; do
         --engine) ENGINE="${2:?--engine needs a Robocode version}"; shift 2 ;;
         --arms) ARMS="${2:?--arms needs a file}"; shift 2 ;;
         --pin) PIN=1; shift ;;
+        --no-resume) RESUME=0; shift ;;
         --pin-offset) PIN_OFFSET="${2:?--pin-offset needs a number}"; shift 2 ;;
         -h|--help) sed -n '2,/^set -u$/p' "$0" | sed '$d' | sed 's/^# \{0,1\}//'; exit 0 ;;
         *) echo "unknown option: $1" >&2; exit 2 ;;
@@ -174,6 +178,7 @@ if [ -n "$CHILD_CPUS" ]; then ARGS="$ARGS --child-cpus $CHILD_CPUS"; fi
 if [ "$FORCE_MEMORY" -eq 1 ]; then ARGS="$ARGS --force-memory true"; fi
 if [ -n "$ARMS" ]; then ARGS="$ARGS --arms $ARMS"; fi
 if [ "$PIN" -eq 1 ]; then ARGS="$ARGS --pin true"; fi
+if [ "$RESUME" -eq 0 ]; then ARGS="$ARGS --resume false"; fi
 if [ -n "$PIN_OFFSET" ]; then ARGS="$ARGS --pin-offset $PIN_OFFSET"; fi
 
 # The engine is the bench's own Maven dependency, so another release is a property away;

@@ -126,4 +126,26 @@ class ArmsTest {
             "(Get-Process -Id 4242).ProcessorAffinity = 12"), Affinity.command("Windows 11", 4242, 12));
         assertEquals(List.of("taskset", "-a", "-p", "c", "4242"), Affinity.command("Linux", 4242, 12));
     }
+
+    @Test
+    @Tag("BENCH-95")
+    @DisplayName("a finished battle's kept row is read back for the same arm, opponent and seed; a failed, foreign or missing one is fought again")
+    void resumesOnlyFinishedBattles(@TempDir Path dir) throws IOException {
+        Arms.Arm c = new Arms.Arm("c", "hadur2.Hadur 3.14", dir.resolve("a.jar"));
+        Arms.Arm rc = new Arms.Arm("rc", "hadur2.Hadur 3.14swnf", dir.resolve("b.jar"));
+        Opponent o = new Opponent("x.Bot 1.0", "rank1-band1", "x.Bot_1.0.jar", 0);
+        Opponent other = new Opponent("y.Bot 2.0", "rank2-band1", "y.Bot_2.0.jar", 0);
+        BattleResult ok = BattleResult.parse("true" + BattleResult.failed("none").substring("false".length()));
+        String row = Arms.row(c, o, 1, 3, 2, ok);
+        assertEquals(null, Arms.resumed(dir, c, o, 1), "no file: fought");
+        Files.writeString(dir.resolve(Arms.ROW_FILE), row + "\n");
+        assertEquals(row, Arms.resumed(dir, c, o, 1));
+        assertEquals(null, Arms.resumed(dir, rc, o, 1), "another arm's row");
+        assertEquals(null, Arms.resumed(dir, c, other, 1), "another opponent's row");
+        assertEquals(null, Arms.resumed(dir, c, o, 2), "another seed's row");
+        Files.writeString(dir.resolve(Arms.ROW_FILE), Arms.row(c, o, 1, 3, 2, BattleResult.parse(BattleResult.failed("boom"))) + "\n");
+        assertEquals(null, Arms.resumed(dir, c, o, 1), "a failed battle is fought again");
+        Files.writeString(dir.resolve(Arms.ROW_FILE), "c\thadur2.Hadur 3.14\tx.Bot 1.0");
+        assertEquals(null, Arms.resumed(dir, c, o, 1), "a half-written row is fought again");
+    }
 }
