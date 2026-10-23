@@ -108,6 +108,8 @@ default for any parallel run, 6 to 24 wide all stayed workable on a 48-thread ho
 top-20 scripts default to a quarter of the logical cores. Without `--child-cpus` the same width
 starves the battles and shows up as skipped turns, which spoil a result the same way a loaded
 cloud container does. Read the report's skipped-turns line before trusting a run.
+On the 24-core PC the 2026-10-23 worker ladder (`docs/bench/throughput.md`) settled on 12
+workers for duel and team runs: team 16 and duel 20 or more raised skipped turns past the bar.
 
 A parallel run calibrates `robocode.cpu.constant` once, in the main home, with an idle
 one-round sample battle, then copies that constant to every worker so workers do not each
