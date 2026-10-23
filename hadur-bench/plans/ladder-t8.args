@@ -1,0 +1,31 @@
+# Worker ladder (plans/pc-ladder.queue), team block at 8 workers: 3.15aa against the 3.15 release on all 46 TeamRumble teams, 2 seeds (Bench @FILE, one argument a line)
+--team
+true
+--seeds
+2
+--seed-base
+2400
+--rounds
+10
+--parallel
+8
+--child-heap
+2G
+--cpu-constant
+1488498
+--set
+team-census46.txt
+--robot-jar
+bisect/hadur2.HadurTeam_3.15aa.jar
+--robot
+hadur2.HadurTeam 3.15aa
+--member
+hadur2.Hadur
+--out
+work/ladder-t8
+--baseline
+bisect/hadur2.HadurTeam_3.15.jar
+--baseline-robot
+hadur2.HadurTeam 3.15
+--force-memory
+true

@@ -46,6 +46,8 @@
 #   --no-resume            a multi-arm rerun fights every battle again (BENCH-95: by default it reads
 #                          back the battles a stopped run into the same --out already finished)
 #   --pin-offset N         processors left to the OS and the runner before worker 1's, Bench default 2
+#   --no-truth-log         duel battles write no truth.log.gz (BENCH-97: ~10% faster on strong pairings,
+#                          5-6 MB less disk a battle; only the offline data/tools scripts read it)
 set -u
 
 HERE=$(cd "$(dirname "$0")" && pwd)
@@ -83,6 +85,7 @@ ARMS=""
 PIN=0
 RESUME=1
 PIN_OFFSET=""
+TRUTH_LOG=1
 
 while [ $# -gt 0 ]; do
     case "$1" in
@@ -117,6 +120,7 @@ while [ $# -gt 0 ]; do
         --pin) PIN=1; shift ;;
         --no-resume) RESUME=0; shift ;;
         --pin-offset) PIN_OFFSET="${2:?--pin-offset needs a number}"; shift 2 ;;
+        --no-truth-log) TRUTH_LOG=0; shift ;;
         -h|--help) sed -n '2,/^set -u$/p' "$0" | sed '$d' | sed 's/^# \{0,1\}//'; exit 0 ;;
         *) echo "unknown option: $1" >&2; exit 2 ;;
     esac
@@ -180,6 +184,7 @@ if [ -n "$ARMS" ]; then ARGS="$ARGS --arms $ARMS"; fi
 if [ "$PIN" -eq 1 ]; then ARGS="$ARGS --pin true"; fi
 if [ "$RESUME" -eq 0 ]; then ARGS="$ARGS --resume false"; fi
 if [ -n "$PIN_OFFSET" ]; then ARGS="$ARGS --pin-offset $PIN_OFFSET"; fi
+if [ "$TRUTH_LOG" -eq 0 ]; then ARGS="$ARGS --truth-log false"; fi
 
 # The engine is the bench's own Maven dependency, so another release is a property away;
 # the bench's classpath file is rebuilt with it on this compile (issue #109).
