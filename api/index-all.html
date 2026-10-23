@@ -107,7 +107,7 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur2/core/melee/TeamDanger.html#add(hadur2.core.melee.TeamDanger.Sample)" class="member-name-link">add(TeamDanger.Sample)</a> - Method in class hadur2.core.melee.<a href="hadur2/core/melee/TeamDanger.html" title="class in hadur2.core.melee">TeamDanger</a></dt>
 <dd>
-<div class="block">Adds a sample, Hadur's own or a teammate's, to its shooter's log.</div>
+<div class="block">Adds a sample, Hadur's own or a teammate's, to its shooter's log and its class's.</div>
 </dd>
 <dt><a href="hadur/bench/Exclusions.Counter.html#add(java.lang.String,boolean,java.lang.String)" class="member-name-link">add(String, boolean, String)</a> - Method in class hadur.bench.<a href="hadur/bench/Exclusions.Counter.html" title="class in hadur.bench">Exclusions.Counter</a></dt>
 <dd>&nbsp;</dd>
@@ -3352,14 +3352,14 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="hadur2/core/melee/TeamModes.html#FORCE_PACK" class="member-name-link">FORCE_PACK</a> - Static variable in class hadur2.core.melee.<a href="hadur2/core/melee/TeamModes.html" title="class in hadur2.core.melee">TeamModes</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur2/core/melee/TeamModes.html#FORCE_POOL" class="member-name-link">FORCE_POOL</a> - Static variable in class hadur2.core.melee.<a href="hadur2/core/melee/TeamModes.html" title="class in hadur2.core.melee">TeamModes</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="hadur2/core/melee/TeamModes.html#FORCE_SCREEN" class="member-name-link">FORCE_SCREEN</a> - Static variable in class hadur2.core.melee.<a href="hadur2/core/melee/TeamModes.html" title="class in hadur2.core.melee">TeamModes</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="hadur2/core/melee/TeamModes.html#FORCE_SOFT" class="member-name-link">FORCE_SOFT</a> - Static variable in class hadur2.core.melee.<a href="hadur2/core/melee/TeamModes.html" title="class in hadur2.core.melee">TeamModes</a></dt>
 <dd>
 <div class="block">Ablation switches: the mode for every team the table does not name.</div>
 </dd>
-<dt><a href="hadur2/core/melee/TeamModes.html#forced(boolean,boolean,boolean,boolean)" class="member-name-link">forced(boolean, boolean, boolean, boolean)</a> - Static method in class hadur2.core.melee.<a href="hadur2/core/melee/TeamModes.html" title="class in hadur2.core.melee">TeamModes</a></dt>
-<dd>&nbsp;</dd>
-<dt><a href="hadur2/core/melee/TeamModes.html#forced(boolean,boolean,boolean,boolean,boolean)" class="member-name-link">forced(boolean, boolean, boolean, boolean, boolean)</a> - Static method in class hadur2.core.melee.<a href="hadur2/core/melee/TeamModes.html" title="class in hadur2.core.melee">TeamModes</a></dt>
-<dd>&nbsp;</dd>
 <dt><a href="hadur2/core/role/Tick.html#forDrive(hadur2.core.role.RoleId,boolean,int,boolean)" class="member-name-link">forDrive(RoleId, boolean, int, boolean)</a> - Method in class hadur2.core.role.<a href="hadur2/core/role/Tick.html" title="class in hadur2.core.role">Tick</a></dt>
 <dd>
 <div class="block">The tick as the driving role drives it.</div>
@@ -6922,6 +6922,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#END-1">END-1</a> and <a class="req" href="../requirements.html#END-2">END-2</a> from the last scan's enemy energy, our energy, and both gun heats.</div>
 </dd>
+<dt><a href="hadur2/core/melee/TeamModes.html#of(hadur2.core.melee.TeamModes.Mode...)" class="member-name-link">of(TeamModes.Mode...)</a> - Static method in class hadur2.core.melee.<a href="hadur2/core/melee/TeamModes.html" title="class in hadur2.core.melee">TeamModes</a></dt>
+<dd>
+<div class="block">The set of <code>modes</code>, nulls left out; the table's entries are written with it.</div>
+</dd>
 <dt><a href="hadur2/core/role/Charter.html#of(hadur2.core.model.BattleFacts)" class="member-name-link">of(BattleFacts)</a> - Static method in enum class hadur2.core.role.<a href="hadur2/core/role/Charter.html" title="enum class in hadur2.core.role">Charter</a></dt>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#ROLE-1">ROLE-1</a>: the charter the facts at tick 0 fix.</div>
@@ -7866,6 +7870,15 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur2/core/move/MoveController.html#pointKernelValue(double,double,java.util.List)" class="member-name-link">pointKernelValue(double, double, List&lt;double[]&gt;)</a> - Static method in class hadur2.core.move.<a href="hadur2/core/move/MoveController.html" title="class in hadur2.core.move">MoveController</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur2/core/melee/TeamDanger.html#pool(boolean)" class="member-name-link">pool(boolean)</a> - Method in class hadur2.core.melee.<a href="hadur2/core/melee/TeamDanger.html" title="class in hadur2.core.melee">TeamDanger</a></dt>
+<dd>
+<div class="block">TMODE-7: read one log per enemy class (<a href="hadur2/core/melee/TeamModes.html#key(java.lang.String)"><code>TeamModes.key(java.lang.String)</code></a>), fed by every copy of it,
+ in place of one per robot.</div>
+</dd>
+<dt><a href="hadur2/core/melee/TeamModes.Mode.html#POOL" class="member-name-link">POOL</a> - Enum constant in enum class hadur2.core.melee.<a href="hadur2/core/melee/TeamModes.Mode.html" title="enum class in hadur2.core.melee">TeamModes.Mode</a></dt>
+<dd>
+<div class="block">TMODE-7: MMOVE-10's learned aims from one log per enemy class, fed by all its copies.</div>
+</dd>
 <dt><a href="hadur/bench/RepeatStudy.html#pooledSd(java.util.Collection)" class="member-name-link">pooledSd(Collection&lt;List&lt;Double&gt;&gt;)</a> - Static method in class hadur.bench.<a href="hadur/bench/RepeatStudy.html" title="class in hadur.bench">RepeatStudy</a></dt>
 <dd>
 <div class="block">The within-group standard deviation pooled over groups of repeats (each group one seed
@@ -9602,6 +9615,17 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur/bench/RepeatStudy.Row.html#scoreShare()" class="member-name-link">scoreShare()</a> - Method in record class hadur.bench.<a href="hadur/bench/RepeatStudy.Row.html" title="class in hadur.bench">RepeatStudy.Row</a></dt>
 <dd>
 <div class="block">Returns the value of the <code>scoreShare</code> record component.</div>
+</dd>
+<dt><a href="hadur2/core/melee/MinimumRiskMovement.html#screen(hadur2.core.melee.MinimumRiskMovement.View,long)" class="member-name-link">screen(MinimumRiskMovement.View, long)</a> - Static method in class hadur2.core.melee.<a href="hadur2/core/melee/MinimumRiskMovement.html" title="class in hadur2.core.melee">MinimumRiskMovement</a></dt>
+<dd>
+<div class="block">TMODE-6: a teammate screens Hadur from an enemy as another enemy does: each enemy's
+ distance to its nearest other robot, which decides whether Hadur at a point would be its
+ closest (<a class="req" href="../requirements.html#MMOVE-2">MMOVE-2</a>), takes the living teammates in view too (Ogi counts every robot nearer
+ the enemy, teammates included).</div>
+</dd>
+<dt><a href="hadur2/core/melee/TeamModes.Mode.html#SCREEN" class="member-name-link">SCREEN</a> - Enum constant in enum class hadur2.core.melee.<a href="hadur2/core/melee/TeamModes.Mode.html" title="enum class in hadur2.core.melee">TeamModes.Mode</a></dt>
+<dd>
+<div class="block">TMODE-6: teammates count with enemies as robots nearer an enemy than Hadur would be.</div>
 </dd>
 <dt><a href="hadur2/core/Archive.html#scribe()" class="member-name-link">scribe()</a> - Method in class hadur2.core.<a href="hadur2/core/Archive.html" title="class in hadur2.core">Archive</a></dt>
 <dd>

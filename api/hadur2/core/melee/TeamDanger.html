@@ -216,7 +216,7 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#add(hadur2.core.melee.TeamDanger.Sample)" class="member-name-link">add</a><wbr>(<a href="TeamDanger.Sample.html" title="class in hadur2.core.melee">TeamDanger.Sample</a>&nbsp;s)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Adds a sample, Hadur's own or a teammate's, to its shooter's log.</div>
+<div class="block">Adds a sample, Hadur's own or a teammate's, to its shooter's log and its class's.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static boolean</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#aimedAtMe(hadur2.core.world.EnemyShot,java.awt.geom.Point2D.Double,java.util.List)" class="member-name-link">aimedAtMe</a><wbr>(<a href="../world/EnemyShot.html" title="class in hadur2.core.world">EnemyShot</a>&nbsp;shot,
@@ -256,30 +256,36 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Hadur's own sample: logged here and kept for the next report.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="TeamDanger.Sample.html" title="class in hadur2.core.melee">TeamDanger.Sample</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#sample(hadur2.core.world.EnemyShot,hadur2.core.model.RobotState,double)" class="member-name-link">sample</a><wbr>(<a href="../world/EnemyShot.html" title="class in hadur2.core.world">EnemyShot</a>&nbsp;shot,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#pool(boolean)" class="member-name-link">pool</a><wbr>(boolean&nbsp;on)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">TMODE-7: read one log per enemy class (<a href="TeamModes.html#key(java.lang.String)"><code>TeamModes.key(java.lang.String)</code></a>), fed by every copy of it,
+ in place of one per robot.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="TeamDanger.Sample.html" title="class in hadur2.core.melee">TeamDanger.Sample</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#sample(hadur2.core.world.EnemyShot,hadur2.core.model.RobotState,double)" class="member-name-link">sample</a><wbr>(<a href="../world/EnemyShot.html" title="class in hadur2.core.world">EnemyShot</a>&nbsp;shot,
  <a href="../model/RobotState.html" title="class in hadur2.core.model">RobotState</a>&nbsp;target,
  double&nbsp;heading)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">The sample a bullet of <code>shot</code> that hit Hadur makes: Hadur's state at the shot's
  fire tick (<code>target</code>) and the bullet's <code>heading</code>.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#size(java.lang.String)" class="member-name-link">size</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;shooter)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#size(java.lang.String)" class="member-name-link">size</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;shooter)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">The samples logged for <code>shooter</code>.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="TeamDanger.Sample.html" title="class in hadur2.core.melee">TeamDanger.Sample</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#takeOutgoing()" class="member-name-link">takeOutgoing</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="TeamDanger.Sample.html" title="class in hadur2.core.melee">TeamDanger.Sample</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#takeOutgoing()" class="member-name-link">takeOutgoing</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">The samples Hadur has learnt since the last call, for its report; the list is emptied.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) double</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#wallAhead(hadur2.core.world.EnemyShot,hadur2.core.model.RobotState,double,double)" class="member-name-link">wallAhead</a><wbr>(<a href="../world/EnemyShot.html" title="class in hadur2.core.world">EnemyShot</a>&nbsp;shot,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) double</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#wallAhead(hadur2.core.world.EnemyShot,hadur2.core.model.RobotState,double,double)" class="member-name-link">wallAhead</a><wbr>(<a href="../world/EnemyShot.html" title="class in hadur2.core.world">EnemyShot</a>&nbsp;shot,
  <a href="../model/RobotState.html" title="class in hadur2.core.model">RobotState</a>&nbsp;t,
  double&nbsp;bearing,
  double&nbsp;distance)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">The share of the escape angle ahead, along the circle round the shooter, inside the field.</div>
 </div>
 </div>
@@ -458,6 +464,14 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
+<section class="detail" id="pool(boolean)">
+<h3>pool</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">pool</span><wbr><span class="parameters">(boolean&nbsp;on)</span></div>
+<div class="block">TMODE-7: read one log per enemy class (<a href="TeamModes.html#key(java.lang.String)"><code>TeamModes.key(java.lang.String)</code></a>), fed by every copy of it,
+ in place of one per robot. Both are always kept, so the switch can flip at any tick.</div>
+</section>
+</li>
+<li>
 <section class="detail" id="size(java.lang.String)">
 <h3>size</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">size</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;shooter)</span></div>
@@ -468,7 +482,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="add(hadur2.core.melee.TeamDanger.Sample)">
 <h3>add</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">add</span><wbr><span class="parameters">(<a href="TeamDanger.Sample.html" title="class in hadur2.core.melee">TeamDanger.Sample</a>&nbsp;s)</span></div>
-<div class="block">Adds a sample, Hadur's own or a teammate's, to its shooter's log.</div>
+<div class="block">Adds a sample, Hadur's own or a teammate's, to its shooter's log and its class's.</div>
 </section>
 </li>
 <li>
