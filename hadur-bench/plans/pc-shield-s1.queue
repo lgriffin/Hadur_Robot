@@ -7,8 +7,8 @@
 #
 # listed (about 1 h): the 174 Saguaro shield bots our list already shields, 4 seeds, arms c, aa, sq
 #   = 2,088 battles. Question: does SHIELD-16 cost anything where the shield already works?
-# off (about 0.5 h): the 126 off-list Saguaro shield bots, arm sasq only, M1's 8 seeds = 1,008
-#   battles; pooled with M1's c, aa, sa, sy.
+# off (about 0.7 h): the 126 off-list Saguaro shield bots, arms c and sasq (the bench needs two arms),
+#   M1's 8 seeds = 2,016 battles; pooled with M1's aa, sa, sy (M1's c rows dropped, so none counts twice).
 # pick: multiarm reports for both, and mode_table.py on the pooled off-list arms (sa, sy, sasq vs c+aa).
 # Reports: ../docs/bench/local/<date>_shield-s1*.md and the pick TSV; then a results PR.
 
@@ -26,7 +26,7 @@ listed | ./bench-top20.sh ${C} ${P} --set panel-saguaro-shield-listed.txt --seed
 off | ./bench-top20.sh ${C} ${P} --set panel-saguaro-shield.txt --seeds 8 --seed-base 1900 --arms plans/shield-s1-off.arms --out work/shield-s1-off --label shield-s1-off
   after: listed
 
-pick | python3 ../data/tools/multiarm.py work/shield-s1-listed/arms.tsv ${READ} --out ../docs/bench/local/$(date +%Y-%m-%d)_shield-s1-listed.md && python3 ../data/tools/multiarm.py work/mode-m1/arms.tsv work/shield-s1-off/arms.tsv ${READ} --out ../docs/bench/local/$(date +%Y-%m-%d)_shield-s1-off.md && python3 ../data/tools/mode_table.py work/mode-m1/arms.tsv work/shield-s1-off/arms.tsv --margin 5 --out-tsv ../docs/bench/local/shield-s1-pick.tsv --out ../docs/bench/local/$(date +%Y-%m-%d)_shield-s1-pick.md
+pick | python3 ../data/tools/multiarm.py work/shield-s1-listed/arms.tsv ${READ} --out ../docs/bench/local/$(date +%Y-%m-%d)_shield-s1-listed.md && grep -v "$(printf '^c\t')" work/mode-m1/arms.tsv > work/mode-m1-noc.tsv && python3 ../data/tools/multiarm.py work/mode-m1-noc.tsv work/shield-s1-off/arms.tsv ${READ} --out ../docs/bench/local/$(date +%Y-%m-%d)_shield-s1-off.md && python3 ../data/tools/mode_table.py work/mode-m1-noc.tsv work/shield-s1-off/arms.tsv --margin 5 --out-tsv ../docs/bench/local/shield-s1-pick.tsv --out ../docs/bench/local/$(date +%Y-%m-%d)_shield-s1-pick.md
   after: off
 
 pr | bash tools/open_results_pr.sh claude/pc-shield-s1-results "Shield stage 1: SHIELD-16 on Saguaro's shield bots" ../docs/bench/local/*_shield-s1*.md ../docs/bench/local/shield-s1-pick.tsv

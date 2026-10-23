@@ -1,3 +1,5 @@
-# Stage 1, off-list panel: only the new arm. Its battles use M1's seeds (1900-1907), so they pool with
-# M1's c, aa, sa and sy battles in work/mode-m1/arms.tsv (PR #228) without re-running them.
+# Stage 1, off-list panel: the control and the new arm. The bench needs two arms, so c is re-run here at
+# M1's seeds (1900-1907); the pick reads M1's aa, sa and sy (work/mode-m1/arms.tsv, PR #228) with this
+# run's c and sasq, dropping M1's c rows so no c battle counts twice.
+c | hadur2.Hadur 3.15 | bisect/hadur2.Hadur_3.15.jar
 sasq | hadur2.Hadur 3.15sasq | bisect/hadur2.Hadur_3.15sasq.jar
