@@ -39,8 +39,11 @@ public final class ShieldDesign {
     /** 3.12's shield: every switch off. */
     public static final ShieldDesign NONE = new ShieldDesign(false, false, false, false, false, false);
 
-    /** The design the robot ships (SHIELD-13). The ablation builds edit this one line. */
-    public static final ShieldDesign SHIPPED = parse("hold,learn,mode,stay");
+    /**
+     * The design the robot ships (SHIELD-13; SHIELD-14's wall since 3.15, +0.19 +/- 0.09 APS in the
+     * top-5 factorial, PR #221). The ablation builds edit this one line.
+     */
+    public static final ShieldDesign SHIPPED = parse("wall,hold,learn,mode,stay");
 
     /** SHIELD-8: no attack shots while shielding. */
     public final boolean hold;

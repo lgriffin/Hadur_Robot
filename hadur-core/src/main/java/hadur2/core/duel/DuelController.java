@@ -310,6 +310,7 @@ public final class DuelController {
         this.gunController.setFreeGun(GunDesign.FREE_GUN);
         this.gunController.setUndecayed(GunDesign.UNDECAYED);
         this.moveController = new MoveController(battleField, predictor);
+        moveController.setFlattenerOff(duelOnly(MoveDesign.FLATTENER_OFF, enemiesTotal));
         this.moveController.setReplicator(MoveDesign.REPLICATOR);
         this.moveController.setPointKernel(duelOnly(MoveDesign.POINT_KERNEL, enemiesTotal));
         this.surfMover = new SurfMover(battleField, predictor);

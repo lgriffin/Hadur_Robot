@@ -111,6 +111,12 @@ public class AdaptSteps {
         assertTrue(core.dangerViewsOn().containsAll(List.of(a, b)), core.dangerViewsOn().toString());
     }
 
+    @Then("the danger views on exclude {string} and {string}")
+    public void viewsExclude(String a, String b) {
+        List<String> on = core.dangerViewsOn();
+        assertTrue(!on.contains(a) && !on.contains(b), on.toString());
+    }
+
     @Then("the danger views on are only {string}")
     public void viewsOnly(String view) {
         assertEquals(List.of(view), core.dangerViewsOn());

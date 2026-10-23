@@ -102,6 +102,13 @@ final class MoveDesign {
     static final boolean RAM_HEAT = false;
 
     /**
+     * MOVE-24: in a duel the flattener views stay off (3.15). The top-5 factorial (PR #221) put
+     * flattener off at +0.12 +/- 0.10 APS on 1,212 bots, and the release-candidate census (PR #222)
+     * put it with swall at +0.34 +/- 0.15. Melee and team are untouched.
+     */
+    static final boolean FLATTENER_OFF = true;
+
+    /**
      * AES-1 (measurement): each wave's first three-option rating is printed as an {@code AES}
      * record with every term of each option's danger (docs/plan-aes.md). Behaviour unchanged.
      */

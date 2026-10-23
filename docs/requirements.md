@@ -1394,7 +1394,7 @@ None of these change how the robot plays; TIME-8 and RES-15 only report.
   the first record at median turn 105; the record says where those turns go.
 - **RES-15.** `HadurCore.writeBattleHealth` with seven arguments appends
   `,setupMs,firstTurn,maxRun`; the four-argument form keeps the old record, so older readers and
-  the replay fixtures are unchanged. `data/tools/live_client.py` reads both shapes.
+  the replay fixtures are unchanged (since 3.15 the recorder logs the three fields too, see below). `data/tools/live_client.py` reads both shapes.
 - **BENCH-91.** `LogHarvester.noteTurn` latches a round once either robot is dead.
 - **BENCH-92.** `Arms` and `Bench.runArms`. Shuffling the order spreads load and drift over
   every arm; an A/A arm (the control under another name) prices the run's own noise.
@@ -1410,6 +1410,29 @@ None of these change how the robot plays; TIME-8 and RES-15 only report.
   takes `HEAT_HOLD` off; still ANDed with MOVE-23's `stackOn`. Why: the top-5 factorial (PR #221,
   1,212 bots) put heatjit's whole +0.10 APS on the 87 rammers (+1.39 points) and -0.055 APS on
   ranks 51-400. Tested in `DuelOnlySwitchesTest`; screened and censused by `plans/pc-top5-s34.queue`.
+
+## 3.15: the census winners shipped (MOVE-24, SHIELD-14 on)
+
+| ID | Pattern | Requirement | Stage |
+|---|---|---|---|
+| MOVE-24 | State | While in a duel, the surf's danger score shall leave the two flattener views (`flattener`, `flattener2`) off whatever the hit rate, ADAPT-2's flattener-first or MOVE-2's flavour ask, and turn the other views on by their own thresholds; in melee and team the views are as ADAPT-2, MOVE-2 and MOVE-5 state. | R9 |
+
+- **MOVE-24.** `MoveDesign.FLATTENER_OFF` (true), set per battle in `DuelController`'s constructor
+  as `moveController.setFlattenerOff(duelOnly(FLATTENER_OFF, enemiesTotal))`; `MoveController.viewOn`
+  then never turns on `flattener` or `flattener2` and ignores flattener-first. In a duel this plays
+  exactly as the benched `flat` ablation (nf: threshold 1000, flattener-first off), whose light
+  flattener also kept its own 3% threshold. Ablation `flaton` (fo) undoes it. Why: the top-5
+  factorial (PR #221, 1,212 bots) put it at +0.12 ± 0.10 APS, and the release-candidate census
+  (PR #222) put it with the wall shot at +0.34 ± 0.15 APS over 3.14 (A/A −0.00 ± 0.17). In a duel
+  this supersedes ADAPT-2 and MOVE-5 for the two flatteners. Tested in `SurfOpeningTest`,
+  `DuelOnlySwitchesTest` and adapt.feature.
+- **SHIELD-14 ships on.** `ShieldDesign.SHIPPED` is `wall,hold,learn,mode,stay`. Shield mode exists
+  only in a duel, so melee and team are untouched. Ablation `nowall` (xs) undoes it. Why: +0.19 ±
+  0.09 APS in the factorial, all of it on ranks 401+.
+- **Fixtures.** `abc.Shadow_3.83c` was re-recorded on 3.15 (the only fixture whose orders moved),
+  with its telemetry snapshot; duel and owner pins re-taken. The recorder's `HE` line now carries
+  RES-15's three start-up fields, so a fixture recorded since 3.15 replays the seven-field health
+  record; older fixtures keep the four-field line.
 
 ## Retired requirements
 

@@ -44,8 +44,9 @@ import robocode.WinEvent;
  * <li>{@code RE,tick,result,energy}: the adapter's one {@code roundEnded} call of a round
  *     (the guard's fault count is the replay's own);</li>
  * <li>{@code CP,tick}: the round-end checkpoint, made only while Hadur is alive;</li>
- * <li>{@code BE,tick} and {@code HE,rounds,survived,skippedTurns}: the battle-end save and
- *     the health record's arguments (faults again the replay's own);</li>
+ * <li>{@code BE,tick} and {@code HE,rounds,survived,skippedTurns,setupMillis,firstTurn,longestSkipRun}:
+ *     the battle-end save and the health record's arguments (faults again the replay's own;
+ *     the last three are RES-15's, absent from fixtures recorded before it);</li>
  * <li>one {@code S,name,base64} per file the battle left in the data directory.</li>
  * </ul>
  *
@@ -166,7 +167,7 @@ public class HadurRecorder extends Hadur {
     @Override
     public void onBattleEnded(BattleEndedEvent e) {
         write("BE," + getTime());
-        write("HE," + rounds + "," + survived + "," + skipped);
+        write("HE," + rounds + "," + survived + "," + skipped + "," + startupFields());
         super.onBattleEnded(e);
         if (!onTeam) writeStore("S");
         flush();

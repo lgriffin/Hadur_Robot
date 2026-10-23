@@ -58,6 +58,15 @@ class DuelOnlySwitchesTest {
     }
 
     @Test
+    @Tag("MOVE-24")
+    @DisplayName("MOVE-24: flattener off ships on, and only in a duel")
+    void flattenerOffDuelOnly() {
+        assertTrue(MoveDesign.FLATTENER_OFF, "3.15 ships it");
+        assertTrue(DuelController.duelOnly(MoveDesign.FLATTENER_OFF, 1));
+        assertFalse(DuelController.duelOnly(MoveDesign.FLATTENER_OFF, 3), "never in melee or team");
+    }
+
+    @Test
     @Tag("MOVE-19")
     @DisplayName("bhb on logs an intercept whose wave was found; off or no wave does not")
     void interceptLogged() {

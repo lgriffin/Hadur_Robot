@@ -18,12 +18,12 @@ Feature: Recognise and adapt
     Then the profile's tiers are "T0/M0"
     And the opening gun is "main"
 
-  @ADAPT-2
-  Scenario: A top gun's profile turns the flattener on before the first wave
+  @ADAPT-2 @MOVE-24
+  Scenario: A top gun's profile reads as a top gun, and the duel still keeps the flattener off
     Given a stored profile of "abc.Shadow 3.83c" with their hit rate 9%, main rating 20% and anti-surfer rating 19%
     When Hadur first scans "abc.Shadow 3.83c"
     Then the profile's tiers are "T3/M1"
-    And the danger views on include "flattener" and "flattener2"
+    And the danger views on exclude "flattener" and "flattener2"
 
   @ADAPT-2 @DIAL-1
   Scenario: A stranger's surf starts with only the simple view

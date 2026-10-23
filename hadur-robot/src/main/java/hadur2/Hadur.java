@@ -89,6 +89,11 @@ public class Hadur extends TeamRobot {
     private static int longestSkipRun, skipRun;
     private static long lastSkippedTurn;
 
+    /** RES-15's start-up fields as the health record takes them, for the recorder's transcript. */
+    static String startupFields() {
+        return setupMillis + "," + firstTurn + "," + longestSkipRun;
+    }
+
     /** Events delivered since the last tick, in delivery order; cleared as each input is built. */
     private final List<BotEvent> pending = new ArrayList<>();
     /** Whether this round's R record has been emitted; the round's end can arrive by several events. */
