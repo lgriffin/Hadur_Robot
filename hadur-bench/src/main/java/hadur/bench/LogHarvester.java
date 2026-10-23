@@ -29,7 +29,8 @@ import robocode.control.snapshot.ITurnSnapshot;
  * <li>{@code hadur.log}: every line Hadur printed, prefixed with round and turn.</li>
  * <li>{@code truth.log.gz}: one {@code T} record per turn with both robots' true state and
  *     every live bullet, in the artifact's line format, and an {@code F,round,turn,E,power}
- *     record when an enemy bullet first appears.</li>
+ *     record when an enemy bullet first appears. BENCH-97: left out when the truth log is off;
+ *     the enemy shots the report's wave fidelity needs are still counted.</li>
  * </ul>
  *
  * <p>Also measures wall-clock time per turn and counts skipped turns reported in Hadur's
@@ -39,6 +40,7 @@ public class LogHarvester extends BattleAdaptor {
 
     private final String us;
     private final BufferedWriter hadurLog;
+    /** Null when the truth log is off (BENCH-97). */
     private final BufferedWriter truthLog;
     private int round;
     private long lastTurnNanos;
@@ -101,11 +103,29 @@ public class LogHarvester extends BattleAdaptor {
     }
 
     public LogHarvester(Path dir, String us) throws IOException {
+        this(dir, us, true);
+    }
+
+    /**
+     * BENCH-97: with {@code truth} false no {@code truth.log.gz} is written. The log costs about a
+     * tenth of a strong battle's time and 5 to 6 MB of disk a battle, and only the offline tools
+     * under {@code data/tools} read it.
+     */
+    public LogHarvester(Path dir, String us, boolean truth) throws IOException {
         this.us = us;
         this.hadurLog = Files.newBufferedWriter(dir.resolve("hadur.log"), StandardCharsets.UTF_8);
-        this.truthLog = new BufferedWriter(new OutputStreamWriter(new GZIPOutputStream(
-            Files.newOutputStream(dir.resolve("truth.log.gz"))), StandardCharsets.UTF_8));
-        truthLog.write("V,1\n");
+        if (truth) {
+            this.truthLog = new BufferedWriter(new OutputStreamWriter(new GZIPOutputStream(
+                Files.newOutputStream(dir.resolve("truth.log.gz"))), StandardCharsets.UTF_8));
+            truthLog.write("V,1\n");
+        } else {
+            this.truthLog = null;
+        }
+    }
+
+    /** BENCH-97: whether a battle child writes the truth log ({@code -Dhadur.bench.truth=false} turns it off). */
+    static boolean truthLogOn() {
+        return !"false".equalsIgnoreCase(System.getProperty("hadur.bench.truth", "true"));
     }
 
     @Override
@@ -315,31 +335,40 @@ public class LogHarvester extends BattleAdaptor {
 
     private void writeTruth(ITurnSnapshot snap, IRobotSnapshot me, IRobotSnapshot enemy,
                             int turn) throws IOException {
+        // BENCH-97: with the truth log off only the enemy shots are noted, no lines are built.
+        boolean log = truthLog != null;
         StringBuilder spawns = new StringBuilder();
-        StringBuilder b = new StringBuilder("T,").append(round).append(',').append(turn);
-        appendRobot(b, me);
-        appendRobot(b, enemy);
-        b.append(',');
+        StringBuilder b = new StringBuilder();
+        if (log) {
+            b.append("T,").append(round).append(',').append(turn);
+            appendRobot(b, me);
+            appendRobot(b, enemy);
+            b.append(',');
+        }
         boolean first = true;
         for (IBulletSnapshot bullet : snap.getBullets()) {
             if (bullet.getState() != BulletState.FIRED && bullet.getState() != BulletState.MOVING) {
                 continue;
             }
-            if (!first) b.append(' ');
-            first = false;
             String owner = bullet.getOwnerIndex() == me.getRobotIndex() ? "H" : "E";
             if (owner.equals("E") && enemyBulletIds.add(bullet.getBulletId())) {
                 // {round, turn, power, disabled}: disabled marks a shot fired while either
                 // robot was disabled, which a scan may never reveal.
                 enemyShots.add(new double[] {round, turn, bullet.getPower(),
                     me.getEnergy() <= 0 || enemy.getEnergy() <= 0 ? 1 : 0});
-                spawns.append("F,").append(round).append(',').append(turn).append(",E,")
-                    .append(f(bullet.getPower())).append('\n');
+                if (log) {
+                    spawns.append("F,").append(round).append(',').append(turn).append(",E,")
+                        .append(f(bullet.getPower())).append('\n');
+                }
             }
+            if (!log) continue;
+            if (!first) b.append(' ');
+            first = false;
             b.append(owner).append(':').append(f(bullet.getX())).append(':')
              .append(f(bullet.getY())).append(':').append(f(bullet.getHeading())).append(':')
              .append(f(bullet.getPower()));
         }
+        if (!log) return;
         truthLog.write(b.append('\n').toString());
         truthLog.write(spawns.toString());
     }
@@ -558,6 +587,6 @@ public class LogHarvester extends BattleAdaptor {
 
     public void close() throws IOException {
         hadurLog.close();
-        truthLog.close();
+        if (truthLog != null) truthLog.close();
     }
 }

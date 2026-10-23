@@ -39,7 +39,7 @@ public final class BattleRunner {
         JdkWarmup.run(); // BENCH-83: before any robot can be the first to need a JDK provider
         RobocodeEngine.setLogMessagesEnabled(false);
         RobocodeEngine engine = new RobocodeEngine(home);
-        LogHarvester harvester = new LogHarvester(battleDir, us);
+        LogHarvester harvester = new LogHarvester(battleDir, us, LogHarvester.truthLogOn());
         engine.addBattleListener(harvester);
         StringBuilder errors = new StringBuilder();
         BattleResults[] results = new BattleResults[1];

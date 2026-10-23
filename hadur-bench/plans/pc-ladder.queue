@@ -1,0 +1,59 @@
+# Worker ladder (docs/bench/throughput.md): how many battles the PC can run at once, and what the
+# truth-log switch (BENCH-97) saves. Leigh 2026-10-23: "build what is needed". About 1.75 h.
+#   ./queue.sh run pc-ladder        (or  .\queue.ps1 run pc-ladder)
+# Run from master with RoboRumble clients at 0 (the team-s1 header showed one running), nothing else on the PC.
+# --force-memory: the 2G heap is a cap; a battle JVM uses well under 100 MB of heap (measured), so
+# the planner's 2.3 GB a worker would wrongly refuse 20 or 24 workers on a smaller-RAM day.
+# Every step writes its own work folder and resumes (BENCH-95 multi-arm, BENCH-96 team), so a stop
+# loses no battles; a resumed step's battles an hour is then partial, which the read flags by count.
+#
+# Why: the 2026-10-23 throughput read (https://claude.ai/artifact/7bWonLGQsi7obMGXHXtQEP) found the
+# 24-core Threadripper running 8 team or 12 duel workers. A team battle uses about 2 cores and a duel
+# about 1.25 to 1.5, so 8 to 9 cores sit idle. Pinned 18 and 22 were tried (Stage 0) and raised engine
+# disables 4 to 10 times; unpinned above 12 was never measured.
+#
+# Duel blocks: the 208-bot Stage 0 panel, arms c (3.15) and aa (3.15 renamed, A/A), 1 seed, the same
+# seed in every block: 416 battles a block, about 12 min at 12 workers. Widths 12, 16, 20, 24 with the
+# truth log on (today's bench), then 12 and 16 with it off (x).
+# Team blocks: 3.15aa against the 3.15 release on all 46 teams, 2 seeds: 184 battles a block, about
+# 13 min at 8 workers. Widths 8, 12, 16.
+#
+# Read (tools/ladder.py): battles an hour, skipped turns a round, engine disables a 100 battles and
+# truth-log MB a battle per block. Pick rule: the widest block whose skips a round stay within 15% of
+# its base (d12, t8) and whose disables a 100 stay within 1 of the base's. multiarm.py adds each duel
+# block's A/A and c level, which must agree across widths (the Stage 0 stop rule).
+# When done, the PC commits both reports to claude/pc-ladder-results and opens a PR.
+
+set HEAP = --child-heap 2G
+set E = --engine 1.11.1
+set C = --skip-build --skip-fetch --rounds 35 --cpu-constant 1488498 ${HEAP} ${E} --force-memory
+set D = --set top5-s0-panel.txt --seeds 1 --seed-base 2500 --arms plans/ladder.arms
+set READ = --census census-312.txt --segments plans/top5-segments.tsv
+
+prep | mkdir -p bisect && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur2.Hadur_3.15.jar bisect/ && { python3 -c "import sys,zipfile; sys.exit(zipfile.ZipFile(sys.argv[1]).testzip() is not None)" bisect/hadur2.HadurTeam_3.15.jar 2>/dev/null || { curl -fsSL -o bisect/hadur2.HadurTeam_3.15.jar.part https://github.com/lgriffin/Hadur_Robot/releases/download/v3.15/hadur2.HadurTeam_3.15.jar && python3 -c "import sys,zipfile; sys.exit(zipfile.ZipFile(sys.argv[1]).testzip() is not None)" bisect/hadur2.HadurTeam_3.15.jar.part && mv bisect/hadur2.HadurTeam_3.15.jar.part bisect/hadur2.HadurTeam_3.15.jar; }; } && bash ./build-ablation.sh aa && ./fetch-opponents.sh --set top5-s0-panel.txt && ./fetch-opponents.sh --set team-census46.txt && (cd .. && mvn -q -DskipTests install -pl hadur-core -am) && mvn -q compile
+
+d12 | ./bench-top20.sh ${C} ${D} --parallel 12 --out work/ladder-d12 --label ladder-d12
+  after: prep
+d16 | ./bench-top20.sh ${C} ${D} --parallel 16 --out work/ladder-d16 --label ladder-d16
+  after: d12
+d20 | ./bench-top20.sh ${C} ${D} --parallel 20 --out work/ladder-d20 --label ladder-d20
+  after: d16
+d24 | ./bench-top20.sh ${C} ${D} --parallel 24 --out work/ladder-d24 --label ladder-d24
+  after: d20
+d12x | ./bench-top20.sh ${C} ${D} --parallel 12 --no-truth-log --out work/ladder-d12x --label ladder-d12x
+  after: d24
+d16x | ./bench-top20.sh ${C} ${D} --parallel 16 --no-truth-log --out work/ladder-d16x --label ladder-d16x
+  after: d12x
+
+t8 | mvn -q exec:java "-Dexec.args=@plans/ladder-t8.args"
+  after: d16x
+t12 | mvn -q exec:java "-Dexec.args=@plans/ladder-t12.args"
+  after: t8
+t16 | mvn -q exec:java "-Dexec.args=@plans/ladder-t16.args"
+  after: t12
+
+read | python3 tools/ladder.py --base d12 --base t8 d12=work/ladder-d12 d16=work/ladder-d16 d20=work/ladder-d20 d24=work/ladder-d24 d12x=work/ladder-d12x d16x=work/ladder-d16x t8=work/ladder-t8 t12=work/ladder-t12 t16=work/ladder-t16 --out ../docs/bench/local/2026-10-23_worker-ladder.md && python3 ../data/tools/multiarm.py work/ladder-d12/arms.tsv work/ladder-d16/arms.tsv work/ladder-d20/arms.tsv work/ladder-d24/arms.tsv work/ladder-d12x/arms.tsv work/ladder-d16x/arms.tsv --blocks ${READ} --out ../docs/bench/local/2026-10-23_worker-ladder-arms.md
+  after: t16
+
+pr | bash tools/open_results_pr.sh claude/pc-ladder-results "Worker ladder: battles an hour against workers, and the truth-log switch" ../docs/bench/local/2026-10-23_worker-ladder.md ../docs/bench/local/2026-10-23_worker-ladder-arms.md
+  after: read
