@@ -51,33 +51,47 @@ Different teams punish different things:
 So the mode table approach from 1v1 applies: a few team movement modes, and one mode picked
 per opposing team, locked only after a screen and a fresh-seed confirm.
 
-## 4. Team modes to build (all team-only)
+## 4. Team modes built (all team-only, requirements TMODE-1 to TMODE-4)
 
-Each mode is a switch that can be read from a per-team table. With no teammate alive, none of
-it is reached. Solo and melee replay fixtures must stay bit-identical with every mode forced on.
+Each mode can be read from a per-team table (`melee.TeamModes`). With no living teammate,
+none of it is reached. Solo and melee replay fixtures stay bit-identical with every mode forced
+on: all 11 replay, and only the two team fixtures change.
 
-| Mode | Source idea | What it does in Hadur | Size |
+| Mode | Source idea | What it does in Hadur | Ablation |
 |---|---|---|---|
-| **TM-SOFT** | Ogi aimedAtUs, Firestarter target weight | Each virtual bullet's weight × 1/(1+k)^2, where k is the number of living teammates nearer the shooter at fire time (replaces the hard MMOVE-9 drop) | small |
-| **TM-GANG** | Ogi gang defence and finish pull | When 2 or more enemies are within 250 px of me, multiply the candidate's risk by a pull toward my nearest teammate. Otherwise, if a teammate is ganged, pull toward it, with a 300 px floor. Last enemy alive and energy >= 30: pull toward it, with a 350 px floor | medium |
-| **TM-PATH** | Ogi withWaves, Firestarter path danger | Score bullet risk along the predicted path to each candidate, not only at the end. Re-rank the 8 best by risk/median + 3 × danger/median | medium |
-| **TM-LEARN** | Firestarter, Combat | The existing MMOVE-10 learned aims, now a mode in the table instead of a global switch | built |
-| **TM-PACK** (later) | Nightmare leader | Leader assigns 2-3 members per enemy and sends arc waypoints | large, stage 2 |
+| **SOFT** (TMODE-2) | Ogi aimedAtUs, Firestarter target weight | Each detected shot's virtual bullets weigh 1/(1+k)², where k is the number of living teammates nearer the shooter. Under 0.1 the shot makes no bullets. This replaces the hard MMOVE-9 drop | `tmsoft` (ms) |
+| **GANG** (TMODE-3) | Ogi gang defence | With 2 or more enemies within 250 px, the risk is scaled by e^(0.5 (to - from) / 100) toward the nearest teammate. If instead a teammate is ganged, the same pull applies toward it, floored at 300 px | `tmgang` (mg) |
+| **FINISH** (TMODE-4) | Ogi finish pull, Combat's pull to disabled enemies | Last enemy alive and own energy >= 30: e^((to - from) / 100) toward it, floored at 350 px | `tmfin` (mf) |
+| **LEARN** | Firestarter, Combat | MMOVE-10's learned aims, for the teams the table names | `tmlearn` (ml); screened already as team-s2 `dl` |
 
-## 5. Plan
+Not built:
+- **Path danger** (Ogi withWaves, Firestarter). Scoring the route to each candidate was tried
+  in melee M4 and cost 3 to 5 APS (docs/bench/m4-gates.md). Ogi makes it work with learned aims
+  and soft weights, so it stays a later candidate once SOFT and LEARN have per-team results.
+- **Pack hunting** (Nightmare's leader-assigned pincers). It needs a leader role and waypoint
+  orders on the link, so it is stage 2 for the teams the table cannot fix.
 
-1. **Build TM-SOFT, TM-GANG and TM-PATH** behind a per-team table (`TeamModeTable`). The key is
-   the opposing team's member class, and the default is today's movement. Each mode gets an
-   ablation build that forces it on for every team. Unit tests, EARS rows and the
-   team-only proof come with each mode.
-2. **One PC screen per mode across all 46 teams** (6 seeds, paired against 3.15aa, about 276
-   battles and 20-25 min per mode). Each run gives every team's score under that mode, so 4
-   runs plus an A/A fill the whole table.
-3. **Build the table.** For each team, take the best mode whose gain is more than 2 standard
-   errors on the screen. Confirm those teams on fresh seeds; lock only the confirmed ones
-   (the 1v1 lesson: tonight's 2-seed +6.7 became -8.9).
-4. **Census the table build** against 3.15 on all 46 teams with an A/A. Gate: +3 APS with a
-   low end above +1.5.
-5. Stage 2 if needed: TM-PACK for the teams the table cannot fix.
+**Already in hand from team-s2.** The LEARN screen exists: dl against aa, 6 seeds. Overall it
+was +0.5 ± 0.8 (noise), but per team it gave **Ogi +4.9 ± 2.6** and **Nightmare -7.2 ± 4.3**.
+That is exactly the per-team split the table is for. At 6 seeds a team's interval is ±3 to ±12
+points, so the screen only catches large effects, and the confirm uses 12 fresh seeds.
+
+## 5. Plan and PC card
+
+Card `hadur-bench/plans/pc-team-modes.queue` (about 2,800 to 3,100 battles, 3 h at
+--parallel 12, resumable):
+
+1. **Screens:** bb (A/A), ms, mg and mf. Each runs against all 46 teams, 6 seeds, seed base
+   2600, paired with aa. LEARN is read from team-s2's dl report.
+2. **pick** (`tools/team_modes.py pick`): for each team, the mode whose paired gain has its 95%
+   low end above zero, with ties going to the larger mean. Entries are keyed by the member
+   classes in the team's jar. A class two teams share with different picks is left out. The
+   step then builds the screen's table (`tmtab`, mt).
+3. **confirm:** mt against aa on the picked teams only, 12 fresh seeds (base 2700).
+4. **lock** (`team_modes.py lock`): keep a pick only where confirm gained at least +1.0 point.
+   Then build `tmlock` (mk).
+5. **census:** mk against aa, all 46 teams, 6 fresh seeds (base 2800). Gate: at least +3.0
+   points with the interval above +1.5, and bb inside ±1.0.
+6. Results PR from the PC (claude/pc-team-modes-results).
 
 No PC run starts until pc-table-v1 is done and Leigh says go.
