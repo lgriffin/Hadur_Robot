@@ -1,0 +1,31 @@
+# PC card team-modes (docs/bench/team-top-decompile.md section 5): the confirmed table (mk), all 46 teams, fresh seeds against master (the aa build) (Bench @FILE, one argument a line)
+--team
+true
+--seeds
+6
+--seed-base
+2800
+--rounds
+10
+--parallel
+12
+--child-heap
+2G
+--cpu-constant
+1488498
+--set
+team-census46.txt
+--robot-jar
+bisect/hadur2.HadurTeam_3.15mk.jar
+--robot
+hadur2.HadurTeam 3.15mk
+--member
+hadur2.Hadur
+--out
+work/team-modes-census
+--report
+../docs/bench/local/team-modes-census.md
+--baseline
+bisect/hadur2.HadurTeam_3.15aa.jar
+--baseline-robot
+hadur2.HadurTeam 3.15aa

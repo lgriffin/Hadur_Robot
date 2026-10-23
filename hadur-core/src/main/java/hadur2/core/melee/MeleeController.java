@@ -13,6 +13,7 @@ import hadur2.core.physics.Rules;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Runs Hadur's melee subsystems for one tick and returns what the robot should do.
@@ -103,6 +104,8 @@ public class MeleeController {
     private final TeamDanger danger;
     /** Whether the last tick had a living teammate. */
     private boolean onTeam;
+    /** T7: the team's modes against this team (TMODE-1) as of the last tick; none off a team. */
+    private Set<TeamModes.Mode> modes = TeamModes.NONE;
 
     public MeleeController(BattleField field) {
         this(field, new EnemyTracker(field));
@@ -215,7 +218,7 @@ public class MeleeController {
         double headOn = DiaUtils.absoluteBearing(shooter.location, atFire.location);
         double botWidth = DiaUtils.botWidthAimAngle(distance);
         stats.recordDamageReceived(damage, heading - headOn, botWidth);
-        if (TeamDanger.LEARNED && onTeam) learn(name, power, heading, me, now);
+        if (onTeam && (TeamDanger.LEARNED || modes.contains(TeamModes.Mode.LEARN))) learn(name, power, heading, me, now);
         // The same test OpponentStats uses: within Hadur's width of head-on, else led.
         profiles.hitOnHadur(name, Math.abs(Angles.normalRelativeAngle(heading - headOn)) <= botWidth
             ? MeleeProfile.AimClass.HEAD_ON : MeleeProfile.AimClass.LINEAR);
@@ -307,16 +310,20 @@ public class MeleeController {
         c.posture = plan.posture;
         onTeam = !s.teammates.isEmpty();
         if (onTeam) {
+            // T7 (TMODE-1): the modes against this team.
+            modes = TeamModes.against(alive);
             // T6 (MMOVE-9, MMOVE-10): where each teammate stands, for whom a shot was aimed at.
             List<Point2D.Double> mates = new ArrayList<>(s.teammates.size());
             for (Roster.Mate m : s.teammates) mates.add(m.at(s.time));
             mover.updateBullets(tracker.shots(s.time), myPath, s.me, s.time, mates, danger,
-                TeamDanger.NEAREST, TeamDanger.LEARNED);
+                TeamDanger.NEAREST, TeamDanger.LEARNED || modes.contains(TeamModes.Mode.LEARN),
+                modes.contains(TeamModes.Mode.SOFT));
         } else {
+            modes = TeamModes.NONE;
             mover.updateBullets(tracker.shots(s.time), myPath, s.me, s.time);
         }
         c.destination = alive.isEmpty() ? null
-            : mover.chooseDestination(s.me, s.energy, s.others, alive, s.time, plan, s.teammates);
+            : mover.chooseDestination(s.me, s.energy, s.others, alive, s.time, plan, s.teammates, modes);
         gun.onTeam(!s.teammates.isEmpty());
         waves.tick(s.me, s.time, s.gunHeat, alive, gun, s.energy, s.others);
 

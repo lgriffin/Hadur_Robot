@@ -105,6 +105,18 @@ public class MinimumRiskMovement {
     static final double MATE_PATH_RANGE = 60;
     /** MMOVE-8: how far apart, along its wall, the opening spots of two members in the roster are. */
     static final double MATE_FAN = 120;
+    /** TMODE-2: a shot's weight is 1/(1+k)^2 for k teammates nearer its shooter; under this it makes no bullets. */
+    static final double SOFT_FLOOR = 0.1;
+    /** TMODE-3: an enemy within this of a robot counts toward ganging it; two make a gang. */
+    static final double GANG_RANGE = 250;
+    static final int GANG_SIZE = 2;
+    /** TMODE-3: the pull's strength, and the floor when helping a ganged teammate. */
+    static final double GANG_PULL = 0.5;
+    static final double HELP_FLOOR = 300;
+    /** TMODE-4: the last enemy pulls this hard, down to this distance, while Hadur has this energy. */
+    static final double FINISH_PULL = 1.0;
+    static final double FINISH_FLOOR = 350;
+    static final double FINISH_ENERGY = 30;
     static final double SWITCH_GAIN = 0.9;
     static final double REACHED = 20;
 
@@ -129,6 +141,31 @@ public class MinimumRiskMovement {
     /** The ring never shrinks below a robot's width, so Hadur can always move. */
     static final double MIN_RING = 36.0;
 
+    /**
+     * TMODE-3, TMODE-4: a point a team member is drawn to. A candidate's risk is multiplied
+     * by e^(strength (to - from) / 100), where from and to are Hadur's and the candidate's
+     * distances to the point, each floored at {@code floor}: closing on it lowers the risk,
+     * and inside the floor it neither pulls nor pushes.
+     */
+    static final class Pull {
+        final Point2D.Double at;
+        final double floor;
+        final double strength;
+
+        Pull(Point2D.Double at, double floor, double strength) {
+            this.at = at;
+            this.floor = floor;
+            this.strength = strength;
+        }
+
+        /** The factor for moving from {@code me} to {@code p}. */
+        double factor(Point2D.Double me, Point2D.Double p) {
+            double from = Math.max(floor, me.distance(at));
+            double to = Math.max(floor, p.distance(at));
+            return Math.exp(strength * (to - from) / 100.0);
+        }
+    }
+
     /** What the movement sees this tick. */
     public static final class View {
         final Point2D.Double me;
@@ -142,6 +179,8 @@ public class MinimumRiskMovement {
         final double[] nearestOther;
         /** MMOVE-6: the living teammates whose position is fresh; empty off a team. */
         final List<Roster.Mate> mates;
+        /** TMODE-3, TMODE-4: the point this decision is drawn to, or null; only on a team. */
+        Pull pull;
 
         View(Point2D.Double me, double energy, long now, int others, List<EnemyInfo> enemies,
              List<VirtualBullet> bullets, MeleeStrategy.Plan plan) {
@@ -262,7 +301,18 @@ public class MinimumRiskMovement {
     public void updateBullets(List<EnemyShot> shots, RobotStateLog myPath, Point2D.Double me,
                               long now, List<Point2D.Double> mates, TeamDanger danger,
                               boolean nearest, boolean learned) {
-        if (mates.isEmpty() || (!nearest && !learned)) {
+        updateBullets(shots, myPath, me, now, mates, danger, nearest, learned, false);
+    }
+
+    /**
+     * As above, where with {@code soft} (TMODE-2) each shot's bullets weigh
+     * {@link #softWeight}: less for each teammate nearer its shooter than Hadur was, and none
+     * under {@link #SOFT_FLOOR}.
+     */
+    public void updateBullets(List<EnemyShot> shots, RobotStateLog myPath, Point2D.Double me,
+                              long now, List<Point2D.Double> mates, TeamDanger danger,
+                              boolean nearest, boolean learned, boolean soft) {
+        if (mates.isEmpty() || (!nearest && !learned && !soft)) {
             updateBullets(shots, myPath, me, now);
             return;
         }
@@ -273,24 +323,39 @@ public class MinimumRiskMovement {
             if (at == null) at = myPath.getState(s.fireTime + 1);
             Point2D.Double target = at == null ? me : at.location;
             if (nearest && !TeamDanger.aimedAtMe(s, target, mates)) continue;
+            double w = soft ? softWeight(s, target, mates) : 1.0;
+            if (w < SOFT_FLOOR) continue;
             List<TeamDanger.Aim> aims = learned && at != null ? danger.aims(s, at) : null;
             if (aims != null) {
                 for (TeamDanger.Aim a : aims) {
-                    add(new VirtualBullet(s, VirtualBullet.Aim.LEARNED, a.heading, a.weight), cap);
+                    add(new VirtualBullet(s, VirtualBullet.Aim.LEARNED, a.heading, w * a.weight), cap);
                 }
                 continue;
             }
             double hot = DiaUtils.absoluteBearing(s.source, target);
             double linear = at == null ? hot : VirtualBullet.linearHeading(s.source, target,
                 at.heading, at.velocity, s.speed(), field.width, field.height);
-            add(new VirtualBullet(s, VirtualBullet.Aim.HEAD_ON, hot), cap);
-            add(new VirtualBullet(s, VirtualBullet.Aim.LINEAR, linear), cap);
+            add(new VirtualBullet(s, VirtualBullet.Aim.HEAD_ON, hot, w), cap);
+            add(new VirtualBullet(s, VirtualBullet.Aim.LINEAR, linear, w), cap);
         }
         double reach = Math.hypot(field.width, field.height);
         for (Iterator<VirtualBullet> it = bullets.iterator(); it.hasNext(); ) {
             if (it.next().passed(me, now, reach)) it.remove();
         }
         seenShots.retainAll(shots);
+    }
+
+    /**
+     * TMODE-2: the share of {@code shot} aimed at Hadur, standing at {@code me} when it was
+     * fired: 1/(1+k)^2 for the k teammates in {@code mates} nearer its source.
+     */
+    static double softWeight(EnemyShot shot, Point2D.Double me, List<Point2D.Double> mates) {
+        double mine = shot.source.distance(me);
+        int k = 0;
+        for (Point2D.Double m : mates) {
+            if (shot.source.distance(m) < mine) k++;
+        }
+        return 1.0 / ((1 + k) * (1 + k));
     }
 
     private void add(VirtualBullet b) {
@@ -313,9 +378,22 @@ public class MinimumRiskMovement {
     public Point2D.Double chooseDestination(Point2D.Double me, double energy, int others,
                                             List<EnemyInfo> enemies, long now,
                                             MeleeStrategy.Plan plan, List<Roster.Mate> mates) {
+        return chooseDestination(me, energy, others, enemies, now, plan, mates, TeamModes.NONE);
+    }
+
+    /**
+     * As above, with the team's {@code modes} against this team (T7): {@link TeamModes.Mode#GANG}
+     * and {@link TeamModes.Mode#FINISH} draw the decision to a point (TMODE-3, TMODE-4). With
+     * no teammate the modes are not read.
+     */
+    public Point2D.Double chooseDestination(Point2D.Double me, double energy, int others,
+                                            List<EnemyInfo> enemies, long now,
+                                            MeleeStrategy.Plan plan, List<Roster.Mate> mates,
+                                            Set<TeamModes.Mode> modes) {
         remember(me, now);
         if (openingSpot == null) openingSpot = openingSpot(me);
         View v = new View(me, energy, now, others, enemies, new ArrayList<>(bullets), plan, mates);
+        if (!mates.isEmpty() && !modes.isEmpty()) v.pull = pull(me, energy, others, enemies, now, mates, modes);
         List<Point2D.Double> candidates = candidates(me, others, enemies, now, mates);
         lastCandidates = candidates.size();
         Point2D.Double best = null;
@@ -390,6 +468,44 @@ public class MinimumRiskMovement {
             DiaUtils.limit(WALL_MARGIN, p.y, field.height - WALL_MARGIN));
     }
 
+    /**
+     * TMODE-3, TMODE-4: the point a team member is drawn to, or null. With
+     * {@link TeamModes.Mode#FINISH}, one enemy left by the engine's count ({@code others} less
+     * the teammates in view), seen lately, and at least {@link #FINISH_ENERGY}, that enemy, to
+     * {@link #FINISH_FLOOR}: early in a round the tracker holds only the enemies scanned so far. Else with {@link TeamModes.Mode#GANG}: when
+     * {@link #GANG_SIZE} enemies are within {@link #GANG_RANGE} of Hadur, its nearest teammate;
+     * when they are of a teammate, the nearest such teammate, to {@link #HELP_FLOOR}.
+     */
+    static Pull pull(Point2D.Double me, double energy, int others, List<EnemyInfo> enemies, long now,
+                     List<Roster.Mate> mates, Set<TeamModes.Mode> modes) {
+        if (modes.contains(TeamModes.Mode.FINISH) && enemies.size() == 1 && others - mates.size() == 1
+                && enemies.get(0).age(now) < CAP_MAX_AGE && energy >= FINISH_ENERGY) {
+            return new Pull(enemies.get(0).location, FINISH_FLOOR, FINISH_PULL);
+        }
+        if (!modes.contains(TeamModes.Mode.GANG)) return null;
+        Point2D.Double nearest = null;
+        Point2D.Double ganged = null;
+        for (Roster.Mate m : mates) {
+            Point2D.Double q = m.at(now);
+            if (nearest == null || q.distance(me) < nearest.distance(me)) nearest = q;
+            if (enemiesNear(q, enemies, now) >= GANG_SIZE && (ganged == null || q.distance(me) < ganged.distance(me))) {
+                ganged = q;
+            }
+        }
+        if (nearest != null && enemiesNear(me, enemies, now) >= GANG_SIZE) return new Pull(nearest, 0, GANG_PULL);
+        if (ganged != null) return new Pull(ganged, HELP_FLOOR, GANG_PULL);
+        return null;
+    }
+
+    /** TMODE-3: the enemies seen lately within {@link #GANG_RANGE} of {@code p}. */
+    static int enemiesNear(Point2D.Double p, List<EnemyInfo> enemies, long now) {
+        int n = 0;
+        for (EnemyInfo e : enemies) {
+            if (e.age(now) < CAP_MAX_AGE && e.location.distance(p) <= GANG_RANGE) n++;
+        }
+        return n;
+    }
+
     /** The whole risk of {@code p}. */
     public double risk(Point2D.Double p, View v) {
         double r = 0;
@@ -407,6 +523,8 @@ public class MinimumRiskMovement {
             r += OPENING_K * p.distance(openingSpot) / 500.0;
         }
         if (!v.mates.isEmpty()) r += teammateRisk(p, v);
+        // TMODE-3, TMODE-4: the pull scales every term but the posture's, which may be negative.
+        if (v.pull != null) r *= v.pull.factor(v.me, p);
         return r + postureRisk(p, v.enemies, v.plan);
     }
 
