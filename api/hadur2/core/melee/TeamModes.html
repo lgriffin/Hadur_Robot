@@ -145,18 +145,21 @@ loadScripts(document, 'script');</script>
 <div class="col-second odd-row-color"><code><a href="#FORCE_LEARN" class="member-name-link">FORCE_LEARN</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code>static final boolean</code></div>
-<div class="col-second even-row-color"><code><a href="#FORCE_SOFT" class="member-name-link">FORCE_SOFT</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-second even-row-color"><code><a href="#FORCE_PACK" class="member-name-link">FORCE_PACK</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>static final boolean</code></div>
+<div class="col-second odd-row-color"><code><a href="#FORCE_SOFT" class="member-name-link">FORCE_SOFT</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Ablation switches: the mode for every team the table does not name.</div>
 </div>
-<div class="col-first odd-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a><wbr>&lt;<a href="TeamModes.Mode.html" title="enum class in hadur2.core.melee">TeamModes.Mode</a>&gt;</code></div>
-<div class="col-second odd-row-color"><code><a href="#NONE" class="member-name-link">NONE</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a><wbr>&lt;<a href="TeamModes.Mode.html" title="enum class in hadur2.core.melee">TeamModes.Mode</a>&gt;</code></div>
+<div class="col-second even-row-color"><code><a href="#NONE" class="member-name-link">NONE</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">No modes: today's team movement.</div>
 </div>
-<div class="col-first even-row-color"><code>(package private) static final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="TeamModes.Mode.html" title="enum class in hadur2.core.melee">TeamModes.Mode</a>&gt;&gt;</code></div>
-<div class="col-second even-row-color"><code><a href="#TABLE" class="member-name-link">TABLE</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code>(package private) static final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="TeamModes.Mode.html" title="enum class in hadur2.core.melee">TeamModes.Mode</a>&gt;&gt;</code></div>
+<div class="col-second odd-row-color"><code><a href="#TABLE" class="member-name-link">TABLE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Opposing member class to its team's modes; filled from the per-team screens.</div>
 </div>
 </div>
@@ -189,9 +192,16 @@ loadScripts(document, 'script');</script>
  boolean&nbsp;finish,
  boolean&nbsp;learn)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#key(java.lang.String)" class="member-name-link">key</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a><wbr>&lt;<a href="TeamModes.Mode.html" title="enum class in hadur2.core.melee">TeamModes.Mode</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#forced(boolean,boolean,boolean,boolean,boolean)" class="member-name-link">forced</a><wbr>(boolean&nbsp;soft,
+ boolean&nbsp;gang,
+ boolean&nbsp;finish,
+ boolean&nbsp;learn,
+ boolean&nbsp;pack)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#key(java.lang.String)" class="member-name-link">key</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">A member's class: its name without the engine's trailing " (n)" duplicate markers or
  the version after the first space, as <code>"cz.libors.Ogi 1.0 (2)"</code> to
  <code>"cz.libors.Ogi"</code>.</div>
@@ -271,6 +281,20 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="FORCE_PACK">
+<h3>FORCE_PACK</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">FORCE_PACK</span></div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur2.core.melee.TeamModes.FORCE_PACK">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="NONE">
 <h3>NONE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="TeamModes.Mode.html" title="enum class in hadur2.core.melee">TeamModes.Mode</a>&gt;</span>&nbsp;<span class="element-name">NONE</span></div>
@@ -306,6 +330,16 @@ loadScripts(document, 'script');</script>
  boolean&nbsp;gang,
  boolean&nbsp;finish,
  boolean&nbsp;learn)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="forced(boolean,boolean,boolean,boolean,boolean)">
+<h3>forced</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="TeamModes.Mode.html" title="enum class in hadur2.core.melee">TeamModes.Mode</a>&gt;</span>&nbsp;<span class="element-name">forced</span><wbr><span class="parameters">(boolean&nbsp;soft,
+ boolean&nbsp;gang,
+ boolean&nbsp;finish,
+ boolean&nbsp;learn,
+ boolean&nbsp;pack)</span></div>
 </section>
 </li>
 <li>

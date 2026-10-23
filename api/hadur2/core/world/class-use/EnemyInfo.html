@@ -127,6 +127,15 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color">
 <div class="block">An opponent was scanned at <code>location</code>, <code>distance</code> from Hadur.</div>
 </div>
+<div class="col-first odd-row-color"><code>(package private) static <a href="../EnemyInfo.html" title="class in hadur2.core.world">EnemyInfo</a></code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">MinimumRiskMovement.</span><code><a href="../../melee/MinimumRiskMovement.html#prey(java.awt.geom.Point2D.Double,java.util.List,long)" class="member-name-link">prey</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;centre,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../EnemyInfo.html" title="class in hadur2.core.world">EnemyInfo</a>&gt;&nbsp;enemies,
+ long&nbsp;now)</code></div>
+<div class="col-last odd-row-color">
+<div class="block">TMODE-5: the team's prey, as every member works it out from the positions they share: the
+ enemy seen lately with the least distance from the team's centre plus
+ <a href="../../melee/MinimumRiskMovement.html#PACK_ENERGY_WEIGHT"><code>MinimumRiskMovement.PACK_ENERGY_WEIGHT</code></a> times its energy (NightmareTeam's assignment cost).</div>
+</div>
 </div>
 <div class="caption"><span>Methods in <a href="../../melee/package-summary.html">hadur2.core.melee</a> with parameters of type <a href="../EnemyInfo.html" title="class in hadur2.core.world">EnemyInfo</a></span></div>
 <div class="summary-table three-column-summary">
@@ -319,11 +328,28 @@ loadScripts(document, 'script');</script>
 <div class="col-second odd-row-color"><span class="type-name-label">FieldGun.</span><code><a href="../../melee/FieldGun.html#isolated(hadur2.core.world.EnemyInfo,java.util.List)" class="member-name-link">isolated</a><wbr>(<a href="../EnemyInfo.html" title="class in hadur2.core.world">EnemyInfo</a>&nbsp;e,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../EnemyInfo.html" title="class in hadur2.core.world">EnemyInfo</a>&gt;&nbsp;alive)</code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>(package private) double</code></div>
-<div class="col-second even-row-color"><span class="type-name-label">MinimumRiskMovement.</span><code><a href="../../melee/MinimumRiskMovement.html#postureRisk(java.awt.geom.Point2D.Double,java.util.List,hadur2.core.melee.MeleeStrategy.Plan)" class="member-name-link">postureRisk</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;p,
+<div class="col-first even-row-color"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a></code></div>
+<div class="col-second even-row-color"><span class="type-name-label">MinimumRiskMovement.</span><code><a href="../../melee/MinimumRiskMovement.html#pincerSlot(java.awt.geom.Point2D.Double,java.util.List,long,java.util.List)" class="member-name-link">pincerSlot</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../EnemyInfo.html" title="class in hadur2.core.world">EnemyInfo</a>&gt;&nbsp;enemies,
+ long&nbsp;now,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../Roster.Mate.html" title="class in hadur2.core.world">Roster.Mate</a>&gt;&nbsp;mates)</code></div>
+<div class="col-last even-row-color">
+<div class="block">TMODE-5: Hadur's place in the pincer round the prey.</div>
+</div>
+<div class="col-first odd-row-color"><code>(package private) double</code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">MinimumRiskMovement.</span><code><a href="../../melee/MinimumRiskMovement.html#postureRisk(java.awt.geom.Point2D.Double,java.util.List,hadur2.core.melee.MeleeStrategy.Plan)" class="member-name-link">postureRisk</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;p,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../EnemyInfo.html" title="class in hadur2.core.world">EnemyInfo</a>&gt;&nbsp;enemies,
  <a href="../../melee/MeleeStrategy.Plan.html" title="class in hadur2.core.melee">MeleeStrategy.Plan</a>&nbsp;plan)</code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>(package private) static <a href="../EnemyInfo.html" title="class in hadur2.core.world">EnemyInfo</a></code></div>
+<div class="col-second even-row-color"><span class="type-name-label">MinimumRiskMovement.</span><code><a href="../../melee/MinimumRiskMovement.html#prey(java.awt.geom.Point2D.Double,java.util.List,long)" class="member-name-link">prey</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;centre,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../EnemyInfo.html" title="class in hadur2.core.world">EnemyInfo</a>&gt;&nbsp;enemies,
+ long&nbsp;now)</code></div>
+<div class="col-last even-row-color">
+<div class="block">TMODE-5: the team's prey, as every member works it out from the positions they share: the
+ enemy seen lately with the least distance from the team's centre plus
+ <a href="../../melee/MinimumRiskMovement.html#PACK_ENERGY_WEIGHT"><code>MinimumRiskMovement.PACK_ENERGY_WEIGHT</code></a> times its energy (NightmareTeam's assignment cost).</div>
+</div>
 <div class="col-first odd-row-color"><code>(package private) static <a href="../../melee/MinimumRiskMovement.Pull.html" title="class in hadur2.core.melee">MinimumRiskMovement.Pull</a></code></div>
 <div class="col-second odd-row-color"><span class="type-name-label">MinimumRiskMovement.</span><code><a href="../../melee/MinimumRiskMovement.html#pull(java.awt.geom.Point2D.Double,double,int,java.util.List,long,java.util.List,java.util.Set)" class="member-name-link">pull</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
  double&nbsp;energy,

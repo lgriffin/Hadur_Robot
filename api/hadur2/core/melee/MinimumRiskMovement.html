@@ -322,6 +322,38 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color"><code>(package private) static final double</code></div>
 <div class="col-second even-row-color"><code><a href="#OPENING_WALL_GAP" class="member-name-link">OPENING_WALL_GAP</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>(package private) static final double</code></div>
+<div class="col-second odd-row-color"><code><a href="#PACK_ENERGY" class="member-name-link">PACK_ENERGY</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>(package private) static final double</code></div>
+<div class="col-second even-row-color"><code><a href="#PACK_ENERGY_WEIGHT" class="member-name-link">PACK_ENERGY_WEIGHT</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">TMODE-5: the prey's cost weighs its energy this much against its distance (NightmareTeam's 1.2).</div>
+</div>
+<div class="col-first odd-row-color"><code>(package private) static final double</code></div>
+<div class="col-second odd-row-color"><code><a href="#PACK_FLOOR" class="member-name-link">PACK_FLOOR</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>(package private) static final double</code></div>
+<div class="col-second even-row-color"><code><a href="#PACK_MAX_RADIUS" class="member-name-link">PACK_MAX_RADIUS</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>(package private) static final double</code></div>
+<div class="col-second odd-row-color"><code><a href="#PACK_MIN_RADIUS" class="member-name-link">PACK_MIN_RADIUS</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>(package private) static final double</code></div>
+<div class="col-second even-row-color"><code><a href="#PACK_PULL" class="member-name-link">PACK_PULL</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">TMODE-5: the pull's strength, its floor, and the energy a member needs to hunt.</div>
+</div>
+<div class="col-first odd-row-color"><code>(package private) static final double</code></div>
+<div class="col-second odd-row-color"><code><a href="#PACK_RADIUS_SHARE" class="member-name-link">PACK_RADIUS_SHARE</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">TMODE-5: the pincer's radius as a share of the nearest member's distance (NightmareTeam's 0.74), and its bounds.</div>
+</div>
+<div class="col-first even-row-color"><code>(package private) static final double</code></div>
+<div class="col-second even-row-color"><code><a href="#PACK_SPREAD" class="member-name-link">PACK_SPREAD</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">TMODE-5: members' places are at most this far apart round the prey: 70 degrees.</div>
+</div>
 <div class="col-first odd-row-color"><code>(package private) static final long</code></div>
 <div class="col-second odd-row-color"><code><a href="#PAST_EVERY" class="member-name-link">PAST_EVERY</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
@@ -551,11 +583,28 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) double</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#pastRisk(java.awt.geom.Point2D.Double)" class="member-name-link">pastRisk</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;p)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) double</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#postureRisk(java.awt.geom.Point2D.Double,java.util.List,hadur2.core.melee.MeleeStrategy.Plan)" class="member-name-link">postureRisk</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;p,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#pincerSlot(java.awt.geom.Point2D.Double,java.util.List,long,java.util.List)" class="member-name-link">pincerSlot</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../world/EnemyInfo.html" title="class in hadur2.core.world">EnemyInfo</a>&gt;&nbsp;enemies,
+ long&nbsp;now,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../world/Roster.Mate.html" title="class in hadur2.core.world">Roster.Mate</a>&gt;&nbsp;mates)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">TMODE-5: Hadur's place in the pincer round the prey.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) double</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#postureRisk(java.awt.geom.Point2D.Double,java.util.List,hadur2.core.melee.MeleeStrategy.Plan)" class="member-name-link">postureRisk</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;p,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../world/EnemyInfo.html" title="class in hadur2.core.world">EnemyInfo</a>&gt;&nbsp;enemies,
  <a href="MeleeStrategy.Plan.html" title="class in hadur2.core.melee">MeleeStrategy.Plan</a>&nbsp;plan)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static <a href="../world/EnemyInfo.html" title="class in hadur2.core.world">EnemyInfo</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#prey(java.awt.geom.Point2D.Double,java.util.List,long)" class="member-name-link">prey</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;centre,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../world/EnemyInfo.html" title="class in hadur2.core.world">EnemyInfo</a>&gt;&nbsp;enemies,
+ long&nbsp;now)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">TMODE-5: the team's prey, as every member works it out from the positions they share: the
+ enemy seen lately with the least distance from the team's centre plus
+ <a href="#PACK_ENERGY_WEIGHT"><code>PACK_ENERGY_WEIGHT</code></a> times its energy (NightmareTeam's assignment cost).</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static <a href="MinimumRiskMovement.Pull.html" title="class in hadur2.core.melee">MinimumRiskMovement.Pull</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#pull(java.awt.geom.Point2D.Double,double,int,java.util.List,long,java.util.List,java.util.Set)" class="member-name-link">pull</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
  double&nbsp;energy,
@@ -1385,6 +1434,114 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="PACK_ENERGY_WEIGHT">
+<h3>PACK_ENERGY_WEIGHT</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">PACK_ENERGY_WEIGHT</span></div>
+<div class="block">TMODE-5: the prey's cost weighs its energy this much against its distance (NightmareTeam's 1.2).</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur2.core.melee.MinimumRiskMovement.PACK_ENERGY_WEIGHT">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="PACK_RADIUS_SHARE">
+<h3>PACK_RADIUS_SHARE</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">PACK_RADIUS_SHARE</span></div>
+<div class="block">TMODE-5: the pincer's radius as a share of the nearest member's distance (NightmareTeam's 0.74), and its bounds.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur2.core.melee.MinimumRiskMovement.PACK_RADIUS_SHARE">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="PACK_MIN_RADIUS">
+<h3>PACK_MIN_RADIUS</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">PACK_MIN_RADIUS</span></div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur2.core.melee.MinimumRiskMovement.PACK_MIN_RADIUS">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="PACK_MAX_RADIUS">
+<h3>PACK_MAX_RADIUS</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">PACK_MAX_RADIUS</span></div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur2.core.melee.MinimumRiskMovement.PACK_MAX_RADIUS">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="PACK_SPREAD">
+<h3>PACK_SPREAD</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">PACK_SPREAD</span></div>
+<div class="block">TMODE-5: members' places are at most this far apart round the prey: 70 degrees.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="PACK_PULL">
+<h3>PACK_PULL</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">PACK_PULL</span></div>
+<div class="block">TMODE-5: the pull's strength, its floor, and the energy a member needs to hunt.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur2.core.melee.MinimumRiskMovement.PACK_PULL">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="PACK_FLOOR">
+<h3>PACK_FLOOR</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">PACK_FLOOR</span></div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur2.core.melee.MinimumRiskMovement.PACK_FLOOR">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="PACK_ENERGY">
+<h3>PACK_ENERGY</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">PACK_ENERGY</span></div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur2.core.melee.MinimumRiskMovement.PACK_ENERGY">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="SWITCH_GAIN">
 <h3>SWITCH_GAIN</h3>
 <div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">SWITCH_GAIN</span></div>
@@ -1790,6 +1947,33 @@ loadScripts(document, 'script');</script>
  <a href="#FINISH_FLOOR"><code>FINISH_FLOOR</code></a>: early in a round the tracker holds only the enemies scanned so far. Else with <a href="TeamModes.Mode.html#GANG"><code>TeamModes.Mode.GANG</code></a>: when
  <a href="#GANG_SIZE"><code>GANG_SIZE</code></a> enemies are within <a href="#GANG_RANGE"><code>GANG_RANGE</code></a> of Hadur, its nearest teammate;
  when they are of a teammate, the nearest such teammate, to <a href="#HELP_FLOOR"><code>HELP_FLOOR</code></a>.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="prey(java.awt.geom.Point2D.Double,java.util.List,long)">
+<h3>prey</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type"><a href="../world/EnemyInfo.html" title="class in hadur2.core.world">EnemyInfo</a></span>&nbsp;<span class="element-name">prey</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;centre,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../world/EnemyInfo.html" title="class in hadur2.core.world">EnemyInfo</a>&gt;&nbsp;enemies,
+ long&nbsp;now)</span></div>
+<div class="block">TMODE-5: the team's prey, as every member works it out from the positions they share: the
+ enemy seen lately with the least distance from the team's centre plus
+ <a href="#PACK_ENERGY_WEIGHT"><code>PACK_ENERGY_WEIGHT</code></a> times its energy (NightmareTeam's assignment cost). Null when
+ none is fresh.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="pincerSlot(java.awt.geom.Point2D.Double,java.util.List,long,java.util.List)">
+<h3>pincerSlot</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a></span>&nbsp;<span class="element-name">pincerSlot</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../world/EnemyInfo.html" title="class in hadur2.core.world">EnemyInfo</a>&gt;&nbsp;enemies,
+ long&nbsp;now,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../world/Roster.Mate.html" title="class in hadur2.core.world">Roster.Mate</a>&gt;&nbsp;mates)</span></div>
+<div class="block">TMODE-5: Hadur's place in the pincer round the prey. The members (Hadur and its teammates
+ in view) are ranked by their bearing from the prey about the team's mean bearing, and
+ spread over an arc about that mean, <a href="#PACK_SPREAD"><code>PACK_SPREAD</code></a> apart at most and never more than
+ a full turn in all; Hadur's place is its rank's angle at <a href="#PACK_RADIUS_SHARE"><code>PACK_RADIUS_SHARE</code></a> of the
+ nearest member's distance, kept within <a href="#PACK_MIN_RADIUS"><code>PACK_MIN_RADIUS</code></a> and
+ <a href="#PACK_MAX_RADIUS"><code>PACK_MAX_RADIUS</code></a>. Null with no fresh enemy.</div>
 </section>
 </li>
 <li>
