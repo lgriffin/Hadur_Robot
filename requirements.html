@@ -12,7 +12,7 @@
 <h1>EARS requirements</h1>
 <p class="lede">Every requirement from <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/docs/requirements.md">docs/requirements.md</a>, the source of truth. <em>Implemented in</em> lists
 the classes whose documentation cites the ID; <em>Verified by</em> lists the tests tagged with it, the same tags the build's
-traceability check reads. 229 of 229 live requirements have a tagged test. The readings behind the numbers are in
+traceability check reads. 230 of 230 live requirements have a tagged test. The readings behind the numbers are in
 <a href="docs/requirements-notes.html">Requirement readings</a>.</p>
 <nav class="toc"><a href="#group-CORE">Core</a> <a href="#group-RES">Resilience</a> <a href="#group-REL">Release</a> <a href="#group-WAVE">Waves</a> <a href="#group-RADAR">Radar</a> <a href="#group-MEM">Memory</a> <a href="#group-ADAPT">Adapt</a> <a href="#group-DIAL">Dials</a> <a href="#group-DIST">Distance</a> <a href="#group-POW">Power</a> <a href="#group-END">Endgame</a> <a href="#group-MOVE">Movement</a> <a href="#group-TIME">Time budget</a> <a href="#group-SHIELD">Bullet shielding</a> <a href="#group-MELEE">Melee (2.1)</a> <a href="#group-GATE">Posture gate</a> <a href="#group-MRADAR">Melee radar</a> <a href="#group-MSENSE">Melee sensing</a> <a href="#group-MMOVE">Melee movement</a> <a href="#group-MGUN">Melee gun</a> <a href="#group-MMEM">Melee memory</a></nav><h2 id="group-CORE">Core</h2>
 <article class="req-card" id="CORE-1">
@@ -956,6 +956,11 @@ traceability check reads. 229 of 229 live requirements have a tagged test. The r
 <div class="req-head"><span class="rid">BENCH-98</span><span class="badge">Ubiquitous</span><span class="badge stage">R9</span></div>
 <p>The bench shall carry <code>tools/ladder.py</code>, which reads bench run folders and reports per run the battles an hour, skipped turns a round, engine disables a 100 battles and truth-log disk a battle against a base run, names the widest truth-on run inside the skip and disable limits that is no slower than the base, and compares each truth-off run with the truth-on run of its width.</p>
 <dl><dt>Implemented in</dt><dd><span class="none">no citation in the sources</span></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/LadderPlanTest.java">LadderPlanTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="BENCH-99">
+<div class="req-head"><span class="rid">BENCH-99</span><span class="badge">Ubiquitous</span><span class="badge stage">R9</span></div>
+<p>The bench shall carry <code>tools/table_v1.py</code> and the <code>slistadd</code> ablation, which together build mode table v1&#x27;s shield entries: the screen panel (census robots off the shield list and outside a named set), the confirm set (robots a pick locked with a shield arm), the final list (locked with sasq in the confirm pick and with a shield arm in a first pick), the census candidate (<a class="req" href="requirements.html#SHIELD-16">SHIELD-16</a>, the aim the final robots were confirmed with, plus the final robots added to the shield list), and the census gate verdict (+0.5 APS census-weighted with the lower 95% end above +0.3, the A/A inside its band and at least 95% of the census robots read in all three arms).</p>
+<dl><dt>Implemented in</dt><dd><span class="none">no citation in the sources</span></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/TableV1PlanTest.java">TableV1PlanTest.java</a></dd></dl>
 </article>
 <h2 id="group-GUN">GUN</h2>
 <article class="req-card" id="GUN-1">
