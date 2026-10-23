@@ -384,7 +384,14 @@ loadScripts(document, 'script');</script>
 <div class="block">A round ended: the round's record is written and the budget is checked.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onScan(java.lang.String,long,double,double,double,double,double,double,double,double)" class="member-name-link">onScan</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onRoundEnded(long,boolean)" class="member-name-link">onRoundEnded</a><wbr>(long&nbsp;tick,
+ boolean&nbsp;won)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">A round ended, with its result: as <a href="#onRoundEnded(long)"><code>onRoundEnded(long)</code></a>, and a round lost in shield
+ mode counts against <a class="req" href="../../../../requirements.html#SHIELD-15">SHIELD-15</a>'s trial.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onScan(java.lang.String,long,double,double,double,double,double,double,double,double)" class="member-name-link">onScan</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
  long&nbsp;time,
  double&nbsp;myX,
  double&nbsp;myY,
@@ -394,8 +401,13 @@ loadScripts(document, 'script');</script>
  double&nbsp;enemyY,
  double&nbsp;enemyHeading,
  double&nbsp;enemyVelocity)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">One scan of the enemy.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onTrial()" class="member-name-link">onTrial</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../../../requirements.html#SHIELD-15">SHIELD-15</a>: whether the opponent is in shield mode on trial, not from the list.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#ownBulletResolved(double,double)" class="member-name-link">ownBulletResolved</a><wbr>(double&nbsp;power,
@@ -907,6 +919,20 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="onRoundEnded(long,boolean)">
+<h3>onRoundEnded</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">onRoundEnded</span><wbr><span class="parameters">(long&nbsp;tick,
+ boolean&nbsp;won)</span></div>
+<div class="block">A round ended, with its result: as <a href="#onRoundEnded(long)"><code>onRoundEnded(long)</code></a>, and a round lost in shield
+ mode counts against <a class="req" href="../../../../requirements.html#SHIELD-15">SHIELD-15</a>'s trial.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>tick</code> - the tick the round ended on</dd>
+<dd><code>won</code> - whether Hadur won it</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="ownBulletResolved(double,double)">
 <h3>ownBulletResolved</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">ownBulletResolved</span><wbr><span class="parameters">(double&nbsp;power,
@@ -925,6 +951,13 @@ loadScripts(document, 'script');</script>
 <dt>Returns:</dt>
 <dd>whether it was a shield bullet</dd>
 </dl>
+</section>
+</li>
+<li>
+<section class="detail" id="onTrial()">
+<h3>onTrial</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">onTrial</span>()</div>
+<div class="block"><a class="req" href="../../../../requirements.html#SHIELD-15">SHIELD-15</a>: whether the opponent is in shield mode on trial, not from the list.</div>
 </section>
 </li>
 <li>

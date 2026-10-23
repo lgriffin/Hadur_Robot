@@ -6912,6 +6912,11 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">A round ended: the round's record is written and the budget is checked.</div>
 </dd>
+<dt><a href="hadur2/core/shieldmode/ShieldMode.html#onRoundEnded(long,boolean)" class="member-name-link">onRoundEnded(long, boolean)</a> - Method in class hadur2.core.shieldmode.<a href="hadur2/core/shieldmode/ShieldMode.html" title="class in hadur2.core.shieldmode">ShieldMode</a></dt>
+<dd>
+<div class="block">A round ended, with its result: as <a href="hadur2/core/shieldmode/ShieldMode.html#onRoundEnded(long)"><code>ShieldMode.onRoundEnded(long)</code></a>, and a round lost in shield
+ mode counts against <a class="req" href="../requirements.html#SHIELD-15">SHIELD-15</a>'s trial.</div>
+</dd>
 <dt><a href="hadur/bench/MeleeHarvester.html#onRoundEnded(robocode.control.events.RoundEndedEvent)" class="member-name-link">onRoundEnded(RoundEndedEvent)</a> - Method in class hadur.bench.<a href="hadur/bench/MeleeHarvester.html" title="class in hadur.bench">MeleeHarvester</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur/bench/TeamHarvester.html#onRoundEnded(robocode.control.events.RoundEndedEvent)" class="member-name-link">onRoundEnded(RoundEndedEvent)</a> - Method in class hadur.bench.<a href="hadur/bench/TeamHarvester.html" title="class in hadur.bench">TeamHarvester</a></dt>
@@ -6982,6 +6987,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur2/core/melee/FieldGun.html#onTeam(boolean)" class="member-name-link">onTeam(boolean)</a> - Method in class hadur2.core.melee.<a href="hadur2/core/melee/FieldGun.html" title="class in hadur2.core.melee">FieldGun</a></dt>
 <dd>
 <div class="block">MGUN-6: whether Hadur has a living teammate this tick, set before any aim of the tick.</div>
+</dd>
+<dt><a href="hadur2/core/shieldmode/ShieldMode.html#onTrial()" class="member-name-link">onTrial()</a> - Method in class hadur2.core.shieldmode.<a href="hadur2/core/shieldmode/ShieldMode.html" title="class in hadur2.core.shieldmode">ShieldMode</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#SHIELD-15">SHIELD-15</a>: whether the opponent is in shield mode on trial, not from the list.</div>
 </dd>
 <dt><a href="hadur/bench/LogHarvester.html#onTurnEnded(robocode.control.events.TurnEndedEvent)" class="member-name-link">onTurnEnded(TurnEndedEvent)</a> - Method in class hadur.bench.<a href="hadur/bench/LogHarvester.html" title="class in hadur.bench">LogHarvester</a></dt>
 <dd>&nbsp;</dd>
@@ -7438,7 +7447,8 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur2/core/shieldmode/ShieldDesign.html#parse(java.lang.String)" class="member-name-link">parse(String)</a> - Static method in class hadur2.core.shieldmode.<a href="hadur2/core/shieldmode/ShieldDesign.html" title="class in hadur2.core.shieldmode">ShieldDesign</a></dt>
 <dd>
 <div class="block">The design a comma-separated list of switch names turns on (<code>hold</code>, <code>learn</code>,
- <code>mode</code>, <code>stay</code>, <code>turn</code>, <code>wall</code>, or <code>all</code>); blank is <a href="hadur2/core/shieldmode/ShieldDesign.html#NONE"><code>ShieldDesign.NONE</code></a>.</div>
+ <code>mode</code>, <code>stay</code>, <code>turn</code>, <code>wall</code>, <code>trial</code>, or <code>all</code>); blank
+ is <a href="hadur2/core/shieldmode/ShieldDesign.html#NONE"><code>ShieldDesign.NONE</code></a>.</div>
 </dd>
 <dt><a href="hadur/bench/Bench.html#parse(java.lang.String%5B%5D)" class="member-name-link">parse(String[])</a> - Static method in class hadur.bench.<a href="hadur/bench/Bench.html" title="class in hadur.bench">Bench</a></dt>
 <dd>&nbsp;</dd>
@@ -11571,6 +11581,42 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur2/core/melee/EnemyHistory.html#TREE_LIMIT" class="member-name-link">TREE_LIMIT</a> - Static variable in class hadur2.core.melee.<a href="hadur2/core/melee/EnemyHistory.html" title="class in hadur2.core.melee">EnemyHistory</a></dt>
 <dd>
 <div class="block">Situations kept per opponent (<a class="req" href="../requirements.html#RES-2">RES-2</a>).</div>
+</dd>
+<dt><a href="hadur2/core/shieldmode/ShieldDesign.html#trial" class="member-name-link">trial</a> - Variable in class hadur2.core.shieldmode.<a href="hadur2/core/shieldmode/ShieldDesign.html" title="class in hadur2.core.shieldmode">ShieldDesign</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#SHIELD-15">SHIELD-15</a>: shield mode on trial against every unlisted duel opponent.</div>
+</dd>
+<dt><a href="hadur2/core/shieldmode/ShieldDesign.html#TRIAL_BLANK_HITS" class="member-name-link">TRIAL_BLANK_HITS</a> - Static variable in class hadur2.core.shieldmode.<a href="hadur2/core/shieldmode/ShieldDesign.html" title="class in hadur2.core.shieldmode">ShieldDesign</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#SHIELD-15">SHIELD-15</a>: hits on us with none shot down after which the trial fails.</div>
+</dd>
+<dt><a href="hadur2/core/shieldmode/ShieldDesign.html#TRIAL_DAMAGE" class="member-name-link">TRIAL_DAMAGE</a> - Static variable in class hadur2.core.shieldmode.<a href="hadur2/core/shieldmode/ShieldDesign.html" title="class in hadur2.core.shieldmode">ShieldDesign</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#SHIELD-15">SHIELD-15</a>: the bullet damage an unlisted opponent may do before the trial fails ...</div>
+</dd>
+<dt><a href="hadur2/core/shieldmode/ShieldDesign.html#TRIAL_DAMAGE_PER_SHOT" class="member-name-link">TRIAL_DAMAGE_PER_SHOT</a> - Static variable in class hadur2.core.shieldmode.<a href="hadur2/core/shieldmode/ShieldDesign.html" title="class in hadur2.core.shieldmode">ShieldDesign</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#SHIELD-15">SHIELD-15</a>: ... plus this much for every shot it has fired.</div>
+</dd>
+<dt><a href="hadur2/core/shieldmode/ShieldDesign.html#TRIAL_DOWN_SHARE" class="member-name-link">TRIAL_DOWN_SHARE</a> - Static variable in class hadur2.core.shieldmode.<a href="hadur2/core/shieldmode/ShieldDesign.html" title="class in hadur2.core.shieldmode">ShieldDesign</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#SHIELD-15">SHIELD-15</a>: the least share of ended bullets shot down for the trial to go on.</div>
+</dd>
+<dt><a href="hadur2/core/shieldmode/ShieldDesign.html#TRIAL_JUDGE_BULLETS" class="member-name-link">TRIAL_JUDGE_BULLETS</a> - Static variable in class hadur2.core.shieldmode.<a href="hadur2/core/shieldmode/ShieldDesign.html" title="class in hadur2.core.shieldmode">ShieldDesign</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#SHIELD-15">SHIELD-15</a>: the ended enemy bullets (shot down or hit us) after which the shot-down share is judged.</div>
+</dd>
+<dt><a href="hadur2/core/shieldmode/ShieldDesign.html#TRIAL_LOST_ROUNDS" class="member-name-link">TRIAL_LOST_ROUNDS</a> - Static variable in class hadur2.core.shieldmode.<a href="hadur2/core/shieldmode/ShieldDesign.html" title="class in hadur2.core.shieldmode">ShieldDesign</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#SHIELD-15">SHIELD-15</a>: rounds lost in shield mode after which the trial fails.</div>
+</dd>
+<dt><a href="hadur2/core/shieldmode/ShieldDesign.html#trialFails(double,int,int,int,int)" class="member-name-link">trialFails(double, int, int, int, int)</a> - Static method in class hadur2.core.shieldmode.<a href="hadur2/core/shieldmode/ShieldDesign.html" title="class in hadur2.core.shieldmode">ShieldDesign</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#SHIELD-15">SHIELD-15</a>: whether Ogi's shield trial has failed against an unlisted opponent: its bullets
+ have done more than <a href="hadur2/core/shieldmode/ShieldDesign.html#TRIAL_DAMAGE">35.0</a> plus <a href="hadur2/core/shieldmode/ShieldDesign.html#TRIAL_DAMAGE_PER_SHOT">0.25</a> a shot it
+ fired, or <a href="hadur2/core/shieldmode/ShieldDesign.html#TRIAL_LOST_ROUNDS">2</a> rounds are lost, or of at least
+ <a href="hadur2/core/shieldmode/ShieldDesign.html#TRIAL_JUDGE_BULLETS">20</a> ended bullets under <a href="hadur2/core/shieldmode/ShieldDesign.html#TRIAL_DOWN_SHARE">0.5</a> were shot down,
+ or <a href="hadur2/core/shieldmode/ShieldDesign.html#TRIAL_BLANK_HITS">6</a> hit us with none shot down.</div>
 </dd>
 <dt><a href="hadur/bench/Bench.Tried.html#%3Cinit%3E(T,int)" class="member-name-link">Tried(T, int)</a> - Constructor for record class hadur.bench.<a href="hadur/bench/Bench.Tried.html" title="class in hadur.bench">Bench.Tried</a></dt>
 <dd>
