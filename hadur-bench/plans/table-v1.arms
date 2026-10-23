@@ -1,0 +1,5 @@
+# Mode table v1 screen and confirm (pc-table-v1): c is 3.15, aa its A/A copy, sasq is 3.15 shielding every
+# opponent with SHIELD-16 (shield-all + sprior). A robot whose sasq score beats c and aa pooled joins the list.
+c | hadur2.Hadur 3.15 | bisect/hadur2.Hadur_3.15.jar
+aa | hadur2.Hadur 3.15aa | bisect/hadur2.Hadur_3.15aa.jar
+sasq | hadur2.Hadur 3.15sasq | bisect/hadur2.Hadur_3.15sasq.jar

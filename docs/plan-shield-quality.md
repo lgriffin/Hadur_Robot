@@ -54,3 +54,30 @@ Against Hadur 3.15's live scores (normal mode) these 25 bots gain about +174 poi
    train the table.
 2. A shipped per-opponent shield aim of our own, read from stage 1's records, and Saguaro's
    opening reposition.
+
+## PC run order, night of 2026-10-23 (all 12 workers, one queue at a time)
+
+| # | Card | Command on the PC (in `hadur-bench`) | Battles | Time | Opens |
+|---|------|------|---------|------|-------|
+| 1 | Stage 1 shield check | `.\queue.ps1 run pc-shield-s1` (running since 18:06 UTC) | 3,096 | ~1.2 h | `claude/pc-shield-s1-results` |
+| 2 | Team stage 2 (team thread) | the team thread's card (its own PR) | team | ~2 h | its results PR |
+| 3 | Stages 3 + 4: table v1 | `git checkout master; git pull; .\queue.ps1 run pc-table-v1` | ~19,500 | ~9-10 h | `claude/pc-table-v1-results` |
+
+`pc-table-v1` (BENCH-99) chains, with no decision between steps: `panel` (census robots off the
+shield list and outside Saguaro's 126, ~886) → `screen` (c, aa, sasq x 4 seeds, ~10,600 battles,
+~4.5 h) → `pick` (lock sasq at +5 points, interval above 0) → `confirm` (the screen's and stage 1's
+locked robots, 8 fresh seeds, ~1-1.5 h) → `final` (locked at +3 in the confirm and in a first pick)
+→ `candidate` (t1 = 3.15 + SHIELD-16, the aim every final robot won with, + the final robots on the
+shield list, `build-ablation.sh sprior,slistadd`; the census carries SHIELD-16's cost on the listed robots)
+→ `census`
+(census-312 x c, aa, t1 x 2 seeds, ~7,300 battles, ~3-4 h) → `gate` (+0.5 APS census-weighted, lower
+end above +0.3, A/A inside its band, 95% of the census read; the verdict is written either way) → `pr`.
+
+Watching it: `.\queue.ps1 status pc-table-v1`. A stop (`.\queue.ps1 stop pc-table-v1`) and a re-run
+resume where they left off; no finished battle is fought again.
+
+On PASS: t1 becomes 3.16's 1v1 (ShieldListData plus SHIELD-16 on), released after Leigh's call with
+the live-noise warning (one pass is ±0.4 APS). On FAIL: the screen and confirm picks still stand as
+the table's shield entries; the gap is read by band before any more PC hours. Stages 2 (shipped
+per-opponent aim and opening reposition), 5 (simple-aim dodge) and 6 (stop-and-go) are builds still
+to write; they get their own cards after this run.

@@ -1421,6 +1421,7 @@ None of these change how the robot plays; TIME-8 and RES-15 only report.
 | BENCH-96 | Event | When a team run starts in an output folder where a stopped run already finished some team battles, the bench shall read back each battle that finished ok for the same team, opponent and seed (candidate and baseline alike), and fight only the rest, unless resuming is turned off. | R9 |
 | BENCH-97 | Option | Where the truth log is off (`--truth-log false`), a duel battle shall write no `truth.log.gz` and shall still count the enemy shots and every other figure its result row and report carry. | R9 |
 | BENCH-98 | Ubiquitous | The bench shall carry `tools/ladder.py`, which reads bench run folders and reports per run the battles an hour, skipped turns a round, engine disables a 100 battles and truth-log disk a battle against a base run, names the widest truth-on run inside the skip and disable limits that is no slower than the base, and compares each truth-off run with the truth-on run of its width. | R9 |
+| BENCH-99 | Ubiquitous | The bench shall carry `tools/table_v1.py` and the `slistadd` ablation, which together build mode table v1's shield entries: the screen panel (census robots off the shield list and outside a named set), the confirm set (robots a pick locked with a shield arm), the final list (locked with sasq in the confirm pick and with a shield arm in a first pick), the census candidate (SHIELD-16, the aim the final robots were confirmed with, plus the final robots added to the shield list), and the census gate verdict (+0.5 APS census-weighted with the lower 95% end above +0.3, the A/A inside its band and at least 95% of the census robots read in all three arms). | R9 |
 | RAM-4 | State | While the rammer-heat switch is on, in a duel, once RAM-2 has confirmed the opponent as a rammer, the surf shall offer MOVE-11's gun-heat wave with MOVE-13's hold off (as heatjit plays) for the rest of the battle, whatever those switches are set to; before the confirmation, and in melee or team, the switches are as their own requirements state. Off by default. | R9 |
 
 - **TIME-8.** `Hadur.setupRecord`, printed once in round 0. The PC's round-0 read
@@ -1450,6 +1451,10 @@ None of these change how the robot plays; TIME-8 and RES-15 only report.
 - **BENCH-98.** `hadur-bench/tools/ladder.py`, run by `plans/pc-ladder.queue`; tested by
   `tools/test_ladder.py` in CI. Why: the PC ran 8 team and 12 duel workers on 24 cores and only pinned
   widths above 12 had been measured.
+- **BENCH-99.** `hadur-bench/tools/table_v1.py` and `build-ablation.sh slistadd` (suffix mt, needs
+  `SHIELD_ADD=<file>`), run by `plans/pc-table-v1.queue`; tested by `tools/test_table_v1.py` in CI.
+  Why: Leigh made the per-opponent table the 1v1 strategy (2026-10-23) and runs it on the PC
+  unattended, so every pick, build and gate is a queue step with no decision in between.
 - **RAM-4.** `MoveDesign.RAM_HEAT`, ablation `ramheat` (rh), read in `DuelController` as
   `ramHeat(duelOnly(RAM_HEAT, enemiesTotal), rammer.confirmed())`, which ORs into `HEAT_WAVE` and
   takes `HEAT_HOLD` off; still ANDed with MOVE-23's `stackOn`. Why: the top-5 factorial (PR #221,
