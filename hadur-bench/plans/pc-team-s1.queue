@@ -16,7 +16,7 @@
 # its 6-seed spread; aa inside +/- 1.0. Ship k21rm if it passes and is not below k21 alone.
 # When done, the PC commits the four reports to claude/pc-team-s1-results and opens a PR.
 
-prep | mkdir -p bisect && { [ -s bisect/hadur2.HadurTeam_3.15.jar ] || { curl -fsSL -o bisect/hadur2.HadurTeam_3.15.jar.part https://github.com/lgriffin/Hadur_Robot/releases/download/v3.15/hadur2.HadurTeam_3.15.jar && python3 -c "import sys,zipfile; sys.exit(zipfile.ZipFile(sys.argv[1]).testzip() is not None)" bisect/hadur2.HadurTeam_3.15.jar.part && mv bisect/hadur2.HadurTeam_3.15.jar.part bisect/hadur2.HadurTeam_3.15.jar; }; } && bash ./build-ablation.sh aa && bash ./build-ablation.sh tk21 && bash ./build-ablation.sh tram && bash ./build-ablation.sh tk21,tram && ./fetch-opponents.sh --set team-census46.txt && (cd .. && mvn -q -DskipTests install -pl hadur-core -am) && mvn -q compile
+prep | mkdir -p bisect && { python3 -c "import sys,zipfile; sys.exit(zipfile.ZipFile(sys.argv[1]).testzip() is not None)" bisect/hadur2.HadurTeam_3.15.jar 2>/dev/null || { curl -fsSL -o bisect/hadur2.HadurTeam_3.15.jar.part https://github.com/lgriffin/Hadur_Robot/releases/download/v3.15/hadur2.HadurTeam_3.15.jar && python3 -c "import sys,zipfile; sys.exit(zipfile.ZipFile(sys.argv[1]).testzip() is not None)" bisect/hadur2.HadurTeam_3.15.jar.part && mv bisect/hadur2.HadurTeam_3.15.jar.part bisect/hadur2.HadurTeam_3.15.jar; }; } && bash ./build-ablation.sh aa && bash ./build-ablation.sh tk21 && bash ./build-ablation.sh tram && bash ./build-ablation.sh tk21,tram && ./fetch-opponents.sh --set team-census46.txt && (cd .. && mvn -q -DskipTests install -pl hadur-core -am) && mvn -q compile
 
 aa    | mvn -q exec:java "-Dexec.args=@plans/team-s1-aa.args"
   after: prep
