@@ -104,8 +104,9 @@ loadScripts(document, 'script');</script>
  for an isolated opponent and 1.5 for one that has hit Hadur twice in 200 ticks. The gun
  aims at the angle where the summed density peaks, at the power of the opponent that
  contributes most there. An opponent with too little history gets one circular or linear
- solution instead. A robot coming at Hadur inside <a href="#RAMMER_RANGE"><code>RAMMER_RANGE</code></a> is not shot at
- unless it can be finished: Hadur moves instead.</p></div>
+ solution instead. Off a team, a robot coming at Hadur inside <a href="#RAMMER_RANGE"><code>RAMMER_RANGE</code></a> is not
+ shot at unless it can be finished: Hadur moves instead. On a team it is shot at like any
+ other (MGUN-10).</p></div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -152,7 +153,7 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color"><code>static final int</code></div>
 <div class="col-second odd-row-color"><code><a href="#K" class="member-name-link">K</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">The kNN depth on a team (<a class="req" href="../../../../requirements.html#MGUN-1">MGUN-1</a>'s three situations; HadurTeam keeps them).</div>
+<div class="block">MGUN-9: the kNN depth on a team.</div>
 </div>
 <div class="col-first even-row-color"><code>static final long</code></div>
 <div class="col-second even-row-color"><code><a href="#MAX_AGE" class="member-name-link">MAX_AGE</a></code></div>
@@ -316,7 +317,8 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="K">
 <h3>K</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">K</span></div>
-<div class="block">The kNN depth on a team (<a class="req" href="../../../../requirements.html#MGUN-1">MGUN-1</a>'s three situations; HadurTeam keeps them).</div>
+<div class="block">MGUN-9: the kNN depth on a team. CombatTeam's 21 situations per opponent; the team
+ census gained +2.4 points over <a class="req" href="../../../../requirements.html#MGUN-1">MGUN-1</a>'s three (docs/plan-team-top5.md).</div>
 <dl class="notes">
 <dt>See Also:</dt>
 <dd>
