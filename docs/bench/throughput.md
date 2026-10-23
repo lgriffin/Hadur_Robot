@@ -51,7 +51,10 @@ Every step resumes (BENCH-95, BENCH-96), so a stop throws no battles away. The `
 `claude/pc-ladder-results`.
 
 **Pick rule.** For each kind, use the widest block whose skipped turns a round stay within 15% of
-its base (d12, t8) and whose engine disables a 100 battles stay within 1 of the base's. In
+its base (d12, t8), whose engine disables a 100 battles stay within 1 of the base's, and whose
+battles an hour are at least the base's. The truth-off blocks (d12x, d16x) are left out of the width
+pick, because they do less work a tick. The read compares each one with the truth-on block of the
+same width. In
 multiarm, the A/A must sit inside its interval in every duel block, and c's level must agree
 across widths (the Stage 0 stop rule). Then set `--parallel` in later queues to that width. If
 d12x is faster than d12 and its counts agree, add `--no-truth-log` to census and screen queues.

@@ -27,3 +27,5 @@ work/ladder-t8
 bisect/hadur2.HadurTeam_3.15.jar
 --baseline-robot
 hadur2.HadurTeam 3.15
+--force-memory
+true

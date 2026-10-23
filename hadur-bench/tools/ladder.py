@@ -7,11 +7,14 @@ Each LABEL=WORKDIR is one bench run (duel, multi-arm or team). For each it reads
 conditions.json (start, finish, workers, child flags) and every battle folder under
 WORKDIR/battles, and reports battles, wall hours, battles an hour, skipped turns a round,
 engine disables, truth-log disk a battle and the battles-an-hour and skips ratios against its
-base run (--base: the first label of its kind, duel or team, unless named). Battles a stopped run
+base run (--base: the first label of its kind, duel or team, unless named). A run that did not
+finish (no finish time in conditions.json) is refused with a message. Battles a stopped run
 read back (resumed) are counted only if they were fought after the run's start.
 
 Pick rule (docs/bench/throughput.md): the widest run whose skipped turns a round stay within 15%
-of its base and whose engine disables a 100 battles stay within 1 of the base's.
+of its base, whose engine disables a 100 battles stay within 1 of the base's and whose battles an
+hour are at least the base's. Runs with the truth log off are judged apart, against the truth-on
+run of the same width.
 """
 import argparse
 import csv
@@ -32,8 +35,12 @@ def when(s):
 def read_run(label, work):
     with open(os.path.join(work, "conditions.json"), encoding="utf-8") as f:
         c = json.load(f)
+    if not c.get("started") or not c.get("finished"):
+        raise ValueError("the run did not finish (conditions.json has no finish time)")
     t0, t1 = when(c["started"]), when(c["finished"])
     team = c.get("mode") == "team"
+    flags = c.get("childFlags") or ""
+    truth_off = "-Dhadur.bench.truth=false" in (" ".join(flags) if isinstance(flags, list) else str(flags))
     battles = skips = rounds = disables = 0
     truth_bytes = 0
     for d in sorted(glob.glob(os.path.join(work, "battles", "*"))):
@@ -44,8 +51,10 @@ def read_run(label, work):
             if not os.path.exists(done) or os.path.getmtime(done) < t0:
                 continue
             battles += 1
-            rounds += int(c.get("rounds") or 10)
-            for m in glob.glob(os.path.join(d, "member-*.log")):
+            members = glob.glob(os.path.join(d, "member-*.log"))
+            # Skips are counted over every member, so the rounds are member-rounds too.
+            rounds += int(c.get("rounds") or 10) * max(1, len(members))
+            for m in members:
                 with open(m, encoding="utf-8", errors="replace") as f:
                     for line in f:
                         if "SYSTEM:" in line and "skipped turn" in line:
@@ -70,7 +79,7 @@ def read_run(label, work):
                 truth_bytes += os.path.getsize(t)
     hours = (t1 - t0) / 3600.0
     return {
-        "label": label, "team": team, "workers": c.get("workers"), "flags": c.get("childFlags", ""),
+        "label": label, "team": team, "truth_off": truth_off, "workers": c.get("workers"), "flags": c.get("childFlags", ""),
         "battles": battles, "hours": hours, "per_hour": battles / hours if hours > 0 else 0.0,
         "skips_round": skips / rounds if rounds else 0.0,
         "disables_100": 100.0 * disables / battles if battles else 0.0,
@@ -79,10 +88,13 @@ def read_run(label, work):
 
 
 def verdict(runs, bases):
-    """Per kind, the widest run inside the skip and disable limits of its base."""
+    """Per kind, the widest run inside the skip and disable limits of its base and at least as fast.
+
+    Truth-log-off runs (BENCH-97) do less work a tick, so they are left out of the width pick and
+    judged on their own against the truth-on run of the same width (truth_lines)."""
     picks = {}
     for kind in ("duel", "team"):
-        rs = [r for r in runs if ("team" if r["team"] else "duel") == kind]
+        rs = [r for r in runs if ("team" if r["team"] else "duel") == kind and not r["truth_off"]]
         if not rs:
             continue
         base = next((r for r in rs if r["label"] in bases), rs[0])
@@ -93,14 +105,31 @@ def verdict(runs, bases):
     return picks
 
 
+def truth_lines(runs):
+    """Each truth-off run against the truth-on run of the same kind and width."""
+    out = []
+    for r in runs:
+        if not r["truth_off"]:
+            continue
+        on = next((o for o in runs if not o["truth_off"] and o["team"] == r["team"] and o["workers"] == r["workers"]), None)
+        if on is None or not on["per_hour"]:
+            out.append(f"- truth log off, {r['label']}: no truth-on run at {r['workers']} workers to compare.")
+            continue
+        out.append(f"- truth log off, {r['label']} against {on['label']} at {r['workers']} workers: "
+                   f"{r['per_hour'] / on['per_hour'] - 1:+.0%} battles an hour, skips a round "
+                   f"{r['skips_round']:.3f} against {on['skips_round']:.3f}.")
+    return out
+
+
 def render(runs, bases):
     picks = verdict(runs, bases)
     out = ["# Worker ladder", "",
            "Battles an hour against the number of battles run at once (BENCH-98). Skips a round are the",
-           "engine's skipped-turn lines per robot-round of Hadur (duel) or of all five members (team);",
+           "engine's skipped-turn lines per robot-round of Hadur (duel) or of each team member (team);",
            "ratios are against the base run of the same kind. Pick rule: the widest run whose skips a",
-           f"round stay within {int(round((SKIP_LIMIT - 1) * 100))}% of the base and whose engine disables a 100 battles stay within",
-           f"{DISABLE_LIMIT:g} of the base's.", "",
+           f"round stay within {int(round((SKIP_LIMIT - 1) * 100))}% of the base, whose engine disables a 100 battles stay within",
+           f"{DISABLE_LIMIT:g} of the base's and whose battles an hour are at least the base's. Truth-log-off runs",
+           "are left out of the pick and compared with the truth-on run of their width.", "",
            "| Run | Kind | Workers | Battles | Minutes | Battles an hour | vs base | Skips a round | vs base | Disables /100 | Truth log MB a battle |",
            "|---|---|---|---|---|---|---|---|---|---|---|"]
     for r in runs:
@@ -116,6 +145,7 @@ def render(runs, bases):
         gain = best["per_hour"] / base["per_hour"] - 1 if base["per_hour"] else 0
         out.append(f"- {kind}: run at **{best['workers']} workers** ({best['label']}): "
                    f"{best['per_hour']:.0f} battles an hour, {gain:+.0%} on {base['label']} at {base['workers']}.")
+    out += truth_lines(runs)
     return "\n".join(out) + "\n"
 
 
@@ -132,7 +162,7 @@ def main(argv=None):
             ap.error(f"expected LABEL=WORKDIR, not {spec}")
         try:
             runs.append(read_run(label, work))
-        except (OSError, KeyError, ValueError) as e:
+        except (OSError, KeyError, ValueError, AttributeError) as e:
             print(f"ladder: {label}: cannot read {work}: {e}", file=sys.stderr)
             return 2
     text = render(runs, set(a.base))

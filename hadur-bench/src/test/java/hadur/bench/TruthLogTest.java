@@ -102,6 +102,17 @@ class TruthLogTest {
 
     @Test
     @Tag("BENCH-97")
+    @DisplayName("a truth-off refight in a folder that holds an earlier truth log removes it")
+    void truthOffRefightRemovesTheOldLog() throws IOException {
+        Path dir = tmp.resolve("again");
+        harvest(dir, true);
+        assertTrue(Files.exists(dir.resolve("truth.log.gz")));
+        harvest(dir, false);
+        assertFalse(Files.exists(dir.resolve("truth.log.gz")));
+    }
+
+    @Test
+    @Tag("BENCH-97")
     @DisplayName("--truth-log false reaches the battle child as -Dhadur.bench.truth=false; on by default")
     void truthLogOptionBecomesAChildFlag() {
         assertEquals(List.of("-Xmx2G", "-Dhadur.bench.truth=false"), Bench.childFlags(Map.of("truth-log", "false"), 1));

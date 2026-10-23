@@ -119,6 +119,8 @@ public class LogHarvester extends BattleAdaptor {
                 Files.newOutputStream(dir.resolve("truth.log.gz"))), StandardCharsets.UTF_8));
             truthLog.write("V,1\n");
         } else {
+            // A refight in the same folder must not leave an earlier battle's log beside this result.
+            Files.deleteIfExists(dir.resolve("truth.log.gz"));
             this.truthLog = null;
         }
     }
