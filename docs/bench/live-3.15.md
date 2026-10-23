@@ -47,7 +47,7 @@ page, with earlier page pairs as the baseline (all over the 1,216-1,219 common o
 | 3.12 vs 3.11 (+0.16 release) | +0.16 | 18 | -0.24 | 17 | +0.24 | +0.15 |
 | **3.15 vs 3.13 final** | **-0.15** | **30** | **-0.37** | **8** | **+0.08** | **+0.14** |
 
-3.15's pass has twice the collapses of any earlier pass and few gains to match them. Sixteen of the
+Against the three page pairs in the table, 3.15's pass has about twice the collapses and few gains to match them (3.10's 26 in [live-3.10.md](live-3.10.md) were counted by a stricter single-battle rule, so they are not comparable). Sixteen of the
 thirty are in ranks 51-400, mostly against robots Hadur beats 95-100 (WeeksOnEnd 99.8 to 71.0,
 Grrrrr 94.6 to 68.9, SMG, SquirmyToad, Fallen), each at one or two battles; five are in the top 50,
 four each in the 88 large losses and the weak tail, one rammer. The list, in census format for a PC
@@ -86,7 +86,7 @@ includes zero; the pattern is a lead, not a finding.
   collapses, then 87.33 on the second pass, [live-3.10.md](live-3.10.md)). On the bench, 3.15 (rc)
   skipped fewer turns than 3.14 (37.4 against 39.2 a battle, 99% of battles trusted) and beat the
   collapsed opponents. Unverified: no client log from this pass is available; if Leigh's client ran
-  during it, `live_client.py`'s `health.tsv` holds each battle's longest skipped-turn run (RES-15).
+  during it, `live_client.py`'s `startup.tsv` holds each battle's longest skipped-turn run (`max_skip_run`, RES-15; `health.tsv` has only the battle's total `skipped`).
 - **The D shortfall is a real bench-against-live gap to understand.** One candidate: MOVE-24 keeps
   the flatteners off whatever the stored profile says, so ADAPT-2 (a T3 profile turns the flattener on
   from the first wave) no longer acts. The bench runs every battle cold and never measured that loss;
@@ -101,7 +101,7 @@ includes zero; the pattern is a lead, not a finding.
 
 1. Judge 3.15 at about 4 battles a pairing, when single-battle collapses have averaged out (3.10
    gained +0.9 on its second pass). Save the page then.
-2. If Leigh's client ran during the pass, read its `health.tsv` for the 30 collapsed opponents.
+2. If Leigh's client ran during the pass, read its `startup.tsv` (`max_skip_run`) for the 30 collapsed opponents.
 3. PC, about 15 minutes: 3.15 against 3.14 on `panel-collapses-315.txt`, 4 seeds, once cold and once
    warm (data kept), to rule a code cause in or out and to test the ADAPT-2 lead.
 4. No more switch work until the D gap is explained.
