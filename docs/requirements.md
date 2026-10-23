@@ -1177,8 +1177,12 @@ MMOVE-8 the melee strand, WEAVE-7 and WEAVE-8 the conductor.
   version 2 (`LinkCodec.VERSION_DODGES`), one without is version 1 byte for byte.
 - **Switches.** `TeamDanger.NEAREST` and `TeamDanger.LEARNED` are both off: the shipped team
   plays as before. `build-ablation.sh t6n` and `t6l` turn them on for the PC gate (card team-s2).
-- Solo play is untouched: both are reached only with a living teammate, and off both switches
-  the team path calls MMOVE-3's own.
+- **Team only (Leigh, 2026-10-23: "ONLY ... in the team capabilities and NEVER in others").** Both
+  are reached only with a living teammate; with no teammate the movement calls MMOVE-3's own path
+  (`TeamDangerTest.soloUntouched`, both switches on), and a hit is learnt only while `onTeam`.
+  Checked with both switches turned on: every duel and melee replay fixture (Walls, Crazy, RamFire,
+  SpinBot, Tracker, Shadow, warm Shadow, duress, melee samples, sentry, hand-off) replays bit for
+  bit; only the two team fixtures change. Any release that turns a switch on re-runs that check.
 
 ### T5 notes: shared gun learning (MGUN-8)
 

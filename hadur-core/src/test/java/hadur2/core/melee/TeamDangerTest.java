@@ -178,4 +178,24 @@ class TeamDangerTest {
         assertEquals(1, sent.size());
         assertEquals(1.0, sent.get(0).gf, 1e-9);
     }
+
+    @Test
+    @Tag("MMOVE-9")
+    @Tag("MMOVE-10")
+    @DisplayName("MMOVE-9, MMOVE-10: with no teammate both switches on change nothing: the bullets are MMOVE-3's, weight 1")
+    void soloUntouched() {
+        for (int i = 0; i < 8; i++) danger.add(danger.sample(shot, target(true), mea));
+        MinimumRiskMovement alone = new MinimumRiskMovement(field(1200, 1200));
+        alone.newRound();
+        alone.updateBullets(List.of(shot), path(), pt(600, 600), 12, List.of(), danger, true, true);
+        MinimumRiskMovement solo = new MinimumRiskMovement(field(1200, 1200));
+        solo.newRound();
+        solo.updateBullets(List.of(shot), path(), pt(600, 600), 12);
+        assertEquals(solo.bullets().size(), alone.bullets().size());
+        for (int i = 0; i < solo.bullets().size(); i++) {
+            assertEquals(solo.bullets().get(i).aim, alone.bullets().get(i).aim);
+            assertEquals(solo.bullets().get(i).heading, alone.bullets().get(i).heading, 0.0);
+            assertEquals(1.0, alone.bullets().get(i).weight, 0.0);
+        }
+    }
 }
