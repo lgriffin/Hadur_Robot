@@ -1396,6 +1396,7 @@ None of these change how the robot plays; TIME-8 and RES-15 only report.
 | BENCH-93 | Option | Where pinning is on (`--pin true`), the bench shall bind each battle's JVM to its worker's own logical processors, leaving the first `--pin-offset` to the OS, and refuse more workers than the processors allow. | R9 |
 | BENCH-94 | Ubiquitous | The bench shall carry `data/tools/multiarm.py`, which reads one or more `arms.tsv` files and reports each arm against the pooled control and A/A arms per opponent with 95% intervals, the A/A check, the split by band, engine and start-up disables per arm, and factorial main effects from a design file. | R9 |
 | BENCH-95 | Event | When a multi-arm run starts in an output folder where a stopped run already finished some battles, the bench shall read back each battle that finished ok for the same arm (label and robot), opponent and seed, and fight only the rest, unless resuming is turned off (`--resume false`, `--no-resume`). | R9 |
+| BENCH-96 | Event | When a team run starts in an output folder where a stopped run already finished some team battles, the bench shall read back each battle that finished ok for the same team, opponent and seed (candidate and baseline alike), and fight only the rest, unless resuming is turned off. | R9 |
 | RAM-4 | State | While the rammer-heat switch is on, in a duel, once RAM-2 has confirmed the opponent as a rammer, the surf shall offer MOVE-11's gun-heat wave with MOVE-13's hold off (as heatjit plays) for the rest of the battle, whatever those switches are set to; before the confirmation, and in melee or team, the switches are as their own requirements state. Off by default. | R9 |
 
 - **TIME-8.** `Hadur.setupRecord`, printed once in round 0. The PC's round-0 read
@@ -1414,6 +1415,10 @@ None of these change how the robot plays; TIME-8 and RES-15 only report.
   `Arms.resumed` reads it back in `Bench.runArms`. Why: on 2026-10-22 a stop of the census to move it
   onto NVMe threw away ~2,000 finished battles, because a queue step could only rerun from zero.
   Tested in `ArmsTest`.
+- **BENCH-96.** `Bench.TEAM_DONE` (`team-done.txt`: the team that fought, then the battle's stray data
+  files) is written beside a team battle that read back ok; `Bench.resumedTeam` reads it in
+  `teamBattle`. Why: the team plan's PC card (docs/plan-team-top5.md) runs 2,208 team battles and
+  team mode had no resume, so any stop would have refought a whole step. Tested in `TeamReportTest`.
 - **RAM-4.** `MoveDesign.RAM_HEAT`, ablation `ramheat` (rh), read in `DuelController` as
   `ramHeat(duelOnly(RAM_HEAT, enemiesTotal), rammer.confirmed())`, which ORs into `HEAT_WAVE` and
   takes `HEAT_HOLD` off; still ANDed with MOVE-23's `stackOn`. Why: the top-5 factorial (PR #221,

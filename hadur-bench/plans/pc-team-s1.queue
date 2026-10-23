@@ -1,0 +1,31 @@
+# Team plan to top 5, Stage 1 (docs/plan-team-top5.md section 5): the two cheap team-only switches,
+# gated on the whole TeamRumble field before any team release.
+#   ./queue.sh run pc-team-s1        (or  .\queue.ps1 run pc-team-s1)
+# Run from master with RoboRumble workers at 0. Team-only: every jar here differs from 3.15 only
+# while a member has a living teammate, so 1v1 and melee play is untouched.
+#
+#   aa     A/A: 3.15aa (master rebuilt, no change) against the 3.15 release jar. Prices the run's noise.
+#   k21    T3, team gun depth 21 (PC 2026-10-17 on 3.14: +2.6 +/- 0.9; never shipped).
+#   rm     TR1, shoot rammers on a team: FieldGun no longer skips an enemy closing inside 100 px.
+#   k21rm  both: the 3.16 team candidate.
+# Each step fights the 3.15 release at the same opponent and seed (--baseline): 46 teams x 6 seeds x 2
+# = 552 battles a step, 2,208 in all. At --parallel 4 a 540-battle team step took 67-70 min
+# (pc-1017); at 8 expect about 40 min a step, about 3 h in all. Each step resumes where it stopped: a finished
+# battle is read back, not fought again (BENCH-96).
+# Gate (T2's): mean paired difference at least +1.0 point, interval above zero, no team worse beyond
+# its 6-seed spread; aa inside +/- 1.0. Ship k21rm if it passes and is not below k21 alone.
+# When done, the PC commits the four reports to claude/pc-team-s1-results and opens a PR.
+
+prep | mkdir -p bisect && { python3 -c "import sys,zipfile; sys.exit(zipfile.ZipFile(sys.argv[1]).testzip() is not None)" bisect/hadur2.HadurTeam_3.15.jar 2>/dev/null || { curl -fsSL -o bisect/hadur2.HadurTeam_3.15.jar.part https://github.com/lgriffin/Hadur_Robot/releases/download/v3.15/hadur2.HadurTeam_3.15.jar && python3 -c "import sys,zipfile; sys.exit(zipfile.ZipFile(sys.argv[1]).testzip() is not None)" bisect/hadur2.HadurTeam_3.15.jar.part && mv bisect/hadur2.HadurTeam_3.15.jar.part bisect/hadur2.HadurTeam_3.15.jar; }; } && bash ./build-ablation.sh aa && bash ./build-ablation.sh tk21 && bash ./build-ablation.sh tram && bash ./build-ablation.sh tk21,tram && ./fetch-opponents.sh --set team-census46.txt && (cd .. && mvn -q -DskipTests install -pl hadur-core -am) && mvn -q compile
+
+aa    | mvn -q exec:java "-Dexec.args=@plans/team-s1-aa.args"
+  after: prep
+k21   | mvn -q exec:java "-Dexec.args=@plans/team-s1-k21.args"
+  after: aa
+rm    | mvn -q exec:java "-Dexec.args=@plans/team-s1-rm.args"
+  after: k21
+k21rm | mvn -q exec:java "-Dexec.args=@plans/team-s1-k21rm.args"
+  after: rm
+
+pr | bash tools/open_results_pr.sh claude/pc-team-s1-results "Team Stage 1: k21 and shoot-rammers gate on the whole TeamRumble field" ../docs/bench/local/2026-10-23_team-s1-aa.md ../docs/bench/local/2026-10-23_team-s1-k21.md ../docs/bench/local/2026-10-23_team-s1-rm.md ../docs/bench/local/2026-10-23_team-s1-k21rm.md
+  after: k21rm

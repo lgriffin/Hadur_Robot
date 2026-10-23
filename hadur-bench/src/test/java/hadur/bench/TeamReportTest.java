@@ -153,4 +153,21 @@ class TeamReportTest {
         assertFalse(r.contains("Baseline share"), r);
         assertTrue(r.contains("| 2 | failed |"), r);
     }
+
+    @Test
+    @Tag("BENCH-96")
+    @DisplayName("BENCH-96: a finished team battle is read back on resume only with its marker and the same team")
+    void resumedTeamBattle() throws IOException {
+        battle(600, 400, -1);
+        Path d = dir.resolve("t0");
+        assertEquals(null, Bench.resumedTeam(d, TEAM, MEMBER), "no marker: fight it again");
+        Files.write(d.resolve(Bench.TEAM_DONE), List.of(TEAM, "stray.dat"));
+        TeamReport.Battle b = Bench.resumedTeam(d, TEAM, MEMBER);
+        assertTrue(b != null && b.ok);
+        assertEquals(600, b.ourScore, 1e-9);
+        assertEquals(List.of("stray.dat"), b.dataFiles);
+        assertEquals(null, Bench.resumedTeam(d, "hadur2.HadurTeam 3.9", MEMBER), "another team's battle");
+        Files.delete(d.resolve("team.csv"));
+        assertEquals(null, Bench.resumedTeam(d, TEAM, MEMBER), "marker without scores");
+    }
 }

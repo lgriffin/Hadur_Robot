@@ -1,0 +1,31 @@
+# PC card team-s1 (docs/plan-team-top5.md): T3: team gun depth 21 (tk21) on 3.15, against all 46 TeamRumble opponents (Bench @FILE, one argument a line)
+--team
+true
+--seeds
+6
+--seed-base
+2300
+--rounds
+10
+--parallel
+8
+--child-heap
+2G
+--cpu-constant
+1488498
+--set
+team-census46.txt
+--robot-jar
+bisect/hadur2.HadurTeam_3.15k21.jar
+--robot
+hadur2.HadurTeam 3.15k21
+--member
+hadur2.Hadur
+--out
+work/team-s1-k21
+--report
+../docs/bench/local/2026-10-23_team-s1-k21.md
+--baseline
+bisect/hadur2.HadurTeam_3.15.jar
+--baseline-robot
+hadur2.HadurTeam 3.15
