@@ -12,7 +12,7 @@
 <h1>EARS requirements</h1>
 <p class="lede">Every requirement from <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/docs/requirements.md">docs/requirements.md</a>, the source of truth. <em>Implemented in</em> lists
 the classes whose documentation cites the ID; <em>Verified by</em> lists the tests tagged with it, the same tags the build's
-traceability check reads. 228 of 228 live requirements have a tagged test. The readings behind the numbers are in
+traceability check reads. 229 of 229 live requirements have a tagged test. The readings behind the numbers are in
 <a href="docs/requirements-notes.html">Requirement readings</a>.</p>
 <nav class="toc"><a href="#group-CORE">Core</a> <a href="#group-RES">Resilience</a> <a href="#group-REL">Release</a> <a href="#group-WAVE">Waves</a> <a href="#group-RADAR">Radar</a> <a href="#group-MEM">Memory</a> <a href="#group-ADAPT">Adapt</a> <a href="#group-DIAL">Dials</a> <a href="#group-DIST">Distance</a> <a href="#group-POW">Power</a> <a href="#group-END">Endgame</a> <a href="#group-MOVE">Movement</a> <a href="#group-TIME">Time budget</a> <a href="#group-SHIELD">Bullet shielding</a> <a href="#group-MELEE">Melee (2.1)</a> <a href="#group-GATE">Posture gate</a> <a href="#group-MRADAR">Melee radar</a> <a href="#group-MSENSE">Melee sensing</a> <a href="#group-MMOVE">Melee movement</a> <a href="#group-MGUN">Melee gun</a> <a href="#group-MMEM">Melee memory</a></nav><h2 id="group-CORE">Core</h2>
 <article class="req-card" id="CORE-1">
@@ -472,6 +472,11 @@ traceability check reads. 228 of 228 live requirements have a tagged test. The r
 <div class="req-head"><span class="rid">SHIELD-15</span><span class="badge">Optional</span><span class="badge stage">R9</span></div>
 <p>Where the trial switch is on, when a duel opponent not on the shield list is first scanned, the core shall start shield mode against it, and shall leave shield mode for the rest of the battle once its bullets have done more than 35 damage plus 0.25 for each shot it fired, or two rounds in shield mode are lost, or under half of at least 20 ended enemy bullets were shot down, or six of its bullets hit with none shot down, or it rams Hadur. Listed opponents shall play as without the switch.</p>
 <dl><dt>Implemented in</dt><dd><a href="api/hadur2/core/shieldmode/ShieldDesign.html" title="hadur2.core.shieldmode.ShieldDesign">ShieldDesign</a>, <a href="api/hadur2/core/shieldmode/ShieldMode.html" title="hadur2.core.shieldmode.ShieldMode">ShieldMode</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-core/src/test/java/hadur2/core/shieldmode/ShieldTrialTest.java">ShieldTrialTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="SHIELD-16">
+<div class="req-head"><span class="rid">SHIELD-16</span><span class="badge">Optional</span><span class="badge stage">R9</span></div>
+<p>Where the prior switch is on, the core shall add a fifth head-on base to the shield predictors: the bearing from where the enemy stood on the tick before it fired to where Hadur stood then, turned by the enemy&#x27;s body turn on the firing tick.</p>
+<dl><dt>Implemented in</dt><dd><a href="api/hadur2/core/shieldmode/ShieldDesign.html" title="hadur2.core.shieldmode.ShieldDesign">ShieldDesign</a>, <a href="api/hadur2/core/shieldmode/ShieldMode.html" title="hadur2.core.shieldmode.ShieldMode">ShieldMode</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-core/src/test/java/hadur2/core/shieldmode/ShieldDesignTest.java">ShieldDesignTest.java</a></dd></dl>
 </article>
 <h2 id="group-MELEE">Melee (2.1)</h2>
 <article class="req-card" id="MELEE-2">
