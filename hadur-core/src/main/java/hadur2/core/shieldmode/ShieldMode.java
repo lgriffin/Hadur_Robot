@@ -1,6 +1,7 @@
 package hadur2.core.shieldmode;
 
 import hadur2.core.physics.Angles;
+import hadur2.core.physics.Rules;
 import hadur2.core.port.Telemetry;
 import java.util.ArrayList;
 import java.util.List;
@@ -255,6 +256,14 @@ public final class ShieldMode {
     private int enemyShotsThisRound;
     private boolean enemyFiredThisRound;
 
+    /** SHIELD-15: the opponent is in shield mode only on trial (unlisted, trial switch on). */
+    private boolean onTrial;
+    private int trialShots;
+    private double trialDamage;
+    private int trialLost;
+    private int trialDown;
+    private int trialHits;
+
     /**
      * A shield mode for one battle.
      *
@@ -421,7 +430,9 @@ public final class ShieldMode {
                        double enemyVelocity) {
         if (decidedFor == null || !decidedFor.equals(name)) {
             decidedFor = name;
-            listed = list.matches(name);
+            boolean onList = list.matches(name);
+            onTrial = design.trial && !onList;
+            listed = onList || onTrial;
         }
         if (!listed) return;
         now = time;
@@ -461,7 +472,9 @@ public final class ShieldMode {
      * interval): no wave is built from it, but the enemy is not silent (SHIELD-11).
      */
     public void onEnemyFired() {
-        if (listed) enemyFiredThisRound = true;
+        if (!listed) return;
+        enemyFiredThisRound = true;
+        if (onTrial) trialShots++;
     }
 
     /**
@@ -491,6 +504,7 @@ public final class ShieldMode {
         if (!listed) return;
         lastEnemyShot = fireTime;
         enemyFiredThisRound = true;
+        if (onTrial) trialShots++;
         lastEnemyPower = power;
         enemyNextFire = fireTime + (long) Math.ceil((1 + power / 5) / coolingRate - 1e-9);
         if (!active()) return;
@@ -554,6 +568,11 @@ public final class ShieldMode {
         telemetry.emit(String.format(Locale.ROOT, "SB,%d,%d,%s,%d,%d,%.2f", round, time,
             hitClass(wasActive, w), w == null ? -1 : w.ordinal, predicted ? 1 : 0, power));
         budget.damageTaken(power);
+        if (onTrial && !battleOff) {
+            trialDamage += Rules.getBulletDamage(power);
+            trialHits++;
+            if (trialFailed(time)) return;
+        }
         if (!battleOff && budget.exceeded()) {
             leaveBattle(time, "budget");
             return;
@@ -657,6 +676,10 @@ public final class ShieldMode {
             if (design.learn && !Double.isNaN(enemyHeading)) learn(w, enemyHeading);
         }
         if (active()) interceptsThisRound++;
+        if (onTrial && !battleOff) {
+            trialDown++;
+            trialFailed(time);
+        }
     }
 
     /**
@@ -670,6 +693,11 @@ public final class ShieldMode {
 
     /** The enemy drove into us, or we into it: a rammer is no target for a shield. */
     public void onRammed() {
+        // SHIELD-15: a rammer ends the trial; the shield is no defence against a body.
+        if (onTrial && !battleOff) {
+            leaveBattle(now, "trial-rammed");
+            return;
+        }
         if (active() && !design.stay) leaveRound(now, "rammed");
     }
 
@@ -680,7 +708,22 @@ public final class ShieldMode {
      * @param tick the tick the round ended on
      */
     public void onRoundEnded(long tick) {
+        onRoundEnded(tick, true);
+    }
+
+    /**
+     * A round ended, with its result: as {@link #onRoundEnded(long)}, and a round lost in shield
+     * mode counts against SHIELD-15's trial.
+     *
+     * @param tick the tick the round ended on
+     * @param won whether Hadur won it
+     */
+    public void onRoundEnded(long tick, boolean won) {
         if (!listed) return;
+        if (onTrial && !battleOff && !won && !roundOff) {
+            trialLost++;
+            trialFailed(tick);
+        }
         telemetry.emit(String.format(Locale.ROOT, "SR,%d,%d,%d,%d,%d,%d,%d,%.1f,%.1f,%s",
             round, tick, shieldShotsThisRound, interceptsThisRound, hitsThisRound,
             unpredictedThisRound, attackShotsThisRound, budget.taken(), budget.allowed(),
@@ -711,6 +754,20 @@ public final class ShieldMode {
             return true;
         }
         return false;
+    }
+
+    /** SHIELD-15: whether the opponent is in shield mode on trial, not from the list. */
+    public boolean onTrial() {
+        return onTrial;
+    }
+
+    /** SHIELD-15: leaves the mode for the battle once the trial has failed; whether it has. */
+    private boolean trialFailed(long time) {
+        if (!ShieldDesign.trialFails(trialDamage, trialShots, trialLost, trialDown, trialHits)) {
+            return false;
+        }
+        leaveBattle(time, "trial");
+        return true;
     }
 
     /** SHIELD-6, SHIELD-11: off for the rest of the battle. */

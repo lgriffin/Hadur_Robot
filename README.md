@@ -4,8 +4,9 @@
 a 1v1 duelist that remembers each opponent across battles, with a melee brain for
 free-for-alls, a five-robot team entry, and a core that has no idea it is inside Robocode.
 
-**Hadur 3.13 is ranked 7th of 1,218 in the RoboRumble 1v1** (89.50 APS, its best score and place),
-17th in the MeleeRumble and 9th in the TeamRumble, the highest-ranked robot flying the Irish flag. It was designed, written, tested and tuned by Claude agents working
+**Hadur 3.15 is ranked 8th of 1,220 in the RoboRumble 1v1** (89.29 APS on its first pass; 3.13 held
+7th at 89.50 before a new entry arrived above it), 15th in the MeleeRumble and 9th in the TeamRumble,
+the highest-ranked robot flying the Irish flag. It was designed, written, tested and tuned by Claude agents working
 in a shared project with one human, Leigh Griffin, who set the goals and ran the live
 entries. This page covers what the robot does, how it is built, and how it was built.
 
@@ -18,6 +19,25 @@ at Waterford Institute of Technology (the `wit` in its name). Building it is how
 learned Java, and it was the original inspiration for everything on this page.
 
 ## Standing
+
+**3.15 was released on 2026-10-23** and its first full 1v1 pass, saved at 09:34 UTC the same morning
+(1,219 pairings, 2,255 battles), puts `hadur2.Hadur 3.15` **8th of 1,220** at **89.29**:
+
+| Rank | APS | Battles a pairing | Melee | Team |
+|---|---|---|---|---|
+| **8th of 1,220** | **89.29** | 1.85 | 15th, 66.71 (early pass) | 9th, 68.33 |
+
+- **What changed.** Two 1v1-only changes from the top-5 census: the shield builds a wave from an
+  uncertain shot (SHIELD-14) and the surf keeps its flattener views off (MOVE-24); plus 3.14's melee
+  gun (MGUN-7) and team shared gun learning (MGUN-8), never released on their own
+  ([notes](docs/releases/v3.15.md)).
+- **Read against 3.13's final page** (89.44 after 2,849 battles), 3.15 is -0.15 ± 0.22 APS on the
+  same opponents: no regression the page can show, but not the census's +0.34 either. Thirty pairings
+  collapsed by 10+ points in a pass that ran four times faster than 3.13's, and ranks 51-400 read
+  below the bench ([live notes](docs/bench/live-3.15.md)). 8th is `cz.libors.Ogi v1`, new at 90.92.
+- **Melee up two places** on an early pass (+1.1, in line with MGUN-7's census); **team level**.
+
+### 3.13 at 7th
 
 **3.13 was released on 2026-10-14** and its first full 1v1 pass, saved 2026-10-15 05:56 UTC
 with every pairing filled, puts `hadur2.Hadur 3.13` **7th**, 1.78 APS above 3.12:

@@ -1,0 +1,62 @@
+# Live 3.15 first pass (2026-10-23 09:34 UTC): the 30 pairings down 10+ points against 3.13's retired page.
+# docs/bench/live-3.15.md. For a warm/cold PC check of 3.15 vs 3.14 (collapse or code?). Lines from census-312.txt.
+# 99.8 -> 70.8 (2 battles)  (next line)
+simonton.mini.WeeksOnEnd 1.10.4 | rank64-band3 | simonton.mini.WeeksOnEnd_1.10.4.jar
+# 94.8 -> 73.5 (1 battles)  (next line)
+ary.SMG 1.01 | rank81-band3 | ary.SMG_1.01.jar
+# 100.0 -> 78.8 (2 battles)  (next line)
+slugzilla.SquirmyToad 3.9 | rank359-band4 | slugzilla.SquirmyToad_3.9.jar
+# 72.2 -> 51.2 (4 battles)  (next line)
+darkcanuck.Pris 0.92 | rank26-band2 | darkcanuck.Pris_0.92.jar
+# 95.0 -> 74.8 (2 battles)  (next line)
+pez.rumble.Ali 0.4.9 | rank48-band2 | pez.rumble.Ali_0.4.9.jar
+# 86.6 -> 66.5 (1 battles)  (next line)
+trab.Crusader 0.1.7 | rank95-band3 | trab.Crusader_0.1.7.jar
+# 100.0 -> 80.4 (2 battles)  (next line)
+brainfade.Fallen 0.63 | rank164-band3 | brainfade.Fallen_0.63.jar
+# 99.4 -> 81.8 (2 battles)  (next line)
+wilson.Chameleon 0.91 | rank193-band3 | wilson.Chameleon_0.91.jar
+# 75.2 -> 57.7 (1 battles)  (next line)
+wiki.WaveRammer 1.0 | rank387-band4 | wiki.WaveRammer_1.0.jar
+# 98.7 -> 81.4 (1 battles)  (next line)
+cbot.agile.Nibbler 0.2 | rank298-band4 | cbot.agile.Nibbler_0.2.jar
+# 93.7 -> 77.4 (1 battles)  (next line)
+Polkwane.Intensive 1.0 | rank295-band4 | Polkwane.Intensive_1.0.jar
+# 64.0 -> 48.5 (1 battles)  (next line)
+mue.Ascendant 1.2.27 | rank24-band2 | mue.Ascendant_1.2.27.jar
+# 92.8 -> 77.5 (1 battles)  (next line)
+nz.jdc.micro.HedgehogGF 1.5 | rank114-band3 | nz.jdc.micro.HedgehogGF_1.5.jar
+# 75.1 -> 60.2 (1 battles)  (next line)
+darkcanuck.Holden 1.13a | rank54-band3 | darkcanuck.Holden_1.13a.jar
+# 94.7 -> 80.5 (1 battles)  (next line)
+rz.GlowBlowAPM 1.0 | rank229-band4 | rz.GlowBlowAPM_1.0.jar
+# 98.9 -> 85.8 (2 battles)  (next line)
+ags.micro.Carpet 1.1 | rank333-band4 | ags.micro.Carpet_1.1.jar
+# 81.3 -> 68.9 (1 battles)  (next line)
+rz.Artist 0.2 | rank283-band4 | rz.Artist_0.2.jar
+# 88.1 -> 75.8 (1 battles)  (next line)
+ers.nano.lig.LigMA 1.9 | rank419-band5 | ers.nano.lig.LigMA_1.9.jar
+# 75.7 -> 63.8 (2 battles)  (next line)
+slugzilla.Basilisk 3.9 | rank89-band3 | slugzilla.Basilisk_3.9.jar
+# 59.8 -> 47.9 (2 battles)  (next line)
+mn.Combat 3.25.0 | rank38-band2 | mn.Combat_3.25.0.jar
+# 79.6 -> 68.1 (1 battles)  (next line)
+TJ.Exupery 1.39 | rank288-band4 | TJ.Exupery_1.39.jar
+# 61.1 -> 49.7 (2 battles)  (next line)
+tjk.deBroglie rev0108 | rank52-band3 | tjk.deBroglie_rev0108.jar
+# 62.1 -> 51.1 (1 battles)  (next line)
+sheldor.mini.Foilist 1.3.1 | rank42-band2 | sheldor.mini.Foilist_1.3.1.jar
+# 71.1 -> 60.5 (1 battles)  (next line)
+theo.simple.Lucid 1.0 | rank175-band3 | theo.simple.Lucid_1.0.jar
+# 84.8 -> 74.3 (1 battles)  (next line)
+bayen.nut.Squirrel 1.621 | rank176-band3 | bayen.nut.Squirrel_1.621.jar
+# 99.2 -> 88.9 (3 battles)  (next line)
+stelo.UntouchableNano 1.4 | rank579-band5 | stelo.UntouchableNano_1.4.jar
+# 99.7 -> 89.4 (1 battles)  (next line)
+slugzilla.OrbitLinear 1.1 | rank839-band6 | slugzilla.OrbitLinear_1.1.jar
+# 90.4 -> 80.2 (1 battles)  (next line)
+nat.nano.OcnirpPM 1.0 | rank432-band5 | nat.nano.OcnirpPM_1.0.jar
+# 99.5 -> 89.3 (2 battles)  (next line)
+davidalves.Firebird 0.25 | rank30-band2 | davidalves.Firebird_0.25.jar
+# 63.0 -> 52.9 (1 battles)  (next line)
+xander.cat.XanderCat 12.9 | rank9-band1 | xander.cat.XanderCat_12.9.jar
