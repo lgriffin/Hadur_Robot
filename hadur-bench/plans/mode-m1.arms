@@ -1,0 +1,7 @@
+# Mode table M1 (docs/plan-mode-table.md): label | robot | jar. c is 3.15, aa its A/A copy,
+# sa shields every opponent with the shipped shield rules (ablation shield-all), sy is SHIELD-15's
+# trial (strial: shield every unlisted opponent until Ogi's trial fails).
+c | hadur2.Hadur 3.15 | bisect/hadur2.Hadur_3.15.jar
+aa | hadur2.Hadur 3.15aa | bisect/hadur2.Hadur_3.15aa.jar
+sa | hadur2.Hadur 3.15sa | bisect/hadur2.Hadur_3.15sa.jar
+sy | hadur2.Hadur 3.15sy | bisect/hadur2.Hadur_3.15sy.jar

@@ -1,0 +1,34 @@
+# Mode table M1 (docs/plan-mode-table.md): shield or not, per opponent, on the 126 robots Saguaro 1.0
+# shields and Hadur's list leaves out (panel-saguaro-shield.txt, from Saguaro's shipped table).
+#   ./queue.sh run pc-mode-m1        (or  .\queue.ps1 run pc-mode-m1)
+# Needs PR #224 merged (SHIELD-15 and the tools) and master pulled. One bench queue, RoboRumble
+# workers at 0, 12 workers unpinned. Resumable; no step needs a decision.
+#
+# screen (about 2.7 h): 126 bots x 8 seeds x arms c, aa, sa, sy = 4,032 battles.
+# pick: mode_table.py locks a mode for a bot where it beats c+aa by 5+ points with the interval above 0.
+# confirm (about 1 h for ~40 locked bots): the locked bots only, 8 fresh seeds, same arms.
+# confirm-pick: margin 3 on the fresh seeds; the shipped M1 table is the bots locked in both picks.
+# Reports: ../docs/bench/local/<date>_mode-m1*.md and the two pick TSVs; then a results PR.
+
+set P = --parallel 12
+set HEAP = --child-heap 2G
+set E = --engine 1.11.1
+set C = --skip-build --skip-fetch --rounds 35 --cpu-constant 1488498 ${HEAP} ${E}
+set READ = --census census-312.txt --segments plans/top5-segments.tsv
+
+prep | mkdir -p bisect && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur2.Hadur_3.15.jar bisect/ && bash ./build-ablation.sh aa && bash ./build-ablation.sh shield-all && bash ./build-ablation.sh strial && ./fetch-opponents.sh --set panel-saguaro-shield.txt && mvn -q compile
+
+screen | ./bench-top20.sh ${C} ${P} --set panel-saguaro-shield.txt --seeds 8 --seed-base 1900 --arms plans/mode-m1.arms --out work/mode-m1 --label mode-m1
+  after: prep
+
+pick | python3 ../data/tools/multiarm.py work/mode-m1/arms.tsv ${READ} --out ../docs/bench/local/$(date +%Y-%m-%d)_mode-m1.md && python3 ../data/tools/mode_table.py work/mode-m1/arms.tsv --margin 5 --out-tsv ../docs/bench/local/mode-m1-pick.tsv --out ../docs/bench/local/$(date +%Y-%m-%d)_mode-m1-pick.md && python3 -c "import sys; L=set(l.split('\t')[0] for l in open('../docs/bench/local/mode-m1-pick.tsv')); out=[l for l in open('panel-saguaro-shield.txt') if l.split(' | ')[0].strip() in L]; open('work/mode-m1-locked.txt','w').write('# locked by mode-m1 pick\n'+''.join(out)); print(len(out),'locked')"
+  after: screen
+
+confirm | ./bench-top20.sh ${C} ${P} --set work/mode-m1-locked.txt --seeds 8 --seed-base 1950 --arms plans/mode-m1.arms --out work/mode-m1-confirm --label mode-m1-confirm
+  after: pick
+
+confirm-pick | python3 ../data/tools/mode_table.py work/mode-m1-confirm/arms.tsv --margin 3 --out-tsv ../docs/bench/local/mode-m1-confirm.tsv --out ../docs/bench/local/$(date +%Y-%m-%d)_mode-m1-confirm.md
+  after: confirm
+
+pr | bash tools/open_results_pr.sh claude/pc-mode-m1-results "Mode table M1: shield per opponent on Saguaro's shield bots" ../docs/bench/local/*_mode-m1*.md ../docs/bench/local/mode-m1-pick.tsv ../docs/bench/local/mode-m1-confirm.tsv
+  after: confirm-pick
