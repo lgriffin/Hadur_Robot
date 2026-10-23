@@ -1,0 +1,201 @@
+# Plan: HadurTeam to top 5 in the TeamRumble
+
+Date: 2026-10-23. Asked by Leigh after 3.15's first team pass: "Our team results are in and we
+didn't improve by a serious amount. Why? Come up with a plan to get me top 5."
+
+Sources: the live TeamRumble pages fetched at 10:05 UTC for HadurTeam 3.15, HadurTeam 3.13
+(retired, its final state) and the eight teams above Hadur, archived in
+`data/rumble/pages/2026-10-23T1005Z_teamrumble_botdetails_*.html` and parsed to
+`data/rumble/parsed/2026-10-23T1005Z_*.csv`; the rankings of 09:34 UTC
+(`2026-10-23T0934Z_teamrumble_rankings.tsv`); every team bench report since 2026-10-11
+(`docs/bench/team-lower-half.md`, `docs/bench/combatteam-3.25.md`,
+`docs/bench/local/2026-10-1*_team-*.md`). Team changes follow Leigh's isolation rule of
+2026-10-11: team-only code paths, 1v1 and melee bit-identical.
+
+## Summary
+
+- **3.15 is level with 3.13 because nothing that was measured to work was in it.** The only team
+  change in 3.15 is MGUN-8 (teammates' sightings feed the gun), whose cloud screen read
+  +1.5 ± 1.8 alone and −0.5 ± 1.7 on top of a deeper gun. The change that did pass on the PC,
+  team gun depth 21 (T3, +2.6 ± 0.9 on 2026-10-17), was never shipped. Live, 3.15 against 3.13
+  is −0.05 ± 1.1 points a pairing over the same 45 teams.
+- **The 68.33 flatters 3.15.** Its page is missing the ShadowTeam pairing (3.13 took 31 there).
+  With it, 3.15 is about 67.5, the same as 3.13's final 67.57. OgiTeam's entry at 1st on
+  2026-10-23 costs every team below it about 1 APS (Hadur takes 21 there), which is why both
+  read lower than 3.13's 68.30 first pass.
+- **5th is NightmareTeam at 77.37: about +9.9 APS from where Hadur really stands.** Nearly all
+  of it is the top 20. Against NightmareTeam's own scores, the gap is 4.4 APS against the top
+  8, 3.8 against ranks 9-20 and 1.6 against three ramming teams; ranks 21-47 are level or
+  better. In every one of those segments the cause is the same: Hadur's members die.
+  Survival is 15-29 points lower.
+- **What we have measured adds about +3.6.** T3 (+2.6 on the PC) and a new switch built today,
+  shoot rammers (TR1: +15.7 points a pairing on the three ramming teams in a cloud screen, about
+  +1.0 APS), are cheap and team-only. That is about 71, 7th, passing Polylunar and Xmen.
+- **Top 5 needs learned movement on a team (T6).** Members dodge with head-on and linear virtual
+  bullets only; the top teams aim with learning guns, which is why survival collapses from rank
+  20 up. CombatTeam shares every hit on every member into one learned danger model. This is the
+  only lever large enough, and it is a real build (two to three days), not a switch.
+- **Central estimate for the whole plan: about +8 APS, top 5 needs +9.9.** Top 5 is reachable
+  only if T6 lands at the top of its range, or if the shared-learning pieces (T5b, T6) stack
+  better than the screens so far suggest. Section 6 says what ends each line.
+
+## 1. 3.15 against 3.13, like for like
+
+| | 3.15 (first pass) | 3.13 (final, retired) | 3.13 (first pass, 2026-10-15) |
+|---|---|---|---|
+| APS on the page | 68.33 | 67.57 | 68.30 |
+| Pairings | 45 of 46 (no ShadowTeam) | 46 | 45 (no OgiTeam yet) |
+| Battles | 113 | 198 | |
+| APS with all 46 pairings | about 67.5 (ShadowTeam at 3.13's 31.3) | 67.57 | |
+| Same 44 opponents as 3.13's first pass | 69.41 | | 69.18 |
+
+- Paired over the 45 common opponents, 3.15 minus 3.13 final is **−0.05 points, ±1.1** (95%,
+  per-pairing sd 3.6). 19 pairings fell, 24 rose, 2 stayed at 100. The largest moves are 1-2 battle pairings
+  (Xmen −8.9 at 2 battles, Firestarter −8.7 at 1, RadnorMedSchool +7.3 at 3, Nightmare +5.6 at 3)
+  and sit inside one pairing's noise (a 1-battle team pairing carries ±7.8).
+- Survival is level (74.4 against 74.1).
+- **Rank**: 9th on both pages. When ShadowTeam's pairing arrives 3.15 should drop to about 67.5,
+  within 0.2 of GlowingHawks (67.36, 10th).
+
+So 3.15 did not regress and did not improve. That is what its one team change predicted:
+MGUN-8 was built as a capability (the cloud screen said "does not earn its place on this
+evidence", `docs/bench/local/2026-10-16_team-t5-screen.md`), and the measured gain was left out.
+The gap between the PC verdict on T3 (2026-10-17) and the 3.15 release (2026-10-23) is a process
+miss: the 1v1 top-5 work took the PC and the release, and nobody carried T3 to master.
+
+## 2. The bench and the live ladder agree on levels
+
+The PC census of 3.14 on all 45 teams (6 seeds, `2026-10-17_team-census-k21.md`) scored 68.6%;
+3.13/3.15 live sit at 68.3 before Ogi. 3.11's census read 63.2% against 64.61 live. Team APS is the
+mean score share over pairings, which is what the census measures, so **a bench point is close to
+a live APS point** on this ladder (MGUN-6: bench +5.7, live 3.11 to 3.13 +3.7 with other changes
+in between). Plan figures below use bench points as APS.
+
+Live noise is large: 113 battles over 46 pairings, about 2.5 a pairing, and a 10-round team
+battle is one sample. A change smaller than about 1.5 APS cannot be read from one pass.
+
+## 3. Where the 9.9 APS to 5th are
+
+Hadur's per-opponent score pools 3.15 and 3.13 final by battles (both are the same team on this
+evidence). Each rival's lead over Hadur, summed by segment and divided by 45 (APS units; the
+head-to-head pairing is left out):
+
+| Rival | Total | A: top 8 | B: ranks 9-20 | C: ramming trio | D: ranks 21-33 other | E: ranks 34-47 |
+|---|---|---|---|---|---|---|
+| 2nd CombatTeam | +14.0 | +3.55 | +4.66 | +2.25 | +2.43 | +1.10 |
+| 4th ShadowTeam | +10.8 | +1.95 | +4.24 | +1.82 | +1.82 | +1.00 |
+| **5th NightmareTeam** | **+8.8** | **+4.44** | **+3.79** | **+1.59** | +0.16 | −1.20 |
+| 6th AlephTeam | +8.9 | +1.70 | +2.54 | +2.11 | +1.78 | +0.81 |
+| 7th Xmen | +3.3 | +1.25 | +0.97 | +1.35 | +0.26 | −0.51 |
+
+Per pairing, NightmareTeam takes 29 points more than Hadur against the top 8, 15 more against
+ranks 9-20 and 24 more against the ramming trio, with survival higher by 29, 15 and 22. Add the
+head-to-head (Hadur about 20 against Nightmare's 77, about 1.3 APS) and the total is the 9.9.
+
+**A and B: the top 20 kill Hadur's members.** Against the top 7 Hadur survives 0-20% of rounds
+(3.13's final page: Ogi 0, Polylunar 7, Nightmare 8, CombatTeam 8, Firestarter 16, Shadow 20,
+Aleph 20). These teams aim with
+learning guns. HadurTeam's members dodge using only head-on and linear virtual bullets (MMOVE-3),
+treat every detected shot as aimed at themselves, and learn nothing from the hits on their
+teammates. Firepower was the lower half's gap in October (MGUN-6 fixed most of it); against the
+top 20 the gap is defence.
+
+**C: three teams that ram.** amz.TeamDeathTeam 1, jab.Enjambre 3, mn.nano.perceptual.ImpactTeam 1.3.0.
+Hadur takes 39, 53 and 55 there; NightmareTeam, Aleph, Shadow and Xmen average 73, 77 and 75.
+Their non-bullet score against Hadur (ram damage and kill bonuses) was 1,700-2,400 a battle
+against 340-1,040 for HOFSwarm in October's cloud run. The field gun **skips any enemy closing on
+the member inside 100 px** (`FieldGun.rams`, a melee rule: move rather than trade at point blank)
+unless it can finish it, so a member being rammed does not shoot the robot ramming it. T3's deeper
+gun did nothing here (TeamDeath −0.9, Enjambre +2.4, Impact +2.9), as expected if the gun is not
+firing. CombatTeam does the opposite: inside 150 px it shoots only the close enemies, at power 3.
+
+**D and E: level with NightmareTeam.** The lower half was the gap in October; MGUN-6 closed it.
+Aleph and Shadow still lead there by 1.8 APS each, so there is more to take, but not first.
+
+## 4. Shoot rammers (TR1): cloud screen, 2026-10-23
+
+`build-ablation.sh tram` (team only, suffix `rm`): `FieldGun.solutions` keeps the rammer skip only
+off a team. Against the ramming trio (`hadur-bench/team-rammers3.txt`), 4 seeds, 10 rounds,
+1200x1200, engine 1.11.1, two battles at once on a 4-core cloud container, paired with 3.15aa
+(the same master rebuilt with no change):
+
+| Ramming team | 3.15rm | 3.15aa | Paired (pp) |
+|---|---|---|---|
+| amz.TeamDeathTeam 1 | 59.9% | 40.0% | **+19.9 ± 13.9** |
+| jab.Enjambre 3 | 75.2% | 57.8% | **+17.4 ± 6.2** |
+| mn.nano.perceptual.ImpactTeam 1.3.0 | 63.3% | 53.5% | **+9.8 ± 6.3** |
+| Rounds won (pooled) | 95.8% | 70.0% | +25.8 ± 10.7 |
+
+Report: `docs/bench/local/2026-10-23_team-tram-screen.md`. All three teams clear of zero; skipped
+turns 1.8 a battle against 3.0. The mean, +15.7 points a pairing over three pairings, is **+1.0
+APS** spread over the 46-team field, about two thirds of what the rivals take from these three.
+This is a screen on the teams it was built for: the PC gate (section 6) checks the other 43 teams,
+where an enemy that comes inside 100 px is rarer but now also gets shot.
+
+## 5. The plan
+
+Expected values are bench points (≈ live APS, section 2). "Range" is the plausible span from what
+each step's evidence says, not a confidence interval. Every step is team-only (reached only while
+a member has a living teammate); every gate is the whole team field, 46 teams, 6 seeds, paired.
+
+| Stage | What | Evidence so far | Expected | Range | Cost |
+|---|---|---|---|---|---|
+| **S1 T3** | team gun depth 3 → 21 (`tk21`) | PC +2.6 ± 0.9 on 3.14, 2 hosts screened +3.5 to +4.3 (k12) | +2.6 | +1.7 to +3.5 | one constant |
+| **S1 TR1** | shoot rammers on a team (`tram`) | cloud screen +15.7 pts on the 3 ramming teams (section 4) | +1.0 | +0.6 to +1.4 | one condition |
+| **Release 3.16 team** | S1 gate passes | | **≈ 71.1** | 7th | release.yml |
+| **S2 T6** | learned team danger: every member logs each enemy bullet that hits or passes it (situation, angle) and broadcasts it; one shared kNN per enemy gun replaces head-on/linear virtual bullets in the team's risk; a detected shot is treated as aimed at the member nearest the shooter (CombatTeam's rule) | top 20 survival gap 15-29 points; CombatTeam's design (combatteam-3.25.md 2.2, 2.3) | +3.0 | +1.5 to +4.5 | 2-3 days build, new link codec field |
+| **S3 T5b** | shared gun *samples*: resolved gun waves (situation, guess factor) broadcast and added to every member's kNN, with catch-up after a death | MGUN-8 (sightings) added nothing over k12; samples are the labels, sightings were only context | +1.0 | 0 to +2.0 | link codec v2 |
+| **S4 T7** | small team rules: attract to a disabled enemy; teammates' bullets in flight as a risk term, then retest firing through teammates (`tlane0` read +0.5 ± 3.4 without it) | CombatTeam does both | +0.5 | 0 to +1.0 | small |
+| **Total** | | | **+8.1** | **+3.8 to +12.4** | |
+
+Top 5 needs +9.9 from 67.5, and the field will not stand still. The central estimate lands at
+about 75.6, 6th today. **Top 5 needs S2 at the top of its range or S3 stacking with it.** Two
+cheap reads before S2's build can sharpen this, both from logs the S1 run keeps:
+
+1. **Who kills members against the top 20, and with what aim.** `team_aim.py` already tags each
+   enemy bullet that hits a member (head-on, linear, other). If learning guns (other) are most
+   of the hits from the top 8, S2 is the lever; if head-on and linear are, Hadur's existing
+   virtual bullets are failing and S2 is the wrong build.
+2. **Leader deaths.** The leader (200 energy) dying costs every living teammate 30 energy. If
+   the leader dies early against the top 20 more often than other members, a team-only "leader
+   stays back" rule is cheap and whole-field.
+
+### 5.1 Requirements when S1 ships
+
+| ID | Type | Requirement | Stage |
+|---|---|---|---|
+| MGUN-9 | State | While in melee on a team with a living teammate, the field gun shall take 21 situations per opponent from its kNN in place of MGUN-1's three. | T3 |
+| MGUN-10 | State | While in melee on a team with a living teammate, the field gun shall keep an opponent closing on Hadur within 100 px among its targets, in place of the melee rule that skips it. | TR1 |
+
+## 6. PC cards and stop rules
+
+**Card team-s1 (about 3 h, needs Leigh's go).** `hadur-bench/plans/pc-team-s1.queue`, run from
+master after this PR merges, RoboRumble workers at 0:
+`./queue.sh run pc-team-s1` (or `.\queue.ps1 run pc-team-s1`).
+Four steps, each 552 battles paired with the 3.15 release jar on the 46-team field
+(`team-census46.txt` = the 45 of October plus OgiTeam), 6 seeds, `--parallel 8`, resumable:
+`aa` (A/A), `k21`, `rm`, `k21rm`. The last step commits the four reports to
+`claude/pc-team-s1-results` and opens the PR.
+
+- Ship rule: `k21rm` mean paired difference at least +1.0, interval above zero, no team worse
+  beyond its 6-seed spread, A/A inside ±1.0, and `k21rm` not below `k21`. Then 3.16 is 3.15 with
+  MGUN-9 (and MGUN-10 if `rm` holds), team-only, 1v1 and melee fixtures unchanged.
+- If `rm` alone is level, ship `k21` only.
+
+**Card team-s2 (later, about 3 h).** S2's gate, written when the build is ready: `t6` and `t6`
+on top of S1, same protocol. Ship rule as above.
+
+**Stop rules.**
+- After S1 ships and settles (about 4 battles a pairing, a week of live play): if live gains less
+  than half the bench figure, stop and find out why before S2.
+- After S2's gate: if S1 + S2 together are below +5.5 bench points, top 5 is out of reach with
+  this team design. The remaining option is the larger one: a team movement built on CombatTeam's
+  anti-gravity with learned danger in full, which is a new team strand, not a switch.
+- No PC run is stopped or restarted on a guess; every step resumes.
+
+## 7. What changed in the repo with this plan
+
+- `hadur-bench/build-ablation.sh`: `tram` (TR1), team only, suffix `rm`.
+- `hadur-bench/team-rammers3.txt`, `hadur-bench/team-census46.txt`, `hadur-bench/plans/pc-team-s1.queue`
+  and its four `team-s1-*.args`.
+- The live team pages (see Sources), the TR1 screen report `docs/bench/local/2026-10-23_team-tram-screen.md` and this plan. No robot code.

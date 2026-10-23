@@ -1,0 +1,5 @@
+# TeamRumble ramming trio (docs/plan-team-top5.md stage TR1): the three teams that close in and ram.
+# Ranks from data/rumble/parsed/2026-10-23T0934Z_teamrumble_rankings.tsv (27, 28, 30).
+amz.TeamDeathTeam 1 | team | amz.TeamDeathTeam_1.jar
+jab.Enjambre 3 | team | jab.Enjambre_3.jar
+mn.nano.perceptual.ImpactTeam 1.3.0 | team | mn.nano.perceptual.ImpactTeam_1.3.0.jar
