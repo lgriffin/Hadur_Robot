@@ -26,20 +26,20 @@ Hadur's SHIELD-12 body-turn base starts from the firing point instead, so it mis
 with the body while the robot moves. Saguaro uses this base for 30 of its shield bots, 28 of them
 off Hadur's list (live gap +0.27 APS).
 
-## SHIELD-16 (`prior`, ablation `sprior`, suffix `sp`)
+## SHIELD-16 (`prior`, ablation `sprior`, suffix `sq`)
 
 Adds the fifth base with Saguaro's origin. Off by default; not in `all`.
 
-Probe, same seeds, shield on (3.15 vs 3.15sp; each against its own shield-off battles):
+Probe, same seeds, shield on (3.15 vs 3.15 with SHIELD-16, built as 3.15sp before the suffix became `sq`; each against its own shield-off battles):
 
-| Opponent | 3.15 shield on | 3.15sp shield on | Rounds in shield mode (of 105) |
+| Opponent | 3.15 shield on | SHIELD-16 shield on | Rounds in shield mode (of 105) |
 |---|---:|---:|---|
 | exauge.GateKeeper 1.1.121g | 76.8% | 96.7% | 6 to 105 |
 | slugzilla.ButtHead 2.0 | 67.5% | 94.6% | 6 to 105 |
 | oog.micro.SavantMicro 1.1 | 71.0% | 83.6% | 8 to 87 |
 | rz.GlowBlow 2.31 | 80.2% | 76.8% | 48 to 33 |
 
-Multi-arm run on the other 25 of the 28 off-list bots (arms `sa` = shield on every opponent, `sasp` =
+Multi-arm run on the other 25 of the 28 off-list bots (arms `sa` = shield on every opponent, `sasp` (now `sasq`) =
 the same with SHIELD-16; 3 seeds from 1900; 150 battles, none failed;
 `docs/bench/local/2026-10-23_shield16-prior25-arms.tsv`): **sasp − sa = +11.7 ± 1.8 points a bot**;
 19 of 25 gain 6 to 25 points, 6 are level within about 6 points (ChumbaMini, ThnikkaBot, both
@@ -50,7 +50,7 @@ Against Hadur 3.15's live scores (normal mode) these 25 bots gain about +174 poi
 ## Next
 
 1. PC stage 1: SHIELD-16 on all 300 Saguaro shield bots (173 listed, 127 not), arms c, aa, sa,
-   sasp, 4 seeds, to check it costs nothing on the listed bots before it joins the shield used to
+   sasq, 4 seeds, to check it costs nothing on the listed bots before it joins the shield used to
    train the table.
 2. A shipped per-opponent shield aim of our own, read from stage 1's records, and Saguaro's
    opening reposition.

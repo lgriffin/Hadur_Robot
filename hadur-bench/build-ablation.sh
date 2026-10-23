@@ -184,7 +184,7 @@
 #         rounds, under half of 20 ended bullets shot down, six hits with none shot down, or
 #         being rammed). Listed opponents play as shipped. Suffix sy.
 #   sprior SHIELD-16: Saguaro's body-turn base (head-on from the enemy's position on the tick
-#         before it fired, plus its body turn on the firing tick) as a fifth base. Suffix sp.
+#         before it fired, plus its body turn on the firing tick) as a fifth base. Suffix sq.
 #   snull  all five at once: Nullstride's design as read from its jar.
 #   strim (3.13) the 22 listed robots that 3.13 lost to in both plan90-gate runs come off the shield
 #         list, so they are fought in normal mode: does the shield still pay against them
@@ -539,7 +539,7 @@ for a in "${list[@]}"; do
                 sturn) flag=turn; suffix=st ;;
                 swall) flag=wall; suffix=sw ;;
                 strial) flag=trial; suffix=sy ;;
-                sprior) flag=prior; suffix=sp ;;
+                sprior) flag=prior; suffix=sq ;;
                 snull) flag=all; suffix=sn ;;
             esac
             edit "$design" 'public static final ShieldDesign SHIPPED = parse("' \
