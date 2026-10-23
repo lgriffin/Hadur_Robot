@@ -34,6 +34,24 @@ public class LinkCodecTest {
     }
 
     @Test
+    @Tag("MMOVE-10")
+    @DisplayName("MMOVE-10: a report with dodges reads back exactly as version 2; one without is still version 1, byte for byte")
+    void dodgesRoundTrip() {
+        Report plain = sample();
+        Report r = new Report(plain.round(), plain.tick(), plain.x(), plain.y(), plain.heading(), plain.velocity(),
+            plain.energy(), plain.sightings(), plain.deaths(), plain.shots(),
+            List.of(new Report.Dodge("sample.Fire", 0.5, 0.75, -0.25, 1.0, 0.42),
+                new Report.Dodge("abc.Shadow 3.83 (2)", 1.1, 0, 0.1, 0.3, -1.2)));
+        byte[] bytes = LinkCodec.encode(r);
+        assertEquals(LinkCodec.VERSION_DODGES, bytes[2]);
+        assertEquals(r, LinkCodec.decode(bytes));
+        byte[] old = LinkCodec.encode(plain);
+        assertEquals(LinkCodec.VERSION, old[2]);
+        // The plain report's bytes are the v1 body: the dodged report's start the same way.
+        for (int i = 3; i < old.length - 4; i++) assertEquals(old[i], bytes[i], "byte " + i);
+    }
+
+    @Test
     @Tag("LINK-1")
     @DisplayName("LINK-1: a report's round is what the wire's 16 bits carry, 0 to 65535, and no more")
     void roundFitsTheWire() {
@@ -53,7 +71,7 @@ public class LinkCodecTest {
     void refusesWhatItCannotRead() {
         byte[] good = LinkCodec.encode(sample());
         byte[] future = good.clone();
-        future[2] = 2;
+        future[2] = 3;
         reseal(future);
         assertTrue(assertThrows(LinkFormatException.class, () -> LinkCodec.decode(future)).getMessage()
             .startsWith("version"));

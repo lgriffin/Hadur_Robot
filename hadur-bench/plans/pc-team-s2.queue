@@ -1,0 +1,31 @@
+# Team plan to top 5, Stage 2 (docs/plan-team-top5.md section 5, requirements T6 notes): learned
+# team danger, gated on the whole TeamRumble field before any team release.
+#   ./queue.sh run pc-team-s2        (or  .\queue.ps1 run pc-team-s2)
+# Run from master with RoboRumble workers at 0. Team-only: every jar here plays as master off a team.
+#
+#   baseline  aa: master rebuilt (3.15 + MGUN-9 depth 21 + MGUN-10 shoot rammers, both switches off).
+#   bb     A/A: master again under another name. Prices the run's noise.
+#   dn     MMOVE-9 (t6n): a detected shot is aimed at the member nearest the shooter; the rest ignore it.
+#   dl     MMOVE-10 (t6l): hits on any member teach a shared per-enemy log; members dodge its learned aims.
+#   dndl   both: the Stage 2 candidate.
+# Each step fights the aa build at the same opponent and seed (--baseline): 46 teams x 6 seeds x 2
+# = 552 battles a step, 2,208 in all, about 3 h at --parallel 8 (team-s1 took 2.5 h). Each step
+# resumes where it stopped: a finished battle is read back, not fought again (BENCH-96).
+# Gate (as team-s1): mean paired difference at least +1.0 point, interval above zero, bb inside
+# +/- 1.0. Ship the best arm that passes. Stop rule (plan section 6): S1 + S2 below +5.5 together
+# means top 5 needs a new team movement, not switches.
+# When done, the PC commits the four reports to claude/pc-team-s2-results and opens a PR.
+
+prep | bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && bash ./build-ablation.sh t6n && bash ./build-ablation.sh t6l && bash ./build-ablation.sh t6n,t6l && ./fetch-opponents.sh --set team-census46.txt && (cd .. && mvn -q -DskipTests install -pl hadur-core -am) && mvn -q compile
+
+bb    | mvn -q exec:java "-Dexec.args=@plans/team-s2-bb.args"
+  after: prep
+dn    | mvn -q exec:java "-Dexec.args=@plans/team-s2-dn.args"
+  after: bb
+dl    | mvn -q exec:java "-Dexec.args=@plans/team-s2-dl.args"
+  after: dn
+dndl  | mvn -q exec:java "-Dexec.args=@plans/team-s2-dndl.args"
+  after: dl
+
+pr | bash tools/open_results_pr.sh claude/pc-team-s2-results "Team Stage 2: learned team danger gate on the whole TeamRumble field" ../docs/bench/local/2026-10-24_team-s2-bb.md ../docs/bench/local/2026-10-24_team-s2-dn.md ../docs/bench/local/2026-10-24_team-s2-dl.md ../docs/bench/local/2026-10-24_team-s2-dndl.md
+  after: dndl

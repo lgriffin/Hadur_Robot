@@ -80,6 +80,8 @@ public class MinimumRiskMovement {
     /** Hadur's rough speed to a point, for when it would be there. */
     static final double TRAVEL_SPEED = 7.0;
     static final int MAX_BULLETS = 128;
+    /** MMOVE-10: a learned shot makes up to {@link TeamDanger#K} bullets, so the cap is three times MMOVE-3's. */
+    static final int LEARNED_MAX_BULLETS = 3 * MAX_BULLETS;
 
     static final double CENTRE_K = 0.25;
     static final double WALL_K = 0.3;
@@ -249,8 +251,54 @@ public class MinimumRiskMovement {
         seenShots.retainAll(shots);
     }
 
+    /**
+     * On a team (T6): as above, where {@code mates} are the living teammates' positions. With
+     * {@code nearest} ({@link TeamDanger#NEAREST}) a shot whose source was nearer a teammate
+     * than Hadur makes no bullets (MMOVE-9); with {@code learned} ({@link TeamDanger#LEARNED})
+     * a shot whose shooter's log is deep enough makes the learned aims in place of the head-on
+     * and linear guesses (MMOVE-10). With neither, or no teammate, this is
+     * {@link #updateBullets(List, RobotStateLog, Point2D.Double, long)}.
+     */
+    public void updateBullets(List<EnemyShot> shots, RobotStateLog myPath, Point2D.Double me,
+                              long now, List<Point2D.Double> mates, TeamDanger danger,
+                              boolean nearest, boolean learned) {
+        if (mates.isEmpty() || (!nearest && !learned)) {
+            updateBullets(shots, myPath, me, now);
+            return;
+        }
+        int cap = learned ? LEARNED_MAX_BULLETS : MAX_BULLETS;
+        for (EnemyShot s : shots) {
+            if (!seenShots.add(s)) continue;
+            RobotState at = myPath.getState(s.fireTime);
+            if (at == null) at = myPath.getState(s.fireTime + 1);
+            Point2D.Double target = at == null ? me : at.location;
+            if (nearest && !TeamDanger.aimedAtMe(s, target, mates)) continue;
+            List<TeamDanger.Aim> aims = learned && at != null ? danger.aims(s, at) : null;
+            if (aims != null) {
+                for (TeamDanger.Aim a : aims) {
+                    add(new VirtualBullet(s, VirtualBullet.Aim.LEARNED, a.heading, a.weight), cap);
+                }
+                continue;
+            }
+            double hot = DiaUtils.absoluteBearing(s.source, target);
+            double linear = at == null ? hot : VirtualBullet.linearHeading(s.source, target,
+                at.heading, at.velocity, s.speed(), field.width, field.height);
+            add(new VirtualBullet(s, VirtualBullet.Aim.HEAD_ON, hot), cap);
+            add(new VirtualBullet(s, VirtualBullet.Aim.LINEAR, linear), cap);
+        }
+        double reach = Math.hypot(field.width, field.height);
+        for (Iterator<VirtualBullet> it = bullets.iterator(); it.hasNext(); ) {
+            if (it.next().passed(me, now, reach)) it.remove();
+        }
+        seenShots.retainAll(shots);
+    }
+
     private void add(VirtualBullet b) {
-        if (bullets.size() >= MAX_BULLETS) bullets.removeFirst();
+        add(b, MAX_BULLETS);
+    }
+
+    private void add(VirtualBullet b, int cap) {
+        while (bullets.size() >= cap) bullets.removeFirst();
         bullets.addLast(b);
     }
 
@@ -468,7 +516,7 @@ public class MinimumRiskMovement {
             double d = b.closestApproach(p, Math.max(now, arrive - window), arrive + window);
             double damage = 4 * b.shot.power + Math.max(0, 2 * (b.shot.power - 1));
             double x = d / HIT_RADIUS;
-            r += BULLET_K * damage / 4.0 * Math.exp(-x * x);
+            r += b.weight * BULLET_K * damage / 4.0 * Math.exp(-x * x);
         }
         return r;
     }

@@ -439,6 +439,8 @@ public final class HadurCore {
         // MGUN-8: the teammates' sightings merged this tick reach the melee gun's histories
         // before our own scans of this tick, so each history stays in time order.
         if (teamLink != null && meleeSeam != null) meleeSeam.mateSightings(teamLink.mateSightings());
+        // MMOVE-10: the teammates' samples of the enemies' guns join the team's log.
+        if (teamLink != null && meleeSeam != null) meleeSeam.mateDodges(teamLink.mateDodges());
 
         // The events in the order the adapter queued them, which is the engine's own. HitWall
         // needs no handling: the ledger infers the enemy's wall hits, and our own wall damage
@@ -496,7 +498,9 @@ public final class HadurCore {
             lastRole = drove;
         }
         // LINK-4: while a teammate lives, the completed tick's orders carry our report.
-        if (teamLink != null && teamLink.hasLivingTeammate()) built = built.send(teamLink.report(raw, built));
+        if (teamLink != null && teamLink.hasLivingTeammate()) {
+            built = built.send(teamLink.report(raw, built, meleeSeam == null ? List.of() : meleeSeam.takeDodges()));
+        }
         // The bench's count check (WORLD-8): the count of enemies alive, each time it changes.
         if (teamLink != null && in.others() != lastEnemiesAlive) {
             telemetry.emit("E," + round + "," + in.time() + "," + in.others());

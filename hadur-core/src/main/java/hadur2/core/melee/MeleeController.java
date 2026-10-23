@@ -11,6 +11,7 @@ import hadur2.core.physics.BattleField;
 import hadur2.core.physics.DiaUtils;
 import hadur2.core.physics.Rules;
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -98,6 +99,10 @@ public class MeleeController {
     /** Where Hadur has been this round, to tell head-on shooters from leading ones. */
     private final RobotStateLog myPath = new RobotStateLog();
     private long ghostsDropped;
+    /** T6: the team's log of each enemy's gun (MMOVE-9, MMOVE-10); untouched off a team. */
+    private final TeamDanger danger;
+    /** Whether the last tick had a living teammate. */
+    private boolean onTeam;
 
     public MeleeController(BattleField field) {
         this(field, new EnemyTracker(field));
@@ -113,6 +118,7 @@ public class MeleeController {
         this.tracker = world;
         this.mover = new MinimumRiskMovement(field);
         this.gun = new FieldGun(field);
+        this.danger = new TeamDanger(field);
     }
 
     public void newRound() {
@@ -209,10 +215,50 @@ public class MeleeController {
         double headOn = DiaUtils.absoluteBearing(shooter.location, atFire.location);
         double botWidth = DiaUtils.botWidthAimAngle(distance);
         stats.recordDamageReceived(damage, heading - headOn, botWidth);
+        if (TeamDanger.LEARNED && onTeam) learn(name, power, heading, me, now);
         // The same test OpponentStats uses: within Hadur's width of head-on, else led.
         profiles.hitOnHadur(name, Math.abs(Angles.normalRelativeAngle(heading - headOn)) <= botWidth
             ? MeleeProfile.AimClass.HEAD_ON : MeleeProfile.AimClass.LINEAR);
     }
+
+    /**
+     * MMOVE-10: the shot of {@code name} that this hit ended, found among the shots the World
+     * inferred: the same power, its bullet's flight from its source to {@code me} matching the
+     * ticks since it was fired. Its sample is logged and kept for the report. A hit no shot
+     * explains teaches nothing.
+     */
+    void learn(String name, double power, double heading, Point2D.Double me, long now) {
+        EnemyShot best = null;
+        double bestErr = Double.POSITIVE_INFINITY;
+        for (EnemyShot shot : tracker.shots(now)) {
+            if (!shot.shooter.equals(name) || Math.abs(shot.power - power) > 0.01) continue;
+            double err = Math.abs(shot.source.distance(me) - shot.travelled(now));
+            if (err > LEARN_SLACK + shot.window * shot.speed()) continue;
+            if (err < bestErr) {
+                bestErr = err;
+                best = shot;
+            }
+        }
+        if (best == null) return;
+        RobotState at = myPath.getState(best.fireTime);
+        if (at == null) return;
+        danger.own(danger.sample(best, at, heading));
+    }
+
+    /** MMOVE-10: how far, px, a hit may be from where its shot's bullet should be: a robot's reach and a tick's flight. */
+    static final double LEARN_SLACK = 40;
+
+    /** MMOVE-10: a teammate's sample, from its report. */
+    public void mateSample(TeamDanger.Sample s) {
+        danger.add(s);
+    }
+
+    /** MMOVE-10: Hadur's own samples since the last report, for the next one. */
+    public List<TeamDanger.Sample> takeSamples() {
+        return danger.takeOutgoing();
+    }
+
+    public TeamDanger danger() { return danger; }
 
     public void onRobotDeath(String name) {
         onRobotDeath(name, false);
@@ -259,7 +305,16 @@ public class MeleeController {
         List<EnemyInfo> alive = tracker.alive();
         MeleeStrategy.Plan plan = strategy.evaluate(tracker, s.me, s.energy, s.others, s.time);
         c.posture = plan.posture;
-        mover.updateBullets(tracker.shots(s.time), myPath, s.me, s.time);
+        onTeam = !s.teammates.isEmpty();
+        if (onTeam) {
+            // T6 (MMOVE-9, MMOVE-10): where each teammate stands, for whom a shot was aimed at.
+            List<Point2D.Double> mates = new ArrayList<>(s.teammates.size());
+            for (Roster.Mate m : s.teammates) mates.add(m.at(s.time));
+            mover.updateBullets(tracker.shots(s.time), myPath, s.me, s.time, mates, danger,
+                TeamDanger.NEAREST, TeamDanger.LEARNED);
+        } else {
+            mover.updateBullets(tracker.shots(s.time), myPath, s.me, s.time);
+        }
         c.destination = alive.isEmpty() ? null
             : mover.chooseDestination(s.me, s.energy, s.others, alive, s.time, plan, s.teammates);
         gun.onTeam(!s.teammates.isEmpty());
