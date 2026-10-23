@@ -8,7 +8,7 @@ true
 --rounds
 10
 --parallel
-8
+12
 --child-heap
 2G
 --cpu-constant

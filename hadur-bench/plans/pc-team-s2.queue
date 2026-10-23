@@ -9,7 +9,7 @@
 #   dl     MMOVE-10 (t6l): hits on any member teach a shared per-enemy log; members dodge its learned aims.
 #   dndl   both: the Stage 2 candidate.
 # Each step fights the aa build at the same opponent and seed (--baseline): 46 teams x 6 seeds x 2
-# = 552 battles a step, 2,208 in all, about 3 h at --parallel 8 (team-s1 took 2.5 h). Each step
+# = 552 battles a step, 2,208 in all, about 2 h at --parallel 12 (the pc-ladder pick, PR #232; team-s1 took 2.5 h at 8). Each step
 # resumes where it stopped: a finished battle is read back, not fought again (BENCH-96).
 # Gate (as team-s1): mean paired difference at least +1.0 point, interval above zero, bb inside
 # +/- 1.0. Ship the best arm that passes. Stop rule (plan section 6): S1 + S2 below +5.5 together
