@@ -2,7 +2,7 @@
 # shield aim base) on all of Saguaro 1.0's shield bots.
 #   ./queue.sh run pc-shield-s1        (or  .\queue.ps1 run pc-shield-s1)
 # Needs PR #230 on master and master pulled; needs work/mode-m1/arms.tsv from pc-mode-m1 (kept on the
-# PC). One bench queue, RoboRumble workers at 0, unpinned. Set P to the width pc-ladder picked.
+# PC). One bench queue, RoboRumble workers at 0, unpinned, 16 workers (pc-ladder, PR #232).
 # Resumable; no step needs a decision.
 #
 # listed (about 1 h): the 174 Saguaro shield bots our list already shields, 4 seeds, arms c, aa, sq
@@ -12,7 +12,7 @@
 # pick: multiarm reports for both, and mode_table.py on the pooled off-list arms (sa, sy, sasq vs c+aa).
 # Reports: ../docs/bench/local/<date>_shield-s1*.md and the pick TSV; then a results PR.
 
-set P = --parallel 12
+set P = --parallel 16
 set HEAP = --child-heap 2G
 set E = --engine 1.11.1
 set C = --skip-build --skip-fetch --rounds 35 --cpu-constant 1488498 ${HEAP} ${E}
