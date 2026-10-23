@@ -1,0 +1,56 @@
+# Stages 3 and 4 of the 1v1 per-opponent table (docs/plan-shield-quality.md): the shield entries of
+# mode table v1 across the whole field, then the census gate on the built table.
+#   ./queue.sh run pc-table-v1        (or  .\queue.ps1 run pc-table-v1)
+# Run it after pc-shield-s1 has finished (it reads that run's work/shield-s1-listed/arms.tsv and
+# ../docs/bench/local/shield-s1-pick.tsv, fetched from its results branch if master lacks it) and after
+#   git checkout master && git pull
+# (a results PR step leaves the checkout on its own branch). One bench queue, RoboRumble
+# workers at 0, unpinned, 12 workers, truth log off. Every step resumes; no step needs a decision.
+#
+# panel: census robots off the shield list and outside Saguaro's 126 (stage 1 covers those): ~886.
+# screen (about 4.5 h): the panel x c, aa, sasq x 4 seeds = ~10,600 battles.
+# pick: mode_table.py, a robot locks sasq at +5 points with the 95% interval above 0.
+# confirm (about 1-1.5 h): every robot locked by the screen or by stage 1's off-list pick, 8 fresh
+#   seeds, same arms. confirm-pick at +3. final: locked in both = the robots that join the list.
+# candidate: t1 = 3.15 + SHIELD-16 (only if stage 1 showed it costs the listed robots no more than
+#   0.3 points) + the final robots on the shield list (build-ablation.sh slistadd).
+# census (about 3-4 h): census-312 x c, aa, t1 x 2 seeds = ~7,300 battles.
+# gate: t1 minus pooled c and aa, census-weighted: PASS at +0.5 APS with the lower end above +0.3
+#   (docs/plan-top5.md bar) and the A/A inside its band. The verdict goes in the results PR either way.
+
+set P = --parallel 12 --no-truth-log
+set HEAP = --child-heap 2G
+set E = --engine 1.11.1
+set C = --skip-build --skip-fetch --rounds 35 --cpu-constant 1488498 ${HEAP} ${E}
+set READ = --census census-312.txt --segments plans/top5-segments.tsv
+set T = python3 tools/table_v1.py
+set OUT = ../docs/bench/local
+
+prep | mkdir -p bisect && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur2.Hadur_3.15.jar bisect/ && bash ./build-ablation.sh aa && bash ./build-ablation.sh shield-all,sprior && ./fetch-opponents.sh --set census-312.txt && test -f work/shield-s1-listed/arms.tsv && { test -f ${OUT}/shield-s1-pick.tsv || { git fetch -q origin claude/pc-shield-s1-results && git show FETCH_HEAD:docs/bench/local/shield-s1-pick.tsv > ${OUT}/shield-s1-pick.tsv; }; } && mvn -q compile
+
+panel | ${T} panel census-312.txt ../hadur-robot/src/main/java/hadur2/ShieldListData.java panel-saguaro-shield.txt --out work/table-v1-panel.txt
+  after: prep
+
+screen | ./bench-top20.sh ${C} ${P} --set work/table-v1-panel.txt --seeds 4 --seed-base 2000 --arms plans/table-v1.arms --out work/table-v1-screen --label table-v1-screen
+  after: panel
+
+pick | python3 ../data/tools/multiarm.py work/table-v1-screen/arms.tsv ${READ} --out ${OUT}/$(date +%Y-%m-%d)_table-v1-screen.md && python3 ../data/tools/mode_table.py work/table-v1-screen/arms.tsv --margin 5 --out-tsv ${OUT}/table-v1-screen-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_table-v1-screen-pick.md && ${T} confirm-set census-312.txt ${OUT}/table-v1-screen-pick.tsv ${OUT}/shield-s1-pick.tsv --out work/table-v1-confirm-set.txt
+  after: screen
+
+confirm | ./bench-top20.sh ${C} ${P} --set work/table-v1-confirm-set.txt --seeds 8 --seed-base 2100 --arms plans/table-v1.arms --out work/table-v1-confirm --label table-v1-confirm
+  after: pick
+
+final | python3 ../data/tools/mode_table.py work/table-v1-confirm/arms.tsv --margin 3 --out-tsv ${OUT}/table-v1-confirm-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_table-v1-confirm-pick.md && ${T} final ${OUT}/table-v1-confirm-pick.tsv ${OUT}/table-v1-screen-pick.tsv ${OUT}/shield-s1-pick.tsv --out ${OUT}/table-v1-final.txt
+  after: confirm
+
+candidate | ${T} candidate work/shield-s1-listed/arms.tsv ${OUT}/table-v1-final.txt --out work/table-v1-census.arms
+  after: final
+
+census | ./bench-top20.sh ${C} ${P} --set census-312.txt --seeds 2 --seed-base 2200 --arms work/table-v1-census.arms --out work/table-v1-census --label table-v1-census
+  after: candidate
+
+gate | python3 ../data/tools/multiarm.py work/table-v1-census/arms.tsv ${READ} --out ${OUT}/$(date +%Y-%m-%d)_table-v1-census.md && ${T} gate work/table-v1-census/arms.tsv census-312.txt --arm t1 --out ${OUT}/$(date +%Y-%m-%d)_table-v1-gate.md
+  after: census
+
+pr | bash tools/open_results_pr.sh claude/pc-table-v1-results "Mode table v1: shield entries across the field and census gate" ${OUT}/*_table-v1*.md ${OUT}/table-v1-*.tsv ${OUT}/table-v1-final.txt
+  after: gate
