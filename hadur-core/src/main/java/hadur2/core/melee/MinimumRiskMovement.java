@@ -244,7 +244,7 @@ public class MinimumRiskMovement {
     private final Deque<VirtualBullet> bullets = new ArrayDeque<>();
     /** TMODE-9: the teammates' bullets from their reports, oldest first. */
     private final Deque<VirtualBullet> mateBullets = new ArrayDeque<>();
-    /** TMODE-10: whether this member leads its team this round. */
+    /** TMODE-10: whether this member leads its team (fixed for the battle). */
     private boolean leader;
     private final Set<EnemyShot> seenShots =
         Collections.newSetFromMap(new IdentityHashMap<EnemyShot, Boolean>());
@@ -298,7 +298,7 @@ public class MinimumRiskMovement {
         return new ArrayList<>(mateBullets);
     }
 
-    /** TMODE-10: whether this member is its team's leader; set each round, false off a team. */
+    /** TMODE-10: whether this member is its team's leader; set on the battle's first tick. */
     public void leader(boolean leader) {
         this.leader = leader;
     }
@@ -447,7 +447,7 @@ public class MinimumRiskMovement {
         View v = new View(me, energy, now, others, enemies, new ArrayList<>(bullets), plan, mates);
         if (!mates.isEmpty() && !modes.isEmpty()) v.pull = pull(me, energy, others, enemies, now, mates, modes);
         if (!mates.isEmpty() && modes.contains(TeamModes.Mode.SCREEN)) screen(v, now);
-        if (!mates.isEmpty() && modes.contains(TeamModes.Mode.MATEFIRE)) v.mateBullets = mateBullets(me, now);
+        if (!mates.isEmpty() && modes.contains(TeamModes.Mode.MATEFIRE)) v.mateBullets = relevant(mateBullets(me, now), me, now);
         v.rear = leader && !mates.isEmpty() && modes.contains(TeamModes.Mode.REAR);
         List<Point2D.Double> candidates = candidates(me, others, enemies, now, mates);
         lastCandidates = candidates.size();

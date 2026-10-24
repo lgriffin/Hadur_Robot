@@ -106,7 +106,10 @@ public class MeleeController {
     private boolean onTeam;
     /** T7: the team's modes against this team (TMODE-1) as of the last tick; none off a team. */
     private Set<TeamModes.Mode> modes = TeamModes.NONE;
-    /** TMODE-10: whether this round's first tick has told whether Hadur leads its team. */
+    /**
+     * TMODE-10: whether the battle's first tick has told whether Hadur leads its team. A team's
+     * leader is the same member every round, so a fault's recovery mid-round does not ask again.
+     */
     private boolean leaderKnown;
 
     public MeleeController(BattleField field) {
@@ -134,7 +137,6 @@ public class MeleeController {
         waves.newRound();
         lastTarget = null;
         myPath.clear();
-        leaderKnown = false;
     }
 
     public OpponentStatsBook book() { return book; }
@@ -320,7 +322,7 @@ public class MeleeController {
         c.posture = plan.posture;
         onTeam = !s.teammates.isEmpty();
         if (!leaderKnown) {
-            // TMODE-10: only a team's leader starts a round with more than 100 energy.
+            // TMODE-10: only a team's leader starts a battle with more than 100 energy.
             leaderKnown = true;
             mover.leader(s.energy > 100);
         }
