@@ -91,3 +91,17 @@ By segment (APS): rammers 0.00, ranks 401+ +0.16, large losses +0.06, ranks 51-4
 64 at +12.7 points each. Master now ships t1 (SHIELD-16 on, the 49 added); release on Leigh's call.
 The bench overpredicted 3.15 live by about 0.5, and one live pass moves about ±0.4 APS, so read the
 first pass by segment.
+
+## Shield part 2 (M4): opening drive and shipped aims (built 2026-10-24, off)
+
+- **SHIELD-17** (`smove`, suffix `sv`; per opponent `smovelist`, suffix `mv`): Saguaro's moving
+  shield. Until the enemy's first shot of a round, the body drives away from the walls and the
+  enemy (inverse square, the enemy three times a wall) and stands still from 5 ticks before the
+  enemy's gun is ready. Targets the 54 off-list robots Saguaro moving-shields (+0.37 APS ahead).
+- **SHIELD-18** (`srec`, suffix `sk`, records; `saimlist`, suffix `ak`, shipped aims): the shield's
+  predictors start each battle cold. A shipped aim gives an opponent's best predictor three exact
+  matches and its offset before the first bullet. The aims come from the screen's `SP` records.
+- Card `plans/pc-shield-s2.queue` (BENCH-100, ~8,400 battles, about 5 h), run from master after
+  3.16: screen Saguaro's 300 shield robots x c, aa, sask, sasvsk x 4 seeds; pick at +5; list adds,
+  opening drives and aims; candidate t2; verify on the panel with 4 fresh seeds; gate +0.15 APS
+  summed over the panel with the lower end above 0; results PR. The whole table's census is M5.

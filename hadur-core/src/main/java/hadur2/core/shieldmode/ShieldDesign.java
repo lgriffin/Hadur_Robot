@@ -31,6 +31,16 @@ import java.util.Locale;
  * <li>{@code prior} (SHIELD-16): the body-turn base is Saguaro's: head-on from where the enemy
  *     stood on the tick before it fired (base 0), turned by its body turn on the firing tick,
  *     instead of from the firing point. Implies the fifth base. Not part of {@code all}.</li>
+ * <li>{@code move} (SHIELD-17): Saguaro's moving shield. Each round, until the enemy's first
+ *     shot, the body drives away from the walls and the enemy (anti-gravity) while the enemy's
+ *     gun cools, and stands still from {@link #MOVE_STOP_TICKS} ticks before that gun is ready.
+ *     With the switch off, the shield list can still name opponents to do this against.
+ *     Not part of {@code all}.</li>
+ * <li>{@code rec} (SHIELD-18): each round's end writes the predictors' state ({@code SP}), which
+ *     the bench builds shipped aims from. A shipped aim (an opponent's best predictor and its
+ *     offset, from the shield list) needs no switch: it starts the battle's predictors with
+ *     {@link #AIM_PRIOR} exact matches on it, so the shield aims right from the first bullet.
+ *     Not part of {@code all}.</li>
  * </ul>
  */
 public final class ShieldDesign {
@@ -53,9 +63,13 @@ public final class ShieldDesign {
     public static final double TRIAL_DOWN_SHARE = 0.5;
     /** SHIELD-15: hits on us with none shot down after which the trial fails. */
     public static final int TRIAL_BLANK_HITS = 6;
+    /** SHIELD-17: the ticks before the enemy's gun is ready from which the opening drive stands still. */
+    public static final int MOVE_STOP_TICKS = 5;
+    /** SHIELD-18: the exact matches a shipped aim starts its predictor with. */
+    public static final int AIM_PRIOR = 3;
 
     /** 3.12's shield: every switch off. */
-    public static final ShieldDesign NONE = new ShieldDesign(false, false, false, false, false, false, false, false);
+    public static final ShieldDesign NONE = new ShieldDesign(false, false, false, false, false, false, false, false, false, false);
 
     /**
      * The design the robot ships (SHIELD-13; SHIELD-14's wall since 3.15, +0.19 +/- 0.09 APS in the
@@ -81,9 +95,13 @@ public final class ShieldDesign {
     public final boolean trial;
     /** SHIELD-16: the body-turn base from the enemy's position on the tick before it fired. */
     public final boolean prior;
+    /** SHIELD-17: the opening drive against every shielded opponent. */
+    public final boolean move;
+    /** SHIELD-18: the round's {@code SP} record. */
+    public final boolean rec;
 
     private ShieldDesign(boolean hold, boolean learn, boolean mode, boolean stay, boolean turn,
-                         boolean wall, boolean trial, boolean prior) {
+                         boolean wall, boolean trial, boolean prior, boolean move, boolean rec) {
         this.hold = hold;
         this.learn = learn;
         this.mode = mode;
@@ -92,11 +110,13 @@ public final class ShieldDesign {
         this.wall = wall;
         this.trial = trial;
         this.prior = prior;
+        this.move = move;
+        this.rec = rec;
     }
 
     /**
      * The design a comma-separated list of switch names turns on ({@code hold}, {@code learn},
-     * {@code mode}, {@code stay}, {@code turn}, {@code wall}, {@code trial}, {@code prior}, or {@code all}); blank
+     * {@code mode}, {@code stay}, {@code turn}, {@code wall}, {@code trial}, {@code prior}, {@code move}, {@code rec}, or {@code all}); blank
      * is {@link #NONE}.
      *
      * @param flags the switches
@@ -105,7 +125,7 @@ public final class ShieldDesign {
      */
     public static ShieldDesign parse(String flags) {
         boolean hold = false, learn = false, mode = false, stay = false, turn = false,
-            wall = false, trial = false, prior = false;
+            wall = false, trial = false, prior = false, move = false, rec = false;
         for (String raw : flags.split(",")) {
             String f = raw.trim().toLowerCase(Locale.ROOT);
             switch (f) {
@@ -118,12 +138,14 @@ public final class ShieldDesign {
                 case "wall": wall = true; break;
                 case "trial": trial = true; break;
                 case "prior": prior = true; break;
+                case "move": move = true; break;
+                case "rec": rec = true; break;
                 case "all": hold = learn = mode = stay = turn = true; break;
                 default: throw new IllegalArgumentException("unknown shield switch: " + raw);
             }
         }
-        if (!(hold || learn || mode || stay || turn || wall || trial || prior)) return NONE;
-        return new ShieldDesign(hold, learn, mode, stay, turn, wall, trial, prior);
+        if (!(hold || learn || mode || stay || turn || wall || trial || prior || move || rec)) return NONE;
+        return new ShieldDesign(hold, learn, mode, stay, turn, wall, trial, prior, move, rec);
     }
 
     /**
@@ -164,6 +186,8 @@ public final class ShieldDesign {
         if (wall) b.append(",wall");
         if (trial) b.append(",trial");
         if (prior) b.append(",prior");
+        if (move) b.append(",move");
+        if (rec) b.append(",rec");
         return b.length() == 0 ? "none" : b.substring(1);
     }
 }

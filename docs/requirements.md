@@ -1313,6 +1313,8 @@ Nullstride's list with (docs/bench/local/2026-10-12_plan90-pc-read.md).
 | SHIELD-14 | Optional | Where the wall switch is on, when the ledger's read of an enemy shot is uncertain (a wall hit inferred on the same scan interval), the core shall build a shield wave at the ledger's best-guess power, the wall-split power nearest the enemy's last sure shot, and match that wave to a hit or an intercepted bullet by distance and time without its power, instead of building none. | R9 |
 | SHIELD-15 | Optional | Where the trial switch is on, when a duel opponent not on the shield list is first scanned, the core shall start shield mode against it, and shall leave shield mode for the rest of the battle once its bullets have done more than 35 damage plus 0.25 for each shot it fired, or two rounds in shield mode are lost, or under half of at least 20 ended enemy bullets were shot down, or six of its bullets hit with none shot down, or it rams Hadur. Listed opponents shall play as without the switch. | R9 |
 | SHIELD-16 | Optional | Where the prior switch is on, the core shall add a fifth head-on base to the shield predictors: the bearing from where the enemy stood on the tick before it fired to where Hadur stood then, turned by the enemy's body turn on the firing tick. | R9 |
+| SHIELD-17 | Optional | Where the move switch is on, or the shield list names the opponent for the opening drive, when a round of shield mode opens, the core shall drive away from the walls and the enemy, each pushing by the inverse square of its distance and the enemy three times a wall, until the enemy's first shot or 5 ticks before the enemy's gun is ready, whichever comes first, and shall then stand still as SHIELD-5 does. | R9 |
+| SHIELD-18 | Optional | When the shield list gives a shipped aim for the opponent (a predictor and its offset), the core shall start that predictor with three exact matches and that offset as its base's learned offset. Where the rec switch is on, at each round's end of shield mode the core shall write the best predictor, its offset, its exact matches, the bullets learned from and the round's opening-drive ticks as an `SP` record. | R9 |
 
 - **Switches** (`ShieldDesign.parse`): `hold`, `learn`, `mode`, `stay`, `turn`, `wall`, or `all` (the first five; `wall` is not in `all`). The
   ablation builds edit the one line `SHIPPED = parse("")` (`hadur-bench/build-ablation.sh`:
@@ -1363,6 +1365,23 @@ Nullstride's list with (docs/bench/local/2026-10-12_plan90-pc-read.md).
   shipped shield aim picks this base (options 1, 5 or 9) for SavantMicro, GateKeeper and
   ButtHead, three of the bots our shield fails on with no predictor exact
   (docs/plan-shield-quality.md). Tests: `ShieldDesignTest` (SHIELD-16).
+- **SHIELD-17** (off by default; `smove`, suffix `sv`, every shielded opponent; `smovelist`
+  with `SHIELD_MOVE=<file>`, suffix `mv`, per opponent through `ShieldTableData.moves()`).
+  Saguaro's MovingBulletShield as the plan reads its decompile (docs/plan-mode-table.md, M4):
+  the standing shield plus an opening reposition while the enemy's gun cools. `ShieldMode.tick`
+  returns `openingDrive` while the opponent is shielded, has not fired this round, no wave or
+  plan is open, the field size is known (`Situation`'s 17-argument form, which `DuelController`
+  passes) and the tick is before `enemyNextFire - MOVE_STOP_TICKS`. Forward or back by the
+  smaller body turn, gun to the main gun's aim, no shot. Duel-only: shield mode runs only in
+  `DuelController`. Tests: `ShieldOpeningTest` (SHIELD-17).
+- **SHIELD-18** (shipped aims need no switch, and the shipped `ShieldTableData.aims()` is empty;
+  `srec`, suffix `sk`, writes the records; `saimlist` with `SHIELD_AIM=<file>`, suffix `ak`, fills
+  the aims). Saguaro ships each shield bot's best aim (one of 12 options plus an offset, 9 bytes)
+  so its shield aims right in round 1; Hadur's predictors start cold every battle. An aim line is
+  `shield-aim: predictor offset name` in the list `ShieldList` parses; the predictor index is
+  `ShieldMode`'s (with SHIELD-16, 5 bases, 15 predictors). The `SP` record is
+  `SP,round,tick,bases,best,offset,exact,samples,openingTicks`, the offset to 9 places since a
+  predictor is exact within 1e-5. Tests: `ShieldOpeningTest` (SHIELD-18).
 - **SB records** (measurement, every design): each bullet that hits us from a listed opponent
   writes `SB,round,tick,class,ordinal,predicted,power`, class `off`, `nowave`, `missed`
   (a shield bullet was fired at it), `first` or `unshielded`, so the plan's step 2 can classify
@@ -1483,6 +1502,7 @@ None of these change how the robot plays; TIME-8 and RES-15 only report.
 | BENCH-97 | Option | Where the truth log is off (`--truth-log false`), a duel battle shall write no `truth.log.gz` and shall still count the enemy shots and every other figure its result row and report carry. | R9 |
 | BENCH-98 | Ubiquitous | The bench shall carry `tools/ladder.py`, which reads bench run folders and reports per run the battles an hour, skipped turns a round, engine disables a 100 battles and truth-log disk a battle against a base run, names the widest truth-on run inside the skip and disable limits that is no slower than the base, and compares each truth-off run with the truth-on run of its width. | R9 |
 | BENCH-99 | Ubiquitous | The bench shall carry `tools/table_v1.py` and the `slistadd` ablation, which together build mode table v1's shield entries: the screen panel (census robots off the shield list and outside a named set), the confirm set (robots a pick locked with a shield arm), the final list (locked with sasq in the confirm pick and with a shield arm in a first pick), the census candidate (SHIELD-16, the aim the final robots were confirmed with, plus the final robots added to the shield list), and the census gate verdict (+0.5 APS census-weighted with the lower 95% end above +0.3, the A/A inside its band and at least 95% of the census robots read in all three arms). | R9 |
+| BENCH-100 | Ubiquitous | The bench shall carry `tools/shield_s2.py`, the `smove`, `srec`, `smovelist` and `saimlist` ablations and the `pc-shield-s2` card, which together build shield part 2 of the mode table: the list adds and opening-drive robots from a screen pick, a shipped aim for each robot the candidate shields (the predictor at least half its battles end on with five or more exact matches, and the median offset), the candidate t2, and the verify gate (t2 minus pooled c and aa summed over the panel and divided by 1,217 pairings, PASS at +0.15 APS with the lower 95% end above 0 and the A/A inside its band). The card's control shall be the version the build makes. | R9 |
 | RAM-4 | State | While the rammer-heat switch is on, in a duel, once RAM-2 has confirmed the opponent as a rammer, the surf shall offer MOVE-11's gun-heat wave with MOVE-13's hold off (as heatjit plays) for the rest of the battle, whatever those switches are set to; before the confirmation, and in melee or team, the switches are as their own requirements state. Off by default. | R9 |
 
 - **TIME-8.** `Hadur.setupRecord`, printed once in round 0. The PC's round-0 read
