@@ -324,7 +324,47 @@ public class StopPointSurf {
             double g1 = wave.guessFactor(seg[1]);
             total += seg[2] * integrate(profile, Math.min(g0, g1), Math.max(g0, g1));
         }
-        return total;
+        ShotDodger dodger = aimMix ? moveCtrl.shotDodger() : null;
+        if (dodger == null) return total;
+        double share = simpleAimShare(dodger);
+        if (share <= 0) return total;
+        double[] aims = wave.simpleAims();
+        double a = aims == null ? Double.NaN : dodger.expert(aims, dodger.best());
+        if (Double.isNaN(a)) return total;
+        // MOVE-26: the simple aim's bullet, where it would cross us, counted at what the shadows let through.
+        double hit = 0;
+        for (double[] seg : wave.transmission(x)) {
+            double lo = seg[0] - ShotDodger.MARGIN, hi = seg[1] + ShotDodger.MARGIN;
+            double at = DiaUtils.normalizeAngle(a, (lo + hi) / 2);
+            if (at >= lo && at <= hi) hit = Math.max(hit, seg[2]);
+        }
+        return (1 - share) * total + share * hit;
+    }
+
+    /**
+     * MOVE-26: the chance the enemy's next bullet is its most-matched simple aim, as the bullets
+     * read so far say: that aim's matches over the bullets read plus two (so two of two is a half,
+     * not certainty), and 0 until it has matched twice.
+     */
+    static double simpleAimShare(ShotDodger dodger) {
+        int best = dodger.best();
+        if (best < 0) return 0;
+        int m = dodger.matches(best);
+        return m < 2 ? 0 : m / (dodger.read() + 2.0);
+    }
+
+    /** MOVE-26: whether the simple-aim expert is mixed into the danger (needs the duel's dodger on). */
+    private boolean aimMix;
+
+    /**
+     * MOVE-26: mixes the enemy's most-matched simple aim into the danger at the share of its
+     * bullets it has matched (BeepBoop's and Ogi's mixture of experts, in its simplest form). Off by
+     * default; the duel turns the shot dodger's reading on with it.
+     *
+     * @param on whether to mix
+     */
+    public void setAimMix(boolean on) {
+        this.aimMix = on;
     }
 
     /** The histogram convolved with the Cauchy kernel and normalised to sum to 1. */

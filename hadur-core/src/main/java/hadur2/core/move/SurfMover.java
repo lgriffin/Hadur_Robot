@@ -117,6 +117,11 @@ public class SurfMover {
         this.stopPointSurf = on ? new StopPointSurf(battleField, predictor) : null;
     }
 
+    /** MOVE-26: with the stop-point surf on, whether it mixes the simple-aim expert in (off by default). */
+    public void setStopPointAimMix(boolean on) {
+        if (stopPointSurf != null) stopPointSurf.setAimMix(on);
+    }
+
     /** The distance, in px, the attack angles steer toward. */
     private double desiredDistance = DEFAULT_DISTANCE;
     /** The surf mode for the wave being surfed, and the one the next wave starts with (MOVE-2). */

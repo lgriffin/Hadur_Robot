@@ -321,6 +321,7 @@ public final class DuelController {
         this.surfMover.setProtean(MoveDesign.PROTEAN, MoveDesign.PROTEAN_DWELL);
         this.surfMover.setAesRecord(MoveDesign.AES_RECORD);
         this.surfMover.setStopPointSurf(duelOnly(MoveDesign.STOP_POINT_SURF, enemiesTotal));
+        this.surfMover.setStopPointAimMix(MoveDesign.AIM_MIX);
         this.shadowAvoidance = new ShadowAvoidance(fieldWidth, fieldHeight);
         this.ramEscape = new RamEscape(battleField, predictor);
         this.mirror = new MirrorDetector(fieldWidth, fieldHeight);
@@ -1282,7 +1283,8 @@ public final class DuelController {
         stackOn = stackApplies(duelOnly(MoveDesign.STACK_LIST, enemiesTotal), stackList, name);
         moveController.setPointKernel(duelOnly(MoveDesign.POINT_KERNEL && stackOn, enemiesTotal));
         // DODGE-3: the simple-aim dodge, forced for every opponent or for those the table names.
-        moveController.setShotDodger(duelOnly(MoveDesign.SHOT_DODGE || stackList.dodges(name), enemiesTotal)
+        moveController.setShotDodger(duelOnly(MoveDesign.SHOT_DODGE || stackList.dodges(name)
+                || (MoveDesign.STOP_POINT_SURF && MoveDesign.AIM_MIX), enemiesTotal)
             ? shotDodger : null);
         // POISON-2: stop-and-go, forced or by the table's entry and its variant.
         int prefire = MoveDesign.STOP_AND_GO ? MoveDesign.STOP_AND_GO_PREFIRE : stackList.stopGo(name);
