@@ -15,6 +15,7 @@ import hadur2.core.memory.ProfileLibrary;
 import hadur2.core.memory.Tiers;
 import hadur2.core.model.*;
 import hadur2.core.move.GunClassifier;
+import hadur2.core.move.StopAndGo;
 import hadur2.core.physics.ShotDodger;
 import hadur2.core.move.HitForensics;
 import hadur2.core.move.MoveController;
@@ -350,6 +351,8 @@ public final class DuelController {
         this.stats = stats;
         java.util.Arrays.fill(aimRingTime, -1);
         aimVelocityCount = 0;
+        roundEnemyShot = Long.MIN_VALUE;
+        if (stopAndGo != null) stopAndGo.initRound();
         if (shield != null) shield.newRound(round);
         recover();
         // The history of the enemy's movement starts with the round; recover() marked it unknown.
@@ -699,6 +702,7 @@ public final class DuelController {
                 smallestEnemyPower = reading.corrected();
             }
             enemyGunHeat(in).shot(fireTime, reading.corrected());
+            roundEnemyShot = fireTime;
             if (folder != null) folder.enemyShot(e.distance(), reading.corrected(), myVel != 0);
             // EW,round,tick,waveId,fireTick,rawDrop,correctedDrop,power,distance: the wave is
             // named by its fire tick, and its power is the corrected drop.
@@ -768,6 +772,10 @@ public final class DuelController {
             // RAM-2: a charging rammer is kept out, not surfed or orbited.
             stats.ramEscapeTicks++;
             ramEscape.move(orders, currentState(in), lastEnemyState);
+        } else if (stopAndGo != null) {
+            // POISON-1: stop while the enemy's gun cools, go once it has fired; the waves still teach the views.
+            stopAndGo.move(orders, currentState(in), lastEnemyLocation, enemyGunHeat(in).at(in.time()),
+                in.gunCoolingRate(), roundEnemyShot);
         } else {
             // MOVE-11: the enemy's gun is cool by now or next tick, and the wave it will leave is surfed too.
             // MOVE-15: the enemy's gun decides the hold and the protean pick when the split is on.
@@ -887,6 +895,10 @@ public final class DuelController {
     private final double[] aimVelocities = new double[AIM_AVERAGE_TICKS];
     /** DODGE-1: velocities recorded this round. */
     private int aimVelocityCount;
+    /** POISON-2: stop-and-go against this opponent, or null when it is not played. */
+    private StopAndGo stopAndGo;
+    /** POISON-1: the fire tick of the enemy's last shot detected this round. */
+    private long roundEnemyShot = Long.MIN_VALUE;
     /** DODGE-1: ticks the averaged linear aim averages our velocity over. */
     static final int AIM_AVERAGE_TICKS = 10;
 
@@ -1116,6 +1128,11 @@ public final class DuelController {
                 + (best < 0 ? 0 : shotDodger.matches(best)) + "," + shotDodger.read() + ","
                 + (shotDodger.active() ? 1 : 0));
         }
+        if (stopAndGo != null) {
+            // POISON-1: WP,round,tick,goTicks,stopTicks,reverseTicks.
+            telemetry.emit("WP," + round + "," + tick + "," + stopAndGo.ticks(StopAndGo.Phase.GO) + ","
+                + stopAndGo.ticks(StopAndGo.Phase.STOP) + "," + stopAndGo.ticks(StopAndGo.Phase.REVERSE));
+        }
         // RAM-3: a round the rammer played, before its confirmation (fought) or after (its arm).
         if (trialRound || rammer.rammedThisRound()) {
             double ours = won ? lastOurEnergy : 0;
@@ -1265,6 +1282,9 @@ public final class DuelController {
         // DODGE-3: the simple-aim dodge, forced for every opponent or for those the table names.
         moveController.setShotDodger(duelOnly(MoveDesign.SHOT_DODGE || stackList.dodges(name), enemiesTotal)
             ? shotDodger : null);
+        // POISON-2: stop-and-go, forced or by the table's entry and its variant.
+        int prefire = MoveDesign.STOP_AND_GO ? MoveDesign.STOP_AND_GO_PREFIRE : stackList.stopGo(name);
+        stopAndGo = duelOnly(prefire > 0, enemiesTotal) ? new StopAndGo(battleField, prefire) : null;
         // Without memory the B record still goes out, with '-' for what memory would say.
         if (library != null) {
             // MEM-4: a missing or damaged profile loads as a stranger; load never throws.

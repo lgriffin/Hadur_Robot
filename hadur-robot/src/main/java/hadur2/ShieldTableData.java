@@ -3,7 +3,7 @@ package hadur2;
 /**
  * Shield part 2 of the 1v1 mode table (docs/plan-shield-quality.md): per opponent, the shield's
  * opening drive (SHIELD-17) and its shipped aim (SHIELD-18); and the opponents the duel surf
- * dodges simple aims against (DODGE-3). Every list starts empty, so Hadur plays as before until
+ * dodges simple aims against (DODGE-3); and the opponents fought with stop-and-go (POISON-2). Every list starts empty, so Hadur plays as before until
  * a bench run has picked entries for it.
  *
  * <p>{@link #moves()} and {@link #dodges()} name opponents, matched by the rule of {@link ShieldListData}.
@@ -13,8 +13,9 @@ package hadur2;
  *
  * <p>A class, not a resource, for the reason {@link ShieldListData} gives: Robocode's sandbox
  * refuses a robot the read of its own jar. Keep the shape: a final class with package-private
- * static methods {@code moves()}, {@code aims()} and {@code dodges()}; the bench's {@code
- * smovelist}/{@code saimlist}/{@code sdodgelist} ablations fill them.</p>
+ * static methods {@code moves()}, {@code aims()}, {@code dodges()}, {@code stopGos()} and
+ * {@code stopGoShifts()}; the bench's {@code smovelist}/{@code saimlist}/{@code sdodgelist}/
+ * {@code sgolist}/{@code sgo2list} ablations fill them.</p>
  */
 final class ShieldTableData {
 
@@ -47,6 +48,26 @@ final class ShieldTableData {
      * @return a fresh array of names
      */
     static String[] dodges() {
+        return new String[] {
+        };
+    }
+
+    /**
+     * POISON-2: the opponents fought with stop-and-go, WavePoison's variant (reverse crawl one tick early).
+     *
+     * @return a fresh array of names
+     */
+    static String[] stopGos() {
+        return new String[] {
+        };
+    }
+
+    /**
+     * POISON-2: the opponents fought with stop-and-go, WavePoisonShift's variant (two ticks early).
+     *
+     * @return a fresh array of names
+     */
+    static String[] stopGoShifts() {
         return new String[] {
         };
     }

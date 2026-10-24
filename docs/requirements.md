@@ -1326,6 +1326,8 @@ Nullstride's list with (docs/bench/local/2026-10-12_plan90-pc-read.md).
 | DODGE-1 | Event-driven | When the duel makes a movement wave while the simple-aim dodge is on, the core shall record on it our position, heading, velocity, last turn and average velocity of the last 10 ticks and the enemy's position, for the wave's tick and the two ticks before, and the wave shall give from them where each of 12 simple aims sends its bullet at its current power: head-on, linear, circular and averaged linear, each aimed on one of those three ticks from the enemy's position on it, with predicted paths stopped 18 px inside the walls. | R9 |
 | DODGE-2 | State | While the simple-aim dodge is on for the opponent, the core shall count, across the battle's rounds, the enemy bullets whose heading it learns (a hit on us, a bullet meeting ours) and, per aim, those within 0.002 rad of it; while one aim matches at least 3 of them and at least 60% of those read, the surf's danger for a wave shall be 1 when that aim's bullet falls inside the option's hit range (with a 0.005 rad margin) and 0 otherwise, plus 0.05 of the views' score, without the hit-rate term; otherwise the views decide as before. At each round's end it shall write `SD,round,tick,best,bestMatches,read,active`. | R9 |
 | DODGE-3 | State | While in a duel, the simple-aim dodge shall be on against an opponent the table's `shot-dodge:` lines name (matched as the shield list is), or against every opponent with the dodge switch on (off by default); in melee and team, and against any other opponent, it shall be off and the duel play exactly as before. | R9 |
+| POISON-1 | State | While stop-and-go is on for the opponent and no rammer escape is under way, the duel shall drive by it instead of the surf: crawl 0.5 px a tick along the orbit while the enemy's gun cools; crawl 0.5 px the other way on the tick the enemy's gun is the variant's ticks (1, or 2 for the shift variant) from ready; and after each detected enemy shot drive at full speed toward a point 140 px along the orbit, pushed out from the enemy by up to 90 px inside 250 px, wall-smoothed with a 160 px stick, until the gun is no more than its braking ticks plus 1 from ready. The orbit direction shall start on the roomier side and turn round when the smoothed heading comes within 45 degrees of the enemy and the other side's does not. At each round's end it shall write `WP,round,tick,goTicks,stopTicks,reverseTicks`. | R9 |
+| POISON-2 | State | While in a duel, stop-and-go shall be on against an opponent the table's `stop-go:` lines (variant 1) or `stop-go2:` lines (variant 2) name (matched as the shield list is), or against every opponent with the stop-and-go switch on (off by default, variant set by the switch); in melee and team, and against any other opponent, it shall be off and the duel play exactly as before. | R9 |
 
 - **Switches** (`ShieldDesign.parse`): `hold`, `learn`, `mode`, `stay`, `turn`, `wall`, or `all` (the first five; `wall` is not in `all`). The
   ablation builds edit the one line `SHIPPED = parse("")` (`hadur-bench/build-ablation.sh`:
@@ -1402,6 +1404,14 @@ Nullstride's list with (docs/bench/local/2026-10-12_plan90-pc-read.md).
   learning gun matches no aim, so the dodge stays off against it even when forced on. Ablations
   `sdodge` (suffix `sg`, every opponent) and `sdodgelist` (`SHOT_DODGE=<file>`, suffix `dg`, the
   table's entries in `ShieldTableData.dodges()`). Tests: `ShotDodgerTest` (DODGE-1, DODGE-2, DODGE-3).
+- **POISON-1, POISON-2** (1v1 strategy after 3.16, docs/bench/live-3.16.md: Saguaro's WavePoison
+  and WavePoisonShift modes cover 148 bots, +0.87 APS over Hadur there). `move/StopAndGo` drives
+  while it is on, read from Saguaro's jar: against a gun that aims from our velocity when it fires,
+  every bullet is aimed at a robot all but stopped, and we are gone by the time it lands. The waves
+  are still made and logged, so the views keep learning. Ablations `sgo` (suffix `wp`, variant 1)
+  and `sgo2` (`ws`, variant 2) for every opponent; `sgolist`/`sgo2list` (`STOP_GO`/`STOP_GO2=<file>`,
+  suffixes `wl`/`wm`) for the table's entries in `ShieldTableData.stopGos()`/`stopGoShifts()`.
+  Tests: `StopAndGoTest` (POISON-1, POISON-2).
 - **SB records** (measurement, every design): each bullet that hits us from a listed opponent
   writes `SB,round,tick,class,ordinal,predicted,power`, class `off`, `nowave`, `missed`
   (a shield bullet was fired at it), `first` or `unshielded`, so the plan's step 2 can classify

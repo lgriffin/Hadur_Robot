@@ -34,7 +34,8 @@ public final class ShieldList {
 
     /** The list with nobody on it: shield mode never starts. */
     public static final ShieldList NONE = new ShieldList(Collections.<String>emptySet(), Collections.<String>emptySet(),
-        Collections.<String>emptySet(), Collections.<String, double[]>emptyMap(), Collections.<String>emptySet());
+        Collections.<String>emptySet(), Collections.<String, double[]>emptyMap(), Collections.<String>emptySet(),
+        Collections.<String, Integer>emptyMap());
 
     /** MOVE-23: a line starting with this names an opponent on the stack off-list, not a shield-mode one. */
     public static final String STACK_OFF_PREFIX = "stack-off:";
@@ -44,6 +45,10 @@ public final class ShieldList {
     public static final String AIM_PREFIX = "shield-aim:";
     /** DODGE-3: a line starting with this names an opponent the duel surf dodges simple aims against. */
     public static final String DODGE_PREFIX = "shot-dodge:";
+    /** POISON-2: a line starting with this names an opponent the duel plays stop-and-go against (WavePoison). */
+    public static final String STOP_GO_PREFIX = "stop-go:";
+    /** POISON-2: the same with the reverse crawl two ticks before the enemy's gun is ready (WavePoisonShift). */
+    public static final String STOP_GO_SHIFT_PREFIX = "stop-go2:";
 
     private final Set<String> entries;
     /** MOVE-23: the stack off-list, matched as the shield entries are. */
@@ -54,14 +59,17 @@ public final class ShieldList {
     private final Map<String, double[]> aims;
     /** DODGE-3: the simple-aim dodge list. */
     private final Set<String> dodges;
+    /** POISON-2: name to the reverse crawl's ticks before the enemy's gun is ready (1 or 2). */
+    private final Map<String, Integer> stopGo;
 
     private ShieldList(Set<String> entries, Set<String> stackOff, Set<String> moves, Map<String, double[]> aims,
-                       Set<String> dodges) {
+                       Set<String> dodges, Map<String, Integer> stopGo) {
         this.entries = entries;
         this.stackOff = stackOff;
         this.moves = moves;
         this.aims = aims;
         this.dodges = dodges;
+        this.stopGo = stopGo;
     }
 
     /**
@@ -76,6 +84,7 @@ public final class ShieldList {
         Set<String> moves = new TreeSet<>();
         Map<String, double[]> aims = new TreeMap<>();
         Set<String> dodges = new TreeSet<>();
+        Map<String, Integer> stopGo = new TreeMap<>();
         if (lines != null) {
             for (String line : lines) {
                 if (line == null) continue;
@@ -90,6 +99,13 @@ public final class ShieldList {
                 if (entry.startsWith(MOVE_PREFIX)) {
                     String name = entry.substring(MOVE_PREFIX.length()).trim();
                     if (!name.isEmpty() && moves.size() < MAX_ENTRIES) moves.add(name);
+                    continue;
+                }
+                // The shift prefix first: "stop-go2:" also starts with "stop-go".
+                if (entry.startsWith(STOP_GO_SHIFT_PREFIX) || entry.startsWith(STOP_GO_PREFIX)) {
+                    boolean shift = entry.startsWith(STOP_GO_SHIFT_PREFIX);
+                    String name = entry.substring((shift ? STOP_GO_SHIFT_PREFIX : STOP_GO_PREFIX).length()).trim();
+                    if (!name.isEmpty() && stopGo.size() < MAX_ENTRIES) stopGo.put(name, shift ? 2 : 1);
                     continue;
                 }
                 if (entry.startsWith(DODGE_PREFIX)) {
@@ -116,9 +132,11 @@ public final class ShieldList {
                 entries.add(entry);
             }
         }
-        if (entries.isEmpty() && stackOff.isEmpty() && moves.isEmpty() && aims.isEmpty() && dodges.isEmpty()) return NONE;
+        if (entries.isEmpty() && stackOff.isEmpty() && moves.isEmpty() && aims.isEmpty() && dodges.isEmpty()
+            && stopGo.isEmpty()) return NONE;
         return new ShieldList(Collections.unmodifiableSet(entries), Collections.unmodifiableSet(stackOff),
-            Collections.unmodifiableSet(moves), Collections.unmodifiableMap(aims), Collections.unmodifiableSet(dodges));
+            Collections.unmodifiableSet(moves), Collections.unmodifiableMap(aims), Collections.unmodifiableSet(dodges),
+            Collections.unmodifiableMap(stopGo));
     }
 
     /**
@@ -186,6 +204,20 @@ public final class ShieldList {
         if (robotName == null || dodges.isEmpty()) return false;
         String name = robotName.trim().replaceAll("\\s+", " ");
         return dodges.contains(name) || dodges.contains(withoutVersion(name));
+    }
+
+    /**
+     * POISON-2: the stop-and-go variant for {@code robotName}, by the rule of {@link #matches}: the
+     * reverse crawl's ticks before the enemy's gun is ready, 1 or 2; 0 when it is not listed.
+     *
+     * @param robotName the scanned robot's name, or null
+     */
+    public int stopGo(String robotName) {
+        if (robotName == null || stopGo.isEmpty()) return 0;
+        String name = robotName.trim().replaceAll("\\s+", " ");
+        Integer v = stopGo.get(name);
+        if (v == null) v = stopGo.get(withoutVersion(name));
+        return v == null ? 0 : v;
     }
 
     /** Whether nobody is on the (shield) list. */

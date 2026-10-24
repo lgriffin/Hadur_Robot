@@ -121,4 +121,13 @@ final class MoveDesign {
      * those the table names. Off by default; the ablation {@code sdodge} turns it on for the screen.
      */
     static final boolean SHOT_DODGE = false;
+
+    /**
+     * POISON-2: stop-and-go (POISON-1) against every opponent, not only those the table names,
+     * with the reverse crawl {@link #STOP_AND_GO_PREFIRE} ticks before the enemy's gun is ready.
+     * Off by default; the ablations {@code sgo} and {@code sgo2} turn it on for the screen.
+     */
+    static final boolean STOP_AND_GO = false;
+    /** POISON-2: the forced stop-and-go's variant: 1 WavePoison, 2 WavePoisonShift. */
+    static final int STOP_AND_GO_PREFIRE = 1;
 }
