@@ -1,0 +1,27 @@
+roborumble,35,800x600,lgriffin,1792863263425,SERVER
+jkong.JKHydra 1.4,3032,1161,29
+florent.XSeries.X2 0.17,1834,1402,7
+roborumble,35,800x600,lgriffin,1792863271047,SERVER
+hadur2.Hadur 3.16,2100,0,35
+ph.micro.Pikeman 0.4.5,9,9,0
+roborumble,35,800x600,lgriffin,1792863275253,SERVER
+jkong.JKHydra 1.4,4932,2360,35
+reeder.colin.WallGuy3 1.0,49,49,0
+roborumble,35,800x600,lgriffin,1792863282068,SERVER
+jkong.JKHydra 1.4,4331,1857,35
+dummy.micro.HummingBird 2.14,630,629,0
+roborumble,35,800x600,lgriffin,1792863285113,SERVER
+hadur2.Hadur 3.16,6206,3422,35
+mjhjd.MattHussey1 1.1,10,10,0
+roborumble,35,800x600,lgriffin,1792863290388,SERVER
+cz.libors.Ogi v1,2327,189,35
+pez.gloom.GloomyDark 0.9.2,17,17,0
+roborumble,35,800x600,lgriffin,1792863297092,SERVER
+ers.micro.ISuck.ISuckMicro 0.1f,5776,3127,34
+dev.kurtw.KurtBot 0.2,1386,1314,1
+roborumble,35,800x600,lgriffin,1792863303064,SERVER
+jkong.JKHydra 1.4,4983,2403,35
+eskimo.micro.Echo 0.1,30,30,0
+roborumble,35,800x600,lgriffin,1792863307988,SERVER
+hadur2.Hadur 3.16,5524,2854,35
+mn.micro.perceptual.Mimic 1.0.0,303,303,0

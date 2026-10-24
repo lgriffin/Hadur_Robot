@@ -1,0 +1,111 @@
+roborumble,35,800x600,lgriffin,1792862781770,SERVER
+hadur2.Hadur 3.16,2040,0,34
+DM.mega.Bezier 1.618fprrr,128,58,1
+roborumble,35,800x600,lgriffin,1792862832341,SERVER
+hadur2.Hadur 3.16,4283,1867,34
+taqho.taqbot 1.0,401,330,1
+roborumble,35,800x600,lgriffin,1792862844457,SERVER
+hadur2.Hadur 3.16,3534,1462,30
+cb.mega.RandomBot 1.0,1378,1023,5
+roborumble,35,800x600,lgriffin,1792862863844,SERVER
+hadur2.Hadur 3.16,3903,1720,31
+gf.Centaur.Centaur 0.6.7,1058,776,4
+roborumble,35,800x600,lgriffin,1792862875846,SERVER
+hadur2.Hadur 3.16,3516,1556,28
+kenran.mega.Pantheist 1.1,1465,966,7
+roborumble,35,800x600,lgriffin,1792862906220,SERVER
+hadur2.Hadur 3.16,4365,2059,32
+dam.MogBot 2.9,1079,873,3
+roborumble,35,800x600,lgriffin,1792862927258,SERVER
+jkong.JKHydra 1.4,2850,891,30
+tjk.deBroglie rev0108,1870,1503,5
+roborumble,35,800x600,lgriffin,1792862961028,SERVER
+hadur2.Hadur 3.16,4190,1795,34
+taqho.taqbot 1.0,505,432,1
+roborumble,35,800x600,lgriffin,1792862980279,SERVER
+jkong.JKHydra 1.4,3094,1103,30
+tjk.deBroglie rev0108,1703,1337,5
+roborumble,35,800x600,lgriffin,1792862986951,SERVER
+jkong.JKHydra 1.4,3161,830,35
+rsim.mini.BulletCatcher 0.4,246,181,0
+roborumble,35,800x600,lgriffin,1792863009441,SERVER
+hadur2.Hadur 3.16,4287,1932,33
+gf.Centaur.Centaur 0.6.7,872,731,2
+roborumble,35,800x600,lgriffin,1792863020989,SERVER
+hadur2.Hadur 3.16,3545,1474,30
+kenran.mega.Pantheist 1.1,1106,757,5
+roborumble,35,800x600,lgriffin,1792863024054,SERVER
+jkong.JKHydra 1.4,5218,2599,35
+bzdp.BoxCar 2.0,287,286,0
+roborumble,35,800x600,lgriffin,1792863031084,SERVER
+hadur2.Hadur 3.16,2040,0,34
+nat.nano.OcnirpPM 1.0,223,102,1
+roborumble,35,800x600,lgriffin,1792863036555,SERVER
+hadur2.Hadur 3.16,5612,2926,35
+skm.butterfly 1.0,10,10,0
+roborumble,35,800x600,lgriffin,1792863043885,SERVER
+hadur2.Hadur 3.16,4697,2164,35
+fullsail.LaxativeTeaTwo 1.0,312,312,0
+roborumble,35,800x600,lgriffin,1792863048728,SERVER
+jkong.JKHydra 1.4,4089,1658,35
+lmk.ACPFinal 0.2,60,60,0
+roborumble,35,800x600,lgriffin,1792863056435,SERVER
+hadur2.Hadur 3.16,2040,0,34
+nat.nano.OcnirpPM 1.0,169,65,1
+roborumble,35,800x600,lgriffin,1792863082692,SERVER
+hadur2.Hadur 3.16,4097,1832,32
+sm.Devil 7.3,849,642,3
+roborumble,35,800x600,lgriffin,1792863087503,SERVER
+hadur2.Hadur 3.16,5672,2976,35
+skm.butterfly 1.0,0,0,0
+roborumble,35,800x600,lgriffin,1792863093021,SERVER
+hadur2.Hadur 3.16,5175,2562,35
+apc.Caan 1.0,204,204,0
+roborumble,35,800x600,lgriffin,1792863105067,SERVER
+hadur2.Hadur 3.16,2988,1023,30
+jbot.Rabbit2 1.1,1143,780,5
+roborumble,35,800x600,lgriffin,1792863108600,SERVER
+jkong.JKHydra 1.4,2100,0,35
+lmk.ACPFinal 0.2,0,0,0
+roborumble,35,800x600,lgriffin,1792863143188,SERVER
+hadur2.Hadur 3.16,2810,1027,27
+rh.Intra 2.1DomoKN,1676,1115,8
+roborumble,35,800x600,lgriffin,1792863151205,SERVER
+hadur2.Hadur 3.16,5422,2768,35
+apc.Caan 1.0,376,376,0
+roborumble,35,800x600,lgriffin,1792863183821,SERVER
+hadur2.Hadur 3.16,3265,1185,31
+rh.Intra 2.1DomoKN,1479,1208,4
+roborumble,35,800x600,lgriffin,1792863191877,SERVER
+jkong.JKHydra 1.4,3742,1459,33
+dz.OthoMini 0.15,1031,885,2
+roborumble,35,800x600,lgriffin,1792863196395,SERVER
+jkong.JKHydra 1.4,2108,0,35
+rsim.mini.BulletCatcher 0.4,1,1,0
+roborumble,35,800x600,lgriffin,1792863199891,SERVER
+jkong.JKHydra 1.4,4944,2370,35
+bzdp.BoxCar 2.0,248,247,0
+roborumble,35,800x600,lgriffin,1792863209039,SERVER
+jkong.JKHydra 1.4,3367,1219,32
+dz.OthoMini 0.15,1156,935,3
+roborumble,35,800x600,lgriffin,1792863244428,SERVER
+hadur2.Hadur 3.16,2100,0,35
+DM.mega.Bezier 1.618fprrr,25,25,0
+roborumble,35,800x600,lgriffin,1792863273528,SERVER
+hadur2.Hadur 3.16,4532,2189,32
+dam.MogBot 2.9,1066,857,3
+roborumble,35,800x600,lgriffin,1792863281001,SERVER
+jkong.JKHydra 1.4,3793,1410,35
+dz.OthoMicro 0.12,702,702,0
+roborumble,35,800x600,lgriffin,1792863286948,SERVER
+jkong.JKHydra 1.4,2590,409,35
+deo.virtual.RainbowBot 1.0,85,85,0
+roborumble,35,800x600,lgriffin,1792863290930,SERVER
+hadur2.Hadur 3.16,5235,2613,35
+ICS4U1.Patrick_White_Schrodinger 1.1,180,180,0
+roborumble,35,800x600,lgriffin,1792863299032,SERVER
+hadur2.Hadur 3.16,4279,1872,34
+vft.Hrist 1.0,226,152,1
+roborumble,35,800x600,lgriffin,1792863307920,SERVER
+hadur2.Hadur 3.16,3846,1511,34
+amk.ChumbaMini 0.2,809,737,1

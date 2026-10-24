@@ -1,0 +1,100 @@
+{
+  "started": "2026-10-24T05:39:36.182642200Z",
+  "finished": "2026-10-24T10:00:12.808110100Z",
+  "mode": "cold",
+  "git": {
+    "sha": "c2ff04d965a5f6f666b1f9eef0c745d2c9b65d8d",
+    "dirty": false
+  },
+  "jars": {
+    "candidate": {
+      "path": "D:\\code\\Hadur_Robot\\hadur-bench\\work\\table-v1-census\\home\\robots\\hadur2.Hadur_3.15.jar",
+      "bytes": 490566,
+      "sha256": "a9222b8d55404436c732cea062cbf57f3bccf43b889e873243cf7a39876e4e3b"
+    },
+    "arm c": {
+      "path": "D:\\code\\Hadur_Robot\\hadur-bench\\work\\table-v1-census\\home\\robots\\hadur2.Hadur_3.15.jar",
+      "bytes": 490566,
+      "sha256": "a9222b8d55404436c732cea062cbf57f3bccf43b889e873243cf7a39876e4e3b"
+    },
+    "arm aa": {
+      "path": "D:\\code\\Hadur_Robot\\hadur-bench\\work\\table-v1-census\\home\\robots\\hadur2.Hadur_3.15aa.jar",
+      "bytes": 490568,
+      "sha256": "d57b6a107c7c4bb6ed9685a9384344029365244f4a343f0c19b336b97331ad16"
+    },
+    "arm t1": {
+      "path": "D:\\code\\Hadur_Robot\\hadur-bench\\work\\table-v1-census\\home\\robots\\hadur2.Hadur_3.15sqmt.jar",
+      "bytes": 491580,
+      "sha256": "60d590e47d21ddda83815a6e33dea112142872af7874019ba64dca5579d5b458"
+    }
+  },
+  "arms": [
+    "c",
+    "aa",
+    "t1"
+  ],
+  "pin": "off",
+  "robot": "hadur2.Hadur 3.15",
+  "baselineRobot": null,
+  "engine": "1.11.1",
+  "parallel": 12,
+  "workers": 12,
+  "childCpus": "2",
+  "childHeap": "2G",
+  "memoryEstimateMb": 28176,
+  "childFlags": [
+    "-XX:ActiveProcessorCount=2",
+    "-Xmx2G",
+    "-Dhadur.bench.truth=false"
+  ],
+  "jvmFlags": [
+    "--add-opens=java.base/sun.net.www.protocol.jar=ALL-UNNAMED",
+    "--add-opens=java.base/java.lang=ALL-UNNAMED",
+    "--add-opens=java.base/java.util=ALL-UNNAMED",
+    "--add-opens=java.base/java.net=ALL-UNNAMED",
+    "--add-opens=java.desktop/sun.awt=ALL-UNNAMED",
+    "-Djava.security.manager=allow",
+    "-Djava.awt.headless=true"
+  ],
+  "cpuConstant": "robocode.cpu.constant=1488498 (pinned with --cpu-constant)",
+  "rounds": 35,
+  "seeds": 2,
+  "field": "800x600",
+  "retries": 1,
+  "repeat": 0,
+  "unseeded": false,
+  "set": "census-312.txt",
+  "opponents": 1212,
+  "options": {
+    "arms": "work/table-v1-census.arms",
+    "child-heap": "2G",
+    "cpu-constant": "1488498",
+    "out": "work/table-v1-census",
+    "parallel": "12",
+    "per-opponent": "../docs/bench/local/2026-10-24_table-v1-census",
+    "report": "../docs/bench/local/2026-10-24_table-v1-census.md",
+    "robot": "hadur2.Hadur 3.15",
+    "robot-jar": "D:\\code\\Hadur_Robot\\hadur-bench\\bisect\\hadur2.Hadur_3.15.jar",
+    "rounds": "35",
+    "seed-base": "2200",
+    "seeds": "2",
+    "set": "census-312.txt",
+    "truth-log": "false"
+  },
+  "host": "AMD Ryzen Threadripper PRO 9965WX 24-Cores, 48 logical cores, Windows 11 10.0, no other Robocode JVMs running",
+  "hostSample": {
+    "samples": 15065,
+    "cpuMin": 0.0000,
+    "cpuMean": 0.4039,
+    "cpuMax": 0.6299,
+    "otherJvmsMax": 0
+  },
+  "shelfAtStart": {
+    "files": 0,
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "failedBattles": 0,
+  "excluded": [],
+  "retriedBattles": 0
+}

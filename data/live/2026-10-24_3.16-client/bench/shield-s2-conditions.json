@@ -1,0 +1,106 @@
+{
+  "started": "2026-10-24T17:56:10.341324500Z",
+  "finished": null,
+  "mode": "cold",
+  "git": {
+    "sha": "1e7220c8c80bd8e81ddc90930b503069c709857b",
+    "dirty": false
+  },
+  "jars": {
+    "candidate": {
+      "path": "D:\\code\\Hadur_Robot\\hadur-bench\\work\\shield-s2-screen\\home\\robots\\hadur2.Hadur_3.16.jar",
+      "bytes": 504242,
+      "sha256": "caeafc8f562990d7e9a60fc4ad8a707cf4fe6e9e3f6378daf2266676a9472a46"
+    },
+    "arm c": {
+      "path": "D:\\code\\Hadur_Robot\\hadur-bench\\work\\shield-s2-screen\\home\\robots\\hadur2.Hadur_3.16.jar",
+      "bytes": 504242,
+      "sha256": "caeafc8f562990d7e9a60fc4ad8a707cf4fe6e9e3f6378daf2266676a9472a46"
+    },
+    "arm aa": {
+      "path": "D:\\code\\Hadur_Robot\\hadur-bench\\work\\shield-s2-screen\\home\\robots\\hadur2.Hadur_3.16aa.jar",
+      "bytes": 504244,
+      "sha256": "0d081c1c05d310444859fe9eb7f3f7c1a24920d420f6db75e9200b01550cf80e"
+    },
+    "arm sask": {
+      "path": "D:\\code\\Hadur_Robot\\hadur-bench\\work\\shield-s2-screen\\home\\robots\\hadur2.Hadur_3.16sask.jar",
+      "bytes": 504265,
+      "sha256": "1f184823ddf6dc4ac21b33b1ac9c60d76e6306b26e98c1fbd63e2f8469e22e69"
+    },
+    "arm sasvsk": {
+      "path": "D:\\code\\Hadur_Robot\\hadur-bench\\work\\shield-s2-screen\\home\\robots\\hadur2.Hadur_3.16sasvsk.jar",
+      "bytes": 504269,
+      "sha256": "9a51c20d01b228f066ea7b7f2a5a562656a6135bf8c94bdffbd746ba5f0595ac"
+    }
+  },
+  "arms": [
+    "c",
+    "aa",
+    "sask",
+    "sasvsk"
+  ],
+  "pin": "off",
+  "robot": "hadur2.Hadur 3.16",
+  "baselineRobot": null,
+  "engine": "1.11.1",
+  "parallel": 12,
+  "workers": 1,
+  "childCpus": "2",
+  "childHeap": "2G",
+  "memoryEstimateMb": 28176,
+  "childFlags": [
+    "-XX:ActiveProcessorCount=2",
+    "-Xmx2G",
+    "-Dhadur.bench.truth=false"
+  ],
+  "jvmFlags": [
+    "--add-opens=java.base/sun.net.www.protocol.jar=ALL-UNNAMED",
+    "--add-opens=java.base/java.lang=ALL-UNNAMED",
+    "--add-opens=java.base/java.util=ALL-UNNAMED",
+    "--add-opens=java.base/java.net=ALL-UNNAMED",
+    "--add-opens=java.desktop/sun.awt=ALL-UNNAMED",
+    "-Djava.security.manager=allow",
+    "-Djava.awt.headless=true"
+  ],
+  "cpuConstant": "robocode.cpu.constant=1488498 (pinned with --cpu-constant)",
+  "rounds": 35,
+  "seeds": 4,
+  "field": "800x600",
+  "retries": 1,
+  "repeat": 0,
+  "unseeded": false,
+  "set": "work/shield-s2-panel.txt",
+  "opponents": 300,
+  "options": {
+    "arms": "plans/shield-s2.arms",
+    "child-heap": "2G",
+    "cpu-constant": "1488498",
+    "out": "work/shield-s2-screen",
+    "parallel": "12",
+    "per-opponent": "../docs/bench/local/2026-10-24_shield-s2-screen",
+    "report": "../docs/bench/local/2026-10-24_shield-s2-screen.md",
+    "robot": "hadur2.Hadur 3.16",
+    "robot-jar": "D:\\code\\Hadur_Robot\\hadur-bench\\bisect\\hadur2.Hadur_3.16.jar",
+    "rounds": "35",
+    "seed-base": "2300",
+    "seeds": "4",
+    "set": "work/shield-s2-panel.txt",
+    "truth-log": "false"
+  },
+  "host": "AMD Ryzen Threadripper PRO 9965WX 24-Cores, 48 logical cores, Windows 11 10.0, no other Robocode JVMs running",
+  "hostSample": {
+    "samples": 1,
+    "cpuMin": 0.0000,
+    "cpuMean": 0.0000,
+    "cpuMax": 0.0000,
+    "otherJvmsMax": 0
+  },
+  "shelfAtStart": {
+    "files": 0,
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "failedBattles": 0,
+  "excluded": [],
+  "retriedBattles": 0
+}

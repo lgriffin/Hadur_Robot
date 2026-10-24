@@ -1,0 +1,60 @@
+roborumble,35,800x600,lgriffin,1792863177899,SERVER
+hadur2.Hadur 3.16,5223,2603,35
+apc.Caan 1.0,296,296,0
+roborumble,35,800x600,lgriffin,1792863189383,SERVER
+hadur2.Hadur 3.16,3941,1858,29
+kenran.mega.Pantheist 1.1,1330,897,6
+roborumble,35,800x600,lgriffin,1792863202956,SERVER
+hadur2.Hadur 3.16,3608,1590,29
+cb.mega.RandomBot 1.0,1650,1218,6
+roborumble,35,800x600,lgriffin,1792863206736,SERVER
+jkong.JKHydra 1.4,2100,0,35
+lmk.ACPFinal 0.2,0,0,0
+roborumble,35,800x600,lgriffin,1792863209953,SERVER
+pez.mini.Tityus 0.9.1,4332,2087,31
+mld.Moebius 2.9.3,1512,1220,4
+roborumble,35,800x600,lgriffin,1792863214145,SERVER
+hadur2.Hadur 3.16,5626,2939,35
+skm.butterfly 1.0,0,0,0
+roborumble,35,800x600,lgriffin,1792863218278,SERVER
+elloco.Flower 0.1r1,6003,3238,35
+kurios.DOSexe .9a,3025,1953,1
+roborumble,35,800x600,lgriffin,1792863220644,SERVER
+dummy.micro.Sparrow 2.5,2834,1152,25
+myl.nano.Kakuru 1.20,2081,1365,10
+roborumble,35,800x600,lgriffin,1792863223002,SERVER
+ntc.Knowledge 1.1,5574,2968,33
+tk.BotOX 0.3,1294,1098,2
+roborumble,35,800x600,lgriffin,1792863230017,SERVER
+jkong.JKHydra 1.4,3824,1543,33
+dz.OthoMicro 0.12,974,830,2
+roborumble,35,800x600,lgriffin,1792863233034,SERVER
+oog.micro.MagicD3 0.41,5194,2839,31
+stf.PanzerGeneral 0.1,2171,1838,4
+roborumble,35,800x600,lgriffin,1792863234466,SERVER
+TCMI.nano.Copper 0.2,4543,2270,30
+mn.micro.perceptual.Mimic 1.0.0,1118,736,5
+roborumble,35,800x600,lgriffin,1792863242179,SERVER
+hadur2.Hadur 3.16,5204,2587,35
+apc.Caan 1.0,336,336,0
+roborumble,35,800x600,lgriffin,1792863255578,SERVER
+hadur2.Hadur 3.16,2109,8,35
+jbot.Rabbit2 1.1,135,135,0
+roborumble,35,800x600,lgriffin,1792863258490,SERVER
+gh.nano.Grofvuil 0.2,2540,1179,20
+kawigi.sbf.Barracuda 1.0,2507,1423,15
+roborumble,35,800x600,lgriffin,1792863264657,SERVER
+jkong.JKHydra 1.4,2631,443,35
+rsim.mini.BulletCatcher 0.4,69,69,0
+roborumble,35,800x600,lgriffin,1792863276952,SERVER
+cx.mini.Cigaret 1.31,2805,1251,22
+arthord.micro.Muffin 0.6.1,2266,1364,13
+roborumble,35,800x600,lgriffin,1792863278387,SERVER
+zch.Hirkan 0.11,4685,2097,35
+t3.Ripper 1.0,830,830,0
+roborumble,35,800x600,lgriffin,1792863291660,SERVER
+hadur2.Hadur 3.16,3777,1772,28
+kenran.mega.Pantheist 1.1,1439,949,7
+roborumble,35,800x600,lgriffin,1792863300336,SERVER
+jkong.JKHydra 1.4,3711,1506,32
+dz.OthoMicro 0.12,1276,1057,3
