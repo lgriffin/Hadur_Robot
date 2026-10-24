@@ -1387,7 +1387,8 @@ Nullstride's list with (docs/bench/local/2026-10-12_plan90-pc-read.md).
   passes) and the tick is before `enemyNextFire - MOVE_STOP_TICKS`. Forward or back by the
   smaller body turn, gun to the main gun's aim, no shot. Duel-only: shield mode runs only in
   `DuelController`. Tests: `ShieldOpeningTest` (SHIELD-17).
-- **SHIELD-18** (shipped aims need no switch, and the shipped `ShieldTableData.aims()` is empty;
+- **SHIELD-18** (shipped aims need no switch; `ShieldTableData.aims()` holds shield part 2's 221
+  aims and `moves()` its 31 opening drives, with 16 list adds, PR #256, gate +0.31 ± 0.12 APS;
   `srec`, suffix `sk`, writes the records; `saimlist` with `SHIELD_AIM=<file>`, suffix `ak`, fills
   the aims). Saguaro ships each shield bot's best aim (one of 12 options plus an offset, 9 bytes)
   so its shield aims right in round 1; Hadur's predictors start cold every battle. An aim line is

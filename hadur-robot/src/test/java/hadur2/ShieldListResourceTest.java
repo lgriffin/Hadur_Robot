@@ -46,7 +46,7 @@ class ShieldListResourceTest {
     @DisplayName("the list holds the 14 robots of the D5 probe and nobody the probe lost against since")
     void listHoldsTheProbedRobots() {
         ShieldList list = ShieldList.parse(Arrays.asList(ShieldListData.lines()));
-        assertEquals(14 + 83 + 103 + 49, list.size());
+        assertEquals(14 + 83 + 103 + 49 + 16, list.size());
         for (String name : new String[] {
             "apv.test.Virus 0.6.1", "kcn.unnamed.Unnamed 1.21", "simonton.mega.SniperFrog 1.0.fix2",
             "vic.Locke 0.7.5.5", "cx.micro.Smoke 0.96", "dft.Virgin 1.25", "kid.Gladiator .7.2",
@@ -77,7 +77,8 @@ class ShieldListResourceTest {
         for (String name : new String[] {
             // dz.Caedo 1.4 lost here and joined in 3.16 with SHIELD-16 (mode table v1).
             "sqTank.waveSurfing.LionWWSVMvoid 0.01", "suh.mega.WaveSurferGF 1.04", "rz.Artist 0.2",
-            "ratosh.Nobo 0.21", "dy.LevelOne 2.0", "rjw.RabidWombat 0.71"}) {
+            // rjw.RabidWombat 0.71 lost here and joined with shield part 2 (PR #256).
+            "ratosh.Nobo 0.21", "dy.LevelOne 2.0"}) {
             assertTrue(!list.matches(name), name);
         }
         // Entries carry a version: a robot's next release is not on the list until benched.
@@ -116,11 +117,36 @@ class ShieldListResourceTest {
             "dz.Caedo 1.4", "cuoq.Kakera 1.0"}) {
             assertTrue(list.matches(name), name);
         }
-        // Locked on the first pick, dropped on the 8 fresh seeds of the confirm.
+        // Locked on the first pick, dropped on the 8 fresh seeds of the confirm. TJ.Exupery 1.39 was
+        // too, and joined with shield part 2's opening drive (PR #256).
         for (String name : new String[] {
-            "ar.horizon.Horizon 1.2.2", "stelo.Spread 0.9", "florent.XSeries.X2 0.17", "TJ.Exupery 1.39"}) {
+            "ar.horizon.Horizon 1.2.2", "stelo.Spread 0.9", "florent.XSeries.X2 0.17"}) {
             assertTrue(!list.matches(name), name);
         }
+    }
+
+    @Test
+    @Tag("SHIELD-17")
+    @Tag("SHIELD-18")
+    @DisplayName("shield part 2's entries (PR #256, gate +0.31 APS): 16 list adds, 31 opening drives, 221 shipped aims")
+    void listHoldsShieldPartTwo() {
+        List<String> lines = new java.util.ArrayList<>(Arrays.asList(ShieldListData.lines()));
+        for (String name : ShieldTableData.moves()) lines.add(ShieldList.MOVE_PREFIX + " " + name);
+        for (String aim : ShieldTableData.aims()) lines.add(ShieldList.AIM_PREFIX + " " + aim);
+        ShieldList list = ShieldList.parse(lines);
+        for (String name : new String[] {"CharlieN.Omega.Omega 1.03", "SHAM.WOW 1.4", "voidious.micro.Jen 1.11"}) {
+            assertTrue(list.matches(name), name);
+        }
+        assertEquals(31, ShieldTableData.moves().length);
+        for (String name : ShieldTableData.moves()) {
+            assertTrue(list.moves(name) && list.matches(name), "an opening drive is for a shielded robot: " + name);
+        }
+        assertEquals(221, ShieldTableData.aims().length);
+        for (String aim : ShieldTableData.aims()) {
+            String name = aim.split(" ", 3)[2];
+            assertTrue(list.aimFor(name) != null && list.matches(name), "a shipped aim is for a shielded robot: " + name);
+        }
+        assertTrue(!list.moves("dft.Cyanide 1.90") && list.aimFor("sample.Fire") == null);
     }
 
     @Test
