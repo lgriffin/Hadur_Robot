@@ -247,3 +247,25 @@ melee replays bit-identical).
 **Stop rule.** If D's PC gate is below +1.5, 5th place needs Nightmare's structure (a leader
 giving orders, 120-energy droids), which is a new team, not a movement. Report that before
 building anything more.
+
+**Step B result (cloud, 2026-10-24).** AlephTeam and HadurTeam 3.16 were each benched as the
+subject against the 25 lower teams of hadur-bench/team-lower25.txt (ranks 21-46 without the
+engine's sampleteam.MyFirstTeam; seeds 3000-3001, 10 rounds), then Hadur again on the five worst
+of them, with every enemy bullet that hit a member classified by aim (head-on, linear, other)
+from the bench's bullets.log. The tlane0 smoke used seeds 3100-3101.
+
+- Aleph's lower-half edge is four teams: TeamDeath +20, GrofGroup +17.5, DiamondStealers +12.5 and
+  ImpactTeam +12 share points. The other 21 are within ±2.
+- It is not dodging. The enemy's hit rate on our members matches its rate on Aleph's (TeamDeath
+  36% and 38%, Grof 16% and 13%, Impact 34% and 35%), and our hit rate matches Aleph's.
+- It is tempo. Aleph fires 14.8 shots a round per 50 ticks, near five members' cap; Hadur fires
+  9.6. Our rounds run 35-40% longer, so the enemy fires about 40% more bullets at us.
+- The cause is the fire lane (WEAVE-4, WEAVE-7): 7,069 shots held for a teammate in 10 battles,
+  about a third of our fire. Aleph fires through its teammates (about 50 hits on its own members
+  a battle) and still wins.
+- Cloud smoke of `tlane0` (no lane, team only) against the 3.16 aa build on those five teams,
+  2 seeds: **+10.8 ± 4.8** share points, TeamDeath +15.9 ± 2.2.
+
+So step C is the fire lane: `tlane0`, `tlane4` (WEAVE-4's point test alone) and `tlane0` with
+MATEFIRE (teammates dodge our bullets), screened on all 46 teams (plans/team-c.steps, about
+2.5 PC hours). Ship an arm at +1.0 or more with the low end above zero and the A/A within ±1.0.
