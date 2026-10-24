@@ -59,9 +59,11 @@ public final class ShieldDesign {
 
     /**
      * The design the robot ships (SHIELD-13; SHIELD-14's wall since 3.15, +0.19 +/- 0.09 APS in the
-     * top-5 factorial, PR #221). The ablation builds edit this one line.
+     * top-5 factorial, PR #221; SHIELD-16's prior base with mode table v1, which passed the census
+     * gate at +0.54 +/- 0.20 APS with the 49 robots it added to the shield list, PR #244). The
+     * ablation builds edit this one line.
      */
-    public static final ShieldDesign SHIPPED = parse("wall,hold,learn,mode,stay");
+    public static final ShieldDesign SHIPPED = parse("prior,wall,hold,learn,mode,stay");
 
     /** SHIELD-8: no attack shots while shielding. */
     public final boolean hold;

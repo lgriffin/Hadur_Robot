@@ -16,9 +16,10 @@ package hadur2;
  * docs/bench/d5-probe.md (gate in docs/bench/d5-gate.md): the robots shield mode wins against,
  * and those it is expected to gain against. The other 83 (3.10) come from the shield sweep of
  * DrussGT's list, ranks 51 to 700 (docs/bench/local/2026-10-08_shield-sweep.md), by the same
- * rule. The last 103 (3.13) are the robots on Nullstride 2.3.3's list that shield mode with
+ * rule. The next 103 (3.13) are the robots on Nullstride 2.3.3's list that shield mode with
  * SHIELD-8 to SHIELD-11 beats normal mode against, by the same rule
- * (docs/bench/local/2026-10-12_plan90-pc-read.md). SHIELD-6 still bounds the cost for a listed
+ * (docs/bench/local/2026-10-12_plan90-pc-read.md). The last 49 (3.16) are mode table v1's shield
+ * entries, confirmed on fresh seeds and passed through the census gate (PR #244). SHIELD-6 still bounds the cost for a listed
  * robot: shield mode is left for the rest of a battle once the enemy's bullet damage would
  * hold our score share below 85%.</p>
  *
@@ -254,6 +255,60 @@ final class ShieldListData {
             "ejbots.AngryGrandpappy 1.2",
             "slugzilla.OrbitLinear 1.1",
             "suh.nano.AntiGravityL 1.01",
+            // Mode table v1 (3.16, PR #244, docs/plan-shield-quality.md): the census robots off this
+            // list that shield mode with SHIELD-16 beats normal mode against at +5 points with the
+            // interval above 0 on a first pick (Saguaro's shield bots, pc-shield-s1; the rest of the
+            // field, the pc-table-v1 screen) and again at +3 on 8 fresh seeds. Census gate with
+            // SHIELD-16 on: +0.54 +/- 0.20 APS.
+            "EE.LittleBig 1.0",
+            "KiraNL.Cataris 1.0",
+            "PkKillers.PkAssassin 1.0",
+            "apv.NanoLauLectrik 1.0",
+            "ary.Help 1.0",
+            "bing2.Melody 1.3.1",
+            "cs.s2.Seraphim 2.3.1",
+            "cuoq.Kakera 1.0",
+            "dz.Caedo 1.4",
+            "ers.micro.ISuck.ISuckMicro 0.1f",
+            "ers.micro.speusippus.Speusippus 0.3",
+            "ers.nano.gokdeniz.Gokdeniz 1.5b",
+            "ers.nano.iSuck.ISuckNano 1.0a",
+            "ers.nano.lig.LigMA 1.9",
+            "ers.nano.nekolh.Nekolh 1.4d",
+            "exauge.GateKeeper 1.1.121g",
+            "florent.test.Toad 0.14t",
+            "intruder.PrairieWolf 2.61",
+            "jk.micro.Cotillion 0.8",
+            "jk.sheldor.nano.Yatagan 1.2.3",
+            "jwst.DAD.DarkAndDarker 1.1",
+            "kawigi.nano.FunkyChicken 1.1",
+            "kc.micro.WaveShark 0.5",
+            "kenran.Bakko v1.0.1",
+            "kenran.mega.Pantheist 1.1",
+            "kinsen.nano.Quarrelet 1.0",
+            "kneels.nano.Derp 0.2",
+            "mue.Hyperion 0.8",
+            "myl.micro.Avipes 1.00",
+            "nz.jdc.nano.NeophytePattern 1.1",
+            "nz.jdc.nano.PatternAdept 1.0",
+            "oog.micro.MagicD3 0.41",
+            "oog.micro.SavantMicro 1.1",
+            "oog.nano.Fuatisha 1.1",
+            "rc.yoda.Yoda 1.0.6c.fix",
+            "robar.nano.BlackWidow 1.3",
+            "robar.nano.Pugio 1.49",
+            "sheldor.nano.Feint 1.2.1",
+            "sheldor.nano.FoilistNano 3.2",
+            "sheldor.nano.PointInLine 1.0",
+            "shinh.Entangled 0.3",
+            "slugzilla.ButtHead 2.0",
+            "spinnercat.Robovirus 2.718",
+            "spinnercat.mega.Tardis 1.2",
+            "timmit.micro.TimXJ 0.22",
+            "trab.nano.AinippeNano 1.3",
+            "whind.Constitution 0.7.1",
+            "whind.Strength 0.6.4",
+            "wiki.nano.RaikoNano 1.1",
         };
     }
 }

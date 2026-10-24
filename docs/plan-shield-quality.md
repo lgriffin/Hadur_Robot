@@ -81,3 +81,13 @@ the live-noise warning (one pass is ±0.4 APS). On FAIL: the screen and confirm 
 the table's shield entries; the gap is read by band before any more PC hours. Stages 2 (shipped
 per-opponent aim and opening reposition), 5 (simple-aim dodge) and 6 (stop-and-go) are builds still
 to write; they get their own cards after this run.
+
+## Result (2026-10-24, PR #244)
+
+`pc-table-v1` passed its census gate: t1 (3.15 + SHIELD-16 + 49 robots on the shield list) beat 3.15
+by +0.54 ± 0.20 APS census-weighted over all 1,212 robots (lower end +0.34), A/A -0.02 ± 0.17.
+By segment (APS): rammers 0.00, ranks 401+ +0.16, large losses +0.06, ranks 51-400 +0.27, top 24
++0.04. The screen locked 23 of 886, stage 1 locked 41 of 126, and the 8-seed confirm kept 49 of those
+64 at +12.7 points each. Master now ships t1 (SHIELD-16 on, the 49 added); release on Leigh's call.
+The bench overpredicted 3.15 live by about 0.5, and one live pass moves about ±0.4 APS, so read the
+first pass by segment.
