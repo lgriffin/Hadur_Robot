@@ -61,10 +61,13 @@ class ModesV2Test(unittest.TestCase):
         census = {n for n, _ in table_v1.set_rows(os.path.join(bench, "census-312.txt"))}
         poison = table_v1.set_rows(os.path.join(bench, "panel-saguaro-poison.txt"))
         dodge = table_v1.set_rows(os.path.join(bench, "panel-saguaro-dodge.txt"))
+        low = table_v1.set_rows(os.path.join(bench, "panel-low-normal.txt"))
         self.assertEqual(148, len(poison))
         self.assertEqual(428, len(dodge))
-        self.assertFalse({n for n, _ in poison} & {n for n, _ in dodge}, "one mode a robot")
-        self.assertTrue(all(n in census for n, _ in poison + dodge))
+        self.assertEqual(148, len(low))
+        names = [{n for n, _ in p} for p in (poison, dodge, low)]
+        self.assertFalse(names[0] & names[1] or names[0] & names[2] or names[1] & names[2], "one panel a robot")
+        self.assertTrue(all(n in census for n, _ in poison + dodge + low))
 
 
 if __name__ == "__main__":

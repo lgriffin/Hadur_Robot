@@ -1,7 +1,7 @@
-# 1v1 mode table v2 (docs/bench/live-3.16.md, Leigh's "Tailor the field (3 modes)"): Saguaro's two
-# mode families Hadur lacks, per opponent. Stop-and-go (POISON-1, POISON-2) against the 148 robots
-# Saguaro plays WavePoison or WavePoisonShift against, and the simple-aim dodge (DODGE-1 to DODGE-3)
-# against the 428 it plays ShotDodger against (panel-saguaro-poison.txt, panel-saguaro-dodge.txt).
+# 1v1 mode table v2 (docs/bench/live-3.16.md, Leigh's "Tailor the field (3 modes)"): stop-and-go
+# (POISON-1, POISON-2) per opponent, against the 148 robots Saguaro plays WavePoison or
+# WavePoisonShift against (panel-saguaro-poison.txt) and the 148 Hadur scores under 85 live that
+# Saguaro fights with its normal modes (panel-low-normal.txt).
 #   ./queue.sh run pc-1v1-modes        (or  .\queue.ps1 run pc-1v1-modes)
 # Run it from master:
 #   git checkout master && git pull
@@ -12,13 +12,15 @@
 # Cloud smoke (2026-10-24, 1 seed, Hadur's 16 worst poison robots): the right variant gained 10 to
 # 35 points on 13 of 16, the wrong one collapsed to 5-20%. So stop-and-go goes per robot, never
 # field-wide, and the pick needs the 95% interval above 0 as well as the margin.
+# The simple-aim dodge (DODGE-1 to DODGE-3) is not screened: two cloud smokes on 32 simple-gun
+# robots, pooled against four control runs, gave +0.18 (v1) and 0.00 (v2) points a robot, with no
+# gain even where it read the gun (Hadur already scores 90-97 there). It stays built, off.
 #
 # poison screen (about 1.2 h): 148 robots x c, aa, wp, ws x 3 seeds = 1,776 battles.
-# dodge screen (about 0.8 h): 428 robots x c, aa, sg x 2 seeds = 2,568 battles.
-# pick: mode_table.py locks wp or ws at +5 points with the 95% interval above 0 (the better wins);
-#   the dodge goes to a robot whose gun it read (last SD record active) in at least half its sg
-#   battles and whose sg mean is not below the reference.
-# candidate: t3 = 3.16 + the WavePoison, WavePoisonShift and dodge entries (build-ablation.sh).
+# low screen (about 0.8 h): 148 robots x c, aa, wp, ws x 2 seeds = 1,184 battles.
+# pick: mode_table.py over both screens locks wp or ws at +5 points with the 95% interval above 0
+#   (the better wins).
+# candidate: t3 = 3.16 + the WavePoison and WavePoisonShift entries (build-ablation.sh).
 # verify (about 1.5 h): the robots t3 has an entry for x c, aa, t3 x 3 fresh seeds. A robot without
 #   an entry plays bit for bit as 3.16, so it adds nothing but noise to the verify.
 # gate: t3 minus pooled c and aa summed over the verify panel / 1,217 pairings: PASS at +0.15 APS
@@ -33,18 +35,18 @@ set C = --skip-build --skip-fetch --rounds 35 --cpu-constant 1488498 ${HEAP} ${E
 set M = python3 tools/modes_v2.py
 set OUT = ../docs/bench/local
 
-prep | mkdir -p bisect work && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur2.Hadur_3.16.jar bisect/ && bash ./build-ablation.sh aa && bash ./build-ablation.sh sgo && bash ./build-ablation.sh sgo2 && bash ./build-ablation.sh sdodge && ./fetch-opponents.sh --set panel-saguaro-poison.txt && ./fetch-opponents.sh --set panel-saguaro-dodge.txt && mvn -q compile
+prep | mkdir -p bisect work && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur2.Hadur_3.16.jar bisect/ && bash ./build-ablation.sh aa && bash ./build-ablation.sh sgo && bash ./build-ablation.sh sgo2 && ./fetch-opponents.sh --set panel-saguaro-poison.txt && ./fetch-opponents.sh --set panel-low-normal.txt && mvn -q compile
 
 poison | ./bench-top20.sh ${C} ${P} --set panel-saguaro-poison.txt --seeds 3 --seed-base 2500 --arms plans/modes-poison.arms --out work/modes-poison --label modes-poison
   after: prep
 
-dodge | ./bench-top20.sh ${C} ${P} --set panel-saguaro-dodge.txt --seeds 2 --seed-base 2600 --arms plans/modes-dodge.arms --out work/modes-dodge --label modes-dodge
+low | ./bench-top20.sh ${C} ${P} --set panel-low-normal.txt --seeds 2 --seed-base 2600 --arms plans/modes-poison.arms --out work/modes-low --label modes-low
   after: poison
 
-pick | python3 ../data/tools/multiarm.py work/modes-poison/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_modes-poison-screen.md && python3 ../data/tools/multiarm.py work/modes-dodge/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_modes-dodge-screen.md && python3 ../data/tools/mode_table.py work/modes-poison/arms.tsv --margin 5 --out-tsv ${OUT}/modes-v2-poison-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_modes-v2-poison-pick.md && ${M} split ${OUT}/modes-v2-poison-pick.tsv --stopgo ${OUT}/modes-v2-stopgo.txt --stopgo2 ${OUT}/modes-v2-stopgo2.txt && ${M} dodge work/modes-dodge --arm sg --out ${OUT}/modes-v2-dodge.txt
-  after: dodge
+pick | python3 ../data/tools/multiarm.py work/modes-poison/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_modes-poison-screen.md && python3 ../data/tools/multiarm.py work/modes-low/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_modes-low-screen.md && python3 ../data/tools/mode_table.py work/modes-poison/arms.tsv work/modes-low/arms.tsv --margin 5 --out-tsv ${OUT}/modes-v2-poison-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_modes-v2-poison-pick.md && ${M} split ${OUT}/modes-v2-poison-pick.tsv --stopgo ${OUT}/modes-v2-stopgo.txt --stopgo2 ${OUT}/modes-v2-stopgo2.txt && : > ${OUT}/modes-v2-dodge.txt
+  after: low
 
-candidate | ${M} candidate ${OUT}/modes-v2-stopgo.txt ${OUT}/modes-v2-stopgo2.txt ${OUT}/modes-v2-dodge.txt --base 3.16 --out work/modes-v2-verify.arms && ${M} panel panel-saguaro-poison.txt panel-saguaro-dodge.txt --names ${OUT}/modes-v2-stopgo.txt ${OUT}/modes-v2-stopgo2.txt ${OUT}/modes-v2-dodge.txt --out work/modes-v2-panel.txt
+candidate | ${M} candidate ${OUT}/modes-v2-stopgo.txt ${OUT}/modes-v2-stopgo2.txt ${OUT}/modes-v2-dodge.txt --base 3.16 --out work/modes-v2-verify.arms && ${M} panel panel-saguaro-poison.txt panel-low-normal.txt --names ${OUT}/modes-v2-stopgo.txt ${OUT}/modes-v2-stopgo2.txt ${OUT}/modes-v2-dodge.txt --out work/modes-v2-panel.txt
   after: pick
 
 verify | ./bench-top20.sh ${C} ${P} --set work/modes-v2-panel.txt --seeds 3 --seed-base 2700 --arms work/modes-v2-verify.arms --out work/modes-v2-verify --label modes-v2-verify
@@ -53,7 +55,7 @@ verify | ./bench-top20.sh ${C} ${P} --set work/modes-v2-panel.txt --seeds 3 --se
 gate | python3 ../data/tools/multiarm.py work/modes-v2-verify/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_modes-v2-verify.md && python3 tools/shield_s2.py gate work/modes-v2-verify/arms.tsv --arm t3 --panel work/modes-v2-panel.txt --out ${OUT}/$(date +%Y-%m-%d)_modes-v2-gate.md
   after: verify
 
-pr | bash tools/open_results_pr.sh claude/pc-1v1-modes-results "1v1 mode table v2: stop-and-go and simple-aim dodge, screen and verify gate" ${OUT}/*_modes-*.md ${OUT}/modes-v2-*.tsv ${OUT}/modes-v2-*.txt
+pr | bash tools/open_results_pr.sh claude/pc-1v1-modes-results "1v1 mode table v2: stop-and-go per opponent, screen and verify gate" ${OUT}/*_modes-*.md ${OUT}/modes-v2-*.tsv ${OUT}/modes-v2-*.txt
   after: gate
 
 # ---- Team step C (team thread, plans/team-c.steps, docs/plan-team-top5.md section 8): the fire
