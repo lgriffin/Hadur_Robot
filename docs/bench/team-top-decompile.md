@@ -95,3 +95,51 @@ Card `hadur-bench/plans/pc-team-modes.queue` (about 2,800 to 3,100 battles, 3 h 
 6. Results PR from the PC (claude/pc-team-modes-results).
 
 No PC run starts until pc-table-v1 is done and Leigh says go.
+
+## 6. Results: pc-team-modes (2026-10-24, PR #246)
+
+**Verdict: the gate FAILED. Every team mode stays off in 3.16.** The census of the locked table
+(mk) against aa came out at **+0.2 ± 0.8** points over all 46 teams, against a bar of +3.0 with
+the low end above +1.5. The A/A (bb) was clean at -0.3 ± 0.8. There were no failed battles.
+
+| Screen (forced on vs every team) | Paired gain over aa |
+|---|---|
+| SOFT (ms) | -0.3 ± 0.8 |
+| GANG (mg) | -0.8 ± 0.8 |
+| FINISH (mf) | +0.4 ± 0.7 |
+| PACK (mp) | **-15.2 ± 1.3** |
+| SCREEN (mx) | +0.4 ± 0.7 |
+| POOL (mo) | +0.6 ± 0.8 |
+
+- **Pick, confirm and lock.** Pick chose a mode for 13 teams. Confirm kept 5 of them:
+  - GlowingHawks: SCREEN
+  - TroodonPack: LEARN
+  - DiamondStealers: POOL
+  - DrunkenTeam: SCREEN
+  - FourProphets: POOL
+
+  Only one held on the census's fresh seeds: **FourProphets with POOL, +4.1 ± 1.7**. TroodonPack
+  gave +7.5 ± 7.0 and the other three were noise. Five teams out of 46 cannot move the mean by
+  +3: even a real +4 on one team is +0.1 overall.
+- **What it says.** The six team movement modes are each worth less than one point across the
+  field. The team gap (members dying against the top 20) is not a movement-mode problem. Per-team
+  tailoring only pays where a single mode is worth a lot against that team, and the screens found
+  no such team apart from PACK's losses.
+- **PACK is a design flaw, not a code bug.** The prey choice, the ranking and the slot geometry
+  are all as designed. Two things combine to cause the loss:
+  1. The pincer radius is 0.74 × the nearest member's *current* distance, recomputed every
+     tick. Each step in shrinks it until it reaches the 150 px floor, so Hadur parks at
+     point-blank range inside the prey's team.
+  2. The pull has strength 1.0 and multiplies the *whole* risk, bullet risk included. A spot
+     200 px closer is scaled by e^-2 ≈ 0.14, which all but switches the dodging off.
+
+  NightmareTeam can play like this because its members carry 120 energy and fight close; Hadur's
+  gun and surfing are built for range. If PACK is ever retried, it needs these changes:
+  - a fixed radius of 300 px or more, set when the prey is chosen;
+  - strength around 0.3;
+  - the pull leaves the bullet term unscaled.
+- **POOL costs CPU.** The mo screen skipped 143.7 turns a battle (aa: 7.8), and the table builds
+  that carry POOL skipped more too (confirm 59.7, census 13.4). A pooled log fills five times as
+  fast, up to its 1,000-sample cap, and each detected shot runs the kNN over it. On slower
+  rumble clients that would cost more. Before POOL ships anywhere, cap the pooled log lower (for
+  example 300) or limit the kNN.
