@@ -92,6 +92,11 @@ public final class ShieldMode {
     /** Ticks without an enemy shot after which we fire at it anyway. */
     public static final int IDLE_TICKS = 32;
 
+    /** SHIELD-17: the enemy's weight against one wall's in the opening drive's anti-gravity. */
+    static final double MOVE_ENEMY_WEIGHT = 3;
+    /** SHIELD-17: the distance ordered each tick of the opening drive, px. */
+    static final double MOVE_AHEAD = 100;
+
     private static final int HISTORY = 8;
     private static final int MAX_WAVES = 16;
     private static final int MAX_OWN_BULLETS = 16;
@@ -115,6 +120,8 @@ public final class ShieldMode {
         final double attackPower;
         final boolean gunOnTarget;
         final boolean mayFire;
+        final double fieldWidth;
+        final double fieldHeight;
 
         /**
          * One tick's view of the duel. {@code attackAngle} and {@code attackPower} are what
@@ -141,6 +148,37 @@ public final class ShieldMode {
                          double gunHeat, double coolingRate, double energy, double enemyX,
                          double enemyY, double enemyEnergy, double attackAngle,
                          double attackPower, boolean gunOnTarget, boolean mayFire) {
+            this(time, x, y, heading, gunHeading, gunHeat, coolingRate, energy, enemyX, enemyY,
+                enemyEnergy, attackAngle, attackPower, gunOnTarget, mayFire, Double.NaN, Double.NaN);
+        }
+
+        /**
+         * One tick's view of the duel on a field of known size, which SHIELD-17's opening
+         * drive needs; the other parameters are as above.
+         *
+         * @param time the tick
+         * @param x our x, px
+         * @param y our y, px
+         * @param heading our body's heading, radians
+         * @param gunHeading our gun's heading, radians
+         * @param gunHeat the gun's heat
+         * @param coolingRate the gun's cooling rate per tick
+         * @param energy our energy
+         * @param enemyX the enemy's x at the last scan, px
+         * @param enemyY the enemy's y at the last scan, px
+         * @param enemyEnergy the enemy's energy at the last scan
+         * @param attackAngle the angle the main gun would aim at
+         * @param attackPower the power the main gun would fire
+         * @param gunOnTarget whether the gun may fire at the attack aim
+         * @param mayFire whether the conductor lets a shot leave this tick (WEAVE-3)
+         * @param fieldWidth the battlefield's width, px, or NaN when not known
+         * @param fieldHeight the battlefield's height, px, or NaN when not known
+         */
+        public Situation(long time, double x, double y, double heading, double gunHeading,
+                         double gunHeat, double coolingRate, double energy, double enemyX,
+                         double enemyY, double enemyEnergy, double attackAngle,
+                         double attackPower, boolean gunOnTarget, boolean mayFire,
+                         double fieldWidth, double fieldHeight) {
             this.time = time;
             this.x = x;
             this.y = y;
@@ -156,6 +194,8 @@ public final class ShieldMode {
             this.attackPower = attackPower;
             this.gunOnTarget = gunOnTarget;
             this.mayFire = mayFire;
+            this.fieldWidth = fieldWidth;
+            this.fieldHeight = fieldHeight;
         }
     }
 
@@ -256,6 +296,11 @@ public final class ShieldMode {
     private int enemyShotsThisRound;
     private boolean enemyFiredThisRound;
 
+    /** SHIELD-17: the opening drive is for this opponent (the move switch, or the list's move entry). */
+    private boolean opening;
+    /** SHIELD-17: ticks of opening drive this round, for the round's record. */
+    private int openingTicks;
+
     /** SHIELD-15: the opponent is in shield mode only on trial (unlisted, trial switch on). */
     private boolean onTrial;
     private int trialShots;
@@ -345,6 +390,7 @@ public final class ShieldMode {
         attackShotsThisRound = 0;
         enemyShotsThisRound = 0;
         enemyFiredThisRound = false;
+        openingTicks = 0;
     }
 
     /**
@@ -402,6 +448,40 @@ public final class ShieldMode {
         return interceptsThisRound;
     }
 
+    /**
+     * SHIELD-18: a shipped aim starts its predictor {@link ShieldDesign#AIM_PRIOR} exact matches
+     * ahead, with its offset as that base's learned offset; an aim for a predictor this design
+     * does not have is ignored.
+     */
+    private void seedAim(double[] aim) {
+        if (aim == null) return;
+        int k = (int) aim[0];
+        if (k < 0 || k >= predictors) return;
+        exactHits[k] += ShieldDesign.AIM_PRIOR;
+        int b = k % bases;
+        if (k / bases == 1) offsets[b] = aim[1];
+        else if (k / bases == 2) directionalOffsets[b] = aim[1];
+    }
+
+    /** SHIELD-18: the offset predictor {@code k} adds to its base. */
+    private double offsetOf(int k) {
+        int b = k % bases;
+        switch (k / bases) {
+            case 0: return 0;
+            case 1: return offsets[b];
+            default: return directionalOffsets[b];
+        }
+    }
+
+    /**
+     * SHIELD-17: whether the opening drive applies to this battle's opponent.
+     *
+     * @return true when the opponent is shielded and the move switch or the list's move entry is on
+     */
+    public boolean opening() {
+        return opening;
+    }
+
     /** The predictor that has matched the most enemy bullets exactly. */
     int bestPredictor() {
         int best = 0;
@@ -433,6 +513,8 @@ public final class ShieldMode {
             boolean onList = list.matches(name);
             onTrial = design.trial && !onList;
             listed = onList || onTrial;
+            opening = listed && (design.move || list.moves(name));
+            if (listed) seedAim(list.aimFor(name));
         }
         if (!listed) return;
         now = time;
@@ -729,6 +811,12 @@ public final class ShieldMode {
             round, tick, shieldShotsThisRound, interceptsThisRound, hitsThisRound,
             unpredictedThisRound, attackShotsThisRound, budget.taken(), budget.allowed(),
             battleOff ? battleExit : exitReason));
+        if (design.rec) {
+            // SHIELD-18: what a shipped aim is built from.
+            int k = bestPredictor();
+            telemetry.emit(String.format(Locale.ROOT, "SP,%d,%d,%d,%d,%.9f,%d,%d,%d",
+                round, tick, bases, k, offsetOf(k), exactHits[k], offsetSamples, openingTicks));
+        }
         if (!battleOff && budget.exceeded()) leaveBattle(tick, "budget");
     }
 
@@ -838,6 +926,13 @@ public final class ShieldMode {
             }
         }
         prune(s);
+        if (opening && !enemyFiredThisRound && plan == null && waves.isEmpty()
+                && s.time < enemyNextFire - ShieldDesign.MOVE_STOP_TICKS
+                && !Double.isNaN(s.fieldWidth) && !Double.isNaN(s.fieldHeight)) {
+            // SHIELD-17: Saguaro's moving shield, the opening drive while the enemy's gun cools.
+            openingTicks++;
+            return openingDrive(s);
+        }
         double back = 0;
 
         if (plan != null && s.time == plan.fireTime) {
@@ -1003,6 +1098,33 @@ public final class ShieldMode {
             }
         }
         return Long.MIN_VALUE;
+    }
+
+    /**
+     * SHIELD-17: away from the four walls and the enemy, each pushing by the inverse square of
+     * its distance (the enemy {@link #MOVE_ENEMY_WEIGHT} times a wall), driving forward or
+     * back, whichever needs the smaller body turn. The gun turns to the main gun's aim and holds.
+     */
+    static Command openingDrive(Situation s) {
+        double fx = 0, fy = 0;
+        double left = Math.max(1, s.x), right = Math.max(1, s.fieldWidth - s.x);
+        double bottom = Math.max(1, s.y), top = Math.max(1, s.fieldHeight - s.y);
+        fx += 1 / (left * left) - 1 / (right * right);
+        fy += 1 / (bottom * bottom) - 1 / (top * top);
+        double dx = s.x - s.enemyX, dy = s.y - s.enemyY;
+        double d2 = Math.max(1, dx * dx + dy * dy);
+        double d = Math.sqrt(d2);
+        fx += MOVE_ENEMY_WEIGHT * dx / (d * d2);
+        fy += MOVE_ENEMY_WEIGHT * dy / (d * d2);
+        double gunTurn = Angles.normalRelativeAngle(s.attackAngle - s.gunHeading);
+        if (fx == 0 && fy == 0) return new Command(0, 0, gunTurn, 0, false);
+        double turn = Angles.normalRelativeAngle(Math.atan2(fx, fy) - s.heading);
+        double ahead = MOVE_AHEAD;
+        if (Math.abs(turn) > Math.PI / 2) {
+            turn = Angles.normalRelativeAngle(turn + Math.PI);
+            ahead = -ahead;
+        }
+        return new Command(turn, ahead, gunTurn, 0, false);
     }
 
     /** Turns the body side-on to the enemy, so a step ahead is a step sideways. */

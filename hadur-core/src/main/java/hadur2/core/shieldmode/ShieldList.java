@@ -1,7 +1,9 @@
 package hadur2.core.shieldmode;
 
 import java.util.Collections;
+import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.TreeSet;
 
 /**
@@ -18,7 +20,12 @@ import java.util.TreeSet;
  * {@code apv.test.Virus} does not match {@code apv.test.VirusX}. Runs of white space in a
  * line count as one space.</p>
  *
- * <p>At most {@link #MAX_ENTRIES} entries are kept (RES-2).</p>
+ * <p>Two more kinds of line, matched by the same rule (SHIELD-17, SHIELD-18):
+ * {@code shield-move: name} names an opponent the shield's opening drive is for, and
+ * {@code shield-aim: predictor offset name} gives an opponent's shipped aim, its best predictor
+ * (from 0) and that predictor's offset in radians. A malformed aim line is skipped.</p>
+ *
+ * <p>At most {@link #MAX_ENTRIES} entries of each kind are kept (RES-2).</p>
  */
 public final class ShieldList {
 
@@ -26,18 +33,29 @@ public final class ShieldList {
     public static final int MAX_ENTRIES = 4096;
 
     /** The list with nobody on it: shield mode never starts. */
-    public static final ShieldList NONE = new ShieldList(Collections.<String>emptySet(), Collections.<String>emptySet());
+    public static final ShieldList NONE = new ShieldList(Collections.<String>emptySet(), Collections.<String>emptySet(),
+        Collections.<String>emptySet(), Collections.<String, double[]>emptyMap());
 
     /** MOVE-23: a line starting with this names an opponent on the stack off-list, not a shield-mode one. */
     public static final String STACK_OFF_PREFIX = "stack-off:";
+    /** SHIELD-17: a line starting with this names an opponent for the shield's opening drive. */
+    public static final String MOVE_PREFIX = "shield-move:";
+    /** SHIELD-18: a line starting with this gives an opponent's shipped aim. */
+    public static final String AIM_PREFIX = "shield-aim:";
 
     private final Set<String> entries;
     /** MOVE-23: the stack off-list, matched as the shield entries are. */
     private final Set<String> stackOff;
+    /** SHIELD-17: the opening-drive list. */
+    private final Set<String> moves;
+    /** SHIELD-18: name to {predictor, offset}. */
+    private final Map<String, double[]> aims;
 
-    private ShieldList(Set<String> entries, Set<String> stackOff) {
+    private ShieldList(Set<String> entries, Set<String> stackOff, Set<String> moves, Map<String, double[]> aims) {
         this.entries = entries;
         this.stackOff = stackOff;
+        this.moves = moves;
+        this.aims = aims;
     }
 
     /**
@@ -49,6 +67,8 @@ public final class ShieldList {
     public static ShieldList parse(Iterable<String> lines) {
         Set<String> entries = new TreeSet<>();
         Set<String> stackOff = new TreeSet<>();
+        Set<String> moves = new TreeSet<>();
+        Map<String, double[]> aims = new TreeMap<>();
         if (lines != null) {
             for (String line : lines) {
                 if (line == null) continue;
@@ -60,12 +80,33 @@ public final class ShieldList {
                     if (!name.isEmpty() && stackOff.size() < MAX_ENTRIES) stackOff.add(name);
                     continue;
                 }
+                if (entry.startsWith(MOVE_PREFIX)) {
+                    String name = entry.substring(MOVE_PREFIX.length()).trim();
+                    if (!name.isEmpty() && moves.size() < MAX_ENTRIES) moves.add(name);
+                    continue;
+                }
+                if (entry.startsWith(AIM_PREFIX)) {
+                    String[] p = entry.substring(AIM_PREFIX.length()).trim().split(" ", 3);
+                    if (p.length == 3 && aims.size() < MAX_ENTRIES) {
+                        try {
+                            int predictor = Integer.parseInt(p[0]);
+                            double offset = Double.parseDouble(p[1]);
+                            if (predictor >= 0 && !Double.isNaN(offset) && !Double.isInfinite(offset)) {
+                                aims.put(p[2], new double[] {predictor, offset});
+                            }
+                        } catch (NumberFormatException e) {
+                            // A malformed aim line is skipped.
+                        }
+                    }
+                    continue;
+                }
                 if (entries.size() >= MAX_ENTRIES) continue;
                 entries.add(entry);
             }
         }
-        if (entries.isEmpty() && stackOff.isEmpty()) return NONE;
-        return new ShieldList(Collections.unmodifiableSet(entries), Collections.unmodifiableSet(stackOff));
+        if (entries.isEmpty() && stackOff.isEmpty() && moves.isEmpty() && aims.isEmpty()) return NONE;
+        return new ShieldList(Collections.unmodifiableSet(entries), Collections.unmodifiableSet(stackOff),
+            Collections.unmodifiableSet(moves), Collections.unmodifiableMap(aims));
     }
 
     /**
@@ -92,6 +133,34 @@ public final class ShieldList {
         if (robotName == null || stackOff.isEmpty()) return false;
         String name = robotName.trim().replaceAll("\\s+", " ");
         return stackOff.contains(name) || stackOff.contains(withoutVersion(name));
+    }
+
+    /**
+     * SHIELD-17: whether the shield's opening drive is for {@code robotName}, by the rule of
+     * {@link #matches}.
+     *
+     * @param robotName the scanned robot's name, or null
+     * @return whether it is on the opening-drive list
+     */
+    public boolean moves(String robotName) {
+        if (robotName == null || moves.isEmpty()) return false;
+        String name = robotName.trim().replaceAll("\\s+", " ");
+        return moves.contains(name) || moves.contains(withoutVersion(name));
+    }
+
+    /**
+     * SHIELD-18: {@code robotName}'s shipped aim, by the rule of {@link #matches}: the full name's
+     * entry, else the name's without the version.
+     *
+     * @param robotName the scanned robot's name, or null
+     * @return a fresh {predictor, offset}, or null when none is shipped
+     */
+    public double[] aimFor(String robotName) {
+        if (robotName == null || aims.isEmpty()) return null;
+        String name = robotName.trim().replaceAll("\\s+", " ");
+        double[] a = aims.get(name);
+        if (a == null) a = aims.get(withoutVersion(name));
+        return a == null ? null : a.clone();
     }
 
     /** Whether nobody is on the (shield) list. */

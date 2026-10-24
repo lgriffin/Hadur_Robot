@@ -209,6 +209,14 @@
 #         before it fired, plus its body turn on the firing tick) as a fifth base. Suffix sq.
 #   slistadd  the robots named in the file $SHIELD_ADD (one per line, or a pick TSV) join the shield
 #         list: the shield entries of the 1v1 mode table (docs/plan-shield-quality.md). Suffix mt.
+#   smove  SHIELD-17: Saguaro's moving shield, the opening drive (away from walls and the enemy
+#         while its gun cools) against every shielded opponent. Suffix sv.
+#   srec   SHIELD-18: each shield round's end writes the predictors' state (SP), which saimlist's
+#         file is built from. Changes no play. Suffix sk.
+#   smovelist the robots named in $SHIELD_MOVE (one per line, or a pick TSV) get the opening drive
+#         per opponent (ShieldTableData.moves()). Suffix mv.
+#   saimlist  the lines of $SHIELD_AIM ("predictor offset name", from tools/shield_s2.py aims) become
+#         shipped aims (ShieldTableData.aims()). Suffix ak.
 #   snull  all five at once: Nullstride's design as read from its jar.
 #   strim (3.13) the 22 listed robots that 3.13 lost to in both plan90-gate runs come off the shield
 #         list, so they are fought in normal mode: does the shield still pay against them
@@ -244,6 +252,7 @@ gundesign="$src/hadur-core/src/main/java/hadur2/core/duel/GunDesign.java"
 powerdesign="$src/hadur-core/src/main/java/hadur2/core/duel/PowerDesign.java"
 protean="$src/hadur-core/src/main/java/hadur2/core/move/ProteanPick.java"
 listdata="$src/hadur-robot/src/main/java/hadur2/ShieldListData.java"
+tabledata="$src/hadur-robot/src/main/java/hadur2/ShieldTableData.java"
 budget="$src/hadur-core/src/main/java/hadur2/core/policy/TickBudget.java"
 dist="$src/hadur-core/src/main/java/hadur2/core/policy/DistancePolicy.java"
 detector="$src/hadur-core/src/main/java/hadur2/core/shield/ShieldDetector.java"
@@ -605,13 +614,24 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(names))
             [[ -n "$add" ]] || { echo "slistadd: $SHIELD_ADD names no robot" >&2; exit 2; }
             python3 -c 'import sys; p,a=sys.argv[1:]; s=open(p).read(); k=s.rindex("        };"); open(p,"w").write(s[:k]+a+s[k:])' "$listdata" "$add"
             version="${version}mt" ;;
+        smovelist|saimlist)
+            # Shield part 2 (docs/plan-shield-quality.md): per-opponent opening drive or shipped aims.
+            if [[ "$a" == smovelist ]]; then file="${SHIELD_MOVE:-}"; method="moves"; version="${version}mv"
+            else file="${SHIELD_AIM:-}"; method="aims"; version="${version}ak"; fi
+            [[ -n "$file" && -f "$file" ]] || { echo "$a needs SHIELD_MOVE / SHIELD_AIM=<file>" >&2; exit 2; }
+            add="$(python3 -c 'import sys,json
+lines=[l.split("\t")[0].strip() for l in open(sys.argv[1]) if l.strip() and not l.startswith("#")]
+print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines)), end="")' "$file")"
+            [[ -n "$add" ]] || { echo "$a: $file has no line" >&2; exit 2; }
+            python3 -c 'import sys; p,m,a=sys.argv[1:]; s=open(p).read(); k=s.index("        };", s.index("static String[] %s()" % m)); open(p,"w").write(s[:k]+a+s[k:])' "$tabledata" "$method" "$add"
+            ;;
         strim)
             # 3.13: the 22 robots 3.13's shield lost to in both gate runs leave the list.
             for r in "trab.Crusader 0.1.7" "kid.Toa .0.5" "mladjo.Grrrrr 0.9" "tw.Exterminator 1.0" "suh.micro.MirrorPM 1.00" "cf.proto.Shiva 2.2" "ary.SMG 1.01" "wilson.Chameleon 0.91" "cx.micro.Smoke 0.96" "davidalves.net.DuelistMicroMkII 1.1" "AIR.iRobot 1.0" "starpkg.StarViewerZ 1.26" "rcb.Vanessa03 0" "kawigi.mini.Coriantumr 1.1" "ary.mini.Nimi 1.0" "DM.mega.Bezier 1.618fprrr" "brainfade.Fallen 0.63" "stelo.Randomness 1.1" "simonton.micro.GFMicro 1.0" "apv.NanoLauLectrikTheCannibal 1.1" "mnt.AHEB 0.6a" "nat.Hikari dev0001"; do
                 edit "$listdata" "\"$r\"," '"",'
             done
             version="${version}tr" ;;
-        shold|slearn|smode|sstay|sturn|swall|strial|sprior|snull)
+        shold|slearn|smode|sstay|sturn|swall|strial|sprior|smove|srec|snull)
             # One switch of shieldmode.ShieldDesign (SHIELD-8 to SHIELD-12) added to SHIPPED.
             case "$a" in
                 shold) flag=hold; suffix=sh ;;
@@ -622,12 +642,14 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(names))
                 swall) flag=wall; suffix=sw ;;
                 strial) flag=trial; suffix=sy ;;
                 sprior) flag=prior; suffix=sq ;;
+                smove) flag=move; suffix=sv ;;
+                srec) flag=rec; suffix=sk ;;
                 snull) flag=all; suffix=sn ;;
             esac
             edit "$design" 'public static final ShieldDesign SHIPPED = parse("' \
                 "public static final ShieldDesign SHIPPED = parse(\"$flag,"
             version="${version}${suffix}" ;;
-        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, ramheat, flaton, nowall, flt59, flt8, split, wallesc, gungate, hold650, dfac, bhb, hitclr, pkern, keep2, thgun, freegun, nodecay, stacklist, protean, pdw3, pdw8, pc10, phot, repl, pressure, pdown, pwall, pwc, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tram, t6n, t6l, tmsoft, tmgang, tmfin, tmlearn, tmpack, tmscreen, tmpool, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, shold, slearn, smode, sstay, sturn, swall, strial, sprior, snull, strim, slistadd)" >&2; exit 2 ;;
+        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, ramheat, flaton, nowall, flt59, flt8, split, wallesc, gungate, hold650, dfac, bhb, hitclr, pkern, keep2, thgun, freegun, nodecay, stacklist, protean, pdw3, pdw8, pc10, phot, repl, pressure, pdown, pwall, pwc, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tram, t6n, t6l, tmsoft, tmgang, tmfin, tmlearn, tmpack, tmscreen, tmpool, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, snull, strim, slistadd, smovelist, saimlist)" >&2; exit 2 ;;
     esac
 done
 

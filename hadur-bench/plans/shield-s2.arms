@@ -1,0 +1,7 @@
+# Shield part 2 screen (pc-shield-s2): c is 3.16, aa its A/A copy, sask is 3.16 shielding every
+# opponent with SHIELD-18's records on (shield-all + srec; the records change no play), sasvsk the
+# same with SHIELD-17's opening drive (shield-all + smove + srec).
+c | hadur2.Hadur 3.16 | bisect/hadur2.Hadur_3.16.jar
+aa | hadur2.Hadur 3.16aa | bisect/hadur2.Hadur_3.16aa.jar
+sask | hadur2.Hadur 3.16sask | bisect/hadur2.Hadur_3.16sask.jar
+sasvsk | hadur2.Hadur 3.16sasvsk | bisect/hadur2.Hadur_3.16sasvsk.jar
