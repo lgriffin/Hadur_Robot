@@ -150,6 +150,21 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">The Robocode game rules the core relies on, identical to <code>robocode.Rules</code>.</div>
 </div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="ShotDodger.html" title="class in hadur2.core.physics">ShotDodger</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="block"><a class="req" href="../../../../requirements.html#DODGE-2">DODGE-2</a>: which simple aim the enemy's gun uses, read from the headings of its bullets we learn
+ (those that hit us and those that meet ours), and, once one stands out, the danger of a surf
+ option as whether that aim's bullet would cross us there.</div>
+</div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="SimpleAims.html" title="class in hadur2.core.physics">SimpleAims</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="block"><a class="req" href="../../../../requirements.html#DODGE-1">DODGE-1</a>: where the simple guns would have aimed a wave's bullet at us, as Saguaro's
+ ShotDodger reads them (docs/bench/rivals-source-read.md): head-on, linear, circular and
+ averaged linear predicted tick by tick, and the two one-line linear aims small robots use
+ (bearing plus lateral velocity over bullet speed, and its arcsine), each aimed on the wave's tick or one or two ticks before it (the enemy reads
+ our scan a tick late, and its gun turns a tick after it aims), from where the enemy stood on
+ that tick at where we stood.</div>
+</div>
 </div>
 </div>
 </li>

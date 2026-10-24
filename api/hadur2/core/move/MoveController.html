@@ -491,15 +491,25 @@ loadScripts(document, 'script');</script>
  <a href="FlattenerFormula.html" title="class in hadur2.core.move"><code>FlattenerFormula</code></a> point of the wave (0 to 10), the <a href="SimpleFormula.html" title="class in hadur2.core.move"><code>SimpleFormula</code></a>
  lateral-velocity value (11) and the guess factor that hit (12).</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#shadowComputations()" class="member-name-link">shadowComputations</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setShotDodger(hadur2.core.physics.ShotDodger)" class="member-name-link">setShotDodger</a><wbr>(<a href="../physics/ShotDodger.html" title="class in hadur2.core.physics">ShotDodger</a>&nbsp;dodger)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block"><a class="req" href="../../../../requirements.html#MOVE-1">MOVE-1</a>: how many times a wave's shadows were computed this round.</div>
+<div class="block"><a class="req" href="../../../../requirements.html#DODGE-2">DODGE-2</a>: sets the dodger the surf asks for each wave's danger; null turns it off.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#shadowedWaves()" class="member-name-link">shadowedWaves</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#shadowComputations()" class="member-name-link">shadowComputations</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../../../requirements.html#MOVE-1">MOVE-1</a>: how many times a wave's shadows were computed this round.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#shadowedWaves()" class="member-name-link">shadowedWaves</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../../../requirements.html#MOVE-1">MOVE-1</a>: enemy firing waves one of our bullets shadowed this round.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../physics/ShotDodger.html" title="class in hadur2.core.physics">ShotDodger</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#shotDodger()" class="member-name-link">shotDodger</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../../../requirements.html#DODGE-2">DODGE-2</a>: the dodger, or null.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#soonestFiringImpact(hadur2.core.model.RobotState)" class="member-name-link">soonestFiringImpact</a><wbr>(<a href="../model/RobotState.html" title="class in hadur2.core.model">RobotState</a>&nbsp;myState)</code></div>
@@ -674,6 +684,20 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">pointKernelValue</span><wbr><span class="parameters">(double&nbsp;at,
  double&nbsp;bandwidth,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;double[]&gt;&nbsp;segments)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="setShotDodger(hadur2.core.physics.ShotDodger)">
+<h3>setShotDodger</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setShotDodger</span><wbr><span class="parameters">(<a href="../physics/ShotDodger.html" title="class in hadur2.core.physics">ShotDodger</a>&nbsp;dodger)</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#DODGE-2">DODGE-2</a>: sets the dodger the surf asks for each wave's danger; null turns it off.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="shotDodger()">
+<h3>shotDodger</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../physics/ShotDodger.html" title="class in hadur2.core.physics">ShotDodger</a></span>&nbsp;<span class="element-name">shotDodger</span>()</div>
+<div class="block"><a class="req" href="../../../../requirements.html#DODGE-2">DODGE-2</a>: the dodger, or null.</div>
 </section>
 </li>
 <li>

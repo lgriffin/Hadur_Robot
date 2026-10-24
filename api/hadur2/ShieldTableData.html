@@ -93,18 +93,20 @@ loadScripts(document, 'script');</script>
 <div class="type-signature"><span class="modifiers">final class </span><span class="element-name type-name-label">ShieldTableData</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
 <div class="block">Shield part 2 of the 1v1 mode table (docs/plan-shield-quality.md): per opponent, the shield's
- opening drive (<a class="req" href="../../requirements.html#SHIELD-17">SHIELD-17</a>) and its shipped aim (<a class="req" href="../../requirements.html#SHIELD-18">SHIELD-18</a>). Both lists start empty, so the
- shield plays as before until a bench run has picked entries for them.
+ opening drive (<a class="req" href="../../requirements.html#SHIELD-17">SHIELD-17</a>) and its shipped aim (<a class="req" href="../../requirements.html#SHIELD-18">SHIELD-18</a>); and the opponents the duel surf
+ dodges simple aims against (<a class="req" href="../../requirements.html#DODGE-3">DODGE-3</a>); and the opponents fought with stop-and-go (<a class="req" href="../../requirements.html#POISON-2">POISON-2</a>). Every list starts empty, so Hadur plays as before until
+ a bench run has picked entries for it.
 
- <p><a href="#moves()"><code>moves()</code></a> names opponents, matched by the rule of <a href="ShieldListData.html" title="class in hadur2"><code>ShieldListData</code></a>.
+ <p><a href="#moves()"><code>moves()</code></a> and <a href="#dodges()"><code>dodges()</code></a> name opponents, matched by the rule of <a href="ShieldListData.html" title="class in hadur2"><code>ShieldListData</code></a>.
  <a href="#aims()"><code>aims()</code></a> holds one <code>"predictor offset name"</code> line an opponent: the predictor
  (from 0) the shield's records showed best against it, that predictor's offset in radians,
  then the robot's name as Robocode lists it, with or without its version.</p>
 
  <p>A class, not a resource, for the reason <a href="ShieldListData.html" title="class in hadur2"><code>ShieldListData</code></a> gives: Robocode's sandbox
  refuses a robot the read of its own jar. Keep the shape: a final class with package-private
- static methods <code>moves()</code> and <code>aims()</code>; the bench's <code>smovelist</code>/<code>
- saimlist</code> ablations fill them.</p></div>
+ static methods <code>moves()</code>, <code>aims()</code>, <code>dodges()</code>, <code>stopGos()</code> and
+ <code>stopGoShifts()</code>; the bench's <code>smovelist</code>/<code>saimlist</code>/<code>sdodgelist</code>/
+ <code>sgolist</code>/<code>sgo2list</code> ablations fill them.</p></div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -125,9 +127,24 @@ loadScripts(document, 'script');</script>
 <div class="block"><a class="req" href="../../requirements.html#SHIELD-18">SHIELD-18</a>: the shipped aims, one <code>"predictor offset name"</code> line each.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#moves()" class="member-name-link">moves</a>()</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#dodges()" class="member-name-link">dodges</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../requirements.html#DODGE-3">DODGE-3</a>: the opponents the duel surf dodges simple aims against.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#moves()" class="member-name-link">moves</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../requirements.html#SHIELD-17">SHIELD-17</a>: the opponents the opening drive is for.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#stopGos()" class="member-name-link">stopGos</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../requirements.html#POISON-2">POISON-2</a>: the opponents fought with stop-and-go, WavePoison's variant (reverse crawl one tick early).</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#stopGoShifts()" class="member-name-link">stopGoShifts</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../requirements.html#POISON-2">POISON-2</a>: the opponents fought with stop-and-go, WavePoisonShift's variant (two ticks early).</div>
 </div>
 </div>
 </div>
@@ -165,6 +182,39 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>a fresh array of lines</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="dodges()">
+<h3>dodges</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]</span>&nbsp;<span class="element-name">dodges</span>()</div>
+<div class="block"><a class="req" href="../../requirements.html#DODGE-3">DODGE-3</a>: the opponents the duel surf dodges simple aims against.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>a fresh array of names</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="stopGos()">
+<h3>stopGos</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]</span>&nbsp;<span class="element-name">stopGos</span>()</div>
+<div class="block"><a class="req" href="../../requirements.html#POISON-2">POISON-2</a>: the opponents fought with stop-and-go, WavePoison's variant (reverse crawl one tick early).</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>a fresh array of names</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="stopGoShifts()">
+<h3>stopGoShifts</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]</span>&nbsp;<span class="element-name">stopGoShifts</span>()</div>
+<div class="block"><a class="req" href="../../requirements.html#POISON-2">POISON-2</a>: the opponents fought with stop-and-go, WavePoisonShift's variant (two ticks early).</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>a fresh array of names</dd>
 </dl>
 </section>
 </li>

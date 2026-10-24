@@ -1125,7 +1125,23 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/ShieldTableData.html" title="class in hadur2">ShieldTableData</a></div>
 <div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">Shield part 2 of the 1v1 mode table (docs/plan-shield-quality.md): per opponent, the shield's
- opening drive (<a class="req" href="../requirements.html#SHIELD-17">SHIELD-17</a>) and its shipped aim (<a class="req" href="../requirements.html#SHIELD-18">SHIELD-18</a>).</div>
+ opening drive (<a class="req" href="../requirements.html#SHIELD-17">SHIELD-17</a>) and its shipped aim (<a class="req" href="../requirements.html#SHIELD-18">SHIELD-18</a>); and the opponents the duel surf
+ dodges simple aims against (<a class="req" href="../requirements.html#DODGE-3">DODGE-3</a>); and the opponents fought with stop-and-go (<a class="req" href="../requirements.html#POISON-2">POISON-2</a>).</div>
+</div>
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/physics/ShotDodger.html" title="class in hadur2.core.physics">ShotDodger</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="block"><a class="req" href="../requirements.html#DODGE-2">DODGE-2</a>: which simple aim the enemy's gun uses, read from the headings of its bullets we learn
+ (those that hit us and those that meet ours), and, once one stands out, the danger of a surf
+ option as whether that aim's bullet would cross us there.</div>
+</div>
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/physics/SimpleAims.html" title="class in hadur2.core.physics">SimpleAims</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="block"><a class="req" href="../requirements.html#DODGE-1">DODGE-1</a>: where the simple guns would have aimed a wave's bullet at us, as Saguaro's
+ ShotDodger reads them (docs/bench/rivals-source-read.md): head-on, linear, circular and
+ averaged linear predicted tick by tick, and the two one-line linear aims small robots use
+ (bearing plus lateral velocity over bullet speed, and its arcsine), each aimed on the wave's tick or one or two ticks before it (the enemy reads
+ our scan a tick late, and its gun turns a tick after it aims), from where the enemy stood on
+ that tick at where we stood.</div>
 </div>
 <div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/move/SimpleFormula.html" title="class in hadur2.core.move">SimpleFormula</a></div>
 <div class="col-last even-row-color all-classes-table all-classes-table-tab2">
@@ -1146,6 +1162,15 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color all-classes-table all-classes-table-tab4"><a href="hadur/bench/Stats.Interval.html" title="class in hadur.bench">Stats.Interval</a></div>
 <div class="col-last odd-row-color all-classes-table all-classes-table-tab4">
 <div class="block">A percentile bootstrap interval for a difference of means, with the observed estimate.</div>
+</div>
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/move/StopAndGo.html" title="class in hadur2.core.move">StopAndGo</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="block"><a class="req" href="../requirements.html#POISON-1">POISON-1</a>: stop-and-go against an opponent whose gun learns from where we are when it fires,
+ as Saguaro's WavePoison and WavePoisonShift play it (docs/bench/rivals-source-read.md).</div>
+</div>
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab3"><a href="hadur2/core/move/StopAndGo.Phase.html" title="enum class in hadur2.core.move">StopAndGo.Phase</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab3">
+<div class="block">The phase of the last <a href="hadur2/core/move/StopAndGo.html#move(hadur2.core.model.BotOrders.Builder,hadur2.core.model.RobotState,java.awt.geom.Point2D.Double,double,double,long)"><code>StopAndGo.move(hadur2.core.model.BotOrders.Builder, hadur2.core.model.RobotState, java.awt.geom.Point2D.Double, double, double, long)</code></a>: the next one's input decides it.</div>
 </div>
 <div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="hadur2/core/move/SurfMover.html" title="class in hadur2.core.move">SurfMover</a></div>
 <div class="col-last even-row-color all-classes-table all-classes-table-tab2">

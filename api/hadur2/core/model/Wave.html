@@ -180,201 +180,207 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="block">The bearing from source to target at fire time, radians, in (-pi, pi]: guess factor
  0.</div>
 </div>
-<div class="col-first odd-row-color"><code>boolean</code></div>
-<div class="col-second odd-row-color"><code><a href="#altWave" class="member-name-link">altWave</a></code></div>
+<div class="col-first odd-row-color"><code>double[][]</code></div>
+<div class="col-second odd-row-color"><code><a href="#aimStates" class="member-name-link">aimStates</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block"><a class="req" href="../../../../requirements.html#DODGE-1">DODGE-1</a>: the states the simple aims read (<a href="../physics/SimpleAims.html" title="class in hadur2.core.physics"><code>SimpleAims</code></a>), on this
+ wave's tick and the ticks before; null when the duel did not set them.</div>
+</div>
+<div class="col-first even-row-color"><code>boolean</code></div>
+<div class="col-second even-row-color"><code><a href="#altWave" class="member-name-link">altWave</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">An alternative wave, which bullet matching, the gun's logging and the last-fire-time
  lookup skip.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color"><code><a href="#botName" class="member-name-link">botName</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#botName" class="member-name-link">botName</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">The duel opponent this wave concerns: its target for a gun wave, its source for a
  movement wave.</div>
 </div>
-<div class="col-first odd-row-color"><code>boolean</code></div>
-<div class="col-second odd-row-color"><code><a href="#bulletHitBullet" class="member-name-link">bulletHitBullet</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code>boolean</code></div>
+<div class="col-second even-row-color"><code><a href="#bulletHitBullet" class="member-name-link">bulletHitBullet</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Movement waves: this wave's bullet was shot down by one of ours; no longer surfed.</div>
 </div>
-<div class="col-first even-row-color"><code>int</code></div>
-<div class="col-second even-row-color"><code><a href="#enemiesAlive" class="member-name-link">enemiesAlive</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code>int</code></div>
+<div class="col-second odd-row-color"><code><a href="#enemiesAlive" class="member-name-link">enemiesAlive</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Opponents alive at fire time (the gun's melee feature); 0 when not set.</div>
 </div>
-<div class="col-first odd-row-color"><code>boolean</code></div>
-<div class="col-second odd-row-color"><code><a href="#everShadowed" class="member-name-link">everShadowed</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code>boolean</code></div>
+<div class="col-second even-row-color"><code><a href="#everShadowed" class="member-name-link">everShadowed</a></code></div>
+<div class="col-last even-row-color">
 <div class="block"><a class="req" href="../../../../requirements.html#MOVE-1">MOVE-1</a>: whether this wave has ever had a shadow, for the round's count.</div>
 </div>
-<div class="col-first even-row-color"><code>int</code></div>
-<div class="col-second even-row-color"><code><a href="#fireRound" class="member-name-link">fireRound</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code>int</code></div>
+<div class="col-second odd-row-color"><code><a href="#fireRound" class="member-name-link">fireRound</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">The round the wave was fired in, from 0.</div>
 </div>
-<div class="col-first odd-row-color"><code>long</code></div>
-<div class="col-second odd-row-color"><code><a href="#fireTime" class="member-name-link">fireTime</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code>long</code></div>
+<div class="col-second even-row-color"><code><a href="#fireTime" class="member-name-link">fireTime</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">The tick the wave was fired; its radius is 0 at this tick.</div>
 </div>
-<div class="col-first even-row-color"><code>boolean</code></div>
-<div class="col-second even-row-color"><code><a href="#firingWave" class="member-name-link">firingWave</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code>boolean</code></div>
+<div class="col-second odd-row-color"><code><a href="#firingWave" class="member-name-link">firingWave</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">A real bullet rides on this wave: we fired on this tick (gun wave), or the energy
  ledger found an enemy shot on it (movement wave; <a class="req" href="../../../../requirements.html#WAVE-1">WAVE-1</a>, <a class="req" href="../../../../requirements.html#WAVE-2">WAVE-2</a>).</div>
 </div>
-<div class="col-first odd-row-color"><code>double</code></div>
-<div class="col-second odd-row-color"><code><a href="#gunHeat" class="member-name-link">gunHeat</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code>double</code></div>
+<div class="col-second even-row-color"><code><a href="#gunHeat" class="member-name-link">gunHeat</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Gun waves: our gun heat at fire time, for <a href="#virtuality()"><code>virtuality()</code></a>.</div>
 </div>
-<div class="col-first even-row-color"><code>boolean</code></div>
-<div class="col-second even-row-color"><code><a href="#hitByBullet" class="member-name-link">hitByBullet</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code>boolean</code></div>
+<div class="col-second odd-row-color"><code><a href="#hitByBullet" class="member-name-link">hitByBullet</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Movement waves: the enemy's bullet on this wave hit us, set when the bullet is matched
  to the wave.</div>
 </div>
-<div class="col-first odd-row-color"><code>long</code></div>
-<div class="col-second odd-row-color"><code><a href="#lastBulletFiredTime" class="member-name-link">lastBulletFiredTime</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code>long</code></div>
+<div class="col-second even-row-color"><code><a href="#lastBulletFiredTime" class="member-name-link">lastBulletFiredTime</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Gun waves: the tick of our last real bullet this round, 0 when none yet.</div>
 </div>
-<div class="col-first even-row-color"><code>static final double</code></div>
-<div class="col-second even-row-color"><code><a href="#MAX_BOT_RADIUS" class="member-name-link">MAX_BOT_RADIUS</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code>static final double</code></div>
+<div class="col-second odd-row-color"><code><a href="#MAX_BOT_RADIUS" class="member-name-link">MAX_BOT_RADIUS</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Half the diagonal of a robot's 36 by 36 box, 18 &times; sqrt(2) &asymp; 25.46 px: the
  farthest any point of a robot is from its centre.</div>
 </div>
-<div class="col-first odd-row-color"><code>int</code></div>
-<div class="col-second odd-row-color"><code><a href="#orbitDirection" class="member-name-link">orbitDirection</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code>int</code></div>
+<div class="col-second even-row-color"><code><a href="#orbitDirection" class="member-name-link">orbitDirection</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">+1 when the target's direction of travel at fire time turns clockwise from the line
  of fire (it is orbiting the source clockwise), -1 when counter-clockwise.</div>
 </div>
-<div class="col-first even-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a></code></div>
-<div class="col-second even-row-color"><code><a href="#ORIGIN" class="member-name-link">ORIGIN</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#ORIGIN" class="member-name-link">ORIGIN</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">The origin, from which displacement vectors are projected and measured.</div>
 </div>
-<div class="col-first odd-row-color"><code>static final double</code></div>
-<div class="col-second odd-row-color"><code><a href="#PRECISE_MEA_WALL_STICK" class="member-name-link">PRECISE_MEA_WALL_STICK</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code>static final double</code></div>
+<div class="col-second even-row-color"><code><a href="#PRECISE_MEA_WALL_STICK" class="member-name-link">PRECISE_MEA_WALL_STICK</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Wall stick, in pixels, for the wall smoothing used when the precise escape angle's
  straight run hits a wall: how far ahead of the robot a heading is tested against the
  walls.</div>
 </div>
-<div class="col-first even-row-color"><code>long</code></div>
-<div class="col-second even-row-color"><code><a href="#shadowVersion" class="member-name-link">shadowVersion</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code>long</code></div>
+<div class="col-second odd-row-color"><code><a href="#shadowVersion" class="member-name-link">shadowVersion</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block"><a class="req" href="../../../../requirements.html#MOVE-1">MOVE-1</a>: the version of our bullets in flight these shadows were computed for; -1 never.</div>
 </div>
-<div class="col-first odd-row-color"><code>double</code></div>
-<div class="col-second odd-row-color"><code><a href="#sourceEnergy" class="member-name-link">sourceEnergy</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code>double</code></div>
+<div class="col-second even-row-color"><code><a href="#sourceEnergy" class="member-name-link">sourceEnergy</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">The source's energy at fire time.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a></code></div>
-<div class="col-second even-row-color"><code><a href="#sourceLocation" class="member-name-link">sourceLocation</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#sourceLocation" class="member-name-link">sourceLocation</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Where the bullet was (or would have been) fired from, pixels.</div>
 </div>
-<div class="col-first odd-row-color"><code>double</code></div>
-<div class="col-second odd-row-color"><code><a href="#targetAccel" class="member-name-link">targetAccel</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code>double</code></div>
+<div class="col-second even-row-color"><code><a href="#targetAccel" class="member-name-link">targetAccel</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">The target's acceleration at fire time, pixels per tick per tick: positive speeding up
  in its direction of travel, negative braking (<code>DiaUtils.accel</code>).</div>
 </div>
-<div class="col-first even-row-color"><code>long</code></div>
-<div class="col-second even-row-color"><code><a href="#targetDchangeTime" class="member-name-link">targetDchangeTime</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code>long</code></div>
+<div class="col-second odd-row-color"><code><a href="#targetDchangeTime" class="member-name-link">targetDchangeTime</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Kept for the formulas' layout; nothing in the core sets it, so it stays 0.</div>
 </div>
-<div class="col-first odd-row-color"><code>double</code></div>
-<div class="col-second odd-row-color"><code><a href="#targetDistance" class="member-name-link">targetDistance</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code>double</code></div>
+<div class="col-second even-row-color"><code><a href="#targetDistance" class="member-name-link">targetDistance</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">The distance from source to target at fire time, pixels.</div>
 </div>
-<div class="col-first even-row-color"><code>double</code></div>
-<div class="col-second even-row-color"><code><a href="#targetDl20t" class="member-name-link">targetDl20t</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code>double</code></div>
+<div class="col-second odd-row-color"><code><a href="#targetDl20t" class="member-name-link">targetDl20t</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Pixels between the target's position at fire time and 20 ticks earlier.</div>
 </div>
-<div class="col-first odd-row-color"><code>double</code></div>
-<div class="col-second odd-row-color"><code><a href="#targetDl40t" class="member-name-link">targetDl40t</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code>double</code></div>
+<div class="col-second even-row-color"><code><a href="#targetDl40t" class="member-name-link">targetDl40t</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Pixels between the target's position at fire time and 40 ticks earlier.</div>
 </div>
-<div class="col-first even-row-color"><code>double</code></div>
-<div class="col-second even-row-color"><code><a href="#targetDl8t" class="member-name-link">targetDl8t</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code>double</code></div>
+<div class="col-second odd-row-color"><code><a href="#targetDl8t" class="member-name-link">targetDl8t</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Pixels between the target's position at fire time and 8 ticks earlier (or its
  earliest logged position this round, when the log is shorter).</div>
 </div>
-<div class="col-first odd-row-color"><code>double</code></div>
-<div class="col-second odd-row-color"><code><a href="#targetEnergy" class="member-name-link">targetEnergy</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code>double</code></div>
+<div class="col-second even-row-color"><code><a href="#targetEnergy" class="member-name-link">targetEnergy</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">The target's energy at fire time.</div>
 </div>
-<div class="col-first even-row-color"><code>double</code></div>
-<div class="col-second even-row-color"><code><a href="#targetHeading" class="member-name-link">targetHeading</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code>double</code></div>
+<div class="col-second odd-row-color"><code><a href="#targetHeading" class="member-name-link">targetHeading</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">The target's body heading at fire time, radians (0 = north, clockwise).</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#targetLocation" class="member-name-link">targetLocation</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a></code></div>
+<div class="col-second even-row-color"><code><a href="#targetLocation" class="member-name-link">targetLocation</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">The target's centre at fire time, pixels.</div>
 </div>
-<div class="col-first even-row-color"><code>int</code></div>
-<div class="col-second even-row-color"><code><a href="#targetOrbitChanges40" class="member-name-link">targetOrbitChanges40</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code>int</code></div>
+<div class="col-second odd-row-color"><code><a href="#targetOrbitChanges40" class="member-name-link">targetOrbitChanges40</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block"><a class="req" href="../../../../requirements.html#GUN-2">GUN-2</a>: how many times the target's orbit direction around the source flipped over the
  40 scans up to and including fire time (clockwise to counter-clockwise or back); a
  surfer that keeps changing which way it orbits scores high here.</div>
 </div>
-<div class="col-first odd-row-color"><code>double</code></div>
-<div class="col-second odd-row-color"><code><a href="#targetRelativeHeading" class="member-name-link">targetRelativeHeading</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code>double</code></div>
+<div class="col-second even-row-color"><code><a href="#targetRelativeHeading" class="member-name-link">targetRelativeHeading</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">The angle between the target's direction of travel and the line of fire, radians, in
  [0, pi]: 0 moving straight away from the source, pi/2 square to it, pi straight at it.</div>
 </div>
-<div class="col-first even-row-color"><code>double</code></div>
-<div class="col-second even-row-color"><code><a href="#targetRevWallDistance" class="member-name-link">targetRevWallDistance</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code>double</code></div>
+<div class="col-second odd-row-color"><code><a href="#targetRevWallDistance" class="member-name-link">targetRevWallDistance</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">As <a href="#targetWallDistance"><code>targetWallDistance</code></a>, orbiting the other way.</div>
 </div>
-<div class="col-first odd-row-color"><code>long</code></div>
-<div class="col-second odd-row-color"><code><a href="#targetTicksSinceReversal" class="member-name-link">targetTicksSinceReversal</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code>long</code></div>
+<div class="col-second even-row-color"><code><a href="#targetTicksSinceReversal" class="member-name-link">targetTicksSinceReversal</a></code></div>
+<div class="col-last even-row-color">
 <div class="block"><a class="req" href="../../../../requirements.html#GUN-2">GUN-2</a>: how many scans in a row the target's velocity had kept the same sign (its
  direction along its heading) at fire time; 0 right after a reversal.</div>
 </div>
-<div class="col-first even-row-color"><code>long</code></div>
-<div class="col-second even-row-color"><code><a href="#targetVchangeTime" class="member-name-link">targetVchangeTime</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code>long</code></div>
+<div class="col-second odd-row-color"><code><a href="#targetVchangeTime" class="member-name-link">targetVchangeTime</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">How many scans in a row the target's velocity had stayed within 0.5 px/tick of its
  value at the scan before; 0 right after a change.</div>
 </div>
-<div class="col-first odd-row-color"><code>double</code></div>
-<div class="col-second odd-row-color"><code><a href="#targetVelocity" class="member-name-link">targetVelocity</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code>double</code></div>
+<div class="col-second even-row-color"><code><a href="#targetVelocity" class="member-name-link">targetVelocity</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">The target's velocity at fire time, pixels per tick, signed as the engine gives it.</div>
 </div>
-<div class="col-first even-row-color"><code>int</code></div>
-<div class="col-second even-row-color"><code><a href="#targetVelocitySign" class="member-name-link">targetVelocitySign</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code>int</code></div>
+<div class="col-second odd-row-color"><code><a href="#targetVelocitySign" class="member-name-link">targetVelocitySign</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">The sign of the target's last non-zero velocity, +1 or -1: which way it was going,
  remembered through a stop.</div>
 </div>
-<div class="col-first odd-row-color"><code>double</code></div>
-<div class="col-second odd-row-color"><code><a href="#targetWallDistance" class="member-name-link">targetWallDistance</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code>double</code></div>
+<div class="col-second even-row-color"><code><a href="#targetWallDistance" class="member-name-link">targetWallDistance</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">How far the target could orbit in its orbit direction before a wall, as a multiple of
  the classic escape angle, capped at 1.5 by <a href="#setWallDistances()"><code>setWallDistances()</code></a>.</div>
 </div>
-<div class="col-first even-row-color"><code>boolean</code></div>
-<div class="col-second even-row-color"><code><a href="#uncertain" class="member-name-link">uncertain</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code>boolean</code></div>
+<div class="col-second odd-row-color"><code><a href="#uncertain" class="member-name-link">uncertain</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block"><a class="req" href="../../../../requirements.html#WAVE-3">WAVE-3</a>: this movement wave's power came from a scan where the energy ledger also
  inferred a wall hit, so the split between the wall and the bullet is a guess.</div>
 </div>
@@ -736,15 +742,21 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="block"><a class="req" href="../../../../requirements.html#MOVE-1">MOVE-1</a>: the firing angles, absolute radians from the source as <code>[low, high]</code>
  pairs, whose bullet meets one of ours whatever order the engine moves them in.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;double[]&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#transmission(hadur2.core.model.Wave.Intersection)" class="member-name-link">transmission</a><wbr>(<a href="Wave.Intersection.html" title="class in hadur2.core.model">Wave.Intersection</a>&nbsp;intersection)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double[]</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#simpleAims()" class="member-name-link">simpleAims</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../../../requirements.html#DODGE-1">DODGE-1</a>: where each simple aim sends this wave's bullet, absolute radians from the source,
+ at its current power (recomputed when a firing wave's power is fixed); null without states.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;double[]&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#transmission(hadur2.core.model.Wave.Intersection)" class="member-name-link">transmission</a><wbr>(<a href="Wave.Intersection.html" title="class in hadur2.core.model">Wave.Intersection</a>&nbsp;intersection)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../../../requirements.html#MOVE-3">MOVE-3</a>: how much of a bullet fired at each angle of the intersection would still reach
  us.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#virtuality()" class="member-name-link">virtuality</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#virtuality()" class="member-name-link">virtuality</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Gun waves: how far this wave is, in time, from a real bullet, in units of 8 ticks.</div>
 </div>
 </div>
@@ -1057,6 +1069,14 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="block"><a class="req" href="../../../../requirements.html#MOVE-1">MOVE-1</a>: the version of our bullets in flight these shadows were computed for; -1 never.</div>
 </section>
 </li>
+<li>
+<section class="detail" id="aimStates">
+<h3>aimStates</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">double[][]</span>&nbsp;<span class="element-name">aimStates</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#DODGE-1">DODGE-1</a>: the states the simple aims read (<a href="../physics/SimpleAims.html" title="class in hadur2.core.physics"><code>SimpleAims</code></a>), on this
+ wave's tick and the ticks before; null when the duel did not set them.</div>
+</section>
+</li>
 </ul>
 </section>
 </li>
@@ -1112,6 +1132,14 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <section class="method-details" id="method-detail">
 <h2>Method Details</h2>
 <ul class="member-list">
+<li>
+<section class="detail" id="simpleAims()">
+<h3>simpleAims</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">double[]</span>&nbsp;<span class="element-name">simpleAims</span>()</div>
+<div class="block"><a class="req" href="../../../../requirements.html#DODGE-1">DODGE-1</a>: where each simple aim sends this wave's bullet, absolute radians from the source,
+ at its current power (recomputed when a firing wave's power is fixed); null without states.</div>
+</section>
+</li>
 <li>
 <section class="detail" id="setShadows(java.util.List)">
 <h3>setShadows</h3>

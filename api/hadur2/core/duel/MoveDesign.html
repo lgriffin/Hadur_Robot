@@ -203,11 +203,28 @@ loadScripts(document, 'script');</script>
 <div class="block"><a class="req" href="../../../../requirements.html#MOVE-16">MOVE-16</a>: the danger views' weights evolve by the replicator equation.</div>
 </div>
 <div class="col-first odd-row-color"><code>(package private) static final boolean</code></div>
-<div class="col-second odd-row-color"><code><a href="#STACK_LIST" class="member-name-link">STACK_LIST</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#SHOT_DODGE" class="member-name-link">SHOT_DODGE</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block"><a class="req" href="../../../../requirements.html#DODGE-3">DODGE-3</a>: dodge the enemy's simple aim (<a class="req" href="../../../../requirements.html#DODGE-1">DODGE-1</a>, <a class="req" href="../../../../requirements.html#DODGE-2">DODGE-2</a>) against every opponent, not only
+ those the table names.</div>
+</div>
+<div class="col-first even-row-color"><code>(package private) static final boolean</code></div>
+<div class="col-second even-row-color"><code><a href="#STACK_LIST" class="member-name-link">STACK_LIST</a></code></div>
+<div class="col-last even-row-color">
 <div class="block"><a class="req" href="../../../../requirements.html#MOVE-23">MOVE-23</a>: the stop-and-start stack (<a class="req" href="../../../../requirements.html#MOVE-13">MOVE-13</a> heatjit, <a class="req" href="../../../../requirements.html#SHIELD-14">SHIELD-14</a> swall, and <a class="req" href="../../../../requirements.html#MOVE-20">MOVE-20</a>, <a class="req" href="../../../../requirements.html#MOVE-21">MOVE-21</a>
  and <a class="req" href="../../../../requirements.html#TIME-6">TIME-6</a> whenever those are on) applies only to opponents not on the stack off-list;
  a listed opponent plays as if those switches were off.</div>
+</div>
+<div class="col-first odd-row-color"><code>(package private) static final boolean</code></div>
+<div class="col-second odd-row-color"><code><a href="#STOP_AND_GO" class="member-name-link">STOP_AND_GO</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block"><a class="req" href="../../../../requirements.html#POISON-2">POISON-2</a>: stop-and-go (<a class="req" href="../../../../requirements.html#POISON-1">POISON-1</a>) against every opponent, not only those the table names,
+ with the reverse crawl <a href="#STOP_AND_GO_PREFIRE"><code>STOP_AND_GO_PREFIRE</code></a> ticks before the enemy's gun is ready.</div>
+</div>
+<div class="col-first even-row-color"><code>(package private) static final int</code></div>
+<div class="col-second even-row-color"><code><a href="#STOP_AND_GO_PREFIRE" class="member-name-link">STOP_AND_GO_PREFIRE</a></code></div>
+<div class="col-last even-row-color">
+<div class="block"><a class="req" href="../../../../requirements.html#POISON-2">POISON-2</a>: the forced stop-and-go's variant: 1 WavePoison, 2 WavePoisonShift.</div>
 </div>
 </div>
 </section>
@@ -523,6 +540,54 @@ loadScripts(document, 'script');</script>
 <dd>
 <ul class="tag-list">
 <li><a href="../../../constant-values.html#hadur2.core.duel.MoveDesign.AES_RECORD">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="SHOT_DODGE">
+<h3>SHOT_DODGE</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">SHOT_DODGE</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#DODGE-3">DODGE-3</a>: dodge the enemy's simple aim (<a class="req" href="../../../../requirements.html#DODGE-1">DODGE-1</a>, <a class="req" href="../../../../requirements.html#DODGE-2">DODGE-2</a>) against every opponent, not only
+ those the table names. Off by default; the ablation <code>sdodge</code> turns it on for the screen.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur2.core.duel.MoveDesign.SHOT_DODGE">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="STOP_AND_GO">
+<h3>STOP_AND_GO</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">STOP_AND_GO</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#POISON-2">POISON-2</a>: stop-and-go (<a class="req" href="../../../../requirements.html#POISON-1">POISON-1</a>) against every opponent, not only those the table names,
+ with the reverse crawl <a href="#STOP_AND_GO_PREFIRE"><code>STOP_AND_GO_PREFIRE</code></a> ticks before the enemy's gun is ready.
+ Off by default; the ablations <code>sgo</code> and <code>sgo2</code> turn it on for the screen.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur2.core.duel.MoveDesign.STOP_AND_GO">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="STOP_AND_GO_PREFIRE">
+<h3>STOP_AND_GO_PREFIRE</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">STOP_AND_GO_PREFIRE</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#POISON-2">POISON-2</a>: the forced stop-and-go's variant: 1 WavePoison, 2 WavePoisonShift.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur2.core.duel.MoveDesign.STOP_AND_GO_PREFIRE">Constant Field Values</a></li>
 </ul>
 </dd>
 </dl>
