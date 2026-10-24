@@ -73,13 +73,13 @@ class ShieldDesignTest {
     @Test
     @Tag("SHIELD-13")
     @Tag("SHIELD-14")
-    @DisplayName("the robot ships wall, hold, learn, mode and stay with turn off, and the plain constructor uses it")
+    @Tag("SHIELD-16")
+    @DisplayName("the robot ships prior, wall, hold, learn, mode and stay with turn off, and the plain constructor uses it")
     void shippedIsStep3Build() {
         ShieldDesign shipped = ShieldDesign.SHIPPED;
-        assertTrue(shipped.wall && shipped.hold && shipped.learn && shipped.mode && shipped.stay);
+        assertTrue(shipped.prior && shipped.wall && shipped.hold && shipped.learn && shipped.mode && shipped.stay);
         assertFalse(shipped.turn);
-        assertEquals("hold,learn,mode,stay,wall", shipped.toString());
-        assertEquals(ShieldMode.BASES, shipped.bases());
+        assertEquals(ShieldMode.MAX_BASES, shipped.bases());
         assertSame(ShieldDesign.SHIPPED, new ShieldMode(ShieldList.NONE, records::add, 35).design());
     }
 
@@ -318,14 +318,14 @@ class ShieldDesignTest {
 
     @Test
     @Tag("SHIELD-16")
-    @DisplayName("SHIELD-16: the prior switch parses, stays out of 'all' and the shipped design, and adds the fifth base")
+    @DisplayName("SHIELD-16: the prior switch parses, stays out of 'all', ships with mode table v1, and adds the fifth base")
     void priorParses() {
         ShieldDesign d = ShieldDesign.parse("hold,prior");
         assertTrue(d.hold && d.prior);
         assertEquals("hold,prior", d.toString());
         assertEquals(ShieldMode.MAX_BASES, d.bases());
         assertFalse(ShieldDesign.parse("all").prior);
-        assertFalse(ShieldDesign.SHIPPED.prior);
+        assertTrue(ShieldDesign.SHIPPED.prior);
         assertFalse(ShieldDesign.NONE.prior);
     }
 

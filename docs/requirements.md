@@ -1356,7 +1356,7 @@ Nullstride's list with (docs/bench/local/2026-10-12_plan90-pc-read.md).
   `onRoundEnded(tick, won)`. A ram ends the trial outright, whatever `stay` says. Purpose: the
   field-wide alternative to a longer list (docs/plan-mode-table.md, stage 4). Tests:
   `ShieldTrialTest`.
-- **SHIELD-16** (off by default; `sprior`, suffix `sq`). Saguaro 1.0's second head-on option
+- **SHIELD-16** (on since mode table v1, PR #244: census gate +0.54 ± 0.20 APS with the 49 robots it added to the shield list; before that off, `sprior`, suffix `sq`). Saguaro 1.0's second head-on option
   (`BulletShieldMode.buildEnemyWave`, index 1): head-on from the shooter's position on the tick
   before it fired, plus its body turn on the firing tick. SHIELD-12's base starts from the firing
   point instead, so it misses a gun that turns with the body while the robot moves. Saguaro's

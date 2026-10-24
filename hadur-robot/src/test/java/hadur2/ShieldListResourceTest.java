@@ -46,7 +46,7 @@ class ShieldListResourceTest {
     @DisplayName("the list holds the 14 robots of the D5 probe and nobody the probe lost against since")
     void listHoldsTheProbedRobots() {
         ShieldList list = ShieldList.parse(Arrays.asList(ShieldListData.lines()));
-        assertEquals(14 + 83 + 103, list.size());
+        assertEquals(14 + 83 + 103 + 49, list.size());
         for (String name : new String[] {
             "apv.test.Virus 0.6.1", "kcn.unnamed.Unnamed 1.21", "simonton.mega.SniperFrog 1.0.fix2",
             "vic.Locke 0.7.5.5", "cx.micro.Smoke 0.96", "dft.Virgin 1.25", "kid.Gladiator .7.2",
@@ -75,7 +75,8 @@ class ShieldListResourceTest {
         }
         // Robots whose interval lay below 0: shield mode costs points on them.
         for (String name : new String[] {
-            "dz.Caedo 1.4", "sqTank.waveSurfing.LionWWSVMvoid 0.01", "suh.mega.WaveSurferGF 1.04", "rz.Artist 0.2",
+            // dz.Caedo 1.4 lost here and joined in 3.16 with SHIELD-16 (mode table v1).
+            "sqTank.waveSurfing.LionWWSVMvoid 0.01", "suh.mega.WaveSurferGF 1.04", "rz.Artist 0.2",
             "ratosh.Nobo 0.21", "dy.LevelOne 2.0", "rjw.RabidWombat 0.71"}) {
             assertTrue(!list.matches(name), name);
         }
@@ -98,7 +99,26 @@ class ShieldListResourceTest {
         // Robots of Nullstride's list the sweep found worse or open with a small mean.
         for (String name : new String[] {
             "aaa.r.ScalarR 0.005h.053-noshield", "theo.Hydrogen 2.1r", "stelo.MatchupMicro 1.2",
-            "cx.mini.BlackSwans 0.60", "dz.Caedo 1.4"}) {
+            "cx.mini.BlackSwans 0.60"}) {
+            assertTrue(!list.matches(name), name);
+        }
+    }
+
+    @Test
+    @Tag("SHIELD-16")
+    @DisplayName("the list holds mode table v1's 49 confirmed robots, and none the confirm dropped")
+    void listHoldsModeTableV1() {
+        ShieldList list = ShieldList.parse(Arrays.asList(ShieldListData.lines()));
+        // The largest confirmed gains (PR #244), and Saguaro shield bots that lost to SHIELD-16 before.
+        for (String name : new String[] {
+            "cs.s2.Seraphim 2.3.1", "slugzilla.ButtHead 2.0", "jk.micro.Cotillion 0.8",
+            "ers.nano.gokdeniz.Gokdeniz 1.5b", "oog.micro.SavantMicro 1.1", "exauge.GateKeeper 1.1.121g",
+            "dz.Caedo 1.4", "cuoq.Kakera 1.0"}) {
+            assertTrue(list.matches(name), name);
+        }
+        // Locked on the first pick, dropped on the 8 fresh seeds of the confirm.
+        for (String name : new String[] {
+            "ar.horizon.Horizon 1.2.2", "stelo.Spread 0.9", "florent.XSeries.X2 0.17", "TJ.Exupery 1.39"}) {
             assertTrue(!list.matches(name), name);
         }
     }
