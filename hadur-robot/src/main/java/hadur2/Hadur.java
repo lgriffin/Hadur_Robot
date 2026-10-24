@@ -244,6 +244,8 @@ public class Hadur extends TeamRobot {
             // SHIELD-17, SHIELD-18: mode table part 2's opening drive and shipped aims, marked the same way.
             for (String name : ShieldTableData.moves()) lines.add(ShieldList.MOVE_PREFIX + " " + name);
             for (String aim : ShieldTableData.aims()) lines.add(ShieldList.AIM_PREFIX + " " + aim);
+            // DODGE-3: the mode table's simple-aim dodge entries.
+            for (String name : ShieldTableData.dodges()) lines.add(ShieldList.DODGE_PREFIX + " " + name);
             return ShieldList.parse(lines);
         } catch (RuntimeException | LinkageError e) {
             out.println("SH," + getRoundNum() + "," + getTime() + ",list-failed," + e);

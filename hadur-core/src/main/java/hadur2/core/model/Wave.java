@@ -216,8 +216,32 @@ public class Wave implements Cloneable {
     /** MOVE-1: the version of our bullets in flight these shadows were computed for; -1 never. */
     public long shadowVersion = -1;
 
+    /**
+     * DODGE-1: the states the simple aims read ({@link SimpleAims}), on this
+     * wave's tick and the ticks before; null when the duel did not set them.
+     */
+    public double[][] aimStates;
+    /** DODGE-1: the simple aims at {@link #aimSpeed}, once computed. */
+    private double[] aims;
+    /** DODGE-1: the bullet speed the cached aims were computed for. */
+    private double aimSpeed = Double.NaN;
+
     /** An empty wave with no field or predictor, for subclasses and tests. */
     protected Wave() {}
+
+    /**
+     * DODGE-1: where each simple aim sends this wave's bullet, absolute radians from the source,
+     * at its current power (recomputed when a firing wave's power is fixed); null without states.
+     */
+    public double[] simpleAims() {
+        if (aimStates == null || battleField == null) return null;
+        if (aims == null || aimSpeed != bulletSpeed) {
+            aims = hadur2.core.physics.SimpleAims.angles(aimStates, bulletSpeed,
+                battleField.width, battleField.height);
+            aimSpeed = bulletSpeed;
+        }
+        return aims;
+    }
 
     /**
      * A wave fired now. The other target attributes are set afterwards with the fluent
@@ -970,6 +994,7 @@ public class Wave implements Cloneable {
         w.gunHeat = gunHeat;
         w.targetWallDistance = targetWallDistance;
         w.targetRevWallDistance = targetRevWallDistance;
+        w.aimStates = aimStates;
         return w;
     }
 

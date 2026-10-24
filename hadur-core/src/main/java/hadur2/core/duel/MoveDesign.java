@@ -115,4 +115,10 @@ final class MoveDesign {
     static final boolean AES_RECORD = false;
 
     private MoveDesign() { }
+
+    /**
+     * DODGE-3: dodge the enemy's simple aim (DODGE-1, DODGE-2) against every opponent, not only
+     * those the table names. Off by default; the ablation {@code sdodge} turns it on for the screen.
+     */
+    static final boolean SHOT_DODGE = false;
 }

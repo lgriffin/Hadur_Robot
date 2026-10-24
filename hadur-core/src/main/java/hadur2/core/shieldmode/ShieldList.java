@@ -34,7 +34,7 @@ public final class ShieldList {
 
     /** The list with nobody on it: shield mode never starts. */
     public static final ShieldList NONE = new ShieldList(Collections.<String>emptySet(), Collections.<String>emptySet(),
-        Collections.<String>emptySet(), Collections.<String, double[]>emptyMap());
+        Collections.<String>emptySet(), Collections.<String, double[]>emptyMap(), Collections.<String>emptySet());
 
     /** MOVE-23: a line starting with this names an opponent on the stack off-list, not a shield-mode one. */
     public static final String STACK_OFF_PREFIX = "stack-off:";
@@ -42,6 +42,8 @@ public final class ShieldList {
     public static final String MOVE_PREFIX = "shield-move:";
     /** SHIELD-18: a line starting with this gives an opponent's shipped aim. */
     public static final String AIM_PREFIX = "shield-aim:";
+    /** DODGE-3: a line starting with this names an opponent the duel surf dodges simple aims against. */
+    public static final String DODGE_PREFIX = "shot-dodge:";
 
     private final Set<String> entries;
     /** MOVE-23: the stack off-list, matched as the shield entries are. */
@@ -50,12 +52,16 @@ public final class ShieldList {
     private final Set<String> moves;
     /** SHIELD-18: name to {predictor, offset}. */
     private final Map<String, double[]> aims;
+    /** DODGE-3: the simple-aim dodge list. */
+    private final Set<String> dodges;
 
-    private ShieldList(Set<String> entries, Set<String> stackOff, Set<String> moves, Map<String, double[]> aims) {
+    private ShieldList(Set<String> entries, Set<String> stackOff, Set<String> moves, Map<String, double[]> aims,
+                       Set<String> dodges) {
         this.entries = entries;
         this.stackOff = stackOff;
         this.moves = moves;
         this.aims = aims;
+        this.dodges = dodges;
     }
 
     /**
@@ -69,6 +75,7 @@ public final class ShieldList {
         Set<String> stackOff = new TreeSet<>();
         Set<String> moves = new TreeSet<>();
         Map<String, double[]> aims = new TreeMap<>();
+        Set<String> dodges = new TreeSet<>();
         if (lines != null) {
             for (String line : lines) {
                 if (line == null) continue;
@@ -83,6 +90,11 @@ public final class ShieldList {
                 if (entry.startsWith(MOVE_PREFIX)) {
                     String name = entry.substring(MOVE_PREFIX.length()).trim();
                     if (!name.isEmpty() && moves.size() < MAX_ENTRIES) moves.add(name);
+                    continue;
+                }
+                if (entry.startsWith(DODGE_PREFIX)) {
+                    String name = entry.substring(DODGE_PREFIX.length()).trim();
+                    if (!name.isEmpty() && dodges.size() < MAX_ENTRIES) dodges.add(name);
                     continue;
                 }
                 if (entry.startsWith(AIM_PREFIX)) {
@@ -104,9 +116,9 @@ public final class ShieldList {
                 entries.add(entry);
             }
         }
-        if (entries.isEmpty() && stackOff.isEmpty() && moves.isEmpty() && aims.isEmpty()) return NONE;
+        if (entries.isEmpty() && stackOff.isEmpty() && moves.isEmpty() && aims.isEmpty() && dodges.isEmpty()) return NONE;
         return new ShieldList(Collections.unmodifiableSet(entries), Collections.unmodifiableSet(stackOff),
-            Collections.unmodifiableSet(moves), Collections.unmodifiableMap(aims));
+            Collections.unmodifiableSet(moves), Collections.unmodifiableMap(aims), Collections.unmodifiableSet(dodges));
     }
 
     /**
@@ -161,6 +173,19 @@ public final class ShieldList {
         double[] a = aims.get(name);
         if (a == null) a = aims.get(withoutVersion(name));
         return a == null ? null : a.clone();
+    }
+
+    /**
+     * DODGE-3: whether the duel surf dodges simple aims against {@code robotName}, by the rule of
+     * {@link #matches}.
+     *
+     * @param robotName the scanned robot's name, or null
+     * @return whether it is on the dodge list
+     */
+    public boolean dodges(String robotName) {
+        if (robotName == null || dodges.isEmpty()) return false;
+        String name = robotName.trim().replaceAll("\\s+", " ");
+        return dodges.contains(name) || dodges.contains(withoutVersion(name));
     }
 
     /** Whether nobody is on the (shield) list. */

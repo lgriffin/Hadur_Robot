@@ -1323,6 +1323,9 @@ Nullstride's list with (docs/bench/local/2026-10-12_plan90-pc-read.md).
 | SHIELD-16 | Optional | Where the prior switch is on, the core shall add a fifth head-on base to the shield predictors: the bearing from where the enemy stood on the tick before it fired to where Hadur stood then, turned by the enemy's body turn on the firing tick. | R9 |
 | SHIELD-17 | Optional | Where the move switch is on, or the shield list names the opponent for the opening drive, when a round of shield mode opens, the core shall drive away from the walls and the enemy, each pushing by the inverse square of its distance and the enemy three times a wall, until the enemy's first shot or 5 ticks before the enemy's gun is ready, whichever comes first, and shall then stand still as SHIELD-5 does. | R9 |
 | SHIELD-18 | Optional | When the shield list gives a shipped aim for the opponent (a predictor and its offset), the core shall start that predictor with three exact matches and that offset as its base's learned offset. Where the rec switch is on, at each round's end of shield mode the core shall write the best predictor, its offset, its exact matches, the bullets learned from and the round's opening-drive ticks as an `SP` record. | R9 |
+| DODGE-1 | Event-driven | When the duel makes a movement wave while the simple-aim dodge is on, the core shall record on it our position, heading, velocity, last turn and average velocity of the last 10 ticks and the enemy's position, for the wave's tick and the two ticks before, and the wave shall give from them where each of 12 simple aims sends its bullet at its current power: head-on, linear, circular and averaged linear, each aimed on one of those three ticks from the enemy's position on it, with predicted paths stopped 18 px inside the walls. | R9 |
+| DODGE-2 | State | While the simple-aim dodge is on for the opponent, the core shall count, across the battle's rounds, the enemy bullets whose heading it learns (a hit on us, a bullet meeting ours) and, per aim, those within 0.002 rad of it; while one aim matches at least 3 of them and at least 60% of those read, the surf's danger for a wave shall be 1 when that aim's bullet falls inside the option's hit range (with a 0.005 rad margin) and 0 otherwise, plus 0.05 of the views' score, without the hit-rate term; otherwise the views decide as before. At each round's end it shall write `SD,round,tick,best,bestMatches,read,active`. | R9 |
+| DODGE-3 | State | While in a duel, the simple-aim dodge shall be on against an opponent the table's `shot-dodge:` lines name (matched as the shield list is), or against every opponent with the dodge switch on (off by default); in melee and team, and against any other opponent, it shall be off and the duel play exactly as before. | R9 |
 
 - **Switches** (`ShieldDesign.parse`): `hold`, `learn`, `mode`, `stay`, `turn`, `wall`, or `all` (the first five; `wall` is not in `all`). The
   ablation builds edit the one line `SHIPPED = parse("")` (`hadur-bench/build-ablation.sh`:
@@ -1390,6 +1393,15 @@ Nullstride's list with (docs/bench/local/2026-10-12_plan90-pc-read.md).
   `ShieldMode`'s (with SHIELD-16, 5 bases, 15 predictors). The `SP` record is
   `SP,round,tick,bases,best,offset,exact,samples,openingTicks`, the offset to 9 places since a
   predictor is exact within 1e-5. Tests: `ShieldOpeningTest` (SHIELD-18).
+- **DODGE-1 to DODGE-3** (1v1 strategy after 3.16, docs/bench/live-3.16.md: Saguaro's ShotDodger
+  mode covers 429 bots, +0.60 APS over Hadur there). `physics/SimpleAims` computes the 12 aims from
+  the states `DuelController` puts on each movement wave (`Wave.aimStates`, only while the dodge is
+  on); `physics/ShotDodger` counts the matches and gives `SurfMover.waveDanger` its 0/1 danger. Both
+  are pure and live in `physics` so team code may reuse them. Our own state is exact, so a simple
+  gun's bullet matches its aim to within float error; 0.002 rad allows for the enemy's rounding. A
+  learning gun matches no aim, so the dodge stays off against it even when forced on. Ablations
+  `sdodge` (suffix `sg`, every opponent) and `sdodgelist` (`SHOT_DODGE=<file>`, suffix `dg`, the
+  table's entries in `ShieldTableData.dodges()`). Tests: `ShotDodgerTest` (DODGE-1, DODGE-2, DODGE-3).
 - **SB records** (measurement, every design): each bullet that hits us from a listed opponent
   writes `SB,round,tick,class,ordinal,predicted,power`, class `off`, `nowave`, `missed`
   (a shield bullet was fired at it), `first` or `unshielded`, so the plan's step 2 can classify

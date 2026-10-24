@@ -15,6 +15,7 @@ import hadur2.core.memory.ProfileLibrary;
 import hadur2.core.memory.Tiers;
 import hadur2.core.model.*;
 import hadur2.core.move.GunClassifier;
+import hadur2.core.physics.ShotDodger;
 import hadur2.core.move.HitForensics;
 import hadur2.core.move.MoveController;
 import hadur2.core.move.OurBullet;
@@ -347,6 +348,8 @@ public final class DuelController {
     public void newRound(int round, RoundStats stats) {
         this.round = round;
         this.stats = stats;
+        java.util.Arrays.fill(aimRingTime, -1);
+        aimVelocityCount = 0;
         if (shield != null) shield.newRound(round);
         recover();
         // The history of the enemy's movement starts with the round; recover() marked it unknown.
@@ -667,6 +670,8 @@ public final class DuelController {
             .setTargetEnergy(in.energy())
             .setSourceEnergy(e.energy());
         moveWave.setWallDistances();
+        // DODGE-1: what the simple aims read, only while the dodge is on.
+        if (moveController.shotDodger() != null) moveWave.aimStates = aimStates(time, myPos, myHead, myVel, enemyPos);
         moveController.addWave(moveWave);
 
         // WAVE-1, WAVE-2: only the part of the drop the ledger can't explain is a shot.
@@ -802,6 +807,33 @@ public final class DuelController {
         return !stackListOn || list == null || !list.onStackOffList(opponent);
     }
 
+    /**
+     * DODGE-1: records this tick's state and returns the states of this tick and the ticks
+     * before it that the simple aims read (null for a tick with no scan).
+     */
+    private double[][] aimStates(long time, Point2D.Double myPos, double myHead, double myVel,
+                                 Point2D.Double enemyPos) {
+        int slot = (int) (time % SimpleAims.LAGS);
+        int prev = (int) ((time - 1) % SimpleAims.LAGS);
+        double turn = aimRingTime[prev] == time - 1
+            ? Angles.normalRelativeAngle(myHead - aimRing[prev][2]) : 0;
+        aimVelocities[aimVelocityCount % AIM_AVERAGE_TICKS] = myVel;
+        aimVelocityCount++;
+        int n = Math.min(aimVelocityCount, AIM_AVERAGE_TICKS);
+        double sum = 0;
+        for (int i = 0; i < n; i++) sum += aimVelocities[i];
+        aimRing[slot] = new double[] {myPos.x, myPos.y, myHead, myVel, turn, sum / n, enemyPos.x, enemyPos.y};
+        aimRingTime[slot] = time;
+        double[][] states = new double[SimpleAims.LAGS][];
+        for (int lag = 0; lag < SimpleAims.LAGS; lag++) {
+            long t = time - lag;
+            if (t < 0) continue;
+            int k = (int) (t % SimpleAims.LAGS);
+            if (aimRingTime[k] == t) states[lag] = aimRing[k];
+        }
+        return states;
+    }
+
     /** A duel-only move switch: in effect only in a duel; melee and team endgames play as with it off. */
     /** RAM-4: whether the duel plays heatjit for being against a confirmed rammer. */
     static boolean ramHeat(boolean switchOn, boolean confirmedRammer) {
@@ -841,6 +873,22 @@ public final class DuelController {
      * count runs across its rounds and starts empty with the next battle's controller.
      */
     private final GunClassifier gunClassifier = new GunClassifier();
+
+    /**
+     * DODGE-2: the simple aim the enemy's gun fires, counted across the battle's rounds like the
+     * gun classifier; the surf asks it only when DODGE-3 turns it on for this opponent.
+     */
+    private final ShotDodger shotDodger = new ShotDodger();
+    /** DODGE-1: our state and the enemy's position on the last ticks, by tick, for the simple aims. */
+    private final double[][] aimRing = new double[SimpleAims.LAGS][];
+    /** DODGE-1: the tick each {@link #aimRing} slot was taken on; -1 for none. */
+    private final long[] aimRingTime = {-1, -1, -1};
+    /** DODGE-1: our last velocities, for the averaged linear aim. */
+    private final double[] aimVelocities = new double[AIM_AVERAGE_TICKS];
+    /** DODGE-1: velocities recorded this round. */
+    private int aimVelocityCount;
+    /** DODGE-1: ticks the averaged linear aim averages our velocity over. */
+    static final int AIM_AVERAGE_TICKS = 10;
 
     /** MOVE-14: no protean pick when a real bullet is this many ticks from reaching us. */
     private static final double PROTEAN_MIN_TICKS = 10.0;
@@ -913,6 +961,8 @@ public final class DuelController {
         if (enemiesTotal <= 1) hitForensics(in, e, hitWave, bulletLoc, driving);
         if (hitWave != null) {
             hitWave.hitByBullet = true;
+            // DODGE-2: the bullet's heading says which simple aim fired it.
+            if (moveController.shotDodger() != null) shotDodger.observe(hitWave.simpleAims(), e.heading());
             moveController.logBulletHit(hitWave, bulletLoc, round, in.time());
         }
         // MOVE-20: a hit is a new sample for the next wave's neighbours too.
@@ -1016,6 +1066,7 @@ public final class DuelController {
                 stats.interceptsShadowed++;
             }
             hitWave.bulletHitBullet = true;
+            if (moveController.shotDodger() != null) shotDodger.observe(hitWave.simpleAims(), e.enemyHeading());
             // MOVE-19: the bullet's angle is a sample of the enemy gun's aim, as a hit would be.
             if (logsIntercept(duelOnly(MoveDesign.BULLET_HIT_BULLET_LOG, enemiesTotal), hitWave)) {
                 moveController.logBulletHit(hitWave, hitLoc, round, in.time());
@@ -1058,6 +1109,13 @@ public final class DuelController {
         // SHIELD-6: the round's record, and the budget is checked once more; the result of the
         // round does not move the budget, only the damage does.
         if (shield != null) shield.onRoundEnded(tick, won);
+        // DODGE-2: SD,round,tick,best,bestMatches,read,active, while the dodge is on.
+        if (moveController.shotDodger() != null) {
+            int best = shotDodger.best();
+            telemetry.emit("SD," + round + "," + tick + "," + best + ","
+                + (best < 0 ? 0 : shotDodger.matches(best)) + "," + shotDodger.read() + ","
+                + (shotDodger.active() ? 1 : 0));
+        }
         // RAM-3: a round the rammer played, before its confirmation (fought) or after (its arm).
         if (trialRound || rammer.rammedThisRound()) {
             double ours = won ? lastOurEnergy : 0;
@@ -1204,6 +1262,9 @@ public final class DuelController {
         // MOVE-23: the stack's per-opponent switches, decided now the opponent is named.
         stackOn = stackApplies(duelOnly(MoveDesign.STACK_LIST, enemiesTotal), stackList, name);
         moveController.setPointKernel(duelOnly(MoveDesign.POINT_KERNEL && stackOn, enemiesTotal));
+        // DODGE-3: the simple-aim dodge, forced for every opponent or for those the table names.
+        moveController.setShotDodger(duelOnly(MoveDesign.SHOT_DODGE || stackList.dodges(name), enemiesTotal)
+            ? shotDodger : null);
         // Without memory the B record still goes out, with '-' for what memory would say.
         if (library != null) {
             // MEM-4: a missing or damaged profile loads as a stranger; load never throws.
