@@ -384,6 +384,17 @@ loadScripts(document, 'script');</script>
  otherwise reject, rather than whichever wall-smoothed heading points more directly
  away from the enemy.</div>
 </div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setStopPointAimMix(boolean)" class="member-name-link">setStopPointAimMix</a><wbr>(boolean&nbsp;on)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">MOVE-26: with the stop-point surf on, whether it mixes the simple-aim expert in (off by default).</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setStopPointSurf(boolean)" class="member-name-link">setStopPointSurf</a><wbr>(boolean&nbsp;on)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">MOVE-25: whether the stop-point surf (<a href="StopPointSurf.html" title="class in hadur2.core.move"><code>StopPointSurf</code></a>) drives every surfed tick in
+ place of the three options and go-to, while the tick budget allows go-to surfing.</div>
+</div>
 </div>
 </div>
 </div>
@@ -475,6 +486,26 @@ loadScripts(document, 'script');</script>
 <section class="method-details" id="method-detail">
 <h2>Method Details</h2>
 <ul class="member-list">
+<li>
+<section class="detail" id="setStopPointSurf(boolean)">
+<h3>setStopPointSurf</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setStopPointSurf</span><wbr><span class="parameters">(boolean&nbsp;on)</span></div>
+<div class="block">MOVE-25: whether the stop-point surf (<a href="StopPointSurf.html" title="class in hadur2.core.move"><code>StopPointSurf</code></a>) drives every surfed tick in
+ place of the three options and go-to, while the tick budget allows go-to surfing. Off by
+ default; when off nothing about the surf changes.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>on</code> - whether the stop-point surf is used</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setStopPointAimMix(boolean)">
+<h3>setStopPointAimMix</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setStopPointAimMix</span><wbr><span class="parameters">(boolean&nbsp;on)</span></div>
+<div class="block">MOVE-26: with the stop-point surf on, whether it mixes the simple-aim expert in (off by default).</div>
+</section>
+</li>
 <li>
 <section class="detail" id="setDesiredDistance(double)">
 <h3>setDesiredDistance</h3>

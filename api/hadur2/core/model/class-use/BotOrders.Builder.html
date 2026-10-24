@@ -244,6 +244,18 @@ loadScripts(document, 'script');</script>
 <div class="block"><a class="req" href="../../../../../requirements.html#END-2">END-2</a>: drive straight at the enemy at full speed, front or back first, whichever needs
  less turning.</div>
 </div>
+<div class="col-first even-row-color"><code>int</code></div>
+<div class="col-second even-row-color"><span class="type-name-label">StopPointSurf.</span><code><a href="../../move/StopPointSurf.html#surf(hadur2.core.model.BotOrders.Builder,hadur2.core.model.RobotState,hadur2.core.move.MoveController,hadur2.core.model.Wave,int,double,java.awt.geom.Point2D.Double)" class="member-name-link">surf</a><wbr>(<a href="../BotOrders.Builder.html" title="class in hadur2.core.model">BotOrders.Builder</a>&nbsp;orders,
+ <a href="../RobotState.html" title="class in hadur2.core.model">RobotState</a>&nbsp;myState,
+ <a href="../../move/MoveController.html" title="class in hadur2.core.move">MoveController</a>&nbsp;moveCtrl,
+ <a href="../Wave.html" title="class in hadur2.core.model">Wave</a>&nbsp;surfWave,
+ int&nbsp;wavesToSurf,
+ double&nbsp;desiredDistance,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;distancingFrom)</code></div>
+<div class="col-last even-row-color">
+<div class="block">Surfs <code>surfWave</code> (and the next surfable wave when <code>wavesToSurf</code> is 2 or more):
+ keeps or remakes the plan, publishes its intervals and writes the drive.</div>
+</div>
 </div>
 </section>
 </li>
