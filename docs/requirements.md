@@ -1134,6 +1134,7 @@ MMOVE-8 the melee strand, WEAVE-7 and WEAVE-8 the conductor.
 | TMODE-8 | Optional | Where the DISABLED mode is played and an enemy seen lately with at most 0.1 energy is within 500 px, the team movement shall draw the member to the nearest such enemy, to 50 px, at half FINISH's strength. | T7 |
 | TMODE-9 | Optional | Where the MATEFIRE mode is played, each bullet a teammate reports firing shall count in the member's destination risk as an enemy's virtual bullet does, on the reported heading, until it has passed the member. | T7 |
 | TMODE-10 | Optional | Where the REAR mode is played by the team's leader (the member that starts a round with more than 100 energy), each enemy's risk term shall weigh 1.5 times. | T7 |
+| TMODE-11 | Optional | Where the WAVES mode is played, the member shall re-rank its eight lowest-risk destinations, and the destination it holds, by the damage expected from the shots in flight its 30-tick drive to each would cross, each shot a profile over its virtual bullets' headings and its escape angle summing to its aimed-at weight, and shall take the least of risk over the median risk plus three times damage over the median damage (floored at 0.1). | T7 |
 
 ### T1 notes
 
