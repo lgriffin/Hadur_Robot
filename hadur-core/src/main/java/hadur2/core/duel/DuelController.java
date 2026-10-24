@@ -1665,7 +1665,7 @@ public final class DuelController {
         ShieldMode.Command c = shield.tick(new ShieldMode.Situation(in.time(), me.x, me.y,
             in.heading(), in.gunHeading(), in.gunHeat(), in.gunCoolingRate(), in.energy(),
             lastEnemyLocation.x, lastEnemyLocation.y, lastEnemyEnergy, aimAngle,
-            attackPower, onTarget, mayFire));
+            attackPower, onTarget, mayFire, fieldWidth, fieldHeight));
         if (c == null) {
             shieldAim = Double.NaN;
             return false;

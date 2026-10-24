@@ -1,0 +1,78 @@
+# Shield part 2 of the 1v1 mode table (docs/plan-shield-quality.md, M4 in docs/plan-mode-table.md):
+# SHIELD-17's opening drive (Saguaro's moving shield) and SHIELD-18's shipped aims, per opponent.
+#   ./queue.sh run pc-shield-s2        (or  .\queue.ps1 run pc-shield-s2)
+# Run it from master once 3.16 is released (the arms are 3.16):
+#   git checkout master && git pull
+# (a results PR step leaves the checkout on its own branch). One bench queue, RoboRumble workers
+# at 0, unpinned, 12 workers, truth log off. Every step resumes; no step needs a decision.
+#
+# panel: Saguaro's 300 shield robots (127 it shields off Hadur's 3.15 list, 173 on it), incl. its
+#   54 off-list ones it moving-shields.
+# screen (about 2.5-3 h): the panel x c, aa, sask, sasvsk x 4 seeds = ~4,800 battles.
+# pick: mode_table.py, a robot locks sask or sasvsk at +5 points with the 95% interval above 0.
+# entries: locked robots off the list join it; robots locked with sasvsk get the opening drive.
+# aims: a shipped aim for every robot the candidate shields, from the screen's SP records.
+# candidate: t2 = 3.16 + the list adds + the opening drives + the aims (build-ablation.sh).
+# verify (about 2 h): the panel x c, aa, t2 x 4 fresh seeds = ~3,600 battles.
+# gate: t2 minus pooled c and aa summed over the panel / 1,217 pairings: PASS at +0.15 APS with the
+#   lower end above 0 and the A/A inside its band. Fresh seeds, so the screen's picks that were noise
+#   count at their real (zero or negative) value. The verdict goes in the results PR either way; the
+#   whole table's census against the release is stage M5.
+# Then team stage S4 (about 3 h, below): one combined card, about 8 h in all.
+
+set P = --parallel 12 --no-truth-log
+set HEAP = --child-heap 2G
+set E = --engine 1.11.1
+set C = --skip-build --skip-fetch --rounds 35 --cpu-constant 1488498 ${HEAP} ${E}
+set S = python3 tools/shield_s2.py
+set LIST = ../hadur-robot/src/main/java/hadur2/ShieldListData.java
+set OUT = ../docs/bench/local
+
+prep | mkdir -p bisect work && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur2.Hadur_3.16.jar bisect/ && bash ./build-ablation.sh aa && bash ./build-ablation.sh shield-all,srec && bash ./build-ablation.sh shield-all,smove,srec && cat panel-saguaro-shield.txt panel-saguaro-shield-listed.txt > work/shield-s2-panel.txt && ./fetch-opponents.sh --set work/shield-s2-panel.txt && mvn -q compile
+
+screen | ./bench-top20.sh ${C} ${P} --set work/shield-s2-panel.txt --seeds 4 --seed-base 2300 --arms plans/shield-s2.arms --out work/shield-s2-screen --label shield-s2-screen
+  after: prep
+
+pick | python3 ../data/tools/multiarm.py work/shield-s2-screen/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_shield-s2-screen.md && python3 ../data/tools/mode_table.py work/shield-s2-screen/arms.tsv --margin 5 --out-tsv ${OUT}/shield-s2-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_shield-s2-pick.md
+  after: screen
+
+entries | ${S} entries ${OUT}/shield-s2-pick.tsv ${LIST} --move-arm sasvsk --adds ${OUT}/shield-s2-adds.txt --moves ${OUT}/shield-s2-moves.txt && ${S} aims work/shield-s2-screen ${OUT}/shield-s2-pick.tsv ${LIST} --rec-arm sask --move-arm sasvsk --out ${OUT}/shield-s2-aims.txt
+  after: pick
+
+candidate | ${S} candidate ${OUT}/shield-s2-adds.txt ${OUT}/shield-s2-moves.txt ${OUT}/shield-s2-aims.txt --base 3.16 --out work/shield-s2-verify.arms
+  after: entries
+
+verify | ./bench-top20.sh ${C} ${P} --set work/shield-s2-panel.txt --seeds 4 --seed-base 2400 --arms work/shield-s2-verify.arms --out work/shield-s2-verify --label shield-s2-verify
+  after: candidate
+
+gate | python3 ../data/tools/multiarm.py work/shield-s2-verify/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_shield-s2-verify.md && ${S} gate work/shield-s2-verify/arms.tsv --arm t2 --panel work/shield-s2-panel.txt --out ${OUT}/$(date +%Y-%m-%d)_shield-s2-gate.md
+  after: verify
+
+pr | bash tools/open_results_pr.sh claude/pc-shield-s2-results "Shield part 2: opening drive and shipped aims, screen and verify gate" ${OUT}/*_shield-s2*.md ${OUT}/shield-s2-*.tsv ${OUT}/shield-s2-*.txt
+  after: gate
+
+# ---- Team stage S4 (team thread, plans/team-s4.steps, TMODE-8 to TMODE-10): five screens of
+# 46 teams x 6 seeds x 2 = 2,760 battles, about 3 h, after the 1v1 results PR. Their own results
+# PR (claude/pc-team-s4-results); the team thread reads the verdict. t4prep goes back to master
+# first, so that PR does not carry the 1v1 reports from the pr step's branch.
+
+t4prep | git checkout -q master && bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && bash ./build-ablation.sh tmdis && bash ./build-ablation.sh tmfire && bash ./build-ablation.sh tmrear && bash ./build-ablation.sh tmdis,tmfire,tmrear && ./fetch-opponents.sh --set team-census46.txt && mvn -q compile
+  after: pr
+
+t4bb  | mvn -q exec:java "-Dexec.args=@plans/team-s4-bb.args"
+  after: t4prep
+
+t4md  | mvn -q exec:java "-Dexec.args=@plans/team-s4-md.args"
+  after: t4bb
+
+t4mb  | mvn -q exec:java "-Dexec.args=@plans/team-s4-mb.args"
+  after: t4md
+
+t4mr  | mvn -q exec:java "-Dexec.args=@plans/team-s4-mr.args"
+  after: t4mb
+
+t4all | mvn -q exec:java "-Dexec.args=@plans/team-s4-mdmbmr.args"
+  after: t4mr
+
+t4pr  | bash tools/open_results_pr.sh claude/pc-team-s4-results "Team stage S4: DISABLED, MATEFIRE and REAR screens" $(ls ${OUT}/team-s4-*.md 2>/dev/null)
+  after: t4all
