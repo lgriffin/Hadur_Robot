@@ -1,0 +1,5 @@
+# 1v1 mode table v2, dodge screen (pc-1v1-modes): c is 3.16, aa its A/A copy, sg the simple-aim
+# dodge for every duel opponent (DODGE-1 to DODGE-3; it acts only once one expert reads the gun).
+c | hadur2.Hadur 3.16 | bisect/hadur2.Hadur_3.16.jar
+aa | hadur2.Hadur 3.16aa | bisect/hadur2.Hadur_3.16aa.jar
+sg | hadur2.Hadur 3.16sg | bisect/hadur2.Hadur_3.16sg.jar
