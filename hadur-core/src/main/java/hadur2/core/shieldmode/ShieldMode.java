@@ -265,6 +265,9 @@ public final class ShieldMode {
     private final double[] offsets = new double[MAX_BASES];
     private final double[] directionalOffsets = new double[MAX_BASES];
     private int offsetSamples;
+    /** SHIELD-18: a shipped offset's weight in its base's running mean, as that many bullets. */
+    private final int[] seedWeight = new int[MAX_BASES];
+    private final int[] directionalSeedWeight = new int[MAX_BASES];
     /** SHIELD-10: the kept errors per base, plain and times the lateral direction. */
     private final ModalOffset[] modal = new ModalOffset[MAX_BASES];
     private final ModalOffset[] directionalModal = new ModalOffset[MAX_BASES];
@@ -450,8 +453,10 @@ public final class ShieldMode {
 
     /**
      * SHIELD-18: a shipped aim starts its predictor {@link ShieldDesign#AIM_PRIOR} exact matches
-     * ahead, with its offset as that base's learned offset; an aim for a predictor this design
-     * does not have is ignored.
+     * ahead, with its offset as that base's learned offset, weighted as {@code AIM_PRIOR} bullets
+     * (kept that many times under SHIELD-10's mode, counted that many times in the mean), so one
+     * learned bullet does not replace it; an aim for a predictor this design does not have is
+     * ignored.
      */
     private void seedAim(double[] aim) {
         if (aim == null) return;
@@ -459,8 +464,19 @@ public final class ShieldMode {
         if (k < 0 || k >= predictors) return;
         exactHits[k] += ShieldDesign.AIM_PRIOR;
         int b = k % bases;
-        if (k / bases == 1) offsets[b] = aim[1];
-        else if (k / bases == 2) directionalOffsets[b] = aim[1];
+        int type = k / bases;
+        if (type == 0) return;
+        ModalOffset m = type == 1 ? modal[b] : directionalModal[b];
+        if (m != null) {
+            for (int i = 0; i < ShieldDesign.AIM_PRIOR; i++) m.add(aim[1]);
+        }
+        if (type == 1) {
+            offsets[b] = aim[1];
+            seedWeight[b] = ShieldDesign.AIM_PRIOR;
+        } else {
+            directionalOffsets[b] = aim[1];
+            directionalSeedWeight[b] = ShieldDesign.AIM_PRIOR;
+        }
     }
 
     /** SHIELD-18: the offset predictor {@code k} adds to its base. */
@@ -709,9 +725,10 @@ public final class ShieldMode {
                 offsets[b] = modal[b].add(err);
                 directionalOffsets[b] = directionalModal[b].add(err * w.direction);
             } else {
-                offsets[b] = (offsets[b] * offsetSamples + err) / (offsetSamples + 1);
-                directionalOffsets[b] = (directionalOffsets[b] * offsetSamples + err * w.direction)
-                    / (offsetSamples + 1);
+                int n = offsetSamples + seedWeight[b];
+                int dn = offsetSamples + directionalSeedWeight[b];
+                offsets[b] = (offsets[b] * n + err) / (n + 1);
+                directionalOffsets[b] = (directionalOffsets[b] * dn + err * w.direction) / (dn + 1);
             }
         }
         offsetSamples++;

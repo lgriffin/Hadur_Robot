@@ -40,9 +40,9 @@ class ShieldS2Test(unittest.TestCase):
         self.assertEqual(["a.Listed 1.0", "d.Mover 1"], moves)
 
     def sp_log(self, run, robot, seed, arm, records):
-        body = "".join("SP,%d,900,5,%d,%.9f,%d,40,0\n" % (i, k, off, exact) for i, (k, off, exact) in enumerate(records))
+        body = "".join("%d,900,SP,%d,900,5,%d,%.9f,%d,40,0\n" % (i, i, k, off, exact) for i, (k, off, exact) in enumerate(records))
         self.file(os.path.join(run, "battles", "%s-%s-%s" % (shield_s2.slug(robot), seed, arm), "hadur.log"),
-                  "SR,0,900,1,1,0,0,0,0.0,10.0,-\n" + body)
+                  "0,900,SR,0,900,1,1,0,0,0,0.0,10.0,-\n0,5,SP,unprefixed is not read\n" + body)
 
     def test_aims(self):
         listdata = self.file("ShieldListData.java", LISTDATA)
@@ -91,12 +91,21 @@ class ShieldS2Test(unittest.TestCase):
         return self.file("verify.tsv", HEADER + "".join(rows))
 
     def test_gate(self):
-        ok, m, ci, n, aa = shield_s2.gate(self.gate_rows(1.0), "t2", 1217, 0.15, 0.0)
+        ok, m, ci, n, aa, _ = shield_s2.gate(self.gate_rows(1.0), "t2", 1217, 0.15, 0.0)
         self.assertTrue(ok)
         self.assertEqual(300, n)
         self.assertAlmostEqual(300 * 1.0 / 1217, m, delta=0.05)
-        ok, m, ci, n, aa = shield_s2.gate(self.gate_rows(0.0), "t2", 1217, 0.15, 0.0)
+        ok, m, ci, n, aa, _ = shield_s2.gate(self.gate_rows(0.0), "t2", 1217, 0.15, 0.0)
         self.assertFalse(ok)
+
+    def test_gate_needs_the_panel(self):
+        rows = self.gate_rows(4.0)
+        panel = self.file("panel.txt", "# panel\n" + "".join("opp%d | band1 | x.jar\n" % o for o in range(400)))
+        ok, m, ci, n, aa, expected = shield_s2.gate(rows, "t2", 1217, 0.15, 0.0, panel)
+        self.assertEqual((300, 400), (n, expected))
+        self.assertFalse(ok, "300 of 400 read is under 95%")
+        full = self.file("full.txt", "".join("opp%d | band1 | x.jar\n" % o for o in range(300)))
+        self.assertTrue(shield_s2.gate(rows, "t2", 1217, 0.15, 0.0, full)[0])
 
 
 if __name__ == "__main__":

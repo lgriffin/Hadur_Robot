@@ -13,10 +13,11 @@
   shield_s2.py candidate ADDS MOVES AIMS --base 3.16 --out ARMS
       builds the candidate t2 (build-ablation.sh: slistadd, smovelist, saimlist, each only when its
       file names anything) and writes the verify arms file c, aa, t2
-  shield_s2.py gate ARMS_TSV --arm t2 --out FILE [--field 1217] [--bar 0.15] [--low 0]
+  shield_s2.py gate ARMS_TSV --arm t2 --out FILE [--panel SET] [--cover 0.95] [--field 1217] [--bar 0.15] [--low 0]
       the verify gate on the panel: the sum over the panel's robots of arm minus pooled c and aa,
       divided by the field's pairings, in APS. PASS needs the estimate at BAR or more, its lower 95%
-      end above LOW, and the A/A inside its band. Writes a short verdict.
+      end above LOW, the A/A inside its band, and (with PANEL) at least COVER of the panel's robots
+      read in all three arms. Writes a short verdict.
 
 A robot matches the shield list with or without its version, as ShieldList does. Standard library
 plus data/tools/multiarm.py and tools/table_v1.py.
@@ -51,15 +52,18 @@ def entries(pick, listdata, move_arm):
 
 
 def last_sp(log):
-    """The last SP record of a hadur.log: (bases, best, offset, exact), or None."""
+    """The last SP record of a hadur.log: (bases, best, offset, exact), or None. The harvester
+    prefixes each line with its round and turn: "round,turn,record"."""
     best = None
     try:
         with open(log, encoding="utf-8", errors="replace") as f:
             for line in f:
-                if line.startswith("SP,"):
-                    p = line.strip().split(",")
-                    if len(p) >= 7:
-                        best = (int(p[3]), int(p[4]), float(p[5]), int(p[6]))
+                parts = line.rstrip("\n").split(",", 2)
+                if len(parts) < 3 or not parts[2].startswith("SP,"):
+                    continue
+                p = parts[2].strip().split(",")
+                if len(p) >= 7:
+                    best = (int(p[3]), int(p[4]), float(p[5]), int(p[6]))
     except OSError:
         return None
     return best
@@ -123,16 +127,20 @@ def candidate_arms(base, suffix):
             "t2 | hadur2.Hadur %s%s | bisect/hadur2.Hadur_%s%s.jar\n" % (base, suffix, base, suffix)]
 
 
-def gate(arms_tsv, arm, field, bar, low):
+def gate(arms_tsv, arm, field, bar, low, panel=None, cover=0.95):
+    """The verify gate. With PANEL (a bench set file), at least COVER of its robots must be read in
+    all three arms, so a partial run cannot pass on a lucky subset."""
     run = multiarm.Run(multiarm.read_rows([arms_tsv]))
     d = run.diffs(arm, ["c", "aa"], run.opps(arm, "c", "aa"))
     m, ci, n = multiarm.mean_ci(list(d.values()))
     aa = multiarm.aa_check(run, "c", "aa")
+    expected = len(table_v1.set_rows(panel)) if panel else n
     if m is None or ci is None or ci != ci:
-        return False, None, None, n, aa
+        return False, None, None, n, aa, expected
     total, half = m * n / field, ci * n / field
-    ok = total >= bar and total - half > low and aa is not None and aa["ok"]
-    return ok, total, half, n, aa
+    ok = (total >= bar and total - half > low and aa is not None and aa["ok"]
+          and n >= cover * expected)
+    return ok, total, half, n, aa, expected
 
 
 def read_lines(path):
@@ -159,6 +167,7 @@ def main(argv=None):
     p = sub.add_parser("gate"); p.add_argument("arms"); p.add_argument("--arm", default="t2")
     p.add_argument("--out", required=True); p.add_argument("--field", type=int, default=FIELD)
     p.add_argument("--bar", type=float, default=0.15); p.add_argument("--low", type=float, default=0.0)
+    p.add_argument("--panel"); p.add_argument("--cover", type=float, default=0.95)
     a = ap.parse_args(argv)
 
     if a.cmd == "entries":
@@ -170,6 +179,8 @@ def main(argv=None):
         lines = aims(a.run, a.pick, a.listdata, a.rec_arm, a.move_arm, a.min_exact)
         write(a.out, [l + "\n" for l in lines])
         print(len(lines), "shipped aims")
+        if not lines:
+            sys.stderr.write("warning: no shipped aims (no SP records read in %s)\n" % a.run)
     elif a.cmd == "candidate":
         adds, moves, aims_ = read_lines(a.adds), read_lines(a.moves), read_lines(a.aims)
         spec, suffix = candidate_spec(adds, moves, aims_)
@@ -188,12 +199,12 @@ def main(argv=None):
             return code
         write(a.out, candidate_arms(a.base, suffix))
     elif a.cmd == "gate":
-        ok, m, ci, n, aa = gate(a.arms, a.arm, a.field, a.bar, a.low)
+        ok, m, ci, n, aa, expected = gate(a.arms, a.arm, a.field, a.bar, a.low, a.panel, a.cover)
         est = "no battles" if m is None else "%+.2f +/- %.2f APS" % (m, ci)
         text = ["# Shield part 2: verify gate\n\n",
-                "%s: %s - pooled c and aa, summed over %d panel robots / %d pairings = %s. "
-                "Bar: %+.2f with the lower end above %+.2f.\n\n"
-                % ("PASS" if ok else "FAIL", a.arm, n, a.field, est, a.bar, a.low),
+                "%s: %s - pooled c and aa, summed over %d panel robots (of %d) / %d pairings = %s. "
+                "Bar: %+.2f with the lower end above %+.2f, and %.0f%% of the panel read.\n\n"
+                % ("PASS" if ok else "FAIL", a.arm, n, expected, a.field, est, a.bar, a.low, 100 * a.cover),
                 "A/A: aa - c = %+.2f +/- %.2f, band +/- %.2f: %s.\n"
                 % (aa["diff"], aa["ci"], aa["band"], "inside" if aa["ok"] else "OUTSIDE, run not read")
                 if aa else "A/A: no aa arm.\n"]

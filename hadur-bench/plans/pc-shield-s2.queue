@@ -44,7 +44,7 @@ candidate | ${S} candidate ${OUT}/shield-s2-adds.txt ${OUT}/shield-s2-moves.txt 
 verify | ./bench-top20.sh ${C} ${P} --set work/shield-s2-panel.txt --seeds 4 --seed-base 2400 --arms work/shield-s2-verify.arms --out work/shield-s2-verify --label shield-s2-verify
   after: candidate
 
-gate | python3 ../data/tools/multiarm.py work/shield-s2-verify/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_shield-s2-verify.md && ${S} gate work/shield-s2-verify/arms.tsv --arm t2 --out ${OUT}/$(date +%Y-%m-%d)_shield-s2-gate.md
+gate | python3 ../data/tools/multiarm.py work/shield-s2-verify/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_shield-s2-verify.md && ${S} gate work/shield-s2-verify/arms.tsv --arm t2 --panel work/shield-s2-panel.txt --out ${OUT}/$(date +%Y-%m-%d)_shield-s2-gate.md
   after: verify
 
 pr | bash tools/open_results_pr.sh claude/pc-shield-s2-results "Shield part 2: opening drive and shipped aims, screen and verify gate" ${OUT}/*_shield-s2*.md ${OUT}/shield-s2-*.tsv ${OUT}/shield-s2-*.txt

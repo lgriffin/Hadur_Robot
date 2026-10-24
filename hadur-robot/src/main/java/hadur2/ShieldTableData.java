@@ -12,8 +12,8 @@ package hadur2;
  *
  * <p>A class, not a resource, for the reason {@link ShieldListData} gives: Robocode's sandbox
  * refuses a robot the read of its own jar. Keep the shape: a final class with package-private
- * static methods {@code moves()} and {@code aims()}; the bench's {@code smove}/{@code saim}
- * ablations fill them.</p>
+ * static methods {@code moves()} and {@code aims()}; the bench's {@code smovelist}/{@code
+ * saimlist} ablations fill them.</p>
  */
 final class ShieldTableData {
 

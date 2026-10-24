@@ -3,6 +3,7 @@ package hadur2.core.shieldmode;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -183,5 +184,29 @@ class ShieldOpeningTest {
         assertTrue(records.stream().noneMatch(r -> r.startsWith("SP,")));
         assertFalse(ShieldDesign.SHIPPED.rec);
         assertFalse(ShieldDesign.parse("all").rec);
+    }
+
+    /** The SP record's offset after one head-on bullet that hits us, with {@code design} and {@code extra} list lines. */
+    private double offsetAfterOneBullet(String design, String... extra) {
+        records.clear();
+        ShieldMode m = mode(design, extra);
+        for (long t = 99; t <= 101; t++) scan(m, LISTED, t);
+        m.onEnemyShot(100, 0.1);
+        double travelled = (20 - 3 * 0.1) * 21;
+        m.onHitByBullet(121, 0.1, ENEMY_X, ENEMY_Y - travelled, Math.PI);
+        m.onRoundEnded(500, true);
+        String sp = records.stream().filter(r -> r.startsWith("SP,")).findFirst().orElseThrow();
+        return Double.parseDouble(sp.split(",")[5]);
+    }
+
+    @Test
+    @Tag("SHIELD-18")
+    @DisplayName("a shipped offset counts as AIM_PRIOR bullets: one learned bullet moves it a quarter of the way")
+    void seedSurvivesOneBullet() {
+        double learned = offsetAfterOneBullet("prior,learn,rec", "shield-aim: 7 0 list.Other");
+        double seeded = offsetAfterOneBullet("prior,learn,rec", "shield-aim: 7 0.02 list.Target");
+        int w = ShieldDesign.AIM_PRIOR;
+        assertEquals((0.02 * w + learned) / (w + 1), seeded, 1e-6);
+        assertNotEquals(learned, seeded, 1e-6);
     }
 }
