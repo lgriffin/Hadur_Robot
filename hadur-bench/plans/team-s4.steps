@@ -1,0 +1,23 @@
+# Team stage S4 steps (docs/plan-team-top5.md, requirements TMODE-8 to TMODE-10), to fold into the
+# combined PC card. Not a card on its own. Chain t4prep after the card's last 1v1 step.
+# Five screens, each 46 teams x 6 seeds x 2 = 552 battles paired with the 3.16 aa build:
+#   t4bb A/A, t4md DISABLED, t4mb MATEFIRE, t4mr REAR (leader keeps back), t4all all three.
+# 2,760 battles, about 3 h at --parallel 12. Every step resumes where it stopped (BENCH-96).
+# Verdict (team thread, cloud): ship a mode whose screen gains at least +1.0 with the 95% low end
+# above zero and t4bb within +/- 1.0; t4all says whether the passing ones stack.
+# Needs `set OUT = ../docs/bench/local` in the card.
+
+t4prep | bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && bash ./build-ablation.sh tmdis && bash ./build-ablation.sh tmfire && bash ./build-ablation.sh tmrear && bash ./build-ablation.sh tmdis,tmfire,tmrear && ./fetch-opponents.sh --set team-census46.txt && mvn -q compile
+  after: <the card's last 1v1 step>
+t4bb  | mvn -q exec:java "-Dexec.args=@plans/team-s4-bb.args"
+  after: t4prep
+t4md  | mvn -q exec:java "-Dexec.args=@plans/team-s4-md.args"
+  after: t4bb
+t4mb  | mvn -q exec:java "-Dexec.args=@plans/team-s4-mb.args"
+  after: t4md
+t4mr  | mvn -q exec:java "-Dexec.args=@plans/team-s4-mr.args"
+  after: t4mb
+t4all | mvn -q exec:java "-Dexec.args=@plans/team-s4-mdmbmr.args"
+  after: t4mr
+t4pr  | bash tools/open_results_pr.sh claude/pc-team-s4-results "Team stage S4: DISABLED, MATEFIRE and REAR screens" $(ls ${OUT}/team-s4-*.md 2>/dev/null)
+  after: t4all

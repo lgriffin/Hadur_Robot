@@ -1131,6 +1131,9 @@ MMOVE-8 the melee strand, WEAVE-7 and WEAVE-8 the conductor.
 | TMODE-5 | Optional | Where the PACK mode is played, while Hadur has 20 energy or more and is not drawn by TMODE-3's regroup or TMODE-4, each candidate's risk shall be scaled by e^((to − from) / 100), each distance floored at 40 px, toward Hadur's place in a pincer round the prey: the enemy seen within the cap age with the least distance from the members' centre plus 1.2 times its energy; the members ranked by bearing from the prey about their mean bearing and spread about it at most 70° apart, at 0.74 of the nearest member's distance, between 150 and 450 px. | T7 |
 | TMODE-6 | Optional | Where the SCREEN mode is played, each enemy's distance to its nearest other robot, by which MMOVE-2 decides whether Hadur at a candidate point would be that enemy's closest, shall take the living teammates in view as well as the other enemies. | T7 |
 | TMODE-7 | Optional | Where the POOL mode is played, MMOVE-10's learning and learned aims shall apply as for the LEARN mode, with one log per enemy class (the name without version or duplicate marker) fed by the hits of every copy of that class. | T7 |
+| TMODE-8 | Optional | Where the DISABLED mode is played and an enemy seen lately with at most 0.1 energy is within 500 px, the team movement shall draw the member to the nearest such enemy, to 50 px, at half FINISH's strength. | T7 |
+| TMODE-9 | Optional | Where the MATEFIRE mode is played, each bullet a teammate reports firing shall count in the member's destination risk as an enemy's virtual bullet does, on the reported heading, until it has passed the member. | T7 |
+| TMODE-10 | Optional | Where the REAR mode is played by the team's leader (the member that starts a round with more than 100 energy), each enemy's risk term shall weigh 1.5 times. | T7 |
 
 ### T1 notes
 
@@ -1211,6 +1214,11 @@ MMOVE-8 the melee strand, WEAVE-7 and WEAVE-8 the conductor.
 - **SCREEN and POOL (TMODE-6, TMODE-7).** From the Ogi deep dive (docs/bench/ogi-deep-dive.md):
   Ogi divides an enemy's risk by the robots nearer it, teammates included, and keys its danger
   model by class, so one model learns from all five copies of an enemy.
+- **DISABLED, MATEFIRE and REAR (TMODE-8 to TMODE-10).** Team stage S4 of docs/plan-team-top5.md,
+  after the mode table failed its gate (docs/bench/team-top-decompile.md section 6): CombatTeam's
+  small rules (finish a disabled enemy, keep out of teammates' fire) and a leader that keeps back,
+  since its death costs every teammate energy. Teammates' shots come from the reports already on
+  the link. Ablations tmdis (md), tmfire (mb), tmrear (mr), all off in the shipped build.
 - **Ablations.** `build-ablation.sh tmsoft`, `tmgang`, `tmfin`, `tmlearn`, `tmpack`, `tmscreen` and `tmpool` force one mode on
   against every team. One census run of each scores that mode against all 46 teams, which is what
   the table is built from.
