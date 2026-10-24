@@ -320,6 +320,7 @@ public final class DuelController {
         this.surfMover.setDistancingToEnemy(duelOnly(MoveDesign.DISTANCING_TO_ENEMY, enemiesTotal));
         this.surfMover.setProtean(MoveDesign.PROTEAN, MoveDesign.PROTEAN_DWELL);
         this.surfMover.setAesRecord(MoveDesign.AES_RECORD);
+        this.surfMover.setStopPointSurf(duelOnly(MoveDesign.STOP_POINT_SURF, enemiesTotal));
         this.shadowAvoidance = new ShadowAvoidance(fieldWidth, fieldHeight);
         this.ramEscape = new RamEscape(battleField, predictor);
         this.mirror = new MirrorDetector(fieldWidth, fieldHeight);

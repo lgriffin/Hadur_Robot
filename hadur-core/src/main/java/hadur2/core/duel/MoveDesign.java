@@ -114,6 +114,14 @@ final class MoveDesign {
      */
     static final boolean AES_RECORD = false;
 
+    /**
+     * MOVE-25: the duel surfs with the stop-point surf (StopPointSurf, docs/bench/surf-b-rivals-read.md):
+     * dozens of stop points both ways rated on a smoothed probability histogram of the same views,
+     * BeepBoop's 1 / sqrt(4 + t) time weight, two waves, and a plan kept until the waves or the
+     * views change. Melee and team never take it.
+     */
+    static final boolean STOP_POINT_SURF = false;
+
     private MoveDesign() { }
 
     /**

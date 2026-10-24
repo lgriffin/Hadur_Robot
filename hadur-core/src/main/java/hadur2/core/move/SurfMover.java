@@ -103,6 +103,20 @@ public class SurfMover {
     private SurfOption proteanOption = SurfOption.STOP;
     private int proteanDwellLeft;
 
+    /** MOVE-25: the stop-point surf, or null while it is off (the default). */
+    private StopPointSurf stopPointSurf;
+
+    /**
+     * MOVE-25: whether the stop-point surf ({@link StopPointSurf}) drives every surfed tick in
+     * place of the three options and go-to, while the tick budget allows go-to surfing. Off by
+     * default; when off nothing about the surf changes.
+     *
+     * @param on whether the stop-point surf is used
+     */
+    public void setStopPointSurf(boolean on) {
+        this.stopPointSurf = on ? new StopPointSurf(battleField, predictor) : null;
+    }
+
     /** The distance, in px, the attack angles steer toward. */
     private double desiredDistance = DEFAULT_DISTANCE;
     /** The surf mode for the wave being surfed, and the one the next wave starts with (MOVE-2). */
@@ -286,6 +300,7 @@ public class SurfMover {
         DiaUtils.setBackAsFront(orders, myState.heading,
             DiaUtils.absoluteBearing(myState.location, enemyLocation));
         // A surf resumed after ramming starts fresh.
+        if (stopPointSurf != null) stopPointSurf.reset();
         lastSurfDestination = null;
         stopDestination = null;
     }
@@ -298,6 +313,7 @@ public class SurfMover {
         goToPoint = null;
         rammerActive = false;
         proteanHeld = false;
+        if (stopPointSurf != null) stopPointSurf.reset();
     }
 
     /**
@@ -319,9 +335,22 @@ public class SurfMover {
         noteEnemyAt(enemyLocation);
         Wave surfWave = moveCtrl.findSurfableWave(0, myState);
         if (surfWave == null) {
+            if (stopPointSurf != null) stopPointSurf.reset();
             orbit(orders, myState.heading, myState.location, enemyLocation);
             return;
         }
+        // MOVE-25: the stop-point surf, when on, takes every surfed tick the budget allows.
+        if (stopPointSurf != null && goToAllowed) {
+            int side = stopPointSurf.surf(orders, myState, moveCtrl, surfWave, wavesToSurf,
+                desiredDistance, distancingPoint(surfWave));
+            lastSurfOption = side < 0 ? SurfOption.COUNTER_CLOCKWISE : SurfOption.CLOCKWISE;
+            // A three-option tick after this one starts afresh.
+            lastWaveSurfed = null;
+            lastSurfDestination = null;
+            stopDestination = null;
+            return;
+        }
+        if (stopPointSurf != null) stopPointSurf.reset();
         // The mode changes only between waves, never under a wave half-dodged (MOVE-2).
         if (surfWave != lastWaveSurfed) mode = nextMode;
         if (mode == Mode.GO_TO && goToAllowed) {
