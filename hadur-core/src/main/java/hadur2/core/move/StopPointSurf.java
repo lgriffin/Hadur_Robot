@@ -28,12 +28,13 @@ import java.util.*;
  * intersection of driving to the point, counting only what our bullet shadows let through,
  * times the bullet's damage, over {@code sqrt(4 + t)} for the ticks {@code t} until the wave
  * breaks (BeepBoop's time weight; Hadur's 1/t made the second wave nearly weightless), times
- * the surf's distancing factor.</li>
+ * the surf's distancing factor, times DrussGT's closeness term (650 - 34) / (d - 34) at the
+ * leg's end.</li>
  * <li><b>Two waves.</b> The cheapest first-wave points, in order, get the second wave's
  * cheapest stop point from where they leave us added, with pruning once a first-wave danger
  * alone is not below the best total.</li>
- * <li><b>Commitment.</b> The point is kept until the waves surfed change, a bullet is logged to
- * the views, or we are more than {@value #DRIFT} px off the predicted path (DrussGT replans
+ * <li><b>Commitment.</b> The point is kept until the waves surfed change, their bullet shadows
+ * are recomputed, the views learn a hit or a visit, or we are more than {@value #DRIFT} px off the predicted path (DrussGT replans
  * only when its stats change).</li>
  * </ul>
  *
@@ -69,7 +70,9 @@ public class StopPointSurf {
 
     /** The waves the plan was made for, and the views' state then. */
     private Wave planWave1, planWave2;
-    private long planHits = -1;
+    private long planRevision = -1;
+    /** The planned waves' shadow versions when the plan was made (MOVE-1 recomputes shadows as our bullets fly). */
+    private long planShadow1 = Long.MIN_VALUE, planShadow2 = Long.MIN_VALUE;
     /** The point being driven to, and the predicted path to it, one state a tick from the plan's start. */
     private Point2D.Double planPoint;
     private List<RobotState> planPath = List.of();
@@ -101,7 +104,7 @@ public class StopPointSurf {
         planPath = List.of();
         planIntervals = List.of();
         profiles.clear();
-        planHits = -1;
+        planRevision = -1;
     }
 
     /** Replans made over the battle; for tests. */
@@ -147,7 +150,9 @@ public class StopPointSurf {
     /** Whether the plan must be remade this tick (see the class comment). */
     private boolean needsPlan(RobotState myState, MoveController moveCtrl, Wave wave1, Wave wave2) {
         if (planPoint == null || wave1 != planWave1 || wave2 != planWave2) return true;
-        if (moveCtrl.hitsLogged() != planHits) return true;
+        if (moveCtrl.viewRevision() != planRevision) return true;
+        if (wave1.shadowVersion != planShadow1) return true;
+        if (wave2 != null && wave2.shadowVersion != planShadow2) return true;
         RobotState expected = expectedNow(myState.time);
         return expected == null || expected.location.distance(myState.location) > DRIFT;
     }
@@ -165,7 +170,9 @@ public class StopPointSurf {
         replans++;
         planWave1 = wave1;
         planWave2 = wave2;
-        planHits = moveCtrl.hitsLogged();
+        planRevision = moveCtrl.viewRevision();
+        planShadow1 = wave1.shadowVersion;
+        planShadow2 = wave2 == null ? Long.MIN_VALUE : wave2.shadowVersion;
         // A logged hit, or a new wave, changes what the views find: search afresh.
         moveCtrl.clearNeighborCache();
         profiles.clear();
@@ -194,7 +201,7 @@ public class StopPointSurf {
                 // Sorted: once the first wave alone is not below the best, none further can be.
                 if (first.danger >= bestTotal) break;
                 Leg next = bestSecondLeg(myState, moveCtrl, wave2, first, desiredDistance,
-                    distancingFrom, bestTotal - first.danger);
+                    distancingFrom);
                 double total = first.danger + (next == null ? 0 : next.danger);
                 if (total < bestTotal) {
                     bestTotal = total;
@@ -216,7 +223,7 @@ public class StopPointSurf {
      * point meets it. Points are rated in no order; the search stops at the first that is free.
      */
     private Leg bestSecondLeg(RobotState myState, MoveController moveCtrl, Wave wave2, Leg first,
-                              double desiredDistance, Point2D.Double distancingFrom, double cap) {
+                              double desiredDistance, Point2D.Double distancingFrom) {
         Leg best = null;
         for (Point2D.Double p : stopPoints(first.passed, wave2, desiredDistance)) {
             Leg leg = leg(myState, first.passed, moveCtrl, wave2, 1, p, distancingFrom, first.path);

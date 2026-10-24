@@ -792,6 +792,8 @@ public class MoveController {
         int currentRound = w.fireRound;
         for (KnnView<TimestampedGuessFactor> view : views) {
             if (!view.logVisits) continue;
+            // MOVE-25: a visit learned is a change of the views too.
+            viewRevision++;
             // Visits are logged even for a wave our bullet destroyed: we were still there.
             double gf = w.guessFactor(intersection.angle);
             view.logWave(w, new TimestampedGuessFactor(currentRound, currentTime, gf));
@@ -837,7 +839,7 @@ public class MoveController {
         // angle it was fired at.
         double hitGF = hitWave.guessFactor(bulletLocation);
         // MOVE-25: the stop-point surf replans once the views have learned something new.
-        hitsLogged++;
+        viewRevision++;
         // MOVE-16: rate the hit before any view learns it, so each view is judged on a prediction.
         if (replicator) updateReplicator(hitWave, hitGF);
         for (KnnView<TimestampedGuessFactor> view : views) {
@@ -1297,12 +1299,12 @@ public class MoveController {
         return danger;
     }
 
-    /** MOVE-25: enemy bullets logged to the hit views so far this battle. */
-    private long hitsLogged;
+    /** MOVE-25: counts every sample the danger views learn, hit or visit, this battle. */
+    private long viewRevision;
 
-    /** MOVE-25: how many enemy bullets have been logged to the hit views; a change means the views moved. */
-    public long hitsLogged() {
-        return hitsLogged;
+    /** MOVE-25: the danger views' revision; it changes whenever a view learns a hit or a visit. */
+    public long viewRevision() {
+        return viewRevision;
     }
 
     /**
