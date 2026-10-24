@@ -217,6 +217,16 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color">
 <div class="block">Hits taken in one round, outnumbering our interceptions, before the round's exit.</div>
 </div>
+<div class="col-first odd-row-color"><code>(package private) static final double</code></div>
+<div class="col-second odd-row-color"><code><a href="#MOVE_AHEAD" class="member-name-link">MOVE_AHEAD</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block"><a class="req" href="../../../../requirements.html#SHIELD-17">SHIELD-17</a>: the distance ordered each tick of the opening drive, px.</div>
+</div>
+<div class="col-first even-row-color"><code>(package private) static final double</code></div>
+<div class="col-second even-row-color"><code><a href="#MOVE_ENEMY_WEIGHT" class="member-name-link">MOVE_ENEMY_WEIGHT</a></code></div>
+<div class="col-last even-row-color">
+<div class="block"><a class="req" href="../../../../requirements.html#SHIELD-17">SHIELD-17</a>: the enemy's weight against one wall's in the opening drive's anti-gravity.</div>
+</div>
 <div class="col-first odd-row-color"><code>static final int</code></div>
 <div class="col-second odd-row-color"><code><a href="#PREDICTORS" class="member-name-link">PREDICTORS</a></code></div>
 <div class="col-last odd-row-color">
@@ -408,6 +418,18 @@ loadScripts(document, 'script');</script>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onTrial()" class="member-name-link">onTrial</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../../../requirements.html#SHIELD-15">SHIELD-15</a>: whether the opponent is in shield mode on trial, not from the list.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#opening()" class="member-name-link">opening</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../../../requirements.html#SHIELD-17">SHIELD-17</a>: whether the opening drive applies to this battle's opponent.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static <a href="ShieldMode.Command.html" title="class in hadur2.core.shieldmode">ShieldMode.Command</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#openingDrive(hadur2.core.shieldmode.ShieldMode.Situation)" class="member-name-link">openingDrive</a><wbr>(<a href="ShieldMode.Situation.html" title="class in hadur2.core.shieldmode">ShieldMode.Situation</a>&nbsp;s)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../../../requirements.html#SHIELD-17">SHIELD-17</a>: away from the four walls and the enemy, each pushing by the inverse square of
+ its distance (the enemy <a href="#MOVE_ENEMY_WEIGHT"><code>MOVE_ENEMY_WEIGHT</code></a> times a wall), driving forward or
+ back, whichever needs the smaller body turn.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#ownBulletResolved(double,double)" class="member-name-link">ownBulletResolved</a><wbr>(double&nbsp;power,
@@ -602,6 +624,36 @@ loadScripts(document, 'script');</script>
 </dl>
 </section>
 </li>
+<li>
+<section class="detail" id="MOVE_ENEMY_WEIGHT">
+<h3>MOVE_ENEMY_WEIGHT</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">MOVE_ENEMY_WEIGHT</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#SHIELD-17">SHIELD-17</a>: the enemy's weight against one wall's in the opening drive's anti-gravity.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur2.core.shieldmode.ShieldMode.MOVE_ENEMY_WEIGHT">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="MOVE_AHEAD">
+<h3>MOVE_AHEAD</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">MOVE_AHEAD</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#SHIELD-17">SHIELD-17</a>: the distance ordered each tick of the opening drive, px.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur2.core.shieldmode.ShieldMode.MOVE_AHEAD">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
 </ul>
 </section>
 </li>
@@ -750,6 +802,17 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>the count</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="opening()">
+<h3>opening</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">opening</span>()</div>
+<div class="block"><a class="req" href="../../../../requirements.html#SHIELD-17">SHIELD-17</a>: whether the opening drive applies to this battle's opponent.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>true when the opponent is shielded and the move switch or the list's move entry is on</dd>
 </dl>
 </section>
 </li>
@@ -973,6 +1036,15 @@ loadScripts(document, 'script');</script>
 <dt>Returns:</dt>
 <dd>what to do, or null if the mode has been left</dd>
 </dl>
+</section>
+</li>
+<li>
+<section class="detail" id="openingDrive(hadur2.core.shieldmode.ShieldMode.Situation)">
+<h3>openingDrive</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type"><a href="ShieldMode.Command.html" title="class in hadur2.core.shieldmode">ShieldMode.Command</a></span>&nbsp;<span class="element-name">openingDrive</span><wbr><span class="parameters">(<a href="ShieldMode.Situation.html" title="class in hadur2.core.shieldmode">ShieldMode.Situation</a>&nbsp;s)</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#SHIELD-17">SHIELD-17</a>: away from the four walls and the enemy, each pushing by the inverse square of
+ its distance (the enemy <a href="#MOVE_ENEMY_WEIGHT"><code>MOVE_ENEMY_WEIGHT</code></a> times a wall), driving forward or
+ back, whichever needs the smaller body turn. The gun turns to the main gun's aim and holds.</div>
 </section>
 </li>
 <li>

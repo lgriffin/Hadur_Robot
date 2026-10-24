@@ -246,6 +246,14 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="hadur2/core/melee/MeleeGun.Aim.html#%3Cinit%3E(double,hadur2.core.melee.MeleeGun.Strategy,java.awt.geom.Point2D.Double)" class="member-name-link">Aim(double, MeleeGun.Strategy, Point2D.Double)</a> - Constructor for class hadur2.core.melee.<a href="hadur2/core/melee/MeleeGun.Aim.html" title="class in hadur2.core.melee">MeleeGun.Aim</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur2/core/shieldmode/ShieldList.html#AIM_PREFIX" class="member-name-link">AIM_PREFIX</a> - Static variable in class hadur2.core.shieldmode.<a href="hadur2/core/shieldmode/ShieldList.html" title="class in hadur2.core.shieldmode">ShieldList</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#SHIELD-18">SHIELD-18</a>: a line starting with this gives an opponent's shipped aim.</div>
+</dd>
+<dt><a href="hadur2/core/shieldmode/ShieldDesign.html#AIM_PRIOR" class="member-name-link">AIM_PRIOR</a> - Static variable in class hadur2.core.shieldmode.<a href="hadur2/core/shieldmode/ShieldDesign.html" title="class in hadur2.core.shieldmode">ShieldDesign</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#SHIELD-18">SHIELD-18</a>: the exact matches a shipped aim starts its predictor with.</div>
+</dd>
 <dt><a href="hadur2/core/gun/MainGun.Aimed.html#%3Cinit%3E(double,hadur2.core.gun.ShadowAim.Mass)" class="member-name-link">Aimed(double, ShadowAim.Mass)</a> - Constructor for class hadur2.core.gun.<a href="hadur2/core/gun/MainGun.Aimed.html" title="class in hadur2.core.gun">MainGun.Aimed</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur2/core/gun/TripHammerGun.Aimed.html#%3Cinit%3E(double,hadur2.core.gun.ShadowAim.Mass)" class="member-name-link">Aimed(double, ShadowAim.Mass)</a> - Constructor for class hadur2.core.gun.<a href="hadur2/core/gun/TripHammerGun.Aimed.html" title="class in hadur2.core.gun">TripHammerGun.Aimed</a></dt>
@@ -255,6 +263,11 @@ loadScripts(document, 'script');</script>
 <div class="block">MMOVE-9: whether <code>shot</code> was aimed at Hadur, standing at <code>me</code> when it was
  fired, rather than at the teammate nearest its source: a teammate takes it only when
  <a href="hadur2/core/melee/TeamDanger.html#NEAREST_MARGIN"><code>TeamDanger.NEAREST_MARGIN</code></a> times nearer.</div>
+</dd>
+<dt><a href="hadur2/core/shieldmode/ShieldList.html#aimFor(java.lang.String)" class="member-name-link">aimFor(String)</a> - Method in class hadur2.core.shieldmode.<a href="hadur2/core/shieldmode/ShieldList.html" title="class in hadur2.core.shieldmode">ShieldList</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#SHIELD-18">SHIELD-18</a>: <code>robotName</code>'s shipped aim, by the rule of <a href="hadur2/core/shieldmode/ShieldList.html#matches(java.lang.String)"><code>ShieldList.matches(java.lang.String)</code></a>: the full name's
+ entry, else the name's without the version.</div>
 </dd>
 <dt><a href="hadur2/core/melee/MeleeProfile.html#aimHits" class="member-name-link">aimHits</a> - Variable in class hadur2.core.melee.<a href="hadur2/core/melee/MeleeProfile.html" title="class in hadur2.core.melee">MeleeProfile</a></dt>
 <dd>&nbsp;</dd>
@@ -266,6 +279,10 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur2/core/shield/AimJitter.html#%3Cinit%3E()" class="member-name-link">AimJitter()</a> - Constructor for class hadur2.core.shield.<a href="hadur2/core/shield/AimJitter.html" title="class in hadur2.core.shield">AimJitter</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur2/ShieldTableData.html#aims()" class="member-name-link">aims()</a> - Static method in class hadur2.<a href="hadur2/ShieldTableData.html" title="class in hadur2">ShieldTableData</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#SHIELD-18">SHIELD-18</a>: the shipped aims, one <code>"predictor offset name"</code> line each.</div>
+</dd>
 <dt><a href="hadur2/core/melee/TeamDanger.html#aims(hadur2.core.world.EnemyShot,hadur2.core.model.RobotState)" class="member-name-link">aims(EnemyShot, RobotState)</a> - Method in class hadur2.core.melee.<a href="hadur2/core/melee/TeamDanger.html" title="class in hadur2.core.melee">TeamDanger</a></dt>
 <dd>
 <div class="block">The aims at Hadur, in state <code>target</code> when <code>shot</code> was fired, that the
@@ -3000,6 +3017,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">One firing solution.</div>
 </dd>
+<dt><a href="hadur2/core/shieldmode/ShieldMode.Situation.html#fieldHeight" class="member-name-link">fieldHeight</a> - Variable in class hadur2.core.shieldmode.<a href="hadur2/core/shieldmode/ShieldMode.Situation.html" title="class in hadur2.core.shieldmode">ShieldMode.Situation</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="hadur2/core/shieldmode/ShieldMode.Situation.html#fieldWidth" class="member-name-link">fieldWidth</a> - Variable in class hadur2.core.shieldmode.<a href="hadur2/core/shieldmode/ShieldMode.Situation.html" title="class in hadur2.core.shieldmode">ShieldMode.Situation</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="hadur2/core/melee/MeleeStrategy.Plan.html#fight" class="member-name-link">fight</a> - Variable in class hadur2.core.melee.<a href="hadur2/core/melee/MeleeStrategy.Plan.html" title="class in hadur2.core.melee">MeleeStrategy.Plan</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur2/core/policy/EscapeTrial.Arm.html#FIGHT" class="member-name-link">FIGHT</a> - Enum constant in enum class hadur2.core.policy.<a href="hadur2/core/policy/EscapeTrial.Arm.html" title="enum class in hadur2.core.policy">EscapeTrial.Arm</a></dt>
@@ -6476,6 +6497,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">The direction it is moving: its heading, turned round when driving backwards.</div>
 </dd>
+<dt><a href="hadur2/core/shieldmode/ShieldDesign.html#move" class="member-name-link">move</a> - Variable in class hadur2.core.shieldmode.<a href="hadur2/core/shieldmode/ShieldDesign.html" title="class in hadur2.core.shieldmode">ShieldDesign</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#SHIELD-17">SHIELD-17</a>: the opening drive against every shielded opponent.</div>
+</dd>
 <dt><a href="hadur2/core/memory/Tiers.html#move(hadur2.core.memory.Estimate,hadur2.core.memory.Estimate)" class="member-name-link">move(Estimate, Estimate)</a> - Static method in class hadur2.core.memory.<a href="hadur2/core/memory/Tiers.html" title="class in hadur2.core.memory">Tiers</a></dt>
 <dd>
 <div class="block">As <a href="hadur2/core/memory/Tiers.html#move(hadur2.core.memory.OpponentProfile)"><code>Tiers.move(OpponentProfile)</code></a>, from the main and anti-surfer ratings directly
@@ -6507,6 +6532,22 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Surfs the first surfable wave (and <code>wavesToSurf - 1</code> behind it), or orbits when
  there is none.</div>
+</dd>
+<dt><a href="hadur2/core/shieldmode/ShieldMode.html#MOVE_AHEAD" class="member-name-link">MOVE_AHEAD</a> - Static variable in class hadur2.core.shieldmode.<a href="hadur2/core/shieldmode/ShieldMode.html" title="class in hadur2.core.shieldmode">ShieldMode</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#SHIELD-17">SHIELD-17</a>: the distance ordered each tick of the opening drive, px.</div>
+</dd>
+<dt><a href="hadur2/core/shieldmode/ShieldMode.html#MOVE_ENEMY_WEIGHT" class="member-name-link">MOVE_ENEMY_WEIGHT</a> - Static variable in class hadur2.core.shieldmode.<a href="hadur2/core/shieldmode/ShieldMode.html" title="class in hadur2.core.shieldmode">ShieldMode</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#SHIELD-17">SHIELD-17</a>: the enemy's weight against one wall's in the opening drive's anti-gravity.</div>
+</dd>
+<dt><a href="hadur2/core/shieldmode/ShieldList.html#MOVE_PREFIX" class="member-name-link">MOVE_PREFIX</a> - Static variable in class hadur2.core.shieldmode.<a href="hadur2/core/shieldmode/ShieldList.html" title="class in hadur2.core.shieldmode">ShieldList</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#SHIELD-17">SHIELD-17</a>: a line starting with this names an opponent for the shield's opening drive.</div>
+</dd>
+<dt><a href="hadur2/core/shieldmode/ShieldDesign.html#MOVE_STOP_TICKS" class="member-name-link">MOVE_STOP_TICKS</a> - Static variable in class hadur2.core.shieldmode.<a href="hadur2/core/shieldmode/ShieldDesign.html" title="class in hadur2.core.shieldmode">ShieldDesign</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#SHIELD-17">SHIELD-17</a>: the ticks before the enemy's gun is ready from which the opening drive stands still.</div>
 </dd>
 <dt><a href="hadur2/core/move/MoveController.html" class="type-name-link" title="class in hadur2.core.move">MoveController</a> - Class in <a href="hadur2/core/move/package-summary.html">hadur2.core.move</a></dt>
 <dd>
@@ -6570,6 +6611,15 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="hadur2/core/melee/MeleeController.html#mover()" class="member-name-link">mover()</a> - Method in class hadur2.core.melee.<a href="hadur2/core/melee/MeleeController.html" title="class in hadur2.core.melee">MeleeController</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur2/ShieldTableData.html#moves()" class="member-name-link">moves()</a> - Static method in class hadur2.<a href="hadur2/ShieldTableData.html" title="class in hadur2">ShieldTableData</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#SHIELD-17">SHIELD-17</a>: the opponents the opening drive is for.</div>
+</dd>
+<dt><a href="hadur2/core/shieldmode/ShieldList.html#moves(java.lang.String)" class="member-name-link">moves(String)</a> - Method in class hadur2.core.shieldmode.<a href="hadur2/core/shieldmode/ShieldList.html" title="class in hadur2.core.shieldmode">ShieldList</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#SHIELD-17">SHIELD-17</a>: whether the shield's opening drive is for <code>robotName</code>, by the rule of
+ <a href="hadur2/core/shieldmode/ShieldList.html#matches(java.lang.String)"><code>ShieldList.matches(java.lang.String)</code></a>.</div>
+</dd>
 <dt><a href="hadur2/core/adapt/Opening.html#moveTier()" class="member-name-link">moveTier()</a> - Method in class hadur2.core.adapt.<a href="hadur2/core/adapt/Opening.html" title="class in hadur2.core.adapt">Opening</a></dt>
 <dd>
 <div class="block">Their movement's tier from the profile, <code>UNKNOWN</code> while its margin is too wide (<a class="req" href="../requirements.html#DIAL-1">DIAL-1</a>).</div>
@@ -7320,6 +7370,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">The distance this controller started at, in px (the opening book's for this opponent).</div>
 </dd>
+<dt><a href="hadur2/core/shieldmode/ShieldMode.html#opening()" class="member-name-link">opening()</a> - Method in class hadur2.core.shieldmode.<a href="hadur2/core/shieldmode/ShieldMode.html" title="class in hadur2.core.shieldmode">ShieldMode</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#SHIELD-17">SHIELD-17</a>: whether the opening drive applies to this battle's opponent.</div>
+</dd>
 <dt><a href="hadur2/core/adapt/Opening.html" class="type-name-link" title="class in hadur2.core.adapt">Opening</a> - Class in <a href="hadur2/core/adapt/package-summary.html">hadur2.core.adapt</a></dt>
 <dd>
 <div class="block">What the opening book decided for one battle, read once from the profile at the first
@@ -7357,6 +7411,12 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur/bench/LogHarvester.html#openingDistance()" class="member-name-link">openingDistance()</a> - Method in class hadur.bench.<a href="hadur/bench/LogHarvester.html" title="class in hadur.bench">LogHarvester</a></dt>
 <dd>
 <div class="block">S5: the opening's starting distance, "-" before S5 or without memory.</div>
+</dd>
+<dt><a href="hadur2/core/shieldmode/ShieldMode.html#openingDrive(hadur2.core.shieldmode.ShieldMode.Situation)" class="member-name-link">openingDrive(ShieldMode.Situation)</a> - Static method in class hadur2.core.shieldmode.<a href="hadur2/core/shieldmode/ShieldMode.html" title="class in hadur2.core.shieldmode">ShieldMode</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#SHIELD-17">SHIELD-17</a>: away from the four walls and the enemy, each pushing by the inverse square of
+ its distance (the enemy <a href="hadur2/core/shieldmode/ShieldMode.html#MOVE_ENEMY_WEIGHT"><code>ShieldMode.MOVE_ENEMY_WEIGHT</code></a> times a wall), driving forward or
+ back, whichever needs the smaller body turn.</div>
 </dd>
 <dt><a href="hadur/bench/BattleResult.html#openingGun" class="member-name-link">openingGun</a> - Variable in class hadur.bench.<a href="hadur/bench/BattleResult.html" title="class in hadur.bench">BattleResult</a></dt>
 <dd>
@@ -7756,7 +7816,7 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur2/core/shieldmode/ShieldDesign.html#parse(java.lang.String)" class="member-name-link">parse(String)</a> - Static method in class hadur2.core.shieldmode.<a href="hadur2/core/shieldmode/ShieldDesign.html" title="class in hadur2.core.shieldmode">ShieldDesign</a></dt>
 <dd>
 <div class="block">The design a comma-separated list of switch names turns on (<code>hold</code>, <code>learn</code>,
- <code>mode</code>, <code>stay</code>, <code>turn</code>, <code>wall</code>, <code>trial</code>, <code>prior</code>, or <code>all</code>); blank
+ <code>mode</code>, <code>stay</code>, <code>turn</code>, <code>wall</code>, <code>trial</code>, <code>prior</code>, <code>move</code>, <code>rec</code>, or <code>all</code>); blank
  is <a href="hadur2/core/shieldmode/ShieldDesign.html#NONE"><code>ShieldDesign.NONE</code></a>.</div>
 </dd>
 <dt><a href="hadur/bench/Bench.html#parse(java.lang.String%5B%5D)" class="member-name-link">parse(String[])</a> - Static method in class hadur.bench.<a href="hadur/bench/Bench.html" title="class in hadur.bench">Bench</a></dt>
@@ -8745,6 +8805,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur/bench/Exclusions.html#reason(java.lang.String)" class="member-name-link">reason(String)</a> - Static method in class hadur.bench.<a href="hadur/bench/Exclusions.html" title="class in hadur.bench">Exclusions</a></dt>
 <dd>
 <div class="block">The first line of a failure's reason, cut to 160 characters; "no result" when it says nothing.</div>
+</dd>
+<dt><a href="hadur2/core/shieldmode/ShieldDesign.html#rec" class="member-name-link">rec</a> - Variable in class hadur2.core.shieldmode.<a href="hadur2/core/shieldmode/ShieldDesign.html" title="class in hadur2.core.shieldmode">ShieldDesign</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#SHIELD-18">SHIELD-18</a>: the round's <code>SP</code> record.</div>
 </dd>
 <dt><a href="hadur2/core/melee/MinimumRiskMovement.html#RECENT_HIT_FACTOR" class="member-name-link">RECENT_HIT_FACTOR</a> - Static variable in class hadur2.core.melee.<a href="hadur2/core/melee/MinimumRiskMovement.html" title="class in hadur2.core.melee">MinimumRiskMovement</a></dt>
 <dd>&nbsp;</dd>
@@ -10485,6 +10549,11 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">The shield bullets fired this round.</div>
 </dd>
+<dt><a href="hadur2/ShieldTableData.html" class="type-name-link" title="class in hadur2">ShieldTableData</a> - Class in <a href="hadur2/package-summary.html">hadur2</a></dt>
+<dd>
+<div class="block">Shield part 2 of the 1v1 mode table (docs/plan-shield-quality.md): per opponent, the shield's
+ opening drive (<a class="req" href="../requirements.html#SHIELD-17">SHIELD-17</a>) and its shipped aim (<a class="req" href="../requirements.html#SHIELD-18">SHIELD-18</a>).</div>
+</dd>
 <dt><a href="hadur2/core/policy/DistancePolicy.html#shiftOut(double)" class="member-name-link">shiftOut(double)</a> - Method in class hadur2.core.policy.<a href="hadur2/core/policy/DistancePolicy.html" title="class in hadur2.core.policy">DistancePolicy</a></dt>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#MOVE-2">MOVE-2</a>: moves the band out by <code>px</code>, not past <a href="hadur2/core/policy/DistancePolicy.html#CEILING"><code>DistancePolicy.CEILING</code></a>; returns the new target.</div>
@@ -10660,6 +10729,11 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur2/core/shieldmode/ShieldMode.Situation.html#%3Cinit%3E(long,double,double,double,double,double,double,double,double,double,double,double,double,boolean,boolean)" class="member-name-link">Situation(long, double, double, double, double, double, double, double, double, double, double, double, double, boolean, boolean)</a> - Constructor for class hadur2.core.shieldmode.<a href="hadur2/core/shieldmode/ShieldMode.Situation.html" title="class in hadur2.core.shieldmode">ShieldMode.Situation</a></dt>
 <dd>
 <div class="block">One tick's view of the duel.</div>
+</dd>
+<dt><a href="hadur2/core/shieldmode/ShieldMode.Situation.html#%3Cinit%3E(long,double,double,double,double,double,double,double,double,double,double,double,double,boolean,boolean,double,double)" class="member-name-link">Situation(long, double, double, double, double, double, double, double, double, double, double, double, double, boolean, boolean, double, double)</a> - Constructor for class hadur2.core.shieldmode.<a href="hadur2/core/shieldmode/ShieldMode.Situation.html" title="class in hadur2.core.shieldmode">ShieldMode.Situation</a></dt>
+<dd>
+<div class="block">One tick's view of the duel on a field of known size, which <a class="req" href="../requirements.html#SHIELD-17">SHIELD-17</a>'s opening
+ drive needs; the other parameters are as above.</div>
 </dd>
 <dt><a href="hadur2/core/melee/MeleeController.Situation.html#%3Cinit%3E(java.awt.geom.Point2D.Double,double,double,double,long,int)" class="member-name-link">Situation(Point2D.Double, double, double, double, long, int)</a> - Constructor for class hadur2.core.melee.<a href="hadur2/core/melee/MeleeController.Situation.html" title="class in hadur2.core.melee">MeleeController.Situation</a></dt>
 <dd>&nbsp;</dd>

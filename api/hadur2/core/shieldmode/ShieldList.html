@@ -105,7 +105,12 @@ loadScripts(document, 'script');</script>
  <code>apv.test.Virus</code> does not match <code>apv.test.VirusX</code>. Runs of white space in a
  line count as one space.</p>
 
- <p>At most <a href="#MAX_ENTRIES"><code>MAX_ENTRIES</code></a> entries are kept (<a class="req" href="../../../../requirements.html#RES-2">RES-2</a>).</p></div>
+ <p>Two more kinds of line, matched by the same rule (<a class="req" href="../../../../requirements.html#SHIELD-17">SHIELD-17</a>, <a class="req" href="../../../../requirements.html#SHIELD-18">SHIELD-18</a>):
+ <code>shield-move: name</code> names an opponent the shield's opening drive is for, and
+ <code>shield-aim: predictor offset name</code> gives an opponent's shipped aim, its best predictor
+ (from 0) and that predictor's offset in radians. A malformed aim line is skipped.</p>
+
+ <p>At most <a href="#MAX_ENTRIES"><code>MAX_ENTRIES</code></a> entries of each kind are kept (<a class="req" href="../../../../requirements.html#RES-2">RES-2</a>).</p></div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -118,10 +123,20 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Field</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code>static final int</code></div>
-<div class="col-second even-row-color"><code><a href="#MAX_ENTRIES" class="member-name-link">MAX_ENTRIES</a></code></div>
+<div class="col-first even-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color"><code><a href="#AIM_PREFIX" class="member-name-link">AIM_PREFIX</a></code></div>
 <div class="col-last even-row-color">
+<div class="block"><a class="req" href="../../../../requirements.html#SHIELD-18">SHIELD-18</a>: a line starting with this gives an opponent's shipped aim.</div>
+</div>
+<div class="col-first odd-row-color"><code>static final int</code></div>
+<div class="col-second odd-row-color"><code><a href="#MAX_ENTRIES" class="member-name-link">MAX_ENTRIES</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">The most entries a list keeps.</div>
+</div>
+<div class="col-first even-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color"><code><a href="#MOVE_PREFIX" class="member-name-link">MOVE_PREFIX</a></code></div>
+<div class="col-last even-row-color">
+<div class="block"><a class="req" href="../../../../requirements.html#SHIELD-17">SHIELD-17</a>: a line starting with this names an opponent for the shield's opening drive.</div>
 </div>
 <div class="col-first odd-row-color"><code>static final <a href="ShieldList.html" title="class in hadur2.core.shieldmode">ShieldList</a></code></div>
 <div class="col-second odd-row-color"><code><a href="#NONE" class="member-name-link">NONE</a></code></div>
@@ -147,16 +162,28 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isEmpty()" class="member-name-link">isEmpty</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double[]</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#aimFor(java.lang.String)" class="member-name-link">aimFor</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;robotName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Whether nobody is on the (shield) list.</div>
+<div class="block"><a class="req" href="../../../../requirements.html#SHIELD-18">SHIELD-18</a>: <code>robotName</code>'s shipped aim, by the rule of <a href="#matches(java.lang.String)"><code>matches(java.lang.String)</code></a>: the full name's
+ entry, else the name's without the version.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#matches(java.lang.String)" class="member-name-link">matches</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;robotName)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isEmpty()" class="member-name-link">isEmpty</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Whether nobody is on the (shield) list.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#matches(java.lang.String)" class="member-name-link">matches</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;robotName)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Whether <code>robotName</code>, as the engine names a scanned robot (<code>package.Class
  version</code>), is on the list: its full name is, or its name without the version is.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#moves(java.lang.String)" class="member-name-link">moves</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;robotName)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../../../requirements.html#SHIELD-17">SHIELD-17</a>: whether the shield's opening drive is for <code>robotName</code>, by the rule of
+ <a href="#matches(java.lang.String)"><code>matches(java.lang.String)</code></a>.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onStackOffList(java.lang.String)" class="member-name-link">onStackOffList</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;robotName)</code></div>
@@ -233,6 +260,36 @@ loadScripts(document, 'script');</script>
 </dl>
 </section>
 </li>
+<li>
+<section class="detail" id="MOVE_PREFIX">
+<h3>MOVE_PREFIX</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">MOVE_PREFIX</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#SHIELD-17">SHIELD-17</a>: a line starting with this names an opponent for the shield's opening drive.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur2.core.shieldmode.ShieldList.MOVE_PREFIX">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="AIM_PREFIX">
+<h3>AIM_PREFIX</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">AIM_PREFIX</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#SHIELD-18">SHIELD-18</a>: a line starting with this gives an opponent's shipped aim.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur2.core.shieldmode.ShieldList.AIM_PREFIX">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
 </ul>
 </section>
 </li>
@@ -279,6 +336,34 @@ loadScripts(document, 'script');</script>
 <dd><code>robotName</code> - the scanned robot's name, or null</dd>
 <dt>Returns:</dt>
 <dd>whether the stop-and-start stack stays off against it</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="moves(java.lang.String)">
+<h3>moves</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">moves</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;robotName)</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#SHIELD-17">SHIELD-17</a>: whether the shield's opening drive is for <code>robotName</code>, by the rule of
+ <a href="#matches(java.lang.String)"><code>matches(java.lang.String)</code></a>.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>robotName</code> - the scanned robot's name, or null</dd>
+<dt>Returns:</dt>
+<dd>whether it is on the opening-drive list</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="aimFor(java.lang.String)">
+<h3>aimFor</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">double[]</span>&nbsp;<span class="element-name">aimFor</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;robotName)</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#SHIELD-18">SHIELD-18</a>: <code>robotName</code>'s shipped aim, by the rule of <a href="#matches(java.lang.String)"><code>matches(java.lang.String)</code></a>: the full name's
+ entry, else the name's without the version.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>robotName</code> - the scanned robot's name, or null</dd>
+<dt>Returns:</dt>
+<dd>a fresh {predictor, offset}, or null when none is shipped</dd>
 </dl>
 </section>
 </li>

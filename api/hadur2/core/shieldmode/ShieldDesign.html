@@ -120,6 +120,16 @@ loadScripts(document, 'script');</script>
  <li><code>prior</code> (<a class="req" href="../../../../requirements.html#SHIELD-16">SHIELD-16</a>): the body-turn base is Saguaro's: head-on from where the enemy
      stood on the tick before it fired (base 0), turned by its body turn on the firing tick,
      instead of from the firing point. Implies the fifth base. Not part of <code>all</code>.</li>
+ <li><code>move</code> (<a class="req" href="../../../../requirements.html#SHIELD-17">SHIELD-17</a>): Saguaro's moving shield. Each round, until the enemy's first
+     shot, the body drives away from the walls and the enemy (anti-gravity) while the enemy's
+     gun cools, and stands still from <a href="#MOVE_STOP_TICKS"><code>MOVE_STOP_TICKS</code></a> ticks before that gun is ready.
+     With the switch off, the shield list can still name opponents to do this against.
+     Not part of <code>all</code>.</li>
+ <li><code>rec</code> (<a class="req" href="../../../../requirements.html#SHIELD-18">SHIELD-18</a>): each round's end writes the predictors' state (<code>SP</code>), which
+     the bench builds shipped aims from. A shipped aim (an opponent's best predictor and its
+     offset, from the shield list) needs no switch: it starts the battle's predictors with
+     <a href="#AIM_PRIOR"><code>AIM_PRIOR</code></a> exact matches on it, so the shield aims right from the first bullet.
+     Not part of <code>all</code>.</li>
  </ul></div>
 </section>
 <section class="summary">
@@ -133,35 +143,55 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Field</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code>final boolean</code></div>
-<div class="col-second even-row-color"><code><a href="#hold" class="member-name-link">hold</a></code></div>
+<div class="col-first even-row-color"><code>static final int</code></div>
+<div class="col-second even-row-color"><code><a href="#AIM_PRIOR" class="member-name-link">AIM_PRIOR</a></code></div>
 <div class="col-last even-row-color">
+<div class="block"><a class="req" href="../../../../requirements.html#SHIELD-18">SHIELD-18</a>: the exact matches a shipped aim starts its predictor with.</div>
+</div>
+<div class="col-first odd-row-color"><code>final boolean</code></div>
+<div class="col-second odd-row-color"><code><a href="#hold" class="member-name-link">hold</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block"><a class="req" href="../../../../requirements.html#SHIELD-8">SHIELD-8</a>: no attack shots while shielding.</div>
 </div>
-<div class="col-first odd-row-color"><code>static final int</code></div>
-<div class="col-second odd-row-color"><code><a href="#KEPT_ERRORS" class="member-name-link">KEPT_ERRORS</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code>static final int</code></div>
+<div class="col-second even-row-color"><code><a href="#KEPT_ERRORS" class="member-name-link">KEPT_ERRORS</a></code></div>
+<div class="col-last even-row-color">
 <div class="block"><a class="req" href="../../../../requirements.html#SHIELD-10">SHIELD-10</a>: the errors kept per base for the most frequent one.</div>
 </div>
-<div class="col-first even-row-color"><code>final boolean</code></div>
-<div class="col-second even-row-color"><code><a href="#learn" class="member-name-link">learn</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code>final boolean</code></div>
+<div class="col-second odd-row-color"><code><a href="#learn" class="member-name-link">learn</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block"><a class="req" href="../../../../requirements.html#SHIELD-9">SHIELD-9</a>: learn from intercepted bullets.</div>
 </div>
-<div class="col-first odd-row-color"><code>final boolean</code></div>
-<div class="col-second odd-row-color"><code><a href="#mode" class="member-name-link">mode</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code>final boolean</code></div>
+<div class="col-second even-row-color"><code><a href="#mode" class="member-name-link">mode</a></code></div>
+<div class="col-last even-row-color">
 <div class="block"><a class="req" href="../../../../requirements.html#SHIELD-10">SHIELD-10</a>: the most frequent offset, not the mean.</div>
 </div>
-<div class="col-first even-row-color"><code>static final <a href="ShieldDesign.html" title="class in hadur2.core.shieldmode">ShieldDesign</a></code></div>
-<div class="col-second even-row-color"><code><a href="#NONE" class="member-name-link">NONE</a></code></div>
+<div class="col-first odd-row-color"><code>final boolean</code></div>
+<div class="col-second odd-row-color"><code><a href="#move" class="member-name-link">move</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block"><a class="req" href="../../../../requirements.html#SHIELD-17">SHIELD-17</a>: the opening drive against every shielded opponent.</div>
+</div>
+<div class="col-first even-row-color"><code>static final int</code></div>
+<div class="col-second even-row-color"><code><a href="#MOVE_STOP_TICKS" class="member-name-link">MOVE_STOP_TICKS</a></code></div>
 <div class="col-last even-row-color">
+<div class="block"><a class="req" href="../../../../requirements.html#SHIELD-17">SHIELD-17</a>: the ticks before the enemy's gun is ready from which the opening drive stands still.</div>
+</div>
+<div class="col-first odd-row-color"><code>static final <a href="ShieldDesign.html" title="class in hadur2.core.shieldmode">ShieldDesign</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#NONE" class="member-name-link">NONE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">3.12's shield: every switch off.</div>
 </div>
-<div class="col-first odd-row-color"><code>final boolean</code></div>
-<div class="col-second odd-row-color"><code><a href="#prior" class="member-name-link">prior</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code>final boolean</code></div>
+<div class="col-second even-row-color"><code><a href="#prior" class="member-name-link">prior</a></code></div>
+<div class="col-last even-row-color">
 <div class="block"><a class="req" href="../../../../requirements.html#SHIELD-16">SHIELD-16</a>: the body-turn base from the enemy's position on the tick before it fired.</div>
+</div>
+<div class="col-first odd-row-color"><code>final boolean</code></div>
+<div class="col-second odd-row-color"><code><a href="#rec" class="member-name-link">rec</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block"><a class="req" href="../../../../requirements.html#SHIELD-18">SHIELD-18</a>: the round's <code>SP</code> record.</div>
 </div>
 <div class="col-first even-row-color"><code>static final <a href="ShieldDesign.html" title="class in hadur2.core.shieldmode">ShieldDesign</a></code></div>
 <div class="col-second even-row-color"><code><a href="#SHIPPED" class="member-name-link">SHIPPED</a></code></div>
@@ -253,7 +283,7 @@ loadScripts(document, 'script');</script>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#parse(java.lang.String)" class="member-name-link">parse</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;flags)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">The design a comma-separated list of switch names turns on (<code>hold</code>, <code>learn</code>,
- <code>mode</code>, <code>stay</code>, <code>turn</code>, <code>wall</code>, <code>trial</code>, <code>prior</code>, or <code>all</code>); blank
+ <code>mode</code>, <code>stay</code>, <code>turn</code>, <code>wall</code>, <code>trial</code>, <code>prior</code>, <code>move</code>, <code>rec</code>, or <code>all</code>); blank
  is <a href="#NONE"><code>NONE</code></a>.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
@@ -425,6 +455,36 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="MOVE_STOP_TICKS">
+<h3>MOVE_STOP_TICKS</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">MOVE_STOP_TICKS</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#SHIELD-17">SHIELD-17</a>: the ticks before the enemy's gun is ready from which the opening drive stands still.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur2.core.shieldmode.ShieldDesign.MOVE_STOP_TICKS">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="AIM_PRIOR">
+<h3>AIM_PRIOR</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">AIM_PRIOR</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#SHIELD-18">SHIELD-18</a>: the exact matches a shipped aim starts its predictor with.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur2.core.shieldmode.ShieldDesign.AIM_PRIOR">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="NONE">
 <h3>NONE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ShieldDesign.html" title="class in hadur2.core.shieldmode">ShieldDesign</a></span>&nbsp;<span class="element-name">NONE</span></div>
@@ -497,6 +557,20 @@ loadScripts(document, 'script');</script>
 <div class="block"><a class="req" href="../../../../requirements.html#SHIELD-16">SHIELD-16</a>: the body-turn base from the enemy's position on the tick before it fired.</div>
 </section>
 </li>
+<li>
+<section class="detail" id="move">
+<h3>move</h3>
+<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">move</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#SHIELD-17">SHIELD-17</a>: the opening drive against every shielded opponent.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="rec">
+<h3>rec</h3>
+<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">rec</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#SHIELD-18">SHIELD-18</a>: the round's <code>SP</code> record.</div>
+</section>
+</li>
 </ul>
 </section>
 </li>
@@ -510,7 +584,7 @@ loadScripts(document, 'script');</script>
 <h3>parse</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="ShieldDesign.html" title="class in hadur2.core.shieldmode">ShieldDesign</a></span>&nbsp;<span class="element-name">parse</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;flags)</span></div>
 <div class="block">The design a comma-separated list of switch names turns on (<code>hold</code>, <code>learn</code>,
- <code>mode</code>, <code>stay</code>, <code>turn</code>, <code>wall</code>, <code>trial</code>, <code>prior</code>, or <code>all</code>); blank
+ <code>mode</code>, <code>stay</code>, <code>turn</code>, <code>wall</code>, <code>trial</code>, <code>prior</code>, <code>move</code>, <code>rec</code>, or <code>all</code>); blank
  is <a href="#NONE"><code>NONE</code></a>.</div>
 <dl class="notes">
 <dt>Parameters:</dt>

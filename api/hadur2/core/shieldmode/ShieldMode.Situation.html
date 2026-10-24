@@ -131,6 +131,12 @@ loadScripts(document, 'script');</script>
 <div class="col-second even-row-color"><code><a href="#energy" class="member-name-link">energy</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code>(package private) final double</code></div>
+<div class="col-second odd-row-color"><code><a href="#fieldHeight" class="member-name-link">fieldHeight</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>(package private) final double</code></div>
+<div class="col-second even-row-color"><code><a href="#fieldWidth" class="member-name-link">fieldWidth</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>(package private) final double</code></div>
 <div class="col-second odd-row-color"><code><a href="#gunHeading" class="member-name-link">gunHeading</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code>(package private) final double</code></div>
@@ -182,6 +188,27 @@ loadScripts(document, 'script');</script>
  boolean&nbsp;mayFire)</code></div>
 <div class="col-last even-row-color">
 <div class="block">One tick's view of the duel.</div>
+</div>
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(long,double,double,double,double,double,double,double,double,double,double,double,double,boolean,boolean,double,double)" class="member-name-link">Situation</a><wbr>(long&nbsp;time,
+ double&nbsp;x,
+ double&nbsp;y,
+ double&nbsp;heading,
+ double&nbsp;gunHeading,
+ double&nbsp;gunHeat,
+ double&nbsp;coolingRate,
+ double&nbsp;energy,
+ double&nbsp;enemyX,
+ double&nbsp;enemyY,
+ double&nbsp;enemyEnergy,
+ double&nbsp;attackAngle,
+ double&nbsp;attackPower,
+ boolean&nbsp;gunOnTarget,
+ boolean&nbsp;mayFire,
+ double&nbsp;fieldWidth,
+ double&nbsp;fieldHeight)</code></div>
+<div class="col-last odd-row-color">
+<div class="block">One tick's view of the duel on a field of known size, which <a class="req" href="../../../../requirements.html#SHIELD-17">SHIELD-17</a>'s opening
+ drive needs; the other parameters are as above.</div>
 </div>
 </div>
 </section>
@@ -294,6 +321,18 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">mayFire</span></div>
 </section>
 </li>
+<li>
+<section class="detail" id="fieldWidth">
+<h3>fieldWidth</h3>
+<div class="member-signature"><span class="modifiers">final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">fieldWidth</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="fieldHeight">
+<h3>fieldHeight</h3>
+<div class="member-signature"><span class="modifiers">final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">fieldHeight</span></div>
+</section>
+</li>
 </ul>
 </section>
 </li>
@@ -340,6 +379,50 @@ loadScripts(document, 'script');</script>
 <dd><code>attackPower</code> - the power the main gun would fire</dd>
 <dd><code>gunOnTarget</code> - whether the gun may fire at the attack aim</dd>
 <dd><code>mayFire</code> - whether the conductor lets a shot leave this tick (<a class="req" href="../../../../requirements.html#WEAVE-3">WEAVE-3</a>)</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="&lt;init&gt;(long,double,double,double,double,double,double,double,double,double,double,double,double,boolean,boolean,double,double)">
+<h3>Situation</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">Situation</span><wbr><span class="parameters">(long&nbsp;time,
+ double&nbsp;x,
+ double&nbsp;y,
+ double&nbsp;heading,
+ double&nbsp;gunHeading,
+ double&nbsp;gunHeat,
+ double&nbsp;coolingRate,
+ double&nbsp;energy,
+ double&nbsp;enemyX,
+ double&nbsp;enemyY,
+ double&nbsp;enemyEnergy,
+ double&nbsp;attackAngle,
+ double&nbsp;attackPower,
+ boolean&nbsp;gunOnTarget,
+ boolean&nbsp;mayFire,
+ double&nbsp;fieldWidth,
+ double&nbsp;fieldHeight)</span></div>
+<div class="block">One tick's view of the duel on a field of known size, which <a class="req" href="../../../../requirements.html#SHIELD-17">SHIELD-17</a>'s opening
+ drive needs; the other parameters are as above.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>time</code> - the tick</dd>
+<dd><code>x</code> - our x, px</dd>
+<dd><code>y</code> - our y, px</dd>
+<dd><code>heading</code> - our body's heading, radians</dd>
+<dd><code>gunHeading</code> - our gun's heading, radians</dd>
+<dd><code>gunHeat</code> - the gun's heat</dd>
+<dd><code>coolingRate</code> - the gun's cooling rate per tick</dd>
+<dd><code>energy</code> - our energy</dd>
+<dd><code>enemyX</code> - the enemy's x at the last scan, px</dd>
+<dd><code>enemyY</code> - the enemy's y at the last scan, px</dd>
+<dd><code>enemyEnergy</code> - the enemy's energy at the last scan</dd>
+<dd><code>attackAngle</code> - the angle the main gun would aim at</dd>
+<dd><code>attackPower</code> - the power the main gun would fire</dd>
+<dd><code>gunOnTarget</code> - whether the gun may fire at the attack aim</dd>
+<dd><code>mayFire</code> - whether the conductor lets a shot leave this tick (<a class="req" href="../../../../requirements.html#WEAVE-3">WEAVE-3</a>)</dd>
+<dd><code>fieldWidth</code> - the battlefield's width, px, or NaN when not known</dd>
+<dd><code>fieldHeight</code> - the battlefield's height, px, or NaN when not known</dd>
 </dl>
 </section>
 </li>
