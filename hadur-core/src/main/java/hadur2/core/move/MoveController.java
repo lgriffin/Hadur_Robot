@@ -165,6 +165,19 @@ public class MoveController {
         return through * Math.pow(2.0, -Math.abs(at - centre) / bandwidth);
     }
 
+    /** DODGE-2: the simple-aim dodger the surf asks, or null when it is off (duel only). */
+    private ShotDodger shotDodger;
+
+    /** DODGE-2: sets the dodger the surf asks for each wave's danger; null turns it off. */
+    public void setShotDodger(ShotDodger dodger) {
+        this.shotDodger = dodger;
+    }
+
+    /** DODGE-2: the dodger, or null. */
+    public ShotDodger shotDodger() {
+        return shotDodger;
+    }
+
     /** MOVE-16: each view's multiplier, in the order the views were built; all 1 until learned. */
     double[] replicatorMultipliers() {
         return replicatorWeights.multipliers();

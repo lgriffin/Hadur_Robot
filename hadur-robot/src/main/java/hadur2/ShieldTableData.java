@@ -2,18 +2,20 @@ package hadur2;
 
 /**
  * Shield part 2 of the 1v1 mode table (docs/plan-shield-quality.md): per opponent, the shield's
- * opening drive (SHIELD-17) and its shipped aim (SHIELD-18). Both lists start empty, so the
- * shield plays as before until a bench run has picked entries for them.
+ * opening drive (SHIELD-17) and its shipped aim (SHIELD-18); and the opponents the duel surf
+ * dodges simple aims against (DODGE-3); and the opponents fought with stop-and-go (POISON-2). Every list starts empty, so Hadur plays as before until
+ * a bench run has picked entries for it.
  *
- * <p>{@link #moves()} names opponents, matched by the rule of {@link ShieldListData}.
+ * <p>{@link #moves()} and {@link #dodges()} name opponents, matched by the rule of {@link ShieldListData}.
  * {@link #aims()} holds one {@code "predictor offset name"} line an opponent: the predictor
  * (from 0) the shield's records showed best against it, that predictor's offset in radians,
  * then the robot's name as Robocode lists it, with or without its version.</p>
  *
  * <p>A class, not a resource, for the reason {@link ShieldListData} gives: Robocode's sandbox
  * refuses a robot the read of its own jar. Keep the shape: a final class with package-private
- * static methods {@code moves()} and {@code aims()}; the bench's {@code smovelist}/{@code
- * saimlist} ablations fill them.</p>
+ * static methods {@code moves()}, {@code aims()}, {@code dodges()}, {@code stopGos()} and
+ * {@code stopGoShifts()}; the bench's {@code smovelist}/{@code saimlist}/{@code sdodgelist}/
+ * {@code sgolist}/{@code sgo2list} ablations fill them.</p>
  */
 final class ShieldTableData {
 
@@ -36,6 +38,36 @@ final class ShieldTableData {
      * @return a fresh array of lines
      */
     static String[] aims() {
+        return new String[] {
+        };
+    }
+
+    /**
+     * DODGE-3: the opponents the duel surf dodges simple aims against.
+     *
+     * @return a fresh array of names
+     */
+    static String[] dodges() {
+        return new String[] {
+        };
+    }
+
+    /**
+     * POISON-2: the opponents fought with stop-and-go, WavePoison's variant (reverse crawl one tick early).
+     *
+     * @return a fresh array of names
+     */
+    static String[] stopGos() {
+        return new String[] {
+        };
+    }
+
+    /**
+     * POISON-2: the opponents fought with stop-and-go, WavePoisonShift's variant (two ticks early).
+     *
+     * @return a fresh array of names
+     */
+    static String[] stopGoShifts() {
         return new String[] {
         };
     }

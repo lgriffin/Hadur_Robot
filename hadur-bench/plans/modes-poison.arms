@@ -1,0 +1,7 @@
+# 1v1 mode table v2, poison screen (pc-1v1-modes): c is 3.16, aa its A/A copy, wp stop-and-go
+# for every duel opponent (POISON-1, WavePoison: reverse crawl 1 tick early), ws the shift variant
+# (2 ticks early).
+c | hadur2.Hadur 3.16 | bisect/hadur2.Hadur_3.16.jar
+aa | hadur2.Hadur 3.16aa | bisect/hadur2.Hadur_3.16aa.jar
+wp | hadur2.Hadur 3.16wp | bisect/hadur2.Hadur_3.16wp.jar
+ws | hadur2.Hadur 3.16ws | bisect/hadur2.Hadur_3.16ws.jar

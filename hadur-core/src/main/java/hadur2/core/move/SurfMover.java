@@ -705,6 +705,16 @@ public class SurfMover {
         double[] cap = surfWaveIndex == 0 ? aesCapture : null;
         double[] parts = cap == null ? null : new double[2 * moveCtrl.viewCount() + 1];
         double viewScore = moveCtrl.getDangerScore(surfWave, intersection, surfWaveIndex, parts);
+        // DODGE-2: against a gun that fires one simple aim, the danger is whether that aim's
+        // bullet crosses us here; the views only break ties between the options it misses.
+        ShotDodger dodger = moveCtrl.shotDodger();
+        if (dodger != null && intersection != null) {
+            double dodged = dodger.danger(surfWave.simpleAims(), intersection.angle, intersection.bandwidth);
+            if (!Double.isNaN(dodged)) {
+                viewScore = dodged + ShotDodger.VIEW_WEIGHT * viewScore;
+                hitRate = 0;
+            }
+        }
         double danger = hitRate * (1 - shadowed) + viewScore;
         // MOVE-8: what the gun is told about this wave, before the damage and timing scale it.
         lastLeg = intersection == null ? null : PlanInterval.of(surfWave, intersection, danger);

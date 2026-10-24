@@ -221,6 +221,15 @@
 #         per opponent (ShieldTableData.moves()). Suffix mv.
 #   saimlist  the lines of $SHIELD_AIM ("predictor offset name", from tools/shield_s2.py aims) become
 #         shipped aims (ShieldTableData.aims()). Suffix ak.
+#   sdodge DODGE-3: the duel surf dodges the enemy's simple aim (DODGE-1, DODGE-2) against every
+#         opponent once one aim matches its bullets. Suffix sg.
+#   sdodgelist the robots named in $SHOT_DODGE (one per line, or a pick TSV) get the dodge per
+#         opponent (ShieldTableData.dodges()). Suffix dg.
+#   sgo    POISON-2: stop-and-go (POISON-1, WavePoison: reverse crawl 1 tick before the enemy's gun
+#         is ready) against every duel opponent. Suffix wp.
+#   sgo2   the same, WavePoisonShift's variant (2 ticks). Suffix ws.
+#   sgolist / sgo2list the robots named in $STOP_GO / $STOP_GO2 get stop-and-go per opponent
+#         (ShieldTableData.stopGos() / stopGoShifts()). Suffix wl / wm.
 #   snull  all five at once: Nullstride's design as read from its jar.
 #   strim (3.13) the 22 listed robots that 3.13 lost to in both plan90-gate runs come off the shield
 #         list, so they are fought in normal mode: does the shield still pay against them
@@ -630,11 +639,24 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(names))
             [[ -n "$add" ]] || { echo "slistadd: $SHIELD_ADD names no robot" >&2; exit 2; }
             python3 -c 'import sys; p,a=sys.argv[1:]; s=open(p).read(); k=s.rindex("        };"); open(p,"w").write(s[:k]+a+s[k:])' "$listdata" "$add"
             version="${version}mt" ;;
-        smovelist|saimlist)
-            # Shield part 2 (docs/plan-shield-quality.md): per-opponent opening drive or shipped aims.
+        sdodge)
+            edit "$movedesign" "static final boolean SHOT_DODGE = false;" "static final boolean SHOT_DODGE = true;"
+            version="${version}sg" ;;
+        sgo|sgo2)
+            edit "$movedesign" "static final boolean STOP_AND_GO = false;" "static final boolean STOP_AND_GO = true;"
+            if [[ "$a" == sgo2 ]]; then
+                edit "$movedesign" "static final int STOP_AND_GO_PREFIRE = 1;" "static final int STOP_AND_GO_PREFIRE = 2;"
+                version="${version}ws"
+            else version="${version}wp"; fi ;;
+        smovelist|saimlist|sdodgelist|sgolist|sgo2list)
+            # Shield part 2 (docs/plan-shield-quality.md): per-opponent opening drive or shipped aims;
+            # the mode table's simple-aim dodge (DODGE-3).
             if [[ "$a" == smovelist ]]; then file="${SHIELD_MOVE:-}"; method="moves"; version="${version}mv"
-            else file="${SHIELD_AIM:-}"; method="aims"; version="${version}ak"; fi
-            [[ -n "$file" && -f "$file" ]] || { echo "$a needs SHIELD_MOVE / SHIELD_AIM=<file>" >&2; exit 2; }
+            elif [[ "$a" == saimlist ]]; then file="${SHIELD_AIM:-}"; method="aims"; version="${version}ak"
+            elif [[ "$a" == sdodgelist ]]; then file="${SHOT_DODGE:-}"; method="dodges"; version="${version}dg"
+            elif [[ "$a" == sgolist ]]; then file="${STOP_GO:-}"; method="stopGos"; version="${version}wl"
+            else file="${STOP_GO2:-}"; method="stopGoShifts"; version="${version}wm"; fi
+            [[ -n "$file" && -f "$file" ]] || { echo "$a needs SHIELD_MOVE / SHIELD_AIM / SHOT_DODGE / STOP_GO / STOP_GO2=<file>" >&2; exit 2; }
             add="$(python3 -c 'import sys,json
 lines=[l.split("\t")[0].strip() for l in open(sys.argv[1]) if l.strip() and not l.startswith("#")]
 print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines)), end="")' "$file")"
@@ -665,7 +687,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$design" 'public static final ShieldDesign SHIPPED = parse("' \
                 "public static final ShieldDesign SHIPPED = parse(\"$flag,"
             version="${version}${suffix}" ;;
-        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, ramheat, flaton, nowall, flt59, flt8, split, wallesc, gungate, hold650, dfac, bhb, hitclr, pkern, keep2, thgun, freegun, nodecay, stacklist, protean, pdw3, pdw8, pc10, phot, repl, pressure, pdown, pwall, pwc, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tram, t6n, t6l, tmsoft, tmgang, tmfin, tmlearn, tmpack, tmscreen, tmpool, tmdis, tmfire, tmrear, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, snull, strim, slistadd, smovelist, saimlist)" >&2; exit 2 ;;
+        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, ramheat, flaton, nowall, flt59, flt8, split, wallesc, gungate, hold650, dfac, bhb, hitclr, pkern, keep2, thgun, freegun, nodecay, stacklist, protean, pdw3, pdw8, pc10, phot, repl, pressure, pdown, pwall, pwc, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tram, t6n, t6l, tmsoft, tmgang, tmfin, tmlearn, tmpack, tmscreen, tmpool, tmdis, tmfire, tmrear, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, snull, strim, slistadd, smovelist, saimlist, sdodge, sdodgelist, sgo, sgo2, sgolist, sgo2list)" >&2; exit 2 ;;
     esac
 done
 

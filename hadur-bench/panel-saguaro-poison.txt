@@ -1,0 +1,299 @@
+# 1v1 mode table v2 (pc-1v1-modes): the robots Saguaro 1.0 plays WavePoison or WavePoisonShift (stop-and-go, POISON-1) against,
+# from saguaro-modes.tsv; rows from census-312.txt (148 of 149 named are in it).
+# The comment above each row gives Saguaro's variant: wp = WavePoison, ws = WavePoisonShift.
+# ws
+DM.Mijit .3 | rank469-band5 | DM.Mijit_.3.jar
+# ws
+EBBU.Sim2 1.02 | rank1020-band6 | EBBU.Sim2_1.02.jar
+# wp
+EE.LittleBig 1.0 | rank682-band5 | EE.LittleBig_1.0.jar
+# ws
+Legend.X_FireFly 1.3 | rank592-band5 | Legend.X_FireFly_1.3.jar
+# ws
+NDH.GuessFactor 1.0 | rank825-band6 | NDH.GuessFactor_1.0.jar
+# ws
+NG.LegatusLegionis 1.2 | rank962-band6 | NG.LegatusLegionis_1.2.jar
+# wp
+PkKillers.PkAssassin 1.0 | rank521-band5 | PkKillers.PkAssassin_1.0.jar
+# ws
+ab.DengerousRoBatra 1.3 | rank155-band3 | ab.DengerousRoBatra_1.3.jar
+# ws
+acid.Null 1.0 | rank932-band6 | acid.Null_1.0.jar
+# ws
+ahr.ice.Ice 1.0 | rank556-band5 | ahr.ice.Ice_1.0.jar
+# ws
+ajs.Guessit 1.3 | rank587-band5 | ajs.Guessit_1.3.jar
+# ws
+apc.Colossus2 0.12 | rank923-band6 | apc.Colossus2_0.12.jar
+# ws
+apv.AspidReloaded 0.6 | rank343-band4 | apv.AspidReloaded_0.6.jar
+# wp
+apv.LauLectrik 1.2 | rank363-band4 | apv.LauLectrik_1.2.jar
+# ws
+ar.TheoryOfEverything 1.2.1 | rank570-band5 | ar.TheoryOfEverything_1.2.1.jar
+# ws
+ar.horizon.Horizon 1.2.2 | rank44-band2 | ar.horizon.Horizon_1.2.2.jar
+# wp
+areb.Union 1.06 | rank299-band4 | areb.Union_1.06.jar
+# ws
+arthord.micro.Apoptygma 0.4 | rank476-band5 | arthord.micro.Apoptygma_0.4.jar
+# ws
+arthord.micro.Muffin 0.6.1 | rank300-band4 | arthord.micro.Muffin_0.6.1.jar
+# ws
+ary.Crisis 1.0 | rank376-band4 | ary.Crisis_1.0.jar
+# ws
+asd.Cthulhu 1.2 | rank881-band6 | asd.Cthulhu_1.2.jar
+# ws
+banshee.micro.Nexus6 0.3.0 | rank671-band5 | banshee.micro.Nexus6_0.3.0.jar
+# ws
+barontrozo.BaronTrozo 1.7.6 | rank169-band3 | barontrozo.BaronTrozo_1.7.6.jar
+# ws
+bigpete.Stewie 1.0 | rank670-band5 | bigpete.Stewie_1.0.jar
+# ws
+bing2.Melody 1.3.1 | rank201-band4 | bing2.Melody_1.3.1.jar
+# ws
+blir.mini.oops.Splooshlu 2.0 | rank677-band5 | blir.mini.oops.Splooshlu_2.0.jar
+# ws
+bvh.tyr.Tyr 1.74 | rank833-band6 | bvh.tyr.Tyr_1.74.jar
+# ws
+casey.Flump 1.0 | rank690-band5 | casey.Flump_1.0.jar
+# ws
+cf.proto.Shiva 2.2 | rank75-band3 | cf.proto.Shiva_2.2.jar
+# ws
+com.arsenic.NewTest 1.0 | rank769-band6 | com.arsenic.NewTest_1.0.jar
+# ws
+com.timothyveletta.FuzzyBot 1.1 | rank996-band6 | com.timothyveletta.FuzzyBot_1.1.jar
+# wp
+cx.BlestPain 1.41 | rank129-band3 | cx.BlestPain_1.41.jar
+# wp
+cx.nano.Smog 2.6 | rank546-band5 | cx.nano.Smog_2.6.jar
+# ws
+da.NewBGank 1.4 | rank134-band3 | da.NewBGank_1.4.jar
+# ws
+davidalves.Phoenix 1.02 | rank21-band2 | davidalves.Phoenix_1.02.jar
+# wp
+davidalves.net.DuelistMicroMkII 1.1 | rank345-band4 | davidalves.net.DuelistMicroMkII_1.1.jar
+# wp
+deewiant.Anomaly 0.2 | rank630-band5 | deewiant.Anomaly_0.2.jar
+# ws
+demetrix.nano.Neutrino 0.27 | rank589-band5 | demetrix.nano.Neutrino_0.27.jar
+# ws
+deo.CloudBot 1.3 | rank163-band3 | deo.CloudBot_1.3.jar
+# ws
+dft.Immortal 1.40 | rank76-band3 | dft.Immortal_1.40.jar
+# ws
+dmh.robocode.robot.YellowBird 0.12 | rank617-band5 | dmh.robocode.robot.YellowBird_0.12.jar
+# wp
+ds.OoV4 0.3b | rank404-band5 | ds.OoV4_0.3b.jar
+# ws
+dsx724.VSAB_EP3_ATR 1.1 | rank531-band5 | dsx724.VSAB_EP3_ATR_1.1.jar
+# wp
+dy.LevelOne 2.0 | rank591-band5 | dy.LevelOne_2.0.jar
+# ws
+dz.MostlyHarmlessNano 2.1 | rank581-band5 | dz.MostlyHarmlessNano_2.1.jar
+# ws
+eem.IWillFireNoBullet v2.4 | rank821-band6 | eem.IWillFireNoBullet_v2.4.jar
+# wp
+ejbots.AngryGrandpappy 1.2 | rank916-band6 | ejbots.AngryGrandpappy_1.2.jar
+# ws
+el33t.EL33tGangstarr2 2.0 | rank1000-band6 | el33t.EL33tGangstarr2_2.0.jar
+# wp
+element.Earth 1.1 | rank168-band3 | element.Earth_1.1.jar
+# wp
+ender.EnderRobot 1.1 | rank988-band6 | ender.EnderRobot_1.1.jar
+# ws
+ers.micro.ISuck.ISuckMicro 0.1f | rank260-band4 | ers.micro.ISuck.ISuckMicro_0.1f.jar
+# ws
+ers.micro.speusippus.Speusippus 0.3 | rank172-band3 | ers.micro.speusippus.Speusippus_0.3.jar
+# ws
+fala.robocode.FalaRobot 1.0 | rank960-band6 | fala.robocode.FalaRobot_1.0.jar
+# ws
+fnc.bandit.Bandit 5.2.0 | rank792-band6 | fnc.bandit.Bandit_5.2.0.jar
+# ws
+froh.micro.Aversari 0.31 | rank707-band6 | froh.micro.Aversari_0.31.jar
+# wp
+gg.Wolverine 2.0 | rank852-band6 | gg.Wolverine_2.0.jar
+# ws
+gh.mini.Grimmig 0.3.6 | rank179-band3 | gh.mini.Grimmig_0.3.6.jar
+# wp
+grybgoofy.GoofyBot 0.10 | rank795-band6 | grybgoofy.GoofyBot_0.10.jar
+# ws
+hapiel.Spiral 0.1 | rank880-band6 | hapiel.Spiral_0.1.jar
+# wp
+jab.avk.ManuelGallegus 0.6 | rank187-band3 | jab.avk.ManuelGallegus_0.6.jar
+# ws
+jam.RaikoMX 0.32 | rank57-band3 | jam.RaikoMX_0.32.jar
+# wp
+janm.Jammy 1.0 | rank777-band6 | janm.Jammy_1.0.jar
+# ws
+jje.BagPuss 1.2 | rank738-band6 | jje.BagPuss_1.2.jar
+# ws
+kano.gamma.KanoGamma 1.8 | rank621-band5 | kano.gamma.KanoGamma_1.8.jar
+# wp
+kawigi.spare.SpareParts 0.7.6nosnd | rank747-band6 | kawigi.spare.SpareParts_0.7.6nosnd.jar
+# ws
+kc.micro.Thorn 1.252 | rank116-band3 | kc.micro.Thorn_1.252.jar
+# wp
+kcn.percept.PerceptBot 2.3 | rank942-band6 | kcn.percept.PerceptBot_2.3.jar
+# wp
+klein.GottesKrieger 1.1 | rank622-band5 | klein.GottesKrieger_1.1.jar
+# wp
+lechu.Lechu 1.1 | rank760-band6 | lechu.Lechu_1.1.jar
+# wp
+lion.Kresnanano 1.0 | rank815-band6 | lion.Kresnanano_1.0.jar
+# ws
+lorneswork.Predator 1.0 | rank800-band6 | lorneswork.Predator_1.0.jar
+# ws
+lxx.ConceptA 0.8 | rank166-band3 | lxx.ConceptA_0.8.jar
+# wp
+lxx.Emerald 0.6.5 | rank191-band3 | lxx.Emerald_0.6.5.jar
+# wp
+madmath.Cow 0.1.1 | rank1104-band6 | madmath.Cow_0.1.1.jar
+# ws
+marksteam.Phoenix 1.0 | rank719-band6 | marksteam.Phoenix_1.0.jar
+# wp
+matt.BlueMind 0.8.00 | rank993-band6 | matt.BlueMind_0.8.00.jar
+# ws
+matt.UnderDark4 0.4.00 | rank1120-band6 | matt.UnderDark4_0.4.00.jar
+# ws
+mb.Monte 0.1.0 | rank406-band5 | mb.Monte_0.1.0.jar
+# wp
+md.November 1.0 | rank788-band6 | md.November_1.0.jar
+# wp
+mladjo.AIR 0.7 | rank524-band5 | mladjo.AIR_0.7.jar
+# wp
+mladjo.GnuKlub 0.1 | rank268-band4 | mladjo.GnuKlub_0.1.jar
+# wp
+mladjo.Startko 1.0 | rank548-band5 | mladjo.Startko_1.0.jar
+# ws
+mladjo.iRobot 0.3 | rank160-band3 | mladjo.iRobot_0.3.jar
+# ws
+mrm.MightyMoose .2 | rank732-band6 | mrm.MightyMoose_.2.jar
+# wp
+muf.CrazyKitten 0.9 | rank400-band4 | muf.CrazyKitten_0.9.jar
+# ws
+nat.BlackHole 2.0gamma | rank125-band3 | nat.BlackHole_2.0gamma.jar
+# ws
+nat.Hikari dev0001 | rank220-band4 | nat.Hikari_dev0001.jar
+# wp
+nat.Samekh 0.4 | rank108-band3 | nat.Samekh_0.4.jar
+# ws
+nat.micro.Reepicheep 0.1a | rank514-band5 | nat.micro.Reepicheep_0.1a.jar
+# ws
+nic.Nicator 2.4 | rank595-band5 | nic.Nicator_2.4.jar
+# ws
+ntc.Cannon 1.12test | rank286-band4 | ntc.Cannon_1.12test.jar
+# wp
+nz.A7Ibwenape A7Ibwen1.0 | rank1197-band6 | nz.A7Ibwenape_A7Ibwen1.0.jar
+# ws
+nz.jdc.micro.HedgehogGF 1.5 | rank114-band3 | nz.jdc.micro.HedgehogGF_1.5.jar
+# ws
+oog.melee.Capulet 1.2 | rank586-band5 | oog.melee.Capulet_1.2.jar
+# ws
+pe.SandboxLump 1.52 | rank231-band4 | pe.SandboxLump_1.52.jar
+# wp
+pe.mini.SandboxMini 1.2 | rank381-band4 | pe.mini.SandboxMini_1.2.jar
+# wp
+penguin.Joker .611wr | rank180-band3 | penguin.Joker_.611wr.jar
+# ws
+pez.mini.ChironexFleckeri 0.5 | rank259-band4 | pez.mini.ChironexFleckeri_0.5.jar
+# ws
+pez.mini.Tityus 0.9.1 | rank144-band3 | pez.mini.Tityus_0.9.1.jar
+# ws
+pez.rumble.Ali 0.4.9 | rank48-band2 | pez.rumble.Ali_0.4.9.jar
+# ws
+pfvicm.Sobieski 7.2.3b | rank607-band5 | pfvicm.Sobieski_7.2.3b.jar
+# wp
+pkdeken.Paladin 1.0 | rank567-band5 | pkdeken.Paladin_1.0.jar
+# ws
+populations.TrainStoopidbot 0.01 | rank736-band6 | populations.TrainStoopidbot_0.01.jar
+# ws
+projectx.ProjectNano 2.0 | rank866-band6 | projectx.ProjectNano_2.0.jar
+# ws
+pulsar.PulsarMax 0.8.9 | rank31-band2 | pulsar.PulsarMax_0.8.9.jar
+# ws
+rc.RCBot 2.0 | rank663-band5 | rc.RCBot_2.0.jar
+# wp
+rc.yoda.Yoda 1.0.6c.fix | rank123-band3 | rc.yoda.Yoda_1.0.6c.fix.jar
+# wp
+rcb.Vanessa03 0 | rank318-band4 | rcb.Vanessa03_0.jar
+# ws
+rdt.AgentSmith.AgentSmithRedux 0.02 | rank266-band4 | rdt.AgentSmith.AgentSmithRedux_0.02.jar
+# ws
+rh.Intra 2.1DomoKN | rank70-band3 | rh.Intra_2.1DomoKN.jar
+# wp
+rh.abs.Xwing 2.1 | rank137-band3 | rh.abs.Xwing_2.1.jar
+# wp
+romz.robot.circular.WildRabbit 0.9.6 | rank718-band6 | romz.robot.circular.WildRabbit_0.9.6.jar
+# ws
+rsim.mini.BulletCatcher 0.4 | rank243-band4 | rsim.mini.BulletCatcher_0.4.jar
+# ws
+ry.LightningBug 1.0 | rank352-band4 | ry.LightningBug_1.0.jar
+# ws
+sample.Tracker 1.0 | rank1172-band6 | sample.Tracker_1.0.jar
+# ws
+scheronimus.AntiRebel 1.1 | rank403-band5 | scheronimus.AntiRebel_1.1.jar
+# ws
+serenity.nonSense 1.39 | rank442-band5 | serenity.nonSense_1.39.jar
+# ws
+serenity.serenityFire 1.29 | rank450-band5 | serenity.serenityFire_1.29.jar
+# ws
+sheldor.micro.EpeeistDC 3.0 | rank105-band3 | sheldor.micro.EpeeistDC_3.0.jar
+# wp
+sigterm.Sigterm 1.0 | rank785-band6 | sigterm.Sigterm_1.0.jar
+# ws
+slugzilla.Basilisk 3.9 | rank89-band3 | slugzilla.Basilisk_3.9.jar
+# ws
+slugzilla.SNGGF 1.0 | rank559-band5 | slugzilla.SNGGF_1.0.jar
+# ws
+steff.Rebel 2.1 | rank471-band5 | steff.Rebel_2.1.jar
+# ws
+stelo.Liblix 0.3.1 | rank126-band3 | stelo.Liblix_0.3.1.jar
+# ws
+stelo.MirrorMicro 1.1 | rank605-band5 | stelo.MirrorMicro_1.1.jar
+# ws
+stelo.Spread 0.9 | rank109-band3 | stelo.Spread_0.9.jar
+# ws
+step.NanoBidu 1.0 | rank664-band5 | step.NanoBidu_1.0.jar
+# ws
+suh.mega.WaveSurferGF 1.04 | rank214-band4 | suh.mega.WaveSurferGF_1.04.jar
+# ws
+suh.nano.TargetC 1.00 | rank1109-band6 | suh.nano.TargetC_1.00.jar
+# ws
+supersample.SuperTracker 1.0 | rank890-band6 | supersample.SuperTracker_1.0.jar
+# ws
+suzushin7.nano.TargetC 1.00 | rank1102-band6 | suzushin7.nano.TargetC_1.00.jar
+# ws
+synapse.Geomancy 15 | rank110-band3 | synapse.Geomancy_15.jar
+# wp
+taqho.taqbot 1.0 | rank892-band6 | taqho.taqbot_1.0.jar
+# wp
+tcf.Drifter 29 | rank289-band4 | tcf.Drifter_29.jar
+# ws
+tjk.AFlatNatural 1.0 | rank539-band5 | tjk.AFlatNatural_1.0.jar
+# ws
+tjk.deBroglie rev0108 | rank52-band3 | tjk.deBroglie_rev0108.jar
+# ws
+urdos.URDOS 1.3 | rank412-band5 | urdos.URDOS_1.3.jar
+# ws
+vjik.UnViolation 1.1 | rank827-band6 | vjik.UnViolation_1.1.jar
+# ws
+voidious.perceptual.RetroGirl 1.0.0 | rank625-band5 | voidious.perceptual.RetroGirl_1.0.0.jar
+# ws
+whind.Constitution 0.7.1 | rank511-band5 | whind.Constitution_0.7.1.jar
+# ws
+whind.Wisdom 0.5.1 | rank573-band5 | whind.Wisdom_0.5.1.jar
+# ws
+wiki.BasicGFSurfer 1.02 | rank161-band3 | wiki.BasicGFSurfer_1.02.jar
+# ws
+wiki.Wolverine 2.1 | rank864-band6 | wiki.Wolverine_2.1.jar
+# ws
+wiki.nano.Flick 1.0 | rank529-band5 | wiki.nano.Flick_1.0.jar
+# wp
+xander.cat.Mikey 1.2 | rank228-band4 | xander.cat.Mikey_1.2.jar
+# wp
+xander.cat.SamAxe 1.1 | rank225-band4 | xander.cat.SamAxe_1.1.jar
+# wp
+xander.cat.XanderCat 12.9 | rank9-band1 | xander.cat.XanderCat_12.9.jar
+# ws
+zyx.micro.Ant 1.1 | rank436-band5 | zyx.micro.Ant_1.1.jar
