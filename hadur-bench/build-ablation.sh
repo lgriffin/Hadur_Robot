@@ -157,6 +157,9 @@
 #   tlane0 (team only) T4, no fire lane: a member fires whatever teammates lie ahead, as CombatTeam does.
 #   tlane4 (team only) T4, WEAVE-4's lane alone: a teammate's last known point still holds the shot,
 #         its predicted track (WEAVE-7) no longer does.
+#   tlaneo (team only) team step C, Ogi's lane (docs/bench/ogi-deep-dive.md 4.6): the shot holds only for a
+#         teammate nearer than the target (the nearest enemy within atan2(36, d) of the gun line) and
+#         within atan2(30, d) of the gun line; no drift, no predicted track. Suffix lo.
 #   tram  (team only) TR1, shoot rammers: the field gun no longer skips an enemy closing on the member
 #         inside 100 px (FieldGun.rams). Off a team the skip stays. Three ramming teams take 1.6-2.1 APS
 #         of the gap to 5th-6th (docs/plan-team-top5.md). Suffix rm. MGUN-10 ships it: use --ref v3.15.
@@ -597,6 +600,27 @@ $(cat "$table")"
             version="${version}rm"
             edit "$fgun" "if (!finisher && rams(e, me)) continue;" "if (!finisher && !onTeam && rams(e, me)) continue;"
             ;;
+        tlaneo)
+            version="${version}lo"
+            edit "$tlink" "        double dx = Math.sin(in.gunHeading());" "        if (true) {
+            double gun = in.gunHeading();
+            double target = Double.POSITIVE_INFINITY;
+            if (world != null) for (EnemyInfo e : world.alive()) {
+                if (e.location == null) continue;
+                double d = e.location.distance(in.x(), in.y());
+                double off = Math.abs(Angles.normalRelativeAngle(Math.atan2(e.location.x - in.x(), e.location.y - in.y()) - gun));
+                if (off <= Math.atan2(36, d) && d < target) target = d;
+            }
+            for (Roster.Mate m : roster.living(in.time())) {
+                double d = Math.hypot(m.x() - in.x(), m.y() - in.y());
+                if (d >= target) continue;
+                double off = Math.abs(Angles.normalRelativeAngle(Math.atan2(m.x() - in.x(), m.y() - in.y()) - gun));
+                if (off <= Math.atan2(30, d)) return false;
+            }
+            return true;
+        }
+        double dx = Math.sin(in.gunHeading());"
+            ;;
         tlane4)
             version="${version}l4"
             edit "$tlink" "            if (across <= half) return false;" "            if (across <= half) return false;
@@ -687,7 +711,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$design" 'public static final ShieldDesign SHIPPED = parse("' \
                 "public static final ShieldDesign SHIPPED = parse(\"$flag,"
             version="${version}${suffix}" ;;
-        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, ramheat, flaton, nowall, flt59, flt8, split, wallesc, gungate, hold650, dfac, bhb, hitclr, pkern, keep2, thgun, freegun, nodecay, stacklist, protean, pdw3, pdw8, pc10, phot, repl, pressure, pdown, pwall, pwc, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tram, t6n, t6l, tmsoft, tmgang, tmfin, tmlearn, tmpack, tmscreen, tmpool, tmdis, tmfire, tmrear, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, snull, strim, slistadd, smovelist, saimlist, sdodge, sdodgelist, sgo, sgo2, sgolist, sgo2list)" >&2; exit 2 ;;
+        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, ramheat, flaton, nowall, flt59, flt8, split, wallesc, gungate, hold650, dfac, bhb, hitclr, pkern, keep2, thgun, freegun, nodecay, stacklist, protean, pdw3, pdw8, pc10, phot, repl, pressure, pdown, pwall, pwc, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tram, t6n, t6l, tmsoft, tmgang, tmfin, tmlearn, tmpack, tmscreen, tmpool, tmdis, tmfire, tmrear, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, snull, strim, slistadd, smovelist, saimlist, sdodge, sdodgelist, sgo, sgo2, sgolist, sgo2list)" >&2; exit 2 ;;
     esac
 done
 

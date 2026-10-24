@@ -61,7 +61,7 @@ pr | bash tools/open_results_pr.sh claude/pc-1v1-modes-results "1v1 mode table v
 # PR. Their own results PR (claude/pc-team-c-results); the team thread reads the verdict. tcprep goes
 # back to master first, so that PR does not carry the 1v1 reports from the pr step's branch.
 
-tcprep | git checkout -q master && bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && bash ./build-ablation.sh tlane0 && bash ./build-ablation.sh tlane4 && bash ./build-ablation.sh tlane0,tmfire && ./fetch-opponents.sh --set team-census46.txt && mvn -q compile
+tcprep | git checkout -q master && bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && bash ./build-ablation.sh tlane0 && bash ./build-ablation.sh tlaneo && bash ./build-ablation.sh tlaneo,tmfire && ./fetch-opponents.sh --set team-census46.txt && mvn -q compile
   after: pr
 
 tcbb   | mvn -q exec:java "-Dexec.args=@plans/team-c-bb.args"
@@ -70,11 +70,11 @@ tcbb   | mvn -q exec:java "-Dexec.args=@plans/team-c-bb.args"
 tcl0   | mvn -q exec:java "-Dexec.args=@plans/team-c-l0.args"
   after: tcbb
 
-tcl4   | mvn -q exec:java "-Dexec.args=@plans/team-c-l4.args"
+tclo   | mvn -q exec:java "-Dexec.args=@plans/team-c-lo.args"
   after: tcl0
 
-tcl0mb | mvn -q exec:java "-Dexec.args=@plans/team-c-l0mb.args"
-  after: tcl4
+tclomb | mvn -q exec:java "-Dexec.args=@plans/team-c-lomb.args"
+  after: tclo
 
 tcpr   | bash tools/open_results_pr.sh claude/pc-team-c-results "Team step C: fire lane screens" $(ls ${OUT}/team-c-*.md 2>/dev/null)
-  after: tcl0mb
+  after: tclomb
