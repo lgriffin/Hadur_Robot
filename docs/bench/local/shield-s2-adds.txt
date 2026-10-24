@@ -1,0 +1,16 @@
+CharlieN.Omega.Omega 1.03
+SHAM.WOW 1.4
+TJ.Exupery 1.39
+awl.Locutus 1.5
+bayen.nut.Squirrel 1.621
+can.Pookie 1.1
+deo.virtual.RainbowBot 1.0
+gu.MicroScoob 1.3
+nz.jdc.micro.HedgehogP 1.2
+nz.jdc.nano.PralDeGuerre 1.2
+pez.frankie.Frankie 0.9.6.1
+rjw.RabidWombat 0.71
+robar.nano.Vespa 0.95
+sm.Devil 7.3
+stelo.Chord 1.0
+voidious.micro.Jen 1.11
