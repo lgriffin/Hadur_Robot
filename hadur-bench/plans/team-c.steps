@@ -3,22 +3,23 @@
 # Step B found that our members fire about a third less than AlephTeam's (WEAVE-4/WEAVE-7 hold
 # the shot while a teammate is in the lane), so rounds run 35-40% longer and the enemy fires 40%
 # more at us. Four screens, each 46 teams x 6 seeds x 2 = 552 battles paired with the 3.16 aa build:
-#   tcbb A/A, tcl0 no fire lane (tlane0), tcl4 WEAVE-4's point test alone (tlane4),
-#   tcl0mb no fire lane with MATEFIRE (teammates dodge our bullets, TMODE-9).
+#   tcbb A/A, tcl0 no fire lane (tlane0), tclo Ogi's lane (tlaneo: hold only for a teammate nearer
+#   than the target, within atan2(30, d) of the gun line), tclomb Ogi's lane with MATEFIRE (TMODE-9).
+#   Cloud smoke, 11 teams x 2 seeds: tlaneo beat tlane0 by +3.9 +/- 3.1 share points.
 # 2,208 battles, about 2.5 h at --parallel 12. Every step resumes where it stopped (BENCH-96).
 # Verdict (team thread, cloud): ship an arm whose screen gains at least +1.0 with the 95% low end
 # above zero and tcbb within +/- 1.0. All arms are team only: the lane exists only on a team.
 # Needs `set OUT = ../docs/bench/local` in the card.
 
-tcprep | bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && bash ./build-ablation.sh tlane0 && bash ./build-ablation.sh tlane4 && bash ./build-ablation.sh tlane0,tmfire && ./fetch-opponents.sh --set team-census46.txt && mvn -q compile
+tcprep | bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && bash ./build-ablation.sh tlane0 && bash ./build-ablation.sh tlaneo && bash ./build-ablation.sh tlaneo,tmfire && ./fetch-opponents.sh --set team-census46.txt && mvn -q compile
   after: <the card's last 1v1 step>
 tcbb   | mvn -q exec:java "-Dexec.args=@plans/team-c-bb.args"
   after: tcprep
 tcl0   | mvn -q exec:java "-Dexec.args=@plans/team-c-l0.args"
   after: tcbb
-tcl4   | mvn -q exec:java "-Dexec.args=@plans/team-c-l4.args"
+tclo   | mvn -q exec:java "-Dexec.args=@plans/team-c-lo.args"
   after: tcl0
-tcl0mb | mvn -q exec:java "-Dexec.args=@plans/team-c-l0mb.args"
-  after: tcl4
+tclomb | mvn -q exec:java "-Dexec.args=@plans/team-c-lomb.args"
+  after: tclo
 tcpr   | bash tools/open_results_pr.sh claude/pc-team-c-results "Team step C: fire lane screens" $(ls ${OUT}/team-c-*.md 2>/dev/null)
-  after: tcl0mb
+  after: tclomb

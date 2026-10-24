@@ -266,6 +266,11 @@ from the bench's bullets.log. The tlane0 smoke used seeds 3100-3101.
 - Cloud smoke of `tlane0` (no lane, team only) against the 3.16 aa build on those five teams,
   2 seeds: **+10.8 ± 4.8** share points, TeamDeath +15.9 ± 2.2.
 
-So step C is the fire lane: `tlane0`, `tlane4` (WEAVE-4's point test alone) and `tlane0` with
-MATEFIRE (teammates dodge our bullets), screened on all 46 teams (plans/team-c.steps, about
-2.5 PC hours). Ship an arm at +1.0 or more with the low end above zero and the A/A within ±1.0.
+A second smoke on the top 6 (Combat, Shadow, Aleph, Nightmare, Xmen, Polylunar), seeds 3200-3201:
+`tlane0` **+8.8 ± 7.0**. Then Ogi's own rule (`tlaneo`, docs/bench/ogi-deep-dive.md 4.6: hold only
+for a teammate nearer than the target and within atan2(30, d) of the gun line) against `tlane0`
+on those 11 teams, seeds 3400-3401: **+3.9 ± 3.1** for `tlaneo`, with 3,125 shots held against
+7,400 for the 3.16 lane.
+
+So step C is the fire lane: `tlane0`, `tlaneo` and `tlaneo` with MATEFIRE (teammates dodge our
+bullets), screened on all 46 teams (plans/team-c.steps, about 2.5 PC hours). Ship an arm at +1.0 or more with the low end above zero and the A/A within ±1.0.

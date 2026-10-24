@@ -75,7 +75,7 @@ class ModesV2PlanTest {
     @DisplayName("team step C runs after the 1v1 results PR, from master, each step after the one before, and ends in its own results PR")
     void teamStepsFollow() throws IOException {
         String queue = Files.readString(QUEUE);
-        String[] steps = {"pr", "tcprep", "tcbb", "tcl0", "tcl4", "tcl0mb", "tcpr"};
+        String[] steps = {"pr", "tcprep", "tcbb", "tcl0", "tclo", "tclomb", "tcpr"};
         for (int i = 1; i < steps.length; i++) {
             int at = queue.indexOf("\n" + steps[i] + " ");
             assertTrue(at >= 0, steps[i]);
