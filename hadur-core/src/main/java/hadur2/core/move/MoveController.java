@@ -792,6 +792,8 @@ public class MoveController {
         int currentRound = w.fireRound;
         for (KnnView<TimestampedGuessFactor> view : views) {
             if (!view.logVisits) continue;
+            // MOVE-25: a visit learned is a change of the views too.
+            viewRevision++;
             // Visits are logged even for a wave our bullet destroyed: we were still there.
             double gf = w.guessFactor(intersection.angle);
             view.logWave(w, new TimestampedGuessFactor(currentRound, currentTime, gf));
@@ -836,6 +838,8 @@ public class MoveController {
         // The bullet lies on its firing line, so its bearing from the source is the exact
         // angle it was fired at.
         double hitGF = hitWave.guessFactor(bulletLocation);
+        // MOVE-25: the stop-point surf replans once the views have learned something new.
+        viewRevision++;
         // MOVE-16: rate the hit before any view learns it, so each view is judged on a prediction.
         if (replicator) updateReplicator(hitWave, hitGF);
         for (KnnView<TimestampedGuessFactor> view : views) {
@@ -1293,6 +1297,65 @@ public class MoveController {
             danger += weights[i] * kernel(DiaUtils.normalizeAngle(firingAngle, centre), bandwidth, segments);
         }
         return danger;
+    }
+
+    /** MOVE-25: counts every sample the danger views learn, hit or visit, this battle. */
+    private long viewRevision;
+
+    /** MOVE-25: the danger views' revision; it changes whenever a view learns a hit or a visit. */
+    public long viewRevision() {
+        return viewRevision;
+    }
+
+    /**
+     * MOVE-25: the danger views' firing angles for {@code w} as a histogram over the classic
+     * guess factor: {@code bins} equal bins across [-1, 1], each holding the summed weight of
+     * the neighbours whose guess factor falls in it (view weight times scan weight, the same
+     * weights {@link #getDangerScore} averages), normalised to sum to 1. No kernel and no
+     * shadows: the stop-point surf smooths it and applies them. With no view on with data it
+     * holds {@link #defaultDanger}'s fixed guess (GF 0 weight 3, GF 0.85 weight 1).
+     *
+     * @param w the wave
+     * @param surfWaveIndex the wave's index among the surfable waves, which keys the cache
+     * @param bins the number of bins, at least 2
+     * @return the histogram, summing to 1
+     */
+    public double[] dangerProfile(Wave w, int surfWaveIndex, int bins) {
+        validateCache(w, surfWaveIndex);
+        double[] out = new double[bins];
+        double[] estimate = viewEstimate();
+        double total = 0;
+        for (int vi = 0; vi < views.size(); vi++) {
+            KnnView<TimestampedGuessFactor> view = views.get(vi);
+            if (view.effectiveSize() == 0 || !viewOn(view, estimate)) continue;
+            double viewWeight = effectiveWeight(vi);
+            List<KdTree.Entry<TimestampedGuessFactor>> neighbors =
+                getNearestNeighbors(view, w, surfWaveIndex);
+            Map<Timestamped, Double> weightMap = view.getDecayWeights(neighbors);
+            for (KdTree.Entry<TimestampedGuessFactor> entry : neighbors) {
+                TimestampedGuessFactor tsgf = entry.value;
+                double scanWeight = weightMap.get(tsgf)
+                    / Math.sqrt(Math.max(entry.distance, MIN_DISTANCE)) * tsgf.weight();
+                double add = viewWeight * scanWeight;
+                if (!(add > 0)) continue;
+                out[profileBin(tsgf.guessFactor, bins)] += add;
+                total += add;
+            }
+        }
+        if (!(total > 0)) {
+            Arrays.fill(out, 0.0);
+            out[profileBin(0.0, bins)] += 0.75;
+            out[profileBin(0.85, bins)] += 0.25;
+            return out;
+        }
+        for (int i = 0; i < bins; i++) out[i] /= total;
+        return out;
+    }
+
+    /** MOVE-25: the bin of {@code gf} among {@code bins} equal bins over [-1, 1], clamped. */
+    static int profileBin(double gf, int bins) {
+        int b = (int) Math.floor((gf + 1) / 2 * bins);
+        return Math.max(0, Math.min(bins - 1, b));
     }
 
     /** Floor for a neighbour's squared distance, so an exact match weighs a lot but not infinitely. */
