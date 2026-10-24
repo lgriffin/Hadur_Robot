@@ -285,7 +285,9 @@ the 3.16 aa build on the 11 teams of step C, 2 seeds each:
 | `tmwaves` (head-on and linear profile, seeds 3500-3501) | -0.3 ± 4.0 | 176 (122) |
 | `tmwaves,tmlearn,tmpool` (learned aims pooled by class, Ogi's setup) | -4.4 ± 4.1 | 1,593 (124) |
 | `tmwaves,tmwk` (kernel 2.5 bot widths wide, seeds 3600-3601) | +0.5 ± 3.2 | 172 (123) |
+| `tmwaves,tmwk` after the signed-risk scaling fix (seeds 3700-3701) | +1.6 ± 4.1 | 174 (124) |
 
-None earns PC time, so D is closed as built: the code stays on master with the mode off. By the
+The re-smoke after the review fix (risk medians shifted by the least risk) stays inside its
+noise. None earns PC time, so D is closed as built: the code stays on master with the mode off. By the
 stop rule, movement is not where 5th comes from. The team lever is C (the fire lane), and what is
 left after C's gate is read from the census against 77.2.
