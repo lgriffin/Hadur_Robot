@@ -151,6 +151,15 @@ public class MinimumRiskMovement {
     static final long SWEEP_TICKS = 10;
     /** Opponents whose data has gone stale do not cap the ring. */
     static final long CAP_MAX_AGE = EnemyInfo.STALE_TICKS;
+    /** TMODE-8: an enemy at or under this energy is disabled; one within the range draws a member, to the floor. */
+    static final double DISABLED_ENERGY = 0.1;
+    static final double DISABLED_RANGE = 500;
+    static final double DISABLED_FLOOR = 50;
+    static final double DISABLED_PULL = 0.5;
+    /** TMODE-9: teammates' bullets kept, oldest dropped first. */
+    static final int MATE_BULLETS = 64;
+    /** TMODE-10: the leader's enemy terms weigh this much more. */
+    static final double REAR_FACTOR = 1.5;
     /** The ring never shrinks below a robot's width, so Hadur can always move. */
     static final double MIN_RING = 36.0;
 
@@ -194,6 +203,10 @@ public class MinimumRiskMovement {
         final List<Roster.Mate> mates;
         /** TMODE-3, TMODE-4: the point this decision is drawn to, or null; only on a team. */
         Pull pull;
+        /** TMODE-9: the teammates' bullets in flight this decision weighs; empty unless MATEFIRE. */
+        List<VirtualBullet> mateBullets = List.of();
+        /** TMODE-10: whether this decision is the leader's keeping back. */
+        boolean rear;
 
         View(Point2D.Double me, double energy, long now, int others, List<EnemyInfo> enemies,
              List<VirtualBullet> bullets, MeleeStrategy.Plan plan) {
@@ -229,6 +242,10 @@ public class MinimumRiskMovement {
     private final BattleField field;
     private final Point2D.Double centre;
     private final Deque<VirtualBullet> bullets = new ArrayDeque<>();
+    /** TMODE-9: the teammates' bullets from their reports, oldest first. */
+    private final Deque<VirtualBullet> mateBullets = new ArrayDeque<>();
+    /** TMODE-10: whether this member leads its team this round. */
+    private boolean leader;
     private final Set<EnemyShot> seenShots =
         Collections.newSetFromMap(new IdentityHashMap<EnemyShot, Boolean>());
     private final Deque<Point2D.Double> past = new ArrayDeque<>();
@@ -259,9 +276,31 @@ public class MinimumRiskMovement {
         destination = null;
         openingSpot = null;
         bullets.clear();
+        mateBullets.clear();
         seenShots.clear();
         past.clear();
         round++;
+    }
+
+    /**
+     * TMODE-9: a teammate's bullet, from its report: fired from {@code at} on {@code tick}
+     * along {@code heading}. Kept whether or not MATEFIRE is on; read only when it is.
+     */
+    public void mateShot(String mate, Point2D.Double at, long tick, double heading, double power) {
+        while (mateBullets.size() >= MATE_BULLETS) mateBullets.removeFirst();
+        mateBullets.addLast(new VirtualBullet(new EnemyShot(mate, at, tick, power, 0), VirtualBullet.Aim.HEAD_ON, heading));
+    }
+
+    /** TMODE-9: the teammates' bullets that have not yet passed {@code me}; the rest are dropped. */
+    List<VirtualBullet> mateBullets(Point2D.Double me, long now) {
+        double reach = Math.hypot(field.width, field.height);
+        mateBullets.removeIf(b -> b.passed(me, now, reach));
+        return new ArrayList<>(mateBullets);
+    }
+
+    /** TMODE-10: whether this member is its team's leader; set each round, false off a team. */
+    public void leader(boolean leader) {
+        this.leader = leader;
     }
 
     /** Virtual bullets in flight, for tests and the bench. */
@@ -408,6 +447,8 @@ public class MinimumRiskMovement {
         View v = new View(me, energy, now, others, enemies, new ArrayList<>(bullets), plan, mates);
         if (!mates.isEmpty() && !modes.isEmpty()) v.pull = pull(me, energy, others, enemies, now, mates, modes);
         if (!mates.isEmpty() && modes.contains(TeamModes.Mode.SCREEN)) screen(v, now);
+        if (!mates.isEmpty() && modes.contains(TeamModes.Mode.MATEFIRE)) v.mateBullets = mateBullets(me, now);
+        v.rear = leader && !mates.isEmpty() && modes.contains(TeamModes.Mode.REAR);
         List<Point2D.Double> candidates = candidates(me, others, enemies, now, mates);
         lastCandidates = candidates.size();
         Point2D.Double best = null;
@@ -496,6 +537,10 @@ public class MinimumRiskMovement {
                 && enemies.get(0).age(now) < CAP_MAX_AGE && energy >= FINISH_ENERGY) {
             return new Pull(enemies.get(0).location, FINISH_FLOOR, FINISH_PULL);
         }
+        if (modes.contains(TeamModes.Mode.DISABLED)) {
+            EnemyInfo prey = disabled(me, enemies, now);
+            if (prey != null) return new Pull(prey.location, DISABLED_FLOOR, DISABLED_PULL);
+        }
         boolean gang = modes.contains(TeamModes.Mode.GANG);
         if (!gang && !modes.contains(TeamModes.Mode.PACK)) return null;
         Point2D.Double nearest = null;
@@ -514,6 +559,20 @@ public class MinimumRiskMovement {
         }
         if (gang && ganged != null) return new Pull(ganged, HELP_FLOOR, GANG_PULL);
         return null;
+    }
+
+    /**
+     * TMODE-8: the nearest enemy seen lately at or under {@link #DISABLED_ENERGY} and within
+     * {@link #DISABLED_RANGE} of {@code me}, or null.
+     */
+    static EnemyInfo disabled(Point2D.Double me, List<EnemyInfo> enemies, long now) {
+        EnemyInfo best = null;
+        for (EnemyInfo e : enemies) {
+            if (e.age(now) >= CAP_MAX_AGE || e.energy > DISABLED_ENERGY) continue;
+            double d = e.location.distance(me);
+            if (d <= DISABLED_RANGE && (best == null || d < best.location.distance(me))) best = e;
+        }
+        return best;
     }
 
     /**
@@ -611,9 +670,10 @@ public class MinimumRiskMovement {
             if (v.plan.fight != null && (e == v.plan.fight[0] || e == v.plan.fight[1])) {
                 w = FIGHT_WEIGHT;
             }
-            r += w * enemyRisk(p, v, i);
+            r += w * enemyRisk(p, v, i) * (v.rear ? REAR_FACTOR : 1.0);
         }
         r += bulletRisk(p, v.me, v.bullets, v.now);
+        if (!v.mateBullets.isEmpty()) r += bulletRisk(p, v.me, v.mateBullets, v.now);
         r += centreRisk(p) + wallRisk(p) + cornerRisk(p) + pastRisk(p) + noise(p);
         if (v.now < OPENING_TICKS && openingSpot != null) {
             r += OPENING_K * p.distance(openingSpot) / 500.0;

@@ -1,0 +1,31 @@
+# PC card team-s4 (docs/plan-team-top5.md S4, requirements T7 notes): arm mb (TMODE-9 MATEFIRE forced on), all 46 teams against master 3.16 (the aa build) (Bench @FILE, one argument a line)
+--team
+true
+--seeds
+6
+--seed-base
+2900
+--rounds
+10
+--parallel
+12
+--child-heap
+2G
+--cpu-constant
+1488498
+--set
+team-census46.txt
+--robot-jar
+bisect/hadur2.HadurTeam_3.16mb.jar
+--robot
+hadur2.HadurTeam 3.16mb
+--member
+hadur2.Hadur
+--out
+work/team-s4-mb
+--report
+../docs/bench/local/team-s4-mb.md
+--baseline
+bisect/hadur2.HadurTeam_3.16aa.jar
+--baseline-robot
+hadur2.HadurTeam 3.16aa

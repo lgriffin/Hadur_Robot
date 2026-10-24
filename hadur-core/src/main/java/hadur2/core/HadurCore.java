@@ -441,6 +441,8 @@ public final class HadurCore {
         if (teamLink != null && meleeSeam != null) meleeSeam.mateSightings(teamLink.mateSightings());
         // MMOVE-10: the teammates' samples of the enemies' guns join the team's log.
         if (teamLink != null && meleeSeam != null) meleeSeam.mateDodges(teamLink.mateDodges());
+        // TMODE-9: the teammates' bullets, for the movement's MATEFIRE mode.
+        if (teamLink != null && meleeSeam != null) meleeSeam.mateShots(teamLink.mateShots());
 
         // The events in the order the adapter queued them, which is the engine's own. HitWall
         // needs no handling: the ledger infers the enemy's wall hits, and our own wall damage

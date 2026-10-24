@@ -106,6 +106,8 @@ public class MeleeController {
     private boolean onTeam;
     /** T7: the team's modes against this team (TMODE-1) as of the last tick; none off a team. */
     private Set<TeamModes.Mode> modes = TeamModes.NONE;
+    /** TMODE-10: whether this round's first tick has told whether Hadur leads its team. */
+    private boolean leaderKnown;
 
     public MeleeController(BattleField field) {
         this(field, new EnemyTracker(field));
@@ -132,6 +134,7 @@ public class MeleeController {
         waves.newRound();
         lastTarget = null;
         myPath.clear();
+        leaderKnown = false;
     }
 
     public OpponentStatsBook book() { return book; }
@@ -258,6 +261,11 @@ public class MeleeController {
         danger.add(s);
     }
 
+    /** TMODE-9: a teammate's bullet, from its report. */
+    public void mateShot(String mate, Point2D.Double at, long tick, double heading, double power) {
+        mover.mateShot(mate, at, tick, heading, power);
+    }
+
     /** MMOVE-10: Hadur's own samples since the last report, for the next one. */
     public List<TeamDanger.Sample> takeSamples() {
         return danger.takeOutgoing();
@@ -311,6 +319,11 @@ public class MeleeController {
         MeleeStrategy.Plan plan = strategy.evaluate(tracker, s.me, s.energy, s.others, s.time);
         c.posture = plan.posture;
         onTeam = !s.teammates.isEmpty();
+        if (!leaderKnown) {
+            // TMODE-10: only a team's leader starts a round with more than 100 energy.
+            leaderKnown = true;
+            mover.leader(s.energy > 100);
+        }
         if (onTeam) {
             // T7 (TMODE-1): the modes against this team.
             modes = TeamModes.against(alive);

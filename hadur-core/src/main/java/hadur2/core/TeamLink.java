@@ -76,6 +76,19 @@ final class TeamLink {
     private final List<MateSighting> mateSightings = new ArrayList<>();
     /** MMOVE-10 (T6): this tick's teammates' samples of the enemies' guns, in merge order. */
     private final List<Report.Dodge> mateDodges = new ArrayList<>();
+    /** TMODE-9: this tick's teammates' shots, each with its sender, in merge order. */
+    private final List<MateShot> mateShots = new ArrayList<>();
+
+    /** TMODE-9: one bullet a teammate reported firing. */
+    static final class MateShot {
+        final String mate;
+        final Report.Shot shot;
+
+        MateShot(String mate, Report.Shot shot) {
+            this.mate = mate;
+            this.shot = shot;
+        }
+    }
 
     /**
      * MGUN-8: one teammate's sighting of an enemy as the World took it: where and how it moved
@@ -139,6 +152,7 @@ final class TeamLink {
         fresh.clear();
         mateSightings.clear();
         mateDodges.clear();
+        mateShots.clear();
         boolean sentries = in.numSentries() > 0;
         List<Report> reports = new ArrayList<>();
         List<String> senders = new ArrayList<>();
@@ -242,6 +256,7 @@ final class TeamLink {
                     taken.turnRate(), distance));
             }
             mateDodges.addAll(r.dodges());
+            for (Report.Shot sh : r.shots()) mateShots.add(new MateShot(sender, sh));
             for (String dead : r.deaths()) {
                 if (dead.equals(facts.name())) continue;
                 boolean known = roster.enemyDead(dead);
@@ -319,6 +334,11 @@ final class TeamLink {
     /** MMOVE-10: this tick's teammates' samples of the enemies' guns, in merge order. */
     List<Report.Dodge> mateDodges() {
         return mateDodges;
+    }
+
+    /** TMODE-9: this tick's teammates' shots, in merge order. */
+    List<MateShot> mateShots() {
+        return mateShots;
     }
 
     /** WORLD-9: the living teammates with a fresh position, as of this tick's input. */
