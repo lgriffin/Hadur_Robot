@@ -1,0 +1,30 @@
+live - bench[t1]: rounds won -0.45 pp (±0.23, n=1048); damage share +1.46 pp (±0.90, n=1048)
+   pending score share - bench[t1] score share: -0.30 pp (±1.35, n=21); live 0.8841 bench 0.8871
+live - bench[c]: rounds won -0.18 pp (±0.24, n=1048); damage share +0.25 pp (±1.00, n=1048)
+live - bench[aa]: rounds won -0.14 pp (±0.25, n=1048); damage share -0.03 pp (±0.97, n=1048)
+live - bench[s2c]: rounds won -1.35 pp (±1.09, n=88); damage share +3.12 pp (±2.78, n=88)
+   pending score share - bench[s2c] score share: +1.24 pp (±2.86, n=4); live 0.8243 bench 0.8119
+live - bench[s2aa]: rounds won -1.30 pp (±0.93, n=88); damage share +3.25 pp (±2.97, n=88)
+
+worst 12 (live - t1 rounds won):
+  dragonbyte.Neutrino                 rank383-band4    live 0.429 bench 0.686 -0.257  dmg 0.992/0.998
+  cs.s2.Seraphim                      rank39-band2     live 0.771 bench 1.000 -0.229  dmg 0.499/0.500
+  darkcanuck.Gaff                     rank79-band3     live 0.657 bench 0.886 -0.229  dmg 0.517/0.597
+  stelo.MatchupMini                   rank284-band4    live 0.607 bench 0.814 -0.207  dmg 0.528/0.552
+  cb.Domogled                         rank23-band2     live 0.371 bench 0.543 -0.171  dmg 0.618/0.635
+  intruder.PrairieWolf                rank270-band4    live 0.829 bench 1.000 -0.171  dmg 0.704/0.136
+  axeBots.Musashi                     rank156-band3    live 0.800 bench 0.957 -0.157  dmg 0.616/0.687
+  cb.fire.Firestarter                 rank7-band1      live 0.371 bench 0.514 -0.143  dmg 0.529/0.521
+  ary.FourWD                          rank133-band3    live 0.857 bench 0.986 -0.129  dmg 0.492/0.036
+  lxx.Tomcat                          rank10-band1     live 0.514 bench 0.643 -0.129  dmg 0.365/0.435
+  rh.abs.Xwing                        rank137-band3    live 0.800 bench 0.929 -0.129  dmg 0.548/0.623
+  ur4n0.UR4NO                         rank115-band3    live 0.814 bench 0.943 -0.129  dmg 0.567/0.609
+best 5:
+  stelo.MatchupWS                     live 0.943 bench 0.800 +0.143
+  areb.Union                          live 0.971 bench 0.814 +0.157
+  kc.serpent.WaveSerpent              live 0.800 bench 0.586 +0.214
+  darkcanuck.Holden                   live 0.971 bench 0.714 +0.257
+  sheldor.mini.Foilist                live 0.941 bench 0.671 +0.270
+
+by band: {'band1': '-5.40pp n=9', 'band2': '+0.47pp n=35', 'band3': '-0.77pp n=127', 'band4': '-1.03pp n=166', 'band5': '-0.37pp n=262', 'band6': '-0.16pp n=449'}
+live opponents not on census panel: ['zen.Ronin', 'zzx.StormHead', 'dev.kurtw.KurtBot', 'jkong.JKHydra', 'a.FreyaOS', 'cz.libors.Ogi', 'e32.Omni', 'zen.Mirage']
