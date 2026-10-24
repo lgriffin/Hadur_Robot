@@ -11,7 +11,8 @@
 # against an A/A build): the planner without the closeness term read +0.0 and +1.4 +/- 1.3 pp (the
 # same build twice), and -0.7 with the simple-aim mix (MOVE-26, not screened). This build adds
 # DrussGT's closeness term and replans on shadow and visit changes; see
-# docs/bench/surf-b-rivals-read.md for its smoke. Proposed only if that smoke is clearly positive.
+# docs/bench/surf-b-rivals-read.md. Its smoke read level (+0.5 +/- 1.8 pp), so the card is NOT
+# proposed: kept for when an enemy-gun model change reads positive in the cloud.
 #
 # census (about 3.5-4 h): census-312 x c, aa, sb x 2 seeds = ~7,300 battles.
 # gate: sb minus pooled c and aa, census-weighted: KEEP at +0.3 APS with the lower end above 0 and

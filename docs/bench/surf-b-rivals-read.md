@@ -94,16 +94,17 @@ without the term:
 | 1 | planner, 3.15 base | +0.0 +/- 1.4 | 46.5 / 25.3 against 43.2 / 24.8 | 8.3% against 7.2% | 416 against 457 px | 9.7 against 6.4 |
 | 2 | the same planner, 3.16 base | +1.4 +/- 1.3 | 41.5 / 22.2 against 39.3 / 22.5 | 6.9% against 6.5% | 422 against 451 px | 9.1 against 6.7 |
 | 3 | the same + MOVE-26 simple-aim mix | -0.7 +/- 1.4 | 41.7 / 23.7 against 39.6 / 22.4 | 7.4% against 6.4% | 418 against 446 px | 9.3 against 6.0 |
-| 4 | + closeness term, replans on shadow and visit changes | pending | | | | |
+| 4 | + closeness term, replans on shadow and visit changes | +0.5 +/- 1.8 (trusted pairs -0.3) | 40.6 / 23.4 against 40.1 / 23.5 | 7.0% against 7.0% | 415 against 444 px | 10.3 against 6.7 |
 
-What smokes 1-3 say:
+What smokes 1-4 say:
 
 - **It plays.** No faults; the plan commitment makes it cheaper than the three-option surf on
   average (slow ticks fell from 15,500 to 800 in smoke 1) but its replans spike, so skipped turns
   rise by about 3 a battle.
 - **The planner alone is level.** Two readings of the same build, +0.0 and +1.4, pool to about
   +0.7 +/- 1.0 points; damage taken is level or slightly worse. It fights about 30 px closer, where
-  both guns hit more, which is what the closeness term (smoke 4) is meant to correct.
+  both guns hit more. Smoke 4 adds the closeness term and still fights 30 px closer, so the term is
+  not the cause; the stop points themselves sit inside the preferred distance.
 - **The simple-aim mix does not help** against learning guns (a spurious match leaks into the
   danger). It stays off.
 - 20 robots at 3 seeds cannot price a field-wide change: the midrange lesson is that a +0.6 point
@@ -111,7 +112,10 @@ What smokes 1-3 say:
 
 ## Honest expectation and the PC proposal
 
-On smokes 1-3 the planner alone is worth about **0 +/- 0.3 APS** on the field. The PC census card
+**Smoke 4 read level (+0.5 +/- 1.8 pp, damage taken 23.4 against 23.5), so the card is not
+proposed.** On smokes 1-4 the planner alone is worth about **0 +/- 0.3 APS** on the field: a better
+planner over the same danger information does not cut damage taken, which agrees with the AES
+verdict that the gap is information, not choice. The PC census card
 (`hadur-bench/plans/pc-surf-b.queue`, arms `plans/surf-b.arms`: census-312 x {3.16, 3.16aa,
 3.16sb} x 2 seeds, about 7,300 battles, 3.5-4 h, keep at +0.3 APS with the lower end above 0) is
 proposed only if smoke 4 reads clearly positive, and only on Leigh's go. Its value even when level
