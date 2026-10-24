@@ -346,6 +346,19 @@ class TeamModesTest {
 
     @Test
     @Tag("TMODE-11")
+    @DisplayName("TMODE-11: negative risks (the posture term) keep a positive scale, so wave damage still decides")
+    void waveScoresSigned() {
+        double[] risk = {-3.0, -2.9, -2.8, -2.7};
+        double[] damage = {16.0, 0.0, 1.0, 1.0};
+        double[] score = MinimumRiskMovement.waveScores(risk, damage);
+        int best = 0;
+        for (int k = 1; k < score.length; k++) if (score[k] < score[best]) best = k;
+        assertEquals(1, best);
+        assertTrue(Double.isFinite(score[0]) && score[0] < 1e6);
+    }
+
+    @Test
+    @Tag("TMODE-11")
     @DisplayName("TMODE-11: with WAVES on a team the destination is one of the safest candidates, re-ranked by the waves")
     void wavesPick() {
         List<EnemyInfo> far = enemies(pt(600, 150)).alive();

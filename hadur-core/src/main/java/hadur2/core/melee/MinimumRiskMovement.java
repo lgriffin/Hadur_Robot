@@ -681,7 +681,8 @@ public class MinimumRiskMovement {
      * there. A shot is a profile that sums to its aimed-at weight, not a certain bullet: its
      * virtual bullets' headings share {@code 1 - }{@link #WAVE_UNIFORM} of it, and the rest is
      * spread over its escape angle. The score is {@code risk / median(risk) + 3 x damage /
-     * max(0.1, median(damage))}, times {@link #SWITCH_GAIN} for the held destination.
+     * max(0.1, median(damage))}, each risk measured from the least of them (the posture term
+     * can make risks negative), times {@link #SWITCH_GAIN} for the held destination.
      */
     Point2D.Double waveBest(List<Point2D.Double> candidates, View v) {
         List<Point2D.Double> pool = new ArrayList<>(candidates);
@@ -704,19 +705,37 @@ public class MinimumRiskMovement {
             r[k] = risk[picked.get(k)];
             damage[k] = waveDamage(v.me, pool.get(picked.get(k)), v.now, waves);
         }
-        double riskMedian = Math.max(1e-9, median(r));
-        double damageMedian = Math.max(WAVE_MEDIAN_FLOOR, median(damage));
+        double[] score = waveScores(r, damage);
         Point2D.Double best = null;
         double bestScore = Double.POSITIVE_INFINITY;
         for (int k = 0; k < picked.size(); k++) {
-            double score = r[k] / riskMedian + WAVE_DAMAGE_K * damage[k] / damageMedian;
-            if (hold && picked.get(k) == pool.size() - 1) score *= SWITCH_GAIN;
-            if (score < bestScore) {
-                bestScore = score;
+            double sc = score[k];
+            if (hold && picked.get(k) == pool.size() - 1) sc *= SWITCH_GAIN;
+            if (sc < bestScore) {
+                bestScore = sc;
                 best = pool.get(picked.get(k));
             }
         }
         return best;
+    }
+
+    /**
+     * TMODE-11: each destination's score from its risk and wave damage. The posture term may
+     * make a risk negative, so each risk is measured from the least of them, which keeps the
+     * order and gives the median a positive scale.
+     */
+    static double[] waveScores(double[] risk, double[] damage) {
+        double least = Double.POSITIVE_INFINITY;
+        for (double x : risk) least = Math.min(least, x);
+        double[] shifted = new double[risk.length];
+        for (int k = 0; k < risk.length; k++) shifted[k] = risk[k] - least;
+        double riskMedian = Math.max(1e-9, median(shifted));
+        double damageMedian = Math.max(WAVE_MEDIAN_FLOOR, median(damage));
+        double[] out = new double[risk.length];
+        for (int k = 0; k < risk.length; k++) {
+            out[k] = shifted[k] / riskMedian + WAVE_DAMAGE_K * damage[k] / damageMedian;
+        }
+        return out;
     }
 
     static double median(double[] xs) {
