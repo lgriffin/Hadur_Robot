@@ -199,3 +199,51 @@ on top of S1, same protocol. Ship rule as above.
 - `hadur-bench/team-rammers3.txt`, `hadur-bench/team-census46.txt`, `hadur-bench/plans/pc-team-s1.queue`
   and its four `team-s1-*.args`.
 - The live team pages (see Sources), the TR1 screen report `docs/bench/local/2026-10-23_team-tram-screen.md` and this plan. No robot code.
+
+## 8. After 3.16: 7th live, and the plan adjusted (2026-10-24)
+
+**Where 3.16 stands.** HadurTeam 3.16 is 7th at **72.13 ± 0.80** after 114 battles (about 2.5 a
+pairing, so it will move). That is the team's best ever: 3.15 settled near 67.5. The bench
+predicted +3.4 for stage 1 (k21 and shooting rammers), and live shows about +4.6, so the first stop
+rule holds: the bench does not overstate live. To reach 5th, Hadur needs +5.1 over NightmareTeam
+(77.19); to reach 6th, +4.8 over AlephTeam (76.90).
+
+**Where the gap is.** These are the live pages of Hadur, Aleph and Nightmare over the 44 teams
+all three have met, split by the opponent's rank. APS points are each segment's share of the
+46-team mean.
+
+| Opponents | Hadur | Aleph (6th) | Nightmare (5th) | Survival H / A / N |
+|---|---|---|---|---|
+| ranks 1-6 | 4.55 | 5.45 (+0.9) | 7.79 (+3.2) | 21 / 32 / 45 |
+| ranks 7-20 | 21.02 | 22.42 (+1.4) | 23.42 (+2.4) | 80 / 93 / 82 |
+| ranks 21-46 | 45.11 | 46.89 (+1.8) | 43.06 (-2.0) | 98 / 99 / 89 |
+
+- **Aleph beats Hadur by a little everywhere**, and most of all against the lower half. Its
+  biggest margins are TeamDeath +20, DiamondStealers +17, Mamba +11, Enjambre +9 and Drunken +9:
+  rammers and the ranks 21-33 group again. Survival there is level (98 against 99), so Aleph's
+  edge is points per pairing (damage and kill bonuses, faster kills), not who survives.
+- **Nightmare's lead is survival against the top 20.** Its members live 45% of top-6 rounds
+  against Hadur's 21%. Its biggest margins are Shadow +41, Polylunar +37, ArmyOfShiz +26 and
+  Combat +24. It gives back 2 points against the lower half.
+- **What failed.** Per-team mode tables (pc-team-modes, +0.2 ± 0.8), learned team dodging (S2)
+  and PACK all changed the risk sum of the same minimum-risk movement. None of them moved
+  survival against the top 20.
+
+**The plan from here.**
+
+| Step | What | Why | Expected | Cost |
+|---|---|---|---|---|
+| A | S4 screens (DISABLED, MATEFIRE, REAR) on the combined PC card | built and queued | 0 to +0.5 | 3 PC hours, already on the card |
+| B | **Lower-half margin read**: bench Aleph itself as the subject against ranks 21-46, with Hadur alongside, and compare the score parts (bullet damage, kill bonus, survival) team by team | Aleph's +1.8 there is the cheapest gap; measure before building | read only | cloud, small teams run fast |
+| C | Fix what B finds: likely kill speed against rammers and weak teams (team fire power and target choice at close range) | the k21 and full-power steps (+2.4, +5.7) show gun-side changes carry live | +1.0 to +1.8 | small build, one PC gate |
+| D | **New team movement: Ogi's waves** (docs/bench/ogi-deep-dive.md port 3): a danger profile per enemy shot weighted by whom it was aimed at, driving to the safest of 8 points over 30 ticks | the stop rule's "new strand": survival against the top 20 is where Nightmare's +5.6 is, and only a different movement can change it | +2 to +4 | 2 to 3 days in the cloud, team-only, one PC gate |
+| E | Shared radar arcs (Ogi port 5) | fresher scans for the k21 gun on every member | +0.5 to +1.5 | small |
+
+Central estimate: B+C +1.4, D +3, E +0.8, so about +5 on 72, which is level with 5th. **D is
+the step that decides 5th**, so it starts in the cloud now, while the PC runs the combined card.
+Everything stays team-only, with the same isolation proof as before (switches forced on, duel and
+melee replays bit-identical).
+
+**Stop rule.** If D's PC gate is below +1.5, 5th place needs Nightmare's structure (a leader
+giving orders, 120-energy droids), which is a new team, not a movement. Report that before
+building anything more.
