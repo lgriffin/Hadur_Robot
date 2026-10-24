@@ -1,0 +1,31 @@
+# PC card team-c (docs/plan-team-top5.md section 8 step C, the fire lane): arm l0mb, all 46 teams against master 3.16 (the aa build) (Bench @FILE, one argument a line)
+--team
+true
+--seeds
+6
+--seed-base
+3300
+--rounds
+10
+--parallel
+12
+--child-heap
+2G
+--cpu-constant
+1488498
+--set
+team-census46.txt
+--robot-jar
+bisect/hadur2.HadurTeam_3.16l0mb.jar
+--robot
+hadur2.HadurTeam 3.16l0mb
+--member
+hadur2.Hadur
+--out
+work/team-c-l0mb
+--report
+../docs/bench/local/team-c-l0mb.md
+--baseline
+bisect/hadur2.HadurTeam_3.16aa.jar
+--baseline-robot
+hadur2.HadurTeam 3.16aa
