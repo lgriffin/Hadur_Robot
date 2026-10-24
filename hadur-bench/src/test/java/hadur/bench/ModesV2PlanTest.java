@@ -28,24 +28,21 @@ class ModesV2PlanTest {
 
     @Test
     @Tag("BENCH-101")
-    @DisplayName("the screens' arms are the control, its A/A copy and the forced modes, all built by the card on the release")
+    @DisplayName("the screen's arms are the control, its A/A copy and both stop-and-go variants, all built by the card on the release")
     void armsAreBuilt() throws IOException {
         String v = release();
         String queue = Files.readString(QUEUE);
         Path here = Path.of("").toAbsolutePath();
         List<Arms.Arm> poison = Arms.parse(Path.of("plans/modes-poison.arms"), here);
-        List<Arms.Arm> dodge = Arms.parse(Path.of("plans/modes-dodge.arms"), here);
         assertEquals(List.of("c", "aa", "wp", "ws"), poison.stream().map(Arms.Arm::label).toList());
-        assertEquals(List.of("c", "aa", "sg"), dodge.stream().map(Arms.Arm::label).toList());
         for (Arms.Arm a : poison) assertTrue(a.robot().startsWith("hadur2.Hadur " + v), a.robot());
-        for (Arms.Arm a : dodge) assertTrue(a.robot().startsWith("hadur2.Hadur " + v), a.robot());
         assertTrue(queue.contains("cp ../hadur-robot/target/hadur2.Hadur_" + v + ".jar bisect/"));
-        for (String b : new String[] {"aa", "sgo", "sgo2", "sdodge"}) {
+        for (String b : new String[] {"aa", "sgo", "sgo2"}) {
             assertTrue(queue.contains("build-ablation.sh " + b + " "), b);
         }
         assertTrue(queue.contains("--base " + v + " "));
         assertTrue(queue.contains("fetch-opponents.sh --set panel-saguaro-poison.txt")
-            && queue.contains("fetch-opponents.sh --set panel-saguaro-dodge.txt"));
+            && queue.contains("fetch-opponents.sh --set panel-low-normal.txt"));
     }
 
     @Test
@@ -54,7 +51,7 @@ class ModesV2PlanTest {
     void stepsChain() throws IOException {
         String queue = Files.readString(QUEUE);
         assertTrue(queue.contains("set P = --parallel 12 --no-truth-log"));
-        String[] steps = {"prep", "poison", "dodge", "pick", "candidate", "verify", "gate", "pr"};
+        String[] steps = {"prep", "poison", "low", "pick", "candidate", "verify", "gate", "pr"};
         for (int i = 1; i < steps.length; i++) {
             int at = queue.indexOf("\n" + steps[i] + " | ");
             assertTrue(at >= 0, steps[i]);
@@ -69,6 +66,8 @@ class ModesV2PlanTest {
         assertTrue(queue.contains("gate work/modes-v2-verify/arms.tsv --arm t3 --panel work/modes-v2-panel.txt"));
         assertTrue(Files.isRegularFile(Path.of("tools/modes_v2.py")) && Files.isRegularFile(Path.of("tools/test_modes_v2.py")));
         assertTrue(queue.contains("open_results_pr.sh claude/pc-1v1-modes-results"));
+        assertFalse(queue.contains("${OUT}/modes-v2-*.txt"), "an empty list would stop open_results_pr.sh");
+        assertTrue(queue.contains("-name 'modes-v2-*' -size +0c"));
     }
 
     @Test

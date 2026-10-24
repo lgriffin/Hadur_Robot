@@ -28,6 +28,12 @@ public final class ShotDodger {
     public static final double MIN_SHARE = 0.6;
     /** The views' weight left in a dodged danger, so ties between safe options still use them. */
     public static final double VIEW_WEIGHT = 0.05;
+    /**
+     * Added to every dodged danger, so the surf's distancing and escape factors still choose
+     * among the options the bullet misses. Without it the first smokes took twice the ram
+     * damage: a danger of almost 0 makes closing in on the enemy free.
+     */
+    public static final double FLOOR = 0.1;
     /** Margin added each side of a surf option's hit range, radians. */
     public static final double MARGIN = 0.005;
     /** Experts a lag: the angles, the angles with the turn after, and the two divisor aims. */

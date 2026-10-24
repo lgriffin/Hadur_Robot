@@ -706,12 +706,14 @@ public class SurfMover {
         double[] parts = cap == null ? null : new double[2 * moveCtrl.viewCount() + 1];
         double viewScore = moveCtrl.getDangerScore(surfWave, intersection, surfWaveIndex, parts);
         // DODGE-2: against a gun that fires one simple aim, the danger is whether that aim's
-        // bullet crosses us here; the views only break ties between the options it misses.
+        // bullet crosses us here; the views only break ties between the options it misses, and
+        // a floor keeps the distancing and escape terms in play among the safe ones (with a
+        // danger of nearly 0 they scaled nothing, and the surf drove into the enemy).
         ShotDodger dodger = moveCtrl.shotDodger();
         if (dodger != null && intersection != null) {
             double dodged = dodger.danger(surfWave.simpleAims(), intersection.angle, intersection.bandwidth);
             if (!Double.isNaN(dodged)) {
-                viewScore = dodged + ShotDodger.VIEW_WEIGHT * viewScore;
+                viewScore = dodged + ShotDodger.FLOOR + ShotDodger.VIEW_WEIGHT * viewScore;
                 hitRate = 0;
             }
         }
