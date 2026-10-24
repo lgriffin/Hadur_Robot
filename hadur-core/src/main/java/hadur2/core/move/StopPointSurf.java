@@ -51,6 +51,8 @@ public class StopPointSurf {
     static final int SECOND_WAVE_POINTS = 10;
     /** A replan is forced when we are this far from where the plan put us this tick, px. */
     static final double DRIFT = 2.0;
+    /** The distance at which DrussGT's closeness term is 1, px. */
+    static final double CLOSE_REFERENCE = 650.0;
     /** The most ticks any prediction runs (as go-to surfing). */
     private static final int MAX_PREDICTION = 150;
     /** Wall smoothing's reach for the orbit the stop points are taken along, px. */
@@ -303,6 +305,11 @@ public class StopPointSurf {
             - wave.distanceTraveled(myState.time)) / wave.bulletSpeed());
         danger /= Math.sqrt(4 + ticks);
         danger *= distancing(start.location, passed.location, distancingFrom);
+        // DrussGT's closeness term: danger over (distance - 34) where the leg ends, scaled to 1 at
+        // 650 px. The first smokes fought about 30 px closer than the three-option surf (a straight
+        // drive to a point on the orbit cuts inside it) and were hit more often.
+        danger *= closeness(Math.min(passed.location.distance(wave.sourceLocation),
+            passed.location.distance(distancingFrom)));
         List<RobotState> fullPath = new ArrayList<>(earlier.size() + path.size());
         // The earlier leg ends on the state this one starts from: keep one of the two.
         fullPath.addAll(earlier.isEmpty() ? earlier : earlier.subList(0, earlier.size() - 1));
@@ -401,6 +408,11 @@ public class StopPointSurf {
     static double distancing(Point2D.Double start, Point2D.Double end, Point2D.Double from) {
         double q = from.distance(start) / Math.max(1.0, from.distance(end));
         return Math.pow(DISTANCING_DANGER_BASE, q) / DISTANCING_DANGER_BASE;
+    }
+
+    /** DrussGT's closeness term, {@code (650 - 34) / (d - 34)}: 1 at 650 px, larger nearer (d floored at 35 px). */
+    static double closeness(double distance) {
+        return (CLOSE_REFERENCE - 34) / (Math.max(35.0, distance) - 34);
     }
 
     /** As the three-option surf's attack angle: 0.6 times the relative distance error, capped. */

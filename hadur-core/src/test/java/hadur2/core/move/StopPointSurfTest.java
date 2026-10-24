@@ -102,4 +102,13 @@ class StopPointSurfTest {
         dodger.observe(aims, 2.0);
         assertEquals(2.0 / 5.0, StopPointSurf.simpleAimShare(dodger), 1e-12);
     }
+
+    @Test
+    @Tag("MOVE-25")
+    @DisplayName("the closeness term is 1 at 650 px and grows as the leg ends nearer")
+    void closenessTerm() {
+        assertEquals(1.0, StopPointSurf.closeness(650), 1e-12);
+        assertEquals(616.0 / 291.0, StopPointSurf.closeness(325), 1e-12);
+        assertTrue(StopPointSurf.closeness(10) > StopPointSurf.closeness(100));
+    }
 }
