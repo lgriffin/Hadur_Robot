@@ -179,6 +179,9 @@ class TeamModesTest {
         alone.newRound();
         alone.updateBullets(List.of(shot), path(), pt(600, 600), 12, List.of(),
             new TeamDanger(field(1200, 1200)), true, true, true);
+        // TMODE-9, TMODE-10: a teammate's bullet and the leader's rear are kept but never read alone.
+        alone.mateShot("m0", pt(600, 500), 11, 0, 3.0);
+        alone.leader(true);
         MinimumRiskMovement solo = new MinimumRiskMovement(field(1200, 1200));
         solo.newRound();
         solo.updateBullets(List.of(shot), path(), pt(600, 600), 12);
@@ -274,5 +277,75 @@ class TeamModesTest {
         assertEquals(1, apart.size("cz.libors.Ogi 1.0 (2)"));
         d.pool(false);
         assertEquals(1, d.size("cz.libors.Ogi 1.0 (1)"));
+    }
+
+    @Test
+    @Tag("TMODE-8")
+    @DisplayName("TMODE-8: with DISABLED Hadur is drawn to the nearest fresh disabled enemy within 500 px, to 50 px; not to a live or distant one")
+    void disabledPull() {
+        Set<TeamModes.Mode> dis = EnumSet.of(TeamModes.Mode.DISABLED);
+        EnemyTracker t = new EnemyTracker(field(1200, 1200));
+        scan(t, "dead 1.0", 900, 600, 0, 100);
+        scan(t, "live 1.0", 700, 600, 50, 100);
+        MinimumRiskMovement.Pull p = MinimumRiskMovement.pull(pt(600, 600), 100, 3, t.alive(), 100, mates(pt(200, 600)), dis);
+        assertEquals(pt(900, 600), p.at);
+        assertEquals(MinimumRiskMovement.DISABLED_FLOOR, p.floor, 0);
+        assertEquals(MinimumRiskMovement.DISABLED_PULL, p.strength, 0);
+        // Too far, or stale: nothing.
+        assertNull(MinimumRiskMovement.pull(pt(100, 100), 100, 3, t.alive(), 100, mates(pt(200, 600)), dis));
+        assertNull(MinimumRiskMovement.pull(pt(600, 600), 100, 3, t.alive(), 100 + MinimumRiskMovement.CAP_MAX_AGE,
+            mates(pt(200, 600)), dis));
+        // Without the mode, nothing.
+        assertNull(MinimumRiskMovement.pull(pt(600, 600), 100, 3, t.alive(), 100, mates(pt(200, 600)), TeamModes.NONE));
+    }
+
+    @Test
+    @Tag("TMODE-9")
+    @DisplayName("TMODE-9: with MATEFIRE a teammate's bullet in flight adds danger on its line, and is dropped once past")
+    void mateFire() {
+        List<EnemyInfo> far = enemies(pt(100, 1100)).alive();
+        MinimumRiskMovement move = new MinimumRiskMovement(field(1200, 1200));
+        move.newRound();
+        // A teammate at (600, 300) fired north (heading 0) at tick 75 at 11 px a tick: at (600, 575) on tick 100.
+        move.mateShot("m0", pt(600, 300), 75, 0, 3.0);
+        List<Roster.Mate> m = mates(pt(600, 300));
+        MinimumRiskMovement.View plain = move.view(pt(560, 600), 100, 100, 3, far, MeleeStrategy.Plan.normal(), m);
+        MinimumRiskMovement.View fire = move.view(pt(560, 600), 100, 100, 3, far, MeleeStrategy.Plan.normal(), m);
+        fire.mateBullets = move.mateBullets(pt(560, 600), 100);
+        assertEquals(1, fire.mateBullets.size());
+        Point2D.Double onLine = pt(600, 620);
+        assertTrue(move.risk(onLine, fire) > move.risk(onLine, plain));
+        Point2D.Double aside = pt(300, 620);
+        assertEquals(move.risk(aside, plain), move.risk(aside, fire), 1e-9);
+        // Long past Hadur: dropped.
+        assertTrue(move.mateBullets(pt(560, 600), 400).isEmpty());
+    }
+
+    @Test
+    @Tag("TMODE-10")
+    @DisplayName("TMODE-10: with REAR the leader's enemy terms weigh 1.5 times; a member that is not the leader is unchanged")
+    void rearLeader() {
+        List<EnemyInfo> two = enemies(pt(700, 600), pt(600, 800)).alive();
+        List<Roster.Mate> m = mates(pt(200, 600));
+        MinimumRiskMovement move = new MinimumRiskMovement(field(1200, 1200));
+        move.newRound();
+        MinimumRiskMovement.View plain = move.view(pt(600, 600), 100, 100, 3, two, MeleeStrategy.Plan.normal(), m);
+        MinimumRiskMovement.View rear = move.view(pt(600, 600), 100, 100, 3, two, MeleeStrategy.Plan.normal(), m);
+        rear.rear = true;
+        Point2D.Double p = pt(650, 650);
+        double enemies = move.enemyRisk(p, plain, 0) + move.enemyRisk(p, plain, 1);
+        assertEquals(move.risk(p, plain) + (MinimumRiskMovement.REAR_FACTOR - 1) * enemies, move.risk(p, rear), 1e-9);
+        // chooseDestination sets rear only for the leader.
+        MinimumRiskMovement led = new MinimumRiskMovement(field(1200, 1200));
+        led.newRound();
+        led.leader(true);
+        MinimumRiskMovement member = new MinimumRiskMovement(field(1200, 1200));
+        member.newRound();
+        MinimumRiskMovement base = new MinimumRiskMovement(field(1200, 1200));
+        base.newRound();
+        Set<TeamModes.Mode> r = EnumSet.of(TeamModes.Mode.REAR);
+        Point2D.Double a = base.chooseDestination(pt(600, 600), 100, 3, two, 100, MeleeStrategy.Plan.normal(), m);
+        Point2D.Double b = member.chooseDestination(pt(600, 600), 100, 3, two, 100, MeleeStrategy.Plan.normal(), m, r);
+        assertEquals(a, b);
     }
 }

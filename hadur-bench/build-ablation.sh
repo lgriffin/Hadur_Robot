@@ -177,6 +177,10 @@
 #   tmscreen (team only) T7, TMODE-6: SCREEN against every team (teammates count as robots nearer an
 #         enemy in MMOVE-2's closest test, as Ogi). Suffix mx.
 #   tmpool (team only) T7, TMODE-7: POOL against every team (learned aims, one log per enemy class). Suffix mo.
+#   tmdis  (team only) T7, TMODE-8: DISABLED against every team (drawn to a disabled enemy). Suffix md.
+#   tmfire (team only) T7, TMODE-9: MATEFIRE against every team (teammates' bullets as danger). Suffix mb.
+#   tmrear (team only) T7, TMODE-10: REAR against every team (the leader keeps back). Suffix mr.
+#          The three combine: tmdis,tmfire,tmrear is one build (suffix mdmbmr).
 #   tmtab (team only) T7, TMODE-1: the screen's table, the t.put lines in $TEAM_MODE_TABLE (default
 #         work/team-modes-screen.java, written by tools/team_modes.py pick). Suffix mt.
 #   tmlock (team only) the confirmed table, $TEAM_MODE_LOCKED (default work/team-modes-locked.java,
@@ -561,6 +565,18 @@ for a in "${list[@]}"; do
             version="${version}mo"
             edit "$modes" "public static final boolean FORCE_POOL = false;" "public static final boolean FORCE_POOL = true;"
             ;;
+        tmdis)
+            version="${version}md"
+            edit "$modes" "public static final boolean FORCE_DISABLED = false;" "public static final boolean FORCE_DISABLED = true;"
+            ;;
+        tmfire)
+            version="${version}mb"
+            edit "$modes" "public static final boolean FORCE_MATEFIRE = false;" "public static final boolean FORCE_MATEFIRE = true;"
+            ;;
+        tmrear)
+            version="${version}mr"
+            edit "$modes" "public static final boolean FORCE_REAR = false;" "public static final boolean FORCE_REAR = true;"
+            ;;
         tmtab|tmlock)
             if [[ "$a" == tmtab ]]; then table="${TEAM_MODE_TABLE:-$here/work/team-modes-screen.java}"; version="${version}mt"
             else table="${TEAM_MODE_LOCKED:-$here/work/team-modes-locked.java}"; version="${version}mk"; fi
@@ -649,7 +665,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$design" 'public static final ShieldDesign SHIPPED = parse("' \
                 "public static final ShieldDesign SHIPPED = parse(\"$flag,"
             version="${version}${suffix}" ;;
-        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, ramheat, flaton, nowall, flt59, flt8, split, wallesc, gungate, hold650, dfac, bhb, hitclr, pkern, keep2, thgun, freegun, nodecay, stacklist, protean, pdw3, pdw8, pc10, phot, repl, pressure, pdown, pwall, pwc, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tram, t6n, t6l, tmsoft, tmgang, tmfin, tmlearn, tmpack, tmscreen, tmpool, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, snull, strim, slistadd, smovelist, saimlist)" >&2; exit 2 ;;
+        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, ramheat, flaton, nowall, flt59, flt8, split, wallesc, gungate, hold650, dfac, bhb, hitclr, pkern, keep2, thgun, freegun, nodecay, stacklist, protean, pdw3, pdw8, pc10, phot, repl, pressure, pdown, pwall, pwc, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tram, t6n, t6l, tmsoft, tmgang, tmfin, tmlearn, tmpack, tmscreen, tmpool, tmdis, tmfire, tmrear, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, snull, strim, slistadd, smovelist, saimlist)" >&2; exit 2 ;;
     esac
 done
 

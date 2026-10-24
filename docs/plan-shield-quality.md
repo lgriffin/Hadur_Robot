@@ -105,3 +105,6 @@ first pass by segment.
   3.16: screen Saguaro's 300 shield robots x c, aa, sask, sasvsk x 4 seeds; pick at +5; list adds,
   opening drives and aims; candidate t2; verify on the panel with 4 fresh seeds; gate +0.15 APS
   summed over the panel with the lower end above 0; results PR. The whole table's census is M5.
+- The same card then runs team stage S4 (plans/team-s4.steps, TMODE-8 to TMODE-10: five screens,
+  2,760 battles, about 3 h) after the 1v1 results PR, back on master, with its own results PR
+  (Leigh, 2026-10-24: one combined card). About 8 h in all.

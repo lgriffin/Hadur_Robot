@@ -18,6 +18,7 @@
 #   lower end above 0 and the A/A inside its band. Fresh seeds, so the screen's picks that were noise
 #   count at their real (zero or negative) value. The verdict goes in the results PR either way; the
 #   whole table's census against the release is stage M5.
+# Then team stage S4 (about 3 h, below): one combined card, about 8 h in all.
 
 set P = --parallel 12 --no-truth-log
 set HEAP = --child-heap 2G
@@ -49,3 +50,29 @@ gate | python3 ../data/tools/multiarm.py work/shield-s2-verify/arms.tsv --out ${
 
 pr | bash tools/open_results_pr.sh claude/pc-shield-s2-results "Shield part 2: opening drive and shipped aims, screen and verify gate" ${OUT}/*_shield-s2*.md ${OUT}/shield-s2-*.tsv ${OUT}/shield-s2-*.txt
   after: gate
+
+# ---- Team stage S4 (team thread, plans/team-s4.steps, TMODE-8 to TMODE-10): five screens of
+# 46 teams x 6 seeds x 2 = 2,760 battles, about 3 h, after the 1v1 results PR. Their own results
+# PR (claude/pc-team-s4-results); the team thread reads the verdict. t4prep goes back to master
+# first, so that PR does not carry the 1v1 reports from the pr step's branch.
+
+t4prep | git checkout -q master && bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && bash ./build-ablation.sh tmdis && bash ./build-ablation.sh tmfire && bash ./build-ablation.sh tmrear && bash ./build-ablation.sh tmdis,tmfire,tmrear && ./fetch-opponents.sh --set team-census46.txt && mvn -q compile
+  after: pr
+
+t4bb  | mvn -q exec:java "-Dexec.args=@plans/team-s4-bb.args"
+  after: t4prep
+
+t4md  | mvn -q exec:java "-Dexec.args=@plans/team-s4-md.args"
+  after: t4bb
+
+t4mb  | mvn -q exec:java "-Dexec.args=@plans/team-s4-mb.args"
+  after: t4md
+
+t4mr  | mvn -q exec:java "-Dexec.args=@plans/team-s4-mr.args"
+  after: t4mb
+
+t4all | mvn -q exec:java "-Dexec.args=@plans/team-s4-mdmbmr.args"
+  after: t4mr
+
+t4pr  | bash tools/open_results_pr.sh claude/pc-team-s4-results "Team stage S4: DISABLED, MATEFIRE and REAR screens" $(ls ${OUT}/team-s4-*.md 2>/dev/null)
+  after: t4all

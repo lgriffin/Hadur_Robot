@@ -168,6 +168,14 @@ final class MeleeSeam implements Role {
         }
     }
 
+    /** TMODE-9: the teammates' bullets, for the movement to keep clear of when MATEFIRE is on. */
+    void mateShots(List<TeamLink.MateShot> shots) {
+        for (TeamLink.MateShot m : shots) {
+            guard(() -> melee.mateShot(m.mate, new Point2D.Double(m.shot.x, m.shot.y),
+                m.shot.tick, m.shot.heading, m.shot.power));
+        }
+    }
+
     /** MMOVE-10: our own samples since the last report, for this tick's report. */
     List<Report.Dodge> takeDodges() {
         List<TeamDanger.Sample> own = melee.takeSamples();

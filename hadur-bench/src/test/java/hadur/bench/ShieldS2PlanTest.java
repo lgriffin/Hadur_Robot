@@ -74,4 +74,23 @@ class ShieldS2PlanTest {
         assertTrue(Files.isRegularFile(Path.of("tools/shield_s2.py")) && Files.isRegularFile(Path.of("tools/test_shield_s2.py")));
         assertTrue(queue.contains("open_results_pr.sh claude/pc-shield-s2-results"), "opens a results PR");
     }
+
+    @Test
+    @Tag("BENCH-100")
+    @DisplayName("the team stage S4 steps run after the 1v1 results PR, from master, each after the one before, and end in their own results PR")
+    void teamStepsFollow() throws IOException {
+        String queue = Files.readString(QUEUE);
+        String[] steps = {"pr", "t4prep", "t4bb", "t4md", "t4mb", "t4mr", "t4all", "t4pr"};
+        for (int i = 1; i < steps.length; i++) {
+            Matcher m = Pattern.compile("\n" + steps[i] + " +\\| [^\n]*\n  after: (\\S+)").matcher(queue);
+            assertTrue(m.find(), steps[i]);
+            assertEquals(steps[i - 1], m.group(1), steps[i] + " after " + steps[i - 1]);
+        }
+        assertTrue(queue.contains("\nt4prep | git checkout -q master && "), "back on master before the team builds");
+        for (String a : new String[] {"bb", "md", "mb", "mr", "mdmbmr"}) {
+            assertTrue(queue.contains("@plans/team-s4-" + a + ".args"), a);
+            assertTrue(Files.isRegularFile(Path.of("plans/team-s4-" + a + ".args")), a);
+        }
+        assertTrue(queue.contains("open_results_pr.sh claude/pc-team-s4-results"), "the team screens open their own results PR");
+    }
 }
