@@ -123,17 +123,25 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code><a href="#FINISH" class="member-name-link">FINISH</a></code></div>
+<div class="col-first even-row-color"><code><a href="#DISABLED" class="member-name-link">DISABLED</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">TMODE-8: a member is drawn to a disabled enemy nearby, to finish it (CombatTeam).</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#FINISH" class="member-name-link">FINISH</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">TMODE-4: against the last enemy, with energy to spare, close in.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#GANG" class="member-name-link">GANG</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#GANG" class="member-name-link">GANG</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">TMODE-3: a member near two or more enemies is drawn to a teammate; a free one to a ganged teammate.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#LEARN" class="member-name-link">LEARN</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#LEARN" class="member-name-link">LEARN</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">MMOVE-10 as a mode: dodge the team's learned aims.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#MATEFIRE" class="member-name-link">MATEFIRE</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">TMODE-9: the teammates' bullets in flight count as danger, as an enemy's do (CombatTeam).</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#PACK" class="member-name-link">PACK</a></code></div>
 <div class="col-last odd-row-color">
@@ -143,12 +151,16 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color">
 <div class="block">TMODE-7: MMOVE-10's learned aims from one log per enemy class, fed by all its copies.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#SCREEN" class="member-name-link">SCREEN</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#REAR" class="member-name-link">REAR</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">TMODE-10: the leader, whose death costs every teammate energy, keeps further from enemies.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#SCREEN" class="member-name-link">SCREEN</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">TMODE-6: teammates count with enemies as robots nearer an enemy than Hadur would be.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#SOFT" class="member-name-link">SOFT</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#SOFT" class="member-name-link">SOFT</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">TMODE-2: a shot's virtual bullets weigh less for each teammate nearer its shooter.</div>
 </div>
 </div>
@@ -243,6 +255,27 @@ the order they are declared.</div>
 <h3>POOL</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="TeamModes.Mode.html" title="enum class in hadur2.core.melee">TeamModes.Mode</a></span>&nbsp;<span class="element-name">POOL</span></div>
 <div class="block">TMODE-7: MMOVE-10's learned aims from one log per enemy class, fed by all its copies.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="DISABLED">
+<h3>DISABLED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="TeamModes.Mode.html" title="enum class in hadur2.core.melee">TeamModes.Mode</a></span>&nbsp;<span class="element-name">DISABLED</span></div>
+<div class="block">TMODE-8: a member is drawn to a disabled enemy nearby, to finish it (CombatTeam).</div>
+</section>
+</li>
+<li>
+<section class="detail" id="MATEFIRE">
+<h3>MATEFIRE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="TeamModes.Mode.html" title="enum class in hadur2.core.melee">TeamModes.Mode</a></span>&nbsp;<span class="element-name">MATEFIRE</span></div>
+<div class="block">TMODE-9: the teammates' bullets in flight count as danger, as an enemy's do (CombatTeam).</div>
+</section>
+</li>
+<li>
+<section class="detail" id="REAR">
+<h3>REAR</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="TeamModes.Mode.html" title="enum class in hadur2.core.melee">TeamModes.Mode</a></span>&nbsp;<span class="element-name">REAR</span></div>
+<div class="block">TMODE-10: the leader, whose death costs every teammate energy, keeps further from enemies.</div>
 </section>
 </li>
 </ul>
