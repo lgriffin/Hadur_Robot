@@ -85,39 +85,38 @@ Item 1 is the next stage: the same planner with simple-aim experts (the census t
 seventh), 35 rounds x 3 seeds, each candidate paired against an A/A copy of its base, 4-core cloud,
 parallel 3. Score share is the mean paired difference over the 60 pairs, in points of share.
 
-| Build | Score share (pp) | Damage a round, dealt / taken | Their hit rate | Fighting distance | Skipped turns a battle |
-|---|---|---|---|---|---|
-| v1 (3.15 base), no closeness term | +0.0 +/- 1.4 | 46.5 / 25.3 against 43.2 / 24.8 | 8.3% against 7.2% | 416 against 457 px | 9.7 against 6.4 |
-| v2 (3.16 base), DrussGT's closeness term | **+1.4 +/- 1.3** | 41.5 / 22.2 against 39.3 / 22.5 | 6.9% against 6.5% | 422 against 451 px | 9.1 against 6.7 |
-| v2 + MOVE-26 simple-aim mix | -0.7 +/- 1.4 | 41.7 / 23.7 against 39.6 / 22.4 | 7.4% against 6.4% | 418 against 446 px | 9.3 against 6.0 |
+**Correction (2026-10-24 23:10 UTC).** The edit adding DrussGT's closeness term never landed
+before smokes 2 and 3 (a review on PR #259 caught it), so smokes 1-3 all ran the same planner,
+without the term:
 
-What it says:
+| Smoke | Build | Score share (pp) | Damage a round, dealt / taken | Their hit rate | Fighting distance | Skipped turns a battle |
+|---|---|---|---|---|---|---|
+| 1 | planner, 3.15 base | +0.0 +/- 1.4 | 46.5 / 25.3 against 43.2 / 24.8 | 8.3% against 7.2% | 416 against 457 px | 9.7 against 6.4 |
+| 2 | the same planner, 3.16 base | +1.4 +/- 1.3 | 41.5 / 22.2 against 39.3 / 22.5 | 6.9% against 6.5% | 422 against 451 px | 9.1 against 6.7 |
+| 3 | the same + MOVE-26 simple-aim mix | -0.7 +/- 1.4 | 41.7 / 23.7 against 39.6 / 22.4 | 7.4% against 6.4% | 418 against 446 px | 9.3 against 6.0 |
+| 4 | + closeness term, replans on shadow and visit changes | pending | | | | |
+
+What smokes 1-3 say:
 
 - **It plays.** No faults; the plan commitment makes it cheaper than the three-option surf on
-  average (slow ticks fell from 15,500 to 800 over the run) but its replans spike, so skipped turns
+  average (slow ticks fell from 15,500 to 800 in smoke 1) but its replans spike, so skipped turns
   rise by about 3 a battle.
-- **v2 is the only positive reading, at the edge of its interval**, and it is not the defence
-  fix the study hoped for: damage taken is level (22.2 against 22.5 a round). The share comes from
-  dealing more (41.5 against 39.3), because the stop-point surf still fights about 30 px closer,
-  where both guns hit more.
-- **The simple-aim mix costs**: against learning guns a spurious match leaks into the danger. It
-  stays off and is not proposed for the PC.
+- **The planner alone is level.** Two readings of the same build, +0.0 and +1.4, pool to about
+  +0.7 +/- 1.0 points; damage taken is level or slightly worse. It fights about 30 px closer, where
+  both guns hit more, which is what the closeness term (smoke 4) is meant to correct.
+- **The simple-aim mix does not help** against learning guns (a spurious match leaks into the
+  danger). It stays off.
 - 20 robots at 3 seeds cannot price a field-wide change: the midrange lesson is that a +0.6 point
   class gain was +0.07 APS on the census. Only the census decides.
 
 ## Honest expectation and the PC proposal
 
-If v2's +1.4 points held on the ~900 robots not shielded, that would be about +1.0 APS; the class
-screens so far have kept about a tenth of their gain on the census, which puts the central guess
-at **+0.1 to +0.3 APS, range -0.2 to +1.0**. That is not top 5 on its own. Its value is that it is
-the first planner that can use a better enemy-gun model with many options without overfitting, so
-the information stage (BeepBoop's accuracy-weighted ensemble of simulated and mimic guns) has a
-planner to feed.
-
-PC card proposal for the census thread (`hadur-bench/plans/pc-surf-b.queue`, arms
-`plans/surf-b.arms`): census-312 x {3.16, 3.16aa, 3.16sb} x 2 seeds, about 7,300 battles,
-3.5-4 h; read with `multiarm.py`; keep sb as a master entry at +0.3 APS with the lower end above
-0 and the A/A in band. No release from it alone (release rule: census must project top 5).
+On smokes 1-3 the planner alone is worth about **0 +/- 0.3 APS** on the field. The PC census card
+(`hadur-bench/plans/pc-surf-b.queue`, arms `plans/surf-b.arms`: census-312 x {3.16, 3.16aa,
+3.16sb} x 2 seeds, about 7,300 battles, 3.5-4 h, keep at +0.3 APS with the lower end above 0) is
+proposed only if smoke 4 reads clearly positive, and only on Leigh's go. Its value even when level
+is that it is the first planner that can use a better enemy-gun model with many options without
+overfitting, so the information stage has a planner to feed.
 
 Next in the cloud, whatever the census says: the ensemble (stage 2 proper), as BeepBoop builds it:
 each view and each simulated simple gun as its own histogram, weighted per enemy by its rolling

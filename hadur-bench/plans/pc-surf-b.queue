@@ -8,9 +8,10 @@
 # no step needs a decision.
 #
 # Cloud smokes (2026-10-24, 20 mid-field learning-gun robots from flat-gf-mid.txt x 3 seeds, paired
-# against an A/A build): v1 +0.0 +/- 1.4 pp; v2 (this one, with DrussGT's closeness term)
-# +1.4 +/- 1.3 pp; v2 with the simple-aim mix (MOVE-26) -0.7 +/- 1.4 pp, so the mix is not
-# screened. Damage taken barely moved (22.2 against 22.5 a round); the gain came from dealing more.
+# against an A/A build): the planner without the closeness term read +0.0 and +1.4 +/- 1.3 pp (the
+# same build twice), and -0.7 with the simple-aim mix (MOVE-26, not screened). This build adds
+# DrussGT's closeness term and replans on shadow and visit changes; see
+# docs/bench/surf-b-rivals-read.md for its smoke. Proposed only if that smoke is clearly positive.
 #
 # census (about 3.5-4 h): census-312 x c, aa, sb x 2 seeds = ~7,300 battles.
 # gate: sb minus pooled c and aa, census-weighted: KEEP at +0.3 APS with the lower end above 0 and
