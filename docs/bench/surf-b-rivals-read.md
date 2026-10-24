@@ -113,7 +113,9 @@ What smokes 1-4 say:
 ## Honest expectation and the PC proposal
 
 **Smoke 4 read level (+0.5 +/- 1.8 pp, damage taken 23.4 against 23.5), so the card is not
-proposed.** On smokes 1-4 the planner alone is worth about **0 +/- 0.3 APS** on the field: a better
+proposed.** On smokes 1, 2 and 4 (the stop-point planner, without and then with the closeness term; smoke 3's
+aim mix is a separate, rejected change) the planner reads level, which we take to mean about
+**0 +/- 0.3 APS** on the field, a guess the census would have to confirm: a better
 planner over the same danger information does not cut damage taken, which agrees with the AES
 verdict that the gap is information, not choice. The PC census card
 (`hadur-bench/plans/pc-surf-b.queue`, arms `plans/surf-b.arms`: census-312 x {3.16, 3.16aa,
