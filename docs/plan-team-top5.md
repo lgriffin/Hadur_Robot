@@ -249,8 +249,10 @@ giving orders, 120-energy droids), which is a new team, not a movement. Report t
 building anything more.
 
 **Step B result (cloud, 2026-10-24).** AlephTeam and HadurTeam 3.16 were each benched as the
-subject against the 25 lower teams (2 seeds), then Hadur again on the five worst of them, with
-every enemy bullet that hit a member classified by aim (head-on, linear, other).
+subject against the 25 lower teams of hadur-bench/team-lower25.txt (ranks 21-46 without the
+engine's sampleteam.MyFirstTeam; seeds 3000-3001, 10 rounds), then Hadur again on the five worst
+of them, with every enemy bullet that hit a member classified by aim (head-on, linear, other)
+from the bench's bullets.log. The tlane0 smoke used seeds 3100-3101.
 
 - Aleph's lower-half edge is four teams: TeamDeath +20, GrofGroup +17.5, DiamondStealers +12.5 and
   ImpactTeam +12 share points. The other 21 are within ±2.
