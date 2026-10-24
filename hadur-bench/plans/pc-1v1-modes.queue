@@ -43,6 +43,8 @@ poison | ./bench-top20.sh ${C} ${P} --set panel-saguaro-poison.txt --seeds 3 --s
 low | ./bench-top20.sh ${C} ${P} --set panel-low-normal.txt --seeds 2 --seed-base 2600 --arms plans/modes-poison.arms --out work/modes-low --label modes-low
   after: poison
 
+# The dodge list is left empty: the candidate reads it; the results PR step passes only non-empty
+# lists, since open_results_pr.sh refuses an empty file.
 pick | python3 ../data/tools/multiarm.py work/modes-poison/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_modes-poison-screen.md && python3 ../data/tools/multiarm.py work/modes-low/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_modes-low-screen.md && python3 ../data/tools/mode_table.py work/modes-poison/arms.tsv work/modes-low/arms.tsv --margin 5 --out-tsv ${OUT}/modes-v2-poison-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_modes-v2-poison-pick.md && ${M} split ${OUT}/modes-v2-poison-pick.tsv --stopgo ${OUT}/modes-v2-stopgo.txt --stopgo2 ${OUT}/modes-v2-stopgo2.txt && : > ${OUT}/modes-v2-dodge.txt
   after: low
 
@@ -55,7 +57,7 @@ verify | ./bench-top20.sh ${C} ${P} --set work/modes-v2-panel.txt --seeds 3 --se
 gate | python3 ../data/tools/multiarm.py work/modes-v2-verify/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_modes-v2-verify.md && python3 tools/shield_s2.py gate work/modes-v2-verify/arms.tsv --arm t3 --panel work/modes-v2-panel.txt --out ${OUT}/$(date +%Y-%m-%d)_modes-v2-gate.md
   after: verify
 
-pr | bash tools/open_results_pr.sh claude/pc-1v1-modes-results "1v1 mode table v2: stop-and-go per opponent, screen and verify gate" ${OUT}/*_modes-*.md ${OUT}/modes-v2-*.tsv ${OUT}/modes-v2-*.txt
+pr | bash tools/open_results_pr.sh claude/pc-1v1-modes-results "1v1 mode table v2: stop-and-go per opponent, screen and verify gate" ${OUT}/*_modes-*.md $(find ${OUT} -maxdepth 1 -name 'modes-v2-*' -size +0c)
   after: gate
 
 # ---- Team step C (team thread, plans/team-c.steps, docs/plan-team-top5.md section 8): the fire

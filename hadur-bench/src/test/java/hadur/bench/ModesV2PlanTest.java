@@ -66,6 +66,8 @@ class ModesV2PlanTest {
         assertTrue(queue.contains("gate work/modes-v2-verify/arms.tsv --arm t3 --panel work/modes-v2-panel.txt"));
         assertTrue(Files.isRegularFile(Path.of("tools/modes_v2.py")) && Files.isRegularFile(Path.of("tools/test_modes_v2.py")));
         assertTrue(queue.contains("open_results_pr.sh claude/pc-1v1-modes-results"));
+        assertFalse(queue.contains("${OUT}/modes-v2-*.txt"), "an empty list would stop open_results_pr.sh");
+        assertTrue(queue.contains("-name 'modes-v2-*' -size +0c"));
     }
 
     @Test
