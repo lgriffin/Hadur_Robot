@@ -21,7 +21,7 @@ class ShotDodgerTest {
 
     /** Our state at (400, 100) heading east at {@code v}, turning {@code turn}; the enemy at (400, 500). */
     private static double[] state(double v, double turn, double average) {
-        return new double[] {400, 100, Math.PI / 2, v, turn, average, 400, 500};
+        return new double[] {400, 100, Math.PI / 2, v, turn, average, 400, 500, 0};
     }
 
     @Test
@@ -44,7 +44,7 @@ class ShotDodgerTest {
     @Tag("DODGE-1")
     @DisplayName("a predicted path stops at the wall")
     void wall() {
-        double[] s = {780, 100, Math.PI / 2, 8, 0, 8, 400, 500};
+        double[] s = {780, 100, Math.PI / 2, 8, 0, 8, 400, 500, 0};
         double a = SimpleAims.angles(new double[][] {s}, 11, W, H)[SimpleAims.LINEAR];
         assertEquals(Math.atan2(782 - 400, 100 - 500), a, 1e-9, "stops at x = 782");
     }
@@ -96,6 +96,48 @@ class ShotDodgerTest {
         d.reset();
         assertEquals(0, d.read());
         assertFalse(d.active());
+    }
+
+    @Test
+    @Tag("DODGE-1")
+    @DisplayName("the one-line linear aims: bearing plus lateral velocity over bullet speed, and its arcsine")
+    void oneLine() {
+        double[] a = SimpleAims.angles(new double[][] {state(8, 0, 8)}, 14, W, H);
+        // East at 8 seen from the north: lateral -8, so the aim swings west of due south... east on the map.
+        assertEquals(-8, a[SimpleAims.LATERAL], 1e-12);
+        assertEquals(Math.PI - 8.0 / 14, a[SimpleAims.SIMPLE_LINEAR], 1e-12);
+        assertEquals(Math.PI - Math.asin(8.0 / 14), a[SimpleAims.ASIN_LINEAR], 1e-12);
+        assertTrue(Double.isNaN(a[SimpleAims.TURN_AFTER]), "no tick after the wave's");
+        double[] turned = state(8, 0, 8);
+        turned[8] = 0.1;
+        double[] b = SimpleAims.angles(new double[][] {turned, state(8, 0, 8)}, 14, W, H);
+        assertEquals(0.1, b[SimpleAims.TYPES + SimpleAims.TURN_AFTER], 1e-12, "the enemy turned 0.1 after lag 1");
+    }
+
+    @Test
+    @Tag("DODGE-2")
+    @DisplayName("a linear gun with its own divisor is learned; a gun that turns with its body is matched")
+    void divisorAndTurn() {
+        ShotDodger d = new ShotDodger();
+        // A nano gun: bearing plus lateral velocity over 13, for three different lateral speeds.
+        for (double v : new double[] {8, 5, -6, 7}) {
+            double[] aims = SimpleAims.angles(new double[][] {state(v, 0, v)}, 14, W, H);
+            d.observe(aims, Math.PI - v / 13);
+        }
+        assertTrue(d.active());
+        assertEquals(ShotDodger.DIVISOR, d.best(), "the divisor aim, lag 0");
+        assertEquals(3, d.matches(ShotDodger.DIVISOR), "learned from the first bullet, matched from the second");
+        double[] aims = SimpleAims.angles(new double[][] {state(4, 0, 4)}, 14, W, H);
+        assertEquals(Math.PI - 4.0 / 13, d.expert(aims, ShotDodger.DIVISOR), 1e-9);
+
+        ShotDodger t = new ShotDodger();
+        double[] now = state(8, 0, 8);
+        now[8] = 0.05;
+        double[] before = state(8, 0, 8);
+        double[] turned = SimpleAims.angles(new double[][] {now, before}, 14, W, H);
+        for (int i = 0; i < 3; i++) t.observe(turned, turned[SimpleAims.TYPES + SimpleAims.HEAD_ON] + 0.05);
+        assertEquals(ShotDodger.PER_LAG + ShotDodger.TURNED + SimpleAims.HEAD_ON, t.best(),
+            "head-on at lag 1, turned with the body");
     }
 
     @Test

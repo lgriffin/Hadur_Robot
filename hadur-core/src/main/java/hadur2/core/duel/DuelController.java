@@ -674,7 +674,7 @@ public final class DuelController {
             .setSourceEnergy(e.energy());
         moveWave.setWallDistances();
         // DODGE-1: what the simple aims read, only while the dodge is on.
-        if (moveController.shotDodger() != null) moveWave.aimStates = aimStates(time, myPos, myHead, myVel, enemyPos);
+        if (moveController.shotDodger() != null) moveWave.aimStates = aimStates(time, myPos, myHead, myVel, enemyPos, enemyHead);
         moveController.addWave(moveWave);
 
         // WAVE-1, WAVE-2: only the part of the drop the ledger can't explain is a shot.
@@ -820,7 +820,7 @@ public final class DuelController {
      * before it that the simple aims read (null for a tick with no scan).
      */
     private double[][] aimStates(long time, Point2D.Double myPos, double myHead, double myVel,
-                                 Point2D.Double enemyPos) {
+                                 Point2D.Double enemyPos, double enemyHead) {
         int slot = (int) (time % SimpleAims.LAGS);
         int prev = (int) ((time - 1) % SimpleAims.LAGS);
         double turn = aimRingTime[prev] == time - 1
@@ -830,7 +830,8 @@ public final class DuelController {
         int n = Math.min(aimVelocityCount, AIM_AVERAGE_TICKS);
         double sum = 0;
         for (int i = 0; i < n; i++) sum += aimVelocities[i];
-        aimRing[slot] = new double[] {myPos.x, myPos.y, myHead, myVel, turn, sum / n, enemyPos.x, enemyPos.y};
+        aimRing[slot] = new double[] {myPos.x, myPos.y, myHead, myVel, turn, sum / n, enemyPos.x, enemyPos.y,
+            enemyHead};
         aimRingTime[slot] = time;
         double[][] states = new double[SimpleAims.LAGS][];
         for (int lag = 0; lag < SimpleAims.LAGS; lag++) {
