@@ -129,6 +129,13 @@ final class MoveDesign {
      */
     static final boolean AIM_MIX = false;
 
+    /**
+     * MOVE-27: with {@link #STOP_POINT_SURF}, the stop-point surf rates waves on the enemy-gun
+     * ensemble (GunMimics): the views blended with visit-trained mimics of common learning guns,
+     * each weighted by how well it predicted the real bullets, cubed.
+     */
+    static final boolean MIMICS = false;
+
     private MoveDesign() { }
 
     /**

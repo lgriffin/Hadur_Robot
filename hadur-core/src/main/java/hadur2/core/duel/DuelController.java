@@ -15,6 +15,7 @@ import hadur2.core.memory.ProfileLibrary;
 import hadur2.core.memory.Tiers;
 import hadur2.core.model.*;
 import hadur2.core.move.GunClassifier;
+import hadur2.core.move.GunMimics;
 import hadur2.core.move.StopAndGo;
 import hadur2.core.physics.ShotDodger;
 import hadur2.core.move.HitForensics;
@@ -315,6 +316,8 @@ public final class DuelController {
         moveController.setFlattenerOff(duelOnly(MoveDesign.FLATTENER_OFF, enemiesTotal));
         this.moveController.setReplicator(MoveDesign.REPLICATOR);
         this.moveController.setPointKernel(duelOnly(MoveDesign.POINT_KERNEL, enemiesTotal));
+        this.moveController.setGunMimics(duelOnly(MoveDesign.STOP_POINT_SURF && MoveDesign.MIMICS,
+            enemiesTotal) ? new GunMimics() : null);
         this.surfMover = new SurfMover(battleField, predictor);
         this.surfMover.setEscapeRoomTerm(MoveDesign.ESCAPE_ROOM);
         this.surfMover.setDistancingToEnemy(duelOnly(MoveDesign.DISTANCING_TO_ENEMY, enemiesTotal));

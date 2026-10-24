@@ -330,7 +330,7 @@ public class StopPointSurf {
      */
     double mass(MoveController moveCtrl, Wave wave, int waveIndex, Wave.Intersection x) {
         double[] profile = profiles.computeIfAbsent(wave,
-            w -> smooth(moveCtrl.dangerProfile(w, waveIndex, BINS)));
+            w -> smooth(moveCtrl.surfProfile(w, waveIndex, BINS)));
         double total = 0;
         for (double[] seg : wave.transmission(x)) {
             if (seg[2] <= 0) continue;

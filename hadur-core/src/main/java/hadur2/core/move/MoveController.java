@@ -178,6 +178,19 @@ public class MoveController {
         return shotDodger;
     }
 
+    /** MOVE-27: the enemy-gun ensemble the stop-point surf blends, or null when it is off. */
+    private GunMimics gunMimics;
+
+    /** MOVE-27: sets the ensemble (duel only); null turns it off. */
+    public void setGunMimics(GunMimics mimics) {
+        this.gunMimics = mimics;
+    }
+
+    /** MOVE-27: the ensemble, or null. */
+    public GunMimics gunMimics() {
+        return gunMimics;
+    }
+
     /** MOVE-16: each view's multiplier, in the order the views were built; all 1 until learned. */
     double[] replicatorMultipliers() {
         return replicatorWeights.multipliers();
@@ -790,6 +803,11 @@ public class MoveController {
         if (intersection == null) return;
 
         int currentRound = w.fireRound;
+        if (gunMimics != null) {
+            // MOVE-27: a learning gun learns every visit; so do its mimics.
+            gunMimics.learnVisit(w, w.guessFactor(intersection.angle));
+            viewRevision++;
+        }
         for (KnnView<TimestampedGuessFactor> view : views) {
             if (!view.logVisits) continue;
             // MOVE-25: a visit learned is a change of the views too.
@@ -842,6 +860,8 @@ public class MoveController {
         viewRevision++;
         // MOVE-16: rate the hit before any view learns it, so each view is judged on a prediction.
         if (replicator) updateReplicator(hitWave, hitGF);
+        // MOVE-27: score the ensemble's models on this bullet before anything learns it.
+        if (gunMimics != null) scoreMimics(hitWave, hitGF);
         for (KnnView<TimestampedGuessFactor> view : views) {
             if (!view.logBulletHits) continue;
             view.logWave(hitWave, new TimestampedGuessFactor(
@@ -1350,6 +1370,32 @@ public class MoveController {
         }
         for (int i = 0; i < bins; i++) out[i] /= total;
         return out;
+    }
+
+    /**
+     * MOVE-27: the profile the stop-point surf rates {@code w} on: the views' {@link #dangerProfile},
+     * blended with the enemy-gun ensemble's models when it is on.
+     */
+    public double[] surfProfile(Wave w, int surfWaveIndex, int bins) {
+        double[] views = dangerProfile(w, surfWaveIndex, bins);
+        return gunMimics == null ? views : gunMimics.blend(w, views);
+    }
+
+    /** MOVE-27: the bins the ensemble scores the views' profile in; the stop-point surf's. */
+    static final int MIMIC_SCORE_BINS = StopPointSurf.BINS;
+
+    /**
+     * MOVE-27: scores the ensemble's models on a bullet fired at {@code hitGf}, the views on
+     * their profile of the wave. It uses the HF cache slot and empties it after, as
+     * {@link #updateReplicator} does, so the surf's cached neighbours are untouched.
+     */
+    private void scoreMimics(Wave w, double hitGf) {
+        try {
+            gunMimics.scoreBullet(w, hitGf, dangerProfile(w, FORENSICS_CACHE, MIMIC_SCORE_BINS));
+        } finally {
+            for (KnnView<TimestampedGuessFactor> view : views) view.cachedNeighbors.remove(FORENSICS_CACHE);
+            cacheOwners.remove(FORENSICS_CACHE);
+        }
     }
 
     /** MOVE-25: the bin of {@code gf} among {@code bins} equal bins over [-1, 1], clamped. */
