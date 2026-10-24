@@ -70,4 +70,22 @@ class ModesV2PlanTest {
         assertTrue(Files.isRegularFile(Path.of("tools/modes_v2.py")) && Files.isRegularFile(Path.of("tools/test_modes_v2.py")));
         assertTrue(queue.contains("open_results_pr.sh claude/pc-1v1-modes-results"));
     }
+
+    @Test
+    @Tag("BENCH-101")
+    @DisplayName("team step C runs after the 1v1 results PR, from master, each step after the one before, and ends in its own results PR")
+    void teamStepsFollow() throws IOException {
+        String queue = Files.readString(QUEUE);
+        String[] steps = {"pr", "tcprep", "tcbb", "tcl0", "tcl4", "tcl0mb", "tcpr"};
+        for (int i = 1; i < steps.length; i++) {
+            int at = queue.indexOf("\n" + steps[i] + " ");
+            assertTrue(at >= 0, steps[i]);
+            int next = queue.indexOf("\n\n", at + 1);
+            assertTrue(queue.substring(at, next < 0 ? queue.length() : next).contains("after: " + steps[i - 1]),
+                steps[i] + " after " + steps[i - 1]);
+        }
+        assertTrue(queue.contains("tcprep | git checkout -q master && "), "back on master before the team builds");
+        assertTrue(queue.contains("open_results_pr.sh claude/pc-team-c-results"));
+        assertTrue(queue.contains("set OUT = ../docs/bench/local"));
+    }
 }
