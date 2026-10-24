@@ -1,0 +1,35 @@
+# Core surf rebuild (docs/bench/surf-b-rivals-read.md): the stop-point surf (MOVE-25) against 3.16
+# across the whole field. A proposal for the census thread to fold into a combined card; nothing
+# here starts on its own.
+#   ./queue.sh run pc-surf-b        (or  .\queue.ps1 run pc-surf-b)
+# Run it from master:
+#   git checkout master && git pull
+# One bench queue, RoboRumble workers at 0, unpinned, 12 workers, truth log off. Every step resumes;
+# no step needs a decision.
+#
+# Cloud smokes (2026-10-24, 20 mid-field learning-gun robots from flat-gf-mid.txt x 3 seeds, paired
+# against an A/A build): v1 +0.0 +/- 1.4 pp; v2 (this one, with DrussGT's closeness term)
+# +1.4 +/- 1.3 pp; v2 with the simple-aim mix (MOVE-26) -0.7 +/- 1.4 pp, so the mix is not
+# screened. Damage taken barely moved (22.2 against 22.5 a round); the gain came from dealing more.
+#
+# census (about 3.5-4 h): census-312 x c, aa, sb x 2 seeds = ~7,300 battles.
+# gate: sb minus pooled c and aa, census-weighted: KEEP at +0.3 APS with the lower end above 0 and
+#   the A/A inside its band; then sb is a census-gated table entry on master (Leigh's release rule).
+
+set P = --parallel 12 --no-truth-log
+set HEAP = --child-heap 2G
+set E = --engine 1.11.1
+set C = --skip-build --skip-fetch --rounds 35 --cpu-constant 1488498 ${HEAP} ${E}
+set READ = --census census-312.txt --segments plans/top5-segments.tsv
+set OUT = ../docs/bench/local
+
+prep | mkdir -p bisect && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur2.Hadur_3.16.jar bisect/ && bash ./build-ablation.sh aa && bash ./build-ablation.sh surfb && ./fetch-opponents.sh --set census-312.txt && mvn -q compile
+
+census | ./bench-top20.sh ${C} ${P} --set census-312.txt --seeds 2 --seed-base 2900 --arms plans/surf-b.arms --out work/surf-b-census --label surf-b-census
+  after: prep
+
+read | python3 ../data/tools/multiarm.py work/surf-b-census/arms.tsv ${READ} --out ${OUT}/$(date +%Y-%m-%d)_surf-b-census.md
+  after: census
+
+pr | bash tools/open_results_pr.sh claude/pc-surf-b-results "Core surf rebuild: stop-point surf census" ${OUT}/*_surf-b-census.md
+  after: read

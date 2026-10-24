@@ -1,0 +1,4 @@
+# Core surf rebuild census (pc-surf-b): c is 3.16, aa its A/A copy, sb the stop-point surf (MOVE-25).
+c | hadur2.Hadur 3.16 | bisect/hadur2.Hadur_3.16.jar
+aa | hadur2.Hadur 3.16aa | bisect/hadur2.Hadur_3.16aa.jar
+sb | hadur2.Hadur 3.16sb | bisect/hadur2.Hadur_3.16sb.jar

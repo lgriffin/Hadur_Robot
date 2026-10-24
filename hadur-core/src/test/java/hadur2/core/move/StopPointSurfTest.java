@@ -85,4 +85,21 @@ class StopPointSurfTest {
         assertEquals(1.0, StopPointSurf.distancing(new Point2D.Double(300, 0), new Point2D.Double(0, 300), from), 1e-9);
         assertTrue(StopPointSurf.distancing(new Point2D.Double(300, 0), new Point2D.Double(150, 0), from) > 1);
     }
+
+    @Test
+    @Tag("MOVE-26")
+    @DisplayName("the simple aim's share is its matches over the bullets read plus two, 0 below two matches")
+    void simpleAimShare() {
+        hadur2.core.physics.ShotDodger dodger = new hadur2.core.physics.ShotDodger();
+        assertEquals(0.0, StopPointSurf.simpleAimShare(dodger), 0.0);
+        double[] aims = new double[hadur2.core.physics.SimpleAims.COUNT];
+        java.util.Arrays.fill(aims, Double.NaN);
+        aims[hadur2.core.physics.SimpleAims.HEAD_ON] = 1.0;
+        dodger.observe(aims, 1.0);
+        assertEquals(0.0, StopPointSurf.simpleAimShare(dodger), 0.0);
+        dodger.observe(aims, 1.0);
+        assertEquals(0.5, StopPointSurf.simpleAimShare(dodger), 1e-12);
+        dodger.observe(aims, 2.0);
+        assertEquals(2.0 / 5.0, StopPointSurf.simpleAimShare(dodger), 1e-12);
+    }
 }
