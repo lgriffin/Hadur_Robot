@@ -1,4 +1,4 @@
-# PC card pc-melee-s0 (docs/plan-melee-top5.md, Stage 0, BENCH-104): master against itself (bb against aa) on today's whole melee field, 46 fields x 4 seeds, at the machine's melee width and CPU constant (BENCH-105: 12 and 1488498 on the PC). Template: s0prep writes work/melee-s0-census.args with @V@ = the robot.release in hadur-robot/pom.xml
+# PC card pc-melee-s0 (docs/plan-melee-top5.md, Stage 0, BENCH-104): master against itself (bb against aa) on today's whole melee field, 46 fields x 4 seeds, at the machine's melee width and CPU constant (BENCH-105: 12 and 1488498 on the PC). Template: s0prep writes work/melee-s0-census.args with @V@ = the robot.release in hadur-robot/pom.xml and @C@ = the host's melee width at prep, so a resumed card keeps the width its width check was sized from
 --suite
 melee-census-317.txt
 --seeds
@@ -8,7 +8,7 @@ melee-census-317.txt
 --rounds
 35
 --parallel
-auto
+@C@
 --child-heap
 2G
 --cpu-constant

@@ -1,4 +1,4 @@
-# PC card pc-melee-s0, width check: fields F01-F06 at half the machine's melee width (@W@, 6 on the PC) on the census's first two seeds, the bb build alone, so the read compares skipped turns at half and full width on the same battles. Template as melee-s0-census.args.
+# PC card pc-melee-s0, width check: fields F01-F06 at half the machine's melee width (@W@, 6 on the PC) on the census's first two seeds, the bb build alone, so the read compares skipped turns at half and full width on the same battles. Template as melee-s0-census.args; prep leaves it out on a one-worker host, where there is no narrower width.
 --suite
 melee-census-317-width.txt
 --seeds

@@ -1,7 +1,8 @@
 # Melee Stage 0 (docs/plan-melee-top5.md, BENCH-103 and BENCH-104): the fresh census of today's
 # melee field and the measurements the plan is missing. No robot change: master (aa) against
 # master again (bb), 46 fields x 4 seeds, 368 battles at the machine's melee width, then the first
-# six fields at half that width (12 battles) for the skipped-turn check. Width and CPU constant come
+# six fields at half that width (12 battles) for the skipped-turn check (skipped on a one-worker
+# host). Prep fixes both widths in work/, so a resumed card never mixes host profiles. Width and CPU constant come
 # from the host profile (BENCH-105, docs/bench/second-machine.md): 12 workers and 1488498 on the PC,
 # about 1.5-3 h there; a laptop runs narrower with its own constant and takes several times longer
 # (run the host-check card on it first). The census step's time is the card's first measured number.
@@ -16,12 +17,12 @@
 
 set OUT = ../docs/bench/local
 
-s0prep   | git checkout -q master && V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && test -n "$V" && rm -f bisect/hadur2.Hadur_"$V"aa.jar bisect/hadur2.Hadur_"$V"bb.jar && bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && test -f bisect/hadur2.Hadur_"$V"aa.jar && test -f bisect/hadur2.Hadur_"$V"bb.jar && mkdir -p work && W=$(( ${MELEE_WORKERS} / 2 )) && W=$(( W < 1 ? 1 : W )) && for a in census width; do sed -e "s/@V@/$V/g" -e "s/@W@/$W/g" plans/melee-s0-$a.args > work/melee-s0-$a.args || exit 1; done && rm -f ${OUT}/melee-s0-census.md ${OUT}/melee-s0-width.md ${OUT}/melee-s0-read.md && for f in melee-census-317/f*.txt; do ./fetch-opponents.sh --set "$f" || exit 1; done && mvn -q compile
+s0prep   | git checkout -q master && V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && test -n "$V" && rm -f bisect/hadur2.Hadur_"$V"aa.jar bisect/hadur2.Hadur_"$V"bb.jar && bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && test -f bisect/hadur2.Hadur_"$V"aa.jar && test -f bisect/hadur2.Hadur_"$V"bb.jar && mkdir -p work && C=${MELEE_WORKERS} && W=$(( C / 2 )) && rm -f work/melee-s0-width.args && sed -e "s/@V@/$V/g" -e "s/@C@/$C/g" plans/melee-s0-census.args > work/melee-s0-census.args && { if [ "$W" -ge 1 ]; then sed -e "s/@V@/$V/g" -e "s/@W@/$W/g" plans/melee-s0-width.args > work/melee-s0-width.args; else rm -rf work/melee-s0-"$V"-width; fi; } && rm -f ${OUT}/melee-s0-census.md ${OUT}/melee-s0-width.md ${OUT}/melee-s0-read.md && for f in melee-census-317/f*.txt; do ./fetch-opponents.sh --set "$f" || exit 1; done && mvn -q compile
 s0census | mvn -q exec:java "-Dexec.args=@work/melee-s0-census.args"
   after: s0prep
-s0width  | mvn -q exec:java "-Dexec.args=@work/melee-s0-width.args"
+s0width  | if test -f work/melee-s0-width.args; then mvn -q exec:java "-Dexec.args=@work/melee-s0-width.args"; else echo "one melee worker on this host: no narrower width to check"; fi
   after: s0census
-s0read   | V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && { python3 tools/melee_s0.py read work/melee-s0-"$V"-census --census melee-census-317.txt --width work/melee-s0-"$V"-width --out ${OUT}/melee-s0-read.md --title "Melee Stage 0: census of $V against itself" || true; } && test -s ${OUT}/melee-s0-read.md
+s0read   | V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && { WD=work/melee-s0-"$V"-width; WA=; if test -d "$WD"; then WA="--width $WD"; fi; python3 tools/melee_s0.py read work/melee-s0-"$V"-census --census melee-census-317.txt $WA --out ${OUT}/melee-s0-read.md --title "Melee Stage 0: census of $V against itself" || true; } && test -s ${OUT}/melee-s0-read.md
   after: s0width
 s0pr     | bash tools/open_results_pr.sh claude/pc-melee-s0-results "Melee Stage 0: census and endgame read" ${OUT}/melee-s0-census.md ${OUT}/melee-s0-width.md ${OUT}/melee-s0-read.md
   after: s0read
