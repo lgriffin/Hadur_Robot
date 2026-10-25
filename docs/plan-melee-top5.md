@@ -176,8 +176,9 @@ of Portia and Shadow, behind DemonicRage. Top 5 needs the upper half of Stages 2
    energy then, and the damage Hadur took with three or more alive and with two. The rank
    at death and the killer were already recorded (BENCH-40).
 3. **PC card `pc-melee-s0`** (`hadur-bench/plans/pc-melee-s0.queue`, BENCH-104): master (aa)
-   against master (bb) on the new census, 4 seeds at 12 workers (368 battles), then six fields
-   at 6 workers for the skipped-turn check, then `tools/melee_s0.py read` and a results PR on
+   against master (bb) on the new census, 4 seeds (368 battles) at the machine's melee width and
+   CPU constant (BENCH-105: 12 workers on the PC; a laptop runs narrower after its host check), then
+   six fields at half that width for the skipped-turn check, then `tools/melee_s0.py read` and a results PR on
    `claude/pc-melee-s0-results`. It gives the baseline census APS, the noise of the paired
    difference, the PC battle time, and the endgame and death tables for today's field.
 4. **Read** (cloud): which of the endgame causes is real (energy deficit at hand-off, cold duel

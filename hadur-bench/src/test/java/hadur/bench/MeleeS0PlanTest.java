@@ -41,7 +41,11 @@ class MeleeS0PlanTest {
         }
         String census = Files.readString(Path.of("plans/melee-s0-census.args"));
         assertTrue(census.contains("--baseline\nbisect/hadur2.Hadur_@V@aa.jar"));
-        assertTrue(census.contains("--parallel\n12\n"));
+        assertTrue(census.contains("--parallel\nauto\n"), "the census runs at the host's melee width (BENCH-105)");
+        assertTrue(census.contains("--cpu-constant\nauto\n"), "and with the host's CPU constant");
+        String width = Files.readString(Path.of("plans/melee-s0-width.args"));
+        assertTrue(width.contains("--parallel\n@W@\n") && width.contains("--cpu-constant\nauto\n"));
+        assertTrue(queue.contains("W=$(( ${MELEE_WORKERS} / 2 ))"), "the width check runs at half the host's width");
         assertTrue(census.contains("--seeds\n4\n"));
     }
 
