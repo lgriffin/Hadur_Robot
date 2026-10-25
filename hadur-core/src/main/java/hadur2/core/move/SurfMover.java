@@ -372,6 +372,12 @@ public class SurfMover {
         Wave surfWave = moveCtrl.findSurfableWave(0, myState);
         if (surfWave == null) {
             if (stopPointSurf != null) stopPointSurf.reset();
+            // DODGE-6: with no wave, the planner keeps a close enemy away while the dodger has its gun.
+            if (dodgePlanner != null && goToAllowed && dodgePlanner.surf(orders, myState, moveCtrl,
+                    moveCtrl.shotDodger(), dodgeEnemy, desiredDistance)) {
+                dodgePlanTicks++;
+                return;
+            }
             if (dodgePlanner != null) dodgePlanner.reset();
             orbit(orders, myState.heading, myState.location, enemyLocation);
             return;

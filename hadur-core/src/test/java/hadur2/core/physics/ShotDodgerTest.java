@@ -168,6 +168,8 @@ class ShotDodgerTest {
         assertTrue(d.planActive());
         assertEquals(SimpleAims.HEAD_ON, d.planBest() % ShotDodger.PER_LAG, "head-on at some lag");
         int best = d.planBest();
+        assertEquals(0.02, d.band(best), 1e-9, "twice the RMS of its 0.01 rad misses");
+        assertEquals(ShotDodger.MARGIN, new ShotDodger().band(best), 0.0, "unread: exact");
         // Three waves pass us with head-on's bullet inside our intersection: not this gun.
         for (int i = 0; i < 3; i++) d.observePass(aims, d.expert(aims, best), 0.05);
         assertEquals(3, d.passes());

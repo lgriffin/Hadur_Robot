@@ -41,10 +41,11 @@ class ShotDodgePlannerTest {
         Wave w = wave();
         Wave.Intersection x = new Wave.Intersection(Math.PI, 0.06);
         double damage = Rules.getBulletDamage(2);
-        assertEquals(ShotDodgePlanner.HIT_COST * damage, ShotDodgePlanner.waveCost(w, x, Math.PI + 0.05), 1e-3);
-        double near = ShotDodgePlanner.waveCost(w, x, Math.PI + 0.1);
-        double far = ShotDodgePlanner.waveCost(w, x, Math.PI + 0.3);
-        assertEquals(damage / (0.04 * 0.04), near, 1e-6);
+        assertEquals(ShotDodgePlanner.HIT_COST * damage, ShotDodgePlanner.waveCost(w, x, Math.PI + 0.05, 0.005), 1e-3);
+        double near = ShotDodgePlanner.waveCost(w, x, Math.PI + 0.1, 0.005);
+        double far = ShotDodgePlanner.waveCost(w, x, Math.PI + 0.3, 0.005);
+        assertEquals(damage / (0.035 * 0.035), near, 1e-6);
+        assertEquals(ShotDodgePlanner.HIT_COST * damage, ShotDodgePlanner.waveCost(w, x, Math.PI + 0.1, 0.05), 1e-3, "inside a wide band");
         assertTrue(far < near, "a wider miss is cheaper");
         assertTrue(near < ShotDodgePlanner.HIT_COST, "any miss is below a hit");
     }
@@ -57,11 +58,11 @@ class ShotDodgePlannerTest {
         Wave w = wave();
         List<Wave> waves = List.of(w);
         List<Double> bullets = List.of(Math.PI);
-        double still = p.cost(p.path(me(), ME, waves), waves, bullets, null);
+        double still = p.cost(p.path(me(), ME, waves), waves, bullets, 0.005, null);
         assertTrue(still >= ShotDodgePlanner.HIT_COST, "standing still is hit");
-        p.plan(me(), waves, bullets, null, 500);
+        p.plan(me(), waves, bullets, 0.005, null, 500);
         List<RobotState> chosen = p.path(me(), p.planPoint(), waves);
-        assertTrue(p.cost(chosen, waves, bullets, null) < ShotDodgePlanner.HIT_COST, "the chosen path misses");
+        assertTrue(p.cost(chosen, waves, bullets, 0.005, null) < ShotDodgePlanner.HIT_COST, "the chosen path misses");
         assertTrue(Math.abs(p.planPoint().x - ME.x) > 20, "moved off the line: " + p.planPoint());
     }
 
@@ -71,7 +72,7 @@ class ShotDodgePlannerTest {
     void pointsAndPaths() {
         ShotDodgePlanner p = planner();
         List<Wave> waves = List.of(wave());
-        List<Point2D.Double> points = p.points(me(), waves, 500);
+        List<Point2D.Double> points = p.points(me(), SOURCE, waves, 500);
         assertEquals(ME, points.get(0));
         assertTrue(points.size() > ShotDodgePlanner.HEADINGS * 3, "too few points: " + points.size());
         List<RobotState> path = p.path(me(), points.get(5), waves);
@@ -91,8 +92,21 @@ class ShotDodgePlannerTest {
         assertEquals(18, held.y, 1e-9, "held inside the field");
         List<Wave> none = List.of(wave());
         List<Double> miss = List.of(0.0);
-        double toward = p.cost(p.path(me(), new Point2D.Double(400, 300), none), none, miss, enemy);
-        double away = p.cost(p.path(me(), new Point2D.Double(700, 200), none), none, miss, enemy);
+        double toward = p.cost(p.path(me(), new Point2D.Double(400, 300), none), none, miss, 0.005, enemy);
+        double away = p.cost(p.path(me(), new Point2D.Double(700, 200), none), none, miss, 0.005, enemy);
         assertTrue(away < toward, away + " vs " + toward);
+    }
+
+    @Test
+    @Tag("DODGE-6")
+    @DisplayName("with no wave in the air the planner keeps away from a close enemy")
+    void keepsAway() {
+        ShotDodgePlanner p = planner();
+        RobotState enemy = RobotState.newBuilder().setLocation(new Point2D.Double(400, 300))
+            .setHeading(Math.PI).setVelocity(8).setTime(1).build();
+        p.plan(me(), List.of(), List.of(), 0.005, enemy, 500);
+        assertTrue(p.planPoint().distance(enemy.location) > ME.distance(enemy.location) + 40,
+            "moved away: " + p.planPoint());
+        assertEquals(ShotDodgePlanner.KEEP_TICKS + 1, p.path(me(), p.planPoint(), List.of()).size());
     }
 }

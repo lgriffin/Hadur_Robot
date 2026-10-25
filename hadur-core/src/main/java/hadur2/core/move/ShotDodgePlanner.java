@@ -41,9 +41,13 @@ import java.util.*;
 public final class ShotDodgePlanner {
 
     /** Straight headings tried, evenly round the compass. */
-    static final int HEADINGS = 16;
+    static final int HEADINGS = 12;
     /** The ticks along each heading or orbit at which a stop point is taken. */
-    static final int[] POINT_TICKS = {2, 4, 6, 8, 10, 13, 16, 20, 25, 30, 36, 43, 50, 60};
+    static final int[] POINT_TICKS = {3, 6, 10, 15, 21, 28, 36, 45, 55};
+    /** With no wave to dodge, the planner keeps away from an enemy closer than this, px. */
+    static final double CLOSE_RANGE = 200.0;
+    /** The ticks a keep-away path looks ahead. */
+    static final int KEEP_TICKS = 20;
     /** Waves planned for at once. */
     static final int MAX_WAVES = 3;
     /** The most ticks a path runs. */
@@ -116,6 +120,7 @@ public final class ShotDodgePlanner {
         int expert = dodger.planBest();
         List<Wave> waves = new ArrayList<>(MAX_WAVES);
         List<Double> bullets = new ArrayList<>(MAX_WAVES);
+        double band = dodger.band(expert);
         for (int i = 0; i < MAX_WAVES; i++) {
             Wave w = moveCtrl.findSurfableWave(i, myState);
             if (w == null) break;
@@ -125,9 +130,10 @@ public final class ShotDodgePlanner {
             waves.add(w);
             bullets.add(a);
         }
-        if (waves.isEmpty()) return false;
+        // With no wave in the air, a close enemy is kept away from (Saguaro's distance term alone).
+        if (waves.isEmpty() && (enemy == null || enemy.location.distance(myState.location) > CLOSE_RANGE)) return false;
         if (needsPlan(myState, waves, expert)) {
-            plan(myState, waves, bullets, enemy, desiredDistance);
+            plan(myState, waves, bullets, band, enemy, desiredDistance);
             planWaves = waves;
             planExpert = expert;
             planTime = myState.time;
@@ -146,15 +152,16 @@ public final class ShotDodgePlanner {
         return expected.location.distance(myState.location) > DRIFT;
     }
 
-    void plan(RobotState myState, List<Wave> waves, List<Double> bullets, RobotState enemy,
-                      double desiredDistance) {
+    void plan(RobotState myState, List<Wave> waves, List<Double> bullets, double band, RobotState enemy,
+              double desiredDistance) {
         replans++;
         double best = Double.POSITIVE_INFINITY;
         Point2D.Double bestPoint = myState.location;
         List<RobotState> bestPath = List.of(myState);
-        for (Point2D.Double p : points(myState, waves, desiredDistance)) {
+        Point2D.Double source = waves.isEmpty() ? enemy.location : waves.get(0).sourceLocation;
+        for (Point2D.Double p : points(myState, source, waves, desiredDistance)) {
             List<RobotState> path = path(myState, p, waves);
-            double cost = cost(path, waves, bullets, enemy);
+            double cost = cost(path, waves, bullets, band, enemy);
             if (cost < best) {
                 best = cost;
                 bestPoint = p;
@@ -166,35 +173,35 @@ public final class ShotDodgePlanner {
     }
 
     /** The stop points (see the class comment), standing still first. */
-    List<Point2D.Double> points(RobotState start, List<Wave> waves, double desiredDistance) {
+    List<Point2D.Double> points(RobotState start, Point2D.Double source, List<Wave> waves, double desiredDistance) {
         List<Point2D.Double> out = new ArrayList<>();
         out.add(start.location);
-        Wave first = waves.get(0);
-        int last = POINT_TICKS[POINT_TICKS.length - 1];
+        int last = waves.isEmpty() ? KEEP_TICKS : POINT_TICKS[POINT_TICKS.length - 1];
         for (int h = 0; h < HEADINGS; h++) {
             double heading = 2 * Math.PI * h / HEADINGS;
             RobotState s = start;
             for (int t = 1, i = 0; t <= last && i < POINT_TICKS.length; t++) {
                 s = predictor.nextLocation(s, 8.0, heading, false);
+                if (t == last && t != POINT_TICKS[i]) out.add(s.location);
                 if (t == POINT_TICKS[i]) {
                     out.add(s.location);
                     i++;
-                    if (allPassed(s, waves)) break;
+                    if (!waves.isEmpty() && allPassed(s, waves)) break;
                 }
             }
         }
         for (int direction : new int[] {-1, 1}) {
             RobotState s = start;
             for (int t = 1, i = 0; t <= last && i < POINT_TICKS.length; t++) {
-                double bearing = DiaUtils.absoluteBearing(first.sourceLocation, s.location);
-                double attack = StopPointSurf.attackAngle(first.sourceLocation.distance(s.location), desiredDistance);
+                double bearing = DiaUtils.absoluteBearing(source, s.location);
+                double attack = StopPointSurf.attackAngle(source.distance(s.location), desiredDistance);
                 double goAngle = battleField.wallSmoothing(s.location,
                     bearing + direction * (Math.PI / 2 + attack), direction, WALL_STICK);
                 s = predictor.nextLocation(s, 8.0, goAngle, false);
                 if (t == POINT_TICKS[i]) {
                     out.add(s.location);
                     i++;
-                    if (allPassed(s, waves)) break;
+                    if (!waves.isEmpty() && allPassed(s, waves)) break;
                 }
             }
         }
@@ -213,7 +220,8 @@ public final class ShotDodgePlanner {
         List<RobotState> path = new ArrayList<>();
         RobotState s = start;
         path.add(s);
-        for (int t = 0; t < MAX_TICKS && !allPassed(s, waves); t++) {
+        int ticks = waves.isEmpty() ? KEEP_TICKS : MAX_TICKS;
+        for (int t = 0; t < ticks && (waves.isEmpty() || !allPassed(s, waves)); t++) {
             s = goToStep(s, point);
             path.add(s);
         }
@@ -221,7 +229,7 @@ public final class ShotDodgePlanner {
     }
 
     /** The path's cost (see the class comment). */
-    double cost(List<RobotState> path, List<Wave> waves, List<Double> bullets, RobotState enemy) {
+    double cost(List<RobotState> path, List<Wave> waves, List<Double> bullets, double band, RobotState enemy) {
         double cost = 0;
         for (int i = 0; i < waves.size(); i++) {
             Wave w = waves.get(i);
@@ -232,7 +240,7 @@ public final class ShotDodgePlanner {
             if (crossing.isEmpty()) continue;
             Wave.Intersection x = w.preciseIntersection(crossing);
             if (x == null) continue;
-            cost += waveCost(w, x, bullets.get(i));
+            cost += waveCost(w, x, bullets.get(i), band);
         }
         if (enemy != null) {
             double min = Double.POSITIVE_INFINITY;
@@ -244,25 +252,28 @@ public final class ShotDodgePlanner {
         return cost;
     }
 
-    /** One wave's cost for a path crossing it at {@code x}, its expert bullet at {@code bullet}. */
-    static double waveCost(Wave w, Wave.Intersection x, double bullet) {
+    /**
+     * One wave's cost for a path crossing it at {@code x}, its expert bullet at {@code bullet} and
+     * as far as {@code band} either side ({@link ShotDodger#band}).
+     */
+    static double waveCost(Wave w, Wave.Intersection x, double bullet, double band) {
         double damage = Rules.getBulletDamage(w.bulletPower());
         double off = Math.abs(Angles.normalRelativeAngle(bullet - x.angle));
-        if (off <= x.bandwidth + ShotDodger.MARGIN) {
+        if (off <= x.bandwidth + band) {
             double through = 1.0;
             List<double[]> segments = w.transmission(x);
             if (!segments.isEmpty()) {
                 through = 0;
                 for (double[] seg : segments) {
                     double at = DiaUtils.normalizeAngle(bullet, (seg[0] + seg[1]) / 2);
-                    if (at >= seg[0] - ShotDodger.MARGIN && at <= seg[1] + ShotDodger.MARGIN) {
+                    if (at >= seg[0] - band && at <= seg[1] + band) {
                         through = Math.max(through, seg[2]);
                     }
                 }
             }
             if (through > 0) return HIT_COST * damage * through;
         }
-        double clearance = Math.max(MIN_CLEARANCE, off - x.bandwidth);
+        double clearance = Math.max(MIN_CLEARANCE, off - x.bandwidth - band);
         return damage / (clearance * clearance);
     }
 

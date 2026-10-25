@@ -71,6 +71,9 @@ public final class ShotDodger {
     private final double[] soft = new double[EXPERTS];
     private final double[] prior = new double[EXPERTS];
     private final int[] contra = new int[EXPERTS];
+    /** DODGE-5: per expert, the squared misses of the bullets read within three sigma of it, and their count. */
+    private final double[] errSum = new double[EXPERTS];
+    private final int[] errCount = new int[EXPERTS];
     private int passes;
     private final double[] divisorSum = new double[2 * SimpleAims.LAGS];
     private final double[] divisorWeight = new double[2 * SimpleAims.LAGS];
@@ -103,7 +106,13 @@ public final class ShotDodger {
             if (Double.isNaN(a)) continue;
             double d = Math.abs(SimpleAims.relative(heading - a));
             if (d <= MATCH) matches[k]++;
-            if (sigma > 0) soft[k] += Math.exp(-0.5 * (d / sigma) * (d / sigma));
+            if (sigma > 0) {
+                soft[k] += Math.exp(-0.5 * (d / sigma) * (d / sigma));
+                if (d <= 3 * sigma) {
+                    errSum[k] += d * d;
+                    errCount[k]++;
+                }
+            }
         }
         for (int lag = 0; lag < SimpleAims.LAGS; lag++) {
             int base = lag * SimpleAims.TYPES;
@@ -229,6 +238,19 @@ public final class ShotDodger {
         return soft[b] + prior[b] >= MIN_SHARE * (read + prior[b]);
     }
 
+    /**
+     * DODGE-5: how far expert {@code k}'s bullet may be from where it says, radians: twice the RMS
+     * of its misses on the bullets read near it, at least {@link #MARGIN} and at most
+     * {@value #MAX_BAND}; {@link #MARGIN} before any (a shipped expert is taken as exact until read).
+     */
+    public double band(int k) {
+        if (k < 0 || k >= EXPERTS || errCount[k] == 0) return MARGIN;
+        return Math.min(MAX_BAND, Math.max(MARGIN, 2 * Math.sqrt(errSum[k] / errCount[k])));
+    }
+
+    /** DODGE-5: the widest {@link #band}, radians. */
+    public static final double MAX_BAND = 0.1;
+
     /** DODGE-5: passes read this battle. */
     public int passes() {
         return passes;
@@ -242,6 +264,8 @@ public final class ShotDodger {
     /** Forgets the count and the divisors, for a new battle. */
     public void reset() {
         java.util.Arrays.fill(soft, 0);
+        java.util.Arrays.fill(errSum, 0);
+        java.util.Arrays.fill(errCount, 0);
         java.util.Arrays.fill(prior, 0);
         java.util.Arrays.fill(contra, 0);
         passes = 0;
