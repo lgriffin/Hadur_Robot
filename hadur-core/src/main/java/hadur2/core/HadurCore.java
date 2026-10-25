@@ -333,6 +333,11 @@ public final class HadurCore {
         return teamLink == null ? List.of() : teamLink.living();
     }
 
+    /** The conductor's team link, null off a team; a test judges the wide fire lane through it. */
+    TeamLink teamLink() {
+        return teamLink;
+    }
+
     /**
      * Starts a round. Transient state (waves, logs, the World, the resolver's veto
      * and latch, the tick budget's round level) is cleared; what was learned (KNN views,

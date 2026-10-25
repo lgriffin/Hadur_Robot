@@ -255,6 +255,7 @@ class TeamLinkTest {
     void fireLaneHoldsTheShot() {
         List<String> telemetry = new ArrayList<>();
         HadurCore core = new HadurCore(facts(), telemetry::add, null, new TriggerHappy());
+        core.teamLink().narrowLane = false;
         core.newRound(0);
         // MATE straight up the gun's heading (north), 200 px away: blocked.
         List<BotEvent> events = new ArrayList<>(enemies());
@@ -276,6 +277,7 @@ class TeamLinkTest {
     @DisplayName("WEAVE-4: a teammate behind the gun or wide of the lane does not hold the shot")
     void clearLaneFires() {
         HadurCore core = new HadurCore(facts(), line -> {}, null, new TriggerHappy());
+        core.teamLink().narrowLane = false;
         core.newRound(0);
         List<BotEvent> events = new ArrayList<>(enemies());
         events.add(scan(MATE, Math.PI, 300));
@@ -290,11 +292,18 @@ class TeamLinkTest {
         return new BotEvent.Scan(MATE, Math.atan2(side, ahead), Math.hypot(ahead, side), 100, heading, velocity);
     }
 
+    /** The power fired over {@code ticks} ticks with the wide lane (WEAVE-4, WEAVE-7), {@code mate} in sight. */
     private static double fired(BotEvent.Scan mate, int ticks) {
-        HadurCore core = new HadurCore(facts(), line -> {}, null, new TriggerHappy());
-        core.newRound(0);
         List<BotEvent> events = new ArrayList<>(enemies());
         events.add(mate);
+        return fired(events, ticks, false);
+    }
+
+    /** The power fired over {@code ticks} ticks with these scans each tick, on the narrow or the wide lane. */
+    private static double fired(List<BotEvent> events, int ticks, boolean narrow) {
+        HadurCore core = new HadurCore(facts(), line -> {}, null, new TriggerHappy());
+        core.teamLink().narrowLane = narrow;
+        core.newRound(0);
         double fired = 0;
         for (long t = 1; t <= ticks; t++) fired += core.tick(input(t, 5, events)).firePower();
         return fired;
@@ -322,6 +331,45 @@ class TeamLinkTest {
         assertTrue(fired(mateScan(400, 60, heading, 8), 6) > 0, "crossed and gone before a bullet");
         // Nearer, the same course has a bullet there as the mate crosses: held.
         assertEquals(0, fired(mateScan(250, 100, heading, 8), 6), 1e-9, "genuine crossing");
+    }
+
+    @Test
+    @Tag("WEAVE-9")
+    @DisplayName("WEAVE-9: the shipped lane is the narrow one")
+    void narrowLaneShips() {
+        assertTrue(TeamLink.NARROW_LANE);
+        HadurCore core = new HadurCore(facts(), line -> {}, null, new TriggerHappy());
+        assertTrue(core.teamLink().narrowLane);
+    }
+
+    @Test
+    @Tag("WEAVE-9")
+    @DisplayName("WEAVE-9: a teammate on the gun's line holds the shot only when nearer than the enemy on that line")
+    void narrowLaneHoldsForANearerMate() {
+        // The enemy 400 px up the gun's line, MATE 200 px up it: between us, held.
+        List<BotEvent> nearer = List.of(scan("e.A", 0, 400), scan("e.B", 2.5, 350), scan(MATE, 0, 200));
+        assertEquals(0, fired(nearer, 6, true), 1e-9, "mate before the target");
+        // The enemy 200 px up the line, MATE 300 px up it: beyond the target, the shot leaves.
+        List<BotEvent> beyond = List.of(scan("e.A", 0, 200), scan("e.B", 2.5, 350), scan(MATE, 0, 300));
+        assertTrue(fired(beyond, 6, true) > 0, "mate behind the target");
+        // No enemy on the line: every teammate on it counts, however far.
+        List<BotEvent> none = List.of(scan("e.A", 1.0, 300), scan("e.B", 2.5, 350), scan(MATE, 0, 500));
+        assertEquals(0, fired(none, 6, true), 1e-9, "no target on the line");
+    }
+
+    @Test
+    @Tag("WEAVE-9")
+    @DisplayName("WEAVE-9: a teammate wide of the line holds no shot, even one crossing it as WEAVE-7 would hold")
+    void narrowLaneIgnoresAWideMate() {
+        // 300 px up and 100 px east, running west: WEAVE-7 holds it; WEAVE-9 sees it 18 degrees off the line.
+        List<BotEvent> crossing = new ArrayList<>(enemies());
+        crossing.add(mateScan(300, 100, 3 * Math.PI / 2, 8));
+        assertTrue(fired(crossing, 6, true) > 0, "crossing mate");
+        assertEquals(0, fired(crossing, 6, false), 1e-9, "the wide lane holds it");
+        // 200 px up and 20 px east: inside atan2(30, d), held.
+        List<BotEvent> close = new ArrayList<>(enemies());
+        close.add(mateScan(200, 20, 0, 0));
+        assertEquals(0, fired(close, 6, true), 1e-9, "mate within a robot's width");
     }
 
     @Test

@@ -39,6 +39,9 @@ import java.util.Map;
  *     position, no older than {@link Roster#SILENT_WINDOW}, lies in the fire lane.</li>
  * <li>WEAVE-7 (T1): the lane is also held while a teammate's predicted track, over the time
  *     a bullet would take to pass it, comes within the lane's half-width.</li>
+ * <li>WEAVE-9 (T7): the shipped lane is Ogi's narrow one: only a teammate nearer than the
+ *     enemy on the gun's line, and within a robot's width of that line, holds the shot.
+ *     WEAVE-4 and WEAVE-7's wide lane stays for the {@code tlanew} ablation.</li>
  * <li>WEAVE-8 (T1): the driving role's drive is replaced when it would bring Hadur into a
  *     living teammate ({@link TeammateFence}); the replacements are counted.</li>
  * <li>LINK-4: while a teammate lives, every completed tick's orders carry our report.</li>
@@ -63,11 +66,22 @@ final class TeamLink {
     static final double TURN_SLACK = 3.0;
     /** WEAVE-7: the longest flight judged, ticks: far more than any field's diagonal over a bullet's slowest speed. */
     static final int MAX_FLIGHT = 400;
+    /**
+     * WEAVE-9: the shipped lane is the narrow one. Step C (docs/plan-team-top5.md) benched it
+     * against 3.16's wide lane: +2.2 share points on 46 teams, +2.9 with TMODE-9.
+     */
+    static final boolean NARROW_LANE = true;
+    /** WEAVE-9: a teammate holds the shot within this many px of the gun's line, at its distance. */
+    static final double NARROW_MATE_HALF = 30;
+    /** WEAVE-9: the target is the nearest enemy within this many px of the gun's line, at its distance. */
+    static final double NARROW_TARGET_HALF = 36;
 
     private final HadurCore core;
     private final BattleFacts facts;
     private final Roster roster;
     private final EnemyTracker world;
+    /** WEAVE-9 or the wide lane (WEAVE-4, WEAVE-7); a test may judge the wide one. */
+    boolean narrowLane = NARROW_LANE;
     /** WORLD-4: the latest stated tick merged from each teammate this round. */
     private final Map<String, Long> merged = new HashMap<>();
     /** This tick's fresh sightings of enemies, for our report. */
@@ -283,6 +297,44 @@ final class TeamLink {
      * keeps WEAVE-4's test on its known point alone.
      */
     boolean laneClear(BotInput in) {
+        return narrowLane ? narrowLaneClear(in) : wideLaneClear(in);
+    }
+
+    /**
+     * WEAVE-9 (OgiTeam's rule): the target is the nearest enemy whose bearing lies within
+     * {@code atan2(36, d)} of the gun's heading, at its distance {@code d}; with none, every
+     * teammate counts. A living teammate nearer than the target, whose bearing lies within
+     * {@code atan2(30, d)} of the gun's heading, holds the shot. A teammate beyond the target,
+     * wide of the line or behind the gun does not: the shot is worth the small risk.
+     */
+    boolean narrowLaneClear(BotInput in) {
+        double gun = in.gunHeading();
+        double target = Double.POSITIVE_INFINITY;
+        for (EnemyInfo e : world.alive()) {
+            if (e.location == null) continue;
+            double d = e.location.distance(in.x(), in.y());
+            if (off(e.location.x - in.x(), e.location.y - in.y(), gun) <= Math.atan2(NARROW_TARGET_HALF, d)
+                && d < target) {
+                target = d;
+            }
+        }
+        for (Roster.Mate m : roster.living(in.time())) {
+            double rx = m.x() - in.x();
+            double ry = m.y() - in.y();
+            double d = Math.hypot(rx, ry);
+            if (d >= target) continue;
+            if (off(rx, ry, gun) <= Math.atan2(NARROW_MATE_HALF, d)) return false;
+        }
+        return true;
+    }
+
+    /** How far, radians, the bearing to {@code (rx, ry)} lies from {@code heading}. */
+    private static double off(double rx, double ry, double heading) {
+        return Math.abs(Angles.normalRelativeAngle(Math.atan2(rx, ry) - heading));
+    }
+
+    /** WEAVE-4, WEAVE-7: the wide lane, as 3.16 played it. */
+    boolean wideLaneClear(BotInput in) {
         double dx = Math.sin(in.gunHeading());
         double dy = Math.cos(in.gunHeading());
         for (Roster.Mate m : roster.living(in.time())) {
