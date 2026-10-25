@@ -70,7 +70,10 @@ def head_to_head(battle, us, prefix, key):
     return None
 
 
-def evaluate(works, robot, pairings=156, needed_battles=200):
+def evaluate(works, robot, pairings=156, needed_battles=200, only=None):
+    """With `only` (a set of robot names, version included), APS and its groups count only the
+    pairings against those robots, as LiteRumble scores MicroMelee from mixed MeleeRumble
+    battles; a battle with none of them adds no group value."""
     shares = {}
     firsts = rounds = 0
     figment = []
@@ -83,12 +86,13 @@ def evaluate(works, robot, pairings=156, needed_battles=200):
         s = battle[us]["score"]
         mine = []
         for name, row in battle.items():
-            if name == us:
+            if name == us or (only is not None and name not in only):
                 continue
             total = s + row["score"]
             mine.append(50.0 if total == 0 else 100.0 * s / total)
             shares.setdefault(name, []).append(mine[-1])
-        groups.setdefault(group, []).append(sum(mine) / len(mine))
+        if mine:
+            groups.setdefault(group, []).append(sum(mine) / len(mine))
         firsts += battle[us]["firsts"]
         rounds += sum(r["firsts"] for r in battle.values())
         f = head_to_head(battle, us, FIGMENT, "survival")

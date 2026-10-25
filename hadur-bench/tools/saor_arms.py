@@ -12,6 +12,13 @@ above --top5: default 66.6, which is 5th place (Quantum, 65.61 on the 2026-10-25
 1.0 margin for the bench-to-live offset (Hadur's 1v1 ran 0.5 to 0.7 under its bench live).
 
   python3 tools/saor_arms.py --arms C,P,N,U --control C [--work-root work/saor-arms] [--top5 66.6]
+  python3 tools/saor_arms.py --field live --arms C,FIG,WAL --control C --only work/saor-arms/live/micro.txt --top5 69.37
+
+--field live reads the live-shaped census (tools/saor_live.py: fields drawn from the whole
+MeleeRumble list), and --only limits APS to the pairings against the robots that file names,
+the MicroMelee field, as LiteRumble scores MicroMelee from mixed MeleeRumble battles
+(docs/plan-saor-first.md, stage 0). An arm whose arms.txt line is `@robot name` is that robot
+in the seat, not a Saor build. On the live census the bar is a 1st-place bar: Figment's 69.37.
 
 Standard library only.
 """
@@ -63,12 +70,30 @@ def compare(groups, control):
     return diff, math.sqrt(half), len(common)
 
 
-def read(root, arms, control_arm, top5, pairings=156):
+def seats(path):
+    """Arm name to seated robot for the `@robot name` lines of an arms file."""
+    out = {}
+    if path and os.path.exists(path):
+        with open(path, encoding="utf-8") as f:
+            for line in f:
+                parts = [p.strip() for p in line.split("|")]
+                if not line.startswith("#") and len(parts) == 3 and parts[2].startswith("@"):
+                    out[parts[0]] = parts[2][1:].strip()
+    return out
+
+
+def read_only(path):
+    with open(path, encoding="utf-8") as f:
+        return {l.strip() for l in f if l.strip() and not l.startswith("#")}
+
+
+def read(root, arms, control_arm, top5, pairings=156, field="census", robots=None, only=None):
     rows = []
     results = {}
+    robots = robots or {}
     for arm in arms:
-        robot = "hadur117.micro.Saor%s" % arm
-        census = saor_gates.evaluate([os.path.join(root, "census-" + arm)], robot)
+        robot = robots.get(arm, "hadur117.micro.Saor%s" % arm)
+        census = saor_gates.evaluate([os.path.join(root, field + "-" + arm)], robot, only=only)
         gate = saor_gates.evaluate([os.path.join(root, "gate9-" + arm)], robot)
         results[arm] = (census, gate)
     control = results[control_arm][0]["groups"]
@@ -98,8 +123,8 @@ def fmt(v, digits=2):
     return "-" if v is None else "%.*f" % (digits, v)
 
 
-def render(rows, control_arm, top5):
-    lines = ["| Arm | Census APS (opponents) | vs %s, by field (fields) | Top-5 bar (full census, low end > %.1f) | Figment out-survived | Wallaby out-damaged |" % (control_arm, top5),
+def render(rows, control_arm, top5, bar="Top-5 bar"):
+    lines = ["| Arm | Census APS (opponents) | vs %s, by field (fields) | %s (full census, low end > %.2f) | Figment out-survived | Wallaby out-damaged |" % (control_arm, bar, top5),
              "|---|---|---|---|---|---|"]
     for r in rows:
         lines.append("| %s | %s ± %s (%d) | %s ± %s (%d) | %s | %s%% (%d) | %s%% (%d) |" % (
@@ -116,9 +141,14 @@ def main(argv=None):
     p.add_argument("--work-root", default="work/saor-arms")
     p.add_argument("--top5", type=float, default=66.6)
     p.add_argument("--pairings", type=int, default=156, help="opponents a full census has")
+    p.add_argument("--field", default="census", choices=("census", "live"))
+    p.add_argument("--only", help="count only pairings against the robots this file names, one a line")
+    p.add_argument("--arms-file", default=os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "saor-arms", "arms.txt"))
     a = p.parse_args(argv)
     arms = [s.strip() for s in a.arms.split(",") if s.strip()]
-    print(render(read(a.work_root, arms, a.control, a.top5, a.pairings), a.control, a.top5))
+    only = read_only(a.only) if a.only else None
+    rows = read(a.work_root, arms, a.control, a.top5, a.pairings, a.field, seats(a.arms_file), only)
+    print(render(rows, a.control, a.top5, "1st bar" if a.field == "live" else "Top-5 bar"))
     return 0
 
 
