@@ -7053,6 +7053,28 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">The plain files in the data directory, from the index; an absent directory has none.</div>
 </dd>
+<dt><a href="hadur2/core/TeamLink.html#NARROW_LANE" class="member-name-link">NARROW_LANE</a> - Static variable in class hadur2.core.<a href="hadur2/core/TeamLink.html" title="class in hadur2.core">TeamLink</a></dt>
+<dd>
+<div class="block">WEAVE-9: the shipped lane is the narrow one.</div>
+</dd>
+<dt><a href="hadur2/core/TeamLink.html#NARROW_MATE_HALF" class="member-name-link">NARROW_MATE_HALF</a> - Static variable in class hadur2.core.<a href="hadur2/core/TeamLink.html" title="class in hadur2.core">TeamLink</a></dt>
+<dd>
+<div class="block">WEAVE-9: a teammate holds the shot within this many px of the gun's line, at its distance.</div>
+</dd>
+<dt><a href="hadur2/core/TeamLink.html#NARROW_TARGET_HALF" class="member-name-link">NARROW_TARGET_HALF</a> - Static variable in class hadur2.core.<a href="hadur2/core/TeamLink.html" title="class in hadur2.core">TeamLink</a></dt>
+<dd>
+<div class="block">WEAVE-9: the target is the nearest enemy within this many px of the gun's line, at its distance.</div>
+</dd>
+<dt><a href="hadur2/core/TeamLink.html#narrowLane" class="member-name-link">narrowLane</a> - Variable in class hadur2.core.<a href="hadur2/core/TeamLink.html" title="class in hadur2.core">TeamLink</a></dt>
+<dd>
+<div class="block">WEAVE-9 or the wide lane (<a class="req" href="../requirements.html#WEAVE-4">WEAVE-4</a>, WEAVE-7); a test may judge the wide one.</div>
+</dd>
+<dt><a href="hadur2/core/TeamLink.html#narrowLaneClear(hadur2.core.model.BotInput)" class="member-name-link">narrowLaneClear(BotInput)</a> - Method in class hadur2.core.<a href="hadur2/core/TeamLink.html" title="class in hadur2.core">TeamLink</a></dt>
+<dd>
+<div class="block">WEAVE-9 (OgiTeam's rule): the target is the nearest enemy whose bearing lies within
+ <code>atan2(36, d)</code> of the gun's heading, at its distance <code>d</code>; with none, every
+ teammate counts.</div>
+</dd>
 <dt><a href="hadur2/core/melee/TeamDanger.html#NEAREST" class="member-name-link">NEAREST</a> - Static variable in class hadur2.core.melee.<a href="hadur2/core/melee/TeamDanger.html" title="class in hadur2.core.melee">TeamDanger</a></dt>
 <dd>
 <div class="block">MMOVE-9 switch: a shot is taken as aimed at the member nearest the shooter.</div>
@@ -12142,6 +12164,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">The default team jar of the release (A5).</div>
 </dd>
+<dt><a href="hadur2/core/HadurCore.html#teamLink()" class="member-name-link">teamLink()</a> - Method in class hadur2.core.<a href="hadur2/core/HadurCore.html" title="class in hadur2.core">HadurCore</a></dt>
+<dd>
+<div class="block">The conductor's team link, null off a team; a test judges the wide fire lane through it.</div>
+</dd>
 <dt><a href="hadur2/core/TeamLink.html" class="type-name-link" title="class in hadur2.core">TeamLink</a> - Class in <a href="hadur2/core/package-summary.html">hadur2.core</a></dt>
 <dd>
 <div class="block">The conductor's part in a team battle (A5): it turns the engine's input into what a strand
@@ -13726,6 +13752,10 @@ the order they are declared.</div>
 <dt><a href="hadur/bench/Bench.Failure.html#why()" class="member-name-link">why()</a> - Method in record class hadur.bench.<a href="hadur/bench/Bench.Failure.html" title="class in hadur.bench">Bench.Failure</a></dt>
 <dd>
 <div class="block">Returns the value of the <code>why</code> record component.</div>
+</dd>
+<dt><a href="hadur2/core/TeamLink.html#wideLaneClear(hadur2.core.model.BotInput)" class="member-name-link">wideLaneClear(BotInput)</a> - Method in class hadur2.core.<a href="hadur2/core/TeamLink.html" title="class in hadur2.core">TeamLink</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#WEAVE-4">WEAVE-4</a>, WEAVE-7: the wide lane, as 3.16 played it.</div>
 </dd>
 <dt><a href="hadur2/core/physics/BattleField.html#width" class="member-name-link">width</a> - Variable in class hadur2.core.physics.<a href="hadur2/core/physics/BattleField.html" title="class in hadur2.core.physics">BattleField</a></dt>
 <dd>

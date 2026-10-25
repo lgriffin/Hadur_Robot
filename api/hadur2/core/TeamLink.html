@@ -112,6 +112,9 @@ loadScripts(document, 'script');</script>
      position, no older than <a href="world/Roster.html#SILENT_WINDOW"><code>Roster.SILENT_WINDOW</code></a>, lies in the fire lane.</li>
  <li>WEAVE-7 (T1): the lane is also held while a teammate's predicted track, over the time
      a bullet would take to pass it, comes within the lane's half-width.</li>
+ <li>WEAVE-9 (T7): the shipped lane is Ogi's narrow one: only a teammate nearer than the
+     enemy on the gun's line, and within a robot's width of that line, holds the shot.
+     <a class="req" href="../../../requirements.html#WEAVE-4">WEAVE-4</a> and WEAVE-7's wide lane stays for the <code>tlanew</code> ablation.</li>
  <li>WEAVE-8 (T1): the driving role's drive is replaced when it would bring Hadur into a
      living teammate (<a href="role/TeammateFence.html" title="class in hadur2.core.role"><code>TeammateFence</code></a>); the replacements are counted.</li>
  <li><a class="req" href="../../../requirements.html#LINK-4">LINK-4</a>: while a teammate lives, every completed tick's orders carry our report.</li>
@@ -181,6 +184,26 @@ loadScripts(document, 'script');</script>
 <div class="col-second odd-row-color"><code><a href="#MAX_FLIGHT" class="member-name-link">MAX_FLIGHT</a></code></div>
 <div class="col-last odd-row-color">
 <div class="block">WEAVE-7: the longest flight judged, ticks: far more than any field's diagonal over a bullet's slowest speed.</div>
+</div>
+<div class="col-first even-row-color"><code>(package private) static final boolean</code></div>
+<div class="col-second even-row-color"><code><a href="#NARROW_LANE" class="member-name-link">NARROW_LANE</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">WEAVE-9: the shipped lane is the narrow one.</div>
+</div>
+<div class="col-first odd-row-color"><code>(package private) static final double</code></div>
+<div class="col-second odd-row-color"><code><a href="#NARROW_MATE_HALF" class="member-name-link">NARROW_MATE_HALF</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">WEAVE-9: a teammate holds the shot within this many px of the gun's line, at its distance.</div>
+</div>
+<div class="col-first even-row-color"><code>(package private) static final double</code></div>
+<div class="col-second even-row-color"><code><a href="#NARROW_TARGET_HALF" class="member-name-link">NARROW_TARGET_HALF</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">WEAVE-9: the target is the nearest enemy within this many px of the gun's line, at its distance.</div>
+</div>
+<div class="col-first odd-row-color"><code>(package private) boolean</code></div>
+<div class="col-second odd-row-color"><code><a href="#narrowLane" class="member-name-link">narrowLane</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">WEAVE-9 or the wide lane (<a class="req" href="../../../requirements.html#WEAVE-4">WEAVE-4</a>, WEAVE-7); a test may judge the wide one.</div>
 </div>
 <div class="col-first even-row-color"><code>(package private) int</code></div>
 <div class="col-second even-row-color"><code><a href="#reportsMerged" class="member-name-link">reportsMerged</a></code></div>
@@ -284,29 +307,41 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">MGUN-8: this tick's teammates' sightings the World took, in the order it took them.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#newRound()" class="member-name-link">newRound</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#record(int,long,int,int)" class="member-name-link">record</a><wbr>(int&nbsp;round,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#narrowLaneClear(hadur2.core.model.BotInput)" class="member-name-link">narrowLaneClear</a><wbr>(<a href="model/BotInput.html" title="class in hadur2.core.model">BotInput</a>&nbsp;in)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">WEAVE-9 (OgiTeam's rule): the target is the nearest enemy whose bearing lies within
+ <code>atan2(36, d)</code> of the gun's heading, at its distance <code>d</code>; with none, every
+ teammate counts.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#newRound()" class="member-name-link">newRound</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#record(int,long,int,int)" class="member-name-link">record</a><wbr>(int&nbsp;round,
  long&nbsp;tick,
  int&nbsp;linkRejected,
  int&nbsp;enemiesAlive)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">The team's round record: <code>T,round,tick,teammateHits,teammateBulletHits,collisions,blockedShots,reportsMerged,linkRejected,enemiesAlive,fenced</code>.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) byte[]</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#report(hadur2.core.model.BotInput,hadur2.core.model.BotOrders)" class="member-name-link">report</a><wbr>(<a href="model/BotInput.html" title="class in hadur2.core.model">BotInput</a>&nbsp;in,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) byte[]</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#report(hadur2.core.model.BotInput,hadur2.core.model.BotOrders)" class="member-name-link">report</a><wbr>(<a href="model/BotInput.html" title="class in hadur2.core.model">BotInput</a>&nbsp;in,
  <a href="model/BotOrders.html" title="class in hadur2.core.model">BotOrders</a>&nbsp;orders)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../../requirements.html#LINK-4">LINK-4</a>: this tick's report, from the raw input and the orders the tick completed with.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) byte[]</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#report(hadur2.core.model.BotInput,hadur2.core.model.BotOrders,java.util.List)" class="member-name-link">report</a><wbr>(<a href="model/BotInput.html" title="class in hadur2.core.model">BotInput</a>&nbsp;in,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) byte[]</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#report(hadur2.core.model.BotInput,hadur2.core.model.BotOrders,java.util.List)" class="member-name-link">report</a><wbr>(<a href="model/BotInput.html" title="class in hadur2.core.model">BotInput</a>&nbsp;in,
  <a href="model/BotOrders.html" title="class in hadur2.core.model">BotOrders</a>&nbsp;orders,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="link/Report.Dodge.html" title="class in hadur2.core.link">Report.Dodge</a>&gt;&nbsp;dodges)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">As above, carrying <code>dodges</code>: the enemy bullets that hit us, as samples (MMOVE-10).</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#wideLaneClear(hadur2.core.model.BotInput)" class="member-name-link">wideLaneClear</a><wbr>(<a href="model/BotInput.html" title="class in hadur2.core.model">BotInput</a>&nbsp;in)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../../requirements.html#WEAVE-4">WEAVE-4</a>, WEAVE-7: the wide lane, as 3.16 played it.</div>
 </div>
 </div>
 </div>
@@ -416,6 +451,59 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="NARROW_LANE">
+<h3>NARROW_LANE</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">NARROW_LANE</span></div>
+<div class="block">WEAVE-9: the shipped lane is the narrow one. Step C (docs/plan-team-top5.md) benched it
+ against 3.16's wide lane: +2.2 share points on 46 teams, +2.9 with TMODE-9.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../constant-values.html#hadur2.core.TeamLink.NARROW_LANE">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="NARROW_MATE_HALF">
+<h3>NARROW_MATE_HALF</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">NARROW_MATE_HALF</span></div>
+<div class="block">WEAVE-9: a teammate holds the shot within this many px of the gun's line, at its distance.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../constant-values.html#hadur2.core.TeamLink.NARROW_MATE_HALF">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="NARROW_TARGET_HALF">
+<h3>NARROW_TARGET_HALF</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">NARROW_TARGET_HALF</span></div>
+<div class="block">WEAVE-9: the target is the nearest enemy within this many px of the gun's line, at its distance.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../constant-values.html#hadur2.core.TeamLink.NARROW_TARGET_HALF">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="narrowLane">
+<h3>narrowLane</h3>
+<div class="member-signature"><span class="return-type">boolean</span>&nbsp;<span class="element-name">narrowLane</span></div>
+<div class="block">WEAVE-9 or the wide lane (<a class="req" href="../../../requirements.html#WEAVE-4">WEAVE-4</a>, WEAVE-7); a test may judge the wide one.</div>
+</section>
+</li>
+<li>
 <section class="detail" id="teammateHits">
 <h3>teammateHits</h3>
 <div class="member-signature"><span class="return-type">int</span>&nbsp;<span class="element-name">teammateHits</span></div>
@@ -505,6 +593,24 @@ loadScripts(document, 'script');</script>
  <code>11t</code> and <code>19.7t</code> px, give or take the half-width): the bullet and the
  teammate must coincide in time, not only cross the same line. A teammate behind the gun
  keeps <a class="req" href="../../../requirements.html#WEAVE-4">WEAVE-4</a>'s test on its known point alone.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="narrowLaneClear(hadur2.core.model.BotInput)">
+<h3>narrowLaneClear</h3>
+<div class="member-signature"><span class="return-type">boolean</span>&nbsp;<span class="element-name">narrowLaneClear</span><wbr><span class="parameters">(<a href="model/BotInput.html" title="class in hadur2.core.model">BotInput</a>&nbsp;in)</span></div>
+<div class="block">WEAVE-9 (OgiTeam's rule): the target is the nearest enemy whose bearing lies within
+ <code>atan2(36, d)</code> of the gun's heading, at its distance <code>d</code>; with none, every
+ teammate counts. A living teammate nearer than the target, whose bearing lies within
+ <code>atan2(30, d)</code> of the gun's heading, holds the shot. A teammate beyond the target,
+ wide of the line or behind the gun does not: the shot is worth the small risk.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="wideLaneClear(hadur2.core.model.BotInput)">
+<h3>wideLaneClear</h3>
+<div class="member-signature"><span class="return-type">boolean</span>&nbsp;<span class="element-name">wideLaneClear</span><wbr><span class="parameters">(<a href="model/BotInput.html" title="class in hadur2.core.model">BotInput</a>&nbsp;in)</span></div>
+<div class="block"><a class="req" href="../../../requirements.html#WEAVE-4">WEAVE-4</a>, WEAVE-7: the wide lane, as 3.16 played it.</div>
 </section>
 </li>
 <li>
