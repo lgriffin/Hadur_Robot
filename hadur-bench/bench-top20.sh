@@ -19,12 +19,15 @@
 #   --seed-base B          engine seeds are B+1..B+N, fresh ones for a confirmation run (BENCH-72)
 #   --unseeded             no -DRANDOMSEED, as the rumble client runs battles; seeds are labels (BENCH-76)
 #   --rounds N              rounds per battle, default 35
-#   --parallel N           battles at once, default a quarter of the logical cores, floored, min 1 (see docs/bench/local/2026-10-06_parallel-ladder.md)
+#   --parallel N|auto      battles at once, default auto: the queue runner's width (HADUR_BENCH_WORKERS_DUEL),
+#                          else hostprofile.py's (12 on the PC, fewer on a smaller machine; BENCH-105),
+#                          else a quarter of the logical cores, floored, min 1
 #   --robot-jar FILE       the robot jar (bench default follows robot.release)
 #   --robot NAME           the robot's name as Robocode lists it
 #   --baseline FILE        a baseline jar for a paired A/B run (needs --baseline-robot)
 #   --baseline-robot NAME  the baseline robot's name, distinct from --robot
-#   --cpu-constant NANOS   pin robocode.cpu.constant in every worker home
+#   --cpu-constant NANOS|auto  pin robocode.cpu.constant in every worker home; auto takes the host's
+#                          (HADUR_BENCH_CPU_CONSTANT, else hostprofile.py), or calibrates when none is known
 #   --label NAME           used in the default --out, --report and --per-opponent, default top20
 #   --out DIR              working directory, default work/<label>-<timestamp>
 #   --report FILE          also write the report there, default ../docs/bench/local/<date>_<label>.md
@@ -131,10 +134,22 @@ if [ -n "$BASELINE" ] && [ -z "$BASELINE_ROBOT" ]; then
     exit 2
 fi
 
-if [ "$PARALLEL" -eq 0 ]; then
-    CORES=$(nproc 2>/dev/null || sysctl -n hw.ncpu 2>/dev/null || echo 2)
-    PARALLEL=$((CORES / 4))
-    if [ "$PARALLEL" -lt 1 ]; then PARALLEL=1; fi
+HERE_DIR=$(cd "$(dirname "$0")" && pwd)
+PYTHON=$(command -v python3 || command -v python || true)
+if [ "$PARALLEL" = "auto" ] || [ "$PARALLEL" = "0" ]; then
+    PARALLEL="${HADUR_BENCH_WORKERS_DUEL:-}"
+    if [ -z "$PARALLEL" ] && [ -n "$PYTHON" ]; then PARALLEL=$("$PYTHON" "$HERE_DIR/hostprofile.py" --get duel 2>/dev/null | tr -d '\r'); fi
+    if [ -z "$PARALLEL" ]; then
+        CORES=$(nproc 2>/dev/null || sysctl -n hw.ncpu 2>/dev/null || echo 2)
+        PARALLEL=$((CORES / 4))
+        if [ "$PARALLEL" -lt 1 ]; then PARALLEL=1; fi
+    fi
+    echo "parallel $PARALLEL (auto)"
+fi
+if [ "$CPU_CONSTANT" = "auto" ]; then
+    CPU_CONSTANT="${HADUR_BENCH_CPU_CONSTANT-}"
+    if [ -z "${HADUR_BENCH_CPU_CONSTANT+x}" ] && [ -n "$PYTHON" ]; then CPU_CONSTANT=$("$PYTHON" "$HERE_DIR/hostprofile.py" --get cpu-constant 2>/dev/null | tr -d '\r'); fi
+    echo "cpu constant ${CPU_CONSTANT:-calibrated by the engine} (auto)"
 fi
 
 # --dry-run prints each build, fetch and run step instead of running it.

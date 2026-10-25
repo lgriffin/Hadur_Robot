@@ -3,3 +3,6 @@ work/
 opponents/*.jar
 engines/*/*.jar
 work-*.log
+# BENCH-105: work may be a link to another disk; host.local is one machine's overrides
+/work
+host.local

@@ -16,8 +16,9 @@
 .PARAMETER Rounds
   Rounds per battle (--rounds). Default: 35.
 .PARAMETER Parallel
-  Battles to run at once (--parallel). Default: a quarter of the logical processors,
-  floored, at least 1. Issue #102's rule of thumb was one battle per two logical cores, but
+  Battles to run at once (--parallel). Default: the host's width from hostprofile.py
+  (BENCH-105: 12 on the PC, fewer on a smaller machine; HADUR_BENCH_WORKERS_DUEL when the
+  queue runner set it), else a quarter of the logical processors, floored, at least 1. Issue #102's rule of thumb was one battle per two logical cores, but
   the width ladder in docs/bench/local/2026-10-06_parallel-ladder.md found that a quarter
   is what this host sustains without duress rounds while its rumble clients run.
 .PARAMETER RobotJar
@@ -128,6 +129,17 @@ Set-Location $PSScriptRoot
 
 . (Join-Path $PSScriptRoot "bench-args.ps1")
 
+if ($Parallel -le 0 -and $env:HADUR_BENCH_WORKERS_DUEL) {
+    $Parallel = [int]$env:HADUR_BENCH_WORKERS_DUEL
+}
+if ($Parallel -le 0) {
+    $py = Get-Command python -ErrorAction SilentlyContinue
+    if (-not $py) { $py = Get-Command python3 -ErrorAction SilentlyContinue }
+    if ($py) {
+        $width = & $py.Source (Join-Path $PSScriptRoot "hostprofile.py") --get duel 2>$null
+        if ($LASTEXITCODE -eq 0 -and "$width".Trim() -match '^\d+$') { $Parallel = [int]"$width".Trim() }
+    }
+}
 if ($Parallel -le 0) {
     $cores = [Environment]::ProcessorCount
     $Parallel = [Math]::Max(1, [Math]::Floor($cores / 4))

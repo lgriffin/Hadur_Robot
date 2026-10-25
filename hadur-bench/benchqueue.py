@@ -2,7 +2,8 @@
 """Resumable queue runner for overnight bench plans (issue #117).
 
     benchqueue.py run PLAN [--dry-run] [--only A,B] [--skip A] [--fresh] [--stop-on-fail] [--min-free-gb N]
-                           [--concurrency N]
+                           [--concurrency N] [--workers N] [--work-dir DIR]
+    benchqueue.py host [--workers N] [--work-dir DIR]
     benchqueue.py status PLAN
     benchqueue.py stop PLAN
 
@@ -23,6 +24,18 @@ step is done (or that have none) start together, up to that many at once, in pla
 that is after a step still running waits for it. The default is one step at a time. The log (work-queue-<plan>.log) reads like the hand-written
 queues: `HH:MM:SS start X`, `HH:MM:SS X exit=N in S s`, and a final `ALLDONE`.
 
+Host (BENCH-105): before a plan is read, hostprofile.py sizes the bench to this machine and
+offers the plan ${WORKERS} (duel width), ${TEAM_WORKERS}, ${MELEE_WORKERS} and ${CPU} (the
+--cpu-constant flag, or nothing). They are 12, 12, 12 and --cpu-constant 1488498 on the PC and
+narrower on a smaller machine. A plan's own `set WORKERS = N` wins over the detected value;
+--workers N (or HADUR_BENCH_WORKERS) wins over both. Every step also gets them in its environment
+(HADUR_BENCH_WORKERS_DUEL/_TEAM/_MELEE, HADUR_BENCH_CPU_CONSTANT, HADUR_BENCH_HOST), so Bench's
+--parallel auto and --cpu-constant auto agree with the plan, and the run's conditions.json names
+the host. The first log line of a run names the host and the widths. --work-dir DIR (or
+HADUR_BENCH_WORK, or WORK_DIR in host.local) puts the work folder on another disk: when
+hadur-bench/work does not exist yet it is made a link (a junction on Windows) to DIR; an
+existing work folder is never moved.
+
 Every step is run in its own process group (POSIX) or job object (Windows) and only
 that tree is killed on stop, timeout or runner exit; no other java is touched. A timeout kills
 that one step; a stop kills every running step.
@@ -41,6 +54,8 @@ import time
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
+sys.path.insert(0, str(HERE))
+import hostprofile  # noqa: E402
 IS_WIN = os.name == "nt"
 TERMINAL_OK = "done"
 
@@ -79,8 +94,13 @@ def parse_gb(text):
     return float(m.group(1))
 
 
-def parse_plan(text):
-    steps, variables, current = [], {}, None
+HOST_VARIABLES = ("WORKERS", "DUEL_WORKERS", "TEAM_WORKERS", "MELEE_WORKERS", "CPU")
+
+
+def parse_plan(text, preset=None, locked=()):
+    """The plan's steps. `preset` variables (the host's) are defined before the first line; a
+    plan's `set` replaces one unless its name is in `locked` (a --workers override)."""
+    steps, variables, current = [], dict(preset or {}), None
     for n, raw in enumerate(text.splitlines(), 1):
         line = raw.rstrip()
         if not line.strip() or line.lstrip().startswith("#"):
@@ -100,6 +120,9 @@ def parse_plan(text):
                 raise PlanError(f"line {n}: unknown attribute '{key}'")
             continue
         m = re.match(r"set\s+(\w+)\s*=\s*(.*)$", stripped)
+        if m and m.group(1) in locked:
+            current = None
+            continue
         if m:
             value = m.group(2)
             for key, known in variables.items():
@@ -265,14 +288,14 @@ class Job:
         self.proc = None
         self.handle = None
 
-    def start(self, argv, cwd, out):
+    def start(self, argv, cwd, out, env=None):
         if IS_WIN:
             self.proc = subprocess.Popen(argv, cwd=cwd, stdout=out, stderr=subprocess.STDOUT,
-                                         stdin=subprocess.DEVNULL, creationflags=0x00000200)
+                                         stdin=subprocess.DEVNULL, creationflags=0x00000200, env=env)
             self._assign_job()
         else:
             self.proc = subprocess.Popen(argv, cwd=cwd, stdout=out, stderr=subprocess.STDOUT,
-                                         stdin=subprocess.DEVNULL, start_new_session=True)
+                                         stdin=subprocess.DEVNULL, start_new_session=True, env=env)
         return self.proc
 
     def _assign_job(self):
@@ -390,7 +413,7 @@ class Runner:
         out = open(paths.step_log(step.name), "w", encoding="utf-8", errors="replace")
         log(paths, f"start {step.name}")
         job = Job()
-        job.start(find_shell() + [step.command], str(paths.home), out)
+        job.start(find_shell() + [step.command], str(paths.home), out, getattr(self.args, "step_env", None))
         self.running[step.name] = Active(step, job, out)
         state["steps"][step.name] = {"status": "running", "start": time.strftime("%Y-%m-%dT%H:%M:%S")}
         save_state(paths, state)
@@ -439,6 +462,8 @@ class Runner:
             signal.signal(signal.SIGBREAK, self._on_signal)
         signal.signal(signal.SIGTERM, self._on_signal)
         state = {"steps": {}} if args.fresh else load_state(paths)
+        for line in getattr(args, "host_lines", []):
+            log(paths, line)
         try:
             return self._loop(state)
         finally:
@@ -533,10 +558,50 @@ class Runner:
         return 1 if failed else 0
 
 
+def host_profile(args, home):
+    """The host's profile (hostprofile.py) with the run's --workers and --work-dir, if any."""
+    try:
+        return hostprofile.profile(workers=getattr(args, "workers", None) or os.environ.get("HADUR_BENCH_WORKERS") or None,
+                                   work_dir=getattr(args, "work_dir", None), home=home)
+    except ValueError as e:
+        raise PlanError(str(e))
+
+
+def read_plan(plan_file, prof, args=None):
+    locked = HOST_VARIABLES if (getattr(args, "workers", None) or os.environ.get("HADUR_BENCH_WORKERS")) else ()
+    return parse_plan(plan_file.read_text(encoding="utf-8"), hostprofile.plan_variables(prof), locked)
+
+
+def link_work_dir(home, target):
+    """Make home/work a link to `target` when home/work does not exist; never move an existing one.
+    Returns a line for the log, or None when there is nothing to say."""
+    work, target = home / "work", Path(target).expanduser()
+    if work.resolve() == target.resolve():
+        return None
+    if work.exists() or work.is_symlink():
+        raise PlanError(f"work dir {target} was asked for, but {work} already exists and is not a link to it; "
+                        "move or link it by hand (nothing was moved)")
+    target.mkdir(parents=True, exist_ok=True)
+    if IS_WIN:
+        r = subprocess.run(["cmd", "/c", "mklink", "/J", str(work), str(target)], capture_output=True, text=True)
+        if r.returncode != 0:
+            raise PlanError(f"could not link {work} to {target}: {r.stdout.strip()} {r.stderr.strip()}")
+    else:
+        os.symlink(target, work, target_is_directory=True)
+    return f"work dir {work} -> {target}"
+
+
+def cmd_host(args):
+    home = Path(args.home).resolve()
+    print(hostprofile.describe(host_profile(args, home)))
+    return 0
+
+
 def cmd_run(args):
     home = Path(args.home).resolve()
     plan_file = resolve_plan(args.plan, home)
-    steps = parse_plan(plan_file.read_text(encoding="utf-8"))
+    prof = host_profile(args, home)
+    steps = read_plan(plan_file, prof, args)
     paths = Paths(home, plan_file)
     known = {s.name for s in steps}
     for name in args.only + args.skip:
@@ -551,15 +616,25 @@ def cmd_run(args):
             mark = "skip" if status == TERMINAL_OK or s.name in args.skip or (args.only and s.name not in args.only) else "run "
             extra = (f" [after {s.after}]" if s.after else "") + (f" [timeout {s.timeout:g}s]" if s.timeout else "") + (f" [memory {s.memory:g} GB]" if s.memory else "")
             print(f"{mark} {s.name} ({status}){extra}: {s.command}")
+        print(f"host: {hostprofile.summary(prof)}")
         print(f"dry run: nothing was run (up to {args.concurrency or steps.concurrency} at a time)")
         return 0
+    linked = link_work_dir(home, prof["work_dir"]) if prof["work_dir_source"] != "default" else None
+    if args.min_free_gb is None:
+        args.min_free_gb = prof["min_free_gb"]
+    paths.work.mkdir(parents=True, exist_ok=True)
+    profile_file = paths.work / f"queue-{paths.plan}.host.json"
+    profile_file.write_text(json.dumps(prof, indent=1))
+    args.step_env = {**os.environ, **hostprofile.step_environment(prof, profile_file)}
+    args.host_lines = ([linked] if linked else []) + [f"host {hostprofile.summary(prof)}"] + \
+        [f"host warning: {w}" for w in prof["warnings"]]
     return Runner(paths, steps, args).run()
 
 
 def cmd_status(args):
     home = Path(args.home).resolve()
     plan_file = resolve_plan(args.plan, home)
-    steps = parse_plan(plan_file.read_text(encoding="utf-8"))
+    steps = read_plan(plan_file, host_profile(args, home))
     paths = Paths(home, plan_file)
     state = load_state(paths)
     pid = runner_pid(paths)
@@ -604,11 +679,19 @@ def build_parser():
     r.add_argument("--skip", default="", help="comma-separated step names to skip")
     r.add_argument("--fresh", action="store_true", help="ignore the saved state and run every step")
     r.add_argument("--stop-on-fail", action="store_true", help="stop the queue at the first failed step")
-    r.add_argument("--min-free-gb", type=float, default=8.0, help="pause before a step while free memory is under this (0 disables), default 8")
+    r.add_argument("--min-free-gb", type=float, default=None,
+                   help="pause before a step while free memory is under this (0 disables); default 8, or a fifth of the RAM under 40 GB")
     r.add_argument("--concurrency", type=int, default=None,
                    help="run up to N independent steps side by side (default: the plan's CONCURRENCY, else 1)")
+    r.add_argument("--workers", type=int, default=None,
+                   help="battle width for every kind, over the plan's and the detected one (default: detected, see hostprofile.py)")
+    r.add_argument("--work-dir", default=None, help="put the work folder here (linked from hadur-bench/work when that does not exist yet)")
     r.add_argument("--poll", type=float, default=1.0, help=argparse.SUPPRESS)
     r.set_defaults(func=cmd_run)
+    h = sub.add_parser("host", help="show what this machine runs: cores, memory, widths, CPU constant, work dir")
+    h.add_argument("--workers", type=int, default=None)
+    h.add_argument("--work-dir", default=None)
+    h.set_defaults(func=cmd_host)
     s = sub.add_parser("status", help="show each step's state")
     s.add_argument("plan")
     s.set_defaults(func=cmd_status)
