@@ -805,8 +805,8 @@ public class MoveController {
         int currentRound = w.fireRound;
         if (gunMimics != null) {
             // MOVE-27: a learning gun learns every visit; so do its mimics.
+            // A visit moves the next plan's profile but does not end the current plan.
             gunMimics.learnVisit(w, w.guessFactor(intersection.angle));
-            viewRevision++;
         }
         for (KnnView<TimestampedGuessFactor> view : views) {
             if (!view.logVisits) continue;
