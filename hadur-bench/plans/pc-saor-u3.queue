@@ -13,7 +13,8 @@
 #   robots. Gives U1 survival, U2 64 APS and SAOR-12 66 APS over every opponent.
 # gate9 (about 20 min): saor-gate9.txt (Figment, Wallaby, Capulet and six robots down the field)
 #   x 200 seeds. Gives SAOR-13 (out-survive Figment in half) and SAOR-14 (out-damage Wallaby in half).
-# read: tools/saor_gates.py over both runs into one gates report; then the results PR.
+# read: tools/saor_gates.py on each run on its own (U1, U2 and SAOR-12 from the census, SAOR-13 and
+#   SAOR-14 from the gate field; pooling them would skew both); then the results PR.
 #
 # Cloud smoke (2026-10-25, 2 seeds of saor-gate9.txt, 4 cores): Saor ran clean (0 skipped turns),
 # 3rd of 10 by mean place, score share 11.6% against Figment's 12.6% and Wallaby's 16.0%.
@@ -29,8 +30,8 @@ census | ${MVN} "-Dexec.args=@plans/saor-census.args"
 gate9 | ${MVN} "-Dexec.args=@plans/saor-gate9.args"
   after: census
 
-read | python3 tools/saor_gates.py --work work/saor-census --work work/saor-gate9 --robot "hadur117.micro.Saor 0.1" --json ${OUT}/saor-gates.json > ${OUT}/saor-gates.md
+read | python3 tools/saor_gates.py --work work/saor-census --robot "hadur117.micro.Saor 0.1" --json ${OUT}/saor-gates-census.json > ${OUT}/saor-gates-census.md && python3 tools/saor_gates.py --work work/saor-gate9 --robot "hadur117.micro.Saor 0.1" --json ${OUT}/saor-gates-gate9.json > ${OUT}/saor-gates-gate9.md
   after: gate9
 
-pr | bash tools/open_results_pr.sh claude/pc-saor-u3-results "Saor 0.1: MicroMelee census and gate field" ${OUT}/saor-census.md ${OUT}/saor-gate9.md ${OUT}/saor-gates.md
+pr | bash tools/open_results_pr.sh claude/pc-saor-u3-results "Saor 0.1: MicroMelee census and gate field" ${OUT}/saor-census.md ${OUT}/saor-gate9.md ${OUT}/saor-gates-census.md ${OUT}/saor-gates-gate9.md
   after: read

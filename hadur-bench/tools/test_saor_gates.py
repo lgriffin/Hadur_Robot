@@ -43,7 +43,7 @@ class SaorGatesTest(unittest.TestCase):
         self.battle([("other.Bot 1.0", 900, 30, 900, 800), (SAOR, 100, 5, 100, 100)], baseline=True)
         r = saor_gates.evaluate([self.work], "hadur117.micro.Saor")
         self.assertEqual(r["battles"], 1)
-        self.assertEqual(r["SAOR-12 aps"]["verdict"], "pass (short: 1 of 155)")
+        self.assertEqual(r["SAOR-12 aps"]["verdict"], "short: 1 of 156, above threshold")
         self.assertEqual(r["U1 survival"]["value"], round(100 * 30 / 35, 2))
 
     # @Tag("SAOR-13")

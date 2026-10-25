@@ -93,6 +93,27 @@ room for a later fix. Two trades would buy it:
 
 Neither is made. The PC census and gate field are the place to decide them.
 
+### Known gaps kept for bytes
+
+These behaviours are Figment's own, and Saor keeps them. A fix costs bytes the class does not
+have. The core and SaorLab do the same, so SAOR-15 still holds.
+
+- **A target switch records one false transition.** The last velocity, heading and state are
+  not kept per target. So the first scan after a switch packs a state from two robots, and
+  records it in the new target's table under the old target's row. Switches come from a nearer
+  robot or a death. In a ten-robot round that is a few samples against hundreds of good ones.
+- **A gap between scans can push the turn index out of range.** The turn is the heading change
+  since the last scan, divided by one tick's largest turn. If the radar misses the target for
+  two or more ticks, a hard turn packs below 0 or above 4. The aim's table lookup then throws,
+  and the catch drops that one scan's gun turn. The next scan's record also throws, and nothing
+  is learned from it. While the gun is cool the radar locks every tick, so gaps mostly happen
+  while the gun is hot.
+- **The current target is matched by reference (`name == targetName`).** The engine hands a
+  robot the same name String on every event, so equal names are the same object. This is the
+  usual micro idiom, and Figment uses it too.
+- **`Double.POSITIVE_INFINITY * sin(0)` is NaN.** That happens only when the radar points
+  exactly at the target's bearing, to the last bit of a double. That is too rare to spend bytes on.
+
 ## Stages
 
 The spec's stages M0 to M5 are U0 to U5 here, because M is already Hadur's melee stage letter.
@@ -132,8 +153,10 @@ options in an args file (`plans/saor-*.args`), since the robot's name has a spac
 | SAOR-13 | The share of battles with Figment in which Saor's survival score beat Figment's. |
 | SAOR-14 | The share of battles with Wallaby in which Saor's bullet damage beat Wallaby's. |
 
-A gate passes only on its full sample: 155 opponents for the APS gates and 200 battles for
-the head-to-heads. A smaller run prints "short".
+A gate passes only on its full sample: 156 opponents for the APS gates and 200 battles for
+the head-to-heads. A smaller run's verdict is "short", never "pass". The census and the gate field
+are read separately: survival and APS come from the census only, the head-to-heads from the gate
+field only.
 
 ### PC card
 
@@ -142,7 +165,8 @@ the head-to-heads. A smaller run prints "short".
 - the census, 216 battles (about 15 min)
 - the gate field, 200 battles (about 20 min)
 
-It then writes `docs/bench/local/saor-gates.md` and opens a results PR. Run it from master:
+It then writes `docs/bench/local/saor-gates-census.md` and `saor-gates-gate9.md` and opens a
+results PR. Run it from master:
 `./queue.sh run pc-saor-u3` (or `.\queue.ps1 run pc-saor-u3`).
 
 ### Cloud smoke, 2026-10-25

@@ -75,8 +75,11 @@ public class SaorLab extends AdvancedRobot {
         }
         double power = Energy.power(getEnergy(), targetDistance = distance, getOthers());
         if (Energy.fire(getGunTurnRemaining())) {
+            // The engine drops the order while the gun is hot; count only the ones it can fire.
+            if (getGunHeat() == 0 && getEnergy() > 0) {
+                shots++;
+            }
             setFire(power);
-            shots++;
         }
         double velocity = e.getVelocity();
         double lastHeading = targetHeading;

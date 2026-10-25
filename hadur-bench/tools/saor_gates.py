@@ -17,9 +17,11 @@ battles are skipped) and reports, for the robot named by --robot (default hadur1
 
   python3 hadur-bench/tools/saor_gates.py --work hadur-bench/work/saor-gate9 [--json out.json]
 
-A gate passes only with its full sample: the APS gate needs --pairings opponents (155, the
-MicroMelee field), the head-to-head gates --battles battles (200). Smaller runs print the same
-numbers marked "short", so a cloud smoke run reads as a smoke run. Standard library only.
+A gate passes only with its full sample: the APS gate needs --pairings opponents (156, the
+MicroMelee field), the head-to-head gates --battles battles (200). A smaller run's verdict is
+"short: n of N" with whether the value is above or below the threshold, never "pass", so a cloud
+smoke run reads as a smoke run. Run the census and the gate field separately: the APS and survival
+gates belong to the census, the head-to-heads to the gate field. Standard library only.
 """
 
 import argparse
@@ -66,7 +68,7 @@ def head_to_head(battle, us, prefix, key):
     return None
 
 
-def evaluate(works, robot, pairings=155, needed_battles=200):
+def evaluate(works, robot, pairings=156, needed_battles=200):
     shares = {}
     firsts = rounds = 0
     figment = []
@@ -97,7 +99,11 @@ def evaluate(works, robot, pairings=155, needed_battles=200):
         if value is None:
             return {"value": None, "n": n, "verdict": "no data"}
         ok = value >= threshold
-        verdict = ("pass" if ok else "fail") + ("" if n >= needed else " (short: %d of %d)" % (n, needed))
+        if n >= needed:
+            verdict = "pass" if ok else "fail"
+        else:
+            # Never a pass: a gate is decided only on its full sample.
+            verdict = "short: %d of %d, %s threshold" % (n, needed, "above" if ok else "below")
         return {"value": round(value, 2), "n": n, "threshold": threshold, "verdict": verdict}
 
     share = lambda xs: 100.0 * sum(xs) / len(xs) if xs else None
@@ -129,7 +135,7 @@ def main(argv=None):
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("--work", action="append", required=True, help="bench work directory; repeatable")
     p.add_argument("--robot", default="hadur117.micro.Saor")
-    p.add_argument("--pairings", type=int, default=155, help="opponents the APS gate needs")
+    p.add_argument("--pairings", type=int, default=156, help="opponents the APS gate needs")
     p.add_argument("--battles", type=int, default=200, help="battles each head-to-head gate needs")
     p.add_argument("--json", help="also write the result here")
     a = p.parse_args(argv)
