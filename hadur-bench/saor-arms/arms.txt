@@ -9,3 +9,12 @@ N | cap 3 / others + 1.9: uncapped one on one, 2.9 at 2-3 left, 1.9 from 4 (764)
 U | no power cap at all, frees 14 bytes (750) | s#Math.min(getOthers() / 3 + 1.9, Math.log10(getEnergy()) \* 325 / (targetDistance = distance))#Math.log10(getEnergy()) * 325 / (targetDistance = distance)#
 L | longer leg: 55 + distance / 2, wider swings in melee and duel (764) | s#int x = 55 + (int) (targetDistance / 2.5);#int x = 55 + (int) (targetDistance / 2);#
 S | shorter leg: 55 + distance / 3.5, tighter to the corner (764) | s#int x = 55 + (int) (targetDistance / 2.5);#int x = 55 + (int) (targetDistance / 3.5);#
+# Stage 0 and 1 of docs/plan-saor-first.md (Leigh, 2026-10-25: "plan the gap to 1st"). Seats run
+# on the live-shaped census only (tools/saor_live.py); the parity arms revert where Saor differs
+# from Figment.
+FIG | kc.micro.Figment 1.0 in the seat (1st, 69.37 live) | @kc.micro.Figment 1.0
+WAL | wompi.Wallaby 5.1 in the seat (2nd, 68.96 live) | @wompi.Wallaby 5.1
+G | 128 playouts an aim, as Figment (764) | s#} while (++i < 64);#} while (++i <= 127);#
+W | sample any row with a sample, as Figment (762) | s#if ((n = table\[id\]\[126\]) >= 8) {#if ((n = table[id][126]) > 0) {#
+R | no leg after a ram, as Figment (751) | s#targetName = e.getName();##; s#targetDistance = -12.5;##
+FX | G, W, R and U together: Figment's gun and movement with Saor's 512 hashes and 1024 bins (735) | s#} while (++i < 64);#} while (++i <= 127);#; s#if ((n = table\[id\]\[126\]) >= 8) {#if ((n = table[id][126]) > 0) {#; s#targetName = e.getName();##; s#targetDistance = -12.5;##; s#Math.min(getOthers() / 3 + 1.9, Math.log10(getEnergy()) \* 325 / (targetDistance = distance))#Math.log10(getEnergy()) * 325 / (targetDistance = distance)#

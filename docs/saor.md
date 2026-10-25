@@ -126,6 +126,7 @@ The spec's stages M0 to M5 are U0 to U5 here, because M is already Hadur's melee
 | U3 | M3 | 66 APS; out-survive Figment in half of 200 battles | APS met: 66.45 ± 0.24 (PR #284); Figment 29% not met; no arm beat 0.1 |
 | U4 | M4 | Codesize at most 744 | 749: at the limit, the margin is not met (above) |
 | U5 | M5 | Rumble entry | Done: 0.1 entered 2026-10-25, MicroMelee 3rd at 68.08 ([standing](../saor/README.md)); plan for 1st in [plan-saor-first.md](plan-saor-first.md) |
+| U6 | - | Plan for 1st, stages 0 and 1: a live-shaped census (SAOR-16) and Figment parity | Card `pc-saor-s01` ready, waiting on Leigh |
 
 `hadur.saor.stage` in the root pom is U4, so the traceability test expects coverage for every
 requirement up to U4.

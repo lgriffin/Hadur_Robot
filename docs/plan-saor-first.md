@@ -64,10 +64,10 @@ power formula.
 
 | Difference | Saor | Figment | Bytes to revert |
 |---|---|---|---|
-| Playouts per aim | 64 | **128** | 0 |
-| When a row is sampled | 8 or more samples, otherwise hold the state | **any sample** (min 126) | saves about 2 |
+| Playouts per aim | 64 | **128** | 0 (arm G, 764 javac) |
+| When a row is sampled | 8 or more samples, otherwise hold the state | **any sample** (min 126) | saves 2 (arm W) |
 | Power cap | `others / 3 + 1.9` | **none** | saves 14 (arm U, -0.12 ± 0.35) |
-| Leg after a ram | 50 px (SAOR-9) | **none** | saves 14 |
+| Leg after a ram | 50 px (SAOR-9) | **none** | saves 13 (arm R) |
 | Opponent hash | 512 rows | 256 | 0 |
 | Angle bins | 1024 | 1000 | 0 |
 
@@ -77,8 +77,23 @@ the cause, but it has not been tested.
 
 ## 5. Stages
 
-Each stage is one PC card, started by Leigh. Cards run from master, and every arm is paired
-per field against the control. The read uses `tools/saor_arms.py`.
+The stages are U6 onward in docs/saor.md (SAOR-16 is the live-shaped census). Each card is
+started by Leigh and runs from master. Every arm is paired per field against the control, and
+the read uses `tools/saor_arms.py`.
+
+**Stages 0 and 1 share one card, `plans/pc-saor-s01.queue`, which takes about 4-5 h.** It runs
+the live-shaped census for C, Figment, Wallaby and FX, and the MicroMelee census for C, G, W, R
+and FX. The results PR goes to `claude/pc-saor-s01-results`.
+
+How the card is built:
+
+- `tools/saor_live.py` builds the live-shaped fields from `melee-census-317`.
+- `tools/saor_arms.sh live` seats an arm. An arm written `@robot` seats that robot.
+- `SAOR_RUN=s01` keeps the card's battles and reports apart from earlier cards.
+- `saor_arms.py --field live --only work/saor-s01/live/micro.txt` counts only the micro pairings.
+
+Stage 1 runs on the fast census because that census ranks arms well even though its level is
+off.
 
 | Stage | What | Arms | PC time | Pass |
 |---|---|---|---|---|

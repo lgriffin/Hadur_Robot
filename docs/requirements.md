@@ -1736,6 +1736,7 @@ docs/saor.md. Nothing in Hadur's modules depends on it, and it on nothing of Had
 | SAOR-13 | Ubiquitous | Against Figment 1.0 in a 10-bot field over 200 battles, the bot shall out-survive it in 50% or more of battles. | U3 |
 | SAOR-14 | Ubiquitous | Against Wallaby 5.1 in the same setup, the bot shall out-score it on bullet damage in 50% or more of battles. | U3 |
 | SAOR-15 | Ubiquitous | The shipped class shall give the same orders as the bench adapter, which drives the core, for the same events. | U0 |
+| SAOR-16 | Ubiquitous | The live-shaped census shall run fields drawn from the whole MeleeRumble list and score the seated robot only on its pairings against MicroMelee robots, as LiteRumble scores MicroMelee. | U6 |
 
 ### Saor notes
 
@@ -1751,4 +1752,6 @@ docs/saor.md. Nothing in Hadur's modules depends on it, and it on nothing of Had
   SAOR-15 also by the equivalence test on the robots, SAOR-11 and SAOR-15 on the shipped jar by
   `SaorJarIT` (failsafe, after ProGuard). SAOR-12 to SAOR-14 are bench gates: what is covered here
   is their evaluator, `hadur-bench/tools/saor_gates.py`, by `test_saor_gates.py`; whether they
-  pass is a bench result, recorded in docs/bench/.
+  pass is a bench result, recorded in docs/bench/. SAOR-16 is the plan for 1st
+  (docs/plan-saor-first.md): its field builder `tools/saor_live.py` and the micro-only read in
+  `saor_arms.py` are covered by `test_saor_live.py` and `test_saor_arms.py`.

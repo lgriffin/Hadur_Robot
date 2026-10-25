@@ -60,6 +60,24 @@ class SaorArmsTest(unittest.TestCase):
         self.assertEqual(mean, 70.0)
         self.assertGreater(half, 4.0)
 
+    # @Tag("SAOR-16")
+    def test_the_live_read_counts_only_micro_pairings_and_seats_other_robots(self):
+        root = tempfile.mkdtemp()
+        # Saor C scores 50% on the micro robot and 10% on a megabot; only the 50 counts.
+        battle(root, "live-C", 1, [("hadur117.micro.SaorC 0.1", 100, 1, 1, 1), ("micro.A 1", 100, 0, 0, 0), ("mega.M 1", 900, 0, 0, 0)])
+        battle(root, "live-FIG", 1, [("kc.micro.Figment 1.0", 300, 1, 1, 1), ("micro.A 1", 100, 0, 0, 0), ("mega.M 1", 900, 0, 0, 0)])
+        arms = os.path.join(root, "arms.txt")
+        with open(arms, "w", encoding="utf-8") as f:
+            f.write("# arms\nC | control |\nFIG | Figment seated | @kc.micro.Figment 1.0\n")
+        rows = saor_arms.read(root, ["C", "FIG"], "C", 60.0, pairings=1, field="live",
+                              robots=saor_arms.seats(arms), only={"micro.A 1"})
+        self.assertAlmostEqual(rows[0]["aps"], 50.0)
+        self.assertAlmostEqual(rows[1]["aps"], 75.0)
+        self.assertAlmostEqual(rows[1]["diff"], 25.0)
+        self.assertTrue(rows[1]["top5"])
+        self.assertFalse(rows[0]["top5"])
+        self.assertIn("1st bar", saor_arms.render(rows, "C", 60.0, "1st bar"))
+
 
 if __name__ == "__main__":
     unittest.main()
