@@ -4,8 +4,8 @@
 a 1v1 duelist that remembers each opponent across battles, with a melee brain for
 free-for-alls, a five-robot team entry, and a core that has no idea it is inside Robocode.
 
-**Hadur 3.15 is ranked 8th of 1,220 in the RoboRumble 1v1** (89.29 APS on its first pass; 3.13 held
-7th at 89.50 before a new entry arrived above it), 15th in the MeleeRumble and 9th in the TeamRumble,
+**Hadur 3.16 is ranked 8th of 1,220 in the RoboRumble 1v1** (89.25 APS), 7th of 47 in the
+TeamRumble (72.13, its best ever) and 17th of 416 in the MeleeRumble (66.30),
 the highest-ranked robot flying the Irish flag. It was designed, written, tested and tuned by Claude agents working
 in a shared project with one human, Leigh Griffin, who set the goals and ran the live
 entries. This page covers what the robot does, how it is built, and how it was built.
@@ -19,6 +19,26 @@ at Waterford Institute of Technology (the `wit` in its name). Building it is how
 learned Java, and it was the original inspiration for everything on this page.
 
 ## Standing
+
+**3.16 was released on 2026-10-24.** The live rankings read on 2026-10-25 at 11:10 UTC:
+
+| Rumble | Entry | Rank | APS | Pairings | Battles |
+|---|---|---|---|---|---|
+| 1v1 | `hadur2.Hadur 3.16` | **8th of 1,220** | **89.25** ± 0.18 | 1,219 | 2,160 |
+| Team | `hadur2.HadurTeam 3.16` | **7th of 47** | **72.13** ± 0.80 | 46 | 114 |
+| Melee | `hadur2.Hadur 3.15` | **17th of 416** | **66.30** ± 0.17 | 415 | 2,064 |
+
+- **What changed.** The per-opponent 1v1 mode table v1 (SHIELD-16 plus 49 more shield bots) and team
+  stage 1 (k21 and shooting rammers); all team modes off ([notes](docs/releases/v3.16.md)).
+- **1v1 level with 3.15.** Its first pass read 89.49; the 48 newly shielded bots gained +9.5 points
+  each (+0.37 APS, as benched), and nothing else moved ([live notes](docs/bench/live-3.16.md)).
+  7th is Diamond at 90.18; top 5 (Ogi, 90.97) needs +1.72.
+- **Team up two places to 7th**, its best ever: +3.8 over 3.15's 68.33, against a bench prediction of
+  +3.4. 6th is AlephTeam at 76.90 and 5th NightmareTeam at 77.19.
+- **Melee down two places** on the same code: the melee page still scores the 3.15 entry, now 66.30
+  over 2,064 battles against 66.71 on its early pass.
+
+### 3.15 at 8th
 
 **3.15 was released on 2026-10-23** and its first full 1v1 pass, saved at 09:34 UTC the same morning
 (1,219 pairings, 2,255 battles), puts `hadur2.Hadur 3.15` **8th of 1,220** at **89.29**:
@@ -119,6 +139,9 @@ by BENCH-5. The saved page is archived in [`data/rumble/`](data/rumble/).
 | 3.10 | 2026-10-08 | 86.42 | 93.9% | 20th, 13th on its second pass (87.33) | The shield sweep: 83 more robots on the shield list (+0.51 APS live); the pass ran 1.25 APS under 3.9's on unchanged code ([live notes](docs/bench/live-3.10.md)) |
 | 3.11 | 2026-10-10 | 87.56 | 95.1% | 13th (17th melee, 12th team) | Census-led: start-up duress (RES-9) retired, +0.25 APS live over 3.10 ([live notes](docs/bench/live-3.11.md)) |
 | 3.12 | 2026-10-11 | **87.72** | **95.3%** | **9th** | SHIELD-7: the mirror aim fires against a shielder, so the gun no longer falls silent against mirror bots ([live notes](docs/bench/live-3.12.md)) |
+| 3.13 | 2026-10-14 | 89.50 | 95.9% | 7th (17th melee, 9th team) | SHIELD-8..13: shield against 200 listed robots, holding fire and learning intercepted headings ([live notes](docs/bench/live-3.13.md)) |
+| 3.15 | 2026-10-23 | 89.29 | | 8th (15th melee, 9th team) | SHIELD-14, MOVE-24, the melee gun (MGUN-7) and team shared gun learning (MGUN-8) ([live notes](docs/bench/live-3.15.md)) |
+| 3.16 | 2026-10-24 | 89.25 | 95.3% | 8th (17th melee, 7th team) | Per-opponent mode table v1 and team stage 1 ([live notes](docs/bench/live-3.16.md)) |
 
 3.0 and 3.1 both started near 85.7 APS and slid by 5 to 8 points within hours on live
 clients, which the bench could not reproduce. R7's one-JVM session bench and R8 traced it to
