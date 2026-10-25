@@ -1,6 +1,6 @@
 # 3.17 live, first pass (2026-10-25 22:57 UTC)
 
-LiteRumble pages archived as `data/rumble/pages/2026-10-25T2257Z_*` (1v1), `2026-10-25T2216Z_*` (team) and
+LiteRumble pages archived as `data/rumble/pages/2026-10-25T2257Z_*` (1v1), `2026-10-25T2216Z_*` (team), `2026-10-25T2330Z_*` (melee) and
 `2026-10-25T2305Z_*` (Saguaro, ScalarR, JKHydra and Ogi BotDetails), parsed under `data/rumble/parsed/`.
 1v1 3.17 is 7th at **90.91 ± 0.19** over 1,219 pairings and 2,253 battles, Hadur's best score ever.
 HadurTeam 3.17 is 4th of 48 at **79.39 ± 1.00** over 69 battles (published as 3.17.1).
@@ -49,3 +49,9 @@ place has to come from Saguaro's groups above while keeping the shield and stop-
 
 HadurTeam 3.17 (3.17.1) is 4th at 79.39, +7.3 over 3.16's 72.13 on 69 battles (bench step C predicted
 +2.9; one early pass, ±1.00). 5th ShadowTeam 79.17, 6th NightmareTeam 77.11, 3rd CombatTeam 81.85.
+
+## Melee
+
+Hadur 3.17's first full melee pass (2026-10-25 23:30 UTC, `2026-10-25T2330Z_meleerumble_*`): **16th of 416 at
+66.40 ± 0.23** over 415 pairings and 1,354 battles, survival 44.2%; 3.15 settled at 66.30 (17th). The melee code
+did not change in 3.17, so +0.10 is pass noise. Saor 0.1 (MicroMelee entry, `hadur117.micro.Saor`) is 31st at 63.70.

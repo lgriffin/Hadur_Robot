@@ -5,7 +5,7 @@ a 1v1 duelist that remembers each opponent across battles, with a melee brain fo
 free-for-alls, a five-robot team entry, and a core that has no idea it is inside Robocode.
 
 **Hadur 3.17 is ranked 7th of 1,220 in the RoboRumble 1v1** (90.91 APS, its best ever), 4th of 48 in the
-TeamRumble (79.39, its best ever) and 17th of 416 in the MeleeRumble (66.30),
+TeamRumble (79.39, its best ever) and 16th of 416 in the MeleeRumble (66.40),
 the highest-ranked robot flying the Irish flag. It was designed, written, tested and tuned by Claude agents working
 in a shared project with one human, Leigh Griffin, who set the goals and ran the live
 entries. This page covers what the robot does, how it is built, and how it was built.
@@ -20,13 +20,13 @@ learned Java, and it was the original inspiration for everything on this page.
 
 ## Standing
 
-**3.17 was released on 2026-10-25.** The live rankings read on 2026-10-25 at 22:57 UTC (1v1) and 22:16 UTC (team):
+**3.17 was released on 2026-10-25.** The live rankings read on 2026-10-25 at 22:57 UTC (1v1), 22:16 UTC (team) and 23:30 UTC (melee):
 
 | Rumble | Entry | Rank | APS | Pairings | Battles |
 |---|---|---|---|---|---|
 | 1v1 | `hadur2.Hadur 3.17` | **7th of 1,220** | **90.91** ± 0.19 | 1,219 | 2,253 |
 | Team | `hadur2.HadurTeam 3.17` | **4th of 48** | **79.39** ± 1.00 | 47 | 69 |
-| Melee | `hadur2.Hadur 3.15` | **17th of 416** | **66.30** ± 0.17 | 415 | 2,064 |
+| Melee | `hadur2.Hadur 3.17` | **16th of 416** | **66.40** ± 0.23 | 415 | 1,354 |
 
 - **What changed.** Three more stages of the per-opponent 1v1 mode table (shield part 2, stop-and-go against
   surfers, shield part 3) and the team's narrow fire lane (step C) ([notes](docs/releases/v3.17.md)).
@@ -36,8 +36,8 @@ learned Java, and it was the original inspiration for everything on this page.
   4th to 6th (ScalarR 91.27, JKHydra 90.96, Ogi 90.96) are within 0.36.
 - **Team up three places to 4th**, its best ever: +7.3 over 3.16's 72.13 on its first pass. 5th is ShadowTeam
   at 79.17, 3rd CombatTeam at 81.85.
-- **Melee down two places** on the same code: the melee page still scores the 3.15 entry, now 66.30
-  over 2,064 battles against 66.71 on its early pass.
+- **Melee up one place to 16th** on unchanged melee code: 66.40 on 3.17's first full pass (1,354 battles),
+  +0.10 over 3.15's settled 66.30. Saor 0.1, the MicroMelee entry, is 31st at 63.70.
 
 ### 3.15 at 8th
 
@@ -143,7 +143,7 @@ by BENCH-5. The saved page is archived in [`data/rumble/`](data/rumble/).
 | 3.13 | 2026-10-14 | 89.50 | 95.9% | 7th (17th melee, 9th team) | SHIELD-8..13: shield against 200 listed robots, holding fire and learning intercepted headings ([live notes](docs/bench/live-3.13.md)) |
 | 3.15 | 2026-10-23 | 89.29 | | 8th (15th melee, 9th team) | SHIELD-14, MOVE-24, the melee gun (MGUN-7) and team shared gun learning (MGUN-8) ([live notes](docs/bench/live-3.15.md)) |
 | 3.16 | 2026-10-24 | 89.25 | 95.3% | 8th (17th melee, 7th team) | Per-opponent mode table v1 and team stage 1 ([live notes](docs/bench/live-3.16.md)) |
-| 3.17 | 2026-10-25 | **90.91** | 99.0% | **7th** (4th team) | Mode table v2 (stop-and-go), shield parts 2 and 3, team step C ([live notes](docs/bench/live-3.17.md)) |
+| 3.17 | 2026-10-25 | **90.91** | 99.0% | **7th** (16th melee, 4th team) | Mode table v2 (stop-and-go), shield parts 2 and 3, team step C ([live notes](docs/bench/live-3.17.md)) |
 
 3.0 and 3.1 both started near 85.7 APS and slid by 5 to 8 points within hours on live
 clients, which the bench could not reproduce. R7's one-JVM session bench and R8 traced it to
