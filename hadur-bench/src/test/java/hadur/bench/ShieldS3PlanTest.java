@@ -20,8 +20,8 @@ class ShieldS3PlanTest {
     @DisplayName("every step reads the one before it at 12 workers, on the release the card builds, and ends in a gate and a results PR")
     void stepsChain() throws IOException {
         String queue = Files.readString(QUEUE);
-        String release = Files.readString(Path.of("../hadur-robot/pom.xml"))
-            .replaceAll("(?s).*<robot.release>([^<]+)</robot.release>.*", "$1");
+        // The card ran on 3.16 and is finished, so later version bumps do not move it.
+        String release = "3.16";
         assertTrue(queue.contains("set P = --parallel 12 --no-truth-log"));
         assertTrue(queue.contains("cp ../hadur-robot/target/hadur2.Hadur_" + release + ".jar bisect/"));
         assertTrue(queue.contains("--base " + release + " "));

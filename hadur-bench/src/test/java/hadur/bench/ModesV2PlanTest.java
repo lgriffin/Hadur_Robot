@@ -8,8 +8,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -19,11 +17,11 @@ class ModesV2PlanTest {
 
     private static final Path QUEUE = Path.of("plans/pc-1v1-modes.queue");
 
+    /** The release the card ran on. The card is finished, so later version bumps do not move it. */
+    private static final String RAN_ON = "3.16";
+
     private static String release() throws IOException {
-        Matcher m = Pattern.compile("<robot.release>([^<]+)</robot.release>")
-            .matcher(Files.readString(Path.of("../hadur-robot/pom.xml")));
-        assertTrue(m.find());
-        return m.group(1);
+        return RAN_ON;
     }
 
     @Test
