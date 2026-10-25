@@ -111,7 +111,7 @@ class RunTest(QueueCase):
         self.plan(f"a | {py('print(1)')}\nb | {py('print(2)')}\n")
         code, _ = self.run_queue()
         self.assertEqual(code, 0)
-        lines = self.logtext().splitlines()
+        lines = [x for x in self.logtext().splitlines() if " host " not in x]
         self.assertRegex(lines[0], r"^\d\d:\d\d:\d\d start a$")
         self.assertRegex(lines[1], r"^\d\d:\d\d:\d\d a exit=0 in \d+ s$")
         self.assertTrue(lines[-1].endswith("ALLDONE"))
@@ -450,13 +450,76 @@ class ConcurrencyTest(QueueCase):
         self.assertEqual(benchqueue.parse_plan("a | echo 1\n").concurrency, 1)
 
 
+PC_VARIABLES = {"WORKERS": "12", "DUEL_WORKERS": "12", "TEAM_WORKERS": "12", "MELEE_WORKERS": "12",
+                "CPU": "--cpu-constant 1488498"}
+
+
+class HostTest(QueueCase):
+    """BENCH-105: the host's widths reach the plan and the steps; the work dir can move."""
+
+    ENV_STEP = py("import os;open('env.txt','w').write(os.environ.get('HADUR_BENCH_WORKERS_DUEL','-')+' '+os.environ.get('HADUR_BENCH_WORKERS_MELEE','-'))")
+
+    def test_preset_variables_fill_the_plan_and_a_plan_set_replaces_them(self):
+        plan = benchqueue.parse_plan("a | bench --parallel ${WORKERS} ${CPU}\n", PC_VARIABLES)
+        self.assertEqual(plan[0].command, "bench --parallel 12 --cpu-constant 1488498")
+        plan = benchqueue.parse_plan("set WORKERS = 6\na | bench --parallel ${WORKERS}\n", PC_VARIABLES)
+        self.assertEqual(plan[0].command, "bench --parallel 6")
+        locked = benchqueue.parse_plan("set WORKERS = 6\na | bench --parallel ${WORKERS}\n",
+                                       dict(PC_VARIABLES, WORKERS="3"), benchqueue.HOST_VARIABLES)
+        self.assertEqual(locked[0].command, "bench --parallel 3")
+
+    def test_an_empty_cpu_flag_leaves_the_engine_to_calibrate(self):
+        plan = benchqueue.parse_plan("a | bench ${CPU} --rounds 35\n", dict(PC_VARIABLES, CPU=""))
+        self.assertEqual(plan[0].command, "bench  --rounds 35")
+
+    def test_workers_override_reaches_the_plan_the_steps_and_the_log(self):
+        self.plan(f"set WORKERS = 12\na | {self.ENV_STEP} && echo ${{WORKERS}} > width.txt\n")
+        code, _ = self.run_queue("t", "--workers", "3")
+        self.assertEqual(code, 0)
+        self.assertEqual((self.home / "width.txt").read_text().strip(), "3")
+        self.assertEqual((self.home / "env.txt").read_text(), "3 3")
+        log = self.logtext()
+        self.assertIn("workers duel 3 team 3 melee 3 (override)", log)
+        self.assertTrue((self.home / "work" / "queue-t.host.json").is_file())
+
+    def test_host_local_sets_the_width(self):
+        (self.home / "host.local").write_text("# laptop\nWORKERS = 2\nWORKERS_MELEE = 1\n")
+        self.plan(f"a | {self.ENV_STEP}\n")
+        code, _ = self.run_queue()
+        self.assertEqual(code, 0)
+        self.assertEqual((self.home / "env.txt").read_text(), "2 1")
+
+    @unittest.skipIf(os.name == "nt", "symlink needs privileges on Windows; the junction path is used there")
+    def test_work_dir_is_linked_when_work_does_not_exist(self):
+        target = Path(self._tmp.name + "-work")
+        self.addCleanup(lambda: __import__("shutil").rmtree(target, ignore_errors=True))
+        self.plan(f"a | {append_marker('work/mark')}\n")
+        code, _ = self.run_queue("t", "--work-dir", str(target))
+        self.assertEqual(code, 0)
+        self.assertTrue((self.home / "work").is_symlink())
+        self.assertTrue((target / "mark").is_file())
+        self.assertTrue((target / "queue-t.state.json").is_file())
+        self.assertIn(f"work dir {self.home / 'work'} -> {target}", self.logtext())
+
+    def test_an_existing_work_folder_is_never_moved(self):
+        (self.home / "work").mkdir()
+        (self.home / "work" / "keep").write_text("x")
+        self.plan(f"a | {py('print(1)')}\n")
+        err = io.StringIO()
+        with mock.patch("sys.stderr", err):
+            code, _ = self.run_queue("t", "--work-dir", self._tmp.name + "-elsewhere")
+        self.assertEqual(code, 2)
+        self.assertIn("nothing was moved", err.getvalue())
+        self.assertTrue((self.home / "work" / "keep").is_file())
+
+
 class ShippedPlanTest(unittest.TestCase):
     def test_every_shipped_plan_parses_with_all_variables_resolved(self):
         plans = Path(benchqueue.__file__).resolve().parent / "plans"
         found = sorted(plans.glob("*.queue"))
         self.assertTrue(found)
         for p in found:
-            steps = benchqueue.parse_plan(p.read_text(encoding="utf-8"))
+            steps = benchqueue.parse_plan(p.read_text(encoding="utf-8"), PC_VARIABLES)
             self.assertTrue(steps, p.name)
             for s in steps:
                 self.assertNotIn("${", s.command, f"{p.name}:{s.name}")

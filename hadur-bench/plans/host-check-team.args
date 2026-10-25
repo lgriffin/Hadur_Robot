@@ -1,0 +1,27 @@
+# Host check (plans/host-check.queue), team block: HadurTeam 3.15 on all 46 TeamRumble teams, 2 seeds, at this machine's own width (Bench @FILE, one argument a line)
+--team
+true
+--seeds
+2
+--seed-base
+2400
+--rounds
+10
+--parallel
+auto
+--child-heap
+2G
+--cpu-constant
+auto
+--set
+team-census46.txt
+--robot-jar
+bisect/hadur2.HadurTeam_3.15.jar
+--robot
+hadur2.HadurTeam 3.15
+--member
+hadur2.Hadur
+--out
+work/host-check-team
+--force-memory
+true

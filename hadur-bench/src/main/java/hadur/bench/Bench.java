@@ -158,11 +158,27 @@ public final class Bench {
     private Instant startedAt;
     private Conditions.Shelf startShelf;
     private volatile int workers = 1;
+    /** BENCH-105: the queue runner's one-line host profile, or null when run by hand. */
+    private final String hostEnv;
 
     /** A battle that failed on every attempt. */
     record Failure(String what, int attempts, String why) {}
 
     Bench(Map<String, String> opts) {
+        this(opts, System.getenv());
+    }
+
+    /** As above, with {@code env} standing for the environment {@code --parallel auto} reads (BENCH-105). */
+    Bench(Map<String, String> opts, Map<String, String> env) {
+        HostWidth.resolve(opts, env, Runtime.getRuntime().availableProcessors());
+        if (opts.containsKey("shard")) {
+            HostWidth.parseShard(opts.get("shard"));
+            if (opts.containsKey("melee") || opts.containsKey("session")) {
+                throw new IllegalArgumentException("--shard splits a set's opponents between machines: "
+                    + "it does not combine with --melee (one field) or --session");
+            }
+        }
+        this.hostEnv = env.get("HADUR_BENCH_HOST");
         this.opts = opts;
         this.benchDir = Path.of("").toAbsolutePath();
         this.release = RobotJar.release(benchDir);
@@ -382,6 +398,11 @@ public final class Bench {
         List<Opponent> opponents = Opponent.load(benchDir.resolve(opts.getOrDefault("set", "reference-set.txt")));
         String only = opts.get("only");
         if (only != null) opponents.removeIf(o -> !o.name.contains(only));
+        if (opts.containsKey("shard")) {
+            int[] kn = HostWidth.parseShard(opts.get("shard"));
+            opponents = HostWidth.shard(opponents, kn[0], kn[1]);
+            System.out.println("shard " + kn[0] + "/" + kn[1] + ": " + opponents.size() + " opponents of the set");
+        }
         if (dryRun) return dryRun(opponents);
         Memory.Check memory = Memory.check(Memory.freeMb(), parallel, childHeap());
         System.out.println("memory: " + memory.message());
@@ -430,7 +451,8 @@ public final class Bench {
         if (pin) System.out.println("  pinned: " + pinWidth() + " processors a worker from processor " + pinOffset);
         System.out.println("  set " + opts.getOrDefault("set", "reference-set.txt") + ": " + opponents.size() + " opponents; "
             + battles + " battles of " + rounds + " rounds on " + width + "x" + height
-            + ", parallel " + parallel + ", retries " + retries + (seedBase == 0 ? "" : ", seed base " + seedBase)
+            + ", parallel " + parallel + (opts.containsKey("parallel-source") ? " (" + opts.get("parallel-source") + ")" : "")
+            + (opts.containsKey("shard") ? ", shard " + opts.get("shard") : "") + ", retries " + retries + (seedBase == 0 ? "" : ", seed base " + seedBase)
             + (unseeded ? ", unseeded" : ""));
         System.out.println("  child flags " + childFlags() + ", cpu constant "
             + (opts.containsKey("cpu-constant") ? opts.get("cpu-constant") : "engine's own") + ", out " + out);
@@ -714,7 +736,9 @@ public final class Bench {
             m.put("baselineRobot", baselineRobot);
             m.put("engine", Report.ENGINE);
             m.put("parallel", parallel);
+            m.put("parallelSource", opts.getOrDefault("parallel-source", "set"));
             m.put("workers", workers);
+            m.put("shard", opts.get("shard"));
             m.put("childCpus", opts.getOrDefault("child-cpus", parallel > 1 ? "2" : "0"));
             m.putAll(Memory.conditions(parallel, childHeap()));
             m.put("childFlags", childFlags());
@@ -730,6 +754,7 @@ public final class Bench {
             m.put("opponents", opponents.size());
             m.put("options", new TreeMap<>(opts));
             m.put("host", Host.describe());
+            m.put("hostProfile", hostEnv);
             Host.Window w = sampler.overall();
             Map<String, Object> sample = new LinkedHashMap<>();
             sample.put("samples", w.samples());

@@ -1,0 +1,33 @@
+# Host check (BENCH-106, docs/bench/second-machine.md): before a new machine runs real cards, fight
+# the battles the PC fought in the 2026-10-23 worker ladder (PR #232) at this machine's own width and
+# compare skipped turns a round, engine disables and level with the PC's. About 30-60 min on a laptop.
+#   ./queue.sh run host-check        (or  .\queue.ps1 run host-check)
+#   .\queue.ps1 host                 shows the width it will use first
+# Run from master, plugged in, with nothing heavy open. Every value below comes from the host
+# profile (hostprofile.py): ${WORKERS} is 12 on the PC and narrower on a smaller machine; ${CPU} is
+# this machine's own Robocode CPU constant, or nothing, and then the bench calibrates it once, idle.
+#
+# duel: the 208-bot Stage 0 panel, Hadur 3.15 (the release jar), seed 2501: the PC's d12 c arm
+#   (skips a round 0.465, disables 3.1 a 100, level 83.32).
+# team: HadurTeam 3.15 on all 46 teams, seeds 2401-2402: the PC's t12 block (skips a member-round 0.119).
+# check: tools/host_check.py writes docs/bench/local/<date>_host-check-<host>.md with VALID or
+#   TOO LOADED per block; TOO LOADED names the width to try next (--workers N, or WORKERS in host.local).
+# pr: commits that report to claude/host-check-<host> and opens a PR (needs gh on this machine;
+#   without it the report stays in place).
+
+set HEAP = --child-heap 2G
+set REL = https://github.com/lgriffin/Hadur_Robot/releases/download/v3.15
+
+prep | mkdir -p bisect && for j in Hadur HadurTeam; do f=bisect/hadur2."$j"_3.15.jar; python3 -c "import sys,zipfile; sys.exit(zipfile.ZipFile(sys.argv[1]).testzip() is not None)" "$f" 2>/dev/null || { curl -fsSL -o "$f.part" "${REL}/hadur2.$j"_3.15.jar && python3 -c "import sys,zipfile; sys.exit(zipfile.ZipFile(sys.argv[1]).testzip() is not None)" "$f.part" && mv "$f.part" "$f"; } || exit 1; done && ./fetch-opponents.sh --set top5-s0-panel.txt && ./fetch-opponents.sh --set team-census46.txt && (cd .. && mvn -q -DskipTests install -pl hadur-core -am) && mvn -q compile
+
+duel | ./bench-top20.sh --skip-build --skip-fetch --rounds 35 ${HEAP} --engine 1.11.1 ${CPU} --parallel ${WORKERS} --force-memory --set top5-s0-panel.txt --seeds 1 --seed-base 2500 --robot-jar bisect/hadur2.Hadur_3.15.jar --robot "hadur2.Hadur 3.15" --out work/host-check-duel --label host-check-duel
+  after: prep
+
+team | mvn -q exec:java "-Dexec.args=@plans/host-check-team.args"
+  after: duel
+
+check | H=$(hostname | tr -c 'A-Za-z0-9.\n-' '-') && python3 tools/host_check.py duel=work/host-check-duel team=work/host-check-team --out ../docs/bench/local/$(date +%Y-%m-%d)_host-check-"$H".md; test -s ../docs/bench/local/$(date +%Y-%m-%d)_host-check-"$H".md
+  after: team
+
+pr | H=$(hostname | tr -c 'A-Za-z0-9.\n-' '-') && bash tools/open_results_pr.sh claude/host-check-"$H" "Host check: $H against the PC" ../docs/bench/local/*_host-check-"$H".md
+  after: check
