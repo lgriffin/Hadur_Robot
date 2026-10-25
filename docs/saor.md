@@ -123,9 +123,9 @@ The spec's stages M0 to M5 are U0 to U5 here, because M is already Hadur's melee
 | U0 | M0 | Module, core, tests, traceability | Done |
 | U1 | M1 | Survival at or above Capulet's 29.2% | Passed: 51.7 (PR #278) |
 | U2 | M2 | 64 APS on the cold gun | Passed: 66.3 (PR #278) |
-| U3 | M3 | 66 APS; out-survive Figment in half of 200 battles | Not met: 66.3 ± 0.25 APS, Figment 29.5% (PR #278); arm screen next |
+| U3 | M3 | 66 APS; out-survive Figment in half of 200 battles | APS met: 66.45 ± 0.24 (PR #284); Figment 29% not met; no arm beat 0.1 |
 | U4 | M4 | Codesize at most 744 | 749: at the limit, the margin is not met (above) |
-| U5 | M5 | Rumble entry | Not started: needs Leigh's go |
+| U5 | M5 | Rumble entry | 0.1 released for live calibration on Leigh's go (2026-10-25), tag saor-v0.1 |
 
 `hadur.saor.stage` in the root pom is U4, so the traceability test expects coverage for every
 requirement up to U4.
@@ -230,9 +230,28 @@ pairs each arm per opponent against the control):
 Arms are built with javac only, so their bytes run about 15 over what ships. A winning arm must
 still fit 749 bytes after ProGuard, with the core and SAOR-15 updated, before any entry.
 
-## Entering the rumble (U5, not done)
+The card ran on 2026-10-25 (PR #284, [saor-arms-screen](bench/local/saor-arms-screen.md)).
+Paired per field against the control, no arm gains:
+
+| Arm | Census APS | vs C | Figment out-survived | Wallaby out-damaged |
+|---|---|---|---|---|
+| C | 66.45 ± 0.24 | 0.00 ± 0.34 | 29% | 36% |
+| P | 66.36 ± 0.24 | -0.11 ± 0.34 | 26% | 37% |
+| N | 64.26 ± 0.34 | -2.16 ± 0.41 | 4% | 0% |
+| U | 66.36 ± 0.25 | -0.12 ± 0.35 | 36% | 36% |
+| L | 65.33 ± 0.24 | -1.15 ± 0.34 | 11% | 29% |
+| S | 66.44 ± 0.23 | -0.02 ± 0.33 | 33% | 27% |
+
+The duel screen's gain from uncapped one-on-one power (P) does not reach the census: the duels
+it wins are a small share of all rounds. The power cap and the leg are closed as levers. 0.1
+stays, and on Leigh's go (2026-10-25: "cut a release, I'd like to get results") it is released
+as is, for a live reading that calibrates bench against live.
+
+## Entering the rumble (U5)
 
 Saor enters MeleeRumble. The server files it as MicroMelee from its codesize. The participants
 line is `hadur117.micro.Saor 0.1,<jar URL>`. The version has no underscore, and the country
 flag is set as for Hadur (`hadur117/IRL`). The jar is `saor/target/hadur117.micro.Saor_0.1.jar`.
-Nothing is entered without Leigh's go.
+Saor ships on its own tags (`saor-v0.1`) from `.github/workflows/release-saor.yml`, run by hand
+with the version; the notes are `docs/releases/saor-v<version>.md`. Hadur's `v*` tags and
+`release.yml` are untouched. Leigh adds the participants line himself.
