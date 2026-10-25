@@ -130,6 +130,17 @@ public class MinimumRiskMovement {
     static final double PACK_PULL = 1.0;
     static final double PACK_FLOOR = 40;
     static final double PACK_ENERGY = 20;
+    /**
+     * TMODE-13, HUNT (NightmareTeam's packs, PACK's retry): each member is assigned an enemy at
+     * the cost (distance + {@link #PACK_ENERGY_WEIGHT} x energy) squared, times
+     * {@link #HUNT_CROWD} for an enemy that already has {@link #HUNT_MAX_GROUP} members, so two or
+     * three go to each; it holds a place {@link #HUNT_RADIUS} from its prey, fixed, and the pull,
+     * at {@link #HUNT_PULL}, leaves the bullets' risk unscaled.
+     */
+    static final double HUNT_RADIUS = 350;
+    static final double HUNT_PULL = 0.3;
+    static final double HUNT_CROWD = 1.6;
+    static final int HUNT_MAX_GROUP = 3;
     static final double SWITCH_GAIN = 0.9;
     static final double REACHED = 20;
 
@@ -182,11 +193,18 @@ public class MinimumRiskMovement {
         final Point2D.Double at;
         final double floor;
         final double strength;
+        /** Whether the pull scales the bullets' risk too; TMODE-13's leaves it as it is. */
+        final boolean scalesBullets;
 
         Pull(Point2D.Double at, double floor, double strength) {
+            this(at, floor, strength, true);
+        }
+
+        Pull(Point2D.Double at, double floor, double strength, boolean scalesBullets) {
             this.at = at;
             this.floor = floor;
             this.strength = strength;
+            this.scalesBullets = scalesBullets;
         }
 
         /** The factor for moving from {@code me} to {@code p}. */
@@ -264,6 +282,8 @@ public class MinimumRiskMovement {
     private int lastCandidates;
     /** MMOVE-8: this member's place in the team's roster, or -1 off a team. */
     private int teamIndex = -1;
+    /** This member's name on a team (TMODE-13); null off one. */
+    private String teamName;
     /** MMOVE-8: XORed into the noise field's hash; 0 off a team, so the field is MMOVE-1's. */
     private long salt;
 
@@ -279,6 +299,12 @@ public class MinimumRiskMovement {
     public void team(int index) {
         teamIndex = index < 0 ? -1 : index;
         salt = index < 0 ? 0 : mix(index + 1L);
+    }
+
+    /** MMOVE-8 with this member's own name, by which TMODE-13 orders the team. */
+    public void team(int index, String name) {
+        team(index);
+        teamName = name;
     }
 
     public void newRound() {
@@ -454,7 +480,7 @@ public class MinimumRiskMovement {
         remember(me, now);
         if (openingSpot == null) openingSpot = openingSpot(me);
         View v = new View(me, energy, now, others, enemies, new ArrayList<>(bullets), plan, mates);
-        if (!mates.isEmpty() && !modes.isEmpty()) v.pull = pull(me, energy, others, enemies, now, mates, modes);
+        if (!mates.isEmpty() && !modes.isEmpty()) v.pull = pull(me, teamName, energy, others, enemies, now, mates, modes);
         if (!mates.isEmpty() && modes.contains(TeamModes.Mode.SCREEN)) screen(v, now);
         if (!mates.isEmpty() && modes.contains(TeamModes.Mode.MATEFIRE)) v.mateBullets = relevant(mateBullets(me, now), me, now);
         v.rear = leader && !mates.isEmpty() && modes.contains(TeamModes.Mode.REAR);
@@ -546,6 +572,12 @@ public class MinimumRiskMovement {
      */
     static Pull pull(Point2D.Double me, double energy, int others, List<EnemyInfo> enemies, long now,
                      List<Roster.Mate> mates, Set<TeamModes.Mode> modes) {
+        return pull(me, null, energy, others, enemies, now, mates, modes);
+    }
+
+    /** As above, with {@code name} this member's name for TMODE-13's order (null: first). */
+    static Pull pull(Point2D.Double me, String name, double energy, int others, List<EnemyInfo> enemies,
+                     long now, List<Roster.Mate> mates, Set<TeamModes.Mode> modes) {
         if (modes.contains(TeamModes.Mode.FINISH) && enemies.size() == 1 && others - mates.size() == 1
                 && enemies.get(0).age(now) < CAP_MAX_AGE && energy >= FINISH_ENERGY) {
             return new Pull(enemies.get(0).location, FINISH_FLOOR, FINISH_PULL);
@@ -553,6 +585,10 @@ public class MinimumRiskMovement {
         if (modes.contains(TeamModes.Mode.DISABLED)) {
             EnemyInfo prey = disabled(me, enemies, now);
             if (prey != null) return new Pull(prey.location, DISABLED_FLOOR, DISABLED_PULL);
+        }
+        if (modes.contains(TeamModes.Mode.HUNT) && energy >= PACK_ENERGY) {
+            Point2D.Double slot = huntSlot(me, name, enemies, now, mates);
+            if (slot != null) return new Pull(slot, PACK_FLOOR, HUNT_PULL, false);
         }
         boolean gang = modes.contains(TeamModes.Mode.GANG);
         if (!gang && !modes.contains(TeamModes.Mode.PACK)) return null;
@@ -648,6 +684,80 @@ public class MinimumRiskMovement {
         double angle = mean + (rank - (n - 1) / 2.0) * spread;
         double r = DiaUtils.limit(PACK_MIN_RADIUS, PACK_RADIUS_SHARE * nearest, PACK_MAX_RADIUS);
         return DiaUtils.project(t, angle, r);
+    }
+
+    /**
+     * TMODE-13: each member's prey, as every member works it out from the positions they share.
+     * Members go in name order ({@code me} as {@code name}); each takes the fresh enemy of least
+     * (distance + {@link #PACK_ENERGY_WEIGHT} x energy) squared, times {@link #HUNT_CROWD} when
+     * {@link #HUNT_MAX_GROUP} members already hunt it. Returns the members' places as indexes
+     * into {@code enemies}, in the order of {@code pack}; -1 with no fresh enemy.
+     */
+    static int[] huntAssign(List<Point2D.Double> pack, List<EnemyInfo> enemies, long now) {
+        int[] group = new int[enemies.size()];
+        int[] prey = new int[pack.size()];
+        for (int m = 0; m < pack.size(); m++) {
+            int best = -1;
+            double bestCost = Double.POSITIVE_INFINITY;
+            for (int i = 0; i < enemies.size(); i++) {
+                EnemyInfo e = enemies.get(i);
+                if (e.age(now) >= CAP_MAX_AGE) continue;
+                double c = e.location.distance(pack.get(m)) + PACK_ENERGY_WEIGHT * e.energy;
+                c *= c;
+                if (group[i] >= HUNT_MAX_GROUP) c *= HUNT_CROWD;
+                // Ties go to the name, so every member makes the same choice.
+                if (c < bestCost || (c == bestCost && e.name.compareTo(enemies.get(best).name) < 0)) {
+                    bestCost = c;
+                    best = i;
+                }
+            }
+            prey[m] = best;
+            if (best >= 0) group[best]++;
+        }
+        return prey;
+    }
+
+    /**
+     * TMODE-13: Hadur's place round its prey: the members hunting it, ranked by their bearing
+     * from it about their mean bearing, spread {@link #PACK_SPREAD} apart, at
+     * {@link #HUNT_RADIUS}. Null with no fresh enemy.
+     */
+    static Point2D.Double huntSlot(Point2D.Double me, String name, List<EnemyInfo> enemies, long now,
+                                   List<Roster.Mate> mates) {
+        List<Roster.Mate> sorted = new ArrayList<>(mates);
+        sorted.sort((a, b) -> a.name.compareTo(b.name));
+        List<Point2D.Double> pack = new ArrayList<>(mates.size() + 1);
+        int self = 0;
+        for (Roster.Mate m : sorted) {
+            if (name != null && m.name.compareTo(name) < 0) self++;
+            pack.add(m.at(now));
+        }
+        pack.add(self, me);
+        int[] prey = huntAssign(pack, enemies, now);
+        if (prey[self] < 0) return null;
+        Point2D.Double t = enemies.get(prey[self]).location;
+        List<Integer> group = new ArrayList<>();
+        double sx = 0, sy = 0;
+        for (int m = 0; m < pack.size(); m++) {
+            if (prey[m] != prey[self]) continue;
+            group.add(m);
+            double b = DiaUtils.absoluteBearing(t, pack.get(m));
+            sx += Math.sin(b);
+            sy += Math.cos(b);
+        }
+        double mean = Math.atan2(sx, sy);
+        double mine = Angles.normalRelativeAngle(DiaUtils.absoluteBearing(t, me) - mean);
+        int rank = 0;
+        for (int m : group) {
+            if (m == self) continue;
+            double off = Angles.normalRelativeAngle(DiaUtils.absoluteBearing(t, pack.get(m)) - mean);
+            // Name order breaks ties, so members on one ray from the prey still take apart slots.
+            if (off < mine || (off == mine && m < self)) rank++;
+        }
+        int n = group.size();
+        double spread = Math.min(PACK_SPREAD, 2 * Math.PI / n);
+        double angle = mean + (rank - (n - 1) / 2.0) * spread;
+        return DiaUtils.project(t, angle, HUNT_RADIUS);
     }
 
     /**
@@ -871,8 +981,16 @@ public class MinimumRiskMovement {
             }
             r += w * enemyRisk(p, v, i) * (v.rear ? REAR_FACTOR : 1.0);
         }
-        r += bulletRisk(p, v.me, v.bullets, v.now);
-        if (!v.mateBullets.isEmpty()) r += bulletRisk(p, v.me, v.mateBullets, v.now);
+        // TMODE-13: a pull that leaves the bullets alone adds them after it scales the rest.
+        boolean apart = v.pull != null && !v.pull.scalesBullets;
+        double shots = 0;
+        if (apart) {
+            shots = bulletRisk(p, v.me, v.bullets, v.now);
+            if (!v.mateBullets.isEmpty()) shots += bulletRisk(p, v.me, v.mateBullets, v.now);
+        } else {
+            r += bulletRisk(p, v.me, v.bullets, v.now);
+            if (!v.mateBullets.isEmpty()) r += bulletRisk(p, v.me, v.mateBullets, v.now);
+        }
         r += centreRisk(p) + wallRisk(p) + cornerRisk(p) + pastRisk(p) + noise(p);
         if (v.now < OPENING_TICKS && openingSpot != null) {
             r += OPENING_K * p.distance(openingSpot) / 500.0;
@@ -880,6 +998,7 @@ public class MinimumRiskMovement {
         if (!v.mates.isEmpty()) r += teammateRisk(p, v);
         // TMODE-3, TMODE-4: the pull scales every term but the posture's, which may be negative.
         if (v.pull != null) r *= v.pull.factor(v.me, p);
+        if (apart) r += shots;
         return r + postureRisk(p, v.enemies, v.plan);
     }
 

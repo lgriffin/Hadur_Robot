@@ -1,0 +1,17 @@
+# Team HUNT steps (docs/plan-team-top5.md, requirement TMODE-13), to fold into the combined PC card.
+# Not a card on its own. Chain huprep after the card's last 1v1 step.
+# Two screens, each 46 teams x 6 seeds x 2 = 552 battles paired with the master aa build:
+#   hubb A/A, humh HUNT forced on (assigned pincers at a fixed 350 px, pull 0.3, bullets unscaled).
+# 1,104 battles, about 1.2 h at --parallel 12. Every step resumes where it stopped (BENCH-96).
+# Verdict (team thread, cloud): pass at +1.0 or more with the 95% low end above zero and hubb within
+# +/- 1.0; the per-segment split (ranks 1-20 vs 21-46) says whether it hit the top-20 survival gap.
+# Needs `set OUT = ../docs/bench/local` in the card.
+
+huprep | bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && bash ./build-ablation.sh tmhunt && ./fetch-opponents.sh --set team-census46.txt && mvn -q compile
+  after: <the card's last 1v1 step>
+hubb  | mvn -q exec:java "-Dexec.args=@plans/team-hunt-bb.args"
+  after: huprep
+humh  | mvn -q exec:java "-Dexec.args=@plans/team-hunt-mh.args"
+  after: hubb
+hupr  | bash tools/open_results_pr.sh claude/pc-team-hunt-results "Team HUNT (TMODE-13) screen" $(ls ${OUT}/team-hunt-*.md 2>/dev/null)
+  after: humh

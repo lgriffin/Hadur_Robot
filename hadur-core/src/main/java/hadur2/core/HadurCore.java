@@ -309,7 +309,7 @@ public final class HadurCore {
             this.roster = new Roster(facts.teammates(), facts.enemies());
             this.teamLink = new TeamLink(this, facts, roster, world);
             // MMOVE-8: the melee movement's noise differs by the member's place in the roster.
-            if (meleeSeam != null) meleeSeam.melee.team(rosterIndex(facts));
+            if (meleeSeam != null) meleeSeam.melee.team(rosterIndex(facts), facts.name());
         } else {
             this.roster = null;
             this.teamLink = null;

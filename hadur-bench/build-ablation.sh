@@ -613,6 +613,10 @@ for a in "${list[@]}"; do
             version="${version}nmb"
             edit "$modes" "public static final boolean FORCE_MATEFIRE = true;" "public static final boolean FORCE_MATEFIRE = false;"
             ;;
+        tmhunt)
+            version="${version}mh"
+            edit "$modes" "public static final boolean FORCE_HUNT = false;" "public static final boolean FORCE_HUNT = true;"
+            ;;
         tmwk)
             version="${version}wk"
             edit "$mrm" "double sigma = Math.max(1e-3, half / 2);" "double sigma = Math.max(1e-3, half * 2.5);"
@@ -758,7 +762,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$design" 'public static final ShieldDesign SHIPPED = parse("' \
                 "public static final ShieldDesign SHIPPED = parse(\"$flag,"
             version="${version}${suffix}" ;;
-        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, ramheat, flaton, nowall, flt59, flt8, split, wallesc, gungate, hold650, dfac, bhb, hitclr, pkern, keep2, thgun, freegun, nodecay, stacklist, protean, pdw3, pdw8, pc10, phot, repl, pressure, pdown, pwall, pwc, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tlook, tram, t6n, t6l, tmsoft, tmgang, tmfin, tmlearn, tmpack, tmscreen, tmpool, tmdis, tmfire, tmnofire, tmrear, tmwaves, tmwk, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, surfb, aimmix, mimics, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, snull, strim, slistadd, smovelist, saimlist, sdodge, sdodgelist, sgo, sgo2, sgolist, sgo2list)" >&2; exit 2 ;;
+        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, ramheat, flaton, nowall, flt59, flt8, split, wallesc, gungate, hold650, dfac, bhb, hitclr, pkern, keep2, thgun, freegun, nodecay, stacklist, protean, pdw3, pdw8, pc10, phot, repl, pressure, pdown, pwall, pwc, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tlook, tram, t6n, t6l, tmsoft, tmgang, tmfin, tmlearn, tmpack, tmscreen, tmpool, tmdis, tmfire, tmnofire, tmrear, tmwaves, tmwk, tmhunt, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, surfb, aimmix, mimics, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, snull, strim, slistadd, smovelist, saimlist, sdodge, sdodgelist, sgo, sgo2, sgolist, sgo2list)" >&2; exit 2 ;;
     esac
 done
 

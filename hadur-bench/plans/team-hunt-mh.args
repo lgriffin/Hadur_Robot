@@ -1,0 +1,31 @@
+# PC card team-hunt (docs/plan-team-top5.md, requirement TMODE-13): arm mh (TMODE-13 HUNT forced on), all 46 teams against master (the aa build) (Bench @FILE, one argument a line)
+--team
+true
+--seeds
+6
+--seed-base
+4000
+--rounds
+10
+--parallel
+12
+--child-heap
+2G
+--cpu-constant
+1488498
+--set
+team-census46.txt
+--robot-jar
+bisect/hadur2.HadurTeam_3.16mh.jar
+--robot
+hadur2.HadurTeam 3.16mh
+--member
+hadur2.Hadur
+--out
+work/team-hunt-mh
+--report
+../docs/bench/local/team-hunt-mh.md
+--baseline
+bisect/hadur2.HadurTeam_3.16aa.jar
+--baseline-robot
+hadur2.HadurTeam 3.16aa

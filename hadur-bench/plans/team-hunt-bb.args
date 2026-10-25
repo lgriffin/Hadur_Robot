@@ -1,0 +1,31 @@
+# PC card team-hunt (docs/plan-team-top5.md, requirement TMODE-13): arm bb (A/A, master again under another name), all 46 teams against master (the aa build) (Bench @FILE, one argument a line)
+--team
+true
+--seeds
+6
+--seed-base
+4000
+--rounds
+10
+--parallel
+12
+--child-heap
+2G
+--cpu-constant
+1488498
+--set
+team-census46.txt
+--robot-jar
+bisect/hadur2.HadurTeam_3.16bb.jar
+--robot
+hadur2.HadurTeam 3.16bb
+--member
+hadur2.Hadur
+--out
+work/team-hunt-bb
+--report
+../docs/bench/local/team-hunt-bb.md
+--baseline
+bisect/hadur2.HadurTeam_3.16aa.jar
+--baseline-robot
+hadur2.HadurTeam 3.16aa
