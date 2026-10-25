@@ -121,9 +121,9 @@ The spec's stages M0 to M5 are U0 to U5 here, because M is already Hadur's melee
 | Stage | Spec | Gate | State |
 |---|---|---|---|
 | U0 | M0 | Module, core, tests, traceability | Done |
-| U1 | M1 | Survival at or above Capulet's 29.2% | Bench: PC census |
-| U2 | M2 | 64 APS on the cold gun | Bench: PC census |
-| U3 | M3 | 66 APS; out-survive Figment in half of 200 battles | Bench: PC census and gate field |
+| U1 | M1 | Survival at or above Capulet's 29.2% | Passed: 51.7 (PR #278) |
+| U2 | M2 | 64 APS on the cold gun | Passed: 66.3 (PR #278) |
+| U3 | M3 | 66 APS; out-survive Figment in half of 200 battles | Not met: 66.3 ± 0.25 APS, Figment 29.5% (PR #278); arm screen next |
 | U4 | M4 | Codesize at most 744 | 749: at the limit, the margin is not met (above) |
 | U5 | M5 | Rumble entry | Not started: needs Leigh's go |
 
@@ -179,6 +179,56 @@ gate results.
   out-survived Figment in 1 of 2 battles and out-damaged Wallaby in neither.
 - **Census field F01, 1 seed.** Saor won with a 19.4% score share and 18 of 35 rounds, at
   70.0 APS.
+
+## Duel endgame and the top-5 bar
+
+Leigh's goal (2026-10-25): **a guaranteed top 5**. 5th on the 2026-10-25 MicroMelee rankings is
+Quantum at 65.61, and 4th is Sprout at 66.67. The live table may sit below the bench: Hadur's 1v1
+ran 0.5 to 0.7 under its bench live, and MicroMelee has no calibration yet. So the bar is a full
+census whose APS interval sits wholly above **66.6**, which is 5th place plus a 1.0 margin.
+
+Saor 0.1 reads 66.32 ± 0.25. The ± is seed-to-seed noise, worked out within each census field
+(`tools/saor_arms.py`). An earlier figure of ± 1.4 was the spread between fields, which is not
+measurement noise. So 0.1 sits 0.3 above 5th place but under the bar, and it needs about +0.5.
+
+The first PC card (PR #278) shows where the points go. Saor reaches the final duel in about half
+the gate-field rounds and then loses most of those duels:
+
+| Duel against | Saor won |
+|---|---|
+| Wallaby | 23% |
+| Figment | 38% |
+| Capulet | 53% |
+| Anyone else | 85-89% |
+
+A cloud duel screen (2026-10-25: 1v1 on 1000 x 1000, 4 seeds, 35 rounds, against the top three)
+tried four duel-only changes. Figures are Saor's score share against each opponent:
+
+| Change | Figment | Wallaby | Capulet |
+|---|---|---|---|
+| 0.1 | 33.5 | 29.2 | 40.7 |
+| No power cap one on one | 41.1 | 29.0 | 44.6 |
+| Random axis flips | 32.8 | 28.0 | 40.1 |
+| Wider leg one on one | 16.0 | 43.8 | 29.0 |
+| Orbit the target | 36.6 | 21.9 | 35.2 |
+
+Only the uncapped one-on-one power helps across the board. It is worth about four points of score share on average across the
+three, which may not lift the census by the 0.5 APS the bar needs on its
+own. So the second card, `plans/pc-saor-u3b.queue`, screens six arms on the census and the gate
+field (`saor-arms/arms.txt`, built by `tools/saor_arms.sh`, read by `tools/saor_arms.py`, which
+pairs each arm per opponent against the control):
+
+| Arm | Change |
+|---|---|
+| C | Saor 0.1, the control |
+| P | No power cap one on one (+14 bytes) |
+| N | `3 / others + 1.9` cap, byte-neutral |
+| U | No cap at all (-14 bytes) |
+| L | Leg of distance / 2 |
+| S | Leg of distance / 3.5 |
+
+Arms are built with javac only, so their bytes run about 15 over what ships. A winning arm must
+still fit 749 bytes after ProGuard, with the core and SAOR-15 updated, before any entry.
 
 ## Entering the rumble (U5, not done)
 
