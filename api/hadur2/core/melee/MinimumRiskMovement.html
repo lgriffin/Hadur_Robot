@@ -146,6 +146,11 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color">
 <div class="block">What the movement sees this tick.</div>
 </div>
+<div class="col-first even-row-color"><code>(package private) static final class&nbsp;</code></div>
+<div class="col-second even-row-color"><code><a href="MinimumRiskMovement.Wave.html" class="type-name-link" title="class in hadur2.core.melee">MinimumRiskMovement.Wave</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">TMODE-11: one shot in flight as a profile over its headings.</div>
+</div>
 </div>
 </section>
 </li>
@@ -435,6 +440,30 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color"><code>(package private) static final double</code></div>
 <div class="col-second odd-row-color"><code><a href="#WALL_RANGE" class="member-name-link">WALL_RANGE</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>(package private) static final double</code></div>
+<div class="col-second even-row-color"><code><a href="#WAVE_DAMAGE_K" class="member-name-link">WAVE_DAMAGE_K</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>(package private) static final double</code></div>
+<div class="col-second odd-row-color"><code><a href="#WAVE_HALF" class="member-name-link">WAVE_HALF</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">TMODE-11: a robot's half-width, px: a wave hits the box it crosses.</div>
+</div>
+<div class="col-first even-row-color"><code>(package private) static final double</code></div>
+<div class="col-second even-row-color"><code><a href="#WAVE_MEDIAN_FLOOR" class="member-name-link">WAVE_MEDIAN_FLOOR</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>(package private) static final int</code></div>
+<div class="col-second odd-row-color"><code><a href="#WAVE_RERANK" class="member-name-link">WAVE_RERANK</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">TMODE-11: the lowest-risk candidates driven to, the ticks each drive is checked, and the damage term's weight.</div>
+</div>
+<div class="col-first even-row-color"><code>(package private) static final int</code></div>
+<div class="col-second even-row-color"><code><a href="#WAVE_TICKS" class="member-name-link">WAVE_TICKS</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>(package private) static final double</code></div>
+<div class="col-second odd-row-color"><code><a href="#WAVE_UNIFORM" class="member-name-link">WAVE_UNIFORM</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">TMODE-11: the share of a shot spread evenly over its escape angle, and the least median damage.</div>
+</div>
 </div>
 </section>
 </li>
@@ -610,32 +639,40 @@ loadScripts(document, 'script');</script>
 <div class="block">TMODE-9: a teammate's bullet, from its report: fired from <code>at</code> on <code>tick</code>
  along <code>heading</code>.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static long</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#mix(long)" class="member-name-link">mix</a><wbr>(long&nbsp;z)</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static double</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#median(double%5B%5D)" class="member-name-link">median</a><wbr>(double[]&nbsp;xs)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#newRound()" class="member-name-link">newRound</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) double</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#noise(java.awt.geom.Point2D.Double)" class="member-name-link">noise</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;p)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static long</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#mix(long)" class="member-name-link">mix</a><wbr>(long&nbsp;z)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#newRound()" class="member-name-link">newRound</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) double</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#noise(java.awt.geom.Point2D.Double)" class="member-name-link">noise</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;p)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">A fixed pseudo-random field over the battlefield, different every round, and on a team
  different for each member (MMOVE-8).</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#openingSpot()" class="member-name-link">openingSpot</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#openingSpot()" class="member-name-link">openingSpot</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Where the opening heads this round, once the first decision is made.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#openingSpot(java.awt.geom.Point2D.Double)" class="member-name-link">openingSpot</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#openingSpot(java.awt.geom.Point2D.Double)" class="member-name-link">openingSpot</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">The opening's goal: the nearest wall's spot <a href="#OPENING_WALL_GAP"><code>OPENING_WALL_GAP</code></a> px off it, at
  least <a href="#OPENING_CORNER_GAP"><code>OPENING_CORNER_GAP</code></a> px from either corner.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) double</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#pastRisk(java.awt.geom.Point2D.Double)" class="member-name-link">pastRisk</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;p)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) double</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#pastRisk(java.awt.geom.Point2D.Double)" class="member-name-link">pastRisk</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;p)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static double</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#phi(double)" class="member-name-link">phi</a><wbr>(double&nbsp;z)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">The standard normal distribution function (Abramowitz and Stegun 7.1.26).</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#pincerSlot(java.awt.geom.Point2D.Double,java.util.List,long,java.util.List)" class="member-name-link">pincerSlot</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../world/EnemyInfo.html" title="class in hadur2.core.world">EnemyInfo</a>&gt;&nbsp;enemies,
@@ -792,6 +829,31 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static double</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#wallTerm(double)" class="member-name-link">wallTerm</a><wbr>(double&nbsp;d)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#waveBest(java.util.List,hadur2.core.melee.MinimumRiskMovement.View)" class="member-name-link">waveBest</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&gt;&nbsp;candidates,
+ <a href="MinimumRiskMovement.View.html" title="class in hadur2.core.melee">MinimumRiskMovement.View</a>&nbsp;v)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">TMODE-11, Ogi's wave check: the <a href="#WAVE_RERANK"><code>WAVE_RERANK</code></a> lowest-risk candidates, and the
+ destination held if not reached, are each driven to for <a href="#WAVE_TICKS"><code>WAVE_TICKS</code></a> ticks, and
+ every shot in flight that crosses Hadur's box on the way counts the share of it aimed
+ there.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static double</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#waveDamage(java.awt.geom.Point2D.Double,java.awt.geom.Point2D.Double,long,java.util.List)" class="member-name-link">waveDamage</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;to,
+ long&nbsp;now,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="MinimumRiskMovement.Wave.html" title="class in hadur2.core.melee">MinimumRiskMovement.Wave</a>&gt;&nbsp;waves)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">TMODE-11: the damage the <code>waves</code> are expected to do Hadur driving from <code>me</code>
+ straight to <code>to</code> (accelerating 1 px a tick to 8, stopping there) for
+ <a href="#WAVE_TICKS"><code>WAVE_TICKS</code></a> ticks.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static double[]</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#waveScores(double%5B%5D,double%5B%5D)" class="member-name-link">waveScores</a><wbr>(double[]&nbsp;risk,
+ double[]&nbsp;damage)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">TMODE-11: each destination's score from its risk and wave damage.</div>
+</div>
 </div>
 </div>
 </div>
@@ -1876,6 +1938,93 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="WAVE_RERANK">
+<h3>WAVE_RERANK</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">WAVE_RERANK</span></div>
+<div class="block">TMODE-11: the lowest-risk candidates driven to, the ticks each drive is checked, and the damage term's weight.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur2.core.melee.MinimumRiskMovement.WAVE_RERANK">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="WAVE_TICKS">
+<h3>WAVE_TICKS</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">WAVE_TICKS</span></div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur2.core.melee.MinimumRiskMovement.WAVE_TICKS">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="WAVE_DAMAGE_K">
+<h3>WAVE_DAMAGE_K</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">WAVE_DAMAGE_K</span></div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur2.core.melee.MinimumRiskMovement.WAVE_DAMAGE_K">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="WAVE_UNIFORM">
+<h3>WAVE_UNIFORM</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">WAVE_UNIFORM</span></div>
+<div class="block">TMODE-11: the share of a shot spread evenly over its escape angle, and the least median damage.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur2.core.melee.MinimumRiskMovement.WAVE_UNIFORM">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="WAVE_MEDIAN_FLOOR">
+<h3>WAVE_MEDIAN_FLOOR</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">WAVE_MEDIAN_FLOOR</span></div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur2.core.melee.MinimumRiskMovement.WAVE_MEDIAN_FLOOR">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="WAVE_HALF">
+<h3>WAVE_HALF</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">WAVE_HALF</span></div>
+<div class="block">TMODE-11: a robot's half-width, px: a wave hits the box it crosses.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur2.core.melee.MinimumRiskMovement.WAVE_HALF">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="MIN_RING">
 <h3>MIN_RING</h3>
 <div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">MIN_RING</span></div>
@@ -2180,6 +2329,56 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../world/EnemyInfo.html" title="class in hadur2.core.world">EnemyInfo</a>&gt;&nbsp;enemies,
  long&nbsp;now)</span></div>
 <div class="block">TMODE-3: the enemies seen lately within <a href="#GANG_RANGE"><code>GANG_RANGE</code></a> of <code>p</code>.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="waveBest(java.util.List,hadur2.core.melee.MinimumRiskMovement.View)">
+<h3>waveBest</h3>
+<div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a></span>&nbsp;<span class="element-name">waveBest</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&gt;&nbsp;candidates,
+ <a href="MinimumRiskMovement.View.html" title="class in hadur2.core.melee">MinimumRiskMovement.View</a>&nbsp;v)</span></div>
+<div class="block">TMODE-11, Ogi's wave check: the <a href="#WAVE_RERANK"><code>WAVE_RERANK</code></a> lowest-risk candidates, and the
+ destination held if not reached, are each driven to for <a href="#WAVE_TICKS"><code>WAVE_TICKS</code></a> ticks, and
+ every shot in flight that crosses Hadur's box on the way counts the share of it aimed
+ there. A shot is a profile that sums to its aimed-at weight, not a certain bullet: its
+ virtual bullets' headings share <code>1 - </code><a href="#WAVE_UNIFORM"><code>WAVE_UNIFORM</code></a> of it, and the rest is
+ spread over its escape angle. The score is <code>risk / median(risk) + 3 x damage /
+ max(0.1, median(damage))</code>, each risk measured from the least of them (the posture term
+ can make risks negative), times <a href="#SWITCH_GAIN"><code>SWITCH_GAIN</code></a> for the held destination.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="waveScores(double[],double[])">
+<h3>waveScores</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">double[]</span>&nbsp;<span class="element-name">waveScores</span><wbr><span class="parameters">(double[]&nbsp;risk,
+ double[]&nbsp;damage)</span></div>
+<div class="block">TMODE-11: each destination's score from its risk and wave damage. The posture term may
+ make a risk negative, so each risk is measured from the least of them, which keeps the
+ order and gives the median a positive scale.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="median(double[])">
+<h3>median</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">median</span><wbr><span class="parameters">(double[]&nbsp;xs)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="waveDamage(java.awt.geom.Point2D.Double,java.awt.geom.Point2D.Double,long,java.util.List)">
+<h3>waveDamage</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">waveDamage</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;to,
+ long&nbsp;now,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="MinimumRiskMovement.Wave.html" title="class in hadur2.core.melee">MinimumRiskMovement.Wave</a>&gt;&nbsp;waves)</span></div>
+<div class="block">TMODE-11: the damage the <code>waves</code> are expected to do Hadur driving from <code>me</code>
+ straight to <code>to</code> (accelerating 1 px a tick to 8, stopping there) for
+ <a href="#WAVE_TICKS"><code>WAVE_TICKS</code></a> ticks. Each wave counts once, on the tick its front crosses the box.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="phi(double)">
+<h3>phi</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">phi</span><wbr><span class="parameters">(double&nbsp;z)</span></div>
+<div class="block">The standard normal distribution function (Abramowitz and Stegun 7.1.26).</div>
 </section>
 </li>
 <li>
