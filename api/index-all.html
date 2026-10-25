@@ -5798,6 +5798,14 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Returns the value of the <code>longestPauseMs</code> record component.</div>
 </dd>
+<dt><a href="hadur2/core/melee/MeleeRadar.html#LOOK_AGE" class="member-name-link">LOOK_AGE</a> - Static variable in class hadur2.core.melee.<a href="hadur2/core/melee/MeleeRadar.html" title="class in hadur2.core.melee">MeleeRadar</a></dt>
+<dd>
+<div class="block">MRADAR-3: a target scan this old, by any member, is worth a look; a teammate's arrives a tick late.</div>
+</dd>
+<dt><a href="hadur2/core/melee/MeleeRadar.html#LOOK_HEAT" class="member-name-link">LOOK_HEAT</a> - Static variable in class hadur2.core.melee.<a href="hadur2/core/melee/MeleeRadar.html" title="class in hadur2.core.melee">MeleeRadar</a></dt>
+<dd>
+<div class="block">MRADAR-3: the gun heat at or under which the gun fires within two ticks (it cools 0.1 a tick).</div>
+</dd>
 <dt><a href="hadur2/core/world/EnemyInfo.html#LOSS_WINDOW" class="member-name-link">LOSS_WINDOW</a> - Static variable in class hadur2.core.world.<a href="hadur2/core/world/EnemyInfo.html" title="class in hadur2.core.world">EnemyInfo</a></dt>
 <dd>
 <div class="block">Window over which energy lost to other robots is summed.</div>
@@ -9030,6 +9038,11 @@ loadScripts(document, 'script');</script>
 <div class="block">Radar turn for this tick at <code>now</code>, with <code>finisher</code> the opponent the gun
  wants to finish (or null).</div>
 </dd>
+<dt><a href="hadur2/core/melee/MeleeRadar.html#radarTurn(java.awt.geom.Point2D.Double,double,hadur2.core.world.EnemyTracker,int,java.lang.String,long,boolean,double,java.lang.String)" class="member-name-link">radarTurn(Point2D.Double, double, EnemyTracker, int, String, long, boolean, double, String)</a> - Method in class hadur2.core.melee.<a href="hadur2/core/melee/MeleeRadar.html" title="class in hadur2.core.melee">MeleeRadar</a></dt>
+<dd>
+<div class="block">Radar turn for this tick at <code>now</code>; <code>team</code> says whether a teammate lives, and
+ <code>gunHeat</code> and <code>target</code> are the gun's heat and its last target, for MRADAR-3.</div>
+</dd>
 <dt><a href="hadur2/core/move/SurfMover.html#ram(hadur2.core.model.BotOrders.Builder,hadur2.core.model.RobotState,java.awt.geom.Point2D.Double)" class="member-name-link">ram(BotOrders.Builder, RobotState, Point2D.Double)</a> - Method in class hadur2.core.move.<a href="hadur2/core/move/SurfMover.html" title="class in hadur2.core.move">SurfMover</a></dt>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#END-2">END-2</a>: drive straight at the enemy at full speed, front or back first, whichever needs
@@ -12139,6 +12152,11 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur2/core/melee/MeleeEnergyPolicy.html#TEAM_FULL_POWER_ENERGY" class="member-name-link">TEAM_FULL_POWER_ENERGY</a> - Static variable in class hadur2.core.melee.<a href="hadur2/core/melee/MeleeEnergyPolicy.html" title="class in hadur2.core.melee">MeleeEnergyPolicy</a></dt>
 <dd>
 <div class="block">MGUN-6: the own energy from which a member on a team fires full power.</div>
+</dd>
+<dt><a href="hadur2/core/melee/MeleeRadar.html#TEAM_LOOK" class="member-name-link">TEAM_LOOK</a> - Static variable in class hadur2.core.melee.<a href="hadur2/core/melee/MeleeRadar.html" title="class in hadur2.core.melee">MeleeRadar</a></dt>
+<dd>
+<div class="block">MRADAR-3 (team step E): on a team, with four or more enemies alive, a member whose gun
+ is about to fire looks at its own target when the team's freshest scan of it is stale.</div>
 </dd>
 <dt><a href="hadur2/core/melee/TeamDanger.html" class="type-name-link" title="class in hadur2.core.melee">TeamDanger</a> - Class in <a href="hadur2/core/melee/package-summary.html">hadur2.core.melee</a></dt>
 <dd>

@@ -140,6 +140,20 @@ loadScripts(document, 'script');</script>
 <div class="block">Radar turn for this tick at <code>now</code>, with <code>finisher</code> the opponent the gun
  wants to finish (or null).</div>
 </div>
+<div class="col-first odd-row-color"><code>double</code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">MeleeRadar.</span><code><a href="../../melee/MeleeRadar.html#radarTurn(java.awt.geom.Point2D.Double,double,hadur2.core.world.EnemyTracker,int,java.lang.String,long,boolean,double,java.lang.String)" class="member-name-link">radarTurn</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
+ double&nbsp;radarHeading,
+ <a href="../EnemyTracker.html" title="class in hadur2.core.world">EnemyTracker</a>&nbsp;tracker,
+ int&nbsp;others,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;finisher,
+ long&nbsp;now,
+ boolean&nbsp;team,
+ double&nbsp;gunHeat,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;target)</code></div>
+<div class="col-last odd-row-color">
+<div class="block">Radar turn for this tick at <code>now</code>; <code>team</code> says whether a teammate lives, and
+ <code>gunHeat</code> and <code>target</code> are the gun's heat and its last target, for MRADAR-3.</div>
+</div>
 </div>
 <div class="caption"><span>Constructors in <a href="../../melee/package-summary.html">hadur2.core.melee</a> with parameters of type <a href="../EnemyTracker.html" title="class in hadur2.core.world">EnemyTracker</a></span></div>
 <div class="summary-table three-column-summary">

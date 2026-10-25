@@ -119,6 +119,16 @@ loadScripts(document, 'script');</script>
 <div class="block">A finisher's scan this old is refreshed first (others at most 3).</div>
 </div>
 <div class="col-first odd-row-color"><code>(package private) static final long</code></div>
+<div class="col-second odd-row-color"><code><a href="#LOOK_AGE" class="member-name-link">LOOK_AGE</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">MRADAR-3: a target scan this old, by any member, is worth a look; a teammate's arrives a tick late.</div>
+</div>
+<div class="col-first even-row-color"><code>(package private) static final double</code></div>
+<div class="col-second even-row-color"><code><a href="#LOOK_HEAT" class="member-name-link">LOOK_HEAT</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">MRADAR-3: the gun heat at or under which the gun fires within two ticks (it cools 0.1 a tick).</div>
+</div>
+<div class="col-first odd-row-color"><code>(package private) static final long</code></div>
 <div class="col-second odd-row-color"><code><a href="#OVERDUE" class="member-name-link">OVERDUE</a></code></div>
 <div class="col-last odd-row-color">
 <div class="block">...unless the stalest opponent's scan is this old: one full sweep.</div>
@@ -127,6 +137,12 @@ loadScripts(document, 'script');</script>
 <div class="col-second even-row-color"><code><a href="#SPIN_OTHERS" class="member-name-link">SPIN_OTHERS</a></code></div>
 <div class="col-last even-row-color">
 <div class="block">Opponents alive from which the radar just spins (<a class="req" href="../../../../requirements.html#MRADAR-1">MRADAR-1</a>).</div>
+</div>
+<div class="col-first odd-row-color"><code>static final boolean</code></div>
+<div class="col-second odd-row-color"><code><a href="#TEAM_LOOK" class="member-name-link">TEAM_LOOK</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">MRADAR-3 (team step E): on a team, with four or more enemies alive, a member whose gun
+ is about to fire looks at its own target when the team's freshest scan of it is stale.</div>
 </div>
 </div>
 </section>
@@ -176,6 +192,20 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Radar turn for this tick at <code>now</code>, with <code>finisher</code> the opponent the gun
  wants to finish (or null).</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#radarTurn(java.awt.geom.Point2D.Double,double,hadur2.core.world.EnemyTracker,int,java.lang.String,long,boolean,double,java.lang.String)" class="member-name-link">radarTurn</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
+ double&nbsp;radarHeading,
+ <a href="../world/EnemyTracker.html" title="class in hadur2.core.world">EnemyTracker</a>&nbsp;tracker,
+ int&nbsp;others,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;finisher,
+ long&nbsp;now,
+ boolean&nbsp;team,
+ double&nbsp;gunHeat,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;target)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Radar turn for this tick at <code>now</code>; <code>team</code> says whether a teammate lives, and
+ <code>gunHeat</code> and <code>target</code> are the gun's heat and its last target, for MRADAR-3.</div>
 </div>
 </div>
 </div>
@@ -239,6 +269,53 @@ loadScripts(document, 'script');</script>
 </dl>
 </section>
 </li>
+<li>
+<section class="detail" id="TEAM_LOOK">
+<h3>TEAM_LOOK</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">TEAM_LOOK</span></div>
+<div class="block">MRADAR-3 (team step E): on a team, with four or more enemies alive, a member whose gun
+ is about to fire looks at its own target when the team's freshest scan of it is stale.
+ Off in the shipped build: the <code>tlook</code> ablation turns it on.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur2.core.melee.MeleeRadar.TEAM_LOOK">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="LOOK_HEAT">
+<h3>LOOK_HEAT</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">LOOK_HEAT</span></div>
+<div class="block">MRADAR-3: the gun heat at or under which the gun fires within two ticks (it cools 0.1 a tick).</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur2.core.melee.MeleeRadar.LOOK_HEAT">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="LOOK_AGE">
+<h3>LOOK_AGE</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">long</span>&nbsp;<span class="element-name">LOOK_AGE</span></div>
+<div class="block">MRADAR-3: a target scan this old, by any member, is worth a look; a teammate's arrives a tick late.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur2.core.melee.MeleeRadar.LOOK_AGE">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
 </ul>
 </section>
 </li>
@@ -288,6 +365,22 @@ loadScripts(document, 'script');</script>
  long&nbsp;now)</span></div>
 <div class="block">Radar turn for this tick at <code>now</code>, with <code>finisher</code> the opponent the gun
  wants to finish (or null).</div>
+</section>
+</li>
+<li>
+<section class="detail" id="radarTurn(java.awt.geom.Point2D.Double,double,hadur2.core.world.EnemyTracker,int,java.lang.String,long,boolean,double,java.lang.String)">
+<h3>radarTurn</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">radarTurn</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
+ double&nbsp;radarHeading,
+ <a href="../world/EnemyTracker.html" title="class in hadur2.core.world">EnemyTracker</a>&nbsp;tracker,
+ int&nbsp;others,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;finisher,
+ long&nbsp;now,
+ boolean&nbsp;team,
+ double&nbsp;gunHeat,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;target)</span></div>
+<div class="block">Radar turn for this tick at <code>now</code>; <code>team</code> says whether a teammate lives, and
+ <code>gunHeat</code> and <code>target</code> are the gun's heat and its last target, for MRADAR-3.</div>
 </section>
 </li>
 </ul>
