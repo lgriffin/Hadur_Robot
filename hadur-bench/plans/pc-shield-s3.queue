@@ -1,0 +1,56 @@
+# 1v1 mode table, last entries before top 5 (2026-10-25): master's census reads 91.16 (pc-surf-b's
+# c arm), 0.54 short of the ~91.7 that projects top 5 live. Two per-opponent screens that no earlier
+# card has run:
+#   warm shield: the Saguaro shield robots Hadur's list still leaves out (79). Part 2 screened
+#     them with cold predictors and none locked; Saguaro ships an aim per robot. Each gets the aim its
+#     part 2 screen battles end on (work/shield-s2-screen's SP records, shield_s2.py's rule), with
+#     and without the opening drive.
+#   stop-and-go pass 2: the Saguaro poison robots table v2 left out (99), 3 fresh seeds pooled
+#     with last night's 3 (work/modes-poison), locked at +3 points with the 95% interval above 0.
+# Expected +0.05 to +0.3 APS in all (central about +0.15): not enough on its own for top 5.
+#   ./queue.sh run pc-shield-s3        (or  .\queue.ps1 run pc-shield-s3)
+# Run it from master:
+#   git checkout master && git pull
+# One bench queue, RoboRumble workers at 0, unpinned, 12 workers, truth log off. Every step resumes;
+# no step needs a decision. About 1.5 h. It needs last night's work/shield-s2-screen and
+# work/modes-poison left in place (without them the warm arms start cold and pass 2 reads 3 seeds).
+#
+# warm screen (about 0.5 h): 79 robots x c, aa, w, wv x 4 seeds = 1,264 battles.
+# poison screen (about 0.5 h): 99 robots x c, aa, wp, ws x 3 seeds = 1,188 battles.
+# pick: mode_table.py, w or wv at +5 on the warm screen, wp or ws at +3 on both poison runs.
+# candidate: t4 = master + the new list adds, drives, aims and stop-and-go entries.
+# verify (about 0.4 h): the robots t4 has a new entry for x c, aa, t4 x 4 fresh seeds.
+# gate: t4 minus pooled c and aa summed over the verify panel / 1,217 pairings: PASS at +0.05 APS
+#   with the lower end above 0 and the A/A inside its band (a small table; the lower end is the bar).
+
+set P = --parallel 12 --no-truth-log
+set HEAP = --child-heap 2G
+set E = --engine 1.11.1
+set C = --skip-build --skip-fetch --rounds 35 --cpu-constant 1488498 ${HEAP} ${E}
+set S3 = python3 tools/shield_s3.py
+set LIST = ../hadur-robot/src/main/java/hadur2/ShieldListData.java
+set OUT = ../docs/bench/local
+set W = work/shield-s3
+
+prep | mkdir -p bisect work ${W} && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur2.Hadur_3.16.jar bisect/ && bash ./build-ablation.sh aa && bash ./build-ablation.sh sgo && bash ./build-ablation.sh sgo2 && ${S3} rest panel-saguaro-shield.txt panel-saguaro-shield-listed.txt --listdata ${LIST} --out ${W}/warm-panel.txt && ${S3} rest panel-saguaro-poison.txt --exclude ${OUT}/modes-v2-stopgo.txt ${OUT}/modes-v2-stopgo2.txt --out ${W}/poison2-panel.txt && ${S3} warm work/shield-s2-screen ${W}/warm-panel.txt --out-dir ${W} --base 3.16 && ./fetch-opponents.sh --set ${W}/warm-panel.txt && ./fetch-opponents.sh --set ${W}/poison2-panel.txt && mvn -q compile
+
+warm | ./bench-top20.sh ${C} ${P} --set ${W}/warm-panel.txt --seeds 4 --seed-base 3100 --arms ${W}/shield-s3-screen.arms --out work/shield-s3-warm --label shield-s3-warm
+  after: prep
+
+poison2 | ./bench-top20.sh ${C} ${P} --set ${W}/poison2-panel.txt --seeds 3 --seed-base 3200 --arms plans/modes-poison.arms --out work/shield-s3-poison --label shield-s3-poison
+  after: warm
+
+pick | python3 ../data/tools/multiarm.py work/shield-s3-warm/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_shield-s3-warm.md && python3 ../data/tools/multiarm.py work/shield-s3-poison/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_shield-s3-poison.md && python3 ../data/tools/mode_table.py work/shield-s3-warm/arms.tsv --margin 5 --out-tsv ${OUT}/shield-s3-warm-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_shield-s3-warm-pick.md && python3 ../data/tools/mode_table.py work/modes-poison/arms.tsv work/shield-s3-poison/arms.tsv --margin 3 --out-tsv ${OUT}/shield-s3-poison-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_shield-s3-poison-pick.md
+  after: poison2
+
+candidate | ${S3} candidate ${OUT}/shield-s3-warm-pick.tsv ${OUT}/shield-s3-poison-pick.tsv --only ${W}/poison2-panel.txt --warm-dir ${W} --base 3.16 --out ${W}/verify.arms && ${S3} panel ${W}/warm-panel.txt ${W}/poison2-panel.txt --names ${W}/s3-adds.txt ${W}/s3-stopgo.txt ${W}/s3-stopgo2.txt --out ${W}/verify-panel.txt && cp ${W}/s3-*.txt ${OUT}/ && cp ${W}/warm-aims*.txt ${OUT}/
+  after: pick
+
+verify | ./bench-top20.sh ${C} ${P} --set ${W}/verify-panel.txt --seeds 4 --seed-base 3300 --arms ${W}/verify.arms --out work/shield-s3-verify --label shield-s3-verify
+  after: candidate
+
+gate | python3 ../data/tools/multiarm.py work/shield-s3-verify/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_shield-s3-verify.md && python3 tools/shield_s2.py gate work/shield-s3-verify/arms.tsv --arm t4 --panel ${W}/verify-panel.txt --bar 0.05 --out ${OUT}/$(date +%Y-%m-%d)_shield-s3-gate.md
+  after: verify
+
+pr | bash tools/open_results_pr.sh claude/pc-shield-s3-results "1v1 table: warm-start shield and stop-and-go pass 2, screen and verify gate" ${OUT}/*_shield-s3*.md $(find ${OUT} -maxdepth 1 \( -name 'shield-s3-*.tsv' -o -name 's3-*.txt' -o -name 'warm-aims*.txt' \) -size +0c)
+  after: gate
