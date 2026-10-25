@@ -123,7 +123,7 @@ The spec's stages M0 to M5 are U0 to U5 here, because M is already Hadur's melee
 | U0 | M0 | Module, core, tests, traceability | Done |
 | U1 | M1 | Survival at or above Capulet's 29.2% | Passed: 51.7 (PR #278) |
 | U2 | M2 | 64 APS on the cold gun | Passed: 66.3 (PR #278) |
-| U3 | M3 | 66 APS; out-survive Figment in half of 200 battles | Not met: 66.3 ± 1.4 APS, Figment 29.5% (PR #278); arm screen next |
+| U3 | M3 | 66 APS; out-survive Figment in half of 200 battles | Not met: 66.3 ± 0.25 APS, Figment 29.5% (PR #278); arm screen next |
 | U4 | M4 | Codesize at most 744 | 749: at the limit, the margin is not met (above) |
 | U5 | M5 | Rumble entry | Not started: needs Leigh's go |
 
@@ -183,8 +183,13 @@ gate results.
 ## Duel endgame and the top-5 bar
 
 Leigh's goal (2026-10-25): **a guaranteed top 5**. 5th on the 2026-10-25 MicroMelee rankings is
-Quantum at 65.61 and 4th is Sprout at 66.67, so the bar is a census APS whose 95% low end is above
-66.0. Saor 0.1 reads 66.32 ± 1.4, so its low end is 64.9, and that does not clear the bar.
+Quantum at 65.61, and 4th is Sprout at 66.67. The live table may sit below the bench: Hadur's 1v1
+ran 0.5 to 0.7 under its bench live, and MicroMelee has no calibration yet. So the bar is a full
+census whose APS interval sits wholly above **66.6**, which is 5th place plus a 1.0 margin.
+
+Saor 0.1 reads 66.32 ± 0.25. The ± is seed-to-seed noise, worked out within each census field
+(`tools/saor_arms.py`). An earlier figure of ± 1.4 was the spread between fields, which is not
+measurement noise. So 0.1 sits 0.3 above 5th place but under the bar, and it needs about +0.5.
 
 The first PC card (PR #278) shows where the points go. Saor reaches the final duel in about half
 the gate-field rounds and then loses most of those duels:
@@ -208,7 +213,7 @@ tried four duel-only changes. Figures are Saor's score share against each oppone
 | Orbit the target | 36.6 | 21.9 | 35.2 |
 
 Only the uncapped one-on-one power helps across the board. It is worth about four points of score share on average across the
-three, which is unlikely to lift the census by the 1.2 APS the bar needs on its
+three, which may not lift the census by the 0.5 APS the bar needs on its
 own. So the second card, `plans/pc-saor-u3b.queue`, screens six arms on the census and the gate
 field (`saor-arms/arms.txt`, built by `tools/saor_arms.sh`, read by `tools/saor_arms.py`, which
 pairs each arm per opponent against the control):

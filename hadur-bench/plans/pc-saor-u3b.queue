@@ -13,14 +13,14 @@
 #   U  no cap at all; frees 14 bytes
 #   L  longer corner leg (distance / 2)
 #   S  shorter corner leg (distance / 3.5)
-# Why: the first card (PR #278) put Saor at 66.32 +- 1.4 census APS, losing the final duel to
+# Why: the first card (PR #278) put Saor at 66.32 +- 0.25 census APS (seed noise), losing the final duel to
 # Wallaby (23%) and Figment (38%). A cloud duel screen (2026-10-25, 1v1, 4 seeds) had P up 7.6
 # score-share points on Figment and 3.9 on Capulet; random axis flips and an orbit duel movement
 # lost. P alone is unlikely to be enough, so the leg and cap arms test melee play as well.
 # census (about 15 min an arm, 1.5 h): 18 fields x 12 fresh seeds = 216 battles an arm.
 # gate9 (about 10 min an arm, 1 h): 100 fresh seeds an arm.
-# read: tools/saor_arms.py, paired per opponent against C. The bar is the top-5 bar: census APS
-#   with its 95% low end above 66.0 (5th, Quantum, is 65.61). A winning arm must still fit 749
+# read: tools/saor_arms.py, field by field against C. The bar is the top-5 bar: a full census
+#   whose 95% low end is above 66.6 (5th, Quantum, is 65.61, plus 1.0 for the bench-to-live offset). A winning arm must still fit 749
 #   bytes after ProGuard, with the core and SAOR-15 updated, before any entry.
 
 set MVN = mvn -q -Drobocode.version=1.11.1 compile exec:java

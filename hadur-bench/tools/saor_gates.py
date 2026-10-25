@@ -42,8 +42,10 @@ def is_robot(name, configured):
     return name == configured or name.startswith(configured + " ")
 
 
-def battles(works, robot):
-    """Yield the rows of each battle our robot fought, as {name: row} with numbers parsed."""
+def battles(works, robot, with_group=False):
+    """Yield the rows of each battle our robot fought, as {name: row} with numbers parsed; with
+    with_group, as (group, rows), the group being the run directory above `battles/` (a census
+    field such as F01, or the whole run for a single field)."""
     for work in works:
         for root, _dirs, files in sorted(os.walk(work)):
             base = os.path.basename(root)
@@ -57,7 +59,7 @@ def battles(works, robot):
             for r in rows:
                 parsed[r["robot"]] = {k: float(r[k]) for k in ("score", "firsts", "survival", "bulletDamage")}
             if any(is_robot(n, robot) for n in parsed):
-                yield parsed
+                yield (os.path.dirname(os.path.dirname(root)), parsed) if with_group else parsed
 
 
 def head_to_head(battle, us, prefix, key):
@@ -73,16 +75,20 @@ def evaluate(works, robot, pairings=156, needed_battles=200):
     firsts = rounds = 0
     figment = []
     wallaby = []
+    groups = {}
     count = 0
-    for battle in battles(works, robot):
+    for group, battle in battles(works, robot, with_group=True):
         count += 1
         us = next(n for n in battle if is_robot(n, robot))
         s = battle[us]["score"]
+        mine = []
         for name, row in battle.items():
             if name == us:
                 continue
             total = s + row["score"]
-            shares.setdefault(name, []).append(50.0 if total == 0 else 100.0 * s / total)
+            mine.append(50.0 if total == 0 else 100.0 * s / total)
+            shares.setdefault(name, []).append(mine[-1])
+        groups.setdefault(group, []).append(sum(mine) / len(mine))
         firsts += battle[us]["firsts"]
         rounds += sum(r["firsts"] for r in battle.values())
         f = head_to_head(battle, us, FIGMENT, "survival")
@@ -112,6 +118,8 @@ def evaluate(works, robot, pairings=156, needed_battles=200):
         "battles": count,
         "opponents": len(per_opponent),
         "per_opponent": {n: round(v, 2) for n, v in sorted(per_opponent.items())},
+        # Each group's (field's) battle APS values, for the seed-to-seed interval (saor_arms.py).
+        "groups": {os.path.basename(g): v for g, v in sorted(groups.items())},
         "U1 survival": gate(survival, CAPULET_SURVIVAL, len(per_opponent), pairings),
         "U2 aps": gate(aps, COLD_GUN_APS, len(per_opponent), pairings),
         "SAOR-12 aps": gate(aps, APS_GATE, len(per_opponent), pairings),
