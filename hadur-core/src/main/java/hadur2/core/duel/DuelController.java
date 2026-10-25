@@ -15,6 +15,7 @@ import hadur2.core.memory.ProfileLibrary;
 import hadur2.core.memory.Tiers;
 import hadur2.core.model.*;
 import hadur2.core.move.GunClassifier;
+import hadur2.core.move.GunMimics;
 import hadur2.core.move.StopAndGo;
 import hadur2.core.physics.ShotDodger;
 import hadur2.core.move.HitForensics;
@@ -102,6 +103,8 @@ public final class DuelController {
     private double smallestEnemyPower = Double.NaN;
     /** END-4: whether the last shot decision held the shot, so a P record marks each change. */
     private boolean end4Holding;
+    /** MOVE-25: this round's ticks with a cool gun, and those of them off its aim. */
+    private int coolTicks, offAimTicks;
     /** Whether the aim the gun is turning to carries the anti-shield offset (SHIELD-2). */
     private boolean aimCarriesJitter;
     /**
@@ -315,6 +318,8 @@ public final class DuelController {
         moveController.setFlattenerOff(duelOnly(MoveDesign.FLATTENER_OFF, enemiesTotal));
         this.moveController.setReplicator(MoveDesign.REPLICATOR);
         this.moveController.setPointKernel(duelOnly(MoveDesign.POINT_KERNEL, enemiesTotal));
+        this.moveController.setGunMimics(duelOnly(MoveDesign.STOP_POINT_SURF && MoveDesign.MIMICS,
+            enemiesTotal) ? new GunMimics() : null);
         this.surfMover = new SurfMover(battleField, predictor);
         this.surfMover.setEscapeRoomTerm(MoveDesign.ESCAPE_ROOM);
         this.surfMover.setDistancingToEnemy(duelOnly(MoveDesign.DISTANCING_TO_ENEMY, enemiesTotal));
@@ -1085,6 +1090,9 @@ public final class DuelController {
             // MOVE-19: the bullet's angle is a sample of the enemy gun's aim, as a hit would be.
             if (logsIntercept(duelOnly(MoveDesign.BULLET_HIT_BULLET_LOG, enemiesTotal), hitWave)) {
                 moveController.logBulletHit(hitWave, hitLoc, round, in.time());
+            } else {
+                // MOVE-27: the angle still scores the ensemble's models, which logBulletHit would do.
+                moveController.scoreIntercept(hitWave, hitLoc);
             }
         }
         // MOVE-20: an intercept clears the cached searches, as a hit does.
@@ -1130,6 +1138,20 @@ public final class DuelController {
             telemetry.emit("SD," + round + "," + tick + "," + best + ","
                 + (best < 0 ? 0 : shotDodger.matches(best)) + "," + shotDodger.read() + ","
                 + (shotDodger.active() ? 1 : 0));
+        }
+        if (duelOnly(MoveDesign.STOP_POINT_SURF, enemiesTotal)) {
+            // MOVE-25: GH,round,tick,coolTicks,offAimTicks.
+            telemetry.emit("GH," + round + "," + tick + "," + coolTicks + "," + offAimTicks);
+        }
+        coolTicks = 0;
+        offAimTicks = 0;
+        if (moveController.gunMimics() != null) {
+            // MOVE-27: GM,round,tick,views score,each mimic's score.
+            StringBuilder gm = new StringBuilder("GM," + round + "," + tick);
+            for (double score : moveController.gunMimics().scores()) {
+                gm.append(',').append(String.format(java.util.Locale.ROOT, "%.3f", score));
+            }
+            telemetry.emit(gm.toString());
         }
         if (stopAndGo != null) {
             // POISON-1: WP,round,tick,goTicks,stopTicks,reverseTicks.
@@ -1861,6 +1883,11 @@ public final class DuelController {
         if (end4 != end4Holding) {
             end4Holding = end4;
             emitPolicy(round, in.time(), "power", firePower, Double.NaN, end4 ? "end_4" : "end_4_off");
+        }
+        // MOVE-25: a cool gun's ticks, and those it was off its aim, for the GH record.
+        if (in.gunHeat() == 0) {
+            coolTicks++;
+            if (Math.abs(Math.toDegrees(in.gunTurnRemaining())) >= 0.05) offAimTicks++;
         }
         if (in.gunHeat() == 0 && Math.abs(Math.toDegrees(in.gunTurnRemaining())) < 0.05
                 && !Double.isNaN(firePower) && lastGunWave != null && !predictable

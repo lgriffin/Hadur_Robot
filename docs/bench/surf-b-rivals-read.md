@@ -128,3 +128,52 @@ Next in the cloud, whatever the census says: the ensemble (stage 2 proper), as B
 each view and each simulated simple gun as its own histogram, weighted per enemy by its rolling
 density at real bullets cubed, inside the stop-point planner; and find why the stop-point surf
 fights closer before blaming the danger.
+
+## MOVE-27, the enemy-gun ensemble (2026-10-25)
+
+Hadur's main danger views learn only from bullets that hit us, but a learning gun learns from
+where we drove on every wave. MOVE-27 (`move/GunMimics.java`, switch `MoveDesign.MIMICS`,
+ablation `mimics`, jar suffix gm) puts six visit-count mimics of classic learning guns beside the
+views. Each mimic has its own segmentation from the shooter's side (flight time, lateral and
+advancing speed, acceleration, wall room, time since our last speed change) and its own rolling
+depth, from 3 to 30. As BeepBoop does, every model, the views included, is scored at each real
+bullet: its probability near the bullet's guess factor, relative to a uniform guess, folded into a
+rolling mean. The stop-point surf rates waves on the blend, weighted by score cubed. The views
+start well ahead (2 against 0.5), so early rounds play as before.
+
+Cloud smokes on the same 20 mid-field robots, 3 seeds each, paired against the stop-point surf
+alone (3.16sb):
+
+| Smoke | Build | Score share (pp) | Damage a round, dealt / taken | Their hit rate | Our shots a battle |
+|---|---|---|---|---|---|
+| 5 | ensemble, seeds 1-3 | +0.4 +/- 1.5 | 38.4 / 21.1 against 41.6 / 22.1 | 6.6% against 6.8% | 1,253 against 1,319 |
+| 6 | the same, fresh seeds 3101-3103 | +1.0 +/- 1.9 | 38.3 / 22.0 against 41.2 / 23.1 | 6.8% against 7.1% | 1,244 against 1,366 |
+| 7 | a mimic's visit no longer ends the plan, seeds 3101-3103 | +0.4 +/- 1.8 | 38.6 / 21.5 against 41.3 / 23.0 | 6.8% against 7.2% | 1,272 against 1,376 |
+| 8 | smoke 7 plus GH telemetry, against a rebuilt 3.16sb, seeds 3101-3103 | +0.9 +/- 1.7 | 38.5 / 20.9 against 39.6 / 21.6 | 6.7% against 7.0% | 1,205 against 1,259 |
+
+What they say:
+
+- **The ensemble does cut the damage we take.** It falls by 1.0 to 1.5 a round in all three
+  smokes, with their hit rate down 0.2 to 0.4 points. No earlier movement change has moved damage
+  taken against learning guns in the cloud.
+- **The lost shots are mostly noise between runs.** Smokes 5-7 showed our gun firing about 7%
+  fewer shots, so we dealt about 3 less a round. Smoke 8 rebuilt the 3.16sb baseline from the
+  same code (the ensemble off plays bit for bit) and reran the same seeds. The baseline itself
+  then fired 1,259 shots where it had fired 1,376, under heavier contention on the box (864
+  skipped turns against 694). Against it the gap is 4% of shots and 1.1 dealt a round. The GH
+  telemetry shows the gun off its aim on 13.1% of its cool ticks with the ensemble and 13.4%
+  without, so the movement is not holding shots. The cloud box's timing noise is as large as the
+  effect.
+- **The models barely predict mid-field learning guns.** The GM telemetry shows every model
+  scoring 1.1 to 1.6 times a uniform guess at real bullets (views 1.2 to 1.7, mimics 1.0 to 1.4).
+  Only weak or simple guns go higher (Bakko 7.8, Chord 4.9, HedgehogP 4.2). With the cube, the
+  mimics take most of the blend against learning guns, so in practice they act as a visit
+  flattener: they steer us away from where we have been. That is BeepBoop's lesson too: against a
+  good learning gun you cannot predict the bullet, but you can stop being predictable.
+
+Estimate: all four smokes read positive (+0.4, +1.0, +0.4, +0.9 pp; pooled about +0.7 +/- 0.9).
+Damage taken fell in every one. This is the first movement change since the rebuild began to move
+damage taken against learning guns. On the field I estimate +0.1 to +0.5 APS, with zero inside
+the range; 20 robots on a 4-core box cannot settle it. `plans/pc-surf-b.queue` now runs this
+build (arm gm) against 3.16 and its A/A copy on census-312 x 2 seeds, about 3.5-4 h, gated at +0.3
+APS. It is a proposal: it runs only on Leigh's go.
