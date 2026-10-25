@@ -24,6 +24,7 @@ Standard library only.
 import argparse
 import csv
 import html
+import json
 import math
 import os
 import random
@@ -257,8 +258,21 @@ def skipped_turns(work, fields=None, max_number=None):
     return out
 
 
+def run_width(work):
+    """The worker count a run's conditions.json records (BENCH-51), or None when none says."""
+    for root, _dirs, files in sorted(os.walk(work)):
+        if "conditions.json" in files:
+            try:
+                with open(os.path.join(root, "conditions.json")) as fh:
+                    return int(json.load(fh)["parallel"])
+            except (ValueError, KeyError, TypeError):
+                continue
+    return None
+
+
 def width_check(census_work, width_work):
-    """(skips a round at the census width, at the width run's) on the width run's fields and seeds."""
+    """(skips a round at the census width, at the width run's, rounds each, the two widths) on the
+    width run's fields and seeds. The widths are None when the runs do not record them."""
     narrow = defaultdict(int)
     for field, key, baseline, _r, _rounds in battles(width_work):
         if not baseline:
@@ -267,7 +281,7 @@ def width_check(census_work, width_work):
     wide = skipped_turns(census_work, set(narrow), max(narrow.values()) if narrow else None)
     thin = skipped_turns(width_work)
     return (statistics.mean(wide) if wide else float("nan"), statistics.mean(thin) if thin else float("nan"),
-            len(wide), len(thin))
+            len(wide), len(thin), run_width(census_work), run_width(width_work))
 
 
 def pct(a, b):
@@ -293,9 +307,13 @@ def render(res, title):
     out += ["Skipped turns: %.1f a round (most in one round %d) over %d rounds." % (
         statistics.mean(sk) if sk else 0, max(sk) if sk else 0, len(sk)), ""]
     if res.get("width"):
-        wide, thin, nw, nt = res["width"]
-        out += ["Width check on the same fields and seeds: %.2f skipped turns a round at the census width "
-                "(%d rounds) against %.2f at the narrower width (%d rounds)." % (wide, nw, thin, nt), ""]
+        wide, thin, nw, nt, cw, tw = res["width"]
+        if cw is not None and cw == tw:
+            out += ["Width check: not applicable, both runs used %d worker%s." % (cw, "" if cw == 1 else "s"), ""]
+        else:
+            named = " (%s against %s workers)" % (cw, tw) if cw is not None and tw is not None else ""
+            out += ["Width check on the same fields and seeds%s: %.2f skipped turns a round at the census width "
+                    "(%d rounds) against %.2f at the narrower width (%d rounds)." % (named, wide, nw, thin, nt), ""]
     out += ["## Rounds won by the strongest opponent in the field", "",
             "| Strongest opponent | Rounds | Hadur won |", "|---|---|---|"]
     for b in BANDS:
