@@ -1,4 +1,4 @@
-# PC card team-hunt (docs/plan-team-top5.md, requirement TMODE-13): arm bb (A/A, master again under another name), all 46 teams against master (the aa build) (Bench @FILE, one argument a line)
+# PC card team-hunt (docs/plan-team-top5.md, requirement TMODE-13): arm bb (A/A, master again under another name), all 46 teams against master (the aa build). Template: hvprep writes work/team-hunt-bb.args with @V@ = the robot.release in hadur-robot/pom.xml
 --team
 true
 --seeds
@@ -16,16 +16,16 @@ true
 --set
 team-census46.txt
 --robot-jar
-bisect/hadur2.HadurTeam_3.16bb.jar
+bisect/hadur2.HadurTeam_@V@bb.jar
 --robot
-hadur2.HadurTeam 3.16bb
+hadur2.HadurTeam @V@bb
 --member
 hadur2.Hadur
 --out
-work/team-hunt-bb
+work/team-hunt-@V@-bb
 --report
 ../docs/bench/local/team-hunt-bb.md
 --baseline
-bisect/hadur2.HadurTeam_3.16aa.jar
+bisect/hadur2.HadurTeam_@V@aa.jar
 --baseline-robot
-hadur2.HadurTeam 3.16aa
+hadur2.HadurTeam @V@aa

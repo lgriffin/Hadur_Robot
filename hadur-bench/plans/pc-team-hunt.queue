@@ -1,16 +1,21 @@
 # Team HUNT (TMODE-13, team thread; plans/team-hunt.steps as its own card): team-only, duel and melee
 # fixtures bit for bit. hubb A/A and humh HUNT forced on, 46 teams x 6 seeds each, 1,104 battles,
 # about 1.2 h at 12 workers. The team thread reads claude/pc-team-hunt-results.
+# 2026-10-25 rerun: the first run named 3.16 jars after the 3.17 bump (humh found no jar; hubb ran
+# on stale 3.16 jars, report invalid). Now hvprep reads the version from hadur-robot/pom.xml, deletes
+# that version's aa/bb/mh team jars before rebuilding, and writes the args from the @V@ templates
+# with a per-version work dir, so a bump cannot point the card at stale jars or resume old pairings.
+# New step names, so the queue does not count the failed run's steps as done.
 #   ./queue.sh run pc-team-hunt        (or  .\queue.ps1 run pc-team-hunt)
 # Run it from master after pc-shield-s3 and pc-saor-u3 (one bench queue at a time):
 #   git checkout master && git pull
 
 set OUT = ../docs/bench/local
 
-huprep | git checkout -q master && bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && bash ./build-ablation.sh tmhunt && ./fetch-opponents.sh --set team-census46.txt && mvn -q compile
-hubb  | mvn -q exec:java "-Dexec.args=@plans/team-hunt-bb.args"
-  after: huprep
-humh  | mvn -q exec:java "-Dexec.args=@plans/team-hunt-mh.args"
-  after: hubb
-hupr  | bash tools/open_results_pr.sh claude/pc-team-hunt-results "Team HUNT (TMODE-13) screen" $(ls ${OUT}/team-hunt-*.md 2>/dev/null)
-  after: humh
+hvprep | git checkout -q master && V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && test -n "$V" && rm -f bisect/hadur2.HadurTeam_"$V"aa.jar bisect/hadur2.HadurTeam_"$V"bb.jar bisect/hadur2.HadurTeam_"$V"mh.jar && bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && bash ./build-ablation.sh tmhunt && mkdir -p work && for a in bb mh; do sed "s/@V@/$V/g" plans/team-hunt-$a.args > work/team-hunt-$a.args && test -f bisect/hadur2.HadurTeam_"$V"$a.jar || exit 1; done && test -f bisect/hadur2.HadurTeam_"$V"aa.jar && rm -f ../docs/bench/local/team-hunt-bb.md ../docs/bench/local/team-hunt-mh.md && ./fetch-opponents.sh --set team-census46.txt && mvn -q compile
+hvbb  | mvn -q exec:java "-Dexec.args=@work/team-hunt-bb.args"
+  after: hvprep
+hvmh  | mvn -q exec:java "-Dexec.args=@work/team-hunt-mh.args"
+  after: hvbb
+hvpr  | bash tools/open_results_pr.sh claude/pc-team-hunt-results "Team HUNT (TMODE-13) screen" $(ls ${OUT}/team-hunt-*.md 2>/dev/null)
+  after: hvmh
