@@ -14,8 +14,8 @@ import java.util.Set;
  *
  * <p>The table is keyed by an opposing member's class ({@link #key}): a team's members
  * share their team's entry, and a team of two classes has an entry for each. A team the
- * table does not name plays every mode forced on ({@code FORCE_...}, all off in the shipped
- * build), so an ablation build plays a mode against the whole field and one bench of it
+ * table does not name plays every mode forced on ({@code FORCE_...}; only MATEFIRE in the
+ * shipped build), so an ablation build plays a mode against the whole field and one bench of it
  * scores that mode against every team. The modes act only while Hadur has a living teammate:
  * off a team, or as the last member alive, the controller never asks.</p>
  */
@@ -47,7 +47,11 @@ public final class TeamModes {
         WAVES
     }
 
-    /** Ablation switches: the mode for every team the table does not name. */
+    /**
+     * Ablation switches: the mode for every team the table does not name. MATEFIRE is on in
+     * the shipped build since team step C (TMODE-12): with WEAVE-9's narrow lane, teammates'
+     * bullets fly near more often, and the pair benched +2.9 share points against 3.16.
+     */
     public static final boolean FORCE_SOFT = false;
     public static final boolean FORCE_GANG = false;
     public static final boolean FORCE_FINISH = false;
@@ -56,7 +60,7 @@ public final class TeamModes {
     public static final boolean FORCE_SCREEN = false;
     public static final boolean FORCE_POOL = false;
     public static final boolean FORCE_DISABLED = false;
-    public static final boolean FORCE_MATEFIRE = false;
+    public static final boolean FORCE_MATEFIRE = true;
     public static final boolean FORCE_REAR = false;
     public static final boolean FORCE_WAVES = false;
 

@@ -706,7 +706,7 @@ Every requirement group belongs to one owner, the same owner as the code it gove
 | WEAVE-1 | Ubiquitous | Only the driving role shall originate a tick's body, gun, radar and fire orders, apart from the full-speed order the conductor gives at a change of role. | A2 |
 | WEAVE-2 | Ubiquitous | A fence shall only replace a drive; it shall never touch the gun, the radar, the fire order or the messages. | A2 |
 | WEAVE-3 | Ubiquitous | The driving role shall order a shot only on a tick for which the conductor has given the fire permission. | A2 |
-| WEAVE-4 | State | While a living teammate's last known position is no older than the WORLD-3 window and lies in the fire lane, the conductor shall withhold the fire permission. | A5 |
+| WEAVE-4 | Optional | Where the wide fire lane is played (WEAVE-9 off), while a living teammate's last known position is no older than the WORLD-3 window and lies in the fire lane, the conductor shall withhold the fire permission. | A5 |
 | WEAVE-5 | State | While in a team battle, the Guard's safe orders shall hold fire. | A5 |
 | WEAVE-6 | Unwanted | If the driving role orders a shot on a tick without the fire permission, then the core shall treat it as that role's fault. | A2 |
 | LINK-1 | Ubiquitous | Team messages shall be byte arrays in a versioned, checksummed format that the core encodes and decodes. | A4 |
@@ -1116,7 +1116,7 @@ MMOVE-8 the melee strand, WEAVE-7 and WEAVE-8 the conductor.
 | MMOVE-6 | State | While in melee on a team, movement shall add to each candidate point's risk a term for every living teammate whose position is no older than the WORLD-3 window, rising with the inverse square of the distance between the point and the teammate's predicted position when Hadur would arrive. | T1 |
 | MMOVE-7 | State | While in melee on a team, movement shall score the path to each candidate against each such teammate's predicted track, and shall cap the candidate ring at the same fraction of the nearest teammate's distance as of the nearest opponent's. | T1 |
 | MMOVE-8 | State | While on a team, each member's movement noise field shall differ from its teammates' by the member's place in the roster; off a team the field shall be the one MMOVE-1 uses. | T1 |
-| WEAVE-7 | State | While a living teammate's predicted track, over the time a bullet of any power would take to pass it, comes within the fire lane's half-width of the lane, the conductor shall withhold the fire permission. | T1 |
+| WEAVE-7 | Optional | Where the wide fire lane is played (WEAVE-9 off), while a living teammate's predicted track, over the time a bullet of any power would take to pass it, comes within the fire lane's half-width of the lane, the conductor shall withhold the fire permission. | T1 |
 | WEAVE-8 | Unwanted | If the driving role's drive, simulated a set number of ticks ahead, would bring Hadur within a robot's width and a margin of a living teammate's predicted position, then the conductor shall replace the drive with the nearest of a brake or a reversal that stays clear, keeping the gun, radar, fire and message orders. | T1 |
 | MGUN-6 | State | While in melee on a team with a living teammate whose position is no older than the WORLD-3 window, and at least 30 energy of its own, the gun shall fire power 3, or the power that kills its target if less, in place of the MGUN-3 table. | T2 |
 | MGUN-8 | Event | When the World takes a teammate's reported sighting of an enemy, the field gun shall add it to that enemy's movement history as one of Hadur's own scans, before Hadur's own scans of the same tick. | T5 |
@@ -1135,6 +1135,8 @@ MMOVE-8 the melee strand, WEAVE-7 and WEAVE-8 the conductor.
 | TMODE-9 | Optional | Where the MATEFIRE mode is played, each bullet a teammate reports firing shall count in the member's destination risk as an enemy's virtual bullet does, on the reported heading, until it has passed the member. | T7 |
 | TMODE-10 | Optional | Where the REAR mode is played by the team's leader (the member that starts a round with more than 100 energy), each enemy's risk term shall weigh 1.5 times. | T7 |
 | TMODE-11 | Optional | Where the WAVES mode is played, the member shall re-rank its eight lowest-risk destinations, and the destination it holds, by the damage expected from the shots in flight its 30-tick drive to each would cross, each shot a profile over its virtual bullets' headings and its escape angle summing to its aimed-at weight, and shall take the least of risk over the median risk plus three times damage over the median damage (floored at 0.1). | T7 |
+| WEAVE-9 | State | While a living teammate lies ahead of the gun within 30 px of its line, at the teammate's distance, and nearer Hadur than the nearest enemy within 36 px of that line (at any distance when no enemy is), the conductor shall withhold the fire permission. | T7 |
+| TMODE-12 | Ubiquitous | The team mode table's default, for a team it does not name, shall be the MATEFIRE mode. | T7 |
 
 ### T1 notes
 
@@ -1657,3 +1659,19 @@ A retired requirement keeps its ID; no new requirement reuses it.
   `StopPointSurf` rates. Why: BeepBoop weights 22 enemy-gun models by their density at real bullets
   cubed, and Hadur's main views learn only from hits while learning guns learn every visit
   (docs/bench/surf-b-rivals-read.md).
+
+## Team step C: Ogi's narrow fire lane and dodging teammates' bullets (WEAVE-9, TMODE-12)
+
+- **Why.** Step B (docs/plan-team-top5.md) found Aleph's edge over us is tempo: the wide lane
+  (WEAVE-4, WEAVE-7) held about a third of our shots (9.6 shots per 50 ticks against Aleph's 14.8).
+- **Gate.** PC card pc-1v1-modes, team C block: all 46 TeamRumble opponents, 6 seeds, paired with
+  3.16 (PR #264). A/A +0.6 ± 0.7; no lane (`tlane0`) +0.9 ± 1.0; narrow lane (`tlaneo`) +2.2 ± 0.9;
+  narrow lane with MATEFIRE (`tlaneo,tmfire`) **+2.9 ± 0.9**. The last ships.
+- **WEAVE-9.** `TeamLink.NARROW_LANE` (true) picks `narrowLaneClear`; the wide lane stays as
+  `wideLaneClear` for the `tlanew` ablation. Constants `NARROW_MATE_HALF` (30) and
+  `NARROW_TARGET_HALF` (36).
+- **TMODE-12.** `TeamModes.FORCE_MATEFIRE` is true, so TMODE-9 plays against every team.
+- Solo play is untouched: the lane is asked only through the team link (null off a team), and
+  MATEFIRE reads teammates' bullets only while a teammate lives. The duel and melee replay fixtures
+  replay bit for bit.
+

@@ -604,7 +604,14 @@ for a in "${list[@]}"; do
             ;;
         tmfire)
             version="${version}mb"
+            # TMODE-12 ships MATEFIRE since team step C; on older source (--ref) force it on.
+            if ! grep -qF "public static final boolean FORCE_MATEFIRE = true;" "$modes"; then
             edit "$modes" "public static final boolean FORCE_MATEFIRE = false;" "public static final boolean FORCE_MATEFIRE = true;"
+            fi
+            ;;
+        tmnofire)
+            version="${version}nmb"
+            edit "$modes" "public static final boolean FORCE_MATEFIRE = true;" "public static final boolean FORCE_MATEFIRE = false;"
             ;;
         tmwk)
             version="${version}wk"
@@ -631,6 +638,8 @@ $(cat "$table")"
             ;;
         tlaneo)
             version="${version}lo"
+            # WEAVE-9 ships since team step C; on older source (--ref) install Ogi's lane as step C benched it.
+            if ! grep -qF "static final boolean NARROW_LANE = true;" "$tlink"; then
             edit "$tlink" "        double dx = Math.sin(in.gunHeading());" "        if (true) {
             double gun = in.gunHeading();
             double target = Double.POSITIVE_INFINITY;
@@ -649,6 +658,11 @@ $(cat "$table")"
             return true;
         }
         double dx = Math.sin(in.gunHeading());"
+            fi
+            ;;
+        tlanew)
+            version="${version}lw"
+            edit "$tlink" "static final boolean NARROW_LANE = true;" "static final boolean NARROW_LANE = false;"
             ;;
         tlane4)
             version="${version}l4"
@@ -740,7 +754,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$design" 'public static final ShieldDesign SHIPPED = parse("' \
                 "public static final ShieldDesign SHIPPED = parse(\"$flag,"
             version="${version}${suffix}" ;;
-        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, ramheat, flaton, nowall, flt59, flt8, split, wallesc, gungate, hold650, dfac, bhb, hitclr, pkern, keep2, thgun, freegun, nodecay, stacklist, protean, pdw3, pdw8, pc10, phot, repl, pressure, pdown, pwall, pwc, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tram, t6n, t6l, tmsoft, tmgang, tmfin, tmlearn, tmpack, tmscreen, tmpool, tmdis, tmfire, tmrear, tmwaves, tmwk, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, surfb, aimmix, mimics, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, snull, strim, slistadd, smovelist, saimlist, sdodge, sdodgelist, sgo, sgo2, sgolist, sgo2list)" >&2; exit 2 ;;
+        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, ramheat, flaton, nowall, flt59, flt8, split, wallesc, gungate, hold650, dfac, bhb, hitclr, pkern, keep2, thgun, freegun, nodecay, stacklist, protean, pdw3, pdw8, pc10, phot, repl, pressure, pdown, pwall, pwc, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tram, t6n, t6l, tmsoft, tmgang, tmfin, tmlearn, tmpack, tmscreen, tmpool, tmdis, tmfire, tmnofire, tmrear, tmwaves, tmwk, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, surfb, aimmix, mimics, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, snull, strim, slistadd, smovelist, saimlist, sdodge, sdodgelist, sgo, sgo2, sgolist, sgo2list)" >&2; exit 2 ;;
     esac
 done
 

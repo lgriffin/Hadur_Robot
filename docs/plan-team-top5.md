@@ -306,3 +306,24 @@ The re-smoke after the review fix (risk medians shifted by the least risk) stays
 noise. None earns PC time, so D is closed as built: the code stays on master with the mode off. By the
 stop rule, movement is not where 5th comes from. The team lever is C (the fire lane), and what is
 left after C's gate is read from the census against 77.2.
+
+**Step C result (PC, 2026-10-25, PR #264): the narrow fire lane passes, and ships with MATEFIRE.**
+46 teams, 6 seeds, against 3.16 (share points, paired):
+
+| Arm | Paired diff |
+|---|---|
+| `bb` (A/A) | +0.6 ± 0.7 |
+| `tlane0` no lane | +0.9 ± 1.0 |
+| `tlaneo` Ogi's narrow lane | +2.2 ± 0.9 |
+| `tlaneo,tmfire` narrow lane, dodging teammates' bullets | **+2.9 ± 0.9** |
+
+Both narrow-lane arms clear the gate (+1.0 or more, low end above zero, A/A within ±1). The pair
+gains most where step B said the tempo was lost: TeamDeath +14.8, ImpactTeam +11.5, Enjambre +8.3,
+and against the top: Nightmare +15.1, Polylunar +19.8, CombatTeam +7.8, ShadowTeam +4.1, Ogi +3.5.
+MATEFIRE, flat on its own in S4 (+0.6), adds +0.7 here: with the narrow lane our bullets pass near
+teammates far more often. The pair is built as WEAVE-9 and TMODE-12 (team-only; the duel and melee
+fixtures replay bit for bit) and goes on master with no release.
+
+Projection: 3.16 live 72.13 plus +2.3 to +2.9 is about 74.5 to 75.0, behind Nightmare's 77.2 by
+about 2.3. That is not top 5, so under the release rule there is no team release yet. What is left
+is E (shared radar) and a fresh read of where the remaining 2.3 sits once the narrow lane is on.

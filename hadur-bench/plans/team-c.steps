@@ -10,6 +10,9 @@
 # Verdict (team thread, cloud): ship an arm whose screen gains at least +1.0 with the 95% low end
 # above zero and tcbb within +/- 1.0. All arms are team only: the lane exists only on a team.
 # Needs `set OUT = ../docs/bench/local` in the card.
+# Since team step C (WEAVE-9, TMODE-12) master ships the narrow lane and MATEFIRE, so on master these
+# arms build the same robot; to rerun this card as benched, build from a commit before PR #266
+# (build-ablation.sh --ref).
 
 tcprep | bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && bash ./build-ablation.sh tlane0 && bash ./build-ablation.sh tlaneo && bash ./build-ablation.sh tlaneo,tmfire && ./fetch-opponents.sh --set team-census46.txt && mvn -q compile
   after: <the card's last 1v1 step>
