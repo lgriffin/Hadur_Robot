@@ -3,7 +3,9 @@ package hadur2.core.melee;
 import static hadur2.core.melee.Fixtures.field;
 import static hadur2.core.melee.Fixtures.pt;
 import static hadur2.core.melee.Fixtures.scan;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -243,6 +245,53 @@ class TeamModesTest {
         p = MinimumRiskMovement.pull(pt(600, 600), 100, 3, two, 100, mates(pt(200, 600)),
             EnumSet.of(TeamModes.Mode.PACK, TeamModes.Mode.GANG));
         assertEquals(pt(200, 600), p.at);
+    }
+
+    @Test
+    @Tag("TMODE-13")
+    @DisplayName("TMODE-13: members take the enemy of least (distance + 1.2 energy) squared, a fourth on one enemy costing 1.6 times")
+    void huntAssignment() {
+        List<EnemyInfo> two = enemies(pt(600, 800), pt(600, 350)).alive();
+        List<Point2D.Double> pack = new ArrayList<>();
+        for (int i = 0; i < 5; i++) pack.add(pt(600, 600));
+        // e0: (200 + 120)^2 = 102,400; e1: (250 + 120)^2 = 136,900. Three take e0; then e0 costs
+        // 163,840 and the last two take e1.
+        assertArrayEquals(new int[] {0, 0, 0, 1, 1}, MinimumRiskMovement.huntAssign(pack, two, 100));
+        assertArrayEquals(new int[] {-1, -1, -1, -1, -1},
+            MinimumRiskMovement.huntAssign(pack, two, 100 + MinimumRiskMovement.CAP_MAX_AGE));
+    }
+
+    @Test
+    @Tag("TMODE-13")
+    @DisplayName("TMODE-13: a member's place is 350 px from its prey whatever its distance, and members on one prey take places either side")
+    void huntSlots() {
+        List<EnemyInfo> prey = enemies(pt(600, 900)).alive();
+        // Hadur sorts after m0 and holds the eastern place; the mate the western.
+        Point2D.Double me = pt(650, 300);
+        Point2D.Double mate = pt(550, 300);
+        Point2D.Double a = MinimumRiskMovement.huntSlot(me, "n", prey, 100, mates(mate));
+        assertEquals(MinimumRiskMovement.HUNT_RADIUS, a.distance(600, 900), 1e-6);
+        assertTrue(a.x > 600, a.toString());
+        // Closer in, the radius does not shrink.
+        Point2D.Double near = MinimumRiskMovement.huntSlot(pt(620, 750), "n", prey, 100, mates(pt(580, 750)));
+        assertEquals(MinimumRiskMovement.HUNT_RADIUS, near.distance(600, 900), 1e-6);
+    }
+
+    @Test
+    @Tag("TMODE-13")
+    @DisplayName("TMODE-13: with HUNT the pull is 0.3 strong and leaves the bullets' risk unscaled; under 20 energy, no hunt")
+    void huntPull() {
+        List<EnemyInfo> prey = enemies(pt(600, 1000)).alive();
+        Set<TeamModes.Mode> hunt = EnumSet.of(TeamModes.Mode.HUNT);
+        MinimumRiskMovement.Pull p = MinimumRiskMovement.pull(pt(600, 400), "n", 100, 3, prey, 100,
+            mates(pt(700, 400)), hunt);
+        assertEquals(MinimumRiskMovement.huntSlot(pt(600, 400), "n", prey, 100, mates(pt(700, 400))), p.at);
+        assertEquals(MinimumRiskMovement.HUNT_PULL, p.strength, 0);
+        assertFalse(p.scalesBullets);
+        assertNull(MinimumRiskMovement.pull(pt(600, 400), "n", 19, 3, prey, 100, mates(pt(700, 400)), hunt));
+        // The other pulls still scale every term but the posture's.
+        assertTrue(MinimumRiskMovement.pull(pt(600, 400), 100, 3, prey, 100, mates(pt(700, 400)),
+            EnumSet.of(TeamModes.Mode.PACK)).scalesBullets);
     }
 
     @Test

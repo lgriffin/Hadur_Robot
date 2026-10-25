@@ -1138,6 +1138,7 @@ MMOVE-8 the melee strand, WEAVE-7 and WEAVE-8 the conductor.
 | WEAVE-9 | State | While a living teammate lies ahead of the gun within 30 px of its line, at the teammate's distance, and nearer Hadur than the nearest enemy within 36 px of that line (at any distance when no enemy is), the conductor shall withhold the fire permission. | T7 |
 | TMODE-12 | Ubiquitous | The team mode table's default, for a team it does not name, shall be the MATEFIRE mode. | T7 |
 | MRADAR-3 | Optional | Where the team look switch is on, while on a team with a living teammate, four or more enemies alive and every one seen, if the gun's heat is 0.2 or less and the freshest scan of its last target by any member is two ticks old or more, then the radar shall turn toward that target. | T7 |
+| TMODE-13 | Optional | Where the HUNT mode is played, while Hadur has 20 energy or more, the members (in name order) shall each be assigned the fresh enemy of least (distance + 1.2 × energy)², times 1.6 for an enemy three members already hunt, and Hadur's destination risk, all terms but the bullets' and the posture's, shall be scaled by e^(0.3 (to − from) / 100) for its and Hadur's distances to its place 350 px from its prey, ranked by bearing among the members on that prey and spread up to 70° apart. | T7 |
 
 ### T1 notes
 

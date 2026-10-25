@@ -308,6 +308,11 @@ public class MeleeController {
         mover.team(index);
     }
 
+    /** MMOVE-8 with this member's own name (TMODE-13 orders the team by name). */
+    public void team(int index, String name) {
+        mover.team(index, name);
+    }
+
     public Command tick(Situation s) {
         myPath.addState(RobotState.newBuilder().setLocation(s.me).setHeading(s.heading)
             .setVelocity(s.velocity).setTime(s.time).build());
