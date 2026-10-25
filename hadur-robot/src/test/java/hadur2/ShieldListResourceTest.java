@@ -159,6 +159,8 @@ class ShieldListResourceTest {
         ShieldList list = ShieldList.parse(lines);
         assertEquals(18, ShieldTableData.stopGos().length);
         assertEquals(35, ShieldTableData.stopGoShifts().length);
+        assertEquals(18, new java.util.HashSet<>(Arrays.asList(ShieldTableData.stopGos())).size(), "no duplicates");
+        assertEquals(35, new java.util.HashSet<>(Arrays.asList(ShieldTableData.stopGoShifts())).size(), "no duplicates");
         // DuelistMicroMkII is on both: the verify gate measured it that way, so it stays as measured.
         java.util.Set<String> both = java.util.Set.of("davidalves.net.DuelistMicroMkII 1.1");
         for (String name : ShieldTableData.stopGos()) {
