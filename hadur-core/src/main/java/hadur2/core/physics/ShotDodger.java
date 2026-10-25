@@ -16,6 +16,16 @@ package hadur2.core.physics;
  * matched at least {@value #MIN_MATCHES} of the bullets read and at least {@value #MIN_SHARE} of
  * them; a learning gun matches none, so the surf stays on its views.</p>
  *
+ * <p>DODGE-5 (the planner's reading, {@link #planBest} and {@link #planActive}): Saguaro scores
+ * its experts loosely and learns from the bullets that missed us too. A bullet read scores every
+ * expert {@code exp(-d^2 / 2 sigma^2)} for its distance {@code d} from the bullet's heading, with
+ * {@code sigma} {@value #SIGMA_GF} of the wave's escape angle (Saguaro's 0.18 guess factor), so
+ * a gun our strict match just misses still stands out. A wave that passed us without a hit (and
+ * without meeting our bullet) contradicts every expert whose bullet would have crossed us
+ * ({@link #observePass}): such a gun does not fire that aim. DODGE-4: a per-opponent expert
+ * shipped in the table primes the score ({@link #prime}), so the dodge acts from the first
+ * bullet; contradictions take it off again. The strict reading above is unchanged.</p>
+ *
  * <p>Pure: no engine types, no clock, no randomness.</p>
  */
 public final class ShotDodger {
@@ -49,7 +59,19 @@ public final class ShotDodger {
     static final double MIN_DIVISOR = 4.0;
     static final double MAX_DIVISOR = 30.0;
 
+    /** DODGE-5: the loose score's width, as a share of the wave's escape angle (Saguaro's 0.18 GF). */
+    public static final double SIGMA_GF = 0.18;
+    /** DODGE-4: a shipped expert's prior, in bullets read. */
+    public static final double PRIOR = 3.0;
+    /** DODGE-5: a contradicted expert loses this much score a pass. */
+    public static final double CONTRA_WEIGHT = 1.0;
+
     private final int[] matches = new int[EXPERTS];
+    /** DODGE-5: the loose score, the shipped prior, and the passes that contradicted each expert. */
+    private final double[] soft = new double[EXPERTS];
+    private final double[] prior = new double[EXPERTS];
+    private final int[] contra = new int[EXPERTS];
+    private int passes;
     private final double[] divisorSum = new double[2 * SimpleAims.LAGS];
     private final double[] divisorWeight = new double[2 * SimpleAims.LAGS];
     private int read;
@@ -61,11 +83,27 @@ public final class ShotDodger {
      * @param heading the bullet's heading, radians
      */
     public void observe(double[] aims, double heading) {
+        observe(aims, heading, Double.NaN);
+    }
+
+    /**
+     * As {@link #observe(double[], double)}, and DODGE-5's loose score when {@code escapeAngle}
+     * is known.
+     *
+     * @param aims the bullet's wave's {@link SimpleAims#angles}
+     * @param heading the bullet's heading, radians
+     * @param escapeAngle the wave's escape angle, radians; NaN for the strict reading only
+     */
+    public void observe(double[] aims, double heading, double escapeAngle) {
         if (aims == null || Double.isNaN(heading) || aims.length < SimpleAims.COUNT) return;
         read++;
+        double sigma = SIGMA_GF * escapeAngle;
         for (int k = 0; k < EXPERTS; k++) {
             double a = expert(aims, k);
-            if (!Double.isNaN(a) && Math.abs(SimpleAims.relative(heading - a)) <= MATCH) matches[k]++;
+            if (Double.isNaN(a)) continue;
+            double d = Math.abs(SimpleAims.relative(heading - a));
+            if (d <= MATCH) matches[k]++;
+            if (sigma > 0) soft[k] += Math.exp(-0.5 * (d / sigma) * (d / sigma));
         }
         for (int lag = 0; lag < SimpleAims.LAGS; lag++) {
             int base = lag * SimpleAims.TYPES;
@@ -136,8 +174,77 @@ public final class ShotDodger {
         return Math.abs(SimpleAims.relative(a - angle)) <= bandwidth + MARGIN ? 1.0 : 0.0;
     }
 
+    /**
+     * DODGE-5: a wave that passed us with its bullet neither hitting us nor meeting ours. Every
+     * expert whose bullet lies inside {@code angle +/- bandwidth}, less {@link #MARGIN} each side,
+     * would have hit us, so this gun does not fire it.
+     *
+     * @param aims the wave's {@link SimpleAims#angles}
+     * @param angle the centre of the wave's precise intersection with us, radians
+     * @param bandwidth its half width, radians
+     */
+    public void observePass(double[] aims, double angle, double bandwidth) {
+        if (aims == null || aims.length < SimpleAims.COUNT || Double.isNaN(angle)) return;
+        passes++;
+        double inside = bandwidth - MARGIN;
+        if (!(inside > 0)) return;
+        for (int k = 0; k < EXPERTS; k++) {
+            double a = expert(aims, k);
+            if (!Double.isNaN(a) && Math.abs(SimpleAims.relative(a - angle)) <= inside) contra[k]++;
+        }
+    }
+
+    /**
+     * DODGE-4: primes expert {@code k} with {@link #PRIOR} bullets' worth of score, as the table
+     * ships it for an opponent; out of range does nothing.
+     */
+    public void prime(int k) {
+        if (k >= 0 && k < EXPERTS) prior[k] += PRIOR;
+    }
+
+    /** DODGE-5: expert {@code k}'s net score: loose score plus prior, less the contradictions. */
+    public double planScore(int k) {
+        return soft[k] + prior[k] - CONTRA_WEIGHT * contra[k];
+    }
+
+    /** DODGE-5: the expert with the best net score (the lowest index on a tie), or -1 with none above 0. */
+    public int planBest() {
+        int b = -1;
+        double best = 0;
+        for (int k = 0; k < EXPERTS; k++) {
+            double s = planScore(k);
+            if (s > best) { best = s; b = k; }
+        }
+        return b;
+    }
+
+    /**
+     * DODGE-5: whether the planner dodges: the best expert's net score is at least
+     * {@value #MIN_MATCHES}, and its score with the prior is at least {@value #MIN_SHARE} of the
+     * bullets read (the prior counted as bullets).
+     */
+    public boolean planActive() {
+        int b = planBest();
+        if (b < 0 || planScore(b) < MIN_MATCHES) return false;
+        return soft[b] + prior[b] >= MIN_SHARE * (read + prior[b]);
+    }
+
+    /** DODGE-5: passes read this battle. */
+    public int passes() {
+        return passes;
+    }
+
+    /** DODGE-5: the passes that contradicted expert {@code k}. */
+    public int contradictions(int k) {
+        return contra[k];
+    }
+
     /** Forgets the count and the divisors, for a new battle. */
     public void reset() {
+        java.util.Arrays.fill(soft, 0);
+        java.util.Arrays.fill(prior, 0);
+        java.util.Arrays.fill(contra, 0);
+        passes = 0;
         java.util.Arrays.fill(matches, 0);
         java.util.Arrays.fill(divisorSum, 0);
         java.util.Arrays.fill(divisorWeight, 0);

@@ -173,6 +173,14 @@ public class MoveController {
         this.shotDodger = dodger;
     }
 
+    /** DODGE-5: whether a wave that passed us without a hit teaches the dodger (off by default). */
+    private boolean dodgePasses;
+
+    /** DODGE-5: sets whether the waves that pass us without a hit teach the dodger. */
+    public void setDodgePasses(boolean on) {
+        this.dodgePasses = on;
+    }
+
     /** DODGE-2: the dodger, or null. */
     public ShotDodger shotDodger() {
         return shotDodger;
@@ -803,6 +811,10 @@ public class MoveController {
         if (intersection == null) return;
 
         int currentRound = w.fireRound;
+        // DODGE-5: a bullet that neither hit us nor met ours missed: no expert it would have hit us with is its gun's.
+        if (dodgePasses && shotDodger != null && !w.hitByBullet && !w.bulletHitBullet) {
+            shotDodger.observePass(w.simpleAims(), intersection.angle, intersection.bandwidth);
+        }
         if (gunMimics != null) {
             // MOVE-27: a learning gun learns every visit; so do its mimics.
             // A visit moves the next plan's profile but does not end the current plan.

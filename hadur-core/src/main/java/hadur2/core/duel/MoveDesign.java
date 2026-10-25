@@ -145,6 +145,13 @@ final class MoveDesign {
     static final boolean SHOT_DODGE = false;
 
     /**
+     * DODGE-6: the shot-dodge planner (Saguaro's ShotDodger movement) against every opponent, not
+     * only those the table's {@code shot-dodge2:} lines name; a shipped expert still primes it.
+     * Off by default; the ablation {@code sdplan} turns it on for the screen.
+     */
+    static final boolean SHOT_DODGE_PLAN = false;
+
+    /**
      * POISON-2: stop-and-go (POISON-1) against every opponent, not only those the table names,
      * with the reverse crawl {@link #STOP_AND_GO_PREFIRE} ticks before the enemy's gun is ready.
      * Off by default; the ablations {@code sgo} and {@code sgo2} turn it on for the screen.

@@ -1,0 +1,308 @@
+package hadur2.core.move;
+
+import hadur2.core.model.*;
+import hadur2.core.physics.*;
+
+import java.awt.geom.Point2D;
+import java.util.*;
+
+/**
+ * DODGE-6: Saguaro's ShotDodger movement, re-implemented from its algorithm (read decompiled,
+ * nothing copied): against a gun that fires one simple aim, plan a path on which that aim's
+ * bullets miss us, as far from them as the field allows. Off by default; {@link SurfMover} hands
+ * it the tick only when the duel switches it on for the opponent and {@link ShotDodger#planActive}.
+ *
+ * <p><b>Why.</b> DODGE-2's three-option surf knew Machete's bullet exactly (190 of 194 matched)
+ * and still took the same damage as without it (2,150 a battle, dodge-smoke run2..run5): orbit
+ * either way or stop cannot reach a safe spot at close range, and a 0/1 danger floored at 0.1
+ * does not say how near a miss was. Saguaro instead searches many paths and scores each by the
+ * clearance its bullets leave.</p>
+ *
+ * <ul>
+ * <li><b>Paths.</b> Drive to a point and stop there: standing still, and the points reached at
+ * {@link #POINT_TICKS} ticks along {@value #HEADINGS} straight headings and along both orbits of
+ * the first wave's source (wall-smoothed, the surf's attack angle toward the desired distance),
+ * each until every wave planned for has passed.</li>
+ * <li><b>Waves.</b> Up to {@value #MAX_WAVES} surfable waves whose expert bullet is known.</li>
+ * <li><b>Score.</b> For each wave, the precise intersection of the path's states with it: a path
+ * on which the expert's bullet falls inside it (within {@link ShotDodger#MARGIN}, at the share our
+ * bullet shadows let through) costs {@value #HIT_COST} times the bullet's damage, so it is taken
+ * only when every path is hit, and then the one hit least; otherwise the bullet's damage over the
+ * square of the clearance in radians (Saguaro's {@code damage / (gfDistance * MEA)^2}). Plus
+ * Saguaro's {@code 2500 / d^2}, {@code d} the least distance along the path to the enemy
+ * extrapolated at its last heading and speed.</li>
+ * <li><b>Commitment.</b> The path is kept until the waves planned for or the expert change, we
+ * are more than {@value #DRIFT} px off it, or {@value #REPLAN_TICKS} ticks have passed (the enemy
+ * moves).</li>
+ * </ul>
+ *
+ * <p>Angles are radians on Robocode's compass; distances in px; times in ticks.</p>
+ */
+public final class ShotDodgePlanner {
+
+    /** Straight headings tried, evenly round the compass. */
+    static final int HEADINGS = 16;
+    /** The ticks along each heading or orbit at which a stop point is taken. */
+    static final int[] POINT_TICKS = {2, 4, 6, 8, 10, 13, 16, 20, 25, 30, 36, 43, 50, 60};
+    /** Waves planned for at once. */
+    static final int MAX_WAVES = 3;
+    /** The most ticks a path runs. */
+    static final int MAX_TICKS = 120;
+    /** A hit's cost per point of damage: above any miss's. */
+    static final double HIT_COST = 1e9;
+    /** Saguaro's weight on the closest approach to the enemy, px squared. */
+    static final double OPPONENT_WEIGHT = 2500.0;
+    /** A clearance is floored here, radians, so a graze is costly but finite. */
+    static final double MIN_CLEARANCE = 1e-4;
+    /** A replan is forced when we are this far from the path, px. */
+    static final double DRIFT = 2.0;
+    /** A replan is forced after this many ticks on one path. */
+    static final int REPLAN_TICKS = 5;
+    /** Wall smoothing's reach for the orbit points, px. */
+    private static final double WALL_STICK = 160.0;
+
+    private final BattleField battleField;
+    private final MovementPredictor predictor;
+
+    private List<Wave> planWaves = List.of();
+    private int planExpert = -1;
+    private long planTime = Long.MIN_VALUE;
+    private Point2D.Double planPoint;
+    private List<RobotState> planPath = List.of();
+    private int replans;
+
+    /**
+     * @param battleField the field, for wall smoothing and the enemy's extrapolation
+     * @param predictor the engine's movement rules
+     */
+    public ShotDodgePlanner(BattleField battleField, MovementPredictor predictor) {
+        this.battleField = battleField;
+        this.predictor = predictor;
+    }
+
+    /** Forgets the plan, at each round and after anything else drove. */
+    public void reset() {
+        planWaves = List.of();
+        planExpert = -1;
+        planTime = Long.MIN_VALUE;
+        planPoint = null;
+        planPath = List.of();
+    }
+
+    /** Replans over the battle; for tests. */
+    int replans() {
+        return replans;
+    }
+
+    /** The point driven to; null before the first plan. */
+    Point2D.Double planPoint() {
+        return planPoint;
+    }
+
+    /**
+     * Drives the tick when the dodger has an expert and a surfable wave has its bullet.
+     *
+     * @param orders the orders to write the drive into
+     * @param myState our state now
+     * @param moveCtrl the waves
+     * @param dodger the duel's dodger
+     * @param enemy the enemy's last scanned state, or null
+     * @param desiredDistance the distance the orbit points' attack angle steers toward, px
+     * @return whether it drove; false leaves the tick to the surf
+     */
+    public boolean surf(BotOrders.Builder orders, RobotState myState, MoveController moveCtrl,
+                        ShotDodger dodger, RobotState enemy, double desiredDistance) {
+        if (dodger == null || !dodger.planActive()) return false;
+        int expert = dodger.planBest();
+        List<Wave> waves = new ArrayList<>(MAX_WAVES);
+        List<Double> bullets = new ArrayList<>(MAX_WAVES);
+        for (int i = 0; i < MAX_WAVES; i++) {
+            Wave w = moveCtrl.findSurfableWave(i, myState);
+            if (w == null) break;
+            double[] aims = w.simpleAims();
+            double a = aims == null ? Double.NaN : dodger.expert(aims, expert);
+            if (Double.isNaN(a)) continue;
+            waves.add(w);
+            bullets.add(a);
+        }
+        if (waves.isEmpty()) return false;
+        if (needsPlan(myState, waves, expert)) {
+            plan(myState, waves, bullets, enemy, desiredDistance);
+            planWaves = waves;
+            planExpert = expert;
+            planTime = myState.time;
+        }
+        moveCtrl.publishPlan(List.of());
+        goTo(orders, myState, planPoint);
+        return true;
+    }
+
+    private boolean needsPlan(RobotState myState, List<Wave> waves, int expert) {
+        if (planPoint == null || expert != planExpert || !waves.equals(planWaves)) return true;
+        if (myState.time - planTime >= REPLAN_TICKS) return true;
+        long offset = myState.time - planPath.get(0).time;
+        if (offset < 0) return true;
+        RobotState expected = planPath.get((int) Math.min(offset, planPath.size() - 1));
+        return expected.location.distance(myState.location) > DRIFT;
+    }
+
+    void plan(RobotState myState, List<Wave> waves, List<Double> bullets, RobotState enemy,
+                      double desiredDistance) {
+        replans++;
+        double best = Double.POSITIVE_INFINITY;
+        Point2D.Double bestPoint = myState.location;
+        List<RobotState> bestPath = List.of(myState);
+        for (Point2D.Double p : points(myState, waves, desiredDistance)) {
+            List<RobotState> path = path(myState, p, waves);
+            double cost = cost(path, waves, bullets, enemy);
+            if (cost < best) {
+                best = cost;
+                bestPoint = p;
+                bestPath = path;
+            }
+        }
+        planPoint = bestPoint;
+        planPath = bestPath;
+    }
+
+    /** The stop points (see the class comment), standing still first. */
+    List<Point2D.Double> points(RobotState start, List<Wave> waves, double desiredDistance) {
+        List<Point2D.Double> out = new ArrayList<>();
+        out.add(start.location);
+        Wave first = waves.get(0);
+        int last = POINT_TICKS[POINT_TICKS.length - 1];
+        for (int h = 0; h < HEADINGS; h++) {
+            double heading = 2 * Math.PI * h / HEADINGS;
+            RobotState s = start;
+            for (int t = 1, i = 0; t <= last && i < POINT_TICKS.length; t++) {
+                s = predictor.nextLocation(s, 8.0, heading, false);
+                if (t == POINT_TICKS[i]) {
+                    out.add(s.location);
+                    i++;
+                    if (allPassed(s, waves)) break;
+                }
+            }
+        }
+        for (int direction : new int[] {-1, 1}) {
+            RobotState s = start;
+            for (int t = 1, i = 0; t <= last && i < POINT_TICKS.length; t++) {
+                double bearing = DiaUtils.absoluteBearing(first.sourceLocation, s.location);
+                double attack = StopPointSurf.attackAngle(first.sourceLocation.distance(s.location), desiredDistance);
+                double goAngle = battleField.wallSmoothing(s.location,
+                    bearing + direction * (Math.PI / 2 + attack), direction, WALL_STICK);
+                s = predictor.nextLocation(s, 8.0, goAngle, false);
+                if (t == POINT_TICKS[i]) {
+                    out.add(s.location);
+                    i++;
+                    if (allPassed(s, waves)) break;
+                }
+            }
+        }
+        return out;
+    }
+
+    private static boolean allPassed(RobotState s, List<Wave> waves) {
+        for (Wave w : waves) {
+            if (w.checkWavePosition(s, true) != Wave.WavePosition.GONE) return false;
+        }
+        return true;
+    }
+
+    /** Driving to {@code point} and stopping there, one state a tick from {@code start}, until every wave has passed. */
+    List<RobotState> path(RobotState start, Point2D.Double point, List<Wave> waves) {
+        List<RobotState> path = new ArrayList<>();
+        RobotState s = start;
+        path.add(s);
+        for (int t = 0; t < MAX_TICKS && !allPassed(s, waves); t++) {
+            s = goToStep(s, point);
+            path.add(s);
+        }
+        return path;
+    }
+
+    /** The path's cost (see the class comment). */
+    double cost(List<RobotState> path, List<Wave> waves, List<Double> bullets, RobotState enemy) {
+        double cost = 0;
+        for (int i = 0; i < waves.size(); i++) {
+            Wave w = waves.get(i);
+            List<RobotState> crossing = new ArrayList<>();
+            for (RobotState s : path) {
+                if (w.checkWavePosition(s).isBreaking()) crossing.add(s);
+            }
+            if (crossing.isEmpty()) continue;
+            Wave.Intersection x = w.preciseIntersection(crossing);
+            if (x == null) continue;
+            cost += waveCost(w, x, bullets.get(i));
+        }
+        if (enemy != null) {
+            double min = Double.POSITIVE_INFINITY;
+            for (RobotState s : path) {
+                min = Math.min(min, s.location.distance(enemyAt(enemy, s.time)));
+            }
+            cost += OPPONENT_WEIGHT / Math.max(1.0, min * min);
+        }
+        return cost;
+    }
+
+    /** One wave's cost for a path crossing it at {@code x}, its expert bullet at {@code bullet}. */
+    static double waveCost(Wave w, Wave.Intersection x, double bullet) {
+        double damage = Rules.getBulletDamage(w.bulletPower());
+        double off = Math.abs(Angles.normalRelativeAngle(bullet - x.angle));
+        if (off <= x.bandwidth + ShotDodger.MARGIN) {
+            double through = 1.0;
+            List<double[]> segments = w.transmission(x);
+            if (!segments.isEmpty()) {
+                through = 0;
+                for (double[] seg : segments) {
+                    double at = DiaUtils.normalizeAngle(bullet, (seg[0] + seg[1]) / 2);
+                    if (at >= seg[0] - ShotDodger.MARGIN && at <= seg[1] + ShotDodger.MARGIN) {
+                        through = Math.max(through, seg[2]);
+                    }
+                }
+            }
+            if (through > 0) return HIT_COST * damage * through;
+        }
+        double clearance = Math.max(MIN_CLEARANCE, off - x.bandwidth);
+        return damage / (clearance * clearance);
+    }
+
+    /** The enemy at {@code time}, driven on at its last heading and speed and held inside the field. */
+    Point2D.Double enemyAt(RobotState enemy, long time) {
+        double t = Math.max(0, time - enemy.time);
+        return battleField.translateToField(DiaUtils.project(enemy.location, enemy.heading, enemy.velocity * t));
+    }
+
+    /** One tick of driving to {@code point} and stopping there, as go-to surfing's. */
+    RobotState goToStep(RobotState state, Point2D.Double point) {
+        double dist = state.location.distance(point);
+        if (dist < 0.5) return predictor.predict(state, 0, 0, 8.0, 1, false);
+        double turn = Angles.normalRelativeAngle(
+            DiaUtils.absoluteBearing(state.location, point) - state.heading);
+        double distance = dist;
+        if (Math.abs(turn) > Math.PI / 2) {
+            turn -= Math.signum(turn) * Math.PI;
+            distance = -dist;
+        }
+        return predictor.predict(state, distance, turn, 8.0, 1, false);
+    }
+
+    /** The orders that match {@link #goToStep}. */
+    private static void goTo(BotOrders.Builder orders, RobotState state, Point2D.Double point) {
+        orders.maxVelocity(8.0);
+        double dist = state.location.distance(point);
+        if (dist < 0.5) {
+            orders.turnRight(0);
+            orders.ahead(0);
+            return;
+        }
+        double turn = Angles.normalRelativeAngle(
+            DiaUtils.absoluteBearing(state.location, point) - state.heading);
+        double distance = dist;
+        if (Math.abs(turn) > Math.PI / 2) {
+            turn -= Math.signum(turn) * Math.PI;
+            distance = -dist;
+        }
+        orders.turnRight(turn);
+        orders.ahead(distance);
+    }
+}

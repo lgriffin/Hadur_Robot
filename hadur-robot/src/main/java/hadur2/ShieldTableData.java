@@ -15,8 +15,8 @@ package hadur2;
  * <p>A class, not a resource, for the reason {@link ShieldListData} gives: Robocode's sandbox
  * refuses a robot the read of its own jar. Keep the shape: a final class with package-private
  * static methods {@code moves()}, {@code aims()}, {@code dodges()}, {@code stopGos()} and
- * {@code stopGoShifts()}; the bench's {@code smovelist}/{@code saimlist}/{@code sdodgelist}/
- * {@code sgolist}/{@code sgo2list} ablations fill them.</p>
+ * {@code stopGoShifts()} and {@code dodgePlans()}; the bench's {@code smovelist}/{@code saimlist}/{@code sdodgelist}/
+ * {@code sgolist}/{@code sgo2list}/{@code sdplanlist} ablations fill them.</p>
  */
 final class ShieldTableData {
 
@@ -320,6 +320,18 @@ final class ShieldTableData {
      * @return a fresh array of names
      */
     static String[] dodges() {
+        return new String[] {
+        };
+    }
+
+    /**
+     * DODGE-4: the opponents the shot-dodge planner (DODGE-6) is for, one {@code "expert name"}
+     * line each: the expert shipped for it (DODGE-2's index, from the bench's DP records), or -1
+     * to learn it in the battle, then the robot's name.
+     *
+     * @return a fresh array of lines
+     */
+    static String[] dodgePlans() {
         return new String[] {
         };
     }
