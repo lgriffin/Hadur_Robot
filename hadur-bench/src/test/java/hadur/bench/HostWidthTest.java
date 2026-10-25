@@ -79,7 +79,7 @@ class HostWidthTest {
     }
 
     @Test
-    @Tag("BENCH-105")
+    @Tag("BENCH-107")
     @DisplayName("two shards split a set with every opponent fought exactly once")
     void shardsPartition() {
         List<Integer> set = List.of(0, 1, 2, 3, 4, 5, 6);
@@ -92,7 +92,7 @@ class HostWidthTest {
     }
 
     @Test
-    @Tag("BENCH-105")
+    @Tag("BENCH-107")
     @DisplayName("the bench resolves auto when built, and refuses a shard of a melee field")
     void benchUsesIt() {
         Bench b = new Bench(opts("parallel", "auto"), Map.of("HADUR_BENCH_WORKERS_DUEL", "5"));

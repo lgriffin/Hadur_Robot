@@ -35,6 +35,7 @@ def run(root, name, workers, skips_each, share=83.3, battles=40, team=False, set
     return work
 
 
+# @Tag("BENCH-106"): host_check.py's VALID / TOO LOADED verdicts against the PC ladder blocks.
 class HostCheckTest(unittest.TestCase):
     def test_a_run_like_the_pc_is_valid(self):
         with tempfile.TemporaryDirectory() as root:
