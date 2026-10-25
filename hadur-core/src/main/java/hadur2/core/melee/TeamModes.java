@@ -14,7 +14,7 @@ import java.util.Set;
  *
  * <p>The table is keyed by an opposing member's class ({@link #key}): a team's members
  * share their team's entry, and a team of two classes has an entry for each. A team the
- * table does not name plays every mode forced on ({@code FORCE_...}; only MATEFIRE in the
+ * table does not name plays every mode forced on ({@code FORCE_...}; MATEFIRE and HUNT in the
  * shipped build), so an ablation build plays a mode against the whole field and one bench of it
  * scores that mode against every team. The modes act only while Hadur has a living teammate:
  * off a team, or as the last member alive, the controller never asks.</p>
@@ -65,7 +65,7 @@ public final class TeamModes {
     public static final boolean FORCE_MATEFIRE = true;
     public static final boolean FORCE_REAR = false;
     public static final boolean FORCE_WAVES = false;
-    public static final boolean FORCE_HUNT = false;
+    public static final boolean FORCE_HUNT = true;
 
     /** No modes: today's team movement. */
     public static final Set<Mode> NONE = Collections.unmodifiableSet(EnumSet.noneOf(Mode.class));

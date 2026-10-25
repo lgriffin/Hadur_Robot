@@ -50,7 +50,8 @@ class TeamModesTest {
     @Test
     @Tag("TMODE-1")
     @Tag("TMODE-12")
-    @DisplayName("TMODE-1: a team's modes are its first member's entry, by class without version or duplicate marker; else the default, MATEFIRE alone in the shipped build (TMODE-12)")
+    @Tag("TMODE-14")
+    @DisplayName("TMODE-1: a team's modes are its first member's entry, by class without version or duplicate marker; else the default, MATEFIRE and HUNT in the shipped build (TMODE-12, TMODE-14)")
     void tableLookup() {
         EnemyTracker t = new EnemyTracker(field(1200, 1200));
         scan(t, "x.Other 2.0 (1)", 100, 100, 100, 1);
@@ -59,7 +60,7 @@ class TeamModesTest {
         Map<String, Set<TeamModes.Mode>> table = Map.of("cz.libors.Ogi", gang);
         assertSame(gang, TeamModes.against(t.alive(), table, TeamModes.NONE));
         assertSame(TeamModes.NONE, TeamModes.against(List.of(t.get("x.Other 2.0 (1)")), table, TeamModes.NONE));
-        assertEquals(EnumSet.of(TeamModes.Mode.MATEFIRE), TeamModes.DEFAULT);
+        assertEquals(EnumSet.of(TeamModes.Mode.MATEFIRE, TeamModes.Mode.HUNT), TeamModes.DEFAULT);
         assertTrue(TeamModes.TABLE.isEmpty());
     }
 
