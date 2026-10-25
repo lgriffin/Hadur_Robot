@@ -1,0 +1,31 @@
+# PC card team-lane (docs/plan-team-top5.md section 10, WEAVE-10/11): arm lb (WEAVE-11 beyond-target lane, ablation tlaneb), all 46 teams against master (the aa build). Template: tlprep writes work/team-lane-lb.args with @V@ = the robot.release in hadur-robot/pom.xml
+--team
+true
+--seeds
+6
+--seed-base
+4100
+--rounds
+10
+--parallel
+12
+--child-heap
+2G
+--cpu-constant
+1488498
+--set
+team-census46.txt
+--robot-jar
+bisect/hadur2.HadurTeam_@V@lb.jar
+--robot
+hadur2.HadurTeam @V@lb
+--member
+hadur2.Hadur
+--out
+work/team-lane-@V@-lb
+--report
+../docs/bench/local/team-lane-lb.md
+--baseline
+bisect/hadur2.HadurTeam_@V@aa.jar
+--baseline-robot
+hadur2.HadurTeam @V@aa

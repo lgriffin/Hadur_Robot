@@ -301,8 +301,15 @@ class TeamLinkTest {
 
     /** The power fired over {@code ticks} ticks with these scans each tick, on the narrow or the wide lane. */
     private static double fired(List<BotEvent> events, int ticks, boolean narrow) {
+        return fired(events, ticks, narrow, false, false);
+    }
+
+    /** The power fired on the narrow or wide lane, with WEAVE-10 and WEAVE-11 as given. */
+    private static double fired(List<BotEvent> events, int ticks, boolean narrow, boolean predict, boolean beyond) {
         HadurCore core = new HadurCore(facts(), line -> {}, null, new TriggerHappy());
         core.teamLink().narrowLane = narrow;
+        core.teamLink().predictLane = predict;
+        core.teamLink().beyondLane = beyond;
         core.newRound(0);
         double fired = 0;
         for (long t = 1; t <= ticks; t++) fired += core.tick(input(t, 5, events)).firePower();
@@ -370,6 +377,35 @@ class TeamLinkTest {
         List<BotEvent> close = new ArrayList<>(enemies());
         close.add(mateScan(200, 20, 0, 0));
         assertEquals(0, fired(close, 6, true), 1e-9, "mate within a robot's width");
+    }
+
+    @Test
+    @Tag("WEAVE-10")
+    @DisplayName("WEAVE-10: off as shipped; on, a teammate nearer than the target holds the shot where it will be when the bullet arrives")
+    void predictedMateHoldsTheShot() {
+        assertFalse(TeamLink.NARROW_PREDICT);
+        // 300 px up and 60 px east, walking west at 4: 11 degrees off the line now, on it
+        // (28 px west) when a 14 px a tick bullet gets there 22 ticks later.
+        List<BotEvent> crossing = List.of(scan("e.A", 0, 500), scan("e.B", 2.5, 350), mateScan(300, 60, 3 * Math.PI / 2, 4));
+        assertTrue(fired(crossing, 6, true) > 0, "the narrow lane judges the present place");
+        assertEquals(0, fired(crossing, 6, true, true, false), 1e-9, "predicted into the line");
+        // Walking east, away from the line: the shot leaves.
+        List<BotEvent> leaving = List.of(scan("e.A", 0, 500), scan("e.B", 2.5, 350), mateScan(300, 60, Math.PI / 2, 4));
+        assertTrue(fired(leaving, 6, true, true, false) > 0, "predicted out of the line");
+    }
+
+    @Test
+    @Tag("WEAVE-11")
+    @DisplayName("WEAVE-11: off as shipped; on, a teammate up to 450 px beyond the target on the line holds the shot")
+    void mateBeyondTheTargetHoldsTheShot() {
+        assertFalse(TeamLink.NARROW_BEYOND);
+        // The enemy 200 px up the line, MATE 300 px up it: a miss flies on into it.
+        List<BotEvent> behind = List.of(scan("e.A", 0, 200), scan("e.B", 2.5, 350), scan(MATE, 0, 300));
+        assertTrue(fired(behind, 6, true) > 0, "WEAVE-9 alone fires past the target");
+        assertEquals(0, fired(behind, 6, true, false, true), 1e-9, "held for the mate beyond");
+        // MATE 700 px up: more than 450 px past the target, the shot leaves.
+        List<BotEvent> far = List.of(scan("e.A", 0, 200), scan("e.B", 2.5, 350), scan(MATE, 0, 700));
+        assertTrue(fired(far, 6, true, false, true) > 0, "too far past the target");
     }
 
     @Test
