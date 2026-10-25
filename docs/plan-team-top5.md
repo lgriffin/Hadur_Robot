@@ -389,3 +389,31 @@ duel and melee fixtures replay bit for bit.
 5th) and Aleph (76.92), so HUNT projects 5th; ShadowTeam (79.17, 4th) is 0.3 above the point
 estimate, so 4th is an uncertain upside. This meets the release rule (projection > Nightmare).
 Leigh released it as the team-only patch 3.17.1 (minors move together across the rumbles).
+
+## 10. From 4th to 2nd (2026-10-25 22:30 GMT)
+
+3.17.1 went live 4th at 79.39 ± 1.00 after 69 battles (+4.6 over 3.17; the bench gave HUNT +4.1).
+2nd is Firestarter at 81.99 and 3rd is Combat at 81.85, so 2nd is +2.6 away. Comparing our live page
+with theirs opponent by opponent:
+
+| Opponents | Gap to Firestarter | Gap to Combat | Our survival | Theirs (F / C) |
+|---|---|---|---|---|
+| Top 6 (Ogi, Aleph, Shadow, Nightmare, Xmen, Polylunar) | 0.30 | 0.51 | 42% | 61% / 54% |
+| 14 mid teams (HOFSwarm, Hawks, ArmyOfShiz, Phoenix, Troodon, Mamba, ...) | 2.10 | 1.62 | 84% | 98% / 97% |
+| Bottom 25 | 0.09 | 0.33 | 99% | 100% / 100% |
+
+The gap is rounds lost to mid-table teams that Firestarter and Combat almost never lose, not the top
+teams we lose to. The 46x6 bench agrees (HOFSwarm 63%, Hawks 75%, ArmyOfShiz and Phoenix 78%).
+
+Steps, all team-only, each a PC card Leigh starts:
+
+1. **Friendly-fire lane** (card pc-team-lane, 3 arms x 552 battles, about 1.8 h). Our bullets hit our
+   own members 21,600 times a 46x6 run with the narrow lane, against 6,100 before it. WEAVE-10 (tlanep)
+   judges a nearer teammate where it will be when the bullet arrives; WEAVE-11 (tlaneb) holds for a
+   teammate up to 450 px beyond the target. Expected +0.5..+1.5 (a guess). Pass: +1.0 with the low end
+   above zero and A/A within 1.0.
+2. **Per-team table over the 20 teams that cost us** (14 mid + top 6): HUNT on/off, pack size, slot
+   distance, fire lane. Table v1 failed at 6 seeds a team (about ±7 a team); this uses 20 seeds a team
+   (about ±3). Screen about 2.5 h, fresh-seed gate about 1 h. Expected +0.5..+1.0.
+
+Together +1.0..+2.5 against +2.6: 2nd only at the top of the range.
