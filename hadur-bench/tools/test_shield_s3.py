@@ -63,10 +63,8 @@ class ShieldS3Test(unittest.TestCase):
                           "w | hadur2.Hadur 3.16mtak | bisect/hadur2.Hadur_3.16mtak.jar\n",
                           "wv | hadur2.Hadur 3.16mtmvak | bisect/hadur2.Hadur_3.16mtmvak.jar\n"], arms[1:])
         self.assertEqual(["6 -0.010000000 c.Free 1"], shield_s2.read_lines(os.path.join(out, "warm-aims-move.txt")))
-        missing = shield_s3.warm(os.path.join(self.dir, "gone"), panel, "3.16", out, "sask", "sasvsk",
-                                 run_build=False)[1]
-        self.assertIn("w | hadur2.Hadur 3.16mt | bisect/hadur2.Hadur_3.16mt.jar\n", missing,
-                      "without part 2's records the warm arm starts cold")
+        self.assertEqual((2, None), shield_s3.warm(os.path.join(self.dir, "gone"), panel, "3.16", out, "sask",
+                                                   "sasvsk", run_build=False), "without part 2's records it stops")
 
     def test_candidate(self):
         out = os.path.join(self.dir, "w")

@@ -33,7 +33,8 @@ class ShieldS3PlanTest {
             assertTrue(queue.substring(at, next < 0 ? queue.length() : next).contains("after: " + steps[i - 1]),
                 steps[i] + " after " + steps[i - 1]);
         }
-        assertTrue(queue.contains("work/shield-s2-screen"), "the warm aims come from part 2's records");
+        assertTrue(queue.contains("test -s work/shield-s2-screen/arms.tsv && test -s work/modes-poison/arms.tsv"),
+            "prep stops before any battle without the earlier runs");
         assertTrue(queue.contains("work/modes-poison/arms.tsv work/shield-s3-poison/arms.tsv --margin 3"));
         assertTrue(queue.contains("gate work/shield-s3-verify/arms.tsv --arm t4"));
         assertTrue(Files.isRegularFile(Path.of("tools/shield_s3.py")) && Files.isRegularFile(Path.of("tools/test_shield_s3.py")));

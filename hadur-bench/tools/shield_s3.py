@@ -8,7 +8,7 @@
       the warm-start shield screen: for each robot of SET, a shipped aim from its part 2 screen
       battles (OLD_RUN, shield_s2.py's rule) from the still arm and from the moving arm; builds
       w = base + slistadd + saimlist and wv = w + smovelist (each aim file only when it names
-      anything) and writes DIR/shield-s3-screen.arms with c, aa, w and wv
+      anything; stops when OLD_RUN has no arms.tsv) and writes DIR/shield-s3-screen.arms with c, aa, w and wv
   shield_s3.py candidate SHIELD_PICK POISON_PICK --only SET --warm-dir DIR --base 3.16 --out ARMS
       from the two screen picks (mode_table.py TSVs): the robots that join the shield list (locked
       with w or wv), the opening drive (wv), their aims (from the arm they locked with), and the new
@@ -59,7 +59,7 @@ def rest(sets, excludes, listdata=None):
 
 def warm_aims(old_run, robots, arm, min_exact=5):
     """shield_s2.py's shipped aim per robot, from the robot's battles in ARM of OLD_RUN."""
-    seeds = shield_s2.battle_seeds(old_run) if os.path.exists(os.path.join(old_run, "arms.tsv")) else {}
+    seeds = shield_s2.battle_seeds(old_run)
     out = []
     for robot in sorted(robots):
         logs = [os.path.join(old_run, "battles", "%s-%s-%s" % (shield_s2.slug(robot), s, arm), "hadur.log")
@@ -91,6 +91,9 @@ def arm_line(label, base, suffix):
 
 
 def warm(old_run, set_path, base, out_dir, rec_arm, move_arm, run_build=True):
+    if not os.path.exists(os.path.join(old_run, "arms.tsv")):
+        sys.stderr.write("warm: %s has no arms.tsv: part 2's records are needed for the aims\n" % old_run)
+        return 2, None
     robots = [n for n, _ in table_v1.set_rows(set_path)]
     os.makedirs(out_dir, exist_ok=True)
     f = lambda n: os.path.join(out_dir, n)

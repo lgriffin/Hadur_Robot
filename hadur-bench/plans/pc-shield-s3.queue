@@ -12,8 +12,8 @@
 # Run it from master:
 #   git checkout master && git pull
 # One bench queue, RoboRumble workers at 0, unpinned, 12 workers, truth log off. Every step resumes;
-# no step needs a decision. About 1.5 h. It needs last night's work/shield-s2-screen and
-# work/modes-poison left in place (without them the warm arms start cold and pass 2 reads 3 seeds).
+# no step needs a decision. About 1.5 h. It needs work/shield-s2-screen (shield part 2) and
+# work/modes-poison (table v2) left in place: prep stops before any battle if either is missing.
 #
 # warm screen (about 0.5 h): 79 robots x c, aa, w, wv x 4 seeds = 1,264 battles.
 # poison screen (about 0.5 h): 99 robots x c, aa, wp, ws x 3 seeds = 1,188 battles.
@@ -32,7 +32,7 @@ set LIST = ../hadur-robot/src/main/java/hadur2/ShieldListData.java
 set OUT = ../docs/bench/local
 set W = work/shield-s3
 
-prep | mkdir -p bisect work ${W} && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur2.Hadur_3.16.jar bisect/ && bash ./build-ablation.sh aa && bash ./build-ablation.sh sgo && bash ./build-ablation.sh sgo2 && ${S3} rest panel-saguaro-shield.txt panel-saguaro-shield-listed.txt --listdata ${LIST} --out ${W}/warm-panel.txt && ${S3} rest panel-saguaro-poison.txt --exclude ${OUT}/modes-v2-stopgo.txt ${OUT}/modes-v2-stopgo2.txt --out ${W}/poison2-panel.txt && ${S3} warm work/shield-s2-screen ${W}/warm-panel.txt --out-dir ${W} --base 3.16 && ./fetch-opponents.sh --set ${W}/warm-panel.txt && ./fetch-opponents.sh --set ${W}/poison2-panel.txt && mvn -q compile
+prep | { test -s work/shield-s2-screen/arms.tsv && test -s work/modes-poison/arms.tsv || { echo 'pc-shield-s3 needs work/shield-s2-screen and work/modes-poison' >&2; exit 2; }; } && mkdir -p bisect work ${W} && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur2.Hadur_3.16.jar bisect/ && bash ./build-ablation.sh aa && bash ./build-ablation.sh sgo && bash ./build-ablation.sh sgo2 && ${S3} rest panel-saguaro-shield.txt panel-saguaro-shield-listed.txt --listdata ${LIST} --out ${W}/warm-panel.txt && ${S3} rest panel-saguaro-poison.txt --exclude ${OUT}/modes-v2-stopgo.txt ${OUT}/modes-v2-stopgo2.txt --out ${W}/poison2-panel.txt && ${S3} warm work/shield-s2-screen ${W}/warm-panel.txt --out-dir ${W} --base 3.16 && ./fetch-opponents.sh --set ${W}/warm-panel.txt && ./fetch-opponents.sh --set ${W}/poison2-panel.txt && mvn -q compile
 
 warm | ./bench-top20.sh ${C} ${P} --set ${W}/warm-panel.txt --seeds 4 --seed-base 3100 --arms ${W}/shield-s3-screen.arms --out work/shield-s3-warm --label shield-s3-warm
   after: prep
