@@ -327,3 +327,11 @@ fixtures replay bit for bit) and goes on master with no release.
 Projection: 3.16 live 72.13 plus +2.3 to +2.9 is about 74.5 to 75.0, behind Nightmare's 77.2 by
 about 2.3. That is not top 5, so under the release rule there is no team release yet. What is left
 is E (shared radar) and a fresh read of where the remaining 2.3 sits once the narrow lane is on.
+
+**Step E result (cloud, 2026-10-25): the radar is not where the team loses.** Teammates already
+share every scan, so against Nightmare an enemy's freshest position is 1.7 ticks old on average
+(2.8 to 4.3 for one member's own radar); Ogi's arc plan could reach about 1.1. The cheap part,
+MRADAR-3 (`MeleeRadar.TEAM_LOOK`, off, ablation `tlook`: look at the gun's target just before a
+shot when every member's scan of it is two ticks old), smoked flat against master with step C on:
+-0.2 ± 3.2 share points (11 teams, seeds 3800-3801). E is closed as built: no PC time, the switch
+stays off, and the full arc planner is not worth its build for at most 0.6 ticks of freshness.
