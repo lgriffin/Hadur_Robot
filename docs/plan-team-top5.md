@@ -386,5 +386,6 @@ duel and melee fixtures replay bit for bit.
 
 **Projection.** 3.17 is live at 74.80 (65 battles), and team gains have carried over about 1:1
 (C: bench +2.9, live +2.7). With HUNT the projection is about 78.9. That is above Nightmare (77.02,
-5th), Aleph (76.92) and probably ShadowTeam (79.17), so HUNT projects 5th and likely 4th. This
-meets the release rule (projection > Nightmare), so a team release is Leigh's call.
+5th) and Aleph (76.92), so HUNT projects 5th; ShadowTeam (79.17, 4th) is 0.3 above the point
+estimate, so 4th is an uncertain upside. This meets the release rule (projection > Nightmare).
+Leigh released it as the team-only patch 3.17.1 (minors move together across the rumbles).
