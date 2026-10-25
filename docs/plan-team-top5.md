@@ -355,3 +355,37 @@ PR #264) added to Hadur's live score. APS points are each segment's share of the
   and E shows the scans are not the limit. What is left is a different team structure against the
   top 20 (Nightmare's assigned pincers rebuilt with PACK's retry fixes, or Ogi's leaderless
   formation), a multi-day build with an uncertain return.
+
+## 9. Pack hunting passes (TMODE-13, 2026-10-25)
+
+Leigh chose to build a top-20 structure. HUNT is Nightmare's assigned pincers with PACK's three
+flaws fixed:
+- members are assigned two or three to an enemy, leaderless, in name order;
+- each holds a slot at a fixed 350 px from its prey, ranked by bearing;
+- the pull is 0.3 strong and leaves the bullets' risk unscaled, so members keep dodging.
+
+The cloud could not smoke it (only 8 of the top-20 jars are there), so it went straight to the PC.
+The card was pc-team-hunt (PR #282): 46 teams, 6 seeds, paired with 3.17. The first run was void
+because it named 3.16 jars; PR #280 made the card read the version from the pom.
+
+| Arm | Paired diff (share pts) |
+|---|---|
+| A/A (`bb`) | -0.4 ± 0.7 |
+| HUNT (`tmhunt`) | **+4.1 ± 0.9** |
+
+The gain is where the gap was: the top 20.
+- ShadowTeam +16.5, Aleph +15.3, ArmyOfShiz +15.8, OmegaSquad +14.1, CombatTeam +12.7,
+  TMNR +11.6, Valkiries +10.9, DemoniacNimrods +10.8, Xmen +8.9, GlowingHawks +8.6, Ogi +8.1,
+  TroodonPack +8.3.
+- Rounds won rose from 2155 to 2341 of 2760, and survival from 78.1% to 84.8%.
+- The only top-20 loss is Nightmare, -3.2 ± 7.2, within noise. The lower half is flat (all within
+  ±3).
+
+HUNT ships as the team default (TMODE-14, `FORCE_HUNT`; ablation `tmnohunt`). It is team-only: the
+duel and melee fixtures replay bit for bit.
+
+**Projection.** 3.17 is live at 74.80 (65 battles), and team gains have carried over about 1:1
+(C: bench +2.9, live +2.7). With HUNT the projection is about 78.9. That is above Nightmare (77.02,
+5th) and Aleph (76.92), so HUNT projects 5th; ShadowTeam (79.17, 4th) is 0.3 above the point
+estimate, so 4th is an uncertain upside. This meets the release rule (projection > Nightmare).
+Leigh released it as the team-only patch 3.17.1 (minors move together across the rumbles).
