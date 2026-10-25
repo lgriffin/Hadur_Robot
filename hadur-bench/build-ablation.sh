@@ -188,6 +188,9 @@
 #   tmdis  (team only) T7, TMODE-8: DISABLED against every team (drawn to a disabled enemy). Suffix md.
 #   tmfire (team only) T7, TMODE-9: MATEFIRE against every team (teammates' bullets as danger). Suffix mb.
 #   tmrear (team only) T7, TMODE-10: REAR against every team (the leader keeps back). Suffix mr.
+#   tmwaves (team only) T7, TMODE-11: WAVES against every team (Ogi's wave check on the safest destinations,
+#          team step D). Suffix mw.
+#   tmwk  (team only) with tmwaves: each virtual bullet's kernel 2.5 bot widths wide, not half of one. Suffix wk.
 #          The three combine: tmdis,tmfire,tmrear is one build (suffix mdmbmr).
 #   tmtab (team only) T7, TMODE-1: the screen's table, the t.put lines in $TEAM_MODE_TABLE (default
 #         work/team-modes-screen.java, written by tools/team_modes.py pick). Suffix mt.
@@ -283,6 +286,7 @@ tlink="$src/hadur-core/src/main/java/hadur2/core/TeamLink.java"
 fgun="$src/hadur-core/src/main/java/hadur2/core/melee/FieldGun.java"
 danger="$src/hadur-core/src/main/java/hadur2/core/melee/TeamDanger.java"
 modes="$src/hadur-core/src/main/java/hadur2/core/melee/TeamModes.java"
+mrm="$src/hadur-core/src/main/java/hadur2/core/melee/MinimumRiskMovement.java"
 core="$src/hadur-core/src/main/java/hadur2/core/HadurCore.java"
 mseam="$src/hadur-core/src/main/java/hadur2/core/MeleeSeam.java"
 robot="$src/hadur-robot/src/main/java/hadur2/Hadur.java"
@@ -596,6 +600,14 @@ for a in "${list[@]}"; do
             version="${version}mb"
             edit "$modes" "public static final boolean FORCE_MATEFIRE = false;" "public static final boolean FORCE_MATEFIRE = true;"
             ;;
+        tmwk)
+            version="${version}wk"
+            edit "$mrm" "double sigma = Math.max(1e-3, half / 2);" "double sigma = Math.max(1e-3, half * 2.5);"
+            ;;
+        tmwaves)
+            version="${version}mw"
+            edit "$modes" "public static final boolean FORCE_WAVES = false;" "public static final boolean FORCE_WAVES = true;"
+            ;;
         tmrear)
             version="${version}mr"
             edit "$modes" "public static final boolean FORCE_REAR = false;" "public static final boolean FORCE_REAR = true;"
@@ -722,7 +734,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$design" 'public static final ShieldDesign SHIPPED = parse("' \
                 "public static final ShieldDesign SHIPPED = parse(\"$flag,"
             version="${version}${suffix}" ;;
-        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, ramheat, flaton, nowall, flt59, flt8, split, wallesc, gungate, hold650, dfac, bhb, hitclr, pkern, keep2, thgun, freegun, nodecay, stacklist, protean, pdw3, pdw8, pc10, phot, repl, pressure, pdown, pwall, pwc, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tram, t6n, t6l, tmsoft, tmgang, tmfin, tmlearn, tmpack, tmscreen, tmpool, tmdis, tmfire, tmrear, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, surfb, aimmix, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, snull, strim, slistadd, smovelist, saimlist, sdodge, sdodgelist, sgo, sgo2, sgolist, sgo2list)" >&2; exit 2 ;;
+        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, ramheat, flaton, nowall, flt59, flt8, split, wallesc, gungate, hold650, dfac, bhb, hitclr, pkern, keep2, thgun, freegun, nodecay, stacklist, protean, pdw3, pdw8, pc10, phot, repl, pressure, pdown, pwall, pwc, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tram, t6n, t6l, tmsoft, tmgang, tmfin, tmlearn, tmpack, tmscreen, tmpool, tmdis, tmfire, tmrear, tmwaves, tmwk, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, surfb, aimmix, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, snull, strim, slistadd, smovelist, saimlist, sdodge, sdodgelist, sgo, sgo2, sgolist, sgo2list)" >&2; exit 2 ;;
     esac
 done
 

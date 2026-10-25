@@ -274,3 +274,35 @@ on those 11 teams, seeds 3400-3401: **+3.9 ± 3.1** for `tlaneo`, with 3,125 sho
 
 So step C is the fire lane: `tlane0`, `tlaneo` and `tlaneo` with MATEFIRE (teammates dodge our
 bullets), screened on all 46 teams (plans/team-c.steps, about 2.5 PC hours). Ship an arm at +1.0 or more with the low end above zero and the A/A within ±1.0.
+
+**Step A result (PC, 2026-10-25, PR #261): S4 fails its gate.** 46 teams, 6 seeds, against 3.16
+(share points, paired):
+
+| Arm | Paired diff |
+|---|---|
+| `bb` (A/A) | -0.2 ± 0.8 |
+| `md` finish a disabled enemy (TMODE-8) | +0.1 ± 0.7 |
+| `mb` dodge teammates' bullets (TMODE-9) | +0.6 ± 0.8 |
+| `mr` leader keeps back (TMODE-10) | -0.3 ± 0.7 |
+| `mdmbmr` all three | +0.2 ± 0.7 |
+
+No arm reaches +1.0 with its low end above zero, so all three switches stay off. Small rules on
+the current team play do not move the share; C (the fire lane) is the remaining lever on tonight's
+card.
+
+**Step D result (cloud, 2026-10-24): Ogi's wave check does not move us.** WAVES (TMODE-11, off,
+team only) re-ranks the eight lowest-risk destinations by the shots their 30-tick drive would
+cross, each shot a profile over its virtual bullets and its escape angle. Three cloud smokes against
+the 3.16 aa build on the 11 teams of step C, 2 seeds each:
+
+| Arm | Paired diff (share points) | Skipped turns a battle (baseline) |
+|---|---|---|
+| `tmwaves` (head-on and linear profile, seeds 3500-3501) | -0.3 ± 4.0 | 176 (122) |
+| `tmwaves,tmlearn,tmpool` (learned aims pooled by class, Ogi's setup) | -4.4 ± 4.1 | 1,593 (124) |
+| `tmwaves,tmwk` (kernel 2.5 bot widths wide, seeds 3600-3601) | +0.5 ± 3.2 | 172 (123) |
+| `tmwaves,tmwk` after the signed-risk scaling fix (seeds 3700-3701) | +1.6 ± 4.1 | 174 (124) |
+
+The re-smoke after the review fix (risk medians shifted by the least risk) stays inside its
+noise. None earns PC time, so D is closed as built: the code stays on master with the mode off. By the
+stop rule, movement is not where 5th comes from. The team lever is C (the fire lane), and what is
+left after C's gate is read from the census against 77.2.

@@ -322,6 +322,56 @@ class TeamModesTest {
     }
 
     @Test
+    @Tag("TMODE-11")
+    @DisplayName("TMODE-11: a wave counts its aimed share where the drive crosses its heading, and only the even spread aside")
+    void waveDamage() {
+        // Fired north from (600, 200) on tick 0 at power 3 (11 px a tick): it reaches y = 600 near tick 35.
+        EnemyShot shot = new EnemyShot("e", pt(600, 200), 0, 3.0);
+        VirtualBullet head = new VirtualBullet(shot, VirtualBullet.Aim.HEAD_ON, 0.0);
+        VirtualBullet lin = new VirtualBullet(shot, VirtualBullet.Aim.LINEAR, 0.0);
+        List<MinimumRiskMovement.Wave> waves = MinimumRiskMovement.Wave.of(List.of(head, lin));
+        assertEquals(1, waves.size());
+        double full = 4 * 3.0 + 2 * 2.0;
+        double stay = MinimumRiskMovement.waveDamage(pt(600, 600), pt(600, 600), 20, waves);
+        double aside = MinimumRiskMovement.waveDamage(pt(600, 600), pt(800, 600), 20, waves);
+        assertTrue(stay > 0.6 * full && stay <= full, "stay " + stay);
+        assertTrue(aside > 0 && aside < 0.1 * full, "aside " + aside);
+        // A wave the drive never meets in 30 ticks does nothing.
+        assertEquals(0.0, MinimumRiskMovement.waveDamage(pt(600, 600), pt(600, 600), 0, waves), 0.0);
+        // A weight under one (TMODE-2) scales it.
+        List<MinimumRiskMovement.Wave> soft = MinimumRiskMovement.Wave.of(List.of(
+            new VirtualBullet(shot, VirtualBullet.Aim.HEAD_ON, 0.0, 0.25)));
+        assertEquals(0.25 * stay, MinimumRiskMovement.waveDamage(pt(600, 600), pt(600, 600), 20, soft), 1e-6);
+    }
+
+    @Test
+    @Tag("TMODE-11")
+    @DisplayName("TMODE-11: negative risks (the posture term) keep a positive scale, so wave damage still decides")
+    void waveScoresSigned() {
+        double[] risk = {-3.0, -2.9, -2.8, -2.7};
+        double[] damage = {16.0, 0.0, 1.0, 1.0};
+        double[] score = MinimumRiskMovement.waveScores(risk, damage);
+        int best = 0;
+        for (int k = 1; k < score.length; k++) if (score[k] < score[best]) best = k;
+        assertEquals(1, best);
+        assertTrue(Double.isFinite(score[0]) && score[0] < 1e6);
+    }
+
+    @Test
+    @Tag("TMODE-11")
+    @DisplayName("TMODE-11: with WAVES on a team the destination is one of the safest candidates, re-ranked by the waves")
+    void wavesPick() {
+        List<EnemyInfo> far = enemies(pt(600, 150)).alive();
+        List<Roster.Mate> m = mates(pt(200, 900));
+        MinimumRiskMovement move = new MinimumRiskMovement(field(1200, 1200));
+        move.newRound();
+        move.updateBullets(List.of(new EnemyShot("e", pt(600, 150), 0, 3.0)), path(), pt(600, 600), 20);
+        Point2D.Double d = move.chooseDestination(pt(600, 600), 100, 1, far, 20, MeleeStrategy.Plan.normal(),
+            m, TeamModes.of(TeamModes.Mode.WAVES));
+        assertTrue(move.candidates(pt(600, 600), 1, far, 20, m).contains(d));
+    }
+
+    @Test
     @Tag("TMODE-10")
     @DisplayName("TMODE-10: with REAR the leader's enemy terms weigh 1.5 times; a member that is not the leader is unchanged")
     void rearLeader() {

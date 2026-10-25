@@ -160,6 +160,15 @@ public class MinimumRiskMovement {
     static final int MATE_BULLETS = 64;
     /** TMODE-10: the leader's enemy terms weigh this much more. */
     static final double REAR_FACTOR = 1.5;
+    /** TMODE-11: the lowest-risk candidates driven to, the ticks each drive is checked, and the damage term's weight. */
+    static final int WAVE_RERANK = 8;
+    static final int WAVE_TICKS = 30;
+    static final double WAVE_DAMAGE_K = 3.0;
+    /** TMODE-11: the share of a shot spread evenly over its escape angle, and the least median damage. */
+    static final double WAVE_UNIFORM = 0.3;
+    static final double WAVE_MEDIAN_FLOOR = 0.1;
+    /** TMODE-11: a robot's half-width, px: a wave hits the box it crosses. */
+    static final double WAVE_HALF = 18;
     /** The ring never shrinks below a robot's width, so Hadur can always move. */
     static final double MIN_RING = 36.0;
 
@@ -451,6 +460,10 @@ public class MinimumRiskMovement {
         v.rear = leader && !mates.isEmpty() && modes.contains(TeamModes.Mode.REAR);
         List<Point2D.Double> candidates = candidates(me, others, enemies, now, mates);
         lastCandidates = candidates.size();
+        if (!mates.isEmpty() && modes.contains(TeamModes.Mode.WAVES)) {
+            destination = waveBest(candidates, v);
+            return destination;
+        }
         Point2D.Double best = null;
         double bestRisk = Double.POSITIVE_INFINITY;
         for (Point2D.Double p : candidates) {
@@ -659,6 +672,192 @@ public class MinimumRiskMovement {
             if (e.age(now) < CAP_MAX_AGE && e.location.distance(p) <= GANG_RANGE) n++;
         }
         return n;
+    }
+
+    /**
+     * TMODE-11, Ogi's wave check: the {@link #WAVE_RERANK} lowest-risk candidates, and the
+     * destination held if not reached, are each driven to for {@link #WAVE_TICKS} ticks, and
+     * every shot in flight that crosses Hadur's box on the way counts the share of it aimed
+     * there. A shot is a profile that sums to its aimed-at weight, not a certain bullet: its
+     * virtual bullets' headings share {@code 1 - }{@link #WAVE_UNIFORM} of it, and the rest is
+     * spread over its escape angle. The score is {@code risk / median(risk) + 3 x damage /
+     * max(0.1, median(damage))}, each risk measured from the least of them (the posture term
+     * can make risks negative), times {@link #SWITCH_GAIN} for the held destination.
+     */
+    Point2D.Double waveBest(List<Point2D.Double> candidates, View v) {
+        List<Point2D.Double> pool = new ArrayList<>(candidates);
+        boolean hold = destination != null && destination.distance(v.me) > REACHED;
+        if (hold) pool.add(destination);
+        double[] risk = new double[pool.size()];
+        Integer[] order = new Integer[pool.size()];
+        for (int i = 0; i < pool.size(); i++) {
+            risk[i] = risk(pool.get(i), v);
+            order[i] = i;
+        }
+        java.util.Arrays.sort(order, (a, b) -> Double.compare(risk[a], risk[b]));
+        List<Integer> picked = new ArrayList<>();
+        for (int i = 0; i < order.length && picked.size() < WAVE_RERANK; i++) picked.add(order[i]);
+        if (hold && !picked.contains(pool.size() - 1)) picked.add(pool.size() - 1);
+        List<Wave> waves = Wave.of(v.bullets);
+        double[] damage = new double[picked.size()];
+        double[] r = new double[picked.size()];
+        for (int k = 0; k < picked.size(); k++) {
+            r[k] = risk[picked.get(k)];
+            damage[k] = waveDamage(v.me, pool.get(picked.get(k)), v.now, waves);
+        }
+        double[] score = waveScores(r, damage);
+        Point2D.Double best = null;
+        double bestScore = Double.POSITIVE_INFINITY;
+        for (int k = 0; k < picked.size(); k++) {
+            double sc = score[k];
+            if (hold && picked.get(k) == pool.size() - 1) sc *= SWITCH_GAIN;
+            if (sc < bestScore) {
+                bestScore = sc;
+                best = pool.get(picked.get(k));
+            }
+        }
+        return best;
+    }
+
+    /**
+     * TMODE-11: each destination's score from its risk and wave damage. The posture term may
+     * make a risk negative, so each risk is measured from the least of them, which keeps the
+     * order and gives the median a positive scale.
+     */
+    static double[] waveScores(double[] risk, double[] damage) {
+        double least = Double.POSITIVE_INFINITY;
+        for (double x : risk) least = Math.min(least, x);
+        double[] shifted = new double[risk.length];
+        for (int k = 0; k < risk.length; k++) shifted[k] = risk[k] - least;
+        double riskMedian = Math.max(1e-9, median(shifted));
+        double damageMedian = Math.max(WAVE_MEDIAN_FLOOR, median(damage));
+        double[] out = new double[risk.length];
+        for (int k = 0; k < risk.length; k++) {
+            out[k] = shifted[k] / riskMedian + WAVE_DAMAGE_K * damage[k] / damageMedian;
+        }
+        return out;
+    }
+
+    static double median(double[] xs) {
+        double[] s = xs.clone();
+        java.util.Arrays.sort(s);
+        int n = s.length;
+        if (n == 0) return 0;
+        return n % 2 == 1 ? s[n / 2] : (s[n / 2 - 1] + s[n / 2]) / 2;
+    }
+
+    /**
+     * TMODE-11: the damage the {@code waves} are expected to do Hadur driving from {@code me}
+     * straight to {@code to} (accelerating 1 px a tick to 8, stopping there) for
+     * {@link #WAVE_TICKS} ticks. Each wave counts once, on the tick its front crosses the box.
+     */
+    static double waveDamage(Point2D.Double me, Point2D.Double to, long now, List<Wave> waves) {
+        if (waves.isEmpty()) return 0;
+        boolean[] done = new boolean[waves.size()];
+        double total = 0;
+        double x = me.x, y = me.y, speed = 0;
+        for (int t = 1; t <= WAVE_TICKS; t++) {
+            double left = Math.hypot(to.x - x, to.y - y);
+            if (left > 0.5) {
+                speed = Math.min(MAX_SPEED, Math.min(speed + 1, left));
+                x += (to.x - x) / left * speed;
+                y += (to.y - y) / left * speed;
+            }
+            long tick = now + t;
+            for (int i = 0; i < waves.size(); i++) {
+                if (done[i]) continue;
+                Wave w = waves.get(i);
+                double d = Math.hypot(x - w.source.x, y - w.source.y);
+                double front = w.speed * (tick - w.fireTime);
+                if (front < d - WAVE_HALF) continue;
+                done[i] = true;
+                if (front - w.speed > d + WAVE_HALF) continue;
+                total += w.mass(Math.atan2(x - w.source.x, y - w.source.y), Math.atan(WAVE_HALF / Math.max(d, WAVE_HALF)));
+            }
+        }
+        return total;
+    }
+
+    /** TMODE-11: one shot in flight as a profile over its headings. */
+    static final class Wave {
+        final Point2D.Double source;
+        final long fireTime;
+        final double speed;
+        final double damage;
+        /** The aimed-at weight: the most the wave can do, as a share of one bullet. */
+        final double aimed;
+        final double[] headings;
+        final double[] shares;
+        final double centre;
+        final double escape;
+
+        Wave(EnemyShot shot, List<VirtualBullet> bullets) {
+            source = shot.source;
+            fireTime = shot.fireTime;
+            speed = shot.speed();
+            damage = 4 * shot.power + Math.max(0, 2 * (shot.power - 1));
+            double sum = 0, max = 0;
+            boolean learned = false;
+            for (VirtualBullet b : bullets) {
+                sum += b.weight;
+                max = Math.max(max, b.weight);
+                learned |= b.aim == VirtualBullet.Aim.LEARNED;
+            }
+            aimed = Math.min(1.0, learned ? sum : max);
+            headings = new double[bullets.size()];
+            shares = new double[bullets.size()];
+            double c = Double.NaN;
+            for (int i = 0; i < bullets.size(); i++) {
+                VirtualBullet b = bullets.get(i);
+                headings[i] = b.heading;
+                shares[i] = sum > 0 ? b.weight / sum : 1.0 / bullets.size();
+                if (b.aim == VirtualBullet.Aim.HEAD_ON || Double.isNaN(c)) c = b.heading;
+            }
+            centre = c;
+            escape = Math.asin(Math.min(1.0, MAX_SPEED / speed));
+        }
+
+        /** The waves of {@code bullets}, one for each shot, in the order first seen. */
+        static List<Wave> of(List<VirtualBullet> bullets) {
+            IdentityHashMap<EnemyShot, List<VirtualBullet>> by = new IdentityHashMap<>();
+            List<EnemyShot> order = new ArrayList<>();
+            for (VirtualBullet b : bullets) {
+                List<VirtualBullet> l = by.get(b.shot);
+                if (l == null) {
+                    l = new ArrayList<>();
+                    by.put(b.shot, l);
+                    order.add(b.shot);
+                }
+                l.add(b);
+            }
+            List<Wave> out = new ArrayList<>(order.size());
+            for (EnemyShot s : order) out.add(new Wave(s, by.get(s)));
+            return out;
+        }
+
+        /** The expected damage to a box at {@code bearing} from the source, {@code half} radians each side. */
+        double mass(double bearing, double half) {
+            double m = 0;
+            double sigma = Math.max(1e-3, half / 2);
+            for (int i = 0; i < headings.length; i++) {
+                double off = Angles.normalRelativeAngle(bearing - headings[i]);
+                m += shares[i] * (phi((off + half) / sigma) - phi((off - half) / sigma));
+            }
+            m *= 1 - WAVE_UNIFORM;
+            double off = Math.abs(Angles.normalRelativeAngle(bearing - centre));
+            double lo = Math.max(off - half, -escape), hi = Math.min(off + half, escape);
+            if (hi > lo) m += WAVE_UNIFORM * (hi - lo) / (2 * escape);
+            return aimed * m * damage;
+        }
+    }
+
+    /** The standard normal distribution function (Abramowitz and Stegun 7.1.26). */
+    static double phi(double z) {
+        double x = Math.abs(z) / Math.sqrt(2);
+        double t = 1 / (1 + 0.3275911 * x);
+        double erf = 1 - ((((1.061405429 * t - 1.453152027) * t + 1.421413741) * t - 0.284496736) * t
+            + 0.254829592) * t * Math.exp(-x * x);
+        return z >= 0 ? 0.5 * (1 + erf) : 0.5 * (1 - erf);
     }
 
     /** The whole risk of {@code p}. */
