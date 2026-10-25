@@ -147,7 +147,7 @@ over all enemies with records kept across rounds, and a true surf in the last du
 ## 4. The plan
 
 Each stage builds behind a melee-only switch, smokes on the cloud's five top-20 fields
-(`bench-melee-top20.sh --baseline`, 3 seeds, about 75 minutes), then screens on the PC census
+(`./bench-melee-top20.sh --seeds 3 --parallel 2 --baseline <3.17 jar>`, about 75 minutes), then screens on the PC census
 against 3.17 with an A/A arm. A stage that passes ships on master as a default for melee only.
 Gains stack on master; there is no melee-only release (Hadur is one jar), and the release rule
 stays: no release until the census projects top 5 (section 1 bar), alongside the 1v1 and team
