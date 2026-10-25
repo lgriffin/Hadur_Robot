@@ -1416,7 +1416,10 @@ Nullstride's list with (docs/bench/local/2026-10-12_plan90-pc-read.md).
   are still made and logged, so the views keep learning. Ablations `sgo` (suffix `wp`, variant 1)
   and `sgo2` (`ws`, variant 2) for every opponent; `sgolist`/`sgo2list` (`STOP_GO`/`STOP_GO2=<file>`,
   suffixes `wl`/`wm`) for the table's entries in `ShieldTableData.stopGos()`/`stopGoShifts()`.
-  Tests: `StopAndGoTest` (POISON-1, POISON-2).
+  Mode table v2 (pc-1v1-modes, PR #263) ships 18 variant 1 and 35 variant 2 entries: verify gate
+  on fresh seeds +0.61 ± 0.10 APS over 1,217 pairings, A/A inside its band. Every opponent a
+  variant would lose against stays off the table (wrong variant: 5-20% score share).
+  Tests: `StopAndGoTest` (POISON-1, POISON-2), `ShieldListResourceTest` (POISON-2).
 - **SB records** (measurement, every design): each bullet that hits us from a listed opponent
   writes `SB,round,tick,class,ordinal,predicted,power`, class `off`, `nowave`, `missed`
   (a shield bullet was fired at it), `first` or `unshielded`, so the plan's step 2 can classify

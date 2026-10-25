@@ -4,7 +4,8 @@ package hadur2;
  * Shield part 2 of the 1v1 mode table (docs/plan-shield-quality.md): per opponent, the shield's
  * opening drive (SHIELD-17) and its shipped aim (SHIELD-18); and the opponents the duel surf
  * dodges simple aims against (DODGE-3); and the opponents fought with stop-and-go (POISON-2). Every list starts empty, so Hadur plays as before until
- * a bench run has picked entries for it; moves() and aims() hold shield part 2's (PR #256).
+ * a bench run has picked entries for it; moves() and aims() hold shield part 2's (PR #256),
+ * stopGos() and stopGoShifts() mode table v2's (PR #263).
  *
  * <p>{@link #moves()} and {@link #dodges()} name opponents, matched by the rule of {@link ShieldListData}.
  * {@link #aims()} holds one {@code "predictor offset name"} line an opponent: the predictor
@@ -311,6 +312,24 @@ final class ShieldTableData {
      */
     static String[] stopGos() {
         return new String[] {
+            "apv.LauLectrik 1.2",
+            "areb.Union 1.06",
+            "bvh.mini.Mjolnir 0.3",
+            "davidalves.net.DuelistMicroMkII 1.1",
+            "ender.EnderRobot 1.1",
+            "jab.avk.ManuelGallegus 0.6",
+            "lxx.ConceptA 0.8",
+            "lxx.Emerald 0.6.5",
+            "md.November 1.0",
+            "mladjo.AIR 0.7",
+            "mladjo.GnuKlub 0.1",
+            "ntc.Cannon 1.12test",
+            "penguin.Joker .611wr",
+            "rh.abs.Xwing 2.1",
+            "stelo.Spread 0.9",
+            "urdos.URDOS 1.3",
+            "xander.cat.SamAxe 1.1",
+            "xander.cat.XanderCat 12.9",
         };
     }
 
@@ -321,6 +340,41 @@ final class ShieldTableData {
      */
     static String[] stopGoShifts() {
         return new String[] {
+            "DM.Mijit .3",
+            "ab.DengerousRoBatra 1.3",
+            "ahr.ice.Ice 1.0",
+            "apc.Colossus2 0.12",
+            "ar.TheoryOfEverything 1.2.1",
+            "ar.horizon.Horizon 1.2.2",
+            "arthord.micro.Apoptygma 0.4",
+            "arthord.micro.Muffin 0.6.1",
+            "banshee.micro.Nexus6 0.3.0",
+            "da.NewBGank 1.4",
+            "demetrix.nano.Neutrino 0.27",
+            "deo.CloudBot 1.3",
+            "element.Earth 1.1",
+            "jam.RaikoMX 0.32",
+            "kano.gamma.KanoGamma 1.8",
+            "mladjo.iRobot 0.3",
+            "nat.BlackHole 2.0gamma",
+            "nat.micro.Reepicheep 0.1a",
+            "oog.melee.Capulet 1.2",
+            "pe.SandboxLump 1.52",
+            "pez.micro.Aristocles 0.3.9",
+            "pez.mini.Tityus 0.9.1",
+            "pez.mini2.Pugilist 2.5.15",
+            "ry.LightningBug 1.0",
+            "scheronimus.AntiRebel 1.1",
+            "serenity.nonSense 1.39",
+            "sheldor.micro.Epeeist 3.7",
+            "sheldor.micro.EpeeistDC 3.0",
+            "slugzilla.Basilisk 3.9",
+            "stelo.Liblix 0.3.1",
+            "suh.mega.WaveSurferGF 1.04",
+            "tjk.deBroglie rev0108",
+            "whind.Wisdom 0.5.1",
+            "wiki.BasicGFSurfer 1.02",
+            "zyx.micro.Ant 1.1",
         };
     }
 }
