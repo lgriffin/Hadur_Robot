@@ -59,8 +59,9 @@ its survival figures are not. Stage 0 fixes this before any gain is claimed.
 ## 4. How Saor differs from Figment
 
 All of these are in `Saor.java` against `kc/micro/Figment.java`. Everything else is the same
-arithmetic: the corner movement, the Markov state, the 17.5 px aim wall, the kernel and the
-power formula.
+arithmetic: the corner movement, the Markov state, the 17.5 px aim wall, the kernel, the power
+formula, and a cold playout's vote of 5 (Figment sets `weight = 5` on an empty row too, so
+with arm W Saor matches it).
 
 | Difference | Saor | Figment | Bytes to revert |
 |---|---|---|---|
@@ -68,6 +69,7 @@ power formula.
 | When a row is sampled | 8 or more samples, otherwise hold the state | **any sample** (min 126) | saves 2 (arm W) |
 | Power cap | `others / 3 + 1.9` | **none** | saves 14 (arm U, -0.12 ± 0.35) |
 | Leg after a ram | 50 px (SAOR-9) | **none** | saves 13 (arm R) |
+| Fire at power 0 or below | yes: below 1 energy `log10(E)` is negative and the engine fires 0.1 | **no** (`power > 0`) | costs 7 (arm Z) |
 | Opponent hash | 512 rows | 256 | 0 |
 | Angle bins | 1024 | 1000 | 0 |
 
@@ -82,8 +84,8 @@ started by Leigh and runs from master. Every arm is paired per field against the
 the read uses `tools/saor_arms.py`.
 
 **Stages 0 and 1 share one card, `plans/pc-saor-s01.queue`, which takes about 4-5 h.** It runs
-the live-shaped census for C, Figment, Wallaby and FX, and the MicroMelee census for C, G, W, R
-and FX. The results PR goes to `claude/pc-saor-s01-results`.
+the live-shaped census for C, Figment, Wallaby and FX, and the MicroMelee census for C, G, W, R,
+Z and FX. The results PR goes to `claude/pc-saor-s01-results`.
 
 How the card is built:
 
@@ -98,7 +100,7 @@ off.
 | Stage | What | Arms | PC time | Pass |
 |---|---|---|---|---|
 | **0. Live-shaped census** | A second census, `micromelee-live`: fields of 9 drawn from the full MeleeRumble list (the PC already holds the melee jars), scored only on the micro pairings. Run Saor 0.1, Figment and Wallaby in the seat, on both censuses. | C, Figment, Wallaby | about 3 h | The live census reproduces live: Figment over Saor by +1.3 ± 0.5, Wallaby by +0.8 ± 0.5, and Saor's level within 0.5 of 68.08. |
-| **1. Figment parity** | Revert the differences in section 4, one at a time and then all together. | G128 (playouts), W (any-sample rows), R (no ram leg), FX (all three plus U) | about 2.5 h | An arm gains at least +0.3, with a low end above 0. Expected (a guess): G128 is worth most of the gap. |
+| **1. Figment parity** | Revert the differences in section 4, one at a time and then all together. | G (128 playouts), W (any-sample rows), R (no ram leg), Z (power > 0), FX (all four plus U: Figment but for 512 hashes and 1024 bins) | about 2.5 h | An arm gains at least +0.3, with a low end above 0. Expected (a guess): G is worth most of the gap. |
 | **2. Beyond Figment, no bytes** | Constants that cost nothing. | 256 playouts (if no skipped turns), power constant 250 and 400, learning threshold 0.5 and 0.9, leg constant 55 | about 3 h | The same rule, stacked on stage 1's winner. |
 | **3. Beyond Figment, with bytes** | Spend what stage 1 frees (up to about 30 bytes: cap 14, ram leg 14). Candidates: a duel-only move for the last two (the duel screen's orbit), or a corner chosen away from the crowd. | 2-3 arms | about 2 h | The same rule. |
 | **4. Stack and ship 0.2** | Fit the stack into 749 bytes after ProGuard, update the core, SaorLab and SAOR-15, then confirm on the live census with 8 seeds. | the stack against 0.1 | about 2 h | The live census projects at least Figment + 0.5 (69.9), with its low end above 69.37. Then release 0.2 on Leigh's go. |

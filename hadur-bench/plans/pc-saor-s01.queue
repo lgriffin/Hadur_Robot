@@ -18,13 +18,14 @@
 #   G  128 playouts an aim (Saor 0.1 runs 64)
 #   W  sample any row with a sample (Saor 0.1 waits for 8)
 #   R  no leg after a ram
-#   FX G, W, R and no power cap together (735 bytes javac)
+#   Z  fire only at positive power (no 0.1 shots below 1 energy)
+#   FX G, W, R, Z and no power cap together (742 bytes javac)
 #   An arm passes at +0.3 or more with its low end above 0, field by field against C.
 # About 4-5 h in all.
 
 set MVN = mvn -q -Drobocode.version=1.11.1 compile exec:java
 set OUT = ../docs/bench/local
-set ARMS = C,G,W,R,FX
+set ARMS = C,G,W,R,Z,FX
 set LIVE = C,FIG,WAL,FX
 
 prep | (cd .. && mvn -q -DskipTests install -pl saor -am) && cp ../saor/target/hadur117.micro.Saor_0.1.jar opponents/ && ./fetch-opponents.sh --set micromelee-field.txt && for f in melee-census-317/f*.txt; do ./fetch-opponents.sh --set "$f" || exit 1; done && SAOR_RUN=s01 bash tools/saor_arms.sh census 12 1500 ${ARMS} && SAOR_RUN=s01 bash tools/saor_arms.sh live 8 1600 ${LIVE}
@@ -50,8 +51,11 @@ census-W | ${MVN} "-Dexec.args=@work/saor-s01/census-W.args"
 census-R | ${MVN} "-Dexec.args=@work/saor-s01/census-R.args"
   after: census-W
 
-census-FX | ${MVN} "-Dexec.args=@work/saor-s01/census-FX.args"
+census-Z | ${MVN} "-Dexec.args=@work/saor-s01/census-Z.args"
   after: census-R
+
+census-FX | ${MVN} "-Dexec.args=@work/saor-s01/census-FX.args"
+  after: census-Z
 
 live-FX | ${MVN} "-Dexec.args=@work/saor-s01/live-FX.args"
   after: census-FX
