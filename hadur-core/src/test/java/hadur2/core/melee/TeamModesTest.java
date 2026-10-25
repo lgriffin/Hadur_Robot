@@ -275,6 +275,11 @@ class TeamModesTest {
         // Closer in, the radius does not shrink.
         Point2D.Double near = MinimumRiskMovement.huntSlot(pt(620, 750), "n", prey, 100, mates(pt(580, 750)));
         assertEquals(MinimumRiskMovement.HUNT_RADIUS, near.distance(600, 900), 1e-6);
+        // On one ray from the prey, name order breaks the tie: the two take mirrored places.
+        Point2D.Double after = MinimumRiskMovement.huntSlot(pt(600, 500), "n", prey, 100, mates(pt(600, 300)));
+        Point2D.Double before = MinimumRiskMovement.huntSlot(pt(600, 500), "a", prey, 100, mates(pt(600, 300)));
+        assertEquals(1200, after.x + before.x, 1e-6);
+        assertTrue(Math.abs(after.x - before.x) > 100, after + " " + before);
     }
 
     @Test

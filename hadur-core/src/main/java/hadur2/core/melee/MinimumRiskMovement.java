@@ -736,11 +736,11 @@ public class MinimumRiskMovement {
         int[] prey = huntAssign(pack, enemies, now);
         if (prey[self] < 0) return null;
         Point2D.Double t = enemies.get(prey[self]).location;
-        List<Point2D.Double> group = new ArrayList<>();
+        List<Integer> group = new ArrayList<>();
         double sx = 0, sy = 0;
         for (int m = 0; m < pack.size(); m++) {
             if (prey[m] != prey[self]) continue;
-            group.add(pack.get(m));
+            group.add(m);
             double b = DiaUtils.absoluteBearing(t, pack.get(m));
             sx += Math.sin(b);
             sy += Math.cos(b);
@@ -748,9 +748,11 @@ public class MinimumRiskMovement {
         double mean = Math.atan2(sx, sy);
         double mine = Angles.normalRelativeAngle(DiaUtils.absoluteBearing(t, me) - mean);
         int rank = 0;
-        for (Point2D.Double q : group) {
-            if (q == me) continue;
-            if (Angles.normalRelativeAngle(DiaUtils.absoluteBearing(t, q) - mean) < mine) rank++;
+        for (int m : group) {
+            if (m == self) continue;
+            double off = Angles.normalRelativeAngle(DiaUtils.absoluteBearing(t, pack.get(m)) - mean);
+            // Name order breaks ties, so members on one ray from the prey still take apart slots.
+            if (off < mine || (off == mine && m < self)) rank++;
         }
         int n = group.size();
         double spread = Math.min(PACK_SPREAD, 2 * Math.PI / n);
