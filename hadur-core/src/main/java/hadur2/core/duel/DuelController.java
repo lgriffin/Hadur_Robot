@@ -103,6 +103,8 @@ public final class DuelController {
     private double smallestEnemyPower = Double.NaN;
     /** END-4: whether the last shot decision held the shot, so a P record marks each change. */
     private boolean end4Holding;
+    /** MOVE-25: this round's ticks with a cool gun, and those of them off its aim. */
+    private int coolTicks, offAimTicks;
     /** Whether the aim the gun is turning to carries the anti-shield offset (SHIELD-2). */
     private boolean aimCarriesJitter;
     /**
@@ -1134,6 +1136,12 @@ public final class DuelController {
                 + (best < 0 ? 0 : shotDodger.matches(best)) + "," + shotDodger.read() + ","
                 + (shotDodger.active() ? 1 : 0));
         }
+        if (duelOnly(MoveDesign.STOP_POINT_SURF, enemiesTotal)) {
+            // MOVE-25: GH,round,tick,coolTicks,offAimTicks.
+            telemetry.emit("GH," + round + "," + tick + "," + coolTicks + "," + offAimTicks);
+        }
+        coolTicks = 0;
+        offAimTicks = 0;
         if (moveController.gunMimics() != null) {
             // MOVE-27: GM,round,tick,views score,each mimic's score.
             StringBuilder gm = new StringBuilder("GM," + round + "," + tick);
@@ -1872,6 +1880,11 @@ public final class DuelController {
         if (end4 != end4Holding) {
             end4Holding = end4;
             emitPolicy(round, in.time(), "power", firePower, Double.NaN, end4 ? "end_4" : "end_4_off");
+        }
+        // MOVE-25: a cool gun's ticks, and those it was off its aim, for the GH record.
+        if (in.gunHeat() == 0) {
+            coolTicks++;
+            if (Math.abs(Math.toDegrees(in.gunTurnRemaining())) >= 0.05) offAimTicks++;
         }
         if (in.gunHeat() == 0 && Math.abs(Math.toDegrees(in.gunTurnRemaining())) < 0.05
                 && !Double.isNaN(firePower) && lastGunWave != null && !predictable
