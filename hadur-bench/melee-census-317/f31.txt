@@ -1,0 +1,10 @@
+# Melee census field f31 (see melee-census-317.txt)
+gh.mini.Griezel 0.2 | melee-29 | gh.mini.Griezel_0.2.jar
+Gecko.ultimateGeckoBot 1.0 | melee-287 | Gecko.ultimateGeckoBot_1.0.jar
+spinnercat.micro.Tyger 0.1 | melee-100 | spinnercat.micro.Tyger_0.1.jar
+gh.nano.Grofvuil 0.2 | melee-142 | gh.nano.Grofvuil_0.2.jar
+tlp.ThreeLeggedPig 1 | melee-327 | tlp.ThreeLeggedPig_1.jar
+abc.Shadow 3.84i | melee-9 | abc.Shadow_3.84i.jar
+fm.mammillarias 1.3 | melee-248 | fm.mammillarias_1.3.jar
+timmit.nano.TimDog 0.33 | melee-226 | timmit.nano.TimDog_0.33.jar
+d414.nano.Quantum 1.0.0 | melee-59 | d414.nano.Quantum_1.0.0.jar

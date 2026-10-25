@@ -1,0 +1,10 @@
+# Melee census field f28 (see melee-census-317.txt)
+pfvicm.Sobieski 7.2.3b | melee-198 | pfvicm.Sobieski_7.2.3b.jar
+amk.ChumbaWumba 0.3 | melee-285 | amk.ChumbaWumba_0.3.jar
+kid.test.NightFox .2 | melee-57 | kid.test.NightFox_.2.jar
+stelo.Lifestealer 1.0 | melee-378 | stelo.Lifestealer_1.0.jar
+uji.Antique 1.0 | melee-139 | uji.Antique_1.0.jar
+matt.advanced.Katana 1.0 | melee-359 | matt.advanced.Katana_1.0.jar
+qohnil.blot.BlotBot 3.61 | melee-201 | qohnil.blot.BlotBot_3.61.jar
+ahr.ice.Ice 1.0.2 | melee-297 | ahr.ice.Ice_1.0.2.jar
+stelo.PianistNano 1.2 | melee-385 | stelo.PianistNano_1.2.jar

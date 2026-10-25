@@ -1,0 +1,10 @@
+# Melee census field f07 (see melee-census-317.txt)
+drd.Dreadknoght 0.9 | melee-410 | drd.Dreadknoght_0.9.jar
+oog.melee.CapuletDroid 1.1 | melee-170 | oog.melee.CapuletDroid_1.1.jar
+skm.PateranBotlock2 1.0 | melee-401 | skm.PateranBotlock2_1.0.jar
+sample.Target 1.0 | melee-411 | sample.Target_1.0.jar
+lrem.micro.MoggFanatic 0.2 | melee-319 | lrem.micro.MoggFanatic_0.2.jar
+franzor.Lizt 1.3.1 | melee-188 | franzor.Lizt_1.3.1.jar
+rtk.Tachikoma 1.0 | melee-78 | rtk.Tachikoma_1.0.jar
+exauge.GateKeeper 1.1.121g | melee-329 | exauge.GateKeeper_1.1.121g.jar
+rsalesc.melee.Monk 0.3.6c | melee-123 | rsalesc.melee.Monk_0.3.6c.jar

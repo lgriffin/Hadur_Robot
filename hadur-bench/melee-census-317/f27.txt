@@ -1,0 +1,10 @@
+# Melee census field f27 (see melee-census-317.txt)
+cs.Grudge 1.0 | melee-390 | cs.Grudge_1.0.jar
+techdude.kombat.FlamingKombat 1.5 | melee-209 | techdude.kombat.FlamingKombat_1.5.jar
+mk.Alpha 0.2.1 | melee-46 | mk.Alpha_0.2.1.jar
+caimano.Furia_Ceca 0.22 | melee-303 | caimano.Furia_Ceca_0.22.jar
+sheldor.melee.nano.TestMelee 0.1 | melee-152 | sheldor.melee.nano.TestMelee_0.1.jar
+joe.ADinosaur 1.0 | melee-247 | joe.ADinosaur_1.0.jar
+EH.Eagle 1.0.6 | melee-167 | EH.Eagle_1.0.6.jar
+throxbot.ThroxBot 0.1 | melee-236 | throxbot.ThroxBot_0.1.jar
+wee.Gem 1.8.4 | melee-151 | wee.Gem_1.8.4.jar

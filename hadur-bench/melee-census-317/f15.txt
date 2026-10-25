@@ -1,0 +1,10 @@
+# Melee census field f15 (see melee-census-317.txt)
+mld.DustBunny 3.8 | melee-79 | mld.DustBunny_3.8.jar
+lambdaxy.TBot 0.1 | melee-273 | lambdaxy.TBot_0.1.jar
+divineomega.TrialBot 0.003 | melee-299 | divineomega.TrialBot_0.003.jar
+emp.Yngwie 1.11 | melee-89 | emp.Yngwie_1.11.jar
+kawigi.robot.Girl 1.2 | melee-169 | kawigi.robot.Girl_1.2.jar
+cb.nano.Insomnia 1.0 | melee-128 | cb.nano.Insomnia_1.0.jar
+Grystrion.TrackerWO 1.0 | melee-277 | Grystrion.TrackerWO_1.0.jar
+com.cgarias.rc.AdvancedTrackerII 1.0 | melee-365 | com.cgarias.rc.AdvancedTrackerII_1.0.jar
+kawigi.micro.Shiz 1.1 | melee-61 | kawigi.micro.Shiz_1.1.jar

@@ -1,0 +1,10 @@
+# Melee census field f13 (see melee-census-317.txt)
+mn.Combat 3.25.0 | melee-13 | mn.Combat_3.25.0.jar
+shinh.Entangled 0.3 | melee-53 | shinh.Entangled_0.3.jar
+maribo.FollowFire 1 | melee-360 | maribo.FollowFire_1.jar
+gh.micro.Gruweltje 0.7 | melee-91 | gh.micro.Gruweltje_0.7.jar
+sample.Tracker 1.0 | melee-406 | sample.Tracker_1.0.jar
+stelo.Wang 1.0 | melee-255 | stelo.Wang_1.0.jar
+ags.Glacier 0.2.11 | melee-10 | ags.Glacier_0.2.11.jar
+ayk.WallHugger 1.0 | melee-318 | ayk.WallHugger_1.0.jar
+apc.Colossus2 0.17 | melee-203 | apc.Colossus2_0.17.jar

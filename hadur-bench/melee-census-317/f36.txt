@@ -1,0 +1,10 @@
+# Melee census field f36 (see melee-census-317.txt)
+squidM.TentalceMeleeNano 1.1 | melee-354 | squidM.TentalceMeleeNano_1.1.jar
+bvh.mini.Fenrir 0.39 | melee-218 | bvh.mini.Fenrir_0.39.jar
+bzdp.Pansy 2.1 | melee-116 | bzdp.Pansy_2.1.jar
+mz.Cork 0.1 | melee-156 | mz.Cork_0.1.jar
+bvh.micro.Freya 0.3 | melee-174 | bvh.micro.Freya_0.3.jar
+m3thos.Eva02 0.7.1 | melee-168 | m3thos.Eva02_0.7.1.jar
+alpha.RainingFire 1.0 | melee-120 | alpha.RainingFire_1.0.jar
+dl.BetterWalls 1.0 | melee-352 | dl.BetterWalls_1.0.jar
+sample.MyFirstRobot 1.0 | melee-398 | sample.MyFirstRobot_1.0.jar

@@ -1,0 +1,10 @@
+# Melee census field f17 (see melee-census-317.txt)
+oog.melee.Mercutio 1.0 | melee-70 | oog.melee.Mercutio_1.0.jar
+et.Predator 1.8 | melee-73 | et.Predator_1.8.jar
+maribo.melee.BMV 0.1 | melee-197 | maribo.melee.BMV_0.1.jar
+nic.Nicator 2.4 | melee-144 | nic.Nicator_2.4.jar
+cx.BlestPain 1.41 | melee-96 | cx.BlestPain_1.41.jar
+ahf.NanoAndrew .4 | melee-164 | ahf.NanoAndrew_.4.jar
+goblin.Bender 2.4 | melee-400 | goblin.Bender_2.4.jar
+edu.otg.spr.TheTeacher 1.2 | melee-338 | edu.otg.spr.TheTeacher_1.2.jar
+tex.Longbot 0.4 | melee-348 | tex.Longbot_0.4.jar

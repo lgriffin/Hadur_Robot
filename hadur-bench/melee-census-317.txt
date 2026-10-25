@@ -1,0 +1,50 @@
+# Melee census of the live MeleeRumble field (2026-10-25T2031Z_meleerumble_rankings.html, 416 ranked): each robot but Hadur once,
+# shuffled (seed 317) into 46 fields of nine; the last field is topped up from the first.
+# Dropped (no jar in the robot archive): jd.Nullstride 2.3.3.
+# Role melee-<rank> is the robot's rank on that page. Made by tools/melee_s0.py (BENCH-104).
+F01 | --set melee-census-317/f01.txt --melee true --field 1000x1000
+F02 | --set melee-census-317/f02.txt --melee true --field 1000x1000
+F03 | --set melee-census-317/f03.txt --melee true --field 1000x1000
+F04 | --set melee-census-317/f04.txt --melee true --field 1000x1000
+F05 | --set melee-census-317/f05.txt --melee true --field 1000x1000
+F06 | --set melee-census-317/f06.txt --melee true --field 1000x1000
+F07 | --set melee-census-317/f07.txt --melee true --field 1000x1000
+F08 | --set melee-census-317/f08.txt --melee true --field 1000x1000
+F09 | --set melee-census-317/f09.txt --melee true --field 1000x1000
+F10 | --set melee-census-317/f10.txt --melee true --field 1000x1000
+F11 | --set melee-census-317/f11.txt --melee true --field 1000x1000
+F12 | --set melee-census-317/f12.txt --melee true --field 1000x1000
+F13 | --set melee-census-317/f13.txt --melee true --field 1000x1000
+F14 | --set melee-census-317/f14.txt --melee true --field 1000x1000
+F15 | --set melee-census-317/f15.txt --melee true --field 1000x1000
+F16 | --set melee-census-317/f16.txt --melee true --field 1000x1000
+F17 | --set melee-census-317/f17.txt --melee true --field 1000x1000
+F18 | --set melee-census-317/f18.txt --melee true --field 1000x1000
+F19 | --set melee-census-317/f19.txt --melee true --field 1000x1000
+F20 | --set melee-census-317/f20.txt --melee true --field 1000x1000
+F21 | --set melee-census-317/f21.txt --melee true --field 1000x1000
+F22 | --set melee-census-317/f22.txt --melee true --field 1000x1000
+F23 | --set melee-census-317/f23.txt --melee true --field 1000x1000
+F24 | --set melee-census-317/f24.txt --melee true --field 1000x1000
+F25 | --set melee-census-317/f25.txt --melee true --field 1000x1000
+F26 | --set melee-census-317/f26.txt --melee true --field 1000x1000
+F27 | --set melee-census-317/f27.txt --melee true --field 1000x1000
+F28 | --set melee-census-317/f28.txt --melee true --field 1000x1000
+F29 | --set melee-census-317/f29.txt --melee true --field 1000x1000
+F30 | --set melee-census-317/f30.txt --melee true --field 1000x1000
+F31 | --set melee-census-317/f31.txt --melee true --field 1000x1000
+F32 | --set melee-census-317/f32.txt --melee true --field 1000x1000
+F33 | --set melee-census-317/f33.txt --melee true --field 1000x1000
+F34 | --set melee-census-317/f34.txt --melee true --field 1000x1000
+F35 | --set melee-census-317/f35.txt --melee true --field 1000x1000
+F36 | --set melee-census-317/f36.txt --melee true --field 1000x1000
+F37 | --set melee-census-317/f37.txt --melee true --field 1000x1000
+F38 | --set melee-census-317/f38.txt --melee true --field 1000x1000
+F39 | --set melee-census-317/f39.txt --melee true --field 1000x1000
+F40 | --set melee-census-317/f40.txt --melee true --field 1000x1000
+F41 | --set melee-census-317/f41.txt --melee true --field 1000x1000
+F42 | --set melee-census-317/f42.txt --melee true --field 1000x1000
+F43 | --set melee-census-317/f43.txt --melee true --field 1000x1000
+F44 | --set melee-census-317/f44.txt --melee true --field 1000x1000
+F45 | --set melee-census-317/f45.txt --melee true --field 1000x1000
+F46 | --set melee-census-317/f46.txt --melee true --field 1000x1000

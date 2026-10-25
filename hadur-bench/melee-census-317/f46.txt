@@ -1,0 +1,10 @@
+# Melee census field f46 (see melee-census-317.txt)
+jeremyreeder.collective.Prophet 5 | melee-288 | jeremyreeder.collective.Prophet_5.jar
+cx.Princess 1.0 | melee-129 | cx.Princess_1.0.jar
+mz.MicroSheep 1.0 | melee-105 | mz.MicroSheep_1.0.jar
+kc.mini.Mirage 0.2 | melee-11 | kc.mini.Mirage_0.2.jar
+sadoner.killer 0.2 | melee-200 | sadoner.killer_0.2.jar
+mbro.Detektor3 0.1.1 | melee-388 | mbro.Detektor3_0.1.1.jar
+kurios.DOSexe .9a | melee-363 | kurios.DOSexe_.9a.jar
+rsalesc.melee.Medina 0.4.5 | melee-12 | rsalesc.melee.Medina_0.4.5.jar
+arthord.NanoSatanMelee Beta | melee-239 | arthord.NanoSatanMelee_Beta.jar

@@ -1,0 +1,10 @@
+# Melee census field f42 (see melee-census-317.txt)
+dsw.StaticD 1.0 | melee-279 | dsw.StaticD_1.0.jar
+maribo.IotaCT 1.1 | melee-251 | maribo.IotaCT_1.1.jar
+stelo.MirrorMicro 1.0 | melee-307 | stelo.MirrorMicro_1.0.jar
+mme.NikeEnhanced 2.0 | melee-320 | mme.NikeEnhanced_2.0.jar
+ara.Shera 0.88 | melee-85 | ara.Shera_0.88.jar
+wompi.Wallaby 5.1 | melee-21 | wompi.Wallaby_5.1.jar
+de.simpleworks.robocode.bots.swiBot 1.1 | melee-355 | de.simpleworks.robocode.bots.swiBot_1.1.jar
+maribo.mini.MiniQuester 0.1 | melee-44 | maribo.mini.MiniQuester_0.1.jar
+amz.NanoClone 1.41 | melee-233 | amz.NanoClone_1.41.jar

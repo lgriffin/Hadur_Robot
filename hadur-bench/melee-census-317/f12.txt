@@ -1,0 +1,10 @@
+# Melee census field f12 (see melee-census-317.txt)
+nat.PallasHawk 1.0 | melee-39 | nat.PallasHawk_1.0.jar
+stuff.Vlad 0.1 | melee-335 | stuff.Vlad_0.1.jar
+jaybot.bots.Oddball 4.0 | melee-336 | jaybot.bots.Oddball_4.0.jar
+jrm.Test0 1.0 | melee-223 | jrm.Test0_1.0.jar
+brainfade.melee.Genghis 0.36 | melee-108 | brainfade.melee.Genghis_0.36.jar
+cs.sheldor.Talon 1.1 | melee-256 | cs.sheldor.Talon_1.1.jar
+darkcanuck.Leon 1.01 | melee-67 | darkcanuck.Leon_1.01.jar
+bts.wiki.RipCurl 0.9b | melee-52 | bts.wiki.RipCurl_0.9b.jar
+jp.Perpy 16.0 | melee-238 | jp.Perpy_16.0.jar

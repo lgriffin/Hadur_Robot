@@ -1,0 +1,10 @@
+# Melee census field f34 (see melee-census-317.txt)
+stelo.Spread 0.9 | melee-23 | stelo.Spread_0.9.jar
+tcf.Reach 3 | melee-158 | tcf.Reach_3.jar
+ratosh.Wesco 1.4 | melee-257 | ratosh.Wesco_1.4.jar
+amk.Punbot.Punbot 0.01 | melee-368 | amk.Punbot.Punbot_0.01.jar
+kid.Gladiator .7.2 | melee-25 | kid.Gladiator_.7.2.jar
+sample.RamFire 1.0 | melee-407 | sample.RamFire_1.0.jar
+jcs.Seth 1.8 | melee-146 | jcs.Seth_1.8.jar
+sample.VelociRobot 1.0 | melee-396 | sample.VelociRobot_1.0.jar
+cli.Dancer 1.1 | melee-216 | cli.Dancer_1.1.jar

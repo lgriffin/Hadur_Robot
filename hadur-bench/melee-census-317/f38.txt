@@ -1,0 +1,10 @@
+# Melee census field f38 (see melee-census-317.txt)
+kdf.KoulDestroyer 1.0 | melee-110 | kdf.KoulDestroyer_1.0.jar
+justin.Mallais 14.0 | melee-18 | justin.Mallais_14.0.jar
+cs.Wren 1.0 | melee-106 | cs.Wren_1.0.jar
+bzdp.BoxCar 2.0 | melee-339 | bzdp.BoxCar_2.0.jar
+matt.UnderDark3 2.4.34 | melee-369 | matt.UnderDark3_2.4.34.jar
+kawigi.spare.SpareParts 0.7.6nosnd | melee-267 | kawigi.spare.SpareParts_0.7.6nosnd.jar
+davidalves.net.DuelistNanoMelee 1.01 | melee-183 | davidalves.net.DuelistNanoMelee_1.01.jar
+bts.mega.Gnarly 1.4 | melee-90 | bts.mega.Gnarly_1.4.jar
+bvh.mini.Freya 0.55 | melee-65 | bvh.mini.Freya_0.55.jar

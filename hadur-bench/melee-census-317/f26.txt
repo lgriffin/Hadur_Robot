@@ -1,0 +1,10 @@
+# Melee census field f26 (see melee-census-317.txt)
+js.PinBall 1.6 | melee-150 | js.PinBall_1.6.jar
+logiblocs.SittingDroid 1.0 | melee-413 | logiblocs.SittingDroid_1.0.jar
+gh.mini.GrubbmOne 1.0 | melee-210 | gh.mini.GrubbmOne_1.0.jar
+shu.nitro.LENIN .T34 | melee-125 | shu.nitro.LENIN_.T34.jar
+fullsail.LaxativeTeaTwo 1.0 | melee-298 | fullsail.LaxativeTeaTwo_1.0.jar
+lrem.Spectre 0.4.4 | melee-111 | lrem.Spectre_0.4.4.jar
+sample.SpinBot 1.0 | melee-382 | sample.SpinBot_1.0.jar
+ak.Fermat 2.0 | melee-50 | ak.Fermat_2.0.jar
+jaybot.adv.bots.JayBot 2.0 | melee-186 | jaybot.adv.bots.JayBot_2.0.jar

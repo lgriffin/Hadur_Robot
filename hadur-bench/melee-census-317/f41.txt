@@ -1,0 +1,10 @@
+# Melee census field f41 (see melee-census-317.txt)
+acogdev.alpha 0.2 | melee-379 | acogdev.alpha_0.2.jar
+stelo.Mirror 1.1 | melee-306 | stelo.Mirror_1.1.jar
+eem.EvBotNG v12.8 | melee-101 | eem.EvBotNG_v12.8.jar
+shrub.Silver v048 | melee-179 | shrub.Silver_v048.jar
+jsal.Jsalbot 1.0 | melee-337 | jsal.Jsalbot_1.0.jar
+ary.Swarm 1.1 | melee-54 | ary.Swarm_1.1.jar
+lessonz.robocode.Oz 0.5.0 | melee-83 | lessonz.robocode.Oz_0.5.0.jar
+simonton.nano.MeleeSeed 1.8 | melee-131 | simonton.nano.MeleeSeed_1.8.jar
+zyx.nano.Ant 1.1 | melee-237 | zyx.nano.Ant_1.1.jar

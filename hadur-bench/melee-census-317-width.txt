@@ -1,0 +1,7 @@
+# Width check of pc-melee-s0: the first six fields of melee-census-317.txt, run at 6 workers (BENCH-104).
+F01 | --set melee-census-317/f01.txt --melee true --field 1000x1000
+F02 | --set melee-census-317/f02.txt --melee true --field 1000x1000
+F03 | --set melee-census-317/f03.txt --melee true --field 1000x1000
+F04 | --set melee-census-317/f04.txt --melee true --field 1000x1000
+F05 | --set melee-census-317/f05.txt --melee true --field 1000x1000
+F06 | --set melee-census-317/f06.txt --melee true --field 1000x1000

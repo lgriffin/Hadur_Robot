@@ -1,0 +1,10 @@
+# Melee census field f05 (see melee-census-317.txt)
+cb.fire.Firestarter 2.0f | melee-4 | cb.fire.Firestarter_2.0f.jar
+GarmBox.Oranges 1.0 | melee-361 | GarmBox.Oranges_1.0.jar
+wompi.Numbat 2.1 | melee-16 | wompi.Numbat_2.1.jar
+Queens_teamrobot.UltraRazor 1.0 | melee-324 | Queens_teamrobot.UltraRazor_1.0.jar
+davidalves.net.DuelistMicroMelee 1.4 | melee-157 | davidalves.net.DuelistMicroMelee_1.4.jar
+supersample.SuperBoxBot 1.0 | melee-204 | supersample.SuperBoxBot_1.0.jar
+axeBots.HataMoto 3.09 | melee-109 | axeBots.HataMoto_3.09.jar
+justin.DemonicRage 3.4 | melee-7 | justin.DemonicRage_3.4.jar
+ms.Ares 0.19 | melee-77 | ms.Ares_0.19.jar

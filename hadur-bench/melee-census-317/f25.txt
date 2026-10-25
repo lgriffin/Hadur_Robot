@@ -1,0 +1,10 @@
+# Melee census field f25 (see melee-census-317.txt)
+adt.Ar2 1.1 | melee-262 | adt.Ar2_1.1.jar
+amk.ChumbaMini 0.2 | melee-357 | amk.ChumbaMini_0.2.jar
+gjr.Cephalosporin 0.1 | melee-263 | gjr.Cephalosporin_0.1.jar
+awesomeness.Elite 1.0 | melee-268 | awesomeness.Elite_1.0.jar
+voidious.micro.BlitzBat 1.05 | melee-71 | voidious.micro.BlitzBat_1.05.jar
+ds.Oo 2.2 | melee-205 | ds.Oo_2.2.jar
+gre.svman4.Morfeas 1.4.1 | melee-212 | gre.svman4.Morfeas_1.4.1.jar
+voidious.mini.BrokenSword 2.0.3 | melee-72 | voidious.mini.BrokenSword_2.0.3.jar
+jdw.Hurricane 1.4 | melee-136 | jdw.Hurricane_1.4.jar

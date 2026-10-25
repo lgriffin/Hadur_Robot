@@ -30,7 +30,10 @@ import robocode.control.snapshot.ITurnSnapshot;
  *     (the duel the melee handed over to) and whether Hadur won it, sentry bullets that hit
  *     Hadur and Hadur bullets that hit a sentry, and skipped turns. When Hadur died, also
  *     the tick it died, its killer and the last robot to hit it ({@link #HEADER}'s last
- *     three columns, {@code -} when it lived or nothing hit it).</li>
+ *     three columns, {@code -} when it lived or nothing hit it). BENCH-103 adds the endgame and
+ *     the damage Hadur took: the tick the field fell to Hadur and one other, Hadur's and that
+ *     survivor's energy at that tick ({@code -} when the round never came to it), and the bullet
+ *     damage Hadur took while three or more fighters were alive and while two were.</li>
  * <li>{@code bullets.csv}: one row per robot per round ({@link #BULLET_HEADER}): every
  *     fighter's shots, their summed power, hits on a fighter, the damage those scored (capped
  *     at the victim's energy, as the score caps it) and shots lost to another bullet; the
@@ -44,7 +47,7 @@ public class MeleeHarvester extends BattleAdaptor {
 
     public static final String HEADER =
         "round,place,fielded,duelOpponent,duelWon,sentryHitsTaken,sentryHitsGiven,skippedTurns,"
-        + "deathTick,killer,lastHit";
+        + "deathTick,killer,lastHit,duelTick,duelEnergy,duelOppEnergy,takenCrowd,takenDuel";
 
     public static final String BULLET_HEADER =
         "round,robot,shots,power,hits,damage,bulletHits,crowdShots,crowdPower,crowdHits,crowdDamage,aliveTicks,readyTicks";
@@ -75,6 +78,9 @@ public class MeleeHarvester extends BattleAdaptor {
     private boolean placed;
     private int deathTick, lastHitTick;
     private String killer, lastHit;
+    /** BENCH-103: the endgame's first tick and both energies then, and the damage taken by phase. */
+    private int duelTick;
+    private double duelEnergy, duelOppEnergy, takenCrowd, takenDuel;
     private final Set<Integer> counted = new HashSet<>();
 
     public MeleeHarvester(Path dir, String us, Set<String> sentries) throws IOException {
@@ -98,6 +104,8 @@ public class MeleeHarvester extends BattleAdaptor {
         placed = false;
         deathTick = lastHitTick = -1;
         killer = lastHit = null;
+        duelTick = -1;
+        duelEnergy = duelOppEnergy = takenCrowd = takenDuel = 0;
         counted.clear();
         tally.clear();
         seenShots.clear();
@@ -134,7 +142,14 @@ public class MeleeHarvester extends BattleAdaptor {
             place = alive + 1;
             placed = true;
         }
-        if (meAlive && alive == 2 && duelOpponent == null) duelOpponent = other.getName();
+        if (meAlive && alive == 2 && duelOpponent == null) {
+            duelOpponent = other.getName();
+            duelTick = snap.getTurn();
+            duelEnergy = me.getEnergy();
+            duelOppEnergy = other.getEnergy();
+        }
+        // Fighters alive before this turn's deaths, as the crowd count of bullets.csv reads it.
+        int aliveThen = Math.max(alive, aliveBefore);
 
         for (IBulletSnapshot b : snap.getBullets()) {
             if (b.getState() != BulletState.HIT_VICTIM || !counted.add(b.getBulletId())) continue;
@@ -146,6 +161,11 @@ public class MeleeHarvester extends BattleAdaptor {
             if (victim == me && owner != me) {
                 lastHit = owner.getName();
                 lastHitTick = snap.getTurn();
+                Double left = energyBefore.get(me.getRobotIndex());
+                double dmg = robocode.Rules.getBulletDamage(b.getPower());
+                if (left != null) dmg = Math.min(dmg, left);
+                if (aliveThen >= 3) takenCrowd += dmg;
+                else takenDuel += dmg;
             }
         }
         tallyBullets(robots, snap.getBullets(), alive);
@@ -263,9 +283,13 @@ public class MeleeHarvester extends BattleAdaptor {
         // Won the duel it was handed if it was one of the last two and came first.
         String duelWon = duelOpponent == null ? "-" : place == 1 ? "1" : "0";
         try {
-            rounds.write(String.format(Locale.ROOT, "%d,%d,%d,%s,%s,%d,%d,%d,%s,%s,%s%n", round, place,
-                fielded, field(duelOpponent), duelWon, sentryHitsTaken, sentryHitsGiven, skippedTurns,
-                deathTick < 0 ? "-" : String.valueOf(deathTick), field(killer), field(lastHit)));
+            boolean duel = duelTick >= 0;
+            rounds.write(String.format(Locale.ROOT, "%d,%d,%d,%s,%s,%d,%d,%d,%s,%s,%s,%s,%s,%s,%.2f,%.2f%n", round,
+                place, fielded, field(duelOpponent), duelWon, sentryHitsTaken, sentryHitsGiven, skippedTurns,
+                deathTick < 0 ? "-" : String.valueOf(deathTick), field(killer), field(lastHit),
+                duel ? String.valueOf(duelTick) : "-",
+                duel ? String.format(Locale.ROOT, "%.2f", duelEnergy) : "-",
+                duel ? String.format(Locale.ROOT, "%.2f", duelOppEnergy) : "-", takenCrowd, takenDuel));
             for (Map.Entry<String, double[]> en : tally.entrySet()) {
                 double[] t = en.getValue();
                 bullets.write(String.format(Locale.ROOT, "%d,%s,%d,%.2f,%d,%.2f,%d,%d,%.2f,%d,%.2f,%d,%d%n", round,

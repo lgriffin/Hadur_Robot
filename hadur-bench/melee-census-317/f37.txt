@@ -1,0 +1,10 @@
+# Melee census field f37 (see melee-census-317.txt)
+EBBU.Sim2 1.02 | melee-286 | EBBU.Sim2_1.02.jar
+germ.TheMind .2 | melee-266 | germ.TheMind_.2.jar
+lmk.ACPFinal 0.1 | melee-342 | lmk.ACPFinal_0.1.jar
+mb.Beast 0.1 | melee-381 | mb.Beast_0.1.jar
+agrach.Dalek 1.0 | melee-321 | agrach.Dalek_1.0.jar
+stelo.UntouchableNano 1.3 | melee-340 | stelo.UntouchableNano_1.3.jar
+com.syncleus.robocode.Dreadnaught 0.1 | melee-316 | com.syncleus.robocode.Dreadnaught_0.1.jar
+skm.Ryubot 1.0 | melee-403 | skm.Ryubot_1.0.jar
+mn.nano.perceptual.Impact 1.3.0 | melee-345 | mn.nano.perceptual.Impact_1.3.0.jar

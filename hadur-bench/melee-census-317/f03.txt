@@ -1,0 +1,10 @@
+# Melee census field f03 (see melee-census-317.txt)
+vuen.Cake 2.51 | melee-118 | vuen.Cake_2.51.jar
+kawigi.nano.Lib 1.0 | melee-98 | kawigi.nano.Lib_1.0.jar
+adt.Ar1 2.1 | melee-292 | adt.Ar1_2.1.jar
+oa.weak.FlyMk1 0.1 | melee-343 | oa.weak.FlyMk1_0.1.jar
+de.simpleworks.robocode.bots.swiBot 1.0 | melee-395 | de.simpleworks.robocode.bots.swiBot_1.0.jar
+urdos.URDOS 1.3 | melee-276 | urdos.URDOS_1.3.jar
+bwbaugh.nano.Tirunculus 0.0.0a | melee-387 | bwbaugh.nano.Tirunculus_0.0.0a.jar
+radnor.DoctorBob 1.42 | melee-95 | radnor.DoctorBob_1.42.jar
+ghent.ArthurPanzergon 1.0.0 | melee-353 | ghent.ArthurPanzergon_1.0.0.jar

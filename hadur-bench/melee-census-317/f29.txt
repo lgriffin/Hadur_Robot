@@ -1,0 +1,10 @@
+# Melee census field f29 (see melee-census-317.txt)
+deewiant.Anomaly 0.2 | melee-45 | deewiant.Anomaly_0.2.jar
+jangs.ns51 1.0 | melee-376 | jangs.ns51_1.0.jar
+zyx.mega.YersiniaPestis 3.1 | melee-34 | zyx.mega.YersiniaPestis_3.1.jar
+DBall.Anarchy 0.1 | melee-275 | DBall.Anarchy_0.1.jar
+jok.PheonixM 0.1.2 | melee-140 | jok.PheonixM_0.1.2.jar
+ph.melee.ArcherME 0.3 | melee-194 | ph.melee.ArcherME_0.3.jar
+myl.micro.Troodon 1.10 | melee-88 | myl.micro.Troodon_1.10.jar
+fullsail.TimbotNoPrediction 1.0 | melee-301 | fullsail.TimbotNoPrediction_1.0.jar
+ap.Frederick 1.1 | melee-392 | ap.Frederick_1.1.jar

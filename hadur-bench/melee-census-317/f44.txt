@@ -1,0 +1,10 @@
+# Melee census field f44 (see melee-census-317.txt)
+sample.Crazy 1.0 | melee-367 | sample.Crazy_1.0.jar
+jwirde.Gort 2.0 | melee-220 | jwirde.Gort_2.0.jar
+stf.PanzerGeneral 0.1 | melee-259 | stf.PanzerGeneral_0.1.jar
+stelo.Liblix 0.3.1 | melee-36 | stelo.Liblix_0.3.1.jar
+tzu.TheArtOfWar 1.2 | melee-63 | tzu.TheArtOfWar_1.2.jar
+amk.jointstrike.JointStrike 0.2 | melee-330 | amk.jointstrike.JointStrike_0.2.jar
+wompi.Quokka 1.6 | melee-182 | wompi.Quokka_1.6.jar
+disan.Chair 2.2.0 | melee-252 | disan.Chair_2.2.0.jar
+ICS4U1.Patrick_White_Schrodinger 1.1 | melee-214 | ICS4U1.Patrick_White_Schrodinger_1.1.jar

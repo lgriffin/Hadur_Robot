@@ -1,0 +1,10 @@
+# Melee census field f19 (see melee-census-317.txt)
+pbg.R2D2 1.0 | melee-389 | pbg.R2D2_1.0.jar
+erdnis.Rover 0.3 | melee-225 | erdnis.Rover_0.3.jar
+davidalves.net.DuelistMiniMelee 1.2 | melee-74 | davidalves.net.DuelistMiniMelee_1.2.jar
+patson.PatsonTestBot 1.0 | melee-265 | patson.PatsonTestBot_1.0.jar
+mbh.Mbh 0.1 | melee-351 | mbh.Mbh_0.1.jar
+pac.ABC 2.1 | melee-341 | pac.ABC_2.1.jar
+krillr.mini.JointStrike 2.0.0 | melee-187 | krillr.mini.JointStrike_2.0.0.jar
+mld.Infinity 2.2 | melee-141 | mld.Infinity_2.2.jar
+pedersen.Moron 2.0 | melee-414 | pedersen.Moron_2.0.jar

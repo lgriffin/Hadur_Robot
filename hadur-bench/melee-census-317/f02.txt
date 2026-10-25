@@ -1,0 +1,10 @@
+# Melee census field f02 (see melee-census-317.txt)
+fullsail.SweetTea 1.1 | melee-349 | fullsail.SweetTea_1.1.jar
+fnc.bandit.Bandit 5.2.0 | melee-253 | fnc.bandit.Bandit_5.2.0.jar
+Noran.BitchingElk 0.054 | melee-244 | Noran.BitchingElk_0.054.jar
+lrem.micro.SpikeSoldier 0.4 | melee-177 | lrem.micro.SpikeSoldier_0.4.jar
+com.cohesiva.robocode.ManOwaR 1.0 | melee-159 | com.cohesiva.robocode.ManOwaR_1.0.jar
+pulsar.PulsarMax 0.8.9 | melee-69 | pulsar.PulsarMax_0.8.9.jar
+rsalesc.roborio.RoborioPorradeiro 1.1b | melee-68 | rsalesc.roborio.RoborioPorradeiro_1.1b.jar
+sch.Simone 0.3d | melee-147 | sch.Simone_0.3d.jar
+stelo.PatternRobot 1.0 | melee-294 | stelo.PatternRobot_1.0.jar
