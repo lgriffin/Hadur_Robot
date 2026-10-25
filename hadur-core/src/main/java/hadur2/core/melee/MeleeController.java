@@ -315,7 +315,8 @@ public class MeleeController {
         ghostsDropped += tracker.pruneGhosts(s.others, s.time, s.me);
         EnemyInfo last = tracker.get(lastTarget);
         String finisher = last != null && last.energy <= FINISHER_ENERGY ? last.name : null;
-        c.radarTurn = radar.radarTurn(s.me, s.radarHeading, tracker, s.others, finisher, s.time);
+        c.radarTurn = radar.radarTurn(s.me, s.radarHeading, tracker, s.others, finisher, s.time,
+            !s.teammates.isEmpty(), s.gunHeat, lastTarget);
 
         List<EnemyInfo> alive = tracker.alive();
         MeleeStrategy.Plan plan = strategy.evaluate(tracker, s.me, s.energy, s.others, s.time);
