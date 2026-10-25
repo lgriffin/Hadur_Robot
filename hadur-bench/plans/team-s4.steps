@@ -6,6 +6,9 @@
 # Verdict (team thread, cloud): ship a mode whose screen gains at least +1.0 with the 95% low end
 # above zero and t4bb within +/- 1.0; t4all says whether the passing ones stack.
 # Needs `set OUT = ../docs/bench/local` in the card.
+# Since team step C (WEAVE-9, TMODE-12) master ships the narrow lane and MATEFIRE, so on master these
+# arms build the same robot; to rerun this card as benched, build from a commit before PR #266
+# (build-ablation.sh --ref).
 
 t4prep | bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && bash ./build-ablation.sh tmdis && bash ./build-ablation.sh tmfire && bash ./build-ablation.sh tmrear && bash ./build-ablation.sh tmdis,tmfire,tmrear && ./fetch-opponents.sh --set team-census46.txt && mvn -q compile
   after: <the card's last 1v1 step>

@@ -603,8 +603,11 @@ for a in "${list[@]}"; do
             edit "$modes" "public static final boolean FORCE_DISABLED = false;" "public static final boolean FORCE_DISABLED = true;"
             ;;
         tmfire)
-            # TMODE-12: MATEFIRE is the shipped default since team step C; the suffix alone.
             version="${version}mb"
+            # TMODE-12 ships MATEFIRE since team step C; on older source (--ref) force it on.
+            if ! grep -qF "public static final boolean FORCE_MATEFIRE = true;" "$modes"; then
+            edit "$modes" "public static final boolean FORCE_MATEFIRE = false;" "public static final boolean FORCE_MATEFIRE = true;"
+            fi
             ;;
         tmnofire)
             version="${version}nmb"
@@ -634,8 +637,28 @@ $(cat "$table")"
             edit "$fgun" "if (!finisher && rams(e, me)) continue;" "if (!finisher && !onTeam && rams(e, me)) continue;"
             ;;
         tlaneo)
-            # WEAVE-9 is the shipped lane since team step C: the suffix alone, so old cards still build.
             version="${version}lo"
+            # WEAVE-9 ships since team step C; on older source (--ref) install Ogi's lane as step C benched it.
+            if ! grep -qF "static final boolean NARROW_LANE = true;" "$tlink"; then
+            edit "$tlink" "        double dx = Math.sin(in.gunHeading());" "        if (true) {
+            double gun = in.gunHeading();
+            double target = Double.POSITIVE_INFINITY;
+            if (world != null) for (EnemyInfo e : world.alive()) {
+                if (e.location == null) continue;
+                double d = e.location.distance(in.x(), in.y());
+                double off = Math.abs(Angles.normalRelativeAngle(Math.atan2(e.location.x - in.x(), e.location.y - in.y()) - gun));
+                if (off <= Math.atan2(36, d) && d < target) target = d;
+            }
+            for (Roster.Mate m : roster.living(in.time())) {
+                double d = Math.hypot(m.x() - in.x(), m.y() - in.y());
+                if (d >= target) continue;
+                double off = Math.abs(Angles.normalRelativeAngle(Math.atan2(m.x() - in.x(), m.y() - in.y()) - gun));
+                if (off <= Math.atan2(30, d)) return false;
+            }
+            return true;
+        }
+        double dx = Math.sin(in.gunHeading());"
+            fi
             ;;
         tlanew)
             version="${version}lw"
