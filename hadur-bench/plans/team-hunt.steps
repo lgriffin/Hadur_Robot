@@ -1,5 +1,6 @@
 # Team HUNT steps (docs/plan-team-top5.md, requirement TMODE-13), to fold into the combined PC card.
 # Not a card on its own. Chain huprep after the card's last 1v1 step.
+# Superseded as a card by plans/pc-team-hunt.queue (steps hv*), which derives the jar version from the pom.
 # Two screens, each 46 teams x 6 seeds x 2 = 552 battles paired with the master aa build:
 #   hubb A/A, humh HUNT forced on (assigned pincers at a fixed 350 px, pull 0.3, bullets unscaled).
 # 1,104 battles, about 1.2 h at --parallel 12. Every step resumes where it stopped (BENCH-96).
