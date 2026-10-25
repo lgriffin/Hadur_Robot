@@ -71,6 +71,7 @@ graph LR
 | `hadur-core` | the brain, as plain Java: every package listed below | Java 11 |
 | `hadur-robot` | the adapter `hadur2.Hadur` (a `TeamRobot` from A4, so one class plays all three ladders; from A5 a second jar, `hadur2.HadurTeam`, fields five of it as a team), `hadur2.FileProfileStore`, and `hadur2.HadurRecorder` (the robot plus a transcript of its inputs and orders, for replay fixtures) | Java 11 |
 | `hadur-bench` | headless battles in the real engine, the report, wave fidelity against the engine's truth | Java 17 |
+| `saor` | a separate robot, `hadur117.micro.Saor`, for the MicroMelee rumble: a pure core, the core flattened by hand into one 749-byte class, and a bench adapter held to it by an equivalence test ([saor.md](saor.md)). Shares nothing with Hadur. | Java 8 (shipped class), 17 (tests) |
 
 `hadur-robot` shades the core into three jars. `hadur2.Hadur_<version>.jar` is the competition
 jar, with the recorder left out; the `recorder` jar keeps it, and only the bench's

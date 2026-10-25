@@ -1,0 +1,10 @@
+# MicroMelee census field f13 (see micromelee-census.txt)
+logiblocs.SittingDroid 1.0 | micromelee-154 | logiblocs.SittingDroid_1.0.jar
+ejb.Polaris 1.0.1 | micromelee-27 | ejb.Polaris_1.0.1.jar
+kawigi.micro.Shiz 1.1 | micromelee-6 | kawigi.micro.Shiz_1.1.jar
+oog.melee.Capulet 1.2 | micromelee-3 | oog.melee.Capulet_1.2.jar
+kurios.DOSexe .9a | micromelee-123 | kurios.DOSexe_.9a.jar
+step.nanoPri 1.0 | micromelee-80 | step.nanoPri_1.0.jar
+sheldor.melee.nano.NaturalScience 1.2.1 | micromelee-11 | sheldor.melee.nano.NaturalScience_1.2.1.jar
+stelo.MirrorNano 1.3 | micromelee-76 | stelo.MirrorNano_1.3.jar
+yagami.Tidus 0.11 | micromelee-15 | yagami.Tidus_0.11.jar

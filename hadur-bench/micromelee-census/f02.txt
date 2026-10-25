@@ -1,0 +1,10 @@
+# MicroMelee census field f02 (see micromelee-census.txt)
+cs.Grudge 1.0 | micromelee-140 | cs.Grudge_1.0.jar
+oog.melee.Mercutio 1.0 | micromelee-8 | oog.melee.Mercutio_1.0.jar
+sheldor.micro.PointInLineRRAL 1.0 | micromelee-88 | sheldor.micro.PointInLineRRAL_1.0.jar
+fullsail.SweetTea 1.1 | micromelee-115 | fullsail.SweetTea_1.1.jar
+mld.DustBunny 3.8 | micromelee-10 | mld.DustBunny_3.8.jar
+bzdp.BoxCar 2.0 | micromelee-106 | bzdp.BoxCar_2.0.jar
+zyx.nano.Ant 1.1 | micromelee-64 | zyx.nano.Ant_1.1.jar
+maribo.melee.BMV 0.1 | micromelee-52 | maribo.melee.BMV_0.1.jar
+djdjdj.NanoSkunk10 1.0 | micromelee-82 | djdjdj.NanoSkunk10_1.0.jar

@@ -1,0 +1,12 @@
+# Saor's U3 gate field (SAOR-13, SAOR-14; docs/saor.md): nine fixed MicroMelee robots with Saor,
+# the top three and one from each band below, by rank in 2026-10-25T1340Z_micromeleerumble_rankings.tsv.
+# Run with --melee true --field 1000x1000 --rounds 35 --seeds 200. Made by tools/saor_fields.py.
+kc.micro.Figment 1.0 | micromelee-1 | kc.micro.Figment_1.0.jar
+wompi.Wallaby 5.1 | micromelee-2 | wompi.Wallaby_5.1.jar
+oog.melee.Capulet 1.2 | micromelee-3 | oog.melee.Capulet_1.2.jar
+kawigi.micro.Shiz 1.1 | micromelee-6 | kawigi.micro.Shiz_1.1.jar
+myl.micro.Troodon 1.10 | micromelee-12 | myl.micro.Troodon_1.10.jar
+cb.nano.Insomnia 1.0 | micromelee-25 | cb.nano.Insomnia_1.0.jar
+ratosh.Nobo 0.21 | micromelee-50 | ratosh.Nobo_0.21.jar
+conscience.Electron 1.3g | micromelee-90 | conscience.Electron_1.3g.jar
+donjezza.Muncho 1.0 | micromelee-130 | donjezza.Muncho_1.0.jar

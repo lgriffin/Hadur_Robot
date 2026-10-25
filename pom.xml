@@ -17,6 +17,7 @@
         <module>hadur-core</module>
         <module>hadur-robot</module>
         <module>hadur-bench</module>
+        <module>saor</module>
     </modules>
 
     <properties>
@@ -45,6 +46,8 @@
         <hadur.druss.stage>D8</hadur.druss.stage>
         <!-- The Team plan's stage (T1-T2, docs/team-plan-t1.md; T2 in docs/requirements.md). -->
         <hadur.team.stage>T7</hadur.team.stage>
+        <!-- Saor's stage (U0-U5, the spec's M0-M5; docs/saor.md): its requirements up to here must be covered too. -->
+        <hadur.saor.stage>U4</hadur.saor.stage>
     </properties>
 
     <repositories>
@@ -127,6 +130,7 @@
                             <hadur.arch.stage>${hadur.arch.stage}</hadur.arch.stage>
                             <hadur.druss.stage>${hadur.druss.stage}</hadur.druss.stage>
                             <hadur.team.stage>${hadur.team.stage}</hadur.team.stage>
+                            <hadur.saor.stage>${hadur.saor.stage}</hadur.saor.stage>
                             <hadur.root>${maven.multiModuleProjectDirectory}</hadur.root>
                         </systemPropertyVariables>
                     </configuration>

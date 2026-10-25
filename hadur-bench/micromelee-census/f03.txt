@@ -1,0 +1,10 @@
+# MicroMelee census field f03 (see micromelee-census.txt)
+stelo.SoRobotNanoMelee 1.2 | micromelee-55 | stelo.SoRobotNanoMelee_1.2.jar
+cb.nano.Insomnia 1.0 | micromelee-25 | cb.nano.Insomnia_1.0.jar
+sample.Fire 1.0 | micromelee-147 | sample.Fire_1.0.jar
+myl.micro.Troodon 1.10 | micromelee-12 | myl.micro.Troodon_1.10.jar
+myl.nano.KomoriNinja 1.1 | micromelee-36 | myl.nano.KomoriNinja_1.1.jar
+cs.sheldor.Talon 1.1 | micromelee-73 | cs.sheldor.Talon_1.1.jar
+sp.Nanos.Ember 1.1 | micromelee-118 | sp.Nanos.Ember_1.1.jar
+fm.mammillarias 1.3 | micromelee-68 | fm.mammillarias_1.3.jar
+sample.Tracker 1.0 | micromelee-148 | sample.Tracker_1.0.jar

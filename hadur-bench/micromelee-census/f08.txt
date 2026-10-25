@@ -1,0 +1,10 @@
+# MicroMelee census field f08 (see micromelee-census.txt)
+awesomeness.Elite 1.0 | micromelee-77 | awesomeness.Elite_1.0.jar
+qualidafial.MajorDick 1.0.1 | micromelee-78 | qualidafial.MajorDick_1.0.1.jar
+germ.TheMind .2 | micromelee-75 | germ.TheMind_.2.jar
+lrem.micro.MoggFanatic 0.2 | micromelee-102 | lrem.micro.MoggFanatic_0.2.jar
+stelo.UntouchableNano 1.3 | micromelee-110 | stelo.UntouchableNano_1.3.jar
+simonton.nano.WeekendObsession_Melee 1.0 | micromelee-38 | simonton.nano.WeekendObsession_Melee_1.0.jar
+mym.EdgeStalker 1.0 | micromelee-150 | mym.EdgeStalker_1.0.jar
+simonton.micro.Sprout 1.1.3 | micromelee-4 | simonton.micro.Sprout_1.1.3.jar
+sample.Crazy 1.0 | micromelee-122 | sample.Crazy_1.0.jar

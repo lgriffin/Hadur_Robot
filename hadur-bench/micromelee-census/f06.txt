@@ -1,0 +1,10 @@
+# MicroMelee census field f06 (see micromelee-census.txt)
+d414.nano.Quantum 1.0.0 | micromelee-5 | d414.nano.Quantum_1.0.0.jar
+kurios.DOSexe .9b | micromelee-120 | kurios.DOSexe_.9b.jar
+fm.claire 1.7 | micromelee-60 | fm.claire_1.7.jar
+sample.SpinBot 1.0 | micromelee-129 | sample.SpinBot_1.0.jar
+winamp32.micro.MicroMacro 1.0 | micromelee-45 | winamp32.micro.MicroMacro_1.0.jar
+pa.Improved 1.0 | micromelee-98 | pa.Improved_1.0.jar
+gh.nano.Grofvuil 0.2 | micromelee-29 | gh.nano.Grofvuil_0.2.jar
+oog.melee.CapuletDroid 1.1 | micromelee-46 | oog.melee.CapuletDroid_1.1.jar
+arthord.NanoSatanMelee Beta | micromelee-66 | arthord.NanoSatanMelee_Beta.jar

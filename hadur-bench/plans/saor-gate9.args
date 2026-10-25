@@ -1,0 +1,27 @@
+# Saor U3 gate (SAOR-13, SAOR-14; docs/saor.md): the nine-robot gate field, 200 battles of 35 rounds at MeleeRumble settings
+--set
+saor-gate9.txt
+--melee
+true
+--field
+1000x1000
+--seeds
+200
+--seed-base
+1170
+--rounds
+35
+--parallel
+12
+--child-heap
+2G
+--cpu-constant
+1488498
+--robot-jar
+../saor/target/hadur117.micro.Saor_0.1.jar
+--robot
+hadur117.micro.Saor 0.1
+--out
+work/saor-gate9
+--report
+../docs/bench/local/saor-gate9.md

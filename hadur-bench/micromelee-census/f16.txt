@@ -1,0 +1,10 @@
+# MicroMelee census field f16 (see micromelee-census.txt)
+ap.Frederick 1.1 | micromelee-139 | ap.Frederick_1.1.jar
+bvh.micro.Freya 0.3 | micromelee-42 | bvh.micro.Freya_0.3.jar
+dummy.micro.Sparrow 2.5 | micromelee-18 | dummy.micro.Sparrow_2.5.jar
+dl.BetterWalls 1.0 | micromelee-112 | dl.BetterWalls_1.0.jar
+stelo.MirrorMicro 1.0 | micromelee-96 | stelo.MirrorMicro_1.0.jar
+davidalves.net.DuelistMicroMelee 1.4 | micromelee-33 | davidalves.net.DuelistMicroMelee_1.4.jar
+voidious.micro.BlitzBat 1.05 | micromelee-9 | voidious.micro.BlitzBat_1.05.jar
+mn.nano.perceptual.Impact 1.3.0 | micromelee-117 | mn.nano.perceptual.Impact_1.3.0.jar
+conscience.Electron 1.3g | micromelee-90 | conscience.Electron_1.3g.jar

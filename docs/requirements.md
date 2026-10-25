@@ -1676,3 +1676,44 @@ A retired requirement keeps its ID; no new requirement reuses it.
   MATEFIRE reads teammates' bullets only while a teammate lives. The duel and melee replay fixtures
   replay bit for bit.
 
+
+## Saor, a MicroMelee entry (SAOR-1 to SAOR-15, stages U0 to U5)
+
+`hadur117.micro.Saor`, a separate robot in the `saor` module, built from the spec "MicroMelee
+Rumble Entry" (https://claude.ai/artifact/ANvBYVXHDXn3PePmWPu5J1). Its stages U0 to U5 are the
+spec's M0 to M5 (the letter M is the melee extension's here). Design, byte budget and bench plan:
+docs/saor.md. Nothing in Hadur's modules depends on it, and it on nothing of Hadur's.
+
+| ID | Pattern | Requirement | Stage |
+|---|---|---|---|
+| SAOR-1 | Ubiquitous | The bot shall drive to a point within 25 px of a battlefield edge, so that it occupies such a point whenever its distance remaining is 0. | U1 |
+| SAOR-2 | Ubiquitous | The domain core (`hadur117.micro.core`) shall not import or reference `robocode.*`. | U0 |
+| SAOR-3 | Event | When a scanned robot is nearer than the current target, the bot shall adopt it as target and keep it until it dies or a nearer one is scanned. | U1 |
+| SAOR-4 | Event | When a robot dies, the bot shall reset the target distance to infinity and release the radar to free spin. | U1 |
+| SAOR-5 | State | While gun heat is below 1, the bot shall hold the radar on the target to within one scan width. | U1 |
+| SAOR-6 | State | While the Markov row for the opponent's current state holds fewer than 8 samples, the gun shall aim by circular projection, holding that state's speed and turn rate. | U2 |
+| SAOR-7 | State | While that row holds 8 or more samples, the gun shall aim by Monte-Carlo playout of the opponent's Markov chain and a vote in angle bins. | U3 |
+| SAOR-8 | State | While fewer than 3 opponents remain, bullet power shall not exceed 1.9. | U4 |
+| SAOR-9 | Optional | Where the bot has collided with a robot, the oscillation leg shall be 50 px until that robot is next scanned. | U4 |
+| SAOR-10 | Unwanted | If gun turn remaining is non-zero, then the bot shall not fire. | U1 |
+| SAOR-11 | Unwanted | If Robocode's codesize tool reports more than 749 bytes for the shipped jar, then the build shall fail. | U0 |
+| SAOR-12 | Ubiquitous | Before release, the bot shall score 66.0 APS or more over the 155 MicroMelee pairings at 35 rounds on a 1000 x 1000 field. | U3 |
+| SAOR-13 | Ubiquitous | Against Figment 1.0 in a 10-bot field over 200 battles, the bot shall out-survive it in 50% or more of battles. | U3 |
+| SAOR-14 | Ubiquitous | Against Wallaby 5.1 in the same setup, the bot shall out-score it on bullet damage in 50% or more of battles. | U3 |
+| SAOR-15 | Ubiquitous | The shipped class shall give the same orders as the bench adapter, which drives the core, for the same events. | U0 |
+
+### Saor notes
+
+- **Wording against the spec.** SAOR-1 says "drive to" where the spec says "occupy whenever
+  distance remaining is 0": the engine can stop the robot short at a wall, and what the code
+  controls is the point. SAOR-4 says "a robot dies" (any `onRobotDeath`), as the spec's event.
+  SAOR-6 states the cold gun as built: the playout holds the state, which is circular
+  projection at the state's quantised speed and turn; the spec's acceleration term costs bytes
+  the class does not have (docs/saor.md). SAOR-9 adds "until that robot is next scanned": a
+  collision takes the rammer as target at distance -12.5, which reads as a 50 px leg. SAOR-15 is
+  new: the shipped class is the core flattened by hand, so it is held to the core.
+- **Coverage.** SAOR-1 to SAOR-10 by property tests and Cucumber on the core, SAOR-6, SAOR-7 and
+  SAOR-15 also by the equivalence test on the robots, SAOR-11 and SAOR-15 on the shipped jar by
+  `SaorJarIT` (failsafe, after ProGuard). SAOR-12 to SAOR-14 are bench gates: what is covered here
+  is their evaluator, `hadur-bench/tools/saor_gates.py`, by `test_saor_gates.py`; whether they
+  pass is a bench result, recorded in docs/bench/.

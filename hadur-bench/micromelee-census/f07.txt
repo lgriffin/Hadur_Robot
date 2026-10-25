@@ -1,0 +1,10 @@
+# MicroMelee census field f07 (see micromelee-census.txt)
+spinnercat.micro.Tyger 0.1 | micromelee-17 | spinnercat.micro.Tyger_0.1.jar
+gh.micro.Gruweltje 0.7 | micromelee-13 | gh.micro.Gruweltje_0.7.jar
+acogdev.alpha 0.2 | micromelee-127 | acogdev.alpha_0.2.jar
+caimano.Furia_Ceca 0.22 | micromelee-95 | caimano.Furia_Ceca_0.22.jar
+mz.MicroGodMelee 1 | micromelee-22 | mz.MicroGodMelee_1.jar
+mbro.Detektor3 0.1.1 | micromelee-133 | mbro.Detektor3_0.1.1.jar
+fire219.CatBot 1.0 | micromelee-138 | fire219.CatBot_1.0.jar
+el.JumpShoot 0.2 | micromelee-131 | el.JumpShoot_0.2.jar
+DBall.Anarchy 0.1 | micromelee-79 | DBall.Anarchy_0.1.jar

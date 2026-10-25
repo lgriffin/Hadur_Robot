@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.lgriffin</groupId>
+        <artifactId>hadur-parent</artifactId>
+        <version>2.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>saor</artifactId>
+    <name>Saor</name>
+    <description>hadur117.micro.Saor, a MicroMelee entry: a pure core, the core flattened by hand into
+        one class under Robocode's 749-byte codesize limit, and a bench adapter (docs/saor.md).</description>
+
+    <properties>
+        <!-- The robot's version: the jar is named for it and Saor.properties takes it by filtering. -->
+        <saor.release>0.1</saor.release>
+        <!-- MicroMelee's limit, as Robocode's codesize tool counts it (SAOR-11). -->
+        <saor.codesize.limit>749</saor.codesize.limit>
+        <!-- Rating clients still run Java 8; the shipped class targets it. Tests use 17. -->
+        <maven.compiler.release>8</maven.compiler.release>
+        <saor.jar>${project.build.directory}/hadur117.micro.Saor_${saor.release}.jar</saor.jar>
+        <saor.lab.jar>${project.build.directory}/hadur117.micro.SaorLab_${saor.release}.jar</saor.lab.jar>
+        <proguard.version>7.8.2</proguard.version>
+        <codesize.version>1.3.1</codesize.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>net.sf.robocode</groupId>
+            <artifactId>robocode-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <!-- Build tools, test scope so nothing reaches the jar: ProGuard runs at package, the
+             codesize gate at integration-test. -->
+        <dependency>
+            <groupId>com.guardsquare</groupId>
+            <artifactId>proguard-base</artifactId>
+            <version>${proguard.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.robocode</groupId>
+            <artifactId>codesize</artifactId>
+            <version>${codesize.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-suite</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-java</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-junit-platform-engine</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.tngtech.archunit</groupId>
+            <artifactId>archunit-junit5</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.jqwik</groupId>
+            <artifactId>jqwik</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.8.1</version>
+                <executions>
+                    <!-- ProGuard needs the API jar's path as a library. -->
+                    <execution>
+                        <id>robocode-api-path</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>properties</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.5.0</version>
+                <executions>
+                    <!-- The shipped jar: the flat class through ProGuard's peephole pass (proguard.pro).
+                         Run in its own JVM: ProGuard calls System.exit. -->
+                    <execution>
+                        <id>proguard</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>${java.home}/bin/java</executable>
+                            <classpathScope>test</classpathScope>
+                            <arguments>
+                                <argument>-Dsaor.jar=${saor.jar}</argument>
+                                <argument>-Drobocode.api=${net.sf.robocode:robocode-api:jar}</argument>
+                                <argument>-classpath</argument>
+                                <classpath/>
+                                <argument>proguard.ProGuard</argument>
+                                <argument>@${project.basedir}/proguard.pro</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- The bench adapter's jar: SaorLab (Saor plus paint and a per-round log line) over
+                 the same core, unoptimised. Not for the rumble. -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                    <execution>
+                        <id>lab-jar</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <jar destfile="${saor.lab.jar}">
+                                    <fileset dir="${project.build.outputDirectory}">
+                                        <include name="hadur117/micro/**"/>
+                                        <exclude name="hadur117/micro/Saor.class"/>
+                                        <exclude name="hadur117/micro/Saor.properties"/>
+                                    </fileset>
+                                </jar>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- The gate on the shipped jar (SAOR-11): codesize, one class, the properties. -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>3.5.2</version>
+                <configuration>
+                    <systemPropertyVariables>
+                        <saor.jar>${saor.jar}</saor.jar>
+                        <saor.lab.jar>${saor.lab.jar}</saor.lab.jar>
+                        <saor.release>${saor.release}</saor.release>
+                        <saor.codesize.limit>${saor.codesize.limit}</saor.codesize.limit>
+                    </systemPropertyVariables>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

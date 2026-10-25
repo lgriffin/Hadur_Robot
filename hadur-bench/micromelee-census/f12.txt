@@ -1,0 +1,10 @@
+# MicroMelee census field f12 (see micromelee-census.txt)
+donjezza.Muncho 1.0 | micromelee-130 | donjezza.Muncho_1.0.jar
+disan.Chair 2.2.0 | micromelee-72 | disan.Chair_2.2.0.jar
+stelo.AreaTargetingBot 1.1 | micromelee-49 | stelo.AreaTargetingBot_1.1.jar
+ntc.Opposite 1.5 | micromelee-40 | ntc.Opposite_1.5.jar
+pbg.R2D2 1.0 | micromelee-137 | pbg.R2D2_1.0.jar
+myl.nano.Graviton 1.10 | micromelee-34 | myl.nano.Graviton_1.10.jar
+DBall.NUKE 0.1 | micromelee-84 | DBall.NUKE_0.1.jar
+pfvicm.Sobieski 7.2.3b | micromelee-53 | pfvicm.Sobieski_7.2.3b.jar
+lrem.micro.SpikeSoldier 0.4 | micromelee-48 | lrem.micro.SpikeSoldier_0.4.jar

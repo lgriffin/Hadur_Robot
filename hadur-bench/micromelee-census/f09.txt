@@ -1,0 +1,10 @@
+# MicroMelee census field f09 (see micromelee-census.txt)
+maribo.IotaCT 1.1 | micromelee-69 | maribo.IotaCT_1.1.jar
+dmh.robocode.robot.RedDwarf 0.4 | micromelee-65 | dmh.robocode.robot.RedDwarf_0.4.jar
+spinnercat.Omen 1.0 | micromelee-93 | spinnercat.Omen_1.0.jar
+ratosh.Wesco 1.4 | micromelee-74 | ratosh.Wesco_1.4.jar
+timmit.nano.TimDog 0.33 | micromelee-58 | timmit.nano.TimDog_0.33.jar
+stelo.PatternRobot 1.0 | micromelee-92 | stelo.PatternRobot_1.0.jar
+rrh.Iwillfindyou 2.0 | micromelee-146 | rrh.Iwillfindyou_2.0.jar
+rz.HawkOnFire 0.1 | micromelee-7 | rz.HawkOnFire_0.1.jar
+nz.jdc.nano.GridFu 1.0 | micromelee-24 | nz.jdc.nano.GridFu_1.0.jar

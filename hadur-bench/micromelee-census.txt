@@ -1,0 +1,21 @@
+# Saor's MicroMelee census (SAOR-12): the 156 robots of micromelee-field.txt (2026-10-25T1340Z_micromeleerumble_rankings.tsv)
+# shuffled (seed 117) into 18 fields of nine, each fought with Saor at MeleeRumble settings;
+# the last field is topped up from the first. Made by tools/saor_fields.py.
+F01 | --set micromelee-census/f01.txt --melee true --field 1000x1000
+F02 | --set micromelee-census/f02.txt --melee true --field 1000x1000
+F03 | --set micromelee-census/f03.txt --melee true --field 1000x1000
+F04 | --set micromelee-census/f04.txt --melee true --field 1000x1000
+F05 | --set micromelee-census/f05.txt --melee true --field 1000x1000
+F06 | --set micromelee-census/f06.txt --melee true --field 1000x1000
+F07 | --set micromelee-census/f07.txt --melee true --field 1000x1000
+F08 | --set micromelee-census/f08.txt --melee true --field 1000x1000
+F09 | --set micromelee-census/f09.txt --melee true --field 1000x1000
+F10 | --set micromelee-census/f10.txt --melee true --field 1000x1000
+F11 | --set micromelee-census/f11.txt --melee true --field 1000x1000
+F12 | --set micromelee-census/f12.txt --melee true --field 1000x1000
+F13 | --set micromelee-census/f13.txt --melee true --field 1000x1000
+F14 | --set micromelee-census/f14.txt --melee true --field 1000x1000
+F15 | --set micromelee-census/f15.txt --melee true --field 1000x1000
+F16 | --set micromelee-census/f16.txt --melee true --field 1000x1000
+F17 | --set micromelee-census/f17.txt --melee true --field 1000x1000
+F18 | --set micromelee-census/f18.txt --melee true --field 1000x1000
