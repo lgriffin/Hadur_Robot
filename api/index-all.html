@@ -3643,6 +3643,8 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="hadur2/core/melee/TeamModes.html#FORCE_GANG" class="member-name-link">FORCE_GANG</a> - Static variable in class hadur2.core.melee.<a href="hadur2/core/melee/TeamModes.html" title="class in hadur2.core.melee">TeamModes</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur2/core/melee/TeamModes.html#FORCE_HUNT" class="member-name-link">FORCE_HUNT</a> - Static variable in class hadur2.core.melee.<a href="hadur2/core/melee/TeamModes.html" title="class in hadur2.core.melee">TeamModes</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="hadur2/core/melee/TeamModes.html#FORCE_LEARN" class="member-name-link">FORCE_LEARN</a> - Static variable in class hadur2.core.melee.<a href="hadur2/core/melee/TeamModes.html" title="class in hadur2.core.melee">TeamModes</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur2/core/melee/TeamModes.html#FORCE_MATEFIRE" class="member-name-link">FORCE_MATEFIRE</a> - Static variable in class hadur2.core.melee.<a href="hadur2/core/melee/TeamModes.html" title="class in hadur2.core.melee">TeamModes</a></dt>
@@ -4946,6 +4948,34 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur2/core/move/ProteanPick.html#HOT_T0_SHARE" class="member-name-link">HOT_T0_SHARE</a> - Static variable in class hadur2.core.move.<a href="hadur2/core/move/ProteanPick.html" title="class in hadur2.core.move">ProteanPick</a></dt>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#MOVE-15">MOVE-15</a>: the hot setting's floor share, so a learning gun meets a near-uniform draw.</div>
+</dd>
+<dt><a href="hadur2/core/melee/TeamModes.Mode.html#HUNT" class="member-name-link">HUNT</a> - Enum constant in enum class hadur2.core.melee.<a href="hadur2/core/melee/TeamModes.Mode.html" title="enum class in hadur2.core.melee">TeamModes.Mode</a></dt>
+<dd>
+<div class="block">TMODE-13: packs of two or three assigned per enemy, each member at a fixed 350 px round its prey (NightmareTeam).</div>
+</dd>
+<dt><a href="hadur2/core/melee/MinimumRiskMovement.html#HUNT_CROWD" class="member-name-link">HUNT_CROWD</a> - Static variable in class hadur2.core.melee.<a href="hadur2/core/melee/MinimumRiskMovement.html" title="class in hadur2.core.melee">MinimumRiskMovement</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="hadur2/core/melee/MinimumRiskMovement.html#HUNT_MAX_GROUP" class="member-name-link">HUNT_MAX_GROUP</a> - Static variable in class hadur2.core.melee.<a href="hadur2/core/melee/MinimumRiskMovement.html" title="class in hadur2.core.melee">MinimumRiskMovement</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="hadur2/core/melee/MinimumRiskMovement.html#HUNT_PULL" class="member-name-link">HUNT_PULL</a> - Static variable in class hadur2.core.melee.<a href="hadur2/core/melee/MinimumRiskMovement.html" title="class in hadur2.core.melee">MinimumRiskMovement</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="hadur2/core/melee/MinimumRiskMovement.html#HUNT_RADIUS" class="member-name-link">HUNT_RADIUS</a> - Static variable in class hadur2.core.melee.<a href="hadur2/core/melee/MinimumRiskMovement.html" title="class in hadur2.core.melee">MinimumRiskMovement</a></dt>
+<dd>
+<div class="block">TMODE-13, HUNT (NightmareTeam's packs, PACK's retry): each member is assigned an enemy at
+ the cost (distance + <a href="hadur2/core/melee/MinimumRiskMovement.html#PACK_ENERGY_WEIGHT"><code>MinimumRiskMovement.PACK_ENERGY_WEIGHT</code></a> x energy) squared, times
+ <a href="hadur2/core/melee/MinimumRiskMovement.html#HUNT_CROWD"><code>MinimumRiskMovement.HUNT_CROWD</code></a> for an enemy that already has <a href="hadur2/core/melee/MinimumRiskMovement.html#HUNT_MAX_GROUP"><code>MinimumRiskMovement.HUNT_MAX_GROUP</code></a> members, so two or
+ three go to each; it holds a place <a href="hadur2/core/melee/MinimumRiskMovement.html#HUNT_RADIUS"><code>MinimumRiskMovement.HUNT_RADIUS</code></a> from its prey, fixed, and the pull,
+ at <a href="hadur2/core/melee/MinimumRiskMovement.html#HUNT_PULL"><code>MinimumRiskMovement.HUNT_PULL</code></a>, leaves the bullets' risk unscaled.</div>
+</dd>
+<dt><a href="hadur2/core/melee/MinimumRiskMovement.html#huntAssign(java.util.List,java.util.List,long)" class="member-name-link">huntAssign(List&lt;Point2D.Double&gt;, List&lt;EnemyInfo&gt;, long)</a> - Static method in class hadur2.core.melee.<a href="hadur2/core/melee/MinimumRiskMovement.html" title="class in hadur2.core.melee">MinimumRiskMovement</a></dt>
+<dd>
+<div class="block">TMODE-13: each member's prey, as every member works it out from the positions they share.</div>
+</dd>
+<dt><a href="hadur2/core/melee/MinimumRiskMovement.html#huntSlot(java.awt.geom.Point2D.Double,java.lang.String,java.util.List,long,java.util.List)" class="member-name-link">huntSlot(Point2D.Double, String, List&lt;EnemyInfo&gt;, long, List&lt;Roster.Mate&gt;)</a> - Static method in class hadur2.core.melee.<a href="hadur2/core/melee/MinimumRiskMovement.html" title="class in hadur2.core.melee">MinimumRiskMovement</a></dt>
+<dd>
+<div class="block">TMODE-13: Hadur's place round its prey: the members hunting it, ranked by their bearing
+ from it about their mean bearing, spread <a href="hadur2/core/melee/MinimumRiskMovement.html#PACK_SPREAD"><code>MinimumRiskMovement.PACK_SPREAD</code></a> apart, at
+ <a href="hadur2/core/melee/MinimumRiskMovement.html#HUNT_RADIUS"><code>MinimumRiskMovement.HUNT_RADIUS</code></a>.</div>
 </dd>
 <dt><a href="hadur2/core/gun/GunController.Opening.html#HYBRID" class="member-name-link">HYBRID</a> - Enum constant in enum class hadur2.core.gun.<a href="hadur2/core/gun/GunController.Opening.html" title="enum class in hadur2.core.gun">GunController.Opening</a></dt>
 <dd>&nbsp;</dd>
@@ -9133,7 +9163,13 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">TMODE-3, TMODE-4: the point a team member is drawn to, or null.</div>
 </dd>
+<dt><a href="hadur2/core/melee/MinimumRiskMovement.html#pull(java.awt.geom.Point2D.Double,java.lang.String,double,int,java.util.List,long,java.util.List,java.util.Set)" class="member-name-link">pull(Point2D.Double, String, double, int, List&lt;EnemyInfo&gt;, long, List&lt;Roster.Mate&gt;, Set&lt;TeamModes.Mode&gt;)</a> - Static method in class hadur2.core.melee.<a href="hadur2/core/melee/MinimumRiskMovement.html" title="class in hadur2.core.melee">MinimumRiskMovement</a></dt>
+<dd>
+<div class="block">As above, with <code>name</code> this member's name for TMODE-13's order (null: first).</div>
+</dd>
 <dt><a href="hadur2/core/melee/MinimumRiskMovement.Pull.html#%3Cinit%3E(java.awt.geom.Point2D.Double,double,double)" class="member-name-link">Pull(Point2D.Double, double, double)</a> - Constructor for class hadur2.core.melee.<a href="hadur2/core/melee/MinimumRiskMovement.Pull.html" title="class in hadur2.core.melee">MinimumRiskMovement.Pull</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="hadur2/core/melee/MinimumRiskMovement.Pull.html#%3Cinit%3E(java.awt.geom.Point2D.Double,double,double,boolean)" class="member-name-link">Pull(Point2D.Double, double, double, boolean)</a> - Constructor for class hadur2.core.melee.<a href="hadur2/core/melee/MinimumRiskMovement.Pull.html" title="class in hadur2.core.melee">MinimumRiskMovement.Pull</a></dt>
 <dd>&nbsp;</dd>
 </dl>
 <h2 class="title" id="I:Q">Q</h2>
@@ -10343,6 +10379,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#TIME-4">TIME-4</a>: writes <code>profile</code>'s statistics without re-writing its seeds from
  scratch.</div>
+</dd>
+<dt><a href="hadur2/core/melee/MinimumRiskMovement.Pull.html#scalesBullets" class="member-name-link">scalesBullets</a> - Variable in class hadur2.core.melee.<a href="hadur2/core/melee/MinimumRiskMovement.Pull.html" title="class in hadur2.core.melee">MinimumRiskMovement.Pull</a></dt>
+<dd>
+<div class="block">Whether the pull scales the bullets' risk too; TMODE-13's leaves it as it is.</div>
 </dd>
 <dt><a href="hadur2/core/ledger/EnergyLedger.html#scan(long,double,double,double,double)" class="member-name-link">scan(long, double, double, double, double)</a> - Method in class hadur2.core.ledger.<a href="hadur2/core/ledger/EnergyLedger.html" title="class in hadur2.core.ledger">EnergyLedger</a></dt>
 <dd>
@@ -12373,6 +12413,14 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur2/core/melee/MinimumRiskMovement.html#team(int)" class="member-name-link">team(int)</a> - Method in class hadur2.core.melee.<a href="hadur2/core/melee/MinimumRiskMovement.html" title="class in hadur2.core.melee">MinimumRiskMovement</a></dt>
 <dd>
 <div class="block">MMOVE-8: this member's place in the team's roster, 0 up; a negative index is off a team.</div>
+</dd>
+<dt><a href="hadur2/core/melee/MeleeController.html#team(int,java.lang.String)" class="member-name-link">team(int, String)</a> - Method in class hadur2.core.melee.<a href="hadur2/core/melee/MeleeController.html" title="class in hadur2.core.melee">MeleeController</a></dt>
+<dd>
+<div class="block">MMOVE-8 with this member's own name (TMODE-13 orders the team by name).</div>
+</dd>
+<dt><a href="hadur2/core/melee/MinimumRiskMovement.html#team(int,java.lang.String)" class="member-name-link">team(int, String)</a> - Method in class hadur2.core.melee.<a href="hadur2/core/melee/MinimumRiskMovement.html" title="class in hadur2.core.melee">MinimumRiskMovement</a></dt>
+<dd>
+<div class="block">MMOVE-8 with this member's own name, by which TMODE-13 orders the team.</div>
 </dd>
 <dt><a href="hadur2/core/role/Charter.html#TEAM" class="member-name-link">TEAM</a> - Enum constant in enum class hadur2.core.role.<a href="hadur2/core/role/Charter.html" title="enum class in hadur2.core.role">Charter</a></dt>
 <dd>
