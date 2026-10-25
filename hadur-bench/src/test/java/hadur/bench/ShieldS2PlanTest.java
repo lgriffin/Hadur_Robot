@@ -18,12 +18,11 @@ class ShieldS2PlanTest {
 
     private static final Path QUEUE = Path.of("plans/pc-shield-s2.queue");
 
-    /** The robot version the build makes, from hadur-robot's pom. */
+    /** The release the card ran on. The card is finished, so later version bumps do not move it. */
+    private static final String RAN_ON = "3.16";
+
     private static String release() throws IOException {
-        Matcher m = Pattern.compile("<robot.release>([^<]+)</robot.release>")
-            .matcher(Files.readString(Path.of("../hadur-robot/pom.xml")));
-        assertTrue(m.find());
-        return m.group(1);
+        return RAN_ON;
     }
 
     @Test

@@ -61,6 +61,14 @@ final class ShieldTableData {
             "theo.simple.Bones 1.0",
             "tw.Exterminator 1.0",
             "voidious.micro.Jen 1.11",
+            "amk.ChumbaMini 0.2",
+            "cf.star.Star2 1.23",
+            "deo.FlowerBot 1.0",
+            "ers.nano.meroka.Meroka 1.8a",
+            "satan.White 0.26",
+            "stelo.MatchupWS 1.2c",
+            "usa.nano.Nemo 2.0",
+            "wiki.mako.MakoHT 1.2.2.1",
         };
     }
 
@@ -292,6 +300,17 @@ final class ShieldTableData {
             "4 0.000000000 wiki.nano.RaikoNano 1.1",
             "0 0.000000000 wilson.Chameleon 0.91",
             "0 0.000000000 zen.Lindada 0.2",
+            "0 0.000000000 cf.star.Star2 1.23",
+            "0 0.000000000 cw.megas.Blade 0.8",
+            "0 0.000000000 deo.FlowerBot 1.0",
+            "0 0.000000000 kawigi.sbf.FloodHT 0.9.2",
+            "0 0.000000000 stelo.MatchupWS 1.2c",
+            "0 0.000000000 wiki.mako.MakoHT 1.2.2.1",
+            "10 0.000003719 alpha.BlackIce 1.0",
+            "4 0.000000000 amk.ChumbaMini 0.2",
+            "4 0.000000000 ers.nano.meroka.Meroka 1.8a",
+            "4 0.000000000 usa.nano.Nemo 2.0",
+            "5 0.005000000 satan.White 0.26",
         };
     }
 
@@ -330,6 +349,14 @@ final class ShieldTableData {
             "urdos.URDOS 1.3",
             "xander.cat.SamAxe 1.1",
             "xander.cat.XanderCat 12.9",
+            "EBBU.Sim2 1.02",
+            "klein.GottesKrieger 1.1",
+            "lorneswork.Predator 1.0",
+            "pkdeken.Paladin 1.0",
+            "projectx.ProjectNano 2.0",
+            "rcb.Vanessa03 0",
+            "romz.robot.circular.WildRabbit 0.9.6",
+            "steff.Rebel 2.1",
         };
     }
 
@@ -375,6 +402,18 @@ final class ShieldTableData {
             "whind.Wisdom 0.5.1",
             "wiki.BasicGFSurfer 1.02",
             "zyx.micro.Ant 1.1",
+            "ajs.Guessit 1.3",
+            "casey.Flump 1.0",
+            "deewiant.Anomaly 0.2",
+            "dz.MostlyHarmlessNano 2.1",
+            "gh.mini.Grimmig 0.3.6",
+            "janm.Jammy 1.0",
+            "marksteam.Phoenix 1.0",
+            "mb.Monte 0.1.0",
+            "pulsar.PulsarMax 0.8.9",
+            "serenity.serenityFire 1.29",
+            "vjik.UnViolation 1.1",
+            "voidious.perceptual.RetroGirl 1.0.0",
         };
     }
 }
