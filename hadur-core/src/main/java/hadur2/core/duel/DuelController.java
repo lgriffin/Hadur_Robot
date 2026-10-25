@@ -1134,6 +1134,14 @@ public final class DuelController {
                 + (best < 0 ? 0 : shotDodger.matches(best)) + "," + shotDodger.read() + ","
                 + (shotDodger.active() ? 1 : 0));
         }
+        if (moveController.gunMimics() != null) {
+            // MOVE-27: GM,round,tick,views score,each mimic's score.
+            StringBuilder gm = new StringBuilder("GM," + round + "," + tick);
+            for (double score : moveController.gunMimics().scores()) {
+                gm.append(',').append(String.format(java.util.Locale.ROOT, "%.3f", score));
+            }
+            telemetry.emit(gm.toString());
+        }
         if (stopAndGo != null) {
             // POISON-1: WP,round,tick,goTicks,stopTicks,reverseTicks.
             telemetry.emit("WP," + round + "," + tick + "," + stopAndGo.ticks(StopAndGo.Phase.GO) + ","
