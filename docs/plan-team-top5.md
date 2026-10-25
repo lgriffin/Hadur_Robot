@@ -335,3 +335,23 @@ MRADAR-3 (`MeleeRadar.TEAM_LOOK`, off, ablation `tlook`: look at the gun's targe
 shot when every member's scan of it is two ticks old), smoked flat against master with step C on:
 -0.2 ± 3.2 share points (11 teams, seeds 3800-3801). E is closed as built: no PC time, the switch
 stays off, and the full arc planner is not worth its build for at most 0.6 ticks of freshness.
+
+**Gap read with step C on (2026-10-25).** Live pages of Hadur 3.16, Nightmare and Aleph (all 46
+pairings each; 44 teams all three have met), with each team's step C bench gain (`tlaneo,tmfire`,
+PR #264) added to Hadur's live score. APS points are each segment's share of the 46-team mean.
+
+| Opponents | Hadur 3.16 | Hadur + C | Nightmare (5th) | Aleph (6th) |
+|---|---|---|---|---|
+| ranks 1-6 (4 teams) | 2.68 | 2.99 | 4.87 (+1.9) | 3.44 (+0.5) |
+| ranks 7-20 | 18.10 | 18.58 | 21.45 (+2.9) | 19.31 (+0.7) |
+| ranks 21-46 | 49.90 | 51.58 | 47.95 (-3.6) | 52.00 (+0.4) |
+
+- After C the lower half is no longer where we lose: we lead Nightmare there by 3.6 and are level
+  with Aleph.
+- The whole remaining gap is the top 20, where Nightmare's members survive (pack hunting: two or
+  three members per target, leader-assigned). Its biggest leads after C: Shadow, Aleph, ArmyOfShiz,
+  Firestarter, DemoniacNimrods, TroodonPack, Polylunar, CombatTeam, TMNR, Ogi (0.3 to 0.8 APS each).
+- Three attempts at survival through the minimum-risk movement (S2, PACK, D) were flat or worse,
+  and E shows the scans are not the limit. What is left is a different team structure against the
+  top 20 (Nightmare's assigned pincers rebuilt with PACK's retry fixes, or Ogi's leaderless
+  formation), a multi-day build with an uncertain return.
