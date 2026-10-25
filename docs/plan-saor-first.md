@@ -77,7 +77,26 @@ The playout count stands out. Halving it makes each aim noisier, and that would 
 won everywhere, which is the shape of the gap. Halving the playouts makes the most sense as
 the cause, but it has not been tested.
 
-## 5. Stages
+## 5. Saor stays its own robot
+
+Leigh, 2026-10-25 23:52 UTC: "I do want us unique and different, inspired by others but not
+copying them byte for byte."
+
+- **The parity arms are measurements, not candidates.** G, W, R, Z and FX run Figment's code,
+  and they only show which difference costs Saor points. None of them ships. FX above all is
+  Figment's robot in all but its hash and bins, so it is a diagnostic only.
+- **A parity result names a cause; the fix is Saor's own.** If the playout count is the cost,
+  the question becomes how Saor spends its CPU on aiming in its own way. For example, it could
+  run more playouts only on the tick it fires, or end a playout early once the bins agree. The
+  answer is not to run Figment's 128.
+- **Saor keeps what makes it Saor** unless a measurement shows a part costs points. That means
+  the circular cold start, the end-game power cap, the leg after a ram, 512 opponent rows and
+  1024 bins. A part that costs points is redesigned, not swapped for Figment's version.
+- **Stages 2 and 3 are where Saor gets ahead.** They hold Saor's own ideas, built on what
+  stage 1 shows. 0.2 has to be measurably different from Figment in behaviour, not only in
+  constants.
+
+## 6. Stages
 
 The stages are U6 onward in docs/saor.md (SAOR-16 is the live-shaped census). Each card is
 started by Leigh and runs from master. Every arm is paired per field against the control, and
@@ -100,10 +119,10 @@ off.
 | Stage | What | Arms | PC time | Pass |
 |---|---|---|---|---|
 | **0. Live-shaped census** | A second census, `micromelee-live`: fields of 9 drawn from the full MeleeRumble list (the PC already holds the melee jars), scored only on the micro pairings. Run Saor 0.1, Figment and Wallaby in the seat, on both censuses. | C, Figment, Wallaby | about 3 h | The live census reproduces live: Figment over Saor by +1.3 ± 0.5, Wallaby by +0.8 ± 0.5, and Saor's level within 0.5 of 68.08. |
-| **1. Figment parity** | Revert the differences in section 4, one at a time and then all together. | G (128 playouts), W (any-sample rows), R (no ram leg), Z (power > 0), FX (all four plus U: Figment but for 512 hashes and 1024 bins) | about 2.5 h | An arm gains at least +0.3, with a low end above 0. Expected (a guess): G is worth most of the gap. |
+| **1. Figment parity (measurement only)** | Revert the differences in section 4, one at a time and then all together, to find which ones cost points. None ships (section 5). | G (128 playouts), W (any-sample rows), R (no ram leg), Z (power > 0), FX (all four plus U: Figment but for 512 hashes and 1024 bins) | about 2.5 h | An arm gains at least +0.3, with a low end above 0. Expected (a guess): G is worth most of the gap. |
 | **2. Beyond Figment, no bytes** | Constants that cost nothing. | 256 playouts (if no skipped turns), power constant 250 and 400, learning threshold 0.5 and 0.9, leg constant 55 | about 3 h | The same rule, stacked on stage 1's winner. |
 | **3. Beyond Figment, with bytes** | Spend what stage 1 frees (up to about 30 bytes: cap 14, ram leg 14). Candidates: a duel-only move for the last two (the duel screen's orbit), or a corner chosen away from the crowd. | 2-3 arms | about 2 h | The same rule. |
-| **4. Stack and ship 0.2** | Fit the stack into 749 bytes after ProGuard, update the core, SaorLab and SAOR-15, then confirm on the live census with 8 seeds. | the stack against 0.1 | about 2 h | The live census projects at least Figment + 0.5 (69.9), with its low end above 69.37. Then release 0.2 on Leigh's go. |
+| **4. Stack and ship 0.2** | Stack Saor's own winners (never a parity arm, section 5) and fit them into 749 bytes after ProGuard, update the core, SaorLab and SAOR-15, then confirm on the live census with 8 seeds. | the stack against 0.1 | about 2 h | The live census projects at least Figment + 0.5 (69.9), with its low end above 69.37. Then release 0.2 on Leigh's go. |
 
 Stop rules:
 
@@ -112,7 +131,7 @@ Stop rules:
 - **If stage 1 finds nothing**, the gap is not in the differences from Figment. Read
   Figment's and Saor's rounds side by side before stage 2.
 
-## 6. What a guaranteed 1st takes
+## 7. What a guaranteed 1st takes
 
 Figment and Wallaby are not changing; both have been in the rumble for years. If stage 1
 closes the gap, Saor ties Figment. Clearing it by 0.5 needs stages 2 and 3 to add about +0.5
