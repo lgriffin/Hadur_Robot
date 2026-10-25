@@ -111,4 +111,16 @@ class GunMimicsTest {
         GunMimics.Mimic m = new GunMimics.Mimic(10, GunMimics.Feature.LATERAL);
         assertTrue(m.segment(slow) != m.segment(fast));
     }
+
+    @Test
+    @Tag("MOVE-27")
+    @DisplayName("a flat buffer gives a flat profile at the surf's bins")
+    void flatBufferFlatProfile() {
+        GunMimics.Mimic m = new GunMimics.Mimic(10);
+        java.util.Arrays.fill(m.flat, 1.0);
+        m.flatCount = 1;
+        java.util.Arrays.fill(m.buffers[0], 1.0);
+        double[] p = m.profile(wave(), BINS);
+        for (double v : p) assertEquals(1.0 / BINS, v, 1e-12);
+    }
 }

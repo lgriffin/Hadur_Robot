@@ -112,8 +112,12 @@ public final class GunMimics {
             double[] out = new double[bins];
             double total = 0;
             for (int j = 0; j < bins; j++) {
-                int b = gfBin(-1 + (j + 0.5) * 2.0 / bins, GF_BINS);
-                out[j] = seg[b] + FLAT_SHARE * flat[b];
+                // Linear interpolation between buffer-bin centres, so a flat buffer stays flat.
+                double x = ((-1 + (j + 0.5) * 2.0 / bins) + 1) / 2 * GF_BINS - 0.5;
+                int b0 = Math.max(0, Math.min(GF_BINS - 1, (int) Math.floor(x)));
+                int b1 = Math.min(GF_BINS - 1, b0 + 1);
+                double t = Math.max(0, Math.min(1, x - b0));
+                out[j] = (1 - t) * (seg[b0] + FLAT_SHARE * flat[b0]) + t * (seg[b1] + FLAT_SHARE * flat[b1]);
                 total += out[j];
             }
             if (!(total > 0)) return null;

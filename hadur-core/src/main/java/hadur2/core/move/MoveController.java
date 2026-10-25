@@ -1385,6 +1385,15 @@ public class MoveController {
     static final int MIMIC_SCORE_BINS = StopPointSurf.BINS;
 
     /**
+     * MOVE-27: an enemy bullet our bullet met at {@code bulletLocation}, when the views do not learn
+     * it (MOVE-19 off): its angle still scores the ensemble's models. Does nothing when it is off.
+     */
+    public void scoreIntercept(Wave w, Point2D.Double bulletLocation) {
+        if (gunMimics == null || w == null) return;
+        scoreMimics(w, w.guessFactor(bulletLocation));
+    }
+
+    /**
      * MOVE-27: scores the ensemble's models on a bullet fired at {@code hitGf}, the views on
      * their profile of the wave. It uses the HF cache slot and empties it after, as
      * {@link #updateReplicator} does, so the surf's cached neighbours are untouched.

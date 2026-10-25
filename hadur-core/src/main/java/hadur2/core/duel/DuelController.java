@@ -1090,6 +1090,9 @@ public final class DuelController {
             // MOVE-19: the bullet's angle is a sample of the enemy gun's aim, as a hit would be.
             if (logsIntercept(duelOnly(MoveDesign.BULLET_HIT_BULLET_LOG, enemiesTotal), hitWave)) {
                 moveController.logBulletHit(hitWave, hitLoc, round, in.time());
+            } else {
+                // MOVE-27: the angle still scores the ensemble's models, which logBulletHit would do.
+                moveController.scoreIntercept(hitWave, hitLoc);
             }
         }
         // MOVE-20: an intercept clears the cached searches, as a hit does.
