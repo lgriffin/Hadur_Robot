@@ -168,17 +168,18 @@ of Portia and Shadow, behind DemonicRage. Top 5 needs the upper half of Stages 2
 
 ### Stage 0: baseline and measurements (no robot change)
 
-1. **Refresh the census field** from today's 416 participants (`melee-census-317.txt`, 46 fields
-   of 9, seeded shuffle as in `melee-census-313.txt`), so Ogi, Nullstride and every top-10 robot
-   are in it. The PC fetches the jars (the cloud cannot).
-2. **Telemetry Hadur's census needs** (bench-side and an `H`-record extension; 1v1 untouched):
-   energy of Hadur and the survivor at the hand-off, endgame duel length and how it ended (bullet,
-   ram, disable), the count alive when Hadur dies, the killer's distance, damage taken a round by
-   phase (crowd, last three, duel), skipped turns by phase.
-3. **PC card `pc-melee-s0`**: 3.17 against 3.17 (A/A) on the new census, 4 seeds. It gives the
-   baseline census APS, the noise of the paired difference, the battle time on the PC at 12
-   workers (melee is CPU-sensitive: check skipped turns at 6 and 12), and the endgame and death
-   tables above for today's field.
+1. **Refresh the census field** from the 2026-10-25 rankings (`hadur-bench/melee-census-317.txt`,
+   46 fields of 9 made by `tools/melee_s0.py fields`, seed 317): all 414 robots but Hadur, Ogi
+   and every top-10 robot included. Nullstride is left out because the robot archive has no jar for it (404).
+2. **Bench measurements** (BENCH-103, bench-side only, so the robot and its fixtures are
+   untouched): `rounds.csv` adds the tick the field fell to two, Hadur's and the survivor's
+   energy then, and the damage Hadur took with three or more alive and with two. The rank
+   at death and the killer were already recorded (BENCH-40).
+3. **PC card `pc-melee-s0`** (`hadur-bench/plans/pc-melee-s0.queue`, BENCH-104): master (aa)
+   against master (bb) on the new census, 4 seeds at 12 workers (368 battles), then six fields
+   at 6 workers for the skipped-turn check, then `tools/melee_s0.py read` and a results PR on
+   `claude/pc-melee-s0-results`. It gives the baseline census APS, the noise of the paired
+   difference, the PC battle time, and the endgame and death tables for today's field.
 4. **Read** (cloud): which of the endgame causes is real (energy deficit at hand-off, cold duel
    gun, mode), and where crowd deaths happen (count alive, killer distance, phase).
 

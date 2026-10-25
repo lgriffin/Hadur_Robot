@@ -1,0 +1,10 @@
+# Melee census field f35 (see melee-census-317.txt)
+stelo.MyAgileRobot 0.2 | melee-347 | stelo.MyAgileRobot_0.2.jar
+myl.nano.KomoriNinja 1.1 | melee-161 | myl.nano.KomoriNinja_1.1.jar
+rz.HawkOnFire 0.1 | melee-66 | rz.HawkOnFire_0.1.jar
+cz.libors.Ogi v1 | melee-5 | cz.libors.Ogi_v1.jar
+wit.Chuliath 1.0 | melee-258 | wit.Chuliath_1.0.jar
+amk.ShizzleStiX.ShizzleStiX 0.6 | melee-289 | amk.ShizzleStiX.ShizzleStiX_0.6.jar
+dmh.robocode.robot.BlackDeath 9.2 | melee-26 | dmh.robocode.robot.BlackDeath_9.2.jar
+dans.Cinnamon 1.2 | melee-370 | dans.Cinnamon_1.2.jar
+gh.mini.Gruwel 0.9 | melee-42 | gh.mini.Gruwel_0.9.jar

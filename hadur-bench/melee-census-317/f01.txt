@@ -1,0 +1,10 @@
+# Melee census field f01 (see melee-census-317.txt)
+adt.Ar2 1.0 | melee-274 | adt.Ar2_1.0.jar
+simonton.nano.WeekendObsession_Melee 1.0 | melee-166 | simonton.nano.WeekendObsession_Melee_1.0.jar
+kawigi.sbf.FloodSonnet 0.9 | melee-334 | kawigi.sbf.FloodSonnet_0.9.jar
+mz.MicroGodMelee 1 | melee-122 | mz.MicroGodMelee_1.jar
+skm.butterfly 1.0 | melee-393 | skm.butterfly_1.0.jar
+sgp.JollyNinja 3.53 | melee-196 | sgp.JollyNinja_3.53.jar
+lorneswork.Predator 1.0 | melee-192 | lorneswork.Predator_1.0.jar
+voidious.Diamond 1.8.28 | melee-6 | voidious.Diamond_1.8.28.jar
+mym.EdgeStalker 1.0 | melee-408 | mym.EdgeStalker_1.0.jar

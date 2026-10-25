@@ -1,0 +1,27 @@
+# PC card pc-melee-s0 (docs/plan-melee-top5.md, Stage 0, BENCH-104): master against itself (bb against aa) on today's whole melee field, 46 fields x 4 seeds. Template: s0prep writes work/melee-s0-census.args with @V@ = the robot.release in hadur-robot/pom.xml
+--suite
+melee-census-317.txt
+--seeds
+4
+--seed-base
+3170
+--rounds
+35
+--parallel
+12
+--child-heap
+2G
+--cpu-constant
+1488498
+--robot-jar
+bisect/hadur2.Hadur_@V@bb.jar
+--robot
+hadur2.Hadur @V@bb
+--baseline
+bisect/hadur2.Hadur_@V@aa.jar
+--baseline-robot
+hadur2.Hadur @V@aa
+--out
+work/melee-s0-@V@-census
+--report
+../docs/bench/local/melee-s0-census.md

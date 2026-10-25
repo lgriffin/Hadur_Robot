@@ -1,0 +1,10 @@
+# Melee census field f10 (see melee-census-317.txt)
+sam.Samspin 1.0 | melee-314 | sam.Samspin_1.0.jar
+Grystrion.RandomTrackerNOREV 1.0 | melee-323 | Grystrion.RandomTrackerNOREV_1.0.jar
+donjezza.Muncho 1.0 | melee-377 | donjezza.Muncho_1.0.jar
+ejb.Polaris 1.0.1 | melee-133 | ejb.Polaris_1.0.1.jar
+ne.Chimera 1.2 | melee-115 | ne.Chimera_1.2.jar
+DTF.Kludgy 1.2b | melee-86 | DTF.Kludgy_1.2b.jar
+vStar.RAFzilla 2.15 | melee-162 | vStar.RAFzilla_2.15.jar
+kurios.DOSexe .9b | melee-362 | kurios.DOSexe_.9b.jar
+tvv.micro.Antares 1.1.1 | melee-199 | tvv.micro.Antares_1.1.1.jar

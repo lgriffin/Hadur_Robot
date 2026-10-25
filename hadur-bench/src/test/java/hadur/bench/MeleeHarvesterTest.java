@@ -200,7 +200,35 @@ class MeleeHarvesterTest {
         List<String[]> rows = harvest(List.of(List.of(
             turn(3, List.of(meAlive, a), List.of()),
             turn(4, List.of(meDead, a), List.of(hit(1, 1, 0))))));
-        assertEquals(11, rows.get(0).length);
+        assertEquals(16, rows.get(0).length);
         assertEquals("a.Alpha 1;0", rows.get(0)[9]);
+    }
+
+    @Test
+    @Tag("BENCH-103")
+    @DisplayName("the endgame's first tick and both energies are kept, and damage taken splits at three alive")
+    void endgameAndDamageTaken() throws IOException {
+        IRobotSnapshot me80 = robot(0, US, 100, 100, true, 1.0, 80.0);
+        IRobotSnapshot me76 = robot(0, US, 100, 100, true, 1.0, 76.0);
+        IRobotSnapshot meDead = robot(0, US, 100, 100, false, 1.0, 0.0);
+        IRobotSnapshot a = robot(1, "a.Alpha 1.0", 500, 500, true, 1.0, 60.0);
+        IRobotSnapshot b = robot(2, "b.Beta 1.0", 900, 900, true, 1.0, 20.0);
+        IRobotSnapshot bDead = robot(2, "b.Beta 1.0", 900, 900, false, 1.0, 0.0);
+        List<String[]> rows = harvest(List.of(
+            List.of(
+                // three alive: a 1.0 bullet (4 damage) from Alpha is crowd damage
+                turn(1, List.of(me80, a, b), List.of()),
+                turn(2, List.of(me76, a, b), List.of(bullet(1, 1, 0, 1.0, BulletState.HIT_VICTIM))),
+                // Beta dies at the end of turn 3: the endgame starts there with 76 against 60
+                turn(3, List.of(me76, a, bDead), List.of()),
+                // a 3.0 bullet (16 damage) in the duel, capped at the 76 Hadur had: none capped here
+                turn(4, List.of(meDead, a, bDead), List.of(bullet(2, 1, 0, 3.0, BulletState.HIT_VICTIM)))),
+            List.of(turn(1, List.of(me80, a, b), List.of()))));
+        String[] r = rows.get(0);
+        assertEquals(List.of("3", "76.00", "60.00", "4.00", "16.00"), List.of(r[11], r[12], r[13], r[14], r[15]));
+        assertEquals("a.Alpha 1.0", r[3]);
+        assertEquals("0", r[4]);
+        String[] none = rows.get(1);
+        assertEquals(List.of("-", "-", "-", "0.00", "0.00"), List.of(none[11], none[12], none[13], none[14], none[15]));
     }
 }

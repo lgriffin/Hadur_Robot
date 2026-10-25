@@ -1,0 +1,10 @@
+# Melee census field f20 (see melee-census-317.txt)
+sample.MyFirstJuniorRobot 1.0 | melee-386 | sample.MyFirstJuniorRobot_1.0.jar
+m3thos.mini.Eva01 0.5.5 | melee-229 | m3thos.mini.Eva01_0.5.5.jar
+catcat20.Rabbit 0.001 | melee-81 | catcat20.Rabbit_0.001.jar
+bayen.nut.Squirrel 1.615 | melee-271 | bayen.nut.Squirrel_1.615.jar
+trm.Wrekt 1.1.6.f | melee-41 | trm.Wrekt_1.1.6.f.jar
+ntc.ControlledChaos 1.1.4 | melee-326 | ntc.ControlledChaos_1.1.4.jar
+nz.jdc.nano.GridFu 1.0 | melee-130 | nz.jdc.nano.GridFu_1.0.jar
+fwb.Nine 1.0.1 | melee-114 | fwb.Nine_1.0.1.jar
+djdjdj.NanoSkunk10 1.0 | melee-282 | djdjdj.NanoSkunk10_1.0.jar

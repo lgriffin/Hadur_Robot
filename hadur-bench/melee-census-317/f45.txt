@@ -1,0 +1,10 @@
+# Melee census field f45 (see melee-census-317.txt)
+eem.IWillFireNoBullet v2.8 | melee-135 | eem.IWillFireNoBullet_v2.8.jar
+jje.BagPuss 1.2 | melee-138 | jje.BagPuss_1.2.jar
+sul.Lunar 1.1 | melee-171 | sul.Lunar_1.1.jar
+myl.nano.Graviton 1.10 | melee-149 | myl.nano.Graviton_1.10.jar
+wit.Deep7 2.0 | melee-331 | wit.Deep7_2.0.jar
+fm.claire 1.7 | melee-227 | fm.claire_1.7.jar
+pez.mini.ChironexFleckeri 0.5 | melee-245 | pez.mini.ChironexFleckeri_0.5.jar
+abud.ThirdRobo 1.0 | melee-364 | abud.ThirdRobo_1.0.jar
+hvilela.HVilela 0.9 | melee-231 | hvilela.HVilela_0.9.jar

@@ -1,0 +1,10 @@
+# Melee census field f32 (see melee-census-317.txt)
+kawigi.sbf.FloodHT 0.9.2 | melee-43 | kawigi.sbf.FloodHT_0.9.2.jar
+apc.botM 3.0 | melee-165 | apc.botM_3.0.jar
+yk.JahMicro 1.0 | melee-291 | yk.JahMicro_1.0.jar
+bayen.UbaMicro 1.4 | melee-254 | bayen.UbaMicro_1.4.jar
+vjik.UnViolation 1.1 | melee-145 | vjik.UnViolation_1.1.jar
+panzer.Panzer 0.2 | melee-264 | panzer.Panzer_0.2.jar
+conscience.Electron 1.3g | melee-293 | conscience.Electron_1.3g.jar
+lxx.ConceptA 0.8 | melee-137 | lxx.ConceptA_0.8.jar
+donjezza.Jezza 1.0 | melee-375 | donjezza.Jezza_1.0.jar

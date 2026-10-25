@@ -1,0 +1,10 @@
+# Melee census field f04 (see melee-census-317.txt)
+apc.LeeroyJenkins2 1.0 | melee-80 | apc.LeeroyJenkins2_1.0.jar
+josago.Jorgito 0.16 | melee-215 | josago.Jorgito_0.16.jar
+rampancy.Durandal 2.1d | melee-302 | rampancy.Durandal_2.1d.jar
+tj.zombie1n 1.0.1 | melee-249 | tj.zombie1n_1.0.1.jar
+TNT.TNT 0.99.1 | melee-163 | TNT.TNT_0.99.1.jar
+css.Delitioner 0.11 | melee-211 | css.Delitioner_0.11.jar
+aaa.r.ScalarR 0.005g.047 | melee-1 | aaa.r.ScalarR_0.005g.047.jar
+spin.Bugstard 0.012b | melee-402 | spin.Bugstard_0.012b.jar
+sp.Nanos.Ember 1.1 | melee-358 | sp.Nanos.Ember_1.1.jar

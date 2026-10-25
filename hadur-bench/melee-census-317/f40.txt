@@ -1,0 +1,10 @@
+# Melee census field f40 (see melee-census-317.txt)
+amk.superstrike.SuperStrike 0.3 | melee-328 | amk.superstrike.SuperStrike_0.3.jar
+alpha.BlackIce 1.0 | melee-246 | alpha.BlackIce_1.0.jar
+kano.gamma.KanoGamma 1.8 | melee-97 | kano.gamma.KanoGamma_1.8.jar
+Polkwane.SmashMelee 1.0 | melee-148 | Polkwane.SmashMelee_1.0.jar
+kawigi.mini.Coriantumr 1.1 | melee-35 | kawigi.mini.Coriantumr_1.1.jar
+testantiswapgun.AntiSwap 1.0 | melee-384 | testantiswapgun.AntiSwap_1.0.jar
+stelo.Randomness 1.0 | melee-185 | stelo.Randomness_1.0.jar
+sample.Corners 1.0 | melee-399 | sample.Corners_1.0.jar
+mz.AntiGrav 1.0 | melee-112 | mz.AntiGrav_1.0.jar

@@ -1,0 +1,10 @@
+# Melee census field f14 (see melee-census-317.txt)
+Lo_Ian.Gandalf_V4 4.0 | melee-242 | Lo_Ian.Gandalf_V4_4.0.jar
+sample.TrackFire 1.0 | melee-412 | sample.TrackFire_1.0.jar
+pa.Improved 1.0 | melee-308 | pa.Improved_1.0.jar
+catcat20.shape.Theta 0.018 | melee-55 | catcat20.shape.Theta_0.018.jar
+dmh.robocode.robot.RedDwarf 0.4 | melee-243 | dmh.robocode.robot.RedDwarf_0.4.jar
+sheldor.micro.PointInLineRRAL 1.0 | melee-283 | sheldor.micro.PointInLineRRAL_1.0.jar
+simonton.micro.Sprout 1.1.3 | melee-47 | simonton.micro.Sprout_1.1.3.jar
+sanyi.mikrobi.Roberto 1.0 | melee-240 | sanyi.mikrobi.Roberto_1.0.jar
+co.edu.usb.rc.LidisTron 1.0 | melee-241 | co.edu.usb.rc.LidisTron_1.0.jar

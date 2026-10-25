@@ -1,0 +1,10 @@
+# Melee census field f18 (see melee-census-317.txt)
+agd.Mooserwirt2 2.7 | melee-94 | agd.Mooserwirt2_2.7.jar
+sigterm.Sigterm 1.0 | melee-217 | sigterm.Sigterm_1.0.jar
+spinnercat.Robovirus 2.718 | melee-206 | spinnercat.Robovirus_2.718.jar
+uji.DBH 1.1 | melee-121 | uji.DBH_1.1.jar
+ratosh.Nobo 0.21 | melee-195 | ratosh.Nobo_0.21.jar
+morbid.MorbidPriest 1.0 | melee-84 | morbid.MorbidPriest_1.0.jar
+WarfaJibril.Jibril_Warfa_Andromeda 1.11 | melee-312 | WarfaJibril.Jibril_Warfa_Andromeda_1.11.jar
+kawigi.mini.Fhqwhgads 1.1 | melee-261 | kawigi.mini.Fhqwhgads_1.1.jar
+stelo.WangRobot 1.0 | melee-325 | stelo.WangRobot_1.0.jar

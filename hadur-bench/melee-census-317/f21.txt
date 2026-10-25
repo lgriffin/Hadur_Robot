@@ -1,0 +1,10 @@
+# Melee census field f21 (see melee-census-317.txt)
+fire219.CatBot 1.0 | melee-391 | fire219.CatBot_1.0.jar
+oa.weak.BotherBot 0.1 | melee-315 | oa.weak.BotherBot_0.1.jar
+el.JumpShoot 0.2 | melee-380 | el.JumpShoot_0.2.jar
+eld.Hmm 1.0 | melee-290 | eld.Hmm_1.0.jar
+PSW.Relentless 0.1 | melee-397 | PSW.Relentless_0.1.jar
+dummy.mini.Scimitar 1.01 | melee-104 | dummy.mini.Scimitar_1.01.jar
+cf.RiO.RiOx 4.2.1 | melee-176 | cf.RiO.RiOx_4.2.1.jar
+arthord.MannyPacquiao Beta | melee-394 | arthord.MannyPacquiao_Beta.jar
+eem.EvBot v4.6.16 | melee-32 | eem.EvBot_v4.6.16.jar

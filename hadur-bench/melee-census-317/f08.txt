@@ -1,0 +1,10 @@
+# Melee census field f08 (see melee-census-317.txt)
+tm.Yuugao 1.0 | melee-56 | tm.Yuugao_1.0.jar
+Krabb.sliNk.Garm 0.9u | melee-127 | Krabb.sliNk.Garm_0.9u.jar
+zyx.nano.BacillusComma 1.0 | melee-278 | zyx.nano.BacillusComma_1.0.jar
+shrub.Vapour v159 | melee-75 | shrub.Vapour_v159.jar
+com.spp.robocode.MostlyHarmless 010 | melee-193 | com.spp.robocode.MostlyHarmless_010.jar
+jwst.DAD.DarkAndDarker 1.1 | melee-189 | jwst.DAD.DarkAndDarker_1.1.jar
+SHAM.WOW 1.4 | melee-310 | SHAM.WOW_1.4.jar
+m3thos.Eva00 1.1 | melee-224 | m3thos.Eva00_1.1.jar
+qualidafial.MajorDick 1.0.1 | melee-272 | qualidafial.MajorDick_1.0.1.jar

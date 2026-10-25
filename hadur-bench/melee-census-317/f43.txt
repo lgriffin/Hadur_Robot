@@ -1,0 +1,10 @@
+# Melee census field f43 (see melee-census-317.txt)
+cvt.Firsty 1.0 | melee-383 | cvt.Firsty_1.0.jar
+Krabb.akim2.Akim2 1.1b | melee-154 | Krabb.akim2.Akim2_1.1b.jar
+jk.melee.Neuromancer 7.12 | melee-2 | jk.melee.Neuromancer_7.12.jar
+sample.SittingDuck 1.0 | melee-415 | sample.SittingDuck_1.0.jar
+dummy.micro.Sparrow 2.5 | melee-103 | dummy.micro.Sparrow_2.5.jar
+wcsv.melee.EngineerMelee 0.1 | melee-102 | wcsv.melee.EngineerMelee_0.1.jar
+mz.NanoGod 2.02 | melee-155 | mz.NanoGod_2.02.jar
+brainfade.melee.Dusk 0.44 | melee-49 | brainfade.melee.Dusk_0.44.jar
+jab.DiamondStealer 5 | melee-191 | jab.DiamondStealer_5.jar

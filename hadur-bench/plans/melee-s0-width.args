@@ -1,0 +1,23 @@
+# PC card pc-melee-s0, width check: fields F01-F06 at 6 workers on the census's first two seeds, the bb build alone, so the read compares skipped turns at 6 and 12 workers on the same battles. Template as melee-s0-census.args.
+--suite
+melee-census-317-width.txt
+--seeds
+2
+--seed-base
+3170
+--rounds
+35
+--parallel
+6
+--child-heap
+2G
+--cpu-constant
+1488498
+--robot-jar
+bisect/hadur2.Hadur_@V@bb.jar
+--robot
+hadur2.Hadur @V@bb
+--out
+work/melee-s0-@V@-width
+--report
+../docs/bench/local/melee-s0-width.md

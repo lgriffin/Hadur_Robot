@@ -1,0 +1,10 @@
+# Melee census field f06 (see melee-census-317.txt)
+ers.nano.hawk.HawkLA 3.0m | melee-280 | ers.nano.hawk.HawkLA_3.0m.jar
+jekl.StoneGhost 0.7 | melee-51 | jekl.StoneGhost_0.7.jar
+mld.Wisdom 1.0 | melee-181 | mld.Wisdom_1.0.jar
+gg.Wolverine 2.0 | melee-219 | gg.Wolverine_2.0.jar
+DBall.NUKE 0.1 | melee-281 | DBall.NUKE_0.1.jar
+origin.SleepSiphon 1.7b | melee-60 | origin.SleepSiphon_1.7b.jar
+spinnercat.Omen 1.0 | melee-309 | spinnercat.Omen_1.0.jar
+pe.minimelee.SandboxMiniMelee 1.1 | melee-87 | pe.minimelee.SandboxMiniMelee_1.1.jar
+sample.Fire 1.0 | melee-405 | sample.Fire_1.0.jar

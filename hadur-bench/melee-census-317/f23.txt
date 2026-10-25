@@ -1,0 +1,10 @@
+# Melee census field f23 (see melee-census-317.txt)
+stelo.RamTrackSurfer 1.2 | melee-317 | stelo.RamTrackSurfer_1.2.jar
+stelo.AreaTargetingBot 1.1 | melee-190 | stelo.AreaTargetingBot_1.1.jar
+rrh.Iwillfindyou 2.0 | melee-404 | rrh.Iwillfindyou_2.0.jar
+cre.Karolos 0.32 | melee-173 | cre.Karolos_0.32.jar
+sample.Walls 1.0 | melee-350 | sample.Walls_1.0.jar
+darwinsnightmare.DNGEN474UI85390C20S0R528 1.0 | melee-333 | darwinsnightmare.DNGEN474UI85390C20S0R528_1.0.jar
+cw.megas.Blade 0.8 | melee-346 | cw.megas.Blade_0.8.jar
+pe.SandboxLump 1.52 | melee-40 | pe.SandboxLump_1.52.jar
+cli.WasteOfAmmo 1.0 | melee-416 | cli.WasteOfAmmo_1.0.jar
