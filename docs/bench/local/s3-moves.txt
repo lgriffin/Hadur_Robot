@@ -1,0 +1,8 @@
+amk.ChumbaMini 0.2
+cf.star.Star2 1.23
+deo.FlowerBot 1.0
+ers.nano.meroka.Meroka 1.8a
+satan.White 0.26
+stelo.MatchupWS 1.2c
+usa.nano.Nemo 2.0
+wiki.mako.MakoHT 1.2.2.1
