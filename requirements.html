@@ -12,7 +12,7 @@
 <h1>EARS requirements</h1>
 <p class="lede">Every requirement from <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/docs/requirements.md">docs/requirements.md</a>, the source of truth. <em>Implemented in</em> lists
 the classes whose documentation cites the ID; <em>Verified by</em> lists the tests tagged with it, the same tags the build's
-traceability check reads. 240 of 240 live requirements have a tagged test. The readings behind the numbers are in
+traceability check reads. 242 of 242 live requirements have a tagged test. The readings behind the numbers are in
 <a href="docs/requirements-notes.html">Requirement readings</a>.</p>
 <nav class="toc"><a href="#group-CORE">Core</a> <a href="#group-RES">Resilience</a> <a href="#group-REL">Release</a> <a href="#group-WAVE">Waves</a> <a href="#group-RADAR">Radar</a> <a href="#group-MEM">Memory</a> <a href="#group-ADAPT">Adapt</a> <a href="#group-DIAL">Dials</a> <a href="#group-DIST">Distance</a> <a href="#group-POW">Power</a> <a href="#group-END">Endgame</a> <a href="#group-MOVE">Movement</a> <a href="#group-TIME">Time budget</a> <a href="#group-SHIELD">Bullet shielding</a> <a href="#group-MELEE">Melee (2.1)</a> <a href="#group-GATE">Posture gate</a> <a href="#group-MRADAR">Melee radar</a> <a href="#group-MSENSE">Melee sensing</a> <a href="#group-MMOVE">Melee movement</a> <a href="#group-MGUN">Melee gun</a> <a href="#group-MMEM">Melee memory</a></nav><h2 id="group-CORE">Core</h2>
 <article class="req-card" id="CORE-1">
@@ -986,6 +986,16 @@ traceability check reads. 240 of 240 live requirements have a tagged test. The r
 <div class="req-head"><span class="rid">BENCH-102</span><span class="badge">Ubiquitous</span><span class="badge stage">R9</span></div>
 <p>The bench shall carry <code>tools/shield_s3.py</code> and the <code>pc-shield-s3</code> card, which together build the 1v1 table&#x27;s last per-opponent entries before top 5: a warm-start shield screen of the Saguaro shield robots the list leaves out (each with the shipped aim its shield part 2 screen battles end on, by <a class="req" href="requirements.html#BENCH-100">BENCH-100</a>&#x27;s rule, with and without the opening drive), a stop-and-go second pass on the Saguaro poison robots table v2 left out (fresh seeds pooled with table v2&#x27;s screen, locked at +3 points with the 95% interval above 0), the candidate t4 and the verify gate on fresh seeds as <a class="req" href="requirements.html#BENCH-100">BENCH-100</a>&#x27;s with the bar at +0.05 APS. When nothing locks, the verify still runs (t4 the A/A copy) so the card ends in a results PR.</p>
 <dl><dt>Implemented in</dt><dd><span class="none">no citation in the sources</span></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/ShieldS3PlanTest.java">ShieldS3PlanTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="BENCH-103">
+<div class="req-head"><span class="rid">BENCH-103</span><span class="badge">Event</span><span class="badge stage">R9</span></div>
+<p>When a melee round ends, the bench shall also record in <code>rounds.csv</code> the tick the field fell to Hadur and one other, Hadur&#x27;s and that survivor&#x27;s energy at that tick (<code>-</code> when the round never came to it), and the bullet damage Hadur took, capped at its energy, while three or more fighters were alive and while two were.</p>
+<dl><dt>Implemented in</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/MeleeHarvester.java" title="hadur.bench.MeleeHarvester">MeleeHarvester</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/MeleeHarvesterTest.java">MeleeHarvesterTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="BENCH-104">
+<div class="req-head"><span class="rid">BENCH-104</span><span class="badge">Ubiquitous</span><span class="badge stage">R9</span></div>
+<p>The bench shall carry <code>tools/melee_s0.py</code>, the <code>melee-census-317</code> fields (every robot of the 2026-10-25 MeleeRumble rankings but Hadur and the robots without an archive jar, nine to a field) and the <code>pc-melee-s0</code> card, which together run melee Stage 0 (docs/plan-melee-top5.md): master against itself on the census at 12 workers and on six fields at 6, and a read with the A/A gate (paired APS within 0.2, 95% half-width under 0.3), the census level and live projection, rounds won by the field&#x27;s strongest opponent, the endgame duels by survivor rank with both energies at their start, deaths before the last two and damage taken by phase. The card reads the robot version from the pom and ends in a results PR whatever the gate says.</p>
+<dl><dt>Implemented in</dt><dd><span class="none">no citation in the sources</span></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/MeleeS0PlanTest.java">MeleeS0PlanTest.java</a></dd></dl>
 </article>
 <h2 id="group-DODGE">DODGE</h2>
 <article class="req-card" id="DODGE-1">

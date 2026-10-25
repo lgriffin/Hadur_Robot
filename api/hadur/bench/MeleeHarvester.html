@@ -107,7 +107,10 @@ loadScripts(document, 'script');</script>
      (the duel the melee handed over to) and whether Hadur won it, sentry bullets that hit
      Hadur and Hadur bullets that hit a sentry, and skipped turns. When Hadur died, also
      the tick it died, its killer and the last robot to hit it (<a href="#HEADER"><code>HEADER</code></a>'s last
-     three columns, <code>-</code> when it lived or nothing hit it).</li>
+     three columns, <code>-</code> when it lived or nothing hit it). <a class="req" href="../../../requirements.html#BENCH-103">BENCH-103</a> adds the endgame and
+     the damage Hadur took: the tick the field fell to Hadur and one other, Hadur's and that
+     survivor's energy at that tick (<code>-</code> when the round never came to it), and the bullet
+     damage Hadur took while three or more fighters were alive and while two were.</li>
  <li><code>bullets.csv</code>: one row per robot per round (<a href="#BULLET_HEADER"><code>BULLET_HEADER</code></a>): every
      fighter's shots, their summed power, hits on a fighter, the damage those scored (capped
      at the victim's energy, as the score caps it) and shots lost to another bullet; the
