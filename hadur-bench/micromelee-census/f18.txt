@@ -1,0 +1,10 @@
+# MicroMelee census field f18 (see micromelee-census.txt)
+mld.Wisdom 1.0 | micromelee-43 | mld.Wisdom_1.0.jar
+davidalves.net.DuelistNanoMelee 1.01 | micromelee-47 | davidalves.net.DuelistNanoMelee_1.01.jar
+KiraNL.Chupacabra 0.4 | micromelee-62 | KiraNL.Chupacabra_0.4.jar
+sample.Target 1.0 | micromelee-152 | sample.Target_1.0.jar
+radnor.DoctorBob 1.42 | micromelee-14 | radnor.DoctorBob_1.42.jar
+jangs.ns51 1.0 | micromelee-126 | jangs.ns51_1.0.jar
+sample.Walls 1.0 | micromelee-113 | sample.Walls_1.0.jar
+GarmBox.Oranges 1.0 | micromelee-119 | GarmBox.Oranges_1.0.jar
+amz.NanoClone 1.41 | micromelee-61 | amz.NanoClone_1.41.jar

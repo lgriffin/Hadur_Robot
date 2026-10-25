@@ -1,0 +1,10 @@
+# MicroMelee census field f15 (see micromelee-census.txt)
+cli.WasteOfAmmo 1.0 | micromelee-156 | cli.WasteOfAmmo_1.0.jar
+mz.NanoGod 2.02 | micromelee-37 | mz.NanoGod_2.02.jar
+sample.SittingDuck 1.0 | micromelee-155 | sample.SittingDuck_1.0.jar
+stelo.PianistNano 1.2 | micromelee-134 | stelo.PianistNano_1.2.jar
+drd.Dreadknoght 0.9 | micromelee-151 | drd.Dreadknoght_0.9.jar
+wompi.Wallaby 5.1 | micromelee-2 | wompi.Wallaby_5.1.jar
+exauge.GateKeeper 1.1.121g | micromelee-107 | exauge.GateKeeper_1.1.121g.jar
+stuff.Vlad 0.1 | micromelee-109 | stuff.Vlad_0.1.jar
+ayk.WallHugger 1.0 | micromelee-99 | ayk.WallHugger_1.0.jar

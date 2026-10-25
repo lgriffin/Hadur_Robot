@@ -1,0 +1,10 @@
+# MicroMelee census field f01 (see micromelee-census.txt)
+sample.Target 1.0 | micromelee-152 | sample.Target_1.0.jar
+radnor.DoctorBob 1.42 | micromelee-14 | radnor.DoctorBob_1.42.jar
+jangs.ns51 1.0 | micromelee-126 | jangs.ns51_1.0.jar
+sample.Walls 1.0 | micromelee-113 | sample.Walls_1.0.jar
+GarmBox.Oranges 1.0 | micromelee-119 | GarmBox.Oranges_1.0.jar
+amz.NanoClone 1.41 | micromelee-61 | amz.NanoClone_1.41.jar
+arthord.MannyPacquiao Beta | micromelee-141 | arthord.MannyPacquiao_Beta.jar
+mld.Infinity 2.2 | micromelee-28 | mld.Infinity_2.2.jar
+mz.AntiGrav 1.0 | micromelee-20 | mz.AntiGrav_1.0.jar

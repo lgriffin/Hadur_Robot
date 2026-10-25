@@ -1,0 +1,10 @@
+# MicroMelee census field f10 (see micromelee-census.txt)
+baal.nano.N 1.42 | micromelee-56 | baal.nano.N_1.42.jar
+Grystrion.TrackerWO 1.0 | micromelee-83 | Grystrion.TrackerWO_1.0.jar
+zyx.micro.Ant 1.1 | micromelee-91 | zyx.micro.Ant_1.1.jar
+amk.Punbot.Punbot 0.01 | micromelee-124 | amk.Punbot.Punbot_0.01.jar
+sample.RamFire 1.0 | micromelee-149 | sample.RamFire_1.0.jar
+cvt.Firsty 1.0 | micromelee-132 | cvt.Firsty_1.0.jar
+sanja.First 0.1 | micromelee-104 | sanja.First_0.1.jar
+tvv.nano.Polaris 1.2 | micromelee-59 | tvv.nano.Polaris_1.2.jar
+squidM.TentalceMeleeNano 1.1 | micromelee-116 | squidM.TentalceMeleeNano_1.1.jar

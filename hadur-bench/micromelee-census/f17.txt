@@ -1,0 +1,10 @@
+# MicroMelee census field f17 (see micromelee-census.txt)
+dsw.StaticD 1.0 | micromelee-85 | dsw.StaticD_1.0.jar
+sample.Corners 1.0 | micromelee-145 | sample.Corners_1.0.jar
+sample.MyFirstJuniorRobot 1.0 | micromelee-135 | sample.MyFirstJuniorRobot_1.0.jar
+sheldor.melee.nano.TestMelee 0.1 | micromelee-31 | sheldor.melee.nano.TestMelee_0.1.jar
+tlp.ThreeLeggedPig 1 | micromelee-105 | tlp.ThreeLeggedPig_1.jar
+sample.MyFirstRobot 1.0 | micromelee-143 | sample.MyFirstRobot_1.0.jar
+sul.Lunar 1.1 | micromelee-41 | sul.Lunar_1.1.jar
+mme.NikeEnhanced 2.0 | micromelee-103 | mme.NikeEnhanced_2.0.jar
+supersample.SuperBoxBot 1.0 | micromelee-54 | supersample.SuperBoxBot_1.0.jar

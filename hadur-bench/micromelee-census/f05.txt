@@ -1,0 +1,10 @@
+# MicroMelee census field f05 (see micromelee-census.txt)
+sam.Samspin 1.0 | micromelee-97 | sam.Samspin_1.0.jar
+bwbaugh.nano.Tirunculus 0.0.0a | micromelee-136 | bwbaugh.nano.Tirunculus_0.0.0a.jar
+oog.melee.Corsair 1.0 | micromelee-21 | oog.melee.Corsair_1.0.jar
+simonton.nano.MeleeSeed 1.8 | micromelee-26 | simonton.nano.MeleeSeed_1.8.jar
+zyx.nano.BacillusComma 1.0 | micromelee-81 | zyx.nano.BacillusComma_1.0.jar
+EBBU.Sim2 1.02 | micromelee-86 | EBBU.Sim2_1.02.jar
+ahf.NanoAndrew .4 | micromelee-39 | ahf.NanoAndrew_.4.jar
+sample.TrackFire 1.0 | micromelee-153 | sample.TrackFire_1.0.jar
+robar.nano.Assertive_Melee 0.2 | micromelee-101 | robar.nano.Assertive_Melee_0.2.jar

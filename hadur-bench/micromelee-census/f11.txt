@@ -1,0 +1,10 @@
+# MicroMelee census field f11 (see micromelee-census.txt)
+evd.X1 0.01 | micromelee-111 | evd.X1_0.01.jar
+joe.ADinosaur 1.0 | micromelee-70 | joe.ADinosaur_1.0.jar
+donjezza.Jezza 1.0 | micromelee-128 | donjezza.Jezza_1.0.jar
+mz.Cork 0.1 | micromelee-35 | mz.Cork_0.1.jar
+kc.micro.Figment 1.0 | micromelee-1 | kc.micro.Figment_1.0.jar
+jsal.Jsalbot 1.0 | micromelee-108 | jsal.Jsalbot_1.0.jar
+cs.Wren 1.0 | micromelee-19 | cs.Wren_1.0.jar
+PSW.Relentless 0.1 | micromelee-144 | PSW.Relentless_0.1.jar
+js.PinBall 1.6 | micromelee-32 | js.PinBall_1.6.jar

@@ -1,0 +1,10 @@
+# MicroMelee census field f04 (see micromelee-census.txt)
+ers.nano.hawk.HawkLA 3.0m | micromelee-87 | ers.nano.hawk.HawkLA_3.0m.jar
+sample.VelociRobot 1.0 | micromelee-142 | sample.VelociRobot_1.0.jar
+repositorio.NanoStep 1.0 | micromelee-125 | repositorio.NanoStep_1.0.jar
+stelo.SoJNanoMelee 1.1 | micromelee-63 | stelo.SoJNanoMelee_1.1.jar
+kawigi.nano.Lib 1.0 | micromelee-16 | kawigi.nano.Lib_1.0.jar
+Grystrion.RandomTrackerNOREV 1.0 | micromelee-100 | Grystrion.RandomTrackerNOREV_1.0.jar
+tvv.micro.Antares 1.1.1 | micromelee-51 | tvv.micro.Antares_1.1.1.jar
+yk.JahMicro 1.0 | micromelee-89 | yk.JahMicro_1.0.jar
+tj.zombie1n 1.0.1 | micromelee-67 | tj.zombie1n_1.0.1.jar

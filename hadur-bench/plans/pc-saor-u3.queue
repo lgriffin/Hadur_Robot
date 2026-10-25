@@ -1,0 +1,37 @@
+# Saor's first PC card (docs/saor.md, stages U1 to U3): the MicroMelee census and the nine-robot
+# gate field, Saor 0.1 from master. Nothing here touches Hadur; the robot is its own module (saor/).
+#   ./queue.sh run pc-saor-u3        (or  .\queue.ps1 run pc-saor-u3)
+# Run it from master:
+#   git checkout master && git pull
+# One bench queue, RoboRumble workers at 0, unpinned, 12 workers. Every step resumes; no step needs
+# a decision.
+#
+# prep: builds saor/ (shipped jar hadur117.micro.Saor_0.1.jar, 749 bytes by Robocode's codesize
+#   tool) and fetches any of the 156 MicroMelee robots (micromelee-field.txt, 2026-10-25 rankings)
+#   not already in opponents/ from the robot archive.
+# census (about 15 min): micromelee-census.txt, 18 fields of nine x 12 seeds = 216 battles of ten
+#   robots. Gives U1 survival, U2 64 APS and SAOR-12 66 APS over every opponent.
+# gate9 (about 20 min): saor-gate9.txt (Figment, Wallaby, Capulet and six robots down the field)
+#   x 200 seeds. Gives SAOR-13 (out-survive Figment in half) and SAOR-14 (out-damage Wallaby in half).
+# read: tools/saor_gates.py on each run on its own (U1, U2 and SAOR-12 from the census, SAOR-13 and
+#   SAOR-14 from the gate field; pooling them would skew both); then the results PR.
+#
+# Cloud smoke (2026-10-25, 2 seeds of saor-gate9.txt, 4 cores): Saor ran clean (0 skipped turns),
+# 3rd of 10 by mean place, score share 11.6% against Figment's 12.6% and Wallaby's 16.0%.
+
+set MVN = mvn -q -Drobocode.version=1.11.1 compile exec:java
+set OUT = ../docs/bench/local
+
+prep | (cd .. && mvn -q -DskipTests install -pl saor -am) && ./fetch-opponents.sh --set micromelee-field.txt && ./fetch-opponents.sh --set saor-gate9.txt
+
+census | ${MVN} "-Dexec.args=@plans/saor-census.args"
+  after: prep
+
+gate9 | ${MVN} "-Dexec.args=@plans/saor-gate9.args"
+  after: census
+
+read | python3 tools/saor_gates.py --work work/saor-census --robot "hadur117.micro.Saor 0.1" --json ${OUT}/saor-gates-census.json > ${OUT}/saor-gates-census.md && python3 tools/saor_gates.py --work work/saor-gate9 --robot "hadur117.micro.Saor 0.1" --json ${OUT}/saor-gates-gate9.json > ${OUT}/saor-gates-gate9.md
+  after: gate9
+
+pr | bash tools/open_results_pr.sh claude/pc-saor-u3-results "Saor 0.1: MicroMelee census and gate field" ${OUT}/saor-census.md ${OUT}/saor-gate9.md ${OUT}/saor-gates-census.md ${OUT}/saor-gates-gate9.md
+  after: read

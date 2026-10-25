@@ -501,6 +501,8 @@ hadur-core/    the brain: a kernel (physics, waves, KNN, memory, the World, the 
 hadur-robot/   the Robocode adapter (hadur2.Hadur, a TeamRobot): events in, orders out,
                profile files; and the team jar hadur2.HadurTeam, five of it.
 hadur-bench/   headless battles, the bench report, and the replay recorder.
+saor/          Saor, a separate MicroMelee robot (hadur117.micro.Saor, 749 bytes);
+               see docs/saor.md. Shares nothing with Hadur.
 docs/          requirements, architecture, testing, strategy, bench reports, release notes,
                rumble entry.
 data/          the rumble and bench archive: saved rumble pages, parsed tables, bench

@@ -1,0 +1,23 @@
+# Saor MicroMelee census (SAOR-12, U1, U2; docs/saor.md): the 156-robot field in 18 fields of nine, 12 battles a field
+--suite
+micromelee-census.txt
+--seeds
+12
+--seed-base
+1180
+--rounds
+35
+--parallel
+12
+--child-heap
+2G
+--cpu-constant
+1488498
+--robot-jar
+../saor/target/hadur117.micro.Saor_0.1.jar
+--robot
+hadur117.micro.Saor 0.1
+--out
+work/saor-census
+--report
+../docs/bench/local/saor-census.md
