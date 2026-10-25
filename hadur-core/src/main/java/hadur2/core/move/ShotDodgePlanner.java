@@ -7,9 +7,11 @@ import java.awt.geom.Point2D;
 import java.util.*;
 
 /**
- * DODGE-6: Saguaro's ShotDodger movement, re-implemented from its algorithm (read decompiled,
- * nothing copied): against a gun that fires one simple aim, plan a path on which that aim's
- * bullets miss us, as far from them as the field allows. Off by default; {@link SurfMover} hands
+ * DODGE-6: Hadur's own shot-dodge planner, inspired by Saguaro's ShotDodger (its ideas: score a
+ * path by its clearance from the predicted bullet, add the enemy's distance, learn from misses;
+ * no code or data of it): against a gun that fires one simple aim, plan a path on which that
+ * aim's bullets miss us, as far from them as the field allows. The paths are our surf's stop
+ * points, the experts our simple aims (DODGE-1), the band each bullet is given our own misses. Off by default; {@link SurfMover} hands
  * it the tick only when the duel switches it on for the opponent and {@link ShotDodger#planActive}.
  *
  * <p><b>Why.</b> DODGE-2's three-option surf knew Machete's bullet exactly (190 of 194 matched)

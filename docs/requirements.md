@@ -1422,10 +1422,13 @@ Nullstride's list with (docs/bench/local/2026-10-12_plan90-pc-read.md).
 - **DODGE-4 to DODGE-6** (1v1 plan to 3rd, 2026-10-25: Saguaro leads Hadur by +0.57 APS on the 423 bots its
   table fights with ShotDodger). The dodge-smoke runs showed DODGE-2's reading locked (Machete: 190 of 194
   bullets read matched one expert) yet Hadur took the same damage as without it (about 2,150 a battle): the
-  three-option surf cannot reach a spot the known bullet misses at close range. Saguaro's ShotDodger
-  (read decompiled; the algorithm re-implemented, nothing copied, and no data decoded from Saguaro.data)
-  plans paths and scores them `damage / clearance^2`, infinite on a hit, plus `2500 / d^2` to the enemy,
-  and learns its experts loosely (Gaussian, 0.18 GF) from hits and from the bullets that passed.
+  three-option surf cannot reach a spot the known bullet misses at close range. The planner is Hadur's
+  own design (Leigh, 2026-10-25: "unique and different, inspired by others but not copying them"),
+  taking three ideas from Saguaro's ShotDodger and none of its code or data: score a path by its
+  clearance from the predicted bullet (`damage / clearance^2`, a hit above any miss), add the enemy's
+  distance (`2500 / d^2`), and learn the experts loosely (Gaussian, 0.18 GF) from hits and from the
+  bullets that passed. Its paths are our surf's stop points, its experts our simple aims, each
+  bullet's band our own misses, and against close-range bots it keeps away with no wave in the air.
   `move/ShotDodgePlanner` is that planner; `ShotDodger.observe(aims, heading, escapeAngle)`,
   `observePass`, `prime`, `planBest` and `planActive` its reading; `MoveController.setDodgePasses` the pass
   learning. Shipped experts are derived from our own bench DP records, never from Saguaro's. Ablations
@@ -1570,6 +1573,8 @@ None of these change how the robot plays; TIME-8 and RES-15 only report.
 | BENCH-105 | Ubiquitous | The bench shall size itself to the machine it runs on: `hostprofile.py` shall read the physical cores, logical processors, free memory, work-disk space and a local Robocode CPU constant, and give one battle worker per two physical cores (12 on the 24-core PC, which always runs its full width), holding back one core (two for melee) and fitting 70% of free memory at 2.3 GB a worker on a machine under 16 cores, never fewer than 1 and never pinned; the queue runner shall offer these as `${WORKERS}`, `${TEAM_WORKERS}`, `${MELEE_WORKERS}` and `${CPU}`, pass them to every step, log the host and widths, and take `--workers`, `HADUR_BENCH_WORKERS*` or `host.local` over them, a plan's `set` over the detected value only; `--parallel auto` and `--cpu-constant auto` shall read the same values; `--work-dir` (or `HADUR_BENCH_WORK`, or `WORK_DIR` in host.local) shall link a not-yet-existing `work` folder there and never move an existing one; `conditions.json` shall record the host profile and where the width came from. | R9 |
 | BENCH-106 | Ubiquitous | The bench shall carry `tools/host_check.py` and the `host-check` card, which fight the PC worker ladder's d12 and t12 battles at the machine's own width and report per block VALID (skipped turns a round within 1.15x the PC's plus 0.02, engine disables a 100 within the PC's plus 2, and a duel level within 1.5 points of the PC's) or TOO LOADED with the width to try next. | R9 |
 | BENCH-107 | Option | Where a shard is given (`--shard K/N`), the bench shall fight only every N-th opponent of the set from the K-th, so that N machines split one duel or team set with every opponent fought once, and shall refuse a shard of a melee field or a session. | R9 |
+| BENCH-108 | Ubiquitous | The bench shall carry `tools/factor_picks.py`, which reads the Stage 2 factorial's runs and design and gives, per factor, its field effect, the robots whose own effect is at least 5 points either way, and the APS a per-opponent switch would add measured held out (picked on the design points with a second factor at one level, read on those at the other, both ways, averaged), over 1,217 pairings. | R9 |
+| BENCH-109 | Ubiquitous | The bench shall carry `tools/third.py`, `panel-third-dodge.txt` (the 148 Saguaro ShotDodger robots Hadur 3.17 scores under 95 live or Saguaro leads by more than 3), the `sdplan` and `sdplanlist` ablations and the `pc-1v1-third` card: the factorial picks (BENCH-108); a screen of the panel with the control, its A/A copy and the planner at 3 seeds; the planner locked per robot at +5 points with the 95% interval above 0; each locked robot's expert read from its own battles' DP records (a strict majority of those where the planner acted, else -1); the candidate built from those lines; a verify on the locked robots at 3 fresh seeds; the gate of BENCH-100; and a results PR. | R9 |
 | RAM-4 | State | While the rammer-heat switch is on, in a duel, once RAM-2 has confirmed the opponent as a rammer, the surf shall offer MOVE-11's gun-heat wave with MOVE-13's hold off (as heatjit plays) for the rest of the battle, whatever those switches are set to; before the confirmation, and in melee or team, the switches are as their own requirements state. Off by default. | R9 |
 
 - **TIME-8.** `Hadur.setupRecord`, printed once in round 0. The PC's round-0 read

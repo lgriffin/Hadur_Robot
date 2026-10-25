@@ -9,6 +9,9 @@
   third.py candidate LINES --base 3.17.1 --out ARMS
       builds t4 = base + those lines (build-ablation.sh sdplanlist) and writes the verify arms c, aa,
       t4; with no line, t4 is the base's A/A copy.
+  third.py panel SET --plans LINES --out SET
+      the verify panel: the rows of the screen set whose robot a plan line names. Robots without a
+      line play bit for bit as the base, so they need no verify battles.
 
 The pick is data/tools/mode_table.py over the dodge screen; the verify panel is modes_v2.py panel;
 the gate is shield_s2.py gate --arm t4. Standard library plus tools/shield_s2.py and
@@ -69,6 +72,21 @@ def experts(run_dir, pick, arm):
     return ["%d %s" % (expert_for(battle_logs(run_dir, r, arm)), r) for r in robots]
 
 
+def plan_names(lines):
+    """The robot names of "expert name" plan lines."""
+    out = []
+    for l in lines:
+        p = l.split(" ", 1)
+        if len(p) == 2 and p[0].lstrip("-").isdigit():
+            out.append(p[1].strip())
+    return out
+
+
+def panel(set_path, names):
+    want = set(names)
+    return [line for name, line in table_v1.set_rows(set_path) if name in want]
+
+
 def candidate_arms(base, suffix):
     return ["# 1v1 plan to 3rd, dodge verify (pc-1v1-third): c is %s, aa its A/A copy, t4 the candidate.\n" % base,
             "c | hadur2.Hadur %s | bisect/hadur2.Hadur_%s.jar\n" % (base, base),
@@ -83,6 +101,8 @@ def main(argv=None):
     p.add_argument("--arm", default="sp"); p.add_argument("--out", required=True)
     p = sub.add_parser("candidate"); p.add_argument("lines")
     p.add_argument("--base", required=True); p.add_argument("--out", required=True)
+    p = sub.add_parser("panel"); p.add_argument("set"); p.add_argument("--plans", required=True)
+    p.add_argument("--out", required=True)
     a = ap.parse_args(argv)
     if a.cmd == "experts":
         lines = experts(a.run, a.pick, a.arm)
@@ -103,6 +123,11 @@ def main(argv=None):
         if code:
             return code
         shield_s2.write(a.out, candidate_arms(a.base, "dp"))
+    elif a.cmd == "panel":
+        names = plan_names(shield_s2.read_lines(a.plans)) if os.path.exists(a.plans) else []
+        rows = panel(a.set, names)
+        shield_s2.write(a.out, ["# 1v1 plan to 3rd verify panel: the robots the candidate t4 has a planner entry for.\n"] + rows)
+        print(len(rows), "robots in the verify panel")
     return 0
 
 
