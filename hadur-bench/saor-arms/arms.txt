@@ -1,0 +1,11 @@
+# Saor arms for the U3b screen (docs/saor.md, "Duel endgame"). One arm a line:
+#   NAME | what it changes | sed expression over saor/src/main/java/hadur117/micro/Saor.java
+# The arm is built as hadur117.micro.Saor<NAME> by tools/saor_arms.sh; the sed must change the
+# source (the build fails if it does not). C is Saor 0.1 unchanged, the control.
+# Bytes are javac-only codesize (ProGuard takes about 15 off): 0.1 is 764, so 749 shipped.
+C | Saor 0.1, the control (764) |
+P | no power cap while one opponent is left (778) | s#Math.min(getOthers() / 3 + 1.9,#Math.min(getOthers() < 2 ? 3 : getOthers() / 3 + 1.9,#
+N | cap 3 / others + 1.9: uncapped one on one, 2.9 at 2-3 left, 1.9 from 4 (764) | s#Math.min(getOthers() / 3 + 1.9,#Math.min(3 / getOthers() + 1.9,#
+U | no power cap at all, frees 14 bytes (750) | s#Math.min(getOthers() / 3 + 1.9, Math.log10(getEnergy()) \* 325 / (targetDistance = distance))#Math.log10(getEnergy()) * 325 / (targetDistance = distance)#
+L | longer leg: 55 + distance / 2, wider swings in melee and duel (764) | s#int x = 55 + (int) (targetDistance / 2.5);#int x = 55 + (int) (targetDistance / 2);#
+S | shorter leg: 55 + distance / 3.5, tighter to the corner (764) | s#int x = 55 + (int) (targetDistance / 2.5);#int x = 55 + (int) (targetDistance / 3.5);#

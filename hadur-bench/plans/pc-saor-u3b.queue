@@ -1,0 +1,72 @@
+# Saor's second PC card (docs/saor.md, "Duel endgame"): six arms of Saor 0.1 on the MicroMelee
+# census and the gate field, for Leigh's goal of a guaranteed top 5 (2026-10-25).
+#   ./queue.sh run pc-saor-u3b        (or  .\queue.ps1 run pc-saor-u3b)
+# Run it from master:
+#   git checkout master && git pull
+# One bench queue, RoboRumble workers at 0, unpinned, 12 workers. Every step resumes; no step needs
+# a decision. Nothing here touches Hadur.
+#
+# Arms (saor-arms/arms.txt, built by tools/saor_arms.sh with javac only):
+#   C  Saor 0.1, the control (A/A against the first card's census: 66.32)
+#   P  no power cap with one opponent left
+#   N  cap 3 / others + 1.9: uncapped one on one, 1.9 in a crowd; byte-neutral
+#   U  no cap at all; frees 14 bytes
+#   L  longer corner leg (distance / 2)
+#   S  shorter corner leg (distance / 3.5)
+# Why: the first card (PR #278) put Saor at 66.32 +- 1.4 census APS, losing the final duel to
+# Wallaby (23%) and Figment (38%). A cloud duel screen (2026-10-25, 1v1, 4 seeds) had P up 7.6
+# score-share points on Figment and 3.9 on Capulet; random axis flips and an orbit duel movement
+# lost. P alone is unlikely to be enough, so the leg and cap arms test melee play as well.
+# census (about 15 min an arm, 1.5 h): 18 fields x 12 fresh seeds = 216 battles an arm.
+# gate9 (about 10 min an arm, 1 h): 100 fresh seeds an arm.
+# read: tools/saor_arms.py, paired per opponent against C. The bar is the top-5 bar: census APS
+#   with its 95% low end above 66.0 (5th, Quantum, is 65.61). A winning arm must still fit 749
+#   bytes after ProGuard, with the core and SAOR-15 updated, before any entry.
+
+set MVN = mvn -q -Drobocode.version=1.11.1 compile exec:java
+set OUT = ../docs/bench/local
+set ARMS = C,P,N,U,L,S
+
+prep | (cd .. && mvn -q -DskipTests install -pl saor -am) && ./fetch-opponents.sh --set micromelee-field.txt && bash tools/saor_arms.sh gate9 100 1400 && bash tools/saor_arms.sh census 12 1300
+
+census-C | ${MVN} "-Dexec.args=@work/saor-arms/census-C.args"
+  after: prep
+
+census-P | ${MVN} "-Dexec.args=@work/saor-arms/census-P.args"
+  after: census-C
+
+census-N | ${MVN} "-Dexec.args=@work/saor-arms/census-N.args"
+  after: census-P
+
+census-U | ${MVN} "-Dexec.args=@work/saor-arms/census-U.args"
+  after: census-N
+
+census-L | ${MVN} "-Dexec.args=@work/saor-arms/census-L.args"
+  after: census-U
+
+census-S | ${MVN} "-Dexec.args=@work/saor-arms/census-S.args"
+  after: census-L
+
+gate-C | ${MVN} "-Dexec.args=@work/saor-arms/gate9-C.args"
+  after: census-S
+
+gate-P | ${MVN} "-Dexec.args=@work/saor-arms/gate9-P.args"
+  after: gate-C
+
+gate-N | ${MVN} "-Dexec.args=@work/saor-arms/gate9-N.args"
+  after: gate-P
+
+gate-U | ${MVN} "-Dexec.args=@work/saor-arms/gate9-U.args"
+  after: gate-N
+
+gate-L | ${MVN} "-Dexec.args=@work/saor-arms/gate9-L.args"
+  after: gate-U
+
+gate-S | ${MVN} "-Dexec.args=@work/saor-arms/gate9-S.args"
+  after: gate-L
+
+read | python3 tools/saor_arms.py --arms ${ARMS} --control C > ${OUT}/saor-arms-screen.md
+  after: gate-S
+
+pr | bash tools/open_results_pr.sh claude/pc-saor-u3b-results "Saor arms screen: census and gate field, six arms" ${OUT}/saor-arms-screen.md ${OUT}/saor-arms-census-*.md ${OUT}/saor-arms-gate9-*.md
+  after: read
