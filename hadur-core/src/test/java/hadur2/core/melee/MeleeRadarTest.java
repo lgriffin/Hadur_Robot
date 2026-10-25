@@ -20,6 +20,44 @@ class MeleeRadarTest {
         assertEquals(Double.POSITIVE_INFINITY, turn);
     }
 
+    /** Five enemies, all seen: the target "west" last at tick 4, the rest at tick 6. */
+    private static EnemyTracker fiveSeen() {
+        EnemyTracker tracker = new EnemyTracker();
+        scan(tracker, "west", 100, 300, 100, 4);
+        scan(tracker, "a", 700, 300, 100, 6);
+        scan(tracker, "b", 400, 600, 100, 6);
+        scan(tracker, "c", 400, 50, 100, 6);
+        scan(tracker, "d", 700, 600, 100, 6);
+        return tracker;
+    }
+
+    @Test
+    @Tag("MRADAR-3")
+    void lookAtTheTargetBeforeATeamShot() {
+        MeleeRadar radar = new MeleeRadar();
+        double spin = radar.radarTurn(pt(400, 300), 0, fiveSeen(), 5, null, 6, true, 0.1, "west");
+        if (MeleeRadar.TEAM_LOOK) {
+            // Radar facing north, the target west and two ticks old, the gun about to fire: turn to it.
+            assertEquals(Double.NEGATIVE_INFINITY, spin);
+        } else {
+            assertEquals(Double.POSITIVE_INFINITY, spin);
+        }
+    }
+
+    @Test
+    @Tag("MRADAR-3")
+    void noLookOffATeamWithAHotGunOrAFreshTarget() {
+        // Off a team, as solo melee always is: the spin, whatever the switch.
+        assertEquals(Double.POSITIVE_INFINITY,
+            new MeleeRadar().radarTurn(pt(400, 300), 0, fiveSeen(), 5, null, 6, false, 0.1, "west"));
+        // A gun three ticks or more from firing: the spin.
+        assertEquals(Double.POSITIVE_INFINITY,
+            new MeleeRadar().radarTurn(pt(400, 300), 0, fiveSeen(), 5, null, 6, true, 0.5, "west"));
+        // A target scanned a tick ago (a teammate's sighting): the spin.
+        assertEquals(Double.POSITIVE_INFINITY,
+            new MeleeRadar().radarTurn(pt(400, 300), 0, fiveSeen(), 5, null, 5, true, 0.1, "west"));
+    }
+
     @Test
     @Tag("MRADAR-2")
     void turnsTowardTheStalestOpponent() {
