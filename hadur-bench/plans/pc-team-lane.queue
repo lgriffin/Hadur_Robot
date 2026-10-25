@@ -1,0 +1,24 @@
+# Team friendly-fire lane (WEAVE-10, WEAVE-11; docs/plan-team-top5.md section 10), team thread:
+# team-only, duel and melee fixtures bit for bit. Since the narrow lane (step C) our bullets hit our
+# own members 21,600 times a 46x6 run (6,100 before); this screens two ways to hold those shots.
+#   tlbb A/A, tllp WEAVE-10 (nearer mate judged along its predicted track against the bullet),
+#   tllb WEAVE-11 (mate up to 450 px beyond the target, e.g. a HUNT pincer on the prey's far side).
+# 46 teams x 6 seeds (seed base 4100) per arm, 1,656 battles, about 1.8 h at 12 workers.
+# Every step resumes where it stopped. The team thread reads claude/pc-team-lane-results.
+# Verdict: an arm passes at +1.0 share points or more with the 95% low end above zero and tlbb
+# within +/- 1.0; the report's own-member hit count says how much friendly fire it removed.
+#   ./queue.sh run pc-team-lane        (or  .\queue.ps1 run pc-team-lane)
+# Run it from master (one bench queue at a time):
+#   git checkout master && git pull
+
+set OUT = ../docs/bench/local
+
+tlprep | git checkout -q master && V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && test -n "$V" && rm -f bisect/hadur2.HadurTeam_"$V"aa.jar bisect/hadur2.HadurTeam_"$V"bb.jar bisect/hadur2.HadurTeam_"$V"lp.jar bisect/hadur2.HadurTeam_"$V"lb.jar && bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && bash ./build-ablation.sh tlanep && bash ./build-ablation.sh tlaneb && mkdir -p work && for a in bb lp lb; do sed "s/@V@/$V/g" plans/team-lane-$a.args > work/team-lane-$a.args && test -f bisect/hadur2.HadurTeam_"$V"$a.jar || exit 1; done && test -f bisect/hadur2.HadurTeam_"$V"aa.jar && rm -f ../docs/bench/local/team-lane-bb.md ../docs/bench/local/team-lane-lp.md ../docs/bench/local/team-lane-lb.md && ./fetch-opponents.sh --set team-census46.txt && mvn -q compile
+tlbb  | mvn -q exec:java "-Dexec.args=@work/team-lane-bb.args"
+  after: tlprep
+tllp  | mvn -q exec:java "-Dexec.args=@work/team-lane-lp.args"
+  after: tlbb
+tllb  | mvn -q exec:java "-Dexec.args=@work/team-lane-lb.args"
+  after: tllp
+tlpr  | bash tools/open_results_pr.sh claude/pc-team-lane-results "Team friendly-fire lane (WEAVE-10/11) screen" $(ls ${OUT}/team-lane-*.md 2>/dev/null)
+  after: tllb

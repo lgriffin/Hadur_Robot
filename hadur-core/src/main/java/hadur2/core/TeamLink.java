@@ -75,6 +75,24 @@ final class TeamLink {
     static final double NARROW_MATE_HALF = 30;
     /** WEAVE-9: the target is the nearest enemy within this many px of the gun's line, at its distance. */
     static final double NARROW_TARGET_HALF = 36;
+    /**
+     * WEAVE-10: a teammate nearer than the target also holds the shot when its predicted track
+     * meets a bullet flying the gun's line (see {@code meetsBullet}). Off: an ablation
+     * (tlanep) against own-bullet hits, which tripled with the narrow lane.
+     */
+    static final boolean NARROW_PREDICT = false;
+    /**
+     * WEAVE-11: a teammate up to {@link #BEYOND_RANGE} px beyond the target holds the shot when
+     * its predicted track meets the bullet there: a bullet that misses flies on into a hunter on
+     * the prey's far side. Off: ablation tlaneb.
+     */
+    static final boolean NARROW_BEYOND = false;
+    /** WEAVE-11: how far past the target a teammate still holds the shot, px: a HUNT slot's 350 and slack. */
+    static final double BEYOND_RANGE = 450;
+    /** WEAVE-10, WEAVE-11: the bullet speed a teammate's track is judged against, px a tick (power 2). */
+    static final double LANE_BULLET_SPEED = 14;
+    /** WEAVE-10, WEAVE-11: how far along the line, px, a teammate may be from the bullet and still meet it. */
+    static final double LANE_ALONG_SLACK = 40;
 
     private final HadurCore core;
     private final BattleFacts facts;
@@ -82,6 +100,9 @@ final class TeamLink {
     private final EnemyTracker world;
     /** WEAVE-9 or the wide lane (WEAVE-4, WEAVE-7); a test may judge the wide one. */
     boolean narrowLane = NARROW_LANE;
+    /** WEAVE-10 and WEAVE-11 as this link plays them; a test may turn them on. */
+    boolean predictLane = NARROW_PREDICT;
+    boolean beyondLane = NARROW_BEYOND;
     /** WORLD-4: the latest stated tick merged from each teammate this round. */
     private final Map<String, Long> merged = new HashMap<>();
     /** This tick's fresh sightings of enemies, for our report. */
@@ -322,10 +343,34 @@ final class TeamLink {
             double rx = m.x() - in.x();
             double ry = m.y() - in.y();
             double d = Math.hypot(rx, ry);
-            if (d >= target) continue;
-            if (off(rx, ry, gun) <= Math.atan2(NARROW_MATE_HALF, d)) return false;
+            if (d < target && off(rx, ry, gun) <= Math.atan2(NARROW_MATE_HALF, d)) return false;
+            if (d < target ? !predictLane : !beyondLane || d > target + BEYOND_RANGE) continue;
+            if (meetsBullet(in, m, gun, target)) return false;
         }
         return true;
+    }
+
+    /**
+     * WEAVE-10, WEAVE-11: whether teammate {@code m}'s predicted track meets a bullet flying the
+     * gun's line at {@link #LANE_BULLET_SPEED}: on some tick of the flight, its place lies within
+     * {@link #NARROW_MATE_HALF} of the line and within {@link #LANE_ALONG_SLACK} of the bullet
+     * along it. The flight is judged as far as the target, or {@link #BEYOND_RANGE} past it when
+     * WEAVE-11 is played.
+     */
+    private boolean meetsBullet(BotInput in, Roster.Mate m, double gun, double target) {
+        double dx = Math.sin(gun);
+        double dy = Math.cos(gun);
+        double reach = beyondLane ? target + BEYOND_RANGE : target;
+        if (Double.isInfinite(reach)) reach = MAX_FLIGHT * SLOWEST_BULLET;
+        int ticks = (int) Math.ceil((reach + LANE_ALONG_SLACK) / LANE_BULLET_SPEED);
+        for (int t = 1; t <= ticks; t++) {
+            Point2D.Double p = m.at(in.time() + t);
+            double along = (p.x - in.x()) * dx + (p.y - in.y()) * dy;
+            if (along > reach) continue;
+            if (Math.abs(along - LANE_BULLET_SPEED * t) > LANE_ALONG_SLACK) continue;
+            if (Math.abs((p.x - in.x()) * dy - (p.y - in.y()) * dx) <= NARROW_MATE_HALF) return true;
+        }
+        return false;
     }
 
     /** How far, radians, the bearing to {@code (rx, ry)} lies from {@code heading}. */
