@@ -381,7 +381,7 @@ class TeamLinkTest {
 
     @Test
     @Tag("WEAVE-10")
-    @DisplayName("WEAVE-10: off as shipped; on, a teammate nearer than the target holds the shot where it will be when the bullet arrives")
+    @DisplayName("WEAVE-10: off as shipped; on, a teammate nearer than the target holds the shot when its predicted track meets the bullet")
     void predictedMateHoldsTheShot() {
         assertFalse(TeamLink.NARROW_PREDICT);
         // 300 px up and 60 px east, walking west at 4: 11 degrees off the line now, on it
@@ -392,6 +392,11 @@ class TeamLinkTest {
         // Walking east, away from the line: the shot leaves.
         List<BotEvent> leaving = List.of(scan("e.A", 0, 500), scan("e.B", 2.5, 350), mateScan(300, 60, Math.PI / 2, 4));
         assertTrue(fired(leaving, 6, true, true, false) > 0, "predicted out of the line");
+        // 491 px up and 141 east, running south-west at 8: it meets a bullet 350 px up the line
+        // on tick 25 and is wide of the line again before a bullet would reach its first distance.
+        List<BotEvent> early = List.of(scan("e.A", 0, 550), scan("e.B", 2.5, 350), mateScan(491.4, 141.4, 5 * Math.PI / 4, 8));
+        assertTrue(fired(early, 6, true) > 0, "the narrow lane alone fires");
+        assertEquals(0, fired(early, 6, true, true, false), 1e-9, "met on the bullet's way");
     }
 
     @Test

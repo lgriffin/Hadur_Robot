@@ -1,7 +1,7 @@
 # Team friendly-fire lane (WEAVE-10, WEAVE-11; docs/plan-team-top5.md section 10), team thread:
 # team-only, duel and melee fixtures bit for bit. Since the narrow lane (step C) our bullets hit our
 # own members 21,600 times a 46x6 run (6,100 before); this screens two ways to hold those shots.
-#   tlbb A/A, tllp WEAVE-10 (nearer mate judged where it will be when the bullet arrives),
+#   tlbb A/A, tllp WEAVE-10 (nearer mate judged along its predicted track against the bullet),
 #   tllb WEAVE-11 (mate up to 450 px beyond the target, e.g. a HUNT pincer on the prey's far side).
 # 46 teams x 6 seeds (seed base 4100) per arm, 1,656 battles, about 1.8 h at 12 workers.
 # Every step resumes where it stopped. The team thread reads claude/pc-team-lane-results.
