@@ -153,9 +153,14 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color">
 <div class="block"><a class="req" href="../../../../requirements.html#MOVE-5">MOVE-5</a>: the padded hit rate, in percent, at which the flattener views switch on.</div>
 </div>
-<div class="col-first odd-row-color"><code>static final int</code></div>
-<div class="col-second odd-row-color"><code><a href="#SAMPLE_WIDTH" class="member-name-link">SAMPLE_WIDTH</a></code></div>
+<div class="col-first odd-row-color"><code>(package private) static final int</code></div>
+<div class="col-second odd-row-color"><code><a href="#MIMIC_SCORE_BINS" class="member-name-link">MIMIC_SCORE_BINS</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">MOVE-27: the bins the ensemble scores the views' profile in; the stop-point surf's.</div>
+</div>
+<div class="col-first even-row-color"><code>static final int</code></div>
+<div class="col-second even-row-color"><code><a href="#SAMPLE_WIDTH" class="member-name-link">SAMPLE_WIDTH</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">A surf seed sample: the flattener formula's 11 data-point values (the normal views use
  the first 9), the simple view's lateral-velocity value, and the guess factor that hit us.</div>
 </div>
@@ -309,145 +314,157 @@ loadScripts(document, 'script');</script>
 <div class="block">The power to give a new enemy wave before we know if it is a shot: the last shot's
  power this round, else 1.9.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hasOptions(hadur2.core.model.Wave)" class="member-name-link">hasOptions</a><wbr>(<a href="../model/Wave.html" title="class in hadur2.core.model">Wave</a>&nbsp;w)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="GunMimics.html" title="class in hadur2.core.move">GunMimics</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#gunMimics()" class="member-name-link">gunMimics</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">MOVE-27: the ensemble, or null.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hasOptions(hadur2.core.model.Wave)" class="member-name-link">hasOptions</a><wbr>(<a href="../model/Wave.html" title="class in hadur2.core.model">Wave</a>&nbsp;w)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../../../requirements.html#AES-1">AES-1</a>: whether wave <code>w</code> has had its first options published this round.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hitPercentageMarginOfError()" class="member-name-link">hitPercentageMarginOfError</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hitPercentageMarginOfError()" class="member-name-link">hitPercentageMarginOfError</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">The 95% margin of error of <a href="#normalizedEnemyHitPercentage()"><code>normalizedEnemyHitPercentage()</code></a>, in percent: the
  normal approximation <code>1.96 sqrt(p (1 - p) / n)</code> over the firing waves.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#initRound()" class="member-name-link">initRound</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#initRound()" class="member-name-link">initRound</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Starts a round, or recovers after a fault (<a class="req" href="../../../../requirements.html#RES-1">RES-1</a>): drops the waves, our bullets and
  this round's counts, and the cached neighbours.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) double</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#kernel(double,double,java.util.List)" class="member-name-link">kernel</a><wbr>(double&nbsp;at,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) double</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#kernel(double,double,java.util.List)" class="member-name-link">kernel</a><wbr>(double&nbsp;at,
  double&nbsp;bandwidth,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;double[]&gt;&nbsp;segments)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../../../requirements.html#MOVE-4">MOVE-4</a> or <a class="req" href="../../../../requirements.html#MOVE-21">MOVE-21</a>: the kernel's weight for a neighbour at angle <code>at</code>: the integrated
  mass, or with the point kernel on, <code>2^-|u|</code> at the intersection's centre
  (<code>u</code> in bandwidths), scaled by the share of the intersection the shadows leave.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static double</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#kernelMass(double,double,java.util.List)" class="member-name-link">kernelMass</a><wbr>(double&nbsp;at,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static double</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#kernelMass(double,double,java.util.List)" class="member-name-link">kernelMass</a><wbr>(double&nbsp;at,
  double&nbsp;bandwidth,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;double[]&gt;&nbsp;segments)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../../../requirements.html#MOVE-3">MOVE-3</a>, <a class="req" href="../../../../requirements.html#MOVE-4">MOVE-4</a>: the mass of the kernel <code>2^(-|a - at| / bandwidth)</code> over the
  intersection's segments, each scaled by its transmission, and normalised so that a kernel
  centred on an unshadowed intersection scores 1 (the value the point kernel gave there).</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#lastChosenFor(hadur2.core.model.Wave)" class="member-name-link">lastChosenFor</a><wbr>(<a href="../model/Wave.html" title="class in hadur2.core.model">Wave</a>&nbsp;w)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#lastChosenFor(hadur2.core.model.Wave)" class="member-name-link">lastChosenFor</a><wbr>(<a href="../model/Wave.html" title="class in hadur2.core.model">Wave</a>&nbsp;w)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../../../requirements.html#MOVE-10">MOVE-10</a>: the ordinal of the option taken with <a href="#lastOptionsFor(hadur2.core.model.Wave)"><code>lastOptionsFor(hadur2.core.model.Wave)</code></a>, or -1.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="PlanInterval.html" title="class in hadur2.core.move">PlanInterval</a>[]</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#lastOptionsFor(hadur2.core.model.Wave)" class="member-name-link">lastOptionsFor</a><wbr>(<a href="../model/Wave.html" title="class in hadur2.core.model">Wave</a>&nbsp;w)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="PlanInterval.html" title="class in hadur2.core.move">PlanInterval</a>[]</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#lastOptionsFor(hadur2.core.model.Wave)" class="member-name-link">lastOptionsFor</a><wbr>(<a href="../model/Wave.html" title="class in hadur2.core.model">Wave</a>&nbsp;w)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../../../requirements.html#MOVE-10">MOVE-10</a>: the options last published for wave <code>w</code>, or null when there are none.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>long</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#lastOptionTime(hadur2.core.model.Wave)" class="member-name-link">lastOptionTime</a><wbr>(<a href="../model/Wave.html" title="class in hadur2.core.model">Wave</a>&nbsp;w)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>long</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#lastOptionTime(hadur2.core.model.Wave)" class="member-name-link">lastOptionTime</a><wbr>(<a href="../model/Wave.html" title="class in hadur2.core.model">Wave</a>&nbsp;w)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../../../requirements.html#MOVE-10">MOVE-10</a>: the tick <a href="#lastOptionsFor(hadur2.core.model.Wave)"><code>lastOptionsFor(hadur2.core.model.Wave)</code></a> was published, or -1 when there is none.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="PlanInterval.html" title="class in hadur2.core.move">PlanInterval</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#lastPlanFor(hadur2.core.model.Wave)" class="member-name-link">lastPlanFor</a><wbr>(<a href="../model/Wave.html" title="class in hadur2.core.model">Wave</a>&nbsp;w)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="PlanInterval.html" title="class in hadur2.core.move">PlanInterval</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#lastPlanFor(hadur2.core.model.Wave)" class="member-name-link">lastPlanFor</a><wbr>(<a href="../model/Wave.html" title="class in hadur2.core.model">Wave</a>&nbsp;w)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../../../requirements.html#MOVE-9">MOVE-9</a>: the last interval the surf published for wave <code>w</code> this round, or null when
  it never planned on it.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>long</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#lastPlanTime(hadur2.core.model.Wave)" class="member-name-link">lastPlanTime</a><wbr>(<a href="../model/Wave.html" title="class in hadur2.core.model">Wave</a>&nbsp;w)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>long</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#lastPlanTime(hadur2.core.model.Wave)" class="member-name-link">lastPlanTime</a><wbr>(<a href="../model/Wave.html" title="class in hadur2.core.model">Wave</a>&nbsp;w)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../../../requirements.html#MOVE-9">MOVE-9</a>: the tick <a href="#lastPlanFor(hadur2.core.model.Wave)"><code>lastPlanFor(hadur2.core.model.Wave)</code></a> was published, or -1 when there is none.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#logBulletHit(hadur2.core.model.Wave,java.awt.geom.Point2D.Double,int,long)" class="member-name-link">logBulletHit</a><wbr>(<a href="../model/Wave.html" title="class in hadur2.core.model">Wave</a>&nbsp;hitWave,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#logBulletHit(hadur2.core.model.Wave,java.awt.geom.Point2D.Double,int,long)" class="member-name-link">logBulletHit</a><wbr>(<a href="../model/Wave.html" title="class in hadur2.core.model">Wave</a>&nbsp;hitWave,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;bulletLocation,
  int&nbsp;currentRound,
  long&nbsp;currentTime)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">An enemy bullet hit us: teaches every hit view the guess factor it was fired at, and
  hands the stored-sample form to the sample sink.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#normalizedEnemyHitPercentage()" class="member-name-link">normalizedEnemyHitPercentage</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#normalizedEnemyHitPercentage()" class="member-name-link">normalizedEnemyHitPercentage</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block"><a href="#normalizedEnemyHitRate()"><code>normalizedEnemyHitRate()</code></a>, in percent: what the views' thresholds compare to.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#normalizedEnemyHitRate()" class="member-name-link">normalizedEnemyHitRate</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#normalizedEnemyHitRate()" class="member-name-link">normalizedEnemyHitRate</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">The enemy's normalised hit rate on us this battle: weighted hits per firing wave, a
  fraction; 0 before any wave has broken.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#ourBulletFired(hadur2.core.move.OurBullet)" class="member-name-link">ourBulletFired</a><wbr>(<a href="OurBullet.html" title="class in hadur2.core.move">OurBullet</a>&nbsp;bullet)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#ourBulletFired(hadur2.core.move.OurBullet)" class="member-name-link">ourBulletFired</a><wbr>(<a href="OurBullet.html" title="class in hadur2.core.move">OurBullet</a>&nbsp;bullet)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../../../requirements.html#MOVE-1">MOVE-1</a>: one of our bullets has left the gun.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#ourBulletGone(double,double)" class="member-name-link">ourBulletGone</a><wbr>(double&nbsp;heading,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#ourBulletGone(double,double)" class="member-name-link">ourBulletGone</a><wbr>(double&nbsp;heading,
  double&nbsp;power)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../../../requirements.html#MOVE-1">MOVE-1</a>: one of our bullets hit, missed or met a bullet.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#ourBulletsInFlight()" class="member-name-link">ourBulletsInFlight</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#ourBulletsInFlight()" class="member-name-link">ourBulletsInFlight</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../../../requirements.html#MOVE-1">MOVE-1</a>: our bullets still in flight, as far as the events and the field edge tell.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="PlanInterval.html" title="class in hadur2.core.move">PlanInterval</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#planIntervals()" class="member-name-link">planIntervals</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="PlanInterval.html" title="class in hadur2.core.move">PlanInterval</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#planIntervals()" class="member-name-link">planIntervals</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">MOVE-8: the guess-factor interval, as the absolute bearing interval from each wave's
  source, that the current plan occupies when that wave arrives, for each enemy wave in
  the air the surf scored.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static double</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#pointKernelValue(double,double,java.util.List)" class="member-name-link">pointKernelValue</a><wbr>(double&nbsp;at,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static double</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#pointKernelValue(double,double,java.util.List)" class="member-name-link">pointKernelValue</a><wbr>(double&nbsp;at,
  double&nbsp;bandwidth,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;double[]&gt;&nbsp;segments)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#priorInUse()" class="member-name-link">priorInUse</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#priorInUse()" class="member-name-link">priorInUse</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Whether the profile's estimate is deciding the danger views right now (the same test
  as the view estimate's).</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static int</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#profileBin(double,int)" class="member-name-link">profileBin</a><wbr>(double&nbsp;gf,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#profileBin(double,int)" class="member-name-link">profileBin</a><wbr>(double&nbsp;gf,
  int&nbsp;bins)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">MOVE-25: the bin of <code>gf</code> among <code>bins</code> equal bins over [-1, 1], clamped.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#publishOptions(hadur2.core.move.PlanInterval%5B%5D,int)" class="member-name-link">publishOptions</a><wbr>(<a href="PlanInterval.html" title="class in hadur2.core.move">PlanInterval</a>[]&nbsp;options,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#publishOptions(hadur2.core.move.PlanInterval%5B%5D,int)" class="member-name-link">publishOptions</a><wbr>(<a href="PlanInterval.html" title="class in hadur2.core.move">PlanInterval</a>[]&nbsp;options,
  int&nbsp;chosen)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../../../requirements.html#MOVE-10">MOVE-10</a>: the three-option surf's plan on its first wave for every option it rated this
  tick, by option ordinal (a null slot for an option with no plan there), and the ordinal
  it took.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#publishPlan(java.util.List)" class="member-name-link">publishPlan</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="PlanInterval.html" title="class in hadur2.core.move">PlanInterval</a>&gt;&nbsp;intervals)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#publishPlan(java.util.List)" class="member-name-link">publishPlan</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="PlanInterval.html" title="class in hadur2.core.move">PlanInterval</a>&gt;&nbsp;intervals)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">MOVE-8: the surf publishes the intervals its plan occupies, one per enemy wave in the
  air that it scored, nearest wave first.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) double[]</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#replicatorMultipliers()" class="member-name-link">replicatorMultipliers</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) double[]</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#replicatorMultipliers()" class="member-name-link">replicatorMultipliers</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../../../requirements.html#MOVE-16">MOVE-16</a>: each view's multiplier, in the order the views were built; all 1 until learned.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#scoreIntercept(hadur2.core.model.Wave,java.awt.geom.Point2D.Double)" class="member-name-link">scoreIntercept</a><wbr>(<a href="../model/Wave.html" title="class in hadur2.core.model">Wave</a>&nbsp;w,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;bulletLocation)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">MOVE-27: an enemy bullet our bullet met at <code>bulletLocation</code>, when the views do not learn
+ it (<a class="req" href="../../../../requirements.html#MOVE-19">MOVE-19</a> off): its angle still scores the ensemble's models.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#seed(double%5B%5D,hadur2.core.model.SeedWeight)" class="member-name-link">seed</a><wbr>(double[]&nbsp;sample,
@@ -469,69 +486,82 @@ loadScripts(document, 'script');</script>
  thresholds.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setKShare(double)" class="member-name-link">setKShare</a><wbr>(double&nbsp;kShare)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setGunMimics(hadur2.core.move.GunMimics)" class="member-name-link">setGunMimics</a><wbr>(<a href="GunMimics.html" title="class in hadur2.core.move">GunMimics</a>&nbsp;mimics)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">MOVE-27: sets the ensemble (duel only); null turns it off.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setKShare(double)" class="member-name-link">setKShare</a><wbr>(double&nbsp;kShare)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../../../requirements.html#TIME-1">TIME-1</a>, <a class="req" href="../../../../requirements.html#TIME-2">TIME-2</a>: the share of k every danger view uses; 1 is all of it.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setPointKernel(boolean)" class="member-name-link">setPointKernel</a><wbr>(boolean&nbsp;on)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setPointKernel(boolean)" class="member-name-link">setPointKernel</a><wbr>(boolean&nbsp;on)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../../../requirements.html#MOVE-21">MOVE-21</a>: the danger kernel is the point value at the intersection centre (Diamond's); off, <a class="req" href="../../../../requirements.html#MOVE-4">MOVE-4</a>'s integral.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setPrior(double,double)" class="member-name-link">setPrior</a><wbr>(double&nbsp;hitRate,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setPrior(double,double)" class="member-name-link">setPrior</a><wbr>(double&nbsp;hitRate,
  double&nbsp;marginOfError)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../../../requirements.html#ADAPT-2">ADAPT-2</a>, <a class="req" href="../../../../requirements.html#DIAL-1">DIAL-1</a>: the enemy's normalised hit rate on us as the profile knows it.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setProvisionalHold(boolean)" class="member-name-link">setProvisionalHold</a><wbr>(boolean&nbsp;hold)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setProvisionalHold(boolean)" class="member-name-link">setProvisionalHold</a><wbr>(boolean&nbsp;hold)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../../../requirements.html#MOVE-13">MOVE-13</a>: whether the provisional wave is held while the gun stays ready (<a class="req" href="../../../../requirements.html#MOVE-11">MOVE-11</a>) or taken
  afresh each tick, which makes the surf re-rank its options every tick.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setProvisionalReady(boolean,long)" class="member-name-link">setProvisionalReady</a><wbr>(boolean&nbsp;ready,
- long&nbsp;time)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setReplicator(boolean)" class="member-name-link">setReplicator</a><wbr>(boolean&nbsp;on)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setProvisionalReady(boolean,long)" class="member-name-link">setProvisionalReady</a><wbr>(boolean&nbsp;ready,
+ long&nbsp;time)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setReplicator(boolean)" class="member-name-link">setReplicator</a><wbr>(boolean&nbsp;on)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../../../requirements.html#MOVE-16">MOVE-16</a>: whether each enemy bullet that hits us moves the danger views' weights toward the
  views that predicted it (the replicator equation, <a href="ReplicatorWeights.html" title="class in hadur2.core.move"><code>ReplicatorWeights</code></a>).</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSampleSink(java.util.function.Consumer)" class="member-name-link">setSampleSink</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;double[]&gt;&nbsp;sampleSink)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSampleSink(java.util.function.Consumer)" class="member-name-link">setSampleSink</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;double[]&gt;&nbsp;sampleSink)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Receives one <a href="#SAMPLE_WIDTH"><code>SAMPLE_WIDTH</code></a>-value sample per enemy bullet that hits us: the
  <a href="FlattenerFormula.html" title="class in hadur2.core.move"><code>FlattenerFormula</code></a> point of the wave (0 to 10), the <a href="SimpleFormula.html" title="class in hadur2.core.move"><code>SimpleFormula</code></a>
  lateral-velocity value (11) and the guess factor that hit (12).</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setShotDodger(hadur2.core.physics.ShotDodger)" class="member-name-link">setShotDodger</a><wbr>(<a href="../physics/ShotDodger.html" title="class in hadur2.core.physics">ShotDodger</a>&nbsp;dodger)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setShotDodger(hadur2.core.physics.ShotDodger)" class="member-name-link">setShotDodger</a><wbr>(<a href="../physics/ShotDodger.html" title="class in hadur2.core.physics">ShotDodger</a>&nbsp;dodger)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../../../requirements.html#DODGE-2">DODGE-2</a>: sets the dodger the surf asks for each wave's danger; null turns it off.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#shadowComputations()" class="member-name-link">shadowComputations</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#shadowComputations()" class="member-name-link">shadowComputations</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../../../requirements.html#MOVE-1">MOVE-1</a>: how many times a wave's shadows were computed this round.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#shadowedWaves()" class="member-name-link">shadowedWaves</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#shadowedWaves()" class="member-name-link">shadowedWaves</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../../../requirements.html#MOVE-1">MOVE-1</a>: enemy firing waves one of our bullets shadowed this round.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../physics/ShotDodger.html" title="class in hadur2.core.physics">ShotDodger</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#shotDodger()" class="member-name-link">shotDodger</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../physics/ShotDodger.html" title="class in hadur2.core.physics">ShotDodger</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#shotDodger()" class="member-name-link">shotDodger</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../../../requirements.html#DODGE-2">DODGE-2</a>: the dodger, or null.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#soonestFiringImpact(hadur2.core.model.RobotState)" class="member-name-link">soonestFiringImpact</a><wbr>(<a href="../model/RobotState.html" title="class in hadur2.core.model">RobotState</a>&nbsp;myState)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#soonestFiringImpact(hadur2.core.model.RobotState)" class="member-name-link">soonestFiringImpact</a><wbr>(<a href="../model/RobotState.html" title="class in hadur2.core.model">RobotState</a>&nbsp;myState)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../../../requirements.html#MOVE-14">MOVE-14</a>: the fewest ticks before a real (firing) wave that has not yet hit us or met
  one of our bullets reaches our centre, as we stand now; infinity when there is none.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double[]</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#surfProfile(hadur2.core.model.Wave,int,int)" class="member-name-link">surfProfile</a><wbr>(<a href="../model/Wave.html" title="class in hadur2.core.model">Wave</a>&nbsp;w,
+ int&nbsp;surfWaveIndex,
+ int&nbsp;bins)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">MOVE-27: the profile the stop-point surf rates <code>w</code> on: the views' <a href="#dangerProfile(hadur2.core.model.Wave,int,int)"><code>dangerProfile(hadur2.core.model.Wave, int, int)</code></a>,
+ blended with the enemy-gun ensemble's models when it is on.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Boolean.html" title="class or interface in java.lang" class="external-link">Boolean</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#takeBrokenWaveOutcomes()" class="member-name-link">takeBrokenWaveOutcomes</a>()</code></div>
@@ -639,6 +669,21 @@ loadScripts(document, 'script');</script>
 </dl>
 </section>
 </li>
+<li>
+<section class="detail" id="MIMIC_SCORE_BINS">
+<h3>MIMIC_SCORE_BINS</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">MIMIC_SCORE_BINS</span></div>
+<div class="block">MOVE-27: the bins the ensemble scores the views' profile in; the stop-point surf's.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur2.core.move.MoveController.MIMIC_SCORE_BINS">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
 </ul>
 </section>
 </li>
@@ -719,6 +764,20 @@ loadScripts(document, 'script');</script>
 <h3>shotDodger</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../physics/ShotDodger.html" title="class in hadur2.core.physics">ShotDodger</a></span>&nbsp;<span class="element-name">shotDodger</span>()</div>
 <div class="block"><a class="req" href="../../../../requirements.html#DODGE-2">DODGE-2</a>: the dodger, or null.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="setGunMimics(hadur2.core.move.GunMimics)">
+<h3>setGunMimics</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setGunMimics</span><wbr><span class="parameters">(<a href="GunMimics.html" title="class in hadur2.core.move">GunMimics</a>&nbsp;mimics)</span></div>
+<div class="block">MOVE-27: sets the ensemble (duel only); null turns it off.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="gunMimics()">
+<h3>gunMimics</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="GunMimics.html" title="class in hadur2.core.move">GunMimics</a></span>&nbsp;<span class="element-name">gunMimics</span>()</div>
+<div class="block">MOVE-27: the ensemble, or null.</div>
 </section>
 </li>
 <li>
@@ -1385,6 +1444,25 @@ loadScripts(document, 'script');</script>
 <dt>Returns:</dt>
 <dd>the histogram, summing to 1</dd>
 </dl>
+</section>
+</li>
+<li>
+<section class="detail" id="surfProfile(hadur2.core.model.Wave,int,int)">
+<h3>surfProfile</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">double[]</span>&nbsp;<span class="element-name">surfProfile</span><wbr><span class="parameters">(<a href="../model/Wave.html" title="class in hadur2.core.model">Wave</a>&nbsp;w,
+ int&nbsp;surfWaveIndex,
+ int&nbsp;bins)</span></div>
+<div class="block">MOVE-27: the profile the stop-point surf rates <code>w</code> on: the views' <a href="#dangerProfile(hadur2.core.model.Wave,int,int)"><code>dangerProfile(hadur2.core.model.Wave, int, int)</code></a>,
+ blended with the enemy-gun ensemble's models when it is on.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="scoreIntercept(hadur2.core.model.Wave,java.awt.geom.Point2D.Double)">
+<h3>scoreIntercept</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">scoreIntercept</span><wbr><span class="parameters">(<a href="../model/Wave.html" title="class in hadur2.core.model">Wave</a>&nbsp;w,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;bulletLocation)</span></div>
+<div class="block">MOVE-27: an enemy bullet our bullet met at <code>bulletLocation</code>, when the views do not learn
+ it (<a class="req" href="../../../../requirements.html#MOVE-19">MOVE-19</a> off): its angle still scores the ensemble's models. Does nothing when it is off.</div>
 </section>
 </li>
 <li>

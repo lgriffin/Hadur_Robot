@@ -181,61 +181,68 @@ loadScripts(document, 'script');</script>
  the round; it is dropped from level 2, where the k halving and the go-to shedding also stay.</div>
 </div>
 <div class="col-first odd-row-color"><code>(package private) static final boolean</code></div>
-<div class="col-second odd-row-color"><code><a href="#POINT_KERNEL" class="member-name-link">POINT_KERNEL</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#MIMICS" class="member-name-link">MIMICS</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">MOVE-27: with <a href="#STOP_POINT_SURF"><code>STOP_POINT_SURF</code></a>, the stop-point surf rates waves on the enemy-gun
+ ensemble (GunMimics): the views blended with visit-trained mimics of common learning guns,
+ each weighted by how well it predicted the real bullets, cubed.</div>
+</div>
+<div class="col-first even-row-color"><code>(package private) static final boolean</code></div>
+<div class="col-second even-row-color"><code><a href="#POINT_KERNEL" class="member-name-link">POINT_KERNEL</a></code></div>
+<div class="col-last even-row-color">
 <div class="block"><a class="req" href="../../../../requirements.html#MOVE-21">MOVE-21</a>: the danger kernel is the point value 2^-|u| at the intersection's centre
  (Diamond's), not <a class="req" href="../../../../requirements.html#MOVE-4">MOVE-4</a>'s integral over the intersection.</div>
 </div>
-<div class="col-first even-row-color"><code>(package private) static final boolean</code></div>
-<div class="col-second even-row-color"><code><a href="#PROTEAN" class="member-name-link">PROTEAN</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code>(package private) static final boolean</code></div>
+<div class="col-second odd-row-color"><code><a href="#PROTEAN" class="member-name-link">PROTEAN</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block"><a class="req" href="../../../../requirements.html#MOVE-14">MOVE-14</a>: while the enemy's gun is cool and no real bullet is within 10 ticks, the surf draws
  its option from the protean pick (a softmin over the option dangers, a replaying chaotic die)
  instead of taking the least danger.</div>
 </div>
-<div class="col-first odd-row-color"><code>(package private) static final int</code></div>
-<div class="col-second odd-row-color"><code><a href="#PROTEAN_DWELL" class="member-name-link">PROTEAN_DWELL</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code>(package private) static final int</code></div>
+<div class="col-second even-row-color"><code><a href="#PROTEAN_DWELL" class="member-name-link">PROTEAN_DWELL</a></code></div>
+<div class="col-last even-row-color">
 <div class="block"><a class="req" href="../../../../requirements.html#MOVE-14">MOVE-14</a>: the protean pick's mean dwell, in ticks; 1 re-picks every tick.</div>
 </div>
-<div class="col-first even-row-color"><code>(package private) static final boolean</code></div>
-<div class="col-second even-row-color"><code><a href="#RAM_HEAT" class="member-name-link">RAM_HEAT</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code>(package private) static final boolean</code></div>
+<div class="col-second odd-row-color"><code><a href="#RAM_HEAT" class="member-name-link">RAM_HEAT</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block"><a class="req" href="../../../../requirements.html#RAM-4">RAM-4</a>: once the opponent is a confirmed rammer (<a class="req" href="../../../../requirements.html#RAM-2">RAM-2</a>), the duel plays as with heatjit on
  (<a class="req" href="../../../../requirements.html#MOVE-11">MOVE-11</a>'s gun-heat wave offered, <a class="req" href="../../../../requirements.html#MOVE-13">MOVE-13</a>'s hold off) for the rest of the battle.</div>
 </div>
-<div class="col-first odd-row-color"><code>(package private) static final boolean</code></div>
-<div class="col-second odd-row-color"><code><a href="#REPLICATOR" class="member-name-link">REPLICATOR</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code>(package private) static final boolean</code></div>
+<div class="col-second even-row-color"><code><a href="#REPLICATOR" class="member-name-link">REPLICATOR</a></code></div>
+<div class="col-last even-row-color">
 <div class="block"><a class="req" href="../../../../requirements.html#MOVE-16">MOVE-16</a>: the danger views' weights evolve by the replicator equation.</div>
 </div>
-<div class="col-first even-row-color"><code>(package private) static final boolean</code></div>
-<div class="col-second even-row-color"><code><a href="#SHOT_DODGE" class="member-name-link">SHOT_DODGE</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code>(package private) static final boolean</code></div>
+<div class="col-second odd-row-color"><code><a href="#SHOT_DODGE" class="member-name-link">SHOT_DODGE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block"><a class="req" href="../../../../requirements.html#DODGE-3">DODGE-3</a>: dodge the enemy's simple aim (<a class="req" href="../../../../requirements.html#DODGE-1">DODGE-1</a>, <a class="req" href="../../../../requirements.html#DODGE-2">DODGE-2</a>) against every opponent, not only
  those the table names.</div>
 </div>
-<div class="col-first odd-row-color"><code>(package private) static final boolean</code></div>
-<div class="col-second odd-row-color"><code><a href="#STACK_LIST" class="member-name-link">STACK_LIST</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code>(package private) static final boolean</code></div>
+<div class="col-second even-row-color"><code><a href="#STACK_LIST" class="member-name-link">STACK_LIST</a></code></div>
+<div class="col-last even-row-color">
 <div class="block"><a class="req" href="../../../../requirements.html#MOVE-23">MOVE-23</a>: the stop-and-start stack (<a class="req" href="../../../../requirements.html#MOVE-13">MOVE-13</a> heatjit, <a class="req" href="../../../../requirements.html#SHIELD-14">SHIELD-14</a> swall, and <a class="req" href="../../../../requirements.html#MOVE-20">MOVE-20</a>, <a class="req" href="../../../../requirements.html#MOVE-21">MOVE-21</a>
  and <a class="req" href="../../../../requirements.html#TIME-6">TIME-6</a> whenever those are on) applies only to opponents not on the stack off-list;
  a listed opponent plays as if those switches were off.</div>
 </div>
-<div class="col-first even-row-color"><code>(package private) static final boolean</code></div>
-<div class="col-second even-row-color"><code><a href="#STOP_AND_GO" class="member-name-link">STOP_AND_GO</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code>(package private) static final boolean</code></div>
+<div class="col-second odd-row-color"><code><a href="#STOP_AND_GO" class="member-name-link">STOP_AND_GO</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block"><a class="req" href="../../../../requirements.html#POISON-2">POISON-2</a>: stop-and-go (<a class="req" href="../../../../requirements.html#POISON-1">POISON-1</a>) against every opponent, not only those the table names,
  with the reverse crawl <a href="#STOP_AND_GO_PREFIRE"><code>STOP_AND_GO_PREFIRE</code></a> ticks before the enemy's gun is ready.</div>
 </div>
-<div class="col-first odd-row-color"><code>(package private) static final int</code></div>
-<div class="col-second odd-row-color"><code><a href="#STOP_AND_GO_PREFIRE" class="member-name-link">STOP_AND_GO_PREFIRE</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code>(package private) static final int</code></div>
+<div class="col-second even-row-color"><code><a href="#STOP_AND_GO_PREFIRE" class="member-name-link">STOP_AND_GO_PREFIRE</a></code></div>
+<div class="col-last even-row-color">
 <div class="block"><a class="req" href="../../../../requirements.html#POISON-2">POISON-2</a>: the forced stop-and-go's variant: 1 WavePoison, 2 WavePoisonShift.</div>
 </div>
-<div class="col-first even-row-color"><code>(package private) static final boolean</code></div>
-<div class="col-second even-row-color"><code><a href="#STOP_POINT_SURF" class="member-name-link">STOP_POINT_SURF</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code>(package private) static final boolean</code></div>
+<div class="col-second odd-row-color"><code><a href="#STOP_POINT_SURF" class="member-name-link">STOP_POINT_SURF</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">MOVE-25: the duel surfs with the stop-point surf (StopPointSurf, docs/bench/surf-b-rivals-read.md):
  dozens of stop points both ways rated on a smoothed probability histogram of the same views,
  BeepBoop's 1 / sqrt(4 + t) time weight, two waves, and a plan kept until the waves or the
@@ -590,6 +597,23 @@ loadScripts(document, 'script');</script>
 <dd>
 <ul class="tag-list">
 <li><a href="../../../constant-values.html#hadur2.core.duel.MoveDesign.AIM_MIX">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="MIMICS">
+<h3>MIMICS</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">MIMICS</span></div>
+<div class="block">MOVE-27: with <a href="#STOP_POINT_SURF"><code>STOP_POINT_SURF</code></a>, the stop-point surf rates waves on the enemy-gun
+ ensemble (GunMimics): the views blended with visit-trained mimics of common learning guns,
+ each weighted by how well it predicted the real bullets, cubed.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur2.core.duel.MoveDesign.MIMICS">Constant Field Values</a></li>
 </ul>
 </dd>
 </dl>
