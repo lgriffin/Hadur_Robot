@@ -150,6 +150,31 @@ class ShieldListResourceTest {
     }
 
     @Test
+    @Tag("POISON-2")
+    @DisplayName("mode table v2's stop-and-go entries (PR #263, gate +0.61 APS): 18 variant 1, 35 variant 2")
+    void listHoldsModeTableV2() {
+        List<String> lines = new java.util.ArrayList<>(Arrays.asList(ShieldListData.lines()));
+        for (String name : ShieldTableData.stopGos()) lines.add(ShieldList.STOP_GO_PREFIX + " " + name);
+        for (String name : ShieldTableData.stopGoShifts()) lines.add(ShieldList.STOP_GO_SHIFT_PREFIX + " " + name);
+        ShieldList list = ShieldList.parse(lines);
+        assertEquals(18, ShieldTableData.stopGos().length);
+        assertEquals(35, ShieldTableData.stopGoShifts().length);
+        assertEquals(18, new java.util.HashSet<>(Arrays.asList(ShieldTableData.stopGos())).size(), "no duplicates");
+        assertEquals(35, new java.util.HashSet<>(Arrays.asList(ShieldTableData.stopGoShifts())).size(), "no duplicates");
+        // DuelistMicroMkII is on both: the verify gate measured it that way, so it stays as measured.
+        java.util.Set<String> both = java.util.Set.of("davidalves.net.DuelistMicroMkII 1.1");
+        for (String name : ShieldTableData.stopGos()) {
+            assertEquals(1, list.stopGo(name), name);
+            assertTrue(!list.matches(name) || both.contains(name), "a stop-and-go robot is not shielded: " + name);
+        }
+        for (String name : ShieldTableData.stopGoShifts()) {
+            assertEquals(2, list.stopGo(name), name);
+            assertTrue(!list.matches(name) || both.contains(name), "a stop-and-go robot is not shielded: " + name);
+        }
+        assertEquals(0, list.stopGo("dft.Cyanide 1.90"));
+    }
+
+    @Test
     @DisplayName("the robot never reads a resource of its own jar: Robocode's sandbox kills it for that")
     void noResourceReads() throws java.io.IOException {
         java.nio.file.Path src = java.nio.file.Path.of("src/main/java/hadur2/Hadur.java");
