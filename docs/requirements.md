@@ -1634,3 +1634,17 @@ A retired requirement keeps its ID; no new requirement reuses it.
 - **MOVE-6 is not in this stage.** The profile stores one whole-battle hit count, so a
   same-phase baseline (from the 100th wave) needs new profile fields and a format bump (MEM-9
   carry-forward). It stays on #55.
+
+## Core surf rebuild: the stop-point surf (MOVE-25, MOVE-26)
+
+| ID | Pattern | Requirement | Stage |
+|---|---|---|---|
+| MOVE-25 | State | While the stop-point surf switch is on, in a duel, on a tick with a surfable wave and the tick budget allowing go-to surfing, the surf shall drive to the stop point (where we stand, or one reached along either orbit before the wave passes, kept 7 px apart) whose danger is least, the danger being, per wave, the views' neighbours as a guess-factor histogram smoothed with a Cauchy kernel 0.1 of a guess factor wide and normalised to 1, its mass over the precise intersection of driving there counting only what the bullet shadows let through, times the bullet damage, over sqrt(4 + ticks to impact), times the distancing factor and (650 - 34) / (d - 34) at the leg's end, with the second wave's least such danger added for the ten cheapest first-wave points; and shall keep the point until the waves surfed change, their bullet shadows are recomputed, the danger views learn a hit or a visit, or we are more than 2 px from the planned path. Otherwise the three-option or go-to surf drives. Off by default; melee and team never take it. | R9 |
+| MOVE-26 | State | While MOVE-25 and the simple-aim mix switch are both on, in a duel, the shot dodger shall read every opponent's bullets and the stop-point danger shall be (1 - s) times MOVE-25's mass plus s times whether the most-matched simple aim's bullet crosses the intersection (within DODGE-2's margin, at the shadows' transmission), with s that aim's matches over the bullets read plus 2, and 0 below 2 matches. Off by default. | R9 |
+
+- **MOVE-25.** `MoveDesign.STOP_POINT_SURF` (false), ablation `surfb` (sb), `move/StopPointSurf.java`,
+  handed the tick by `SurfMover.move` before the mode is read. The histogram is
+  `MoveController.dangerProfile` (the views, weights and neighbour cache `getDangerScore` uses).
+  Why: docs/bench/surf-b-rivals-read.md (DrussGT's and BeepBoop's planners).
+- **MOVE-26.** `MoveDesign.AIM_MIX` (false), ablation `aimmix` (am), `StopPointSurf.mass` and
+  `simpleAimShare`; the dodger is `physics/ShotDodger` (DODGE-2), turned on in `DuelController.announce`.
