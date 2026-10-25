@@ -177,3 +177,44 @@ damage taken against learning guns. On the field I estimate +0.1 to +0.5 APS, wi
 the range; 20 robots on a 4-core box cannot settle it. `plans/pc-surf-b.queue` now runs this
 build (arm gm) against 3.16 and its A/A copy on census-312 x 2 seeds, about 3.5-4 h, gated at +0.3
 APS. It is a proposal: it runs only on Leigh's go.
+
+## Census verdict (PC, 2026-10-25): the ensemble loses, -0.75 APS
+
+`plans/pc-surf-b.queue` on the PC (census-312, 1,212 opponents, 2 seeds; results branch
+`claude/pc-surf-b-results`, report `docs/bench/local/2026-10-25_surf-b-census.md`): A/A -0.03 +/-
+0.18 (inside its band, so the run stands); **gm (stop-point surf + MOVE-27 ensemble) -0.75 +/-
+0.16 APS**, against a +0.3 gate. It loses in every band, most where the field is largest:
+
+| Band | Opponents | gm against 3.16 |
+|---|---:|---:|
+| 1 | 10 | -0.56 +/- 3.43 |
+| 2 | 38 | -0.65 +/- 1.48 |
+| 3 | 149 | -0.42 +/- 0.61 |
+| 4 | 200 | -0.57 +/- 0.51 |
+| 5 | 300 | -0.94 +/- 0.32 |
+| 6 | 515 | -0.83 +/- 0.14 |
+
+Skipped turns rose from 31.3 to 42.5 a battle (0.89 to 1.21 a round), and trusted battles fell
+from 94% to 86%.
+
+Why the cloud smokes misled:
+
+- **The panel was the wrong field.** The 20 smoke robots were mid-field learning guns, the one
+  class the ensemble targets. Bands 5-6 (815 of 1,212 opponents) are weak and simple guns, which
+  3.16 already beats at 90-97. There the visit mimics steer us away from where we have been,
+  which a simple gun does not care about, and the stop-point planner replaces a surf that was
+  already tuned for them. Even band 3, the closest to the panel, reads -0.42 +/- 0.61: no band
+  shows the smoke's gain.
+- **The smokes never tested the build against 3.16 on the field.** Smokes 5-8 compared the
+  ensemble with the stop-point surf alone. The stop-point surf itself was only ever smoked on the
+  same 20 robots (level), so its cost on the weak tail was never measured.
+- **CPU.** On the PC at 12 workers the build skips 36% more turns. A skipped turn loses a shot
+  and a move, and that costs most against the bots we otherwise beat cleanly.
+
+Verdict: MOVE-25 and MOVE-27 stay off and are not banked. A blanket switch is closed. A
+per-opponent entry would need per-robot evidence. The bands show no class where the build is
+level, so that is only worth a look if the per-robot rows in the run's `arms.tsv` on the PC show
+robots with a clear gain (a +5 point screen, as the mode table uses). The read on the gap stands:
+against mid-field learning guns no model predicts the bullets much better than chance (GM
+telemetry 1.1-1.6x uniform). Lesson for every later movement smoke: smoke against the census
+mix, or at least bands 5-6, against 3.16 itself, before a card.
