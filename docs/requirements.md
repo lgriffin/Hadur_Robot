@@ -1136,9 +1136,10 @@ MMOVE-8 the melee strand, WEAVE-7 and WEAVE-8 the conductor.
 | TMODE-10 | Optional | Where the REAR mode is played by the team's leader (the member that starts a round with more than 100 energy), each enemy's risk term shall weigh 1.5 times. | T7 |
 | TMODE-11 | Optional | Where the WAVES mode is played, the member shall re-rank its eight lowest-risk destinations, and the destination it holds, by the damage expected from the shots in flight its 30-tick drive to each would cross, each shot a profile over its virtual bullets' headings and its escape angle summing to its aimed-at weight, and shall take the least of risk over the median risk plus three times damage over the median damage (floored at 0.1). | T7 |
 | WEAVE-9 | State | While a living teammate lies ahead of the gun within 30 px of its line, at the teammate's distance, and nearer Hadur than the nearest enemy within 36 px of that line (at any distance when no enemy is), the conductor shall withhold the fire permission. | T7 |
-| TMODE-12 | Ubiquitous | The team mode table's default, for a team it does not name, shall be the MATEFIRE mode. | T7 |
+| TMODE-12 | Ubiquitous | The team mode table's default, for a team it does not name, shall include the MATEFIRE mode. | T7 |
 | MRADAR-3 | Optional | Where the team look switch is on, while on a team with a living teammate, four or more enemies alive and every one seen, if the gun's heat is 0.2 or less and the freshest scan of its last target by any member is two ticks old or more, then the radar shall turn toward that target. | T7 |
 | TMODE-13 | Optional | Where the HUNT mode is played, while Hadur has 20 energy or more, the members (in name order) shall each be assigned the fresh enemy of least (distance + 1.2 × energy)², times 1.6 for an enemy three members already hunt, and Hadur's destination risk, all terms but the bullets' and the posture's, shall be scaled by e^(0.3 (to − from) / 100) for its and Hadur's distances to its place 350 px from its prey, ranked by bearing among the members on that prey and spread up to 70° apart. | T7 |
+| TMODE-14 | Ubiquitous | The team mode table's default, for a team it does not name, shall include the HUNT mode. | T7 |
 
 ### T1 notes
 
@@ -1677,6 +1678,21 @@ A retired requirement keeps its ID; no new requirement reuses it.
 - Solo play is untouched: the lane is asked only through the team link (null off a team), and
   MATEFIRE reads teammates' bullets only while a teammate lives. The duel and melee replay fixtures
   replay bit for bit.
+
+## Team pack hunting (TMODE-13, TMODE-14)
+
+- **Why.** After step C the whole remaining gap to 5th was survival against the top 20, where
+  Nightmare's members hunt in assigned packs (docs/plan-team-top5.md). PACK (TMODE-5) failed by
+  shrinking to point-blank, pulling at full strength and scaling the bullets' risk away.
+- **Gate.** PC card pc-team-hunt (PR #282): all 46 TeamRumble opponents, 6 seeds, paired with the
+  3.17 build. A/A -0.4 ± 0.7; HUNT (`tmhunt`) **+4.1 ± 0.9**, with ShadowTeam +16.5, Aleph +15.3,
+  CombatTeam +12.7, Ogi +8.1 and Nightmare -3.2.
+- **TMODE-13.** `MinimumRiskMovement.huntAssign` and `huntSlot`: leaderless name-order assignment,
+  slots at a fixed `HUNT_RADIUS` (350) ranked by bearing, pull `HUNT_PULL` (0.3) that leaves the
+  bullets' risk unscaled (`Pull.scalesBullets`).
+- **TMODE-14.** `TeamModes.FORCE_HUNT` is true; ablation `tmnohunt` turns it off.
+- Solo play is untouched: the modes act only while a teammate lives. With HUNT on, only the team
+  replay fixtures change; the duel and melee fixtures replay bit for bit.
 
 
 ## Saor, a MicroMelee entry (SAOR-1 to SAOR-15, stages U0 to U5)
