@@ -158,6 +158,14 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Field</div>
 <div class="table-header col-last">Description</div>
+<div class="col-first even-row-color"><code>(package private) static final double</code></div>
+<div class="col-second even-row-color"><code><a href="#BEYOND_RANGE" class="member-name-link">BEYOND_RANGE</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">WEAVE-11: how far past the target a teammate still holds the shot, px: a HUNT slot's 350 and slack.</div>
+</div>
+<div class="col-first odd-row-color"><code>(package private) boolean</code></div>
+<div class="col-second odd-row-color"><code><a href="#beyondLane" class="member-name-link">beyondLane</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code>(package private) int</code></div>
 <div class="col-second even-row-color"><code><a href="#blockedShots" class="member-name-link">blockedShots</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
@@ -175,6 +183,16 @@ loadScripts(document, 'script');</script>
 <div class="block">WEAVE-8: drives the teammate fence replaced this round.</div>
 </div>
 <div class="col-first even-row-color"><code>(package private) static final double</code></div>
+<div class="col-second even-row-color"><code><a href="#LANE_ALONG_SLACK" class="member-name-link">LANE_ALONG_SLACK</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">WEAVE-10, WEAVE-11: how far along the line, px, a teammate may be from the bullet and still meet it.</div>
+</div>
+<div class="col-first odd-row-color"><code>(package private) static final double</code></div>
+<div class="col-second odd-row-color"><code><a href="#LANE_BULLET_SPEED" class="member-name-link">LANE_BULLET_SPEED</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">WEAVE-10, WEAVE-11: the bullet speed a teammate's track is judged against, px a tick (power 2).</div>
+</div>
+<div class="col-first even-row-color"><code>(package private) static final double</code></div>
 <div class="col-second even-row-color"><code><a href="#LANE_HALF_WIDTH" class="member-name-link">LANE_HALF_WIDTH</a></code></div>
 <div class="col-last even-row-color">
 <div class="block"><a class="req" href="../../../requirements.html#WEAVE-4">WEAVE-4</a>: the fire lane's half-width at a fresh position, px: a robot's half-width (18)
@@ -186,14 +204,27 @@ loadScripts(document, 'script');</script>
 <div class="block">WEAVE-7: the longest flight judged, ticks: far more than any field's diagonal over a bullet's slowest speed.</div>
 </div>
 <div class="col-first even-row-color"><code>(package private) static final boolean</code></div>
-<div class="col-second even-row-color"><code><a href="#NARROW_LANE" class="member-name-link">NARROW_LANE</a></code></div>
+<div class="col-second even-row-color"><code><a href="#NARROW_BEYOND" class="member-name-link">NARROW_BEYOND</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">WEAVE-11: a teammate up to <a href="#BEYOND_RANGE"><code>BEYOND_RANGE</code></a> px beyond the target holds the shot when
+ its predicted track meets the bullet there: a bullet that misses flies on into a hunter on
+ the prey's far side.</div>
+</div>
+<div class="col-first odd-row-color"><code>(package private) static final boolean</code></div>
+<div class="col-second odd-row-color"><code><a href="#NARROW_LANE" class="member-name-link">NARROW_LANE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">WEAVE-9: the shipped lane is the narrow one.</div>
 </div>
-<div class="col-first odd-row-color"><code>(package private) static final double</code></div>
-<div class="col-second odd-row-color"><code><a href="#NARROW_MATE_HALF" class="member-name-link">NARROW_MATE_HALF</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code>(package private) static final double</code></div>
+<div class="col-second even-row-color"><code><a href="#NARROW_MATE_HALF" class="member-name-link">NARROW_MATE_HALF</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">WEAVE-9: a teammate holds the shot within this many px of the gun's line, at its distance.</div>
+</div>
+<div class="col-first odd-row-color"><code>(package private) static final boolean</code></div>
+<div class="col-second odd-row-color"><code><a href="#NARROW_PREDICT" class="member-name-link">NARROW_PREDICT</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">WEAVE-10: a teammate nearer than the target also holds the shot when its predicted track
+ meets a bullet flying the gun's line (see <code>meetsBullet</code>).</div>
 </div>
 <div class="col-first even-row-color"><code>(package private) static final double</code></div>
 <div class="col-second even-row-color"><code><a href="#NARROW_TARGET_HALF" class="member-name-link">NARROW_TARGET_HALF</a></code></div>
@@ -205,26 +236,31 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color">
 <div class="block">WEAVE-9 or the wide lane (<a class="req" href="../../../requirements.html#WEAVE-4">WEAVE-4</a>, WEAVE-7); a test may judge the wide one.</div>
 </div>
-<div class="col-first even-row-color"><code>(package private) int</code></div>
-<div class="col-second even-row-color"><code><a href="#reportsMerged" class="member-name-link">reportsMerged</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>(package private) static final double</code></div>
-<div class="col-second odd-row-color"><code><a href="#SLOWEST_BULLET" class="member-name-link">SLOWEST_BULLET</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code>(package private) boolean</code></div>
+<div class="col-second even-row-color"><code><a href="#predictLane" class="member-name-link">predictLane</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">WEAVE-10 and WEAVE-11 as this link plays them; a test may turn them on.</div>
+</div>
+<div class="col-first odd-row-color"><code>(package private) int</code></div>
+<div class="col-second odd-row-color"><code><a href="#reportsMerged" class="member-name-link">reportsMerged</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>(package private) static final double</code></div>
+<div class="col-second even-row-color"><code><a href="#SLOWEST_BULLET" class="member-name-link">SLOWEST_BULLET</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">WEAVE-7: a bullet's slowest and fastest speed, px a tick: when it passes a teammate's range.</div>
 </div>
-<div class="col-first even-row-color"><code>(package private) int</code></div>
-<div class="col-second even-row-color"><code><a href="#teammateBulletHits" class="member-name-link">teammateBulletHits</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code>(package private) int</code></div>
-<div class="col-second odd-row-color"><code><a href="#teammateCollisions" class="member-name-link">teammateCollisions</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#teammateBulletHits" class="member-name-link">teammateBulletHits</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code>(package private) int</code></div>
-<div class="col-second even-row-color"><code><a href="#teammateHits" class="member-name-link">teammateHits</a></code></div>
+<div class="col-second even-row-color"><code><a href="#teammateCollisions" class="member-name-link">teammateCollisions</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>(package private) static final double</code></div>
-<div class="col-second odd-row-color"><code><a href="#TURN_SLACK" class="member-name-link">TURN_SLACK</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first odd-row-color"><code>(package private) int</code></div>
+<div class="col-second odd-row-color"><code><a href="#teammateHits" class="member-name-link">teammateHits</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>(package private) static final double</code></div>
+<div class="col-second even-row-color"><code><a href="#TURN_SLACK" class="member-name-link">TURN_SLACK</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">WEAVE-7: how far, px for each tick of the bullet's flight, a teammate may turn off its predicted track.</div>
 </div>
 </div>
@@ -497,10 +533,102 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="NARROW_PREDICT">
+<h3>NARROW_PREDICT</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">NARROW_PREDICT</span></div>
+<div class="block">WEAVE-10: a teammate nearer than the target also holds the shot when its predicted track
+ meets a bullet flying the gun's line (see <code>meetsBullet</code>). Off: an ablation
+ (tlanep) against own-bullet hits, which tripled with the narrow lane.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../constant-values.html#hadur2.core.TeamLink.NARROW_PREDICT">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="NARROW_BEYOND">
+<h3>NARROW_BEYOND</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">NARROW_BEYOND</span></div>
+<div class="block">WEAVE-11: a teammate up to <a href="#BEYOND_RANGE"><code>BEYOND_RANGE</code></a> px beyond the target holds the shot when
+ its predicted track meets the bullet there: a bullet that misses flies on into a hunter on
+ the prey's far side. Off: ablation tlaneb.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../constant-values.html#hadur2.core.TeamLink.NARROW_BEYOND">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="BEYOND_RANGE">
+<h3>BEYOND_RANGE</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">BEYOND_RANGE</span></div>
+<div class="block">WEAVE-11: how far past the target a teammate still holds the shot, px: a HUNT slot's 350 and slack.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../constant-values.html#hadur2.core.TeamLink.BEYOND_RANGE">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="LANE_BULLET_SPEED">
+<h3>LANE_BULLET_SPEED</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">LANE_BULLET_SPEED</span></div>
+<div class="block">WEAVE-10, WEAVE-11: the bullet speed a teammate's track is judged against, px a tick (power 2).</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../constant-values.html#hadur2.core.TeamLink.LANE_BULLET_SPEED">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="LANE_ALONG_SLACK">
+<h3>LANE_ALONG_SLACK</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">LANE_ALONG_SLACK</span></div>
+<div class="block">WEAVE-10, WEAVE-11: how far along the line, px, a teammate may be from the bullet and still meet it.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../constant-values.html#hadur2.core.TeamLink.LANE_ALONG_SLACK">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="narrowLane">
 <h3>narrowLane</h3>
 <div class="member-signature"><span class="return-type">boolean</span>&nbsp;<span class="element-name">narrowLane</span></div>
 <div class="block">WEAVE-9 or the wide lane (<a class="req" href="../../../requirements.html#WEAVE-4">WEAVE-4</a>, WEAVE-7); a test may judge the wide one.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="predictLane">
+<h3>predictLane</h3>
+<div class="member-signature"><span class="return-type">boolean</span>&nbsp;<span class="element-name">predictLane</span></div>
+<div class="block">WEAVE-10 and WEAVE-11 as this link plays them; a test may turn them on.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="beyondLane">
+<h3>beyondLane</h3>
+<div class="member-signature"><span class="return-type">boolean</span>&nbsp;<span class="element-name">beyondLane</span></div>
 </section>
 </li>
 <li>

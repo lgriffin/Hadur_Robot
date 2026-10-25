@@ -845,6 +845,12 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">The predictor that has matched the most enemy bullets exactly.</div>
 </dd>
+<dt><a href="hadur2/core/TeamLink.html#BEYOND_RANGE" class="member-name-link">BEYOND_RANGE</a> - Static variable in class hadur2.core.<a href="hadur2/core/TeamLink.html" title="class in hadur2.core">TeamLink</a></dt>
+<dd>
+<div class="block">WEAVE-11: how far past the target a teammate still holds the shot, px: a HUNT slot's 350 and slack.</div>
+</dd>
+<dt><a href="hadur2/core/TeamLink.html#beyondLane" class="member-name-link">beyondLane</a> - Variable in class hadur2.core.<a href="hadur2/core/TeamLink.html" title="class in hadur2.core">TeamLink</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="hadur117/micro/core/Targeting.html#BINS" class="member-name-link">BINS</a> - Static variable in class hadur117.micro.core.<a href="hadur117/micro/core/Targeting.html" title="class in hadur117.micro.core">Targeting</a></dt>
 <dd>
 <div class="block">Angle bins in a full circle; a power of two so a bin wraps with a mask.</div>
@@ -5409,6 +5415,14 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#WEAVE-4">WEAVE-4</a>: counts a shot the lane held back.</div>
 </dd>
+<dt><a href="hadur2/core/TeamLink.html#LANE_ALONG_SLACK" class="member-name-link">LANE_ALONG_SLACK</a> - Static variable in class hadur2.core.<a href="hadur2/core/TeamLink.html" title="class in hadur2.core">TeamLink</a></dt>
+<dd>
+<div class="block">WEAVE-10, WEAVE-11: how far along the line, px, a teammate may be from the bullet and still meet it.</div>
+</dd>
+<dt><a href="hadur2/core/TeamLink.html#LANE_BULLET_SPEED" class="member-name-link">LANE_BULLET_SPEED</a> - Static variable in class hadur2.core.<a href="hadur2/core/TeamLink.html" title="class in hadur2.core">TeamLink</a></dt>
+<dd>
+<div class="block">WEAVE-10, WEAVE-11: the bullet speed a teammate's track is judged against, px a tick (power 2).</div>
+</dd>
 <dt><a href="hadur2/core/TeamLink.html#LANE_HALF_WIDTH" class="member-name-link">LANE_HALF_WIDTH</a> - Static variable in class hadur2.core.<a href="hadur2/core/TeamLink.html" title="class in hadur2.core">TeamLink</a></dt>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#WEAVE-4">WEAVE-4</a>: the fire lane's half-width at a fresh position, px: a robot's half-width (18)
@@ -7215,6 +7229,12 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">The plain files in the data directory, from the index; an absent directory has none.</div>
 </dd>
+<dt><a href="hadur2/core/TeamLink.html#NARROW_BEYOND" class="member-name-link">NARROW_BEYOND</a> - Static variable in class hadur2.core.<a href="hadur2/core/TeamLink.html" title="class in hadur2.core">TeamLink</a></dt>
+<dd>
+<div class="block">WEAVE-11: a teammate up to <a href="hadur2/core/TeamLink.html#BEYOND_RANGE"><code>TeamLink.BEYOND_RANGE</code></a> px beyond the target holds the shot when
+ its predicted track meets the bullet there: a bullet that misses flies on into a hunter on
+ the prey's far side.</div>
+</dd>
 <dt><a href="hadur2/core/TeamLink.html#NARROW_LANE" class="member-name-link">NARROW_LANE</a> - Static variable in class hadur2.core.<a href="hadur2/core/TeamLink.html" title="class in hadur2.core">TeamLink</a></dt>
 <dd>
 <div class="block">WEAVE-9: the shipped lane is the narrow one.</div>
@@ -7222,6 +7242,11 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur2/core/TeamLink.html#NARROW_MATE_HALF" class="member-name-link">NARROW_MATE_HALF</a> - Static variable in class hadur2.core.<a href="hadur2/core/TeamLink.html" title="class in hadur2.core">TeamLink</a></dt>
 <dd>
 <div class="block">WEAVE-9: a teammate holds the shot within this many px of the gun's line, at its distance.</div>
+</dd>
+<dt><a href="hadur2/core/TeamLink.html#NARROW_PREDICT" class="member-name-link">NARROW_PREDICT</a> - Static variable in class hadur2.core.<a href="hadur2/core/TeamLink.html" title="class in hadur2.core">TeamLink</a></dt>
+<dd>
+<div class="block">WEAVE-10: a teammate nearer than the target also holds the shot when its predicted track
+ meets a bullet flying the gun's line (see <code>meetsBullet</code>).</div>
 </dd>
 <dt><a href="hadur2/core/TeamLink.html#NARROW_TARGET_HALF" class="member-name-link">NARROW_TARGET_HALF</a> - Static variable in class hadur2.core.<a href="hadur2/core/TeamLink.html" title="class in hadur2.core">TeamLink</a></dt>
 <dd>
@@ -8809,6 +8834,10 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="hadur2/core/melee/MeleeGun.Aim.html#predicted" class="member-name-link">predicted</a> - Variable in class hadur2.core.melee.<a href="hadur2/core/melee/MeleeGun.Aim.html" title="class in hadur2.core.melee">MeleeGun.Aim</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur2/core/TeamLink.html#predictLane" class="member-name-link">predictLane</a> - Variable in class hadur2.core.<a href="hadur2/core/TeamLink.html" title="class in hadur2.core">TeamLink</a></dt>
+<dd>
+<div class="block">WEAVE-10 and WEAVE-11 as this link plays them; a test may turn them on.</div>
+</dd>
 <dt><a href="hadur2/core/shieldmode/ShieldMode.html#PREDICTORS" class="member-name-link">PREDICTORS</a> - Static variable in class hadur2.core.shieldmode.<a href="hadur2/core/shieldmode/ShieldMode.html" title="class in hadur2.core.shieldmode">ShieldMode</a></dt>
 <dd>
 <div class="block">Heading predictors: each base as is, plus a learned offset, and plus a learned offset
