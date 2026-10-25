@@ -818,6 +818,10 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur/bench/Bench.html#%3Cinit%3E(java.util.Map)" class="member-name-link">Bench(Map&lt;String, String&gt;)</a> - Constructor for class hadur.bench.<a href="hadur/bench/Bench.html" title="class in hadur.bench">Bench</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur/bench/Bench.html#%3Cinit%3E(java.util.Map,java.util.Map)" class="member-name-link">Bench(Map&lt;String, String&gt;, Map&lt;String, String&gt;)</a> - Constructor for class hadur.bench.<a href="hadur/bench/Bench.html" title="class in hadur.bench">Bench</a></dt>
+<dd>
+<div class="block">As above, with <code>env</code> standing for the environment <code>--parallel auto</code> reads (<a class="req" href="../requirements.html#BENCH-105">BENCH-105</a>).</div>
+</dd>
 <dt><a href="hadur/bench/Bench.Attempt.html" class="type-name-link" title="interface in hadur.bench">Bench.Attempt&lt;T&gt;</a> - Interface in <a href="hadur/bench/package-summary.html">hadur.bench</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur/bench/Bench.Failure.html" class="type-name-link" title="class in hadur.bench">Bench.Failure</a> - Record Class in <a href="hadur/bench/package-summary.html">hadur.bench</a></dt>
@@ -4937,6 +4941,10 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur/bench/Bench.html#hostLine(java.lang.String,java.lang.String,int,java.util.List)" class="member-name-link">hostLine(String, String, int, List&lt;String&gt;)</a> - Static method in class hadur.bench.<a href="hadur/bench/Bench.html" title="class in hadur.bench">Bench</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur/bench/HostWidth.html" class="type-name-link" title="class in hadur.bench">HostWidth</a> - Class in <a href="hadur/bench/package-summary.html">hadur.bench</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#BENCH-105">BENCH-105</a>: <code>--parallel auto</code>, <code>--cpu-constant auto</code> and <code>--shard K/N</code>.</div>
+</dd>
 <dt><a href="hadur2/core/move/ProteanPick.html#hot()" class="member-name-link">hot()</a> - Method in class hadur2.core.move.<a href="hadur2/core/move/ProteanPick.html" title="class in hadur2.core.move">ProteanPick</a></dt>
 <dd>
 <div class="block">Whether the hot setting is on; a seam for tests.</div>
@@ -5337,6 +5345,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">The least power whose damage finishes a robot with <code>energy</code> left: e/4 below
  power 1, else (e + 2)/6, with a hair more so rounding cannot leave it alive.</div>
+</dd>
+<dt><a href="hadur/bench/HostWidth.html#kind(java.util.Map)" class="member-name-link">kind(Map&lt;String, String&gt;)</a> - Static method in class hadur.bench.<a href="hadur/bench/HostWidth.html" title="class in hadur.bench">HostWidth</a></dt>
+<dd>
+<div class="block">The kind of battle the options ask for, as the queue runner's variables name it.</div>
 </dd>
 <dt><a href="hadur2/core/knn/KnnView.html" class="type-name-link" title="class in hadur2.core.knn">KnnView&lt;T&gt;</a> - Class in <a href="hadur2/core/knn/package-summary.html">hadur2.core.knn</a></dt>
 <dd>
@@ -8404,6 +8416,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block"><code>WxH</code> as {width, height}; anything else is refused with the form it wants.</div>
 </dd>
+<dt><a href="hadur/bench/HostWidth.html#parseShard(java.lang.String)" class="member-name-link">parseShard(String)</a> - Static method in class hadur.bench.<a href="hadur/bench/HostWidth.html" title="class in hadur.bench">HostWidth</a></dt>
+<dd>
+<div class="block"><code>K/N</code> as {K, N} with 1 &lt;= K &lt;= N; anything else is refused with the form it wants.</div>
+</dd>
 <dt><a href="hadur2/core/melee/VirtualBullet.html#passed(java.awt.geom.Point2D.Double,long,double)" class="member-name-link">passed(Point2D.Double, long, double)</a> - Method in class hadur2.core.melee.<a href="hadur2/core/melee/VirtualBullet.html" title="class in hadur2.core.melee">VirtualBullet</a></dt>
 <dd>
 <div class="block">Whether the bullet has flown past <code>p</code>, or left a field no larger than
@@ -9851,6 +9867,12 @@ loadScripts(document, 'script');</script>
  alive, the round's vetoes and the lowest role that has driven this round, and from
  nothing else.</div>
 </dd>
+<dt><a href="hadur/bench/HostWidth.html#resolve(java.util.Map,java.util.Map,int)" class="member-name-link">resolve(Map&lt;String, String&gt;, Map&lt;String, String&gt;, int)</a> - Static method in class hadur.bench.<a href="hadur/bench/HostWidth.html" title="class in hadur.bench">HostWidth</a></dt>
+<dd>
+<div class="block">Replaces <code>parallel=auto</code> by a width and <code>cpu-constant=auto</code> by a constant (or
+ drops it, so the bench calibrates), and records where each came from under
+ <code>parallel-source</code> and <code>cpu-constant-source</code>.</div>
+</dd>
 <dt><a href="hadur2/core/melee/MeleeWaves.html#resolved()" class="member-name-link">resolved()</a> - Method in class hadur2.core.melee.<a href="hadur2/core/melee/MeleeWaves.html" title="class in hadur2.core.melee">MeleeWaves</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur2/core/move/EscapeRoom.html#restriction(java.awt.geom.Point2D.Double,java.awt.geom.Point2D.Double,double,hadur2.core.physics.BattleField)" class="member-name-link">restriction(Point2D.Double, Point2D.Double, double, BattleField)</a> - Static method in class hadur2.core.move.<a href="hadur2/core/move/EscapeRoom.html" title="class in hadur2.core.move">EscapeRoom</a></dt>
@@ -11159,6 +11181,12 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur2/core/model/Wave.html#shadowVersion" class="member-name-link">shadowVersion</a> - Variable in class hadur2.core.model.<a href="hadur2/core/model/Wave.html" title="class in hadur2.core.model">Wave</a></dt>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#MOVE-1">MOVE-1</a>: the version of our bullets in flight these shadows were computed for; -1 never.</div>
+</dd>
+<dt><a href="hadur/bench/HostWidth.html#shard(java.util.List,int,int)" class="member-name-link">shard(List&lt;T&gt;, int, int)</a> - Static method in class hadur.bench.<a href="hadur/bench/HostWidth.html" title="class in hadur.bench">HostWidth</a></dt>
+<dd>
+<div class="block">The opponents shard <code>K</code> of <code>N</code> fights: every N-th of the set, starting at the K-th,
+ so two machines given 1/2 and 2/2 split one set between them with no opponent fought twice
+ and each half spread across the set's bands.</div>
 </dd>
 <dt><a href="hadur/bench/TeamReport.Battle.html#share()" class="member-name-link">share()</a> - Method in class hadur.bench.<a href="hadur/bench/TeamReport.Battle.html" title="class in hadur.bench">TeamReport.Battle</a></dt>
 <dd>&nbsp;</dd>
