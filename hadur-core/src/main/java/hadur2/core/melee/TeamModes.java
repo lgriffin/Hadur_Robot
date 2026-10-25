@@ -42,7 +42,9 @@ public final class TeamModes {
         /** TMODE-9: the teammates' bullets in flight count as danger, as an enemy's do (CombatTeam). */
         MATEFIRE,
         /** TMODE-10: the leader, whose death costs every teammate energy, keeps further from enemies. */
-        REAR
+        REAR,
+        /** TMODE-11: the safest candidates are re-ranked by the shots their drive would cross (Ogi's waves). */
+        WAVES
     }
 
     /** Ablation switches: the mode for every team the table does not name. */
@@ -56,6 +58,7 @@ public final class TeamModes {
     public static final boolean FORCE_DISABLED = false;
     public static final boolean FORCE_MATEFIRE = false;
     public static final boolean FORCE_REAR = false;
+    public static final boolean FORCE_WAVES = false;
 
     /** No modes: today's team movement. */
     public static final Set<Mode> NONE = Collections.unmodifiableSet(EnumSet.noneOf(Mode.class));
@@ -65,7 +68,8 @@ public final class TeamModes {
         FORCE_SOFT ? Mode.SOFT : null, FORCE_GANG ? Mode.GANG : null, FORCE_FINISH ? Mode.FINISH : null,
         FORCE_LEARN ? Mode.LEARN : null, FORCE_PACK ? Mode.PACK : null, FORCE_SCREEN ? Mode.SCREEN : null,
         FORCE_POOL ? Mode.POOL : null, FORCE_DISABLED ? Mode.DISABLED : null,
-        FORCE_MATEFIRE ? Mode.MATEFIRE : null, FORCE_REAR ? Mode.REAR : null);
+        FORCE_MATEFIRE ? Mode.MATEFIRE : null, FORCE_REAR ? Mode.REAR : null,
+        FORCE_WAVES ? Mode.WAVES : null);
 
     /** Opposing member class to its team's modes; filled from the per-team screens. */
     static final Map<String, Set<Mode>> TABLE = table();
