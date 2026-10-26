@@ -1,0 +1,31 @@
+# PC card team-table (docs/plan-team-top5.md section 10.3, TMODE-16..18): arm bb (A/A) on the picked teams, the confirm's seeds. Template: ttprep writes work/team-table-cbb.args with @V@ = the robot.release in hadur-robot/pom.xml
+--team
+true
+--seeds
+12
+--seed-base
+4300
+--rounds
+10
+--parallel
+auto
+--child-heap
+2G
+--cpu-constant
+auto
+--set
+work/team-table-confirm.txt
+--robot-jar
+bisect/hadur2.HadurTeam_@V@bb.jar
+--robot
+hadur2.HadurTeam @V@bb
+--member
+hadur2.Hadur
+--out
+work/team-table-@V@-cbb
+--report
+../docs/bench/local/team-table-cbb.md
+--baseline
+bisect/hadur2.HadurTeam_@V@aa.jar
+--baseline-robot
+hadur2.HadurTeam @V@aa

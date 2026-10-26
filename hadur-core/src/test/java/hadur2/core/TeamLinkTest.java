@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import hadur2.core.link.LinkCodec;
 import hadur2.core.link.Report;
 import hadur2.core.melee.MeleeController;
+import hadur2.core.melee.TeamModes;
 import hadur2.core.model.BattleFacts;
 import hadur2.core.model.BotEvent;
 import hadur2.core.model.BotInput;
@@ -21,6 +22,7 @@ import hadur2.core.world.Roster;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -411,6 +413,31 @@ class TeamLinkTest {
         // MATE 700 px up: more than 450 px past the target, the shot leaves.
         List<BotEvent> far = List.of(scan("e.A", 0, 200), scan("e.B", 2.5, 350), scan(MATE, 0, 700));
         assertTrue(fired(far, 6, true, false, true) > 0, "too far past the target");
+    }
+
+    /** The power fired on the narrow lane, switches off, with the mode table naming {@code modes} against every team. */
+    private static double firedWith(List<BotEvent> events, int ticks, TeamModes.Mode... modes) {
+        HadurCore core = new HadurCore(facts(), line -> {}, null, new TriggerHappy());
+        core.teamLink().narrowLane = true;
+        core.teamLink().modes = enemies -> Set.of(modes);
+        core.newRound(0);
+        double fired = 0;
+        for (long t = 1; t <= ticks; t++) fired += core.tick(input(t, 5, events)).firePower();
+        return fired;
+    }
+
+    @Test
+    @Tag("TMODE-17")
+    @Tag("TMODE-18")
+    @DisplayName("TMODE-17, TMODE-18: a team the table names with LANEP or LANEB plays WEAVE-10 or WEAVE-11 against it")
+    void tableNamesTheLaneVariants() {
+        List<BotEvent> crossing = List.of(scan("e.A", 0, 500), scan("e.B", 2.5, 350), mateScan(300, 60, 3 * Math.PI / 2, 4));
+        assertTrue(firedWith(crossing, 6) > 0, "no lane mode: the narrow lane alone");
+        assertEquals(0, firedWith(crossing, 6, TeamModes.Mode.LANEP), 1e-9, "LANEP predicts the mate into the line");
+        assertTrue(firedWith(crossing, 6, TeamModes.Mode.LANEB) > 0, "LANEB alone does not predict a nearer mate");
+        List<BotEvent> behind = List.of(scan("e.A", 0, 200), scan("e.B", 2.5, 350), scan(MATE, 0, 300));
+        assertTrue(firedWith(behind, 6, TeamModes.Mode.LANEP) > 0, "LANEP alone fires past the target");
+        assertEquals(0, firedWith(behind, 6, TeamModes.Mode.LANEB), 1e-9, "LANEB holds for the mate beyond");
     }
 
     @Test

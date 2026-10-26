@@ -1,0 +1,31 @@
+# PC card team-table (docs/plan-team-top5.md section 10.3, TMODE-16..18): arm bb (A/A) on the kept teams, the gate's seeds. Template: ttprep writes work/team-table-gbb.args with @V@ = the robot.release in hadur-robot/pom.xml
+--team
+true
+--seeds
+16
+--seed-base
+4400
+--rounds
+10
+--parallel
+auto
+--child-heap
+2G
+--cpu-constant
+auto
+--set
+work/team-table-gate.txt
+--robot-jar
+bisect/hadur2.HadurTeam_@V@bb.jar
+--robot
+hadur2.HadurTeam @V@bb
+--member
+hadur2.Hadur
+--out
+work/team-table-@V@-gbb
+--report
+../docs/bench/local/team-table-gbb.md
+--baseline
+bisect/hadur2.HadurTeam_@V@aa.jar
+--baseline-robot
+hadur2.HadurTeam @V@aa

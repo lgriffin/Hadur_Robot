@@ -1,0 +1,38 @@
+# Team per-team table v2 (TMODE-16..18, BENCH-119; docs/plan-team-top5.md section 10.3), team thread:
+# team-only, duel and melee fixtures bit for bit. No new screens: the picks come from the lane
+# (pc-team-lane: LANEP, LANEB) and lines (pc-team-lines: LINES, LINESW) screens already on master,
+# each scored against both of its card's baselines (aa and bb). A team's pick is its best mode at
+# +3.0 points or more; every entry keeps the shipped MATEFIRE and HUNT. Seven teams pick from the
+# reports on master: Ogi LANEB, Shadow LINES, Xmen LANEP, GrubbmGroup LINESW, GrofGroup LANEP,
+# Enjambre LANEB, OmegaTeam LINES.
+#   ttconf  the screen's table (mt) vs aa on the picked teams, 12 fresh seeds (base 4300)
+#   ttcbb   bb vs aa on the same teams and seeds (A/A)
+#   ttlock  keep a pick only where ttconf gained +1.0 point or more
+#   ttgate  the locked table (mk) vs aa on the kept teams, 16 fresh seeds (base 4400); ttgbb A/A
+#   ttsum   projected team APS change = sum of the kept teams' gains / 46
+# Gate: projection at least +0.30 APS with the 95% low end above zero. About 700 battles, 45 min at
+# 12 workers (sizes itself to the host). Every step resumes where it stopped. The team thread reads
+# claude/pc-team-table-results.
+#   ./queue.sh run pc-team-table        (or  .\queue.ps1 run pc-team-table)
+# Run it from master (one bench queue at a time):
+#   git checkout master && git pull
+
+set OUT = ../docs/bench/local
+set T = python3 tools/team_modes.py
+set SCREENS = --report LANEP=../docs/bench/local/team-lane-lp.md --control LANEP=../docs/bench/local/team-lane-bb.md --report LANEB=../docs/bench/local/team-lane-lb.md --control LANEB=../docs/bench/local/team-lane-bb.md --report LINES=../docs/bench/local/team-lines-ml.md --control LINES=../docs/bench/local/team-lines-bb.md --report LINESW=../docs/bench/local/team-lines-mlw.md --control LINESW=../docs/bench/local/team-lines-bb.md
+
+ttprep | git checkout -q master && V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && test -n "$V" && rm -f bisect/hadur2.HadurTeam_"$V"aa.jar bisect/hadur2.HadurTeam_"$V"bb.jar bisect/hadur2.HadurTeam_"$V"mt.jar bisect/hadur2.HadurTeam_"$V"mk.jar && rm -f ${OUT}/team-table-*.md ${OUT}/team-table-pick.tsv && ./fetch-opponents.sh --set team-census46.txt && mkdir -p work && ${T} pick ${SCREENS} --min-mean 3.0 --base MATEFIRE,HUNT --census team-census46.txt --opponents opponents --out-md ${OUT}/team-table-pick.md --out-tsv ${OUT}/team-table-pick.tsv --out-java work/team-table-screen.java --out-set work/team-table-confirm.txt && test -s work/team-table-screen.java && bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && TEAM_MODE_TABLE="$(pwd)/work/team-table-screen.java" bash ./build-ablation.sh tmtab && for a in conf cbb gate gbb; do sed "s/@V@/$V/g" plans/team-table-$a.args > work/team-table-$a.args || exit 1; done && test -f bisect/hadur2.HadurTeam_"$V"mt.jar && mvn -q compile
+ttconf | mvn -q exec:java "-Dexec.args=@work/team-table-conf.args"
+  after: ttprep
+ttcbb  | mvn -q exec:java "-Dexec.args=@work/team-table-cbb.args"
+  after: ttconf
+ttlock | ${T} lock --confirm ${OUT}/team-table-conf.md --pick-tsv ${OUT}/team-table-pick.tsv --base MATEFIRE,HUNT --census team-census46.txt --opponents opponents --min-gain 1.0 --out-md ${OUT}/team-table-lock.md --out-java work/team-table-locked.java --out-set work/team-table-gate.txt && if [ -s work/team-table-locked.java ]; then TEAM_MODE_LOCKED="$(pwd)/work/team-table-locked.java" bash ./build-ablation.sh tmlock; else echo "no pick kept: no gate"; fi
+  after: ttcbb
+ttgate | if [ -s work/team-table-locked.java ]; then mvn -q exec:java "-Dexec.args=@work/team-table-gate.args"; else echo "no pick kept: no gate"; fi
+  after: ttlock
+ttgbb  | if [ -s work/team-table-locked.java ]; then mvn -q exec:java "-Dexec.args=@work/team-table-gbb.args"; else echo "no pick kept: no gate"; fi
+  after: ttgate
+ttsum  | if [ -f ${OUT}/team-table-gate.md ]; then ${T} gate --report ${OUT}/team-table-gate.md --control ${OUT}/team-table-gbb.md --teams 46 --min-aps 0.3 --out-md ${OUT}/team-table-verdict.md; else echo "no gate run" > ${OUT}/team-table-verdict.md; fi && cp work/team-table-locked.java ${OUT}/team-table-locked.java.txt 2>/dev/null; true
+  after: ttgbb
+ttpr   | bash tools/open_results_pr.sh claude/pc-team-table-results "Team per-team table v2: confirm, lock and gate" $(ls ${OUT}/team-table-*.md ${OUT}/team-table-pick.tsv ${OUT}/team-table-locked.java.txt 2>/dev/null)
+  after: ttsum

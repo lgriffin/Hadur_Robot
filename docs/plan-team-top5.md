@@ -461,3 +461,26 @@ Together +1.0..+2.5 against +2.6: 2nd only at the top of the range.
   cone round the enemy's current spot could not reach them. LINES stays off.
 - **Next (card pc-team-ffread, no battles):** `tools/friendly_hits.py` on the A/A logs says how far
   off the line those victims stood and whether they were ahead of the shooter.
+
+### 10.3 Per-team table v2 (2026-10-27)
+
+- **Why per team.** The rumble has 47 teams, so each pairing is about 2% of the team APS. The lane
+  (WEAVE-10/11, PR #293) and lines (TMODE-15, PR #326) screens lost across the field but several
+  teams gained by 3 to 9 share points. A table entry plays a variant only against the teams it helps.
+- **Modes (team-only, off unless a table entry names them; TABLE ships empty):** TMODE-16 LINESW
+  (lines at 0.6 / 0.45 rad), TMODE-17 LANEP (WEAVE-10 for that team), TMODE-18 LANEB (WEAVE-11).
+  Every entry keeps the shipped MATEFIRE and HUNT. With all three forced on against every team,
+  only the team fixtures change; the duel and melee fixtures replay bit for bit.
+- **Picks, no new screens:** each mode scored against both of its card's baselines (paired gain
+  less half the A/A), best mode at +3.0 points or more: Ogi LANEB +8.5, Xmen LANEP +8.8, Shadow
+  LINES +5.5, GrubbmGroup LINESW +5.9, GrofGroup LANEP +5.0, OmegaTeam LINES +3.5, Enjambre LANEB
+  +3.2. Intervals are wide (3.6 to 14.8 points): these are max-of-four picks on 6 seeds, so expect
+  half or less to hold.
+- **Card pc-team-table (about 45 min, ~700 battles):** confirm the table on those 7 teams at 12
+  fresh seeds with a bb A/A, keep picks at +1.0 or more, then gate the kept table at 16 fresh seeds.
+  Gate: projected team APS change (summed gains / 46) at least +0.30 with the low end above zero.
+  The v1 table (2026-10-24, PR #246) kept 5 of 13 picks and its census read +0.2 ± 0.8 across all
+  46 teams; this gate measures only the teams the table changes, so the noise of the other 39 is
+  left out.
+- **Expected:** +0.2 to +0.5 APS. It does not close the 2.6 gap to 2nd on its own.
+

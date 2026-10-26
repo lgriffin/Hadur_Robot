@@ -1144,6 +1144,9 @@ MMOVE-8 the melee strand, WEAVE-7 and WEAVE-8 the conductor.
 | TMODE-13 | Optional | Where the HUNT mode is played, while Hadur has 20 energy or more, the members (in name order) shall each be assigned the fresh enemy of least (distance + 1.2 × energy)², times 1.6 for an enemy three members already hunt, and Hadur's destination risk, all terms but the bullets' and the posture's, shall be scaled by e^(0.3 (to − from) / 100) for its and Hadur's distances to its place 350 px from its prey, ranked by bearing among the members on that prey and spread up to 70° apart. | T7 |
 | TMODE-14 | Ubiquitous | The team mode table's default, for a team it does not name, shall include the HUNT mode. | T7 |
 | TMODE-15 | Optional | Where the LINES mode is played (ablations tmlines, tmlinesw), Hadur's destination risk shall add, for each living teammate with a fresh position and its nearest fresh enemy, 0.3 at a point on the line from the teammate through that enemy, falling linearly to none 0.3 radians off that line as the teammate sees it, and none nearer the teammate than the enemy or more than 800 px beyond it. | T7 |
+| TMODE-16 | Optional | Where the team mode table names LINESW against a team, Hadur shall play TMODE-15 against it with 0.6 on the line, falling linearly to none 0.45 radians off it. | T7 |
+| TMODE-17 | Optional | Where the team mode table names LANEP against a team, Hadur shall play WEAVE-10 against it: a teammate nearer than the target whose predicted track meets a bullet flying the gun's line holds the shot. | T7 |
+| TMODE-18 | Optional | Where the team mode table names LANEB against a team, Hadur shall play WEAVE-11 against it: a teammate up to 450 px beyond the target whose predicted track meets the bullet holds the shot. | T7 |
 
 ### T1 notes
 
@@ -1594,6 +1597,7 @@ None of these change how the robot plays; TIME-8 and RES-15 only report.
 | BENCH-116 | Event | When a melee round ends, the bench shall write one `exposure.csv` row per fighter with its ticks alive while three or more fighters were alive, the summed count over those ticks of other fighters whose nearest living fighter it was, the bullet damage it took while three or more were alive (capped at its energy), and the parts of that damage fired by a shooter whose nearest and whose second nearest living fighter it was when the shot was first seen; and `tools/melee_exposure.py` shall read them per 100 crowd ticks for Hadur and for the census opponents by rank band. | R9 |
 | BENCH-117 | Ubiquitous | The bench shall carry the `pc-melee-power` card, which builds MGUN-12 (`pfloor`) and MGUN-13 (`pogi`) each alone beside an aa baseline and a bb A/A copy, runs each alone on the melee census at 6 seeds after the bank card's, and reads it with `tools/melee_s0.py screen --base2` at a +0.3 bar with the 95% low end above 0 and Hadur's share of the others it outlives no more than 1 point lower. | R9 |
 | BENCH-118 | Ubiquitous | The bench shall carry the `pc-melee-ogi` card, which builds MGUN-13 (`pogi`) on master's banked gun beside an aa baseline and a bb A/A copy, runs each alone on the melee census at 8 seeds after the power card's, and reads it with `tools/melee_s0.py screen --base2` at a 0 bar with the 95% low end above 0 and Hadur's share of the others it outlives no more than 1 point lower. | R9 |
+| BENCH-119 | Ubiquitous | The bench shall carry the `pc-team-table` card, which picks each team's best of LANEP, LANEB, LINES and LINESW from the lane and lines screens on master at +3.0 share points or more (scored against both of its card's baselines, with MATEFIRE and HUNT kept), confirms the table on the picked teams at 12 fresh seeds beside a bb A/A, keeps the picks that gained +1.0 or more, and gates the kept table at 16 fresh seeds with `tools/team_modes.py gate`: the summed gains over 46 teams at +0.30 APS or more with the 95% low end above zero. | T7 |
 | RAM-4 | State | While the rammer-heat switch is on, in a duel, once RAM-2 has confirmed the opponent as a rammer, the surf shall offer MOVE-11's gun-heat wave with MOVE-13's hold off (as heatjit plays) for the rest of the battle, whatever those switches are set to; before the confirmation, and in melee or team, the switches are as their own requirements state. Off by default. | R9 |
 
 - **TIME-8.** `Hadur.setupRecord`, printed once in round 0. The PC's round-0 read
@@ -1768,6 +1772,18 @@ A retired requirement keeps its ID; no new requirement reuses it.
   `kind`; `tools/team_losses.py` prints the shares per band.
 - Solo play is untouched: the term is read only while a teammate lives. With LINES forced on, only
   the team replay fixtures can change; the duel and melee fixtures replay bit for bit.
+
+## Team per-team table v2 (TMODE-16 to TMODE-18, BENCH-119)
+
+- **Why.** With 47 teams in the rumble, each pairing is about 2% of the APS. The lane (WEAVE-10/11)
+  and lines (TMODE-15) screens failed across the field but gained against single teams; the table
+  plays them only there.
+- **TMODE-16..18.** `TeamModes.Mode.LINESW` (`MinimumRiskMovement.LINES_WIDE_K`/`LINES_WIDE_HALF`),
+  `LANEP` and `LANEB` (`TeamLink.narrowLaneClear` asks `TeamLink.modes`, the table by default).
+  No FORCE switch: they act only through a table entry, and `TeamModes.TABLE` ships empty, so every
+  replay fixture is unchanged.
+- **BENCH-119.** `tools/team_modes.py pick --control --min-mean --base`, `lock --out-set`, `gate`;
+  card plans/pc-team-table.queue.
 
 ## Saor, a MicroMelee entry (SAOR-1 to SAOR-15, stages U0 to U5)
 

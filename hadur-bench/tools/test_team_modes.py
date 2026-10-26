@@ -94,5 +94,43 @@ class TeamModesTest(unittest.TestCase):
         self.assertEqual(float("inf"), ci)
 
 
+    def test_base_modes_join_every_entry_in_mode_order(self):
+        lines, _ = team_modes.java_lines({"x": {"LANEP"}}, {"x": ["s.X"]}, ("MATEFIRE", "HUNT"))
+        self.assertEqual(['        t.put("s.X", of(Mode.MATEFIRE, Mode.HUNT, Mode.LANEP));'], lines)
+
+    def test_min_mean_picks_on_the_mean_alone(self):
+        lanep = report(self.d, "lp.md", {"a.ATeam 1": (4.0, 9.0), "b.BTeam 2": (2.0, 1.0), "c.CTeam 3": (3.5, 9.0)})
+        lines = report(self.d, "ml.md", {"a.ATeam 1": (3.0, 1.0), "b.BTeam 2": (-1.0, 1.0), "c.CTeam 3": (1.0, 9.0)})
+        out = Path(self.d)
+        team_modes.main(["pick", "--report", f"LANEP={lanep}", "--report", f"LINES={lines}", "--min-mean", "3.0",
+                         "--base", "MATEFIRE,HUNT", "--census", str(out / "census.txt"), "--opponents", self.d,
+                         "--out-tsv", str(out / "p.tsv"), "--out-java", str(out / "p.java")])
+        java = (out / "p.java").read_text()
+        self.assertIn('t.put("a.A", of(Mode.MATEFIRE, Mode.HUNT, Mode.LANEP));', java)
+        self.assertNotIn('"b.Lead"', java)
+        self.assertIn('t.put("c.C", of(Mode.MATEFIRE, Mode.HUNT, Mode.LANEP));', java)
+
+
+    def test_control_scores_a_mode_against_both_baselines(self):
+        lanep = report(self.d, "lp.md", {"a.ATeam 1": (4.0, 2.0), "b.BTeam 2": (4.0, 2.0), "c.CTeam 3": (0.0, 2.0)})
+        bb = report(self.d, "bb.md", {"a.ATeam 1": (0.0, 2.0), "b.BTeam 2": (4.0, 2.0), "c.CTeam 3": (0.0, 2.0)})
+        out = Path(self.d)
+        team_modes.main(["pick", "--report", f"LANEP={lanep}", "--control", f"LANEP={bb}", "--min-mean", "3.0",
+                         "--census", str(out / "census.txt"), "--opponents", self.d, "--out-tsv", str(out / "c.tsv")])
+        tsv = (out / "c.tsv").read_text()
+        self.assertIn("a.ATeam 1\tLANEP\t4.00", tsv)
+        self.assertNotIn("b.BTeam 2", tsv)
+
+
+    def test_gate_spreads_the_gains_over_every_team(self):
+        mk = report(self.d, "mk.md", {"a.ATeam 1": (6.0, 3.0), "b.BTeam 2": (4.0, 4.0)})
+        bb = report(self.d, "gbb.md", {"a.ATeam 1": (2.0, 2.0), "b.BTeam 2": (0.0, 2.0)})
+        out = Path(self.d) / "gate.md"
+        team_modes.main(["gate", "--report", mk, "--control", bb, "--teams", "20", "--out-md", str(out)])
+        text = out.read_text()
+        self.assertIn("**+0.45 ±", text)
+        self.assertIn("**PASS**", text)
+
+
 if __name__ == "__main__":
     unittest.main()
