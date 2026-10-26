@@ -198,7 +198,10 @@ final class MeleeSeam implements Role {
             long time = in.time();
             EnemyInfo info = core.scanInfo();
             if (worldFed && info != null && info.name.equals(e.name())) {
-                guard(() -> melee.scanned(info, core.scanShot(), e.distance(), e.velocity(), time));
+                guard(() -> {
+                    melee.at(in.location());
+                    melee.scanned(info, core.scanShot(), e.distance(), e.velocity(), time);
+                });
             }
             // MMEM-1: after the World has the scan and before the Duel sees it.
             loadBlock(time, e.name());

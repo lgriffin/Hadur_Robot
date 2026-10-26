@@ -142,8 +142,14 @@ public class FieldGun {
      */
     public void onSighting(String name, long time, double x, double y, double heading, double velocity,
                            double distance, double turnRate) {
+        onSighting(name, time, x, y, heading, velocity, distance, turnRate, null, 0);
+    }
+
+    /** As above, with MGUN-11's crowd context, as {@link #onScan(EnemyInfo, double, long, Point2D.Double, int)}. */
+    public void onSighting(String name, long time, double x, double y, double heading, double velocity,
+                           double distance, double turnRate, Point2D.Double nearest, int alive) {
         EnemyHistory h = history(name);
-        if (h != null) h.onScan(time, x, y, heading, velocity, distance, turnRate, field);
+        if (h != null) h.onScan(time, x, y, heading, velocity, distance, turnRate, field, nearest, alive);
     }
 
     /** Every firing solution this tick, for every opponent fresh enough to shoot at. */

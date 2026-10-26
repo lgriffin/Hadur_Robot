@@ -169,19 +169,8 @@ public class MeleeController {
         if (shot != null) profiles.shotInferred(name, shot.power);
         book.get(name).recordScan(distance, velocity, info.turnRate());
         if (EnemyHistory.CROWD) {
-            // MGUN-11: the robot nearest the scanned opponent, Hadur included.
-            Point2D.Double nearest = lastMe;
-            double best = lastMe == null ? Double.POSITIVE_INFINITY : lastMe.distance(info.location);
             List<EnemyInfo> alive = tracker.alive();
-            for (EnemyInfo o : alive) {
-                if (o == info || o.location == null) continue;
-                double d = o.location.distance(info.location);
-                if (d < best) {
-                    best = d;
-                    nearest = o.location;
-                }
-            }
-            gun.onScan(info, distance, time, nearest, alive.size());
+            gun.onScan(info, distance, time, nearest(info.name, info.location, alive), alive.size());
         } else {
             gun.onScan(info, distance, time);
         }
@@ -195,7 +184,36 @@ public class MeleeController {
      */
     public void mateSighting(String name, long time, double x, double y, double heading, double velocity,
                              double distance, double turnRate) {
-        gun.onSighting(name, time, x, y, heading, velocity, distance, turnRate);
+        if (EnemyHistory.CROWD) {
+            List<EnemyInfo> alive = tracker.alive();
+            gun.onSighting(name, time, x, y, heading, velocity, distance, turnRate,
+                nearest(name, new Point2D.Double(x, y), alive), alive.size());
+        } else {
+            gun.onSighting(name, time, x, y, heading, velocity, distance, turnRate);
+        }
+    }
+
+    /**
+     * MGUN-11: where Hadur is now, set before the tick's scans so their crowd attributes
+     * measure from this tick's position rather than the last.
+     */
+    public void at(Point2D.Double me) {
+        lastMe = me;
+    }
+
+    /** MGUN-11: the robot nearest {@code name} at {@code at}, Hadur included, or null. */
+    private Point2D.Double nearest(String name, Point2D.Double at, List<EnemyInfo> alive) {
+        Point2D.Double nearest = lastMe;
+        double best = lastMe == null ? Double.POSITIVE_INFINITY : lastMe.distance(at);
+        for (EnemyInfo o : alive) {
+            if (o.name.equals(name) || o.location == null) continue;
+            double d = o.location.distance(at);
+            if (d < best) {
+                best = d;
+                nearest = o.location;
+            }
+        }
+        return nearest;
     }
 
     /** One of Hadur's bullets of {@code power} hit {@code name}. */
