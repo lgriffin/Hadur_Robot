@@ -251,6 +251,9 @@ public class Hadur extends TeamRobot {
             // POISON-2: the mode table's stop-and-go entries, by variant.
             for (String name : ShieldTableData.stopGos()) lines.add(ShieldList.STOP_GO_PREFIX + " " + name);
             for (String name : ShieldTableData.stopGoShifts()) lines.add(ShieldList.STOP_GO_SHIFT_PREFIX + " " + name);
+            // MOVE-28, GUN-11: the factorial's per-opponent switches.
+            for (String name : ShieldTableData.heatJits()) lines.add(ShieldList.HEAT_JIT_PREFIX + " " + name);
+            for (String name : ShieldTableData.gunStacks()) lines.add(ShieldList.GUN_STACK_PREFIX + " " + name);
             return ShieldList.parse(lines);
         } catch (RuntimeException | LinkageError e) {
             out.println("SH," + getRoundNum() + "," + getTime() + ",list-failed," + e);

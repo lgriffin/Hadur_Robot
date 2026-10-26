@@ -1,0 +1,19 @@
+# GUN-11 candidate: Stage 2 factorial (PR #301) robots whose G (gun stack) effect is +5 points or more.
+DM.mega.Bezier 1.618fprrr
+amk.ChumbaMini 0.2
+ary.SMG 1.01
+aw.Gilgalad 1.99.5c
+barontrozo.BaronTrozo 1.7.6
+davidalves.Firebird 0.25
+florent.small.LittleAngel 1.8
+florent.test.Toad 0.14t
+jk.precise.Wintermute 0.8
+mue.Ascendant 1.2.27
+nat.nano.OcnirpSNG 1.0b
+oog.mega.saguaro.Saguaro 1.0
+pedersen.Ugluk 1.0
+slugzilla.Basilisk 3.9
+theo.QuarkSoup 1.5fga
+trab.Crusader 0.1.7
+tw.Exterminator 1.0
+wilson.Chameleon 0.91

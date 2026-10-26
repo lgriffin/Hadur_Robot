@@ -800,7 +800,8 @@ public final class DuelController {
             boolean learning = split && gunClassifier.learning();
             // MOVE-23: a listed opponent plays as with heatjit off (the hold on, no gun-heat wave).
             // RAM-4: a confirmed rammer gets heatjit (the gun-heat wave, no hold) whatever the switches say.
-            boolean ramHeat = ramHeat(duelOnly(MoveDesign.RAM_HEAT, enemiesTotal), rammer.confirmed());
+            // MOVE-28: a listed opponent gets heatjit the same way.
+            boolean ramHeat = ramHeat(duelOnly(MoveDesign.RAM_HEAT, enemiesTotal), rammer.confirmed()) || heatJitOn;
             moveController.setProvisionalHold(split ? learning : ((MoveDesign.HEAT_HOLD && !ramHeat) || !stackOn));
             // MOVE-17: the gate closes the gun-heat wave once the gun is called learning (the split wins).
             moveController.setProvisionalReady(provisionalOffered((MoveDesign.HEAT_WAVE || ramHeat) && stackOn,
@@ -908,6 +909,8 @@ public final class DuelController {
     private final ShotDodger shotDodger = new ShotDodger();
     /** DODGE-6: whether the shot-dodge planner is on against this opponent. */
     private boolean dodgePlanOn;
+    /** MOVE-28: the table names this opponent for stop-and-start. */
+    private boolean heatJitOn;
 
     /** DODGE-5: the escape angle a bullet read is scored loosely at while the planner is on; NaN otherwise. */
     private double dodgeEscape(Wave w) {
@@ -1341,6 +1344,14 @@ public final class DuelController {
         moveController.setDodgePasses(dodgePlanOn);
         surfMover.setDodgePlanner(dodgePlanOn);
         if (dodgePlanOn) shotDodger.prime(dodgePlan);
+        // MOVE-28: stop-and-start (MOVE-13) for the opponents the table names.
+        heatJitOn = duelOnly(stackList.heatJit(name), enemiesTotal);
+        // GUN-11: the gun stack (GUN-8 to GUN-10) for the opponents the table names; the gun keeps them 1v1-only.
+        if (duelOnly(stackList.gunStack(name), enemiesTotal)) {
+            gunController.setTripHammer(true);
+            gunController.setFreeGun(true);
+            gunController.setUndecayed(true);
+        }
         // POISON-2: stop-and-go, forced or by the table's entry and its variant.
         int prefire = MoveDesign.STOP_AND_GO ? MoveDesign.STOP_AND_GO_PREFIRE : stackList.stopGo(name);
         stopAndGo = duelOnly(prefire > 0, enemiesTotal) ? new StopAndGo(battleField, prefire) : null;

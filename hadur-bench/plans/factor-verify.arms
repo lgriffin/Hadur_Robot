@@ -1,0 +1,5 @@
+# 1v1 plan to 3rd, factorial picks verify (pc-1v1-factor): c is master (3.17.1, 1v1 as 3.17), aa its A/A copy,
+# t5 the candidate: master + plans/factor-heatjit.txt (MOVE-28) + plans/factor-gunstack.txt (GUN-11).
+c | hadur2.Hadur 3.17.1 | bisect/hadur2.Hadur_3.17.1.jar
+aa | hadur2.Hadur 3.17.1aa | bisect/hadur2.Hadur_3.17.1aa.jar
+t5 | hadur2.Hadur 3.17.1hlgl | bisect/hadur2.Hadur_3.17.1hlgl.jar
