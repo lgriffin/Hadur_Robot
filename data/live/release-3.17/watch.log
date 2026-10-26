@@ -1,0 +1,213 @@
+2026-10-26T17:38:48Z client C:/RoboRumbleWorkers/rr01: results ['C:\\RoboRumbleWorkers\\rr01\\roborumble\\files\\results1v1.txt', 'C:\\RoboRumbleWorkers\\rr01\\roborumble\\files\\resultsTeams.txt', 'C:\\RoboRumbleWorkers\\rr01\\roborumble\\files\\resultsTwinduel.txt', 'C:\\RoboRumbleWorkers\\rr01\\roborumble\\files\\resultsmelee.txt'], data ['C:/RoboRumbleWorkers/rr01\\robots\\.data\\hadur2\\Hadur.data']
+2026-10-26T17:38:48Z client C:/RoboRumbleWorkers/rr02: results ['C:\\RoboRumbleWorkers\\rr02\\roborumble\\files\\results1v1.txt', 'C:\\RoboRumbleWorkers\\rr02\\roborumble\\files\\resultsTeams.txt', 'C:\\RoboRumbleWorkers\\rr02\\roborumble\\files\\resultsTwinduel.txt', 'C:\\RoboRumbleWorkers\\rr02\\roborumble\\files\\resultsmelee.txt'], data ['C:/RoboRumbleWorkers/rr02\\robots\\.data\\hadur2\\Hadur.data']
+2026-10-26T17:38:48Z client C:/RoboRumbleWorkers/rr03: results ['C:\\RoboRumbleWorkers\\rr03\\roborumble\\files\\results1v1.txt', 'C:\\RoboRumbleWorkers\\rr03\\roborumble\\files\\resultsTeams.txt', 'C:\\RoboRumbleWorkers\\rr03\\roborumble\\files\\resultsTwinduel.txt', 'C:\\RoboRumbleWorkers\\rr03\\roborumble\\files\\resultsmelee.txt'], data ['C:/RoboRumbleWorkers/rr03\\robots\\.data\\hadur2\\Hadur.data']
+2026-10-26T17:38:48Z client C:/RoboRumbleWorkers/rr04: results ['C:\\RoboRumbleWorkers\\rr04\\roborumble\\files\\results1v1.txt', 'C:\\RoboRumbleWorkers\\rr04\\roborumble\\files\\resultsTeams.txt', 'C:\\RoboRumbleWorkers\\rr04\\roborumble\\files\\resultsTwinduel.txt', 'C:\\RoboRumbleWorkers\\rr04\\roborumble\\files\\resultsmelee.txt'], data ['C:/RoboRumbleWorkers/rr04\\robots\\.data\\hadur2\\Hadur.data']
+2026-10-26T17:38:49Z client C:/RoboRumbleWorkers/rr05: results ['C:\\RoboRumbleWorkers\\rr05\\roborumble\\files\\results1v1.txt', 'C:\\RoboRumbleWorkers\\rr05\\roborumble\\files\\resultsTeams.txt', 'C:\\RoboRumbleWorkers\\rr05\\roborumble\\files\\resultsTwinduel.txt', 'C:\\RoboRumbleWorkers\\rr05\\roborumble\\files\\resultsmelee.txt'], data ['C:/RoboRumbleWorkers/rr05\\robots\\.data\\hadur2\\Hadur.data']
+2026-10-26T17:38:49Z client C:/RoboRumbleWorkers/rr06: results ['C:\\RoboRumbleWorkers\\rr06\\roborumble\\files\\results1v1.txt', 'C:\\RoboRumbleWorkers\\rr06\\roborumble\\files\\resultsTeams.txt', 'C:\\RoboRumbleWorkers\\rr06\\roborumble\\files\\resultsTwinduel.txt', 'C:\\RoboRumbleWorkers\\rr06\\roborumble\\files\\resultsmelee.txt'], data ['C:/RoboRumbleWorkers/rr06\\robots\\.data\\hadur2\\Hadur.data']
+2026-10-25T22:55:59Z battle hadur2.Hadur 3.17 vs hp.Athena 0.1 (roborumble): 85.21% share, 33-2 rounds
+2026-10-25T22:56:01Z battle hadur2.Hadur 3.17 vs jt.SpearmintCT Alpha (roborumble): 97.56% share, 35-0 rounds
+2026-10-25T22:56:05Z battle hadur2.Hadur 3.17 vs cbot.cbot.CBot 0.8 (roborumble): 82.87% share, 34-1 rounds
+2026-10-25T22:56:30Z battle hadur2.Hadur 3.17 vs kc.serpent.WaveSerpent 2.11 (roborumble): 59.03% share, 27-8 rounds  << LOW
+2026-10-25T22:56:36Z battle hadur2.Hadur 3.17 vs cx.BlestPain 1.41 (roborumble): 76.85% share, 32-3 rounds
+2026-10-25T22:56:41Z battle hadur2.Hadur 3.17 vs hp.Athena 0.1 (roborumble): 85.71% share, 33-2 rounds
+2026-10-25T22:55:55Z battle hadur2.Hadur 3.17 vs jt.SpearmintCT Alpha (roborumble): 96.67% share, 35-0 rounds
+2026-10-25T22:56:01Z battle hadur2.Hadur 3.17 vs hp.Athena 0.1 (roborumble): 76.28% share, 33-2 rounds
+2026-10-25T22:56:03Z battle hadur2.Hadur 3.17 vs jt.SpearmintCT Alpha (roborumble): 96.33% share, 35-0 rounds
+2026-10-25T22:56:24Z battle hadur2.Hadur 3.17 vs kc.serpent.WaveSerpent 2.11 (roborumble): 56.36% share, 25-10 rounds  << LOW
+2026-10-25T22:56:30Z battle hadur2.Hadur 3.17 vs cx.BlestPain 1.41 (roborumble): 64.65% share, 26-9 rounds  << LOW
+2026-10-25T22:56:34Z battle hadur2.Hadur 3.17 vs hp.Athena 0.1 (roborumble): 84.91% share, 34-1 rounds
+2026-10-25T22:56:41Z battle hadur2.Hadur 3.17 vs cx.BlestPain 1.41 (roborumble): 75.84% share, 32-3 rounds
+2026-10-25T22:56:09Z battle hadur2.Hadur 3.17 vs hp.Athena 0.1 (roborumble): 83.13% share, 33-2 rounds
+2026-10-25T22:56:14Z battle hadur2.Hadur 3.17 vs hp.Athena 0.1 (roborumble): 80.71% share, 33-2 rounds
+2026-10-25T22:56:37Z battle hadur2.Hadur 3.17 vs kc.serpent.WaveSerpent 2.11 (roborumble): 50.09% share, 23-13 rounds  << LOW
+2026-10-25T22:56:11Z battle hadur2.Hadur 3.17 vs hp.Athena 0.1 (roborumble): 84.46% share, 34-1 rounds
+2026-10-25T22:56:16Z battle hadur2.Hadur 3.17 vs hp.Athena 0.1 (roborumble): 73.92% share, 30-5 rounds
+2026-10-25T22:56:40Z battle hadur2.Hadur 3.17 vs kc.serpent.WaveSerpent 2.11 (roborumble): 62.78% share, 29-6 rounds  << LOW
+2026-10-26T17:38:51Z page roborumble: APS 90.92, 2331 battles (first read)
+2026-10-26T17:38:52Z page meleerumble: APS 66.36, 1462 battles (first read)
+2026-10-26T17:38:52Z page teamrumble: APS 79.39, 69 battles (first read)
+2026-10-26T17:38:52Z profiles rr01_robots_.data_hadur2_Hadur.data: 438 files, 202 shield verdicts stored
+2026-10-26T17:38:52Z profiles rr02_robots_.data_hadur2_Hadur.data: 455 files, 196 shield verdicts stored
+2026-10-26T17:38:52Z profiles rr03_robots_.data_hadur2_Hadur.data: 459 files, 202 shield verdicts stored
+2026-10-26T17:38:52Z profiles rr04_robots_.data_hadur2_Hadur.data: 437 files, 204 shield verdicts stored
+2026-10-26T17:38:52Z profiles rr05_robots_.data_hadur2_Hadur.data: 453 files, 256 shield verdicts stored
+2026-10-26T17:38:52Z profiles rr06_robots_.data_hadur2_Hadur.data: 458 files, 243 shield verdicts stored
+2026-10-26T17:46:17Z health gg.Wolverine: 34/35 survived, 1 skipped, 0 faults, shield verdict 0
+2026-10-26T17:46:17Z health pkdeken.Paladin: 35/35 survived, 1 skipped, 0 faults, shield verdict 0
+2026-10-26T17:46:18Z battle hadur2.Hadur 3.17 vs gg.Wolverine 2.0 (roborumble): 84.9% share, 34-1 rounds
+2026-10-26T17:46:17Z battle hadur2.Hadur 3.17 vs pkdeken.Paladin 1.0 (roborumble): 98.64% share, 35-0 rounds
+2026-10-26T17:46:27Z battle hadur2.Hadur 3.17 vs fowl3628800.SitAndGo 1.0.0 (roborumble): 99.28% share, 35-0 rounds
+2026-10-26T17:46:27Z health florent.XSeries.X2: 35/35 survived, 2 skipped, 0 faults, shield verdict 0
+2026-10-26T17:46:46Z health ry.LightningBug: 35/35 survived, 1 skipped, 0 faults, shield verdict 1
+2026-10-26T17:46:46Z health florent.XSeries.X2: 28/35 survived, 6 skipped, 0 faults, shield verdict 1
+2026-10-26T17:46:46Z health demetrix.nano.Neutrino: 33/35 survived, 3 skipped, 0 faults, shield verdict 1
+2026-10-26T17:46:46Z health kinsen.melee.Angsaichmophobia: 35/35 survived, 6 skipped, 0 faults, shield verdict 1
+2026-10-26T17:46:46Z battle hadur2.Hadur 3.17 vs ry.LightningBug 1.0 (roborumble): 95.73% share, 35-0 rounds
+2026-10-26T17:46:57Z battle hadur2.Hadur 3.17 vs jekl.Jekyl .70 (roborumble): 97.04% share, 35-0 rounds
+2026-10-26T17:46:46Z battle hadur2.Hadur 3.17 vs florent.XSeries.X2 0.17 (roborumble): 64.83% share, 28-7 rounds  << LOW
+2026-10-26T17:46:55Z battle hadur2.Hadur 3.17 vs McS.Spanky_test 0.1a (roborumble): 99.67% share, 35-0 rounds
+2026-10-26T17:46:46Z battle hadur2.Hadur 3.17 vs demetrix.nano.Neutrino 0.27 (roborumble): 88.83% share, 33-2 rounds
+2026-10-26T17:46:46Z battle hadur2.Hadur 3.17 vs adt.Ar2 1.0 (roborumble): 93.92% share, 35-0 rounds
+2026-10-26T17:46:56Z battle hadur2.Hadur 3.17 vs kinsen.melee.Angsaichmophobia 1.8c (roborumble): 92.41% share, 35-0 rounds
+2026-10-26T17:46:57Z health jekl.Jekyl: 35/35 survived, 3 skipped, 0 faults, shield verdict 0
+2026-10-26T17:46:55Z health McS.Spanky_test: 35/35 survived, 1 skipped, 0 faults, shield verdict 0
+2026-10-26T17:47:01Z health pez.mini.VertiLeach: 32/35 survived, 3 skipped, 0 faults, shield verdict 1
+2026-10-26T17:47:07Z battle hadur2.Hadur 3.17 vs apv.Aspid 1.7 (roborumble): 82.85% share, 34-1 rounds
+2026-10-26T17:47:01Z battle hadur2.Hadur 3.17 vs pez.mini.VertiLeach 0.4.0 (roborumble): 78.42% share, 32-3 rounds
+2026-10-26T17:47:06Z battle hadur2.Hadur 3.17 vs sample.Corners 1.0 (roborumble): 100.0% share, 35-0 rounds
+2026-10-26T17:47:07Z health apv.Aspid: 34/35 survived, 4 skipped, 0 faults, shield verdict 1
+2026-10-26T17:47:11Z health ry.LightningBug: 35/35 survived, 1 skipped, 0 faults, shield verdict 0
+2026-10-26T17:47:11Z battle hadur2.Hadur 3.17 vs mz.AdeptBSB 1.03 (roborumble): 98.73% share, 35-0 rounds
+2026-10-26T17:47:16Z battle hadur2.Hadur 3.17 vs mwj.A1176183 1.0 (roborumble): 99.98% share, 35-0 rounds
+2026-10-26T17:47:11Z battle hadur2.Hadur 3.17 vs ers.nano.meroka.Meroka 1.8a (roborumble): 91.28% share, 35-0 rounds
+2026-10-26T17:47:14Z battle hadur2.Hadur 3.17 vs ry.LightningBug 1.0 (roborumble): 91.49% share, 35-0 rounds
+2026-10-26T17:47:16Z health kawigi.sbf.FloodHT: 35/35 survived, 2 skipped, 0 faults, shield verdict 0
+2026-10-26T17:47:14Z health ry.LightningBug: 35/35 survived, 1 skipped, 0 faults, shield verdict 0
+2026-10-26T17:47:26Z battle hadur2.Hadur 3.17 vs kawigi.sbf.FloodHT 0.9.2 (roborumble): 82.13% share, 34-1 rounds
+2026-10-26T17:47:26Z battle hadur2.Hadur 3.17 vs catcat20.Lambda 0.017 (roborumble): 62.97% share, 26-9 rounds  << LOW
+2026-10-26T17:47:29Z battle hadur2.Hadur 3.17 vs ICS4U1.Patrick_White_Schrodinger 1.1 (roborumble): 96.31% share, 35-0 rounds
+2026-10-26T17:47:27Z battle hadur2.Hadur 3.17 vs rdt199.Warlord 0.73 (roborumble): 87.34% share, 35-0 rounds
+2026-10-26T17:47:26Z health ar.TheoryOfEverything: 34/35 survived, 2 skipped, 0 faults, shield verdict 0
+2026-10-26T17:47:29Z health ICS4U1.Patrick_White_Schrodinger: 35/35 survived, 3 skipped, 0 faults, shield verdict 1
+2026-10-26T17:47:35Z health mld.Infinity: 35/35 survived, 2 skipped, 0 faults, shield verdict 0
+2026-10-26T17:47:34Z battle hadur2.Hadur 3.17 vs leb.ShootAnArrow 0.1 (roborumble): 92.43% share, 35-0 rounds
+2026-10-26T17:47:33Z battle hadur2.Hadur 3.17 vs ar.TheoryOfEverything 1.2.1 (roborumble): 91.65% share, 35-0 rounds
+2026-10-26T17:47:37Z battle hadur2.Hadur 3.17 vs pc.Wavelet 1.5 (roborumble): 35.92% share, 9-26 rounds  << LOW
+2026-10-26T17:47:35Z battle hadur2.Hadur 3.17 vs mld.Infinity 2.2 (roborumble): 97.92% share, 35-0 rounds
+2026-10-26T17:47:33Z health leb.ShootAnArrow: 35/35 survived, 3 skipped, 0 faults, shield verdict 0
+2026-10-26T17:47:33Z health ar.TheoryOfEverything: 35/35 survived, 1 skipped, 0 faults, shield verdict 0
+2026-10-26T17:47:37Z health pc.Wavelet: 10/35 survived, 8 skipped, 0 faults, shield verdict 1
+2026-10-26T17:47:41Z health jam.micro.RaikoMicro: 35/35 survived, 3 skipped, 0 faults, shield verdict 0
+2026-10-26T17:47:43Z battle hadur2.Hadur 3.17 vs scheronimus.AntiRebel 1.1 (roborumble): 97.35% share, 35-0 rounds
+2026-10-26T17:47:48Z battle hadur2.Hadur 3.17 vs bvh.micro.Svadilfari 0.2 (roborumble): 99.28% share, 35-0 rounds
+2026-10-26T17:47:41Z battle hadur2.Hadur 3.17 vs spartancompany.Spartan2 1.0 (roborumble): 99.74% share, 35-0 rounds
+2026-10-26T17:47:50Z battle hadur2.Hadur 3.17 vs jam.micro.RaikoMicro 1.44 (roborumble): 99.53% share, 35-0 rounds
+2026-10-26T17:47:48Z health bvh.micro.Svadilfari: 35/35 survived, 3 skipped, 0 faults, shield verdict 0
+2026-10-26T17:47:56Z health test.Podgy: 35/35 survived, 3 skipped, 0 faults, shield verdict 0
+2026-10-26T17:48:03Z battle hadur2.Hadur 3.17 vs ab.DengerousRoBatra 1.3 (roborumble): 93.54% share, 35-0 rounds
+2026-10-26T17:47:54Z battle hadur2.Hadur 3.17 vs discan.mini.Exode 0.25 (roborumble): 97.35% share, 35-0 rounds
+2026-10-26T17:47:57Z battle hadur2.Hadur 3.17 vs fala.robocode.FalaRobot 1.0 (roborumble): 95.73% share, 35-0 rounds
+2026-10-26T17:48:02Z battle hadur2.Hadur 3.17 vs test.Podgy 4.0 (roborumble): 86.03% share, 34-1 rounds
+2026-10-26T17:48:03Z health ab.DengerousRoBatra: 35/35 survived, 1 skipped, 0 faults, shield verdict 0
+2026-10-26T17:48:02Z health drm.CobraBora: 34/35 survived, 6 skipped, 0 faults, shield verdict 1
+2026-10-26T17:48:11Z battle hadur2.Hadur 3.17 vs ary.SMG 1.01 (roborumble): 99.1% share, 35-0 rounds
+2026-10-26T17:48:11Z battle hadur2.Hadur 3.17 vs robar.nano.Scytodes 0.3 (roborumble): 95.94% share, 35-0 rounds
+2026-10-26T17:48:11Z health ary.SMG: 35/35 survived, 3 skipped, 0 faults, shield verdict 0
+2026-10-26T17:48:11Z health robar.nano.Scytodes: 35/35 survived, 4 skipped, 0 faults, shield verdict 1
+2026-10-26T17:48:16Z health lj.Dapps: 35/35 survived, 1 skipped, 0 faults, shield verdict 1
+2026-10-26T17:48:21Z battle hadur2.Hadur 3.17 vs mn.micro.perceptual.Mimic 1.0.0 (roborumble): 93.87% share, 35-0 rounds
+2026-10-26T17:48:14Z battle hadur2.Hadur 3.17 vs drm.CobraBora 1.12 (roborumble): 75.81% share, 32-3 rounds
+2026-10-26T17:48:16Z battle hadur2.Hadur 3.17 vs Legend.Qetro 1.6 (roborumble): 97.78% share, 35-0 rounds
+2026-10-26T17:48:23Z battle hadur2.Hadur 3.17 vs lj.Dapps 0.2 (roborumble): 86.5% share, 35-0 rounds
+2026-10-26T17:48:21Z health mn.micro.perceptual.Mimic: 35/35 survived, 2 skipped, 0 faults, shield verdict 1
+2026-10-26T17:48:23Z health pez.rumble.Ali: 35/35 survived, 2 skipped, 0 faults, shield verdict 1
+2026-10-26T17:48:30Z battle hadur2.Hadur 3.17 vs as.xbots 1.0 (roborumble): 81.4% share, 35-0 rounds
+2026-10-26T17:48:30Z battle hadur2.Hadur 3.17 vs csp.Eagle 3.30 (roborumble): 95.45% share, 35-0 rounds
+2026-10-26T17:48:35Z health wiki.mini.Griffon: 35/35 survived, 3 skipped, 0 faults, shield verdict 0
+2026-10-26T17:48:30Z health as.xbots: 35/35 survived, 3 skipped, 0 faults, shield verdict 1
+2026-10-26T17:48:30Z health csp.Eagle: 35/35 survived, 3 skipped, 0 faults, shield verdict 1
+2026-10-26T17:48:35Z battle hadur2.Hadur 3.17 vs wiki.mini.Griffon 0.1 (roborumble): 98.31% share, 35-0 rounds
+2026-10-26T17:48:44Z battle hadur2.Hadur 3.17 vs cuoq.Kakera 1.0 (roborumble): 83.42% share, 33-2 rounds
+2026-10-26T17:48:42Z battle hadur2.Hadur 3.17 vs dam.MogBot 2.9 (roborumble): 83.59% share, 33-2 rounds
+2026-10-26T17:48:45Z battle hadur2.Hadur 3.17 vs pez.rumble.Ali 0.4.9 (roborumble): 96.64% share, 35-0 rounds
+2026-10-26T17:48:44Z health cuoq.Kakera: 33/35 survived, 2 skipped, 0 faults, shield verdict 1
+2026-10-26T17:48:41Z health dam.MogBot: 33/35 survived, 4 skipped, 0 faults, shield verdict 0
+2026-10-26T17:48:51Z health ph.mini.Archer: 34/35 survived, 1 skipped, 0 faults, shield verdict 0
+2026-10-26T17:48:53Z battle hadur2.Hadur 3.17 vs ajs.Solveit 1.3 (roborumble): 89.16% share, 35-0 rounds
+2026-10-26T17:48:51Z battle hadur2.Hadur 3.17 vs ph.mini.Archer 0.6.6 (roborumble): 93.76% share, 34-1 rounds
+2026-10-26T17:48:53Z health cx.micro.Spark: 35/35 survived, 10 skipped, 0 faults, shield verdict 0
+2026-10-26T17:48:58Z health timmit.TimmiT: 35/35 survived, 1 skipped, 0 faults, shield verdict 0
+2026-10-26T17:49:06Z battle hadur2.Hadur 3.17 vs rus.vv.Dzhigit 1.1 (roborumble): 99.37% share, 35-0 rounds
+2026-10-26T17:49:01Z battle hadur2.Hadur 3.17 vs cyragia.Bot 1.1 (roborumble): 99.13% share, 35-0 rounds
+2026-10-26T17:49:02Z battle hadur2.Hadur 3.17 vs cx.micro.Spark 0.6 (roborumble): 76.21% share, 32-3 rounds
+2026-10-26T17:48:58Z battle hadur2.Hadur 3.17 vs el.JumpShoot 0.2 (roborumble): 99.98% share, 35-0 rounds
+2026-10-26T17:49:05Z health rus.vv.Dzhigit: 35/35 survived, 3 skipped, 0 faults, shield verdict 0
+2026-10-26T17:49:01Z health cyragia.Bot: 35/35 survived, 1 skipped, 0 faults, shield verdict 0
+2026-10-26T17:49:02Z health kc.serpent.WaveSerpent: 32/35 survived, 5 skipped, 0 faults, shield verdict 0
+2026-10-26T17:49:07Z health arthord.KostyaTszyu: 35/35 survived, 1 skipped, 0 faults, shield verdict 0
+2026-10-26T17:49:19Z battle hadur2.Hadur 3.17 vs suh.mega.WaveSurferPG 1.06 (roborumble): 77.52% share, 30-5 rounds
+2026-10-26T17:49:16Z battle hadur2.Hadur 3.17 vs bayen.UbaMicro 1.4 (roborumble): 97.71% share, 35-0 rounds
+2026-10-26T17:49:17Z battle hadur2.Hadur 3.17 vs dft.Calliope 5.6 (roborumble): 91.92% share, 35-0 rounds
+2026-10-26T17:49:19Z battle hadur2.Hadur 3.17 vs WdV.Lesserbee 0.01 (roborumble): 95.59% share, 35-0 rounds
+2026-10-26T17:49:07Z battle hadur2.Hadur 3.17 vs timmit.TimmiT 0.22 (roborumble): 100.0% share, 35-0 rounds
+2026-10-26T17:49:15Z battle hadur2.Hadur 3.17 vs arthord.KostyaTszyu Beta2 (roborumble): 100.0% share, 35-0 rounds
+2026-10-26T17:49:19Z battle hadur2.Hadur 3.17 vs ratosh.Nobo 0.21 (roborumble): 96.57% share, 35-0 rounds
+2026-10-26T17:49:19Z health suh.mega.WaveSurferPG: 30/35 survived, 5 skipped, 0 faults, shield verdict 1
+2026-10-26T17:49:16Z health bayen.UbaMicro: 35/35 survived, 1 skipped, 0 faults, shield verdict 0
+2026-10-26T17:49:19Z health satan.White: 35/35 survived, 2 skipped, 0 faults, shield verdict 0
+2026-10-26T17:49:23Z health rdm.Dueler: 35/35 survived, 1 skipped, 0 faults, shield verdict 0
+2026-10-26T17:49:31Z battle hadur2.Hadur 3.17 vs ha2.T2b 0.2b (roborumble): 96.44% share, 35-0 rounds
+2026-10-26T17:49:27Z battle hadur2.Hadur 3.17 vs labg.Cataclysm 2.05 (roborumble): 87.85% share, 34-1 rounds
+2026-10-26T17:49:25Z battle hadur2.Hadur 3.17 vs satan.White 0.26 (roborumble): 99.86% share, 35-0 rounds
+2026-10-26T17:49:30Z battle hadur2.Hadur 3.17 vs kc.serpent.WaveSerpent 2.11 (roborumble): 45.49% share, 19-16 rounds  << LOW
+2026-10-26T17:49:23Z battle hadur2.Hadur 3.17 vs ntc.Plains 0.9 (roborumble): 99.2% share, 35-0 rounds
+2026-10-26T17:49:32Z battle hadur2.Hadur 3.17 vs rdm.Dueler 0.4x (roborumble): 82.56% share, 33-2 rounds
+2026-10-26T17:49:31Z health ha2.T2b: 35/35 survived, 3 skipped, 0 faults, shield verdict 1
+2026-10-26T17:49:27Z health labg.Cataclysm: 34/35 survived, 3 skipped, 0 faults, shield verdict 1
+2026-10-26T17:49:25Z health gre.svman4.Morfeas: 35/35 survived, 1 skipped, 0 faults, shield verdict 0
+2026-10-26T17:49:30Z health kc.serpent.WaveSerpent: 19/35 survived, 6 skipped, 0 faults, shield verdict 1
+2026-10-26T17:49:37Z health ha2.T2: 35/35 survived, 1 skipped, 0 faults, shield verdict 0
+2026-10-26T17:49:38Z battle hadur2.Hadur 3.17 vs rjw.RabidWombat 0.71 (roborumble): 99.24% share, 35-0 rounds
+2026-10-26T17:49:44Z battle hadur2.Hadur 3.17 vs com.arsenic.NewTest 1.0 (roborumble): 89.2% share, 34-1 rounds
+2026-10-26T17:49:37Z battle hadur2.Hadur 3.17 vs gre.svman4.Morfeas 1.4.3 (roborumble): 76.62% share, 30-5 rounds
+2026-10-26T17:49:41Z battle hadur2.Hadur 3.17 vs projectx.ProjectNano 2.0 (roborumble): 98.7% share, 35-0 rounds
+2026-10-26T17:49:44Z battle hadur2.Hadur 3.17 vs fala.robocode.FalaRobot 1.0 (roborumble): 96.74% share, 35-0 rounds
+2026-10-26T17:49:34Z battle hadur2.Hadur 3.17 vs paolord.TheHulk 1.0 (roborumble): 100.0% share, 35-0 rounds
+2026-10-26T17:49:37Z battle hadur2.Hadur 3.17 vs hs.SimpleHBot 1.3 (roborumble): 98.94% share, 35-0 rounds
+2026-10-26T17:49:39Z battle hadur2.Hadur 3.17 vs ha2.T2 0.2 (roborumble): 97.63% share, 35-0 rounds
+2026-10-26T17:49:42Z battle hadur2.Hadur 3.17 vs mld.LittleBlackBook 1.69e (roborumble): 94.21% share, 35-0 rounds
+2026-10-26T17:49:44Z health com.arsenic.NewTest: 34/35 survived, 4 skipped, 0 faults, shield verdict 1
+2026-10-26T17:49:45Z health nat.nano.OcnirpSNG: 35/35 survived, 1 skipped, 0 faults, shield verdict 0
+2026-10-26T17:49:49Z health wiki.mako.MakoHT: 35/35 survived, 3 skipped, 0 faults, shield verdict 0
+2026-10-26T17:49:50Z health sqTank.waveSurfing.LionWWSVMvoid: 35/35 survived, 1 skipped, 0 faults, shield verdict 1
+2026-10-26T17:49:49Z battle hadur2.Hadur 3.17 vs apv.ScruchiPu 1.0 (roborumble): 78.22% share, 32-3 rounds
+2026-10-26T17:49:48Z battle hadur2.Hadur 3.17 vs bvh.micro.Freya 0.3 (roborumble): 95.5% share, 35-0 rounds
+2026-10-26T17:49:56Z battle hadur2.Hadur 3.17 vs jaemcrb.nano.M1Abrams 1.0 (roborumble): 95.9% share, 35-0 rounds
+2026-10-26T17:49:45Z battle hadur2.Hadur 3.17 vs nat.nano.OcnirpSNG 1.0b (roborumble): 100.0% share, 35-0 rounds
+2026-10-26T17:49:49Z battle hadur2.Hadur 3.17 vs wiki.mako.MakoHT 1.2.2.1 (roborumble): 99.39% share, 35-0 rounds
+2026-10-26T17:49:55Z battle hadur2.Hadur 3.17 vs m3thos.mini.Eva01 0.5.5 (roborumble): 94.62% share, 35-0 rounds
+2026-10-26T17:49:50Z battle hadur2.Hadur 3.17 vs sqTank.waveSurfing.LionWWSVMvoid 0.01 (roborumble): 100.0% share, 35-0 rounds
+2026-10-26T17:49:48Z health apv.ScruchiPu: 32/35 survived, 1 skipped, 0 faults, shield verdict 1
+2026-10-26T17:49:56Z health synapse.Geomancy: 35/35 survived, 3 skipped, 0 faults, shield verdict 1
+2026-10-26T17:49:55Z health jk.melee.Neuromancer: 35/35 survived, 3 skipped, 0 faults, shield verdict 1
+2026-10-26T17:50:08Z health rdt.AgentSmith.AgentSmithRedux: 24/35 survived, 2 skipped, 0 faults, shield verdict 1
+2026-10-26T17:50:09Z battle hadur2.Hadur 3.17 vs synapse.Geomancy 15 (roborumble): 72.78% share, 29-6 rounds
+2026-10-26T17:50:08Z battle hadur2.Hadur 3.17 vs jk.precise.Wintermute 0.8 (roborumble): 57.42% share, 24-11 rounds  << LOW
+2026-10-26T17:50:15Z battle hadur2.Hadur 3.17 vs rdt.AgentSmith.AgentSmithRedux 0.02 (roborumble): 94.83% share, 35-0 rounds
+2026-10-26T17:50:16Z done: 102 1v1 battles, 10 under 70%
+2026-10-26T17:50:09Z health synapse.Geomancy: 29/35 survived, 7 skipped, 0 faults, shield verdict 1
+2026-10-26T17:50:15Z health rdt.AgentSmith.AgentSmithRedux: 35/35 survived, 1 skipped, 0 faults, shield verdict 1
+2026-10-26T17:50:23Z battle hadur2.Hadur 3.17 vs rc.yoda.Yoda 1.0.6c.fix (roborumble): 99.95% share, 35-0 rounds
+2026-10-26T17:50:22Z battle hadur2.Hadur 3.17 vs myl.micro.Avipes 1.00 (roborumble): 80.51% share, 33-2 rounds
+2026-10-26T17:50:23Z health rc.yoda.Yoda: 35/35 survived, 1 skipped, 0 faults, shield verdict 0
+2026-10-26T17:50:22Z health Noran.BitchingElk: 33/35 survived, 1 skipped, 0 faults, shield verdict 0
+2026-10-26T17:50:28Z battle hadur2.Hadur 3.17 vs lessonz.robocode.Oz 0.5.0 (roborumble): 96.8% share, 35-0 rounds
+2026-10-26T17:50:33Z battle hadur2.Hadur 3.17 vs Noran.BitchingElk 0.054 (roborumble): 99.67% share, 35-0 rounds
+2026-10-26T17:50:28Z health lessonz.robocode.Oz: 35/35 survived, 2 skipped, 0 faults, shield verdict 1
+2026-10-26T17:50:33Z health Noran.BitchingElk: 35/35 survived, 2 skipped, 0 faults, shield verdict 0
+2026-10-26T17:50:38Z health rc.yoda.Yoda: 33/35 survived, 3 skipped, 0 faults, shield verdict 1
+2026-10-26T17:50:46Z battle hadur2.Hadur 3.17 vs jk.melee.Neuromancer 7.12 (roborumble): 53.8% share, 21-14 rounds  << LOW
+2026-10-26T17:50:39Z battle hadur2.Hadur 3.17 vs rc.yoda.Yoda 1.0.6c.fix (roborumble): 85.37% share, 33-2 rounds
+2026-10-26T17:50:46Z health labg.Cataclysm: 35/35 survived, 2 skipped, 0 faults, shield verdict 1
+2026-10-26T17:50:49Z health mbro.BelajarBot: 35/35 survived, 2 skipped, 0 faults, shield verdict 1
+2026-10-26T17:50:48Z battle hadur2.Hadur 3.17 vs RobotMarco.MarcoV 0.1 (roborumble): 100.0% share, 35-0 rounds
+2026-10-26T17:50:46Z battle hadur2.Hadur 3.17 vs labg.Cataclysm 2.05 (roborumble): 92.12% share, 35-0 rounds
+2026-10-26T17:50:54Z battle hadur2.Hadur 3.17 vs wiki.mini.Sedan 1.0 (roborumble): 99.15% share, 35-0 rounds
+2026-10-26T17:50:47Z health RobotMarco.MarcoV: 35/35 survived, 6 skipped, 0 faults, shield verdict 0
+2026-10-26T17:50:57Z health wiki.BasicGFSurfer: 35/35 survived, 1 skipped, 0 faults, shield verdict 1
+2026-10-26T17:51:00Z battle hadur2.Hadur 3.17 vs jaw.Mouse 0.11 (roborumble): 96.36% share, 35-0 rounds
+2026-10-26T17:50:57Z battle hadur2.Hadur 3.17 vs wiki.BasicGFSurfer 1.02 (roborumble): 96.65% share, 35-0 rounds
+2026-10-26T17:51:00Z health jaw.Mouse: 35/35 survived, 3 skipped, 0 faults, shield verdict 0
+2026-10-26T17:51:07Z health learn.ISmart: 35/35 survived, 2 skipped, 0 faults, shield verdict 0
+2026-10-26T17:51:09Z health florent.small.LittleAngel: 35/35 survived, 1 skipped, 0 faults, shield verdict 0
+2026-10-26T17:51:06Z health cw.megas.Blade: 34/35 survived, 2 skipped, 0 faults, shield verdict 0
+2026-10-26T17:51:13Z health dmh.robocode.robot.BlackDeath: 35/35 survived, 1 skipped, 0 faults, shield verdict 0
+2026-10-26T17:51:14Z health whind.Constitution: 34/35 survived, 2 skipped, 0 faults, shield verdict 0
+2026-10-26T17:51:18Z health florent.small.LittleAngel: 35/35 survived, 2 skipped, 0 faults, shield verdict 0
+2026-10-26T17:51:20Z health fowl3628800.ThunderStruck: 35/35 survived, 4 skipped, 0 faults, shield verdict 0
+2026-10-26T17:51:24Z profiles rr01_robots_.data_hadur2_Hadur.data: 445 files, 205 shield verdicts stored
+2026-10-26T17:51:24Z profiles rr02_robots_.data_hadur2_Hadur.data: 463 files, 198 shield verdicts stored
+2026-10-26T17:51:24Z profiles rr03_robots_.data_hadur2_Hadur.data: 468 files, 207 shield verdicts stored
+2026-10-26T17:51:24Z profiles rr04_robots_.data_hadur2_Hadur.data: 444 files, 209 shield verdicts stored
+2026-10-26T17:51:24Z profiles rr05_robots_.data_hadur2_Hadur.data: 462 files, 262 shield verdicts stored
+2026-10-26T17:51:24Z profiles rr06_robots_.data_hadur2_Hadur.data: 480 files, 248 shield verdicts stored
