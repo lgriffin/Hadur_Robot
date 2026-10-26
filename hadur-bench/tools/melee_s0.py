@@ -222,10 +222,13 @@ def analyse(work, ranks):
     won = defaultdict(lambda: [0, 0])
     duel = defaultdict(lambda: {"n": 0, "won": 0, "me": [], "opp": [], "lead_n": 0, "lead_won": 0, "behind_n": 0, "behind_won": 0})
     crowd_deaths = defaultdict(int)
-    taken_crowd, taken_duel, skipped = [], [], []
+    taken_crowd, taken_duel, skipped, outlived = [], [], [], []
     n_rounds = 0
     for best, r in rounds_all:
         n_rounds += 1
+        if r.get("place", "").isdigit() and r.get("fielded", "").isdigit() and int(r["fielded"]) > 1:
+            # The share of the others Hadur outlived this round (the live page's Survival).
+            outlived.append(100.0 * (int(r["fielded"]) - int(r["place"])) / (int(r["fielded"]) - 1))
         won[best][1] += 1
         if r.get("place") == "1":
             won[best][0] += 1
@@ -255,7 +258,7 @@ def analyse(work, ranks):
             if r.get(col) not in (None, "", "-"):
                 sink.append(float(r[col]))
     res.update(rounds=n_rounds, won=won, duel=duel, crowd_deaths=crowd_deaths,
-               taken_crowd=taken_crowd, taken_duel=taken_duel, skipped=skipped)
+               taken_crowd=taken_crowd, taken_duel=taken_duel, skipped=skipped, outlived=outlived)
     a_mean, a_half = res["paired"]
     res["aa_pass"] = (not math.isnan(a_half)) and abs(a_mean) <= AA_MEAN and a_half <= AA_HALF
     return res
@@ -380,7 +383,8 @@ def run_aps(work):
 
 
 def phase_stats(res):
-    """(1-30 endgame wins %, duels, deaths with two opponents left as % of rounds, mean energy entering the endgame)."""
+    """(1-30 endgame wins %, duels, deaths with two opponents left as % of rounds, mean energy
+    entering the endgame, mean share of the others outlived %)."""
     n = won = 0
     energy = []
     for b, d in res["duel"].items():
@@ -390,7 +394,8 @@ def phase_stats(res):
             won += d["won"]
     rounds = res["rounds"] or 1
     return (100.0 * won / n if n else float("nan"), n, 100.0 * res["crowd_deaths"].get(2, 0) / rounds,
-            statistics.mean(energy) if energy else float("nan"))
+            statistics.mean(energy) if energy else float("nan"),
+            statistics.mean(res["outlived"]) if res.get("outlived") else float("nan"))
 
 
 def suite_fields(suite):
@@ -419,7 +424,7 @@ def screen(base_work, arms, ranks, seeds=None, fields=None):
     return out, base_phase
 
 
-def verdict(arm, base_phase):
+def verdict(arm, base_phase, gain=GAIN, survival_slack=None):
     m, h = arm["paired"]
     if arm.get("missing", 0) > 0:
         return "INCOMPLETE"
@@ -430,25 +435,38 @@ def verdict(arm, base_phase):
     band = arm["phase"][0] - base_phase[0]
     if math.isnan(band):
         return "NO DATA"
-    if m >= GAIN and m - h > 0 and not (band < -BAND_SLACK):
+    if survival_slack is not None:
+        lived = arm["phase"][4] - base_phase[4]
+        if math.isnan(lived):
+            return "NO DATA"
+        if lived < -survival_slack:
+            return "FAIL"
+    if m >= gain and m - h > 0 and not (band < -BAND_SLACK):
         return "PASS"
     return "FAIL"
 
 
-def render_screen(rows, base_phase, title):
+def render_screen(rows, base_phase, title, gain=GAIN, survival_slack=None, gains=None):
+    gains = gains or {}
     out = ["# %s" % title, "",
            "Each arm paired with the aa baseline battle for battle (same field, same seed). Paired APS is the mean over",
-           "fields of the per-field mean difference, with its 95%% interval. Pass: +%.1f or more, low end above 0, and" % GAIN,
-           "1-30 endgame wins no more than %.0f points below the baseline's. The bb copy is clean within ±%.2f." % (BAND_SLACK, SCREEN_AA), "",
-           "| Arm | Paired APS | Fields | Battles (missing) | 1-30 endgame wins | Deaths with two opponents left | Energy entering the endgame | Verdict |",
-           "|---|---|---|---|---|---|---|---|",
-           "| aa (baseline) | - | - | - | %.1f%% of %d | %.1f%% | %.1f | - |" % base_phase]
+           "fields of the per-field mean difference, with its 95%% interval. Pass: +%.1f or more, low end above 0, and" % gain,
+           "1-30 endgame wins no more than %.0f points below the baseline's%s. The bb copy is clean within ±%.2f." % (
+               BAND_SLACK, "" if survival_slack is None else
+               ", and the share of others outlived no more than %.0f point%s lower" % (survival_slack, "" if survival_slack == 1 else "s"),
+               SCREEN_AA), "",
+           "| Arm | Paired APS | Fields | Battles (missing) | 1-30 endgame wins | Deaths with two opponents left | Energy entering the endgame | Others outlived | Verdict |",
+           "|---|---|---|---|---|---|---|---|---|",
+           "| aa (baseline) | - | - | - | %.1f%% of %d | %.1f%% | %.1f | %.1f%% | - |" % base_phase]
     for r in rows:
         m, h = r["paired"]
-        w, n, dead, en = r["phase"]
-        out.append("| %s | %+.2f ± %.2f | %d | %d (%d) | %.1f%% of %d (%+.1f) | %.1f%% (%+.1f) | %.1f (%+.1f) | **%s** |" % (
+        w, n, dead, en, lived = r["phase"]
+        out.append("| %s | %+.2f ± %.2f | %d | %d (%d) | %.1f%% of %d (%+.1f) | %.1f%% (%+.1f) | %.1f (%+.1f) | %.1f%% (%+.1f) | **%s** |" % (
             r["name"], m, h, r["fields"], r["pairs"], r.get("missing", 0), w, n, w - base_phase[0], dead, dead - base_phase[2],
-            en, en - base_phase[3], verdict(r, base_phase)))
+            en, en - base_phase[3], lived, lived - base_phase[4],
+            verdict(r, base_phase, gains.get(r["name"], gain), survival_slack)))
+    for name, g in gains.items():
+        out += ["", "%s is judged at +%.1f, not +%.1f." % (name, g, gain)]
     return "\n".join(out) + "\n"
 
 
@@ -471,6 +489,10 @@ def main(argv=None):
     sc.add_argument("--arm", action="append", required=True, help="NAME=WORK")
     sc.add_argument("--census", required=True)
     sc.add_argument("--seeds", type=int, help="the card's seeds a field: every field x seed battle must pair")
+    sc.add_argument("--gain", action="append", default=[],
+                    help="the pass bar: X for every arm, or NAME=X for one (default %.1f)" % GAIN)
+    sc.add_argument("--survival-slack", type=float,
+                    help="also fail an arm whose share of others outlived falls more than this many points")
     sc.add_argument("--out", required=True)
     sc.add_argument("--title", default="Melee Stage 1: two opponents left")
     a = ap.parse_args(argv)
@@ -478,9 +500,17 @@ def main(argv=None):
         arms = [tuple(x.split("=", 1)) for x in a.arm]
         rows, base_phase = screen(a.base, arms, census_ranks(a.census), a.seeds,
                                   suite_fields(a.census) if a.seeds else None)
-        write(a.out, render_screen(rows, base_phase, a.title))
+        gains, default_gain = {}, GAIN
+        for g in a.gain:
+            if "=" in g:
+                k, v = g.split("=", 1)
+                gains[k] = float(v)
+            else:
+                default_gain = float(g)
+        write(a.out, render_screen(rows, base_phase, a.title, default_gain, a.survival_slack, gains))
         for r in rows:
-            print("%s %+.2f ± %.2f: %s" % (r["name"], r["paired"][0], r["paired"][1], verdict(r, base_phase)))
+            print("%s %+.2f ± %.2f: %s" % (r["name"], r["paired"][0], r["paired"][1],
+                                         verdict(r, base_phase, gains.get(r["name"], default_gain), a.survival_slack)))
         aa = [r for r in rows if r["name"] == "bb"]
         if not aa:
             print("no bb (A/A) arm: the screen cannot say whether the run is clean", file=sys.stderr)

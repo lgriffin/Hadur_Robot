@@ -226,6 +226,24 @@ A/A clean. The arms can share one card with Stage 2's first arms.
 
 ### Stage 2: a play-it-forward melee gun
 
+**Stage 1 result (2026-10-26, PR #305).** No arm passed: er +0.14 ± 0.21, ep +0.06 ± 0.19, ef +0.29
+± 0.31 (deaths with two opponents left 13.0% to 11.7%), A/A +0.01. No arm moved Hadur's energy
+entering the endgame by more than 1.5 (baseline 46.5): the deficit is built across the whole crowd
+phase, which is the gun's and the crowd movement's.
+
+**What the code already has.** `FieldGun` already plays each neighbour's trajectory forward in the
+opponent's own frame to the bullet's flight time, inside the walls, and `EnemyHistory`'s kd-tree
+lives the whole battle (2,000 situations an opponent), so g-pif's replay and g-keep exist. What
+Ogi has and Hadur lacks is the depth (24, not 12) and **features that see the crowd**: Hadur's
+five describe an opponent by its distance to Hadur, speed, turn rate, time since reversing and
+wall distance, while a melee robot moves by its own nearest robot. g-pow stays out (power alone
+failed twice: mpow, and Stage 1's ep).
+
+**The Stage 2 card (`pc-melee-s2`, BENCH-110)**: g4 (`g24`, K = 24 off a team), gc (`gcrowd`,
+MGUN-11: the opponent's nearest robot's distance, its heading toward or away from it, opponents
+alive), g4gc (both), and ef again on fresh seeds (3177-3182) so its two runs pool to 12. 1,656
+battles. Gate as below; ef at +0.3.
+
 Hadur's `FieldGun` takes K = 12 situations an opponent (MGUN-7) and sums densities. Ogi's melee
 gun plays each of 24 neighbours forward to the bullet's flight time in the enemy's own frame,
 with features that see the crowd (distance and direction to the enemy's nearest robot, enemies

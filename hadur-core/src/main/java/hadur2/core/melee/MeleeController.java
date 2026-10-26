@@ -100,6 +100,8 @@ public class MeleeController {
     /** Where Hadur has been this round, to tell head-on shooters from leading ones. */
     private final RobotStateLog myPath = new RobotStateLog();
     private long ghostsDropped;
+    /** Where Hadur was at its last tick, for MGUN-11's nearest robot; null before the first. */
+    private Point2D.Double lastMe;
     /** T6: the team's log of each enemy's gun (MMOVE-9, MMOVE-10); untouched off a team. */
     private final TeamDanger danger;
     /** Whether the last tick had a living teammate. */
@@ -137,6 +139,7 @@ public class MeleeController {
         waves.newRound();
         lastTarget = null;
         myPath.clear();
+        lastMe = null;
     }
 
     public OpponentStatsBook book() { return book; }
@@ -165,7 +168,23 @@ public class MeleeController {
         profiles.scanned(name, distance);
         if (shot != null) profiles.shotInferred(name, shot.power);
         book.get(name).recordScan(distance, velocity, info.turnRate());
-        gun.onScan(info, distance, time);
+        if (EnemyHistory.CROWD) {
+            // MGUN-11: the robot nearest the scanned opponent, Hadur included.
+            Point2D.Double nearest = lastMe;
+            double best = lastMe == null ? Double.POSITIVE_INFINITY : lastMe.distance(info.location);
+            List<EnemyInfo> alive = tracker.alive();
+            for (EnemyInfo o : alive) {
+                if (o == info || o.location == null) continue;
+                double d = o.location.distance(info.location);
+                if (d < best) {
+                    best = d;
+                    nearest = o.location;
+                }
+            }
+            gun.onScan(info, distance, time, nearest, alive.size());
+        } else {
+            gun.onScan(info, distance, time);
+        }
         waves.onScan(info, time);
     }
 
@@ -317,6 +336,7 @@ public class MeleeController {
         myPath.addState(RobotState.newBuilder().setLocation(s.me).setHeading(s.heading)
             .setVelocity(s.velocity).setTime(s.time).build());
         Command c = new Command();
+        lastMe = s.me;
         ghostsDropped += tracker.pruneGhosts(s.others, s.time, s.me);
         EnemyInfo last = tracker.get(lastTarget);
         String finisher = last != null && last.energy <= FINISHER_ENERGY ? last.name : null;

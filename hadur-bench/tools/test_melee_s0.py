@@ -163,5 +163,31 @@ class ScreenTest(unittest.TestCase):
                              "no bb copy, no clean exit")
 
 
+    def test_gain_and_survival_bars(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            sets = os.path.join(tmp, "census")
+            write(os.path.join(sets, "f.txt"), "aaa.Big 1.0 | melee-3 | aaa.Big_1.0.jar\n")
+            write(os.path.join(sets, "suite.txt"), "F01 | --set f.txt\nF02 | --set f.txt\n")
+            won = "0,1,10,aaa.Big 1.0,1,0,0,2,-,-,aaa.Big 1.0,800,60.00,40.00,30.00,5.00\n"
+            fifth = "1,5,10,-,-,0,0,0,300,aaa.Big 1.0,aaa.Big 1.0,-,-,-,90.00,0.00\n"
+            ninth = "1,9,10,-,-,0,0,0,300,aaa.Big 1.0,aaa.Big 1.0,-,-,-,90.00,0.00\n"
+            base, arm, dies = (os.path.join(tmp, x) for x in ("aa", "up", "dies"))
+            self.run_of(base, {"F01": [100, 102], "F02": [98, 100]}, [won, fifth])
+            self.run_of(arm, {"F01": [103, 104], "F02": [101, 103]}, [won, fifth])
+            self.run_of(dies, {"F01": [106, 107], "F02": [104, 106]}, [won, ninth])
+            rows, base_phase = ms.screen(base, [("up", arm), ("dies", dies)],
+                                         ms.census_ranks(os.path.join(sets, "suite.txt")))
+            self.assertAlmostEqual(base_phase[4], (100 + 500 / 9) / 2)
+            by = {r["name"]: r for r in rows}
+            self.assertEqual(ms.verdict(by["up"], base_phase), "PASS")
+            self.assertEqual(ms.verdict(by["up"], base_phase, gain=1.5), "FAIL", "a higher bar")
+            self.assertEqual(ms.verdict(by["dies"], base_phase), "PASS")
+            self.assertEqual(ms.verdict(by["dies"], base_phase, survival_slack=1), "FAIL",
+                             "outlived 22 points fewer of the others")
+            text = ms.render_screen(rows, base_phase, "t", 0.5, 1, {"up": 1.5})
+            self.assertIn("up is judged at +1.5, not +0.5.", text)
+            self.assertIn("others outlived no more than 1 point lower", text)
+
+
 if __name__ == "__main__":
     unittest.main()
