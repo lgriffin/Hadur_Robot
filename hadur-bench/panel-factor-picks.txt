@@ -1,0 +1,16 @@
+# 1v1 plan to 3rd, lever L1 (pc-1v1-factor): the robots of plans/factor-heatjit.txt and plans/factor-gunstack.txt,
+# from the Stage 2 factorial's held-out picks (PR #301). Rows as census-312.txt.
+oog.mega.saguaro.Saguaro 1.0 | rank4-band1 | oog.mega.saguaro.Saguaro_1.0.jar
+cb.fire.Firestarter 2.0f | rank7-band1 | cb.fire.Firestarter_2.0f.jar
+aw.Gilgalad 1.99.5c | rank12-band2 | aw.Gilgalad_1.99.5c.jar
+mue.Ascendant 1.2.27 | rank24-band2 | mue.Ascendant_1.2.27.jar
+jk.precise.Wintermute 0.8 | rank28-band2 | jk.precise.Wintermute_0.8.jar
+catcat20.Lambda 0.017 | rank49-band2 | catcat20.Lambda_0.017.jar
+DM.mega.Regicide 2.0rrr | rank71-band3 | DM.mega.Regicide_2.0rrr.jar
+ags.Glacier 0.3.2 | rank83-band3 | ags.Glacier_0.3.2.jar
+cx.Lacrimas 1.36 | rank118-band3 | cx.Lacrimas_1.36.jar
+pedersen.Ugluk 1.0 | rank157-band3 | pedersen.Ugluk_1.0.jar
+barontrozo.BaronTrozo 1.7.6 | rank169-band3 | barontrozo.BaronTrozo_1.7.6.jar
+dragonbyte.Neutrino 4 | rank383-band4 | dragonbyte.Neutrino_4.jar
+vort.Chaser 0.0.3 | rank1044-band6 | vort.Chaser_0.0.3.jar
+bbo.RamboT 0.3 | rank1048-band6 | bbo.RamboT_0.3.jar

@@ -1,0 +1,8 @@
+# GUN-11 candidate: Stage 2 factorial (PR #301) robots whose G (gun stack) effect is +5 points or more, less
+# those on the shield list (a cloud smoke vs ary.SMG: shield hits taken 0 -> 152, 92% -> 61%) or a stop-and-go entry.
+aw.Gilgalad 1.99.5c
+barontrozo.BaronTrozo 1.7.6
+jk.precise.Wintermute 0.8
+mue.Ascendant 1.2.27
+oog.mega.saguaro.Saguaro 1.0
+pedersen.Ugluk 1.0

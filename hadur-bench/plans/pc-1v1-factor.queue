@@ -1,0 +1,33 @@
+# 1v1 plan to 3rd ("Hadur 1v1: plan to 3rd place"), lever L1: the Stage 2 factorial's per-opponent
+# picks for the two switches that ship off and paid held out (PR #301): stop-and-start (hj, MOVE-28,
+# +0.035 APS before trimming, 9 robots) and the gun stack (G, GUN-11, +0.068 APS before trimming;
+# 6 robots once the 12 shield-list robots are left out: the gun stack breaks the shield's bullet hits).
+#   ./queue.sh run pc-1v1-factor        (or  .\queue.ps1 run pc-1v1-factor)
+# Run it from master:
+#   git checkout master && git pull
+# One bench queue, RoboRumble workers at 0, unpinned, 12 workers, truth log off. Every step resumes;
+# no step needs a decision. About 20 minutes.
+#
+# Why: the picks were read against 3.14 (Stage 2's control); 3.17 has the mode table since, so the
+# gain is verified on 3.17 at fresh seeds before any entry ships.
+# verify: the 14 robots of panel-factor-picks.txt x c, aa, t5 x 6 fresh seeds = 252 battles.
+# gate: t5 minus pooled c and aa summed over the panel / 1,217 pairings: PASS at +0.03 APS with the
+#   lower end above 0 and the A/A inside its band. The verdict goes in the results PR either way.
+#   Leigh's release rule stands: no 1v1 release until the census projects the target.
+
+set P = --parallel 12 --no-truth-log
+set HEAP = --child-heap 2G
+set E = --engine 1.11.1
+set C = --skip-build --skip-fetch --rounds 35 --cpu-constant 1488498 ${HEAP} ${E}
+set OUT = ../docs/bench/local
+
+prep | git checkout -q master && mkdir -p bisect work && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur2.Hadur_3.17.1.jar bisect/ && bash ./build-ablation.sh aa && HEAT_JIT=plans/factor-heatjit.txt GUN_STACK=plans/factor-gunstack.txt bash ./build-ablation.sh hjlist,gslist && ./fetch-opponents.sh --set panel-factor-picks.txt && mvn -q compile
+
+verify | ./bench-top20.sh ${C} ${P} --set panel-factor-picks.txt --seeds 6 --seed-base 3100 --arms plans/factor-verify.arms --out work/factor-verify --label factor-verify
+  after: prep
+
+gate | python3 ../data/tools/multiarm.py work/factor-verify/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_factor-verify.md && python3 tools/shield_s2.py gate work/factor-verify/arms.tsv --arm t5 --bar 0.03 --panel panel-factor-picks.txt --out ${OUT}/$(date +%Y-%m-%d)_factor-gate.md
+  after: verify
+
+pr | bash tools/open_results_pr.sh claude/pc-1v1-factor-results "1v1 plan to 3rd: factorial per-opponent picks verify (hj, gun stack)" ${OUT}/*_factor-verify.md ${OUT}/*_factor-gate.md
+  after: gate

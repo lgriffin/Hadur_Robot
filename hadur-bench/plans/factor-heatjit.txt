@@ -1,0 +1,11 @@
+# MOVE-28 candidate: Stage 2 factorial (PR #301) robots whose hj effect is +5 points or more, less those
+# a shield or stop-and-go entry already drives (their movement is not the surf's).
+DM.mega.Regicide 2.0rrr
+ags.Glacier 0.3.2
+bbo.RamboT 0.3
+catcat20.Lambda 0.017
+cb.fire.Firestarter 2.0f
+cx.Lacrimas 1.36
+dragonbyte.Neutrino 4
+mue.Ascendant 1.2.27
+vort.Chaser 0.0.3

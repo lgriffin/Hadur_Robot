@@ -66,5 +66,16 @@ class FactorPicksTest(unittest.TestCase):
         self.assertTrue(hj_on[5])
 
 
+    def test_ships_list_is_trimmed_and_checked(self):
+        with tempfile.TemporaryDirectory() as d:
+            p = os.path.join(d, "arms.tsv")
+            with open(p, "w") as f:
+                f.write(HEAD)
+            out = os.path.join(d, "r.md")
+            self.assertEqual(0, factor_picks.main([p, "--design", DESIGN, "--out", out, "--ships", "sw, F"]))
+            self.assertIn("on in this release: sw,F;", open(out).read())
+            with self.assertRaises(SystemExit):
+                factor_picks.main([p, "--design", DESIGN, "--out", out, "--ships", "sw,X"])
+
 if __name__ == "__main__":
     unittest.main()

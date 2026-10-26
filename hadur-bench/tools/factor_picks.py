@@ -114,13 +114,16 @@ def main(argv=None):
     ap.add_argument("--pairings", type=int, default=1217)
     ap.add_argument("--ships", default="", help="factors on in the current release, comma separated (e.g. sw,F)")
     a = ap.parse_args(argv)
-    factors, data, rows, tsv, dropped = report(a.arms, a.design, a.margin, a.pairings,
-                                              tuple(x for x in a.ships.split(",") if x))
+    ships = tuple(x.strip() for x in a.ships.split(",") if x.strip())
+    unknown = sorted(set(ships) - set(multiarm.read_design(a.design)[0]))
+    if unknown:
+        ap.error("--ships names no design factor: %s" % ", ".join(unknown))
+    factors, data, rows, tsv, dropped = report(a.arms, a.design, a.margin, a.pairings, ships)
     lines = ["# Stage 2 factorial: per-opponent switch picks (L1)\n\n",
              "Files: %s. %d robots with every design point (%d left out as incomplete); picks at |effect| >= %.1f "
              "points; held-out gain over %d pairings, counting only picks away from the shipped level (on in "
              "this release: %s; the rest off).\n\n"
-             % (", ".join("`%s`" % p for p in a.arms), len(data), dropped, a.margin, a.pairings, a.ships or "none"),
+             % (", ".join("`%s`" % p for p in a.arms), len(data), dropped, a.margin, a.pairings, ",".join(ships) or "none"),
              "| Factor | Ships | Field effect (pts a robot) | Picked | of them on | Held-out gain (APS) |\n",
              "|---|---|---:|---:|---:|---:|\n"]
     for f, field, n, on, g, shipped in rows:

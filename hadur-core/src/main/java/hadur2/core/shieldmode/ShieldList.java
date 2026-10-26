@@ -58,6 +58,15 @@ public final class ShieldList {
     /** POISON-2: the same with the reverse crawl two ticks before the enemy's gun is ready (WavePoisonShift). */
     public static final String STOP_GO_SHIFT_PREFIX = "stop-go2:";
 
+    /** MOVE-28: a line starting with this names an opponent the duel plays MOVE-13's stop-and-start against. */
+    public static final String HEAT_JIT_PREFIX = "heat-jit:";
+    /** GUN-11: a line starting with this names an opponent the duel gun aims at with GUN-8 to GUN-10 on. */
+    public static final String GUN_STACK_PREFIX = "gun-stack:";
+    /** MOVE-28: the per-opponent switch's bit in {@link #switches}. */
+    static final int HEAT_JIT = 1;
+    /** GUN-11: the per-opponent switch's bit in {@link #switches}. */
+    static final int GUN_STACK = 2;
+
     private final Set<String> entries;
     /** MOVE-23: the stack off-list, matched as the shield entries are. */
     private final Set<String> stackOff;
@@ -71,6 +80,8 @@ public final class ShieldList {
     private final Map<String, Integer> stopGo;
     /** DODGE-4: name to the shipped expert, -1 for none. */
     private Map<String, Integer> dodgePlans = Collections.emptyMap();
+    /** MOVE-28, GUN-11: name to the per-opponent switches' bits. */
+    private Map<String, Integer> switches = Collections.emptyMap();
 
     private ShieldList(Set<String> entries, Set<String> stackOff, Set<String> moves, Map<String, double[]> aims,
                        Set<String> dodges, Map<String, Integer> stopGo) {
@@ -96,6 +107,7 @@ public final class ShieldList {
         Set<String> dodges = new TreeSet<>();
         Map<String, Integer> stopGo = new TreeMap<>();
         Map<String, Integer> dodgePlans = new TreeMap<>();
+        Map<String, Integer> switches = new TreeMap<>();
         if (lines != null) {
             for (String line : lines) {
                 if (line == null) continue;
@@ -105,6 +117,14 @@ public final class ShieldList {
                     // MOVE-23: carried in the same list so the adapter hands the core one object.
                     String name = entry.substring(STACK_OFF_PREFIX.length()).trim();
                     if (!name.isEmpty() && stackOff.size() < MAX_ENTRIES) stackOff.add(name);
+                    continue;
+                }
+                if (entry.startsWith(HEAT_JIT_PREFIX) || entry.startsWith(GUN_STACK_PREFIX)) {
+                    boolean jit = entry.startsWith(HEAT_JIT_PREFIX);
+                    String name = entry.substring((jit ? HEAT_JIT_PREFIX : GUN_STACK_PREFIX).length()).trim();
+                    if (!name.isEmpty() && (switches.containsKey(name) || switches.size() < MAX_ENTRIES)) {
+                        switches.merge(name, jit ? HEAT_JIT : GUN_STACK, (a, b) -> a | b);
+                    }
                     continue;
                 }
                 if (entry.startsWith(MOVE_PREFIX)) {
@@ -157,11 +177,12 @@ public final class ShieldList {
             }
         }
         if (entries.isEmpty() && stackOff.isEmpty() && moves.isEmpty() && aims.isEmpty() && dodges.isEmpty()
-            && stopGo.isEmpty() && dodgePlans.isEmpty()) return NONE;
+            && stopGo.isEmpty() && dodgePlans.isEmpty() && switches.isEmpty()) return NONE;
         ShieldList list = new ShieldList(Collections.unmodifiableSet(entries), Collections.unmodifiableSet(stackOff),
             Collections.unmodifiableSet(moves), Collections.unmodifiableMap(aims), Collections.unmodifiableSet(dodges),
             Collections.unmodifiableMap(stopGo));
         list.dodgePlans = Collections.unmodifiableMap(dodgePlans);
+        list.switches = Collections.unmodifiableMap(switches);
         return list;
     }
 
@@ -262,6 +283,32 @@ public final class ShieldList {
         Integer v = stopGo.get(name);
         if (v == null) v = stopGo.get(withoutVersion(name));
         return v == null ? 0 : v;
+    }
+
+    /**
+     * MOVE-28: whether the duel plays MOVE-13's stop-and-start against {@code robotName}, by the
+     * rule of {@link #matches}.
+     *
+     * @param robotName the scanned robot's name, or null
+     */
+    public boolean heatJit(String robotName) {
+        return (switchBits(robotName) & HEAT_JIT) != 0;
+    }
+
+    /**
+     * GUN-11: whether the duel gun aims at {@code robotName} with GUN-8 to GUN-10 on, by the rule of
+     * {@link #matches}.
+     *
+     * @param robotName the scanned robot's name, or null
+     */
+    public boolean gunStack(String robotName) {
+        return (switchBits(robotName) & GUN_STACK) != 0;
+    }
+
+    private int switchBits(String robotName) {
+        if (robotName == null || switches.isEmpty()) return 0;
+        String name = robotName.trim().replaceAll("\\s+", " ");
+        return switches.getOrDefault(name, 0) | switches.getOrDefault(withoutVersion(name), 0);
     }
 
     /** Whether nobody is on the (shield) list. */

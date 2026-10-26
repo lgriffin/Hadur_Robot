@@ -428,4 +428,26 @@ final class ShieldTableData {
             "voidious.perceptual.RetroGirl 1.0.0",
         };
     }
+
+    /**
+     * MOVE-28: the opponents fought with MOVE-13's stop-and-start (heatjit). Empty: candidate
+     * builds add lines here (build-ablation.sh hjlist).
+     *
+     * @return a fresh array of names
+     */
+    static String[] heatJits() {
+        return new String[] {
+        };
+    }
+
+    /**
+     * GUN-11: the opponents aimed at with the gun stack (GUN-8 to GUN-10). Empty: candidate builds
+     * add lines here (build-ablation.sh gslist).
+     *
+     * @return a fresh array of names
+     */
+    static String[] gunStacks() {
+        return new String[] {
+        };
+    }
 }

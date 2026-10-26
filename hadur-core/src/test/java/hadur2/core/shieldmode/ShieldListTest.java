@@ -75,4 +75,23 @@ class ShieldListTest {
     void nullLines() {
         assertTrue(ShieldList.parse(null).isEmpty());
     }
+
+    @Test
+    @Tag("MOVE-28")
+    @Tag("GUN-11")
+    @DisplayName("heat-jit and gun-stack lines name per-opponent switches, matched as shield entries, and no shield entry")
+    void perOpponentSwitches() {
+        ShieldList l = ShieldList.parse(List.of("heat-jit: a.B 1.0", "gun-stack: a.B 1.0", "gun-stack: c.D",
+            "heat-jit:", "gun-stack:   "));
+        assertTrue(l.heatJit("a.B 1.0"));
+        assertTrue(l.gunStack("a.B 1.0"));
+        assertFalse(l.heatJit("a.B 1.1"), "a versioned line matches that version only");
+        assertTrue(l.gunStack("c.D 2.3"), "a bare name matches every version");
+        assertFalse(l.heatJit("c.D 2.3"));
+        assertFalse(l.matches("a.B 1.0"), "not a shield entry");
+        assertTrue(l.isEmpty());
+        assertFalse(ShieldList.NONE.heatJit("a.B 1.0"));
+        assertFalse(ShieldList.NONE.gunStack(null));
+        assertSame(ShieldList.NONE, ShieldList.parse(List.of("heat-jit:", "gun-stack:")));
+    }
 }
