@@ -12,7 +12,7 @@
 <h1>EARS requirements</h1>
 <p class="lede">Every requirement from <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/docs/requirements.md">docs/requirements.md</a>, the source of truth. <em>Implemented in</em> lists
 the classes whose documentation cites the ID; <em>Verified by</em> lists the tests tagged with it, the same tags the build's
-traceability check reads. 260 of 261 live requirements have a tagged test. The readings behind the numbers are in
+traceability check reads. 265 of 266 live requirements have a tagged test. The readings behind the numbers are in
 <a href="docs/requirements-notes.html">Requirement readings</a>.</p>
 <nav class="toc"><a href="#group-CORE">Core</a> <a href="#group-RES">Resilience</a> <a href="#group-REL">Release</a> <a href="#group-WAVE">Waves</a> <a href="#group-RADAR">Radar</a> <a href="#group-MEM">Memory</a> <a href="#group-ADAPT">Adapt</a> <a href="#group-DIAL">Dials</a> <a href="#group-DIST">Distance</a> <a href="#group-POW">Power</a> <a href="#group-END">Endgame</a> <a href="#group-MOVE">Movement</a> <a href="#group-TIME">Time budget</a> <a href="#group-SHIELD">Bullet shielding</a> <a href="#group-MELEE">Melee (2.1)</a> <a href="#group-GATE">Posture gate</a> <a href="#group-MRADAR">Melee radar</a> <a href="#group-MSENSE">Melee sensing</a> <a href="#group-MMOVE">Melee movement</a> <a href="#group-MGUN">Melee gun</a> <a href="#group-MMEM">Melee memory</a></nav><h2 id="group-CORE">Core</h2>
 <article class="req-card" id="CORE-1">
@@ -604,6 +604,16 @@ traceability check reads. 260 of 261 live requirements have a tagged test. The r
 <p>Where the <code>CROWD</code> switch is on, while in melee, the field gun shall describe each opponent&#x27;s situation also by the distance from it to its nearest robot (Hadur included), whether it is moving toward or away from that robot, and the opponents alive, beside <a class="req" href="requirements.html#MGUN-1">MGUN-1</a>&#x27;s five attributes.</p>
 <dl><dt>Implemented in</dt><dd><a href="api/hadur2/core/melee/EnemyHistory.html" title="hadur2.core.melee.EnemyHistory">EnemyHistory</a>, <a href="api/hadur2/core/melee/FieldGun.html" title="hadur2.core.melee.FieldGun">FieldGun</a>, <a href="api/hadur2/core/melee/MeleeController.html" title="hadur2.core.melee.MeleeController">MeleeController</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-core/src/test/java/hadur2/core/melee/EnemyHistoryCrowdTest.java">EnemyHistoryCrowdTest.java</a></dd></dl>
 </article>
+<article class="req-card" id="MGUN-12">
+<div class="req-head"><span class="rid">MGUN-12</span><span class="badge">Optional</span><span class="badge stage">M7</span></div>
+<p>Where the <code>CROWD_FLOOR</code> switch is on, while off a team with three or more opponents alive and 20 energy or more, the melee gun shall fire a target that is not a finisher at no less than power 1.9, still capped by the power that kills the target, by Hadur&#x27;s energy lead over it and by Hadur&#x27;s own energy.</p>
+<dl><dt>Implemented in</dt><dd><a href="api/hadur2/core/melee/MeleeEnergyPolicy.html" title="hadur2.core.melee.MeleeEnergyPolicy">MeleeEnergyPolicy</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-core/src/test/java/hadur2/core/melee/MeleeCrowdPowerTest.java">MeleeCrowdPowerTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="MGUN-13">
+<div class="req-head"><span class="rid">MGUN-13</span><span class="badge">Optional</span><span class="badge stage">M7</span></div>
+<p>Where the <code>CROWD_OGI</code> switch is on, under <a class="req" href="requirements.html#MGUN-12">MGUN-12</a>&#x27;s conditions, the melee gun shall fire power 3 at a target within 200 px and 1.92 beyond, in place of the table, under the same caps.</p>
+<dl><dt>Implemented in</dt><dd><a href="api/hadur2/core/melee/MeleeEnergyPolicy.html" title="hadur2.core.melee.MeleeEnergyPolicy">MeleeEnergyPolicy</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-core/src/test/java/hadur2/core/melee/MeleeCrowdPowerTest.java">MeleeCrowdPowerTest.java</a></dd></dl>
+</article>
 <h2 id="group-MMEM">Melee memory</h2>
 <article class="req-card" id="MMEM-1">
 <div class="req-head"><span class="rid">MMEM-1</span><span class="badge">Event</span><span class="badge stage">M5</span></div>
@@ -1056,6 +1066,21 @@ traceability check reads. 260 of 261 live requirements have a tagged test. The r
 <div class="req-head"><span class="rid">BENCH-114</span><span class="badge">Event</span><span class="badge stage">R9</span></div>
 <p>When one of our team&#x27;s bullets hits one of our members, the team harvester&#x27;s <code>friendly.log</code> line shall add where the victim stood when the bullet was first shown: the distance along the bullet&#x27;s line of the nearest living enemy within 60 px of it (<code>target</code>), the victim&#x27;s distance along and across the line, and the hit&#x27;s kind: <code>lane</code> (ahead within 36 px of the line and nearer than the target), <code>noline</code> (no target), <code>walkin</code> (hit before reaching the target) or <code>beyond</code> (hit past it); and <code>tools/team_losses.py</code> shall report the kinds&#x27; shares per band.</p>
 <dl><dt>Implemented in</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/TeamHarvester.java" title="hadur.bench.TeamHarvester">TeamHarvester</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/TeamPairedTest.java">TeamPairedTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="BENCH-115">
+<div class="req-head"><span class="rid">BENCH-115</span><span class="badge">Ubiquitous</span><span class="badge stage">R9</span></div>
+<p>The bench shall carry the <code>pc-melee-bank</code> card, which builds the field gun at 24 situations an opponent and <a class="req" href="requirements.html#MEND-3">MEND-3</a> together, runs it, an aa baseline and a bb A/A copy each alone on the melee census at 8 seeds after Stage 2&#x27;s, and reads it with <code>tools/melee_s0.py screen --base2</code>, which pairs every arm but bb with the mean of the two baseline copies battle for battle, at a +0.3 bar with the 95% low end above 0 and Hadur&#x27;s share of the others it outlives no more than 1 point lower.</p>
+<dl><dt>Implemented in</dt><dd><span class="none">no citation in the sources</span></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/MeleeBankPlanTest.java">MeleeBankPlanTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="BENCH-116">
+<div class="req-head"><span class="rid">BENCH-116</span><span class="badge">Event</span><span class="badge stage">R9</span></div>
+<p>When a melee round ends, the bench shall write one <code>exposure.csv</code> row per fighter with its ticks alive while three or more fighters were alive, the summed count over those ticks of other fighters whose nearest living fighter it was, the bullet damage it took while three or more were alive (capped at its energy), and the parts of that damage fired by a shooter whose nearest and whose second nearest living fighter it was when the shot was first seen; and <code>tools/melee_exposure.py</code> shall read them per 100 crowd ticks for Hadur and for the census opponents by rank band.</p>
+<dl><dt>Implemented in</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/main/java/hadur/bench/MeleeHarvester.java" title="hadur.bench.MeleeHarvester">MeleeHarvester</a>, <a href="api/hadur2/core/melee/MeleeEnergyPolicy.html" title="hadur2.core.melee.MeleeEnergyPolicy">MeleeEnergyPolicy</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/MeleeHarvesterTest.java">MeleeHarvesterTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="BENCH-117">
+<div class="req-head"><span class="rid">BENCH-117</span><span class="badge">Ubiquitous</span><span class="badge stage">R9</span></div>
+<p>The bench shall carry the <code>pc-melee-power</code> card, which builds <a class="req" href="requirements.html#MGUN-12">MGUN-12</a> (<code>pfloor</code>) and <a class="req" href="requirements.html#MGUN-13">MGUN-13</a> (<code>pogi</code>) each alone beside an aa baseline and a bb A/A copy, runs each alone on the melee census at 6 seeds after the bank card&#x27;s, and reads it with <code>tools/melee_s0.py screen --base2</code> at a +0.3 bar with the 95% low end above 0 and Hadur&#x27;s share of the others it outlives no more than 1 point lower.</p>
+<dl><dt>Implemented in</dt><dd><span class="none">no citation in the sources</span></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/MeleePowerPlanTest.java">MeleePowerPlanTest.java</a></dd></dl>
 </article>
 <h2 id="group-DODGE">DODGE</h2>
 <article class="req-card" id="DODGE-1">

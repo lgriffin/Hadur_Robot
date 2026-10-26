@@ -123,6 +123,27 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Field</div>
 <div class="table-header col-last">Description</div>
+<div class="col-first even-row-color"><code>static final boolean</code></div>
+<div class="col-second even-row-color"><code><a href="#CROWD_FLOOR" class="member-name-link">CROWD_FLOOR</a></code></div>
+<div class="col-last even-row-color">
+<div class="block"><a class="req" href="../../../../requirements.html#MGUN-12">MGUN-12</a>: off a team with three or more opponents and 20 energy or more, fire at least
+ <a href="#CROWD_FLOOR_POWER"><code>CROWD_FLOOR_POWER</code></a> wherever the target is, in place of the table's 1.0 and 1.5 beyond
+ 300 px.</div>
+</div>
+<div class="col-first odd-row-color"><code>(package private) static final double</code></div>
+<div class="col-second odd-row-color"><code><a href="#CROWD_FLOOR_POWER" class="member-name-link">CROWD_FLOOR_POWER</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>static final boolean</code></div>
+<div class="col-second even-row-color"><code><a href="#CROWD_OGI" class="member-name-link">CROWD_OGI</a></code></div>
+<div class="col-last even-row-color">
+<div class="block"><a class="req" href="../../../../requirements.html#MGUN-13">MGUN-13</a>: as <a class="req" href="../../../../requirements.html#MGUN-12">MGUN-12</a>'s conditions, fire Ogi's melee power instead: <a href="#OGI_POWER"><code>OGI_POWER</code></a>, and 3
+ within <a href="#OGI_CLOSE"><code>OGI_CLOSE</code></a> px.</div>
+</div>
+<div class="col-first odd-row-color"><code>(package private) static final double</code></div>
+<div class="col-second odd-row-color"><code><a href="#CROWD_RULE_ENERGY" class="member-name-link">CROWD_RULE_ENERGY</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block"><a class="req" href="../../../../requirements.html#MGUN-12">MGUN-12</a>, <a class="req" href="../../../../requirements.html#MGUN-13">MGUN-13</a>: the own energy from which the crowd rules fire harder than the table.</div>
+</div>
 <div class="col-first even-row-color"><code>static final double</code></div>
 <div class="col-second even-row-color"><code><a href="#FINISHER_ENERGY" class="member-name-link">FINISHER_ENERGY</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
@@ -134,6 +155,12 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code>(package private) static final double</code></div>
 <div class="col-second odd-row-color"><code><a href="#MIN_POWER" class="member-name-link">MIN_POWER</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>(package private) static final double</code></div>
+<div class="col-second even-row-color"><code><a href="#OGI_CLOSE" class="member-name-link">OGI_CLOSE</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>(package private) static final double</code></div>
+<div class="col-second odd-row-color"><code><a href="#OGI_POWER" class="member-name-link">OGI_POWER</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code>static final double</code></div>
 <div class="col-second even-row-color"><code><a href="#TEAM_FULL_POWER_ENERGY" class="member-name-link">TEAM_FULL_POWER_ENERGY</a></code></div>
@@ -154,6 +181,25 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static double</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#crowdPower(double,double,double,double,int)" class="member-name-link">crowdPower</a><wbr>(double&nbsp;tablePower,
+ double&nbsp;distance,
+ double&nbsp;ownEnergy,
+ double&nbsp;targetEnergy,
+ int&nbsp;others)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../../../requirements.html#MGUN-12">MGUN-12</a>, <a class="req" href="../../../../requirements.html#MGUN-13">MGUN-13</a>: off a team, the power for a target with <code>others</code> opponents alive,
+ given the table's <code>tablePower</code>.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static double</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#crowdPower(double,double,double,double,int,boolean,boolean)" class="member-name-link">crowdPower</a><wbr>(double&nbsp;tablePower,
+ double&nbsp;distance,
+ double&nbsp;ownEnergy,
+ double&nbsp;targetEnergy,
+ int&nbsp;others,
+ boolean&nbsp;floor,
+ boolean&nbsp;ogi)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static double</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#duelPower(double,double,double)" class="member-name-link">duelPower</a><wbr>(double&nbsp;distance,
  double&nbsp;ownEnergy,
@@ -270,6 +316,97 @@ loadScripts(document, 'script');</script>
 </dl>
 </section>
 </li>
+<li>
+<section class="detail" id="CROWD_FLOOR">
+<h3>CROWD_FLOOR</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">CROWD_FLOOR</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#MGUN-12">MGUN-12</a>: off a team with three or more opponents and 20 energy or more, fire at least
+ <a href="#CROWD_FLOOR_POWER"><code>CROWD_FLOOR_POWER</code></a> wherever the target is, in place of the table's 1.0 and 1.5 beyond
+ 300 px. Off: the crowd exposure read (<a class="req" href="../../../../requirements.html#BENCH-116">BENCH-116</a>) has the top 10 firing 2.6 in the crowd to
+ Hadur's 1.6 at the same hit rate, and the bench builds an arm with it on (pfloor).</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur2.core.melee.MeleeEnergyPolicy.CROWD_FLOOR">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="CROWD_FLOOR_POWER">
+<h3>CROWD_FLOOR_POWER</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">CROWD_FLOOR_POWER</span></div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur2.core.melee.MeleeEnergyPolicy.CROWD_FLOOR_POWER">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="CROWD_OGI">
+<h3>CROWD_OGI</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">CROWD_OGI</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#MGUN-13">MGUN-13</a>: as <a class="req" href="../../../../requirements.html#MGUN-12">MGUN-12</a>'s conditions, fire Ogi's melee power instead: <a href="#OGI_POWER"><code>OGI_POWER</code></a>, and 3
+ within <a href="#OGI_CLOSE"><code>OGI_CLOSE</code></a> px. Off (arm pogi).</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur2.core.melee.MeleeEnergyPolicy.CROWD_OGI">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="OGI_POWER">
+<h3>OGI_POWER</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">OGI_POWER</span></div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur2.core.melee.MeleeEnergyPolicy.OGI_POWER">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="OGI_CLOSE">
+<h3>OGI_CLOSE</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">OGI_CLOSE</span></div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur2.core.melee.MeleeEnergyPolicy.OGI_CLOSE">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="CROWD_RULE_ENERGY">
+<h3>CROWD_RULE_ENERGY</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">CROWD_RULE_ENERGY</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#MGUN-12">MGUN-12</a>, <a class="req" href="../../../../requirements.html#MGUN-13">MGUN-13</a>: the own energy from which the crowd rules fire harder than the table.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur2.core.melee.MeleeEnergyPolicy.CROWD_RULE_ENERGY">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
 </ul>
 </section>
 </li>
@@ -298,6 +435,33 @@ loadScripts(document, 'script');</script>
  (0) stands; with <a href="#TEAM_FULL_POWER_ENERGY"><code>TEAM_FULL_POWER_ENERGY</code></a> or more own energy the shot is 3, or what
  kills the target, whatever the table said (its lead cap and two-left row included);
  below that the table stands.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="crowdPower(double,double,double,double,int)">
+<h3>crowdPower</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">crowdPower</span><wbr><span class="parameters">(double&nbsp;tablePower,
+ double&nbsp;distance,
+ double&nbsp;ownEnergy,
+ double&nbsp;targetEnergy,
+ int&nbsp;others)</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#MGUN-12">MGUN-12</a>, <a class="req" href="../../../../requirements.html#MGUN-13">MGUN-13</a>: off a team, the power for a target with <code>others</code> opponents alive,
+ given the table's <code>tablePower</code>. A hold (0) stands, as do a finisher, fewer than three
+ opponents and own energy under <a href="#CROWD_RULE_ENERGY"><code>CROWD_RULE_ENERGY</code></a>; otherwise a switched-on rule
+ replaces the table's power, still capped by what kills the target, by the lead over it and by
+ Hadur's own energy, as the table is. With both switches off the table stands.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="crowdPower(double,double,double,double,int,boolean,boolean)">
+<h3>crowdPower</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">crowdPower</span><wbr><span class="parameters">(double&nbsp;tablePower,
+ double&nbsp;distance,
+ double&nbsp;ownEnergy,
+ double&nbsp;targetEnergy,
+ int&nbsp;others,
+ boolean&nbsp;floor,
+ boolean&nbsp;ogi)</span></div>
 </section>
 </li>
 <li>

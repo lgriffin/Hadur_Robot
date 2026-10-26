@@ -121,9 +121,12 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color"><code id="hadur.bench.MeleeHarvester.BULLET_HEADER">public&nbsp;static&nbsp;final&nbsp;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color"><code><a href="hadur/bench/MeleeHarvester.html#BULLET_HEADER">BULLET_HEADER</a></code></div>
 <div class="col-last even-row-color"><code>"round,robot,shots,power,hits,damage,bulletHits,crowdShots,crowdPower,crowdHits,crowdDamage,aliveTicks,readyTicks"</code></div>
-<div class="col-first odd-row-color"><code id="hadur.bench.MeleeHarvester.HEADER">public&nbsp;static&nbsp;final&nbsp;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color"><code><a href="hadur/bench/MeleeHarvester.html#HEADER">HEADER</a></code></div>
-<div class="col-last odd-row-color"><code>"round,place,fielded,duelOpponent,duelWon,sentryHitsTaken,sentryHitsGiven,skippedTurns,deathTick,killer,lastHit,duelTick,duelEnergy,duelOppEnergy,takenCrowd,takenDuel"</code></div>
+<div class="col-first odd-row-color"><code id="hadur.bench.MeleeHarvester.EXPOSURE_HEADER">public&nbsp;static&nbsp;final&nbsp;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color"><code><a href="hadur/bench/MeleeHarvester.html#EXPOSURE_HEADER">EXPOSURE_HEADER</a></code></div>
+<div class="col-last odd-row-color"><code>"round,robot,crowdTicks,nearestLoad,takenCrowd,takenNearest,takenSecond"</code></div>
+<div class="col-first even-row-color"><code id="hadur.bench.MeleeHarvester.HEADER">public&nbsp;static&nbsp;final&nbsp;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color"><code><a href="hadur/bench/MeleeHarvester.html#HEADER">HEADER</a></code></div>
+<div class="col-last even-row-color"><code>"round,place,fielded,duelOpponent,duelWon,sentryHitsTaken,sentryHitsGiven,skippedTurns,deathTick,killer,lastHit,duelTick,duelEnergy,duelOppEnergy,takenCrowd,takenDuel"</code></div>
 </div>
 </li>
 <li>
@@ -893,6 +896,18 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Constant Field</div>
 <div class="table-header col-last">Value</div>
+<div class="col-first even-row-color"><code id="hadur2.core.melee.MeleeEnergyPolicy.CROWD_FLOOR">public&nbsp;static&nbsp;final&nbsp;boolean</code></div>
+<div class="col-second even-row-color"><code><a href="hadur2/core/melee/MeleeEnergyPolicy.html#CROWD_FLOOR">CROWD_FLOOR</a></code></div>
+<div class="col-last even-row-color"><code>false</code></div>
+<div class="col-first odd-row-color"><code id="hadur2.core.melee.MeleeEnergyPolicy.CROWD_FLOOR_POWER">static&nbsp;final&nbsp;double</code></div>
+<div class="col-second odd-row-color"><code><a href="hadur2/core/melee/MeleeEnergyPolicy.html#CROWD_FLOOR_POWER">CROWD_FLOOR_POWER</a></code></div>
+<div class="col-last odd-row-color"><code>1.9</code></div>
+<div class="col-first even-row-color"><code id="hadur2.core.melee.MeleeEnergyPolicy.CROWD_OGI">public&nbsp;static&nbsp;final&nbsp;boolean</code></div>
+<div class="col-second even-row-color"><code><a href="hadur2/core/melee/MeleeEnergyPolicy.html#CROWD_OGI">CROWD_OGI</a></code></div>
+<div class="col-last even-row-color"><code>false</code></div>
+<div class="col-first odd-row-color"><code id="hadur2.core.melee.MeleeEnergyPolicy.CROWD_RULE_ENERGY">static&nbsp;final&nbsp;double</code></div>
+<div class="col-second odd-row-color"><code><a href="hadur2/core/melee/MeleeEnergyPolicy.html#CROWD_RULE_ENERGY">CROWD_RULE_ENERGY</a></code></div>
+<div class="col-last odd-row-color"><code>20.0</code></div>
 <div class="col-first even-row-color"><code id="hadur2.core.melee.MeleeEnergyPolicy.FINISHER_ENERGY">public&nbsp;static&nbsp;final&nbsp;double</code></div>
 <div class="col-second even-row-color"><code><a href="hadur2/core/melee/MeleeEnergyPolicy.html#FINISHER_ENERGY">FINISHER_ENERGY</a></code></div>
 <div class="col-last even-row-color"><code>16.0</code></div>
@@ -905,6 +920,12 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color"><code id="hadur2.core.melee.MeleeEnergyPolicy.MIN_POWER">static&nbsp;final&nbsp;double</code></div>
 <div class="col-second odd-row-color"><code><a href="hadur2/core/melee/MeleeEnergyPolicy.html#MIN_POWER">MIN_POWER</a></code></div>
 <div class="col-last odd-row-color"><code>0.1</code></div>
+<div class="col-first even-row-color"><code id="hadur2.core.melee.MeleeEnergyPolicy.OGI_CLOSE">static&nbsp;final&nbsp;double</code></div>
+<div class="col-second even-row-color"><code><a href="hadur2/core/melee/MeleeEnergyPolicy.html#OGI_CLOSE">OGI_CLOSE</a></code></div>
+<div class="col-last even-row-color"><code>200.0</code></div>
+<div class="col-first odd-row-color"><code id="hadur2.core.melee.MeleeEnergyPolicy.OGI_POWER">static&nbsp;final&nbsp;double</code></div>
+<div class="col-second odd-row-color"><code><a href="hadur2/core/melee/MeleeEnergyPolicy.html#OGI_POWER">OGI_POWER</a></code></div>
+<div class="col-last odd-row-color"><code>1.92</code></div>
 <div class="col-first even-row-color"><code id="hadur2.core.melee.MeleeEnergyPolicy.TEAM_FULL_POWER_ENERGY">public&nbsp;static&nbsp;final&nbsp;double</code></div>
 <div class="col-second even-row-color"><code><a href="hadur2/core/melee/MeleeEnergyPolicy.html#TEAM_FULL_POWER_ENERGY">TEAM_FULL_POWER_ENERGY</a></code></div>
 <div class="col-last even-row-color"><code>30.0</code></div>
