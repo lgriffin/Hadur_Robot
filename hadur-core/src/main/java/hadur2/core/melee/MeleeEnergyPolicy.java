@@ -29,6 +29,23 @@ public final class MeleeEnergyPolicy {
     static final double MAX_POWER = 3.0;
     /** MGUN-6: the own energy from which a member on a team fires full power. */
     public static final double TEAM_FULL_POWER_ENERGY = 30.0;
+    /**
+     * MGUN-12: off a team with three or more opponents and 20 energy or more, fire at least
+     * {@link #CROWD_FLOOR_POWER} wherever the target is, in place of the table's 1.0 and 1.5 beyond
+     * 300 px. Off: the crowd exposure read (BENCH-116) has the top 10 firing 2.6 in the crowd to
+     * Hadur's 1.6 at the same hit rate, and the bench builds an arm with it on (pfloor).
+     */
+    public static final boolean CROWD_FLOOR = false;
+    static final double CROWD_FLOOR_POWER = 1.9;
+    /**
+     * MGUN-13: as MGUN-12's conditions, fire Ogi's melee power instead: {@link #OGI_POWER}, and 3
+     * within {@link #OGI_CLOSE} px. Off (arm pogi).
+     */
+    public static final boolean CROWD_OGI = false;
+    static final double OGI_POWER = 1.92;
+    static final double OGI_CLOSE = 200;
+    /** MGUN-12, MGUN-13: the own energy from which the crowd rules fire harder than the table. */
+    static final double CROWD_RULE_ENERGY = 20.0;
 
     private MeleeEnergyPolicy() {}
 
@@ -69,6 +86,31 @@ public final class MeleeEnergyPolicy {
     public static double teamPower(double tablePower, double ownEnergy, double targetEnergy) {
         if (tablePower <= 0 || ownEnergy < TEAM_FULL_POWER_ENERGY) return tablePower;
         return Math.min(MAX_POWER, killPower(targetEnergy));
+    }
+
+    /**
+     * MGUN-12, MGUN-13: off a team, the power for a target with {@code others} opponents alive,
+     * given the table's {@code tablePower}. A hold (0) stands, as do a finisher, fewer than three
+     * opponents and own energy under {@link #CROWD_RULE_ENERGY}; otherwise a switched-on rule
+     * replaces the table's power, still capped by what kills the target, by the lead over it and by
+     * Hadur's own energy, as the table is. With both switches off the table stands.
+     */
+    public static double crowdPower(double tablePower, double distance, double ownEnergy, double targetEnergy,
+                                    int others) {
+        return crowdPower(tablePower, distance, ownEnergy, targetEnergy, others, CROWD_FLOOR, CROWD_OGI);
+    }
+
+    static double crowdPower(double tablePower, double distance, double ownEnergy, double targetEnergy,
+                             int others, boolean floor, boolean ogi) {
+        if (tablePower <= 0 || others < 3 || ownEnergy < CROWD_RULE_ENERGY || targetEnergy <= FINISHER_ENERGY
+            || !(floor || ogi)) {
+            return tablePower;
+        }
+        double p = ogi ? (distance <= OGI_CLOSE ? MAX_POWER : OGI_POWER) : Math.max(tablePower, CROWD_FLOOR_POWER);
+        p = Math.min(p, killPower(targetEnergy));
+        if (ownEnergy > targetEnergy) p = Math.min(p, ownEnergy - targetEnergy);
+        p = Math.max(p, MIN_POWER);
+        return Math.min(p, ownEnergy);
     }
 
     /** The duel gun's 1v1 table, mirrored here: melee code does not reach into the duel. */

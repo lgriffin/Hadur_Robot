@@ -29,6 +29,9 @@
       below BASE's. An arm or BASE missing battles of the other (or, with --seeds, of the
       census's fields x seeds) is INCOMPLETE, and an arm with no 1-30 endgame duel to compare is
       NO DATA; neither passes. Exit status 1 when there is no bb arm or it is not clean.
+      BENCH-115: with --base2 WORK (the bb run), every arm but bb pairs with the mean of BASE and
+      WORK battle for battle, so one baseline copy drawing low or high moves no verdict; bb is
+      still read against BASE alone.
 
 Standard library only.
 """
@@ -403,22 +406,40 @@ def suite_fields(suite):
         return sum(1 for line in f if "--set" in line and not line.lstrip().startswith("#"))
 
 
-def screen(base_work, arms, ranks, seeds=None, fields=None):
+def pooled_phase(a, b):
+    """Two runs' phase stats as one: the 1-30 endgame win rate weighted by duels, the duels
+    summed, the rest the mean of the two (BENCH-115)."""
+    n = a[1] + b[1]
+    wins = (a[0] * a[1] + b[0] * b[1]) / n if n else float("nan")
+    return (wins, n) + tuple((x + y) / 2 for x, y in zip(a[2:], b[2:]))
+
+
+def screen(base_work, arms, ranks, seeds=None, fields=None, base2_work=None):
     """Per arm (name, paired (mean, half), pairs, fields, its phase stats, battles missing from
     the pairing); and the base's phase stats. A battle in one run and not the other is missing;
-    with seeds and fields, so is any of the census's fields x seeds battles that neither ran."""
+    with seeds and fields, so is any of the census's fields x seeds battles that neither ran.
+    With base2_work (BENCH-115), arms other than bb pair with the mean of both baselines, on the
+    battles both ran, the phase gates read both baselines pooled, and a battle either baseline
+    ran is one the arm must pair."""
     base, field_of = run_aps(base_work)
+    mixed, other = base, {}
     base_phase = phase_stats(analyse(base_work, ranks))
+    if base2_work:
+        other, _ = run_aps(base2_work)
+        mixed = {k: (a + other[k]) / 2 for k, a in base.items() if k in other}
+        base_phase = pooled_phase(base_phase, phase_stats(analyse(base2_work, ranks)))
     out = []
     for name, work in arms:
         arm, _ = run_aps(work)
+        against = base if name == "bb" else mixed
         per_field = defaultdict(list)
         for k, a in arm.items():
-            if k in base:
-                per_field[field_of[k]].append(a - base[k])
+            if k in against:
+                per_field[field_of[k]].append(a - against[k])
         diffs = [statistics.mean(v) for v in per_field.values()]
         pairs = sum(len(v) for v in per_field.values())
-        expected = max(len(set(base) | set(arm)), (seeds or 0) * (fields or 0))
+        known = set(against) | set(arm) | (set(base) | set(other) if name != "bb" else set())
+        expected = max(len(known), (seeds or 0) * (fields or 0))
         out.append({"name": name, "paired": mean_ci(diffs), "pairs": pairs, "missing": expected - pairs,
                     "fields": len(per_field), "phase": phase_stats(analyse(work, ranks))})
     return out, base_phase
@@ -446,10 +467,11 @@ def verdict(arm, base_phase, gain=GAIN, survival_slack=None):
     return "FAIL"
 
 
-def render_screen(rows, base_phase, title, gain=GAIN, survival_slack=None, gains=None):
+def render_screen(rows, base_phase, title, gain=GAIN, survival_slack=None, gains=None, both=False):
     gains = gains or {}
     out = ["# %s" % title, "",
-           "Each arm paired with the aa baseline battle for battle (same field, same seed). Paired APS is the mean over",
+           ("Each arm but bb paired with the mean of the aa and bb baselines" if both else
+            "Each arm paired with the aa baseline") + " battle for battle (same field, same seed). Paired APS is the mean over",
            "fields of the per-field mean difference, with its 95%% interval. Pass: +%.1f or more, low end above 0, and" % gain,
            "1-30 endgame wins no more than %.0f points below the baseline's%s. The bb copy is clean within ±%.2f." % (
                BAND_SLACK, "" if survival_slack is None else
@@ -457,7 +479,7 @@ def render_screen(rows, base_phase, title, gain=GAIN, survival_slack=None, gains
                SCREEN_AA), "",
            "| Arm | Paired APS | Fields | Battles (missing) | 1-30 endgame wins | Deaths with two opponents left | Energy entering the endgame | Others outlived | Verdict |",
            "|---|---|---|---|---|---|---|---|---|",
-           "| aa (baseline) | - | - | - | %.1f%% of %d | %.1f%% | %.1f | %.1f%% | - |" % base_phase]
+           ("| aa and bb (baseline) " if both else "| aa (baseline) ") + "| - | - | - | %.1f%% of %d | %.1f%% | %.1f | %.1f%% | - |" % base_phase]
     for r in rows:
         m, h = r["paired"]
         w, n, dead, en, lived = r["phase"]
@@ -493,13 +515,14 @@ def main(argv=None):
                     help="the pass bar: X for every arm, or NAME=X for one (default %.1f)" % GAIN)
     sc.add_argument("--survival-slack", type=float,
                     help="also fail an arm whose share of others outlived falls more than this many points")
+    sc.add_argument("--base2", help="the bb run: arms other than bb pair with the mean of BASE and it (BENCH-115)")
     sc.add_argument("--out", required=True)
     sc.add_argument("--title", default="Melee Stage 1: two opponents left")
     a = ap.parse_args(argv)
     if a.cmd == "screen":
         arms = [tuple(x.split("=", 1)) for x in a.arm]
         rows, base_phase = screen(a.base, arms, census_ranks(a.census), a.seeds,
-                                  suite_fields(a.census) if a.seeds else None)
+                                  suite_fields(a.census) if a.seeds else None, a.base2)
         gains, default_gain = {}, GAIN
         for g in a.gain:
             if "=" in g:
@@ -507,7 +530,7 @@ def main(argv=None):
                 gains[k] = float(v)
             else:
                 default_gain = float(g)
-        write(a.out, render_screen(rows, base_phase, a.title, default_gain, a.survival_slack, gains))
+        write(a.out, render_screen(rows, base_phase, a.title, default_gain, a.survival_slack, gains, bool(a.base2)))
         for r in rows:
             print("%s %+.2f ± %.2f: %s" % (r["name"], r["paired"][0], r["paired"][1],
                                          verdict(r, base_phase, gains.get(r["name"], default_gain), a.survival_slack)))

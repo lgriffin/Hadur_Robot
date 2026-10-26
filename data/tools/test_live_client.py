@@ -159,24 +159,70 @@ class ClientFilesTest(unittest.TestCase):
         w = lc.Watch([self.client], self.out, log=self.lines.append, robots=["hadur2.Hadur 3.11"])
         self.assertEqual(len(w.poll_results()), 2)
 
-    def test_watch_counts_duels_and_collapses_across_restarts(self):
-        w = lc.Watch([self.client], self.out, log=self.lines.append)
+    def save_page(self, nan_pairing):
+        os.makedirs(os.path.join(self.out, "pages"), exist_ok=True)
+        with open(os.path.join(self.out, "pages", "2026-10-26T170000Z_roborumble_hadur2.Hadur_3.11.html"), "w") as f:
+            f.write(fake_page([("stelo.MirrorMicro 1.1", "90.00", 3, "t"), ("non.mega.NaN 0.1", nan_pairing, 3, "t")]))
+
+    def test_a_collapse_is_measured_against_its_pairing(self):
         with open(self.results, "w") as f:
             f.write(RESULTS)
+        self.save_page("30.00")
+        w = lc.Watch([self.client], self.out, log=self.lines.append)
         w.poll_results()
-        self.assertEqual((w.duels, w.collapses), (2, 1), "the 25% battle is a collapse")
+        self.assertEqual((w.duels, w.collapses), (2, 0), "25% against a pairing at 30 is that robot's level")
+        self.save_page("60.00")
         again = lc.Watch([self.client], self.out, log=self.lines.append)
-        self.assertEqual((again.duels, again.collapses), (2, 1), "a restart counts battles.tsv")
+        self.assertEqual((again.duels, again.collapses), (2, 1), "35 under its pairing; a restart counts battles.tsv")
+        self.assertIn("non.mega.NaN 0.1 | 25.0 | 60.0", lc.report(self.out))
+
+    def test_a_collapse_is_inclusive_and_skips_a_bad_newer_page(self):
+        with open(self.results, "w") as f:
+            f.write(RESULTS)
+        self.save_page("40.00")  # 25 is exactly 15 under
+        with open(os.path.join(self.out, "pages", "2026-10-26T180000Z_roborumble_hadur2.Hadur_3.11.html"), "w") as f:
+            f.write("<html>rate limited</html>")
+        w = lc.Watch([self.client], self.out, log=self.lines.append)
+        w.poll_results()
+        self.assertEqual(w.collapses, 1)
+
+    def test_a_late_page_rescores_battles_already_kept(self):
+        with open(self.results, "w") as f:
+            f.write(RESULTS)
+        w = lc.Watch([self.client], self.out, pages=["roborumble:hadur2.Hadur 3.11"], log=self.lines.append)
+        w.poll_results()
+        self.assertEqual((w.duels, w.collapses), (2, 0), "no page yet: nothing to score against")
+        w.poll_pages(fetcher=lambda url: fake_page([("non.mega.NaN 0.1", "60.00", 3, "t")]))
+        self.assertEqual(w.collapses, 1, "the first good page scores the battle kept before it")
+
+    def test_a_watch_keeps_only_battles_after_its_first_start(self):
+        with open(self.results, "w") as f:
+            f.write(RESULTS)  # 2025 battles, before the watch
+        since = lc.first_start(self.out)
+        self.assertEqual(lc.first_start(self.out), since, "a restart keeps the first start")
+        w = lc.Watch([self.client], self.out, log=self.lines.append, since=since)
+        self.assertEqual(w.poll_results(), [])
+
+    def test_a_reused_folder_counts_and_reports_only_battles_since_its_start(self):
+        with open(self.results, "w") as f:
+            f.write(RESULTS)
+        lc.Watch([self.client], self.out, log=self.lines.append).poll_results()  # an earlier watch
+        self.save_page("60.00")
+        w = lc.Watch([self.client], self.out, log=self.lines.append, since=lc.first_start(self.out))
+        self.assertEqual((w.duels, w.collapses), (0, 0))
+        self.assertNotIn("NaN", lc.report(self.out))
 
     def test_watch_stops_on_its_collapse_count(self):
         with open(self.results, "w") as f:
             f.write(RESULTS)
+        self.save_page("60.00")
         self.assertEqual(lc.main(["watch", "--client", self.client, "--out", self.out,
                                   "--stop-collapses", "1", "--every", "0.05", "--grace", "0.2",
                                   "--hours", "0.01"]), 0)
         with open(os.path.join(self.out, "watch.log")) as f:
             log = f.read()
-        self.assertIn("done: 2 1v1 battles, 1 under 70%", log)
+        self.assertIn("done: 2 1v1 battles, 1 collapses", log)
+        self.assertIn("<< COLLAPSE", log)
         self.assertEqual(log.count("done:"), 1, "the grace polling does not stop twice")
 
     def test_watch_ends_cleanly_on_a_stop_file(self):

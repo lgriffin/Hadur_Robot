@@ -263,23 +263,39 @@ at MGUN-7's rate (+8% damage gave +0.88) is +1.0 to +2.5. **Gate**: +0.5 census 
 above 0, Hadur's survival (rounds outlived) not down more than 1 point, no band below -0.5.
 Team keeps its K = 3 gun unless the team thread screens it.
 
-**Stage 2 result (2026-10-26, PR #316).** Against aa alone, no arm passed (g4 +0.45 ± 0.22, g4gc
-+0.39, gc +0.17, ef +0.24). But the A/A came out at +0.23 ± 0.22: aa drew low. Pairing each arm
-battle for battle with the mean of aa and bb (both are master; per-battle APS from the reports)
-gives:
+**Stage 2 result (2026-10-26, PR #316).** Against aa alone no arm passed, but the A/A came out at
++0.23 ± 0.22 (aa drew low). Paired battle for battle with the mean of aa and bb: g4 (K = 24)
+**+0.34 ± 0.16**, g4gc +0.28 ± 0.18, gc +0.05 ± 0.15 (the crowd features add nothing), ef +0.13 ±
+0.18, and ef pooled with Stage 1 over 12 seeds **+0.21 ± 0.16**. Depth is a real gain, ef a small
+real one; both are under their bars. Stages 1 and 2 together come to about +0.55, under section 6's
++1.0 stop line: top 5 is out of reach on this core (census 66.99 + 0.55 projects about 66.7 live,
+near today's 16th).
 
-| Arm | vs mean of aa and bb |
-|---|---|
-| g4 (K = 24) | **+0.34 ± 0.16** |
-| g4gc | +0.28 ± 0.18 |
-| gc (crowd features) | +0.05 ± 0.15 |
-| ef (Stage 2 seeds) | +0.13 ± 0.18 |
-| ef pooled with Stage 1 (12 seeds) | **+0.21 ± 0.16** |
+**Banking them (`pc-melee-bank`, BENCH-115):** g24 and e3far in one build (g4ef) beside aa and bb
+on the census at 8 fresh seeds (3183-3190), 1,104 battles; g4ef pairs with the mean of aa and bb
+(`screen --base2`) and passes at +0.3 with the low end above 0 and survival no more than 1 point
+lower. A pass turns both on in master.
 
-The gun's depth is a real gain and the crowd features are not (they take a little off g4). ef is
-real but small. Both sit under their bars (+0.5 and +0.3). Stages 1 and 2 together come to about
-+0.55 if g4 and ef stack, which is under section 6's +1.0 stop line: top 5 is out of reach on this
-core (census 66.99 + 0.55 projects about 66.7 live, near today's 16th).
+**Movement rebuild, step M0: the crowd exposure read (2026-10-26, BENCH-116).** Leigh chose to
+bank g4 + ef and then rebuild the melee movement. Before building, master ran on 12 census fields
+(every fourth, 1 seed, cloud; docs/bench/local/melee-exposure-317.md) with the new exposure.csv:
+
+| Robots | Crowd damage taken per 100 crowd ticks | As the shooter's nearest | Nearest of | Crowd ticks a round |
+|---|---|---|---|---|
+| Hadur | 8.7 | 53% | 0.83 | 775 |
+| Ranks 1-10 | 8.9 | 51% | 0.78 | 707 |
+| Ranks 11-30 | 9.7 | 51% | 0.82 | 718 |
+| Ranks 31-100 | 11.2 | 54% | 0.86 | 625 |
+
+Hadur's crowd movement already takes damage at the top 10's rate and stays alive longer. In the
+same battles (melee.csv) its survival score beats the top-10 robots' (13,333 a battle against
+12,660), and its bullet damage trails (4,244 against 5,211). The difference is firepower: in the
+crowd the top 10 fire at 2.62 power on average against Hadur's 1.64, at a similar hit rate (36%
+against 39%) and damage per power spent (1.84 against 1.91), so they deal 125 damage a round there
+against Hadur's 94 and win 74 energy back against 57. **A movement rebuild aims at a part that is not
+behind;** the gap is the crowd's bullet power, now on a better gun (g4). Power alone was flat twice
+on the older gun (mpow +0.1 on 3.13's K = 3 gun; Stage 1's ep +0.06), so a power stage must be
+screened on top of g4ef.
 
 ### Stage 3: crowd survival
 

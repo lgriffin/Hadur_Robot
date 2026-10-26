@@ -46,7 +46,9 @@ public final class TeamModes {
         /** TMODE-11: the safest candidates are re-ranked by the shots their drive would cross (Ogi's waves). */
         WAVES,
         /** TMODE-13: packs of two or three assigned per enemy, each member at a fixed 350 px round its prey (NightmareTeam). */
-        HUNT
+        HUNT,
+        /** TMODE-15: a member keeps out of the cone behind each teammate's likely target, where that teammate's misses fly. */
+        LINES
     }
 
     /**
@@ -66,6 +68,7 @@ public final class TeamModes {
     public static final boolean FORCE_REAR = false;
     public static final boolean FORCE_WAVES = false;
     public static final boolean FORCE_HUNT = true;
+    public static final boolean FORCE_LINES = false;
 
     /** No modes: today's team movement. */
     public static final Set<Mode> NONE = Collections.unmodifiableSet(EnumSet.noneOf(Mode.class));
@@ -76,7 +79,7 @@ public final class TeamModes {
         FORCE_LEARN ? Mode.LEARN : null, FORCE_PACK ? Mode.PACK : null, FORCE_SCREEN ? Mode.SCREEN : null,
         FORCE_POOL ? Mode.POOL : null, FORCE_DISABLED ? Mode.DISABLED : null,
         FORCE_MATEFIRE ? Mode.MATEFIRE : null, FORCE_REAR ? Mode.REAR : null,
-        FORCE_WAVES ? Mode.WAVES : null, FORCE_HUNT ? Mode.HUNT : null);
+        FORCE_WAVES ? Mode.WAVES : null, FORCE_HUNT ? Mode.HUNT : null, FORCE_LINES ? Mode.LINES : null);
 
     /** Opposing member class to its team's modes; filled from the per-team screens. */
     static final Map<String, Set<Mode>> TABLE = table();

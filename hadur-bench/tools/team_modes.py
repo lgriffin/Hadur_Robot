@@ -22,7 +22,7 @@ import sys
 import zipfile
 from pathlib import Path
 
-MODES = ("SOFT", "GANG", "FINISH", "LEARN", "PACK", "SCREEN", "POOL", "DISABLED", "MATEFIRE", "REAR", "WAVES", "HUNT")
+MODES = ("SOFT", "GANG", "FINISH", "LEARN", "PACK", "SCREEN", "POOL", "DISABLED", "MATEFIRE", "REAR", "WAVES", "HUNT", "LINES")
 
 ROW = re.compile(r"^\|\s*(?P<team>[^|]+?)\s*\|\s*[^|]*\|\s*[^|]*\|\s*(?P<mean>[+-]?\d+(?:\.\d+)?)(?:\s*±\s*(?P<ci>\d+(?:\.\d+)?))?\s*\|\s*$")
 
