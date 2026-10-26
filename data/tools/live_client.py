@@ -373,14 +373,53 @@ HEALTH_COLUMNS = ["utc", "folder", "rounds", "survived", "faults", "skipped", "m
 
 
 LOW_SHARE = 70
+# BENCH-113: a collapse is a 1v1 battle this far under the pairing's live score. A flat 70%
+# share line called normal battles against strong robots collapses (WaveSerpent pairs at 57).
+COLLAPSE_MARGIN = 15.0
 
 
 def is_low(share):
-    """A 1v1 battle under 70% share: the collapses the release watch is after."""
+    """A 1v1 battle under 70% share."""
     try:
         return float(share) < LOW_SHARE
     except (TypeError, ValueError):
         return False
+
+
+def is_collapse(row, expected):
+    """A 1v1 battle at least COLLAPSE_MARGIN under its pairing's score on the live page;
+    False when the page has no score for the opponent."""
+    if row["game"] != "roborumble" or row["opponent"] not in expected:
+        return False
+    try:
+        return float(row["share"]) < expected[row["opponent"]][0] - COLLAPSE_MARGIN
+    except (TypeError, ValueError):
+        return False
+
+
+def first_start(out):
+    """BENCH-113: when the watch over `out` first started (out/started.txt), written on the
+    first call. Battles before it (a client's results file can hold yesterday's) stay out,
+    and a restarted watch keeps the first start."""
+    path = os.path.join(out, "started.txt")
+    if not os.path.exists(path):
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(utc_now() + "\n")
+    with open(path, encoding="utf-8") as f:
+        return f.read().strip()
+
+
+def latest_page_rows(out, game):
+    """The rows of the newest BotDetails page of `game` saved under out/pages, or {}."""
+    folder = os.path.join(out, "pages")
+    try:
+        saved = sorted(n for n in os.listdir(folder) if f"_{game}_" in n and n.endswith(".html"))
+    except OSError:
+        return {}
+    if not saved:
+        return {}
+    with open(os.path.join(folder, saved[-1]), encoding="utf-8", errors="replace") as f:
+        return page_rows(f.read())
 
 
 # RES-15 (docs/plan-top5.md, Stage F): from 3.15 the record carries the start-up fields too.
@@ -549,7 +588,7 @@ def read_tsv(path):
 class Watch:
     """One watch over the clients and pages; each poll_* step is separately testable."""
 
-    def __init__(self, clients, out, pages=(), log=print, robots=()):
+    def __init__(self, clients, out, pages=(), log=print, robots=(), since=None):
         self.clients, self.out, self.pages, self.log = clients, out, list(pages), log
         # BENCH-113: a release watch keeps only the released versions' battles, so results a
         # client still holds from an older version stay out of the release report.
@@ -557,10 +596,12 @@ class Watch:
         os.makedirs(out, exist_ok=True)
         kept = read_tsv(os.path.join(out, "battles.tsv"))
         self.seen = {r["key"] for r in kept}
-        # BENCH-113: 1v1 battles and collapses so far, counted from battles.tsv too, so a
-        # restarted watch keeps counting towards its stop.
+        self.since = since or ""
+        # 1v1 battles and collapses so far, counted from battles.tsv too, so a restarted watch
+        # keeps counting towards its stop.
+        self.expected = latest_page_rows(out, "roborumble")
         self.duels = sum(1 for r in kept if r["game"] == "roborumble")
-        self.collapses = sum(1 for r in kept if r["game"] == "roborumble" and is_low(r["share"]))
+        self.collapses = sum(1 for r in kept if is_collapse(r, self.expected))
         self.health_mtime = {}
         self.last_page = {}
         # The records already on disk are from battles before the watch; a folder or record
@@ -588,6 +629,8 @@ class Watch:
                     row = battle_row(b, self.label(client))
                     if row and self.robots and row["hadur"] not in self.robots:
                         continue
+                    if row and row["utc"] < self.since:
+                        continue
                     if row and row["key"] not in self.seen:
                         self.seen.add(row["key"])
                         rows.append(row)
@@ -595,10 +638,11 @@ class Watch:
             append_tsv(os.path.join(self.out, "battles.tsv"), BATTLE_COLUMNS, rows)
             for r in rows:
                 low = r["game"] == "roborumble" and is_low(r["share"])
+                fell = is_collapse(r, self.expected)
                 self.duels += r["game"] == "roborumble"
-                self.collapses += low
+                self.collapses += fell
                 self.log(f"{r['utc']} battle {r['hadur']} vs {r['opponent']} ({r['game']}): "
-                         f"{r['share']}% share, {r['won']}-{r['lost']} rounds" + ("  << LOW" if low else ""))
+                         f"{r['share']}% share, {r['won']}-{r['lost']} rounds" + ("  << COLLAPSE" if fell else "  << LOW" if low else ""))
         return rows
 
     def poll_health(self):
@@ -672,6 +716,8 @@ class Watch:
             else:
                 self.log(f"{now} page {game}: APS {head['aps']:.2f}, {head['battles']} battles (first read)")
             self.last_page[spec] = rows
+            if game == "roborumble":
+                self.expected = rows
 
     def _previous_saved(self, folder, tag, current):
         saved = sorted(n for n in os.listdir(folder) if n.endswith(f"_{tag}.html") and n != current)
@@ -710,7 +756,8 @@ def cmd_watch(args):
         with open(log_path, "a", encoding="utf-8") as f:
             f.write(line + "\n")
 
-    w = Watch(args.client, args.out, args.page, log, args.robot)
+    since = first_start(args.out) if args.new_only else None
+    w = Watch(args.client, args.out, args.page, log, args.robot, since)
     for c in args.client:
         log(f"{utc_now()} client {c}: results {client_results_files(c)}, data {hadur_data_dirs(c) or 'none yet'}")
     end = time.time() + args.hours * 3600 if args.hours > 0 else None
@@ -721,22 +768,23 @@ def cmd_watch(args):
     try:
         while (end is None or time.time() < end) and (done_at is None or time.time() < done_at):
             now = time.time()
+            # The page first: a battle is a collapse against its pairing's live score.
+            if args.page and now >= next_page:
+                w.poll_pages()
+                next_page = now + args.page_every
             w.poll_results()
             if now >= next_rate:
                 log(f"{utc_now()} rate: {w.duels - rate_from[0]} 1v1 battles, {w.collapses - rate_from[1]} "
-                    f"under {LOW_SHARE}% in the last hour; {w.duels} and {w.collapses} in all")
+                    f"collapses in the last hour; {w.duels} and {w.collapses} in all")
                 rate_from, next_rate = (w.duels, w.collapses), now + 3600
             asked = os.path.exists(os.path.join(args.out, "STOP"))
             if done_at is None and (asked or args.stop_collapses and w.collapses >= args.stop_collapses
                                     or args.stop_battles and w.duels >= args.stop_battles):
                 # The last battle's health record can land after its result: keep polling a while.
                 log(f"{utc_now()} done{' (STOP file)' if asked else ''}: {w.duels} 1v1 battles, "
-                    f"{w.collapses} under {LOW_SHARE}%")
+                    f"{w.collapses} collapses")
                 done_at = now + args.grace
             w.poll_health()
-            if args.page and now >= next_page:
-                w.poll_pages()
-                next_page = now + args.page_every
             if now >= next_prof:
                 w.snapshot_profiles()
                 next_prof = now + args.profiles_every
@@ -808,6 +856,22 @@ def report(out):
                      f"{sum(1 for s in sk if s > 0)} battles with any; faults in "
                      f"{sum(1 for h in health if int(h['faults']) > 0)}; shield verdict stored at the end of "
                      f"{len(sh)} ({100.0 * len(sh) / len(health):.0f}%).")
+        lines.append("")
+    expected = latest_page_rows(out, "roborumble")
+    fell = [(b, h) for b, h in joined if is_collapse(b, expected)]
+    if joined:
+        lines.append(f"## Collapses: 1v1 battles {COLLAPSE_MARGIN:.0f}+ under the pairing's live score")
+        lines.append("")
+        if not expected:
+            lines.append("No saved roborumble page to score the pairings against.")
+        else:
+            lines.append("| Time (UTC) | Opponent | Share | Pairing | Rounds won | Skipped | Shield verdict |")
+            lines.append("|---|---|---:|---:|---|---:|---|")
+            for b, h in fell:
+                lines.append(f"| {b['utc']} | {b['opponent']} | {b['share']:.1f} | {expected[b['opponent']][0]:.1f} | "
+                             f"{b['won']}-{b['lost']} | {h['skipped'] if h else '?'} | {h['shielder'] if h else '?'} |")
+            if not fell:
+                lines.append("| none | | | | | | |")
         lines.append("")
     low = [(b, h) for b, h in joined if b["share"] is not None and b["share"] < 70]
     if joined:
@@ -881,8 +945,10 @@ def main(argv=None):
     w.add_argument("--robot", action="append", default=[],
                    help='keep only battles of this Hadur, e.g. "hadur2.Hadur 3.17"; repeatable, default all')
     w.add_argument("--stop-collapses", type=int, default=0,
-                   help="stop once this many 1v1 battles under 70%% share are kept; 0 never")
+                   help="stop once this many collapses (1v1 battles 15+ under the pairing's live score) are kept; 0 never")
     w.add_argument("--stop-battles", type=int, default=0, help="stop once this many 1v1 battles are kept; 0 never")
+    w.add_argument("--new-only", action="store_true",
+                   help="keep only battles fought after the watch first started (out/started.txt)")
     w.add_argument("--grace", type=float, default=60.0,
                    help="seconds of health polling after a count stop, for the last battle's record")
     w.add_argument("--every", type=float, default=5.0)

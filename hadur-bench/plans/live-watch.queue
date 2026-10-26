@@ -7,7 +7,8 @@
 # 1v1/melee and team participant lines name (they can differ, as 3.17 and 3.17.1 did).
 #
 # Why these stops: about 1 live 1v1 battle in 100 collapses (7 of 659 on 3.16), and ~10 collapses with
-#   their health records are enough to find a cause, so the watch ends at COLLAPSES battles under 70% or
+#   their health records are enough to find a cause, so the watch ends at COLLAPSES collapses (a 1v1 battle 15+ points under its pairing's
+#   score on the live page; a flat 70% line flagged normal battles vs strong robots) or
 #   DUELS 1v1 battles, whichever comes first, capped at HOURS. Right after a release (its first pass,
 #   when most client battles include Hadur) that is a few hours; later it can take days. It logs the
 #   1v1 battle rate hourly. To finish early, create a file named STOP in the watch folder (data/live/
@@ -16,7 +17,9 @@
 # watch: data/tools/live_client.py watch over every client folder that exists
 #   under C:/RoboRumbleWorkers (rr01..rr06), with the three live pages; it resumes across restarts
 #   (BENCH-86), so re-running the step after a reboot keeps every battle already recorded.
-# report: live_client.py report, joining each 1v1 battle under 70% share to its health record.
+# --new-only: only battles fought after the watch first started (started.txt); the first 3.17 run
+#   took yesterday's battles still in the clients' results files.
+# report: live_client.py report, joining each collapse to its health record.
 # pr: the watch folder's TSVs, report and log as a results PR; Claude reads it for the live collapses
 #   (the +0.1..+0.2 APS lever L5 of the 1v1 plan to 3rd).
 
@@ -28,7 +31,7 @@ set DUELS = 1000
 set CLIENTS = C:/RoboRumbleWorkers
 set W = ../data/live/release-${V1}
 
-watch | mkdir -p ${W} && rm -f ${W}/STOP && $(command -v python3 || command -v python) ../data/tools/live_client.py watch $(for d in ${CLIENTS}/rr0*; do [ -d "$d" ] && printf -- '--client %s ' "$d"; done) --out ${W} --page "roborumble:hadur2.Hadur ${V1}" --page "meleerumble:hadur2.Hadur ${V1}" --page "teamrumble:hadur2.HadurTeam ${VT}" --robot "hadur2.Hadur ${V1}" --robot "hadur2.HadurTeam ${VT}" --stop-collapses ${COLLAPSES} --stop-battles ${DUELS} --hours ${HOURS}
+watch | mkdir -p ${W} && rm -f ${W}/STOP && $(command -v python3 || command -v python) ../data/tools/live_client.py watch $(for d in ${CLIENTS}/rr0*; do [ -d "$d" ] && printf -- '--client %s ' "$d"; done) --out ${W} --page "roborumble:hadur2.Hadur ${V1}" --page "meleerumble:hadur2.Hadur ${V1}" --page "teamrumble:hadur2.HadurTeam ${VT}" --robot "hadur2.Hadur ${V1}" --robot "hadur2.HadurTeam ${VT}" --new-only --stop-collapses ${COLLAPSES} --stop-battles ${DUELS} --hours ${HOURS}
 
 report | $(command -v python3 || command -v python) ../data/tools/live_client.py report ${W} --md ${W}/report.md
   after: watch
