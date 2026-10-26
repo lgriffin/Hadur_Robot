@@ -1610,10 +1610,18 @@ loadScripts(document, 'script');</script>
 <div class="block">Shortest distance from <code>p</code> to the bullet's flight between ticks <code>from</code> and
  <code>to</code>; the bullet moves in a straight line, so this is a point-to-segment distance.</div>
 </dd>
+<dt><a href="hadur2/core/melee/MeleeEndgame.html#closestFactor(double,int,boolean,boolean)" class="member-name-link">closestFactor(double, int, boolean, boolean)</a> - Static method in class hadur2.core.melee.<a href="hadur2/core/melee/MeleeEndgame.html" title="class in hadur2.core.melee">MeleeEndgame</a></dt>
+<dd>
+<div class="block">The closest-robot factor (<a class="req" href="../requirements.html#MMOVE-2">MMOVE-2</a>); <a class="req" href="../requirements.html#MEND-3">MEND-3</a> (<code>far</code>) raises it in this phase.</div>
+</dd>
 <dt><a href="hadur2/core/melee/MinimumRiskMovement.html#closestFactor(java.awt.geom.Point2D.Double,hadur2.core.world.EnemyInfo,double,long)" class="member-name-link">closestFactor(Point2D.Double, EnemyInfo, double, long)</a> - Method in class hadur2.core.melee.<a href="hadur2/core/melee/MinimumRiskMovement.html" title="class in hadur2.core.melee">MinimumRiskMovement</a></dt>
 <dd>
 <div class="block">2 where Hadur at <code>p</code> would be <code>e</code>'s closest robot, 4 in the opening, and
  half again if <code>e</code> hit Hadur lately (<a class="req" href="../requirements.html#MMOVE-2">MMOVE-2</a>).</div>
+</dd>
+<dt><a href="hadur2/core/melee/MinimumRiskMovement.html#closestFactor(java.awt.geom.Point2D.Double,hadur2.core.world.EnemyInfo,double,long,int,boolean)" class="member-name-link">closestFactor(Point2D.Double, EnemyInfo, double, long, int, boolean)</a> - Method in class hadur2.core.melee.<a href="hadur2/core/melee/MinimumRiskMovement.html" title="class in hadur2.core.melee">MinimumRiskMovement</a></dt>
+<dd>
+<div class="block">As above with <code>others</code> opponents left; <a class="req" href="../requirements.html#MEND-3">MEND-3</a> may raise the factor off a team.</div>
 </dd>
 <dt><a href="hadur2/core/policy/RammerPolicy.html#CLOSING_RATE" class="member-name-link">CLOSING_RATE</a> - Static variable in class hadur2.core.policy.<a href="hadur2/core/policy/RammerPolicy.html" title="class in hadur2.core.policy">RammerPolicy</a></dt>
 <dd>
@@ -2598,6 +2606,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur2/core/policy/Endgame.State.html" class="type-name-link" title="enum class in hadur2.core.policy">Endgame.State</a> - Enum Class in <a href="hadur2/core/policy/package-summary.html">hadur2.core.policy</a></dt>
 <dd>
 <div class="block">The endgame state for one tick.</div>
+</dd>
+<dt><a href="hadur2/core/melee/MeleeEndgame.html#endgameRing(int,boolean,boolean)" class="member-name-link">endgameRing(int, boolean, boolean)</a> - Static method in class hadur2.core.melee.<a href="hadur2/core/melee/MeleeEndgame.html" title="class in hadur2.core.melee">MeleeEndgame</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MMOVE-4">MMOVE-4</a>'s endgame ring and lateral weight apply; <a class="req" href="../requirements.html#MEND-1">MEND-1</a> (<code>keepCrowd</code>) holds them off.</div>
 </dd>
 <dt><a href="hadur2/core/melee/MinimumRiskMovement.View.html#enemies" class="member-name-link">enemies</a> - Variable in class hadur2.core.melee.<a href="hadur2/core/melee/MinimumRiskMovement.View.html" title="class in hadur2.core.melee">MinimumRiskMovement.View</a></dt>
 <dd>&nbsp;</dd>
@@ -6572,6 +6584,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">What Hadur knows about itself this tick.</div>
 </dd>
+<dt><a href="hadur2/core/melee/MeleeEndgame.html" class="type-name-link" title="class in hadur2.core.melee">MeleeEndgame</a> - Class in <a href="hadur2/core/melee/package-summary.html">hadur2.core.melee</a></dt>
+<dd>
+<div class="block">Melee Stage 1 (docs/plan-melee-top5.md): Hadur's play with two opponents left, off a team.</div>
+</dd>
 <dt><a href="hadur2/core/melee/MeleeEnergyPolicy.html" class="type-name-link" title="class in hadur2.core.melee">MeleeEnergyPolicy</a> - Class in <a href="hadur2/core/melee/package-summary.html">hadur2.core.melee</a></dt>
 <dd>
 <div class="block">Melee bullet power (<a class="req" href="../requirements.html#MGUN-2">MGUN-2</a>, <a class="req" href="../requirements.html#MGUN-3">MGUN-3</a>), the plan's energy table:
@@ -8765,6 +8781,11 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur2/core/memory/OpponentProfile.html#powerHistogram" class="member-name-link">powerHistogram</a> - Variable in class hadur2.core.memory.<a href="hadur2/core/memory/OpponentProfile.html" title="class in hadur2.core.memory">OpponentProfile</a></dt>
 <dd>
 <div class="block">Their shots by bullet power bin (see <a href="hadur2/core/memory/OpponentProfile.html#powerBin(double)"><code>OpponentProfile.powerBin(double)</code></a>).</div>
+</dd>
+<dt><a href="hadur2/core/melee/MeleeEndgame.html#powerOthers(int,boolean,boolean)" class="member-name-link">powerOthers(int, boolean, boolean)</a> - Static method in class hadur2.core.melee.<a href="hadur2/core/melee/MeleeEndgame.html" title="class in hadur2.core.melee">MeleeEndgame</a></dt>
+<dd>
+<div class="block">The opponent count the power table reads (<a class="req" href="../requirements.html#MGUN-2">MGUN-2</a>, <a class="req" href="../requirements.html#MGUN-3">MGUN-3</a>); <a class="req" href="../requirements.html#MEND-2">MEND-2</a> (<code>crowdPower</code>)
+ reads two opponents as three, so the crowd's table stands.</div>
 </dd>
 <dt><a href="hadur2/core/policy/PowerPolicy.html" class="type-name-link" title="class in hadur2.core.policy">PowerPolicy</a> - Class in <a href="hadur2/core/policy/package-summary.html">hadur2.core.policy</a></dt>
 <dd>
@@ -12729,6 +12750,26 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur/bench/BattleResult.html#theirSurvival" class="member-name-link">theirSurvival</a> - Variable in class hadur.bench.<a href="hadur/bench/BattleResult.html" title="class in hadur.bench">BattleResult</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur2/core/melee/MeleeEndgame.html#three(int,boolean)" class="member-name-link">three(int, boolean)</a> - Static method in class hadur2.core.melee.<a href="hadur2/core/melee/MeleeEndgame.html" title="class in hadur2.core.melee">MeleeEndgame</a></dt>
+<dd>
+<div class="block">Whether this is the phase the switches act on: two opponents left, off a team.</div>
+</dd>
+<dt><a href="hadur2/core/melee/MeleeEndgame.html#THREE_FAR" class="member-name-link">THREE_FAR</a> - Static variable in class hadur2.core.melee.<a href="hadur2/core/melee/MeleeEndgame.html" title="class in hadur2.core.melee">MeleeEndgame</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MEND-3">MEND-3</a>: with two opponents left off a team, being an opponent's closest robot weighs more.</div>
+</dd>
+<dt><a href="hadur2/core/melee/MeleeEndgame.html#THREE_FAR_FACTOR" class="member-name-link">THREE_FAR_FACTOR</a> - Static variable in class hadur2.core.melee.<a href="hadur2/core/melee/MeleeEndgame.html" title="class in hadur2.core.melee">MeleeEndgame</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MEND-3">MEND-3</a>: the closest-robot factor then, in place of <a class="req" href="../requirements.html#MMOVE-2">MMOVE-2</a>'s 2.</div>
+</dd>
+<dt><a href="hadur2/core/melee/MeleeEndgame.html#THREE_POWER" class="member-name-link">THREE_POWER</a> - Static variable in class hadur2.core.melee.<a href="hadur2/core/melee/MeleeEndgame.html" title="class in hadur2.core.melee">MeleeEndgame</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MEND-2">MEND-2</a>: with two opponents left off a team, fire by the crowd's power table.</div>
+</dd>
+<dt><a href="hadur2/core/melee/MeleeEndgame.html#THREE_RING" class="member-name-link">THREE_RING</a> - Static variable in class hadur2.core.melee.<a href="hadur2/core/melee/MeleeEndgame.html" title="class in hadur2.core.melee">MeleeEndgame</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MEND-1">MEND-1</a>: with two opponents left off a team, keep the crowd's ring and lateral weight.</div>
+</dd>
 <dt><a href="hadur2/core/policy/TickBudget.html#THRESHOLD" class="member-name-link">THRESHOLD</a> - Static variable in class hadur2.core.policy.<a href="hadur2/core/policy/TickBudget.html" title="class in hadur2.core.policy">TickBudget</a></dt>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#TIME-1">TIME-1</a>: the share of the allowance past which the next tick sheds a level.</div>
