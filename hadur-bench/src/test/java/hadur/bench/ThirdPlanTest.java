@@ -76,7 +76,8 @@ class ThirdPlanTest {
         assertTrue(queue.contains("--design plans/top5-factorial.design"));
         assertTrue(Files.isRegularFile(Path.of("plans/top5-factorial.design")));
         assertTrue(Files.isRegularFile(Path.of("tools/test_factor_picks.py")));
-        assertTrue(queue.contains("open_results_pr.sh claude/pc-1v1-mine-results"));
+        assertTrue(queue.contains("open_results_pr.sh claude/pc-1v1-mine2-results"));
+        assertTrue(queue.contains("--ships sw,F"), "sw and F ship on since 3.15");
         assertTrue(queue.contains("after: mine"));
     }
 }
