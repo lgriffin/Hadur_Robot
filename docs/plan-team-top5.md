@@ -417,3 +417,25 @@ Steps, all team-only, each a PC card Leigh starts:
    (about ±3). Screen about 2.5 h, fresh-seed gate about 1 h. Expected +0.5..+1.0.
 
 Together +1.0..+2.5 against +2.6: 2nd only at the top of the range.
+
+### 10.1 Results so far (2026-10-26)
+
+- **Friendly-fire lane failed** (results PR #293). Against master: A/A -0.1 ± 0.6, WEAVE-10 -0.4 ± 0.7
+  (own-member hits 19.6k down to 14.7k, held shots doubled), WEAVE-11 -0.3 ± 0.7 (hits unchanged).
+  Both stay off. Our own fire is not what loses rounds to the mid teams.
+- **How we lose rounds** (PR #300, tools/team_losses.py on the lane card's A/A logs, 12 battles a team):
+
+| Band | Round wins | Members lost a round | Lost in a won round | Round length | Dmg taken / dealt | Their / our hit % |
+|---|---|---|---|---|---|---|
+| top 8 | 39.9% | 4.09 | 2.72 | 956 | 363 / 369 | 17.6 / 16.1 |
+| mid 14 | 85.5% | 2.42 | 1.98 | 878 | 251 / 378 | 14.1 / 14.9 |
+| rest | 99.8% | 0.46 | 0.45 | 452 | 137 / 475 | 16.3 / 21.2 |
+
+  Against the mid 14 we out-trade them and win most rounds, but rounds run twice as long as against
+  the rest because we hit them less (14.9% against 21.2%), and we lose two members even in a round we
+  win. Earlier screens rule out the cheap readings: head-on and linear aims are about 12% of the hits
+  on us (docs/bench/team-lower-half.md), converging fire lost 2.2 (tfocus), and fire power already
+  ships (MGUN-6).
+- **Next (card pc-team-compare, about 15 min):** bench Firestarter and Combat as the subject against
+  the mid 14 on the same seeds and read them with the same tool, to see where they differ (round
+  length, hit rate, members lost) before building anything.

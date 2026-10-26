@@ -1,0 +1,17 @@
+# The 14 mid-table teams that cost HadurTeam 2.1 APS against Firestarter and Combat (docs/plan-team-top5.md
+# section 10), from team-census46.txt.
+#   <team name as Robocode lists it> | team | <jar file in opponents/>
+rz.GlowingHawks 0.2 | team-8 | rz.GlowingHawks_0.2.jar
+kawigi.micro.ArmyOfShiz 1.1 | team-9 | kawigi.micro.ArmyOfShiz_1.1.jar
+rz.HOFSwarm 1.1 | team-10 | rz.HOFSwarm_1.1.jar
+davidalves.PhoenixTeam 0.54 | team-11 | davidalves.PhoenixTeam_0.54.jar
+kid.team.OmegaSquad .0.2 | team-12 | kid.team.OmegaSquad_.0.2.jar
+cx.mini.DemoniacNimrods 0.50 | team-13 | cx.mini.DemoniacNimrods_0.50.jar
+tmnr.TMNR 1.01 | team-14 | tmnr.TMNR_1.01.jar
+myl.micro.TroodonPack 1.10 | team-15 | myl.micro.TroodonPack_1.10.jar
+Krabb.sliNk.SlartibartfassTeam 0.5 | team-16 | Krabb.sliNk.SlartibartfassTeam_0.5.jar
+bvh.team.Valkiries 1.0 | team-17 | bvh.team.Valkiries_1.0.jar
+gh.mini.GrubbmGroup 0.4 | team-19 | gh.mini.GrubbmGroup_0.4.jar
+apvteam.MambaTeam 0.7.5 | team-20 | apvteam.MambaTeam_0.7.5.jar
+kawigi.sbf.TidalWave 0.8 | team | kawigi.sbf.TidalWave_0.8.jar
+gh.nano.GrofGroup 1.1 | team | gh.nano.GrofGroup_1.1.jar

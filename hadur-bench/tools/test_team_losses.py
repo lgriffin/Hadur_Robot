@@ -48,11 +48,28 @@ class TeamLossesTest(unittest.TestCase):
             self.assertEqual(25.0, s["hit_us"])          # 1 of their 4 shots hit us
             self.assertEqual(100.0, s["hit_them"])       # our 1 shot hit
             self.assertEqual(2.0, s["mates"])
+            self.assertEqual(27.5, s["last_shot"])    # rounds end their shooting at 25 and 30
             (Path(d) / "battles" / "rz.HOFSwarm_1.1-2").mkdir()
             text = team_losses.report([d])
             self.assertIn("mid 14", text)
             self.assertIn("left out: rz.HOFSwarm_1.1-2", text)
             self.assertEqual("top 8", team_losses.band("cb.fire.FirestarterTeam"))
+
+    def test_other_subject(self):
+        fire = "cb.fire.Firestarter 2.0"
+        with tempfile.TemporaryDirectory() as d:
+            battle(d, "rz.HOFSwarm_1.1-1", ["0,5,0,1,0,0,0,0,0,-\n"], [
+                f"0,40,F,1,{fire} (1),3.00,0,0,0,-\n",
+                f"0,44,H,1,{fire} (1),rz.Hawk 0.2 (1),3.00\n",
+            ], [])
+            battle(d, "rz.HOFSwarm_1.1-1-baseline", ["0,0,3,0,0,0,0,0,0,-\n"], [], [])
+            team_losses.OURS = "cb.fire.Firestarter "
+            try:
+                text = team_losses.report([d], "Firestarter")
+            finally:
+                team_losses.OURS = "hadur2."
+            self.assertIn("Battles read: 1 over 1 opponents", text)   # the baseline is HadurTeam's
+            self.assertIn("| rz.HOFSwarm (mid) | 1 | 100.0 | 0.00 | 0.00 | nan | nan | 44 | 0 | 16 |", text)
 
 
 if __name__ == "__main__":
