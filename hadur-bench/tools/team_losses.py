@@ -7,14 +7,15 @@ band (docs/plan-team-top5.md section 10: the 14 mid teams that cost us 2.1 APS a
 Firestarter and Combat, the top 6, the rest):
 
 - rounds, our round wins, members we lose per round (all rounds; in won rounds);
-- tick of our first death (median) against the round's length (median);
+- tick of our first death (median) against the round's length (median), both from our members' R records;
+- the round's last shot (median turn in bullets.log): a round length every subject has, ours or not;
 - enemy bullet damage on us and our bullet damage on them, per round;
 - the enemy's hit rate on us and ours on them (bullets that hit a robot / bullets fired);
 - focus: the share of the enemy's bullet damage that landed on the member it hurt most;
 - damage our bullets did to our own members, per round.
 
 Another team can be the subject (a run with it as the bench's robot): --ours names its class
-prefix, e.g. --ours cb.fire., and only the run's candidate battles are read. Its members print no R records, so its first death reads nan.
+prefix, e.g. --ours cb.fire., and only the run's candidate battles are read. Its members print no R records, so its first death and round length read nan; compare the last-shot column instead.
 
 Usage: python3 tools/team_losses.py [--ours PREFIX] [--title TEXT] RUN [RUN...] > report.md
 """
@@ -64,7 +65,7 @@ def battle(d):
                 continue
             rows[int(c[0])] = {'alive': int(c[1]), 'won': c[3] == '1', 'ends': [],
                                'shots_at_us': 0, 'shots_at_them': 0, 'hits_us': 0, 'hits_them': 0,
-                               'dmg_us': 0.0, 'dmg_them': 0.0, 'dmg_mates': 0.0,
+                               'dmg_us': 0.0, 'dmg_them': 0.0, 'dmg_mates': 0.0, 'last_shot': 0,
                                'on_member': collections.Counter()}
     with open(bullets) as f:
         for line in f:
@@ -73,6 +74,7 @@ def battle(d):
             row = rows.get(r)
             if row is None:
                 continue
+            row['last_shot'] = max(row['last_shot'], int(c[1]))
             if c[2] == 'F':
                 # Our bullet is a shot at them; an enemy's is a shot at us.
                 row['shots_at_them' if c[4].startswith(OURS) else 'shots_at_us'] += 1
@@ -122,6 +124,7 @@ def summary(rows):
         'lost_won': sum(5 - r['alive'] for r in won) / len(won) if won else float('nan'),
         'first': statistics.median(firsts) if firsts else float('nan'),
         'length': statistics.median(lengths) if lengths else float('nan'),
+        'last_shot': statistics.median(r['last_shot'] for r in rows),
         'dmg_us': dmg_us / n,
         'dmg_them': sum(r['dmg_them'] for r in rows) / n,
         'hit_us': 100.0 * sum(r['hits_us'] for r in rows) / shots_at_us if shots_at_us else float('nan'),
@@ -131,12 +134,12 @@ def summary(rows):
     }
 
 
-HEAD = ('| {} | Rounds | Won % | Lost/round | Lost/won round | First death | Round length | Dmg taken/round '
+HEAD = ('| {} | Rounds | Won % | Lost/round | Lost/won round | First death | Round length | Last shot | Dmg taken/round '
         '| Dmg dealt/round | Their hit % | Our hit % | Their focus % | Own-fire dmg/round |')
 
 
 def line(name, s):
-    return ('| {} | {rounds} | {won:.1f} | {lost:.2f} | {lost_won:.2f} | {first:.0f} | {length:.0f} | {dmg_us:.0f} '
+    return ('| {} | {rounds} | {won:.1f} | {lost:.2f} | {lost_won:.2f} | {first:.0f} | {length:.0f} | {last_shot:.0f} | {dmg_us:.0f} '
             '| {dmg_them:.0f} | {hit_us:.1f} | {hit_them:.1f} | {focus:.0f} | {mates:.0f} |').format(name, **s)
 
 
@@ -162,7 +165,7 @@ def report(runs, title='How HadurTeam loses rounds'):
            'Battles read: {} over {} opponents ({} per opponent); incomplete directories left out: {}.'.format(
                sum(battles.values()), len(battles), ' or '.join(map(str, counts)),
                ', '.join(skipped) if skipped else 'none'), '',
-           '## By band', '', HEAD.format('Band'), '|' + '---|' * 13]
+           '## By band', '', HEAD.format('Band'), '|' + '---|' * 14]
     bands = collections.defaultdict(list)
     for team, rows in per.items():
         bands[band(team)].extend(rows)
@@ -170,7 +173,7 @@ def report(runs, title='How HadurTeam loses rounds'):
         s = summary(bands[b])
         if s:
             out.append(line(b, s))
-    out += ['', '## By opponent (fewest round wins first)', '', HEAD.format('Opponent'), '|' + '---|' * 13]
+    out += ['', '## By opponent (fewest round wins first)', '', HEAD.format('Opponent'), '|' + '---|' * 14]
     ranked = sorted(((summary(rows), team) for team, rows in per.items() if rows), key=lambda x: x[0]['won'])
     for s, team in ranked:
         out.append(line(team + (' (mid)' if team in MID else ''), s))
