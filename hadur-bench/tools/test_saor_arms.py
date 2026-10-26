@@ -61,6 +61,16 @@ class SaorArmsTest(unittest.TestCase):
         self.assertGreater(half, 4.0)
 
     # @Tag("SAOR-16")
+    def test_the_live_bar_moves_by_the_runs_offset(self):
+        self.assertEqual(saor_arms.bar_for(69.37, 68.28), 69.37)
+        self.assertAlmostEqual(saor_arms.bar_for(69.37, 68.28, 68.08), 69.57)
+        self.assertAlmostEqual(saor_arms.bar_for(69.37, 67.98, 68.08), 69.27)
+        rows = [{"arm": "C", "aps": 68.28, "aps_half": 0.2, "diff": 0.0, "diff_half": 0.3, "paired": 45,
+                 "opponents": 156, "top5": False, "bar": 69.57,
+                 "figment": {"value": None, "n": 0}, "wallaby": {"value": None, "n": 0}}]
+        self.assertIn("low end > 69.57: 69.37 moved by the run's offset +0.20", saor_arms.render(rows, "C", 69.37, "1st bar"))
+
+    # @Tag("SAOR-16")
     def test_the_live_read_counts_only_micro_pairings_and_seats_other_robots(self):
         root = tempfile.mkdtemp()
         # Saor C scores 50% on the micro robot and 10% on a megabot; only the 50 counts.

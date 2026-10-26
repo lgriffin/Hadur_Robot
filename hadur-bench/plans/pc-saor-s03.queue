@@ -17,7 +17,8 @@
 # MicroMelee census for C, DC, S1-S3 (216 battles, about 15 min an arm); the live-shaped census
 # (SAOR-16) for C, FIG, S1-S3 (360 battles a seat, about 30-60 min each).
 # Pass: the best S arm leads FIG by +0.5 or more on the live-shaped census, its low end above
-# Figment's 69.37 live after the run's offset (C's read minus 68.08).
+# Figment's 69.37 live after the run's offset (C's read minus 68.08; the read applies it with
+# --control-live 68.08).
 
 set MVN = mvn -q -Drobocode.version=1.11.1 compile exec:java
 set OUT = ../docs/bench/local
@@ -56,7 +57,7 @@ live-S2 | ${MVN} "-Dexec.args=@work/saor-s03/live-S2.args"
 live-S3 | ${MVN} "-Dexec.args=@work/saor-s03/live-S3.args"
   after: live-S2
 
-read | python3 tools/saor_arms.py --work-root work/saor-s03 --field live --arms ${LIVE} --control C --only work/saor-s03/live/micro.txt --top5 69.37 > ${OUT}/saor-s03-live.md && python3 tools/saor_arms.py --work-root work/saor-s03 --arms ${ARMS} --control C > ${OUT}/saor-s03-census.md
+read | python3 tools/saor_arms.py --work-root work/saor-s03 --field live --arms ${LIVE} --control C --only work/saor-s03/live/micro.txt --top5 69.37 --control-live 68.08 > ${OUT}/saor-s03-live.md && python3 tools/saor_arms.py --work-root work/saor-s03 --arms ${ARMS} --control C > ${OUT}/saor-s03-census.md
   after: live-S3
 
 pr | bash tools/open_results_pr.sh claude/pc-saor-s03-results "Saor stage 4: stack DC, no ram leg and constants" ${OUT}/saor-s03-live.md ${OUT}/saor-s03-census.md ${OUT}/saor-s03-live-*.md ${OUT}/saor-s03-census-*.md
