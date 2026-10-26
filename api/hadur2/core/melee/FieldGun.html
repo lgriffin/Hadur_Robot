@@ -241,7 +241,17 @@ loadScripts(document, 'script');</script>
 <div class="block">An opponent was scanned <code>distance</code> from Hadur.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onSighting(java.lang.String,long,double,double,double,double,double,double)" class="member-name-link">onSighting</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onScan(hadur2.core.world.EnemyInfo,double,long,java.awt.geom.Point2D.Double,int)" class="member-name-link">onScan</a><wbr>(<a href="../world/EnemyInfo.html" title="class in hadur2.core.world">EnemyInfo</a>&nbsp;e,
+ double&nbsp;distance,
+ long&nbsp;time,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;nearest,
+ int&nbsp;alive)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">As above, with the robot nearest it (<code>nearest</code>, Hadur included, or null) and the
+ opponents alive, which <a class="req" href="../../../../requirements.html#MGUN-11">MGUN-11</a>'s crowd attributes read.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onSighting(java.lang.String,long,double,double,double,double,double,double)" class="member-name-link">onSighting</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
  long&nbsp;time,
  double&nbsp;x,
  double&nbsp;y,
@@ -249,9 +259,23 @@ loadScripts(document, 'script');</script>
  double&nbsp;velocity,
  double&nbsp;distance,
  double&nbsp;turnRate)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">MGUN-8: a teammate's sighting of <code>name</code>, <code>distance</code> from Hadur, joins its
  movement history as one of Hadur's own scans would.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onSighting(java.lang.String,long,double,double,double,double,double,double,java.awt.geom.Point2D.Double,int)" class="member-name-link">onSighting</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
+ long&nbsp;time,
+ double&nbsp;x,
+ double&nbsp;y,
+ double&nbsp;heading,
+ double&nbsp;velocity,
+ double&nbsp;distance,
+ double&nbsp;turnRate,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;nearest,
+ int&nbsp;alive)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">As above, with <a class="req" href="../../../../requirements.html#MGUN-11">MGUN-11</a>'s crowd context, as <a href="#onScan(hadur2.core.world.EnemyInfo,double,long,java.awt.geom.Point2D.Double,int)"><code>onScan(EnemyInfo, double, long, Point2D.Double, int)</code></a>.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onTeam(boolean)" class="member-name-link">onTeam</a><wbr>(boolean&nbsp;onTeam)</code></div>
@@ -532,6 +556,18 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="onScan(hadur2.core.world.EnemyInfo,double,long,java.awt.geom.Point2D.Double,int)">
+<h3>onScan</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">onScan</span><wbr><span class="parameters">(<a href="../world/EnemyInfo.html" title="class in hadur2.core.world">EnemyInfo</a>&nbsp;e,
+ double&nbsp;distance,
+ long&nbsp;time,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;nearest,
+ int&nbsp;alive)</span></div>
+<div class="block">As above, with the robot nearest it (<code>nearest</code>, Hadur included, or null) and the
+ opponents alive, which <a class="req" href="../../../../requirements.html#MGUN-11">MGUN-11</a>'s crowd attributes read.</div>
+</section>
+</li>
+<li>
 <section class="detail" id="onSighting(java.lang.String,long,double,double,double,double,double,double)">
 <h3>onSighting</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">onSighting</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
@@ -544,6 +580,22 @@ loadScripts(document, 'script');</script>
  double&nbsp;turnRate)</span></div>
 <div class="block">MGUN-8: a teammate's sighting of <code>name</code>, <code>distance</code> from Hadur, joins its
  movement history as one of Hadur's own scans would.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="onSighting(java.lang.String,long,double,double,double,double,double,double,java.awt.geom.Point2D.Double,int)">
+<h3>onSighting</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">onSighting</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
+ long&nbsp;time,
+ double&nbsp;x,
+ double&nbsp;y,
+ double&nbsp;heading,
+ double&nbsp;velocity,
+ double&nbsp;distance,
+ double&nbsp;turnRate,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;nearest,
+ int&nbsp;alive)</span></div>
+<div class="block">As above, with <a class="req" href="../../../../requirements.html#MGUN-11">MGUN-11</a>'s crowd context, as <a href="#onScan(hadur2.core.world.EnemyInfo,double,long,java.awt.geom.Point2D.Double,int)"><code>onScan(EnemyInfo, double, long, Point2D.Double, int)</code></a>.</div>
 </section>
 </li>
 <li>

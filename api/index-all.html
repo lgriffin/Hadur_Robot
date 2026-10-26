@@ -571,6 +571,11 @@ loadScripts(document, 'script');</script>
  <code>velocity</code> for each tick since it was known along <code>heading</code>, no further
  than a robot's top speed allows.</div>
 </dd>
+<dt><a href="hadur2/core/melee/MeleeController.html#at(java.awt.geom.Point2D.Double)" class="member-name-link">at(Point2D.Double)</a> - Method in class hadur2.core.melee.<a href="hadur2/core/melee/MeleeController.html" title="class in hadur2.core.melee">MeleeController</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MGUN-11">MGUN-11</a>: where Hadur is now, set before the tick's scans so their crowd attributes
+ measure from this tick's position rather than the last.</div>
+</dd>
 <dt><a href="hadur2/core/shieldmode/ShieldMode.Command.html#attack" class="member-name-link">attack</a> - Variable in class hadur2.core.shieldmode.<a href="hadur2/core/shieldmode/ShieldMode.Command.html" title="class in hadur2.core.shieldmode">ShieldMode.Command</a></dt>
 <dd>
 <div class="block">Whether a shot is at the enemy (true) or at one of its bullets (false).</div>
@@ -1875,6 +1880,20 @@ loadScripts(document, 'script');</script>
 <div class="block">Where the opponent was when <code>w</code> reached it, given that it had by tick <code>t1</code>
  at <code>p1</code>: along the straight line from its previous scan (<code>p0</code> at <code>t0</code>)
  if the wave had not yet reached it there, else <code>p0</code>; <code>p1</code> with no previous scan.</div>
+</dd>
+<dt><a href="hadur2/core/melee/EnemyHistory.html#crowd(double%5B%5D,double,double,double,double,java.awt.geom.Point2D,int)" class="member-name-link">crowd(double[], double, double, double, double, Point2D, int)</a> - Static method in class hadur2.core.melee.<a href="hadur2/core/melee/EnemyHistory.html" title="class in hadur2.core.melee">EnemyHistory</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MGUN-11">MGUN-11</a>: <code>base</code> with the crowd's three attributes: the nearest robot's distance
+ (capped at 800 px), the cosine of the angle between the opponent's motion and the bearing
+ to that robot mapped to 0..1 (1 heading straight at it, 0.5 when stopped or none is
+ known), and the opponents alive out of nine.</div>
+</dd>
+<dt><a href="hadur2/core/melee/EnemyHistory.html#CROWD" class="member-name-link">CROWD</a> - Static variable in class hadur2.core.melee.<a href="hadur2/core/melee/EnemyHistory.html" title="class in hadur2.core.melee">EnemyHistory</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#MGUN-11">MGUN-11</a> (melee Stage 2, docs/plan-melee-top5.md): three more attributes that see the crowd,
+ as Ogi's melee gun has: the distance from the opponent to its nearest robot (Hadur
+ included), whether it is moving toward or away from that robot, and how many opponents
+ are alive.</div>
 </dd>
 <dt><a href="hadur2/core/melee/EnemyHistory.html#current()" class="member-name-link">current()</a> - Method in class hadur2.core.melee.<a href="hadur2/core/melee/EnemyHistory.html" title="class in hadur2.core.melee">EnemyHistory</a></dt>
 <dd>
@@ -8007,9 +8026,19 @@ loadScripts(document, 'script');</script>
 <div class="block">Takes a scan at <code>time</code>; <code>distance</code> is to Hadur and <code>turnRate</code> the
  opponent's heading change per tick (NaN while unknown).</div>
 </dd>
+<dt><a href="hadur2/core/melee/EnemyHistory.html#onScan(long,double,double,double,double,double,double,hadur2.core.physics.BattleField,java.awt.geom.Point2D,int)" class="member-name-link">onScan(long, double, double, double, double, double, double, BattleField, Point2D, int)</a> - Method in class hadur2.core.melee.<a href="hadur2/core/melee/EnemyHistory.html" title="class in hadur2.core.melee">EnemyHistory</a></dt>
+<dd>
+<div class="block">As above, where <code>nearest</code> is the robot nearest the opponent (Hadur included), or
+ null when none is known, and <code>alive</code> the opponents alive; <a class="req" href="../requirements.html#MGUN-11">MGUN-11</a> reads them.</div>
+</dd>
 <dt><a href="hadur2/core/melee/FieldGun.html#onScan(hadur2.core.world.EnemyInfo,double,long)" class="member-name-link">onScan(EnemyInfo, double, long)</a> - Method in class hadur2.core.melee.<a href="hadur2/core/melee/FieldGun.html" title="class in hadur2.core.melee">FieldGun</a></dt>
 <dd>
 <div class="block">An opponent was scanned <code>distance</code> from Hadur.</div>
+</dd>
+<dt><a href="hadur2/core/melee/FieldGun.html#onScan(hadur2.core.world.EnemyInfo,double,long,java.awt.geom.Point2D.Double,int)" class="member-name-link">onScan(EnemyInfo, double, long, Point2D.Double, int)</a> - Method in class hadur2.core.melee.<a href="hadur2/core/melee/FieldGun.html" title="class in hadur2.core.melee">FieldGun</a></dt>
+<dd>
+<div class="block">As above, with the robot nearest it (<code>nearest</code>, Hadur included, or null) and the
+ opponents alive, which <a class="req" href="../requirements.html#MGUN-11">MGUN-11</a>'s crowd attributes read.</div>
 </dd>
 <dt><a href="hadur2/core/melee/MeleeWaves.html#onScan(hadur2.core.world.EnemyInfo,long)" class="member-name-link">onScan(EnemyInfo, long)</a> - Method in class hadur2.core.melee.<a href="hadur2/core/melee/MeleeWaves.html" title="class in hadur2.core.melee">MeleeWaves</a></dt>
 <dd>
@@ -8043,6 +8072,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">MGUN-8: a teammate's sighting of <code>name</code>, <code>distance</code> from Hadur, joins its
  movement history as one of Hadur's own scans would.</div>
+</dd>
+<dt><a href="hadur2/core/melee/FieldGun.html#onSighting(java.lang.String,long,double,double,double,double,double,double,java.awt.geom.Point2D.Double,int)" class="member-name-link">onSighting(String, long, double, double, double, double, double, double, Point2D.Double, int)</a> - Method in class hadur2.core.melee.<a href="hadur2/core/melee/FieldGun.html" title="class in hadur2.core.melee">FieldGun</a></dt>
+<dd>
+<div class="block">As above, with <a class="req" href="../requirements.html#MGUN-11">MGUN-11</a>'s crowd context, as <a href="hadur2/core/melee/FieldGun.html#onScan(hadur2.core.world.EnemyInfo,double,long,java.awt.geom.Point2D.Double,int)"><code>FieldGun.onScan(EnemyInfo, double, long, Point2D.Double, int)</code></a>.</div>
 </dd>
 <dt><a href="hadur2/Hadur.html#onSkippedTurn(robocode.SkippedTurnEvent)" class="member-name-link">onSkippedTurn(SkippedTurnEvent)</a> - Method in class hadur2.<a href="hadur2/Hadur.html" title="class in hadur2">Hadur</a></dt>
 <dd>
@@ -14414,7 +14447,8 @@ the order they are declared.</div>
 </dd>
 <dt><a href="hadur2/core/melee/EnemyHistory.html#WEIGHTS" class="member-name-link">WEIGHTS</a> - Static variable in class hadur2.core.melee.<a href="hadur2/core/melee/EnemyHistory.html" title="class in hadur2.core.melee">EnemyHistory</a></dt>
 <dd>
-<div class="block">Attribute weights: distance, speed, turn rate, time since reversing, wall distance.</div>
+<div class="block">Attribute weights: distance, speed, turn rate, time since reversing, wall distance; with
+ <a href="hadur2/core/melee/EnemyHistory.html#CROWD"><code>EnemyHistory.CROWD</code></a> also nearest-robot distance, heading to it, opponents alive.</div>
 </dd>
 <dt><a href="hadur2/core/gun/TripHammerGun.html#weightsFor(int)" class="member-name-link">weightsFor(int)</a> - Static method in class hadur2.core.gun.<a href="hadur2/core/gun/TripHammerGun.html" title="class in hadur2.core.gun">TripHammerGun</a></dt>
 <dd>

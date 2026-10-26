@@ -12,7 +12,7 @@
 <h1>EARS requirements</h1>
 <p class="lede">Every requirement from <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/docs/requirements.md">docs/requirements.md</a>, the source of truth. <em>Implemented in</em> lists
 the classes whose documentation cites the ID; <em>Verified by</em> lists the tests tagged with it, the same tags the build's
-traceability check reads. 257 of 258 live requirements have a tagged test. The readings behind the numbers are in
+traceability check reads. 259 of 260 live requirements have a tagged test. The readings behind the numbers are in
 <a href="docs/requirements-notes.html">Requirement readings</a>.</p>
 <nav class="toc"><a href="#group-CORE">Core</a> <a href="#group-RES">Resilience</a> <a href="#group-REL">Release</a> <a href="#group-WAVE">Waves</a> <a href="#group-RADAR">Radar</a> <a href="#group-MEM">Memory</a> <a href="#group-ADAPT">Adapt</a> <a href="#group-DIAL">Dials</a> <a href="#group-DIST">Distance</a> <a href="#group-POW">Power</a> <a href="#group-END">Endgame</a> <a href="#group-MOVE">Movement</a> <a href="#group-TIME">Time budget</a> <a href="#group-SHIELD">Bullet shielding</a> <a href="#group-MELEE">Melee (2.1)</a> <a href="#group-GATE">Posture gate</a> <a href="#group-MRADAR">Melee radar</a> <a href="#group-MSENSE">Melee sensing</a> <a href="#group-MMOVE">Melee movement</a> <a href="#group-MGUN">Melee gun</a> <a href="#group-MMEM">Melee memory</a></nav><h2 id="group-CORE">Core</h2>
 <article class="req-card" id="CORE-1">
@@ -599,6 +599,11 @@ traceability check reads. 257 of 258 live requirements have a tagged test. The r
 <p>While in melee off a team, the field gun shall give each opponent with at least twelve learned situations twelve firing solutions from its most similar situations, sharing the opponent&#x27;s weight, and an opponent with fewer one circular or linear solution; on a team it shall keep <a class="req" href="requirements.html#MGUN-1">MGUN-1</a>&#x27;s three.</p>
 <dl><dt>Implemented in</dt><dd><a href="api/hadur2/core/melee/FieldGun.html" title="hadur2.core.melee.FieldGun">FieldGun</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-core/src/test/java/hadur2/core/melee/FieldGunTest.java">FieldGunTest.java</a></dd></dl>
 </article>
+<article class="req-card" id="MGUN-11">
+<div class="req-head"><span class="rid">MGUN-11</span><span class="badge">Optional</span><span class="badge stage">M7</span></div>
+<p>Where the <code>CROWD</code> switch is on, while in melee, the field gun shall describe each opponent&#x27;s situation also by the distance from it to its nearest robot (Hadur included), whether it is moving toward or away from that robot, and the opponents alive, beside <a class="req" href="requirements.html#MGUN-1">MGUN-1</a>&#x27;s five attributes.</p>
+<dl><dt>Implemented in</dt><dd><a href="api/hadur2/core/melee/EnemyHistory.html" title="hadur2.core.melee.EnemyHistory">EnemyHistory</a>, <a href="api/hadur2/core/melee/FieldGun.html" title="hadur2.core.melee.FieldGun">FieldGun</a>, <a href="api/hadur2/core/melee/MeleeController.html" title="hadur2.core.melee.MeleeController">MeleeController</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-core/src/test/java/hadur2/core/melee/EnemyHistoryCrowdTest.java">EnemyHistoryCrowdTest.java</a></dd></dl>
+</article>
 <h2 id="group-MMEM">Melee memory</h2>
 <article class="req-card" id="MMEM-1">
 <div class="req-head"><span class="rid">MMEM-1</span><span class="badge">Event</span><span class="badge stage">M5</span></div>
@@ -1024,8 +1029,13 @@ traceability check reads. 257 of 258 live requirements have a tagged test. The r
 </article>
 <article class="req-card" id="BENCH-110">
 <div class="req-head"><span class="rid">BENCH-110</span><span class="badge">Ubiquitous</span><span class="badge stage">R9</span></div>
+<p>The bench shall carry the <code>pc-melee-s2</code> card, which runs melee Stage 2 (docs/plan-melee-top5.md) as <a class="req" href="requirements.html#BENCH-109">BENCH-109</a> runs Stage 1: an aa baseline, a bb A/A copy, the field gun at 24 situations an opponent, with <a class="req" href="requirements.html#MGUN-11">MGUN-11</a>&#x27;s crowd attributes, with both, and <a class="req" href="requirements.html#MEND-3">MEND-3</a> again, each alone on the melee census at 6 seeds after Stage 1&#x27;s, read by <code>tools/melee_s0.py screen</code> with the gun arms&#x27; bar at +0.3 replaced by +0.5, <a class="req" href="requirements.html#MEND-3">MEND-3</a>&#x27;s kept at +0.3, and an arm also failing when Hadur&#x27;s share of the others it outlives falls more than 1 point.</p>
+<dl><dt>Implemented in</dt><dd><span class="none">no citation in the sources</span></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/MeleeS2PlanTest.java">MeleeS2PlanTest.java</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/ThirdPlanTest.java">ThirdPlanTest.java</a></dd></dl>
+</article>
+<article class="req-card" id="BENCH-110">
+<div class="req-head"><span class="rid">BENCH-110</span><span class="badge">Ubiquitous</span><span class="badge stage">R9</span></div>
 <p>The bench shall carry <code>tools/factor_picks.py</code>, which reads the Stage 2 factorial&#x27;s runs and design and gives, per factor, its field effect, the robots whose own effect is at least 5 points either way, and the APS a per-opponent switch would add measured held out (picked on the design points with a second factor at one level, read on those at the other, both ways, averaged; only picks away from the shipped level count: &quot;on&quot; picks for a factor that ships off, &quot;off&quot; picks, crediting minus the effect, for one named as shipping on, as sw and F have since 3.15), over 1,217 pairings, using only the robots with every design point and counting those left out.</p>
-<dl><dt>Implemented in</dt><dd><span class="none">no citation in the sources</span></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/ThirdPlanTest.java">ThirdPlanTest.java</a></dd></dl>
+<dl><dt>Implemented in</dt><dd><span class="none">no citation in the sources</span></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/MeleeS2PlanTest.java">MeleeS2PlanTest.java</a>, <a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/ThirdPlanTest.java">ThirdPlanTest.java</a></dd></dl>
 </article>
 <article class="req-card" id="BENCH-111">
 <div class="req-head"><span class="rid">BENCH-111</span><span class="badge">Ubiquitous</span><span class="badge stage">R9</span></div>
