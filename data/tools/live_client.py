@@ -538,8 +538,11 @@ def read_tsv(path):
 class Watch:
     """One watch over the clients and pages; each poll_* step is separately testable."""
 
-    def __init__(self, clients, out, pages=(), log=print):
+    def __init__(self, clients, out, pages=(), log=print, robots=()):
         self.clients, self.out, self.pages, self.log = clients, out, list(pages), log
+        # BENCH-113: a release watch keeps only the released versions' battles, so results a
+        # client still holds from an older version stay out of the release report.
+        self.robots = set(robots)
         os.makedirs(out, exist_ok=True)
         self.seen = {r["key"] for r in read_tsv(os.path.join(out, "battles.tsv"))}
         self.health_mtime = {}
@@ -567,6 +570,8 @@ class Watch:
                     continue
                 for b in parse_results(text):
                     row = battle_row(b, self.label(client))
+                    if row and self.robots and row["hadur"] not in self.robots:
+                        continue
                     if row and row["key"] not in self.seen:
                         self.seen.add(row["key"])
                         rows.append(row)
@@ -687,7 +692,7 @@ def cmd_watch(args):
         with open(log_path, "a", encoding="utf-8") as f:
             f.write(line + "\n")
 
-    w = Watch(args.client, args.out, args.page, log)
+    w = Watch(args.client, args.out, args.page, log, args.robot)
     for c in args.client:
         log(f"{utc_now()} client {c}: results {client_results_files(c)}, data {hadur_data_dirs(c) or 'none yet'}")
     end = time.time() + args.hours * 3600 if args.hours > 0 else None
@@ -839,6 +844,8 @@ def main(argv=None):
     w.add_argument("--client", action="append", required=True)
     w.add_argument("--out", required=True)
     w.add_argument("--page", action="append", default=[], help='"game:robot version", e.g. "roborumble:hadur2.Hadur 3.11"')
+    w.add_argument("--robot", action="append", default=[],
+                   help='keep only battles of this Hadur, e.g. "hadur2.Hadur 3.17"; repeatable, default all')
     w.add_argument("--every", type=float, default=5.0)
     w.add_argument("--page-every", type=float, default=900.0)
     w.add_argument("--profiles-every", type=float, default=3600.0)

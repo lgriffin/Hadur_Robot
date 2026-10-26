@@ -22,7 +22,10 @@ class LiveWatchPlanTest {
         assertTrue(queue.contains("--page \"roborumble:hadur2.Hadur ${V1}\""));
         assertTrue(queue.contains("--page \"meleerumble:hadur2.Hadur ${V1}\""));
         assertTrue(queue.contains("--page \"teamrumble:hadur2.HadurTeam ${VT}\""));
+        assertTrue(queue.contains("--robot \"hadur2.Hadur ${V1}\" --robot \"hadur2.HadurTeam ${VT}\""),
+                "only the released versions' battles enter the report");
         assertTrue(queue.contains("live_client.py report ${W}"));
+        assertTrue(queue.contains("${W}/profiles"), "the profile TSVs go into the results PR");
         assertTrue(queue.contains("open_results_pr.sh claude/live-watch-${V1}-results"));
         assertTrue(queue.contains("after: report"));
     }

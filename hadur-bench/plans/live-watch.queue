@@ -19,10 +19,10 @@ set HOURS = 24
 set CLIENTS = C:/RoboRumbleWorkers
 set W = ../data/live/release-${V1}
 
-watch | mkdir -p ${W} && python3 ../data/tools/live_client.py watch $(for d in ${CLIENTS}/rr0*; do [ -d "$d" ] && printf -- '--client %s ' "$d"; done) --out ${W} --page "roborumble:hadur2.Hadur ${V1}" --page "meleerumble:hadur2.Hadur ${V1}" --page "teamrumble:hadur2.HadurTeam ${VT}" --hours ${HOURS}
+watch | mkdir -p ${W} && $(command -v python3 || command -v python) ../data/tools/live_client.py watch $(for d in ${CLIENTS}/rr0*; do [ -d "$d" ] && printf -- '--client %s ' "$d"; done) --out ${W} --page "roborumble:hadur2.Hadur ${V1}" --page "meleerumble:hadur2.Hadur ${V1}" --page "teamrumble:hadur2.HadurTeam ${VT}" --robot "hadur2.Hadur ${V1}" --robot "hadur2.HadurTeam ${VT}" --hours ${HOURS}
 
-report | python3 ../data/tools/live_client.py report ${W} --md ${W}/report.md
+report | $(command -v python3 || command -v python) ../data/tools/live_client.py report ${W} --md ${W}/report.md
   after: watch
 
-pr | bash tools/open_results_pr.sh claude/live-watch-${V1}-results "Release watch: live battles and health records of ${V1} / team ${VT}" $(ls ${W}/*.tsv ${W}/report.md ${W}/watch.log 2>/dev/null)
+pr | bash tools/open_results_pr.sh claude/live-watch-${V1}-results "Release watch: live battles and health records of ${V1} / team ${VT}" $(ls ${W}/*.tsv ${W}/report.md ${W}/watch.log 2>/dev/null) $(find ${W}/profiles -name '*.tsv' -size +0c 2>/dev/null)
   after: report
