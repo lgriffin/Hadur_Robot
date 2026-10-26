@@ -88,5 +88,5 @@ jobs:
           {
             echo "### Next on the PC"
             echo "Start the RoboRumble clients on the new version, then run the release watch:"
-            echo '`.\queue.ps1 run live-watch` (V1 / VT in hadur-bench/plans/live-watch.queue: '"$(grep -h '^set V1 = \|^set VT = ' hadur-bench/plans/live-watch.queue | tr '\n' ' ')"')'
+            echo '`.\queue.ps1 run live-watch` (V1 / VT in hadur-bench/plans/live-watch.queue: '"$(grep -h '^set V1 = \|^set VT = \|^set RUN = ' hadur-bench/plans/live-watch.queue | tr '\n' ' ')"')'
           } >> "$GITHUB_STEP_SUMMARY"
