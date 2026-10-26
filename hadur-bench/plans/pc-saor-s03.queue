@@ -1,0 +1,63 @@
+# Saor's plan for 1st in MicroMelee, stage 4 (docs/plan-saor-first.md 6d): stack and fit.
+# pc-saor-s02 (PR #311) passed Saor's own graded vote DC: 69.56 on the live-shaped census, +1.28
+# over 0.1, level with Figment. This card stacks it with the free gains and fits 749 bytes.
+#   ./queue.sh run pc-saor-s03        (or  .\queue.ps1 run pc-saor-s03)
+# Run it from master:
+#   git checkout master && git pull
+# One bench queue, RoboRumble workers at 0, unpinned, 12 workers. Every step resumes; no step needs
+# a decision. Nothing here touches Hadur.
+#
+# Arms (saor-arms/arms.txt; bytes after ProGuard):
+#   C      Saor 0.1, the control (749)
+#   DC     stage 2's graded vote, the anchor, MicroMelee census only (762)
+#   S1     DC without the ram leg (749)
+#   S2     S1 learning transitions below 0.9 gun heat (749)
+#   S3     S2 with power constant 400 (749)
+#   FIG    kc.micro.Figment 1.0 seated, live-shaped census only
+# MicroMelee census for C, DC, S1-S3 (216 battles, about 15 min an arm); the live-shaped census
+# (SAOR-16) for C, FIG, S1-S3 (360 battles a seat, about 30-60 min each).
+# Pass: the best S arm leads FIG by +0.5 or more on the live-shaped census, its low end above
+# Figment's 69.37 live after the run's offset (C's read minus 68.08).
+
+set MVN = mvn -q -Drobocode.version=1.11.1 compile exec:java
+set OUT = ../docs/bench/local
+set ARMS = C,DC,S1,S2,S3
+set LIVE = C,FIG,S1,S2,S3
+
+prep | (cd .. && mvn -q -DskipTests install -pl saor -am) && cp ../saor/target/hadur117.micro.Saor_0.1.jar opponents/ && ./fetch-opponents.sh --set micromelee-field.txt && for f in melee-census-317/f*.txt; do ./fetch-opponents.sh --set "$f" || exit 1; done && SAOR_RUN=s03 bash tools/saor_arms.sh census 12 1900 ${ARMS} && SAOR_RUN=s03 bash tools/saor_arms.sh live 8 2000 ${LIVE}
+
+census-C | ${MVN} "-Dexec.args=@work/saor-s03/census-C.args"
+  after: prep
+
+census-DC | ${MVN} "-Dexec.args=@work/saor-s03/census-DC.args"
+  after: census-C
+
+census-S1 | ${MVN} "-Dexec.args=@work/saor-s03/census-S1.args"
+  after: census-DC
+
+census-S2 | ${MVN} "-Dexec.args=@work/saor-s03/census-S2.args"
+  after: census-S1
+
+census-S3 | ${MVN} "-Dexec.args=@work/saor-s03/census-S3.args"
+  after: census-S2
+
+live-C | ${MVN} "-Dexec.args=@work/saor-s03/live-C.args"
+  after: census-S3
+
+live-FIG | ${MVN} "-Dexec.args=@work/saor-s03/live-FIG.args"
+  after: live-C
+
+live-S1 | ${MVN} "-Dexec.args=@work/saor-s03/live-S1.args"
+  after: live-FIG
+
+live-S2 | ${MVN} "-Dexec.args=@work/saor-s03/live-S2.args"
+  after: live-S1
+
+live-S3 | ${MVN} "-Dexec.args=@work/saor-s03/live-S3.args"
+  after: live-S2
+
+read | python3 tools/saor_arms.py --work-root work/saor-s03 --field live --arms ${LIVE} --control C --only work/saor-s03/live/micro.txt --top5 69.37 > ${OUT}/saor-s03-live.md && python3 tools/saor_arms.py --work-root work/saor-s03 --arms ${ARMS} --control C > ${OUT}/saor-s03-census.md
+  after: live-S3
+
+pr | bash tools/open_results_pr.sh claude/pc-saor-s03-results "Saor stage 4: stack DC, no ram leg and constants" ${OUT}/saor-s03-live.md ${OUT}/saor-s03-census.md ${OUT}/saor-s03-live-*.md ${OUT}/saor-s03-census-*.md
+  after: read

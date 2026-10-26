@@ -30,3 +30,9 @@ DK250 | D with power constant 250, softer shots (766) | s#if ((n = table\[id\]\[
 DK400 | D with power constant 400, harder shots (766) | s#if ((n = table\[id\]\[126\]) >= 8) {#if ((n = table[id][126]) > 0) {#; s#} else {#} if (n < 8) {#; s#\* 325 /#* 400 /#
 DH5 | D, learning a transition only below 0.5 gun heat (766) | s#if ((n = table\[id\]\[126\]) >= 8) {#if ((n = table[id][126]) > 0) {#; s#} else {#} if (n < 8) {#; s#getGunHeat() < 0.7#getGunHeat() < 0.5#
 DH9 | D, learning a transition below 0.9 gun heat (766) | s#if ((n = table\[id\]\[126\]) >= 8) {#if ((n = table[id][126]) > 0) {#; s#} else {#} if (n < 8) {#; s#getGunHeat() < 0.7#getGunHeat() < 0.9#
+# Stage 4 of docs/plan-saor-first.md: stack stage 2's winners on Saor's own vote (DC) and fit them
+# into 749 bytes. Dropping the ram leg (stage 1's R, +0.30) pays DC's 13 bytes: S1 is exactly 749
+# after ProGuard, and the constants in S2 and S3 cost nothing.
+S1 | DC without the ram leg (764; 749 after ProGuard) | s#if ((n = table\[id\]\[126\]) >= 8) {#if ((n = table[id][126]) > 0) {#; s#} else {#} if (n < 8) {#; s#weight = 5;#weight = Math.min(weight, n * 12 + 5);#; s#targetName = e.getName();##; s#targetDistance = -12.5;##
+S2 | S1 learning a transition below 0.9 gun heat (764) | s#if ((n = table\[id\]\[126\]) >= 8) {#if ((n = table[id][126]) > 0) {#; s#} else {#} if (n < 8) {#; s#weight = 5;#weight = Math.min(weight, n * 12 + 5);#; s#targetName = e.getName();##; s#targetDistance = -12.5;##; s#getGunHeat() < 0.7#getGunHeat() < 0.9#
+S3 | S2 with power constant 400 (764) | s#if ((n = table\[id\]\[126\]) >= 8) {#if ((n = table[id][126]) > 0) {#; s#} else {#} if (n < 8) {#; s#weight = 5;#weight = Math.min(weight, n * 12 + 5);#; s#targetName = e.getName();##; s#targetDistance = -12.5;##; s#getGunHeat() < 0.7#getGunHeat() < 0.9#; s#\* 325 /#* 400 /#
