@@ -309,7 +309,8 @@ paired with the mean of aa and bb:
 
 po is the largest single melee gain of this plan. The bank card (BENCH-115) now also carries
 g4efpo, the whole stack (g24 + MEND-3 + MGUN-13), so one run confirms Stage 2's gains and whether
-crowd power adds on top of the better gun. With the gains adding, the stack is worth about +1.2 of
+crowd power adds on top of the better gun; a second read pairs g4efpo with g4ef itself, and MGUN-13
+goes on master only if that difference is above 0 at the 95% low end. With the gains adding, the stack is worth about +1.2 of
 the +4.61 to the census bar.
 
 ### Stage 3: crowd survival

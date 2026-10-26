@@ -14,6 +14,9 @@
 # a team with two opponents left; pogi acts only off a team with three or more opponents.
 # Verdict: each of g4ef and g4efpo passes at +0.3 census APS or more with the 95% low end above 0, Hadur's share of
 # others outlived no more than 1 point lower and the 1-30 endgame wins no more than 3 points lower.
+# A second read pairs g4efpo with g4ef itself, battle for battle (melee-bank-stack.md): MGUN-13
+# goes on master only when g4efpo passes against the baselines AND beats g4ef with the 95% low end
+# above 0 (no outlived share or endgame loss past the same slacks).
 # A pass puts its switches on in master (MGUN-7's melee K to 24, MEND-3 on, and for g4efpo MGUN-13 on). The card ends in a
 # results PR on claude/pc-melee-bank-results whatever the verdict; the melee thread reads it.
 #   ./queue.sh run pc-melee-bank        (or  .\queue.ps1 run pc-melee-bank)
@@ -33,7 +36,7 @@ bankg4ef | mvn -q exec:java "-Dexec.args=@work/melee-bank-g4ef.args"
   after: bankbb
 bankg4efpo | mvn -q exec:java "-Dexec.args=@work/melee-bank-g4efpo.args"
   after: bankg4ef
-bankread | V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && W=work/melee-bank-"$V" && { python3 tools/melee_s0.py screen "$W"-aa --base2 "$W"-bb --arm bb="$W"-bb --arm g4ef="$W"-g4ef --arm g4efpo="$W"-g4efpo --census melee-census-317.txt --seeds 8 --gain 0.3 --survival-slack 1 --out ${OUT}/melee-bank-read.md --title "Melee: banking Stage 2's gains on $V" || true; } && test -s ${OUT}/melee-bank-read.md
+bankread | V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && W=work/melee-bank-"$V" && { python3 tools/melee_s0.py screen "$W"-aa --base2 "$W"-bb --arm bb="$W"-bb --arm g4ef="$W"-g4ef --arm g4efpo="$W"-g4efpo --census melee-census-317.txt --seeds 8 --gain 0.3 --survival-slack 1 --out ${OUT}/melee-bank-read.md --title "Melee: banking Stage 2's gains on $V" || true; } && { python3 tools/melee_s0.py screen "$W"-g4ef --arm g4efpo="$W"-g4efpo --census melee-census-317.txt --seeds 8 --gain 0 --survival-slack 1 --out ${OUT}/melee-bank-stack.md --title "Melee: does crowd power (MGUN-13) add to g4ef on $V? The baseline row here is g4ef" || true; } && test -s ${OUT}/melee-bank-read.md && test -s ${OUT}/melee-bank-stack.md
   after: bankg4efpo
-bankpr   | bash tools/open_results_pr.sh claude/pc-melee-bank-results "Melee: bank Stage 2's gains and the crowd power (g24 + MEND-3 + MGUN-13)" ${OUT}/melee-bank-read.md $(ls ${OUT}/melee-bank-aa.md ${OUT}/melee-bank-bb.md ${OUT}/melee-bank-g4ef.md ${OUT}/melee-bank-g4efpo.md 2>/dev/null)
+bankpr   | bash tools/open_results_pr.sh claude/pc-melee-bank-results "Melee: bank Stage 2's gains and the crowd power (g24 + MEND-3 + MGUN-13)" ${OUT}/melee-bank-read.md ${OUT}/melee-bank-stack.md $(ls ${OUT}/melee-bank-aa.md ${OUT}/melee-bank-bb.md ${OUT}/melee-bank-g4ef.md ${OUT}/melee-bank-g4efpo.md 2>/dev/null)
   after: bankread

@@ -38,6 +38,9 @@ class MeleeBankPlanTest {
         assertTrue(queue.contains("screen \"$W\"-aa --base2 \"$W\"-bb --arm bb=\"$W\"-bb --arm g4ef=\"$W\"-g4ef --arm g4efpo=\"$W\"-g4efpo"),
             "bb against aa, g4ef and g4efpo against both baselines");
         assertTrue(queue.contains("--seeds 8 --gain 0.3 --survival-slack 1"));
+        assertTrue(queue.contains("screen \"$W\"-g4ef --arm g4efpo=\"$W\"-g4efpo --census melee-census-317.txt --seeds 8 --gain 0 --survival-slack 1"),
+            "g4efpo also pairs with g4ef itself, so crowd power must add to the stack");
+        assertTrue(queue.contains("melee-bank-read.md ${OUT}/melee-bank-stack.md"), "both reads reach the results PR");
         assertTrue(queue.contains("open_results_pr.sh claude/pc-melee-bank-results"));
     }
 
