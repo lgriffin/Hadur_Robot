@@ -10,7 +10,7 @@
 #   their health records are enough to find a cause, so the watch ends at COLLAPSES battles under 70% or
 #   DUELS 1v1 battles, whichever comes first, capped at HOURS. Right after a release (its first pass,
 #   when most client battles include Hadur) that is a few hours; later it can take days. It logs the
-#   1v1 battle rate hourly, and Ctrl-C ends it early with report and pr still running.
+#   1v1 battle rate hourly. Stopped early, re-running the card resumes from battles.tsv.
 # watch: data/tools/live_client.py watch over every client folder that exists
 #   under C:/RoboRumbleWorkers (rr01..rr06), with the three live pages; it resumes across restarts
 #   (BENCH-86), so re-running the step after a reboot keeps every battle already recorded.
