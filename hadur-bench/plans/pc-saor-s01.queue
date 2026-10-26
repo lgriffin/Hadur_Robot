@@ -1,0 +1,67 @@
+# Saor's plan for 1st in MicroMelee, stages 0 and 1 (docs/plan-saor-first.md; Leigh, 2026-10-25:
+# "Now lets plan the gap to 1st").
+#   ./queue.sh run pc-saor-s01        (or  .\queue.ps1 run pc-saor-s01)
+# Run it from master:
+#   git checkout master && git pull
+# One bench queue, RoboRumble workers at 0, unpinned, 12 workers. Every step resumes; no step needs
+# a decision. Nothing here touches Hadur.
+#
+# Stage 0, the live-shaped census (tools/saor_live.py): LiteRumble scores MicroMelee from the
+#   MeleeRumble battles, so the fields are melee-census-317 (the whole 2026-10-25 melee list, 46
+#   fields of nine; the one field with no micro robot is left out) and the read counts only the micro
+#   pairings. Seats: Saor 0.1 (C), Figment (FIG) and Wallaby (WAL); a seat in a field is replaced
+#   there by Saor 0.1. Passes when it reproduces live: FIG - C = +1.3 +- 0.5, WAL - C = +0.8 +- 0.5,
+#   C within 0.5 of 68.08. 45 fields x 8 seeds = 360 battles a seat; megabots are slower than
+#   micro bots, so about 30-60 min a seat.
+# Stage 1, Figment parity, on the MicroMelee census (fast, 216 battles an arm, about 15 min each)
+#   and FX on the live census too:
+#   G  128 playouts an aim (Saor 0.1 runs 64)
+#   W  sample any row with a sample (Saor 0.1 waits for 8)
+#   R  no leg after a ram
+#   Z  fire only at positive power (no 0.1 shots below 1 energy)
+#   FX G, W, R, Z and no power cap together (742 bytes javac)
+#   An arm passes at +0.3 or more with its low end above 0, field by field against C.
+# About 4-5 h in all.
+
+set MVN = mvn -q -Drobocode.version=1.11.1 compile exec:java
+set OUT = ../docs/bench/local
+set ARMS = C,G,W,R,Z,FX
+set LIVE = C,FIG,WAL,FX
+
+prep | (cd .. && mvn -q -DskipTests install -pl saor -am) && cp ../saor/target/hadur117.micro.Saor_0.1.jar opponents/ && ./fetch-opponents.sh --set micromelee-field.txt && for f in melee-census-317/f*.txt; do ./fetch-opponents.sh --set "$f" || exit 1; done && SAOR_RUN=s01 bash tools/saor_arms.sh census 12 1500 ${ARMS} && SAOR_RUN=s01 bash tools/saor_arms.sh live 8 1600 ${LIVE}
+
+live-C | ${MVN} "-Dexec.args=@work/saor-s01/live-C.args"
+  after: prep
+
+live-FIG | ${MVN} "-Dexec.args=@work/saor-s01/live-FIG.args"
+  after: live-C
+
+live-WAL | ${MVN} "-Dexec.args=@work/saor-s01/live-WAL.args"
+  after: live-FIG
+
+census-C | ${MVN} "-Dexec.args=@work/saor-s01/census-C.args"
+  after: live-WAL
+
+census-G | ${MVN} "-Dexec.args=@work/saor-s01/census-G.args"
+  after: census-C
+
+census-W | ${MVN} "-Dexec.args=@work/saor-s01/census-W.args"
+  after: census-G
+
+census-R | ${MVN} "-Dexec.args=@work/saor-s01/census-R.args"
+  after: census-W
+
+census-Z | ${MVN} "-Dexec.args=@work/saor-s01/census-Z.args"
+  after: census-R
+
+census-FX | ${MVN} "-Dexec.args=@work/saor-s01/census-FX.args"
+  after: census-Z
+
+live-FX | ${MVN} "-Dexec.args=@work/saor-s01/live-FX.args"
+  after: census-FX
+
+read | python3 tools/saor_arms.py --work-root work/saor-s01 --field live --arms ${LIVE} --control C --only work/saor-s01/live/micro.txt --top5 69.37 > ${OUT}/saor-s01-live.md && python3 tools/saor_arms.py --work-root work/saor-s01 --arms ${ARMS} --control C > ${OUT}/saor-s01-census.md
+  after: live-FX
+
+pr | bash tools/open_results_pr.sh claude/pc-saor-s01-results "Saor stages 0 and 1: live-shaped census and Figment parity" ${OUT}/saor-s01-live.md ${OUT}/saor-s01-census.md ${OUT}/saor-s01-live-*.md ${OUT}/saor-s01-census-*.md
+  after: read
