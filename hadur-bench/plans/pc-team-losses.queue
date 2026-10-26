@@ -1,0 +1,13 @@
+# How HadurTeam loses rounds (docs/plan-team-top5.md section 10, after the friendly-fire lane failed).
+# No new battles: reads the battle logs pc-team-lane already left in work/team-lane-<V>-bb (its A/A
+# arm, master on both sides: 46 teams x 12 battles x 10 rounds) and writes docs/bench/local/team-losses.md
+# per opponent and per band (top, the 14 mid teams, the rest). A minute or two. The team thread reads
+# claude/pc-team-losses-results.
+#   ./queue.sh run pc-team-losses        (or  .\queue.ps1 run pc-team-losses)
+# Run it from master; it can run beside another card, it fights no battles.
+
+set OUT = ../docs/bench/local
+
+tlsread | git checkout -q master && V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && test -d work/team-lane-"$V"-bb/battles && python3 tools/team_losses.py work/team-lane-"$V"-bb > ../docs/bench/local/team-losses.md
+tlspr   | bash tools/open_results_pr.sh claude/pc-team-losses-results "How HadurTeam loses rounds (team-lane A/A logs)" ${OUT}/team-losses.md
+  after: tlsread
