@@ -165,6 +165,7 @@ public class FieldGun {
                 MeleeEndgame.powerOthers(others, onTeam, MeleeEndgame.THREE_POWER));
             if (power <= 0) continue;
             if (onTeam) power = MeleeEnergyPolicy.teamPower(power, energy, e.energy);
+            else power = MeleeEnergyPolicy.crowdPower(power, distance, energy, e.energy, others);
             double weight = weight(e, me, alive, now);
             EnemyHistory h = history(e.name);
             double[] attributes = h == null ? null : h.current();

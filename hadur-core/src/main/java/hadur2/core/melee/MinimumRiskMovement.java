@@ -104,6 +104,14 @@ public class MinimumRiskMovement {
     /** MMOVE-7: weight, and reach in px, of the term for a path crossing a teammate's track. */
     static final double MATE_PATH_K = 0.3;
     static final double MATE_PATH_RANGE = 60;
+    /**
+     * TMODE-15: weight of a point straight behind a teammate's likely target (its nearest fresh
+     * enemy) as the teammate sees it, falling to none at {@link #LINES_HALF} radians off that line;
+     * only past the target, and up to {@link #LINES_REACH} px beyond it.
+     */
+    static final double LINES_K = 0.3;
+    static final double LINES_HALF = 0.3;
+    static final double LINES_REACH = 800;
     /** MMOVE-8: how far apart, along its wall, the opening spots of two members in the roster are. */
     static final double MATE_FAN = 120;
     /** TMODE-2: a shot's weight is 1/(1+k)^2 for k teammates nearer its shooter; under this it makes no bullets. */
@@ -234,6 +242,8 @@ public class MinimumRiskMovement {
         List<VirtualBullet> mateBullets = List.of();
         /** TMODE-10: whether this decision is the leader's keeping back. */
         boolean rear;
+        /** TMODE-15: whether the teammates' lines of fire count; only on a team. */
+        boolean lines;
 
         View(Point2D.Double me, double energy, long now, int others, List<EnemyInfo> enemies,
              List<VirtualBullet> bullets, MeleeStrategy.Plan plan) {
@@ -489,6 +499,7 @@ public class MinimumRiskMovement {
         if (!mates.isEmpty() && modes.contains(TeamModes.Mode.SCREEN)) screen(v, now);
         if (!mates.isEmpty() && modes.contains(TeamModes.Mode.MATEFIRE)) v.mateBullets = relevant(mateBullets(me, now), me, now);
         v.rear = leader && !mates.isEmpty() && modes.contains(TeamModes.Mode.REAR);
+        v.lines = !mates.isEmpty() && modes.contains(TeamModes.Mode.LINES);
         List<Point2D.Double> candidates = candidates(me, others, enemies, now, mates);
         lastCandidates = candidates.size();
         if (!mates.isEmpty() && modes.contains(TeamModes.Mode.WAVES)) {
@@ -1031,6 +1042,34 @@ public class MinimumRiskMovement {
             }
             double sd = segmentDistance(v.me, p, from, q);
             r += MATE_PATH_K * Math.max(0, 1 - sd / MATE_PATH_RANGE);
+        }
+        if (v.lines) r += linesRisk(p, v.mates, v.enemies, v.now);
+        return r;
+    }
+
+    /**
+     * TMODE-15: for each teammate, now, and its nearest fresh enemy, {@link #LINES_K} where
+     * {@code p} lies on the line from the teammate through that enemy and past it, falling
+     * linearly to none {@link #LINES_HALF} radians off the line as the teammate sees it, and
+     * none nearer the teammate than the enemy or more than {@link #LINES_REACH} px beyond it.
+     * The bullets a teammate fires at that enemy and misses fly there.
+     */
+    static double linesRisk(Point2D.Double p, List<Roster.Mate> mates, List<EnemyInfo> enemies, long now) {
+        double r = 0;
+        for (Roster.Mate m : mates) {
+            Point2D.Double q = m.at(now);
+            EnemyInfo target = null;
+            for (EnemyInfo e : enemies) {
+                if (e.age(now) >= CAP_MAX_AGE) continue;
+                if (target == null || e.location.distance(q) < target.location.distance(q)) target = e;
+            }
+            if (target == null) continue;
+            double range = target.location.distance(q);
+            double d = p.distance(q);
+            if (d <= range || d > range + LINES_REACH) continue;
+            double off = Math.abs(Angles.normalRelativeAngle(
+                DiaUtils.absoluteBearing(q, p) - DiaUtils.absoluteBearing(q, target.location)));
+            r += LINES_K * Math.max(0, 1 - off / LINES_HALF);
         }
         return r;
     }

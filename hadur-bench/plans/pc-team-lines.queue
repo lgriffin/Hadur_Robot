@@ -1,0 +1,28 @@
+# Team lines of fire (TMODE-15, BENCH-114; docs/plan-team-top5.md section 10.2), team thread:
+# team-only, duel and melee fixtures bit for bit. Against the mid 14 our own bullets do 60 damage a
+# round to our members; Firestarter's 10, Combat's 17 (docs/bench/local/team-compare-read.md), and
+# they hold almost no shots. This screens a movement term that keeps a member out of the cone behind
+# each teammate's nearest enemy, where that teammate's misses fly, instead of holding fire.
+#   tnbb A/A, tnml TMODE-15 (LINES_K 0.3, 0.3 rad), tnmlw wide (0.6, 0.45 rad).
+# 46 teams x 6 seeds (seed base 4200) per arm, 1,656 battles, about 1.8 h at 12 workers (sizes
+# itself to the host). Every step resumes where it stopped. BENCH-114's friendly.log says what kind
+# each friendly hit was (lane, walkin, beyond, noline); tnread writes that per band for each arm.
+# Verdict: an arm passes at +1.0 share points or more with the 95% low end above zero and tnbb
+# within +/- 1.0. The team thread reads claude/pc-team-lines-results.
+#   ./queue.sh run pc-team-lines        (or  .\queue.ps1 run pc-team-lines)
+# Run it from master (one bench queue at a time):
+#   git checkout master && git pull
+
+set OUT = ../docs/bench/local
+
+tnprep | git checkout -q master && V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && test -n "$V" && rm -f bisect/hadur2.HadurTeam_"$V"aa.jar bisect/hadur2.HadurTeam_"$V"bb.jar bisect/hadur2.HadurTeam_"$V"ml.jar bisect/hadur2.HadurTeam_"$V"mlw.jar && bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && bash ./build-ablation.sh tmlines && bash ./build-ablation.sh tmlinesw && mkdir -p work && for a in bb ml mlw; do sed "s/@V@/$V/g" plans/team-lines-$a.args > work/team-lines-$a.args && test -f bisect/hadur2.HadurTeam_"$V"$a.jar || exit 1; done && test -f bisect/hadur2.HadurTeam_"$V"aa.jar && rm -f ../docs/bench/local/team-lines-*.md && ./fetch-opponents.sh --set team-census46.txt && mvn -q compile
+tnbb  | mvn -q exec:java "-Dexec.args=@work/team-lines-bb.args"
+  after: tnprep
+tnml  | mvn -q exec:java "-Dexec.args=@work/team-lines-ml.args"
+  after: tnbb
+tnmlw | mvn -q exec:java "-Dexec.args=@work/team-lines-mlw.args"
+  after: tnml
+tnread | V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && for a in bb ml mlw; do python3 tools/team_losses.py --title "HadurTeam, team-lines arm $a" work/team-lines-"$V"-$a || exit 1; done > ../docs/bench/local/team-lines-losses.md
+  after: tnmlw
+tnpr  | bash tools/open_results_pr.sh claude/pc-team-lines-results "Team lines of fire (TMODE-15) screen" $(ls ${OUT}/team-lines-*.md 2>/dev/null)
+  after: tnread

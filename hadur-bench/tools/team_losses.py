@@ -12,7 +12,10 @@ Firestarter and Combat, the top 6, the rest):
 - enemy bullet damage on us and our bullet damage on them, per round;
 - the enemy's hit rate on us and ours on them (bullets that hit a robot / bullets fired);
 - focus: the share of the enemy's bullet damage that landed on the member it hurt most;
-- damage our bullets did to our own members, per round.
+- damage our bullets did to our own members, per round;
+- with BENCH-114's friendly.log, our hits on our own members by kind: lane (the victim was in the
+  lane when the shot was fired), walkin (it stepped into the path before the target), beyond (a miss
+  that flew on past the target), noline (no enemy near the line), unseen (first shown already hitting).
 
 Another team can be the subject (a run with it as the bench's robot): --ours names its class
 prefix, e.g. --ours cb.fire., and only the run's candidate battles are read. Its members print no R records, so its first death and round length read nan; compare the last-shot column instead.
@@ -33,6 +36,9 @@ MID = {'rz.HOFSwarm', 'gh.nano.GrofGroup', 'davidalves.PhoenixTeam', 'myl.micro.
 # The top 8 by live APS: the plan's top 6 and the two we chase (Firestarter, Combat).
 TOP = {'cz.libors.OgiTeam', 'rz.AlephTeam', 'abc.ShadowTeam', 'ustimaw.NightmareTeam',
        'florent.XSeries.Xmen', 'ags.polylunar.Polylunar', 'cb.fire.FirestarterTeam', 'mn.CombatTeam'}
+
+
+KINDS = ('lane', 'walkin', 'beyond', 'noline', 'unseen')
 
 
 def damage(power):
@@ -66,7 +72,7 @@ def battle(d):
             rows[int(c[0])] = {'alive': int(c[1]), 'won': c[3] == '1', 'ends': [],
                                'shots_at_us': 0, 'shots_at_them': 0, 'hits_us': 0, 'hits_them': 0,
                                'dmg_us': 0.0, 'dmg_them': 0.0, 'dmg_mates': 0.0, 'last_shot': 0,
-                               'on_member': collections.Counter()}
+                               'on_member': collections.Counter(), 'kinds': collections.Counter()}
     with open(bullets) as f:
         for line in f:
             c = line.rstrip('\n').split(',')
@@ -90,6 +96,14 @@ def battle(d):
                     row['hits_us'] += 1
                     row['dmg_us'] += damage(power)
                     row['on_member'][victim] += damage(power)
+    friendly = os.path.join(d, 'friendly.log')
+    if os.path.exists(friendly):
+        with open(friendly) as f:
+            for line in f:
+                c = line.rstrip('\n').split(',')
+                kind = [x[5:] for x in c if x.startswith('kind=')]
+                if kind and kind[0] in KINDS and c[0].isdigit() and int(c[0]) in rows:
+                    rows[int(c[0])]['kinds'][kind[0]] += 1
     for p in glob.glob(os.path.join(d, 'member-*.log')):
         with open(p) as f:
             for line in f:
@@ -131,6 +145,7 @@ def summary(rows):
         'hit_them': 100.0 * sum(r['hits_them'] for r in rows) / shots_at_them if shots_at_them else float('nan'),
         'focus': 100.0 * statistics.mean(focus) if focus else float('nan'),
         'mates': sum(r['dmg_mates'] for r in rows) / n,
+        'kinds': sum((r['kinds'] for r in rows), collections.Counter()),
     }
 
 
@@ -173,6 +188,15 @@ def report(runs, title='How HadurTeam loses rounds'):
         s = summary(bands[b])
         if s:
             out.append(line(b, s))
+    kinds = [(b, summary(bands[b])) for b in ('top 8', 'mid 14', 'rest')]
+    if any(k and k['kinds'] for _, k in kinds):
+        out += ['', '## Our hits on our own members, by kind', '',
+                '| Band | Hits | ' + ' | '.join(KINDS) + ' |', '|' + '---|' * (2 + len(KINDS))]
+        for b, k in kinds:
+            if k and k['kinds']:
+                total = sum(k['kinds'].values())
+                out.append('| {} | {} | {} |'.format(b, total, ' | '.join(
+                    '{:.0f}%'.format(100.0 * k['kinds'][x] / total) for x in KINDS)))
     out += ['', '## By opponent (fewest round wins first)', '', HEAD.format('Opponent'), '|' + '---|' * 14]
     ranked = sorted(((summary(rows), team) for team, rows in per.items() if rows), key=lambda x: x[0]['won'])
     for s, team in ranked:

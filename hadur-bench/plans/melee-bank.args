@@ -1,0 +1,23 @@
+# PC card pc-melee-bank (docs/plan-melee-top5.md, Stage 2 result, BENCH-115): one build alone on today's whole melee field, 46 fields x 8 seeds (3183-3190, after Stage 2's 3177-3182), at the machine's melee width (@C@, fixed at prep) and CPU constant. Template: bankprep writes work/melee-bank-<arm>.args with @V@ = the robot.release in hadur-robot/pom.xml and @A@ = the arm's suffix (aa, bb, g4ef); every arm fights the same fields and seeds, so the read pairs them battle for battle.
+--suite
+melee-census-317.txt
+--seeds
+8
+--seed-base
+3182
+--rounds
+35
+--parallel
+@C@
+--child-heap
+2G
+--cpu-constant
+auto
+--robot-jar
+bisect/hadur2.Hadur_@V@@A@.jar
+--robot
+hadur2.Hadur @V@@A@
+--out
+work/melee-bank-@V@-@A@
+--report
+../docs/bench/local/melee-bank-@A@.md

@@ -8,6 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
@@ -41,6 +42,14 @@ import robocode.control.snapshot.ITurnSnapshot;
  *     (counted before the turn's deaths); then the ticks it was alive and, of those, the ticks its gun
  *     was cool (heat 0) with energy to fire, so a robot that could shoot but held is seen. It
  *     is how Hadur's firepower is read against the field's.</li>
+ * <li>{@code exposure.csv} (BENCH-116): one row per robot per round ({@link #EXPOSURE_HEADER}):
+ *     the ticks it was alive with three or more fighters alive; over those ticks, the summed
+ *     count of other fighters whose nearest living fighter it was; the bullet damage it took
+ *     while three or more were alive (capped as above); and of that damage, the part fired by a
+ *     shooter whose nearest living fighter it was when the shot was first seen, and the part
+ *     whose second nearest it was. It is how Hadur's place in the crowd is read against the
+ *     field's: whether it takes its damage as somebody's nearest robot or from shots meant for it
+ *     from further off.</li>
  * </ul>
  */
 public class MeleeHarvester extends BattleAdaptor {
@@ -52,8 +61,16 @@ public class MeleeHarvester extends BattleAdaptor {
     public static final String BULLET_HEADER =
         "round,robot,shots,power,hits,damage,bulletHits,crowdShots,crowdPower,crowdHits,crowdDamage,aliveTicks,readyTicks";
 
+    public static final String EXPOSURE_HEADER =
+        "round,robot,crowdTicks,nearestLoad,takenCrowd,takenNearest,takenSecond";
+
     private final String us;
     private final BufferedWriter bullets;
+    private final BufferedWriter exposure;
+    /** BENCH-116, per robot this round: crowd ticks, nearest load, crowd damage taken, as nearest, as second. */
+    private final Map<String, double[]> exposed = new LinkedHashMap<>();
+    /** Bullet id to the victim's place by distance from the shooter when the shot was first seen, by robot index. */
+    private final Map<Integer, Map<Integer, Integer>> shotRank = new java.util.HashMap<>();
     /** Per robot this round: shots, power, hits, damage, bullet hits, the crowd four, alive and ready ticks. */
     private final Map<String, double[]> tally = new LinkedHashMap<>();
     private final Set<Integer> seenShots = new HashSet<>();
@@ -91,6 +108,8 @@ public class MeleeHarvester extends BattleAdaptor {
         rounds.write(HEADER + "\n");
         this.bullets = Files.newBufferedWriter(dir.resolve("bullets.csv"), StandardCharsets.UTF_8);
         bullets.write(BULLET_HEADER + "\n");
+        this.exposure = Files.newBufferedWriter(dir.resolve("exposure.csv"), StandardCharsets.UTF_8);
+        exposure.write(EXPOSURE_HEADER + "\n");
     }
 
     @Override
@@ -111,6 +130,8 @@ public class MeleeHarvester extends BattleAdaptor {
         seenShots.clear();
         endedShots.clear();
         crowdShot.clear();
+        exposed.clear();
+        shotRank.clear();
         aliveBefore = 0;
         energyBefore.clear();
     }
@@ -168,6 +189,7 @@ public class MeleeHarvester extends BattleAdaptor {
                 else takenDuel += dmg;
             }
         }
+        tallyExposure(robots, snap.getBullets(), alive);
         tallyBullets(robots, snap.getBullets(), alive);
         if (diedNow) {
             deathTick = snap.getTurn();
@@ -198,6 +220,58 @@ public class MeleeHarvester extends BattleAdaptor {
             }
         }
         return nearest == null ? null : nearest.getName();
+    }
+
+    /** BENCH-116: who stands nearest whom in the crowd, and where each robot's crowd damage came from. */
+    private void tallyExposure(IRobotSnapshot[] robots, IBulletSnapshot[] shots, int alive) {
+        List<IRobotSnapshot> living = new java.util.ArrayList<>();
+        for (IRobotSnapshot r : robots) {
+            if (!isSentry(r) && r.getState() != robocode.control.snapshot.RobotState.DEAD) living.add(r);
+        }
+        if (alive >= 3) {
+            for (IRobotSnapshot r : living) {
+                exposed.computeIfAbsent(r.getName(), k -> new double[5])[0]++;
+                IRobotSnapshot nearest = null;
+                double best = Double.MAX_VALUE;
+                for (IRobotSnapshot o : living) {
+                    if (o == r) continue;
+                    double d = Math.hypot(o.getX() - r.getX(), o.getY() - r.getY());
+                    if (d < best) {
+                        best = d;
+                        nearest = o;
+                    }
+                }
+                if (nearest != null) exposed.computeIfAbsent(nearest.getName(), k -> new double[5])[1]++;
+            }
+        }
+        int aliveThen = Math.max(alive, aliveBefore);
+        for (IBulletSnapshot b : shots) {
+            int id = b.getBulletId();
+            IRobotSnapshot owner = byIndex(robots, b.getOwnerIndex());
+            if (owner == null || isSentry(owner)) continue;
+            if (!shotRank.containsKey(id)) {
+                List<IRobotSnapshot> others = new java.util.ArrayList<>();
+                for (IRobotSnapshot o : living) {
+                    if (o != owner) others.add(o);
+                }
+                others.sort(java.util.Comparator.comparingDouble(
+                    o -> Math.hypot(o.getX() - owner.getX(), o.getY() - owner.getY())));
+                Map<Integer, Integer> ranks = new java.util.HashMap<>();
+                for (int i = 0; i < others.size(); i++) ranks.put(others.get(i).getRobotIndex(), i + 1);
+                shotRank.put(id, ranks);
+            }
+            if (b.getState() != BulletState.HIT_VICTIM || endedShots.contains(id) || aliveThen < 3) continue;
+            IRobotSnapshot victim = byIndex(robots, b.getVictimIndex());
+            if (victim == null || isSentry(victim) || victim == owner) continue;
+            Double left = energyBefore.get(victim.getRobotIndex());
+            double dmg = robocode.Rules.getBulletDamage(b.getPower());
+            if (left != null) dmg = Math.min(dmg, left);
+            double[] x = exposed.computeIfAbsent(victim.getName(), k -> new double[5]);
+            x[2] += dmg;
+            Integer rank = shotRank.get(id).get(victim.getRobotIndex());
+            if (rank != null && rank == 1) x[3] += dmg;
+            if (rank != null && rank == 2) x[4] += dmg;
+        }
     }
 
     private void tallyBullets(IRobotSnapshot[] robots, IBulletSnapshot[] shots, int alive) {
@@ -296,6 +370,11 @@ public class MeleeHarvester extends BattleAdaptor {
                     field(en.getKey()), (long) t[0], t[1], (long) t[2], t[3], (long) t[4], (long) t[5], t[6],
                     (long) t[7], t[8], (long) t[9], (long) t[10]));
             }
+            for (Map.Entry<String, double[]> en : exposed.entrySet()) {
+                double[] x = en.getValue();
+                exposure.write(String.format(Locale.ROOT, "%d,%s,%d,%d,%.2f,%.2f,%.2f%n", round,
+                    field(en.getKey()), (long) x[0], (long) x[1], x[2], x[3], x[4]));
+            }
         } catch (IOException ex) {
             throw new UncheckedIOException(ex);
         }
@@ -305,5 +384,6 @@ public class MeleeHarvester extends BattleAdaptor {
         hadurLog.close();
         rounds.close();
         bullets.close();
+        exposure.close();
     }
 }
