@@ -172,9 +172,19 @@ class ClientFilesTest(unittest.TestCase):
         with open(self.results, "w") as f:
             f.write(RESULTS)
         self.assertEqual(lc.main(["watch", "--client", self.client, "--out", self.out,
-                                  "--stop-collapses", "1", "--every", "0", "--hours", "0.01"]), 0)
+                                  "--stop-collapses", "1", "--every", "0.05", "--grace", "0.2",
+                                  "--hours", "0.01"]), 0)
         with open(os.path.join(self.out, "watch.log")) as f:
-            self.assertIn("done: 2 1v1 battles, 1 under 70%", f.read())
+            log = f.read()
+        self.assertIn("done: 2 1v1 battles, 1 under 70%", log)
+        self.assertEqual(log.count("done:"), 1, "the grace polling does not stop twice")
+
+    def test_watch_ends_cleanly_on_a_stop_file(self):
+        open(os.path.join(self.out, "STOP"), "w").close()
+        self.assertEqual(lc.main(["watch", "--client", self.client, "--out", self.out,
+                                  "--every", "0.05", "--grace", "0", "--hours", "0.01"]), 0)
+        with open(os.path.join(self.out, "watch.log")) as f:
+            self.assertIn("done (STOP file): 0 1v1 battles", f.read())
 
     def test_health_record_names_its_opponent_and_verdict(self):
         self.assertEqual(lc.parse_health("HEALTH,35,33,2,7,0,3100000")["skipped"], 7)

@@ -716,18 +716,23 @@ def cmd_watch(args):
     end = time.time() + args.hours * 3600 if args.hours > 0 else None
     next_page = next_prof = 0.0
     start, next_rate = time.time(), time.time() + 3600
+    rate_from = (w.duels, w.collapses)
+    done_at = None
     try:
-        while end is None or time.time() < end:
+        while (end is None or time.time() < end) and (done_at is None or time.time() < done_at):
             now = time.time()
             w.poll_results()
             if now >= next_rate:
-                log(f"{utc_now()} rate: {w.duels} 1v1 battles, {w.collapses} under {LOW_SHARE}% "
-                    f"in {(now - start) / 3600:.1f} h")
-                next_rate = now + 3600
-            if args.stop_collapses and w.collapses >= args.stop_collapses \
-                    or args.stop_battles and w.duels >= args.stop_battles:
-                log(f"{utc_now()} done: {w.duels} 1v1 battles, {w.collapses} under {LOW_SHARE}%")
-                break
+                log(f"{utc_now()} rate: {w.duels - rate_from[0]} 1v1 battles, {w.collapses - rate_from[1]} "
+                    f"under {LOW_SHARE}% in the last hour; {w.duels} and {w.collapses} in all")
+                rate_from, next_rate = (w.duels, w.collapses), now + 3600
+            asked = os.path.exists(os.path.join(args.out, "STOP"))
+            if done_at is None and (asked or args.stop_collapses and w.collapses >= args.stop_collapses
+                                    or args.stop_battles and w.duels >= args.stop_battles):
+                # The last battle's health record can land after its result: keep polling a while.
+                log(f"{utc_now()} done{' (STOP file)' if asked else ''}: {w.duels} 1v1 battles, "
+                    f"{w.collapses} under {LOW_SHARE}%")
+                done_at = now + args.grace
             w.poll_health()
             if args.page and now >= next_page:
                 w.poll_pages()
@@ -736,6 +741,8 @@ def cmd_watch(args):
                 w.snapshot_profiles()
                 next_prof = now + args.profiles_every
             time.sleep(args.every)
+        w.poll_health()
+        w.snapshot_profiles()
     except KeyboardInterrupt:
         log(f"{utc_now()} stopped")
     return 0
@@ -876,6 +883,8 @@ def main(argv=None):
     w.add_argument("--stop-collapses", type=int, default=0,
                    help="stop once this many 1v1 battles under 70%% share are kept; 0 never")
     w.add_argument("--stop-battles", type=int, default=0, help="stop once this many 1v1 battles are kept; 0 never")
+    w.add_argument("--grace", type=float, default=60.0,
+                   help="seconds of health polling after a count stop, for the last battle's record")
     w.add_argument("--every", type=float, default=5.0)
     w.add_argument("--page-every", type=float, default=900.0)
     w.add_argument("--profiles-every", type=float, default=3600.0)
