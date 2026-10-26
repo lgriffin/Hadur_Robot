@@ -99,9 +99,6 @@ class ReadTest(unittest.TestCase):
                                       "--out", os.path.join(tmp, "r.md")]), 1)
 
 
-if __name__ == "__main__":
-    unittest.main()
-
 
 class ScreenTest(unittest.TestCase):
     # @Tag("BENCH-109")
@@ -138,5 +135,33 @@ class ScreenTest(unittest.TestCase):
             self.assertEqual(ms.verdict(by["up"], base_phase), "PASS")
             self.assertEqual(ms.verdict(by["down"], base_phase), "FAIL", "the 1-30 endgame band fell 50 points")
             text = ms.render_screen(rows, base_phase, "t")
-            self.assertIn("| bb | +0.00 ± 0.00 | 2 | 4 |", text)
+            self.assertIn("| bb | +0.00 ± 0.00 | 2 | 4 (0) |", text)
             self.assertIn("**PASS**", text)
+
+    def test_incomplete_or_unmeasured_never_passes(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            sets = os.path.join(tmp, "census")
+            write(os.path.join(sets, "f.txt"), "aaa.Big 1.0 | melee-3 | aaa.Big_1.0.jar\n")
+            write(os.path.join(sets, "suite.txt"), "F01 | --set f.txt\nF02 | --set f.txt\n")
+            won = "0,1,2,aaa.Big 1.0,1,0,0,2,-,-,aaa.Big 1.0,800,60.00,40.00,30.00,5.00\n"
+            crowd = "1,3,2,-,-,0,0,0,300,aaa.Big 1.0,aaa.Big 1.0,-,-,-,90.00,0.00\n"
+            base, part, blind = (os.path.join(tmp, x) for x in ("aa", "part", "blind"))
+            self.run_of(base, {"F01": [100, 102], "F02": [98, 100]}, [won, crowd])
+            self.run_of(part, {"F01": [110, 112]}, [won, crowd])
+            self.run_of(blind, {"F01": [110, 112], "F02": [108, 110]}, [crowd])
+            rows, base_phase = ms.screen(base, [("part", part), ("blind", blind)],
+                                         ms.census_ranks(os.path.join(sets, "suite.txt")), seeds=2)
+            by = {r["name"]: r for r in rows}
+            self.assertEqual(by["part"]["missing"], 2)
+            self.assertEqual(ms.verdict(by["part"], base_phase), "INCOMPLETE")
+            self.assertEqual(ms.verdict(by["blind"], base_phase), "NO DATA", "no 1-30 endgame duel to compare")
+            short, _ = ms.screen(part, [("bb", base)], ms.census_ranks(os.path.join(sets, "suite.txt")), seeds=2)
+            self.assertEqual(ms.verdict(short[0], base_phase), "INCOMPLETE", "a short baseline is incomplete too")
+            out = os.path.join(tmp, "r.md")
+            self.assertEqual(ms.main(["screen", base, "--arm", "x=" + blind, "--census",
+                                      os.path.join(sets, "suite.txt"), "--seeds", "2", "--out", out]), 1,
+                             "no bb copy, no clean exit")
+
+
+if __name__ == "__main__":
+    unittest.main()

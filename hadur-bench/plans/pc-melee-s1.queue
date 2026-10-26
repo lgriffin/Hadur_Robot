@@ -29,7 +29,7 @@ s1ep   | mvn -q exec:java "-Dexec.args=@work/melee-s1-ep.args"
   after: s1er
 s1ef   | mvn -q exec:java "-Dexec.args=@work/melee-s1-ef.args"
   after: s1ep
-s1read | V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && W=work/melee-s1-"$V" && { python3 tools/melee_s0.py screen "$W"-aa --arm bb="$W"-bb --arm er="$W"-er --arm ep="$W"-ep --arm ef="$W"-ef --census melee-census-317.txt --out ${OUT}/melee-s1-read.md --title "Melee Stage 1 on $V: two opponents left" || true; } && test -s ${OUT}/melee-s1-read.md
+s1read | V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && W=work/melee-s1-"$V" && { python3 tools/melee_s0.py screen "$W"-aa --arm bb="$W"-bb --arm er="$W"-er --arm ep="$W"-ep --arm ef="$W"-ef --census melee-census-317.txt --seeds 6 --out ${OUT}/melee-s1-read.md --title "Melee Stage 1 on $V: two opponents left" || true; } && test -s ${OUT}/melee-s1-read.md
   after: s1ef
 s1pr   | bash tools/open_results_pr.sh claude/pc-melee-s1-results "Melee Stage 1: two opponents left (MEND-1..3)" ${OUT}/melee-s1-read.md $(ls ${OUT}/melee-s1-??.md 2>/dev/null)
   after: s1read

@@ -26,7 +26,9 @@
       left and Hadur's energy entering the endgame, each beside BASE's, and the verdict. An arm
       named bb is the A/A copy: clean when its paired mean is within +-0.25. Another arm passes
       at +0.3 or more with the interval above 0 and the 1-30 endgame wins no more than 3 points
-      below BASE's. Exit status 1 when the A/A copy is not clean.
+      below BASE's. An arm or BASE missing battles of the other (or, with --seeds, of the
+      census's fields x seeds) is INCOMPLETE, and an arm with no 1-30 endgame duel to compare is
+      NO DATA; neither passes. Exit status 1 when there is no bb arm or it is not clean.
 
 Standard library only.
 """
@@ -391,8 +393,15 @@ def phase_stats(res):
             statistics.mean(energy) if energy else float("nan"))
 
 
-def screen(base_work, arms, ranks):
-    """Per arm (name, paired (mean, half), pairs, fields, its phase stats); and the base's phase stats."""
+def suite_fields(suite):
+    with open(suite, encoding="utf-8") as f:
+        return sum(1 for line in f if "--set" in line and not line.lstrip().startswith("#"))
+
+
+def screen(base_work, arms, ranks, seeds=None, fields=None):
+    """Per arm (name, paired (mean, half), pairs, fields, its phase stats, battles missing from
+    the pairing); and the base's phase stats. A battle in one run and not the other is missing;
+    with seeds and fields, so is any of the census's fields x seeds battles that neither ran."""
     base, field_of = run_aps(base_work)
     base_phase = phase_stats(analyse(base_work, ranks))
     out = []
@@ -403,18 +412,24 @@ def screen(base_work, arms, ranks):
             if k in base:
                 per_field[field_of[k]].append(a - base[k])
         diffs = [statistics.mean(v) for v in per_field.values()]
-        out.append({"name": name, "paired": mean_ci(diffs), "pairs": sum(len(v) for v in per_field.values()),
+        pairs = sum(len(v) for v in per_field.values())
+        expected = max(len(set(base) | set(arm)), (seeds or 0) * (fields or 0))
+        out.append({"name": name, "paired": mean_ci(diffs), "pairs": pairs, "missing": expected - pairs,
                     "fields": len(per_field), "phase": phase_stats(analyse(work, ranks))})
     return out, base_phase
 
 
 def verdict(arm, base_phase):
     m, h = arm["paired"]
+    if arm.get("missing", 0) > 0:
+        return "INCOMPLETE"
     if math.isnan(m) or math.isnan(h):
         return "NO DATA"
     if arm["name"] == "bb":
         return "CLEAN" if abs(m) <= SCREEN_AA else "NOT CLEAN"
     band = arm["phase"][0] - base_phase[0]
+    if math.isnan(band):
+        return "NO DATA"
     if m >= GAIN and m - h > 0 and not (band < -BAND_SLACK):
         return "PASS"
     return "FAIL"
@@ -425,14 +440,14 @@ def render_screen(rows, base_phase, title):
            "Each arm paired with the aa baseline battle for battle (same field, same seed). Paired APS is the mean over",
            "fields of the per-field mean difference, with its 95%% interval. Pass: +%.1f or more, low end above 0, and" % GAIN,
            "1-30 endgame wins no more than %.0f points below the baseline's. The bb copy is clean within ±%.2f." % (BAND_SLACK, SCREEN_AA), "",
-           "| Arm | Paired APS | Fields | Battles | 1-30 endgame wins | Deaths with two opponents left | Energy entering the endgame | Verdict |",
+           "| Arm | Paired APS | Fields | Battles (missing) | 1-30 endgame wins | Deaths with two opponents left | Energy entering the endgame | Verdict |",
            "|---|---|---|---|---|---|---|---|",
            "| aa (baseline) | - | - | - | %.1f%% of %d | %.1f%% | %.1f | - |" % base_phase]
     for r in rows:
         m, h = r["paired"]
         w, n, dead, en = r["phase"]
-        out.append("| %s | %+.2f ± %.2f | %d | %d | %.1f%% of %d (%+.1f) | %.1f%% (%+.1f) | %.1f (%+.1f) | **%s** |" % (
-            r["name"], m, h, r["fields"], r["pairs"], w, n, w - base_phase[0], dead, dead - base_phase[2],
+        out.append("| %s | %+.2f ± %.2f | %d | %d (%d) | %.1f%% of %d (%+.1f) | %.1f%% (%+.1f) | %.1f (%+.1f) | **%s** |" % (
+            r["name"], m, h, r["fields"], r["pairs"], r.get("missing", 0), w, n, w - base_phase[0], dead, dead - base_phase[2],
             en, en - base_phase[3], verdict(r, base_phase)))
     return "\n".join(out) + "\n"
 
@@ -455,16 +470,21 @@ def main(argv=None):
     sc.add_argument("base")
     sc.add_argument("--arm", action="append", required=True, help="NAME=WORK")
     sc.add_argument("--census", required=True)
+    sc.add_argument("--seeds", type=int, help="the card's seeds a field: every field x seed battle must pair")
     sc.add_argument("--out", required=True)
     sc.add_argument("--title", default="Melee Stage 1: two opponents left")
     a = ap.parse_args(argv)
     if a.cmd == "screen":
         arms = [tuple(x.split("=", 1)) for x in a.arm]
-        rows, base_phase = screen(a.base, arms, census_ranks(a.census))
+        rows, base_phase = screen(a.base, arms, census_ranks(a.census), a.seeds,
+                                  suite_fields(a.census) if a.seeds else None)
         write(a.out, render_screen(rows, base_phase, a.title))
         for r in rows:
             print("%s %+.2f ± %.2f: %s" % (r["name"], r["paired"][0], r["paired"][1], verdict(r, base_phase)))
-        return 0 if all(verdict(r, base_phase) == "CLEAN" for r in rows if r["name"] == "bb") else 1
+        aa = [r for r in rows if r["name"] == "bb"]
+        if not aa:
+            print("no bb (A/A) arm: the screen cannot say whether the run is clean", file=sys.stderr)
+        return 0 if aa and all(verdict(r, base_phase) == "CLEAN" for r in aa) else 1
     if a.cmd == "fields":
         fs = build_fields(a.rankings, a.out, a.seed, set(a.drop))
         print("wrote %d fields" % len(fs))
