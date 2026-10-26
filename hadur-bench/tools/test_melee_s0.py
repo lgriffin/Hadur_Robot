@@ -158,6 +158,26 @@ class ScreenTest(unittest.TestCase):
             self.assertAlmostEqual(both[1]["paired"][0], gain / 2, msg="the arm pairs with the mean of aa and bb")
             self.assertIn("mean of the aa and bb baselines", ms.render_screen(both, _, "t", both=True))
 
+    def test_base2_pools_phase_and_counts_every_baseline_battle(self):
+        # @Tag("BENCH-115")
+        with tempfile.TemporaryDirectory() as tmp:
+            sets = os.path.join(tmp, "census")
+            write(os.path.join(sets, "f.txt"), "aaa.Big 1.0 | melee-3 | aaa.Big_1.0.jar\n")
+            write(os.path.join(sets, "suite.txt"), "F01 | --set f.txt\n")
+            won = "0,1,2,aaa.Big 1.0,1,0,0,2,-,-,aaa.Big 1.0,800,60.00,40.00,30.00,5.00\n"
+            lost = "1,2,2,aaa.Big 1.0,0,0,0,4,900,aaa.Big 1.0,aaa.Big 1.0,700,20.00,50.00,50.00,30.00\n"
+            base, bb, arm = (os.path.join(tmp, x) for x in ("aa", "bb", "arm"))
+            self.run_of(base, {"F01": [100, 100, 100]}, [won, won])
+            self.run_of(bb, {"F01": [100, 100]}, [lost, lost])
+            self.run_of(arm, {"F01": [100, 100]}, [won, lost])
+            ranks = ms.census_ranks(os.path.join(sets, "suite.txt"))
+            rows, phase = ms.screen(base, [("bb", bb), ("arm", arm)], ranks, base2_work=bb)
+            self.assertAlmostEqual(phase[0], 60.0, msg="aa's 6 duels won of 6 and bb's 0 of 4 pool to 60%")
+            self.assertEqual(phase[1], 10)
+            by = {r["name"]: r for r in rows}
+            self.assertEqual(by["arm"]["missing"], 1, "aa's third battle is missing from bb and the arm")
+            self.assertEqual(ms.verdict(by["arm"], phase), "INCOMPLETE")
+
     def test_incomplete_or_unmeasured_never_passes(self):
         with tempfile.TemporaryDirectory() as tmp:
             sets = os.path.join(tmp, "census")

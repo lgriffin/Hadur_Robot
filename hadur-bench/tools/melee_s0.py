@@ -406,18 +406,28 @@ def suite_fields(suite):
         return sum(1 for line in f if "--set" in line and not line.lstrip().startswith("#"))
 
 
+def pooled_phase(a, b):
+    """Two runs' phase stats as one: the 1-30 endgame win rate weighted by duels, the duels
+    summed, the rest the mean of the two (BENCH-115)."""
+    n = a[1] + b[1]
+    wins = (a[0] * a[1] + b[0] * b[1]) / n if n else float("nan")
+    return (wins, n) + tuple((x + y) / 2 for x, y in zip(a[2:], b[2:]))
+
+
 def screen(base_work, arms, ranks, seeds=None, fields=None, base2_work=None):
     """Per arm (name, paired (mean, half), pairs, fields, its phase stats, battles missing from
     the pairing); and the base's phase stats. A battle in one run and not the other is missing;
     with seeds and fields, so is any of the census's fields x seeds battles that neither ran.
     With base2_work (BENCH-115), arms other than bb pair with the mean of both baselines, on the
-    battles both ran."""
+    battles both ran, the phase gates read both baselines pooled, and a battle either baseline
+    ran is one the arm must pair."""
     base, field_of = run_aps(base_work)
-    mixed = base
+    mixed, other = base, {}
+    base_phase = phase_stats(analyse(base_work, ranks))
     if base2_work:
         other, _ = run_aps(base2_work)
         mixed = {k: (a + other[k]) / 2 for k, a in base.items() if k in other}
-    base_phase = phase_stats(analyse(base_work, ranks))
+        base_phase = pooled_phase(base_phase, phase_stats(analyse(base2_work, ranks)))
     out = []
     for name, work in arms:
         arm, _ = run_aps(work)
@@ -428,7 +438,8 @@ def screen(base_work, arms, ranks, seeds=None, fields=None, base2_work=None):
                 per_field[field_of[k]].append(a - against[k])
         diffs = [statistics.mean(v) for v in per_field.values()]
         pairs = sum(len(v) for v in per_field.values())
-        expected = max(len(set(against) | set(arm)), (seeds or 0) * (fields or 0))
+        known = set(against) | set(arm) | (set(base) | set(other) if name != "bb" else set())
+        expected = max(len(known), (seeds or 0) * (fields or 0))
         out.append({"name": name, "paired": mean_ci(diffs), "pairs": pairs, "missing": expected - pairs,
                     "fields": len(per_field), "phase": phase_stats(analyse(work, ranks))})
     return out, base_phase
@@ -468,7 +479,7 @@ def render_screen(rows, base_phase, title, gain=GAIN, survival_slack=None, gains
                SCREEN_AA), "",
            "| Arm | Paired APS | Fields | Battles (missing) | 1-30 endgame wins | Deaths with two opponents left | Energy entering the endgame | Others outlived | Verdict |",
            "|---|---|---|---|---|---|---|---|---|",
-           "| aa (baseline) | - | - | - | %.1f%% of %d | %.1f%% | %.1f | %.1f%% | - |" % base_phase]
+           ("| aa and bb (baseline) " if both else "| aa (baseline) ") + "| - | - | - | %.1f%% of %d | %.1f%% | %.1f | %.1f%% | - |" % base_phase]
     for r in rows:
         m, h = r["paired"]
         w, n, dead, en, lived = r["phase"]
