@@ -1,3 +1,5 @@
+# HELD (2026-10-26): do not run yet. The shot-dodge planner lost both cloud smokes (-0.34, -0.65 points a
+# robot); this card goes live only once a planner v3 smoke shows gains worth its 3 PC hours.
 # 1v1 plan to 3rd ("Hadur 1v1: plan to 3rd place"), lever L0 and L1: Saguaro's ShotDodger movement
 # per opponent (DODGE-4 to DODGE-6, docs/requirements.md) and the Stage 2 factorial mined for
 # per-opponent switch picks.

@@ -66,4 +66,17 @@ class ThirdPlanTest {
         assertTrue(queue.contains("open_results_pr.sh claude/pc-1v1-third-results"));
         assertTrue(queue.contains("-name 'third-*' -size +0c"), "an empty list would stop open_results_pr.sh");
     }
+
+    @Test
+    @Tag("BENCH-108")
+    @DisplayName("the factorial mining card runs factor_picks over both Stage 2 halves with the design and ends in a results PR")
+    void miningCard() throws IOException {
+        String queue = Files.readString(Path.of("plans/pc-1v1-mine.queue"));
+        assertTrue(queue.contains("tools/factor_picks.py work/top5-s2-half1/arms.tsv"));
+        assertTrue(queue.contains("--design plans/top5-factorial.design"));
+        assertTrue(Files.isRegularFile(Path.of("plans/top5-factorial.design")));
+        assertTrue(Files.isRegularFile(Path.of("tools/test_factor_picks.py")));
+        assertTrue(queue.contains("open_results_pr.sh claude/pc-1v1-mine-results"));
+        assertTrue(queue.contains("after: mine"));
+    }
 }
