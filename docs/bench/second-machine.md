@@ -94,7 +94,9 @@ panel with the 3.15 release on seed 2501, and the 46 teams on two seeds) at the 
 next (`--workers N-1`, or `WORKERS` in host.local). The report goes to a `claude/host-check-<host>`
 results PR when `gh` is on the machine.
 
-Melee has no PC reference block yet. Read a laptop melee run's skipped-turn line against the PC's
+A melee suite fills the width by running fields side by side (BENCH-108): each field fights only
+its seeds at once, so on the PC a 4-seed census runs three fields together to keep 12 battles in
+flight; on a 6-wide laptop it runs one field (4 battles). Melee has no PC reference block yet. Read a laptop melee run's skipped-turn line against the PC's
 run of the same fields before trusting it.
 
 ## Two machines on one card
