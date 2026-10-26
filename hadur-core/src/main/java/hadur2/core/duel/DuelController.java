@@ -24,6 +24,7 @@ import hadur2.core.move.OurBullet;
 import hadur2.core.move.PlanInterval;
 import hadur2.core.move.MirrorDrive;
 import hadur2.core.move.RamEscape;
+import hadur2.core.move.ShotDodgePlanner;
 import hadur2.core.move.SurfMover;
 import hadur2.core.physics.*;
 import hadur2.core.port.Telemetry;
@@ -777,8 +778,17 @@ public final class DuelController {
             mirrorDrive.move(orders, currentState(in));
         } else if (ramEscaping && lastEnemyState != null) {
             // RAM-2: a charging rammer is kept out, not surfed or orbited.
-            stats.ramEscapeTicks++;
-            ramEscape.move(orders, currentState(in), lastEnemyState);
+            // DODGE-6: the planner drives first while it has the rammer's gun (it dodges and keeps away
+            // at once); the escape takes every tick the planner declines.
+            boolean planned = false;
+            if (dodgePlanOn && ShotDodgePlanner.KEEP_AWAY && shotDodger.planActive()) {
+                surfMover.setDodgeEnemy(lastEnemyState);
+                planned = surfMover.tryDodgePlan(orders, currentState(in), moveController, TickBudget.goToAllowed(level));
+            }
+            if (!planned) {
+                stats.ramEscapeTicks++;
+                ramEscape.move(orders, currentState(in), lastEnemyState);
+            }
         } else if (stopAndGo != null) {
             // POISON-1: stop while the enemy's gun cools, go once it has fired; the waves still teach the views.
             stopAndGo.move(orders, currentState(in), lastEnemyLocation, enemyGunHeat(in).at(in.time()),
@@ -801,6 +811,7 @@ public final class DuelController {
                 surfMover.setProteanHot(learning);
             }
             if (split ? learning : MoveDesign.PROTEAN) proteanWindow(in);
+            if (dodgePlanOn) surfMover.setDodgeEnemy(lastEnemyState);
             surfMover.move(orders, currentState(in), moveController, lastEnemyLocation,
                 TickBudget.wavesToSurf(level, duelOnly(MoveDesign.KEEP_SECOND_WAVE && stackOn, enemiesTotal)), TickBudget.goToAllowed(level));
             // AES-1: the decision records the surf made this tick (none unless the switch is on).
@@ -895,6 +906,13 @@ public final class DuelController {
      * gun classifier; the surf asks it only when DODGE-3 turns it on for this opponent.
      */
     private final ShotDodger shotDodger = new ShotDodger();
+    /** DODGE-6: whether the shot-dodge planner is on against this opponent. */
+    private boolean dodgePlanOn;
+
+    /** DODGE-5: the escape angle a bullet read is scored loosely at while the planner is on; NaN otherwise. */
+    private double dodgeEscape(Wave w) {
+        return dodgePlanOn ? w.maxEscapeAngle() : Double.NaN;
+    }
     /** DODGE-1: our state and the enemy's position on the last ticks, by tick, for the simple aims. */
     private final double[][] aimRing = new double[SimpleAims.LAGS][];
     /** DODGE-1: the tick each {@link #aimRing} slot was taken on; -1 for none. */
@@ -982,7 +1000,7 @@ public final class DuelController {
         if (hitWave != null) {
             hitWave.hitByBullet = true;
             // DODGE-2: the bullet's heading says which simple aim fired it.
-            if (moveController.shotDodger() != null) shotDodger.observe(hitWave.simpleAims(), e.heading());
+            if (moveController.shotDodger() != null) shotDodger.observe(hitWave.simpleAims(), e.heading(), dodgeEscape(hitWave));
             moveController.logBulletHit(hitWave, bulletLoc, round, in.time());
         }
         // MOVE-20: a hit is a new sample for the next wave's neighbours too.
@@ -1086,7 +1104,7 @@ public final class DuelController {
                 stats.interceptsShadowed++;
             }
             hitWave.bulletHitBullet = true;
-            if (moveController.shotDodger() != null) shotDodger.observe(hitWave.simpleAims(), e.enemyHeading());
+            if (moveController.shotDodger() != null) shotDodger.observe(hitWave.simpleAims(), e.enemyHeading(), dodgeEscape(hitWave));
             // MOVE-19: the bullet's angle is a sample of the enemy gun's aim, as a hit would be.
             if (logsIntercept(duelOnly(MoveDesign.BULLET_HIT_BULLET_LOG, enemiesTotal), hitWave)) {
                 moveController.logBulletHit(hitWave, hitLoc, round, in.time());
@@ -1138,6 +1156,14 @@ public final class DuelController {
             telemetry.emit("SD," + round + "," + tick + "," + best + ","
                 + (best < 0 ? 0 : shotDodger.matches(best)) + "," + shotDodger.read() + ","
                 + (shotDodger.active() ? 1 : 0));
+        }
+        if (dodgePlanOn) {
+            // DODGE-6: DP,round,tick,planBest,planScore,read,passes,contradictions,planActive,planTicks.
+            int pb = shotDodger.planBest();
+            telemetry.emit("DP," + round + "," + tick + "," + pb + ","
+                + (pb < 0 ? "0" : String.format(java.util.Locale.ROOT, "%.2f", shotDodger.planScore(pb))) + ","
+                + shotDodger.read() + "," + shotDodger.passes() + "," + (pb < 0 ? 0 : shotDodger.contradictions(pb)) + ","
+                + (shotDodger.planActive() ? 1 : 0) + "," + surfMover.dodgePlanTicks());
         }
         if (duelOnly(MoveDesign.STOP_POINT_SURF, enemiesTotal)) {
             // MOVE-25: GH,round,tick,coolTicks,offAimTicks.
@@ -1305,9 +1331,16 @@ public final class DuelController {
         stackOn = stackApplies(duelOnly(MoveDesign.STACK_LIST, enemiesTotal), stackList, name);
         moveController.setPointKernel(duelOnly(MoveDesign.POINT_KERNEL && stackOn, enemiesTotal));
         // DODGE-3: the simple-aim dodge, forced for every opponent or for those the table names.
+        // DODGE-4 to DODGE-6: the shot-dodge planner, forced or by the table's entry, primed with its shipped expert.
+        int dodgePlan = stackList.dodgePlan(name);
+        if (MoveDesign.SHOT_DODGE_PLAN && dodgePlan == ShieldList.NO_DODGE_PLAN) dodgePlan = -1;
+        dodgePlanOn = duelOnly(dodgePlan >= -1, enemiesTotal);
         moveController.setShotDodger(duelOnly(MoveDesign.SHOT_DODGE || stackList.dodges(name)
-                || (MoveDesign.STOP_POINT_SURF && MoveDesign.AIM_MIX), enemiesTotal)
+                || (MoveDesign.STOP_POINT_SURF && MoveDesign.AIM_MIX), enemiesTotal) || dodgePlanOn
             ? shotDodger : null);
+        moveController.setDodgePasses(dodgePlanOn);
+        surfMover.setDodgePlanner(dodgePlanOn);
+        if (dodgePlanOn) shotDodger.prime(dodgePlan);
         // POISON-2: stop-and-go, forced or by the table's entry and its variant.
         int prefire = MoveDesign.STOP_AND_GO ? MoveDesign.STOP_AND_GO_PREFIRE : stackList.stopGo(name);
         stopAndGo = duelOnly(prefire > 0, enemiesTotal) ? new StopAndGo(battleField, prefire) : null;

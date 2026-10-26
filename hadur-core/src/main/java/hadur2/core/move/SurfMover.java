@@ -117,6 +117,34 @@ public class SurfMover {
         this.stopPointSurf = on ? new StopPointSurf(battleField, predictor) : null;
     }
 
+    /** DODGE-6: the shot-dodge planner, or null while it is off (the default). */
+    private ShotDodgePlanner dodgePlanner;
+    /** DODGE-6: the enemy's last scanned state, for the planner's distance term; null when unknown. */
+    private RobotState dodgeEnemy;
+    /** DODGE-6: the ticks the planner drove this round. */
+    private int dodgePlanTicks;
+
+    /** DODGE-6: the ticks the planner drove this round, for the DP record. */
+    public int dodgePlanTicks() {
+        return dodgePlanTicks;
+    }
+
+    /**
+     * DODGE-6: whether the shot-dodge planner ({@link ShotDodgePlanner}) drives the surfed ticks
+     * the tick budget allows go-to on, while the duel's dodger has an expert. With it on, the
+     * three-option surf leaves DODGE-2's danger out and keeps its views. Off by default.
+     *
+     * @param on whether the planner is used
+     */
+    public void setDodgePlanner(boolean on) {
+        this.dodgePlanner = on ? new ShotDodgePlanner(battleField, predictor) : null;
+    }
+
+    /** DODGE-6: the enemy's last scanned state for the planner; null when unknown. */
+    public void setDodgeEnemy(RobotState enemy) {
+        this.dodgeEnemy = enemy;
+    }
+
     /** MOVE-26: with the stop-point surf on, whether it mixes the simple-aim expert in (off by default). */
     public void setStopPointAimMix(boolean on) {
         if (stopPointSurf != null) stopPointSurf.setAimMix(on);
@@ -306,6 +334,7 @@ public class SurfMover {
             DiaUtils.absoluteBearing(myState.location, enemyLocation));
         // A surf resumed after ramming starts fresh.
         if (stopPointSurf != null) stopPointSurf.reset();
+        if (dodgePlanner != null) dodgePlanner.reset();
         lastSurfDestination = null;
         stopDestination = null;
     }
@@ -319,6 +348,24 @@ public class SurfMover {
         rammerActive = false;
         proteanHeld = false;
         if (stopPointSurf != null) stopPointSurf.reset();
+        if (dodgePlanner != null) dodgePlanner.reset();
+        dodgePlanTicks = 0;
+    }
+
+    /**
+     * DODGE-6: lets the planner, when on, drive this tick outside the surf (RAM-2's escape asks it first).
+     *
+     * @return whether the planner wrote the orders; false leaves them untouched
+     */
+    public boolean tryDodgePlan(BotOrders.Builder orders, RobotState myState, MoveController moveCtrl,
+                                boolean goToAllowed) {
+        if (dodgePlanner == null || !goToAllowed) return false;
+        if (dodgePlanner.surf(orders, myState, moveCtrl, moveCtrl.shotDodger(), dodgeEnemy, desiredDistance)) {
+            dodgePlanTicks++;
+            return true;
+        }
+        dodgePlanner.reset();
+        return false;
     }
 
     /**
@@ -341,8 +388,28 @@ public class SurfMover {
         Wave surfWave = moveCtrl.findSurfableWave(0, myState);
         if (surfWave == null) {
             if (stopPointSurf != null) stopPointSurf.reset();
+            // DODGE-6: with no wave, the planner keeps a close enemy away while the dodger has its gun.
+            if (dodgePlanner != null && goToAllowed && dodgePlanner.surf(orders, myState, moveCtrl,
+                    moveCtrl.shotDodger(), dodgeEnemy, desiredDistance)) {
+                dodgePlanTicks++;
+                return;
+            }
+            if (dodgePlanner != null) dodgePlanner.reset();
             orbit(orders, myState.heading, myState.location, enemyLocation);
             return;
+        }
+        // DODGE-6: the planner, when on, takes the tick while the dodger has an expert for the wave.
+        if (dodgePlanner != null) {
+            if (goToAllowed && dodgePlanner.surf(orders, myState, moveCtrl, moveCtrl.shotDodger(),
+                    dodgeEnemy, desiredDistance)) {
+                dodgePlanTicks++;
+                if (stopPointSurf != null) stopPointSurf.reset();
+                lastWaveSurfed = null;
+                lastSurfDestination = null;
+                stopDestination = null;
+                return;
+            }
+            dodgePlanner.reset();
         }
         // MOVE-25: the stop-point surf, when on, takes every surfed tick the budget allows.
         if (stopPointSurf != null && goToAllowed) {
@@ -743,7 +810,7 @@ public class SurfMover {
         // bullet crosses us here; the views only break ties between the options it misses, and
         // a floor keeps the distancing and escape terms in play among the safe ones (with a
         // danger of nearly 0 they scaled nothing, and the surf drove into the enemy).
-        ShotDodger dodger = moveCtrl.shotDodger();
+        ShotDodger dodger = dodgePlanner == null ? moveCtrl.shotDodger() : null;
         if (dodger != null && intersection != null) {
             double dodged = dodger.danger(surfWave.simpleAims(), intersection.angle, intersection.bandwidth);
             if (!Double.isNaN(dodged)) {

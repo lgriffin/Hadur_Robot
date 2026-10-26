@@ -1,0 +1,11 @@
+# 1v1 plan to 3rd, lever L1 (BENCH-110): mine Stage 2's factorial for per-opponent switch picks.
+# 0 battles, a few minutes. Needs Stage 2's two halves in work/top5-s2-half1 and work/top5-s2-half2
+# (the PC's work disk). Report only, then a results PR; the census thread reads it.
+#   ./queue.sh run pc-1v1-mine        (or  .\queue.ps1 run pc-1v1-mine)
+
+set OUT = ../docs/bench/local
+
+mine | test -f work/top5-s2-half1/arms.tsv && test -f work/top5-s2-half2/arms.tsv && python3 tools/factor_picks.py work/top5-s2-half1/arms.tsv work/top5-s2-half2/arms.tsv --design plans/top5-factorial.design --out ${OUT}/$(date +%Y-%m-%d)_third-factor-picks.md --out-tsv ${OUT}/third-factor-picks.tsv
+
+pr | bash tools/open_results_pr.sh claude/pc-1v1-mine-results "1v1 plan to 3rd: factorial per-opponent switch picks (L1)" ${OUT}/*_third-factor-picks.md ${OUT}/third-factor-picks.tsv
+  after: mine

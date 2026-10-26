@@ -1,5 +1,7 @@
 package hadur2.core.shieldmode;
 
+import hadur2.core.physics.ShotDodger;
+
 import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
@@ -45,6 +47,12 @@ public final class ShieldList {
     public static final String AIM_PREFIX = "shield-aim:";
     /** DODGE-3: a line starting with this names an opponent the duel surf dodges simple aims against. */
     public static final String DODGE_PREFIX = "shot-dodge:";
+    /**
+     * DODGE-4: a line starting with this, {@code shot-dodge2: expert name}, names an opponent the
+     * shot-dodge planner (DODGE-6) is for, with the expert shipped for it (DODGE-2's index), or -1
+     * to learn it in the battle.
+     */
+    public static final String DODGE_PLAN_PREFIX = "shot-dodge2:";
     /** POISON-2: a line starting with this names an opponent the duel plays stop-and-go against (WavePoison). */
     public static final String STOP_GO_PREFIX = "stop-go:";
     /** POISON-2: the same with the reverse crawl two ticks before the enemy's gun is ready (WavePoisonShift). */
@@ -61,6 +69,8 @@ public final class ShieldList {
     private final Set<String> dodges;
     /** POISON-2: name to the reverse crawl's ticks before the enemy's gun is ready (1 or 2). */
     private final Map<String, Integer> stopGo;
+    /** DODGE-4: name to the shipped expert, -1 for none. */
+    private Map<String, Integer> dodgePlans = Collections.emptyMap();
 
     private ShieldList(Set<String> entries, Set<String> stackOff, Set<String> moves, Map<String, double[]> aims,
                        Set<String> dodges, Map<String, Integer> stopGo) {
@@ -85,6 +95,7 @@ public final class ShieldList {
         Map<String, double[]> aims = new TreeMap<>();
         Set<String> dodges = new TreeSet<>();
         Map<String, Integer> stopGo = new TreeMap<>();
+        Map<String, Integer> dodgePlans = new TreeMap<>();
         if (lines != null) {
             for (String line : lines) {
                 if (line == null) continue;
@@ -106,6 +117,19 @@ public final class ShieldList {
                     boolean shift = entry.startsWith(STOP_GO_SHIFT_PREFIX);
                     String name = entry.substring((shift ? STOP_GO_SHIFT_PREFIX : STOP_GO_PREFIX).length()).trim();
                     if (!name.isEmpty() && stopGo.size() < MAX_ENTRIES) stopGo.put(name, shift ? 2 : 1);
+                    continue;
+                }
+                // Before the dodge prefix: "shot-dodge2:" does not start with "shot-dodge:", but keep the order safe.
+                if (entry.startsWith(DODGE_PLAN_PREFIX)) {
+                    String[] p = entry.substring(DODGE_PLAN_PREFIX.length()).trim().split(" ", 2);
+                    if (p.length == 2 && !p[1].isEmpty() && dodgePlans.size() < MAX_ENTRIES) {
+                        try {
+                            int expert = Integer.parseInt(p[0]);
+                            if (expert >= -1 && expert < ShotDodger.EXPERTS) dodgePlans.put(p[1], expert);
+                        } catch (NumberFormatException e) {
+                            // A malformed plan line is skipped.
+                        }
+                    }
                     continue;
                 }
                 if (entry.startsWith(DODGE_PREFIX)) {
@@ -133,10 +157,12 @@ public final class ShieldList {
             }
         }
         if (entries.isEmpty() && stackOff.isEmpty() && moves.isEmpty() && aims.isEmpty() && dodges.isEmpty()
-            && stopGo.isEmpty()) return NONE;
-        return new ShieldList(Collections.unmodifiableSet(entries), Collections.unmodifiableSet(stackOff),
+            && stopGo.isEmpty() && dodgePlans.isEmpty()) return NONE;
+        ShieldList list = new ShieldList(Collections.unmodifiableSet(entries), Collections.unmodifiableSet(stackOff),
             Collections.unmodifiableSet(moves), Collections.unmodifiableMap(aims), Collections.unmodifiableSet(dodges),
             Collections.unmodifiableMap(stopGo));
+        list.dodgePlans = Collections.unmodifiableMap(dodgePlans);
+        return list;
     }
 
     /**
@@ -205,6 +231,24 @@ public final class ShieldList {
         String name = robotName.trim().replaceAll("\\s+", " ");
         return dodges.contains(name) || dodges.contains(withoutVersion(name));
     }
+
+    /**
+     * DODGE-4: the shot-dodge planner's entry for {@code robotName}, by the rule of
+     * {@link #matches}: the shipped expert, -1 to learn it, or {@link #NO_DODGE_PLAN} when it is
+     * not listed.
+     *
+     * @param robotName the scanned robot's name, or null
+     */
+    public int dodgePlan(String robotName) {
+        if (robotName == null || dodgePlans.isEmpty()) return NO_DODGE_PLAN;
+        String name = robotName.trim().replaceAll("\\s+", " ");
+        Integer e = dodgePlans.get(name);
+        if (e == null) e = dodgePlans.get(withoutVersion(name));
+        return e == null ? NO_DODGE_PLAN : e;
+    }
+
+    /** DODGE-4: {@link #dodgePlan} for an opponent not listed. */
+    public static final int NO_DODGE_PLAN = -2;
 
     /**
      * POISON-2: the stop-and-go variant for {@code robotName}, by the rule of {@link #matches}: the

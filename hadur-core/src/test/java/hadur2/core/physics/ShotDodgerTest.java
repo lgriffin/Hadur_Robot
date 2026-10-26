@@ -154,4 +154,67 @@ class ShotDodgerTest {
         assertFalse(ShieldList.parse(List.of("a.B")).dodges("a.B 1.0"));
         assertNull(ShieldList.parse(List.of("shot-dodge:")).aimFor("x"));
     }
+
+    @Test
+    @Tag("DODGE-5")
+    @DisplayName("the loose score finds a gun the strict match just misses; passes contradict an aim that would have hit")
+    void looseAndPasses() {
+        double[] aims = SimpleAims.angles(new double[][] {state(8, 0, 8), state(8, 0, 8), state(8, 0, 8)}, 14, W, H);
+        double head = aims[SimpleAims.HEAD_ON];
+        ShotDodger d = new ShotDodger();
+        // 0.01 rad off head-on: outside the strict 0.002, well inside 0.18 of a 0.6 rad escape angle.
+        for (int i = 0; i < 4; i++) d.observe(aims, head + 0.01, 0.6);
+        assertFalse(d.active(), "strict reading: no match");
+        assertTrue(d.planActive());
+        assertEquals(SimpleAims.HEAD_ON, d.planBest() % ShotDodger.PER_LAG, "head-on at some lag");
+        int best = d.planBest();
+        assertEquals(0.02, d.band(best), 1e-9, "twice the RMS of its 0.01 rad misses");
+        assertEquals(ShotDodger.MARGIN, new ShotDodger().band(best), 0.0, "unread: exact");
+        // Three waves pass us with head-on's bullet inside our intersection: not this gun.
+        for (int i = 0; i < 3; i++) d.observePass(aims, d.expert(aims, best), 0.05);
+        assertEquals(3, d.passes());
+        assertEquals(3, d.contradictions(best));
+        assertTrue(d.planScore(best) < 4 - 2.9, "contradicted");
+        // A pass whose intersection is narrower than the margin contradicts nothing.
+        ShotDodger e = new ShotDodger();
+        e.observePass(aims, head, ShotDodger.MARGIN);
+        assertEquals(0, e.contradictions(0));
+        assertEquals(-1, e.planBest());
+        d.reset();
+        assertEquals(0, d.passes());
+        assertEquals(-1, d.planBest());
+    }
+
+    @Test
+    @Tag("DODGE-4")
+    @DisplayName("a shipped expert makes the planner act from the first bullet; out-of-range experts do nothing")
+    void primed() {
+        ShotDodger d = new ShotDodger();
+        d.prime(SimpleAims.LINEAR);
+        assertTrue(d.planActive());
+        assertEquals(SimpleAims.LINEAR, d.planBest());
+        assertFalse(d.active(), "the strict reading is untouched");
+        ShotDodger n = new ShotDodger();
+        n.prime(-1);
+        n.prime(ShotDodger.EXPERTS);
+        assertFalse(n.planActive());
+    }
+
+    @Test
+    @Tag("DODGE-4")
+    @DisplayName("a shot-dodge2 line gives the planner's entry with its expert; malformed lines are skipped")
+    void planEntry() {
+        ShieldList l = ShieldList.parse(List.of("shot-dodge2: 15 a.B", "shot-dodge2: -1 c.D 1.2",
+            "shot-dodge2: x e.F", "shot-dodge2: -3 g.H", "shot-dodge2: 4",
+            "shot-dodge2: " + ShotDodger.EXPERTS + " i.J"));
+        assertEquals(15, l.dodgePlan("a.B 1.0"));
+        assertEquals(-1, l.dodgePlan("c.D 1.2"));
+        assertEquals(ShieldList.NO_DODGE_PLAN, l.dodgePlan("c.D 1.3"));
+        assertEquals(ShieldList.NO_DODGE_PLAN, l.dodgePlan("e.F"));
+        assertEquals(ShieldList.NO_DODGE_PLAN, l.dodgePlan("g.H"));
+        assertEquals(ShieldList.NO_DODGE_PLAN, l.dodgePlan("i.J"), "an expert past the last is skipped");
+        assertFalse(l.dodges("a.B 1.0"), "not the three-option dodge");
+        assertTrue(l.isEmpty(), "no shield entry");
+        assertEquals(ShieldList.NO_DODGE_PLAN, ShieldList.NONE.dodgePlan("a.B"));
+    }
 }
