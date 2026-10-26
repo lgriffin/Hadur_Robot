@@ -1555,6 +1555,7 @@ None of these change how the robot plays; TIME-8 and RES-15 only report.
 | BENCH-105 | Ubiquitous | The bench shall size itself to the machine it runs on: `hostprofile.py` shall read the physical cores, logical processors, free memory, work-disk space and a local Robocode CPU constant, and give one battle worker per two physical cores (12 on the 24-core PC, which always runs its full width), holding back one core (two for melee) and fitting 70% of free memory at 2.3 GB a worker on a machine under 16 cores, never fewer than 1 and never pinned; the queue runner shall offer these as `${WORKERS}`, `${TEAM_WORKERS}`, `${MELEE_WORKERS}` and `${CPU}`, pass them to every step, log the host and widths, and take `--workers`, `HADUR_BENCH_WORKERS*` or `host.local` over them, a plan's `set` over the detected value only; `--parallel auto` and `--cpu-constant auto` shall read the same values; `--work-dir` (or `HADUR_BENCH_WORK`, or `WORK_DIR` in host.local) shall link a not-yet-existing `work` folder there and never move an existing one; `conditions.json` shall record the host profile and where the width came from. | R9 |
 | BENCH-106 | Ubiquitous | The bench shall carry `tools/host_check.py` and the `host-check` card, which fight the PC worker ladder's d12 and t12 battles at the machine's own width and report per block VALID (skipped turns a round within 1.15x the PC's plus 0.02, engine disables a 100 within the PC's plus 2, and a duel level within 1.5 points of the PC's) or TOO LOADED with the width to try next. | R9 |
 | BENCH-107 | Option | Where a shard is given (`--shard K/N`), the bench shall fight only every N-th opponent of the set from the K-th, so that N machines split one duel or team set with every opponent fought once, and shall refuse a shard of a melee field or a session. | R9 |
+| BENCH-108 | Ubiquitous | When a suite's lines are melee fields, the bench shall run `parallel / min(parallel, seeds)` fields side by side (a field fights at most its seeds at once), so the battles in flight fill `--parallel`, and write the suite report in the suite's line order; `--suite-parallel N` shall set the number, and any other suite, or one with `--keep-data`, shall run one line at a time. | R9 |
 | RAM-4 | State | While the rammer-heat switch is on, in a duel, once RAM-2 has confirmed the opponent as a rammer, the surf shall offer MOVE-11's gun-heat wave with MOVE-13's hold off (as heatjit plays) for the rest of the battle, whatever those switches are set to; before the confirmation, and in melee or team, the switches are as their own requirements state. Off by default. | R9 |
 
 - **TIME-8.** `Hadur.setupRecord`, printed once in round 0. The PC's round-0 read
@@ -1603,6 +1604,9 @@ None of these change how the robot plays; TIME-8 and RES-15 only report.
   turns and level match the PC's on the same battles.
 - **BENCH-107.** `HostWidth.shard`, `--shard`; tested by `HostWidthTest`. Why: two machines on one
   census without fighting an opponent twice.
+- **BENCH-108.** `Bench.runSuite`, `Bench.suiteLinesAtOnce`; tested by `SuiteParallelTest`. Why: pc-melee-s0
+  (results PR #292) asked for 12 workers on the PC but ran 4 battles at a time, because each 4-seed field
+  only has 4 battles and the suite ran fields one by one; Leigh: "Main PC should always go max".
 
 ## 3.15: the census winners shipped (MOVE-24, SHIELD-14 on)
 
