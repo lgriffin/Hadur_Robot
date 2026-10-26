@@ -21,7 +21,7 @@ class MeleeBankPlanTest {
     @DisplayName("the steps chain from prep through every arm to a results PR, on the version the pom names")
     void stepsChain() throws IOException {
         String queue = Files.readString(QUEUE);
-        String[] steps = {"bankprep", "bankaa", "bankbb", "bankg4ef", "bankread", "bankpr"};
+        String[] steps = {"bankprep", "bankaa", "bankbb", "bankg4ef", "bankg4efpo", "bankread", "bankpr"};
         for (int i = 1; i < steps.length; i++) {
             int at = queue.indexOf("\n" + steps[i] + " ");
             assertTrue(at >= 0, steps[i]);
@@ -31,13 +31,16 @@ class MeleeBankPlanTest {
         }
         assertTrue(queue.contains("<robot.release>"), "the version comes from the pom");
         assertFalse(queue.matches("(?s).*Hadur_3\\.\\d.*"), "no robot version is hard-coded");
-        for (String a : List.of("aa", "bb", "g24,e3far")) {
+        for (String a : List.of("aa", "bb", "g24,e3far", "g24,e3far,pogi")) {
             assertTrue(queue.contains("bash ./build-ablation.sh " + a + " "), a + " is built");
         }
         assertTrue(queue.contains("C=${MELEE_WORKERS}"), "the width is the host's melee width, fixed at prep");
-        assertTrue(queue.contains("screen \"$W\"-aa --base2 \"$W\"-bb --arm bb=\"$W\"-bb --arm g4ef=\"$W\"-g4ef"),
-            "bb against aa, g4ef against both baselines");
+        assertTrue(queue.contains("screen \"$W\"-aa --base2 \"$W\"-bb --arm bb=\"$W\"-bb --arm g4ef=\"$W\"-g4ef --arm g4efpo=\"$W\"-g4efpo"),
+            "bb against aa, g4ef and g4efpo against both baselines");
         assertTrue(queue.contains("--seeds 8 --gain 0.3 --survival-slack 1"));
+        assertTrue(queue.contains("screen \"$W\"-g4ef --arm g4efpo=\"$W\"-g4efpo --census melee-census-317.txt --seeds 8 --gain 0 --survival-slack 1"),
+            "g4efpo also pairs with g4ef itself, so crowd power must add to the stack");
+        assertTrue(queue.contains("melee-bank-read.md ${OUT}/melee-bank-stack.md"), "both reads reach the results PR");
         assertTrue(queue.contains("open_results_pr.sh claude/pc-melee-bank-results"));
     }
 

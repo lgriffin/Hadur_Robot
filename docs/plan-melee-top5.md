@@ -297,6 +297,22 @@ behind;** the gap is the crowd's bullet power, now on a better gun (g4). Power a
 on the older gun (mpow +0.1 on 3.13's K = 3 gun; Stage 1's ep +0.06), so a power stage must be
 screened on top of g4ef.
 
+**Firepower result (2026-10-26, PC card pc-melee-power, PR #320).** Leigh chose the firepower stage
+over a movement rebuild. On master (K = 12 gun), each arm alone on the census at 6 seeds (3191-3196),
+paired with the mean of aa and bb:
+
+| Arm | Paired APS | 1-30 endgame wins | Others outlived | Verdict |
+|---|---|---|---|---|
+| bb (A/A, against aa) | +0.21 ± 0.32 | -0.2 pp | +0.3 pp | clean |
+| pf (MGUN-12, floor 1.9) | +0.44 ± 0.18 | +0.2 pp | -0.4 pp | pass |
+| po (MGUN-13, Ogi's 3.0 within 200 px, else 1.92) | **+0.62 ± 0.18** | -1.5 pp | +0.2 pp | pass |
+
+po is the largest single melee gain of this plan. The bank card (BENCH-115) now also carries
+g4efpo, the whole stack (g24 + MEND-3 + MGUN-13), so one run confirms Stage 2's gains and whether
+crowd power adds on top of the better gun; a second read pairs g4efpo with g4ef itself, and MGUN-13
+goes on master only if that difference is above 0 at the 95% low end. With the gains adding, the stack is worth about +1.2 of
+the +4.61 to the census bar.
+
 ### Stage 3: crowd survival
 
 The largest lever and the riskiest: M4's path scoring cost 3 to 5 APS, and the team's port of
