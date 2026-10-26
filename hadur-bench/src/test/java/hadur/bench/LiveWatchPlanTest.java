@@ -28,7 +28,7 @@ class LiveWatchPlanTest {
                 "the watch stops on what it caught, with a time cap");
         assertTrue(queue.contains("live_client.py report ${W}"));
         assertTrue(queue.contains("${W}/profiles"), "the profile TSVs go into the results PR");
-        assertTrue(queue.contains("open_results_pr.sh claude/live-watch-${V1}-results"));
+        assertTrue(queue.contains("open_results_pr.sh claude/live-watch-${V1}-run${RUN}-results"));
         assertTrue(queue.contains("after: report"));
     }
 
