@@ -140,6 +140,26 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color">
 <div class="block"><a class="req" href="../../../../requirements.html#DODGE-3">DODGE-3</a>: a line starting with this names an opponent the duel surf dodges simple aims against.</div>
 </div>
+<div class="col-first odd-row-color"><code>(package private) static final int</code></div>
+<div class="col-second odd-row-color"><code><a href="#GUN_STACK" class="member-name-link">GUN_STACK</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block"><a class="req" href="../../../../requirements.html#GUN-11">GUN-11</a>: the per-opponent switch's bit in <code>switches</code>.</div>
+</div>
+<div class="col-first even-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color"><code><a href="#GUN_STACK_PREFIX" class="member-name-link">GUN_STACK_PREFIX</a></code></div>
+<div class="col-last even-row-color">
+<div class="block"><a class="req" href="../../../../requirements.html#GUN-11">GUN-11</a>: a line starting with this names an opponent the duel gun aims at with <a class="req" href="../../../../requirements.html#GUN-8">GUN-8</a> to <a class="req" href="../../../../requirements.html#GUN-10">GUN-10</a> on.</div>
+</div>
+<div class="col-first odd-row-color"><code>(package private) static final int</code></div>
+<div class="col-second odd-row-color"><code><a href="#HEAT_JIT" class="member-name-link">HEAT_JIT</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">MOVE-28: the per-opponent switch's bit in <code>switches</code>.</div>
+</div>
+<div class="col-first even-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color"><code><a href="#HEAT_JIT_PREFIX" class="member-name-link">HEAT_JIT_PREFIX</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">MOVE-28: a line starting with this names an opponent the duel plays <a class="req" href="../../../../requirements.html#MOVE-13">MOVE-13</a>'s stop-and-start against.</div>
+</div>
 <div class="col-first odd-row-color"><code>static final int</code></div>
 <div class="col-second odd-row-color"><code><a href="#MAX_ENTRIES" class="member-name-link">MAX_ENTRIES</a></code></div>
 <div class="col-last odd-row-color">
@@ -207,6 +227,18 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../../../requirements.html#DODGE-3">DODGE-3</a>: whether the duel surf dodges simple aims against <code>robotName</code>, by the rule of
  <a href="#matches(java.lang.String)"><code>matches(java.lang.String)</code></a>.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#gunStack(java.lang.String)" class="member-name-link">gunStack</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;robotName)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../../../requirements.html#GUN-11">GUN-11</a>: whether the duel gun aims at <code>robotName</code> with <a class="req" href="../../../../requirements.html#GUN-8">GUN-8</a> to <a class="req" href="../../../../requirements.html#GUN-10">GUN-10</a> on, by the rule of
+ <a href="#matches(java.lang.String)"><code>matches(java.lang.String)</code></a>.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#heatJit(java.lang.String)" class="member-name-link">heatJit</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;robotName)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">MOVE-28: whether the duel plays <a class="req" href="../../../../requirements.html#MOVE-13">MOVE-13</a>'s stop-and-start against <code>robotName</code>, by the
+ rule of <a href="#matches(java.lang.String)"><code>matches(java.lang.String)</code></a>.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isEmpty()" class="member-name-link">isEmpty</a>()</code></div>
@@ -399,6 +431,66 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="HEAT_JIT_PREFIX">
+<h3>HEAT_JIT_PREFIX</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">HEAT_JIT_PREFIX</span></div>
+<div class="block">MOVE-28: a line starting with this names an opponent the duel plays <a class="req" href="../../../../requirements.html#MOVE-13">MOVE-13</a>'s stop-and-start against.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur2.core.shieldmode.ShieldList.HEAT_JIT_PREFIX">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="GUN_STACK_PREFIX">
+<h3>GUN_STACK_PREFIX</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">GUN_STACK_PREFIX</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#GUN-11">GUN-11</a>: a line starting with this names an opponent the duel gun aims at with <a class="req" href="../../../../requirements.html#GUN-8">GUN-8</a> to <a class="req" href="../../../../requirements.html#GUN-10">GUN-10</a> on.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur2.core.shieldmode.ShieldList.GUN_STACK_PREFIX">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="HEAT_JIT">
+<h3>HEAT_JIT</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">HEAT_JIT</span></div>
+<div class="block">MOVE-28: the per-opponent switch's bit in <code>switches</code>.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur2.core.shieldmode.ShieldList.HEAT_JIT">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="GUN_STACK">
+<h3>GUN_STACK</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">GUN_STACK</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#GUN-11">GUN-11</a>: the per-opponent switch's bit in <code>switches</code>.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur2.core.shieldmode.ShieldList.GUN_STACK">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="NO_DODGE_PLAN">
 <h3>NO_DODGE_PLAN</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">NO_DODGE_PLAN</span></div>
@@ -523,6 +615,30 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">stopGo</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;robotName)</span></div>
 <div class="block"><a class="req" href="../../../../requirements.html#POISON-2">POISON-2</a>: the stop-and-go variant for <code>robotName</code>, by the rule of <a href="#matches(java.lang.String)"><code>matches(java.lang.String)</code></a>: the
  reverse crawl's ticks before the enemy's gun is ready, 1 or 2; 0 when it is not listed.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>robotName</code> - the scanned robot's name, or null</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="heatJit(java.lang.String)">
+<h3>heatJit</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">heatJit</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;robotName)</span></div>
+<div class="block">MOVE-28: whether the duel plays <a class="req" href="../../../../requirements.html#MOVE-13">MOVE-13</a>'s stop-and-start against <code>robotName</code>, by the
+ rule of <a href="#matches(java.lang.String)"><code>matches(java.lang.String)</code></a>.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>robotName</code> - the scanned robot's name, or null</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="gunStack(java.lang.String)">
+<h3>gunStack</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">gunStack</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;robotName)</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#GUN-11">GUN-11</a>: whether the duel gun aims at <code>robotName</code> with <a class="req" href="../../../../requirements.html#GUN-8">GUN-8</a> to <a class="req" href="../../../../requirements.html#GUN-10">GUN-10</a> on, by the rule of
+ <a href="#matches(java.lang.String)"><code>matches(java.lang.String)</code></a>.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>robotName</code> - the scanned robot's name, or null</dd>

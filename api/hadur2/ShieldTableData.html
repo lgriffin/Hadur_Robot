@@ -140,6 +140,16 @@ loadScripts(document, 'script');</script>
 <div class="block"><a class="req" href="../../requirements.html#DODGE-3">DODGE-3</a>: the opponents the duel surf dodges simple aims against.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#gunStacks()" class="member-name-link">gunStacks</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../requirements.html#GUN-11">GUN-11</a>: the opponents aimed at with the gun stack (<a class="req" href="../../requirements.html#GUN-8">GUN-8</a> to <a class="req" href="../../requirements.html#GUN-10">GUN-10</a>).</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#heatJits()" class="member-name-link">heatJits</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">MOVE-28: the opponents fought with <a class="req" href="../../requirements.html#MOVE-13">MOVE-13</a>'s stop-and-start (heatjit).</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#moves()" class="member-name-link">moves</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../requirements.html#SHIELD-17">SHIELD-17</a>: the opponents the opening drive is for.</div>
@@ -233,6 +243,30 @@ loadScripts(document, 'script');</script>
 <h3>stopGoShifts</h3>
 <div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]</span>&nbsp;<span class="element-name">stopGoShifts</span>()</div>
 <div class="block"><a class="req" href="../../requirements.html#POISON-2">POISON-2</a>: the opponents fought with stop-and-go, WavePoisonShift's variant (two ticks early).</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>a fresh array of names</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="heatJits()">
+<h3>heatJits</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]</span>&nbsp;<span class="element-name">heatJits</span>()</div>
+<div class="block">MOVE-28: the opponents fought with <a class="req" href="../../requirements.html#MOVE-13">MOVE-13</a>'s stop-and-start (heatjit). Empty: candidate
+ builds add lines here (build-ablation.sh hjlist).</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>a fresh array of names</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="gunStacks()">
+<h3>gunStacks</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]</span>&nbsp;<span class="element-name">gunStacks</span>()</div>
+<div class="block"><a class="req" href="../../requirements.html#GUN-11">GUN-11</a>: the opponents aimed at with the gun stack (<a class="req" href="../../requirements.html#GUN-8">GUN-8</a> to <a class="req" href="../../requirements.html#GUN-10">GUN-10</a>). Empty: candidate builds
+ add lines here (build-ablation.sh gslist).</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>a fresh array of names</dd>

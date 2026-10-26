@@ -4191,6 +4191,14 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#MOVE-15">MOVE-15</a>: movement by the enemy's gun (meant to be built with <a href="hadur2/core/duel/MoveDesign.html#HEAT_WAVE"><code>MoveDesign.HEAT_WAVE</code></a>).</div>
 </dd>
+<dt><a href="hadur2/core/shieldmode/ShieldList.html#GUN_STACK" class="member-name-link">GUN_STACK</a> - Static variable in class hadur2.core.shieldmode.<a href="hadur2/core/shieldmode/ShieldList.html" title="class in hadur2.core.shieldmode">ShieldList</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#GUN-11">GUN-11</a>: the per-opponent switch's bit in <code>ShieldList.switches</code>.</div>
+</dd>
+<dt><a href="hadur2/core/shieldmode/ShieldList.html#GUN_STACK_PREFIX" class="member-name-link">GUN_STACK_PREFIX</a> - Static variable in class hadur2.core.shieldmode.<a href="hadur2/core/shieldmode/ShieldList.html" title="class in hadur2.core.shieldmode">ShieldList</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#GUN-11">GUN-11</a>: a line starting with this names an opponent the duel gun aims at with <a class="req" href="../requirements.html#GUN-8">GUN-8</a> to <a class="req" href="../requirements.html#GUN-10">GUN-10</a> on.</div>
+</dd>
 <dt><a href="hadur2/core/physics/Rules.html#GUN_TURN_RATE" class="member-name-link">GUN_TURN_RATE</a> - Static variable in class hadur2.core.physics.<a href="hadur2/core/physics/Rules.html" title="class in hadur2.core.physics">Rules</a></dt>
 <dd>
 <div class="block">The gun's turn rate, in degrees per tick, on top of the body's turn.</div>
@@ -4312,6 +4320,15 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur2/core/HadurCore.html#gunSeedWeight()" class="member-name-link">gunSeedWeight()</a> - Method in class hadur2.core.<a href="hadur2/core/HadurCore.html" title="class in hadur2.core">HadurCore</a></dt>
 <dd>
 <div class="block">The gun seed's weight now (<a class="req" href="../requirements.html#ADAPT-3">ADAPT-3</a>, <a class="req" href="../requirements.html#RES-4">RES-4</a>), or NaN without a profile.</div>
+</dd>
+<dt><a href="hadur2/core/shieldmode/ShieldList.html#gunStack(java.lang.String)" class="member-name-link">gunStack(String)</a> - Method in class hadur2.core.shieldmode.<a href="hadur2/core/shieldmode/ShieldList.html" title="class in hadur2.core.shieldmode">ShieldList</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#GUN-11">GUN-11</a>: whether the duel gun aims at <code>robotName</code> with <a class="req" href="../requirements.html#GUN-8">GUN-8</a> to <a class="req" href="../requirements.html#GUN-10">GUN-10</a> on, by the rule of
+ <a href="hadur2/core/shieldmode/ShieldList.html#matches(java.lang.String)"><code>ShieldList.matches(java.lang.String)</code></a>.</div>
+</dd>
+<dt><a href="hadur2/ShieldTableData.html#gunStacks()" class="member-name-link">gunStacks()</a> - Static method in class hadur2.<a href="hadur2/ShieldTableData.html" title="class in hadur2">ShieldTableData</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#GUN-11">GUN-11</a>: the opponents aimed at with the gun stack (<a class="req" href="../requirements.html#GUN-8">GUN-8</a> to <a class="req" href="../requirements.html#GUN-10">GUN-10</a>).</div>
 </dd>
 <dt><a href="hadur2/core/adapt/Opening.html#gunTier()" class="member-name-link">gunTier()</a> - Method in class hadur2.core.adapt.<a href="hadur2/core/adapt/Opening.html" title="class in hadur2.core.adapt">Opening</a></dt>
 <dd>
@@ -4756,9 +4773,26 @@ loadScripts(document, 'script');</script>
 <div class="block"><a class="req" href="../requirements.html#MOVE-13">MOVE-13</a>: with the gun-heat wave on, false surfs each tick's newest movement wave instead of
  holding one, so the surf re-ranks every tick and stops and starts (the first <a class="req" href="../requirements.html#MOVE-11">MOVE-11</a> build).</div>
 </dd>
+<dt><a href="hadur2/core/shieldmode/ShieldList.html#HEAT_JIT" class="member-name-link">HEAT_JIT</a> - Static variable in class hadur2.core.shieldmode.<a href="hadur2/core/shieldmode/ShieldList.html" title="class in hadur2.core.shieldmode">ShieldList</a></dt>
+<dd>
+<div class="block">MOVE-28: the per-opponent switch's bit in <code>ShieldList.switches</code>.</div>
+</dd>
+<dt><a href="hadur2/core/shieldmode/ShieldList.html#HEAT_JIT_PREFIX" class="member-name-link">HEAT_JIT_PREFIX</a> - Static variable in class hadur2.core.shieldmode.<a href="hadur2/core/shieldmode/ShieldList.html" title="class in hadur2.core.shieldmode">ShieldList</a></dt>
+<dd>
+<div class="block">MOVE-28: a line starting with this names an opponent the duel plays <a class="req" href="../requirements.html#MOVE-13">MOVE-13</a>'s stop-and-start against.</div>
+</dd>
 <dt><a href="hadur2/core/duel/MoveDesign.html#HEAT_WAVE" class="member-name-link">HEAT_WAVE</a> - Static variable in class hadur2.core.duel.<a href="hadur2/core/duel/MoveDesign.html" title="class in hadur2.core.duel">MoveDesign</a></dt>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#MOVE-11">MOVE-11</a>: surf the enemy's next shot before it leaves, when its gun is about to be cool.</div>
+</dd>
+<dt><a href="hadur2/core/shieldmode/ShieldList.html#heatJit(java.lang.String)" class="member-name-link">heatJit(String)</a> - Method in class hadur2.core.shieldmode.<a href="hadur2/core/shieldmode/ShieldList.html" title="class in hadur2.core.shieldmode">ShieldList</a></dt>
+<dd>
+<div class="block">MOVE-28: whether the duel plays <a class="req" href="../requirements.html#MOVE-13">MOVE-13</a>'s stop-and-start against <code>robotName</code>, by the
+ rule of <a href="hadur2/core/shieldmode/ShieldList.html#matches(java.lang.String)"><code>ShieldList.matches(java.lang.String)</code></a>.</div>
+</dd>
+<dt><a href="hadur2/ShieldTableData.html#heatJits()" class="member-name-link">heatJits()</a> - Static method in class hadur2.<a href="hadur2/ShieldTableData.html" title="class in hadur2">ShieldTableData</a></dt>
+<dd>
+<div class="block">MOVE-28: the opponents fought with <a class="req" href="../requirements.html#MOVE-13">MOVE-13</a>'s stop-and-start (heatjit).</div>
 </dd>
 <dt><a href="hadur2/core/policy/BattleHitRates.html#HEAVY_ABOVE" class="member-name-link">HEAVY_ABOVE</a> - Static variable in class hadur2.core.policy.<a href="hadur2/core/policy/BattleHitRates.html" title="class in hadur2.core.policy">BattleHitRates</a></dt>
 <dd>
