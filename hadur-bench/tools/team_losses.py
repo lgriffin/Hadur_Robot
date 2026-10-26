@@ -26,6 +26,7 @@ MID = {'rz.HOFSwarm', 'gh.nano.GrofGroup', 'davidalves.PhoenixTeam', 'myl.micro.
        'cx.mini.DemoniacNimrods', 'apvteam.MambaTeam', 'bvh.team.Valkiries', 'kawigi.micro.ArmyOfShiz',
        'kawigi.sbf.TidalWave', 'kid.team.OmegaSquad', 'gh.mini.GrubbmGroup', 'rz.GlowingHawks',
        'tmnr.TMNR', 'Krabb.sliNk.SlartibartfassTeam'}
+# The top 8 by live APS: the plan's top 6 and the two we chase (Firestarter, Combat).
 TOP = {'cz.libors.OgiTeam', 'rz.AlephTeam', 'abc.ShadowTeam', 'ustimaw.NightmareTeam',
        'florent.XSeries.Xmen', 'ags.polylunar.Polylunar', 'cb.fire.FirestarterTeam', 'mn.CombatTeam'}
 
@@ -42,7 +43,7 @@ def opponent(dirname):
 
 
 def band(team):
-    return 'mid 14' if team in MID else 'top' if team in TOP else 'rest'
+    return 'mid 14' if team in MID else 'top 8' if team in TOP else 'rest'
 
 
 def battle(d):
@@ -59,7 +60,7 @@ def battle(d):
             if len(c) < 4:
                 continue
             rows[int(c[0])] = {'alive': int(c[1]), 'won': c[3] == '1', 'ends': [],
-                               'fired_us': 0, 'fired_them': 0, 'hits_us': 0, 'hits_them': 0,
+                               'shots_at_us': 0, 'shots_at_them': 0, 'hits_us': 0, 'hits_them': 0,
                                'dmg_us': 0.0, 'dmg_them': 0.0, 'dmg_mates': 0.0,
                                'on_member': collections.Counter()}
     with open(bullets) as f:
@@ -70,7 +71,8 @@ def battle(d):
             if row is None:
                 continue
             if c[2] == 'F':
-                row['fired_them' if c[4].startswith(OURS) else 'fired_us'] += 1
+                # Our bullet is a shot at them; an enemy's is a shot at us.
+                row['shots_at_them' if c[4].startswith(OURS) else 'shots_at_us'] += 1
             elif c[2] == 'H':
                 owner, victim, power = c[4], c[5], float(c[6])
                 ours, hit_ours = owner.startswith(OURS), victim.startswith(OURS)
@@ -106,8 +108,8 @@ def summary(rows):
         dead = [t for t in r['ends'] if t < end] if r['won'] else r['ends']
         if dead:
             firsts.append(min(dead))
-    fired_us = sum(r['fired_us'] for r in rows)
-    fired_them = sum(r['fired_them'] for r in rows)
+    shots_at_us = sum(r['shots_at_us'] for r in rows)
+    shots_at_them = sum(r['shots_at_them'] for r in rows)
     dmg_us = sum(r['dmg_us'] for r in rows)
     focus = [max(r['on_member'].values()) / r['dmg_us'] for r in rows if r['dmg_us'] > 0]
     return {
@@ -119,8 +121,8 @@ def summary(rows):
         'length': statistics.median(lengths) if lengths else float('nan'),
         'dmg_us': dmg_us / n,
         'dmg_them': sum(r['dmg_them'] for r in rows) / n,
-        'hit_us': 100.0 * sum(r['hits_us'] for r in rows) / fired_us if fired_us else float('nan'),
-        'hit_them': 100.0 * sum(r['hits_them'] for r in rows) / fired_them if fired_them else float('nan'),
+        'hit_us': 100.0 * sum(r['hits_us'] for r in rows) / shots_at_us if shots_at_us else float('nan'),
+        'hit_them': 100.0 * sum(r['hits_them'] for r in rows) / shots_at_them if shots_at_them else float('nan'),
         'focus': 100.0 * statistics.mean(focus) if focus else float('nan'),
         'mates': sum(r['dmg_mates'] for r in rows) / n,
     }
@@ -137,17 +139,28 @@ def line(name, s):
 
 def report(runs):
     per = collections.defaultdict(list)
+    battles = collections.Counter()
+    skipped = []
     for run in runs:
         for d in sorted(glob.glob(os.path.join(run, 'battles', '*'))):
-            per[opponent(os.path.basename(d))].extend(battle(d))
+            rows = battle(d)
+            if rows:
+                per[opponent(os.path.basename(d))].extend(rows)
+                battles[opponent(os.path.basename(d))] += 1
+            else:
+                skipped.append(os.path.basename(d))
     if not any(per.values()):
         sys.exit('team_losses.py: no team battles under ' + ', '.join(runs))
+    counts = sorted(set(battles.values()))
     out = ['# How HadurTeam loses rounds', '', 'Runs: ' + ', '.join(runs), '',
+           'Battles read: {} over {} opponents ({} per opponent); incomplete directories left out: {}.'.format(
+               sum(battles.values()), len(battles), ' or '.join(map(str, counts)),
+               ', '.join(skipped) if skipped else 'none'), '',
            '## By band', '', HEAD.format('Band'), '|' + '---|' * 13]
     bands = collections.defaultdict(list)
     for team, rows in per.items():
         bands[band(team)].extend(rows)
-    for b in ('top', 'mid 14', 'rest'):
+    for b in ('top 8', 'mid 14', 'rest'):
         s = summary(bands[b])
         if s:
             out.append(line(b, s))

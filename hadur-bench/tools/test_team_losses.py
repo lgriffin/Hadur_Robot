@@ -32,6 +32,9 @@ class TeamLossesTest(unittest.TestCase):
                 f"0,10,F,1,{US} (1),3.00,0,0,0,-\n",
                 f"0,12,H,1,{US} (1),rz.Hawk 0.2 (1),3.00\n",
                 f"0,20,F,2,rz.Hawk 0.2 (1),2.00,0,0,0,-\n",
+                f"0,21,F,4,rz.Hawk 0.2 (2),2.00,0,0,0,-\n",
+                f"0,22,F,5,rz.Hawk 0.2 (2),2.00,0,0,0,-\n",
+                f"0,23,F,6,rz.Hawk 0.2 (3),2.00,0,0,0,-\n",
                 f"0,25,H,2,rz.Hawk 0.2 (1),{US} (2),2.00\n",
                 f"1,30,H,3,{US} (1),{US} (2),1.00\n",
             ], [[500, 300], [200, 100], [500, 300], [500, 300], [500, 300]])
@@ -42,9 +45,14 @@ class TeamLossesTest(unittest.TestCase):
             self.assertEqual(150, s["first"])
             self.assertEqual(5.0, s["dmg_us"])        # 2.0 power = 10 damage over 2 rounds
             self.assertEqual(8.0, s["dmg_them"])      # 3.0 power = 16 damage over 2 rounds
-            self.assertEqual(100.0, s["hit_us"])
+            self.assertEqual(25.0, s["hit_us"])          # 1 of their 4 shots hit us
+            self.assertEqual(100.0, s["hit_them"])       # our 1 shot hit
             self.assertEqual(2.0, s["mates"])
-            self.assertIn("mid 14", team_losses.report([d]))
+            (Path(d) / "battles" / "rz.HOFSwarm_1.1-2").mkdir()
+            text = team_losses.report([d])
+            self.assertIn("mid 14", text)
+            self.assertIn("left out: rz.HOFSwarm_1.1-2", text)
+            self.assertEqual("top 8", team_losses.band("cb.fire.FirestarterTeam"))
 
 
 if __name__ == "__main__":
