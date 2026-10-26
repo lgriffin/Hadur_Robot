@@ -14,12 +14,12 @@ HEAD = "arm\topponent\tseed\tok\tscore_share\n"
 class FactorPicksTest(unittest.TestCase):
     """BENCH-110: per-opponent factor picks with a held-out gain."""
 
-    def run_on(self, rows, margin=5):
+    def run_on(self, rows, margin=5, ships=()):
         with tempfile.TemporaryDirectory() as d:
             p = os.path.join(d, "arms.tsv")
             with open(p, "w") as f:
                 f.write(HEAD + "".join(rows))
-            return factor_picks.report([p], DESIGN, margin, 1000)
+            return factor_picks.report([p], DESIGN, margin, 1000, ships)
 
     def test_one_robot_that_wants_hj(self):
         factors, arms = factor_picks.multiarm.read_design(DESIGN)
@@ -60,6 +60,10 @@ class FactorPicksTest(unittest.TestCase):
         self.assertEqual(5, hj[2], "the B robots are picked (hj hurts them)")
         self.assertEqual(0, hj[3])
         self.assertAlmostEqual(0.0, hj[4], places=9, msg="staying at the shipped off state gains nothing")
+        _, _, rows_on, _, _ = self.run_on(rows, ships=("hj",))
+        hj_on = [r for r in rows_on if r[0] == "hj"][0]
+        self.assertAlmostEqual(5 * 20 / 1000, hj_on[4], places=6, msg="shipped on, turning it off for B pays")
+        self.assertTrue(hj_on[5])
 
 
 if __name__ == "__main__":

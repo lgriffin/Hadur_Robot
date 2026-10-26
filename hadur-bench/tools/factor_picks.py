@@ -14,8 +14,9 @@ least MARGIN points) and their effect read on the g+ half, then the other way ro
 averaged. In a resolution IV design f's effect in either half is still free of every other main
 effect. The held-out gain, summed over the picked robots / PAIRINGS, is the APS a per-opponent
 switch would add; the report says per factor whether it is worth building the table entry.
-Every factor ships at the control's level (the all-low point), so only "on" picks move a robot
-off the field default: a robot whose effect is negative stays at the default and gains nothing.
+A per-opponent entry only pays where it moves a robot off the shipped default: for a factor that
+ships off (the control's level) only "on" picks count, for one named in --ships (on in the current
+release, as sw and F are since 3.15) only "off" picks count, crediting minus the held-out effect.
 An opponent missing a design point (a failed or absent arm) is left out and counted in the report,
 so no unbalanced contrast enters the picks.
 Standard library plus data/tools/multiarm.py.
@@ -58,7 +59,7 @@ def effect(points, i, keep=None):
     return st.mean(hi) - st.mean(lo)
 
 
-def held_out(data, i, j, margin):
+def held_out(data, i, j, margin, ships_on=False):
     """Factor i picked on the half with factor j at one level and read on the other, both ways.
 
     Returns (picked robots by the full data, held-out gain in points summed over robots)."""
@@ -70,9 +71,11 @@ def held_out(data, i, j, margin):
             e_read = effect(points, i, lambda p: p[j] == -pick_side)
             if e_pick is None or e_read is None:
                 continue
-            # The switch ships off (the control's level): only an "on" pick changes anything.
-            if e_pick >= margin:
+            # Only a pick away from the shipped level changes anything.
+            if not ships_on and e_pick >= margin:
                 g += e_read
+            elif ships_on and e_pick <= -margin:
+                g -= e_read
         gains.append(g)
     return st.mean(gains)
 
@@ -86,17 +89,17 @@ def picks(data, i, margin):
     return out
 
 
-def report(paths, design_path, margin, pairings):
+def report(paths, design_path, margin, pairings, ships=()):
     design = multiarm.read_design(design_path)
     factors = design[0]
     data, dropped = complete(cells(paths, design), design)
     rows, tsv = [], []
     for i, f in enumerate(factors):
         j = (i + 1) % len(factors)
-        gain = held_out(data, i, j, margin)
+        gain = held_out(data, i, j, margin, f in ships)
         chosen = picks(data, i, margin)
         field = st.mean(e for e in (effect(p, i) for p in data.values()) if e is not None) if data else 0.0
-        rows.append((f, field, len(chosen), sum(1 for _, e in chosen if e > 0), gain / pairings))
+        rows.append((f, field, len(chosen), sum(1 for _, e in chosen if e > 0), gain / pairings, f in ships))
         tsv += [(o, f, e) for o, e in chosen]
     return factors, data, rows, tsv, dropped
 
@@ -109,16 +112,19 @@ def main(argv=None):
     ap.add_argument("--out-tsv")
     ap.add_argument("--margin", type=float, default=5.0)
     ap.add_argument("--pairings", type=int, default=1217)
+    ap.add_argument("--ships", default="", help="factors on in the current release, comma separated (e.g. sw,F)")
     a = ap.parse_args(argv)
-    factors, data, rows, tsv, dropped = report(a.arms, a.design, a.margin, a.pairings)
+    factors, data, rows, tsv, dropped = report(a.arms, a.design, a.margin, a.pairings,
+                                              tuple(x for x in a.ships.split(",") if x))
     lines = ["# Stage 2 factorial: per-opponent switch picks (L1)\n\n",
              "Files: %s. %d robots with every design point (%d left out as incomplete); picks at |effect| >= %.1f "
-             "points; held-out gain (\"on\" picks only, every switch ships off) over %d pairings.\n\n"
-             % (", ".join("`%s`" % p for p in a.arms), len(data), dropped, a.margin, a.pairings),
-             "| Factor | Field effect (pts a robot) | Picked | of them on | Held-out gain (APS) |\n",
-             "|---|---:|---:|---:|---:|\n"]
-    for f, field, n, on, g in rows:
-        lines.append("| %s | %+.2f | %d | %d | %+.3f |\n" % (f, field, n, on, g))
+             "points; held-out gain over %d pairings, counting only picks away from the shipped level (on in "
+             "this release: %s; the rest off).\n\n"
+             % (", ".join("`%s`" % p for p in a.arms), len(data), dropped, a.margin, a.pairings, a.ships or "none"),
+             "| Factor | Ships | Field effect (pts a robot) | Picked | of them on | Held-out gain (APS) |\n",
+             "|---|---|---:|---:|---:|---:|\n"]
+    for f, field, n, on, g, shipped in rows:
+        lines.append("| %s | %s | %+.2f | %d | %d | %+.3f |\n" % (f, "on" if shipped else "off", field, n, on, g))
     total = sum(max(0.0, r[4]) for r in rows)
     lines.append("\nSum of the positive held-out gains: **%+.3f APS** (factors can overlap on a robot, so this is an upper "
                  "end). A factor is worth a table entry at +0.03 APS or more.\n" % total)
