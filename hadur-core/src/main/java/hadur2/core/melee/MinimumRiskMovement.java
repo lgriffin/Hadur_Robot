@@ -307,6 +307,11 @@ public class MinimumRiskMovement {
         teamName = name;
     }
 
+    /** Whether this member is on a team: a roster place, or a living teammate in sight (MEND-1..3 read it). */
+    private boolean onTeam(List<Roster.Mate> mates) {
+        return teamIndex >= 0 || !mates.isEmpty();
+    }
+
     public void newRound() {
         destination = null;
         openingSpot = null;
@@ -532,7 +537,7 @@ public class MinimumRiskMovement {
      */
     public List<Point2D.Double> candidates(Point2D.Double me, int others, List<EnemyInfo> enemies,
                                            long now, List<Roster.Mate> mates) {
-        boolean endgame = others == 2;
+        boolean endgame = MeleeEndgame.endgameRing(others, onTeam(mates), MeleeEndgame.THREE_RING);
         double min = endgame ? ENDGAME_RING_MIN : RING_MIN;
         double max = endgame ? ENDGAME_RING_MAX : RING_MAX;
         double nearest = Double.POSITIVE_INFINITY;
@@ -1048,9 +1053,10 @@ public class MinimumRiskMovement {
         double d = Math.max(1.0, p.distance(e.location));
         double energy = Math.min(Math.max(e.energy, 1.0) / Math.max(v.energy, 1.0), ENERGY_RATIO_CAP);
         double r = UNIT * e.freshness(v.now) * energy / (d * d);
-        r *= closestFactor(p, e, v.nearestOther[i], v.now);
+        r *= closestFactor(p, e, v.nearestOther[i], v.now, v.others, onTeam(v.mates));
         if (p.distance(v.me) > 1) {
-            double lateral = v.others == 2 ? ENDGAME_LATERAL : LATERAL;
+            double lateral = MeleeEndgame.endgameRing(v.others, onTeam(v.mates), MeleeEndgame.THREE_RING)
+                ? ENDGAME_LATERAL : LATERAL;
             double a = DiaUtils.absoluteBearing(p, e.location) - DiaUtils.absoluteBearing(v.me, p);
             r *= 1.0 + lateral * Math.abs(Math.cos(a));
         }
@@ -1062,9 +1068,14 @@ public class MinimumRiskMovement {
      * half again if {@code e} hit Hadur lately (MMOVE-2).
      */
     double closestFactor(Point2D.Double p, EnemyInfo e, double nearestOther, long now) {
+        return closestFactor(p, e, nearestOther, now, 0, false);
+    }
+
+    /** As above with {@code others} opponents left; MEND-3 may raise the factor off a team. */
+    double closestFactor(Point2D.Double p, EnemyInfo e, double nearestOther, long now, int others, boolean onTeam) {
         double c = 1.0;
         if (p.distance(e.location) < nearestOther) {
-            c = CLOSEST_FACTOR;
+            c = MeleeEndgame.closestFactor(CLOSEST_FACTOR, others, onTeam, MeleeEndgame.THREE_FAR);
             if (now < OPENING_TICKS) c *= 2;
         }
         if (e.lastHitHadur >= 0 && now - e.lastHitHadur <= RECENT_HIT_TICKS) c *= RECENT_HIT_FACTOR;

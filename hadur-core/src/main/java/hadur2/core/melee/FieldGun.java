@@ -147,7 +147,8 @@ public class FieldGun {
             double distance = e.distance(me);
             boolean finisher = e.energy <= MeleeEnergyPolicy.FINISHER_ENERGY;
             if (!finisher && !onTeam && rams(e, me)) continue;
-            double power = MeleeEnergyPolicy.power(distance, energy, e.energy, others);
+            double power = MeleeEnergyPolicy.power(distance, energy, e.energy,
+                MeleeEndgame.powerOthers(others, onTeam, MeleeEndgame.THREE_POWER));
             if (power <= 0) continue;
             if (onTeam) power = MeleeEnergyPolicy.teamPower(power, energy, e.energy);
             double weight = weight(e, me, alive, now);
