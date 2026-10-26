@@ -5,7 +5,7 @@
 
 set OUT = ../docs/bench/local
 
-mine | test -f work/top5-s2-half1/arms.tsv && python3 tools/factor_picks.py work/top5-s2-half1/arms.tsv $(ls work/top5-s2-half2/arms.tsv 2>/dev/null) --design plans/top5-factorial.design --out ${OUT}/$(date +%Y-%m-%d)_third-factor-picks.md --out-tsv ${OUT}/third-factor-picks.tsv
+mine | test -f work/top5-s2-half1/arms.tsv && test -f work/top5-s2-half2/arms.tsv && python3 tools/factor_picks.py work/top5-s2-half1/arms.tsv work/top5-s2-half2/arms.tsv --design plans/top5-factorial.design --out ${OUT}/$(date +%Y-%m-%d)_third-factor-picks.md --out-tsv ${OUT}/third-factor-picks.tsv
 
 pr | bash tools/open_results_pr.sh claude/pc-1v1-mine-results "1v1 plan to 3rd: factorial per-opponent switch picks (L1)" ${OUT}/*_third-factor-picks.md ${OUT}/third-factor-picks.tsv
   after: mine

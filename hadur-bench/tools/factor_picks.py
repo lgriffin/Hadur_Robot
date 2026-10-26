@@ -14,6 +14,10 @@ least MARGIN points) and their effect read on the g+ half, then the other way ro
 averaged. In a resolution IV design f's effect in either half is still free of every other main
 effect. The held-out gain, summed over the picked robots / PAIRINGS, is the APS a per-opponent
 switch would add; the report says per factor whether it is worth building the table entry.
+Every factor ships at the control's level (the all-low point), so only "on" picks move a robot
+off the field default: a robot whose effect is negative stays at the default and gains nothing.
+An opponent missing a design point (a failed or absent arm) is left out and counted in the report,
+so no unbalanced contrast enters the picks.
 Standard library plus data/tools/multiarm.py.
 """
 import argparse
@@ -25,6 +29,13 @@ import sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(HERE, "..", "..", "data", "tools"))
 import multiarm  # noqa: E402
+
+
+def complete(data, design):
+    """(opponents with every design point, the number left out)."""
+    want = {tuple(pt[f] for f in design[0]) for pt in design[1].values()}
+    keep = {o: p for o, p in data.items() if want <= set(p)}
+    return keep, len(data) - len(keep)
 
 
 def cells(paths, design):
@@ -59,11 +70,9 @@ def held_out(data, i, j, margin):
             e_read = effect(points, i, lambda p: p[j] == -pick_side)
             if e_pick is None or e_read is None:
                 continue
-            # A pick either way: the switch on where + pays, off where - does (the field default is the factor's ship state).
+            # The switch ships off (the control's level): only an "on" pick changes anything.
             if e_pick >= margin:
                 g += e_read
-            elif e_pick <= -margin:
-                g -= e_read
         gains.append(g)
     return st.mean(gains)
 
@@ -80,7 +89,7 @@ def picks(data, i, margin):
 def report(paths, design_path, margin, pairings):
     design = multiarm.read_design(design_path)
     factors = design[0]
-    data = cells(paths, design)
+    data, dropped = complete(cells(paths, design), design)
     rows, tsv = [], []
     for i, f in enumerate(factors):
         j = (i + 1) % len(factors)
@@ -89,7 +98,7 @@ def report(paths, design_path, margin, pairings):
         field = st.mean(e for e in (effect(p, i) for p in data.values()) if e is not None) if data else 0.0
         rows.append((f, field, len(chosen), sum(1 for _, e in chosen if e > 0), gain / pairings))
         tsv += [(o, f, e) for o, e in chosen]
-    return factors, data, rows, tsv
+    return factors, data, rows, tsv, dropped
 
 
 def main(argv=None):
@@ -101,10 +110,11 @@ def main(argv=None):
     ap.add_argument("--margin", type=float, default=5.0)
     ap.add_argument("--pairings", type=int, default=1217)
     a = ap.parse_args(argv)
-    factors, data, rows, tsv = report(a.arms, a.design, a.margin, a.pairings)
+    factors, data, rows, tsv, dropped = report(a.arms, a.design, a.margin, a.pairings)
     lines = ["# Stage 2 factorial: per-opponent switch picks (L1)\n\n",
-             "Files: %s. %d robots; picks at |effect| >= %.1f points; held-out gain over %d pairings.\n\n"
-             % (", ".join("`%s`" % p for p in a.arms), len(data), a.margin, a.pairings),
+             "Files: %s. %d robots with every design point (%d left out as incomplete); picks at |effect| >= %.1f "
+             "points; held-out gain (\"on\" picks only, every switch ships off) over %d pairings.\n\n"
+             % (", ".join("`%s`" % p for p in a.arms), len(data), dropped, a.margin, a.pairings),
              "| Factor | Field effect (pts a robot) | Picked | of them on | Held-out gain (APS) |\n",
              "|---|---:|---:|---:|---:|\n"]
     for f, field, n, on, g in rows:

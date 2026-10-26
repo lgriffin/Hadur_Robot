@@ -1,5 +1,7 @@
 package hadur2.core.shieldmode;
 
+import hadur2.core.physics.ShotDodger;
+
 import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
@@ -123,7 +125,7 @@ public final class ShieldList {
                     if (p.length == 2 && !p[1].isEmpty() && dodgePlans.size() < MAX_ENTRIES) {
                         try {
                             int expert = Integer.parseInt(p[0]);
-                            if (expert >= -1) dodgePlans.put(p[1], expert);
+                            if (expert >= -1 && expert < ShotDodger.EXPERTS) dodgePlans.put(p[1], expert);
                         } catch (NumberFormatException e) {
                             // A malformed plan line is skipped.
                         }

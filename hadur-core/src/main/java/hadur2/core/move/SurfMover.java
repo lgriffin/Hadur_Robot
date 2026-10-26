@@ -353,6 +353,22 @@ public class SurfMover {
     }
 
     /**
+     * DODGE-6: lets the planner, when on, drive this tick outside the surf (RAM-2's escape asks it first).
+     *
+     * @return whether the planner wrote the orders; false leaves them untouched
+     */
+    public boolean tryDodgePlan(BotOrders.Builder orders, RobotState myState, MoveController moveCtrl,
+                                boolean goToAllowed) {
+        if (dodgePlanner == null || !goToAllowed) return false;
+        if (dodgePlanner.surf(orders, myState, moveCtrl, moveCtrl.shotDodger(), dodgeEnemy, desiredDistance)) {
+            dodgePlanTicks++;
+            return true;
+        }
+        dodgePlanner.reset();
+        return false;
+    }
+
+    /**
      * Surfs the first surfable wave (and {@code wavesToSurf - 1} behind it), or orbits when
      * there is none. {@code goToAllowed} is false while the tick budget is short (TIME-1):
      * go-to surfing then falls back to the three options.

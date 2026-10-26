@@ -205,12 +205,14 @@ class ShotDodgerTest {
     @DisplayName("a shot-dodge2 line gives the planner's entry with its expert; malformed lines are skipped")
     void planEntry() {
         ShieldList l = ShieldList.parse(List.of("shot-dodge2: 15 a.B", "shot-dodge2: -1 c.D 1.2",
-            "shot-dodge2: x e.F", "shot-dodge2: -3 g.H", "shot-dodge2: 4"));
+            "shot-dodge2: x e.F", "shot-dodge2: -3 g.H", "shot-dodge2: 4",
+            "shot-dodge2: " + ShotDodger.EXPERTS + " i.J"));
         assertEquals(15, l.dodgePlan("a.B 1.0"));
         assertEquals(-1, l.dodgePlan("c.D 1.2"));
         assertEquals(ShieldList.NO_DODGE_PLAN, l.dodgePlan("c.D 1.3"));
         assertEquals(ShieldList.NO_DODGE_PLAN, l.dodgePlan("e.F"));
         assertEquals(ShieldList.NO_DODGE_PLAN, l.dodgePlan("g.H"));
+        assertEquals(ShieldList.NO_DODGE_PLAN, l.dodgePlan("i.J"), "an expert past the last is skipped");
         assertFalse(l.dodges("a.B 1.0"), "not the three-option dodge");
         assertTrue(l.isEmpty(), "no shield entry");
         assertEquals(ShieldList.NO_DODGE_PLAN, ShieldList.NONE.dodgePlan("a.B"));

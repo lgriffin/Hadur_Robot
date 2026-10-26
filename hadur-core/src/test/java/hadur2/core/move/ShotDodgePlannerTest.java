@@ -1,8 +1,10 @@
 package hadur2.core.move;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import hadur2.core.model.BotOrders;
 import hadur2.core.model.RobotState;
 import hadur2.core.model.Wave;
 import hadur2.core.physics.BattleField;
@@ -122,5 +124,21 @@ class ShotDodgePlannerTest {
             "standing in a rammer's path is a collision");
         List<RobotState> aside = p.path(me(), new Point2D.Double(560, 200), List.of());
         assertTrue(p.cost(aside, List.of(), List.of(), 0.005, enemy) < ShotDodgePlanner.HIT_COST);
+    }
+
+    @Test
+    @Tag("DODGE-6")
+    @DisplayName("a planner that declines the tick leaves the orders to RAM-2's escape")
+    void declinedTickWritesNothing() {
+        MoveController m = SurfOpeningTest.controller();
+        SurfMover off = new SurfMover(PlanPublishTest.FIELD, PlanPublishTest.PREDICTOR);
+        BotOrders.Builder b = BotOrders.builder();
+        assertFalse(off.tryDodgePlan(b, me(), m, true), "planner off");
+        SurfMover on = new SurfMover(PlanPublishTest.FIELD, PlanPublishTest.PREDICTOR);
+        on.setDodgePlanner(true);
+        assertFalse(on.tryDodgePlan(b, me(), m, true), "no expert yet");
+        assertFalse(on.tryDodgePlan(b, me(), m, false), "short tick budget");
+        assertEquals(BotOrders.builder().build(), b.build());
+        assertEquals(0, on.dodgePlanTicks());
     }
 }

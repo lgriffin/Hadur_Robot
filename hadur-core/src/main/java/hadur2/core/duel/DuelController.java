@@ -776,11 +776,19 @@ public final class DuelController {
             // comes first: a mirror bot heading for our reflection can read as a charge,
             // but the plan keeps it at least twice the centre margin away.
             mirrorDrive.move(orders, currentState(in));
-        } else if (ramEscaping && lastEnemyState != null && !(dodgePlanOn && ShotDodgePlanner.KEEP_AWAY && shotDodger.planActive())) {
+        } else if (ramEscaping && lastEnemyState != null) {
             // RAM-2: a charging rammer is kept out, not surfed or orbited.
-            // DODGE-6: unless the planner has the rammer's gun: it dodges and keeps away at once.
-            stats.ramEscapeTicks++;
-            ramEscape.move(orders, currentState(in), lastEnemyState);
+            // DODGE-6: the planner drives first while it has the rammer's gun (it dodges and keeps away
+            // at once); the escape takes every tick the planner declines.
+            boolean planned = false;
+            if (dodgePlanOn && ShotDodgePlanner.KEEP_AWAY && shotDodger.planActive()) {
+                surfMover.setDodgeEnemy(lastEnemyState);
+                planned = surfMover.tryDodgePlan(orders, currentState(in), moveController, TickBudget.goToAllowed(level));
+            }
+            if (!planned) {
+                stats.ramEscapeTicks++;
+                ramEscape.move(orders, currentState(in), lastEnemyState);
+            }
         } else if (stopAndGo != null) {
             // POISON-1: stop while the enemy's gun cools, go once it has fired; the waves still teach the views.
             stopAndGo.move(orders, currentState(in), lastEnemyLocation, enemyGunHeat(in).at(in.time()),
