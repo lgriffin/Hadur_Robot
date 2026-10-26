@@ -108,7 +108,10 @@ loadScripts(document, 'script');</script>
      (<code>E</code> records) that fell below the truth (<a class="req" href="../../../requirements.html#WORLD-8">WORLD-8</a>), and, from the engine's own
      bullet snapshots, our bullets that hit one of our own members (T1's friendly fire).</li>
  <li><code>friendly.log</code>: one line for each of those, with the bullet's power and how far
-     it flew, so a hit can be read against the lane that was kept.</li>
+     it flew, so a hit can be read against the lane that was kept, and (<a class="req" href="../../../requirements.html#BENCH-114">BENCH-114</a>) where the
+     victim stood when the bullet was fired: <code>target</code> (how far along the bullet's line the
+     nearest enemy within <a href="#TARGET_HALF"><code>TARGET_HALF</code></a> px of it stood, <code>-</code> for none),
+     <code>victimAlong</code>, <code>victimAcross</code>, and <a href="#kind(double,double,double,double)"><code>kind(double, double, double, double)</code></a>.</li>
  <li><code>bullets.log</code>: every bullet in the battle, ours and the enemies', as
      <code>round,turn,F,id,owner,power,x,y,heading,members</code> when the engine first shows it
      (for an enemy bullet, <code>members</code> lists each living member of ours as
@@ -141,6 +144,16 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color"><code><a href="#HEADER" class="member-name-link">HEADER</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>(package private) static final double</code></div>
+<div class="col-second even-row-color"><code><a href="#LANE_HALF" class="member-name-link">LANE_HALF</a></code></div>
+<div class="col-last even-row-color">
+<div class="block"><a class="req" href="../../../requirements.html#BENCH-114">BENCH-114</a>: a teammate this close to the line, before the target, was in the lane when it fired.</div>
+</div>
+<div class="col-first odd-row-color"><code>(package private) static final double</code></div>
+<div class="col-second odd-row-color"><code><a href="#TARGET_HALF" class="member-name-link">TARGET_HALF</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block"><a class="req" href="../../../requirements.html#BENCH-114">BENCH-114</a>: an enemy this close to a bullet's line, ahead of it, is the shot's target.</div>
+</div>
 </div>
 </section>
 </li>
@@ -163,7 +176,7 @@ loadScripts(document, 'script');</script>
 <section class="method-summary" id="method-summary">
 <h2>Method Summary</h2>
 <div id="method-summary-table">
-<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button></div>
+<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab1" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab1', 3)" class="table-tab">Static Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button></div>
 <div id="method-summary-table.tabpanel" role="tabpanel" aria-labelledby="method-summary-table-tab0">
 <div class="summary-table three-column-summary">
 <div class="table-header col-first">Modifier and Type</div>
@@ -172,15 +185,27 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#close()" class="member-name-link">close</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onRoundEnded(robocode.control.events.RoundEndedEvent)" class="member-name-link">onRoundEnded</a><wbr>(robocode.control.events.RoundEndedEvent&nbsp;e)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#kind(double,double,double,double)" class="member-name-link">kind</a><wbr>(double&nbsp;target,
+ double&nbsp;along,
+ double&nbsp;across,
+ double&nbsp;travelled)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../../requirements.html#BENCH-114">BENCH-114</a>: what kind of friendly hit a bullet made, from where its victim stood when it was
+ fired: <code>lane</code> when the victim was ahead within <a href="#LANE_HALF"><code>LANE_HALF</code></a> px of the line and
+ nearer than the target; else <code>noline</code> with no target; <code>walkin</code> when the bullet
+ hit before reaching the target (the victim stepped into its path); <code>beyond</code> when it
+ had flown past the target (a miss that flew on).</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onRoundStarted(robocode.control.events.RoundStartedEvent)" class="member-name-link">onRoundStarted</a><wbr>(robocode.control.events.RoundStartedEvent&nbsp;e)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onRoundEnded(robocode.control.events.RoundEndedEvent)" class="member-name-link">onRoundEnded</a><wbr>(robocode.control.events.RoundEndedEvent&nbsp;e)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onTurnEnded(robocode.control.events.TurnEndedEvent)" class="member-name-link">onTurnEnded</a><wbr>(robocode.control.events.TurnEndedEvent&nbsp;e)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onRoundStarted(robocode.control.events.RoundStartedEvent)" class="member-name-link">onRoundStarted</a><wbr>(robocode.control.events.RoundStartedEvent&nbsp;e)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onTurnEnded(robocode.control.events.TurnEndedEvent)" class="member-name-link">onTurnEnded</a><wbr>(robocode.control.events.TurnEndedEvent&nbsp;e)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
@@ -225,6 +250,36 @@ loadScripts(document, 'script');</script>
 <dd>
 <ul class="tag-list">
 <li><a href="../../constant-values.html#hadur.bench.TeamHarvester.HALF_WIDTH">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="TARGET_HALF">
+<h3>TARGET_HALF</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">TARGET_HALF</span></div>
+<div class="block"><a class="req" href="../../../requirements.html#BENCH-114">BENCH-114</a>: an enemy this close to a bullet's line, ahead of it, is the shot's target.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../constant-values.html#hadur.bench.TeamHarvester.TARGET_HALF">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="LANE_HALF">
+<h3>LANE_HALF</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">LANE_HALF</span></div>
+<div class="block"><a class="req" href="../../../requirements.html#BENCH-114">BENCH-114</a>: a teammate this close to the line, before the target, was in the lane when it fired.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../constant-values.html#hadur.bench.TeamHarvester.LANE_HALF">Constant Field Values</a></li>
 </ul>
 </dd>
 </dl>
@@ -292,6 +347,20 @@ loadScripts(document, 'script');</script>
 <dt>Overrides:</dt>
 <dd><code>onRoundEnded</code>&nbsp;in class&nbsp;<code>robocode.control.events.BattleAdaptor</code></dd>
 </dl>
+</section>
+</li>
+<li>
+<section class="detail" id="kind(double,double,double,double)">
+<h3>kind</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">kind</span><wbr><span class="parameters">(double&nbsp;target,
+ double&nbsp;along,
+ double&nbsp;across,
+ double&nbsp;travelled)</span></div>
+<div class="block"><a class="req" href="../../../requirements.html#BENCH-114">BENCH-114</a>: what kind of friendly hit a bullet made, from where its victim stood when it was
+ fired: <code>lane</code> when the victim was ahead within <a href="#LANE_HALF"><code>LANE_HALF</code></a> px of the line and
+ nearer than the target; else <code>noline</code> with no target; <code>walkin</code> when the bullet
+ hit before reaching the target (the victim stepped into its path); <code>beyond</code> when it
+ had flown past the target (a miss that flew on).</div>
 </section>
 </li>
 <li>

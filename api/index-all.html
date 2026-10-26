@@ -3744,6 +3744,8 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="hadur2/core/melee/TeamModes.html#FORCE_LEARN" class="member-name-link">FORCE_LEARN</a> - Static variable in class hadur2.core.melee.<a href="hadur2/core/melee/TeamModes.html" title="class in hadur2.core.melee">TeamModes</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur2/core/melee/TeamModes.html#FORCE_LINES" class="member-name-link">FORCE_LINES</a> - Static variable in class hadur2.core.melee.<a href="hadur2/core/melee/TeamModes.html" title="class in hadur2.core.melee">TeamModes</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="hadur2/core/melee/TeamModes.html#FORCE_MATEFIRE" class="member-name-link">FORCE_MATEFIRE</a> - Static variable in class hadur2.core.melee.<a href="hadur2/core/melee/TeamModes.html" title="class in hadur2.core.melee">TeamModes</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur2/core/melee/TeamModes.html#FORCE_PACK" class="member-name-link">FORCE_PACK</a> - Static variable in class hadur2.core.melee.<a href="hadur2/core/melee/TeamModes.html" title="class in hadur2.core.melee">TeamModes</a></dt>
@@ -5494,6 +5496,14 @@ loadScripts(document, 'script');</script>
 <div class="block">The least power whose damage finishes a robot with <code>energy</code> left: e/4 below
  power 1, else (e + 2)/6, with a hair more so rounding cannot leave it alive.</div>
 </dd>
+<dt><a href="hadur/bench/TeamHarvester.html#kind(double,double,double,double)" class="member-name-link">kind(double, double, double, double)</a> - Static method in class hadur.bench.<a href="hadur/bench/TeamHarvester.html" title="class in hadur.bench">TeamHarvester</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#BENCH-114">BENCH-114</a>: what kind of friendly hit a bullet made, from where its victim stood when it was
+ fired: <code>lane</code> when the victim was ahead within <a href="hadur/bench/TeamHarvester.html#LANE_HALF"><code>TeamHarvester.LANE_HALF</code></a> px of the line and
+ nearer than the target; else <code>noline</code> with no target; <code>walkin</code> when the bullet
+ hit before reaching the target (the victim stepped into its path); <code>beyond</code> when it
+ had flown past the target (a miss that flew on).</div>
+</dd>
 <dt><a href="hadur/bench/HostWidth.html#kind(java.util.Map)" class="member-name-link">kind(Map&lt;String, String&gt;)</a> - Static method in class hadur.bench.<a href="hadur/bench/HostWidth.html" title="class in hadur.bench">HostWidth</a></dt>
 <dd>
 <div class="block">The kind of battle the options ask for, as the queue runner's variables name it.</div>
@@ -5564,6 +5574,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur2/core/TeamLink.html#LANE_BULLET_SPEED" class="member-name-link">LANE_BULLET_SPEED</a> - Static variable in class hadur2.core.<a href="hadur2/core/TeamLink.html" title="class in hadur2.core">TeamLink</a></dt>
 <dd>
 <div class="block">WEAVE-10, WEAVE-11: the bullet speed a teammate's track is judged against, px a tick (power 2).</div>
+</dd>
+<dt><a href="hadur/bench/TeamHarvester.html#LANE_HALF" class="member-name-link">LANE_HALF</a> - Static variable in class hadur.bench.<a href="hadur/bench/TeamHarvester.html" title="class in hadur.bench">TeamHarvester</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#BENCH-114">BENCH-114</a>: a teammate this close to the line, before the target, was in the lane when it fired.</div>
 </dd>
 <dt><a href="hadur2/core/TeamLink.html#LANE_HALF_WIDTH" class="member-name-link">LANE_HALF_WIDTH</a> - Static variable in class hadur2.core.<a href="hadur2/core/TeamLink.html" title="class in hadur2.core">TeamLink</a></dt>
 <dd>
@@ -5894,6 +5908,10 @@ loadScripts(document, 'script');</script>
 <div class="block">Text form of <a href="hadur2/core/model/BotInput.html" title="class in hadur2.core.model"><code>BotInput</code></a> and <a href="hadur2/core/model/BotOrders.html" title="class in hadur2.core.model"><code>BotOrders</code></a>, one line each, so a battle can be
  recorded and replayed through the core (<a class="req" href="../requirements.html#CORE-2">CORE-2</a>).</div>
 </dd>
+<dt><a href="hadur2/core/melee/MinimumRiskMovement.View.html#lines" class="member-name-link">lines</a> - Variable in class hadur2.core.melee.<a href="hadur2/core/melee/MinimumRiskMovement.View.html" title="class in hadur2.core.melee">MinimumRiskMovement.View</a></dt>
+<dd>
+<div class="block">TMODE-15: whether the teammates' lines of fire count; only on a team.</div>
+</dd>
 <dt><a href="hadur2/ShieldListData.html#lines()" class="member-name-link">lines()</a> - Static method in class hadur2.<a href="hadur2/ShieldListData.html" title="class in hadur2">ShieldListData</a></dt>
 <dd>
 <div class="block">The list, one robot per element.</div>
@@ -5901,6 +5919,27 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur2/StackListData.html#lines()" class="member-name-link">lines()</a> - Static method in class hadur2.<a href="hadur2/StackListData.html" title="class in hadur2">StackListData</a></dt>
 <dd>
 <div class="block">The list, one robot per element.</div>
+</dd>
+<dt><a href="hadur2/core/melee/TeamModes.Mode.html#LINES" class="member-name-link">LINES</a> - Enum constant in enum class hadur2.core.melee.<a href="hadur2/core/melee/TeamModes.Mode.html" title="enum class in hadur2.core.melee">TeamModes.Mode</a></dt>
+<dd>
+<div class="block">TMODE-15: a member keeps out of the cone behind each teammate's likely target, where that teammate's misses fly.</div>
+</dd>
+<dt><a href="hadur2/core/melee/MinimumRiskMovement.html#LINES_HALF" class="member-name-link">LINES_HALF</a> - Static variable in class hadur2.core.melee.<a href="hadur2/core/melee/MinimumRiskMovement.html" title="class in hadur2.core.melee">MinimumRiskMovement</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="hadur2/core/melee/MinimumRiskMovement.html#LINES_K" class="member-name-link">LINES_K</a> - Static variable in class hadur2.core.melee.<a href="hadur2/core/melee/MinimumRiskMovement.html" title="class in hadur2.core.melee">MinimumRiskMovement</a></dt>
+<dd>
+<div class="block">TMODE-15: weight of a point straight behind a teammate's likely target (its nearest fresh
+ enemy) as the teammate sees it, falling to none at <a href="hadur2/core/melee/MinimumRiskMovement.html#LINES_HALF"><code>MinimumRiskMovement.LINES_HALF</code></a> radians off that line;
+ only past the target, and up to <a href="hadur2/core/melee/MinimumRiskMovement.html#LINES_REACH"><code>MinimumRiskMovement.LINES_REACH</code></a> px beyond it.</div>
+</dd>
+<dt><a href="hadur2/core/melee/MinimumRiskMovement.html#LINES_REACH" class="member-name-link">LINES_REACH</a> - Static variable in class hadur2.core.melee.<a href="hadur2/core/melee/MinimumRiskMovement.html" title="class in hadur2.core.melee">MinimumRiskMovement</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="hadur2/core/melee/MinimumRiskMovement.html#linesRisk(java.awt.geom.Point2D.Double,java.util.List,java.util.List,long)" class="member-name-link">linesRisk(Point2D.Double, List&lt;Roster.Mate&gt;, List&lt;EnemyInfo&gt;, long)</a> - Static method in class hadur2.core.melee.<a href="hadur2/core/melee/MinimumRiskMovement.html" title="class in hadur2.core.melee">MinimumRiskMovement</a></dt>
+<dd>
+<div class="block">TMODE-15: for each teammate, now, and its nearest fresh enemy, <a href="hadur2/core/melee/MinimumRiskMovement.html#LINES_K"><code>MinimumRiskMovement.LINES_K</code></a> where
+ <code>p</code> lies on the line from the teammate through that enemy and past it, falling
+ linearly to none <a href="hadur2/core/melee/MinimumRiskMovement.html#LINES_HALF"><code>MinimumRiskMovement.LINES_HALF</code></a> radians off the line as the teammate sees it, and
+ none nearer the teammate than the enemy or more than <a href="hadur2/core/melee/MinimumRiskMovement.html#LINES_REACH"><code>MinimumRiskMovement.LINES_REACH</code></a> px beyond it.</div>
 </dd>
 <dt><a href="hadur2/core/link/LinkCodec.html" class="type-name-link" title="class in hadur2.core.link">LinkCodec</a> - Class in <a href="hadur2/core/link/package-summary.html">hadur2.core.link</a></dt>
 <dd>
@@ -12632,6 +12671,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur/bench/RobotJar.html#TARGET" class="member-name-link">TARGET</a> - Static variable in class hadur.bench.<a href="hadur/bench/RobotJar.html" title="class in hadur.bench">RobotJar</a></dt>
 <dd>
 <div class="block">The robot module's build directory, relative to <code>hadur-bench/</code>.</div>
+</dd>
+<dt><a href="hadur/bench/TeamHarvester.html#TARGET_HALF" class="member-name-link">TARGET_HALF</a> - Static variable in class hadur.bench.<a href="hadur/bench/TeamHarvester.html" title="class in hadur.bench">TeamHarvester</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#BENCH-114">BENCH-114</a>: an enemy this close to a bullet's line, ahead of it, is the shot's target.</div>
 </dd>
 <dt><a href="hadur2/core/model/Wave.html#targetAccel" class="member-name-link">targetAccel</a> - Variable in class hadur2.core.model.<a href="hadur2/core/model/Wave.html" title="class in hadur2.core.model">Wave</a></dt>
 <dd>
