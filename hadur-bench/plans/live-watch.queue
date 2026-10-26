@@ -1,0 +1,28 @@
+# Release watch (Leigh, 2026-10-26: "build that into your PC card at release"): run on the PC right after
+# every release, while the RoboRumble clients run the new version, so collapsed live battles are logged
+# with their health records (skipped turns, faults, shield verdicts) instead of guessed at afterwards.
+#   ./queue.sh run live-watch        (or  .\queue.ps1 run live-watch)
+# Start the rumble clients first (start-6.bat); this card only watches them and never runs a bench, so
+# it is the one queue on the PC for its length. Edit V1 / VT below in the release PR: the versions the
+# 1v1/melee and team participant lines name (they can differ, as 3.17 and 3.17.1 did).
+#
+# watch (HOURS, 24 by default): data/tools/live_client.py watch over every client folder that exists
+#   under C:/RoboRumbleWorkers (rr01..rr06), with the three live pages; it resumes across restarts
+#   (BENCH-86), so re-running the step after a reboot keeps every battle already recorded.
+# report: live_client.py report, joining each 1v1 battle under 70% share to its health record.
+# pr: the watch folder's TSVs, report and log as a results PR; Claude reads it for the live collapses
+#   (the +0.1..+0.2 APS lever L5 of the 1v1 plan to 3rd).
+
+set V1 = 3.17
+set VT = 3.17.1
+set HOURS = 24
+set CLIENTS = C:/RoboRumbleWorkers
+set W = ../data/live/release-${V1}
+
+watch | mkdir -p ${W} && python3 ../data/tools/live_client.py watch $(for d in ${CLIENTS}/rr0*; do [ -d "$d" ] && printf -- '--client %s ' "$d"; done) --out ${W} --page "roborumble:hadur2.Hadur ${V1}" --page "meleerumble:hadur2.Hadur ${V1}" --page "teamrumble:hadur2.HadurTeam ${VT}" --hours ${HOURS}
+
+report | python3 ../data/tools/live_client.py report ${W} --md ${W}/report.md
+  after: watch
+
+pr | bash tools/open_results_pr.sh claude/live-watch-${V1}-results "Release watch: live battles and health records of ${V1} / team ${VT}" $(ls ${W}/*.tsv ${W}/report.md ${W}/watch.log 2>/dev/null)
+  after: report
