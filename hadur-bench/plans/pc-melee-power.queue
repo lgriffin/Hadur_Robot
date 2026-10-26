@@ -1,0 +1,39 @@
+# Melee firepower (docs/plan-melee-top5.md, MGUN-12/13, BENCH-117). The crowd exposure read (BENCH-116,
+# docs/bench/local/melee-exposure-317.md) found Hadur's melee movement level with the top 10 (crowd
+# damage taken 8.7 per 100 ticks against 8.9; survival score above theirs) and its bullet damage
+# behind (4,244 a battle against 5,211): in the crowd the top 10 fire at 2.62 power to Hadur's 1.64,
+# at a similar hit rate. Power alone was flat twice on older guns (mpow, Stage 1's ep); this card
+# screens it on master's gun (with g4 + MEND-3 if the bank card turned them on).
+#   aa    the baseline (master)
+#   bb    its A/A copy
+#   pf    pfloor, MGUN-12: off a team with 3+ opponents and 20+ energy, at least 1.9 at any distance
+#   po    pogi, MGUN-13: as pf's conditions, Ogi's power: 1.92, and 3 within 200 px
+# Each build fights the 46 census fields x 6 fresh seeds alone (3191-3196; 276 battles, 1,104 in
+# all) at the machine's melee width and CPU constant. The read pairs bb with aa (A/A, within +-0.25)
+# and each power arm with the mean of aa and bb (--base2), battle for battle. Melee only: both rules
+# act off a team with three or more opponents, so the duel and team play are untouched.
+# Verdict: an arm passes at +0.3 census APS or more with the 95% low end above 0, Hadur's share of
+# others outlived no more than 1 point lower and the 1-30 endgame wins no more than 3 points lower.
+# The card ends in a results PR on claude/pc-melee-power-results whatever the verdict; the melee
+# thread reads it.
+#   ./queue.sh run pc-melee-power        (or  .\queue.ps1 run pc-melee-power)
+# Run it from master, one bench queue at a time:
+#   git checkout master && git pull
+# powerprep reads the version from hadur-robot/pom.xml, so a bump cannot point the card at stale
+# jars, and fixes the width in work/, so a resumed card never mixes host profiles.
+
+set OUT = ../docs/bench/local
+
+powerprep | git checkout -q master && V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && test -n "$V" && C=${MELEE_WORKERS} && for a in aa bb pf po; do rm -f bisect/hadur2.Hadur_"$V"$a.jar; done && bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && bash ./build-ablation.sh pfloor && bash ./build-ablation.sh pogi && mkdir -p work && for a in aa bb pf po; do test -f bisect/hadur2.Hadur_"$V"$a.jar && sed -e "s/@V@/$V/g" -e "s/@A@/$a/g" -e "s/@C@/$C/g" plans/melee-power.args > work/melee-power-$a.args || exit 1; done && rm -f ${OUT}/melee-power-*.md && for f in melee-census-317/f*.txt; do ./fetch-opponents.sh --set "$f" || exit 1; done && mvn -q compile
+poweraa   | mvn -q exec:java "-Dexec.args=@work/melee-power-aa.args"
+  after: powerprep
+powerbb   | mvn -q exec:java "-Dexec.args=@work/melee-power-bb.args"
+  after: poweraa
+powerpf   | mvn -q exec:java "-Dexec.args=@work/melee-power-pf.args"
+  after: powerbb
+powerpo   | mvn -q exec:java "-Dexec.args=@work/melee-power-po.args"
+  after: powerpf
+powerread | V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && W=work/melee-power-"$V" && { python3 tools/melee_s0.py screen "$W"-aa --base2 "$W"-bb --arm bb="$W"-bb --arm pf="$W"-pf --arm po="$W"-po --census melee-census-317.txt --seeds 6 --gain 0.3 --survival-slack 1 --out ${OUT}/melee-power-read.md --title "Melee firepower on $V" || true; } && test -s ${OUT}/melee-power-read.md
+  after: powerpo
+powerpr   | bash tools/open_results_pr.sh claude/pc-melee-power-results "Melee firepower (MGUN-12/13)" ${OUT}/melee-power-read.md $(ls ${OUT}/melee-power-aa.md ${OUT}/melee-power-bb.md ${OUT}/melee-power-pf.md ${OUT}/melee-power-po.md 2>/dev/null)
+  after: powerread
