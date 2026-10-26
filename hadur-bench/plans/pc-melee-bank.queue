@@ -1,18 +1,20 @@
 # Melee: bank Stage 2's two gains (docs/plan-melee-top5.md, BENCH-115). Stage 2 (PR #316) read every
 # arm against both baseline copies: the field gun at 24 situations an opponent (g24) +0.34 +-0.16,
 # and "nobody's nearest" (MEND-3, e3far) +0.21 +-0.16 pooled over 12 seeds; each under its own bar.
-# This card confirms the two together before they go on master:
-#   aa    the baseline (master)
-#   bb    its A/A copy
-#   g4ef  g24 and e3far in one build
-# Each build fights the 46 census fields x 8 fresh seeds alone (3183-3190; 368 battles, 1,104 in all)
+# The firepower card (PR #320) then passed MGUN-13, Ogi's crowd power (pogi), at +0.62 +-0.18. This
+# card confirms the gains together before they go on master:
+#   aa      the baseline (master)
+#   bb      its A/A copy
+#   g4ef    g24 and e3far in one build
+#   g4efpo  g24, e3far and pogi in one build (the whole stack)
+# Each build fights the 46 census fields x 8 fresh seeds alone (3183-3190; 368 battles, 1,472 in all)
 # at the machine's melee width and CPU constant. The read pairs bb with aa (A/A, within +-0.25) and
-# g4ef with the mean of aa and bb (--base2), battle for battle, so one baseline copy drawing low
+# g4ef and g4efpo with the mean of aa and bb (--base2), battle for battle, so one baseline copy drawing low
 # cannot move the verdict. Melee only: the duel never reads the field gun, and MEND-3 acts only off
-# a team with two opponents left.
-# Verdict: g4ef passes at +0.3 census APS or more with the 95% low end above 0, Hadur's share of
+# a team with two opponents left; pogi acts only off a team with three or more opponents.
+# Verdict: each of g4ef and g4efpo passes at +0.3 census APS or more with the 95% low end above 0, Hadur's share of
 # others outlived no more than 1 point lower and the 1-30 endgame wins no more than 3 points lower.
-# A pass puts both switches on in master (MGUN-7's melee K to 24, MEND-3 on). The card ends in a
+# A pass puts its switches on in master (MGUN-7's melee K to 24, MEND-3 on, and for g4efpo MGUN-13 on). The card ends in a
 # results PR on claude/pc-melee-bank-results whatever the verdict; the melee thread reads it.
 #   ./queue.sh run pc-melee-bank        (or  .\queue.ps1 run pc-melee-bank)
 # Run it from master, one bench queue at a time:
@@ -22,14 +24,16 @@
 
 set OUT = ../docs/bench/local
 
-bankprep | git checkout -q master && V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && test -n "$V" && C=${MELEE_WORKERS} && for a in aa bb g4ef; do rm -f bisect/hadur2.Hadur_"$V"$a.jar; done && bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && bash ./build-ablation.sh g24,e3far && mkdir -p work && for a in aa bb g4ef; do test -f bisect/hadur2.Hadur_"$V"$a.jar && sed -e "s/@V@/$V/g" -e "s/@A@/$a/g" -e "s/@C@/$C/g" plans/melee-bank.args > work/melee-bank-$a.args || exit 1; done && rm -f ${OUT}/melee-bank-*.md && for f in melee-census-317/f*.txt; do ./fetch-opponents.sh --set "$f" || exit 1; done && mvn -q compile
+bankprep | git checkout -q master && V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && test -n "$V" && C=${MELEE_WORKERS} && for a in aa bb g4ef g4efpo; do rm -f bisect/hadur2.Hadur_"$V"$a.jar; done && bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && bash ./build-ablation.sh g24,e3far && bash ./build-ablation.sh g24,e3far,pogi && mkdir -p work && for a in aa bb g4ef g4efpo; do test -f bisect/hadur2.Hadur_"$V"$a.jar && sed -e "s/@V@/$V/g" -e "s/@A@/$a/g" -e "s/@C@/$C/g" plans/melee-bank.args > work/melee-bank-$a.args || exit 1; done && rm -f ${OUT}/melee-bank-*.md && for f in melee-census-317/f*.txt; do ./fetch-opponents.sh --set "$f" || exit 1; done && mvn -q compile
 bankaa   | mvn -q exec:java "-Dexec.args=@work/melee-bank-aa.args"
   after: bankprep
 bankbb   | mvn -q exec:java "-Dexec.args=@work/melee-bank-bb.args"
   after: bankaa
 bankg4ef | mvn -q exec:java "-Dexec.args=@work/melee-bank-g4ef.args"
   after: bankbb
-bankread | V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && W=work/melee-bank-"$V" && { python3 tools/melee_s0.py screen "$W"-aa --base2 "$W"-bb --arm bb="$W"-bb --arm g4ef="$W"-g4ef --census melee-census-317.txt --seeds 8 --gain 0.3 --survival-slack 1 --out ${OUT}/melee-bank-read.md --title "Melee: banking Stage 2's gains on $V" || true; } && test -s ${OUT}/melee-bank-read.md
+bankg4efpo | mvn -q exec:java "-Dexec.args=@work/melee-bank-g4efpo.args"
   after: bankg4ef
-bankpr   | bash tools/open_results_pr.sh claude/pc-melee-bank-results "Melee: bank Stage 2's gains (g24 + MEND-3)" ${OUT}/melee-bank-read.md $(ls ${OUT}/melee-bank-aa.md ${OUT}/melee-bank-bb.md ${OUT}/melee-bank-g4ef.md 2>/dev/null)
+bankread | V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && W=work/melee-bank-"$V" && { python3 tools/melee_s0.py screen "$W"-aa --base2 "$W"-bb --arm bb="$W"-bb --arm g4ef="$W"-g4ef --arm g4efpo="$W"-g4efpo --census melee-census-317.txt --seeds 8 --gain 0.3 --survival-slack 1 --out ${OUT}/melee-bank-read.md --title "Melee: banking Stage 2's gains on $V" || true; } && test -s ${OUT}/melee-bank-read.md
+  after: bankg4efpo
+bankpr   | bash tools/open_results_pr.sh claude/pc-melee-bank-results "Melee: bank Stage 2's gains and the crowd power (g24 + MEND-3 + MGUN-13)" ${OUT}/melee-bank-read.md $(ls ${OUT}/melee-bank-aa.md ${OUT}/melee-bank-bb.md ${OUT}/melee-bank-g4ef.md ${OUT}/melee-bank-g4efpo.md 2>/dev/null)
   after: bankread
