@@ -193,6 +193,40 @@ class MeleeHarvesterTest {
     }
 
     @Test
+    @Tag("BENCH-116")
+    @DisplayName("exposure.csv counts who stands nearest whom in the crowd, and splits crowd damage by the shooter's nearest")
+    void exposure() throws IOException {
+        // Hadur at (100,100); Alpha 100 px away is nearest Hadur; Beta far off; Gamma near Beta.
+        IRobotSnapshot me = robot(0, US, 100, 100, true);
+        IRobotSnapshot a = robot(1, "a.Alpha 1.0", 200, 100, true);
+        IRobotSnapshot b = robot(2, "b.Beta 1.0", 800, 800, true);
+        IRobotSnapshot c = robot(3, "c.Gamma 1.0", 850, 800, true);
+        IRobotSnapshot deadC = robot(3, "c.Gamma 1.0", 850, 800, false);
+        IRobotSnapshot deadB = robot(2, "b.Beta 1.0", 800, 800, false);
+        MeleeHarvester h = new MeleeHarvester(dir, US, Set.of());
+        h.onRoundStarted(new RoundStartedEvent(null, 0, null));
+        // Alpha fires at its nearest (Hadur), Beta fires across the field (Hadur is its third)
+        h.onTurnEnded(turn(1, List.of(me, a, b, c), List.of(bullet(1, 1, -1, 3.0, BulletState.FIRED),
+            bullet(2, 2, -1, 1.0, BulletState.FIRED))));
+        h.onTurnEnded(turn(2, List.of(me, a, b, c), List.of(bullet(1, 1, 0, 3.0, BulletState.HIT_VICTIM),
+            bullet(2, 2, 0, 1.0, BulletState.HIT_VICTIM))));
+        // the same hit seen again is not counted twice
+        h.onTurnEnded(turn(3, List.of(me, a, b, c), List.of(bullet(1, 1, 0, 3.0, BulletState.HIT_VICTIM))));
+        // two left: neither ticks nor hits count
+        h.onTurnEnded(turn(4, List.of(me, a, deadB, deadC), List.of()));
+        h.onTurnEnded(turn(5, List.of(me, a, deadB, deadC), List.of(bullet(3, 1, -1, 3.0, BulletState.FIRED))));
+        h.onTurnEnded(turn(6, List.of(me, a, deadB, deadC), List.of(bullet(3, 1, 0, 3.0, BulletState.HIT_VICTIM))));
+        h.onRoundEnded(new RoundEndedEvent(0, 0, 0));
+        h.close();
+        List<String> lines = Files.readAllLines(dir.resolve("exposure.csv"));
+        assertEquals(MeleeHarvester.EXPOSURE_HEADER, lines.get(0));
+        // Hadur: 3 crowd ticks, nearest of Alpha each tick (3); took 16 from Alpha as its nearest and 4 from Beta
+        assertEquals("0,hadur2.Hadur 3.8,3,3,20.00,16.00,0.00", lines.get(1));
+        assertEquals("0,a.Alpha 1.0,3,3,0.00,0.00,0.00", lines.get(2));
+        assertEquals("0,b.Beta 1.0,3,3,0.00,0.00,0.00", lines.get(3));
+    }
+
+    @Test
     @DisplayName("a comma in a robot's name cannot break the row")
     void commaInName() throws IOException {
         IRobotSnapshot meAlive = robot(0, US, 100, 100, true), meDead = robot(0, US, 100, 100, false);
