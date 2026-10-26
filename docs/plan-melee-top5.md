@@ -313,6 +313,13 @@ crowd power adds on top of the better gun; a second read pairs g4efpo with g4ef 
 goes on master only if that difference is above 0 at the 95% low end. With the gains adding, the stack is worth about +1.2 of
 the +4.61 to the census bar.
 
+**Bank result (2026-10-26, PR #322).** The bank card ran before the g4efpo arm was added. g4ef
+(K = 24 + MEND-3) against the mean of aa and bb, 8 seeds: **+0.62 ± 0.14**, PASS; 1-30 endgame wins
++2.8 pp, deaths with two left -0.9 pp, others outlived +1.3 pp; A/A -0.03 clean. Both are now on
+master (MGUN-7's K = 24, MEND-3 on; `melee-samples` and `melee-handoff` re-recorded, melee pin moved;
+duel and team fixtures unchanged). `pc-melee-ogi` (BENCH-118) screens MGUN-13 on that master at 8
+seeds, passing if it adds at all (95% low end above 0).
+
 ### Stage 3: crowd survival
 
 The largest lever and the riskiest: M4's path scoring cost 3 to 5 APS, and the team's port of

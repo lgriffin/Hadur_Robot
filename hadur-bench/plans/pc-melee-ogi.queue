@@ -1,0 +1,35 @@
+# Melee: Ogi's crowd power on the banked gun (docs/plan-melee-top5.md, MGUN-13, BENCH-118).
+# pc-melee-power (PR #320) passed MGUN-13 at +0.62 +-0.18 on the K = 12 gun; the bank card (PR #322)
+# then passed K = 24 + MEND-3 at +0.62 +-0.14, and both are on master. This card asks whether
+# MGUN-13 still adds on top of them:
+#   aa    the baseline (master: K = 24, MEND-3 on)
+#   bb    its A/A copy
+#   po    pogi, MGUN-13: off a team with 3+ opponents and 20+ energy, Ogi's power: 1.92, and 3
+#         within 200 px
+# Each build fights the 46 census fields x 8 fresh seeds alone (3197-3204; 368 battles, 1,104 in
+# all) at the machine's melee width and CPU constant. The read pairs bb with aa (A/A, within +-0.25)
+# and po with the mean of aa and bb (--base2), battle for battle. Melee only: MGUN-13 acts off a
+# team with three or more opponents, so the duel and team play are untouched.
+# Verdict: po passes when it adds at all, the 95% low end above 0 (--gain 0), with Hadur's share of
+# others outlived no more than 1 point lower and the 1-30 endgame wins no more than 3 points lower.
+# A pass turns MGUN-13 on in master. The card ends in a results PR on claude/pc-melee-ogi-results
+# whatever the verdict; the melee thread reads it.
+#   ./queue.sh run pc-melee-ogi        (or  .\queue.ps1 run pc-melee-ogi)
+# Run it from master, one bench queue at a time:
+#   git checkout master && git pull
+# ogiprep reads the version from hadur-robot/pom.xml, so a bump cannot point the card at stale
+# jars, and fixes the width in work/, so a resumed card never mixes host profiles.
+
+set OUT = ../docs/bench/local
+
+ogiprep | git checkout -q master && V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && test -n "$V" && C=${MELEE_WORKERS} && for a in aa bb po; do rm -f bisect/hadur2.Hadur_"$V"$a.jar; done && bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && bash ./build-ablation.sh pogi && mkdir -p work && for a in aa bb po; do test -f bisect/hadur2.Hadur_"$V"$a.jar && sed -e "s/@V@/$V/g" -e "s/@A@/$a/g" -e "s/@C@/$C/g" plans/melee-ogi.args > work/melee-ogi-$a.args || exit 1; done && rm -f ${OUT}/melee-ogi-*.md && for f in melee-census-317/f*.txt; do ./fetch-opponents.sh --set "$f" || exit 1; done && mvn -q compile
+ogiaa   | mvn -q exec:java "-Dexec.args=@work/melee-ogi-aa.args"
+  after: ogiprep
+ogibb   | mvn -q exec:java "-Dexec.args=@work/melee-ogi-bb.args"
+  after: ogiaa
+ogipo   | mvn -q exec:java "-Dexec.args=@work/melee-ogi-po.args"
+  after: ogibb
+ogiread | V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && W=work/melee-ogi-"$V" && { python3 tools/melee_s0.py screen "$W"-aa --base2 "$W"-bb --arm bb="$W"-bb --arm po="$W"-po --census melee-census-317.txt --seeds 8 --gain 0 --survival-slack 1 --out ${OUT}/melee-ogi-read.md --title "Melee: Ogi's crowd power on the banked gun, $V" || true; } && test -s ${OUT}/melee-ogi-read.md
+  after: ogipo
+ogipr   | bash tools/open_results_pr.sh claude/pc-melee-ogi-results "Melee: Ogi's crowd power on the banked gun (MGUN-13)" ${OUT}/melee-ogi-read.md $(ls ${OUT}/melee-ogi-aa.md ${OUT}/melee-ogi-bb.md ${OUT}/melee-ogi-po.md 2>/dev/null)
+  after: ogiread

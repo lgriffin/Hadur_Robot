@@ -1,4 +1,6 @@
-# Melee: bank Stage 2's two gains (docs/plan-melee-top5.md, BENCH-115). Stage 2 (PR #316) read every
+# Melee: bank Stage 2's two gains (docs/plan-melee-top5.md, BENCH-115). RAN 2026-10-26 before the
+# g4efpo arm was added (PR #322): g4ef +0.62 +-0.14 PASS, now on master, so g24/e3far no longer
+# apply there and this card's prep stops; pc-melee-ogi screens MGUN-13 on the banked gun instead. Stage 2 (PR #316) read every
 # arm against both baseline copies: the field gun at 24 situations an opponent (g24) +0.34 +-0.16,
 # and "nobody's nearest" (MEND-3, e3far) +0.21 +-0.16 pooled over 12 seeds; each under its own bar.
 # The firepower card (PR #320) then passed MGUN-13, Ogi's crowd power (pogi), at +0.62 +-0.18. This

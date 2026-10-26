@@ -36,11 +36,12 @@ public class FieldGun {
      */
     public static final int K = 21;
     /**
-     * MGUN-7: the kNN depth off a team. Twelve situations spread each opponent over more
+     * MGUN-7: the kNN depth off a team. More situations spread each opponent over more
      * likely angles, so the summed density peaks where several opponents' futures overlap,
-     * which is what a crowd gun is for (docs/bench/melee-gun-3.13.md).
+     * which is what a crowd gun is for (docs/bench/melee-gun-3.13.md). Ogi's 24, not the first
+     * 12: the bank card gained +0.62 +-0.14 with MEND-3 (docs/plan-melee-top5.md, BENCH-115).
      */
-    public static final int MELEE_K = 12;
+    public static final int MELEE_K = 24;
     public static final long MAX_AGE = 8;
     static final double ISOLATED_RANGE = 350;
     static final double FINISHER_BOOST = 2.0;

@@ -63,8 +63,9 @@ class MeleeS1PlanTest {
         assertTrue(build.contains("e3pow) flag=THREE_POWER; suffix=ep ;;"));
         assertTrue(build.contains("e3far) flag=THREE_FAR; suffix=ef ;;"));
         String endgame = Files.readString(Path.of("../hadur-core/src/main/java/hadur2/core/melee/MeleeEndgame.java"));
-        for (String f : List.of("THREE_RING", "THREE_POWER", "THREE_FAR")) {
+        for (String f : List.of("THREE_RING", "THREE_POWER")) {
             assertTrue(endgame.contains("public static final boolean " + f + " = false;"), f + " ships off");
         }
+        assertTrue(endgame.contains("public static final boolean THREE_FAR = true;"), "MEND-3 banked by BENCH-115");
     }
 }
