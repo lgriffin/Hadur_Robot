@@ -1,0 +1,31 @@
+# PC card team-lines (docs/plan-team-top5.md section 10.2, TMODE-15): arm mlw (TMODE-15 wide lines, ablation tmlinesw: LINES_K 0.6, LINES_HALF 0.45), all 46 teams against master (the aa build). Template: tnprep writes work/team-lines-mlw.args with @V@ = the robot.release in hadur-robot/pom.xml
+--team
+true
+--seeds
+6
+--seed-base
+4200
+--rounds
+10
+--parallel
+auto
+--child-heap
+2G
+--cpu-constant
+auto
+--set
+team-census46.txt
+--robot-jar
+bisect/hadur2.HadurTeam_@V@mlw.jar
+--robot
+hadur2.HadurTeam @V@mlw
+--member
+hadur2.Hadur
+--out
+work/team-lines-@V@-mlw
+--report
+../docs/bench/local/team-lines-mlw.md
+--baseline
+bisect/hadur2.HadurTeam_@V@aa.jar
+--baseline-robot
+hadur2.HadurTeam @V@aa

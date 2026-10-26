@@ -49,10 +49,14 @@ class TeamLossesTest(unittest.TestCase):
             self.assertEqual(100.0, s["hit_them"])       # our 1 shot hit
             self.assertEqual(2.0, s["mates"])
             self.assertEqual(27.5, s["last_shot"])    # rounds end their shooting at 25 and 30
+            (Path(d) / "battles" / "rz.HOFSwarm_1.1-1" / "friendly.log").write_text(
+                "1,30,owner=0,victim=1,power=1.00,travelled=500,victimVelocity=0.0,ownerVelocity=0.0,"
+                "target=300,victimAlong=500,victimAcross=0,kind=beyond\n", encoding="utf-8")
             (Path(d) / "battles" / "rz.HOFSwarm_1.1-2").mkdir()
             text = team_losses.report([d])
             self.assertIn("mid 14", text)
             self.assertIn("left out: rz.HOFSwarm_1.1-2", text)
+            self.assertIn("| mid 14 | 1 | 0% | 0% | 100% | 0% |", text)
             self.assertEqual("top 8", team_losses.band("cb.fire.FirestarterTeam"))
 
     def test_other_subject(self):

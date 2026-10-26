@@ -1143,6 +1143,7 @@ MMOVE-8 the melee strand, WEAVE-7 and WEAVE-8 the conductor.
 | MRADAR-3 | Optional | Where the team look switch is on, while on a team with a living teammate, four or more enemies alive and every one seen, if the gun's heat is 0.2 or less and the freshest scan of its last target by any member is two ticks old or more, then the radar shall turn toward that target. | T7 |
 | TMODE-13 | Optional | Where the HUNT mode is played, while Hadur has 20 energy or more, the members (in name order) shall each be assigned the fresh enemy of least (distance + 1.2 × energy)², times 1.6 for an enemy three members already hunt, and Hadur's destination risk, all terms but the bullets' and the posture's, shall be scaled by e^(0.3 (to − from) / 100) for its and Hadur's distances to its place 350 px from its prey, ranked by bearing among the members on that prey and spread up to 70° apart. | T7 |
 | TMODE-14 | Ubiquitous | The team mode table's default, for a team it does not name, shall include the HUNT mode. | T7 |
+| TMODE-15 | Optional | Where the LINES mode is played (ablations tmlines, tmlinesw), Hadur's destination risk shall add, for each living teammate with a fresh position and its nearest fresh enemy, 0.3 at a point on the line from the teammate through that enemy, falling linearly to none 0.3 radians off that line as the teammate sees it, and none nearer the teammate than the enemy or more than 800 px beyond it. | T7 |
 
 ### T1 notes
 
@@ -1585,6 +1586,7 @@ None of these change how the robot plays; TIME-8 and RES-15 only report.
 | BENCH-111 | Ubiquitous | The bench shall carry `tools/third.py`, `panel-third-dodge.txt` (the 148 Saguaro ShotDodger robots Hadur 3.17 scores under 95 live or Saguaro leads by more than 3), the `sdplan` and `sdplanlist` ablations and the `pc-1v1-third` card: the factorial picks (BENCH-110); a screen of the panel with the control, its A/A copy and the planner at 3 seeds; the planner locked per robot at +5 points with the 95% interval above 0; each locked robot's expert read from its own battles' DP records (a strict majority of those where the planner acted, else -1); the candidate built from those lines; a verify on the locked robots at 3 fresh seeds; the gate of BENCH-100; and a results PR. | R9 |
 | BENCH-112 | Ubiquitous | The bench shall carry the `hjlist` and `gslist` ablations (the robots of `$HEAT_JIT` / `$GUN_STACK` get MOVE-28 / GUN-11 entries), the candidate lists `plans/factor-heatjit.txt` and `plans/factor-gunstack.txt` (the Stage 2 factorial's +5-point picks for hj and G, less the robots a shield or stop-and-go entry already drives), `panel-factor-picks.txt` and the `pc-1v1-factor` card: those robots against the control, its A/A copy and the candidate at 6 fresh seeds, the gate of BENCH-100 at +0.03 APS, and a results PR. | R9 |
 | BENCH-113 | Event | When a release is published, the release workflow's summary shall name the release watch, and the bench shall carry the `live-watch` card: `data/tools/live_client.py watch` over every RoboRumble client folder under `C:/RoboRumbleWorkers` with the 1v1, melee and team pages of the versions the card names, keeping only those versions' battles (`--robot`) and stopping at 10 1v1 battles under 70% share or 1,000 1v1 battles, whichever comes first, within 72 hours or when a STOP file appears in the watch folder, then polling health records a further minute for the last battle, and logging the hour's battle counts hourly, then `live_client.py report` and a results PR of the watch folder's TSVs (profiles included), report and log (Leigh, 2026-10-26: the watch is part of every release). | R9 |
+| BENCH-114 | Event | When one of our team's bullets hits one of our members, the team harvester's `friendly.log` line shall add where the victim stood when the bullet was first shown: the distance along the bullet's line of the nearest living enemy within 60 px of it (`target`), the victim's distance along and across the line, and the hit's kind: `lane` (ahead within 36 px of the line and nearer than the target), `noline` (no target), `walkin` (hit before reaching the target) or `beyond` (hit past it); and `tools/team_losses.py` shall report the kinds' shares per band. | R9 |
 | RAM-4 | State | While the rammer-heat switch is on, in a duel, once RAM-2 has confirmed the opponent as a rammer, the surf shall offer MOVE-11's gun-heat wave with MOVE-13's hold off (as heatjit plays) for the rest of the battle, whatever those switches are set to; before the confirmation, and in melee or team, the switches are as their own requirements state. Off by default. | R9 |
 
 - **TIME-8.** `Hadur.setupRecord`, printed once in round 0. The PC's round-0 read
@@ -1745,6 +1747,20 @@ A retired requirement keeps its ID; no new requirement reuses it.
 - Solo play is untouched: the modes act only while a teammate lives. With HUNT on, only the team
   replay fixtures change; the duel and melee fixtures replay bit for bit.
 
+
+## Team lines of fire (TMODE-15, BENCH-114)
+
+- **Why.** Against the 14 mid teams our own bullets do 60 damage a round to our members; Firestarter's
+  10 and Combat's 17 (docs/bench/local/team-compare-read.md). Holding fire for a mate in the lane
+  (WEAVE-10/11, PR #293) cut hits but lost firepower. Both rivals hold almost no shots (about 2%).
+- **TMODE-15.** `TeamModes.Mode.LINES`, `FORCE_LINES` false; `MinimumRiskMovement.linesRisk`, inside
+  `teammateRisk` (so HUNT's pull scales it with the other terms). Constants `LINES_K` (0.3),
+  `LINES_HALF` (0.3 rad), `LINES_REACH` (800 px). Ablations `tmlines` (suffix ml) and `tmlinesw`
+  (mlw: 0.6, 0.45 rad). Card plans/pc-team-lines.queue.
+- **BENCH-114.** `TeamHarvester.kind` and `friendly.log`'s `target`, `victimAlong`, `victimAcross`,
+  `kind`; `tools/team_losses.py` prints the shares per band.
+- Solo play is untouched: the term is read only while a teammate lives. With LINES forced on, only
+  the team replay fixtures can change; the duel and melee fixtures replay bit for bit.
 
 ## Saor, a MicroMelee entry (SAOR-1 to SAOR-15, stages U0 to U5)
 
