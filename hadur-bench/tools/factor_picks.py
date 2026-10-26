@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""BENCH-108: per-opponent picks of the Stage 2 factorial's switches (plan to 3rd, lever L1), 0 battles.
+"""BENCH-110: per-opponent picks of the Stage 2 factorial's switches (plan to 3rd, lever L1), 0 battles.
 
   factor_picks.py ARMS.tsv [ARMS.tsv ...] --design plans/top5-factorial.design --out REPORT.md
       [--out-tsv PICKS.tsv] [--margin 5] [--pairings 1217]

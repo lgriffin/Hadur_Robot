@@ -117,7 +117,9 @@ workers for duel and team runs: team 16 and duel 20 or more raised skipped turns
 (`hostprofile.py`: one worker per two physical cores, 12 on the PC; a smaller machine holds a core
 back and fits its memory), and `--cpu-constant auto` its CPU constant. `python3 hostprofile.py`
 (or `.\queue.ps1 host`) shows both. `--shard K/N` fights every N-th opponent of the set from the
-K-th, for splitting a census between two machines. See `docs/bench/second-machine.md`, which also
+K-th, for splitting a census between two machines. A melee suite (`--suite` of `--melee` fields) runs
+`parallel / min(parallel, seeds)` fields side by side, so a 12-wide census of 4-seed fields keeps
+12 battles in flight rather than 4 (BENCH-108); `--suite-parallel N` overrides it. See `docs/bench/second-machine.md`, which also
 covers the laptop's host check (`plans/host-check.queue`, `tools/host_check.py`, BENCH-106).
 
 A parallel run calibrates `robocode.cpu.constant` once, in the main home, with an idle

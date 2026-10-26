@@ -12,7 +12,7 @@ HEAD = "arm\topponent\tseed\tok\tscore_share\n"
 
 
 class FactorPicksTest(unittest.TestCase):
-    """BENCH-108: per-opponent factor picks with a held-out gain."""
+    """BENCH-110: per-opponent factor picks with a held-out gain."""
 
     def run_on(self, rows, margin=5):
         with tempfile.TemporaryDirectory() as d:

@@ -14,7 +14,7 @@ def log(dir_, lines):
 
 
 class ThirdTest(unittest.TestCase):
-    """BENCH-109: the pc-1v1-third card's expert, candidate and panel steps."""
+    """BENCH-111: the pc-1v1-third card's expert, candidate and panel steps."""
 
     def test_experts_from_our_dp_records(self):
         with tempfile.TemporaryDirectory() as d:

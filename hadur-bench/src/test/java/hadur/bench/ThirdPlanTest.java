@@ -14,7 +14,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-/** BENCH-109: the 1v1 plan-to-3rd card (plans/pc-1v1-third.queue) is complete before it reaches the PC. */
+/** BENCH-111: the 1v1 plan-to-3rd card (plans/pc-1v1-third.queue) is complete before it reaches the PC. */
 class ThirdPlanTest {
 
     private static final Path QUEUE = Path.of("plans/pc-1v1-third.queue");
@@ -27,7 +27,7 @@ class ThirdPlanTest {
     }
 
     @Test
-    @Tag("BENCH-109")
+    @Tag("BENCH-111")
     @DisplayName("the screen's arms are the control, its A/A copy and the planner, all built by the card on the current release")
     void armsAreBuilt() throws IOException {
         String v = release();
@@ -43,7 +43,7 @@ class ThirdPlanTest {
     }
 
     @Test
-    @Tag("BENCH-109")
+    @Tag("BENCH-111")
     @DisplayName("every step reads the one before it at 12 workers; the verify uses fresh seeds and the run ends in a gate and a results PR")
     void stepsChain() throws IOException {
         String queue = Files.readString(QUEUE);
@@ -68,7 +68,7 @@ class ThirdPlanTest {
     }
 
     @Test
-    @Tag("BENCH-108")
+    @Tag("BENCH-110")
     @DisplayName("the factorial mining card runs factor_picks over both Stage 2 halves with the design and ends in a results PR")
     void miningCard() throws IOException {
         String queue = Files.readString(Path.of("plans/pc-1v1-mine.queue"));

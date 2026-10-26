@@ -189,6 +189,24 @@ turns at the chosen width no worse than at 6.
 
 ### Stage 1: the endgame duel
 
+**Stage 0 result (2026-10-26, PR #292).** Census 66.99 ± 0.30 (live projection 66.19, beside
+3.15's live 66.30): +4.61 to the 71.6 bar. A/A +0.20 ± 0.30 at 4 seeds, at its limit, so screens
+need more seeds. Hadur dies with two opponents left in 12.8% of rounds, the largest share of its
+deaths. It enters the endgame duel on 38.9 energy against a top-10 survivor's 59.4 and wins 17%
+(44% even when ahead: the duel against the top 10 is a gun problem, Stage 2); against ranks 11-30
+on 38.4 against 47.6 and wins 56% (89% ahead, 37% behind: the energy deficit). Damage taken a
+round is 66.0 with three or more alive, 4.8 in the endgame.
+
+**The Stage 1 card (`pc-melee-s1`, BENCH-109) therefore opens with e-entry**, as three switches
+on the phase with two opponents left, where Hadur today already plays the duel (MMOVE-4's small
+ring and high lateral weight, MGUN-2's duel power table): MEND-1 `e3ring` keeps the crowd's ring
+and lateral weight, MEND-2 `e3pow` the crowd's power table, MEND-3 `e3far` weighs being a
+survivor's closest robot 4 rather than 2 so the other two fight each other. Each is melee-only,
+off a team (`melee.MeleeEndgame`). Each build runs alone on the census at 6 seeds and is paired
+with an aa baseline battle for battle (`tools/melee_s0.py screen`), with a bb A/A copy; 1,380
+battles. e-pow, e-carry and e-mode act in the duel itself, so they follow in a card of their own
+once this one says how much of the deficit is the entry.
+
 Built where melee hands over (MMEM-2's baton, the conductor and `MeleeSeam`), so a 1v1 battle
 never takes the new path. Arms, each a melee-only switch:
 

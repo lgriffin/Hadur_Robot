@@ -1,4 +1,4 @@
-# 1v1 plan to 3rd, lever L1 (BENCH-108): mine Stage 2's factorial for per-opponent switch picks.
+# 1v1 plan to 3rd, lever L1 (BENCH-110): mine Stage 2's factorial for per-opponent switch picks.
 # 0 battles, a few minutes. Needs Stage 2's two halves in work/top5-s2-half1 and work/top5-s2-half2
 # (the PC's work disk). Report only, then a results PR; the census thread reads it.
 #   ./queue.sh run pc-1v1-mine        (or  .\queue.ps1 run pc-1v1-mine)

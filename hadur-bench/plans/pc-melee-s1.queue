@@ -1,0 +1,35 @@
+# Melee Stage 1 (docs/plan-melee-top5.md, MEND-1..3, BENCH-109): two opponents left. Stage 0 (PR #292)
+# found Hadur dies with two opponents left in 12.8% of rounds, its largest share of deaths, and enters
+# the last duel behind on energy against every survivor ranked 1-30; in that phase it already plays
+# the duel (MMOVE-4's ring, the duel's power table). Each arm keeps one piece of the crowd's play:
+#   er  MEND-1 the crowd's ring and lateral weight      ep  MEND-2 the crowd's power table
+#   ef  MEND-3 being a survivor's closest robot weighs 4, not 2
+# aa is the baseline and bb its A/A copy. Each build fights the 46 census fields x 6 seeds alone
+# (276 battles, 1,380 in all) at the machine's melee width and CPU constant; the read pairs every arm
+# with aa battle for battle. Melee only, off a team: duel and team play are untouched.
+# Verdict: an arm passes at +0.3 census APS or more with the 95% low end above 0 and the 1-30 endgame
+# wins no more than 3 points lower; bb must be within +-0.25. The card ends in a results PR on
+# claude/pc-melee-s1-results whatever the verdict; the melee thread ("Plan melee path to top 5") reads it.
+#   ./queue.sh run pc-melee-s1        (or  .\queue.ps1 run pc-melee-s1)
+# Run it from master, one bench queue at a time:
+#   git checkout master && git pull
+# s1prep reads the version from hadur-robot/pom.xml, so a bump cannot point the card at stale jars,
+# and fixes the width in work/, so a resumed card never mixes host profiles.
+
+set OUT = ../docs/bench/local
+
+s1prep | git checkout -q master && V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && test -n "$V" && C=${MELEE_WORKERS} && for a in aa bb er ep ef; do rm -f bisect/hadur2.Hadur_"$V"$a.jar; done && bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && bash ./build-ablation.sh e3ring && bash ./build-ablation.sh e3pow && bash ./build-ablation.sh e3far && mkdir -p work && for a in aa bb er ep ef; do test -f bisect/hadur2.Hadur_"$V"$a.jar && sed -e "s/@V@/$V/g" -e "s/@A@/$a/g" -e "s/@C@/$C/g" plans/melee-s1.args > work/melee-s1-$a.args || exit 1; done && rm -f ${OUT}/melee-s1-*.md && for f in melee-census-317/f*.txt; do ./fetch-opponents.sh --set "$f" || exit 1; done && mvn -q compile
+s1aa   | mvn -q exec:java "-Dexec.args=@work/melee-s1-aa.args"
+  after: s1prep
+s1bb   | mvn -q exec:java "-Dexec.args=@work/melee-s1-bb.args"
+  after: s1aa
+s1er   | mvn -q exec:java "-Dexec.args=@work/melee-s1-er.args"
+  after: s1bb
+s1ep   | mvn -q exec:java "-Dexec.args=@work/melee-s1-ep.args"
+  after: s1er
+s1ef   | mvn -q exec:java "-Dexec.args=@work/melee-s1-ef.args"
+  after: s1ep
+s1read | V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && W=work/melee-s1-"$V" && { python3 tools/melee_s0.py screen "$W"-aa --arm bb="$W"-bb --arm er="$W"-er --arm ep="$W"-ep --arm ef="$W"-ef --census melee-census-317.txt --seeds 6 --out ${OUT}/melee-s1-read.md --title "Melee Stage 1 on $V: two opponents left" || true; } && test -s ${OUT}/melee-s1-read.md
+  after: s1ef
+s1pr   | bash tools/open_results_pr.sh claude/pc-melee-s1-results "Melee Stage 1: two opponents left (MEND-1..3)" ${OUT}/melee-s1-read.md $(ls ${OUT}/melee-s1-??.md 2>/dev/null)
+  after: s1read

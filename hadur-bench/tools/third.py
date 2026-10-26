@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""BENCH-109: steps of the pc-1v1-third card (docs: "Hadur 1v1: plan to 3rd place", lever L0).
+"""BENCH-111: steps of the pc-1v1-third card (docs: "Hadur 1v1: plan to 3rd place", lever L0).
 
   third.py experts RUN_DIR --pick PICK.tsv --arm sp --out FILE
       the shot-dodge planner's table lines for the robots the pick locked the sp arm for: per robot,
