@@ -159,6 +159,23 @@ class ClientFilesTest(unittest.TestCase):
         w = lc.Watch([self.client], self.out, log=self.lines.append, robots=["hadur2.Hadur 3.11"])
         self.assertEqual(len(w.poll_results()), 2)
 
+    def test_watch_counts_duels_and_collapses_across_restarts(self):
+        w = lc.Watch([self.client], self.out, log=self.lines.append)
+        with open(self.results, "w") as f:
+            f.write(RESULTS)
+        w.poll_results()
+        self.assertEqual((w.duels, w.collapses), (2, 1), "the 25% battle is a collapse")
+        again = lc.Watch([self.client], self.out, log=self.lines.append)
+        self.assertEqual((again.duels, again.collapses), (2, 1), "a restart counts battles.tsv")
+
+    def test_watch_stops_on_its_collapse_count(self):
+        with open(self.results, "w") as f:
+            f.write(RESULTS)
+        self.assertEqual(lc.main(["watch", "--client", self.client, "--out", self.out,
+                                  "--stop-collapses", "1", "--every", "0", "--hours", "0.01"]), 0)
+        with open(os.path.join(self.out, "watch.log")) as f:
+            self.assertIn("done: 2 1v1 battles, 1 under 70%", f.read())
+
     def test_health_record_names_its_opponent_and_verdict(self):
         self.assertEqual(lc.parse_health("HEALTH,35,33,2,7,0,3100000")["skipped"], 7)
         self.assertIsNone(lc.parse_health("garbage"))
