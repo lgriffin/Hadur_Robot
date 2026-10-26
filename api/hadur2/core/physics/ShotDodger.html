@@ -107,6 +107,16 @@ loadScripts(document, 'script');</script>
  matched at least <a href="#MIN_MATCHES">3</a> of the bullets read and at least <a href="#MIN_SHARE">0.6</a> of
  them; a learning gun matches none, so the surf stays on its views.</p>
 
+ <p><a class="req" href="../../../../requirements.html#DODGE-5">DODGE-5</a> (the planner's reading, <a href="#planBest()"><code>planBest()</code></a> and <a href="#planActive()"><code>planActive()</code></a>): Saguaro scores
+ its experts loosely and learns from the bullets that missed us too. A bullet read scores every
+ expert <code>exp(-d^2 / 2 sigma^2)</code> for its distance <code>d</code> from the bullet's heading, with
+ <code>sigma</code> <a href="#SIGMA_GF">0.18</a> of the wave's escape angle (Saguaro's 0.18 guess factor), so
+ a gun our strict match just misses still stands out. A wave that passed us without a hit (and
+ without meeting our bullet) contradicts every expert whose bullet would have crossed us
+ (<a href="#observePass(double%5B%5D,double,double)"><code>observePass(double[], double, double)</code></a>): such a gun does not fire that aim. <a class="req" href="../../../../requirements.html#DODGE-4">DODGE-4</a>: a per-opponent expert
+ shipped in the table primes the score (<a href="#prime(int)"><code>prime(int)</code></a>), so the dodge acts from the first
+ bullet; contradictions take it off again. The strict reading above is unchanged.</p>
+
  <p>Pure: no engine types, no clock, no randomness.</p></div>
 </section>
 <section class="summary">
@@ -120,36 +130,46 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Field</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code>(package private) static final int</code></div>
-<div class="col-second even-row-color"><code><a href="#DIVISOR" class="member-name-link">DIVISOR</a></code></div>
+<div class="col-first even-row-color"><code>static final double</code></div>
+<div class="col-second even-row-color"><code><a href="#CONTRA_WEIGHT" class="member-name-link">CONTRA_WEIGHT</a></code></div>
 <div class="col-last even-row-color">
+<div class="block"><a class="req" href="../../../../requirements.html#DODGE-5">DODGE-5</a>: a contradicted expert loses this much score a pass.</div>
+</div>
+<div class="col-first odd-row-color"><code>(package private) static final int</code></div>
+<div class="col-second odd-row-color"><code><a href="#DIVISOR" class="member-name-link">DIVISOR</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">The divisor aim, and the one after it with the turn added.</div>
 </div>
-<div class="col-first odd-row-color"><code>(package private) static final double</code></div>
-<div class="col-second odd-row-color"><code><a href="#DIVISOR_DECAY" class="member-name-link">DIVISOR_DECAY</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code>(package private) static final double</code></div>
+<div class="col-second even-row-color"><code><a href="#DIVISOR_DECAY" class="member-name-link">DIVISOR_DECAY</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">A learned divisor's running mean keeps this much of the last a bullet.</div>
 </div>
-<div class="col-first even-row-color"><code>static final int</code></div>
-<div class="col-second even-row-color"><code><a href="#EXPERTS" class="member-name-link">EXPERTS</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code>static final int</code></div>
+<div class="col-second odd-row-color"><code><a href="#EXPERTS" class="member-name-link">EXPERTS</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Experts in all.</div>
 </div>
-<div class="col-first odd-row-color"><code>static final double</code></div>
-<div class="col-second odd-row-color"><code><a href="#FLOOR" class="member-name-link">FLOOR</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code>static final double</code></div>
+<div class="col-second even-row-color"><code><a href="#FLOOR" class="member-name-link">FLOOR</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Added to every dodged danger, so the surf's distancing and escape factors still choose
  among the options the bullet misses.</div>
 </div>
-<div class="col-first even-row-color"><code>static final double</code></div>
-<div class="col-second even-row-color"><code><a href="#MARGIN" class="member-name-link">MARGIN</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code>static final double</code></div>
+<div class="col-second odd-row-color"><code><a href="#MARGIN" class="member-name-link">MARGIN</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Margin added each side of a surf option's hit range, radians.</div>
 </div>
-<div class="col-first odd-row-color"><code>static final double</code></div>
-<div class="col-second odd-row-color"><code><a href="#MATCH" class="member-name-link">MATCH</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code>static final double</code></div>
+<div class="col-second even-row-color"><code><a href="#MATCH" class="member-name-link">MATCH</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">A bullet's heading matches an aim within this many radians (our state is exact).</div>
+</div>
+<div class="col-first odd-row-color"><code>static final double</code></div>
+<div class="col-second odd-row-color"><code><a href="#MAX_BAND" class="member-name-link">MAX_BAND</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block"><a class="req" href="../../../../requirements.html#DODGE-5">DODGE-5</a>: the widest <a href="#band(int)"><code>band(int)</code></a>, radians.</div>
 </div>
 <div class="col-first even-row-color"><code>(package private) static final double</code></div>
 <div class="col-second even-row-color"><code><a href="#MAX_DIVISOR" class="member-name-link">MAX_DIVISOR</a></code></div>
@@ -171,6 +191,16 @@ loadScripts(document, 'script');</script>
 <div class="col-second even-row-color"><code><a href="#PER_LAG" class="member-name-link">PER_LAG</a></code></div>
 <div class="col-last even-row-color">
 <div class="block">Experts a lag: the angles, the angles with the turn after, and the two divisor aims.</div>
+</div>
+<div class="col-first odd-row-color"><code>static final double</code></div>
+<div class="col-second odd-row-color"><code><a href="#PRIOR" class="member-name-link">PRIOR</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block"><a class="req" href="../../../../requirements.html#DODGE-4">DODGE-4</a>: a shipped expert's prior, in bullets read.</div>
+</div>
+<div class="col-first even-row-color"><code>static final double</code></div>
+<div class="col-second even-row-color"><code><a href="#SIGMA_GF" class="member-name-link">SIGMA_GF</a></code></div>
+<div class="col-last even-row-color">
+<div class="block"><a class="req" href="../../../../requirements.html#DODGE-5">DODGE-5</a>: the loose score's width, as a share of the wave's escape angle (Saguaro's 0.18 GF).</div>
 </div>
 <div class="col-first odd-row-color"><code>(package private) static final int</code></div>
 <div class="col-second odd-row-color"><code><a href="#TURNED" class="member-name-link">TURNED</a></code></div>
@@ -214,10 +244,22 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Whether one expert stands out enough to dodge it.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#best()" class="member-name-link">best</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#band(int)" class="member-name-link">band</a><wbr>(int&nbsp;k)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../../../requirements.html#DODGE-5">DODGE-5</a>: how far expert <code>k</code>'s bullet may be from where it says, radians: twice the RMS
+ of its misses on the bullets read near it, at least <a href="#MARGIN"><code>MARGIN</code></a> and at most
+ <a href="#MAX_BAND">0.1</a>; <a href="#MARGIN"><code>MARGIN</code></a> before any (a shipped expert is taken as exact until read).</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#best()" class="member-name-link">best</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">The expert matched most often (the lowest index on a tie), or -1 with none matched.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#contradictions(int)" class="member-name-link">contradictions</a><wbr>(int&nbsp;k)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../../../requirements.html#DODGE-5">DODGE-5</a>: the passes that contradicted expert <code>k</code>.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#danger(double%5B%5D,double,double)" class="member-name-link">danger</a><wbr>(double[]&nbsp;aims,
@@ -244,14 +286,57 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Counts one enemy bullet whose heading we know, then learns the divisors from it.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#read()" class="member-name-link">read</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#observe(double%5B%5D,double,double)" class="member-name-link">observe</a><wbr>(double[]&nbsp;aims,
+ double&nbsp;heading,
+ double&nbsp;escapeAngle)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Bullets read this battle.</div>
+<div class="block">As <a href="#observe(double%5B%5D,double)"><code>observe(double[], double)</code></a>, and <a class="req" href="../../../../requirements.html#DODGE-5">DODGE-5</a>'s loose score when <code>escapeAngle</code>
+ is known.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#reset()" class="member-name-link">reset</a>()</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#observePass(double%5B%5D,double,double)" class="member-name-link">observePass</a><wbr>(double[]&nbsp;aims,
+ double&nbsp;angle,
+ double&nbsp;bandwidth)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../../../requirements.html#DODGE-5">DODGE-5</a>: a wave that passed us with its bullet neither hitting us nor meeting ours.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#passes()" class="member-name-link">passes</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../../../requirements.html#DODGE-5">DODGE-5</a>: passes read this battle.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#planActive()" class="member-name-link">planActive</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../../../requirements.html#DODGE-5">DODGE-5</a>: whether the planner dodges: the best expert's net score is at least
+ <a href="#MIN_MATCHES">3</a>, and its score with the prior is at least <a href="#MIN_SHARE">0.6</a> of the
+ bullets read (the prior counted as bullets).</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#planBest()" class="member-name-link">planBest</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../../../requirements.html#DODGE-5">DODGE-5</a>: the expert with the best net score (the lowest index on a tie), or -1 with none above 0.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#planScore(int)" class="member-name-link">planScore</a><wbr>(int&nbsp;k)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../../../requirements.html#DODGE-5">DODGE-5</a>: expert <code>k</code>'s net score: loose score plus prior, less the contradictions.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#prime(int)" class="member-name-link">prime</a><wbr>(int&nbsp;k)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../../../requirements.html#DODGE-4">DODGE-4</a>: primes expert <code>k</code> with <a href="#PRIOR"><code>PRIOR</code></a> bullets' worth of score, as the table
+ ships it for an opponent; out of range does nothing.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#read()" class="member-name-link">read</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Bullets read this battle.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#reset()" class="member-name-link">reset</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Forgets the count and the divisors, for a new battle.</div>
 </div>
 </div>
@@ -466,6 +551,66 @@ loadScripts(document, 'script');</script>
 </dl>
 </section>
 </li>
+<li>
+<section class="detail" id="SIGMA_GF">
+<h3>SIGMA_GF</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">SIGMA_GF</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#DODGE-5">DODGE-5</a>: the loose score's width, as a share of the wave's escape angle (Saguaro's 0.18 GF).</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur2.core.physics.ShotDodger.SIGMA_GF">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="PRIOR">
+<h3>PRIOR</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">PRIOR</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#DODGE-4">DODGE-4</a>: a shipped expert's prior, in bullets read.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur2.core.physics.ShotDodger.PRIOR">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="CONTRA_WEIGHT">
+<h3>CONTRA_WEIGHT</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">CONTRA_WEIGHT</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#DODGE-5">DODGE-5</a>: a contradicted expert loses this much score a pass.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur2.core.physics.ShotDodger.CONTRA_WEIGHT">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="MAX_BAND">
+<h3>MAX_BAND</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">MAX_BAND</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#DODGE-5">DODGE-5</a>: the widest <a href="#band(int)"><code>band(int)</code></a>, radians.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur2.core.physics.ShotDodger.MAX_BAND">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
 </ul>
 </section>
 </li>
@@ -498,6 +643,22 @@ loadScripts(document, 'script');</script>
 <dt>Parameters:</dt>
 <dd><code>aims</code> - the bullet's wave's <a href="SimpleAims.html#angles(double%5B%5D%5B%5D,double,double,double)"><code>SimpleAims.angles(double[][], double, double, double)</code></a></dd>
 <dd><code>heading</code> - the bullet's heading, radians</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="observe(double[],double,double)">
+<h3>observe</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">observe</span><wbr><span class="parameters">(double[]&nbsp;aims,
+ double&nbsp;heading,
+ double&nbsp;escapeAngle)</span></div>
+<div class="block">As <a href="#observe(double%5B%5D,double)"><code>observe(double[], double)</code></a>, and <a class="req" href="../../../../requirements.html#DODGE-5">DODGE-5</a>'s loose score when <code>escapeAngle</code>
+ is known.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>aims</code> - the bullet's wave's <a href="SimpleAims.html#angles(double%5B%5D%5B%5D,double,double,double)"><code>SimpleAims.angles(double[][], double, double, double)</code></a></dd>
+<dd><code>heading</code> - the bullet's heading, radians</dd>
+<dd><code>escapeAngle</code> - the wave's escape angle, radians; NaN for the strict reading only</dd>
 </dl>
 </section>
 </li>
@@ -545,6 +706,77 @@ loadScripts(document, 'script');</script>
  double&nbsp;bandwidth)</span></div>
 <div class="block">The danger of a surf option whose hit range is <code>angle +/- bandwidth</code>: 1 when the best
  expert's bullet falls inside it (with <a href="#MARGIN"><code>MARGIN</code></a>), else 0; NaN while not <a href="#active()"><code>active()</code></a>.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="observePass(double[],double,double)">
+<h3>observePass</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">observePass</span><wbr><span class="parameters">(double[]&nbsp;aims,
+ double&nbsp;angle,
+ double&nbsp;bandwidth)</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#DODGE-5">DODGE-5</a>: a wave that passed us with its bullet neither hitting us nor meeting ours. Every
+ expert whose bullet lies inside <code>angle +/- bandwidth</code>, less <a href="#MARGIN"><code>MARGIN</code></a> each side,
+ would have hit us, so this gun does not fire it.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>aims</code> - the wave's <a href="SimpleAims.html#angles(double%5B%5D%5B%5D,double,double,double)"><code>SimpleAims.angles(double[][], double, double, double)</code></a></dd>
+<dd><code>angle</code> - the centre of the wave's precise intersection with us, radians</dd>
+<dd><code>bandwidth</code> - its half width, radians</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="prime(int)">
+<h3>prime</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">prime</span><wbr><span class="parameters">(int&nbsp;k)</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#DODGE-4">DODGE-4</a>: primes expert <code>k</code> with <a href="#PRIOR"><code>PRIOR</code></a> bullets' worth of score, as the table
+ ships it for an opponent; out of range does nothing.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="planScore(int)">
+<h3>planScore</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">planScore</span><wbr><span class="parameters">(int&nbsp;k)</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#DODGE-5">DODGE-5</a>: expert <code>k</code>'s net score: loose score plus prior, less the contradictions.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="planBest()">
+<h3>planBest</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">planBest</span>()</div>
+<div class="block"><a class="req" href="../../../../requirements.html#DODGE-5">DODGE-5</a>: the expert with the best net score (the lowest index on a tie), or -1 with none above 0.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="planActive()">
+<h3>planActive</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">planActive</span>()</div>
+<div class="block"><a class="req" href="../../../../requirements.html#DODGE-5">DODGE-5</a>: whether the planner dodges: the best expert's net score is at least
+ <a href="#MIN_MATCHES">3</a>, and its score with the prior is at least <a href="#MIN_SHARE">0.6</a> of the
+ bullets read (the prior counted as bullets).</div>
+</section>
+</li>
+<li>
+<section class="detail" id="band(int)">
+<h3>band</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">band</span><wbr><span class="parameters">(int&nbsp;k)</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#DODGE-5">DODGE-5</a>: how far expert <code>k</code>'s bullet may be from where it says, radians: twice the RMS
+ of its misses on the bullets read near it, at least <a href="#MARGIN"><code>MARGIN</code></a> and at most
+ <a href="#MAX_BAND">0.1</a>; <a href="#MARGIN"><code>MARGIN</code></a> before any (a shipped expert is taken as exact until read).</div>
+</section>
+</li>
+<li>
+<section class="detail" id="passes()">
+<h3>passes</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">passes</span>()</div>
+<div class="block"><a class="req" href="../../../../requirements.html#DODGE-5">DODGE-5</a>: passes read this battle.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="contradictions(int)">
+<h3>contradictions</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">contradictions</span><wbr><span class="parameters">(int&nbsp;k)</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#DODGE-5">DODGE-5</a>: the passes that contradicted expert <code>k</code>.</div>
 </section>
 </li>
 <li>

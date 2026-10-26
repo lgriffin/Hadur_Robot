@@ -116,17 +116,35 @@ loadScripts(document, 'script');</script>
 <div class="block">Surfs the first surfable wave (and <code>wavesToSurf - 1</code> behind it), or orbits when
  there is none.</div>
 </div>
-<div class="col-first even-row-color"><code>int</code></div>
-<div class="col-second even-row-color"><span class="type-name-label">StopPointSurf.</span><code><a href="../StopPointSurf.html#surf(hadur2.core.model.BotOrders.Builder,hadur2.core.model.RobotState,hadur2.core.move.MoveController,hadur2.core.model.Wave,int,double,java.awt.geom.Point2D.Double)" class="member-name-link">surf</a><wbr>(<a href="../../model/BotOrders.Builder.html" title="class in hadur2.core.model">BotOrders.Builder</a>&nbsp;orders,
+<div class="col-first even-row-color"><code>boolean</code></div>
+<div class="col-second even-row-color"><span class="type-name-label">ShotDodgePlanner.</span><code><a href="../ShotDodgePlanner.html#surf(hadur2.core.model.BotOrders.Builder,hadur2.core.model.RobotState,hadur2.core.move.MoveController,hadur2.core.physics.ShotDodger,hadur2.core.model.RobotState,double)" class="member-name-link">surf</a><wbr>(<a href="../../model/BotOrders.Builder.html" title="class in hadur2.core.model">BotOrders.Builder</a>&nbsp;orders,
+ <a href="../../model/RobotState.html" title="class in hadur2.core.model">RobotState</a>&nbsp;myState,
+ <a href="../MoveController.html" title="class in hadur2.core.move">MoveController</a>&nbsp;moveCtrl,
+ <a href="../../physics/ShotDodger.html" title="class in hadur2.core.physics">ShotDodger</a>&nbsp;dodger,
+ <a href="../../model/RobotState.html" title="class in hadur2.core.model">RobotState</a>&nbsp;enemy,
+ double&nbsp;desiredDistance)</code></div>
+<div class="col-last even-row-color">
+<div class="block">Drives the tick when the dodger has an expert and a surfable wave has its bullet.</div>
+</div>
+<div class="col-first odd-row-color"><code>int</code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">StopPointSurf.</span><code><a href="../StopPointSurf.html#surf(hadur2.core.model.BotOrders.Builder,hadur2.core.model.RobotState,hadur2.core.move.MoveController,hadur2.core.model.Wave,int,double,java.awt.geom.Point2D.Double)" class="member-name-link">surf</a><wbr>(<a href="../../model/BotOrders.Builder.html" title="class in hadur2.core.model">BotOrders.Builder</a>&nbsp;orders,
  <a href="../../model/RobotState.html" title="class in hadur2.core.model">RobotState</a>&nbsp;myState,
  <a href="../MoveController.html" title="class in hadur2.core.move">MoveController</a>&nbsp;moveCtrl,
  <a href="../../model/Wave.html" title="class in hadur2.core.model">Wave</a>&nbsp;surfWave,
  int&nbsp;wavesToSurf,
  double&nbsp;desiredDistance,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;distancingFrom)</code></div>
-<div class="col-last even-row-color">
+<div class="col-last odd-row-color">
 <div class="block">Surfs <code>surfWave</code> (and the next surfable wave when <code>wavesToSurf</code> is 2 or more):
  keeps or remakes the plan, publishes its intervals and writes the drive.</div>
+</div>
+<div class="col-first even-row-color"><code>boolean</code></div>
+<div class="col-second even-row-color"><span class="type-name-label">SurfMover.</span><code><a href="../SurfMover.html#tryDodgePlan(hadur2.core.model.BotOrders.Builder,hadur2.core.model.RobotState,hadur2.core.move.MoveController,boolean)" class="member-name-link">tryDodgePlan</a><wbr>(<a href="../../model/BotOrders.Builder.html" title="class in hadur2.core.model">BotOrders.Builder</a>&nbsp;orders,
+ <a href="../../model/RobotState.html" title="class in hadur2.core.model">RobotState</a>&nbsp;myState,
+ <a href="../MoveController.html" title="class in hadur2.core.move">MoveController</a>&nbsp;moveCtrl,
+ boolean&nbsp;goToAllowed)</code></div>
+<div class="col-last even-row-color">
+<div class="block"><a class="req" href="../../../../../requirements.html#DODGE-6">DODGE-6</a>: lets the planner, when on, drive this tick outside the surf (<a class="req" href="../../../../../requirements.html#RAM-2">RAM-2</a>'s escape asks it first).</div>
 </div>
 </div>
 </section>

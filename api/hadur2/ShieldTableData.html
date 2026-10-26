@@ -106,8 +106,8 @@ loadScripts(document, 'script');</script>
  <p>A class, not a resource, for the reason <a href="ShieldListData.html" title="class in hadur2"><code>ShieldListData</code></a> gives: Robocode's sandbox
  refuses a robot the read of its own jar. Keep the shape: a final class with package-private
  static methods <code>moves()</code>, <code>aims()</code>, <code>dodges()</code>, <code>stopGos()</code> and
- <code>stopGoShifts()</code>; the bench's <code>smovelist</code>/<code>saimlist</code>/<code>sdodgelist</code>/
- <code>sgolist</code>/<code>sgo2list</code> ablations fill them.</p></div>
+ <code>stopGoShifts()</code> and <code>dodgePlans()</code>; the bench's <code>smovelist</code>/<code>saimlist</code>/<code>sdodgelist</code>/
+ <code>sgolist</code>/<code>sgo2list</code>/<code>sdplanlist</code> ablations fill them.</p></div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -128,23 +128,30 @@ loadScripts(document, 'script');</script>
 <div class="block"><a class="req" href="../../requirements.html#SHIELD-18">SHIELD-18</a>: the shipped aims, one <code>"predictor offset name"</code> line each.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#dodges()" class="member-name-link">dodges</a>()</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#dodgePlans()" class="member-name-link">dodgePlans</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../requirements.html#DODGE-4">DODGE-4</a>: the opponents the shot-dodge planner (<a class="req" href="../../requirements.html#DODGE-6">DODGE-6</a>) is for, one <code>"expert name"</code>
+ line each: the expert shipped for it (<a class="req" href="../../requirements.html#DODGE-2">DODGE-2</a>'s index, from the bench's DP records), or -1
+ to learn it in the battle, then the robot's name.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#dodges()" class="member-name-link">dodges</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../requirements.html#DODGE-3">DODGE-3</a>: the opponents the duel surf dodges simple aims against.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#moves()" class="member-name-link">moves</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#moves()" class="member-name-link">moves</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../requirements.html#SHIELD-17">SHIELD-17</a>: the opponents the opening drive is for.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#stopGos()" class="member-name-link">stopGos</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#stopGos()" class="member-name-link">stopGos</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../requirements.html#POISON-2">POISON-2</a>: the opponents fought with stop-and-go, WavePoison's variant (reverse crawl one tick early).</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#stopGoShifts()" class="member-name-link">stopGoShifts</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#stopGoShifts()" class="member-name-link">stopGoShifts</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block"><a class="req" href="../../requirements.html#POISON-2">POISON-2</a>: the opponents fought with stop-and-go, WavePoisonShift's variant (two ticks early).</div>
 </div>
 </div>
@@ -194,6 +201,19 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>a fresh array of names</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="dodgePlans()">
+<h3>dodgePlans</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]</span>&nbsp;<span class="element-name">dodgePlans</span>()</div>
+<div class="block"><a class="req" href="../../requirements.html#DODGE-4">DODGE-4</a>: the opponents the shot-dodge planner (<a class="req" href="../../requirements.html#DODGE-6">DODGE-6</a>) is for, one <code>"expert name"</code>
+ line each: the expert shipped for it (<a class="req" href="../../requirements.html#DODGE-2">DODGE-2</a>'s index, from the bench's DP records), or -1
+ to learn it in the battle, then the robot's name.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>a fresh array of lines</dd>
 </dl>
 </section>
 </li>

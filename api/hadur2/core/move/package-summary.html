@@ -227,37 +227,44 @@ loadScripts(document, 'script');</script>
 <div class="block">GUN-7's geometry: how much more of the angles that would hit us one more bullet of ours
  would stop.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="SimpleFormula.html" title="class in hadur2.core.move">SimpleFormula</a></div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="ShotDodgePlanner.html" title="class in hadur2.core.move">ShotDodgePlanner</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="block"><a class="req" href="../../../../requirements.html#DODGE-6">DODGE-6</a>: Hadur's own shot-dodge planner, inspired by Saguaro's ShotDodger (its ideas: score a
+ path by its clearance from the predicted bullet, add the enemy's distance, learn from misses;
+ no code or data of it): against a gun that fires one simple aim, plan a path on which that
+ aim's bullets miss us, as far from them as the field allows.</div>
+</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="SimpleFormula.html" title="class in hadur2.core.move">SimpleFormula</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">The simplest danger space: bullet flight time, lateral velocity and acceleration, equally
  weighted.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="StopAndGo.html" title="class in hadur2.core.move">StopAndGo</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="StopAndGo.html" title="class in hadur2.core.move">StopAndGo</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block"><a class="req" href="../../../../requirements.html#POISON-1">POISON-1</a>: stop-and-go against an opponent whose gun learns from where we are when it fires,
  as Saguaro's WavePoison and WavePoisonShift play it (docs/bench/rivals-source-read.md).</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab3"><a href="StopAndGo.Phase.html" title="enum class in hadur2.core.move">StopAndGo.Phase</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab3">
+<div class="col-first odd-row-color class-summary class-summary-tab3"><a href="StopAndGo.Phase.html" title="enum class in hadur2.core.move">StopAndGo.Phase</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab3">
 <div class="block">The phase of the last <a href="StopAndGo.html#move(hadur2.core.model.BotOrders.Builder,hadur2.core.model.RobotState,java.awt.geom.Point2D.Double,double,double,long)"><code>StopAndGo.move(hadur2.core.model.BotOrders.Builder, hadur2.core.model.RobotState, java.awt.geom.Point2D.Double, double, double, long)</code></a>: the next one's input decides it.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="StopPointSurf.html" title="class in hadur2.core.move">StopPointSurf</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="StopPointSurf.html" title="class in hadur2.core.move">StopPointSurf</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">MOVE-25: a second duel surf, built from how DrussGT and BeepBoop plan
  (docs/bench/surf-b-rivals-read.md).</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="SurfMover.html" title="class in hadur2.core.move">SurfMover</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="SurfMover.html" title="class in hadur2.core.move">SurfMover</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">The duel's wave surfing: each tick, decides where to drive so that the enemy's next
  bullets are least likely to hit us, and writes the body's turn, distance and speed into
  the orders.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab3"><a href="SurfMover.Mode.html" title="enum class in hadur2.core.move">SurfMover.Mode</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab3">
+<div class="col-first even-row-color class-summary class-summary-tab3"><a href="SurfMover.Mode.html" title="enum class in hadur2.core.move">SurfMover.Mode</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab3">
 <div class="block">How to pick where to be when a wave breaks.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab3"><a href="SurfMover.SurfOption.html" title="enum class in hadur2.core.move">SurfMover.SurfOption</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab3">
+<div class="col-first odd-row-color class-summary class-summary-tab3"><a href="SurfMover.SurfOption.html" title="enum class in hadur2.core.move">SurfMover.SurfOption</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab3">
 <div class="block">The three-option surf's choices; <a href="SurfMover.SurfOption.html#direction"><code>SurfMover.SurfOption.direction</code></a> is the orbit sign.</div>
 </div>
 </div>

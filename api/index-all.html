@@ -645,6 +645,12 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">The band a distance falls in: <code>floor(distance / 150)</code>, capped at the last band.</div>
 </dd>
+<dt><a href="hadur2/core/physics/ShotDodger.html#band(int)" class="member-name-link">band(int)</a> - Method in class hadur2.core.physics.<a href="hadur2/core/physics/ShotDodger.html" title="class in hadur2.core.physics">ShotDodger</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#DODGE-5">DODGE-5</a>: how far expert <code>k</code>'s bullet may be from where it says, radians: twice the RMS
+ of its misses on the bullets read near it, at least <a href="hadur2/core/physics/ShotDodger.html#MARGIN"><code>ShotDodger.MARGIN</code></a> and at most
+ <a href="hadur2/core/physics/ShotDodger.html#MAX_BAND">0.1</a>; <a href="hadur2/core/physics/ShotDodger.html#MARGIN"><code>ShotDodger.MARGIN</code></a> before any (a shipped expert is taken as exact until read).</div>
+</dd>
 <dt><a href="hadur2/core/memory/OpponentProfile.html#BANDS" class="member-name-link">BANDS</a> - Static variable in class hadur2.core.memory.<a href="hadur2/core/memory/OpponentProfile.html" title="class in hadur2.core.memory">OpponentProfile</a></dt>
 <dd>
 <div class="block">Distance bands of 150 px: under 150, 150-300, 300-450, 450-600, 600 and over.</div>
@@ -1582,6 +1588,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">A scan this close counts toward <a href="hadur2/core/melee/MeleeProfile.html#rams()"><code>MeleeProfile.rams()</code></a>'s denominator.</div>
 </dd>
+<dt><a href="hadur2/core/move/ShotDodgePlanner.html#CLOSE_RANGE" class="member-name-link">CLOSE_RANGE</a> - Static variable in class hadur2.core.move.<a href="hadur2/core/move/ShotDodgePlanner.html" title="class in hadur2.core.move">ShotDodgePlanner</a></dt>
+<dd>
+<div class="block">With no wave to dodge, the planner keeps away from an enemy closer than this, px.</div>
+</dd>
 <dt><a href="hadur2/core/shieldmode/ShieldMode.html#CLOSE_RANGE" class="member-name-link">CLOSE_RANGE</a> - Static variable in class hadur2.core.shieldmode.<a href="hadur2/core/shieldmode/ShieldMode.html" title="class in hadur2.core.shieldmode">ShieldMode</a></dt>
 <dd>
 <div class="block">Closer than this, in px, the enemy is ramming or about to.</div>
@@ -1646,6 +1656,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur/bench/ColdWarm.Row.html" class="type-name-link" title="class in hadur.bench">ColdWarm.Row</a> - Record Class in <a href="hadur/bench/package-summary.html">hadur.bench</a></dt>
 <dd>
 <div class="block">One seed's cold and warm battles of one build, and the shelf the warm one started on.</div>
+</dd>
+<dt><a href="hadur2/core/move/ShotDodgePlanner.html#COLLIDE" class="member-name-link">COLLIDE</a> - Static variable in class hadur2.core.move.<a href="hadur2/core/move/ShotDodgePlanner.html" title="class in hadur2.core.move">ShotDodgePlanner</a></dt>
+<dd>
+<div class="block">Centres closer than this collide, px (a robot is 36 px square).</div>
 </dd>
 <dt><a href="hadur2/core/MeleeMemory.html#collisions()" class="member-name-link">collisions()</a> - Method in class hadur2.core.<a href="hadur2/core/MeleeMemory.html" title="class in hadur2.core">MeleeMemory</a></dt>
 <dd>
@@ -1722,6 +1736,14 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Whether <code>angle</code> is inside the interval, going the short way round the circle.</div>
 </dd>
+<dt><a href="hadur2/core/physics/ShotDodger.html#CONTRA_WEIGHT" class="member-name-link">CONTRA_WEIGHT</a> - Static variable in class hadur2.core.physics.<a href="hadur2/core/physics/ShotDodger.html" title="class in hadur2.core.physics">ShotDodger</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#DODGE-5">DODGE-5</a>: a contradicted expert loses this much score a pass.</div>
+</dd>
+<dt><a href="hadur2/core/physics/ShotDodger.html#contradictions(int)" class="member-name-link">contradictions(int)</a> - Method in class hadur2.core.physics.<a href="hadur2/core/physics/ShotDodger.html" title="class in hadur2.core.physics">ShotDodger</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#DODGE-5">DODGE-5</a>: the passes that contradicted expert <code>k</code>.</div>
+</dd>
 <dt><a href="hadur/bench/SessionFile.html#control()" class="member-name-link">control()</a> - Method in record class hadur.bench.<a href="hadur/bench/SessionFile.html" title="class in hadur.bench">SessionFile</a></dt>
 <dd>
 <div class="block">Returns the value of the <code>control</code> record component.</div>
@@ -1750,6 +1772,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur2/core/ledger/EnergyLedger.Reading.html#corrected()" class="member-name-link">corrected()</a> - Method in class hadur2.core.ledger.<a href="hadur2/core/ledger/EnergyLedger.Reading.html" title="class in hadur2.core.ledger">EnergyLedger.Reading</a></dt>
 <dd>
 <div class="block">The loss the ledger could not explain, in energy: the bullet power when <a href="hadur2/core/ledger/EnergyLedger.Reading.html#shot()"><code>EnergyLedger.Reading.shot()</code></a> is true.</div>
+</dd>
+<dt><a href="hadur2/core/move/ShotDodgePlanner.html#cost(java.util.List,java.util.List,java.util.List,double,hadur2.core.model.RobotState)" class="member-name-link">cost(List&lt;RobotState&gt;, List&lt;Wave&gt;, List&lt;Double&gt;, double, RobotState)</a> - Method in class hadur2.core.move.<a href="hadur2/core/move/ShotDodgePlanner.html" title="class in hadur2.core.move">ShotDodgePlanner</a></dt>
+<dd>
+<div class="block">The path's cost (see the class comment).</div>
 </dd>
 <dt><a href="hadur2/core/memory/Bytes.Reader.html#count(float,java.lang.String)" class="member-name-link">count(float, String)</a> - Static method in class hadur2.core.memory.<a href="hadur2/core/memory/Bytes.Reader.html" title="class in hadur2.core.memory">Bytes.Reader</a></dt>
 <dd>
@@ -2341,9 +2367,31 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur2/core/link/Report.Dodge.html#%3Cinit%3E(java.lang.String,double,double,double,double,double)" class="member-name-link">Dodge(String, double, double, double, double, double)</a> - Constructor for class hadur2.core.link.<a href="hadur2/core/link/Report.Dodge.html" title="class in hadur2.core.link">Report.Dodge</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur2/core/shieldmode/ShieldList.html#DODGE_PLAN_PREFIX" class="member-name-link">DODGE_PLAN_PREFIX</a> - Static variable in class hadur2.core.shieldmode.<a href="hadur2/core/shieldmode/ShieldList.html" title="class in hadur2.core.shieldmode">ShieldList</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#DODGE-4">DODGE-4</a>: a line starting with this, <code>shot-dodge2: expert name</code>, names an opponent the
+ shot-dodge planner (<a class="req" href="../requirements.html#DODGE-6">DODGE-6</a>) is for, with the expert shipped for it (<a class="req" href="../requirements.html#DODGE-2">DODGE-2</a>'s index), or -1
+ to learn it in the battle.</div>
+</dd>
 <dt><a href="hadur2/core/shieldmode/ShieldList.html#DODGE_PREFIX" class="member-name-link">DODGE_PREFIX</a> - Static variable in class hadur2.core.shieldmode.<a href="hadur2/core/shieldmode/ShieldList.html" title="class in hadur2.core.shieldmode">ShieldList</a></dt>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#DODGE-3">DODGE-3</a>: a line starting with this names an opponent the duel surf dodges simple aims against.</div>
+</dd>
+<dt><a href="hadur2/core/shieldmode/ShieldList.html#dodgePlan(java.lang.String)" class="member-name-link">dodgePlan(String)</a> - Method in class hadur2.core.shieldmode.<a href="hadur2/core/shieldmode/ShieldList.html" title="class in hadur2.core.shieldmode">ShieldList</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#DODGE-4">DODGE-4</a>: the shot-dodge planner's entry for <code>robotName</code>, by the rule of
+ <a href="hadur2/core/shieldmode/ShieldList.html#matches(java.lang.String)"><code>ShieldList.matches(java.lang.String)</code></a>: the shipped expert, -1 to learn it, or <a href="hadur2/core/shieldmode/ShieldList.html#NO_DODGE_PLAN"><code>ShieldList.NO_DODGE_PLAN</code></a> when it is
+ not listed.</div>
+</dd>
+<dt><a href="hadur2/ShieldTableData.html#dodgePlans()" class="member-name-link">dodgePlans()</a> - Static method in class hadur2.<a href="hadur2/ShieldTableData.html" title="class in hadur2">ShieldTableData</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#DODGE-4">DODGE-4</a>: the opponents the shot-dodge planner (<a class="req" href="../requirements.html#DODGE-6">DODGE-6</a>) is for, one <code>"expert name"</code>
+ line each: the expert shipped for it (<a class="req" href="../requirements.html#DODGE-2">DODGE-2</a>'s index, from the bench's DP records), or -1
+ to learn it in the battle, then the robot's name.</div>
+</dd>
+<dt><a href="hadur2/core/move/SurfMover.html#dodgePlanTicks()" class="member-name-link">dodgePlanTicks()</a> - Method in class hadur2.core.move.<a href="hadur2/core/move/SurfMover.html" title="class in hadur2.core.move">SurfMover</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#DODGE-6">DODGE-6</a>: the ticks the planner drove this round, for the DP record.</div>
 </dd>
 <dt><a href="hadur2/core/link/Report.html#dodges()" class="member-name-link">dodges()</a> - Method in class hadur2.core.link.<a href="hadur2/core/link/Report.html" title="class in hadur2.core.link">Report</a></dt>
 <dd>&nbsp;</dd>
@@ -2363,6 +2411,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur2/core/move/SurfMover.html#drainAesRecords()" class="member-name-link">drainAesRecords()</a> - Method in class hadur2.core.move.<a href="hadur2/core/move/SurfMover.html" title="class in hadur2.core.move">SurfMover</a></dt>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#AES-1">AES-1</a>: the records made since the last call, oldest first; the list is then emptied.</div>
+</dd>
+<dt><a href="hadur2/core/move/ShotDodgePlanner.html#DRIFT" class="member-name-link">DRIFT</a> - Static variable in class hadur2.core.move.<a href="hadur2/core/move/ShotDodgePlanner.html" title="class in hadur2.core.move">ShotDodgePlanner</a></dt>
+<dd>
+<div class="block">A replan is forced when we are this far from the path, px.</div>
 </dd>
 <dt><a href="hadur2/core/move/StopPointSurf.html#DRIFT" class="member-name-link">DRIFT</a> - Static variable in class hadur2.core.move.<a href="hadur2/core/move/StopPointSurf.html" title="class in hadur2.core.move">StopPointSurf</a></dt>
 <dd>
@@ -2634,6 +2686,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur2/core/HadurCore.html#enemiesTotal()" class="member-name-link">enemiesTotal()</a> - Method in class hadur2.core.<a href="hadur2/core/HadurCore.html" title="class in hadur2.core">HadurCore</a></dt>
 <dd>
 <div class="block">Opponents at the battle's start.</div>
+</dd>
+<dt><a href="hadur2/core/move/ShotDodgePlanner.html#enemyAt(hadur2.core.model.RobotState,long)" class="member-name-link">enemyAt(RobotState, long)</a> - Method in class hadur2.core.move.<a href="hadur2/core/move/ShotDodgePlanner.html" title="class in hadur2.core.move">ShotDodgePlanner</a></dt>
+<dd>
+<div class="block">The enemy at <code>time</code>, driven on at its last heading and speed and held inside the field.</div>
 </dd>
 <dt><a href="hadur2/core/ledger/EnergyLedger.html#enemyBulletHitUs(double)" class="member-name-link">enemyBulletHitUs(double)</a> - Method in class hadur2.core.ledger.<a href="hadur2/core/ledger/EnergyLedger.html" title="class in hadur2.core.ledger">EnergyLedger</a></dt>
 <dd>
@@ -4029,6 +4085,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Go-to surfing's pick on the last tick; null in the three-option mode.</div>
 </dd>
+<dt><a href="hadur2/core/move/ShotDodgePlanner.html#goToStep(hadur2.core.model.RobotState,java.awt.geom.Point2D.Double)" class="member-name-link">goToStep(RobotState, Point2D.Double)</a> - Method in class hadur2.core.move.<a href="hadur2/core/move/ShotDodgePlanner.html" title="class in hadur2.core.move">ShotDodgePlanner</a></dt>
+<dd>
+<div class="block">One tick of driving to <code>point</code> and stopping there, as go-to surfing's.</div>
+</dd>
 <dt><a href="hadur2/core/move/StopPointSurf.html#goToStep(hadur2.core.model.RobotState,java.awt.geom.Point2D.Double)" class="member-name-link">goToStep(RobotState, Point2D.Double)</a> - Method in class hadur2.core.move.<a href="hadur2/core/move/StopPointSurf.html" title="class in hadur2.core.move">StopPointSurf</a></dt>
 <dd>
 <div class="block">One tick of driving to <code>point</code> and stopping there, as go-to surfing's.</div>
@@ -4665,6 +4725,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Absolute headings tried, evenly spaced.</div>
 </dd>
+<dt><a href="hadur2/core/move/ShotDodgePlanner.html#HEADINGS" class="member-name-link">HEADINGS</a> - Static variable in class hadur2.core.move.<a href="hadur2/core/move/ShotDodgePlanner.html" title="class in hadur2.core.move">ShotDodgePlanner</a></dt>
+<dd>
+<div class="block">Straight headings tried, evenly round the compass.</div>
+</dd>
 <dt><a href="hadur2/core/melee/MeleeProfileFolder.Tally.html#headOnHits" class="member-name-link">headOnHits</a> - Variable in class hadur2.core.melee.<a href="hadur2/core/melee/MeleeProfileFolder.Tally.html" title="class in hadur2.core.melee">MeleeProfileFolder.Tally</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur/bench/SessionFile.html#heap()" class="member-name-link">heap()</a> - Method in record class hadur.bench.<a href="hadur/bench/SessionFile.html" title="class in hadur.bench">SessionFile</a></dt>
@@ -4750,6 +4814,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#MOVE-20">MOVE-20</a>: every hit on us and every intercept clears the surf's cached neighbour searches,
  not only a change of the surfed wave.</div>
+</dd>
+<dt><a href="hadur2/core/move/ShotDodgePlanner.html#HIT_COST" class="member-name-link">HIT_COST</a> - Static variable in class hadur2.core.move.<a href="hadur2/core/move/ShotDodgePlanner.html" title="class in hadur2.core.move">ShotDodgePlanner</a></dt>
+<dd>
+<div class="block">A hit's cost per point of damage: above any miss's.</div>
 </dd>
 <dt><a href="hadur2/core/melee/MinimumRiskMovement.html#HIT_RADIUS" class="member-name-link">HIT_RADIUS</a> - Static variable in class hadur2.core.melee.<a href="hadur2/core/melee/MinimumRiskMovement.html" title="class in hadur2.core.melee">MinimumRiskMovement</a></dt>
 <dd>
@@ -5313,10 +5381,19 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">One search result.</div>
 </dd>
+<dt><a href="hadur2/core/move/ShotDodgePlanner.html#KEEP_AWAY" class="member-name-link">KEEP_AWAY</a> - Static variable in class hadur2.core.move.<a href="hadur2/core/move/ShotDodgePlanner.html" title="class in hadur2.core.move">ShotDodgePlanner</a></dt>
+<dd>
+<div class="block">Whether the planner keeps a close enemy away with no wave in the air, and drives ahead of
+ <a class="req" href="../requirements.html#RAM-2">RAM-2</a>'s escape (the ablation <code>sdkeep0</code> turns both off).</div>
+</dd>
 <dt><a href="hadur2/core/duel/MoveDesign.html#KEEP_SECOND_WAVE" class="member-name-link">KEEP_SECOND_WAVE</a> - Static variable in class hadur2.core.duel.<a href="hadur2/core/duel/MoveDesign.html" title="class in hadur2.core.duel">MoveDesign</a></dt>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#TIME-6">TIME-6</a>: a skipped turn (level 1) no longer drops the surf's second wave for the rest of
  the round; it is dropped from level 2, where the k halving and the go-to shedding also stay.</div>
+</dd>
+<dt><a href="hadur2/core/move/ShotDodgePlanner.html#KEEP_TICKS" class="member-name-link">KEEP_TICKS</a> - Static variable in class hadur2.core.move.<a href="hadur2/core/move/ShotDodgePlanner.html" title="class in hadur2.core.move">ShotDodgePlanner</a></dt>
+<dd>
+<div class="block">The ticks a keep-away path looks ahead.</div>
 </dd>
 <dt><a href="hadur2/core/shieldmode/ShieldDesign.html#KEPT_ERRORS" class="member-name-link">KEPT_ERRORS</a> - Static variable in class hadur2.core.shieldmode.<a href="hadur2/core/shieldmode/ShieldDesign.html" title="class in hadur2.core.shieldmode">ShieldDesign</a></dt>
 <dd>
@@ -6260,6 +6337,10 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur2/core/melee/FieldGun.html#MAX_AGE" class="member-name-link">MAX_AGE</a> - Static variable in class hadur2.core.melee.<a href="hadur2/core/melee/FieldGun.html" title="class in hadur2.core.melee">FieldGun</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur2/core/physics/ShotDodger.html#MAX_BAND" class="member-name-link">MAX_BAND</a> - Static variable in class hadur2.core.physics.<a href="hadur2/core/physics/ShotDodger.html" title="class in hadur2.core.physics">ShotDodger</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#DODGE-5">DODGE-5</a>: the widest <a href="hadur2/core/physics/ShotDodger.html#band(int)"><code>ShotDodger.band(int)</code></a>, radians.</div>
+</dd>
 <dt><a href="hadur2/core/shieldmode/ShieldMode.html#MAX_BASES" class="member-name-link">MAX_BASES</a> - Static variable in class hadur2.core.shieldmode.<a href="hadur2/core/shieldmode/ShieldMode.html" title="class in hadur2.core.shieldmode">ShieldMode</a></dt>
 <dd>
 <div class="block">Head-on bases with <a class="req" href="../requirements.html#SHIELD-12">SHIELD-12</a>'s body-turn base.</div>
@@ -6430,6 +6511,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Surf seed samples kept, newest last (<a class="req" href="../requirements.html#RES-2">RES-2</a>).</div>
 </dd>
+<dt><a href="hadur2/core/move/ShotDodgePlanner.html#MAX_TICKS" class="member-name-link">MAX_TICKS</a> - Static variable in class hadur2.core.move.<a href="hadur2/core/move/ShotDodgePlanner.html" title="class in hadur2.core.move">ShotDodgePlanner</a></dt>
+<dd>
+<div class="block">The most ticks a path runs.</div>
+</dd>
 <dt><a href="hadur2/core/physics/SimpleAims.html#MAX_TICKS" class="member-name-link">MAX_TICKS</a> - Static variable in class hadur2.core.physics.<a href="hadur2/core/physics/SimpleAims.html" title="class in hadur2.core.physics">SimpleAims</a></dt>
 <dd>
 <div class="block">Ticks a prediction may run; a bullet slower than us never catches us otherwise.</div>
@@ -6453,6 +6538,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur2/core/melee/MeleeWaves.html#MAX_WAVES" class="member-name-link">MAX_WAVES</a> - Static variable in class hadur2.core.melee.<a href="hadur2/core/melee/MeleeWaves.html" title="class in hadur2.core.melee">MeleeWaves</a></dt>
 <dd>
 <div class="block">Waves in flight (<a class="req" href="../requirements.html#RES-2">RES-2</a>): ten opponents, eight cycles deep.</div>
+</dd>
+<dt><a href="hadur2/core/move/ShotDodgePlanner.html#MAX_WAVES" class="member-name-link">MAX_WAVES</a> - Static variable in class hadur2.core.move.<a href="hadur2/core/move/ShotDodgePlanner.html" title="class in hadur2.core.move">ShotDodgePlanner</a></dt>
+<dd>
+<div class="block">Waves planned for at once.</div>
 </dd>
 <dt><a href="hadur2/core/knn/KnnView.html#maxDataPoints" class="member-name-link">maxDataPoints</a> - Variable in class hadur2.core.knn.<a href="hadur2/core/knn/KnnView.html" title="class in hadur2.core.knn">KnnView</a></dt>
 <dd>
@@ -6841,6 +6930,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur2/core/policy/Matchup.html#MIN_BULLETS" class="member-name-link">MIN_BULLETS</a> - Static variable in class hadur2.core.policy.<a href="hadur2/core/policy/Matchup.html" title="class in hadur2.core.policy">Matchup</a></dt>
 <dd>
 <div class="block">Bullets each side must have resolved before the matchup can read as won.</div>
+</dd>
+<dt><a href="hadur2/core/move/ShotDodgePlanner.html#MIN_CLEARANCE" class="member-name-link">MIN_CLEARANCE</a> - Static variable in class hadur2.core.move.<a href="hadur2/core/move/ShotDodgePlanner.html" title="class in hadur2.core.move">ShotDodgePlanner</a></dt>
+<dd>
+<div class="block">A clearance is floored here, radians, so a graze is costly but finite.</div>
 </dd>
 <dt><a href="hadur2/core/physics/ShotDodger.html#MIN_DIVISOR" class="member-name-link">MIN_DIVISOR</a> - Static variable in class hadur2.core.physics.<a href="hadur2/core/physics/ShotDodger.html" title="class in hadur2.core.physics">ShotDodger</a></dt>
 <dd>&nbsp;</dd>
@@ -7447,6 +7540,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">A <a href="hadur2/core/knn/KnnView.html#decayRate"><code>KnnView.decayRate</code></a> that gives every neighbour weight 1.</div>
 </dd>
+<dt><a href="hadur2/core/shieldmode/ShieldList.html#NO_DODGE_PLAN" class="member-name-link">NO_DODGE_PLAN</a> - Static variable in class hadur2.core.shieldmode.<a href="hadur2/core/shieldmode/ShieldList.html" title="class in hadur2.core.shieldmode">ShieldList</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#DODGE-4">DODGE-4</a>: <a href="hadur2/core/shieldmode/ShieldList.html#dodgePlan(java.lang.String)"><code>ShieldList.dodgePlan(java.lang.String)</code></a> for an opponent not listed.</div>
+</dd>
 <dt><a href="hadur2/core/melee/MinimumRiskMovement.html#noise(java.awt.geom.Point2D.Double)" class="member-name-link">noise(Point2D.Double)</a> - Method in class hadur2.core.melee.<a href="hadur2/core/melee/MinimumRiskMovement.html" title="class in hadur2.core.melee">MinimumRiskMovement</a></dt>
 <dd>
 <div class="block">A fixed pseudo-random field over the battlefield, different every round, and on a team
@@ -7587,6 +7684,11 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Counts one enemy bullet whose heading we know, then learns the divisors from it.</div>
 </dd>
+<dt><a href="hadur2/core/physics/ShotDodger.html#observe(double%5B%5D,double,double)" class="member-name-link">observe(double[], double, double)</a> - Method in class hadur2.core.physics.<a href="hadur2/core/physics/ShotDodger.html" title="class in hadur2.core.physics">ShotDodger</a></dt>
+<dd>
+<div class="block">As <a href="hadur2/core/physics/ShotDodger.html#observe(double%5B%5D,double)"><code>ShotDodger.observe(double[], double)</code></a>, and <a class="req" href="../requirements.html#DODGE-5">DODGE-5</a>'s loose score when <code>escapeAngle</code>
+ is known.</div>
+</dd>
 <dt><a href="hadur2/core/adapt/SeedTrust.html#observe(hadur2.core.memory.Estimate)" class="member-name-link">observe(Estimate)</a> - Method in class hadur2.core.adapt.<a href="hadur2/core/adapt/SeedTrust.html" title="class in hadur2.core.adapt">SeedTrust</a></dt>
 <dd>
 <div class="block">One more wave seen with <code>live</code> as the estimate.</div>
@@ -7606,6 +7708,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">As <a href="hadur2/core/MeleeSeam.html#observe(hadur2.core.model.BotEvent,hadur2.core.role.Tick)"><code>MeleeSeam.observe(BotEvent, Tick)</code></a>, after the World's feed; when the feed failed the
  melee's own books skip the event, as they did when the tracker threw inside them.</div>
+</dd>
+<dt><a href="hadur2/core/physics/ShotDodger.html#observePass(double%5B%5D,double,double)" class="member-name-link">observePass(double[], double, double)</a> - Method in class hadur2.core.physics.<a href="hadur2/core/physics/ShotDodger.html" title="class in hadur2.core.physics">ShotDodger</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#DODGE-5">DODGE-5</a>: a wave that passed us with its bullet neither hitting us nor meeting ours.</div>
 </dd>
 <dt><a href="hadur2/core/memory/Estimate.html#of(double,double)" class="member-name-link">of(double, double)</a> - Static method in class hadur2.core.memory.<a href="hadur2/core/memory/Estimate.html" title="class in hadur2.core.memory">Estimate</a></dt>
 <dd>
@@ -8071,6 +8177,10 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur/bench/Opponent.html#%3Cinit%3E(java.lang.String,java.lang.String,java.lang.String,double)" class="member-name-link">Opponent(String, String, String, double)</a> - Constructor for class hadur.bench.<a href="hadur/bench/Opponent.html" title="class in hadur.bench">Opponent</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur2/core/move/ShotDodgePlanner.html#OPPONENT_WEIGHT" class="member-name-link">OPPONENT_WEIGHT</a> - Static variable in class hadur2.core.move.<a href="hadur2/core/move/ShotDodgePlanner.html" title="class in hadur2.core.move">ShotDodgePlanner</a></dt>
+<dd>
+<div class="block">Saguaro's weight on the closest approach to the enemy, px squared.</div>
+</dd>
 <dt><a href="hadur/bench/LiveDetails.Pairing.html#opponentAps()" class="member-name-link">opponentAps()</a> - Method in record class hadur.bench.<a href="hadur/bench/LiveDetails.Pairing.html" title="class in hadur.bench">LiveDetails.Pairing</a></dt>
 <dd>
 <div class="block">Returns the value of the <code>opponentAps</code> record component.</div>
@@ -8466,6 +8576,10 @@ loadScripts(document, 'script');</script>
 <div class="block">Whether the bullet has flown past <code>p</code>, or left a field no larger than
  <code>reach</code>, even if it was fired at the latest tick its shot's window allows.</div>
 </dd>
+<dt><a href="hadur2/core/physics/ShotDodger.html#passes()" class="member-name-link">passes()</a> - Method in class hadur2.core.physics.<a href="hadur2/core/physics/ShotDodger.html" title="class in hadur2.core.physics">ShotDodger</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#DODGE-5">DODGE-5</a>: passes read this battle.</div>
+</dd>
 <dt><a href="hadur2/core/melee/MinimumRiskMovement.html#PAST_EVERY" class="member-name-link">PAST_EVERY</a> - Static variable in class hadur2.core.melee.<a href="hadur2/core/melee/MinimumRiskMovement.html" title="class in hadur2.core.melee">MinimumRiskMovement</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur2/core/melee/MinimumRiskMovement.html#PAST_K" class="member-name-link">PAST_K</a> - Static variable in class hadur2.core.melee.<a href="hadur2/core/melee/MinimumRiskMovement.html" title="class in hadur2.core.melee">MinimumRiskMovement</a></dt>
@@ -8477,6 +8591,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur2/core/model/Baton.html#path()" class="member-name-link">path()</a> - Method in class hadur2.core.model.<a href="hadur2/core/model/Baton.html" title="class in hadur2.core.model">Baton</a></dt>
 <dd>
 <div class="block">Hadur's path while the giving role drove; null for none.</div>
+</dd>
+<dt><a href="hadur2/core/move/ShotDodgePlanner.html#path(hadur2.core.model.RobotState,java.awt.geom.Point2D.Double,java.util.List)" class="member-name-link">path(RobotState, Point2D.Double, List&lt;Wave&gt;)</a> - Method in class hadur2.core.move.<a href="hadur2/core/move/ShotDodgePlanner.html" title="class in hadur2.core.move">ShotDodgePlanner</a></dt>
+<dd>
+<div class="block">Driving to <code>point</code> and stopping there, one state a tick from <code>start</code>, until every wave has passed.</div>
 </dd>
 <dt><a href="hadur2/core/policy/PowerPolicy.html#payable(double,double)" class="member-name-link">payable(double, double)</a> - Static method in class hadur2.core.policy.<a href="hadur2/core/policy/PowerPolicy.html" title="class in hadur2.core.policy">PowerPolicy</a></dt>
 <dd>
@@ -8588,8 +8706,20 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur2/core/melee/MinimumRiskMovement.View.html#plan" class="member-name-link">plan</a> - Variable in class hadur2.core.melee.<a href="hadur2/core/melee/MinimumRiskMovement.View.html" title="class in hadur2.core.melee">MinimumRiskMovement.View</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur2/core/move/ShotDodgePlanner.html#plan(hadur2.core.model.RobotState,java.util.List,java.util.List,double,hadur2.core.model.RobotState,double)" class="member-name-link">plan(RobotState, List&lt;Wave&gt;, List&lt;Double&gt;, double, RobotState, double)</a> - Method in class hadur2.core.move.<a href="hadur2/core/move/ShotDodgePlanner.html" title="class in hadur2.core.move">ShotDodgePlanner</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="hadur2/core/melee/MeleeStrategy.Plan.html#%3Cinit%3E(hadur2.core.melee.MeleeStrategy.Posture,hadur2.core.world.EnemyInfo,hadur2.core.world.EnemyInfo%5B%5D)" class="member-name-link">Plan(MeleeStrategy.Posture, EnemyInfo, EnemyInfo[])</a> - Constructor for class hadur2.core.melee.<a href="hadur2/core/melee/MeleeStrategy.Plan.html" title="class in hadur2.core.melee">MeleeStrategy.Plan</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur2/core/physics/ShotDodger.html#planActive()" class="member-name-link">planActive()</a> - Method in class hadur2.core.physics.<a href="hadur2/core/physics/ShotDodger.html" title="class in hadur2.core.physics">ShotDodger</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#DODGE-5">DODGE-5</a>: whether the planner dodges: the best expert's net score is at least
+ <a href="hadur2/core/physics/ShotDodger.html#MIN_MATCHES">3</a>, and its score with the prior is at least <a href="hadur2/core/physics/ShotDodger.html#MIN_SHARE">0.6</a> of the
+ bullets read (the prior counted as bullets).</div>
+</dd>
+<dt><a href="hadur2/core/physics/ShotDodger.html#planBest()" class="member-name-link">planBest()</a> - Method in class hadur2.core.physics.<a href="hadur2/core/physics/ShotDodger.html" title="class in hadur2.core.physics">ShotDodger</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#DODGE-5">DODGE-5</a>: the expert with the best net score (the lowest index on a tie), or -1 with none above 0.</div>
+</dd>
 <dt><a href="hadur2/core/move/PlanInterval.html" class="type-name-link" title="class in hadur2.core.move">PlanInterval</a> - Class in <a href="hadur2/core/move/package-summary.html">hadur2.core.move</a></dt>
 <dd>
 <div class="block">MOVE-8: where our current plan puts us on one enemy wave, as the firing angles that would
@@ -8614,9 +8744,17 @@ loadScripts(document, 'script');</script>
 <div class="block">How far the hit lies from the surf's last plan on its wave, in the plan interval's
  half-widths from its centre: at most 1 inside the plan.</div>
 </dd>
+<dt><a href="hadur2/core/move/ShotDodgePlanner.html#planPoint()" class="member-name-link">planPoint()</a> - Method in class hadur2.core.move.<a href="hadur2/core/move/ShotDodgePlanner.html" title="class in hadur2.core.move">ShotDodgePlanner</a></dt>
+<dd>
+<div class="block">The point driven to; null before the first plan.</div>
+</dd>
 <dt><a href="hadur2/core/move/StopPointSurf.html#planPoint()" class="member-name-link">planPoint()</a> - Method in class hadur2.core.move.<a href="hadur2/core/move/StopPointSurf.html" title="class in hadur2.core.move">StopPointSurf</a></dt>
 <dd>
 <div class="block">The point driven to; null before the first plan.</div>
+</dd>
+<dt><a href="hadur2/core/physics/ShotDodger.html#planScore(int)" class="member-name-link">planScore(int)</a> - Method in class hadur2.core.physics.<a href="hadur2/core/physics/ShotDodger.html" title="class in hadur2.core.physics">ShotDodger</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#DODGE-5">DODGE-5</a>: expert <code>k</code>'s net score: loose score plus prior, less the contradictions.</div>
 </dd>
 <dt><a href="hadur2/core/melee/FieldGun.html#playForward(java.awt.geom.Point2D.Double,hadur2.core.world.EnemyInfo,float%5B%5D,double,long)" class="member-name-link">playForward(Point2D.Double, EnemyInfo, float[], double, long)</a> - Method in class hadur2.core.melee.<a href="hadur2/core/melee/FieldGun.html" title="class in hadur2.core.melee">FieldGun</a></dt>
 <dd>
@@ -8636,8 +8774,16 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Stop points closer than this to a kept one are dropped, px (DrussGT's 7).</div>
 </dd>
+<dt><a href="hadur2/core/move/ShotDodgePlanner.html#POINT_TICKS" class="member-name-link">POINT_TICKS</a> - Static variable in class hadur2.core.move.<a href="hadur2/core/move/ShotDodgePlanner.html" title="class in hadur2.core.move">ShotDodgePlanner</a></dt>
+<dd>
+<div class="block">The ticks along each heading or orbit at which a stop point is taken.</div>
+</dd>
 <dt><a href="hadur2/core/move/MoveController.html#pointKernelValue(double,double,java.util.List)" class="member-name-link">pointKernelValue(double, double, List&lt;double[]&gt;)</a> - Static method in class hadur2.core.move.<a href="hadur2/core/move/MoveController.html" title="class in hadur2.core.move">MoveController</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur2/core/move/ShotDodgePlanner.html#points(hadur2.core.model.RobotState,java.awt.geom.Point2D.Double,java.util.List,double)" class="member-name-link">points(RobotState, Point2D.Double, List&lt;Wave&gt;, double)</a> - Method in class hadur2.core.move.<a href="hadur2/core/move/ShotDodgePlanner.html" title="class in hadur2.core.move">ShotDodgePlanner</a></dt>
+<dd>
+<div class="block">The stop points (see the class comment), standing still first.</div>
+</dd>
 <dt><a href="hadur2/core/melee/TeamDanger.html#pool(boolean)" class="member-name-link">pool(boolean)</a> - Method in class hadur2.core.melee.<a href="hadur2/core/melee/TeamDanger.html" title="class in hadur2.core.melee">TeamDanger</a></dt>
 <dd>
 <div class="block">TMODE-7: read one log per enemy class (<a href="hadur2/core/melee/TeamModes.html#key(java.lang.String)"><code>TeamModes.key(java.lang.String)</code></a>), fed by every copy of it,
@@ -9013,6 +9159,11 @@ loadScripts(document, 'script');</script>
  enemy seen lately with the least distance from the team's centre plus
  <a href="hadur2/core/melee/MinimumRiskMovement.html#PACK_ENERGY_WEIGHT"><code>MinimumRiskMovement.PACK_ENERGY_WEIGHT</code></a> times its energy (NightmareTeam's assignment cost).</div>
 </dd>
+<dt><a href="hadur2/core/physics/ShotDodger.html#prime(int)" class="member-name-link">prime(int)</a> - Method in class hadur2.core.physics.<a href="hadur2/core/physics/ShotDodger.html" title="class in hadur2.core.physics">ShotDodger</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#DODGE-4">DODGE-4</a>: primes expert <code>k</code> with <a href="hadur2/core/physics/ShotDodger.html#PRIOR"><code>ShotDodger.PRIOR</code></a> bullets' worth of score, as the table
+ ships it for an opponent; out of range does nothing.</div>
+</dd>
 <dt><a href="hadur2/core/policy/MirrorDetector.html#PRIMED_SCANS" class="member-name-link">PRIMED_SCANS</a> - Static variable in class hadur2.core.policy.<a href="hadur2/core/policy/MirrorDetector.html" title="class in hadur2.core.policy">MirrorDetector</a></dt>
 <dd>
 <div class="block">Ditto, once a mirror has been confirmed this battle.</div>
@@ -9020,6 +9171,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur2/core/shieldmode/ShieldDesign.html#prior" class="member-name-link">prior</a> - Variable in class hadur2.core.shieldmode.<a href="hadur2/core/shieldmode/ShieldDesign.html" title="class in hadur2.core.shieldmode">ShieldDesign</a></dt>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#SHIELD-16">SHIELD-16</a>: the body-turn base from the enemy's position on the tick before it fired.</div>
+</dd>
+<dt><a href="hadur2/core/physics/ShotDodger.html#PRIOR" class="member-name-link">PRIOR</a> - Static variable in class hadur2.core.physics.<a href="hadur2/core/physics/ShotDodger.html" title="class in hadur2.core.physics">ShotDodger</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#DODGE-4">DODGE-4</a>: a shipped expert's prior, in bullets read.</div>
 </dd>
 <dt><a href="hadur2/core/move/MoveController.html#priorInUse()" class="member-name-link">priorInUse()</a> - Method in class hadur2.core.move.<a href="hadur2/core/move/MoveController.html" title="class in hadur2.core.move">MoveController</a></dt>
 <dd>
@@ -9320,6 +9475,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur2/core/policy/Endgame.State.html#RAM" class="member-name-link">RAM</a> - Enum constant in enum class hadur2.core.policy.<a href="hadur2/core/policy/Endgame.State.html" title="enum class in hadur2.core.policy">Endgame.State</a></dt>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#END-2">END-2</a>: they are disabled; drive straight at them.</div>
+</dd>
+<dt><a href="hadur2/core/move/ShotDodgePlanner.html#RAM_DAMAGE" class="member-name-link">RAM_DAMAGE</a> - Static variable in class hadur2.core.move.<a href="hadur2/core/move/ShotDodgePlanner.html" title="class in hadur2.core.move">ShotDodgePlanner</a></dt>
+<dd>
+<div class="block">A collision costs as much as a bullet of this damage, so a path is rammed only when every path is.</div>
 </dd>
 <dt><a href="hadur117/micro/core/Movement.html#RAM_DISTANCE" class="member-name-link">RAM_DISTANCE</a> - Static variable in class hadur117.micro.core.<a href="hadur117/micro/core/Movement.html" title="class in hadur117.micro.core">Movement</a></dt>
 <dd>
@@ -9772,6 +9931,14 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">One repeated battle.</div>
 </dd>
+<dt><a href="hadur2/core/move/ShotDodgePlanner.html#REPLAN_TICKS" class="member-name-link">REPLAN_TICKS</a> - Static variable in class hadur2.core.move.<a href="hadur2/core/move/ShotDodgePlanner.html" title="class in hadur2.core.move">ShotDodgePlanner</a></dt>
+<dd>
+<div class="block">A replan is forced after this many ticks on one path.</div>
+</dd>
+<dt><a href="hadur2/core/move/ShotDodgePlanner.html#replans()" class="member-name-link">replans()</a> - Method in class hadur2.core.move.<a href="hadur2/core/move/ShotDodgePlanner.html" title="class in hadur2.core.move">ShotDodgePlanner</a></dt>
+<dd>
+<div class="block">Replans over the battle; for tests.</div>
+</dd>
 <dt><a href="hadur2/core/move/StopPointSurf.html#replans()" class="member-name-link">replans()</a> - Method in class hadur2.core.move.<a href="hadur2/core/move/StopPointSurf.html" title="class in hadur2.core.move">StopPointSurf</a></dt>
 <dd>
 <div class="block">Replans made over the battle; for tests.</div>
@@ -9890,6 +10057,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur2/core/move/GunClassifier.html#reset()" class="member-name-link">reset()</a> - Method in class hadur2.core.move.<a href="hadur2/core/move/GunClassifier.html" title="class in hadur2.core.move">GunClassifier</a></dt>
 <dd>
 <div class="block">Forgets the count, for a new battle.</div>
+</dd>
+<dt><a href="hadur2/core/move/ShotDodgePlanner.html#reset()" class="member-name-link">reset()</a> - Method in class hadur2.core.move.<a href="hadur2/core/move/ShotDodgePlanner.html" title="class in hadur2.core.move">ShotDodgePlanner</a></dt>
+<dd>
+<div class="block">Forgets the plan, at each round and after anything else drove.</div>
 </dd>
 <dt><a href="hadur2/core/move/StopPointSurf.html#reset()" class="member-name-link">reset()</a> - Method in class hadur2.core.move.<a href="hadur2/core/move/StopPointSurf.html" title="class in hadur2.core.move">StopPointSurf</a></dt>
 <dd>
@@ -10874,6 +11045,19 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#MOVE-18">MOVE-18</a>: whether the distancing factor is measured to the enemy's last scanned position (off by default).</div>
 </dd>
+<dt><a href="hadur2/core/move/SurfMover.html#setDodgeEnemy(hadur2.core.model.RobotState)" class="member-name-link">setDodgeEnemy(RobotState)</a> - Method in class hadur2.core.move.<a href="hadur2/core/move/SurfMover.html" title="class in hadur2.core.move">SurfMover</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#DODGE-6">DODGE-6</a>: the enemy's last scanned state for the planner; null when unknown.</div>
+</dd>
+<dt><a href="hadur2/core/move/MoveController.html#setDodgePasses(boolean)" class="member-name-link">setDodgePasses(boolean)</a> - Method in class hadur2.core.move.<a href="hadur2/core/move/MoveController.html" title="class in hadur2.core.move">MoveController</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#DODGE-5">DODGE-5</a>: sets whether the waves that pass us without a hit teach the dodger.</div>
+</dd>
+<dt><a href="hadur2/core/move/SurfMover.html#setDodgePlanner(boolean)" class="member-name-link">setDodgePlanner(boolean)</a> - Method in class hadur2.core.move.<a href="hadur2/core/move/SurfMover.html" title="class in hadur2.core.move">SurfMover</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#DODGE-6">DODGE-6</a>: whether the shot-dodge planner (<a href="hadur2/core/move/ShotDodgePlanner.html" title="class in hadur2.core.move"><code>ShotDodgePlanner</code></a>) drives the surfed ticks
+ the tick budget allows go-to on, while the duel's dodger has an expert.</div>
+</dd>
 <dt><a href="hadur2/core/model/Wave.html#setEnemiesAlive(int)" class="member-name-link">setEnemiesAlive(int)</a> - Method in class hadur2.core.model.<a href="hadur2/core/model/Wave.html" title="class in hadur2.core.model">Wave</a></dt>
 <dd>
 <div class="block">Sets <a href="hadur2/core/model/Wave.html#enemiesAlive"><code>Wave.enemiesAlive</code></a>.</div>
@@ -11443,6 +11627,11 @@ loadScripts(document, 'script');</script>
 <div class="block"><a class="req" href="../requirements.html#DODGE-3">DODGE-3</a>: dodge the enemy's simple aim (<a class="req" href="../requirements.html#DODGE-1">DODGE-1</a>, <a class="req" href="../requirements.html#DODGE-2">DODGE-2</a>) against every opponent, not only
  those the table names.</div>
 </dd>
+<dt><a href="hadur2/core/duel/MoveDesign.html#SHOT_DODGE_PLAN" class="member-name-link">SHOT_DODGE_PLAN</a> - Static variable in class hadur2.core.duel.<a href="hadur2/core/duel/MoveDesign.html" title="class in hadur2.core.duel">MoveDesign</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#DODGE-6">DODGE-6</a>: the shot-dodge planner (Saguaro's ShotDodger movement) against every opponent, not
+ only those the table's <code>shot-dodge2:</code> lines name; a shipped expert still primes it.</div>
+</dd>
 <dt><a href="hadur2/core/world/EnemyTracker.html#SHOT_LIFETIME" class="member-name-link">SHOT_LIFETIME</a> - Static variable in class hadur2.core.world.<a href="hadur2/core/world/EnemyTracker.html" title="class in hadur2.core.world">EnemyTracker</a></dt>
 <dd>
 <div class="block">The shortest a shot is kept, ticks; a larger field keeps them longer (A5).</div>
@@ -11455,6 +11644,15 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">The total weight a shot's learned bullets carry: the two <a class="req" href="../requirements.html#MMOVE-3">MMOVE-3</a> guesses carried 1 each.</div>
 </dd>
+<dt><a href="hadur2/core/move/ShotDodgePlanner.html" class="type-name-link" title="class in hadur2.core.move">ShotDodgePlanner</a> - Class in <a href="hadur2/core/move/package-summary.html">hadur2.core.move</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#DODGE-6">DODGE-6</a>: Hadur's own shot-dodge planner, inspired by Saguaro's ShotDodger (its ideas: score a
+ path by its clearance from the predicted bullet, add the enemy's distance, learn from misses;
+ no code or data of it): against a gun that fires one simple aim, plan a path on which that
+ aim's bullets miss us, as far from them as the field allows.</div>
+</dd>
+<dt><a href="hadur2/core/move/ShotDodgePlanner.html#%3Cinit%3E(hadur2.core.physics.BattleField,hadur2.core.physics.MovementPredictor)" class="member-name-link">ShotDodgePlanner(BattleField, MovementPredictor)</a> - Constructor for class hadur2.core.move.<a href="hadur2/core/move/ShotDodgePlanner.html" title="class in hadur2.core.move">ShotDodgePlanner</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="hadur2/core/move/MoveController.html#shotDodger()" class="member-name-link">shotDodger()</a> - Method in class hadur2.core.move.<a href="hadur2/core/move/MoveController.html" title="class in hadur2.core.move">MoveController</a></dt>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#DODGE-2">DODGE-2</a>: the dodger, or null.</div>
@@ -11556,6 +11754,10 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="hadur2/core/link/Report.html#sightings()" class="member-name-link">sightings()</a> - Method in class hadur2.core.link.<a href="hadur2/core/link/Report.html" title="class in hadur2.core.link">Report</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur2/core/physics/ShotDodger.html#SIGMA_GF" class="member-name-link">SIGMA_GF</a> - Static variable in class hadur2.core.physics.<a href="hadur2/core/physics/ShotDodger.html" title="class in hadur2.core.physics">ShotDodger</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#DODGE-5">DODGE-5</a>: the loose score's width, as a share of the wave's escape angle (Saguaro's 0.18 GF).</div>
+</dd>
 <dt><a href="hadur/bench/Report.html#signedDiff(hadur.bench.Stats,double)" class="member-name-link">signedDiff(Stats, double)</a> - Static method in class hadur.bench.<a href="hadur/bench/Report.html" title="class in hadur.bench">Report</a></dt>
 <dd>
 <div class="block">A paired difference as "+1.2 ± 3.4" (the <a class="req" href="../requirements.html#BENCH-2">BENCH-2</a> convention: mean, then the 95%
@@ -12122,6 +12324,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Surfs <code>surfWave</code> (and the next surfable wave when <code>wavesToSurf</code> is 2 or more):
  keeps or remakes the plan, publishes its intervals and writes the drive.</div>
+</dd>
+<dt><a href="hadur2/core/move/ShotDodgePlanner.html#surf(hadur2.core.model.BotOrders.Builder,hadur2.core.model.RobotState,hadur2.core.move.MoveController,hadur2.core.physics.ShotDodger,hadur2.core.model.RobotState,double)" class="member-name-link">surf(BotOrders.Builder, RobotState, MoveController, ShotDodger, RobotState, double)</a> - Method in class hadur2.core.move.<a href="hadur2/core/move/ShotDodgePlanner.html" title="class in hadur2.core.move">ShotDodgePlanner</a></dt>
+<dd>
+<div class="block">Drives the tick when the dodger has an expert and a surfable wave has its bullet.</div>
 </dd>
 <dt><a href="hadur2/core/duel/DuelController.html#surfMode()" class="member-name-link">surfMode()</a> - Method in class hadur2.core.duel.<a href="hadur2/core/duel/DuelController.html" title="class in hadur2.core.duel">DuelController</a></dt>
 <dd>
@@ -13254,6 +13460,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#BENCH-97">BENCH-97</a>: whether a battle child writes the truth log (<code>-Dhadur.bench.truth=false</code> turns it off).</div>
 </dd>
+<dt><a href="hadur2/core/move/SurfMover.html#tryDodgePlan(hadur2.core.model.BotOrders.Builder,hadur2.core.model.RobotState,hadur2.core.move.MoveController,boolean)" class="member-name-link">tryDodgePlan(BotOrders.Builder, RobotState, MoveController, boolean)</a> - Method in class hadur2.core.move.<a href="hadur2/core/move/SurfMover.html" title="class in hadur2.core.move">SurfMover</a></dt>
+<dd>
+<div class="block"><a class="req" href="../requirements.html#DODGE-6">DODGE-6</a>: lets the planner, when on, drive this tick outside the surf (<a class="req" href="../requirements.html#RAM-2">RAM-2</a>'s escape asks it first).</div>
+</dd>
 <dt><a href="hadur/bench/ColdWarm.Row.html#tsv()" class="member-name-link">tsv()</a> - Method in record class hadur.bench.<a href="hadur/bench/ColdWarm.Row.html" title="class in hadur.bench">ColdWarm.Row</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur/bench/RepeatStudy.Row.html#tsv()" class="member-name-link">tsv()</a> - Method in record class hadur.bench.<a href="hadur/bench/RepeatStudy.Row.html" title="class in hadur.bench">RepeatStudy.Row</a></dt>
@@ -14050,6 +14260,11 @@ the order they are declared.</div>
  destination held if not reached, are each driven to for <a href="hadur2/core/melee/MinimumRiskMovement.html#WAVE_TICKS"><code>MinimumRiskMovement.WAVE_TICKS</code></a> ticks, and
  every shot in flight that crosses Hadur's box on the way counts the share of it aimed
  there.</div>
+</dd>
+<dt><a href="hadur2/core/move/ShotDodgePlanner.html#waveCost(hadur2.core.model.Wave,hadur2.core.model.Wave.Intersection,double,double)" class="member-name-link">waveCost(Wave, Wave.Intersection, double, double)</a> - Static method in class hadur2.core.move.<a href="hadur2/core/move/ShotDodgePlanner.html" title="class in hadur2.core.move">ShotDodgePlanner</a></dt>
+<dd>
+<div class="block">One wave's cost for a path crossing it at <code>x</code>, its expert bullet at <code>bullet</code> and
+ as far as <code>band</code> either side (<a href="hadur2/core/physics/ShotDodger.html#band(int)"><code>ShotDodger.band(int)</code></a>).</div>
 </dd>
 <dt><a href="hadur2/core/melee/MinimumRiskMovement.html#waveDamage(java.awt.geom.Point2D.Double,java.awt.geom.Point2D.Double,long,java.util.List)" class="member-name-link">waveDamage(Point2D.Double, Point2D.Double, long, List&lt;MinimumRiskMovement.Wave&gt;)</a> - Static method in class hadur2.core.melee.<a href="hadur2/core/melee/MinimumRiskMovement.html" title="class in hadur2.core.melee">MinimumRiskMovement</a></dt>
 <dd>

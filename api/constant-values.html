@@ -603,18 +603,21 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color"><code id="hadur2.core.duel.MoveDesign.SHOT_DODGE">static&nbsp;final&nbsp;boolean</code></div>
 <div class="col-second odd-row-color"><code><a href="hadur2/core/duel/MoveDesign.html#SHOT_DODGE">SHOT_DODGE</a></code></div>
 <div class="col-last odd-row-color"><code>false</code></div>
-<div class="col-first even-row-color"><code id="hadur2.core.duel.MoveDesign.STACK_LIST">static&nbsp;final&nbsp;boolean</code></div>
-<div class="col-second even-row-color"><code><a href="hadur2/core/duel/MoveDesign.html#STACK_LIST">STACK_LIST</a></code></div>
+<div class="col-first even-row-color"><code id="hadur2.core.duel.MoveDesign.SHOT_DODGE_PLAN">static&nbsp;final&nbsp;boolean</code></div>
+<div class="col-second even-row-color"><code><a href="hadur2/core/duel/MoveDesign.html#SHOT_DODGE_PLAN">SHOT_DODGE_PLAN</a></code></div>
 <div class="col-last even-row-color"><code>false</code></div>
-<div class="col-first odd-row-color"><code id="hadur2.core.duel.MoveDesign.STOP_AND_GO">static&nbsp;final&nbsp;boolean</code></div>
-<div class="col-second odd-row-color"><code><a href="hadur2/core/duel/MoveDesign.html#STOP_AND_GO">STOP_AND_GO</a></code></div>
+<div class="col-first odd-row-color"><code id="hadur2.core.duel.MoveDesign.STACK_LIST">static&nbsp;final&nbsp;boolean</code></div>
+<div class="col-second odd-row-color"><code><a href="hadur2/core/duel/MoveDesign.html#STACK_LIST">STACK_LIST</a></code></div>
 <div class="col-last odd-row-color"><code>false</code></div>
-<div class="col-first even-row-color"><code id="hadur2.core.duel.MoveDesign.STOP_AND_GO_PREFIRE">static&nbsp;final&nbsp;int</code></div>
-<div class="col-second even-row-color"><code><a href="hadur2/core/duel/MoveDesign.html#STOP_AND_GO_PREFIRE">STOP_AND_GO_PREFIRE</a></code></div>
-<div class="col-last even-row-color"><code>1</code></div>
-<div class="col-first odd-row-color"><code id="hadur2.core.duel.MoveDesign.STOP_POINT_SURF">static&nbsp;final&nbsp;boolean</code></div>
-<div class="col-second odd-row-color"><code><a href="hadur2/core/duel/MoveDesign.html#STOP_POINT_SURF">STOP_POINT_SURF</a></code></div>
-<div class="col-last odd-row-color"><code>false</code></div>
+<div class="col-first even-row-color"><code id="hadur2.core.duel.MoveDesign.STOP_AND_GO">static&nbsp;final&nbsp;boolean</code></div>
+<div class="col-second even-row-color"><code><a href="hadur2/core/duel/MoveDesign.html#STOP_AND_GO">STOP_AND_GO</a></code></div>
+<div class="col-last even-row-color"><code>false</code></div>
+<div class="col-first odd-row-color"><code id="hadur2.core.duel.MoveDesign.STOP_AND_GO_PREFIRE">static&nbsp;final&nbsp;int</code></div>
+<div class="col-second odd-row-color"><code><a href="hadur2/core/duel/MoveDesign.html#STOP_AND_GO_PREFIRE">STOP_AND_GO_PREFIRE</a></code></div>
+<div class="col-last odd-row-color"><code>1</code></div>
+<div class="col-first even-row-color"><code id="hadur2.core.duel.MoveDesign.STOP_POINT_SURF">static&nbsp;final&nbsp;boolean</code></div>
+<div class="col-second even-row-color"><code><a href="hadur2/core/duel/MoveDesign.html#STOP_POINT_SURF">STOP_POINT_SURF</a></code></div>
+<div class="col-last even-row-color"><code>false</code></div>
 </div>
 </li>
 <li>
@@ -1784,6 +1787,53 @@ loadScripts(document, 'script');</script>
 </div>
 </li>
 <li>
+<div class="caption"><span>hadur2.core.move.<a href="hadur2/core/move/ShotDodgePlanner.html" title="class in hadur2.core.move">ShotDodgePlanner</a></span></div>
+<div class="summary-table three-column-summary">
+<div class="table-header col-first">Modifier and Type</div>
+<div class="table-header col-second">Constant Field</div>
+<div class="table-header col-last">Value</div>
+<div class="col-first even-row-color"><code id="hadur2.core.move.ShotDodgePlanner.CLOSE_RANGE">static&nbsp;final&nbsp;double</code></div>
+<div class="col-second even-row-color"><code><a href="hadur2/core/move/ShotDodgePlanner.html#CLOSE_RANGE">CLOSE_RANGE</a></code></div>
+<div class="col-last even-row-color"><code>200.0</code></div>
+<div class="col-first odd-row-color"><code id="hadur2.core.move.ShotDodgePlanner.COLLIDE">static&nbsp;final&nbsp;double</code></div>
+<div class="col-second odd-row-color"><code><a href="hadur2/core/move/ShotDodgePlanner.html#COLLIDE">COLLIDE</a></code></div>
+<div class="col-last odd-row-color"><code>40.0</code></div>
+<div class="col-first even-row-color"><code id="hadur2.core.move.ShotDodgePlanner.DRIFT">static&nbsp;final&nbsp;double</code></div>
+<div class="col-second even-row-color"><code><a href="hadur2/core/move/ShotDodgePlanner.html#DRIFT">DRIFT</a></code></div>
+<div class="col-last even-row-color"><code>2.0</code></div>
+<div class="col-first odd-row-color"><code id="hadur2.core.move.ShotDodgePlanner.HEADINGS">static&nbsp;final&nbsp;int</code></div>
+<div class="col-second odd-row-color"><code><a href="hadur2/core/move/ShotDodgePlanner.html#HEADINGS">HEADINGS</a></code></div>
+<div class="col-last odd-row-color"><code>12</code></div>
+<div class="col-first even-row-color"><code id="hadur2.core.move.ShotDodgePlanner.HIT_COST">static&nbsp;final&nbsp;double</code></div>
+<div class="col-second even-row-color"><code><a href="hadur2/core/move/ShotDodgePlanner.html#HIT_COST">HIT_COST</a></code></div>
+<div class="col-last even-row-color"><code>1.0E9</code></div>
+<div class="col-first odd-row-color"><code id="hadur2.core.move.ShotDodgePlanner.KEEP_AWAY">public&nbsp;static&nbsp;final&nbsp;boolean</code></div>
+<div class="col-second odd-row-color"><code><a href="hadur2/core/move/ShotDodgePlanner.html#KEEP_AWAY">KEEP_AWAY</a></code></div>
+<div class="col-last odd-row-color"><code>true</code></div>
+<div class="col-first even-row-color"><code id="hadur2.core.move.ShotDodgePlanner.KEEP_TICKS">static&nbsp;final&nbsp;int</code></div>
+<div class="col-second even-row-color"><code><a href="hadur2/core/move/ShotDodgePlanner.html#KEEP_TICKS">KEEP_TICKS</a></code></div>
+<div class="col-last even-row-color"><code>20</code></div>
+<div class="col-first odd-row-color"><code id="hadur2.core.move.ShotDodgePlanner.MAX_TICKS">static&nbsp;final&nbsp;int</code></div>
+<div class="col-second odd-row-color"><code><a href="hadur2/core/move/ShotDodgePlanner.html#MAX_TICKS">MAX_TICKS</a></code></div>
+<div class="col-last odd-row-color"><code>120</code></div>
+<div class="col-first even-row-color"><code id="hadur2.core.move.ShotDodgePlanner.MAX_WAVES">static&nbsp;final&nbsp;int</code></div>
+<div class="col-second even-row-color"><code><a href="hadur2/core/move/ShotDodgePlanner.html#MAX_WAVES">MAX_WAVES</a></code></div>
+<div class="col-last even-row-color"><code>3</code></div>
+<div class="col-first odd-row-color"><code id="hadur2.core.move.ShotDodgePlanner.MIN_CLEARANCE">static&nbsp;final&nbsp;double</code></div>
+<div class="col-second odd-row-color"><code><a href="hadur2/core/move/ShotDodgePlanner.html#MIN_CLEARANCE">MIN_CLEARANCE</a></code></div>
+<div class="col-last odd-row-color"><code>1.0E-4</code></div>
+<div class="col-first even-row-color"><code id="hadur2.core.move.ShotDodgePlanner.OPPONENT_WEIGHT">static&nbsp;final&nbsp;double</code></div>
+<div class="col-second even-row-color"><code><a href="hadur2/core/move/ShotDodgePlanner.html#OPPONENT_WEIGHT">OPPONENT_WEIGHT</a></code></div>
+<div class="col-last even-row-color"><code>2500.0</code></div>
+<div class="col-first odd-row-color"><code id="hadur2.core.move.ShotDodgePlanner.RAM_DAMAGE">static&nbsp;final&nbsp;double</code></div>
+<div class="col-second odd-row-color"><code><a href="hadur2/core/move/ShotDodgePlanner.html#RAM_DAMAGE">RAM_DAMAGE</a></code></div>
+<div class="col-last odd-row-color"><code>4.0</code></div>
+<div class="col-first even-row-color"><code id="hadur2.core.move.ShotDodgePlanner.REPLAN_TICKS">static&nbsp;final&nbsp;int</code></div>
+<div class="col-second even-row-color"><code><a href="hadur2/core/move/ShotDodgePlanner.html#REPLAN_TICKS">REPLAN_TICKS</a></code></div>
+<div class="col-last even-row-color"><code>5</code></div>
+</div>
+</li>
+<li>
 <div class="caption"><span>hadur2.core.move.<a href="hadur2/core/move/StopAndGo.html" title="class in hadur2.core.move">StopAndGo</a></span></div>
 <div class="summary-table three-column-summary">
 <div class="table-header col-first">Modifier and Type</div>
@@ -1915,24 +1965,30 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Constant Field</div>
 <div class="table-header col-last">Value</div>
-<div class="col-first even-row-color"><code id="hadur2.core.physics.ShotDodger.DIVISOR">static&nbsp;final&nbsp;int</code></div>
-<div class="col-second even-row-color"><code><a href="hadur2/core/physics/ShotDodger.html#DIVISOR">DIVISOR</a></code></div>
-<div class="col-last even-row-color"><code>12</code></div>
-<div class="col-first odd-row-color"><code id="hadur2.core.physics.ShotDodger.DIVISOR_DECAY">static&nbsp;final&nbsp;double</code></div>
-<div class="col-second odd-row-color"><code><a href="hadur2/core/physics/ShotDodger.html#DIVISOR_DECAY">DIVISOR_DECAY</a></code></div>
-<div class="col-last odd-row-color"><code>0.85</code></div>
-<div class="col-first even-row-color"><code id="hadur2.core.physics.ShotDodger.EXPERTS">public&nbsp;static&nbsp;final&nbsp;int</code></div>
-<div class="col-second even-row-color"><code><a href="hadur2/core/physics/ShotDodger.html#EXPERTS">EXPERTS</a></code></div>
-<div class="col-last even-row-color"><code>42</code></div>
-<div class="col-first odd-row-color"><code id="hadur2.core.physics.ShotDodger.FLOOR">public&nbsp;static&nbsp;final&nbsp;double</code></div>
-<div class="col-second odd-row-color"><code><a href="hadur2/core/physics/ShotDodger.html#FLOOR">FLOOR</a></code></div>
+<div class="col-first even-row-color"><code id="hadur2.core.physics.ShotDodger.CONTRA_WEIGHT">public&nbsp;static&nbsp;final&nbsp;double</code></div>
+<div class="col-second even-row-color"><code><a href="hadur2/core/physics/ShotDodger.html#CONTRA_WEIGHT">CONTRA_WEIGHT</a></code></div>
+<div class="col-last even-row-color"><code>1.0</code></div>
+<div class="col-first odd-row-color"><code id="hadur2.core.physics.ShotDodger.DIVISOR">static&nbsp;final&nbsp;int</code></div>
+<div class="col-second odd-row-color"><code><a href="hadur2/core/physics/ShotDodger.html#DIVISOR">DIVISOR</a></code></div>
+<div class="col-last odd-row-color"><code>12</code></div>
+<div class="col-first even-row-color"><code id="hadur2.core.physics.ShotDodger.DIVISOR_DECAY">static&nbsp;final&nbsp;double</code></div>
+<div class="col-second even-row-color"><code><a href="hadur2/core/physics/ShotDodger.html#DIVISOR_DECAY">DIVISOR_DECAY</a></code></div>
+<div class="col-last even-row-color"><code>0.85</code></div>
+<div class="col-first odd-row-color"><code id="hadur2.core.physics.ShotDodger.EXPERTS">public&nbsp;static&nbsp;final&nbsp;int</code></div>
+<div class="col-second odd-row-color"><code><a href="hadur2/core/physics/ShotDodger.html#EXPERTS">EXPERTS</a></code></div>
+<div class="col-last odd-row-color"><code>42</code></div>
+<div class="col-first even-row-color"><code id="hadur2.core.physics.ShotDodger.FLOOR">public&nbsp;static&nbsp;final&nbsp;double</code></div>
+<div class="col-second even-row-color"><code><a href="hadur2/core/physics/ShotDodger.html#FLOOR">FLOOR</a></code></div>
+<div class="col-last even-row-color"><code>0.1</code></div>
+<div class="col-first odd-row-color"><code id="hadur2.core.physics.ShotDodger.MARGIN">public&nbsp;static&nbsp;final&nbsp;double</code></div>
+<div class="col-second odd-row-color"><code><a href="hadur2/core/physics/ShotDodger.html#MARGIN">MARGIN</a></code></div>
+<div class="col-last odd-row-color"><code>0.005</code></div>
+<div class="col-first even-row-color"><code id="hadur2.core.physics.ShotDodger.MATCH">public&nbsp;static&nbsp;final&nbsp;double</code></div>
+<div class="col-second even-row-color"><code><a href="hadur2/core/physics/ShotDodger.html#MATCH">MATCH</a></code></div>
+<div class="col-last even-row-color"><code>0.002</code></div>
+<div class="col-first odd-row-color"><code id="hadur2.core.physics.ShotDodger.MAX_BAND">public&nbsp;static&nbsp;final&nbsp;double</code></div>
+<div class="col-second odd-row-color"><code><a href="hadur2/core/physics/ShotDodger.html#MAX_BAND">MAX_BAND</a></code></div>
 <div class="col-last odd-row-color"><code>0.1</code></div>
-<div class="col-first even-row-color"><code id="hadur2.core.physics.ShotDodger.MARGIN">public&nbsp;static&nbsp;final&nbsp;double</code></div>
-<div class="col-second even-row-color"><code><a href="hadur2/core/physics/ShotDodger.html#MARGIN">MARGIN</a></code></div>
-<div class="col-last even-row-color"><code>0.005</code></div>
-<div class="col-first odd-row-color"><code id="hadur2.core.physics.ShotDodger.MATCH">public&nbsp;static&nbsp;final&nbsp;double</code></div>
-<div class="col-second odd-row-color"><code><a href="hadur2/core/physics/ShotDodger.html#MATCH">MATCH</a></code></div>
-<div class="col-last odd-row-color"><code>0.002</code></div>
 <div class="col-first even-row-color"><code id="hadur2.core.physics.ShotDodger.MAX_DIVISOR">static&nbsp;final&nbsp;double</code></div>
 <div class="col-second even-row-color"><code><a href="hadur2/core/physics/ShotDodger.html#MAX_DIVISOR">MAX_DIVISOR</a></code></div>
 <div class="col-last even-row-color"><code>30.0</code></div>
@@ -1948,6 +2004,12 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color"><code id="hadur2.core.physics.ShotDodger.PER_LAG">public&nbsp;static&nbsp;final&nbsp;int</code></div>
 <div class="col-second even-row-color"><code><a href="hadur2/core/physics/ShotDodger.html#PER_LAG">PER_LAG</a></code></div>
 <div class="col-last even-row-color"><code>14</code></div>
+<div class="col-first odd-row-color"><code id="hadur2.core.physics.ShotDodger.PRIOR">public&nbsp;static&nbsp;final&nbsp;double</code></div>
+<div class="col-second odd-row-color"><code><a href="hadur2/core/physics/ShotDodger.html#PRIOR">PRIOR</a></code></div>
+<div class="col-last odd-row-color"><code>3.0</code></div>
+<div class="col-first even-row-color"><code id="hadur2.core.physics.ShotDodger.SIGMA_GF">public&nbsp;static&nbsp;final&nbsp;double</code></div>
+<div class="col-second even-row-color"><code><a href="hadur2/core/physics/ShotDodger.html#SIGMA_GF">SIGMA_GF</a></code></div>
+<div class="col-last even-row-color"><code>0.18</code></div>
 <div class="col-first odd-row-color"><code id="hadur2.core.physics.ShotDodger.TURNED">static&nbsp;final&nbsp;int</code></div>
 <div class="col-second odd-row-color"><code><a href="hadur2/core/physics/ShotDodger.html#TURNED">TURNED</a></code></div>
 <div class="col-last odd-row-color"><code>6</code></div>
@@ -2450,15 +2512,21 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color"><code id="hadur2.core.shieldmode.ShieldList.AIM_PREFIX">public&nbsp;static&nbsp;final&nbsp;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color"><code><a href="hadur2/core/shieldmode/ShieldList.html#AIM_PREFIX">AIM_PREFIX</a></code></div>
 <div class="col-last even-row-color"><code>"shield-aim:"</code></div>
-<div class="col-first odd-row-color"><code id="hadur2.core.shieldmode.ShieldList.DODGE_PREFIX">public&nbsp;static&nbsp;final&nbsp;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color"><code><a href="hadur2/core/shieldmode/ShieldList.html#DODGE_PREFIX">DODGE_PREFIX</a></code></div>
-<div class="col-last odd-row-color"><code>"shot-dodge:"</code></div>
-<div class="col-first even-row-color"><code id="hadur2.core.shieldmode.ShieldList.MAX_ENTRIES">public&nbsp;static&nbsp;final&nbsp;int</code></div>
-<div class="col-second even-row-color"><code><a href="hadur2/core/shieldmode/ShieldList.html#MAX_ENTRIES">MAX_ENTRIES</a></code></div>
-<div class="col-last even-row-color"><code>4096</code></div>
-<div class="col-first odd-row-color"><code id="hadur2.core.shieldmode.ShieldList.MOVE_PREFIX">public&nbsp;static&nbsp;final&nbsp;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color"><code><a href="hadur2/core/shieldmode/ShieldList.html#MOVE_PREFIX">MOVE_PREFIX</a></code></div>
-<div class="col-last odd-row-color"><code>"shield-move:"</code></div>
+<div class="col-first odd-row-color"><code id="hadur2.core.shieldmode.ShieldList.DODGE_PLAN_PREFIX">public&nbsp;static&nbsp;final&nbsp;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color"><code><a href="hadur2/core/shieldmode/ShieldList.html#DODGE_PLAN_PREFIX">DODGE_PLAN_PREFIX</a></code></div>
+<div class="col-last odd-row-color"><code>"shot-dodge2:"</code></div>
+<div class="col-first even-row-color"><code id="hadur2.core.shieldmode.ShieldList.DODGE_PREFIX">public&nbsp;static&nbsp;final&nbsp;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color"><code><a href="hadur2/core/shieldmode/ShieldList.html#DODGE_PREFIX">DODGE_PREFIX</a></code></div>
+<div class="col-last even-row-color"><code>"shot-dodge:"</code></div>
+<div class="col-first odd-row-color"><code id="hadur2.core.shieldmode.ShieldList.MAX_ENTRIES">public&nbsp;static&nbsp;final&nbsp;int</code></div>
+<div class="col-second odd-row-color"><code><a href="hadur2/core/shieldmode/ShieldList.html#MAX_ENTRIES">MAX_ENTRIES</a></code></div>
+<div class="col-last odd-row-color"><code>4096</code></div>
+<div class="col-first even-row-color"><code id="hadur2.core.shieldmode.ShieldList.MOVE_PREFIX">public&nbsp;static&nbsp;final&nbsp;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color"><code><a href="hadur2/core/shieldmode/ShieldList.html#MOVE_PREFIX">MOVE_PREFIX</a></code></div>
+<div class="col-last even-row-color"><code>"shield-move:"</code></div>
+<div class="col-first odd-row-color"><code id="hadur2.core.shieldmode.ShieldList.NO_DODGE_PLAN">public&nbsp;static&nbsp;final&nbsp;int</code></div>
+<div class="col-second odd-row-color"><code><a href="hadur2/core/shieldmode/ShieldList.html#NO_DODGE_PLAN">NO_DODGE_PLAN</a></code></div>
+<div class="col-last odd-row-color"><code>-2</code></div>
 <div class="col-first even-row-color"><code id="hadur2.core.shieldmode.ShieldList.STACK_OFF_PREFIX">public&nbsp;static&nbsp;final&nbsp;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color"><code><a href="hadur2/core/shieldmode/ShieldList.html#STACK_OFF_PREFIX">STACK_OFF_PREFIX</a></code></div>
 <div class="col-last even-row-color"><code>"stack-off:"</code></div>
