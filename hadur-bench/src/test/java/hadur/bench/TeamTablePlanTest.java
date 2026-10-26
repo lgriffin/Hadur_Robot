@@ -42,7 +42,9 @@ class TeamTablePlanTest {
         assertTrue(queue.contains("--control LINESW=../docs/bench/local/team-lines-bb.md"));
         assertTrue(queue.contains("--min-mean 3.0 --base MATEFIRE,HUNT"), "picks keep the shipped modes");
         assertTrue(queue.contains("--min-gain 1.0"));
-        assertTrue(queue.contains("--teams 46 --min-aps 0.3"));
+        assertTrue(queue.contains("--confirm ${OUT}/team-table-conf.md --control ${OUT}/team-table-cbb.md"), "lock scores both baselines");
+        assertTrue(queue.contains("--set work/team-table-gate.txt --seeds 16 --teams 46 --min-aps 0.3"), "gate needs every team fully paired");
+        assertFalse(queue.contains("; true"), "a failed step stops the queue");
         assertTrue(queue.contains("open_results_pr.sh claude/pc-team-table-results"));
     }
 

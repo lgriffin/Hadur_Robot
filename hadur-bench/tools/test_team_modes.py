@@ -132,5 +132,37 @@ class TeamModesTest(unittest.TestCase):
         self.assertIn("**PASS**", text)
 
 
+    def counted(self, name, diffs, pairs):
+        p = Path(report(self.d, name, diffs))
+        rows = "\n".join(f"| {t} | {n} of 16 | {n} of 16 | {n} |" for t, n in pairs.items())
+        text = p.read_text().replace("| a.ATeam 1 | 6 of 6 | 6 of 6 | 6 |", rows)
+        p.write_text(text, encoding="utf-8")
+        return str(p)
+
+    def test_gate_is_incomplete_when_a_team_lacks_its_seeds(self):
+        Path(self.d, "gate.txt").write_text("a.ATeam 1 | team-0 | a.ATeam_1.jar\nb.BTeam 2 | team-1 | b.BTeam_2.jar\n")
+        mk = self.counted("mk2.md", {"a.ATeam 1": (6.0, 3.0), "b.BTeam 2": (4.0, 4.0)}, {"a.ATeam 1": 16, "b.BTeam 2": 15})
+        bb = self.counted("bb2.md", {"a.ATeam 1": (0.0, 2.0), "b.BTeam 2": (0.0, 2.0)}, {"a.ATeam 1": 16, "b.BTeam 2": 16})
+        out = Path(self.d) / "g2.md"
+        with self.assertRaises(SystemExit):
+            team_modes.main(["gate", "--report", mk, "--control", bb, "--set", str(Path(self.d, "gate.txt")),
+                             "--seeds", "16", "--out-md", str(out)])
+        self.assertIn("**INCOMPLETE**", out.read_text())
+
+    def test_lock_scores_both_baselines_and_sets_only_teams_with_an_entry(self):
+        out = self.pick()
+        confirm = report(self.d, "c2.md", {"a.ATeam 1": (2.5, 4.0), "b.BTeam 2": (2.0, 3.0), "c.CTeam 3": (3.0, 2.0)})
+        bb = report(self.d, "cbb2.md", {"a.ATeam 1": (0.0, 1.0), "b.BTeam 2": (4.0, 1.0), "c.CTeam 3": (0.0, 1.0)})
+        Path(self.d, "c.CTeam_3.jar").unlink()
+        team_modes.main(["lock", "--confirm", confirm, "--control", bb, "--pick-tsv", str(out / "pick.tsv"),
+                         "--census", str(out / "census.txt"), "--opponents", self.d, "--min-gain", "1.0",
+                         "--out-md", str(out / "l2.md"), "--out-java", str(out / "l2.java"), "--out-set", str(out / "l2.txt")])
+        java = (out / "l2.java").read_text()
+        self.assertIn('"a.A"', java)
+        self.assertNotIn('"b.Lead"', java, "+2.0 less half of bb's +4.0 is 0")
+        teams = [l.split(" |")[0] for l in (out / "l2.txt").read_text().splitlines() if not l.startswith("#")]
+        self.assertEqual(["a.ATeam 1"], teams, "c kept but its jar is missing: no entry, not gated")
+
+
 if __name__ == "__main__":
     unittest.main()

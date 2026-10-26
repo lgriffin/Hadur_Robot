@@ -64,6 +64,28 @@ def paired(report):
     return out
 
 
+def pair_counts(report):
+    """Team name to its paired seeds, from a report's `Paired seeds` table (failed battles drop out)."""
+    out, inside = {}, False
+    for line in Path(report).read_text(encoding="utf-8").splitlines():
+        if line.startswith("| Opponent team | Candidate |") and "Paired seeds" in line:
+            inside = True
+            continue
+        if inside:
+            if not line.startswith("|"):
+                break
+            cells = [c.strip() for c in line.strip().strip("|").split("|")]
+            if len(cells) >= 4 and cells[3].isdigit():
+                out[cells[0]] = int(cells[3])
+    return out
+
+
+def emitted(lines, classes, kept):
+    """The teams in `kept` with at least one member class entry among `lines`."""
+    put = {l.split('"')[1] for l in lines}
+    return {t for t in kept if any(c in put for c in classes.get(t, []))}
+
+
 def census(path):
     """(team name, census line, jar) for each team in a census file."""
     rows = []
@@ -186,13 +208,15 @@ def cmd_pick(a):
     write(a.out_md, "\n".join(md) + "\n")
     write(a.out_tsv, "\n".join(tsv) + "\n")
     write(a.out_java, "\n".join(lines) + ("\n" if lines else ""))
-    set_lines = ["# Teams whose screen picked a mode (team_modes.py pick)"] + [l for t, l, _ in rows if t in picks]
+    played = emitted(lines, classes, picks)
+    set_lines = ["# Teams the screen's table plays a mode against (team_modes.py pick)"] + [l for t, l, _ in rows if t in played]
     write(a.out_set, "\n".join(set_lines) + "\n")
     print(f"picked {len(picks)} of {len(rows)} teams", file=sys.stderr)
 
 
 def cmd_lock(a):
     confirm = paired(a.confirm)
+    control = paired(a.control) if a.control else None
     picks = {}
     for line in Path(a.pick_tsv).read_text(encoding="utf-8").splitlines()[1:]:
         if line.strip():
@@ -202,21 +226,29 @@ def cmd_lock(a):
     classes = classes_for(rows, a.opponents)
     kept = {}
     md = ["# Team mode table: confirmed entries", "",
-          f"Kept: the table build beat aa by at least {a.min_gain:+.1f} points on fresh seeds.", "",
+          f"Kept: the table build's gain on fresh seeds is at least {a.min_gain:+.1f} points"
+          + (" against both baselines (its gain over aa less half of bb's)." if control is not None else " over aa."), "",
           "| Team | Mode | Confirm | Kept |", "|---|---|---|---|"]
     for team in picks:
         mean, ci = confirm.get(team, (float("nan"), float("nan")))
+        if control is not None:
+            cm, cc = control.get(team, (float("nan"), float("nan")))
+            mean, ci = mean - cm / 2, (ci * ci + (cc / 2) ** 2) ** 0.5
         keep = mean >= a.min_gain
         if keep:
             kept[team] = picks[team]
         md.append(f"| {team} | {','.join(sorted(picks[team]))} | {mean:+.1f} ± {ci:.1f} | {'yes' if keep else 'no'} |")
     lines, clashes = java_lines(kept, classes, base_modes(a.base))
+    played = emitted(lines, classes, kept)
     md += ["", f"{len(kept)} of {len(picks)} picks kept."]
     if clashes:
         md.append("Classes two teams share with different picks, left out: " + ", ".join(clashes))
+    if set(kept) - played:
+        md.append("Kept but with no table entry (jar missing or class clash), so left out of the gate: "
+                  + ", ".join(sorted(set(kept) - played)))
     write(a.out_md, "\n".join(md) + "\n")
     write(a.out_java, "\n".join(lines) + ("\n" if lines else ""))
-    set_lines = ["# Teams whose pick the confirm kept (team_modes.py lock)"] + [l for t, l, _ in rows if t in kept]
+    set_lines = ["# Teams the locked table plays a mode against (team_modes.py lock)"] + [l for t, l, _ in rows if t in played]
     write(a.out_set, "\n".join(set_lines) + "\n")
     print(f"kept {len(kept)} of {len(picks)} picks", file=sys.stderr)
 
@@ -224,23 +256,39 @@ def cmd_lock(a):
 def cmd_gate(a):
     table = paired(a.report)
     control = paired(a.control) if a.control else {}
+    counts = [pair_counts(a.report)] + ([pair_counts(a.control)] if a.control else [])
+    teams = [t for t, _, _ in census(a.set)] if a.set else list(table)
     md = ["# Team mode table: gate", "",
           "Each team's gain is the table build's paired gain over aa less half of bb's (A/A), so it is "
           f"scored against both baselines; the projection spreads the sum over {a.teams} teams.", "",
           "| Team | Table vs aa | bb vs aa | Gain |", "|---|---|---|---|"]
-    total, var = 0.0, 0.0
-    for team, (m, c) in table.items():
+    total, var, short = 0.0, 0.0, []
+    for team in teams:
+        whole = all(c.get(team, 0) >= a.seeds for c in counts) if a.seeds else True
+        if team not in table or (a.control and team not in control) or not whole:
+            short.append(team)
+            md.append(f"| {team} | missing or short of {a.seeds} paired seeds | | |")
+            continue
+        m, c = table[team]
         cm, cc = control.get(team, (0.0, 0.0))
         g, gc = m - cm / 2, (c * c + (cc / 2) ** 2) ** 0.5
         total += g
-        var += (gc if gc != float("inf") else 0.0) ** 2
+        var += gc ** 2
         md.append(f"| {team} | {m:+.1f} ± {c:.1f} | {cm:+.1f} ± {cc:.1f} | {g:+.1f} ± {gc:.1f} |")
     aps, ci = total / a.teams, var ** 0.5 / a.teams
-    passed = aps >= a.min_aps and aps - ci > 0
-    md += ["", f"Projected team APS change: **{aps:+.2f} ± {ci:.2f}** ({len(table)} teams, sum {total:+.1f} points over {a.teams}).",
-           f"Gate: at least {a.min_aps:+.2f} with the 95% low end above zero: **{'PASS' if passed else 'FAIL'}**."]
+    if short:
+        verdict = "INCOMPLETE"
+    else:
+        verdict = "PASS" if aps >= a.min_aps and aps - ci > 0 else "FAIL"
+    md += ["", f"Projected team APS change: **{aps:+.2f} ± {ci:.2f}** ({len(teams) - len(short)} teams, sum {total:+.1f} points over {a.teams}).",
+           "The interval treats the two paired gains as independent; both pair with the same aa battles, which makes it wider than the true one.",
+           f"Gate: at least {a.min_aps:+.2f} with the 95% low end above zero: **{verdict}**."]
+    if short:
+        md.append("Not judged: " + ", ".join(short) + " lack a full pairing; rerun the gate steps.")
     write(a.out_md, "\n".join(md) + "\n")
-    print(f"projected {aps:+.2f} +/- {ci:.2f}: {'PASS' if passed else 'FAIL'}", file=sys.stderr)
+    print(f"projected {aps:+.2f} +/- {ci:.2f}: {verdict}", file=sys.stderr)
+    if short:
+        raise SystemExit(f"gate incomplete: {', '.join(short)}")
 
 
 def main(argv=None):
@@ -265,6 +313,7 @@ def main(argv=None):
     lk.add_argument("--census", required=True)
     lk.add_argument("--opponents", default="opponents")
     lk.add_argument("--min-gain", type=float, default=1.0)
+    lk.add_argument("--control", help="bb against aa on the confirm's teams and seeds")
     lk.add_argument("--base", default="", help="modes every entry also plays, as MATEFIRE,HUNT")
     lk.add_argument("--out-md")
     lk.add_argument("--out-java")
@@ -273,6 +322,8 @@ def main(argv=None):
     gt.add_argument("--report", required=True, help="the locked table build against aa")
     gt.add_argument("--control", help="bb against aa on the same teams and seeds")
     gt.add_argument("--teams", type=int, default=46)
+    gt.add_argument("--set", help="the gate's team set: every team in it must have a full pairing")
+    gt.add_argument("--seeds", type=int, help="paired seeds each team must have in both reports")
     gt.add_argument("--min-aps", type=float, default=0.3)
     gt.add_argument("--out-md")
     a = p.parse_args(argv)

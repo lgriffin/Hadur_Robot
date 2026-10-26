@@ -7,7 +7,7 @@
 # Enjambre LANEB, OmegaTeam LINES.
 #   ttconf  the screen's table (mt) vs aa on the picked teams, 12 fresh seeds (base 4300)
 #   ttcbb   bb vs aa on the same teams and seeds (A/A)
-#   ttlock  keep a pick only where ttconf gained +1.0 point or more
+#   ttlock  keep a pick only where it gained +1.0 point or more against both baselines (ttconf less half ttcbb)
 #   ttgate  the locked table (mk) vs aa on the kept teams, 16 fresh seeds (base 4400); ttgbb A/A
 #   ttsum   projected team APS change = sum of the kept teams' gains / 46
 # Gate: projection at least +0.30 APS with the 95% low end above zero. About 700 battles, 45 min at
@@ -26,13 +26,13 @@ ttconf | mvn -q exec:java "-Dexec.args=@work/team-table-conf.args"
   after: ttprep
 ttcbb  | mvn -q exec:java "-Dexec.args=@work/team-table-cbb.args"
   after: ttconf
-ttlock | ${T} lock --confirm ${OUT}/team-table-conf.md --pick-tsv ${OUT}/team-table-pick.tsv --base MATEFIRE,HUNT --census team-census46.txt --opponents opponents --min-gain 1.0 --out-md ${OUT}/team-table-lock.md --out-java work/team-table-locked.java --out-set work/team-table-gate.txt && if [ -s work/team-table-locked.java ]; then TEAM_MODE_LOCKED="$(pwd)/work/team-table-locked.java" bash ./build-ablation.sh tmlock; else echo "no pick kept: no gate"; fi
+ttlock | ${T} lock --confirm ${OUT}/team-table-conf.md --control ${OUT}/team-table-cbb.md --pick-tsv ${OUT}/team-table-pick.tsv --base MATEFIRE,HUNT --census team-census46.txt --opponents opponents --min-gain 1.0 --out-md ${OUT}/team-table-lock.md --out-java work/team-table-locked.java --out-set work/team-table-gate.txt && if [ -s work/team-table-locked.java ]; then TEAM_MODE_LOCKED="$(pwd)/work/team-table-locked.java" bash ./build-ablation.sh tmlock; else echo "no pick kept: no gate"; fi
   after: ttcbb
 ttgate | if [ -s work/team-table-locked.java ]; then mvn -q exec:java "-Dexec.args=@work/team-table-gate.args"; else echo "no pick kept: no gate"; fi
   after: ttlock
 ttgbb  | if [ -s work/team-table-locked.java ]; then mvn -q exec:java "-Dexec.args=@work/team-table-gbb.args"; else echo "no pick kept: no gate"; fi
   after: ttgate
-ttsum  | if [ -f ${OUT}/team-table-gate.md ]; then ${T} gate --report ${OUT}/team-table-gate.md --control ${OUT}/team-table-gbb.md --teams 46 --min-aps 0.3 --out-md ${OUT}/team-table-verdict.md; else echo "no gate run" > ${OUT}/team-table-verdict.md; fi && cp work/team-table-locked.java ${OUT}/team-table-locked.java.txt 2>/dev/null; true
+ttsum  | if [ -s work/team-table-locked.java ]; then ${T} gate --report ${OUT}/team-table-gate.md --control ${OUT}/team-table-gbb.md --set work/team-table-gate.txt --seeds 16 --teams 46 --min-aps 0.3 --out-md ${OUT}/team-table-verdict.md && cp work/team-table-locked.java ${OUT}/team-table-locked.java.txt; else echo "No pick kept by the confirm: no gate, table stays empty." > ${OUT}/team-table-verdict.md; fi
   after: ttgbb
 ttpr   | bash tools/open_results_pr.sh claude/pc-team-table-results "Team per-team table v2: confirm, lock and gate" $(ls ${OUT}/team-table-*.md ${OUT}/team-table-pick.tsv ${OUT}/team-table-locked.java.txt 2>/dev/null)
   after: ttsum
