@@ -56,7 +56,7 @@ class TeamLossesTest(unittest.TestCase):
             text = team_losses.report([d])
             self.assertIn("mid 14", text)
             self.assertIn("left out: rz.HOFSwarm_1.1-2", text)
-            self.assertIn("| mid 14 | 1 | 0% | 0% | 100% | 0% |", text)
+            self.assertIn("| mid 14 | 1 | 0% | 0% | 100% | 0% | 0% |", text)
             self.assertEqual("top 8", team_losses.band("cb.fire.FirestarterTeam"))
 
     def test_other_subject(self):

@@ -439,3 +439,19 @@ Together +1.0..+2.5 against +2.6: 2nd only at the top of the range.
 - **Next (card pc-team-compare, about 15 min):** bench Firestarter and Combat as the subject against
   the mid 14 on the same seeds and read them with the same tool, to see where they differ (round
   length, hit rate, members lost) before building anything.
+
+### 10.2 Team lines of fire (2026-10-26)
+
+- **Compare result (PR #313, docs/bench/local/team-compare-read.md):** against the mid 14 our own
+  bullets do 60 damage a round to our members; Firestarter's 10, Combat's 17. That is about half
+  of the extra bullet damage we take. Their hit rate on us is the same as on them (14.1% against
+  13.0%); we hit the mid teams less (14.9% against 17.9% and 16.2%). Both rivals hold almost no
+  shots (about 2% fly with a mate in the lane), so they keep members out of each other's lines
+  rather than holding fire, which is what WEAVE-10/11 did and lost.
+- **TMODE-15 LINES (off):** a member's destination risk adds a cone behind each teammate's nearest
+  fresh enemy, as the teammate sees it, where its misses fly (0.3 on the line, none 0.3 rad off,
+  up to 800 px past the enemy). Ablations tmlines and tmlinesw (0.6, 0.45 rad).
+- **BENCH-114:** each friendly hit is logged as lane, walkin, beyond, noline or unseen, so the
+  card says where the 60 a round comes from even if both arms fail.
+- **Card pc-team-lines (about 1.8 h):** A/A, ml and mlw on all 46 teams, 6 seeds from 4200. Gate
+  +1.0 share points with the low end above zero and the A/A within 1.0.

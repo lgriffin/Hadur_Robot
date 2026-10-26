@@ -15,7 +15,7 @@ Firestarter and Combat, the top 6, the rest):
 - damage our bullets did to our own members, per round;
 - with BENCH-114's friendly.log, our hits on our own members by kind: lane (the victim was in the
   lane when the shot was fired), walkin (it stepped into the path before the target), beyond (a miss
-  that flew on past the target), noline (no enemy near the line).
+  that flew on past the target), noline (no enemy near the line), unseen (first shown already hitting).
 
 Another team can be the subject (a run with it as the bench's robot): --ours names its class
 prefix, e.g. --ours cb.fire., and only the run's candidate battles are read. Its members print no R records, so its first death and round length read nan; compare the last-shot column instead.
@@ -38,7 +38,7 @@ TOP = {'cz.libors.OgiTeam', 'rz.AlephTeam', 'abc.ShadowTeam', 'ustimaw.Nightmare
        'florent.XSeries.Xmen', 'ags.polylunar.Polylunar', 'cb.fire.FirestarterTeam', 'mn.CombatTeam'}
 
 
-KINDS = ('lane', 'walkin', 'beyond', 'noline')
+KINDS = ('lane', 'walkin', 'beyond', 'noline', 'unseen')
 
 
 def damage(power):
@@ -102,7 +102,7 @@ def battle(d):
             for line in f:
                 c = line.rstrip('\n').split(',')
                 kind = [x[5:] for x in c if x.startswith('kind=')]
-                if kind and kind[0] != '-' and c[0].isdigit() and int(c[0]) in rows:
+                if kind and kind[0] in KINDS and c[0].isdigit() and int(c[0]) in rows:
                     rows[int(c[0])]['kinds'][kind[0]] += 1
     for p in glob.glob(os.path.join(d, 'member-*.log')):
         with open(p) as f:

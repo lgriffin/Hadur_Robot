@@ -134,6 +134,13 @@ public class TeamHarvester extends BattleAdaptor {
             }
         }
         for (IBulletSnapshot b : snap.getBullets()) {
+            // BENCH-114: our bullet's line when first seen in flight; one first seen ending has none.
+            if (!firstSeen.containsKey(b.getBulletId()) && b.getState() != BulletState.HIT_VICTIM
+                    && b.getOwnerIndex() >= 0 && b.getOwnerIndex() < robots.length
+                    && robots[b.getOwnerIndex()].getTeamIndex() == ourTeam) {
+                fireGeometry.put(b.getBulletId(), geometry(b.getX(), b.getY(), Math.sin(b.getHeading()),
+                    Math.cos(b.getHeading()), robots));
+            }
             firstSeen.putIfAbsent(b.getBulletId(), new double[] {b.getX(), b.getY()});
             logBullet(b, robots, turn);
             // The engine's own record of a bullet of ours that ended on one of our members.
@@ -148,7 +155,7 @@ public class TeamHarvester extends BattleAdaptor {
                 double[] first = firstSeen.get(b.getBulletId());
                 double travelled = Math.hypot(b.getX() - first[0], b.getY() - first[1]);
                 double[] g = fireGeometry.get(b.getBulletId());
-                String where = ",target=-,victimAlong=-,victimAcross=-,kind=-";
+                String where = ",target=-,victimAlong=-,victimAcross=-,kind=unseen";
                 if (g != null) {
                     double along = g[1 + 2 * b.getVictimIndex()], across = g[2 + 2 * b.getVictimIndex()];
                     where = String.format(Locale.ROOT, ",target=%s,victimAlong=%.0f,victimAcross=%.0f,kind=%s",
@@ -173,7 +180,6 @@ public class TeamHarvester extends BattleAdaptor {
             if (owner == null || owner.getTeamIndex() != ourTeam) continue;
             shots++;
             double dx = Math.sin(b.getHeading()), dy = Math.cos(b.getHeading());
-            fireGeometry.put(b.getBulletId(), geometry(b.getX(), b.getY(), dx, dy, robots));
             for (IRobotSnapshot r : robots) {
                 if (r == owner || r.getTeamIndex() != ourTeam || !r.getState().isAlive()) continue;
                 double rx = r.getX() - b.getX(), ry = r.getY() - b.getY();
@@ -224,15 +230,14 @@ public class TeamHarvester extends BattleAdaptor {
 
     /**
      * BENCH-114: what kind of friendly hit a bullet made, from where its victim stood when it was
-     * fired: {@code lane} when the victim was ahead within {@link #LANE_HALF} px of the line and
-     * nearer than the target; else {@code noline} with no target; {@code walkin} when the bullet
+     * fired: {@code noline} with no target; {@code lane} when the victim was ahead within
+     * {@link #LANE_HALF} px of the line and nearer than the target; {@code walkin} when the bullet
      * hit before reaching the target (the victim stepped into its path); {@code beyond} when it
      * had flown past the target (a miss that flew on).
      */
     static String kind(double target, double along, double across, double travelled) {
-        boolean nearer = Double.isNaN(target) || along < target;
-        if (along > 0 && across <= LANE_HALF && nearer) return "lane";
         if (Double.isNaN(target)) return "noline";
+        if (along > 0 && across <= LANE_HALF && along < target) return "lane";
         return travelled < target - HALF_WIDTH ? "walkin" : "beyond";
     }
 
