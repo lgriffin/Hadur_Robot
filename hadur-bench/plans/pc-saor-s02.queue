@@ -15,7 +15,7 @@
 #   T2, T4 Saor's threshold at 2 and 4 samples (763)
 #   D      Saor's confidence vote: sample any seen row, but a playout through a row under 8
 #          samples votes 5, not 100 (766)
-#   DC     the vote falls with the thinnest row's samples, 12 a sample (775)
+#   DC     the vote is at most 5 + 12 per sample of the thinnest row under 8 (777)
 #   DK250, DK400  D with the power constant 325 at 250 and 400
 #   DH5, DH9      D learning transitions below 0.5 and 0.9 gun heat (0.7 now)
 # MicroMelee census for every arm (216 battles, about 15 min an arm, 2.5 h); the live-shaped

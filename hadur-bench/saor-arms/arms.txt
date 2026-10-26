@@ -25,7 +25,7 @@ FX | G, W, R, Z and U together: Figment's gun and movement with Saor's 512 hashe
 T2 | sample a row from 2 samples, circular aim below (764) | s#if ((n = table\[id\]\[126\]) >= 8) {#if ((n = table[id][126]) >= 2) {#
 T4 | sample a row from 4 samples, circular aim below (764) | s#if ((n = table\[id\]\[126\]) >= 8) {#if ((n = table[id][126]) >= 4) {#
 D | sample any seen row; a playout through a row under 8 samples votes 5, not 100 (766) | s#if ((n = table\[id\]\[126\]) >= 8) {#if ((n = table[id][126]) > 0) {#; s#} else {#} if (n < 8) {#
-DC | sample any seen row; a playout's vote falls to 12 per sample of its thinnest row under 8 (775) | s#if ((n = table\[id\]\[126\]) >= 8) {#if ((n = table[id][126]) > 0) {#; s#} else {#} if (n < 8) {#; s#weight = 5;#weight = Math.min(weight, n * 12);#
+DC | sample any seen row; a playout votes at most 5 + 12 per sample of its thinnest row under 8, so an unseen row keeps the cold 5 (777) | s#if ((n = table\[id\]\[126\]) >= 8) {#if ((n = table[id][126]) > 0) {#; s#} else {#} if (n < 8) {#; s#weight = 5;#weight = Math.min(weight, n * 12 + 5);#
 DK250 | D with power constant 250, softer shots (766) | s#if ((n = table\[id\]\[126\]) >= 8) {#if ((n = table[id][126]) > 0) {#; s#} else {#} if (n < 8) {#; s#\* 325 /#* 250 /#
 DK400 | D with power constant 400, harder shots (766) | s#if ((n = table\[id\]\[126\]) >= 8) {#if ((n = table[id][126]) > 0) {#; s#} else {#} if (n < 8) {#; s#\* 325 /#* 400 /#
 DH5 | D, learning a transition only below 0.5 gun heat (766) | s#if ((n = table\[id\]\[126\]) >= 8) {#if ((n = table[id][126]) > 0) {#; s#} else {#} if (n < 8) {#; s#getGunHeat() < 0.7#getGunHeat() < 0.5#

@@ -177,13 +177,13 @@ What this means under section 5:
 | W | Figment's any-sample rule, the reference | 762 |
 | T2, T4 | Saor's threshold at 2 and 4 samples | 763 |
 | **D** | Confidence vote: sample any seen row, and a playout through a row under 8 samples votes 5, not 100 | 766 |
-| **DC** | Graded confidence: the vote falls to 12 for each sample of the thinnest row under 8 | 775 |
+| **DC** | Graded confidence: a playout through a row under 8 samples votes at most 5 + 12 per sample (an unseen row keeps the cold 5) | 777 |
 | DK250, DK400 | D with the power constant at 250 and 400 (325 now) | 766 |
 | DH5, DH9 | D learning a transition below 0.5 and 0.9 gun heat (0.7 now) | 766 |
 
 Every arm runs on the MicroMelee census. C, D and DC also run on the live-shaped census. The
 pass is the same as stage 1. On the live-shaped census the 1st bar is a low end above 69.37.
-D is 2 bytes over after ProGuard, and DC about 11 over. The ram leg's 13 bytes would pay for
+D is 2 bytes over after ProGuard, and DC about 13 over. The ram leg's 13 bytes would pay for
 either.
 
 ## 7. What a guaranteed 1st takes
