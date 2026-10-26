@@ -1,0 +1,28 @@
+# PC card team-compare (docs/plan-team-top5.md section 10): cb.fire.FirestarterTeam 2.0 as the subject team against the 14 mid teams
+# (team-mid14.txt), same seeds as pc-team-lane (base 4100), no baseline. tools/team_losses.py --ours reads its logs.
+--team
+true
+--seeds
+6
+--seed-base
+4100
+--rounds
+10
+--parallel
+auto
+--child-heap
+2G
+--cpu-constant
+auto
+--set
+team-mid14.txt
+--robot-jar
+opponents/cb.fire.FirestarterTeam_2.0.jar
+--robot
+cb.fire.FirestarterTeam 2.0
+--member
+cb.fire.Firestarter
+--out
+work/team-compare-fire
+--report
+../docs/bench/local/team-compare-fire.md

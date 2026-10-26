@@ -13,7 +13,10 @@ Firestarter and Combat, the top 6, the rest):
 - focus: the share of the enemy's bullet damage that landed on the member it hurt most;
 - damage our bullets did to our own members, per round.
 
-Usage: python3 tools/team_losses.py RUN [RUN...] > report.md
+Another team can be the subject (a run with it as the bench's robot): --ours names its class
+prefix, e.g. --ours cb.fire., and only the run's candidate battles are read. Its members print no R records, so its first death reads nan.
+
+Usage: python3 tools/team_losses.py [--ours PREFIX] [--title TEXT] RUN [RUN...] > report.md
 """
 import collections
 import glob
@@ -137,12 +140,15 @@ def line(name, s):
             '| {dmg_them:.0f} | {hit_us:.1f} | {hit_them:.1f} | {focus:.0f} | {mates:.0f} |').format(name, **s)
 
 
-def report(runs):
+def report(runs, title='How HadurTeam loses rounds'):
     per = collections.defaultdict(list)
     battles = collections.Counter()
     skipped = []
     for run in runs:
         for d in sorted(glob.glob(os.path.join(run, 'battles', '*'))):
+            # Another subject is only the candidate: a run's baseline battles are HadurTeam's.
+            if OURS != 'hadur2.' and d.endswith('-baseline'):
+                continue
             rows = battle(d)
             if rows:
                 per[opponent(os.path.basename(d))].extend(rows)
@@ -152,7 +158,7 @@ def report(runs):
     if not any(per.values()):
         sys.exit('team_losses.py: no team battles under ' + ', '.join(runs))
     counts = sorted(set(battles.values()))
-    out = ['# How HadurTeam loses rounds', '', 'Runs: ' + ', '.join(runs), '',
+    out = ['# ' + title, '', 'Subject: ' + OURS + '*', '', 'Runs: ' + ', '.join(runs), '',
            'Battles read: {} over {} opponents ({} per opponent); incomplete directories left out: {}.'.format(
                sum(battles.values()), len(battles), ' or '.join(map(str, counts)),
                ', '.join(skipped) if skipped else 'none'), '',
@@ -172,6 +178,16 @@ def report(runs):
 
 
 if __name__ == '__main__':
-    if len(sys.argv) < 2:
+    args = sys.argv[1:]
+    title = 'How HadurTeam loses rounds'
+    while args and args[0].startswith('--'):
+        if args[0] == '--ours' and len(args) > 1:
+            OURS = args[1]
+        elif args[0] == '--title' and len(args) > 1:
+            title = args[1]
+        else:
+            sys.exit(__doc__)
+        args = args[2:]
+    if not args:
         sys.exit(__doc__)
-    sys.stdout.write(report(sys.argv[1:]))
+    sys.stdout.write(report(args, title))
