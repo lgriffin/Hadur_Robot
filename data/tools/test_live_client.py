@@ -151,6 +151,14 @@ class ClientFilesTest(unittest.TestCase):
         self.assertEqual(len(again.poll_results()), 0, "a restarted watch remembers battles.tsv")
         self.assertTrue(any("LOW" in l for l in self.lines), "the 25% battle is called out")
 
+    def test_watch_keeps_only_the_named_versions(self):
+        w = lc.Watch([self.client], self.out, log=self.lines.append, robots=["hadur2.Hadur 3.17"])
+        with open(self.results, "w") as f:
+            f.write(RESULTS)
+        self.assertEqual(w.poll_results(), [], "3.11 battles stay out of a 3.17 watch")
+        w = lc.Watch([self.client], self.out, log=self.lines.append, robots=["hadur2.Hadur 3.11"])
+        self.assertEqual(len(w.poll_results()), 2)
+
     def test_health_record_names_its_opponent_and_verdict(self):
         self.assertEqual(lc.parse_health("HEALTH,35,33,2,7,0,3100000")["skipped"], 7)
         self.assertIsNone(lc.parse_health("garbage"))
