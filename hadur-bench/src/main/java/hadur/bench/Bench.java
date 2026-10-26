@@ -68,7 +68,8 @@ import java.util.zip.GZIPOutputStream;
  *     {@code load}, {@code engine}, {@code java}; see {@link ClientConditions}), one bench
  *     pass per condition, and report survival and skipped turns per opponent per condition.</li>
  * <li>{@code --suite FILE} run every bench the file lists ({@code label | options} per
- *     line) and write one report, e.g. {@code melee-gates.txt}.</li>
+ *     line) and write one report, e.g. {@code melee-gates.txt}. A melee suite runs as many fields
+ *     side by side as fill {@code --parallel} (BENCH-108); {@code --suite-parallel N} sets it.</li>
  * <li>{@code --parallel N} (issue #102) run N duel battles at once, each on its own Robocode
  *     home ({@code home-1..home-N}); {@code --cpu-constant NANOS} pins the engine's CPU
  *     constant in every home (else several workers share one idle calibration);
@@ -357,9 +358,8 @@ public final class Bench {
         Path suite = benchDir.resolve(global.get("suite"));
         String stamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss"));
         Path out = Path.of(global.getOrDefault("out", "work/suite-" + stamp)).toAbsolutePath();
-        StringBuilder report = new StringBuilder("# Bench suite: ")
-            .append(suite.getFileName()).append("\n\n");
-        int exit = 0;
+        List<String> labels = new ArrayList<>();
+        List<Map<String, String>> lines = new ArrayList<>();
         for (String line : Files.readAllLines(suite)) {
             line = line.trim();
             if (line.isEmpty() || line.startsWith("#")) continue;
@@ -368,23 +368,88 @@ public final class Bench {
             Map<String, String> opts = new HashMap<>(global);
             opts.remove("suite");
             opts.remove("report");
+            opts.remove("suite-parallel");
             opts.putAll(parse(parts[1].trim().split("\\s+")));
             opts.put("out", out.resolve(label).toString());
             opts.put("label", label);
-            System.out.println("== " + label);
-            exit |= new Bench(opts).run();
-            report.append(Files.readString(out.resolve(label).resolve("report.md")).replaceFirst("^# ", "## "))
-                .append("\n");
+            labels.add(label);
+            lines.add(opts);
         }
-        Files.createDirectories(out);
-        Files.writeString(out.resolve("report.md"), report);
-        if (global.containsKey("report")) {
-            Path copy = Path.of(global.get("report")).toAbsolutePath();
-            Files.createDirectories(copy.getParent());
-            Files.writeString(copy, report);
+        // BENCH-108: a melee field has only --seeds battles to share between the workers, so a
+        // 12-wide suite of 4-seed fields would leave two thirds of the PC idle; fields run side by
+        // side until the width is filled ("Main PC should always go max", Leigh 2026-10-25).
+        int atOnce = suiteLinesAtOnce(global, lines, System.getenv());
+        if (atOnce > 1 && new HashSet<>(labels).size() < labels.size()) {
+            throw new IllegalArgumentException("suite labels must be distinct to run lines side by side "
+                + "(each writes to out/<label>): " + labels);
         }
-        System.out.println(report);
-        return exit;
+        if (atOnce > 1) System.out.println("suite: " + atOnce + " lines at once (BENCH-108)");
+        java.util.concurrent.ExecutorService pool = java.util.concurrent.Executors.newFixedThreadPool(atOnce);
+        List<java.util.concurrent.Future<Integer>> runs = new ArrayList<>();
+        try {
+            for (int i = 0; i < lines.size(); i++) {
+                Map<String, String> opts = lines.get(i);
+                String label = labels.get(i);
+                runs.add(pool.submit(() -> {
+                    System.out.println("== " + label);
+                    return new Bench(opts).run();
+                }));
+            }
+            int exit = 0;
+            StringBuilder report = new StringBuilder("# Bench suite: ").append(suite.getFileName()).append("\n\n");
+            for (int i = 0; i < runs.size(); i++) {
+                try {
+                    exit |= runs.get(i).get();
+                } catch (java.util.concurrent.ExecutionException e) {
+                    throw e.getCause() instanceof Exception x ? x : new RuntimeException(e.getCause());
+                }
+                report.append(Files.readString(out.resolve(labels.get(i)).resolve("report.md")).replaceFirst("^# ", "## "))
+                    .append("\n");
+            }
+            Files.createDirectories(out);
+            Files.writeString(out.resolve("report.md"), report);
+            if (global.containsKey("report")) {
+                Path copy = Path.of(global.get("report")).toAbsolutePath();
+                Files.createDirectories(copy.getParent());
+                Files.writeString(copy, report);
+            }
+            System.out.println(report);
+            return exit;
+        } finally {
+            // Let fields already running finish: interrupting one would leave its battle JVMs behind.
+            pool.shutdown();
+            pool.awaitTermination(Long.MAX_VALUE, TimeUnit.DAYS);
+        }
+    }
+
+    /**
+     * BENCH-108: how many suite lines run at once. {@code --suite-parallel N} says; otherwise, when every
+     * line is a melee field, {@code parallel / min(parallel, battles)} fields run side by side (a field
+     * fights at most its seeds, or its {@code --battles} in warm mode, at once), taking the smallest over
+     * the lines so no mix of lines goes past {@code --parallel}. Any other suite runs one line at a
+     * time, as each line already fills the width with its opponents; so does a suite that keeps data,
+     * records fixtures (their names carry no line label) or has no pinned CPU constant (each field
+     * would calibrate it in its own home while the others load the host).
+     */
+    static int suiteLinesAtOnce(Map<String, String> global, List<Map<String, String>> lines, Map<String, String> env) {
+        if (global.containsKey("suite-parallel")) {
+            int n = Integer.parseInt(global.get("suite-parallel").trim());
+            if (n < 1) throw new IllegalArgumentException("--suite-parallel must be at least 1, not " + n);
+            return n;
+        }
+        int atOnce = Integer.MAX_VALUE;
+        for (Map<String, String> line : lines) {
+            Map<String, String> o = new HashMap<>(line);
+            HostWidth.resolve(o, env, Runtime.getRuntime().availableProcessors());
+            if (!o.containsKey("melee") || Boolean.parseBoolean(o.getOrDefault("keep-data", "false"))
+                    || o.containsKey("record") || !o.containsKey("cpu-constant")) return 1;
+            boolean warm = o.getOrDefault("mode", "cold").equals("warm");
+            int parallel = Integer.parseInt(o.getOrDefault("parallel", "1").trim());
+            int battles = Math.max(1, Integer.parseInt(warm ? o.getOrDefault("battles", "5").trim()
+                                                            : o.getOrDefault("seeds", "5").trim()));
+            atOnce = Math.min(atOnce, Math.max(1, parallel / Math.min(parallel, battles)));
+        }
+        return lines.isEmpty() ? 1 : atOnce;
     }
 
     int run() throws Exception {

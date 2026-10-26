@@ -1,0 +1,76 @@
+# Saor's plan for 1st in MicroMelee, stage 2 (docs/plan-saor-first.md): Saor's own answer to
+# stage 1's finding. pc-saor-s01 (PR #294) found the whole gap in one place: Saor waits for 8
+# samples before it samples a Markov row, and sampling any seen row (W, Figment's rule) gave
+# +1.35 census APS and rounds won 51% -> 59.5%. Leigh, 2026-10-25: Saor stays its own robot, so
+# W is the reference here, not a candidate.
+#   ./queue.sh run pc-saor-s02        (or  .\queue.ps1 run pc-saor-s02)
+# Run it from master:
+#   git checkout master && git pull
+# One bench queue, RoboRumble workers at 0, unpinned, 12 workers. Every step resumes; no step needs
+# a decision. Nothing here touches Hadur.
+#
+# Arms (saor-arms/arms.txt; javac bytes, about 15 over ProGuard's):
+#   C      Saor 0.1, the control (764)
+#   W      Figment's any-sample rule, the reference (762)
+#   T2, T4 Saor's threshold at 2 and 4 samples (763)
+#   D      Saor's confidence vote: sample any seen row, but a playout through a row under 8
+#          samples votes 5, not 100 (766)
+#   DC     the vote is at most 5 + 12 per sample of the thinnest row under 8 (777)
+#   DK250, DK400  D with the power constant 325 at 250 and 400
+#   DH5, DH9      D learning transitions below 0.5 and 0.9 gun heat (0.7 now)
+# MicroMelee census for every arm (216 battles, about 15 min an arm, 2.5 h); the live-shaped
+# census (SAOR-16) for C, D and DC (360 battles a seat, about 30-60 min each).
+# Pass: +0.3 or more with the low end above 0 against C, field by field. The 1st bar on the live
+# census is a low end above Figment's 69.37.
+
+set MVN = mvn -q -Drobocode.version=1.11.1 compile exec:java
+set OUT = ../docs/bench/local
+set ARMS = C,W,T2,T4,D,DC,DK250,DK400,DH5,DH9
+set LIVE = C,D,DC
+
+prep | (cd .. && mvn -q -DskipTests install -pl saor -am) && cp ../saor/target/hadur117.micro.Saor_0.1.jar opponents/ && ./fetch-opponents.sh --set micromelee-field.txt && for f in melee-census-317/f*.txt; do ./fetch-opponents.sh --set "$f" || exit 1; done && SAOR_RUN=s02 bash tools/saor_arms.sh census 12 1700 ${ARMS} && SAOR_RUN=s02 bash tools/saor_arms.sh live 8 1800 ${LIVE}
+
+census-C | ${MVN} "-Dexec.args=@work/saor-s02/census-C.args"
+  after: prep
+
+census-W | ${MVN} "-Dexec.args=@work/saor-s02/census-W.args"
+  after: census-C
+
+census-T2 | ${MVN} "-Dexec.args=@work/saor-s02/census-T2.args"
+  after: census-W
+
+census-T4 | ${MVN} "-Dexec.args=@work/saor-s02/census-T4.args"
+  after: census-T2
+
+census-D | ${MVN} "-Dexec.args=@work/saor-s02/census-D.args"
+  after: census-T4
+
+census-DC | ${MVN} "-Dexec.args=@work/saor-s02/census-DC.args"
+  after: census-D
+
+census-DK250 | ${MVN} "-Dexec.args=@work/saor-s02/census-DK250.args"
+  after: census-DC
+
+census-DK400 | ${MVN} "-Dexec.args=@work/saor-s02/census-DK400.args"
+  after: census-DK250
+
+census-DH5 | ${MVN} "-Dexec.args=@work/saor-s02/census-DH5.args"
+  after: census-DK400
+
+census-DH9 | ${MVN} "-Dexec.args=@work/saor-s02/census-DH9.args"
+  after: census-DH5
+
+live-C | ${MVN} "-Dexec.args=@work/saor-s02/live-C.args"
+  after: census-DH9
+
+live-D | ${MVN} "-Dexec.args=@work/saor-s02/live-D.args"
+  after: live-C
+
+live-DC | ${MVN} "-Dexec.args=@work/saor-s02/live-DC.args"
+  after: live-D
+
+read | python3 tools/saor_arms.py --work-root work/saor-s02 --field live --arms ${LIVE} --control C --only work/saor-s02/live/micro.txt --top5 69.37 > ${OUT}/saor-s02-live.md && python3 tools/saor_arms.py --work-root work/saor-s02 --arms ${ARMS} --control C > ${OUT}/saor-s02-census.md
+  after: live-DC
+
+pr | bash tools/open_results_pr.sh claude/pc-saor-s02-results "Saor stage 2: confidence vote, thresholds and constants" ${OUT}/saor-s02-live.md ${OUT}/saor-s02-census.md ${OUT}/saor-s02-live-*.md ${OUT}/saor-s02-census-*.md
+  after: read

@@ -19,3 +19,14 @@ W | sample any row with a sample, as Figment (762) | s#if ((n = table\[id\]\[126
 R | no leg after a ram, as Figment (751) | s#targetName = e.getName();##; s#targetDistance = -12.5;##
 Z | fire only at positive power, as Figment: no 0.1 shots below 1 energy (771) | s#if (getGunTurnRemaining() == 0) {#if (power > 0 \&\& getGunTurnRemaining() == 0) {#
 FX | G, W, R, Z and U together: Figment's gun and movement with Saor's 512 hashes and 1024 bins (742) | s#if (getGunTurnRemaining() == 0) {#if (power > 0 \&\& getGunTurnRemaining() == 0) {#; s#} while (++i < 64);#} while (++i <= 127);#; s#if ((n = table\[id\]\[126\]) >= 8) {#if ((n = table[id][126]) > 0) {#; s#targetName = e.getName();##; s#targetDistance = -12.5;##; s#Math.min(getOthers() / 3 + 1.9, Math.log10(getEnergy()) \* 325 / (targetDistance = distance))#Math.log10(getEnergy()) * 325 / (targetDistance = distance)#
+# Stage 2 of docs/plan-saor-first.md: Saor's own answer to stage 1's finding (waiting for 8
+# samples costs +1.35; W, Figment's any-sample rule, is the reference). D and DC keep Saor's
+# confidence idea: a pattern is sampled once seen, but a thin one (under 8 samples) votes less.
+T2 | sample a row from 2 samples, circular aim below (764) | s#if ((n = table\[id\]\[126\]) >= 8) {#if ((n = table[id][126]) >= 2) {#
+T4 | sample a row from 4 samples, circular aim below (764) | s#if ((n = table\[id\]\[126\]) >= 8) {#if ((n = table[id][126]) >= 4) {#
+D | sample any seen row; a playout through a row under 8 samples votes 5, not 100 (766) | s#if ((n = table\[id\]\[126\]) >= 8) {#if ((n = table[id][126]) > 0) {#; s#} else {#} if (n < 8) {#
+DC | sample any seen row; a playout votes at most 5 + 12 per sample of its thinnest row under 8, so an unseen row keeps the cold 5 (777) | s#if ((n = table\[id\]\[126\]) >= 8) {#if ((n = table[id][126]) > 0) {#; s#} else {#} if (n < 8) {#; s#weight = 5;#weight = Math.min(weight, n * 12 + 5);#
+DK250 | D with power constant 250, softer shots (766) | s#if ((n = table\[id\]\[126\]) >= 8) {#if ((n = table[id][126]) > 0) {#; s#} else {#} if (n < 8) {#; s#\* 325 /#* 250 /#
+DK400 | D with power constant 400, harder shots (766) | s#if ((n = table\[id\]\[126\]) >= 8) {#if ((n = table[id][126]) > 0) {#; s#} else {#} if (n < 8) {#; s#\* 325 /#* 400 /#
+DH5 | D, learning a transition only below 0.5 gun heat (766) | s#if ((n = table\[id\]\[126\]) >= 8) {#if ((n = table[id][126]) > 0) {#; s#} else {#} if (n < 8) {#; s#getGunHeat() < 0.7#getGunHeat() < 0.5#
+DH9 | D, learning a transition below 0.9 gun heat (766) | s#if ((n = table\[id\]\[126\]) >= 8) {#if ((n = table[id][126]) > 0) {#; s#} else {#} if (n < 8) {#; s#getGunHeat() < 0.7#getGunHeat() < 0.9#
