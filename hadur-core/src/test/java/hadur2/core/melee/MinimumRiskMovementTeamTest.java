@@ -197,4 +197,29 @@ class MinimumRiskMovementTeamTest {
         assertEquals(pt(MinimumRiskMovement.OPENING_WALL_GAP, 500), solo.openingSpot(pt(40, 500)));
         assertNotEquals(solo.openingSpot(pt(40, 500)).y, spots.stream().mapToDouble(s -> s.y).min().getAsDouble());
     }
+
+    @Test
+    @Tag("TMODE-15")
+    @DisplayName("TMODE-15: the cone behind a teammate's nearest enemy costs LINES_K on the line, less off it, nothing before the enemy")
+    void behindTheMatesTargetCosts() {
+        EnemyTracker t = new EnemyTracker(field(1000, 1000));
+        scan(t, "a", 500, 500, 100, 100);
+        scan(t, "b", 900, 200, 100, 100);
+        // The teammate at (500, 200): a, 300 px north, is its nearest; b is 400 px east.
+        List<Roster.Mate> m = mate(500, 200, 0, 0);
+        double k = MinimumRiskMovement.LINES_K;
+        assertEquals(k, MinimumRiskMovement.linesRisk(pt(500, 700), m, t.alive(), 100), 1e-9);
+        assertEquals(0, MinimumRiskMovement.linesRisk(pt(500, 400), m, t.alive(), 100), 1e-9);
+        double off = Math.atan2(50, 500);
+        assertEquals(k * (1 - off / MinimumRiskMovement.LINES_HALF),
+            MinimumRiskMovement.linesRisk(pt(550, 700), m, t.alive(), 100), 1e-9);
+        assertEquals(0, MinimumRiskMovement.linesRisk(pt(700, 700), m, t.alive(), 100), 1e-9);
+        // Stale enemies make no line.
+        assertEquals(0, MinimumRiskMovement.linesRisk(pt(500, 700), m, t.alive(), 100 + hadur2.core.world.EnemyInfo.STALE_TICKS), 1e-9);
+        // Off unless the mode is on: the teammate term is the same without it.
+        MinimumRiskMovement.View v = move.view(pt(300, 300), 100, 100, 3, t.alive(), normal, m);
+        double without = move.teammateRisk(pt(500, 700), v);
+        v.lines = true;
+        assertEquals(without + k, move.teammateRisk(pt(500, 700), v), 1e-9);
+    }
 }

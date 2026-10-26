@@ -32,7 +32,10 @@ import robocode.control.snapshot.ITurnSnapshot;
  *     ({@code E} records) that fell below the truth (WORLD-8), and, from the engine's own
  *     bullet snapshots, our bullets that hit one of our own members (T1's friendly fire).</li>
  * <li>{@code friendly.log}: one line for each of those, with the bullet's power and how far
- *     it flew, so a hit can be read against the lane that was kept.</li>
+ *     it flew, so a hit can be read against the lane that was kept, and (BENCH-114) where the
+ *     victim stood when the bullet was fired: {@code target} (how far along the bullet's line the
+ *     nearest enemy within {@link #TARGET_HALF} px of it stood, {@code -} for none),
+ *     {@code victimAlong}, {@code victimAcross}, and {@link #kind}.</li>
  * <li>{@code bullets.log}: every bullet in the battle, ours and the enemies', as
  *     {@code round,turn,F,id,owner,power,x,y,heading,members} when the engine first shows it
  *     (for an enemy bullet, {@code members} lists each living member of ours as
@@ -51,6 +54,10 @@ public class TeamHarvester extends BattleAdaptor {
     public static final String HEADER = "round,membersAlive,enemiesAlive,won,shots,shotsWithMateInLane,countBelowTruth,countReports,bulletsOnMates,focusFireRatio";
     /** A robot's half-width: a teammate this close to a bullet's line is in its lane. */
     static final double HALF_WIDTH = 18;
+    /** BENCH-114: an enemy this close to a bullet's line, ahead of it, is the shot's target. */
+    static final double TARGET_HALF = 60;
+    /** BENCH-114: a teammate this close to the line, before the target, was in the lane when it fired. */
+    static final double LANE_HALF = 36;
 
     private final String memberClass;
     private final Path dir;
@@ -59,6 +66,8 @@ public class TeamHarvester extends BattleAdaptor {
     private final Set<Integer> bullets = new HashSet<>();
     private final Set<Integer> friendly = new HashSet<>();
     private final Map<Integer, double[]> firstSeen = new HashMap<>();
+    /** BENCH-114: our bullets' geometry when first seen: the target's distance along, then each robot's along and across. */
+    private final Map<Integer, double[]> fireGeometry = new HashMap<>();
     private final Set<Integer> damaging = new HashSet<>();
     private final Map<Integer, Double> damageByEnemy = new HashMap<>();
     private final BufferedWriter debug;
@@ -84,6 +93,7 @@ public class TeamHarvester extends BattleAdaptor {
         friendly.clear();
         hits.clear();
         firstSeen.clear();
+        fireGeometry.clear();
         damaging.clear();
         damageByEnemy.clear();
         membersAlive = enemiesAlive = shots = inLane = belowTruth = countReports = bulletsOnMates = 0;
@@ -136,10 +146,18 @@ public class TeamHarvester extends BattleAdaptor {
                 bulletsOnMates++;
                 IRobotSnapshot v = robots[b.getVictimIndex()], o = robots[b.getOwnerIndex()];
                 double[] first = firstSeen.get(b.getBulletId());
+                double travelled = Math.hypot(b.getX() - first[0], b.getY() - first[1]);
+                double[] g = fireGeometry.get(b.getBulletId());
+                String where = ",target=-,victimAlong=-,victimAcross=-,kind=-";
+                if (g != null) {
+                    double along = g[1 + 2 * b.getVictimIndex()], across = g[2 + 2 * b.getVictimIndex()];
+                    where = String.format(Locale.ROOT, ",target=%s,victimAlong=%.0f,victimAcross=%.0f,kind=%s",
+                        Double.isNaN(g[0]) ? "-" : String.format(Locale.ROOT, "%.0f", g[0]), along, across,
+                        kind(g[0], along, across, travelled));
+                }
                 write(debug, String.format(Locale.ROOT, "%d,%d,owner=%d,victim=%d,power=%.2f,travelled=%.0f,"
-                    + "victimVelocity=%.1f,ownerVelocity=%.1f%n", round, turn, o.getRobotIndex(), v.getRobotIndex(),
-                    b.getPower(), Math.hypot(b.getX() - first[0], b.getY() - first[1]), v.getVelocity(),
-                    o.getVelocity()));
+                    + "victimVelocity=%.1f,ownerVelocity=%.1f%s%n", round, turn, o.getRobotIndex(), v.getRobotIndex(),
+                    b.getPower(), travelled, v.getVelocity(), o.getVelocity(), where));
             }
             if (b.getState() == BulletState.HIT_VICTIM && b.getVictimIndex() >= 0
                     && b.getVictimIndex() < robots.length && b.getOwnerIndex() >= 0
@@ -155,6 +173,7 @@ public class TeamHarvester extends BattleAdaptor {
             if (owner == null || owner.getTeamIndex() != ourTeam) continue;
             shots++;
             double dx = Math.sin(b.getHeading()), dy = Math.cos(b.getHeading());
+            fireGeometry.put(b.getBulletId(), geometry(b.getX(), b.getY(), dx, dy, robots));
             for (IRobotSnapshot r : robots) {
                 if (r == owner || r.getTeamIndex() != ourTeam || !r.getState().isAlive()) continue;
                 double rx = r.getX() - b.getX(), ry = r.getY() - b.getY();
@@ -179,6 +198,42 @@ public class TeamHarvester extends BattleAdaptor {
         write(rounds, String.format(Locale.ROOT, "%d,%d,%d,%d,%d,%d,%d,%d,%d,%s%n", round, membersAlive, enemiesAlive,
             membersAlive > 0 && enemiesAlive == 0 ? 1 : 0, shots, inLane, belowTruth, countReports,
             bulletsOnMates, total > 0 ? String.format(Locale.ROOT, "%.4f", most / total) : "-"));
+    }
+
+    /**
+     * BENCH-114: a bullet's line from (x, y) along (dx, dy): first how far along it the nearest
+     * living enemy fighter ahead and within {@link #TARGET_HALF} px of it stands (NaN for none),
+     * then, per robot (in the snapshot's order, which victim indexes follow), that robot's distance along the line and across it.
+     */
+    private double[] geometry(double x, double y, double dx, double dy, IRobotSnapshot[] robots) {
+        double[] g = new double[1 + 2 * robots.length];
+        g[0] = Double.NaN;
+        for (int i = 0; i < robots.length; i++) {
+            IRobotSnapshot r = robots[i];
+            double rx = r.getX() - x, ry = r.getY() - y;
+            double along = rx * dx + ry * dy, across = Math.abs(rx * dy - ry * dx);
+            g[1 + 2 * i] = along;
+            g[2 + 2 * i] = across;
+            if (r.getTeamIndex() != ourTeam && r.getState().isAlive() && !r.isSentryRobot() && along > 0
+                    && across <= TARGET_HALF && !(along >= g[0])) {
+                g[0] = along;
+            }
+        }
+        return g;
+    }
+
+    /**
+     * BENCH-114: what kind of friendly hit a bullet made, from where its victim stood when it was
+     * fired: {@code lane} when the victim was ahead within {@link #LANE_HALF} px of the line and
+     * nearer than the target; else {@code noline} with no target; {@code walkin} when the bullet
+     * hit before reaching the target (the victim stepped into its path); {@code beyond} when it
+     * had flown past the target (a miss that flew on).
+     */
+    static String kind(double target, double along, double across, double travelled) {
+        boolean nearer = Double.isNaN(target) || along < target;
+        if (along > 0 && across <= LANE_HALF && nearer) return "lane";
+        if (Double.isNaN(target)) return "noline";
+        return travelled < target - HALF_WIDTH ? "walkin" : "beyond";
     }
 
     private void logBullet(IBulletSnapshot b, IRobotSnapshot[] robots, int turn) {

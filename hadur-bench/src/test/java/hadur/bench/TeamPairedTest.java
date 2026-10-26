@@ -174,4 +174,58 @@ class TeamPairedTest {
         assertEquals("0,1,F,1," + MEMBER + " 1,1.00,0.0,0.0,0.0000,-", bullets.get(0));
         assertEquals("0,1,H,1," + MEMBER + " 1,kc.Opp 1,1.00", bullets.get(1));
     }
+
+    private static IRobotSnapshot at(int index, int team, String name, double x, double y) {
+        return (IRobotSnapshot) Proxy.newProxyInstance(IRobotSnapshot.class.getClassLoader(),
+            new Class<?>[] {IRobotSnapshot.class}, (p, m, a) -> switch (m.getName()) {
+                case "getName" -> name;
+                case "getRobotIndex" -> index;
+                case "getTeamIndex" -> team;
+                case "getX" -> x;
+                case "getY" -> y;
+                case "getVelocity", "getBodyHeading" -> 0.0;
+                case "getState" -> RobotState.ACTIVE;
+                case "isSentryRobot" -> false;
+                case "getOutputStreamSnapshot" -> "";
+                default -> throw new UnsupportedOperationException(m.getName());
+            });
+    }
+
+    private static IBulletSnapshot bullet(int id, BulletState state, int victim, double x, double y) {
+        return (IBulletSnapshot) Proxy.newProxyInstance(IBulletSnapshot.class.getClassLoader(),
+            new Class<?>[] {IBulletSnapshot.class}, (p, m, a) -> switch (m.getName()) {
+                case "getState" -> state;
+                case "getBulletId" -> id;
+                case "getOwnerIndex" -> 0;
+                case "getVictimIndex" -> victim;
+                case "getPower" -> 3.0;
+                case "getX" -> x;
+                case "getY" -> y;
+                case "getHeading" -> 0.0;
+                default -> throw new UnsupportedOperationException(m.getName());
+            });
+    }
+
+    @Test
+    @Tag("BENCH-114")
+    @DisplayName("a friendly hit is told apart by where its victim stood when the bullet was fired")
+    void friendlyHitKinds() throws IOException {
+        assertEquals("lane", TeamHarvester.kind(300, 200, 20, 200));
+        assertEquals("walkin", TeamHarvester.kind(300, 200, 120, 150));
+        assertEquals("beyond", TeamHarvester.kind(300, 500, 0, 500));
+        assertEquals("noline", TeamHarvester.kind(Double.NaN, -50, 200, 400));
+        assertEquals("lane", TeamHarvester.kind(Double.NaN, 100, 10, 100));
+        // Fired north from (100, 100); the enemy 300 px up the line, the victim 500 px up it: a miss that flew on.
+        List<IRobotSnapshot> field = List.of(at(0, 0, MEMBER + " 1", 100, 80), at(1, 0, MEMBER + " 2", 100, 600),
+            at(2, 1, "kc.Opp 1", 110, 400));
+        TeamHarvester h = new TeamHarvester(dir, MEMBER);
+        h.onRoundStarted(new RoundStartedEvent(null, 0, null));
+        h.onTurnEnded(turn(field, List.of(bullet(9, BulletState.MOVING, -1, 100, 100))));
+        h.onTurnEnded(turn(field, List.of(bullet(9, BulletState.HIT_VICTIM, 1, 100, 600))));
+        h.onRoundEnded(new RoundEndedEvent(0, 0, 0));
+        h.close();
+        String line = Files.readAllLines(dir.resolve("friendly.log")).get(0);
+        assertTrue(line.endsWith(",travelled=500,victimVelocity=0.0,ownerVelocity=0.0,target=300,victimAlong=500,"
+            + "victimAcross=0,kind=beyond"), line);
+    }
 }
