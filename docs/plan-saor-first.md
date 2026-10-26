@@ -131,6 +131,61 @@ Stop rules:
 - **If stage 1 finds nothing**, the gap is not in the differences from Figment. Read
   Figment's and Saor's rounds side by side before stage 2.
 
+## 6a. Stages 0 and 1: results (pc-saor-s01, PR #294, 2026-10-26)
+
+**Stage 0 passed.** The live-shaped census reproduces live:
+
+| Seat | Live-shaped census | vs Saor 0.1, by field | Live (2026-10-25) |
+|---|---|---|---|
+| Saor 0.1 | 68.14 ± 0.21 | | 68.08 |
+| Figment | 69.80 ± 0.20 | +1.69 ± 0.29 | +1.30 |
+| Wallaby | 69.62 ± 0.16 | +1.28 ± 0.27 | +0.84 |
+
+The level is right to 0.06. Both rivals' leads are inside the ±0.5 pass band, and they read
+about 0.4 high. From here the live-shaped census is the projection of a live score.
+
+**Stage 1 found the gap in one place**, which is waiting for 8 samples. The MicroMelee census,
+paired by field against C (66.43 ± 0.26):
+
+| Arm | vs C | Rounds won | Verdict |
+|---|---|---|---|
+| G, 128 playouts | -0.05 ± 0.35 | 52.3% | no effect: the playout guess was wrong |
+| **W, sample any seen row** | **+1.35 ± 0.34** | **59.5%** (C 51.2%) | **the cost** |
+| R, no ram leg | +0.30 ± 0.36 | | small, low end below 0 |
+| Z, power > 0 guard | +0.25 ± 0.35 | | small, low end below 0 |
+| FX, all of them | +1.51 ± 0.35 | 60.1% | W plus about 0.15 |
+
+On the live-shaped census, FX reads 69.73 ± 0.21, level with Figment's 69.80. Most patterns a
+melee opponent shows are seen fewer than 8 times, so Saor 0.1 spent most of its aims on
+circular projection. That is the rounds-won gap of section 2.
+
+What this means under section 5:
+
+- W is Figment's rule, so it is the reference and not the answer.
+- Saor keeps its idea that a thin pattern deserves less trust. Its answer is a confidence vote
+  (arms D and DC): it samples any seen pattern, but a playout through one under 8 samples votes
+  less.
+- R's +0.30 is a weak sign that the ram leg costs points. If stage 4 needs bytes, the ram leg
+  is the first trade, and it is justified by that measurement.
+- The playout count stays at 64.
+
+## 6b. Stage 2 card (pc-saor-s02, about 4-5 h)
+
+| Arm | What | Bytes (javac) |
+|---|---|---|
+| C | Saor 0.1, the control | 764 |
+| W | Figment's any-sample rule, the reference | 762 |
+| T2, T4 | Saor's threshold at 2 and 4 samples | 763 |
+| **D** | Confidence vote: sample any seen row, and a playout through a row under 8 samples votes 5, not 100 | 766 |
+| **DC** | Graded confidence: a playout through a row under 8 samples votes at most 5 + 12 per sample (an unseen row keeps the cold 5) | 777 |
+| DK250, DK400 | D with the power constant at 250 and 400 (325 now) | 766 |
+| DH5, DH9 | D learning a transition below 0.5 and 0.9 gun heat (0.7 now) | 766 |
+
+Every arm runs on the MicroMelee census. C, D and DC also run on the live-shaped census. The
+pass is the same as stage 1. On the live-shaped census the 1st bar is a low end above 69.37.
+D is 2 bytes over after ProGuard, and DC about 13 over. The ram leg's 13 bytes would pay for
+either.
+
 ## 7. What a guaranteed 1st takes
 
 Figment and Wallaby are not changing; both have been in the rumble for years. If stage 1
