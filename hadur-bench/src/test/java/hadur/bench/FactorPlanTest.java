@@ -29,7 +29,7 @@ class FactorPlanTest {
         Set<String> lists = new java.util.TreeSet<>(names("plans/factor-heatjit.txt"));
         lists.addAll(names("plans/factor-gunstack.txt"));
         assertEquals(lists, new java.util.TreeSet<>(names("panel-factor-picks.txt")));
-        assertEquals(26, lists.size());
+        assertEquals(14, lists.size());
     }
 
     @Test
@@ -39,7 +39,7 @@ class FactorPlanTest {
         String queue = Files.readString(Path.of("plans/pc-1v1-factor.queue"));
         assertTrue(queue.contains("HEAT_JIT=plans/factor-heatjit.txt GUN_STACK=plans/factor-gunstack.txt bash ./build-ablation.sh hjlist,gslist"));
         assertTrue(queue.contains("--set panel-factor-picks.txt --seeds 6 --seed-base 3100 --arms plans/factor-verify.arms"));
-        assertTrue(queue.contains("--arm t5 --bar 0.05"));
+        assertTrue(queue.contains("--arm t5 --bar 0.03"));
         assertTrue(queue.contains("open_results_pr.sh claude/pc-1v1-factor-results"));
         String arms = Files.readString(Path.of("plans/factor-verify.arms"));
         assertTrue(arms.contains("t5 | hadur2.Hadur 3.17.1hlgl | bisect/hadur2.Hadur_3.17.1hlgl.jar"));

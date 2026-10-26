@@ -1346,8 +1346,9 @@ public final class DuelController {
         if (dodgePlanOn) shotDodger.prime(dodgePlan);
         // MOVE-28: stop-and-start (MOVE-13) for the opponents the table names.
         heatJitOn = duelOnly(stackList.heatJit(name), enemiesTotal);
-        // GUN-11: the gun stack (GUN-8 to GUN-10) for the opponents the table names; the gun keeps them 1v1-only.
-        if (duelOnly(stackList.gunStack(name), enemiesTotal)) {
+        // GUN-11: the gun stack (GUN-8 to GUN-10) for the opponents the table names, never a shield-mode one
+        // (its TripHammer aims break the shield's bullet hits); the gun keeps them 1v1-only.
+        if (duelOnly(stackList.gunStack(name) && !stackList.matches(name), enemiesTotal)) {
             gunController.setTripHammer(true);
             gunController.setFreeGun(true);
             gunController.setUndecayed(true);
