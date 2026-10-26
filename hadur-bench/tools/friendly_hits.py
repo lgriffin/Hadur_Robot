@@ -16,7 +16,8 @@ import statistics
 import sys
 
 KINDS = ('lane', 'walkin', 'beyond', 'noline', 'unseen')
-ACROSS = ((0, 36, 'within 36 px (in the lane)'), (36, 100, '36-100 px'), (100, 250, '100-250 px'),
+# Upper bounds inclusive, as BENCH-114's lane (across <= 36).
+ACROSS = ((-1, 36, 'within 36 px (in the lane)'), (36, 100, '36-100 px'), (100, 250, '100-250 px'),
           (250, float('inf'), 'over 250 px'))
 
 
@@ -75,7 +76,7 @@ def report(runs):
                 "bullet's heading; behind: at its back (it can only be hit after walking round).", '',
                 '| Off the line at the shot | Hits | Share | Ahead | Median flight (px) |', '|---|---|---|---|---|']
         for lo, hi, name in ACROSS:
-            rows = [r for r in nl if lo <= number(r.get('victimAcross')) < hi]
+            rows = [r for r in nl if lo < number(r.get('victimAcross')) <= hi]
             if not rows:
                 continue
             ahead = sum(1 for r in rows if number(r.get('victimAlong')) > 0)

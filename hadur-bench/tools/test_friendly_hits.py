@@ -18,7 +18,7 @@ class FriendlyHitsTest(unittest.TestCase):
             b = Path(d) / "battles" / "rz.HOFSwarm_1.1-1"
             b.mkdir(parents=True)
             (b / "friendly.log").write_text(
-                line("noline", 400, 380, 20) + line("noline", 300, 250, 120) + line("noline", 500, -80, 300)
+                line("noline", 400, 380, 36) + line("noline", 300, 250, 120) + line("noline", 500, -80, 300)
                 + line("beyond", 600, 600, 5) + "0,9,owner=0,victim=1,power=1.00,travelled=50,victimVelocity=0.0,"
                 "ownerVelocity=0.0\n", encoding="utf-8")
             text = friendly_hits.report([d])
