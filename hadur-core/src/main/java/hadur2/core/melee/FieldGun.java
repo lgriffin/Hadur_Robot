@@ -121,10 +121,18 @@ public class FieldGun {
 
     /** An opponent was scanned {@code distance} from Hadur. */
     public void onScan(EnemyInfo e, double distance, long time) {
+        onScan(e, distance, time, null, 0);
+    }
+
+    /**
+     * As above, with the robot nearest it ({@code nearest}, Hadur included, or null) and the
+     * opponents alive, which MGUN-11's crowd attributes read.
+     */
+    public void onScan(EnemyInfo e, double distance, long time, Point2D.Double nearest, int alive) {
         EnemyHistory h = history(e.name);
         if (h != null) {
             h.onScan(time, e.location.x, e.location.y, e.heading, e.velocity, distance,
-                e.turnRate(), field);
+                e.turnRate(), field, nearest, alive);
         }
     }
 
@@ -134,8 +142,14 @@ public class FieldGun {
      */
     public void onSighting(String name, long time, double x, double y, double heading, double velocity,
                            double distance, double turnRate) {
+        onSighting(name, time, x, y, heading, velocity, distance, turnRate, null, 0);
+    }
+
+    /** As above, with MGUN-11's crowd context, as {@link #onScan(EnemyInfo, double, long, Point2D.Double, int)}. */
+    public void onSighting(String name, long time, double x, double y, double heading, double velocity,
+                           double distance, double turnRate, Point2D.Double nearest, int alive) {
         EnemyHistory h = history(name);
-        if (h != null) h.onScan(time, x, y, heading, velocity, distance, turnRate, field);
+        if (h != null) h.onScan(time, x, y, heading, velocity, distance, turnRate, field, nearest, alive);
     }
 
     /** Every firing solution this tick, for every opponent fresh enough to shoot at. */

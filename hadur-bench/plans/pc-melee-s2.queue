@@ -1,0 +1,41 @@
+# Melee Stage 2 (docs/plan-melee-top5.md, MGUN-11, BENCH-110): the crowd gun. Stage 1 (PR #305) found
+# entry play moves Hadur's energy at the endgame by 1.5 at most; the deficit is the whole crowd phase,
+# where Hadur deals 124 damage a round against 153-203 for the top 12. Ogi's melee gun takes 24
+# situations an opponent and describes them by the crowd; Hadur's takes 12 by distance to Hadur.
+#   g4    24 situations an opponent off a team (MGUN-7's 12)
+#   gc    MGUN-11: each situation also by the opponent's nearest robot, its heading to it, opponents alive
+#   g4gc  both
+#   ef    Stage 1's MEND-3 again (+0.29 +-0.31 there) on fresh seeds, to pool the two runs
+# aa is the baseline and bb its A/A copy. Each build fights the 46 census fields x 6 seeds alone
+# (276 battles, 1,656 in all) at the machine's melee width and CPU constant, on seeds 3177-3182 (Stage 1 fought 3171-3176); the
+# read pairs every arm with aa battle for battle. Melee only: duel play is untouched (the duel never
+# reads the field gun); g4 leaves a team's K alone.
+# Verdict: a gun arm passes at +0.5 census APS or more with the 95% low end above 0, Hadur's share of
+# others outlived no more than 1 point lower and the 1-30 endgame wins no more than 3 points lower;
+# ef at +0.3. bb must be within +-0.25. The card ends in a results PR on claude/pc-melee-s2-results
+# whatever the verdict; the melee thread ("Plan melee path to top 5") reads it.
+#   ./queue.sh run pc-melee-s2        (or  .\queue.ps1 run pc-melee-s2)
+# Run it from master, one bench queue at a time:
+#   git checkout master && git pull
+# s2prep reads the version from hadur-robot/pom.xml, so a bump cannot point the card at stale jars,
+# and fixes the width in work/, so a resumed card never mixes host profiles.
+
+set OUT = ../docs/bench/local
+
+s2prep | git checkout -q master && V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && test -n "$V" && C=${MELEE_WORKERS} && for a in aa bb g4 gc g4gc ef; do rm -f bisect/hadur2.Hadur_"$V"$a.jar; done && bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && bash ./build-ablation.sh g24 && bash ./build-ablation.sh gcrowd && bash ./build-ablation.sh g24,gcrowd && bash ./build-ablation.sh e3far && mkdir -p work && for a in aa bb g4 gc g4gc ef; do test -f bisect/hadur2.Hadur_"$V"$a.jar && sed -e "s/@V@/$V/g" -e "s/@A@/$a/g" -e "s/@C@/$C/g" plans/melee-s2.args > work/melee-s2-$a.args || exit 1; done && rm -f ${OUT}/melee-s2-*.md && for f in melee-census-317/f*.txt; do ./fetch-opponents.sh --set "$f" || exit 1; done && mvn -q compile
+s2aa   | mvn -q exec:java "-Dexec.args=@work/melee-s2-aa.args"
+  after: s2prep
+s2bb   | mvn -q exec:java "-Dexec.args=@work/melee-s2-bb.args"
+  after: s2aa
+s2g4   | mvn -q exec:java "-Dexec.args=@work/melee-s2-g4.args"
+  after: s2bb
+s2gc   | mvn -q exec:java "-Dexec.args=@work/melee-s2-gc.args"
+  after: s2g4
+s2g4gc | mvn -q exec:java "-Dexec.args=@work/melee-s2-g4gc.args"
+  after: s2gc
+s2ef   | mvn -q exec:java "-Dexec.args=@work/melee-s2-ef.args"
+  after: s2g4gc
+s2read | V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && W=work/melee-s2-"$V" && { python3 tools/melee_s0.py screen "$W"-aa --arm bb="$W"-bb --arm g4="$W"-g4 --arm gc="$W"-gc --arm g4gc="$W"-g4gc --arm ef="$W"-ef --census melee-census-317.txt --seeds 6 --gain 0.5 --gain ef=0.3 --survival-slack 1 --out ${OUT}/melee-s2-read.md --title "Melee Stage 2 on $V: the crowd gun" || true; } && test -s ${OUT}/melee-s2-read.md
+  after: s2ef
+s2pr   | bash tools/open_results_pr.sh claude/pc-melee-s2-results "Melee Stage 2: the crowd gun (MGUN-11)" ${OUT}/melee-s2-read.md $(ls ${OUT}/melee-s2-??.md ${OUT}/melee-s2-g4gc.md 2>/dev/null)
+  after: s2read

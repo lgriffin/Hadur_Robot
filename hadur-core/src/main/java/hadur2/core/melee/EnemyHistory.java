@@ -23,9 +23,21 @@ public final class EnemyHistory {
     static final int TREE_LIMIT = 2000;
     /** Scans kept per round (RES-2). */
     static final int MAX_SCANS = 2500;
-    static final int DIMENSIONS = 5;
-    /** Attribute weights: distance, speed, turn rate, time since reversing, wall distance. */
-    static final double[] WEIGHTS = {1.0, 1.5, 1.2, 0.8, 1.0};
+    /**
+     * MGUN-11 (melee Stage 2, docs/plan-melee-top5.md): three more attributes that see the crowd,
+     * as Ogi's melee gun has: the distance from the opponent to its nearest robot (Hadur
+     * included), whether it is moving toward or away from that robot, and how many opponents
+     * are alive. Off, so the gun is MGUN-1's; the bench builds the arm with it on (gcrowd).
+     */
+    public static final boolean CROWD = false;
+    static final int DIMENSIONS = CROWD ? 8 : 5;
+    /**
+     * Attribute weights: distance, speed, turn rate, time since reversing, wall distance; with
+     * {@link #CROWD} also nearest-robot distance, heading to it, opponents alive.
+     */
+    static final double[] WEIGHTS = CROWD
+        ? new double[]{1.0, 1.5, 1.2, 0.8, 1.0, 1.5, 1.0, 0.8}
+        : new double[]{1.0, 1.5, 1.2, 0.8, 1.0};
 
     /** One scan of the opponent. */
     static final class Scan {
@@ -70,6 +82,16 @@ public final class EnemyHistory {
      */
     public void onScan(long time, double x, double y, double heading, double velocity,
                        double distance, double turnRate, BattleField field) {
+        onScan(time, x, y, heading, velocity, distance, turnRate, field, null, 0);
+    }
+
+    /**
+     * As above, where {@code nearest} is the robot nearest the opponent (Hadur included), or
+     * null when none is known, and {@code alive} the opponents alive; MGUN-11 reads them.
+     */
+    public void onScan(long time, double x, double y, double heading, double velocity,
+                       double distance, double turnRate, BattleField field,
+                       java.awt.geom.Point2D nearest, int alive) {
         double sign = Math.signum(velocity);
         if (sign != 0 && sign != lastSign) {
             if (lastSign != 0) lastReverse = time;
@@ -78,6 +100,7 @@ public final class EnemyHistory {
         if (lastReverse < 0 && scans.isEmpty()) lastReverse = time;
         double[] a = attributes(distance, velocity, turnRate,
             lastReverse < 0 ? 0 : time - lastReverse, wallDistance(x, y, field));
+        if (CROWD) a = crowd(a, x, y, heading, velocity, nearest, alive);
         if (scans.size() >= MAX_SCANS) {
             scans.remove(0);
             pending = Math.max(0, pending - 1);
@@ -139,6 +162,28 @@ public final class EnemyHistory {
             Math.min(sinceReverse, 100) / 100.0,
             Math.min(wallDistance, 400) / 400.0,
         };
+    }
+
+    /**
+     * MGUN-11: {@code base} with the crowd's three attributes: the nearest robot's distance
+     * (capped at 800 px), the cosine of the angle between the opponent's motion and the bearing
+     * to that robot mapped to 0..1 (1 heading straight at it, 0.5 when stopped or none is
+     * known), and the opponents alive out of nine.
+     */
+    static double[] crowd(double[] base, double x, double y, double heading, double velocity,
+                          java.awt.geom.Point2D nearest, int alive) {
+        double[] a = java.util.Arrays.copyOf(base, base.length + 3);
+        double d = nearest == null ? 800 : Math.min(800, nearest.distance(x, y));
+        double toward = 0.5;
+        if (nearest != null && velocity != 0 && d > 0) {
+            double m = velocity < 0 ? heading + Math.PI : heading;
+            double bearing = Math.atan2(nearest.getX() - x, nearest.getY() - y);
+            toward = (1 + Math.cos(bearing - m)) / 2;
+        }
+        a[base.length] = d / 800.0;
+        a[base.length + 1] = toward;
+        a[base.length + 2] = Math.min(Math.max(alive, 0), 9) / 9.0;
+        return a;
     }
 
     static double wallDistance(double x, double y, BattleField field) {
