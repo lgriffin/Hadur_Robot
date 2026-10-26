@@ -241,6 +241,8 @@
 #         opponent (ShieldTableData.dodges()). Suffix dg.
 #   sdplan DODGE-6: the shot-dodge planner (Saguaro's ShotDodger movement, DODGE-4 to DODGE-6) against
 #         every duel opponent, once an expert stands out; writes DP records. Suffix sp.
+#   sdkeep0 with sdplan: the planner neither keeps a close enemy away with no wave nor drives ahead of
+#         RAM-2's escape. Suffix k0.
 #   sdplanlist the lines of $SHOT_DODGE_PLAN ("expert name", or a name alone for -1, or a pick TSV)
 #         get the planner per opponent (ShieldTableData.dodgePlans()). Suffix dp.
 #   sgo    POISON-2: stop-and-go (POISON-1, WavePoison: reverse crawl 1 tick before the enemy's gun
@@ -739,6 +741,9 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(names))
         sdplan)
             edit "$movedesign" "static final boolean SHOT_DODGE_PLAN = false;" "static final boolean SHOT_DODGE_PLAN = true;"
             version="${version}sp" ;;
+        sdkeep0)
+            edit "$src/hadur-core/src/main/java/hadur2/core/move/ShotDodgePlanner.java" "public static final boolean KEEP_AWAY = true;" "public static final boolean KEEP_AWAY = false;"
+            version="${version}k0" ;;
         sdplanlist)
             # DODGE-4: per-opponent planner entries; a bare name learns its expert (-1).
             [[ -n "${SHOT_DODGE_PLAN:-}" && -f "$SHOT_DODGE_PLAN" ]] || { echo "sdplanlist needs SHOT_DODGE_PLAN=<file>" >&2; exit 2; }
@@ -797,7 +802,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$design" 'public static final ShieldDesign SHIPPED = parse("' \
                 "public static final ShieldDesign SHIPPED = parse(\"$flag,"
             version="${version}${suffix}" ;;
-        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, ramheat, flaton, nowall, flt59, flt8, split, wallesc, gungate, hold650, dfac, bhb, hitclr, pkern, keep2, thgun, freegun, nodecay, stacklist, protean, pdw3, pdw8, pc10, phot, repl, pressure, pdown, pwall, pwc, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tlanep, tlaneb, tlook, tram, t6n, t6l, tmsoft, tmgang, tmfin, tmlearn, tmpack, tmscreen, tmpool, tmdis, tmfire, tmnofire, tmrear, tmwaves, tmwk, tmhunt, tmnohunt, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, surfb, aimmix, mimics, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, snull, strim, slistadd, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdplanlist, sgo, sgo2, sgolist, sgo2list)" >&2; exit 2 ;;
+        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, ramheat, flaton, nowall, flt59, flt8, split, wallesc, gungate, hold650, dfac, bhb, hitclr, pkern, keep2, thgun, freegun, nodecay, stacklist, protean, pdw3, pdw8, pc10, phot, repl, pressure, pdown, pwall, pwc, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tlanep, tlaneb, tlook, tram, t6n, t6l, tmsoft, tmgang, tmfin, tmlearn, tmpack, tmscreen, tmpool, tmdis, tmfire, tmnofire, tmrear, tmwaves, tmwk, tmhunt, tmnohunt, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, surfb, aimmix, mimics, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, snull, strim, slistadd, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list)" >&2; exit 2 ;;
     esac
 done
 

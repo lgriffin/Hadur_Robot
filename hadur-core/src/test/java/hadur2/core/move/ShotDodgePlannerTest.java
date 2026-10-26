@@ -109,4 +109,18 @@ class ShotDodgePlannerTest {
             "moved away: " + p.planPoint());
         assertEquals(ShotDodgePlanner.KEEP_TICKS + 1, p.path(me(), p.planPoint(), List.of()).size());
     }
+
+    @Test
+    @Tag("DODGE-6")
+    @DisplayName("a path into the enemy's extrapolated track costs a collision")
+    void collision() {
+        ShotDodgePlanner p = planner();
+        RobotState enemy = RobotState.newBuilder().setLocation(new Point2D.Double(400, 300))
+            .setHeading(Math.PI).setVelocity(8).setTime(1).build();
+        List<RobotState> still = p.path(me(), ME, List.of());
+        assertTrue(p.cost(still, List.of(), List.of(), 0.005, enemy) >= ShotDodgePlanner.HIT_COST * ShotDodgePlanner.RAM_DAMAGE,
+            "standing in a rammer's path is a collision");
+        List<RobotState> aside = p.path(me(), new Point2D.Double(560, 200), List.of());
+        assertTrue(p.cost(aside, List.of(), List.of(), 0.005, enemy) < ShotDodgePlanner.HIT_COST);
+    }
 }

@@ -48,6 +48,15 @@ public final class ShotDodgePlanner {
     static final int[] POINT_TICKS = {3, 6, 10, 15, 21, 28, 36, 45, 55};
     /** With no wave to dodge, the planner keeps away from an enemy closer than this, px. */
     static final double CLOSE_RANGE = 200.0;
+    /**
+     * Whether the planner keeps a close enemy away with no wave in the air, and drives ahead of
+     * RAM-2's escape (the ablation {@code sdkeep0} turns both off).
+     */
+    public static final boolean KEEP_AWAY = true;
+    /** Centres closer than this collide, px (a robot is 36 px square). */
+    static final double COLLIDE = 40.0;
+    /** A collision costs as much as a bullet of this damage, so a path is rammed only when every path is. */
+    static final double RAM_DAMAGE = 4.0;
     /** The ticks a keep-away path looks ahead. */
     static final int KEEP_TICKS = 20;
     /** Waves planned for at once. */
@@ -133,7 +142,7 @@ public final class ShotDodgePlanner {
             bullets.add(a);
         }
         // With no wave in the air, a close enemy is kept away from (Saguaro's distance term alone).
-        if (waves.isEmpty() && (enemy == null || enemy.location.distance(myState.location) > CLOSE_RANGE)) return false;
+        if (waves.isEmpty() && (!KEEP_AWAY || enemy == null || enemy.location.distance(myState.location) > CLOSE_RANGE)) return false;
         if (needsPlan(myState, waves, expert)) {
             plan(myState, waves, bullets, band, enemy, desiredDistance);
             planWaves = waves;
@@ -250,6 +259,8 @@ public final class ShotDodgePlanner {
                 min = Math.min(min, s.location.distance(enemyAt(enemy, s.time)));
             }
             cost += OPPONENT_WEIGHT / Math.max(1.0, min * min);
+            // A path that drives into the enemy's extrapolated track is rammed.
+            if (min < COLLIDE) cost += HIT_COST * RAM_DAMAGE;
         }
         return cost;
     }
