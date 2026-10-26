@@ -378,7 +378,11 @@ public final class Bench {
         // BENCH-108: a melee field has only --seeds battles to share between the workers, so a
         // 12-wide suite of 4-seed fields would leave two thirds of the PC idle; fields run side by
         // side until the width is filled ("Main PC should always go max", Leigh 2026-10-25).
-        int atOnce = lines.isEmpty() ? 1 : suiteLinesAtOnce(global, lines.get(0), System.getenv());
+        int atOnce = suiteLinesAtOnce(global, lines, System.getenv());
+        if (atOnce > 1 && new HashSet<>(labels).size() < labels.size()) {
+            throw new IllegalArgumentException("suite labels must be distinct to run lines side by side "
+                + "(each writes to out/<label>): " + labels);
+        }
         if (atOnce > 1) System.out.println("suite: " + atOnce + " lines at once (BENCH-108)");
         java.util.concurrent.ExecutorService pool = java.util.concurrent.Executors.newFixedThreadPool(atOnce);
         List<java.util.concurrent.Future<Integer>> runs = new ArrayList<>();
@@ -412,28 +416,40 @@ public final class Bench {
             System.out.println(report);
             return exit;
         } finally {
-            pool.shutdownNow();
+            // Let fields already running finish: interrupting one would leave its battle JVMs behind.
+            pool.shutdown();
+            pool.awaitTermination(Long.MAX_VALUE, TimeUnit.DAYS);
         }
     }
 
     /**
-     * BENCH-108: how many suite lines run at once. {@code --suite-parallel N} says; otherwise a melee
-     * suite runs {@code parallel / min(parallel, seeds)} fields side by side (each field uses at most
-     * its seeds' worth of workers), so the battles in flight fill {@code --parallel}; any other suite
-     * runs one line at a time, as each line already fills the width with its opponents.
+     * BENCH-108: how many suite lines run at once. {@code --suite-parallel N} says; otherwise, when every
+     * line is a melee field, {@code parallel / min(parallel, battles)} fields run side by side (a field
+     * fights at most its seeds, or its {@code --battles} in warm mode, at once), taking the smallest over
+     * the lines so no mix of lines goes past {@code --parallel}. Any other suite runs one line at a
+     * time, as each line already fills the width with its opponents; so does a suite that keeps data,
+     * records fixtures (their names carry no line label) or has no pinned CPU constant (each field
+     * would calibrate it in its own home while the others load the host).
      */
-    static int suiteLinesAtOnce(Map<String, String> global, Map<String, String> firstLine, Map<String, String> env) {
+    static int suiteLinesAtOnce(Map<String, String> global, List<Map<String, String>> lines, Map<String, String> env) {
         if (global.containsKey("suite-parallel")) {
             int n = Integer.parseInt(global.get("suite-parallel").trim());
             if (n < 1) throw new IllegalArgumentException("--suite-parallel must be at least 1, not " + n);
             return n;
         }
-        Map<String, String> o = new HashMap<>(firstLine);
-        if (!o.containsKey("melee") || Boolean.parseBoolean(o.getOrDefault("keep-data", "false"))) return 1;
-        HostWidth.resolve(o, env, Runtime.getRuntime().availableProcessors());
-        int parallel = Integer.parseInt(o.getOrDefault("parallel", "1").trim());
-        int seeds = Math.max(1, Integer.parseInt(o.getOrDefault("seeds", "5").trim()));
-        return Math.max(1, parallel / Math.min(parallel, seeds));
+        int atOnce = Integer.MAX_VALUE;
+        for (Map<String, String> line : lines) {
+            Map<String, String> o = new HashMap<>(line);
+            HostWidth.resolve(o, env, Runtime.getRuntime().availableProcessors());
+            if (!o.containsKey("melee") || Boolean.parseBoolean(o.getOrDefault("keep-data", "false"))
+                    || o.containsKey("record") || !o.containsKey("cpu-constant")) return 1;
+            boolean warm = o.getOrDefault("mode", "cold").equals("warm");
+            int parallel = Integer.parseInt(o.getOrDefault("parallel", "1").trim());
+            int battles = Math.max(1, Integer.parseInt(warm ? o.getOrDefault("battles", "5").trim()
+                                                            : o.getOrDefault("seeds", "5").trim()));
+            atOnce = Math.min(atOnce, Math.max(1, parallel / Math.min(parallel, battles)));
+        }
+        return lines.isEmpty() ? 1 : atOnce;
     }
 
     int run() throws Exception {
