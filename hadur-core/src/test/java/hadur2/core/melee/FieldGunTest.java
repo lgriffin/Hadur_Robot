@@ -72,11 +72,11 @@ class FieldGunTest {
 
     @Test
     @Tag("MGUN-7")
-    @DisplayName("MGUN-7: off a team an opponent with history gets twelve solutions, sharing its weight")
+    @DisplayName("MGUN-7: off a team an opponent with history gets twenty-four solutions, sharing its weight")
     void twelveLearnedSolutionsOffATeam() {
         for (long t = 0; t <= 200; t++) scanned("a", 500, 800, 100, Math.PI / 2, 8, t);
         List<FieldGun.Solution> s = gun.solutions(me, 100, 5, tracker.alive(), 200);
-        assertEquals(12, FieldGun.MELEE_K);
+        assertEquals(24, FieldGun.MELEE_K);
         assertEquals(FieldGun.MELEE_K, s.size());
         double total = s.stream().mapToDouble(x -> x.weight).sum();
         assertEquals(gun.weight(tracker.get("a"), me, tracker.alive(), 200), total, 1e-9);

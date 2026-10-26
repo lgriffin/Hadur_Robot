@@ -12,11 +12,11 @@ class MeleeEndgameTest {
     @Tag("MEND-1")
     @Tag("MEND-2")
     @Tag("MEND-3")
-    @DisplayName("MEND-1..3: every Stage 1 switch ships off, so the robot plays as before")
+    @DisplayName("MEND-1..3: MEND-1 and MEND-2 ship off; MEND-3 ships on (BENCH-115)")
     void shipOff() {
         assertFalse(MeleeEndgame.THREE_RING);
         assertFalse(MeleeEndgame.THREE_POWER);
-        assertFalse(MeleeEndgame.THREE_FAR);
+        assertTrue(MeleeEndgame.THREE_FAR);
     }
 
     @Test

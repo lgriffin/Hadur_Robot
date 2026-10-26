@@ -57,13 +57,13 @@ class MeleeS2PlanTest {
 
     @Test
     @Tag("BENCH-110")
-    @DisplayName("the gun arms edit exactly what ships: MGUN-7's 12 and MGUN-11's switch, off")
+    @DisplayName("the gun arms edit what shipped then: MGUN-7's 12 (24 since BENCH-115) and MGUN-11's switch, off")
     void ablations() throws IOException {
         String build = Files.readString(Path.of("build-ablation.sh"));
         assertTrue(build.contains("\"public static final int MELEE_K = 12;\" \"public static final int MELEE_K = 24;\""));
         assertTrue(build.contains("\"public static final boolean CROWD = false;\" \"public static final boolean CROWD = true;\""));
         String gun = Files.readString(Path.of("../hadur-core/src/main/java/hadur2/core/melee/FieldGun.java"));
-        assertTrue(gun.contains("public static final int MELEE_K = 12;"));
+        assertTrue(gun.contains("public static final int MELEE_K = 24;"), "banked by the bank card");
         String history = Files.readString(Path.of("../hadur-core/src/main/java/hadur2/core/melee/EnemyHistory.java"));
         assertTrue(history.contains("public static final boolean CROWD = false;"), "MGUN-11 ships off");
     }

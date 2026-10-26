@@ -7,8 +7,9 @@ package hadur2.core.melee;
  * the largest share of its deaths, and enters the last duel behind on energy against every
  * survivor ranked 1-30. Today two opponents left already plays as the duel will: the endgame
  * ring and lateral weight (MMOVE-4) and the duel's power table (MGUN-2). Each switch below
- * keeps the crowd's play for that phase instead; all are off, so the robot plays as before, and
- * the bench builds an arm with one turned on (build-ablation.sh e3ring, e3pow, e3far).</p>
+ * keeps the crowd's play for that phase instead. MEND-3 is on (banked with MGUN-7's 24 by the
+ * bank card, BENCH-115); the other two are off, and the bench builds an arm with one turned on
+ * (build-ablation.sh e3ring, e3pow).</p>
  *
  * <p>None applies on a team, nor with one opponent left, so team battles and the duel (and with
  * it every 1v1 battle) are untouched.</p>
@@ -20,7 +21,7 @@ public final class MeleeEndgame {
     /** MEND-2: with two opponents left off a team, fire by the crowd's power table. */
     public static final boolean THREE_POWER = false;
     /** MEND-3: with two opponents left off a team, being an opponent's closest robot weighs more. */
-    public static final boolean THREE_FAR = false;
+    public static final boolean THREE_FAR = true;
     /** MEND-3: the closest-robot factor then, in place of MMOVE-2's 2. */
     static final double THREE_FAR_FACTOR = 4.0;
 
