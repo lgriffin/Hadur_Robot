@@ -263,6 +263,19 @@ at MGUN-7's rate (+8% damage gave +0.88) is +1.0 to +2.5. **Gate**: +0.5 census 
 above 0, Hadur's survival (rounds outlived) not down more than 1 point, no band below -0.5.
 Team keeps its K = 3 gun unless the team thread screens it.
 
+**Stage 2 result (2026-10-26, PR #316).** Against aa alone no arm passed, but the A/A came out at
++0.23 ± 0.22 (aa drew low). Paired battle for battle with the mean of aa and bb: g4 (K = 24)
+**+0.34 ± 0.16**, g4gc +0.28 ± 0.18, gc +0.05 ± 0.15 (the crowd features add nothing), ef +0.13 ±
+0.18, and ef pooled with Stage 1 over 12 seeds **+0.21 ± 0.16**. Depth is a real gain, ef a small
+real one; both are under their bars. Stages 1 and 2 together come to about +0.55, under section 6's
++1.0 stop line: top 5 is out of reach on this core (census 66.99 + 0.55 projects about 66.7 live,
+near today's 16th).
+
+**Banking them (`pc-melee-bank`, BENCH-115):** g24 and e3far in one build (g4ef) beside aa and bb
+on the census at 8 fresh seeds (3183-3190), 1,104 battles; g4ef pairs with the mean of aa and bb
+(`screen --base2`) and passes at +0.3 with the low end above 0 and survival no more than 1 point
+lower. A pass turns both on in master.
+
 ### Stage 3: crowd survival
 
 The largest lever and the riskiest: M4's path scoring cost 3 to 5 APS, and the team's port of

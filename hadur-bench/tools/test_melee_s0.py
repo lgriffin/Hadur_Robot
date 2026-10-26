@@ -138,6 +138,26 @@ class ScreenTest(unittest.TestCase):
             self.assertIn("| bb | +0.00 ± 0.00 | 2 | 4 (0) |", text)
             self.assertIn("**PASS**", text)
 
+    def test_base2_pairs_with_both_baselines(self):
+        # @Tag("BENCH-115")
+        with tempfile.TemporaryDirectory() as tmp:
+            sets = os.path.join(tmp, "census")
+            write(os.path.join(sets, "f.txt"), "aaa.Big 1.0 | melee-3 | aaa.Big_1.0.jar\n")
+            write(os.path.join(sets, "suite.txt"), "F01 | --set f.txt\nF02 | --set f.txt\n")
+            won = "0,1,2,aaa.Big 1.0,1,0,0,2,-,-,aaa.Big 1.0,800,60.00,40.00,30.00,5.00\n"
+            base, bb, arm = (os.path.join(tmp, x) for x in ("aa", "bb", "arm"))
+            self.run_of(base, {"F01": [100, 100], "F02": [100, 100]}, [won])
+            self.run_of(bb, {"F01": [102, 102], "F02": [102, 102]}, [won])
+            self.run_of(arm, {"F01": [102, 102], "F02": [102, 102]}, [won])
+            ranks = ms.census_ranks(os.path.join(sets, "suite.txt"))
+            alone, _ = ms.screen(base, [("bb", bb), ("arm", arm)], ranks)
+            both, _ = ms.screen(base, [("bb", bb), ("arm", arm)], ranks, base2_work=bb)
+            gain = alone[1]["paired"][0]
+            self.assertGreater(gain, 0)
+            self.assertAlmostEqual(both[0]["paired"][0], alone[0]["paired"][0], msg="bb stays against aa")
+            self.assertAlmostEqual(both[1]["paired"][0], gain / 2, msg="the arm pairs with the mean of aa and bb")
+            self.assertIn("mean of the aa and bb baselines", ms.render_screen(both, _, "t", both=True))
+
     def test_incomplete_or_unmeasured_never_passes(self):
         with tempfile.TemporaryDirectory() as tmp:
             sets = os.path.join(tmp, "census")
