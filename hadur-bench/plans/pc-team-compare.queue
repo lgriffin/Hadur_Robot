@@ -4,7 +4,8 @@
 # workers. tools/team_losses.py then reads them beside HadurTeam's pc-team-lane A/A logs and writes
 # docs/bench/local/team-compare.md. The team thread reads claude/pc-team-compare-results.
 #   ./queue.sh run pc-team-compare        (or  .\queue.ps1 run pc-team-compare)
-# Run it from master (one bench queue at a time).
+# Run it from master (one bench queue at a time). On a host without the pc-team-lane logs (the laptop)
+# the HadurTeam part points to docs/bench/local/team-losses.md instead of stopping.
 
 set OUT = ../docs/bench/local
 
@@ -13,7 +14,7 @@ tcfire  | mvn -q exec:java "-Dexec.args=@plans/team-compare-fire.args"
   after: tcprep
 tccomb  | mvn -q exec:java "-Dexec.args=@plans/team-compare-combat.args"
   after: tcfire
-tcread  | V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && test -d work/team-lane-"$V"-bb/battles && { python3 tools/team_losses.py --title "HadurTeam (pc-team-lane A/A)" work/team-lane-"$V"-bb && python3 tools/team_losses.py --ours "cb.fire.Firestarter " --title "FirestarterTeam against the mid 14" work/team-compare-fire && python3 tools/team_losses.py --ours "mn.Combat " --title "CombatTeam against the mid 14" work/team-compare-combat; } > ../docs/bench/local/team-compare.md
+tcread  | V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && { if test -d work/team-lane-"$V"-bb/battles; then python3 tools/team_losses.py --title "HadurTeam (pc-team-lane A/A)" work/team-lane-"$V"-bb; else printf "# HadurTeam\n\nNo pc-team-lane A/A logs on this host: see docs/bench/local/team-losses.md.\n\n"; fi && python3 tools/team_losses.py --ours "cb.fire.Firestarter " --title "FirestarterTeam against the mid 14" work/team-compare-fire && python3 tools/team_losses.py --ours "mn.Combat " --title "CombatTeam against the mid 14" work/team-compare-combat; } > ../docs/bench/local/team-compare.md
   after: tccomb
 tcpr    | bash tools/open_results_pr.sh claude/pc-team-compare-results "Firestarter and Combat against the mid 14 (team-compare)" ${OUT}/team-compare*.md
   after: tcread
