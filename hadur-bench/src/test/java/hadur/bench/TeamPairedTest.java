@@ -214,7 +214,7 @@ class TeamPairedTest {
         assertEquals("walkin", TeamHarvester.kind(300, 200, 120, 150));
         assertEquals("beyond", TeamHarvester.kind(300, 500, 0, 500));
         assertEquals("noline", TeamHarvester.kind(Double.NaN, -50, 200, 400));
-        assertEquals("lane", TeamHarvester.kind(Double.NaN, 100, 10, 100));
+        assertEquals("noline", TeamHarvester.kind(Double.NaN, 100, 10, 100));
         // Fired north from (100, 100); the enemy 300 px up the line, the victim 500 px up it: a miss that flew on.
         List<IRobotSnapshot> field = List.of(at(0, 0, MEMBER + " 1", 100, 80), at(1, 0, MEMBER + " 2", 100, 600),
             at(2, 1, "kc.Opp 1", 110, 400));
@@ -222,10 +222,13 @@ class TeamPairedTest {
         h.onRoundStarted(new RoundStartedEvent(null, 0, null));
         h.onTurnEnded(turn(field, List.of(bullet(9, BulletState.MOVING, -1, 100, 100))));
         h.onTurnEnded(turn(field, List.of(bullet(9, BulletState.HIT_VICTIM, 1, 100, 600))));
+        // A bullet first shown already hitting: where it was fired from is not known.
+        h.onTurnEnded(turn(field, List.of(bullet(10, BulletState.HIT_VICTIM, 1, 100, 600))));
         h.onRoundEnded(new RoundEndedEvent(0, 0, 0));
         h.close();
-        String line = Files.readAllLines(dir.resolve("friendly.log")).get(0);
-        assertTrue(line.endsWith(",travelled=500,victimVelocity=0.0,ownerVelocity=0.0,target=300,victimAlong=500,"
-            + "victimAcross=0,kind=beyond"), line);
+        List<String> lines = Files.readAllLines(dir.resolve("friendly.log"));
+        assertTrue(lines.get(0).endsWith(",travelled=500,victimVelocity=0.0,ownerVelocity=0.0,target=300,victimAlong=500,"
+            + "victimAcross=0,kind=beyond"), lines.get(0));
+        assertTrue(lines.get(1).endsWith(",target=-,victimAlong=-,victimAcross=-,kind=unseen"), lines.get(1));
     }
 }
