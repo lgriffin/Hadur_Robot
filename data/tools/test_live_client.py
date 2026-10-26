@@ -176,6 +176,25 @@ class ClientFilesTest(unittest.TestCase):
         self.assertEqual((again.duels, again.collapses), (2, 1), "35 under its pairing; a restart counts battles.tsv")
         self.assertIn("non.mega.NaN 0.1 | 25.0 | 60.0", lc.report(self.out))
 
+    def test_a_collapse_is_inclusive_and_skips_a_bad_newer_page(self):
+        with open(self.results, "w") as f:
+            f.write(RESULTS)
+        self.save_page("40.00")  # 25 is exactly 15 under
+        with open(os.path.join(self.out, "pages", "2026-10-26T180000Z_roborumble_hadur2.Hadur_3.11.html"), "w") as f:
+            f.write("<html>rate limited</html>")
+        w = lc.Watch([self.client], self.out, log=self.lines.append)
+        w.poll_results()
+        self.assertEqual(w.collapses, 1)
+
+    def test_a_late_page_rescores_battles_already_kept(self):
+        with open(self.results, "w") as f:
+            f.write(RESULTS)
+        w = lc.Watch([self.client], self.out, pages=["roborumble:hadur2.Hadur 3.11"], log=self.lines.append)
+        w.poll_results()
+        self.assertEqual((w.duels, w.collapses), (2, 0), "no page yet: nothing to score against")
+        w.poll_pages(fetcher=lambda url: fake_page([("non.mega.NaN 0.1", "60.00", 3, "t")]))
+        self.assertEqual(w.collapses, 1, "the first good page scores the battle kept before it")
+
     def test_a_watch_keeps_only_battles_after_its_first_start(self):
         with open(self.results, "w") as f:
             f.write(RESULTS)  # 2025 battles, before the watch
@@ -183,6 +202,15 @@ class ClientFilesTest(unittest.TestCase):
         self.assertEqual(lc.first_start(self.out), since, "a restart keeps the first start")
         w = lc.Watch([self.client], self.out, log=self.lines.append, since=since)
         self.assertEqual(w.poll_results(), [])
+
+    def test_a_reused_folder_counts_and_reports_only_battles_since_its_start(self):
+        with open(self.results, "w") as f:
+            f.write(RESULTS)
+        lc.Watch([self.client], self.out, log=self.lines.append).poll_results()  # an earlier watch
+        self.save_page("60.00")
+        w = lc.Watch([self.client], self.out, log=self.lines.append, since=lc.first_start(self.out))
+        self.assertEqual((w.duels, w.collapses), (0, 0))
+        self.assertNotIn("NaN", lc.report(self.out))
 
     def test_watch_stops_on_its_collapse_count(self):
         with open(self.results, "w") as f:

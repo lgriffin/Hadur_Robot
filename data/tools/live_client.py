@@ -386,13 +386,16 @@ def is_low(share):
         return False
 
 
-def is_collapse(row, expected):
-    """A 1v1 battle at least COLLAPSE_MARGIN under its pairing's score on the live page;
-    False when the page has no score for the opponent."""
-    if row["game"] != "roborumble" or row["opponent"] not in expected:
+def is_collapse(row, pairings):
+    """A 1v1 battle at least COLLAPSE_MARGIN under its pairing's score on its own Hadur's live
+    page; `pairings(bot)` gives that page's rows. False when the page has no score for it."""
+    if row["game"] != "roborumble":
+        return False
+    expected = pairings(row["hadur"])
+    if row["opponent"] not in expected:
         return False
     try:
-        return float(row["share"]) < expected[row["opponent"]][0] - COLLAPSE_MARGIN
+        return float(row["share"]) <= expected[row["opponent"]][0] - COLLAPSE_MARGIN
     except (TypeError, ValueError):
         return False
 
@@ -409,17 +412,44 @@ def first_start(out):
         return f.read().strip()
 
 
-def latest_page_rows(out, game):
-    """The rows of the newest BotDetails page of `game` saved under out/pages, or {}."""
+def latest_page_rows(out, game, bot):
+    """The rows of the newest saved BotDetails page of `bot` in `game` under out/pages that
+    has a table (a failed fetch is saved too), or {}."""
     folder = os.path.join(out, "pages")
+    tag = page_tag(game, bot)
     try:
-        saved = sorted(n for n in os.listdir(folder) if f"_{game}_" in n and n.endswith(".html"))
+        saved = sorted((n for n in os.listdir(folder) if n.endswith(f"_{tag}.html")), reverse=True)
     except OSError:
         return {}
-    if not saved:
-        return {}
-    with open(os.path.join(folder, saved[-1]), encoding="utf-8", errors="replace") as f:
-        return page_rows(f.read())
+    for name in saved:
+        with open(os.path.join(folder, name), encoding="utf-8", errors="replace") as f:
+            rows = page_rows(f.read())
+        if rows:
+            return rows
+    return {}
+
+
+def watch_battles(out):
+    """The battles of the watch over `out`: those since its first start when it has one."""
+    battles = read_tsv(os.path.join(out, "battles.tsv"))
+    path = os.path.join(out, "started.txt")
+    if not os.path.exists(path):
+        return battles
+    with open(path, encoding="utf-8") as f:
+        since = f.read().strip()
+    return [b for b in battles if b["utc"] >= since]
+
+
+class PagePairings:
+    """Each Hadur's pairing scores from its newest saved roborumble page, refreshed by the watch."""
+
+    def __init__(self, out):
+        self.out, self.rows = out, {}
+
+    def __call__(self, bot):
+        if bot not in self.rows:
+            self.rows[bot] = latest_page_rows(self.out, "roborumble", bot)
+        return self.rows[bot]
 
 
 # RES-15 (docs/plan-top5.md, Stage F): from 3.15 the record carries the start-up fields too.
@@ -597,11 +627,8 @@ class Watch:
         kept = read_tsv(os.path.join(out, "battles.tsv"))
         self.seen = {r["key"] for r in kept}
         self.since = since or ""
-        # 1v1 battles and collapses so far, counted from battles.tsv too, so a restarted watch
-        # keeps counting towards its stop.
-        self.expected = latest_page_rows(out, "roborumble")
-        self.duels = sum(1 for r in kept if r["game"] == "roborumble")
-        self.collapses = sum(1 for r in kept if is_collapse(r, self.expected))
+        self.pairings = PagePairings(out)
+        self.recount()
         self.health_mtime = {}
         self.last_page = {}
         # The records already on disk are from battles before the watch; a folder or record
@@ -612,6 +639,13 @@ class Watch:
                     self.health_mtime[folder] = os.stat(os.path.join(folder, "health.hc")).st_mtime
                 except OSError:
                     self.health_mtime[folder] = None
+
+    def recount(self):
+        """1v1 battles and collapses so far, from battles.tsv, so a restarted watch keeps counting
+        towards its stop, and every battle is scored against the newest page as the report is."""
+        kept = [r for r in read_tsv(os.path.join(self.out, "battles.tsv")) if r["utc"] >= self.since]
+        self.duels = sum(1 for r in kept if r["game"] == "roborumble")
+        self.collapses = sum(1 for r in kept if is_collapse(r, self.pairings))
 
     def label(self, client):
         return os.path.basename(os.path.normpath(client)) or client
@@ -638,11 +672,10 @@ class Watch:
             append_tsv(os.path.join(self.out, "battles.tsv"), BATTLE_COLUMNS, rows)
             for r in rows:
                 low = r["game"] == "roborumble" and is_low(r["share"])
-                fell = is_collapse(r, self.expected)
-                self.duels += r["game"] == "roborumble"
-                self.collapses += fell
+                fell = is_collapse(r, self.pairings)
                 self.log(f"{r['utc']} battle {r['hadur']} vs {r['opponent']} ({r['game']}): "
                          f"{r['share']}% share, {r['won']}-{r['lost']} rounds" + ("  << COLLAPSE" if fell else "  << LOW" if low else ""))
+            self.recount()
         return rows
 
     def poll_health(self):
@@ -717,7 +750,8 @@ class Watch:
                 self.log(f"{now} page {game}: APS {head['aps']:.2f}, {head['battles']} battles (first read)")
             self.last_page[spec] = rows
             if game == "roborumble":
-                self.expected = rows
+                self.pairings.rows[name] = rows
+                self.recount()
 
     def _previous_saved(self, folder, tag, current):
         saved = sorted(n for n in os.listdir(folder) if n.endswith(f"_{tag}.html") and n != current)
@@ -823,7 +857,7 @@ def join_health(battles, health):
 
 
 def report(out):
-    battles = read_tsv(os.path.join(out, "battles.tsv"))
+    battles = watch_battles(out)
     health = read_tsv(os.path.join(out, "health.tsv"))
     page = read_tsv(os.path.join(out, "page.tsv"))
     events = read_tsv(os.path.join(out, "page_events.tsv"))
@@ -857,18 +891,18 @@ def report(out):
                      f"{sum(1 for h in health if int(h['faults']) > 0)}; shield verdict stored at the end of "
                      f"{len(sh)} ({100.0 * len(sh) / len(health):.0f}%).")
         lines.append("")
-    expected = latest_page_rows(out, "roborumble")
-    fell = [(b, h) for b, h in joined if is_collapse(b, expected)]
+    pairings = PagePairings(out)
+    fell = [(b, h) for b, h in joined if is_collapse(b, pairings)]
     if joined:
         lines.append(f"## Collapses: 1v1 battles {COLLAPSE_MARGIN:.0f}+ under the pairing's live score")
         lines.append("")
-        if not expected:
+        if not any(pairings(b["hadur"]) for b, _ in joined):
             lines.append("No saved roborumble page to score the pairings against.")
         else:
             lines.append("| Time (UTC) | Opponent | Share | Pairing | Rounds won | Skipped | Shield verdict |")
             lines.append("|---|---|---:|---:|---|---:|---|")
             for b, h in fell:
-                lines.append(f"| {b['utc']} | {b['opponent']} | {b['share']:.1f} | {expected[b['opponent']][0]:.1f} | "
+                lines.append(f"| {b['utc']} | {b['opponent']} | {b['share']:.1f} | {pairings(b['hadur'])[b['opponent']][0]:.1f} | "
                              f"{b['won']}-{b['lost']} | {h['skipped'] if h else '?'} | {h['shielder'] if h else '?'} |")
             if not fell:
                 lines.append("| none | | | | | | |")
