@@ -1,0 +1,14 @@
+# Where our own hits come from (docs/plan-team-top5.md section 10.2), team thread. No battles: reads
+# the friendly.log lines pc-team-lines left in work/team-lines-<V>-bb (its A/A arm, master on both
+# sides, 46 teams x 12 battles) with tools/friendly_hits.py. 57% of our hits on our own members had
+# no enemy within 60 px of the bullet's line when it was fired; this says how far off the line the
+# victim stood and whether it was ahead of the shooter. A minute. The team thread reads
+# claude/pc-team-ffread-results.
+#   ./queue.sh run pc-team-ffread        (or  .\queue.ps1 run pc-team-ffread)
+# Run it from master; it fights no battles, so it can run beside another card.
+
+set OUT = ../docs/bench/local
+
+ffread | git checkout -q master && V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && test -d work/team-lines-"$V"-bb/battles && python3 tools/friendly_hits.py work/team-lines-"$V"-bb > ../docs/bench/local/team-friendly-hits.md
+ffpr   | bash tools/open_results_pr.sh claude/pc-team-ffread-results "Where our own hits come from (team-lines A/A logs)" ${OUT}/team-friendly-hits.md
+  after: ffread

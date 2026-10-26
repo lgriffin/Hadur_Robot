@@ -455,3 +455,9 @@ Together +1.0..+2.5 against +2.6: 2nd only at the top of the range.
   card says where the 60 a round comes from even if both arms fail.
 - **Card pc-team-lines (about 1.8 h):** A/A, ml and mlw on all 46 teams, 6 seeds from 4200. Gate
   +1.0 share points with the low end above zero and the A/A within 1.0.
+- **Result (PR #326): failed.** ml +0.1 ± 0.7, mlw -0.3 ± 0.7 (A/A +0.3); own hits unchanged at
+  about 69 a battle. By kind against the mid 14: lane 4%, walkin 25%, beyond 13%, noline 57%. Most
+  friendly hits come from shots with no enemy within 60 px of the line when fired (lead shots), so a
+  cone round the enemy's current spot could not reach them. LINES stays off.
+- **Next (card pc-team-ffread, no battles):** `tools/friendly_hits.py` on the A/A logs says how far
+  off the line those victims stood and whether they were ahead of the shooter.
