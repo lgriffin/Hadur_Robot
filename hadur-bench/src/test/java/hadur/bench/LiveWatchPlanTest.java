@@ -24,6 +24,8 @@ class LiveWatchPlanTest {
         assertTrue(queue.contains("--page \"teamrumble:hadur2.HadurTeam ${VT}\""));
         assertTrue(queue.contains("--robot \"hadur2.Hadur ${V1}\" --robot \"hadur2.HadurTeam ${VT}\""),
                 "only the released versions' battles enter the report");
+        assertTrue(queue.contains("--stop-collapses ${COLLAPSES} --stop-battles ${DUELS} --hours ${HOURS}"),
+                "the watch stops on what it caught, with a time cap");
         assertTrue(queue.contains("live_client.py report ${W}"));
         assertTrue(queue.contains("${W}/profiles"), "the profile TSVs go into the results PR");
         assertTrue(queue.contains("open_results_pr.sh claude/live-watch-${V1}-results"));

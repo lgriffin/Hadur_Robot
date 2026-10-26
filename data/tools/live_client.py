@@ -372,6 +372,17 @@ HEALTH_COLUMNS = ["utc", "folder", "rounds", "survived", "faults", "skipped", "m
                   "allowance_us", "opponent_key", "shielder", "lead_aware", "profile_battles"]
 
 
+LOW_SHARE = 70
+
+
+def is_low(share):
+    """A 1v1 battle under 70% share: the collapses the release watch is after."""
+    try:
+        return float(share) < LOW_SHARE
+    except (TypeError, ValueError):
+        return False
+
+
 # RES-15 (docs/plan-top5.md, Stage F): from 3.15 the record carries the start-up fields too.
 # They go to startup.tsv, so a health.tsv written by an older watch keeps its columns.
 STARTUP_COLUMNS = ["utc", "folder", "opponent_key", "skipped", "setup_ms", "first_turn", "max_skip_run"]
@@ -544,7 +555,12 @@ class Watch:
         # client still holds from an older version stay out of the release report.
         self.robots = set(robots)
         os.makedirs(out, exist_ok=True)
-        self.seen = {r["key"] for r in read_tsv(os.path.join(out, "battles.tsv"))}
+        kept = read_tsv(os.path.join(out, "battles.tsv"))
+        self.seen = {r["key"] for r in kept}
+        # BENCH-113: 1v1 battles and collapses so far, counted from battles.tsv too, so a
+        # restarted watch keeps counting towards its stop.
+        self.duels = sum(1 for r in kept if r["game"] == "roborumble")
+        self.collapses = sum(1 for r in kept if r["game"] == "roborumble" and is_low(r["share"]))
         self.health_mtime = {}
         self.last_page = {}
         # The records already on disk are from battles before the watch; a folder or record
@@ -578,7 +594,9 @@ class Watch:
         if rows:
             append_tsv(os.path.join(self.out, "battles.tsv"), BATTLE_COLUMNS, rows)
             for r in rows:
-                low = r["share"] != "" and r["share"] < 70 and r["game"] == "roborumble"
+                low = r["game"] == "roborumble" and is_low(r["share"])
+                self.duels += r["game"] == "roborumble"
+                self.collapses += low
                 self.log(f"{r['utc']} battle {r['hadur']} vs {r['opponent']} ({r['game']}): "
                          f"{r['share']}% share, {r['won']}-{r['lost']} rounds" + ("  << LOW" if low else ""))
         return rows
@@ -697,10 +715,24 @@ def cmd_watch(args):
         log(f"{utc_now()} client {c}: results {client_results_files(c)}, data {hadur_data_dirs(c) or 'none yet'}")
     end = time.time() + args.hours * 3600 if args.hours > 0 else None
     next_page = next_prof = 0.0
+    start, next_rate = time.time(), time.time() + 3600
+    rate_from = (w.duels, w.collapses)
+    done_at = None
     try:
-        while end is None or time.time() < end:
+        while (end is None or time.time() < end) and (done_at is None or time.time() < done_at):
             now = time.time()
             w.poll_results()
+            if now >= next_rate:
+                log(f"{utc_now()} rate: {w.duels - rate_from[0]} 1v1 battles, {w.collapses - rate_from[1]} "
+                    f"under {LOW_SHARE}% in the last hour; {w.duels} and {w.collapses} in all")
+                rate_from, next_rate = (w.duels, w.collapses), now + 3600
+            asked = os.path.exists(os.path.join(args.out, "STOP"))
+            if done_at is None and (asked or args.stop_collapses and w.collapses >= args.stop_collapses
+                                    or args.stop_battles and w.duels >= args.stop_battles):
+                # The last battle's health record can land after its result: keep polling a while.
+                log(f"{utc_now()} done{' (STOP file)' if asked else ''}: {w.duels} 1v1 battles, "
+                    f"{w.collapses} under {LOW_SHARE}%")
+                done_at = now + args.grace
             w.poll_health()
             if args.page and now >= next_page:
                 w.poll_pages()
@@ -709,6 +741,8 @@ def cmd_watch(args):
                 w.snapshot_profiles()
                 next_prof = now + args.profiles_every
             time.sleep(args.every)
+        w.poll_health()
+        w.snapshot_profiles()
     except KeyboardInterrupt:
         log(f"{utc_now()} stopped")
     return 0
@@ -846,10 +880,15 @@ def main(argv=None):
     w.add_argument("--page", action="append", default=[], help='"game:robot version", e.g. "roborumble:hadur2.Hadur 3.11"')
     w.add_argument("--robot", action="append", default=[],
                    help='keep only battles of this Hadur, e.g. "hadur2.Hadur 3.17"; repeatable, default all')
+    w.add_argument("--stop-collapses", type=int, default=0,
+                   help="stop once this many 1v1 battles under 70%% share are kept; 0 never")
+    w.add_argument("--stop-battles", type=int, default=0, help="stop once this many 1v1 battles are kept; 0 never")
+    w.add_argument("--grace", type=float, default=60.0,
+                   help="seconds of health polling after a count stop, for the last battle's record")
     w.add_argument("--every", type=float, default=5.0)
     w.add_argument("--page-every", type=float, default=900.0)
     w.add_argument("--profiles-every", type=float, default=3600.0)
-    w.add_argument("--hours", type=float, default=0.0, help="stop after this long; 0 runs until Ctrl-C")
+    w.add_argument("--hours", type=float, default=0.0, help="stop after this long at most; 0 runs until Ctrl-C or a count stop")
     w.add_argument("--data", action="append", default=[], help="Hadur's data folder, if the search under robots/.data misses it")
     p = sub.add_parser("profiles")
     p.add_argument("dir")
