@@ -19,6 +19,9 @@ MeleeRumble list), and --only limits APS to the pairings against the robots that
 the MicroMelee field, as LiteRumble scores MicroMelee from mixed MeleeRumble battles
 (docs/plan-saor-first.md, stage 0). An arm whose arms.txt line is `@robot name` is that robot
 in the seat, not a Saor build. On the live census the bar is a 1st-place bar: Figment's 69.37.
+--control-live names the control's live score (Saor 0.1: 68.08): the bar then moves by the run's
+offset, the control's read minus that score, so a card that reads high or low clears the bar only
+as live would (docs/plan-saor-first.md 6d).
 
 Standard library only.
 """
@@ -87,7 +90,19 @@ def read_only(path):
         return {l.strip() for l in f if l.strip() and not l.startswith("#")}
 
 
-def read(root, arms, control_arm, top5, pairings=156, field="census", robots=None, only=None):
+def per_opponent_aps(census):
+    po = census["per_opponent"]
+    return sum(po.values()) / len(po) if po else None
+
+
+def bar_for(top5, control_aps, control_live=None):
+    """The bar an arm's low end must clear: top5, moved by the run's offset when control_live is set."""
+    if control_live is None or control_aps is None:
+        return top5
+    return top5 + (control_aps - control_live)
+
+
+def read(root, arms, control_arm, top5, pairings=156, field="census", robots=None, only=None, control_live=None):
     rows = []
     results = {}
     robots = robots or {}
@@ -97,10 +112,11 @@ def read(root, arms, control_arm, top5, pairings=156, field="census", robots=Non
         gate = saor_gates.evaluate([os.path.join(root, "gate9-" + arm)], robot)
         results[arm] = (census, gate)
     control = results[control_arm][0]["groups"]
+    bar = bar_for(top5, per_opponent_aps(results[control_arm][0]), control_live)
     for arm in arms:
         census, gate = results[arm]
         po = census["per_opponent"]
-        aps = sum(po.values()) / len(po) if po else None
+        aps = per_opponent_aps(census)
         half = seed_half(census["groups"])
         diff, dhalf, n = compare(census["groups"], control)
         rows.append({
@@ -112,7 +128,8 @@ def read(root, arms, control_arm, top5, pairings=156, field="census", robots=Non
             "paired": n,
             "opponents": len(po),
             # Only a full census can clear the bar; a short one never does.
-            "top5": aps is not None and len(po) >= pairings and aps - half > top5,
+            "top5": aps is not None and len(po) >= pairings and aps - half > bar,
+            "bar": bar,
             "figment": gate["SAOR-13 figment"],
             "wallaby": gate["SAOR-14 wallaby"],
         })
@@ -124,7 +141,12 @@ def fmt(v, digits=2):
 
 
 def render(rows, control_arm, top5, bar="Top-5 bar"):
-    lines = ["| Arm | Census APS (opponents) | vs %s, by field (fields) | %s (full census, low end > %.2f) | Figment out-survived | Wallaby out-damaged |" % (control_arm, bar, top5),
+    level = rows[0]["bar"] if rows and "bar" in rows[0] else top5
+    if abs(level - top5) > 1e-9:
+        label = "%s (full census, low end > %.2f: %.2f moved by the run's offset %+.2f)" % (bar, level, top5, level - top5)
+    else:
+        label = "%s (full census, low end > %.2f)" % (bar, top5)
+    lines = ["| Arm | Census APS (opponents) | vs %s, by field (fields) | %s | Figment out-survived | Wallaby out-damaged |" % (control_arm, label),
              "|---|---|---|---|---|---|"]
     for r in rows:
         lines.append("| %s | %s ± %s (%d) | %s ± %s (%d) | %s | %s%% (%d) | %s%% (%d) |" % (
@@ -140,6 +162,7 @@ def main(argv=None):
     p.add_argument("--control", default="C")
     p.add_argument("--work-root", default="work/saor-arms")
     p.add_argument("--top5", type=float, default=66.6)
+    p.add_argument("--control-live", type=float, help="the control's live score; moves the bar by the run's offset")
     p.add_argument("--pairings", type=int, default=156, help="opponents a full census has")
     p.add_argument("--field", default="census", choices=("census", "live"))
     p.add_argument("--only", help="count only pairings against the robots this file names, one a line")
@@ -147,7 +170,7 @@ def main(argv=None):
     a = p.parse_args(argv)
     arms = [s.strip() for s in a.arms.split(",") if s.strip()]
     only = read_only(a.only) if a.only else None
-    rows = read(a.work_root, arms, a.control, a.top5, a.pairings, a.field, seats(a.arms_file), only)
+    rows = read(a.work_root, arms, a.control, a.top5, a.pairings, a.field, seats(a.arms_file), only, a.control_live)
     print(render(rows, a.control, a.top5, "1st bar" if a.field == "live" else "Top-5 bar"))
     return 0
 

@@ -186,6 +186,64 @@ pass is the same as stage 1. On the live-shaped census the 1st bar is a low end 
 D is 2 bytes over after ProGuard, and DC about 13 over. The ram leg's 13 bytes would pay for
 either.
 
+## 6c. Stage 2: results (pc-saor-s02, PR #311, 2026-10-26)
+
+**Stage 2 passed. Saor's own graded vote closes the gap Figment's rule closed.**
+
+Live-shaped census, paired by field against C:
+
+| Arm | Live-shaped census | vs C | Low end above 69.37 |
+|---|---|---|---|
+| C, Saor 0.1 | 68.28 ± 0.21 | | no |
+| D, flat vote | 69.27 ± 0.20 | +0.99 ± 0.29 | no |
+| **DC, graded vote** | **69.56 ± 0.19** | **+1.28 ± 0.28** | **yes** |
+
+C read 68.28 here against 68.08 live, so this card sits about 0.2 high. DC therefore projects
+to about 69.4 live. That is level with Figment's 69.37, not clear of it. In stage 0, Figment
+read +1.69 over C on this census, and DC reads +1.28.
+
+MicroMelee census, against C (66.18 ± 0.22):
+
+| Arm | vs C | Note |
+|---|---|---|
+| W, Figment's rule (reference) | +1.59 ± 0.32 | |
+| **DC** | **+1.44 ± 0.35** | the same as W within noise |
+| T2 | +1.32 ± 0.32 | |
+| D | +1.12 ± 0.34 | |
+| T4 | +0.66 ± 0.34 | |
+| DH9, D learning below 0.9 heat | +1.45 ± 0.34 | +0.33 over D |
+| DK400, D power constant 400 | +1.24 ± 0.31 | +0.12 over D |
+| DK250 | +1.11 ± 0.32 | nothing |
+| DH5 | +1.04 ± 0.33 | nothing |
+
+DH9 and DK400 point the right way, but neither clears noise on its own. Both are free, so stage 4
+tests them stacked.
+
+## 6d. Stage 4 card (pc-saor-s03, about 4-5 h)
+
+Stage 3 is not needed as its own card. DC's 13 bytes come from the ram leg, which stage 1
+measured at +0.30, and S1 builds at exactly 749 after ProGuard.
+
+| Arm | What | Bytes |
+|---|---|---|
+| C | Saor 0.1, the control | 749 |
+| DC | stage 2's winner, repeated as the anchor (MicroMelee census only) | 762 |
+| **S1** | DC without the ram leg | **749** |
+| **S2** | S1 learning a transition below 0.9 gun heat | 749 |
+| **S3** | S2 with power constant 400 | 749 |
+| FIG | Figment seated, live-shaped census only | |
+
+C, FIG, S1, S2 and S3 run the live-shaped census (8 seeds). C, DC, S1, S2 and S3 run the MicroMelee
+census (12 seeds). Reading FIG in the same run gives the lead over Figment directly, with no
+cross-card offset.
+
+Pass, from section 6: the best S arm leads FIG by at least +0.5 on the live-shaped census, with
+its low end above Figment's live 69.37 after the run's offset (C read minus 68.08). That arm then
+becomes 0.2: the core, SaorLab and SAOR-15 are updated to match, and Saor enters only on Leigh's
+go. If no S arm clears +0.5 over FIG, the best one still ties Figment. The plan then needs
+another Saor-own idea (section 6, stage 3's duel move or corner choice) before a release that is
+sure of 1st.
+
 ## 7. What a guaranteed 1st takes
 
 Figment and Wallaby are not changing; both have been in the rumble for years. If stage 1
