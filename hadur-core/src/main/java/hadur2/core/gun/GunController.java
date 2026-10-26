@@ -784,6 +784,15 @@ public class GunController {
     }
 
     /**
+     * POW-13 (off): the duel's close-range power band, 2.95 inside 150 px; the ablation {@code close200}
+     * widens it to Ogi's melee rule, power 3 inside 200 px (MGUN-13 in a duel).
+     */
+    static final double CLOSE_RANGE = 150.0;
+
+    /** POW-13: the power fired inside {@link #CLOSE_RANGE}. */
+    static final double CLOSE_POWER = 2.95;
+
+    /**
      * 1.20's duel power: 1.95, or 2.95 inside 150 px; beyond 325 px, cut while our energy
      * is below a threshold of 63 (4 lower per point of energy we lead by, never below 35),
      * to 1.95 times the cube of our energy's share of that threshold. Then capped at a quarter of the enemy's
@@ -794,8 +803,8 @@ public class GunController {
     private double calculate1v1BulletPower(double distance, double myEnergy,
                                             double enemyEnergy, Stakes stakes) {
         double bulletPower = stakes == Stakes.PRESSURE ? 2.5 : 1.95;
-        if (distance < 150.0) {
-            bulletPower = 2.95;
+        if (distance < CLOSE_RANGE) {
+            bulletPower = CLOSE_POWER;
         }
         if (stakes == Stakes.CHAFF) {
             bulletPower = Rules.MIN_BULLET_POWER;

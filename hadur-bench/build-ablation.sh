@@ -13,6 +13,7 @@
 # Ablations (each a one-line edit of the duel, checked to apply exactly once):
 #   g24   melee Stage 2: the field gun takes 24 situations an opponent off a team (MGUN-7's 12). Suffix g4.
 #   gcrowd  MGUN-11: the field gun's situations also see the crowd (nearest robot, heading to it, alive). Suffix gc.
+#   close200  POW-13: the duel fires power 3 inside 200 px (Ogi's melee rule; 2.95 inside 150 px ships). Suffix cr.
 #   pfloor  MGUN-12: off a team with 3+ opponents and 20+ energy, fire at least 1.9 at any distance. Suffix pf.
 #   pogi   MGUN-13: as pfloor's conditions, Ogi's power: 1.92, and 3 within 200 px. Suffix po.
 #   e3ring  MEND-1: with two opponents left off a team, the crowd's ring and lateral weight (no MMOVE-4). Suffix er.
@@ -460,6 +461,10 @@ for a in "${list[@]}"; do
         aesrec)
             edit "$movedesign" "static final boolean AES_RECORD = false;" "static final boolean AES_RECORD = true;"
             version="${version}ar" ;;
+        close200)
+            edit "$src/hadur-core/src/main/java/hadur2/core/gun/GunController.java" "static final double CLOSE_RANGE = 150.0;" "static final double CLOSE_RANGE = 200.0;"
+            edit "$src/hadur-core/src/main/java/hadur2/core/gun/GunController.java" "static final double CLOSE_POWER = 2.95;" "static final double CLOSE_POWER = 3.0;"
+            version="${version}cr" ;;
         pressure)
             edit "$powerdesign" "static final boolean PRESSURE = false;" "static final boolean PRESSURE = true;"
             version="${version}pw" ;;
@@ -851,7 +856,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$src/hadur-core/src/main/java/hadur2/core/melee/MeleeEndgame.java" \
                 "public static final boolean $flag = false;" "public static final boolean $flag = true;"
             version="${version}${suffix}" ;;
-        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, ramheat, flaton, nowall, flt59, flt8, split, wallesc, gungate, hold650, dfac, bhb, hitclr, pkern, keep2, thgun, freegun, nodecay, stacklist, protean, pdw3, pdw8, pc10, phot, repl, pressure, pdown, pwall, pwc, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tlanep, tlaneb, tlook, tram, t6n, t6l, tmsoft, tmgang, tmfin, tmlearn, tmpack, tmscreen, tmpool, tmdis, tmfire, tmnofire, tmrear, tmwaves, tmwk, tmhunt, tmnohunt, tmlines, tmlinesw, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, surfb, aimmix, mimics, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, snull, strim, slistadd, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, e3ring, e3pow, e3far, g24, gcrowd, pfloor, pogi)" >&2; exit 2 ;;
+        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, ramheat, flaton, nowall, flt59, flt8, split, wallesc, gungate, hold650, dfac, bhb, hitclr, pkern, keep2, thgun, freegun, nodecay, stacklist, protean, pdw3, pdw8, pc10, phot, repl, pressure, pdown, pwall, pwc, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tlanep, tlaneb, tlook, tram, t6n, t6l, tmsoft, tmgang, tmfin, tmlearn, tmpack, tmscreen, tmpool, tmdis, tmfire, tmnofire, tmrear, tmwaves, tmwk, tmhunt, tmnohunt, tmlines, tmlinesw, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, surfb, aimmix, mimics, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, snull, strim, slistadd, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, e3ring, e3pow, e3far, g24, gcrowd, pfloor, pogi, close200)" >&2; exit 2 ;;
     esac
 done
 
