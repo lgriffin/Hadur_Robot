@@ -1,0 +1,17 @@
+# TwinSaor arms for the T3 card (docs/twinsaor.md section 6). One arm a line:
+#   NAME | what it changes | sed expression over twinsaor/src/main/java/hadur117/twin/{core/Team.java,core/Gun.java,SaorTwin.java}
+# tools/twin_arms.sh builds each arm as the team hadur117.twin.TwinSaor at version 0.1<NAME>, so arms
+# install side by side; a sed must change the source (the build fails if it does not), and an empty
+# one builds the source as it is (C and the A/A arm A). Arms are
+# javac-built like the shipped jar: TwinSaorJarIT measures bytes, not this screen.
+C | TwinSaor 0.1 unchanged, the control |
+A | TwinSaor 0.1 unchanged again, the A/A check on the read's noise |
+R2W | range 300 with two enemies (0.1: 250) | s#RANGE_TWO = 250;#RANGE_TWO = 300;#
+R2N | range 180 with two enemies | s#RANGE_TWO = 250;#RANGE_TWO = 180;#
+R1N | range 60 with one enemy left (0.1: 100), LunarTwins' point blank | s#RANGE_ONE = 100;#RANGE_ONE = 60;#
+R1W | range 160 with one enemy left | s#RANGE_ONE = 100;#RANGE_ONE = 160;#
+P180 | stations 180 degrees apart, a pincer: diagnostic only, never ships (Saor's uniqueness rule) | s#Math.PI / 4 : -Math.PI / 4#Math.PI / 2 : -Math.PI / 2#
+KL | kill order: most energy first, the enemy leader and its 30-energy death penalty (0.1: least energy) | s#candidateEnergy <= targetEnergy - SWITCH_MARGIN#candidateEnergy >= targetEnergy + SWITCH_MARGIN#
+NF | no leg flip on the target's shot (TWIN-10 off) | s#return drop > 0.09 && drop < 3.01;#return false;#
+LEG | leg 100 a side (0.1: 60) | s#LEG = 60;#LEG = 100;#
+FF | wider fire hold: the partner within 0.25 rad of the gun, nearer or not (0.1: 0.15 and nearer only); 0.1 put 476 bullets into its own twins over 700 rounds against LunarTwins | s#return Math.hypot(mateX - x, mateY - y) < targetDistance#return targetDistance > 0#; s#HOLD_ARC = 0.15;#HOLD_ARC = 0.25;#

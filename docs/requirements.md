@@ -1872,6 +1872,32 @@ docs/saor.md. Nothing in Hadur's modules depends on it, and it on nothing of Had
   (docs/plan-saor-first.md): its field builder `tools/saor_live.py` and the micro-only read in
   `saor_arms.py` are covered by `test_saor_live.py` and `test_saor_arms.py`.
 
+## TwinSaor, a Twin Duel team (TWIN-1 to TWIN-12, stages T0 to T3)
+
+`hadur117.twin.TwinSaor`, a separate team in the `twinsaor` module: one class,
+`hadur117.twin.SaorTwin`, listed twice. Design, the LunarTwins analysis, the 0.1 build and the
+bench card: docs/twinsaor.md. It depends on nothing of Hadur's or Saor's, and they on nothing of it.
+
+| ID | Pattern | Requirement | Stage |
+|---|---|---|---|
+| TWIN-1 | Ubiquitous | The team shall be one robot class listed twice in the team file, neither member a Droid. | T0 |
+| TWIN-2 | Unwanted | If the codesize tool reports 2,000 bytes or more for the team jar, then the build shall fail. | T0 |
+| TWIN-3 | Ubiquitous | The domain core (`hadur117.twin.core`) shall not import or reference `robocode.*`, and the module shall depend on no Hadur or Saor module. | T0 |
+| TWIN-4 | Unwanted | If a scanned robot is a teammate, then the twin shall neither target it nor learn from it. | T0 |
+| TWIN-5 | Event | When a twin scans an enemy, it shall broadcast the scan, and both twins shall handle it by the same path. | T0 |
+| TWIN-6 | Event | When a twin handles two scans of one enemy by one scanner one tick apart, it shall record that transition in its table for that enemy. | T0 |
+| TWIN-7 | State | While two enemies live, both twins shall target the enemy with the least energy, switching only when the other is lower by 20 or more. | T0 |
+| TWIN-8 | State | While both twins and both enemies live, the leader shall hold its radar on the target and the other twin on the other enemy. | T0 |
+| TWIN-9 | State | While both twins live, each shall drive to a station 45 degrees either side of the team's bearing from the target, at 250 px with two enemies and 100 px with one. | T0 |
+| TWIN-10 | Event | When the target's energy drops by 0.1 to 3 between scans, a twin on its station shall reverse its leg. | T0 |
+| TWIN-11 | Unwanted | If the partner is nearer than the target and within 0.15 rad of the gun heading, then the twin shall not fire. | T0 |
+| TWIN-12 | State | While a twin is the last of its team against two enemies, it shall play Saor's corner oscillation on the 800 field. | T0 |
+
+- **Coverage.** TWIN-3 by `ArchitectureTest`; TWIN-6 by `GunTest`; TWIN-7, TWIN-9 to TWIN-12 by
+  `TeamTest` on the core; TWIN-1 and TWIN-2 on the built jar by `TwinSaorJarIT` (failsafe). TWIN-4,
+  TWIN-5 and TWIN-8 are the robot's wiring in `SaorTwin`, checked in battle (the cloud head-to-head,
+  docs/twinsaor.md section 8), not by a unit test.
+
 ## Allocation and the engine's stop path (TIME-9)
 
 The engine disables a robot that skips more than 30 turns in a row and then tries to stop its

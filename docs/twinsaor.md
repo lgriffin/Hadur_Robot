@@ -5,9 +5,13 @@ name. This gives us 2000 code size to play with so 2x Saor core logic and a smal
 logic. Analyse the number 1 attached and see what we can do team logic wise. We will not run a
 PC bench until we run a live run later."
 
-This is the design. Nothing is built yet. Section 1 reads the Twin Duel rules and the live
-table, section 2 takes apart the leader, LunarTwins 1.4a, and sections 3 to 6 are TwinSaor
-itself: what it keeps from Saor, the team layer, the byte budget and the stages to a live run.
+Section 1 reads the Twin Duel rules and the live table, section 2 takes apart the leader,
+LunarTwins 1.4a, and sections 3 to 6 are TwinSaor itself: what it keeps from Saor, the team
+layer, the byte budget and the stages to a live run. Section 8 is what was built for 0.1 and
+how it did against LunarTwins on the cloud box.
+
+Leigh, 2026-10-27 15:58 and 15:59 UTC: "Lets design the bench and create a 0.1 team Jar", then
+"Run it in the cloud 1:1 vs the top team as a simple comparison".
 
 ## 1. The rumble
 
@@ -242,9 +246,9 @@ rumble itself, and the bench is a later stage.
 | T2 | Release `twinsaor-v0.1` on its own tag and workflow (as `release-saor.yml`); Leigh adds the line to RoboRumble/Participants/TwinDuel and runs the client's Twin Duel config. | Live first pass, all 26 pairings |
 | T3 | Read the live pairings against LunarTwins, LuminariousDuo, NightAndDay and GeminiTeam. Then, and only then, a PC card for R, the kill rule and the spare bytes. | |
 
-### Requirements (proposed, TWIN-1 to TWIN-12)
+### Requirements (TWIN-1 to TWIN-12)
 
-These go into `docs/requirements.md` with T0.
+These are also in `docs/requirements.md`.
 
 | ID | Pattern | Requirement | Stage |
 |---|---|---|---|
@@ -259,7 +263,7 @@ These go into `docs/requirements.md` with T0.
 | TWIN-9 | State | While both twins live, each shall drive to a station 45 degrees either side of the team's bearing from the target, at 250 px with two enemies and 100 px with one. | T0 |
 | TWIN-10 | Event | When the target's energy drops by 0.1 to 3 between scans, a twin on its station shall reverse its leg. | T0 |
 | TWIN-11 | Unwanted | If the partner is nearer than the target and within 0.15 rad of the gun heading, then the twin shall not fire. | T0 |
-| TWIN-12 | State | While a twin is the last of its team, it shall play Saor's movement, targeting and radar on the 800 field. | T0 |
+| TWIN-12 | State | While a twin is the last of its team against two enemies, it shall play Saor's corner oscillation on the 800 field. | T0 |
 
 ## 7. Open questions for Leigh
 
@@ -269,3 +273,67 @@ These go into `docs/requirements.md` with T0.
 - **Name.** The team is `hadur117.twin.TwinSaor` and the member class `hadur117.twin.SaorTwin`
   (kept apart from the team name). The rumble shows the team name, so the member
   name is free to change.
+
+## 8. TwinSaor 0.1 as built
+
+The module is `twinsaor/` (`mvn -pl twinsaor verify`). The team jar is
+`twinsaor/target/hadur117.twin.TwinSaor_0.1.jar`: the team file, `SaorTwin` and its properties,
+the core and the source. Robocode lists it as `hadur117.twin.TwinSaor 0.1`.
+
+| Piece | Where |
+|---|---|
+| The core | `hadur117.twin.core.Gun` (Saor's Markov gun on 800 x 800, aimed from a scan of any age) and `hadur117.twin.core.Team` (kill order, stations, fire hold, power, the last twin's corners). JDK only (TWIN-3). |
+| The robot | `hadur117.twin.SaorTwin`, a `TeamRobot`. It calls the core; it is not flattened by hand as Saor is, because the budget is 1,999 bytes, not 749. |
+| Tests | `GunTest`, `TeamTest`, `ArchitectureTest` (core purity, no Hadur or Saor), `TwinSaorJarIT` (codesize and packaging, after `package`). |
+| Release | `.github/workflows/release-twinsaor.yml`, tags `twinsaor-v<version>`, notes `docs/releases/twinsaor-v<version>.md`. |
+
+**Codesize: 1,998 of 1,999 bytes**, by Robocode's codesize tool on the team jar. The estimate in
+section 5 (about 1,185) was far too low: writing it with a core and readable code costs what Saor
+saved by flattening by hand. So 0.1 has no spare. Room for 0.2 comes from flattening the core into
+the robot the way Saor was flattened (Saor went from 914 to 749 that way) or from ProGuard's
+peephole pass.
+
+Where 0.1 differs from sections 4 and 5:
+
+- **The last twin keeps the kill order** instead of switching to Saor's nearest-sticky target.
+  One rule for every mode is fewer bytes. Its radar is still Saor's: held on the target while the
+  gun is cool against two, locked against one.
+- **A relayed scan feeds the gun** for up to 4 ticks of age; the playout starts `age` ticks early.
+- **Transitions dedupe by time:** a scan no newer than the record is dropped, so when both twins
+  lock one enemy, each tick is learned once.
+- **A Markov row is a ring:** once full, the newest sample replaces the oldest. Saor keeps
+  Figment's overflow quirk; TwinSaor does not.
+- **The leg flips** on reaching its end (within 20 px) or on the target's shot, not on distance
+  remaining 0, because the station moves with the target every tick.
+
+### Cloud head-to-head against LunarTwins
+
+The cloud box (4 cores, Robocode 1.11.1), `twinduel-lunar.txt`, 20 battles of 35 rounds at
+800 x 800, parallel 3, about 2 minutes (report
+`docs/bench/local/twinsaor-0.1-vs-lunartwins.md`):
+
+| | Score share | Rounds won | Skipped turns |
+|---|---|---|---|
+| TwinSaor 0.1 vs LunarTwins 1.4a | **58.4%** | **571 of 700 (81.6%)** | 12 in 20 battles |
+
+Battle shares ran from 53.6% to about 63%. One opponent and 20 battles is a comparison, not a
+census. A share over 50% means TwinSaor beats the Twin Duel's 1st head to head, which LunarTwins'
+96% PWIN says few teams do.
+
+One thing to fix: the engine counted **476 of TwinSaor's bullets hitting its own twin** over the
+700 rounds. The fire hold only looks at a partner nearer than the target. Arm FF in the bench
+card tests a wider hold.
+
+### The bench (designed, not run)
+
+Leigh's rule stands: no PC bench before a live run. The card is ready for after 0.1's first pass:
+
+- `hadur-bench/twinduel-field.txt`: the 26 teams of the live table, with their archive jars.
+- `hadur-bench/twin-arms/arms.txt` and `tools/twin_arms.sh`: each arm is the source with one sed,
+  built as `hadur117.twin.TwinSaor 0.1<ARM>` so arms install side by side.
+- `tools/twin_read.py` (tested by `test_twin_read.py`): an arm's APS is the mean of its per-team
+  shares; it is read against the control team by team, with the paired standard error.
+- `plans/pc-twin-t3.queue`: C, an A/A arm, ranges (R2W 300, R2N 180, R1N 60, R1W 160), P180
+  (pincer, diagnostic only), KL (enemy leader first), NF (no flip on shot), LEG (100 px leg) and
+  FF (wider fire hold). The field is 10 seeds a team, 260 battles an arm, about 1.5 h for all 11
+  arms. To pass, an arm needs +0.5 share points over C and more than 2 standard errors.

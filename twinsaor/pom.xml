@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.lgriffin</groupId>
+        <artifactId>hadur-parent</artifactId>
+        <version>2.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>twinsaor</artifactId>
+    <name>TwinSaor</name>
+    <description>hadur117.twin.TwinSaor, a Twin Duel team: one class, hadur117.twin.SaorTwin, listed twice,
+        over a pure core (docs/twinsaor.md). Separate from Hadur and from Saor.</description>
+
+    <properties>
+        <!-- The team's version: the jar is named for it, the properties and team file take it by filtering. -->
+        <twinsaor.release>0.1</twinsaor.release>
+        <!-- Twin Duel's limit for the team jar, as Robocode's codesize tool counts it (TWIN-2). -->
+        <twinsaor.codesize.limit>1999</twinsaor.codesize.limit>
+        <!-- Rating clients still run Java 8; the shipped classes target it. -->
+        <maven.compiler.release>8</maven.compiler.release>
+        <twinsaor.jar>${project.build.directory}/hadur117.twin.TwinSaor_${twinsaor.release}.jar</twinsaor.jar>
+        <codesize.version>1.3.1</codesize.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>net.sf.robocode</groupId>
+            <artifactId>robocode-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.robocode</groupId>
+            <artifactId>codesize</artifactId>
+            <version>${codesize.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.tngtech.archunit</groupId>
+            <artifactId>archunit-junit5</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+        <plugins>
+            <!-- The team jar the rumble takes: the classes, the robot's properties, the team file
+                 and the source. -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                    <execution>
+                        <id>team-jar</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <jar destfile="${twinsaor.jar}">
+                                    <fileset dir="${project.build.outputDirectory}" includes="hadur117/twin/**"/>
+                                    <fileset dir="${project.basedir}/src/main/java" includes="hadur117/twin/**/*.java"/>
+                                </jar>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- The gate on the team jar (TWIN-2). -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>3.5.2</version>
+                <configuration>
+                    <systemPropertyVariables>
+                        <twinsaor.jar>${twinsaor.jar}</twinsaor.jar>
+                        <twinsaor.release>${twinsaor.release}</twinsaor.release>
+                        <twinsaor.codesize.limit>${twinsaor.codesize.limit}</twinsaor.codesize.limit>
+                    </systemPropertyVariables>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

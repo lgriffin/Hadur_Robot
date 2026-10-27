@@ -1,0 +1,68 @@
+# TwinSaor stage T3 (docs/twinsaor.md section 6): the first screen of TwinSaor's arms on the whole Twin
+# Duel field. Leigh, 2026-10-27: no PC bench until TwinSaor has had a live run, so this card waits for
+# 0.1's first live pass; it is designed, not queued.
+#   ./queue.sh run pc-twin-t3        (or  .\queue.ps1 run pc-twin-t3)
+# Run it from master:
+#   git checkout master && git pull
+# One bench queue, RoboRumble workers at 0, unpinned. Every step resumes; no step needs a decision.
+# Nothing here touches Hadur or Saor.
+#
+# Field: twinduel-field.txt, the 26 teams TwinSaor meets live (LunarTwins to SuperSittingDuckTwins),
+# 800x800, 35 rounds, 10 seeds a team = 260 battles an arm. The cloud box ran 20 such battles in
+# about 2 minutes at parallel 3, so an arm is roughly 5-10 min at the PC's width; 11 arms, about 1.5 h.
+#
+# Arms (twin-arms/arms.txt):
+#   C     TwinSaor 0.1, the control          A     C again, the A/A check
+#   R2W   range 300 with two enemies         R2N   range 180 with two enemies
+#   R1N   range 60 with one enemy left       R1W   range 160 with one enemy left
+#   P180  a 180-degree pincer: diagnostic only, never ships (Saor's uniqueness rule)
+#   KL    kill the enemy leader first        NF    no leg flip on the target's shot
+#   LEG   a 100 px leg                       FF    wider fire hold (0.1 shot its own twin 476 times
+#                                                  in 700 rounds against LunarTwins on the cloud)
+# Pass (tools/twin_read.py): +0.5 share points of APS over C and more than 2 paired standard errors,
+# with A inside 2 standard errors of C. A passing arm goes into 0.2 only if it still fits 1,999 bytes.
+
+set MVN = mvn -q -Drobocode.version=1.11.1 compile exec:java
+set OUT = ../docs/bench/local
+set ARMS = C,A,R2W,R2N,R1N,R1W,P180,KL,NF,LEG,FF
+
+prep | (cd .. && mvn -q -DskipTests install -pl twinsaor -am) && ./fetch-opponents.sh --set twinduel-field.txt && TWIN_RUN=t3 bash tools/twin_arms.sh twinduel-field.txt 10 3100 ${ARMS}
+
+arm-C | ${MVN} "-Dexec.args=@work/twin-t3/twinduel-field-C.args"
+  after: prep
+
+arm-A | ${MVN} "-Dexec.args=@work/twin-t3/twinduel-field-A.args"
+  after: arm-C
+
+arm-R2W | ${MVN} "-Dexec.args=@work/twin-t3/twinduel-field-R2W.args"
+  after: arm-A
+
+arm-R2N | ${MVN} "-Dexec.args=@work/twin-t3/twinduel-field-R2N.args"
+  after: arm-R2W
+
+arm-R1N | ${MVN} "-Dexec.args=@work/twin-t3/twinduel-field-R1N.args"
+  after: arm-R2N
+
+arm-R1W | ${MVN} "-Dexec.args=@work/twin-t3/twinduel-field-R1W.args"
+  after: arm-R1N
+
+arm-P180 | ${MVN} "-Dexec.args=@work/twin-t3/twinduel-field-P180.args"
+  after: arm-R1W
+
+arm-KL | ${MVN} "-Dexec.args=@work/twin-t3/twinduel-field-KL.args"
+  after: arm-P180
+
+arm-NF | ${MVN} "-Dexec.args=@work/twin-t3/twinduel-field-NF.args"
+  after: arm-KL
+
+arm-LEG | ${MVN} "-Dexec.args=@work/twin-t3/twinduel-field-LEG.args"
+  after: arm-NF
+
+arm-FF | ${MVN} "-Dexec.args=@work/twin-t3/twinduel-field-FF.args"
+  after: arm-LEG
+
+read | python3 tools/twin_read.py --run t3 --arms ${ARMS} --control C > ${OUT}/twin-t3.md
+  after: arm-FF
+
+pr | bash tools/open_results_pr.sh claude/pc-twin-t3-results "TwinSaor T3: first arm screen on the Twin Duel field" ${OUT}/twin-t3.md ${OUT}/twin-t3-twinduel-field-*.md
+  after: read

@@ -1,0 +1,62 @@
+name: release-twinsaor
+
+# TwinSaor (docs/twinsaor.md) ships on its own tags, twinsaor-v0.1 and on, apart from Hadur's v*
+# and Saor's saor-v* tags. Run by hand with a version: it builds and tests the repo, checks the
+# team jar carries that version (the twinsaor build fails above Twin Duel's 1,999 bytes, TWIN-2),
+# and publishes a release with the jar, whose asset URL is what the TwinDuel participants list needs.
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'TwinSaor version to release, e.g. 0.1 (tags twinsaor-v0.1)'
+        required: true
+
+env:
+  TAG: twinsaor-v${{ inputs.version }}
+  VERSION: ${{ inputs.version }}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-twinsaor-${{ inputs.version }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+      - name: Build and test
+        run: mvn -B verify
+      - name: Check the jar name and version match the tag
+        run: |
+          jar="twinsaor/target/hadur117.twin.TwinSaor_${VERSION}.jar"
+          test -f "$jar" || { echo "missing $jar"; ls twinsaor/target/*.jar; exit 1; }
+          unzip -p "$jar" hadur117/twin/TwinSaor.team | grep -qx "team.version=${VERSION}" \
+            || { echo "team.version in $jar is not ${VERSION}"; exit 1; }
+          unzip -p "$jar" hadur117/twin/SaorTwin.properties | grep -qx "robot.version=${VERSION}" \
+            || { echo "robot.version in $jar is not ${VERSION}"; exit 1; }
+          echo "JAR=$jar" >> "$GITHUB_ENV"
+      - name: Check an existing tag points at this commit
+        run: |
+          target=$(git ls-remote --tags origin "refs/tags/${TAG}*" | awk -v t="refs/tags/${TAG}" \
+            '$2 == t "^{}" { peeled = $1 } $2 == t { plain = $1 } END { print (peeled ? peeled : plain) }')
+          if [ -n "$target" ] && [ "$target" != "$GITHUB_SHA" ]; then
+            echo "${TAG} already points at ${target}, not ${GITHUB_SHA}; run the workflow on that commit."
+            exit 1
+          fi
+      - name: Publish the release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ env.TAG }}
+          target_commitish: ${{ github.sha }}
+          name: TwinSaor ${{ inputs.version }}
+          files: ${{ env.JAR }}
+          body_path: docs/releases/${{ env.TAG }}.md
+          make_latest: 'false'

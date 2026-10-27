@@ -18,6 +18,7 @@
         <module>hadur-robot</module>
         <module>hadur-bench</module>
         <module>saor</module>
+        <module>twinsaor</module>
     </modules>
 
     <properties>
