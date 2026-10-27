@@ -1,5 +1,5 @@
-# 1v1 plan to 3rd, dodge screen (pc-1v1-third): c is master (3.17.1, 1v1 as 3.17), aa its A/A copy,
+# 1v1 plan to 3rd, dodge screen (pc-1v1-third): c is master (3.18), aa its A/A copy,
 # sp the shot-dodge planner (DODGE-4 to DODGE-6) for every duel opponent once an expert stands out.
-c | hadur2.Hadur 3.17.1 | bisect/hadur2.Hadur_3.17.1.jar
-aa | hadur2.Hadur 3.17.1aa | bisect/hadur2.Hadur_3.17.1aa.jar
-sp | hadur2.Hadur 3.17.1sp | bisect/hadur2.Hadur_3.17.1sp.jar
+c | hadur2.Hadur 3.18 | bisect/hadur2.Hadur_3.18.jar
+aa | hadur2.Hadur 3.18aa | bisect/hadur2.Hadur_3.18aa.jar
+sp | hadur2.Hadur 3.18sp | bisect/hadur2.Hadur_3.18sp.jar
