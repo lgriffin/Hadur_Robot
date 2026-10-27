@@ -39,7 +39,7 @@ loadScripts(document, 'script');</script>
 <p>Summary:</p>
 <ul>
 <li>Nested</li>
-<li><a href="#field-summary">Field</a></li>
+<li>Field</li>
 <li>Constr</li>
 <li><a href="#method-summary">Method</a></li>
 </ul>
@@ -47,7 +47,7 @@ loadScripts(document, 'script');</script>
 <li>
 <p>Detail:</p>
 <ul>
-<li><a href="#field-detail">Field</a></li>
+<li>Field</li>
 <li>Constr</li>
 <li><a href="#method-detail">Method</a></li>
 </ul>
@@ -59,13 +59,13 @@ loadScripts(document, 'script');</script>
 <ul class="sub-nav-list">
 <li>Summary:&nbsp;</li>
 <li>Nested&nbsp;|&nbsp;</li>
-<li><a href="#field-summary">Field</a>&nbsp;|&nbsp;</li>
+<li>Field&nbsp;|&nbsp;</li>
 <li>Constr&nbsp;|&nbsp;</li>
 <li><a href="#method-summary">Method</a></li>
 </ul>
 <ul class="sub-nav-list">
 <li>Detail:&nbsp;</li>
-<li><a href="#field-detail">Field</a>&nbsp;|&nbsp;</li>
+<li>Field&nbsp;|&nbsp;</li>
 <li>Constr&nbsp;|&nbsp;</li>
 <li><a href="#method-detail">Method</a></li>
 </ul>
@@ -93,30 +93,12 @@ loadScripts(document, 'script');</script>
 <div class="type-signature"><span class="modifiers">public final class </span><span class="element-name type-name-label">Energy</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
 <div class="block">Bullet power and the fire gate: Figment's <code>log10(energy) * 325 / distance</code> (about 3 at
- 200 px, 1 at 650 px), capped at <code>others / 3 + 1.9</code>: 1.9 while fewer than three
- opponents remain (SAOR-8), where the end game is scored on survival and 1.9 keeps two shots
- of margin against a 3-power hit; 2.9 with three to five; no cap the engine does not apply
- itself above that. The gun fires only once it has finished turning (SAOR-10).</div>
+ 200 px, 1 at 650 px), with no cap but the engine's own 0.1 to 3 (SAOR-17). Saor 0.2 capped it
+ at <code>others / 3 + 1.9</code> (SAOR-8, retired in 0.3: stage 5 measured the cap at 0 to -0.14
+ APS, docs/plan-saor-first.md). The gun fires only once it has finished turning (SAOR-10).</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
-<!-- =========== FIELD SUMMARY =========== -->
-<li>
-<section class="field-summary" id="field-summary">
-<h2>Field Summary</h2>
-<div class="caption"><span>Fields</span></div>
-<div class="summary-table three-column-summary">
-<div class="table-header col-first">Modifier and Type</div>
-<div class="table-header col-second">Field</div>
-<div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code>static final double</code></div>
-<div class="col-second even-row-color"><code><a href="#END_GAME_POWER" class="member-name-link">END_GAME_POWER</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">The end-game cap (SAOR-8).</div>
-</div>
-</div>
-</section>
-</li>
 <!-- ========== METHOD SUMMARY =========== -->
 <li>
 <section class="method-summary" id="method-summary">
@@ -140,9 +122,8 @@ loadScripts(document, 'script');</script>
 <div class="block">The fire gate (SAOR-10).</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static double</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#power(double,double,int)" class="member-name-link">power</a><wbr>(double&nbsp;energy,
- double&nbsp;distance,
- int&nbsp;others)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#power(double,double)" class="member-name-link">power</a><wbr>(double&nbsp;energy,
+ double&nbsp;distance)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">The power to fire at the target.</div>
 </div>
@@ -158,47 +139,22 @@ loadScripts(document, 'script');</script>
 </section>
 <section class="details">
 <ul class="details-list">
-<!-- ============ FIELD DETAIL =========== -->
-<li>
-<section class="field-details" id="field-detail">
-<h2>Field Details</h2>
-<ul class="member-list">
-<li>
-<section class="detail" id="END_GAME_POWER">
-<h3>END_GAME_POWER</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">END_GAME_POWER</span></div>
-<div class="block">The end-game cap (SAOR-8).</div>
-<dl class="notes">
-<dt>See Also:</dt>
-<dd>
-<ul class="tag-list">
-<li><a href="../../../constant-values.html#hadur117.micro.core.Energy.END_GAME_POWER">Constant Field Values</a></li>
-</ul>
-</dd>
-</dl>
-</section>
-</li>
-</ul>
-</section>
-</li>
 <!-- ============ METHOD DETAIL ========== -->
 <li>
 <section class="method-details" id="method-detail">
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="power(double,double,int)">
+<section class="detail" id="power(double,double)">
 <h3>power</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">power</span><wbr><span class="parameters">(double&nbsp;energy,
- double&nbsp;distance,
- int&nbsp;others)</span></div>
+ double&nbsp;distance)</span></div>
 <div class="block">The power to fire at the target. Below 0.1 the engine fires 0.1, so a robot under 1
  energy still fires; Figment's <code>power &gt; 0</code> check cost 6 bytes (docs/saor.md).</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>energy</code> - our energy</dd>
 <dd><code>distance</code> - the target's distance</dd>
-<dd><code>others</code> - opponents alive</dd>
 <dt>Returns:</dt>
 <dd>the power</dd>
 </dl>

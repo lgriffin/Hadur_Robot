@@ -2803,10 +2803,6 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">END-4: the energy our side must keep above the enemy's once it can no longer fire.</div>
 </dd>
-<dt><a href="hadur117/micro/core/Energy.html#END_GAME_POWER" class="member-name-link">END_GAME_POWER</a> - Static variable in class hadur117.micro.core.<a href="hadur117/micro/core/Energy.html" title="class in hadur117.micro.core">Energy</a></dt>
-<dd>
-<div class="block">The end-game cap (SAOR-8).</div>
-</dd>
 <dt><a href="hadur2/core/duel/DuelController.html#endgame()" class="member-name-link">endgame()</a> - Method in class hadur2.core.duel.<a href="hadur2/core/duel/DuelController.html" title="class in hadur2.core.duel">DuelController</a></dt>
 <dd>
 <div class="block">S5: the endgame state as of the last duel tick.</div>
@@ -3003,10 +2999,7 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur117/micro/core/Energy.html" class="type-name-link" title="class in hadur117.micro.core">Energy</a> - Class in <a href="hadur117/micro/core/package-summary.html">hadur117.micro.core</a></dt>
 <dd>
 <div class="block">Bullet power and the fire gate: Figment's <code>log10(energy) * 325 / distance</code> (about 3 at
- 200 px, 1 at 650 px), capped at <code>others / 3 + 1.9</code>: 1.9 while fewer than three
- opponents remain (SAOR-8), where the end game is scored on survival and 1.9 keeps two shots
- of margin against a 3-power hit; 2.9 with three to five; no cap the engine does not apply
- itself above that.</div>
+ 200 px, 1 at 650 px), with no cap but the engine's own 0.1 to 3 (SAOR-17).</div>
 </dd>
 <dt><a href="hadur117/mini/core/Move.html#ENERGY" class="member-name-link">ENERGY</a> - Static variable in class hadur117.mini.core.<a href="hadur117/mini/core/Move.html" title="class in hadur117.mini.core">Move</a></dt>
 <dd>&nbsp;</dd>
@@ -6096,11 +6089,6 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur117/mini/core/Gun.html#learn(char%5B%5D%5B%5D,int,int,java.util.Random)" class="member-name-link">learn(char[][], int, int, Random)</a> - Static method in class hadur117.mini.core.<a href="hadur117/mini/core/Gun.html" title="class in hadur117.mini.core">Gun</a></dt>
 <dd>
 <div class="block">Records that <code>next</code> followed <code>from</code>; a full row replaces a random sample (DEISE-6).</div>
-</dd>
-<dt><a href="hadur117/micro/core/Targeting.html#learn(double)" class="member-name-link">learn(double)</a> - Static method in class hadur117.micro.core.<a href="hadur117/micro/core/Targeting.html" title="class in hadur117.micro.core">Targeting</a></dt>
-<dd>
-<div class="block">Whether this scan's transition is recorded: only while the gun is cool enough that the
- radar is held on the target, scanning it every tick.</div>
 </dd>
 <dt><a href="hadur2/core/move/GunMimics.Mimic.html#learn(hadur2.core.model.Wave,double)" class="member-name-link">learn(Wave, double)</a> - Method in class hadur2.core.move.<a href="hadur2/core/move/GunMimics.Mimic.html" title="class in hadur2.core.move">GunMimics.Mimic</a></dt>
 <dd>&nbsp;</dd>
@@ -9455,6 +9443,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">The bullet's power, in [0.1, 3.0].</div>
 </dd>
+<dt><a href="hadur117/micro/core/Energy.html#power(double,double)" class="member-name-link">power(double, double)</a> - Static method in class hadur117.micro.core.<a href="hadur117/micro/core/Energy.html" title="class in hadur117.micro.core">Energy</a></dt>
+<dd>
+<div class="block">The power to fire at the target.</div>
+</dd>
 <dt><a href="hadur117/twin/core/Team.html#power(double,double,boolean,int)" class="member-name-link">power(double, double, boolean, int)</a> - Static method in class hadur117.twin.core.<a href="hadur117/twin/core/Team.html" title="class in hadur117.twin.core">Team</a></dt>
 <dd>
 <div class="block">Bullet power: Saor's <code>log10(energy) * 325 / distance</code>, capped by mode.</div>
@@ -9468,10 +9460,6 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur2/core/melee/MeleeEnergyPolicy.html#power(double,double,double,int)" class="member-name-link">power(double, double, double, int)</a> - Static method in class hadur2.core.melee.<a href="hadur2/core/melee/MeleeEnergyPolicy.html" title="class in hadur2.core.melee">MeleeEnergyPolicy</a></dt>
 <dd>
 <div class="block">The power to fire at a target <code>distance</code> away with <code>targetEnergy</code>, or 0 to hold.</div>
-</dd>
-<dt><a href="hadur117/micro/core/Energy.html#power(double,double,int)" class="member-name-link">power(double, double, int)</a> - Static method in class hadur117.micro.core.<a href="hadur117/micro/core/Energy.html" title="class in hadur117.micro.core">Energy</a></dt>
-<dd>
-<div class="block">The power to fire at the target.</div>
 </dd>
 <dt><a href="hadur2/core/policy/PowerPolicy.html#power(hadur2.core.policy.PowerPolicy.Reason,double,double)" class="member-name-link">power(PowerPolicy.Reason, double, double)</a> - Static method in class hadur2.core.policy.<a href="hadur2/core/policy/PowerPolicy.html" title="class in hadur2.core.policy">PowerPolicy</a></dt>
 <dd>

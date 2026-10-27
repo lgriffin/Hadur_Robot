@@ -119,9 +119,8 @@ loadScripts(document, 'script');</script>
  still runs over it as a peephole pass, and the build fails above 749 bytes (SAOR-11).</p>
 
  <p>Byte idioms, each mirrored in the core and listed in docs/saor.md: statics over fields;
- the axis toggles with <code>^= 1</code> so it needs no initialiser; the end-game cap is
- <code>others / 3 + 1.9</code>; 1024 angle bins wrap with <code>&amp; 1023</code>; one catch absorbs a
- full Markov row and an out-of-range state. 0.2 has no collision handler: the ram leg of 0.1
+ the axis toggles with <code>^= 1</code> so it needs no initialiser; 1024 angle bins wrap with
+ <code>&amp; 1023</code>; one catch absorbs a full Markov row and an out-of-range state. 0.2 has no collision handler: the ram leg of 0.1
  (SAOR-9, retired) measured level and its bytes pay for the graded vote (SAOR-7).</p></div>
 </section>
 <section class="summary">
