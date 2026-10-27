@@ -4,10 +4,12 @@
 # docs/deise.md). Run from hadur-bench after `mvn install` of deise (the robocode API jar comes from
 # the local Maven repository, and the card's prep copies Deise's jar into opponents/).
 #   bash tools/deise_arms.sh live SEEDS SEED_BASE [ARMS]
-# An arm line is `NAME | what | FILE | sed`: FILE (Deise.java, Gun.java or Move.java) takes the sed,
-# empty for the control. An arm `NAME | what | @robot name` seats that robot (its jar from
-# opponents/) instead. Each build is javac-only, with its class renamed Deise<NAME> and its core
-# package hadur117.mini.c<name>, so no two arms share a class; DeiseJarIT measures bytes.
+# An arm line is `NAME | what | FILE | sed`: FILE (DeiseLab.java, Gun.java or Move.java) takes the
+# sed, empty for the control. An arm `NAME | what | @robot name` seats that robot (its jar from
+# opponents/) instead. Arms are built from the bench adapter DeiseLab over the core, which the
+# shipped one-class Deise is held to (DEISE-16). Each build is javac-only, with its class renamed
+# Deise<NAME> and its core package hadur117.mini.c<name>, so no two arms share a class; the
+# shipped Deise is the field's resident, from opponents/.
 set -euo pipefail
 field="$1"; seeds="$2"; base="$3"; only="${4:-}"
 [ "$field" = live ] || { echo "deise_arms: the field is live" >&2; exit 2; }
@@ -35,10 +37,10 @@ grep -v '^#' deise-arms/arms.txt | while IFS='|' read -r name what file expr; do
     else
         lname=$(echo "$name" | tr 'A-Z' 'a-z'); cls="Deise$name"; dir="$out/build/$cls"
         rm -rf "$dir"; mkdir -p "$dir/src/hadur117/mini/c$lname" "$dir/classes/hadur117/mini"
-        for f in "$src"/hadur117/mini/*.java "$src"/hadur117/mini/core/*.java; do
+        for f in "$src"/hadur117/mini/DeiseLab.java "$src"/hadur117/mini/core/*.java; do
             base_name=$(basename "$f"); to="$dir/src/hadur117/mini/c$lname/$base_name"
-            [ "$base_name" = Deise.java ] && to="$dir/src/hadur117/mini/$cls.java"
-            sed -e "s/hadur117\.mini\.core/hadur117.mini.c$lname/g" -e "s/class Deise /class $cls /" "$f" > "$to"
+            [ "$base_name" = DeiseLab.java ] && to="$dir/src/hadur117/mini/$cls.java"
+            sed -e "s/hadur117\\.mini\\.core/hadur117.mini.c$lname/g" -e "s/class DeiseLab /class $cls /" "$f" > "$to"
             if [ -n "$expr" ] && [ "$base_name" = "$file" ]; then
                 cp "$to" "$to.orig"; sed -i -e "$expr" "$to"
                 cmp -s "$to" "$to.orig" && { echo "deise_arms: arm $name's sed changed nothing in $file" >&2; exit 3; }

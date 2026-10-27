@@ -132,22 +132,33 @@ when D or a one-change arm reads within 1.0 of MIR in the same run.
 |---|---|---|
 | E0 | The design measured, unfitted (card `pc-deise-e01`) | D or one arm within 1.0 of MIR |
 | E1 | Stack the winners, then the next round of arms | the stack leads MIR by 0.5 or more, same run |
-| E2 | Fit 1,499 bytes: flatten into one class as Saor is, with an equivalence test against the core, then golf | DeiseJarIT at 1,499; the fitted build reads level with E1's |
+| E2 | Fit 1,499 bytes: flatten into one class as Saor is, with an equivalence test against the core (done early, for 0.2: 1,494 bytes) | DeiseJarIT at 1,499; the fitted build reads level with E1's |
 | E3 | Release the fitted build on Leigh's go | live MiniMelee 1st |
 
-Leigh asked for 0.1 live on 2026-10-27 to get real numbers before the census: `deise-v0.1`
-(`.github/workflows/release-deise.yml`) is the E0 build, unfitted. At 2,303 bytes the rumble scores
-it in MeleeRumble only, and its pairings against the 204 MiniMelee robots give the
-MiniMelee-shaped score, the same count the census makes (DEISE-13).
+Leigh asked for Deise live on 2026-10-27 to get real numbers before the census. 0.1
+(`deise-v0.1`) went out unfitted at 2,303 bytes, which the MiniMelee table does not take, and
+should never have been cut. 0.2 is the same robot fitted to 1,494 bytes (section 7), so stage E2's
+fit came before E0's census.
 
 ## 7. The byte budget
 
-Deise 0.1 is 2,303 bytes by Robocode's codesize tool, with the core shipped in the jar.
-Mirage does a comparable job in 1,479 bytes in one class, so the fit is work, not a redesign:
-the calls into the core, with up to eleven arguments each, and the per-scan bookkeeping are
-where most of it goes. Stage E2 does it the way Saor did (docs/saor.md, "Why the shipped class
-is flattened by hand"), once E0 and E1 have said which parts earn their bytes; the waves are
-the first candidate to cut. `DeiseJarIT` holds the build to a 2,400-byte budget until then.
+Deise 0.1 was 2,303 bytes with the core shipped in the jar. 0.2 ships one class,
+`hadur117.mini.Deise`, the core flattened by hand the way Saor is (docs/saor.md, "Why the shipped
+class is flattened by hand"), through ProGuard's peephole pass: **1,494 bytes** of MiniMelee's
+1,499. The build fails above 1,499 or with more than one class (DEISE-12).
+
+What the fit left out changes no order: the seen-shot waves weigh 0 (DEISE-5), so the shipped class
+neither records nor weighs them, and the dead reckoning of arm RK is off. The bench adapter
+`DeiseLab` keeps both, drives the core call by call, and is what the bench arms are built from.
+`DeiseEquivalenceTest` runs both through three melees (five, three and seven enemies, with deaths
+and target switches) and requires the same orders to the bit, on the compiled classes and on the
+shipped jar (DEISE-16). To make that hold, the core and the adapter adopted the shipped class's
+arithmetic where the two differed only in rounding: distances as the square root of the squared
+sum, the ring's headings as `i * (2π / 36)`, and no special first scan. `DeiseLab` also dropped its
+bullet-hit energy update, which only fed the waves.
+
+Five bytes are left, so any change that adds behaviour has to pay for itself; the waves' code is
+gone already, and the next candidates are the clamp of the turn index and the 0.1 power floor.
 
 ## 8. Uniqueness
 

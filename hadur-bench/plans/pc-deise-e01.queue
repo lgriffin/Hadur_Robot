@@ -1,7 +1,7 @@
 # Deise's stage E0 (docs/deise.md section 5): the design on the live-shaped MiniMelee census.
 # Deise is a new MiniMelee robot (hadur117.mini.Deise, deise/), built to take MiniMelee 1st from
 # kc.mini.Mirage 0.2 (71.30 live). This card seats Mirage and Saor 0.2 (2nd, 68.79 live, the
-# control) beside Deise 0.1 and seven one-change arms, on fields drawn from the whole MeleeRumble
+# control) beside Deise 0.2 and seven one-change arms, on fields drawn from the whole MeleeRumble
 # list, scored only on MiniMelee pairings, as LiteRumble scores MiniMelee (DEISE-13).
 #   ./queue.sh run pc-deise-e01        (or  .\queue.ps1 run pc-deise-e01)
 # Run it from master:
@@ -10,7 +10,7 @@
 # a decision. Nothing here touches Hadur or Saor.
 #
 # Arms (deise-arms/arms.txt):
-#   D      Deise 0.1: corners while crowded, no wave dodging
+#   D      Deise 0.2: corners while crowded, no wave dodging
 #   MIR    kc.mini.Mirage 0.2 seated (Deise takes its place in its field)
 #   SAOR   hadur117.micro.Saor 0.2 seated, the control
 #   W      seen-shot waves back on        CE    out of the centre, not to the corners
@@ -26,7 +26,7 @@ set MVN = mvn -q -Drobocode.version=1.11.1 compile exec:java
 set OUT = ../docs/bench/local
 set ARMS = D,MIR,SAOR,W,CE,CM,RK,FL,P200,G1
 
-prep | (cd .. && mvn -q -DskipTests install -pl saor,deise -am) && cp ../saor/target/hadur117.micro.Saor_0.2.jar ../deise/target/hadur117.mini.Deise_0.1.jar opponents/ && ./fetch-opponents.sh --set minimelee-field.txt && for f in melee-census-317/f*.txt; do ./fetch-opponents.sh --set "$f" || exit 1; done && DEISE_RUN=e01 bash tools/deise_arms.sh live 6 3100 ${ARMS}
+prep | (cd .. && mvn -q -DskipTests install -pl saor,deise -am) && cp ../saor/target/hadur117.micro.Saor_0.2.jar ../deise/target/hadur117.mini.Deise_0.2.jar opponents/ && ./fetch-opponents.sh --set minimelee-field.txt && for f in melee-census-317/f*.txt; do ./fetch-opponents.sh --set "$f" || exit 1; done && DEISE_RUN=e01 bash tools/deise_arms.sh live 6 3100 ${ARMS}
 
 live-D | ${MVN} "-Dexec.args=@work/deise-e01/live-D.args"
   after: prep

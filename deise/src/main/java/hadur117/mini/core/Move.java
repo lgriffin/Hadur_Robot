@@ -47,7 +47,7 @@ public final class Move {
                                 double time, int others) {
         double[] best = {myX, myY, Double.POSITIVE_INFINITY};
         for (int i = 0; i < CANDIDATES; i++) {
-            double heading = i * 2 * Math.PI / CANDIDATES;
+            double heading = i * (2 * Math.PI / CANDIDATES);
             double px = myX + Math.sin(heading) * reach;
             double py = myY + Math.cos(heading) * reach;
             if (Math.min(Math.min(px, py), Gun.FIELD - Math.max(px, py)) >= Gun.MARGIN) {
