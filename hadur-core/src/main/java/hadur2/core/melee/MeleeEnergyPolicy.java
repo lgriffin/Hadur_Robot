@@ -47,6 +47,18 @@ public final class MeleeEnergyPolicy {
     static final double OGI_CLOSE = 200;
     /** MGUN-12, MGUN-13: the own energy from which the crowd rules fire harder than the table. */
     static final double CROWD_RULE_ENERGY = 20.0;
+    /**
+     * MGUN-14: MGUN-13 also with two opponents left, where the duel's table fires now. Off: the
+     * exposure read on the banked build (docs/plan-melee-top5.md) has Hadur's crowd power at 1.85
+     * to the top 10's 2.56, and the rule idle there; the bench builds an arm with it on (ogi2).
+     */
+    public static final boolean OGI_TWO = false;
+    /** MGUN-15: MGUN-13 from {@link #OGI_LOW_ENERGY} own energy, not 20. Off (arm ogie10). */
+    public static final boolean OGI_LOW = false;
+    static final double OGI_LOW_ENERGY = 10.0;
+    /** MGUN-16: MGUN-13's power 3 out to {@link #OGI_WIDE_CLOSE} px, not 200. Off (arm ogi300). */
+    public static final boolean OGI_WIDE = false;
+    static final double OGI_WIDE_CLOSE = 300;
 
     private MeleeEnergyPolicy() {}
 
@@ -98,16 +110,27 @@ public final class MeleeEnergyPolicy {
      */
     public static double crowdPower(double tablePower, double distance, double ownEnergy, double targetEnergy,
                                     int others) {
-        return crowdPower(tablePower, distance, ownEnergy, targetEnergy, others, CROWD_FLOOR, CROWD_OGI);
+        return crowdPower(tablePower, distance, ownEnergy, targetEnergy, others, CROWD_FLOOR, CROWD_OGI,
+            OGI_TWO, OGI_LOW, OGI_WIDE);
     }
 
     static double crowdPower(double tablePower, double distance, double ownEnergy, double targetEnergy,
                              int others, boolean floor, boolean ogi) {
-        if (tablePower <= 0 || others < 3 || ownEnergy < CROWD_RULE_ENERGY || targetEnergy <= FINISHER_ENERGY
+        return crowdPower(tablePower, distance, ownEnergy, targetEnergy, others, floor, ogi, false, false, false);
+    }
+
+    /** MGUN-14..16 widen MGUN-13 only: with it off they do nothing. */
+    static double crowdPower(double tablePower, double distance, double ownEnergy, double targetEnergy,
+                             int others, boolean floor, boolean ogi, boolean two, boolean low, boolean wide) {
+        int least = ogi && two ? 2 : 3;
+        double energy = ogi && low ? OGI_LOW_ENERGY : CROWD_RULE_ENERGY;
+        if (tablePower <= 0 || others < least || ownEnergy < energy || targetEnergy <= FINISHER_ENERGY
             || !(floor || ogi)) {
             return tablePower;
         }
-        double p = ogi ? (distance <= OGI_CLOSE ? MAX_POWER : OGI_POWER) : Math.max(tablePower, CROWD_FLOOR_POWER);
+        if (floor && !ogi && others < 3) return tablePower;
+        double close = ogi && wide ? OGI_WIDE_CLOSE : OGI_CLOSE;
+        double p = ogi ? (distance <= close ? MAX_POWER : OGI_POWER) : Math.max(tablePower, CROWD_FLOOR_POWER);
         p = Math.min(p, killPower(targetEnergy));
         if (ownEnergy > targetEnergy) p = Math.min(p, ownEnergy - targetEnergy);
         p = Math.max(p, MIN_POWER);

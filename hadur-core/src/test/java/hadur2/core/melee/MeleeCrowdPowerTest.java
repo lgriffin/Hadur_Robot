@@ -45,4 +45,49 @@ class MeleeCrowdPowerTest {
         assertEquals(1.92, MeleeEnergyPolicy.crowdPower(1.0, 600, 20, 80, 3, false, true), 1e-9,
             "from exactly 20 energy, with exactly three opponents");
     }
+
+    @Test
+    @Tag("MGUN-14")
+    @Tag("MGUN-15")
+    @Tag("MGUN-16")
+    @DisplayName("MGUN-14..16 ship off, so MGUN-13 plays as banked")
+    void wideningShipsOff() {
+        assertFalse(MeleeEnergyPolicy.OGI_TWO);
+        assertFalse(MeleeEnergyPolicy.OGI_LOW);
+        assertFalse(MeleeEnergyPolicy.OGI_WIDE);
+        assertEquals(MeleeEnergyPolicy.crowdPower(1.95, 250, 15, 80, 2, false, true),
+            MeleeEnergyPolicy.crowdPower(1.95, 250, 15, 80, 2), 1e-9);
+    }
+
+    @Test
+    @Tag("MGUN-14")
+    @DisplayName("MGUN-14: switched on, Ogi's power also with two opponents left; one left keeps the duel's")
+    void two() {
+        assertEquals(1.95, MeleeEnergyPolicy.crowdPower(1.95, 600, 60, 80, 2, false, true), 1e-9, "off: the duel's table");
+        assertEquals(1.92, MeleeEnergyPolicy.crowdPower(1.95, 600, 60, 80, 2, false, true, true, false, false), 1e-9);
+        assertEquals(3.0, MeleeEnergyPolicy.crowdPower(1.95, 150, 60, 80, 2, false, true, true, false, false), 1e-9);
+        assertEquals(1.95, MeleeEnergyPolicy.crowdPower(1.95, 600, 60, 80, 1, false, true, true, false, false), 1e-9, "the duel");
+        assertEquals(1.95, MeleeEnergyPolicy.crowdPower(1.95, 600, 60, 80, 2, false, false, true, false, false), 1e-9,
+            "nothing without MGUN-13");
+    }
+
+    @Test
+    @Tag("MGUN-15")
+    @DisplayName("MGUN-15: switched on, Ogi's power from 10 own energy, still capped by it")
+    void low() {
+        assertEquals(1.0, MeleeEnergyPolicy.crowdPower(1.0, 600, 15, 80, 5, false, true), 1e-9, "off: the table under 20");
+        assertEquals(1.92, MeleeEnergyPolicy.crowdPower(1.0, 600, 15, 80, 5, false, true, false, true, false), 1e-9);
+        assertEquals(1.0, MeleeEnergyPolicy.crowdPower(1.0, 600, 9.9, 80, 5, false, true, false, true, false), 1e-9);
+        assertEquals(1.0, MeleeEnergyPolicy.crowdPower(1.0, 600, 15, 80, 5, true, false, false, true, false), 1e-9,
+            "the floor keeps its 20");
+    }
+
+    @Test
+    @Tag("MGUN-16")
+    @DisplayName("MGUN-16: switched on, power 3 out to 300 px")
+    void wide() {
+        assertEquals(1.92, MeleeEnergyPolicy.crowdPower(1.0, 250, 60, 80, 5, false, true), 1e-9, "off: 3 only within 200");
+        assertEquals(3.0, MeleeEnergyPolicy.crowdPower(1.0, 250, 60, 80, 5, false, true, false, false, true), 1e-9);
+        assertEquals(1.92, MeleeEnergyPolicy.crowdPower(1.0, 301, 60, 80, 5, false, true, false, false, true), 1e-9);
+    }
 }

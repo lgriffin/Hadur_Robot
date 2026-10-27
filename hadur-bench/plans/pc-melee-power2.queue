@@ -1,0 +1,45 @@
+# Melee firepower part 2 (docs/plan-melee-top5.md, MGUN-14..16, BENCH-121). The exposure read on the
+# banked build (K = 24, MEND-3, MGUN-13; 12 fields, cloud) has Hadur's score level with the top 10's
+# but its bullet damage still behind (4,691 a battle against 5,346): its crowd shots average 1.85
+# power to the top 10's 2.56. MGUN-13 is idle with two opponents left, under 20 own energy, and fires
+# 1.92, not 3, beyond 200 px. Each arm widens it one way, and the last all three:
+#   aa      the baseline (master)
+#   bb      its A/A copy
+#   o2      ogi2, MGUN-14: MGUN-13 also with two opponents left
+#   oe      ogie10, MGUN-15: MGUN-13 from 10 own energy
+#   ow      ogi300, MGUN-16: power 3 out to 300 px
+#   o2oeow  all three
+# Each build fights the 46 census fields x 6 fresh seeds alone (3205-3210; 276 battles, 1,656 in
+# all) at the machine's melee width and CPU constant. The read pairs bb with aa (A/A, within +-0.25)
+# and each arm with the mean of aa and bb (--base2), battle for battle. Melee only: every switch
+# acts off a team, with two or more opponents left, so the duel and team play are untouched.
+# Verdict: an arm passes when it adds at all, the 95% low end above 0 (--gain 0), with Hadur's
+# share of others outlived no more than 1 point lower and the 1-30 endgame wins no more than 3
+# points lower. The best passing arm (all three if it passes and leads) goes on master. The card
+# ends in a results PR on claude/pc-melee-power2-results whatever the verdict; the melee thread
+# reads it.
+#   ./queue.sh run pc-melee-power2        (or  .\queue.ps1 run pc-melee-power2)
+# Run it from master, one bench queue at a time:
+#   git checkout master && git pull
+# p2prep reads the version from hadur-robot/pom.xml, so a bump cannot point the card at stale
+# jars, and fixes the width in work/, so a resumed card never mixes host profiles.
+
+set OUT = ../docs/bench/local
+
+p2prep | git checkout -q master && V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && test -n "$V" && C=${MELEE_WORKERS} && for a in aa bb o2 oe ow o2oeow; do rm -f bisect/hadur2.Hadur_"$V"$a.jar; done && bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && bash ./build-ablation.sh ogi2 && bash ./build-ablation.sh ogie10 && bash ./build-ablation.sh ogi300 && bash ./build-ablation.sh ogi2,ogie10,ogi300 && mkdir -p work && for a in aa bb o2 oe ow o2oeow; do test -f bisect/hadur2.Hadur_"$V"$a.jar && sed -e "s/@V@/$V/g" -e "s/@A@/$a/g" -e "s/@C@/$C/g" plans/melee-power2.args > work/melee-power2-$a.args || exit 1; done && rm -f ${OUT}/melee-power2-*.md && for f in melee-census-317/f*.txt; do ./fetch-opponents.sh --set "$f" || exit 1; done && mvn -q compile
+p2aa   | mvn -q exec:java "-Dexec.args=@work/melee-power2-aa.args"
+  after: p2prep
+p2bb   | mvn -q exec:java "-Dexec.args=@work/melee-power2-bb.args"
+  after: p2aa
+p2o2   | mvn -q exec:java "-Dexec.args=@work/melee-power2-o2.args"
+  after: p2bb
+p2oe   | mvn -q exec:java "-Dexec.args=@work/melee-power2-oe.args"
+  after: p2o2
+p2ow   | mvn -q exec:java "-Dexec.args=@work/melee-power2-ow.args"
+  after: p2oe
+p2all  | mvn -q exec:java "-Dexec.args=@work/melee-power2-o2oeow.args"
+  after: p2ow
+p2read | V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && W=work/melee-power2-"$V" && { python3 tools/melee_s0.py screen "$W"-aa --base2 "$W"-bb --arm bb="$W"-bb --arm o2="$W"-o2 --arm oe="$W"-oe --arm ow="$W"-ow --arm o2oeow="$W"-o2oeow --census melee-census-317.txt --seeds 6 --gain 0 --survival-slack 1 --out ${OUT}/melee-power2-read.md --title "Melee firepower part 2 on $V" || true; } && test -s ${OUT}/melee-power2-read.md
+  after: p2all
+p2pr   | bash tools/open_results_pr.sh claude/pc-melee-power2-results "Melee firepower part 2 (MGUN-14..16)" ${OUT}/melee-power2-read.md $(ls ${OUT}/melee-power2-aa.md ${OUT}/melee-power2-bb.md ${OUT}/melee-power2-o2.md ${OUT}/melee-power2-oe.md ${OUT}/melee-power2-ow.md ${OUT}/melee-power2-o2oeow.md 2>/dev/null)
+  after: p2read
