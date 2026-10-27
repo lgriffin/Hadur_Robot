@@ -19,7 +19,7 @@ class LiveWatchPlanTest {
         String queue = Files.readString(Path.of("plans/live-watch.queue"));
         assertTrue(queue.contains("set V1 = ") && queue.contains("set VT = "));
         assertTrue(queue.contains("live_client.py watch --root ${CLIENTS} $(for d in ${ONES}; do printf -- '--launch %s:roborumble.bat ' \"$d\"; done)"));
-        assertTrue(queue.contains("set ONES = rr01 rr02 rr03 rr04 rr05 rr06"));
+        assertTrue(queue.contains("set ONES = rr01 rr02 rr03 rr04\n"), "four 1v1 clients, so the PC is not starved");
         assertTrue(queue.contains("--page \"roborumble:hadur2.Hadur ${V1}\""));
         assertTrue(queue.contains("--page \"meleerumble:hadur2.Hadur ${V1}\""));
         assertTrue(queue.contains("--page \"teamrumble:hadur2.HadurTeam ${VT}\""));
@@ -35,7 +35,7 @@ class LiveWatchPlanTest {
 
     @Test
     @Tag("BENCH-121")
-    @DisplayName("the release watch runs all eight clients and restarts each on a schedule, between battles")
+    @DisplayName("the release watch runs four 1v1 clients plus melee and team and restarts each on a schedule, between battles")
     void clients() throws IOException {
         String queue = Files.readString(Path.of("plans/live-watch.queue"));
         assertTrue(queue.contains("--launch ${MAIN}:meleerumble.bat --launch ${MAIN}:teamrumble.bat"));
