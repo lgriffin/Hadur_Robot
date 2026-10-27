@@ -37,6 +37,21 @@ class FriendlyHitsTest(unittest.TestCase):
             self.assertIn("Friendly hits read: 2.", friendly_hits.report([d]))
             self.assertIn("Friendly hits read: 1.", friendly_hits.report([d], candidate_only=True))
 
+    def test_an_arm_with_no_own_hits_still_reports(self):
+        with tempfile.TemporaryDirectory() as d:
+            arm = Path(d) / "battles" / "rz.HOFSwarm_1.1-1"
+            arm.mkdir(parents=True)
+            (arm / "friendly.log").write_text("", encoding="utf-8")
+            base = Path(d) / "battles" / "rz.HOFSwarm_1.1-1-baseline"
+            base.mkdir(parents=True)
+            (base / "friendly.log").write_text(line("noline", 400, 380, 36), encoding="utf-8")
+            self.assertIn("Friendly hits read: 0.", friendly_hits.report([d], candidate_only=True))
+
+    def test_no_logs_at_all_stops_the_read(self):
+        with tempfile.TemporaryDirectory() as d:
+            with self.assertRaises(SystemExit):
+                friendly_hits.report([d])
+
 
 if __name__ == "__main__":
     unittest.main()

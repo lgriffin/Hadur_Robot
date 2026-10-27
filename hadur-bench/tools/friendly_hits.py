@@ -35,17 +35,24 @@ def number(s):
         return float('nan')
 
 
-def hits(runs, candidate_only=False):
+def logs(runs, candidate_only=False):
     out = []
     for run in runs:
         for p in sorted(glob.glob(os.path.join(run, 'battles', '*', 'friendly.log'))):
             if candidate_only and os.path.basename(os.path.dirname(p)).endswith('-baseline'):
                 continue
-            with open(p) as f:
-                for line in f:
-                    h = fields(line)
-                    if h.get('kind') in KINDS:
-                        out.append(h)
+            out.append(p)
+    return out
+
+
+def hits(runs, candidate_only=False):
+    out = []
+    for p in logs(runs, candidate_only):
+        with open(p) as f:
+            for line in f:
+                h = fields(line)
+                if h.get('kind') in KINDS:
+                    out.append(h)
     return out
 
 
@@ -55,9 +62,10 @@ def median(xs):
 
 
 def report(runs, candidate_only=False):
+    if not logs(runs, candidate_only):
+        sys.exit('friendly_hits.py: no BENCH-114 friendly.log files under ' + ', '.join(runs))
+    # Logs with no lines are a result (no own hits), not a missing read.
     hs = hits(runs, candidate_only)
-    if not hs:
-        sys.exit('friendly_hits.py: no BENCH-114 friendly.log lines under ' + ', '.join(runs))
     out = ['# Where our own hits came from', '', 'Runs: ' + ', '.join(runs), '',
            'Friendly hits read: {}.'.format(len(hs)), '',
            '| Kind | Hits | Share | Median flight (px) | Median along at the shot | Median across at the shot | Median power |',
