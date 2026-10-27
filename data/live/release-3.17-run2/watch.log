@@ -1,0 +1,1654 @@
+2026-10-27T04:51:50Z client C:/RoboRumbleWorkers/rr01: results ['C:\\RoboRumbleWorkers\\rr01\\roborumble\\files\\results1v1.txt', 'C:\\RoboRumbleWorkers\\rr01\\roborumble\\files\\resultsTeams.txt', 'C:\\RoboRumbleWorkers\\rr01\\roborumble\\files\\resultsTwinduel.txt', 'C:\\RoboRumbleWorkers\\rr01\\roborumble\\files\\resultsmelee.txt'], data ['C:/RoboRumbleWorkers/rr01\\robots\\.data\\hadur2\\Hadur.data']
+2026-10-27T04:51:50Z client C:/RoboRumbleWorkers/rr02: results ['C:\\RoboRumbleWorkers\\rr02\\roborumble\\files\\results1v1.txt', 'C:\\RoboRumbleWorkers\\rr02\\roborumble\\files\\resultsTeams.txt', 'C:\\RoboRumbleWorkers\\rr02\\roborumble\\files\\resultsTwinduel.txt', 'C:\\RoboRumbleWorkers\\rr02\\roborumble\\files\\resultsmelee.txt'], data ['C:/RoboRumbleWorkers/rr02\\robots\\.data\\hadur2\\Hadur.data']
+2026-10-27T04:51:51Z client C:/RoboRumbleWorkers/rr03: results ['C:\\RoboRumbleWorkers\\rr03\\roborumble\\files\\results1v1.txt', 'C:\\RoboRumbleWorkers\\rr03\\roborumble\\files\\resultsTeams.txt', 'C:\\RoboRumbleWorkers\\rr03\\roborumble\\files\\resultsTwinduel.txt', 'C:\\RoboRumbleWorkers\\rr03\\roborumble\\files\\resultsmelee.txt'], data ['C:/RoboRumbleWorkers/rr03\\robots\\.data\\hadur2\\Hadur.data']
+2026-10-27T04:51:51Z client C:/RoboRumbleWorkers/rr04: results ['C:\\RoboRumbleWorkers\\rr04\\roborumble\\files\\results1v1.txt', 'C:\\RoboRumbleWorkers\\rr04\\roborumble\\files\\resultsTeams.txt', 'C:\\RoboRumbleWorkers\\rr04\\roborumble\\files\\resultsTwinduel.txt', 'C:\\RoboRumbleWorkers\\rr04\\roborumble\\files\\resultsmelee.txt'], data ['C:/RoboRumbleWorkers/rr04\\robots\\.data\\hadur2\\Hadur.data']
+2026-10-27T04:51:52Z client C:/RoboRumbleWorkers/rr05: results ['C:\\RoboRumbleWorkers\\rr05\\roborumble\\files\\results1v1.txt', 'C:\\RoboRumbleWorkers\\rr05\\roborumble\\files\\resultsTeams.txt', 'C:\\RoboRumbleWorkers\\rr05\\roborumble\\files\\resultsTwinduel.txt', 'C:\\RoboRumbleWorkers\\rr05\\roborumble\\files\\resultsmelee.txt'], data ['C:/RoboRumbleWorkers/rr05\\robots\\.data\\hadur2\\Hadur.data']
+2026-10-27T04:51:52Z client C:/RoboRumbleWorkers/rr06: results ['C:\\RoboRumbleWorkers\\rr06\\roborumble\\files\\results1v1.txt', 'C:\\RoboRumbleWorkers\\rr06\\roborumble\\files\\resultsTeams.txt', 'C:\\RoboRumbleWorkers\\rr06\\roborumble\\files\\resultsTwinduel.txt', 'C:\\RoboRumbleWorkers\\rr06\\roborumble\\files\\resultsmelee.txt'], data ['C:/RoboRumbleWorkers/rr06\\robots\\.data\\hadur2\\Hadur.data']
+2026-10-27T04:51:53Z page roborumble: APS 90.86, 3117 battles (first read)
+2026-10-27T04:51:53Z page meleerumble: APS 66.48, 1779 battles (first read)
+2026-10-27T04:51:54Z page teamrumble: APS 79.39, 202 battles (first read)
+2026-10-27T04:51:57Z profiles rr01_robots_.data_hadur2_Hadur.data: 512 files, 231 shield verdicts stored
+2026-10-27T04:51:57Z profiles rr02_robots_.data_hadur2_Hadur.data: 537 files, 236 shield verdicts stored
+2026-10-27T04:51:57Z profiles rr03_robots_.data_hadur2_Hadur.data: 534 files, 236 shield verdicts stored
+2026-10-27T04:51:57Z profiles rr04_robots_.data_hadur2_Hadur.data: 456 files, 200 shield verdicts stored
+2026-10-27T04:51:57Z profiles rr05_robots_.data_hadur2_Hadur.data: 412 files, 221 shield verdicts stored
+2026-10-27T04:51:57Z profiles rr06_robots_.data_hadur2_Hadur.data: 389 files, 200 shield verdicts stored
+2026-10-27T04:53:03Z battle hadur2.Hadur 3.17 vs lundal.Mark8 2012.09.15 (roborumble): 96.89% share, 35-0 rounds
+2026-10-27T04:52:59Z battle hadur2.Hadur 3.17 vs kawigi.sbf.FloodNano 1.2 (roborumble): 91.69% share, 34-1 rounds
+2026-10-27T04:53:02Z health lundal.Mark8: 35/35 survived, 4 skipped, 0 faults, shield verdict 0
+2026-10-27T04:53:06Z health steff.Rebel: 35/35 survived, 2 skipped, 0 faults, shield verdict 0
+2026-10-27T04:53:07Z battle hadur2.Hadur 3.17 vs slugzilla.RandomPattern 1.0 (roborumble): 100.0% share, 35-0 rounds
+2026-10-27T04:53:12Z battle hadur2.Hadur 3.17 vs nat.BlackHole 2.0gamma (roborumble): 97.29% share, 35-0 rounds
+2026-10-27T04:53:06Z battle hadur2.Hadur 3.17 vs steff.Rebel 2.1 (roborumble): 97.18% share, 35-0 rounds
+2026-10-27T04:53:12Z health nat.BlackHole: 35/35 survived, 1 skipped, 0 faults, shield verdict 1
+2026-10-27T04:53:14Z health sample.RamFire: 35/35 survived, 4 skipped, 0 faults, shield verdict 0
+2026-10-27T04:53:15Z battle hadur2.Hadur 3.17 vs kawigi.sbf.FloodSonnet 0.9 (roborumble): 88.49% share, 34-1 rounds
+2026-10-27T04:53:15Z health kawigi.sbf.FloodSonnet: 34/35 survived, 4 skipped, 0 faults, shield verdict 0
+2026-10-27T04:53:24Z health mladjo.AIR: 35/35 survived, 3 skipped, 0 faults, shield verdict 0
+2026-10-27T04:53:27Z health deith.Czolgzilla: 35/35 survived, 2 skipped, 0 faults, shield verdict 1
+2026-10-27T04:53:25Z battle hadur2.Hadur 3.17 vs mladjo.AIR 0.7 (roborumble): 97.47% share, 35-0 rounds
+2026-10-27T04:53:27Z battle hadur2.Hadur 3.17 vs mladjo.AIR 0.7 (roborumble): 97.51% share, 35-0 rounds
+2026-10-27T04:53:38Z battle hadur2.Hadur 3.17 vs mld.Wisdom 1.0 (roborumble): 98.15% share, 35-0 rounds
+2026-10-27T04:53:38Z health mld.Wisdom: 35/35 survived, 5 skipped, 0 faults, shield verdict 1
+2026-10-27T04:53:45Z health oog.melee.Mercutio: 34/35 survived, 7 skipped, 0 faults, shield verdict 1
+2026-10-27T04:53:45Z battle hadur2.Hadur 3.17 vs deith.Czolgzilla 0.11 (roborumble): 93.36% share, 34-1 rounds
+2026-10-27T04:53:49Z battle hadur2.Hadur 3.17 vs oog.melee.Mercutio 1.0 (roborumble): 97.43% share, 35-0 rounds
+2026-10-27T04:53:52Z health sample.MyFirstJuniorRobot: 35/35 survived, 3 skipped, 0 faults, shield verdict 0
+2026-10-27T04:54:00Z battle hadur2.Hadur 3.17 vs dft.Freddie 1.32 (roborumble): 88.67% share, 35-0 rounds
+2026-10-27T04:53:55Z battle hadur2.Hadur 3.17 vs catcat20.Rabbit 0.001 (roborumble): 89.98% share, 34-1 rounds
+2026-10-27T04:53:55Z battle hadur2.Hadur 3.17 vs AIR.iRobot 1.0 (roborumble): 100.0% share, 35-0 rounds
+2026-10-27T04:53:59Z battle hadur2.Hadur 3.17 vs kjc.etc.Dharok 1.0 (roborumble): 93.52% share, 35-0 rounds
+2026-10-27T04:53:52Z battle hadur2.Hadur 3.17 vs nexus.Two 0.2 (roborumble): 97.52% share, 35-0 rounds
+2026-10-27T04:53:56Z battle hadur2.Hadur 3.17 vs sample.MyFirstJuniorRobot 1.0 (roborumble): 99.0% share, 35-0 rounds
+2026-10-27T04:54:00Z health dft.Freddie: 35/35 survived, 4 skipped, 0 faults, shield verdict 1
+2026-10-27T04:53:55Z health catcat20.Rabbit: 34/35 survived, 10 skipped, 0 faults, shield verdict 1
+2026-10-27T04:53:59Z health kjc.etc.Dharok: 35/35 survived, 2 skipped, 0 faults, shield verdict 0
+2026-10-27T04:54:01Z health theo.real.Ahab: 35/35 survived, 1 skipped, 0 faults, shield verdict 0
+2026-10-27T04:54:05Z battle hadur2.Hadur 3.17 vs kawigi.nano.ThnikkaBot 0.9 (roborumble): 94.67% share, 35-0 rounds
+2026-10-27T04:54:12Z battle hadur2.Hadur 3.17 vs tad.Dalek98 0.98 (roborumble): 87.73% share, 35-0 rounds
+2026-10-27T04:54:11Z battle hadur2.Hadur 3.17 vs sample.Tracker 1.0 (roborumble): 100.0% share, 35-0 rounds
+2026-10-27T04:54:01Z battle hadur2.Hadur 3.17 vs stelo.Spread 0.9 (roborumble): 97.93% share, 35-0 rounds
+2026-10-27T04:54:09Z battle hadur2.Hadur 3.17 vs tkt.RedShift 1.1.CS.0 (roborumble): 97.25% share, 35-0 rounds
+2026-10-27T04:54:11Z health tad.Dalek98: 35/35 survived, 2 skipped, 0 faults, shield verdict 1
+2026-10-27T04:54:13Z health suzushin7.nano.Galaxy01: 35/35 survived, 1 skipped, 0 faults, shield verdict 0
+2026-10-27T04:54:09Z health tkt.RedShift: 35/35 survived, 3 skipped, 0 faults, shield verdict 1
+2026-10-27T04:54:14Z battle hadur2.Hadur 3.17 vs suzushin7.nano.Galaxy01 1.01 (roborumble): 100.0% share, 35-0 rounds
+2026-10-27T04:54:20Z battle hadur2.Hadur 3.17 vs kawigi.sbf.Barracuda 1.0 (roborumble): 96.26% share, 35-0 rounds
+2026-10-27T04:54:17Z battle hadur2.Hadur 3.17 vs ds.Versatile RB1.0.1 (roborumble): 87.83% share, 35-0 rounds
+2026-10-27T04:54:21Z battle hadur2.Hadur 3.17 vs mz.AdeptBSB 1.03 (roborumble): 98.93% share, 35-0 rounds
+2026-10-27T04:54:19Z battle hadur2.Hadur 3.17 vs ry.VirtualGunExperiment 1.2.0 (roborumble): 98.5% share, 35-0 rounds
+2026-10-27T04:54:20Z battle hadur2.Hadur 3.17 vs theo.real.Ahab 1.0 (roborumble): 97.13% share, 35-0 rounds
+2026-10-27T04:54:20Z health kawigi.sbf.Barracuda: 35/35 survived, 2 skipped, 0 faults, shield verdict 1
+2026-10-27T04:54:20Z health wilson.Chameleon: 35/35 survived, 1 skipped, 0 faults, shield verdict 0
+2026-10-27T04:54:26Z health Legend.X_FireFly: 35/35 survived, 3 skipped, 0 faults, shield verdict 0
+2026-10-27T04:54:27Z health ntw.Sighup: 35/35 survived, 5 skipped, 0 faults, shield verdict 0
+2026-10-27T04:54:33Z battle hadur2.Hadur 3.17 vs ary.nano.AceSurf 1.2 (roborumble): 85.12% share, 34-1 rounds
+2026-10-27T04:54:28Z battle hadur2.Hadur 3.17 vs wilson.Chameleon 0.91 (roborumble): 100.0% share, 35-0 rounds
+2026-10-27T04:54:26Z battle hadur2.Hadur 3.17 vs Legend.X_FireFly 1.3 (roborumble): 93.18% share, 35-0 rounds
+2026-10-27T04:54:27Z battle hadur2.Hadur 3.17 vs emp.Yngwie 1.11 (roborumble): 86.93% share, 35-0 rounds
+2026-10-27T04:54:31Z battle hadur2.Hadur 3.17 vs ntw.Sighup 1.5 (roborumble): 92.04% share, 35-0 rounds
+2026-10-27T04:54:33Z health ary.nano.AceSurf: 34/35 survived, 4 skipped, 0 faults, shield verdict 1
+2026-10-27T04:54:27Z health wilson.Chameleon: 35/35 survived, 1 skipped, 0 faults, shield verdict 0
+2026-10-27T04:54:36Z health fullsail.LaxativeTeaTwo: 33/35 survived, 2 skipped, 0 faults, shield verdict 0
+2026-10-27T04:54:36Z health ags.Glacier: 31/35 survived, 2 skipped, 0 faults, shield verdict 1
+2026-10-27T04:54:39Z health simonton.micro.WeeklongObsession: 29/35 survived, 5 skipped, 0 faults, shield verdict 1
+2026-10-27T04:54:45Z battle hadur2.Hadur 3.17 vs cw.megas.Silhouette 1.1 (roborumble): 77.83% share, 33-2 rounds
+2026-10-27T04:54:36Z battle hadur2.Hadur 3.17 vs fullsail.LaxativeTeaTwo 1.0 (roborumble): 87.89% share, 33-2 rounds
+2026-10-27T04:54:37Z battle hadur2.Hadur 3.17 vs timmit.mini.TimVA 0.43 (roborumble): 77.39% share, 31-4 rounds
+2026-10-27T04:54:39Z battle hadur2.Hadur 3.17 vs simonton.micro.WeeklongObsession 3.4.1 (roborumble): 72.08% share, 29-6 rounds
+2026-10-27T04:54:45Z battle hadur2.Hadur 3.17 vs ab.DengerousRoBatra 1.3 (roborumble): 96.26% share, 35-0 rounds
+2026-10-27T04:54:45Z health aw.Gilgalad: 33/35 survived, 4 skipped, 0 faults, shield verdict 1
+2026-10-27T04:54:48Z health exauge.Leopard: 35/35 survived, 1 skipped, 0 faults, shield verdict 0
+2026-10-27T04:54:45Z health ab.DengerousRoBatra: 35/35 survived, 1 skipped, 0 faults, shield verdict 0
+2026-10-27T04:54:52Z battle hadur2.Hadur 3.17 vs KiraNL.Chupacabra 0.5 (roborumble): 99.53% share, 35-0 rounds
+2026-10-27T04:54:49Z battle hadur2.Hadur 3.17 vs exauge.Leopard 1.1.019 (roborumble): 81.59% share, 35-0 rounds
+2026-10-27T04:54:54Z battle hadur2.Hadur 3.17 vs ags.Glacier 0.3.2 (roborumble): 68.04% share, 29-6 rounds  << LOW
+2026-10-27T04:54:55Z battle hadur2.Hadur 3.17 vs pez.micro.Aristocles 0.3.9 (roborumble): 97.75% share, 35-0 rounds
+2026-10-27T04:54:52Z health KiraNL.Chupacabra: 35/35 survived, 4 skipped, 0 faults, shield verdict 0
+2026-10-27T04:55:01Z health deo.FlowerBot: 34/35 survived, 1 skipped, 0 faults, shield verdict 1
+2026-10-27T04:54:55Z health pez.micro.Aristocles: 35/35 survived, 3 skipped, 0 faults, shield verdict 0
+2026-10-27T04:55:02Z battle hadur2.Hadur 3.17 vs bjl.LoneDragon 0.5 (roborumble): 93.9% share, 35-0 rounds
+2026-10-27T04:55:04Z battle hadur2.Hadur 3.17 vs supersample.SuperTracker 1.0 (roborumble): 97.59% share, 35-0 rounds
+2026-10-27T04:55:01Z battle hadur2.Hadur 3.17 vs ary.SMG 1.01 (roborumble): 92.64% share, 34-1 rounds
+2026-10-27T04:55:06Z battle hadur2.Hadur 3.17 vs deo.FlowerBot 1.0 (roborumble): 80.18% share, 33-2 rounds
+2026-10-27T04:55:04Z health Noran.RandomTargeting: 35/35 survived, 1 skipped, 0 faults, shield verdict 1
+2026-10-27T04:55:09Z health ajs.Guessit: 35/35 survived, 1 skipped, 0 faults, shield verdict 0
+2026-10-27T04:55:13Z battle hadur2.Hadur 3.17 vs Noran.RandomTargeting 0.02 (roborumble): 99.2% share, 35-0 rounds
+2026-10-27T04:55:15Z battle hadur2.Hadur 3.17 vs aw.Gilgalad 1.99.5c (roborumble): 54.02% share, 22-13 rounds  << LOW
+2026-10-27T04:55:15Z battle hadur2.Hadur 3.17 vs whind.Strength 0.6.4 (roborumble): 97.99% share, 35-0 rounds
+2026-10-27T04:55:09Z battle hadur2.Hadur 3.17 vs casey.Flump 1.0 (roborumble): 88.34% share, 35-0 rounds
+2026-10-27T04:55:12Z battle hadur2.Hadur 3.17 vs ajs.Guessit 1.3 (roborumble): 98.04% share, 35-0 rounds
+2026-10-27T04:55:17Z battle hadur2.Hadur 3.17 vs whind.Wisdom 0.5.1 (roborumble): 82.71% share, 33-2 rounds
+2026-10-27T04:55:13Z health Noran.RandomTargeting: 35/35 survived, 4 skipped, 0 faults, shield verdict 1
+2026-10-27T04:55:15Z health aw.Gilgalad: 22/35 survived, 16 skipped, 0 faults, shield verdict 1
+2026-10-27T04:55:15Z health wiki.mini.GouldingiHT: 35/35 survived, 1 skipped, 0 faults, shield verdict 0
+2026-10-27T04:55:22Z health pak.JakeTheTestingRobot: 35/35 survived, 1 skipped, 0 faults, shield verdict 0
+2026-10-27T04:55:22Z battle hadur2.Hadur 3.17 vs wiki.mini.GouldingiHT 1.0 (roborumble): 96.24% share, 35-0 rounds
+2026-10-27T04:55:29Z battle hadur2.Hadur 3.17 vs ph.Thinker 0.2.5 (roborumble): 93.69% share, 35-0 rounds
+2026-10-27T04:55:22Z battle hadur2.Hadur 3.17 vs com.blogspot.malinkody.DestrobotMalin 1.0 (roborumble): 99.72% share, 35-0 rounds
+2026-10-27T04:55:25Z battle hadur2.Hadur 3.17 vs pak.JakeTheTestingRobot .1b (roborumble): 96.88% share, 35-0 rounds
+2026-10-27T04:55:28Z health ph.Thinker: 34/35 survived, 1 skipped, 0 faults, shield verdict 1
+2026-10-27T04:55:25Z health jekl.DarkHallow: 35/35 survived, 2 skipped, 0 faults, shield verdict 0
+2026-10-27T04:55:31Z health Noran.BitchingElk: 35/35 survived, 1 skipped, 0 faults, shield verdict 0
+2026-10-27T04:55:35Z battle hadur2.Hadur 3.17 vs EH.Pegasus 0.113 (roborumble): 92.03% share, 35-0 rounds
+2026-10-27T04:55:39Z battle hadur2.Hadur 3.17 vs ha2.T2b 0.2b (roborumble): 95.66% share, 35-0 rounds
+2026-10-27T04:55:36Z battle hadur2.Hadur 3.17 vs jekl.DarkHallow .90.9 (roborumble): 99.43% share, 35-0 rounds
+2026-10-27T04:55:31Z battle hadur2.Hadur 3.17 vs Noran.BitchingElk 0.054 (roborumble): 100.0% share, 35-0 rounds
+2026-10-27T04:55:39Z health stelo.PianistNano: 35/35 survived, 3 skipped, 0 faults, shield verdict 0
+2026-10-27T04:55:44Z health arthord.micro.Muffin: 35/35 survived, 2 skipped, 0 faults, shield verdict 0
+2026-10-27T04:55:48Z battle hadur2.Hadur 3.17 vs ad.Quest 0.10 (roborumble): 83.33% share, 34-1 rounds
+2026-10-27T04:55:46Z battle hadur2.Hadur 3.17 vs rz.Aleph 0.34 (roborumble): 98.78% share, 35-0 rounds
+2026-10-27T04:55:49Z battle hadur2.Hadur 3.17 vs qwaker00.Gandhi 1.2 (roborumble): 95.04% share, 35-0 rounds
+2026-10-27T04:55:43Z battle hadur2.Hadur 3.17 vs stelo.PianistNano 1.3 (roborumble): 99.25% share, 35-0 rounds
+2026-10-27T04:55:46Z battle hadur2.Hadur 3.17 vs strider.Mer 1.1.0 (roborumble): 95.91% share, 35-0 rounds
+2026-10-27T04:55:44Z battle hadur2.Hadur 3.17 vs arthord.micro.Muffin 0.6.1 (roborumble): 96.35% share, 35-0 rounds
+2026-10-27T04:55:48Z battle hadur2.Hadur 3.17 vs jdw.Hornet 1.0 (roborumble): 98.87% share, 35-0 rounds
+2026-10-27T04:55:46Z battle hadur2.Hadur 3.17 vs rz.Aleph 0.34 (roborumble): 98.41% share, 35-0 rounds
+2026-10-27T04:55:48Z health dft.Cyanide: 34/35 survived, 2 skipped, 0 faults, shield verdict 0
+2026-10-27T04:55:49Z health qwaker00.Gandhi: 35/35 survived, 2 skipped, 0 faults, shield verdict 1
+2026-10-27T04:55:46Z health strider.Mer: 35/35 survived, 3 skipped, 0 faults, shield verdict 0
+2026-10-27T04:55:47Z health penguin.Ivy: 35/35 survived, 1 skipped, 0 faults, shield verdict 1
+2026-10-27T04:55:46Z health rz.Aleph: 35/35 survived, 2 skipped, 0 faults, shield verdict 0
+2026-10-27T04:55:55Z battle hadur2.Hadur 3.17 vs dft.Cyanide 1.90 (roborumble): 99.67% share, 35-0 rounds
+2026-10-27T04:55:59Z battle hadur2.Hadur 3.17 vs cx.nano.Smog 2.6 (roborumble): 93.8% share, 35-0 rounds
+2026-10-27T04:55:57Z battle hadur2.Hadur 3.17 vs penguin.Ivy 1.1r (roborumble): 84.34% share, 32-3 rounds
+2026-10-27T04:56:02Z battle hadur2.Hadur 3.17 vs vjik.UnViolation 1.1 (roborumble): 97.01% share, 35-0 rounds
+2026-10-27T04:55:55Z health dft.Cyanide: 35/35 survived, 1 skipped, 0 faults, shield verdict 0
+2026-10-27T04:55:59Z health cx.nano.Smog: 35/35 survived, 2 skipped, 0 faults, shield verdict 0
+2026-10-27T04:55:57Z health SK.SimpleKiller: 35/35 survived, 1 skipped, 0 faults, shield verdict 1
+2026-10-27T04:56:07Z health pa.Improved: 35/35 survived, 2 skipped, 0 faults, shield verdict 0
+2026-10-27T04:56:11Z battle hadur2.Hadur 3.17 vs kenran.mega.Pantheist 1.1 (roborumble): 82.45% share, 33-2 rounds
+2026-10-27T04:56:12Z battle hadur2.Hadur 3.17 vs buba.Archivist 0.1 (roborumble): 100.0% share, 35-0 rounds
+2026-10-27T04:56:08Z battle hadur2.Hadur 3.17 vs xiongan.Xiongan 1.1 (roborumble): 91.96% share, 35-0 rounds
+2026-10-27T04:56:07Z battle hadur2.Hadur 3.17 vs serenity.serenityFire 1.29 (roborumble): 95.37% share, 35-0 rounds
+2026-10-27T04:56:11Z battle hadur2.Hadur 3.17 vs pa.Improved 1.1 (roborumble): 97.24% share, 34-1 rounds
+2026-10-27T04:56:11Z health kenran.mega.Pantheist: 33/35 survived, 4 skipped, 0 faults, shield verdict 1
+2026-10-27T04:56:12Z health jw.Booring: 35/35 survived, 2 skipped, 0 faults, shield verdict 0
+2026-10-27T04:56:08Z health xiongan.Xiongan: 35/35 survived, 2 skipped, 0 faults, shield verdict 0
+2026-10-27T04:56:11Z health jaara.LambdaBot: 34/35 survived, 2 skipped, 0 faults, shield verdict 0
+2026-10-27T04:56:16Z health wiki.nano.DevilFISH: 35/35 survived, 4 skipped, 0 faults, shield verdict 0
+2026-10-27T04:56:22Z battle hadur2.Hadur 3.17 vs jw.Booring 1.11 (roborumble): 76.0% share, 30-5 rounds
+2026-10-27T04:56:25Z battle hadur2.Hadur 3.17 vs sheldor.nano.Feint 1.2.1 (roborumble): 94.97% share, 34-1 rounds
+2026-10-27T04:56:25Z battle hadur2.Hadur 3.17 vs jaara.LambdaBot 1.1 (roborumble): 82.65% share, 34-1 rounds
+2026-10-27T04:56:16Z battle hadur2.Hadur 3.17 vs wiki.nano.DevilFISH 1.0 (roborumble): 98.6% share, 35-0 rounds
+2026-10-27T04:56:26Z battle hadur2.Hadur 3.17 vs wiki.BasicGFSurfer 1.02 (roborumble): 95.89% share, 35-0 rounds
+2026-10-27T04:56:22Z health jw.Booring: 30/35 survived, 8 skipped, 0 faults, shield verdict 1
+2026-10-27T04:56:24Z health sheldor.nano.Feint: 34/35 survived, 2 skipped, 0 faults, shield verdict 0
+2026-10-27T04:56:27Z health rsk1.RSK1: 35/35 survived, 1 skipped, 0 faults, shield verdict 1
+2026-10-27T04:56:26Z health wiki.BasicGFSurfer: 35/35 survived, 2 skipped, 0 faults, shield verdict 1
+2026-10-27T04:56:38Z battle hadur2.Hadur 3.17 vs stelo.MatchupMini 1.1 (roborumble): 68.19% share, 30-5 rounds  << LOW
+2026-10-27T04:56:27Z battle hadur2.Hadur 3.17 vs ad.last.Bottom 1.0 (roborumble): 99.97% share, 35-0 rounds
+2026-10-27T04:56:34Z battle hadur2.Hadur 3.17 vs rsk1.RSK1 4.0 (roborumble): 97.7% share, 35-0 rounds
+2026-10-27T04:56:32Z health codemojo.nano.Woot: 35/35 survived, 3 skipped, 0 faults, shield verdict 0
+2026-10-27T04:56:38Z health stelo.MatchupMini: 30/35 survived, 4 skipped, 0 faults, shield verdict 1
+2026-10-27T04:56:39Z health scheronimus.ScheroBot: 35/35 survived, 5 skipped, 0 faults, shield verdict 0
+2026-10-27T04:56:41Z health mae.Mae1: 34/35 survived, 2 skipped, 0 faults, shield verdict 0
+2026-10-27T04:56:39Z battle hadur2.Hadur 3.17 vs scheronimus.ScheroBot 2.3 (roborumble): 96.87% share, 35-0 rounds
+2026-10-27T04:56:41Z battle hadur2.Hadur 3.17 vs lrem.magic.TormentedAngel Antiquitie (roborumble): 92.64% share, 34-1 rounds
+2026-10-27T04:56:48Z battle hadur2.Hadur 3.17 vs mae.Mae1 1.1 (roborumble): 100.0% share, 35-0 rounds
+2026-10-27T04:56:52Z health alk.lap.LoudAndProud: 32/35 survived, 3 skipped, 0 faults, shield verdict 1
+2026-10-27T04:56:48Z health drm.CobraBora: 35/35 survived, 2 skipped, 0 faults, shield verdict 0
+2026-10-27T04:56:54Z health trm.Wrekt: 35/35 survived, 1 skipped, 0 faults, shield verdict 0
+2026-10-27T04:56:52Z battle hadur2.Hadur 3.17 vs alk.lap.LoudAndProud 2.23 (roborumble): 78.5% share, 33-3 rounds
+2026-10-27T04:56:58Z battle hadur2.Hadur 3.17 vs drm.CobraBora 1.12 (roborumble): 78.51% share, 32-3 rounds
+2026-10-27T04:56:54Z battle hadur2.Hadur 3.17 vs lw.LuthersTest 0.1 (roborumble): 99.93% share, 35-0 rounds
+2026-10-27T04:56:58Z health davidalves.Firebird: 32/35 survived, 5 skipped, 0 faults, shield verdict 0
+2026-10-27T04:57:07Z battle hadur2.Hadur 3.17 vs apv.TheBrainPi 0.5fix (roborumble): 71.33% share, 30-5 rounds
+2026-10-27T04:57:06Z battle hadur2.Hadur 3.17 vs WarfaJibril.Jibril_Warfa_Andromeda 1.11 (roborumble): 100.0% share, 35-0 rounds
+2026-10-27T04:57:09Z battle hadur2.Hadur 3.17 vs ep.MyFirstRobot 1.0 (roborumble): 98.51% share, 35-0 rounds
+2026-10-27T04:57:07Z health apv.TheBrainPi: 30/35 survived, 3 skipped, 0 faults, shield verdict 1
+2026-10-27T04:57:09Z health ep.MyFirstRobot: 35/35 survived, 1 skipped, 0 faults, shield verdict 0
+2026-10-27T04:57:12Z health davidalves.Firebird: 33/35 survived, 2 skipped, 0 faults, shield verdict 0
+2026-10-27T04:57:15Z health syl.Centipede: 35/35 survived, 1 skipped, 0 faults, shield verdict 0
+2026-10-27T04:57:12Z battle hadur2.Hadur 3.17 vs davidalves.Firebird 0.25 (roborumble): 89.63% share, 33-2 rounds
+2026-10-27T04:57:19Z battle hadur2.Hadur 3.17 vs ha2.T2 0.2 (roborumble): 98.28% share, 35-0 rounds
+2026-10-27T04:57:15Z battle hadur2.Hadur 3.17 vs trm.Wrekt 1.1.6.f (roborumble): 100.0% share, 35-0 rounds
+2026-10-27T04:57:25Z health amc.ROBv202: 35/35 survived, 3 skipped, 0 faults, shield verdict 0
+2026-10-27T04:57:26Z health syl.Centipede: 35/35 survived, 1 skipped, 0 faults, shield verdict 0
+2026-10-27T04:57:24Z battle hadur2.Hadur 3.17 vs ntw.Sigsys 1.6 (roborumble): 96.43% share, 35-0 rounds
+2026-10-27T04:57:30Z battle hadur2.Hadur 3.17 vs suh.nano.AngularMirrorC 1.00 (roborumble): 97.19% share, 35-0 rounds
+2026-10-27T04:57:26Z battle hadur2.Hadur 3.17 vs syl.Centipede 0.5 (roborumble): 100.0% share, 35-0 rounds
+2026-10-27T04:57:30Z health suh.nano.AngularMirrorC: 35/35 survived, 1 skipped, 0 faults, shield verdict 0
+2026-10-27T04:57:35Z health amc.ROBv203: 35/35 survived, 5 skipped, 0 faults, shield verdict 1
+2026-10-27T04:57:25Z health amc.ROBv202: 35/35 survived, 3 skipped, 0 faults, shield verdict 0
+2026-10-27T04:57:33Z health fala.robocode.FalaRobot: 35/35 survived, 1 skipped, 0 faults, shield verdict 0
+2026-10-27T04:57:35Z battle hadur2.Hadur 3.17 vs amc.ROBv203 1.0 (roborumble): 98.34% share, 35-0 rounds
+2026-10-27T04:57:44Z battle hadur2.Hadur 3.17 vs dsekercioglu.shield.ColdBreath 1.0 (roborumble): 100.0% share, 35-0 rounds
+2026-10-27T04:57:33Z battle hadur2.Hadur 3.17 vs fala.robocode.FalaRobot 1.0 (roborumble): 96.37% share, 35-0 rounds
+2026-10-27T04:57:44Z health dsekercioglu.shield.ColdBreath: 35/35 survived, 2 skipped, 0 faults, shield verdict 0
+2026-10-27T04:57:51Z battle hadur2.Hadur 3.17 vs jk.melee.Neuromancer 7.12 (roborumble): 62.82% share, 25-10 rounds  << LOW
+2026-10-27T04:57:50Z battle hadur2.Hadur 3.17 vs kc.micro.Needle 0.101 (roborumble): 82.31% share, 35-0 rounds
+2026-10-27T04:57:49Z health aaa.r.ScalarR: 15/35 survived, 42 skipped, 0 faults, shield verdict 1
+2026-10-27T04:57:51Z health boe.Minerva: 25/35 survived, 31 skipped, 0 faults, shield verdict 0
+2026-10-27T04:57:50Z health kc.micro.Needle: 35/35 survived, 3 skipped, 0 faults, shield verdict 1
+2026-10-27T04:58:03Z battle hadur2.Hadur 3.17 vs bbo.RamboT 0.3 (roborumble): 97.39% share, 35-0 rounds
+2026-10-27T04:57:58Z battle hadur2.Hadur 3.17 vs boe.Minerva 0.80 (roborumble): 89.78% share, 35-0 rounds
+2026-10-27T04:58:03Z battle hadur2.Hadur 3.17 vs sadoner.killer 0.2 (roborumble): 81.81% share, 32-3 rounds
+2026-10-27T04:58:03Z health bbo.RamboT: 35/35 survived, 4 skipped, 0 faults, shield verdict 0
+2026-10-27T04:57:57Z health boe.Minerva: 35/35 survived, 2 skipped, 0 faults, shield verdict 1
+2026-10-27T04:58:07Z health Legend.Biogon: 34/35 survived, 2 skipped, 0 faults, shield verdict 0
+2026-10-27T04:58:14Z battle hadur2.Hadur 3.17 vs wiki.SuperSampleBot.SuperSittingDuck 1.0 (roborumble): 99.75% share, 35-0 rounds
+2026-10-27T04:58:11Z battle hadur2.Hadur 3.17 vs ruc.nano.Zealot 0.2 (roborumble): 92.46% share, 35-0 rounds
+2026-10-27T04:58:08Z battle hadur2.Hadur 3.17 vs Legend.Biogon 1.5 (roborumble): 96.73% share, 34-1 rounds
+2026-10-27T04:58:13Z battle hadur2.Hadur 3.17 vs dmp.nano.Eve 3.41 (roborumble): 92.27% share, 35-0 rounds
+2026-10-27T04:58:14Z health wiki.SuperSampleBot.SuperSittingDuck: 35/35 survived, 2 skipped, 0 faults, shield verdict 0
+2026-10-27T04:58:11Z health ruc.nano.Zealot: 35/35 survived, 6 skipped, 0 faults, shield verdict 0
+2026-10-27T04:58:16Z health lrem.micro.MoggFanatic: 35/35 survived, 2 skipped, 0 faults, shield verdict 0
+2026-10-27T04:58:21Z health Heal.TekitokaBot: 35/35 survived, 3 skipped, 0 faults, shield verdict 0
+2026-10-27T04:58:21Z battle hadur2.Hadur 3.17 vs fowl3628800.LightningBolt 2.6.0 (roborumble): 99.41% share, 35-0 rounds
+2026-10-27T04:58:17Z battle hadur2.Hadur 3.17 vs lrem.micro.MoggFanatic 0.2 (roborumble): 91.99% share, 35-0 rounds
+2026-10-27T04:58:18Z battle hadur2.Hadur 3.17 vs stranger.nano.TestBot 1.0 (roborumble): 90.68% share, 35-0 rounds
+2026-10-27T04:58:21Z battle hadur2.Hadur 3.17 vs Heal.TekitokaBot 1.0 (roborumble): 99.13% share, 35-0 rounds
+2026-10-27T04:58:29Z health pez.mako.Mako: 33/35 survived, 1 skipped, 0 faults, shield verdict 0
+2026-10-27T04:58:30Z battle hadur2.Hadur 3.17 vs pez.mako.Mako 1.5 (roborumble): 88.48% share, 33-2 rounds
+2026-10-27T04:58:44Z battle hadur2.Hadur 3.17 vs joe.ADinosaur 1.0 (roborumble): 96.65% share, 35-0 rounds
+2026-10-27T04:58:47Z health adt.Ar1: 35/35 survived, 4 skipped, 0 faults, shield verdict 0
+2026-10-27T04:58:48Z battle hadur2.Hadur 3.17 vs adt.Ar1 2.1 (roborumble): 99.92% share, 35-0 rounds
+2026-10-27T04:58:55Z battle hadur2.Hadur 3.17 vs KiraNL.SpaceKees 0.1 (roborumble): 89.18% share, 35-0 rounds
+2026-10-27T04:58:55Z health KiraNL.SpaceKees: 35/35 survived, 5 skipped, 0 faults, shield verdict 1
+2026-10-27T04:59:00Z battle hadur2.Hadur 3.17 vs amarok.Rookie 1.1 (roborumble): 92.41% share, 35-0 rounds
+2026-10-27T04:59:00Z health amarok.Rookie: 35/35 survived, 3 skipped, 0 faults, shield verdict 1
+2026-10-27T04:59:18Z battle hadur2.Hadur 3.17 vs sam.Samspin 1.0 (roborumble): 97.57% share, 35-0 rounds
+2026-10-27T04:59:18Z health sam.Samspin: 35/35 survived, 3 skipped, 0 faults, shield verdict 1
+2026-10-27T04:59:24Z health cb.mega.RandomBot: 30/35 survived, 6 skipped, 0 faults, shield verdict 0
+2026-10-27T04:59:26Z battle hadur2.Hadur 3.17 vs rsalesc.roborio.Roborio 1.2.4 (roborumble): 67.35% share, 24-11 rounds  << LOW
+2026-10-27T04:59:27Z battle hadur2.Hadur 3.17 vs maribo.melee.BMV 0.1 (roborumble): 98.22% share, 35-0 rounds
+2026-10-27T04:59:29Z battle hadur2.Hadur 3.17 vs el.Attackr 0.1 (roborumble): 99.45% share, 35-0 rounds
+2026-10-27T04:59:29Z battle hadur2.Hadur 3.17 vs rdm.Grasshopper 0.5e (roborumble): 92.11% share, 35-0 rounds
+2026-10-27T04:59:24Z battle hadur2.Hadur 3.17 vs rz.GlowBlow 2.31 (roborumble): 71.05% share, 30-5 rounds
+2026-10-27T04:59:26Z health rsalesc.roborio.Roborio: 24/35 survived, 43 skipped, 0 faults, shield verdict 1
+2026-10-27T04:59:27Z health maribo.melee.BMV: 35/35 survived, 6 skipped, 0 faults, shield verdict 1
+2026-10-27T04:59:29Z health el.Attackr: 35/35 survived, 4 skipped, 0 faults, shield verdict 0
+2026-10-27T04:59:28Z health rdm.Grasshopper: 35/35 survived, 4 skipped, 0 faults, shield verdict 1
+2026-10-27T04:59:38Z health cb.mega.RandomBot: 28/35 survived, 7 skipped, 0 faults, shield verdict 1
+2026-10-27T04:59:47Z battle hadur2.Hadur 3.17 vs cuoq.Kakera 1.0 (roborumble): 71.12% share, 30-5 rounds  << COLLAPSE
+2026-10-27T04:59:47Z battle hadur2.Hadur 3.17 vs gio.RealGioBot 1.0 (roborumble): 96.24% share, 35-0 rounds
+2026-10-27T04:59:47Z battle hadur2.Hadur 3.17 vs penguin.Joker .611wr (roborumble): 94.88% share, 35-0 rounds
+2026-10-27T04:59:44Z battle hadur2.Hadur 3.17 vs gh.mini.Grimmig 0.3.6 (roborumble): 93.07% share, 35-0 rounds
+2026-10-27T04:59:39Z battle hadur2.Hadur 3.17 vs cb.mega.RandomBot 1.0 (roborumble): 64.51% share, 28-7 rounds  << LOW
+2026-10-27T04:59:47Z health cuoq.Kakera: 31/35 survived, 4 skipped, 0 faults, shield verdict 1
+2026-10-27T04:59:47Z health gio.RealGioBot: 35/35 survived, 3 skipped, 0 faults, shield verdict 0
+2026-10-27T04:59:47Z health penguin.Joker: 35/35 survived, 2 skipped, 0 faults, shield verdict 0
+2026-10-27T04:59:52Z health am.Miedzix: 35/35 survived, 4 skipped, 0 faults, shield verdict 0
+2026-10-27T04:59:44Z health gh.mini.Grimmig: 35/35 survived, 2 skipped, 0 faults, shield verdict 1
+2026-10-27T04:59:57Z battle hadur2.Hadur 3.17 vs rsim.micro.uCatcher 0.1 (roborumble): 99.98% share, 35-0 rounds
+2026-10-27T04:59:52Z battle hadur2.Hadur 3.17 vs am.Miedzix 3.0 (roborumble): 87.24% share, 35-0 rounds
+2026-10-27T04:59:57Z health rsim.micro.uCatcher: 35/35 survived, 2 skipped, 0 faults, shield verdict 0
+2026-10-27T05:00:07Z battle hadur2.Hadur 3.17 vs jcs.AutoBot 4.2.1 (roborumble): 71.33% share, 29-6 rounds
+2026-10-27T05:00:10Z battle hadur2.Hadur 3.17 vs pla.Memnoch 0.5 (roborumble): 93.91% share, 35-0 rounds
+2026-10-27T05:00:10Z health pla.Memnoch: 35/35 survived, 5 skipped, 0 faults, shield verdict 0
+2026-10-27T05:00:21Z health nz.jdc.nano.AralR: 35/35 survived, 3 skipped, 0 faults, shield verdict 0
+2026-10-27T05:00:22Z battle hadur2.Hadur 3.17 vs oog.nano.Fuatisha 1.1 (roborumble): 91.32% share, 34-1 rounds
+2026-10-27T05:00:29Z battle hadur2.Hadur 3.17 vs conscience.Bulldozer 1.0a (roborumble): 87.99% share, 35-0 rounds
+2026-10-27T05:00:21Z battle hadur2.Hadur 3.17 vs jgap.JGAP12584 1.0 (roborumble): 100.0% share, 35-0 rounds
+2026-10-27T05:00:28Z battle hadur2.Hadur 3.17 vs nz.jdc.nano.AralR 1.1 (roborumble): 89.91% share, 35-0 rounds
+2026-10-27T05:00:22Z health oog.nano.Fuatisha: 34/35 survived, 7 skipped, 0 faults, shield verdict 0
+2026-10-27T05:00:33Z health ruc.nano.Zealot: 35/35 survived, 6 skipped, 0 faults, shield verdict 0
+2026-10-27T05:00:33Z health stelo.MirrorMicro: 35/35 survived, 3 skipped, 0 faults, shield verdict 1
+2026-10-27T05:00:38Z battle hadur2.Hadur 3.17 vs nz.jdc.micro.HedgehogGF 1.5 (roborumble): 96.64% share, 35-0 rounds
+2026-10-27T05:00:33Z battle hadur2.Hadur 3.17 vs bumblebee.Bumblebee 1.0 (roborumble): 92.48% share, 35-0 rounds
+2026-10-27T05:00:34Z battle hadur2.Hadur 3.17 vs ruc.nano.Zealot 0.2 (roborumble): 93.46% share, 35-0 rounds
+2026-10-27T05:00:34Z battle hadur2.Hadur 3.17 vs stelo.MirrorMicro 1.1 (roborumble): 91.34% share, 35-0 rounds
+2026-10-27T05:00:38Z health mjhjd.MattHussey1: 35/35 survived, 5 skipped, 0 faults, shield verdict 0
+2026-10-27T05:00:33Z health bumblebee.Bumblebee: 35/35 survived, 3 skipped, 0 faults, shield verdict 0
+2026-10-27T05:00:33Z health ruc.nano.Zealot: 35/35 survived, 6 skipped, 0 faults, shield verdict 0
+2026-10-27T05:00:45Z health DM.Mijit: 35/35 survived, 3 skipped, 0 faults, shield verdict 1
+2026-10-27T05:00:44Z battle hadur2.Hadur 3.17 vs mjhjd.MattHussey1 1.1 (roborumble): 100.0% share, 35-0 rounds
+2026-10-27T05:00:45Z battle hadur2.Hadur 3.17 vs DM.Mijit .3 (roborumble): 97.5% share, 35-0 rounds
+2026-10-27T05:00:51Z battle hadur2.Hadur 3.17 vs davidalves.PhoenixOS 1.1 (roborumble): 60.61% share, 26-9 rounds  << LOW
+2026-10-27T05:00:44Z health mjhjd.MattHussey1: 35/35 survived, 1 skipped, 0 faults, shield verdict 0
+2026-10-27T05:00:51Z health davidalves.PhoenixOS: 26/35 survived, 17 skipped, 0 faults, shield verdict 1
+2026-10-27T05:01:04Z battle hadur2.Hadur 3.17 vs dragonbyte.Neutrino 4 (roborumble): 78.43% share, 17-18 rounds
+2026-10-27T05:01:05Z health xander.cat.Spitfire: 35/35 survived, 3 skipped, 0 faults, shield verdict 1
+2026-10-27T05:01:03Z health dragonbyte.Neutrino: 17/35 survived, 9 skipped, 0 faults, shield verdict 1
+2026-10-27T05:01:10Z battle hadur2.Hadur 3.17 vs pulsar.PulsarMax 0.8.9 (roborumble): 60.38% share, 24-11 rounds  << LOW
+2026-10-27T05:01:05Z battle hadur2.Hadur 3.17 vs xander.cat.Spitfire 1.4 (roborumble): 99.97% share, 35-0 rounds
+2026-10-27T05:01:10Z health pulsar.PulsarMax: 24/35 survived, 4 skipped, 0 faults, shield verdict 1
+2026-10-27T05:01:27Z battle hadur2.Hadur 3.17 vs dam.MogBot 2.9 (roborumble): 77.83% share, 30-5 rounds
+2026-10-27T05:01:27Z health dam.MogBot: 30/35 survived, 9 skipped, 0 faults, shield verdict 0
+2026-10-27T05:01:33Z health rz.Artist: 32/35 survived, 10 skipped, 0 faults, shield verdict 1
+2026-10-27T05:01:36Z battle hadur2.Hadur 3.17 vs catcat20.shape.Theta 0.018 (roborumble): 66.47% share, 27-8 rounds  << LOW
+2026-10-27T05:01:33Z battle hadur2.Hadur 3.17 vs rz.Artist 0.2 (roborumble): 78.54% share, 32-3 rounds
+2026-10-27T05:01:36Z health catcat20.shape.Theta: 27/35 survived, 16 skipped, 0 faults, shield verdict 1
+2026-10-27T05:01:49Z battle hadur2.Hadur 3.17 vs com.syncleus.robocode.Dreadnaught 0.1 (roborumble): 84.2% share, 33-2 rounds
+2026-10-27T05:01:49Z battle hadur2.Hadur 3.17 vs fire219.CatBot 1.0 (roborumble): 99.98% share, 35-0 rounds
+2026-10-27T05:01:50Z battle hadur2.Hadur 3.17 vs mwj.A1176183 1.0 (roborumble): 100.0% share, 35-0 rounds
+2026-10-27T05:01:48Z health com.syncleus.robocode.Dreadnaught: 33/35 survived, 2 skipped, 0 faults, shield verdict 0
+2026-10-27T05:01:49Z health fire219.CatBot: 35/35 survived, 4 skipped, 0 faults, shield verdict 0
+2026-10-27T05:01:54Z health wiki.mako.MakoHT: 35/35 survived, 8 skipped, 0 faults, shield verdict 0
+2026-10-27T05:01:49Z health mwj.A1176183: 35/35 survived, 6 skipped, 0 faults, shield verdict 0
+2026-10-27T05:01:55Z battle hadur2.Hadur 3.17 vs wiki.mako.MakoHT 1.2.2.1 (roborumble): 96.73% share, 35-0 rounds
+2026-10-27T05:02:09Z battle hadur2.Hadur 3.17 vs pi.Dark 10 (roborumble): 82.55% share, 33-2 rounds
+2026-10-27T05:02:09Z health pi.Dark: 33/35 survived, 33 skipped, 0 faults, shield verdict 0
+2026-10-27T05:02:18Z battle hadur2.Hadur 3.17 vs wiki.nano.RaikoNano 1.1 (roborumble): 93.27% share, 35-0 rounds
+2026-10-27T05:02:18Z health wiki.nano.RaikoNano: 35/35 survived, 4 skipped, 0 faults, shield verdict 0
+2026-10-27T05:02:34Z battle hadur2.Hadur 3.17 vs robar.nano.Assertive 0.3 (roborumble): 83.72% share, 34-1 rounds
+2026-10-27T05:02:34Z health dcs.PM.Eater_of_Worlds_PM: 33/35 survived, 9 skipped, 0 faults, shield verdict 1
+2026-10-27T05:02:43Z battle hadur2.Hadur 3.17 vs dcs.PM.Eater_of_Worlds_PM 1.2 (roborumble): 78.05% share, 33-2 rounds
+2026-10-27T05:02:43Z battle hadur2.Hadur 3.17 vs m3thos.mini.Eva01 0.5.5 (roborumble): 93.8% share, 35-0 rounds
+2026-10-27T05:02:43Z health dcs.PM.Eater_of_Worlds_PM: 33/35 survived, 14 skipped, 0 faults, shield verdict 1
+2026-10-27T05:02:48Z health KiraNL.Cataris: 35/35 survived, 27 skipped, 0 faults, shield verdict 0
+2026-10-27T05:02:43Z health m3thos.mini.Eva01: 35/35 survived, 1 skipped, 0 faults, shield verdict 1
+2026-10-27T05:02:55Z battle hadur2.Hadur 3.17 vs kms.Golden 0.10 (roborumble): 100.0% share, 35-0 rounds
+2026-10-27T05:02:48Z battle hadur2.Hadur 3.17 vs projectx.TestNano 1.0 (roborumble): 91.18% share, 35-0 rounds
+2026-10-27T05:02:57Z battle hadur2.Hadur 3.17 vs KiraNL.Cataris 1.0 (roborumble): 79.21% share, 33-2 rounds  << COLLAPSE
+2026-10-27T05:02:56Z battle hadur2.Hadur 3.17 vs adt.Ar1 2.1 (roborumble): 100.0% share, 35-0 rounds
+2026-10-27T05:02:54Z health kms.Golden: 35/35 survived, 2 skipped, 0 faults, shield verdict 0
+2026-10-27T05:03:02Z health conscience.Suicidal: 35/35 survived, 3 skipped, 0 faults, shield verdict 0
+2026-10-27T05:02:56Z health adt.Ar1: 35/35 survived, 2 skipped, 0 faults, shield verdict 0
+2026-10-27T05:03:03Z battle hadur2.Hadur 3.17 vs t3.Ripper 1.0 (roborumble): 98.39% share, 35-0 rounds
+2026-10-27T05:03:02Z battle hadur2.Hadur 3.17 vs conscience.Suicidal 1.1 (roborumble): 100.0% share, 35-0 rounds
+2026-10-27T05:03:10Z battle hadur2.Hadur 3.17 vs fullsail.LaxativeTeaTwo 1.0 (roborumble): 94.92% share, 35-0 rounds
+2026-10-27T05:03:03Z health suh.micro.MirrorPM: 35/35 survived, 12 skipped, 0 faults, shield verdict 0
+2026-10-27T05:03:02Z health conscience.Suicidal: 35/35 survived, 3 skipped, 0 faults, shield verdict 0
+2026-10-27T05:03:13Z health amc.ROBv203: 35/35 survived, 5 skipped, 0 faults, shield verdict 1
+2026-10-27T05:03:18Z battle hadur2.Hadur 3.17 vs suh.micro.MirrorPM 1.00 (roborumble): 88.86% share, 34-1 rounds
+2026-10-27T05:03:13Z battle hadur2.Hadur 3.17 vs amc.ROBv203 1.0 (roborumble): 97.64% share, 35-0 rounds
+2026-10-27T05:03:18Z health suh.micro.MirrorPM: 34/35 survived, 8 skipped, 0 faults, shield verdict 1
+2026-10-27T05:03:28Z battle hadur2.Hadur 3.17 vs m3thos.mini.Eva01 0.5.5 (roborumble): 95.05% share, 35-0 rounds
+2026-10-27T05:03:32Z battle hadur2.Hadur 3.17 vs McS.Spanky_test 0.1a (roborumble): 99.64% share, 35-0 rounds
+2026-10-27T05:03:30Z battle hadur2.Hadur 3.17 vs cbot.agile.Nibbler 0.2 (roborumble): 92.25% share, 34-1 rounds
+2026-10-27T05:03:32Z health McS.Spanky_test: 35/35 survived, 5 skipped, 0 faults, shield verdict 0
+2026-10-27T05:03:29Z health cbot.agile.Nibbler: 34/35 survived, 28 skipped, 0 faults, shield verdict 1
+2026-10-27T05:03:44Z battle hadur2.Hadur 3.17 vs robar.haiku.Spike 1.0 (roborumble): 94.25% share, 35-0 rounds
+2026-10-27T05:03:41Z battle hadur2.Hadur 3.17 vs abc.Shadow 3.83c (roborumble): 61.01% share, 28-7 rounds  << LOW
+2026-10-27T05:03:39Z battle hadur2.Hadur 3.17 vs tkt.RedShift 1.1.CS.0 (roborumble): 96.45% share, 35-0 rounds
+2026-10-27T05:03:43Z battle hadur2.Hadur 3.17 vs kc.micro.Needle 0.101 (roborumble): 81.65% share, 33-2 rounds
+2026-10-27T05:03:43Z health robar.haiku.Spike: 35/35 survived, 5 skipped, 0 faults, shield verdict 0
+2026-10-27T05:03:41Z health abc.Shadow: 28/35 survived, 30 skipped, 0 faults, shield verdict 1
+2026-10-27T05:03:38Z health kcn.unnamed.Unnamed: 35/35 survived, 12 skipped, 0 faults, shield verdict 0
+2026-10-27T05:03:49Z health suh.mega.WaveSurferGF: 35/35 survived, 2 skipped, 0 faults, shield verdict 1
+2026-10-27T05:03:57Z battle hadur2.Hadur 3.17 vs ruc.nano.Zealot 0.2 (roborumble): 95.87% share, 35-0 rounds
+2026-10-27T05:03:52Z battle hadur2.Hadur 3.17 vs kcn.unnamed.Unnamed 1.21 (roborumble): 97.99% share, 35-0 rounds
+2026-10-27T05:03:49Z battle hadur2.Hadur 3.17 vs suh.mega.WaveSurferGF 1.04 (roborumble): 97.73% share, 35-0 rounds
+2026-10-27T05:03:57Z health ruc.nano.Zealot: 35/35 survived, 11 skipped, 0 faults, shield verdict 0
+2026-10-27T05:04:00Z health suh.nano.AntiGravityL: 34/35 survived, 35 skipped, 0 faults, shield verdict 0
+2026-10-27T05:03:58Z health klein.GottesKrieger: 35/35 survived, 5 skipped, 0 faults, shield verdict 0
+2026-10-27T05:04:06Z battle hadur2.Hadur 3.17 vs jcs.Seth 1.8 (roborumble): 97.79% share, 35-0 rounds
+2026-10-27T05:04:00Z battle hadur2.Hadur 3.17 vs suh.nano.AntiGravityL 1.01 (roborumble): 93.28% share, 34-1 rounds
+2026-10-27T05:03:58Z battle hadur2.Hadur 3.17 vs klein.GottesKrieger 1.1 (roborumble): 98.93% share, 35-0 rounds
+2026-10-27T05:04:06Z health jcs.Seth: 35/35 survived, 35 skipped, 0 faults, shield verdict 1
+2026-10-27T05:04:17Z battle hadur2.Hadur 3.17 vs ha2.T2b 0.2b (roborumble): 96.41% share, 35-0 rounds
+2026-10-27T05:04:19Z battle hadur2.Hadur 3.17 vs spinnercat.haiku.Refrigerator 1.1 (roborumble): 88.53% share, 35-0 rounds
+2026-10-27T05:04:17Z health ha2.T2b: 35/35 survived, 7 skipped, 0 faults, shield verdict 1
+2026-10-27T05:04:19Z health spinnercat.haiku.Refrigerator: 35/35 survived, 6 skipped, 0 faults, shield verdict 0
+2026-10-27T05:04:32Z health ntc.Evader: 35/35 survived, 7 skipped, 0 faults, shield verdict 0
+2026-10-27T05:04:32Z battle hadur2.Hadur 3.17 vs non.mega.NoName 0.0 (roborumble): 80.6% share, 33-2 rounds
+2026-10-27T05:04:37Z battle hadur2.Hadur 3.17 vs dittman.BlindSquirl Retired (roborumble): 98.26% share, 35-0 rounds
+2026-10-27T05:04:34Z battle hadur2.Hadur 3.17 vs kjc.etc.Dharok 1.0 (roborumble): 90.84% share, 34-1 rounds
+2026-10-27T05:04:32Z battle hadur2.Hadur 3.17 vs ntc.Evader 1.2 (roborumble): 98.8% share, 35-0 rounds
+2026-10-27T05:04:38Z battle hadur2.Hadur 3.17 vs chase.pm.Pytko 1.0 (roborumble): 78.07% share, 34-1 rounds
+2026-10-27T05:04:37Z health dittman.BlindSquirl: 35/35 survived, 4 skipped, 0 faults, shield verdict 1
+2026-10-27T05:04:34Z health kjc.etc.Dharok: 34/35 survived, 13 skipped, 0 faults, shield verdict 1
+2026-10-27T05:04:38Z health chase.pm.Pytko: 34/35 survived, 15 skipped, 0 faults, shield verdict 1
+2026-10-27T05:04:59Z battle hadur2.Hadur 3.17 vs davidalves.net.Duelist 0.1.6src (roborumble): 87.3% share, 35-0 rounds
+2026-10-27T05:04:59Z health davidalves.net.Duelist: 35/35 survived, 22 skipped, 0 faults, shield verdict 1
+2026-10-27T05:05:04Z health matt.advanced.Katana: 34/35 survived, 13 skipped, 0 faults, shield verdict 1
+2026-10-27T05:05:06Z battle hadur2.Hadur 3.17 vs kc.serpent.Hydra 0.21 (roborumble): 97.63% share, 35-0 rounds
+2026-10-27T05:05:04Z battle hadur2.Hadur 3.17 vs matt.advanced.Katana 1.0 (roborumble): 93.12% share, 35-0 rounds
+2026-10-27T05:05:05Z health kc.serpent.Hydra: 35/35 survived, 12 skipped, 0 faults, shield verdict 0
+2026-10-27T05:05:20Z battle hadur2.Hadur 3.17 vs mym.EdgeStalker 1.0 (roborumble): 99.77% share, 35-0 rounds
+2026-10-27T05:05:20Z health mym.EdgeStalker: 35/35 survived, 5 skipped, 0 faults, shield verdict 0
+2026-10-27T05:05:54Z battle hadur2.Hadur 3.17 vs ags.polished.PolishedRuby 1 (roborumble): 92.82% share, 35-0 rounds
+2026-10-27T05:05:54Z health ags.polished.PolishedRuby: 35/35 survived, 5 skipped, 0 faults, shield verdict 1
+2026-10-27T05:06:01Z health mn.Combat: 24/35 survived, 68 skipped, 0 faults, shield verdict 1
+2026-10-27T05:06:03Z battle hadur2.Hadur 3.17 vs jab.avk.ManuelGallegus 0.6 (roborumble): 94.66% share, 35-0 rounds
+2026-10-27T05:06:01Z battle hadur2.Hadur 3.17 vs mn.Combat 3.25.0 (roborumble): 54.75% share, 24-11 rounds  << LOW
+2026-10-27T05:06:03Z health jab.avk.ManuelGallegus: 35/35 survived, 6 skipped, 0 faults, shield verdict 1
+2026-10-27T05:06:20Z health ags.polished.PolishedRuby: 35/35 survived, 4 skipped, 0 faults, shield verdict 0
+2026-10-27T05:06:21Z battle hadur2.Hadur 3.17 vs ags.polished.PolishedRuby 1 (roborumble): 94.08% share, 35-0 rounds
+2026-10-27T05:06:25Z battle hadur2.Hadur 3.17 vs EH.nano.NightBird M (roborumble): 97.54% share, 35-0 rounds
+2026-10-27T05:06:23Z battle hadur2.Hadur 3.17 vs Lo_Ian.Gandalf_V4 4.0 (roborumble): 97.72% share, 35-0 rounds
+2026-10-27T05:06:25Z health EH.nano.NightBird: 35/35 survived, 5 skipped, 0 faults, shield verdict 1
+2026-10-27T05:06:23Z health Lo_Ian.Gandalf_V4: 35/35 survived, 17 skipped, 0 faults, shield verdict 0
+2026-10-27T05:06:35Z health spinnercat.Limit: 35/35 survived, 10 skipped, 0 faults, shield verdict 0
+2026-10-27T05:06:40Z battle hadur2.Hadur 3.17 vs sheldor.nano.Retreat 1.0 (roborumble): 100.0% share, 35-0 rounds
+2026-10-27T05:06:36Z battle hadur2.Hadur 3.17 vs spinnercat.Limit .01 (roborumble): 97.8% share, 35-0 rounds
+2026-10-27T05:06:44Z health ry.LightningBug: 35/35 survived, 13 skipped, 0 faults, shield verdict 0
+2026-10-27T05:06:40Z health sheldor.nano.Retreat: 35/35 survived, 6 skipped, 0 faults, shield verdict 0
+2026-10-27T05:06:56Z page roborumble: APS 90.85, 3309 battles, 192 new, 1 flagged
+    DROP aaa.r.ScalarR 0.005h.053-noshield: 43.3 (pairing 31.94 -> 34.78)
+2026-10-27T05:06:56Z page meleerumble: APS 66.52, 1860 battles, 81 new, 3 flagged
+    DROP cz.libors.Ogi v1: 45.2 (pairing 42.96 -> 43.41)
+    DROP stelo.PastFuture 2.3.2: 49.1 (pairing 52.16 -> 51.72)
+    DROP abc.Shadow 3.84i: 45.2 (pairing 46.0 -> 45.84)
+2026-10-27T05:06:56Z page teamrumble: APS 79.40, 205 battles, 3 new, 0 flagged
+2026-10-27T05:06:51Z battle hadur2.Hadur 3.17 vs panzer.Panzer 0.2 (roborumble): 90.17% share, 35-0 rounds
+2026-10-27T05:06:44Z battle hadur2.Hadur 3.17 vs ry.LightningBug 1.0 (roborumble): 96.21% share, 35-0 rounds
+2026-10-27T05:06:51Z health panzer.Panzer: 35/35 survived, 12 skipped, 0 faults, shield verdict 0
+2026-10-27T05:07:04Z battle hadur2.Hadur 3.17 vs fullsail.TimbotNoPrediction 1.0 (roborumble): 91.2% share, 35-0 rounds
+2026-10-27T05:07:03Z health fullsail.TimbotNoPrediction: 35/35 survived, 11 skipped, 0 faults, shield verdict 1
+2026-10-27T05:07:15Z battle hadur2.Hadur 3.17 vs lunchie.Lunchbox 0.93 (roborumble): 95.71% share, 35-0 rounds
+2026-10-27T05:07:14Z battle hadur2.Hadur 3.17 vs trab.nano.AinippeNano 1.3 (roborumble): 97.36% share, 35-0 rounds
+2026-10-27T05:07:15Z health lunchie.Lunchbox: 35/35 survived, 13 skipped, 0 faults, shield verdict 0
+2026-10-27T05:07:13Z health trab.nano.AinippeNano: 35/35 survived, 13 skipped, 0 faults, shield verdict 0
+2026-10-27T05:07:27Z battle hadur2.Hadur 3.17 vs robar.nano.Scytodes 0.3 (roborumble): 95.94% share, 35-0 rounds
+2026-10-27T05:07:28Z battle hadur2.Hadur 3.17 vs suh.nano.CrossL 1.00 (roborumble): 99.35% share, 35-0 rounds
+2026-10-27T05:07:27Z health robar.nano.Scytodes: 35/35 survived, 3 skipped, 0 faults, shield verdict 1
+2026-10-27T05:07:27Z health suh.nano.CrossL: 35/35 survived, 8 skipped, 0 faults, shield verdict 0
+2026-10-27T05:07:33Z battle hadur2.Hadur 3.17 vs Heal.TekitokaBot 1.0 (roborumble): 98.14% share, 35-0 rounds
+2026-10-27T05:07:37Z battle hadur2.Hadur 3.17 vs pez.mini.VertiLeach 0.4.0 (roborumble): 75.92% share, 31-4 rounds
+2026-10-27T05:07:33Z health Heal.TekitokaBot: 35/35 survived, 9 skipped, 0 faults, shield verdict 0
+2026-10-27T05:07:41Z health ratosh.Wesco: 35/35 survived, 25 skipped, 0 faults, shield verdict 1
+2026-10-27T05:07:37Z health pez.mini.VertiLeach: 31/35 survived, 15 skipped, 0 faults, shield verdict 1
+2026-10-27T05:07:41Z health lxx.Tomcat: 35/35 survived, 22 skipped, 0 faults, shield verdict 0
+2026-10-27T05:07:50Z battle hadur2.Hadur 3.17 vs syl.Centipede 0.5 (roborumble): 90.78% share, 34-1 rounds
+2026-10-27T05:07:42Z battle hadur2.Hadur 3.17 vs ratosh.Wesco 1.4 (roborumble): 99.08% share, 35-0 rounds
+2026-10-27T05:07:42Z battle hadur2.Hadur 3.17 vs can.Pookie 1.1 (roborumble): 91.39% share, 35-0 rounds
+2026-10-27T05:07:50Z health syl.Centipede: 34/35 survived, 51 skipped, 0 faults, shield verdict 0
+2026-10-27T05:08:01Z battle hadur2.Hadur 3.17 vs slugzilla.OrbitGF 1.0 (roborumble): 98.55% share, 35-0 rounds
+2026-10-27T05:08:02Z health lw.LuthersTest: 35/35 survived, 5 skipped, 0 faults, shield verdict 0
+2026-10-27T05:08:04Z health tkt.RedShift: 27/35 survived, 19 skipped, 0 faults, shield verdict 1
+2026-10-27T05:08:01Z health slugzilla.OrbitGF: 35/35 survived, 11 skipped, 0 faults, shield verdict 0
+2026-10-27T05:08:07Z battle hadur2.Hadur 3.17 vs ajs.Solveit 1.3 (roborumble): 87.55% share, 32-3 rounds
+2026-10-27T05:08:02Z battle hadur2.Hadur 3.17 vs lw.LuthersTest 0.1 (roborumble): 99.87% share, 35-0 rounds
+2026-10-27T05:08:04Z battle hadur2.Hadur 3.17 vs wiki.WaveRammer 1.0 (roborumble): 66.78% share, 27-8 rounds  << LOW
+2026-10-27T05:08:07Z battle hadur2.Hadur 3.17 vs tkt.RedShift 1.1.CS.0 (roborumble): 97.06% share, 35-0 rounds
+2026-10-27T05:08:07Z health ajs.Solveit: 32/35 survived, 16 skipped, 0 faults, shield verdict 1
+2026-10-27T05:08:07Z health tkt.RedShift: 35/35 survived, 5 skipped, 0 faults, shield verdict 1
+2026-10-27T05:08:17Z battle hadur2.Hadur 3.17 vs wcsv.mega.PowerHouse2 0.2 (roborumble): 97.67% share, 35-0 rounds
+2026-10-27T05:08:16Z health ds.Versatile: 35/35 survived, 18 skipped, 0 faults, shield verdict 1
+2026-10-27T05:08:33Z health ds.Versatile: 35/35 survived, 29 skipped, 0 faults, shield verdict 1
+2026-10-27T05:08:35Z health lxx.Tomcat: 25/35 survived, 91 skipped, 0 faults, shield verdict 1
+2026-10-27T05:08:34Z battle hadur2.Hadur 3.17 vs ds.Versatile RB1.0.1 (roborumble): 86.72% share, 35-0 rounds
+2026-10-27T05:08:42Z battle hadur2.Hadur 3.17 vs florent.XSeries.X2 0.17 (roborumble): 69.74% share, 31-4 rounds  << LOW
+2026-10-27T05:08:40Z battle hadur2.Hadur 3.17 vs sheldor.nano.Sabreur 1.1.2 (roborumble): 70.34% share, 34-1 rounds
+2026-10-27T05:08:36Z battle hadur2.Hadur 3.17 vs lxx.Tomcat 3.68 (roborumble): 59.89% share, 25-10 rounds  << LOW
+2026-10-27T05:08:45Z health maribo.IotaCT: 35/35 survived, 20 skipped, 0 faults, shield verdict 1
+2026-10-27T05:08:47Z health pmc.SniperBot: 35/35 survived, 9 skipped, 0 faults, shield verdict 0
+2026-10-27T05:08:40Z health sheldor.nano.Sabreur: 34/35 survived, 17 skipped, 0 faults, shield verdict 1
+2026-10-27T05:08:46Z health KiraNL.SpaceKees: 33/35 survived, 31 skipped, 0 faults, shield verdict 1
+2026-10-27T05:08:45Z battle hadur2.Hadur 3.17 vs maribo.IotaCT 1.0 (roborumble): 92.9% share, 35-0 rounds
+2026-10-27T05:08:53Z battle hadur2.Hadur 3.17 vs kawam.kmBot9 1.0 (roborumble): 93.7% share, 35-0 rounds
+2026-10-27T05:08:47Z battle hadur2.Hadur 3.17 vs pmc.SniperBot 1.0 (roborumble): 94.48% share, 35-0 rounds
+2026-10-27T05:08:47Z battle hadur2.Hadur 3.17 vs KiraNL.SpaceKees 0.1 (roborumble): 87.95% share, 33-2 rounds
+2026-10-27T05:08:59Z health tkt.RedShift: 35/35 survived, 4 skipped, 0 faults, shield verdict 1
+2026-10-27T05:08:59Z battle hadur2.Hadur 3.17 vs tkt.RedShift 1.1.CS.0 (roborumble): 96.3% share, 35-0 rounds
+2026-10-27T05:09:05Z battle hadur2.Hadur 3.17 vs supersample.SuperSpinBot 1.0 (roborumble): 93.7% share, 35-0 rounds
+2026-10-27T05:09:04Z battle hadur2.Hadur 3.17 vs sheldor.micro.PointInLineRRAL 1.0 (roborumble): 85.62% share, 33-2 rounds
+2026-10-27T05:08:59Z health tkt.RedShift: 35/35 survived, 4 skipped, 0 faults, shield verdict 1
+2026-10-27T05:09:05Z health pez.mako.Mako: 35/35 survived, 8 skipped, 0 faults, shield verdict 0
+2026-10-27T05:09:04Z health sheldor.micro.PointInLineRRAL: 33/35 survived, 13 skipped, 0 faults, shield verdict 1
+2026-10-27T05:09:19Z battle hadur2.Hadur 3.17 vs pez.mako.Mako 1.5 (roborumble): 90.69% share, 34-1 rounds
+2026-10-27T05:09:18Z health pez.mako.Mako: 34/35 survived, 13 skipped, 0 faults, shield verdict 0
+2026-10-27T05:09:25Z battle hadur2.Hadur 3.17 vs areb.Union 1.06 (roborumble): 98.15% share, 35-0 rounds
+2026-10-27T05:09:30Z health lundal.Mark8: 35/35 survived, 11 skipped, 0 faults, shield verdict 0
+2026-10-27T05:09:25Z health areb.Union: 35/35 survived, 11 skipped, 0 faults, shield verdict 1
+2026-10-27T05:09:31Z battle hadur2.Hadur 3.17 vs lundal.Mark8 2012.09.15 (roborumble): 99.34% share, 35-0 rounds
+2026-10-27T05:09:40Z battle hadur2.Hadur 3.17 vs dft.Calliope 5.6 (roborumble): 94.29% share, 35-0 rounds
+2026-10-27T05:09:41Z health non.mega.NoName: 34/35 survived, 29 skipped, 0 faults, shield verdict 1
+2026-10-27T05:09:41Z health SHAM.WOW: 35/35 survived, 9 skipped, 0 faults, shield verdict 1
+2026-10-27T05:09:47Z health bvh.mini.Mjolnir: 17/35 survived, 38 skipped, 0 faults, shield verdict 0
+2026-10-27T05:09:42Z battle hadur2.Hadur 3.17 vs non.mega.NoName 0.0 (roborumble): 84.09% share, 34-1 rounds
+2026-10-27T05:09:54Z battle hadur2.Hadur 3.17 vs kc.micro.WaveShark 0.5 (roborumble): 75.4% share, 31-4 rounds  << COLLAPSE
+2026-10-27T05:09:52Z battle hadur2.Hadur 3.17 vs de.erdega.robocode.Polyphemos 0.4 (roborumble): 92.86% share, 35-0 rounds
+2026-10-27T05:09:42Z battle hadur2.Hadur 3.17 vs SHAM.WOW 1.4 (roborumble): 94.38% share, 35-0 rounds
+2026-10-27T05:09:47Z battle hadur2.Hadur 3.17 vs bvh.mini.Mjolnir 0.3 (roborumble): 46.44% share, 17-18 rounds  << COLLAPSE
+2026-10-27T05:09:53Z health romz.robot.guessfactor.TeasingFox: 31/35 survived, 40 skipped, 0 faults, shield verdict 0
+2026-10-27T05:09:52Z health de.erdega.robocode.Polyphemos: 35/35 survived, 17 skipped, 0 faults, shield verdict 0
+2026-10-27T05:09:58Z battle hadur2.Hadur 3.17 vs romz.robot.guessfactor.TeasingFox 0.2 (roborumble): 88.77% share, 34-1 rounds
+2026-10-27T05:10:00Z battle hadur2.Hadur 3.17 vs EH.nano.NightBird M (roborumble): 96.34% share, 35-0 rounds
+2026-10-27T05:10:03Z battle hadur2.Hadur 3.17 vs CharlieN.Omega.Omega 1.03 (roborumble): 92.31% share, 34-1 rounds
+2026-10-27T05:09:58Z health romz.robot.guessfactor.TeasingFox: 34/35 survived, 12 skipped, 0 faults, shield verdict 0
+2026-10-27T05:10:00Z health EH.nano.NightBird: 35/35 survived, 12 skipped, 0 faults, shield verdict 0
+2026-10-27T05:10:02Z health CharlieN.Omega.Omega: 34/35 survived, 20 skipped, 0 faults, shield verdict 0
+2026-10-27T05:10:08Z health wiki.mini.GouldingiHT: 35/35 survived, 14 skipped, 0 faults, shield verdict 0
+2026-10-27T05:10:15Z battle hadur2.Hadur 3.17 vs hapiel.Spiral 0.1 (roborumble): 96.63% share, 35-0 rounds
+2026-10-27T05:10:09Z battle hadur2.Hadur 3.17 vs wiki.mini.GouldingiHT 1.0 (roborumble): 95.25% share, 35-0 rounds
+2026-10-27T05:10:23Z health dmp.nano.Eve: 35/35 survived, 8 skipped, 0 faults, shield verdict 0
+2026-10-27T05:10:27Z battle hadur2.Hadur 3.17 vs nz.jdc.nano.AralR 1.1 (roborumble): 90.97% share, 34-1 rounds
+2026-10-27T05:10:31Z battle hadur2.Hadur 3.17 vs wilson.Chameleon 0.91 (roborumble): 91.6% share, 34-1 rounds
+2026-10-27T05:10:24Z battle hadur2.Hadur 3.17 vs ag.Gir 0.99 (roborumble): 98.38% share, 35-0 rounds
+2026-10-27T05:10:28Z battle hadur2.Hadur 3.17 vs dmp.nano.Eve 3.41 (roborumble): 94.72% share, 35-0 rounds
+2026-10-27T05:10:29Z battle hadur2.Hadur 3.17 vs Krabb.sliNk.Garm 0.9u (roborumble): 66.54% share, 28-7 rounds  << LOW
+2026-10-27T05:10:26Z health nz.jdc.nano.AralR: 34/35 survived, 8 skipped, 0 faults, shield verdict 1
+2026-10-27T05:10:31Z health ary.FourWD: 34/35 survived, 21 skipped, 0 faults, shield verdict 0
+2026-10-27T05:10:36Z health av.RobAtHome: 32/35 survived, 9 skipped, 0 faults, shield verdict 0
+2026-10-27T05:10:27Z health dmp.nano.Eve: 35/35 survived, 2 skipped, 0 faults, shield verdict 0
+2026-10-27T05:10:29Z health Krabb.sliNk.Garm: 28/35 survived, 27 skipped, 0 faults, shield verdict 1
+2026-10-27T05:10:40Z battle hadur2.Hadur 3.17 vs ary.FourWD 1.3d (roborumble): 97.4% share, 35-0 rounds
+2026-10-27T05:10:39Z battle hadur2.Hadur 3.17 vs mld.Infinity 2.2 (roborumble): 96.76% share, 35-0 rounds
+2026-10-27T05:10:36Z battle hadur2.Hadur 3.17 vs wiki.Wolverine 2.1 (roborumble): 85.59% share, 32-3 rounds
+2026-10-27T05:10:41Z battle hadur2.Hadur 3.17 vs av.RobAtHome 1.2 (roborumble): 94.35% share, 35-0 rounds
+2026-10-27T05:10:40Z health ags.Midboss: 35/35 survived, 15 skipped, 0 faults, shield verdict 0
+2026-10-27T05:10:39Z health mld.Infinity: 35/35 survived, 30 skipped, 0 faults, shield verdict 1
+2026-10-27T05:10:41Z health av.RobAtHome: 35/35 survived, 12 skipped, 0 faults, shield verdict 1
+2026-10-27T05:10:51Z battle hadur2.Hadur 3.17 vs nat.nano.OcnirpPM 1.0 (roborumble): 77.52% share, 33-2 rounds  << COLLAPSE
+2026-10-27T05:10:50Z health nat.nano.OcnirpPM: 33/35 survived, 28 skipped, 0 faults, shield verdict 0
+2026-10-27T05:10:58Z health sample.VelociRobot: 35/35 survived, 10 skipped, 0 faults, shield verdict 0
+2026-10-27T05:11:02Z battle hadur2.Hadur 3.17 vs ags.Midboss 1q.fast (roborumble): 66.37% share, 28-7 rounds  << LOW
+2026-10-27T05:10:58Z battle hadur2.Hadur 3.17 vs sample.VelociRobot 1.0 (roborumble): 98.81% share, 35-0 rounds
+2026-10-27T05:11:01Z health ags.Midboss: 28/35 survived, 45 skipped, 0 faults, shield verdict 1
+2026-10-27T05:11:10Z health theo.real.Ahab: 31/35 survived, 47 skipped, 0 faults, shield verdict 1
+2026-10-27T05:11:15Z battle hadur2.Hadur 3.17 vs logiblocs.SittingDroid 1.0 (roborumble): 100.0% share, 35-0 rounds
+2026-10-27T05:11:17Z battle hadur2.Hadur 3.17 vs ar.horizon.Horizon 1.2.2 (roborumble): 87.9% share, 33-2 rounds
+2026-10-27T05:11:11Z battle hadur2.Hadur 3.17 vs theo.real.Ahab 1.0 (roborumble): 75.74% share, 31-4 rounds
+2026-10-27T05:11:15Z health logiblocs.SittingDroid: 35/35 survived, 2 skipped, 0 faults, shield verdict 0
+2026-10-27T05:11:17Z health ar.horizon.Horizon: 33/35 survived, 14 skipped, 0 faults, shield verdict 0
+2026-10-27T05:11:34Z battle hadur2.Hadur 3.17 vs nic.Nicator 2.4 (roborumble): 95.16% share, 35-0 rounds
+2026-10-27T05:11:40Z battle hadur2.Hadur 3.17 vs nz.jdc.nano.NeophyteSRAL 1.3 (roborumble): 97.52% share, 35-0 rounds
+2026-10-27T05:11:39Z health nz.jdc.nano.NeophyteSRAL: 35/35 survived, 17 skipped, 0 faults, shield verdict 1
+2026-10-27T05:11:41Z health rdm.Grasshopper: 35/35 survived, 24 skipped, 0 faults, shield verdict 1
+2026-10-27T05:11:55Z health deith.Czolgzilla: 34/35 survived, 41 skipped, 0 faults, shield verdict 1
+2026-10-27T05:11:56Z battle hadur2.Hadur 3.17 vs gtf.robocode.Strafer 2.1.1 (roborumble): 94.43% share, 35-0 rounds
+2026-10-27T05:11:56Z battle hadur2.Hadur 3.17 vs deith.Czolgzilla 0.11 (roborumble): 92.58% share, 34-1 rounds
+2026-10-27T05:11:56Z health gtf.robocode.Strafer: 35/35 survived, 15 skipped, 0 faults, shield verdict 0
+2026-10-27T05:12:11Z battle hadur2.Hadur 3.17 vs gre.svman4.Morfeas 1.4.3 (roborumble): 78.25% share, 30-5 rounds
+2026-10-27T05:12:11Z health gre.svman4.Morfeas: 30/35 survived, 15 skipped, 0 faults, shield verdict 1
+2026-10-27T05:12:12Z health kawigi.nano.FunkyChicken: 34/35 survived, 7 skipped, 0 faults, shield verdict 0
+2026-10-27T05:12:18Z battle hadur2.Hadur 3.17 vs ej.ChocolateBar 1.1 (roborumble): 94.44% share, 34-1 rounds
+2026-10-27T05:12:24Z battle hadur2.Hadur 3.17 vs fnc.bandit.Bandit 5.2.0 (roborumble): 91.34% share, 34-1 rounds
+2026-10-27T05:12:13Z battle hadur2.Hadur 3.17 vs kawigi.nano.FunkyChicken 1.1 (roborumble): 89.2% share, 34-1 rounds
+2026-10-27T05:12:18Z health ej.ChocolateBar: 34/35 survived, 27 skipped, 0 faults, shield verdict 0
+2026-10-27T05:12:23Z health fnc.bandit.Bandit: 34/35 survived, 16 skipped, 0 faults, shield verdict 0
+2026-10-27T05:12:30Z battle hadur2.Hadur 3.17 vs com.sociesc.T1000 1.0.0 (roborumble): 100.0% share, 35-0 rounds
+2026-10-27T05:12:30Z health com.sociesc.T1000: 35/35 survived, 19 skipped, 0 faults, shield verdict 0
+2026-10-27T05:12:42Z battle hadur2.Hadur 3.17 vs fcr.First 1.0 (roborumble): 97.94% share, 35-0 rounds
+2026-10-27T05:12:46Z health eskimo.micro.Echo: 35/35 survived, 2 skipped, 0 faults, shield verdict 0
+2026-10-27T05:12:41Z health fcr.First: 35/35 survived, 7 skipped, 0 faults, shield verdict 1
+2026-10-27T05:12:46Z battle hadur2.Hadur 3.17 vs myl.nano.KomoriNinja 1.1 (roborumble): 98.39% share, 35-0 rounds
+2026-10-27T05:12:51Z battle hadur2.Hadur 3.17 vs eskimo.micro.Echo 0.1 (roborumble): 99.8% share, 35-0 rounds
+2026-10-27T05:12:50Z health eskimo.micro.Echo: 35/35 survived, 24 skipped, 0 faults, shield verdict 0
+2026-10-27T05:12:57Z health sos.SOS: 32/35 survived, 20 skipped, 0 faults, shield verdict 1
+2026-10-27T05:12:58Z battle hadur2.Hadur 3.17 vs sos.SOS 1.0 (roborumble): 87.44% share, 32-3 rounds
+2026-10-27T05:13:10Z battle hadur2.Hadur 3.17 vs disan.Chair 2.2.0 (roborumble): 99.49% share, 35-0 rounds
+2026-10-27T05:13:15Z battle hadur2.Hadur 3.17 vs dsx724.VSAB_EP3_ATR 1.1 (roborumble): 96.68% share, 35-0 rounds
+2026-10-27T05:13:16Z battle hadur2.Hadur 3.17 vs dz.GalbaMicro 0.11 (roborumble): 83.02% share, 34-1 rounds
+2026-10-27T05:13:10Z health disan.Chair: 35/35 survived, 14 skipped, 0 faults, shield verdict 1
+2026-10-27T05:13:14Z health dsx724.VSAB_EP3_ATR: 35/35 survived, 8 skipped, 0 faults, shield verdict 1
+2026-10-27T05:13:18Z health alpha.RainingFire: 32/35 survived, 56 skipped, 0 faults, shield verdict 1
+2026-10-27T05:13:25Z health dans.Cinnamon: 35/35 survived, 23 skipped, 0 faults, shield verdict 0
+2026-10-27T05:13:26Z battle hadur2.Hadur 3.17 vs timmit.micro.TimXJ 0.22 (roborumble): 89.9% share, 33-2 rounds
+2026-10-27T05:13:29Z battle hadur2.Hadur 3.17 vs EH.Fusion 0.32 (roborumble): 81.29% share, 33-2 rounds
+2026-10-27T05:13:18Z battle hadur2.Hadur 3.17 vs alpha.RainingFire 1.0 (roborumble): 78.52% share, 32-3 rounds
+2026-10-27T05:13:27Z battle hadur2.Hadur 3.17 vs kurios.DOSexe .9a (roborumble): 87.62% share, 35-0 rounds
+2026-10-27T05:13:30Z battle hadur2.Hadur 3.17 vs com.syncleus.robocode.Dreadnaught 0.1 (roborumble): 86.64% share, 35-0 rounds
+2026-10-27T05:13:26Z battle hadur2.Hadur 3.17 vs dans.Cinnamon 1.2 (roborumble): 96.4% share, 35-0 rounds
+2026-10-27T05:13:25Z health timmit.micro.TimXJ: 33/35 survived, 56 skipped, 0 faults, shield verdict 0
+2026-10-27T05:13:29Z health slugzilla.OscillateGF: 34/35 survived, 23 skipped, 0 faults, shield verdict 0
+2026-10-27T05:13:30Z health com.syncleus.robocode.Dreadnaught: 35/35 survived, 14 skipped, 0 faults, shield verdict 0
+2026-10-27T05:13:25Z health dans.Cinnamon: 35/35 survived, 23 skipped, 0 faults, shield verdict 0
+2026-10-27T05:13:36Z battle hadur2.Hadur 3.17 vs slugzilla.OscillateGF 1.0 (roborumble): 97.24% share, 35-0 rounds
+2026-10-27T05:13:43Z battle hadur2.Hadur 3.17 vs squidM.SurfinUSA 1.0 (roborumble): 97.67% share, 35-0 rounds
+2026-10-27T05:13:47Z health robar.nano.Prestige: 35/35 survived, 7 skipped, 0 faults, shield verdict 0
+2026-10-27T05:13:54Z battle hadur2.Hadur 3.17 vs blir.micro.blixi.Blixi 1.2 (roborumble): 96.97% share, 35-0 rounds
+2026-10-27T05:13:48Z battle hadur2.Hadur 3.17 vs robar.nano.Prestige 1.0 (roborumble): 97.49% share, 35-0 rounds
+2026-10-27T05:13:54Z health blir.micro.blixi.Blixi: 35/35 survived, 7 skipped, 0 faults, shield verdict 1
+2026-10-27T05:13:47Z health robar.nano.Prestige: 35/35 survived, 7 skipped, 0 faults, shield verdict 0
+2026-10-27T05:13:56Z health theo.simple.Bones: 24/35 survived, 30 skipped, 0 faults, shield verdict 0
+2026-10-27T05:13:59Z health stefw.Tigger: 32/35 survived, 26 skipped, 0 faults, shield verdict 0
+2026-10-27T05:14:04Z battle hadur2.Hadur 3.17 vs shrub.Vapour v159 (roborumble): 86.21% share, 33-2 rounds
+2026-10-27T05:13:56Z battle hadur2.Hadur 3.17 vs theo.simple.Bones 1.0 (roborumble): 62.03% share, 23-12 rounds  << COLLAPSE
+2026-10-27T05:13:55Z battle hadur2.Hadur 3.17 vs kano.gamma.KanoGamma 1.8 (roborumble): 94.55% share, 35-0 rounds
+2026-10-27T05:14:00Z battle hadur2.Hadur 3.17 vs mz.NanoDeath 2.56 (roborumble): 64.63% share, 30-5 rounds  << LOW
+2026-10-27T05:14:10Z health mnt.AHEB: 35/35 survived, 32 skipped, 0 faults, shield verdict 0
+2026-10-27T05:14:03Z health shrub.Vapour: 33/35 survived, 39 skipped, 0 faults, shield verdict 1
+2026-10-27T05:14:14Z health wcsv.Stampede2.Stampede2: 33/35 survived, 30 skipped, 0 faults, shield verdict 1
+2026-10-27T05:14:09Z health penguin.MrFreeze: 34/35 survived, 10 skipped, 0 faults, shield verdict 0
+2026-10-27T05:14:06Z health gjr.Cephalosporin: 34/35 survived, 23 skipped, 0 faults, shield verdict 1
+2026-10-27T05:14:10Z battle hadur2.Hadur 3.17 vs mnt.AHEB 0.6a (roborumble): 96.24% share, 35-0 rounds
+2026-10-27T05:14:15Z battle hadur2.Hadur 3.17 vs wcsv.Stampede2.Stampede2 1.1.0 (roborumble): 78.32% share, 33-2 rounds
+2026-10-27T05:14:10Z battle hadur2.Hadur 3.17 vs stefw.Tigger 0.0.23 (roborumble): 92.85% share, 34-1 rounds
+2026-10-27T05:14:22Z battle hadur2.Hadur 3.17 vs penguin.MrFreeze 1.0a (roborumble): 83.55% share, 33-2 rounds
+2026-10-27T05:14:15Z battle hadur2.Hadur 3.17 vs gjr.Cephalosporin 0.2 (roborumble): 93.09% share, 34-1 rounds
+2026-10-27T05:14:24Z health suzushin7.nano.Galaxy03: 35/35 survived, 4 skipped, 0 faults, shield verdict 0
+2026-10-27T05:14:26Z battle hadur2.Hadur 3.17 vs myl.nano.Kakuru 1.20 (roborumble): 82.44% share, 34-1 rounds
+2026-10-27T05:14:25Z battle hadur2.Hadur 3.17 vs suzushin7.nano.Galaxy03 1.01 (roborumble): 76.96% share, 35-0 rounds
+2026-10-27T05:14:26Z health myl.nano.Kakuru: 35/35 survived, 16 skipped, 0 faults, shield verdict 0
+2026-10-27T05:14:38Z battle hadur2.Hadur 3.17 vs ags.rougedc.RougeDC willow (roborumble): 61.84% share, 23-12 rounds  << LOW
+2026-10-27T05:14:42Z battle hadur2.Hadur 3.17 vs pc.Wavelet 1.5 (roborumble): 46.9% share, 19-16 rounds  << LOW
+2026-10-27T05:14:46Z health testantiswapgun.AntiSwap: 35/35 survived, 5 skipped, 0 faults, shield verdict 1
+2026-10-27T05:14:42Z health pc.Wavelet: 19/35 survived, 62 skipped, 0 faults, shield verdict 1
+2026-10-27T05:14:46Z battle hadur2.Hadur 3.17 vs testantiswapgun.AntiSwap 1.0 (roborumble): 99.31% share, 35-0 rounds
+2026-10-27T05:14:46Z health testantiswapgun.AntiSwap: 35/35 survived, 5 skipped, 0 faults, shield verdict 1
+2026-10-27T05:14:56Z health suh.micro.MirrorPM: 35/35 survived, 12 skipped, 0 faults, shield verdict 1
+2026-10-27T05:14:59Z health jp.SineWall: 35/35 survived, 3 skipped, 0 faults, shield verdict 0
+2026-10-27T05:14:59Z health ouroboros.Dragon: 33/35 survived, 53 skipped, 0 faults, shield verdict 0
+2026-10-27T05:14:57Z battle hadur2.Hadur 3.17 vs WidowMakersAtWar.EpicCow 1.0 (roborumble): 99.57% share, 35-0 rounds
+2026-10-27T05:15:08Z battle hadur2.Hadur 3.17 vs suh.micro.MirrorPM 1.00 (roborumble): 85.84% share, 34-1 rounds
+2026-10-27T05:14:59Z battle hadur2.Hadur 3.17 vs jp.SineWall 1.0 (roborumble): 97.8% share, 35-0 rounds
+2026-10-27T05:15:00Z battle hadur2.Hadur 3.17 vs ouroboros.Dragon 0.0.3 (roborumble): 88.51% share, 33-2 rounds
+2026-10-27T05:15:07Z health suh.micro.MirrorPM: 34/35 survived, 59 skipped, 0 faults, shield verdict 1
+2026-10-27T05:15:17Z battle hadur2.Hadur 3.17 vs benhorner.PureAggression 0.2.6 (roborumble): 78.41% share, 35-0 rounds
+2026-10-27T05:15:15Z battle hadur2.Hadur 3.17 vs rus.vv.Snezhok 1.1 (roborumble): 95.89% share, 35-0 rounds
+2026-10-27T05:15:17Z health deith.Czolgzilla: 35/35 survived, 24 skipped, 0 faults, shield verdict 1
+2026-10-27T05:15:21Z health zignd.ZigIndexOutOfRange: 35/35 survived, 2 skipped, 0 faults, shield verdict 0
+2026-10-27T05:15:24Z battle hadur2.Hadur 3.17 vs oog.PricklyPear 1.0.6 (roborumble): 66.1% share, 26-9 rounds  << LOW
+2026-10-27T05:15:25Z battle hadur2.Hadur 3.17 vs TCMI.Enyo 0.4 (roborumble): 93.34% share, 35-0 rounds
+2026-10-27T05:15:22Z battle hadur2.Hadur 3.17 vs zignd.ZigIndexOutOfRange 1.1 (roborumble): 100.0% share, 35-0 rounds
+2026-10-27T05:15:23Z health oog.PricklyPear: 26/35 survived, 56 skipped, 0 faults, shield verdict 1
+2026-10-27T05:15:31Z health dk.stable.Gorgatron: 33/35 survived, 27 skipped, 0 faults, shield verdict 1
+2026-10-27T05:15:34Z battle hadur2.Hadur 3.17 vs GarmBox.Oranges 1.0.1 (roborumble): 87.71% share, 34-1 rounds
+2026-10-27T05:15:31Z battle hadur2.Hadur 3.17 vs dk.stable.Gorgatron 1.1 (roborumble): 86.71% share, 33-2 rounds
+2026-10-27T05:15:38Z battle hadur2.Hadur 3.17 vs deith.Czolgzilla 0.11 (roborumble): 95.0% share, 35-0 rounds
+2026-10-27T05:15:34Z health GarmBox.Oranges: 34/35 survived, 23 skipped, 0 faults, shield verdict 1
+2026-10-27T05:15:37Z health deith.Czolgzilla: 35/35 survived, 64 skipped, 0 faults, shield verdict 1
+2026-10-27T05:15:47Z battle hadur2.Hadur 3.17 vs oog.nano.Fuatisha 1.1 (roborumble): 96.52% share, 35-0 rounds
+2026-10-27T05:15:47Z health oog.nano.Fuatisha: 35/35 survived, 4 skipped, 0 faults, shield verdict 1
+2026-10-27T05:15:58Z battle hadur2.Hadur 3.17 vs theo.QuarkSoup 1.5fga (roborumble): 78.47% share, 33-2 rounds  << COLLAPSE
+2026-10-27T05:16:01Z battle hadur2.Hadur 3.17 vs drm.Magazine 0.39 (roborumble): 85.08% share, 35-0 rounds
+2026-10-27T05:15:57Z health theo.QuarkSoup: 33/35 survived, 40 skipped, 0 faults, shield verdict 0
+2026-10-27T05:16:05Z health unarmedlad.nano.VirginSteele: 35/35 survived, 31 skipped, 0 faults, shield verdict 0
+2026-10-27T05:16:00Z health drm.Magazine: 35/35 survived, 41 skipped, 0 faults, shield verdict 0
+2026-10-27T05:16:13Z battle hadur2.Hadur 3.17 vs step.NanoBidu 1.0 (roborumble): 91.04% share, 34-1 rounds
+2026-10-27T05:16:07Z battle hadur2.Hadur 3.17 vs nat.micro.Reepicheep 0.1a (roborumble): 95.35% share, 35-0 rounds
+2026-10-27T05:16:06Z battle hadur2.Hadur 3.17 vs gio.RealGioBot 1.0 (roborumble): 97.12% share, 35-0 rounds
+2026-10-27T05:16:13Z battle hadur2.Hadur 3.17 vs unarmedlad.nano.VirginSteele 2.2 (roborumble): 84.8% share, 34-1 rounds
+2026-10-27T05:16:13Z health kcn.unnamed.Unnamed: 34/35 survived, 4 skipped, 0 faults, shield verdict 0
+2026-10-27T05:16:06Z health nat.micro.Reepicheep: 35/35 survived, 14 skipped, 0 faults, shield verdict 0
+2026-10-27T05:16:19Z health bots.UberBot: 35/35 survived, 29 skipped, 0 faults, shield verdict 1
+2026-10-27T05:16:25Z battle hadur2.Hadur 3.17 vs kcn.unnamed.Unnamed 1.21 (roborumble): 92.06% share, 34-1 rounds
+2026-10-27T05:16:19Z battle hadur2.Hadur 3.17 vs bots.UberBot 1.2c (roborumble): 96.01% share, 35-0 rounds
+2026-10-27T05:16:25Z health EFD.AdvancedEFD: 34/35 survived, 28 skipped, 0 faults, shield verdict 1
+2026-10-27T05:16:29Z health nat.BlackHole: 35/35 survived, 17 skipped, 0 faults, shield verdict 1
+2026-10-27T05:16:37Z battle hadur2.Hadur 3.17 vs EFD.AdvancedEFD 0.4.5a (roborumble): 62.37% share, 23-12 rounds  << LOW
+2026-10-27T05:16:30Z battle hadur2.Hadur 3.17 vs nat.BlackHole 2.0gamma (roborumble): 95.42% share, 35-0 rounds
+2026-10-27T05:16:37Z health EFD.AdvancedEFD: 23/35 survived, 48 skipped, 0 faults, shield verdict 1
+2026-10-27T05:16:38Z health axeBots.SilverSurfer: 28/35 survived, 29 skipped, 0 faults, shield verdict 1
+2026-10-27T05:16:42Z battle hadur2.Hadur 3.17 vs arthord.micro.Apoptygma 0.4 (roborumble): 93.65% share, 35-0 rounds
+2026-10-27T05:16:42Z health arthord.micro.Apoptygma: 35/35 survived, 3 skipped, 0 faults, shield verdict 0
+2026-10-27T05:16:48Z health sL300.Mozart: 30/35 survived, 69 skipped, 0 faults, shield verdict 1
+2026-10-27T05:16:49Z battle hadur2.Hadur 3.17 vs sL300.Mozart life (roborumble): 74.62% share, 30-5 rounds
+2026-10-27T05:17:15Z battle hadur2.Hadur 3.17 vs traker.Eraser 1 (roborumble): 98.86% share, 35-0 rounds
+2026-10-27T05:17:14Z health traker.Eraser: 35/35 survived, 8 skipped, 0 faults, shield verdict 1
+2026-10-27T05:17:29Z battle hadur2.Hadur 3.17 vs rsalesc.roborio.Roborio 1.2.4 (roborumble): 60.31% share, 21-14 rounds  << LOW
+2026-10-27T05:17:28Z health rsalesc.roborio.Roborio: 21/35 survived, 165 skipped, 0 faults, shield verdict 1
+2026-10-27T05:17:34Z health slugzilla.RandomLinear: 35/35 survived, 77 skipped, 0 faults, shield verdict 1
+2026-10-27T05:17:34Z battle hadur2.Hadur 3.17 vs slugzilla.RandomLinear 1.0 (roborumble): 95.39% share, 35-0 rounds
+2026-10-27T05:17:49Z battle hadur2.Hadur 3.17 vs pez.nano.Icarus 0.3 (roborumble): 95.75% share, 35-0 rounds
+2026-10-27T05:17:49Z battle hadur2.Hadur 3.17 vs blir.nano.Bruce R1.0.0 (roborumble): 75.47% share, 33-2 rounds
+2026-10-27T05:17:48Z health pez.nano.Icarus: 35/35 survived, 38 skipped, 0 faults, shield verdict 0
+2026-10-27T05:17:49Z health blir.nano.Bruce: 34/35 survived, 11 skipped, 0 faults, shield verdict 0
+2026-10-27T05:17:55Z health lucasslf.Dodger: 35/35 survived, 12 skipped, 0 faults, shield verdict 0
+2026-10-27T05:18:03Z battle hadur2.Hadur 3.17 vs cw.megas.Polar 3.2 (roborumble): 79.17% share, 32-3 rounds
+2026-10-27T05:17:56Z battle hadur2.Hadur 3.17 vs trab.nano.AinippeNano 1.3 (roborumble): 95.72% share, 35-0 rounds
+2026-10-27T05:18:05Z battle hadur2.Hadur 3.17 vs lucasslf.Dodger 1.0 (roborumble): 94.65% share, 35-0 rounds
+2026-10-27T05:18:02Z health cw.megas.Polar: 32/35 survived, 46 skipped, 0 faults, shield verdict 1
+2026-10-27T05:18:05Z health lucasslf.Dodger: 35/35 survived, 42 skipped, 0 faults, shield verdict 0
+2026-10-27T05:18:12Z health jaemcrb.nano.M1Abrams: 35/35 survived, 12 skipped, 0 faults, shield verdict 0
+2026-10-27T05:18:14Z battle hadur2.Hadur 3.17 vs rsalesc.roborio.Roborio 1.2.4 (roborumble): 63.55% share, 22-13 rounds  << LOW
+2026-10-27T05:18:14Z battle hadur2.Hadur 3.17 vs lunchie.Lunchbox 0.93 (roborumble): 93.48% share, 35-0 rounds
+2026-10-27T05:18:13Z battle hadur2.Hadur 3.17 vs jaemcrb.nano.M1Abrams 1.0 (roborumble): 95.65% share, 35-0 rounds
+2026-10-27T05:18:18Z battle hadur2.Hadur 3.17 vs FatalFlaw.FatalFlaw 1.0.5 (roborumble): 93.63% share, 35-0 rounds
+2026-10-27T05:18:13Z health rsalesc.roborio.Roborio: 22/35 survived, 230 skipped, 0 faults, shield verdict 1
+2026-10-27T05:18:14Z health lunchie.Lunchbox: 35/35 survived, 36 skipped, 0 faults, shield verdict 0
+2026-10-27T05:18:18Z health FatalFlaw.FatalFlaw: 35/35 survived, 21 skipped, 0 faults, shield verdict 0
+2026-10-27T05:18:29Z battle hadur2.Hadur 3.17 vs pez.frankie.Frankie 0.9.6.1 (roborumble): 96.6% share, 35-0 rounds
+2026-10-27T05:18:28Z health pez.frankie.Frankie: 35/35 survived, 5 skipped, 0 faults, shield verdict 0
+2026-10-27T05:18:32Z health wiki.BasicBulletShielder: 35/35 survived, 9 skipped, 0 faults, shield verdict 0
+2026-10-27T05:18:39Z battle hadur2.Hadur 3.17 vs apollokidd.ApolloKidd 0.9 (roborumble): 96.74% share, 35-0 rounds
+2026-10-27T05:18:36Z battle hadur2.Hadur 3.17 vs ags.micro.Carpet 1.1 (roborumble): 89.97% share, 35-0 rounds
+2026-10-27T05:18:41Z battle hadur2.Hadur 3.17 vs romz.robot.Test 0.1.0 (roborumble): 90.05% share, 35-0 rounds
+2026-10-27T05:18:38Z battle hadur2.Hadur 3.17 vs brainfade.melee.Dusk 0.44 (roborumble): 93.49% share, 34-1 rounds
+2026-10-27T05:18:33Z battle hadur2.Hadur 3.17 vs wiki.BasicBulletShielder 1.0 (roborumble): 100.0% share, 35-0 rounds
+2026-10-27T05:18:39Z health jeremyreeder.collective.Prophet: 35/35 survived, 6 skipped, 0 faults, shield verdict 0
+2026-10-27T05:18:41Z health romz.robot.Test: 35/35 survived, 31 skipped, 0 faults, shield verdict 0
+2026-10-27T05:18:38Z health brainfade.melee.Dusk: 34/35 survived, 65 skipped, 0 faults, shield verdict 0
+2026-10-27T05:18:46Z battle hadur2.Hadur 3.17 vs jeremyreeder.collective.Prophet 5 (roborumble): 99.51% share, 35-0 rounds
+2026-10-27T05:18:53Z battle hadur2.Hadur 3.17 vs mrm.MightyMoose .2 (roborumble): 97.22% share, 35-0 rounds
+2026-10-27T05:18:46Z health jeremyreeder.collective.Prophet: 35/35 survived, 32 skipped, 0 faults, shield verdict 0
+2026-10-27T05:18:52Z health mrm.MightyMoose: 35/35 survived, 20 skipped, 0 faults, shield verdict 0
+2026-10-27T05:18:58Z battle hadur2.Hadur 3.17 vs uccc.RingDing 1.12 (roborumble): 99.78% share, 35-0 rounds
+2026-10-27T05:19:02Z battle hadur2.Hadur 3.17 vs xander.cat.XanderCat 12.9 (roborumble): 68.03% share, 28-7 rounds  << LOW
+2026-10-27T05:18:57Z health uccc.RingDing: 35/35 survived, 24 skipped, 0 faults, shield verdict 1
+2026-10-27T05:19:02Z health xander.cat.XanderCat: 28/35 survived, 35 skipped, 0 faults, shield verdict 1
+2026-10-27T05:19:19Z health gtf.robocode.Strafer: 35/35 survived, 10 skipped, 0 faults, shield verdict 0
+2026-10-27T05:19:25Z battle hadur2.Hadur 3.17 vs WidowMakersAtWar.EpicCow 1.0 (roborumble): 98.81% share, 35-0 rounds
+2026-10-27T05:19:19Z battle hadur2.Hadur 3.17 vs yarghard.Y101 1.0 (roborumble): 99.2% share, 35-0 rounds
+2026-10-27T05:19:24Z battle hadur2.Hadur 3.17 vs gtf.robocode.Strafer 2.1.1 (roborumble): 94.25% share, 35-0 rounds
+2026-10-27T05:19:25Z health WidowMakersAtWar.EpicCow: 35/35 survived, 30 skipped, 0 faults, shield verdict 0
+2026-10-27T05:19:33Z health mn.nano.SkippedTurns: 35/35 survived, 10 skipped, 0 faults, shield verdict 0
+2026-10-27T05:19:34Z battle hadur2.Hadur 3.17 vs mn.nano.SkippedTurns 1.1.0 (roborumble): 100.0% share, 35-0 rounds
+2026-10-27T05:19:41Z health wcsv.PowerHouse.PowerHouse: 34/35 survived, 55 skipped, 0 faults, shield verdict 1
+2026-10-27T05:19:33Z health mn.nano.SkippedTurns: 35/35 survived, 10 skipped, 0 faults, shield verdict 0
+2026-10-27T05:19:41Z battle hadur2.Hadur 3.17 vs wcsv.PowerHouse.PowerHouse 1.7e3 (roborumble): 84.19% share, 34-1 rounds
+2026-10-27T05:19:50Z battle hadur2.Hadur 3.17 vs davv.DOne b002 (roborumble): 100.0% share, 35-0 rounds
+2026-10-27T05:19:49Z health davv.DOne: 35/35 survived, 14 skipped, 0 faults, shield verdict 0
+2026-10-27T05:19:56Z health cjm.Chomsky: 34/35 survived, 58 skipped, 0 faults, shield verdict 1
+2026-10-27T05:19:56Z battle hadur2.Hadur 3.17 vs cjm.Chomsky 1.5 (roborumble): 88.36% share, 34-1 rounds
+2026-10-27T05:20:05Z health supersample.SuperSpinBot: 34/35 survived, 35 skipped, 0 faults, shield verdict 1
+2026-10-27T05:20:07Z battle hadur2.Hadur 3.17 vs nanoskank.NanoSkank 1.0 (roborumble): 93.23% share, 35-0 rounds
+2026-10-27T05:20:10Z battle hadur2.Hadur 3.17 vs genprog.Gajeel 1.0 (roborumble): 97.07% share, 35-0 rounds
+2026-10-27T05:20:05Z battle hadur2.Hadur 3.17 vs supersample.SuperSpinBot 1.0 (roborumble): 89.31% share, 34-1 rounds
+2026-10-27T05:20:06Z health nanoskank.NanoSkank: 35/35 survived, 35 skipped, 0 faults, shield verdict 0
+2026-10-27T05:20:09Z health genprog.Gajeel: 35/35 survived, 139 skipped, 0 faults, shield verdict 0
+2026-10-27T05:20:36Z battle hadur2.Hadur 3.17 vs da.NewBGank 1.4 (roborumble): 91.13% share, 35-0 rounds
+2026-10-27T05:20:35Z health da.NewBGank: 35/35 survived, 7 skipped, 0 faults, shield verdict 1
+2026-10-27T05:20:39Z health oog.nano.SavantVS: 35/35 survived, 5 skipped, 0 faults, shield verdict 1
+2026-10-27T05:20:40Z health agrach.RobotSlayer: 35/35 survived, 11 skipped, 0 faults, shield verdict 1
+2026-10-27T05:20:42Z battle hadur2.Hadur 3.17 vs apc.botM 3.0 (roborumble): 87.08% share, 35-0 rounds
+2026-10-27T05:20:39Z battle hadur2.Hadur 3.17 vs oog.nano.SavantVS 1.1 (roborumble): 98.12% share, 35-0 rounds
+2026-10-27T05:20:41Z battle hadur2.Hadur 3.17 vs agrach.RobotSlayer 1.0 (roborumble): 99.22% share, 35-0 rounds
+2026-10-27T05:20:42Z health apc.botM: 34/35 survived, 43 skipped, 0 faults, shield verdict 1
+2026-10-27T05:20:52Z health suh.nano.AngularMirrorC: 35/35 survived, 18 skipped, 0 faults, shield verdict 1
+2026-10-27T05:20:52Z battle hadur2.Hadur 3.17 vs suh.nano.AngularMirrorC 1.00 (roborumble): 97.37% share, 35-0 rounds
+2026-10-27T05:21:00Z battle hadur2.Hadur 3.17 vs froh.micro.Aversari 0.31 (roborumble): 97.23% share, 35-0 rounds
+2026-10-27T05:21:00Z health rz.GlowBlow: 33/34 survived, 82 skipped, 0 faults, shield verdict 1
+2026-10-27T05:21:00Z health axeBots.HataMoto: 35/35 survived, 24 skipped, 0 faults, shield verdict 0
+2026-10-27T05:20:59Z health froh.micro.Aversari: 35/35 survived, 19 skipped, 0 faults, shield verdict 1
+2026-10-27T05:21:01Z battle hadur2.Hadur 3.17 vs rz.GlowBlow 2.31 (roborumble): 80.15% share, 33-2 rounds
+2026-10-27T05:21:01Z battle hadur2.Hadur 3.17 vs axeBots.HataMoto 3.09 (roborumble): 87.82% share, 35-0 rounds
+2026-10-27T05:21:14Z health deewiant.Anomaly: 35/35 survived, 17 skipped, 0 faults, shield verdict 1
+2026-10-27T05:21:19Z battle hadur2.Hadur 3.17 vs sL300.Mozart life (roborumble): 78.21% share, 32-3 rounds
+2026-10-27T05:21:14Z battle hadur2.Hadur 3.17 vs deewiant.Anomaly 0.2 (roborumble): 99.64% share, 35-0 rounds
+2026-10-27T05:21:19Z health hlavko.micro.Flex: 32/35 survived, 86 skipped, 0 faults, shield verdict 0
+2026-10-27T05:21:23Z health lxx.ConceptA: 35/35 survived, 5 skipped, 0 faults, shield verdict 0
+2026-10-27T05:21:24Z health pkbots.BoyTDSurfer: 35/35 survived, 8 skipped, 0 faults, shield verdict 1
+2026-10-27T05:21:28Z health KiraNL.Chupacabra: 34/35 survived, 22 skipped, 0 faults, shield verdict 0
+2026-10-27T05:21:29Z battle hadur2.Hadur 3.17 vs hlavko.micro.Flex 1.5 (roborumble): 79.21% share, 31-4 rounds
+2026-10-27T05:21:23Z battle hadur2.Hadur 3.17 vs lxx.ConceptA 0.8 (roborumble): 96.69% share, 35-0 rounds
+2026-10-27T05:21:31Z battle hadur2.Hadur 3.17 vs demetrix.ForceMajeure 0.75 (roborumble): 79.1% share, 32-3 rounds
+2026-10-27T05:21:33Z battle hadur2.Hadur 3.17 vs slugzilla.ButtHead 2.0 (roborumble): 86.09% share, 33-2 rounds
+2026-10-27T05:21:25Z battle hadur2.Hadur 3.17 vs pkbots.BoyTDSurfer 1.0 (roborumble): 98.09% share, 35-0 rounds
+2026-10-27T05:21:29Z battle hadur2.Hadur 3.17 vs KiraNL.Chupacabra 0.5 (roborumble): 90.68% share, 34-1 rounds
+2026-10-27T05:21:29Z health hlavko.micro.Flex: 32/35 survived, 16 skipped, 0 faults, shield verdict 0
+2026-10-27T05:21:31Z health demetrix.ForceMajeure: 32/35 survived, 32 skipped, 0 faults, shield verdict 1
+2026-10-27T05:21:32Z health slugzilla.ButtHead: 33/35 survived, 15 skipped, 0 faults, shield verdict 1
+2026-10-27T05:21:47Z battle hadur2.Hadur 3.17 vs mld.DustBunny 3.8 (roborumble): 98.9% share, 35-0 rounds
+2026-10-27T05:21:48Z battle hadur2.Hadur 3.17 vs fruits.NanoStrawbery 1.3 (roborumble): 99.18% share, 35-0 rounds
+2026-10-27T05:21:48Z battle hadur2.Hadur 3.17 vs pe.SandboxLump 1.52 (roborumble): 93.95% share, 35-0 rounds
+2026-10-27T05:21:47Z health mld.DustBunny: 35/35 survived, 32 skipped, 0 faults, shield verdict 1
+2026-10-27T05:21:48Z health fruits.NanoStrawbery: 35/35 survived, 17 skipped, 0 faults, shield verdict 0
+2026-10-27T05:21:52Z health bh.PencilRain: 24/35 survived, 21 skipped, 0 faults, shield verdict 0
+2026-10-27T05:21:47Z health pe.SandboxLump: 35/35 survived, 9 skipped, 0 faults, shield verdict 0
+2026-10-27T05:22:04Z page roborumble: APS 90.80, 3492 battles, 183 new, 3 flagged
+    DROP bvh.mini.Mjolnir 0.3: 46.5 (pairing 77.92 -> 67.43)
+    DROP theo.simple.Bones 1.0: 62.0 (pairing 95.62 -> 84.42)
+    DROP pc.Wavelet 1.5: 46.9 (pairing 42.67 -> 44.08)
+2026-10-27T05:22:05Z page meleerumble: APS 66.50, 1907 battles, 47 new, 2 flagged
+    DROP cz.libors.Ogi v1: 43.8 (pairing 43.41 -> 43.48)
+    DROP kawigi.sbf.FloodHT 0.9.2: 48.1 (pairing 51.21 -> 50.69)
+2026-10-27T05:22:05Z page teamrumble: APS 79.40, 205 battles, 0 new, 0 flagged
+2026-10-27T05:22:04Z battle hadur2.Hadur 3.17 vs mn.micro.perceptual.Mimic 1.0.0 (roborumble): 94.67% share, 35-0 rounds
+2026-10-27T05:21:53Z battle hadur2.Hadur 3.17 vs pulsar.PulsarMax 0.8.9 (roborumble): 58.9% share, 24-11 rounds  << LOW
+2026-10-27T05:21:59Z battle hadur2.Hadur 3.17 vs bh.PencilRain 0.01 (roborumble): 100.0% share, 35-0 rounds
+2026-10-27T05:21:55Z health WidowMakersAtWar.EpicCow: 35/35 survived, 6 skipped, 0 faults, shield verdict 0
+2026-10-27T05:22:03Z health mn.micro.perceptual.Mimic: 35/35 survived, 25 skipped, 0 faults, shield verdict 0
+2026-10-27T05:21:58Z health bh.PencilRain: 35/35 survived, 10 skipped, 0 faults, shield verdict 1
+2026-10-27T05:22:14Z battle hadur2.Hadur 3.17 vs cs.PumpkinPie 1.0 (roborumble): 71.32% share, 29-7 rounds
+2026-10-27T05:22:13Z health cs.PumpkinPie: 29/35 survived, 125 skipped, 0 faults, shield verdict 1
+2026-10-27T05:22:20Z battle hadur2.Hadur 3.17 vs EFD.AdvancedEFD 0.4.5a (roborumble): 67.07% share, 25-10 rounds  << LOW
+2026-10-27T05:22:19Z battle hadur2.Hadur 3.17 vs wiki.mini.Griffon 0.1 (roborumble): 96.91% share, 35-0 rounds
+2026-10-27T05:22:23Z battle hadur2.Hadur 3.17 vs suh.nano.MyFirstAdvancedRobot 1.00 (roborumble): 99.02% share, 35-0 rounds
+2026-10-27T05:22:26Z battle hadur2.Hadur 3.17 vs fruits.NanoStrawbery 1.3 (roborumble): 98.66% share, 35-0 rounds
+2026-10-27T05:22:19Z health EFD.AdvancedEFD: 25/35 survived, 62 skipped, 0 faults, shield verdict 1
+2026-10-27T05:22:18Z health wiki.mini.Griffon: 35/35 survived, 15 skipped, 0 faults, shield verdict 0
+2026-10-27T05:22:23Z health suh.nano.MyFirstAdvancedRobot: 35/35 survived, 3 skipped, 0 faults, shield verdict 0
+2026-10-27T05:22:30Z health amk.jointstrike.JointStrike: 35/35 survived, 7 skipped, 0 faults, shield verdict 0
+2026-10-27T05:22:32Z health ratosh.nano.Debo: 35/35 survived, 17 skipped, 0 faults, shield verdict 1
+2026-10-27T05:22:34Z battle hadur2.Hadur 3.17 vs ICS4U1.Patrick_White_Schrodinger 1.1 (roborumble): 97.51% share, 35-0 rounds
+2026-10-27T05:22:31Z battle hadur2.Hadur 3.17 vs amk.jointstrike.JointStrike 0.2 (roborumble): 93.78% share, 35-0 rounds
+2026-10-27T05:22:32Z battle hadur2.Hadur 3.17 vs ratosh.nano.Debo 1.36 (roborumble): 90.07% share, 35-0 rounds
+2026-10-27T05:22:34Z health ICS4U1.Patrick_White_Schrodinger: 35/35 survived, 22 skipped, 0 faults, shield verdict 1
+2026-10-27T05:22:43Z health stelo.UntouchableNano: 34/35 survived, 15 skipped, 0 faults, shield verdict 0
+2026-10-27T05:22:43Z battle hadur2.Hadur 3.17 vs stelo.UntouchableNano 1.4 (roborumble): 85.74% share, 34-1 rounds
+2026-10-27T05:22:59Z battle hadur2.Hadur 3.17 vs DM.mega.Regicide 2.0rrr (roborumble): 68.15% share, 30-5 rounds  << LOW
+2026-10-27T05:22:59Z health DM.mega.Regicide: 30/35 survived, 71 skipped, 0 faults, shield verdict 1
+2026-10-27T05:23:06Z health lucasslf.HariSeldon: 35/35 survived, 64 skipped, 0 faults, shield verdict 0
+2026-10-27T05:23:09Z battle hadur2.Hadur 3.17 vs rc.RCBot 2.0 (roborumble): 94.48% share, 35-0 rounds
+2026-10-27T05:23:06Z battle hadur2.Hadur 3.17 vs lucasslf.HariSeldon 0.2.1 (roborumble): 94.03% share, 35-0 rounds
+2026-10-27T05:23:08Z health rc.RCBot: 35/35 survived, 84 skipped, 0 faults, shield verdict 0
+2026-10-27T05:23:20Z battle hadur2.Hadur 3.17 vs nic.SnippetBot 1.0 (roborumble): 98.63% share, 35-0 rounds
+2026-10-27T05:23:19Z health nic.SnippetBot: 35/35 survived, 15 skipped, 0 faults, shield verdict 1
+2026-10-27T05:23:32Z battle hadur2.Hadur 3.17 vs sgp.SleepingGoat 1.1 (roborumble): 92.9% share, 35-0 rounds
+2026-10-27T05:23:31Z health sgp.SleepingGoat: 35/35 survived, 7 skipped, 0 faults, shield verdict 0
+2026-10-27T05:23:46Z health xander.cat.Spitfire: 35/35 survived, 13 skipped, 0 faults, shield verdict 0
+2026-10-27T05:23:50Z battle hadur2.Hadur 3.17 vs jcs.Seth 1.8 (roborumble): 97.97% share, 35-0 rounds
+2026-10-27T05:23:46Z battle hadur2.Hadur 3.17 vs xander.cat.Spitfire 1.4 (roborumble): 99.95% share, 35-0 rounds
+2026-10-27T05:23:49Z health TJ.Exupery: 35/35 survived, 66 skipped, 0 faults, shield verdict 0
+2026-10-27T05:23:56Z health slugzilla.RandomPattern: 33/35 survived, 13 skipped, 0 faults, shield verdict 1
+2026-10-27T05:23:59Z battle hadur2.Hadur 3.17 vs TJ.Exupery 1.39 (roborumble): 89.98% share, 34-1 rounds
+2026-10-27T05:23:57Z battle hadur2.Hadur 3.17 vs drm.Magazine 0.39 (roborumble): 81.2% share, 33-2 rounds
+2026-10-27T05:24:04Z battle hadur2.Hadur 3.17 vs slugzilla.RandomPattern 1.0 (roborumble): 94.21% share, 35-0 rounds
+2026-10-27T05:24:06Z health pl.Drum: 33/35 survived, 85 skipped, 0 faults, shield verdict 1
+2026-10-27T05:23:58Z health TJ.Exupery: 34/35 survived, 33 skipped, 0 faults, shield verdict 0
+2026-10-27T05:24:05Z health mld.jdc.nano.LittleBlackBook: 35/35 survived, 28 skipped, 0 faults, shield verdict 1
+2026-10-27T05:24:04Z health slugzilla.RandomPattern: 34/35 survived, 32 skipped, 0 faults, shield verdict 1
+2026-10-27T05:24:07Z battle hadur2.Hadur 3.17 vs pl.Drum 0.1 (roborumble): 85.08% share, 33-2 rounds
+2026-10-27T05:24:05Z battle hadur2.Hadur 3.17 vs mld.jdc.nano.LittleBlackBook 1.0 (roborumble): 93.66% share, 35-0 rounds
+2026-10-27T05:24:20Z health jab.avk.ManuelGallegus: 34/35 survived, 7 skipped, 0 faults, shield verdict 0
+2026-10-27T05:24:24Z health dggp.haiku.gpBot_0: 35/35 survived, 7 skipped, 0 faults, shield verdict 0
+2026-10-27T05:24:21Z battle hadur2.Hadur 3.17 vs jab.avk.ManuelGallegus 0.6 (roborumble): 91.74% share, 34-1 rounds
+2026-10-27T05:24:27Z battle hadur2.Hadur 3.17 vs apv.MicroAspid 1.8 (roborumble): 79.39% share, 33-2 rounds  << COLLAPSE
+2026-10-27T05:24:25Z battle hadur2.Hadur 3.17 vs dggp.haiku.gpBot_0 1.1 (roborumble): 96.65% share, 35-0 rounds
+2026-10-27T05:24:26Z health apv.MicroAspid: 33/35 survived, 42 skipped, 0 faults, shield verdict 1
+2026-10-27T05:25:03Z health jep.Terrible: 35/35 survived, 34 skipped, 0 faults, shield verdict 0
+2026-10-27T05:25:06Z battle hadur2.Hadur 3.17 vs rz.HawkOnFire 0.1 (roborumble): 100.0% share, 35-0 rounds
+2026-10-27T05:25:03Z battle hadur2.Hadur 3.17 vs jep.Terrible 0.4.1 (roborumble): 95.76% share, 35-0 rounds
+2026-10-27T05:25:05Z health rz.HawkOnFire: 35/35 survived, 13 skipped, 0 faults, shield verdict 1
+2026-10-27T05:25:14Z battle hadur2.Hadur 3.17 vs wcsv.PowerHouse.PowerHouse 1.7e3 (roborumble): 93.92% share, 35-0 rounds
+2026-10-27T05:25:14Z health wcsv.PowerHouse.PowerHouse: 35/35 survived, 23 skipped, 0 faults, shield verdict 1
+2026-10-27T05:25:25Z battle hadur2.Hadur 3.17 vs nexus.Experimental 0.2 (roborumble): 98.77% share, 35-0 rounds
+2026-10-27T05:25:24Z health nexus.Experimental: 35/35 survived, 31 skipped, 0 faults, shield verdict 1
+2026-10-27T05:25:44Z health kc.nano.Splinter: 25/35 survived, 38 skipped, 0 faults, shield verdict 1
+2026-10-27T05:25:45Z battle hadur2.Hadur 3.17 vs abc.Shadow 3.83c (roborumble): 52.97% share, 24-11 rounds  << LOW
+2026-10-27T05:25:53Z battle hadur2.Hadur 3.17 vs kc.nano.Splinter 1.2 (roborumble): 82.32% share, 34-1 rounds
+2026-10-27T05:25:52Z health kc.nano.Splinter: 34/35 survived, 69 skipped, 0 faults, shield verdict 1
+2026-10-27T05:26:04Z battle hadur2.Hadur 3.17 vs jeremyreeder.Bully 1 (roborumble): 96.17% share, 35-0 rounds
+2026-10-27T05:26:04Z health jeremyreeder.Bully: 35/35 survived, 14 skipped, 0 faults, shield verdict 0
+2026-10-27T05:26:05Z health robar.nano.Vespa: 35/35 survived, 20 skipped, 0 faults, shield verdict 1
+2026-10-27T05:26:05Z battle hadur2.Hadur 3.17 vs robar.nano.Vespa 0.95 (roborumble): 92.97% share, 35-0 rounds
+2026-10-27T05:26:11Z battle hadur2.Hadur 3.17 vs yk.JahRoslav 1.1 (roborumble): 88.65% share, 33-2 rounds
+2026-10-27T05:26:10Z health yk.JahRoslav: 33/35 survived, 33 skipped, 0 faults, shield verdict 1
+2026-10-27T05:26:18Z health hlavko.micro.Flex: 32/35 survived, 40 skipped, 0 faults, shield verdict 1
+2026-10-27T05:26:24Z battle hadur2.Hadur 3.17 vs bvh.micro.Freya 0.3 (roborumble): 92.45% share, 35-0 rounds
+2026-10-27T05:26:27Z battle hadur2.Hadur 3.17 vs alpha.BlackIce 1.0 (roborumble): 87.0% share, 35-0 rounds
+2026-10-27T05:26:24Z battle hadur2.Hadur 3.17 vs acid.Null 1.0 (roborumble): 93.9% share, 35-0 rounds
+2026-10-27T05:26:18Z battle hadur2.Hadur 3.17 vs hlavko.micro.Flex 1.5 (roborumble): 81.1% share, 32-3 rounds
+2026-10-27T05:26:24Z health bvh.micro.Freya: 35/35 survived, 76 skipped, 0 faults, shield verdict 1
+2026-10-27T05:26:26Z health alpha.BlackIce: 35/35 survived, 64 skipped, 0 faults, shield verdict 1
+2026-10-27T05:26:23Z health acid.Null: 35/35 survived, 25 skipped, 0 faults, shield verdict 0
+2026-10-27T05:26:33Z health wiki.Wolverine: 33/35 survived, 24 skipped, 0 faults, shield verdict 0
+2026-10-27T05:26:30Z health mladjo.Grrrrr: 34/35 survived, 37 skipped, 0 faults, shield verdict 0
+2026-10-27T05:26:37Z battle hadur2.Hadur 3.17 vs sqTank.waveSurfing.LionWWSVMvoid 0.01 (roborumble): 99.39% share, 35-0 rounds
+2026-10-27T05:26:40Z battle hadur2.Hadur 3.17 vs pkdeken.Paladin 1.0 (roborumble): 98.08% share, 35-0 rounds
+2026-10-27T05:26:34Z battle hadur2.Hadur 3.17 vs wiki.Wolverine 2.1 (roborumble): 84.68% share, 33-2 rounds
+2026-10-27T05:26:30Z battle hadur2.Hadur 3.17 vs mladjo.Grrrrr 0.9 (roborumble): 91.25% share, 34-1 rounds
+2026-10-27T05:26:40Z health pkdeken.Paladin: 35/35 survived, 16 skipped, 0 faults, shield verdict 0
+2026-10-27T05:27:05Z health pez.mini.ChironexFleckeri: 34/35 survived, 43 skipped, 0 faults, shield verdict 1
+2026-10-27T05:27:06Z battle hadur2.Hadur 3.17 vs pez.mini.ChironexFleckeri 0.5 (roborumble): 85.82% share, 35-0 rounds
+2026-10-27T05:27:16Z battle hadur2.Hadur 3.17 vs donjezza.Jezza 1.0 (roborumble): 99.73% share, 35-0 rounds
+2026-10-27T05:27:15Z health donjezza.Jezza: 35/35 survived, 61 skipped, 0 faults, shield verdict 0
+2026-10-27T05:27:19Z health gh.GresSuffurd: 33/35 survived, 85 skipped, 0 faults, shield verdict 1
+2026-10-27T05:27:27Z battle hadur2.Hadur 3.17 vs mz.Adept 2.65 (roborumble): 94.53% share, 34-1 rounds
+2026-10-27T05:27:20Z battle hadur2.Hadur 3.17 vs jmcd.BeoWulf 2.8 (roborumble): 80.73% share, 33-2 rounds
+2026-10-27T05:27:26Z health mz.Adept: 34/35 survived, 16 skipped, 0 faults, shield verdict 1
+2026-10-27T05:27:32Z battle hadur2.Hadur 3.17 vs lunchie.Lunchbox 0.93 (roborumble): 92.87% share, 35-0 rounds
+2026-10-27T05:27:32Z health eem.IWillFireNoBullet: 35/35 survived, 18 skipped, 0 faults, shield verdict 0
+2026-10-27T05:27:44Z health bvh.frg.Friga: 35/35 survived, 42 skipped, 0 faults, shield verdict 0
+2026-10-27T05:27:44Z health sample.TrackFire: 35/35 survived, 5 skipped, 0 faults, shield verdict 1
+2026-10-27T05:27:51Z battle hadur2.Hadur 3.17 vs kjc.MailManX 2.0 (roborumble): 95.23% share, 35-0 rounds
+2026-10-27T05:27:45Z battle hadur2.Hadur 3.17 vs bvh.frg.Friga 0.112dev (roborumble): 99.43% share, 35-0 rounds
+2026-10-27T05:27:41Z battle hadur2.Hadur 3.17 vs gh.GresSuffurd 0.4.13 (roborumble): 43.58% share, 18-18 rounds  << LOW
+2026-10-27T05:27:44Z battle hadur2.Hadur 3.17 vs sample.TrackFire 1.0 (roborumble): 100.0% share, 35-0 rounds
+2026-10-27T05:27:53Z health eem.IWillFireNoBullet: 29/35 survived, 47 skipped, 0 faults, shield verdict 0
+2026-10-27T05:27:51Z health pe.minimelee.SandboxMiniMelee: 35/35 survived, 34 skipped, 0 faults, shield verdict 0
+2026-10-27T05:27:53Z battle hadur2.Hadur 3.17 vs eem.IWillFireNoBullet v2.4 (roborumble): 93.91% share, 29-6 rounds
+2026-10-27T05:28:00Z battle hadur2.Hadur 3.17 vs pe.minimelee.SandboxMiniMelee 1.1 (roborumble): 87.17% share, 33-2 rounds
+2026-10-27T05:28:06Z health timmit.nano.TimDog: 35/35 survived, 46 skipped, 0 faults, shield verdict 1
+2026-10-27T05:27:59Z health pe.minimelee.SandboxMiniMelee: 33/35 survived, 41 skipped, 0 faults, shield verdict 1
+2026-10-27T05:28:10Z health timmit.nano.TimCat: 35/35 survived, 24 skipped, 0 faults, shield verdict 0
+2026-10-27T05:28:06Z battle hadur2.Hadur 3.17 vs timmit.nano.TimDog 0.33 (roborumble): 98.85% share, 35-0 rounds
+2026-10-27T05:28:10Z battle hadur2.Hadur 3.17 vs timmit.nano.TimCat 0.13 (roborumble): 97.16% share, 35-0 rounds
+2026-10-27T05:28:25Z battle hadur2.Hadur 3.17 vs conscience.Electron 1.3g (roborumble): 95.72% share, 35-0 rounds
+2026-10-27T05:28:25Z battle hadur2.Hadur 3.17 vs pak.JakeTheTestingRobot .1b (roborumble): 94.93% share, 35-0 rounds
+2026-10-27T05:28:25Z health conscience.Electron: 35/35 survived, 26 skipped, 0 faults, shield verdict 0
+2026-10-27T05:28:24Z health pak.JakeTheTestingRobot: 35/35 survived, 40 skipped, 0 faults, shield verdict 0
+2026-10-27T05:28:35Z battle hadur2.Hadur 3.17 vs zzx.Ignohis 8.0 (roborumble): 96.27% share, 35-0 rounds
+2026-10-27T05:28:39Z battle hadur2.Hadur 3.17 vs agrach.Dalek 1.0 (roborumble): 98.75% share, 35-0 rounds
+2026-10-27T05:28:39Z health agrach.Dalek: 35/35 survived, 66 skipped, 0 faults, shield verdict 0
+2026-10-27T05:28:45Z battle hadur2.Hadur 3.17 vs kcn.unnamed.Unnamed 1.21 (roborumble): 82.18% share, 34-1 rounds
+2026-10-27T05:28:44Z health kcn.unnamed.Unnamed: 34/35 survived, 173 skipped, 0 faults, shield verdict 1
+2026-10-27T05:28:55Z health sgp.ShiningBeetle: 35/35 survived, 87 skipped, 0 faults, shield verdict 1
+2026-10-27T05:28:57Z battle hadur2.Hadur 3.17 vs EH.mini.Panther 0.2 (roborumble): 95.39% share, 32-3 rounds
+2026-10-27T05:29:00Z battle hadur2.Hadur 3.17 vs cw.megas.Silhouette 1.1 (roborumble): 71.41% share, 31-4 rounds
+2026-10-27T05:28:55Z battle hadur2.Hadur 3.17 vs sgp.ShiningBeetle 1.1 (roborumble): 93.13% share, 35-0 rounds
+2026-10-27T05:28:57Z health taqho.taqbot: 32/35 survived, 31 skipped, 0 faults, shield verdict 0
+2026-10-27T05:29:00Z health rz.Apollon: 31/35 survived, 125 skipped, 0 faults, shield verdict 0
+2026-10-27T05:29:04Z health geep.mini.GPBotA: 35/35 survived, 21 skipped, 0 faults, shield verdict 0
+2026-10-27T05:29:12Z battle hadur2.Hadur 3.17 vs rz.Apollon 0.23 (roborumble): 90.51% share, 34-1 rounds
+2026-10-27T05:29:05Z battle hadur2.Hadur 3.17 vs geep.mini.GPBotA 1.0 (roborumble): 98.4% share, 35-0 rounds
+2026-10-27T05:29:12Z health taqho.taqbot: 35/35 survived, 35 skipped, 0 faults, shield verdict 0
+2026-10-27T05:29:18Z health suh.nano.RammingC: 35/35 survived, 9 skipped, 0 faults, shield verdict 0
+2026-10-27T05:29:22Z battle hadur2.Hadur 3.17 vs taqho.taqbot 1.0 (roborumble): 91.16% share, 35-0 rounds
+2026-10-27T05:29:18Z battle hadur2.Hadur 3.17 vs oog.micro.MagicD3 0.41 (roborumble): 97.68% share, 35-0 rounds
+2026-10-27T05:29:23Z battle hadur2.Hadur 3.17 vs suh.nano.RammingC 1.00 (roborumble): 74.85% share, 35-0 rounds
+2026-10-27T05:29:30Z health dittman.BlindSquirl: 35/35 survived, 26 skipped, 0 faults, shield verdict 0
+2026-10-27T05:29:22Z health suh.nano.RammingC: 35/35 survived, 33 skipped, 0 faults, shield verdict 0
+2026-10-27T05:29:30Z battle hadur2.Hadur 3.17 vs dittman.BlindSquirl Retired (roborumble): 97.71% share, 35-0 rounds
+2026-10-27T05:29:42Z battle hadur2.Hadur 3.17 vs mahrgell.mahrram 1.3 (roborumble): 78.88% share, 35-0 rounds
+2026-10-27T05:29:49Z health dsw.StaticD: 35/35 survived, 3 skipped, 0 faults, shield verdict 0
+2026-10-27T05:29:50Z health mcb.Audace: 35/35 survived, 21 skipped, 0 faults, shield verdict 0
+2026-10-27T05:29:53Z health ary.Help: 30/35 survived, 67 skipped, 0 faults, shield verdict 1
+2026-10-27T05:29:49Z battle hadur2.Hadur 3.17 vs dsw.StaticD 1.0 (roborumble): 99.3% share, 35-0 rounds
+2026-10-27T05:29:51Z battle hadur2.Hadur 3.17 vs mcb.Audace 1.3 (roborumble): 94.89% share, 35-0 rounds
+2026-10-27T05:29:54Z battle hadur2.Hadur 3.17 vs ary.Help 1.0 (roborumble): 68.69% share, 30-5 rounds  << LOW
+2026-10-27T05:30:02Z health cx.mini.BlackSwans: 29/35 survived, 112 skipped, 0 faults, shield verdict 1
+2026-10-27T05:30:02Z START-UP DISABLE? cx.mini.BlackSwans: 35 skipped turns in a row, setup 93 ms, first turn 0
+2026-10-27T05:30:11Z battle hadur2.Hadur 3.17 vs rsim.micro.uCatcher 0.1 (roborumble): 100.0% share, 35-0 rounds
+2026-10-27T05:30:02Z battle hadur2.Hadur 3.17 vs cx.mini.BlackSwans 0.60 (roborumble): 73.91% share, 29-6 rounds
+2026-10-27T05:30:10Z health rsim.micro.uCatcher: 35/35 survived, 34 skipped, 0 faults, shield verdict 0
+2026-10-27T05:30:13Z health sample.Fire: 35/35 survived, 2 skipped, 0 faults, shield verdict 0
+2026-10-27T05:30:21Z battle hadur2.Hadur 3.17 vs cjk.Merkava 0.1.1 (roborumble): 97.28% share, 35-0 rounds
+2026-10-27T05:30:14Z battle hadur2.Hadur 3.17 vs sample.Fire 1.0 (roborumble): 100.0% share, 35-0 rounds
+2026-10-27T05:30:22Z battle hadur2.Hadur 3.17 vs jk.sheldor.nano.Yatagan 1.2.3 (roborumble): 90.71% share, 34-1 rounds
+2026-10-27T05:30:21Z health cjk.Merkava: 35/35 survived, 27 skipped, 0 faults, shield verdict 0
+2026-10-27T05:30:22Z health jk.sheldor.nano.Yatagan: 34/35 survived, 53 skipped, 0 faults, shield verdict 0
+2026-10-27T05:30:33Z battle hadur2.Hadur 3.17 vs slugzilla.RandomLinear 1.0 (roborumble): 95.06% share, 35-0 rounds
+2026-10-27T05:30:36Z health blr.Chicken001: 35/35 survived, 13 skipped, 0 faults, shield verdict 0
+2026-10-27T05:30:37Z battle hadur2.Hadur 3.17 vs blr.Chicken001 0.1 (roborumble): 99.35% share, 35-0 rounds
+2026-10-27T05:30:44Z battle hadur2.Hadur 3.17 vs brainfade.Fallen 0.63 (roborumble): 98.59% share, 35-0 rounds
+2026-10-27T05:30:47Z health pulsar.Nanis: 35/35 survived, 17 skipped, 0 faults, shield verdict 0
+2026-10-27T05:30:49Z health hlavko.nano.Ringo: 35/35 survived, 28 skipped, 0 faults, shield verdict 0
+2026-10-27T05:30:48Z battle hadur2.Hadur 3.17 vs pulsar.Nanis 0.3 (roborumble): 96.63% share, 35-0 rounds
+2026-10-27T05:30:50Z battle hadur2.Hadur 3.17 vs hlavko.nano.Ringo 2.0 (roborumble): 97.08% share, 35-0 rounds
+2026-10-27T05:30:56Z health kanishk.Fr0z3n: 32/35 survived, 43 skipped, 0 faults, shield verdict 0
+2026-10-27T05:30:57Z battle hadur2.Hadur 3.17 vs kawigi.spare.SpareParts 0.7.6nosnd (roborumble): 90.12% share, 32-3 rounds
+2026-10-27T05:31:00Z battle hadur2.Hadur 3.17 vs kanishk.Fr0z3n 1.1 (roborumble): 99.62% share, 35-0 rounds
+2026-10-27T05:31:04Z battle hadur2.Hadur 3.17 vs dft.Guppy 1.0 (roborumble): 93.43% share, 35-0 rounds
+2026-10-27T05:31:00Z health kanishk.Fr0z3n: 35/35 survived, 42 skipped, 0 faults, shield verdict 0
+2026-10-27T05:31:06Z health fowl3628800.SitAndGo: 34/35 survived, 20 skipped, 0 faults, shield verdict 0
+2026-10-27T05:31:04Z health dft.Guppy: 35/35 survived, 44 skipped, 0 faults, shield verdict 0
+2026-10-27T05:31:07Z battle hadur2.Hadur 3.17 vs fowl3628800.SitAndGo 1.0.0 (roborumble): 97.5% share, 34-1 rounds
+2026-10-27T05:31:57Z health slugzilla.OscillateGF: 33/35 survived, 48 skipped, 0 faults, shield verdict 0
+2026-10-27T05:31:57Z battle hadur2.Hadur 3.17 vs slugzilla.OscillateGF 1.0 (roborumble): 88.21% share, 33-2 rounds
+2026-10-27T05:32:10Z health rsim.mini.BulletCatcher: 33/35 survived, 63 skipped, 0 faults, shield verdict 1
+2026-10-27T05:32:16Z battle hadur2.Hadur 3.17 vs sample.SittingDuck 1.0 (roborumble): 100.0% share, 35-0 rounds
+2026-10-27T05:32:12Z battle hadur2.Hadur 3.17 vs pedersen.Hubris 2.4 (roborumble): 80.18% share, 32-4 rounds
+2026-10-27T05:32:10Z battle hadur2.Hadur 3.17 vs rsim.mini.BulletCatcher 0.4 (roborumble): 84.34% share, 33-2 rounds
+2026-10-27T05:32:16Z health sample.SittingDuck: 35/35 survived, 4 skipped, 0 faults, shield verdict 0
+2026-10-27T05:32:11Z health fushi.PvP1.PvP1: 31/35 survived, 127 skipped, 0 faults, shield verdict 1
+2026-10-27T05:32:31Z health mym.EdgeStalker: 35/35 survived, 24 skipped, 0 faults, shield verdict 0
+2026-10-27T05:32:30Z health fushi.PvP1.PvP1: 29/35 survived, 129 skipped, 0 faults, shield verdict 1
+2026-10-27T05:32:35Z battle hadur2.Hadur 3.17 vs dsekercioglu.shield.ColdBreath 1.0 (roborumble): 100.0% share, 35-0 rounds
+2026-10-27T05:32:31Z battle hadur2.Hadur 3.17 vs mym.EdgeStalker 1.0 (roborumble): 98.65% share, 35-0 rounds
+2026-10-27T05:32:34Z health dsekercioglu.shield.ColdBreath: 35/35 survived, 8 skipped, 0 faults, shield verdict 0
+2026-10-27T05:32:47Z battle hadur2.Hadur 3.17 vs supersample.SuperMercutio 1.0 (roborumble): 93.34% share, 35-0 rounds
+2026-10-27T05:32:48Z battle hadur2.Hadur 3.17 vs sample.SittingDuck 1.0 (roborumble): 100.0% share, 35-0 rounds
+2026-10-27T05:32:47Z health supersample.SuperMercutio: 35/35 survived, 68 skipped, 0 faults, shield verdict 0
+2026-10-27T05:32:52Z health marksteam.Phoenix: 35/35 survived, 14 skipped, 0 faults, shield verdict 1
+2026-10-27T05:32:58Z health pez.nano.LittleEvilBrother: 35/35 survived, 36 skipped, 0 faults, shield verdict 0
+2026-10-27T05:32:56Z battle hadur2.Hadur 3.17 vs timmit.nano.TimDog 0.33 (roborumble): 98.7% share, 35-0 rounds
+2026-10-27T05:32:53Z battle hadur2.Hadur 3.17 vs marksteam.Phoenix 1.0 (roborumble): 95.41% share, 35-0 rounds
+2026-10-27T05:33:05Z battle hadur2.Hadur 3.17 vs quietus.Invader 0.1 (roborumble): 100.0% share, 35-0 rounds
+2026-10-27T05:32:59Z battle hadur2.Hadur 3.17 vs pez.nano.LittleEvilBrother 0.1 (roborumble): 96.4% share, 35-0 rounds
+2026-10-27T05:32:55Z health abc.Shadow: 35/35 survived, 74 skipped, 0 faults, shield verdict 0
+2026-10-27T05:33:04Z health quietus.Invader: 35/35 survived, 3 skipped, 0 faults, shield verdict 0
+2026-10-27T05:33:14Z battle hadur2.Hadur 3.17 vs abc.Shadow 3.83c (roborumble): 49.53% share, 24-11 rounds  << LOW
+2026-10-27T05:33:13Z health abc.Shadow: 24/35 survived, 185 skipped, 0 faults, shield verdict 1
+2026-10-27T05:33:29Z health slugzilla.OrbitLinear: 34/35 survived, 42 skipped, 0 faults, shield verdict 0
+2026-10-27T05:33:27Z health oog.mini.AlphaDragon: 35/35 survived, 37 skipped, 0 faults, shield verdict 0
+2026-10-27T05:33:29Z battle hadur2.Hadur 3.17 vs slugzilla.OrbitLinear 1.1 (roborumble): 93.58% share, 34-1 rounds
+2026-10-27T05:33:27Z battle hadur2.Hadur 3.17 vs ap.Frederick 1.1 (roborumble): 100.0% share, 35-0 rounds
+2026-10-27T05:33:37Z health oog.mini.AlphaDragon: 35/35 survived, 20 skipped, 0 faults, shield verdict 0
+2026-10-27T05:33:47Z battle hadur2.Hadur 3.17 vs nz.jdc.nano.PatternAdept 1.0 (roborumble): 82.93% share, 34-1 rounds
+2026-10-27T05:33:38Z battle hadur2.Hadur 3.17 vs oog.mini.AlphaDragon 0.1 (roborumble): 95.94% share, 35-0 rounds
+2026-10-27T05:33:50Z health tvv.micro.Antares: 35/35 survived, 19 skipped, 0 faults, shield verdict 0
+2026-10-27T05:33:59Z battle hadur2.Hadur 3.17 vs axeBots.Okami 1.04 (roborumble): 72.58% share, 29-6 rounds
+2026-10-27T05:33:53Z battle hadur2.Hadur 3.17 vs whitesquare.robots.SkynetAdvanced 1.1 (roborumble): 96.74% share, 35-0 rounds
+2026-10-27T05:33:50Z battle hadur2.Hadur 3.17 vs tvv.micro.Antares 1.1.1 (roborumble): 99.35% share, 35-0 rounds
+2026-10-27T05:33:59Z health axeBots.Okami: 29/35 survived, 121 skipped, 0 faults, shield verdict 1
+2026-10-27T05:33:52Z health gf.Centaur.Centaur: 35/35 survived, 58 skipped, 0 faults, shield verdict 1
+2026-10-27T05:34:14Z health hlavko.micro.Flex: 32/35 survived, 142 skipped, 0 faults, shield verdict 1
+2026-10-27T05:34:14Z START-UP DISABLE? hlavko.micro.Flex: 45 skipped turns in a row, setup 70 ms, first turn 0
+2026-10-27T05:34:15Z battle hadur2.Hadur 3.17 vs arthord.NanoSatan Mu (roborumble): 86.25% share, 35-0 rounds
+2026-10-27T05:34:17Z battle hadur2.Hadur 3.17 vs gf.Centaur.Centaur 0.6.7 (roborumble): 83.66% share, 34-1 rounds
+2026-10-27T05:34:14Z battle hadur2.Hadur 3.17 vs hlavko.micro.Flex 1.5 (roborumble): 75.05% share, 32-3 rounds
+2026-10-27T05:34:14Z health arthord.NanoSatan: 35/35 survived, 50 skipped, 0 faults, shield verdict 1
+2026-10-27T05:34:17Z health gf.Centaur.Centaur: 34/35 survived, 106 skipped, 0 faults, shield verdict 1
+2026-10-27T05:34:32Z health baal.nano.N: 35/35 survived, 64 skipped, 0 faults, shield verdict 0
+2026-10-27T05:34:30Z battle hadur2.Hadur 3.17 vs ar.QuantumChromodynamics 1.2.1 (roborumble): 86.06% share, 34-1 rounds
+2026-10-27T05:34:31Z battle hadur2.Hadur 3.17 vs kinsen.nano.Hoplomachy 1.6 (roborumble): 97.92% share, 35-0 rounds
+2026-10-27T05:34:27Z battle hadur2.Hadur 3.17 vs pl.Drum 0.1 (roborumble): 82.63% share, 32-3 rounds
+2026-10-27T05:34:33Z battle hadur2.Hadur 3.17 vs baal.nano.N 1.42 (roborumble): 97.8% share, 35-0 rounds
+2026-10-27T05:34:30Z health ar.QuantumChromodynamics: 34/35 survived, 62 skipped, 0 faults, shield verdict 0
+2026-10-27T05:34:31Z health kinsen.nano.Hoplomachy: 35/35 survived, 23 skipped, 0 faults, shield verdict 1
+2026-10-27T05:34:32Z health baal.nano.N: 35/35 survived, 64 skipped, 0 faults, shield verdict 0
+2026-10-27T05:34:51Z health justin.DemonicRage: 27/35 survived, 65 skipped, 0 faults, shield verdict 1
+2026-10-27T05:34:50Z health abud.ThirdRobo: 35/35 survived, 23 skipped, 0 faults, shield verdict 0
+2026-10-27T05:34:52Z battle hadur2.Hadur 3.17 vs justin.DemonicRage 3.20 (roborumble): 64.54% share, 27-8 rounds  << LOW
+2026-10-27T05:34:51Z battle hadur2.Hadur 3.17 vs abud.ThirdRobo 1.0 (roborumble): 98.55% share, 35-0 rounds
+2026-10-27T05:35:06Z battle hadur2.Hadur 3.17 vs matt.advanced.Katana 1.0 (roborumble): 93.52% share, 35-0 rounds
+2026-10-27T05:35:05Z health matt.advanced.Katana: 35/35 survived, 26 skipped, 0 faults, shield verdict 0
+2026-10-27T05:35:33Z battle hadur2.Hadur 3.17 vs nat.Hikari dev0001 (roborumble): 84.67% share, 33-2 rounds
+2026-10-27T05:35:34Z battle hadur2.Hadur 3.17 vs ArchAlpha.ArchimedesAlpha 1.0 (roborumble): 100.0% share, 35-0 rounds
+2026-10-27T05:35:32Z battle hadur2.Hadur 3.17 vs takeBot.SpiralCrash 1.0 (roborumble): 94.96% share, 35-0 rounds
+2026-10-27T05:35:32Z health nat.Hikari: 33/35 survived, 21 skipped, 0 faults, shield verdict 1
+2026-10-27T05:35:34Z health ArchAlpha.ArchimedesAlpha: 35/35 survived, 26 skipped, 0 faults, shield verdict 0
+2026-10-27T05:35:38Z health kc.micro.WaveShark: 33/35 survived, 79 skipped, 0 faults, shield verdict 1
+2026-10-27T05:35:36Z health radnor.DoctorBob: 35/35 survived, 24 skipped, 0 faults, shield verdict 1
+2026-10-27T05:35:47Z battle hadur2.Hadur 3.17 vs NDH.GuessFactor 1.0 (roborumble): 93.47% share, 35-0 rounds
+2026-10-27T05:35:39Z battle hadur2.Hadur 3.17 vs kc.micro.WaveShark 0.5 (roborumble): 81.12% share, 33-2 rounds
+2026-10-27T05:35:36Z battle hadur2.Hadur 3.17 vs radnor.DoctorBob 1.42 (roborumble): 99.71% share, 35-0 rounds
+2026-10-27T05:35:47Z health NDH.GuessFactor: 35/35 survived, 61 skipped, 0 faults, shield verdict 0
+2026-10-27T05:36:01Z battle hadur2.Hadur 3.17 vs wiki.nano.Flick 1.0 (roborumble): 92.96% share, 29-6 rounds
+2026-10-27T05:36:01Z battle hadur2.Hadur 3.17 vs sgp.ShiningBeetle 1.1 (roborumble): 89.57% share, 35-0 rounds
+2026-10-27T05:36:01Z health wiki.nano.Flick: 29/35 survived, 116 skipped, 0 faults, shield verdict 1
+2026-10-27T05:36:04Z health amk.ChumbaWumba: 31/35 survived, 58 skipped, 0 faults, shield verdict 1
+2026-10-27T05:36:00Z health sgp.ShiningBeetle: 35/35 survived, 17 skipped, 0 faults, shield verdict 1
+2026-10-27T05:36:01Z START-UP DISABLE? wiki.nano.Flick: 31 skipped turns in a row, setup 112 ms, first turn 0
+2026-10-27T05:36:05Z battle hadur2.Hadur 3.17 vs amk.ChumbaWumba 0.3 (roborumble): 75.19% share, 31-4 rounds  << COLLAPSE
+2026-10-27T05:36:22Z battle hadur2.Hadur 3.17 vs yarghard.Y101 1.0 (roborumble): 99.98% share, 35-0 rounds
+2026-10-27T05:36:21Z health yarghard.Y101: 35/35 survived, 19 skipped, 0 faults, shield verdict 0
+2026-10-27T05:36:36Z battle hadur2.Hadur 3.17 vs zeze2.OperatorZeze 1.05 (roborumble): 84.44% share, 32-3 rounds
+2026-10-27T05:36:41Z battle hadur2.Hadur 3.17 vs bumblebee.Bumblebee 1.0 (roborumble): 89.81% share, 35-0 rounds
+2026-10-27T05:36:43Z health aw.Gilgalad: 19/35 survived, 203 skipped, 0 faults, shield verdict 1
+2026-10-27T05:36:40Z health rcb.Vanessa03: 35/35 survived, 16 skipped, 0 faults, shield verdict 0
+2026-10-27T05:36:43Z health cjm.Che: 33/35 survived, 56 skipped, 0 faults, shield verdict 1
+2026-10-27T05:36:49Z health dmh.robocode.robot.PinkPanther: 30/35 survived, 35 skipped, 0 faults, shield verdict 0
+2026-10-27T05:36:43Z START-UP DISABLE? aw.Gilgalad: 31 skipped turns in a row, setup 72 ms, first turn 0
+2026-10-27T05:36:44Z battle hadur2.Hadur 3.17 vs aw.Gilgalad 1.99.5c (roborumble): 48.36% share, 20-15 rounds  << LOW
+2026-10-27T05:36:56Z battle hadur2.Hadur 3.17 vs wiki.Wolverine 2.1 (roborumble): 87.19% share, 35-0 rounds
+2026-10-27T05:36:48Z battle hadur2.Hadur 3.17 vs fullsail.LaxativeTeaTwo 1.0 (roborumble): 93.9% share, 35-0 rounds
+2026-10-27T05:36:49Z battle hadur2.Hadur 3.17 vs rcb.Vanessa03 0 (roborumble): 89.38% share, 34-1 rounds
+2026-10-27T05:36:49Z battle hadur2.Hadur 3.17 vs dam.MogBot 2.9 (roborumble): 77.25% share, 30-5 rounds
+2026-10-27T05:36:44Z battle hadur2.Hadur 3.17 vs cjm.Che 1.2 (roborumble): 82.5% share, 33-2 rounds
+2026-10-27T05:36:50Z battle hadur2.Hadur 3.17 vs dmh.robocode.robot.PinkPanther 1.1 (roborumble): 68.46% share, 30-5 rounds  << LOW
+2026-10-27T05:36:59Z health sheldor.nano.SabreuseNano: 35/35 survived, 27 skipped, 0 faults, shield verdict 1
+2026-10-27T05:36:47Z health fullsail.LaxativeTeaTwo: 35/35 survived, 11 skipped, 0 faults, shield verdict 0
+2026-10-27T05:37:00Z health divineomega.PatrollerBot: 34/35 survived, 47 skipped, 0 faults, shield verdict 1
+2026-10-27T05:36:49Z health dam.MogBot: 30/35 survived, 109 skipped, 0 faults, shield verdict 1
+2026-10-27T05:37:12Z page roborumble: APS 90.77, 3615 battles, 123 new, 1 flagged
+    DROP gh.GresSuffurd 0.4.13: 43.6 (pairing 53.63 -> 51.62)
+2026-10-27T05:37:12Z page meleerumble: APS 66.47, 1970 battles, 63 new, 3 flagged
+    DROP justin.DemonicRage 3.4: 43.3 (pairing 44.28 -> 43.95)
+    DROP catcat20.Matcha 0.006: 48.8 (pairing 49.53 -> 49.39)
+    DROP kc.mini.Mirage 0.2: 46.5 (pairing 49.84 -> 49.28)
+2026-10-27T05:37:12Z page teamrumble: APS 79.36, 208 battles, 3 new, 0 flagged
+2026-10-27T05:37:00Z battle hadur2.Hadur 3.17 vs sheldor.nano.SabreuseNano 1.1 (roborumble): 70.7% share, 35-0 rounds
+2026-10-27T05:37:12Z battle hadur2.Hadur 3.17 vs velas.Alpha 1.0 (roborumble): 95.79% share, 35-0 rounds
+2026-10-27T05:37:01Z battle hadur2.Hadur 3.17 vs divineomega.PatrollerBot 1.0 (roborumble): 89.81% share, 34-1 rounds
+2026-10-27T05:36:59Z health sheldor.nano.SabreuseNano: 35/35 survived, 27 skipped, 0 faults, shield verdict 1
+2026-10-27T05:37:12Z health velas.Alpha: 35/35 survived, 8 skipped, 0 faults, shield verdict 0
+2026-10-27T05:37:13Z health uccc.Dorito: 35/35 survived, 21 skipped, 0 faults, shield verdict 1
+2026-10-27T05:37:18Z health suzushin7.nano.Galaxy02: 35/35 survived, 80 skipped, 0 faults, shield verdict 0
+2026-10-27T05:37:14Z battle hadur2.Hadur 3.17 vs uccc.Dorito 1.12 (roborumble): 98.44% share, 35-0 rounds
+2026-10-27T05:37:18Z battle hadur2.Hadur 3.17 vs suzushin7.nano.Galaxy02 1.01 (roborumble): 98.29% share, 35-0 rounds
+2026-10-27T05:37:29Z battle hadur2.Hadur 3.17 vs drd.Dreadknoght 0.9 (roborumble): 99.93% share, 35-0 rounds
+2026-10-27T05:37:36Z battle hadur2.Hadur 3.17 vs marcinek.TopGun 1.3 (roborumble): 93.88% share, 35-0 rounds
+2026-10-27T05:37:28Z health drd.Dreadknoght: 35/35 survived, 22 skipped, 0 faults, shield verdict 0
+2026-10-27T05:37:35Z health marcinek.TopGun: 35/35 survived, 37 skipped, 0 faults, shield verdict 0
+2026-10-27T05:37:48Z battle hadur2.Hadur 3.17 vs whind.Constitution 0.7.1 (roborumble): 87.51% share, 34-1 rounds
+2026-10-27T05:37:49Z health ary.nano.AceSurf: 35/35 survived, 41 skipped, 0 faults, shield verdict 0
+2026-10-27T05:37:47Z health whind.Constitution: 34/34 survived, 34 skipped, 0 faults, shield verdict 0
+2026-10-27T05:37:50Z battle hadur2.Hadur 3.17 vs jaw.Mouse 0.11 (roborumble): 98.15% share, 35-0 rounds
+2026-10-27T05:37:55Z battle hadur2.Hadur 3.17 vs ary.nano.AceSurf 1.2 (roborumble): 88.89% share, 34-1 rounds
+2026-10-27T05:37:55Z health ary.nano.AceSurf: 34/35 survived, 19 skipped, 0 faults, shield verdict 0
+2026-10-27T05:38:03Z battle hadur2.Hadur 3.17 vs tzu.TheArtOfWar 1.2 (roborumble): 94.27% share, 34-1 rounds
+2026-10-27T05:38:04Z battle hadur2.Hadur 3.17 vs usa.nano.Nemo 2.0 (roborumble): 91.26% share, 34-1 rounds
+2026-10-27T05:38:09Z battle hadur2.Hadur 3.17 vs sheldor.mini.Foilist 1.3.1 (roborumble): 59.69% share, 24-11 rounds  << LOW
+2026-10-27T05:38:02Z health tzu.TheArtOfWar: 34/35 survived, 49 skipped, 0 faults, shield verdict 0
+2026-10-27T05:38:11Z health suzushin7.nano.Galaxy01: 35/35 survived, 56 skipped, 0 faults, shield verdict 0
+2026-10-27T05:38:04Z health usa.nano.Nemo: 34/35 survived, 42 skipped, 0 faults, shield verdict 0
+2026-10-27T05:38:08Z health sheldor.mini.Foilist: 24/35 survived, 198 skipped, 0 faults, shield verdict 1
+2026-10-27T05:38:02Z START-UP DISABLE? tzu.TheArtOfWar: 40 skipped turns in a row, setup 58 ms, first turn 0
+2026-10-27T05:38:11Z battle hadur2.Hadur 3.17 vs suzushin7.nano.Galaxy01 1.01 (roborumble): 100.0% share, 35-0 rounds
+2026-10-27T05:38:25Z health dz.GalbaMini: 35/35 survived, 40 skipped, 0 faults, shield verdict 0
+2026-10-27T05:38:25Z battle hadur2.Hadur 3.17 vs elloco.Flower 0.1r1 (roborumble): 94.76% share, 35-0 rounds
+2026-10-27T05:38:35Z health dz.GalbaMini: 31/35 survived, 45 skipped, 0 faults, shield verdict 1
+2026-10-27T05:38:35Z health dmh.robocode.robot.GreenDragon: 34/35 survived, 17 skipped, 0 faults, shield verdict 1
+2026-10-27T05:38:36Z battle hadur2.Hadur 3.17 vs dz.GalbaMini 0.121 (roborumble): 73.41% share, 31-4 rounds
+2026-10-27T05:38:36Z battle hadur2.Hadur 3.17 vs dmh.robocode.robot.GreenDragon 1.0 (roborumble): 88.33% share, 34-1 rounds
+2026-10-27T05:38:43Z battle hadur2.Hadur 3.17 vs jcs.Decepticon 2.5.3 (roborumble): 87.18% share, 34-1 rounds
+2026-10-27T05:38:49Z health japs.Sjonniebot: 34/35 survived, 55 skipped, 0 faults, shield verdict 1
+2026-10-27T05:38:43Z health jcs.Decepticon: 34/35 survived, 72 skipped, 0 faults, shield verdict 1
+2026-10-27T05:38:50Z battle hadur2.Hadur 3.17 vs japs.Sjonniebot 0.9.1 (roborumble): 89.04% share, 34-1 rounds
+2026-10-27T05:38:53Z battle hadur2.Hadur 3.17 vs stelo.RamTrackSurfer 1.2 (roborumble): 84.38% share, 34-1 rounds
+2026-10-27T05:38:57Z battle hadur2.Hadur 3.17 vs Queens_teamrobot.UltraRazor 1.0 (roborumble): 99.47% share, 35-0 rounds
+2026-10-27T05:38:57Z health Queens_teamrobot.UltraRazor: 35/35 survived, 22 skipped, 0 faults, shield verdict 0
+2026-10-27T05:39:00Z battle hadur2.Hadur 3.17 vs maribo.Omicron 1.0 (roborumble): 95.54% share, 34-1 rounds
+2026-10-27T05:39:02Z battle hadur2.Hadur 3.17 vs Ex.Survival 3.7 (roborumble): 97.69% share, 35-0 rounds
+2026-10-27T05:39:07Z battle hadur2.Hadur 3.17 vs velas.Alpha 1.0 (roborumble): 95.98% share, 35-0 rounds
+2026-10-27T05:39:04Z battle hadur2.Hadur 3.17 vs robar.nano.Assertive 0.3 (roborumble): 81.32% share, 33-2 rounds
+2026-10-27T05:39:11Z health whitesquare.robots.SkynetAdvanced: 35/35 survived, 56 skipped, 0 faults, shield verdict 1
+2026-10-27T05:39:07Z health velas.Alpha: 35/35 survived, 14 skipped, 0 faults, shield verdict 0
+2026-10-27T05:39:04Z health robar.nano.Assertive: 33/35 survived, 55 skipped, 0 faults, shield verdict 0
+2026-10-27T05:39:11Z battle hadur2.Hadur 3.17 vs whitesquare.robots.SkynetAdvanced 1.1 (roborumble): 94.54% share, 35-0 rounds
+2026-10-27T05:39:20Z battle hadur2.Hadur 3.17 vs omens.CannonfodderMicro 1.4 (roborumble): 95.08% share, 34-1 rounds
+2026-10-27T05:39:21Z battle hadur2.Hadur 3.17 vs skm.butterfly 1.0 (roborumble): 100.0% share, 35-0 rounds
+2026-10-27T05:39:11Z health whitesquare.robots.SkynetAdvanced: 35/35 survived, 56 skipped, 0 faults, shield verdict 1
+2026-10-27T05:39:19Z health omens.CannonfodderMicro: 34/35 survived, 31 skipped, 0 faults, shield verdict 1
+2026-10-27T05:39:20Z health skm.butterfly: 35/35 survived, 12 skipped, 0 faults, shield verdict 0
+2026-10-27T05:39:29Z battle hadur2.Hadur 3.17 vs lunchie.Lunchbox 0.93 (roborumble): 93.8% share, 35-0 rounds
+2026-10-27T05:39:34Z health klein.GottesKrieger: 35/35 survived, 16 skipped, 0 faults, shield verdict 0
+2026-10-27T05:39:36Z health tk.BotOX: 35/35 survived, 16 skipped, 0 faults, shield verdict 0
+2026-10-27T05:39:35Z battle hadur2.Hadur 3.17 vs klein.GottesKrieger 1.1 (roborumble): 99.64% share, 35-0 rounds
+2026-10-27T05:39:37Z battle hadur2.Hadur 3.17 vs tk.BotOX 0.3 (roborumble): 98.52% share, 35-0 rounds
+2026-10-27T05:39:55Z battle hadur2.Hadur 3.17 vs sample.SittingDuck 1.0 (roborumble): 100.0% share, 35-0 rounds
+2026-10-27T05:39:54Z health sample.SittingDuck: 35/35 survived, 2 skipped, 0 faults, shield verdict 0
+2026-10-27T05:40:01Z battle hadur2.Hadur 3.17 vs bumblebee.Bumblebee 1.0 (roborumble): 90.1% share, 35-0 rounds
+2026-10-27T05:40:08Z health cb.nano.Insomnia: 34/35 survived, 64 skipped, 0 faults, shield verdict 0
+2026-10-27T05:40:08Z START-UP DISABLE? cb.nano.Insomnia: 32 skipped turns in a row, setup 57 ms, first turn 0
+2026-10-27T05:40:08Z battle hadur2.Hadur 3.17 vs cb.nano.Insomnia 1.0 (roborumble): 89.26% share, 34-1 rounds
+2026-10-27T05:40:25Z battle hadur2.Hadur 3.17 vs jaara.LambdaBot 1.1 (roborumble): 87.07% share, 35-0 rounds
+2026-10-27T05:40:24Z health jaara.LambdaBot: 35/35 survived, 74 skipped, 0 faults, shield verdict 1
+2026-10-27T05:40:34Z health pl.robocode.Pacyfista: 35/35 survived, 63 skipped, 0 faults, shield verdict 0
+2026-10-27T05:40:33Z battle hadur2.Hadur 3.17 vs voidious.Diamond 1.8.22 (roborumble): 54.23% share, 24-11 rounds  << LOW
+2026-10-27T05:40:35Z battle hadur2.Hadur 3.17 vs pl.robocode.Pacyfista 1.0 (roborumble): 99.64% share, 35-0 rounds
+2026-10-27T05:40:32Z health voidious.Diamond: 24/35 survived, 629 skipped, 0 faults, shield verdict 1
+2026-10-27T05:40:32Z START-UP DISABLE? voidious.Diamond: 42 skipped turns in a row, setup 69 ms, first turn 0
+2026-10-27T05:40:51Z battle hadur2.Hadur 3.17 vs dft.Cyanide 1.90 (roborumble): 96.69% share, 35-0 rounds
+2026-10-27T05:40:50Z health dft.Cyanide: 35/35 survived, 28 skipped, 0 faults, shield verdict 0
+2026-10-27T05:40:57Z battle hadur2.Hadur 3.17 vs abc.Shadow 3.83c (roborumble): 43.5% share, 19-16 rounds  << LOW
+2026-10-27T05:41:01Z battle hadur2.Hadur 3.17 vs jaybot.adv.bots.JayBot 2.0 (roborumble): 95.98% share, 35-0 rounds
+2026-10-27T05:40:59Z battle hadur2.Hadur 3.17 vs ICS4U1.Patrick_White_Schrodinger 1.1 (roborumble): 96.02% share, 35-0 rounds
+2026-10-27T05:40:56Z health abc.Shadow: 19/34 survived, 141 skipped, 0 faults, shield verdict 1
+2026-10-27T05:41:01Z health jaybot.adv.bots.JayBot: 35/35 survived, 24 skipped, 0 faults, shield verdict 1
+2026-10-27T05:40:58Z health ICS4U1.Patrick_White_Schrodinger: 35/35 survived, 16 skipped, 0 faults, shield verdict 0
+2026-10-27T05:40:56Z START-UP DISABLE? abc.Shadow: 37 skipped turns in a row, setup 62 ms, first turn 0
+2026-10-27T05:41:08Z battle hadur2.Hadur 3.17 vs sample.Fire 1.0 (roborumble): 100.0% share, 35-0 rounds
+2026-10-27T05:41:08Z health sample.Fire: 35/35 survived, 18 skipped, 0 faults, shield verdict 1
+2026-10-27T05:41:23Z battle hadur2.Hadur 3.17 vs hfgrobots.HFG 1.0 (roborumble): 100.0% share, 35-0 rounds
+2026-10-27T05:41:22Z health hfgrobots.HFG: 34/35 survived, 74 skipped, 0 faults, shield verdict 0
+2026-10-27T05:41:22Z START-UP DISABLE? hfgrobots.HFG: 45 skipped turns in a row, setup 68 ms, first turn 0
+2026-10-27T05:41:46Z battle hadur2.Hadur 3.17 vs supersample.SuperMercutio 1.0 (roborumble): 81.06% share, 32-3 rounds
+2026-10-27T05:41:47Z health theo.real.Ahab: 33/35 survived, 197 skipped, 0 faults, shield verdict 1
+2026-10-27T05:41:49Z health throxbot.ThroxBot: 34/35 survived, 54 skipped, 0 faults, shield verdict 0
+2026-10-27T05:41:45Z health supersample.SuperMercutio: 32/35 survived, 159 skipped, 0 faults, shield verdict 0
+2026-10-27T05:41:45Z START-UP DISABLE? supersample.SuperMercutio: 50 skipped turns in a row, setup 646 ms, first turn 0
+2026-10-27T05:41:54Z battle hadur2.Hadur 3.17 vs tcf.Drifter 29 (roborumble): 84.26% share, 33-2 rounds
+2026-10-27T05:41:58Z battle hadur2.Hadur 3.17 vs Legend.Qetro 1.6 (roborumble): 99.35% share, 35-0 rounds
+2026-10-27T05:41:48Z battle hadur2.Hadur 3.17 vs theo.real.Ahab 1.0 (roborumble): 82.67% share, 33-2 rounds
+2026-10-27T05:41:50Z battle hadur2.Hadur 3.17 vs throxbot.ThroxBot 0.1 (roborumble): 90.16% share, 34-1 rounds
+2026-10-27T05:41:58Z health Legend.Qetro: 35/35 survived, 49 skipped, 0 faults, shield verdict 0
+2026-10-27T05:42:04Z health madmath.Cow: 35/35 survived, 41 skipped, 0 faults, shield verdict 0
+2026-10-27T05:42:00Z battle hadur2.Hadur 3.17 vs suh.mega.WaveSurferPG 1.06 (roborumble): 78.7% share, 29-6 rounds
+2026-10-27T05:42:06Z battle hadur2.Hadur 3.17 vs madmath.Cow 0.1.1 (roborumble): 97.68% share, 35-0 rounds
+2026-10-27T05:42:17Z battle hadur2.Hadur 3.17 vs gh.micro.Grinnik 1.0 (roborumble): 90.36% share, 34-1 rounds
+2026-10-27T05:42:16Z health gh.micro.Grinnik: 34/35 survived, 119 skipped, 0 faults, shield verdict 1
+2026-10-27T05:42:43Z battle hadur2.Hadur 3.17 vs timmit.mini.TimVA 0.43 (roborumble): 80.73% share, 33-2 rounds
+2026-10-27T05:42:42Z health timmit.mini.TimVA: 33/35 survived, 38 skipped, 0 faults, shield verdict 1
+2026-10-27T05:42:48Z health sam.Samspin: 34/35 survived, 93 skipped, 0 faults, shield verdict 0
+2026-10-27T05:42:48Z START-UP DISABLE? sam.Samspin: 78 skipped turns in a row, setup 78 ms, first turn 0
+2026-10-27T05:42:55Z battle hadur2.Hadur 3.17 vs casey.Flee 1.0 (roborumble): 91.28% share, 34-1 rounds
+2026-10-27T05:42:54Z battle hadur2.Hadur 3.17 vs fire219.CatBot 1.0 (roborumble): 99.05% share, 35-0 rounds
+2026-10-27T05:42:49Z battle hadur2.Hadur 3.17 vs sam.Samspin 1.0 (roborumble): 98.88% share, 35-0 rounds
+2026-10-27T05:42:54Z health casey.Flee: 34/35 survived, 47 skipped, 0 faults, shield verdict 0
+2026-10-27T05:42:53Z health fire219.CatBot: 35/35 survived, 19 skipped, 0 faults, shield verdict 0
+2026-10-27T05:43:10Z health catcat20.atom.Atom: 30/35 survived, 99 skipped, 0 faults, shield verdict 1
+2026-10-27T05:43:14Z health ad.last.Bottom: 35/35 survived, 14 skipped, 0 faults, shield verdict 0
+2026-10-27T05:43:11Z battle hadur2.Hadur 3.17 vs catcat20.atom.Atom 0.51 (roborumble): 76.83% share, 30-5 rounds
+2026-10-27T05:43:10Z battle hadur2.Hadur 3.17 vs techdude.kombat.FlamingKombat 1.5 (roborumble): 99.54% share, 35-0 rounds
+2026-10-27T05:43:14Z battle hadur2.Hadur 3.17 vs ad.last.Bottom 1.0 (roborumble): 99.97% share, 35-0 rounds
+2026-10-27T05:43:14Z health ad.last.Bottom: 35/35 survived, 14 skipped, 0 faults, shield verdict 0
+2026-10-27T05:43:26Z battle hadur2.Hadur 3.17 vs apollokidd.ApolloKidd 0.9 (roborumble): 95.31% share, 34-1 rounds
+2026-10-27T05:43:27Z battle hadur2.Hadur 3.17 vs bts.wiki.RipCurl 0.9b (roborumble): 77.97% share, 32-3 rounds
+2026-10-27T05:43:32Z battle hadur2.Hadur 3.17 vs steff.Rebel 2.1 (roborumble): 97.28% share, 35-0 rounds
+2026-10-27T05:43:25Z health lechu.Ala: 34/35 survived, 3 skipped, 0 faults, shield verdict 0
+2026-10-27T05:43:31Z health steff.Rebel: 35/35 survived, 25 skipped, 0 faults, shield verdict 0
+2026-10-27T05:43:37Z health tobe.Saturn: 31/35 survived, 148 skipped, 0 faults, shield verdict 0
+2026-10-27T05:43:37Z START-UP DISABLE? tobe.Saturn: 88 skipped turns in a row, setup 308 ms, first turn 0
+2026-10-27T05:43:46Z battle hadur2.Hadur 3.17 vs lechu.Ala 0.0.4 (roborumble): 71.99% share, 26-9 rounds
+2026-10-27T05:43:38Z battle hadur2.Hadur 3.17 vs tobe.Saturn lambda (roborumble): 76.51% share, 31-4 rounds
+2026-10-27T05:43:42Z battle hadur2.Hadur 3.17 vs tjk.AFlatNatural 1.0 (roborumble): 87.24% share, 34-1 rounds
+2026-10-27T05:43:45Z health lechu.Ala: 26/34 survived, 164 skipped, 0 faults, shield verdict 1
+2026-10-27T05:43:51Z health tide.pear.Pear: 34/35 survived, 106 skipped, 0 faults, shield verdict 0
+2026-10-27T05:43:50Z health nz.jdc.nano.AralT: 34/35 survived, 35 skipped, 0 faults, shield verdict 1
+2026-10-27T05:43:45Z START-UP DISABLE? lechu.Ala: 54 skipped turns in a row, setup 112 ms, first turn 0
+2026-10-27T05:43:51Z START-UP DISABLE? tide.pear.Pear: 83 skipped turns in a row, setup 126 ms, first turn 0
+2026-10-27T05:43:53Z battle hadur2.Hadur 3.17 vs bts.wiki.RipCurl 0.9b (roborumble): 77.74% share, 32-3 rounds
+2026-10-27T05:43:58Z battle hadur2.Hadur 3.17 vs ntc.Cannon 1.12test (roborumble): 94.05% share, 35-0 rounds
+2026-10-27T05:43:52Z battle hadur2.Hadur 3.17 vs tide.pear.Pear 0.62.1 (roborumble): 92.9% share, 34-1 rounds
+2026-10-27T05:43:51Z battle hadur2.Hadur 3.17 vs dft.Cyanide 1.90 (roborumble): 94.49% share, 34-1 rounds
+2026-10-27T05:43:58Z battle hadur2.Hadur 3.17 vs nz.jdc.nano.AralT 1.1 (roborumble): 87.14% share, 34-1 rounds
+2026-10-27T05:43:57Z health ntc.Cannon: 35/35 survived, 37 skipped, 0 faults, shield verdict 0
+2026-10-27T05:43:57Z health nz.jdc.nano.AralT: 34/35 survived, 164 skipped, 0 faults, shield verdict 1
+2026-10-27T05:43:57Z START-UP DISABLE? nz.jdc.nano.AralT: 38 skipped turns in a row, setup 441 ms, first turn 0
+2026-10-27T05:44:08Z battle hadur2.Hadur 3.17 vs ers.nano.lig.LigMA 1.9 (roborumble): 83.9% share, 33-2 rounds
+2026-10-27T05:44:15Z battle hadur2.Hadur 3.17 vs techdude.Class2C.Class2C 0.1 (roborumble): 90.48% share, 34-1 rounds
+2026-10-27T05:44:08Z health ers.nano.lig.LigMA: 33/35 survived, 114 skipped, 0 faults, shield verdict 0
+2026-10-27T05:44:17Z health tobe.mini.Charon: 34/34 survived, 49 skipped, 0 faults, shield verdict 0
+2026-10-27T05:44:14Z health techdude.Class2C.Class2C: 34/35 survived, 46 skipped, 0 faults, shield verdict 0
+2026-10-27T05:44:16Z health kvk.HebusLeTroll: 33/35 survived, 78 skipped, 0 faults, shield verdict 1
+2026-10-27T05:44:14Z START-UP DISABLE? techdude.Class2C.Class2C: 31 skipped turns in a row, setup 294 ms, first turn 0
+2026-10-27T05:44:18Z battle hadur2.Hadur 3.17 vs tobe.mini.Charon 0.9 (roborumble): 94.2% share, 33-2 rounds
+2026-10-27T05:44:25Z battle hadur2.Hadur 3.17 vs ua.kiiv.kosyak.robocode.tn1.Tn1 2.0 (roborumble): 94.04% share, 35-0 rounds
+2026-10-27T05:44:17Z battle hadur2.Hadur 3.17 vs kvk.HebusLeTroll 0.41 (roborumble): 84.08% share, 33-2 rounds
+2026-10-27T05:44:28Z battle hadur2.Hadur 3.17 vs supersample.SuperTracker 1.0 (roborumble): 94.17% share, 35-0 rounds
+2026-10-27T05:44:24Z health ua.kiiv.kosyak.robocode.tn1.Tn1: 35/35 survived, 23 skipped, 0 faults, shield verdict 1
+2026-10-27T05:44:35Z health wcsv.Stampede: 33/35 survived, 54 skipped, 0 faults, shield verdict 1
+2026-10-27T05:44:27Z health supersample.SuperTracker: 35/35 survived, 67 skipped, 0 faults, shield verdict 0
+2026-10-27T05:44:27Z START-UP DISABLE? supersample.SuperTracker: 35 skipped turns in a row, setup 114 ms, first turn 0
+2026-10-27T05:44:33Z battle hadur2.Hadur 3.17 vs robar.nano.Pugio 1.49 (roborumble): 79.61% share, 33-2 rounds
+2026-10-27T05:44:36Z battle hadur2.Hadur 3.17 vs wcsv.Stampede 1.3.3 (roborumble): 85.38% share, 33-2 rounds
+2026-10-27T05:44:33Z health robar.nano.Pugio: 33/35 survived, 142 skipped, 0 faults, shield verdict 0
+2026-10-27T05:44:44Z health stelo.MatchupMicro: 32/35 survived, 39 skipped, 0 faults, shield verdict 1
+2026-10-27T05:44:33Z START-UP DISABLE? robar.nano.Pugio: 45 skipped turns in a row, setup 91 ms, first turn 0
+2026-10-27T05:44:50Z battle hadur2.Hadur 3.17 vs acid.Bl4ck 1.0 (roborumble): 97.38% share, 35-0 rounds
+2026-10-27T05:44:45Z battle hadur2.Hadur 3.17 vs stelo.MatchupMicro 1.2 (roborumble): 79.85% share, 32-3 rounds
+2026-10-27T05:44:50Z health acid.Bl4ck: 35/35 survived, 10 skipped, 0 faults, shield verdict 0
+2026-10-27T05:44:57Z battle hadur2.Hadur 3.17 vs discan.mini.Exode 0.25 (roborumble): 95.47% share, 35-0 rounds
+2026-10-27T05:45:00Z battle hadur2.Hadur 3.17 vs mld.Moebius 2.9.3 (roborumble): 88.58% share, 34-1 rounds
+2026-10-27T05:44:57Z health discan.mini.Exode: 35/35 survived, 55 skipped, 0 faults, shield verdict 0
+2026-10-27T05:45:00Z health mld.Moebius: 34/34 survived, 83 skipped, 0 faults, shield verdict 0
+2026-10-27T05:45:05Z health barontrozo.BaronTrozo: 27/35 survived, 139 skipped, 0 faults, shield verdict 1
+2026-10-27T05:45:05Z START-UP DISABLE? barontrozo.BaronTrozo: 35 skipped turns in a row, setup 100 ms, first turn 0
+2026-10-27T05:45:13Z battle hadur2.Hadur 3.17 vs amk.Punbot.Punbot 0.01 (roborumble): 99.15% share, 35-0 rounds
+2026-10-27T05:45:13Z battle hadur2.Hadur 3.17 vs test.Podgy 4.0 (roborumble): 87.08% share, 34-1 rounds
+2026-10-27T05:45:06Z battle hadur2.Hadur 3.17 vs barontrozo.BaronTrozo 1.7.6 (roborumble): 64.57% share, 27-8 rounds  << LOW
+2026-10-27T05:45:13Z health amk.Punbot.Punbot: 35/35 survived, 19 skipped, 0 faults, shield verdict 0
+2026-10-27T05:45:13Z health test.Podgy: 34/35 survived, 56 skipped, 0 faults, shield verdict 0
+2026-10-27T05:45:21Z health krzysiek.robbo2.Robbo: 34/35 survived, 22 skipped, 0 faults, shield verdict 1
+2026-10-27T05:45:25Z health jsal.Jsalbot: 35/35 survived, 45 skipped, 0 faults, shield verdict 0
+2026-10-27T05:45:22Z battle hadur2.Hadur 3.17 vs krzysiek.robbo2.Robbo 1.0.0 (roborumble): 89.43% share, 35-0 rounds
+2026-10-27T05:45:20Z battle hadur2.Hadur 3.17 vs apv.LauLectrik 1.2 (roborumble): 83.94% share, 33-2 rounds
+2026-10-27T05:45:26Z battle hadur2.Hadur 3.17 vs jsal.Jsalbot 1.0 (roborumble): 97.64% share, 35-0 rounds
+2026-10-27T05:45:42Z battle hadur2.Hadur 3.17 vs lundal.Mark8 2012.09.15 (roborumble): 98.37% share, 35-0 rounds
+2026-10-27T05:45:41Z battle hadur2.Hadur 3.17 vs learn.ISmart 2.0s (roborumble): 84.2% share, 33-2 rounds
+2026-10-27T05:45:38Z battle hadur2.Hadur 3.17 vs bayen.UbaMicro 1.4 (roborumble): 96.46% share, 35-0 rounds
+2026-10-27T05:45:41Z health lundal.Mark8: 35/35 survived, 43 skipped, 0 faults, shield verdict 0
+2026-10-27T05:45:40Z health eld.Hmm: 33/35 survived, 119 skipped, 0 faults, shield verdict 1
+2026-10-27T05:45:37Z health bayen.UbaMicro: 35/35 survived, 22 skipped, 0 faults, shield verdict 1
+2026-10-27T05:45:54Z battle hadur2.Hadur 3.17 vs eld.Hmm 1.0 (roborumble): 94.77% share, 34-1 rounds
+2026-10-27T05:45:52Z battle hadur2.Hadur 3.17 vs shrub.Silver v048 (roborumble): 89.25% share, 33-2 rounds
+2026-10-27T05:45:56Z battle hadur2.Hadur 3.17 vs zyx.nano.EscherichiaColi 1.0 (roborumble): 90.38% share, 35-0 rounds
+2026-10-27T05:45:58Z health Lo_Ian.Gandalf_V4: 35/35 survived, 27 skipped, 0 faults, shield verdict 0
+2026-10-27T05:45:51Z health shrub.Silver: 33/35 survived, 83 skipped, 0 faults, shield verdict 1
+2026-10-27T05:45:55Z health zyx.nano.EscherichiaColi: 35/35 survived, 40 skipped, 0 faults, shield verdict 0
+2026-10-27T05:46:06Z health m3thos.Eva00: 35/35 survived, 59 skipped, 0 faults, shield verdict 0
+2026-10-27T05:46:09Z battle hadur2.Hadur 3.17 vs donjezza.Jezza 1.0 (roborumble): 99.93% share, 35-0 rounds
+2026-10-27T05:45:59Z battle hadur2.Hadur 3.17 vs a.FreyaOS 1.0 (roborumble): 99.11% share, 35-0 rounds
+2026-10-27T05:46:03Z battle hadur2.Hadur 3.17 vs Lo_Ian.Gandalf_V4 4.0 (roborumble): 93.7% share, 32-3 rounds
+2026-10-27T05:46:01Z battle hadur2.Hadur 3.17 vs jep.Terrible 0.4.1 (roborumble): 97.87% share, 35-0 rounds
+2026-10-27T05:46:06Z battle hadur2.Hadur 3.17 vs m3thos.Eva00 1.1 (roborumble): 99.86% share, 35-0 rounds
+2026-10-27T05:46:09Z health donjezza.Jezza: 35/35 survived, 32 skipped, 0 faults, shield verdict 0
+2026-10-27T05:46:02Z health Lo_Ian.Gandalf_V4: 32/35 survived, 75 skipped, 0 faults, shield verdict 0
+2026-10-27T05:46:06Z health m3thos.Eva00: 35/35 survived, 59 skipped, 0 faults, shield verdict 0
+2026-10-27T05:46:02Z START-UP DISABLE? Lo_Ian.Gandalf_V4: 62 skipped turns in a row, setup 55 ms, first turn 0
+2026-10-27T05:46:20Z battle hadur2.Hadur 3.17 vs qualidafial.MajorDick 1.0.1 (roborumble): 98.87% share, 35-0 rounds
+2026-10-27T05:46:25Z battle hadur2.Hadur 3.17 vs ndn.DyslexicMonkey 1.1 (roborumble): 94.63% share, 35-0 rounds
+2026-10-27T05:46:19Z battle hadur2.Hadur 3.17 vs cyragia.Bot 1.1 (roborumble): 98.75% share, 35-0 rounds
+2026-10-27T05:46:24Z battle hadur2.Hadur 3.17 vs oog.melee.Mercutio 1.0 (roborumble): 97.16% share, 35-0 rounds
+2026-10-27T05:46:24Z health myl.nano.Kakuru: 35/35 survived, 26 skipped, 0 faults, shield verdict 0
+2026-10-27T05:46:30Z health apc.LeeroyJenkins2: 35/35 survived, 51 skipped, 0 faults, shield verdict 1
+2026-10-27T05:46:23Z health oog.melee.Mercutio: 35/35 survived, 31 skipped, 0 faults, shield verdict 1
+2026-10-27T05:46:34Z battle hadur2.Hadur 3.17 vs abc.Shadow 3.83c (roborumble): 60.2% share, 27-8 rounds  << LOW
+2026-10-27T05:46:33Z battle hadur2.Hadur 3.17 vs myl.nano.Kakuru 1.20 (roborumble): 71.71% share, 30-5 rounds
+2026-10-27T05:46:31Z battle hadur2.Hadur 3.17 vs apc.LeeroyJenkins2 1.0 (roborumble): 85.98% share, 35-0 rounds
+2026-10-27T05:46:33Z battle hadur2.Hadur 3.17 vs mcb.Audace 1.3 (roborumble): 94.55% share, 34-1 rounds
+2026-10-27T05:46:33Z health abc.Shadow: 27/34 survived, 126 skipped, 0 faults, shield verdict 1
+2026-10-27T05:46:32Z health myl.nano.Kakuru: 30/35 survived, 26 skipped, 0 faults, shield verdict 0
+2026-10-27T05:46:30Z health apc.LeeroyJenkins2: 35/35 survived, 51 skipped, 0 faults, shield verdict 1
+2026-10-27T05:46:45Z health jsal.Jsalbot: 35/35 survived, 17 skipped, 0 faults, shield verdict 0
+2026-10-27T05:46:48Z battle hadur2.Hadur 3.17 vs tex.Longbot 0.4 (roborumble): 95.57% share, 35-0 rounds
+2026-10-27T05:46:46Z battle hadur2.Hadur 3.17 vs jsal.Jsalbot 1.0 (roborumble): 97.36% share, 35-0 rounds
+2026-10-27T05:46:50Z health robar.nano.BlackWidow: 34/35 survived, 5 skipped, 0 faults, shield verdict 0
+2026-10-27T05:46:48Z health tex.Longbot: 35/35 survived, 27 skipped, 0 faults, shield verdict 0
+2026-10-27T05:46:45Z health jsal.Jsalbot: 35/35 survived, 17 skipped, 0 faults, shield verdict 0
+2026-10-27T05:46:51Z battle hadur2.Hadur 3.17 vs robar.nano.BlackWidow 1.3 (roborumble): 90.31% share, 34-1 rounds
+2026-10-27T05:46:59Z battle hadur2.Hadur 3.17 vs amk.ChumbaMini 0.2 (roborumble): 94.09% share, 35-0 rounds
+2026-10-27T05:46:59Z health amk.ChumbaMini: 35/35 survived, 9 skipped, 0 faults, shield verdict 0
+2026-10-27T05:47:09Z battle hadur2.Hadur 3.17 vs racso.Crono 1.0 (roborumble): 78.76% share, 32-3 rounds  << COLLAPSE
+2026-10-27T05:47:08Z health racso.Crono: 32/35 survived, 250 skipped, 0 faults, shield verdict 0
+2026-10-27T05:47:08Z START-UP DISABLE? racso.Crono: 141 skipped turns in a row, setup 140 ms, first turn 0
+2026-10-27T05:47:23Z battle hadur2.Hadur 3.17 vs slugzilla.OrbitGF 1.0 (roborumble): 86.1% share, 32-3 rounds
+2026-10-27T05:47:22Z health slugzilla.OrbitGF: 32/35 survived, 94 skipped, 0 faults, shield verdict 0
+2026-10-27T05:47:22Z START-UP DISABLE? slugzilla.OrbitGF: 39 skipped turns in a row, setup 79 ms, first turn 0
+2026-10-27T05:47:47Z battle hadur2.Hadur 3.17 vs slugzilla.Parallax 0.1 (roborumble): 80.98% share, 33-2 rounds
+2026-10-27T05:47:46Z health slugzilla.Parallax: 33/35 survived, 79 skipped, 0 faults, shield verdict 1
+2026-10-27T05:47:48Z health cjm.chalk.Chalk: 32/35 survived, 201 skipped, 0 faults, shield verdict 1
+2026-10-27T05:47:46Z START-UP DISABLE? slugzilla.Parallax: 44 skipped turns in a row, setup 183 ms, first turn 0
+2026-10-27T05:47:48Z START-UP DISABLE? cjm.chalk.Chalk: 79 skipped turns in a row, setup 101 ms, first turn 0
+2026-10-27T05:47:50Z battle hadur2.Hadur 3.17 vs cjm.chalk.Chalk 2.6.Be (roborumble): 87.87% share, 32-3 rounds
+2026-10-27T05:48:02Z health jgap.JGAP6139: 31/35 survived, 237 skipped, 0 faults, shield verdict 0
+2026-10-27T05:48:02Z START-UP DISABLE? jgap.JGAP6139: 136 skipped turns in a row, setup 99 ms, first turn 0
+2026-10-27T05:48:02Z battle hadur2.Hadur 3.17 vs brainfade.melee.Dusk 0.44 (roborumble): 82.98% share, 31-4 rounds
+2026-10-27T05:48:10Z battle hadur2.Hadur 3.17 vs jgap.JGAP6139 1.0 (roborumble): 88.29% share, 35-0 rounds
+2026-10-27T05:48:12Z battle hadur2.Hadur 3.17 vs nosteel.Welby 0.0.3 (roborumble): 95.11% share, 35-0 rounds
+2026-10-27T05:48:13Z health rc.RCBot: 34/35 survived, 101 skipped, 0 faults, shield verdict 0
+2026-10-27T05:48:09Z health jgap.JGAP6139: 35/35 survived, 53 skipped, 0 faults, shield verdict 0
+2026-10-27T05:48:11Z health nosteel.Welby: 35/35 survived, 10 skipped, 0 faults, shield verdict 1
+2026-10-27T05:48:22Z health agd.Mooserwirt2: 34/35 survived, 66 skipped, 0 faults, shield verdict 0
+2026-10-27T05:48:14Z battle hadur2.Hadur 3.17 vs rc.RCBot 2.0 (roborumble): 86.59% share, 34-1 rounds
+2026-10-27T05:48:28Z battle hadur2.Hadur 3.17 vs xander.cat.Mikey 1.2 (roborumble): 80.47% share, 32-3 rounds
+2026-10-27T05:48:23Z battle hadur2.Hadur 3.17 vs agd.Mooserwirt2 2.7 (roborumble): 92.35% share, 34-1 rounds
+2026-10-27T05:48:27Z health xander.cat.Mikey: 32/35 survived, 207 skipped, 0 faults, shield verdict 0
+2026-10-27T05:48:27Z START-UP DISABLE? xander.cat.Mikey: 111 skipped turns in a row, setup 724 ms, first turn 0
+2026-10-27T05:48:40Z battle hadur2.Hadur 3.17 vs fruits.NanoStrawbery 1.3 (roborumble): 99.24% share, 35-0 rounds
+2026-10-27T05:48:41Z battle hadur2.Hadur 3.17 vs wiki.mini.Sedan 1.0 (roborumble): 94.21% share, 35-0 rounds
+2026-10-27T05:48:41Z battle hadur2.Hadur 3.17 vs oog.micro.Maui 1.2 (roborumble): 82.76% share, 33-2 rounds
+2026-10-27T05:48:40Z health And.BasicSurfer: 35/35 survived, 22 skipped, 0 faults, shield verdict 0
+2026-10-27T05:48:40Z health wiki.mini.Sedan: 35/35 survived, 28 skipped, 0 faults, shield verdict 0
+2026-10-27T05:48:40Z health oog.micro.Maui: 33/35 survived, 44 skipped, 0 faults, shield verdict 1
+2026-10-27T05:48:50Z battle hadur2.Hadur 3.17 vs ratosh.nano.Debo 1.36 (roborumble): 85.01% share, 33-2 rounds
+2026-10-27T05:48:48Z battle hadur2.Hadur 3.17 vs And.BasicSurfer FF1.6 (roborumble): 98.63% share, 35-0 rounds
+2026-10-27T05:48:49Z health ratosh.nano.Debo: 33/35 survived, 111 skipped, 0 faults, shield verdict 1
+2026-10-27T05:48:48Z health And.BasicSurfer: 35/35 survived, 71 skipped, 0 faults, shield verdict 1
+2026-10-27T05:48:59Z health gwah.GBotMarkIV: 35/35 survived, 17 skipped, 0 faults, shield verdict 0
+2026-10-27T05:48:49Z START-UP DISABLE? ratosh.nano.Debo: 71 skipped turns in a row, setup 78 ms, first turn 0
+2026-10-27T05:49:00Z battle hadur2.Hadur 3.17 vs gwah.GBotMarkIV 1.0 (roborumble): 100.0% share, 35-0 rounds
+2026-10-27T05:49:09Z health is.fon.rs.FonDestroyer3084: 23/35 survived, 171 skipped, 0 faults, shield verdict 0
+2026-10-27T05:49:11Z battle hadur2.Hadur 3.17 vs Polkwane.Intensive 1.0 (roborumble): 99.1% share, 35-0 rounds
+2026-10-27T05:49:12Z battle hadur2.Hadur 3.17 vs lechu.Ala 0.0.4 (roborumble): 76.44% share, 27-8 rounds
+2026-10-27T05:49:10Z battle hadur2.Hadur 3.17 vs abc.Shadow 3.83c (roborumble): 51.39% share, 23-12 rounds  << LOW
+2026-10-27T05:49:16Z battle hadur2.Hadur 3.17 vs is.fon.rs.FonDestroyer3084 1.0 (roborumble): 99.98% share, 35-0 rounds
+2026-10-27T05:49:10Z health Polkwane.Intensive: 35/35 survived, 29 skipped, 0 faults, shield verdict 0
+2026-10-27T05:49:11Z health lechu.Ala: 27/34 survived, 338 skipped, 0 faults, shield verdict 1
+2026-10-27T05:49:20Z health ayk.WallHugger: 35/35 survived, 27 skipped, 0 faults, shield verdict 0
+2026-10-27T05:49:11Z START-UP DISABLE? lechu.Ala: 94 skipped turns in a row, setup 88 ms, first turn 0
+2026-10-27T05:49:21Z battle hadur2.Hadur 3.17 vs ayk.WallHugger 1.0 (roborumble): 98.23% share, 35-0 rounds
+2026-10-27T05:49:43Z battle hadur2.Hadur 3.17 vs jp.SineWall 1.0 (roborumble): 96.42% share, 34-1 rounds
+2026-10-27T05:49:42Z health jp.SineWall: 34/35 survived, 75 skipped, 0 faults, shield verdict 0
+2026-10-27T05:49:42Z START-UP DISABLE? jp.SineWall: 48 skipped turns in a row, setup 67 ms, first turn 0
+2026-10-27T05:50:07Z battle hadur2.Hadur 3.17 vs bayen.nut.Squirrel 1.621 (roborumble): 89.38% share, 33-2 rounds
+2026-10-27T05:50:13Z health nammyung.ModelT: 33/35 survived, 68 skipped, 0 faults, shield verdict 1
+2026-10-27T05:50:14Z health ej.ChocolateBar: 34/35 survived, 86 skipped, 0 faults, shield verdict 0
+2026-10-27T05:50:14Z battle hadur2.Hadur 3.17 vs nammyung.ModelT 0.23 (roborumble): 97.4% share, 33-2 rounds
+2026-10-27T05:50:15Z battle hadur2.Hadur 3.17 vs ej.ChocolateBar 1.1 (roborumble): 89.1% share, 34-1 rounds
+2026-10-27T05:50:13Z health nammyung.ModelT: 33/35 survived, 68 skipped, 0 faults, shield verdict 1
+2026-10-27T05:51:14Z battle hadur2.Hadur 3.17 vs rz.Apollon 0.23 (roborumble): 95.07% share, 35-0 rounds
+2026-10-27T05:51:13Z health rz.Apollon: 35/35 survived, 36 skipped, 0 faults, shield verdict 0
+2026-10-27T05:51:17Z battle hadur2.Hadur 3.17 vs rdt.Wraith.Wraith 0.3 (roborumble): 81.47% share, 33-2 rounds
+2026-10-27T05:51:17Z health rdt.Wraith.Wraith: 33/35 survived, 206 skipped, 0 faults, shield verdict 1
+2026-10-27T05:51:35Z battle hadur2.Hadur 3.17 vs amc.ROBv301 1.1 (roborumble): 96.01% share, 35-0 rounds
+2026-10-27T05:51:32Z battle hadur2.Hadur 3.17 vs spinnercat.Robovirus 2.718 (roborumble): 92.87% share, 34-1 rounds
+2026-10-27T05:51:35Z health oog.nano.Fuatisha: 35/35 survived, 17 skipped, 0 faults, shield verdict 0
+2026-10-27T05:51:32Z health bjl.LoneDragon: 34/35 survived, 90 skipped, 0 faults, shield verdict 0
+2026-10-27T05:51:46Z battle hadur2.Hadur 3.17 vs oog.nano.Fuatisha 1.1 (roborumble): 91.56% share, 34-1 rounds
+2026-10-27T05:51:45Z health oog.nano.Fuatisha: 34/35 survived, 87 skipped, 0 faults, shield verdict 0
+2026-10-27T05:51:51Z health bjl.LoneDragon: 30/35 survived, 231 skipped, 0 faults, shield verdict 1
+2026-10-27T05:51:45Z START-UP DISABLE? oog.nano.Fuatisha: 51 skipped turns in a row, setup 122 ms, first turn 0
+2026-10-27T05:51:51Z START-UP DISABLE? bjl.LoneDragon: 82 skipped turns in a row, setup 194 ms, first turn 0
+2026-10-27T05:51:52Z battle hadur2.Hadur 3.17 vs bjl.LoneDragon 0.5 (roborumble): 88.24% share, 30-5 rounds
+2026-10-27T05:52:00Z rate: 656 1v1 battles, 4 collapses in the last hour; 656 and 4 in all
+2026-10-27T05:52:00Z health AD.CodaFirst: 33/34 survived, 117 skipped, 0 faults, shield verdict 0
+2026-10-27T05:52:00Z START-UP DISABLE? AD.CodaFirst: 86 skipped turns in a row, setup 92 ms, first turn 0
+2026-10-27T05:52:05Z profiles rr01_robots_.data_hadur2_Hadur.data: 446 files, 203 shield verdicts stored
+2026-10-27T05:52:05Z profiles rr02_robots_.data_hadur2_Hadur.data: 495 files, 213 shield verdicts stored
+2026-10-27T05:52:05Z profiles rr03_robots_.data_hadur2_Hadur.data: 478 files, 212 shield verdicts stored
+2026-10-27T05:52:05Z profiles rr04_robots_.data_hadur2_Hadur.data: 465 files, 189 shield verdicts stored
+2026-10-27T05:52:05Z profiles rr05_robots_.data_hadur2_Hadur.data: 402 files, 206 shield verdicts stored
+2026-10-27T05:52:05Z profiles rr06_robots_.data_hadur2_Hadur.data: 416 files, 197 shield verdicts stored
+2026-10-27T05:52:19Z page roborumble: APS 90.69, 3784 battles, 169 new, 1 flagged
+    DROP aw.Gilgalad 1.99.5c: 48.3 (pairing 49.29 -> 49.1)
+2026-10-27T05:52:19Z page meleerumble: APS 66.44, 2042 battles, 72 new, 2 flagged
+    DROP catcat20.Matcha 0.006: 46.2 (pairing 49.39 -> 48.86)
+    DROP justin.DemonicRage 3.4: 47.0 (pairing 43.95 -> 44.71)
+2026-10-27T05:52:19Z page teamrumble: APS 79.39, 209 battles, 1 new, 0 flagged
+2026-10-27T05:52:00Z battle hadur2.Hadur 3.17 vs AD.CodaFirst 1.1 (roborumble): 97.09% share, 33-2 rounds
+2026-10-27T05:52:07Z battle hadur2.Hadur 3.17 vs omens.CannonfodderNano 1.4 (roborumble): 96.77% share, 35-0 rounds
+2026-10-27T05:52:12Z battle hadur2.Hadur 3.17 vs dummy.mini.Parakeet 2.40 (roborumble): 75.86% share, 31-4 rounds
+2026-10-27T05:52:06Z health omens.CannonfodderNano: 35/35 survived, 35 skipped, 0 faults, shield verdict 0
+2026-10-27T05:52:11Z health dummy.mini.Parakeet: 31/33 survived, 234 skipped, 0 faults, shield verdict 1
+2026-10-27T05:52:24Z health rus.vv.Dzhigit: 35/35 survived, 43 skipped, 0 faults, shield verdict 0
+2026-10-27T05:52:21Z health mb.Beast: 34/35 survived, 84 skipped, 0 faults, shield verdict 0
+2026-10-27T05:52:11Z START-UP DISABLE? dummy.mini.Parakeet: 42 skipped turns in a row, setup 57 ms, first turn 0
+2026-10-27T05:52:25Z battle hadur2.Hadur 3.17 vs Legend.X_FireFly 1.3 (roborumble): 90.24% share, 33-2 rounds
+2026-10-27T05:52:24Z battle hadur2.Hadur 3.17 vs rus.vv.Dzhigit 1.1 (roborumble): 97.62% share, 35-0 rounds
+2026-10-27T05:52:30Z battle hadur2.Hadur 3.17 vs com.sociesc.T1000 1.0.0 (roborumble): 99.98% share, 35-0 rounds
+2026-10-27T05:52:22Z battle hadur2.Hadur 3.17 vs mb.Beast 0.4.1 (roborumble): 95.36% share, 34-1 rounds
+2026-10-27T05:52:24Z health Legend.X_FireFly: 33/34 survived, 54 skipped, 0 faults, shield verdict 1
+2026-10-27T05:52:29Z health com.sociesc.T1000: 35/35 survived, 29 skipped, 0 faults, shield verdict 0
+2026-10-27T05:52:36Z health slugzilla.OrbitPattern: 32/35 survived, 144 skipped, 0 faults, shield verdict 1
+2026-10-27T05:52:36Z START-UP DISABLE? slugzilla.OrbitPattern: 39 skipped turns in a row, setup 167 ms, first turn 0
+2026-10-27T05:52:41Z battle hadur2.Hadur 3.17 vs suh.nano.MyFirstAdvancedRobot 1.00 (roborumble): 99.34% share, 35-0 rounds
+2026-10-27T05:52:37Z battle hadur2.Hadur 3.17 vs slugzilla.OrbitPattern 1.1 (roborumble): 86.12% share, 32-3 rounds
+2026-10-27T05:52:41Z health suh.nano.MyFirstAdvancedRobot: 35/35 survived, 8 skipped, 0 faults, shield verdict 0
+2026-10-27T05:52:58Z health ak.Fermat: 32/35 survived, 61 skipped, 0 faults, shield verdict 1
+2026-10-27T05:52:58Z battle hadur2.Hadur 3.17 vs ak.Fermat 2.0 (roborumble): 78.04% share, 32-3 rounds  << COLLAPSE
+2026-10-27T05:53:20Z battle hadur2.Hadur 3.17 vs trm.Wrekt 1.1.6.f (roborumble): 74.91% share, 31-4 rounds  << COLLAPSE
+2026-10-27T05:53:15Z battle hadur2.Hadur 3.17 vs mue.Ascendant 1.2.27 (roborumble): 50.34% share, 21-14 rounds  << LOW
+2026-10-27T05:53:19Z health trm.Wrekt: 31/35 survived, 127 skipped, 0 faults, shield verdict 0
+2026-10-27T05:53:15Z health mue.Ascendant: 21/35 survived, 141 skipped, 0 faults, shield verdict 1
+2026-10-27T05:53:25Z battle hadur2.Hadur 3.17 vs donjezza.Jezza 1.0 (roborumble): 99.8% share, 35-0 rounds
+2026-10-27T05:53:24Z health donjezza.Jezza: 35/35 survived, 48 skipped, 0 faults, shield verdict 0
+2026-10-27T05:53:46Z health qualidafial.MajorDick: 35/35 survived, 24 skipped, 0 faults, shield verdict 0
+2026-10-27T05:53:51Z health rsim.micro.uCatcher: 33/35 survived, 86 skipped, 0 faults, shield verdict 0
+2026-10-27T05:53:50Z battle hadur2.Hadur 3.17 vs Krabb.fe4r.Fe4r 0.4 (roborumble): 86.72% share, 33-2 rounds
+2026-10-27T05:53:50Z battle hadur2.Hadur 3.17 vs paket.MojRobot 1.0 (roborumble): 99.85% share, 35-0 rounds
+2026-10-27T05:53:47Z battle hadur2.Hadur 3.17 vs qualidafial.MajorDick 1.0.1 (roborumble): 98.37% share, 35-0 rounds
+2026-10-27T05:53:51Z battle hadur2.Hadur 3.17 vs krzysiek.robbo2.Robbo 1.0.0 (roborumble): 81.84% share, 33-2 rounds
+2026-10-27T05:53:56Z battle hadur2.Hadur 3.17 vs rsim.micro.uCatcher 0.1 (roborumble): 100.0% share, 35-0 rounds
+2026-10-27T05:53:50Z health Krabb.fe4r.Fe4r: 34/35 survived, 45 skipped, 0 faults, shield verdict 1
+2026-10-27T05:53:50Z health paket.MojRobot: 35/35 survived, 19 skipped, 0 faults, shield verdict 0
+2026-10-27T05:53:55Z health rsim.micro.uCatcher: 35/35 survived, 1 skipped, 0 faults, shield verdict 0
+2026-10-27T05:54:14Z health ej.ChocolateBar: 33/35 survived, 66 skipped, 0 faults, shield verdict 1
+2026-10-27T05:54:24Z battle hadur2.Hadur 3.17 vs ntc.Plains 0.9 (roborumble): 98.7% share, 35-0 rounds
+2026-10-27T05:54:17Z battle hadur2.Hadur 3.17 vs usa.nano.Nemo 2.0 (roborumble): 89.77% share, 33-2 rounds
+2026-10-27T05:54:19Z battle hadur2.Hadur 3.17 vs robots.Lucky 1.2 (roborumble): 97.09% share, 35-0 rounds
+2026-10-27T05:54:15Z battle hadur2.Hadur 3.17 vs ej.ChocolateBar 1.1 (roborumble): 83.14% share, 33-2 rounds
+2026-10-27T05:54:23Z health wiki.nano.Flick: 35/35 survived, 26 skipped, 0 faults, shield verdict 1
+2026-10-27T05:54:29Z health oog.PricklyPear: 31/35 survived, 121 skipped, 0 faults, shield verdict 1
+2026-10-27T05:54:18Z health robots.Lucky: 35/35 survived, 41 skipped, 0 faults, shield verdict 0
+2026-10-27T05:54:36Z battle hadur2.Hadur 3.17 vs wiki.nano.Flick 1.0 (roborumble): 87.12% share, 24-11 rounds
+2026-10-27T05:54:30Z battle hadur2.Hadur 3.17 vs oog.PricklyPear 1.0.6 (roborumble): 77.96% share, 31-4 rounds
+2026-10-27T05:54:37Z battle hadur2.Hadur 3.17 vs jam.RaikoMX 0.32 (roborumble): 88.35% share, 34-1 rounds
+2026-10-27T05:54:36Z health wiki.nano.Flick: 24/35 survived, 34 skipped, 0 faults, shield verdict 1
+2026-10-27T05:54:36Z health jam.RaikoMX: 34/35 survived, 106 skipped, 0 faults, shield verdict 1
+2026-10-27T05:54:36Z START-UP DISABLE? jam.RaikoMX: 73 skipped turns in a row, setup 125 ms, first turn 0
+2026-10-27T05:54:44Z battle hadur2.Hadur 3.17 vs shrub.Vapour v159 (roborumble): 85.12% share, 33-2 rounds
+2026-10-27T05:54:43Z health shrub.Vapour: 33/35 survived, 75 skipped, 0 faults, shield verdict 1
+2026-10-27T05:54:43Z START-UP DISABLE? shrub.Vapour: 36 skipped turns in a row, setup 111 ms, first turn 0
+2026-10-27T05:54:58Z battle hadur2.Hadur 3.17 vs cs.PumpkinPie 1.0 (roborumble): 75.09% share, 30-5 rounds
+2026-10-27T05:54:56Z health cs.PumpkinPie: 30/34 survived, 144 skipped, 0 faults, shield verdict 1
+2026-10-27T05:55:05Z health hamilton.Hamilton: 32/35 survived, 117 skipped, 0 faults, shield verdict 1
+2026-10-27T05:54:56Z START-UP DISABLE? cs.PumpkinPie: 34 skipped turns in a row, setup 105 ms, first turn 0
+2026-10-27T05:55:06Z battle hadur2.Hadur 3.17 vs hamilton.Hamilton 1.0 (roborumble): 85.21% share, 32-3 rounds
+2026-10-27T05:55:19Z health metal.small.MCool: 33/35 survived, 34 skipped, 0 faults, shield verdict 0
+2026-10-27T05:55:17Z health ers.micro.speusippus.Speusippus: 27/35 survived, 146 skipped, 0 faults, shield verdict 0
+2026-10-27T05:55:21Z battle hadur2.Hadur 3.17 vs cx.micro.Smoke 0.96 (roborumble): 66.55% share, 28-7 rounds  << LOW
+2026-10-27T05:55:22Z battle hadur2.Hadur 3.17 vs hamilton.Hamilton 1.0 (roborumble): 84.14% share, 31-4 rounds
+2026-10-27T05:55:29Z battle hadur2.Hadur 3.17 vs lxx.ConceptA 0.8 (roborumble): 98.27% share, 35-0 rounds
+2026-10-27T05:55:24Z battle hadur2.Hadur 3.17 vs sheldor.melee.nano.TestMelee 0.1 (roborumble): 93.95% share, 35-0 rounds
+2026-10-27T05:55:20Z battle hadur2.Hadur 3.17 vs metal.small.MCool 1.21 (roborumble): 85.04% share, 33-2 rounds
+2026-10-27T05:55:18Z battle hadur2.Hadur 3.17 vs axeBots.SilverSurfer 2.53.33fix (roborumble): 64.8% share, 27-8 rounds  << LOW
+2026-10-27T05:55:28Z battle hadur2.Hadur 3.17 vs ers.micro.speusippus.Speusippus 0.3 (roborumble): 81.82% share, 33-2 rounds
+2026-10-27T05:55:20Z health cx.micro.Smoke: 28/35 survived, 78 skipped, 0 faults, shield verdict 1
+2026-10-27T05:55:28Z health lxx.ConceptA: 35/35 survived, 16 skipped, 0 faults, shield verdict 1
+2026-10-27T05:55:24Z health sheldor.melee.nano.TestMelee: 35/35 survived, 68 skipped, 0 faults, shield verdict 1
+2026-10-27T05:55:29Z health el.Attackr: 35/35 survived, 12 skipped, 0 faults, shield verdict 0
+2026-10-27T05:55:27Z health ers.micro.speusippus.Speusippus: 33/35 survived, 72 skipped, 0 faults, shield verdict 1
+2026-10-27T05:55:40Z battle hadur2.Hadur 3.17 vs av.RobAtHome 1.2 (roborumble): 92.92% share, 35-0 rounds
+2026-10-27T05:55:30Z battle hadur2.Hadur 3.17 vs el.Attackr 0.1 (roborumble): 99.21% share, 35-0 rounds
+2026-10-27T05:55:39Z health shu.nitro.LENIN: 35/35 survived, 62 skipped, 0 faults, shield verdict 0
+2026-10-27T05:55:47Z health jcs.Megatron: 34/35 survived, 41 skipped, 0 faults, shield verdict 0
+2026-10-27T05:55:46Z health oog.PricklyPear: 31/35 survived, 33 skipped, 0 faults, shield verdict 1
+2026-10-27T05:55:49Z battle hadur2.Hadur 3.17 vs shu.nitro.LENIN .T34 (roborumble): 87.86% share, 33-2 rounds
+2026-10-27T05:55:48Z battle hadur2.Hadur 3.17 vs jcs.Megatron 1.2 (roborumble): 94.53% share, 34-1 rounds
+2026-10-27T05:55:47Z battle hadur2.Hadur 3.17 vs reaper.Reaper 1.1 (roborumble): 76.74% share, 31-4 rounds  << COLLAPSE
+2026-10-27T05:55:54Z battle hadur2.Hadur 3.17 vs cw.megas.Polar 3.2 (roborumble): 77.15% share, 33-2 rounds
+2026-10-27T05:55:48Z health shu.nitro.LENIN: 33/35 survived, 36 skipped, 0 faults, shield verdict 1
+2026-10-27T05:55:59Z health oog.PricklyPear: 29/34 survived, 156 skipped, 0 faults, shield verdict 1
+2026-10-27T05:55:53Z health cw.megas.Polar: 33/35 survived, 118 skipped, 0 faults, shield verdict 1
+2026-10-27T05:55:59Z START-UP DISABLE? oog.PricklyPear: 47 skipped turns in a row, setup 64 ms, first turn 0
+2026-10-27T05:55:59Z battle hadur2.Hadur 3.17 vs frag.FragBot 1.0 (roborumble): 98.64% share, 35-0 rounds
+2026-10-27T05:56:08Z battle hadur2.Hadur 3.17 vs dsw.StaticD 1.0 (roborumble): 99.14% share, 35-0 rounds
+2026-10-27T05:56:00Z battle hadur2.Hadur 3.17 vs AD.CodaFirst 1.1 (roborumble): 99.52% share, 35-0 rounds
+2026-10-27T05:56:00Z battle hadur2.Hadur 3.17 vs oog.PricklyPear 1.0.6 (roborumble): 72.94% share, 29-6 rounds
+2026-10-27T05:56:08Z health sam.ChipmunkDuelist: 35/35 survived, 10 skipped, 0 faults, shield verdict 0
+2026-10-27T05:55:59Z health AD.CodaFirst: 35/35 survived, 19 skipped, 0 faults, shield verdict 0
+2026-10-27T05:56:13Z health bvh.micro.Svadilfari: 35/35 survived, 15 skipped, 0 faults, shield verdict 0
+2026-10-27T05:56:16Z battle hadur2.Hadur 3.17 vs sam.ChipmunkDuelist 1.0 (roborumble): 93.25% share, 34-1 rounds
+2026-10-27T05:56:23Z battle hadur2.Hadur 3.17 vs ntw.Sigsys 1.6 (roborumble): 96.01% share, 35-0 rounds
+2026-10-27T05:56:15Z battle hadur2.Hadur 3.17 vs dcs.Eater_of_Worlds 1.1.3-A (roborumble): 97.13% share, 35-0 rounds
+2026-10-27T05:56:14Z battle hadur2.Hadur 3.17 vs blir.nano.Bruce R1.0.0 (roborumble): 79.67% share, 35-0 rounds
+2026-10-27T05:56:21Z battle hadur2.Hadur 3.17 vs bvh.micro.Svadilfari 0.2 (roborumble): 99.62% share, 35-0 rounds
+2026-10-27T05:56:22Z health Ex.Survival: 35/35 survived, 74 skipped, 0 faults, shield verdict 0
+2026-10-27T05:56:25Z health kcn.percept.PerceptBot: 34/34 survived, 41 skipped, 0 faults, shield verdict 0
+2026-10-27T05:56:27Z health areb.Union: 34/35 survived, 12 skipped, 0 faults, shield verdict 1
+2026-10-27T05:56:25Z START-UP DISABLE? kcn.percept.PerceptBot: 34 skipped turns in a row, setup 92 ms, first turn 0
+2026-10-27T05:56:29Z battle hadur2.Hadur 3.17 vs Ex.Survival 3.7 (roborumble): 96.52% share, 34-1 rounds
+2026-10-27T05:56:26Z battle hadur2.Hadur 3.17 vs kcn.percept.PerceptBot 2.3 (roborumble): 97.1% share, 34-1 rounds
+2026-10-27T05:56:27Z battle hadur2.Hadur 3.17 vs areb.Union 1.06 (roborumble): 88.24% share, 34-1 rounds
+2026-10-27T05:56:30Z battle hadur2.Hadur 3.17 vs pkbots.BoyTDSurfer 1.0 (roborumble): 88.31% share, 34-1 rounds
+2026-10-27T05:56:34Z health reaper.Reaper: 34/35 survived, 43 skipped, 0 faults, shield verdict 0
+2026-10-27T05:56:25Z health kcn.percept.PerceptBot: 34/34 survived, 41 skipped, 0 faults, shield verdict 0
+2026-10-27T05:56:35Z health bh.PencilRain: 35/35 survived, 58 skipped, 0 faults, shield verdict 1
+2026-10-27T05:56:30Z health pkbots.BoyTDSurfer: 34/35 survived, 122 skipped, 0 faults, shield verdict 0
+2026-10-27T05:56:25Z START-UP DISABLE? kcn.percept.PerceptBot: 34 skipped turns in a row, setup 92 ms, first turn 0
+2026-10-27T05:56:35Z battle hadur2.Hadur 3.17 vs EH.Fusion 0.32 (roborumble): 76.74% share, 33-2 rounds
+2026-10-27T05:56:46Z battle hadur2.Hadur 3.17 vs reaper.Reaper 1.1 (roborumble): 85.91% share, 33-2 rounds
+2026-10-27T05:56:49Z battle hadur2.Hadur 3.17 vs dummy.micro.HummingBird 2.14 (roborumble): 85.39% share, 34-1 rounds
+2026-10-27T05:56:45Z health reaper.Reaper: 33/35 survived, 38 skipped, 0 faults, shield verdict 0
+2026-10-27T05:56:54Z health caimano.Furia_Ceca: 35/35 survived, 59 skipped, 0 faults, shield verdict 0
+2026-10-27T05:56:56Z battle hadur2.Hadur 3.17 vs ara.Shera 0.88 (roborumble): 83.05% share, 33-2 rounds
+2026-10-27T05:56:54Z battle hadur2.Hadur 3.17 vs caimano.Furia_Ceca 0.22 (roborumble): 96.61% share, 35-0 rounds
+2026-10-27T05:56:55Z health ara.Shera: 34/35 survived, 98 skipped, 0 faults, shield verdict 1
+2026-10-27T05:56:54Z health caimano.Furia_Ceca: 35/35 survived, 59 skipped, 0 faults, shield verdict 0
+2026-10-27T05:57:08Z battle hadur2.Hadur 3.17 vs kc.micro.WaveShark 0.5 (roborumble): 91.35% share, 35-0 rounds
+2026-10-27T05:57:09Z battle hadur2.Hadur 3.17 vs hamilton.Hamilton 1.0 (roborumble): 88.52% share, 32-3 rounds
+2026-10-27T05:57:14Z health ICS4U1.Patrick_White_Schrodinger: 35/35 survived, 48 skipped, 0 faults, shield verdict 0
+2026-10-27T05:57:08Z health hamilton.Hamilton: 32/35 survived, 106 skipped, 0 faults, shield verdict 1
+2026-10-27T05:57:08Z START-UP DISABLE? hamilton.Hamilton: 48 skipped turns in a row, setup 61 ms, first turn 0
+2026-10-27T05:57:15Z battle hadur2.Hadur 3.17 vs ICS4U1.Patrick_White_Schrodinger 1.1 (roborumble): 95.97% share, 35-0 rounds
+2026-10-27T05:57:23Z battle hadur2.Hadur 3.17 vs tvv.nano.Polaris 1.2 (roborumble): 95.77% share, 35-0 rounds
+2026-10-27T05:57:14Z health ICS4U1.Patrick_White_Schrodinger: 35/35 survived, 48 skipped, 0 faults, shield verdict 0
+2026-10-27T05:57:28Z health pez.micro.Aristocles: 35/35 survived, 22 skipped, 0 faults, shield verdict 1
+2026-10-27T05:57:29Z battle hadur2.Hadur 3.17 vs pez.micro.Aristocles 0.3.9 (roborumble): 96.81% share, 35-0 rounds
+2026-10-27T05:57:34Z battle hadur2.Hadur 3.17 vs lrem.quickhack.QuickHack 1.0 (roborumble): 81.77% share, 32-3 rounds
+2026-10-27T05:57:41Z health dmh.robocode.robot.BlueBerry: 34/35 survived, 122 skipped, 0 faults, shield verdict 1
+2026-10-27T05:57:41Z START-UP DISABLE? dmh.robocode.robot.BlueBerry: 37 skipped turns in a row, setup 130 ms, first turn 0
+2026-10-27T05:57:42Z battle hadur2.Hadur 3.17 vs krzysiek.robbo2.Robbo 1.0.0 (roborumble): 85.14% share, 33-2 rounds
+2026-10-27T05:57:42Z battle hadur2.Hadur 3.17 vs dmh.robocode.robot.BlueBerry 0.5 (roborumble): 93.19% share, 34-1 rounds
+2026-10-27T05:57:52Z health ers.micro.speusippus.Speusippus: 27/35 survived, 106 skipped, 0 faults, shield verdict 1
+2026-10-27T05:57:56Z health sample.Crazy: 35/35 survived, 11 skipped, 0 faults, shield verdict 0
+2026-10-27T05:57:52Z battle hadur2.Hadur 3.17 vs ers.micro.speusippus.Speusippus 0.3 (roborumble): 67.54% share, 27-8 rounds  << LOW
+2026-10-27T05:58:00Z battle hadur2.Hadur 3.17 vs suh.nano.TargetC 1.00 (roborumble): 99.13% share, 35-0 rounds
+2026-10-27T05:57:57Z battle hadur2.Hadur 3.17 vs sample.Crazy 1.0 (roborumble): 99.22% share, 35-0 rounds
+2026-10-27T05:58:00Z health suh.nano.TargetC: 35/35 survived, 15 skipped, 0 faults, shield verdict 1
+2026-10-27T05:58:17Z health ary.mini.Nimi: 33/35 survived, 92 skipped, 0 faults, shield verdict 0
+2026-10-27T05:58:20Z health velas.Alpha: 35/35 survived, 70 skipped, 0 faults, shield verdict 0
+2026-10-27T05:58:17Z START-UP DISABLE? ary.mini.Nimi: 35 skipped turns in a row, setup 96 ms, first turn 0
+2026-10-27T05:58:18Z battle hadur2.Hadur 3.17 vs ary.mini.Nimi 1.0 (roborumble): 88.24% share, 33-2 rounds
+2026-10-27T05:58:28Z battle hadur2.Hadur 3.17 vs nz.jdc.nano.PralDeGuerre 1.2 (roborumble): 65.54% share, 26-9 rounds  << COLLAPSE
+2026-10-27T05:58:21Z battle hadur2.Hadur 3.17 vs velas.Alpha 1.0 (roborumble): 95.86% share, 35-0 rounds
+2026-10-27T05:58:31Z health quietus.NarrowRadar: 35/35 survived, 5 skipped, 0 faults, shield verdict 0
+2026-10-27T05:58:31Z health cw.megas.Gridd: 27/34 survived, 134 skipped, 0 faults, shield verdict 1
+2026-10-27T05:58:31Z START-UP DISABLE? cw.megas.Gridd: 51 skipped turns in a row, setup 137 ms, first turn 0
+2026-10-27T05:58:31Z battle hadur2.Hadur 3.17 vs quietus.NarrowRadar 0.1 (roborumble): 98.83% share, 35-0 rounds
+2026-10-27T05:58:32Z battle hadur2.Hadur 3.17 vs cw.megas.Gridd 0.4 (roborumble): 70.46% share, 27-8 rounds
+2026-10-27T05:58:37Z battle hadur2.Hadur 3.17 vs matt.UnderDark4 0.4.00 (roborumble): 98.48% share, 35-0 rounds
+2026-10-27T05:58:40Z health jekl.DarkHallow: 25/35 survived, 176 skipped, 0 faults, shield verdict 1
+2026-10-27T05:58:31Z health quietus.NarrowRadar: 35/35 survived, 5 skipped, 0 faults, shield verdict 0
+2026-10-27T05:58:37Z health matt.UnderDark4: 35/35 survived, 42 skipped, 0 faults, shield verdict 0
+2026-10-27T05:58:41Z battle hadur2.Hadur 3.17 vs jekl.DarkHallow .90.9 (roborumble): 57.92% share, 25-10 rounds  << COLLAPSE
+2026-10-27T05:58:52Z battle hadur2.Hadur 3.17 vs cyragia.Bot 1.1 (roborumble): 98.95% share, 35-0 rounds
+2026-10-27T05:58:51Z health cyragia.Bot: 35/35 survived, 24 skipped, 0 faults, shield verdict 0
+2026-10-27T05:59:02Z battle hadur2.Hadur 3.17 vs ags.Midboss 1q.fast (roborumble): 68.89% share, 26-9 rounds  << LOW
+2026-10-27T05:59:01Z health demetrix.ForceMajeure: 26/35 survived, 183 skipped, 0 faults, shield verdict 1
+2026-10-27T05:59:08Z health blir.nano.Cabbage: 35/35 survived, 15 skipped, 0 faults, shield verdict 0
+2026-10-27T05:59:01Z START-UP DISABLE? demetrix.ForceMajeure: 41 skipped turns in a row, setup 114 ms, first turn 0
+2026-10-27T05:59:10Z battle hadur2.Hadur 3.17 vs DTF.Kludgy 1.2b (roborumble): 74.54% share, 29-7 rounds
+2026-10-27T05:59:16Z battle hadur2.Hadur 3.17 vs demetrix.ForceMajeure 0.75 (roborumble): 78.21% share, 30-5 rounds
+2026-10-27T05:59:17Z battle hadur2.Hadur 3.17 vs csp.Eagle 3.30 (roborumble): 96.01% share, 35-0 rounds
+2026-10-27T05:59:10Z battle hadur2.Hadur 3.17 vs blir.nano.Cabbage R1.0.1 (roborumble): 97.62% share, 35-0 rounds
+2026-10-27T05:59:10Z health DTF.Kludgy: 28/34 survived, 154 skipped, 0 faults, shield verdict 1
+2026-10-27T05:59:16Z health demetrix.ForceMajeure: 29/35 survived, 149 skipped, 0 faults, shield verdict 1
+2026-10-27T05:59:22Z health dft.Freddie: 35/35 survived, 32 skipped, 0 faults, shield verdict 1
+2026-10-27T05:59:16Z START-UP DISABLE? demetrix.ForceMajeure: 39 skipped turns in a row, setup 54 ms, first turn 0
+2026-10-27T05:59:35Z battle hadur2.Hadur 3.17 vs apv.ScruchiPu 1.0 (roborumble): 76.33% share, 31-4 rounds
+2026-10-27T05:59:28Z battle hadur2.Hadur 3.17 vs penguin.Joker .611wr (roborumble): 84.38% share, 32-3 rounds
+2026-10-27T05:59:22Z battle hadur2.Hadur 3.17 vs dft.Freddie 1.32 (roborumble): 93.49% share, 35-0 rounds
+2026-10-27T05:59:34Z health e32.Omni: 31/35 survived, 52 skipped, 0 faults, shield verdict 0
+2026-10-27T05:59:38Z health simonton.GFNano_D: 33/35 survived, 86 skipped, 0 faults, shield verdict 0
+2026-10-27T05:59:41Z battle hadur2.Hadur 3.17 vs e32.Omni 0.06 (roborumble): 97.95% share, 35-0 rounds
+2026-10-27T05:59:39Z battle hadur2.Hadur 3.17 vs simonton.GFNano_D 3.1b (roborumble): 83.23% share, 33-2 rounds
+2026-10-27T05:59:48Z battle hadur2.Hadur 3.17 vs pl.Patton.GeneralPatton 1.54 (roborumble): 85.56% share, 32-3 rounds
+2026-10-27T05:59:41Z health e32.Omni: 35/35 survived, 60 skipped, 0 faults, shield verdict 0
+2026-10-27T05:59:46Z health pl.Patton.GeneralPatton: 32/35 survived, 164 skipped, 0 faults, shield verdict 1
+2026-10-27T05:59:46Z START-UP DISABLE? pl.Patton.GeneralPatton: 50 skipped turns in a row, setup 157 ms, first turn 0
+2026-10-27T06:00:05Z health erdnis.Rover: 35/35 survived, 56 skipped, 0 faults, shield verdict 1
+2026-10-27T06:00:13Z battle hadur2.Hadur 3.17 vs bzdp.BoxCar 2.0 (roborumble): 86.87% share, 33-2 rounds
+2026-10-27T06:00:09Z battle hadur2.Hadur 3.17 vs KiraNL.SpaceKees 0.1 (roborumble): 88.02% share, 34-1 rounds
+2026-10-27T06:00:05Z battle hadur2.Hadur 3.17 vs erdnis.Rover 0.3 (roborumble): 88.42% share, 35-0 rounds
+2026-10-27T06:00:12Z health slugzilla.OrbitPattern: 33/35 survived, 131 skipped, 0 faults, shield verdict 0
+2026-10-27T06:00:08Z health gh.GresSuffurd: 34/35 survived, 212 skipped, 0 faults, shield verdict 1
+2026-10-27T06:00:17Z health js.PinBall: 34/35 survived, 44 skipped, 0 faults, shield verdict 0
+2026-10-27T06:00:12Z START-UP DISABLE? slugzilla.OrbitPattern: 93 skipped turns in a row, setup 79 ms, first turn 0
+2026-10-27T06:00:08Z START-UP DISABLE? gh.GresSuffurd: 66 skipped turns in a row, setup 81 ms, first turn 0
+2026-10-27T06:00:21Z battle hadur2.Hadur 3.17 vs slugzilla.OrbitPattern 1.1 (roborumble): 94.61% share, 35-0 rounds
+2026-10-27T06:00:18Z battle hadur2.Hadur 3.17 vs js.PinBall 1.6 (roborumble): 95.51% share, 34-1 rounds
+2026-10-27T06:00:20Z health slugzilla.OrbitPattern: 35/35 survived, 35 skipped, 0 faults, shield verdict 0
+2026-10-27T06:00:29Z health gh.GresSuffurd: 22/34 survived, 320 skipped, 0 faults, shield verdict 1
+2026-10-27T06:00:29Z START-UP DISABLE? gh.GresSuffurd: 39 skipped turns in a row, setup 89 ms, first turn 0
+2026-10-27T06:00:30Z battle hadur2.Hadur 3.17 vs gh.GresSuffurd 0.4.13 (roborumble): 49.98% share, 21-14 rounds  << LOW
+2026-10-27T06:00:50Z health PK.Twardy: 35/35 survived, 50 skipped, 0 faults, shield verdict 0
+2026-10-27T06:00:54Z health kb.PingPong: 35/35 survived, 4 skipped, 0 faults, shield verdict 0
+2026-10-27T06:00:51Z battle hadur2.Hadur 3.17 vs PK.Twardy 0.4.2 (roborumble): 97.1% share, 35-0 rounds
+2026-10-27T06:00:54Z battle hadur2.Hadur 3.17 vs kb.PingPong 1.0 (roborumble): 99.64% share, 35-0 rounds
+2026-10-27T06:01:13Z battle hadur2.Hadur 3.17 vs e32.Omni 0.06 (roborumble): 96.91% share, 35-0 rounds
+2026-10-27T06:01:12Z health e32.Omni: 35/35 survived, 28 skipped, 0 faults, shield verdict 0
+2026-10-27T06:01:18Z battle hadur2.Hadur 3.17 vs az.Ololobot 0.2.4 (roborumble): 86.92% share, 31-4 rounds
+2026-10-27T06:01:23Z battle hadur2.Hadur 3.17 vs racso.Crono 1.0 (roborumble): 85.45% share, 33-2 rounds
+2026-10-27T06:01:17Z health jcs.Megatron: 31/35 survived, 63 skipped, 0 faults, shield verdict 1
+2026-10-27T06:01:23Z health racso.Crono: 33/34 survived, 47 skipped, 0 faults, shield verdict 0
+2026-10-27T06:01:44Z battle hadur2.Hadur 3.17 vs alk.lap.LoudAndProud 2.23 (roborumble): 82.58% share, 35-0 rounds
+2026-10-27T06:01:44Z health alk.lap.LoudAndProud: 35/35 survived, 43 skipped, 0 faults, shield verdict 1
+2026-10-27T06:01:51Z battle hadur2.Hadur 3.17 vs jcs.Megatron 1.2 (roborumble): 71.07% share, 28-7 rounds  << COLLAPSE
+2026-10-27T06:01:51Z health jcs.Megatron: 28/35 survived, 332 skipped, 0 faults, shield verdict 1
+2026-10-27T06:01:51Z START-UP DISABLE? jcs.Megatron: 132 skipped turns in a row, setup 56 ms, first turn 0
+2026-10-27T06:02:14Z battle hadur2.Hadur 3.17 vs mz.Adept 2.65 (roborumble): 81.41% share, 32-3 rounds  << COLLAPSE
+2026-10-27T06:02:12Z battle hadur2.Hadur 3.17 vs emp.Yngwie 1.11 (roborumble): 80.15% share, 31-4 rounds
+2026-10-27T06:02:14Z health deo.FlowerBot: 32/35 survived, 28 skipped, 0 faults, shield verdict 0
+2026-10-27T06:02:12Z health emp.Yngwie: 30/35 survived, 162 skipped, 0 faults, shield verdict 1
+2026-10-27T06:02:12Z START-UP DISABLE? emp.Yngwie: 69 skipped turns in a row, setup 61 ms, first turn 0
+2026-10-27T06:02:25Z battle hadur2.Hadur 3.17 vs deo.FlowerBot 1.0 (roborumble): 73.33% share, 31-4 rounds
+2026-10-27T06:02:24Z health kawigi.mini.Coriantumr: 31/34 survived, 119 skipped, 0 faults, shield verdict 0
+2026-10-27T06:02:24Z START-UP DISABLE? kawigi.mini.Coriantumr: 41 skipped turns in a row, setup 88 ms, first turn 0
+2026-10-27T06:02:35Z battle hadur2.Hadur 3.17 vs com.cohesiva.robocode.ManOwaR 1.0 (roborumble): 94.06% share, 35-0 rounds
+2026-10-27T06:02:34Z health com.cohesiva.robocode.ManOwaR: 35/35 survived, 42 skipped, 0 faults, shield verdict 1
+2026-10-27T06:02:37Z health kawigi.mini.Coriantumr: 34/35 survived, 84 skipped, 0 faults, shield verdict 0
+2026-10-27T06:02:35Z health xander.cat.XanderCat: 29/35 survived, 100 skipped, 0 faults, shield verdict 1
+2026-10-27T06:02:43Z health techdude.kombat.FlamingKombat: 35/35 survived, 11 skipped, 0 faults, shield verdict 0
+2026-10-27T06:02:35Z START-UP DISABLE? xander.cat.XanderCat: 34 skipped turns in a row, setup 92 ms, first turn 0
+2026-10-27T06:02:37Z battle hadur2.Hadur 3.17 vs kawigi.mini.Coriantumr 1.1 (roborumble): 93.41% share, 34-1 rounds
+2026-10-27T06:02:36Z battle hadur2.Hadur 3.17 vs xander.cat.XanderCat 12.9 (roborumble): 75.84% share, 29-6 rounds
+2026-10-27T06:02:43Z battle hadur2.Hadur 3.17 vs techdude.kombat.FlamingKombat 1.5 (roborumble): 99.62% share, 35-0 rounds
+2026-10-27T06:03:06Z battle hadur2.Hadur 3.17 vs logiblocs.SittingDroid 1.0 (roborumble): 100.0% share, 35-0 rounds
+2026-10-27T06:03:05Z health bigpete.Stewie: 35/35 survived, 27 skipped, 0 faults, shield verdict 0
+2026-10-27T06:03:12Z battle hadur2.Hadur 3.17 vs bigpete.Stewie 1.0 (roborumble): 94.11% share, 34-1 rounds
+2026-10-27T06:03:17Z battle hadur2.Hadur 3.17 vs can.Pookie 1.1 (roborumble): 89.28% share, 34-1 rounds
+2026-10-27T06:03:11Z health pez.mini.ChironexFleckeri: 34/35 survived, 89 skipped, 0 faults, shield verdict 0
+2026-10-27T06:03:16Z health can.Pookie: 34/35 survived, 68 skipped, 0 faults, shield verdict 0
+2026-10-27T06:03:11Z START-UP DISABLE? pez.mini.ChironexFleckeri: 75 skipped turns in a row, setup 92 ms, first turn 0
+2026-10-27T06:03:16Z START-UP DISABLE? can.Pookie: 42 skipped turns in a row, setup 136 ms, first turn 0
+2026-10-27T06:03:23Z battle hadur2.Hadur 3.17 vs emp.Yngwie 1.11 (roborumble): 81.54% share, 32-3 rounds
+2026-10-27T06:03:28Z battle hadur2.Hadur 3.17 vs jgap.JGAP12584 1.0 (roborumble): 99.33% share, 35-0 rounds
+2026-10-27T06:03:24Z battle hadur2.Hadur 3.17 vs pez.mini.ChironexFleckeri 0.5 (roborumble): 73.89% share, 29-6 rounds
+2026-10-27T06:03:33Z health dmp.nano.Eve: 35/35 survived, 84 skipped, 0 faults, shield verdict 0
+2026-10-27T06:03:23Z health pez.mini.ChironexFleckeri: 29/35 survived, 124 skipped, 0 faults, shield verdict 0
+2026-10-27T06:03:23Z START-UP DISABLE? pez.mini.ChironexFleckeri: 39 skipped turns in a row, setup 95 ms, first turn 0
+2026-10-27T06:03:34Z battle hadur2.Hadur 3.17 vs dmp.nano.Eve 3.41 (roborumble): 91.65% share, 35-0 rounds
+2026-10-27T06:03:33Z health dmp.nano.Eve: 35/35 survived, 84 skipped, 0 faults, shield verdict 0
+2026-10-27T06:03:43Z health TCMI.nano.Copper: 34/35 survived, 111 skipped, 0 faults, shield verdict 0
+2026-10-27T06:03:52Z battle hadur2.Hadur 3.17 vs m3thos.Eva00 1.1 (roborumble): 98.85% share, 35-0 rounds
+2026-10-27T06:03:44Z battle hadur2.Hadur 3.17 vs gg.Squaraus 0.6 (roborumble): 95.9% share, 35-0 rounds
+2026-10-27T06:03:51Z battle hadur2.Hadur 3.17 vs TCMI.nano.Copper 0.2 (roborumble): 96.09% share, 35-0 rounds
+2026-10-27T06:03:55Z health lancel.Lynx: 28/34 survived, 168 skipped, 0 faults, shield verdict 1
+2026-10-27T06:03:52Z health m3thos.Eva00: 35/35 survived, 27 skipped, 0 faults, shield verdict 0
+2026-10-27T06:03:50Z health TCMI.nano.Copper: 35/35 survived, 54 skipped, 0 faults, shield verdict 0
+2026-10-27T06:03:55Z START-UP DISABLE? lancel.Lynx: 31 skipped turns in a row, setup 63 ms, first turn 0
+2026-10-27T06:03:56Z battle hadur2.Hadur 3.17 vs lancel.Lynx 1.09 (roborumble): 67.19% share, 28-7 rounds  << LOW
+2026-10-27T06:04:05Z battle hadur2.Hadur 3.17 vs amk.ShizzleStiX.ShizzleStiX 0.6 (roborumble): 91.22% share, 34-1 rounds
+2026-10-27T06:04:08Z battle hadur2.Hadur 3.17 vs m3thos.Eva00 1.1 (roborumble): 98.99% share, 35-0 rounds
+2026-10-27T06:04:04Z health amk.ShizzleStiX.ShizzleStiX: 34/35 survived, 52 skipped, 0 faults, shield verdict 0
+2026-10-27T06:04:08Z health m3thos.Eva00: 35/35 survived, 36 skipped, 0 faults, shield verdict 0
+2026-10-27T06:04:17Z health suh.nano.MyFirstAdvancedRobot: 34/35 survived, 65 skipped, 0 faults, shield verdict 1
+2026-10-27T06:04:17Z START-UP DISABLE? suh.nano.MyFirstAdvancedRobot: 36 skipped turns in a row, setup 62 ms, first turn 0
+2026-10-27T06:04:14Z battle hadur2.Hadur 3.17 vs jam.RaikoMX 0.32 (roborumble): 77.14% share, 30-5 rounds
+2026-10-27T06:04:12Z battle hadur2.Hadur 3.17 vs catcat20.shape.Theta 0.018 (roborumble): 68.33% share, 28-7 rounds  << LOW
+2026-10-27T06:04:17Z battle hadur2.Hadur 3.17 vs suh.nano.MyFirstAdvancedRobot 1.00 (roborumble): 98.78% share, 34-1 rounds
+2026-10-27T06:04:14Z health jam.RaikoMX: 30/35 survived, 155 skipped, 0 faults, shield verdict 1
+2026-10-27T06:04:17Z health suh.nano.MyFirstAdvancedRobot: 34/35 survived, 65 skipped, 0 faults, shield verdict 1
+2026-10-27T06:04:25Z health mrm.MightyMoose: 34/34 survived, 28 skipped, 0 faults, shield verdict 0
+2026-10-27T06:04:14Z START-UP DISABLE? jam.RaikoMX: 93 skipped turns in a row, setup 89 ms, first turn 0
+2026-10-27T06:04:17Z START-UP DISABLE? suh.nano.MyFirstAdvancedRobot: 36 skipped turns in a row, setup 62 ms, first turn 0
+2026-10-27T06:04:30Z battle hadur2.Hadur 3.17 vs wit.Chuliath 1.0 (roborumble): 97.67% share, 34-1 rounds
+2026-10-27T06:04:25Z battle hadur2.Hadur 3.17 vs mrm.MightyMoose .2 (roborumble): 93.71% share, 34-1 rounds
+2026-10-27T06:04:29Z health wit.Chuliath: 34/35 survived, 91 skipped, 0 faults, shield verdict 1
+2026-10-27T06:04:42Z health shrub.Vapour: 28/35 survived, 34 skipped, 0 faults, shield verdict 1
+2026-10-27T06:04:29Z START-UP DISABLE? wit.Chuliath: 35 skipped turns in a row, setup 63 ms, first turn 0
+2026-10-27T06:04:40Z battle hadur2.Hadur 3.17 vs mz.NanoDeath 2.56 (roborumble): 65.75% share, 31-4 rounds  << LOW
+2026-10-27T06:04:46Z battle hadur2.Hadur 3.17 vs cre.Karolos 0.32 (roborumble): 88.05% share, 32-3 rounds
+2026-10-27T06:04:51Z battle hadur2.Hadur 3.17 vs sample.SittingDuck 1.0 (roborumble): 100.0% share, 35-0 rounds
+2026-10-27T06:04:44Z battle hadur2.Hadur 3.17 vs shrub.Vapour v159 (roborumble): 74.76% share, 28-7 rounds
+2026-10-27T06:04:40Z health mz.NanoDeath: 31/35 survived, 97 skipped, 0 faults, shield verdict 0
+2026-10-27T06:04:50Z health sample.SittingDuck: 35/35 survived, 19 skipped, 0 faults, shield verdict 0
+2026-10-27T06:04:54Z health conscience.Bulldozer: 35/35 survived, 51 skipped, 0 faults, shield verdict 0
+2026-10-27T06:04:40Z START-UP DISABLE? mz.NanoDeath: 48 skipped turns in a row, setup 53 ms, first turn 0
+2026-10-27T06:05:00Z battle hadur2.Hadur 3.17 vs oog.melee.Capulet 1.2 (roborumble): 93.49% share, 34-1 rounds
+2026-10-27T06:05:08Z battle hadur2.Hadur 3.17 vs jam.mini.Raiko 0.43 (roborumble): 75.31% share, 31-4 rounds  << COLLAPSE
+2026-10-27T06:05:09Z done: 789 1v1 battles, 10 collapses
+2026-10-27T06:05:00Z health oog.melee.Capulet: 34/35 survived, 99 skipped, 0 faults, shield verdict 1
+2026-10-27T06:05:06Z health jam.mini.Raiko: 31/35 survived, 88 skipped, 0 faults, shield verdict 1
+2026-10-27T06:05:00Z START-UP DISABLE? oog.melee.Capulet: 41 skipped turns in a row, setup 81 ms, first turn 0
+2026-10-27T06:05:15Z battle hadur2.Hadur 3.17 vs mjhjd.MattHussey1 1.1 (roborumble): 100.0% share, 35-0 rounds
+2026-10-27T06:05:17Z battle hadur2.Hadur 3.17 vs xander.cat.Fiona 1.4 (roborumble): 86.75% share, 35-0 rounds
+2026-10-27T06:05:16Z battle hadur2.Hadur 3.17 vs dft.Immortal 1.40 (roborumble): 66.49% share, 28-7 rounds  << LOW
+2026-10-27T06:05:20Z health fowl3628800.LightningBolt: 35/35 survived, 96 skipped, 0 faults, shield verdict 0
+2026-10-27T06:05:14Z health mjhjd.MattHussey1: 35/35 survived, 13 skipped, 0 faults, shield verdict 0
+2026-10-27T06:05:22Z health dggp.haiku.gpBot_0: 35/35 survived, 26 skipped, 0 faults, shield verdict 0
+2026-10-27T06:05:19Z health PSW.Relentless: 35/35 survived, 41 skipped, 0 faults, shield verdict 0
+2026-10-27T06:05:21Z battle hadur2.Hadur 3.17 vs robots.Lucky 1.2 (roborumble): 96.42% share, 35-0 rounds
+2026-10-27T06:05:28Z battle hadur2.Hadur 3.17 vs fowl3628800.LightningBolt 2.6.0 (roborumble): 97.19% share, 34-1 rounds
+2026-10-27T06:05:22Z battle hadur2.Hadur 3.17 vs dggp.haiku.gpBot_0 1.1 (roborumble): 96.52% share, 35-0 rounds
+2026-10-27T06:05:21Z battle hadur2.Hadur 3.17 vs PSW.Relentless 0.1 (roborumble): 97.14% share, 35-0 rounds
+2026-10-27T06:05:33Z battle hadur2.Hadur 3.17 vs bvh.hdr.Hodur 0.4 (roborumble): 93.94% share, 35-0 rounds
+2026-10-27T06:05:27Z health fowl3628800.LightningBolt: 34/35 survived, 114 skipped, 0 faults, shield verdict 0
+2026-10-27T06:05:32Z health bvh.hdr.Hodur: 35/35 survived, 66 skipped, 0 faults, shield verdict 0
+2026-10-27T06:05:27Z START-UP DISABLE? fowl3628800.LightningBolt: 32 skipped turns in a row, setup 86 ms, first turn 0
+2026-10-27T06:05:40Z battle hadur2.Hadur 3.17 vs alk.lap.LoudAndProud 2.23 (roborumble): 81.21% share, 33-2 rounds
+2026-10-27T06:05:43Z battle hadur2.Hadur 3.17 vs sng.arco.Arco 0.0 (roborumble): 98.19% share, 34-1 rounds
+2026-10-27T06:05:49Z health mz.NanoDeath: 33/35 survived, 127 skipped, 0 faults, shield verdict 0
+2026-10-27T06:05:39Z health alk.lap.LoudAndProud: 32/35 survived, 114 skipped, 0 faults, shield verdict 1
+2026-10-27T06:05:43Z health sng.arco.Arco: 34/35 survived, 72 skipped, 0 faults, shield verdict 0
+2026-10-27T06:05:39Z START-UP DISABLE? alk.lap.LoudAndProud: 53 skipped turns in a row, setup 69 ms, first turn 0
+2026-10-27T06:05:43Z START-UP DISABLE? sng.arco.Arco: 53 skipped turns in a row, setup 70 ms, first turn 0
+2026-10-27T06:05:58Z battle hadur2.Hadur 3.17 vs Gecko.ultimateGeckoBot 1.0 (roborumble): 89.27% share, 31-4 rounds
+2026-10-27T06:05:50Z battle hadur2.Hadur 3.17 vs mz.NanoDeath 2.56 (roborumble): 68.31% share, 32-3 rounds  << LOW
+2026-10-27T06:05:59Z battle hadur2.Hadur 3.17 vs oog.micro.MagicD3 0.41 (roborumble): 74.26% share, 29-6 rounds  << COLLAPSE
+2026-10-27T06:05:57Z health Gecko.ultimateGeckoBot: 31/34 survived, 209 skipped, 0 faults, shield verdict 1
+2026-10-27T06:05:58Z health oog.micro.MagicD3: 29/35 survived, 128 skipped, 0 faults, shield verdict 1
+2026-10-27T06:06:02Z health robar.nano.Vespa: 34/35 survived, 109 skipped, 0 faults, shield verdict 0
+2026-10-27T06:05:57Z START-UP DISABLE? Gecko.ultimateGeckoBot: 61 skipped turns in a row, setup 1149 ms, first turn 0
+2026-10-27T06:05:58Z START-UP DISABLE? oog.micro.MagicD3: 32 skipped turns in a row, setup 107 ms, first turn 0
+2026-10-27T06:06:07Z health amk.ChumbaMini: 32/35 survived, 57 skipped, 0 faults, shield verdict 1
+2026-10-27T06:06:17Z health catcat20.helios.Helios: 34/35 survived, 200 skipped, 0 faults, shield verdict 1
+2026-10-27T06:06:17Z health cjk.Merkava: 35/35 survived, 64 skipped, 0 faults, shield verdict 0
+2026-10-27T06:06:17Z START-UP DISABLE? cjk.Merkava: 31 skipped turns in a row, setup 71 ms, first turn 0
+2026-10-27T06:06:24Z profiles rr01_robots_.data_hadur2_Hadur.data: 463 files, 210 shield verdicts stored
+2026-10-27T06:06:24Z profiles rr02_robots_.data_hadur2_Hadur.data: 518 files, 227 shield verdicts stored
+2026-10-27T06:06:24Z profiles rr03_robots_.data_hadur2_Hadur.data: 493 files, 223 shield verdicts stored
+2026-10-27T06:06:24Z profiles rr04_robots_.data_hadur2_Hadur.data: 446 files, 176 shield verdicts stored
+2026-10-27T06:06:24Z profiles rr05_robots_.data_hadur2_Hadur.data: 425 files, 219 shield verdicts stored
+2026-10-27T06:06:24Z profiles rr06_robots_.data_hadur2_Hadur.data: 428 files, 200 shield verdicts stored
