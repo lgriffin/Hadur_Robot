@@ -615,8 +615,8 @@ traceability check reads. 267 of 268 live requirements have a tagged test. The r
 <dl><dt>Implemented in</dt><dd><a href="api/hadur2/core/melee/MeleeEnergyPolicy.html" title="hadur2.core.melee.MeleeEnergyPolicy">MeleeEnergyPolicy</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-core/src/test/java/hadur2/core/melee/MeleeCrowdPowerTest.java">MeleeCrowdPowerTest.java</a></dd></dl>
 </article>
 <article class="req-card" id="MGUN-13">
-<div class="req-head"><span class="rid">MGUN-13</span><span class="badge">Optional</span><span class="badge stage">M7</span></div>
-<p>Where the <code>CROWD_OGI</code> switch is on, under <a class="req" href="requirements.html#MGUN-12">MGUN-12</a>&#x27;s conditions, the melee gun shall fire power 3 at a target within 200 px and 1.92 beyond, in place of the table, under the same caps.</p>
+<div class="req-head"><span class="rid">MGUN-13</span><span class="badge">State</span><span class="badge stage">M7</span></div>
+<p>While <a class="req" href="requirements.html#MGUN-12">MGUN-12</a>&#x27;s conditions hold, the melee gun shall fire power 3 at a target within 200 px and 1.92 beyond, in place of the table, under the same caps.</p>
 <dl><dt>Implemented in</dt><dd><a href="api/hadur2/core/gun/GunController.html" title="hadur2.core.gun.GunController">GunController</a>, <a href="api/hadur2/core/melee/MeleeEnergyPolicy.html" title="hadur2.core.melee.MeleeEnergyPolicy">MeleeEnergyPolicy</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-core/src/test/java/hadur2/core/melee/MeleeCrowdPowerTest.java">MeleeCrowdPowerTest.java</a></dd></dl>
 </article>
 <h2 id="group-MMEM">Melee memory</h2>
@@ -1085,12 +1085,12 @@ traceability check reads. 267 of 268 live requirements have a tagged test. The r
 <article class="req-card" id="BENCH-117">
 <div class="req-head"><span class="rid">BENCH-117</span><span class="badge">Ubiquitous</span><span class="badge stage">R9</span></div>
 <p>The bench shall carry the <code>pc-melee-power</code> card, which builds <a class="req" href="requirements.html#MGUN-12">MGUN-12</a> (<code>pfloor</code>) and <a class="req" href="requirements.html#MGUN-13">MGUN-13</a> (<code>pogi</code>) each alone beside an aa baseline and a bb A/A copy, runs each alone on the melee census at 6 seeds after the bank card&#x27;s, and reads it with <code>tools/melee_s0.py screen --base2</code> at a +0.3 bar with the 95% low end above 0 and Hadur&#x27;s share of the others it outlives no more than 1 point lower.</p>
-<dl><dt>Implemented in</dt><dd><span class="none">no citation in the sources</span></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/MeleePowerPlanTest.java">MeleePowerPlanTest.java</a></dd></dl>
+<dl><dt>Implemented in</dt><dd><a href="api/hadur2/core/melee/MeleeEnergyPolicy.html" title="hadur2.core.melee.MeleeEnergyPolicy">MeleeEnergyPolicy</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/MeleePowerPlanTest.java">MeleePowerPlanTest.java</a></dd></dl>
 </article>
 <article class="req-card" id="BENCH-118">
 <div class="req-head"><span class="rid">BENCH-118</span><span class="badge">Ubiquitous</span><span class="badge stage">R9</span></div>
 <p>The bench shall carry the <code>pc-melee-ogi</code> card, which builds <a class="req" href="requirements.html#MGUN-13">MGUN-13</a> (<code>pogi</code>) on master&#x27;s banked gun beside an aa baseline and a bb A/A copy, runs each alone on the melee census at 8 seeds after the power card&#x27;s, and reads it with <code>tools/melee_s0.py screen --base2</code> at a 0 bar with the 95% low end above 0 and Hadur&#x27;s share of the others it outlives no more than 1 point lower.</p>
-<dl><dt>Implemented in</dt><dd><span class="none">no citation in the sources</span></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/MeleeOgiPlanTest.java">MeleeOgiPlanTest.java</a></dd></dl>
+<dl><dt>Implemented in</dt><dd><a href="api/hadur2/core/melee/MeleeEnergyPolicy.html" title="hadur2.core.melee.MeleeEnergyPolicy">MeleeEnergyPolicy</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-bench/src/test/java/hadur/bench/MeleeOgiPlanTest.java">MeleeOgiPlanTest.java</a></dd></dl>
 </article>
 <h2 id="group-DODGE">DODGE</h2>
 <article class="req-card" id="DODGE-1">
@@ -1199,7 +1199,7 @@ traceability check reads. 267 of 268 live requirements have a tagged test. The r
 <article class="req-card" id="MEND-3">
 <div class="req-head"><span class="rid">MEND-3</span><span class="badge">State</span><span class="badge stage">M7</span></div>
 <p>While in melee off a team with two opponents alive, movement shall weight a point where it would be an opponent&#x27;s closest robot four times the base risk, in place of <a class="req" href="requirements.html#MMOVE-2">MMOVE-2</a>&#x27;s two.</p>
-<dl><dt>Implemented in</dt><dd><a href="api/hadur2/core/melee/FieldGun.html" title="hadur2.core.melee.FieldGun">FieldGun</a>, <a href="api/hadur2/core/melee/MeleeEndgame.html" title="hadur2.core.melee.MeleeEndgame">MeleeEndgame</a>, <a href="api/hadur2/core/melee/MinimumRiskMovement.html" title="hadur2.core.melee.MinimumRiskMovement">MinimumRiskMovement</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-core/src/test/java/hadur2/core/melee/MeleeEndgameTest.java">MeleeEndgameTest.java</a></dd></dl>
+<dl><dt>Implemented in</dt><dd><a href="api/hadur2/core/melee/FieldGun.html" title="hadur2.core.melee.FieldGun">FieldGun</a>, <a href="api/hadur2/core/melee/MeleeEndgame.html" title="hadur2.core.melee.MeleeEndgame">MeleeEndgame</a>, <a href="api/hadur2/core/melee/MeleeEnergyPolicy.html" title="hadur2.core.melee.MeleeEnergyPolicy">MeleeEnergyPolicy</a>, <a href="api/hadur2/core/melee/MinimumRiskMovement.html" title="hadur2.core.melee.MinimumRiskMovement">MinimumRiskMovement</a></dd><dt>Verified by</dt><dd><a href="https://github.com/lgriffin/Hadur_Robot/blob/master/hadur-core/src/test/java/hadur2/core/melee/MeleeEndgameTest.java">MeleeEndgameTest.java</a></dd></dl>
 </article>
 <h2 id="group-MIR">MIR</h2>
 <article class="req-card" id="MIR-1">
