@@ -1,10 +1,10 @@
-# Hadur 3.17 live clients: "Unable to stop thread" (2026-10-27, first 15 minutes)
+# Hadur 3.17 live clients: "Unable to stop thread" (2026-10-27, first 17 minutes)
 
 Draft, evidence only. Taken from the first live-watch start on 2026-10-27 (the watch was pointed at 3.18 by
 mistake, so it recorded no battles, but the eight RoboRumble clients ran 3.17 / 3.17.1 and their consoles were
 captured). The 3.17 run 3 watch (`data/live/release-3.17-run3/`) is the real record and is still running.
 
-Window: 14:01:55Z to about 14:16Z, eight clients (six 1v1, one melee, one team), each restarted every 15 minutes.
+Window: 14:01:55Z to 14:18Z, eight clients (six 1v1, one melee, one team), each restarted every 15 minutes.
 
 ## What Robocode printed
 
