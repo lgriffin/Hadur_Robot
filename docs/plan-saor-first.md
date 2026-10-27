@@ -244,6 +244,57 @@ go. If no S arm clears +0.5 over FIG, the best one still ties Figment. The plan 
 another Saor-own idea (section 6, stage 3's duel move or corner choice) before a release that is
 sure of 1st.
 
+## 6e. Stage 4: results (pc-saor-s03, PR #329, 2026-10-27)
+
+**Stage 4 did not pass. The best stack ties Figment.**
+
+Live-shaped census, against C (68.28). The run's offset is +0.20, so the 1st bar is 69.57.
+
+| Arm | Read | vs C | vs Figment, same run |
+|---|---|---|---|
+| FIG, Figment seated | 69.79 ± 0.19 | +1.59 ± 0.28 | |
+| S1, DC without the ram leg | 69.55 ± 0.20 | +1.28 ± 0.29 | -0.24 |
+| **S2, S1 learning below 0.9 gun heat** | **69.83 ± 0.18** | **+1.55 ± 0.28** | **+0.04** |
+| S3, S2 with power constant 400 | 69.86 ± 0.21 | +1.57 ± 0.30 | +0.07 |
+
+MicroMelee census, against C (66.21 ± 0.25):
+
+| Arm | vs C |
+|---|---|
+| DC | +1.52 ± 0.34 |
+| S1 | +1.55 ± 0.35 |
+| **S2** | **+1.82 ± 0.33** |
+| S3 | +1.58 ± 0.37 |
+
+What this means:
+
+- Learning below 0.9 gun heat is real. It adds about +0.27 on both censuses, and the same step
+  showed up in stage 2.
+- Dropping the ram leg is free: S1 and DC read the same. Stage 1's +0.30 for R did not carry over.
+- The power constant of 400 adds nothing.
+- S2 is Saor's best build. It leads Saor 0.1 by about +1.5 and ties Figment, so a sure 1st needs
+  another +0.5.
+
+## 6f. Stage 5a card (pc-saor-s04, about 2 h)
+
+S2 uses all 749 bytes. A duel-only move was the candidate from stage 3. In its smallest form
+(perpendicular to the target, random legs) it costs 67 bytes, and S2's two byte savers free
+only 25. It stays out until something frees more bytes.
+
+Stage 5a screens the changes that cost nothing on the MicroMelee census, all built on S2:
+
+| Arm | What | Bytes after ProGuard |
+|---|---|---|
+| C | Saor 0.1, the control | 749 |
+| S2 | the anchor | 749 |
+| LA | learn a transition on every scan (stage 4 found more learning pays) | 738 |
+| U2 | no end-game power cap (on 0.1 it measured nothing) | 735 |
+| V4, V16 | full trust from 4 or 16 samples, not 8 | 749 |
+| B2, B6 | spread a playout's vote over 5 or 13 bins, not 9 | 749 |
+
+Pass: +0.3 over S2. The winners, stacked on S2, then go to a stage 5b live-shaped confirm with
+Figment seated. The bar there is the same as stage 4: Figment + 0.5 in the same run.
+
 ## 7. What a guaranteed 1st takes
 
 Figment and Wallaby are not changing; both have been in the rumble for years. If stage 1
