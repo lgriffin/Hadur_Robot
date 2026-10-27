@@ -76,5 +76,18 @@ class TeamLossesTest(unittest.TestCase):
             self.assertIn("| rz.HOFSwarm (mid) | 1 | 100.0 | 0.00 | 0.00 | nan | nan | 44 | 0 | 16 |", text)
 
 
+    def test_candidate_only_skips_the_baseline_battles(self):
+        with tempfile.TemporaryDirectory() as d:
+            battle(d, "rz.HOFSwarm_1.1-1", ["0,5,0,1,0,0,0,0,0,-\n"], [], [])
+            battle(d, "rz.HOFSwarm_1.1-1-baseline", ["0,0,3,0,0,0,0,0,0,-\n"], [], [])
+            self.assertIn("Battles read: 2 over 1 opponents", team_losses.report([d]))
+            team_losses.CANDIDATE_ONLY = True
+            try:
+                text = team_losses.report([d])
+            finally:
+                team_losses.CANDIDATE_ONLY = False
+            self.assertIn("Battles read: 1 over 1 opponents", text)
+
+
 if __name__ == "__main__":
     unittest.main()

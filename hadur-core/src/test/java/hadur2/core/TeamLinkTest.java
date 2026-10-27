@@ -542,6 +542,19 @@ class TeamLinkTest {
         HadurCore plain = new HadurCore(facts(), line -> {}, null);
         plain.newRound(0);
         assertEquals(null, LinkCodec.decode(plain.tick(input(1, 5, enemies())).messages().get(0)).aim());
+        // A tick that fires states the heat the shot leaves: 1 + power / 5.
+        HadurCore firing = new HadurCore(facts(), line -> {}, null, new TriggerHappy());
+        firing.teamLink().modes = enemies -> Set.of(TeamModes.Mode.GUNLINE);
+        firing.newRound(0);
+        boolean fired = false;
+        for (long t = 1; t <= 6 && !fired; t++) {
+            BotOrders f = firing.tick(input(t, 5, enemies()));
+            if (f.firePower() > 0) {
+                fired = true;
+                assertEquals(1 + f.firePower() / 5, LinkCodec.decode(f.messages().get(0)).aim().gunHeat, 1e-9);
+            }
+        }
+        assertTrue(fired, "the trigger-happy brain fired");
     }
 
     @Test

@@ -20,7 +20,9 @@ Firestarter and Combat, the top 6, the rest):
 Another team can be the subject (a run with it as the bench's robot): --ours names its class
 prefix, e.g. --ours cb.fire., and only the run's candidate battles are read. Its members print no R records, so its first death and round length read nan; compare the last-shot column instead.
 
-Usage: python3 tools/team_losses.py [--ours PREFIX] [--title TEXT] RUN [RUN...] > report.md
+--candidate-only reads only the run's candidate battles (an arm against aa), not the aa battles beside them.
+
+Usage: python3 tools/team_losses.py [--ours PREFIX] [--title TEXT] [--candidate-only] RUN [RUN...] > report.md
 """
 import collections
 import glob
@@ -29,6 +31,8 @@ import statistics
 import sys
 
 OURS = 'hadur2.'
+# --candidate-only: skip the baseline (aa) battles, so an arm's read is that arm's alone.
+CANDIDATE_ONLY = False
 MID = {'rz.HOFSwarm', 'gh.nano.GrofGroup', 'davidalves.PhoenixTeam', 'myl.micro.TroodonPack',
        'cx.mini.DemoniacNimrods', 'apvteam.MambaTeam', 'bvh.team.Valkiries', 'kawigi.micro.ArmyOfShiz',
        'kawigi.sbf.TidalWave', 'kid.team.OmegaSquad', 'gh.mini.GrubbmGroup', 'rz.GlowingHawks',
@@ -165,7 +169,7 @@ def report(runs, title='How HadurTeam loses rounds'):
     for run in runs:
         for d in sorted(glob.glob(os.path.join(run, 'battles', '*'))):
             # Another subject is only the candidate: a run's baseline battles are HadurTeam's.
-            if OURS != 'hadur2.' and d.endswith('-baseline'):
+            if (OURS != 'hadur2.' or CANDIDATE_ONLY) and d.endswith('-baseline'):
                 continue
             rows = battle(d)
             if rows:
@@ -212,6 +216,10 @@ if __name__ == '__main__':
             OURS = args[1]
         elif args[0] == '--title' and len(args) > 1:
             title = args[1]
+        elif args[0] == '--candidate-only':
+            CANDIDATE_ONLY = True
+            args = args[1:]
+            continue
         else:
             sys.exit(__doc__)
         args = args[2:]

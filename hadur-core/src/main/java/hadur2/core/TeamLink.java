@@ -496,8 +496,10 @@ final class TeamLink {
             : List.of();
         List<Report.Sighting> sightings = fresh.size() > 255 ? fresh.subList(0, 255) : fresh;
         // TMODE-19: the gun's heading and heat, only where GUNLINE is played; else the message is as it was.
+        // A shot this tick heats the gun to 1 + power / 5, the engine's rule, so the heat is stated after it.
+        double heat = orders.firePower() > 0 ? 1 + orders.firePower() / 5 : in.gunHeat();
         Report.Aim aim = modes.apply(world.alive()).contains(TeamModes.Mode.GUNLINE)
-            ? new Report.Aim(Angles.normalAbsoluteAngle(in.gunHeading()), in.gunHeat()) : null;
+            ? new Report.Aim(Angles.normalAbsoluteAngle(in.gunHeading()), heat) : null;
         return LinkCodec.encode(new Report(in.round(), in.time(), in.x(), in.y(), in.heading(), in.velocity(),
             in.energy(), sightings, deaths.size() > 255 ? deaths.subList(0, 255) : deaths, shots,
             dodges.size() > 255 ? dodges.subList(0, 255) : dodges, aim));

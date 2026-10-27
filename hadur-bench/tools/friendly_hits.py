@@ -7,7 +7,9 @@ across it. Prints a markdown report: per kind the hits, median flight and median
 the hits with no enemy near the line (noline), how far off the line the victim stood at the shot
 and whether it was ahead of the shooter or behind it, so a fix can be aimed at the right case.
 
-Usage: python3 tools/friendly_hits.py RUN [RUN...] > report.md
+--candidate-only reads only the run's candidate battles (an arm against aa), not the aa battles beside them.
+
+Usage: python3 tools/friendly_hits.py [--candidate-only] RUN [RUN...] > report.md
 """
 import collections
 import glob
@@ -33,15 +35,24 @@ def number(s):
         return float('nan')
 
 
-def hits(runs):
+def logs(runs, candidate_only=False):
     out = []
     for run in runs:
         for p in sorted(glob.glob(os.path.join(run, 'battles', '*', 'friendly.log'))):
-            with open(p) as f:
-                for line in f:
-                    h = fields(line)
-                    if h.get('kind') in KINDS:
-                        out.append(h)
+            if candidate_only and os.path.basename(os.path.dirname(p)).endswith('-baseline'):
+                continue
+            out.append(p)
+    return out
+
+
+def hits(runs, candidate_only=False):
+    out = []
+    for p in logs(runs, candidate_only):
+        with open(p) as f:
+            for line in f:
+                h = fields(line)
+                if h.get('kind') in KINDS:
+                    out.append(h)
     return out
 
 
@@ -50,10 +61,11 @@ def median(xs):
     return statistics.median(xs) if xs else float('nan')
 
 
-def report(runs):
-    hs = hits(runs)
-    if not hs:
-        sys.exit('friendly_hits.py: no BENCH-114 friendly.log lines under ' + ', '.join(runs))
+def report(runs, candidate_only=False):
+    if not logs(runs, candidate_only):
+        sys.exit('friendly_hits.py: no BENCH-114 friendly.log files under ' + ', '.join(runs))
+    # Logs with no lines are a result (no own hits), not a missing read.
+    hs = hits(runs, candidate_only)
     out = ['# Where our own hits came from', '', 'Runs: ' + ', '.join(runs), '',
            'Friendly hits read: {}.'.format(len(hs)), '',
            '| Kind | Hits | Share | Median flight (px) | Median along at the shot | Median across at the shot | Median power |',
@@ -87,6 +99,10 @@ def report(runs):
 
 
 if __name__ == '__main__':
-    if len(sys.argv) < 2:
+    args = sys.argv[1:]
+    only = bool(args) and args[0] == '--candidate-only'
+    if only:
+        args = args[1:]
+    if not args:
         sys.exit(__doc__)
-    sys.stdout.write(report(sys.argv[1:]))
+    sys.stdout.write(report(args, only))
