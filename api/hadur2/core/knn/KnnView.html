@@ -266,7 +266,7 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Whether the view has data and <a href="#thresholdsMet(double,double)"><code>thresholdsMet(double, double)</code></a>.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a><wbr>&lt;<a href="../model/Timestamped.html" title="class in hadur2.core.model">Timestamped</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Double.html" title="class or interface in java.lang" class="external-link">Double</a>&gt;</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double[]</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDecayWeights(java.util.List)" class="member-name-link">getDecayWeights</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;? extends <a href="KdTree.Entry.html" title="class in hadur2.core.knn">KdTree.Entry</a>&lt;? extends <a href="../model/Timestamped.html" title="class in hadur2.core.model">Timestamped</a>&gt;&gt;&nbsp;entries)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Time-decay weights for a neighbour list: the newest entry weighs 1 and each older one
@@ -898,16 +898,23 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getDecayWeights(java.util.List)">
 <h3>getDecayWeights</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="../model/Timestamped.html" title="class in hadur2.core.model">Timestamped</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Double.html" title="class or interface in java.lang" class="external-link">Double</a>&gt;</span>&nbsp;<span class="element-name">getDecayWeights</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;? extends <a href="KdTree.Entry.html" title="class in hadur2.core.knn">KdTree.Entry</a>&lt;? extends <a href="../model/Timestamped.html" title="class in hadur2.core.model">Timestamped</a>&gt;&gt;&nbsp;entries)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">double[]</span>&nbsp;<span class="element-name">getDecayWeights</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;? extends <a href="KdTree.Entry.html" title="class in hadur2.core.knn">KdTree.Entry</a>&lt;? extends <a href="../model/Timestamped.html" title="class in hadur2.core.model">Timestamped</a>&gt;&gt;&nbsp;entries)</span></div>
 <div class="block">Time-decay weights for a neighbour list: the newest entry weighs 1 and each older one
  <a href="#decayRate"><code>decayRate</code></a> times less than the next newer; with <a href="#NO_DECAY"><code>NO_DECAY</code></a> every entry
  weighs 1. Entries are ordered by round, then tick, so seeds (filed under
- <a href="../model/Timestamped.html#SEED_ROUND"><code>Timestamped.SEED_ROUND</code></a>) count as the oldest.</div>
+ <a href="../model/Timestamped.html#SEED_ROUND"><code>Timestamped.SEED_ROUND</code></a>) count as the oldest.
+
+ <p>The weights come back as an array beside the list, not a map, so a call allocates
+ two small arrays rather than a node and a boxed double per neighbour: the surf calls
+ this for every view on every wave it rates, and it was the core's largest source of
+ garbage. The weights are bit for bit the map's: the same stable order, the same
+ divisions in the same order, and an entry whose value appears twice in the list takes
+ the weight the map kept for it, the oldest position's.</p></div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>entries</code> - the neighbours, as a search returned them</dd>
 <dt>Returns:</dt>
-<dd>each entry's value mapped to its weight, keyed by identity</dd>
+<dd>each entry's weight, at the entry's index; shared, so read it, never write it</dd>
 </dl>
 </section>
 </li>
