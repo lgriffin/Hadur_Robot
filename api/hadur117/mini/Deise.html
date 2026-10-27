@@ -110,9 +110,12 @@ loadScripts(document, 'script');</script>
 <span class="extends-implements">extends robocode.AdvancedRobot</span></div>
 <div class="block">Deise (the Déise, Waterford's people), a MiniMelee entry: Saor's graded Markov gun, learning
  every robot it scans, over a least-risk movement that holds the corners while the field is
- crowded (docs/deise.md). It records the shots it sees fired, but their waves count for nothing
- since stage E0's smoke (<code>Move.WAVES</code>); arm W measures them. This class is the adapter: it keeps
- what Robocode tells it and asks the core (hadur117.mini.core) what to do.</div>
+ crowded (docs/deise.md).
+
+ <p>This is the class that ships: the core (<code>hadur117.mini.core</code>) flattened by hand into
+ one class to fit MiniMelee's 1,499 bytes, as Saor is. <code>DeiseEquivalenceTest</code> drives it
+ and the bench adapter <a href="DeiseLab.html" title="class in hadur117.mini"><code>DeiseLab</code></a>, which calls the core, with the same events and
+ requires the same orders (DEISE-16).</p></div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -127,52 +130,42 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code>(package private) static double[][]</code></div>
 <div class="col-second even-row-color"><code><a href="#bots" class="member-name-link">bots</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>(package private) static double[]</code></div>
-<div class="col-second odd-row-color"><code><a href="#destination" class="member-name-link">destination</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>(package private) static final int</code></div>
-<div class="col-second even-row-color"><code><a href="#GAP" class="member-name-link">GAP</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">Scans further apart than this are not learned (DEISE-6).</div>
+<div class="block">Live opponents this round, {x, y, energy}.</div>
 </div>
-<div class="col-first odd-row-color"><code>(package private) static final int[]</code></div>
-<div class="col-second odd-row-color"><code><a href="#IDS" class="member-name-link">IDS</a></code></div>
+<div class="col-first odd-row-color"><code>(package private) static double</code></div>
+<div class="col-second odd-row-color"><code><a href="#destX" class="member-name-link">destX</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>(package private) static final double[][]</code></div>
-<div class="col-second even-row-color"><code><a href="#LAST" class="member-name-link">LAST</a></code></div>
+<div class="col-first even-row-color"><code>(package private) static double</code></div>
+<div class="col-second even-row-color"><code><a href="#destY" class="member-name-link">destY</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>(package private) static int[]</code></div>
+<div class="col-second odd-row-color"><code><a href="#ids" class="member-name-link">ids</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>(package private) static double[][]</code></div>
+<div class="col-second even-row-color"><code><a href="#last" class="member-name-link">last</a></code></div>
 <div class="col-last even-row-color">
 <div class="block">Per opponent: last scan time, heading, velocity, state.</div>
 </div>
-<div class="col-first odd-row-color"><code>(package private) static final int</code></div>
-<div class="col-second odd-row-color"><code><a href="#MAX" class="member-name-link">MAX</a></code></div>
+<div class="col-first odd-row-color"><code>(package private) static char[][][]</code></div>
+<div class="col-second odd-row-color"><code><a href="#markov" class="member-name-link">markov</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">Opponents a battle can hold; ids are handed out in the order robots are first seen.</div>
+<div class="block">Per-opponent Markov rows: [id][state][successors..., count], kept across rounds (DEISE-6).</div>
 </div>
-<div class="col-first even-row-color"><code>(package private) static final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Random.html" title="class or interface in java.util" class="external-link">Random</a></code></div>
-<div class="col-second even-row-color"><code><a href="#RANDOM" class="member-name-link">RANDOM</a></code></div>
+<div class="col-first even-row-color"><code>(package private) static double</code></div>
+<div class="col-second even-row-color"><code><a href="#myX" class="member-name-link">myX</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>(package private) static final boolean</code></div>
-<div class="col-second odd-row-color"><code><a href="#RECKON" class="member-name-link">RECKON</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block">Whether unscanned opponents are played on by their last heading and speed: arm RK.</div>
-</div>
+<div class="col-first odd-row-color"><code>(package private) static double</code></div>
+<div class="col-second odd-row-color"><code><a href="#myY" class="member-name-link">myY</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code>(package private) static int</code></div>
 <div class="col-second even-row-color"><code><a href="#seen" class="member-name-link">seen</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>(package private) static final char[][][]</code></div>
-<div class="col-second odd-row-color"><code><a href="#TABLES" class="member-name-link">TABLES</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block">Per-opponent Markov tables, kept across rounds (DEISE-6).</div>
-</div>
-<div class="col-first even-row-color"><code>(package private) static int</code></div>
-<div class="col-second even-row-color"><code><a href="#target" class="member-name-link">target</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>(package private) static double</code></div>
-<div class="col-second odd-row-color"><code><a href="#targetDistance" class="member-name-link">targetDistance</a></code></div>
+<div class="col-first odd-row-color"><code>(package private) static int</code></div>
+<div class="col-second odd-row-color"><code><a href="#target" class="member-name-link">target</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>(package private) static double[][]</code></div>
-<div class="col-second even-row-color"><code><a href="#waves" class="member-name-link">waves</a></code></div>
+<div class="col-first even-row-color"><code>(package private) static double</code></div>
+<div class="col-second even-row-color"><code><a href="#targetDistance" class="member-name-link">targetDistance</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 </div>
 <div class="inherited-list">
@@ -205,16 +198,18 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onBulletHit(robocode.BulletHitEvent)" class="member-name-link">onBulletHit</a><wbr>(robocode.BulletHitEvent&nbsp;e)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Our hit is not their shot: their energy after it is the base for the next drop (DEISE-5).</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onRobotDeath(robocode.RobotDeathEvent)" class="member-name-link">onRobotDeath</a><wbr>(robocode.RobotDeathEvent&nbsp;e)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onScannedRobot(robocode.ScannedRobotEvent)" class="member-name-link">onScannedRobot</a><wbr>(robocode.ScannedRobotEvent&nbsp;e)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onRobotDeath(robocode.RobotDeathEvent)" class="member-name-link">onRobotDeath</a><wbr>(robocode.RobotDeathEvent&nbsp;e)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onScannedRobot(robocode.ScannedRobotEvent)" class="member-name-link">onScannedRobot</a><wbr>(robocode.ScannedRobotEvent&nbsp;e)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) double</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#risk(double,double,double)" class="member-name-link">risk</a><wbr>(double&nbsp;px,
+ double&nbsp;py,
+ double&nbsp;heading)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">The risk of moving on <code>heading</code> to (px, py) (DEISE-2 to DEISE-4).</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#run()" class="member-name-link">run</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
@@ -229,7 +224,7 @@ loadScripts(document, 'script');</script>
 <code>endTurn, getGunHeadingDegrees, getHeadingDegrees, getMaxWaitCount, getRadarHeadingDegrees, getWaitCount, setTurnGunLeftDegrees, setTurnGunRightDegrees, setTurnLeftDegrees, setTurnRadarLeftDegrees, setTurnRadarRightDegrees, setTurnRightDegrees, turnGunLeftDegrees, turnGunRightDegrees, turnLeftDegrees, turnRadarLeftDegrees, turnRadarRightDegrees, turnRightDegrees</code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-robocode.Robot">Methods inherited from class&nbsp;robocode.Robot</h3>
-<code>ahead, back, doNothing, fire, fireBullet, getBasicEventListener, getBattleFieldHeight, getBattleFieldWidth, getEnergy, getGraphics, getGunCoolingRate, getGunHeading, getGunHeat, getHeading, getHeight, getInteractiveEventListener, getName, getNumRounds, getNumSentries, getOthers, getPaintEventListener, getRadarHeading, getRobotRunnable, getRoundNum, getSentryBorderSize, getTime, getVelocity, getWidth, getX, getY, onBattleEnded, onBulletHitBullet, onBulletMissed, onHitByBullet, onHitRobot, onHitWall, onKeyPressed, onKeyReleased, onKeyTyped, onMouseClicked, onMouseDragged, onMouseEntered, onMouseExited, onMouseMoved, onMousePressed, onMouseReleased, onMouseWheelMoved, onPaint, onRoundEnded, onStatus, onWin, resume, scan, setAdjustGunForRobotTurn, setAdjustRadarForGunTurn, setAdjustRadarForRobotTurn, setAllColors, setBodyColor, setBulletColor, setColors, setColors, setDebugProperty, setGunColor, setRadarColor, setScanColor, stop, stop, turnGunLeft, turnGunRight, turnLeft, turnRadarLeft, turnRadarRight, turnRight</code></div>
+<code>ahead, back, doNothing, fire, fireBullet, getBasicEventListener, getBattleFieldHeight, getBattleFieldWidth, getEnergy, getGraphics, getGunCoolingRate, getGunHeading, getGunHeat, getHeading, getHeight, getInteractiveEventListener, getName, getNumRounds, getNumSentries, getOthers, getPaintEventListener, getRadarHeading, getRobotRunnable, getRoundNum, getSentryBorderSize, getTime, getVelocity, getWidth, getX, getY, onBattleEnded, onBulletHit, onBulletHitBullet, onBulletMissed, onHitByBullet, onHitRobot, onHitWall, onKeyPressed, onKeyReleased, onKeyTyped, onMouseClicked, onMouseDragged, onMouseEntered, onMouseExited, onMouseMoved, onMousePressed, onMouseReleased, onMouseWheelMoved, onPaint, onRoundEnded, onStatus, onWin, resume, scan, setAdjustGunForRobotTurn, setAdjustRadarForGunTurn, setAdjustRadarForRobotTurn, setAllColors, setBodyColor, setBulletColor, setColors, setColors, setDebugProperty, setGunColor, setRadarColor, setScanColor, stop, stop, turnGunLeft, turnGunRight, turnLeft, turnRadarLeft, turnRadarRight, turnRight</code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-robocode._Robot">Methods inherited from class&nbsp;robocode._Robot</h3>
 <code>getBattleNum, getGunCharge, getGunImageName, getLife, getNumBattles, getRadarImageName, getRobotImageName, setGunImageName, setRadarImageName, setRobotImageName</code></div>
@@ -254,60 +249,24 @@ loadScripts(document, 'script');</script>
 <h2>Field Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="MAX">
-<h3>MAX</h3>
-<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">MAX</span></div>
-<div class="block">Opponents a battle can hold; ids are handed out in the order robots are first seen.</div>
-<dl class="notes">
-<dt>See Also:</dt>
-<dd>
-<ul class="tag-list">
-<li><a href="../../constant-values.html#hadur117.mini.Deise.MAX">Constant Field Values</a></li>
-</ul>
-</dd>
-</dl>
+<section class="detail" id="markov">
+<h3>markov</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">char[][][]</span>&nbsp;<span class="element-name">markov</span></div>
+<div class="block">Per-opponent Markov rows: [id][state][successors..., count], kept across rounds (DEISE-6). Ids
+ start at 1, so slot 0 is what an unseen robot's death clears.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="GAP">
-<h3>GAP</h3>
-<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">GAP</span></div>
-<div class="block">Scans further apart than this are not learned (DEISE-6).</div>
-<dl class="notes">
-<dt>See Also:</dt>
-<dd>
-<ul class="tag-list">
-<li><a href="../../constant-values.html#hadur117.mini.Deise.GAP">Constant Field Values</a></li>
-</ul>
-</dd>
-</dl>
+<section class="detail" id="last">
+<h3>last</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">double[][]</span>&nbsp;<span class="element-name">last</span></div>
+<div class="block">Per opponent: last scan time, heading, velocity, state.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="RECKON">
-<h3>RECKON</h3>
-<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">RECKON</span></div>
-<div class="block">Whether unscanned opponents are played on by their last heading and speed: arm RK.</div>
-<dl class="notes">
-<dt>See Also:</dt>
-<dd>
-<ul class="tag-list">
-<li><a href="../../constant-values.html#hadur117.mini.Deise.RECKON">Constant Field Values</a></li>
-</ul>
-</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="RANDOM">
-<h3>RANDOM</h3>
-<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Random.html" title="class or interface in java.util" class="external-link">Random</a></span>&nbsp;<span class="element-name">RANDOM</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="IDS">
-<h3>IDS</h3>
-<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">int[]</span>&nbsp;<span class="element-name">IDS</span></div>
+<section class="detail" id="ids">
+<h3>ids</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">int[]</span>&nbsp;<span class="element-name">ids</span></div>
 </section>
 </li>
 <li>
@@ -317,29 +276,10 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="TABLES">
-<h3>TABLES</h3>
-<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">char[][][]</span>&nbsp;<span class="element-name">TABLES</span></div>
-<div class="block">Per-opponent Markov tables, kept across rounds (DEISE-6).</div>
-</section>
-</li>
-<li>
-<section class="detail" id="LAST">
-<h3>LAST</h3>
-<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">double[][]</span>&nbsp;<span class="element-name">LAST</span></div>
-<div class="block">Per opponent: last scan time, heading, velocity, state.</div>
-</section>
-</li>
-<li>
 <section class="detail" id="bots">
 <h3>bots</h3>
 <div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">double[][]</span>&nbsp;<span class="element-name">bots</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="waves">
-<h3>waves</h3>
-<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">double[][]</span>&nbsp;<span class="element-name">waves</span></div>
+<div class="block">Live opponents this round, {x, y, energy}.</div>
 </section>
 </li>
 <li>
@@ -355,9 +295,27 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="destination">
-<h3>destination</h3>
-<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">double[]</span>&nbsp;<span class="element-name">destination</span></div>
+<section class="detail" id="myX">
+<h3>myX</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">myX</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="myY">
+<h3>myY</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">myY</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="destX">
+<h3>destX</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">destX</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="destY">
+<h3>destY</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">destY</span></div>
 </section>
 </li>
 </ul>
@@ -395,6 +353,15 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="risk(double,double,double)">
+<h3>risk</h3>
+<div class="member-signature"><span class="return-type">double</span>&nbsp;<span class="element-name">risk</span><wbr><span class="parameters">(double&nbsp;px,
+ double&nbsp;py,
+ double&nbsp;heading)</span></div>
+<div class="block">The risk of moving on <code>heading</code> to (px, py) (DEISE-2 to DEISE-4).</div>
+</section>
+</li>
+<li>
 <section class="detail" id="onScannedRobot(robocode.ScannedRobotEvent)">
 <h3>onScannedRobot</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">onScannedRobot</span><wbr><span class="parameters">(robocode.ScannedRobotEvent&nbsp;e)</span></div>
@@ -403,19 +370,6 @@ loadScripts(document, 'script');</script>
 <dd><code>onScannedRobot</code>&nbsp;in interface&nbsp;<code>robocode.robotinterfaces.IBasicEvents</code></dd>
 <dt>Overrides:</dt>
 <dd><code>onScannedRobot</code>&nbsp;in class&nbsp;<code>robocode.Robot</code></dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="onBulletHit(robocode.BulletHitEvent)">
-<h3>onBulletHit</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">onBulletHit</span><wbr><span class="parameters">(robocode.BulletHitEvent&nbsp;e)</span></div>
-<div class="block">Our hit is not their shot: their energy after it is the base for the next drop (DEISE-5).</div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code>onBulletHit</code>&nbsp;in interface&nbsp;<code>robocode.robotinterfaces.IBasicEvents</code></dd>
-<dt>Overrides:</dt>
-<dd><code>onBulletHit</code>&nbsp;in class&nbsp;<code>robocode.Robot</code></dd>
 </dl>
 </section>
 </li>
