@@ -52,6 +52,24 @@ public class LinkCodecTest {
     }
 
     @Test
+    @Tag("TMODE-19")
+    @DisplayName("TMODE-19: a report with an aim reads back exactly as version 3, dodges or none; one without is unchanged")
+    void aimRoundTrip() {
+        Report plain = sample();
+        Report r = new Report(plain.round(), plain.tick(), plain.x(), plain.y(), plain.heading(), plain.velocity(),
+            plain.energy(), plain.sightings(), plain.deaths(), plain.shots(), List.of(), new Report.Aim(1.25, 0.4));
+        byte[] bytes = LinkCodec.encode(r);
+        assertEquals(LinkCodec.VERSION_AIM, bytes[2]);
+        assertEquals(r, LinkCodec.decode(bytes));
+        Report both = new Report(plain.round(), plain.tick(), plain.x(), plain.y(), plain.heading(), plain.velocity(),
+            plain.energy(), plain.sightings(), plain.deaths(), plain.shots(),
+            List.of(new Report.Dodge("sample.Fire", 0.5, 0.75, -0.25, 1.0, 0.42)), new Report.Aim(0, 0));
+        assertEquals(both, LinkCodec.decode(LinkCodec.encode(both)));
+        assertEquals(LinkCodec.VERSION, LinkCodec.encode(plain)[2]);
+        assertEquals(null, LinkCodec.decode(LinkCodec.encode(plain)).aim());
+    }
+
+    @Test
     @Tag("LINK-1")
     @DisplayName("LINK-1: a report's round is what the wire's 16 bits carry, 0 to 65535, and no more")
     void roundFitsTheWire() {
@@ -71,7 +89,7 @@ public class LinkCodecTest {
     void refusesWhatItCannotRead() {
         byte[] good = LinkCodec.encode(sample());
         byte[] future = good.clone();
-        future[2] = 3;
+        future[2] = 4;
         reseal(future);
         assertTrue(assertThrows(LinkFormatException.class, () -> LinkCodec.decode(future)).getMessage()
             .startsWith("version"));

@@ -115,6 +115,20 @@ public class MinimumRiskMovement {
     /** TMODE-16: the wider cone's weight and half-angle, radians (ablation tmlinesw's values). */
     static final double LINES_WIDE_K = 0.6;
     static final double LINES_WIDE_HALF = 0.45;
+    /**
+     * TMODE-19: weight of a point on the line ahead of a teammate's gun, falling to none
+     * {@link #GUNLINE_HALF} px off it, from {@link #GUNLINE_NEAR} to {@link #GUNLINE_REACH} px
+     * ahead; only while that gun fires within {@link #GUNLINE_TICKS} ticks, by its stated heat,
+     * and only from an aim no older than {@link #GUNLINE_AGE} ticks.
+     */
+    static final double GUNLINE_K = 0.4;
+    static final double GUNLINE_HALF = 70;
+    static final double GUNLINE_NEAR = 20;
+    static final double GUNLINE_REACH = 900;
+    static final double GUNLINE_TICKS = 6;
+    static final long GUNLINE_AGE = 3;
+    /** TMODE-19: the engine's default gun cooling, heat a tick; a stated heat over it is ticks to fire. */
+    static final double GUNLINE_COOLING = 0.1;
     /** MMOVE-8: how far apart, along its wall, the opening spots of two members in the roster are. */
     static final double MATE_FAN = 120;
     /** TMODE-2: a shot's weight is 1/(1+k)^2 for k teammates nearer its shooter; under this it makes no bullets. */
@@ -249,6 +263,8 @@ public class MinimumRiskMovement {
         boolean lines;
         /** TMODE-16: whether those lines use the wider cone. */
         boolean linesWide;
+        /** TMODE-19: whether the lines ahead of the teammates' guns count; only on a team. */
+        boolean gunLines;
 
         View(Point2D.Double me, double energy, long now, int others, List<EnemyInfo> enemies,
              List<VirtualBullet> bullets, MeleeStrategy.Plan plan) {
@@ -506,6 +522,7 @@ public class MinimumRiskMovement {
         v.rear = leader && !mates.isEmpty() && modes.contains(TeamModes.Mode.REAR);
         v.linesWide = modes.contains(TeamModes.Mode.LINESW);
         v.lines = !mates.isEmpty() && (modes.contains(TeamModes.Mode.LINES) || v.linesWide);
+        v.gunLines = !mates.isEmpty() && modes.contains(TeamModes.Mode.GUNLINE);
         List<Point2D.Double> candidates = candidates(me, others, enemies, now, mates);
         lastCandidates = candidates.size();
         if (!mates.isEmpty() && modes.contains(TeamModes.Mode.WAVES)) {
@@ -1049,6 +1066,7 @@ public class MinimumRiskMovement {
             double sd = segmentDistance(v.me, p, from, q);
             r += MATE_PATH_K * Math.max(0, 1 - sd / MATE_PATH_RANGE);
         }
+        if (v.gunLines) r += gunLineRisk(p, v.mates, v.now);
         if (v.lines) {
             r += v.linesWide ? linesRisk(p, v.mates, v.enemies, v.now, LINES_WIDE_K, LINES_WIDE_HALF)
                 : linesRisk(p, v.mates, v.enemies, v.now);
@@ -1065,6 +1083,30 @@ public class MinimumRiskMovement {
      */
     static double linesRisk(Point2D.Double p, List<Roster.Mate> mates, List<EnemyInfo> enemies, long now) {
         return linesRisk(p, mates, enemies, now, LINES_K, LINES_HALF);
+    }
+
+    /**
+     * TMODE-19: for each teammate whose stated aim is fresh and whose gun fires within
+     * {@link #GUNLINE_TICKS} ticks, {@link #GUNLINE_K} where {@code p} lies on the line from
+     * the teammate's place now along its gun heading, falling linearly to none
+     * {@link #GUNLINE_HALF} px off it; only between {@link #GUNLINE_NEAR} and
+     * {@link #GUNLINE_REACH} px ahead. A lead shot flies there whether or not an enemy stands on it.
+     */
+    static double gunLineRisk(Point2D.Double p, List<Roster.Mate> mates, long now) {
+        double r = 0;
+        for (Roster.Mate m : mates) {
+            if (m.aimed() < 0 || now - m.aimed() > GUNLINE_AGE) continue;
+            double toFire = m.gunHeat() / GUNLINE_COOLING - (now - m.aimed());
+            if (toFire > GUNLINE_TICKS) continue;
+            Point2D.Double q = m.at(now);
+            double dx = Math.sin(m.gunHeading());
+            double dy = Math.cos(m.gunHeading());
+            double along = (p.x - q.x) * dx + (p.y - q.y) * dy;
+            if (along < GUNLINE_NEAR || along > GUNLINE_REACH) continue;
+            double across = Math.abs((p.x - q.x) * dy - (p.y - q.y) * dx);
+            r += GUNLINE_K * Math.max(0, 1 - across / GUNLINE_HALF);
+        }
+        return r;
     }
 
     /** TMODE-15 and TMODE-16: {@link #linesRisk} with weight {@code k} and half-angle {@code half}. */
