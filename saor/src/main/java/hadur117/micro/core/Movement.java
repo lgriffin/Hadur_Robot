@@ -18,11 +18,6 @@ public final class Movement {
     public static final int FIELD = 1000;
     /** How far the oscillation points sit from their wall (SAOR-1). */
     public static final int WALL = 25;
-    /**
-     * The target distance a collision leaves behind (SAOR-9): {@link #leg} reads it as 50 px,
-     * and no scan is nearer, so the rammer stays the target until its next scan.
-     */
-    public static final double RAM_DISTANCE = -12.5;
 
     private Movement() {
     }
@@ -40,8 +35,7 @@ public final class Movement {
 
     /**
      * How far along the wall, from the corner, the leg's point lies: 55 px plus 0.4 of the
-     * target's distance, so the robot swings wider when the fight is further off; 50 px after
-     * a collision ({@link #RAM_DISTANCE}). An infinite distance (no target yet) overflows as it
+     * target's distance, so the robot swings wider when the fight is further off. An infinite distance (no target yet) overflows as it
      * does in Figment and sends the robot at the far wall until the first scan.
      *
      * @param targetDistance the target's distance at its last scan

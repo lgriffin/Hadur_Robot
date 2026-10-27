@@ -36,14 +36,20 @@ Feature: Saor, a MicroMelee bot
     And the radar is not held at gun heat 1.0
 
   @SAOR-6
-  Scenario: A cold row aims by circular projection
-    Given a target at full speed turning at the engine's limit, its row holding 7 samples of a stop
+  Scenario: An empty row aims by circular projection
+    Given a target at full speed turning at the engine's limit, its row holding 0 samples of a stop
     When Saor aims at it 400 px away with power 2
     Then the aim is the circular projection of its scan
 
   @SAOR-7
   Scenario: A warm row is played out
     Given a target at full speed turning at the engine's limit, its row holding 8 samples of a stop
+    When Saor aims at it 400 px away with power 2
+    Then the aim is where it was scanned
+
+  @SAOR-7
+  Scenario: A thin row is played out too, at a lower vote
+    Given a target at full speed turning at the engine's limit, its row holding 1 samples of a stop
     When Saor aims at it 400 px away with power 2
     Then the aim is where it was scanned
 
@@ -62,11 +68,6 @@ Feature: Saor, a MicroMelee bot
       | 100      | 4      | 2.9   |
       | 100      | 2      | 1.9   |
       | 100      | 1      | 1.9   |
-
-  @SAOR-9
-  Scenario: A collision shortens the leg to 50 px
-    Then the leg is 50 px after a collision
-    And no robot scanned is nearer than the rammer's mark
 
   @SAOR-10
   Scenario: The gun fires only once it is on its aim

@@ -1,7 +1,7 @@
 # Saor
 
-`hadur117.micro.Saor` is Hadur's MicroMelee robot: 749 bytes, corner oscillation and a
-per-opponent Markov gun. The design, the tests and the bench are in
+`hadur117.micro.Saor` is Hadur's MicroMelee robot: 748 bytes, corner oscillation and a
+per-opponent Markov gun that grades its trust in thin patterns. The design, the tests and the bench are in
 [docs/saor.md](../docs/saor.md). The plan to reach 1st is
 [docs/plan-saor-first.md](../docs/plan-saor-first.md).
 
@@ -25,6 +25,10 @@ in `data/rumble/pages/` under 2026-10-25T23*.
 Saor has its own tags, `saor-v<version>`, made by `.github/workflows/release-saor.yml`. The
 notes are in `docs/releases/saor-v<version>.md`.
 
+- [saor-v0.2](https://github.com/lgriffin/Hadur_Robot/releases/tag/saor-v0.2), 2026-10-27:
+  the graded vote, no ram leg, learning below 0.9 gun heat. On the live-shaped census it reads
+  69.83 against Figment's 69.79 in the same run, +1.55 over 0.1. The participants line is
+  `hadur117.micro.Saor 0.2,https://github.com/lgriffin/Hadur_Robot/releases/download/saor-v0.2/hadur117.micro.Saor_0.2.jar`.
 - [saor-v0.1](https://github.com/lgriffin/Hadur_Robot/releases/tag/saor-v0.1), 2026-10-25.
   The MeleeRumble participants line is
   `hadur117.micro.Saor 0.1,https://github.com/lgriffin/Hadur_Robot/releases/download/saor-v0.1/hadur117.micro.Saor_0.1.jar`.

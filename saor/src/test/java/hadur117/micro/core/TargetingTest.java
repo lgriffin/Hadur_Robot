@@ -69,22 +69,20 @@ class TargetingTest {
 
     @Property
     @Tag("SAOR-6")
-    void aColdRowAimsByCircularProjection(@ForAll @IntRange(min = 0, max = 16) int speed,
-            @ForAll @IntRange(min = 0, max = 4) int turn, @ForAll @IntRange(min = 0, max = 7) int samples,
+    void anEmptyRowAimsByCircularProjection(@ForAll @IntRange(min = 0, max = 16) int speed,
+            @ForAll @IntRange(min = 0, max = 4) int turn,
             @ForAll @DoubleRange(min = 0, max = 6.28) double bearing, @ForAll @DoubleRange(min = 100, max = 700) double distance,
             @ForAll @DoubleRange(min = 0, max = 6.28) double heading, @ForAll @DoubleRange(min = 0.1, max = 3) double power) {
         int state = 1 + (speed << 2) + (turn << 7);
+        // No sample in the state's row: the state is held.
         char[][] table = emptyTable();
-        // Fewer than 8 samples, of a state the playout would otherwise follow: still held.
-        Arrays.fill(table[state], 0, samples, (char) 1);
-        table[state][Targeting.ROW] = (char) samples;
         int bin = Targeting.aim(table, state, 500, 500, bearing, distance, heading, speed - 8, power);
         assertEquals(circularBin(state, 500, 500, bearing, distance, heading, power), bin);
     }
 
     @Property
     @Tag("SAOR-7")
-    void aWarmRowIsPlayedOut(@ForAll @IntRange(min = 8, max = 126) int samples,
+    void aRowWithASampleIsPlayedOut(@ForAll @IntRange(min = 1, max = 126) int samples,
             @ForAll @DoubleRange(min = 0, max = 6.28) double bearing, @ForAll @DoubleRange(min = 150, max = 600) double distance,
             @ForAll @DoubleRange(min = 0, max = 6.28) double heading, @ForAll @DoubleRange(min = 0.1, max = 3) double power) {
         int moving = 1 + (16 << 2) + (2 << 7);     // full speed, straight
@@ -96,6 +94,35 @@ class TargetingTest {
         int bin = Targeting.aim(table, moving, 500, 500, bearing, distance, heading, 8, power);
         // One step at the stopped state's speed 0: the target stays where it was scanned.
         assertEquals(circularBin(stopped, 500, 500, bearing, distance, heading, power), bin);
+    }
+
+    @Example
+    @Tag("SAOR-7")
+    void aThinRowVotesLessThanAWarmOne() {
+        int moving = 1 + (16 << 2) + (2 << 7);     // full speed, straight
+        int stopped = 1 + (8 << 2) + (2 << 7);     // speed 0
+        int thin = 0 + (16 << 2) + (2 << 7);       // full speed, decelerating flag: its own row
+        char[][] table = emptyTable();
+        // Two of three successors lead to a stop through a row of one sample; one keeps moving
+        // through a warm row. Unweighted, the stop would win most aims.
+        for (int i = 0; i < 126; i++) table[moving][i] = (char) (i % 3 == 0 ? thin : stopped);
+        table[moving][Targeting.ROW] = 126;
+        table[stopped][0] = (char) stopped;
+        table[stopped][Targeting.ROW] = 1;
+        Arrays.fill(table[thin], 0, 8, (char) thin);
+        table[thin][Targeting.ROW] = 8;
+        double bearing = 0;
+        double heading = Math.PI / 2;
+        int stopBin = circularBin(stopped, 500, 500, bearing, 300, heading, 2);
+        int stopVotes = 0;
+        for (int trial = 0; trial < 20; trial++) {
+            int bin = Targeting.aim(table, moving, 500, 500, bearing, 300, heading, 8, 2);
+            if (Math.abs(bin - stopBin) <= 4) stopVotes++;
+        }
+        // A one-sample row votes 17 against the warm row's 100, so the moving target wins.
+        assertTrue(stopVotes <= 1, "the thin stop won " + stopVotes + " of 20 aims");
+        assertEquals(17, 1 * Targeting.TRUST + Targeting.HELD_WEIGHT);
+        assertEquals(89, 7 * Targeting.TRUST + Targeting.HELD_WEIGHT);
     }
 
     @Example
@@ -128,6 +155,6 @@ class TargetingTest {
 
     @Property
     void learningOnlyWhileTheGunIsCool(@ForAll @DoubleRange(min = 0, max = 3) double heat) {
-        assertEquals(heat < 0.7, Targeting.learn(heat));
+        assertEquals(heat < 0.9, Targeting.learn(heat));
     }
 }

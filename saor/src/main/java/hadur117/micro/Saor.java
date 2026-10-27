@@ -2,7 +2,6 @@ package hadur117.micro;
 
 import java.awt.geom.Point2D;
 import robocode.AdvancedRobot;
-import robocode.HitRobotEvent;
 import robocode.RobotDeathEvent;
 import robocode.Rules;
 import robocode.ScannedRobotEvent;
@@ -21,10 +20,10 @@ import robocode.util.Utils;
  * still runs over it as a peephole pass, and the build fails above 749 bytes (SAOR-11).</p>
  *
  * <p>Byte idioms, each mirrored in the core and listed in docs/saor.md: statics over fields;
- * the axis toggles with {@code ^= 1} so it needs no initialiser; a collision takes the rammer as target at
- * distance -12.5, which makes the leg 50 px until the target is next scanned (SAOR-9);
- * the end-game cap is {@code others / 3 + 1.9}; 1024 angle bins wrap with {@code & 1023};
- * one catch absorbs a full Markov row and an out-of-range state.</p>
+ * the axis toggles with {@code ^= 1} so it needs no initialiser; the end-game cap is
+ * {@code others / 3 + 1.9}; 1024 angle bins wrap with {@code & 1023}; one catch absorbs a
+ * full Markov row and an out-of-range state. 0.2 has no collision handler: the ram leg of 0.1
+ * (SAOR-9, retired) measured level and its bytes pay for the graded vote (SAOR-7).</p>
  */
 public class Saor extends AdvancedRobot {
 
@@ -106,12 +105,13 @@ public class Saor extends AdvancedRobot {
                     int weight = 100;
                     int n;
                     do {
-                        // A row of 8 or more is sampled (SAOR-7); a colder one holds the state,
-                        // which is circular projection (SAOR-6).
-                        if ((n = table[id][126]) >= 8) {
+                        // A row with a sample is sampled; under 8 samples the playout's vote falls
+                        // to 5 + 12 a sample of its thinnest row (SAOR-7). An empty row holds the
+                        // state, which is circular projection (SAOR-6).
+                        if ((n = table[id][126]) > 0) {
                             id = table[id][(int) (Math.random() * n) % 126];
-                        } else {
-                            weight = 5;
+                        } if (n < 8) {
+                            weight = Math.min(weight, n * 12 + 5);
                         }
                         if (Math.max(Math.abs((px += Math.sin(h += ((id >> 7) - 2) * Rules.getTurnRateRadians(v) / 2)
                                 * (v = ((id >> 2) & 31) - 8)) - 500), Math.abs((py += Math.cos(h) * v) - 500)) > 482.5) {
@@ -128,7 +128,7 @@ public class Saor extends AdvancedRobot {
                     } while (++k <= 4);
                 } while (++i < 64);
                 setTurnGunRightRadians(Utils.normalRelativeAngle(best * (Math.PI / 512) - getGunHeadingRadians()));
-                if (getGunHeat() < 0.7) {
+                if (getGunHeat() < 0.9) {
                     char[] row;
                     (row = table[targetState])[row[126]++] = (char) state;
                 }
@@ -143,16 +143,5 @@ public class Saor extends AdvancedRobot {
     @Override
     public void onRobotDeath(RobotDeathEvent e) {
         setTurnRadarRightRadians(targetDistance = Double.POSITIVE_INFINITY);
-    }
-
-    /**
-     * A collision makes the robot hit the target and shortens the leg to 50 px until the
-     * rammer's next scan (SAOR-9). Taking its name keeps the gun alive: no scan is nearer
-     * than -12.5, so without it a ram before the first lock would leave no target at all.
-     */
-    @Override
-    public void onHitRobot(HitRobotEvent e) {
-        targetName = e.getName();
-        targetDistance = -12.5;
     }
 }
