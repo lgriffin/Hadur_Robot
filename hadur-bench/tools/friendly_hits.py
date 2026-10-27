@@ -7,7 +7,9 @@ across it. Prints a markdown report: per kind the hits, median flight and median
 the hits with no enemy near the line (noline), how far off the line the victim stood at the shot
 and whether it was ahead of the shooter or behind it, so a fix can be aimed at the right case.
 
-Usage: python3 tools/friendly_hits.py RUN [RUN...] > report.md
+--candidate-only reads only the run's candidate battles (an arm against aa), not the aa battles beside them.
+
+Usage: python3 tools/friendly_hits.py [--candidate-only] RUN [RUN...] > report.md
 """
 import collections
 import glob
@@ -33,10 +35,12 @@ def number(s):
         return float('nan')
 
 
-def hits(runs):
+def hits(runs, candidate_only=False):
     out = []
     for run in runs:
         for p in sorted(glob.glob(os.path.join(run, 'battles', '*', 'friendly.log'))):
+            if candidate_only and os.path.basename(os.path.dirname(p)).endswith('-baseline'):
+                continue
             with open(p) as f:
                 for line in f:
                     h = fields(line)
@@ -50,8 +54,8 @@ def median(xs):
     return statistics.median(xs) if xs else float('nan')
 
 
-def report(runs):
-    hs = hits(runs)
+def report(runs, candidate_only=False):
+    hs = hits(runs, candidate_only)
     if not hs:
         sys.exit('friendly_hits.py: no BENCH-114 friendly.log lines under ' + ', '.join(runs))
     out = ['# Where our own hits came from', '', 'Runs: ' + ', '.join(runs), '',
@@ -87,6 +91,10 @@ def report(runs):
 
 
 if __name__ == '__main__':
-    if len(sys.argv) < 2:
+    args = sys.argv[1:]
+    only = bool(args) and args[0] == '--candidate-only'
+    if only:
+        args = args[1:]
+    if not args:
         sys.exit(__doc__)
-    sys.stdout.write(report(sys.argv[1:]))
+    sys.stdout.write(report(args, only))

@@ -28,5 +28,15 @@ class FriendlyHitsTest(unittest.TestCase):
             self.assertIn("| over 250 px | 1 | 33% | 0% | 500 |", text)
 
 
+    def test_candidate_only_skips_the_baseline_battles(self):
+        with tempfile.TemporaryDirectory() as d:
+            for name in ("rz.HOFSwarm_1.1-1", "rz.HOFSwarm_1.1-1-baseline"):
+                b = Path(d) / "battles" / name
+                b.mkdir(parents=True)
+                (b / "friendly.log").write_text(line("noline", 400, 380, 36), encoding="utf-8")
+            self.assertIn("Friendly hits read: 2.", friendly_hits.report([d]))
+            self.assertIn("Friendly hits read: 1.", friendly_hits.report([d], candidate_only=True))
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -23,7 +23,7 @@ gngl   | mvn -q exec:java "-Dexec.args=@work/team-gunline-mgl.args"
   after: gnbb
 gnglw  | mvn -q exec:java "-Dexec.args=@work/team-gunline-mglw.args"
   after: gngl
-gnread | V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && for a in bb mgl mglw; do python3 tools/team_losses.py --title "HadurTeam, team-gunline arm $a" work/team-gunline-"$V"-$a || exit 1; done > ${OUT}/team-gunline-losses.md && for a in bb mgl mglw; do echo "## Arm $a" && python3 tools/friendly_hits.py work/team-gunline-"$V"-$a || exit 1; done > ${OUT}/team-gunline-friendly.md
+gnread | V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && for a in bb mgl mglw; do python3 tools/team_losses.py --candidate-only --title "HadurTeam, team-gunline arm $a" work/team-gunline-"$V"-$a || exit 1; done > ${OUT}/team-gunline-losses.md && for a in bb mgl mglw; do echo "## Arm $a" && python3 tools/friendly_hits.py --candidate-only work/team-gunline-"$V"-$a || exit 1; done > ${OUT}/team-gunline-friendly.md
   after: gnglw
 gnpr   | bash tools/open_results_pr.sh claude/pc-team-gunline-results "Team gun lines (TMODE-19) screen" $(ls ${OUT}/team-gunline-*.md 2>/dev/null)
   after: gnread
