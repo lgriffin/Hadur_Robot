@@ -38,6 +38,8 @@ learned Java, and it was the original inspiration for everything on this page.
   at 79.17, 3rd CombatTeam at 81.85.
 - **Melee up one place to 16th** on unchanged melee code: 66.40 on 3.17's first full pass (1,354 battles),
   +0.10 over 3.15's settled 66.30. Saor 0.1, the MicroMelee entry, is 31st at 63.70.
+- **Saor 0.2 is 1st in MicroMelee** (2026-10-27, first pass, 497 battles): 69.42 ± 0.39, 0.06
+  ahead of Figment's 69.36, and 2nd in MiniMelee at 68.79. See [saor/README.md](saor/README.md).
 
 ### 3.15 at 8th
 
