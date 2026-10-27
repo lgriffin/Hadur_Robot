@@ -18,7 +18,8 @@ class LiveWatchPlanTest {
     void card() throws IOException {
         String queue = Files.readString(Path.of("plans/live-watch.queue"));
         assertTrue(queue.contains("set V1 = ") && queue.contains("set VT = "));
-        assertTrue(queue.contains("live_client.py watch $(for d in ${CLIENTS}/rr0*"));
+        assertTrue(queue.contains("live_client.py watch --root ${CLIENTS} $(for d in ${ONES}; do printf -- '--launch %s:roborumble.bat ' \"$d\"; done)"));
+        assertTrue(queue.contains("set ONES = rr01 rr02 rr03 rr04 rr05 rr06"));
         assertTrue(queue.contains("--page \"roborumble:hadur2.Hadur ${V1}\""));
         assertTrue(queue.contains("--page \"meleerumble:hadur2.Hadur ${V1}\""));
         assertTrue(queue.contains("--page \"teamrumble:hadur2.HadurTeam ${VT}\""));
@@ -30,6 +31,19 @@ class LiveWatchPlanTest {
         assertTrue(queue.contains("${W}/profiles"), "the profile TSVs go into the results PR");
         assertTrue(queue.contains("open_results_pr.sh claude/live-watch-${V1}-run${RUN}-results"));
         assertTrue(queue.contains("after: report"));
+    }
+
+    @Test
+    @Tag("BENCH-121")
+    @DisplayName("the release watch runs all eight clients and restarts each on a schedule, between battles")
+    void clients() throws IOException {
+        String queue = Files.readString(Path.of("plans/live-watch.queue"));
+        assertTrue(queue.contains("--launch ${MAIN}:meleerumble.bat --launch ${MAIN}:teamrumble.bat"));
+        assertTrue(queue.contains("set MAIN = C:/robocode"));
+        assertTrue(queue.contains("--restart-minutes ${RESTART} --wait-minutes ${WAIT}"));
+        assertTrue(queue.contains("set RESTART = 15"));
+        assertTrue(queue.contains("tar czf consoles.tar.gz consoles") && queue.contains("${W}/consoles.tar.gz"),
+                "the consoles go into the results PR as one file");
     }
 
     @Test
