@@ -128,7 +128,8 @@ The spec's stages M0 to M5 are U0 to U5 here, because M is already Hadur's melee
 | U5 | M5 | Rumble entry | Done: 0.1 entered 2026-10-25, MicroMelee 3rd at 68.08 ([standing](../saor/README.md)); plan for 1st in [plan-saor-first.md](plan-saor-first.md) |
 | U6 | - | Plan for 1st, stages 0 and 1: a live-shaped census (SAOR-16) and Figment parity | Passed (PR #294): the live-shaped census reads 68.14 against 68.08 live; the 8-sample wait costs +1.35 |
 | U7 | - | Plan for 1st, stage 2: Saor's confidence vote, thresholds, constants | Passed (PR #311): the graded vote DC reads 69.56 ± 0.19 on the live-shaped census (+1.28), level with Figment |
-| U8 | - | Plan for 1st, stage 4: stack DC, no ram leg and constants in 749 bytes; Figment seated in the same run | Card `pc-saor-s03` ready, waiting on Leigh |
+| U8 | - | Plan for 1st, stage 4: stack DC, no ram leg and constants in 749 bytes; Figment seated in the same run | Not met (PR #329): S2 reads 69.83 against Figment's 69.79 in the same run, a tie; the bar was Figment + 0.5 |
+| U9 | - | Plan for 1st, stage 5a: a screen of S2's free constants and byte savers | Card `pc-saor-s04` ready, waiting on Leigh |
 
 `hadur.saor.stage` in the root pom is U4, so the traceability test expects coverage for every
 requirement up to U4.
