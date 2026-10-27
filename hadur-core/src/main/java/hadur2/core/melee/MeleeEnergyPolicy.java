@@ -39,9 +39,10 @@ public final class MeleeEnergyPolicy {
     static final double CROWD_FLOOR_POWER = 1.9;
     /**
      * MGUN-13: as MGUN-12's conditions, fire Ogi's melee power instead: {@link #OGI_POWER}, and 3
-     * within {@link #OGI_CLOSE} px. Off (arm pogi).
+     * within {@link #OGI_CLOSE} px. On: +0.62 on the K = 12 gun (BENCH-117) and +0.57 +-0.18 on
+     * top of K = 24 and MEND-3 (pc-melee-ogi, BENCH-118).
      */
-    public static final boolean CROWD_OGI = false;
+    public static final boolean CROWD_OGI = true;
     static final double OGI_POWER = 1.92;
     static final double OGI_CLOSE = 200;
     /** MGUN-12, MGUN-13: the own energy from which the crowd rules fire harder than the table. */

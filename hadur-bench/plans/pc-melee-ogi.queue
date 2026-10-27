@@ -1,4 +1,5 @@
-# Melee: Ogi's crowd power on the banked gun (docs/plan-melee-top5.md, MGUN-13, BENCH-118).
+# Melee: Ogi's crowd power on the banked gun (docs/plan-melee-top5.md, MGUN-13, BENCH-118). RAN 2026-10-27
+# (PR #330): +0.57 +-0.18, MGUN-13 ships on, so pogi no longer applies on master and this card's prep stops.
 # pc-melee-power (PR #320) passed MGUN-13 at +0.62 +-0.18 on the K = 12 gun; the bank card (PR #322)
 # then passed K = 24 + MEND-3 at +0.62 +-0.14, and both are on master. This card asks whether
 # MGUN-13 still adds on top of them:

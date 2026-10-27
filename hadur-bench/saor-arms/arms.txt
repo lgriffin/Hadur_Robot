@@ -1,9 +1,10 @@
 # Saor arms for the U3b screen (docs/saor.md, "Duel endgame"). One arm a line:
 #   NAME | what it changes | sed expression over saor/src/main/java/hadur117/micro/Saor.java
 # The arm is built as hadur117.micro.Saor<NAME> by tools/saor_arms.sh; the sed must change the
-# source (the build fails if it does not). C is Saor 0.1 unchanged, the control.
+# source (the build fails if it does not). C is Saor's source unchanged, the control: 0.1 for
+# the arms up to stage 4, 0.2 from stage 5 (see there).
 # Bytes are javac-only codesize (ProGuard takes about 15 off): 0.1 is 764, so 749 shipped.
-C | Saor 0.1, the control (764) |
+C | Saor's source unchanged, the control (0.1: 764 javac; 0.2: 748 after ProGuard) |
 P | no power cap while one opponent is left (778) | s#Math.min(getOthers() / 3 + 1.9,#Math.min(getOthers() < 2 ? 3 : getOthers() / 3 + 1.9,#
 N | cap 3 / others + 1.9: uncapped one on one, 2.9 at 2-3 left, 1.9 from 4 (764) | s#Math.min(getOthers() / 3 + 1.9,#Math.min(3 / getOthers() + 1.9,#
 U | no power cap at all, frees 14 bytes (750) | s#Math.min(getOthers() / 3 + 1.9, Math.log10(getEnergy()) \* 325 / (targetDistance = distance))#Math.log10(getEnergy()) * 325 / (targetDistance = distance)#
@@ -36,11 +37,12 @@ DH9 | D, learning a transition below 0.9 gun heat (766) | s#if ((n = table\[id\]
 S1 | DC without the ram leg (764; 749 after ProGuard) | s#if ((n = table\[id\]\[126\]) >= 8) {#if ((n = table[id][126]) > 0) {#; s#} else {#} if (n < 8) {#; s#weight = 5;#weight = Math.min(weight, n * 12 + 5);#; s#targetName = e.getName();##; s#targetDistance = -12.5;##
 S2 | S1 learning a transition below 0.9 gun heat (764) | s#if ((n = table\[id\]\[126\]) >= 8) {#if ((n = table[id][126]) > 0) {#; s#} else {#} if (n < 8) {#; s#weight = 5;#weight = Math.min(weight, n * 12 + 5);#; s#targetName = e.getName();##; s#targetDistance = -12.5;##; s#getGunHeat() < 0.7#getGunHeat() < 0.9#
 S3 | S2 with power constant 400 (764) | s#if ((n = table\[id\]\[126\]) >= 8) {#if ((n = table[id][126]) > 0) {#; s#} else {#} if (n < 8) {#; s#weight = 5;#weight = Math.min(weight, n * 12 + 5);#; s#targetName = e.getName();##; s#targetDistance = -12.5;##; s#getGunHeat() < 0.7#getGunHeat() < 0.9#; s#\* 325 /#* 400 /#
-# Stage 5 of docs/plan-saor-first.md: S2 ties Figment (pc-saor-s03, PR #329) and fills 749 bytes.
-# A screen of S2's free constants and byte savers on the MicroMelee census (bytes after ProGuard).
-LA | S2 learning a transition on every scan, no gun-heat gate (738 after ProGuard) | s#if ((n = table\[id\]\[126\]) >= 8) {#if ((n = table[id][126]) > 0) {#; s#} else {#} if (n < 8) {#; s#weight = 5;#weight = Math.min(weight, n * 12 + 5);#; s#targetName = e.getName();##; s#targetDistance = -12.5;##; s#getGunHeat() < 0.7#getGunHeat() < 0.9#; s#if (getGunHeat() < 0.9) {#{#
-U2 | S2 without the end-game power cap (735 after ProGuard) | s#if ((n = table\[id\]\[126\]) >= 8) {#if ((n = table[id][126]) > 0) {#; s#} else {#} if (n < 8) {#; s#weight = 5;#weight = Math.min(weight, n * 12 + 5);#; s#targetName = e.getName();##; s#targetDistance = -12.5;##; s#getGunHeat() < 0.7#getGunHeat() < 0.9#; s#Math.min(getOthers() / 3 + 1.9, Math.log10(getEnergy()) \* 325 / (targetDistance = distance))#Math.log10(getEnergy()) * 325 / (targetDistance = distance)#
-V4 | S2 with full trust from 4 samples: 5 + 24 per sample below 4 (749) | s#if ((n = table\[id\]\[126\]) >= 8) {#if ((n = table[id][126]) > 0) {#; s#} else {#} if (n < 4) {#; s#weight = 5;#weight = Math.min(weight, n * 24 + 5);#; s#targetName = e.getName();##; s#targetDistance = -12.5;##; s#getGunHeat() < 0.7#getGunHeat() < 0.9#
-V16 | S2 with full trust from 16 samples: 5 + 6 per sample below 16 (749) | s#if ((n = table\[id\]\[126\]) >= 8) {#if ((n = table[id][126]) > 0) {#; s#} else {#} if (n < 16) {#; s#weight = 5;#weight = Math.min(weight, n * 6 + 5);#; s#targetName = e.getName();##; s#targetDistance = -12.5;##; s#getGunHeat() < 0.7#getGunHeat() < 0.9#
-B2 | S2 spreading each playout's vote over 5 bins, not 9 (749) | s#if ((n = table\[id\]\[126\]) >= 8) {#if ((n = table[id][126]) > 0) {#; s#} else {#} if (n < 8) {#; s#weight = 5;#weight = Math.min(weight, n * 12 + 5);#; s#targetName = e.getName();##; s#targetDistance = -12.5;##; s#getGunHeat() < 0.7#getGunHeat() < 0.9#; s#int k = -4;#int k = -2;#; s#++k <= 4#++k <= 2#
-B6 | S2 spreading each playout's vote over 13 bins (749) | s#if ((n = table\[id\]\[126\]) >= 8) {#if ((n = table[id][126]) > 0) {#; s#} else {#} if (n < 8) {#; s#weight = 5;#weight = Math.min(weight, n * 12 + 5);#; s#targetName = e.getName();##; s#targetDistance = -12.5;##; s#getGunHeat() < 0.7#getGunHeat() < 0.9#; s#int k = -4;#int k = -6;#; s#++k <= 4#++k <= 6#
+# Stage 5 of docs/plan-saor-first.md. From here the source is Saor 0.2 (= S2, released
+# 2026-10-27; 748 bytes after ProGuard), so these arms' seds apply to it and C is 0.2. Every arm
+# above applies to the 0.1 source (tag saor-v0.1). Bytes after ProGuard.
+LA | 0.2 learning a transition on every scan, no gun-heat gate (737) | s#if (getGunHeat() < 0.9) {#{#
+U2 | 0.2 without the end-game power cap (734) | s#Math.min(getOthers() / 3 + 1.9, Math.log10(getEnergy()) \* 325 / (targetDistance = distance))#Math.log10(getEnergy()) * 325 / (targetDistance = distance)#
+V4 | 0.2 with full trust from 4 samples: 5 + 24 per sample below 4 (747) | s#} if (n < 8) {#} if (n < 4) {#; s#n \* 12 + 5#n * 24 + 5#
+V16 | 0.2 with full trust from 16 samples: 5 + 6 per sample below 16 (748) | s#} if (n < 8) {#} if (n < 16) {#; s#n \* 12 + 5#n * 6 + 5#
+B2 | 0.2 spreading each playout's vote over 5 bins, not 9 (748) | s#int k = -4;#int k = -2;#; s#++k <= 4#++k <= 2#
+B6 | 0.2 spreading each playout's vote over 13 bins (749) | s#int k = -4;#int k = -6;#; s#++k <= 4#++k <= 6#

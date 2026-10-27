@@ -8,7 +8,6 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import robocode.AdvancedRobot;
 import robocode.BulletHitEvent;
-import robocode.HitRobotEvent;
 import robocode.RobotDeathEvent;
 import robocode.RoundEndedEvent;
 import robocode.ScannedRobotEvent;
@@ -104,12 +103,6 @@ public class SaorLab extends AdvancedRobot {
     }
 
     @Override
-    public void onHitRobot(HitRobotEvent e) {
-        targetName = e.getName();
-        targetDistance = Movement.RAM_DISTANCE;
-    }
-
-    @Override
     public void onBulletHit(BulletHitEvent e) {
         hits++;
         double p = e.getBullet().getPower();
@@ -123,7 +116,7 @@ public class SaorLab extends AdvancedRobot {
 
     @Override
     public void onPaint(Graphics2D g) {
-        g.setColor(targetDistance < 0 ? Color.RED : Color.GREEN);
+        g.setColor(Color.GREEN);
         g.drawOval(pointX - 6, pointY - 6, 12, 12);
         g.drawLine((int) myX, (int) myY, pointX, pointY);
         g.setColor(Color.YELLOW);

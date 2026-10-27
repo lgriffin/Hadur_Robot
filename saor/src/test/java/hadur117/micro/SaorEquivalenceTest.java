@@ -32,7 +32,7 @@ class SaorEquivalenceTest {
      * @throws Exception if a robot cannot be made
      */
     static void assertSameOrders(URL saor, URL lab) throws Exception {
-        for (String scenario : List.of("lowLeft", "highRight", "learned7", "learned8")) {
+        for (String scenario : List.of("lowLeft", "highRight", "learned0", "learned1", "learned8")) {
             MiniWorld micro = world(scenario, "hadur117.micro.Saor", saor);
             MiniWorld bench = world(scenario, "hadur117.micro.SaorLab", lab);
             int ticks = scenario.equals("lowLeft") ? Scenarios.LOW_LEFT_TICKS : Scenarios.TICKS;
@@ -51,7 +51,7 @@ class SaorEquivalenceTest {
         switch (scenario) {
             case "lowLeft": return Scenarios.lowLeft(robot, from);
             case "highRight": return Scenarios.highRight(robot, from);
-            default: return Scenarios.learned(robot, scenario.endsWith("7") ? 7 : 8, from);
+            default: return Scenarios.learned(robot, Integer.parseInt(scenario.substring("learned".length())), from);
         }
     }
 
@@ -83,10 +83,10 @@ class SaorEquivalenceTest {
     @Test
     @Tag("SAOR-6")
     @Tag("SAOR-7")
-    @DisplayName("8 samples switch the gun from circular to learned, so the two scenarios aim apart")
+    @DisplayName("one sample switches the gun from circular to learned, so the two scenarios aim apart")
     void theLearnedRowChangesTheAim() throws Exception {
-        List<String> cold = Scenarios.learned("hadur117.micro.Saor", 7, classes()).run(Scenarios.TICKS);
-        List<String> warm = Scenarios.learned("hadur117.micro.Saor", 8, classes()).run(Scenarios.TICKS);
-        assertTrue(!cold.equals(warm), "7 and 8 samples gave the same orders");
+        List<String> cold = Scenarios.learned("hadur117.micro.Saor", 0, classes()).run(Scenarios.TICKS);
+        List<String> warm = Scenarios.learned("hadur117.micro.Saor", 1, classes()).run(Scenarios.TICKS);
+        assertTrue(!cold.equals(warm), "0 and 1 samples gave the same orders");
     }
 }

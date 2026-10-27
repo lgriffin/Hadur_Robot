@@ -1547,7 +1547,7 @@ gun as it was (docs/bench/melee-gun-3.13.md).
 | MEND-3 | State | While in melee off a team with two opponents alive, movement shall weight a point where it would be an opponent's closest robot four times the base risk, in place of MMOVE-2's two. | M7 |
 | MGUN-11 | Optional | Where the `CROWD` switch is on, while in melee, the field gun shall describe each opponent's situation also by the distance from it to its nearest robot (Hadur included), whether it is moving toward or away from that robot, and the opponents alive, beside MGUN-1's five attributes. | M7 |
 | MGUN-12 | Optional | Where the `CROWD_FLOOR` switch is on, while off a team with three or more opponents alive and 20 energy or more, the melee gun shall fire a target that is not a finisher at no less than power 1.9, still capped by the power that kills the target, by Hadur's energy lead over it and by Hadur's own energy. | M7 |
-| MGUN-13 | Optional | Where the `CROWD_OGI` switch is on, under MGUN-12's conditions, the melee gun shall fire power 3 at a target within 200 px and 1.92 beyond, in place of the table, under the same caps. | M7 |
+| MGUN-13 | State | While MGUN-12's conditions hold, the melee gun shall fire power 3 at a target within 200 px and 1.92 beyond, in place of the table, under the same caps. | M7 |
 
 - **MGUN-7.** `FieldGun.MELEE_K` (12) beside `FieldGun.K` (3), chosen by `FieldGun.k()` from
   `onTeam`. More situations spread each opponent over the angles it is likely to reach, so the
@@ -1689,6 +1689,7 @@ A retired requirement keeps its ID; no new requirement reuses it.
 | MELEE-6 | The melee gun shall aim with circular prediction, fall back to linear prediction while the target's turn rate is unknown, and fire no more power than needed to kill the target. | M4 | MGUN-1, MGUN-2, MGUN-3 (learned play-it-forward aim, circular and linear only as the fallback; the energy table and exact kill power) |
 | MELEE-8 | While two opponents within 300 px of each other, and further from us than from each other, are both losing energy to others, the strategy shall keep clear of their fight and halve fire power. | M6 | MMOVE-5 (keep clear, unchanged), MGUN-5 (full power: the M6 sweep found the posture's power cuts and holds cost score) |
 | RES-9 | If the engine has skipped three turns in a round, then the core shall run the rest of the round at a duress level that adds no samples, builds no waves, reads no neighbour tree, orbits at the distance floor and fires head-on at power 1.0 whenever the gun is cool and the fire permission is given (WEAVE-3). | D1 | RES-14 (the same duress level, which ended after 300 ticks without a skipped turn), itself retired in 3.11 (below) |
+| SAOR-9 | Where the bot has collided with a robot, the oscillation leg shall be 50 px until that robot is next scanned. | Saor 0.2 | none: stage 4 measured the ram leg level (S1 against DC, +0.03 APS), and its 13 bytes pay for SAOR-7's graded vote |
 | RES-14 | If the engine has skipped three turns in a round, then the core shall run at the duress level RES-9 defines until 300 ticks have passed without a skipped turn. | 3.11 | none: a round is never in duress, and skipped turns still shed levels (TIME-2) and teach the allowance (TIME-3). 3.11 census (docs/plan-3.11-census.md): duress cost +0.73 APS on the whole field and 37 points of share on a slow client |
 
 ### R6 notes
@@ -1815,10 +1816,9 @@ docs/saor.md. Nothing in Hadur's modules depends on it, and it on nothing of Had
 | SAOR-3 | Event | When a scanned robot is nearer than the current target, the bot shall adopt it as target and keep it until it dies or a nearer one is scanned. | U1 |
 | SAOR-4 | Event | When a robot dies, the bot shall reset the target distance to infinity and release the radar to free spin. | U1 |
 | SAOR-5 | State | While gun heat is below 1, the bot shall hold the radar on the target to within one scan width. | U1 |
-| SAOR-6 | State | While the Markov row for the opponent's current state holds fewer than 8 samples, the gun shall aim by circular projection, holding that state's speed and turn rate. | U2 |
-| SAOR-7 | State | While that row holds 8 or more samples, the gun shall aim by Monte-Carlo playout of the opponent's Markov chain and a vote in angle bins. | U3 |
+| SAOR-6 | State | While the Markov row for the opponent's current state holds no sample, the gun shall aim by circular projection, holding that state's speed and turn rate. | U2 |
+| SAOR-7 | State | While that row holds a sample, the gun shall aim by Monte-Carlo playout of the opponent's Markov chain and a vote in angle bins, where a playout through a row of fewer than 8 samples votes at most 5 plus 12 for each sample of that row. | U3 |
 | SAOR-8 | State | While fewer than 3 opponents remain, bullet power shall not exceed 1.9. | U4 |
-| SAOR-9 | Optional | Where the bot has collided with a robot, the oscillation leg shall be 50 px until that robot is next scanned. | U4 |
 | SAOR-10 | Unwanted | If gun turn remaining is non-zero, then the bot shall not fire. | U1 |
 | SAOR-11 | Unwanted | If Robocode's codesize tool reports more than 749 bytes for the shipped jar, then the build shall fail. | U0 |
 | SAOR-12 | Ubiquitous | Before release, the bot shall score 66.0 APS or more over the 155 MicroMelee pairings at 35 rounds on a 1000 x 1000 field. | U3 |
@@ -1834,10 +1834,12 @@ docs/saor.md. Nothing in Hadur's modules depends on it, and it on nothing of Had
   controls is the point. SAOR-4 says "a robot dies" (any `onRobotDeath`), as the spec's event.
   SAOR-6 states the cold gun as built: the playout holds the state, which is circular
   projection at the state's quantised speed and turn; the spec's acceleration term costs bytes
-  the class does not have (docs/saor.md). SAOR-9 adds "until that robot is next scanned": a
-  collision takes the rammer as target at distance -12.5, which reads as a 50 px leg. SAOR-15 is
-  new: the shipped class is the core flattened by hand, so it is held to the core.
-- **Coverage.** SAOR-1 to SAOR-10 by property tests and Cucumber on the core, SAOR-6, SAOR-7 and
+  the class does not have (docs/saor.md). SAOR-15 is new: the shipped class is the core
+  flattened by hand, so it is held to the core.
+- **Saor 0.2** (docs/plan-saor-first.md 6c-6e). SAOR-6 and SAOR-7 now state the graded vote:
+  0.1 held the state until a row had 8 samples, which stage 1 measured at -1.35 APS. SAOR-9, the
+  ram leg, is retired (see the retired table).
+- **Coverage.** SAOR-1 to SAOR-10 (SAOR-9 retired) by property tests and Cucumber on the core, SAOR-6, SAOR-7 and
   SAOR-15 also by the equivalence test on the robots, SAOR-11 and SAOR-15 on the shipped jar by
   `SaorJarIT` (failsafe, after ProGuard). SAOR-12 to SAOR-14 are bench gates: what is covered here
   is their evaluator, `hadur-bench/tools/saor_gates.py`, by `test_saor_gates.py`; whether they

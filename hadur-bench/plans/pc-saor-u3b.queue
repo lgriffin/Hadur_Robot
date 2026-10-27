@@ -1,3 +1,5 @@
+# Historical card: it ran on the Saor 0.1 source, before 0.2 (2026-10-27). Its arms' seds match
+# 0.1 only (tag saor-v0.1), so it does not re-run from master.
 # Saor's second PC card (docs/saor.md, "Duel endgame"): six arms of Saor 0.1 on the MicroMelee
 # census and the gate field, for Leigh's goal of a guaranteed top 5 (2026-10-25).
 #   ./queue.sh run pc-saor-u3b        (or  .\queue.ps1 run pc-saor-u3b)

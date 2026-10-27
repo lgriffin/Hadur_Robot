@@ -1,4 +1,5 @@
-# Melee firepower (docs/plan-melee-top5.md, MGUN-12/13, BENCH-117). The crowd exposure read (BENCH-116,
+# Melee firepower (docs/plan-melee-top5.md, MGUN-12/13, BENCH-117). RAN 2026-10-26 (PR #320): MGUN-13 passed
+# and ships on since pc-melee-ogi, so pogi no longer applies on master and this card's prep stops. The crowd exposure read (BENCH-116,
 # docs/bench/local/melee-exposure-317.md) found Hadur's melee movement level with the top 10 (crowd
 # damage taken 8.7 per 100 ticks against 8.9; survival score above theirs) and its bullet damage
 # behind (4,244 a battle against 5,211): in the crowd the top 10 fire at 2.62 power to Hadur's 1.64,

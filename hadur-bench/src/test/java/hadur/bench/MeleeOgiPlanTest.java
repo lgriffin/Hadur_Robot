@@ -56,13 +56,13 @@ class MeleeOgiPlanTest {
 
     @Test
     @Tag("BENCH-118")
-    @DisplayName("the baseline carries the banked gun and MEND-3; MGUN-13 still ships off")
+    @DisplayName("the baseline carried the banked gun and MEND-3; MGUN-13, off then, ships on since the card passed")
     void baseline() throws IOException {
         String gun = Files.readString(Path.of("../hadur-core/src/main/java/hadur2/core/melee/FieldGun.java"));
         assertTrue(gun.contains("public static final int MELEE_K = 24;"));
         String endgame = Files.readString(Path.of("../hadur-core/src/main/java/hadur2/core/melee/MeleeEndgame.java"));
         assertTrue(endgame.contains("public static final boolean THREE_FAR = true;"));
         String policy = Files.readString(Path.of("../hadur-core/src/main/java/hadur2/core/melee/MeleeEnergyPolicy.java"));
-        assertTrue(policy.contains("public static final boolean CROWD_OGI = false;"));
+        assertTrue(policy.contains("public static final boolean CROWD_OGI = true;"));
     }
 }

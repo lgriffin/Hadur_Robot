@@ -10,11 +10,11 @@ fields of nine) and the read counts only the micro pairings (saor_arms.py --only
 For each seat it writes, under OUT/<seat>/:
 
   fNN.txt      the census fields that hold at least one micro robot (a field with none adds
-               nothing to the score); when the seated robot is itself in a field, Saor 0.1 takes
+               nothing to the score); when the seated robot is itself in a field, Saor takes
                its place, as Saor now plays in the live field
   suite.txt    the suite over those fields, for the bench's --suite
 
-and OUT/micro.txt, the robots the read counts: the MicroMelee field plus Saor 0.1.
+and OUT/micro.txt, the robots the read counts: the MicroMelee field plus Saor (the release in the rumble).
 
   python3 tools/saor_live.py --seat "kc.micro.Figment 1.0" --seat "wompi.Wallaby 5.1" --seat saor
 
@@ -28,8 +28,8 @@ import re
 import sys
 
 HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SAOR = "hadur117.micro.Saor 0.1"
-SAOR_LINE = "%s | micromelee-3 | hadur117.micro.Saor_0.1.jar" % SAOR
+SAOR = "hadur117.micro.Saor 0.2"
+SAOR_LINE = "%s | micromelee-3 | hadur117.micro.Saor_0.2.jar" % SAOR
 
 
 def set_lines(path):
@@ -62,7 +62,7 @@ def build(suite, micro_file, seats, out):
     written = {}
     os.makedirs(out, exist_ok=True)
     with open(os.path.join(out, "micro.txt"), "w", encoding="utf-8") as f:
-        f.write("# Robots the live-shaped census read counts (saor_live.py): the MicroMelee field and Saor 0.1.\n")
+        f.write("# Robots the live-shaped census read counts (saor_live.py): the MicroMelee field and Saor.\n")
         for n in micro + [SAOR]:
             f.write(n + "\n")
     micro = set(micro) | {SAOR}

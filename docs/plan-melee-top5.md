@@ -320,6 +320,11 @@ master (MGUN-7's K = 24, MEND-3 on; `melee-samples` and `melee-handoff` re-recor
 duel and team fixtures unchanged). `pc-melee-ogi` (BENCH-118) screens MGUN-13 on that master at 8
 seeds, passing if it adds at all (95% low end above 0).
 
+**Ogi result (2026-10-27, PR #330).** On that master, po against the mean of aa and bb, 8 seeds:
+**+0.57 ± 0.18**, PASS (1-30 endgame wins -1.3 pp, others outlived +0.1 pp; A/A +0.05 clean).
+MGUN-13 ships on. Banked since Stage 0's census (66.99): about +1.2, so the census reads about 68.2
+against the 71.6 bar, about 3.4 short.
+
 ### Stage 3: crowd survival
 
 The largest lever and the riskiest: M4's path scoring cost 3 to 5 APS, and the team's port of
