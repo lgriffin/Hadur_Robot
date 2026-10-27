@@ -1,7 +1,7 @@
-# TwinSaor stage T3 (docs/twinsaor.md section 6): the first screen of TwinSaor's arms on the whole Twin
+# TwinSaor stage W3 (docs/twinsaor.md section 6): the first screen of TwinSaor's arms on the whole Twin
 # Duel field. Leigh, 2026-10-27: no PC bench until TwinSaor has had a live run, so this card waits for
 # 0.1's first live pass; it is designed, not queued.
-#   ./queue.sh run pc-twin-t3        (or  .\queue.ps1 run pc-twin-t3)
+#   ./queue.sh run pc-twin-w3        (or  .\queue.ps1 run pc-twin-w3)
 # Run it from master:
 #   git checkout master && git pull
 # One bench queue, RoboRumble workers at 0, unpinned. Every step resumes; no step needs a decision.
@@ -26,43 +26,43 @@ set MVN = mvn -q -Drobocode.version=1.11.1 compile exec:java
 set OUT = ../docs/bench/local
 set ARMS = C,A,R2W,R2N,R1N,R1W,P180,KL,NF,LEG,FF
 
-prep | (cd .. && mvn -q -DskipTests install -pl twinsaor -am) && ./fetch-opponents.sh --set twinduel-field.txt && TWIN_RUN=t3 bash tools/twin_arms.sh twinduel-field.txt 10 3100 ${ARMS}
+prep | (cd .. && mvn -q -DskipTests install -pl twinsaor -am) && ./fetch-opponents.sh --set twinduel-field.txt && TWIN_RUN=w3 bash tools/twin_arms.sh twinduel-field.txt 10 3100 ${ARMS}
 
-arm-C | ${MVN} "-Dexec.args=@work/twin-t3/twinduel-field-C.args"
+arm-C | ${MVN} "-Dexec.args=@work/twin-w3/twinduel-field-C.args"
   after: prep
 
-arm-A | ${MVN} "-Dexec.args=@work/twin-t3/twinduel-field-A.args"
+arm-A | ${MVN} "-Dexec.args=@work/twin-w3/twinduel-field-A.args"
   after: arm-C
 
-arm-R2W | ${MVN} "-Dexec.args=@work/twin-t3/twinduel-field-R2W.args"
+arm-R2W | ${MVN} "-Dexec.args=@work/twin-w3/twinduel-field-R2W.args"
   after: arm-A
 
-arm-R2N | ${MVN} "-Dexec.args=@work/twin-t3/twinduel-field-R2N.args"
+arm-R2N | ${MVN} "-Dexec.args=@work/twin-w3/twinduel-field-R2N.args"
   after: arm-R2W
 
-arm-R1N | ${MVN} "-Dexec.args=@work/twin-t3/twinduel-field-R1N.args"
+arm-R1N | ${MVN} "-Dexec.args=@work/twin-w3/twinduel-field-R1N.args"
   after: arm-R2N
 
-arm-R1W | ${MVN} "-Dexec.args=@work/twin-t3/twinduel-field-R1W.args"
+arm-R1W | ${MVN} "-Dexec.args=@work/twin-w3/twinduel-field-R1W.args"
   after: arm-R1N
 
-arm-P180 | ${MVN} "-Dexec.args=@work/twin-t3/twinduel-field-P180.args"
+arm-P180 | ${MVN} "-Dexec.args=@work/twin-w3/twinduel-field-P180.args"
   after: arm-R1W
 
-arm-KL | ${MVN} "-Dexec.args=@work/twin-t3/twinduel-field-KL.args"
+arm-KL | ${MVN} "-Dexec.args=@work/twin-w3/twinduel-field-KL.args"
   after: arm-P180
 
-arm-NF | ${MVN} "-Dexec.args=@work/twin-t3/twinduel-field-NF.args"
+arm-NF | ${MVN} "-Dexec.args=@work/twin-w3/twinduel-field-NF.args"
   after: arm-KL
 
-arm-LEG | ${MVN} "-Dexec.args=@work/twin-t3/twinduel-field-LEG.args"
+arm-LEG | ${MVN} "-Dexec.args=@work/twin-w3/twinduel-field-LEG.args"
   after: arm-NF
 
-arm-FF | ${MVN} "-Dexec.args=@work/twin-t3/twinduel-field-FF.args"
+arm-FF | ${MVN} "-Dexec.args=@work/twin-w3/twinduel-field-FF.args"
   after: arm-LEG
 
-read | python3 tools/twin_read.py --run t3 --arms ${ARMS} --control C > ${OUT}/twin-t3.md
+read | python3 tools/twin_read.py --run w3 --arms ${ARMS} --control C > ${OUT}/twin-w3.md
   after: arm-FF
 
-pr | bash tools/open_results_pr.sh claude/pc-twin-t3-results "TwinSaor T3: first arm screen on the Twin Duel field" ${OUT}/twin-t3.md ${OUT}/twin-t3-twinduel-field-*.md
+pr | bash tools/open_results_pr.sh claude/pc-twin-w3-results "TwinSaor W3: first arm screen on the Twin Duel field" ${OUT}/twin-w3.md ${OUT}/twin-w3-twinduel-field-*.md
   after: read

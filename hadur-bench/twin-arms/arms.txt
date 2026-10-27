@@ -1,4 +1,4 @@
-# TwinSaor arms for the T3 card (docs/twinsaor.md section 6). One arm a line:
+# TwinSaor arms for the W3 card (docs/twinsaor.md section 6). One arm a line:
 #   NAME | what it changes | sed expression over twinsaor/src/main/java/hadur117/twin/{core/Team.java,core/Gun.java,SaorTwin.java}
 # tools/twin_arms.sh builds each arm as the team hadur117.twin.TwinSaor at version 0.1<NAME>, so arms
 # install side by side; a sed must change the source (the build fails if it does not), and an empty

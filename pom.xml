@@ -49,6 +49,7 @@
         <hadur.team.stage>T7</hadur.team.stage>
         <!-- Saor's stage (U0-U5, the spec's M0-M5; docs/saor.md): its requirements up to here must be covered too. -->
         <hadur.saor.stage>U4</hadur.saor.stage>
+        <hadur.twin.stage>W0</hadur.twin.stage>
     </properties>
 
     <repositories>
@@ -132,6 +133,7 @@
                             <hadur.druss.stage>${hadur.druss.stage}</hadur.druss.stage>
                             <hadur.team.stage>${hadur.team.stage}</hadur.team.stage>
                             <hadur.saor.stage>${hadur.saor.stage}</hadur.saor.stage>
+                            <hadur.twin.stage>${hadur.twin.stage}</hadur.twin.stage>
                             <hadur.root>${maven.multiModuleProjectDirectory}</hadur.root>
                         </systemPropertyVariables>
                     </configuration>

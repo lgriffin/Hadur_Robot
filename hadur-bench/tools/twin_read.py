@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""Reads TwinSaor's arms off their team bench reports (docs/twinsaor.md section 6, card pc-twin-t3).
+"""Reads TwinSaor's arms off their team bench reports (docs/twinsaor.md section 6, card pc-twin-w3).
 
 Each report's first table gives one row per opposing team: `| team | battles | NN.N% | ...`. An arm's
 APS is the mean of its per-team score shares, as the rumble's APS is the mean of its pairings. An arm
 is read against the control team by team, so the difference's error is the paired one:
 sd(differences) / sqrt(teams).
 
-    python3 tools/twin_read.py --reports DIR --label twinduel-field --run t3 --arms C,A,R2W --control C
+    python3 tools/twin_read.py --reports DIR --label twinduel-field --run w3 --arms C,A,R2W --control C
 """
 import argparse
 import math
