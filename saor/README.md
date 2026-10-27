@@ -14,13 +14,15 @@ every melee table it is small enough for. MicroMelee is the target.
 |---|---|---|---|---|---|---|---|
 | 0.2 | 2026-10-27 15:40 | **MicroMelee** | **1st of 157** | **69.42 ± 0.39** | 497 | Saor, 2nd kc.micro.Figment 1.0 69.36 | -0.06 (leads) |
 | 0.2 | 2026-10-27 15:40 | MiniMelee | 2nd of 204 | 68.79 ± 0.34 | 644 | kc.mini.Mirage 0.2, 71.30 | +2.51 |
+| 0.2 | 2026-10-27 16:00 | MeleeRumble | 19th of 416 | - | - | - | - |
 | 0.1 | 2026-10-25 23:32 | MicroMelee | 3rd of 157 | 68.08 ± 0.37 | 533 | kc.micro.Figment 1.0, 69.37 | +1.29 |
 | 0.1 | 2026-10-25 23:32 | MiniMelee | 5th of 204 | 67.36 ± 0.32 | 728 | kc.mini.Mirage 0.2, 71.31 | +3.95 |
 | 0.1 | 2026-10-25 23:45 | MeleeRumble | 31st of 416 | 63.70 ± 0.22 | 1,460 | aaa.r.ScalarR 0.005g.047, 72.78 | +9.08 |
 
 **Saor 0.2 is 1st in MicroMelee** on its first pass: 69.42 against Figment's 69.36, a 0.06
 lead inside its ±0.39, so it is a tie on the numbers and the lead can still change hands. It
-gained +1.34 over 0.1 and took 2nd in MiniMelee too, ahead of Figment and Wallaby. Survival
+gained +1.34 over 0.1 and took 2nd in MiniMelee too, ahead of Figment and Wallaby, and
+climbed from 31st to 19th in the full MeleeRumble. Survival
 rose from 29.6% to 35.9%. The live-shaped census called it: 0.2 (stage 4's S2) read 69.83
 against Figment's 69.79 in the same run (PR #329), +0.04 against +0.06 live. Stage 5a's LA
 (learning on every scan) adds +0.45 ± 0.29 on the MicroMelee census (PR #347); stage 5b
