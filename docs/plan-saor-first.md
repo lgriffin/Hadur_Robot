@@ -299,6 +299,40 @@ Stage 5a screens the changes that cost nothing on the MicroMelee census, built o
 Pass: +0.3 over C. The winners, stacked on 0.2, then go to a stage 5b live-shaped confirm with
 Figment seated. The bar there is the same as stage 4: Figment + 0.5 in the same run.
 
+## 6g. Stage 5a: results (pc-saor-s04, PR #347, 2026-10-27)
+
+MicroMelee census, 216 battles an arm, built on 0.2:
+
+| Arm | APS | vs C | Bytes |
+|---|---|---|---|
+| C (0.2) | 67.99 ± 0.20 | | 748 |
+| **LA** (learn on every scan) | 68.45 ± 0.21 | **+0.45 ± 0.29, passes** | 737 |
+| V4 | 68.14 ± 0.23 | +0.14 | 747 |
+| B2 | 68.08 ± 0.20 | +0.08 | 748 |
+| V16 | 68.02 ± 0.21 | +0.03 | 748 |
+| U2 (no end-game cap) | 68.01 ± 0.22 | +0.02 | 734 |
+| B6 | 68.00 ± 0.21 | 0.00 | 749 |
+
+One arm passed. LA's low end is +0.16. More learning has paid three times running: DH9 on
+stage 4 (+0.27), S2's learning below 0.9 gun heat, and now learning on every scan. U2 measures
+nothing again but frees 14 bytes; together with LA, 25 bytes are free (723).
+
+## 6h. Stage 5b card (pc-saor-s05, about 3 h)
+
+A live-shaped confirm with Figment seated (SAOR-16), and a MicroMelee census of the same arms:
+
+| Arm | What | Bytes after ProGuard |
+|---|---|---|
+| C | Saor 0.2, the control | 748 |
+| FIG | kc.micro.Figment 1.0 seated, live-shaped only | - |
+| LA | 0.2 learning on every scan | 737 |
+| LAU | LA without the end-game cap, 25 bytes free | 723 |
+
+Pass, the same bar as stage 4: the best of LA and LAU leads FIG by +0.5 or more on the
+live-shaped census, its low end above Figment's 69.37 live after the run's offset. If it leads
+C but not FIG, it is still a better Saor and a candidate 0.3; the free bytes go to the next
+change (a duel-only move needs 67).
+
 ## 7. What a guaranteed 1st takes
 
 Figment and Wallaby are not changing; both have been in the rumble for years. If stage 1
