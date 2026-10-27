@@ -53,21 +53,18 @@ Feature: Saor, a MicroMelee bot
     When Saor aims at it 400 px away with power 2
     Then the aim is where it was scanned
 
-  @SAOR-8
-  Scenario Outline: Power by range, capped in the end game
-    The cap is others / 3 + 1.9: 1.9 below three opponents, 2.9 from three to five, and above
-    3 from six, where the engine's own limit of 3 applies.
+  @SAOR-17
+  Scenario Outline: Power by range, whatever the field
+    No cap but the engine's own limit of 3 (Saor 0.2's end-game cap, SAOR-8, is retired).
 
     Then with 100 energy at <distance> px and <others> opponents left the power is <power>
 
     Examples:
       | distance | others | power |
       | 650      | 9      | 1.0   |
-      | 100      | 9      | 4.9   |
-      | 100      | 6      | 3.9   |
-      | 100      | 4      | 2.9   |
-      | 100      | 2      | 1.9   |
-      | 100      | 1      | 1.9   |
+      | 100      | 9      | 6.5   |
+      | 100      | 2      | 6.5   |
+      | 325      | 1      | 2.0   |
 
   @SAOR-10
   Scenario: The gun fires only once it is on its aim

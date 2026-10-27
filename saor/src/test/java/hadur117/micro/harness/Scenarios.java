@@ -72,7 +72,7 @@ public final class Scenarios {
 
     /**
      * Three enemies around a robot starting high right, one stationary; the field thins to
-     * two, so the end-game power cap applies (SAOR-8). The collision comes before any scan; 0.2
+     * two. The collision comes before any scan; 0.2
      * has no collision handler, so the gun waits for its first scan.
      *
      * @param className the robot

@@ -26,7 +26,7 @@ set MVN = mvn -q -Drobocode.version=1.11.1 compile exec:java
 set OUT = ../docs/bench/local
 set ARMS = D,MIR,SAOR,W,CE,CM,RK,FL,P200,G1
 
-prep | (cd .. && mvn -q -DskipTests install -pl saor,deise -am) && cp ../saor/target/hadur117.micro.Saor_0.2.jar ../deise/target/hadur117.mini.Deise_0.2.jar opponents/ && ./fetch-opponents.sh --set minimelee-field.txt && for f in melee-census-317/f*.txt; do ./fetch-opponents.sh --set "$f" || exit 1; done && DEISE_RUN=e01 bash tools/deise_arms.sh live 6 3100 ${ARMS}
+prep | (cd .. && mvn -q -DskipTests install -pl deise -am) && cp ../deise/target/hadur117.mini.Deise_0.2.jar opponents/ && curl -fsSLo opponents/hadur117.micro.Saor_0.2.jar https://github.com/lgriffin/Hadur_Robot/releases/download/saor-v0.2/hadur117.micro.Saor_0.2.jar && ./fetch-opponents.sh --set minimelee-field.txt && for f in melee-census-317/f*.txt; do ./fetch-opponents.sh --set "$f" || exit 1; done && DEISE_RUN=e01 bash tools/deise_arms.sh live 6 3100 ${ARMS}
 
 live-D | ${MVN} "-Dexec.args=@work/deise-e01/live-D.args"
   after: prep
