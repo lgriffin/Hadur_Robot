@@ -62,7 +62,21 @@ public final class TeamModes {
          * TMODE-19: members state their gun's heading and heat; a member keeps out of the line
          * ahead of each teammate's gun while that gun is about to fire.
          */
-        GUNLINE
+        GUNLINE,
+        /**
+         * TMODE-20: shot ownership, for a team whose code shoots its closest enemy: a shot makes
+         * virtual bullets only for the member it was aimed at (MMOVE-9's nearest rule). Only
+         * through the table.
+         */
+        OWN,
+        /** TMODE-21: the team aims only head-on: one head-on virtual bullet per shot. Only through the table. */
+        HEADON,
+        /** TMODE-22: the team aims only linear: one linear virtual bullet per shot. Only through the table. */
+        LINEAR,
+        /** TMODE-23: the team's power falls with distance: hunt at 500 px, not 350. Only through the table. */
+        FAR,
+        /** TMODE-24: as FAR, at 650 px. Only through the table. */
+        FARTHER
     }
 
     /**
@@ -134,6 +148,18 @@ public final class TeamModes {
         }
         int space = s.indexOf(' ');
         return space < 0 ? s : s.substring(0, space);
+    }
+
+    /** TMODE-20: whether a shot counts only for the member it was aimed at (MMOVE-9's nearest rule). */
+    static boolean owns(Set<Mode> modes) {
+        return modes.contains(Mode.OWN);
+    }
+
+    /** TMODE-21, TMODE-22: the one aim the team's shots make a virtual bullet on, or null for both. */
+    static VirtualBullet.Aim onlyAim(Set<Mode> modes) {
+        if (modes.contains(Mode.HEADON)) return VirtualBullet.Aim.HEAD_ON;
+        if (modes.contains(Mode.LINEAR)) return VirtualBullet.Aim.LINEAR;
+        return null;
     }
 
     /** The modes against {@code enemies}: the first one the table names, else the default. */

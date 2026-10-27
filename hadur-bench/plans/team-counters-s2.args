@@ -1,0 +1,31 @@
+# PC card team-counters (docs/plan-team-top5.md section 11, TMODE-20..24, BENCH-123): screen s2, each team's second counter, against aa on its own teams. Template: tcprep writes work/team-counters-s2.args with @V@ = the robot.release in hadur-robot/pom.xml
+--team
+true
+--seeds
+16
+--seed-base
+4600
+--rounds
+10
+--parallel
+auto
+--child-heap
+2G
+--cpu-constant
+auto
+--set
+work/team-counters-s2.txt
+--robot-jar
+bisect/hadur2.HadurTeam_@V@kb.jar
+--robot
+hadur2.HadurTeam @V@kb
+--member
+hadur2.Hadur
+--out
+work/team-counters-@V@-s2
+--report
+../docs/bench/local/team-counters-s2.md
+--baseline
+bisect/hadur2.HadurTeam_@V@aa.jar
+--baseline-robot
+hadur2.HadurTeam @V@aa

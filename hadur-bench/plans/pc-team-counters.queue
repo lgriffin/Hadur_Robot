@@ -1,0 +1,43 @@
+# Team per-opponent counters (TMODE-20..24, BENCH-123; docs/plan-team-top5.md section 11), team thread:
+# team-only, duel and melee fixtures bit for bit. Each team whose code was read gets up to three
+# counters (plans/team-counters.tsv), each played only against that team, on top of the shipped
+# MATEFIRE and HUNT: OWN (shot ownership, for closest-target teams), HEADON / LINEAR (dodge the one
+# aim the team's gun has), FAR / FARTHER (hunt at 500 / 650 px against power that falls with range).
+#   tcprep  build aa, bb and one table jar per screen (ka, kb, kc)
+#   tcs1..3 each screen against aa on its own teams, 16 seeds (base 4600)
+#   tcsbb   bb vs aa on every screened team, same seeds (A/A)
+#   tcpick  per team, the screen with the best gain over both baselines, +3.0 points or more with
+#           the 95% low end above zero; builds the picked table (mk)
+#   tcgate  mk vs aa on the picked teams, 16 fresh seeds (base 4700); tcgbb A/A
+#   tcsum   projected team APS change = sum of the picked teams' gains / 46 (gate: +0.30 with the
+#           low end above zero); lock keeps the teams that gained +1.0 or more as the table to ship
+# About 2,500 battles at most (screens ~1,570, gate ~960), about 2.8 h at 12 workers (sizes itself
+# to the host). Every step resumes where it stopped. The team thread reads
+# claude/pc-team-counters-results.
+#   ./queue.sh run pc-team-counters        (or  .\queue.ps1 run pc-team-counters)
+# Run it from master (one bench queue at a time):
+#   git checkout master && git pull
+
+set OUT = ../docs/bench/local
+set T = python3 tools/team_modes.py
+set SCREENS = --counters plans/team-counters.tsv --report s1=../docs/bench/local/team-counters-s1.md --report s2=../docs/bench/local/team-counters-s2.md --report s3=../docs/bench/local/team-counters-s3.md --control s1=../docs/bench/local/team-counters-sbb.md --control s2=../docs/bench/local/team-counters-sbb.md --control s3=../docs/bench/local/team-counters-sbb.md
+
+tcprep | git checkout -q master && V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && test -n "$V" && rm -f bisect/hadur2.HadurTeam_"$V"aa.jar bisect/hadur2.HadurTeam_"$V"bb.jar bisect/hadur2.HadurTeam_"$V"ka.jar bisect/hadur2.HadurTeam_"$V"kb.jar bisect/hadur2.HadurTeam_"$V"kc.jar bisect/hadur2.HadurTeam_"$V"mk.jar && rm -f ${OUT}/team-counters-*.md ${OUT}/team-counters-pick.tsv && ./fetch-opponents.sh --set team-census46.txt && mkdir -p work && ${T} screens --counters plans/team-counters.tsv --census team-census46.txt --opponents opponents --base MATEFIRE,HUNT --out-dir work && bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && TEAM_MODE_TABLE="$(pwd)/work/team-counters-s1.java" TEAM_MODE_SUFFIX=ka bash ./build-ablation.sh tmtab && TEAM_MODE_TABLE="$(pwd)/work/team-counters-s2.java" TEAM_MODE_SUFFIX=kb bash ./build-ablation.sh tmtab && TEAM_MODE_TABLE="$(pwd)/work/team-counters-s3.java" TEAM_MODE_SUFFIX=kc bash ./build-ablation.sh tmtab && for a in s1 s2 s3 sbb gate gbb; do sed "s/@V@/$V/g" plans/team-counters-$a.args > work/team-counters-$a.args || exit 1; done && for j in aa bb ka kb kc; do test -f bisect/hadur2.HadurTeam_"$V"$j.jar || exit 1; done && mvn -q compile
+tcs1   | mvn -q exec:java "-Dexec.args=@work/team-counters-s1.args"
+  after: tcprep
+tcs2   | mvn -q exec:java "-Dexec.args=@work/team-counters-s2.args"
+  after: tcs1
+tcs3   | mvn -q exec:java "-Dexec.args=@work/team-counters-s3.args"
+  after: tcs2
+tcsbb  | mvn -q exec:java "-Dexec.args=@work/team-counters-sbb.args"
+  after: tcs3
+tcpick | ${T} pick ${SCREENS} --min-mean 3.0 --low-end 0 --base MATEFIRE,HUNT --census team-census46.txt --opponents opponents --out-md ${OUT}/team-counters-pick.md --out-tsv ${OUT}/team-counters-pick.tsv --out-java work/team-counters-picked.java --out-set work/team-counters-gate.txt && if [ -s work/team-counters-picked.java ]; then TEAM_MODE_LOCKED="$(pwd)/work/team-counters-picked.java" bash ./build-ablation.sh tmlock; else echo "no counter picked: no gate"; fi
+  after: tcsbb
+tcgate | if [ -s work/team-counters-picked.java ]; then mvn -q exec:java "-Dexec.args=@work/team-counters-gate.args"; else echo "no counter picked: no gate"; fi
+  after: tcpick
+tcgbb  | if [ -s work/team-counters-picked.java ]; then mvn -q exec:java "-Dexec.args=@work/team-counters-gbb.args"; else echo "no counter picked: no gate"; fi
+  after: tcgate
+tcsum  | if [ -s work/team-counters-picked.java ]; then ${T} gate --report ${OUT}/team-counters-gate.md --control ${OUT}/team-counters-gbb.md --set work/team-counters-gate.txt --seeds 16 --teams 46 --min-aps 0.3 --out-md ${OUT}/team-counters-verdict.md && ${T} lock --confirm ${OUT}/team-counters-gate.md --control ${OUT}/team-counters-gbb.md --pick-tsv ${OUT}/team-counters-pick.tsv --base MATEFIRE,HUNT --census team-census46.txt --opponents opponents --min-gain 1.0 --out-md ${OUT}/team-counters-lock.md --out-java work/team-counters-locked.java && cp work/team-counters-locked.java ${OUT}/team-counters-locked.java.txt; else echo "No counter cleared the screen: no gate, table stays empty." > ${OUT}/team-counters-verdict.md; fi
+  after: tcgbb
+tcpr   | bash tools/open_results_pr.sh claude/pc-team-counters-results "Team per-opponent counters: screen, pick and gate" $(ls ${OUT}/team-counters-*.md ${OUT}/team-counters-pick.tsv ${OUT}/team-counters-locked.java.txt 2>/dev/null)
+  after: tcsum
