@@ -132,7 +132,8 @@ The spec's stages M0 to M5 are U0 to U5 here, because M is already Hadur's melee
 | U7 | - | Plan for 1st, stage 2: Saor's confidence vote, thresholds, constants | Passed (PR #311): the graded vote DC reads 69.56 ± 0.19 on the live-shaped census (+1.28), level with Figment |
 | U8 | - | Plan for 1st, stage 4: stack DC, no ram leg and constants in 749 bytes; Figment seated in the same run | Not met (PR #329): S2 reads 69.83 against Figment's 69.79 in the same run, a tie; the bar was Figment + 0.5 |
 | U9 | - | Saor 0.2 = S2 (graded vote, no ram leg, learning below 0.9 gun heat), 748 bytes | Released on Leigh's go, 2026-10-27 ([notes](releases/saor-v0.2.md)) |
-| U10 | - | Plan for 1st, stage 5a: a screen of 0.2's free constants and byte savers | Card `pc-saor-s04` ready, waiting on Leigh |
+| U10 | - | Plan for 1st, stage 5a: a screen of 0.2's free constants and byte savers | Passed: LA (learn on every scan) +0.45 ± 0.29 over 0.2 (PR #347) |
+| U11 | - | Plan for 1st, stage 5b: LA and LA without the end-game cap, live-shaped with Figment seated | Card `pc-saor-s05` ready, waiting on Leigh |
 
 `hadur.saor.stage` in the root pom is U4, so the traceability test expects coverage for every
 requirement up to U4.

@@ -46,3 +46,5 @@ V4 | 0.2 with full trust from 4 samples: 5 + 24 per sample below 4 (747) | s#} i
 V16 | 0.2 with full trust from 16 samples: 5 + 6 per sample below 16 (748) | s#} if (n < 8) {#} if (n < 16) {#; s#n \* 12 + 5#n * 6 + 5#
 B2 | 0.2 spreading each playout's vote over 5 bins, not 9 (748) | s#int k = -4;#int k = -2;#; s#++k <= 4#++k <= 2#
 B6 | 0.2 spreading each playout's vote over 13 bins (749) | s#int k = -4;#int k = -6;#; s#++k <= 4#++k <= 6#
+# Stage 5b (docs/plan-saor-first.md 6h): stage 5a's pass LA, and LA with U2's 14 bytes freed.
+LAU | 0.2 learning on every scan, no end-game power cap (723) | s#if (getGunHeat() < 0.9) {#{#; s#Math.min(getOthers() / 3 + 1.9, Math.log10(getEnergy()) \* 325 / (targetDistance = distance))#Math.log10(getEnergy()) * 325 / (targetDistance = distance)#
