@@ -133,7 +133,12 @@ when D or a one-change arm reads within 1.0 of MIR in the same run.
 | E0 | The design measured, unfitted (card `pc-deise-e01`) | D or one arm within 1.0 of MIR |
 | E1 | Stack the winners, then the next round of arms | the stack leads MIR by 0.5 or more, same run |
 | E2 | Fit 1,499 bytes: flatten into one class as Saor is, with an equivalence test against the core, then golf | DeiseJarIT at 1,499; the fitted build reads level with E1's |
-| E3 | Release `deise-v0.1` on Leigh's go | live MiniMelee 1st |
+| E3 | Release the fitted build on Leigh's go | live MiniMelee 1st |
+
+Leigh asked for 0.1 live on 2026-10-27 to get real numbers before the census: `deise-v0.1`
+(`.github/workflows/release-deise.yml`) is the E0 build, unfitted. At 2,303 bytes the rumble scores
+it in MeleeRumble only, and its pairings against the 204 MiniMelee robots give the
+MiniMelee-shaped score, the same count the census makes (DEISE-13).
 
 ## 7. The byte budget
 

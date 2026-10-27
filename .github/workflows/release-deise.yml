@@ -1,0 +1,62 @@
+name: release-deise
+
+# Deise (docs/deise.md) ships on its own tags, deise-v0.1 and on, apart from Hadur's v*, Saor's
+# saor-v* and TwinSaor's twinsaor-v* tags. Run by hand with a version: it builds and tests the
+# repo, checks the jar carries that version (the deise build fails above its codesize budget,
+# DEISE-12), and publishes a release with the jar, whose asset URL is what the MeleeRumble
+# participants list needs.
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Deise version to release, e.g. 0.1 (tags deise-v0.1)'
+        required: true
+
+env:
+  TAG: deise-v${{ inputs.version }}
+  VERSION: ${{ inputs.version }}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-deise-${{ inputs.version }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+      - name: Build and test
+        # The jar and Deise.properties take the version from deise.release.
+        run: mvn -B verify -Ddeise.release="${VERSION}"
+      - name: Check the jar name and version match the tag
+        run: |
+          jar="deise/target/hadur117.mini.Deise_${VERSION}.jar"
+          test -f "$jar" || { echo "missing $jar"; ls deise/target/*.jar; exit 1; }
+          unzip -p "$jar" hadur117/mini/Deise.properties | grep -qx "robot.version=${VERSION}" \
+            || { echo "robot.version in $jar is not ${VERSION}"; exit 1; }
+          echo "JAR=$jar" >> "$GITHUB_ENV"
+      - name: Check an existing tag points at this commit
+        run: |
+          target=$(git ls-remote --tags origin "refs/tags/${TAG}*" | awk -v t="refs/tags/${TAG}" \
+            '$2 == t "^{}" { peeled = $1 } $2 == t { plain = $1 } END { print (peeled ? peeled : plain) }')
+          if [ -n "$target" ] && [ "$target" != "$GITHUB_SHA" ]; then
+            echo "${TAG} already points at ${target}, not ${GITHUB_SHA}; run the workflow on that commit."
+            exit 1
+          fi
+      - name: Publish the release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ env.TAG }}
+          target_commitish: ${{ github.sha }}
+          name: Deise ${{ inputs.version }}
+          files: ${{ env.JAR }}
+          body_path: docs/releases/${{ env.TAG }}.md
+          make_latest: 'false'
