@@ -56,12 +56,14 @@ class MeleePowerPlanTest {
 
     @Test
     @Tag("BENCH-117")
-    @DisplayName("the power arms edit exactly the MGUN-12 and MGUN-13 switches, which ship off")
+    @DisplayName("the power arms edit exactly the MGUN-12 and MGUN-13 switches, which shipped off (MGUN-13 on since BENCH-118)")
     void ablations() throws IOException {
         String build = Files.readString(Path.of("build-ablation.sh"));
         assertTrue(build.contains("flag=CROWD_FLOOR; suffix=pf") && build.contains("flag=CROWD_OGI; suffix=po"));
         String policy = Files.readString(Path.of("../hadur-core/src/main/java/hadur2/core/melee/MeleeEnergyPolicy.java"));
         assertTrue(policy.contains("public static final boolean CROWD_FLOOR = false;"));
-        assertTrue(policy.contains("public static final boolean CROWD_OGI = false;"));
+        assertTrue(policy.contains("public static final boolean CROWD_OGI = true;"), "banked by pc-melee-ogi");
+        assertTrue(build.contains("\"public static final boolean CROWD_OGI = true;\" \"public static final boolean CROWD_OGI = false;\""),
+            "pfloor turns MGUN-13 off, so the floor arm measures the floor, not Ogi's rule");
     }
 }

@@ -1546,7 +1546,7 @@ gun as it was (docs/bench/melee-gun-3.13.md).
 | MEND-3 | State | While in melee off a team with two opponents alive, movement shall weight a point where it would be an opponent's closest robot four times the base risk, in place of MMOVE-2's two. | M7 |
 | MGUN-11 | Optional | Where the `CROWD` switch is on, while in melee, the field gun shall describe each opponent's situation also by the distance from it to its nearest robot (Hadur included), whether it is moving toward or away from that robot, and the opponents alive, beside MGUN-1's five attributes. | M7 |
 | MGUN-12 | Optional | Where the `CROWD_FLOOR` switch is on, while off a team with three or more opponents alive and 20 energy or more, the melee gun shall fire a target that is not a finisher at no less than power 1.9, still capped by the power that kills the target, by Hadur's energy lead over it and by Hadur's own energy. | M7 |
-| MGUN-13 | Optional | Where the `CROWD_OGI` switch is on, under MGUN-12's conditions, the melee gun shall fire power 3 at a target within 200 px and 1.92 beyond, in place of the table, under the same caps. | M7 |
+| MGUN-13 | State | While MGUN-12's conditions hold, the melee gun shall fire power 3 at a target within 200 px and 1.92 beyond, in place of the table, under the same caps. | M7 |
 
 - **MGUN-7.** `FieldGun.MELEE_K` (12) beside `FieldGun.K` (3), chosen by `FieldGun.k()` from
   `onTeam`. More situations spread each opponent over the angles it is likely to reach, so the

@@ -2,6 +2,7 @@ package hadur2.core.melee;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -12,11 +13,12 @@ class MeleeCrowdPowerTest {
     @Test
     @Tag("MGUN-12")
     @Tag("MGUN-13")
-    @DisplayName("MGUN-12, MGUN-13: both crowd rules ship off, so the table stands")
-    void shipOff() {
+    @DisplayName("MGUN-12, MGUN-13: the floor ships off and Ogi's power on (BENCH-118)")
+    void shipped() {
         assertFalse(MeleeEnergyPolicy.CROWD_FLOOR);
-        assertFalse(MeleeEnergyPolicy.CROWD_OGI);
-        assertEquals(1.0, MeleeEnergyPolicy.crowdPower(1.0, 600, 80, 80, 5), 1e-9);
+        assertTrue(MeleeEnergyPolicy.CROWD_OGI);
+        assertEquals(MeleeEnergyPolicy.crowdPower(1.0, 600, 80, 80, 5, false, true),
+            MeleeEnergyPolicy.crowdPower(1.0, 600, 80, 80, 5), 1e-9);
     }
 
     @Test
