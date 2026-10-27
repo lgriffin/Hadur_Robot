@@ -1,0 +1,41 @@
+# PC qualification (BENCH-125, Leigh 2026-10-27 after the 3.18 live collapse): before the PC's RoboRumble
+# clients upload 3.18.1's first pass, fight with uploads off and check the battles match clean pairings.
+#   ./queue.sh run pc-qualify --fresh        (or  .\queue.ps1 run pc-qualify --fresh)
+# CLOSE EVERY ROBORUMBLE CLIENT WINDOW FIRST, and run nothing else on the PC: this card is the only queue.
+# About 35 minutes. Why: 3.18's first pass came 98.6% from the release watch, which scored about 3 points
+# under 3.17's clean pairings (3.17 too); six hand-started 1v1 clients still lost about 1.4. So this card
+# starts TWO 1v1 clients the old way (roborumble.bat, no melee or team client, no restarts).
+#
+# off: UPLOAD=NOT in each client's roborumble/roborumble.txt (a .qualify-bak copy is kept).
+# watch: live_client.py watch starts the two clients, keeps their 1v1 battles of Hadur ${V1} (results
+#   files, health records, consoles) for MINUTES, then stops them.
+# on: puts each roborumble.txt back as it was and sets the results files aside (<file>.qualify-<n>), so
+#   none of the test battles is ever uploaded. IF THE CARD STOPS BEFORE THIS STEP, rerun the card
+#   without --fresh: it resumes and restores the configs.
+# score: tools/qualify_pc.py compares each battle with the opponent's pairing on 3.17's clean first
+#   pass (90.88) and writes qualify.md: QUALIFIED within ±0.5, else NOT QUALIFIED.
+# pr: qualify.md and the watch's TSVs and log as a results PR.
+# After a QUALIFIED read: start rr01 and rr02 by hand as usual (they upload again). A third client is a
+# rerun with ONES = rr01 rr02 rr03 and RUN raised. Never melee or team clients beside them for a first pass.
+
+set V1 = 3.18.1
+set CLIENTS = C:/RoboRumbleWorkers
+set ONES = rr01 rr02
+set HOURS = 0.5
+set CLEAN = ../data/rumble/parsed/2026-10-25T2257Z_roborumble_botdetails_hadur2.Hadur_3.17.csv
+set RUN = 1
+set W = ../data/live/qualify-${V1}-run${RUN}
+
+off | $(command -v python3 || command -v python) tools/qualify_pc.py upload off $(for d in ${ONES}; do printf '%s/%s ' "${CLIENTS}" "$d"; done)
+
+watch | mkdir -p ${W} && $(command -v python3 || command -v python) ../data/tools/live_client.py watch --root ${CLIENTS} $(for d in ${ONES}; do printf -- '--launch %s:roborumble.bat ' "$d"; done) --restart-minutes 600 --out ${W} --robot "hadur2.Hadur ${V1}" --new-only --hours ${HOURS}
+  after: off
+
+on | $(command -v python3 || command -v python) tools/qualify_pc.py upload on $(for d in ${ONES}; do printf '%s/%s ' "${CLIENTS}" "$d"; done)
+  after: watch
+
+score | $(command -v python3 || command -v python) tools/qualify_pc.py score ${W} --clean ${CLEAN} --robot "hadur2.Hadur ${V1}"
+  after: on
+
+pr | bash tools/open_results_pr.sh claude/pc-qualify-${V1}-run${RUN}-results "PC qualification: two 1v1 clients, uploads off, ${V1}" ${W}/qualify.md $(ls ${W}/*.tsv ${W}/watch.log 2>/dev/null)
+  after: score
