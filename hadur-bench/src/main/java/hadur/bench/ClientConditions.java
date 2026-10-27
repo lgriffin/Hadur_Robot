@@ -17,7 +17,7 @@ import java.util.Map;
  * <li>{@code data=shared}: never wipe the robot data directory during the pass (the rumble
  *     client's reality), instead of the bench's usual per-seed or per-opponent wipe.</li>
  * <li>{@code data=prefill:DIR}: copy DIR's contents into
- *     {@code robots/.data/hadur2/Hadur.data/} once before the pass, then never wipe.</li>
+ *     {@code robots/.data/<package>/Hadur.data/} once before the pass, then never wipe.</li>
  * <li>{@code cpu=NANOS}: write {@code robocode.cpu.constant} before the pass.</li>
  * <li>{@code load=N}: run N CPU-bound threads alongside the battles.</li>
  * <li>{@code engine=VERSION}: use the Robocode jars under {@code engines/VERSION/} instead

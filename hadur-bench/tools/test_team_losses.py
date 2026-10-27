@@ -7,7 +7,7 @@ from pathlib import Path
 import team_losses
 
 ROUNDS = "round,membersAlive,enemiesAlive,won,shots,shotsWithMateInLane,countBelowTruth,countReports,bulletsOnMates,focusFireRatio\n"
-US = "hadur2.Hadur 3.17.1bb"
+US = "hadur117.Hadur 3.17.1bb"
 
 
 def battle(root, name, rounds, bullets, ends):
@@ -71,7 +71,7 @@ class TeamLossesTest(unittest.TestCase):
             try:
                 text = team_losses.report([d], "Firestarter")
             finally:
-                team_losses.OURS = "hadur2."
+                team_losses.OURS = team_losses.DEFAULT_OURS
             self.assertIn("Battles read: 1 over 1 opponents", text)   # the baseline is HadurTeam's
             self.assertIn("| rz.HOFSwarm (mid) | 1 | 100.0 | 0.00 | 0.00 | nan | nan | 44 | 0 | 16 |", text)
 

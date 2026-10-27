@@ -42,7 +42,7 @@ class FactorPlanTest {
         assertTrue(queue.contains("--arm t5 --bar 0.03"));
         assertTrue(queue.contains("open_results_pr.sh claude/pc-1v1-factor-results"));
         String arms = Files.readString(Path.of("plans/factor-verify.arms"));
-        assertTrue(arms.contains("t5 | hadur2.Hadur 3.18hlgl | bisect/hadur2.Hadur_3.18hlgl.jar"));
+        assertTrue(arms.contains("t5 | hadur117.Hadur 3.18hlgl | bisect/hadur117.Hadur_3.18hlgl.jar"));
         String robot = Files.readString(Path.of("../hadur-robot/pom.xml"));
         assertTrue(robot.contains("<robot.release>3.18</robot.release>"), "the arms name the master release");
     }

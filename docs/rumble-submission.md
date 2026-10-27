@@ -35,8 +35,9 @@ hadur2.HadurTeam 3.7,https://github.com/lgriffin/Hadur_Robot/releases/download/v
 LiteRumble shows the flag of the author's country next to each bot, keyed by the bot's
 main package, from the robowiki page
 [RoboRumble/Country Flags](https://robowiki.net/wiki/RoboRumble/Country_Flags). Hadur's
-package is `hadur2`, so the page needs one line `hadur2,IRL` (package, comma, the
-three-letter code the other entries use), added once; every Hadur version picks it up.
+package was `hadur2` through 3.18, so the page has one line `hadur2,IRL` (package, comma, the
+three-letter code the other entries use). From 3.19 Hadur is in `hadur117` with Saor (NAME-1),
+which the `hadur117,IRL` line covers.
 
 ## Previous entry: 3.5.1
 

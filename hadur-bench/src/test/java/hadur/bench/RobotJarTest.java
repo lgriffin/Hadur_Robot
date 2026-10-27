@@ -98,13 +98,13 @@ class RobotJarTest {
     @Test
     @DisplayName("soloJar names the solo robot jar for the release")
     void soloJarNamesTheSoloJar() {
-        assertTrue(RobotJar.soloJar("3.8").endsWith("hadur2.Hadur_3.8.jar"));
+        assertTrue(RobotJar.soloJar("3.8").endsWith("/hadur117.Hadur_3.8.jar"));
     }
 
     @Test
     @DisplayName("teamJar names the team robot jar for the release")
     void teamJarNamesTheTeamJar() {
-        assertTrue(RobotJar.teamJar("3.8").endsWith("hadur2.HadurTeam_3.8.jar"));
+        assertTrue(RobotJar.teamJar("3.8").endsWith("/hadur117.HadurTeam_3.8.jar"));
     }
 
     @Test
@@ -125,5 +125,30 @@ class RobotJarTest {
         assertNull(RobotJar.nameOf(tmp.resolve("missing.jar")));
         java.nio.file.Files.writeString(tmp.resolve("other.jar"), "not a jar");
         assertNull(RobotJar.nameOf(tmp.resolve("other.jar")));
+    }
+
+    @Test
+    @Tag("BENCH-124")
+    @DisplayName("jars from before the rename still read as hadur2; new ones as hadur117")
+    void bothPackages(@TempDir Path tmp) throws IOException {
+        assertEquals("3.19", RobotJar.versionOf("hadur117.Hadur_3.19.jar"));
+        assertEquals("3.18", RobotJar.versionOf("hadur2.Hadur_3.18.jar"));
+        assertNull(RobotJar.versionOf("hadur117.HadurTeam_3.19.jar"));
+        assertNull(RobotJar.versionOf("hadur117.micro.Saor_0.2.jar"));
+        Path jar = tmp.resolve("whatever.jar");
+        try (java.util.jar.JarOutputStream out = new java.util.jar.JarOutputStream(Files.newOutputStream(jar))) {
+            out.putNextEntry(new java.util.jar.JarEntry("hadur117/Hadur.properties"));
+            out.write("robot.classname=hadur117.Hadur\nrobot.version=3.19\n".getBytes(java.nio.charset.StandardCharsets.ISO_8859_1));
+            out.closeEntry();
+        }
+        assertEquals("hadur117.Hadur 3.19", RobotJar.nameOf(jar));
+        Path named = tmp.resolve("hadur117.Hadur_3.19aa.jar");
+        Files.writeString(named, "not a jar");
+        assertEquals("hadur117.Hadur 3.19aa", RobotJar.nameOf(named));
+        assertEquals("hadur117", RobotJar.packageOf("hadur117.HadurTeam 3.19"));
+        assertEquals("hadur2", RobotJar.packageOf("hadur2.Hadur 3.18"));
+        assertEquals("hadur117.Hadur", RobotJar.memberOf("hadur117.HadurTeam 3.19ka"));
+        assertEquals("hadur2.Hadur", RobotJar.memberOf("hadur2.HadurTeam 3.17.1"));
+        assertEquals("hadur117.Hadur 3.19", Bench.defaultRobot(java.util.Map.of(), tmp, "3.19"));
     }
 }

@@ -14,7 +14,7 @@ import java.util.Set;
 
 /**
  * BENCH-92: the arms of a multi-arm run ({@code --arms FILE}). Each line of the file is
- * {@code label | robot name | jar}, the robot name as Robocode lists it ({@code hadur2.Hadur 3.14aa}).
+ * {@code label | robot name | jar}, the robot name as Robocode lists it ({@code hadur117.Hadur 3.14aa}).
  * Every (opponent, seed) job fights every arm, cold, on one worker home, in an order shuffled
  * from the job (docs/plan-top5.md section 6.1), so a load or drift effect over a job falls on
  * every arm alike instead of on whichever arm a fixed order puts first.

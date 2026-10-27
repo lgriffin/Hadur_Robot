@@ -64,8 +64,8 @@ class TeamCountersPlanTest {
             String args = Files.readString(Path.of("plans/team-counters-" + a[0] + ".args"));
             assertTrue(args.contains("--set\nwork/team-counters-" + a[2] + ".txt\n"), a[0]);
             assertTrue(args.contains("--seeds\n16\n") && args.contains("--seed-base\n" + a[3] + "\n"), a[0]);
-            assertTrue(args.contains("bisect/hadur2.HadurTeam_@V@" + a[1] + ".jar"), a[0]);
-            assertTrue(args.contains("--baseline\nbisect/hadur2.HadurTeam_@V@aa.jar\n"), a[0]);
+            assertTrue(args.contains("bisect/hadur117.HadurTeam_@V@" + a[1] + ".jar"), a[0]);
+            assertTrue(args.contains("--baseline\nbisect/hadur117.HadurTeam_@V@aa.jar\n"), a[0]);
             assertTrue(args.contains("--report\n../docs/bench/local/team-counters-" + a[0] + ".md\n"), a[0]);
             assertTrue(args.contains("--parallel\nauto\n") && args.contains("--cpu-constant\nauto\n"), a[0]);
         }

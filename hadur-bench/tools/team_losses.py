@@ -30,7 +30,9 @@ import os
 import statistics
 import sys
 
-OURS = 'hadur2.'
+# Our members' name prefix: hadur117.Hadur since the 2026-10-27 rename (hadur2. before it).
+DEFAULT_OURS = 'hadur117.Hadur'
+OURS = DEFAULT_OURS
 # --candidate-only: skip the baseline (aa) battles, so an arm's read is that arm's alone.
 CANDIDATE_ONLY = False
 MID = {'rz.HOFSwarm', 'gh.nano.GrofGroup', 'davidalves.PhoenixTeam', 'myl.micro.TroodonPack',
@@ -169,7 +171,7 @@ def report(runs, title='How HadurTeam loses rounds'):
     for run in runs:
         for d in sorted(glob.glob(os.path.join(run, 'battles', '*'))):
             # Another subject is only the candidate: a run's baseline battles are HadurTeam's.
-            if (OURS != 'hadur2.' or CANDIDATE_ONLY) and d.endswith('-baseline'):
+            if (OURS != DEFAULT_OURS or CANDIDATE_ONLY) and d.endswith('-baseline'):
                 continue
             rows = battle(d)
             if rows:

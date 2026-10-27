@@ -36,11 +36,11 @@ class MeleeS0PlanTest {
         assertTrue(queue.contains("for f in melee-census-317/f*.txt; do ./fetch-opponents.sh --set \"$f\" || exit 1; done"));
         for (String a : List.of("census", "width")) {
             String args = Files.readString(Path.of("plans/melee-s0-" + a + ".args"));
-            assertTrue(args.contains("bisect/hadur2.Hadur_@V@bb.jar"), a);
+            assertTrue(args.contains("bisect/hadur117.Hadur_@V@bb.jar"), a);
             assertFalse(args.matches("(?s).*3\\.1\\d.*"), a + " names no version");
         }
         String census = Files.readString(Path.of("plans/melee-s0-census.args"));
-        assertTrue(census.contains("--baseline\nbisect/hadur2.Hadur_@V@aa.jar"));
+        assertTrue(census.contains("--baseline\nbisect/hadur117.Hadur_@V@aa.jar"));
         assertTrue(census.contains("--parallel\n@C@\n") && queue.contains("C=${MELEE_WORKERS}"), "the census runs at the host's melee width (BENCH-105), fixed at prep");
         assertTrue(census.contains("--cpu-constant\nauto\n"), "and with the host's CPU constant");
         String width = Files.readString(Path.of("plans/melee-s0-width.args"));

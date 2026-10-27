@@ -40,7 +40,7 @@ notes are in `docs/releases/saor-v<version>.md`.
 
 The Irish flag on the rumble pages comes from one line, `hadur117,IRL`, on the robowiki page
 [RoboRumble/Country Flags](https://robowiki.net/wiki/RoboRumble/Country_Flags). Flags go by
-package, so Hadur's `hadur2,IRL` does not cover Saor's `hadur117`. Leigh adds it (2026-10-27).
+package, so Hadur's `hadur2,IRL` did not cover Saor's `hadur117`. Leigh adds it (2026-10-27); from 3.19 Hadur is in `hadur117` too (NAME-1).
 
 - [saor-v0.2](https://github.com/lgriffin/Hadur_Robot/releases/tag/saor-v0.2), 2026-10-27:
   the graded vote, no ram leg, learning below 0.9 gun heat. On the live-shaped census it reads

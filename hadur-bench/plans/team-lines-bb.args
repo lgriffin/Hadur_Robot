@@ -16,16 +16,16 @@ auto
 --set
 team-census46.txt
 --robot-jar
-bisect/hadur2.HadurTeam_@V@bb.jar
+bisect/hadur117.HadurTeam_@V@bb.jar
 --robot
-hadur2.HadurTeam @V@bb
+hadur117.HadurTeam @V@bb
 --member
-hadur2.Hadur
+hadur117.Hadur
 --out
 work/team-lines-@V@-bb
 --report
 ../docs/bench/local/team-lines-bb.md
 --baseline
-bisect/hadur2.HadurTeam_@V@aa.jar
+bisect/hadur117.HadurTeam_@V@aa.jar
 --baseline-robot
-hadur2.HadurTeam @V@aa
+hadur117.HadurTeam @V@aa

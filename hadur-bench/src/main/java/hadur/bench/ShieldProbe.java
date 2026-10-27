@@ -23,7 +23,7 @@ import java.util.jar.JarOutputStream;
  * set format, {@code name | role | jar | weight}) to run with Hadur's shield mode on and off
  * over the same seeds, and report the paired difference for each.
  *
- * <p>Shield mode is switched by the list in the robot jar, the class {@code hadur2.ShieldListData}
+ * <p>Shield mode is switched by the list in the robot jar, the class {@code hadur117.ShieldListData}
  * (SHIELD-5; a class because Robocode's sandbox denies a robot the read of a resource in its own
  * jar). The probe repacks the candidate jar twice: once with that class naming every
  * opponent of the set ("on") and once with a list of comments only ("off"); it writes the
@@ -42,10 +42,10 @@ import java.util.jar.JarOutputStream;
  */
 final class ShieldProbe {
 
-    /** The class in the robot jar that holds the shield list. */
-    static final String LIST_ENTRY = "hadur2/ShieldListData.class";
+    /** The class in the robot jar that holds the shield list (a jar from before the rename has it in hadur2). */
+    static final String LIST_ENTRY = RobotJar.PACKAGE + "/ShieldListData.class";
     /** The robot's Robocode properties, where its version string lives. */
-    static final String PROPERTIES_ENTRY = "hadur2/Hadur.properties";
+    static final String PROPERTIES_ENTRY = RobotJar.PACKAGE + "/Hadur.properties";
 
     private ShieldProbe() {
     }
@@ -81,7 +81,7 @@ final class ShieldProbe {
         String[] parts = robot.split(" ");
         if (parts.length != 2) throw new IllegalArgumentException("--robot must be 'name version': " + robot);
         Path source = benchDir.resolve(opts.getOrDefault("robot-jar",
-            "../hadur-robot/target/hadur2.Hadur_" + parts[1] + ".jar")).toAbsolutePath();
+            "../hadur-robot/target/" + parts[0] + "_" + parts[1] + ".jar")).toAbsolutePath();
         if (!Files.isRegularFile(source)) {
             throw new IllegalStateException("No robot jar at " + source + "; run mvn package first");
         }
@@ -141,10 +141,11 @@ final class ShieldProbe {
                 try (InputStream s = in.getInputStream(e)) {
                     bytes = s.readAllBytes();
                 }
-                if (e.getName().equals(LIST_ENTRY)) {
-                    bytes = listClass(list);
+                String pkg = e.getName().contains("/") ? e.getName().substring(0, e.getName().indexOf('/')) : "";
+                if (RobotJar.PACKAGES.contains(pkg) && e.getName().equals(pkg + "/ShieldListData.class")) {
+                    bytes = listClass(list, pkg);
                     sawList = true;
-                } else if (e.getName().equals(PROPERTIES_ENTRY)) {
+                } else if (RobotJar.PACKAGES.contains(pkg) && e.getName().equals(pkg + "/Hadur.properties")) {
                     bytes = withVersion(new String(bytes, StandardCharsets.ISO_8859_1), version)
                         .getBytes(StandardCharsets.ISO_8859_1);
                     sawProperties = true;
@@ -162,7 +163,7 @@ final class ShieldProbe {
     }
 
     /**
-     * The compiled {@code hadur2.ShieldListData}: the source in the shape of the robot's own
+     * The compiled {@code <package>.ShieldListData}: the source in the shape of the robot's own
      * class, with {@code list} one entry per line, compiled with the JDK's compiler.
      *
      * @param list the list's text
@@ -171,17 +172,22 @@ final class ShieldProbe {
      * @throws IllegalStateException if there is no compiler (a JRE) or the text will not compile
      */
     static byte[] listClass(String list) throws IOException {
+        return listClass(list, RobotJar.PACKAGE);
+    }
+
+    /** As above, in the robot's package ({@code hadur2} for a jar from before the rename). */
+    static byte[] listClass(String list, String pkg) throws IOException {
         javax.tools.JavaCompiler compiler = javax.tools.ToolProvider.getSystemJavaCompiler();
         if (compiler == null) throw new IllegalStateException("No Java compiler: run the bench on a JDK, not a JRE");
         Path dir = Files.createTempDirectory("shield-list");
         try {
-            Path src = dir.resolve("hadur2").resolve("ShieldListData.java");
+            Path src = dir.resolve(pkg).resolve("ShieldListData.java");
             Files.createDirectories(src.getParent());
-            Files.writeString(src, listSource(list), StandardCharsets.UTF_8);
+            Files.writeString(src, listSource(list, pkg), StandardCharsets.UTF_8);
             Path classes = Files.createDirectories(dir.resolve("classes"));
             int rc = compiler.run(null, null, null, "--release", "11", "-d", classes.toString(), src.toString());
             if (rc != 0) throw new IllegalStateException("The shield list does not compile: " + list);
-            return Files.readAllBytes(classes.resolve("hadur2").resolve("ShieldListData.class"));
+            return Files.readAllBytes(classes.resolve(pkg).resolve("ShieldListData.class"));
         } finally {
             try (java.util.stream.Stream<Path> walk = Files.walk(dir)) {
                 walk.sorted(Comparator.reverseOrder()).forEach(f -> f.toFile().delete());
@@ -189,9 +195,14 @@ final class ShieldProbe {
         }
     }
 
-    /** The Java source of {@code hadur2.ShieldListData} for a list, one string literal per entry (comments and blanks drop out). */
+    /** The Java source of {@code <package>.ShieldListData} for a list, one string literal per entry (comments and blanks drop out). */
     static String listSource(String list) {
-        StringBuilder b = new StringBuilder("package hadur2;\n\nfinal class ShieldListData {\n"
+        return listSource(list, RobotJar.PACKAGE);
+    }
+
+    /** As above, in the given package. */
+    static String listSource(String list, String pkg) {
+        StringBuilder b = new StringBuilder("package " + pkg + ";\n\nfinal class ShieldListData {\n"
             + "    private ShieldListData() {\n    }\n\n    static String[] lines() {\n        return new String[] {\n");
         for (String line : list.split("\n")) {
             String t = line.trim();
@@ -322,7 +333,7 @@ final class ShieldProbe {
         if (wins.isEmpty()) {
             b.append("\nNo opponent wins on this run.\n");
         } else {
-            b.append("\nOpponents shield mode wins against, as entries for `ShieldListData.lines()` (`hadur-robot/src/main/java/hadur2/ShieldListData.java`):\n\n```\n");
+            b.append("\nOpponents shield mode wins against, as entries for `ShieldListData.lines()` (`hadur-robot/src/main/java/hadur117/ShieldListData.java`):\n\n```\n");
             for (String name : wins) b.append(name).append('\n');
             b.append("```\n");
         }

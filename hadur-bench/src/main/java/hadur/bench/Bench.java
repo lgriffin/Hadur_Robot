@@ -1,10 +1,10 @@
 package hadur.bench;
 
-import hadur2.core.memory.LineageKey;
-import hadur2.core.memory.OpponentProfile;
-import hadur2.core.memory.ProfileCodec;
-import hadur2.core.memory.ProfileFormatException;
-import hadur2.core.memory.ProfileLibrary;
+import hadur117.core.memory.LineageKey;
+import hadur117.core.memory.OpponentProfile;
+import hadur117.core.memory.ProfileCodec;
+import hadur117.core.memory.ProfileFormatException;
+import hadur117.core.memory.ProfileLibrary;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,18 +34,18 @@ import java.util.zip.GZIPOutputStream;
  *     warm keeps it across {@code --battles} consecutive battles per opponent.</li>
  * <li>{@code --rounds N} rounds per battle (35), {@code --seeds N} battles per opponent in
  *     cold mode (5), {@code --battles N} in warm mode (5), {@code --field WxH} (800x600).</li>
- * <li>{@code --robot-jar FILE} the robot jar (../hadur-robot/target/hadur2.Hadur_&lt;release&gt;.jar,
+ * <li>{@code --robot-jar FILE} the robot jar (../hadur-robot/target/hadur117.Hadur_&lt;release&gt;.jar,
  *     the release being {@code robot.release} in hadur-robot/pom.xml, see {@link RobotJar}),
  *     or {@code --robot-classes DIR} to jar a compiled class tree instead;
- *     {@code --robot NAME} as Robocode lists it ("hadur2.Hadur &lt;release&gt;").</li>
+ *     {@code --robot NAME} as Robocode lists it ("hadur117.Hadur &lt;release&gt;").</li>
  * <li>{@code --record DIR} capture replay fixtures instead: runs the recorder robot
  *     (../hadur-robot/target/hadur-robot-2.0-SNAPSHOT-recorder.jar) with Robocode's
  *     security off and writes one gzipped transcript per opponent to DIR (CORE-2).</li>
  * <li>{@code --melee true} run every opponent in the set against Hadur at once, one battle
  *     per seed, and report finishing places instead (MeleeRumble: 10 robots, 1000x1000).</li>
  * <li>{@code --team true} (A5) fight each team of the set with our team jar
- *     ({@code --robot-jar}, hadur2.HadurTeam_&lt;release&gt;.jar; {@code --robot} "hadur2.HadurTeam
- *     &lt;release&gt;"; {@code --member} hadur2.Hadur), TeamRumble style: 1200x1200, 10 rounds.</li>
+ *     ({@code --robot-jar}, hadur117.HadurTeam_&lt;release&gt;.jar; {@code --robot} "hadur117.HadurTeam
+ *     &lt;release&gt;"; {@code --member} the team's package's Hadur), TeamRumble style: 1200x1200, 10 rounds.</li>
  * <li>{@code --baseline JAR} (BENCH-2) also fight every opponent with this second jar, one
  *     battle per seed at the same {@code RANDOMSEED} as the candidate's, and report the
  *     paired score-share difference instead of two separate means. Requires
@@ -196,11 +196,11 @@ public final class Bench {
             opts.putIfAbsent("seeds", "3");
             if (opts.containsKey("record")) {
                 // STRAND-5: five recorders, a team jar made from the recorder jar (runTeam).
-                opts.putIfAbsent("robot", "hadur2.HadurRecorderTeam " + release);
-                opts.putIfAbsent("member", "hadur2.HadurRecorder");
+                opts.putIfAbsent("robot", RobotJar.PACKAGE + ".HadurRecorderTeam " + release);
+                opts.putIfAbsent("member", RobotJar.PACKAGE + ".HadurRecorder");
                 opts.putIfAbsent("robot-jar", RobotJar.recorderJar());
             }
-            opts.putIfAbsent("robot", "hadur2.HadurTeam " + release);
+            opts.putIfAbsent("robot", RobotJar.PACKAGE + ".HadurTeam " + release);
             opts.putIfAbsent("robot-jar", RobotJar.teamJar(release));
         }
         this.warm = opts.getOrDefault("mode", "cold").equals("warm");
@@ -246,7 +246,7 @@ public final class Bench {
             }
         }
         if (record != null) {
-            opts.putIfAbsent("robot", "hadur2.HadurRecorder " + release);
+            opts.putIfAbsent("robot", RobotJar.PACKAGE + ".HadurRecorder " + release);
             opts.putIfAbsent("robot-jar", RobotJar.recorderJar());
         }
         this.robot = opts.getOrDefault("robot", defaultRobot(opts, benchDir, release));
@@ -301,7 +301,7 @@ public final class Bench {
             String named = RobotJar.nameOf(benchDir.resolve(opts.get("robot-jar")));
             if (named != null) return named;
         }
-        return "hadur2.Hadur " + release;
+        return RobotJar.PACKAGE + ".Hadur " + release;
     }
 
     /** {@code WxH} as {width, height}; anything else is refused with the form it wants. */
@@ -1396,7 +1396,9 @@ public final class Bench {
      * with {@code --baseline} the baseline team fights the same opponent at the same seed.
      */
     private int runTeam(List<Opponent> opponents) throws Exception {
-        String member = opts.getOrDefault("member", "hadur2.Hadur");
+        // Each team's own member by default: a baseline built before the rename is hadur2's.
+        String member = opts.getOrDefault("member", RobotJar.memberOf(robot));
+        String baseMember = opts.getOrDefault("member", baselineRobot == null ? member : RobotJar.memberOf(baselineRobot));
         if (record != null) recorderTeam(member);
         int n = opponents.size();
         TeamReport.Battle[][] cand = new TeamReport.Battle[n][runs];
@@ -1417,7 +1419,7 @@ public final class Bench {
                         Tried<TeamReport.Battle> t = attempts(retries, () -> {
                             wipeData(h);
                             return teamBattle(h, o, seed, o.slug() + "-" + seed + "-baseline",
-                                baselineRobot, member, false);
+                                baselineRobot, baseMember, false);
                         }, b -> b.ok);
                         base[index][seed - 1] = t.value();
                         note(o.name + " (baseline)", o.name + " team seed " + seed + " baseline", t.attempts(), t.value().ok, "no result");
@@ -1684,7 +1686,7 @@ public final class Bench {
             wipeData();
             Path src = Path.of(prefill);
             if (!Files.isDirectory(src)) throw new IllegalStateException("No prefill directory at " + src);
-            Path dest = home.resolve("robots/.data/hadur2/Hadur.data");
+            Path dest = home.resolve("robots/.data/" + RobotJar.packageOf(robot) + "/Hadur.data");
             Files.createDirectories(dest);
             try (Stream<Path> files = Files.walk(src)) {
                 for (Path f : (Iterable<Path>) files::iterator) {

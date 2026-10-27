@@ -78,7 +78,7 @@ class ShieldS2Test(unittest.TestCase):
         self.assertEqual(("saimlist", "ak"), shield_s2.candidate_spec([], [], ["z"]))
         self.assertEqual(("", ""), shield_s2.candidate_spec([], [], []))
         arms = shield_s2.candidate_arms("3.16", "ak")
-        self.assertIn("t2 | hadur2.Hadur 3.16ak | bisect/hadur2.Hadur_3.16ak.jar\n", arms)
+        self.assertIn("t2 | hadur117.Hadur 3.16ak | bisect/hadur117.Hadur_3.16ak.jar\n", arms)
 
     def gate_rows(self, gain):
         rng = random.Random(5)

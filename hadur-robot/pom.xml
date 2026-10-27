@@ -39,7 +39,7 @@
 
     <build>
         <!-- RoboRumble naming: package.BotName_version.jar -->
-        <finalName>hadur2.Hadur_${robot.release}</finalName>
+        <finalName>hadur117.Hadur_${robot.release}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -99,7 +99,7 @@
                         </goals>
                         <configuration>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <outputFile>${project.build.directory}/hadur2.HadurTeam_${robot.release}.jar</outputFile>
+                            <outputFile>${project.build.directory}/hadur117.HadurTeam_${robot.release}.jar</outputFile>
                             <artifactSet>
                                 <includes>
                                     <include>com.lgriffin:hadur-core</include>
@@ -109,13 +109,13 @@
                                 <filter>
                                     <artifact>com.lgriffin:hadur-robot</artifact>
                                     <excludes>
-                                        <exclude>hadur2/HadurRecorder*</exclude>
+                                        <exclude>hadur117/HadurRecorder*</exclude>
                                     </excludes>
                                 </filter>
                             </filters>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.IncludeResourceTransformer">
-                                    <resource>hadur2/HadurTeam.team</resource>
+                                    <resource>hadur117/HadurTeam.team</resource>
                                     <file>src/team/HadurTeam.team</file>
                                 </transformer>
                             </transformers>
@@ -138,7 +138,7 @@
                                 <filter>
                                     <artifact>com.lgriffin:hadur-robot</artifact>
                                     <excludes>
-                                        <exclude>hadur2/HadurRecorder*</exclude>
+                                        <exclude>hadur117/HadurRecorder*</exclude>
                                     </excludes>
                                 </filter>
                             </filters>

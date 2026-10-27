@@ -89,9 +89,9 @@ def candidate_spec(stopgo, stopgo2, dodges):
 
 def candidate_arms(base, suffix):
     return ["# 1v1 mode table v2 verify (pc-1v1-modes): c is %s, aa its A/A copy, t3 the candidate.\n" % base,
-            "c | hadur2.Hadur %s | bisect/hadur2.Hadur_%s.jar\n" % (base, base),
-            "aa | hadur2.Hadur %saa | bisect/hadur2.Hadur_%saa.jar\n" % (base, base),
-            "t3 | hadur2.Hadur %s%s | bisect/hadur2.Hadur_%s%s.jar\n" % (base, suffix, base, suffix)]
+            "c | hadur117.Hadur %s | bisect/hadur117.Hadur_%s.jar\n" % (base, base),
+            "aa | hadur117.Hadur %saa | bisect/hadur117.Hadur_%saa.jar\n" % (base, base),
+            "t3 | hadur117.Hadur %s%s | bisect/hadur117.Hadur_%s%s.jar\n" % (base, suffix, base, suffix)]
 
 
 def panel(sets, names):
@@ -135,7 +135,7 @@ def main(argv=None):
         if not spec:
             print("nothing to build: t3 is the base")
             shield_s2.write(a.out, candidate_arms(a.base, "aa")[:3]
-                            + ["t3 | hadur2.Hadur %saa | bisect/hadur2.Hadur_%saa.jar\n" % (a.base, a.base)])
+                            + ["t3 | hadur117.Hadur %saa | bisect/hadur117.Hadur_%saa.jar\n" % (a.base, a.base)])
             return 0
         bench = os.path.dirname(HERE)
         rel = lambda f: os.path.relpath(os.path.abspath(f), bench).replace(os.sep, "/")

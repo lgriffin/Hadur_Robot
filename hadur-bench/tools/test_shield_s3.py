@@ -58,10 +58,10 @@ class ShieldS3Test(unittest.TestCase):
         out = os.path.join(self.dir, "w")
         code, arms = shield_s3.warm(run, panel, "3.16", out, "sask", "sasvsk", run_build=False)
         self.assertEqual(0, code)
-        self.assertEqual(["c | hadur2.Hadur 3.16 | bisect/hadur2.Hadur_3.16.jar\n",
-                          "aa | hadur2.Hadur 3.16aa | bisect/hadur2.Hadur_3.16aa.jar\n",
-                          "w | hadur2.Hadur 3.16mtak | bisect/hadur2.Hadur_3.16mtak.jar\n",
-                          "wv | hadur2.Hadur 3.16mtmvak | bisect/hadur2.Hadur_3.16mtmvak.jar\n"], arms[1:])
+        self.assertEqual(["c | hadur117.Hadur 3.16 | bisect/hadur117.Hadur_3.16.jar\n",
+                          "aa | hadur117.Hadur 3.16aa | bisect/hadur117.Hadur_3.16aa.jar\n",
+                          "w | hadur117.Hadur 3.16mtak | bisect/hadur117.Hadur_3.16mtak.jar\n",
+                          "wv | hadur117.Hadur 3.16mtmvak | bisect/hadur117.Hadur_3.16mtmvak.jar\n"], arms[1:])
         self.assertEqual(["6 -0.010000000 c.Free 1"], shield_s2.read_lines(os.path.join(out, "warm-aims-move.txt")))
         self.assertEqual((2, None), shield_s3.warm(os.path.join(self.dir, "gone"), panel, "3.16", out, "sask",
                                                    "sasvsk", run_build=False), "without part 2's records it stops")
@@ -82,11 +82,11 @@ class ShieldS3Test(unittest.TestCase):
                          "each robot's aim from the arm it locked with")
         self.assertEqual((["p.One 1"], ["p.Two 1"]), (read("s3-stopgo.txt"), read("s3-stopgo2.txt")),
                          "a robot table v2 already has stays off")
-        self.assertIn("t4 | hadur2.Hadur 3.16mtmvakwlwm | bisect/hadur2.Hadur_3.16mtmvakwlwm.jar\n",
+        self.assertIn("t4 | hadur117.Hadur 3.16mtmvakwlwm | bisect/hadur117.Hadur_3.16mtmvakwlwm.jar\n",
                       open(arms).read())
         empty = self.file("empty.tsv", "")
         self.assertEqual(0, shield_s3.candidate(empty, empty, only, out, "3.16", arms, run_build=False))
-        self.assertIn("t4 | hadur2.Hadur 3.16aa |", open(arms).read(), "nothing locked: t4 is the A/A copy")
+        self.assertIn("t4 | hadur117.Hadur 3.16aa |", open(arms).read(), "nothing locked: t4 is the A/A copy")
 
     def test_panel(self):
         s1 = self.file("s1.txt", "".join("r.Bot%d 1 | r | r.jar\n" % i for i in range(30)))

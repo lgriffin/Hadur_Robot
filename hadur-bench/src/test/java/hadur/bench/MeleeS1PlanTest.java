@@ -49,7 +49,7 @@ class MeleeS1PlanTest {
         assertTrue(args.contains("--suite\nmelee-census-317.txt\n"));
         assertTrue(args.contains("--seeds\n6\n") && args.contains("--seed-base\n3170\n"));
         assertTrue(args.contains("--parallel\n@C@\n") && args.contains("--cpu-constant\nauto\n"));
-        assertTrue(args.contains("bisect/hadur2.Hadur_@V@@A@.jar") && args.contains("work/melee-s1-@V@-@A@"));
+        assertTrue(args.contains("bisect/hadur117.Hadur_@V@@A@.jar") && args.contains("work/melee-s1-@V@-@A@"));
         assertFalse(args.contains("--baseline"), "arms pair with aa in the read, not in the run");
         assertFalse(args.matches("(?s).*3\\.1\\d.*"), "names no version");
     }
@@ -62,7 +62,7 @@ class MeleeS1PlanTest {
         assertTrue(build.contains("e3ring) flag=THREE_RING; suffix=er ;;"));
         assertTrue(build.contains("e3pow) flag=THREE_POWER; suffix=ep ;;"));
         assertTrue(build.contains("e3far) flag=THREE_FAR; suffix=ef ;;"));
-        String endgame = Files.readString(Path.of("../hadur-core/src/main/java/hadur2/core/melee/MeleeEndgame.java"));
+        String endgame = Files.readString(Path.of("../hadur-core/src/main/java/hadur117/core/melee/MeleeEndgame.java"));
         for (String f : List.of("THREE_RING", "THREE_POWER")) {
             assertTrue(endgame.contains("public static final boolean " + f + " = false;"), f + " ships off");
         }

@@ -33,6 +33,8 @@
 #   (the +0.1..+0.2 APS lever L5 of the 1v1 plan to 3rd).
 
 set V1 = 3.18
+# PKG: the release's package, hadur2 through 3.18 and hadur117 from 3.19 (NAME-1); set it with V1 / VT.
+set PKG = hadur2
 set VT = 3.18
 set HOURS = 72
 set COLLAPSES = 10
@@ -48,7 +50,7 @@ set WAIT = 10
 set RUN = 2
 set W = ../data/live/release-${V1}-run${RUN}
 
-watch | mkdir -p ${W} && rm -f ${W}/STOP && $(command -v python3 || command -v python) ../data/tools/live_client.py watch --root ${CLIENTS} $(for d in ${ONES}; do printf -- '--launch %s:roborumble.bat ' "$d"; done) --launch ${MAIN}:meleerumble.bat --launch ${MAIN}:teamrumble.bat --restart-minutes ${RESTART} --wait-minutes ${WAIT} --out ${W} --page "roborumble:hadur2.Hadur ${V1}" --page "meleerumble:hadur2.Hadur ${V1}" --page "teamrumble:hadur2.HadurTeam ${VT}" --robot "hadur2.Hadur ${V1}" --robot "hadur2.HadurTeam ${VT}" --new-only --stop-collapses ${COLLAPSES} --stop-battles ${DUELS} --hours ${HOURS}
+watch | mkdir -p ${W} && rm -f ${W}/STOP && $(command -v python3 || command -v python) ../data/tools/live_client.py watch --root ${CLIENTS} $(for d in ${ONES}; do printf -- '--launch %s:roborumble.bat ' "$d"; done) --launch ${MAIN}:meleerumble.bat --launch ${MAIN}:teamrumble.bat --restart-minutes ${RESTART} --wait-minutes ${WAIT} --out ${W} --page "roborumble:${PKG}.Hadur ${V1}" --page "meleerumble:${PKG}.Hadur ${V1}" --page "teamrumble:${PKG}.HadurTeam ${VT}" --robot "${PKG}.Hadur ${V1}" --robot "${PKG}.HadurTeam ${VT}" --new-only --stop-collapses ${COLLAPSES} --stop-battles ${DUELS} --hours ${HOURS}
 
 report | $(command -v python3 || command -v python) ../data/tools/live_client.py report ${W} --md ${W}/report.md && (cd ${W} && [ ! -d consoles ] || tar czf consoles.tar.gz consoles)
   after: watch

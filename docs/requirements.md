@@ -1910,3 +1910,15 @@ changing a single decision.
 | ID | Pattern | Requirement | Stage |
 |---|---|---|---|
 | TIME-9 | Ubiquitous | The core's surf, bullet-shadow and wave hit-box code shall reuse arrays and plain coordinates instead of building a map, point or line per neighbour, bullet or corner on every tick, with the same arithmetic in the same order, so that every duel, melee and team fixture replays bit for bit. | R9 |
+
+## The hadur117 package (NAME-1, BENCH-124)
+
+Leigh's package is `hadur117`, Saor's from the start (`hadur117.micro.Saor`); Hadur had shipped as
+`hadur2` through 3.18. From 3.19 the whole family is in `hadur117`. Robocode lets a robot read
+only its own package's data folder, so the first pass of a renamed entry starts with no stored
+profiles, and the rumbles list it as a new participant.
+
+| ID | Pattern | Requirement | Stage |
+|---|---|---|---|
+| NAME-1 | Ubiquitous | The solo robot, the team, the recorder and the core shall be in package `hadur117` (`hadur117.Hadur`, `hadur117.HadurTeam` of five `hadur117.Hadur`, `hadur117.core`), with jars named `hadur117.Hadur_<release>.jar` and `hadur117.HadurTeam_<release>.jar`, and the rename shall change no decision: every duel, melee and team fixture replays bit for bit. | R9 |
+| BENCH-124 | Ubiquitous | The bench, the ablation builder, the shield probe and the live client shall read a robot jar or name from before the rename as `hadur2` and a new one as `hadur117`: the jar name and properties in either package, a team's member from its own package, the shield list repacked in the jar's own package, the data folder of the robot's package, and Hadur's battles, console lines and data folders under either name, never counting Saor (`hadur117.micro.Saor`) as Hadur. | T7 |

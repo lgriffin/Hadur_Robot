@@ -14,9 +14,9 @@ melee-census-317-width.txt
 --cpu-constant
 auto
 --robot-jar
-bisect/hadur2.Hadur_@V@bb.jar
+bisect/hadur117.Hadur_@V@bb.jar
 --robot
-hadur2.Hadur @V@bb
+hadur117.Hadur @V@bb
 --out
 work/melee-s0-@V@-width
 --report
