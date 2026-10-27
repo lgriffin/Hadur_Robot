@@ -4,7 +4,7 @@
 # Built by tools/deise_arms.sh as hadur117.mini.Deise<NAME>. D is Deise's source unchanged.
 # Stage E0 (pc-deise-e01): the design, cut by the cloud smoke (docs/deise.md section 4), against
 # the field's best, and what each part is worth. D: no wave dodging (Move.WAVES = 0).
-D | Deise 0.2: corners while crowded, no wave dodging (the core-driven DeiseLab, which the shipped 1,494-byte class matches order for order) | |
+D | Deise 0.2: corners while crowded, no wave dodging (the core-driven DeiseLab, which the shipped 1,490-byte class matches order for order) | |
 MIR | kc.mini.Mirage 0.2 in the seat (1st, 71.30 live) | @kc.mini.Mirage 0.2
 SAOR | hadur117.micro.Saor 0.2 in the seat (2nd, 68.79 live): the control | @hadur117.micro.Saor 0.2
 W | seen-shot waves back on, at full weight | Move.java | s#WAVES = 0;#WAVES = 1;#

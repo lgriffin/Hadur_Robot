@@ -1,4 +1,4 @@
-Deise 0.2, a MiniMelee robot built to take 1st (docs/deise.md). It is 0.1's robot fitted into one class at 1,494 bytes, under MiniMelee's 1,499.
+Deise 0.2, a MiniMelee robot built to take 1st (docs/deise.md). It is 0.1's robot fitted into one class at 1,490 bytes, under MiniMelee's 1,499.
 
 - Saor's graded Markov gun, learning every robot it scans, not just its target.
 - Range power capped at 3 and at what kills the target.

@@ -144,8 +144,9 @@ fit came before E0's census.
 
 Deise 0.1 was 2,303 bytes with the core shipped in the jar. 0.2 ships one class,
 `hadur117.mini.Deise`, the core flattened by hand the way Saor is (docs/saor.md, "Why the shipped
-class is flattened by hand"), through ProGuard's peephole pass: **1,494 bytes** of MiniMelee's
-1,499. The build fails above 1,499 or with more than one class (DEISE-12).
+class is flattened by hand"), through ProGuard's peephole pass: **1,490 bytes** of MiniMelee's
+1,499 (1,490 since ids start at 1, so an unseen robot's death clears an empty slot). The build
+fails above 1,499 or with more than one class (DEISE-12).
 
 What the fit left out changes no order: the seen-shot waves weigh 0 (DEISE-5), so the shipped class
 neither records nor weighs them, and the dead reckoning of arm RK is off. The bench adapter
@@ -157,7 +158,14 @@ arithmetic where the two differed only in rounding: distances as the square root
 sum, the ring's headings as `i * (2π / 36)`, and no special first scan. `DeiseLab` also dropped its
 bullet-hit energy update, which only fed the waves.
 
-Five bytes are left, so any change that adds behaviour has to pay for itself; the waves' code is
+Two costs of the fit are accepted. With no special first scan, a robot first seen in the opening
+eight ticks of a battle puts one transition from state 0 into its table; state 0 (full speed
+backwards and slowing) is all but unvisited, so the sample is nearly never read. And the shipped
+class samples rows with `Math.random()` while `DeiseLab` uses its own `Random`, so the two match
+to the bit only while each row holds one successor, as in the test's melees; the thin-row vote
+(DEISE-8) is held by `GunTest` on the core.
+
+Nine bytes are left, so any change that adds behaviour has to pay for itself; the waves' code is
 gone already, and the next candidates are the clamp of the turn index and the 0.1 power floor.
 
 ## 8. Uniqueness

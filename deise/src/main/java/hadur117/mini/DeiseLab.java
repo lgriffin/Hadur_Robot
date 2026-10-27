@@ -5,6 +5,7 @@ import hadur117.mini.core.Move;
 import java.awt.geom.Point2D;
 import java.util.Random;
 import robocode.AdvancedRobot;
+import robocode.BulletHitEvent;
 import robocode.RobotDeathEvent;
 import robocode.ScannedRobotEvent;
 import robocode.util.Utils;
@@ -31,6 +32,11 @@ public class DeiseLab extends AdvancedRobot {
     static final char[][][] TABLES = new char[MAX][][];
     /** Per opponent: last scan time, heading, velocity, state. */
     static final double[][] LAST = new double[MAX][4];
+    /**
+     * Per opponent: the energy the next drop is measured from (DEISE-5). Kept apart from the risk's
+     * energy so a hit, which moves only this, leaves every order as the shipped class gives it.
+     */
+    static final double[] BASE = new double[MAX];
     static double[][] bots;
     static double[][] waves;
     static int target;
@@ -90,10 +96,11 @@ public class DeiseLab extends AdvancedRobot {
         double[] last = LAST[id];
         char[][] table = TABLES[id] == null ? (TABLES[id] = new char[Gun.STATES][Gun.ROW + 1]) : TABLES[id];
         if (bot == null) {
-            bot = bots[id] = new double[] {x, y, e.getEnergy()};
+            bot = bots[id] = new double[] {x, y, BASE[id] = e.getEnergy()};
         }
         // A drop of 0.1 to 3 is a shot: a wave at us, weighed by whether it likely aims at us (DEISE-5).
-        double drop = bot[Move.ENERGY] - e.getEnergy();
+        double drop = BASE[id] - e.getEnergy();
+        BASE[id] = e.getEnergy();
         bot[Move.X] = x;
         bot[Move.Y] = y;
         bot[Move.ENERGY] = e.getEnergy();
@@ -132,6 +139,15 @@ public class DeiseLab extends AdvancedRobot {
             }
             setTurnGunRightRadians(Utils.normalRelativeAngle(
                 Gun.aim(table, state, x, y, heading, velocity, getX(), getY(), power, 64, RANDOM) - getGunHeadingRadians()));
+        }
+    }
+
+    /** Our hit is not their shot: their energy after it is the base for the next drop (DEISE-5, arm W). */
+    @Override
+    public void onBulletHit(BulletHitEvent e) {
+        int id = IDS[e.getName().hashCode() & (IDS.length - 1)] - 1;
+        if (id >= 0) {
+            BASE[id] = e.getEnergy();
         }
     }
 

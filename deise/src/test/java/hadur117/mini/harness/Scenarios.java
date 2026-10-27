@@ -46,7 +46,8 @@ public final class Scenarios {
     }
 
     /**
-     * Seven enemies, a crowded MiniMelee start, around a robot in the middle; three die.
+     * Seven enemies, a crowded MiniMelee start, around a robot in the middle; three die, one of
+     * them on the first tick, before the radar has seen it.
      *
      * @param className the robot
      * @param classPath where its classes are
@@ -61,6 +62,7 @@ public final class Scenarios {
             .enemy(new MiniWorld.Enemy("l.Lima 1.0", 150, 850, 2.4, 8, -0.02, 420))
             .enemy(new MiniWorld.Enemy("m.Mike 1.0", 500, 820, 1.6, 5, 0.05, -1))
             .enemy(new MiniWorld.Enemy("n.November 1.0", 500, 150, 4.7, 8, 0.0, 600))
-            .enemy(new MiniWorld.Enemy("o.Oscar 1.0", 300, 500, 0.1, 3, -0.06, -1));
+            .enemy(new MiniWorld.Enemy("o.Oscar 1.0", 300, 500, 0.1, 3, -0.06, -1))
+            .enemy(new MiniWorld.Enemy("p.Papa 1.0", 900, 500, 1.0, 8, 0.03, 1));
     }
 }

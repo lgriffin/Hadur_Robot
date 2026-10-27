@@ -19,10 +19,13 @@ import robocode.util.Utils;
  */
 public class Deise extends AdvancedRobot {
 
-    /** Per-opponent Markov rows: [id][state][successors..., count], kept across rounds (DEISE-6). */
-    static char[][][] markov = new char[16][579][127];
+    /**
+     * Per-opponent Markov rows: [id][state][successors..., count], kept across rounds (DEISE-6). Ids
+     * start at 1, so slot 0 is what an unseen robot's death clears.
+     */
+    static char[][][] markov = new char[17][579][127];
     /** Per opponent: last scan time, heading, velocity, state. */
-    static double[][] last = new double[16][4];
+    static double[][] last = new double[17][4];
     static int[] ids = new int[1 << 18];
     static int seen;
     /** Live opponents this round, {x, y, energy}. */
@@ -38,7 +41,7 @@ public class Deise extends AdvancedRobot {
     public void run() {
         setAdjustGunForRobotTurn(true);
         setAdjustRadarForGunTurn(true);
-        bots = new double[16][];
+        bots = new double[17][];
         destX = getX();
         destY = getY();
         setTurnRadarRightRadians(targetDistance = Double.POSITIVE_INFINITY);
@@ -119,7 +122,7 @@ public class Deise extends AdvancedRobot {
         if (ids[code = e.getName().hashCode() & 262143] == 0) {
             ids[code] = ++seen;
         }
-        l = last[id = ids[code] - 1];
+        l = last[id = ids[code]];
         table = markov[id];
         bots[id] = new double[] {
             x = (myX = getX()) + Math.sin(bearing = getHeadingRadians() + e.getBearingRadians()) * (distance = e.getDistance()),
@@ -202,7 +205,7 @@ public class Deise extends AdvancedRobot {
 
     @Override
     public void onRobotDeath(RobotDeathEvent e) {
-        int id = ids[e.getName().hashCode() & 262143] - 1;
+        int id = ids[e.getName().hashCode() & 262143];
         bots[id] = null;
         if (id == target) {
             targetDistance = Double.POSITIVE_INFINITY;

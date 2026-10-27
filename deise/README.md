@@ -8,7 +8,7 @@ the stages are in [docs/deise.md](../docs/deise.md); the requirements are DEISE-
 
 ## Status
 
-0.2 is MiniMelee sized: one class, 1,494 bytes of 1,499, the core flattened by hand and held to it
+0.2 is MiniMelee sized: one class, 1,490 bytes of 1,499, the core flattened by hand and held to it
 order for order (DEISE-16). Card `pc-deise-e01` measures the design on the live-shaped MiniMelee
 census against Mirage and Saor. 0.1 went out unfitted at 2,303 bytes by mistake and is not listed.
 
