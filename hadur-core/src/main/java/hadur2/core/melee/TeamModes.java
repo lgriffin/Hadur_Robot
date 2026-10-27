@@ -57,7 +57,12 @@ public final class TeamModes {
         /** TMODE-17: WEAVE-10 for this team: a nearer teammate's predicted track holds the shot. Only through the table. */
         LANEP,
         /** TMODE-18: WEAVE-11 for this team: a teammate beyond the target holds the shot. Only through the table. */
-        LANEB
+        LANEB,
+        /**
+         * TMODE-19: members state their gun's heading and heat; a member keeps out of the line
+         * ahead of each teammate's gun while that gun is about to fire.
+         */
+        GUNLINE
     }
 
     /**
@@ -78,6 +83,7 @@ public final class TeamModes {
     public static final boolean FORCE_WAVES = false;
     public static final boolean FORCE_HUNT = true;
     public static final boolean FORCE_LINES = false;
+    public static final boolean FORCE_GUNLINE = false;
 
     /** No modes: today's team movement. */
     public static final Set<Mode> NONE = Collections.unmodifiableSet(EnumSet.noneOf(Mode.class));
@@ -88,7 +94,8 @@ public final class TeamModes {
         FORCE_LEARN ? Mode.LEARN : null, FORCE_PACK ? Mode.PACK : null, FORCE_SCREEN ? Mode.SCREEN : null,
         FORCE_POOL ? Mode.POOL : null, FORCE_DISABLED ? Mode.DISABLED : null,
         FORCE_MATEFIRE ? Mode.MATEFIRE : null, FORCE_REAR ? Mode.REAR : null,
-        FORCE_WAVES ? Mode.WAVES : null, FORCE_HUNT ? Mode.HUNT : null, FORCE_LINES ? Mode.LINES : null);
+        FORCE_WAVES ? Mode.WAVES : null, FORCE_HUNT ? Mode.HUNT : null, FORCE_LINES ? Mode.LINES : null,
+        FORCE_GUNLINE ? Mode.GUNLINE : null);
 
     /** Opposing member class to its team's modes; filled from the per-team screens. */
     static final Map<String, Set<Mode>> TABLE = table();

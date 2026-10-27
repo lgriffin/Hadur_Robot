@@ -484,3 +484,20 @@ Together +1.0..+2.5 against +2.6: 2nd only at the top of the range.
   left out.
 - **Expected:** +0.2 to +0.5 APS. It does not close the 2.6 gap to 2nd on its own.
 
+### 10.4 Gun lines (2026-10-27)
+
+- **Friendly-fire read (PR #332, A/A logs, 38,673 own hits):** lane 5%, walkin 21%, beyond 17%,
+  noline 57%. Noline victims stood ahead of the shooter in 98 to 100% of hits: 20% within 36 px of
+  the line when the shot left, 44% at 36 to 100 px, 28% at 100 to 250 px. These are lead shots: the
+  bullet flies to where the enemy will be, and a teammate is on that line, not near the enemy.
+- **TMODE-19 GUNLINE (off):** each member's report states its gun heading and heat; a member's
+  destination risk adds the line ahead of each teammate's gun that fires within 6 ticks (0.4 on the
+  line, none 70 px off, 20 to 900 px ahead). That keeps members out of where their teammates' next
+  shots go, which is what Firestarter and Combat appear to do (they hold about 2% of shots and take a
+  sixth of our own-fire damage). Team-only; the report is unchanged where GUNLINE is not played.
+- **Card pc-team-gunline (about 1.8 h, 1,656 battles):** A/A, mgl and mglw (1.0, 100 px) on all 46
+  teams, 6 seeds from 4500. Gate +1.0 share points with the low end above zero and the A/A within 1.0.
+  The read reports own hits per arm, so it says whether the term moved them even if the score did not.
+- **Expected:** if own-fire damage falls by half, about +0.5 to +1.0 APS (half our extra damage
+  against the mid 14 is own fire). Run after pc-team-table.
+

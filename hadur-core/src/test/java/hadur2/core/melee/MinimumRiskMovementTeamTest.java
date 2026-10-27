@@ -223,6 +223,42 @@ class MinimumRiskMovementTeamTest {
         assertEquals(without + k, move.teammateRisk(pt(500, 700), v), 1e-9);
     }
 
+    /** One teammate at (x, y), standing, known on tick 100, stating its gun heading and heat on {@code aimed}. */
+    private static List<Roster.Mate> aiming(double x, double y, double gunHeading, double gunHeat, long aimed) {
+        Roster r = new Roster(List.of("m"), 3);
+        r.newRound();
+        r.scanned("m", x, y, 0, 0, 100);
+        r.aimed("m", aimed, gunHeading, gunHeat);
+        return r.living(100);
+    }
+
+    @Test
+    @Tag("TMODE-19")
+    @DisplayName("TMODE-19: the line ahead of a teammate's gun about to fire costs GUNLINE_K on it, less off it, nothing behind or once the aim is stale or the gun hot")
+    void aheadOfTheMatesGunCosts() {
+        double k = MinimumRiskMovement.GUNLINE_K;
+        // The teammate at (500, 200), gun north, cool: the line runs up x = 500.
+        List<Roster.Mate> m = aiming(500, 200, 0, 0, 100);
+        assertEquals(k, MinimumRiskMovement.gunLineRisk(pt(500, 600), m, 100), 1e-9);
+        assertEquals(k * (1 - 35 / MinimumRiskMovement.GUNLINE_HALF),
+            MinimumRiskMovement.gunLineRisk(pt(535, 600), m, 100), 1e-9);
+        assertEquals(0, MinimumRiskMovement.gunLineRisk(pt(600, 600), m, 100), 1e-9, "wide of the line");
+        assertEquals(0, MinimumRiskMovement.gunLineRisk(pt(500, 100), m, 100), 1e-9, "behind the gun");
+        assertEquals(0, MinimumRiskMovement.gunLineRisk(pt(500, 1200), m, 100), 1e-9, "beyond the reach");
+        assertEquals(0, MinimumRiskMovement.gunLineRisk(pt(500, 600), m, 100 + MinimumRiskMovement.GUNLINE_AGE + 1),
+            1e-9, "a stale aim");
+        // Heat 0.9 at 0.1 a tick is 9 ticks to fire: too far off; 3 ticks later it is 6.
+        assertEquals(0, MinimumRiskMovement.gunLineRisk(pt(500, 600), aiming(500, 200, 0, 0.9, 100), 100), 1e-9);
+        assertEquals(k, MinimumRiskMovement.gunLineRisk(pt(500, 600), aiming(500, 200, 0, 0.9, 100), 103), 1e-9);
+        // Never stated: nothing.
+        assertEquals(0, MinimumRiskMovement.gunLineRisk(pt(500, 600), mate(500, 200, 0, 0), 100), 1e-9);
+        // Off unless the mode is on: the teammate term is the same without it.
+        MinimumRiskMovement.View v = move.view(pt(300, 300), 100, 100, 3, tracker.alive(), normal, m);
+        double without = move.teammateRisk(pt(500, 600), v);
+        v.gunLines = true;
+        assertEquals(without + k, move.teammateRisk(pt(500, 600), v), 1e-9);
+    }
+
     @Test
     @Tag("TMODE-16")
     @DisplayName("TMODE-16: LINESW plays the cone wider and heavier: LINES_WIDE_K on the line, reaching LINES_WIDE_HALF off it")

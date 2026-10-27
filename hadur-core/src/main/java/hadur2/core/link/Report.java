@@ -143,6 +143,36 @@ public final class Report {
     private final List<String> deaths;
     private final List<Shot> shots;
     private final List<Dodge> dodges;
+    /** TMODE-19: the member's gun heading and heat on that tick, or null when it does not state them. */
+    private final Aim aim;
+
+    /** TMODE-19: where a member's gun points and how hot it is, so its teammates keep off the line. */
+    public static final class Aim {
+        public final double gunHeading;
+        public final double gunHeat;
+
+        public Aim(double gunHeading, double gunHeat) {
+            this.gunHeading = gunHeading;
+            this.gunHeat = gunHeat;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (!(o instanceof Aim)) return false;
+            Aim a = (Aim) o;
+            return Double.compare(gunHeading, a.gunHeading) == 0 && Double.compare(gunHeat, a.gunHeat) == 0;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(gunHeading, gunHeat);
+        }
+
+        @Override
+        public String toString() {
+            return "Aim[" + gunHeading + " heat " + gunHeat + "]";
+        }
+    }
 
     /**
      * @param round the round, from 0 to 65535 (the wire's 16 bits)
@@ -164,6 +194,12 @@ public final class Report {
     /** As above, with {@code dodges}: the enemy bullets that hit the member on that tick (MMOVE-10). */
     public Report(int round, long tick, double x, double y, double heading, double velocity, double energy,
                   List<Sighting> sightings, List<String> deaths, List<Shot> shots, List<Dodge> dodges) {
+        this(round, tick, x, y, heading, velocity, energy, sightings, deaths, shots, dodges, null);
+    }
+
+    /** As above, with the member's {@code aim} (TMODE-19), or null for none. */
+    public Report(int round, long tick, double x, double y, double heading, double velocity, double energy,
+                  List<Sighting> sightings, List<String> deaths, List<Shot> shots, List<Dodge> dodges, Aim aim) {
         if (round < 0 || round > MAX_ROUND) throw new IllegalArgumentException("round " + round + " is not 0 to " + MAX_ROUND);
         this.round = round;
         this.tick = tick;
@@ -176,6 +212,7 @@ public final class Report {
         this.deaths = List.copyOf(deaths);
         this.shots = List.copyOf(shots);
         this.dodges = List.copyOf(dodges);
+        this.aim = aim;
     }
 
     public int round() {
@@ -222,6 +259,11 @@ public final class Report {
         return dodges;
     }
 
+    /** TMODE-19: the member's aim, or null. */
+    public Aim aim() {
+        return aim;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof Report)) return false;
@@ -230,12 +272,12 @@ public final class Report {
             && Double.compare(y, r.y) == 0 && Double.compare(heading, r.heading) == 0
             && Double.compare(velocity, r.velocity) == 0 && Double.compare(energy, r.energy) == 0
             && sightings.equals(r.sightings) && deaths.equals(r.deaths) && shots.equals(r.shots)
-            && dodges.equals(r.dodges);
+            && dodges.equals(r.dodges) && Objects.equals(aim, r.aim);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(round, tick, x, y, heading, velocity, energy, sightings, deaths, shots, dodges);
+        return Objects.hash(round, tick, x, y, heading, velocity, energy, sightings, deaths, shots, dodges, aim);
     }
 
     @Override

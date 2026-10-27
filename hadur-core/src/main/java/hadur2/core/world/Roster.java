@@ -43,6 +43,10 @@ public final class Roster {
         /** The tick a death event or report named it, or -1. */
         long diedAt = -1;
         boolean presumedDead;
+        /** TMODE-19: its gun heading and heat as its last report with an aim stated them, and that tick; -1 for none. */
+        double gunHeading;
+        double gunHeat;
+        long aimed = -1;
 
         Mate(String name) {
             this.name = name;
@@ -71,6 +75,21 @@ public final class Roster {
 
         public double velocity() {
             return velocity;
+        }
+
+        /** TMODE-19: its gun heading as last stated. */
+        public double gunHeading() {
+            return gunHeading;
+        }
+
+        /** TMODE-19: its gun heat as last stated. */
+        public double gunHeat() {
+            return gunHeat;
+        }
+
+        /** TMODE-19: the tick its aim was stated on; -1 for none this round. */
+        public long aimed() {
+            return aimed;
         }
 
         /**
@@ -183,6 +202,15 @@ public final class Roster {
         m.diedAt = -1;
         m.presumedDead = false;
         if (tick == now - 1) heard.add(name);
+    }
+
+    /** TMODE-19: the aim a report from {@code name} stated for {@code tick}; a newer one wins. */
+    public void aimed(String name, long tick, double gunHeading, double gunHeat) {
+        Mate m = mates.get(name);
+        if (m == null || tick < m.aimed) return;
+        m.gunHeading = gunHeading;
+        m.gunHeat = gunHeat;
+        m.aimed = tick;
     }
 
     /** A teammate's sighting of another teammate: the newer position wins (WORLD-4). */
