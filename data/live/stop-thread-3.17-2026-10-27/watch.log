@@ -1,0 +1,267 @@
+2026-10-27T14:01:54Z client C:\RoboRumbleWorkers\rr01: results ['C:\\RoboRumbleWorkers\\rr01\\roborumble\\files\\results1v1.txt', 'C:\\RoboRumbleWorkers\\rr01\\roborumble\\files\\resultsTeams.txt', 'C:\\RoboRumbleWorkers\\rr01\\roborumble\\files\\resultsTwinduel.txt', 'C:\\RoboRumbleWorkers\\rr01\\roborumble\\files\\resultsmelee.txt'], data ['C:\\RoboRumbleWorkers\\rr01\\robots\\.data\\hadur2\\Hadur.data']
+2026-10-27T14:01:54Z client C:\RoboRumbleWorkers\rr02: results ['C:\\RoboRumbleWorkers\\rr02\\roborumble\\files\\results1v1.txt', 'C:\\RoboRumbleWorkers\\rr02\\roborumble\\files\\resultsTeams.txt', 'C:\\RoboRumbleWorkers\\rr02\\roborumble\\files\\resultsTwinduel.txt', 'C:\\RoboRumbleWorkers\\rr02\\roborumble\\files\\resultsmelee.txt'], data ['C:\\RoboRumbleWorkers\\rr02\\robots\\.data\\hadur2\\Hadur.data']
+2026-10-27T14:01:54Z client C:\RoboRumbleWorkers\rr03: results ['C:\\RoboRumbleWorkers\\rr03\\roborumble\\files\\results1v1.txt', 'C:\\RoboRumbleWorkers\\rr03\\roborumble\\files\\resultsTeams.txt', 'C:\\RoboRumbleWorkers\\rr03\\roborumble\\files\\resultsTwinduel.txt', 'C:\\RoboRumbleWorkers\\rr03\\roborumble\\files\\resultsmelee.txt'], data ['C:\\RoboRumbleWorkers\\rr03\\robots\\.data\\hadur2\\Hadur.data']
+2026-10-27T14:01:54Z client C:\RoboRumbleWorkers\rr04: results ['C:\\RoboRumbleWorkers\\rr04\\roborumble\\files\\results1v1.txt', 'C:\\RoboRumbleWorkers\\rr04\\roborumble\\files\\resultsTeams.txt', 'C:\\RoboRumbleWorkers\\rr04\\roborumble\\files\\resultsTwinduel.txt', 'C:\\RoboRumbleWorkers\\rr04\\roborumble\\files\\resultsmelee.txt'], data ['C:\\RoboRumbleWorkers\\rr04\\robots\\.data\\hadur2\\Hadur.data']
+2026-10-27T14:01:55Z client C:\RoboRumbleWorkers\rr05: results ['C:\\RoboRumbleWorkers\\rr05\\roborumble\\files\\results1v1.txt', 'C:\\RoboRumbleWorkers\\rr05\\roborumble\\files\\resultsTeams.txt', 'C:\\RoboRumbleWorkers\\rr05\\roborumble\\files\\resultsTwinduel.txt', 'C:\\RoboRumbleWorkers\\rr05\\roborumble\\files\\resultsmelee.txt'], data ['C:\\RoboRumbleWorkers\\rr05\\robots\\.data\\hadur2\\Hadur.data']
+2026-10-27T14:01:55Z client C:\RoboRumbleWorkers\rr06: results ['C:\\RoboRumbleWorkers\\rr06\\roborumble\\files\\results1v1.txt', 'C:\\RoboRumbleWorkers\\rr06\\roborumble\\files\\resultsTeams.txt', 'C:\\RoboRumbleWorkers\\rr06\\roborumble\\files\\resultsTwinduel.txt', 'C:\\RoboRumbleWorkers\\rr06\\roborumble\\files\\resultsmelee.txt'], data ['C:\\RoboRumbleWorkers\\rr06\\robots\\.data\\hadur2\\Hadur.data']
+2026-10-27T14:01:55Z client C:\robocode: results ['C:\\robocode\\roborumble\\files\\results1v1.txt', 'C:\\robocode\\roborumble\\files\\resultsTeams.txt', 'C:\\robocode\\roborumble\\files\\resultsTwinduel.txt', 'C:\\robocode\\roborumble\\files\\resultsmelee.txt'], data ['C:\\robocode\\robots\\.data\\hadur2\\Hadur.data']
+2026-10-27T14:01:55Z client rr01-roborumble: start, console ../data/live/release-3.18-run1\consoles\rr01-roborumble-2026-10-27T140155Z.log
+2026-10-27T14:01:55Z client rr02-roborumble: start, console ../data/live/release-3.18-run1\consoles\rr02-roborumble-2026-10-27T140155Z.log
+2026-10-27T14:01:55Z client rr03-roborumble: start, console ../data/live/release-3.18-run1\consoles\rr03-roborumble-2026-10-27T140155Z.log
+2026-10-27T14:01:55Z client rr04-roborumble: start, console ../data/live/release-3.18-run1\consoles\rr04-roborumble-2026-10-27T140155Z.log
+2026-10-27T14:01:55Z client rr05-roborumble: start, console ../data/live/release-3.18-run1\consoles\rr05-roborumble-2026-10-27T140155Z.log
+2026-10-27T14:01:55Z client rr06-roborumble: start, console ../data/live/release-3.18-run1\consoles\rr06-roborumble-2026-10-27T140155Z.log
+2026-10-27T14:01:55Z client robocode-meleerumble: start, console ../data/live/release-3.18-run1\consoles\robocode-meleerumble-2026-10-27T140155Z.log
+2026-10-27T14:01:55Z client robocode-teamrumble: start, console ../data/live/release-3.18-run1\consoles\robocode-teamrumble-2026-10-27T140155Z.log
+2026-10-27T14:01:56Z page roborumble:hadur2.Hadur 3.18: no BotDetails table (wrong name or version?)
+2026-10-27T14:01:56Z page meleerumble:hadur2.Hadur 3.18: no BotDetails table (wrong name or version?)
+2026-10-27T14:01:56Z page teamrumble:hadur2.HadurTeam 3.18: no BotDetails table (wrong name or version?)
+2026-10-27T14:01:59Z profiles rr01_robots_.data_hadur2_Hadur.data: 483 files, 229 shield verdicts stored
+2026-10-27T14:01:59Z profiles rr02_robots_.data_hadur2_Hadur.data: 495 files, 220 shield verdicts stored
+2026-10-27T14:01:59Z profiles rr03_robots_.data_hadur2_Hadur.data: 479 files, 220 shield verdicts stored
+2026-10-27T14:01:59Z profiles rr04_robots_.data_hadur2_Hadur.data: 452 files, 184 shield verdicts stored
+2026-10-27T14:01:59Z profiles rr05_robots_.data_hadur2_Hadur.data: 454 files, 234 shield verdicts stored
+2026-10-27T14:01:59Z profiles rr06_robots_.data_hadur2_Hadur.data: 424 files, 195 shield verdicts stored
+2026-10-27T14:01:59Z profiles robocode_robots_.data_hadur2_Hadur.data: 3 files, 2 shield verdicts stored
+2026-10-27T14:03:55Z health ?: 28/34 survived, 22 skipped, 0 faults, shield verdict 
+2026-10-27T14:04:05Z health kenran.Bakko: 34/34 survived, 7 skipped, 0 faults, shield verdict 1
+2026-10-27T14:04:23Z client robocode-teamrumble: unstoppable: Unable to stop thread: hadur2.Hadur 3.17.1 (5)
+2026-10-27T14:04:23Z client robocode-teamrumble: unstoppable: Unable to stop thread: hadur2.Hadur 3.17.1 (5)
+2026-10-27T14:04:21Z health ers.micro.speusippus.Speusippus: 32/34 survived, 10 skipped, 0 faults, shield verdict 1
+2026-10-27T14:04:33Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:04:33Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:04:28Z health ers.micro.speusippus.Speusippus: 34/34 survived, 12 skipped, 0 faults, shield verdict 1
+2026-10-27T14:04:26Z health xander.cat.Spitfire: 34/34 survived, 271 skipped, 0 faults, shield verdict 0
+2026-10-27T14:04:26Z START-UP DISABLE? xander.cat.Spitfire: 256 skipped turns in a row, setup 1718 ms, first turn 0
+2026-10-27T14:04:41Z health gwah.GBotMarkIV: 34/34 survived, 7 skipped, 0 faults, shield verdict 1
+2026-10-27T14:04:48Z health ?: 8/9 survived, 34 skipped, 0 faults, shield verdict 
+2026-10-27T14:04:55Z client rr06-roborumble: unstoppable: Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:04:55Z client rr06-roborumble: unstoppable: Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:04:56Z health dz.GalbaMini: 32/34 survived, 16 skipped, 0 faults, shield verdict 1
+2026-10-27T14:04:55Z health pl.robocode.Pacyfista: 34/34 survived, 266 skipped, 0 faults, shield verdict 1
+2026-10-27T14:04:55Z START-UP DISABLE? pl.robocode.Pacyfista: 256 skipped turns in a row, setup 1645 ms, first turn 0
+2026-10-27T14:04:56Z health slugzilla.OscillatePattern: 34/34 survived, 11 skipped, 0 faults, shield verdict 0
+2026-10-27T14:05:03Z health lucasslf.Wiggins: 34/34 survived, 7 skipped, 0 faults, shield verdict 0
+2026-10-27T14:05:34Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:05:34Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:05:29Z health wit.Deep7: 34/34 survived, 267 skipped, 0 faults, shield verdict 0
+2026-10-27T14:05:29Z START-UP DISABLE? wit.Deep7: 256 skipped turns in a row, setup 1410 ms, first turn 0
+2026-10-27T14:05:46Z health lxx.Emerald: 34/34 survived, 12 skipped, 0 faults, shield verdict 1
+2026-10-27T14:05:57Z health zyx.mega.YersiniaPestis: 26/34 survived, 21 skipped, 0 faults, shield verdict 1
+2026-10-27T14:05:59Z health cx.micro.Blur: 31/34 survived, 5 skipped, 0 faults, shield verdict 0
+2026-10-27T14:06:14Z health rc.yoda.Yoda: 33/34 survived, 9 skipped, 0 faults, shield verdict 1
+2026-10-27T14:06:18Z health tobe.Fusion: 32/34 survived, 20 skipped, 0 faults, shield verdict 0
+2026-10-27T14:06:34Z client rr04-roborumble: unstoppable: Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:06:34Z client rr04-roborumble: unstoppable: Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:06:34Z client robocode-teamrumble: unstoppable: Unable to stop thread: hadur2.Hadur 3.17.1 (4)
+2026-10-27T14:06:34Z client robocode-teamrumble: unstoppable: Unable to stop thread: hadur2.Hadur 3.17.1 (4)
+2026-10-27T14:06:34Z client robocode-teamrumble: unstoppable: Unable to stop thread: hadur2.Hadur 3.17.1 (2)
+2026-10-27T14:06:34Z client robocode-teamrumble: unstoppable: Unable to stop thread: hadur2.Hadur 3.17.1 (2)
+2026-10-27T14:06:30Z health oog.micro.SavantMicro: 33/34 survived, 13 skipped, 0 faults, shield verdict 1
+2026-10-27T14:06:32Z health agd.Mooserwirt2: 18/34 survived, 39 skipped, 0 faults, shield verdict 0
+2026-10-27T14:06:28Z health spinnercat.mega.Tardis: 34/35 survived, 152 skipped, 0 faults, shield verdict 0
+2026-10-27T14:06:32Z health tcf.Repat3: 34/34 survived, 10 skipped, 0 faults, shield verdict 0
+2026-10-27T14:06:36Z health ?: 10/10 survived, 1 skipped, 0 faults, shield verdict 
+2026-10-27T14:06:28Z START-UP DISABLE? spinnercat.mega.Tardis: 142 skipped turns in a row, setup 863 ms, first turn 0
+2026-10-27T14:06:40Z health step.nanoPri: 33/34 survived, 10 skipped, 0 faults, shield verdict 0
+2026-10-27T14:06:40Z health agd.Mooserwirt2: 34/34 survived, 16 skipped, 0 faults, shield verdict 0
+2026-10-27T14:06:58Z health amc.ROBv300: 34/34 survived, 16 skipped, 0 faults, shield verdict 0
+2026-10-27T14:07:09Z client rr04-roborumble: unstoppable: Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:07:09Z client rr04-roborumble: unstoppable: Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:07:07Z health areb.Union: 34/34 survived, 264 skipped, 0 faults, shield verdict 1
+2026-10-27T14:07:07Z START-UP DISABLE? areb.Union: 256 skipped turns in a row, setup 1670 ms, first turn 0
+2026-10-27T14:07:20Z client rr06-roborumble: unstoppable: Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:07:20Z client rr06-roborumble: unstoppable: Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:07:19Z health axeBots.SilverSurfer: 27/34 survived, 26 skipped, 0 faults, shield verdict 1
+2026-10-27T14:07:19Z health mym.EdgeStalker: 34/34 survived, 8 skipped, 0 faults, shield verdict 0
+2026-10-27T14:07:15Z health dans.Cinnamon: 34/34 survived, 13 skipped, 0 faults, shield verdict 0
+2026-10-27T14:07:16Z health EH.Pegasus: 34/34 survived, 8 skipped, 0 faults, shield verdict 0
+2026-10-27T14:07:19Z health rnatest.MendelBot: 34/34 survived, 271 skipped, 0 faults, shield verdict 0
+2026-10-27T14:07:19Z START-UP DISABLE? rnatest.MendelBot: 256 skipped turns in a row, setup 1640 ms, first turn 0
+2026-10-27T14:07:37Z health supersample.SuperWalls: 34/34 survived, 9 skipped, 0 faults, shield verdict 0
+2026-10-27T14:07:44Z client rr06-roborumble: unstoppable: Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:07:44Z client rr06-roborumble: unstoppable: Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:07:39Z health elloco.Flower: 34/34 survived, 12 skipped, 0 faults, shield verdict 0
+2026-10-27T14:07:37Z health alk.lap.LoudAndProud: 32/34 survived, 10 skipped, 0 faults, shield verdict 1
+2026-10-27T14:07:45Z health a.FreyaOS: 34/35 survived, 240 skipped, 0 faults, shield verdict 0
+2026-10-27T14:07:45Z START-UP DISABLE? a.FreyaOS: 231 skipped turns in a row, setup 1139 ms, first turn 0
+2026-10-27T14:07:56Z client rr03-roborumble: unstoppable: Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:07:56Z client rr03-roborumble: unstoppable: Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:07:56Z client rr05-roborumble: unstoppable: Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:07:56Z client rr05-roborumble: unstoppable: Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:07:52Z health dks.MicroDanMK2: 34/35 survived, 248 skipped, 0 faults, shield verdict 0
+2026-10-27T14:07:52Z START-UP DISABLE? dks.MicroDanMK2: 232 skipped turns in a row, setup 1169 ms, first turn 0
+2026-10-27T14:08:07Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:08:07Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:08:03Z health dhn.Immortal: 34/35 survived, 255 skipped, 0 faults, shield verdict 0
+2026-10-27T14:08:08Z health josago.Jorgito: 33/34 survived, 13 skipped, 0 faults, shield verdict 1
+2026-10-27T14:08:03Z START-UP DISABLE? dhn.Immortal: 243 skipped turns in a row, setup 1212 ms, first turn 0
+2026-10-27T14:08:11Z health bvh.fnr.Fenrir: 31/34 survived, 14 skipped, 0 faults, shield verdict 0
+2026-10-27T14:08:30Z health spartancompany.Spartan2: 34/34 survived, 13 skipped, 0 faults, shield verdict 0
+2026-10-27T14:08:25Z health fromHell.BlackBox: 32/34 survived, 15 skipped, 0 faults, shield verdict 0
+2026-10-27T14:08:37Z health pkbots.BoyTDSurfer: 33/34 survived, 10 skipped, 0 faults, shield verdict 0
+2026-10-27T14:08:30Z health spartancompany.Spartan2: 34/34 survived, 13 skipped, 0 faults, shield verdict 0
+2026-10-27T14:08:36Z health catcat20.atom.Atom: 33/34 survived, 274 skipped, 0 faults, shield verdict 1
+2026-10-27T14:08:40Z health fromHell.BlackBox: 26/34 survived, 23 skipped, 0 faults, shield verdict 1
+2026-10-27T14:08:36Z START-UP DISABLE? catcat20.atom.Atom: 256 skipped turns in a row, setup 1422 ms, first turn 0
+2026-10-27T14:08:46Z health pkbots.BoyTDSurfer: 34/34 survived, 13 skipped, 0 faults, shield verdict 0
+2026-10-27T14:08:46Z health pez.rumble.CassiusClay: 26/34 survived, 29 skipped, 0 faults, shield verdict 1
+2026-10-27T14:08:58Z health bvh.micro.Svadilfari: 34/34 survived, 7 skipped, 0 faults, shield verdict 0
+2026-10-27T14:08:56Z health lxx.Tomcat: 28/34 survived, 12 skipped, 0 faults, shield verdict 1
+2026-10-27T14:09:12Z client robocode-meleerumble: unstoppable: Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:09:12Z client robocode-meleerumble: unstoppable: Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:09:07Z health wilson.Chameleon: 33/34 survived, 13 skipped, 0 faults, shield verdict 1
+2026-10-27T14:09:18Z health pez.nano.LittleEvilBrother: 34/34 survived, 13 skipped, 0 faults, shield verdict 0
+2026-10-27T14:09:33Z client rr03-roborumble: unstoppable: Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:09:33Z client rr03-roborumble: unstoppable: Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:09:33Z client rr06-roborumble: unstoppable: Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:09:33Z client rr06-roborumble: unstoppable: Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:09:33Z health apv.ScruchiPu: 30/35 survived, 245 skipped, 0 faults, shield verdict 1
+2026-10-27T14:09:36Z health SHAM.WOW: 32/34 survived, 264 skipped, 0 faults, shield verdict 1
+2026-10-27T14:09:33Z START-UP DISABLE? apv.ScruchiPu: 236 skipped turns in a row, setup 1178 ms, first turn 0
+2026-10-27T14:09:36Z START-UP DISABLE? SHAM.WOW: 256 skipped turns in a row, setup 1445 ms, first turn 0
+2026-10-27T14:09:44Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:09:44Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:09:43Z health winamp32.micro.MicroMacro: 34/35 survived, 226 skipped, 0 faults, shield verdict 1
+2026-10-27T14:09:43Z START-UP DISABLE? winamp32.micro.MicroMacro: 215 skipped turns in a row, setup 1074 ms, first turn 0
+2026-10-27T14:09:52Z health lxx.Tomcat: 23/34 survived, 50 skipped, 0 faults, shield verdict 1
+2026-10-27T14:09:52Z health davidalves.net.DuelistMini: 34/34 survived, 7 skipped, 0 faults, shield verdict 0
+2026-10-27T14:09:51Z health ?: 25/35 survived, 83 skipped, 0 faults, shield verdict 
+2026-10-27T14:09:51Z START-UP DISABLE? ?: 64 skipped turns in a row, setup 768 ms, first turn 0
+2026-10-27T14:10:04Z health GarmBox.Anger: 34/34 survived, 12 skipped, 0 faults, shield verdict 0
+2026-10-27T14:10:00Z health lrem.micro.MoggFanatic: 34/34 survived, 9 skipped, 0 faults, shield verdict 1
+2026-10-27T14:10:15Z health mcb.Audace: 34/34 survived, 8 skipped, 0 faults, shield verdict 0
+2026-10-27T14:10:19Z health mz.Adept: 34/34 survived, 10 skipped, 0 faults, shield verdict 0
+2026-10-27T14:10:29Z client rr05-roborumble: unstoppable: Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:10:29Z client rr05-roborumble: unstoppable: Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:10:23Z health hamilton.Hamilton: 34/34 survived, 268 skipped, 0 faults, shield verdict 1
+2026-10-27T14:10:23Z START-UP DISABLE? hamilton.Hamilton: 256 skipped turns in a row, setup 1651 ms, first turn 0
+2026-10-27T14:10:38Z client rr04-roborumble: unstoppable: Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:10:38Z client rr04-roborumble: unstoppable: Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:10:34Z health hamilton.Hamilton: 34/34 survived, 12 skipped, 0 faults, shield verdict 1
+2026-10-27T14:10:49Z health pez.rumble.CassiusClay: 23/34 survived, 48 skipped, 0 faults, shield verdict 1
+2026-10-27T14:10:41Z health evd.X1: 34/35 survived, 208 skipped, 0 faults, shield verdict 0
+2026-10-27T14:10:52Z health pez.mini.Gouldingi: 34/34 survived, 13 skipped, 0 faults, shield verdict 0
+2026-10-27T14:10:41Z START-UP DISABLE? evd.X1: 200 skipped turns in a row, setup 1037 ms, first turn 0
+2026-10-27T14:11:00Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:11:00Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:11:01Z client rr04-roborumble: unstoppable: Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:11:01Z client rr04-roborumble: unstoppable: Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:10:54Z health trab.Crusader: 27/34 survived, 20 skipped, 0 faults, shield verdict 1
+2026-10-27T14:11:01Z health ruc.nano.Zealot: 34/34 survived, 10 skipped, 0 faults, shield verdict 0
+2026-10-27T14:10:53Z health genprog.Zafaran: 34/34 survived, 267 skipped, 0 faults, shield verdict 0
+2026-10-27T14:10:57Z health kawigi.sbf.FloodMicro: 34/34 survived, 9 skipped, 0 faults, shield verdict 0
+2026-10-27T14:10:53Z START-UP DISABLE? genprog.Zafaran: 256 skipped turns in a row, setup 1657 ms, first turn 0
+2026-10-27T14:11:05Z health doka.KillerRabbit: 31/34 survived, 266 skipped, 0 faults, shield verdict 1
+2026-10-27T14:11:05Z START-UP DISABLE? doka.KillerRabbit: 256 skipped turns in a row, setup 1274 ms, first turn 0
+2026-10-27T14:11:25Z client robocode-teamrumble: unstoppable: Unable to stop thread: hadur2.Hadur 3.17.1 (3)
+2026-10-27T14:11:25Z client robocode-teamrumble: unstoppable: Unable to stop thread: hadur2.Hadur 3.17.1 (3)
+2026-10-27T14:11:25Z client robocode-teamrumble: unstoppable: Unable to stop thread: hadur2.Hadur 3.17.1 (2)
+2026-10-27T14:11:25Z client robocode-teamrumble: unstoppable: Unable to stop thread: hadur2.Hadur 3.17.1 (2)
+2026-10-27T14:11:35Z health ne.Chimera: 34/34 survived, 10 skipped, 0 faults, shield verdict 0
+2026-10-27T14:11:37Z health slugzilla.RandomPattern: 34/34 survived, 13 skipped, 0 faults, shield verdict 0
+2026-10-27T14:11:43Z health ne.Chimera: 33/34 survived, 14 skipped, 0 faults, shield verdict 1
+2026-10-27T14:11:42Z health ?: 9/10 survived, 5 skipped, 0 faults, shield verdict 
+2026-10-27T14:11:54Z health tw.Exterminator: 27/34 survived, 38 skipped, 0 faults, shield verdict 1
+2026-10-27T14:12:09Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:12:09Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:12:01Z health sp.AstherNano: 34/34 survived, 272 skipped, 0 faults, shield verdict 0
+2026-10-27T14:12:01Z START-UP DISABLE? sp.AstherNano: 256 skipped turns in a row, setup 1729 ms, first turn 0
+2026-10-27T14:12:19Z health rtk.Tachikoma: 33/34 survived, 10 skipped, 0 faults, shield verdict 1
+2026-10-27T14:12:30Z client rr04-roborumble: unstoppable: Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:12:30Z client rr04-roborumble: unstoppable: Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:12:25Z health alpha.RainingFire: 31/34 survived, 17 skipped, 0 faults, shield verdict 1
+2026-10-27T14:12:33Z health rz.GlowBlow: 32/34 survived, 15 skipped, 0 faults, shield verdict 1
+2026-10-27T14:12:37Z health kc.micro.Thorn: 32/35 survived, 157 skipped, 0 faults, shield verdict 0
+2026-10-27T14:12:45Z health com.timothyveletta.FuzzyBot: 34/34 survived, 12 skipped, 0 faults, shield verdict 0
+2026-10-27T14:12:37Z START-UP DISABLE? kc.micro.Thorn: 148 skipped turns in a row, setup 878 ms, first turn 0
+2026-10-27T14:12:45Z health kms.Royal: 34/34 survived, 17 skipped, 0 faults, shield verdict 1
+2026-10-27T14:12:54Z health jam.mini.Raiko: 34/34 survived, 8 skipped, 0 faults, shield verdict 0
+2026-10-27T14:13:06Z health bvh.tyr.Tyr: 34/34 survived, 16 skipped, 0 faults, shield verdict 0
+2026-10-27T14:13:18Z health slugzilla.OscillateGF: 34/34 survived, 5 skipped, 0 faults, shield verdict 0
+2026-10-27T14:13:24Z client rr03-roborumble: unstoppable: Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:13:24Z client rr03-roborumble: unstoppable: Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:13:15Z health asm.Statistas: 34/34 survived, 13 skipped, 0 faults, shield verdict 0
+2026-10-27T14:13:23Z health spinnercat.haiku.Refrigerator: 34/34 survived, 273 skipped, 0 faults, shield verdict 0
+2026-10-27T14:13:18Z health jaemcrb.nano.M1Abrams: 34/34 survived, 11 skipped, 0 faults, shield verdict 1
+2026-10-27T14:13:18Z health barontrozo.BaronTrozo: 29/34 survived, 15 skipped, 0 faults, shield verdict 1
+2026-10-27T14:13:18Z health slugzilla.OscillateGF: 34/34 survived, 5 skipped, 0 faults, shield verdict 0
+2026-10-27T14:13:23Z START-UP DISABLE? spinnercat.haiku.Refrigerator: 256 skipped turns in a row, setup 1289 ms, first turn 0
+2026-10-27T14:13:35Z health slugzilla.OscillatePattern: 34/34 survived, 9 skipped, 0 faults, shield verdict 0
+2026-10-27T14:13:31Z health robar.nano.Mosquito: 34/34 survived, 15 skipped, 0 faults, shield verdict 0
+2026-10-27T14:13:42Z health robar.nano.Prestige: 34/34 survived, 10 skipped, 0 faults, shield verdict 0
+2026-10-27T14:13:53Z health joe.ADinosaur: 34/34 survived, 14 skipped, 0 faults, shield verdict 0
+2026-10-27T14:13:55Z health dmh.robocode.robot.GreenDragon: 34/34 survived, 16 skipped, 0 faults, shield verdict 1
+2026-10-27T14:13:59Z health bing2.Melody: 32/34 survived, 11 skipped, 0 faults, shield verdict 1
+2026-10-27T14:14:12Z client rr03-roborumble: unstoppable: Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:14:12Z client rr03-roborumble: unstoppable: Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:14:05Z health stelo.Liblix: 34/34 survived, 11 skipped, 0 faults, shield verdict 1
+2026-10-27T14:14:15Z health bjl.LoneDragon: 33/34 survived, 16 skipped, 0 faults, shield verdict 1
+2026-10-27T14:14:19Z health stelo.Liblix: 32/34 survived, 11 skipped, 0 faults, shield verdict 1
+2026-10-27T14:14:17Z health sheldor.nano.Feint: 34/35 survived, 102 skipped, 0 faults, shield verdict 0
+2026-10-27T14:14:21Z health dsekercioglu.mega.Raven: 21/34 survived, 29 skipped, 0 faults, shield verdict 1
+2026-10-27T14:14:17Z START-UP DISABLE? sheldor.nano.Feint: 95 skipped turns in a row, setup 770 ms, first turn 0
+2026-10-27T14:14:35Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:14:35Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:14:35Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:14:35Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:14:35Z client rr03-roborumble: unstoppable: Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:14:35Z client rr03-roborumble: unstoppable: Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:14:37Z health nzeemin.Izh: 34/35 survived, 226 skipped, 0 faults, shield verdict 0
+2026-10-27T14:14:32Z health Noran.BitchingElk: 34/35 survived, 235 skipped, 0 faults, shield verdict 0
+2026-10-27T14:14:37Z START-UP DISABLE? nzeemin.Izh: 219 skipped turns in a row, setup 1136 ms, first turn 0
+2026-10-27T14:14:32Z START-UP DISABLE? Noran.BitchingElk: 226 skipped turns in a row, setup 1157 ms, first turn 0
+2026-10-27T14:14:47Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:14:47Z client rr01-roborumble: unstoppable: Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:14:44Z health disan.Ghost: 34/34 survived, 269 skipped, 0 faults, shield verdict 0
+2026-10-27T14:14:49Z health wcsv.Engineer.Engineer: 34/34 survived, 9 skipped, 0 faults, shield verdict 0
+2026-10-27T14:14:48Z health theo.real.Ahab: 29/34 survived, 12 skipped, 0 faults, shield verdict 1
+2026-10-27T14:14:44Z START-UP DISABLE? disan.Ghost: 256 skipped turns in a row, setup 1810 ms, first turn 0
+2026-10-27T14:14:59Z client rr04-roborumble: unstoppable: Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:14:59Z client rr04-roborumble: unstoppable: Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:14:49Z health wcsv.Engineer.Engineer: 34/34 survived, 9 skipped, 0 faults, shield verdict 0
+2026-10-27T14:15:10Z health pe.SandboxLump: 34/34 survived, 8 skipped, 0 faults, shield verdict 0
+2026-10-27T14:15:09Z health kid.Gladiator: 33/34 survived, 6 skipped, 0 faults, shield verdict 1
+2026-10-27T14:15:10Z health pe.SandboxLump: 34/34 survived, 8 skipped, 0 faults, shield verdict 0
+2026-10-27T14:15:16Z health vft.Hrist: 32/35 survived, 201 skipped, 0 faults, shield verdict 0
+2026-10-27T14:15:15Z health ntc.Lasers.Lasers: 33/34 survived, 12 skipped, 0 faults, shield verdict 0
+2026-10-27T14:15:19Z health marcinek.TopGun: 33/34 survived, 12 skipped, 0 faults, shield verdict 0
+2026-10-27T14:15:16Z START-UP DISABLE? vft.Hrist: 186 skipped turns in a row, setup 993 ms, first turn 0
+2026-10-27T14:15:28Z health cw.megas.Silhouette: 31/34 survived, 9 skipped, 0 faults, shield verdict 1
+2026-10-27T14:15:25Z health vft.Hrist: 33/34 survived, 13 skipped, 0 faults, shield verdict 0
+2026-10-27T14:15:34Z health ags.polished.PolishedRuby: 34/34 survived, 12 skipped, 0 faults, shield verdict 1
+2026-10-27T14:15:29Z health homerbots.h1: 34/34 survived, 11 skipped, 0 faults, shield verdict 0
+2026-10-27T14:15:47Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:15:47Z client rr02-roborumble: unstoppable: Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:15:49Z health kneels.ToNoone: 33/35 survived, 236 skipped, 0 faults, shield verdict 1
+2026-10-27T14:15:52Z health jp.Perpy: 29/34 survived, 15 skipped, 0 faults, shield verdict 1
+2026-10-27T14:15:49Z START-UP DISABLE? kneels.ToNoone: 227 skipped turns in a row, setup 1174 ms, first turn 0
+2026-10-27T14:16:03Z health Grystrion.TrackerWO: 33/34 survived, 11 skipped, 0 faults, shield verdict 0
+2026-10-27T14:16:23Z health cf.star.Star2: 33/34 survived, 13 skipped, 0 faults, shield verdict 0
+2026-10-27T14:16:28Z health tjk.deBroglie: 32/34 survived, 7 skipped, 0 faults, shield verdict 1
+2026-10-27T14:16:36Z health eem.awful: 34/34 survived, 264 skipped, 0 faults, shield verdict 0
+2026-10-27T14:16:36Z START-UP DISABLE? eem.awful: 256 skipped turns in a row, setup 1554 ms, first turn 0
+2026-10-27T14:16:46Z client rr06-roborumble: unstoppable: Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:16:46Z client rr06-roborumble: unstoppable: Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:16:47Z health nzeemin.Izh: 34/34 survived, 13 skipped, 0 faults, shield verdict 0
+2026-10-27T14:16:57Z page roborumble:hadur2.Hadur 3.18: no BotDetails table (wrong name or version?)
+2026-10-27T14:16:57Z page meleerumble:hadur2.Hadur 3.18: no BotDetails table (wrong name or version?)
+2026-10-27T14:16:57Z page teamrumble:hadur2.HadurTeam 3.18: no BotDetails table (wrong name or version?)
+2026-10-27T14:16:51Z health amc.ROBv301: 34/34 survived, 15 skipped, 0 faults, shield verdict 1
+2026-10-27T14:17:00Z health fnc.bandit2002.Bandit2002: 32/34 survived, 15 skipped, 0 faults, shield verdict 0
+2026-10-27T14:17:13Z health Lo_Ian.Gandalf_V4: 34/34 survived, 13 skipped, 0 faults, shield verdict 0
+2026-10-27T14:17:12Z health ers.nano.lig.LigMA: 34/34 survived, 14 skipped, 0 faults, shield verdict 0
+2026-10-27T14:17:12Z health alk.lap.LoudAndProud: 34/34 survived, 13 skipped, 0 faults, shield verdict 1
+2026-10-27T14:17:18Z health sL300.Mozart: 30/34 survived, 22 skipped, 0 faults, shield verdict 1
+2026-10-27T14:17:22Z health ers.nano.lig.LigMA: 34/34 survived, 10 skipped, 0 faults, shield verdict 1
+2026-10-27T14:17:31Z health sgp.ShiningBeetle: 34/34 survived, 7 skipped, 0 faults, shield verdict 1
+2026-10-27T14:17:30Z health Queens_teamrobot.UltraRazor: 34/34 survived, 13 skipped, 0 faults, shield verdict 0
+2026-10-27T14:17:37Z health bwbaugh.nano.Tirunculus: 34/34 survived, 6 skipped, 0 faults, shield verdict 0
+2026-10-27T14:17:47Z client robocode-meleerumble: restart, console ../data/live/release-3.18-run1\consoles\robocode-meleerumble-2026-10-27T141747Z.log
+2026-10-27T14:17:40Z health japs.Sjonniebot: 34/34 survived, 15 skipped, 0 faults, shield verdict 0
+2026-10-27T14:17:49Z health suh.nano.CornerRL: 34/34 survived, 16 skipped, 0 faults, shield verdict 1
+2026-10-27T14:17:50Z health suh.micro.MirrorPM: 31/34 survived, 14 skipped, 0 faults, shield verdict 0
+2026-10-27T14:18:00Z client robocode-teamrumble: restart, console ../data/live/release-3.18-run1\consoles\robocode-teamrumble-2026-10-27T141800Z.log
+2026-10-27T14:17:58Z health t3.Ripper: 34/34 survived, 12 skipped, 0 faults, shield verdict 0
+2026-10-27T14:18:11Z client rr01-roborumble: restart, console ../data/live/release-3.18-run1\consoles\rr01-roborumble-2026-10-27T141811Z.log
+2026-10-27T14:18:05Z health pa3k.Viper: 33/34 survived, 8 skipped, 0 faults, shield verdict 0

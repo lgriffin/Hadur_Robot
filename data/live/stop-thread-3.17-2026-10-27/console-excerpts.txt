@@ -1,0 +1,408 @@
+=== robocode-meleerumble-2026-10-27T140155Z.log
+700-Executing melee battles ...
+701-Fighting battle 0 ... yk.JahRoslav 1.1,hadur2.Hadur 3.17,logiblocs.SittingDroid 1.0,matt.advanced.Katana 1.0,rdm.Dueler 0.4x,mz.NanoGod 2.02,dsw.StaticD 1.0,step.nanoPri 1.0,bigpete.Stewie 1.0,kvk.HebusLeTroll 0.35
+702:Robot hadur2.Hadur 3.17 is not stopping.  Forcing a stop.
+703:Robot hadur2.Hadur 3.17 is not stopping.  Forcing a stop.
+704:Robot hadur2.Hadur 3.17 is not stopping.  Forcing a stop.
+705:Robot hadur2.Hadur 3.17 is not stopping.  Forcing a stop.
+706-RESULT = hadur2.Hadur 3.17 wins, mz.NanoGod 2.02 is second.
+--
+1711-RESULT = voidious.Diamond 1.8.28 wins, brainfade.melee.Dusk 0.44 is second.
+1712-Fighting battle 1 ... hadur117.micro.Saor 0.2,panzer.Panzer 0.2,lrem.micro.MoggFanatic 0.2,m3thos.Eva00 1.1,SHAM.WOW 1.4,davidalves.net.DuelistMicroMelee 1.4,evd.X1 0.01,florent.XSeries.X2 0.12,uji.Antique 1.0,oa.weak.FlyMk1 0.1
+1713:Robot SHAM.WOW 1.4 is not stopping.  Forcing a stop.
+1714:Robot SHAM.WOW 1.4 is not stopping.  Forcing a stop.
+1715:Unable to stop thread: SHAM.WOW 1.4
+1716:Unable to stop thread: SHAM.WOW 1.4
+1717:Robot SHAM.WOW 1.4 is not stopping.  Forcing a stop.
+1718:Robot SHAM.WOW 1.4 is not stopping.  Forcing a stop.
+1719:Unable to stop thread: SHAM.WOW 1.4
+1720:Unable to stop thread: SHAM.WOW 1.4
+1721-RESULT = hadur117.micro.Saor 0.2 wins, florent.XSeries.X2 0.12 is second.
+--
+1990-Executing melee battles ...
+1991-Fighting battle 0 ... myl.micro.Troodon 1.10,hadur117.micro.Saor 0.2,jwst.DAD.DarkAndDarker 1.1,awesomeness.Elite 1.0,tm.Yuugao 1.0,adt.Ar1 2.1,qualidafial.MajorDick 1.0.1,skm.Ryubot 1.0,inonit.robocode.javascript.MyFirstRobot 1.1,stelo.WangRobot 1.0
+1992:Unable to stop thread: inonit.robocode.javascript.MyFirstRobot 1.1
+1993:Unable to stop thread: inonit.robocode.javascript.MyFirstRobot 1.1
+1994-RESULT = tm.Yuugao 1.0 wins, hadur117.micro.Saor 0.2 is second.
+--
+1996-RESULT = hadur117.micro.Saor 0.2 wins, apc.botM 3.0 is second.
+1997-Fighting battle 2 ... hadur117.micro.Saor 0.2,oa.weak.FlyMk1 0.1,PSW.Relentless 0.1,DBall.NUKE 0.1,hadur2.Hadur 3.17,ahr.ice.Ice 1.0.2,kawigi.mini.Coriantumr 1.1,sheldor.melee.nano.TestMelee 0.1,goblin.Bender 2.4,lrem.micro.MoggFanatic 0.2
+1998:Unable to stop thread: hadur2.Hadur 3.17
+1999:Unable to stop thread: hadur2.Hadur 3.17
+2000:Robot hadur2.Hadur 3.17 is not stopping.  Forcing a stop.
+2001:Robot hadur2.Hadur 3.17 is not stopping.  Forcing a stop.
+2002:Robot hadur2.Hadur 3.17 is not stopping.  Forcing a stop.
+2003:Robot hadur2.Hadur 3.17 is not stopping.  Forcing a stop.
+2004-RESULT = hadur2.Hadur 3.17 wins, kawigi.mini.Coriantumr 1.1 is second.
+--
+2293-RESULT = hadur117.micro.Saor 0.2 wins, ms.Ares 0.19 is second.
+2294-Fighting battle 2 ... hadur117.micro.Saor 0.2,drd.Dreadknoght 0.9,disan.Chair 2.2.0,sample.MyFirstRobot 1.0,voidious.Diamond 1.8.28,tripphippy.Alice 1.1,maribo.mini.MiniQuester 0.1,sp.Nanos.Ember 1.1,shrub.Vapour v159,eem.EvBot v4.6.16
+2295:Robot voidious.Diamond 1.8.28 is not stopping.  Forcing a stop.
+2296:Robot voidious.Diamond 1.8.28 is not stopping.  Forcing a stop.
+2297:Unable to stop thread: voidious.Diamond 1.8.28
+2298:Unable to stop thread: voidious.Diamond 1.8.28
+2299-Exception in thread "voidious.Diamond 1.8.28" java.lang.NullPointerException: Cannot invoke "net.sf.robocode.host.io.RobotOutputStream.readAndReset()" because "this.out" is null
+=== robocode-teamrumble-2026-10-27T140155Z.log
+28-Executing battles ...
+29-Fighting battle 0 ... amz.TeamDeathTeam 1,Polkwane.PTeam 1.0
+30:Robot Polkwane.Piyane 1.0 is not stopping.  Forcing a stop.
+31:Robot Polkwane.Piyane 1.0 is not stopping.  Forcing a stop.
+32:Unable to stop thread: Polkwane.Piyane 1.0
+33:Unable to stop thread: Polkwane.Piyane 1.0
+34:Robot Polkwane.Piyane 1.0 is not stopping.  Forcing a stop.
+35:Robot Polkwane.Piyane 1.0 is not stopping.  Forcing a stop.
+36:Unable to stop thread: Polkwane.Piyane 1.0
+37:Unable to stop thread: Polkwane.Piyane 1.0
+38:Robot Polkwane.Piyane 1.0 is not stopping.  Forcing a stop.
+39:Robot Polkwane.Piyane 1.0 is not stopping.  Forcing a stop.
+40:Unable to stop thread: Polkwane.Piyane 1.0
+41:Unable to stop thread: Polkwane.Piyane 1.0
+42:Robot Polkwane.Piyane 1.0 is not stopping.  Forcing a stop.
+43:Robot Polkwane.Piyane 1.0 is not stopping.  Forcing a stop.
+44:Unable to stop thread: Polkwane.Piyane 1.0
+45:Unable to stop thread: Polkwane.Piyane 1.0
+46:Robot Polkwane.Piyane 1.0 is not stopping.  Forcing a stop.
+47:Robot Polkwane.Piyane 1.0 is not stopping.  Forcing a stop.
+48:Unable to stop thread: Polkwane.Piyane 1.0
+49:Unable to stop thread: Polkwane.Piyane 1.0
+50:Robot Polkwane.Piyane 1.0 is not stopping.  Forcing a stop.
+51:Robot Polkwane.Piyane 1.0 is not stopping.  Forcing a stop.
+52:Unable to stop thread: Polkwane.Piyane 1.0
+53:Unable to stop thread: Polkwane.Piyane 1.0
+54:Robot Polkwane.Piyane 1.0 is not stopping.  Forcing a stop.
+55:Robot Polkwane.Piyane 1.0 is not stopping.  Forcing a stop.
+56:Unable to stop thread: Polkwane.Piyane 1.0
+57:Unable to stop thread: Polkwane.Piyane 1.0
+58-RESULT = amz.TeamDeathTeam 1 wins 5488 to 701
+--
+148-RESULT = bvh.team.Valkiries 1.0 wins 16801 to 2891
+149-Fighting battle 1 ... hadur2.HadurTeam 3.17.1,rz.GlowingHawks 0.2
+150:Unable to stop thread: hadur2.Hadur 3.17.1 (5)
+151:Unable to stop thread: hadur2.Hadur 3.17.1 (5)
+152-RESULT = hadur2.HadurTeam 3.17.1 wins 16112 to 5352
+--
+220-RESULT = apvteam.MambaTeam 0.7.5 wins 20447 to 1872
+221-Fighting battle 3 ... mn.SuperSittingDuckTeam 1.0.2,hadur2.HadurTeam 3.17.1
+222:Unable to stop thread: hadur2.Hadur 3.17.1 (4)
+223:Unable to stop thread: hadur2.Hadur 3.17.1 (4)
+224:Unable to stop thread: hadur2.Hadur 3.17.1 (2)
+225:Unable to stop thread: hadur2.Hadur 3.17.1 (2)
+226-RESULT = hadur2.HadurTeam 3.17.1 wins 14700 to 150
+--
+356-RESULT = jab.DiamondStealers 5 wins 18372 to 4484
+357-Fighting battle 3 ... bvh.team.Valkiries 1.0,Polkwane.PTeam 1.0
+358:Robot Polkwane.Piyane 1.0 is not stopping.  Forcing a stop.
+359:Robot Polkwane.Piyane 1.0 is not stopping.  Forcing a stop.
+360:Unable to stop thread: Polkwane.Piyane 1.0
+361:Unable to stop thread: Polkwane.Piyane 1.0
+362:Robot Polkwane.Piyane 1.0 is not stopping.  Forcing a stop.
+363:Robot Polkwane.Piyane 1.0 is not stopping.  Forcing a stop.
+364:Unable to stop thread: Polkwane.Piyane 1.0
+365:Unable to stop thread: Polkwane.Piyane 1.0
+366:Robot Polkwane.Piyane 1.0 is not stopping.  Forcing a stop.
+367:Robot Polkwane.Piyane 1.0 is not stopping.  Forcing a stop.
+368:Unable to stop thread: Polkwane.Piyane 1.0
+369:Unable to stop thread: Polkwane.Piyane 1.0
+370:Robot Polkwane.Piyane 1.0 is not stopping.  Forcing a stop.
+371:Robot Polkwane.Piyane 1.0 is not stopping.  Forcing a stop.
+372:Unable to stop thread: Polkwane.Piyane 1.0
+373:Unable to stop thread: Polkwane.Piyane 1.0
+374:Robot Polkwane.Piyane 1.0 is not stopping.  Forcing a stop.
+375:Robot Polkwane.Piyane 1.0 is not stopping.  Forcing a stop.
+376:Unable to stop thread: Polkwane.Piyane 1.0
+377:Unable to stop thread: Polkwane.Piyane 1.0
+378-RESULT = bvh.team.Valkiries 1.0 wins 4930 to 352
+--
+438-RESULT = tmnr.TMNR 1.01 wins 15843 to 4298
+439-Fighting battle 1 ... Polkwane.PTeam 1.0,ethdsy.MalackaTeam 1.2
+440:Robot Polkwane.Piyane 1.0 is not stopping.  Forcing a stop.
+441:Robot Polkwane.Piyane 1.0 is not stopping.  Forcing a stop.
+442:Unable to stop thread: Polkwane.Piyane 1.0
+443:Unable to stop thread: Polkwane.Piyane 1.0
+444:Robot Polkwane.Piyane 1.0 is not stopping.  Forcing a stop.
+445:Robot Polkwane.Piyane 1.0 is not stopping.  Forcing a stop.
+446:Unable to stop thread: Polkwane.Piyane 1.0
+447:Unable to stop thread: Polkwane.Piyane 1.0
+448:Robot Polkwane.Piyane 1.0 is not stopping.  Forcing a stop.
+449:Robot Polkwane.Piyane 1.0 is not stopping.  Forcing a stop.
+450:Unable to stop thread: Polkwane.Piyane 1.0
+451:Unable to stop thread: Polkwane.Piyane 1.0
+452:Robot Polkwane.Piyane 1.0 is not stopping.  Forcing a stop.
+453:Robot Polkwane.Piyane 1.0 is not stopping.  Forcing a stop.
+454:Unable to stop thread: Polkwane.Piyane 1.0
+455:Unable to stop thread: Polkwane.Piyane 1.0
+456:Robot Polkwane.Piyane 1.0 is not stopping.  Forcing a stop.
+457:Robot Polkwane.Piyane 1.0 is not stopping.  Forcing a stop.
+458:Unable to stop thread: Polkwane.Piyane 1.0
+459:Unable to stop thread: Polkwane.Piyane 1.0
+460:Robot Polkwane.Piyane 1.0 is not stopping.  Forcing a stop.
+461:Robot Polkwane.Piyane 1.0 is not stopping.  Forcing a stop.
+462:Unable to stop thread: Polkwane.Piyane 1.0
+463:Unable to stop thread: Polkwane.Piyane 1.0
+464-RESULT = ethdsy.MalackaTeam 1.2 wins 5385 to 519
+--
+466-RESULT = bvh.team.Valkiries 1.0 wins 10510 to 10122
+467-Fighting battle 3 ... hadur2.HadurTeam 3.17.1,kawigi.sbf.TidalWave 0.8
+468:Unable to stop thread: hadur2.Hadur 3.17.1 (3)
+469:Unable to stop thread: hadur2.Hadur 3.17.1 (3)
+470:Unable to stop thread: hadur2.Hadur 3.17.1 (2)
+471:Unable to stop thread: hadur2.Hadur 3.17.1 (2)
+472-RESULT = hadur2.HadurTeam 3.17.1 wins 15941 to 4707
+--
+543-RESULT = abc.ShadowTeam 3.83 wins 19026 to 2191
+544-Fighting battle 3 ... florent.XSeries.Xmen 0.9,lxx.ConceptATeam 0.8
+545:Robot florent.XSeries.X2 0.9 (1) is not stopping.  Forcing a stop.
+546:Robot florent.XSeries.X2 0.9 (1) is not stopping.  Forcing a stop.
+547:Unable to stop thread: florent.XSeries.X2 0.9 (1)
+548:Unable to stop thread: florent.XSeries.X2 0.9 (1)
+549-RESULT = florent.XSeries.Xmen 0.9 wins 15470 to 4657
+--
+679-RESULT = rz.GlowingHawks 0.2 wins 18794 to 2226
+680-Fighting battle 3 ... ms.AresHaikuTeam 0.3,Polkwane.PTeam 1.0
+681:Robot Polkwane.Piyane 1.0 is not stopping.  Forcing a stop.
+682:Robot Polkwane.Piyane 1.0 is not stopping.  Forcing a stop.
+683:Unable to stop thread: Polkwane.Piyane 1.0
+684:Unable to stop thread: Polkwane.Piyane 1.0
+685:Robot Polkwane.Piyane 1.0 is not stopping.  Forcing a stop.
+686:Robot Polkwane.Piyane 1.0 is not stopping.  Forcing a stop.
+687:Unable to stop thread: Polkwane.Piyane 1.0
+688:Unable to stop thread: Polkwane.Piyane 1.0
+689:Robot Polkwane.Piyane 1.0 is not stopping.  Forcing a stop.
+690:Robot Polkwane.Piyane 1.0 is not stopping.  Forcing a stop.
+691:Unable to stop thread: Polkwane.Piyane 1.0
+692:Unable to stop thread: Polkwane.Piyane 1.0
+693:Robot Polkwane.Piyane 1.0 is not stopping.  Forcing a stop.
+694:Robot Polkwane.Piyane 1.0 is not stopping.  Forcing a stop.
+695:Unable to stop thread: Polkwane.Piyane 1.0
+696:Unable to stop thread: Polkwane.Piyane 1.0
+697:Robot Polkwane.Piyane 1.0 is not stopping.  Forcing a stop.
+698:Robot Polkwane.Piyane 1.0 is not stopping.  Forcing a stop.
+699:Unable to stop thread: Polkwane.Piyane 1.0
+700:Unable to stop thread: Polkwane.Piyane 1.0
+701:Robot Polkwane.Piyane 1.0 is not stopping.  Forcing a stop.
+702:Robot Polkwane.Piyane 1.0 is not stopping.  Forcing a stop.
+703:Unable to stop thread: Polkwane.Piyane 1.0
+704:Unable to stop thread: Polkwane.Piyane 1.0
+705-RESULT = ms.AresHaikuTeam 0.3 wins 4513 to 1110
+--
+709-RESULT = tmnr.TMNR 1.01 wins 15008 to 0
+710-Fighting battle 6 ... Polkwane.PTeam 1.0,ethdsy.MalackaTeam 1.2
+711:Robot Polkwane.Piyane 1.0 is not stopping.  Forcing a stop.
+712:Robot Polkwane.Piyane 1.0 is not stopping.  Forcing a stop.
+713:Unable to stop thread: Polkwane.Piyane 1.0
+714:Unable to stop thread: Polkwane.Piyane 1.0
+715:Robot Polkwane.Piyane 1.0 is not stopping.  Forcing a stop.
+716:Robot Polkwane.Piyane 1.0 is not stopping.  Forcing a stop.
+=== robocode-teamrumble-2026-10-27T141800Z.log
+30-RESULT = kawigi.micro.ArmyOfShiz 1.1 wins 20112 to 1480
+31-Fighting battle 1 ... hadur2.HadurTeam 3.17.1,mn.CombatTeam 3.25.0
+32:Unable to stop thread: hadur2.Hadur 3.17.1 (1)
+33:Unable to stop thread: hadur2.Hadur 3.17.1 (1)
+=== rr01-roborumble-2026-10-27T140155Z.log
+723-RESULT = mld.Moebius 2.9.3 wins 3251 to 2746
+724-Fighting battle 12 ... winamp32.micro.MicroMacro 1.0,hadur2.Hadur 3.17
+725:Unable to stop thread: hadur2.Hadur 3.17
+726:Unable to stop thread: hadur2.Hadur 3.17
+727-RESULT = hadur2.Hadur 3.17 wins 5516 to 428
+--
+749-RESULT = jkong.JKHydra 1.4 wins 3703 to 752
+750-Fighting battle 24 ... doka.KillerRabbit 1.0,hadur2.Hadur 3.17
+751:Unable to stop thread: hadur2.Hadur 3.17
+752:Unable to stop thread: hadur2.Hadur 3.17
+753-RESULT = hadur2.Hadur 3.17 wins 4034 to 1037
+--
+779-RESULT = dummy.mini.Parakeet 2.40 wins 2975 to 2586
+780-Fighting battle 38 ... sp.AstherNano 1.0,hadur2.Hadur 3.17
+781:Unable to stop thread: hadur2.Hadur 3.17
+782:Unable to stop thread: hadur2.Hadur 3.17
+783-RESULT = hadur2.Hadur 3.17 wins 5486 to 207
+--
+981-RESULT = cz.libors.Ogi v1 wins 2100 to 48
+982-Fighting battle 17 ... disan.Ghost .01,hadur2.Hadur 3.17
+983:Unable to stop thread: hadur2.Hadur 3.17
+984:Unable to stop thread: hadur2.Hadur 3.17
+985-RESULT = hadur2.Hadur 3.17 wins 5926 to 60
+=== rr02-roborumble-2026-10-27T140155Z.log
+344-RESULT = cs.s2.Seraphim 2.4.0 wins 3889 to 80
+345-Fighting battle 1 ... xander.cat.Spitfire 1.4,hadur2.Hadur 3.17
+346:Unable to stop thread: hadur2.Hadur 3.17
+347:Unable to stop thread: hadur2.Hadur 3.17
+348-RESULT = hadur2.Hadur 3.17 wins 6041 to 60
+--
+376-RESULT = dev.kurtw.KurtBot 0.2 wins 3135 to 2585
+377-Fighting battle 16 ... wit.Deep7 2.0,hadur2.Hadur 3.17
+378:Unable to stop thread: hadur2.Hadur 3.17
+379:Unable to stop thread: hadur2.Hadur 3.17
+380-RESULT = hadur2.Hadur 3.17 wins 5858 to 131
+--
+593-RESULT = krillr.mega.Psyche 0.0.3 wins 4587 to 1679
+594-Fighting battle 2 ... dhn.Immortal 1.0,hadur2.Hadur 3.17
+595:Unable to stop thread: hadur2.Hadur 3.17
+596:Unable to stop thread: hadur2.Hadur 3.17
+597-RESULT = hadur2.Hadur 3.17 wins 5621 to 202
+--
+900-RESULT = bvh.micro.Freya 0.3 wins 2379 to 2127
+901-Fighting battle 25 ... goblin.Bender 2.4,hadur2.Hadur 3.17
+902:Unable to stop thread: hadur2.Hadur 3.17
+903:Unable to stop thread: hadur2.Hadur 3.17
+904-RESULT = hadur2.Hadur 3.17 wins 5509 to 138
+905-Fighting battle 26 ... nzeemin.Izh 0.5,hadur2.Hadur 3.17
+906:Unable to stop thread: hadur2.Hadur 3.17
+907:Unable to stop thread: hadur2.Hadur 3.17
+908-RESULT = hadur2.Hadur 3.17 wins 4962 to 196
+--
+940-RESULT = cz.libors.Ogi v1 wins 3606 to 425
+941-Fighting battle 43 ... kneels.ToNoone 0.2,hadur2.Hadur 3.17
+942:Unable to stop thread: hadur2.Hadur 3.17
+943:Unable to stop thread: hadur2.Hadur 3.17
+944-RESULT = hadur2.Hadur 3.17 wins 4236 to 478
+=== rr03-roborumble-2026-10-27T140155Z.log
+478-RESULT = jkong.JKHydra 1.4 wins 3933 to 643
+479-Fighting battle 49 ... dks.MicroDanMK2 1.0,hadur2.Hadur 3.17
+480:Unable to stop thread: hadur2.Hadur 3.17
+481:Unable to stop thread: hadur2.Hadur 3.17
+482-RESULT = hadur2.Hadur 3.17 wins 4573 to 283
+--
+697-RESULT = cz.libors.Ogi v1 wins 3779 to 64
+698-Fighting battle 20 ... apv.ScruchiPu 1.0,hadur2.Hadur 3.17
+699:Unable to stop thread: hadur2.Hadur 3.17
+700:Unable to stop thread: hadur2.Hadur 3.17
+701-RESULT = hadur2.Hadur 3.17 wins 3404 to 1256
+--
+953-RESULT = repositorio.NanoStep 1.0 wins 3421 to 2728
+954-Fighting battle 9 ... spinnercat.haiku.Refrigerator 1.1,hadur2.Hadur 3.17
+955:Unable to stop thread: hadur2.Hadur 3.17
+956:Unable to stop thread: hadur2.Hadur 3.17
+957-RESULT = hadur2.Hadur 3.17 wins 3682 to 583
+--
+991-RESULT = cs.s2.Seraphim 2.4.0 wins 5345 to 377
+992-Fighting battle 27 ... sheldor.nano.Feint 1.2.1,hadur2.Hadur 3.17
+993:Unable to stop thread: hadur2.Hadur 3.17
+994:Unable to stop thread: hadur2.Hadur 3.17
+995-RESULT = hadur2.Hadur 3.17 wins 2045 to 140
+--
+997-RESULT = dev.kurtw.KurtBot 0.2 wins 3290 to 3218
+998-Fighting battle 29 ... Noran.BitchingElk 0.054,hadur2.Hadur 3.17
+999:Unable to stop thread: hadur2.Hadur 3.17
+1000:Unable to stop thread: hadur2.Hadur 3.17
+1001-RESULT = hadur2.Hadur 3.17 wins 2076 to 123
+=== rr04-roborumble-2026-10-27T140155Z.log
+113-RESULT = brainfade.Fallen 0.63 wins 3515 to 1960
+114-Fighting battle 43 ... catcat20.Lambda 0.017,taqho.taqbot 1.0
+115:Robot taqho.taqbot 1.0 is not stopping.  Forcing a stop.
+116:Robot taqho.taqbot 1.0 is not stopping.  Forcing a stop.
+117:Unable to stop thread: taqho.taqbot 1.0
+118:Unable to stop thread: taqho.taqbot 1.0
+119:Robot taqho.taqbot 1.0 is not stopping.  Forcing a stop.
+120:Robot taqho.taqbot 1.0 is not stopping.  Forcing a stop.
+121:Unable to stop thread: taqho.taqbot 1.0
+122:Unable to stop thread: taqho.taqbot 1.0
+123:Robot taqho.taqbot 1.0 is not stopping.  Forcing a stop.
+124:Robot taqho.taqbot 1.0 is not stopping.  Forcing a stop.
+125:Unable to stop thread: taqho.taqbot 1.0
+126:Unable to stop thread: taqho.taqbot 1.0
+127:Robot taqho.taqbot 1.0 is not stopping.  Forcing a stop.
+128:Robot taqho.taqbot 1.0 is not stopping.  Forcing a stop.
+129:Unable to stop thread: taqho.taqbot 1.0
+130:Unable to stop thread: taqho.taqbot 1.0
+131:Robot taqho.taqbot 1.0 is not stopping.  Forcing a stop.
+132:Robot taqho.taqbot 1.0 is not stopping.  Forcing a stop.
+133:Unable to stop thread: taqho.taqbot 1.0
+134:Unable to stop thread: taqho.taqbot 1.0
+135:Robot taqho.taqbot 1.0 is not stopping.  Forcing a stop.
+136:Robot taqho.taqbot 1.0 is not stopping.  Forcing a stop.
+137:Unable to stop thread: taqho.taqbot 1.0
+138:Unable to stop thread: taqho.taqbot 1.0
+139:Robot taqho.taqbot 1.0 is not stopping.  Forcing a stop.
+140:Robot taqho.taqbot 1.0 is not stopping.  Forcing a stop.
+141:Unable to stop thread: taqho.taqbot 1.0
+142:Unable to stop thread: taqho.taqbot 1.0
+143:Robot taqho.taqbot 1.0 is not stopping.  Forcing a stop.
+144:Robot taqho.taqbot 1.0 is not stopping.  Forcing a stop.
+145:Unable to stop thread: taqho.taqbot 1.0
+146:Unable to stop thread: taqho.taqbot 1.0
+147-RESULT = catcat20.Lambda 0.017 wins 3892 to 377
+--
+420-RESULT = cz.libors.Ogi v1 wins 4838 to 567
+421-Fighting battle 5 ... spinnercat.mega.Tardis 1.2,hadur2.Hadur 3.17
+422:Unable to stop thread: hadur2.Hadur 3.17
+423:Unable to stop thread: hadur2.Hadur 3.17
+424-RESULT = hadur2.Hadur 3.17 wins 2040 to 172
+--
+434-RESULT = rz.GlowBlow 2.31 wins 5742 to 570
+435-Fighting battle 11 ... areb.Union 1.06,hadur2.Hadur 3.17
+436:Unable to stop thread: hadur2.Hadur 3.17
+437:Unable to stop thread: hadur2.Hadur 3.17
+438-RESULT = hadur2.Hadur 3.17 wins 4007 to 350
+--
+676-RESULT = cz.libors.Ogi v1 wins 4054 to 844
+677-Fighting battle 2 ... evd.X1 0.01,hadur2.Hadur 3.17
+678:Unable to stop thread: hadur2.Hadur 3.17
+679:Unable to stop thread: hadur2.Hadur 3.17
+680-RESULT = hadur2.Hadur 3.17 wins 4901 to 418
+--
+684-RESULT = cz.libors.Ogi v1 wins 3807 to 1400
+685-Fighting battle 5 ... genprog.Zafaran 1.0,hadur2.Hadur 3.17
+686:Unable to stop thread: hadur2.Hadur 3.17
+687:Unable to stop thread: hadur2.Hadur 3.17
+688-RESULT = hadur2.Hadur 3.17 wins 4695 to 388
+--
+714-RESULT = jkong.JKHydra 1.4 wins 2100 to 4
+715-Fighting battle 19 ... kc.micro.Thorn 1.252,hadur2.Hadur 3.17
+716:Unable to stop thread: hadur2.Hadur 3.17
+717:Unable to stop thread: hadur2.Hadur 3.17
+718-RESULT = hadur2.Hadur 3.17 wins 1923 to 410
+--
+758-RESULT = hadur2.Hadur 3.17 wins 3419 to 1101
+759-Fighting battle 40 ... theo.real.Ahab 1.0,hadur2.Hadur 3.17
+760:Unable to stop thread: hadur2.Hadur 3.17
+761:Unable to stop thread: hadur2.Hadur 3.17
+762-RESULT = hadur2.Hadur 3.17 wins 2244 to 730
+=== rr05-roborumble-2026-10-27T140155Z.log
+466-RESULT = cz.libors.Ogi v1 wins 5254 to 489
+467-Fighting battle 28 ... catcat20.atom.Atom 0.51,hadur2.Hadur 3.17
+468:Unable to stop thread: hadur2.Hadur 3.17
+469:Unable to stop thread: hadur2.Hadur 3.17
+470-RESULT = hadur2.Hadur 3.17 wins 3868 to 804
+--
+494-RESULT = cs.s2.Seraphim 2.4.0 wins 3189 to 1274
+495-Fighting battle 41 ... el33t.EL33tGangstarr2 2.0,hadur2.Hadur 3.17
+496:Unable to stop thread: hadur2.Hadur 3.17
+497:Unable to stop thread: hadur2.Hadur 3.17
+498-RESULT = hadur2.Hadur 3.17 wins 5148 to 476
+=== rr06-roborumble-2026-10-27T140155Z.log
+418-RESULT = maribo.FollowFire 1.11 wins 7111 to 2191
+419-Fighting battle 11 ... pl.robocode.Pacyfista 1.0,hadur2.Hadur 3.17
+420:Unable to stop thread: hadur2.Hadur 3.17
+421:Unable to stop thread: hadur2.Hadur 3.17
+422-RESULT = hadur2.Hadur 3.17 wins 5425 to 108
+--
+458-RESULT = jkong.JKHydra 1.4 wins 3507 to 1113
+459-Fighting battle 30 ... rdt.Wraith.Wraith 0.3,dev.kurtw.KurtBot 0.2
+460:Unable to stop thread: rdt.Wraith.Wraith 0.3
+461:Unable to stop thread: rdt.Wraith.Wraith 0.3
+462-RESULT = rdt.Wraith.Wraith 0.3 wins 5386 to 1343
+--
+478-RESULT = jkong.JKHydra 1.4 wins 4460 to 276
+479-Fighting battle 39 ... rnatest.MendelBot 1.0,hadur2.Hadur 3.17
+480:Unable to stop thread: hadur2.Hadur 3.17
+481:Unable to stop thread: hadur2.Hadur 3.17
+482-RESULT = hadur2.Hadur 3.17 wins 5186 to 160
+--
+496-RESULT = voidious.micro.Jen 1.11 wins 5678 to 1246
+497-Fighting battle 47 ... a.FreyaOS 1.0,hadur2.Hadur 3.17
+498:Unable to stop thread: hadur2.Hadur 3.17
+499:Unable to stop thread: hadur2.Hadur 3.17
+500-RESULT = hadur2.Hadur 3.17 wins 5520 to 86
+--
+701-RESULT = cz.libors.Ogi v1 wins 2102 to 13
+702-Fighting battle 18 ... SHAM.WOW 1.4,hadur2.Hadur 3.17
+703:Unable to stop thread: hadur2.Hadur 3.17
+704:Unable to stop thread: hadur2.Hadur 3.17
+705-RESULT = hadur2.Hadur 3.17 wins 2667 to 515
+--
+1216-RESULT = exauge.GateKeeper 1.1.121g wins 3410 to 2299
+1217-Fighting battle 7 ... hadur2.Hadur 3.17,eem.awful v1.2
+1218:Unable to stop thread: hadur2.Hadur 3.17
+1219:Unable to stop thread: hadur2.Hadur 3.17
+1220-RESULT = hadur2.Hadur 3.17 wins 2052 to 60
