@@ -137,7 +137,7 @@ when D or a one-change arm reads within 1.0 of MIR in the same run.
 
 ## 7. The byte budget
 
-Deise 0.1 is 2,292 bytes by Robocode's codesize tool, with the core shipped in the jar.
+Deise 0.1 is 2,303 bytes by Robocode's codesize tool, with the core shipped in the jar.
 Mirage does a comparable job in 1,479 bytes in one class, so the fit is work, not a redesign:
 the calls into the core, with up to eleven arguments each, and the per-scan bookkeeping are
 where most of it goes. Stage E2 does it the way Saor did (docs/saor.md, "Why the shipped class

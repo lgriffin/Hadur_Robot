@@ -19,7 +19,7 @@
         <!-- The robot's version: the jar is named for it and Deise.properties takes it by filtering. -->
         <deise.release>0.1</deise.release>
         <!-- The codesize budget, as Robocode's codesize tool counts it (DEISE-12). MiniMelee's limit is
-             1,499; stage D0 measures the design unfitted, at 2,400, and stage D2 fits it to 1,499. -->
+             1,499; stages E0 and E1 measure the design unfitted, at 2,400, and stage E2 fits it to 1,499. -->
         <deise.codesize.limit>2400</deise.codesize.limit>
         <!-- Rating clients still run Java 8; the shipped classes target it. -->
         <maven.compiler.release>8</maven.compiler.release>

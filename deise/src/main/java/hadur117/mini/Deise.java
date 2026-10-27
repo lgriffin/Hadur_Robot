@@ -11,8 +11,9 @@ import robocode.util.Utils;
 
 /**
  * Deise (the Déise, Waterford's people), a MiniMelee entry: Saor's graded Markov gun, learning
- * every robot it scans, over a least-risk movement that dodges the waves it sees fired and holds
- * the corners while the field is crowded (docs/deise.md). This class is the adapter: it keeps
+ * every robot it scans, over a least-risk movement that holds the corners while the field is
+ * crowded (docs/deise.md). It records the shots it sees fired, but their waves count for nothing
+ * since stage E0's smoke ({@code Move.WAVES}); arm W measures them. This class is the adapter: it keeps
  * what Robocode tells it and asks the core (hadur117.mini.core) what to do.
  */
 public class Deise extends AdvancedRobot {
@@ -39,6 +40,7 @@ public class Deise extends AdvancedRobot {
     @Override
     public void run() {
         setAdjustGunForRobotTurn(true);
+        setAdjustRadarForGunTurn(true);
         bots = new double[MAX][];
         waves = new double[64][];
         targetDistance = Double.POSITIVE_INFINITY;

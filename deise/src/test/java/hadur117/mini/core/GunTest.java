@@ -117,5 +117,7 @@ class GunTest {
         assertEquals(0.5, Gun.power(100, 2, 100, 9), 1e-9);
         assertEquals(2, Gun.power(100, 10, 100, 9), 1e-9);
         assertEquals(0.1, Gun.power(100, 0.1, 100, 9), 1e-9);
+        // Close, healthy, a full field: the crowd cap allows 4.9; Robocode fires 3 at most.
+        assertEquals(3, Gun.power(100, 100, 50, 9), 1e-9);
     }
 }

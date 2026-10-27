@@ -95,10 +95,11 @@ public final class Gun {
 
     /**
      * Bullet power (DEISE-10): Saor's range power, log10(energy) * 325 / distance, capped at 1.9
-     * plus one for every three opponents left, at what kills the target, and at 0.1 below.
+     * plus one for every three opponents left, at what kills the target, and within Robocode's 0.1
+     * to 3, so the speed the aim plays out is the speed the bullet flies.
      */
     public static double power(double energy, double targetEnergy, double distance, int others) {
-        return Math.max(0.1, Math.min(Math.min(others / 3 + 1.9, Math.log10(energy) * 325 / distance),
+        return Math.max(0.1, Math.min(Math.min(Math.min(3, others / 3 + 1.9), Math.log10(energy) * 325 / distance),
             targetEnergy > 4 ? (targetEnergy + 2) / 6 : targetEnergy / 4));
     }
 }
