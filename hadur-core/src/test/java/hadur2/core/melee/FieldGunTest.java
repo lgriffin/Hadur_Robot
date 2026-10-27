@@ -204,14 +204,15 @@ class FieldGunTest {
 
     @Test
     @Tag("MGUN-6")
-    @DisplayName("MGUN-6: on a team every solution carries full power; off a team the table's, as before")
+    @DisplayName("MGUN-6: on a team every solution carries full power; off a team the table's, through MGUN-13")
     void teamPowerOnlyOnATeam() {
         scanned("far", 500, 950, 100, 0, 0, 5);
         scanned("near", 500 + 250, 500, 100, 0, 0, 5);
         List<FieldGun.Solution> solo = gun.solutions(me, 100, 5, tracker.alive(), 6);
         assertEquals(2, solo.size());
         for (FieldGun.Solution s : solo) {
-            assertEquals(MeleeEnergyPolicy.power(me.distance(tracker.get(s.target).location), 100, 100, 5), s.power, 1e-9);
+            double d = me.distance(tracker.get(s.target).location);
+            assertEquals(MeleeEnergyPolicy.crowdPower(MeleeEnergyPolicy.power(d, 100, 100, 5), d, 100, 100, 5), s.power, 1e-9);
             assertTrue(s.power < 3.0, s.target + " " + s.power);
         }
         gun.onTeam(true);
