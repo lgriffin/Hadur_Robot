@@ -110,45 +110,56 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Field</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code>(package private) long</code></div>
-<div class="col-second even-row-color"><code><a href="#diedAt" class="member-name-link">diedAt</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">The tick a death event or report named it, or -1.</div>
-</div>
-<div class="col-first odd-row-color"><code>(package private) double</code></div>
-<div class="col-second odd-row-color"><code><a href="#heading" class="member-name-link">heading</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block">Its heading (radians, clockwise from north) and velocity as last stated (WORLD-9).</div>
-</div>
-<div class="col-first even-row-color"><code>final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color"><code><a href="#name" class="member-name-link">name</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>(package private) int</code></div>
-<div class="col-second odd-row-color"><code><a href="#othersAtReport" class="member-name-link">othersAtReport</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block">The engine's count of others when that report was read.</div>
-</div>
-<div class="col-first even-row-color"><code>(package private) boolean</code></div>
-<div class="col-second even-row-color"><code><a href="#presumedDead" class="member-name-link">presumedDead</a></code></div>
+<div class="col-second even-row-color"><code><a href="#aimed" class="member-name-link">aimed</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code>(package private) long</code></div>
-<div class="col-second odd-row-color"><code><a href="#reported" class="member-name-link">reported</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#diedAt" class="member-name-link">diedAt</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">The tick its last report stated; -1 for none this round.</div>
+<div class="block">The tick a death event or report named it, or -1.</div>
 </div>
-<div class="col-first even-row-color"><code>(package private) long</code></div>
-<div class="col-second even-row-color"><code><a href="#seen" class="member-name-link">seen</a></code></div>
+<div class="col-first even-row-color"><code>(package private) double</code></div>
+<div class="col-second even-row-color"><code><a href="#gunHeading" class="member-name-link">gunHeading</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">The tick its position was known on; -1 for never this round.</div>
+<div class="block">TMODE-19: its gun heading and heat as its last report with an aim stated them, and that tick; -1 for none.</div>
 </div>
 <div class="col-first odd-row-color"><code>(package private) double</code></div>
-<div class="col-second odd-row-color"><code><a href="#velocity" class="member-name-link">velocity</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#gunHeat" class="member-name-link">gunHeat</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code>(package private) double</code></div>
-<div class="col-second even-row-color"><code><a href="#x" class="member-name-link">x</a></code></div>
+<div class="col-second even-row-color"><code><a href="#heading" class="member-name-link">heading</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Its heading (radians, clockwise from north) and velocity as last stated (WORLD-9).</div>
+</div>
+<div class="col-first odd-row-color"><code>final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#name" class="member-name-link">name</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>(package private) int</code></div>
+<div class="col-second even-row-color"><code><a href="#othersAtReport" class="member-name-link">othersAtReport</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">The engine's count of others when that report was read.</div>
+</div>
+<div class="col-first odd-row-color"><code>(package private) boolean</code></div>
+<div class="col-second odd-row-color"><code><a href="#presumedDead" class="member-name-link">presumedDead</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>(package private) long</code></div>
+<div class="col-second even-row-color"><code><a href="#reported" class="member-name-link">reported</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">The tick its last report stated; -1 for none this round.</div>
+</div>
+<div class="col-first odd-row-color"><code>(package private) long</code></div>
+<div class="col-second odd-row-color"><code><a href="#seen" class="member-name-link">seen</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">The tick its position was known on; -1 for never this round.</div>
+</div>
+<div class="col-first even-row-color"><code>(package private) double</code></div>
+<div class="col-second even-row-color"><code><a href="#velocity" class="member-name-link">velocity</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code>(package private) double</code></div>
-<div class="col-second odd-row-color"><code><a href="#y" class="member-name-link">y</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#x" class="member-name-link">x</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>(package private) double</code></div>
+<div class="col-second even-row-color"><code><a href="#y" class="member-name-link">y</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
 </div>
 </section>
 </li>
@@ -176,33 +187,48 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#alive()" class="member-name-link">alive</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#at(long)" class="member-name-link">at</a><wbr>(long&nbsp;tick)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>long</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#aimed()" class="member-name-link">aimed</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">TMODE-19: the tick its aim was stated on; -1 for none this round.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#alive()" class="member-name-link">alive</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#at(long)" class="member-name-link">at</a><wbr>(long&nbsp;tick)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">WORLD-9: where it is predicted to be at <code>tick</code>: the last known point moved
  <code>velocity</code> for each tick since it was known along <code>heading</code>, no further
  than a robot's top speed allows.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#heading()" class="member-name-link">heading</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>long</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#seen()" class="member-name-link">seen</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#gunHeading()" class="member-name-link">gunHeading</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">The tick its position was known on; -1 for never this round.</div>
+<div class="block">TMODE-19: its gun heading as last stated.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#velocity()" class="member-name-link">velocity</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#gunHeat()" class="member-name-link">gunHeat</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">TMODE-19: its gun heat as last stated.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#x()" class="member-name-link">x</a>()</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#heading()" class="member-name-link">heading</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>long</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#seen()" class="member-name-link">seen</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">The tick its position was known on; -1 for never this round.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#velocity()" class="member-name-link">velocity</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#y()" class="member-name-link">y</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#x()" class="member-name-link">x</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#y()" class="member-name-link">y</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
@@ -285,6 +311,25 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="return-type">boolean</span>&nbsp;<span class="element-name">presumedDead</span></div>
 </section>
 </li>
+<li>
+<section class="detail" id="gunHeading">
+<h3>gunHeading</h3>
+<div class="member-signature"><span class="return-type">double</span>&nbsp;<span class="element-name">gunHeading</span></div>
+<div class="block">TMODE-19: its gun heading and heat as its last report with an aim stated them, and that tick; -1 for none.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="gunHeat">
+<h3>gunHeat</h3>
+<div class="member-signature"><span class="return-type">double</span>&nbsp;<span class="element-name">gunHeat</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="aimed">
+<h3>aimed</h3>
+<div class="member-signature"><span class="return-type">long</span>&nbsp;<span class="element-name">aimed</span></div>
+</section>
+</li>
 </ul>
 </section>
 </li>
@@ -342,6 +387,27 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="velocity()">
 <h3>velocity</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">velocity</span>()</div>
+</section>
+</li>
+<li>
+<section class="detail" id="gunHeading()">
+<h3>gunHeading</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">gunHeading</span>()</div>
+<div class="block">TMODE-19: its gun heading as last stated.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="gunHeat()">
+<h3>gunHeat</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">gunHeat</span>()</div>
+<div class="block">TMODE-19: its gun heat as last stated.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="aimed()">
+<h3>aimed</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">long</span>&nbsp;<span class="element-name">aimed</span>()</div>
+<div class="block">TMODE-19: the tick its aim was stated on; -1 for none this round.</div>
 </section>
 </li>
 <li>
