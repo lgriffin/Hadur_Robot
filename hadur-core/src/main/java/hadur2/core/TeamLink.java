@@ -278,6 +278,7 @@ final class TeamLink {
             merged.put(sender, r.tick());
             reportsMerged++;
             roster.reported(sender, r.tick(), r.x(), r.y(), r.heading(), r.velocity(), in.others());
+            if (r.aim() != null) roster.aimed(sender, r.tick(), r.aim().gunHeading, r.aim().gunHeat);
             for (Report.Sighting s : r.sightings()) {
                 if (s.name.equals(facts.name())) continue;
                 if (roster.isTeammate(s.name)) {
@@ -494,9 +495,14 @@ final class TeamLink {
                 orders.firePower()))
             : List.of();
         List<Report.Sighting> sightings = fresh.size() > 255 ? fresh.subList(0, 255) : fresh;
+        // TMODE-19: the gun's heading and heat, only where GUNLINE is played; else the message is as it was.
+        // A shot this tick heats the gun to 1 + power / 5, the engine's rule, so the heat is stated after it.
+        double heat = orders.firePower() > 0 ? 1 + orders.firePower() / 5 : in.gunHeat();
+        Report.Aim aim = modes.apply(world.alive()).contains(TeamModes.Mode.GUNLINE)
+            ? new Report.Aim(Angles.normalAbsoluteAngle(in.gunHeading()), heat) : null;
         return LinkCodec.encode(new Report(in.round(), in.time(), in.x(), in.y(), in.heading(), in.velocity(),
             in.energy(), sightings, deaths.size() > 255 ? deaths.subList(0, 255) : deaths, shots,
-            dodges.size() > 255 ? dodges.subList(0, 255) : dodges));
+            dodges.size() > 255 ? dodges.subList(0, 255) : dodges, aim));
     }
 
     /** The team's round record: {@code T,round,tick,teammateHits,teammateBulletHits,collisions,blockedShots,reportsMerged,linkRejected,enemiesAlive,fenced}. */

@@ -1,4 +1,4 @@
-# PC card pc-melee-power2 (docs/plan-melee-top5.md, MGUN-14..16, BENCH-121): one build alone on today's whole melee field, 46 fields x 6 seeds (3205-3210, after the Ogi card's 3197-3204), at the machine's melee width (@C@, fixed at prep) and CPU constant. Template: p2prep writes work/melee-power2-<arm>.args with @V@ = the robot.release in hadur-robot/pom.xml and @A@ = the arm's suffix (aa, bb, o2, oe, ow, o2oeow); every arm fights the same fields and seeds, so the read pairs them battle for battle.
+# PC card pc-melee-power2 (docs/plan-melee-top5.md, MGUN-14..16, BENCH-122): one build alone on today's whole melee field, 46 fields x 6 seeds (3205-3210, after the Ogi card's 3197-3204), at the machine's melee width (@C@, fixed at prep) and CPU constant. Template: p2prep writes work/melee-power2-<arm>.args with @V@ = the robot.release in hadur-robot/pom.xml and @A@ = the arm's suffix (aa, bb, o2, oe, ow, o2oeow); every arm fights the same fields and seeds, so the read pairs them battle for battle.
 --suite
 melee-census-317.txt
 --seeds

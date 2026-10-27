@@ -208,6 +208,9 @@
 #          team step D). Suffix mw.
 #   tmwk  (team only) with tmwaves: each virtual bullet's kernel 2.5 bot widths wide, not half of one. Suffix wk.
 #          The three combine: tmdis,tmfire,tmrear is one build (suffix mdmbmr).
+#   tmgunline (team only) TMODE-19: GUNLINE against every team: members state their gun heading and heat,
+#         and keep out of the line ahead of a teammate's gun about to fire (K 0.4, 70 px). Suffix mgl.
+#   tmgunlinew (team only) with it heavier and wider (K 1.0, 100 px). Suffix mglw.
 #   tmtab (team only) T7, TMODE-1: the screen's table, the t.put lines in $TEAM_MODE_TABLE (default
 #         work/team-modes-screen.java, written by tools/team_modes.py pick). Suffix mt.
 #   tmlock (team only) the confirmed table, $TEAM_MODE_LOCKED (default work/team-modes-locked.java,
@@ -652,6 +655,16 @@ for a in "${list[@]}"; do
         tmlines)
             version="${version}ml"
             edit "$modes" "public static final boolean FORCE_LINES = false;" "public static final boolean FORCE_LINES = true;"
+            ;;
+        tmgunline)
+            version="${version}mgl"
+            edit "$modes" "public static final boolean FORCE_GUNLINE = false;" "public static final boolean FORCE_GUNLINE = true;"
+            ;;
+        tmgunlinew)
+            version="${version}mglw"
+            edit "$modes" "public static final boolean FORCE_GUNLINE = false;" "public static final boolean FORCE_GUNLINE = true;"
+            edit "$mrm" "static final double GUNLINE_K = 0.4;" "static final double GUNLINE_K = 1.0;"
+            edit "$mrm" "static final double GUNLINE_HALF = 70;" "static final double GUNLINE_HALF = 100;"
             ;;
         tmlinesw)
             version="${version}mlw"

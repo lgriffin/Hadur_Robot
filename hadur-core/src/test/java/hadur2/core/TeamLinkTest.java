@@ -524,6 +524,40 @@ class TeamLinkTest {
     }
 
     @Test
+    @Tag("TMODE-19")
+    @DisplayName("TMODE-19: with GUNLINE played our report states the gun's heading and heat, and a teammate's stated aim reaches the roster; without it, no aim")
+    void reportsStateTheAimUnderGunline() {
+        HadurCore core = new HadurCore(facts(), line -> {}, null);
+        core.teamLink().modes = enemies -> Set.of(TeamModes.Mode.GUNLINE);
+        core.newRound(0);
+        Report sent = new Report(0, 1, 500, 500, 0, 0, 100, List.of(), List.of(), List.of(), List.of(),
+            new Report.Aim(2.0, 0.3));
+        BotOrders o = core.tick(input(2, 5, List.of(new BotEvent.Message(MATE, LinkCodec.encode(sent)))));
+        Report r = LinkCodec.decode(o.messages().get(0));
+        assertTrue(r.aim() != null, "our aim is stated");
+        assertEquals(0, r.aim().gunHeat, 1e-9);
+        assertEquals(2.0, core.roster().mate(MATE).gunHeading(), 1e-9);
+        assertEquals(0.3, core.roster().mate(MATE).gunHeat(), 1e-9);
+        assertEquals(1, core.roster().mate(MATE).aimed());
+        HadurCore plain = new HadurCore(facts(), line -> {}, null);
+        plain.newRound(0);
+        assertEquals(null, LinkCodec.decode(plain.tick(input(1, 5, enemies())).messages().get(0)).aim());
+        // A tick that fires states the heat the shot leaves: 1 + power / 5.
+        HadurCore firing = new HadurCore(facts(), line -> {}, null, new TriggerHappy());
+        firing.teamLink().modes = enemies -> Set.of(TeamModes.Mode.GUNLINE);
+        firing.newRound(0);
+        boolean fired = false;
+        for (long t = 1; t <= 6 && !fired; t++) {
+            BotOrders f = firing.tick(input(t, 5, enemies()));
+            if (f.firePower() > 0) {
+                fired = true;
+                assertEquals(1 + f.firePower() / 5, LinkCodec.decode(f.messages().get(0)).aim().gunHeat, 1e-9);
+            }
+        }
+        assertTrue(fired, "the trigger-happy brain fired");
+    }
+
+    @Test
     @Tag("LINK-4")
     @DisplayName("LINK-4: while a teammate lives each tick's orders carry our report; with none alive, none")
     void ordersCarryTheReport() {

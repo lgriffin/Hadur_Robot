@@ -331,7 +331,7 @@ still ahead (13,338 against 12,810) and its bullet damage still behind (4,691 ag
 damage taken is unchanged (8.8 per 100 crowd ticks against the top 10's 9.6). MGUN-13 lifted Hadur's
 mean crowd power only from 1.64 to 1.85, against the top 10's 2.56: the rule is idle with two
 opponents left, under 20 own energy, and fires 1.92 rather than 3 between 200 and 300 px.
-`pc-melee-power2` (BENCH-121) screens each of those (MGUN-14 two left, MGUN-15 from 10 energy,
+`pc-melee-power2` (BENCH-122) screens each of those (MGUN-14 two left, MGUN-15 from 10 energy,
 MGUN-16 power 3 to 300 px) alone and all three together.
 
 ### Stage 3: crowd survival

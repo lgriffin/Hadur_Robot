@@ -409,5 +409,165 @@ class ReportTest(unittest.TestCase):
             shutil.rmtree(out)
 
 
+
+
+class FakeProc:
+    def __init__(self, pid):
+        self.pid, self.returncode, self.killed = pid, None, False
+
+    def poll(self):
+        return self.returncode
+
+
+class ClientsTest(unittest.TestCase):
+    """BENCH-121: the clients run under the watch, each console in its own file per start, and
+    each is restarted on schedule at its first battle end, or counted as cut after the wait."""
+
+    def setUp(self):
+        self.root = tempfile.mkdtemp()
+        self.out = os.path.join(self.root, "out")
+        self.now = 1793080000.0
+        self.procs = []
+        for name in ("rr01", "robocode"):
+            os.makedirs(os.path.join(self.root, name, "roborumble", "files"))
+            for game, res in (("roborumble", "results1v1"), ("meleerumble", "resultsmelee")):
+                with open(os.path.join(self.root, name, "roborumble", f"{game}.txt"), "w") as f:
+                    f.write(f"OUTPUT=./roborumble/files/{res}.txt\n")
+
+    def tearDown(self):
+        shutil.rmtree(self.root)
+
+    def spawn(self, launcher, cwd, console):
+        p = FakeProc(len(self.procs) + 100)
+        self.procs.append((p, launcher, cwd, console))
+        return p
+
+    def kill(self, proc):
+        proc.killed, proc.returncode = True, -9
+
+    def clients(self, *specs):
+        launches = [lc.parse_launch(s, self.root) for s in specs]
+        return lc.Clients(launches, self.out, 900, 600, log=lambda line: None, spawn=self.spawn,
+                          kill=self.kill, clock=lambda: self.now)
+
+    def events(self):
+        return [(e["client"], e["event"]) for e in lc.read_tsv(os.path.join(self.out, "client-events.tsv"))]
+
+    def finish_battle(self, folder, res="results1v1"):
+        with open(os.path.join(self.root, folder, "roborumble", "files", f"{res}.txt"), "a") as f:
+            f.write("line\n")
+
+    def test_a_launch_names_its_folder_and_launcher(self):
+        label, folder, launcher = lc.parse_launch("rr01:roborumble.bat", self.root)
+        self.assertEqual(("rr01-roborumble", os.path.join(self.root, "rr01"), "roborumble.bat"),
+                         (label, folder, launcher))
+        label, _, launcher = lc.parse_launch("C:/robocode:meleerumble.bat", "C:/RoboRumbleWorkers")
+        self.assertEqual(("robocode-meleerumble", "meleerumble.bat"), (label, launcher),
+                         "a Windows folder keeps its drive colon")
+        with self.assertRaises(ValueError):
+            lc.parse_launch("rr01", self.root)
+
+    def test_each_start_gets_its_own_console_and_only_hadur_lines_count(self):
+        c = self.clients("rr01:roborumble.bat")
+        c.start_all()
+        self.assertEqual([("rr01-roborumble", "start")], self.events())
+        console = self.procs[0][3]
+        console.write(b"Fighting battle 3 ... hadur2.Hadur 3.17,sample.Crazy\n")
+        console.write(b"SYSTEM: hadur2.Hadur 3.17 has not performed any actions in a reasonable amount of time\n")
+        console.write(b"Unable to stop thread: other.Bot 1.0\nUnable to stop thread: hadur2.Hadur 3.17\n")
+        console.write(b"SYSTEM: hadur2.Hadur 3.17 skipped turn 51")  # no newline yet
+        c.poll()
+        self.assertEqual(["start", "idle", "unstoppable"], [e for _, e in self.events()])
+        console.write(b"\n")
+        c.poll()
+        self.assertEqual("skipped", self.events()[-1][1], "a line is counted once it is complete")
+        self.assertEqual(1, len(os.listdir(os.path.join(self.out, "consoles"))))
+        c.stop_all()
+
+    def test_a_due_restart_waits_for_the_next_battle_end(self):
+        c = self.clients("rr01:roborumble.bat", "robocode:meleerumble.bat")
+        c.start_all()
+        self.now += 900
+        c.poll()
+        self.now += 60
+        self.finish_battle("rr01", "resultsmelee")  # another game's file: not this client's battle
+        c.poll()
+        self.assertEqual(2, len(self.procs), "nothing restarts before its battle ends")
+        self.finish_battle("rr01")
+        c.poll()
+        self.assertFalse(self.procs[0][0].killed, "a change must hold still before the restart")
+        self.now += 5
+        self.finish_battle("rr01")  # still being written
+        c.poll()
+        self.assertFalse(self.procs[0][0].killed)
+        self.now += 10
+        c.poll()
+        self.assertTrue(self.procs[0][0].killed)
+        self.assertEqual(3, len(self.procs))
+        self.assertIn(("rr01-roborumble", "stop after battle"), self.events())
+        self.assertIn(("rr01-roborumble", "restart"), self.events())
+        self.assertFalse(self.procs[1][0].killed, "the melee client is still in its battle")
+        self.now += 585
+        c.poll()
+        self.assertIn(("robocode-meleerumble", "stop cut"), self.events())
+        self.assertEqual(4, len(os.listdir(os.path.join(self.out, "consoles"))), "a console file per start")
+        c.stop_all()
+
+    def test_labels_must_be_unique_and_a_failed_start_stops_the_ones_started(self):
+        with self.assertRaises(ValueError):
+            self.clients("rr01:roborumble.bat", f"{self.root}/x/rr01:roborumble.bat")
+        c = self.clients("rr01:roborumble.bat", "robocode:meleerumble.bat")
+        spawn = self.spawn
+
+        def second_fails(launcher, cwd, console):
+            if self.procs:
+                raise OSError("no such launcher")
+            return spawn(launcher, cwd, console)
+        c.spawn = second_fails
+        with self.assertRaises(OSError):
+            c.start_all()
+        self.assertTrue(self.procs[0][0].killed, "the client already started is stopped")
+        self.assertEqual("stop at end", self.events()[-1][1])
+
+    def test_a_last_line_without_a_newline_counts_at_stop(self):
+        c = self.clients("rr01:roborumble.bat")
+        c.start_all()
+        self.procs[0][3].write(b"Unable to stop thread: hadur2.Hadur 3.17")
+        c.stop_all()
+        self.assertIn(("rr01-roborumble", "unstoppable"), self.events())
+
+    def test_an_exited_client_is_started_again_and_all_stop_at_the_end(self):
+        c = self.clients("rr01:roborumble.bat")
+        c.start_all()
+        self.procs[0][0].returncode = 1
+        c.poll()
+        self.assertEqual([("rr01-roborumble", "start"), ("rr01-roborumble", "exited"),
+                          ("rr01-roborumble", "start after exit")], self.events())
+        c.stop_all()
+        self.assertTrue(self.procs[1][0].killed)
+        self.assertEqual("stop at end", self.events()[-1][1])
+
+    def test_the_report_counts_events_and_skips_by_uptime(self):
+        c = self.clients("rr01:roborumble.bat")
+        c.start_all()
+        start = self.now
+        lc.append_tsv(os.path.join(self.out, "battles.tsv"), lc.BATTLE_COLUMNS, [
+            {"utc": lc.utc_of(start + m * 60), "game": "roborumble", "client": "rr01", "hadur": "hadur2.Hadur 3.17",
+             "opponent": "a.Bot 1.0", "share": "90.0", "rounds": "35", "won": "30", "lost": "5", "key": f"k{m}"}
+            for m in (2, 12)])
+        lc.append_tsv(os.path.join(self.out, "health.tsv"), lc.HEALTH_COLUMNS, [
+            {"utc": lc.utc_of(start + m * 60), "folder": "x", "rounds": 35, "survived": 35, "faults": 0,
+             "skipped": sk, "memory_failures": 0, "allowance_us": 3000, "opponent_key": "a.Bot",
+             "shielder": 0, "lead_aware": 0, "profile_battles": 1} for m, sk in ((2, 3), (12, 40))])
+        c.event("rr01-roborumble", "unstoppable", "Unable to stop thread: hadur2.Hadur 3.17")
+        text = lc.report(self.out)
+        self.assertIn("## Clients (BENCH-121)", text)
+        self.assertIn("| rr01-roborumble | 1 | 0 | 0 | 0 | 0 | 1 | 0 |", text)
+        self.assertIn("| 0-5 | 1 | 3.0 | 90.00 |", text)
+        self.assertIn("| 10-15 | 1 | 40.0 | 90.00 |", text)
+        self.assertIn("unstoppable: Unable to stop thread", text)
+        c.stop_all()
+
+
 if __name__ == "__main__":
     unittest.main()

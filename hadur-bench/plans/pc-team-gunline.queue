@@ -1,0 +1,29 @@
+# Team gun lines (TMODE-19, BENCH-120; docs/plan-team-top5.md section 10.4), team thread: team-only,
+# duel and melee fixtures bit for bit. PR #332: 57% of our own hits are lead shots with no enemy near
+# the line, and 98-100% of those victims stood AHEAD of the shooter, 64% within 100 px of the line.
+# Holding fire cost more than it saved (PR #293); a cone behind the enemy missed them (PR #326).
+# Here each member states its gun heading and heat in its report, and a member keeps out of the line
+# ahead of a teammate's gun that fires within 6 ticks.
+#   gnbb A/A, gngl TMODE-19 (GUNLINE_K 0.4, 70 px), gnglw heavier and wider (1.0, 100 px).
+# 46 teams x 6 seeds (seed base 4500) per arm, 1,656 battles, about 1.8 h at 12 workers (sizes
+# itself to the host). Every step resumes where it stopped. gnread writes the loss read and
+# friendly_hits.py for each arm, so the card says whether own hits fell even if the score did not.
+# Verdict: an arm passes at +1.0 share points or more with the 95% low end above zero and gnbb
+# within +/- 1.0. The team thread reads claude/pc-team-gunline-results.
+#   ./queue.sh run pc-team-gunline        (or  .\queue.ps1 run pc-team-gunline)
+# Run it from master (one bench queue at a time):
+#   git checkout master && git pull
+
+set OUT = ../docs/bench/local
+
+gnprep | git checkout -q master && V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && test -n "$V" && rm -f bisect/hadur2.HadurTeam_"$V"aa.jar bisect/hadur2.HadurTeam_"$V"bb.jar bisect/hadur2.HadurTeam_"$V"mgl.jar bisect/hadur2.HadurTeam_"$V"mglw.jar && bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && bash ./build-ablation.sh tmgunline && bash ./build-ablation.sh tmgunlinew && mkdir -p work && for a in bb mgl mglw; do sed "s/@V@/$V/g" plans/team-gunline-$a.args > work/team-gunline-$a.args && test -f bisect/hadur2.HadurTeam_"$V"$a.jar || exit 1; done && test -f bisect/hadur2.HadurTeam_"$V"aa.jar && rm -f ../docs/bench/local/team-gunline-*.md && ./fetch-opponents.sh --set team-census46.txt && mvn -q compile
+gnbb   | mvn -q exec:java "-Dexec.args=@work/team-gunline-bb.args"
+  after: gnprep
+gngl   | mvn -q exec:java "-Dexec.args=@work/team-gunline-mgl.args"
+  after: gnbb
+gnglw  | mvn -q exec:java "-Dexec.args=@work/team-gunline-mglw.args"
+  after: gngl
+gnread | V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && for a in bb mgl mglw; do python3 tools/team_losses.py --candidate-only --title "HadurTeam, team-gunline arm $a" work/team-gunline-"$V"-$a || exit 1; done > ${OUT}/team-gunline-losses.md && for a in bb mgl mglw; do echo "## Arm $a" && python3 tools/friendly_hits.py --candidate-only work/team-gunline-"$V"-$a || exit 1; done > ${OUT}/team-gunline-friendly.md
+  after: gnglw
+gnpr   | bash tools/open_results_pr.sh claude/pc-team-gunline-results "Team gun lines (TMODE-19) screen" $(ls ${OUT}/team-gunline-*.md 2>/dev/null)
+  after: gnread

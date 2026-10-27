@@ -11,13 +11,13 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-/** BENCH-121: the pc-melee-power2 card (MGUN-14..16) is complete before it reaches the PC. */
+/** BENCH-122: the pc-melee-power2 card (MGUN-14..16) is complete before it reaches the PC. */
 class MeleePower2PlanTest {
 
     private static final Path QUEUE = Path.of("plans/pc-melee-power2.queue");
 
     @Test
-    @Tag("BENCH-121")
+    @Tag("BENCH-122")
     @DisplayName("the steps chain from prep through every arm to a results PR, on the version the pom names")
     void stepsChain() throws IOException {
         String queue = Files.readString(QUEUE);
@@ -42,7 +42,7 @@ class MeleePower2PlanTest {
     }
 
     @Test
-    @Tag("BENCH-121")
+    @Tag("BENCH-122")
     @DisplayName("every arm runs alone on the census at 6 seeds after the Ogi card's, the host's width and CPU constant")
     void args() throws IOException {
         String args = Files.readString(Path.of("plans/melee-power2.args"));
@@ -55,7 +55,7 @@ class MeleePower2PlanTest {
     }
 
     @Test
-    @Tag("BENCH-121")
+    @Tag("BENCH-122")
     @DisplayName("the arms edit exactly MGUN-14..16, which ship off on top of MGUN-13")
     void ablations() throws IOException {
         String build = Files.readString(Path.of("build-ablation.sh"));

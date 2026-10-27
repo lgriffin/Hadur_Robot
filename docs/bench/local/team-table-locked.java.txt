@@ -1,0 +1,2 @@
+        t.put("florent.XSeries.X2", of(Mode.MATEFIRE, Mode.HUNT, Mode.LANEP));
+        t.put("gh.nano.GrofGroupMember", of(Mode.MATEFIRE, Mode.HUNT, Mode.LANEP));

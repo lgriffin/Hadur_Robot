@@ -14,13 +14,14 @@ import java.util.zip.CRC32;
  * sightings:u8 { name tick:i64 x y heading velocity energy:f64 }
  * deaths:u8 { name }
  * shots:u8 { tick:i64 x y heading power:f64 }
- * [version 2 only] dodges:u8 { name distance lateral advancing wallAhead gf:f64 }
+ * [version 2 and 3] dodges:u8 { name distance lateral advancing wallAhead gf:f64 }
+ * [version 3 only] gunHeading gunHeat:f64
  * crc:i32                      CRC-32 of every byte before it
  * name = length:u8 then that many UTF-16 chars:u16
  * </pre>
  *
  * <p>LINK-2: {@link #decode} refuses a message whose checksum fails, whose version is neither
- * {@link #VERSION} nor {@link #VERSION_DODGES}, or that is cut short or runs long, by throwing {@link LinkFormatException};
+ * {@link #VERSION}, {@link #VERSION_DODGES} nor {@link #VERSION_AIM}, or that is cut short or runs long, by throwing {@link LinkFormatException};
  * the caller ignores it and counts it. Pure byte work: no I/O (RES-6).</p>
  */
 public final class LinkCodec {
@@ -32,6 +33,8 @@ public final class LinkCodec {
     public static final int VERSION = 1;
     /** The format of a report that carries dodges: {@link #VERSION} with the dodges list after the shots. */
     public static final int VERSION_DODGES = 2;
+    /** TMODE-19: {@link #VERSION_DODGES} with the member's gun heading and heat last; written only when it states its aim. */
+    public static final int VERSION_AIM = 3;
     /** The engine's limit on one serialized message. */
     public static final int MAX_BYTES = 32_768;
     /** More than any battle holds, so a list's count fits a byte. */
@@ -46,8 +49,9 @@ public final class LinkCodec {
      */
     public static byte[] encode(Report r) {
         Out o = new Out();
-        boolean dodges = !r.dodges().isEmpty();
-        o.u8('H').u8('L').u8(dodges ? VERSION_DODGES : VERSION).u16(r.round()).i64(r.tick());
+        boolean aim = r.aim() != null;
+        boolean dodges = aim || !r.dodges().isEmpty();
+        o.u8('H').u8('L').u8(aim ? VERSION_AIM : dodges ? VERSION_DODGES : VERSION).u16(r.round()).i64(r.tick());
         o.f64(r.x()).f64(r.y()).f64(r.heading()).f64(r.velocity()).f64(r.energy());
         o.count(r.sightings().size());
         for (Report.Sighting s : r.sightings()) {
@@ -63,6 +67,7 @@ public final class LinkCodec {
                 o.name(d.shooter).f64(d.distance).f64(d.lateral).f64(d.advancing).f64(d.wallAhead).f64(d.gf);
             }
         }
+        if (aim) o.f64(r.aim().gunHeading).f64(r.aim().gunHeat);
         byte[] body = o.bytes();
         byte[] all = new byte[body.length + 4];
         System.arraycopy(body, 0, all, 0, body.length);
@@ -85,7 +90,7 @@ public final class LinkCodec {
             | ((bytes[n + 2] & 0xff) << 8) | (bytes[n + 3] & 0xff);
         if (stored != crc(bytes, n)) throw new LinkFormatException("checksum");
         int version = bytes[2] & 0xff;
-        if (version != VERSION && version != VERSION_DODGES) throw new LinkFormatException("version " + version);
+        if (version != VERSION && version != VERSION_DODGES && version != VERSION_AIM) throw new LinkFormatException("version " + version);
         In in = new In(bytes, 3, n);
         int round = in.u16();
         long tick = in.i64();
@@ -100,13 +105,14 @@ public final class LinkCodec {
         List<Report.Shot> shots = new ArrayList<>();
         for (int i = in.u8(); i > 0; i--) shots.add(new Report.Shot(in.i64(), in.f64(), in.f64(), in.f64(), in.f64()));
         List<Report.Dodge> dodges = new ArrayList<>();
-        if (version == VERSION_DODGES) {
+        if (version == VERSION_DODGES || version == VERSION_AIM) {
             for (int i = in.u8(); i > 0; i--) {
                 dodges.add(new Report.Dodge(in.name(), in.f64(), in.f64(), in.f64(), in.f64(), in.f64()));
             }
         }
+        Report.Aim aim = version == VERSION_AIM ? new Report.Aim(in.f64(), in.f64()) : null;
         if (in.pos != n) throw new LinkFormatException("trailing bytes");
-        return new Report(round, tick, x, y, heading, velocity, energy, sightings, deaths, shots, dodges);
+        return new Report(round, tick, x, y, heading, velocity, energy, sightings, deaths, shots, dodges, aim);
     }
 
     private static int crc(byte[] b, int length) {

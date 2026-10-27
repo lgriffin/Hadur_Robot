@@ -1,4 +1,4 @@
-# Melee firepower part 2 (docs/plan-melee-top5.md, MGUN-14..16, BENCH-121). The exposure read on the
+# Melee firepower part 2 (docs/plan-melee-top5.md, MGUN-14..16, BENCH-122). The exposure read on the
 # banked build (K = 24, MEND-3, MGUN-13; 12 fields, cloud) has Hadur's score level with the top 10's
 # but its bullet damage still behind (4,691 a battle against 5,346): its crowd shots average 1.85
 # power to the top 10's 2.56. MGUN-13 is idle with two opponents left, under 20 own energy, and fires
