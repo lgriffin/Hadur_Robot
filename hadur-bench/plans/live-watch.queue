@@ -34,9 +34,9 @@
 
 # 3.18.1 (2026-10-27): DO NOT RUN until the PC is qualified with uploads off. The 3.17 run 3 and 3.18 runs 2-3
 # watches supplied 98.6% of 3.18's first pass at about -3 APS under clean pairings (thread "Investigate the
-# 3.18 live collapse"). 3.18.1 is 3.18's code under a new version so its pages start clean; team stays 3.18.
+# 3.18 live collapse"). 3.18.1 is 3.18's code under a new version so its pages (1v1, melee, team) start clean.
 set V1 = 3.18.1
-set VT = 3.18
+set VT = 3.18.1
 set HOURS = 72
 set COLLAPSES = 10
 set DUELS = 1000
