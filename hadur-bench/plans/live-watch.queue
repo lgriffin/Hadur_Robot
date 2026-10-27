@@ -1,7 +1,9 @@
 # Release watch (Leigh, 2026-10-26: "build that into your PC card at release"): run on the PC right after
 # every release, while the RoboRumble clients run the new version, so collapsed live battles are logged
 # with their health records (skipped turns, faults, shield verdicts) instead of guessed at afterwards.
-#   ./queue.sh run live-watch        (or  .\queue.ps1 run live-watch)
+#   ./queue.sh run live-watch --fresh        (or  .\queue.ps1 run live-watch --fresh)
+# --fresh at each new release or RUN: the queue keeps done steps under the plan's name, so without it a
+# PC that ran an earlier watch skips this one. To resume an interrupted watch, run it without --fresh.
 # BENCH-121: the card runs the six RoboRumble clients itself (four 1v1 in C:/RoboRumbleWorkers/rr01..rr04,
 # melee and team in C:/robocode), so CLOSE ANY CLIENT WINDOWS STARTED BY HAND FIRST. Each client's console
 # goes to consoles/<client>-<UTC>.log per start; Hadur's console lines (disabled for a stall, thread not

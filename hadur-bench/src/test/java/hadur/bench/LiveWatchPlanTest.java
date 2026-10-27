@@ -51,7 +51,7 @@ class LiveWatchPlanTest {
     @DisplayName("the release workflow names the release watch in its summary")
     void releaseNamesIt() throws IOException {
         String release = Files.readString(Path.of("../.github/workflows/release.yml"));
-        assertTrue(release.contains("queue.ps1 run live-watch"));
+        assertTrue(release.contains("queue.ps1 run live-watch --fresh"), "a new release starts the watch afresh");
         assertTrue(release.contains("GITHUB_STEP_SUMMARY"));
     }
 }
