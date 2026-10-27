@@ -1,0 +1,33 @@
+# The Twin Duel field: every ranked team (rumble.robowiki.net, twinduel, read 2026-10-27), for
+# TwinSaor's census (docs/twinsaor.md section 6, card plans/pc-twin-w3.queue): the 27 ranked teams, in rank order.
+# Twin Duel settings: two-robot teams, 800x800.
+# Run with: --set twinduel-field.txt --team true --field 800x800 --rounds 35
+# Jars from https://robocode-archive.strangeautomata.com/robots/<jar>, into opponents/ (./fetch-opponents.sh).
+#   <team name as Robocode lists it> | team | <jar file in opponents/>
+ags.lunartwins.LunarTwins 1.4a | twin-1 | ags.lunartwins.LunarTwins_1.4a.jar
+voidious.twin.LuminariousDuo 1.13 | twin-2 | voidious.twin.LuminariousDuo_1.13.jar
+jk.team.NightAndDay 1.6 | twin-3 | jk.team.NightAndDay_1.6.jar
+kc.twins.GeminiTeam 2.1 | twin-4 | kc.twins.GeminiTeam_2.1.jar
+kawigi.twin.MarioBros 1.0 | twin-5 | kawigi.twin.MarioBros_1.0.jar
+wompi.TassieDevils 1.8 | twin-6 | wompi.TassieDevils_1.8.jar
+wiki.twin.KomariousTeam 1.0 | twin-7 | wiki.twin.KomariousTeam_1.0.jar
+kawigi.micro.ShizPair 1.1c | twin-8 | kawigi.micro.ShizPair_1.1c.jar
+gh.GruwelTwins 0.1 | twin-9 | gh.GruwelTwins_0.1.jar
+bvh.two.Valkiries 0.44tmk3b | twin-10 | bvh.two.Valkiries_0.44tmk3b.jar
+mn.nano.perceptual.ImpactTwins 1.3.0 | twin-11 | mn.nano.perceptual.ImpactTwins_1.3.0.jar
+davidalves.twin.YinYang 1.2 | twin-12 | davidalves.twin.YinYang_1.2.jar
+kinsen.twin.SelcouthTeam 1.1 | twin-13 | kinsen.twin.SelcouthTeam_1.1.jar
+gh.twin.GrauwuarG 0.41 | twin-14 | gh.twin.GrauwuarG_0.41.jar
+dsekercioglu.LordMantis 1.0repackaged | twin-15 | dsekercioglu.LordMantis_1.0repackaged.jar
+bvh.two.Ravens 0.2 | twin-16 | bvh.two.Ravens_0.2.jar
+wcsv.Coyote.CoyotePair .1 | twin-17 | wcsv.Coyote.CoyotePair_.1.jar
+EH.twin.OlympusTwins 1.1 | twin-18 | EH.twin.OlympusTwins_1.1.jar
+krillr.mini.JointStrikeForce 2.0c | twin-19 | krillr.mini.JointStrikeForce_2.0c.jar
+wiki.twin.InevitableTeam 0.1 | twin-20 | wiki.twin.InevitableTeam_0.1.jar
+jeremyreeder.collective.DuoLedByDroid 1.0fix | twin-21 | jeremyreeder.collective.DuoLedByDroid_1.0fix.jar
+whind.TwintelligenceTeam 1.0 | twin-22 | whind.TwintelligenceTeam_1.0.jar
+chase.twin.SurroundingTeam 1.0 | twin-23 | chase.twin.SurroundingTeam_1.0.jar
+jeremyreeder.collective.TwoProphets 5 | twin-24 | jeremyreeder.collective.TwoProphets_5.jar
+madness.Dyn4sty 1.0 | twin-25 | madness.Dyn4sty_1.0.jar
+logiblocs.SittingDroidPair 1.0 | twin-26 | logiblocs.SittingDroidPair_1.0.jar
+mn.SuperSittingDuckTwins 1.0.2 | twin-27 | mn.SuperSittingDuckTwins_1.0.2.jar

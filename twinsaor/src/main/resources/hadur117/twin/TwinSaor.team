@@ -1,0 +1,7 @@
+#Robocode Robot Team
+team.members=hadur117.twin.SaorTwin,hadur117.twin.SaorTwin
+team.version=${twinsaor.release}
+team.author.name=lgriffin
+team.description=Twin Duel: two Saor twins, one scan shared, one target, two lines of fire at right angles
+team.webpage=https\://github.com/lgriffin/Hadur_Robot
+robocode.version=1.9.3.0

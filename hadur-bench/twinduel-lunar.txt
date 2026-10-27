@@ -1,0 +1,4 @@
+# Twin Duel's 1st, ags.lunartwins.LunarTwins 1.4a, alone: TwinSaor's head-to-head check.
+# Twin Duel settings: 800x800, two-robot teams. Run with: --set twinduel-lunar.txt --team true --field 800x800
+#   <team name as Robocode lists it> | team | <jar file in opponents/>
+ags.lunartwins.LunarTwins 1.4a | twin-1 | ags.lunartwins.LunarTwins_1.4a.jar
