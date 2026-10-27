@@ -25,6 +25,10 @@ in `data/rumble/pages/` under 2026-10-25T23*.
 Saor has its own tags, `saor-v<version>`, made by `.github/workflows/release-saor.yml`. The
 notes are in `docs/releases/saor-v<version>.md`.
 
+The Irish flag on the rumble pages comes from one line, `hadur117,IRL`, on the robowiki page
+[RoboRumble/Country Flags](https://robowiki.net/wiki/RoboRumble/Country_Flags). Flags go by
+package, so Hadur's `hadur2,IRL` does not cover Saor's `hadur117`. Leigh adds it (2026-10-27).
+
 - [saor-v0.2](https://github.com/lgriffin/Hadur_Robot/releases/tag/saor-v0.2), 2026-10-27:
   the graded vote, no ram leg, learning below 0.9 gun heat. On the live-shaped census it reads
   69.83 against Figment's 69.79 in the same run, +1.55 over 0.1. The participants line is
