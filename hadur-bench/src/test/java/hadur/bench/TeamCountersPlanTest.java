@@ -45,7 +45,11 @@ class TeamCountersPlanTest {
         assertTrue(queue.contains("screens --counters plans/team-counters.tsv"), "prep writes the screens' tables");
         assertTrue(queue.contains("--min-mean 3.0 --low-end 0 --base MATEFIRE,HUNT"), "picks keep the shipped modes");
         assertTrue(queue.contains("--set work/team-counters-gate.txt --seeds 16 --teams 46 --min-aps 0.3"), "gate needs every team fully paired");
-        assertTrue(queue.contains("--min-gain 1.0"));
+        assertFalse(queue.contains(" lock "), "the shipped table is the gated one, not re-picked on the gate's seeds");
+        assertTrue(queue.contains("grep -q '\\*\\*PASS\\*\\*' ${OUT}/team-counters-verdict.md; then cp work/team-counters-picked.java"),
+            "only a passed gate writes the table to ship");
+        assertTrue(queue.contains("rm -f ${OUT}/team-counters-*.md ${OUT}/team-counters-pick.tsv ${OUT}/team-counters-locked.java.txt"),
+            "a rerun never carries an old table");
         assertFalse(queue.contains("; true"), "a failed step stops the queue");
         assertTrue(queue.contains("open_results_pr.sh claude/pc-team-counters-results"));
     }

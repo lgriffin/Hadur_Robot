@@ -526,7 +526,7 @@ the same for team: read each costly team's code, then give it a counter that exp
   its team, 16 seeds from 4600, beside a bb A/A.
   - Pick per team: best screen at +3.0 points or more over both baselines, with the low end above 0.
   - Gate: the picked table (mk) on 16 fresh seeds from 4700; projection at least +0.30 APS with the
-    low end above zero. `lock` keeps the teams at +1.0 or more as the table to ship.
+    low end above zero. On PASS the gated table, as benched, is the table to ship (nothing is dropped on the gate's own seeds).
   - About 2,500 battles at most, ~2.8 h on the PC.
 - **Not built yet:** radar first against TroodonPack (two radar bots feed three droids); break the
   focus (Mamba's shared target); wounded members back off (Valkiries, OmegaSquad). Firestarter's
