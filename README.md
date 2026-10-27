@@ -509,6 +509,8 @@ hadur-bench/   headless battles, the bench report, and the replay recorder.
 saor/          Saor, a separate MicroMelee robot (hadur117.micro.Saor, 749 bytes;
                live standing in saor/README.md);
                see docs/saor.md. Shares nothing with Hadur.
+deise/         Deise, a separate MiniMelee robot (hadur117.mini.Deise), in design
+               (stage E0); see docs/deise.md. Shares nothing with Hadur or Saor.
 docs/          requirements, architecture, testing, strategy, bench reports, release notes,
                rumble entry.
 data/          the rumble and bench archive: saved rumble pages, parsed tables, bench

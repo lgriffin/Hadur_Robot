@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.lgriffin</groupId>
+        <artifactId>hadur-parent</artifactId>
+        <version>2.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>deise</artifactId>
+    <name>Deise</name>
+    <description>hadur117.mini.Deise, a MiniMelee entry: a thin Robocode adapter over a pure core that ships
+        in the jar (docs/deise.md). Separate from Hadur, Saor and TwinSaor.</description>
+
+    <properties>
+        <!-- The robot's version: the jar is named for it and Deise.properties takes it by filtering. -->
+        <deise.release>0.1</deise.release>
+        <!-- The codesize budget, as Robocode's codesize tool counts it (DEISE-12). MiniMelee's limit is
+             1,499; stages E0 and E1 measure the design unfitted, at 2,400, and stage E2 fits it to 1,499. -->
+        <deise.codesize.limit>2400</deise.codesize.limit>
+        <!-- Rating clients still run Java 8; the shipped classes target it. -->
+        <maven.compiler.release>8</maven.compiler.release>
+        <deise.jar>${project.build.directory}/hadur117.mini.Deise_${deise.release}.jar</deise.jar>
+        <codesize.version>1.3.1</codesize.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>net.sf.robocode</groupId>
+            <artifactId>robocode-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.robocode</groupId>
+            <artifactId>codesize</artifactId>
+            <version>${codesize.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.tngtech.archunit</groupId>
+            <artifactId>archunit-junit5</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+        <plugins>
+            <!-- The jar the rumble takes: the classes, the robot's properties and the source. -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                    <execution>
+                        <id>robot-jar</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <jar destfile="${deise.jar}">
+                                    <fileset dir="${project.build.outputDirectory}" includes="hadur117/mini/**"/>
+                                    <fileset dir="${project.basedir}/src/main/java" includes="hadur117/mini/**/*.java"/>
+                                </jar>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- The gate on the jar (DEISE-12). -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>3.5.2</version>
+                <configuration>
+                    <systemPropertyVariables>
+                        <deise.jar>${deise.jar}</deise.jar>
+                        <deise.release>${deise.release}</deise.release>
+                        <deise.codesize.limit>${deise.codesize.limit}</deise.codesize.limit>
+                    </systemPropertyVariables>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

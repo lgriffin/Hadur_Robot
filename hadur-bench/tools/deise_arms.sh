@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+# Builds Deise's arms (deise-arms/arms.txt) into work/deise-$DEISE_RUN/: one robot jar and one bench
+# args file per arm, on the live-shaped MiniMelee census (tools/saor_live.py with Deise's options,
+# docs/deise.md). Run from hadur-bench after `mvn install` of deise (the robocode API jar comes from
+# the local Maven repository, and the card's prep copies Deise's jar into opponents/).
+#   bash tools/deise_arms.sh live SEEDS SEED_BASE [ARMS]
+# An arm line is `NAME | what | FILE | sed`: FILE (Deise.java, Gun.java or Move.java) takes the sed,
+# empty for the control. An arm `NAME | what | @robot name` seats that robot (its jar from
+# opponents/) instead. Each build is javac-only, with its class renamed Deise<NAME> and its core
+# package hadur117.mini.c<name>, so no two arms share a class; DeiseJarIT measures bytes.
+set -euo pipefail
+field="$1"; seeds="$2"; base="$3"; only="${4:-}"
+[ "$field" = live ] || { echo "deise_arms: the field is live" >&2; exit 2; }
+src=../deise/src/main/java
+api=$(find "$HOME/.m2/repository/net/sf/robocode/robocode-api" -name 'robocode-api-*.jar' | head -1)
+[ -n "$api" ] || { echo "deise_arms: robocode-api jar not in ~/.m2; run mvn install first" >&2; exit 2; }
+run="${DEISE_RUN:-arms}"
+out=work/deise-$run
+release=$(sed -n 's:.*<deise.release>\([0-9.]*\)</deise.release>.*:\1:p' ../deise/pom.xml | head -1)
+own="hadur117.mini.Deise $release"
+resident="$own | minimelee-deise | hadur117.mini.Deise_$release.jar"
+mkdir -p "$out"
+grep -v '^#' deise-arms/arms.txt | while IFS='|' read -r name what file expr; do
+    name=$(echo "$name" | tr -d ' '); file=$(echo "${file:-}" | sed 's/^ *//; s/ *$//')
+    expr=$(echo "${expr:-}" | sed 's/^ *//; s/ *$//')
+    [ -n "$name" ] || continue
+    if [ -n "$only" ] && ! echo ",$only," | grep -q ",$name,"; then continue; fi
+    seat=deise
+    [ "${file#@}" != "$file" ] && seat="${file#@}"
+    suite=$(python3 tools/saor_live.py --counted minimelee-field.txt --own "$own" --own-key deise \
+        --resident "$resident" --seat "$seat" --out "$out/live" | sed -n 's/^.*: \(.*suite.txt\) (.*$/\1/p')
+    if [ "$seat" != deise ]; then
+        robot="$seat"; jar="opponents/$(echo "$robot" | tr ' ' _).jar"
+        [ -f "$jar" ] || { echo "deise_arms: seat $name needs $jar; run ./fetch-opponents.sh" >&2; exit 2; }
+    else
+        lname=$(echo "$name" | tr 'A-Z' 'a-z'); cls="Deise$name"; dir="$out/build/$cls"
+        rm -rf "$dir"; mkdir -p "$dir/src/hadur117/mini/c$lname" "$dir/classes/hadur117/mini"
+        for f in "$src"/hadur117/mini/*.java "$src"/hadur117/mini/core/*.java; do
+            base_name=$(basename "$f"); to="$dir/src/hadur117/mini/c$lname/$base_name"
+            [ "$base_name" = Deise.java ] && to="$dir/src/hadur117/mini/$cls.java"
+            sed -e "s/hadur117\.mini\.core/hadur117.mini.c$lname/g" -e "s/class Deise /class $cls /" "$f" > "$to"
+            if [ -n "$expr" ] && [ "$base_name" = "$file" ]; then
+                cp "$to" "$to.orig"; sed -i -e "$expr" "$to"
+                cmp -s "$to" "$to.orig" && { echo "deise_arms: arm $name's sed changed nothing in $file" >&2; exit 3; }
+                rm "$to.orig"
+            fi
+        done
+        javac --release 8 -nowarn -cp "$api" -d "$dir/classes" $(find "$dir/src" -name '*.java')
+        printf 'robot.classname=hadur117.mini.%s\nrobot.version=%s\nrobot.author.name=lgriffin\nrobocode.version=1.9.3.0\n' \
+            "$cls" "$release" > "$dir/classes/hadur117/mini/$cls.properties"
+        jar="$out/hadur117.mini.${cls}_$release.jar"
+        (cd "$dir/classes" && jar cf "../../../$(basename "$jar")" hadur117)
+        robot="hadur117.mini.$cls $release"
+    fi
+    args="$out/$field-$name.args"
+    printf '%s\n' --suite "$suite" --seeds "$seeds" --seed-base "$base" --rounds 35 --parallel 12 \
+        --child-heap 2G --cpu-constant 1488498 --robot-jar "$jar" --robot "$robot" \
+        --out "$out/$field-$name" --report "../docs/bench/local/deise-$run-$field-$name.md" > "$args"
+    echo "arm $name: $jar, $args"
+done
