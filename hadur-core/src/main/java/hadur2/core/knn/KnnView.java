@@ -95,6 +95,13 @@ public class KnnView<T> {
     public static final int DEFAULT_MAX_DATA_POINTS = 50_000;
 
     private KdTree<T> tree;
+    /**
+     * The last two neighbour lists {@link #getDecayWeights} weighed, newest first, with their
+     * weights and the decay rate they were weighed at. Callers only read the weights.
+     */
+    private List<?> decayFor0, decayFor1;
+    private double[] decay0, decay1;
+    private double decayRate0, decayRate1;
     /** Points ever added, and how many of them were seeds (ADAPT-3), since the tree was made. */
     private long added;
     private int seeds;
@@ -432,33 +439,80 @@ public class KnnView<T> {
      * weighs 1. Entries are ordered by round, then tick, so seeds (filed under
      * {@link Timestamped#SEED_ROUND}) count as the oldest.
      *
+     * <p>The weights come back as an array beside the list, not a map, so a call allocates
+     * two small arrays rather than a node and a boxed double per neighbour: the surf calls
+     * this for every view on every wave it rates, and it was the core's largest source of
+     * garbage. The weights are bit for bit the map's: the same stable order, the same
+     * divisions in the same order, and an entry whose value appears twice in the list takes
+     * the weight the map kept for it, the oldest position's.</p>
+     *
      * @param entries the neighbours, as a search returned them
-     * @return each entry's value mapped to its weight, keyed by identity
+     * @return each entry's weight, at the entry's index; shared, so read it, never write it
      */
-    @SuppressWarnings("unchecked")
-    public Map<Timestamped, Double> getDecayWeights(
-            List<? extends KdTree.Entry<? extends Timestamped>> entries) {
-        HashMap<Timestamped, Double> weightMap = new HashMap<>();
-        int numScans = entries.size();
+    public double[] getDecayWeights(List<? extends KdTree.Entry<? extends Timestamped>> entries) {
+        // The surf rates many positions against one wave's cached neighbour list, so the same
+        // list comes back many times in a row: the last two lists' weights are kept.
+        if (entries == decayFor0 && decayRate == decayRate0) return decay0;
+        if (entries == decayFor1 && decayRate == decayRate1) return decay1;
+        double[] weights = decayWeights(entries);
+        decayFor1 = decayFor0;
+        decay1 = decay0;
+        decayRate1 = decayRate0;
+        decayFor0 = entries;
+        decay0 = weights;
+        decayRate0 = decayRate;
+        return weights;
+    }
+
+    /** {@link #getDecayWeights} without the cache. */
+    private double[] decayWeights(List<? extends KdTree.Entry<? extends Timestamped>> entries) {
+        int n = entries.size();
+        double[] weights = new double[n];
         if (decayRate == 0.0) {
-            for (KdTree.Entry<? extends Timestamped> entry : entries) {
-                weightMap.put(entry.value, 1.0);
-            }
-        } else {
-            Timestamped[] sorted = new Timestamped[numScans];
-            for (int i = 0; i < numScans; i++) {
-                sorted[i] = entries.get(i).value;
-            }
-            Arrays.sort(sorted);
-            // The newest weighs 1 and each older one decayRate times less. Walking from the
-            // newest repeats 1.20's divisions in the same order, so the weights are
-            // bit-identical, in linear time rather than quadratic.
-            double w = 1.0;
-            for (int i = numScans - 1; i >= 0; i--) {
-                weightMap.put(sorted[i], w);
-                w /= decayRate;
-            }
+            Arrays.fill(weights, 1.0);
+            return weights;
         }
-        return weightMap;
+        // The entries' indices in a stable order of their values, oldest first. A stable sort
+        // has one answer, so this is the order Arrays.sort gave the values themselves.
+        int[] order = new int[n];
+        for (int i = 0; i < n; i++) order[i] = i;
+        sortStable(order, entries);
+        // The newest weighs 1 and each older one decayRate times less. Walking from the
+        // newest repeats 1.20's divisions in the same order, so the weights are
+        // bit-identical, in linear time rather than quadratic.
+        double w = 1.0;
+        for (int i = n - 1; i >= 0; i--) {
+            weights[order[i]] = w;
+            w /= decayRate;
+        }
+        // The same value twice is one map key, which kept the weight of its oldest position
+        // (the last one written). Copies sort next to each other, among entries of equal age.
+        for (int i = 0; i < n; ) {
+            int end = i + 1;
+            Timestamped v = entries.get(order[i]).value;
+            while (end < n && entries.get(order[end]).value.compareTo(v) == 0) end++;
+            for (int a = i; a < end; a++) {
+                Timestamped va = entries.get(order[a]).value;
+                for (int b = a + 1; b < end; b++) {
+                    if (entries.get(order[b]).value == va) weights[order[b]] = weights[order[a]];
+                }
+            }
+            i = end;
+        }
+        return weights;
+    }
+
+    /** Insertion sort of {@code order} by the entries' values: stable, and quick for a neighbour list. */
+    private static void sortStable(int[] order, List<? extends KdTree.Entry<? extends Timestamped>> entries) {
+        for (int i = 1; i < order.length; i++) {
+            int idx = order[i];
+            Timestamped v = entries.get(idx).value;
+            int j = i - 1;
+            while (j >= 0 && entries.get(order[j]).value.compareTo(v) > 0) {
+                order[j + 1] = order[j];
+                j--;
+            }
+            order[j + 1] = idx;
+        }
     }
 }

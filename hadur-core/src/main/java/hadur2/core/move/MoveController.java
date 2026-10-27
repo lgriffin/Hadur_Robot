@@ -911,12 +911,12 @@ public class MoveController {
                 on[i] = true;
                 List<KdTree.Entry<TimestampedGuessFactor>> neighbors =
                     getNearestNeighbors(view, w, FORENSICS_CACHE);
-                Map<Timestamped, Double> weightMap = view.getDecayWeights(neighbors);
+                double[] decay = view.getDecayWeights(neighbors);
                 double[] scan = new double[neighbors.size()];
                 double[] angle = new double[neighbors.size()];
                 for (int k = 0; k < scan.length; k++) {
                     KdTree.Entry<TimestampedGuessFactor> entry = neighbors.get(k);
-                    scan[k] = weightMap.get(entry.value)
+                    scan[k] = decay[k]
                         / Math.sqrt(Math.max(entry.distance, MIN_DISTANCE)) * entry.value.weight();
                     angle[k] = w.firingAngle(entry.value.guessFactor);
                 }
@@ -1181,18 +1181,19 @@ public class MoveController {
 
             List<KdTree.Entry<TimestampedGuessFactor>> neighbors =
                 getNearestNeighbors(view, w, surfWaveIndex);
-            Map<Timestamped, Double> weightMap = view.getDecayWeights(neighbors);
+            double[] decay = view.getDecayWeights(neighbors);
 
             double density = 0;
             double viewScanWeight = 0;
-            for (KdTree.Entry<TimestampedGuessFactor> entry : neighbors) {
+            for (int k = 0; k < decay.length; k++) {
+                KdTree.Entry<TimestampedGuessFactor> entry = neighbors.get(k);
                 TimestampedGuessFactor tsgf = entry.value;
                 // ADAPT-3: a seeded sample counts for its seed's weight, a live one for 1.
                 // entry.distance is the squared weighted distance, so this divides by the
                 // Euclidean distance: nearer situations count for more.
                 // An exact feature match has distance 0; the floor keeps the weight finite
                 // (#50 item 4) while still letting that neighbour dominate.
-                double scanWeight = weightMap.get(tsgf)
+                double scanWeight = decay[k]
                     / Math.sqrt(Math.max(entry.distance, MIN_DISTANCE)) * tsgf.weight();
                 // The neighbour's guess factor as an angle on this wave, unwrapped near ours.
                 double xFiringAngle = DiaUtils.normalizeAngle(
@@ -1249,12 +1250,13 @@ public class MoveController {
             if (view.effectiveSize() == 0 || !viewOn(view, estimate)) continue;
             List<KdTree.Entry<TimestampedGuessFactor>> neighbors =
                 getNearestNeighbors(view, w, surfWaveIndex);
-            Map<Timestamped, Double> weightMap = view.getDecayWeights(neighbors);
+            double[] decay = view.getDecayWeights(neighbors);
             double density = 0;
             double viewScanWeight = 0;
-            for (KdTree.Entry<TimestampedGuessFactor> entry : neighbors) {
+            for (int k = 0; k < decay.length; k++) {
+                KdTree.Entry<TimestampedGuessFactor> entry = neighbors.get(k);
                 TimestampedGuessFactor tsgf = entry.value;
-                double scanWeight = weightMap.get(tsgf)
+                double scanWeight = decay[k]
                     / Math.sqrt(Math.max(entry.distance, MIN_DISTANCE)) * tsgf.weight();
                 double xFiringAngle = DiaUtils.normalizeAngle(
                     w.firingAngle(tsgf.guessFactor), dangerAngle);
@@ -1363,10 +1365,11 @@ public class MoveController {
             double viewWeight = effectiveWeight(vi);
             List<KdTree.Entry<TimestampedGuessFactor>> neighbors =
                 getNearestNeighbors(view, w, surfWaveIndex);
-            Map<Timestamped, Double> weightMap = view.getDecayWeights(neighbors);
-            for (KdTree.Entry<TimestampedGuessFactor> entry : neighbors) {
+            double[] decay = view.getDecayWeights(neighbors);
+            for (int k = 0; k < decay.length; k++) {
+                KdTree.Entry<TimestampedGuessFactor> entry = neighbors.get(k);
                 TimestampedGuessFactor tsgf = entry.value;
-                double scanWeight = weightMap.get(tsgf)
+                double scanWeight = decay[k]
                     / Math.sqrt(Math.max(entry.distance, MIN_DISTANCE)) * tsgf.weight();
                 double add = viewWeight * scanWeight;
                 if (!(add > 0)) continue;

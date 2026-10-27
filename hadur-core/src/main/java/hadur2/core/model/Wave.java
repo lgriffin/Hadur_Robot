@@ -846,13 +846,26 @@ public class Wave implements Cloneable {
         // starts, already contains all four corners: then no part of the box is left ahead
         // of it. The farthest point of an axis-aligned box from any outside point is a
         // corner, so the corners suffice.
+        // The corners are worked out here rather than built as points: this test runs for every
+        // predicted surf tick. Same corners, same order and same arithmetic as botCorners and
+        // Point2D.distanceSq, so the answer is bit for bit the same.
         double startBulletDistance = distanceTraveled(currentState.time);
-        for (Point2D.Double corner : currentState.botCorners()) {
-            if (corner.distanceSq(sourceLocation) > DiaUtils.square(startBulletDistance)) {
-                return WavePosition.BREAKING_CENTER;
-            }
+        double x = currentState.location.x, y = currentState.location.y;
+        double h = RobotState.BOT_HALF_WIDTH;
+        if (cornerDistanceSq(x - h, y - h) > DiaUtils.square(startBulletDistance)
+                || cornerDistanceSq(x - h, y + h) > DiaUtils.square(startBulletDistance)
+                || cornerDistanceSq(x + h, y - h) > DiaUtils.square(startBulletDistance)
+                || cornerDistanceSq(x + h, y + h) > DiaUtils.square(startBulletDistance)) {
+            return WavePosition.BREAKING_CENTER;
         }
         return WavePosition.GONE;
+    }
+
+    /** {@code new Point2D.Double(cx, cy).distanceSq(sourceLocation)}, without the point. */
+    private double cornerDistanceSq(double cx, double cy) {
+        double px = sourceLocation.x - cx;
+        double py = sourceLocation.y - cy;
+        return px * px + py * py;
     }
 
     /**
@@ -864,10 +877,13 @@ public class Wave implements Cloneable {
         if (point.x > x - 18 && point.x < x + 18 && point.y > y - 18 && point.y < y + 18) {
             return 0;
         }
+        // botSides' four segments, in its order, measured with the static form of the same
+        // Line2D method its segments would call, so no segment objects are built.
         double distance = Double.POSITIVE_INFINITY;
-        for (Line2D.Double side : state.botSides()) {
-            distance = Math.min(distance, side.ptSegDist(point));
-        }
+        distance = Math.min(distance, Line2D.ptSegDist(x - 18, y - 18, x + 18, y - 18, point.x, point.y));
+        distance = Math.min(distance, Line2D.ptSegDist(x + 18, y - 18, x + 18, y + 18, point.x, point.y));
+        distance = Math.min(distance, Line2D.ptSegDist(x + 18, y + 18, x - 18, y + 18, point.x, point.y));
+        distance = Math.min(distance, Line2D.ptSegDist(x - 18, y + 18, x - 18, y - 18, point.x, point.y));
         return distance;
     }
 
@@ -899,16 +915,18 @@ public class Wave implements Cloneable {
             // The ring the bullet sweeps during the next tick, as in checkWavePosition.
             double waveStartR = bulletSpeed * (state.time - fireTime);
             double waveEndR = bulletSpeed * (state.time - fireTime + 1);
-            for (Point2D.Double corner : state.botCorners()) {
-                double cornerDist = corner.distance(sourceLocation);
-                if (cornerDist <= waveEndR && cornerDist >= waveStartR) {
-                    aimAngles.add(DiaUtils.absoluteBearing(sourceLocation, corner));
-                }
-            }
-            for (Line2D.Double side : state.botSides()) {
-                addCircleLineIntersections(aimAngles, sourceLocation, waveStartR, side);
-                addCircleLineIntersections(aimAngles, sourceLocation, waveEndR, side);
-            }
+            // botCorners' and botSides' points in their order, worked out here so no point or
+            // segment is built unless its angle is kept; the arithmetic is theirs, bit for bit.
+            double x = state.location.x, y = state.location.y;
+            double h = RobotState.BOT_HALF_WIDTH;
+            addCorner(aimAngles, x - h, y - h, waveStartR, waveEndR);
+            addCorner(aimAngles, x - h, y + h, waveStartR, waveEndR);
+            addCorner(aimAngles, x + h, y - h, waveStartR, waveEndR);
+            addCorner(aimAngles, x + h, y + h, waveStartR, waveEndR);
+            addSide(aimAngles, x - 18, y - 18, x + 18, y - 18, waveStartR, waveEndR);
+            addSide(aimAngles, x + 18, y - 18, x + 18, y + 18, waveStartR, waveEndR);
+            addSide(aimAngles, x + 18, y + 18, x - 18, y + 18, waveStartR, waveEndR);
+            addSide(aimAngles, x - 18, y + 18, x - 18, y - 18, waveStartR, waveEndR);
         }
         if (aimAngles.isEmpty()) return null;
 
@@ -929,18 +947,38 @@ public class Wave implements Cloneable {
     }
 
     /**
+     * Adds the bearing of the hit-box corner ({@code cx}, {@code cy}) when it lies in the ring
+     * [{@code inner}, {@code outer}] round the source; the distance is Point2D.distance's.
+     */
+    private void addCorner(List<Double> angles, double cx, double cy, double inner, double outer) {
+        double px = sourceLocation.x - cx;
+        double py = sourceLocation.y - cy;
+        double cornerDist = Math.sqrt(px * px + py * py);
+        if (cornerDist <= outer && cornerDist >= inner) {
+            angles.add(DiaUtils.absoluteBearing(sourceLocation, new Point2D.Double(cx, cy)));
+        }
+    }
+
+    /** A hit-box side's crossings of both of the ring's circles, inner first. */
+    private void addSide(List<Double> angles, double x1, double y1, double x2, double y2,
+                         double inner, double outer) {
+        addCircleLineIntersections(angles, sourceLocation, inner, x1, y1, x2, y2);
+        addCircleLineIntersections(angles, sourceLocation, outer, x1, y1, x2, y2);
+    }
+
+    /**
      * Adds to {@code angles} the bearing from {@code center} of each point where the circle
      * of {@code radius} about {@code center} crosses the segment {@code line}.
      */
     private static void addCircleLineIntersections(List<Double> angles,
-            Point2D.Double center, double radius, Line2D.Double line) {
+            Point2D.Double center, double radius, double x1, double y1, double x2, double y2) {
         // Points on the segment are P(t) = P1 + t * d for t in [0, 1]. Setting
         // |P(t) - center|^2 = radius^2 gives the quadratic a t^2 + b t + c = 0 below, with
         // f = P1 - center.
-        double dx = line.x2 - line.x1;
-        double dy = line.y2 - line.y1;
-        double fx = line.x1 - center.x;
-        double fy = line.y1 - center.y;
+        double dx = x2 - x1;
+        double dy = y2 - y1;
+        double fx = x1 - center.x;
+        double fy = y1 - center.y;
         double a = dx * dx + dy * dy;
         double b = 2 * (fx * dx + fy * dy);
         double c = fx * fx + fy * fy - radius * radius;
@@ -953,12 +991,12 @@ public class Wave implements Cloneable {
         // Only roots within [0, 1] lie on the segment itself.
         if (t1 >= 0 && t1 <= 1) {
             angles.add(DiaUtils.absoluteBearing(center,
-                new Point2D.Double(line.x1 + t1 * dx, line.y1 + t1 * dy)));
+                new Point2D.Double(x1 + t1 * dx, y1 + t1 * dy)));
         }
         // A tangent gives a double root; add its point only once.
         if (t2 >= 0 && t2 <= 1 && Math.abs(t2 - t1) > 1e-10) {
             angles.add(DiaUtils.absoluteBearing(center,
-                new Point2D.Double(line.x1 + t2 * dx, line.y1 + t2 * dy)));
+                new Point2D.Double(x1 + t2 * dx, y1 + t2 * dy)));
         }
     }
 
