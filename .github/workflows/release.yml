@@ -85,6 +85,13 @@ jobs:
         # battles are logged with their health records.
         run: |
           grep -q "^set V1 = " hadur-bench/plans/live-watch.queue
+          if grep -q "^set QUALIFIED = no" hadur-bench/plans/live-watch.queue; then
+            {
+              echo "### Next on the PC"
+              echo "Do NOT run the release watch: the PC is not qualified (QUALIFIED = no in hadur-bench/plans/live-watch.queue). Keep the PC's RoboRumble clients off the live rumble."
+            } >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
           {
             echo "### Next on the PC"
             echo "Close any RoboRumble client started by hand, then run the release watch, which starts the clients itself:"
