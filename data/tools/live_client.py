@@ -7,6 +7,8 @@
     python3 data/tools/live_client.py profiles DIR [--out TSV]
     python3 data/tools/live_client.py page-diff OLD NEW
     python3 data/tools/live_client.py report OUT [--md FILE]
+    python3 data/tools/live_client.py clients --launch FOLDER:LAUNCHER [...] --out DIR [--root DIR]
+        [--restart-minutes 15] [--wait-minutes 10] [--hours 0]
 
 DIR is a RoboRumble client's Robocode folder (the one holding roborumble.bat). OUT is the
 folder a watch writes into; it can be stopped and started again on the same OUT.
@@ -31,6 +33,14 @@ after (page.tsv, page_events.tsv; every client's uploads, not only this one's). 
 
 report (BENCH-88): reads a watch folder and prints the battle, skipped-turn, shield-verdict
 and live-page summaries, joining each 1v1 battle to its health record.
+
+clients (BENCH-121), or watch with --launch: starts each RoboRumble client (FOLDER:LAUNCHER, e.g.
+rr01:roborumble.bat or C:/robocode:meleerumble.bat), writes its console to consoles/LABEL-UTC.log per
+start, logs Hadur's console lines (disabled for a stall, thread not stoppable, skipped turn) to
+client-events.tsv, and restarts each client every --restart-minutes at its first battle end or upload
+after that (no battle cut), or after --wait-minutes more if none ends (counted as cut). A long-running
+client's skipped turns climbed from 4 to 87 a battle over 75 minutes (3.17 run 2, PR #331). All
+clients stop when the watch ends.
 
 page-diff: the page step on two saved pages (.mht, .html or a parsed .csv).
 Standard library only; runs on Windows and Linux.
@@ -778,6 +788,11 @@ class Watch:
 
 def cmd_watch(args):
     DATA_OVERRIDE[:] = args.data
+    if args.launch and not args.client:
+        args.client = sorted({folder for _, folder, _ in (parse_launch(x, args.root) for x in args.launch)})
+    if not args.client:
+        print("watch needs --client or --launch", file=sys.stderr)
+        return 2
     for c in args.client:
         if not os.path.isdir(c):
             print(f"no such client folder: {c}", file=sys.stderr)
@@ -792,6 +807,12 @@ def cmd_watch(args):
 
     since = first_start(args.out) if args.new_only else None
     w = Watch(args.client, args.out, args.page, log, args.robot, since)
+    clients = None
+    if args.launch:
+        # BENCH-121: the watch runs the clients itself, restarting each on a schedule.
+        clients = Clients([parse_launch(x, args.root) for x in args.launch], args.out,
+                          args.restart_minutes * 60, args.wait_minutes * 60, log)
+        clients.start_all()
     for c in args.client:
         log(f"{utc_now()} client {c}: results {client_results_files(c)}, data {hadur_data_dirs(c) or 'none yet'}")
     end = time.time() + args.hours * 3600 if args.hours > 0 else None
@@ -802,6 +823,8 @@ def cmd_watch(args):
     try:
         while (end is None or time.time() < end) and (done_at is None or time.time() < done_at):
             now = time.time()
+            if clients:
+                clients.poll()
             # The page first: a battle is a collapse against its pairing's live score.
             if args.page and now >= next_page:
                 w.poll_pages()
@@ -827,6 +850,213 @@ def cmd_watch(args):
         w.snapshot_profiles()
     except KeyboardInterrupt:
         log(f"{utc_now()} stopped")
+    finally:
+        if clients:
+            clients.stop_all()
+    return 0
+
+
+# ---------------------------------------------------------------- clients (BENCH-121)
+
+# Console lines worth counting, each a client's own line about a Hadur robot. The engine prints
+# the first when it disables a robot for a stall, the second when it then fails to stop the
+# robot's thread (that join runs on the robot's own thread, so it always fails and the thread
+# ends by itself), the third for each turn a robot misses.
+CONSOLE_EVENTS = [
+    ("idle", re.compile(r"has not performed any actions? in a reasonable amount of time", re.I)),
+    ("unstoppable", re.compile(r"Unable to stop thread", re.I)),
+    ("skipped", re.compile(r"skipped turn", re.I)),
+]
+CLIENT_EVENT_COLUMNS = ["utc", "client", "event", "detail"]
+# Which results file each launcher fills, by a word in the file name.
+RESULTS_WORD = {"roborumble": "1v1", "meleerumble": "melee", "teamrumble": "team", "twinduel": "twinduel"}
+
+
+def parse_launch(spec, root):
+    """ "rr01:roborumble.bat" -> (label, folder, launcher); the folder is under root."""
+    folder, _, launcher = spec.rpartition(":")  # a Windows folder has its own colon
+    if not folder or not launcher:
+        raise ValueError(f"--launch {spec!r}: expected FOLDER:LAUNCHER, e.g. rr01:roborumble.bat")
+    name = os.path.splitext(os.path.basename(launcher))[0]
+    return f"{os.path.basename(os.path.normpath(folder))}-{name}", os.path.join(root, folder), launcher
+
+
+def results_signature(paths):
+    """What changes when a client finishes a battle or uploads: each results file's size and mtime."""
+    sig = []
+    for p in paths:
+        try:
+            st = os.stat(p)
+            sig.append((p, st.st_size, st.st_mtime))
+        except OSError:
+            sig.append((p, None, None))
+    return tuple(sig)
+
+
+def popen_client(launcher, cwd, console):
+    import subprocess
+    if os.name == "nt":
+        return subprocess.Popen(["cmd", "/c", launcher], cwd=cwd, stdout=console, stderr=subprocess.STDOUT,
+                                stdin=subprocess.DEVNULL, creationflags=subprocess.CREATE_NEW_PROCESS_GROUP)
+    return subprocess.Popen(["sh", launcher] if launcher.endswith(".sh") else launcher, cwd=cwd, stdout=console,
+                            stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL, start_new_session=True,
+                            shell=not launcher.endswith(".sh"))
+
+
+def kill_tree(proc):
+    """The launcher and the Robocode JVM under it; by pid, never by name."""
+    import signal
+    import subprocess
+    if proc.poll() is not None:
+        return
+    if os.name == "nt":
+        subprocess.run(["taskkill", "/PID", str(proc.pid), "/T", "/F"], capture_output=True)
+    else:
+        try:
+            os.killpg(proc.pid, signal.SIGKILL)
+        except OSError:
+            pass
+    try:
+        proc.wait(timeout=30)
+    except Exception:
+        pass
+
+
+class Clients:
+    """BENCH-121: runs the RoboRumble clients, each console to its own file per start, and restarts
+    each one every restart_s seconds, at the first battle end (or upload) after it is due, so no
+    battle is cut; a client that finishes none within wait_s is restarted anyway and counted as cut."""
+
+    def __init__(self, launches, out, restart_s, wait_s=600.0, log=print, spawn=popen_client,
+                 kill=kill_tree, clock=time.time, robot_words=("hadur2.",)):
+        self.launches, self.out, self.restart_s, self.wait_s = launches, out, restart_s, wait_s
+        self.log, self.spawn, self.kill, self.clock, self.words = log, spawn, kill, clock, robot_words
+        self.consoles = os.path.join(out, "consoles")
+        os.makedirs(self.consoles, exist_ok=True)
+        self.state = {}
+
+    def results_paths(self, folder, launcher):
+        paths = client_results_files(folder)
+        word = RESULTS_WORD.get(os.path.splitext(os.path.basename(launcher))[0].lower())
+        mine = [p for p in paths if word and word in os.path.basename(p).lower()]
+        return mine or paths
+
+    def event(self, label, event, detail=""):
+        append_tsv(os.path.join(self.out, "client-events.tsv"), CLIENT_EVENT_COLUMNS,
+                   [{"utc": utc_of(self.clock()), "client": label, "event": event, "detail": detail}])
+
+    def start(self, label, why="start"):
+        _, folder, launcher = next(x for x in self.launches if x[0] == label)
+        stamp = utc_of(self.clock()).replace(":", "")
+        path = os.path.join(self.consoles, f"{label}-{stamp}.log")
+        console = open(path, "ab")
+        proc = self.spawn(launcher, folder, console)
+        paths = self.results_paths(folder, launcher)
+        self.state[label] = {"proc": proc, "console": console, "path": path, "read": 0, "partial": "",
+                             "started": self.clock(), "due": None, "sig": None, "paths": paths}
+        self.event(label, why, os.path.basename(path))
+        self.log(f"{utc_now()} client {label}: {why}, console {path}")
+
+    def start_all(self):
+        for label, _, _ in self.launches:
+            self.start(label)
+
+    def read_console(self, label):
+        st = self.state[label]
+        st["console"].flush()
+        try:
+            with open(st["path"], "rb") as f:
+                f.seek(st["read"])
+                data = f.read()
+        except OSError:
+            return
+        st["read"] += len(data)
+        text = st["partial"] + data.decode("utf-8", errors="replace")
+        lines = text.split("\n")
+        st["partial"] = lines.pop()
+        for line in lines:
+            if not any(w in line for w in self.words):
+                continue
+            for name, rx in CONSOLE_EVENTS:
+                if rx.search(line):
+                    self.event(label, name, line.strip()[:300])
+                    if name != "skipped":
+                        self.log(f"{utc_now()} client {label}: {name}: {line.strip()[:200]}")
+                    break
+
+    def stop(self, label, why):
+        st = self.state[label]
+        self.read_console(label)
+        self.kill(st["proc"])
+        st["console"].close()
+        self.event(label, why, f"up {self.clock() - st['started']:.0f} s")
+
+    def poll(self):
+        now = self.clock()
+        for label, _, _ in self.launches:
+            st = self.state.get(label)
+            if st is None:
+                continue
+            self.read_console(label)
+            if st["proc"].poll() is not None:
+                self.event(label, "exited", f"code {st['proc'].returncode}")
+                st["console"].close()
+                self.start(label, "start after exit")
+                continue
+            if st["due"] is None and now - st["started"] >= self.restart_s:
+                st["due"], st["sig"] = now, results_signature(st["paths"])
+            if st["due"] is not None:
+                if results_signature(st["paths"]) != st["sig"]:
+                    self.stop(label, "stop after battle")
+                    self.start(label, "restart")
+                elif now - st["due"] >= self.wait_s:
+                    self.stop(label, "stop cut")
+                    self.start(label, "restart")
+
+    def stop_all(self):
+        for label in list(self.state):
+            self.stop(label, "stop at end")
+        self.state.clear()
+
+
+def client_starts(out):
+    """Each client's start times from client-events.tsv, by its folder name."""
+    starts = {}
+    for e in read_tsv(os.path.join(out, "client-events.tsv")):
+        if e["event"].startswith("start") or e["event"] == "restart":
+            starts.setdefault(e["client"], []).append(seconds_of(e["utc"]))
+    return starts
+
+
+def uptime_of(battle, starts):
+    """Seconds the client that fought this battle had been running at its end, or None. A client
+    label is FOLDER-LAUNCHER; a battle names its folder and game, and a launcher named after the
+    game (roborumble.bat for roborumble) is the one that fought it."""
+    t = seconds_of(battle["utc"])
+    exact = starts.get(f"{battle['client']}-{battle['game']}")
+    cands = [exact] if exact else [v for k, v in starts.items() if k.split("-")[0] == battle["client"]]
+    before = [s for v in cands for s in v if s <= t]
+    return t - max(before) if before else None
+
+
+def cmd_clients(args):
+    """The clients alone, without a watch: until a STOP file in --out or --hours."""
+    launches = [parse_launch(s, args.root) for s in args.launch]
+    for _, folder, _ in launches:
+        if not os.path.isdir(folder):
+            print(f"no such client folder: {folder}", file=sys.stderr)
+            return 2
+    os.makedirs(args.out, exist_ok=True)
+    c = Clients(launches, args.out, args.restart_minutes * 60, args.wait_minutes * 60)
+    end = time.time() + args.hours * 3600 if args.hours > 0 else None
+    c.start_all()
+    try:
+        while (end is None or time.time() < end) and not os.path.exists(os.path.join(args.out, "STOP")):
+            c.poll()
+            time.sleep(args.every)
+    except KeyboardInterrupt:
+        pass
+    c.stop_all()
     return 0
 
 
@@ -930,6 +1160,45 @@ def report(out):
         if clean:
             lines.append(f"Without it: {sum(clean) / len(clean):.2f} over {len(clean)}.")
         lines.append("")
+    cevents = read_tsv(os.path.join(out, "client-events.tsv"))
+    if cevents:
+        lines.append("## Clients (BENCH-121)")
+        lines.append("")
+        lines.append("| Client | Starts | Restarts after a battle | Restarts that cut one | Exits | Idle disables | Unable to stop | Skipped-turn lines |")
+        lines.append("|---|---:|---:|---:|---:|---:|---:|---:|")
+        for label in sorted({e["client"] for e in cevents}):
+            es = [e["event"] for e in cevents if e["client"] == label]
+            lines.append(f"| {label} | {sum(1 for x in es if x.startswith('start') or x == 'restart')} | "
+                         f"{es.count('stop after battle')} | {es.count('stop cut')} | {es.count('exited')} | "
+                         f"{es.count('idle')} | {es.count('unstoppable')} | {es.count('skipped')} |")
+        lines.append("")
+        starts = client_starts(out)
+        buckets = [(0, 5), (5, 10), (10, 15), (15, 30), (30, None)]
+        rows = []
+        for b, h in joined:
+            up = uptime_of(b, starts)
+            if up is not None and h:
+                rows.append((up / 60.0, int(h["skipped"]), b["share"]))
+        if rows:
+            lines.append("1v1 battles by how long their client had been running:")
+            lines.append("")
+            lines.append("| Minutes since start | Battles | Skipped turns mean | Mean share |")
+            lines.append("|---|---:|---:|---:|")
+            for lo, hi in buckets:
+                rs = [r for r in rows if r[0] >= lo and (hi is None or r[0] < hi)]
+                if rs:
+                    sh = [r[2] for r in rs if r[2] is not None]
+                    lines.append(f"| {lo}-{hi if hi is not None else ''} | {len(rs)} | "
+                                 f"{sum(r[1] for r in rs) / len(rs):.1f} | "
+                                 f"{(sum(sh) / len(sh)) if sh else float('nan'):.2f} |")
+            lines.append("")
+        bad = [e for e in cevents if e["event"] in ("idle", "unstoppable")]
+        if bad:
+            lines.append("Disables and threads the engine could not stop:")
+            lines.append("")
+            for e in bad[-40:]:
+                lines.append(f"- {e['utc']} {e['client']} {e['event']}: {e['detail']}")
+            lines.append("")
     if profiles:
         latest = {}
         for p in profiles:
@@ -973,7 +1242,13 @@ def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     sub = ap.add_subparsers(dest="cmd", required=True)
     w = sub.add_parser("watch")
-    w.add_argument("--client", action="append", required=True)
+    w.add_argument("--client", action="append", default=[])
+    w.add_argument("--launch", action="append", default=[],
+                   help="BENCH-121: FOLDER:LAUNCHER under --root, e.g. rr01:roborumble.bat; the watch starts, logs and restarts it")
+    w.add_argument("--root", default=".", help="the folder --launch folders are under")
+    w.add_argument("--restart-minutes", type=float, default=15.0)
+    w.add_argument("--wait-minutes", type=float, default=10.0,
+                   help="after a restart is due, how long to wait for a battle end before restarting anyway")
     w.add_argument("--out", required=True)
     w.add_argument("--page", action="append", default=[], help='"game:robot version", e.g. "roborumble:hadur2.Hadur 3.11"')
     w.add_argument("--robot", action="append", default=[],
@@ -996,12 +1271,20 @@ def main(argv=None):
     d = sub.add_parser("page-diff")
     d.add_argument("old")
     d.add_argument("new")
+    c = sub.add_parser("clients")
+    c.add_argument("--launch", action="append", required=True)
+    c.add_argument("--root", default=".")
+    c.add_argument("--out", required=True)
+    c.add_argument("--restart-minutes", type=float, default=15.0)
+    c.add_argument("--wait-minutes", type=float, default=10.0)
+    c.add_argument("--every", type=float, default=5.0)
+    c.add_argument("--hours", type=float, default=0.0)
     r = sub.add_parser("report")
     r.add_argument("out")
     r.add_argument("--md")
     args = ap.parse_args(argv)
     return {"watch": cmd_watch, "profiles": cmd_profiles, "page-diff": cmd_page_diff,
-            "report": cmd_report}[args.cmd](args)
+            "report": cmd_report, "clients": cmd_clients}[args.cmd](args)
 
 
 if __name__ == "__main__":

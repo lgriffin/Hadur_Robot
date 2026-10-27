@@ -2,8 +2,13 @@
 # every release, while the RoboRumble clients run the new version, so collapsed live battles are logged
 # with their health records (skipped turns, faults, shield verdicts) instead of guessed at afterwards.
 #   ./queue.sh run live-watch        (or  .\queue.ps1 run live-watch)
-# Start the rumble clients first (start-6.bat); this card only watches them and never runs a bench, so
-# it is the one queue on the PC for its length. Edit V1 / VT below in the release PR: the versions the
+# BENCH-121: the card runs the eight RoboRumble clients itself (six 1v1 in C:/RoboRumbleWorkers/rr01..rr06,
+# melee and team in C:/robocode), so CLOSE ANY CLIENT WINDOWS STARTED BY HAND FIRST. Each client's console
+# goes to consoles/<client>-<UTC>.log per start; Hadur's console lines (disabled for a stall, thread not
+# stoppable, skipped turn) go to client-events.tsv; every RESTART minutes each client is restarted at its
+# next battle end or upload (none cut), or WAIT minutes later if none ends (counted as cut). In 3.17 run 2
+# (PR #331) clients left running climbed from 4 to 87 skipped turns a battle in 75 minutes. All eight stop
+# when the watch ends. It never runs a bench, so it is the one queue on the PC for its length. Edit V1 / VT below in the release PR: the versions the
 # 1v1/melee and team participant lines name (they can differ, as 3.17 and 3.17.1 did).
 #
 # Why these stops: about 1 live 1v1 battle in 100 collapses (7 of 659 on 3.16), and ~10 collapses with
@@ -14,8 +19,7 @@
 #   1v1 battle rate hourly. To finish early, create a file named STOP in the watch folder (data/live/
 #   release-<V1>-run<RUN>/STOP): the watch ends as if it had hit a count, and report and pr run. Ctrl-C instead
 #   interrupts the step, so report and pr do not run; re-running the card resumes the watch.
-# watch: data/tools/live_client.py watch over every client folder that exists
-#   under C:/RoboRumbleWorkers (rr01..rr06), with the three live pages; it resumes across restarts
+# watch: data/tools/live_client.py watch over the eight clients it runs, with the three live pages; it resumes across restarts
 #   (BENCH-86), so re-running the step after a reboot keeps every battle already recorded.
 # --new-only: only battles fought after the watch first started (started.txt); the first 3.17 run
 #   took yesterday's battles still in the clients' results files.
@@ -29,15 +33,19 @@ set HOURS = 72
 set COLLAPSES = 10
 set DUELS = 1000
 set CLIENTS = C:/RoboRumbleWorkers
+set ONES = rr01 rr02 rr03 rr04 rr05 rr06
+set MAIN = C:/robocode
+set RESTART = 15
+set WAIT = 10
 # RUN: 1 for a release's first watch; raise it to watch the same release again in a fresh folder
 # and results branch (the first 3.17 run, PR #318, is in release-3.17).
 set RUN = 3
 set W = ../data/live/release-${V1}-run${RUN}
 
-watch | mkdir -p ${W} && rm -f ${W}/STOP && $(command -v python3 || command -v python) ../data/tools/live_client.py watch $(for d in ${CLIENTS}/rr0*; do [ -d "$d" ] && printf -- '--client %s ' "$d"; done) --out ${W} --page "roborumble:hadur2.Hadur ${V1}" --page "meleerumble:hadur2.Hadur ${V1}" --page "teamrumble:hadur2.HadurTeam ${VT}" --robot "hadur2.Hadur ${V1}" --robot "hadur2.HadurTeam ${VT}" --new-only --stop-collapses ${COLLAPSES} --stop-battles ${DUELS} --hours ${HOURS}
+watch | mkdir -p ${W} && rm -f ${W}/STOP && $(command -v python3 || command -v python) ../data/tools/live_client.py watch --root ${CLIENTS} $(for d in ${ONES}; do printf -- '--launch %s:roborumble.bat ' "$d"; done) --launch ${MAIN}:meleerumble.bat --launch ${MAIN}:teamrumble.bat --restart-minutes ${RESTART} --wait-minutes ${WAIT} --out ${W} --page "roborumble:hadur2.Hadur ${V1}" --page "meleerumble:hadur2.Hadur ${V1}" --page "teamrumble:hadur2.HadurTeam ${VT}" --robot "hadur2.Hadur ${V1}" --robot "hadur2.HadurTeam ${VT}" --new-only --stop-collapses ${COLLAPSES} --stop-battles ${DUELS} --hours ${HOURS}
 
 report | $(command -v python3 || command -v python) ../data/tools/live_client.py report ${W} --md ${W}/report.md
   after: watch
 
-pr | bash tools/open_results_pr.sh claude/live-watch-${V1}-run${RUN}-results "Release watch: live battles and health records of ${V1} / team ${VT}" $(ls ${W}/*.tsv ${W}/report.md ${W}/watch.log 2>/dev/null) $(find ${W}/profiles -name '*.tsv' -size +0c 2>/dev/null)
+pr | bash tools/open_results_pr.sh claude/live-watch-${V1}-run${RUN}-results "Release watch: live battles and health records of ${V1} / team ${VT}" $(ls ${W}/*.tsv ${W}/report.md ${W}/watch.log 2>/dev/null) $(find ${W}/consoles -name '*.log' -size +0c 2>/dev/null) $(find ${W}/profiles -name '*.tsv' -size +0c 2>/dev/null)
   after: report
