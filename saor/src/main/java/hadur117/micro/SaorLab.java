@@ -72,7 +72,7 @@ public class SaorLab extends AdvancedRobot {
         if (Selection.holdRadar(getGunHeat())) {
             setTurnRadarRightRadians(Selection.radarTurn(bearing, getRadarHeadingRadians()));
         }
-        double power = Energy.power(getEnergy(), targetDistance = distance, getOthers());
+        double power = Energy.power(getEnergy(), targetDistance = distance);
         if (Energy.fire(getGunTurnRemaining())) {
             // The engine drops the order while the gun is hot; count only the ones it can fire.
             if (getGunHeat() == 0 && getEnergy() > 0) {
@@ -87,9 +87,7 @@ public class SaorLab extends AdvancedRobot {
             char[][] table = Targeting.table(markov, name.hashCode());
             int best = Targeting.aim(table, state, myX, myY, bearing, distance, targetHeading, velocity, power);
             setTurnGunRightRadians(Utils.normalRelativeAngle(Targeting.angle(best) - getGunHeadingRadians()));
-            if (Targeting.learn(getGunHeat())) {
-                Targeting.record(table[targetState], state);
-            }
+            Targeting.record(table[targetState], state);
         } catch (RuntimeException ex) {
             // A full row or an out-of-range state, as in the shipped class.
         }

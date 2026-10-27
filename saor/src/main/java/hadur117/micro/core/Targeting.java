@@ -167,16 +167,4 @@ public final class Targeting {
     public static double angle(int bin) {
         return bin * (Math.PI / (BINS / 2));
     }
-
-    /**
-     * Whether this scan's transition is recorded: only while the gun is cool enough that the
-     * radar is held on the target, scanning it every tick. Figment learns below 0.7; Saor 0.2
-     * learns below 0.9, which stage 4 measured at about +0.27 APS (docs/plan-saor-first.md 6e).
-     *
-     * @param gunHeat the gun's heat
-     * @return true below 0.9
-     */
-    public static boolean learn(double gunHeat) {
-        return gunHeat < 0.9;
-    }
 }

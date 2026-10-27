@@ -1,6 +1,6 @@
 # Saor
 
-`hadur117.micro.Saor` is Hadur's MicroMelee robot: 748 bytes, corner oscillation and a
+`hadur117.micro.Saor` is Hadur's MicroMelee robot: 723 bytes, corner oscillation and a
 per-opponent Markov gun that grades its trust in thin patterns. The design, the tests and the bench are in
 [docs/saor.md](../docs/saor.md). The plan to reach 1st is
 [docs/plan-saor-first.md](../docs/plan-saor-first.md).
@@ -26,7 +26,8 @@ climbed from 31st to 19th in the full MeleeRumble. Survival
 rose from 29.6% to 35.9%. The live-shaped census called it: 0.2 (stage 4's S2) read 69.83
 against Figment's 69.79 in the same run (PR #329), +0.04 against +0.06 live. Stage 5a's LA
 (learning on every scan) adds +0.45 ± 0.29 on the MicroMelee census (PR #347); stage 5b
-(`pc-saor-s05`) checks it with Figment seated before a 0.3, to turn the tie into a clear lead.
+(`pc-saor-s05`, PR #360) checked it with Figment seated: LAU (LA without the end-game power cap)
+reads +0.26 ± 0.26 over 0.2 there and +0.49 ± 0.33 on the MicroMelee census, and ships as 0.3.
 
 Bench census before 0.1's release: 66.45 ± 0.24 (PR #284). That live score is 1.6 higher,
 because the MicroMelee census is not run the way the live rumble is; the live-shaped census
@@ -42,6 +43,10 @@ The Irish flag on the rumble pages comes from one line, `hadur117,IRL`, on the r
 [RoboRumble/Country Flags](https://robowiki.net/wiki/RoboRumble/Country_Flags). Flags go by
 package, so Hadur's `hadur2,IRL` does not cover Saor's `hadur117`. Leigh adds it (2026-10-27).
 
+- [saor-v0.3](https://github.com/lgriffin/Hadur_Robot/releases/tag/saor-v0.3), 2026-10-27:
+  learning on every scan of the target and no end-game power cap, 723 bytes. The participants
+  line is
+  `hadur117.micro.Saor 0.3,https://github.com/lgriffin/Hadur_Robot/releases/download/saor-v0.3/hadur117.micro.Saor_0.3.jar`.
 - [saor-v0.2](https://github.com/lgriffin/Hadur_Robot/releases/tag/saor-v0.2), 2026-10-27:
   the graded vote, no ram leg, learning below 0.9 gun heat. On the live-shaped census it reads
   69.83 against Figment's 69.79 in the same run, +1.55 over 0.1. The participants line is

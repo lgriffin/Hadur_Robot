@@ -1701,6 +1701,7 @@ A retired requirement keeps its ID; no new requirement reuses it.
 | MELEE-8 | While two opponents within 300 px of each other, and further from us than from each other, are both losing energy to others, the strategy shall keep clear of their fight and halve fire power. | M6 | MMOVE-5 (keep clear, unchanged), MGUN-5 (full power: the M6 sweep found the posture's power cuts and holds cost score) |
 | RES-9 | If the engine has skipped three turns in a round, then the core shall run the rest of the round at a duress level that adds no samples, builds no waves, reads no neighbour tree, orbits at the distance floor and fires head-on at power 1.0 whenever the gun is cool and the fire permission is given (WEAVE-3). | D1 | RES-14 (the same duress level, which ended after 300 ticks without a skipped turn), itself retired in 3.11 (below) |
 | SAOR-9 | Where the bot has collided with a robot, the oscillation leg shall be 50 px until that robot is next scanned. | Saor 0.2 | none: stage 4 measured the ram leg level (S1 against DC, +0.03 APS), and its 13 bytes pay for SAOR-7's graded vote |
+| SAOR-8 | While fewer than 3 opponents remain, bullet power shall not exceed 1.9. | Saor 0.3 | SAOR-17 (no cap): stage 5 (pc-saor-s05, PR #360) measured LAU, no cap and learning on every target scan, at +0.49 ± 0.33 on the MicroMelee census and +0.26 ± 0.26 live-shaped |
 | RES-14 | If the engine has skipped three turns in a round, then the core shall run at the duress level RES-9 defines until 300 ticks have passed without a skipped turn. | 3.11 | none: a round is never in duress, and skipped turns still shed levels (TIME-2) and teach the allowance (TIME-3). 3.11 census (docs/plan-3.11-census.md): duress cost +0.73 APS on the whole field and 37 points of share on a slow client |
 
 ### R6 notes
@@ -1827,7 +1828,7 @@ A retired requirement keeps its ID; no new requirement reuses it.
 - **BENCH-123.** `tools/team_modes.py screens`, `pick --counters --low-end`; build-ablation `tmtab`
   takes `$TEAM_MODE_SUFFIX`; card plans/pc-team-counters.queue.
 
-## Saor, a MicroMelee entry (SAOR-1 to SAOR-15, stages U0 to U5)
+## Saor, a MicroMelee entry (SAOR-1 to SAOR-17, stages U0 to U6)
 
 `hadur117.micro.Saor`, a separate robot in the `saor` module, built from the spec "MicroMelee
 Rumble Entry" (https://claude.ai/artifact/ANvBYVXHDXn3PePmWPu5J1). Its stages U0 to U5 are the
@@ -1843,7 +1844,6 @@ docs/saor.md. Nothing in Hadur's modules depends on it, and it on nothing of Had
 | SAOR-5 | State | While gun heat is below 1, the bot shall hold the radar on the target to within one scan width. | U1 |
 | SAOR-6 | State | While the Markov row for the opponent's current state holds no sample, the gun shall aim by circular projection, holding that state's speed and turn rate. | U2 |
 | SAOR-7 | State | While that row holds a sample, the gun shall aim by Monte-Carlo playout of the opponent's Markov chain and a vote in angle bins, where a playout through a row of fewer than 8 samples votes at most 5 plus 12 for each sample of that row. | U3 |
-| SAOR-8 | State | While fewer than 3 opponents remain, bullet power shall not exceed 1.9. | U4 |
 | SAOR-10 | Unwanted | If gun turn remaining is non-zero, then the bot shall not fire. | U1 |
 | SAOR-11 | Unwanted | If Robocode's codesize tool reports more than 749 bytes for the shipped jar, then the build shall fail. | U0 |
 | SAOR-12 | Ubiquitous | Before release, the bot shall score 66.0 APS or more over the 155 MicroMelee pairings at 35 rounds on a 1000 x 1000 field. | U3 |
@@ -1851,6 +1851,7 @@ docs/saor.md. Nothing in Hadur's modules depends on it, and it on nothing of Had
 | SAOR-14 | Ubiquitous | Against Wallaby 5.1 in the same setup, the bot shall out-score it on bullet damage in 50% or more of battles. | U3 |
 | SAOR-15 | Ubiquitous | The shipped class shall give the same orders as the bench adapter, which drives the core, for the same events. | U0 |
 | SAOR-16 | Ubiquitous | The live-shaped census shall run fields drawn from the whole MeleeRumble list and score the seated robot only on its pairings against MicroMelee robots, as LiteRumble scores MicroMelee. | U6 |
+| SAOR-17 | Ubiquitous | Bullet power shall be log10(energy) times 325 over the target's distance, with no cap but the engine's. | U4 |
 
 ### Saor notes
 
@@ -1864,7 +1865,10 @@ docs/saor.md. Nothing in Hadur's modules depends on it, and it on nothing of Had
 - **Saor 0.2** (docs/plan-saor-first.md 6c-6e). SAOR-6 and SAOR-7 now state the graded vote:
   0.1 held the state until a row had 8 samples, which stage 1 measured at -1.35 APS. SAOR-9, the
   ram leg, is retired (see the retired table).
-- **Coverage.** SAOR-1 to SAOR-10 (SAOR-9 retired) by property tests and Cucumber on the core, SAOR-6, SAOR-7 and
+- **Saor 0.3** (stage 5, PR #360). SAOR-8, the end-game power cap, is retired for SAOR-17, and
+  the gun learns a transition on every scan of its target, not only below 0.9 gun heat (no
+  requirement named the gate).
+- **Coverage.** SAOR-1 to SAOR-10 (SAOR-8 and SAOR-9 retired) and SAOR-17 by property tests and Cucumber on the core, SAOR-6, SAOR-7 and
   SAOR-15 also by the equivalence test on the robots, SAOR-11 and SAOR-15 on the shipped jar by
   `SaorJarIT` (failsafe, after ProGuard). SAOR-12 to SAOR-14 are bench gates: what is covered here
   is their evaluator, `hadur-bench/tools/saor_gates.py`, by `test_saor_gates.py`; whether they
