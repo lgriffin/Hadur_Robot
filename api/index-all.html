@@ -222,9 +222,15 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur117/micro/core/Targeting.html#aim(char%5B%5D%5B%5D,int,double,double,double,double,double,double,double)" class="member-name-link">aim(char[][], int, double, double, double, double, double, double, double)</a> - Static method in class hadur117.micro.core.<a href="hadur117/micro/core/Targeting.html" title="class in hadur117.micro.core">Targeting</a></dt>
 <dd>
-<div class="block">Aims: <a href="hadur117/micro/core/Targeting.html#PLAYOUTS"><code>PLAYOUTS</code></a> playouts of the chain from the target's state until a bullet of
+<div class="block">Aims: <a href="hadur117/micro/core/Targeting.html#PLAYOUTS"><code>Targeting.PLAYOUTS</code></a> playouts of the chain from the target's state until a bullet of
  <code>power</code> would reach it, each voted into nine bins with one more vote at its centre,
  so a plateau of tied bins resolves to a playout's own bin rather than to its left edge.</div>
+</dd>
+<dt><a href="hadur117/twin/core/Gun.html#aim(char%5B%5D%5B%5D,int,int,double,double,double,double,double,double,double)" class="member-name-link">aim(char[][], int, int, double, double, double, double, double, double, double)</a> - Static method in class hadur117.twin.core.<a href="hadur117/twin/core/Gun.html" title="class in hadur117.twin.core">Gun</a></dt>
+<dd>
+<div class="block">Aims: <a href="hadur117/twin/core/Gun.html#PLAYOUTS"><code>Gun.PLAYOUTS</code></a> playouts of the chain from the scanned state until a bullet of
+ <code>power</code> fired from (<code>x</code>, <code>y</code>) on the next tick would reach the robot,
+ each voted into nine bins with one more vote at its centre.</div>
 </dd>
 <dt><a href="hadur2/core/gun/TripHammerGun.html#aim(hadur2.core.model.Wave,hadur2.core.knn.KnnView)" class="member-name-link">aim(Wave, KnnView&lt;TimestampedFiringAngle&gt;)</a> - Method in class hadur2.core.gun.<a href="hadur2/core/gun/TripHammerGun.html" title="class in hadur2.core.gun">TripHammerGun</a></dt>
 <dd>
@@ -374,6 +380,10 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="hadur2/core/world/Roster.Mate.html#alive()" class="member-name-link">alive()</a> - Method in class hadur2.core.world.<a href="hadur2/core/world/Roster.Mate.html" title="class in hadur2.core.world">Roster.Mate</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur117/twin/SaorTwin.html#ALIVE" class="member-name-link">ALIVE</a> - Static variable in class hadur117.twin.<a href="hadur117/twin/SaorTwin.html" title="class in hadur117.twin">SaorTwin</a></dt>
+<dd>
+<div class="block">Record fields.</div>
+</dd>
 <dt><a href="hadur/bench/Exclusions.Tally.html#all()" class="member-name-link">all()</a> - Method in record class hadur.bench.<a href="hadur/bench/Exclusions.Tally.html" title="class in hadur.bench">Exclusions.Tally</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur2/core/melee/OpponentStatsBook.html#all()" class="member-name-link">all()</a> - Method in class hadur2.core.melee.<a href="hadur2/core/melee/OpponentStatsBook.html" title="class in hadur2.core.melee">OpponentStatsBook</a></dt>
@@ -655,6 +665,8 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="hadur117/micro/SaorLab.html#axis" class="member-name-link">axis</a> - Static variable in class hadur117.micro.<a href="hadur117/micro/SaorLab.html" title="class in hadur117.micro">SaorLab</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur117/twin/SaorTwin.html#axis" class="member-name-link">axis</a> - Static variable in class hadur117.twin.<a href="hadur117/twin/SaorTwin.html" title="class in hadur117.twin">SaorTwin</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="hadur117/micro/core/Movement.html#axis(int,double)" class="member-name-link">axis(int, double)</a> - Static method in class hadur117.micro.core.<a href="hadur117/micro/core/Movement.html" title="class in hadur117.micro.core">Movement</a></dt>
 <dd>
 <div class="block">The axis after this tick: flipped when the last leg is done.</div>
@@ -882,6 +894,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Angle bins in a full circle; a power of two so a bin wraps with a mask.</div>
 </dd>
+<dt><a href="hadur117/twin/core/Gun.html#BINS" class="member-name-link">BINS</a> - Static variable in class hadur117.twin.core.<a href="hadur117/twin/core/Gun.html" title="class in hadur117.twin.core">Gun</a></dt>
+<dd>
+<div class="block">Angle bins in a full circle.</div>
+</dd>
 <dt><a href="hadur2/core/move/StopPointSurf.html#BINS" class="member-name-link">BINS</a> - Static variable in class hadur2.core.move.<a href="hadur2/core/move/StopPointSurf.html" title="class in hadur2.core.move">StopPointSurf</a></dt>
 <dd>
 <div class="block">Bins over guess factors [-1, 1] (BeepBoop uses 151).</div>
@@ -1043,6 +1059,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur2/core/model/Wave.WavePosition.html#BREAKING_FRONT" class="member-name-link">BREAKING_FRONT</a> - Enum constant in enum class hadur2.core.model.<a href="hadur2/core/model/Wave.WavePosition.html" title="enum class in hadur2.core.model">Wave.WavePosition</a></dt>
 <dd>
 <div class="block">The next move reaches the box but not its centre.</div>
+</dd>
+<dt><a href="hadur117/twin/SaorTwin.html#broadcast(double%5B%5D)" class="member-name-link">broadcast(double[])</a> - Method in class hadur117.twin.<a href="hadur117/twin/SaorTwin.html" title="class in hadur117.twin">SaorTwin</a></dt>
+<dd>
+<div class="block">Sends a message to the partner, ignoring a send the engine refuses.</div>
 </dd>
 <dt><a href="hadur2/core/shieldmode/ShieldMode.html#budget()" class="member-name-link">budget()</a> - Method in class hadur2.core.shieldmode.<a href="hadur2/core/shieldmode/ShieldMode.html" title="class in hadur2.core.shieldmode">ShieldMode</a></dt>
 <dd>
@@ -1225,6 +1245,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">A bullet's speed, as <code>Rules.getBulletSpeed</code> computes it: power clamped to
  [0.1, 3], then <code>20 - 3 power</code>.</div>
+</dd>
+<dt><a href="hadur117/twin/core/Gun.html#bulletSpeed(double)" class="member-name-link">bulletSpeed(double)</a> - Static method in class hadur117.twin.core.<a href="hadur117/twin/core/Gun.html" title="class in hadur117.twin.core">Gun</a></dt>
+<dd>
+<div class="block">A bullet's speed.</div>
 </dd>
 <dt><a href="hadur2/core/physics/DiaUtils.html#bulletTicksFromPower(double,double)" class="member-name-link">bulletTicksFromPower(double, double)</a> - Static method in class hadur2.core.physics.<a href="hadur2/core/physics/DiaUtils.html" title="class in hadur2.core.physics">DiaUtils</a></dt>
 <dd>
@@ -1515,6 +1539,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Circular: as linear, turning by our last turn every tick.</div>
 </dd>
+<dt><a href="hadur117/twin/core/Team.html#clamp(double)" class="member-name-link">clamp(double)</a> - Static method in class hadur117.twin.core.<a href="hadur117/twin/core/Team.html" title="class in hadur117.twin.core">Team</a></dt>
+<dd>
+<div class="block">A coordinate kept <a href="hadur117/twin/core/Team.html#WALL"><code>Team.WALL</code></a> px inside the field.</div>
+</dd>
 <dt><a href="hadur2/core/policy/BattleHitRates.html#CLASSES" class="member-name-link">CLASSES</a> - Static variable in class hadur2.core.policy.<a href="hadur2/core/policy/BattleHitRates.html" title="class in hadur2.core.policy">BattleHitRates</a></dt>
 <dd>
 <div class="block">The number of power classes.</div>
@@ -1796,6 +1824,11 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">One coordinate of the point the robot drives to, mirrored into the half of the field the
  robot is in: <a href="hadur117/micro/core/Movement.html#WALL"><code>Movement.WALL</code></a> on the axis whose wall the point sits against, else the leg.</div>
+</dd>
+<dt><a href="hadur117/twin/core/Team.html#corner(boolean,double,double)" class="member-name-link">corner(boolean, double, double)</a> - Static method in class hadur117.twin.core.<a href="hadur117/twin/core/Team.html" title="class in hadur117.twin.core">Team</a></dt>
+<dd>
+<div class="block">Saor's corner oscillation on the 800 field (TWIN-12): one coordinate of the point the last
+ twin drives to with two enemies alive.</div>
 </dd>
 <dt><a href="hadur2/core/melee/MinimumRiskMovement.html#CORNER_K" class="member-name-link">CORNER_K</a> - Static variable in class hadur2.core.melee.<a href="hadur2/core/melee/MinimumRiskMovement.html" title="class in hadur2.core.melee">MinimumRiskMovement</a></dt>
 <dd>&nbsp;</dd>
@@ -2914,6 +2947,10 @@ loadScripts(document, 'script');</script>
  of margin against a 3-power hit; 2.9 with three to five; no cap the engine does not apply
  itself above that.</div>
 </dd>
+<dt><a href="hadur117/twin/SaorTwin.html#ENERGY" class="member-name-link">ENERGY</a> - Static variable in class hadur117.twin.<a href="hadur117/twin/SaorTwin.html" title="class in hadur117.twin">SaorTwin</a></dt>
+<dd>
+<div class="block">Record fields.</div>
+</dd>
 <dt><a href="hadur2/core/melee/MinimumRiskMovement.html#ENERGY_RATIO_CAP" class="member-name-link">ENERGY_RATIO_CAP</a> - Static variable in class hadur2.core.melee.<a href="hadur2/core/melee/MinimumRiskMovement.html" title="class in hadur2.core.melee">MinimumRiskMovement</a></dt>
 <dd>
 <div class="block">Energy ratio cap: an opponent far stronger than Hadur is no more than twice the danger.</div>
@@ -3401,6 +3438,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">The battlefield's side; Saor enters MeleeRumble only, whose field is 1000 x 1000.</div>
 </dd>
+<dt><a href="hadur117/twin/core/Team.html#FIELD" class="member-name-link">FIELD</a> - Static variable in class hadur117.twin.core.<a href="hadur117/twin/core/Team.html" title="class in hadur117.twin.core">Team</a></dt>
+<dd>
+<div class="block">Twin Duel's field side.</div>
+</dd>
 <dt><a href="hadur2/core/melee/FieldGun.html" class="type-name-link" title="class in hadur2.core.melee">FieldGun</a> - Class in <a href="hadur2/core/melee/package-summary.html">hadur2.core.melee</a></dt>
 <dd>
 <div class="block">The melee gun (<a class="req" href="../requirements.html#MGUN-1">MGUN-1</a>, <a class="req" href="../requirements.html#MGUN-2">MGUN-2</a>): Shadow's melee gun, as Diamond and Neuromancer use it.</div>
@@ -3573,6 +3614,10 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur2/core/shieldmode/ShieldGeometry.Shadow.html#fireAngle" class="member-name-link">fireAngle</a> - Variable in class hadur2.core.shieldmode.<a href="hadur2/core/shieldmode/ShieldGeometry.Shadow.html" title="class in hadur2.core.shieldmode">ShieldGeometry.Shadow</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur117/twin/core/Team.html#fired(double,double)" class="member-name-link">fired(double, double)</a> - Static method in class hadur117.twin.core.<a href="hadur117/twin/core/Team.html" title="class in hadur117.twin.core">Team</a></dt>
+<dd>
+<div class="block">Whether the target fired between two scans (TWIN-10): its energy fell by a bullet's cost.</div>
+</dd>
 <dt><a href="hadur2/core/HadurCore.html#firePermission(java.util.function.Predicate)" class="member-name-link">firePermission(Predicate&lt;BotInput&gt;)</a> - Method in class hadur2.core.<a href="hadur2/core/HadurCore.html" title="class in hadur2.core">HadurCore</a></dt>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#WEAVE-3">WEAVE-3</a>: who decides whether a shot may leave each tick.</div>
@@ -4267,6 +4312,12 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">From their normalised hit rate on us: under 2%, 2-4.5%, 4.5-7%, 7% and over.</div>
 </dd>
+<dt><a href="hadur117/twin/core/Gun.html" class="type-name-link" title="class in hadur117.twin.core">Gun</a> - Class in <a href="hadur117/twin/core/package-summary.html">hadur117.twin.core</a></dt>
+<dd>
+<div class="block">TwinSaor's gun: Saor's per-opponent Markov chain (docs/saor.md, SAOR-6 and SAOR-7) on the
+ Twin Duel's 800 x 800 field, aimed from a scan that may be a tick or two old because the
+ partner made it (TWIN-5, TWIN-6).</div>
+</dd>
 <dt><a href="hadur2/core/policy/PowerPolicy.Reason.html#GUN" class="member-name-link">GUN</a> - Enum constant in enum class hadur2.core.policy.<a href="hadur2/core/policy/PowerPolicy.Reason.html" title="enum class in hadur2.core.policy">PowerPolicy.Reason</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur2/core/memory/Tiers.html#GUN_BOUNDS" class="member-name-link">GUN_BOUNDS</a> - Static variable in class hadur2.core.memory.<a href="hadur2/core/memory/Tiers.html" title="class in hadur2.core.memory">Tiers</a></dt>
@@ -4513,6 +4564,10 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="hadur117/micro/core/package-summary.html">hadur117.micro.core</a> - package hadur117.micro.core</dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur117/twin/package-summary.html">hadur117.twin</a> - package hadur117.twin</dt>
+<dd>&nbsp;</dd>
+<dt><a href="hadur117/twin/core/package-summary.html">hadur117.twin.core</a> - package hadur117.twin.core</dt>
+<dd>&nbsp;</dd>
 <dt><a href="hadur2/package-summary.html">hadur2</a> - package hadur2</dt>
 <dd>
 <div class="block">The Robocode adapter: the only code in Hadur 2 that sees the engine.</div>
@@ -4645,6 +4700,10 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur2/HadurRecorder.html#%3Cinit%3E()" class="member-name-link">HadurRecorder()</a> - Constructor for class hadur2.<a href="hadur2/HadurRecorder.html" title="class in hadur2">HadurRecorder</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur117/twin/core/Gun.html#HALF" class="member-name-link">HALF</a> - Static variable in class hadur117.twin.core.<a href="hadur117/twin/core/Gun.html" title="class in hadur117.twin.core">Gun</a></dt>
+<dd>
+<div class="block">Half the Twin Duel field.</div>
+</dd>
 <dt><a href="hadur2/core/physics/SimpleAims.html#HALF" class="member-name-link">HALF</a> - Static variable in class hadur2.core.physics.<a href="hadur2/core/physics/SimpleAims.html" title="class in hadur2.core.physics">SimpleAims</a></dt>
 <dd>
 <div class="block">A robot's half width, px: how far inside the walls its centre stays.</div>
@@ -4665,6 +4724,11 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur/bench/Stats.html#halfWidth" class="member-name-link">halfWidth</a> - Variable in class hadur.bench.<a href="hadur/bench/Stats.html" title="class in hadur.bench">Stats</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur117/twin/SaorTwin.html#handle(double%5B%5D)" class="member-name-link">handle(double[])</a> - Static method in class hadur117.twin.<a href="hadur117/twin/SaorTwin.html" title="class in hadur117.twin">SaorTwin</a></dt>
+<dd>
+<div class="block">A scan of an enemy, ours or the partner's (TWIN-5): a newer scan replaces the record, and
+ one exactly a tick after the last records a transition (TWIN-6).</div>
+</dd>
 <dt><a href="hadur2/core/HadurCore.html#handOff(hadur2.core.role.Tick,hadur2.core.model.BotEvent.Scan)" class="member-name-link">handOff(Tick, BotEvent.Scan)</a> - Method in class hadur2.core.<a href="hadur2/core/HadurCore.html" title="class in hadur2.core">HadurCore</a></dt>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#MMEM-2">MMEM-2</a>: the melee's survivor, scanned by the duel for the first time, after the Duel
@@ -4886,6 +4950,10 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur2/core/world/Roster.Mate.html#heading()" class="member-name-link">heading()</a> - Method in class hadur2.core.world.<a href="hadur2/core/world/Roster.Mate.html" title="class in hadur2.core.world">Roster.Mate</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur117/twin/SaorTwin.html#HEADING" class="member-name-link">HEADING</a> - Static variable in class hadur117.twin.<a href="hadur117/twin/SaorTwin.html" title="class in hadur117.twin">SaorTwin</a></dt>
+<dd>
+<div class="block">Record fields.</div>
+</dd>
 <dt><a href="hadur2/core/melee/MinimumRiskMovement.Wave.html#headings" class="member-name-link">headings</a> - Variable in class hadur2.core.melee.<a href="hadur2/core/melee/MinimumRiskMovement.Wave.html" title="class in hadur2.core.melee">MinimumRiskMovement.Wave</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur2/core/move/RamEscape.html#HEADINGS" class="member-name-link">HEADINGS</a> - Static variable in class hadur2.core.move.<a href="hadur2/core/move/RamEscape.html" title="class in hadur2.core.move">RamEscape</a></dt>
@@ -4961,6 +5029,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur117/micro/core/Targeting.html#HELD_WEIGHT" class="member-name-link">HELD_WEIGHT</a> - Static variable in class hadur117.micro.core.<a href="hadur117/micro/core/Targeting.html" title="class in hadur117.micro.core">Targeting</a></dt>
 <dd>
 <div class="block">Its vote once any step held a state with no sample (SAOR-6).</div>
+</dd>
+<dt><a href="hadur117/twin/core/Gun.html#HELD_WEIGHT" class="member-name-link">HELD_WEIGHT</a> - Static variable in class hadur117.twin.core.<a href="hadur117/twin/core/Gun.html" title="class in hadur117.twin.core">Gun</a></dt>
+<dd>
+<div class="block">The vote of a playout that held a state with no sample.</div>
 </dd>
 <dt><a href="hadur2/core/melee/MinimumRiskMovement.html#HELP_FLOOR" class="member-name-link">HELP_FLOOR</a> - Static variable in class hadur2.core.melee.<a href="hadur2/core/melee/MinimumRiskMovement.html" title="class in hadur2.core.melee">MinimumRiskMovement</a></dt>
 <dd>&nbsp;</dd>
@@ -5122,11 +5194,19 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#SHIELD-8">SHIELD-8</a>: no attack shots while shielding.</div>
 </dd>
+<dt><a href="hadur117/twin/core/Team.html#hold(double,double,double,double,double,double)" class="member-name-link">hold(double, double, double, double, double, double)</a> - Static method in class hadur117.twin.core.<a href="hadur117/twin/core/Team.html" title="class in hadur117.twin.core">Team</a></dt>
+<dd>
+<div class="block">Whether to hold fire because the partner is in the line (TWIN-11).</div>
+</dd>
 <dt><a href="hadur2/core/policy/DistancePolicy.Step.html#HOLD" class="member-name-link">HOLD</a> - Enum constant in enum class hadur2.core.policy.<a href="hadur2/core/policy/DistancePolicy.Step.html" title="enum class in hadur2.core.policy">DistancePolicy.Step</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur2/core/duel/MoveDesign.html#HOLD_650" class="member-name-link">HOLD_650</a> - Static variable in class hadur2.core.duel.<a href="hadur2/core/duel/MoveDesign.html" title="class in hadur2.core.duel">MoveDesign</a></dt>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#DIST-3">DIST-3</a>: no <a class="req" href="../requirements.html#DIST-1">DIST-1</a> walk-in in a duel.</div>
+</dd>
+<dt><a href="hadur117/twin/core/Team.html#HOLD_ARC" class="member-name-link">HOLD_ARC</a> - Static variable in class hadur117.twin.core.<a href="hadur117/twin/core/Team.html" title="class in hadur117.twin.core">Team</a></dt>
+<dd>
+<div class="block">The arc either side of the gun inside which a nearer partner holds fire (TWIN-11).</div>
 </dd>
 <dt><a href="hadur2/core/shieldmode/ShieldBudget.html#HOLD_SHARE" class="member-name-link">HOLD_SHARE</a> - Static variable in class hadur2.core.shieldmode.<a href="hadur2/core/shieldmode/ShieldBudget.html" title="class in hadur2.core.shieldmode">ShieldBudget</a></dt>
 <dd>
@@ -5898,6 +5978,8 @@ loadScripts(document, 'script');</script>
 <div class="block">ADAPT-5: the lead-aware power rule's verdict as the round ends: whether POW-7's hit-rate
  condition stands.</div>
 </dd>
+<dt><a href="hadur117/twin/SaorTwin.html#leader" class="member-name-link">leader</a> - Static variable in class hadur117.twin.<a href="hadur117/twin/SaorTwin.html" title="class in hadur117.twin">SaorTwin</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="hadur2/core/melee/MinimumRiskMovement.html#leader(boolean)" class="member-name-link">leader(boolean)</a> - Method in class hadur2.core.melee.<a href="hadur2/core/melee/MinimumRiskMovement.html" title="class in hadur2.core.melee">MinimumRiskMovement</a></dt>
 <dd>
 <div class="block">TMODE-10: whether this member is its team's leader; set on the battle's first tick.</div>
@@ -5983,6 +6065,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">How far along the wall, from the corner, the leg's point lies: 55 px plus 0.4 of the
  target's distance, so the robot swings wider when the fight is further off.</div>
+</dd>
+<dt><a href="hadur117/twin/core/Team.html#LEG" class="member-name-link">LEG</a> - Static variable in class hadur117.twin.core.<a href="hadur117/twin/core/Team.html" title="class in hadur117.twin.core">Team</a></dt>
+<dd>
+<div class="block">Half the leg a twin shuttles along, across its line to the target.</div>
 </dd>
 <dt><a href="hadur2/core/gun/AntiSurferFormula.html#LEGACY_FEATURES" class="member-name-link">LEGACY_FEATURES</a> - Static variable in class hadur2.core.gun.<a href="hadur2/core/gun/AntiSurferFormula.html" title="class in hadur2.core.gun">AntiSurferFormula</a></dt>
 <dd>
@@ -6422,6 +6508,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">The 95% margin of error of a rate of <code>hits</code> in <code>n</code> (Agresti-Coull).</div>
 </dd>
+<dt><a href="hadur117/twin/core/Gun.html#MARGIN" class="member-name-link">MARGIN</a> - Static variable in class hadur117.twin.core.<a href="hadur117/twin/core/Gun.html" title="class in hadur117.twin.core">Gun</a></dt>
+<dd>
+<div class="block">A playout point further than this from the centre on either axis is off the field.</div>
+</dd>
 <dt><a href="hadur2/core/physics/ShotDodger.html#MARGIN" class="member-name-link">MARGIN</a> - Static variable in class hadur2.core.physics.<a href="hadur2/core/physics/ShotDodger.html" title="class in hadur2.core.physics">ShotDodger</a></dt>
 <dd>
 <div class="block">Margin added each side of a surf option's hit range, radians.</div>
@@ -6441,6 +6531,10 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur117/micro/SaorLab.html#markov" class="member-name-link">markov</a> - Static variable in class hadur117.micro.<a href="hadur117/micro/SaorLab.html" title="class in hadur117.micro">SaorLab</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur117/twin/SaorTwin.html#markov" class="member-name-link">markov</a> - Static variable in class hadur117.twin.<a href="hadur117/twin/SaorTwin.html" title="class in hadur117.twin">SaorTwin</a></dt>
+<dd>
+<div class="block">Per-enemy Markov rows, kept across rounds.</div>
+</dd>
 <dt><a href="hadur/bench/Affinity.html#mask(int,int,int)" class="member-name-link">mask(int, int, int)</a> - Static method in class hadur.bench.<a href="hadur/bench/Affinity.html" title="class in hadur.bench">Affinity</a></dt>
 <dd>
 <div class="block">Worker <code>worker</code>'s processor mask; refused when it would need more than 64 processors.</div>
@@ -6536,6 +6630,8 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur2/core/melee/MinimumRiskMovement.html#MATE_PATH_RANGE" class="member-name-link">MATE_PATH_RANGE</a> - Static variable in class hadur2.core.melee.<a href="hadur2/core/melee/MinimumRiskMovement.html" title="class in hadur2.core.melee">MinimumRiskMovement</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur117/twin/SaorTwin.html#mateAlive" class="member-name-link">mateAlive</a> - Static variable in class hadur117.twin.<a href="hadur117/twin/SaorTwin.html" title="class in hadur117.twin">SaorTwin</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="hadur2/core/melee/MinimumRiskMovement.View.html#mateBullets" class="member-name-link">mateBullets</a> - Variable in class hadur2.core.melee.<a href="hadur2/core/melee/MinimumRiskMovement.View.html" title="class in hadur2.core.melee">MinimumRiskMovement.View</a></dt>
 <dd>
 <div class="block">TMODE-9: the teammates' bullets in flight this decision weighs; empty unless MATEFIRE.</div>
@@ -6600,6 +6696,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">MGUN-8: the teammates' sightings the World took this tick, for the field gun to learn from.</div>
 </dd>
+<dt><a href="hadur117/twin/SaorTwin.html#mateX" class="member-name-link">mateX</a> - Static variable in class hadur117.twin.<a href="hadur117/twin/SaorTwin.html" title="class in hadur117.twin">SaorTwin</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="hadur117/twin/SaorTwin.html#mateY" class="member-name-link">mateY</a> - Static variable in class hadur117.twin.<a href="hadur117/twin/SaorTwin.html" title="class in hadur117.twin">SaorTwin</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="hadur2/core/move/ReplicatorWeights.html#MAX" class="member-name-link">MAX</a> - Static variable in class hadur2.core.move.<a href="hadur2/core/move/ReplicatorWeights.html" title="class in hadur2.core.move">ReplicatorWeights</a></dt>
 <dd>
 <div class="block">The largest multiplier a view may reach.</div>
@@ -7916,6 +8016,10 @@ loadScripts(document, 'script');</script>
 <div class="block"><code>Utils.normalRelativeAngle</code> written out, as the core imports nothing from the
  engine, branch for branch so the two agree to the bit: the angle in [-pi, pi).</div>
 </dd>
+<dt><a href="hadur117/twin/core/Gun.html#normalRelativeAngle(double)" class="member-name-link">normalRelativeAngle(double)</a> - Static method in class hadur117.twin.core.<a href="hadur117/twin/core/Gun.html" title="class in hadur117.twin.core">Gun</a></dt>
+<dd>
+<div class="block">An angle brought into [-pi, pi], as <code>Utils.normalRelativeAngle</code> does, in fewer bytes.</div>
+</dd>
 <dt><a href="hadur2/core/physics/Angles.html#normalRelativeAngle(double)" class="member-name-link">normalRelativeAngle(double)</a> - Static method in class hadur2.core.physics.<a href="hadur2/core/physics/Angles.html" title="class in hadur2.core.physics">Angles</a></dt>
 <dd>
 <div class="block">Normalises to [-π, π): the form for a turn or an angle between two bearings, where
@@ -8194,6 +8298,8 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">TMODE-21, TMODE-22: the one aim the team's shots make a virtual bullet on, or null for both.</div>
 </dd>
+<dt><a href="hadur117/twin/SaorTwin.html#onMessageReceived(robocode.MessageEvent)" class="member-name-link">onMessageReceived(MessageEvent)</a> - Method in class hadur117.twin.<a href="hadur117/twin/SaorTwin.html" title="class in hadur117.twin">SaorTwin</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="hadur2/Hadur.html#onMessageReceived(robocode.MessageEvent)" class="member-name-link">onMessageReceived(MessageEvent)</a> - Method in class hadur2.<a href="hadur2/Hadur.html" title="class in hadur2">Hadur</a></dt>
 <dd>
 <div class="block">A teammate's message (A4).</div>
@@ -8225,6 +8331,8 @@ loadScripts(document, 'script');</script>
 <div class="block">Any death frees the target and the radar (SAOR-4).</div>
 </dd>
 <dt><a href="hadur117/micro/SaorLab.html#onRobotDeath(robocode.RobotDeathEvent)" class="member-name-link">onRobotDeath(RobotDeathEvent)</a> - Method in class hadur117.micro.<a href="hadur117/micro/SaorLab.html" title="class in hadur117.micro">SaorLab</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="hadur117/twin/SaorTwin.html#onRobotDeath(robocode.RobotDeathEvent)" class="member-name-link">onRobotDeath(RobotDeathEvent)</a> - Method in class hadur117.twin.<a href="hadur117/twin/SaorTwin.html" title="class in hadur117.twin">SaorTwin</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur2/Hadur.html#onRobotDeath(robocode.RobotDeathEvent)" class="member-name-link">onRobotDeath(RobotDeathEvent)</a> - Method in class hadur2.<a href="hadur2/Hadur.html" title="class in hadur2">Hadur</a></dt>
 <dd>
@@ -8305,6 +8413,8 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur117/micro/Saor.html#onScannedRobot(robocode.ScannedRobotEvent)" class="member-name-link">onScannedRobot(ScannedRobotEvent)</a> - Method in class hadur117.micro.<a href="hadur117/micro/Saor.html" title="class in hadur117.micro">Saor</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur117/micro/SaorLab.html#onScannedRobot(robocode.ScannedRobotEvent)" class="member-name-link">onScannedRobot(ScannedRobotEvent)</a> - Method in class hadur117.micro.<a href="hadur117/micro/SaorLab.html" title="class in hadur117.micro">SaorLab</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="hadur117/twin/SaorTwin.html#onScannedRobot(robocode.ScannedRobotEvent)" class="member-name-link">onScannedRobot(ScannedRobotEvent)</a> - Method in class hadur117.twin.<a href="hadur117/twin/SaorTwin.html" title="class in hadur117.twin">SaorTwin</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur2/Hadur.html#onScannedRobot(robocode.ScannedRobotEvent)" class="member-name-link">onScannedRobot(ScannedRobotEvent)</a> - Method in class hadur2.<a href="hadur2/Hadur.html" title="class in hadur2">Hadur</a></dt>
 <dd>
@@ -9083,6 +9193,16 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Monte-Carlo playouts an aim (Figment runs 128).</div>
 </dd>
+<dt><a href="hadur117/twin/core/Gun.html#PLAYOUTS" class="member-name-link">PLAYOUTS</a> - Static variable in class hadur117.twin.core.<a href="hadur117/twin/core/Gun.html" title="class in hadur117.twin.core">Gun</a></dt>
+<dd>
+<div class="block">Monte-Carlo playouts an aim.</div>
+</dd>
+<dt><a href="hadur117/twin/core/Team.html#point(double,double,double,double,int)" class="member-name-link">point(double, double, double, double, int)</a> - Static method in class hadur117.twin.core.<a href="hadur117/twin/core/Team.html" title="class in hadur117.twin.core">Team</a></dt>
+<dd>
+<div class="block">The point a twin drives to: on its station's bearing at <code>range</code> from the target,
+ moved <a href="hadur117/twin/core/Team.html#LEG"><code>Team.LEG</code></a> across that line on the side <code>side</code>, and kept <a href="hadur117/twin/core/Team.html#WALL"><code>Team.WALL</code></a> px off
+ every wall.</div>
+</dd>
 <dt><a href="hadur2/core/duel/MoveDesign.html#POINT_KERNEL" class="member-name-link">POINT_KERNEL</a> - Static variable in class hadur2.core.duel.<a href="hadur2/core/duel/MoveDesign.html" title="class in hadur2.core.duel">MoveDesign</a></dt>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#MOVE-21">MOVE-21</a>: the danger kernel is the point value 2^-|u| at the intersection's centre
@@ -9204,6 +9324,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur2/core/model/BotEvent.HitByBullet.html#power()" class="member-name-link">power()</a> - Method in class hadur2.core.model.<a href="hadur2/core/model/BotEvent.HitByBullet.html" title="class in hadur2.core.model">BotEvent.HitByBullet</a></dt>
 <dd>
 <div class="block">The bullet's power, in [0.1, 3.0].</div>
+</dd>
+<dt><a href="hadur117/twin/core/Team.html#power(double,double,boolean,int)" class="member-name-link">power(double, double, boolean, int)</a> - Static method in class hadur117.twin.core.<a href="hadur117/twin/core/Team.html" title="class in hadur117.twin.core">Team</a></dt>
+<dd>
+<div class="block">Bullet power: Saor's <code>log10(energy) * 325 / distance</code>, capped by mode.</div>
 </dd>
 <dt><a href="hadur2/core/melee/MeleeEnergyPolicy.html#power(double,double,double,int)" class="member-name-link">power(double, double, double, int)</a> - Static method in class hadur2.core.melee.<a href="hadur2/core/melee/MeleeEnergyPolicy.html" title="class in hadur2.core.melee">MeleeEnergyPolicy</a></dt>
 <dd>
@@ -9871,9 +9995,21 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="hadur/bench/SessionReport.Row.html#ran()" class="member-name-link">ran()</a> - Method in record class hadur.bench.<a href="hadur/bench/SessionReport.Row.html" title="class in hadur.bench">SessionReport.Row</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur117/twin/core/Team.html#range(int)" class="member-name-link">range(int)</a> - Static method in class hadur117.twin.core.<a href="hadur117/twin/core/Team.html" title="class in hadur117.twin.core">Team</a></dt>
+<dd>
+<div class="block">The range a twin keeps from the target while its partner lives (TWIN-9).</div>
+</dd>
 <dt><a href="hadur2/core/policy/RammerPolicy.html#RANGE" class="member-name-link">RANGE</a> - Static variable in class hadur2.core.policy.<a href="hadur2/core/policy/RammerPolicy.html" title="class in hadur2.core.policy">RammerPolicy</a></dt>
 <dd>
 <div class="block">The range, in px, within which a charge counts, and outside which the response clears.</div>
+</dd>
+<dt><a href="hadur117/twin/core/Team.html#RANGE_ONE" class="member-name-link">RANGE_ONE</a> - Static variable in class hadur117.twin.core.<a href="hadur117/twin/core/Team.html" title="class in hadur117.twin.core">Team</a></dt>
+<dd>
+<div class="block">Station range with one enemy alive (TWIN-9).</div>
+</dd>
+<dt><a href="hadur117/twin/core/Team.html#RANGE_TWO" class="member-name-link">RANGE_TWO</a> - Static variable in class hadur117.twin.core.<a href="hadur117/twin/core/Team.html" title="class in hadur117.twin.core">Team</a></dt>
+<dd>
+<div class="block">Station range with two enemies alive (TWIN-9).</div>
 </dd>
 <dt><a href="hadur2/core/melee/MeleeProfileFolder.html#rank(java.lang.String,int)" class="member-name-link">rank(String, int)</a> - Method in class hadur2.core.melee.<a href="hadur2/core/melee/MeleeProfileFolder.html" title="class in hadur2.core.melee">MeleeProfileFolder</a></dt>
 <dd>
@@ -9997,6 +10133,11 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur117/micro/core/Targeting.html#record(char%5B%5D,int)" class="member-name-link">record(char[], int)</a> - Static method in class hadur117.micro.core.<a href="hadur117/micro/core/Targeting.html" title="class in hadur117.micro.core">Targeting</a></dt>
 <dd>
 <div class="block">Records that <code>state</code> followed the row's state.</div>
+</dd>
+<dt><a href="hadur117/twin/core/Gun.html#record(char%5B%5D,int)" class="member-name-link">record(char[], int)</a> - Static method in class hadur117.twin.core.<a href="hadur117/twin/core/Gun.html" title="class in hadur117.twin.core">Gun</a></dt>
+<dd>
+<div class="block">Records that <code>state</code> followed the row's state: a ring, so once the row is full the
+ newest sample replaces the oldest.</div>
 </dd>
 <dt><a href="hadur2/core/policy/BattleHitRates.html#record(double,boolean)" class="member-name-link">record(double, boolean)</a> - Method in class hadur2.core.policy.<a href="hadur2/core/policy/BattleHitRates.html" title="class in hadur2.core.policy">BattleHitRates</a></dt>
 <dd>
@@ -10768,6 +10909,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Successor slots in a row; the slot after them holds the count.</div>
 </dd>
+<dt><a href="hadur117/twin/core/Gun.html#ROW" class="member-name-link">ROW</a> - Static variable in class hadur117.twin.core.<a href="hadur117/twin/core/Gun.html" title="class in hadur117.twin.core">Gun</a></dt>
+<dd>
+<div class="block">Successor slots in a row; the slot after them holds the count.</div>
+</dd>
 <dt><a href="hadur/bench/Arms.html#ROW_FILE" class="member-name-link">ROW_FILE</a> - Static variable in class hadur.bench.<a href="hadur/bench/Arms.html" title="class in hadur.bench">Arms</a></dt>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#BENCH-95">BENCH-95</a>: the file in each battle's directory that keeps that battle's row, for a resumed run.</div>
@@ -10796,6 +10941,8 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur117/micro/Saor.html#run()" class="member-name-link">run()</a> - Method in class hadur117.micro.<a href="hadur117/micro/Saor.html" title="class in hadur117.micro">Saor</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur117/micro/SaorLab.html#run()" class="member-name-link">run()</a> - Method in class hadur117.micro.<a href="hadur117/micro/SaorLab.html" title="class in hadur117.micro">SaorLab</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="hadur117/twin/SaorTwin.html#run()" class="member-name-link">run()</a> - Method in class hadur117.twin.<a href="hadur117/twin/SaorTwin.html" title="class in hadur117.twin">SaorTwin</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur2/Hadur.html#run()" class="member-name-link">run()</a> - Method in class hadur2.<a href="hadur2/Hadur.html" title="class in hadur2">Hadur</a></dt>
 <dd>
@@ -10912,6 +11059,13 @@ loadScripts(document, 'script');</script>
  round.</div>
 </dd>
 <dt><a href="hadur117/micro/SaorLab.html#%3Cinit%3E()" class="member-name-link">SaorLab()</a> - Constructor for class hadur117.micro.<a href="hadur117/micro/SaorLab.html" title="class in hadur117.micro">SaorLab</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="hadur117/twin/SaorTwin.html" class="type-name-link" title="class in hadur117.twin">SaorTwin</a> - Class in <a href="hadur117/twin/package-summary.html">hadur117.twin</a></dt>
+<dd>
+<div class="block">One twin of TwinSaor, the Twin Duel team (docs/twinsaor.md): the team file lists this class
+ twice, and the first listed is the leader by the engine's rule (TWIN-1).</div>
+</dd>
+<dt><a href="hadur117/twin/SaorTwin.html#%3Cinit%3E()" class="member-name-link">SaorTwin()</a> - Constructor for class hadur117.twin.<a href="hadur117/twin/SaorTwin.html" title="class in hadur117.twin">SaorTwin</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur2/core/MeleeSeam.html#save(long)" class="member-name-link">save(long)</a> - Method in class hadur2.core.<a href="hadur2/core/MeleeSeam.html" title="class in hadur2.core">MeleeSeam</a></dt>
 <dd>
@@ -11203,6 +11357,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#MEM-8">MEM-8</a>: an opponent's seeds are worth the space once it has been fought at least
  <a href="hadur2/core/memory/ProfileLibrary.html#SEED_WORTHY_BATTLES"><code>ProfileLibrary.SEED_WORTHY_BATTLES</code></a> times and scored under <a href="hadur2/core/memory/ProfileLibrary.html#SEED_WORTHY_SCORE_SHARE"><code>ProfileLibrary.SEED_WORTHY_SCORE_SHARE</code></a>.</div>
+</dd>
+<dt><a href="hadur117/twin/SaorTwin.html#seen" class="member-name-link">seen</a> - Static variable in class hadur117.twin.<a href="hadur117/twin/SaorTwin.html" title="class in hadur117.twin">SaorTwin</a></dt>
+<dd>
+<div class="block">The latest record of each enemy this round.</div>
 </dd>
 <dt><a href="hadur2/core/world/Roster.Mate.html#seen" class="member-name-link">seen</a> - Variable in class hadur2.core.world.<a href="hadur2/core/world/Roster.Mate.html" title="class in hadur2.core.world">Roster.Mate</a></dt>
 <dd>
@@ -12067,6 +12225,8 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Returns the value of the <code>shuffle</code> record component.</div>
 </dd>
+<dt><a href="hadur117/twin/SaorTwin.html#side" class="member-name-link">side</a> - Static variable in class hadur117.twin.<a href="hadur117/twin/SaorTwin.html" title="class in hadur117.twin">SaorTwin</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="hadur2/core/world/Roster.html#sighted(java.lang.String,double,double,double,double,long)" class="member-name-link">sighted(String, double, double, double, double, long)</a> - Method in class hadur2.core.world.<a href="hadur2/core/world/Roster.html" title="class in hadur2.core.world">Roster</a></dt>
 <dd>
 <div class="block">A teammate's sighting of another teammate: the newer position wins (<a class="req" href="../requirements.html#WORLD-4">WORLD-4</a>).</div>
@@ -12244,6 +12404,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur/bench/BattleResult.html#skipsPerRoundLimit()" class="member-name-link">skipsPerRoundLimit()</a> - Static method in class hadur.bench.<a href="hadur/bench/BattleResult.html" title="class in hadur.bench">BattleResult</a></dt>
 <dd>
 <div class="block">The skips-per-round ceiling: <code>-Dhadur.bench.trust.skips=&lt;n&gt;</code> overrides <a href="hadur/bench/BattleResult.html#DEFAULT_SKIPS_PER_ROUND"><code>BattleResult.DEFAULT_SKIPS_PER_ROUND</code></a>.</div>
+</dd>
+<dt><a href="hadur117/twin/SaorTwin.html#SLOTS" class="member-name-link">SLOTS</a> - Static variable in class hadur117.twin.<a href="hadur117/twin/SaorTwin.html" title="class in hadur117.twin">SaorTwin</a></dt>
+<dd>
+<div class="block">Enemy slots by name hash: the Twin Duel field has about 54 robot names.</div>
 </dd>
 <dt><a href="hadur2/core/TeamLink.html#SLOWEST_BULLET" class="member-name-link">SLOWEST_BULLET</a> - Static variable in class hadur2.core.<a href="hadur2/core/TeamLink.html" title="class in hadur2.core">TeamLink</a></dt>
 <dd>
@@ -12426,6 +12590,14 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Packs a scan into a state.</div>
 </dd>
+<dt><a href="hadur117/twin/core/Gun.html#state(double,double,double,double)" class="member-name-link">state(double, double, double, double)</a> - Static method in class hadur117.twin.core.<a href="hadur117/twin/core/Gun.html" title="class in hadur117.twin.core">Gun</a></dt>
+<dd>
+<div class="block">Packs two consecutive scans of one robot into a state.</div>
+</dd>
+<dt><a href="hadur117/twin/SaorTwin.html#STATE" class="member-name-link">STATE</a> - Static variable in class hadur117.twin.<a href="hadur117/twin/SaorTwin.html" title="class in hadur117.twin">SaorTwin</a></dt>
+<dd>
+<div class="block">Record fields.</div>
+</dd>
 <dt><a href="hadur2/core/physics/SimpleAims.html#STATE" class="member-name-link">STATE</a> - Static variable in class hadur2.core.physics.<a href="hadur2/core/physics/SimpleAims.html" title="class in hadur2.core.physics">SimpleAims</a></dt>
 <dd>
 <div class="block">A state's length.</div>
@@ -12437,6 +12609,15 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur117/micro/core/Targeting.html#STATES" class="member-name-link">STATES</a> - Static variable in class hadur117.micro.core.<a href="hadur117/micro/core/Targeting.html" title="class in hadur117.micro.core">Targeting</a></dt>
 <dd>
 <div class="block">Packed states: acceleration 0-2, speed index 0-16 from bit 2, turn index 0-4 from bit 7.</div>
+</dd>
+<dt><a href="hadur117/twin/core/Gun.html#STATES" class="member-name-link">STATES</a> - Static variable in class hadur117.twin.core.<a href="hadur117/twin/core/Gun.html" title="class in hadur117.twin.core">Gun</a></dt>
+<dd>
+<div class="block">Packed states.</div>
+</dd>
+<dt><a href="hadur117/twin/core/Team.html#stationBearing(double,double,double,double,boolean)" class="member-name-link">stationBearing(double, double, double, double, boolean)</a> - Static method in class hadur117.twin.core.<a href="hadur117/twin/core/Team.html" title="class in hadur117.twin.core">Team</a></dt>
+<dd>
+<div class="block">The bearing, from the target, of a twin's station (TWIN-9): 45 degrees either side of the
+ bearing from the target to the team's midpoint, the leader on the clockwise side.</div>
 </dd>
 <dt><a href="hadur2/core/HadurCore.html#stats()" class="member-name-link">stats()</a> - Method in class hadur2.core.<a href="hadur2/core/HadurCore.html" title="class in hadur2.core">HadurCore</a></dt>
 <dd>
@@ -12758,9 +12939,18 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur2/core/melee/MinimumRiskMovement.html#SWITCH_GAIN" class="member-name-link">SWITCH_GAIN</a> - Static variable in class hadur2.core.melee.<a href="hadur2/core/melee/MinimumRiskMovement.html" title="class in hadur2.core.melee">MinimumRiskMovement</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur117/twin/core/Team.html#SWITCH_MARGIN" class="member-name-link">SWITCH_MARGIN</a> - Static variable in class hadur117.twin.core.<a href="hadur117/twin/core/Team.html" title="class in hadur117.twin.core">Team</a></dt>
+<dd>
+<div class="block">Energy lead the other enemy needs before the twins switch to it (TWIN-7).</div>
+</dd>
 <dt><a href="hadur2/core/duel/DuelController.html#switchOpponent(java.lang.String)" class="member-name-link">switchOpponent(String)</a> - Method in class hadur2.core.duel.<a href="hadur2/core/duel/DuelController.html" title="class in hadur2.core.duel">DuelController</a></dt>
 <dd>
 <div class="block">The Duel fights <code>name</code> from this scan on.</div>
+</dd>
+<dt><a href="hadur117/twin/core/Team.html#switchTo(double,double)" class="member-name-link">switchTo(double, double)</a> - Static method in class hadur117.twin.core.<a href="hadur117/twin/core/Team.html" title="class in hadur117.twin.core">Team</a></dt>
+<dd>
+<div class="block">Whether the twins switch from the current target to a candidate (TWIN-7): when there is no
+ live target yet, or the candidate has at least <a href="hadur117/twin/core/Team.html#SWITCH_MARGIN"><code>Team.SWITCH_MARGIN</code></a> less energy.</div>
 </dd>
 <dt><a href="hadur/bench/Host.Sampler.html#system()" class="member-name-link">system()</a> - Static method in class hadur.bench.<a href="hadur/bench/Host.Sampler.html" title="class in hadur.bench">Host.Sampler</a></dt>
 <dd>
@@ -12867,6 +13057,8 @@ loadScripts(document, 'script');</script>
 <div class="block">A per-battle count (skipped turns, duress ticks) as the report's one-line tally: the
  total over the battles, the mean per battle and the worst single battle.</div>
 </dd>
+<dt><a href="hadur117/twin/SaorTwin.html#target" class="member-name-link">target</a> - Static variable in class hadur117.twin.<a href="hadur117/twin/SaorTwin.html" title="class in hadur117.twin">SaorTwin</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="hadur2/core/melee/FieldGun.Aim.html#target" class="member-name-link">target</a> - Variable in class hadur2.core.melee.<a href="hadur2/core/melee/FieldGun.Aim.html" title="class in hadur2.core.melee">FieldGun.Aim</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur2/core/melee/FieldGun.Solution.html#target" class="member-name-link">target</a> - Variable in class hadur2.core.melee.<a href="hadur2/core/melee/FieldGun.Solution.html" title="class in hadur2.core.melee">FieldGun.Solution</a></dt>
@@ -13034,6 +13226,11 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur2/core/melee/MinimumRiskMovement.html#team(int,java.lang.String)" class="member-name-link">team(int, String)</a> - Method in class hadur2.core.melee.<a href="hadur2/core/melee/MinimumRiskMovement.html" title="class in hadur2.core.melee">MinimumRiskMovement</a></dt>
 <dd>
 <div class="block">MMOVE-8 with this member's own name, by which TMODE-13 orders the team.</div>
+</dd>
+<dt><a href="hadur117/twin/core/Team.html" class="type-name-link" title="class in hadur117.twin.core">Team</a> - Class in <a href="hadur117/twin/core/package-summary.html">hadur117.twin.core</a></dt>
+<dd>
+<div class="block">The team layer (docs/twinsaor.md section 4): who to shoot, where to stand, when to hold fire
+ and how hard to fire.</div>
 </dd>
 <dt><a href="hadur2/core/role/Charter.html#TEAM" class="member-name-link">TEAM</a> - Enum constant in enum class hadur2.core.role.<a href="hadur2/core/role/Charter.html" title="enum class in hadur2.core.role">Charter</a></dt>
 <dd>
@@ -13315,6 +13512,10 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="hadur2/core/TeamLink.MateSighting.html#tick" class="member-name-link">tick</a> - Variable in class hadur2.core.<a href="hadur2/core/TeamLink.MateSighting.html" title="class in hadur2.core">TeamLink.MateSighting</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur117/twin/SaorTwin.html#tick()" class="member-name-link">tick()</a> - Method in class hadur117.twin.<a href="hadur117/twin/SaorTwin.html" title="class in hadur117.twin">SaorTwin</a></dt>
+<dd>
+<div class="block">One tick's decisions from the records as they stand.</div>
+</dd>
 <dt><a href="hadur2/core/link/Report.html#tick()" class="member-name-link">tick()</a> - Method in class hadur2.core.link.<a href="hadur2/core/link/Report.html" title="class in hadur2.core.link">Report</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur2/core/role/RoundResult.html#tick()" class="member-name-link">tick()</a> - Method in class hadur2.core.role.<a href="hadur2/core/role/RoundResult.html" title="class in hadur2.core.role">RoundResult</a></dt>
@@ -13448,6 +13649,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur2/core/model/BotInput.html#time()" class="member-name-link">time()</a> - Method in class hadur2.core.model.<a href="hadur2/core/model/BotInput.html" title="class in hadur2.core.model">BotInput</a></dt>
 <dd>
 <div class="block">The tick within the round; the engine restarts it at 0 each round.</div>
+</dd>
+<dt><a href="hadur117/twin/SaorTwin.html#TIME" class="member-name-link">TIME</a> - Static variable in class hadur117.twin.<a href="hadur117/twin/SaorTwin.html" title="class in hadur117.twin">SaorTwin</a></dt>
+<dd>
+<div class="block">Record fields.</div>
 </dd>
 <dt><a href="hadur2/core/move/AesRecord.html#TIME_TO_IMPACT" class="member-name-link">TIME_TO_IMPACT</a> - Static variable in class hadur2.core.move.<a href="hadur2/core/move/AesRecord.html" title="class in hadur2.core.move">AesRecord</a></dt>
 <dd>
@@ -13773,7 +13978,11 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur117/micro/core/Targeting.html#TRUST" class="member-name-link">TRUST</a> - Static variable in class hadur117.micro.core.<a href="hadur117/micro/core/Targeting.html" title="class in hadur117.micro.core">Targeting</a></dt>
 <dd>
-<div class="block">The vote a sample of a thin row adds, on <a href="hadur117/micro/core/Targeting.html#HELD_WEIGHT"><code>HELD_WEIGHT</code></a>: 1 sample votes 17, 7 vote 89.</div>
+<div class="block">The vote a sample of a thin row adds, on <a href="hadur117/micro/core/Targeting.html#HELD_WEIGHT"><code>Targeting.HELD_WEIGHT</code></a>: 1 sample votes 17, 7 vote 89.</div>
+</dd>
+<dt><a href="hadur117/twin/core/Gun.html#TRUST" class="member-name-link">TRUST</a> - Static variable in class hadur117.twin.core.<a href="hadur117/twin/core/Gun.html" title="class in hadur117.twin.core">Gun</a></dt>
+<dd>
+<div class="block">The vote a sample of a thin row adds.</div>
 </dd>
 <dt><a href="hadur/bench/Report.html#TRUST_NOTE" class="member-name-link">TRUST_NOTE</a> - Static variable in class hadur.bench.<a href="hadur/bench/Report.html" title="class in hadur.bench">Report</a></dt>
 <dd>
@@ -13851,6 +14060,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur117/micro/core/Targeting.html#turnRate(double)" class="member-name-link">turnRate(double)</a> - Static method in class hadur117.micro.core.<a href="hadur117/micro/core/Targeting.html" title="class in hadur117.micro.core">Targeting</a></dt>
 <dd>
 <div class="block"><code>Rules.getTurnRateRadians</code> written out: the largest turn a tick at a speed.</div>
+</dd>
+<dt><a href="hadur117/twin/core/Gun.html#turnRate(double)" class="member-name-link">turnRate(double)</a> - Static method in class hadur117.twin.core.<a href="hadur117/twin/core/Gun.html" title="class in hadur117.twin.core">Gun</a></dt>
+<dd>
+<div class="block"><code>Rules.getTurnRateRadians</code> written out.</div>
 </dd>
 <dt><a href="hadur2/core/model/BotOrders.Builder.html#turnRight(double)" class="member-name-link">turnRight(double)</a> - Method in class hadur2.core.model.<a href="hadur2/core/model/BotOrders.Builder.html" title="class in hadur2.core.model">BotOrders.Builder</a></dt>
 <dd>
@@ -14310,6 +14523,10 @@ the order they are declared.</div>
 </dd>
 <dt><a href="hadur2/core/world/Roster.Mate.html#velocity()" class="member-name-link">velocity()</a> - Method in class hadur2.core.world.<a href="hadur2/core/world/Roster.Mate.html" title="class in hadur2.core.world">Roster.Mate</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur117/twin/SaorTwin.html#VELOCITY" class="member-name-link">VELOCITY</a> - Static variable in class hadur117.twin.<a href="hadur117/twin/SaorTwin.html" title="class in hadur117.twin">SaorTwin</a></dt>
+<dd>
+<div class="block">Record fields.</div>
+</dd>
 <dt><a href="hadur/bench/ShieldProbe.html#verdict(hadur.bench.Stats)" class="member-name-link">verdict(Stats)</a> - Static method in class hadur.bench.<a href="hadur/bench/ShieldProbe.html" title="class in hadur.bench">ShieldProbe</a></dt>
 <dd>
 <div class="block">wins*, *loses* or *open*, by whether the paired difference's interval clears 0.</div>
@@ -14475,6 +14692,10 @@ the order they are declared.</div>
 <dd>
 <div class="block">How far the oscillation points sit from their wall (SAOR-1).</div>
 </dd>
+<dt><a href="hadur117/twin/core/Team.html#WALL" class="member-name-link">WALL</a> - Static variable in class hadur117.twin.core.<a href="hadur117/twin/core/Team.html" title="class in hadur117.twin.core">Team</a></dt>
+<dd>
+<div class="block">How close to a wall a station may sit.</div>
+</dd>
 <dt><a href="hadur2/core/melee/MinimumRiskMovement.html#WALL_K" class="member-name-link">WALL_K</a> - Static variable in class hadur2.core.melee.<a href="hadur2/core/melee/MinimumRiskMovement.html" title="class in hadur2.core.melee">MinimumRiskMovement</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur2/core/ledger/EnergyLedger.html#WALL_MARGIN" class="member-name-link">WALL_MARGIN</a> - Static variable in class hadur2.core.ledger.<a href="hadur2/core/ledger/EnergyLedger.html" title="class in hadur2.core.ledger">EnergyLedger</a></dt>
@@ -14535,6 +14756,10 @@ the order they are declared.</div>
 <dt><a href="hadur117/micro/core/Targeting.html#WARM" class="member-name-link">WARM</a> - Static variable in class hadur117.micro.core.<a href="hadur117/micro/core/Targeting.html" title="class in hadur117.micro.core">Targeting</a></dt>
 <dd>
 <div class="block">Samples a row needs before a playout through it keeps its full vote (SAOR-7).</div>
+</dd>
+<dt><a href="hadur117/twin/core/Gun.html#WARM" class="member-name-link">WARM</a> - Static variable in class hadur117.twin.core.<a href="hadur117/twin/core/Gun.html" title="class in hadur117.twin.core">Gun</a></dt>
+<dd>
+<div class="block">Samples a row needs before a playout through it keeps its full vote.</div>
 </dd>
 <dt><a href="hadur/bench/ColdWarm.Row.html#warmDir()" class="member-name-link">warmDir()</a> - Method in record class hadur.bench.<a href="hadur/bench/ColdWarm.Row.html" title="class in hadur.bench">ColdWarm.Row</a></dt>
 <dd>
@@ -14706,6 +14931,10 @@ the order they are declared.</div>
  (<a class="req" href="../requirements.html#MGUN-2">MGUN-2</a>), an isolated opponent and a recent shooter.</div>
 </dd>
 <dt><a href="hadur117/micro/core/Targeting.html#WEIGHT" class="member-name-link">WEIGHT</a> - Static variable in class hadur117.micro.core.<a href="hadur117/micro/core/Targeting.html" title="class in hadur117.micro.core">Targeting</a></dt>
+<dd>
+<div class="block">A playout's vote while every step was drawn from a warm row.</div>
+</dd>
+<dt><a href="hadur117/twin/core/Gun.html#WEIGHT" class="member-name-link">WEIGHT</a> - Static variable in class hadur117.twin.core.<a href="hadur117/twin/core/Gun.html" title="class in hadur117.twin.core">Gun</a></dt>
 <dd>
 <div class="block">A playout's vote while every step was drawn from a warm row.</div>
 </dd>
@@ -14899,6 +15128,10 @@ the order they are declared.</div>
 </dd>
 <dt><a href="hadur2/core/world/Roster.Mate.html#x()" class="member-name-link">x()</a> - Method in class hadur2.core.world.<a href="hadur2/core/world/Roster.Mate.html" title="class in hadur2.core.world">Roster.Mate</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur117/twin/SaorTwin.html#X" class="member-name-link">X</a> - Static variable in class hadur117.twin.<a href="hadur117/twin/SaorTwin.html" title="class in hadur117.twin">SaorTwin</a></dt>
+<dd>
+<div class="block">Record fields.</div>
+</dd>
 </dl>
 <h2 class="title" id="I:Y">Y</h2>
 <dl class="index">
@@ -14930,6 +15163,10 @@ the order they are declared.</div>
 </dd>
 <dt><a href="hadur2/core/world/Roster.Mate.html#y()" class="member-name-link">y()</a> - Method in class hadur2.core.world.<a href="hadur2/core/world/Roster.Mate.html" title="class in hadur2.core.world">Roster.Mate</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur117/twin/SaorTwin.html#Y" class="member-name-link">Y</a> - Static variable in class hadur117.twin.<a href="hadur117/twin/SaorTwin.html" title="class in hadur117.twin">SaorTwin</a></dt>
+<dd>
+<div class="block">Record fields.</div>
+</dd>
 </dl>
 <a href="#I:A">A</a>&nbsp;<a href="#I:B">B</a>&nbsp;<a href="#I:C">C</a>&nbsp;<a href="#I:D">D</a>&nbsp;<a href="#I:E">E</a>&nbsp;<a href="#I:F">F</a>&nbsp;<a href="#I:G">G</a>&nbsp;<a href="#I:H">H</a>&nbsp;<a href="#I:I">I</a>&nbsp;<a href="#I:J">J</a>&nbsp;<a href="#I:K">K</a>&nbsp;<a href="#I:L">L</a>&nbsp;<a href="#I:M">M</a>&nbsp;<a href="#I:N">N</a>&nbsp;<a href="#I:O">O</a>&nbsp;<a href="#I:P">P</a>&nbsp;<a href="#I:Q">Q</a>&nbsp;<a href="#I:R">R</a>&nbsp;<a href="#I:S">S</a>&nbsp;<a href="#I:T">T</a>&nbsp;<a href="#I:U">U</a>&nbsp;<a href="#I:V">V</a>&nbsp;<a href="#I:W">W</a>&nbsp;<a href="#I:X">X</a>&nbsp;<a href="#I:Y">Y</a>&nbsp;<br><a href="allclasses-index.html">All&nbsp;Classes&nbsp;and&nbsp;Interfaces</a><span class="vertical-separator">|</span><a href="allpackages-index.html">All&nbsp;Packages</a><span class="vertical-separator">|</span><a href="constant-values.html">Constant&nbsp;Field&nbsp;Values</a><span class="vertical-separator">|</span><a href="serialized-form.html">Serialized&nbsp;Form</a></main>
 <footer role="contentinfo">
