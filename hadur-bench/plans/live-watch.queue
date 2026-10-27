@@ -23,7 +23,8 @@
 #   (BENCH-86), so re-running the step after a reboot keeps every battle already recorded.
 # --new-only: only battles fought after the watch first started (started.txt); the first 3.17 run
 #   took yesterday's battles still in the clients' results files.
-# report: live_client.py report, joining each collapse to its health record.
+# report: live_client.py report, joining each collapse to its health record; the consoles packed into
+#   one consoles.tar.gz so the results PR takes one file, not one per restart.
 # pr: the watch folder's TSVs, report and log as a results PR; Claude reads it for the live collapses
 #   (the +0.1..+0.2 APS lever L5 of the 1v1 plan to 3rd).
 
@@ -44,8 +45,8 @@ set W = ../data/live/release-${V1}-run${RUN}
 
 watch | mkdir -p ${W} && rm -f ${W}/STOP && $(command -v python3 || command -v python) ../data/tools/live_client.py watch --root ${CLIENTS} $(for d in ${ONES}; do printf -- '--launch %s:roborumble.bat ' "$d"; done) --launch ${MAIN}:meleerumble.bat --launch ${MAIN}:teamrumble.bat --restart-minutes ${RESTART} --wait-minutes ${WAIT} --out ${W} --page "roborumble:hadur2.Hadur ${V1}" --page "meleerumble:hadur2.Hadur ${V1}" --page "teamrumble:hadur2.HadurTeam ${VT}" --robot "hadur2.Hadur ${V1}" --robot "hadur2.HadurTeam ${VT}" --new-only --stop-collapses ${COLLAPSES} --stop-battles ${DUELS} --hours ${HOURS}
 
-report | $(command -v python3 || command -v python) ../data/tools/live_client.py report ${W} --md ${W}/report.md
+report | $(command -v python3 || command -v python) ../data/tools/live_client.py report ${W} --md ${W}/report.md && (cd ${W} && [ ! -d consoles ] || tar czf consoles.tar.gz consoles)
   after: watch
 
-pr | bash tools/open_results_pr.sh claude/live-watch-${V1}-run${RUN}-results "Release watch: live battles and health records of ${V1} / team ${VT}" $(ls ${W}/*.tsv ${W}/report.md ${W}/watch.log 2>/dev/null) $(find ${W}/consoles -name '*.log' -size +0c 2>/dev/null) $(find ${W}/profiles -name '*.tsv' -size +0c 2>/dev/null)
+pr | bash tools/open_results_pr.sh claude/live-watch-${V1}-run${RUN}-results "Release watch: live battles and health records of ${V1} / team ${VT}" $(ls ${W}/*.tsv ${W}/report.md ${W}/watch.log 2>/dev/null) $(ls ${W}/consoles.tar.gz 2>/dev/null) $(find ${W}/profiles -name '*.tsv' -size +0c 2>/dev/null)
   after: report

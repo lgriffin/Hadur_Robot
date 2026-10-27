@@ -42,7 +42,8 @@ class LiveWatchPlanTest {
         assertTrue(queue.contains("set MAIN = C:/robocode"));
         assertTrue(queue.contains("--restart-minutes ${RESTART} --wait-minutes ${WAIT}"));
         assertTrue(queue.contains("set RESTART = 15"));
-        assertTrue(queue.contains("${W}/consoles"), "the consoles go into the results PR");
+        assertTrue(queue.contains("tar czf consoles.tar.gz consoles") && queue.contains("${W}/consoles.tar.gz"),
+                "the consoles go into the results PR as one file");
     }
 
     @Test

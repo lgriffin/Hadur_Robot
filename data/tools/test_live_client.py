@@ -495,16 +495,46 @@ class ClientsTest(unittest.TestCase):
         self.assertEqual(2, len(self.procs), "nothing restarts before its battle ends")
         self.finish_battle("rr01")
         c.poll()
+        self.assertFalse(self.procs[0][0].killed, "a change must hold still before the restart")
+        self.now += 5
+        self.finish_battle("rr01")  # still being written
+        c.poll()
+        self.assertFalse(self.procs[0][0].killed)
+        self.now += 10
+        c.poll()
         self.assertTrue(self.procs[0][0].killed)
         self.assertEqual(3, len(self.procs))
         self.assertIn(("rr01-roborumble", "stop after battle"), self.events())
         self.assertIn(("rr01-roborumble", "restart"), self.events())
         self.assertFalse(self.procs[1][0].killed, "the melee client is still in its battle")
-        self.now += 600
+        self.now += 585
         c.poll()
         self.assertIn(("robocode-meleerumble", "stop cut"), self.events())
         self.assertEqual(4, len(os.listdir(os.path.join(self.out, "consoles"))), "a console file per start")
         c.stop_all()
+
+    def test_labels_must_be_unique_and_a_failed_start_stops_the_ones_started(self):
+        with self.assertRaises(ValueError):
+            self.clients("rr01:roborumble.bat", f"{self.root}/x/rr01:roborumble.bat")
+        c = self.clients("rr01:roborumble.bat", "robocode:meleerumble.bat")
+        spawn = self.spawn
+
+        def second_fails(launcher, cwd, console):
+            if self.procs:
+                raise OSError("no such launcher")
+            return spawn(launcher, cwd, console)
+        c.spawn = second_fails
+        with self.assertRaises(OSError):
+            c.start_all()
+        self.assertTrue(self.procs[0][0].killed, "the client already started is stopped")
+        self.assertEqual("stop at end", self.events()[-1][1])
+
+    def test_a_last_line_without_a_newline_counts_at_stop(self):
+        c = self.clients("rr01:roborumble.bat")
+        c.start_all()
+        self.procs[0][3].write(b"Unable to stop thread: hadur2.Hadur 3.17")
+        c.stop_all()
+        self.assertIn(("rr01-roborumble", "unstoppable"), self.events())
 
     def test_an_exited_client_is_started_again_and_all_stop_at_the_end(self):
         c = self.clients("rr01:roborumble.bat")

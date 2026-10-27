@@ -379,7 +379,7 @@ def battle_row(b, client):
 
 
 HEALTH_COLUMNS = ["utc", "folder", "rounds", "survived", "faults", "skipped", "memory_failures",
-                  "allowance_us", "opponent_key", "shielder", "lead_aware", "profile_battles"]
+                  "allowance_us", "opponent_key", "shielder", "lead_aware", "profile_battles", "client"]
 
 
 LOW_SHARE = 70
@@ -703,6 +703,7 @@ class Watch:
                 time.sleep(1.0)
                 rec, _ = health_row(folder, os.path.relpath(folder, client))
                 if rec:
+                    rec["client"] = self.label(client)
                     rows.append(rec)
                     self.log(f"{rec['utc']} health {rec['opponent_key'] or '?'}: "
                              f"{rec['survived']}/{rec['rounds']} survived, {rec['skipped']} skipped, "
@@ -788,8 +789,9 @@ class Watch:
 
 def cmd_watch(args):
     DATA_OVERRIDE[:] = args.data
-    if args.launch and not args.client:
-        args.client = sorted({folder for _, folder, _ in (parse_launch(x, args.root) for x in args.launch)})
+    if args.launch:
+        launched = {os.path.normpath(folder) for _, folder, _ in (parse_launch(x, args.root) for x in args.launch)}
+        args.client = sorted(launched | {os.path.normpath(c) for c in args.client})
     if not args.client:
         print("watch needs --client or --launch", file=sys.stderr)
         return 2
@@ -812,7 +814,6 @@ def cmd_watch(args):
         # BENCH-121: the watch runs the clients itself, restarting each on a schedule.
         clients = Clients([parse_launch(x, args.root) for x in args.launch], args.out,
                           args.restart_minutes * 60, args.wait_minutes * 60, log)
-        clients.start_all()
     for c in args.client:
         log(f"{utc_now()} client {c}: results {client_results_files(c)}, data {hadur_data_dirs(c) or 'none yet'}")
     end = time.time() + args.hours * 3600 if args.hours > 0 else None
@@ -821,15 +822,17 @@ def cmd_watch(args):
     rate_from = (w.duels, w.collapses)
     done_at = None
     try:
+        if clients:
+            clients.start_all()
         while (end is None or time.time() < end) and (done_at is None or time.time() < done_at):
             now = time.time()
-            if clients:
-                clients.poll()
             # The page first: a battle is a collapse against its pairing's live score.
             if args.page and now >= next_page:
                 w.poll_pages()
                 next_page = now + args.page_every
             w.poll_results()
+            if clients:
+                clients.poll()
             if now >= next_rate:
                 log(f"{utc_now()} rate: {w.duels - rate_from[0]} 1v1 battles, {w.collapses - rate_from[1]} "
                     f"collapses in the last hour; {w.duels} and {w.collapses} in all")
@@ -931,9 +934,14 @@ class Clients:
                  kill=kill_tree, clock=time.time, robot_words=("hadur2.",)):
         self.launches, self.out, self.restart_s, self.wait_s = launches, out, restart_s, wait_s
         self.log, self.spawn, self.kill, self.clock, self.words = log, spawn, kill, clock, robot_words
+        labels = [x[0] for x in launches]
+        if len(set(labels)) != len(labels):
+            raise ValueError(f"two launches share a label: {sorted(labels)}")
         self.consoles = os.path.join(out, "consoles")
         os.makedirs(self.consoles, exist_ok=True)
         self.state = {}
+        # A battle end is a results-file change that then holds for settle_s (an append or upload done).
+        self.settle_s = 10.0
 
     def results_paths(self, folder, launcher):
         paths = client_results_files(folder)
@@ -950,7 +958,11 @@ class Clients:
         stamp = utc_of(self.clock()).replace(":", "")
         path = os.path.join(self.consoles, f"{label}-{stamp}.log")
         console = open(path, "ab")
-        proc = self.spawn(launcher, folder, console)
+        try:
+            proc = self.spawn(launcher, folder, console)
+        except Exception:
+            console.close()
+            raise
         paths = self.results_paths(folder, launcher)
         self.state[label] = {"proc": proc, "console": console, "path": path, "read": 0, "partial": "",
                              "started": self.clock(), "due": None, "sig": None, "paths": paths}
@@ -958,10 +970,14 @@ class Clients:
         self.log(f"{utc_now()} client {label}: {why}, console {path}")
 
     def start_all(self):
-        for label, _, _ in self.launches:
-            self.start(label)
+        try:
+            for label, _, _ in self.launches:
+                self.start(label)
+        except Exception:
+            self.stop_all()
+            raise
 
-    def read_console(self, label):
+    def read_console(self, label, final=False):
         st = self.state[label]
         st["console"].flush()
         try:
@@ -973,7 +989,7 @@ class Clients:
         st["read"] += len(data)
         text = st["partial"] + data.decode("utf-8", errors="replace")
         lines = text.split("\n")
-        st["partial"] = lines.pop()
+        st["partial"] = "" if final else lines.pop()
         for line in lines:
             if not any(w in line for w in self.words):
                 continue
@@ -986,8 +1002,8 @@ class Clients:
 
     def stop(self, label, why):
         st = self.state[label]
-        self.read_console(label)
         self.kill(st["proc"])
+        self.read_console(label, final=True)
         st["console"].close()
         self.event(label, why, f"up {self.clock() - st['started']:.0f} s")
 
@@ -999,14 +1015,19 @@ class Clients:
                 continue
             self.read_console(label)
             if st["proc"].poll() is not None:
+                self.read_console(label, final=True)
                 self.event(label, "exited", f"code {st['proc'].returncode}")
                 st["console"].close()
                 self.start(label, "start after exit")
                 continue
             if st["due"] is None and now - st["started"] >= self.restart_s:
-                st["due"], st["sig"] = now, results_signature(st["paths"])
+                st["due"], st["sig"], st["changed"] = now, results_signature(st["paths"]), None
             if st["due"] is not None:
-                if results_signature(st["paths"]) != st["sig"]:
+                sig = results_signature(st["paths"])
+                if sig != st["sig"]:
+                    # Changed: wait until it holds still, so an append or upload is not cut.
+                    st["sig"], st["changed"] = sig, now
+                elif st["changed"] is not None and now - st["changed"] >= self.settle_s:
                     self.stop(label, "stop after battle")
                     self.start(label, "restart")
                 elif now - st["due"] >= self.wait_s:
@@ -1049,14 +1070,15 @@ def cmd_clients(args):
     os.makedirs(args.out, exist_ok=True)
     c = Clients(launches, args.out, args.restart_minutes * 60, args.wait_minutes * 60)
     end = time.time() + args.hours * 3600 if args.hours > 0 else None
-    c.start_all()
     try:
+        c.start_all()
         while (end is None or time.time() < end) and not os.path.exists(os.path.join(args.out, "STOP")):
             c.poll()
             time.sleep(args.every)
     except KeyboardInterrupt:
         pass
-    c.stop_all()
+    finally:
+        c.stop_all()
     return 0
 
 
@@ -1177,7 +1199,8 @@ def report(out):
         rows = []
         for b, h in joined:
             up = uptime_of(b, starts)
-            if up is not None and h:
+            # The join matches on opponent and time; keep only a record from the battle's own client.
+            if up is not None and h and h.get("client", b["client"]) in (b["client"], ""):
                 rows.append((up / 60.0, int(h["skipped"]), b["share"]))
         if rows:
             lines.append("1v1 battles by how long their client had been running:")
