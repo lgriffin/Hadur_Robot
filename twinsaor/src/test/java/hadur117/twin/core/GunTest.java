@@ -52,7 +52,7 @@ class GunTest {
         for (int i = 0; i < 3 * Gun.ROW + 5; i++) {
             Gun.record(row, i % 500);
         }
-        assertTrue(row[Gun.ROW] >= Gun.ROW && row[Gun.ROW] < 2 * Gun.ROW);
+        assertEquals(3 * Gun.ROW + 5, row[Gun.ROW]);
         // The newest sample sits just before the write position.
         int newest = (3 * Gun.ROW + 4) % 500;
         assertEquals(newest, row[(row[Gun.ROW] - 1) % Gun.ROW]);

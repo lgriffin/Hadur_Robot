@@ -33,7 +33,8 @@ jobs:
           java-version: '21'
           cache: maven
       - name: Build and test
-        run: mvn -B verify
+        # The jar and its team file take the version from twinsaor.release.
+        run: mvn -B verify -Dtwinsaor.release="${VERSION}"
       - name: Check the jar name and version match the tag
         run: |
           jar="twinsaor/target/hadur117.twin.TwinSaor_${VERSION}.jar"

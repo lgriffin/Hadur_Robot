@@ -44,6 +44,37 @@ class TwinReadTest(unittest.TestCase):
     def test_no_shared_teams_is_no_data(self):
         self.assertEqual(twin_read.verdict(twin_read.compare({"a": 1.0}, {"b": 1.0}), 0.5), "no data")
 
+    def test_an_incomplete_report_is_not_read(self):
+        c = {"a": (10, 50.0), "b": (10, 60.0)}
+        self.assertIsNone(twin_read.complete(c, {"a": (10, 51.0), "b": (10, 61.0)}))
+        self.assertIn("teams differ", twin_read.complete(c, {"a": (10, 51.0)}))
+        self.assertIn("battle counts", twin_read.complete(c, {"a": (10, 51.0), "b": (7, 61.0)}))
+
+    def test_the_aa_arm_must_agree_with_the_control(self):
+        self.assertTrue(twin_read.aa_ok(twin_read.compare({"a": 50.0, "b": 60.0}, {"a": 51.0, "b": 59.0})))
+        self.assertFalse(twin_read.aa_ok(twin_read.compare({"a": 50.0, "b": 60.0, "c": 40.0},
+                                                           {"a": 52.0, "b": 62.1, "c": 42.0})))
+        self.assertFalse(twin_read.aa_ok(None))
+
+    def test_a_failed_aa_voids_every_arm(self):
+        d = tempfile.mkdtemp()
+        def put(arm, a, b):
+            with open(os.path.join(d, "twin-r-f-%s.md" % arm), "w", encoding="utf-8") as f:
+                f.write(REPORT % (a, b))
+        put("C", "50.0", "60.0")
+        put("A", "55.0", "65.2")
+        put("X", "60.0", "70.1")
+        import io
+        import contextlib
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out):
+            twin_read.main(["--reports", d, "--run", "r", "--label", "f", "--arms", "C,A,X"])
+        text = out.getvalue()
+        self.assertIn("A/A check failed", text)
+        self.assertIn("| X | 2 |", text)
+        self.assertIn("void", text)
+        self.assertIn("A/A noisy", text)
+
 
 if __name__ == "__main__":
     unittest.main()

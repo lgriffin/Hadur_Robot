@@ -84,18 +84,15 @@ public final class Gun {
     }
 
     /**
-     * Records that {@code state} followed the row's state, overwriting the oldest sample once
-     * the row is full.
+     * Records that {@code state} followed the row's state: a ring, so once the row is full the
+     * newest sample replaces the oldest. The count in the last slot keeps counting.
      *
      * @param row the row of the earlier state
      * @param state the state that followed
      */
     public static void record(char[] row, int state) {
-        row[row[ROW] % ROW] = (char) state;
-        // The count runs ROW..2*ROW-1 once full, so it still says "full" and still walks the ring.
-        if (++row[ROW] >= 2 * ROW) {
-            row[ROW] -= ROW;
-        }
+        // The count runs on; a char holds 65,535 transitions of one row, more than a battle makes.
+        row[row[ROW]++ % ROW] = (char) state;
     }
 
     /**

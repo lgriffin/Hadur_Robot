@@ -17,7 +17,7 @@
 #   R1N   range 60 with one enemy left       R1W   range 160 with one enemy left
 #   P180  a 180-degree pincer: diagnostic only, never ships (Saor's uniqueness rule)
 #   KL    kill the enemy leader first        NF    no leg flip on the target's shot
-#   LEG   a 100 px leg                       FF    wider fire hold (0.1 shot its own twin 476 times
+#   LEG   a 100 px leg                       FF    wider fire hold (0.1 shot its own twin 467 times
 #                                                  in 700 rounds against LunarTwins on the cloud)
 # Pass (tools/twin_read.py): +0.5 share points of APS over C and more than 2 paired standard errors,
 # with A inside 2 standard errors of C. A passing arm goes into 0.2 only if it still fits 1,999 bytes.

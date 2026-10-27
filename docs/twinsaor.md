@@ -122,7 +122,7 @@ distance. PWIN 96%: it loses one pairing.
 | Corner oscillation (SAOR-1) | Kept as the **last-twin** movement only (4.5): with the partner dead, two enemies is a small melee, which is Saor's game. |
 | Nearest-sticky target (SAOR-3) | Replaced by the team's kill order (4.2). Kept when alone. |
 | Radar held while gun cool (SAOR-5) | Replaced by the split radar (4.3). Kept when alone. |
-| 512 tables, 75 MB | Down to 64 tables (`& 63`), 9 MB: Twin Duel has about 50 enemy robots, and two twins plus the enemy pair share one client JVM. Same bytes. |
+| 512 tables, 75 MB | Down to 128 tables (`& 127`), 19 MB: Twin Duel has about 54 robot names, and two twins plus the enemy pair share one client JVM. Two enemies of one pairing share a table with odds of 1 in 128. Same bytes. |
 
 One class, `hadur117.twin.SaorTwin`, listed twice in the team file `hadur117.twin.TwinSaor.team`. The first
 listed is the leader by engine rule; **neither is a `Droid`**. LunarTwins' rover gets 20 more
@@ -289,9 +289,9 @@ the core and the source. Robocode lists it as `hadur117.twin.TwinSaor 0.1`.
 | Tests | `GunTest`, `TeamTest`, `ArchitectureTest` (core purity, no Hadur or Saor), `TwinSaorJarIT` (codesize and packaging, after `package`). |
 | Release | `.github/workflows/release-twinsaor.yml`, tags `twinsaor-v<version>`, notes `docs/releases/twinsaor-v<version>.md`. |
 
-**Codesize: 1,998 of 1,999 bytes**, by Robocode's codesize tool on the team jar. The estimate in
+**Codesize: 1,989 of 1,999 bytes**, by Robocode's codesize tool on the team jar. The estimate in
 section 5 (about 1,185) was far too low: writing it with a core and readable code costs what Saor
-saved by flattening by hand. So 0.1 has no spare. Room for 0.2 comes from flattening the core into
+saved by flattening by hand. So 0.1 has 10 bytes spare. Room for 0.2 comes from flattening the core into
 the robot the way Saor was flattened (Saor went from 914 to 749 that way) or from ProGuard's
 peephole pass.
 
@@ -305,6 +305,8 @@ Where 0.1 differs from sections 4 and 5:
   lock one enemy, each tick is learned once.
 - **A Markov row is a ring:** once full, the newest sample replaces the oldest. Saor keeps
   Figment's overflow quirk; TwinSaor does not.
+- **A dead enemy stays dead:** its record's time becomes infinite, so a scan the partner sent
+  before the death, arriving after it, cannot revive it as a target.
 - **The leg flips** on reaching its end (within 20 px) or on the target's shot, not on distance
   remaining 0, because the station moves with the target every tick.
 
@@ -314,16 +316,18 @@ The cloud box (4 cores, Robocode 1.11.1), `twinduel-lunar.txt`, 20 battles of 35
 800 x 800, parallel 3, about 2 minutes (report
 `docs/bench/local/twinsaor-0.1-vs-lunartwins.md`):
 
-| | Score share | Rounds won | Skipped turns |
+| Build | Score share | Rounds won | Skipped turns |
 |---|---|---|---|
-| TwinSaor 0.1 vs LunarTwins 1.4a | **58.4%** | **571 of 700 (81.6%)** | 12 in 20 battles |
+| **TwinSaor 0.1 as shipped (1,989 bytes)** | **58.2%** | **582 of 700 (83.1%)** | 5 in 20 battles |
+| First build (1,998 bytes: 64 tables, no dead-enemy guard) | 58.4% | 571 of 700 (81.6%) | 12 in 20 battles |
 
-Battle shares ran from 53.6% to about 63%. One opponent and 20 battles is a comparison, not a
+Both ran seeds 100 to 119. The shipped build's battles ran from 52.2% to 63.5%; every one went
+TwinSaor's way. One opponent and 20 battles is a comparison, not a
 census. A share over 50% means TwinSaor beats the Twin Duel's 1st head to head, which LunarTwins'
 96% PWIN says few teams do.
 
-One thing to fix: the engine counted **476 of TwinSaor's bullets hitting its own twin** over the
-700 rounds. The fire hold only looks at a partner nearer than the target. Arm FF in the bench
+One thing to fix: the engine counted **467 of TwinSaor's bullets hitting its own twin** over the
+700 rounds (476 on the first build). The fire hold only looks at a partner nearer than the target. Arm FF in the bench
 card tests a wider hold.
 
 TWIN-4 (teammate scans dropped), TWIN-5 (scans shared) and TWIN-8 (split radar) are the robot's

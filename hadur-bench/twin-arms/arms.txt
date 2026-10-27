@@ -14,4 +14,4 @@ P180 | stations 180 degrees apart, a pincer: diagnostic only, never ships (Saor'
 KL | kill order: most energy first, the enemy leader and its 30-energy death penalty (0.1: least energy) | s#candidateEnergy <= targetEnergy - SWITCH_MARGIN#candidateEnergy >= targetEnergy + SWITCH_MARGIN#
 NF | no leg flip on the target's shot (TWIN-10 off) | s#return drop > 0.09 && drop < 3.01;#return false;#
 LEG | leg 100 a side (0.1: 60) | s#LEG = 60;#LEG = 100;#
-FF | wider fire hold: the partner within 0.25 rad of the gun, nearer or not (0.1: 0.15 and nearer only); 0.1 put 476 bullets into its own twins over 700 rounds against LunarTwins | s#return Math.hypot(mateX - x, mateY - y) < targetDistance#return targetDistance > 0#; s#HOLD_ARC = 0.15;#HOLD_ARC = 0.25;#
+FF | wider fire hold: the partner within 0.25 rad of the gun, nearer or not (0.1: 0.15 and nearer only); 0.1 put 467 bullets into its own twins over 700 rounds against LunarTwins | s#return Math.hypot(mateX - x, mateY - y) < targetDistance#return targetDistance > 0#; s#HOLD_ARC = 0.15;#HOLD_ARC = 0.25;#

@@ -10,7 +10,7 @@ the LunarTwins analysis, the build and the bench card are in [docs/twinsaor.md](
 
 | Version | Date (UTC) | Where | Result |
 |---|---|---|---|
-| 0.1 | 2026-10-27 | cloud, vs LunarTwins 1.4a (Twin Duel 1st), 20 x 35 rounds | 58.4% score share, 81.6% rounds won |
+| 0.1 | 2026-10-27 | cloud, vs LunarTwins 1.4a (Twin Duel 1st), 20 x 35 rounds | 58.2% score share, 83.1% rounds won |
 
 Releases are tagged `twinsaor-v<version>` by `.github/workflows/release-twinsaor.yml`, with notes
 in `docs/releases/twinsaor-v<version>.md`.

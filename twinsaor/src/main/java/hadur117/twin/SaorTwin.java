@@ -21,8 +21,11 @@ import robocode.util.Utils;
  */
 public class SaorTwin extends TeamRobot {
 
-    /** Enemy slots by name hash: the Twin Duel field has about 50 robot names. */
-    static final int SLOTS = 64;
+    /**
+     * Enemy slots by name hash: the Twin Duel field has about 54 robot names. Two enemies of one
+     * pairing share a slot with odds of 1 in 128; the ids are not kept, for bytes.
+     */
+    static final int SLOTS = 128;
     /** Record fields. */
     static final int X = 0, Y = 1, HEADING = 2, VELOCITY = 3, ENERGY = 4, TIME = 5, STATE = 6, ALIVE = 7;
 
@@ -212,7 +215,11 @@ public class SaorTwin extends TeamRobot {
         if (isTeammate(e.getName())) {
             mateAlive = false;
         } else {
-            seen[e.getName().hashCode() & (SLOTS - 1)][ALIVE] = 0;
+            // A dead enemy's record takes an endless time, so a scan of it the partner sent before
+            // the death, arriving after it, is older and cannot bring it back.
+            double[] r = seen[e.getName().hashCode() & (SLOTS - 1)];
+            r[ALIVE] = 0;
+            r[TIME] = Double.POSITIVE_INFINITY;
         }
     }
 }
