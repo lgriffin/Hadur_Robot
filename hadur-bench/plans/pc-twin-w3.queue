@@ -7,8 +7,8 @@
 # One bench queue, RoboRumble workers at 0, unpinned. Every step resumes; no step needs a decision.
 # Nothing here touches Hadur or Saor.
 #
-# Field: twinduel-field.txt, the 26 teams TwinSaor meets live (LunarTwins to SuperSittingDuckTwins),
-# 800x800, 35 rounds, 10 seeds a team = 260 battles an arm. The cloud box ran 20 such battles in
+# Field: twinduel-field.txt, the 27 ranked teams (LunarTwins to SuperSittingDuckTwins),
+# 800x800, 35 rounds, 10 seeds a team = 270 battles an arm. The cloud box ran 20 such battles in
 # about 2 minutes at parallel 3, so an arm is roughly 5-10 min at the PC's width; 11 arms, about 1.5 h.
 #
 # Arms (twin-arms/arms.txt):

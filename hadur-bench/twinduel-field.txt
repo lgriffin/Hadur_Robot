@@ -1,6 +1,6 @@
 # The Twin Duel field: every ranked team (rumble.robowiki.net, twinduel, read 2026-10-27), for
-# TwinSaor's census (docs/twinsaor.md section 6, card plans/pc-twin-t3.queue). 27 teams, 26 pairings each;
-# the live APS is in the comment. Twin Duel settings: two-robot teams, 800x800.
+# TwinSaor's census (docs/twinsaor.md section 6, card plans/pc-twin-w3.queue): the 27 ranked teams, in rank order.
+# Twin Duel settings: two-robot teams, 800x800.
 # Run with: --set twinduel-field.txt --team true --field 800x800 --rounds 35
 # Jars from https://robocode-archive.strangeautomata.com/robots/<jar>, into opponents/ (./fetch-opponents.sh).
 #   <team name as Robocode lists it> | team | <jar file in opponents/>

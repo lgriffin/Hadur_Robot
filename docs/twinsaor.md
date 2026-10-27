@@ -334,12 +334,12 @@ targeting showed, both twins aimed), and a battle-log test that names them is du
 
 Leigh's rule stands: no PC bench before a live run. The card is ready for after 0.1's first pass:
 
-- `hadur-bench/twinduel-field.txt`: the 26 teams of the live table, with their archive jars.
+- `hadur-bench/twinduel-field.txt`: the 27 teams of the live table, with their archive jars.
 - `hadur-bench/twin-arms/arms.txt` and `tools/twin_arms.sh`: each arm is the source with one sed,
   built as `hadur117.twin.TwinSaor 0.1<ARM>` so arms install side by side.
 - `tools/twin_read.py` (tested by `test_twin_read.py`): an arm's APS is the mean of its per-team
   shares; it is read against the control team by team, with the paired standard error.
 - `plans/pc-twin-w3.queue`: C, an A/A arm, ranges (R2W 300, R2N 180, R1N 60, R1W 160), P180
   (pincer, diagnostic only), KL (enemy leader first), NF (no flip on shot), LEG (100 px leg) and
-  FF (wider fire hold). The field is 10 seeds a team, 260 battles an arm, about 1.5 h for all 11
+  FF (wider fire hold). The field is 10 seeds a team, 270 battles an arm, about 1.5 h for all 11
   arms. To pass, an arm needs +0.5 share points over C and more than 2 standard errors.
