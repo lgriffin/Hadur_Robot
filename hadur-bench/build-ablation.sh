@@ -212,7 +212,8 @@
 #         and keep out of the line ahead of a teammate's gun about to fire (K 0.4, 70 px). Suffix mgl.
 #   tmgunlinew (team only) with it heavier and wider (K 1.0, 100 px). Suffix mglw.
 #   tmtab (team only) T7, TMODE-1: the screen's table, the t.put lines in $TEAM_MODE_TABLE (default
-#         work/team-modes-screen.java, written by tools/team_modes.py pick). Suffix mt.
+#         work/team-modes-screen.java, written by tools/team_modes.py pick). Suffix mt, or
+#         $TEAM_MODE_SUFFIX (the per-opponent counter screens build ka, kb, kc).
 #   tmlock (team only) the confirmed table, $TEAM_MODE_LOCKED (default work/team-modes-locked.java,
 #         written by tools/team_modes.py lock). Suffix mk.
 #   mrate (melee and team) fire more often: the controller fires on a scan up to 8 ticks old (was 5;
@@ -685,7 +686,7 @@ for a in "${list[@]}"; do
             edit "$modes" "public static final boolean FORCE_REAR = false;" "public static final boolean FORCE_REAR = true;"
             ;;
         tmtab|tmlock)
-            if [[ "$a" == tmtab ]]; then table="${TEAM_MODE_TABLE:-$here/work/team-modes-screen.java}"; version="${version}mt"
+            if [[ "$a" == tmtab ]]; then table="${TEAM_MODE_TABLE:-$here/work/team-modes-screen.java}"; version="${version}${TEAM_MODE_SUFFIX:-mt}"
             else table="${TEAM_MODE_LOCKED:-$here/work/team-modes-locked.java}"; version="${version}mk"; fi
             [[ -f "$table" ]] || { echo "ablation $a: no table file $table" >&2; exit 1; }
             edit "$modes" "        Map<String, Set<Mode>> t = new HashMap<>();" "        Map<String, Set<Mode>> t = new HashMap<>();

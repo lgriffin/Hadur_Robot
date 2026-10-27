@@ -163,6 +163,14 @@ public class MinimumRiskMovement {
      * at {@link #HUNT_PULL}, leaves the bullets' risk unscaled.
      */
     static final double HUNT_RADIUS = 350;
+    /** TMODE-23, TMODE-24: the hunt's radius against a team whose power falls with distance. */
+    static final double HUNT_RADIUS_FAR = 500;
+    static final double HUNT_RADIUS_FARTHER = 650;
+    /**
+     * TMODE-21, TMODE-22: the weight of a shot's one virtual bullet against a team that aims
+     * only head-on or only linear: the two guesses' total, all on the real line.
+     */
+    static final double ONE_AIM_WEIGHT = 2.0;
     static final double HUNT_PULL = 0.3;
     static final double HUNT_CROWD = 1.6;
     static final int HUNT_MAX_GROUP = 3;
@@ -435,7 +443,18 @@ public class MinimumRiskMovement {
     public void updateBullets(List<EnemyShot> shots, RobotStateLog myPath, Point2D.Double me,
                               long now, List<Point2D.Double> mates, TeamDanger danger,
                               boolean nearest, boolean learned, boolean soft) {
-        if (mates.isEmpty() || (!nearest && !learned && !soft)) {
+        updateBullets(shots, myPath, me, now, mates, danger, nearest, learned, soft, null);
+    }
+
+    /**
+     * As above, where with {@code only} (TMODE-21 HEADON, TMODE-22 LINEAR) each shot makes one
+     * virtual bullet, on that aim, at {@link #ONE_AIM_WEIGHT}: the team's code aims no other way.
+     * Null: both guesses.
+     */
+    public void updateBullets(List<EnemyShot> shots, RobotStateLog myPath, Point2D.Double me,
+                              long now, List<Point2D.Double> mates, TeamDanger danger,
+                              boolean nearest, boolean learned, boolean soft, VirtualBullet.Aim only) {
+        if (mates.isEmpty() || (!nearest && !learned && !soft && only == null)) {
             updateBullets(shots, myPath, me, now);
             return;
         }
@@ -456,8 +475,16 @@ public class MinimumRiskMovement {
                 continue;
             }
             double hot = DiaUtils.absoluteBearing(s.source, target);
+            if (only == VirtualBullet.Aim.HEAD_ON) {
+                add(new VirtualBullet(s, VirtualBullet.Aim.HEAD_ON, hot, ONE_AIM_WEIGHT * w), cap);
+                continue;
+            }
             double linear = at == null ? hot : VirtualBullet.linearHeading(s.source, target,
                 at.heading, at.velocity, s.speed(), field.width, field.height);
+            if (only == VirtualBullet.Aim.LINEAR) {
+                add(new VirtualBullet(s, VirtualBullet.Aim.LINEAR, linear, ONE_AIM_WEIGHT * w), cap);
+                continue;
+            }
             add(new VirtualBullet(s, VirtualBullet.Aim.HEAD_ON, hot, w), cap);
             add(new VirtualBullet(s, VirtualBullet.Aim.LINEAR, linear, w), cap);
         }
@@ -626,7 +653,7 @@ public class MinimumRiskMovement {
             if (prey != null) return new Pull(prey.location, DISABLED_FLOOR, DISABLED_PULL);
         }
         if (modes.contains(TeamModes.Mode.HUNT) && energy >= PACK_ENERGY) {
-            Point2D.Double slot = huntSlot(me, name, enemies, now, mates);
+            Point2D.Double slot = huntSlot(me, name, enemies, now, mates, huntRadius(modes));
             if (slot != null) return new Pull(slot, PACK_FLOOR, HUNT_PULL, false);
         }
         boolean gang = modes.contains(TeamModes.Mode.GANG);
@@ -763,6 +790,19 @@ public class MinimumRiskMovement {
      */
     static Point2D.Double huntSlot(Point2D.Double me, String name, List<EnemyInfo> enemies, long now,
                                    List<Roster.Mate> mates) {
+        return huntSlot(me, name, enemies, now, mates, HUNT_RADIUS);
+    }
+
+    /** TMODE-23, TMODE-24: the hunt's radius against this team. */
+    static double huntRadius(Set<TeamModes.Mode> modes) {
+        if (modes.contains(TeamModes.Mode.FARTHER)) return HUNT_RADIUS_FARTHER;
+        if (modes.contains(TeamModes.Mode.FAR)) return HUNT_RADIUS_FAR;
+        return HUNT_RADIUS;
+    }
+
+    /** As above, at {@code radius} from the prey. */
+    static Point2D.Double huntSlot(Point2D.Double me, String name, List<EnemyInfo> enemies, long now,
+                                   List<Roster.Mate> mates, double radius) {
         List<Roster.Mate> sorted = new ArrayList<>(mates);
         sorted.sort((a, b) -> a.name.compareTo(b.name));
         List<Point2D.Double> pack = new ArrayList<>(mates.size() + 1);
@@ -796,7 +836,7 @@ public class MinimumRiskMovement {
         int n = group.size();
         double spread = Math.min(PACK_SPREAD, 2 * Math.PI / n);
         double angle = mean + (rank - (n - 1) / 2.0) * spread;
-        return DiaUtils.project(t, angle, HUNT_RADIUS);
+        return DiaUtils.project(t, angle, radius);
     }
 
     /**

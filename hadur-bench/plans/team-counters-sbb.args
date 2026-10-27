@@ -1,0 +1,31 @@
+# PC card team-counters (docs/plan-team-top5.md section 11, TMODE-20..24, BENCH-123): bb (A/A) against aa on every team a screen plays, the screens' seeds. Template: tcprep writes work/team-counters-sbb.args with @V@ = the robot.release in hadur-robot/pom.xml
+--team
+true
+--seeds
+16
+--seed-base
+4600
+--rounds
+10
+--parallel
+auto
+--child-heap
+2G
+--cpu-constant
+auto
+--set
+work/team-counters-all.txt
+--robot-jar
+bisect/hadur2.HadurTeam_@V@bb.jar
+--robot
+hadur2.HadurTeam @V@bb
+--member
+hadur2.Hadur
+--out
+work/team-counters-@V@-sbb
+--report
+../docs/bench/local/team-counters-sbb.md
+--baseline
+bisect/hadur2.HadurTeam_@V@aa.jar
+--baseline-robot
+hadur2.HadurTeam @V@aa

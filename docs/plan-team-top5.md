@@ -501,3 +501,34 @@ Together +1.0..+2.5 against +2.6: 2nd only at the top of the range.
 - **Expected:** if own-fire damage falls by half, about +0.5 to +1.0 APS (half our extra damage
   against the mid 14 is own fire). Run after pc-team-table.
 
+
+## 11. One counter per opponent (2026-10-27)
+
+Plan doc: "Team rumble: plan from 4th to 2nd" (https://claude.ai/artifact/WJJuSZcEDftxfD7FMLgVbB).
+Gun lines failed (PR #344), and no team gain has landed since 3.17.1. Every flat card since HUNT was
+a tweak to our own movement, and both per-team tables (PR #246, PR #339) only picked among those
+tweaks on 6 seeds. In 1v1, tailoring pays because each mode counters a bot type. This section does
+the same for team: read each costly team's code, then give it a counter that exploits what it does.
+
+- **Reads.** The 16 teams Firestarter beats us on by 5 to 13 points, from their decompiled jars:
+  10 shoot their closest enemy, 9 cut power with distance, 5 aim only head-on or only linear.
+- **Counters** (team-only table modes; no FORCE switch, `TeamModes.TABLE` ships empty):
+  - OWN (TMODE-20): shot ownership via MMOVE-9's nearest rule. It lost globally, but against a team
+    that shoots its closest it is exact.
+  - HEADON / LINEAR (TMODE-21/22): one virtual bullet per shot, on the team's only aim, weighing
+    both guesses' total (`ONE_AIM_WEIGHT` 2).
+  - FAR / FARTHER (TMODE-23/24): the hunt's slot at 500 / 650 px, not 350, against power that
+    falls with distance.
+  - With all of them forced into the default, only the team replay fixtures move; the duel and
+    melee fixtures replay bit for bit.
+- **Card** plans/pc-team-counters.queue (BENCH-123): plans/team-counters.tsv gives each of 15 teams
+  up to three counters (screens s1..s3, one table jar each: ka, kb, kc), each played only against
+  its team, 16 seeds from 4600, beside a bb A/A.
+  - Pick per team: best screen at +3.0 points or more over both baselines, with the low end above 0.
+  - Gate: the picked table (mk) on 16 fresh seeds from 4700; projection at least +0.30 APS with the
+    low end above zero. On PASS the gated table, as benched, is the table to ship (nothing is dropped on the gate's own seeds).
+  - About 2,500 battles at most, ~2.8 h on the PC.
+- **Not built yet:** radar first against TroodonPack (two radar bots feed three droids); break the
+  focus (Mamba's shared target); wounded members back off (Valkiries, OmegaSquad). Firestarter's
+  path check on mate bullets comes after the table, as the one general step.
+- **Expected:** the table +0.8 to +1.8 APS, if half of Firestarter's lead on these teams closes.

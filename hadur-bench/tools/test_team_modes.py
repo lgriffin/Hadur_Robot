@@ -122,6 +122,48 @@ class TeamModesTest(unittest.TestCase):
         self.assertNotIn("b.BTeam 2", tsv)
 
 
+    def counters_tsv(self):
+        p = Path(self.d, "counters.tsv")
+        p.write_text("# counters\nteam\ts1\ts2\na.ATeam 1\tOWN,LINEAR\tFAR\nb.BTeam 2\tOWN\t-\n", encoding="utf-8")
+        return str(p)
+
+    def test_screens_write_one_table_and_set_per_screen(self):
+        out = Path(self.d)
+        team_modes.main(["screens", "--counters", self.counters_tsv(), "--census", str(out / "census.txt"),
+                         "--opponents", self.d, "--base", "MATEFIRE,HUNT", "--out-dir", str(out / "w")])
+        s1 = (out / "w" / "team-counters-s1.java").read_text()
+        self.assertIn('t.put("a.A", of(Mode.MATEFIRE, Mode.HUNT, Mode.OWN, Mode.LINEAR));', s1)
+        self.assertIn('t.put("b.Lead", of(Mode.MATEFIRE, Mode.HUNT, Mode.OWN));', s1)
+        s2 = (out / "w" / "team-counters-s2.java").read_text()
+        self.assertEqual(['        t.put("a.A", of(Mode.MATEFIRE, Mode.HUNT, Mode.FAR));'], s2.splitlines())
+        sets = {n: [l.split(" |")[0] for l in (out / "w" / f"team-counters-{n}.txt").read_text().splitlines() if not l.startswith("#")]
+                for n in ("s1", "s2", "all")}
+        self.assertEqual(["a.ATeam 1", "b.BTeam 2"], sets["s1"])
+        self.assertEqual(["a.ATeam 1"], sets["s2"])
+        self.assertEqual(["a.ATeam 1", "b.BTeam 2"], sets["all"])
+
+    def test_screens_refuse_a_team_not_in_the_census(self):
+        p = Path(self.d, "bad.tsv")
+        p.write_text("team\ts1\nz.Nobody 1\tOWN\n", encoding="utf-8")
+        with self.assertRaises(SystemExit):
+            team_modes.main(["screens", "--counters", str(p), "--census", str(Path(self.d) / "census.txt"),
+                             "--opponents", self.d, "--out-dir", str(Path(self.d) / "w")])
+
+    def test_pick_with_counters_takes_the_screen_modes_and_needs_the_low_end(self):
+        s1 = report(self.d, "s1.md", {"a.ATeam 1": (4.0, 3.0), "b.BTeam 2": (5.0, 6.0)})
+        s2 = report(self.d, "s2.md", {"a.ATeam 1": (6.0, 2.0)})
+        out = Path(self.d)
+        team_modes.main(["pick", "--counters", self.counters_tsv(), "--report", f"s1={s1}", "--report", f"s2={s2}",
+                         "--min-mean", "3.0", "--low-end", "0", "--base", "MATEFIRE,HUNT",
+                         "--census", str(out / "census.txt"), "--opponents", self.d,
+                         "--out-tsv", str(out / "k.tsv"), "--out-java", str(out / "k.java"), "--out-md", str(out / "k.md")])
+        java = (out / "k.java").read_text()
+        # a: s2 (FAR) +6 beats s1 +4; b: s1 +5 has its low end under zero, so no pick.
+        self.assertIn('t.put("a.A", of(Mode.MATEFIRE, Mode.HUNT, Mode.FAR));', java)
+        self.assertNotIn('"b.Lead"', java)
+        self.assertIn("a.ATeam 1\tFAR\t6.00", (out / "k.tsv").read_text())
+        self.assertIn("s2 (FAR)", (out / "k.md").read_text())
+
     def test_gate_spreads_the_gains_over_every_team(self):
         mk = report(self.d, "mk.md", {"a.ATeam 1": (6.0, 3.0), "b.BTeam 2": (4.0, 4.0)})
         bb = report(self.d, "gbb.md", {"a.ATeam 1": (2.0, 2.0), "b.BTeam 2": (0.0, 2.0)})

@@ -25,6 +25,16 @@ baseline's luck against a team does not make the pick.
 both baselines, summed and spread over all --teams pairings, as a projected team APS change.
 The teams the table does not name play the default modes, so they add nothing but noise.
 
+  team_modes.py screens --counters plans/team-counters.tsv --census team-census46.txt \
+      --opponents opponents --base MATEFIRE,HUNT --out-dir work
+
+The per-opponent counters (TMODE-20 to TMODE-24, BENCH-123): `plans/team-counters.tsv` names, for
+each team whose code was read, up to three counters (screens s1, s2, s3), each a mode set as
+OWN,LINEAR. `screens` writes one table per screen (work/team-counters-s1.java) and the teams it
+plays a counter against (work/team-counters-s1.txt). `pick --counters` then reads each
+--report s1=... as that screen, and picks for each team the screen whose gain clears --min-mean
+and, with --low-end, has its 95% low end above that.
+
 A pick is kept by `lock` only where the table build, on fresh seeds, beat aa against that team
 by at least --min-gain points: the 1v1 lesson that a short screen's +6.7 can be -8.9 on confirm.
 """
@@ -36,7 +46,7 @@ import zipfile
 from pathlib import Path
 
 MODES = ("SOFT", "GANG", "FINISH", "LEARN", "PACK", "SCREEN", "POOL", "DISABLED", "MATEFIRE", "REAR", "WAVES", "HUNT",
-         "LINES", "LINESW", "LANEP", "LANEB")
+         "LINES", "LINESW", "LANEP", "LANEB", "GUNLINE", "OWN", "HEADON", "LINEAR", "FAR", "FARTHER")
 
 ROW = re.compile(r"^\|\s*(?P<team>[^|]+?)\s*\|\s*[^|]*\|\s*[^|]*\|\s*(?P<mean>[+-]?\d+(?:\.\d+)?)(?:\s*±\s*(?P<ci>\d+(?:\.\d+)?))?\s*\|\s*$")
 
@@ -157,11 +167,56 @@ def classes_for(rows, opponents):
     return out
 
 
+def counters(path):
+    """(screen names, team to {screen: mode tuple}) from a counters TSV; '-' is no counter."""
+    lines = [l for l in Path(path).read_text(encoding="utf-8").splitlines()
+             if l.strip() and not l.lstrip().startswith("#")]
+    head = lines[0].split("\t")
+    if head[0] != "team":
+        raise SystemExit(f"{path}: the first line must be the header team<TAB>s1...")
+    names = head[1:]
+    out = {}
+    for line in lines[1:]:
+        cells = [c.strip() for c in line.split("\t")]
+        out[cells[0]] = {}
+        for name, cell in zip(names, cells[1:]):
+            if cell and cell != "-":
+                out[cells[0]][name] = base_modes(cell)
+    return names, out
+
+
+def cmd_screens(a):
+    names, table = counters(a.counters)
+    rows = census(a.census)
+    known = {t for t, _, _ in rows}
+    unknown = sorted(set(table) - known)
+    if unknown:
+        raise SystemExit("counters for teams not in the census: " + ", ".join(unknown))
+    classes = classes_for(rows, a.opponents)
+    for name in names:
+        entries = {t: set(c[name]) for t, c in table.items() if name in c}
+        lines, clashes = java_lines(entries, classes, base_modes(a.base))
+        if clashes:
+            raise SystemExit(f"screen {name}: classes two teams share: " + ", ".join(clashes))
+        played = emitted(lines, classes, entries)
+        missing = sorted(set(entries) - played)
+        if missing:
+            raise SystemExit(f"screen {name}: no member classes (jar missing): " + ", ".join(missing))
+        write(str(Path(a.out_dir) / f"team-counters-{name}.java"), "\n".join(lines) + "\n")
+        set_lines = [f"# Teams screen {name} plays a counter against (team_modes.py screens)"] + [l for t, l, _ in rows if t in played]
+        write(str(Path(a.out_dir) / f"team-counters-{name}.txt"), "\n".join(set_lines) + "\n")
+        print(f"screen {name}: {len(played)} teams", file=sys.stderr)
+    every = [l for t, l, _ in rows if table.get(t)]
+    write(str(Path(a.out_dir) / "team-counters-all.txt"),
+          "\n".join(["# Teams any screen plays a counter against (team_modes.py screens)"] + every) + "\n")
+
+
 def cmd_pick(a):
     screens = {}
+    names, table = counters(a.counters) if a.counters else ((), {})
     for spec in a.report:
         mode, path = spec.split("=", 1)
-        if mode not in MODES:
+        if mode not in MODES and mode not in names:
             raise SystemExit(f"unknown mode {mode}")
         screens[mode] = paired(path)
     for spec in a.control or ():
@@ -190,14 +245,21 @@ def cmd_pick(a):
             mean, ci = r[team]
             cells.append(f"{mean:+.1f} ± {ci:.1f}")
             clears = mean >= a.min_mean if a.min_mean is not None else mean - ci > a.margin
+            if a.low_end is not None:
+                clears = clears and mean - ci > a.low_end
+            if names and mode not in table.get(team, {}):
+                clears = False
             if clears and (best is None or mean > best[1]):
                 best = (mode, mean, ci)
         if aa:
             cells.append(f"{aa[team][0]:+.1f} ± {aa[team][1]:.1f}" if team in aa else "-")
         if best:
-            picks[team] = {best[0]}
-            tsv.append(f"{team}\t{best[0]}\t{best[1]:.2f}\t{best[2]:.2f}")
-        md.append(f"| {team} | " + " | ".join(cells) + f" | {best[0] if best else ''} |")
+            modes = set(table[team][best[0]]) if names else {best[0]}
+            picks[team] = modes
+            listed = ",".join(m for m in MODES if m in modes)
+            tsv.append(f"{team}\t{listed}\t{best[1]:.2f}\t{best[2]:.2f}")
+        label = (f"{best[0]} ({','.join(m for m in MODES if m in picks[team])})" if names else best[0]) if best else ""
+        md.append(f"| {team} | " + " | ".join(cells) + f" | {label} |")
     lines, clashes = java_lines(picks, classes, base_modes(a.base))
     missing = [t for t in picks if not classes.get(t)]
     md += ["", f"{len(picks)} of {len(rows)} teams picked a mode."]
@@ -302,6 +364,8 @@ def main(argv=None):
     pk.add_argument("--margin", type=float, default=0.0)
     pk.add_argument("--control", action="append", help="MODE=bb.md, the A/A arm of the card that screened MODE")
     pk.add_argument("--min-mean", type=float, help="pick on the mean alone, at least this many points")
+    pk.add_argument("--low-end", type=float, help="also require the 95%% low end above this many points")
+    pk.add_argument("--counters", help="the per-opponent counters TSV: --report names its screens")
     pk.add_argument("--base", default="", help="modes every entry also plays, as MATEFIRE,HUNT")
     pk.add_argument("--out-md")
     pk.add_argument("--out-tsv")
@@ -318,6 +382,12 @@ def main(argv=None):
     lk.add_argument("--out-md")
     lk.add_argument("--out-java")
     lk.add_argument("--out-set")
+    sc = sub.add_parser("screens")
+    sc.add_argument("--counters", required=True)
+    sc.add_argument("--census", required=True)
+    sc.add_argument("--opponents", default="opponents")
+    sc.add_argument("--base", default="", help="modes every entry also plays, as MATEFIRE,HUNT")
+    sc.add_argument("--out-dir", required=True)
     gt = sub.add_parser("gate")
     gt.add_argument("--report", required=True, help="the locked table build against aa")
     gt.add_argument("--control", help="bb against aa on the same teams and seeds")
@@ -327,7 +397,7 @@ def main(argv=None):
     gt.add_argument("--min-aps", type=float, default=0.3)
     gt.add_argument("--out-md")
     a = p.parse_args(argv)
-    {"pick": cmd_pick, "lock": cmd_lock, "gate": cmd_gate}[a.cmd](a)
+    {"pick": cmd_pick, "lock": cmd_lock, "gate": cmd_gate, "screens": cmd_screens}[a.cmd](a)
 
 
 if __name__ == "__main__":

@@ -1148,6 +1148,11 @@ MMOVE-8 the melee strand, WEAVE-7 and WEAVE-8 the conductor.
 | TMODE-17 | Optional | Where the team mode table names LANEP against a team, Hadur shall play WEAVE-10 against it: a teammate nearer than the target whose predicted track meets a bullet flying the gun's line holds the shot. | T7 |
 | TMODE-18 | Optional | Where the team mode table names LANEB against a team, Hadur shall play WEAVE-11 against it: a teammate up to 450 px beyond the target whose predicted track meets the bullet holds the shot. | T7 |
 | TMODE-19 | Optional | Where the GUNLINE mode is played (ablations tmgunline, tmgunlinew), each team report shall state the member's gun heading and gun heat (link version 3), and Hadur's destination risk shall add, for each teammate whose stated aim is at most 3 ticks old and whose gun fires within 6 ticks by that heat at 0.1 a tick, 0.4 at a point on the line ahead of that teammate's gun, falling linearly to none 70 px off it, from 20 to 900 px ahead. Where it is not played, the report shall be written as before. | T7 |
+| TMODE-20 | Optional | Where the team mode table names OWN against a team, while Hadur has a living teammate, a shot by that team shall make virtual bullets only when no teammate stood 0.9 times nearer its source than Hadur (MMOVE-9's nearest rule). | T7 |
+| TMODE-21 | Optional | Where the team mode table names HEADON against a team, while Hadur has a living teammate, each shot by that team shall make one head-on virtual bullet of weight 2, and no linear one. | T7 |
+| TMODE-22 | Optional | Where the team mode table names LINEAR against a team, while Hadur has a living teammate, each shot by that team shall make one linear virtual bullet of weight 2, and no head-on one. | T7 |
+| TMODE-23 | Optional | Where the team mode table names FAR against a team, the HUNT place shall be 500 px from the prey. | T7 |
+| TMODE-24 | Optional | Where the team mode table names FARTHER against a team, the HUNT place shall be 650 px from the prey. | T7 |
 
 ### T1 notes
 
@@ -1605,6 +1610,7 @@ None of these change how the robot plays; TIME-8 and RES-15 only report.
 | BENCH-120 | Ubiquitous | The bench shall carry the `pc-team-gunline` card, which builds TMODE-19 (`tmgunline`, and `tmgunlinew` at 1.0 and 100 px) beside an aa baseline and a bb A/A copy, runs each against all 46 teams at 6 seeds from 4500, and writes the loss read and `tools/friendly_hits.py` for every arm. | T7 |
 | BENCH-121 | Event | When the release watch runs, it shall start each RoboRumble client it names (`--launch FOLDER:LAUNCHER`: rr01..rr06 `roborumble.bat` and `C:/robocode` `meleerumble.bat` and `teamrumble.bat`), write each console to its own file per start, log Hadur's console lines for a stall disable, a thread the engine cannot stop and a skipped turn with their times (`client-events.tsv`), restart each client every `RESTART` minutes at its next battle end or upload or `WAIT` minutes after that if none ends (logged as cut), start again a client that exits, stop every client when the watch ends, and report the counts and 1v1 skipped turns and share by minutes since the client started. | T7 |
 | BENCH-122 | Ubiquitous | The bench shall carry the `pc-melee-power2` card, which builds MGUN-14, MGUN-15 and MGUN-16 each alone and all three together beside an aa baseline and a bb A/A copy, runs each alone on the melee census at 6 seeds after the Ogi card's, and reads it with `tools/melee_s0.py screen --base2` at a 0 bar with the 95% low end above 0 and Hadur's share of the others it outlives no more than 1 point lower. | R9 |
+| BENCH-123 | Ubiquitous | The bench shall carry the `pc-team-counters` card, which builds one table jar per screen of plans/team-counters.tsv (each team's counters, TMODE-20 to TMODE-24, played only against that team), runs each against aa on its teams at 16 seeds from 4600 beside a bb A/A, picks per team the screen at +3.0 points or more with the 95% low end above zero, and gates the picked table on 16 fresh seeds from 4700 at +0.30 APS with the low end above zero; only a passed gate writes that table, as benched, as the table to ship. | T7 |
 | RAM-4 | State | While the rammer-heat switch is on, in a duel, once RAM-2 has confirmed the opponent as a rammer, the surf shall offer MOVE-11's gun-heat wave with MOVE-13's hold off (as heatjit plays) for the rest of the battle, whatever those switches are set to; before the confirmation, and in melee or team, the switches are as their own requirements state. Off by default. | R9 |
 
 - **TIME-8.** `Hadur.setupRecord`, printed once in round 0. The PC's round-0 read
@@ -1806,6 +1812,20 @@ A retired requirement keeps its ID; no new requirement reuses it.
   `tmgunline` (mgl) and `tmgunlinew` (mglw: 1.0, 100 px). Card plans/pc-team-gunline.queue.
 - With GUNLINE forced on, only the team replay fixtures can change; the duel and melee fixtures replay
   bit for bit.
+
+## Team per-opponent counters (TMODE-20 to TMODE-24, BENCH-123)
+
+- **Why.** Leigh 2026-10-27: tailor a plan per opponent, as the 1v1 mode table does. Code reads of
+  the 16 costliest teams (docs/plan-team-top5.md section 11): 10 shoot their closest enemy, 9 cut
+  power with distance, 5 aim only head-on or only linear.
+- **TMODE-20..24.** `TeamModes.Mode.OWN`, `HEADON`, `LINEAR`, `FAR`, `FARTHER`, table-only (no
+  FORCE switch). `MeleeController` passes OWN as the nearest rule and HEADON/LINEAR as `only` to
+  `MinimumRiskMovement.updateBullets`; `ONE_AIM_WEIGHT` 2; `huntRadius(modes)` gives
+  `HUNT_RADIUS_FAR` 500 or `HUNT_RADIUS_FARTHER` 650.
+- With all five forced into the default (HEADON and LINEAR in turn), only the team replay fixtures
+  move; the duel and melee fixtures replay bit for bit.
+- **BENCH-123.** `tools/team_modes.py screens`, `pick --counters --low-end`; build-ablation `tmtab`
+  takes `$TEAM_MODE_SUFFIX`; card plans/pc-team-counters.queue.
 
 ## Saor, a MicroMelee entry (SAOR-1 to SAOR-15, stages U0 to U5)
 

@@ -454,4 +454,75 @@ class TeamModesTest {
         Point2D.Double b = member.chooseDestination(pt(600, 600), 100, 3, two, 100, MeleeStrategy.Plan.normal(), m, r);
         assertEquals(a, b);
     }
+
+    @Test
+    @Tag("TMODE-20")
+    @Tag("TMODE-21")
+    @Tag("TMODE-22")
+    @DisplayName("TMODE-20: OWN plays the nearest rule: a shot whose source a teammate stood nearer makes no bullets; HEADON or LINEAR names the one aim")
+    void shotOwnership() {
+        assertTrue(TeamModes.owns(EnumSet.of(TeamModes.Mode.OWN, TeamModes.Mode.HUNT)));
+        assertFalse(TeamModes.owns(TeamModes.DEFAULT));
+        assertNull(TeamModes.onlyAim(TeamModes.DEFAULT));
+        assertSame(VirtualBullet.Aim.HEAD_ON, TeamModes.onlyAim(EnumSet.of(TeamModes.Mode.OWN, TeamModes.Mode.HEADON)));
+        assertSame(VirtualBullet.Aim.LINEAR, TeamModes.onlyAim(EnumSet.of(TeamModes.Mode.LINEAR)));
+        EnemyShot shot = new EnemyShot("e", pt(600, 200), 10, 2.0);
+        TeamDanger danger = new TeamDanger(field(1200, 1200));
+        MinimumRiskMovement theirs = new MinimumRiskMovement(field(1200, 1200));
+        theirs.newRound();
+        theirs.updateBullets(List.of(shot), path(), pt(600, 600), 12, List.of(pt(600, 300)), danger,
+            TeamModes.owns(EnumSet.of(TeamModes.Mode.OWN)), false, false, null);
+        assertTrue(theirs.bullets().isEmpty());
+        MinimumRiskMovement mine = new MinimumRiskMovement(field(1200, 1200));
+        mine.newRound();
+        mine.updateBullets(List.of(shot), path(), pt(600, 600), 12, List.of(pt(600, 1000)), danger,
+            TeamModes.owns(EnumSet.of(TeamModes.Mode.OWN)), false, false, null);
+        assertEquals(2, mine.bullets().size());
+    }
+
+    @Test
+    @Tag("TMODE-21")
+    @Tag("TMODE-22")
+    @DisplayName("TMODE-21/22: against a head-on-only or linear-only team each shot makes one bullet on that aim, weighing both guesses' total")
+    void oneAim() {
+        EnemyShot shot = new EnemyShot("e", pt(600, 200), 10, 2.0);
+        TeamDanger danger = new TeamDanger(field(1200, 1200));
+        MinimumRiskMovement both = new MinimumRiskMovement(field(1200, 1200));
+        both.newRound();
+        both.updateBullets(List.of(shot), path(), pt(600, 600), 12, List.of(pt(100, 1100)), danger, false, false, false, null);
+        assertEquals(2, both.bullets().size());
+        for (VirtualBullet.Aim aim : new VirtualBullet.Aim[] {VirtualBullet.Aim.HEAD_ON, VirtualBullet.Aim.LINEAR}) {
+            MinimumRiskMovement one = new MinimumRiskMovement(field(1200, 1200));
+            one.newRound();
+            one.updateBullets(List.of(shot), path(), pt(600, 600), 12, List.of(pt(100, 1100)), danger, false, false, false, aim);
+            assertEquals(1, one.bullets().size());
+            VirtualBullet b = one.bullets().get(0);
+            assertEquals(aim, b.aim);
+            assertEquals(MinimumRiskMovement.ONE_AIM_WEIGHT, b.weight, 0);
+            VirtualBullet same = both.bullets().get(aim == VirtualBullet.Aim.HEAD_ON ? 0 : 1);
+            assertEquals(same.heading, b.heading, 0);
+        }
+        // Off a team (no living teammate) the shot makes both guesses as ever.
+        MinimumRiskMovement alone = new MinimumRiskMovement(field(1200, 1200));
+        alone.newRound();
+        alone.updateBullets(List.of(shot), path(), pt(600, 600), 12, List.of(), danger, false, false, false, VirtualBullet.Aim.HEAD_ON);
+        assertEquals(2, alone.bullets().size());
+    }
+
+    @Test
+    @Tag("TMODE-23")
+    @Tag("TMODE-24")
+    @DisplayName("TMODE-23/24: with FAR the hunt's place is 500 px from its prey, with FARTHER 650 px; else 350 px")
+    void huntRange() {
+        List<EnemyInfo> prey = enemies(pt(600, 900)).alive();
+        assertEquals(MinimumRiskMovement.HUNT_RADIUS, MinimumRiskMovement.huntRadius(EnumSet.of(TeamModes.Mode.HUNT)), 0);
+        for (TeamModes.Mode m : new TeamModes.Mode[] {TeamModes.Mode.FAR, TeamModes.Mode.FARTHER}) {
+            Set<TeamModes.Mode> modes = EnumSet.of(TeamModes.Mode.HUNT, m);
+            double r = m == TeamModes.Mode.FAR ? 500 : 650;
+            assertEquals(r, MinimumRiskMovement.huntRadius(modes), 0);
+            MinimumRiskMovement.Pull p = MinimumRiskMovement.pull(pt(600, 300), "n", 100, 3, prey, 100,
+                mates(pt(700, 300)), modes);
+            assertEquals(r, p.at.distance(600, 900), 1e-6);
+        }
+    }
 }

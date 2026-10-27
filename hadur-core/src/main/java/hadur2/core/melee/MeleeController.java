@@ -378,10 +378,12 @@ public class MeleeController {
             // T6 (MMOVE-9, MMOVE-10): where each teammate stands, for whom a shot was aimed at.
             List<Point2D.Double> mates = new ArrayList<>(s.teammates.size());
             for (Roster.Mate m : s.teammates) mates.add(m.at(s.time));
+            // TMODE-20..22: shot ownership and the one aim, for a team whose code is read.
             mover.updateBullets(tracker.shots(s.time), myPath, s.me, s.time, mates, danger,
-                TeamDanger.NEAREST, TeamDanger.LEARNED || modes.contains(TeamModes.Mode.LEARN)
+                TeamDanger.NEAREST || TeamModes.owns(modes),
+                TeamDanger.LEARNED || modes.contains(TeamModes.Mode.LEARN)
                     || modes.contains(TeamModes.Mode.POOL),
-                modes.contains(TeamModes.Mode.SOFT));
+                modes.contains(TeamModes.Mode.SOFT), TeamModes.onlyAim(modes));
         } else {
             modes = TeamModes.NONE;
             mover.updateBullets(tracker.shots(s.time), myPath, s.me, s.time);

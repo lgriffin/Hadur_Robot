@@ -1,0 +1,22 @@
+# Per-opponent counters (TMODE-20 to TMODE-24, BENCH-123), one row per team whose code was read
+# (docs/plan-team-top5.md section 11). Each cell is a counter: the modes played against that team
+# on top of the shipped MATEFIRE and HUNT. Screens s1, s2, s3 each build one table jar; '-' is none.
+#   OWN      the team shoots its closest enemy: a shot counts only for the member it was aimed at
+#   HEADON   the team aims only head-on        LINEAR   the team aims only linear
+#   FAR      hunt at 500 px, not 350           FARTHER  hunt at 650 px (power falls with distance)
+team	s1	s2	s3
+gh.nano.GrofGroup 1.1	OWN,LINEAR	FAR	OWN,LINEAR,FAR
+rz.HOFSwarm 1.1	OWN,LINEAR	FAR	OWN,LINEAR,FAR
+myl.micro.TroodonPack 1.10	OWN,HEADON	HEADON	OWN
+radnor.RadnorMedSchool 1.0	LINEAR	-	-
+kawigi.sbf.TidalWave 0.8	OWN	FARTHER	OWN,FARTHER
+rz.GlowingHawks 0.2	OWN	FARTHER	OWN,FARTHER
+gh.mini.GrubbmGroup 0.4	OWN	FAR	OWN,FAR
+kid.team.OmegaSquad .0.2	FARTHER	FAR	-
+Krabb.sliNk.SlartibartfassTeam 0.5	OWN	FARTHER	OWN,FARTHER
+kawigi.micro.ArmyOfShiz 1.1	OWN,HEADON	HEADON	OWN
+davidalves.PhoenixTeam 0.54	FAR	FARTHER	-
+tmnr.TMNR 1.01	OWN	-	-
+abc.ShadowTeam 3.83	FAR	FARTHER	-
+bvh.team.Valkiries 1.0	OWN	-	-
+cx.mini.DemoniacNimrods 0.50	OWN	-	-
