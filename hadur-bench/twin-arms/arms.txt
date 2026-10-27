@@ -7,10 +7,11 @@
 C | TwinSaor 0.1 unchanged, the control |
 A | TwinSaor 0.1 unchanged again, the A/A check on the read's noise |
 R2W | range 300 with two enemies (0.1: 250) | s#RANGE_TWO = 250;#RANGE_TWO = 300;#
+R2X | range 400 with two enemies, standing off | s#RANGE_TWO = 250;#RANGE_TWO = 400;#
 R2N | range 180 with two enemies | s#RANGE_TWO = 250;#RANGE_TWO = 180;#
 R1N | range 60 with one enemy left (0.1: 100), LunarTwins' point blank | s#RANGE_ONE = 100;#RANGE_ONE = 60;#
 R1W | range 160 with one enemy left | s#RANGE_ONE = 100;#RANGE_ONE = 160;#
-P180 | stations 180 degrees apart, a pincer: diagnostic only, never ships (Saor's uniqueness rule) | s#Math.PI / 4 : -Math.PI / 4#Math.PI / 2 : -Math.PI / 2#
+P180 | stations 180 degrees apart, a pincer: diagnostic only, never ships (Saor's uniqueness rule); not in the per-team screen | s#Math.PI / 4 : -Math.PI / 4#Math.PI / 2 : -Math.PI / 2#
 KL | kill order: most energy first, the enemy leader and its 30-energy death penalty (0.1: least energy) | s#candidateEnergy <= targetEnergy - SWITCH_MARGIN#candidateEnergy >= targetEnergy + SWITCH_MARGIN#
 NF | no leg flip on the target's shot (TWIN-10 off) | s#return drop > 0.09 && drop < 3.01;#return false;#
 LEG | leg 100 a side (0.1: 60) | s#LEG = 60;#LEG = 100;#

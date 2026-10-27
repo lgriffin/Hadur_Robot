@@ -334,9 +334,10 @@ TWIN-4 (teammate scans dropped), TWIN-5 (scans shared) and TWIN-8 (split radar) 
 wiring, not the core's, so they are stage W1: the cloud head-to-head exercised them (no own-team
 targeting showed, both twins aimed), and a battle-log test that names them is due before W1 closes.
 
-### The bench (designed, not run)
+### The bench
 
-Leigh's rule stands: no PC bench before a live run. The card is ready for after 0.1's first pass:
+Leigh's rule was no PC bench before a live run; 0.1 has had it. Section 9 turns the card into the
+per-team screen. As first designed:
 
 - `hadur-bench/twinduel-field.txt`: the 27 teams of the live table, with their archive jars.
 - `hadur-bench/twin-arms/arms.txt` and `tools/twin_arms.sh`: each arm is the source with one sed,
@@ -347,3 +348,75 @@ Leigh's rule stands: no PC bench before a live run. The card is ready for after 
   (pincer, diagnostic only), KL (enemy leader first), NF (no flip on shot), LEG (100 px leg) and
   FF (wider fire hold). The field is 10 seeds a team, 270 battles an arm, about 1.5 h for all 11
   arms. To pass, an arm needs +0.5 share points over C and more than 2 standard errors.
+
+## 9. Per-opponent mode table (stage W3)
+
+0.1's first live pass (2026-10-27 18:46 UTC) put TwinSaor 7th of 28 at 64.28, 3.72 behind 5th.
+The APS is lost in two places (`twinsaor/README.md`): about 1.8 to the four strong teams, which
+win by survival (NightAndDay and GeminiTeam 37.8, 11% survival; MarioBros 45.7; LuminariousDuo
+49.7), and about 1.5 to weaker teams that tie or beat it (CoyotePair 46.1, InevitableTeam 50.1,
+ImpactTwins 52.4, KomariousTeam 53.7, YinYang 54.8, JointStrikeForce 55.5). Each pairing is 1 to
+4 battles live, so these are ±5 to 8 each. Leigh, 2026-10-27: "tailor this to a per opponent
+basis". Per-opponent tables are the only change that has ever transferred live for Hadur's 1v1,
+and the Twin Duel field is small: 27 teams, 54 robots.
+
+### What a mode is
+
+A mode is a setting of the team layer's knobs: station range against two enemies and against one,
+the leg, the flip on the target's shot, the kill order and the fire hold. Mode 0 is 0.1 exactly.
+The screen measures each knob change on every team; the picks decide which knobs the robot has to
+carry, since each one costs bytes.
+
+### How a twin knows the team it faces
+
+The probe (`hadur-bench/twin-arms/names.tsv`) ran one round against every team and logged the
+names the engine gives. The table is keyed by name hash, the same way the Markov slots are:
+
+- 0.1's slot, `hashCode & 127`, puts both robots of LunarTwins on slots another team also uses
+  (LunarRover with Gemini, LunarLeader with DuoLedByDroid's BlindMan), so it cannot key the table.
+- `hashCode >> 5 & 127` gives every one of the 27 teams at least one robot on a slot no other team
+  uses. 11 robots share a slot with another team's robot.
+- The mode is the OR of the table's entries at the slots of the enemies seen so far this battle:
+  `mode |= MODES.charAt(slot)`. A team's unshared slot holds its mode; a shared slot holds the
+  AND of the modes of the teams on it, which the OR can never take past any of them. An unknown team reads
+  whatever its slots hold, usually 0, which is 0.1.
+- The Markov slot moves to the same hash (it changes no behaviour: no pairing has two robots on
+  one slot either way). The key costs about 15 bytes: the shift, the string and the OR.
+
+A new name live (a new team, or a version change) reads mode 0 until the table learns it. The
+names are taken from the bench engine (Robocode 1.11.1); the live clients run the same naming.
+
+### Bytes
+
+0.1 is 1,989 of 1,999 bytes. The key costs about 15 and each knob 6 to 13 (a bit test, or a
+small sum, where 0.1 has a constant). The table therefore carries only the knobs the screen picks,
+and the bytes come from flattening the core into the robot by hand, as Saor 0.2 was, for whatever
+the picks need beyond the 10 spare. The screen needs no bytes: each arm is a build with one
+constant changed.
+
+### The bench
+
+1. **Screen** (`plans/pc-twin-w3.queue`, about 1 h 50 on the PC, Leigh starts it): 11 arms of
+   0.1 (C, the A/A arm A, R2W 300, R2X 400, R2N 180, R1N 60, R1W 160, KL, NF, LEG 100, FF) on
+   `twinduel-tailor.txt`, the 24 teams less the three sitting-duck teams. 16 seeds a team, 4,224
+   battles in all.
+2. **Pick** (`tools/twin_pick.py`, tested): for each team, each arm is read against C battle by
+   battle on the same seeds. The pick is the best arm with at least +3.0 share points and a low
+   end (mean - 2 SE) above zero; no such arm means mode 0. The A/A arm is read the same way, and
+   the teams it would have "won" are the rule's false-pick count on that run. The printed gain
+   is an upper bound: the best of 10 arms on the same battles is flattered.
+3. **Build**: 0.2 carries the picked knobs and the `MODES` string, written from the picks file.
+   The whole-field read (`tools/twin_read.py`) still runs, so a knob that wins on every team
+   becomes the default instead of a table entry.
+4. **Gate**: 0.2 against 0.1 on fresh seeds on the tailored teams. A table entry stays only where
+   the fresh read keeps it above zero, and 0.2 ships only if the field's APS rises by at least
+   +0.3 (8 share points over 27 teams). The gate is small enough for the cloud box (2 arms x
+   24 teams x 16 seeds, about 75 minutes) if the PC is busy.
+
+What it can reach: +3.7 APS needs about 100 share points across the field. If the four strong
+teams move from 38-50 to 55 and the near-even ones from 46-55 to 60, the table gives roughly
++3.3. That needs a knob to change how those teams beat TwinSaor, which the screen will show.
+If no knob moves the strong four, the next step is a different movement, not a bigger table.
+
+Requirements: TWIN-13 (mode table keyed by name hash, mode 0 is 0.1) and TWIN-14 (a table entry
+needs a fresh-seed gate) are stage W3, added when 0.2 is built.
