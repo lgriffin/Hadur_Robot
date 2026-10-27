@@ -119,10 +119,10 @@ loadScripts(document, 'script');</script>
  still runs over it as a peephole pass, and the build fails above 749 bytes (SAOR-11).</p>
 
  <p>Byte idioms, each mirrored in the core and listed in docs/saor.md: statics over fields;
- the axis toggles with <code>^= 1</code> so it needs no initialiser; a collision takes the rammer as target at
- distance -12.5, which makes the leg 50 px until the target is next scanned (SAOR-9);
- the end-game cap is <code>others / 3 + 1.9</code>; 1024 angle bins wrap with <code>&amp; 1023</code>;
- one catch absorbs a full Markov row and an out-of-range state.</p></div>
+ the axis toggles with <code>^= 1</code> so it needs no initialiser; the end-game cap is
+ <code>others / 3 + 1.9</code>; 1024 angle bins wrap with <code>&amp; 1023</code>; one catch absorbs a
+ full Markov row and an out-of-range state. 0.2 has no collision handler: the ram leg of 0.1
+ (SAOR-9, retired) measured level and its bytes pay for the graded vote (SAOR-7).</p></div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -195,27 +195,21 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onHitRobot(robocode.HitRobotEvent)" class="member-name-link">onHitRobot</a><wbr>(robocode.HitRobotEvent&nbsp;e)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onRobotDeath(robocode.RobotDeathEvent)" class="member-name-link">onRobotDeath</a><wbr>(robocode.RobotDeathEvent&nbsp;e)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">A collision makes the robot hit the target and shortens the leg to 50 px until the
- rammer's next scan (SAOR-9).</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onRobotDeath(robocode.RobotDeathEvent)" class="member-name-link">onRobotDeath</a><wbr>(robocode.RobotDeathEvent&nbsp;e)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Any death frees the target and the radar (SAOR-4).</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onScannedRobot(robocode.ScannedRobotEvent)" class="member-name-link">onScannedRobot</a><wbr>(robocode.ScannedRobotEvent&nbsp;e)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onStatus(robocode.StatusEvent)" class="member-name-link">onStatus</a><wbr>(robocode.StatusEvent&nbsp;e)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onScannedRobot(robocode.ScannedRobotEvent)" class="member-name-link">onScannedRobot</a><wbr>(robocode.ScannedRobotEvent&nbsp;e)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onStatus(robocode.StatusEvent)" class="member-name-link">onStatus</a><wbr>(robocode.StatusEvent&nbsp;e)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Corner oscillation, every tick (SAOR-1).</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#run()" class="member-name-link">run</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#run()" class="member-name-link">run</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
@@ -227,7 +221,7 @@ loadScripts(document, 'script');</script>
 <code>endTurn, getGunHeadingDegrees, getHeadingDegrees, getMaxWaitCount, getRadarHeadingDegrees, getWaitCount, setTurnGunLeftDegrees, setTurnGunRightDegrees, setTurnLeftDegrees, setTurnRadarLeftDegrees, setTurnRadarRightDegrees, setTurnRightDegrees, turnGunLeftDegrees, turnGunRightDegrees, turnLeftDegrees, turnRadarLeftDegrees, turnRadarRightDegrees, turnRightDegrees</code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-robocode.Robot">Methods inherited from class&nbsp;robocode.Robot</h3>
-<code>ahead, back, doNothing, fire, fireBullet, getBasicEventListener, getBattleFieldHeight, getBattleFieldWidth, getEnergy, getGraphics, getGunCoolingRate, getGunHeading, getGunHeat, getHeading, getHeight, getInteractiveEventListener, getName, getNumRounds, getNumSentries, getOthers, getPaintEventListener, getRadarHeading, getRobotRunnable, getRoundNum, getSentryBorderSize, getTime, getVelocity, getWidth, getX, getY, onBattleEnded, onBulletHit, onBulletHitBullet, onBulletMissed, onHitByBullet, onHitWall, onKeyPressed, onKeyReleased, onKeyTyped, onMouseClicked, onMouseDragged, onMouseEntered, onMouseExited, onMouseMoved, onMousePressed, onMouseReleased, onMouseWheelMoved, onPaint, onRoundEnded, onWin, resume, scan, setAdjustGunForRobotTurn, setAdjustRadarForGunTurn, setAdjustRadarForRobotTurn, setAllColors, setBodyColor, setBulletColor, setColors, setColors, setDebugProperty, setGunColor, setRadarColor, setScanColor, stop, stop, turnGunLeft, turnGunRight, turnLeft, turnRadarLeft, turnRadarRight, turnRight</code></div>
+<code>ahead, back, doNothing, fire, fireBullet, getBasicEventListener, getBattleFieldHeight, getBattleFieldWidth, getEnergy, getGraphics, getGunCoolingRate, getGunHeading, getGunHeat, getHeading, getHeight, getInteractiveEventListener, getName, getNumRounds, getNumSentries, getOthers, getPaintEventListener, getRadarHeading, getRobotRunnable, getRoundNum, getSentryBorderSize, getTime, getVelocity, getWidth, getX, getY, onBattleEnded, onBulletHit, onBulletHitBullet, onBulletMissed, onHitByBullet, onHitRobot, onHitWall, onKeyPressed, onKeyReleased, onKeyTyped, onMouseClicked, onMouseDragged, onMouseEntered, onMouseExited, onMouseMoved, onMousePressed, onMouseReleased, onMouseWheelMoved, onPaint, onRoundEnded, onWin, resume, scan, setAdjustGunForRobotTurn, setAdjustRadarForGunTurn, setAdjustRadarForRobotTurn, setAllColors, setBodyColor, setBulletColor, setColors, setColors, setDebugProperty, setGunColor, setRadarColor, setScanColor, stop, stop, turnGunLeft, turnGunRight, turnLeft, turnRadarLeft, turnRadarRight, turnRight</code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-robocode._Robot">Methods inherited from class&nbsp;robocode._Robot</h3>
 <code>getBattleNum, getGunCharge, getGunImageName, getLife, getNumBattles, getRadarImageName, getRobotImageName, setGunImageName, setRadarImageName, setRobotImageName</code></div>
@@ -375,21 +369,6 @@ loadScripts(document, 'script');</script>
 <dd><code>onRobotDeath</code>&nbsp;in interface&nbsp;<code>robocode.robotinterfaces.IBasicEvents</code></dd>
 <dt>Overrides:</dt>
 <dd><code>onRobotDeath</code>&nbsp;in class&nbsp;<code>robocode.Robot</code></dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="onHitRobot(robocode.HitRobotEvent)">
-<h3>onHitRobot</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">onHitRobot</span><wbr><span class="parameters">(robocode.HitRobotEvent&nbsp;e)</span></div>
-<div class="block">A collision makes the robot hit the target and shortens the leg to 50 px until the
- rammer's next scan (SAOR-9). Taking its name keeps the gun alive: no scan is nearer
- than -12.5, so without it a ram before the first lock would leave no target at all.</div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code>onHitRobot</code>&nbsp;in interface&nbsp;<code>robocode.robotinterfaces.IBasicEvents</code></dd>
-<dt>Overrides:</dt>
-<dd><code>onHitRobot</code>&nbsp;in class&nbsp;<code>robocode.Robot</code></dd>
 </dl>
 </section>
 </li>

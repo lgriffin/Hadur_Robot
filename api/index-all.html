@@ -4862,7 +4862,7 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="hadur117/micro/core/Targeting.html#HELD_WEIGHT" class="member-name-link">HELD_WEIGHT</a> - Static variable in class hadur117.micro.core.<a href="hadur117/micro/core/Targeting.html" title="class in hadur117.micro.core">Targeting</a></dt>
 <dd>
-<div class="block">Its vote once any step held a cold state.</div>
+<div class="block">Its vote once any step held a state with no sample (SAOR-6).</div>
 </dd>
 <dt><a href="hadur2/core/melee/MinimumRiskMovement.html#HELP_FLOOR" class="member-name-link">HELP_FLOOR</a> - Static variable in class hadur2.core.melee.<a href="hadur2/core/melee/MinimumRiskMovement.html" title="class in hadur2.core.melee">MinimumRiskMovement</a></dt>
 <dd>&nbsp;</dd>
@@ -5808,7 +5808,7 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur117/micro/core/Targeting.html#learn(double)" class="member-name-link">learn(double)</a> - Static method in class hadur117.micro.core.<a href="hadur117/micro/core/Targeting.html" title="class in hadur117.micro.core">Targeting</a></dt>
 <dd>
 <div class="block">Whether this scan's transition is recorded: only while the gun is cool enough that the
- target is being scanned every tick (Figment).</div>
+ radar is held on the target, scanning it every tick.</div>
 </dd>
 <dt><a href="hadur2/core/move/GunMimics.Mimic.html#learn(hadur2.core.model.Wave,double)" class="member-name-link">learn(Wave, double)</a> - Method in class hadur2.core.move.<a href="hadur2/core/move/GunMimics.Mimic.html" title="class in hadur2.core.move">GunMimics.Mimic</a></dt>
 <dd>&nbsp;</dd>
@@ -5870,8 +5870,7 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur117/micro/core/Movement.html#leg(double)" class="member-name-link">leg(double)</a> - Static method in class hadur117.micro.core.<a href="hadur117/micro/core/Movement.html" title="class in hadur117.micro.core">Movement</a></dt>
 <dd>
 <div class="block">How far along the wall, from the corner, the leg's point lies: 55 px plus 0.4 of the
- target's distance, so the robot swings wider when the fight is further off; 50 px after
- a collision (<a href="hadur117/micro/core/Movement.html#RAM_DISTANCE"><code>Movement.RAM_DISTANCE</code></a>).</div>
+ target's distance, so the robot swings wider when the fight is further off.</div>
 </dd>
 <dt><a href="hadur2/core/gun/AntiSurferFormula.html#LEGACY_FEATURES" class="member-name-link">LEGACY_FEATURES</a> - Static variable in class hadur2.core.gun.<a href="hadur2/core/gun/AntiSurferFormula.html" title="class in hadur2.core.gun">AntiSurferFormula</a></dt>
 <dd>
@@ -8037,13 +8036,6 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">An enemy bullet hit us: the shooter, its power, where it hit and its heading.</div>
 </dd>
-<dt><a href="hadur117/micro/Saor.html#onHitRobot(robocode.HitRobotEvent)" class="member-name-link">onHitRobot(HitRobotEvent)</a> - Method in class hadur117.micro.<a href="hadur117/micro/Saor.html" title="class in hadur117.micro">Saor</a></dt>
-<dd>
-<div class="block">A collision makes the robot hit the target and shortens the leg to 50 px until the
- rammer's next scan (SAOR-9).</div>
-</dd>
-<dt><a href="hadur117/micro/SaorLab.html#onHitRobot(robocode.HitRobotEvent)" class="member-name-link">onHitRobot(HitRobotEvent)</a> - Method in class hadur117.micro.<a href="hadur117/micro/SaorLab.html" title="class in hadur117.micro">SaorLab</a></dt>
-<dd>&nbsp;</dd>
 <dt><a href="hadur2/Hadur.html#onHitRobot(robocode.HitRobotEvent)" class="member-name-link">onHitRobot(HitRobotEvent)</a> - Method in class hadur2.<a href="hadur2/Hadur.html" title="class in hadur2">Hadur</a></dt>
 <dd>
 <div class="block">We collided with a robot: the energy ledger takes the collision damage out of the
@@ -9655,11 +9647,6 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur2/core/move/ShotDodgePlanner.html#RAM_DAMAGE" class="member-name-link">RAM_DAMAGE</a> - Static variable in class hadur2.core.move.<a href="hadur2/core/move/ShotDodgePlanner.html" title="class in hadur2.core.move">ShotDodgePlanner</a></dt>
 <dd>
 <div class="block">A collision costs as much as a bullet of this damage, so a path is rammed only when every path is.</div>
-</dd>
-<dt><a href="hadur117/micro/core/Movement.html#RAM_DISTANCE" class="member-name-link">RAM_DISTANCE</a> - Static variable in class hadur117.micro.core.<a href="hadur117/micro/core/Movement.html" title="class in hadur117.micro.core">Movement</a></dt>
-<dd>
-<div class="block">The target distance a collision leaves behind (SAOR-9): <a href="hadur117/micro/core/Movement.html#leg(double)"><code>Movement.leg(double)</code></a> reads it as 50 px,
- and no scan is nearer, so the rammer stays the target until its next scan.</div>
 </dd>
 <dt><a href="hadur2/core/duel/MoveDesign.html#RAM_HEAT" class="member-name-link">RAM_HEAT</a> - Static variable in class hadur2.core.duel.<a href="hadur2/core/duel/MoveDesign.html" title="class in hadur2.core.duel">MoveDesign</a></dt>
 <dd>
@@ -13624,6 +13611,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">An angle and the mass behind it (null for none), see <a href="hadur2/core/gun/TripHammerGun.html#aimWithMass(hadur2.core.model.Wave,hadur2.core.knn.KnnView)"><code>TripHammerGun.aimWithMass(hadur2.core.model.Wave, hadur2.core.knn.KnnView&lt;hadur2.core.model.TimestampedFiringAngle&gt;)</code></a>.</div>
 </dd>
+<dt><a href="hadur117/micro/core/Targeting.html#TRUST" class="member-name-link">TRUST</a> - Static variable in class hadur117.micro.core.<a href="hadur117/micro/core/Targeting.html" title="class in hadur117.micro.core">Targeting</a></dt>
+<dd>
+<div class="block">The vote a sample of a thin row adds, on <a href="hadur117/micro/core/Targeting.html#HELD_WEIGHT"><code>HELD_WEIGHT</code></a>: 1 sample votes 17, 7 vote 89.</div>
+</dd>
 <dt><a href="hadur/bench/Report.html#TRUST_NOTE" class="member-name-link">TRUST_NOTE</a> - Static variable in class hadur.bench.<a href="hadur/bench/Report.html" title="class in hadur.bench">Report</a></dt>
 <dd>
 <div class="block">The sentence the skipped-turns line ends with in every report that carries it.</div>
@@ -14374,7 +14365,7 @@ the order they are declared.</div>
 </dd>
 <dt><a href="hadur117/micro/core/Targeting.html#WARM" class="member-name-link">WARM</a> - Static variable in class hadur117.micro.core.<a href="hadur117/micro/core/Targeting.html" title="class in hadur117.micro.core">Targeting</a></dt>
 <dd>
-<div class="block">Samples a row needs before the gun draws from it (SAOR-6, SAOR-7).</div>
+<div class="block">Samples a row needs before a playout through it keeps its full vote (SAOR-7).</div>
 </dd>
 <dt><a href="hadur/bench/ColdWarm.Row.html#warmDir()" class="member-name-link">warmDir()</a> - Method in record class hadur.bench.<a href="hadur/bench/ColdWarm.Row.html" title="class in hadur.bench">ColdWarm.Row</a></dt>
 <dd>

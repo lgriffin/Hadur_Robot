@@ -117,15 +117,9 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color">
 <div class="block">The battlefield's side; Saor enters MeleeRumble only, whose field is 1000 x 1000.</div>
 </div>
-<div class="col-first odd-row-color"><code>static final double</code></div>
-<div class="col-second odd-row-color"><code><a href="#RAM_DISTANCE" class="member-name-link">RAM_DISTANCE</a></code></div>
+<div class="col-first odd-row-color"><code>static final int</code></div>
+<div class="col-second odd-row-color"><code><a href="#WALL" class="member-name-link">WALL</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">The target distance a collision leaves behind (SAOR-9): <a href="#leg(double)"><code>leg(double)</code></a> reads it as 50 px,
- and no scan is nearer, so the rammer stays the target until its next scan.</div>
-</div>
-<div class="col-first even-row-color"><code>static final int</code></div>
-<div class="col-second even-row-color"><code><a href="#WALL" class="member-name-link">WALL</a></code></div>
-<div class="col-last even-row-color">
 <div class="block">How far the oscillation points sit from their wall (SAOR-1).</div>
 </div>
 </div>
@@ -175,8 +169,7 @@ loadScripts(document, 'script');</script>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#leg(double)" class="member-name-link">leg</a><wbr>(double&nbsp;targetDistance)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">How far along the wall, from the corner, the leg's point lies: 55 px plus 0.4 of the
- target's distance, so the robot swings wider when the fight is further off; 50 px after
- a collision (<a href="#RAM_DISTANCE"><code>RAM_DISTANCE</code></a>).</div>
+ target's distance, so the robot swings wider when the fight is further off.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static double</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#turn(int,int,double,double,double)" class="member-name-link">turn</a><wbr>(int&nbsp;x,
@@ -235,22 +228,6 @@ loadScripts(document, 'script');</script>
 </dl>
 </section>
 </li>
-<li>
-<section class="detail" id="RAM_DISTANCE">
-<h3>RAM_DISTANCE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">RAM_DISTANCE</span></div>
-<div class="block">The target distance a collision leaves behind (SAOR-9): <a href="#leg(double)"><code>leg(double)</code></a> reads it as 50 px,
- and no scan is nearer, so the rammer stays the target until its next scan.</div>
-<dl class="notes">
-<dt>See Also:</dt>
-<dd>
-<ul class="tag-list">
-<li><a href="../../../constant-values.html#hadur117.micro.core.Movement.RAM_DISTANCE">Constant Field Values</a></li>
-</ul>
-</dd>
-</dl>
-</section>
-</li>
 </ul>
 </section>
 </li>
@@ -279,8 +256,7 @@ loadScripts(document, 'script');</script>
 <h3>leg</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">leg</span><wbr><span class="parameters">(double&nbsp;targetDistance)</span></div>
 <div class="block">How far along the wall, from the corner, the leg's point lies: 55 px plus 0.4 of the
- target's distance, so the robot swings wider when the fight is further off; 50 px after
- a collision (<a href="#RAM_DISTANCE"><code>RAM_DISTANCE</code></a>). An infinite distance (no target yet) overflows as it
+ target's distance, so the robot swings wider when the fight is further off. An infinite distance (no target yet) overflows as it
  does in Figment and sends the robot at the far wall until the first scan.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
