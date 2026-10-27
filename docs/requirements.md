@@ -1899,7 +1899,7 @@ bench card: docs/twinsaor.md. It depends on nothing of Hadur's or Saor's, and th
   head-to-head (docs/twinsaor.md section 8), with a test due before W1. Stages compare with
   `hadur.twin.stage` in the root pom (W0); W, because T is the Team plan's letter.
 
-## Deise, a MiniMelee entry (DEISE-1 to DEISE-15, stages E0 to E3)
+## Deise, a MiniMelee entry (DEISE-1 to DEISE-16, stages E0 to E3)
 
 `hadur117.mini.Deise`, a separate robot in the `deise` module, built to take MiniMelee 1st from
 kc.mini.Mirage (Leigh, 2026-10-27). Design, the Mirage analysis and the stages: docs/deise.md.
@@ -1912,22 +1912,24 @@ are E0 to E3 (D is the DrussGT route's letter).
 | DEISE-2 | Ubiquitous | The risk of a point shall include, for each live opponent, 50,000 plus 500 times its energy over the squared distance to it. | E0 |
 | DEISE-3 | State | While no other robot is within 0.9 of the bot's distance from an opponent, the risk of a point shall include the absolute cosine between the heading to the point and the bearing from the point to that opponent. | E0 |
 | DEISE-4 | State | While 4 or more opponents remain, the risk of a point shall include the number of opponents times its distance to the nearest corner over 5,000. | E0 |
-| DEISE-5 | Event | When a scanned opponent's energy has dropped by 0.1 to 3, the bot shall record a wave with a head-on and a linear line, weighed 1 if that opponent likely aims at the bot (DEISE-3) and 0.25 otherwise, whose danger at a point not yet passed is 4,000 over 800 plus the squared distance from the point to each line's bullet at the point's range, counted in the risk times the wave weight (0 since the E0 smoke, docs/deise.md section 4). | E0 |
+| DEISE-5 | Event | When a scanned opponent's energy has dropped by 0.1 to 3, the bench build (`DeiseLab`) shall record a wave with a head-on and a linear line, weighed 1 if that opponent likely aims at the bot (DEISE-3) and 0.25 otherwise, whose danger at a point not yet passed is 4,000 over 800 plus the squared distance from the point to each line's bullet at the point's range, counted in the risk times the wave weight (0 since the E0 smoke, docs/deise.md section 4, so the shipped class leaves the waves out). | E0 |
 | DEISE-6 | Event | When any opponent is scanned 1 to 8 ticks after its last scan, the bot shall record the transition from its last state to its present one, the turn spread over the gap, in that opponent's table, kept across rounds; a full row shall replace a random sample. | E0 |
 | DEISE-7 | State | While the target's present Markov row holds no sample, the gun shall play the target on with that state held, which is circular projection. | E0 |
 | DEISE-8 | State | While it holds a sample, the gun shall play the target out by sampling its Markov chain, 64 playouts, where a playout through a row of fewer than 8 samples votes at most 5 plus 12 for each sample of that row. | E0 |
 | DEISE-9 | Ubiquitous | A playout's vote shall cover the 1,024-bin circle over the target's width at its distance, atan(18 / distance) either side, and a playout that leaves the field shall vote 1. | E0 |
 | DEISE-10 | Ubiquitous | Bullet power shall be log10(energy) times 325 over the distance, capped at 1.9 plus one for every 3 opponents left and at the power that kills the target, and at least 0.1. | E0 |
 | DEISE-11 | Unwanted | If gun turn remaining is non-zero, or the bot's energy is not above the power, then the bot shall not fire. | E2 |
-| DEISE-12 | Unwanted | If Robocode's codesize tool reports more than the budget for the shipped jar, then the build shall fail: 2,400 bytes through E1, MiniMelee's 1,499 from E2. | E0 |
+| DEISE-12 | Unwanted | If Robocode's codesize tool reports more than MiniMelee's 1,499 bytes for the shipped jar, or more than one class in it, then the build shall fail. | E0 |
 | DEISE-13 | Ubiquitous | The live-shaped MiniMelee census shall run fields drawn from the whole MeleeRumble list and score the seated robot only on its pairings against MiniMelee robots, with Deise in the field in place of a seated robot. | E0 |
 | DEISE-14 | Ubiquitous | The domain core (`hadur117.mini.core`) shall depend on the JDK only, and the module on no Hadur, Saor or TwinSaor module. | E0 |
-| DEISE-15 | Ubiquitous | The shipped jar shall carry the robot's properties at the release version, its core and its source. | E0 |
+| DEISE-15 | Ubiquitous | The shipped jar shall carry the robot's properties at the release version and its source. | E0 |
+| DEISE-16 | Ubiquitous | The shipped class, the core flattened by hand, shall give the same orders, to the bit, as the bench adapter (`DeiseLab`, which calls the core) in the same melees, both as compiled and as shipped. | E0 |
 
 - **Coverage.** DEISE-1 to DEISE-5 by `MoveTest` and DEISE-6 to DEISE-10 by `GunTest` on the
-  core; DEISE-14 by `ArchitectureTest`; DEISE-12 and DEISE-15 on the built jar by `DeiseJarIT`
-  (failsafe). DEISE-11 and the scan wiring of DEISE-5 and DEISE-6 are the adapter's, in `Deise`:
-  exercised by the bench's battles, with a robot-level test due by E2, when the class is flattened.
+  core; DEISE-14 by `ArchitectureTest`; DEISE-12, DEISE-15 and DEISE-16 (on the jars) by
+  `DeiseJarIT` (failsafe), DEISE-16 on the compiled classes by `DeiseEquivalenceTest`. DEISE-11
+  and the scan wiring of DEISE-5 and DEISE-6 are the adapters': the equivalence test holds the
+  shipped class to `DeiseLab`, and a robot-level test of DEISE-11 is due by E2.
   DEISE-13's field builder (`saor_live.py` with Deise's options) and `deise_fields.py` by
   `test_saor_live.py`.
 

@@ -56,7 +56,7 @@ public final class Gun {
         int[] bins = new int[BINS];
         int best = 0;
         double speed = 20 - 3 * power;
-        double distance = Math.hypot(x - myX, y - myY);
+        double distance = Math.sqrt((x - myX) * (x - myX) + (y - myY) * (y - myY));
         int width = Math.max(1, (int) (Math.atan(18 / distance) * BINS / (2 * Math.PI)));
         for (int i = 0; i < playouts; i++) {
             double px = x;
@@ -66,7 +66,7 @@ public final class Gun {
             int id = state;
             int weight = 100;
             int ticks = 0;
-            while (++ticks * speed < Math.hypot(px - myX, py - myY)) {
+            while (++ticks * speed < Math.sqrt((px - myX) * (px - myX) + (py - myY) * (py - myY))) {
                 int n = table[id][ROW];
                 if (n > 0) {
                     id = table[id][random.nextInt(n)];

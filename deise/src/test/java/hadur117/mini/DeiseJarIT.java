@@ -13,7 +13,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-/** The gate on the jar the rumble takes (DEISE-12, DEISE-15). */
+/** The gate on the jar the rumble takes (DEISE-12, DEISE-15, DEISE-16). */
 class DeiseJarIT {
 
     static File jar() {
@@ -32,6 +32,7 @@ class DeiseJarIT {
         System.out.println("Deise codesize: " + item.getCodeSize() + " bytes (budget " + limit
             + ", MiniMelee 1499)");
         assertTrue(item.getCodeSize() <= limit, "codesize " + item.getCodeSize() + " is over " + limit);
+        assertEquals(1, item.getNClassFiles(), "the shipped jar should hold one class");
     }
 
     @Test
@@ -46,7 +47,16 @@ class DeiseJarIT {
             assertEquals("hadur117.mini.Deise", robot.getProperty("robot.classname"));
             assertEquals(System.getProperty("deise.release"), robot.getProperty("robot.version"));
             assertNotNull(j.getEntry("hadur117/mini/Deise.java"), "source not included");
-            assertNotNull(j.getEntry("hadur117/mini/core/Gun.class"), "core not included");
+            assertEquals("true", robot.getProperty("robot.java.source.included"));
         }
+    }
+
+    @Test
+    @Tag("DEISE-16")
+    @DisplayName("the shipped bytes give the core-driven adapter's orders")
+    void shippedJarMatchesTheCore() throws Exception {
+        File lab = new File(System.getProperty("deise.lab.jar", "missing"));
+        assertTrue(lab.isFile(), "lab jar not built: " + lab);
+        DeiseEquivalenceTest.assertSameOrders(jar().toURI().toURL(), lab.toURI().toURL());
     }
 }

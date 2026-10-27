@@ -4,13 +4,13 @@
 # Built by tools/deise_arms.sh as hadur117.mini.Deise<NAME>. D is Deise's source unchanged.
 # Stage E0 (pc-deise-e01): the design, cut by the cloud smoke (docs/deise.md section 4), against
 # the field's best, and what each part is worth. D: no wave dodging (Move.WAVES = 0).
-D | Deise 0.1: corners while crowded, no wave dodging (about 2,300 bytes; E2 fits 1,499) | |
+D | Deise 0.2: corners while crowded, no wave dodging (the core-driven DeiseLab, which the shipped 1,490-byte class matches order for order) | |
 MIR | kc.mini.Mirage 0.2 in the seat (1st, 71.30 live) | @kc.mini.Mirage 0.2
 SAOR | hadur117.micro.Saor 0.2 in the seat (2nd, 68.79 live): the control | @hadur117.micro.Saor 0.2
 W | seen-shot waves back on, at full weight | Move.java | s#WAVES = 0;#WAVES = 1;#
 CE | out of the centre while crowded, not to the corners | Move.java | s#others \* Math.hypot(Math.min(px, Gun.FIELD - px), Math.min(py, Gun.FIELD - py)) / 5000#-others * Math.hypot(px - 500, py - 500) / 5000#
-CM | commits to a leg: a new point only when 2x safer or within 50 px of the old | Deise.java | s#y) < 16#y) < 50#; s#best\[2\] < 0.9 \*#best[2] < 0.5 *#
-RK | plays unscanned opponents on by their last heading and speed | Deise.java | s#RECKON = false;#RECKON = true;#
+CM | commits to a leg: a new point only when 2x safer or within 50 px of the old | DeiseLab.java | s#y) < 16#y) < 50#; s#best\[2\] < 0.9 \*#best[2] < 0.5 *#
+RK | plays unscanned opponents on by their last heading and speed | DeiseLab.java | s#RECKON = false;#RECKON = true;#
 FL | every opponent pushes the same, whatever its energy | Move.java | s#(50000 + bot\[ENERGY\] \* 500)#80000#
-P200 | 200 playouts an aim, not 64 | Deise.java | s#power, 64, RANDOM#power, 200, RANDOM#
-G1 | learns only scans one tick apart | Deise.java | s#GAP = 8;#GAP = 1;#
+P200 | 200 playouts an aim, not 64 | DeiseLab.java | s#power, 64, RANDOM#power, 200, RANDOM#
+G1 | learns only scans one tick apart | DeiseLab.java | s#GAP = 8;#GAP = 1;#

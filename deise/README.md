@@ -8,11 +8,9 @@ the stages are in [docs/deise.md](../docs/deise.md); the requirements are DEISE-
 
 ## Status
 
-Stage E0: the design is built and tested, at about 2,300 bytes against MiniMelee's 1,499.
-Card `pc-deise-e01` measures it on the live-shaped MiniMelee census against Mirage and Saor
-before it is fitted (stage E2). 0.1 is released unfitted for live numbers: over 1,499 bytes, the
-rumble scores it in MeleeRumble only, and its pairings against the MiniMelee robots give its
-MiniMelee-shaped score.
+0.2 is MiniMelee sized: one class, 1,490 bytes of 1,499, the core flattened by hand and held to it
+order for order (DEISE-16). Card `pc-deise-e01` measures the design on the live-shaped MiniMelee
+census against Mirage and Saor. 0.1 went out unfitted at 2,303 bytes by mistake and is not listed.
 
 Releases are tagged `deise-v<version>` by `.github/workflows/release-deise.yml`, with notes in
 `docs/releases/deise-v<version>.md`.
@@ -21,4 +19,5 @@ Releases are tagged `deise-v<version>` by `.github/workflows/release-deise.yml`,
 
     mvn -pl deise -am verify
 
-The jar is `deise/target/hadur117.mini.Deise_<version>.jar`; `DeiseJarIT` prints its codesize.
+The shipped jar is `deise/target/hadur117.mini.Deise_<version>.jar` (one class, through ProGuard);
+`DeiseJarIT` prints its codesize. The bench adapter's jar is `hadur117.mini.DeiseLab_<version>.jar`.

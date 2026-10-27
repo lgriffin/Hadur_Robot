@@ -12,18 +12,19 @@
 
     <artifactId>deise</artifactId>
     <name>Deise</name>
-    <description>hadur117.mini.Deise, a MiniMelee entry: a thin Robocode adapter over a pure core that ships
-        in the jar (docs/deise.md). Separate from Hadur, Saor and TwinSaor.</description>
+    <description>hadur117.mini.Deise, a MiniMelee entry: one class flattened by hand from a pure core, held to
+        it by an equivalence test (docs/deise.md). Separate from Hadur, Saor and TwinSaor.</description>
 
     <properties>
         <!-- The robot's version: the jar is named for it and Deise.properties takes it by filtering. -->
-        <deise.release>0.1</deise.release>
-        <!-- The codesize budget, as Robocode's codesize tool counts it (DEISE-12). MiniMelee's limit is
-             1,499; stages E0 and E1 measure the design unfitted, at 2,400, and stage E2 fits it to 1,499. -->
-        <deise.codesize.limit>2400</deise.codesize.limit>
+        <deise.release>0.2</deise.release>
+        <!-- MiniMelee's limit, as Robocode's codesize tool counts the shipped jar (DEISE-12). -->
+        <deise.codesize.limit>1499</deise.codesize.limit>
         <!-- Rating clients still run Java 8; the shipped classes target it. -->
         <maven.compiler.release>8</maven.compiler.release>
         <deise.jar>${project.build.directory}/hadur117.mini.Deise_${deise.release}.jar</deise.jar>
+        <deise.lab.jar>${project.build.directory}/hadur117.mini.DeiseLab_${deise.release}.jar</deise.lab.jar>
+        <proguard.version>7.8.2</proguard.version>
         <codesize.version>1.3.1</codesize.version>
     </properties>
 
@@ -32,6 +33,13 @@
             <groupId>net.sf.robocode</groupId>
             <artifactId>robocode-api</artifactId>
             <scope>provided</scope>
+        </dependency>
+        <!-- Build tools, test scope so nothing reaches the jar: ProGuard runs at package. -->
+        <dependency>
+            <groupId>com.guardsquare</groupId>
+            <artifactId>proguard-base</artifactId>
+            <version>${proguard.version}</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>net.sf.robocode</groupId>
@@ -59,30 +67,78 @@
             </resource>
         </resources>
         <plugins>
-            <!-- The jar the rumble takes: the classes, the robot's properties and the source. -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.8.1</version>
+                <executions>
+                    <!-- ProGuard needs the API jar's path as a library. -->
+                    <execution>
+                        <id>robocode-api-path</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>properties</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.5.0</version>
+                <executions>
+                    <!-- The jar the rumble takes: the one flat class through ProGuard's peephole pass
+                         (proguard.pro), with its properties and source. Run in its own JVM: ProGuard
+                         calls System.exit. -->
+                    <execution>
+                        <id>proguard</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>${java.home}/bin/java</executable>
+                            <classpathScope>test</classpathScope>
+                            <arguments>
+                                <argument>-Ddeise.jar=${deise.jar}</argument>
+                                <argument>-Drobocode.api=${net.sf.robocode:robocode-api:jar}</argument>
+                                <argument>-classpath</argument>
+                                <classpath/>
+                                <argument>proguard.ProGuard</argument>
+                                <argument>@${project.basedir}/proguard.pro</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- The bench adapter's jar: DeiseLab over the core, unoptimised. Not for the rumble;
+                 the bench arms are built from its source (hadur-bench/tools/deise_arms.sh). -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-antrun-plugin</artifactId>
                 <version>3.1.0</version>
                 <executions>
                     <execution>
-                        <id>robot-jar</id>
+                        <id>lab-jar</id>
                         <phase>package</phase>
                         <goals>
                             <goal>run</goal>
                         </goals>
                         <configuration>
                             <target>
-                                <jar destfile="${deise.jar}">
-                                    <fileset dir="${project.build.outputDirectory}" includes="hadur117/mini/**"/>
-                                    <fileset dir="${project.basedir}/src/main/java" includes="hadur117/mini/**/*.java"/>
+                                <jar destfile="${deise.lab.jar}">
+                                    <fileset dir="${project.build.outputDirectory}">
+                                        <include name="hadur117/mini/**"/>
+                                        <exclude name="hadur117/mini/Deise.class"/>
+                                        <exclude name="hadur117/mini/Deise.properties"/>
+                                    </fileset>
                                 </jar>
                             </target>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
-            <!-- The gate on the jar (DEISE-12). -->
+            <!-- The gate on the shipped jar (DEISE-12, DEISE-15, DEISE-16). -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
@@ -90,6 +146,7 @@
                 <configuration>
                     <systemPropertyVariables>
                         <deise.jar>${deise.jar}</deise.jar>
+                        <deise.lab.jar>${deise.lab.jar}</deise.lab.jar>
                         <deise.release>${deise.release}</deise.release>
                         <deise.codesize.limit>${deise.codesize.limit}</deise.codesize.limit>
                     </systemPropertyVariables>
