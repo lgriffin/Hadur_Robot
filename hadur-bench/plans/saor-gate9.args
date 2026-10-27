@@ -18,10 +18,10 @@ true
 --cpu-constant
 1488498
 --robot-jar
-../saor/target/hadur117.micro.Saor_0.1.jar
+../saor/target/hadur117.micro.Saor_0.2.jar
 --robot
-hadur117.micro.Saor 0.1
+hadur117.micro.Saor 0.2
 --out
-work/saor-gate9
+work/saor-0.2-gate9
 --report
-../docs/bench/local/saor-gate9.md
+../docs/bench/local/saor-0.2-gate9.md

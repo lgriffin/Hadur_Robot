@@ -1,3 +1,5 @@
+# Historical card: it ran Saor 0.1 (PR #278). Its args now gate the current release; re-run the
+# gates with pc-saor-g02.
 # Saor's first PC card (docs/saor.md, stages U1 to U3): the MicroMelee census and the nine-robot
 # gate field, Saor 0.1 from master. Nothing here touches Hadur; the robot is its own module (saor/).
 #   ./queue.sh run pc-saor-u3        (or  .\queue.ps1 run pc-saor-u3)

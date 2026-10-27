@@ -1,3 +1,5 @@
+# Historical card: it ran on the Saor 0.1 source, before 0.2 (2026-10-27). Its arms' seds match
+# 0.1 only (tag saor-v0.1), so it does not re-run from master.
 # Saor's plan for 1st in MicroMelee, stage 4 (docs/plan-saor-first.md 6d): stack and fit.
 # pc-saor-s02 (PR #311) passed Saor's own graded vote DC: 69.56 on the live-shaped census, +1.28
 # over 0.1, level with Figment. This card stacks it with the free gains and fits 749 bytes.
