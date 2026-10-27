@@ -1,0 +1,65 @@
+# Deise's stage E0 (docs/deise.md section 5): the design on the live-shaped MiniMelee census.
+# Deise is a new MiniMelee robot (hadur117.mini.Deise, deise/), built to take MiniMelee 1st from
+# kc.mini.Mirage 0.2 (71.30 live). This card seats Mirage and Saor 0.2 (2nd, 68.79 live, the
+# control) beside Deise 0.1 and seven one-change arms, on fields drawn from the whole MeleeRumble
+# list, scored only on MiniMelee pairings, as LiteRumble scores MiniMelee (DEISE-13).
+#   ./queue.sh run pc-deise-e01        (or  .\queue.ps1 run pc-deise-e01)
+# Run it from master:
+#   git checkout master && git pull
+# One bench queue, RoboRumble workers at 0, unpinned, 12 workers. Every step resumes; no step needs
+# a decision. Nothing here touches Hadur or Saor.
+#
+# Arms (deise-arms/arms.txt):
+#   D      Deise 0.1: corners while crowded, no wave dodging
+#   MIR    kc.mini.Mirage 0.2 seated (Deise takes its place in its field)
+#   SAOR   hadur117.micro.Saor 0.2 seated, the control
+#   W      seen-shot waves back on        CE    out of the centre, not to the corners
+#   CM     commits to a leg               RK    plays unscanned opponents on
+#   FL     flat push from every opponent  P200  200 playouts an aim
+#   G1     learns only scans one tick apart
+# Live-shaped census: 46 fields x 6 seeds a seat (276 battles, about 30-45 min), about 6 h.
+# Reads: each arm against SAOR; the 1st bar is Mirage's 71.30 moved by the run's offset (SAOR's
+# read minus 68.79). E0 passes when D or a one-change arm reads within 1.0 of MIR in the same run;
+# the winners stack in E1.
+
+set MVN = mvn -q -Drobocode.version=1.11.1 compile exec:java
+set OUT = ../docs/bench/local
+set ARMS = D,MIR,SAOR,W,CE,CM,RK,FL,P200,G1
+
+prep | (cd .. && mvn -q -DskipTests install -pl saor,deise -am) && cp ../saor/target/hadur117.micro.Saor_0.2.jar ../deise/target/hadur117.mini.Deise_0.1.jar opponents/ && ./fetch-opponents.sh --set minimelee-field.txt && for f in melee-census-317/f*.txt; do ./fetch-opponents.sh --set "$f" || exit 1; done && DEISE_RUN=e01 bash tools/deise_arms.sh live 6 3100 ${ARMS}
+
+live-D | ${MVN} "-Dexec.args=@work/deise-e01/live-D.args"
+  after: prep
+
+live-MIR | ${MVN} "-Dexec.args=@work/deise-e01/live-MIR.args"
+  after: live-D
+
+live-SAOR | ${MVN} "-Dexec.args=@work/deise-e01/live-SAOR.args"
+  after: live-MIR
+
+live-W | ${MVN} "-Dexec.args=@work/deise-e01/live-W.args"
+  after: live-SAOR
+
+live-CE | ${MVN} "-Dexec.args=@work/deise-e01/live-CE.args"
+  after: live-W
+
+live-CM | ${MVN} "-Dexec.args=@work/deise-e01/live-CM.args"
+  after: live-CE
+
+live-RK | ${MVN} "-Dexec.args=@work/deise-e01/live-RK.args"
+  after: live-CM
+
+live-FL | ${MVN} "-Dexec.args=@work/deise-e01/live-FL.args"
+  after: live-RK
+
+live-P200 | ${MVN} "-Dexec.args=@work/deise-e01/live-P200.args"
+  after: live-FL
+
+live-G1 | ${MVN} "-Dexec.args=@work/deise-e01/live-G1.args"
+  after: live-P200
+
+read | python3 tools/saor_arms.py --work-root work/deise-e01 --field live --arms ${ARMS} --control SAOR --only work/deise-e01/live/micro.txt --top5 71.30 --control-live 68.79 --pairings 203 --robot-prefix hadur117.mini.Deise --arms-file deise-arms/arms.txt > ${OUT}/deise-e01-live.md
+  after: live-G1
+
+pr | bash tools/open_results_pr.sh claude/pc-deise-e01-results "Deise stage E0: the design on the MiniMelee census" ${OUT}/deise-e01-live.md ${OUT}/deise-e01-live-*.md
+  after: read

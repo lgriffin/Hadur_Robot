@@ -102,12 +102,13 @@ def bar_for(top5, control_aps, control_live=None):
     return top5 + (control_aps - control_live)
 
 
-def read(root, arms, control_arm, top5, pairings=156, field="census", robots=None, only=None, control_live=None):
+def read(root, arms, control_arm, top5, pairings=156, field="census", robots=None, only=None, control_live=None,
+         prefix="hadur117.micro.Saor"):
     rows = []
     results = {}
     robots = robots or {}
     for arm in arms:
-        robot = robots.get(arm, "hadur117.micro.Saor%s" % arm)
+        robot = robots.get(arm, prefix + arm)
         census = saor_gates.evaluate([os.path.join(root, field + "-" + arm)], robot, only=only)
         gate = saor_gates.evaluate([os.path.join(root, "gate9-" + arm)], robot)
         results[arm] = (census, gate)
@@ -166,11 +167,14 @@ def main(argv=None):
     p.add_argument("--pairings", type=int, default=156, help="opponents a full census has")
     p.add_argument("--field", default="census", choices=("census", "live"))
     p.add_argument("--only", help="count only pairings against the robots this file names, one a line")
+    p.add_argument("--robot-prefix", default="hadur117.micro.Saor",
+                   help="an arm's robot is this plus the arm's name (Deise: hadur117.mini.Deise)")
     p.add_argument("--arms-file", default=os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "saor-arms", "arms.txt"))
     a = p.parse_args(argv)
     arms = [s.strip() for s in a.arms.split(",") if s.strip()]
     only = read_only(a.only) if a.only else None
-    rows = read(a.work_root, arms, a.control, a.top5, a.pairings, a.field, seats(a.arms_file), only, a.control_live)
+    rows = read(a.work_root, arms, a.control, a.top5, a.pairings, a.field, seats(a.arms_file), only, a.control_live,
+                a.robot_prefix)
     print(render(rows, a.control, a.top5, "1st bar" if a.field == "live" else "Top-5 bar"))
     return 0
 

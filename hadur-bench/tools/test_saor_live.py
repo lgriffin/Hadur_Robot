@@ -52,6 +52,33 @@ class SaorLiveTest(unittest.TestCase):
             names = [l.strip() for l in f if l.strip() and not l.startswith("#")]
         self.assertEqual(names, ["kc.micro.Figment 1.0", "micro.D 1", saor_live.SAOR])
 
+    # @Tag("DEISE-13")
+    def test_deise_takes_a_seated_robots_place_and_is_counted(self):
+        line = "hadur117.mini.Deise 0.1 | minimelee-deise | hadur117.mini.Deise_0.1.jar"
+        done = saor_live.build(self.suite, self.micro, ["kc.micro.Figment 1.0", "deise"], self.out,
+                               own="hadur117.mini.Deise 0.1", resident=line, own_key="deise")
+        self.assertEqual(sorted(done), ["deise", "kc.micro.Figment 1.0"])
+        with open(os.path.join(self.out, "kc.micro.Figment_1.0", "f01.txt"), encoding="utf-8") as f:
+            names = [l.split("|")[0].strip() for l in f if "|" in l]
+        self.assertEqual(names, ["mega.A 1", "hadur117.mini.Deise 0.1"])
+        with open(os.path.join(self.out, "deise", "f01.txt"), encoding="utf-8") as f:
+            self.assertIn("kc.micro.Figment 1.0", f.read())
+        with open(os.path.join(self.out, "micro.txt"), encoding="utf-8") as f:
+            names = [l.strip() for l in f if l.strip() and not l.startswith("#")]
+        self.assertEqual(names[-1], "hadur117.mini.Deise 0.1")
+        self.assertNotIn(saor_live.SAOR, names)
+
+    # @Tag("DEISE-13")
+    def test_the_minimelee_field_lists_every_ranked_robot(self):
+        import deise_fields
+        tsv = os.path.join(self.root, "mini.tsv")
+        with open(tsv, "w", encoding="utf-8") as f:
+            f.write("rank\tname\taps\n2\thadur117.micro.Saor 0.2\t68.79\n1\tkc.mini.Mirage 0.2\t71.30\n")
+        text = deise_fields.lines(deise_fields.read(tsv), tsv)
+        rows = [l for l in text.splitlines() if not l.startswith("#")]
+        self.assertEqual(rows, ["kc.mini.Mirage 0.2 | minimelee-1 | kc.mini.Mirage_0.2.jar",
+                                "hadur117.micro.Saor 0.2 | minimelee-2 | hadur117.micro.Saor_0.2.jar"])
+
 
 if __name__ == "__main__":
     unittest.main()

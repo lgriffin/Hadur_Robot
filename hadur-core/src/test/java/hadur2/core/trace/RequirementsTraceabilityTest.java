@@ -30,7 +30,8 @@ import org.junit.jupiter.api.Test;
  * with {@code hadur.climb.stage}, and the architecture evolution's A0-A5 with
  * {@code hadur.arch.stage}, the DrussGT route's D0-D6 with {@code hadur.druss.stage}, and the
  * Team plan's T1 with {@code hadur.team.stage}, and Saor's U0-U5 (docs/saor.md) with
- * {@code hadur.saor.stage}, and TwinSaor's W0-W3 (docs/twinsaor.md) with {@code hadur.twin.stage},
+ * {@code hadur.saor.stage}, and TwinSaor's W0-W3 (docs/twinsaor.md) with {@code hadur.twin.stage}, and Deise's E0-E3
+ * (docs/deise.md) with {@code hadur.deise.stage},
  * all set in the root pom. Saor's module is scanned with the
  * others, and so are the bench tools' Python tests ({@code hadur-bench/tools/test_*.py}),
  * where a comment {@code @Tag("ID")} names what a bench gate's evaluator covers.
@@ -40,7 +41,7 @@ import org.junit.jupiter.api.Test;
 class RequirementsTraceabilityTest {
 
     static final Pattern ROW = Pattern.compile(
-        "^\\|\\s*([A-Z]+-\\d+)\\s*\\|[^|]*\\|[^|]*\\|\\s*([SMRADTUW]\\d)\\s*\\|\\s*$");
+        "^\\|\\s*([A-Z]+-\\d+)\\s*\\|[^|]*\\|[^|]*\\|\\s*([SMRADTUWE]\\d)\\s*\\|\\s*$");
     static final Pattern JAVA_TAG = Pattern.compile("@Tag\\(\"([A-Z]+-\\d+)\"\\)");
     // Split so this file's own source doesn't match them.
     static final String JQWIK_PROPERTY = "import net.jqwik.api." + "Property;";
@@ -56,6 +57,7 @@ class RequirementsTraceabilityTest {
     static String teamStage;
     static String saorStage;
     static String twinStage;
+    static String deiseStage;
     static Map<String, String> requirements;
     static Map<String, Set<String>> coverage;
     /** jqwik test files that tag with JUnit's {@code @Tag}, which makes jqwik skip them. */
@@ -72,11 +74,13 @@ class RequirementsTraceabilityTest {
         teamStage = System.getProperty("hadur.team.stage", "T0");
         saorStage = System.getProperty("hadur.saor.stage", "U0");
         twinStage = System.getProperty("hadur.twin.stage", "W0");
+        deiseStage = System.getProperty("hadur.deise.stage", "E0");
         requirements = readRequirements(root.resolve("docs/requirements.md"));
         coverage = new TreeMap<>();
         junitTaggedProperties = new ArrayList<>();
         for (Path module : List.of(root.resolve("hadur-core"), root.resolve("hadur-robot"),
-                root.resolve("hadur-bench"), root.resolve("saor"), root.resolve("twinsaor"))) {
+                root.resolve("hadur-bench"), root.resolve("saor"), root.resolve("twinsaor"),
+                root.resolve("deise"))) {
             Path tests = module.resolve("src/test");
             if (!Files.isDirectory(tests)) continue;
             try (Stream<Path> files = Files.walk(tests)) {
@@ -114,7 +118,7 @@ class RequirementsTraceabilityTest {
         });
         assertTrue(missing.isEmpty(), "No test names " + missing + "; stages are " + stage
             + ", " + meleeStage + ", " + climbStage + ", " + archStage + ", " + drussStage + ", " + teamStage
-            + ", " + saorStage + " and " + twinStage);
+            + ", " + saorStage + ", " + twinStage + " and " + deiseStage);
     }
 
     @Test
@@ -146,7 +150,7 @@ class RequirementsTraceabilityTest {
         char plan = s.charAt(0);
         return atOrBefore(s, plan == 'M' ? meleeStage : plan == 'R' ? climbStage
             : plan == 'A' ? archStage : plan == 'D' ? drussStage : plan == 'T' ? teamStage
-            : plan == 'U' ? saorStage : plan == 'W' ? twinStage : stage);
+            : plan == 'U' ? saorStage : plan == 'W' ? twinStage : plan == 'E' ? deiseStage : stage);
     }
 
     static boolean atOrBefore(String s, String stage) {
