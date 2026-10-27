@@ -81,16 +81,42 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code>static <a href="../VirtualBullet.Aim.html" title="enum class in hadur2.core.melee">VirtualBullet.Aim</a></code></div>
-<div class="col-second even-row-color"><span class="type-name-label">VirtualBullet.Aim.</span><code><a href="../VirtualBullet.Aim.html#valueOf(java.lang.String)" class="member-name-link">valueOf</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
+<div class="col-first even-row-color"><code>(package private) static <a href="../VirtualBullet.Aim.html" title="enum class in hadur2.core.melee">VirtualBullet.Aim</a></code></div>
+<div class="col-second even-row-color"><span class="type-name-label">TeamModes.</span><code><a href="../TeamModes.html#onlyAim(java.util.Set)" class="member-name-link">onlyAim</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="../TeamModes.Mode.html" title="enum class in hadur2.core.melee">TeamModes.Mode</a>&gt;&nbsp;modes)</code></div>
 <div class="col-last even-row-color">
+<div class="block">TMODE-21, TMODE-22: the one aim the team's shots make a virtual bullet on, or null for both.</div>
+</div>
+<div class="col-first odd-row-color"><code>static <a href="../VirtualBullet.Aim.html" title="enum class in hadur2.core.melee">VirtualBullet.Aim</a></code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">VirtualBullet.Aim.</span><code><a href="../VirtualBullet.Aim.html#valueOf(java.lang.String)" class="member-name-link">valueOf</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
+<div class="col-last odd-row-color">
 <div class="block">Returns the enum constant of this class with the specified name.</div>
 </div>
-<div class="col-first odd-row-color"><code>static <a href="../VirtualBullet.Aim.html" title="enum class in hadur2.core.melee">VirtualBullet.Aim</a>[]</code></div>
-<div class="col-second odd-row-color"><span class="type-name-label">VirtualBullet.Aim.</span><code><a href="../VirtualBullet.Aim.html#values()" class="member-name-link">values</a>()</code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code>static <a href="../VirtualBullet.Aim.html" title="enum class in hadur2.core.melee">VirtualBullet.Aim</a>[]</code></div>
+<div class="col-second even-row-color"><span class="type-name-label">VirtualBullet.Aim.</span><code><a href="../VirtualBullet.Aim.html#values()" class="member-name-link">values</a>()</code></div>
+<div class="col-last even-row-color">
 <div class="block">Returns an array containing the constants of this enum class, in
 the order they are declared.</div>
+</div>
+</div>
+<div class="caption"><span>Methods in <a href="../package-summary.html">hadur2.core.melee</a> with parameters of type <a href="../VirtualBullet.Aim.html" title="enum class in hadur2.core.melee">VirtualBullet.Aim</a></span></div>
+<div class="summary-table three-column-summary">
+<div class="table-header col-first">Modifier and Type</div>
+<div class="table-header col-second">Method</div>
+<div class="table-header col-last">Description</div>
+<div class="col-first even-row-color"><code>void</code></div>
+<div class="col-second even-row-color"><span class="type-name-label">MinimumRiskMovement.</span><code><a href="../MinimumRiskMovement.html#updateBullets(java.util.List,hadur2.core.model.RobotStateLog,java.awt.geom.Point2D.Double,long,java.util.List,hadur2.core.melee.TeamDanger,boolean,boolean,boolean,hadur2.core.melee.VirtualBullet.Aim)" class="member-name-link">updateBullets</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../world/EnemyShot.html" title="class in hadur2.core.world">EnemyShot</a>&gt;&nbsp;shots,
+ <a href="../../model/RobotStateLog.html" title="class in hadur2.core.model">RobotStateLog</a>&nbsp;myPath,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;me,
+ long&nbsp;now,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&gt;&nbsp;mates,
+ <a href="../TeamDanger.html" title="class in hadur2.core.melee">TeamDanger</a>&nbsp;danger,
+ boolean&nbsp;nearest,
+ boolean&nbsp;learned,
+ boolean&nbsp;soft,
+ <a href="../VirtualBullet.Aim.html" title="enum class in hadur2.core.melee">VirtualBullet.Aim</a>&nbsp;only)</code></div>
+<div class="col-last even-row-color">
+<div class="block">As above, where with <code>only</code> (TMODE-21 HEADON, TMODE-22 LINEAR) each shot makes one
+ virtual bullet, on that aim, at <a href="../MinimumRiskMovement.html#ONE_AIM_WEIGHT"><code>MinimumRiskMovement.ONE_AIM_WEIGHT</code></a>: the team's code aims no other way.</div>
 </div>
 </div>
 <div class="caption"><span>Constructors in <a href="../package-summary.html">hadur2.core.melee</a> with parameters of type <a href="../VirtualBullet.Aim.html" title="enum class in hadur2.core.melee">VirtualBullet.Aim</a></span></div>

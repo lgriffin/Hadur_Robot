@@ -225,6 +225,16 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">The set of <code>modes</code>, nulls left out; the table's entries are written with it.</div>
 </div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static <a href="VirtualBullet.Aim.html" title="enum class in hadur2.core.melee">VirtualBullet.Aim</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#onlyAim(java.util.Set)" class="member-name-link">onlyAim</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="TeamModes.Mode.html" title="enum class in hadur2.core.melee">TeamModes.Mode</a>&gt;&nbsp;modes)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">TMODE-21, TMODE-22: the one aim the team's shots make a virtual bullet on, or null for both.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#owns(java.util.Set)" class="member-name-link">owns</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="TeamModes.Mode.html" title="enum class in hadur2.core.melee">TeamModes.Mode</a>&gt;&nbsp;modes)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">TMODE-20: whether a shot counts only for the member it was aimed at (MMOVE-9's nearest rule).</div>
+</div>
 </div>
 </div>
 </div>
@@ -484,6 +494,20 @@ loadScripts(document, 'script');</script>
 <div class="block">A member's class: its name without the engine's trailing " (n)" duplicate markers or
  the version after the first space, as <code>"cz.libors.Ogi 1.0 (2)"</code> to
  <code>"cz.libors.Ogi"</code>.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="owns(java.util.Set)">
+<h3>owns</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">owns</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="TeamModes.Mode.html" title="enum class in hadur2.core.melee">TeamModes.Mode</a>&gt;&nbsp;modes)</span></div>
+<div class="block">TMODE-20: whether a shot counts only for the member it was aimed at (MMOVE-9's nearest rule).</div>
+</section>
+</li>
+<li>
+<section class="detail" id="onlyAim(java.util.Set)">
+<h3>onlyAim</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type"><a href="VirtualBullet.Aim.html" title="enum class in hadur2.core.melee">VirtualBullet.Aim</a></span>&nbsp;<span class="element-name">onlyAim</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="TeamModes.Mode.html" title="enum class in hadur2.core.melee">TeamModes.Mode</a>&gt;&nbsp;modes)</span></div>
+<div class="block">TMODE-21, TMODE-22: the one aim the team's shots make a virtual bullet on, or null for both.</div>
 </section>
 </li>
 <li>
