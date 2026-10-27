@@ -1,0 +1,645 @@
+utc	client	event	detail
+2026-10-27T14:18:51Z	rr01-roborumble	start	rr01-roborumble-2026-10-27T141851Z.log
+2026-10-27T14:18:51Z	rr02-roborumble	start	rr02-roborumble-2026-10-27T141851Z.log
+2026-10-27T14:18:51Z	rr03-roborumble	start	rr03-roborumble-2026-10-27T141851Z.log
+2026-10-27T14:18:51Z	rr04-roborumble	start	rr04-roborumble-2026-10-27T141851Z.log
+2026-10-27T14:18:51Z	rr05-roborumble	start	rr05-roborumble-2026-10-27T141851Z.log
+2026-10-27T14:18:51Z	rr06-roborumble	start	rr06-roborumble-2026-10-27T141851Z.log
+2026-10-27T14:18:51Z	robocode-meleerumble	start	robocode-meleerumble-2026-10-27T141851Z.log
+2026-10-27T14:18:51Z	robocode-teamrumble	start	robocode-teamrumble-2026-10-27T141851Z.log
+2026-10-27T14:21:05Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:21:05Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:21:25Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:21:25Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:22:11Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:22:11Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:22:22Z	rr05-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:22:22Z	rr05-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:22:50Z	rr01-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:22:50Z	rr01-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:23:26Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:23:26Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:23:48Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:23:48Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:23:48Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:23:48Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:24:15Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:24:15Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:24:46Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:24:46Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:25:06Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:25:06Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:25:17Z	rr06-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:25:17Z	rr06-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:25:17Z	rr06-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:25:17Z	rr06-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:25:59Z	rr06-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:25:59Z	rr06-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:28:28Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:28:28Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:28:38Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:28:38Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:28:48Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:28:48Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:29:22Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:29:22Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:29:22Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:29:22Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:30:23Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:30:23Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:30:32Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:30:32Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:31:29Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:31:29Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:31:51Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:31:51Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:32:12Z	rr06-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:32:12Z	rr06-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:32:12Z	robocode-teamrumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17.1 (5)
+2026-10-27T14:32:12Z	robocode-teamrumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17.1 (5)
+2026-10-27T14:32:34Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:32:34Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:32:34Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:32:34Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:33:17Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:33:17Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:33:40Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:33:40Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:33:40Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:33:40Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:34:15Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:34:15Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:34:27Z	rr02-roborumble	stop after battle	up 936 s
+2026-10-27T14:34:27Z	rr02-roborumble	restart	rr02-roborumble-2026-10-27T143427Z.log
+2026-10-27T14:34:28Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:34:28Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:34:28Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:34:28Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:34:39Z	robocode-meleerumble	stop after battle	up 948 s
+2026-10-27T14:34:39Z	robocode-meleerumble	restart	robocode-meleerumble-2026-10-27T143439Z.log
+2026-10-27T14:34:50Z	rr05-roborumble	stop after battle	up 959 s
+2026-10-27T14:34:50Z	rr05-roborumble	restart	rr05-roborumble-2026-10-27T143450Z.log
+2026-10-27T14:35:09Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:35:09Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:35:23Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:35:23Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:35:34Z	robocode-teamrumble	stop after battle	up 1002 s
+2026-10-27T14:35:34Z	robocode-teamrumble	restart	robocode-teamrumble-2026-10-27T143534Z.log
+2026-10-27T14:36:32Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:36:32Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:36:52Z	rr03-roborumble	stop after battle	up 1080 s
+2026-10-27T14:36:52Z	rr03-roborumble	restart	rr03-roborumble-2026-10-27T143652Z.log
+2026-10-27T14:37:19Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:37:19Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:37:38Z	rr04-roborumble	stop after battle	up 1126 s
+2026-10-27T14:37:38Z	rr04-roborumble	restart	rr04-roborumble-2026-10-27T143738Z.log
+2026-10-27T14:37:59Z	rr01-roborumble	stop after battle	up 1147 s
+2026-10-27T14:37:59Z	rr01-roborumble	restart	rr01-roborumble-2026-10-27T143759Z.log
+2026-10-27T14:37:59Z	rr06-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:37:59Z	rr06-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:38:11Z	rr06-roborumble	stop after battle	up 1160 s
+2026-10-27T14:38:11Z	rr06-roborumble	restart	rr06-roborumble-2026-10-27T143811Z.log
+2026-10-27T14:39:02Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:39:02Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:39:19Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:39:19Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:39:29Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:39:29Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:40:02Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:40:02Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:40:44Z	robocode-teamrumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17.1 (2)
+2026-10-27T14:40:44Z	robocode-teamrumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17.1 (2)
+2026-10-27T14:40:44Z	robocode-teamrumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17.1 (4)
+2026-10-27T14:40:44Z	robocode-teamrumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17.1 (4)
+2026-10-27T14:40:54Z	robocode-teamrumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17.1 (1)
+2026-10-27T14:40:54Z	robocode-teamrumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17.1 (1)
+2026-10-27T14:41:07Z	rr05-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:41:07Z	rr05-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:41:20Z	rr05-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:41:20Z	rr05-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:42:29Z	rr05-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:42:29Z	rr05-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:42:42Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:42:42Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:42:42Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:42:42Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:42:57Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:42:57Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:42:57Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:42:57Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:43:55Z	rr01-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:43:55Z	rr01-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:43:55Z	robocode-teamrumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17.1 (5)
+2026-10-27T14:43:55Z	robocode-teamrumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17.1 (5)
+2026-10-27T14:43:55Z	robocode-teamrumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17.1 (2)
+2026-10-27T14:43:55Z	robocode-teamrumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17.1 (2)
+2026-10-27T14:44:56Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:44:56Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:45:18Z	rr05-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:45:18Z	rr05-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:45:42Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:45:42Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:46:04Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:46:04Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:46:04Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:46:04Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:46:15Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:46:15Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:47:01Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:47:01Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:47:01Z	robocode-teamrumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17.1 (5)
+2026-10-27T14:47:01Z	robocode-teamrumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17.1 (5)
+2026-10-27T14:47:01Z	robocode-teamrumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17.1 (3)
+2026-10-27T14:47:01Z	robocode-teamrumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17.1 (3)
+2026-10-27T14:47:46Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:47:46Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:47:46Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:47:46Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:48:58Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:48:58Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:49:30Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:49:30Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:49:41Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:49:41Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:50:33Z	robocode-teamrumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17.1 (4)
+2026-10-27T14:50:33Z	robocode-teamrumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17.1 (4)
+2026-10-27T14:50:56Z	rr02-roborumble	stop after battle	up 988 s
+2026-10-27T14:50:56Z	rr02-roborumble	restart	rr02-roborumble-2026-10-27T145056Z.log
+2026-10-27T14:50:56Z	robocode-meleerumble	stop after battle	up 977 s
+2026-10-27T14:50:56Z	robocode-meleerumble	restart	robocode-meleerumble-2026-10-27T145056Z.log
+2026-10-27T14:51:47Z	robocode-teamrumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17.1 (5)
+2026-10-27T14:51:47Z	robocode-teamrumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17.1 (5)
+2026-10-27T14:51:59Z	rr05-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:51:59Z	rr05-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:51:59Z	robocode-teamrumble	stop after battle	up 986 s
+2026-10-27T14:51:59Z	robocode-teamrumble	restart	robocode-teamrumble-2026-10-27T145159Z.log
+2026-10-27T14:52:09Z	robocode-teamrumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17.1 (5)
+2026-10-27T14:52:09Z	robocode-teamrumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17.1 (5)
+2026-10-27T14:52:40Z	robocode-teamrumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17.1 (2)
+2026-10-27T14:52:40Z	robocode-teamrumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17.1 (2)
+2026-10-27T14:53:09Z	rr01-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:53:10Z	rr01-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:53:10Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:53:10Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:53:10Z	rr05-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:53:10Z	rr05-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:53:21Z	rr03-roborumble	stop after battle	up 989 s
+2026-10-27T14:53:21Z	rr03-roborumble	restart	rr03-roborumble-2026-10-27T145321Z.log
+2026-10-27T14:53:33Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:53:33Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:53:33Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:53:33Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:53:45Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:53:45Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:53:57Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:53:57Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:54:21Z	rr01-roborumble	stop after battle	up 982 s
+2026-10-27T14:54:21Z	rr01-roborumble	restart	rr01-roborumble-2026-10-27T145421Z.log
+2026-10-27T14:54:21Z	rr05-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:54:21Z	rr05-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:54:21Z	rr06-roborumble	stop after battle	up 970 s
+2026-10-27T14:54:21Z	rr06-roborumble	restart	rr06-roborumble-2026-10-27T145421Z.log
+2026-10-27T14:54:33Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:54:33Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:55:53Z	rr05-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:55:53Z	rr05-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:56:43Z	rr05-roborumble	stop after battle	up 1313 s
+2026-10-27T14:56:43Z	rr05-roborumble	restart	rr05-roborumble-2026-10-27T145643Z.log
+2026-10-27T14:56:51Z	rr06-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:56:51Z	rr06-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:57:30Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:57:30Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:57:30Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:57:30Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:57:39Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:57:39Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:57:51Z	rr06-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:57:51Z	rr06-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:58:03Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:58:03Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:58:03Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:58:03Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:58:13Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:58:13Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:58:23Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:58:23Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:58:23Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:58:23Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T14:58:24Z	rr04-roborumble	stop after battle	up 1246 s
+2026-10-27T14:58:24Z	rr04-roborumble	restart	rr04-roborumble-2026-10-27T145824Z.log
+2026-10-27T15:00:08Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:00:08Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:00:41Z	robocode-teamrumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17.1 (2)
+2026-10-27T15:00:41Z	robocode-teamrumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17.1 (2)
+2026-10-27T15:00:41Z	robocode-teamrumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17.1 (3)
+2026-10-27T15:00:41Z	robocode-teamrumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17.1 (3)
+2026-10-27T15:01:01Z	rr01-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:01:01Z	rr01-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:02:41Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:02:41Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:02:50Z	rr01-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:02:50Z	rr01-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:04:02Z	rr05-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:04:02Z	rr05-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:04:13Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:04:13Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:06:40Z	robocode-meleerumble	stop after battle	up 944 s
+2026-10-27T15:06:40Z	robocode-meleerumble	restart	robocode-meleerumble-2026-10-27T150640Z.log
+2026-10-27T15:06:53Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:06:53Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:07:05Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:07:05Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:07:16Z	rr02-roborumble	stop after battle	up 980 s
+2026-10-27T15:07:16Z	rr02-roborumble	restart	rr02-roborumble-2026-10-27T150716Z.log
+2026-10-27T15:07:16Z	rr05-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:07:16Z	rr05-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:07:27Z	rr05-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:07:27Z	rr05-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:07:27Z	robocode-teamrumble	stop after battle	up 928 s
+2026-10-27T15:07:27Z	robocode-teamrumble	restart	robocode-teamrumble-2026-10-27T150727Z.log
+2026-10-27T15:08:24Z	rr05-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:08:24Z	rr05-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:08:36Z	rr06-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:08:36Z	rr06-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:08:59Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:08:59Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:10:58Z	rr01-roborumble	stop after battle	up 997 s
+2026-10-27T15:10:58Z	rr01-roborumble	restart	rr01-roborumble-2026-10-27T151058Z.log
+2026-10-27T15:10:58Z	rr03-roborumble	stop after battle	up 1057 s
+2026-10-27T15:10:58Z	rr03-roborumble	restart	rr03-roborumble-2026-10-27T151058Z.log
+2026-10-27T15:13:15Z	rr05-roborumble	stop after battle	up 992 s
+2026-10-27T15:13:15Z	rr05-roborumble	restart	rr05-roborumble-2026-10-27T151315Z.log
+2026-10-27T15:13:33Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:13:33Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:13:34Z	rr06-roborumble	stop after battle	up 1152 s
+2026-10-27T15:13:34Z	rr06-roborumble	restart	rr06-roborumble-2026-10-27T151334Z.log
+2026-10-27T15:13:34Z	robocode-meleerumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:13:34Z	robocode-meleerumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:13:53Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:13:53Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:14:25Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:14:25Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:14:47Z	rr01-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:14:47Z	rr01-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:15:35Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:15:35Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:15:35Z	rr05-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:15:35Z	rr05-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:15:55Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:15:55Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:16:07Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:16:07Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:17:01Z	rr01-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:17:01Z	rr01-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:17:01Z	rr05-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:17:01Z	rr05-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:17:01Z	rr06-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:17:01Z	rr06-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:19:23Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:19:23Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:20:07Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:20:07Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:21:23Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:21:23Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:21:43Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:21:43Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:22:04Z	rr04-roborumble	stop after battle	up 1421 s
+2026-10-27T15:22:04Z	rr04-roborumble	restart	rr04-roborumble-2026-10-27T152204Z.log
+2026-10-27T15:22:17Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:22:17Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:22:30Z	robocode-meleerumble	stop after battle	up 950 s
+2026-10-27T15:22:30Z	robocode-meleerumble	restart	robocode-meleerumble-2026-10-27T152230Z.log
+2026-10-27T15:22:40Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:22:40Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:22:51Z	rr02-roborumble	stop after battle	up 936 s
+2026-10-27T15:22:51Z	rr02-roborumble	restart	rr02-roborumble-2026-10-27T152251Z.log
+2026-10-27T15:23:01Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:23:01Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:23:51Z	robocode-teamrumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17.1 (4)
+2026-10-27T15:23:51Z	robocode-teamrumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17.1 (4)
+2026-10-27T15:24:24Z	robocode-teamrumble	stop after battle	up 1017 s
+2026-10-27T15:24:24Z	robocode-teamrumble	restart	robocode-teamrumble-2026-10-27T152424Z.log
+2026-10-27T15:25:32Z	rr05-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:25:32Z	rr05-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:25:45Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:25:45Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:25:56Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:25:56Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:26:22Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:26:22Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:27:43Z	rr05-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:27:43Z	rr05-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:27:54Z	rr01-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:27:54Z	rr01-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:28:06Z	robocode-teamrumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17.1 (4)
+2026-10-27T15:28:06Z	robocode-teamrumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17.1 (4)
+2026-10-27T15:28:17Z	rr06-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:28:17Z	rr06-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:28:29Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:28:29Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:28:29Z	robocode-teamrumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17.1 (5)
+2026-10-27T15:28:29Z	robocode-teamrumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17.1 (5)
+2026-10-27T15:29:09Z	rr01-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:29:09Z	rr01-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:29:17Z	rr03-roborumble	stop after battle	up 1099 s
+2026-10-27T15:29:17Z	rr03-roborumble	restart	rr03-roborumble-2026-10-27T152917Z.log
+2026-10-27T15:29:29Z	rr06-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:29:29Z	rr06-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:29:50Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:29:50Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:30:10Z	rr06-roborumble	stop after battle	up 997 s
+2026-10-27T15:30:10Z	rr06-roborumble	restart	rr06-roborumble-2026-10-27T153010Z.log
+2026-10-27T15:30:21Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:30:21Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:30:31Z	rr05-roborumble	stop after battle	up 1037 s
+2026-10-27T15:30:31Z	rr05-roborumble	restart	rr05-roborumble-2026-10-27T153031Z.log
+2026-10-27T15:31:22Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:31:22Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:31:50Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:31:50Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:32:31Z	rr01-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:32:31Z	rr01-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:32:31Z	rr06-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:32:31Z	rr06-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:33:12Z	rr05-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:33:12Z	rr05-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:33:23Z	rr01-roborumble	stop after battle	up 1345 s
+2026-10-27T15:33:23Z	rr01-roborumble	restart	rr01-roborumble-2026-10-27T153323Z.log
+2026-10-27T15:33:23Z	rr05-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:33:23Z	rr05-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:33:48Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:33:48Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:34:08Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:34:08Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:36:04Z	rr06-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:36:04Z	rr06-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:37:01Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:37:01Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:37:44Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:37:44Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:37:57Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:37:57Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:38:08Z	robocode-meleerumble	stop after battle	up 938 s
+2026-10-27T15:38:08Z	robocode-meleerumble	restart	robocode-meleerumble-2026-10-27T153808Z.log
+2026-10-27T15:38:20Z	robocode-teamrumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17.1 (2)
+2026-10-27T15:38:20Z	robocode-teamrumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17.1 (2)
+2026-10-27T15:38:20Z	robocode-teamrumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17.1 (4)
+2026-10-27T15:38:20Z	robocode-teamrumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17.1 (4)
+2026-10-27T15:38:50Z	rr02-roborumble	stop after battle	up 959 s
+2026-10-27T15:38:50Z	rr02-roborumble	restart	rr02-roborumble-2026-10-27T153850Z.log
+2026-10-27T15:38:50Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:38:50Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:39:11Z	rr04-roborumble	stop after battle	up 1027 s
+2026-10-27T15:39:11Z	rr04-roborumble	restart	rr04-roborumble-2026-10-27T153911Z.log
+2026-10-27T15:39:29Z	rr05-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:39:29Z	rr05-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:39:52Z	rr05-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:39:52Z	rr05-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:40:04Z	robocode-teamrumble	stop after battle	up 940 s
+2026-10-27T15:40:04Z	robocode-teamrumble	restart	robocode-teamrumble-2026-10-27T154004Z.log
+2026-10-27T15:40:47Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:40:47Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:41:56Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:41:56Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:42:26Z	robocode-meleerumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:42:26Z	robocode-meleerumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:42:50Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:42:50Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:43:02Z	robocode-meleerumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:43:02Z	robocode-meleerumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:43:12Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:43:12Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:43:21Z	rr01-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:43:21Z	rr01-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:43:30Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:43:30Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:45:10Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:45:10Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:45:52Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:45:52Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:46:35Z	rr01-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:46:35Z	rr01-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:46:35Z	rr01-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:46:35Z	rr01-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:46:35Z	robocode-meleerumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:46:35Z	robocode-meleerumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:46:47Z	rr05-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:46:47Z	rr05-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:47:16Z	robocode-teamrumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17.1 (4)
+2026-10-27T15:47:16Z	robocode-teamrumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17.1 (4)
+2026-10-27T15:47:16Z	robocode-teamrumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17.1 (1)
+2026-10-27T15:47:16Z	robocode-teamrumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17.1 (1)
+2026-10-27T15:47:29Z	robocode-teamrumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17.1 (4)
+2026-10-27T15:47:29Z	robocode-teamrumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17.1 (4)
+2026-10-27T15:47:42Z	rr03-roborumble	stop after battle	up 1105 s
+2026-10-27T15:47:42Z	rr03-roborumble	restart	rr03-roborumble-2026-10-27T154742Z.log
+2026-10-27T15:47:55Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:47:55Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:48:16Z	rr05-roborumble	stop after battle	up 1065 s
+2026-10-27T15:48:16Z	rr05-roborumble	restart	rr05-roborumble-2026-10-27T154816Z.log
+2026-10-27T15:48:16Z	rr06-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:48:16Z	rr06-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:48:27Z	rr01-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:48:27Z	rr01-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:48:27Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:48:27Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:48:38Z	rr01-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:48:38Z	rr01-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:48:48Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:48:48Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:48:48Z	robocode-meleerumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:48:48Z	robocode-meleerumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:49:09Z	rr01-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:49:09Z	rr01-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:49:09Z	rr01-roborumble	stop after battle	up 947 s
+2026-10-27T15:49:09Z	rr01-roborumble	restart	rr01-roborumble-2026-10-27T154909Z.log
+2026-10-27T15:49:21Z	rr06-roborumble	stop after battle	up 1151 s
+2026-10-27T15:49:21Z	rr06-roborumble	restart	rr06-roborumble-2026-10-27T154921Z.log
+2026-10-27T15:49:33Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:49:33Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:49:44Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:49:44Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:50:50Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:50:50Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:51:11Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:51:11Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:51:48Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:51:48Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:52:35Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:52:35Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:52:45Z	robocode-teamrumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17.1 (4)
+2026-10-27T15:52:45Z	robocode-teamrumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17.1 (4)
+2026-10-27T15:52:45Z	robocode-teamrumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17.1 (5)
+2026-10-27T15:52:45Z	robocode-teamrumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17.1 (5)
+2026-10-27T15:53:23Z	rr05-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:53:23Z	rr05-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:53:23Z	robocode-meleerumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:53:23Z	robocode-meleerumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:53:35Z	robocode-meleerumble	stop after battle	up 927 s
+2026-10-27T15:53:35Z	robocode-meleerumble	restart	robocode-meleerumble-2026-10-27T155335Z.log
+2026-10-27T15:54:18Z	rr01-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:54:18Z	rr01-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:55:15Z	rr04-roborumble	stop after battle	up 965 s
+2026-10-27T15:55:15Z	rr04-roborumble	restart	rr04-roborumble-2026-10-27T155515Z.log
+2026-10-27T15:55:15Z	robocode-meleerumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:55:15Z	robocode-meleerumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:55:26Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:55:26Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:55:36Z	rr01-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:55:36Z	rr01-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:55:47Z	rr02-roborumble	stop after battle	up 1017 s
+2026-10-27T15:55:47Z	rr02-roborumble	restart	rr02-roborumble-2026-10-27T155547Z.log
+2026-10-27T15:56:18Z	robocode-teamrumble	stop after battle	up 974 s
+2026-10-27T15:56:18Z	robocode-teamrumble	restart	robocode-teamrumble-2026-10-27T155618Z.log
+2026-10-27T15:56:46Z	robocode-teamrumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17.1 (5)
+2026-10-27T15:56:46Z	robocode-teamrumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17.1 (5)
+2026-10-27T15:57:41Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:57:41Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:57:52Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:57:52Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:58:31Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:58:31Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:58:44Z	robocode-meleerumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:58:44Z	robocode-meleerumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:59:04Z	rr01-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:59:04Z	rr01-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:59:25Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:59:25Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:59:37Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T15:59:37Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:00:20Z	rr05-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:00:20Z	rr05-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:00:39Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:00:39Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:01:24Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:01:24Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:01:34Z	rr05-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:01:34Z	rr05-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:01:44Z	robocode-meleerumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:01:44Z	robocode-meleerumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:01:53Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:01:53Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:02:23Z	rr05-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:02:23Z	rr05-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:02:54Z	rr05-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:02:54Z	rr05-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:02:54Z	rr05-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:02:54Z	rr05-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:03:16Z	rr03-roborumble	stop after battle	up 934 s
+2026-10-27T16:03:16Z	rr03-roborumble	restart	rr03-roborumble-2026-10-27T160316Z.log
+2026-10-27T16:04:15Z	rr01-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:04:15Z	rr01-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:04:50Z	rr01-roborumble	stop after battle	up 941 s
+2026-10-27T16:04:50Z	rr01-roborumble	restart	rr01-roborumble-2026-10-27T160450Z.log
+2026-10-27T16:05:09Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:05:09Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:05:10Z	rr06-roborumble	stop after battle	up 948 s
+2026-10-27T16:05:10Z	rr06-roborumble	restart	rr06-roborumble-2026-10-27T160510Z.log
+2026-10-27T16:05:38Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:05:38Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:05:49Z	robocode-meleerumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:05:49Z	robocode-meleerumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:05:59Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:05:59Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:06:10Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:06:10Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:06:55Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:06:55Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:07:13Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:07:13Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:07:25Z	rr05-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:07:25Z	rr05-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:07:56Z	robocode-teamrumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17.1 (2)
+2026-10-27T16:07:56Z	robocode-teamrumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17.1 (2)
+2026-10-27T16:07:56Z	robocode-teamrumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17.1 (1)
+2026-10-27T16:07:56Z	robocode-teamrumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17.1 (1)
+2026-10-27T16:08:18Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:08:18Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:08:47Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:08:47Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:08:57Z	robocode-meleerumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:08:57Z	robocode-meleerumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:09:09Z	robocode-meleerumble	stop after battle	up 933 s
+2026-10-27T16:09:09Z	robocode-meleerumble	restart	robocode-meleerumble-2026-10-27T160909Z.log
+2026-10-27T16:09:32Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:09:32Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:09:55Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:09:55Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:10:05Z	rr01-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:10:05Z	rr01-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:10:50Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:10:50Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:10:50Z	rr05-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:10:50Z	rr05-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:11:20Z	rr06-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:11:20Z	rr06-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:12:33Z	rr01-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:12:33Z	rr01-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:12:33Z	robocode-teamrumble	stop after battle	up 975 s
+2026-10-27T16:12:33Z	robocode-teamrumble	restart	robocode-teamrumble-2026-10-27T161233Z.log
+2026-10-27T16:13:19Z	rr05-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:13:19Z	rr05-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:13:28Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:13:28Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:13:59Z	rr05-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:13:59Z	rr05-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:14:24Z	rr06-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:14:24Z	rr06-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:15:25Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:15:25Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:15:37Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:15:37Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:15:58Z	robocode-meleerumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:15:58Z	robocode-meleerumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:16:12Z	robocode-teamrumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17.1 (1)
+2026-10-27T16:16:12Z	robocode-teamrumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17.1 (1)
+2026-10-27T16:16:24Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:16:24Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:16:36Z	rr02-roborumble	stop after battle	up 1249 s
+2026-10-27T16:16:36Z	rr02-roborumble	restart	rr02-roborumble-2026-10-27T161636Z.log
+2026-10-27T16:16:37Z	rr04-roborumble	stop after battle	up 1281 s
+2026-10-27T16:16:37Z	rr04-roborumble	restart	rr04-roborumble-2026-10-27T161637Z.log
+2026-10-27T16:16:58Z	rr05-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:16:58Z	rr05-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:17:10Z	rr05-roborumble	stop after battle	up 1733 s
+2026-10-27T16:17:10Z	rr05-roborumble	restart	rr05-roborumble-2026-10-27T161710Z.log
+2026-10-27T16:18:08Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:18:08Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:18:48Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:18:48Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:18:58Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:18:58Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:18:58Z	robocode-teamrumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17.1 (3)
+2026-10-27T16:18:58Z	robocode-teamrumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17.1 (3)
+2026-10-27T16:19:14Z	rr01-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:19:14Z	rr01-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:19:14Z	rr01-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:19:14Z	rr01-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:19:41Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:19:41Z	rr02-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:20:15Z	rr06-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:20:15Z	rr06-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:21:07Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:21:07Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:21:07Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:21:07Z	rr03-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:21:19Z	robocode-meleerumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:21:19Z	robocode-meleerumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:21:19Z	robocode-teamrumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17.1 (1)
+2026-10-27T16:21:19Z	robocode-teamrumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17.1 (1)
+2026-10-27T16:21:32Z	rr01-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:21:32Z	rr01-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:21:46Z	rr01-roborumble	stop after battle	up 1016 s
+2026-10-27T16:21:46Z	rr01-roborumble	restart	rr01-roborumble-2026-10-27T162146Z.log
+2026-10-27T16:21:58Z	rr06-roborumble	stop after battle	up 1008 s
+2026-10-27T16:21:58Z	rr06-roborumble	restart	rr06-roborumble-2026-10-27T162158Z.log
+2026-10-27T16:22:30Z	rr01-roborumble	stop at end	up 44 s
+2026-10-27T16:22:30Z	rr02-roborumble	stop at end	up 354 s
+2026-10-27T16:22:30Z	rr03-roborumble	stop at end	up 1154 s
+2026-10-27T16:22:31Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:22:31Z	rr04-roborumble	unstoppable	Unable to stop thread: hadur2.Hadur 3.17
+2026-10-27T16:22:31Z	rr04-roborumble	stop at end	up 354 s
+2026-10-27T16:22:31Z	rr05-roborumble	stop at end	up 321 s
+2026-10-27T16:22:31Z	rr06-roborumble	stop at end	up 33 s
+2026-10-27T16:22:31Z	robocode-meleerumble	stop at end	up 803 s
+2026-10-27T16:22:32Z	robocode-teamrumble	stop at end	up 599 s
