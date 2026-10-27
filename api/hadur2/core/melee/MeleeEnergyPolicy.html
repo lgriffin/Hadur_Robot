@@ -159,12 +159,33 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color"><code>(package private) static final double</code></div>
 <div class="col-second even-row-color"><code><a href="#OGI_CLOSE" class="member-name-link">OGI_CLOSE</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>static final boolean</code></div>
+<div class="col-second odd-row-color"><code><a href="#OGI_LOW" class="member-name-link">OGI_LOW</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block"><a class="req" href="../../../../requirements.html#MGUN-15">MGUN-15</a>: <a class="req" href="../../../../requirements.html#MGUN-13">MGUN-13</a> from <a href="#OGI_LOW_ENERGY"><code>OGI_LOW_ENERGY</code></a> own energy, not 20.</div>
+</div>
+<div class="col-first even-row-color"><code>(package private) static final double</code></div>
+<div class="col-second even-row-color"><code><a href="#OGI_LOW_ENERGY" class="member-name-link">OGI_LOW_ENERGY</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code>(package private) static final double</code></div>
 <div class="col-second odd-row-color"><code><a href="#OGI_POWER" class="member-name-link">OGI_POWER</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>static final double</code></div>
-<div class="col-second even-row-color"><code><a href="#TEAM_FULL_POWER_ENERGY" class="member-name-link">TEAM_FULL_POWER_ENERGY</a></code></div>
+<div class="col-first even-row-color"><code>static final boolean</code></div>
+<div class="col-second even-row-color"><code><a href="#OGI_TWO" class="member-name-link">OGI_TWO</a></code></div>
 <div class="col-last even-row-color">
+<div class="block"><a class="req" href="../../../../requirements.html#MGUN-14">MGUN-14</a>: <a class="req" href="../../../../requirements.html#MGUN-13">MGUN-13</a> also with two opponents left, where the duel's table fires now.</div>
+</div>
+<div class="col-first odd-row-color"><code>static final boolean</code></div>
+<div class="col-second odd-row-color"><code><a href="#OGI_WIDE" class="member-name-link">OGI_WIDE</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block"><a class="req" href="../../../../requirements.html#MGUN-16">MGUN-16</a>: <a class="req" href="../../../../requirements.html#MGUN-13">MGUN-13</a>'s power 3 out to <a href="#OGI_WIDE_CLOSE"><code>OGI_WIDE_CLOSE</code></a> px, not 200.</div>
+</div>
+<div class="col-first even-row-color"><code>(package private) static final double</code></div>
+<div class="col-second even-row-color"><code><a href="#OGI_WIDE_CLOSE" class="member-name-link">OGI_WIDE_CLOSE</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>static final double</code></div>
+<div class="col-second odd-row-color"><code><a href="#TEAM_FULL_POWER_ENERGY" class="member-name-link">TEAM_FULL_POWER_ENERGY</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">MGUN-6: the own energy from which a member on a team fires full power.</div>
 </div>
 </div>
@@ -201,31 +222,45 @@ loadScripts(document, 'script');</script>
  boolean&nbsp;ogi)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static double</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#duelPower(double,double,double)" class="member-name-link">duelPower</a><wbr>(double&nbsp;distance,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#crowdPower(double,double,double,double,int,boolean,boolean,boolean,boolean,boolean)" class="member-name-link">crowdPower</a><wbr>(double&nbsp;tablePower,
+ double&nbsp;distance,
+ double&nbsp;ownEnergy,
+ double&nbsp;targetEnergy,
+ int&nbsp;others,
+ boolean&nbsp;floor,
+ boolean&nbsp;ogi,
+ boolean&nbsp;two,
+ boolean&nbsp;low,
+ boolean&nbsp;wide)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../../../requirements.html#MGUN-14">MGUN-14</a>..16 widen <a class="req" href="../../../../requirements.html#MGUN-13">MGUN-13</a> only: with it off they do nothing.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static double</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#duelPower(double,double,double)" class="member-name-link">duelPower</a><wbr>(double&nbsp;distance,
  double&nbsp;ownEnergy,
  double&nbsp;targetEnergy)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">The duel gun's 1v1 table, mirrored here: melee code does not reach into the duel.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static double</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#killPower(double)" class="member-name-link">killPower</a><wbr>(double&nbsp;energy)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static double</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#killPower(double)" class="member-name-link">killPower</a><wbr>(double&nbsp;energy)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">The least power whose damage finishes a robot with <code>energy</code> left: e/4 below
  power 1, else (e + 2)/6, with a hair more so rounding cannot leave it alive.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static double</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#power(double,double,double,int)" class="member-name-link">power</a><wbr>(double&nbsp;distance,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static double</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#power(double,double,double,int)" class="member-name-link">power</a><wbr>(double&nbsp;distance,
  double&nbsp;ownEnergy,
  double&nbsp;targetEnergy,
  int&nbsp;others)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">The power to fire at a target <code>distance</code> away with <code>targetEnergy</code>, or 0 to hold.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static double</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#teamPower(double,double,double)" class="member-name-link">teamPower</a><wbr>(double&nbsp;tablePower,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static double</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#teamPower(double,double,double)" class="member-name-link">teamPower</a><wbr>(double&nbsp;tablePower,
  double&nbsp;ownEnergy,
  double&nbsp;targetEnergy)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">MGUN-6: the power a member on a team fires, given the table's <code>tablePower</code>.</div>
 </div>
 </div>
@@ -408,6 +443,81 @@ loadScripts(document, 'script');</script>
 </dl>
 </section>
 </li>
+<li>
+<section class="detail" id="OGI_TWO">
+<h3>OGI_TWO</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">OGI_TWO</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#MGUN-14">MGUN-14</a>: <a class="req" href="../../../../requirements.html#MGUN-13">MGUN-13</a> also with two opponents left, where the duel's table fires now. Off: the
+ exposure read on the banked build (docs/plan-melee-top5.md) has Hadur's crowd power at 1.85
+ to the top 10's 2.56, and the rule idle there; the bench builds an arm with it on (ogi2).</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur2.core.melee.MeleeEnergyPolicy.OGI_TWO">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="OGI_LOW">
+<h3>OGI_LOW</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">OGI_LOW</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#MGUN-15">MGUN-15</a>: <a class="req" href="../../../../requirements.html#MGUN-13">MGUN-13</a> from <a href="#OGI_LOW_ENERGY"><code>OGI_LOW_ENERGY</code></a> own energy, not 20. Off (arm ogie10).</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur2.core.melee.MeleeEnergyPolicy.OGI_LOW">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="OGI_LOW_ENERGY">
+<h3>OGI_LOW_ENERGY</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">OGI_LOW_ENERGY</span></div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur2.core.melee.MeleeEnergyPolicy.OGI_LOW_ENERGY">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="OGI_WIDE">
+<h3>OGI_WIDE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">OGI_WIDE</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#MGUN-16">MGUN-16</a>: <a class="req" href="../../../../requirements.html#MGUN-13">MGUN-13</a>'s power 3 out to <a href="#OGI_WIDE_CLOSE"><code>OGI_WIDE_CLOSE</code></a> px, not 200. Off (arm ogi300).</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur2.core.melee.MeleeEnergyPolicy.OGI_WIDE">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="OGI_WIDE_CLOSE">
+<h3>OGI_WIDE_CLOSE</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">OGI_WIDE_CLOSE</span></div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur2.core.melee.MeleeEnergyPolicy.OGI_WIDE_CLOSE">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
 </ul>
 </section>
 </li>
@@ -463,6 +573,22 @@ loadScripts(document, 'script');</script>
  int&nbsp;others,
  boolean&nbsp;floor,
  boolean&nbsp;ogi)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="crowdPower(double,double,double,double,int,boolean,boolean,boolean,boolean,boolean)">
+<h3>crowdPower</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">crowdPower</span><wbr><span class="parameters">(double&nbsp;tablePower,
+ double&nbsp;distance,
+ double&nbsp;ownEnergy,
+ double&nbsp;targetEnergy,
+ int&nbsp;others,
+ boolean&nbsp;floor,
+ boolean&nbsp;ogi,
+ boolean&nbsp;two,
+ boolean&nbsp;low,
+ boolean&nbsp;wide)</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#MGUN-14">MGUN-14</a>..16 widen <a class="req" href="../../../../requirements.html#MGUN-13">MGUN-13</a> only: with it off they do nothing.</div>
 </section>
 </li>
 <li>
