@@ -1,3 +1,5 @@
+# Historical card: it ran on the Saor 0.1 source, before 0.2 (2026-10-27). Its arms' seds match
+# 0.1 only (tag saor-v0.1), so it does not re-run from master.
 # Saor's plan for 1st in MicroMelee, stage 2 (docs/plan-saor-first.md): Saor's own answer to
 # stage 1's finding. pc-saor-s01 (PR #294) found the whole gap in one place: Saor waits for 8
 # samples before it samples a Markov row, and sampling any seen row (W, Figment's rule) gave

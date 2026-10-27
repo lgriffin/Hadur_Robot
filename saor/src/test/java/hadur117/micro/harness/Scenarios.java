@@ -8,11 +8,12 @@ public final class Scenarios {
     /** Ticks a scenario runs: long enough for rows to warm and the axis to flip many times. */
     public static final int TICKS = 900;
     /**
-     * Ticks of {@link #lowLeft}: from about tick 700 target switches and radar gaps have put
-     * two different successors in a warm row, the gun samples it at random and two runs of
-     * the same robot part; every tick before that replays exactly.
+     * Ticks of {@link #lowLeft}: from about tick 524 target switches and radar gaps have put
+     * two different successors in a row, the gun samples it at random and two runs of the same
+     * robot part; every tick before that replays exactly. (0.1 waited for 8 samples, so its
+     * runs held together to about tick 700; 0.2 samples any seen row.)
      */
-    public static final int LOW_LEFT_TICKS = 650;
+    public static final int LOW_LEFT_TICKS = 500;
 
     private Scenarios() {
     }
@@ -40,8 +41,8 @@ public final class Scenarios {
      * One steady enemy whose rows are set by hand so the learned gun is deterministic and
      * differs from the cold one: its own state S has a full row of T (the robot's learning
      * cannot write into a full row), T has {@code warmth} samples of U, and U a full row of U.
-     * With 8 or more samples at T the playouts go S, T, U, U...; with fewer they hold T
-     * (SAOR-6, SAOR-7). The robot's own scans only ever record into S's row.
+     * With a sample or more at T the playouts go S, T, U, U..., voting less below 8 samples;
+     * with none they hold T (SAOR-6, SAOR-7). The robot's own scans only ever record into S's row.
      *
      * @param className the robot
      * @param warmth samples in T's row
@@ -71,8 +72,8 @@ public final class Scenarios {
 
     /**
      * Three enemies around a robot starting high right, one stationary; the field thins to
-     * two, so the end-game power cap applies (SAOR-8). The collision comes before any scan, so
-     * only taking the rammer's name gives the gun a target (SAOR-9).
+     * two, so the end-game power cap applies (SAOR-8). The collision comes before any scan; 0.2
+     * has no collision handler, so the gun waits for its first scan.
      *
      * @param className the robot
      * @param classPath where its classes are

@@ -1,3 +1,5 @@
+# Historical card: it ran on the Saor 0.1 source, before 0.2 (2026-10-27). Its arms' seds match
+# 0.1 only (tag saor-v0.1), so it does not re-run from master.
 # Saor's plan for 1st in MicroMelee, stages 0 and 1 (docs/plan-saor-first.md; Leigh, 2026-10-25:
 # "Now lets plan the gap to 1st").
 #   ./queue.sh run pc-saor-s01        (or  .\queue.ps1 run pc-saor-s01)

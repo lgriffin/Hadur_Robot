@@ -275,24 +275,28 @@ What this means:
 - S2 is Saor's best build. It leads Saor 0.1 by about +1.5 and ties Figment, so a sure 1st needs
   another +0.5.
 
-## 6f. Stage 5a card (pc-saor-s04, about 2 h)
+## 6f. Saor 0.2 and the stage 5a card (pc-saor-s04, about 2 h)
 
-S2 uses all 749 bytes. A duel-only move was the candidate from stage 3. In its smallest form
-(perpendicular to the target, random legs) it costs 67 bytes, and S2's two byte savers free
-only 25. It stays out until something frees more bytes.
+Leigh chose to ship S2 at the tie (2026-10-27): **Saor 0.2 is S2**, at 748 bytes after ProGuard
+(S2 kept an empty collision handler, which 0.2 drops). It differs from Figment in behaviour:
+Figment samples any seen row at full vote, while 0.2 grades its vote by the row's samples, has
+no ram leg, keeps the end-game cap, 64 playouts, 512 opponent tables and 1024 bins.
 
-Stage 5a screens the changes that cost nothing on the MicroMelee census, all built on S2:
+A duel-only move was stage 3's candidate. In its smallest form (perpendicular to the target,
+random legs) it costs 67 bytes, and 0.2's two byte savers free only 25. It stays out until
+something frees more bytes.
+
+Stage 5a screens the changes that cost nothing on the MicroMelee census, built on 0.2:
 
 | Arm | What | Bytes after ProGuard |
 |---|---|---|
-| C | Saor 0.1, the control | 749 |
-| S2 | the anchor | 749 |
-| LA | learn a transition on every scan (stage 4 found more learning pays) | 738 |
-| U2 | no end-game power cap (on 0.1 it measured nothing) | 735 |
-| V4, V16 | full trust from 4 or 16 samples, not 8 | 749 |
-| B2, B6 | spread a playout's vote over 5 or 13 bins, not 9 | 749 |
+| C | Saor 0.2, the control | 748 |
+| LA | learn a transition on every scan (stage 4 found more learning pays) | 737 |
+| U2 | no end-game power cap (on 0.1 it measured nothing) | 734 |
+| V4, V16 | full trust from 4 or 16 samples, not 8 | 747, 748 |
+| B2, B6 | spread a playout's vote over 5 or 13 bins, not 9 | 748, 749 |
 
-Pass: +0.3 over S2. The winners, stacked on S2, then go to a stage 5b live-shaped confirm with
+Pass: +0.3 over C. The winners, stacked on 0.2, then go to a stage 5b live-shaped confirm with
 Figment seated. The bar there is the same as stage 4: Figment + 0.5 in the same run.
 
 ## 7. What a guaranteed 1st takes

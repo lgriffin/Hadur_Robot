@@ -143,17 +143,6 @@ public class SaorSteps {
         assertEquals(expected, Energy.power(energy, d, others), 1e-9);
     }
 
-    @Then("the leg is 50 px after a collision")
-    public void legAfterRam() {
-        assertEquals(50, Movement.leg(Movement.RAM_DISTANCE));
-    }
-
-    @Then("no robot scanned is nearer than the rammer's mark")
-    public void noneNearer() {
-        assertFalse(Selection.adopt(0, Movement.RAM_DISTANCE, false));
-        assertTrue(Selection.adopt(400, Movement.RAM_DISTANCE, true), "the rammer, now the target, is kept");
-    }
-
     @Then("the gun fires with {double} gun turn left")
     public void fires(double left) {
         assertTrue(Energy.fire(left));

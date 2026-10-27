@@ -2,10 +2,11 @@ package hadur117.micro.core;
 
 /**
  * The gun: a per-opponent Markov chain over the target's movement state (Figment), played
- * forward by Monte-Carlo to bullet arrival and voted into angle bins. One change of substance:
- * a state whose row holds fewer than {@link #WARM} samples is not sampled but held, so the
- * playout continues at the scan's speed and turn rate, which is circular projection (SAOR-6);
- * once a row holds {@link #WARM} or more, successors are drawn from it (SAOR-7).
+ * forward by Monte-Carlo to bullet arrival and voted into angle bins. Saor's own part is its
+ * confidence in a thin row: a row with any sample is drawn from, but a playout through a row of
+ * fewer than {@link #WARM} samples votes at most {@link #HELD_WEIGHT} + {@link #TRUST} a sample
+ * of that row (SAOR-7). A row with no sample holds the state, so the playout continues at the
+ * scan's speed and turn rate, which is circular projection (SAOR-6).
  *
  * <p>A state packs acceleration sign (3 values), integer speed (17) and turn in half steps of
  * the engine's largest turn at the last speed (5) into one int below {@link #STATES}. A row is
@@ -19,7 +20,7 @@ public final class Targeting {
     public static final int STATES = 579;
     /** Successor slots in a row; the slot after them holds the count. */
     public static final int ROW = 126;
-    /** Samples a row needs before the gun draws from it (SAOR-6, SAOR-7). */
+    /** Samples a row needs before a playout through it keeps its full vote (SAOR-7). */
     public static final int WARM = 8;
     /** Monte-Carlo playouts an aim (Figment runs 128). */
     public static final int PLAYOUTS = 64;
@@ -29,8 +30,10 @@ public final class Targeting {
     public static final int BINS = 1024;
     /** A playout's vote while every step was drawn from a warm row. */
     public static final int WEIGHT = 100;
-    /** Its vote once any step held a cold state. */
+    /** Its vote once any step held a state with no sample (SAOR-6). */
     public static final int HELD_WEIGHT = 5;
+    /** The vote a sample of a thin row adds, on {@link #HELD_WEIGHT}: 1 sample votes 17, 7 vote 89. */
+    public static final int TRUST = 12;
     /** Its vote once any step left the field less the aim margin of 17.5 px. */
     public static final int OUT_WEIGHT = 1;
 
@@ -131,10 +134,11 @@ public final class Targeting {
             int weight = WEIGHT;
             int n;
             do {
-                if ((n = table[id][ROW]) >= WARM) {
+                if ((n = table[id][ROW]) > 0) {
                     id = table[id][(int) (Math.random() * n) % ROW];
-                } else {
-                    weight = HELD_WEIGHT;
+                }
+                if (n < WARM) {
+                    weight = Math.min(weight, n * TRUST + HELD_WEIGHT);
                 }
                 px += Math.sin(h += ((id >> 7) - 2) * turnRate(v) / 2) * (v = ((id >> 2) & 31) - 8);
                 py += Math.cos(h) * v;
@@ -166,12 +170,13 @@ public final class Targeting {
 
     /**
      * Whether this scan's transition is recorded: only while the gun is cool enough that the
-     * target is being scanned every tick (Figment).
+     * radar is held on the target, scanning it every tick. Figment learns below 0.7; Saor 0.2
+     * learns below 0.9, which stage 4 measured at about +0.27 APS (docs/plan-saor-first.md 6e).
      *
      * @param gunHeat the gun's heat
-     * @return true below 0.7
+     * @return true below 0.9
      */
     public static boolean learn(double gunHeat) {
-        return gunHeat < 0.7;
+        return gunHeat < 0.9;
     }
 }

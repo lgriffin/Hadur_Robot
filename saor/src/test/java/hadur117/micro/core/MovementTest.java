@@ -3,7 +3,6 @@ package hadur117.micro.core;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import net.jqwik.api.Example;
 import net.jqwik.api.ForAll;
 import net.jqwik.api.Property;
 import net.jqwik.api.Tag;
@@ -58,11 +57,5 @@ class MovementTest {
         double facing = Math.abs(off) < Math.PI / 2 ? off : robocode.util.Utils.normalRelativeAngle(off + Math.PI);
         double bodyTurn = Movement.bodyTurn(turn);
         if (Math.abs(facing) > 1e-9) assertEquals(Math.signum(facing), Math.signum(bodyTurn));
-    }
-
-    @Example
-    @Tag("SAOR-9")
-    void aCollisionMakesTheLegFiftyPx() {
-        assertEquals(50, Movement.leg(Movement.RAM_DISTANCE));
     }
 }
