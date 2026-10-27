@@ -139,6 +139,14 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color">
 <div class="block">TMODE-13: packs of two or three assigned per enemy, each member at a fixed 350 px round its prey (NightmareTeam).</div>
 </div>
+<div class="col-first even-row-color"><code><a href="#LANEB" class="member-name-link">LANEB</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">TMODE-18: WEAVE-11 for this team: a teammate beyond the target holds the shot.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#LANEP" class="member-name-link">LANEP</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">TMODE-17: WEAVE-10 for this team: a nearer teammate's predicted track holds the shot.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#LEARN" class="member-name-link">LEARN</a></code></div>
 <div class="col-last even-row-color">
 <div class="block">MMOVE-10 as a mode: dodge the team's learned aims.</div>
@@ -147,32 +155,37 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color">
 <div class="block">TMODE-15: a member keeps out of the cone behind each teammate's likely target, where that teammate's misses fly.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#MATEFIRE" class="member-name-link">MATEFIRE</a></code></div>
+<div class="col-first even-row-color"><code><a href="#LINESW" class="member-name-link">LINESW</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">TMODE-16: TMODE-15 with wider, heavier cones (<code>LINES_WIDE_K</code>, <code>LINES_WIDE_HALF</code>),
+ as ablation tmlinesw benched them.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#MATEFIRE" class="member-name-link">MATEFIRE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">TMODE-9: the teammates' bullets in flight count as danger, as an enemy's do (CombatTeam).</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#PACK" class="member-name-link">PACK</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#PACK" class="member-name-link">PACK</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">TMODE-5: hunt as a pack: every member closes on the same enemy from its own side (NightmareTeam's pincer).</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#POOL" class="member-name-link">POOL</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#POOL" class="member-name-link">POOL</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">TMODE-7: MMOVE-10's learned aims from one log per enemy class, fed by all its copies.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#REAR" class="member-name-link">REAR</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#REAR" class="member-name-link">REAR</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">TMODE-10: the leader, whose death costs every teammate energy, keeps further from enemies.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#SCREEN" class="member-name-link">SCREEN</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#SCREEN" class="member-name-link">SCREEN</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">TMODE-6: teammates count with enemies as robots nearer an enemy than Hadur would be.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#SOFT" class="member-name-link">SOFT</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#SOFT" class="member-name-link">SOFT</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">TMODE-2: a shot's virtual bullets weigh less for each teammate nearer its shooter.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#WAVES" class="member-name-link">WAVES</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#WAVES" class="member-name-link">WAVES</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">TMODE-11: the safest candidates are re-ranked by the shots their drive would cross (Ogi's waves).</div>
 </div>
 </div>
@@ -309,6 +322,28 @@ the order they are declared.</div>
 <h3>LINES</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="TeamModes.Mode.html" title="enum class in hadur2.core.melee">TeamModes.Mode</a></span>&nbsp;<span class="element-name">LINES</span></div>
 <div class="block">TMODE-15: a member keeps out of the cone behind each teammate's likely target, where that teammate's misses fly.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="LINESW">
+<h3>LINESW</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="TeamModes.Mode.html" title="enum class in hadur2.core.melee">TeamModes.Mode</a></span>&nbsp;<span class="element-name">LINESW</span></div>
+<div class="block">TMODE-16: TMODE-15 with wider, heavier cones (<code>LINES_WIDE_K</code>, <code>LINES_WIDE_HALF</code>),
+ as ablation tmlinesw benched them. Only through the table: no FORCE switch.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="LANEP">
+<h3>LANEP</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="TeamModes.Mode.html" title="enum class in hadur2.core.melee">TeamModes.Mode</a></span>&nbsp;<span class="element-name">LANEP</span></div>
+<div class="block">TMODE-17: WEAVE-10 for this team: a nearer teammate's predicted track holds the shot. Only through the table.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="LANEB">
+<h3>LANEB</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="TeamModes.Mode.html" title="enum class in hadur2.core.melee">TeamModes.Mode</a></span>&nbsp;<span class="element-name">LANEB</span></div>
+<div class="block">TMODE-18: WEAVE-11 for this team: a teammate beyond the target holds the shot. Only through the table.</div>
 </section>
 </li>
 </ul>

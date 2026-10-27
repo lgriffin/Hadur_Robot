@@ -5619,9 +5619,17 @@ loadScripts(document, 'script');</script>
 <div class="block"><a class="req" href="../requirements.html#WEAVE-4">WEAVE-4</a>: the fire lane's half-width at a fresh position, px: a robot's half-width (18)
  and a bullet's few px of slack.</div>
 </dd>
+<dt><a href="hadur2/core/melee/TeamModes.Mode.html#LANEB" class="member-name-link">LANEB</a> - Enum constant in enum class hadur2.core.melee.<a href="hadur2/core/melee/TeamModes.Mode.html" title="enum class in hadur2.core.melee">TeamModes.Mode</a></dt>
+<dd>
+<div class="block">TMODE-18: WEAVE-11 for this team: a teammate beyond the target holds the shot.</div>
+</dd>
 <dt><a href="hadur2/core/TeamLink.html#laneClear(hadur2.core.model.BotInput)" class="member-name-link">laneClear(BotInput)</a> - Method in class hadur2.core.<a href="hadur2/core/TeamLink.html" title="class in hadur2.core">TeamLink</a></dt>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#WEAVE-4">WEAVE-4</a>, WEAVE-7: whether a shot may leave on the gun's present heading.</div>
+</dd>
+<dt><a href="hadur2/core/melee/TeamModes.Mode.html#LANEP" class="member-name-link">LANEP</a> - Enum constant in enum class hadur2.core.melee.<a href="hadur2/core/melee/TeamModes.Mode.html" title="enum class in hadur2.core.melee">TeamModes.Mode</a></dt>
+<dd>
+<div class="block">TMODE-17: WEAVE-10 for this team: a nearer teammate's predicted track holds the shot.</div>
 </dd>
 <dt><a href="hadur2/core/model/Wave.html#lastBulletFiredTime" class="member-name-link">lastBulletFiredTime</a> - Variable in class hadur2.core.model.<a href="hadur2/core/model/Wave.html" title="class in hadur2.core.model">Wave</a></dt>
 <dd>
@@ -5969,12 +5977,31 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur2/core/melee/MinimumRiskMovement.html#LINES_REACH" class="member-name-link">LINES_REACH</a> - Static variable in class hadur2.core.melee.<a href="hadur2/core/melee/MinimumRiskMovement.html" title="class in hadur2.core.melee">MinimumRiskMovement</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur2/core/melee/MinimumRiskMovement.html#LINES_WIDE_HALF" class="member-name-link">LINES_WIDE_HALF</a> - Static variable in class hadur2.core.melee.<a href="hadur2/core/melee/MinimumRiskMovement.html" title="class in hadur2.core.melee">MinimumRiskMovement</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="hadur2/core/melee/MinimumRiskMovement.html#LINES_WIDE_K" class="member-name-link">LINES_WIDE_K</a> - Static variable in class hadur2.core.melee.<a href="hadur2/core/melee/MinimumRiskMovement.html" title="class in hadur2.core.melee">MinimumRiskMovement</a></dt>
+<dd>
+<div class="block">TMODE-16: the wider cone's weight and half-angle, radians (ablation tmlinesw's values).</div>
+</dd>
 <dt><a href="hadur2/core/melee/MinimumRiskMovement.html#linesRisk(java.awt.geom.Point2D.Double,java.util.List,java.util.List,long)" class="member-name-link">linesRisk(Point2D.Double, List&lt;Roster.Mate&gt;, List&lt;EnemyInfo&gt;, long)</a> - Static method in class hadur2.core.melee.<a href="hadur2/core/melee/MinimumRiskMovement.html" title="class in hadur2.core.melee">MinimumRiskMovement</a></dt>
 <dd>
 <div class="block">TMODE-15: for each teammate, now, and its nearest fresh enemy, <a href="hadur2/core/melee/MinimumRiskMovement.html#LINES_K"><code>MinimumRiskMovement.LINES_K</code></a> where
  <code>p</code> lies on the line from the teammate through that enemy and past it, falling
  linearly to none <a href="hadur2/core/melee/MinimumRiskMovement.html#LINES_HALF"><code>MinimumRiskMovement.LINES_HALF</code></a> radians off the line as the teammate sees it, and
  none nearer the teammate than the enemy or more than <a href="hadur2/core/melee/MinimumRiskMovement.html#LINES_REACH"><code>MinimumRiskMovement.LINES_REACH</code></a> px beyond it.</div>
+</dd>
+<dt><a href="hadur2/core/melee/MinimumRiskMovement.html#linesRisk(java.awt.geom.Point2D.Double,java.util.List,java.util.List,long,double,double)" class="member-name-link">linesRisk(Point2D.Double, List&lt;Roster.Mate&gt;, List&lt;EnemyInfo&gt;, long, double, double)</a> - Static method in class hadur2.core.melee.<a href="hadur2/core/melee/MinimumRiskMovement.html" title="class in hadur2.core.melee">MinimumRiskMovement</a></dt>
+<dd>
+<div class="block">TMODE-15 and TMODE-16: <a href="hadur2/core/melee/MinimumRiskMovement.html#linesRisk(java.awt.geom.Point2D.Double,java.util.List,java.util.List,long)"><code>MinimumRiskMovement.linesRisk(java.awt.geom.Point2D.Double, java.util.List&lt;hadur2.core.world.Roster.Mate&gt;, java.util.List&lt;hadur2.core.world.EnemyInfo&gt;, long)</code></a> with weight <code>k</code> and half-angle <code>half</code>.</div>
+</dd>
+<dt><a href="hadur2/core/melee/TeamModes.Mode.html#LINESW" class="member-name-link">LINESW</a> - Enum constant in enum class hadur2.core.melee.<a href="hadur2/core/melee/TeamModes.Mode.html" title="enum class in hadur2.core.melee">TeamModes.Mode</a></dt>
+<dd>
+<div class="block">TMODE-16: TMODE-15 with wider, heavier cones (<code>LINES_WIDE_K</code>, <code>LINES_WIDE_HALF</code>),
+ as ablation tmlinesw benched them.</div>
+</dd>
+<dt><a href="hadur2/core/melee/MinimumRiskMovement.View.html#linesWide" class="member-name-link">linesWide</a> - Variable in class hadur2.core.melee.<a href="hadur2/core/melee/MinimumRiskMovement.View.html" title="class in hadur2.core.melee">MinimumRiskMovement.View</a></dt>
+<dd>
+<div class="block">TMODE-16: whether those lines use the wider cone.</div>
 </dd>
 <dt><a href="hadur2/core/link/LinkCodec.html" class="type-name-link" title="class in hadur2.core.link">LinkCodec</a> - Class in <a href="hadur2/core/link/package-summary.html">hadur2.core.link</a></dt>
 <dd>
@@ -7226,6 +7253,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur2/core/shieldmode/ModalOffset.html#mode()" class="member-name-link">mode()</a> - Method in class hadur2.core.shieldmode.<a href="hadur2/core/shieldmode/ModalOffset.html" title="class in hadur2.core.shieldmode">ModalOffset</a></dt>
 <dd>
 <div class="block">The most frequent value kept, the latest on a tie; 0 when empty.</div>
+</dd>
+<dt><a href="hadur2/core/TeamLink.html#modes" class="member-name-link">modes</a> - Variable in class hadur2.core.<a href="hadur2/core/TeamLink.html" title="class in hadur2.core">TeamLink</a></dt>
+<dd>
+<div class="block">TMODE-17, TMODE-18: the modes against the living enemies, from the team mode table; a test may name its own.</div>
 </dd>
 <dt><a href="hadur2/core/memory/OpponentProfile.html#motion" class="member-name-link">motion</a> - Variable in class hadur2.core.memory.<a href="hadur2/core/memory/OpponentProfile.html" title="class in hadur2.core.memory">OpponentProfile</a></dt>
 <dd>

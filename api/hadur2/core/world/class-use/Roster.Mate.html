@@ -127,6 +127,16 @@ loadScripts(document, 'script');</script>
  linearly to none <a href="../../melee/MinimumRiskMovement.html#LINES_HALF"><code>MinimumRiskMovement.LINES_HALF</code></a> radians off the line as the teammate sees it, and
  none nearer the teammate than the enemy or more than <a href="../../melee/MinimumRiskMovement.html#LINES_REACH"><code>MinimumRiskMovement.LINES_REACH</code></a> px beyond it.</div>
 </div>
+<div class="col-first odd-row-color"><code>(package private) static double</code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">MinimumRiskMovement.</span><code><a href="../../melee/MinimumRiskMovement.html#linesRisk(java.awt.geom.Point2D.Double,java.util.List,java.util.List,long,double,double)" class="member-name-link">linesRisk</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;p,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../Roster.Mate.html" title="class in hadur2.core.world">Roster.Mate</a>&gt;&nbsp;mates,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../EnemyInfo.html" title="class in hadur2.core.world">EnemyInfo</a>&gt;&nbsp;enemies,
+ long&nbsp;now,
+ double&nbsp;k,
+ double&nbsp;half)</code></div>
+<div class="col-last odd-row-color">
+<div class="block">TMODE-15 and TMODE-16: <a href="../../melee/MinimumRiskMovement.html#linesRisk(java.awt.geom.Point2D.Double,java.util.List,java.util.List,long)"><code>MinimumRiskMovement.linesRisk(java.awt.geom.Point2D.Double, java.util.List&lt;hadur2.core.world.Roster.Mate&gt;, java.util.List&lt;hadur2.core.world.EnemyInfo&gt;, long)</code></a> with weight <code>k</code> and half-angle <code>half</code>.</div>
+</div>
 </div>
 <div class="caption"><span>Constructor parameters in <a href="../../melee/package-summary.html">hadur2.core.melee</a> with type arguments of type <a href="../Roster.Mate.html" title="class in hadur2.core.world">Roster.Mate</a></span></div>
 <div class="summary-table three-column-summary">
