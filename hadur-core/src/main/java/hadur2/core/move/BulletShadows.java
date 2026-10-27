@@ -94,8 +94,17 @@ public final class BulletShadows {
         // The first turn on which both bullets move: each first moves on the turn after it
         // was fired.
         long first = Math.max(b.fireTime + 1, wave.fireTime + 1);
+        // at(t) is a pure function of t, so each turn's points are carried into the next
+        // rather than built again: one new point a turn instead of up to four (it was the
+        // core's largest source of garbage in a duel). before = at(k - 2), when it is used.
+        Point2D.Double before = first - 2 >= b.fireTime ? b.at(first - 2) : null;
+        Point2D.Double from = b.at(first - 1);
+        Point2D.Double to = null;
         for (long k = first; k < first + MAX_TURNS; k++) {
-            Point2D.Double from = b.at(k - 1);
+            if (k > first) {
+                before = from;
+                from = to;
+            }
             // Once ours is off the field the engine has removed it: nothing further to shadow.
             if (!inField(from, fieldWidth, fieldHeight)) return;
             // The enemy bullet is at radius r after turn k and moved out from r - v during it.
@@ -103,12 +112,13 @@ public final class BulletShadows {
             double v = wave.bulletSpeed();
             // Certain: both of turn k's segments, ours from at(k - 1) to at(k), theirs the
             // ring [r - v, r].
-            pair(s, from, b.at(k), r - v, r, certain);
+            to = b.at(k);
+            pair(s, from, to, r - v, r, certain);
             // Possible: their turn-k move against our turn-(k - 1) segment (ours moves second)...
-            if (k - 2 >= b.fireTime) pair(s, b.at(k - 2), from, r - v, r, possible);
+            if (k - 2 >= b.fireTime) pair(s, before, from, r - v, r, possible);
             // ...and our turn-k move against their turn-(k - 1) ring (theirs moves second).
             // Each guard skips a previous segment from before that bullet was fired.
-            if (k - 2 >= wave.fireTime) pair(s, from, b.at(k), r - 2 * v, r - v, possible);
+            if (k - 2 >= wave.fireTime) pair(s, from, to, r - 2 * v, r - v, possible);
         }
     }
 

@@ -31,7 +31,7 @@ import java.util.List;
 public class RobotState {
 
     /** Half the side of a robot's square hit box, pixels: Robocode robots are 36 by 36. */
-    private static final double BOT_HALF_WIDTH = 18.0;
+    static final double BOT_HALF_WIDTH = 18.0;
 
     /** The robot's centre, pixels. */
     public final Point2D.Double location;

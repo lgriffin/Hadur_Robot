@@ -1847,3 +1847,15 @@ docs/saor.md. Nothing in Hadur's modules depends on it, and it on nothing of Had
   pass is a bench result, recorded in docs/bench/. SAOR-16 is the plan for 1st
   (docs/plan-saor-first.md): its field builder `tools/saor_live.py` and the micro-only read in
   `saor_arms.py` are covered by `test_saor_live.py` and `test_saor_arms.py`.
+
+## Allocation and the engine's stop path (TIME-9)
+
+The engine disables a robot that skips more than 30 turns in a row and then tries to stop its
+thread from that same thread, which always prints "Unable to stop thread". A real client never
+collects garbage on purpose between battles, so a young collection that lands in Hadur's turn
+is the usual cause of such a run. TIME-9 lowers how much garbage the core makes without
+changing a single decision.
+
+| ID | Pattern | Requirement | Stage |
+|---|---|---|---|
+| TIME-9 | Ubiquitous | The core's surf, bullet-shadow and wave hit-box code shall reuse arrays and plain coordinates instead of building a map, point or line per neighbour, bullet or corner on every tick, with the same arithmetic in the same order, so that every duel, melee and team fixture replays bit for bit. | R9 |
