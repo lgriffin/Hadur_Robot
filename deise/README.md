@@ -10,7 +10,12 @@ the stages are in [docs/deise.md](../docs/deise.md); the requirements are DEISE-
 
 Stage E0: the design is built and tested, at about 2,300 bytes against MiniMelee's 1,499.
 Card `pc-deise-e01` measures it on the live-shaped MiniMelee census against Mirage and Saor
-before it is fitted (stage E2). Not released.
+before it is fitted (stage E2). 0.1 is released unfitted for live numbers: over 1,499 bytes, the
+rumble scores it in MeleeRumble only, and its pairings against the MiniMelee robots give its
+MiniMelee-shaped score.
+
+Releases are tagged `deise-v<version>` by `.github/workflows/release-deise.yml`, with notes in
+`docs/releases/deise-v<version>.md`.
 
 ## Build
 
