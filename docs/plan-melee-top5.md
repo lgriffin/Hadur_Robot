@@ -325,6 +325,15 @@ seeds, passing if it adds at all (95% low end above 0).
 MGUN-13 ships on. Banked since Stage 0's census (66.99): about +1.2, so the census reads about 68.2
 against the 71.6 bar, about 3.4 short.
 
+**Exposure read on the banked build (2026-10-27, cloud, the same 12 fields x 1 seed as M0).** Hadur's
+score is now level with the top 10's (19,873 a battle against 19,936; 19,366 before), its survival
+still ahead (13,338 against 12,810) and its bullet damage still behind (4,691 against 5,346). Crowd
+damage taken is unchanged (8.8 per 100 crowd ticks against the top 10's 9.6). MGUN-13 lifted Hadur's
+mean crowd power only from 1.64 to 1.85, against the top 10's 2.56: the rule is idle with two
+opponents left, under 20 own energy, and fires 1.92 rather than 3 between 200 and 300 px.
+`pc-melee-power2` (BENCH-122) screens each of those (MGUN-14 two left, MGUN-15 from 10 energy,
+MGUN-16 power 3 to 300 px) alone and all three together.
+
 ### Stage 3: crowd survival
 
 The largest lever and the riskiest: M4's path scoring cost 3 to 5 APS, and the team's port of
