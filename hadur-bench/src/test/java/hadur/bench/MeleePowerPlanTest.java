@@ -63,5 +63,7 @@ class MeleePowerPlanTest {
         String policy = Files.readString(Path.of("../hadur-core/src/main/java/hadur2/core/melee/MeleeEnergyPolicy.java"));
         assertTrue(policy.contains("public static final boolean CROWD_FLOOR = false;"));
         assertTrue(policy.contains("public static final boolean CROWD_OGI = true;"), "banked by pc-melee-ogi");
+        assertTrue(build.contains("\"public static final boolean CROWD_OGI = true;\" \"public static final boolean CROWD_OGI = false;\""),
+            "pfloor turns MGUN-13 off, so the floor arm measures the floor, not Ogi's rule");
     }
 }
