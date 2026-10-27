@@ -2,6 +2,7 @@ package hadur2.core;
 
 import hadur2.core.link.LinkCodec;
 import hadur2.core.link.Report;
+import hadur2.core.melee.TeamModes;
 import hadur2.core.model.BattleFacts;
 import hadur2.core.model.BotEvent;
 import hadur2.core.model.BotInput;
@@ -17,6 +18,8 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.function.Function;
 
 /**
  * The conductor's part in a team battle (A5): it turns the engine's input into what a strand
@@ -103,6 +106,8 @@ final class TeamLink {
     /** WEAVE-10 and WEAVE-11 as this link plays them; a test may turn them on. */
     boolean predictLane = NARROW_PREDICT;
     boolean beyondLane = NARROW_BEYOND;
+    /** TMODE-17, TMODE-18: the modes against the living enemies, from the team mode table; a test may name its own. */
+    Function<List<EnemyInfo>, Set<TeamModes.Mode>> modes = TeamModes::against;
     /** WORLD-4: the latest stated tick merged from each teammate this round. */
     private final Map<String, Long> merged = new HashMap<>();
     /** This tick's fresh sightings of enemies, for our report. */
@@ -327,9 +332,17 @@ final class TeamLink {
      * teammate counts. A living teammate nearer than the target, whose bearing lies within
      * {@code atan2(30, d)} of the gun's heading, holds the shot. A teammate beyond the target,
      * wide of the line or behind the gun does not: the shot is worth the small risk.
+     * TMODE-17 and TMODE-18 play WEAVE-10 and WEAVE-11 against the teams the mode table names.
      */
     boolean narrowLaneClear(BotInput in) {
         double gun = in.gunHeading();
+        boolean predict = predictLane;
+        boolean beyond = beyondLane;
+        if (!predict || !beyond) {
+            Set<TeamModes.Mode> playing = modes.apply(world.alive());
+            predict |= playing.contains(TeamModes.Mode.LANEP);
+            beyond |= playing.contains(TeamModes.Mode.LANEB);
+        }
         double target = Double.POSITIVE_INFINITY;
         for (EnemyInfo e : world.alive()) {
             if (e.location == null) continue;
@@ -344,8 +357,8 @@ final class TeamLink {
             double ry = m.y() - in.y();
             double d = Math.hypot(rx, ry);
             if (d < target && off(rx, ry, gun) <= Math.atan2(NARROW_MATE_HALF, d)) return false;
-            if (d < target ? !predictLane : !beyondLane || d > target + BEYOND_RANGE) continue;
-            if (meetsBullet(in, m, gun, target)) return false;
+            if (d < target ? !predict : !beyond || d > target + BEYOND_RANGE) continue;
+            if (meetsBullet(in, m, gun, target, beyond)) return false;
         }
         return true;
     }
@@ -357,10 +370,10 @@ final class TeamLink {
      * along it. The flight is judged as far as the target, or {@link #BEYOND_RANGE} past it when
      * WEAVE-11 is played.
      */
-    private boolean meetsBullet(BotInput in, Roster.Mate m, double gun, double target) {
+    private boolean meetsBullet(BotInput in, Roster.Mate m, double gun, double target, boolean beyond) {
         double dx = Math.sin(gun);
         double dy = Math.cos(gun);
-        double reach = beyondLane ? target + BEYOND_RANGE : target;
+        double reach = beyond ? target + BEYOND_RANGE : target;
         if (Double.isInfinite(reach)) reach = MAX_FLIGHT * SLOWEST_BULLET;
         int ticks = (int) Math.ceil((reach + LANE_ALONG_SLACK) / LANE_BULLET_SPEED);
         for (int t = 1; t <= ticks; t++) {

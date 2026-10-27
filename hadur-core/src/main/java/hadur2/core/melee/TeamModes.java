@@ -48,7 +48,16 @@ public final class TeamModes {
         /** TMODE-13: packs of two or three assigned per enemy, each member at a fixed 350 px round its prey (NightmareTeam). */
         HUNT,
         /** TMODE-15: a member keeps out of the cone behind each teammate's likely target, where that teammate's misses fly. */
-        LINES
+        LINES,
+        /**
+         * TMODE-16: TMODE-15 with wider, heavier cones ({@code LINES_WIDE_K}, {@code LINES_WIDE_HALF}),
+         * as ablation tmlinesw benched them. Only through the table: no FORCE switch.
+         */
+        LINESW,
+        /** TMODE-17: WEAVE-10 for this team: a nearer teammate's predicted track holds the shot. Only through the table. */
+        LANEP,
+        /** TMODE-18: WEAVE-11 for this team: a teammate beyond the target holds the shot. Only through the table. */
+        LANEB
     }
 
     /**

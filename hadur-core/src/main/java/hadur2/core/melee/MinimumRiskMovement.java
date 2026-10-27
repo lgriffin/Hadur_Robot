@@ -112,6 +112,9 @@ public class MinimumRiskMovement {
     static final double LINES_K = 0.3;
     static final double LINES_HALF = 0.3;
     static final double LINES_REACH = 800;
+    /** TMODE-16: the wider cone's weight and half-angle, radians (ablation tmlinesw's values). */
+    static final double LINES_WIDE_K = 0.6;
+    static final double LINES_WIDE_HALF = 0.45;
     /** MMOVE-8: how far apart, along its wall, the opening spots of two members in the roster are. */
     static final double MATE_FAN = 120;
     /** TMODE-2: a shot's weight is 1/(1+k)^2 for k teammates nearer its shooter; under this it makes no bullets. */
@@ -244,6 +247,8 @@ public class MinimumRiskMovement {
         boolean rear;
         /** TMODE-15: whether the teammates' lines of fire count; only on a team. */
         boolean lines;
+        /** TMODE-16: whether those lines use the wider cone. */
+        boolean linesWide;
 
         View(Point2D.Double me, double energy, long now, int others, List<EnemyInfo> enemies,
              List<VirtualBullet> bullets, MeleeStrategy.Plan plan) {
@@ -499,7 +504,8 @@ public class MinimumRiskMovement {
         if (!mates.isEmpty() && modes.contains(TeamModes.Mode.SCREEN)) screen(v, now);
         if (!mates.isEmpty() && modes.contains(TeamModes.Mode.MATEFIRE)) v.mateBullets = relevant(mateBullets(me, now), me, now);
         v.rear = leader && !mates.isEmpty() && modes.contains(TeamModes.Mode.REAR);
-        v.lines = !mates.isEmpty() && modes.contains(TeamModes.Mode.LINES);
+        v.linesWide = modes.contains(TeamModes.Mode.LINESW);
+        v.lines = !mates.isEmpty() && (modes.contains(TeamModes.Mode.LINES) || v.linesWide);
         List<Point2D.Double> candidates = candidates(me, others, enemies, now, mates);
         lastCandidates = candidates.size();
         if (!mates.isEmpty() && modes.contains(TeamModes.Mode.WAVES)) {
@@ -1043,7 +1049,10 @@ public class MinimumRiskMovement {
             double sd = segmentDistance(v.me, p, from, q);
             r += MATE_PATH_K * Math.max(0, 1 - sd / MATE_PATH_RANGE);
         }
-        if (v.lines) r += linesRisk(p, v.mates, v.enemies, v.now);
+        if (v.lines) {
+            r += v.linesWide ? linesRisk(p, v.mates, v.enemies, v.now, LINES_WIDE_K, LINES_WIDE_HALF)
+                : linesRisk(p, v.mates, v.enemies, v.now);
+        }
         return r;
     }
 
@@ -1055,6 +1064,12 @@ public class MinimumRiskMovement {
      * The bullets a teammate fires at that enemy and misses fly there.
      */
     static double linesRisk(Point2D.Double p, List<Roster.Mate> mates, List<EnemyInfo> enemies, long now) {
+        return linesRisk(p, mates, enemies, now, LINES_K, LINES_HALF);
+    }
+
+    /** TMODE-15 and TMODE-16: {@link #linesRisk} with weight {@code k} and half-angle {@code half}. */
+    static double linesRisk(Point2D.Double p, List<Roster.Mate> mates, List<EnemyInfo> enemies, long now,
+                            double k, double half) {
         double r = 0;
         for (Roster.Mate m : mates) {
             Point2D.Double q = m.at(now);
@@ -1069,7 +1084,7 @@ public class MinimumRiskMovement {
             if (d <= range || d > range + LINES_REACH) continue;
             double off = Math.abs(Angles.normalRelativeAngle(
                 DiaUtils.absoluteBearing(q, p) - DiaUtils.absoluteBearing(q, target.location)));
-            r += LINES_K * Math.max(0, 1 - off / LINES_HALF);
+            r += k * Math.max(0, 1 - off / half);
         }
         return r;
     }

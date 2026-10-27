@@ -222,4 +222,24 @@ class MinimumRiskMovementTeamTest {
         v.lines = true;
         assertEquals(without + k, move.teammateRisk(pt(500, 700), v), 1e-9);
     }
+
+    @Test
+    @Tag("TMODE-16")
+    @DisplayName("TMODE-16: LINESW plays the cone wider and heavier: LINES_WIDE_K on the line, reaching LINES_WIDE_HALF off it")
+    void wideLinesCost() {
+        EnemyTracker t = new EnemyTracker(field(1000, 1000));
+        scan(t, "a", 500, 500, 100, 100);
+        List<Roster.Mate> m = mate(500, 200, 0, 0);
+        MinimumRiskMovement.View v = move.view(pt(300, 300), 100, 100, 3, t.alive(), normal, m);
+        double without = move.teammateRisk(pt(500, 700), v);
+        v.lines = true;
+        v.linesWide = true;
+        assertEquals(without + MinimumRiskMovement.LINES_WIDE_K, move.teammateRisk(pt(500, 700), v), 1e-9);
+        // 0.38 rad off the line: outside LINES' cone, inside the wide one.
+        double off = Math.atan2(200, 500);
+        assertEquals(0, MinimumRiskMovement.linesRisk(pt(700, 700), m, t.alive(), 100), 1e-9);
+        assertEquals(MinimumRiskMovement.LINES_WIDE_K * (1 - off / MinimumRiskMovement.LINES_WIDE_HALF),
+            MinimumRiskMovement.linesRisk(pt(700, 700), m, t.alive(), 100,
+                MinimumRiskMovement.LINES_WIDE_K, MinimumRiskMovement.LINES_WIDE_HALF), 1e-9);
+    }
 }
