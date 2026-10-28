@@ -50,7 +50,7 @@ class MeleeS2PlanTest {
         assertTrue(args.contains("--suite\nmelee-census-317.txt\n"));
         assertTrue(args.contains("--seeds\n6\n") && args.contains("--seed-base\n3176\n"));
         assertTrue(args.contains("--parallel\n@C@\n") && args.contains("--cpu-constant\nauto\n"));
-        assertTrue(args.contains("bisect/hadur2.Hadur_@V@@A@.jar") && args.contains("work/melee-s2-@V@-@A@"));
+        assertTrue(args.contains("bisect/hadur117.Hadur_@V@@A@.jar") && args.contains("work/melee-s2-@V@-@A@"));
         assertFalse(args.contains("--baseline"), "arms pair with aa in the read, not in the run");
         assertFalse(args.matches("(?s).*3\\.1\\d.*"), "names no version");
     }
@@ -62,9 +62,9 @@ class MeleeS2PlanTest {
         String build = Files.readString(Path.of("build-ablation.sh"));
         assertTrue(build.contains("\"public static final int MELEE_K = 12;\" \"public static final int MELEE_K = 24;\""));
         assertTrue(build.contains("\"public static final boolean CROWD = false;\" \"public static final boolean CROWD = true;\""));
-        String gun = Files.readString(Path.of("../hadur-core/src/main/java/hadur2/core/melee/FieldGun.java"));
+        String gun = Files.readString(Path.of("../hadur-core/src/main/java/hadur117/core/melee/FieldGun.java"));
         assertTrue(gun.contains("public static final int MELEE_K = 24;"), "banked by the bank card");
-        String history = Files.readString(Path.of("../hadur-core/src/main/java/hadur2/core/melee/EnemyHistory.java"));
+        String history = Files.readString(Path.of("../hadur-core/src/main/java/hadur117/core/melee/EnemyHistory.java"));
         assertTrue(history.contains("public static final boolean CROWD = false;"), "MGUN-11 ships off");
     }
 }

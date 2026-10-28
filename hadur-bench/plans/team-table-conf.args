@@ -16,16 +16,16 @@ auto
 --set
 work/team-table-confirm.txt
 --robot-jar
-bisect/hadur2.HadurTeam_@V@mt.jar
+bisect/hadur117.HadurTeam_@V@mt.jar
 --robot
-hadur2.HadurTeam @V@mt
+hadur117.HadurTeam @V@mt
 --member
-hadur2.Hadur
+hadur117.Hadur
 --out
 work/team-table-@V@-conf
 --report
 ../docs/bench/local/team-table-conf.md
 --baseline
-bisect/hadur2.HadurTeam_@V@aa.jar
+bisect/hadur117.HadurTeam_@V@aa.jar
 --baseline-robot
-hadur2.HadurTeam @V@aa
+hadur117.HadurTeam @V@aa

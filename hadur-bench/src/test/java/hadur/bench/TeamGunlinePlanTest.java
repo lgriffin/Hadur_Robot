@@ -46,9 +46,9 @@ class TeamGunlinePlanTest {
             String args = Files.readString(Path.of("plans/team-gunline-" + a + ".args"));
             assertTrue(args.contains("--set\nteam-census46.txt\n"), a);
             assertTrue(args.contains("--seeds\n6\n") && args.contains("--seed-base\n4500\n"), a);
-            assertTrue(args.contains("bisect/hadur2.HadurTeam_@V@" + a + ".jar\n") && args.contains("hadur2.HadurTeam @V@" + a + "\n"), a);
+            assertTrue(args.contains("bisect/hadur117.HadurTeam_@V@" + a + ".jar\n") && args.contains("hadur117.HadurTeam @V@" + a + "\n"), a);
             assertTrue(args.contains("--out\nwork/team-gunline-@V@-" + a + "\n"), a);
-            assertTrue(args.contains("--baseline\nbisect/hadur2.HadurTeam_@V@aa.jar\n"), a);
+            assertTrue(args.contains("--baseline\nbisect/hadur117.HadurTeam_@V@aa.jar\n"), a);
             assertTrue(args.contains("--parallel\nauto\n") && args.contains("--cpu-constant\nauto\n"), a);
         }
     }
@@ -59,9 +59,9 @@ class TeamGunlinePlanTest {
     void ablations() throws IOException {
         String build = Files.readString(Path.of("build-ablation.sh"));
         assertTrue(build.contains("version=\"${version}mgl\"") && build.contains("version=\"${version}mglw\""));
-        String modes = Files.readString(Path.of("../hadur-core/src/main/java/hadur2/core/melee/TeamModes.java"));
+        String modes = Files.readString(Path.of("../hadur-core/src/main/java/hadur117/core/melee/TeamModes.java"));
         assertTrue(modes.contains("public static final boolean FORCE_GUNLINE = false;"));
-        String mrm = Files.readString(Path.of("../hadur-core/src/main/java/hadur2/core/melee/MinimumRiskMovement.java"));
+        String mrm = Files.readString(Path.of("../hadur-core/src/main/java/hadur117/core/melee/MinimumRiskMovement.java"));
         assertTrue(mrm.contains("static final double GUNLINE_K = 0.4;") && mrm.contains("static final double GUNLINE_HALF = 70;"));
     }
 }

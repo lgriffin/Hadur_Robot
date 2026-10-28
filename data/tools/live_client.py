@@ -2,7 +2,7 @@
 """Watch a live RoboRumble client and the live rankings page for Hadur (3.12 plan).
 
     python3 data/tools/live_client.py watch --client DIR [--client DIR ...] --out DIR
-        [--page "roborumble:hadur2.Hadur 3.11" ...] [--every 5] [--page-every 900]
+        [--page "roborumble:hadur117.Hadur 3.19" ...] [--every 5] [--page-every 900]
         [--profiles-every 3600] [--hours 0] [--data DIR ...]
     python3 data/tools/live_client.py profiles DIR [--out TSV]
     python3 data/tools/live_client.py page-diff OLD NEW
@@ -21,7 +21,7 @@ the verdict already latched, which is the silent-gun shape of P4 (docs/plan-3.12
 
 watch (BENCH-86, BENCH-87): every --every seconds it reads
   - each client's results files (OUTPUT= in roborumble/*.txt), which the client appends one
-    battle at a time and deletes after each upload, and keeps every battle with a hadur2 bot
+    battle at a time and deletes after each upload, and keeps every battle with a Hadur (hadur2 or hadur117)
     (battles.tsv: score share, rounds won, bullet damage);
   - Hadur's health.hc (RES-8), which Hadur rewrites at each battle end: rounds, rounds survived,
     faults, skipped turns, memory failures, the learned tick allowance; the profile written in
@@ -314,14 +314,16 @@ DATA_OVERRIDE = []
 
 def hadur_data_dirs(client):
     """Hadur's data folders under the client's robots/.data: any folder holding health.hc or
-    a Hadur profile, on a path that names hadur2. --data replaces the search."""
+    a Hadur profile, on a path that names hadur2 or hadur117/Hadur (the package since the
+    2026-10-27 rename; Saor's hadur117/micro folders stay out). --data replaces the search."""
     if DATA_OVERRIDE:
         return [d for d in DATA_OVERRIDE if os.path.isdir(d)]
     root = os.path.join(client, "robots", ".data")
     found = set()
     for pattern in ("**/health.hc", "**/*-v[0-9].hp"):
         for p in glob.glob(os.path.join(root, pattern), recursive=True):
-            if "hadur2" in p.replace("\\", "/").lower():
+            q = p.replace("\\", "/").lower()
+            if "hadur2" in q or "hadur117/hadur" in q:
                 found.add(os.path.dirname(p))
     return sorted(found)
 
@@ -352,8 +354,13 @@ def parse_results(text):
     return battles
 
 
+# Hadur's names: hadur2 before the 2026-10-27 rename, hadur117.Hadur and hadur117.HadurTeam
+# after it. Saor (hadur117.micro.Saor) is not Hadur.
+HADUR_PREFIXES = ("hadur2.", "hadur117.Hadur")
+
+
 def is_hadur(name):
-    return name.startswith("hadur2.")
+    return name.startswith(HADUR_PREFIXES)
 
 
 BATTLE_COLUMNS = ["utc", "game", "client", "hadur", "opponent", "share", "rounds", "won",
@@ -361,7 +368,7 @@ BATTLE_COLUMNS = ["utc", "game", "client", "hadur", "opponent", "share", "rounds
 
 
 def battle_row(b, client):
-    """Hadur's side of a results battle, or None if no hadur2 bot fought in it."""
+    """Hadur's side of a results battle, or None if no Hadur fought in it."""
     if is_hadur(b["a"]) and not is_hadur(b["b"]):
         h, o = "a", "b"
     elif is_hadur(b["b"]) and not is_hadur(b["a"]):
@@ -931,7 +938,7 @@ class Clients:
     battle is cut; a client that finishes none within wait_s is restarted anyway and counted as cut."""
 
     def __init__(self, launches, out, restart_s, wait_s=600.0, log=print, spawn=popen_client,
-                 kill=kill_tree, clock=time.time, robot_words=("hadur2.",)):
+                 kill=kill_tree, clock=time.time, robot_words=HADUR_PREFIXES):
         self.launches, self.out, self.restart_s, self.wait_s = launches, out, restart_s, wait_s
         self.log, self.spawn, self.kill, self.clock, self.words = log, spawn, kill, clock, robot_words
         labels = [x[0] for x in launches]
@@ -1273,9 +1280,9 @@ def main(argv=None):
     w.add_argument("--wait-minutes", type=float, default=10.0,
                    help="after a restart is due, how long to wait for a battle end before restarting anyway")
     w.add_argument("--out", required=True)
-    w.add_argument("--page", action="append", default=[], help='"game:robot version", e.g. "roborumble:hadur2.Hadur 3.11"')
+    w.add_argument("--page", action="append", default=[], help='"game:robot version", e.g. "roborumble:hadur117.Hadur 3.19"')
     w.add_argument("--robot", action="append", default=[],
-                   help='keep only battles of this Hadur, e.g. "hadur2.Hadur 3.17"; repeatable, default all')
+                   help='keep only battles of this Hadur, e.g. "hadur117.Hadur 3.19"; repeatable, default all')
     w.add_argument("--stop-collapses", type=int, default=0,
                    help="stop once this many collapses (1v1 battles 15+ under the pairing's live score) are kept; 0 never")
     w.add_argument("--stop-battles", type=int, default=0, help="stop once this many 1v1 battles are kept; 0 never")

@@ -569,5 +569,34 @@ class ClientsTest(unittest.TestCase):
         c.stop_all()
 
 
+class PackageNamesTest(unittest.TestCase):
+    """BENCH-124: Hadur is hadur2 before the 2026-10-27 rename and hadur117 after it; Saor is not Hadur."""
+
+    def test_both_packages_are_hadur_and_saor_is_not(self):
+        for name in ("hadur2.Hadur 3.18", "hadur2.HadurTeam 3.17.1", "hadur117.Hadur 3.19", "hadur117.HadurTeam 3.19"):
+            self.assertTrue(lc.is_hadur(name), name)
+        for name in ("hadur117.micro.Saor 0.2", "hadur117.TwinSaor 0.1", "voidious.Diamond 1.8.28"):
+            self.assertFalse(lc.is_hadur(name), name)
+
+    def test_data_folders_of_both_packages_and_not_saor(self):
+        client = tempfile.mkdtemp()
+        try:
+            for folder in ("hadur2/Hadur.data", "hadur117/Hadur.data", "hadur117/micro/Saor.data"):
+                d = os.path.join(client, "robots", ".data", *folder.split("/"))
+                os.makedirs(d)
+                open(os.path.join(d, "health.hc"), "wb").close()
+            found = [os.path.relpath(d, os.path.join(client, "robots", ".data")).replace(os.sep, "/")
+                     for d in lc.hadur_data_dirs(client)]
+            self.assertEqual(["hadur117/Hadur.data", "hadur2/Hadur.data"], found)
+        finally:
+            shutil.rmtree(client)
+
+    def test_console_lines_of_the_new_name_count(self):
+        with tempfile.TemporaryDirectory() as out:
+            clients = lc.Clients([], out, 900)
+        self.assertTrue(any(w in "Unable to stop thread: hadur117.Hadur 3.19" for w in clients.words))
+        self.assertFalse(any(w in "Unable to stop thread: hadur117.micro.Saor 0.2" for w in clients.words))
+
+
 if __name__ == "__main__":
     unittest.main()

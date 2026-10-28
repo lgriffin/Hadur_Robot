@@ -14,9 +14,9 @@ melee-census-317.txt
 --cpu-constant
 auto
 --robot-jar
-bisect/hadur2.Hadur_@V@@A@.jar
+bisect/hadur117.Hadur_@V@@A@.jar
 --robot
-hadur2.Hadur @V@@A@
+hadur117.Hadur @V@@A@
 --out
 work/melee-s2-@V@-@A@
 --report

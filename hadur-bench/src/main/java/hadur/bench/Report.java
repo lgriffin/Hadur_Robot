@@ -1,7 +1,7 @@
 package hadur.bench;
 
-import hadur2.core.memory.OpponentProfile;
-import hadur2.core.memory.Tiers;
+import hadur117.core.memory.OpponentProfile;
+import hadur117.core.memory.Tiers;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -896,14 +896,14 @@ final class Report {
             b.append(String.format(Locale.ROOT,
                 "| %s | %s | %d | %d | %d | %s | %s | %s | %s / %s | %s | %d / %d | %s | %s |%n",
                 e.getKey().name, p.key(), p.battles(), p.rounds(),
-                hadur2.core.memory.ProfileCodec.encode(p).length,
+                hadur117.core.memory.ProfileCodec.encode(p).length,
                 rate(p.theirHitRate()), estimate(Tiers.theirHitRate(p)), rate(p.ourHitRate()),
                 rate(p.mainGunRating()), rate(p.antiSurferRating()), rate(p.stoppedFraction()),
                 p.gunSeedSize(), p.surfSeedSize(), Tiers.label(p), curve));
         }
     }
 
-    private static String estimate(hadur2.core.memory.Estimate e) {
+    private static String estimate(hadur117.core.memory.Estimate e) {
         return Double.isNaN(e.value()) ? "-"
             : String.format(Locale.ROOT, "%.1f%% ± %.1f", 100 * e.value(), 100 * e.margin());
     }

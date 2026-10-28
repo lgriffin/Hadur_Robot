@@ -122,9 +122,9 @@ def candidate_spec(adds, moves, aims_):
 
 def candidate_arms(base, suffix):
     return ["# Shield part 2 verify (pc-shield-s2): c is %s, aa its A/A copy, t2 the candidate.\n" % base,
-            "c | hadur2.Hadur %s | bisect/hadur2.Hadur_%s.jar\n" % (base, base),
-            "aa | hadur2.Hadur %saa | bisect/hadur2.Hadur_%saa.jar\n" % (base, base),
-            "t2 | hadur2.Hadur %s%s | bisect/hadur2.Hadur_%s%s.jar\n" % (base, suffix, base, suffix)]
+            "c | hadur117.Hadur %s | bisect/hadur117.Hadur_%s.jar\n" % (base, base),
+            "aa | hadur117.Hadur %saa | bisect/hadur117.Hadur_%saa.jar\n" % (base, base),
+            "t2 | hadur117.Hadur %s%s | bisect/hadur117.Hadur_%s%s.jar\n" % (base, suffix, base, suffix)]
 
 
 def gate(arms_tsv, arm, field, bar, low, panel=None, cover=0.95):
@@ -189,7 +189,7 @@ def main(argv=None):
         if not spec:
             print("nothing to build: t2 is the base")
             write(a.out, candidate_arms(a.base, "aa")[:3]
-                  + ["t2 | hadur2.Hadur %saa | bisect/hadur2.Hadur_%saa.jar\n" % (a.base, a.base)])
+                  + ["t2 | hadur117.Hadur %saa | bisect/hadur117.Hadur_%saa.jar\n" % (a.base, a.base)])
             return 0
         bench = os.path.dirname(HERE)
         rel = lambda f: os.path.relpath(os.path.abspath(f), bench).replace(os.sep, "/")

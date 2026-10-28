@@ -87,7 +87,7 @@ def build(parts, env_files):
 
 
 def arm_line(label, base, suffix):
-    return "%s | hadur2.Hadur %s%s | bisect/hadur2.Hadur_%s%s.jar\n" % (label, base, suffix, base, suffix)
+    return "%s | hadur117.Hadur %s%s | bisect/hadur117.Hadur_%s%s.jar\n" % (label, base, suffix, base, suffix)
 
 
 def warm(old_run, set_path, base, out_dir, rec_arm, move_arm, run_build=True):

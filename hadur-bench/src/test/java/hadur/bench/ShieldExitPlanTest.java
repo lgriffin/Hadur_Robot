@@ -36,9 +36,9 @@ class ShieldExitPlanTest {
         assertEquals(List.of("c", "aa", "s4", "s0"), exit.stream().map(Arms.Arm::label).toList());
         List<Arms.Arm> repick = Arms.parse(Path.of("plans/repick-verify.arms"), here);
         assertEquals(List.of("c", "aa", "rp"), repick.stream().map(Arms.Arm::label).toList());
-        for (Arms.Arm a : exit) assertTrue(a.robot().startsWith("hadur2.Hadur " + v), a.robot());
-        for (Arms.Arm a : repick) assertTrue(a.robot().startsWith("hadur2.Hadur " + v), a.robot());
-        assertTrue(queue.contains("cp ../hadur-robot/target/hadur2.Hadur_" + v + ".jar bisect/"));
+        for (Arms.Arm a : exit) assertTrue(a.robot().startsWith("hadur117.Hadur " + v), a.robot());
+        for (Arms.Arm a : repick) assertTrue(a.robot().startsWith("hadur117.Hadur " + v), a.robot());
+        assertTrue(queue.contains("cp ../hadur-robot/target/hadur117.Hadur_" + v + ".jar bisect/"));
         for (String b : new String[] {"aa", "sdmg400", "sdmgoff", "slistdrop,sgolist,sgo2list"}) {
             assertTrue(queue.contains("build-ablation.sh " + b + " "), b);
         }

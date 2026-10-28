@@ -112,7 +112,7 @@ def write(path, text):
 def build_fields(rankings_path, out, seed, drop):
     with open(rankings_path, encoding="utf-8", errors="ignore") as f:
         ranked = read_rankings(f.read())
-    robots = [r for r in ranked if not r["name"].startswith("hadur2.") and r["name"] not in drop]
+    robots = [r for r in ranked if not is_hadur(r["name"]) and r["name"] not in drop]
     fs = shuffle_fields(robots, seed)
     src = os.path.basename(rankings_path)
     stem = "melee-census-%d" % seed
@@ -156,7 +156,8 @@ def census_ranks(suite_path):
 
 
 def is_hadur(name):
-    return name.startswith("hadur2.")
+    # hadur2 before the 2026-10-27 rename; Saor (hadur117.micro) is a field robot.
+    return name.startswith(("hadur2.", "hadur117.Hadur"))
 
 
 def battles(work):

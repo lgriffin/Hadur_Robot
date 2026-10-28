@@ -3,7 +3,7 @@
 # it came from (the live-loser follow-up, docs/bench/local/2026-10-07_live-loser-bisect.md).
 #
 #   ./build-ablation.sh [--ref REF] ABLATION[,ABLATION...]
-#   ./build-ablation.sh ram2            # bisect/hadur2.Hadur_3.8.5nr.jar, "hadur2.Hadur 3.8.5nr"
+#   ./build-ablation.sh ram2            # bisect/hadur117.Hadur_3.8.5nr.jar, "hadur117.Hadur 3.8.5nr" (hadur2 before the rename)
 #   ./build-ablation.sh mir1            # ... 3.8.5nm
 #   ./build-ablation.sh ram2,mir1       # ... 3.8.5nrnm
 #   ./build-ablation.sh shield-all      # ... 3.8.5sa
@@ -303,30 +303,33 @@ work="$(mktemp -d)"
 trap 'git -C "$repo" worktree remove --force "$work/src" >/dev/null 2>&1 || true; rm -rf "$work"' EXIT
 git -C "$repo" worktree add --detach "$work/src" "$ref" >/dev/null
 src="$work/src"
-duel="$src/hadur-core/src/main/java/hadur2/core/duel/DuelController.java"
-move="$src/hadur-core/src/main/java/hadur2/core/move/MoveController.java"
-book="$src/hadur-core/src/main/java/hadur2/core/adapt/OpeningBook.java"
-shields="$src/hadur-core/src/main/java/hadur2/core/shieldmode/ShieldList.java"
-design="$src/hadur-core/src/main/java/hadur2/core/shieldmode/ShieldDesign.java"
-movedesign="$src/hadur-core/src/main/java/hadur2/core/duel/MoveDesign.java"
-gundesign="$src/hadur-core/src/main/java/hadur2/core/duel/GunDesign.java"
-powerdesign="$src/hadur-core/src/main/java/hadur2/core/duel/PowerDesign.java"
-protean="$src/hadur-core/src/main/java/hadur2/core/move/ProteanPick.java"
-listdata="$src/hadur-robot/src/main/java/hadur2/ShieldListData.java"
-tabledata="$src/hadur-robot/src/main/java/hadur2/ShieldTableData.java"
-budget="$src/hadur-core/src/main/java/hadur2/core/policy/TickBudget.java"
-dist="$src/hadur-core/src/main/java/hadur2/core/policy/DistancePolicy.java"
-detector="$src/hadur-core/src/main/java/hadur2/core/shield/ShieldDetector.java"
-surf="$src/hadur-core/src/main/java/hadur2/core/move/SurfMover.java"
-mctl="$src/hadur-core/src/main/java/hadur2/core/melee/MeleeController.java"
-tlink="$src/hadur-core/src/main/java/hadur2/core/TeamLink.java"
-fgun="$src/hadur-core/src/main/java/hadur2/core/melee/FieldGun.java"
-danger="$src/hadur-core/src/main/java/hadur2/core/melee/TeamDanger.java"
-modes="$src/hadur-core/src/main/java/hadur2/core/melee/TeamModes.java"
-mrm="$src/hadur-core/src/main/java/hadur2/core/melee/MinimumRiskMovement.java"
-core="$src/hadur-core/src/main/java/hadur2/core/HadurCore.java"
-mseam="$src/hadur-core/src/main/java/hadur2/core/MeleeSeam.java"
-robot="$src/hadur-robot/src/main/java/hadur2/Hadur.java"
+# The robot's package: hadur117 since the 2026-10-27 rename, hadur2 in a --ref from before it.
+pkg=hadur117
+[[ -d "$src/hadur-core/src/main/java/hadur117" ]] || pkg=hadur2
+duel="$src/hadur-core/src/main/java/$pkg/core/duel/DuelController.java"
+move="$src/hadur-core/src/main/java/$pkg/core/move/MoveController.java"
+book="$src/hadur-core/src/main/java/$pkg/core/adapt/OpeningBook.java"
+shields="$src/hadur-core/src/main/java/$pkg/core/shieldmode/ShieldList.java"
+design="$src/hadur-core/src/main/java/$pkg/core/shieldmode/ShieldDesign.java"
+movedesign="$src/hadur-core/src/main/java/$pkg/core/duel/MoveDesign.java"
+gundesign="$src/hadur-core/src/main/java/$pkg/core/duel/GunDesign.java"
+powerdesign="$src/hadur-core/src/main/java/$pkg/core/duel/PowerDesign.java"
+protean="$src/hadur-core/src/main/java/$pkg/core/move/ProteanPick.java"
+listdata="$src/hadur-robot/src/main/java/$pkg/ShieldListData.java"
+tabledata="$src/hadur-robot/src/main/java/$pkg/ShieldTableData.java"
+budget="$src/hadur-core/src/main/java/$pkg/core/policy/TickBudget.java"
+dist="$src/hadur-core/src/main/java/$pkg/core/policy/DistancePolicy.java"
+detector="$src/hadur-core/src/main/java/$pkg/core/shield/ShieldDetector.java"
+surf="$src/hadur-core/src/main/java/$pkg/core/move/SurfMover.java"
+mctl="$src/hadur-core/src/main/java/$pkg/core/melee/MeleeController.java"
+tlink="$src/hadur-core/src/main/java/$pkg/core/TeamLink.java"
+fgun="$src/hadur-core/src/main/java/$pkg/core/melee/FieldGun.java"
+danger="$src/hadur-core/src/main/java/$pkg/core/melee/TeamDanger.java"
+modes="$src/hadur-core/src/main/java/$pkg/core/melee/TeamModes.java"
+mrm="$src/hadur-core/src/main/java/$pkg/core/melee/MinimumRiskMovement.java"
+core="$src/hadur-core/src/main/java/$pkg/core/HadurCore.java"
+mseam="$src/hadur-core/src/main/java/$pkg/core/MeleeSeam.java"
+robot="$src/hadur-robot/src/main/java/$pkg/Hadur.java"
 
 # Replace exactly one occurrence of $2 with $3 in file $1, or fail.
 edit() {
@@ -483,8 +486,8 @@ for a in "${list[@]}"; do
             edit "$movedesign" "static final boolean AES_RECORD = false;" "static final boolean AES_RECORD = true;"
             version="${version}ar" ;;
         close200)
-            edit "$src/hadur-core/src/main/java/hadur2/core/gun/GunController.java" "static final double CLOSE_RANGE = 150.0;" "static final double CLOSE_RANGE = 200.0;"
-            edit "$src/hadur-core/src/main/java/hadur2/core/gun/GunController.java" "static final double CLOSE_POWER = 2.95;" "static final double CLOSE_POWER = 3.0;"
+            edit "$src/hadur-core/src/main/java/$pkg/core/gun/GunController.java" "static final double CLOSE_RANGE = 150.0;" "static final double CLOSE_RANGE = 200.0;"
+            edit "$src/hadur-core/src/main/java/$pkg/core/gun/GunController.java" "static final double CLOSE_POWER = 2.95;" "static final double CLOSE_POWER = 3.0;"
             version="${version}cr" ;;
         pressure)
             edit "$powerdesign" "static final boolean PRESSURE = false;" "static final boolean PRESSURE = true;"
@@ -734,7 +737,7 @@ $(cat "$table")"
             ;;
         tlook)
             version="${version}lk"
-            edit "$src/hadur-core/src/main/java/hadur2/core/melee/MeleeRadar.java" "public static final boolean TEAM_LOOK = false;" "public static final boolean TEAM_LOOK = true;"
+            edit "$src/hadur-core/src/main/java/$pkg/core/melee/MeleeRadar.java" "public static final boolean TEAM_LOOK = false;" "public static final boolean TEAM_LOOK = true;"
             ;;
         tlanep)
             version="${version}lp"
@@ -763,7 +766,7 @@ $(cat "$table")"
         mrate)
             version="${version}mr"
             edit "$mctl" "static final long MAX_FIRE_AGE = 5;" "static final long MAX_FIRE_AGE = 8;"
-            edit "$src/hadur-core/src/main/java/hadur2/core/melee/MeleeEnergyPolicy.java" \
+            edit "$src/hadur-core/src/main/java/$pkg/core/melee/MeleeEnergyPolicy.java" \
                 "if (ownEnergy > targetEnergy) {" "if (others <= 2 && ownEnergy > targetEnergy) {"
             ;;
         mhold)
@@ -816,7 +819,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(names))
             edit "$movedesign" "static final boolean SHOT_DODGE_PLAN = false;" "static final boolean SHOT_DODGE_PLAN = true;"
             version="${version}sp" ;;
         sdkeep0)
-            edit "$src/hadur-core/src/main/java/hadur2/core/move/ShotDodgePlanner.java" "public static final boolean KEEP_AWAY = true;" "public static final boolean KEEP_AWAY = false;"
+            edit "$src/hadur-core/src/main/java/$pkg/core/move/ShotDodgePlanner.java" "public static final boolean KEEP_AWAY = true;" "public static final boolean KEEP_AWAY = false;"
             version="${version}k0" ;;
         sdplanlist)
             # DODGE-4: per-opponent planner entries; a bare name learns its expert (-1).
@@ -887,7 +890,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             version="${version}g4" ;;
         gcrowd)
             # Melee Stage 2, MGUN-11: the field gun's situations also see the crowd. Suffix gc.
-            edit "$src/hadur-core/src/main/java/hadur2/core/melee/EnemyHistory.java" \
+            edit "$src/hadur-core/src/main/java/$pkg/core/melee/EnemyHistory.java" \
                 "public static final boolean CROWD = false;" "public static final boolean CROWD = true;"
             version="${version}gc" ;;
         pfloor|pogi)
@@ -895,7 +898,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             # off a team with three or more opponents only; duel and team fixtures bit for bit.
             # MGUN-13 ships on since pc-melee-ogi (BENCH-118), so pogi no longer applies on master, and
             # pfloor turns it off: crowdPower gives Ogi's rule precedence, so the floor stands in for it.
-            policy="$src/hadur-core/src/main/java/hadur2/core/melee/MeleeEnergyPolicy.java"
+            policy="$src/hadur-core/src/main/java/$pkg/core/melee/MeleeEnergyPolicy.java"
             if [[ "$a" == pfloor ]]; then flag=CROWD_FLOOR; suffix=pf; else flag=CROWD_OGI; suffix=po; fi
             if [[ "$a" == pfloor ]] && grep -qF "public static final boolean CROWD_OGI = true;" "$policy"; then
                 edit "$policy" "public static final boolean CROWD_OGI = true;" "public static final boolean CROWD_OGI = false;"
@@ -911,7 +914,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
                 ogie10) flag=OGI_LOW; suffix=oe ;;
                 ogi300) flag=OGI_WIDE; suffix=ow ;;
             esac
-            edit "$src/hadur-core/src/main/java/hadur2/core/melee/MeleeEnergyPolicy.java" \
+            edit "$src/hadur-core/src/main/java/$pkg/core/melee/MeleeEnergyPolicy.java" \
                 "public static final boolean $flag = false;" "public static final boolean $flag = true;"
             version="${version}${suffix}" ;;
         e3ring|e3pow|e3far)
@@ -922,7 +925,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
                 e3pow) flag=THREE_POWER; suffix=ep ;;
                 e3far) flag=THREE_FAR; suffix=ef ;;
             esac
-            edit "$src/hadur-core/src/main/java/hadur2/core/melee/MeleeEndgame.java" \
+            edit "$src/hadur-core/src/main/java/$pkg/core/melee/MeleeEndgame.java" \
                 "public static final boolean $flag = false;" "public static final boolean $flag = true;"
             version="${version}${suffix}" ;;
         *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, ramheat, flaton, nowall, flt59, flt8, split, wallesc, gungate, hold650, dfac, bhb, hitclr, pkern, keep2, thgun, freegun, nodecay, stacklist, protean, pdw3, pdw8, pc10, phot, repl, pressure, pdown, pwall, pwc, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tlanep, tlaneb, tlook, tram, t6n, t6l, tmsoft, tmgang, tmfin, tmlearn, tmpack, tmscreen, tmpool, tmdis, tmfire, tmnofire, tmrear, tmwaves, tmwk, tmhunt, tmnohunt, tmlines, tmlinesw, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, surfb, aimmix, mimics, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, e3ring, e3pow, e3far, g24, gcrowd, pfloor, pogi, close200, ogi2, ogie10, ogi300)" >&2; exit 2 ;;
@@ -931,17 +934,17 @@ done
 
 edit "$src/hadur-robot/pom.xml" "<robot.release>$base</robot.release>" "<robot.release>$version</robot.release>"
 for f in Hadur.properties HadurRecorder.properties; do
-    edit "$src/hadur-robot/src/main/resources/hadur2/$f" "robot.version=$base" "robot.version=$version"
+    edit "$src/hadur-robot/src/main/resources/$pkg/$f" "robot.version=$base" "robot.version=$version"
 done
 team="$src/hadur-robot/src/team/HadurTeam.team"
 [[ -f "$team" ]] && sed -i "s/$base/$version/g" "$team"
 
 (cd "$src" && mvn -q -B package -DskipTests -Dmaven.javadoc.skip=true)
-jar="$src/hadur-robot/target/hadur2.Hadur_${version}.jar"
-python3 -c 'import sys,zipfile; print(zipfile.ZipFile(sys.argv[1]).read("hadur2/Hadur.properties").decode())' "$jar" | tr -d '\r' | grep -qx "robot.version=$version" \
+jar="$src/hadur-robot/target/${pkg}.Hadur_${version}.jar"
+python3 -c 'import sys,zipfile; print(zipfile.ZipFile(sys.argv[1]).read(sys.argv[2] + "/Hadur.properties").decode())' "$jar" "$pkg" | tr -d '\r' | grep -qx "robot.version=$version" \
     || { echo "built jar does not carry robot.version=$version" >&2; exit 1; }
 mkdir -p "$here/bisect"
 cp "$jar" "$here/bisect/"
-teamjar="$src/hadur-robot/target/hadur2.HadurTeam_${version}.jar"
+teamjar="$src/hadur-robot/target/${pkg}.HadurTeam_${version}.jar"
 [[ -f "$teamjar" ]] && cp "$teamjar" "$here/bisect/"
-echo "built bisect/hadur2.Hadur_${version}.jar  --robot \"hadur2.Hadur ${version}\""
+echo "built bisect/${pkg}.Hadur_${version}.jar  --robot \"${pkg}.Hadur ${version}\""

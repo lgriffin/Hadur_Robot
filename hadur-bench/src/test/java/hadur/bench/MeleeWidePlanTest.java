@@ -54,7 +54,7 @@ class MeleeWidePlanTest {
         assertTrue(args.contains("--suite\nmelee-census-317.txt\n"));
         assertTrue(args.contains("--seeds\n8\n") && args.contains("--seed-base\n3210\n"));
         assertTrue(args.contains("--parallel\n@C@\n") && args.contains("--cpu-constant\nauto\n"));
-        assertTrue(args.contains("bisect/hadur2.Hadur_@V@@A@.jar") && args.contains("work/melee-wide-@V@-@A@"));
+        assertTrue(args.contains("bisect/hadur117.Hadur_@V@@A@.jar") && args.contains("work/melee-wide-@V@-@A@"));
         assertFalse(args.contains("--baseline"), "arms pair in the read, not in the run");
         assertFalse(args.matches("(?s).*3\\.1\\d.*"), "names no version");
     }
@@ -65,7 +65,7 @@ class MeleeWidePlanTest {
     void ablations() throws IOException {
         String build = Files.readString(Path.of("build-ablation.sh"));
         assertTrue(build.contains("ogi300) flag=OGI_WIDE; suffix=ow ;;"));
-        String policy = Files.readString(Path.of("../hadur-core/src/main/java/hadur2/core/melee/MeleeEnergyPolicy.java"));
+        String policy = Files.readString(Path.of("../hadur-core/src/main/java/hadur117/core/melee/MeleeEnergyPolicy.java"));
         assertTrue(policy.contains("public static final boolean CROWD_OGI = true;"));
         for (String f : List.of("OGI_WIDE")) {
             assertTrue(policy.contains("public static final boolean " + f + " = false;"), f + " ships off");
