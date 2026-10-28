@@ -46,7 +46,7 @@ import zipfile
 from pathlib import Path
 
 MODES = ("SOFT", "GANG", "FINISH", "LEARN", "PACK", "SCREEN", "POOL", "DISABLED", "MATEFIRE", "REAR", "WAVES", "HUNT",
-         "LINES", "LINESW", "LANEP", "LANEB", "GUNLINE", "OWN", "HEADON", "LINEAR", "FAR", "FARTHER")
+         "LINES", "LINESW", "LANEP", "LANEB", "GUNLINE", "OWN", "HEADON", "LINEAR", "FAR", "FARTHER", "PATH", "NEAR")
 
 ROW = re.compile(r"^\|\s*(?P<team>[^|]+?)\s*\|\s*[^|]*\|\s*[^|]*\|\s*(?P<mean>[+-]?\d+(?:\.\d+)?)(?:\s*±\s*(?P<ci>\d+(?:\.\d+)?))?\s*\|\s*$")
 
@@ -119,10 +119,11 @@ def member_classes(jar):
     return []
 
 
-def java_lines(entries, classes, base=()):
+def java_lines(entries, classes, base=(), shipped=None):
     """`t.put(...)` lines for TeamModes.table(). A class two teams share is left out unless both
     picked the same modes: an unpicked team counts as picking none, since the entry would reach it too.
-    Each entry also plays the `base` modes."""
+    Each entry also plays the `base` modes, or, for a class the shipped table already names
+    (`shipped`, class to modes), that entry's modes: the line replaces it, so it keeps them."""
     by_class = {}
     for team in classes:
         for c in classes[team]:
@@ -139,7 +140,7 @@ def java_lines(entries, classes, base=()):
         modes = set(next(iter(picks)))
         if not modes:
             continue
-        modes |= set(base)
+        modes |= set((shipped or {}).get(c, base))
         listed = ", ".join(f"Mode.{m}" for m in MODES if m in modes)
         lines.append(f'        t.put("{c}", of({listed}));')
     return lines, clashes
@@ -151,6 +152,19 @@ def base_modes(spec):
         if m not in MODES:
             raise SystemExit(f"unknown mode {m}")
     return modes
+
+
+PUT = re.compile(r'^\s*t\.put\("(?P<cls>[^"]+)",\s*of\((?P<modes>[^)]*)\)\);')
+
+
+def shipped_table(path):
+    """Member class to modes from the `t.put` lines of TeamModes.table() in a Java source."""
+    out = {}
+    for line in Path(path).read_text(encoding="utf-8").splitlines():
+        m = PUT.match(line)
+        if m:
+            out[m["cls"]] = set(base_modes(m["modes"].replace("Mode.", "").replace(" ", "")))
+    return out
 
 
 def write(path, text):
@@ -260,7 +274,7 @@ def cmd_pick(a):
             tsv.append(f"{team}\t{listed}\t{best[1]:.2f}\t{best[2]:.2f}")
         label = (f"{best[0]} ({','.join(m for m in MODES if m in picks[team])})" if names else best[0]) if best else ""
         md.append(f"| {team} | " + " | ".join(cells) + f" | {label} |")
-    lines, clashes = java_lines(picks, classes, base_modes(a.base))
+    lines, clashes = java_lines(picks, classes, base_modes(a.base), shipped_table(a.shipped) if a.shipped else None)
     missing = [t for t in picks if not classes.get(t)]
     md += ["", f"{len(picks)} of {len(rows)} teams picked a mode."]
     if missing:
@@ -367,6 +381,7 @@ def main(argv=None):
     pk.add_argument("--low-end", type=float, help="also require the 95%% low end above this many points")
     pk.add_argument("--counters", help="the per-opponent counters TSV: --report names its screens")
     pk.add_argument("--base", default="", help="modes every entry also plays, as MATEFIRE,HUNT")
+    pk.add_argument("--shipped", help="TeamModes.java: a picked team the table already names keeps that entry's modes")
     pk.add_argument("--out-md")
     pk.add_argument("--out-tsv")
     pk.add_argument("--out-java")

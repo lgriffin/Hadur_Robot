@@ -1,0 +1,31 @@
+# PC card team-path (docs/plan-team-top5.md section 12, TMODE-25/26, BENCH-124): arm tn (TMODE-26 NEAR, hunt at 250 px, added to the shipped TroodonPack entry), TroodonPack only, against master (the aa build). Template: tpprep writes work/team-path-tn.args with @V@ = the robot.release in hadur-robot/pom.xml
+--team
+true
+--seeds
+16
+--seed-base
+4900
+--rounds
+10
+--parallel
+auto
+--child-heap
+2G
+--cpu-constant
+auto
+--set
+plans/team-path-troodon.txt
+--robot-jar
+bisect/hadur2.HadurTeam_@V@tn.jar
+--robot
+hadur2.HadurTeam @V@tn
+--member
+hadur2.Hadur
+--out
+work/team-path-@V@-tn
+--report
+../docs/bench/local/team-path-tn.md
+--baseline
+bisect/hadur2.HadurTeam_@V@aa.jar
+--baseline-robot
+hadur2.HadurTeam @V@aa

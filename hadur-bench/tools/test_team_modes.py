@@ -98,6 +98,20 @@ class TeamModesTest(unittest.TestCase):
         lines, _ = team_modes.java_lines({"x": {"LANEP"}}, {"x": ["s.X"]}, ("MATEFIRE", "HUNT"))
         self.assertEqual(['        t.put("s.X", of(Mode.MATEFIRE, Mode.HUNT, Mode.LANEP));'], lines)
 
+    def test_a_class_the_shipped_table_names_keeps_its_modes(self):
+        shipped = {"s.T": {"MATEFIRE", "HUNT", "OWN", "HEADON"}}
+        lines, _ = team_modes.java_lines({"x": {"NEAR"}, "y": {"PATH"}}, {"x": ["s.T"], "y": ["s.Y"]},
+                                         ("MATEFIRE", "HUNT"), shipped)
+        self.assertEqual(['        t.put("s.T", of(Mode.MATEFIRE, Mode.HUNT, Mode.OWN, Mode.HEADON, Mode.NEAR));',
+                          '        t.put("s.Y", of(Mode.MATEFIRE, Mode.HUNT, Mode.PATH));'], lines)
+
+    def test_shipped_table_reads_the_t_put_lines(self):
+        with tempfile.TemporaryDirectory() as d:
+            src = Path(d) / "TeamModes.java"
+            src.write_text('        Map<String, Set<Mode>> t = new HashMap<>();\n'
+                           '        t.put("a.B", of(Mode.MATEFIRE, Mode.HUNT, Mode.OWN));\n', encoding="utf-8")
+            self.assertEqual({"a.B": {"MATEFIRE", "HUNT", "OWN"}}, team_modes.shipped_table(src))
+
     def test_min_mean_picks_on_the_mean_alone(self):
         lanep = report(self.d, "lp.md", {"a.ATeam 1": (4.0, 9.0), "b.BTeam 2": (2.0, 1.0), "c.CTeam 3": (3.5, 9.0)})
         lines = report(self.d, "ml.md", {"a.ATeam 1": (3.0, 1.0), "b.BTeam 2": (-1.0, 1.0), "c.CTeam 3": (1.0, 9.0)})
