@@ -17,12 +17,26 @@ PLAN is a path, or a name resolved to plans/NAME.queue. A plan is one step per l
         timeout: 6h                     kill the step after this long (s, m or h)
         memory: 24g                     rough peak memory in GB, held back from the free-memory
                                         check for a minute after the step starts (concurrent runs)
+        watch: field=1217               read the step's battles as they land (BENCH-129, benchwatch.py)
+        stop: futility s4 below 0.1 after 30%
+                                        a pre-declared stop rule, checked every minute (BENCH-130);
+                                        one per line: fails, dead, skips, stall, aa, futility
 
 State is kept in work/queue-<plan>.state.json, so a restart skips steps that already
 exited 0 and runs the rest. With CONCURRENCY (or --concurrency) above 1, steps whose `after:`
 step is done (or that have none) start together, up to that many at once, in plan order; a step
 that is after a step still running waits for it. The default is one step at a time. The log (work-queue-<plan>.log) reads like the hand-written
 queues: `HH:MM:SS start X`, `HH:MM:SS X exit=N in S s`, and a final `ALLDONE`.
+
+Progress (BENCH-129..131): every minute the runner writes work/queue-<plan>.progress.md and .json
+(each step's state; for a watched step its battles, rate, ETA, failures, skipped turns, each arm's
+running difference from the control and every stop rule's state) and every PROGRESS_MINUTES (15)
+pushes them, with the log's tail, to the branch PROGRESS_BRANCH (claude/<plan>-progress when a
+step is watched; `off` for none) without touching the working tree, so Leigh and a thread can read a run mid-way on GitHub. A
+stop rule that trips stops its step (see benchwatch.py: halt stops the queue, finish lets the gate
+and PR steps run on the rows so far), pushes at once and, with `set ALERT = <github login>`, opens a
+GitHub issue assigned to that login. --no-stop-rules shows the rules without acting on them;
+--continue-early reruns steps a finish rule ended, its rules shown only.
 
 Host (BENCH-105): before a plan is read, hostprofile.py sizes the bench to this machine and
 offers the plan ${WORKERS} (duel width), ${TEAM_WORKERS}, ${MELEE_WORKERS} and ${CPU} (the
@@ -56,6 +70,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import hostprofile  # noqa: E402
+import benchwatch  # noqa: E402
 IS_WIN = os.name == "nt"
 TERMINAL_OK = "done"
 
@@ -71,6 +86,8 @@ class Step:
         self.after = None
         self.timeout = None
         self.memory = 0.0
+        self.watch = None
+        self.stops = []
 
 
 class Plan(list):
@@ -116,6 +133,14 @@ def parse_plan(text, preset=None, locked=()):
                 current.timeout = parse_duration(value)
             elif key == "memory":
                 current.memory = parse_gb(value)
+            elif key == "watch":
+                current.watch = value
+            elif key == "stop":
+                try:
+                    current.stops.append(benchwatch.Rule(value))
+                except benchwatch.WatchError as e:
+                    raise PlanError(f"line {n}: {e}")
+                current.watch = current.watch if current.watch is not None else ""
             else:
                 raise PlanError(f"line {n}: unknown attribute '{key}'")
             continue
@@ -182,6 +207,8 @@ class Paths:
         self.stop = self.work / f"queue-{self.plan}.STOP"
         self.pid = self.work / f"queue-{self.plan}.pid"
         self.log = home / f"work-queue-{self.plan}.log"
+        self.progress = self.work / f"queue-{self.plan}.progress.md"
+        self.progress_json = self.work / f"queue-{self.plan}.progress.json"
 
     def step_log(self, name):
         return self.home / f"work-queue-{self.plan}-{name}.log"
@@ -368,6 +395,157 @@ class Active:
     def __init__(self, step, job, out):
         self.step, self.job, self.out = step, job, out
         self.started = time.time()
+        self.spec = None
+        self.enforce = True
+        self.summary = None
+
+
+def bind_watches(steps, home):
+    """Each watched step's benchwatch.Spec, checked against its rules before anything runs."""
+    for s in steps:
+        if s.watch is None and re.search(r"(^|\s)--arms\s", s.command):
+            s.watch = ""  # every multi-arm step shows its progress; only declared rules stop anything
+        if s.watch is None:
+            s.spec = None
+            continue
+        try:
+            s.spec = benchwatch.Spec(s.watch, s.command, home)
+            s.spec.check(s.stops)
+        except benchwatch.WatchError as e:
+            raise PlanError(f"step '{s.name}': {e}")
+
+
+class Progress:
+    """The run's progress file and its pushes to a progress branch (BENCH-129, BENCH-131)."""
+
+    def __init__(self, paths, steps, args):
+        v = getattr(steps, "variables", {})
+        self.paths, self.steps = paths, steps
+        watched = any(getattr(s, "watch", None) is not None for s in steps)
+        self.branch = v.get("PROGRESS_BRANCH", f"claude/{paths.plan}-progress" if watched else "off")
+        if getattr(args, "no_publish", False) or self.branch.lower() in ("off", "none", ""):
+            self.branch = None
+        self.remote = v.get("PROGRESS_REMOTE", "origin")
+        self.alert = v.get("ALERT", "").strip() or None
+        try:
+            self.every = float(v.get("PROGRESS_MINUTES", "15")) * 60
+        except ValueError:
+            raise PlanError(f"PROGRESS_MINUTES must be a number, not '{v['PROGRESS_MINUTES']}'")
+        self.last_push = 0.0
+        self.last_log = 0.0
+        self.pushing = None
+        self.warned = set()
+
+    def render(self, state, running):
+        p = self.paths
+        lines = [f"# Queue {p.plan}: progress", "",
+                 f"Updated {time.strftime('%Y-%m-%d %H:%M:%S')} PC time ({time.strftime('%H:%M', time.gmtime())} UTC), "
+                 f"runner pid {os.getpid()}.", ""]
+        for s in self.steps:
+            rec = state["steps"].get(s.name, {})
+            st_ = rec.get("status", "pending")
+            extra = f", exit {rec['exit']} in {benchwatch.hours(rec['seconds'])}" if "exit" in rec else ""
+            if rec.get("early"):
+                extra += f", STOPPED EARLY: {rec['early']}"
+            lines.append(f"- `{s.name}` {st_}{extra}")
+        lines.append("")
+        summaries = []
+        for s in self.steps:
+            act = running.get(s.name)
+            summ = act.summary if act else getattr(s, "last_summary", None)
+            if s.spec is not None and summ is not None:
+                lines.append(benchwatch.render_step(s.name, s.spec, summ))
+                summaries.append({"step": s.name, **benchwatch.to_json(summ)})
+        try:
+            tail = p.log.read_text(encoding="utf-8", errors="replace").splitlines()[-15:]
+        except OSError:
+            tail = []
+        lines += ["### Queue log (last lines)", "", "```", *tail, "```", ""]
+        steps = {s.name: state["steps"].get(s.name, {"status": "pending"}) for s in self.steps}
+        return "\n".join(lines), {"plan": p.plan, "updated": time.time(), "steps": steps, "watched": summaries}
+
+    def write(self, state, running, push=False, message="progress"):
+        md, js = self.render(state, running)
+        for path, text in ((self.paths.progress, md), (self.paths.progress_json, json.dumps(js, indent=1, default=str))):
+            tmp = path.with_suffix(path.suffix + ".tmp")
+            tmp.write_text(text, encoding="utf-8")
+            os.replace(tmp, path)
+        now = time.time()
+        if self.branch and (push or now - self.last_push >= self.every):
+            self.last_push = now
+            self._push_async(md, js, message)
+        return md
+
+    def _push_async(self, md, js, message):
+        if self.pushing and self.pushing.is_alive():
+            return
+        import threading
+        try:
+            log_tail = "\n".join(self.paths.log.read_text(encoding="utf-8", errors="replace").splitlines()[-300:]) + "\n"
+        except OSError:
+            log_tail = ""
+        files = {"progress.md": md, "progress.json": json.dumps(js, indent=1, default=str), "queue.log": log_tail}
+        self.pushing = threading.Thread(target=self._push, args=(files, message), daemon=True)
+        self.pushing.start()
+
+    def wait(self, seconds=90):
+        if self.pushing:
+            self.pushing.join(seconds)
+
+    def _push(self, files, message):
+        """Commit FILES alone on the progress branch with git plumbing (a private index, no checkout)
+        and force-push it. A failure is logged once and never touches the run."""
+        p = self.paths
+        env = {**os.environ, "GIT_INDEX_FILE": str(p.work / f"queue-{p.plan}.progress.index")}
+        env.setdefault("GIT_AUTHOR_NAME", "hadur-bench")
+        env.setdefault("GIT_AUTHOR_EMAIL", "hadur-bench@localhost")
+        env.setdefault("GIT_COMMITTER_NAME", env["GIT_AUTHOR_NAME"])
+        env.setdefault("GIT_COMMITTER_EMAIL", env["GIT_AUTHOR_EMAIL"])
+
+        def git(*a, inp=None):
+            r = subprocess.run(["git", *a], cwd=str(p.home), env=env, input=inp, capture_output=True,
+                               text=True, timeout=120, encoding="utf-8")
+            if r.returncode != 0 and a[0] != "rev-parse":
+                raise RuntimeError(f"git {a[0]}: {(r.stderr or r.stdout).strip()[:300]}")
+            return r.stdout.strip()
+
+        ref = f"refs/hadur-progress/{p.plan}"
+        try:
+            prev = git("rev-parse", "--verify", "-q", ref)
+            git("read-tree", "--empty")
+            for name, text in files.items():
+                blob = git("hash-object", "-w", "--stdin", inp=text)
+                git("update-index", "--add", "--cacheinfo", f"100644,{blob},{name}")
+            tree = git("write-tree")
+            commit = git("commit-tree", tree, *(["-p", prev] if prev else []), "-m", f"{p.plan}: {message}")
+            git("update-ref", ref, commit)
+            git("push", "-q", "--force", self.remote, f"{commit}:refs/heads/{self.branch}")
+            if "pushed" not in self.warned:
+                self.warned.add("pushed")
+                log(p, f"progress pushed to {self.remote} {self.branch} (every {self.every / 60:g} min)")
+        except (RuntimeError, OSError, subprocess.SubprocessError) as e:
+            if "push" not in self.warned:
+                self.warned.add("push")
+                log(p, f"progress push failed (the run is unaffected; later failures not logged): {e}")
+
+    def raise_alert(self, title, body):
+        """BENCH-131: a GitHub issue assigned to ALERT, so a stop reaches Leigh's phone."""
+        if not self.alert:
+            return
+        gh = shutil.which("gh")
+        if not gh:
+            log(self.paths, "alert skipped: gh not installed")
+            return
+        body_file = self.paths.work / f"queue-{self.paths.plan}.alert.md"
+        link = f"\n\nLive progress: branch `{self.branch}`, `progress.md`.\n" if self.branch else "\n"
+        body_file.write_text(body + link, encoding="utf-8")
+        try:
+            r = subprocess.run([gh, "issue", "create", "--title", title, "--body-file", str(body_file),
+                                "--assignee", self.alert], cwd=str(self.paths.home), capture_output=True,
+                               text=True, timeout=120)
+            log(self.paths, f"alert issue: {(r.stdout or r.stderr).strip()[:200]}")
+        except (OSError, subprocess.SubprocessError) as e:
+            log(self.paths, f"alert failed: {e}")
 
 
 class Runner:
@@ -377,6 +555,9 @@ class Runner:
         self.running = {}
         self.paused = False
         self.last_pause_log = 0.0
+        self.progress = Progress(paths, steps, args)
+        self.last_watch = 0.0
+        self.halt_code = 0
 
     def _on_signal(self, *_):
         self.stop_requested = True
@@ -413,8 +594,24 @@ class Runner:
         out = open(paths.step_log(step.name), "w", encoding="utf-8", errors="replace")
         log(paths, f"start {step.name}")
         job = Job()
-        job.start(find_shell() + [step.command], str(paths.home), out, getattr(self.args, "step_env", None))
-        self.running[step.name] = Active(step, job, out)
+        env = dict(getattr(self.args, "step_env", None) or os.environ)
+        env["HADUR_BENCH_PROGRESS"] = str(paths.progress)
+        job.start(find_shell() + [step.command], str(paths.home), out, env)
+        act = Active(step, job, out)
+        act.spec = getattr(step, "spec", None)
+        if act.spec is not None:
+            # Read again now: an earlier step (prep) may have written the arms or set file the watch reads.
+            try:
+                act.spec = step.spec = benchwatch.Spec(step.watch, step.command, paths.home)
+                step.spec.check(step.stops)
+            except benchwatch.WatchError as e:
+                log(paths, f"watch {step.name}: {e}; the step runs with its progress shown, rules not acted on")
+                act.enforce = False
+        was_early = bool(state["steps"].get(step.name, {}).get("early"))
+        act.enforce = act.enforce and not (self.args.no_stop_rules or (self.args.continue_early and was_early))
+        if act.spec is not None:
+            log(paths, f"watching {step.name}" + (f": {len(step.stops)} stop rule(s)" + ("" if act.enforce else ", shown only") if step.stops else ""))
+        self.running[step.name] = act
         state["steps"][step.name] = {"status": "running", "start": time.strftime("%Y-%m-%dT%H:%M:%S")}
         save_state(paths, state)
 
@@ -429,20 +626,86 @@ class Runner:
             return 124, "timeout"
         return None, None
 
-    def end_step(self, act, code, reason, state):
+    def end_step(self, act, code, reason, state, status=None, early=None):
         name = act.step.name
         if reason is None:
             act.job.kill()  # sweep anything the shell left behind
         act.job.close()
         act.out.close()
         self.running.pop(name, None)
+        if act.spec is not None:
+            act.step.last_summary = self.read_watch(act) or act.summary
         secs = int(time.time() - act.started)
         suffix = f" ({reason})" if reason else ""
         log(self.paths, f"{name} exit={code} in {secs} s{suffix}")
         state["steps"][name] = {
-            "status": TERMINAL_OK if code == 0 else ("interrupted" if reason == "stopped" else "failed"),
+            "status": status or (TERMINAL_OK if code == 0 else ("interrupted" if reason == "stopped" else "failed")),
             "exit": code, "seconds": secs, "end": time.strftime("%Y-%m-%dT%H:%M:%S")}
+        if early:
+            state["steps"][name]["early"] = early
         save_state(self.paths, state)
+        if act.spec is not None and code != 0 and status is None and reason != "stopped":
+            md = self.progress.write(state, self.running, push=True, message=f"{name} failed")
+            self.progress.raise_alert(f"PC card {self.paths.plan}: step {name} failed (exit {code})", md)
+
+    def read_watch(self, act):
+        try:
+            return benchwatch.summarize(act.spec, act.step.stops, self.paths.step_log(act.step.name), act.started)
+        except Exception as e:  # a reading error must never stop a run
+            if not getattr(act, "watch_error", None):
+                act.watch_error = str(e)
+                log(self.paths, f"watch {act.step.name}: could not read progress ({e}); the step runs on")
+            return None
+
+    def watch_tick(self, state, force=False):
+        """BENCH-129/130: read every watched step, act on a tripped stop rule, write the progress file."""
+        now = time.time()
+        if not force and now - self.last_watch < self.args.watch_seconds:
+            return
+        self.last_watch = now
+        for act in list(self.running.values()):
+            if act.spec is None:
+                continue
+            summ = self.read_watch(act)
+            if summ is None:
+                continue
+            act.summary = summ
+            hit = benchwatch.tripped(summ)
+            if hit and act.enforce:
+                self.trip(act, hit, summ, state)
+            elif hit and not getattr(act, "shown_trip", None):
+                act.shown_trip = hit["rule"]
+                log(self.paths, f"stop rule {hit['rule']} would trip on {act.step.name} ({hit['detail']}); not acted on")
+        if now - self.progress.last_log >= 1800 and any(a.summary for a in self.running.values()):
+            self.progress.last_log = now
+            for act in self.running.values():
+                if act.summary:
+                    log(self.paths, f"progress {act.step.name}: {one_line(act.summary)}")
+        self.progress.write(state, self.running)
+
+    def trip(self, act, rule, summ, state):
+        name = act.step.name
+        left = (summ["expected"] - summ["battles"]) if summ["expected"] else None
+        cost = (f"{left} battles left unrun" + (f" (about {benchwatch.hours(summ['eta'])})" if summ["eta"] else "")
+                if left is not None else "the rest of the step unrun")
+        why = f"{rule['rule']}: {rule['detail']}"
+        log(self.paths, f"STOP {name} by rule {why}; {summ['battles']} battles fought and kept, {cost}")
+        act.job.kill()
+        if rule["action"] == benchwatch.FINISH:
+            out = act.spec.home / act.spec.out
+            benchwatch.write_arms_tsv(summ["rows"], out / "arms.tsv")
+            (out / "EARLY-STOP.md").write_text(
+                f"# {name} stopped early\n\nRule `{rule['rule']}` ({rule['detail']}) after {summ['battles']} of "
+                f"{summ['expected'] or '?'} battles; {cost}. arms.tsv holds the battles fought so far.\n", encoding="utf-8")
+            self.end_step(act, 0, f"early stop, {rule['rule']}", state, early=why)
+        else:
+            self.end_step(act, 75, f"halted, {rule['rule']}", state, status="halted", early=why)
+            self.halt_code = 75
+        md = self.progress.write(state, self.running, push=True, message=f"STOP {name}: {rule['rule']}")
+        verb = "stopped early (finish: gate and PR run on the battles so far)" if rule["action"] == benchwatch.FINISH \
+            else "halted (queue stopped; rerun resumes)"
+        self.progress.raise_alert(f"PC card {self.paths.plan}: {name} {verb.split(' (')[0]} by `{rule['rule']}`",
+                                  f"**{name} {verb}.** {why}. {summ['battles']} battles fought and kept, {cost}.\n\n" + md)
 
     def kill_all(self, state):
         for act in list(self.running.values()):
@@ -500,7 +763,7 @@ class Runner:
             if step.name in args.skip:
                 log(paths, f"skip {step.name} (--skip)")
                 continue
-            if rec.get("status") == TERMINAL_OK:
+            if rec.get("status") == TERMINAL_OK and not (args.continue_early and rec.get("early")):
                 log(paths, f"skip {step.name} (already exit=0)")
                 continue
             todo.append(step)
@@ -515,6 +778,7 @@ class Runner:
                     log(paths, "stopped; rerun to resume from the interrupted steps")
                 else:
                     log(paths, "stop requested, leaving the remaining steps pending")
+                self.final_progress(state, "stopped by hand")
                 return 130
             for act in list(self.running.values()):
                 code, reason = self.poll_step(act)
@@ -526,6 +790,13 @@ class Runner:
                     if args.stop_on_fail and not halted:
                         halted = True
                         log(paths, f"stopping after failed step {act.step.name} (--stop-on-fail)")
+            self.watch_tick(state)
+            if self.halt_code and not halted:
+                halted, failed, first_failure = True, True, first_failure or self.halt_code
+                for act in list(self.running.values()):
+                    act.job.kill()
+                    self.end_step(act, 130, "stopped", state)
+                log(paths, "queue halted by a stop rule; fix the cause and rerun to resume (every fought battle is kept)")
             if halted:
                 todo = []
             started = False
@@ -553,9 +824,34 @@ class Runner:
             elif todo:
                 time.sleep(args.poll)
         if halted:
+            self.final_progress(state, "halted")
             return first_failure
         log(paths, "ALLDONE")
+        self.final_progress(state, "ALLDONE")
         return 1 if failed else 0
+
+    def final_progress(self, state, message):
+        try:
+            self.progress.write(state, self.running, push=True, message=message)
+            self.progress.wait()
+        except OSError as e:
+            log(self.paths, f"progress not written: {e}")
+
+
+def one_line(s):
+    """A watched step's progress in one log line."""
+    parts = [f"{s['battles']}" + (f"/{s['expected']} ({s['fraction']:.0%})" if s["expected"] else "") + " battles"]
+    if s["rate"]:
+        parts.append(f"{s['rate']:.0f}/h")
+    if s["eta"] is not None:
+        parts.append(f"ETA {benchwatch.hours(s['eta'])}")
+    parts.append(f"{s['failed']} failed")
+    if s["skips"]:
+        parts.append(f"skips {sum(s['skips'][-100:]) / len(s['skips'][-100:]):.1f}/battle (last 100)")
+    for e in s["arms"]:
+        if e["diff"] is not None:
+            parts.append(f"{e['arm']} {e['diff'] * (e.get('scale') or 1):+.2f}")
+    return ", ".join(parts)
 
 
 def host_profile(args, home):
@@ -602,6 +898,7 @@ def cmd_run(args):
     plan_file = resolve_plan(args.plan, home)
     prof = host_profile(args, home)
     steps = read_plan(plan_file, prof, args)
+    bind_watches(steps, home)
     paths = Paths(home, plan_file)
     known = {s.name for s in steps}
     for name in args.only + args.skip:
@@ -616,6 +913,14 @@ def cmd_run(args):
             mark = "skip" if status == TERMINAL_OK or s.name in args.skip or (args.only and s.name not in args.only) else "run "
             extra = (f" [after {s.after}]" if s.after else "") + (f" [timeout {s.timeout:g}s]" if s.timeout else "") + (f" [memory {s.memory:g} GB]" if s.memory else "")
             print(f"{mark} {s.name} ({status}){extra}: {s.command}")
+            if s.spec is not None:
+                sp = s.spec
+                print(f"       watch: {sp.out or 'step log'}" + (f", {sp.battles} battles" if sp.battles else "")
+                      + (f", arms {','.join(sp.arm_labels)}" if sp.arm_labels else "")
+                      + (f", APS over {sp.panel}/{sp.field}" if sp.field and sp.panel else "")
+                      + (", jobs shuffled" if sp.shuffled else ""))
+                for r in s.stops:
+                    print(f"       stop: {r.text} -> {r.action}")
         print(f"host: {hostprofile.summary(prof)}")
         print(f"dry run: nothing was run (up to {args.concurrency or steps.concurrency} at a time)")
         return 0
@@ -651,6 +956,9 @@ def cmd_status(args):
         detail = f"exit={rec['exit']} in {rec['seconds']} s" if "exit" in rec else rec.get("reason", "")
         print(f"  {s.name:<28} {status:<12} {detail}")
     print(f"{done} of {len(steps)} steps done" + (f", {running} running" if running else ""))
+    if paths.progress.is_file():
+        print()
+        print(paths.progress.read_text(encoding="utf-8", errors="replace"))
     return 0
 
 
@@ -686,7 +994,12 @@ def build_parser():
     r.add_argument("--workers", type=int, default=None,
                    help="battle width for every kind, over the plan's and the detected one (default: detected, see hostprofile.py)")
     r.add_argument("--work-dir", default=None, help="put the work folder here (linked from hadur-bench/work when that does not exist yet)")
+    r.add_argument("--no-stop-rules", action="store_true", help="show the steps' stop rules without acting on them")
+    r.add_argument("--continue-early", action="store_true",
+                   help="rerun steps a finish rule stopped early, with their rules shown only")
+    r.add_argument("--no-publish", action="store_true", help="write the progress file but push no progress branch")
     r.add_argument("--poll", type=float, default=1.0, help=argparse.SUPPRESS)
+    r.add_argument("--watch-seconds", type=float, default=60.0, help=argparse.SUPPRESS)
     r.set_defaults(func=cmd_run)
     h = sub.add_parser("host", help="show what this machine runs: cores, memory, widths, CPU constant, work dir")
     h.add_argument("--workers", type=int, default=None)

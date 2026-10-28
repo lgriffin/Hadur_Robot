@@ -1614,6 +1614,10 @@ None of these change how the robot plays; TIME-8 and RES-15 only report.
 | BENCH-125 | Event | When the PC qualification card (`pc-qualify`) runs, it shall set `UPLOAD=NOT` in each named 1v1 client's `roborumble.txt`, run those clients the old way for `HOURS`, put each config back and set the results files aside so no test battle is uploaded, and score each 1v1 battle of the release against the opponent's pairing on a clean page: QUALIFIED within ±0.5 over at least 40 battles, else NOT QUALIFIED. | T7 |
 | BENCH-126 | Ubiquitous | The bench shall carry the `pc-shield-exit` card, which builds SHIELD-11's battle exit at 400 damage (`sdmg400`) and with no damage exit (`sdmgoff`) beside an aa A/A copy, runs them against all robots on the shield list at 3 seeds from 3400 and gates each at +0.10 APS with the 95% low end above zero, writes the per-robot pick and every robot's difference with losses (`tools/per_robot.py`), stops before the results PR if any analysis fails, and verifies the three stop-and-go re-picks (`slistdrop,sgolist,sgo2list`) on 6 fresh seeds from 3500. | T7 |
 | BENCH-127 | Ubiquitous | The bench shall carry the `pc-melee-wide` card, which builds MGUN-16 alone beside an aa baseline and a bb A/A copy, runs each alone on the melee census at 8 fresh seeds after the firepower part 2 card's, and reads it with `tools/melee_s0.py screen --base2` at a 0 bar with the 95% low end above 0 and Hadur's share of the others it outlives no more than 1 point lower. | R9 |
+| BENCH-128 | Optional | Where a multi-arm run is given `--job-order shuffled`, the bench shall fight its (opponent, seed) jobs in an order seeded from the seed base; and when a stopped multi-arm run is resumed, the bench shall read back every finished battle's row, a clean battle's empty errors column included. | T7 |
+| BENCH-129 | Event | When a queue step with a `watch:` line runs, the queue runner shall rewrite the plan's progress file every minute with each step's state and, for the watched step, its battles done of the run's size, battles an hour, ETA, failed battles, skipped turns a battle (first and last 100), and each arm's running difference from the pooled control with its 95% interval and the stop rules' z 3 bound, and shall push the progress, without touching the working tree, to the plan's progress branch every `PROGRESS_MINUTES` and at once on a stop. | T7 |
+| BENCH-130 | Event | When a step's pre-declared `stop:` rule trips (fails, dead, skips, stall, aa or futility), the queue runner shall kill that step, log the rule, the battles fought and kept and the battles left unrun; for a halt rule stop the queue with the step resumable, and for a finish rule record the step as done early with its rows so far written as its `arms.tsv`, so the steps after it run. | T7 |
+| BENCH-131 | Event | When a stop rule trips or a watched step fails and the plan sets `ALERT`, the queue runner shall open a GitHub issue assigned to that login carrying the progress file. | T7 |
 | RAM-4 | State | While the rammer-heat switch is on, in a duel, once RAM-2 has confirmed the opponent as a rammer, the surf shall offer MOVE-11's gun-heat wave with MOVE-13's hold off (as heatjit plays) for the rest of the battle, whatever those switches are set to; before the confirmation, and in melee or team, the switches are as their own requirements state. Off by default. | R9 |
 
 - **TIME-8.** `Hadur.setupRecord`, printed once in round 0. The PC's round-0 read
@@ -1843,6 +1847,20 @@ A retired requirement keeps its ID; no new requirement reuses it.
   +0.10 APS; the three cloud re-picks (Wolverine stop-and-go, Hikari and Melody stop-and-go shift)
   verified on 6 fresh seeds. Nothing ships until a gate passes; 3.18.1 plays bit for bit.
   Test: `ShieldExitPlanTest`.
+
+## Watching a PC card as it runs (BENCH-128 to BENCH-131)
+
+- **Why.** Leigh 2026-10-28: "Why can't the harness do what you have done in the cloud there and monitor
+  as it runs? Instead I'm doing 6 hour runs that have clear failures." A PC card was read only from its
+  results PR at the end, so a losing arm, a crash, a skipped-turn build-up or a broken jar cost the
+  whole card.
+- **BENCH-128.** Bench `--job-order shuffled` (`bench-top20.sh --shuffle-jobs`). `Arms.resumed` read
+  rows with `strip()`, which also removed the tab before an empty errors column, so no clean battle was
+  ever resumed; it now strips only the line break. Test: `ArmsTest`.
+- **BENCH-129..131.** `benchwatch.py` (rules, reading rows, progress Markdown), `benchqueue.py` (`watch:`
+  and `stop:` step lines, the progress file and branch, the alert issue, `--no-stop-rules`,
+  `--continue-early`, `--no-publish`), `tools/open_results_pr.sh` puts the progress file first in a
+  results PR. Card `plans/watch-smoke.queue`. Tests: `test_benchwatch.py`.
 
 ## Saor, a MicroMelee entry (SAOR-1 to SAOR-17, stages U0 to U6)
 
