@@ -1,0 +1,27 @@
+# TwinSaor stage W5 (docs/twinsaor.md section 11): the fresh-seed gate of 0.2 (R1W plus the W4 mode
+# table) against 0.1 (TWIN-14). Run on the cloud box on 2026-10-28 (Leigh: the PC is busy); the card
+# records it so it can be rerun anywhere.
+#   ./queue.sh run pc-twin-w5        (or  .\queue.ps1 run pc-twin-w5)
+# Field: twinduel-tailor.txt (24 teams), 800x800, 35 rounds, 8 fresh seeds a team (base 3500; W3 used
+# 3100, W4 3300) = 192 battles an arm, 384 in all.
+# Arms: C, 0.1 from the twinsaor-v0.1 tag; G, the source as it stands.
+# Pass: G over C by at least +0.3 APS over a 27-team field = +8.1 share points summed over the teams
+# (+0.34 a team on 24 teams), more than 2 paired SE. Per team (tools/twin_pick.py), a table team
+# whose fresh read is below zero loses its entry before release.
+
+set MVN = mvn -q -Drobocode.version=1.11.1 compile exec:java
+set OUT = ../docs/bench/local
+
+prep | (cd .. && mvn -q -DskipTests install -pl twinsaor -am) && ./fetch-opponents.sh --set twinduel-tailor.txt && rm -rf work/twin-w5/v01 && mkdir -p work/twin-w5/v01 && git -C .. archive twinsaor-v0.1 twinsaor/src/main | tar -x -C work/twin-w5/v01 && TWIN_RUN=w5 TWIN_SRC=work/twin-w5/v01/twinsaor/src/main TWIN_RELEASE=0.1 bash tools/twin_arms.sh twinduel-tailor.txt 8 3500 C && TWIN_RUN=w5 bash tools/twin_arms.sh twinduel-tailor.txt 8 3500 G
+
+arm-C | ${MVN} "-Dexec.args=@work/twin-w5/twinduel-tailor-C.args"
+  after: prep
+
+arm-G | ${MVN} "-Dexec.args=@work/twin-w5/twinduel-tailor-G.args"
+  after: arm-C
+
+read | python3 tools/twin_read.py --run w5 --label twinduel-tailor --arms C,G --control C --gate 0.34 --aa none > ${OUT}/twin-w5.md && python3 tools/twin_pick.py --run w5 --label twinduel-tailor --arms C,G --control C --aa none --gain 0 --all G > ${OUT}/twin-w5-teams.md
+  after: arm-G
+
+pr | bash tools/open_results_pr.sh claude/pc-twin-w5-results "TwinSaor W5: the 0.2 gate" ${OUT}/twin-w5.md ${OUT}/twin-w5-teams.md ${OUT}/twin-w5-twinduel-tailor-*.md
+  after: read

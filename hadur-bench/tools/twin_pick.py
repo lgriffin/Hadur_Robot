@@ -93,11 +93,14 @@ def main(argv=None):
     p.add_argument("--label", default="twinduel-tailor")
     p.add_argument("--arms", required=True)
     p.add_argument("--control", default="C")
-    p.add_argument("--aa", default="A", help="the A/A arm, never picked; '' for none")
+    p.add_argument("--aa", default="A", help="the A/A arm, never picked; 'none' (or '') for none")
     p.add_argument("--gain", type=float, default=3.0, help="share points over the control a pick needs")
     p.add_argument("--field", type=int, default=27, help="teams in the live rumble, for the APS estimate")
     p.add_argument("--picks", help="also write team<TAB>arm lines here")
+    p.add_argument("--all", help="also list this arm's read on every team, picked or not (a gate's per-team view)")
     a = p.parse_args(argv)
+    if a.aa == "none":
+        a.aa = ""
     d = lambda arm: os.path.join(a.work, "twin-%s" % a.run, "%s-%s" % (a.label, arm))
     control = arm_battles(d(a.control))
     arms = {arm: arm_battles(d(arm)) for arm in a.arms.split(",") if arm != a.control}
@@ -126,6 +129,14 @@ def main(argv=None):
           % (sum(1 for v in picks.values() if v[0]), len(picks), total, total / a.field, a.field))
     if a.aa:
         print("A/A false picks: %d of %d teams (the rule's noise on this run).\n" % (false_picks, len(picks)))
+    if a.all and a.all in arms:
+        print("| Team | %s | %s | Diff | SE |" % (a.control, a.all))
+        print("|---|---|---|---|---|")
+        for team, c in sorted(control.items()):
+            r = paired(c, arms[a.all].get(team, {}))
+            if r:
+                print("| %s | %.1f | %.1f | %+.1f | %.1f |" % (team, r["control"], r["control"] + r["diff"], r["diff"], r["se"]))
+        print()
     if a.picks:
         with open(a.picks, "w", encoding="utf-8") as f:
             for team, (arm, _, _) in picks.items():

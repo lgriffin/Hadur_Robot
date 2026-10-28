@@ -468,3 +468,50 @@ R1W, since they may not stack:
 
 0.2 is then R1W as the default plus a mode table of the W4 picks: the NF, R2N and KL bits and the
 key cost about 40 bytes against 10 spare, which the flattening in section 9 pays for.
+
+## 11. W4 results and 0.2
+
+W4 ran on the cloud box (Leigh, 2026-10-28: the PC was busy), at 8 seeds a team (Leigh's pick, to
+halve the wait) and parallel 3: 6 arms on the 24 tailored teams, 1,152 battles, 0.3 to 0.4 skipped
+turns a battle. R1W is confirmed on the fresh seeds: W1 against 0.1 reads **+3.81 ± 0.68** share
+points over the 24 teams (`twin-w4.md`; +3.39 APS on the 27-team field), positive on 20 of 24, with
+LuminariousDuo +12.2 and CoyotePair +9.7 again. Against W1 (R1W), per team (`tools/twin_pick.py`, +3.0 share points and a low end
+above zero over 8 paired seeds):
+
+| Team | W1 share | Pick | Gain | SE |
+|---|---|---|---|---|
+| JointStrikeForce | 56.0 | W1NF | +21.7 | 0.8 |
+| ShizPair | 66.0 | W1NF | +12.7 | 1.1 |
+| CoyotePair | 55.8 | W1N2 | +11.9 | 1.7 |
+| InevitableTeam | 57.9 | W1NF | +11.6 | 1.6 |
+| SelcouthTeam | 71.2 | W1NF | +11.0 | 1.1 |
+| TwintelligenceTeam | 80.7 | W1NF | +5.7 | 0.7 |
+| DuoLedByDroid | 63.9 | W1KL | +5.0 | 0.7 |
+| LordMantis | 64.5 | W1N2 | +4.6 | 1.1 |
+| NightAndDay | 45.8 | W1NF | +4.4 | 1.6 |
+| ImpactTwins | 52.4 | W1N2 | +4.4 | 1.4 |
+
+The A/A arm (W1A) would have picked no team. The upper bound is 92.9 share points, +3.44 APS on
+a 27-team field, on top of R1W. The strong four other than NightAndDay (LuminariousDuo,
+GeminiTeam, MarioBros) and LunarTwins have no pick: none of these knobs moves them.
+
+**0.2** is R1W as the default plus a mode table of the NF and N2 picks (TWIN-13):
+
+- The table is keyed by 0.1's own slot, `hashCode & 127`: for these picks every team reads its
+  own mode under it (`tools/twin_table.py` checks), so the `>> 5` key of section 9 was not needed
+  and the Markov slots are 0.1's. Bit 1 is NF, bit 2 is N2. A different set of picks may need
+  the shifted key; the writer says so.
+- KL (one team, +5.0, 0.19 APS) is left out: its bit costs about 23 bytes.
+- Bytes: 1,995 of 1,999 by the build (1,999 by a plain javac). The key, the table and the two bits cost 40; they were paid for by
+  computing the station point's sin and cos once (15), measuring the leg distance once for both
+  the flip and the drive (the corner ignores the side, so a flip there does nothing), and
+  dropping the playout's 200-tick cap (a bullet of power 3 or less always outruns a robot, so the
+  loop ends without it).
+- The picks are `hadur-bench/twin-arms/picks-0.2.tsv`; `test_twin_table.py` checks the robot's
+  string is the one they write.
+
+**W5, the gate** (`plans/pc-twin-w5.queue`, TWIN-14): 0.2 (G) against 0.1 built from the
+`twinsaor-v0.1` tag (C), 8 fresh seeds (base 3500) on the 24 teams, 384 battles. 0.2 passes at
++0.3 APS over a 27-team field and over 2 paired SE; a table team whose fresh read is below zero
+loses its entry before release. The W3 and W4 cards build their arms from 0.1's constants, so
+they only rebuild from a 0.1 tree (`TWIN_SRC`).

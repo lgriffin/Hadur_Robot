@@ -23,3 +23,6 @@ W1A | W1 again, the A/A check on the W4 reads | s#RANGE_ONE = 100;#RANGE_ONE = 1
 W1NF | W1 and no leg flip on the target's shot (W3: +8 to +20 on NightAndDay, ShizPair, SelcouthTeam, JointStrikeForce, InevitableTeam; -21 to -24 on others) | s#RANGE_ONE = 100;#RANGE_ONE = 160;#; s#return drop > 0.09 && drop < 3.01;#return false;#
 W1N2 | W1 and range 180 with two enemies (W3: +12.9 on CoyotePair, +4.1 MarioBros, +3.6 NightAndDay) | s#RANGE_ONE = 100;#RANGE_ONE = 160;#; s#RANGE_TWO = 250;#RANGE_TWO = 180;#
 W1KL | W1 and the enemy leader first (W3: +9.4 CoyotePair, +7.4 DuoLedByDroid, +6.5 TwintelligenceTeam; -10 to -30 elsewhere) | s#RANGE_ONE = 100;#RANGE_ONE = 160;#; s#candidateEnergy <= targetEnergy - SWITCH_MARGIN#candidateEnergy >= targetEnergy + SWITCH_MARGIN#
+# W5, the 0.2 gate (docs/twinsaor.md section 11): G is the source as it stands (0.2: R1W and the mode table);
+# the control is C built from the twinsaor-v0.1 tag (TWIN_SRC, TWIN_RELEASE=0.1).
+G | TwinSaor 0.2 as built, the gate's candidate |

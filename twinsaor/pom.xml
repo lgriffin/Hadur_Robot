@@ -17,7 +17,7 @@
 
     <properties>
         <!-- The team's version: the jar is named for it, the properties and team file take it by filtering. -->
-        <twinsaor.release>0.1</twinsaor.release>
+        <twinsaor.release>0.2</twinsaor.release>
         <!-- Twin Duel's limit for the team jar, as Robocode's codesize tool counts it (TWIN-2). -->
         <twinsaor.codesize.limit>1999</twinsaor.codesize.limit>
         <!-- Rating clients still run Java 8; the shipped classes target it. -->
