@@ -3,9 +3,11 @@
 
 The table is one string constant, which costs Sanaro two bytes of code however long it is
 (SANARO-8). Cell (own energy E, enemy energy e) sits at E * 128 + e, both truncated to ints, for
-own energy 0..400 and enemy energy 0..400 (SANARO-2: an enemy above 127 reads the next row's
-cells, never past the end). A cell holds the power at 321-640 px in fortieths:
-the lesser of Sanaro's base power for its own energy and the least power that kills the enemy.
+own energy 0..400 and enemy energy 0..400 (SANARO-2: never past the end). An enemy at 128 or
+more reads energy // 128 rows on at its energy % 128 and draws that remainder's kill shot, a limit
+of the 128 stride. A cell holds the power at 321-640 px in fortieths:
+the lesser of Sanaro's base power for its own energy and the least power that kills the enemy
+(worked out for one more than its truncated energy).
 SanaroTableTest holds the constant to this formula.
 
   python3 sanaro/table.py            (rewrites sanaro/src/main/java/hadur117/nano/Sanaro.java)
