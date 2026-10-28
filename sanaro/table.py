@@ -29,10 +29,11 @@ def base(energy):
 
 
 def kill(enemy):
-    """The least power whose damage exceeds the enemy's energy, with a 0.025 margin, at least 0.1.
-    Damage is 4p up to power 1 and 6p - 2 above it."""
-    p = enemy / 4.0 if enemy < 4 else (enemy + 2) / 6.0
-    return max(0.1, p + 0.025)
+    """The least power whose damage reaches enemy + 1, so it kills any energy the truncated int
+    stands for (enemy up to enemy + 1), at least 0.1. Damage is 4p up to power 1 and 6p - 2 above it."""
+    e = enemy + 1
+    p = e / 4.0 if e <= 4 else (e + 2) / 6.0
+    return max(0.1, p)
 
 
 def cell(i):

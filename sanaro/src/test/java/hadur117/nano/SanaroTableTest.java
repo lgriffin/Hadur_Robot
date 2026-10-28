@@ -15,8 +15,9 @@ class SanaroTableTest {
     }
 
     static double kill(int enemy) {
-        double p = enemy < 4 ? enemy / 4.0 : (enemy + 2) / 6.0;
-        return Math.max(0.1, p + 0.025);
+        int e = enemy + 1;
+        double p = e <= 4 ? e / 4.0 : (e + 2) / 6.0;
+        return Math.max(0.1, p);
     }
 
     static double damage(double power) {
@@ -46,10 +47,11 @@ class SanaroTableTest {
     @Tag("SANARO-8")
     @DisplayName("at 321-640 px, with energy to spare, the shot is the least power that kills a weak enemy")
     void exactKillShots() {
-        for (int enemy = 0; enemy <= 12; enemy++) {  // 2.5, the base at 100 energy, kills 12
+        for (int enemy = 0; enemy <= 12; enemy++) {  // 2.5, the base at 100 energy, does 13: kills up to 12.99
             double power = Sanaro.POWER.charAt((100 << 7) + enemy) / 40.0;
-            assertTrue(damage(power) > enemy, "enemy " + enemy + ": power " + power + " does not kill");
-            assertTrue(power == 0.1 || damage(power - 0.05) <= enemy + 0.3, "enemy " + enemy + ": power " + power + " wastes energy");
+            // The int is the truncated energy: the shot must kill anything up to enemy + 1.
+            assertTrue(damage(power) >= enemy + 1, "enemy " + enemy + ": power " + power + " does not kill " + (enemy + 0.99));
+            assertTrue(power == 0.1 || damage(power - 0.025) < enemy + 1, "enemy " + enemy + ": power " + power + " wastes energy");
         }
     }
 }
