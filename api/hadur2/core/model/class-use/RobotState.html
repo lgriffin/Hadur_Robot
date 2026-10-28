@@ -428,36 +428,55 @@ loadScripts(document, 'script');</script>
 <div class="block">Writes this tick's escape drive into <code>orders</code>: full speed along the chosen
  heading, back-as-front.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="../../move/StopAndGo.Phase.html" title="enum class in hadur2.core.move">StopAndGo.Phase</a></code></div>
-<div class="col-second even-row-color"><span class="type-name-label">StopAndGo.</span><code><a href="../../move/StopAndGo.html#move(hadur2.core.model.BotOrders.Builder,hadur2.core.model.RobotState,java.awt.geom.Point2D.Double,double,double,long)" class="member-name-link">move</a><wbr>(<a href="../BotOrders.Builder.html" title="class in hadur2.core.model">BotOrders.Builder</a>&nbsp;orders,
+<div class="col-first even-row-color"><code>void</code></div>
+<div class="col-second even-row-color"><span class="type-name-label">RamEscape.</span><code><a href="../../move/RamEscape.html#move(hadur2.core.model.BotOrders.Builder,hadur2.core.model.RobotState,hadur2.core.model.RobotState,boolean)" class="member-name-link">move</a><wbr>(<a href="../BotOrders.Builder.html" title="class in hadur2.core.model">BotOrders.Builder</a>&nbsp;orders,
+ <a href="../RobotState.html" title="class in hadur2.core.model">RobotState</a>&nbsp;me,
+ <a href="../RobotState.html" title="class in hadur2.core.model">RobotState</a>&nbsp;enemy,
+ boolean&nbsp;dodge)</code></div>
+<div class="col-last even-row-color">
+<div class="block"><a class="req" href="../../../../../requirements.html#RAM-5">RAM-5</a>: as <a href="../../move/RamEscape.html#move(hadur2.core.model.BotOrders.Builder,hadur2.core.model.RobotState,hadur2.core.model.RobotState)"><code>RamEscape.move(BotOrders.Builder, RobotState, RobotState)</code></a>; with <code>dodge</code> on, a
+ path one of the rammer's shots in flight would hit, aimed head-on or linear, loses
+ <a href="../../move/RamEscape.html#HIT_COST"><code>RamEscape.HIT_COST</code></a> px of closest approach for each aim that hits it.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="../../move/StopAndGo.Phase.html" title="enum class in hadur2.core.move">StopAndGo.Phase</a></code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">StopAndGo.</span><code><a href="../../move/StopAndGo.html#move(hadur2.core.model.BotOrders.Builder,hadur2.core.model.RobotState,java.awt.geom.Point2D.Double,double,double,long)" class="member-name-link">move</a><wbr>(<a href="../BotOrders.Builder.html" title="class in hadur2.core.model">BotOrders.Builder</a>&nbsp;orders,
  <a href="../RobotState.html" title="class in hadur2.core.model">RobotState</a>&nbsp;me,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;enemy,
  double&nbsp;enemyGunHeat,
  double&nbsp;coolingRate,
  long&nbsp;lastEnemyShot)</code></div>
-<div class="col-last even-row-color">
+<div class="col-last odd-row-color">
 <div class="block">Writes this tick's drive into <code>orders</code> and returns its phase.</div>
 </div>
-<div class="col-first odd-row-color"><code>void</code></div>
-<div class="col-second odd-row-color"><span class="type-name-label">SurfMover.</span><code><a href="../../move/SurfMover.html#move(hadur2.core.model.BotOrders.Builder,hadur2.core.model.RobotState,hadur2.core.move.MoveController,java.awt.geom.Point2D.Double,int)" class="member-name-link">move</a><wbr>(<a href="../BotOrders.Builder.html" title="class in hadur2.core.model">BotOrders.Builder</a>&nbsp;orders,
+<div class="col-first even-row-color"><code>void</code></div>
+<div class="col-second even-row-color"><span class="type-name-label">SurfMover.</span><code><a href="../../move/SurfMover.html#move(hadur2.core.model.BotOrders.Builder,hadur2.core.model.RobotState,hadur2.core.move.MoveController,java.awt.geom.Point2D.Double,int)" class="member-name-link">move</a><wbr>(<a href="../BotOrders.Builder.html" title="class in hadur2.core.model">BotOrders.Builder</a>&nbsp;orders,
  <a href="../RobotState.html" title="class in hadur2.core.model">RobotState</a>&nbsp;myState,
  <a href="../../move/MoveController.html" title="class in hadur2.core.move">MoveController</a>&nbsp;moveCtrl,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;enemyLocation,
  int&nbsp;wavesToSurf)</code></div>
-<div class="col-last odd-row-color">
+<div class="col-last even-row-color">
 <div class="block"><a href="../../move/SurfMover.html#move(hadur2.core.model.BotOrders.Builder,hadur2.core.model.RobotState,hadur2.core.move.MoveController,java.awt.geom.Point2D.Double,int,boolean)"><code>SurfMover.move(BotOrders.Builder, RobotState, MoveController, Point2D.Double, int, boolean)</code></a>
  with go-to surfing allowed.</div>
 </div>
-<div class="col-first even-row-color"><code>void</code></div>
-<div class="col-second even-row-color"><span class="type-name-label">SurfMover.</span><code><a href="../../move/SurfMover.html#move(hadur2.core.model.BotOrders.Builder,hadur2.core.model.RobotState,hadur2.core.move.MoveController,java.awt.geom.Point2D.Double,int,boolean)" class="member-name-link">move</a><wbr>(<a href="../BotOrders.Builder.html" title="class in hadur2.core.model">BotOrders.Builder</a>&nbsp;orders,
+<div class="col-first odd-row-color"><code>void</code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">SurfMover.</span><code><a href="../../move/SurfMover.html#move(hadur2.core.model.BotOrders.Builder,hadur2.core.model.RobotState,hadur2.core.move.MoveController,java.awt.geom.Point2D.Double,int,boolean)" class="member-name-link">move</a><wbr>(<a href="../BotOrders.Builder.html" title="class in hadur2.core.model">BotOrders.Builder</a>&nbsp;orders,
  <a href="../RobotState.html" title="class in hadur2.core.model">RobotState</a>&nbsp;myState,
  <a href="../../move/MoveController.html" title="class in hadur2.core.move">MoveController</a>&nbsp;moveCtrl,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/geom/Point2D.Double.html" title="class or interface in java.awt.geom" class="external-link">Point2D.Double</a>&nbsp;enemyLocation,
  int&nbsp;wavesToSurf,
  boolean&nbsp;goToAllowed)</code></div>
-<div class="col-last even-row-color">
+<div class="col-last odd-row-color">
 <div class="block">Surfs the first surfable wave (and <code>wavesToSurf - 1</code> behind it), or orbits when
  there is none.</div>
+</div>
+<div class="col-first even-row-color"><code>void</code></div>
+<div class="col-second even-row-color"><span class="type-name-label">RamEscape.</span><code><a href="../../move/RamEscape.html#onEnemyShot(long,double,double,double,hadur2.core.model.RobotState)" class="member-name-link">onEnemyShot</a><wbr>(long&nbsp;fireTime,
+ double&nbsp;enemyX,
+ double&nbsp;enemyY,
+ double&nbsp;power,
+ <a href="../RobotState.html" title="class in hadur2.core.model">RobotState</a>&nbsp;me)</code></div>
+<div class="col-last even-row-color">
+<div class="block"><a class="req" href="../../../../../requirements.html#RAM-5">RAM-5</a>: the rammer fired.</div>
 </div>
 <div class="col-first odd-row-color"><code>(package private) static <a href="../../move/SurfMover.SurfOption.html" title="enum class in hadur2.core.move">SurfMover.SurfOption</a></code></div>
 <div class="col-second odd-row-color"><span class="type-name-label">SurfMover.</span><code><a href="../../move/SurfMover.html#orbitSide(hadur2.core.model.Wave,hadur2.core.model.RobotState,java.awt.geom.Point2D.Double)" class="member-name-link">orbitSide</a><wbr>(<a href="../Wave.html" title="class in hadur2.core.model">Wave</a>&nbsp;surfWave,

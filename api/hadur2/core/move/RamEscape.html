@@ -130,10 +130,30 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color">
 <div class="block">Absolute headings tried, evenly spaced.</div>
 </div>
+<div class="col-first odd-row-color"><code>(package private) static final double</code></div>
+<div class="col-second odd-row-color"><code><a href="#HIT_BOX" class="member-name-link">HIT_BOX</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block"><a class="req" href="../../../../requirements.html#RAM-5">RAM-5</a>: a bullet within this many px of our centre on both axes counts as a hit (half a robot, plus slack).</div>
+</div>
+<div class="col-first even-row-color"><code>(package private) static final double</code></div>
+<div class="col-second even-row-color"><code><a href="#HIT_COST" class="member-name-link">HIT_COST</a></code></div>
+<div class="col-last even-row-color">
+<div class="block"><a class="req" href="../../../../requirements.html#RAM-5">RAM-5</a>: a candidate path loses this many px of closest approach for each aim one of the rammer's shots would hit it with.</div>
+</div>
 <div class="col-first odd-row-color"><code>(package private) static final int</code></div>
 <div class="col-second odd-row-color"><code><a href="#HORIZON" class="member-name-link">HORIZON</a></code></div>
 <div class="col-last odd-row-color">
 <div class="block">Ticks each candidate is played forward.</div>
+</div>
+<div class="col-first even-row-color"><code>(package private) static final int</code></div>
+<div class="col-second even-row-color"><code><a href="#MAX_SHOTS" class="member-name-link">MAX_SHOTS</a></code></div>
+<div class="col-last even-row-color">
+<div class="block"><a class="req" href="../../../../requirements.html#RAM-5">RAM-5</a>: the most shots in flight kept.</div>
+</div>
+<div class="col-first odd-row-color"><code>(package private) static final int</code></div>
+<div class="col-second odd-row-color"><code><a href="#SHOT_HORIZON" class="member-name-link">SHOT_HORIZON</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block"><a class="req" href="../../../../requirements.html#RAM-5">RAM-5</a>: ticks a candidate is played for the shots: a shot chasing a fleeing robot takes long to reach it.</div>
 </div>
 </div>
 </section>
@@ -187,6 +207,30 @@ loadScripts(document, 'script');</script>
 <div class="block">Writes this tick's escape drive into <code>orders</code>: full speed along the chosen
  heading, back-as-front.</div>
 </div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#move(hadur2.core.model.BotOrders.Builder,hadur2.core.model.RobotState,hadur2.core.model.RobotState,boolean)" class="member-name-link">move</a><wbr>(<a href="../model/BotOrders.Builder.html" title="class in hadur2.core.model">BotOrders.Builder</a>&nbsp;orders,
+ <a href="../model/RobotState.html" title="class in hadur2.core.model">RobotState</a>&nbsp;me,
+ <a href="../model/RobotState.html" title="class in hadur2.core.model">RobotState</a>&nbsp;enemy,
+ boolean&nbsp;dodge)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../../../requirements.html#RAM-5">RAM-5</a>: as <a href="#move(hadur2.core.model.BotOrders.Builder,hadur2.core.model.RobotState,hadur2.core.model.RobotState)"><code>move(BotOrders.Builder, RobotState, RobotState)</code></a>; with <code>dodge</code> on, a
+ path one of the rammer's shots in flight would hit, aimed head-on or linear, loses
+ <a href="#HIT_COST"><code>HIT_COST</code></a> px of closest approach for each aim that hits it.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onEnemyShot(long,double,double,double,hadur2.core.model.RobotState)" class="member-name-link">onEnemyShot</a><wbr>(long&nbsp;fireTime,
+ double&nbsp;enemyX,
+ double&nbsp;enemyY,
+ double&nbsp;power,
+ <a href="../model/RobotState.html" title="class in hadur2.core.model">RobotState</a>&nbsp;me)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../../../requirements.html#RAM-5">RAM-5</a>: the rammer fired.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#shotsInFlight()" class="member-name-link">shotsInFlight</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block"><a class="req" href="../../../../requirements.html#RAM-5">RAM-5</a>: the shots in flight, for tests.</div>
+</div>
 </div>
 </div>
 </div>
@@ -229,6 +273,66 @@ loadScripts(document, 'script');</script>
 <dd>
 <ul class="tag-list">
 <li><a href="../../../constant-values.html#hadur2.core.move.RamEscape.HORIZON">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="HIT_COST">
+<h3>HIT_COST</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">HIT_COST</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#RAM-5">RAM-5</a>: a candidate path loses this many px of closest approach for each aim one of the rammer's shots would hit it with.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur2.core.move.RamEscape.HIT_COST">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="HIT_BOX">
+<h3>HIT_BOX</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">HIT_BOX</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#RAM-5">RAM-5</a>: a bullet within this many px of our centre on both axes counts as a hit (half a robot, plus slack).</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur2.core.move.RamEscape.HIT_BOX">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="SHOT_HORIZON">
+<h3>SHOT_HORIZON</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">SHOT_HORIZON</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#RAM-5">RAM-5</a>: ticks a candidate is played for the shots: a shot chasing a fleeing robot takes long to reach it.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur2.core.move.RamEscape.SHOT_HORIZON">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="MAX_SHOTS">
+<h3>MAX_SHOTS</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">MAX_SHOTS</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#RAM-5">RAM-5</a>: the most shots in flight kept.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur2.core.move.RamEscape.MAX_SHOTS">Constant Field Values</a></li>
 </ul>
 </dd>
 </dl>
@@ -290,6 +394,45 @@ loadScripts(document, 'script');</script>
 <dd><code>me</code> - our state this tick</dd>
 <dd><code>enemy</code> - the rammer's state this tick (its location, heading and velocity)</dd>
 </dl>
+</section>
+</li>
+<li>
+<section class="detail" id="move(hadur2.core.model.BotOrders.Builder,hadur2.core.model.RobotState,hadur2.core.model.RobotState,boolean)">
+<h3>move</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">move</span><wbr><span class="parameters">(<a href="../model/BotOrders.Builder.html" title="class in hadur2.core.model">BotOrders.Builder</a>&nbsp;orders,
+ <a href="../model/RobotState.html" title="class in hadur2.core.model">RobotState</a>&nbsp;me,
+ <a href="../model/RobotState.html" title="class in hadur2.core.model">RobotState</a>&nbsp;enemy,
+ boolean&nbsp;dodge)</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#RAM-5">RAM-5</a>: as <a href="#move(hadur2.core.model.BotOrders.Builder,hadur2.core.model.RobotState,hadur2.core.model.RobotState)"><code>move(BotOrders.Builder, RobotState, RobotState)</code></a>; with <code>dodge</code> on, a
+ path one of the rammer's shots in flight would hit, aimed head-on or linear, loses
+ <a href="#HIT_COST"><code>HIT_COST</code></a> px of closest approach for each aim that hits it.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="onEnemyShot(long,double,double,double,hadur2.core.model.RobotState)">
+<h3>onEnemyShot</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">onEnemyShot</span><wbr><span class="parameters">(long&nbsp;fireTime,
+ double&nbsp;enemyX,
+ double&nbsp;enemyY,
+ double&nbsp;power,
+ <a href="../model/RobotState.html" title="class in hadur2.core.model">RobotState</a>&nbsp;me)</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#RAM-5">RAM-5</a>: the rammer fired. The shot is kept with the two aims a nano rammer uses: head-on at
+ where we were, and linear, leading our heading and speed then.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>fireTime</code> - the tick the bullet left</dd>
+<dd><code>enemyX</code> - the rammer's x when it fired</dd>
+<dd><code>enemyY</code> - the rammer's y when it fired</dd>
+<dd><code>power</code> - the shot's power</dd>
+<dd><code>me</code> - our state when it fired (or as near as is known)</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="shotsInFlight()">
+<h3>shotsInFlight</h3>
+<div class="member-signature"><span class="return-type">int</span>&nbsp;<span class="element-name">shotsInFlight</span>()</div>
+<div class="block"><a class="req" href="../../../../requirements.html#RAM-5">RAM-5</a>: the shots in flight, for tests.</div>
 </section>
 </li>
 <li>

@@ -206,49 +206,55 @@ loadScripts(document, 'script');</script>
 <div class="block"><a class="req" href="../../../../requirements.html#MOVE-14">MOVE-14</a>: the protean pick's mean dwell, in ticks; 1 re-picks every tick.</div>
 </div>
 <div class="col-first odd-row-color"><code>(package private) static final boolean</code></div>
-<div class="col-second odd-row-color"><code><a href="#RAM_HEAT" class="member-name-link">RAM_HEAT</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#RAM_BREAK" class="member-name-link">RAM_BREAK</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block"><a class="req" href="../../../../requirements.html#RAM-5">RAM-5</a>: while <a class="req" href="../../../../requirements.html#RAM-2">RAM-2</a>'s escape drives, each path it weighs loses closest approach for every
+ aim (head-on, linear) one of the rammer's shots in flight would hit it with.</div>
+</div>
+<div class="col-first even-row-color"><code>(package private) static final boolean</code></div>
+<div class="col-second even-row-color"><code><a href="#RAM_HEAT" class="member-name-link">RAM_HEAT</a></code></div>
+<div class="col-last even-row-color">
 <div class="block"><a class="req" href="../../../../requirements.html#RAM-4">RAM-4</a>: once the opponent is a confirmed rammer (<a class="req" href="../../../../requirements.html#RAM-2">RAM-2</a>), the duel plays as with heatjit on
  (<a class="req" href="../../../../requirements.html#MOVE-11">MOVE-11</a>'s gun-heat wave offered, <a class="req" href="../../../../requirements.html#MOVE-13">MOVE-13</a>'s hold off) for the rest of the battle.</div>
 </div>
-<div class="col-first even-row-color"><code>(package private) static final boolean</code></div>
-<div class="col-second even-row-color"><code><a href="#REPLICATOR" class="member-name-link">REPLICATOR</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code>(package private) static final boolean</code></div>
+<div class="col-second odd-row-color"><code><a href="#REPLICATOR" class="member-name-link">REPLICATOR</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block"><a class="req" href="../../../../requirements.html#MOVE-16">MOVE-16</a>: the danger views' weights evolve by the replicator equation.</div>
 </div>
-<div class="col-first odd-row-color"><code>(package private) static final boolean</code></div>
-<div class="col-second odd-row-color"><code><a href="#SHOT_DODGE" class="member-name-link">SHOT_DODGE</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code>(package private) static final boolean</code></div>
+<div class="col-second even-row-color"><code><a href="#SHOT_DODGE" class="member-name-link">SHOT_DODGE</a></code></div>
+<div class="col-last even-row-color">
 <div class="block"><a class="req" href="../../../../requirements.html#DODGE-3">DODGE-3</a>: dodge the enemy's simple aim (<a class="req" href="../../../../requirements.html#DODGE-1">DODGE-1</a>, <a class="req" href="../../../../requirements.html#DODGE-2">DODGE-2</a>) against every opponent, not only
  those the table names.</div>
 </div>
-<div class="col-first even-row-color"><code>(package private) static final boolean</code></div>
-<div class="col-second even-row-color"><code><a href="#SHOT_DODGE_PLAN" class="member-name-link">SHOT_DODGE_PLAN</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code>(package private) static final boolean</code></div>
+<div class="col-second odd-row-color"><code><a href="#SHOT_DODGE_PLAN" class="member-name-link">SHOT_DODGE_PLAN</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block"><a class="req" href="../../../../requirements.html#DODGE-6">DODGE-6</a>: the shot-dodge planner (Saguaro's ShotDodger movement) against every opponent, not
  only those the table's <code>shot-dodge2:</code> lines name; a shipped expert still primes it.</div>
 </div>
-<div class="col-first odd-row-color"><code>(package private) static final boolean</code></div>
-<div class="col-second odd-row-color"><code><a href="#STACK_LIST" class="member-name-link">STACK_LIST</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code>(package private) static final boolean</code></div>
+<div class="col-second even-row-color"><code><a href="#STACK_LIST" class="member-name-link">STACK_LIST</a></code></div>
+<div class="col-last even-row-color">
 <div class="block"><a class="req" href="../../../../requirements.html#MOVE-23">MOVE-23</a>: the stop-and-start stack (<a class="req" href="../../../../requirements.html#MOVE-13">MOVE-13</a> heatjit, <a class="req" href="../../../../requirements.html#SHIELD-14">SHIELD-14</a> swall, and <a class="req" href="../../../../requirements.html#MOVE-20">MOVE-20</a>, <a class="req" href="../../../../requirements.html#MOVE-21">MOVE-21</a>
  and <a class="req" href="../../../../requirements.html#TIME-6">TIME-6</a> whenever those are on) applies only to opponents not on the stack off-list;
  a listed opponent plays as if those switches were off.</div>
 </div>
-<div class="col-first even-row-color"><code>(package private) static final boolean</code></div>
-<div class="col-second even-row-color"><code><a href="#STOP_AND_GO" class="member-name-link">STOP_AND_GO</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code>(package private) static final boolean</code></div>
+<div class="col-second odd-row-color"><code><a href="#STOP_AND_GO" class="member-name-link">STOP_AND_GO</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block"><a class="req" href="../../../../requirements.html#POISON-2">POISON-2</a>: stop-and-go (<a class="req" href="../../../../requirements.html#POISON-1">POISON-1</a>) against every opponent, not only those the table names,
  with the reverse crawl <a href="#STOP_AND_GO_PREFIRE"><code>STOP_AND_GO_PREFIRE</code></a> ticks before the enemy's gun is ready.</div>
 </div>
-<div class="col-first odd-row-color"><code>(package private) static final int</code></div>
-<div class="col-second odd-row-color"><code><a href="#STOP_AND_GO_PREFIRE" class="member-name-link">STOP_AND_GO_PREFIRE</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code>(package private) static final int</code></div>
+<div class="col-second even-row-color"><code><a href="#STOP_AND_GO_PREFIRE" class="member-name-link">STOP_AND_GO_PREFIRE</a></code></div>
+<div class="col-last even-row-color">
 <div class="block"><a class="req" href="../../../../requirements.html#POISON-2">POISON-2</a>: the forced stop-and-go's variant: 1 WavePoison, 2 WavePoisonShift.</div>
 </div>
-<div class="col-first even-row-color"><code>(package private) static final boolean</code></div>
-<div class="col-second even-row-color"><code><a href="#STOP_POINT_SURF" class="member-name-link">STOP_POINT_SURF</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code>(package private) static final boolean</code></div>
+<div class="col-second odd-row-color"><code><a href="#STOP_POINT_SURF" class="member-name-link">STOP_POINT_SURF</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">MOVE-25: the duel surfs with the stop-point surf (StopPointSurf, docs/bench/surf-b-rivals-read.md):
  dozens of stop points both ways rated on a smoothed probability histogram of the same views,
  BeepBoop's 1 / sqrt(4 + t) time weight, two waves, and a plan kept until the waves or the
@@ -535,6 +541,24 @@ loadScripts(document, 'script');</script>
 <dd>
 <ul class="tag-list">
 <li><a href="../../../constant-values.html#hadur2.core.duel.MoveDesign.RAM_HEAT">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="RAM_BREAK">
+<h3>RAM_BREAK</h3>
+<div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">RAM_BREAK</span></div>
+<div class="block"><a class="req" href="../../../../requirements.html#RAM-5">RAM-5</a>: while <a class="req" href="../../../../requirements.html#RAM-2">RAM-2</a>'s escape drives, each path it weighs loses closest approach for every
+ aim (head-on, linear) one of the rammer's shots in flight would hit it with. The 2026-10-28
+ rammer read (docs/bench/gap-to-2nd.md): against 12 nano rammers a linear aim would hit the
+ escape on 52% of shots, Saguaro on 35%. Off by default.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur2.core.duel.MoveDesign.RAM_BREAK">Constant Field Values</a></li>
 </ul>
 </dd>
 </dl>
