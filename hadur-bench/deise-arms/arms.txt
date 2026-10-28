@@ -4,11 +4,9 @@
 # Built by tools/deise_arms.sh as hadur117.mini.Deise<NAME>. D is Deise's source unchanged.
 # Stage E2 (pc-deise-e04): E1b (pc-deise-e03, PR #388) found both wave lines and the aim weight
 # needed (WL -2.23, WA -0.43 against D) and the hit correction safe to drop (WB +0.48 to W's +0.59),
-# with the across term and the hold better gone (WPN +0.83). FIT3 and FIT3F are that build fitted
-# into one class under 1,499 bytes, as it would ship (deise-arms/e2/, docs/deise.md section 8).
-D | Deise 0.2 (the core-driven DeiseLab, which the shipped 1,490-byte class matches order for order) | |
+# with the across term and the hold better gone (WPN +0.83). Deise 0.3 is that build fitted into
+# one class (FIT3, 1,494 B); D is now 0.3. 0.2 read 0.73 over SAOR by field in pc-deise-e03.
+D | Deise 0.3 (the core-driven DeiseLab, which the shipped 1,494-byte class matches order for order) | |
 MIR | kc.mini.Mirage 0.2 in the seat (1st, 71.20 live) | @kc.mini.Mirage 0.2
 SAOR | hadur117.micro.Saor 0.2 in the seat (68.79 live in MiniMelee): the control | @hadur117.micro.Saor 0.2
-WPN | E1b's best: waves on, without the across term and the hold (+0.83 in pc-deise-e03) | Move.java | s#WAVES = 0;#WAVES = 1;#; s#ACROSS = true;#ACROSS = false;# | DeiseLab.java | s#HOLD = 0.9;#HOLD = 1e9;#
-FIT3 | WPN fitted: no hit correction, flat push, 200 playouts, no corners, no kill cap; 1,494 B flat class | =deise-arms/e2/FIT3.java
-FIT3F | FIT3 without the field cap on power; 1,480 B flat class | =deise-arms/e2/FIT3F.java
+FIT3F | Deise 0.3 without the field cap on power; 1,480 B flat class | =deise-arms/e2/FIT3F.java

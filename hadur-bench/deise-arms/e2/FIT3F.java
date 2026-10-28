@@ -8,15 +8,9 @@ import robocode.ScannedRobotEvent;
 import robocode.util.Utils;
 
 /**
- * Stage E2 candidate FIT3F for Deise 0.3: FIT3 without the field cap on power, 1,480 bytes.
- *
- * <p>FIT3 (docs/deise.md section 8) is Deise 0.2's one class with E0's
- * seen-shot waves fitted in, 1,494 bytes (ProGuard, codesize). Against 0.2 it adds the waves (both
- * lines, weighed by whether the shooter likely aims at Deise, no hit correction, slots as a ring
- * of 64) and 200 playouts, and drops the across term, the 10% hold, the corners and the kill cap
- * on power; the push from opponents is flat. Benched as a flat class by tools/deise_arms.sh
- * (arm FIT3); if it passes it becomes the shipped Deise.java and the core is matched to it
- * (DEISE-16).</p>
+ * Stage E2 candidate FIT3F (docs/deise.md section 8): Deise 0.3, the shipped class (FIT3), without
+ * the field cap on power, 1,480 bytes (ProGuard, codesize). Benched as a flat class by
+ * tools/deise_arms.sh (arm FIT3F).
  */
 public class Deise extends AdvancedRobot {
 

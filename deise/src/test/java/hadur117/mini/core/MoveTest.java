@@ -45,11 +45,17 @@ class MoveTest {
 
     @Test
     @Tag("DEISE-2")
-    @DisplayName("a strong opponent pushes harder than a weak one")
+    @DisplayName("a strong opponent pushes harder than a weak one, while the push weighs energy")
     void strongPushesHarder() {
         double[][] b = bots(new double[] {500, 650, 100}, new double[] {500, 350, 5});
-        double[] p = Move.best(500, 500, 60, b, NO_WAVES, 0, 2);
-        assertTrue(p[1] < 500, "moved to " + p[1]);
+        if (Move.ENERGY_PUSH) {
+            double[] p = Move.best(500, 500, 60, b, NO_WAVES, 0, 2);
+            assertTrue(p[1] < 500, "moved to " + p[1]);
+        } else {
+            // Flat since 0.3: two opponents equally far push equally, whatever their energy.
+            assertEquals(Move.risk(500, 560, 0, 500, 500, b, NO_WAVES, 0, 2),
+                Move.risk(500, 440, Math.PI, 500, 500, b, NO_WAVES, 0, 2), 1e-12);
+        }
     }
 
     @Test
@@ -58,28 +64,40 @@ class MoveTest {
     void aimsAtUs() {
         double[] a = {500, 800, 100};
         double[] near = {520, 780, 100};
-        assertTrue(Move.aimsAtUs(a, 500, 500, bots(a)));
-        assertFalse(Move.aimsAtUs(a, 500, 500, bots(a, near)));
+        // We are at (500, 500), 300 from it.
+        assertTrue(Move.aimsAtUs(a, 300, bots(a)));
+        assertFalse(Move.aimsAtUs(a, 300, bots(a, near)));
     }
 
     @Test
     @Tag("DEISE-3")
-    @DisplayName("across the line of a shooter is safer than along it")
+    @DisplayName("across the line of a shooter is safer than along it, while the across term is on")
     void acrossNotAlong() {
         double[][] b = bots(new double[] {500, 900, 100});
-        double along = Move.risk(500, 420, Math.PI, 500, 500, b, NO_WAVES, 0, 1);
-        double across = Move.risk(580, 500, Math.PI / 2, 500, 500, b, NO_WAVES, 0, 1);
-        assertTrue(across < along);
+        if (Move.ACROSS) {
+            double along = Move.risk(500, 420, Math.PI, 500, 500, b, NO_WAVES, 0, 1);
+            double across = Move.risk(580, 500, Math.PI / 2, 500, 500, b, NO_WAVES, 0, 1);
+            assertTrue(across < along);
+        } else {
+            // Off since 0.3: the heading to a point no longer changes its risk.
+            assertEquals(Move.risk(500, 420, Math.PI, 500, 500, b, NO_WAVES, 0, 1),
+                Move.risk(500, 420, Math.PI / 2, 500, 500, b, NO_WAVES, 0, 1));
+        }
     }
 
     @Test
     @Tag("DEISE-4")
-    @DisplayName("corners pull while the field is crowded, not once it thins")
+    @DisplayName("corners pull while the field is crowded, not once it thins, while the corners are on")
     void cornersPullWhileCrowded() {
         double[][] b = bots();
         double corner = Move.risk(60, 60, 0, 100, 100, b, NO_WAVES, 0, Move.CROWD);
         double middle = Move.risk(500, 500, 0, 100, 100, b, NO_WAVES, 0, Move.CROWD);
-        assertTrue(corner < middle);
+        if (Move.CORNERS) {
+            assertTrue(corner < middle);
+        } else {
+            // Off since 0.3: no pull at any crowd.
+            assertEquals(corner, middle);
+        }
         assertEquals(Move.risk(60, 60, 0, 100, 100, b, NO_WAVES, 0, Move.CROWD - 1),
             Move.risk(500, 500, 0, 100, 100, b, NO_WAVES, 0, Move.CROWD - 1));
     }
@@ -89,16 +107,16 @@ class MoveTest {
     @DisplayName("a seen shot makes its head-on line dangerous, and off it safer")
     void waveDanger() {
         // Fired from (500, 900) at us at (500, 500), standing still: both lines point due south.
-        double[] w = Move.wave(500, 900, 0, 2, 500, 500, 0, 0, 1);
+        double[] w = Move.wave(500, 900, 0, 2, 0, 0, 1);
         assertEquals(Math.PI, Math.abs(w[Move.HEAD_ON]), 1e-9);
-        assertTrue(Move.danger(w, 500, 500, 5) > 5 * Move.danger(w, 620, 500, 5));
+        assertTrue(Move.danger(w, 500, 500, 5, 0) > 5 * Move.danger(w, 620, 500, 5, 0));
     }
 
     @Test
     @Tag("DEISE-5")
     @DisplayName("a moving target's second line leads it")
     void linearLineLeads() {
-        double[] w = Move.wave(500, 900, 0, 2, 500, 500, Math.PI / 2, 8, 1);
+        double[] w = Move.wave(500, 900, 0, 2, 0, -8, 1);
         assertTrue(Math.sin(w[Move.LINEAR]) > Math.sin(w[Move.HEAD_ON]));
     }
 
@@ -106,8 +124,8 @@ class MoveTest {
     @Tag("DEISE-5")
     @DisplayName("a wave past a point is no danger there, and is spent once past us")
     void passedWaves() {
-        double[] w = Move.wave(500, 900, 0, 2, 500, 500, 0, 0, 1);
-        assertEquals(0, Move.danger(w, 500, 500, 100));
+        double[] w = Move.wave(500, 900, 0, 2, 0, 0, 1);
+        assertEquals(0, Move.danger(w, 500, 500, 100, 0));
         assertFalse(Move.spent(w, 500, 500, 10));
         assertTrue(Move.spent(w, 500, 500, 100));
     }
@@ -116,8 +134,8 @@ class MoveTest {
     @Tag("DEISE-5")
     @DisplayName("a shot from a robot likely aiming elsewhere counts a quarter")
     void weight() {
-        double[] at = Move.wave(500, 900, 0, 2, 500, 500, 0, 0, 1);
-        double[] away = Move.wave(500, 900, 0, 2, 500, 500, 0, 0, 0.25);
-        assertEquals(0.25 * Move.danger(at, 500, 500, 5), Move.danger(away, 500, 500, 5), 1e-12);
+        double[] at = Move.wave(500, 900, 0, 2, 0, 0, 1);
+        double[] away = Move.wave(500, 900, 0, 2, 0, 0, 0.25);
+        assertEquals(0.25 * Move.danger(at, 500, 500, 5, 0), Move.danger(away, 500, 500, 5, 0), 1e-12);
     }
 }

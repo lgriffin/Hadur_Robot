@@ -46,6 +46,7 @@ class DeiseEquivalenceTest {
             assertEquals(b.size(), a.size(), scenario + ": order counts differ");
             assertTrue(maxCount(shipped.robotClass) >= 8, scenario + ": no Markov row warmed, so DEISE-8 was not compared");
             assertTrue(shipped.shots > 10, scenario + ": the gun should fire, fired " + shipped.shots);
+            assertTrue(waves(shipped.robotClass) > 3, scenario + ": no seen-shot waves, so DEISE-5 was not compared");
         }
     }
 
@@ -62,6 +63,12 @@ class DeiseEquivalenceTest {
             if (orders.get(j).startsWith("tick ")) return orders.get(j);
         }
         return "run()";
+    }
+
+    static int waves(Class<?> robot) throws Exception {
+        java.lang.reflect.Field f = robot.getDeclaredField("wave");
+        f.setAccessible(true);
+        return f.getInt(null);
     }
 
     static int maxCount(Class<?> robot) throws Exception {

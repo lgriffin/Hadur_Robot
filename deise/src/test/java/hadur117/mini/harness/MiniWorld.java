@@ -15,7 +15,8 @@ import robocode.ScannedRobotEvent;
  * then scans), in the engine's order. It is not the engine; it only has to give two builds the
  * same inputs and react to their orders the same way, so that any difference in their orders
  * shows (DEISE-16). Enemies circle at a constant speed and turn, so each Markov row they fill
- * holds one successor and the learned gun is as deterministic as the cold one. Adapted from
+ * holds one successor and the learned gun is as deterministic as the cold one. Some fire on a
+ * fixed beat, so the seen-shot waves (DEISE-5) are compared too. Adapted from
  * Saor's harness, which drives an event-only robot.
  */
 public final class MiniWorld {
@@ -30,6 +31,9 @@ public final class MiniWorld {
         final double turn;
         final int diesAt;
         boolean alive = true;
+        double energy = 100;
+        int every;
+        double power;
 
         /**
          * An enemy.
@@ -50,6 +54,20 @@ public final class MiniWorld {
             this.velocity = velocity;
             this.turn = turn;
             this.diesAt = diesAt;
+        }
+
+        /**
+         * Makes the enemy fire: its energy drops by {@code power} every {@code every} ticks, which
+         * a scan reads as a shot (DEISE-5).
+         *
+         * @param every ticks between shots
+         * @param power each shot's power
+         * @return this enemy
+         */
+        public Enemy fires(int every, double power) {
+            this.every = every;
+            this.power = power;
+            return this;
         }
     }
 
@@ -147,7 +165,7 @@ public final class MiniWorld {
         double before = radarHeading - lastRadarStep;
         for (Enemy e : enemies) {
             if (e.alive && swept(before, radarHeading, bearing(e))) {
-                robot.onScannedRobot(new ScannedRobotEvent(e.name, 100, bearing(e) - heading,
+                robot.onScannedRobot(new ScannedRobotEvent(e.name, e.energy, bearing(e) - heading,
                     Math.hypot(e.x - x, e.y - y), e.heading, e.velocity, false));
             }
         }
@@ -217,6 +235,9 @@ public final class MiniWorld {
         y = ny;
         for (Enemy e : enemies) {
             if (e.alive) {
+                if (e.every > 0 && time % e.every == 0 && e.energy > e.power) {
+                    e.energy -= e.power;
+                }
                 e.heading += e.turn;
                 e.x += Math.sin(e.heading) * e.velocity;
                 e.y += Math.cos(e.heading) * e.velocity;

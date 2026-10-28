@@ -277,21 +277,25 @@ two cuts E1 measured as harmless on WH, the corners (WHPC +0.03 over WHP) and th
 
 | Candidate | Bytes | What |
 |---|---|---|
-| FIT3 | 1,494 | WPN, no hit correction, flat push, 200 playouts, no corners, no kill cap |
+| FIT3 (0.3) | 1,494 | WPN, no hit correction, flat push, 200 playouts, no corners, no kill cap |
 | FIT3F | 1,480 | FIT3 without the field cap on power (never measured alone) |
 
-Two things differ from the core beyond the switches: wave slots are a ring of 64 that overwrites
-the oldest (the core frees spent waves and drops a new one when all 64 are live), and the golf's
-rounding (the angle constants, the move length). Neither is a strategy change, but they are why
-E2 benches the flat classes themselves (`deise-arms/e2/`, arm lines `=FILE` in
-`tools/deise_arms.sh`) rather than core switches: what is measured is what would ship.
+FIT3 ships as **Deise 0.3** (2026-10-28, for Leigh's live test that night): it is the shipped
+`Deise.java`, and the core and `DeiseLab` are matched to it bit for bit (DEISE-16). New switches
+off in 0.3: `Move.CORNERS`, `Move.ENERGY_PUSH`, `Move.ACROSS`, `Gun.KILL`, `DeiseLab.HITS` and
+`DeiseLab.HOLD` (0); on: `Move.WAVES` 1 and `DeiseLab.PLAYOUTS` 200. To match the golfed class the
+core keeps its waves as a ring of 64 that overwrites the oldest (it used to free spent waves and
+drop a new one when all were live), adds each line's danger to the risk in turn, takes the head-on
+line from the scan bearing, weighs a wave by the scan distance, and moves the ring's reach. The
+equivalence harness's enemies now fire on fixed beats, so the waves are compared too (a 0.25 to
+0.3 weight change in `DeiseLab` fails it at tick 18).
 
-`pc-deise-e04` seats D, FIT3, FIT3F, WPN, MIR and SAOR (276 battles each, about 4 h), with the
-candidates early so a look at the progress branch reads them first. Every census step stops
-itself on 20 failed battles, 30 minutes without a battle, or 40 skipped turns a battle over the
-last 100. **E2 passes when FIT3 or FIT3F reads at least D + 0.4**; the better one becomes the
-shipped `Deise.java` as 0.3, the core and `DeiseLab` are matched to it (DEISE-16), and the jar
-gate holds it to 1,499 bytes and one class.
+`pc-deise-e04` measures 0.3 on the bench beside its live pass: D (now 0.3), FIT3F (0.3 without the
+field cap, a flat class, `deise-arms/e2/`, arm lines `=FILE` in `tools/deise_arms.sh`), MIR and
+SAOR, 276 battles each, about 2.5 h. Every census step stops itself on 20 failed battles, 30
+minutes without a battle, or 40 skipped turns a battle over the last 100. 0.2 read +0.73 over SAOR
+in `pc-deise-e03` and the W family +1.3 to +1.5; **0.3 holds when it reads at least +1.1 over
+SAOR**, and FIT3F replaces it if it reads 0.3 above D.
 
 ## 9. Uniqueness
 

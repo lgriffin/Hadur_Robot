@@ -4,8 +4,10 @@ package hadur117.mini.core;
  * Deise's movement (DEISE-1 to DEISE-5): a least-risk point each tick from a ring of candidates.
  * The risk of a point adds, for each live opponent, a push away from it, a cost for heading
  * straight at or away from an opponent that is likely aiming at Deise, and the danger of the
- * waves it was seen to fire (weighed by {@link #WAVES}); while the field is crowded, the distance to the nearest corner, so
- * Deise holds Saor's corners early and comes out of them as the field thins. Pure: opponents are
+ * waves it was seen to fire (weighed by {@link #WAVES}); with {@link #CORNERS}, while the field is
+ * crowded, the distance to the nearest corner, so Deise holds Saor's corners early and comes out
+ * of them as the field thins. Since 0.3 the across term and the corners are off and the push is
+ * flat (docs/deise.md section 8). Pure: opponents are
  * rows {x, y, energy} (null when unseen or dead), waves rows {x, y, fire time, speed, head-on
  * angle, linear angle, weight} (null when free).
  */
@@ -25,15 +27,19 @@ public final class Move {
     public static final int CANDIDATES = 36;
     /** Opponents left at or above which the corners pull (DEISE-4). */
     public static final int CROWD = 4;
+    /** Whether the corners pull while crowded (DEISE-4): off since 0.3, whose bytes went to the waves. */
+    public static final boolean CORNERS = false;
+    /** Whether the push grows with an opponent's energy (DEISE-2): flat since 0.3 (arm WF). */
+    public static final boolean ENERGY_PUSH = false;
     /**
-     * How much the seen-shot waves count (DEISE-5): 0 since stage E0's smoke, where they cost
-     * about 13 APS at full weight and 3 at 0.3 (docs/deise.md section 4). Kept for arm W.
+     * How much the seen-shot waves count (DEISE-5): 1 since 0.3 (E0 to E1b's arm W, +0.44 to +0.59);
+     * 0 turns them off.
      */
-    public static final double WAVES = 0;
+    public static final double WAVES = 1;
     /** The lines a wave's bullet may fly on, from HEAD_ON: 2 is head-on and linear, 1 head-on only (arm WH). */
     public static final int LINES = 2;
     /** Whether the across term counts (DEISE-3); false for arm P, which frees its bytes for the waves. */
-    public static final boolean ACROSS = true;
+    public static final boolean ACROSS = false;
 
     private Move() {
     }
@@ -71,19 +77,19 @@ public final class Move {
         for (double[] bot : bots) {
             if (bot != null) {
                 // Away from every opponent, harder from strong ones (DEISE-2).
-                r += (50000 + bot[ENERGY] * 500) / sq(px - bot[X], py - bot[Y]);
+                r += (ENERGY_PUSH ? 50000 + bot[ENERGY] * 500 : 80000) / sq(px - bot[X], py - bot[Y]);
                 // Across, not along, the line of an opponent likely aiming at us (DEISE-3).
-                if (ACROSS && aimsAtUs(bot, myX, myY, bots)) {
+                if (ACROSS && aimsAtUs(bot, Math.sqrt(sq(bot[X] - myX, bot[Y] - myY)), bots)) {
                     r += Math.abs(Math.cos(Math.atan2(bot[X] - px, bot[Y] - py) - heading));
                 }
             }
         }
         for (double[] wave : waves) {
             if (wave != null) {
-                r += WAVES * danger(wave, px, py, time);
+                r = danger(wave, px, py, time, r);
             }
         }
-        if (others >= CROWD) {
+        if (CORNERS && others >= CROWD) {
             // To the nearest corner while crowded (DEISE-4).
             r += others * Math.hypot(Math.min(px, Gun.FIELD - px), Math.min(py, Gun.FIELD - py)) / 5000;
         }
@@ -91,11 +97,11 @@ public final class Move {
     }
 
     /**
-     * Whether an opponent likely aims at Deise: no other opponent is within 0.9 of Deise's distance
-     * from it, so Deise is, or is nearly, its nearest robot (DEISE-3, DEISE-5).
+     * Whether an opponent at {@code distance} likely aims at Deise: no other opponent is within 0.9
+     * of that distance from it, so Deise is, or is nearly, its nearest robot (DEISE-3, DEISE-5).
      */
-    public static boolean aimsAtUs(double[] bot, double myX, double myY, double[][] bots) {
-        double mine = 0.81 * sq(bot[X] - myX, bot[Y] - myY);
+    public static boolean aimsAtUs(double[] bot, double distance, double[][] bots) {
+        double mine = 0.81 * distance * distance;
         for (double[] other : bots) {
             if (other != null && other != bot && sq(bot[X] - other[X], bot[Y] - other[Y]) < mine) {
                 return false;
@@ -106,37 +112,39 @@ public final class Move {
 
     /**
      * A wave fired at Deise from (ox, oy) at {@code time} with {@code power}, its bullet on Deise's
-     * head-on line or on the line that leads Deise's present motion (DEISE-5). Its weight is 1
-     * when the shooter likely aims at Deise and 0.25 otherwise.
+     * head-on line or on the line that leads Deise's present motion (DEISE-5). {@code bearing} is
+     * the shooter's absolute bearing from Deise, so the head-on line is {@code bearing + PI};
+     * {@code lateral} is Deise's speed across that line, its velocity times the sine of the
+     * shooter's bearing relative to Deise's heading. Its weight is 1 when the shooter likely aims
+     * at Deise and 0.25 otherwise.
      */
-    public static double[] wave(double ox, double oy, double time, double power, double myX, double myY,
-                                double myHeading, double myVelocity, double weight) {
+    public static double[] wave(double ox, double oy, double time, double power, double bearing, double lateral,
+                                double weight) {
         double speed = 20 - 3 * power;
-        double headOn = Math.atan2(myX - ox, myY - oy);
-        return new double[] {ox, oy, time, speed, headOn,
-            headOn + Math.asin(myVelocity * Math.sin(myHeading - headOn) / speed), weight};
+        double headOn = bearing + Math.PI;
+        return new double[] {ox, oy, time, speed, headOn, headOn + Math.asin(lateral / speed), weight};
     }
 
     /**
-     * The danger of (px, py) from a wave: for each of its two lines, where the bullet will be when
-     * it has come as far as the point, near the point is dangerous; a wave already past the point
-     * is not (DEISE-5).
+     * {@code r} plus the danger of (px, py) from a wave: for each of its lines, where the bullet
+     * will be when it has come as far as the point, near the point is dangerous; a wave already
+     * past the point is not (DEISE-5). Each line adds to {@code r} in turn, as the shipped class
+     * sums it.
      */
-    public static double danger(double[] wave, double px, double py, double time) {
-        double reach = Math.hypot(px - wave[X], py - wave[Y]);
-        if ((time - wave[TIME]) * wave[SPEED] > reach + 30) {
-            return 0;
+    public static double danger(double[] wave, double px, double py, double time, double r) {
+        double reach = Math.sqrt(sq(px - wave[X], py - wave[Y]));
+        if ((time - wave[TIME]) * wave[SPEED] < reach + 30) {
+            for (int line = HEAD_ON; line < HEAD_ON + LINES; line++) {
+                r += WAVES * wave[WEIGHT] * 4000 / (800 + sq(px - (wave[X] + Math.sin(wave[line]) * reach),
+                    py - (wave[Y] + Math.cos(wave[line]) * reach)));
+            }
         }
-        double d = 0;
-        for (int line = HEAD_ON; line < HEAD_ON + LINES; line++) {
-            d += 4000 / (800 + sq(px - wave[X] - Math.sin(wave[line]) * reach, py - wave[Y] - Math.cos(wave[line]) * reach));
-        }
-        return d * wave[WEIGHT];
+        return r;
     }
 
     /** Whether a wave has passed every point Deise can reach, so its slot is free. */
     public static boolean spent(double[] wave, double myX, double myY, double time) {
-        return (time - wave[TIME]) * wave[SPEED] > Math.hypot(myX - wave[X], myY - wave[Y]) + 200;
+        return (time - wave[TIME]) * wave[SPEED] > Math.sqrt(sq(myX - wave[X], myY - wave[Y])) + 200;
     }
 
     static double sq(double dx, double dy) {

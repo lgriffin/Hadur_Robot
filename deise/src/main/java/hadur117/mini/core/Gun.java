@@ -24,8 +24,8 @@ public final class Gun {
     public static final double MARGIN = 18;
     /** Whether a playout that leaves the field votes 1 (DEISE-8); false for arm T. */
     public static final boolean WALLS = true;
-    /** Whether power is capped at what kills the target (DEISE-10); false for arm K. */
-    public static final boolean KILL = true;
+    /** Whether power is capped at what kills the target (DEISE-10): off since 0.3 (arm WHPK +0.14). */
+    public static final boolean KILL = false;
 
     private Gun() {
     }
@@ -56,12 +56,12 @@ public final class Gun {
      * votes 1. A vote spreads over the bins the target's width covers at its distance.
      */
     public static double aim(char[][] table, int state, double x, double y, double heading, double velocity,
-                             double myX, double myY, double power, int playouts, Random random) {
+                             double myX, double myY, double distance, double power, int playouts, Random random) {
         int[] bins = new int[BINS];
         int best = 0;
         double speed = 20 - 3 * power;
-        double distance = Math.sqrt((x - myX) * (x - myX) + (y - myY) * (y - myY));
-        int width = Math.max(1, (int) (Math.atan(18 / distance) * BINS / (2 * Math.PI)));
+        // At least 1 bin anywhere on a 1000 x 1000 field (atan(18 / 1415) is 2.07 bins).
+        int width = (int) (Math.atan(18 / distance) * (BINS / 2 / Math.PI));
         for (int i = 0; i < playouts; i++) {
             double px = x;
             double py = y;
@@ -86,7 +86,7 @@ public final class Gun {
                     weight = 1;
                 }
             }
-            int centre = (int) (Math.atan2(px - myX, py - myY) * BINS / (2 * Math.PI));
+            int centre = (int) (Math.atan2(px - myX, py - myY) * (BINS / 2 / Math.PI));
             for (int k = -width; k <= width; k++) {
                 int b = (centre + k) & (BINS - 1);
                 if ((bins[b] += weight + (k == 0 ? 1 : 0)) > bins[best]) {
@@ -94,7 +94,7 @@ public final class Gun {
                 }
             }
         }
-        return best * 2 * Math.PI / BINS;
+        return best * (Math.PI / (BINS / 2));
     }
 
     /**
