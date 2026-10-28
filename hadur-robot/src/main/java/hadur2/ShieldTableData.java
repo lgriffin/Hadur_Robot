@@ -453,4 +453,26 @@ final class ShieldTableData {
         return new String[] {
         };
     }
+
+    /**
+     * SHIELD-19: the opponents SHIELD-11 leaves the battle against at 400 damage, not 150. Empty:
+     * candidate builds add lines here (build-ablation.sh sx4list).
+     *
+     * @return a fresh array of names
+     */
+    static String[] exitLates() {
+        return new String[] {
+        };
+    }
+
+    /**
+     * SHIELD-19: the opponents SHIELD-11 takes no damage exit against (SHIELD-6's budget alone).
+     * Empty: candidate builds add lines here (build-ablation.sh sx0list).
+     *
+     * @return a fresh array of names
+     */
+    static String[] exitOffs() {
+        return new String[] {
+        };
+    }
 }

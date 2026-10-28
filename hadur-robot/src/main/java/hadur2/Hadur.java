@@ -254,6 +254,9 @@ public class Hadur extends TeamRobot {
             // MOVE-28, GUN-11: the factorial's per-opponent switches.
             for (String name : ShieldTableData.heatJits()) lines.add(ShieldList.HEAT_JIT_PREFIX + " " + name);
             for (String name : ShieldTableData.gunStacks()) lines.add(ShieldList.GUN_STACK_PREFIX + " " + name);
+            // SHIELD-19: per-opponent battle exits for SHIELD-11.
+            for (String name : ShieldTableData.exitLates()) lines.add(ShieldList.EXIT_LATE_PREFIX + " " + name);
+            for (String name : ShieldTableData.exitOffs()) lines.add(ShieldList.EXIT_OFF_PREFIX + " " + name);
             return ShieldList.parse(lines);
         } catch (RuntimeException | LinkageError e) {
             out.println("SH," + getRoundNum() + "," + getTime() + ",list-failed," + e);

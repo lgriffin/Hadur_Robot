@@ -94,4 +94,20 @@ class ShieldListTest {
         assertFalse(ShieldList.NONE.gunStack(null));
         assertSame(ShieldList.NONE, ShieldList.parse(List.of("heat-jit:", "gun-stack:")));
     }
+
+    @Test
+    @Tag("SHIELD-19")
+    @DisplayName("shield-exit4 and shield-exit0 lines give an opponent's battle exit, matched as shield entries")
+    void perOpponentExit() {
+        ShieldList l = ShieldList.parse(List.of("a.B", "shield-exit4: a.B 1.0", "shield-exit0: c.D", "shield-exit4: c.D",
+            "shield-exit0:"));
+        assertEquals(400, l.stayDamage("a.B 1.0", 150));
+        assertEquals(150, l.stayDamage("a.B 1.1", 150), "a versioned line matches that version only");
+        assertEquals(Double.MAX_VALUE, l.stayDamage("c.D 2.3", 150), "no exit wins over the later exit");
+        assertEquals(150, l.stayDamage("e.F 1", 150));
+        assertEquals(150, l.stayDamage(null, 150));
+        assertFalse(l.heatJit("a.B 1.0") || l.gunStack("c.D 2.3"), "no other switch");
+        assertEquals(1, l.size(), "no shield entry");
+        assertEquals(150, ShieldList.NONE.stayDamage("a.B 1.0", 150));
+    }
 }
