@@ -1,0 +1,22 @@
+{
+ "plan": "pc-1v1-ram",
+ "updated": 1793215206.3560202,
+ "steps": {
+  "prep": {
+   "status": "pending"
+  },
+  "ram": {
+   "status": "pending"
+  },
+  "exit": {
+   "status": "pending"
+  },
+  "gate": {
+   "status": "pending"
+  },
+  "pr": {
+   "status": "pending"
+  }
+ },
+ "watched": []
+}
