@@ -297,6 +297,21 @@ minutes without a battle, or 40 skipped turns a battle over the last 100. 0.2 re
 in `pc-deise-e03` and the W family +1.3 to +1.5; **0.3 holds when it reads at least +1.1 over
 SAOR**, and FIT3F replaces it if it reads 0.3 above D.
 
+### 0.3's live first pass (2026-10-28)
+
+MiniMelee 2nd, 69.81 ± 0.33 over 205 pairings (641 battles), 1.38 behind Mirage's 71.19; 0.2 read
+69.68 ± 0.39, 1.52 behind. On the 204 opponents both versions met, 0.3 is +0.18, inside one
+pass's noise of about ±0.4. Survival rose 3.4 points (42.4% to 45.8%), +1.7 against the 20
+strongest opponents and +3.5 against the rest, so the waves keep Deise alive as E1b said they
+would. The score gained less than the bench promised: E1b's nearest arms (WPN, WF) read +0.82
+over 0.2. Either the bench overstates the gain or the fitted whole is worth less than its measured
+parts; E1 measured each cut as harmless only on its own. `pc-deise-e04` tells the two apart: 0.2
+read +0.73 over SAOR on the bench. If 0.3 reads about +0.9 over SAOR, bench and live agree and
+the fitted class is worth less than its parts. If it reads +1.5 or more, the bench overstates
+the gain. Survival remains the gap: Mirage 55.6%.
+Pages: `data/rumble/pages/2026-10-28T2322Z_minimeleerumble_botdetails_hadur117.mini.Deise_0.3.mht`,
+`2026-10-28T2323Z_minimeleerumble_rankings.mht`.
+
 ## 9. Uniqueness
 
 Leigh's rule for Saor holds here: inspired by others, never a copy. Deise's gun is Saor's own

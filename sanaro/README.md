@@ -7,7 +7,9 @@ line's hedged lead, and its own table of bullet power by both robots' energy. Th
 screen and the stages are in [docs/sanaro.md](../docs/sanaro.md); the requirements are SANARO-1 to
 SANARO-12 in [docs/requirements.md](../docs/requirements.md).
 
-0.1 is one class of 247 bytes (NanoMelee's limit is 249). Not yet released.
+0.1 is one class of 247 bytes (NanoMelee's limit is 249). It was released on 2026-10-28 (tag
+`sanaro-v0.1`). Its first live pass is still filling: on 2026-10-28 at 23:25 UTC it was 2nd of 90 in
+NanoMelee at 65.02, over 80 of 89 pairings, behind Quantum's 66.42.
 
 ## Build
 
