@@ -2048,8 +2048,8 @@ E1 to E6 map onto these as the last column says.
 | JAYLEXI-6 | Event | When hit by a bullet, or when bullets collide, the bot shall log the guess factor of the hit, smoothed over the neighbouring bins, on the enemy wave that was passing it, and stop surfing that wave. | J2 |
 | JAYLEXI-7 | Ubiquitous | The bot shall turn its drive until a 140 px stick from it stays inside the field. | J3 |
 | JAYLEXI-8 | Event | When the gun is within 3 degrees of its aim, the bot shall fire 3 inside 150 px and 2 beyond, at most a fifteenth of its own energy and at most what finishes the enemy. | J4, K4 |
-| JAYLEXI-9 | Ubiquitous | The shipped jar shall carry the robot's properties at the release version and its source. | S5 |
-| JAYLEXI-10 | Ubiquitous | On the MiniRumble bench sample, paired against Komarious 1.88, the build shall predict at least 87.7 APS before it is submitted. | S4 |
+| JAYLEXI-9 | Ubiquitous | The shipped jar shall carry the robot's properties at the release version and its source. | plan S5 |
+| JAYLEXI-10 | Ubiquitous | On the MiniRumble bench sample, paired against Komarious 1.88, the build shall predict at least 87.7 APS before it is submitted. | plan S4 |
 | EVEIMEAR-1 | Unwanted | If Robocode's codesize tool reports more than 746 bytes for the shipped jar (MicroRumble's 749 less 3 spare), then the build shall fail. | K6 |
 | EVEIMEAR-2 | Event | While in stop-and-go, when the enemy fires, the bot shall step (3 + (int) (drop x 1.999999)) << 3 px along its orbit. | E1 |
 | EVEIMEAR-3 | Event | When the energy the enemy has won back by hitting it (three times each bullet's power, Épéeist's measure) exceeds 40 + 23 x round, the bot shall move every tick and reverse at random for the rest of the battle. | E2 |
@@ -2058,10 +2058,10 @@ E1 to E6 map onto these as the last column says.
 | EVEIMEAR-6 | Event | When the enemy is scanned, the bot shall launch a gun wave segmented on velocity history, lateral speed and distance, aim at its most visited of 25 bins, and count the enemy's bin when the wave passes it. | K2 |
 | EVEIMEAR-7 | State | While the enemy is inside 100 px, the bot shall fire 3, move every tick and retreat. | E5 |
 | EVEIMEAR-8 | Ubiquitous | The bot shall fire 2, at most what finishes the enemy, and never more than its energy less 0.1. | K4 |
-| EVEIMEAR-9 | Ubiquitous | The shipped jar shall carry the robot's properties at the release version and its source. | S5 |
+| EVEIMEAR-9 | Ubiquitous | The shipped jar shall carry the robot's properties at the release version and its source. | plan S5 |
 | EVEIMEAR-10 | Event | When the enemy is scanned, the bot shall turn its radar back by the turn it had left. | K1 |
 | EVEIMEAR-11 | Event | When we hit the enemy, the bot shall take the bullet's damage off the enemy's energy, and when hit, add three times the bullet's power, so neither reads as a shot. | K3 |
-| EVEIMEAR-12 | Ubiquitous | On the MicroRumble bench sample, paired against Épéeist 3.7, the build shall predict at least 85.3 APS before it is submitted. | S4 |
+| EVEIMEAR-12 | Ubiquitous | On the MicroRumble bench sample, paired against Épéeist 3.7, the build shall predict at least 85.3 APS before it is submitted. | plan S4 |
 
 - **Coverage.** JAYLEXI-1, JAYLEXI-9, EVEIMEAR-1 and EVEIMEAR-9 by `JayLexiJarIT` and
   `EveimearJarIT` (failsafe) on the shipped jars; JAYLEXI-2 to JAYLEXI-8 by `JayLexiTest` and
