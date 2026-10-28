@@ -1,0 +1,899 @@
+utc	folder	rounds	survived	faults	skipped	memory_failures	allowance_us	opponent_key	shielder	lead_aware	profile_battles	client
+2026-10-27T20:03:23Z	robots\.data\hadur2\Hadur.data	34	34	0	14	0	7854.4	sL300.Mozart	1	0	1	rr02
+2026-10-27T20:03:25Z	robots\.data\hadur2\Hadur.data	34	32	0	16	0	11773.6	rcb.Vanessa03	0	0	1	rr03
+2026-10-27T20:03:31Z	robots\.data\hadur2\Hadur.data	34	31	0	15	0	13064.5	ntc.Plains	0	0	2	rr01
+2026-10-27T20:03:35Z	robots\.data\hadur2\Hadur.data	35	32	0	138	0	6684.9	arthord.micro.Muffin	0	0	1	rr02
+2026-10-27T20:03:34Z	robots\.data\hadur2\Hadur.data	34	34	0	11	0	9679.1	css.Delitioner	0	0	1	rr03
+2026-10-27T20:03:44Z	robots\.data\hadur2\Hadur.data	35	34	0	237	0	7651.1	pulsar.PulsarNano	0	0	2	rr01
+2026-10-27T20:03:44Z	robots\.data\hadur2\Hadur.data	35	34	0	164	0	7247.7	mue.Hyperion	0	0	1	rr02
+2026-10-27T20:03:42Z	robots\.data\hadur2\Hadur.data	35	34	0	197	0	7783.4	shrub.Vapour	1	0	6	rr03
+2026-10-27T20:03:44Z	robots\.data\hadur2\Hadur.data	34	34	0	6	0	-0.0	cf.star.Star2	0	0	5	rr04
+2026-10-27T20:03:48Z	robots\.data\hadur2\Hadur.data	10	9	0	45	0	1173.2					robocode
+2026-10-27T20:03:55Z	robots\.data\hadur2\Hadur.data	35	34	0	183	0	7113.4	mme.NikeEnhanced	1	0	5	rr01
+2026-10-27T20:03:52Z	robots\.data\hadur2\Hadur.data	35	30	0	200	0	6910.7	stefw.Tigger	0	0	1	rr02
+2026-10-27T20:03:59Z	robots\.data\hadur2\Hadur.data	35	34	0	214	0	9356.1	Krabb.krabby.Krabby	1	0	2	rr03
+2026-10-27T20:04:00Z	robots\.data\hadur2\Hadur.data	34	34	0	8	0	6198.0	voidious.mini.Komarious	0	0	1	rr04
+2026-10-27T20:04:01Z	robots\.data\hadur2\Hadur.data	10	10	0	1	0	7546.2					robocode
+2026-10-27T20:04:08Z	robots\.data\hadur2\Hadur.data	34	33	0	9	0	4684.2	tex.Longbot	0	0	1	rr01
+2026-10-27T20:04:13Z	robots\.data\hadur2\Hadur.data	34	33	0	10	0	5567.0	alpha.BlackIce	0	0	3	rr02
+2026-10-27T20:04:13Z	robots\.data\hadur2\Hadur.data	34	34	0	10	0	5797.5	robar.micro.Topaz	0	0	2	rr03
+2026-10-27T20:04:15Z	robots\.data\hadur2\Hadur.data	35	34	0	189	0	6808.1	suh.mega.WaveSurferGF	0	0	1	rr04
+2026-10-27T20:04:10Z	robots\.data\hadur2\Hadur.data	35	14	0	154	0	15513.6					robocode
+2026-10-27T20:04:21Z	robots\.data\hadur2\Hadur.data	35	32	0	167	0	4399.1	DM.Mijit	0	0	1	rr01
+2026-10-27T20:04:26Z	robots\.data\hadur2\Hadur.data	34	34	0	9	0	7599.1	fw.Number1	0	0	1	rr02
+2026-10-27T20:04:27Z	robots\.data\hadur2\Hadur.data	35	33	0	181	0	-0.0	sadoner.killer	1	0	1	rr03
+2026-10-27T20:04:26Z	robots\.data\hadur2\Hadur.data	34	34	0	9	0	4094.9	suh.nano.StopAndGoL	0	0	1	rr04
+2026-10-27T20:04:26Z	robots\.data\hadur2\Hadur.data	10	9	0	4	0	7995.7					robocode
+2026-10-27T20:04:31Z	robots\.data\hadur2\Hadur.data	34	34	0	8	0	4227.8	myl.micro.Avipes	0	0	2	rr01
+2026-10-27T20:04:39Z	robots\.data\hadur2\Hadur.data	35	34	0	235	0	-0.0	suh.nano.CrossC	0	0	2	rr02
+2026-10-27T20:04:37Z	robots\.data\hadur2\Hadur.data	34	32	0	14	0	9754.6	stelo.Lifestealer	0	0	1	rr03
+2026-10-27T20:04:42Z	robots\.data\hadur2\Hadur.data	34	33	0	9	0	6772.4	dz.OthoMicro	1	0	1	rr04
+2026-10-27T20:04:45Z	robots\.data\hadur2\Hadur.data	34	34	0	8	0	9043.5	alk.lap.LoudAndProud	1	0	3	rr01
+2026-10-27T20:04:47Z	robots\.data\hadur2\Hadur.data	35	31	0	178	0	6566.7	boe.Minerva	0	0	1	rr02
+2026-10-27T20:04:51Z	robots\.data\hadur2\Hadur.data	35	34	0	225	0	-0.0	slugzilla.SquirmyToad	0	0	1	rr03
+2026-10-27T20:04:46Z	robots\.data\hadur2\Hadur.data	34	34	0	9	0	2119.6	tornyil.bottomup.BottomUp	0	0	1	rr04
+2026-10-27T20:04:55Z	robots\.data\hadur2\Hadur.data	35	34	0	159	0	-0.0	asm.Statistas	0	1	2	rr01
+2026-10-27T20:05:00Z	robots\.data\hadur2\Hadur.data	34	32	0	11	0	3363.5	supersample.SuperCorners	0	0	1	rr02
+2026-10-27T20:05:01Z	robots\.data\hadur2\Hadur.data	34	34	0	7	0	6943.2	cx.BlestPain	0	0	1	rr03
+2026-10-27T20:04:54Z	robots\.data\hadur2\Hadur.data	34	33	0	9	0	7665.2	taqho.taqbot	0	0	1	rr04
+2026-10-27T20:05:12Z	robots\.data\hadur2\Hadur.data	34	34	0	8	0	7020.3	pez.gloom.GloomyDark	0	1	1	rr01
+2026-10-27T20:05:11Z	robots\.data\hadur2\Hadur.data	34	34	0	7	0	3805.6	sgp.JollyNinja	0	0	2	rr02
+2026-10-27T20:05:11Z	robots\.data\hadur2\Hadur.data	35	34	0	101	0	5605.4	timmit.mini.TimVA	1	0	2	rr03
+2026-10-27T20:05:11Z	robots\.data\hadur2\Hadur.data	10	0	0	1	0	7555.7					robocode
+2026-10-27T20:05:15Z	robots\.data\hadur2\Hadur.data	34	34	0	10	0	10243.0	penguin.Ivy	0	0	1	rr01
+2026-10-27T20:05:19Z	robots\.data\hadur2\Hadur.data	34	32	0	10	0	3715.0	sgp.JollyNinja	1	0	2	rr02
+2026-10-27T20:05:24Z	robots\.data\hadur2\Hadur.data	34	33	0	8	0	6595.4	dummy.micro.Sparrow	0	0	1	rr03
+2026-10-27T20:05:25Z	robots\.data\hadur2\Hadur.data	35	34	0	161	0	1775.1	jaybot.adv.bots.JayBot	0	0	1	rr04
+2026-10-27T20:05:35Z	robots\.data\hadur2\Hadur.data	34	34	0	8	0	3944.2	AD.CodaFirst	0	0	2	rr01
+2026-10-27T20:05:32Z	robots\.data\hadur2\Hadur.data	35	34	0	148	0	4323.2	eem.IWillFireNoBullet	0	0	2	rr02
+2026-10-27T20:05:30Z	robots\.data\hadur2\Hadur.data	34	34	0	9	0	6335.7	pe.minimelee.SandboxMiniMelee	1	1	4	rr03
+2026-10-27T20:05:37Z	robots\.data\hadur2\Hadur.data	34	34	0	8	0	1999.3	robar.haiku.Spike	0	0	1	rr04
+2026-10-27T20:05:32Z	robots\.data\hadur2\Hadur.data	10	10	0	0	0	-0.0					robocode
+2026-10-27T20:05:47Z	robots\.data\hadur2\Hadur.data	34	34	0	6	0	2930.9	bayen.UbaRamLT	1	0	3	rr01
+2026-10-27T20:05:49Z	robots\.data\hadur2\Hadur.data	35	34	0	157	0	5480.5	jsal.Jsalbot	1	0	1	rr03
+2026-10-27T20:05:41Z	robots\.data\hadur2\Hadur.data	35	34	0	172	0	6346.6	abc.Shadow	1	1	6	rr04
+2026-10-27T20:05:54Z	robots\.data\hadur2\Hadur.data	34	33	0	4	0	-0.0	Fenix.FenixTrack	0	0	2	rr01
+2026-10-27T20:05:53Z	robots\.data\hadur2\Hadur.data	34	34	0	8	0	3843.8	jekl.Jekyl	0	0	1	rr02
+2026-10-27T20:05:57Z	robots\.data\hadur2\Hadur.data	35	33	0	160	0	4238.5	vic.Locke	0	0	1	rr03
+2026-10-27T20:05:59Z	robots\.data\hadur2\Hadur.data	35	34	0	158	0	10212.6	sheldor.nano.PointInLineRRAL	0	0	1	rr04
+2026-10-27T20:05:58Z	robots\.data\hadur2\Hadur.data	10	10	0	1	0	6672.6					robocode
+2026-10-27T20:05:58Z	robots\.data\hadur2\Hadur.data	34	34	0	11	0	5556.5	trm.Wrekt	1	0	3	rr01
+2026-10-27T20:06:01Z	robots\.data\hadur2\Hadur.data	35	31	0	134	0	7740.9	kc.serpent.Hydra	0	0	1	rr02
+2026-10-27T20:06:10Z	robots\.data\hadur2\Hadur.data	35	34	0	155	0	8124.9	suh.nano.AngularMirrorC	0	0	1	rr03
+2026-10-27T20:06:12Z	robots\.data\hadur2\Hadur.data	35	34	0	137	0	4260.7	rz.GlowBlow	0	0	1	rr04
+2026-10-27T20:06:20Z	robots\.data\hadur2\Hadur.data	34	34	0	10	0	2396.5	de.simpleworks.robocode.bots.swiBot	0	0	1	rr01
+2026-10-27T20:06:23Z	robots\.data\hadur2\Hadur.data	35	34	0	179	0	4276.6	sp.AstherNano	0	0	2	rr02
+2026-10-27T20:06:23Z	robots\.data\hadur2\Hadur.data	35	32	0	143	0	1334.4	jwst.DAD.DarkAndDarker	0	0	1	rr03
+2026-10-27T20:06:27Z	robots\.data\hadur2\Hadur.data	35	34	0	257	0	4152.6	wiki.BasicBulletShielder	1	0	2	rr04
+2026-10-27T20:06:24Z	robots\.data\hadur2\Hadur.data	10	9	0	3	0	7331.8					robocode
+2026-10-27T20:06:27Z	robots\.data\hadur2\Hadur.data	34	34	0	265	0	8692.1	SuperSample.SuperCrazy	0	0	1	rr01
+2026-10-27T20:06:31Z	robots\.data\hadur2\Hadur.data	34	34	0	10	0	4184.7	gre.svman4.Morfeas	1	0	4	rr02
+2026-10-27T20:06:36Z	robots\.data\hadur2\Hadur.data	35	34	0	189	0	7094.6	sch.Simone	0	0	1	rr03
+2026-10-27T20:06:36Z	robots\.data\hadur2\Hadur.data	34	34	0	7	0	6415.1	suh.nano.CornerRL	0	0	1	rr04
+2026-10-27T20:06:37Z	robots\.data\hadur2\Hadur.data	34	34	0	9	0	8109.9	theo.Tungsten	0	0	1	rr01
+2026-10-27T20:06:47Z	robots\.data\hadur2\Hadur.data	35	34	0	223	0	-0.0	fowl3628800.LightningBolt	0	0	1	rr02
+2026-10-27T20:06:48Z	robots\.data\hadur2\Hadur.data	35	34	0	238	0	6873.2	gh.micro.GrubbmThree	0	0	2	rr03
+2026-10-27T20:06:41Z	robots\.data\hadur2\Hadur.data	35	34	0	178	0	8979.6	davidalves.PhoenixOS	0	0	1	rr04
+2026-10-27T20:06:41Z	robots\.data\hadur2\Hadur.data	10	10	0	5	0	8995.1					robocode
+2026-10-27T20:06:56Z	robots\.data\hadur2\Hadur.data	34	34	0	7	0	6267.1	acid.Null	0	0	1	rr01
+2026-10-27T20:07:00Z	robots\.data\hadur2\Hadur.data	34	34	0	10	0	6753.5	rz.SmallDevil	0	0	1	rr03
+2026-10-27T20:06:55Z	robots\.data\hadur2\Hadur.data	34	34	0	10	0	2734.7	dft.Immortal	1	0	2	rr04
+2026-10-27T20:07:09Z	robots\.data\hadur2\Hadur.data	34	34	0	11	0	6180.6	PSW.Relentless	0	0	1	rr01
+2026-10-27T20:07:04Z	robots\.data\hadur2\Hadur.data	34	34	0	6	0	6837.8	CharlieN.Omega.Omega	0	0	1	rr02
+2026-10-27T20:07:03Z	robots\.data\hadur2\Hadur.data	34	34	0	6	0	-0.0	zen.Ronin	1	0	1	rr03
+2026-10-27T20:07:12Z	robots\.data\hadur2\Hadur.data	34	33	0	6	0	6637.7	stelo.Randomness	0	0	2	rr04
+2026-10-27T20:07:09Z	robots\.data\hadur2\Hadur.data	10	9	0	2	0	9043.6					robocode
+2026-10-27T20:07:19Z	robots\.data\hadur2\Hadur.data	34	33	0	7	0	1524.4	apc.botM	0	0	1	rr01
+2026-10-27T20:07:21Z	robots\.data\hadur2\Hadur.data	35	34	0	171	0	6528.1	jeremyreeder.Bully	0	0	2	rr02
+2026-10-27T20:07:25Z	robots\.data\hadur2\Hadur.data	34	34	0	6	0	4157.3	ntc.Cannon	1	0	2	rr03
+2026-10-27T20:07:21Z	robots\.data\hadur2\Hadur.data	35	34	0	166	0	-0.0	barontrozo.BaronTrozo	0	0	2	rr04
+2026-10-27T20:07:32Z	robots\.data\hadur2\Hadur.data	34	34	0	10	0	6535.2	japs.Sjonniebot	0	0	1	rr01
+2026-10-27T20:07:33Z	robots\.data\hadur2\Hadur.data	34	34	0	5	0	835.4	rcp.Kuramatron	0	0	1	rr02
+2026-10-27T20:07:28Z	robots\.data\hadur2\Hadur.data	34	34	0	8	0	4480.2	ms.Ares	0	0	1	rr03
+2026-10-27T20:07:29Z	robots\.data\hadur2\Hadur.data	34	30	0	11	0	4028.5	tw.Exterminator	1	0	2	rr04
+2026-10-27T20:07:40Z	robots\.data\hadur2\Hadur.data	10	4	0	2	0	2635.6					robocode
+2026-10-27T20:07:41Z	robots\.data\hadur2\Hadur.data	34	34	0	9	0	3240.3	ak.Fermat	0	0	1	rr01
+2026-10-27T20:07:45Z	robots\.data\hadur2\Hadur.data	35	34	0	157	0	3541.6	DM.mega.Bezier	1	1	4	rr02
+2026-10-27T20:07:48Z	robots\.data\hadur2\Hadur.data	34	34	0	9	0	10511.8	kjc.Karaykan	0	0	1	rr03
+2026-10-27T20:07:43Z	robots\.data\hadur2\Hadur.data	34	31	0	7	0	3127.0	lancel.Lynx	1	0	2	rr04
+2026-10-27T20:07:40Z	robots\.data\hadur2\Hadur.data	10	4	0	2	0	2635.6					robocode
+2026-10-27T20:07:57Z	robots\.data\hadur2\Hadur.data	34	34	0	8	0	6873.0	jk.nano.Machete	0	0	1	rr01
+2026-10-27T20:07:55Z	robots\.data\hadur2\Hadur.data	35	34	0	138	0	6047.1	cx.Lacrimas	0	0	1	rr03
+2026-10-27T20:07:59Z	robots\.data\hadur2\Hadur.data	35	34	0	137	0	6165.4	spinnercat.haiku.Refrigerator	0	0	1	rr04
+2026-10-27T20:08:00Z	robots\.data\hadur2\Hadur.data	10	6	0	5	0	8315.4					robocode
+2026-10-27T20:08:06Z	robots\.data\hadur2\Hadur.data	34	34	0	9	0	7950.6	pa.Improved	0	0	1	rr01
+2026-10-27T20:08:09Z	robots\.data\hadur2\Hadur.data	35	33	0	152	0	3955.4	jam.micro.RaikoMicro	0	0	1	rr02
+2026-10-27T20:08:12Z	robots\.data\hadur2\Hadur.data	34	31	0	7	0	6283.8	robar.micro.Kirbyi	0	0	2	rr03
+2026-10-27T20:08:04Z	robots\.data\hadur2\Hadur.data	35	34	0	194	0	6135.9	cs.s2.Seraphim	0	0	1	rr04
+2026-10-27T20:08:18Z	robots\.data\hadur2\Hadur.data	34	34	0	8	0	6310.1	ultra.Defender	1	0	2	rr02
+2026-10-27T20:08:23Z	robots\.data\hadur2\Hadur.data	34	34	0	264	0	6307.7	wompi.Kowari	0	0	1	rr03
+2026-10-27T20:08:25Z	robots\.data\hadur2\Hadur.data	35	34	0	172	0	6501.9	suh.nano.MirrorL	0	0	1	rr04
+2026-10-27T20:08:17Z	robots\.data\hadur2\Hadur.data	10	10	0	4	0	7908.8					robocode
+2026-10-27T20:08:33Z	robots\.data\hadur2\Hadur.data	34	34	0	7	0	3989.9	And.BasicSurfer	0	0	1	rr02
+2026-10-27T20:08:34Z	robots\.data\hadur2\Hadur.data	35	34	0	201	0	4429.7	drm.Magazine	0	0	1	rr03
+2026-10-27T20:08:36Z	robots\.data\hadur2\Hadur.data	34	33	0	9	0	8576.8	pez.frankie.Frankie	0	0	1	rr04
+2026-10-27T20:08:29Z	robots\.data\hadur2\Hadur.data	10	10	0	1	0	7078.6					robocode
+2026-10-27T20:08:42Z	robots\.data\hadur2\Hadur.data	35	34	0	139	0	4396.5	omens.CannonfodderMicro	0	0	1	rr02
+2026-10-27T20:08:44Z	robots\.data\hadur2\Hadur.data	35	30	0	189	0	-0.0	cx.mini.Nimrod	0	1	5	rr03
+2026-10-27T20:08:44Z	robots\.data\hadur2\Hadur.data	35	34	0	167	0	7385.2	pez.frankie.Frankie	0	0	1	rr04
+2026-10-27T20:08:57Z	robots\.data\hadur2\Hadur.data	35	33	0	160	0	8578.7	penguin.MrFreeze	1	0	1	rr02
+2026-10-27T20:08:57Z	robots\.data\hadur2\Hadur.data	35	33	0	160	0	8578.7	penguin.MrFreeze	1	0	1	rr02
+2026-10-27T20:09:05Z	robots\.data\hadur2\Hadur.data	35	30	0	131	0	1922.6	ags.Midboss	1	0	1	rr04
+2026-10-27T20:09:02Z	robots\.data\hadur2\Hadur.data	10	9	0	1	0	7543.6					robocode
+2026-10-27T20:09:14Z	robots\.data\hadur2\Hadur.data	35	34	0	154	0	9289.2	com.blogspot.malinkody.DestrobotMalin	0	0	1	rr02
+2026-10-27T20:09:16Z	robots\.data\hadur2\Hadur.data	35	34	0	150	0	6617.0	timmit.nano.TimCat	0	0	1	rr03
+2026-10-27T20:09:17Z	robots\.data\hadur2\Hadur.data	35	32	0	193	0	5783.7	sample.SpinBot	0	0	1	rr04
+2026-10-27T20:09:21Z	robots\.data\hadur2\Hadur.data	35	34	0	242	0	6653.0	mue.Ascendant	0	0	1	rr04
+2026-10-27T20:09:34Z	robots\.data\hadur2\Hadur.data	34	34	0	9	0	4341.4	dvogon.GangBang	0	0	2	rr02
+2026-10-27T20:09:34Z	robots\.data\hadur2\Hadur.data	35	34	0	249	0	5354.1	stelo.MoojukNano	0	0	1	rr03
+2026-10-27T20:09:35Z	robots\.data\hadur2\Hadur.data	34	34	0	10	0	9059.3	arthord.NanoSatan	1	0	1	rr04
+2026-10-27T20:09:42Z	robots\.data\hadur2\Hadur.data	35	34	0	140	0	5630.1	jf.Dodger	0	0	1	rr02
+2026-10-27T20:09:40Z	robots\.data\hadur2\Hadur.data	34	33	0	8	0	2336.3	stelo.MoojukNano	1	0	1	rr03
+2026-10-27T20:09:45Z	robots\.data\hadur2\Hadur.data	35	34	0	215	0	4308.3	kawigi.sbf.FloodSonnet	0	0	1	rr04
+2026-10-27T20:09:46Z	robots\.data\hadur2\Hadur.data	10	7	0	2	0	9021.6					robocode
+2026-10-27T20:09:56Z	robots\.data\hadur2\Hadur.data	34	33	0	10	0	7042.2	mcb.Audace	0	0	1	rr02
+2026-10-27T20:09:58Z	robots\.data\hadur2\Hadur.data	34	31	0	8	0	4363.2	voidious.micro.Jen	0	0	2	rr03
+2026-10-27T20:09:56Z	robots\.data\hadur2\Hadur.data	35	34	0	169	0	-0.0	cjm.Che	1	0	2	rr04
+2026-10-27T20:10:00Z	robots\.data\hadur2\Hadur.data	34	34	0	11	0	9023.2	ur4n0.UR4NO	0	0	1	rr02
+2026-10-27T20:10:08Z	robots\.data\hadur2\Hadur.data	35	28	0	186	0	6203.8	ers.nano.gokdeniz.Gokdeniz	0	0	1	rr03
+2026-10-27T20:10:08Z	robots\.data\hadur2\Hadur.data	35	34	0	128	0	6552.8	xander.cat.XanderCat	1	0	1	rr04
+2026-10-27T20:10:11Z	robots\.data\hadur2\Hadur.data	9	7	0	4	0	9204.9					robocode
+2026-10-27T20:10:17Z	robots\.data\hadur2\Hadur.data	35	34	0	181	0	-0.0	jf.Dodger	0	0	2	rr02
+2026-10-27T20:10:13Z	robots\.data\hadur2\Hadur.data	34	34	0	7	0	6787.8	ers.nano.gokdeniz.Gokdeniz	0	0	1	rr03
+2026-10-27T20:10:21Z	robots\.data\hadur2\Hadur.data	35	34	0	13	0	9441.9	bk.Shooter	0	0	1	rr04
+2026-10-27T20:10:26Z	robots\.data\hadur2\Hadur.data	34	34	0	7	0	6815.4	kronenthaler.Basilisk	1	0	3	rr02
+2026-10-27T20:10:32Z	robots\.data\hadur2\Hadur.data	34	34	0	9	0	5975.8	jep.nano.Hotspur	1	0	1	rr03
+2026-10-27T20:10:25Z	robots\.data\hadur2\Hadur.data	34	34	0	10	0	6527.2	kc.micro.Thorn	0	1	2	rr04
+2026-10-27T20:10:34Z	robots\.data\hadur2\Hadur.data	35	3	0	86	0	3983.4					robocode
+2026-10-27T20:10:38Z	robots\.data\hadur2\Hadur.data	34	34	0	10	0	7077.0	catcat20.helios.Helios	1	0	1	rr02
+2026-10-27T20:10:42Z	robots\.data\hadur2\Hadur.data	34	34	0	8	0	7198.0	dummy.mini.Parakeet	1	0	3	rr03
+2026-10-27T20:10:39Z	robots\.data\hadur2\Hadur.data	34	34	0	8	0	6754.6	axeBots.Musashi	0	0	1	rr04
+2026-10-27T20:10:51Z	robots\.data\hadur2\Hadur.data	34	33	0	12	0	4953.0	florent.small.LittleAngel	0	0	1	rr03
+2026-10-27T20:10:51Z	robots\.data\hadur2\Hadur.data	35	28	0	180	0	1754.3	mue.Ascendant	1	0	2	rr04
+2026-10-27T20:11:02Z	robots\.data\hadur2\Hadur.data	35	28	0	183	0	7010.0	paulk.PaulV3	0	0	1	rr01
+2026-10-27T20:11:03Z	robots\.data\hadur2\Hadur.data	34	34	0	7	0	6813.8	wiki.nano.RaikoNano	0	0	1	rr02
+2026-10-27T20:11:04Z	robots\.data\hadur2\Hadur.data	34	34	0	5	0	-0.0	radnor.RamRod	0	0	1	rr03
+2026-10-27T20:11:07Z	robots\.data\hadur2\Hadur.data	34	34	0	8	0	6481.0	cx.micro.Blur	1	0	1	rr04
+2026-10-27T20:11:03Z	robots\.data\hadur2\Hadur.data	10	8	0	2	0	2244.7					robocode
+2026-10-27T20:11:14Z	robots\.data\hadur2\Hadur.data	34	32	0	268	0	10200.4	apc.botM	1	0	2	rr01
+2026-10-27T20:11:12Z	robots\.data\hadur2\Hadur.data	34	34	0	6	0	6698.0	trab.nano.AinippeNano	0	0	1	rr02
+2026-10-27T20:11:12Z	robots\.data\hadur2\Hadur.data	34	34	0	11	0	9303.0	theo.avenge.Pequod	0	0	1	rr03
+2026-10-27T20:11:19Z	robots\.data\hadur2\Hadur.data	34	25	0	9	0	6440.7	lechu.Ala	1	0	1	rr04
+2026-10-27T20:11:27Z	robots\.data\hadur2\Hadur.data	34	33	0	9	0	8560.2	dsx724.VSAB_EP3_ATR	1	0	1	rr01
+2026-10-27T20:11:19Z	robots\.data\hadur2\Hadur.data	34	34	0	10	0	9307.8	cx.Lacrimas	1	0	1	rr02
+2026-10-27T20:11:26Z	robots\.data\hadur2\Hadur.data	35	33	0	233	0	6575.2	sheldor.nano.FoilistNano	0	0	1	rr04
+2026-10-27T20:11:29Z	robots\.data\hadur2\Hadur.data	10	10	0	1	0	1488.6					robocode
+2026-10-27T20:11:38Z	robots\.data\hadur2\Hadur.data	34	33	0	10	0	7386.9	whind.Constitution	1	0	1	rr01
+2026-10-27T20:11:40Z	robots\.data\hadur2\Hadur.data	34	27	0	11	0	4259.7	suh.mega.WaveSurferPG	1	0	2	rr02
+2026-10-27T20:11:35Z	robots\.data\hadur2\Hadur.data	34	34	0	11	0	6526.1	cjm.Chomsky	0	0	1	rr03
+2026-10-27T20:11:42Z	robots\.data\hadur2\Hadur.data	35	34	0	217	0	7512.7	oog.nano.MagicD2	0	0	1	rr04
+2026-10-27T20:11:46Z	robots\.data\hadur2\Hadur.data	34	33	0	10	0	6623.5	theo.simple.Bones	0	0	1	rr01
+2026-10-27T20:11:43Z	robots\.data\hadur2\Hadur.data	35	33	0	172	0	4357.8	aaa.r.ScalarR	1	1	2	rr02
+2026-10-27T20:11:47Z	robots\.data\hadur2\Hadur.data	35	34	0	245	0	6575.3	lrem.micro.FalseProphet	1	0	1	rr03
+2026-10-27T20:11:53Z	robots\.data\hadur2\Hadur.data	34	33	0	10	0	5736.7	lw.LuthersTest	0	0	1	rr04
+2026-10-27T20:11:46Z	robots\.data\hadur2\Hadur.data	10	10	0	1	0	6964.4					robocode
+2026-10-27T20:12:03Z	robots\.data\hadur2\Hadur.data	35	34	0	246	0	5213.1	tvv.nano.Polaris	1	0	2	rr03
+2026-10-27T20:12:03Z	robots\.data\hadur2\Hadur.data	34	34	0	9	0	7689.9	pez.mini.VertiLeach	1	0	2	rr04
+2026-10-27T20:12:02Z	robots\.data\hadur2\Hadur.data	35	18	0	121	0	8711.1					robocode
+2026-10-27T20:12:13Z	robots\.data\hadur2\Hadur.data	34	34	0	8	0	6458.2	gio.RealGioBot	0	0	1	rr01
+2026-10-27T20:12:13Z	robots\.data\hadur2\Hadur.data	34	34	0	9	0	8280.3	tjk.deBroglie	0	0	1	rr03
+2026-10-27T20:12:17Z	robots\.data\hadur2\Hadur.data	35	34	0	239	0	6898.5	mae.Mae1	0	0	1	rr04
+2026-10-27T20:12:13Z	robots\.data\hadur2\Hadur.data	10	10	0	0	0	-0.0					robocode
+2026-10-27T20:12:18Z	robots\.data\hadur2\Hadur.data	34	34	0	11	0	6737.3	slugzilla.Basilite	0	0	1	rr01
+2026-10-27T20:12:22Z	robots\.data\hadur2\Hadur.data	34	34	0	9	0	8440.3	metal.small.MCool	0	0	1	rr03
+2026-10-27T20:12:25Z	robots\.data\hadur2\Hadur.data	35	34	0	158	0	4129.8	TCMI.nano.Copper	0	0	1	rr04
+2026-10-27T20:12:29Z	robots\.data\hadur2\Hadur.data	35	34	0	183	0	8571.5	slugzilla.Basilisk	0	0	1	rr01
+2026-10-27T20:12:32Z	robots\.data\hadur2\Hadur.data	35	33	0	176	0	3871.5	stuff.Vlad	0	0	2	rr03
+2026-10-27T20:12:38Z	robots\.data\hadur2\Hadur.data	34	33	0	9	0	4114.0	agrach.RobotSlayer	0	0	2	rr04
+2026-10-27T20:12:44Z	robots\.data\hadur2\Hadur.data	34	32	0	7	0	-0.0	ua.kiiv.kosyak.robocode.tn1.Tn1	0	0	1	rr01
+2026-10-27T20:12:38Z	robots\.data\hadur2\Hadur.data	34	33	0	9	0	4114.0	pc.Wavelet	0	0	1	rr04
+2026-10-27T20:12:47Z	robots\.data\hadur2\Hadur.data	10	9	0	1	0	8720.9					robocode
+2026-10-27T20:12:48Z	robots\.data\hadur2\Hadur.data	34	34	0	7	0	1729.0	kid.Gladiator	0	1	2	rr01
+2026-10-27T20:13:04Z	robots\.data\hadur2\Hadur.data	35	31	0	183	0	6357.3	md.Pasta	0	0	1	rr01
+2026-10-27T20:13:02Z	robots\.data\hadur2\Hadur.data	35	14	0	72	0	1295.2	tobe.Saturn	0	0	1	rr02
+2026-10-27T20:13:04Z	robots\.data\hadur2\Hadur.data	10	10	0	3	0	7122.2					robocode
+2026-10-27T20:13:13Z	robots\.data\hadur2\Hadur.data	34	34	0	8	0	6006.1	pez.mako.Mako	0	1	1	rr01
+2026-10-27T20:13:14Z	robots\.data\hadur2\Hadur.data	35	33	0	144	0	7702.9	ultra.Defender	1	0	3	rr02
+2026-10-27T20:13:16Z	robots\.data\hadur2\Hadur.data	34	33	0	12	0	10056.6	jp.Perpy	1	0	4	rr04
+2026-10-27T20:13:25Z	robots\.data\hadur2\Hadur.data	34	32	0	8	0	3980.2	tjk.deBroglie	0	0	1	rr04
+2026-10-27T20:13:22Z	robots\.data\hadur2\Hadur.data	10	10	0	1	0	789.0					robocode
+2026-10-27T20:13:33Z	robots\.data\hadur2\Hadur.data	35	34	0	115	0	6407.8	spartancompany.Spartan2	0	0	3	rr02
+2026-10-27T20:13:36Z	robots\.data\hadur2\Hadur.data	34	34	0	8	0	6542.5	pmc.SniperBot	0	0	1	rr04
+2026-10-27T20:13:34Z	robots\.data\hadur2\Hadur.data	10	9	0	42	0	5213.7					robocode
+2026-10-27T20:13:44Z	robots\.data\hadur2\Hadur.data	34	33	0	10	0	4229.7	suzushin7.nano.Galaxy03	0	0	2	rr01
+2026-10-27T20:13:41Z	robots\.data\hadur2\Hadur.data	35	34	0	209	0	7306.1	pedersen.Ugluk	0	0	1	rr02
+2026-10-27T20:13:49Z	robots\.data\hadur2\Hadur.data	35	34	0	246	0	7524.0	oog.nano.SavantWS	1	0	1	rr04
+2026-10-27T20:13:54Z	robots\.data\hadur2\Hadur.data	34	34	0	10	0	6642.4	demetrix.nano.SledgeHammer	0	0	2	rr01
+2026-10-27T20:13:57Z	robots\.data\hadur2\Hadur.data	35	34	0	105	0	7367.9	slugzilla.OrbitLinear	0	0	1	rr02
+2026-10-27T20:13:57Z	robots\.data\hadur2\Hadur.data	34	34	0	6	0	8298.6	eem.EvBotNG	1	0	1	rr04
+2026-10-27T20:13:57Z	robots\.data\hadur2\Hadur.data	34	34	0	8	0	4534.0	gg.Wolverine	0	0	1	rr01
+2026-10-27T20:14:08Z	robots\.data\hadur2\Hadur.data	35	34	0	115	0	9157.3	omens.CannonfodderNano	0	0	2	rr02
+2026-10-27T20:14:10Z	robots\.data\hadur2\Hadur.data	10	8	0	2	0	6942.3					robocode
+2026-10-27T20:14:15Z	robots\.data\hadur2\Hadur.data	34	31	0	9	0	6798.7	starpkg.StarViewerZ	0	0	1	rr01
+2026-10-27T20:14:13Z	robots\.data\hadur2\Hadur.data	34	34	0	11	0	10776.6	stelo.MatchupMini	0	0	1	rr02
+2026-10-27T20:14:21Z	robots\.data\hadur2\Hadur.data	34	18	0	13	0	8886.3	cs.PumpkinPie	1	0	3	rr03
+2026-10-27T20:14:32Z	robots\.data\hadur2\Hadur.data	34	32	0	4	0	-0.0	TCMI.Enyo	0	0	1	rr01
+2026-10-27T20:14:34Z	robots\.data\hadur2\Hadur.data	34	30	0	10	0	7382.4	ar.QuantumChromodynamics	0	0	1	rr02
+2026-10-27T20:14:37Z	robots\.data\hadur2\Hadur.data	35	32	0	176	0	1499.9	cs.PumpkinPie	1	0	3	rr03
+2026-10-27T20:14:39Z	robots\.data\hadur2\Hadur.data	10	10	0	1	0	10107.9					robocode
+2026-10-27T20:14:38Z	robots\.data\hadur2\Hadur.data	35	34	0	171	0	5787.8	starpkg.StarViewerZ	1	0	2	rr01
+2026-10-27T20:14:42Z	robots\.data\hadur2\Hadur.data	35	34	0	213	0	3667.1	nexus.One	0	0	2	rr02
+2026-10-27T20:14:48Z	robots\.data\hadur2\Hadur.data	34	34	0	10	0	5118.8	metal.small.MCool	0	0	2	rr03
+2026-10-27T20:14:49Z	robots\.data\hadur2\Hadur.data	34	31	0	10	0	9562.8	jwirde.Gort	0	0	2	rr04
+2026-10-27T20:14:48Z	robots\.data\hadur2\Hadur.data	35	23	0	70	0	1539.9					robocode
+2026-10-27T20:14:56Z	robots\.data\hadur2\Hadur.data	34	33	0	8	0	6934.8	dev.kurtw.KurtBot	1	0	1	rr01
+2026-10-27T20:14:55Z	robots\.data\hadur2\Hadur.data	34	34	0	11	0	6242.4	theo.Hydrogen	0	0	1	rr02
+2026-10-27T20:15:02Z	robots\.data\hadur2\Hadur.data	34	34	0	9	0	9448.8	rsim.mini.BulletCatcher	0	0	1	rr03
+2026-10-27T20:14:53Z	robots\.data\hadur2\Hadur.data	35	34	0	233	0	5196.2	jwirde.Gort	0	0	2	rr04
+2026-10-27T20:15:03Z	robots\.data\hadur2\Hadur.data	10	10	0	2	0	1903.8					robocode
+2026-10-27T20:15:10Z	robots\.data\hadur2\Hadur.data	34	34	0	10	0	11630.5	fromHell.C4H10O	0	0	1	rr01
+2026-10-27T20:15:10Z	robots\.data\hadur2\Hadur.data	34	34	0	8	0	7420.3	vft.Hrist	0	0	1	rr02
+2026-10-27T20:15:08Z	robots\.data\hadur2\Hadur.data	34	34	0	12	0	9880.5	kc.micro.Thorn	0	0	1	rr03
+2026-10-27T20:15:17Z	robots\.data\hadur2\Hadur.data	35	34	0	195	0	9152.5	sample.SpinBot	0	0	2	rr04
+2026-10-27T20:15:23Z	robots\.data\hadur2\Hadur.data	34	29	0	7	0	6468.6	fromHell.C4H10O	1	0	1	rr01
+2026-10-27T20:15:16Z	robots\.data\hadur2\Hadur.data	35	34	0	248	0	2815.4	catcat20.helios.Helios	1	0	2	rr02
+2026-10-27T20:15:23Z	robots\.data\hadur2\Hadur.data	35	34	0	154	0	3429.0	sheldor.melee.nano.TestMelee	1	0	2	rr03
+2026-10-27T20:15:27Z	robots\.data\hadur2\Hadur.data	34	34	0	264	0	8843.4	mld.Wisdom	0	0	1	rr04
+2026-10-27T20:15:25Z	robots\.data\hadur2\Hadur.data	10	10	0	1	0	4369.8					robocode
+2026-10-27T20:15:34Z	robots\.data\hadur2\Hadur.data	34	34	0	264	0	7257.9	fm.mammillarias	0	0	1	rr01
+2026-10-27T20:15:37Z	robots\.data\hadur2\Hadur.data	34	34	0	264	0	4549.5	com.blogspot.malinkody.DestrobotMalin	0	0	2	rr02
+2026-10-27T20:15:38Z	robots\.data\hadur2\Hadur.data	34	33	0	11	0	5690.2	spartancompany.Spartan2	0	0	2	rr03
+2026-10-27T20:15:36Z	robots\.data\hadur2\Hadur.data	34	34	0	5	0	-0.0	ej.ChocolateBar	0	0	1	rr04
+2026-10-27T20:15:37Z	robots\.data\hadur2\Hadur.data	10	10	0	1	0	10524.8					robocode
+2026-10-27T20:15:48Z	robots\.data\hadur2\Hadur.data	34	34	0	11	0	5309.3	disan.Chair	1	0	2	rr01
+2026-10-27T20:15:50Z	robots\.data\hadur2\Hadur.data	34	33	0	8	0	4573.1	mcb.Audace	0	0	2	rr02
+2026-10-27T20:15:47Z	robots\.data\hadur2\Hadur.data	34	34	0	7	0	6387.4	kawigi.sbf.Teancum	0	0	1	rr03
+2026-10-27T20:15:53Z	robots\.data\hadur2\Hadur.data	34	34	0	7	0	-0.0	pmc.SniperBot	0	0	2	rr04
+2026-10-27T20:15:56Z	robots\.data\hadur2\Hadur.data	34	34	0	265	0	6832.2	ph.micro.Pikeman	1	1	4	rr01
+2026-10-27T20:15:59Z	robots\.data\hadur2\Hadur.data	34	34	0	8	0	5346.6	zen.Mirage	1	0	1	rr02
+2026-10-27T20:15:58Z	robots\.data\hadur2\Hadur.data	34	34	0	265	0	8093.9	mn.Combat	1	0	1	rr03
+2026-10-27T20:16:01Z	robots\.data\hadur2\Hadur.data	34	34	0	7	0	-0.0	starpkg.StarViewerZ	0	0	1	rr04
+2026-10-27T20:16:02Z	robots\.data\hadur2\Hadur.data	10	8	0	40	0	939.1					robocode
+2026-10-27T20:16:12Z	robots\.data\hadur2\Hadur.data	34	34	0	8	0	4565.4	benhorner.PureAggression	0	0	1	rr01
+2026-10-27T20:16:15Z	robots\.data\hadur2\Hadur.data	34	31	0	265	0	1229.9	zzx.Ignohis	0	0	1	rr04
+2026-10-27T20:16:21Z	robots\.data\hadur2\Hadur.data	34	34	0	10	0	7541.0	xander.cat.Mikey	0	0	1	rr01
+2026-10-27T20:16:19Z	robots\.data\hadur2\Hadur.data	34	34	0	9	0	8521.4	myl.micro.NekoNinja	0	0	1	rr04
+2026-10-27T20:16:32Z	robots\.data\hadur2\Hadur.data	34	34	0	9	0	7153.1	etienne72230.Wall_street	0	0	1	rr01
+2026-10-27T20:16:35Z	robots\.data\hadur2\Hadur.data	34	34	0	11	0	2299.9	TCMI.Enyo	1	0	1	rr02
+2026-10-27T20:16:32Z	robots\.data\hadur2\Hadur.data	34	34	0	9	0	4182.3	froh.micro.Aversari	0	0	1	rr04
+2026-10-27T20:16:35Z	robots\.data\hadur2\Hadur.data	10	8	0	3	0	7176.8					robocode
+2026-10-27T20:16:40Z	robots\.data\hadur2\Hadur.data	34	34	0	8	0	7670.6	pez.nano.Icarus	0	0	1	rr01
+2026-10-27T20:16:45Z	robots\.data\hadur2\Hadur.data	34	33	0	10	0	8362.9	jk.sheldor.nano.Yatagan	0	0	1	rr02
+2026-10-27T20:16:40Z	robots\.data\hadur2\Hadur.data	34	21	0	9	0	6906.1	mn.Combat	1	1	1	rr03
+2026-10-27T20:16:38Z	robots\.data\hadur2\Hadur.data	35	34	0	263	0	7012.4	ags.Midboss	1	0	2	rr04
+2026-10-27T20:16:53Z	robots\.data\hadur2\Hadur.data	35	34	0	111	0	6470.8	steff.Rebel	0	0	1	rr02
+2026-10-27T20:16:56Z	robots\.data\hadur2\Hadur.data	35	34	0	174	0	-0.0	nanoskank.NanoSkank	0	0	2	rr04
+2026-10-27T20:17:06Z	robots\.data\hadur2\Hadur.data	35	34	0	154	0	7547.7	mnt.AHEB	0	1	1	rr02
+2026-10-27T20:17:06Z	robots\.data\hadur2\Hadur.data	34	34	0	7	0	5587.6	suh.nano.MyFirstAdvancedRobot	0	0	1	rr04
+2026-10-27T20:17:03Z	robots\.data\hadur2\Hadur.data	10	6	0	3	0	9095.3					robocode
+2026-10-27T20:17:17Z	robots\.data\hadur2\Hadur.data	34	33	0	5	0	6256.6	demetrix.nano.SledgeHammer	0	0	1	rr04
+2026-10-27T20:17:23Z	robots\.data\hadur2\Hadur.data	35	34	0	118	0	6160.2	kenran.Bakko	0	0	1	rr02
+2026-10-27T20:17:24Z	robots\.data\hadur2\Hadur.data	35	34	0	156	0	5425.2	mae.Mae1	0	0	2	rr04
+2026-10-27T20:17:23Z	robots\.data\hadur2\Hadur.data	10	9	0	40	0	1152.2					robocode
+2026-10-27T20:17:36Z	robots\.data\hadur2\Hadur.data	34	34	0	262	0	-0.0	sanja.First	0	0	2	rr02
+2026-10-27T20:17:32Z	robots\.data\hadur2\Hadur.data	34	33	0	10	0	9295.1	tcf.Drifter	0	1	2	rr04
+2026-10-27T20:17:40Z	robots\.data\hadur2\Hadur.data	35	23	0	168	0	6373.5	traker.Eraser	1	0	1	rr01
+2026-10-27T20:17:43Z	robots\.data\hadur2\Hadur.data	35	34	0	111	0	6543.4	oa.weak.BotherBot	0	0	1	rr02
+2026-10-27T20:17:42Z	robots\.data\hadur2\Hadur.data	34	28	0	9	0	4079.5	cs.Nene	1	1	1	rr03
+2026-10-27T20:17:50Z	robots\.data\hadur2\Hadur.data	34	34	0	6	0	-0.0	xiongan.Xiongan	0	0	1	rr04
+2026-10-27T20:17:55Z	robots\.data\hadur2\Hadur.data	34	32	0	9	0	3792.8	pe.SandboxDT	1	0	1	rr01
+2026-10-27T20:17:50Z	robots\.data\hadur2\Hadur.data	35	34	0	207	0	9930.0	ry.Worst	0	0	1	rr02
+2026-10-27T20:18:00Z	robots\.data\hadur2\Hadur.data	35	34	0	224	0	4414.6	ry.Worst	0	0	2	rr03
+2026-10-27T20:17:55Z	robots\.data\hadur2\Hadur.data	34	34	0	9	0	8976.3	catcat20.Rabbit	0	0	1	rr04
+2026-10-27T20:18:06Z	robots\.data\hadur2\Hadur.data	34	27	0	10	0	6661.4	tjk.deBroglie	0	0	1	rr01
+2026-10-27T20:18:09Z	robots\.data\hadur2\Hadur.data	34	34	0	9	0	8441.1	simonton.mini.WeeksOnEnd	0	0	1	rr02
+2026-10-27T20:18:09Z	robots\.data\hadur2\Hadur.data	35	29	0	182	0	11675.6	com.arsenic.NewTest	0	0	1	rr03
+2026-10-27T20:18:18Z	robots\.data\hadur2\Hadur.data	34	34	0	6	0	4150.7	aetos.AetosFirstBot	0	0	1	rr01
+2026-10-27T20:18:18Z	robots\.data\hadur2\Hadur.data	34	34	0	8	0	7757.0	AIR.iRobot	0	0	1	rr02
+2026-10-27T20:18:14Z	robots\.data\hadur2\Hadur.data	34	34	0	10	0	6711.9	suh.mega.WaveSurferPG	0	0	1	rr03
+2026-10-27T20:18:17Z	robots\.data\hadur2\Hadur.data	9	0	0	4	0	4406.3					robocode
+2026-10-27T20:18:29Z	robots\.data\hadur2\Hadur.data	34	34	0	9	0	5407.0	dcs.Eater_of_Worlds	0	0	1	rr01
+2026-10-27T20:18:25Z	robots\.data\hadur2\Hadur.data	34	34	0	8	0	-0.0	fromHell.CHCl3	0	0	1	rr02
+2026-10-27T20:18:28Z	robots\.data\hadur2\Hadur.data	34	34	0	263	0	7943.0	florent.small.LittleAngel	0	1	2	rr03
+2026-10-27T20:18:35Z	robots\.data\hadur2\Hadur.data	34	30	0	270	0	6896.7	catcat20.Rabbit	1	0	1	rr04
+2026-10-27T20:18:32Z	robots\.data\hadur2\Hadur.data	10	10	0	1	0	8070.2					robocode
+2026-10-27T20:18:37Z	robots\.data\hadur2\Hadur.data	34	34	0	6	0	-0.0	cw.megas.Polar	1	0	3	rr01
+2026-10-27T20:18:42Z	robots\.data\hadur2\Hadur.data	34	34	0	10	0	8346.4	com.arsenic.NewTest	0	0	1	rr02
+2026-10-27T20:18:43Z	robots\.data\hadur2\Hadur.data	34	34	0	266	0	6193.7	traker.Eraser	0	0	1	rr03
+2026-10-27T20:18:43Z	robots\.data\hadur2\Hadur.data	34	34	0	4	0	-0.0	pez.mini.Gouldingi	0	0	1	rr04
+2026-10-27T20:18:52Z	robots\.data\hadur2\Hadur.data	34	28	0	7	0	6940.4	racso.Frog	0	0	1	rr01
+2026-10-27T20:18:47Z	robots\.data\hadur2\Hadur.data	34	34	0	13	0	9130.0	ags.Midboss	0	0	1	rr02
+2026-10-27T20:18:52Z	robots\.data\hadur2\Hadur.data	34	34	0	265	0	7966.0	mnt.AHEB	0	0	1	rr03
+2026-10-27T20:18:53Z	robots\.data\hadur2\Hadur.data	34	34	0	5	0	-0.0	synapse.rsim.GeomancyBS	0	0	1	rr04
+2026-10-27T20:19:06Z	robots\.data\hadur2\Hadur.data	34	33	0	266	0	9862.6	amk.ChumbaWumba	0	0	1	rr01
+2026-10-27T20:19:09Z	robots\.data\hadur2\Hadur.data	34	34	0	8	0	-0.0	fm.mammillarias	0	0	1	rr02
+2026-10-27T20:19:08Z	robots\.data\hadur2\Hadur.data	34	34	0	9	0	707.1	simonton.micro.GFMicro	0	0	1	rr03
+2026-10-27T20:19:10Z	robots\.data\hadur2\Hadur.data	34	34	0	9	0	9092.4	amk.superstrike.SuperStrike	0	0	1	rr04
+2026-10-27T20:19:18Z	robots\.data\hadur2\Hadur.data	34	32	0	8	0	-0.0	xander.cat.Mikey	1	0	2	rr01
+2026-10-27T20:19:13Z	robots\.data\hadur2\Hadur.data	34	34	0	10	0	7310.6	dam.MogBot	0	0	1	rr02
+2026-10-27T20:19:20Z	robots\.data\hadur2\Hadur.data	35	34	0	154	0	6660.8	jdw.Hornet	0	0	2	rr03
+2026-10-27T20:19:21Z	robots\.data\hadur2\Hadur.data	35	33	0	164	0	7633.5	benhorner.PureAggression	0	0	1	rr04
+2026-10-27T20:19:19Z	robots\.data\hadur2\Hadur.data	10	9	0	41	0	1459.9					robocode
+2026-10-27T20:19:30Z	robots\.data\hadur2\Hadur.data	34	33	0	10	0	5281.6	gtf.robocode.Strafer	1	0	1	rr01
+2026-10-27T20:19:31Z	robots\.data\hadur2\Hadur.data	35	31	0	175	0	8836.7	dam.MogBot	0	0	1	rr02
+2026-10-27T20:19:35Z	robots\.data\hadur2\Hadur.data	34	34	0	9	0	9369.5	gio.RealGioBot	0	0	1	rr03
+2026-10-27T20:19:35Z	robots\.data\hadur2\Hadur.data	34	34	0	267	0	5278.5	logiblocs.SittingDroid	0	0	2	rr04
+2026-10-27T20:19:45Z	robots\.data\hadur2\Hadur.data	34	30	0	8	0	11064.5	dev.kurtw.KurtBot	1	0	2	rr01
+2026-10-27T20:19:44Z	robots\.data\hadur2\Hadur.data	34	34	0	7	0	1952.8	pl.Drum	0	0	1	rr02
+2026-10-27T20:19:41Z	robots\.data\hadur2\Hadur.data	34	34	0	13	0	12407.4	Grystrion.RandomTrackerNOREV	1	0	1	rr03
+2026-10-27T20:19:40Z	robots\.data\hadur2\Hadur.data	34	34	0	269	0	11499.7	cx.mini.BlackSwans	0	0	1	rr04
+2026-10-27T20:19:46Z	robots\.data\hadur2\Hadur.data	10	10	0	6	0	7163.4					robocode
+2026-10-27T20:19:49Z	robots\.data\hadur2\Hadur.data	34	34	0	5	0	6581.8	agrach.Dalek	0	0	1	rr01
+2026-10-27T20:19:56Z	robots\.data\hadur2\Hadur.data	34	33	0	11	0	9230.8	winamp32.micro.MicroMacro	1	0	5	rr02
+2026-10-27T20:19:58Z	robots\.data\hadur2\Hadur.data	34	33	0	10	0	8546.4	patson.PatsonTestBot	0	0	2	rr03
+2026-10-27T20:19:59Z	robots\.data\hadur2\Hadur.data	35	34	0	220	0	3997.1	supersample.SuperMercutio	0	0	1	rr04
+2026-10-27T20:19:58Z	robots\.data\hadur2\Hadur.data	34	33	0	10	0	8996.4	gg.Wolverine	0	0	2	rr01
+2026-10-27T20:20:04Z	robots\.data\hadur2\Hadur.data	35	34	0	173	0	-0.0	pez.clean.Swiffer	0	1	2	rr02
+2026-10-27T20:20:11Z	robots\.data\hadur2\Hadur.data	34	34	0	7	0	-0.0	adt.Ar2	0	0	1	rr03
+2026-10-27T20:20:09Z	robots\.data\hadur2\Hadur.data	35	34	0	251	0	4157.2	apv.Aspid	1	0	2	rr04
+2026-10-27T20:20:10Z	robots\.data\hadur2\Hadur.data	34	33	0	266	0	10308.2	simonton.micro.WeeklongObsession	0	0	1	rr01
+2026-10-27T20:20:13Z	robots\.data\hadur2\Hadur.data	35	34	0	217	0	3850.5	cx.Princess	1	0	2	rr02
+2026-10-27T20:20:22Z	robots\.data\hadur2\Hadur.data	34	34	0	8	0	5831.1	stordy.StordyBot	0	0	3	rr03
+2026-10-27T20:20:16Z	robots\.data\hadur2\Hadur.data	34	32	0	7	0	4758.7	apv.Aspid	1	0	2	rr04
+2026-10-27T20:20:16Z	robots\.data\hadur2\Hadur.data	10	9	0	24	0	1614.2					robocode
+2026-10-27T20:20:26Z	robots\.data\hadur2\Hadur.data	34	29	0	13	0	7900.1	tobe.Fusion	0	0	1	rr01
+2026-10-27T20:20:31Z	robots\.data\hadur2\Hadur.data	34	33	0	8	0	9772.7	mn.Combat	1	0	1	rr02
+2026-10-27T20:20:32Z	robots\.data\hadur2\Hadur.data	34	34	0	8	0	6990.1	stelo.Spread	0	0	1	rr03
+2026-10-27T20:20:35Z	robots\.data\hadur2\Hadur.data	34	33	0	9	0	8849.7	catcat20.Lambda	1	1	2	rr04
+2026-10-27T20:20:33Z	robots\.data\hadur2\Hadur.data	10	10	0	1	0	7183.6					robocode
+2026-10-27T20:20:35Z	robots\.data\hadur2\Hadur.data	34	34	0	14	0	6886.8	positive.Portia	1	1	2	rr01
+2026-10-27T20:20:43Z	robots\.data\hadur2\Hadur.data	34	34	0	10	0	7296.1	nat.micro.Reepicheep	0	0	1	rr03
+2026-10-27T20:20:44Z	robots\.data\hadur2\Hadur.data	35	30	0	115	0	15732.0					robocode
+2026-10-27T20:20:56Z	robots\.data\hadur2\Hadur.data	34	34	0	8	0	6500.4	sng.arco.Arco	0	0	1	rr01
+2026-10-27T20:20:54Z	robots\.data\hadur2\Hadur.data	35	34	0	233	0	9790.9	cli.WasteOfAmmo	0	0	2	rr03
+2026-10-27T20:20:59Z	robots\.data\hadur2\Hadur.data	10	9	0	3	0	9485.1					robocode
+2026-10-27T20:21:05Z	robots\.data\hadur2\Hadur.data	34	34	0	13	0	4881.6	ne.Chimera	0	0	1	rr03
+2026-10-27T20:21:10Z	robots\.data\hadur2\Hadur.data	34	32	0	11	0	9000.1	ahr.ice.Ice	1	0	1	rr04
+2026-10-27T20:21:15Z	robots\.data\hadur2\Hadur.data	34	34	0	10	0	7512.5	synapse.Geomancy	0	0	1	rr01
+2026-10-27T20:21:15Z	robots\.data\hadur2\Hadur.data	35	18	0	137	0	7896.2	wiki.nano.RaikoNano	0	0	2	rr02
+2026-10-27T20:21:19Z	robots\.data\hadur2\Hadur.data	34	34	0	10	0	8588.5	vft.Hrist	0	0	1	rr03
+2026-10-27T20:21:18Z	robots\.data\hadur2\Hadur.data	34	34	0	263	0	4317.6	dummy.mini.Parakeet	0	0	1	rr04
+2026-10-27T20:21:21Z	robots\.data\hadur2\Hadur.data	10	5	0	1	0	6211.8					robocode
+2026-10-27T20:21:26Z	robots\.data\hadur2\Hadur.data	34	28	0	14	0	7509.8	jaybot.adv.bots.JayBot	1	0	2	rr01
+2026-10-27T20:21:30Z	robots\.data\hadur2\Hadur.data	34	30	0	13	0	9848.9	lancel.Lynx	0	0	1	rr02
+2026-10-27T20:21:33Z	robots\.data\hadur2\Hadur.data	34	34	0	10	0	7711.1	deewiant.Anomaly	0	0	1	rr03
+2026-10-27T20:21:30Z	robots\.data\hadur2\Hadur.data	35	34	0	238	0	7155.5	mnt.SurferBot	0	0	1	rr04
+2026-10-27T20:21:36Z	robots\.data\hadur2\Hadur.data	34	34	0	8	0	1320.5	ary.Help	0	0	1	rr01
+2026-10-27T20:21:40Z	robots\.data\hadur2\Hadur.data	34	30	0	10	0	8666.0	davidalves.net.DuelistMicro	1	0	3	rr02
+2026-10-27T20:21:43Z	robots\.data\hadur2\Hadur.data	34	34	0	7	0	6261.9	ahf.r2d2.R2d2	0	0	1	rr03
+2026-10-27T20:21:46Z	robots\.data\hadur2\Hadur.data	35	34	0	249	0	6534.2	sheldor.nano.Retreat	0	0	1	rr04
+2026-10-27T20:21:53Z	robots\.data\hadur2\Hadur.data	34	34	0	7	0	10452.3	dy.LevelOne	1	0	4	rr01
+2026-10-27T20:21:55Z	robots\.data\hadur2\Hadur.data	35	32	0	190	0	10120.2	theo.Hydrogen	1	0	2	rr02
+2026-10-27T20:21:55Z	robots\.data\hadur2\Hadur.data	35	34	0	184	0	5730.7	sheldor.nano.Sabreur	1	0	2	rr03
+2026-10-27T20:21:56Z	robots\.data\hadur2\Hadur.data	34	34	0	9	0	6455.0	mn.Combat	0	0	1	rr01
+2026-10-27T20:22:06Z	robots\.data\hadur2\Hadur.data	35	34	0	156	0	-0.0	oog.nano.MagicD2	1	0	5	rr02
+2026-10-27T20:21:59Z	robots\.data\hadur2\Hadur.data	34	32	0	6	0	-0.0	gh.micro.Grinnik	1	1	3	rr03
+2026-10-27T20:22:08Z	robots\.data\hadur2\Hadur.data	34	27	0	9	0	5100.0	oog.mega.saguaro.Saguaro	1	0	6	rr04
+2026-10-27T20:22:17Z	robots\.data\hadur2\Hadur.data	34	34	0	9	0	4178.7	vort.Chaser	0	0	2	rr02
+2026-10-27T20:22:09Z	robots\.data\hadur2\Hadur.data	34	34	0	7	0	4606.3	fromHell.BlackBox	1	0	1	rr03
+2026-10-27T20:22:12Z	robots\.data\hadur2\Hadur.data	34	34	0	9	0	4429.2	ags.Glacier	1	0	4	rr04
+2026-10-27T20:22:13Z	robots\.data\hadur2\Hadur.data	9	0	0	0	0	-0.0					robocode
+2026-10-27T20:22:25Z	robots\.data\hadur2\Hadur.data	34	34	0	7	0	6382.0	pkbots.BoyTDSurfer	0	0	4	rr02
+2026-10-27T20:22:27Z	robots\.data\hadur2\Hadur.data	34	34	0	6	0	6917.2	AIR.iRobot	0	0	1	rr03
+2026-10-27T20:22:28Z	robots\.data\hadur2\Hadur.data	34	26	0	9	0	6383.0	muf.CrazyKitten	0	0	1	rr04
+2026-10-27T20:22:37Z	robots\.data\hadur2\Hadur.data	35	27	0	261	0	5259.0	mn.Combat	1	1	1	rr01
+2026-10-27T20:22:32Z	robots\.data\hadur2\Hadur.data	35	34	0	141	0	5737.6	DM.mega.Bezier	1	1	5	rr02
+2026-10-27T20:22:39Z	robots\.data\hadur2\Hadur.data	34	34	0	5	0	6350.4	lucasslf.Dodger	0	0	1	rr03
+2026-10-27T20:22:38Z	robots\.data\hadur2\Hadur.data	35	34	0	192	0	-0.0	josago.Jorgito	1	0	5	rr04
+2026-10-27T20:22:37Z	robots\.data\hadur2\Hadur.data	10	10	0	1	0	6628.8					robocode
+2026-10-27T20:22:47Z	robots\.data\hadur2\Hadur.data	34	34	0	10	0	3772.4	ary.micro.Weak	1	0	2	rr01
+2026-10-27T20:22:49Z	robots\.data\hadur2\Hadur.data	35	32	0	262	0	7636.2	arthord.MannyPacquiao	0	0	1	rr03
+2026-10-27T20:22:54Z	robots\.data\hadur2\Hadur.data	34	33	0	6	0	7944.4	rdm.Dueler	0	0	1	rr04
+2026-10-27T20:22:59Z	robots\.data\hadur2\Hadur.data	34	31	0	9	0	3888.3	jep.nano.Hotspur	0	0	1	rr01
+2026-10-27T20:23:01Z	robots\.data\hadur2\Hadur.data	34	34	0	9	0	5430.1	t3.Ripper	0	0	2	rr02
+2026-10-27T20:23:04Z	robots\.data\hadur2\Hadur.data	34	34	0	263	0	8706.7	testantiswapgun.AntiSwap	1	0	1	rr04
+2026-10-27T20:23:07Z	robots\.data\hadur2\Hadur.data	34	34	0	6	0	6776.1	penguin.Ivy	1	0	2	rr01
+2026-10-27T20:23:13Z	robots\.data\hadur2\Hadur.data	34	34	0	7	0	10009.2	doka.Shinigami	1	0	2	rr02
+2026-10-27T20:23:10Z	robots\.data\hadur2\Hadur.data	34	34	0	264	0	6722.0	franzor.Lizt	0	0	1	rr03
+2026-10-27T20:23:15Z	robots\.data\hadur2\Hadur.data	34	29	0	11	0	8061.8	drm.CobraBora	1	0	1	rr04
+2026-10-27T20:23:23Z	robots\.data\hadur2\Hadur.data	34	33	0	8	0	5650.8	wiki.Wolverine	0	0	3	rr01
+2026-10-27T20:23:13Z	robots\.data\hadur2\Hadur.data	34	34	0	7	0	10009.2	jk.melee.Neuromancer	1	0	1	rr02
+2026-10-27T20:23:26Z	robots\.data\hadur2\Hadur.data	34	34	0	12	0	12062.0	stelo.Spread	0	0	2	rr03
+2026-10-27T20:23:27Z	robots\.data\hadur2\Hadur.data	34	31	0	8	0	6691.0	cw.megas.Blade	0	0	1	rr04
+2026-10-27T20:23:30Z	robots\.data\hadur2\Hadur.data	34	33	0	7	0	3986.6	sqTank.waveSurfing.LionWWSVMvoid	0	0	1	rr01
+2026-10-27T20:23:26Z	robots\.data\hadur2\Hadur.data	34	34	0	12	0	12062.0	jkong.JKHydra	0	0	1	rr03
+2026-10-27T20:23:31Z	robots\.data\hadur2\Hadur.data	34	34	0	7	0	8520.0	zen.Mirage	0	0	1	rr04
+2026-10-27T20:23:39Z	robots\.data\hadur2\Hadur.data	10	6	0	3	0	7671.1					robocode
+2026-10-27T20:23:45Z	robots\.data\hadur2\Hadur.data	34	34	0	5	0	4104.0	timmit.nano.TimDog	1	0	5	rr01
+2026-10-27T20:23:46Z	robots\.data\hadur2\Hadur.data	35	19	0	187	0	6371.0	gf.Centaur.Centaur	1	0	2	rr02
+2026-10-27T20:23:50Z	robots\.data\hadur2\Hadur.data	34	34	0	5	0	-0.0	ur4n0.UR4NO	0	0	1	rr01
+2026-10-27T20:23:54Z	robots\.data\hadur2\Hadur.data	34	34	0	15	0	9928.4	rfj.Sunburn	1	0	2	rr03
+2026-10-27T20:24:03Z	robots\.data\hadur2\Hadur.data	35	33	0	238	0	6097.1	robar.nano.Pugio	0	0	2	rr01
+2026-10-27T20:24:04Z	robots\.data\hadur2\Hadur.data	35	34	0	141	0	4670.5	sanja.First	0	0	3	rr02
+2026-10-27T20:24:03Z	robots\.data\hadur2\Hadur.data	34	34	0	9	0	4182.1	pez.clean.Swiffer	1	0	2	rr03
+2026-10-27T20:24:08Z	robots\.data\hadur2\Hadur.data	34	34	0	7	0	4523.2	sp.AstherNano	0	0	1	rr04
+2026-10-27T20:24:12Z	robots\.data\hadur2\Hadur.data	34	34	0	8	0	7174.2	simonton.GFNano_D	0	0	1	rr01
+2026-10-27T20:24:17Z	robots\.data\hadur2\Hadur.data	34	34	0	11	0	5320.0	jcs.Megatron	0	0	1	rr02
+2026-10-27T20:24:20Z	robots\.data\hadur2\Hadur.data	34	30	0	6	0	4064.8	gh.micro.GrubbmThree	1	0	3	rr03
+2026-10-27T20:24:12Z	robots\.data\hadur2\Hadur.data	34	34	0	264	0	6242.3	cjm.chalk.Chalk	0	1	2	rr04
+2026-10-27T20:24:16Z	robots\.data\hadur2\Hadur.data	10	9	0	3	0	10292.2					robocode
+2026-10-27T20:24:23Z	robots\.data\hadur2\Hadur.data	34	34	0	14	0	2848.8	TJ.Exupery	0	0	1	rr01
+2026-10-27T20:24:30Z	robots\.data\hadur2\Hadur.data	35	33	0	158	0	-0.0	trab.nano.AinippeNano	0	0	2	rr02
+2026-10-27T20:24:33Z	robots\.data\hadur2\Hadur.data	34	34	0	10	0	6471.9	davidalves.Firebird	0	1	1	rr03
+2026-10-27T20:24:27Z	robots\.data\hadur2\Hadur.data	34	34	0	10	0	4288.0	kawigi.mini.Coriantumr	0	1	3	rr04
+2026-10-27T20:24:42Z	robots\.data\hadur2\Hadur.data	34	34	0	10	0	7477.6	yk.JahMicro	0	0	1	rr01
+2026-10-27T20:24:36Z	robots\.data\hadur2\Hadur.data	35	34	0	177	0	635.0	gadsky.Gadsky	1	0	3	rr02
+2026-10-27T20:24:43Z	robots\.data\hadur2\Hadur.data	34	33	0	6	0	6503.7	jrm.Test0	0	0	2	rr03
+2026-10-27T20:24:44Z	robots\.data\hadur2\Hadur.data	34	34	0	10	0	9814.4	SHAM.WOW	0	0	1	rr04
+2026-10-27T20:24:50Z	robots\.data\hadur2\Hadur.data	34	34	0	8	0	3958.1	stelo.MirrorMicro	1	0	2	rr01
+2026-10-27T20:24:54Z	robots\.data\hadur2\Hadur.data	35	34	0	173	0	8340.6	ins.MobyNano	0	0	1	rr02
+2026-10-27T20:24:47Z	robots\.data\hadur2\Hadur.data	34	34	0	7	0	4163.8	zen.Mirage	1	0	1	rr03
+2026-10-27T20:24:53Z	robots\.data\hadur2\Hadur.data	35	29	0	231	0	7236.0	jekl.DarkHallow	0	0	1	rr04
+2026-10-27T20:24:49Z	robots\.data\hadur2\Hadur.data	10	9	0	1	0	7574.2					robocode
+2026-10-27T20:25:03Z	robots\.data\hadur2\Hadur.data	34	34	0	8	0	-0.0	TCMI.Enyo	0	0	2	rr01
+2026-10-27T20:25:06Z	robots\.data\hadur2\Hadur.data	35	34	0	140	0	-0.0	trab.Crusader	1	1	3	rr02
+2026-10-27T20:25:02Z	robots\.data\hadur2\Hadur.data	34	33	0	11	0	9210.3	fromHell.BlackBox	0	0	1	rr04
+2026-10-27T20:25:10Z	robots\.data\hadur2\Hadur.data	10	10	0	0	0	-0.0					robocode
+2026-10-27T20:25:15Z	robots\.data\hadur2\Hadur.data	34	34	0	13	0	6804.8	kawigi.sbf.FloodSonnet	0	0	1	rr01
+2026-10-27T20:25:16Z	robots\.data\hadur2\Hadur.data	35	34	0	242	0	4238.3	ej.ChocolateBar	0	1	2	rr04
+2026-10-27T20:25:26Z	robots\.data\hadur2\Hadur.data	34	34	0	8	0	1498.4	fw.Number1	0	0	1	rr01
+2026-10-27T20:25:21Z	robots\.data\hadur2\Hadur.data	35	28	0	163	0	3876.0	axeBots.Musashi	1	0	2	rr02
+2026-10-27T20:25:26Z	robots\.data\hadur2\Hadur.data	34	19	0	9	0	6406.3	pez.mini.ChironexFleckeri	0	0	1	rr03
+2026-10-27T20:25:25Z	robots\.data\hadur2\Hadur.data	34	34	0	7	0	10135.8	zen.Ronin	0	0	1	rr04
+2026-10-27T20:25:34Z	robots\.data\hadur2\Hadur.data	34	34	0	12	0	7737.0	synnalagma.test.MiniNeural	0	0	1	rr01
+2026-10-27T20:25:36Z	robots\.data\hadur2\Hadur.data	35	34	0	143	0	4103.0	davidalves.Firebird	0	0	1	rr02
+2026-10-27T20:25:33Z	robots\.data\hadur2\Hadur.data	34	32	0	6	0	6273.7	pe.mini.SandboxMini	0	0	1	rr03
+2026-10-27T20:25:40Z	robots\.data\hadur2\Hadur.data	35	34	0	242	0	5865.3	catcat20.atom.Atom	0	0	1	rr04
+2026-10-27T20:25:41Z	robots\.data\hadur2\Hadur.data	34	34	0	269	0	5475.6	az.Ololobot	1	0	4	rr01
+2026-10-27T20:25:48Z	robots\.data\hadur2\Hadur.data	35	34	0	173	0	8378.6	gre.svman4.Morfeas	1	0	5	rr02
+2026-10-27T20:25:43Z	robots\.data\hadur2\Hadur.data	34	34	0	8	0	9171.6	taqho.taqbot	1	0	2	rr03
+2026-10-27T20:25:51Z	robots\.data\hadur2\Hadur.data	10	10	0	1	0	6608.7					robocode
+2026-10-27T20:26:01Z	robots\.data\hadur2\Hadur.data	34	34	0	8	0	4794.8	PkKillers.PkAssassin	0	0	2	rr01
+2026-10-27T20:26:00Z	robots\.data\hadur2\Hadur.data	35	34	0	141	0	-0.0	jk.mini.CunobelinDC	0	0	1	rr02
+2026-10-27T20:26:04Z	robots\.data\hadur2\Hadur.data	10	10	0	1	0	4948.7					robocode
+2026-10-27T20:26:11Z	robots\.data\hadur2\Hadur.data	34	22	0	6	0	6645.5	mue.Ascendant	1	1	4	rr01
+2026-10-27T20:26:13Z	robots\.data\hadur2\Hadur.data	34	34	0	8	0	4017.0	taqho.taqbot	1	0	2	rr03
+2026-10-27T20:26:12Z	robots\.data\hadur2\Hadur.data	35	34	0	186	0	5658.8	origin.SleepSiphon	0	1	3	rr04
+2026-10-27T20:26:21Z	robots\.data\hadur2\Hadur.data	35	34	0	174	0	5087.4	kawigi.sbf.FloodHT	0	0	1	rr01
+2026-10-27T20:26:23Z	robots\.data\hadur2\Hadur.data	35	34	0	126	0	-0.0	maribo.Omicron	0	0	1	rr02
+2026-10-27T20:26:17Z	robots\.data\hadur2\Hadur.data	34	34	0	8	0	6398.5	jasolo.Sonda	0	0	1	rr03
+2026-10-27T20:26:26Z	robots\.data\hadur2\Hadur.data	34	34	0	8	0	4325.9	origin.SleepSiphon	0	1	3	rr04
+2026-10-27T20:26:27Z	robots\.data\hadur2\Hadur.data	10	10	0	3	0	4067.1					robocode
+2026-10-27T20:26:32Z	robots\.data\hadur2\Hadur.data	34	30	0	9	0	6642.9	oa.weak.BotherBot	0	0	1	rr01
+2026-10-27T20:26:30Z	robots\.data\hadur2\Hadur.data	34	34	0	9	0	7415.1	demetrix.ForceMajeure	0	0	1	rr03
+2026-10-27T20:26:38Z	robots\.data\hadur2\Hadur.data	34	31	0	6	0	6499.2	supersample.SuperCorners	0	0	1	rr04
+2026-10-27T20:26:41Z	robots\.data\hadur2\Hadur.data	35	34	0	131	0	9587.0	usa.nano.Nemo	0	0	2	rr01
+2026-10-27T20:26:40Z	robots\.data\hadur2\Hadur.data	35	32	0	135	0	5580.3	tobe.Fusion	0	0	1	rr02
+2026-10-27T20:26:47Z	robots\.data\hadur2\Hadur.data	34	32	0	9	0	6452.4	rz.GlowBlowMelee	0	0	1	rr03
+2026-10-27T20:26:50Z	robots\.data\hadur2\Hadur.data	35	34	0	254	0	3761.7	nexus.Prototype	0	0	2	rr04
+2026-10-27T20:26:56Z	robots\.data\hadur2\Hadur.data	35	30	0	149	0	7151.2	maribo.Omicron	0	0	1	rr01
+2026-10-27T20:26:58Z	robots\.data\hadur2\Hadur.data	35	33	0	172	0	5962.2	cf.OldMan.OldManXP	1	0	4	rr02
+2026-10-27T20:27:01Z	robots\.data\hadur2\Hadur.data	34	34	0	8	0	4682.9	spinnercat.CopyKat	0	0	2	rr03
+2026-10-27T20:26:57Z	robots\.data\hadur2\Hadur.data	35	34	0	239	0	6765.5	apv.test.Virus	0	0	1	rr04
+2026-10-27T20:26:55Z	robots\.data\hadur2\Hadur.data	10	7	0	46	0	1627.4					robocode
+2026-10-27T20:27:08Z	robots\.data\hadur2\Hadur.data	35	34	0	138	0	10580.6	nic.Nicator	0	0	1	rr01
+2026-10-27T20:27:09Z	robots\.data\hadur2\Hadur.data	34	34	0	7	0	6271.0	ruc.nano.Zealot	0	0	1	rr02
+2026-10-27T20:27:13Z	robots\.data\hadur2\Hadur.data	34	34	0	8	0	7086.6	jeremyreeder.Bully	0	0	1	rr03
+2026-10-27T20:27:12Z	robots\.data\hadur2\Hadur.data	34	34	0	5	0	-0.0	rz.GlowBlow	1	0	2	rr04
+2026-10-27T20:27:23Z	robots\.data\hadur2\Hadur.data	34	33	0	9	0	9664.5	maribo.Omicron	0	0	2	rr01
+2026-10-27T20:27:18Z	robots\.data\hadur2\Hadur.data	35	34	0	183	0	6834.1	sheldor.micro.PointInLineRRAL	1	0	3	rr02
+2026-10-27T20:27:23Z	robots\.data\hadur2\Hadur.data	34	34	0	6	0	6199.0	dk.stable.Gorgatron	0	0	1	rr03
+2026-10-27T20:27:25Z	robots\.data\hadur2\Hadur.data	34	34	0	9	0	6598.3	suh.nano.TargetH	0	0	1	rr04
+2026-10-27T20:27:24Z	robots\.data\hadur2\Hadur.data	10	6	0	39	0	1374.7					robocode
+2026-10-27T20:27:33Z	robots\.data\hadur2\Hadur.data	34	32	0	9	0	8970.4	kc.micro.WaveShark	0	0	1	rr01
+2026-10-27T20:27:31Z	robots\.data\hadur2\Hadur.data	34	34	0	12	0	10295.7	asd.Cthulhu	0	0	1	rr02
+2026-10-27T20:27:38Z	robots\.data\hadur2\Hadur.data	34	31	0	8	0	4308.8	kc.micro.rammer.MaxRisk	1	0	2	rr03
+2026-10-27T20:27:38Z	robots\.data\hadur2\Hadur.data	34	31	0	10	0	7602.7	rc.yoda.Yoda	0	0	1	rr04
+2026-10-27T20:27:39Z	robots\.data\hadur2\Hadur.data	10	10	0	2	0	6945.4					robocode
+2026-10-27T20:27:44Z	robots\.data\hadur2\Hadur.data	35	34	0	211	0	5942.3	deith.Czolgzilla	0	0	1	rr01
+2026-10-27T20:27:43Z	robots\.data\hadur2\Hadur.data	34	34	0	10	0	7291.2	synapse.rsim.GeomancyBS	1	0	2	rr03
+2026-10-27T20:27:46Z	robots\.data\hadur2\Hadur.data	34	32	0	7	0	7943.4	EE.LittleBig	0	0	1	rr04
+2026-10-27T20:27:58Z	robots\.data\hadur2\Hadur.data	35	32	0	173	0	627.6	apc.LeeroyJenkins2	0	0	1	rr02
+2026-10-27T20:27:58Z	robots\.data\hadur2\Hadur.data	35	34	0	199	0	4408.2	robin.SCALPBot	0	0	2	rr03
+2026-10-27T20:27:58Z	robots\.data\hadur2\Hadur.data	34	34	0	7	0	7363.9	ph.mini.Archer	0	0	1	rr04
+2026-10-27T20:27:58Z	robots\.data\hadur2\Hadur.data	35	33	0	185	0	7730.5	jkong.JKHydra	0	0	1	rr01
+2026-10-27T20:28:07Z	robots\.data\hadur2\Hadur.data	35	34	0	137	0	10636.0	erdnis.Rover	0	0	1	rr02
+2026-10-27T20:28:10Z	robots\.data\hadur2\Hadur.data	34	33	0	8	0	6706.8	supersample.SuperTracker	0	0	1	rr04
+2026-10-27T20:28:05Z	robots\.data\hadur2\Hadur.data	10	10	0	1	0	8809.7					robocode
+2026-10-27T20:28:13Z	robots\.data\hadur2\Hadur.data	34	34	0	9	0	1485.5	erdnis.Rover	0	0	1	rr02
+2026-10-27T20:28:19Z	robots\.data\hadur2\Hadur.data	34	23	0	9	0	6112.5	matt.advanced.Katana	1	0	1	rr03
+2026-10-27T20:28:22Z	robots\.data\hadur2\Hadur.data	34	34	0	8	0	6783.9	kawigi.sbf.Barracuda	0	0	1	rr04
+2026-10-27T20:28:28Z	robots\.data\hadur2\Hadur.data	35	10	0	95	0	5906.0	bvh.mini.Wodan	0	0	1	rr01
+2026-10-27T20:28:28Z	robots\.data\hadur2\Hadur.data	35	32	0	150	0	6246.1	gtf.robocode.Strafer	0	0	1	rr02
+2026-10-27T20:28:34Z	robots\.data\hadur2\Hadur.data	34	33	0	11	0	4522.0	jekl.DarkHallow	0	1	2	rr03
+2026-10-27T20:28:31Z	robots\.data\hadur2\Hadur.data	34	34	0	7	0	6235.4	rdt.AgentSmith.AgentSmith	0	0	1	rr04
+2026-10-27T20:28:40Z	robots\.data\hadur2\Hadur.data	35	34	0	161	0	5581.3	ab.DengerousRoBatra	0	0	1	rr01
+2026-10-27T20:28:41Z	robots\.data\hadur2\Hadur.data	34	34	0	6	0	6747.0	oa.weak.BotherBot	1	0	2	rr02
+2026-10-27T20:28:34Z	robots\.data\hadur2\Hadur.data	34	33	0	11	0	4522.0	sheldor.mini.Foilist	1	1	3	rr03
+2026-10-27T20:28:47Z	robots\.data\hadur2\Hadur.data	34	34	0	8	0	7644.2	lorneswork.Predator	0	0	1	rr04
+2026-10-27T20:28:42Z	robots\.data\hadur2\Hadur.data	9	2	0	35	0	997.4					robocode
+2026-10-27T20:28:50Z	robots\.data\hadur2\Hadur.data	35	34	0	232	0	6304.7	rdt.AgentSmith.AgentSmith	0	0	1	rr01
+2026-10-27T20:28:46Z	robots\.data\hadur2\Hadur.data	35	34	0	196	0	9286.8	brainfade.melee.Dusk	0	0	1	rr02
+2026-10-27T20:28:52Z	robots\.data\hadur2\Hadur.data	34	33	0	10	0	8165.5	asd.Cthulhu	0	0	1	rr04
+2026-10-27T20:28:57Z	robots\.data\hadur2\Hadur.data	10	9	0	43	0	6361.6					robocode
+2026-10-27T20:29:02Z	robots\.data\hadur2\Hadur.data	35	34	0	152	0	5829.7	rz.HawkOnFire	0	0	1	rr01
+2026-10-27T20:29:07Z	robots\.data\hadur2\Hadur.data	35	32	0	195	0	6218.5	lazarecki.mega.PinkerStinker	0	0	1	rr02
+2026-10-27T20:29:08Z	robots\.data\hadur2\Hadur.data	35	34	0	251	0	4692.4	techdude.kombat.FlamingKombat	0	0	2	rr03
+2026-10-27T20:29:08Z	robots\.data\hadur2\Hadur.data	34	34	0	7	0	6402.0	kinsen.nano.Senticous	1	0	2	rr04
+2026-10-27T20:29:07Z	robots\.data\hadur2\Hadur.data	34	34	0	8	0	8037.3	asd.Cthulhu	0	0	2	rr01
+2026-10-27T20:29:11Z	robots\.data\hadur2\Hadur.data	34	32	0	8	0	-0.0	as.xbots	1	0	1	rr02
+2026-10-27T20:29:18Z	robots\.data\hadur2\Hadur.data	34	32	0	10	0	4237.5	simonton.GFNano_D	0	0	3	rr03
+2026-10-27T20:29:23Z	robots\.data\hadur2\Hadur.data	34	33	0	8	0	7844.7	ab.DengerousRoBatra	1	0	1	rr04
+2026-10-27T20:29:26Z	robots\.data\hadur2\Hadur.data	34	34	0	10	0	6790.7	dsx724.VSAB_EP3a	1	0	1	rr01
+2026-10-27T20:29:29Z	robots\.data\hadur2\Hadur.data	35	31	0	150	0	5788.0	metal.small.dna2.MCoolDNA	0	0	1	rr02
+2026-10-27T20:29:32Z	robots\.data\hadur2\Hadur.data	34	32	0	6	0	-0.0	simonton.GFNano_D	0	0	3	rr03
+2026-10-27T20:29:33Z	robots\.data\hadur2\Hadur.data	34	34	0	8	0	6631.0	robar.micro.Gladius	0	0	1	rr04
+2026-10-27T20:29:31Z	robots\.data\hadur2\Hadur.data	35	34	0	139	0	5753.8	synapse.Geomancy	1	0	2	rr01
+2026-10-27T20:29:43Z	robots\.data\hadur2\Hadur.data	34	34	0	9	0	8544.9	GarmBox.Anger	0	0	1	rr02
+2026-10-27T20:29:44Z	robots\.data\hadur2\Hadur.data	34	30	0	9	0	6366.5	whind.StrengthBee	1	0	1	rr04
+2026-10-27T20:29:41Z	robots\.data\hadur2\Hadur.data	10	7	0	1	0	10811.6					robocode
+2026-10-27T20:29:50Z	robots\.data\hadur2\Hadur.data	34	34	0	5	0	-0.0	rc.yoda.Yoda	0	0	1	rr01
+2026-10-27T20:29:43Z	robots\.data\hadur2\Hadur.data	34	34	0	9	0	8544.9	GarmBox.Anger	0	0	1	rr02
+2026-10-27T20:29:52Z	robots\.data\hadur2\Hadur.data	34	34	0	10	0	7699.2	jk.micro.Cotillion	0	0	1	rr03
+2026-10-27T20:29:52Z	robots\.data\hadur2\Hadur.data	34	33	0	7	0	9233.8	drm.CobraBora	1	0	2	rr04
+2026-10-27T20:29:58Z	robots\.data\hadur2\Hadur.data	34	33	0	7	0	7796.9	whind.StrengthBee	1	0	2	rr01
+2026-10-27T20:30:07Z	robots\.data\hadur2\Hadur.data	34	34	0	7	0	6840.6	kawigi.nano.ThnikkaBot	1	0	1	rr02
+2026-10-27T20:30:08Z	robots\.data\hadur2\Hadur.data	34	34	0	269	0	8267.0	lw.LuthersTest	0	0	1	rr03
+2026-10-27T20:30:05Z	robots\.data\hadur2\Hadur.data	34	33	0	11	0	10591.5	metal.small.dna2.MCoolDNA	0	0	1	rr04
+2026-10-27T20:30:08Z	robots\.data\hadur2\Hadur.data	10	5	0	4	0	9100.5					robocode
+2026-10-27T20:30:18Z	robots\.data\hadur2\Hadur.data	34	34	0	265	0	9086.3	fullsail.SweetTea	0	0	1	rr01
+2026-10-27T20:30:19Z	robots\.data\hadur2\Hadur.data	35	34	0	266	0	11153.6	ntw.Sigsys	1	0	2	rr02
+2026-10-27T20:30:21Z	robots\.data\hadur2\Hadur.data	34	34	0	14	0	7997.0	wiki.BasicGFSurfer	1	0	1	rr03
+2026-10-27T20:30:22Z	robots\.data\hadur2\Hadur.data	34	34	0	8	0	6522.0	dsx724.VSAB_EP3a	1	0	1	rr04
+2026-10-27T20:30:27Z	robots\.data\hadur2\Hadur.data	34	34	0	8	0	6608.6	rdt.AgentSmith.AgentSmith	0	1	2	rr01
+2026-10-27T20:30:31Z	robots\.data\hadur2\Hadur.data	34	34	0	10	0	9237.2	jp.Perpy	1	0	2	rr03
+2026-10-27T20:30:30Z	robots\.data\hadur2\Hadur.data	34	32	0	9	0	7564.4	spinnercat.mega.Tardis	0	0	2	rr04
+2026-10-27T20:30:31Z	robots\.data\hadur2\Hadur.data	10	8	0	81	0	2986.2					robocode
+2026-10-27T20:30:40Z	robots\.data\hadur2\Hadur.data	34	34	0	10	0	10677.5	ds.Versatile	0	0	1	rr01
+2026-10-27T20:30:32Z	robots\.data\hadur2\Hadur.data	35	34	0	215	0	7624.4	jkong.JKHydra	0	0	1	rr02
+2026-10-27T20:30:44Z	robots\.data\hadur2\Hadur.data	34	34	0	0	0	-0.0	benhorner.PureAggression	0	0	1	rr03
+2026-10-27T20:30:47Z	robots\.data\hadur2\Hadur.data	34	34	0	10	0	10266.3	GarmBox.Anger	0	0	2	rr04
+2026-10-27T20:30:48Z	robots\.data\hadur2\Hadur.data	35	33	0	256	0	6916.5	pb.Oscillator	0	0	1	rr03
+2026-10-27T20:30:47Z	robots\.data\hadur2\Hadur.data	34	34	0	10	0	10266.3	oog.mega.saguaro.Saguaro	1	0	7	rr04
+2026-10-27T20:30:55Z	robots\.data\hadur2\Hadur.data	35	33	0	220	0	6985.3	lxx.Tomcat	1	1	3	rr01
+2026-10-27T20:31:03Z	robots\.data\hadur2\Hadur.data	35	8	0	211	0	7764.2	dft.Cardigan	0	0	1	rr02
+2026-10-27T20:31:02Z	robots\.data\hadur2\Hadur.data	34	34	0	10	0	5949.9	lucasslf.HariSeldon	0	0	1	rr03
+2026-10-27T20:31:00Z	robots\.data\hadur2\Hadur.data	10	9	0	3	0	4781.7					robocode
+2026-10-27T20:31:14Z	robots\.data\hadur2\Hadur.data	34	32	0	8	0	6048.2	dft.Cardigan	1	0	1	rr02
+2026-10-27T20:31:16Z	robots\.data\hadur2\Hadur.data	35	34	0	194	0	5584.9	povik.nano.Smilee	1	0	1	rr04
+2026-10-27T20:31:23Z	robots\.data\hadur2\Hadur.data	35	34	0	146	0	6259.3	stelo.SteloTestNano	0	0	1	rr02
+2026-10-27T20:31:23Z	robots\.data\hadur2\Hadur.data	34	34	0	7	0	6594.5	zen.Lindada	0	1	2	rr04
+2026-10-27T20:31:28Z	robots\.data\hadur2\Hadur.data	34	32	0	10	0	8193.7	bvh.mini.Wodan	0	0	1	rr02
+2026-10-27T20:31:34Z	robots\.data\hadur2\Hadur.data	34	33	0	10	0	5634.7	knackibot.KnackOnOne	1	0	1	rr03
+2026-10-27T20:31:31Z	robots\.data\hadur2\Hadur.data	34	34	0	9	0	9954.2	ds.Versatile	0	0	1	rr04
+2026-10-27T20:31:31Z	robots\.data\hadur2\Hadur.data	10	9	0	3	0	6844.2					robocode
+2026-10-27T20:31:46Z	robots\.data\hadur2\Hadur.data	35	34	0	140	0	-0.0	rc.yoda.Yoda	0	0	1	rr02
+2026-10-27T20:31:44Z	robots\.data\hadur2\Hadur.data	34	34	0	9	0	6764.8	bvh.mini.Wodan	1	0	2	rr04
+2026-10-27T20:31:53Z	robots\.data\hadur2\Hadur.data	35	26	0	165	0	10614.1	lxx.Tomcat	1	1	3	rr01
+2026-10-27T20:31:46Z	robots\.data\hadur2\Hadur.data	35	34	0	140	0	-0.0	zyx.mega.YersiniaPestis	0	0	1	rr02
+2026-10-27T20:31:52Z	robots\.data\hadur2\Hadur.data	34	34	0	10	0	8936.9	jkong.JKHydra	1	0	2	rr03
+2026-10-27T20:31:57Z	robots\.data\hadur2\Hadur.data	35	34	0	221	0	4215.5	WarfaJibril.Jibril_Warfa_Andromeda	0	0	1	rr04
+2026-10-27T20:32:05Z	robots\.data\hadur2\Hadur.data	35	33	0	199	0	6338.7	davidalves.Firebird	0	1	1	rr01
+2026-10-27T20:32:04Z	robots\.data\hadur2\Hadur.data	35	30	0	151	0	6494.1	m3thos.Eva02	0	0	1	rr02
+2026-10-27T20:32:10Z	robots\.data\hadur2\Hadur.data	34	34	0	10	0	9015.9	kawigi.nano.ThnikkaBot	1	0	1	rr04
+2026-10-27T20:32:06Z	robots\.data\hadur2\Hadur.data	9	4	0	1	0	7527.8					robocode
+2026-10-27T20:32:10Z	robots\.data\hadur2\Hadur.data	34	34	0	8	0	8612.9	darkcanuck.Holden	0	0	1	rr01
+2026-10-27T20:32:16Z	robots\.data\hadur2\Hadur.data	35	34	0	142	0	5790.4	dft.Cyprus	0	0	1	rr02
+2026-10-27T20:32:18Z	robots\.data\hadur2\Hadur.data	34	34	0	11	0	9453.8	kc.serpent.WaveSerpent	0	0	1	rr04
+2026-10-27T20:32:23Z	robots\.data\hadur2\Hadur.data	34	33	0	7	0	6936.2	oog.mega.saguaro.Saguaro	1	0	1	rr01
+2026-10-27T20:32:29Z	robots\.data\hadur2\Hadur.data	34	34	0	8	0	6015.6	pez.micro.Aristocles	0	0	1	rr02
+2026-10-27T20:32:30Z	robots\.data\hadur2\Hadur.data	35	34	0	200	0	917.7	repositorio.NanoStep	0	0	1	rr03
+2026-10-27T20:32:34Z	robots\.data\hadur2\Hadur.data	35	34	0	123	0	6224.3	whind.StrengthBee	0	0	1	rr03
+2026-10-27T20:32:37Z	robots\.data\hadur2\Hadur.data	10	7	0	1	0	9124.0					robocode
+2026-10-27T20:32:39Z	robots\.data\hadur2\Hadur.data	35	27	0	201	0	6492.7	pez.rumble.Ali	0	0	1	rr01
+2026-10-27T20:32:49Z	robots\.data\hadur2\Hadur.data	34	34	0	9	0	5662.0	fowl3628800.SitAndGo	0	0	1	rr02
+2026-10-27T20:32:44Z	robots\.data\hadur2\Hadur.data	35	28	0	102	0	6066.9	whind.StrengthBee	1	0	2	rr03
+2026-10-27T20:32:49Z	robots\.data\hadur2\Hadur.data	34	34	0	267	0	7359.5	jaybot.adv.bots.JayBot	1	0	2	rr04
+2026-10-27T20:32:55Z	robots\.data\hadur2\Hadur.data	34	33	0	7	0	6890.2	EE.LittleBig	0	0	1	rr02
+2026-10-27T20:32:57Z	robots\.data\hadur2\Hadur.data	34	28	0	10	0	10841.7	jkong.JKHydra	1	1	3	rr03
+2026-10-27T20:33:04Z	robots\.data\hadur2\Hadur.data	34	34	0	11	0	11601.7	slugzilla.RandomPattern	0	0	3	rr04
+2026-10-27T20:33:11Z	robots\.data\hadur2\Hadur.data	35	34	0	188	0	7258.6	lorneswork.Predator	1	0	1	rr01
+2026-10-27T20:33:12Z	robots\.data\hadur2\Hadur.data	34	30	0	9	0	4121.5	dft.Cardigan	1	0	2	rr02
+2026-10-27T20:33:07Z	robots\.data\hadur2\Hadur.data	34	34	0	7	0	6113.2	dmp.nano.Eve	0	0	1	rr04
+2026-10-27T20:33:06Z	robots\.data\hadur2\Hadur.data	10	8	0	2	0	6895.3					robocode
+2026-10-27T20:33:21Z	robots\.data\hadur2\Hadur.data	34	34	0	8	0	6503.5	tobe.Fusion	1	0	2	rr01
+2026-10-27T20:33:17Z	robots\.data\hadur2\Hadur.data	34	34	0	11	0	9712.4	yarhoslav.YaroBot	1	0	2	rr02
+2026-10-27T20:33:23Z	robots\.data\hadur2\Hadur.data	34	34	0	16	0	9988.1	pa3k.Quark	0	1	2	rr04
+2026-10-27T20:33:34Z	robots\.data\hadur2\Hadur.data	34	34	0	9	0	6564.0	maribo.IotaCT	0	0	1	rr01
+2026-10-27T20:33:32Z	robots\.data\hadur2\Hadur.data	35	34	0	176	0	6179.1	kawigi.sbf.Barracuda	0	0	1	rr02
+2026-10-27T20:33:32Z	robots\.data\hadur2\Hadur.data	35	34	0	137	0	8383.1	rdt.Wraith.Wraith	0	0	1	rr03
+2026-10-27T20:33:38Z	robots\.data\hadur2\Hadur.data	34	34	0	9	0	9671.0	kinsen.nano.Quarrelet	0	0	2	rr04
+2026-10-27T20:33:42Z	robots\.data\hadur2\Hadur.data	34	34	0	11	0	8170.0	WarfaJibril.Jibril_Warfa_Andromeda	0	0	2	rr01
+2026-10-27T20:33:43Z	robots\.data\hadur2\Hadur.data	34	33	0	9	0	7242.5	brainfade.melee.Dusk	0	1	3	rr02
+2026-10-27T20:33:48Z	robots\.data\hadur2\Hadur.data	35	32	0	112	0	7875.7	rdt.Wraith.Wraith	1	0	1	rr03
+2026-10-27T20:33:43Z	robots\.data\hadur2\Hadur.data	34	34	0	9	0	2823.9	jkong.JKHydra	0	0	1	rr04
+2026-10-27T20:33:40Z	robots\.data\hadur2\Hadur.data	10	8	0	48	0	1424.1					robocode
+2026-10-27T20:33:56Z	robots\.data\hadur2\Hadur.data	34	30	0	10	0	7855.0	ary.mini.Nimi	0	0	1	rr01
+2026-10-27T20:33:57Z	robots\.data\hadur2\Hadur.data	34	34	0	11	0	10763.4	brainfade.melee.Dusk	0	1	3	rr02
+2026-10-27T20:33:59Z	robots\.data\hadur2\Hadur.data	35	34	0	158	0	6612.2	dft.Cyprus	0	1	2	rr03
+2026-10-27T20:34:04Z	robots\.data\hadur2\Hadur.data	35	34	0	178	0	5953.8	lazarecki.mega.PinkerStinker	0	0	1	rr01
+2026-10-27T20:34:11Z	robots\.data\hadur2\Hadur.data	35	34	0	220	0	2793.5	leb.ShootAnArrow	0	0	1	rr02
+2026-10-27T20:34:11Z	robots\.data\hadur2\Hadur.data	35	33	0	178	0	5936.1	marcinek.TopGun	1	0	1	rr03
+2026-10-27T20:34:12Z	robots\.data\hadur2\Hadur.data	10	9	0	4	0	1117.0					robocode
+2026-10-27T20:34:14Z	robots\.data\hadur2\Hadur.data	35	30	0	174	0	6890.5	lazarecki.mega.PinkerStinker	1	0	1	rr01
+2026-10-27T20:34:21Z	robots\.data\hadur2\Hadur.data	34	34	0	12	0	6121.6	amk.ShizzleStiX.ShizzleStiX	0	0	1	rr02
+2026-10-27T20:34:20Z	robots\.data\hadur2\Hadur.data	34	33	0	7	0	6504.9	ers.micro.ISuck.ISuckMicro	0	0	1	rr03
+2026-10-27T20:34:19Z	robots\.data\hadur2\Hadur.data	34	34	0	9	0	10136.4	whind.StrengthBee	1	0	2	rr04
+2026-10-27T20:34:23Z	robots\.data\hadur2\Hadur.data	34	34	0	13	0	12966.4	zyx.mega.YersiniaPestis	0	0	1	rr01
+2026-10-27T20:34:33Z	robots\.data\hadur2\Hadur.data	34	31	0	11	0	10555.9	apc.LeeroyJenkins2	1	0	2	rr02
+2026-10-27T20:34:36Z	robots\.data\hadur2\Hadur.data	35	34	0	113	0	10255.8	pa3k.Quark	0	1	2	rr03
+2026-10-27T20:34:36Z	robots\.data\hadur2\Hadur.data	34	34	0	10	0	9516.5	labg.Cataclysm	0	0	1	rr04
+2026-10-27T20:34:40Z	robots\.data\hadur2\Hadur.data	34	24	0	12	0	8517.2	kc.micro.WaveShark	0	1	2	rr01
+2026-10-27T20:34:39Z	robots\.data\hadur2\Hadur.data	35	34	0	190	0	-0.0	rz.HawkOnFire	1	0	1	rr02
+2026-10-27T20:34:46Z	robots\.data\hadur2\Hadur.data	35	34	0	9	0	6834.9	maribo.IotaCT	0	0	1	rr03
+2026-10-27T20:34:47Z	robots\.data\hadur2\Hadur.data	34	34	0	11	0	10486.7	ph.mini.Archer	0	0	2	rr04
+2026-10-27T20:34:48Z	robots\.data\hadur2\Hadur.data	35	33	0	176	0	9219.2	dft.Cardigan	1	1	3	rr01
+2026-10-27T20:34:50Z	robots\.data\hadur2\Hadur.data	35	34	0	187	0	5153.6	catcat20.Lambda	0	0	1	rr02
+2026-10-27T20:34:50Z	robots\.data\hadur2\Hadur.data	35	34	0	147	0	6474.3	lucasslf.HariSeldon	0	0	2	rr03
+2026-10-27T20:34:54Z	robots\.data\hadur2\Hadur.data	34	34	0	8	0	9529.2	dft.Cardigan	0	0	1	rr04
+2026-10-27T20:35:05Z	robots\.data\hadur2\Hadur.data	34	26	0	15	0	10245.1	can.Pookie	0	0	1	rr01
+2026-10-27T20:35:06Z	robots\.data\hadur2\Hadur.data	35	31	0	230	0	1951.5	dft.Cardigan	1	0	1	rr04
+2026-10-27T20:35:10Z	robots\.data\hadur2\Hadur.data	10	10	0	4	0	8589.6					robocode
+2026-10-27T20:35:14Z	robots\.data\hadur2\Hadur.data	35	34	0	185	0	6828.6	ary.mini.Nimi	0	1	2	rr01
+2026-10-27T20:35:17Z	robots\.data\hadur2\Hadur.data	34	34	0	13	0	10673.1	mue.Hyperion	1	0	2	rr02
+2026-10-27T20:35:20Z	robots\.data\hadur2\Hadur.data	35	34	0	126	0	6433.9	pez.rumble.Ali	0	0	1	rr03
+2026-10-27T20:35:21Z	robots\.data\hadur2\Hadur.data	34	34	0	11	0	5834.3	pez.rumble.Ali	0	0	1	rr04
+2026-10-27T20:35:22Z	robots\.data\hadur2\Hadur.data	35	34	0	220	0	11606.9	lucasslf.HariSeldon	0	0	1	rr01
+2026-10-27T20:35:31Z	robots\.data\hadur2\Hadur.data	34	34	0	11	0	9944.8	kawigi.sbf.Barracuda	0	1	2	rr02
+2026-10-27T20:35:30Z	robots\.data\hadur2\Hadur.data	35	2	0	36	0	6903.9					robocode
+2026-10-27T20:35:38Z	robots\.data\hadur2\Hadur.data	35	34	0	171	0	-0.0	fromHell.CHCl3	1	0	2	rr02
+2026-10-27T20:35:42Z	robots\.data\hadur2\Hadur.data	10	9	0	54	0	5966.2					robocode
+2026-10-27T20:35:46Z	robots\.data\hadur2\Hadur.data	35	33	0	148	0	14512.8	oog.PricklyPear	1	0	1	rr02
+2026-10-27T20:35:48Z	robots\.data\hadur2\Hadur.data	35	34	0	8	0	6399.7	chase.pm.Pytko	0	0	1	rr03
+2026-10-27T20:35:53Z	robots\.data\hadur2\Hadur.data	34	33	0	12	0	12130.3	can.Pookie	0	0	1	rr04
+2026-10-27T20:36:00Z	robots\.data\hadur2\Hadur.data	35	34	0	191	0	8831.2	amk.ShizzleStiX.ShizzleStiX	0	0	2	rr01
+2026-10-27T20:35:56Z	robots\.data\hadur2\Hadur.data	34	33	0	11	0	7620.6	voidious.Diamond	1	1	3	rr02
+2026-10-27T20:36:03Z	robots\.data\hadur2\Hadur.data	35	34	0	129	0	-0.0	fullsail.SweetTea	0	0	2	rr03
+2026-10-27T20:36:02Z	robots\.data\hadur2\Hadur.data	34	34	0	9	0	6178.5	ary.mini.Nimi	0	0	1	rr04
+2026-10-27T20:36:11Z	robots\.data\hadur2\Hadur.data	35	34	0	128	0	5375.7	amk.ShizzleStiX.ShizzleStiX	0	0	1	rr03
+2026-10-27T20:36:12Z	robots\.data\hadur2\Hadur.data	34	34	0	10	0	-0.0	pez.micro.Aristocles	0	0	2	rr04
+2026-10-27T20:36:11Z	robots\.data\hadur2\Hadur.data	10	6	0	1	0	8121.6					robocode
+2026-10-27T20:36:25Z	robots\.data\hadur2\Hadur.data	34	34	0	11	0	11313.8	repositorio.NanoStep	0	0	2	rr03
+2026-10-27T20:36:20Z	robots\.data\hadur2\Hadur.data	34	33	0	10	0	9091.4	lucasslf.HariSeldon	0	0	1	rr04
+2026-10-27T20:36:29Z	robots\.data\hadur2\Hadur.data	35	34	0	146	0	-0.0	dft.Cardigan	0	0	1	rr03
+2026-10-27T20:36:40Z	robots\.data\hadur2\Hadur.data	35	30	0	142	0	6063.3	m3thos.Eva02	0	0	1	rr03
+2026-10-27T20:36:41Z	robots\.data\hadur2\Hadur.data	10	10	0	2	0	1707.8					robocode
+2026-10-27T20:36:49Z	robots\.data\hadur2\Hadur.data	35	8	0	244	0	1203.3	rdt.Wraith.Wraith	0	0	1	rr01
+2026-10-27T20:36:46Z	robots\.data\hadur2\Hadur.data	34	34	0	10	0	9414.5	lazarecki.mega.PinkerStinker	0	0	1	rr03
+2026-10-27T20:36:54Z	robots\.data\hadur2\Hadur.data	34	34	0	13	0	8176.8	oog.micro.Claudius	0	0	1	rr04
+2026-10-27T20:37:01Z	robots\.data\hadur2\Hadur.data	35	34	0	122	0	5581.1	yarhoslav.YaroBot	0	0	2	rr03
+2026-10-27T20:37:02Z	robots\.data\hadur2\Hadur.data	34	34	0	13	0	10343.0	bots.UberBot	0	0	1	rr04
+2026-10-27T20:37:11Z	robots\.data\hadur2\Hadur.data	34	34	0	12	0	3259.1	rapture.Rapture	1	0	1	rr01
+2026-10-27T20:37:14Z	robots\.data\hadur2\Hadur.data	35	33	0	7	0	8649.6	rc.yoda.Yoda	0	0	1	rr03
+2026-10-27T20:37:10Z	robots\.data\hadur2\Hadur.data	34	34	0	11	0	2590.5	mk.Alpha	0	0	1	rr04
+2026-10-27T20:37:08Z	robots\.data\hadur2\Hadur.data	10	10	0	2	0	11353.8					robocode
+2026-10-27T20:37:21Z	robots\.data\hadur2\Hadur.data	35	34	0	173	0	2627.5	md.November	0	0	1	rr01
+2026-10-27T20:37:14Z	robots\.data\hadur2\Hadur.data	35	33	0	7	0	8649.6	rdt.Wraith.Wraith	1	0	2	rr03
+2026-10-27T20:37:21Z	robots\.data\hadur2\Hadur.data	34	34	0	13	0	-0.0	simonton.beta.LifelongObsession	0	0	2	rr04
+2026-10-27T20:37:34Z	robots\.data\hadur2\Hadur.data	35	34	0	257	0	8299.0	wompi.Kowari	0	0	1	rr01
+2026-10-27T20:37:34Z	robots\.data\hadur2\Hadur.data	34	31	0	8	0	1950.7	vishius.Orbiter	1	0	3	rr02
+2026-10-27T20:37:33Z	robots\.data\hadur2\Hadur.data	35	29	0	142	0	4113.5	robar.micro.Gladius	0	0	1	rr03
+2026-10-27T20:37:34Z	robots\.data\hadur2\Hadur.data	34	34	0	8	0	10399.6	mz.Adept	0	0	2	rr04
+2026-10-27T20:37:39Z	robots\.data\hadur2\Hadur.data	10	10	0	3	0	7682.8					robocode
+2026-10-27T20:37:42Z	robots\.data\hadur2\Hadur.data	34	34	0	9	0	8316.1	penguin.MrFreeze	1	0	1	rr01
+2026-10-27T20:37:47Z	robots\.data\hadur2\Hadur.data	34	34	0	11	0	9658.8	sul.Pinkbot	0	0	1	rr02
+2026-10-27T20:37:43Z	robots\.data\hadur2\Hadur.data	34	34	0	10	0	9999.1	florent.small.LittleAngel	0	1	3	rr03
+2026-10-27T20:37:50Z	robots\.data\hadur2\Hadur.data	34	34	0	16	0	9018.5	ags.polished.PolishedRuby	0	0	2	rr04
+2026-10-27T20:37:54Z	robots\.data\hadur2\Hadur.data	34	31	0	14	0	11924.5	kawigi.sbf.FloodHT	1	1	2	rr01
+2026-10-27T20:37:56Z	robots\.data\hadur2\Hadur.data	34	33	0	11	0	9676.4	sos.SOS	0	0	1	rr02
+2026-10-27T20:38:03Z	robots\.data\hadur2\Hadur.data	34	34	0	11	0	9968.7	throxbot.ThroxBot	0	0	1	rr03
+2026-10-27T20:38:03Z	robots\.data\hadur2\Hadur.data	34	33	0	16	0	8719.4	bbo.RamboT	0	0	1	rr04
+2026-10-27T20:38:05Z	robots\.data\hadur2\Hadur.data	10	5	0	71	0	892.4					robocode
+2026-10-27T20:38:11Z	robots\.data\hadur2\Hadur.data	34	34	0	6	0	5799.2	wiki.BasicGFSurfer	0	0	1	rr01
+2026-10-27T20:38:13Z	robots\.data\hadur2\Hadur.data	34	34	0	11	0	11145.1	satan.R0	1	0	3	rr02
+2026-10-27T20:38:13Z	robots\.data\hadur2\Hadur.data	34	34	0	9	0	9901.7	kjc.Karaykan	0	0	2	rr03
+2026-10-27T20:38:09Z	robots\.data\hadur2\Hadur.data	34	34	0	10	0	11036.4	rsalesc.roborio.Roborio	1	0	1	rr04
+2026-10-27T20:38:17Z	robots\.data\hadur2\Hadur.data	34	33	0	13	0	10902.5	pe.minimelee.SandboxMiniMelee	0	1	2	rr01
+2026-10-27T20:38:22Z	robots\.data\hadur2\Hadur.data	34	34	0	269	0	12371.8	pl.Drum	0	0	2	rr02
+2026-10-27T20:38:32Z	robots\.data\hadur2\Hadur.data	34	34	0	5	0	-0.0	m3thos.Eva00	0	0	2	rr01
+2026-10-27T20:38:27Z	robots\.data\hadur2\Hadur.data	35	34	0	140	0	8627.7	jasolo.Sonda	0	0	1	rr02
+2026-10-27T20:38:30Z	robots\.data\hadur2\Hadur.data	10	9	0	70	0	11635.0					robocode
+2026-10-27T20:38:46Z	robots\.data\hadur2\Hadur.data	34	32	0	9	0	9170.8	suh.micro.WallPM	0	0	1	rr01
+2026-10-27T20:38:42Z	robots\.data\hadur2\Hadur.data	35	34	0	167	0	10570.4	drm.CobraBora	1	0	1	rr02
+2026-10-27T20:38:52Z	robots\.data\hadur2\Hadur.data	35	34	0	235	0	7510.2	tango.Recrimpo	0	0	1	rr01
+2026-10-27T20:38:52Z	robots\.data\hadur2\Hadur.data	35	28	0	158	0	6772.0	fromHell.C22H30N2O2S	0	0	1	rr02
+2026-10-27T20:38:54Z	robots\.data\hadur2\Hadur.data	10	10	0	4	0	1365.0					robocode
+2026-10-27T20:39:05Z	robots\.data\hadur2\Hadur.data	34	33	0	9	0	9248.6	deo.virtual.RainbowBot	0	0	1	rr01
+2026-10-27T20:38:58Z	robots\.data\hadur2\Hadur.data	34	33	0	9	0	8475.5	simonton.mini.WeeksOnEnd	0	0	2	rr02
+2026-10-27T20:39:10Z	robots\.data\hadur2\Hadur.data	34	34	0	13	0	10108.3	slugzilla.OscillateLinear	0	0	2	rr03
+2026-10-27T20:39:06Z	robots\.data\hadur2\Hadur.data	34	23	0	274	0	2936.8	tcf.Repat3	0	0	2	rr04
+2026-10-27T20:39:13Z	robots\.data\hadur2\Hadur.data	35	34	0	217	0	6741.4	penguin.Ivy	1	0	3	rr01
+2026-10-27T20:39:15Z	robots\.data\hadur2\Hadur.data	34	34	0	9	0	11171.7	zyx.mega.YersiniaPestis	1	1	2	rr02
+2026-10-27T20:39:17Z	robots\.data\hadur2\Hadur.data	35	33	0	150	0	8032.7	lucasslf.HariSeldon	0	0	3	rr03
+2026-10-27T20:39:22Z	robots\.data\hadur2\Hadur.data	34	34	0	266	0	6386.0	sL300.Mozart	0	0	1	rr04
+2026-10-27T20:39:31Z	robots\.data\hadur2\Hadur.data	34	34	0	8	0	6558.5	takeBot.SpiralCrash	1	0	1	rr01
+2026-10-27T20:39:33Z	robots\.data\hadur2\Hadur.data	10	3	0	74	0	9054.5					robocode
+2026-10-27T20:39:37Z	robots\.data\hadur2\Hadur.data	34	34	0	13	0	10027.4	tvv.nano.Polaris	0	0	2	rr01
+2026-10-27T20:39:42Z	robots\.data\hadur2\Hadur.data	34	32	0	13	0	12730.4	bayen.nano.Squirrel	1	0	2	rr02
+2026-10-27T20:39:34Z	robots\.data\hadur2\Hadur.data	34	29	0	12	0	7374.0	deith.Czolgzilla	0	0	1	rr04
+2026-10-27T20:39:46Z	robots\.data\hadur2\Hadur.data	10	10	0	0	0	-0.0					robocode
+2026-10-27T20:39:49Z	robots\.data\hadur2\Hadur.data	34	30	0	9	0	1638.9	mz.NanoDeath	0	0	1	rr01
+2026-10-27T20:39:55Z	robots\.data\hadur2\Hadur.data	34	34	0	13	0	10504.2	jeremyreeder.Vincent	0	0	1	rr02
+2026-10-27T20:39:51Z	robots\.data\hadur2\Hadur.data	34	34	0	14	0	10803.8	brainfade.melee.Dusk	0	0	1	rr04
+2026-10-27T20:40:03Z	robots\.data\hadur2\Hadur.data	35	31	0	124	0	6901.7	wiki.BasicGFSurfer	0	0	1	rr02
+2026-10-27T20:40:04Z	robots\.data\hadur2\Hadur.data	34	34	0	17	0	10488.5	synapse.Geomancy	0	0	1	rr04
+2026-10-27T20:40:14Z	robots\.data\hadur2\Hadur.data	35	34	0	130	0	6015.1	jgap.JGAP12584	0	0	1	rr02
+2026-10-27T20:40:15Z	robots\.data\hadur2\Hadur.data	34	31	0	13	0	6394.2	gh.mini.Grimmig	0	0	1	rr04
+2026-10-27T20:40:24Z	robots\.data\hadur2\Hadur.data	34	25	0	11	0	7149.9	florent.test.Toad	1	0	1	rr02
+2026-10-27T20:40:24Z	robots\.data\hadur2\Hadur.data	34	34	0	10	0	7151.1	sgp.ShiningBeetle	0	0	1	rr04
+2026-10-27T20:40:26Z	robots\.data\hadur2\Hadur.data	10	8	0	1	0	3713.7					robocode
+2026-10-27T20:40:33Z	robots\.data\hadur2\Hadur.data	35	33	0	125	0	6684.3	apc.LeeroyJenkins2	1	0	3	rr02
+2026-10-27T20:40:39Z	robots\.data\hadur2\Hadur.data	34	34	0	267	0	11039.8	quietus.Invader	0	0	4	rr04
+2026-10-27T20:40:44Z	robots\.data\hadur2\Hadur.data	35	34	0	214	0	9748.2	ncj.MoxieBot	0	0	1	rr02
+2026-10-27T20:40:39Z	robots\.data\hadur2\Hadur.data	34	34	0	267	0	11039.8	ary.micro.Weak	0	0	1	rr04
+2026-10-27T20:40:44Z	robots\.data\hadur2\Hadur.data	10	10	0	4	0	2870.4					robocode
+2026-10-27T20:40:55Z	robots\.data\hadur2\Hadur.data	34	34	0	8	0	9560.0	klein.GottesKrieger	1	0	3	rr02
+2026-10-27T20:40:57Z	robots\.data\hadur2\Hadur.data	34	34	0	9	0	6772.2	jab.avk.ManuelGallegus	0	0	1	rr04
+2026-10-27T20:41:05Z	robots\.data\hadur2\Hadur.data	34	34	0	9	0	7577.2	apv.NanoLauLectrik	0	0	1	rr01
+2026-10-27T20:41:07Z	robots\.data\hadur2\Hadur.data	34	34	0	9	0	5949.2	ne.Chimera	1	0	1	rr04
+2026-10-27T20:41:02Z	robots\.data\hadur2\Hadur.data	10	10	0	2	0	2071.3					robocode
+2026-10-27T20:41:16Z	robots\.data\hadur2\Hadur.data	35	34	0	214	0	6122.7	dks.MicroDanMK2	0	0	1	rr01
+2026-10-27T20:41:15Z	robots\.data\hadur2\Hadur.data	35	33	0	266	0	8022.5	dsekercioglu.mini.Partial	0	0	1	rr04
+2026-10-27T20:41:20Z	robots\.data\hadur2\Hadur.data	34	34	0	9	0	6225.7	davidalves.PhoenixOS	0	0	1	rr01
+2026-10-27T20:41:26Z	robots\.data\hadur2\Hadur.data	35	34	0	125	0	7060.3	Grystrion.TrackerWO	0	0	1	rr02
+2026-10-27T20:41:28Z	robots\.data\hadur2\Hadur.data	35	34	0	266	0	12777.4	sgp.SleepingGoat	1	0	3	rr04
+2026-10-27T20:41:36Z	robots\.data\hadur2\Hadur.data	34	34	0	10	0	7748.3	e32.Omni	1	0	1	rr01
+2026-10-27T20:41:37Z	robots\.data\hadur2\Hadur.data	35	34	0	158	0	10160.9	kid.Gladiator	0	0	1	rr02
+2026-10-27T20:41:33Z	robots\.data\hadur2\Hadur.data	34	34	0	10	0	9949.4	cre.Karolos	0	0	4	rr04
+2026-10-27T20:41:42Z	robots\.data\hadur2\Hadur.data	10	5	0	4	0	1849.7					robocode
+2026-10-27T20:41:45Z	robots\.data\hadur2\Hadur.data	34	34	0	10	0	9308.5	TCMI.Enyo	1	0	3	rr01
+2026-10-27T20:41:50Z	robots\.data\hadur2\Hadur.data	35	34	0	220	0	8617.9	oog.nano.SavantWS	0	0	1	rr02
+2026-10-27T20:41:50Z	robots\.data\hadur2\Hadur.data	34	34	0	271	0	8587.2	suh.nano.MirrorL	0	0	2	rr04
+2026-10-27T20:41:58Z	robots\.data\hadur2\Hadur.data	34	34	0	9	0	7686.3	spinnercat.Limit	0	0	1	rr01
+2026-10-27T20:41:59Z	robots\.data\hadur2\Hadur.data	34	30	0	8	0	10618.4	m3thos.Eva02	1	0	2	rr02
+2026-10-27T20:42:01Z	robots\.data\hadur2\Hadur.data	34	31	0	12	0	6974.0	myl.nano.Kakuru	0	0	2	rr04
+2026-10-27T20:42:05Z	robots\.data\hadur2\Hadur.data	34	34	0	8	0	6579.0	ara.Shera	0	0	1	rr01
+2026-10-27T20:42:05Z	robots\.data\hadur2\Hadur.data	34	33	0	12	0	11542.3	m3thos.Eva02	1	0	2	rr02
+2026-10-27T20:42:08Z	robots\.data\hadur2\Hadur.data	35	34	0	149	0	7250.5	catcat20.Lambda	0	0	1	rr03
+2026-10-27T20:42:16Z	robots\.data\hadur2\Hadur.data	34	34	0	11	0	10155.6	squidM.SquidmanNano	0	0	2	rr04
+2026-10-27T20:42:10Z	robots\.data\hadur2\Hadur.data	10	10	0	1	0	8353.5					robocode
+2026-10-27T20:42:22Z	robots\.data\hadur2\Hadur.data	34	34	0	11	0	9461.8	kawigi.sbf.FloodMicro	0	0	2	rr01
+2026-10-27T20:42:26Z	robots\.data\hadur2\Hadur.data	34	33	0	6	0	-0.0	can.Pookie	0	1	2	rr02
+2026-10-27T20:42:27Z	robots\.data\hadur2\Hadur.data	34	32	0	15	0	11263.6	pedersen.Hubris	0	1	1	rr04
+2026-10-27T20:42:34Z	robots\.data\hadur2\Hadur.data	34	34	0	12	0	11196.2	xander.cat.Fiona	0	0	1	rr01
+2026-10-27T20:42:26Z	robots\.data\hadur2\Hadur.data	34	33	0	6	0	-0.0	catcat20.Lambda	0	0	2	rr02
+2026-10-27T20:42:32Z	robots\.data\hadur2\Hadur.data	35	29	0	191	0	8605.0	catcat20.Lambda	1	1	1	rr03
+2026-10-27T20:42:39Z	robots\.data\hadur2\Hadur.data	34	34	0	10	0	10037.1	germ.TheMind	0	0	2	rr04
+2026-10-27T20:42:41Z	robots\.data\hadur2\Hadur.data	10	10	0	2	0	9418.0					robocode
+2026-10-27T20:42:44Z	robots\.data\hadur2\Hadur.data	34	34	0	7	0	6146.4	robar.nano.BlackWidow	0	0	2	rr01
+2026-10-27T20:42:48Z	robots\.data\hadur2\Hadur.data	34	34	0	6	0	-0.0	ejbots.AngryGrandpappy	0	0	1	rr04
+2026-10-27T20:42:53Z	robots\.data\hadur2\Hadur.data	34	34	0	8	0	7260.0	scheronimus.ScheroBot	0	0	1	rr01
+2026-10-27T20:42:58Z	robots\.data\hadur2\Hadur.data	35	34	0	169	0	8877.8	catcat20.Lambda	1	0	3	rr02
+2026-10-27T20:42:54Z	robots\.data\hadur2\Hadur.data	34	33	0	12	0	7009.9	pedersen.Hubris	0	1	2	rr04
+2026-10-27T20:43:02Z	robots\.data\hadur2\Hadur.data	35	34	0	250	0	7099.5	catcat20.Lambda	0	0	1	rr01
+2026-10-27T20:43:14Z	robots\.data\hadur2\Hadur.data	35	2	0	182	0	11834.5	kc.mega.BeepBoop	1	1	3	rr03
+2026-10-27T20:43:18Z	robots\.data\hadur2\Hadur.data	35	31	0	230	0	10778.3	elloco.Kabuto	1	0	2	rr04
+2026-10-27T20:43:07Z	robots\.data\hadur2\Hadur.data	10	8	0	36	0	6857.1					robocode
+2026-10-27T20:43:34Z	robots\.data\hadur2\Hadur.data	34	34	0	11	0	10449.9	can.Pookie	0	1	2	rr01
+2026-10-27T20:43:21Z	robots\.data\hadur2\Hadur.data	35	30	0	163	0	1883.9	catcat20.Lambda	1	0	3	rr02
+2026-10-27T20:43:26Z	robots\.data\hadur2\Hadur.data	35	34	0	116	0	11313.7	catcat20.Lambda	1	1	2	rr03
+2026-10-27T20:43:33Z	robots\.data\hadur2\Hadur.data	10	9	0	1	0	7319.9					robocode
+2026-10-27T20:43:53Z	robots\.data\hadur2\Hadur.data	35	29	0	185	0	4931.8	catcat20.Lambda	1	0	2	rr03
+2026-10-27T20:43:51Z	robots\.data\hadur2\Hadur.data	10	10	0	3	0	9290.4					robocode
+2026-10-27T20:44:02Z	robots\.data\hadur2\Hadur.data	34	34	0	9	0	10191.6	can.Pookie	0	1	3	rr01
+2026-10-27T20:44:03Z	robots\.data\hadur2\Hadur.data	34	33	0	12	0	8791.7	labg.Cataclysm	1	0	2	rr03
+2026-10-27T20:44:05Z	robots\.data\hadur2\Hadur.data	34	34	0	10	0	11058.0	catcat20.Lambda	1	0	4	rr04
+2026-10-27T20:44:06Z	robots\.data\hadur2\Hadur.data	10	9	0	10	0	8581.4					robocode
+2026-10-27T20:44:11Z	robots\.data\hadur2\Hadur.data	34	34	0	10	0	4086.7	can.Pookie	0	1	3	rr01
+2026-10-27T20:44:12Z	robots\.data\hadur2\Hadur.data	34	34	0	10	0	11952.1	labg.Cataclysm	1	0	3	rr03
+2026-10-27T20:44:25Z	robots\.data\hadur2\Hadur.data	35	34	0	144	0	8607.6	sul.Pinkbot	1	0	2	rr03
+2026-10-27T20:44:25Z	robots\.data\hadur2\Hadur.data	34	32	0	13	0	-0.0	can.Pookie	0	1	2	rr04
+2026-10-27T20:44:33Z	robots\.data\hadur2\Hadur.data	35	33	0	136	0	4367.5	sul.Pinkbot	1	0	3	rr03
+2026-10-27T20:44:34Z	robots\.data\hadur2\Hadur.data	34	34	0	8	0	9025.9	dft.Cardigan	1	0	2	rr04
+2026-10-27T20:44:45Z	robots\.data\hadur2\Hadur.data	34	34	0	13	0	10658.9	suh.nano.CrossH	0	0	3	rr02
+2026-10-27T20:44:42Z	robots\.data\hadur2\Hadur.data	10	10	0	0	0	-0.0					robocode
+2026-10-27T20:44:49Z	robots\.data\hadur2\Hadur.data	34	34	0	10	0	5740.4	catcat20.Lambda	1	0	4	rr02
+2026-10-27T20:44:49Z	robots\.data\hadur2\Hadur.data	34	28	0	8	0	4161.1	pez.rumble.Ali	0	1	2	rr04
+2026-10-27T20:45:08Z	robots\.data\hadur2\Hadur.data	35	29	0	201	0	5446.3	catcat20.Lambda	1	0	4	rr02
+2026-10-27T20:45:12Z	robots\.data\hadur2\Hadur.data	34	33	0	10	0	9416.8	pez.rumble.Ali	0	1	2	rr04
+2026-10-27T20:45:13Z	robots\.data\hadur2\Hadur.data	10	10	0	2	0	13169.3					robocode
+2026-10-27T20:45:17Z	robots\.data\hadur2\Hadur.data	35	34	0	199	0	7389.3	ajs.Solveit	1	0	1	rr02
+2026-10-27T20:45:23Z	robots\.data\hadur2\Hadur.data	34	34	0	12	0	6491.3	marcinek.TopGun	1	0	1	rr04
+2026-10-27T20:45:28Z	robots\.data\hadur2\Hadur.data	35	24	0	180	0	10623.6					robocode
+2026-10-27T20:45:32Z	robots\.data\hadur2\Hadur.data	35	5	0	280	0	7817.0	pez.rumble.Ali	0	1	2	rr03
+2026-10-27T20:45:36Z	robots\.data\hadur2\Hadur.data	34	34	0	10	0	9314.8	demetrix.ForceMajeure	0	0	1	rr04
+2026-10-27T20:45:34Z	robots\.data\hadur2\Hadur.data	10	10	0	1	0	8306.5					robocode
+2026-10-27T20:45:48Z	robots\.data\hadur2\Hadur.data	34	32	0	11	0	3973.9	yarhoslav.YaroBot	0	0	2	rr04
+2026-10-27T20:45:56Z	robots\.data\hadur2\Hadur.data	35	31	0	116	0	10752.7	dft.Cardigan	1	0	2	rr03
+2026-10-27T20:45:57Z	robots\.data\hadur2\Hadur.data	34	34	0	9	0	9558.7	ab.DengerousRoBatra	1	0	3	rr04
+2026-10-27T20:45:54Z	robots\.data\hadur2\Hadur.data	10	10	0	1	0	9126.0					robocode
+2026-10-27T20:46:05Z	robots\.data\hadur2\Hadur.data	35	34	0	136	0	7764.2	dcs.Eater_of_Worlds_Mini	0	0	1	rr02
+2026-10-27T20:46:12Z	robots\.data\hadur2\Hadur.data	34	34	0	10	0	10809.6	m3thos.Eva02	1	0	2	rr03
+2026-10-27T20:46:25Z	robots\.data\hadur2\Hadur.data	34	34	0	8	0	7943.0	usa.nano.Nemo	0	0	1	rr02
+2026-10-27T20:46:23Z	robots\.data\hadur2\Hadur.data	35	34	0	174	0	7086.1	stelo.SteloTestNano	0	0	2	rr03
+2026-10-27T20:46:20Z	robots\.data\hadur2\Hadur.data	10	10	0	2	0	6690.4					robocode
+2026-10-27T20:46:29Z	robots\.data\hadur2\Hadur.data	34	33	0	12	0	11067.1	stelo.SteloTestNano	0	0	2	rr03
+2026-10-27T20:46:35Z	robots\.data\hadur2\Hadur.data	10	10	0	3	0	11482.3					robocode
+2026-10-27T20:46:45Z	robots\.data\hadur2\Hadur.data	34	34	0	12	0	10340.6	lxx.Emerald	1	0	3	rr01
+2026-10-27T20:46:44Z	robots\.data\hadur2\Hadur.data	34	34	0	11	0	11409.7	fm.claire	1	0	2	rr02
+2026-10-27T20:46:54Z	robots\.data\hadur2\Hadur.data	35	34	0	140	0	9061.2	baal.nano.N	1	0	2	rr02
+2026-10-27T20:46:57Z	robots\.data\hadur2\Hadur.data	34	34	0	7	0	6353.2	dsekercioglu.mega.WhiteFang	0	0	1	rr01
+2026-10-27T20:47:00Z	robots\.data\hadur2\Hadur.data	35	34	0	170	0	10369.1	pez.nano.LittleEvilBrother	0	0	3	rr02
+2026-10-27T20:47:10Z	robots\.data\hadur2\Hadur.data	35	26	0	111	0	3148.9					robocode
+2026-10-27T20:47:13Z	robots\.data\hadur2\Hadur.data	35	28	0	179	0	13419.9	stelo.PastFuture	1	0	2	rr03
+2026-10-27T20:47:10Z	robots\.data\hadur2\Hadur.data	35	26	0	111	0	3148.9					robocode
+2026-10-27T20:47:19Z	robots\.data\hadur2\Hadur.data	35	27	0	209	0	5708.2	zezinho.QuerMePegarKKKK	1	0	3	rr01
+2026-10-27T20:47:25Z	robots\.data\hadur2\Hadur.data	35	34	0	192	0	6990.1	quietus.NarrowRadar	1	0	4	rr02
+2026-10-27T20:47:25Z	robots\.data\hadur2\Hadur.data	35	34	0	127	0	6036.6	stelo.Liblix	0	0	1	rr03
+2026-10-27T20:47:29Z	robots\.data\hadur2\Hadur.data	34	31	0	11	0	10251.5	zezinho.QuerMePegarKKKK	1	0	3	rr01
+2026-10-27T20:47:33Z	robots\.data\hadur2\Hadur.data	34	33	0	7	0	8958.0	unarmedlad.nano.VirginSteele	0	0	1	rr02
+2026-10-27T20:47:35Z	robots\.data\hadur2\Hadur.data	34	34	0	7	0	7141.1	stelo.Liblix	0	0	1	rr03
+2026-10-27T20:47:39Z	robots\.data\hadur2\Hadur.data	34	34	0	12	0	6431.6	dittman.BlindSquirl	0	0	1	rr04
+2026-10-27T20:47:47Z	robots\.data\hadur2\Hadur.data	35	32	0	200	0	7318.0	dz.GalbaMicro	1	0	1	rr02
+2026-10-27T20:47:43Z	robots\.data\hadur2\Hadur.data	34	34	0	268	0	5777.8	dittman.BlindSquirl	1	0	1	rr04
+2026-10-27T20:47:43Z	robots\.data\hadur2\Hadur.data	10	4	0	0	0	-0.0					robocode
+2026-10-27T20:47:55Z	robots\.data\hadur2\Hadur.data	34	29	0	10	0	6429.7	sheldor.mini.Foilist	1	0	1	rr01
+2026-10-27T20:47:56Z	robots\.data\hadur2\Hadur.data	34	33	0	10	0	5215.1	kawigi.nano.ThnikkaBot	1	0	2	rr02
+2026-10-27T20:48:01Z	robots\.data\hadur2\Hadur.data	34	34	0	12	0	10341.8	suh.nano.CrossH	0	0	3	rr04
+2026-10-27T20:48:07Z	robots\.data\hadur2\Hadur.data	34	34	0	13	0	9329.4	trab.nano.AinippeNano	0	0	3	rr02
+2026-10-27T20:48:03Z	robots\.data\hadur2\Hadur.data	35	34	0	118	0	5858.9	deith.Czolgzilla	1	0	1	rr03
+2026-10-27T20:48:17Z	robots\.data\hadur2\Hadur.data	34	34	0	11	0	13297.7	geep.mini.GPBotA	0	0	2	rr01
+2026-10-27T20:48:21Z	robots\.data\hadur2\Hadur.data	34	33	0	10	0	9755.7	wcsv.Stampede	1	0	2	rr02
+2026-10-27T20:48:15Z	robots\.data\hadur2\Hadur.data	34	33	0	9	0	4249.9	gu.MicroScoob	0	0	1	rr03
+2026-10-27T20:48:21Z	robots\.data\hadur2\Hadur.data	10	10	0	4	0	1316.3					robocode
+2026-10-27T20:48:25Z	robots\.data\hadur2\Hadur.data	34	34	0	9	0	6871.8	dcs.PM.Eater_of_Worlds_PM	0	0	1	rr01
+2026-10-27T20:48:21Z	robots\.data\hadur2\Hadur.data	34	33	0	10	0	9755.7	stelo.MatchupMini	1	0	2	rr02
+2026-10-27T20:48:31Z	robots\.data\hadur2\Hadur.data	35	34	0	196	0	2495.6	nzeemin.Izh	0	0	1	rr03
+2026-10-27T20:48:31Z	robots\.data\hadur2\Hadur.data	34	30	0	17	0	12588.4	catcat20.Lambda	1	1	6	rr04
+2026-10-27T20:48:34Z	robots\.data\hadur2\Hadur.data	34	31	0	9	0	2178.1	css.Delitioner	0	0	1	rr01
+2026-10-27T20:48:36Z	robots\.data\hadur2\Hadur.data	34	33	0	9	0	8751.5	stelo.MatchupMini	1	0	2	rr02
+2026-10-27T20:48:41Z	robots\.data\hadur2\Hadur.data	34	34	0	9	0	10725.4	Grystrion.TrackerWO	0	0	1	rr03
+2026-10-27T20:48:46Z	robots\.data\hadur2\Hadur.data	34	34	0	9	0	7615.6	css.Delitioner	0	1	1	rr01
+2026-10-27T20:48:53Z	robots\.data\hadur2\Hadur.data	35	34	0	258	0	12972.5	el33t.EL33tGangstarr2	0	0	2	rr02
+2026-10-27T20:48:57Z	robots\.data\hadur2\Hadur.data	34	34	0	10	0	10627.8	krzysiek.robbo2.Robbo	0	0	2	rr03
+2026-10-27T20:48:56Z	robots\.data\hadur2\Hadur.data	35	23	0	104	0	4014.6					robocode
+2026-10-27T20:49:03Z	robots\.data\hadur2\Hadur.data	34	34	0	7	0	936.5	fala.robocode.FalaRobot	0	0	1	rr01
+2026-10-27T20:49:03Z	robots\.data\hadur2\Hadur.data	35	33	0	162	0	9479.8	nz.jdc.nano.NeophytePattern	0	0	1	rr03
+2026-10-27T20:49:06Z	robots\.data\hadur2\Hadur.data	34	34	0	13	0	5897.6	suh.nano.CrossH	0	0	4	rr04
+2026-10-27T20:49:15Z	robots\.data\hadur2\Hadur.data	34	34	0	7	0	9212.5	tornyil.Lajcsi2.Lajcsi2sm	1	0	2	rr01
+2026-10-27T20:49:11Z	robots\.data\hadur2\Hadur.data	35	34	0	192	0	9850.6	davidalves.net.Duelist	1	0	1	rr02
+2026-10-27T20:49:12Z	robots\.data\hadur2\Hadur.data	34	34	0	11	0	11375.4	nz.jdc.nano.NeophytePattern	0	0	1	rr03
+2026-10-27T20:49:15Z	robots\.data\hadur2\Hadur.data	34	34	0	271	0	8584.5	chase.pm.Pytko	0	0	2	rr04
+2026-10-27T20:49:25Z	robots\.data\hadur2\Hadur.data	34	33	0	13	0	11135.4	slugzilla.ButtHead	0	0	2	rr01
+2026-10-27T20:49:30Z	robots\.data\hadur2\Hadur.data	35	34	0	170	0	9528.8	supersample.SuperTrackFire	0	0	2	rr02
+2026-10-27T20:49:29Z	robots\.data\hadur2\Hadur.data	34	34	0	14	0	11373.5	jp.SineWall	0	0	2	rr03
+2026-10-27T20:49:34Z	robots\.data\hadur2\Hadur.data	34	34	0	16	0	6008.5	jwst.DAD.DarkAndDarker	0	0	1	rr04
+2026-10-27T20:49:41Z	robots\.data\hadur2\Hadur.data	35	34	0	121	0	5634.6	acid.Bl4ck	0	0	1	rr03
+2026-10-27T20:49:41Z	robots\.data\hadur2\Hadur.data	34	34	0	9	0	9206.6	leb.ShootAnArrow	0	0	2	rr04
+2026-10-27T20:49:35Z	robots\.data\hadur2\Hadur.data	10	4	0	18	0	1215.7					robocode
+2026-10-27T20:49:52Z	robots\.data\hadur2\Hadur.data	34	33	0	14	0	10828.6	bayen.nut.Squirrel	0	0	2	rr01
+2026-10-27T20:49:47Z	robots\.data\hadur2\Hadur.data	34	34	0	10	0	8768.9	Lo_Ian.Gandalf_V4	0	0	1	rr02
+2026-10-27T20:49:50Z	robots\.data\hadur2\Hadur.data	34	34	0	10	0	9296.3	sheldor.nano.PointInLine	0	0	1	rr03
+2026-10-27T20:49:54Z	robots\.data\hadur2\Hadur.data	34	34	0	9	0	6587.5	stelo.Chord	0	0	1	rr04
+2026-10-27T20:49:52Z	robots\.data\hadur2\Hadur.data	34	33	0	14	0	10828.6	bayen.nut.Squirrel	0	0	2	rr01
+2026-10-27T20:49:59Z	robots\.data\hadur2\Hadur.data	34	34	0	11	0	9317.2	rapture.Rapture	1	0	2	rr02
+2026-10-27T20:49:56Z	robots\.data\hadur2\Hadur.data	34	31	0	12	0	9336.9	sheldor.nano.PointInLine	0	0	1	rr03
+2026-10-27T20:50:14Z	robots\.data\hadur2\Hadur.data	34	31	0	14	0	9632.5	positive.Portia	1	1	3	rr01
+2026-10-27T20:50:10Z	robots\.data\hadur2\Hadur.data	35	7	0	66	0	12734.0					robocode
+2026-10-27T20:50:21Z	robots\.data\hadur2\Hadur.data	34	33	0	10	0	10371.1	ebo.Tahoe	1	0	2	rr01
+2026-10-27T20:50:29Z	robots\.data\hadur2\Hadur.data	35	27	0	199	0	14185.8	wompi.Numbat	1	0	1	rr01
+2026-10-27T20:50:33Z	robots\.data\hadur2\Hadur.data	35	34	0	148	0	8358.0	lion.Kresnanano	0	0	1	rr03
+2026-10-27T20:50:36Z	robots\.data\hadur2\Hadur.data	35	34	0	160	0	6157.5	Ex.Survival	0	0	1	rr04
+2026-10-27T20:50:35Z	robots\.data\hadur2\Hadur.data	10	6	0	42	0	1475.6					robocode
+2026-10-27T20:50:40Z	robots\.data\hadur2\Hadur.data	34	30	0	9	0	7180.2	wompi.Numbat	1	0	1	rr01
+2026-10-27T20:50:41Z	robots\.data\hadur2\Hadur.data	34	34	0	9	0	8636.9	csp.Eagle	0	0	1	rr03
+2026-10-27T20:50:41Z	robots\.data\hadur2\Hadur.data	34	34	0	9	0	6540.4	kc.micro.WaveShark	0	0	1	rr04
+2026-10-27T20:50:45Z	robots\.data\hadur2\Hadur.data	35	23	0	58	0	3030.9					robocode
+2026-10-27T20:50:56Z	robots\.data\hadur2\Hadur.data	35	34	0	207	0	6160.0	sample.SittingDuck	0	0	1	rr01
+2026-10-27T20:50:50Z	robots\.data\hadur2\Hadur.data	34	33	0	9	0	9341.9	kc.micro.WaveShark	0	1	1	rr04
+2026-10-27T20:51:01Z	robots\.data\hadur2\Hadur.data	34	31	0	11	0	10564.3	nan.Ihivatar_Mk_1	1	0	2	rr01
+2026-10-27T20:51:01Z	robots\.data\hadur2\Hadur.data	35	33	0	143	0	6435.6	pc.Wavelet	0	0	1	rr03
+2026-10-27T20:51:06Z	robots\.data\hadur2\Hadur.data	35	34	0	238	0	1530.6	genprog.Gajeel	0	0	1	rr04
+2026-10-27T20:51:09Z	robots\.data\hadur2\Hadur.data	34	34	0	7	0	6285.6	suh.nano.StopAndGoL	0	0	1	rr01
+2026-10-27T20:51:18Z	robots\.data\hadur2\Hadur.data	34	34	0	10	0	10486.8	can.Pookie	0	1	3	rr04
+2026-10-27T20:51:17Z	robots\.data\hadur2\Hadur.data	10	5	0	4	0	22035.6					robocode
+2026-10-27T20:51:26Z	robots\.data\hadur2\Hadur.data	35	33	0	182	0	4034.7	knackibot.KnackOnOne	0	0	1	rr04
+2026-10-27T20:51:32Z	robots\.data\hadur2\Hadur.data	35	34	0	221	0	-0.0	catcat20.atom.Atom	0	0	1	rr01
+2026-10-27T20:51:36Z	robots\.data\hadur2\Hadur.data	34	13	0	9	0	9625.7	axeBots.HataMoto	0	0	1	rr03
+2026-10-27T20:51:31Z	robots\.data\hadur2\Hadur.data	35	34	0	198	0	8082.6	knackibot.KnackOnOne	0	0	1	rr04
+2026-10-27T20:51:43Z	robots\.data\hadur2\Hadur.data	35	33	0	158	0	6000.6	axeBots.HataMoto	0	0	1	rr03
+2026-10-27T20:51:50Z	robots\.data\hadur2\Hadur.data	34	34	0	6	0	7002.4	slugzilla.OscillateLinear	0	0	1	rr04
+2026-10-27T20:51:42Z	robots\.data\hadur2\Hadur.data	10	10	0	28	0	4372.9					robocode
+2026-10-27T20:51:58Z	robots\.data\hadur2\Hadur.data	34	32	0	9	0	6694.2	dft.Cyprus	0	0	1	rr04
+2026-10-27T20:52:07Z	robots\.data\hadur2\Hadur.data	35	34	0	154	0	6828.7	gh.mini.Grimmig	1	0	1	rr03
+2026-10-27T20:52:02Z	robots\.data\hadur2\Hadur.data	34	33	0	7	0	4456.5	ab.DengerousRoBatra	1	0	4	rr04
+2026-10-27T20:52:13Z	robots\.data\hadur2\Hadur.data	35	28	0	213	0	6107.4	catcat20.atom.Atom	1	0	1	rr01
+2026-10-27T20:52:17Z	robots\.data\hadur2\Hadur.data	34	34	0	6	0	-0.0	ers.nano.lig.LigMA	0	1	1	rr03
+2026-10-27T20:52:12Z	robots\.data\hadur2\Hadur.data	34	34	0	10	0	6737.8	dft.Calliope	1	0	1	rr04
+2026-10-27T20:52:22Z	robots\.data\hadur2\Hadur.data	34	34	0	12	0	10352.8	slugzilla.ButtHead	0	0	3	rr01
+2026-10-27T20:52:24Z	robots\.data\hadur2\Hadur.data	34	33	0	14	0	10451.5	pl.Patton.GeneralPatton	1	0	2	rr03
+2026-10-27T20:52:24Z	robots\.data\hadur2\Hadur.data	34	34	0	9	0	7269.3	hirataatsushi.Trinity	1	0	1	rr04
+2026-10-27T20:52:30Z	robots\.data\hadur2\Hadur.data	34	33	0	7	0	4702.0	slugzilla.ButtHead	0	0	3	rr01
+2026-10-27T20:52:34Z	robots\.data\hadur2\Hadur.data	34	33	0	10	0	9907.5	apc.Colossus2	0	0	2	rr03
+2026-10-27T20:52:42Z	robots\.data\hadur2\Hadur.data	35	34	0	180	0	7307.4	ad.last.Bottom	0	0	1	rr04
+2026-10-27T20:52:51Z	robots\.data\hadur2\Hadur.data	34	34	0	8	0	6013.6	seed.Weed	0	0	1	rr01
+2026-10-27T20:52:54Z	robots\.data\hadur2\Hadur.data	35	23	0	139	0	10989.1	voidious.Dookious	1	1	3	rr03
+2026-10-27T20:52:56Z	robots\.data\hadur2\Hadur.data	34	34	0	8	0	7635.1	ntc.Plains	0	0	2	rr04
+2026-10-27T20:52:52Z	robots\.data\hadur2\Hadur.data	9	6	0	63	0	15122.9					robocode
+2026-10-27T20:53:05Z	robots\.data\hadur2\Hadur.data	34	34	0	7	0	5951.4	mn.nano.perceptual.Impact	0	0	1	rr01
+2026-10-27T20:53:02Z	robots\.data\hadur2\Hadur.data	35	34	0	171	0	9360.3	rz.GlowBlowMelee	0	0	1	rr04
