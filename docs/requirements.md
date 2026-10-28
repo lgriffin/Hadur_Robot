@@ -1153,6 +1153,8 @@ MMOVE-8 the melee strand, WEAVE-7 and WEAVE-8 the conductor.
 | TMODE-22 | Optional | Where the team mode table names LINEAR against a team, while Hadur has a living teammate, each shot by that team shall make one linear virtual bullet of weight 2, and no head-on one. | T7 |
 | TMODE-23 | Optional | Where the team mode table names FAR against a team, the HUNT place shall be 500 px from the prey. | T7 |
 | TMODE-24 | Optional | Where the team mode table names FARTHER against a team, the HUNT place shall be 650 px from the prey. | T7 |
+| TMODE-25 | Optional | Where the PATH mode is played against a team, while Hadur has a living teammate with a bullet in flight, the destination shall be chosen among the 8 lowest-risk candidates by their risk plus the damage of each teammate bullet that, on Hadur's straight drive there (accelerating 1 px a tick to 8) over the next 15 ticks, crosses Hadur's box 18 px each side; a held destination not yet reached shall be kept unless another scores below 0.9 times its risk plus its own path damage. | T7 |
+| TMODE-26 | Optional | Where the team mode table names NEAR against a team, the HUNT place shall be 250 px from the prey. | T7 |
 
 ### T1 notes
 
@@ -1612,6 +1614,7 @@ None of these change how the robot plays; TIME-8 and RES-15 only report.
 | BENCH-121 | Event | When the release watch runs, it shall start each RoboRumble client it names (`--launch FOLDER:LAUNCHER`: rr01..rr04 `roborumble.bat` and `C:/robocode` `meleerumble.bat` and `teamrumble.bat`), write each console to its own file per start, log Hadur's console lines for a stall disable, a thread the engine cannot stop and a skipped turn with their times (`client-events.tsv`), restart each client every `RESTART` minutes at its next battle end or upload or `WAIT` minutes after that if none ends (logged as cut), start again a client that exits, stop every client when the watch ends, and report the counts and 1v1 skipped turns and share by minutes since the client started. | T7 |
 | BENCH-122 | Ubiquitous | The bench shall carry the `pc-melee-power2` card, which builds MGUN-14, MGUN-15 and MGUN-16 each alone and all three together beside an aa baseline and a bb A/A copy, runs each alone on the melee census at 6 seeds after the Ogi card's, and reads it with `tools/melee_s0.py screen --base2` at a 0 bar with the 95% low end above 0 and Hadur's share of the others it outlives no more than 1 point lower. | R9 |
 | BENCH-123 | Ubiquitous | The bench shall carry the `pc-team-counters` card, which builds one table jar per screen of plans/team-counters.tsv (each team's counters, TMODE-20 to TMODE-24, played only against that team), runs each against aa on its teams at 16 seeds from 4600 beside a bb A/A, picks per team the screen at +3.0 points or more with the 95% low end above zero, and gates the picked table on 16 fresh seeds from 4700 at +0.30 APS with the low end above zero; only a passed gate writes that table, as benched, as the table to ship. | T7 |
+| BENCH-124 | Ubiquitous | The bench shall carry the `pc-team-path` card, which screens PATH (TMODE-25) forced on against all 46 teams at 10 seeds from 4900 and NEAR (TMODE-26) on the shipped TroodonPack entry at 16 seeds from 4900, each beside a bb A/A on the same seeds, picks per team the arm at +3.0 points or more over both baselines with the 95% low end above zero (a team the shipped table names keeps its entry's modes), and gates the picked table on 16 fresh seeds from 5000 at +0.30 APS with the low end above zero; only a passed gate writes that table as the table to ship. | T7 |
 | BENCH-125 | Event | When the PC qualification card (`pc-qualify`) runs, it shall set `UPLOAD=NOT` in each named 1v1 client's `roborumble.txt`, run those clients the old way for `HOURS`, put each config back and set the results files aside so no test battle is uploaded, and score each 1v1 battle of the release against the opponent's pairing on a clean page: QUALIFIED within ±0.5 over at least 40 battles, else NOT QUALIFIED. | T7 |
 | BENCH-126 | Ubiquitous | The bench shall carry the `pc-shield-exit` card, which builds SHIELD-11's battle exit at 400 damage (`sdmg400`) and with no damage exit (`sdmgoff`) beside an aa A/A copy, runs them against all robots on the shield list at 3 seeds from 3400 and gates each at +0.10 APS with the 95% low end above zero, writes the per-robot pick and every robot's difference with losses (`tools/per_robot.py`), stops before the results PR if any analysis fails, and verifies the three stop-and-go re-picks (`slistdrop,sgolist,sgo2list`) on 6 fresh seeds from 3500. | T7 |
 | BENCH-127 | Ubiquitous | The bench shall carry the `pc-melee-wide` card, which builds MGUN-16 alone beside an aa baseline and a bb A/A copy, runs each alone on the melee census at 8 fresh seeds after the firepower part 2 card's, and reads it with `tools/melee_s0.py screen --base2` at a 0 bar with the 95% low end above 0 and Hadur's share of the others it outlives no more than 1 point lower. | R9 |
@@ -1837,6 +1840,20 @@ A retired requirement keeps its ID; no new requirement reuses it.
   move; the duel and melee fixtures replay bit for bit.
 - **BENCH-123.** `tools/team_modes.py screens`, `pick --counters --low-end`; build-ablation `tmtab`
   takes `$TEAM_MODE_SUFFIX`; card plans/pc-team-counters.queue.
+
+## Team path check and Troodon at 250 px (TMODE-25, TMODE-26, BENCH-124)
+
+- **Why.** Leigh 2026-10-28: proceed with the next team step. Firestarter (2nd) checks each move
+  against its own team's bullets in flight; the cloud closer-hunt smoke lost on the field (250 px
+  -0.6 +- 1.3, 200 px -2.0 +- 1.3, 22 teams x 6 seeds) but TroodonPack gained at both (+4.3, +3.7).
+- **TMODE-25.** `TeamModes.Mode.PATH` (FORCE_PATH, off): `MinimumRiskMovement.pathBest`,
+  `pathDamage`, `crossesBox`; `PATH_K` 1, `PATH_HALF` 18, `PATH_TICKS` 15, `PATH_RERANK` 8.
+- **TMODE-26.** `TeamModes.Mode.NEAR`, table-only: `huntRadius` gives `HUNT_RADIUS_NEAR` 250.
+- With PATH and NEAR both forced into the default, only the three team replay fixtures move; the
+  duel and melee fixtures replay bit for bit (ReplayTest, DuelIdentityTest, FaithfulPortTest).
+- **BENCH-124.** build-ablation `tmpath` (suffix mp; the named teams play PATH on top of their
+  entry), `tmtnear` (suffix tn); `tmtab`/`tmlock` now insert after the shipped entries, and
+  `team_modes.py pick --shipped` keeps a named team's modes in its line. Card plans/pc-team-path.queue.
 
 ## 1v1 gap to 2nd: shield exit and re-picks (BENCH-126)
 

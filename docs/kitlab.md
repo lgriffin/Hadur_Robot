@@ -112,8 +112,13 @@ What the arms say:
 
 | Bot | Build in the module | Bytes | Paired estimate | Top 5 bar | Plan's gate |
 |---|---|---|---|---|---|
-| JayLexi | e | 1,496 of 1,499 | 86.61 ± 0.55 | 87.40 | 87.7 |
+| JayLexi | e, ORBIT 1.15 | 1,496 of 1,499 | 87.05 ± 0.45 | 87.40 | 87.7 |
 | Eveimear | c | 722 of 749 | 84.28 ± 0.46 | 85.03 | 85.3 |
+
+The evening settings sweep (in [bench/kitlab-2026-10-28.md](bench/kitlab-2026-10-28.md)) moved
+JayLexi's orbit from 1.25 to 1.15 rad off the wave (+0.43 ± 0.41 on 4 seeds); no Eveimear setting
+beat c's. Leigh released both as 0.1 on 28 Oct (tags jaylexi-v0.1 and eveimear-v0.1), below the
+plan's gate, so the live first pass shows which opponents cost points.
 
 Neither meets the plan's submission gate yet. Next, in the order the arms point:
 
