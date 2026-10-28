@@ -64,106 +64,108 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><a href="hadur117/mini/core/package-summary.html">hadur117.mini.core</a></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><a href="hadur117/twin/package-summary.html">hadur117.twin</a></div>
+<div class="col-first odd-row-color"><a href="hadur117/nano/package-summary.html">hadur117.nano</a></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><a href="hadur117/twin/core/package-summary.html">hadur117.twin.core</a></div>
+<div class="col-first even-row-color"><a href="hadur117/twin/package-summary.html">hadur117.twin</a></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><a href="hadur2/package-summary.html">hadur2</a></div>
-<div class="col-last odd-row-color">
+<div class="col-first odd-row-color"><a href="hadur117/twin/core/package-summary.html">hadur117.twin.core</a></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><a href="hadur2/package-summary.html">hadur2</a></div>
+<div class="col-last even-row-color">
 <div class="block">The Robocode adapter: the only code in Hadur 2 that sees the engine.</div>
 </div>
-<div class="col-first even-row-color"><a href="hadur2/core/package-summary.html">hadur2.core</a></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><a href="hadur2/core/package-summary.html">hadur2.core</a></div>
+<div class="col-last odd-row-color">
 <div class="block">Hadur 2's core: the whole of the robot's strategy, as plain Java that never sees the
  Robocode engine.</div>
 </div>
-<div class="col-first odd-row-color"><a href="hadur2/core/adapt/package-summary.html">hadur2.core.adapt</a></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><a href="hadur2/core/adapt/package-summary.html">hadur2.core.adapt</a></div>
+<div class="col-last even-row-color">
 <div class="block">Recognise, then adapt (S4): the opening book that turns a loaded profile into decisions
  for the first tick (<a class="req" href="../requirements.html#ADAPT-1">ADAPT-1</a>, <a class="req" href="../requirements.html#ADAPT-2">ADAPT-2</a>), the seeds it replays into the KNN views at a lower
  weight (<a class="req" href="../requirements.html#ADAPT-3">ADAPT-3</a>), and the trust that fades those seeds when the opponent no longer
  behaves like its profile (<a class="req" href="../requirements.html#RES-4">RES-4</a>).</div>
 </div>
-<div class="col-first even-row-color"><a href="hadur2/core/duel/package-summary.html">hadur2.core.duel</a></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><a href="hadur2/core/gun/package-summary.html">hadur2.core.gun</a></div>
-<div class="col-last odd-row-color">
+<div class="col-first odd-row-color"><a href="hadur2/core/duel/package-summary.html">hadur2.core.duel</a></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><a href="hadur2/core/gun/package-summary.html">hadur2.core.gun</a></div>
+<div class="col-last even-row-color">
 <div class="block">The duel's gun: two KNN guns, the virtual guns that rate them, and the choice between
  them.</div>
 </div>
-<div class="col-first even-row-color"><a href="hadur2/core/knn/package-summary.html">hadur2.core.knn</a></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><a href="hadur2/core/knn/package-summary.html">hadur2.core.knn</a></div>
+<div class="col-last odd-row-color">
 <div class="block">K-nearest-neighbour learning shared by the duel's gun and movement: a weighted KD-tree
  and the views built on it.</div>
 </div>
-<div class="col-first odd-row-color"><a href="hadur2/core/ledger/package-summary.html">hadur2.core.ledger</a></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><a href="hadur2/core/ledger/package-summary.html">hadur2.core.ledger</a></div>
+<div class="col-last even-row-color">
 <div class="block">The energy ledger: deciding which of the enemy's energy drops are bullets (<a class="req" href="../requirements.html#WAVE-1">WAVE-1</a>,
  <a class="req" href="../requirements.html#WAVE-2">WAVE-2</a>).</div>
 </div>
-<div class="col-first even-row-color"><a href="hadur2/core/link/package-summary.html">hadur2.core.link</a></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><a href="hadur2/core/link/package-summary.html">hadur2.core.link</a></div>
+<div class="col-last odd-row-color">
 <div class="block">The link (A4): teammates' reports as bytes, in the core's own versioned, checksummed
  format (<a class="req" href="../requirements.html#LINK-1">LINK-1</a>).</div>
 </div>
-<div class="col-first odd-row-color"><a href="hadur2/core/melee/package-summary.html">hadur2.core.melee</a></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><a href="hadur2/core/melee/package-summary.html">hadur2.core.melee</a></div>
+<div class="col-last even-row-color">
 <div class="block">Melee (free-for-all) subsystems: opponent tracking, sweep radar, minimum-risk
  movement, target selection, circular targeting and posture strategy, and each
  opponent's melee profile block (<a class="req" href="../requirements.html#MMEM-1">MMEM-1</a>), driven each
  tick by <a href="hadur2/core/melee/MeleeController.html" title="class in hadur2.core.melee"><code>MeleeController</code></a>.</div>
 </div>
-<div class="col-first even-row-color"><a href="hadur2/core/memory/package-summary.html">hadur2.core.memory</a></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><a href="hadur2/core/memory/package-summary.html">hadur2.core.memory</a></div>
+<div class="col-last odd-row-color">
 <div class="block">Opponent memory (stage S3): one <a href="hadur2/core/memory/OpponentProfile.html" title="class in hadur2.core.memory"><code>OpponentProfile</code></a> per opponent
  lineage, folded from each round's observations (<a class="req" href="../requirements.html#MEM-2">MEM-2</a>), encoded in a small checksummed
  binary format (<a href="hadur2/core/memory/ProfileCodec.html" title="class in hadur2.core.memory"><code>ProfileCodec</code></a>) and kept in a
  <a href="hadur2/core/port/ProfileStore.html" title="interface in hadur2.core.port"><code>ProfileStore</code></a> by the <a href="hadur2/core/memory/ProfileLibrary.html" title="class in hadur2.core.memory"><code>ProfileLibrary</code></a>
  (<a class="req" href="../requirements.html#MEM-1">MEM-1</a>, <a class="req" href="../requirements.html#MEM-3">MEM-3</a> to <a class="req" href="../requirements.html#MEM-5">MEM-5</a>, <a class="req" href="../requirements.html#RES-3">RES-3</a>).</div>
 </div>
-<div class="col-first odd-row-color"><a href="hadur2/core/model/package-summary.html">hadur2.core.model</a></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><a href="hadur2/core/model/package-summary.html">hadur2.core.model</a></div>
+<div class="col-last even-row-color">
 <div class="block">The values the core is made of: what crosses the hexagonal boundary each tick, the robot
  states and their logs, and the waves the duel's gun and movement learn from.</div>
 </div>
-<div class="col-first even-row-color"><a href="hadur2/core/move/package-summary.html">hadur2.core.move</a></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><a href="hadur2/core/move/package-summary.html">hadur2.core.move</a></div>
+<div class="col-last odd-row-color">
 <div class="block">The duel's movement: wave surfing against the enemy's bullets, the danger views it
  scores with, and the shadows our own bullets cast on the enemy's waves.</div>
 </div>
-<div class="col-first odd-row-color"><a href="hadur2/core/physics/package-summary.html">hadur2.core.physics</a></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><a href="hadur2/core/physics/package-summary.html">hadur2.core.physics</a></div>
+<div class="col-last even-row-color">
 <div class="block">The engine's physics and the geometry built on it: the bottom layer that the duel's gun,
  surf, waves and energy ledger, and the melee brain, all stand on.</div>
 </div>
-<div class="col-first even-row-color"><a href="hadur2/core/policy/package-summary.html">hadur2.core.policy</a></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><a href="hadur2/core/policy/package-summary.html">hadur2.core.policy</a></div>
+<div class="col-last odd-row-color">
 <div class="block">Aggressive (S5): the policies that decide how close Hadur fights and how hard it shoots.</div>
 </div>
-<div class="col-first odd-row-color"><a href="hadur2/core/port/package-summary.html">hadur2.core.port</a></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><a href="hadur2/core/port/package-summary.html">hadur2.core.port</a></div>
+<div class="col-last even-row-color">
 <div class="block">The core's outbound ports: the only ways it reaches anything outside plain computation.</div>
 </div>
-<div class="col-first even-row-color"><a href="hadur2/core/replay/package-summary.html">hadur2.core.replay</a></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><a href="hadur2/core/replay/package-summary.html">hadur2.core.replay</a></div>
+<div class="col-last odd-row-color">
 <div class="block">Recorded battles as text, and a driver that replays them through a fresh core (<a class="req" href="../requirements.html#CORE-2">CORE-2</a>).</div>
 </div>
-<div class="col-first odd-row-color"><a href="hadur2/core/role/package-summary.html">hadur2.core.role</a></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><a href="hadur2/core/role/package-summary.html">hadur2.core.role</a></div>
+<div class="col-last even-row-color">
 <div class="block">The role contract's routing (A1 of the architecture evolution, <a class="req" href="../requirements.html#ROLE-1">ROLE-1</a> to <a class="req" href="../requirements.html#ROLE-4">ROLE-4</a>): which
  strand drives the robot this tick.</div>
 </div>
-<div class="col-first even-row-color"><a href="hadur2/core/shield/package-summary.html">hadur2.core.shield</a></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><a href="hadur2/core/shield/package-summary.html">hadur2.core.shield</a></div>
+<div class="col-last odd-row-color">
 <div class="block">Bullet shielding: noticing an enemy that shoots our bullets down, and aiming so it can't.</div>
 </div>
-<div class="col-first odd-row-color"><a href="hadur2/core/shieldmode/package-summary.html">hadur2.core.shieldmode</a></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><a href="hadur2/core/shieldmode/package-summary.html">hadur2.core.shieldmode</a></div>
+<div class="col-last even-row-color">
 <div class="block">Hadur's own bullet shield (D5): on the opponents of a list of Hadur's own it opens each
  round sitting still and shoots the enemy's bullets down.</div>
 </div>
-<div class="col-first even-row-color"><a href="hadur2/core/world/package-summary.html">hadur2.core.world</a></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><a href="hadur2/core/world/package-summary.html">hadur2.core.world</a></div>
+<div class="col-last odd-row-color">&nbsp;</div>
 </div>
 </main>
 <footer role="contentinfo">
