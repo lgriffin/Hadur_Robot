@@ -1,0 +1,10 @@
+# NanoMelee census field f10 (see nanomelee-census.txt)
+d414.nano.Quantum 1.0.0 | nanomelee-1 | d414.nano.Quantum_1.0.0.jar
+sheldor.melee.nano.NaturalScience 1.2.1 | nanomelee-2 | sheldor.melee.nano.NaturalScience_1.2.1.jar
+ayk.WallHugger 1.0 | nanomelee-56 | ayk.WallHugger_1.0.jar
+robar.nano.Assertive_Melee 0.2 | nanomelee-57 | robar.nano.Assertive_Melee_0.2.jar
+conscience.Electron 1.3g | nanomelee-52 | conscience.Electron_1.3g.jar
+donjezza.Jezza 1.0 | nanomelee-72 | donjezza.Jezza_1.0.jar
+sample.RamFire 1.0 | nanomelee-84 | sample.RamFire_1.0.jar
+mld.Infinity 2.2 | nanomelee-11 | mld.Infinity_2.2.jar
+exauge.GateKeeper 1.1.121g | nanomelee-58 | exauge.GateKeeper_1.1.121g.jar
