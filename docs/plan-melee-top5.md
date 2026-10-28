@@ -334,6 +334,13 @@ opponents left, under 20 own energy, and fires 1.92 rather than 3 between 200 an
 `pc-melee-power2` (BENCH-122) screens each of those (MGUN-14 two left, MGUN-15 from 10 energy,
 MGUN-16 power 3 to 300 px) alone and all three together.
 
+**Firepower part 2 result and the top-10 confirmation (2026-10-28).** The power2 card (PR #349):
+MGUN-14 +0.06, MGUN-15 +0.04, all three -0.02, all failed; MGUN-16 +0.15 ± 0.15, its low end only
+just above 0 on 6 seeds, held back. 3.18.1 reads 13th live at 67.92, beating its projection; 10th
+(Mirage) is 68.24, +0.32 away. `pc-melee-wide` (BENCH-127) re-runs MGUN-16 alone on 8 fresh seeds
+(3211-3218) with the same read; a pass turns it on in master. Firepower widening is otherwise spent:
+the rest of the gap to 5th (+2.19 to Diamond's 70.11) needs Stage 3 or a bigger idea.
+
 ### Stage 3: crowd survival
 
 The largest lever and the riskiest: M4's path scoring cost 3 to 5 APS, and the team's port of
