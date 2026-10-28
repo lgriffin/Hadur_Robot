@@ -149,12 +149,13 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color"><code>(package private) static final boolean</code></div>
 <div class="col-second odd-row-color"><code><a href="#HITS" class="member-name-link">HITS</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">Whether our hits move the energy a shot drop is measured from (DEISE-5); false for arm WH.</div>
+<div class="block">Whether our hits move the energy a shot drop is measured from (DEISE-5): off since 0.3 (arm WB).</div>
 </div>
 <div class="col-first even-row-color"><code>(package private) static final double</code></div>
 <div class="col-second even-row-color"><code><a href="#HOLD" class="member-name-link">HOLD</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">A point must be this much safer than the destination to replace it (DEISE-1); arm H drops it.</div>
+<div class="block">A point must be this much safer than the destination to replace it (DEISE-1); 0, since 0.3
+ (arm WN), takes the ring's best point every tick.</div>
 </div>
 <div class="col-first odd-row-color"><code>(package private) static final int[]</code></div>
 <div class="col-second odd-row-color"><code><a href="#IDS" class="member-name-link">IDS</a></code></div>
@@ -172,7 +173,7 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color"><code>(package private) static final int</code></div>
 <div class="col-second even-row-color"><code><a href="#PLAYOUTS" class="member-name-link">PLAYOUTS</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">Playouts an aim (DEISE-7); 200 for arm P200.</div>
+<div class="block">Playouts an aim (DEISE-7): 200 since 0.3 (arm P200).</div>
 </div>
 <div class="col-first odd-row-color"><code>(package private) static final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Random.html" title="class or interface in java.util" class="external-link">Random</a></code></div>
 <div class="col-second odd-row-color"><code><a href="#RANDOM" class="member-name-link">RANDOM</a></code></div>
@@ -196,9 +197,14 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color"><code>(package private) static double</code></div>
 <div class="col-second even-row-color"><code><a href="#targetDistance" class="member-name-link">targetDistance</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>(package private) static double[][]</code></div>
-<div class="col-second odd-row-color"><code><a href="#waves" class="member-name-link">waves</a></code></div>
+<div class="col-first odd-row-color"><code>(package private) static int</code></div>
+<div class="col-second odd-row-color"><code><a href="#wave" class="member-name-link">wave</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>(package private) static double[][]</code></div>
+<div class="col-second even-row-color"><code><a href="#waves" class="member-name-link">waves</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Waves in a ring of 64 slots, the newest over the oldest (DEISE-5).</div>
+</div>
 </div>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-robocode._RobotBase">Fields inherited from class&nbsp;robocode._RobotBase</h3>
@@ -327,7 +333,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="PLAYOUTS">
 <h3>PLAYOUTS</h3>
 <div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">PLAYOUTS</span></div>
-<div class="block">Playouts an aim (DEISE-7); 200 for arm P200.</div>
+<div class="block">Playouts an aim (DEISE-7): 200 since 0.3 (arm P200).</div>
 <dl class="notes">
 <dt>See Also:</dt>
 <dd>
@@ -342,7 +348,8 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="HOLD">
 <h3>HOLD</h3>
 <div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">HOLD</span></div>
-<div class="block">A point must be this much safer than the destination to replace it (DEISE-1); arm H drops it.</div>
+<div class="block">A point must be this much safer than the destination to replace it (DEISE-1); 0, since 0.3
+ (arm WN), takes the ring's best point every tick.</div>
 <dl class="notes">
 <dt>See Also:</dt>
 <dd>
@@ -372,7 +379,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="HITS">
 <h3>HITS</h3>
 <div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">HITS</span></div>
-<div class="block">Whether our hits move the energy a shot drop is measured from (DEISE-5); false for arm WH.</div>
+<div class="block">Whether our hits move the energy a shot drop is measured from (DEISE-5): off since 0.3 (arm WB).</div>
 <dl class="notes">
 <dt>See Also:</dt>
 <dd>
@@ -433,6 +440,13 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="waves">
 <h3>waves</h3>
 <div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">double[][]</span>&nbsp;<span class="element-name">waves</span></div>
+<div class="block">Waves in a ring of 64 slots, the newest over the oldest (DEISE-5).</div>
+</section>
+</li>
+<li>
+<section class="detail" id="wave">
+<h3>wave</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">wave</span></div>
 </section>
 </li>
 <li>

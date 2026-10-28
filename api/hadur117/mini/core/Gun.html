@@ -122,7 +122,7 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color"><code>static final boolean</code></div>
 <div class="col-second even-row-color"><code><a href="#KILL" class="member-name-link">KILL</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">Whether power is capped at what kills the target (DEISE-10); false for arm K.</div>
+<div class="block">Whether power is capped at what kills the target (DEISE-10): off since 0.3 (arm WHPK +0.14).</div>
 </div>
 <div class="col-first odd-row-color"><code>static final double</code></div>
 <div class="col-second odd-row-color"><code><a href="#MARGIN" class="member-name-link">MARGIN</a></code></div>
@@ -162,7 +162,7 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static double</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#aim(char%5B%5D%5B%5D,int,double,double,double,double,double,double,double,int,java.util.Random)" class="member-name-link">aim</a><wbr>(char[][]&nbsp;table,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#aim(char%5B%5D%5B%5D,int,double,double,double,double,double,double,double,double,int,java.util.Random)" class="member-name-link">aim</a><wbr>(char[][]&nbsp;table,
  int&nbsp;state,
  double&nbsp;x,
  double&nbsp;y,
@@ -170,6 +170,7 @@ loadScripts(document, 'script');</script>
  double&nbsp;velocity,
  double&nbsp;myX,
  double&nbsp;myY,
+ double&nbsp;distance,
  double&nbsp;power,
  int&nbsp;playouts,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Random.html" title="class or interface in java.util" class="external-link">Random</a>&nbsp;random)</code></div>
@@ -331,7 +332,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="KILL">
 <h3>KILL</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">KILL</span></div>
-<div class="block">Whether power is capped at what kills the target (DEISE-10); false for arm K.</div>
+<div class="block">Whether power is capped at what kills the target (DEISE-10): off since 0.3 (arm WHPK +0.14).</div>
 <dl class="notes">
 <dt>See Also:</dt>
 <dd>
@@ -377,7 +378,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="aim(char[][],int,double,double,double,double,double,double,double,int,java.util.Random)">
+<section class="detail" id="aim(char[][],int,double,double,double,double,double,double,double,double,int,java.util.Random)">
 <h3>aim</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">aim</span><wbr><span class="parameters">(char[][]&nbsp;table,
  int&nbsp;state,
@@ -387,6 +388,7 @@ loadScripts(document, 'script');</script>
  double&nbsp;velocity,
  double&nbsp;myX,
  double&nbsp;myY,
+ double&nbsp;distance,
  double&nbsp;power,
  int&nbsp;playouts,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Random.html" title="class or interface in java.util" class="external-link">Random</a>&nbsp;random)</span></div>

@@ -109,13 +109,15 @@ loadScripts(document, 'script');</script>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">Deise</span>
 <span class="extends-implements">extends robocode.AdvancedRobot</span></div>
 <div class="block">Deise (the Déise, Waterford's people), a MiniMelee entry: Saor's graded Markov gun, learning
- every robot it scans, over a least-risk movement that holds the corners while the field is
- crowded (docs/deise.md).
+ every robot it scans, over a least-risk movement that steps off the lines of the shots it sees
+ fired (docs/deise.md).
 
  <p>This is the class that ships: the core (<code>hadur117.mini.core</code>) flattened by hand into
  one class to fit MiniMelee's 1,499 bytes, as Saor is. <code>DeiseEquivalenceTest</code> drives it
  and the bench adapter <a href="DeiseLab.html" title="class in hadur117.mini"><code>DeiseLab</code></a>, which calls the core, with the same events and
- requires the same orders (DEISE-16).</p></div>
+ requires the same orders (DEISE-16). 0.3 is stage E2's FIT3: 0.2 with the seen-shot waves and
+ 200 playouts, without the across term, the hold, the corners, the kill cap and the hit
+ correction, its push flat (docs/deise.md section 8).</p></div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -133,12 +135,6 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color">
 <div class="block">Live opponents this round, {x, y, energy}.</div>
 </div>
-<div class="col-first odd-row-color"><code>(package private) static double</code></div>
-<div class="col-second odd-row-color"><code><a href="#destX" class="member-name-link">destX</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>(package private) static double</code></div>
-<div class="col-second even-row-color"><code><a href="#destY" class="member-name-link">destY</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code>(package private) static int[]</code></div>
 <div class="col-second odd-row-color"><code><a href="#ids" class="member-name-link">ids</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
@@ -152,12 +148,6 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color">
 <div class="block">Per-opponent Markov rows: [id][state][successors..., count], kept across rounds (DEISE-6).</div>
 </div>
-<div class="col-first even-row-color"><code>(package private) static double</code></div>
-<div class="col-second even-row-color"><code><a href="#myX" class="member-name-link">myX</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>(package private) static double</code></div>
-<div class="col-second odd-row-color"><code><a href="#myY" class="member-name-link">myY</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code>(package private) static int</code></div>
 <div class="col-second even-row-color"><code><a href="#seen" class="member-name-link">seen</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
@@ -166,6 +156,12 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code>(package private) static double</code></div>
 <div class="col-second even-row-color"><code><a href="#targetDistance" class="member-name-link">targetDistance</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>(package private) static int</code></div>
+<div class="col-second odd-row-color"><code><a href="#wave" class="member-name-link">wave</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>(package private) static double[][]</code></div>
+<div class="col-second even-row-color"><code><a href="#waves" class="member-name-link">waves</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 </div>
 <div class="inherited-list">
@@ -191,7 +187,7 @@ loadScripts(document, 'script');</script>
 <section class="method-summary" id="method-summary">
 <h2>Method Summary</h2>
 <div id="method-summary-table">
-<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button></div>
+<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab1" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab1', 3)" class="table-tab">Static Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button></div>
 <div id="method-summary-table.tabpanel" role="tabpanel" aria-labelledby="method-summary-table-tab0">
 <div class="summary-table three-column-summary">
 <div class="table-header col-first">Modifier and Type</div>
@@ -203,12 +199,11 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onScannedRobot(robocode.ScannedRobotEvent)" class="member-name-link">onScannedRobot</a><wbr>(robocode.ScannedRobotEvent&nbsp;e)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>(package private) double</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#risk(double,double,double)" class="member-name-link">risk</a><wbr>(double&nbsp;px,
- double&nbsp;py,
- double&nbsp;heading)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">The risk of moving on <code>heading</code> to (px, py) (DEISE-2 to DEISE-4).</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#out(double,double)" class="member-name-link">out</a><wbr>(double&nbsp;px,
+ double&nbsp;py)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Whether (px, py) is within 18 px of a wall.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#run()" class="member-name-link">run</a>()</code></div>
@@ -283,6 +278,18 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="waves">
+<h3>waves</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">double[][]</span>&nbsp;<span class="element-name">waves</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="wave">
+<h3>wave</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">wave</span></div>
+</section>
+</li>
+<li>
 <section class="detail" id="target">
 <h3>target</h3>
 <div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">target</span></div>
@@ -292,30 +299,6 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="targetDistance">
 <h3>targetDistance</h3>
 <div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">targetDistance</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="myX">
-<h3>myX</h3>
-<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">myX</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="myY">
-<h3>myY</h3>
-<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">myY</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="destX">
-<h3>destX</h3>
-<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">destX</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="destY">
-<h3>destY</h3>
-<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">destY</span></div>
 </section>
 </li>
 </ul>
@@ -353,15 +336,6 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="risk(double,double,double)">
-<h3>risk</h3>
-<div class="member-signature"><span class="return-type">double</span>&nbsp;<span class="element-name">risk</span><wbr><span class="parameters">(double&nbsp;px,
- double&nbsp;py,
- double&nbsp;heading)</span></div>
-<div class="block">The risk of moving on <code>heading</code> to (px, py) (DEISE-2 to DEISE-4).</div>
-</section>
-</li>
-<li>
 <section class="detail" id="onScannedRobot(robocode.ScannedRobotEvent)">
 <h3>onScannedRobot</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">onScannedRobot</span><wbr><span class="parameters">(robocode.ScannedRobotEvent&nbsp;e)</span></div>
@@ -371,6 +345,14 @@ loadScripts(document, 'script');</script>
 <dt>Overrides:</dt>
 <dd><code>onScannedRobot</code>&nbsp;in class&nbsp;<code>robocode.Robot</code></dd>
 </dl>
+</section>
+</li>
+<li>
+<section class="detail" id="out(double,double)">
+<h3>out</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">out</span><wbr><span class="parameters">(double&nbsp;px,
+ double&nbsp;py)</span></div>
+<div class="block">Whether (px, py) is within 18 px of a wall.</div>
 </section>
 </li>
 <li>

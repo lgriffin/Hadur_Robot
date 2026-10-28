@@ -95,8 +95,10 @@ loadScripts(document, 'script');</script>
 <div class="block">Deise's movement (DEISE-1 to DEISE-5): a least-risk point each tick from a ring of candidates.
  The risk of a point adds, for each live opponent, a push away from it, a cost for heading
  straight at or away from an opponent that is likely aiming at Deise, and the danger of the
- waves it was seen to fire (weighed by <a href="#WAVES"><code>WAVES</code></a>); while the field is crowded, the distance to the nearest corner, so
- Deise holds Saor's corners early and comes out of them as the field thins. Pure: opponents are
+ waves it was seen to fire (weighed by <a href="#WAVES"><code>WAVES</code></a>); with <a href="#CORNERS"><code>CORNERS</code></a>, while the field is
+ crowded, the distance to the nearest corner, so Deise holds Saor's corners early and comes out
+ of them as the field thins. Since 0.3 the across term and the corners are off and the push is
+ flat (docs/deise.md section 8). Pure: opponents are
  rows {x, y, energy} (null when unseen or dead), waves rows {x, y, fire time, speed, head-on
  angle, linear angle, weight} (null when free).</div>
 </section>
@@ -121,14 +123,24 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color">
 <div class="block">Candidate headings in the ring.</div>
 </div>
-<div class="col-first even-row-color"><code>static final int</code></div>
-<div class="col-second even-row-color"><code><a href="#CROWD" class="member-name-link">CROWD</a></code></div>
+<div class="col-first even-row-color"><code>static final boolean</code></div>
+<div class="col-second even-row-color"><code><a href="#CORNERS" class="member-name-link">CORNERS</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">Opponents left at or above which the corners pull (DEISE-4).</div>
+<div class="block">Whether the corners pull while crowded (DEISE-4): off since 0.3, whose bytes went to the waves.</div>
 </div>
 <div class="col-first odd-row-color"><code>static final int</code></div>
-<div class="col-second odd-row-color"><code><a href="#ENERGY" class="member-name-link">ENERGY</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-second odd-row-color"><code><a href="#CROWD" class="member-name-link">CROWD</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Opponents left at or above which the corners pull (DEISE-4).</div>
+</div>
+<div class="col-first even-row-color"><code>static final int</code></div>
+<div class="col-second even-row-color"><code><a href="#ENERGY" class="member-name-link">ENERGY</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>static final boolean</code></div>
+<div class="col-second odd-row-color"><code><a href="#ENERGY_PUSH" class="member-name-link">ENERGY_PUSH</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Whether the push grows with an opponent's energy (DEISE-2): flat since 0.3 (arm WF).</div>
+</div>
 <div class="col-first even-row-color"><code>static final int</code></div>
 <div class="col-second even-row-color"><code><a href="#HEAD_ON" class="member-name-link">HEAD_ON</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
@@ -151,8 +163,8 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color"><code>static final double</code></div>
 <div class="col-second odd-row-color"><code><a href="#WAVES" class="member-name-link">WAVES</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">How much the seen-shot waves count (DEISE-5): 0 since stage E0's smoke, where they cost
- about 13 APS at full weight and 3 at 0.3 (docs/deise.md section 4).</div>
+<div class="block">How much the seen-shot waves count (DEISE-5): 1 since 0.3 (E0 to E1b's arm W, +0.44 to +0.59);
+ 0 turns them off.</div>
 </div>
 <div class="col-first even-row-color"><code>static final int</code></div>
 <div class="col-second even-row-color"><code><a href="#WEIGHT" class="member-name-link">WEIGHT</a></code></div>
@@ -180,13 +192,12 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#aimsAtUs(double%5B%5D,double,double,double%5B%5D%5B%5D)" class="member-name-link">aimsAtUs</a><wbr>(double[]&nbsp;bot,
- double&nbsp;myX,
- double&nbsp;myY,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#aimsAtUs(double%5B%5D,double,double%5B%5D%5B%5D)" class="member-name-link">aimsAtUs</a><wbr>(double[]&nbsp;bot,
+ double&nbsp;distance,
  double[][]&nbsp;bots)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block">Whether an opponent likely aims at Deise: no other opponent is within 0.9 of Deise's distance
- from it, so Deise is, or is nearly, its nearest robot (DEISE-3, DEISE-5).</div>
+<div class="block">Whether an opponent at <code>distance</code> likely aims at Deise: no other opponent is within 0.9
+ of that distance from it, so Deise is, or is nearly, its nearest robot (DEISE-3, DEISE-5).</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static double[]</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#best(double,double,double,double%5B%5D%5B%5D,double%5B%5D%5B%5D,double,int)" class="member-name-link">best</a><wbr>(double&nbsp;myX,
@@ -200,14 +211,15 @@ loadScripts(document, 'script');</script>
 <div class="block">The least-risk point of the ring around (myX, myY), as {x, y, risk} (DEISE-1).</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static double</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#danger(double%5B%5D,double,double,double)" class="member-name-link">danger</a><wbr>(double[]&nbsp;wave,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#danger(double%5B%5D,double,double,double,double)" class="member-name-link">danger</a><wbr>(double[]&nbsp;wave,
  double&nbsp;px,
  double&nbsp;py,
- double&nbsp;time)</code></div>
+ double&nbsp;time,
+ double&nbsp;r)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block">The danger of (px, py) from a wave: for each of its two lines, where the bullet will be when
- it has come as far as the point, near the point is dangerous; a wave already past the point
- is not (DEISE-5).</div>
+<div class="block"><code>r</code> plus the danger of (px, py) from a wave: for each of its lines, where the bullet
+ will be when it has come as far as the point, near the point is dangerous; a wave already
+ past the point is not (DEISE-5).</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static double</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#reach(double)" class="member-name-link">reach</a><wbr>(double&nbsp;targetDistance)</code></div>
@@ -240,14 +252,12 @@ loadScripts(document, 'script');</script>
  double&nbsp;dy)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static double[]</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#wave(double,double,double,double,double,double,double,double,double)" class="member-name-link">wave</a><wbr>(double&nbsp;ox,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#wave(double,double,double,double,double,double,double)" class="member-name-link">wave</a><wbr>(double&nbsp;ox,
  double&nbsp;oy,
  double&nbsp;time,
  double&nbsp;power,
- double&nbsp;myX,
- double&nbsp;myY,
- double&nbsp;myHeading,
- double&nbsp;myVelocity,
+ double&nbsp;bearing,
+ double&nbsp;lateral,
  double&nbsp;weight)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">A wave fired at Deise from (ox, oy) at <code>time</code> with <code>power</code>, its bullet on Deise's
@@ -415,11 +425,41 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="CORNERS">
+<h3>CORNERS</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">CORNERS</span></div>
+<div class="block">Whether the corners pull while crowded (DEISE-4): off since 0.3, whose bytes went to the waves.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur117.mini.core.Move.CORNERS">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="ENERGY_PUSH">
+<h3>ENERGY_PUSH</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">ENERGY_PUSH</span></div>
+<div class="block">Whether the push grows with an opponent's energy (DEISE-2): flat since 0.3 (arm WF).</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../constant-values.html#hadur117.mini.core.Move.ENERGY_PUSH">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="WAVES">
 <h3>WAVES</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">WAVES</span></div>
-<div class="block">How much the seen-shot waves count (DEISE-5): 0 since stage E0's smoke, where they cost
- about 13 APS at full weight and 3 at 0.3 (docs/deise.md section 4). Kept for arm W.</div>
+<div class="block">How much the seen-shot waves count (DEISE-5): 1 since 0.3 (E0 to E1b's arm W, +0.44 to +0.59);
+ 0 turns them off.</div>
 <dl class="notes">
 <dt>See Also:</dt>
 <dd>
@@ -505,43 +545,45 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="aimsAtUs(double[],double,double,double[][])">
+<section class="detail" id="aimsAtUs(double[],double,double[][])">
 <h3>aimsAtUs</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">aimsAtUs</span><wbr><span class="parameters">(double[]&nbsp;bot,
- double&nbsp;myX,
- double&nbsp;myY,
+ double&nbsp;distance,
  double[][]&nbsp;bots)</span></div>
-<div class="block">Whether an opponent likely aims at Deise: no other opponent is within 0.9 of Deise's distance
- from it, so Deise is, or is nearly, its nearest robot (DEISE-3, DEISE-5).</div>
+<div class="block">Whether an opponent at <code>distance</code> likely aims at Deise: no other opponent is within 0.9
+ of that distance from it, so Deise is, or is nearly, its nearest robot (DEISE-3, DEISE-5).</div>
 </section>
 </li>
 <li>
-<section class="detail" id="wave(double,double,double,double,double,double,double,double,double)">
+<section class="detail" id="wave(double,double,double,double,double,double,double)">
 <h3>wave</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">double[]</span>&nbsp;<span class="element-name">wave</span><wbr><span class="parameters">(double&nbsp;ox,
  double&nbsp;oy,
  double&nbsp;time,
  double&nbsp;power,
- double&nbsp;myX,
- double&nbsp;myY,
- double&nbsp;myHeading,
- double&nbsp;myVelocity,
+ double&nbsp;bearing,
+ double&nbsp;lateral,
  double&nbsp;weight)</span></div>
 <div class="block">A wave fired at Deise from (ox, oy) at <code>time</code> with <code>power</code>, its bullet on Deise's
- head-on line or on the line that leads Deise's present motion (DEISE-5). Its weight is 1
- when the shooter likely aims at Deise and 0.25 otherwise.</div>
+ head-on line or on the line that leads Deise's present motion (DEISE-5). <code>bearing</code> is
+ the shooter's absolute bearing from Deise, so the head-on line is <code>bearing + PI</code>;
+ <code>lateral</code> is Deise's speed across that line, its velocity times the sine of the
+ shooter's bearing relative to Deise's heading. Its weight is 1 when the shooter likely aims
+ at Deise and 0.25 otherwise.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="danger(double[],double,double,double)">
+<section class="detail" id="danger(double[],double,double,double,double)">
 <h3>danger</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">danger</span><wbr><span class="parameters">(double[]&nbsp;wave,
  double&nbsp;px,
  double&nbsp;py,
- double&nbsp;time)</span></div>
-<div class="block">The danger of (px, py) from a wave: for each of its two lines, where the bullet will be when
- it has come as far as the point, near the point is dangerous; a wave already past the point
- is not (DEISE-5).</div>
+ double&nbsp;time,
+ double&nbsp;r)</span></div>
+<div class="block"><code>r</code> plus the danger of (px, py) from a wave: for each of its lines, where the bullet
+ will be when it has come as far as the point, near the point is dangerous; a wave already
+ past the point is not (DEISE-5). Each line adds to <code>r</code> in turn, as the shipped class
+ sums it.</div>
 </section>
 </li>
 <li>

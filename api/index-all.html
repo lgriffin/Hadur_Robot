@@ -232,7 +232,7 @@ loadScripts(document, 'script');</script>
  <code>power</code> would reach it, each voted into nine bins with one more vote at its centre,
  so a plateau of tied bins resolves to a playout's own bin rather than to its left edge.</div>
 </dd>
-<dt><a href="hadur117/mini/core/Gun.html#aim(char%5B%5D%5B%5D,int,double,double,double,double,double,double,double,int,java.util.Random)" class="member-name-link">aim(char[][], int, double, double, double, double, double, double, double, int, Random)</a> - Static method in class hadur117.mini.core.<a href="hadur117/mini/core/Gun.html" title="class in hadur117.mini.core">Gun</a></dt>
+<dt><a href="hadur117/mini/core/Gun.html#aim(char%5B%5D%5B%5D,int,double,double,double,double,double,double,double,double,int,java.util.Random)" class="member-name-link">aim(char[][], int, double, double, double, double, double, double, double, double, int, Random)</a> - Static method in class hadur117.mini.core.<a href="hadur117/mini/core/Gun.html" title="class in hadur117.mini.core">Gun</a></dt>
 <dd>
 <div class="block">The absolute bearing to fire at (DEISE-7, DEISE-8, DEISE-9).</div>
 </dd>
@@ -366,10 +366,10 @@ loadScripts(document, 'script');</script>
  <a href="hadur2/core/melee/TeamDanger.html#K"><code>TeamDanger.K</code></a> nearest samples of its shooter's log give, weighted by nearness; null while
  the log holds fewer than <a href="hadur2/core/melee/TeamDanger.html#MIN_SAMPLES"><code>TeamDanger.MIN_SAMPLES</code></a>.</div>
 </dd>
-<dt><a href="hadur117/mini/core/Move.html#aimsAtUs(double%5B%5D,double,double,double%5B%5D%5B%5D)" class="member-name-link">aimsAtUs(double[], double, double, double[][])</a> - Static method in class hadur117.mini.core.<a href="hadur117/mini/core/Move.html" title="class in hadur117.mini.core">Move</a></dt>
+<dt><a href="hadur117/mini/core/Move.html#aimsAtUs(double%5B%5D,double,double%5B%5D%5B%5D)" class="member-name-link">aimsAtUs(double[], double, double[][])</a> - Static method in class hadur117.mini.core.<a href="hadur117/mini/core/Move.html" title="class in hadur117.mini.core">Move</a></dt>
 <dd>
-<div class="block">Whether an opponent likely aims at Deise: no other opponent is within 0.9 of Deise's distance
- from it, so Deise is, or is nearly, its nearest robot (DEISE-3, DEISE-5).</div>
+<div class="block">Whether an opponent at <code>distance</code> likely aims at Deise: no other opponent is within 0.9
+ of that distance from it, so Deise is, or is nearly, its nearest robot (DEISE-3, DEISE-5).</div>
 </dd>
 <dt><a href="hadur2/core/model/Wave.html#aimStates" class="member-name-link">aimStates</a> - Variable in class hadur2.core.model.<a href="hadur2/core/model/Wave.html" title="class in hadur2.core.model">Wave</a></dt>
 <dd>
@@ -1879,6 +1879,10 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="hadur2/core/melee/MinimumRiskMovement.html#cornerRisk(java.awt.geom.Point2D.Double)" class="member-name-link">cornerRisk(Point2D.Double)</a> - Method in class hadur2.core.melee.<a href="hadur2/core/melee/MinimumRiskMovement.html" title="class in hadur2.core.melee">MinimumRiskMovement</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur117/mini/core/Move.html#CORNERS" class="member-name-link">CORNERS</a> - Static variable in class hadur117.mini.core.<a href="hadur117/mini/core/Move.html" title="class in hadur117.mini.core">Move</a></dt>
+<dd>
+<div class="block">Whether the corners pull while crowded (DEISE-4): off since 0.3, whose bytes went to the waves.</div>
+</dd>
 <dt><a href="hadur2/core/ledger/EnergyLedger.Reading.html#corrected()" class="member-name-link">corrected()</a> - Method in class hadur2.core.ledger.<a href="hadur2/core/ledger/EnergyLedger.Reading.html" title="class in hadur2.core.ledger">EnergyLedger.Reading</a></dt>
 <dd>
 <div class="block">The loss the ledger could not explain, in energy: the bullet power when <a href="hadur2/core/ledger/EnergyLedger.Reading.html#shot()"><code>EnergyLedger.Reading.shot()</code></a> is true.</div>
@@ -2100,11 +2104,11 @@ loadScripts(document, 'script');</script>
 <div class="block">The danger of a surf option whose hit range is <code>angle +/- bandwidth</code>: 1 when the best
  expert's bullet falls inside it (with <a href="hadur2/core/physics/ShotDodger.html#MARGIN"><code>ShotDodger.MARGIN</code></a>), else 0; NaN while not <a href="hadur2/core/physics/ShotDodger.html#active()"><code>ShotDodger.active()</code></a>.</div>
 </dd>
-<dt><a href="hadur117/mini/core/Move.html#danger(double%5B%5D,double,double,double)" class="member-name-link">danger(double[], double, double, double)</a> - Static method in class hadur117.mini.core.<a href="hadur117/mini/core/Move.html" title="class in hadur117.mini.core">Move</a></dt>
+<dt><a href="hadur117/mini/core/Move.html#danger(double%5B%5D,double,double,double,double)" class="member-name-link">danger(double[], double, double, double, double)</a> - Static method in class hadur117.mini.core.<a href="hadur117/mini/core/Move.html" title="class in hadur117.mini.core">Move</a></dt>
 <dd>
-<div class="block">The danger of (px, py) from a wave: for each of its two lines, where the bullet will be when
- it has come as far as the point, near the point is dangerous; a wave already past the point
- is not (DEISE-5).</div>
+<div class="block"><code>r</code> plus the danger of (px, py) from a wave: for each of its lines, where the bullet
+ will be when it has come as far as the point, near the point is dangerous; a wave already
+ past the point is not (DEISE-5).</div>
 </dd>
 <dt><a href="hadur2/core/move/MoveController.html#dangerPercentile(hadur2.core.model.Wave,double)" class="member-name-link">dangerPercentile(Wave, double)</a> - Method in class hadur2.core.move.<a href="hadur2/core/move/MoveController.html" title="class in hadur2.core.move">MoveController</a></dt>
 <dd>
@@ -2272,8 +2276,8 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur117/mini/Deise.html" class="type-name-link" title="class in hadur117.mini">Deise</a> - Class in <a href="hadur117/mini/package-summary.html">hadur117.mini</a></dt>
 <dd>
 <div class="block">Deise (the Déise, Waterford's people), a MiniMelee entry: Saor's graded Markov gun, learning
- every robot it scans, over a least-risk movement that holds the corners while the field is
- crowded (docs/deise.md).</div>
+ every robot it scans, over a least-risk movement that steps off the lines of the shots it sees
+ fired (docs/deise.md).</div>
 </dd>
 <dt><a href="hadur117/mini/Deise.html#%3Cinit%3E()" class="member-name-link">Deise()</a> - Constructor for class hadur117.mini.<a href="hadur117/mini/Deise.html" title="class in hadur117.mini">Deise</a></dt>
 <dd>&nbsp;</dd>
@@ -2349,10 +2353,6 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur117/mini/DeiseLab.html#destination" class="member-name-link">destination</a> - Static variable in class hadur117.mini.<a href="hadur117/mini/DeiseLab.html" title="class in hadur117.mini">DeiseLab</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur2/core/melee/MeleeController.Command.html#destination" class="member-name-link">destination</a> - Variable in class hadur2.core.melee.<a href="hadur2/core/melee/MeleeController.Command.html" title="class in hadur2.core.melee">MeleeController.Command</a></dt>
-<dd>&nbsp;</dd>
-<dt><a href="hadur117/mini/Deise.html#destX" class="member-name-link">destX</a> - Static variable in class hadur117.mini.<a href="hadur117/mini/Deise.html" title="class in hadur117.mini">Deise</a></dt>
-<dd>&nbsp;</dd>
-<dt><a href="hadur117/mini/Deise.html#destY" class="member-name-link">destY</a> - Static variable in class hadur117.mini.<a href="hadur117/mini/Deise.html" title="class in hadur117.mini">Deise</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur2/core/physics/DiaUtils.html" class="type-name-link" title="class in hadur2.core.physics">DiaUtils</a> - Class in <a href="hadur2/core/physics/package-summary.html">hadur2.core.physics</a></dt>
 <dd>
@@ -3022,6 +3022,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="hadur117/twin/SaorTwin.html#ENERGY" class="member-name-link">ENERGY</a> - Static variable in class hadur117.twin.<a href="hadur117/twin/SaorTwin.html" title="class in hadur117.twin">SaorTwin</a></dt>
 <dd>
 <div class="block">Record fields.</div>
+</dd>
+<dt><a href="hadur117/mini/core/Move.html#ENERGY_PUSH" class="member-name-link">ENERGY_PUSH</a> - Static variable in class hadur117.mini.core.<a href="hadur117/mini/core/Move.html" title="class in hadur117.mini.core">Move</a></dt>
+<dd>
+<div class="block">Whether the push grows with an opponent's energy (DEISE-2): flat since 0.3 (arm WF).</div>
 </dd>
 <dt><a href="hadur2/core/melee/MinimumRiskMovement.html#ENERGY_RATIO_CAP" class="member-name-link">ENERGY_RATIO_CAP</a> - Static variable in class hadur2.core.melee.<a href="hadur2/core/melee/MinimumRiskMovement.html" title="class in hadur2.core.melee">MinimumRiskMovement</a></dt>
 <dd>
@@ -5271,7 +5275,7 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur117/mini/DeiseLab.html#HITS" class="member-name-link">HITS</a> - Static variable in class hadur117.mini.<a href="hadur117/mini/DeiseLab.html" title="class in hadur117.mini">DeiseLab</a></dt>
 <dd>
-<div class="block">Whether our hits move the energy a shot drop is measured from (DEISE-5); false for arm WH.</div>
+<div class="block">Whether our hits move the energy a shot drop is measured from (DEISE-5): off since 0.3 (arm WB).</div>
 </dd>
 <dt><a href="hadur2/core/world/EnemyInfo.html#HITS_KEPT" class="member-name-link">HITS_KEPT</a> - Static variable in class hadur2.core.world.<a href="hadur2/core/world/EnemyInfo.html" title="class in hadur2.core.world">EnemyInfo</a></dt>
 <dd>&nbsp;</dd>
@@ -5333,7 +5337,8 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="hadur117/mini/DeiseLab.html#HOLD" class="member-name-link">HOLD</a> - Static variable in class hadur117.mini.<a href="hadur117/mini/DeiseLab.html" title="class in hadur117.mini">DeiseLab</a></dt>
 <dd>
-<div class="block">A point must be this much safer than the destination to replace it (DEISE-1); arm H drops it.</div>
+<div class="block">A point must be this much safer than the destination to replace it (DEISE-1); 0, since 0.3
+ (arm WN), takes the ring's best point every tick.</div>
 </dd>
 <dt><a href="hadur2/core/duel/MoveDesign.html#HOLD_650" class="member-name-link">HOLD_650</a> - Static variable in class hadur2.core.duel.<a href="hadur2/core/duel/MoveDesign.html" title="class in hadur2.core.duel">MoveDesign</a></dt>
 <dd>
@@ -5859,7 +5864,7 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur117/mini/core/Gun.html#KILL" class="member-name-link">KILL</a> - Static variable in class hadur117.mini.core.<a href="hadur117/mini/core/Gun.html" title="class in hadur117.mini.core">Gun</a></dt>
 <dd>
-<div class="block">Whether power is capped at what kills the target (DEISE-10); false for arm K.</div>
+<div class="block">Whether power is capped at what kills the target (DEISE-10): off since 0.3 (arm WHPK +0.14).</div>
 </dd>
 <dt><a href="hadur2/core/melee/MeleeEnergyPolicy.html#killPower(double)" class="member-name-link">killPower(double)</a> - Static method in class hadur2.core.melee.<a href="hadur2/core/melee/MeleeEnergyPolicy.html" title="class in hadur2.core.melee">MeleeEnergyPolicy</a></dt>
 <dd>
@@ -7837,13 +7842,9 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="hadur117/micro/SaorLab.html#myX" class="member-name-link">myX</a> - Static variable in class hadur117.micro.<a href="hadur117/micro/SaorLab.html" title="class in hadur117.micro">SaorLab</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="hadur117/mini/Deise.html#myX" class="member-name-link">myX</a> - Static variable in class hadur117.mini.<a href="hadur117/mini/Deise.html" title="class in hadur117.mini">Deise</a></dt>
-<dd>&nbsp;</dd>
 <dt><a href="hadur117/micro/Saor.html#myY" class="member-name-link">myY</a> - Static variable in class hadur117.micro.<a href="hadur117/micro/Saor.html" title="class in hadur117.micro">Saor</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur117/micro/SaorLab.html#myY" class="member-name-link">myY</a> - Static variable in class hadur117.micro.<a href="hadur117/micro/SaorLab.html" title="class in hadur117.micro">SaorLab</a></dt>
-<dd>&nbsp;</dd>
-<dt><a href="hadur117/mini/Deise.html#myY" class="member-name-link">myY</a> - Static variable in class hadur117.mini.<a href="hadur117/mini/Deise.html" title="class in hadur117.mini">Deise</a></dt>
 <dd>&nbsp;</dd>
 </dl>
 <h2 class="title" id="I:N">N</h2>
@@ -9055,6 +9056,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block"><a class="req" href="../requirements.html#WAVE-5">WAVE-5</a>: our energy this tick, for the ledger's inactivity-drain correction.</div>
 </dd>
+<dt><a href="hadur117/mini/Deise.html#out(double,double)" class="member-name-link">out(double, double)</a> - Static method in class hadur117.mini.<a href="hadur117/mini/Deise.html" title="class in hadur117.mini">Deise</a></dt>
+<dd>
+<div class="block">Whether (px, py) is within 18 px of a wall.</div>
+</dd>
 <dt><a href="hadur2/core/policy/DistancePolicy.Step.html#OUT" class="member-name-link">OUT</a> - Enum constant in enum class hadur2.core.policy.<a href="hadur2/core/policy/DistancePolicy.Step.html" title="enum class in hadur2.core.policy">DistancePolicy.Step</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur117/micro/core/Targeting.html#OUT_WEIGHT" class="member-name-link">OUT_WEIGHT</a> - Static variable in class hadur117.micro.core.<a href="hadur117/micro/core/Targeting.html" title="class in hadur117.micro.core">Targeting</a></dt>
@@ -9412,7 +9417,7 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="hadur117/mini/DeiseLab.html#PLAYOUTS" class="member-name-link">PLAYOUTS</a> - Static variable in class hadur117.mini.<a href="hadur117/mini/DeiseLab.html" title="class in hadur117.mini">DeiseLab</a></dt>
 <dd>
-<div class="block">Playouts an aim (DEISE-7); 200 for arm P200.</div>
+<div class="block">Playouts an aim (DEISE-7): 200 since 0.3 (arm P200).</div>
 </dd>
 <dt><a href="hadur117/twin/core/Gun.html#PLAYOUTS" class="member-name-link">PLAYOUTS</a> - Static variable in class hadur117.twin.core.<a href="hadur117/twin/core/Gun.html" title="class in hadur117.twin.core">Gun</a></dt>
 <dd>
@@ -10851,10 +10856,6 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="hadur2/core/melee/MinimumRiskMovement.html#RINGS" class="member-name-link">RINGS</a> - Static variable in class hadur2.core.melee.<a href="hadur2/core/melee/MinimumRiskMovement.html" title="class in hadur2.core.melee">MinimumRiskMovement</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="hadur117/mini/Deise.html#risk(double,double,double)" class="member-name-link">risk(double, double, double)</a> - Method in class hadur117.mini.<a href="hadur117/mini/Deise.html" title="class in hadur117.mini">Deise</a></dt>
-<dd>
-<div class="block">The risk of moving on <code>heading</code> to (px, py) (DEISE-2 to DEISE-4).</div>
-</dd>
 <dt><a href="hadur117/mini/core/Move.html#risk(double,double,double,double,double,double%5B%5D%5B%5D,double%5B%5D%5B%5D,double,int)" class="member-name-link">risk(double, double, double, double, double, double[][], double[][], double, int)</a> - Static method in class hadur117.mini.core.<a href="hadur117/mini/core/Move.html" title="class in hadur117.mini.core">Move</a></dt>
 <dd>
 <div class="block">The risk of moving on <code>heading</code> to (px, py) (DEISE-2 to DEISE-5).</div>
@@ -15114,11 +15115,15 @@ the order they are declared.</div>
  before the real battle begins, so that class loading and JIT warm-up land here rather
  than on the first real tick a role drives.</div>
 </dd>
+<dt><a href="hadur117/mini/Deise.html#wave" class="member-name-link">wave</a> - Static variable in class hadur117.mini.<a href="hadur117/mini/Deise.html" title="class in hadur117.mini">Deise</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="hadur117/mini/DeiseLab.html#wave" class="member-name-link">wave</a> - Static variable in class hadur117.mini.<a href="hadur117/mini/DeiseLab.html" title="class in hadur117.mini">DeiseLab</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="hadur2/core/move/PlanInterval.html#wave" class="member-name-link">wave</a> - Variable in class hadur2.core.move.<a href="hadur2/core/move/PlanInterval.html" title="class in hadur2.core.move">PlanInterval</a></dt>
 <dd>
 <div class="block">The enemy wave in the air; the gun reads its source, power and shadows.</div>
 </dd>
-<dt><a href="hadur117/mini/core/Move.html#wave(double,double,double,double,double,double,double,double,double)" class="member-name-link">wave(double, double, double, double, double, double, double, double, double)</a> - Static method in class hadur117.mini.core.<a href="hadur117/mini/core/Move.html" title="class in hadur117.mini.core">Move</a></dt>
+<dt><a href="hadur117/mini/core/Move.html#wave(double,double,double,double,double,double,double)" class="member-name-link">wave(double, double, double, double, double, double, double)</a> - Static method in class hadur117.mini.core.<a href="hadur117/mini/core/Move.html" title="class in hadur117.mini.core">Move</a></dt>
 <dd>
 <div class="block">A wave fired at Deise from (ox, oy) at <code>time</code> with <code>power</code>, its bullet on Deise's
  head-on line or on the line that leads Deise's present motion (DEISE-5).</div>
@@ -15209,8 +15214,12 @@ the order they are declared.</div>
 <div class="block">Scores the waves Hadur inferred against the bullets the enemy really fired (S2's wave
  fidelity).</div>
 </dd>
-<dt><a href="hadur117/mini/DeiseLab.html#waves" class="member-name-link">waves</a> - Static variable in class hadur117.mini.<a href="hadur117/mini/DeiseLab.html" title="class in hadur117.mini">DeiseLab</a></dt>
+<dt><a href="hadur117/mini/Deise.html#waves" class="member-name-link">waves</a> - Static variable in class hadur117.mini.<a href="hadur117/mini/Deise.html" title="class in hadur117.mini">Deise</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="hadur117/mini/DeiseLab.html#waves" class="member-name-link">waves</a> - Static variable in class hadur117.mini.<a href="hadur117/mini/DeiseLab.html" title="class in hadur117.mini">DeiseLab</a></dt>
+<dd>
+<div class="block">Waves in a ring of 64 slots, the newest over the oldest (DEISE-5).</div>
+</dd>
 <dt><a href="hadur2/core/melee/MeleeController.html#waves()" class="member-name-link">waves()</a> - Method in class hadur2.core.melee.<a href="hadur2/core/melee/MeleeController.html" title="class in hadur2.core.melee">MeleeController</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="hadur2/core/melee/TeamModes.Mode.html#WAVES" class="member-name-link">WAVES</a> - Enum constant in enum class hadur2.core.melee.<a href="hadur2/core/melee/TeamModes.Mode.html" title="enum class in hadur2.core.melee">TeamModes.Mode</a></dt>
@@ -15219,8 +15228,8 @@ the order they are declared.</div>
 </dd>
 <dt><a href="hadur117/mini/core/Move.html#WAVES" class="member-name-link">WAVES</a> - Static variable in class hadur117.mini.core.<a href="hadur117/mini/core/Move.html" title="class in hadur117.mini.core">Move</a></dt>
 <dd>
-<div class="block">How much the seen-shot waves count (DEISE-5): 0 since stage E0's smoke, where they cost
- about 13 APS at full weight and 3 at 0.3 (docs/deise.md section 4).</div>
+<div class="block">How much the seen-shot waves count (DEISE-5): 1 since 0.3 (E0 to E1b's arm W, +0.44 to +0.59);
+ 0 turns them off.</div>
 </dd>
 <dt><a href="hadur2/core/melee/MinimumRiskMovement.html#waveScores(double%5B%5D,double%5B%5D)" class="member-name-link">waveScores(double[], double[])</a> - Static method in class hadur2.core.melee.<a href="hadur2/core/melee/MinimumRiskMovement.html" title="class in hadur2.core.melee">MinimumRiskMovement</a></dt>
 <dd>
