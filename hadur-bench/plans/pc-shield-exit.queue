@@ -15,9 +15,10 @@
 # gate:   s4 and s0 each minus pooled c and aa, summed over the panel / 1,217 pairings. PASS at +0.10
 #         APS with the lower end above 0 and the A/A inside its band. Unlisted robots never see the
 #         change, so the panel sum is the field's.
-# pick:   mode_table.py over the same screen (0 battles): which robots s4 or s0 win by 5+ points and which
-#         they lose, in case a per-opponent exit beats one global value (cloud: +14 on Smoke, Quest, SMG,
-#         CopyKat; -7 to -11 on Pantheist, Toa, MirrorPM).
+# pick:   mode_table.py over the same screen (0 battles): the robots s4 or s0 win by 5+ points; and
+#         tools/per_robot.py: every robot's s4 and s0 difference, losses included, in case a
+#         per-opponent exit beats one global value (cloud: +14 on Smoke, Quest, SMG, CopyKat; -7 to
+#         -11 on Pantheist, Toa, MirrorPM). Any analysis error stops the card before the results PR.
 # verify: the 3 re-picked robots x c, aa, rp x 6 fresh seeds = 54 battles, gate bar +0.01.
 # Leigh's release rule stands: no 1v1 release until the census projects the target (3rd here).
 
@@ -35,8 +36,8 @@ screen | ./bench-top20.sh ${C} ${P} --set panel-shield-listed-318.txt --seeds 3 
 verify | ./bench-top20.sh ${C} ${P} --set panel-repick-318.txt --seeds 6 --seed-base 3500 --arms plans/repick-verify.arms --out work/repick-verify --label repick-verify
   after: screen
 
-gate | python3 ../data/tools/multiarm.py work/shield-exit/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_shield-exit.md && python3 tools/shield_s2.py gate work/shield-exit/arms.tsv --arm s4 --panel panel-shield-listed-318.txt --bar 0.10 --out ${OUT}/$(date +%Y-%m-%d)_shield-exit-s4-gate.md ; python3 tools/shield_s2.py gate work/shield-exit/arms.tsv --arm s0 --panel panel-shield-listed-318.txt --bar 0.10 --out ${OUT}/$(date +%Y-%m-%d)_shield-exit-s0-gate.md ; python3 ../data/tools/mode_table.py work/shield-exit/arms.tsv --margin 5 --out-tsv ${OUT}/shield-exit-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_shield-exit-pick.md ; python3 ../data/tools/multiarm.py work/repick-verify/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_repick-verify.md && python3 tools/shield_s2.py gate work/repick-verify/arms.tsv --arm rp --panel panel-repick-318.txt --bar 0.01 --out ${OUT}/$(date +%Y-%m-%d)_repick-gate.md ; true
+gate | python3 ../data/tools/multiarm.py work/shield-exit/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_shield-exit.md && python3 tools/shield_s2.py gate work/shield-exit/arms.tsv --arm s4 --panel panel-shield-listed-318.txt --bar 0.10 --out ${OUT}/$(date +%Y-%m-%d)_shield-exit-s4-gate.md && python3 tools/shield_s2.py gate work/shield-exit/arms.tsv --arm s0 --panel panel-shield-listed-318.txt --bar 0.10 --out ${OUT}/$(date +%Y-%m-%d)_shield-exit-s0-gate.md && python3 ../data/tools/mode_table.py work/shield-exit/arms.tsv --margin 5 --out-tsv ${OUT}/shield-exit-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_shield-exit-pick.md && python3 tools/per_robot.py work/shield-exit/arms.tsv --arms s4 s0 --out ${OUT}/$(date +%Y-%m-%d)_shield-exit-per-robot.md --out-tsv ${OUT}/shield-exit-per-robot.tsv && python3 ../data/tools/multiarm.py work/repick-verify/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_repick-verify.md && python3 tools/shield_s2.py gate work/repick-verify/arms.tsv --arm rp --panel panel-repick-318.txt --bar 0.01 --out ${OUT}/$(date +%Y-%m-%d)_repick-gate.md
   after: verify
 
-pr | bash tools/open_results_pr.sh claude/pc-shield-exit-results "1v1 gap to 2nd: shield exit at 400 / budget only, and three stop-and-go re-picks" ${OUT}/*_shield-exit*.md ${OUT}/*_repick-*.md
+pr | bash tools/open_results_pr.sh claude/pc-shield-exit-results "1v1 gap to 2nd: shield exit at 400 / budget only, and three stop-and-go re-picks" ${OUT}/*_shield-exit*.md ${OUT}/*_repick-*.md ${OUT}/shield-exit-per-robot.tsv $(find ${OUT} -maxdepth 1 -name shield-exit-pick.tsv -size +0c)
   after: gate

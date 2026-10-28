@@ -70,6 +70,11 @@ class ShieldExitPlanTest {
         assertTrue(queue.contains("--arm s4 --panel panel-shield-listed-318.txt"));
         assertTrue(queue.contains("--arm s0 --panel panel-shield-listed-318.txt"));
         assertTrue(queue.contains("--arm rp --panel panel-repick-318.txt"));
+        assertTrue(queue.contains("tools/per_robot.py work/shield-exit/arms.tsv --arms s4 s0"), "losses reported per robot");
+        assertTrue(Files.isRegularFile(Path.of("tools/per_robot.py")) && Files.isRegularFile(Path.of("tools/test_per_robot.py")));
+        String gate = queue.substring(queue.indexOf("\ngate | "), queue.indexOf("\n\npr | "));
+        assertTrue(!gate.contains(";"), "an analysis error must stop the card before the results PR");
+        assertTrue(queue.contains("${OUT}/shield-exit-per-robot.tsv") && queue.contains("-name shield-exit-pick.tsv -size +0c"));
         assertTrue(queue.contains("open_results_pr.sh claude/pc-shield-exit-results"));
     }
 }
