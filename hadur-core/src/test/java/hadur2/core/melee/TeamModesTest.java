@@ -512,15 +512,38 @@ class TeamModesTest {
     }
 
     @Test
+    @Tag("TMODE-25")
+    @DisplayName("TMODE-25: a teammate's bullet is counted, at its damage, on a drive that meets it and not on one that leaves its line")
+    void pathCheck() {
+        assertTrue(MinimumRiskMovement.crossesBox(pt(600, 560), pt(600, 571), 600, 580, 18));
+        assertFalse(MinimumRiskMovement.crossesBox(pt(600, 560), pt(600, 571), 620, 580, 18));
+        assertTrue(MinimumRiskMovement.crossesBox(pt(570, 600), pt(630, 600), 600, 610, 18));
+        MinimumRiskMovement move = new MinimumRiskMovement(field(1200, 1200));
+        move.newRound();
+        // A teammate at (600, 300) fired north at tick 75, power 3 (11 px a tick): at (600, 575) on tick 100.
+        move.mateShot("m0", pt(600, 300), 75, 0, 3.0);
+        List<VirtualBullet> b = move.mateBullets(pt(600, 700), 100);
+        assertEquals(1, b.size());
+        double dmg = 4 * 3 + 2 * (3 - 1);
+        // Staying, or driving into it, it lands on tick 110; driving aside or away, it misses.
+        assertEquals(dmg, MinimumRiskMovement.pathDamage(pt(600, 700), pt(600, 700), 100, b), 0);
+        assertEquals(dmg, MinimumRiskMovement.pathDamage(pt(600, 700), pt(600, 400), 100, b), 0);
+        assertEquals(0, MinimumRiskMovement.pathDamage(pt(600, 700), pt(300, 700), 100, b), 0);
+        assertEquals(0, MinimumRiskMovement.pathDamage(pt(600, 700), pt(600, 1000), 100, b), 0);
+        assertEquals(0, MinimumRiskMovement.pathDamage(pt(600, 700), pt(600, 700), 100, List.of()), 0);
+    }
+
+    @Test
     @Tag("TMODE-23")
     @Tag("TMODE-24")
-    @DisplayName("TMODE-23/24: with FAR the hunt's place is 500 px from its prey, with FARTHER 650 px; else 350 px")
+    @Tag("TMODE-26")
+    @DisplayName("TMODE-23/24/26: with FAR the hunt's place is 500 px from its prey, FARTHER 650 px, NEAR 250 px; else 350 px")
     void huntRange() {
         List<EnemyInfo> prey = enemies(pt(600, 900)).alive();
         assertEquals(MinimumRiskMovement.HUNT_RADIUS, MinimumRiskMovement.huntRadius(EnumSet.of(TeamModes.Mode.HUNT)), 0);
-        for (TeamModes.Mode m : new TeamModes.Mode[] {TeamModes.Mode.FAR, TeamModes.Mode.FARTHER}) {
+        for (TeamModes.Mode m : new TeamModes.Mode[] {TeamModes.Mode.FAR, TeamModes.Mode.FARTHER, TeamModes.Mode.NEAR}) {
             Set<TeamModes.Mode> modes = EnumSet.of(TeamModes.Mode.HUNT, m);
-            double r = m == TeamModes.Mode.FAR ? 500 : 650;
+            double r = m == TeamModes.Mode.FAR ? 500 : m == TeamModes.Mode.FARTHER ? 650 : 250;
             assertEquals(r, MinimumRiskMovement.huntRadius(modes), 0);
             MinimumRiskMovement.Pull p = MinimumRiskMovement.pull(pt(600, 300), "n", 100, 3, prey, 100,
                 mates(pt(700, 300)), modes);

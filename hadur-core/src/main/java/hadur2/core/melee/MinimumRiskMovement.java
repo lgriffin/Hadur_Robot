@@ -129,6 +129,16 @@ public class MinimumRiskMovement {
     static final long GUNLINE_AGE = 3;
     /** TMODE-19: the engine's default gun cooling, heat a tick; a stated heat over it is ticks to fire. */
     static final double GUNLINE_COOLING = 0.1;
+    /**
+     * TMODE-25: the {@link #PATH_RERANK} lowest-risk candidates, the destination held and
+     * staying put are each driven to for {@link #PATH_TICKS} ticks; every teammate bullet whose
+     * flight on some tick crosses Hadur's box ({@link #PATH_HALF} px each side) there adds
+     * {@link #PATH_K} times its damage to that candidate's risk.
+     */
+    static final double PATH_K = 1.0;
+    static final double PATH_HALF = 18;
+    static final int PATH_TICKS = 15;
+    static final int PATH_RERANK = 8;
     /** MMOVE-8: how far apart, along its wall, the opening spots of two members in the roster are. */
     static final double MATE_FAN = 120;
     /** TMODE-2: a shot's weight is 1/(1+k)^2 for k teammates nearer its shooter; under this it makes no bullets. */
@@ -166,6 +176,8 @@ public class MinimumRiskMovement {
     /** TMODE-23, TMODE-24: the hunt's radius against a team whose power falls with distance. */
     static final double HUNT_RADIUS_FAR = 500;
     static final double HUNT_RADIUS_FARTHER = 650;
+    /** TMODE-26: the hunt radius against a team whose shots only land up close. */
+    static final double HUNT_RADIUS_NEAR = 250;
     /**
      * TMODE-21, TMODE-22: the weight of a shot's one virtual bullet against a team that aims
      * only head-on or only linear: the two guesses' total, all on the real line.
@@ -273,6 +285,8 @@ public class MinimumRiskMovement {
         boolean linesWide;
         /** TMODE-19: whether the lines ahead of the teammates' guns count; only on a team. */
         boolean gunLines;
+        /** TMODE-25: the teammates' bullets in flight each candidate's drive is checked against; empty unless PATH. */
+        List<VirtualBullet> pathBullets = List.of();
 
         View(Point2D.Double me, double energy, long now, int others, List<EnemyInfo> enemies,
              List<VirtualBullet> bullets, MeleeStrategy.Plan plan) {
@@ -556,6 +570,13 @@ public class MinimumRiskMovement {
             destination = waveBest(candidates, v);
             return destination;
         }
+        if (!mates.isEmpty() && modes.contains(TeamModes.Mode.PATH)) {
+            v.pathBullets = mateBullets(me, now);
+            if (!v.pathBullets.isEmpty()) {
+                destination = pathBest(candidates, v);
+                return destination;
+            }
+        }
         Point2D.Double best = null;
         double bestRisk = Double.POSITIVE_INFINITY;
         for (Point2D.Double p : candidates) {
@@ -797,6 +818,7 @@ public class MinimumRiskMovement {
     static double huntRadius(Set<TeamModes.Mode> modes) {
         if (modes.contains(TeamModes.Mode.FARTHER)) return HUNT_RADIUS_FARTHER;
         if (modes.contains(TeamModes.Mode.FAR)) return HUNT_RADIUS_FAR;
+        if (modes.contains(TeamModes.Mode.NEAR)) return HUNT_RADIUS_NEAR;
         return HUNT_RADIUS;
     }
 
@@ -906,6 +928,100 @@ public class MinimumRiskMovement {
             }
         }
         return best;
+    }
+
+    /**
+     * TMODE-25, Firestarter's path check: the {@link #PATH_RERANK} lowest-risk candidates, the
+     * destination held if not reached, and Hadur's own spot (stay) are each scored as their risk
+     * plus {@link #PATH_K} times the damage of the teammates' bullets their drive would meet in
+     * {@link #PATH_TICKS} ticks. The held destination keeps its place as in the plain choice:
+     * another wins only below {@link #SWITCH_GAIN} times its risk, both with their bullet damage.
+     */
+    Point2D.Double pathBest(List<Point2D.Double> candidates, View v) {
+        List<Point2D.Double> pool = new ArrayList<>(candidates);
+        boolean hold = destination != null && destination.distance(v.me) > REACHED;
+        double[] risk = new double[pool.size()];
+        Integer[] order = new Integer[pool.size()];
+        for (int i = 0; i < pool.size(); i++) {
+            risk[i] = risk(pool.get(i), v);
+            order[i] = i;
+        }
+        java.util.Arrays.sort(order, (a, b) -> Double.compare(risk[a], risk[b]));
+        List<Point2D.Double> picked = new ArrayList<>();
+        List<Double> pickedRisk = new ArrayList<>();
+        for (int i = 0; i < order.length && picked.size() < PATH_RERANK; i++) {
+            picked.add(pool.get(order[i]));
+            pickedRisk.add(risk[order[i]]);
+        }
+        Point2D.Double stay = new Point2D.Double(v.me.x, v.me.y);
+        picked.add(stay);
+        pickedRisk.add(risk(stay, v));
+        Point2D.Double best = null;
+        double bestScore = Double.POSITIVE_INFINITY;
+        for (int k = 0; k < picked.size(); k++) {
+            double sc = pickedRisk.get(k) + PATH_K * pathDamage(v.me, picked.get(k), v.now, v.pathBullets);
+            if (sc < bestScore) {
+                bestScore = sc;
+                best = picked.get(k);
+            }
+        }
+        if (hold) {
+            double held = PATH_K * pathDamage(v.me, destination, v.now, v.pathBullets);
+            if (bestScore >= SWITCH_GAIN * risk(destination, v) + held) return destination;
+        }
+        return best;
+    }
+
+    /**
+     * TMODE-25: the damage of the {@code bullets} Hadur would meet driving from {@code me}
+     * straight to {@code to} (accelerating 1 px a tick to 8, stopping there) for
+     * {@link #PATH_TICKS} ticks: a bullet counts once, on the first tick its flight that tick
+     * crosses Hadur's box, {@link #PATH_HALF} px each side of its centre, as the engine checks it.
+     */
+    static double pathDamage(Point2D.Double me, Point2D.Double to, long now, List<VirtualBullet> bullets) {
+        if (bullets.isEmpty()) return 0;
+        boolean[] done = new boolean[bullets.size()];
+        double total = 0;
+        double x = me.x, y = me.y, speed = 0;
+        for (int t = 1; t <= PATH_TICKS; t++) {
+            double left = Math.hypot(to.x - x, to.y - y);
+            if (left > 0.5) {
+                speed = Math.min(MAX_SPEED, Math.min(speed + 1, left));
+                x += (to.x - x) / left * speed;
+                y += (to.y - y) / left * speed;
+            }
+            long tick = now + t;
+            for (int i = 0; i < bullets.size(); i++) {
+                VirtualBullet b = bullets.get(i);
+                if (done[i] || tick <= b.shot.fireTime) continue;
+                Point2D.Double from = b.position(tick - 1);
+                Point2D.Double at = b.position(tick);
+                if (!crossesBox(from, at, x, y, PATH_HALF)) continue;
+                done[i] = true;
+                double p = b.shot.power;
+                total += 4 * p + Math.max(0, 2 * (p - 1));
+            }
+        }
+        return total;
+    }
+
+    /** Whether the segment {@code a}-{@code b} meets the square of half-side {@code half} round ({@code cx}, {@code cy}). */
+    static boolean crossesBox(Point2D.Double a, Point2D.Double b, double cx, double cy, double half) {
+        double t0 = 0, t1 = 1;
+        double dx = b.x - a.x, dy = b.y - a.y;
+        double[] p = {-dx, dx, -dy, dy};
+        double[] q = {a.x - (cx - half), (cx + half) - a.x, a.y - (cy - half), (cy + half) - a.y};
+        for (int i = 0; i < 4; i++) {
+            if (p[i] == 0) {
+                if (q[i] < 0) return false;
+            } else {
+                double r = q[i] / p[i];
+                if (p[i] < 0) t0 = Math.max(t0, r);
+                else t1 = Math.min(t1, r);
+                if (t0 > t1) return false;
+            }
+        }
+        return true;
     }
 
     /**

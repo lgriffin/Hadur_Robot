@@ -76,7 +76,11 @@ public final class TeamModes {
         /** TMODE-23: the team's power falls with distance: hunt at 500 px, not 350. Only through the table. */
         FAR,
         /** TMODE-24: as FAR, at 650 px. Only through the table. */
-        FARTHER
+        FARTHER,
+        /** TMODE-25: each candidate's drive is checked tick by tick against the teammates' bullets in flight (Firestarter). */
+        PATH,
+        /** TMODE-26: the team only lands its shots up close: hunt at 250 px, not 350. Only through the table. */
+        NEAR
     }
 
     /**
@@ -98,6 +102,7 @@ public final class TeamModes {
     public static final boolean FORCE_HUNT = true;
     public static final boolean FORCE_LINES = false;
     public static final boolean FORCE_GUNLINE = false;
+    public static final boolean FORCE_PATH = false;
 
     /** No modes: today's team movement. */
     public static final Set<Mode> NONE = Collections.unmodifiableSet(EnumSet.noneOf(Mode.class));
@@ -109,7 +114,7 @@ public final class TeamModes {
         FORCE_POOL ? Mode.POOL : null, FORCE_DISABLED ? Mode.DISABLED : null,
         FORCE_MATEFIRE ? Mode.MATEFIRE : null, FORCE_REAR ? Mode.REAR : null,
         FORCE_WAVES ? Mode.WAVES : null, FORCE_HUNT ? Mode.HUNT : null, FORCE_LINES ? Mode.LINES : null,
-        FORCE_GUNLINE ? Mode.GUNLINE : null);
+        FORCE_GUNLINE ? Mode.GUNLINE : null, FORCE_PATH ? Mode.PATH : null);
 
     /** Opposing member class to its team's modes; filled from the per-team screens. */
     static final Map<String, Set<Mode>> TABLE = table();

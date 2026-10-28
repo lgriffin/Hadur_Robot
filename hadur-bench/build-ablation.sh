@@ -212,6 +212,10 @@
 #          team step D). Suffix mw.
 #   tmwk  (team only) with tmwaves: each virtual bullet's kernel 2.5 bot widths wide, not half of one. Suffix wk.
 #          The three combine: tmdis,tmfire,tmrear is one build (suffix mdmbmr).
+#   tmpath (team only) TMODE-25: PATH against every team (Firestarter's path check: each candidate's drive
+#         checked tick by tick against the teammates' bullets in flight); the teams the table names
+#         play it on top of their entry. Suffix mp.
+#   tmtnear (team only) TMODE-26: NEAR (hunt at 250 px) added to the shipped TroodonPack entry. Suffix tn.
 #   tmgunline (team only) TMODE-19: GUNLINE against every team: members state their gun heading and heat,
 #         and keep out of the line ahead of a teammate's gun about to fire (K 0.4, 70 px). Suffix mgl.
 #   tmgunlinew (team only) with it heavier and wider (K 1.0, 100 px). Suffix mglw.
@@ -707,8 +711,22 @@ for a in "${list[@]}"; do
             if [[ "$a" == tmtab ]]; then table="${TEAM_MODE_TABLE:-$here/work/team-modes-screen.java}"; version="${version}${TEAM_MODE_SUFFIX:-mt}"
             else table="${TEAM_MODE_LOCKED:-$here/work/team-modes-locked.java}"; version="${version}mk"; fi
             [[ -f "$table" ]] || { echo "ablation $a: no table file $table" >&2; exit 1; }
-            edit "$modes" "        Map<String, Set<Mode>> t = new HashMap<>();" "        Map<String, Set<Mode>> t = new HashMap<>();
-$(cat "$table")"
+            # After the shipped entries, so a picked line for a team the table already names wins
+            # (team_modes.py --shipped keeps that entry's modes in the line).
+            edit "$modes" "        return Collections.unmodifiableMap(t);" "$(cat "$table")
+        return Collections.unmodifiableMap(t);"
+            ;;
+        tmpath)
+            version="${version}mp"
+            edit "$modes" "public static final boolean FORCE_PATH = false;" "public static final boolean FORCE_PATH = true;"
+            # The teams the table already names play PATH on top of their entry.
+            sed -i -E 's/^(        t\.put\("[^"]+", of\(.*)\)\);$/\1, Mode.PATH));/' "$modes"
+            ;;
+        tmtnear)
+            version="${version}tn"
+            n="$(grep -cE '^        t\.put\("myl\.micro\.Troodon(Droid)?", of\(' "$modes" || true)"
+            [[ "$n" == 2 ]] || { echo "ablation tmtnear: found $n Troodon entries in $modes" >&2; exit 1; }
+            sed -i -E 's/^(        t\.put\("myl\.micro\.Troodon(Droid)?", of\(.*)\)\);$/\1, Mode.NEAR));/' "$modes"
             ;;
         tram)
             version="${version}rm"
@@ -931,7 +949,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$src/hadur-core/src/main/java/hadur2/core/melee/MeleeEndgame.java" \
                 "public static final boolean $flag = false;" "public static final boolean $flag = true;"
             version="${version}${suffix}" ;;
-        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, ramheat, flaton, nowall, flt59, flt8, split, wallesc, gungate, hold650, dfac, bhb, hitclr, pkern, keep2, thgun, freegun, nodecay, stacklist, protean, pdw3, pdw8, pc10, phot, repl, pressure, pdown, pwall, pwc, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tlanep, tlaneb, tlook, tram, t6n, t6l, tmsoft, tmgang, tmfin, tmlearn, tmpack, tmscreen, tmpool, tmdis, tmfire, tmnofire, tmrear, tmwaves, tmwk, tmhunt, tmnohunt, thunt250, thunt200, tmlines, tmlinesw, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, surfb, aimmix, mimics, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, e3ring, e3pow, e3far, g24, gcrowd, pfloor, pogi, close200, ogi2, ogie10, ogi300)" >&2; exit 2 ;;
+        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, ramheat, flaton, nowall, flt59, flt8, split, wallesc, gungate, hold650, dfac, bhb, hitclr, pkern, keep2, thgun, freegun, nodecay, stacklist, protean, pdw3, pdw8, pc10, phot, repl, pressure, pdown, pwall, pwc, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tlanep, tlaneb, tlook, tram, t6n, t6l, tmsoft, tmgang, tmfin, tmlearn, tmpack, tmscreen, tmpool, tmdis, tmfire, tmnofire, tmrear, tmwaves, tmwk, tmhunt, tmnohunt, thunt250, thunt200, tmpath, tmtnear, tmlines, tmlinesw, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, surfb, aimmix, mimics, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, rambrk, sx4list, sx0list, e3ring, e3pow, e3far, g24, gcrowd, pfloor, pogi, close200, ogi2, ogie10, ogi300)" >&2; exit 2 ;;
     esac
 done
 

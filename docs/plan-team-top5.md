@@ -532,3 +532,26 @@ the same for team: read each costly team's code, then give it a counter that exp
   focus (Mamba's shared target); wounded members back off (Valkiries, OmegaSquad). Firestarter's
   path check on mate bullets comes after the table, as the one general step.
 - **Expected:** the table +0.8 to +1.8 APS, if half of Firestarter's lead on these teams closes.
+- **Result (PR #370):** gate FAIL at +0.16 ± 0.11 APS, but TroodonPack OWN,HEADON +4.7 ± 3.8 and
+  GrofGroup OWN,LINEAR +2.5 ± 3.0 held on fresh seeds; Leigh put both on master (PR #373, in 3.19).
+  FAR/FARTHER lost (s2 pooled -2.6 ± 1.1). A cloud smoke of hunting closer (22 teams x 6 seeds,
+  docs/bench/local/team-hunt-close-hr25.md, -hr20.md) lost too: 250 px -0.6 ± 1.3, 200 px -2.0 ± 1.3;
+  only TroodonPack gained at both (+4.3, +3.7). 350 px stays the default.
+
+
+## 12. Firestarter's path check, and Troodon at 250 px (2026-10-28)
+
+- **PATH (TMODE-25).** Firestarter (2nd) drives each candidate move tick by tick against its own
+  team's bullets in flight. Ours: the 8 lowest-risk destinations, the one held and staying put are
+  each driven straight (accelerating to 8 px a tick) for 15 ticks; each teammate bullet whose flight
+  that tick crosses our box (18 px each side) adds its damage. MATEFIRE already scores a point's
+  distance to those bullets; PATH scores the drive there.
+- **NEAR (TMODE-26).** Table-only: hunt at 250 px. Only for TroodonPack, the one team that gained.
+- **Per opponent.** PATH is screened forced on against all 46 teams (the named teams play it on
+  top of their entry), NEAR on TroodonPack alone; each team gets the arm only where it pays +3.0
+  points with the low end above zero, then the picked table is gated on fresh seeds.
+- **Card** plans/pc-team-path.queue (BENCH-124): bb and mp on 46 teams x 10 seeds from 4900, tn and
+  a bb on TroodonPack x 16 seeds; pick; gate 16 fresh seeds from 5000 at +0.30 APS. About 1,000
+  battles plus 32 per picked team, ~1.2 h on the PC. Results claude/pc-team-path-results.
+- **Expected:** PATH +0 to +0.4 APS, on the teams where own fire still costs us after MATEFIRE;
+  NEAR about +0.08 (one team, ~+4 points over 46).

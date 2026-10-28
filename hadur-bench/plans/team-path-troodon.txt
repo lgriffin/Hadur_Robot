@@ -1,0 +1,2 @@
+# pc-team-path: TroodonPack alone, for the NEAR arm (TMODE-26); the line as in team-census46.txt
+myl.micro.TroodonPack 1.10 | team-15 | myl.micro.TroodonPack_1.10.jar
