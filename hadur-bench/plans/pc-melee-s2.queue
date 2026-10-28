@@ -22,7 +22,7 @@
 
 set OUT = ../docs/bench/local
 
-s2prep | git checkout -q master && V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && test -n "$V" && C=${MELEE_WORKERS} && for a in aa bb g4 gc g4gc ef; do rm -f bisect/hadur2.Hadur_"$V"$a.jar; done && bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && bash ./build-ablation.sh g24 && bash ./build-ablation.sh gcrowd && bash ./build-ablation.sh g24,gcrowd && bash ./build-ablation.sh e3far && mkdir -p work && for a in aa bb g4 gc g4gc ef; do test -f bisect/hadur2.Hadur_"$V"$a.jar && sed -e "s/@V@/$V/g" -e "s/@A@/$a/g" -e "s/@C@/$C/g" plans/melee-s2.args > work/melee-s2-$a.args || exit 1; done && rm -f ${OUT}/melee-s2-*.md && for f in melee-census-317/f*.txt; do ./fetch-opponents.sh --set "$f" || exit 1; done && mvn -q compile
+s2prep | git checkout -q master && V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && test -n "$V" && C=${MELEE_WORKERS} && for a in aa bb g4 gc g4gc ef; do rm -f bisect/hadur117.Hadur_"$V"$a.jar; done && bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && bash ./build-ablation.sh g24 && bash ./build-ablation.sh gcrowd && bash ./build-ablation.sh g24,gcrowd && bash ./build-ablation.sh e3far && mkdir -p work && for a in aa bb g4 gc g4gc ef; do test -f bisect/hadur117.Hadur_"$V"$a.jar && sed -e "s/@V@/$V/g" -e "s/@A@/$a/g" -e "s/@C@/$C/g" plans/melee-s2.args > work/melee-s2-$a.args || exit 1; done && rm -f ${OUT}/melee-s2-*.md && for f in melee-census-317/f*.txt; do ./fetch-opponents.sh --set "$f" || exit 1; done && mvn -q compile
 s2aa   | mvn -q exec:java "-Dexec.args=@work/melee-s2-aa.args"
   after: s2prep
 s2bb   | mvn -q exec:java "-Dexec.args=@work/melee-s2-bb.args"

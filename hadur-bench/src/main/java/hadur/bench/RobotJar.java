@@ -30,6 +30,7 @@ final class RobotJar {
     static final java.util.List<String> PACKAGES = java.util.List.of(PACKAGE, "hadur2");
 
     private static final Pattern JAR = Pattern.compile("^(?:hadur117|hadur2)\\.Hadur_([0-9][^/\\\\]*)\\.jar$");
+    private static final Pattern TEAM_JAR = Pattern.compile("^(hadur117|hadur2)\\.HadurTeam_([0-9][^/\\\\]*)\\.jar$");
 
     private RobotJar() {}
 
@@ -106,6 +107,12 @@ final class RobotJar {
         return version == null ? null : file.substring(0, file.indexOf('.')) + ".Hadur " + version;
     }
 
+    /** {@code bisect/hadur2.HadurTeam_3.17.1.jar} is {@code hadur2.HadurTeam 3.17.1}; null when the name is not a team jar's. */
+    static String teamNameOf(String jarPath) {
+        Matcher m = TEAM_JAR.matcher(Path.of(jarPath).getFileName().toString());
+        return m.matches() ? m.group(1) + ".HadurTeam " + m.group(2) : null;
+    }
+
     /** The package of a robot name as Robocode lists it: {@code hadur117} for {@code hadur117.HadurTeam 3.18}. */
     static String packageOf(String robotName) {
         String cls = robotName.split(" ")[0];
@@ -116,6 +123,15 @@ final class RobotJar {
     /** The team member of a team name: {@code hadur117.Hadur} for {@code hadur117.HadurTeam 3.18}. */
     static String memberOf(String teamName) {
         return packageOf(teamName) + ".Hadur";
+    }
+
+    /**
+     * The baseline team's member: the candidate's when both teams share a package, else the
+     * baseline's own ({@code --member} names the candidate's, so a hadur2 baseline keeps hadur2.Hadur).
+     */
+    static String baselineMember(String member, String baselineRobot) {
+        if (baselineRobot == null || packageOf(member).equals(packageOf(baselineRobot))) return member;
+        return memberOf(baselineRobot);
     }
 
     /** The default {@code --robot-jar}: the built solo jar of the release. */

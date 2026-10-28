@@ -88,6 +88,23 @@ class TeamLossesTest(unittest.TestCase):
                 team_losses.CANDIDATE_ONLY = False
             self.assertIn("Battles read: 1 over 1 opponents", text)
 
+    def test_historical_hadur2_run_reads_as_ours(self):
+        old = "hadur2.Hadur 3.17.1aa"
+        with tempfile.TemporaryDirectory() as d:
+            battle(d, "rz.HOFSwarm_1.1-1", ["0,5,0,1,0,0,0,0,0,-\n"], [
+                f"0,40,F,1,{old} (1),3.00,0,0,0,-\n",
+                f"0,44,H,1,{old} (1),rz.Hawk 0.2 (1),3.00\n",
+            ], [])
+            battle(d, "rz.HOFSwarm_1.1-1-baseline", ["0,0,3,0,0,0,0,0,0,-\n"], [], [])
+            s = team_losses.summary(team_losses.battle(str(Path(d) / "battles" / "rz.HOFSwarm_1.1-1")))
+            self.assertEqual(100.0, s["hit_them"])    # hadur2's shot is ours, not an enemy's
+            team_losses.OURS = "hadur2."
+            try:
+                text = team_losses.report([d])
+            finally:
+                team_losses.OURS = team_losses.DEFAULT_OURS
+            self.assertIn("Battles read: 2 over 1 opponents", text)   # --ours hadur2. keeps the baseline
+
 
 if __name__ == "__main__":
     unittest.main()

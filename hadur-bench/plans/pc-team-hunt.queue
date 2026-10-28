@@ -12,7 +12,7 @@
 
 set OUT = ../docs/bench/local
 
-hvprep | git checkout -q master && V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && test -n "$V" && rm -f bisect/hadur2.HadurTeam_"$V"aa.jar bisect/hadur2.HadurTeam_"$V"bb.jar bisect/hadur2.HadurTeam_"$V"mh.jar && bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && bash ./build-ablation.sh tmhunt && mkdir -p work && for a in bb mh; do sed "s/@V@/$V/g" plans/team-hunt-$a.args > work/team-hunt-$a.args && test -f bisect/hadur2.HadurTeam_"$V"$a.jar || exit 1; done && test -f bisect/hadur2.HadurTeam_"$V"aa.jar && rm -f ../docs/bench/local/team-hunt-bb.md ../docs/bench/local/team-hunt-mh.md && ./fetch-opponents.sh --set team-census46.txt && mvn -q compile
+hvprep | git checkout -q master && V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && test -n "$V" && rm -f bisect/hadur117.HadurTeam_"$V"aa.jar bisect/hadur117.HadurTeam_"$V"bb.jar bisect/hadur117.HadurTeam_"$V"mh.jar && bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && bash ./build-ablation.sh tmhunt && mkdir -p work && for a in bb mh; do sed "s/@V@/$V/g" plans/team-hunt-$a.args > work/team-hunt-$a.args && test -f bisect/hadur117.HadurTeam_"$V"$a.jar || exit 1; done && test -f bisect/hadur117.HadurTeam_"$V"aa.jar && rm -f ../docs/bench/local/team-hunt-bb.md ../docs/bench/local/team-hunt-mh.md && ./fetch-opponents.sh --set team-census46.txt && mvn -q compile
 hvbb  | mvn -q exec:java "-Dexec.args=@work/team-hunt-bb.args"
   after: hvprep
 hvmh  | mvn -q exec:java "-Dexec.args=@work/team-hunt-mh.args"

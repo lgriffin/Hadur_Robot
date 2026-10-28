@@ -151,4 +151,18 @@ class RobotJarTest {
         assertEquals("hadur2.Hadur", RobotJar.memberOf("hadur2.HadurTeam 3.17.1"));
         assertEquals("hadur117.Hadur 3.19", Bench.defaultRobot(java.util.Map.of(), tmp, "3.19"));
     }
+
+    @Test
+    void teamNameOfReadsATeamJarName() {
+        assertEquals("hadur2.HadurTeam 3.17.1", RobotJar.teamNameOf("bisect/hadur2.HadurTeam_3.17.1.jar"));
+        assertEquals("hadur117.HadurTeam 3.19ka", RobotJar.teamNameOf("hadur117.HadurTeam_3.19ka.jar"));
+        assertNull(RobotJar.teamNameOf("bisect/hadur117.Hadur_3.19.jar"));
+    }
+
+    @Test
+    void baselineMemberKeepsTheBaselinePackage() {
+        assertEquals("hadur2.Hadur", RobotJar.baselineMember("hadur117.Hadur", "hadur2.HadurTeam 3.17.1"));
+        assertEquals("hadur117.HadurRecorder", RobotJar.baselineMember("hadur117.HadurRecorder", "hadur117.HadurTeam 3.19aa"));
+        assertEquals("hadur117.Hadur", RobotJar.baselineMember("hadur117.Hadur", null));
+    }
 }

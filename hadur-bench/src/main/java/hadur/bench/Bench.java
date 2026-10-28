@@ -200,7 +200,9 @@ public final class Bench {
                 opts.putIfAbsent("member", RobotJar.PACKAGE + ".HadurRecorder");
                 opts.putIfAbsent("robot-jar", RobotJar.recorderJar());
             }
-            opts.putIfAbsent("robot", RobotJar.PACKAGE + ".HadurTeam " + release);
+            // A team jar given without its name runs under the name its file carries (a hadur2 jar stays hadur2).
+            String named = opts.containsKey("robot-jar") ? RobotJar.teamNameOf(opts.get("robot-jar")) : null;
+            opts.putIfAbsent("robot", named != null ? named : RobotJar.PACKAGE + ".HadurTeam " + release);
             opts.putIfAbsent("robot-jar", RobotJar.teamJar(release));
         }
         this.warm = opts.getOrDefault("mode", "cold").equals("warm");
@@ -1401,7 +1403,7 @@ public final class Bench {
     private int runTeam(List<Opponent> opponents) throws Exception {
         // Each team's own member by default: a baseline built before the rename is hadur2's.
         String member = opts.getOrDefault("member", RobotJar.memberOf(robot));
-        String baseMember = opts.getOrDefault("member", baselineRobot == null ? member : RobotJar.memberOf(baselineRobot));
+        String baseMember = RobotJar.baselineMember(member, baselineRobot);
         if (record != null) recorderTeam(member);
         int n = opponents.size();
         TeamReport.Battle[][] cand = new TeamReport.Battle[n][runs];
