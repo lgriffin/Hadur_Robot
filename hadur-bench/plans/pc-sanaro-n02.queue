@@ -1,4 +1,4 @@
-# Sanaro's stage N3 (docs/sanaro.md section 6): the power curve, a small spiral and the band, all
+# Sanaro's stage N3 (docs/sanaro.md section 7): the power curve, a small spiral and the band, all
 # on the live-shaped census, the one LiteRumble scores NanoMelee from. pc-sanaro-n01 (PR #393)
 # showed the NanoMelee-only census picks the wrong spiral (0.6 there, 0 here, +0.88 ± 0.45), and
 # that Quantum's edge in the live-shaped field is damage (+14% bullet damage, better mean place)
