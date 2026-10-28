@@ -28,7 +28,7 @@ public class JayLexi extends AdvancedRobot {
     // Bins either side of guess factor zero, and the whole width (JAYLEXI-4, JAYLEXI-6).
     static final int MID = 23, BINS = 47;
     // Orbit angle off the wave's bearing: a little under PI/2, so the orbit drifts outward (JAYLEXI-5).
-    static final double ORBIT = 1.25;
+    static final double ORBIT = 1.15;
     // Wall smoothing: the stick that must stay inside the field (JAYLEXI-7).
     static final double STICK = 140;
     static final Rectangle2D.Double FIELD = new Rectangle2D.Double(18, 18, 764, 564);
