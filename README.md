@@ -4,8 +4,8 @@
 a 1v1 duelist that remembers each opponent across battles, with a melee brain for
 free-for-alls, a five-robot team entry, and a core that has no idea it is inside Robocode.
 
-**Hadur 3.18.1 is ranked 4th of 1,220 in the RoboRumble 1v1** (91.34 APS, its best ever), 5th of 48 in the
-TeamRumble (78.56) and 13th of 417 in the MeleeRumble (67.92, its best ever), the highest-ranked
+**Hadur 3.18.1 is ranked 4th of 1,220 in the RoboRumble 1v1** (91.34 APS, its best ever), 4th of 48 in the
+TeamRumble (HadurTeam 3.19, 79.41, its best ever) and 13th of 417 in the MeleeRumble (67.92, its best ever), the highest-ranked
 robot flying the Irish flag. Around it is a [family of smaller robots](#family-of-robots), two of
 them 1st in their rumbles. All of it was designed, written, tested and tuned by Claude agents
 working in a shared project with one human, Leigh Griffin, who set the goals and ran the live
@@ -26,7 +26,7 @@ learned Java, and it was the original inspiration for everything on this page.
 | Rumble | Entry | Rank | APS | Pairings | Battles |
 |---|---|---|---|---|---|
 | 1v1 | `hadur2.Hadur 3.18.1` | **4th of 1,220** | **91.34** ± 0.22 | 1,219 | 1,365 |
-| Team | `hadur2.HadurTeam 3.18.1` | **5th of 48** | **78.56** ± 0.97 | 47 | 72 |
+| Team | `hadur117.HadurTeam 3.19` (read 2026-10-28 23:49 UTC) | **4th of 48** | **79.41** ± 0.71 | 47 | 120 |
 | Melee | `hadur2.Hadur 3.18.1` | **13th of 417** | **67.92** ± 0.24 | 416 | 1,224 |
 
 - **1v1 4th, its first top-5 place and best score ever.** +0.43 ± 0.25 over 3.17's first pass on the
@@ -34,7 +34,9 @@ learned Java, and it was the original inspiration for everything on this page.
   ScalarR at 91.26 ([3.18 notes](docs/releases/v3.18.md), [3.18.1 notes](docs/releases/v3.18.1.md)).
 - **Melee 13th, its best ever**: +1.52 over 3.17's 66.40, from banked gun memory, the two-left
   endgame and Ogi's crowd power (MGUN-7, MEND-3, MGUN-13).
-- **Team 5th** on 3.17.1's play, which read 4th at 79.39 (its best); ShadowTeam is 4th at 79.11.
+- **Team 4th at 79.41, its best ever** (3.19, first pass): 3.17.1's play plus counters against TroodonPack
+  (+5.1 live, +4.7 benched) and GrofGroup (+1.7 live, +2.5 benched). 3rd is CombatTeam at 81.57, 2nd
+  Firestarter at 81.69; ShadowTeam is 5th at 79.25 ([team notes](docs/bench/live-3.19-team.md)).
 - **Why 3.18 read 10th first.** 3.18 read 87.73 on code that plays bit for bit as 3.17: 98.6% of its
   1v1 battles came from one PC client that scored about 3 points under clean pairings. 3.18.1
   restarted the pages with that client off the live rumble.
@@ -78,7 +80,7 @@ Best live results as of 2026-10-28:
 |---|---|---|---|---|
 | [**Hadur**](hadur-robot/) `hadur2.Hadur` | RoboRumble (1v1) | megabot | **4th of 1,220**, 91.34 ± 0.22 (3.18.1, 2026-10-28) | [standing](#standing) |
 | | MeleeRumble | | **13th of 417**, 67.92 ± 0.24 (3.18.1, 2026-10-28) | |
-| [**HadurTeam**](hadur-robot/) `hadur2.HadurTeam` | TeamRumble | five Hadurs | **4th of 48**, 79.39 ± 1.00 (3.17.1, 2026-10-25) | [live notes](docs/bench/live-3.17.md) |
+| [**HadurTeam**](hadur-robot/) `hadur117.HadurTeam` | TeamRumble | five Hadurs | **4th of 48**, 79.41 ± 0.71 (3.19, 2026-10-28) | [live notes](docs/bench/live-3.19-team.md) |
 | [**TwinSaor**](twinsaor/) `hadur117.twin.TwinSaor` | Twin Duel (2v2) | 1,995 B of 1,999 | **1st of 28**, 70.28 ± 0.50 (0.2, 2026-10-28) | [README](twinsaor/README.md) |
 | [**Saor**](saor/) `hadur117.micro.Saor` | MicroMelee | 723 B of 749 | **1st of 157**, 69.80 ± 0.43 (0.3, 2026-10-27) | [README](saor/README.md) |
 | [**Deise**](deise/) `hadur117.mini.Deise` | MiniMelee | 1,494 B of 1,499 | **2nd of 206**, 69.81 ± 0.33 (0.3, 2026-10-28), 1.38 behind kc.mini.Mirage | [README](deise/README.md) |
