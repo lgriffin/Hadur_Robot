@@ -100,7 +100,7 @@ loadScripts(document, 'script');</script>
  <li><code>data=shared</code>: never wipe the robot data directory during the pass (the rumble
      client's reality), instead of the bench's usual per-seed or per-opponent wipe.</li>
  <li><code>data=prefill:DIR</code>: copy DIR's contents into
-     <code>robots/.data/hadur2/Hadur.data/</code> once before the pass, then never wipe.</li>
+     <code>robots/.data/&lt;package&gt;/Hadur.data/</code> once before the pass, then never wipe.</li>
  <li><code>cpu=NANOS</code>: write <code>robocode.cpu.constant</code> before the pass.</li>
  <li><code>load=N</code>: run N CPU-bound threads alongside the battles.</li>
  <li><code>engine=VERSION</code>: use the Robocode jars under <code>engines/VERSION/</code> instead

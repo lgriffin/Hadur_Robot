@@ -104,18 +104,18 @@ loadScripts(document, 'script');</script>
      warm keeps it across <code>--battles</code> consecutive battles per opponent.</li>
  <li><code>--rounds N</code> rounds per battle (35), <code>--seeds N</code> battles per opponent in
      cold mode (5), <code>--battles N</code> in warm mode (5), <code>--field WxH</code> (800x600).</li>
- <li><code>--robot-jar FILE</code> the robot jar (../hadur-robot/target/hadur2.Hadur_&lt;release&gt;.jar,
+ <li><code>--robot-jar FILE</code> the robot jar (../hadur-robot/target/hadur117.Hadur_&lt;release&gt;.jar,
      the release being <code>robot.release</code> in hadur-robot/pom.xml, see <a href="RobotJar.html" title="class in hadur.bench"><code>RobotJar</code></a>),
      or <code>--robot-classes DIR</code> to jar a compiled class tree instead;
-     <code>--robot NAME</code> as Robocode lists it ("hadur2.Hadur &lt;release&gt;").</li>
+     <code>--robot NAME</code> as Robocode lists it ("hadur117.Hadur &lt;release&gt;").</li>
  <li><code>--record DIR</code> capture replay fixtures instead: runs the recorder robot
      (../hadur-robot/target/hadur-robot-2.0-SNAPSHOT-recorder.jar) with Robocode's
      security off and writes one gzipped transcript per opponent to DIR (<a class="req" href="../../../requirements.html#CORE-2">CORE-2</a>).</li>
  <li><code>--melee true</code> run every opponent in the set against Hadur at once, one battle
      per seed, and report finishing places instead (MeleeRumble: 10 robots, 1000x1000).</li>
  <li><code>--team true</code> (A5) fight each team of the set with our team jar
-     (<code>--robot-jar</code>, hadur2.HadurTeam_&lt;release&gt;.jar; <code>--robot</code> "hadur2.HadurTeam
-     &lt;release&gt;"; <code>--member</code> hadur2.Hadur), TeamRumble style: 1200x1200, 10 rounds.</li>
+     (<code>--robot-jar</code>, hadur117.HadurTeam_&lt;release&gt;.jar; <code>--robot</code> "hadur117.HadurTeam
+     &lt;release&gt;"; <code>--member</code> the team's package's Hadur), TeamRumble style: 1200x1200, 10 rounds.</li>
  <li><code>--baseline JAR</code> (<a class="req" href="../../../requirements.html#BENCH-2">BENCH-2</a>) also fight every opponent with this second jar, one
      battle per seed at the same <code>RANDOMSEED</code> as the candidate's, and report the
      paired score-share difference instead of two separate means. Requires

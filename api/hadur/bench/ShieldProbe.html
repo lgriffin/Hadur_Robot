@@ -96,7 +96,7 @@ loadScripts(document, 'script');</script>
  set format, <code>name | role | jar | weight</code>) to run with Hadur's shield mode on and off
  over the same seeds, and report the paired difference for each.
 
- <p>Shield mode is switched by the list in the robot jar, the class <code>hadur2.ShieldListData</code>
+ <p>Shield mode is switched by the list in the robot jar, the class <code>hadur117.ShieldListData</code>
  (SHIELD-5; a class because Robocode's sandbox denies a robot the read of a resource in its own
  jar). The probe repacks the candidate jar twice: once with that class naming every
  opponent of the set ("on") and once with a list of comments only ("off"); it writes the
@@ -144,7 +144,7 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color"><code>(package private) static final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color"><code><a href="#LIST_ENTRY" class="member-name-link">LIST_ENTRY</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">The class in the robot jar that holds the shield list.</div>
+<div class="block">The class in the robot jar that holds the shield list (a jar from before the rename has it in hadur2).</div>
 </div>
 <div class="col-first odd-row-color"><code>(package private) static final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color"><code><a href="#PROPERTIES_ENTRY" class="member-name-link">PROPERTIES_ENTRY</a></code></div>
@@ -173,18 +173,30 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static byte[]</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#listClass(java.lang.String)" class="member-name-link">listClass</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;list)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block">The compiled <code>hadur2.ShieldListData</code>: the source in the shape of the robot's own
+<div class="block">The compiled <code>&lt;package&gt;.ShieldListData</code>: the source in the shape of the robot's own
  class, with <code>list</code> one entry per line, compiled with the JDK's compiler.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#listFor(java.util.List)" class="member-name-link">listFor</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="Opponent.html" title="class in hadur.bench">Opponent</a>&gt;&nbsp;opponents)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static byte[]</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#listClass(java.lang.String,java.lang.String)" class="member-name-link">listClass</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;list,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;pkg)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block">The "on" list: every opponent of the set, as the set names it (SHIELD-5 matches name and version).</div>
+<div class="block">As above, in the robot's package (<code>hadur2</code> for a jar from before the rename).</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#listSource(java.lang.String)" class="member-name-link">listSource</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;list)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#listFor(java.util.List)" class="member-name-link">listFor</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="Opponent.html" title="class in hadur.bench">Opponent</a>&gt;&nbsp;opponents)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block">The Java source of <code>hadur2.ShieldListData</code> for a list, one string literal per entry (comments and blanks drop out).</div>
+<div class="block">The "on" list: every opponent of the set, as the set names it (SHIELD-5 matches name and version).</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#listSource(java.lang.String)" class="member-name-link">listSource</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;list)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">The Java source of <code>&lt;package&gt;.ShieldListData</code> for a list, one string literal per entry (comments and blanks drop out).</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#listSource(java.lang.String,java.lang.String)" class="member-name-link">listSource</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;list,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;pkg)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">As above, in the given package.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>(package private) static void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#prepare(java.util.Map,java.nio.file.Path)" class="member-name-link">prepare</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;opts,
@@ -250,7 +262,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="LIST_ENTRY">
 <h3>LIST_ENTRY</h3>
 <div class="member-signature"><span class="modifiers">static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">LIST_ENTRY</span></div>
-<div class="block">The class in the robot jar that holds the shield list.</div>
+<div class="block">The class in the robot jar that holds the shield list (a jar from before the rename has it in hadur2).</div>
 <dl class="notes">
 <dt>See Also:</dt>
 <dd>
@@ -359,7 +371,7 @@ loadScripts(document, 'script');</script>
 <h3>listClass</h3>
 <div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">byte[]</span>&nbsp;<span class="element-name">listClass</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;list)</span>
                  throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></span></div>
-<div class="block">The compiled <code>hadur2.ShieldListData</code>: the source in the shape of the robot's own
+<div class="block">The compiled <code>&lt;package&gt;.ShieldListData</code>: the source in the shape of the robot's own
  class, with <code>list</code> one entry per line, compiled with the JDK's compiler.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -373,10 +385,31 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="listClass(java.lang.String,java.lang.String)">
+<h3>listClass</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">byte[]</span>&nbsp;<span class="element-name">listClass</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;list,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;pkg)</span>
+                 throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></span></div>
+<div class="block">As above, in the robot's package (<code>hadur2</code> for a jar from before the rename).</div>
+<dl class="notes">
+<dt>Throws:</dt>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></code></dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="listSource(java.lang.String)">
 <h3>listSource</h3>
 <div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">listSource</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;list)</span></div>
-<div class="block">The Java source of <code>hadur2.ShieldListData</code> for a list, one string literal per entry (comments and blanks drop out).</div>
+<div class="block">The Java source of <code>&lt;package&gt;.ShieldListData</code> for a list, one string literal per entry (comments and blanks drop out).</div>
+</section>
+</li>
+<li>
+<section class="detail" id="listSource(java.lang.String,java.lang.String)">
+<h3>listSource</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">listSource</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;list,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;pkg)</span></div>
+<div class="block">As above, in the given package.</div>
 </section>
 </li>
 <li>
