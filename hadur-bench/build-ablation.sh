@@ -930,6 +930,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
         ogi2|ogie10|ogi300)
             # Melee firepower part 2 (docs/plan-melee-top5.md, MGUN-14..16): widen MGUN-13, which
             # ships on, off a team only; duel and team fixtures bit for bit.
+            # MGUN-16 ships on since 3.19, so ogi300 no longer applies on master.
             case "$a" in
                 ogi2) flag=OGI_TWO; suffix=o2 ;;
                 ogie10) flag=OGI_LOW; suffix=oe ;;

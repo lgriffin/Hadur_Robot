@@ -64,7 +64,7 @@ class MeleePower2PlanTest {
         assertTrue(build.contains("ogi300) flag=OGI_WIDE; suffix=ow ;;"));
         String policy = Files.readString(Path.of("../hadur-core/src/main/java/hadur2/core/melee/MeleeEnergyPolicy.java"));
         assertTrue(policy.contains("public static final boolean CROWD_OGI = true;"));
-        for (String f : List.of("OGI_TWO", "OGI_LOW", "OGI_WIDE")) {
+        for (String f : List.of("OGI_TWO", "OGI_LOW")) {
             assertTrue(policy.contains("public static final boolean " + f + " = false;"), f + " ships off");
         }
     }
