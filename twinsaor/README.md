@@ -12,13 +12,15 @@ the LunarTwins analysis, the build and the bench card are in [docs/twinsaor.md](
 
 | Version | Date (UTC) | Rumble | Rank | APS | Survival | Battles | 1st | Gap to 1st / 5th |
 |---|---|---|---|---|---|---|---|---|
+| 0.2 | 2026-10-28 17:40 | **Twin Duel** | **1st of 28** | **70.28 ± 0.50** | 77.07 | 148 | TwinSaor 0.2 (2nd LunarTwins 1.4a, 69.37 ± 0.26) | +0.91 over 2nd |
 | 0.2 | 2026-10-28 16:58 | **Twin Duel** | **1st of 28** | **69.95 ± 1.10** | 75.98 | 51 | TwinSaor 0.2 (2nd LunarTwins 1.4a, 69.29) | +0.66 over 2nd |
 | 0.1 | 2026-10-27 18:46 | **Twin Duel** | **7th of 28** | **64.28 ± 1.16** | 67.21 | 51 | ags.lunartwins.LunarTwins 1.4a, 69.48 | +5.20 / +3.72 (MarioBros 68.00) |
 
 0.2 entered with `hadur117.twin.TwinSaor 0.2,https://github.com/lgriffin/Hadur_Robot/releases/download/twinsaor-v0.2/hadur117.twin.TwinSaor_0.2.jar`
 and read 1st on its first pass (all 27 pairings, PWIN 88.89), +5.67 over 0.1, close to the bench's
-+5.9. The lead over LunarTwins (+0.66) is inside the ±1.10 interval, so first place is not settled.
-The pages are archived in `data/rumble/pages/` under 2026-10-28T1658Z*.
++5.9. The lead over LunarTwins (+0.66) was inside the ±1.10 interval, so the client ran on to 148
+battles: 70.28 ± 0.50 against LunarTwins' 69.37 ± 0.26, a +0.91 lead clear of both intervals.
+The pages are archived in `data/rumble/pages/` under 2026-10-28T1658Z* and 2026-10-28T1740Z*.
 
 0.1 entered with `hadur117.twin.TwinSaor 0.1,https://github.com/lgriffin/Hadur_Robot/releases/download/twinsaor-v0.1/hadur117.twin.TwinSaor_0.1.jar`
 and read 7th on its first pass (PWIN 81.48). The pages are archived in `data/rumble/pages/`

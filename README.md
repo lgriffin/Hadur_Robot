@@ -49,9 +49,8 @@ learned Java, and it was the original inspiration for everything on this page.
   See [saor/README.md](saor/README.md).
 - **Deise 0.2 is 2nd in MiniMelee** (2026-10-27, full first pass): 69.68 ± 0.39, 1.52 behind
   kc.mini.Mirage 0.2's 71.20, and 16th in the full MeleeRumble. See [deise/README.md](deise/README.md).
-- **TwinSaor 0.2 is 1st in Twin Duel** (2026-10-28, first pass, all 27 pairings, 51 battles):
-  69.95 ± 1.10, 0.66 ahead of LunarTwins 1.4a's 69.29. The lead is inside the interval, so 1st is
-  not settled. 0.1 was 7th at 64.28. See [twinsaor/README.md](twinsaor/README.md).
+- **TwinSaor 0.2 is 1st in Twin Duel** (2026-10-28, 148 battles over all 27 pairings):
+  70.28 ± 0.50, 0.91 ahead of LunarTwins 1.4a's 69.37 ± 0.26. 0.1 was 7th at 64.28. See [twinsaor/README.md](twinsaor/README.md).
 
 ### 3.17 at 7th
 
