@@ -81,6 +81,9 @@ class OneToOnePlanTest {
         for (String arm : new String[] {"s4", "sv", "sy"}) {
             assertTrue(queue.contains("--arm " + arm + " --panel panel-1to1-shield.txt --bar 0.05"), arm);
         }
+        for (String arm : new String[] {"wp", "ws", "sp"}) {
+            assertTrue(queue.contains("--arm " + arm + " --panel panel-1to1-learn.txt --bar 0.05"), arm);
+        }
         assertTrue(queue.contains("mode_table.py work/1to1-shield/arms.tsv --margin 5"));
         assertTrue(queue.contains("mode_table.py work/1to1-learn/arms.tsv --margin 5"));
         assertTrue(queue.contains("tools/per_robot.py work/1to1-shield/arms.tsv --arms s4 sv sy"));
