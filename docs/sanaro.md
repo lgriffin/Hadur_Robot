@@ -54,7 +54,7 @@ initialiser (SANARO-2). Per scan (SANARO-3 to SANARO-8):
   doubled or tripled closer, a 0.1 pot shot beyond. The string is 51,601 cells, so every index
   for own and enemy energy up to 400 is in it (NaturalScience's throws past 160 own energy,
   doc finding F8). Its constant costs 2 bytes of code however long it is. An enemy at 128
-  energy or more reads the next row at its energy less 128 and draws that remainder's kill shot;
+  energy or more reads energy / 128 rows on at its energy mod 128 and draws that remainder's kill shot;
   a wider stride needs a string over the class file's 65,535-byte constant limit or 2 more bytes.
   Shots past 640 px ask for power 0, which the engine raises to its 0.1 minimum.
 
