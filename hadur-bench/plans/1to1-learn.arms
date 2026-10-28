@@ -1,0 +1,8 @@
+# pc-1to1 step learn (BENCH-133, docs/bench/local/2026-10-28_one-to-one-map.md): c is 3.19, aa its A/A copy;
+# wp = stop-and-go for every opponent (sgo, WavePoison); ws = its 2-tick variant (sgo2, WavePoisonShift);
+# sp = the shot-dodge planner for every opponent (sdplan, DODGE-4 to DODGE-6; it acts only where an aim matches).
+c | hadur117.Hadur 3.19 | bisect/hadur117.Hadur_3.19.jar
+aa | hadur117.Hadur 3.19aa | bisect/hadur117.Hadur_3.19aa.jar
+wp | hadur117.Hadur 3.19wp | bisect/hadur117.Hadur_3.19wp.jar
+ws | hadur117.Hadur 3.19ws | bisect/hadur117.Hadur_3.19ws.jar
+sp | hadur117.Hadur 3.19sp | bisect/hadur117.Hadur_3.19sp.jar

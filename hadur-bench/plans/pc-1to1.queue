@@ -1,0 +1,62 @@
+# The 1:1 tournament (BENCH-133, docs/bench/local/2026-10-28_one-to-one-map.md). Leigh starts it:
+#   git checkout master && git pull
+#   .\queue.ps1 run pc-1to1        (or  ./queue.sh run pc-1to1)
+# One bench queue, RoboRumble workers at 0, unpinned, 12 workers, truth log off. Every step resumes;
+# no step needs a decision. About 8 to 9 h (3,720 + 3,090 battles at today's pc-shield-exit rate).
+#
+# Why: the 1:1 map (every opponent's census gun and movement class joined to the live pages of Hadur
+# and six rivals) puts Saguaro's whole lead in three groups where a rival plays a different mode and
+# wins by 5+ points a robot, and the king's lead in one class (learning guns on flat movers) where no
+# mode applies. This card runs the tournament for the groups: every mode Hadur already has, on every
+# robot in them, 6 fresh seeds, a per-robot pick at 5+ points with the 95% low end above zero
+# (mode_table.py, the rule the shield sweep and mode table v2 locked with).
+#
+# shield: panel A, 124 robots DrussGT or Nullstride shield and Hadur surfs (rammers out, RAM-5 covers
+#         them) x c, aa, s4, sv, sy x 6 seeds = 3,720 battles. The sweep that left them off the list ran
+#         3.9's shield; the 400 exit and the opening drive did not exist then, and today's cloud read
+#         gave +10 to +16 points on four of them with the exit alone.
+# learn:  panel B, 103 learning- or mixed-gun robots on a stat-prone or oscillating movement that Hadur
+#         plays normally and scores under 97 against x c, aa, wp, ws, sp x 6 seeds = 3,090 battles.
+# gate:   per arm, arm minus pooled c and aa summed over its panel / 1,217 pairings (informational: no
+#         arm ships field-wide); mode_table.py picks per robot at margin 5; per_robot.py lists every
+#         robot's wins and losses for each arm. Any analysis error stops the card before the results PR.
+# Next morning: the picks become table lines (slistadd + sx4list for s4, + smovelist for sv, slistadd
+#         for sy; sgolist / sgo2list / sdplanlist for wp / ws / sp), verified on 6 fresh seeds as
+#         pc-shield-s2 did, gate +0.15 APS with the low end above 0; then 3.19.
+# Stop rules (docs/bench/watch.md): both steps halt on 30 failed battles, an arm scoring nothing in 8,
+# 40+ skipped turns a battle over the last 200, no battle in 30 minutes, or an A/A outside its z 3 band
+# after 20%; every battle fought is kept and a rerun resumes. ALERT opens an issue for Leigh on any stop.
+# Leigh's release rule stands: no 1v1 release until the census projects the target (3rd here).
+
+set P = --parallel 12 --no-truth-log
+set HEAP = --child-heap 2G
+set E = --engine 1.11.1
+set C = --skip-build --skip-fetch --rounds 35 --cpu-constant 1488498 ${HEAP} ${E}
+set OUT = ../docs/bench/local
+set ALERT = lgriffin
+
+prep | git checkout -q master && mkdir -p bisect work && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur117.Hadur_3.19.jar bisect/ && bash ./build-ablation.sh aa && bash ./build-ablation.sh shield-all,sdmg400 && bash ./build-ablation.sh shield-all,smove,sdmg400 && bash ./build-ablation.sh strial && bash ./build-ablation.sh sgo && bash ./build-ablation.sh sgo2 && bash ./build-ablation.sh sdplan && ./fetch-opponents.sh --set panel-1to1-shield.txt && ./fetch-opponents.sh --set panel-1to1-learn.txt && mvn -q compile
+
+shield | ./bench-top20.sh ${C} ${P} --set panel-1to1-shield.txt --seeds 6 --seed-base 3800 --arms plans/1to1-shield.arms --out work/1to1-shield --label 1to1-shield --shuffle-jobs
+  after: prep
+  watch: field=1217
+  stop: fails 30
+  stop: dead 8
+  stop: skips 40 over 200
+  stop: stall 30m
+  stop: aa after 20%
+
+learn | ./bench-top20.sh ${C} ${P} --set panel-1to1-learn.txt --seeds 6 --seed-base 3900 --arms plans/1to1-learn.arms --out work/1to1-learn --label 1to1-learn --shuffle-jobs
+  after: shield
+  watch: field=1217
+  stop: fails 30
+  stop: dead 8
+  stop: skips 40 over 200
+  stop: stall 30m
+  stop: aa after 20%
+
+gate | python3 ../data/tools/multiarm.py work/1to1-shield/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_1to1-shield.md && python3 tools/shield_s2.py gate work/1to1-shield/arms.tsv --arm s4 --panel panel-1to1-shield.txt --bar 0.05 --out ${OUT}/$(date +%Y-%m-%d)_1to1-shield-s4-gate.md && python3 tools/shield_s2.py gate work/1to1-shield/arms.tsv --arm sv --panel panel-1to1-shield.txt --bar 0.05 --out ${OUT}/$(date +%Y-%m-%d)_1to1-shield-sv-gate.md && python3 tools/shield_s2.py gate work/1to1-shield/arms.tsv --arm sy --panel panel-1to1-shield.txt --bar 0.05 --out ${OUT}/$(date +%Y-%m-%d)_1to1-shield-sy-gate.md && python3 ../data/tools/mode_table.py work/1to1-shield/arms.tsv --margin 5 --out-tsv ${OUT}/1to1-shield-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_1to1-shield-pick.md && python3 tools/per_robot.py work/1to1-shield/arms.tsv --arms s4 sv sy --out ${OUT}/$(date +%Y-%m-%d)_1to1-shield-per-robot.md --out-tsv ${OUT}/1to1-shield-per-robot.tsv && python3 ../data/tools/multiarm.py work/1to1-learn/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_1to1-learn.md && python3 ../data/tools/mode_table.py work/1to1-learn/arms.tsv --margin 5 --out-tsv ${OUT}/1to1-learn-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_1to1-learn-pick.md && python3 tools/per_robot.py work/1to1-learn/arms.tsv --arms wp ws sp --out ${OUT}/$(date +%Y-%m-%d)_1to1-learn-per-robot.md --out-tsv ${OUT}/1to1-learn-per-robot.tsv
+  after: learn
+
+pr | bash tools/open_results_pr.sh claude/pc-1to1-results "The 1:1 tournament: shield, opening drive and trial on the 124 rival-shielded robots; stop-and-go and the dodge planner on the 103 stat-prone learners" ${OUT}/*_1to1-shield*.md ${OUT}/*_1to1-learn*.md ${OUT}/1to1-shield-per-robot.tsv ${OUT}/1to1-learn-per-robot.tsv $(find ${OUT} -maxdepth 1 \( -name 1to1-shield-pick.tsv -o -name 1to1-learn-pick.tsv \) -size +0c) $(find work/1to1-shield work/1to1-learn -maxdepth 1 -name EARLY-STOP.md)
+  after: gate

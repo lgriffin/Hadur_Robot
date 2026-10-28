@@ -1,0 +1,1220 @@
+rank	opponent	gun_class	move_class	hadur_mode	on_drussgt_list	on_nullstride_list	hadur_live	battles	best_rival	best_rival_aps	gap_to_best	BeepBoop	DrussGT	Saguaro	ScalarR	JKHydra	Ogi	bench_share	bench_taken_per_round	bench_their_hit
+9	cb.fire.Firestarter 2.0f	learning	flat	normal			44.24	3	BeepBoop	80.77	36.53	80.77	56.99	43.4	67.71	55.39	60.03	0.489	26.943	0.087
+170	barontrozo.BaronTrozo 1.7.6	learning	flat	normal			62.44	3	Saguaro	97.69	35.25	78.12	75.64	97.69	73.99	70.43	68.9	0.665	33.193	0.089
+8	voidious.Diamond 1.8.22	learning	flat	normal			46.58	5	BeepBoop	80.34	33.76	80.34	57.37	31.3	67.09	51.65	44.7	0.502	32.55	0.09
+23	rsalesc.roborio.Roborio 1.2.4	learning	flat	normal			53.66	2	BeepBoop	86.7	33.04	86.7	65.59	47.84	79.58	64.33	78.07	0.603	25.75	0.091
+38	pez.rumble.CassiusClay 2rho.02no	learning	flat	normal		1	66.47	2	BeepBoop	96.56	30.09	96.56	87.52	55.59	71.97	67.38	64.07	0.579	28.236	0.082
+40	mn.Combat 3.25.0	learning	flat	normal			53.51	5	BeepBoop	83.45	29.94	83.45	68.45	44.8	74.41	67.14	58.34	0.585	32.343	0.091
+16	pc.Wavelet 1.5	learning	flat	normal			44.64	2	BeepBoop	74.28	29.64	74.28	56.25	45.24	64.07	64.67	74.2	0.498	31.35	0.089
+71	ary.Help 1.0	learning	flat	shield	1	1	67.67	2	BeepBoop	96.96	29.29	96.96	92.68	94.67	80.1	87.52	83.1	0.822	20.257	0.064
+6	jkong.JKHydra 1.4	?	?	normal			38.58	4	ScalarR	67.85	29.27			19.98	67.85		43.05			
+14	aw.Gilgalad 1.99.5c	learning	flat	normal			48.15	2	BeepBoop	77.3	29.15	77.3	59.76	44.81	66.38	56.74	69.32	0.48	35.429	0.103
+2	jk.mega.DrussGT 3.1.16	learning	flat	normal			48.17	2	BeepBoop	76.91	28.73	76.91		24.98	66.58	49.09	50.41	0.438	32.407	0.105
+36	zen.Mirage 0.9.5	?	?	normal			57.39	2	BeepBoop	85.54	28.16	85.54	69.9	50.73	77.76	72.56	61.12			
+11	rsalesc.mega.Knight 0.6.28	learning	flat	normal			52.32	3	BeepBoop	80.4	28.08	80.4	56.03	38.73	77.03	45.86	41.97	0.549	29.307	0.102
+514	mz.NanoDeath 2.56	linear	rammer	normal			66.96	2	JKHydra	95.02	28.06	89.86	79.11	80.35	87.34	95.02	80.52	0.666	72.814	0.534
+157	axeBots.Musashi 2.18	learning	flat	normal		1	70.56	3	BeepBoop	98.06	27.5	98.06	80.43	84.9	80.0	78.89	75.09	0.768	24.486	0.08
+344	apv.AspidReloaded 0.6	learning	flat	normal	1		73.72	4	BeepBoop	99.95	26.23	99.95	90.28	90.88	99.75	79.92	87.12	0.792	23.621	0.056
+191	theo.Hydrogen 2.1r	learning	flat	normal		1	71.95	3	Saguaro	97.59	25.64	91.28	77.85	97.59	76.39	80.47	79.36	0.776	20.986	0.053
+24	cb.Domogled 1.2	learning	flat	normal			60.22	3	BeepBoop	85.38	25.16	85.38	71.78	56.09	77.55	72.62	74.33	0.655	22.1	0.077
+13	lxx.Tomcat 3.68	learning	flat	normal			55.08	2	BeepBoop	80.05	24.97	80.05	57.68	43.34	68.22	63.92	69.23	0.541	35.279	0.107
+5	aaa.r.ScalarR 0.005h.053-noshield	learning	flat	normal		1	30.64	2	BeepBoop	55.47	24.83	55.47	33.42	32.57		32.15	43.2	0.328	32.121	0.107
+27	abc.Shadow 3.83c	learning	flat	normal			49.92	2	BeepBoop	74.55	24.63	74.55	58.84	48.06	61.26	47.96	54.01	0.494	42.371	0.092
+208	cx.Princess 1.0	learning	flat	normal	1	1	66.97	2	Saguaro	91.6	24.62	88.63	78.52	91.6	71.47	64.17	76.37	0.746	26.793	0.081
+10	dsekercioglu.mega.Raven 3.56j8	learning	flat	normal			54.56	4	BeepBoop	78.28	23.72	78.28	63.53	44.65	73.04	64.48	53.29	0.524	36.064	0.115
+477	sul.Bicephal 1.2	linear	rammer	normal			66.5	2	JKHydra	90.01	23.51	86.45	77.45	79.81	86.34	90.01	80.31	0.672	66.779	0.524
+20	jk.melee.Neuromancer 7.12	learning	flat	normal			57.46	3	BeepBoop	80.83	23.37	80.83	61.34	52.82	70.76	62.8	64.67	0.479	35.207	0.103
+17	gh.GresSuffurd 0.4.13	learning	flat	normal			55.22	2	BeepBoop	78.28	23.06	78.28	67.74	46.0	68.03	60.66	55.92	0.568	32.464	0.084
+636	suh.nano.RammingC 1.00	mixed	rammer	normal			70.64	3	JKHydra	93.69	23.05	92.82	84.86	80.44	89.54	93.69	87.94	0.735	61.079	0.523
+1	kc.mega.BeepBoop 2.0	learning	flat	normal			22.03	10	ScalarR	44.53	22.5		23.09	22.61	44.53	22.47	29.24	0.242	28.0	0.087
+326	tm.Yuugao 1.0	learning	flat	normal	1		70.18	2	Saguaro	92.37	22.19	83.08	80.04	92.37	77.27	72.97	87.21	0.764	26.079	0.07
+34	zyx.mega.YersiniaPestis 3.0	learning	flat	normal			53.59	2	BeepBoop	75.19	21.6	75.19	61.26	53.14	66.02	68.61	62.18	0.546	38.314	0.082
+501	jab.micro.Sanguijuela 0.8	linear	rammer	normal			70.68	2	JKHydra	92.04	21.36	89.09	75.07	79.63	85.18	92.04	73.45	0.689	71.771	0.513
+225	chase.pm.Pytko 1.0	learning	flat	shield	1	1	76.88	2	BeepBoop	98.19	21.31	98.19	95.9	94.5	70.38	77.34	80.42	0.755	21.343	0.046
+277	cx.mini.BlackSwans 0.60	learning	flat	normal	1	1	74.3	5	DrussGT	95.49	21.19	93.34	95.49	94.93	79.0	80.7	85.93	0.757	26.386	0.06
+143	kenran.mega.Pantheist 1.1	learning	flat	shield			73.55	2	BeepBoop	94.64	21.09	94.64	92.06	88.31	94.6	87.01	87.1	0.71	28.1	0.08
+368	ebo.Sparse 0.02	learning	flat	normal			74.86	4	ScalarR	95.68	20.82	94.75	88.3	91.65	95.68	83.52	79.13	0.824	21.414	0.065
+524	demetrix.nano.SledgeHammer 0.22	linear	rammer	normal			67.53	2	JKHydra	88.15	20.62	86.62	75.61	80.04	86.53	88.15	77.6	0.67	69.486	0.534
+176	theo.simple.Lucid 1.0	learning	oscillator	shield	1	1	78.4	4	Ogi	98.98	20.58	92.36	86.19	96.73	72.8	88.31	98.98	0.773	17.814	0.051
+21	voidious.Dookious 1.573c	learning	flat	normal			55.83	2	BeepBoop	76.4	20.57	76.4	67.79	46.78	66.85	65.77	51.08	0.616	30.086	0.071
+217	rampancy.Durandal 2.2d	learning	oscillator	normal			73.31	5	BeepBoop	93.86	20.55	93.86	83.5	86.21	92.46	71.0	74.08	0.758	26.75	0.079
+533	as.xbots 1.0	linear	rammer	normal			75.5	2	JKHydra	95.95	20.45	91.37	85.82	86.8	89.89	95.95	80.65	0.737	44.707	0.284
+180	cw.megas.Silhouette 1.1	learning	flat	normal	1		72.42	2	Ogi	92.84	20.42	84.51	75.1	85.4	77.13	81.0	92.84	0.778	27.093	0.076
+413	jw.Booring 1.11	learning	flat	normal			79.27	2	BeepBoop	99.62	20.35	99.62	80.86	75.43	96.28	66.88	60.62	0.759	24.693	0.085
+493	alpha.BlackIce 1.0	learning	flat	shield	1	1	78.77	2	BeepBoop	99.11	20.34	99.11	93.57	95.15	89.99	83.62	91.82	0.82	21.843	0.066
+61	damij.mega.Boque aaah	learning	flat	normal			64.13	3	BeepBoop	84.23	20.1	84.23	74.47	58.11	77.95	69.02	68.32	0.686	29.921	0.079
+324	drm.CobraBora 1.12	learning	flat	normal			75.16	3	Ogi	95.18	20.02	84.43	85.27	71.31	79.96	93.64	95.18	0.766	26.993	0.072
+384	dragonbyte.Neutrino 4	head-on	flat	normal			79.84	2	BeepBoop	99.85	20.01	99.85	94.81	83.45	99.74	88.23	93.11	0.812	0.157	0.004
+63	positive.Portia 1.26e	learning	flat	normal			61.9	2	BeepBoop	81.86	19.96	81.86	70.79	57.98	71.64	71.19	67.51	0.65	30.65	0.078
+80	darkcanuck.Gaff 1.50	learning	flat	normal			62.01	4	BeepBoop	81.92	19.91	81.92	73.35	55.5	73.63	73.33	70.64	0.737	28.793	0.08
+183	cx.mini.Cigaret 1.31	learning	flat	normal		1	73.14	2	Saguaro	92.91	19.77	81.04	75.33	92.91	71.44	77.91	75.05	0.751	24.821	0.055
+18	kc.serpent.WaveSerpent 2.11	learning	flat	normal			55.47	4	BeepBoop	75.23	19.76	75.23	63.81	46.34	64.31	63.62	55.03	0.557	32.407	0.078
+480	kc.micro.rammer.MaxRisk 0.6	linear	rammer	normal			69.62	3	BeepBoop	89.27	19.65	89.27	76.24	74.37	85.87	87.42	75.57	0.682	73.764	0.514
+233	cx.micro.Smoke 0.96	learning	stat-prone	shield	1		72.14	3	Saguaro	91.78	19.64	81.46	74.24	91.78	73.48	71.85	71.63	0.676	27.729	0.062
+260	wompi.Numbat 1.9	learning	flat	normal	1	1	79.35	3	Ogi	98.95	19.6	94.34	87.45	96.88	86.92	84.35	98.95	0.808	20.9	0.08
+617	suzushin7.nano.Galaxy03 1.01	mixed	rammer	normal			74.38	4	JKHydra	93.96	19.58	93.18	82.81	81.15	90.35	93.96	82.2	0.758	57.621	0.44
+653	maribo.FollowFire 1.11	mixed	rammer	normal			70.1	3	BeepBoop	89.67	19.57	89.67	77.11	82.9	87.34	85.24	75.17	0.725	65.357	0.467
+470	gh.micro.GrubbmThree 1.01	mixed	rammer	normal			66.54	2	ScalarR	85.9	19.36	81.32	73.2	74.13	85.9	82.02	72.38	0.653	79.364	0.609
+443	rdt199.Warlord 0.73	learning	flat	normal	1	1	79.56	2	BeepBoop	98.66	19.1	98.66	90.36	97.46	87.74	92.44	97.12	0.859	18.064	0.066
+278	ers.nano.sunderer.Sunderer 1.23a	linear+learning	rammer	normal			70.92	3	BeepBoop	90.01	19.09	90.01	79.83	69.2	88.47	88.88	80.59	0.697	60.914	0.482
+322	sheldor.nano.SabreuseNano 1.1	linear	rammer	normal			69.66	3	JKHydra	88.71	19.05	87.56	75.3	76.24	85.89	88.71	78.57	0.677	72.071	0.552
+29	fromHell.BlackBox 0.0.2	learning	oscillator	normal			62.91	3	BeepBoop	81.94	19.03	81.94	72.24	58.75	74.53	67.96	66.21	0.654	30.6	0.083
+19	dsekercioglu.mega.WhiteFang 2.8.1	learning	flat	normal			63.45	3	BeepBoop	82.42	18.97	82.42	70.38	50.93	71.2	72.36	55.14	0.682	27.764	0.08
+37	Krabb.sliNk.Garm 0.9u	learning	flat	normal			62.09	2	BeepBoop	81.01	18.93	81.01	69.31	56.7	71.8	77.38	60.83	0.672	28.786	0.066
+166	dsekercioglu.mini.Partial 0.1.3	learning	flat	normal			79.18	4	Ogi	97.87	18.69	96.78	84.9	82.4	87.39	76.84	97.87	0.847	20.264	0.068
+351	pl.Patton.GeneralPatton 1.54	learning	flat	normal			75.98	3	BeepBoop	94.51	18.53	94.51	88.15	90.39	92.85	87.15	90.21	0.844	20.607	0.09
+30	jk.precise.Wintermute 0.8	learning	flat	normal			62.8	2	BeepBoop	81.32	18.52	81.32	69.57	59.25	75.46	62.86	61.32	0.64	34.421	0.082
+677	step.nanoPri 1.0	mixed	rammer	normal			77.23	2	JKHydra	95.72	18.48	90.86	86.24	82.69	90.92	95.72	86.41	0.751	55.721	0.44
+197	cx.CigaretBH 1.03	learning	flat	normal	1	1	75.0	5	Saguaro	93.37	18.37	88.04	78.63	93.37	74.25	73.29	75.4	0.77	25.186	0.065
+342	jk.nano.Machete 2.0	linear	rammer	normal			70.97	3	JKHydra	89.2	18.23	88.2	75.53	79.25	86.33	89.2	78.03	0.739	61.914	0.466
+47	sheldor.mini.FoilistMC 1.0	learning	flat	normal			70.5	3	BeepBoop	88.69	18.19	88.69	79.87	69.29	83.33	65.47	70.38	0.753	24.614	0.076
+247	sheldor.nano.Sabreur 1.1.2	linear	rammer	normal			70.0	2	BeepBoop	88.02	18.02	88.02	75.91	79.16	87.18	87.74	77.22	0.696	64.093	0.502
+50	florent.XSeries.X2 0.17	learning	flat	normal			61.55	2	BeepBoop	79.51	17.96	79.51	69.05	56.93	72.12	71.14	73.72	0.649	31.179	0.075
+502	mn.nano.perceptual.Impact 1.3.0	linear	rammer	normal			68.91	3	JKHydra	86.84	17.93	84.96	74.46	75.71	86.16	86.84	74.24	0.674	84.521	0.662
+707	EH.Fusion 0.32	mixed	rammer	normal			80.32	2	JKHydra	98.14	17.82	95.52	88.9	89.89	92.91	98.14	88.04	0.793	32.186	0.234
+113	mue.Hyperion 0.8	learning	flat	shield	1		63.65	3	BeepBoop	81.32	17.67	81.32	71.34	57.91	73.39	68.42	71.17	0.691	31.386	0.086
+249	rz.GlowBlow 2.31	learning	flat	normal	1	1	79.25	3	Saguaro	96.83	17.58	96.25	91.95	96.83	81.44	80.71	70.38	0.761	26.836	0.07
+70	rh.Intra 2.1DomoKN	learning	flat	normal			66.09	2	BeepBoop	83.48	17.39	83.48	74.68	79.2	77.55	69.53	72.46	0.722	28.186	0.071
+35	ags.Midboss 1q.fast	learning	flat	normal			67.94	2	BeepBoop	85.28	17.34	85.28	74.52	60.96	78.74	78.91	65.35	0.717	29.457	0.089
+25	mue.Ascendant 1.2.27	learning	flat	normal	1		58.37	3	BeepBoop	75.65	17.28	75.65	65.71	50.21	66.3	61.53	58.15	0.612	35.157	0.08
+504	hp.Athena 0.1	learning	flat	normal			81.12	2	BeepBoop	98.25	17.13	98.25	92.21	87.66	97.91	83.31	89.49	0.81	20.3	0.055
+107	kenran.Bakko v1.0.1	learning	flat	shield	1		77.42	3	ScalarR	94.51	17.09	93.57	92.47	86.74	94.51	68.32	87.85	0.702	30.207	0.082
+66	voidious.mini.Komarious 1.88	learning	wall-runner	shield	1	1	80.94	3	Ogi	97.9	16.96	96.92	94.54	94.32	79.35	90.14	97.9	0.915	5.936	0.018
+119	cx.Lacrimas 1.36	learning	flat	normal			65.02	2	BeepBoop	81.96	16.94	81.96	74.51	61.8	74.93	72.09	70.84	0.729	27.036	0.06
+15	cs.Nene 1.1.0	learning	flat	normal			58.06	4	BeepBoop	74.96	16.89	74.96	64.33	34.52	70.42	56.96	60.8	0.593	33.357	0.075
+33	pulsar.PulsarMax 0.8.9	learning	flat	stop-go			62.39	5	BeepBoop	79.27	16.88	79.27	65.45	74.99	74.44	77.32	74.39	0.596	34.75	0.093
+68	justin.DemonicRage 3.20	learning	flat	normal			66.08	2	BeepBoop	82.69	16.61	82.69	81.9	61.98	81.33	71.01	70.92	0.683	29.029	0.072
+54	ags.rougedc.RougeDC willow	learning	flat	normal			66.34	4	BeepBoop	82.86	16.52	82.86	69.82	54.89	70.96	68.78	62.18	0.698	29.243	0.098
+500	slugzilla.Parallax 0.1	learning	flat	normal			83.0	3	Saguaro	99.36	16.36	93.01	88.49	99.36	96.1	89.6	90.58	0.809	18.943	0.05
+53	dft.Cardigan 1.09	learning	flat	normal			67.98	3	BeepBoop	84.02	16.04	84.02	75.17	58.22	76.44	73.8	72.93	0.707	29.379	0.076
+274	davidalves.net.DuelistMicro 1.22	learning	flat	normal			80.01	4	Saguaro	96.04	16.03	86.37	88.64	96.04	84.17	78.27	86.31	0.808	21.264	0.066
+49	catcat20.Lambda 0.017	learning	flat	normal			64.0	3	BeepBoop	79.89	15.89	79.89	68.71	56.91	74.22	74.0	67.82	0.604	33.6	0.076
+95	EFD.AdvancedEFD 0.4.5a	learning	flat	normal			64.54	2	BeepBoop	80.4	15.86	80.4	70.96	63.58	73.69	74.06	72.13	0.653	31.65	0.111
+76	eem.EvBotNG v12.8	learning	flat	normal			60.61	4	BeepBoop	76.47	15.86	76.47	70.89	60.89	75.39	72.07	67.72	0.703	25.536	0.092
+773	blir.nano.Bruce R1.0.0	linear	rammer	normal			79.62	2	JKHydra	95.39	15.77	93.6	87.03	86.25	93.76	95.39	91.63	0.787	50.036	0.375
+7	cz.libors.Ogi v1	?	?	normal			41.22	2	JKHydra	56.95	15.73			23.93	56.8	56.95				
+116	ur4n0.UR4NO 1.0	learning	flat	normal			69.11	7	BeepBoop	84.83	15.72	84.83	75.42	68.8	79.85	83.82	74.73	0.736	29.25	0.08
+682	djc.Aardvark 0.3.6	learning	flat	normal			82.99	3	Ogi	98.51	15.52	92.49	89.57	91.2	92.12	88.02	98.51	0.864	16.15	0.051
+94	lancel.Lynx 1.09	learning	flat	normal			62.96	3	BeepBoop	78.47	15.51	78.47	70.62	59.63	73.36	64.04	73.7	0.669	33.486	0.081
+282	jcs.AutoBot 4.2.1	learning	flat	normal			77.09	2	BeepBoop	92.48	15.39	92.48	78.62	74.3	79.99	78.14	90.64	0.763	28.564	0.103
+337	dft.Cyprus 3.0	learning	flat	shield		1	84.63	4	Ogi	100.0	15.37	97.59	86.82	95.98	81.86	81.16	100.0	0.809	10.529	0.024
+91	pe.SandboxDT 3.02	learning	flat	normal			65.23	3	BeepBoop	80.52	15.29	80.52	68.96	55.75	75.74	75.74	63.42	0.7	29.093	0.073
+652	fnc.bandit2002.Bandit2002 4.0.2	learning	stat-prone	normal	1	1	83.98	3	Ogi	99.25	15.27	98.52	96.02	88.48	89.92	94.63	99.25	0.813	21.771	0.079
+60	davidalves.PhoenixOS 1.1	learning	flat	normal			65.31	3	BeepBoop	80.39	15.08	80.39	72.53	53.5	72.06	66.58	68.14	0.674	28.886	0.071
+137	simonton.micro.WeeklongObsession 3.4.1	learning	flat	normal			68.79	3	BeepBoop	83.86	15.07	83.86	79.83	61.96	79.56	71.77	64.49	0.699	28.286	0.083
+275	oog.nano.Caligula 1.15	linear	rammer	normal			75.75	4	JKHydra	90.8	15.05	90.28	84.13	84.53	89.48	90.8	84.69	0.682	51.4	0.431
+361	tw.Exterminator 1.0	learning	stat-prone	shield	1	1	81.22	4	ScalarR	96.2	14.98	94.76	93.8	95.43	96.2	88.92	94.09	0.723	12.571	0.081
+392	zezinho.QuerMePegarKKKK 1.0	mixed	flat	normal			75.03	2	BeepBoop	89.98	14.95	89.98	82.85	75.08	86.28	81.78	84.02	0.786	24.693	0.107
+462	stelo.MatchupMicro 1.2	learning	flat	normal	1	1	82.85	4	Ogi	97.76	14.91	96.02	87.34	90.06	87.13	84.28	97.76	0.794	22.507	0.069
+254	cjm.Che 1.2	learning	flat	normal	1	1	80.4	3	Saguaro	95.23	14.83	88.73	93.29	95.23	84.19	80.38	77.57	0.801	23.743	0.088
+623	bayen.UbaRamLT 1.0	linear	rammer	normal			80.08	2	JKHydra	94.86	14.78	91.42	83.43	85.15	88.83	94.86	81.46	0.806	38.929	0.381
+283	cx.micro.Spark 0.6	learning	flat	normal		1	80.04	4	Saguaro	94.67	14.63	88.65	79.43	94.67	80.25	80.8	82.48	0.807	21.829	0.059
+67	eem.zapper v6.03	learning	flat	normal			66.73	3	BeepBoop	81.33	14.6	81.33	71.83	59.26	74.79	75.02	62.4	0.744	27.486	0.076
+703	ratosh.nano.Debo 1.36	learning	stat-prone	normal			84.53	3	Saguaro	98.92	14.39	96.19	91.29	98.92	95.63	92.25	90.88	0.895	13.957	0.048
+221	nat.Hikari dev0001	learning	circular-prone	stop-go	1	1	82.54	6	Saguaro	96.91	14.37	94.46	92.8	96.91	89.15	85.19	83.53	0.867	10.829	0.04
+42	sheldor.mini.Foilist 1.3.1	learning	flat	normal			66.67	2	BeepBoop	80.98	14.31	80.98	74.47	59.98	73.88	74.76	63.34	0.621	31.6	0.087
+232	rz.GlowBlowAPM 1.0	learning	flat	shield	1	1	84.91	2	DrussGT	99.19	14.28	97.41	99.19	97.71	81.88	81.45	97.73	0.932	3.557	0.007
+544	unarmedlad.nano.VirginSteele 2.2	learning	flat	normal			85.09	2	BeepBoop	99.35	14.26	99.35	90.13	99.34	97.34	91.65	81.51	0.872	16.836	0.054
+993	stelo.Lifestealer 1.0	mixed	rammer	normal			79.98	3	JKHydra	94.18	14.2	93.02	89.7	87.63	93.0	94.18	88.89	0.83	33.421	0.271
+263	rz.GlowBlowMelee 1.4	learning	flat	normal	1	1	78.36	4	Ogi	92.55	14.19	89.22	88.71	92.25	80.18	80.32	92.55	0.845	18.95	0.057
+604	apc.botM 3.0	learning	flat	normal	1		81.13	3	ScalarR	95.2	14.07	92.31	92.47	93.65	95.2	93.57	90.94	0.887	14.621	0.05
+284	rz.Artist 0.2	learning	flat	normal	1		82.66	3	Ogi	96.71	14.05	90.95	95.7	91.59	87.82	79.45	96.71	0.805	18.5	0.05
+321	wompi.Kowari 1.6	linear	rammer	normal			70.89	2	ScalarR	84.87	13.98	82.96	77.91	75.4	84.87	84.85	72.17	0.743	61.836	0.596
+406	cx.micro.Blur 0.2	learning	flat	normal			85.44	3	Saguaro	99.37	13.93	92.07	86.8	99.37	93.99	88.42	82.59	0.785	22.157	0.052
+568	benhorner.PureAggression 0.2.6	mixed	rammer	normal			74.97	2	JKHydra	88.86	13.89	86.13	82.08	77.43	86.44	88.86	78.43	0.757	54.843	0.558
+150	kid.Toa .0.5	learning	oscillator	shield	1	1	83.7	3	BeepBoop	97.26	13.56	97.26	93.87	90.82	84.8	94.71	91.31	0.798	16.021	0.043
+708	stelo.UnfoolableNano 1.0	learning	flat	normal	1	1	84.93	3	Ogi	98.44	13.51	95.31	96.92	96.03	87.59	89.92	98.44	0.817	20.279	0.052
+196	suh.mega.WaveSurferPG 1.06	learning	flat	normal	1		81.14	3	Saguaro	94.48	13.34	89.23	86.28	94.48	88.72	91.72	88.76	0.774	23.236	0.089
+190	fromHell.C4H10O 1.5.1	learning	flat	normal			69.52	2	BeepBoop	82.74	13.22	82.74	78.72	67.67	80.45	68.08	67.88	0.763	25.821	0.068
+140	ebo.Tahoe 1.1.79	learning	flat	normal			68.69	3	BeepBoop	81.83	13.14	81.83	74.17	62.7	76.72	79.14	75.27	0.695	32.379	0.087
+375	stelo.RamTrackSurfer 1.2	learning	flat	normal			82.85	2	ScalarR	95.97	13.12	95.85	93.59	92.84	95.97	88.33	84.23	0.8	22.379	0.068
+39	axeBots.SilverSurfer 2.53.33fix	learning	flat	normal			67.51	2	BeepBoop	80.56	13.05	80.56	65.11	55.23	74.88	71.54	72.07	0.666	29.536	0.069
+108	stelo.MatchupWS 1.2c	learning	flat	shield	1	1	80.6	3	DrussGT	93.63	13.03	91.25	93.63	92.75	80.62	89.29	86.42	0.767	24.157	0.067
+85	synapse.rsim.GeomancyBS 0.11	learning	circular-prone	shield	1	1	84.77	3	BeepBoop	97.73	12.96	97.73	96.77	94.85	78.61	70.08	73.38	0.92	3.157	0.012
+118	catcat20.atom.Atom 0.51	learning	flat	normal			76.17	2	BeepBoop	89.1	12.93	89.1	84.73	73.7	87.98	81.35	80.15	0.846	17.379	0.075
+168	ad.Quest 0.10	learning	flat	shield	1	1	83.0	3	BeepBoop	95.91	12.91	95.91	92.1	94.47	81.68	84.45	79.09	0.874	9.143	0.041
+224	deo.FlowerBot 1.0	learning	flat	shield	1		83.62	3	BeepBoop	96.52	12.9	96.52	91.01	91.76	96.07	80.77	89.24	0.764	26.971	0.078
+386	dmh.robocode.robot.PinkPanther 1.1	learning	flat	normal			73.15	2	BeepBoop	85.96	12.81	85.96	77.33	69.03	78.12	74.73	84.16	0.672	30.529	0.059
+86	stelo.PastFuture 2.3.2	learning	flat	normal	1		64.54	3	BeepBoop	77.27	12.73	77.27	73.99	76.76	70.01	68.33	70.17	0.661	32.407	0.082
+608	mahrgell.mahrram 1.3	linear	rammer	normal			79.0	2	ScalarR	91.57	12.57	91.24	83.03	75.71	91.57	88.88	82.66	0.789	45.021	0.369
+366	drm.Magazine 0.39	learning	flat	normal			72.92	2	BeepBoop	85.46	12.54	85.46	79.09	80.48	77.02	80.21	72.79	0.778	22.729	0.057
+298	cbot.agile.Nibbler 0.2	learning	flat	shield	1	1	86.01	2	Saguaro	98.45	12.44	98.39	94.26	98.45	80.81	82.59	85.04	0.991	0.579	0.013
+483	tobe.Saturn lambda	learning	oscillator	normal	1	1	81.56	3	Ogi	93.99	12.43	86.81	88.72	90.73	84.44	84.64	93.99	0.817	23.5	0.061
+130	cx.BlestPain 1.41	learning	flat	normal			70.79	2	BeepBoop	83.21	12.42	83.21	76.51	12.89	78.51	73.91	76.53	0.772	22.571	0.059
+482	bvh.mini.Mjolnir 0.3	mixed	rammer	stop-go			74.71	5	Ogi	86.94	12.23	83.98	86.3	79.29	85.3	86.9	86.94	0.772	45.043	0.33
+402	zen.Lindada 0.2	learning	head-on-prone	shield	1	1	87.95	3	JKHydra	100.0	12.05	96.05	94.36	97.26	82.91	100.0	84.08	0.934	2.486	0.019
+97	trab.Crusader 0.1.7	learning	stat-prone	shield	1	1	87.98	3	Ogi	100.0	12.02	99.9	99.7	98.07	78.97	70.74	100.0	0.617	27.621	0.067
+26	cs.s2.Seraphim 2.4.0	learning	flat	normal			62.52	4	BeepBoop	74.53	12.01	74.53	68.0	31.37	69.93	64.5	65.13	0.675	30.121	0.069
+248	oog.micro.Maui 1.2	learning	stat-prone	normal	1		81.26	4	BeepBoop	93.24	11.98	93.24	85.21	88.79	85.56	85.52	90.05	0.85	21.436	0.086
+780	janm.Jammy 1.0	mixed	flat	stop-go			86.91	3	Ogi	98.85	11.94	98.2	95.67	97.8	97.85	96.63	98.85	0.808	20.229	0.048
+369	DTF.Kludgy 1.2b	learning	flat	normal			72.03	2	BeepBoop	83.84	11.81	83.84	81.79	68.02	83.33	80.16	76.28	0.792	22.171	0.093
+597	supersample.SuperRamFire 1.0	mixed	rammer	normal			86.52	4	BeepBoop	98.28	11.76	98.28	94.73	92.42	96.57	92.15	94.36	0.841	20.229	0.138
+770	supersample.SuperCorners 1.0	head-on	stat-prone	normal			85.23	2	ScalarR	96.98	11.75	96.62	95.78	93.48	96.98	96.84	96.38	0.906	12.093	0.082
+41	fromHell.CHCl3 1.4.2	learning	oscillator	normal			69.74	3	BeepBoop	81.45	11.71	81.45	70.93	65.0	76.37	72.53	74.06	0.757	26.036	0.07
+526	sL300.Mozart life	learning	flat	normal			80.1	2	BeepBoop	91.71	11.61	91.71	86.73	89.58	84.97	76.74	76.77	0.781	21.364	0.071
+837	tobe.calypso.Calypso 4.1	learning	flat	normal	1	1	83.5	4	DrussGT	95.1	11.6	93.95	95.1	93.66	88.79	82.39	89.66	0.846	17.4	0.052
+955	com.syncleus.robocode.Dreadnaught 0.1	mixed	rammer	normal			85.59	3	ScalarR	97.19	11.6	96.03	93.56	94.27	97.19	93.96	95.38	0.806	41.614	0.264
+455	krzysiek.robbo2.Robbo 1.0.0	learning	stat-prone	normal	1	1	87.79	2	Ogi	99.34	11.55	96.57	93.21	91.83	91.3	90.33	99.34	0.894	15.614	0.059
+671	tango.Recrimpo 2.51	learning	flat	normal			87.02	4	DrussGT	98.53	11.51	93.68	98.53	97.6	98.12	93.2	97.04	0.882	14.536	0.046
+648	rcp.Kuramatron 1.0	linear+learning	rammer	normal			84.87	5	JKHydra	96.37	11.5	92.5	87.19	87.19	93.16	96.37	93.78	0.855	25.943	0.214
+98	theo.real.Ahab 1.0	learning	oscillator	shield	1	1	88.36	3	BeepBoop	99.8	11.44	99.8	98.0	98.22	73.0	76.37	99.05	0.85	8.221	0.023
+294	myl.micro.Avipes 1.00	learning	flat	shield		1	84.0	4	Saguaro	95.3	11.3	90.96	85.82	95.3	85.55	79.53	94.17	0.818	20.807	0.053
+354	mnt.AHEB 0.6a	mixed	sitting	shield	1	1	88.77	3	JKHydra	100.0	11.23	95.98	93.26	95.68	77.03	100.0	75.5	0.894	7.086	0.03
+393	tornyil.bottomup.BottomUp 1.05	learning	flat	normal	1		74.55	2	Saguaro	85.7	11.16	85.11	83.52	85.7	80.52	76.62	72.52	0.805	23.564	0.073
+72	DM.mega.Regicide 2.0rrr	learning	flat	normal			72.56	2	BeepBoop	83.69	11.13	83.69	74.24	51.77	75.58	66.46	59.91	0.701	27.807	0.072
+844	panzer.Panzer 0.2	learning	flat	normal			87.69	3	BeepBoop	98.82	11.13	98.82	96.08	94.17	96.32	94.91	94.77	0.889	11.771	0.052
+367	kvk.HebusLeTroll 0.41	learning	flat	normal			81.38	3	BeepBoop	92.41	11.03	92.41	88.38	79.45	89.1	88.91	86.88	0.842	18.586	0.055
+510	cw.megas.Polar 3.2	learning	flat	normal			75.39	4	BeepBoop	86.4	11.01	86.4	80.82	74.79	79.33	78.84	84.66	0.781	26.571	0.08
+336	bvh.fnr.Fenrir 0.36l	learning	flat	shield		1	81.99	2	BeepBoop	92.92	10.93	92.92	83.96	92.63	76.45	72.13	85.29	0.78	17.25	0.038
+356	EH.kms.LightningStorm 0.11B	learning	flat	shield	1	1	81.69	8	Ogi	92.56	10.88	88.65	86.53	89.87	82.2	82.64	92.56	0.855	10.221	0.033
+77	dft.Immortal 1.40	learning	flat	normal			71.63	2	BeepBoop	82.45	10.82	82.45	74.55	65.16	74.72	75.78	73.56	0.692	30.186	0.064
+251	slugzilla.ButtHead 2.0	linear	rammer	shield		1	87.78	3	Ogi	98.59	10.81	93.17	96.72	94.51	86.39	86.44	98.59	0.703	74.9	0.545
+147	theo.avenge.Pequod 1.0	learning	oscillator	shield	1	1	89.21	4	Ogi	100.0	10.79	97.11	92.01	98.49	70.03	81.5	100.0	0.905	5.464	0.014
+511	cb.mega.RandomBot 1.0	learning	flat	normal			67.92	2	BeepBoop	78.53	10.61	78.53	72.4	69.16	74.11	76.97	70.14	0.708	30.357	0.082
+474	ultra.Defender 1.2	learning	flat	normal			87.69	4	Saguaro	98.3	10.61	97.83	92.9	98.3	96.68	95.65	97.93	0.893	13.964	0.079
+236	bts.wiki.RipCurl 0.9b	learning	flat	normal			76.02	2	BeepBoop	86.61	10.59	86.61	82.28	73.94	85.55	82.43	83.19	0.773	23.829	0.055
+974	doka.Test 1.0	learning	stat-prone	normal			82.61	5	JKHydra	93.19	10.58	90.4	88.81	90.26	91.58	93.19	90.23	0.823	22.271	0.066
+489	test.Fuzzer 1.0.1	learning	flat	normal			87.87	2	ScalarR	98.3	10.43	97.73	94.11	96.14	98.3	87.82	90.94	0.885	12.979	0.05
+237	oog.micro.MagicD3 0.41	learning	flat	shield	1	1	89.58	5	JKHydra	100.0	10.42	96.23	83.56	96.0	78.09	100.0	96.67	0.726	30.5	0.104
+391	pl.Drum 0.1	learning	oscillator	normal			82.23	4	BeepBoop	92.64	10.41	92.64	92.24	88.05	92.53	86.95	86.9	0.848	20.971	0.1
+203	catcat20.Rabbit 0.001	learning	flat	normal			81.17	2	BeepBoop	91.56	10.39	91.56	87.14	74.68	90.19	89.89	89.37	0.802	18.8	0.078
+558	et.Predator 1.8	mixed	flat	normal	1	1	86.81	2	Saguaro	97.15	10.34	96.22	96.21	97.15	93.39	88.26	96.54	0.911	10.407	0.037
+714	zeze2.OperatorZeze 1.05	learning	flat	normal	1	1	85.34	2	DrussGT	95.68	10.34	93.23	95.68	94.47	86.58	87.39	94.44	0.833	18.193	0.076
+302	hlavko.micro.Flex 1.5	learning	flat	normal			77.78	2	BeepBoop	88.12	10.34	88.12	85.09	77.29	85.93	81.45	86.07	0.79	24.071	0.075
+512	apc.LeeroyJenkins2 1.0	learning	flat	normal			79.15	3	BeepBoop	89.37	10.22	89.37	86.29	84.64	86.57	83.64	79.03	0.826	22.421	0.077
+586	sgp.JollyNinja 3.53	learning	oscillator	normal			82.05	2	BeepBoop	92.26	10.22	92.26	89.75	84.41	89.43	87.7	85.72	0.861	15.221	0.043
+505	cw.megas.Gridd 0.4	learning	flat	normal			78.38	2	Ogi	88.59	10.21	86.43	79.62	75.83	78.83	78.23	88.59	0.78	26.864	0.082
+755	davidalves.net.DuelistNano 1.0	learning	flat	normal			84.62	4	Saguaro	94.77	10.15	91.08	91.25	94.77	94.43	93.86	90.03	0.85	15.829	0.043
+82	ary.SMG 1.01	learning	stat-prone	shield	1		87.35	2	Saguaro	97.47	10.12	94.04	88.97	97.47	90.12	91.12	92.07	0.893	5.15	0.06
+460	shrub.Vapour v159	learning	flat	normal			82.66	3	ScalarR	92.68	10.02	91.14	90.47	92.09	92.68	91.94	89.65	0.865	16.479	0.07
+742	stelo.FretNano 1.1	learning	flat	normal			87.37	3	BeepBoop	97.36	9.99	97.36	92.25	94.56	96.18	90.89	95.06	0.852	19.479	0.061
+84	ags.Glacier 0.3.2	learning	flat	normal			66.3	2	BeepBoop	76.27	9.97	76.27	67.94	57.27	72.57	74.12	68.04	0.636	37.4	0.099
+319	rcb.Vanessa03 0	learning	stat-prone	stop-go	1		86.88	2	Saguaro	96.77	9.89	86.74	86.04	96.77	81.27	79.1	79.03	0.789	19.293	0.047
+345	rdm.Dueler 0.4x	learning	flat	normal			86.68	5	BeepBoop	96.56	9.88	96.56	85.1	89.59	94.6	87.52	85.23	0.885	12.021	0.038
+44	florent.test.Toad 0.14t	learning	flat	shield			70.02	3	BeepBoop	79.88	9.86	79.88	68.5	54.94	70.71	65.71	66.15	0.642	32.843	0.077
+394	suh.micro.MirrorPM 1.00	learning	sitting	shield	1		85.85	3	Saguaro	95.68	9.83	92.59	84.27	95.68	90.29	75.07	95.45	0.872	4.536	0.044
+28	darkcanuck.Pris 0.92	learning	flat	normal			66.49	2	BeepBoop	76.32	9.83	76.32	67.02	50.47	65.62	59.21	51.01	0.62	34.979	0.082
+855	gg.Wolverine 2.0	learning	stat-prone	stop-go		1	89.98	2	BeepBoop	99.63	9.65	99.63	95.08	99.28	96.88	99.24	94.97	0.921	6.307	0.048
+331	staticline.whiskey.Whiskey 0.6	learning	flat	normal			78.59	2	ScalarR	88.21	9.62	88.07	86.3	77.23	88.21	82.62	77.82	0.87	13.464	0.062
+530	wiki.nano.Flick 1.0	linear	flat	normal			90.31	2	ScalarR	99.84	9.53	99.37	99.5	90.16	99.84	93.45	96.9	0.961	0.707	0.018
+388	wiki.WaveRammer 1.0	mixed	rammer	normal			75.25	2	BeepBoop	84.78	9.53	84.78	82.17	80.59	84.05	82.89	83.57	0.768	35.7	0.199
+434	lrem.micro.FalseProphet Alpha	learning	stat-prone	normal	1	1	85.82	3	BeepBoop	95.33	9.51	95.33	94.58	90.99	87.27	83.12	87.85	0.859	22.25	0.107
+469	ary.nano.ColorNanoP 1.1	learning	stat-prone	normal	1	1	88.94	3	BeepBoop	98.36	9.42	98.36	96.6	94.23	89.51	91.57	94.83	0.85	22.229	0.08
+291	ara.Shera 0.88	learning	flat	normal			78.95	4	BeepBoop	88.33	9.38	88.33	81.69	69.66	87.88	78.63	76.92	0.767	25.286	0.066
+330	deo.virtual.RainbowBot 1.0	learning	flat	shield	1		87.36	4	ScalarR	96.74	9.38	96.52	91.5	92.56	96.74	95.25	91.04	0.78	25.436	0.087
+75	cf.proto.Shiva 2.2	learning	circular-prone	shield	1	1	83.77	3	Saguaro	93.1	9.33	88.42	87.92	93.1	77.17	76.29	78.2	0.792	16.493	0.04
+265	sos.SOS 1.0	mixed	flat	normal			87.53	4	ScalarR	96.77	9.23	96.6	94.88	94.83	96.77	88.81	93.2	0.903	12.157	0.055
+389	pa3k.Viper 5.03	learning	flat	normal			82.18	3	BeepBoop	91.4	9.22	91.4	85.15	76.63	86.16	87.1	88.34	0.806	21.029	0.075
+136	whind.StrengthBee 0.6.4	learning	flat	normal			72.31	14	BeepBoop	81.49	9.18	81.49	74.83	62.11	76.71	72.6	73.47	0.742	26.721	0.066
+139	kawigi.sbf.FloodHT 0.9.2	learning	flat	shield	1		74.46	3	Ogi	83.57	9.11	82.62	80.75	82.22	77.18	74.94	83.57	0.764	24.3	0.059
+184	kc.micro.Needle 0.101	mixed	flat	normal			76.9	2	BeepBoop	86.0	9.1	86.0	81.79	70.5	81.86	67.93	80.11	0.769	26.721	0.07
+213	stelo.MatchupAGF 1.1	learning	flat	normal			71.87	3	BeepBoop	80.96	9.09	80.96	79.51	67.75	77.27	74.85	80.74	0.68	29.857	0.083
+110	synapse.Geomancy 15	learning	flat	normal			71.56	2	Saguaro	80.63	9.07	79.21	73.0	80.63	73.23	73.57	68.34	0.709	29.507	0.082
+171	paulk.PaulV3 1.7	learning	flat	normal			74.92	4	BeepBoop	83.98	9.06	83.98	78.09	68.49	81.74	80.69	74.26	0.742	28.15	0.082
+109	nat.Samekh 0.4	learning	flat	normal			72.82	3	Saguaro	81.84	9.02	78.69	70.55	81.84	69.11	73.02	71.3	0.612	33.686	0.078
+839	sgp.SleepingGoat 1.1	learning	flat	normal			90.19	4	Saguaro	99.17	8.98	95.27	95.27	99.17	97.02	95.0	90.89	0.921	9.193	0.041
+127	florent.FloatingTadpole 1.2.6	learning	flat	normal			77.6	4	BeepBoop	86.58	8.98	86.58	83.31	65.85	83.59	74.41	75.44	0.824	20.414	0.058
+93	oog.PricklyPear 1.0.6	learning	flat	normal			74.28	2	BeepBoop	83.24	8.96	83.24	74.61	64.03	79.09	80.85	74.98	0.775	24.121	0.082
+522	PkKillers.PkAssassin 1.0	learning	flat	shield	1	1	89.74	7	Saguaro	98.67	8.93	97.78	95.69	98.67	90.99	90.65	96.01	0.912	11.943	0.058
+709	ghent.ArthurPanzergon 1.0.0	mixed	rammer	normal			87.44	4	BeepBoop	96.36	8.92	96.36	92.27	92.3	95.2	91.66	94.72	0.833	22.893	0.103
+949	elloco.Kabuto 0.2r	learning	flat	normal			85.75	2	JKHydra	94.63	8.88	92.47	92.89	92.02	93.01	94.63	90.05	0.889	14.321	0.066
+629	suh.micro.WallPM 1.00	learning	flat	normal			82.26	3	BeepBoop	91.13	8.87	91.13	86.88	82.18	88.52	83.01	88.68	0.828	20.736	0.087
+523	jab.DiamondStealer 5	learning	oscillator	normal	1		82.02	2	BeepBoop	90.88	8.86	90.88	86.48	86.73	85.94	87.35	85.38	0.895	15.907	0.073
+1041	projectx.TestNano 1.0	learning	flat	normal			91.02	3	Saguaro	99.83	8.81	94.66	92.96	99.83	93.45	94.04	91.3	0.882	13.75	0.029
+507	fushi.PvP1.PvP1 2004-02-16	learning	flat	normal			82.36	2	BeepBoop	91.16	8.8	91.16	88.7	77.79	89.18	84.73	85.05	0.833	15.721	0.089
+152	ary.micro.Weak 1.2	learning	flat	normal	1		76.47	4	BeepBoop	85.25	8.78	85.25	80.4	79.7	83.77	76.15	77.39	0.749	25.314	0.072
+120	wcsv.Stampede2.Stampede2 1.1.0	learning	flat	normal			75.57	2	BeepBoop	84.34	8.77	84.34	81.87	67.62	81.68	73.17	75.72	0.792	21.293	0.058
+187	lazarecki.mega.PinkerStinker 0.7	learning	flat	normal			75.53	2	BeepBoop	84.23	8.7	84.23	76.89	63.54	77.11	73.98	67.5	0.765	24.786	0.071
+62	zen.Ronin 1.0.0	?	?	normal			71.84	2	BeepBoop	80.54	8.7	80.54	68.7	54.73	74.74	72.7	60.96			
+666	step.NanoBidu 1.0	mixed	flat	normal		1	91.22	2	JKHydra	99.9	8.69	99.27	95.88	94.48	97.8	99.9	94.76	0.926	7.929	0.029
+151	catcat20.helios.Helios 1.5	learning	flat	normal			80.08	2	ScalarR	88.75	8.67	87.55	85.51	75.14	88.75	85.87	86.78	0.812	19.593	0.074
+204	sheldor.micro.PointInLineRRAL 1.0	learning	flat	normal			83.57	2	ScalarR	92.22	8.65	91.73	90.6	85.89	92.22	85.51	88.69	0.867	14.079	0.045
+425	apv.TheBrainPi 0.5fix	learning	flat	normal			76.8	2	BeepBoop	85.39	8.59	85.39	79.41	72.7	80.76	78.17	77.21	0.787	22.95	0.055
+719	strider.Festis 1.2.1	learning	flat	normal	1		89.16	3	BeepBoop	97.71	8.55	97.71	93.15	97.1	95.16	94.96	94.57	0.9	11.786	0.033
+201	bing2.Melody 1.3.1	learning	flat	stop-go			91.49	3	JKHydra	100.0	8.51	96.61	97.68	98.8	96.41	100.0	85.84	0.862	16.85	0.046
+674	elloco.Flower 0.1r1	linear	rammer	normal			90.91	2	BeepBoop	99.4	8.49	99.4	98.04	99.13	99.33	92.2	96.59	0.889	14.929	0.057
+408	dummy.mini.Parakeet 2.40	learning	flat	normal			82.2	2	BeepBoop	90.69	8.48	90.69	85.25	82.98	82.88	67.64	86.68	0.8	21.65	0.066
+495	pez.mini.Gouldingi 1.5	learning	flat	normal	1	1	91.52	5	JKHydra	100.0	8.48	99.02	99.07	97.39	96.62	100.0	99.75	0.902	11.279	0.026
+229	xander.cat.Mikey 1.2	learning	flat	normal			85.5	2	BeepBoop	93.89	8.39	93.89	89.93	92.21	89.77	85.64	86.16	0.856	18.5	0.075
+144	pkbots.BoyTDSurfer 1.0	learning	linear-prone	shield	1	1	91.62	2	JKHydra	100.0	8.38	99.96	99.72	98.93	77.48	100.0	100.0	1.0	0.007	0.0
+3	oog.mega.saguaro.Saguaro 1.0	learning	flat	normal			71.65	3	JKHydra	80.02	8.37	77.39	75.02		67.43	80.02	76.07	0.758	24.536	0.067
+447	arthord.NanoSatan Mu	learning	flat	normal			84.75	3	BeepBoop	93.1	8.35	93.1	87.29	80.75	84.4	88.02	91.8	0.841	19.621	0.062
+825	eem.IWillFireNoBullet v2.4	silent	flat	normal			91.65	2	DrussGT	100.0	8.35	99.77	100.0	98.05	99.84	99.03	99.98	0.939	0.0	0.0
+101	sheldor.micro.Epeeist 3.7	learning	flat	stop-go			75.59	2	BeepBoop	83.93	8.34	83.93	75.93	62.78	79.54	74.67	81.12	0.726	28.393	0.073
+430	Polkwane.Piyane 0.7b	linear+learning	flat	normal	1		91.49	3	BeepBoop	99.77	8.28	99.77	95.33	95.3	99.15	96.75	93.0	0.907	9.121	0.028
+588	m3thos.Eva02 0.7.1	learning	stat-prone	normal			90.56	2	JKHydra	98.78	8.22	93.85	92.39	93.21	95.48	98.78	92.32	0.935	9.321	0.064
+185	ds.Versatile RB1.0.1	learning	flat	normal			84.18	2	BeepBoop	92.37	8.19	92.37	89.08	77.26	86.9	89.12	81.32	0.832	20.371	0.064
+314	spinnercat.Robovirus 2.718	learning	flat	shield			91.81	2	JKHydra	100.0	8.19	95.22	98.16	91.38	95.86	100.0	93.96	0.827	19.264	0.048
+680	exauge.Leopard 1.1.019	mixed	rammer	normal			81.85	3	JKHydra	89.99	8.14	88.95	86.25	80.79	88.15	89.99	86.28	0.82	39.0	0.396
+186	demetrix.ForceMajeure 0.75	learning	flat	normal			76.62	2	BeepBoop	84.74	8.11	84.74	79.21	77.93	78.24	65.11	76.31	0.741	25.943	0.087
+415	simonton.nano.WeekendObsession_S 1.7	learning	stat-prone	shield	1	1	91.79	2	JKHydra	99.9	8.11	98.06	93.47	91.86	86.12	99.9	96.24	0.903	8.014	0.016
+894	arthord.NanoSatanMelee Beta	learning	flat	normal			84.57	4	Saguaro	92.64	8.07	90.35	89.67	92.64	92.49	89.37	92.03	0.807	23.143	0.054
+768	GarmBox.Oranges 1.0.1	linear+learning	stat-prone	normal			90.87	2	BeepBoop	98.85	7.98	98.85	95.32	97.26	97.67	94.17	92.74	0.906	13.757	0.064
+313	bvh.mini.Wodan 0.50	learning	flat	normal			77.19	4	BeepBoop	85.1	7.91	85.1	77.86	74.07	79.62	79.57	70.47	0.746	31.143	0.083
+494	myl.micro.NekoNinja 1.30	learning	flat	shield	1	1	92.1	7	Ogi	100.0	7.9	98.41	98.79	92.35	87.89	91.93	100.0	0.94	5.264	0.015
+172	oog.mini.AlphaDragon 0.1	learning	stat-prone	shield	1	1	92.15	3	JKHydra	100.0	7.85	99.44	99.47	96.13	80.77	100.0	99.34	0.952	3.043	0.024
+373	dz.GalbaMicro 0.11	learning	flat	normal			82.99	2	BeepBoop	90.81	7.82	90.81	88.3	74.51	88.12	82.7	83.79	0.826	19.579	0.057
+300	areb.Union 1.06	learning	flat	stop-go			88.74	3	Saguaro	96.55	7.81	86.96	85.97	96.55	84.28	80.71	87.12	0.775	24.957	0.096
+632	dmp.micro.Aurora 1.41	learning	flat	normal		1	87.61	4	Saguaro	95.39	7.78	88.63	87.37	95.39	92.15	89.29	94.68	0.86	17.743	0.052
+281	kawigi.mini.Fhqwhgads 1.1	learning	flat	shield	1	1	91.72	2	Ogi	99.5	7.78	95.45	90.97	97.55	83.03	93.98	99.5	0.954	1.85	0.059
+542	morbid.MorbidPriest 1.0	learning	flat	normal			89.22	2	BeepBoop	97.0	7.78	97.0	93.2	94.88	94.85	87.48	94.22	0.874	13.957	0.041
+606	sheldor.nano.PointInLine 1.0	learning	flat	shield	1	1	91.47	2	Ogi	99.25	7.78	97.45	90.83	91.4	90.5	92.94	99.25	0.815	19.386	0.048
+513	whind.Constitution 0.7.1	mixed	flat	shield	1	1	89.91	2	Ogi	97.69	7.78	93.88	89.34	96.15	87.78	78.69	97.69	0.86	17.264	0.058
+235	bvh.fry.Freya 0.82	learning	flat	normal			80.73	3	BeepBoop	88.47	7.74	88.47	80.49	74.4	86.02	83.85	84.43	0.822	20.871	0.059
+991	kneels.ToNoone 0.2	head-on+learning	stat-prone	normal			91.33	2	ScalarR	99.05	7.72	98.74	97.67	97.15	99.05	97.96	97.43	0.924	10.2	0.04
+308	doka.Shinigami 2.2	learning	stat-prone	normal			85.65	4	BeepBoop	93.37	7.72	93.37	89.56	82.75	92.99	90.36	89.35	0.888	14.643	0.045
+656	cw.megas.GhostShell GT	learning	oscillator	normal			87.02	3	Ogi	94.73	7.71	90.37	86.56	84.95	85.93	84.66	94.73	0.864	18.95	0.087
+387	cw.megas.Blade 0.8	learning	flat	shield	1	1	80.68	2	BeepBoop	88.39	7.71	88.39	85.86	87.36	87.44	84.35	87.21	0.847	19.186	0.065
+403	kawigi.sbf.Teancum 1.3	learning	flat	normal			79.53	2	BeepBoop	87.21	7.67	87.21	80.78	73.87	82.24	73.89	79.6	0.809	21.793	0.074
+223	dz.GalbaMini 0.121	learning	flat	normal			72.29	3	BeepBoop	79.96	7.67	79.96	72.87	65.53	77.74	74.69	71.65	0.682	32.207	0.078
+690	hamilton.Hamilton 1.0	learning	flat	normal	1		87.39	3	ScalarR	95.03	7.64	94.55	90.84	90.52	95.03	86.65	94.0	0.859	15.721	0.076
+268	apv.ScruchiPu 1.0	learning	flat	normal			79.3	2	BeepBoop	86.89	7.59	86.89	80.99	70.83	83.49	81.46	84.9	0.775	24.693	0.057
+725	ndn.DyslexicMonkey 1.1	mixed	flat	normal			90.96	4	BeepBoop	98.55	7.59	98.55	97.16	97.69	97.91	96.31	95.41	0.937	7.236	0.029
+660	sadoner.killer 0.2	mixed	stat-prone	normal			86.8	2	ScalarR	94.37	7.57	92.02	90.43	85.0	94.37	92.85	88.9	0.803	25.25	0.09
+641	ntc.Knowledge 1.1	learning	stat-prone	normal			90.19	5	DrussGT	97.73	7.54	94.86	97.73	95.58	92.26	95.59	94.26	0.899	13.764	0.054
+506	jaara.LambdaBot 1.1	learning	flat	normal			84.1	2	BeepBoop	91.64	7.54	91.64	86.25	85.23	89.65	83.79	76.47	0.851	17.764	0.06
+401	muf.CrazyKitten 0.9	mixed	flat	normal			85.1	4	JKHydra	92.64	7.54	90.81	89.84	88.77	89.7	92.64	84.96	0.843	17.514	0.058
+334	ags.micro.Carpet 1.1	learning	flat	shield	1	1	92.25	2	BeepBoop	99.77	7.52	99.77	98.49	97.55	87.44	85.12	96.47	0.874	7.114	0.032
+684	EE.LittleBig 1.0	learning	flat	shield			90.97	5	Ogi	98.47	7.5	93.91	94.54	95.9	94.2	90.94	98.47	0.849	18.7	0.058
+1002	Fenix.FenixTrack 1.0	head-on	stat-prone	normal			92.23	4	ScalarR	99.72	7.49	99.45	97.88	97.99	99.72	99.32	98.12	0.949	6.15	0.03
+295	gh.GrypRepetyf 0.13	mixed	flat	normal			90.34	3	Ogi	97.83	7.49	92.72	95.85	97.81	91.67	95.62	97.83	0.926	8.35	0.026
+227	xander.cat.Fiona 1.4	learning	flat	normal			85.72	2	BeepBoop	93.15	7.43	93.15	90.38	85.51	89.3	90.23	89.89	0.847	19.414	0.079
+238	TCMI.Enyo 0.4	mixed	flat	normal	1		92.57	4	DrussGT	100.0	7.43	99.89	100.0	99.28	99.63	100.0	99.87	0.923	8.629	0.024
+779	ar.QuantumChromodynamics 1.2.1	learning	flat	normal			92.12	2	BeepBoop	99.55	7.42	99.55	94.8	95.04	98.31	94.94	94.99	0.945	6.379	0.019
+858	sgp.ShiningBeetle 1.1	learning	flat	normal			91.97	2	Saguaro	99.32	7.35	95.05	95.17	99.32	96.99	95.2	92.97	0.918	10.993	0.053
+335	nz.jdc.nano.PatternAdept 1.0	learning	stat-prone	shield	1	1	89.53	2	BeepBoop	96.87	7.34	96.87	92.26	92.86	88.48	87.12	91.62	0.813	25.85	0.087
+465	cre.Karolos 0.32	linear+learning	stat-prone	normal			90.81	6	BeepBoop	98.15	7.34	98.15	96.84	95.52	97.16	91.1	93.97	0.894	13.514	0.08
+378	ary.Crisis 1.0	learning	flat	normal			89.6	15	JKHydra	96.92	7.32	95.99	94.17	96.76	94.51	96.92	88.44	0.878	16.721	0.07
+976	amk.ShizzleStiX.ShizzleStiX 0.6	linear+learning	flat	normal			91.52	2	BeepBoop	98.77	7.25	98.77	94.29	93.79	97.99	92.9	96.68	0.899	12.136	0.036
+292	kawigi.f.FhqwhgadsMicro 1.0	learning	flat	shield		1	92.41	2	Ogi	99.62	7.21	96.39	92.67	95.81	86.0	97.15	99.62	0.962	1.236	0.047
+481	nova.Snow 1.0	learning	flat	normal	1		81.16	2	BeepBoop	88.35	7.19	88.35	82.2	77.92	85.73	78.18	86.52	0.78	23.643	0.086
+802	jaybot.adv.bots.JayBot 2.0	linear+learning	stat-prone	normal	1	1	92.86	2	Ogi	100.0	7.14	97.79	98.32	97.73	96.41	95.08	100.0	0.944	7.793	0.031
+492	simonton.GFNano_D 3.1b	learning	stat-prone	shield	1	1	91.69	3	BeepBoop	98.82	7.13	98.82	96.33	95.3	91.02	90.94	91.63	0.969	1.907	0.003
+96	sheldor.micro.Continuation 1.1	learning	flat	normal			73.59	2	BeepBoop	80.69	7.1	80.69	72.51	58.07	73.72	64.77	73.43	0.684	29.143	0.077
+214	spinnercat.mega.Tardis 1.2	learning	flat	shield			89.77	3	JKHydra	96.85	7.08	93.92	92.58	90.7	94.66	96.85	94.58	0.768	24.086	0.061
+488	nan.Ihivatar_Mk_1 1.0	linear+learning	flat	normal			92.83	16	BeepBoop	99.89	7.06	99.89	95.83	95.26	99.22	90.56	94.69	0.925	8.307	0.023
+557	myl.nano.Kakuru 1.20	learning	flat	normal			78.27	3	JKHydra	85.33	7.06	84.82	80.37	77.81	81.15	85.33	84.26	0.8	21.936	0.057
+362	timmit.mini.TimVA 0.43	learning	flat	normal			79.37	2	BeepBoop	86.4	7.03	86.4	84.4	74.85	82.75	79.68	78.56	0.805	21.964	0.051
+1016	jgap.JGAP6139 1.0	learning	flat	normal			86.35	2	JKHydra	93.37	7.02	91.23	91.43	87.81	92.0	93.37	86.97	0.881	12.857	0.041
+285	stelo.MatchupMini 1.1	learning	flat	normal	1		73.62	3	BeepBoop	80.61	6.99	80.61	73.35	79.29	74.19	70.24	67.15	0.724	28.043	0.074
+947	divineomega.PatrollerBot 1.0	learning	flat	normal			91.19	3	JKHydra	98.14	6.95	93.89	94.77	91.15	94.81	98.14	93.22	0.89	11.793	0.063
+772	com.arsenic.NewTest 1.0	mixed	stat-prone	normal			91.08	3	BeepBoop	98.01	6.93	98.01	95.4	96.5	96.21	95.61	94.58	0.937	8.886	0.044
+491	eat.HumblePieLite 1.0	learning	flat	normal			92.5	2	Ogi	99.41	6.91	93.01	90.46	90.03	92.28	81.65	99.41	0.911	14.857	0.066
+798	stelo.MoojukNano 1.2	learning	flat	normal			86.83	4	Ogi	93.74	6.91	91.44	91.65	88.84	90.72	90.16	93.74	0.84	18.964	0.057
+48	wcsv.PowerHouse.PowerHouse 1.7e3	learning	circular-prone	shield	1	1	92.35	2	DrussGT	99.2	6.85	99.0	99.2	97.4	75.25	88.16	88.44	0.984	0.986	0.018
+192	alpha.RainingFire 1.0	learning	flat	normal			75.78	2	BeepBoop	82.61	6.83	82.61	74.28	66.33	78.67	77.25	74.15	0.741	27.786	0.082
+390	synnalagma.NeuralPremier 0.51	learning	flat	normal			83.38	9	BeepBoop	90.14	6.76	90.14	84.03	77.58	87.44	83.07	82.6	0.827	19.664	0.067
+220	pez.mini.VertiLeach 0.4.0	learning	flat	normal			80.08	3	BeepBoop	86.83	6.75	86.83	80.9	73.61	85.5	82.5	75.21	0.77	25.836	0.077
+307	jbot.Rabbit2 1.1	learning	stat-prone	shield	1	1	92.72	2	Ogi	99.46	6.74	98.95	96.56	91.99	86.53	90.97	99.46	0.898	4.957	0.01
+205	nkn.mini.Jskr0 0.1	learning	stat-prone	shield	1	1	93.27	5	Ogi	100.0	6.73	99.23	98.63	98.97	93.77	94.46	100.0	0.93	1.643	0.006
+328	ers.nano.meroka.Meroka 1.8a	learning	stat-prone	shield	1		90.22	3	Saguaro	96.94	6.72	89.32	96.6	96.94	86.98	87.55	81.78	0.822	24.829	0.102
+329	nz.jdc.nano.NeophytePRAL 1.4	learning	stat-prone	normal		1	89.87	2	BeepBoop	96.58	6.71	96.58	88.71	89.54	91.29	91.35	86.86	0.892	17.686	0.1
+803	lorneswork.Predator 1.0	mixed	rammer	stop-go			92.82	3	BeepBoop	99.53	6.71	99.53	97.97	97.9	99.15	96.34	93.72	0.915	12.986	0.075
+58	jam.RaikoMX 0.32	learning	flat	stop-go			75.44	3	BeepBoop	82.14	6.7	82.14	73.46	74.72	78.47	76.95	79.28	0.707	27.664	0.067
+982	nexus.Prototype 1.0	head-on+learning	rammer	normal			91.1	3	ScalarR	97.8	6.7	96.65	97.29	94.77	97.8	97.05	95.2	0.913	11.729	0.089
+376	cs.PumpkinPie 1.0	learning	flat	normal			80.09	2	BeepBoop	86.73	6.64	86.73	80.1	70.12	76.32	75.24	72.16	0.756	26.193	0.062
+490	dft.Freddie 1.32	learning	stat-prone	normal			91.0	3	Saguaro	97.63	6.63	95.63	94.66	97.63	95.48	89.95	93.01	0.926	9.721	0.037
+414	urdos.URDOS 1.3	mixed	stat-prone	stop-go			91.23	3	JKHydra	97.84	6.61	95.45	95.82	93.47	96.87	97.84	92.12	0.894	12.586	0.089
+411	ms.Ares 0.19	head-on+learning	flat	normal			91.59	3	BeepBoop	98.19	6.6	98.19	96.63	90.79	97.2	97.8	94.61	0.936	9.25	0.068
+584	shu.nitro.LENIN .T34	learning	flat	normal			87.09	2	Ogi	93.53	6.44	93.47	91.49	82.77	92.93	91.71	93.53	0.891	15.179	0.094
+325	kawigi.sbf.FloodSonnet 0.9	learning	stat-prone	shield	1	1	92.84	3	Ogi	99.25	6.41	96.13	98.63	94.1	82.67	92.97	99.25	0.928	3.55	0.135
+573	de.erdega.robocode.Polyphemos 0.4	learning	stat-prone	shield		1	93.59	4	JKHydra	100.0	6.41	98.57	99.23	97.38	90.72	100.0	99.5	0.966	1.843	0.029
+763	kurios.DOSexe .9a	linear+learning	rammer	normal			89.66	4	JKHydra	96.07	6.41	95.22	90.94	89.22	92.62	96.07	94.58	0.91	15.9	0.165
+575	mcb.Audace 1.3	mixed	stat-prone	normal			92.06	2	Ogi	98.46	6.39	97.3	95.99	94.56	95.28	97.86	98.46	0.945	7.814	0.039
+823	maribo.IotaCT 1.0	mixed	stat-prone	normal			93.27	2	BeepBoop	99.66	6.39	99.66	96.89	98.73	98.26	95.74	96.32	0.917	13.25	0.067
+868	bzdp.BoxCar 2.0	mixed	rammer	normal			91.27	3	BeepBoop	97.66	6.39	97.66	95.39	95.33	97.08	94.82	91.86	0.904	14.771	0.098
+970	jgap.JGAP7958 1.0	learning	flat	normal			87.04	16	BeepBoop	93.41	6.37	93.41	89.93	90.19	91.68	89.73	89.35	0.877	12.764	0.038
+887	EH.Pegasus 0.113	linear	flat	normal			92.95	4	BeepBoop	99.29	6.34	99.29	97.32	97.58	98.35	95.06	92.52	0.94	8.429	0.052
+348	fromHell.C22H30N2O2S 2.2	learning	stat-prone	shield	1	1	92.76	4	Ogi	99.09	6.33	98.13	96.58	96.83	81.16	81.3	99.09	0.889	6.471	0.009
+317	tad.Dalek98 0.98	learning	flat	normal			84.17	3	BeepBoop	90.5	6.33	90.5	87.08	78.25	87.78	88.1	82.54	0.817	18.864	0.043
+535	tobe.Fusion 1.0	learning	flat	normal			81.47	2	BeepBoop	87.77	6.3	87.77	85.93	81.65	81.87	83.72	80.85	0.848	16.721	0.071
+1029	yk.JahMicro 1.0	learning	mixed	normal			92.53	3	Saguaro	98.81	6.28	95.85	95.86	98.81	97.81	97.27	95.57	0.929	9.636	0.065
+545	ajs.Solveit 1.3	learning	stat-prone	normal			90.28	2	JKHydra	96.51	6.23	93.74	93.14	84.44	93.86	96.51	89.73	0.895	13.421	0.085
+765	ph.Thinker 0.2.5	learning	flat	normal			92.13	3	ScalarR	98.35	6.22	97.81	96.74	96.32	98.35	96.52	95.19	0.949	5.986	0.029
+759	am.Miedzix 3.0	mixed	rammer	normal			90.34	2	BeepBoop	96.54	6.2	96.54	93.19	89.89	95.6	95.25	89.76	0.88	18.007	0.126
+1040	Grystrion.TrackerWO 1.0	learning	flat	normal			91.42	3	JKHydra	97.61	6.19	96.34	96.58	94.71	97.16	97.61	96.94	0.943	8.571	0.062
+407	mb.Monte 0.1.0	learning	stat-prone	stop-go	1	1	90.12	4	Ogi	96.3	6.18	95.7	93.71	93.82	91.55	85.19	96.3	0.876	16.45	0.075
+616	synnalagma.test.MiniNeural 1.1	learning	flat	normal			89.54	3	BeepBoop	95.72	6.18	95.72	90.68	90.93	93.42	95.39	92.29	0.89	12.893	0.04
+520	lrem.quickhack.QuickHack 1.0	learning	circular-prone	shield	1	1	93.88	2	Ogi	100.0	6.12	99.01	99.81	94.56	92.95	96.31	100.0	0.94	3.8	0.191
+244	rsim.mini.BulletCatcher 0.4	learning	stat-prone	shield	1	1	91.62	4	Ogi	97.74	6.11	96.19	97.7	94.95	87.53	96.92	97.74	0.869	6.15	0.034
+442	jmcd.BeoWulf 2.8	learning	flat	normal			83.26	3	BeepBoop	89.36	6.1	89.36	87.46	68.64	87.68	84.51	86.94	0.837	21.85	0.074
+578	ary.nano.AceSurf 1.2	learning	stat-prone	normal			87.68	3	Saguaro	93.78	6.1	91.82	89.51	93.78	93.09	89.89	89.27	0.897	14.986	0.058
+87	DM.mega.Bezier 1.618fprrr	learning	stat-prone	shield	1		93.91	3	Ogi	100.0	6.09	84.76	92.35	98.38	79.61	67.68	100.0	0.873	6.986	0.024
+649	fm.claire 1.7	learning	flat	normal			92.37	4	BeepBoop	98.44	6.07	98.44	94.66	95.11	97.94	95.59	94.42	0.916	9.6	0.027
+861	zyx.nano.RedBull 1.0	head-on	rammer	normal			93.39	2	ScalarR	99.46	6.06	98.02	96.59	94.93	99.46	99.37	95.85	0.928	10.607	0.114
+253	pez.clean.Swiffer 0.2.9	learning	head-on-prone	shield	1	1	93.5	3	Ogi	99.52	6.02	96.46	96.36	97.27	82.73	98.69	99.52	0.935	1.693	0.012
+642	josago.Jorgito 0.16	mixed	flat	normal			88.16	5	BeepBoop	94.16	6.0	94.16	90.69	86.06	91.33	89.47	86.77	0.889	14.236	0.081
+1017	fullsail.TimbotNoPrediction 1.0	learning	stat-prone	normal			87.65	4	Saguaro	93.63	5.98	91.68	92.21	93.63	91.72	87.62	88.95	0.923	10.507	0.049
+977	spinnercat.haiku.Refrigerator 1.1	learning	mixed	normal			89.4	2	ScalarR	95.34	5.94	93.52	90.92	95.27	95.34	89.82	86.59	0.873	13.936	0.039
+596	lrem.micro.MoggFanatic 0.2	mixed	rammer	normal			91.97	2	BeepBoop	97.89	5.92	97.89	96.76	93.14	97.68	91.98	94.09	0.915	13.75	0.076
+577	radnor.RamRod 1.0	mixed	rammer	normal			80.65	5	ScalarR	86.57	5.92	83.16	81.46	81.72	86.57	84.98	81.67	0.784	43.086	0.308
+131	theo.Tungsten 1.0a	learning	stat-prone	shield	1	1	94.1	3	Ogi	100.0	5.9	98.97	96.89	98.52	77.84	80.28	100.0	0.969	1.379	0.005
+310	davidalves.net.Duelist 0.1.6src	learning	flat	normal			84.85	3	BeepBoop	90.69	5.84	90.69	89.21	74.77	85.85	85.22	84.29	0.816	21.543	0.051
+256	jk.sheldor.nano.Yatagan 1.2.3	learning	flat	shield	1	1	89.09	2	BeepBoop	94.91	5.82	94.91	87.26	90.14	82.83	79.96	80.9	0.781	25.429	0.096
+410	dam.MogBot 2.9	learning	flat	normal			80.72	2	Saguaro	86.51	5.79	85.84	79.48	86.51	80.22	81.52	79.01	0.822	23.35	0.092
+592	rz.SmallDevil 1.502	learning	flat	normal	1	1	93.69	3	BeepBoop	99.42	5.73	99.42	99.12	98.02	95.53	98.78	99.24	0.928	8.536	0.025
+534	wcsv.Stampede 1.3.3	learning	flat	normal			82.74	2	BeepBoop	88.46	5.72	88.46	86.67	79.68	88.36	86.72	81.28	0.811	20.736	0.05
+884	asd.Cthulhu 1.2	mixed	stat-prone	normal			92.9	3	BeepBoop	98.61	5.71	98.61	93.71	96.68	97.92	93.93	94.09	0.908	12.471	0.04
+496	wiki.nano.RaikoNano 1.1	learning	flat	shield	1	1	88.87	2	Ogi	94.54	5.67	93.31	93.88	90.86	86.48	84.29	94.54	0.772	22.714	0.053
+733	fire219.cymba.Cymba 1.8	mixed	flat	normal			90.3	4	BeepBoop	95.9	5.6	95.9	93.4	93.19	95.2	91.7	93.73	0.917	10.643	0.05
+271	intruder.PrairieWolf 2.61	learning	flat	shield	1	1	92.29	3	Ogi	97.89	5.6	95.07	91.67	96.41	83.74	86.44	97.89	0.85	19.214	0.084
+753	racso.Frog 0.9	learning	oscillator	shield	1	1	94.34	5	Ogi	99.94	5.6	99.25	97.69	96.95	91.49	95.95	99.94	0.947	2.371	0.016
+727	fullsail.LaxativeTeaTwo 1.0	mixed	flat	normal			92.69	2	BeepBoop	98.28	5.59	98.28	96.26	94.93	97.16	96.38	92.16	0.919	10.671	0.043
+867	wiki.Wolverine 2.1	learning	rammer	shield	1	1	94.09	2	Ogi	99.62	5.53	99.25	98.36	98.36	96.96	98.19	99.62	0.942	2.714	0.027
+527	wiki.mako.MakoHT 1.2.2.1	head-on+learning	flat	shield	1	1	94.48	3	JKHydra	100.0	5.52	98.38	97.17	97.25	94.54	100.0	97.56	0.916	9.7	0.03
+81	catcat20.shape.Theta 0.018	learning	flat	normal			74.14	2	BeepBoop	79.66	5.52	79.66	70.63	61.67	73.81	72.8	70.79	0.632	33.207	0.085
+716	nosteel.Welby 0.0.3	linear+learning	stat-prone	normal			93.86	4	BeepBoop	99.35	5.49	99.35	96.64	92.2	98.13	94.05	94.85	0.934	9.314	0.049
+738	bwbaugh.nano.Tirunculus 0.0.0a	linear	rammer	normal			83.94	3	JKHydra	89.43	5.49	85.68	85.14	81.9	87.81	89.43	85.5	0.843	33.286	0.757
+647	csm.NthGeneration 0.04	mixed	stat-prone	normal	1		94.47	2	BeepBoop	99.95	5.48	99.95	97.93	96.68	99.21	99.42	98.5	0.936	8.736	0.034
+503	dz.OthoMicro 0.12	learning	flat	normal			79.21	5	BeepBoop	84.68	5.47	84.68	81.61	77.97	82.38	79.16	72.7	0.788	22.729	0.056
+579	tobe.Relativity 3.9	learning	flat	normal			90.44	2	ScalarR	95.9	5.46	94.72	93.93	92.14	95.9	95.21	90.77	0.928	9.671	0.041
+672	bigpete.Stewie 1.0	mixed	flat	normal	1		94.28	2	BeepBoop	99.73	5.45	99.73	97.78	96.55	99.12	96.94	98.3	0.96	5.6	0.023
+942	jeremyreeder.Bully 1	head-on	rammer	normal			94.05	2	ScalarR	99.5	5.45	98.9	96.7	96.11	99.5	99.26	98.1	0.956	6.121	0.071
+864	agrach.MicroDalek 1.0	linear	linear-prone	normal			94.44	4	BeepBoop	99.85	5.41	99.85	99.27	98.6	99.8	98.19	92.5	0.943	5.507	0.036
+1004	seed.Anastasia 1.0	learning	flat	normal			91.64	3	JKHydra	97.05	5.41	95.35	95.74	93.74	96.25	97.05	93.75	0.898	12.364	0.049
+619	bayen.nano.Squirrel 0.2	learning	stat-prone	normal			86.81	2	BeepBoop	92.2	5.39	92.2	88.71	89.81	90.79	87.86	87.83	0.881	14.157	0.051
+990	yk.JahRoslav 1.1	learning	flat	normal			92.22	3	Saguaro	97.61	5.39	95.37	96.07	97.61	97.27	96.33	94.52	0.935	9.864	0.071
+723	tornyil.Lajcsi2.Lajcsi2sm 1.0	learning	stat-prone	normal			88.04	2	BeepBoop	93.41	5.37	93.41	92.96	88.04	93.16	91.16	90.75	0.872	14.186	0.078
+338	lj.Dapps 0.2	learning	flat	normal			83.19	4	BeepBoop	88.49	5.3	88.49	87.15	76.64	86.46	80.11	86.56	0.834	22.2	0.074
+429	bts.mega.Gnarly 1.4	learning	oscillator	normal			82.62	4	BeepBoop	87.91	5.29	87.91	84.2	81.7	85.34	86.78	85.53	0.854	23.357	0.111
+563	maribo.Omicron 1.0	linear+learning	stat-prone	normal		1	94.65	3	Ogi	99.94	5.29	99.29	98.27	99.84	99.25	98.45	99.94	0.954	6.614	0.034
+688	zzx.StormHead 1.0.1	?	?	normal			94.73	3	Ogi	100.0	5.27			97.01	96.83	98.54	100.0			
+726	arthord.MannyPacquiao Delta2	learning	flat	normal			81.15	4	DrussGT	86.42	5.27	83.17	86.42	82.44	85.79	85.27	82.05	0.822	20.729	0.061
+910	vft.Valkyrie 1.0	learning	flat	normal			89.55	3	BeepBoop	94.82	5.27	94.82	90.5	90.62	93.2	88.56	92.35	0.862	15.35	0.047
+819	lion.Kresnanano 1.0	learning	stat-prone	normal			91.35	3	Saguaro	96.61	5.26	96.31	94.37	96.61	95.49	93.68	93.42	0.919	10.364	0.039
+966	jdw.Hornet 1.0	learning	mixed	normal			94.55	3	ScalarR	99.79	5.24	99.71	98.34	98.43	99.79	97.69	95.64	0.986	1.4	0.004
+794	kjc.etc.Dharok 1.0	head-on+learning	flat	normal			93.77	2	ScalarR	99.0	5.23	97.76	97.3	95.1	99.0	97.75	95.86	0.949	6.407	0.026
+790	marcinek.TopGun 1.3	linear	flat	normal			93.94	2	BeepBoop	99.17	5.23	99.17	97.4	98.27	97.38	94.3	93.7	0.943	7.421	0.037
+379	emp.Yngwie 1.11	learning	flat	normal			85.27	2	BeepBoop	90.49	5.22	90.49	86.48	72.97	87.53	81.85	79.93	0.828	19.643	0.083
+400	seed.Weed 3.0.2	learning	flat	normal			89.7	6	BeepBoop	94.89	5.19	94.89	91.7	87.02	93.01	90.0	83.25	0.888	15.386	0.059
+242	wiki.mini.BlackDestroyer 0.9.0	learning	flat	shield	1	1	94.27	3	Ogi	99.46	5.19	98.36	95.38	97.16	85.43	95.1	99.46	0.981	1.2	0.029
+670	dmh.robocode.robot.GreenDragon 1.0	mixed	flat	normal			91.7	3	ScalarR	96.88	5.18	96.69	95.18	93.34	96.88	95.46	90.08	0.888	14.429	0.043
+320	kawigi.mini.Coriantumr 1.1	learning	flat	shield	1	1	94.83	3	JKHydra	100.0	5.17	99.63	99.11	99.29	91.55	100.0	99.6	0.967	0.929	0.003
+951	ua.kiiv.kosyak.robocode.tn1.Tn1 2.0	learning	stat-prone	normal			93.53	4	Saguaro	98.7	5.17	97.7	97.12	98.7	97.18	97.89	96.33	0.931	8.493	0.037
+461	spinnercat.CopyKat 1.2.3	learning	head-on-prone	shield	1	1	89.32	3	Saguaro	94.47	5.15	92.85	90.43	94.47	83.35	87.69	81.61	0.923	5.321	0.018
+842	hvilela.HVilela 0.9	linear+learning	linear-prone	normal			94.69	3	BeepBoop	99.83	5.14	99.83	96.85	99.72	98.91	98.62	97.7	0.952	6.186	0.025
+805	stelo.MirrorNano 1.4	learning	flat	normal			93.28	3	Saguaro	98.41	5.13	92.99	91.09	98.41	95.21	86.56	92.2	0.924	11.343	0.051
+693	alex.Diabolo5 1.1	learning	stat-prone	normal			93.07	2	Saguaro	98.2	5.13	97.2	95.07	98.2	96.78	96.08	94.71	0.93	9.943	0.033
+559	ahr.ice.Ice 1.0	linear+learning	stat-prone	stop-go			91.85	3	Saguaro	96.97	5.12	96.28	90.44	96.97	91.6	93.86	94.16	0.814	22.964	0.072
+1082	md.VelociRaptor 1.3	learning	rammer	normal			92.32	2	ScalarR	97.42	5.1	95.83	96.93	95.37	97.42	96.78	95.14	0.952	7.757	0.072
+896	taqho.taqbot 1.0	mixed	stat-prone	normal			89.53	3	BeepBoop	94.62	5.09	94.62	93.06	90.79	93.11	91.59	92.45	0.91	12.814	0.052
+497	cbot.cbot.CBot 0.8	learning	flat	normal			80.75	7	BeepBoop	85.83	5.08	85.83	83.63	80.85	84.92	82.59	78.68	0.793	22.186	0.055
+65	simonton.mini.WeeksOnEnd 1.10.4	learning	wall-runner	shield	1	1	94.93	15	Ogi	100.0	5.07	99.18	98.23	97.91	69.94	89.04	100.0	0.994	0.336	0.005
+464	nz.jdc.nano.AralT 1.1	learning	stat-prone	normal			90.52	3	BeepBoop	95.58	5.06	95.58	93.58	94.02	94.97	92.27	89.73	0.893	15.186	0.051
+834	suh.nano.MirrorL 1.00	linear	flat	normal			94.88	2	BeepBoop	99.93	5.05	99.93	98.82	99.33	99.02	98.67	96.27	0.952	8.136	0.085
+1048	gjr.Cephalosporin 0.2	mixed	stat-prone	normal			93.57	2	Ogi	98.6	5.03	97.89	96.88	94.81	97.77	95.17	98.6	0.945	7.757	0.067
+698	oog.nano.MagicD2 2.4	learning	stat-prone	normal			90.5	2	Saguaro	95.53	5.03	94.89	94.91	95.53	94.59	91.0	90.86	0.902	14.414	0.07
+1021	Grystrion.RandomTrackerNOREV 1.0	learning	flat	normal			92.41	2	JKHydra	97.42	5.02	96.59	95.48	94.27	97.01	97.42	95.06	0.925	9.957	0.075
+1008	adt.Ar2 1.0	learning	rammer	normal			93.62	2	ScalarR	98.63	5.01	95.75	96.12	94.29	98.63	95.6	90.82	0.948	7.729	0.033
+992	ender.EnderRobot 1.1	mixed	oscillator	stop-go			93.67	3	BeepBoop	98.68	5.01	98.68	95.96	94.17	98.08	97.48	94.71	0.88	16.686	0.068
+438	kc.nano.Splinter 1.2	learning	flat	normal			85.91	2	BeepBoop	90.91	5.0	90.91	85.36	87.74	87.97	86.46	88.03	0.845	18.3	0.064
+541	dk.stable.Gorgatron 1.1	mixed	stat-prone	normal			87.94	3	BeepBoop	92.93	4.99	92.93	90.41	87.13	92.06	92.75	91.81	0.853	21.464	0.074
+889	nanoskank.NanoSkank 1.0	learning	stat-prone	normal			91.94	2	JKHydra	96.93	4.99	94.39	94.07	95.88	95.8	96.93	93.06	0.928	9.607	0.04
+810	supersample.SuperSpinBot 1.0	learning	stat-prone	normal			92.84	4	BeepBoop	97.81	4.97	97.81	95.85	97.2	96.67	95.08	91.89	0.93	9.386	0.035
+158	pedersen.Ugluk 1.0	learning	flat	normal			77.94	3	BeepBoop	82.86	4.92	82.86	78.57	70.11	76.88	80.35	76.39	0.756	25.821	0.069
+476	robar.nano.Assertive 0.3	learning	flat	normal			84.41	2	BeepBoop	89.31	4.9	89.31	84.16	79.77	86.96	82.55	82.36	0.828	24.336	0.088
+516	lechu.Ala 0.0.4	learning	flat	normal	1	1	84.05	4	Saguaro	88.94	4.89	87.88	84.14	88.94	86.31	85.82	83.22	0.822	21.2	0.092
+159	simonton.micro.GFMicro 1.0	learning	stat-prone	shield	1	1	94.12	2	DrussGT	99.01	4.89	97.46	99.01	97.36	86.52	90.94	91.28	0.917	3.3	0.03
+836	bvh.tyr.Tyr 1.74	mixed	flat	normal			93.62	3	BeepBoop	98.5	4.88	98.5	93.69	92.72	97.61	95.32	90.43	0.92	11.514	0.099
+907	velas.Beta_2_0 2.0	mixed	flat	normal			92.97	6	BeepBoop	97.84	4.87	97.84	94.49	97.35	96.56	88.5	95.92	0.904	11.686	0.035
+340	shinh.Entangled 0.3	learning	flat	shield	1	1	91.67	2	BeepBoop	96.54	4.87	96.54	87.77	95.06	85.05	87.11	96.24	0.825	20.986	0.077
+463	robar.nano.Prestige 1.0	learning	flat	shield	1	1	93.4	3	BeepBoop	98.24	4.84	98.24	97.9	95.58	79.59	90.68	95.48	0.912	5.0	0.007
+365	robar.nano.Pugio 1.49	learning	flat	shield	1	1	89.39	3	BeepBoop	94.23	4.84	94.23	93.17	93.27	83.97	86.57	85.27	0.764	26.507	0.072
+453	dcs.PM.Eater_of_Worlds_PM 1.2	learning	flat	normal			79.28	2	BeepBoop	84.11	4.83	84.11	81.54	71.97	80.31	80.0	71.56	0.768	26.871	0.065
+318	jwst.DAD.DarkAndDarker 1.1	learning	flat	shield			92.74	4	JKHydra	97.56	4.82	95.26	92.83	91.21	92.9	97.56	87.45	0.844	18.493	0.076
+705	bayen.UbaMicro 1.4	linear+learning	stat-prone	normal	1	1	94.58	2	BeepBoop	99.4	4.82	99.4	98.64	97.96	98.94	96.14	98.5	0.965	5.243	0.025
+854	dmh.robocode.robot.BlueBerry 0.5	head-on+learning	flat	normal			93.33	2	ScalarR	98.09	4.76	96.47	94.54	91.86	98.09	96.89	93.09	0.944	7.586	0.038
+886	knackibot.KnackOnOne 0.8.1	head-on	flat	normal			95.09	4	ScalarR	99.85	4.75	99.32	99.1	98.42	99.85	99.68	98.66	0.967	3.779	0.027
+835	pmc.SniperBot 1.0	head-on+learning	rammer	normal			93.89	4	ScalarR	98.58	4.69	96.82	94.43	93.75	98.58	95.53	96.51	0.925	9.071	0.092
+637	mc2.enemy.Original 0.9	mixed	flat	normal			93.46	4	DrussGT	98.14	4.68	97.78	98.14	94.58	92.43	98.06	95.26	0.918	7.271	0.083
+658	toz.Gnome 1.1	learning	flat	normal			92.5	2	BeepBoop	97.18	4.68	97.18	96.01	97.06	96.84	91.98	92.57	0.906	10.071	0.048
+613	dummy.micro.HummingBird 2.14	learning	flat	normal			85.58	2	BeepBoop	90.24	4.66	90.24	87.58	84.13	89.87	85.66	84.59	0.853	17.986	0.056
+937	dggp.haiku.gpBot_0 1.1	learning	stat-prone	normal			92.05	3	DrussGT	96.71	4.66	96.31	96.71	96.29	95.29	96.13	94.34	0.953	6.329	0.024
+609	pfvicm.Sobieski 7.2.3b	linear	stat-prone	normal		1	95.35	5	Ogi	100.0	4.65	99.56	97.81	98.75	98.96	94.99	100.0	0.955	6.136	0.026
+890	m3thos.mini.Eva01 0.5.5	learning	stat-prone	normal		1	94.64	2	Saguaro	99.29	4.65	97.4	95.91	99.29	97.29	97.0	93.56	0.958	6.343	0.047
+1026	ntw.Sighup 1.5	learning	stat-prone	normal			90.94	4	ScalarR	95.57	4.63	94.34	95.33	92.87	95.57	94.43	91.38	0.878	14.736	0.065
+820	ntc.Swim 0.9	learning	flat	normal			89.12	6	JKHydra	93.74	4.62	90.65	89.12	90.96	91.74	93.74	87.84	0.902	13.007	0.066
+748	kawigi.sbf.FloodNano 1.2	learning	flat	normal			91.25	4	JKHydra	95.86	4.61	90.21	92.72	95.65	94.54	95.86	89.77	0.914	10.814	0.036
+618	dmh.robocode.robot.YellowBird 0.12	learning	stat-prone	normal	1	1	95.07	2	DrussGT	99.68	4.61	99.58	99.68	95.82	97.04	96.93	99.17	0.961	5.114	0.019
+1114	bvh.hdr.Hodur 0.4	learning	rammer	normal			94.88	2	Saguaro	99.49	4.61	94.7	96.32	99.49	97.07	98.38	94.94	0.934	10.0	0.065
+661	ha2.T2b 0.2b	mixed	stat-prone	normal			95.31	2	BeepBoop	99.92	4.61	99.92	96.5	96.74	99.31	99.01	98.73	0.968	4.386	0.021
+824	stranger.nano.TestBot 1.0	learning	stat-prone	normal			93.6	3	Saguaro	98.19	4.59	97.56	96.95	98.19	98.05	95.26	95.24	0.902	11.736	0.077
+717	romz.robot.guessfactor.TeasingFox 0.2	learning	stat-prone	normal			87.3	5	BeepBoop	91.89	4.59	91.89	89.68	87.22	91.62	86.58	87.32	0.888	18.529	0.1
+620	amarok.Rookie 1.1	learning	flat	normal			93.65	2	Saguaro	98.23	4.58	96.15	95.07	98.23	96.73	95.37	95.55	0.935	8.779	0.033
+749	sul.Pinkbot 1.1	learning	stat-prone	normal	1		95.31	3	BeepBoop	99.87	4.56	99.87	97.61	99.84	98.51	98.5	98.57	0.96	3.679	0.013
+585	myl.micro.Predator 1.50	head-on	flat	normal	1		95.44	6	Saguaro	100.0	4.56	99.62	98.55	100.0	99.82	95.52	99.78	0.982	1.979	0.008
+795	fnc.bandit.Bandit 5.2.0	mixed	stat-prone	normal			92.94	2	ScalarR	97.5	4.56	96.4	96.1	95.03	97.5	96.03	93.96	0.945	7.536	0.038
+926	apc.Colossus2 0.12	mixed	rammer	stop-go			94.41	3	BeepBoop	98.97	4.56	98.97	97.8	96.72	98.31	93.11	90.31	0.928	12.814	0.127
+739	populations.TrainStoopidbot 0.01	mixed	stat-prone	normal			94.31	3	BeepBoop	98.86	4.55	98.86	98.21	98.52	98.59	96.62	97.97	0.952	7.464	0.06
+332	gadsky.Gadsky 1.01	learning	flat	normal			83.95	2	BeepBoop	88.5	4.55	88.5	83.72	69.66	84.95	82.23	78.92	0.829	20.386	0.068
+948	yarhoslav.YaroBot 1.2	linear	flat	normal			93.67	2	BeepBoop	98.21	4.54	98.21	96.36	97.28	97.46	95.46	96.91	0.953	6.05	0.027
+258	SHAM.WOW 1.4	learning	flat	shield			91.22	2	BeepBoop	95.69	4.47	95.69	91.01	91.58	93.93	85.58	83.01	0.776	22.4	0.083
+508	pi.Dark 10	learning	flat	normal			86.1	2	Saguaro	90.57	4.47	84.59	82.95	90.57	82.96	83.44	77.16	0.759	26.193	0.063
+117	kc.micro.Thorn 1.252	learning	stat-prone	shield	1	1	94.18	2	JKHydra	98.64	4.46	97.96	93.91	92.65	78.56	98.64	87.0	0.987	0.786	0.001
+189	gf.Centaur.Centaur 0.6.7	learning	flat	normal			83.41	2	BeepBoop	87.86	4.45	87.86	86.37	83.85	85.77	84.07	81.62	0.833	18.557	0.069
+399	non.mega.NaN 0.1	learning	stat-prone	normal			90.27	2	Saguaro	94.69	4.42	89.67	81.3	94.69	89.48	78.74	80.77	0.917	13.293	0.069
+551	slugzilla.SNGPattern 1.0	learning	stat-prone	normal	1	1	94.51	3	BeepBoop	98.93	4.42	98.93	96.31	96.3	94.72	93.19	88.88	0.951	8.286	0.074
+965	NG.LegatusLegionis 1.2	learning	stat-prone	normal			94.08	4	ScalarR	98.48	4.41	97.07	97.41	95.25	98.48	98.48	95.58	0.957	6.064	0.042
+174	penguin.MrFreeze 1.0a	learning	flat	normal			83.84	2	DrussGT	88.23	4.39	87.67	88.23	78.43	87.31	73.96	87.06	0.84	18.021	0.073
+699	conscience.Electron 1.3g	linear+learning	rammer	normal		1	95.07	3	Saguaro	99.46	4.39	96.56	97.32	99.46	98.13	93.38	95.66	0.937	9.607	0.046
+1047	vort.Chaser 0.0.3	head-on	rammer	normal			95.45	2	ScalarR	99.84	4.39	99.26	98.58	97.24	99.84	99.16	98.31	0.958	7.293	0.115
+1053	sanyi.mikrobi.Roberto 1.0	mixed	rammer	normal			93.61	3	BeepBoop	97.99	4.38	97.99	97.51	96.12	97.8	97.63	95.91	0.929	11.264	0.13
+904	tlp.ThreeLeggedPig 1	learning	flat	normal			94.5	3	ScalarR	98.86	4.36	98.2	97.58	94.03	98.86	95.98	90.48	0.963	4.664	0.05
+893	supersample.SuperTracker 1.0	learning	rammer	normal			95.54	2	DrussGT	99.89	4.35	98.07	99.89	98.76	98.44	95.15	99.6	0.946	8.057	0.034
+1030	gio.RealGioBot 1.0	head-on	stat-prone	normal			95.34	3	BeepBoop	99.68	4.34	99.68	99.07	98.73	99.58	99.15	97.81	0.96	5.071	0.029
+598	nic.Nicator 2.4	mixed	oscillator	normal			93.93	3	BeepBoop	98.26	4.33	98.26	94.67	96.93	96.22	95.48	93.23	0.947	7.257	0.042
+296	Polkwane.Intensive 1.0	learning	flat	shield	1	1	95.69	2	Ogi	100.0	4.31	99.39	99.42	99.15	87.3	98.26	100.0	1.0	0.0	0.001
+450	cf.OldMan.OldManXP 0.1	learning	flat	normal			88.75	3	Saguaro	93.05	4.3	90.07	80.38	93.05	84.79	78.14	80.85	0.864	18.614	0.068
+55	darkcanuck.Holden 1.13a	learning	flat	shield	1	1	78.92	2	BeepBoop	83.22	4.3	83.22	75.24	80.52	72.86	72.02	66.27	0.734	24.429	0.074
+279	penguin.Ivy 1.1r	learning	flat	normal			85.63	5	BeepBoop	89.92	4.29	89.92	88.02	76.74	85.37	82.07	80.66	0.886	12.436	0.056
+353	ry.LightningBug 1.0	learning	flat	stop-go	1	1	94.97	2	Ogi	99.26	4.29	97.12	93.76	94.58	89.83	92.69	99.26	0.84	20.321	0.067
+267	rdt.AgentSmith.AgentSmithRedux 0.02	mixed	flat	normal			95.18	2	BeepBoop	99.46	4.28	99.46	95.3	94.95	97.77	97.49	96.97	0.929	9.229	0.034
+1064	fw.Number1 1.0b	head-on+learning	rammer	normal			95.12	5	ScalarR	99.34	4.22	98.5	98.6	97.93	99.34	98.84	96.79	0.964	5.807	0.065
+262	cx.mini.Nimrod 0.55	learning	flat	shield		1	95.78	5	Ogi	100.0	4.22	99.68	97.25	98.57	79.19	90.72	100.0	0.993	0.457	0.0
+458	sheldor.nano.PointInLineRRAL 1.0.0	learning	stat-prone	normal	1	1	90.58	2	Saguaro	94.79	4.22	93.57	92.42	94.79	92.48	87.04	92.64	0.883	16.879	0.069
+594	Legend.X_FireFly 1.3	mixed	flat	normal			94.11	3	BeepBoop	98.31	4.2	98.31	95.74	96.19	97.27	96.12	93.41	0.922	8.564	0.027
+721	marksteam.Phoenix 1.0	mixed	stat-prone	stop-go			94.25	3	BeepBoop	98.45	4.2	98.45	94.02	95.62	97.66	97.05	94.52	0.933	8.514	0.038
+209	theo.simple.Bones 1.0	learning	head-on-prone	shield	1	1	94.84	2	Ogi	98.99	4.14	96.7	90.9	96.73	79.35	97.67	98.99	0.825	14.321	0.041
+475	lrem.Spectre 0.4.4	learning	flat	normal			88.42	6	BeepBoop	92.55	4.13	92.55	89.31	87.86	89.3	87.76	87.71	0.861	15.943	0.052
+555	az.Ololobot 0.2.4	learning	flat	normal			91.0	2	BeepBoop	95.11	4.11	95.11	92.41	92.56	90.89	89.4	89.46	0.899	13.114	0.081
+777	com.spp.robocode.MostlyHarmless 010	mixed	stat-prone	normal	1		95.9	4	Ogi	100.0	4.1	97.13	98.88	94.63	97.38	96.32	100.0	0.949	7.586	0.045
+806	bumblebee.Bumblebee 1.0	learning	circular-prone	normal			90.75	2	BeepBoop	94.85	4.1	94.85	91.98	91.72	93.11	91.33	88.35	0.902	14.243	0.077
+207	pedersen.Hubris 2.4	learning	flat	shield	1	1	95.77	2	Ogi	99.86	4.09	95.77	82.15	86.91	83.87	82.0	99.86	0.866	5.114	0.008
+547	cx.nano.Smog 2.6	learning	stat-prone	normal			91.71	2	BeepBoop	95.79	4.08	95.79	94.17	95.48	93.29	95.78	93.12	0.932	7.979	0.029
+621	mz.NanoGod 2.02	linear	stat-prone	normal			95.59	5	ScalarR	99.67	4.08	99.63	98.8	99.1	99.67	98.41	98.56	0.987	2.0	0.017
+600	sm.Devil 7.3	learning	flat	shield	1		95.44	2	BeepBoop	99.51	4.08	99.51	94.09	94.68	93.93	84.15	93.27	0.813	19.164	0.069
+1050	gg.Squaraus 0.6	learning	stat-prone	normal			94.88	3	JKHydra	98.93	4.05	98.33	98.58	98.09	98.77	98.93	97.45	0.97	4.514	0.038
+906	spin.Bugstard 0.012b	learning	head-on-prone	normal			92.56	2	ScalarR	96.59	4.03	96.11	92.52	95.84	96.59	94.65	94.39	0.942	7.229	0.035
+788	sigterm.Sigterm 1.0	learning	flat	normal			90.86	2	ScalarR	94.88	4.02	94.84	92.75	94.53	94.88	94.39	91.21	0.924	9.321	0.04
+925	suh.nano.MirrorH 1.01	head-on	flat	normal			96.0	2	Ogi	100.0	4.0	99.97	99.38	99.88	99.97	99.9	100.0	0.963	6.25	0.079
+624	kano.gamma.KanoGamma 1.8	mixed	flat	stop-go			93.05	2	BeepBoop	97.04	3.99	97.04	92.51	92.78	96.05	95.9	87.45	0.89	13.593	0.054
+595	stelo.SteloTestNano 1.0	learning	stat-prone	shield	1	1	93.52	2	Saguaro	97.5	3.98	95.03	93.05	97.5	93.75	96.29	95.18	0.874	6.414	0.013
+811	throxbot.ThroxBot 0.1	learning	head-on-prone	shield	1	1	96.03	2	JKHydra	100.0	3.97	98.49	98.33	95.65	95.55	100.0	95.02	0.998	0.093	0.009
+537	dev.kurtw.KurtBot 0.2	?	?	normal			89.03	3	BeepBoop	92.99	3.96	92.99	91.23	58.03	89.99	91.41	86.53			
+468	jasolo.Sonda 0.55	learning	flat	shield		1	96.04	4	JKHydra	100.0	3.96	99.24	96.03	98.12	90.46	100.0	99.64	0.99	0.593	0.004
+222	eem.EvBot v4.6.4	learning	flat	normal			88.13	2	BeepBoop	92.09	3.96	92.09	87.79	79.75	86.84	83.02	82.57	0.875	15.836	0.064
+228	infovk.s_schwarzm16.silverbird 1.0	learning	flat	normal			84.78	3	BeepBoop	88.73	3.95	88.73	84.76	84.51	84.24	79.78	83.21	0.783	23.829	0.067
+46	cjm.chalk.Chalk 2.6.Be	learning	circular-prone	shield	1	1	96.05	3	Ogi	100.0	3.95	99.99	99.8	98.74	71.97	99.55	100.0	0.999	0.064	0.0
+814	sheldor.melee.nano.TestMelee 0.1	learning	stat-prone	normal			92.88	3	JKHydra	96.82	3.94	96.57	95.22	95.35	96.4	96.82	85.2	0.94	9.121	0.055
+1028	leb.ShootAnArrow 0.1	learning	stat-prone	normal			94.7	2	JKHydra	98.64	3.94	95.01	96.93	97.51	96.83	98.64	93.59	0.958	6.036	0.029
+327	robar.micro.Topaz 0.25	learning	flat	normal	1	1	81.31	2	Saguaro	85.24	3.93	82.62	81.67	85.24	80.5	68.37	75.48	0.775	25.607	0.077
+515	nat.micro.Reepicheep 0.1a	mixed	flat	stop-go			91.9	3	JKHydra	95.83	3.93	93.62	92.08	91.04	92.28	95.83	87.08	0.85	16.779	0.058
+346	davidalves.net.DuelistMicroMkII 1.1	learning	flat	stop-go	1	1	92.66	2	Saguaro	96.58	3.92	88.59	88.07	96.58	81.22	95.7	87.91	0.81	14.214	0.034
+920	codemojo.nano.Woot 1.0	learning	stat-prone	normal		1	95.08	3	Saguaro	98.99	3.91	91.8	97.08	98.99	96.85	89.97	97.35	0.944	8.114	0.04
+1187	ncj.MoxieBot 1.0	learning	head-on-prone	normal		1	95.93	3	JKHydra	99.84	3.91	99.15	99.83	96.84	98.85	99.84	99.49	0.999	0.207	0.074
+801	omens.CannonfodderMicro 1.4	linear+learning	flat	normal			94.91	3	ScalarR	98.81	3.9	98.54	97.45	98.34	98.81	97.39	90.59	0.972	3.671	0.023
+261	ers.micro.ISuck.ISuckMicro 0.1f	learning	stat-prone	shield	1		95.4	3	Ogi	99.3	3.9	90.19	93.68	95.85	87.63	94.65	99.3	0.805	26.914	0.105
+352	learn.ISmart 2.0s	learning	stat-prone	shield		1	94.91	3	Ogi	98.8	3.89	98.02	97.12	98.53	84.39	77.98	98.8	0.946	2.936	0.027
+732	joe.ADinosaur 1.0	linear+learning	head-on-prone	normal			95.88	2	BeepBoop	99.76	3.88	99.76	97.05	97.71	99.45	96.56	97.86	0.947	7.721	0.025
+531	starpkg.StarViewerZ 1.26	learning	stat-prone	shield	1	1	94.71	5	BeepBoop	98.59	3.88	98.59	95.26	98.05	94.49	93.29	85.85	0.932	4.529	0.029
+286	whind.Strength 0.6.4	mixed	flat	shield	1	1	94.07	3	BeepBoop	97.94	3.87	97.94	97.94	97.22	85.62	83.01	97.86	0.795	20.85	0.052
+509	asm.Statistas 0.1	learning	flat	shield	1	1	95.76	2	Ogi	99.63	3.87	97.26	95.7	97.3	82.17	86.59	99.63	0.989	0.686	0.002
+876	apollokidd.ApolloKidd 0.9	mixed	stat-prone	normal			95.19	2	ScalarR	99.06	3.87	98.56	98.87	98.31	99.06	98.37	98.11	0.966	5.693	0.039
+746	sul.NanoR2 1.32	head-on+learning	flat	normal			95.56	3	ScalarR	99.42	3.86	98.21	97.12	99.29	99.42	97.96	96.39	0.945	5.529	0.016
+689	kinsen.nano.Senticous 1.0	learning	flat	normal			83.47	4	BeepBoop	87.31	3.84	87.31	84.37	81.01	81.94	86.94	84.59	0.819	20.279	0.06
+984	hirataatsushi.Trinity 0.003	mixed	rammer	normal			94.8	4	DrussGT	98.63	3.83	97.87	98.63	97.0	98.43	97.77	95.86	0.951	7.743	0.08
+964	japs.Sjonniebot 0.9.1	learning	stat-prone	normal			92.47	4	Saguaro	96.29	3.82	94.33	94.45	96.29	95.18	93.55	93.28	0.94	8.829	0.039
+950	av.RobAtHome 1.2	learning	stat-prone	normal			94.22	2	Saguaro	98.03	3.81	96.81	96.57	98.03	97.66	93.28	88.81	0.937	8.929	0.039
+963	fala.robocode.FalaRobot 1.0	head-on	rammer	normal		1	96.22	2	Ogi	100.0	3.78	97.95	98.84	98.96	97.61	97.66	100.0	0.95	8.707	0.062
+667	ahf.Acero 1.0	head-on	flat	normal			96.07	2	ScalarR	99.85	3.78	98.71	97.47	99.12	99.85	97.7	97.22	0.969	3.221	0.013
+826	kawigi.robot.Girl 1.2	learning	flat	normal			91.85	3	BeepBoop	95.62	3.77	95.62	95.5	91.67	95.52	93.71	92.37	0.945	7.55	0.034
+593	dy.LevelOne 2.0	linear	stat-prone	normal	1		95.99	3	BeepBoop	99.76	3.77	99.76	97.78	96.81	98.46	98.24	98.33	0.969	4.7	0.028
+173	ers.micro.speusippus.Speusippus 0.3	learning	flat	shield	1		93.02	2	Saguaro	96.78	3.77	87.95	92.03	96.78	83.3	86.15	94.4	0.755	28.457	0.103
+457	lrem.magic.TormentedAngel Antiquitie	learning	oscillator	shield	1	1	96.23	2	Ogi	100.0	3.77	97.18	96.07	97.16	82.34	99.53	100.0	0.992	0.5	0.006
+466	ngf.nano.Sparky 0.1.5	learning	circular-prone	shield		1	96.24	4	Ogi	100.0	3.76	98.73	94.31	92.9	90.61	83.18	100.0	0.938	3.814	0.009
+959	evd.X1 0.01	head-on+learning	stat-prone	normal			96.09	4	ScalarR	99.83	3.74	99.33	98.43	98.44	99.83	97.73	97.15	0.97	3.9	0.028
+178	gre.svman4.Morfeas 1.4.3	learning	flat	normal			80.12	2	BeepBoop	83.86	3.74	83.86	77.26	69.01	79.15	74.51	69.78	0.781	24.75	0.084
+1025	test.Podgy 4.0	learning	mixed	normal			88.33	3	ScalarR	92.07	3.74	91.25	89.13	86.89	92.07	89.12	85.55	0.862	15.6	0.045
+796	grybgoofy.GoofyBot 0.10	learning	flat	normal			90.67	2	ScalarR	94.38	3.7	93.19	92.95	92.94	94.38	91.4	90.5	0.892	14.921	0.055
+456	nz.jdc.nano.AralR 1.1	learning	stat-prone	normal			90.37	3	BeepBoop	94.03	3.66	94.03	90.76	90.67	93.46	93.73	90.53	0.901	15.236	0.087
+813	jaemcrb.nano.M1Abrams 1.0	learning	stat-prone	normal			95.06	2	ScalarR	98.72	3.66	97.9	96.55	95.25	98.72	96.81	94.97	0.966	5.014	0.022
+607	stelo.MirrorMicro 1.1	learning	flat	normal			92.23	4	BeepBoop	95.88	3.65	95.88	87.83	94.31	90.42	90.76	93.56	0.936	10.114	0.058
+517	Krabb.fe4r.Fe4r 0.4	learning	flat	normal			92.06	4	ScalarR	95.69	3.62	95.45	94.96	93.52	95.69	94.7	94.59	0.92	8.736	0.025
+51	pez.rumble.Ali 0.4.9	learning	circular-prone	shield	1	1	95.11	3	Ogi	98.73	3.62	97.35	95.94	60.41	71.74	68.07	98.73	0.952	3.057	0.017
+734	mrm.MightyMoose .2	mixed	stat-prone	normal	1	1	96.08	3	BeepBoop	99.7	3.62	99.7	98.86	98.79	99.2	95.8	99.3	0.961	5.55	0.022
+1100	velas.Alpha 1.0	head-on+learning	rammer	normal			95.66	2	ScalarR	99.28	3.62	98.64	99.15	99.21	99.28	98.78	95.61	0.966	5.586	0.048
+808	dft.Krazy 1.5	learning	flat	normal			90.36	3	BeepBoop	93.96	3.6	93.96	92.23	87.47	92.5	93.56	92.76	0.905	11.693	0.051
+761	rfj.Sunburn 1.1	learning	flat	normal			92.0	3	ScalarR	95.59	3.59	93.4	93.31	91.57	95.59	94.39	92.72	0.897	13.279	0.066
+272	apv.MicroAspid 1.8	learning	wall-runner	shield	1	1	96.41	2	BeepBoop	100.0	3.59	100.0	99.66	97.17	74.66	74.91	90.57	0.917	2.614	0.01
+532	dsx724.VSAB_EP3_ATR 1.1	mixed	flat	normal			96.29	3	BeepBoop	99.86	3.57	99.86	99.04	97.48	99.69	98.82	77.82	0.951	6.629	0.06
+416	jcz.linio.Linio 2.0.H	learning	stat-prone	normal			91.68	2	BeepBoop	95.24	3.56	95.24	93.13	92.09	94.04	92.29	91.02	0.911	15.1	0.116
+1022	EBBU.Sim2 1.02	learning	circular-prone	stop-go			95.78	3	ScalarR	99.34	3.56	99.07	97.65	96.25	99.34	99.33	96.55	0.929	10.721	0.053
+850	stuff.Vlad 0.1	learning	stat-prone	normal			89.66	4	ScalarR	93.21	3.55	92.4	90.43	91.71	93.21	89.71	88.55	0.909	12.643	0.06
+614	pulsar.Nanis 0.3	learning	head-on-prone	normal			95.85	5	Saguaro	99.4	3.55	97.81	95.85	99.4	97.79	94.97	94.52	0.933	10.014	0.071
+452	bvh.mini.Fenrir 0.39	learning	flat	shield	1	1	94.35	5	BeepBoop	97.87	3.52	97.87	92.12	95.77	84.96	81.07	97.31	0.936	1.693	0.008
+1066	jgap.JGAP23423 1.0	head-on+learning	stat-prone	normal			95.22	3	ScalarR	98.73	3.51	98.28	97.6	96.6	98.73	97.65	96.03	0.947	7.536	0.045
+634	slugzilla.RandomLinear 1.0	linear+learning	flat	normal	1		96.5	2	BeepBoop	100.0	3.5	100.0	99.69	99.63	99.28	99.53	99.53	0.958	4.357	0.01
+875	shrub.Silver v048	linear	flat	normal			95.72	3	Saguaro	99.2	3.48	99.07	97.76	99.2	98.54	97.43	98.12	0.958	5.157	0.026
+177	bayen.nut.Squirrel 1.621	learning	flat	shield	1		96.2	5	Ogi	99.67	3.47	94.85	96.19	93.19	96.12	96.65	99.67	0.805	22.243	0.063
+572	ar.TheoryOfEverything 1.2.1	mixed	flat	stop-go			91.94	3	BeepBoop	95.4	3.46	95.4	88.32	91.86	90.38	89.61	90.05	0.877	15.586	0.047
+561	slugzilla.SNGGF 1.0	learning	stat-prone	normal		1	96.02	2	Saguaro	99.45	3.44	98.92	97.77	99.45	96.78	97.57	98.39	0.958	7.0	0.06
+686	dmp.nano.Eve 3.41	learning	stat-prone	normal	1	1	93.06	2	ScalarR	96.49	3.42	93.66	91.54	95.61	96.49	94.27	95.29	0.94	9.243	0.053
+259	pez.mini.ChironexFleckeri 0.5	learning	flat	normal			85.1	2	BeepBoop	88.52	3.42	88.52	84.11	86.98	87.53	81.21	79.61	0.821	21.929	0.071
+149	gh.GrubbmGrb 1.2.4	unread	circular-prone	shield	1	1	95.09	2	BeepBoop	98.5	3.41	98.5	98.47	77.81	87.95	87.67	92.03	0.926	2.3	0.005
+374	divineomega.DivineBot 1.9.5	mixed	flat	normal			92.39	2	DrussGT	95.8	3.41	95.52	95.8	89.09	95.43	94.93	93.97	0.921	10.857	0.088
+347	qohnil.blot.BlotBot 3.61	learning	stat-prone	normal			85.12	4	BeepBoop	88.53	3.41	88.53	83.64	79.51	86.34	86.22	80.57	0.847	22.021	0.104
+1020	amk.jointstrike.JointStrike 0.2	linear+learning	circular-prone	normal			95.19	3	BeepBoop	98.59	3.4	98.59	96.65	96.4	97.81	95.31	97.03	0.942	8.271	0.052
+911	PK.Twardy 0.4.2	linear+learning	stat-prone	normal			96.41	4	Saguaro	99.78	3.38	99.69	98.28	99.78	99.33	98.26	97.43	0.973	3.286	0.019
+840	nexus.Experimental 0.2	head-on	flat	normal			96.41	2	ScalarR	99.78	3.37	99.64	97.76	97.53	99.78	99.06	95.83	0.981	1.921	0.01
+669	rjw.RabidWombat 0.71	mixed	stat-prone	shield	1		96.64	4	Ogi	100.0	3.36	98.2	98.73	98.83	97.28	98.6	100.0	0.948	7.314	0.027
+146	rdt.Wraith.Wraith 0.3	learning	oscillator	normal			85.65	2	BeepBoop	89.01	3.36	89.01	85.79	76.98	83.54	84.68	83.29	0.87	16.993	0.064
+528	rdm.Grasshopper 0.5e	learning	stat-prone	normal			94.47	2	JKHydra	97.81	3.34	97.77	95.25	94.94	97.48	97.81	95.47	0.936	7.714	0.03
+566	stf.PanzerGeneral 0.1	learning	stat-prone	normal			89.72	10	BeepBoop	93.06	3.34	93.06	90.23	87.42	91.53	86.42	87.09	0.899	15.379	0.073
+1080	genprog.Rinmorikazu 1.0	learning	stat-prone	normal			95.84	2	JKHydra	99.18	3.34	98.25	98.01	97.88	98.75	99.18	96.03	0.953	5.521	0.037
+212	ph.musketeer.Musketeer 0.6	learning	flat	shield	1	1	96.67	4	JKHydra	100.0	3.33	99.46	95.54	99.09	77.52	100.0	100.0	0.985	0.921	0.025
+1051	bbo.RamboT 0.3	learning	rammer	normal			96.53	2	JKHydra	99.86	3.33	99.49	99.49	98.73	99.83	99.86	97.4	0.974	3.857	0.081
+800	kawam.kmBot9 1.0	mixed	flat	normal			95.66	2	JKHydra	98.98	3.33	98.95	97.05	96.98	98.07	98.98	95.54	0.953	6.057	0.032
+815	bndl.LostLion 1.2	linear+learning	oscillator	normal	1		93.41	5	DrussGT	96.73	3.32	96.07	96.73	94.67	94.63	94.96	85.63	0.932	9.65	0.046
+590	deith.Czolgzilla 0.11	learning	flat	normal			93.75	2	JKHydra	97.07	3.32	95.77	94.99	91.77	95.13	97.07	95.17	0.918	10.679	0.073
+628	oog.nano.SavantVS 1.1	learning	flat	normal			95.98	3	BeepBoop	99.28	3.3	99.28	98.13	99.07	98.67	96.38	98.41	0.953	4.764	0.013
+710	froh.micro.Aversari 0.31	mixed	flat	normal			96.42	3	JKHydra	99.71	3.29	99.09	96.85	97.51	98.39	99.71	99.62	0.976	3.286	0.018
+847	sgp.nano.FurryLeech 1.0	learning	flat	normal			96.59	2	ScalarR	99.87	3.28	99.82	98.31	98.01	99.87	96.92	96.81	0.993	0.693	0.004
+1089	genprog.Zafaran 1.0	learning	mixed	normal			95.72	4	JKHydra	99.0	3.28	97.86	98.03	96.9	98.97	99.0	96.57	0.952	4.993	0.044
+1079	mbro.Detektor3 0.1.1	head-on	stat-prone	normal			96.61	3	JKHydra	99.88	3.27	99.87	99.33	98.13	99.71	99.88	85.09	0.962	5.171	0.033
+1075	genprog.Gajeel 1.0	learning	stat-prone	normal			95.71	3	ScalarR	98.98	3.27	98.26	98.46	97.4	98.98	98.86	95.08	0.965	3.943	0.028
+804	jrm.Test0 1.0	linear+learning	flat	normal			95.6	4	BeepBoop	98.86	3.26	98.86	97.18	98.37	97.49	93.74	92.0	0.967	4.314	0.018
+32	davidalves.Firebird 0.25	learning	stat-prone	shield	1	1	96.75	2	JKHydra	100.0	3.25	99.85	98.41	98.43	73.91	100.0	99.54	0.979	0.836	0.003
+1084	geep.mini.GPBotB 1.1	learning	stat-prone	normal			93.56	2	Saguaro	96.79	3.23	94.16	93.28	96.79	94.38	95.69	94.26	0.926	11.464	0.083
+1009	acid.Syzygy 1.0.4	head-on+learning	circular-prone	normal			96.59	5	ScalarR	99.81	3.22	99.59	99.38	96.3	99.81	99.61	97.69	0.972	4.321	0.036
+103	jekl.DarkHallow .90.9	learning	stat-prone	shield	1	1	96.69	2	Ogi	99.91	3.22	99.59	97.82	97.89	76.35	92.03	99.91	0.873	8.557	0.026
+1085	mbro.BelajarBot 0.0.3	head-on	circular-prone	normal			96.64	2	BeepBoop	99.84	3.2	99.84	99.33	98.66	99.79	99.66	87.14	0.986	2.1	0.026
+611	krillr.mini.JointStrike 2.0.0	learning	flat	normal			86.76	2	ScalarR	89.94	3.18	89.57	88.19	88.1	89.94	88.67	86.72	0.891	11.407	0.031
+630	lk.nano.Avesnar 1.1	learning	flat	normal			95.69	2	ScalarR	98.87	3.18	98.16	96.68	98.63	98.87	96.55	97.3	0.968	3.686	0.013
+986	gtf.robocode.Strafer 2.1.1	mixed	stat-prone	normal			92.93	3	Ogi	96.1	3.17	95.97	94.88	94.61	95.72	93.55	96.1	0.917	12.879	0.077
+161	mladjo.iRobot 0.3	learning	flat	stop-go			94.94	3	Ogi	98.09	3.15	95.12	93.92	96.42	96.02	83.8	98.09	0.771	24.879	0.068
+1057	robin.SCALPBot 1.0	learning	stat-prone	normal			95.36	4	ScalarR	98.5	3.14	96.74	97.4	96.94	98.5	97.25	95.93	0.954	5.9	0.036
+1133	pb.Oscillator 1.0	learning	stat-prone	normal			96.24	3	ScalarR	99.38	3.14	98.25	98.96	98.36	99.38	97.6	97.07	0.967	4.986	0.044
+651	ethdsy.Malacka 2.4	mixed	rammer	normal			94.75	2	JKHydra	97.89	3.14	96.69	94.36	92.27	96.16	97.89	95.66	0.932	10.4	0.073
+741	jje.BagPuss 1.2	linear+learning	flat	normal			96.3	2	BeepBoop	99.43	3.14	99.43	96.96	95.9	99.06	96.82	85.52	0.95	6.186	0.04
+567	tkt.RedShift 1.1.CS.0	learning	linear-prone	normal		1	96.69	2	BeepBoop	99.81	3.12	99.81	98.83	98.72	99.26	98.91	99.54	0.965	5.364	0.066
+635	sgp.MadHatter 4.13	mixed	stat-prone	normal			95.18	2	BeepBoop	98.28	3.1	98.28	96.16	94.78	97.87	96.1	95.04	0.95	8.164	0.064
+877	winamp32.micro.MicroMacro 1.0	learning	stat-prone	normal		1	96.36	3	Saguaro	99.46	3.1	98.69	97.8	99.46	99.1	97.2	98.72	0.969	5.214	0.067
+901	robar.haiku.Spike 1.0	learning	flat	normal			94.64	3	ScalarR	97.72	3.08	95.91	95.63	93.45	97.72	95.21	91.78	0.931	8.993	0.034
+932	bvh.loki.Loki 0.5	linear+learning	circular-prone	normal			96.37	7	BeepBoop	99.44	3.07	99.44	98.39	98.4	98.77	97.43	92.68	0.965	5.3	0.043
+105	axeBots.Okami 1.04	learning	oscillator	normal			79.64	3	BeepBoop	82.7	3.06	82.7	75.07	65.21	77.31	67.4	74.69	0.793	22.15	0.069
+441	robar.nano.MosquitoPM 1.0	learning	stat-prone	shield	1	1	96.47	3	BeepBoop	99.53	3.06	99.53	98.28	95.87	86.91	81.55	92.41	0.926	4.65	0.007
+404	scheronimus.AntiRebel 1.1	linear+learning	flat	stop-go			96.55	4	BeepBoop	99.59	3.04	99.59	97.19	96.35	99.33	97.71	79.31	0.906	10.043	0.028
+371	pez.mako.Mako 1.5	learning	flat	shield	1	1	95.93	3	Ogi	98.97	3.04	95.85	93.2	96.66	83.14	92.7	98.97	0.901	3.207	0.01
+785	bots.UnterBot 1.0	learning	flat	normal			96.14	6	Saguaro	99.16	3.02	97.61	97.36	99.16	98.69	94.77	94.87	0.967	4.779	0.036
+712	mz.Movement 1.8	learning	oscillator	normal			96.37	3	BeepBoop	99.39	3.02	99.39	97.25	98.87	98.39	97.96	97.46	0.941	6.85	0.021
+702	kawigi.nano.ThnikkaBot 0.9	head-on	stat-prone	normal			96.22	3	DrussGT	99.24	3.02	94.08	99.24	98.73	96.47	98.39	90.41	0.961	5.036	0.02
+938	whitesquare.robots.SkynetAdvanced 1.1	mixed	rammer	normal			96.83	2	BeepBoop	99.83	3.0	99.83	98.43	98.73	99.1	97.82	94.9	0.974	4.371	0.053
+546	doka.ShinigamiKNN 1.0	learning	stat-prone	normal			96.12	8	DrussGT	99.12	3.0	98.83	99.12	96.85	98.24	96.82	98.8	0.962	4.714	0.013
+700	js.PinBall 1.6	linear+learning	stat-prone	normal			96.3	2	BeepBoop	99.29	2.99	99.29	98.36	98.42	98.85	98.7	95.43	0.956	5.336	0.024
+554	dft.Guppy 1.0	learning	rammer	normal			94.58	3	Saguaro	97.57	2.99	95.54	95.6	97.57	96.59	90.81	93.8	0.946	8.029	0.038
+730	conscience.Bulldozer 1.0a	mixed	rammer	normal			88.67	2	BeepBoop	91.64	2.97	91.64	80.1	84.65	88.45	87.3	86.68	0.894	18.05	0.226
+996	matt.BlueMind 0.8.00	learning	stat-prone	normal			96.58	4	JKHydra	99.52	2.94	99.16	98.59	97.1	98.86	99.52	93.83	0.958	5.821	0.026
+405	ds.OoV4 0.3b	learning	stat-prone	shield	1	1	97.06	4	JKHydra	100.0	2.94	99.89	99.1	99.11	90.94	100.0	100.0	0.973	0.571	0.005
+960	oog.nano.SavantWS 0.1	learning	stat-prone	normal			96.2	2	ScalarR	99.13	2.93	98.68	97.29	97.6	99.13	98.94	95.05	0.962	4.843	0.019
+895	hlavko.nano.Phoenix 1.0	head-on	stat-prone	normal			96.96	3	ScalarR	99.88	2.92	99.84	98.71	98.51	99.88	99.68	93.29	0.966	3.579	0.014
+250	nz.jdc.micro.HedgehogP 1.2	learning	flat	shield			88.84	3	BeepBoop	91.76	2.92	91.76	85.41	89.49	82.82	88.16	90.89	0.732	27.307	0.08
+1090	cb.nano.Insomnia 1.0	learning	flat	normal			96.43	2	Saguaro	99.34	2.91	93.27	92.93	99.34	96.03	93.68	94.43	0.94	9.164	0.04
+395	bjl.LoneDragon 0.5	mixed	flat	normal			93.35	2	BeepBoop	96.26	2.91	96.26	89.97	94.1	94.4	93.08	86.82	0.904	10.743	0.091
+160	cuoq.Kakera 1.0	learning	flat	shield	1	1	94.97	2	BeepBoop	97.87	2.91	97.87	89.6	94.76	80.61	80.14	78.12	0.743	25.571	0.079
+451	serenity.serenityFire 1.29	mixed	flat	stop-go			94.17	3	BeepBoop	97.07	2.9	97.07	93.38	95.15	95.66	93.69	97.04	0.914	11.086	0.048
+580	stelo.UntouchableNano 1.4	learning	stat-prone	shield		1	95.7	2	Saguaro	98.6	2.9	95.64	95.54	98.6	95.13	84.91	95.04	0.901	3.786	0.011
+521	dsx724.VSAB_EP3a 1.0	mixed	oscillator	normal	1		97.1	4	BeepBoop	99.99	2.89	99.99	96.54	98.58	99.76	99.47	99.44	0.978	3.2	0.028
+1109	kjc.MailManX 2.0	learning	stat-prone	normal			94.81	2	JKHydra	97.7	2.89	95.16	94.89	97.08	96.14	97.7	93.87	0.942	8.671	0.095
+471	steff.Rebel 2.1	mixed	stat-prone	stop-go			96.27	2	Ogi	99.16	2.89	96.66	95.57	97.61	94.89	95.46	99.16	0.945	7.664	0.042
+1060	dcs.Eater_of_Worlds 1.1.3-A	head-on+learning	stat-prone	normal			96.25	2	Saguaro	99.13	2.88	98.02	98.32	99.13	99.08	97.82	96.25	0.965	4.793	0.028
+908	dukie.Ambassador 1.0	mixed	stat-prone	normal			96.44	4	BeepBoop	99.31	2.88	99.31	95.6	98.67	98.91	97.24	97.79	0.966	5.021	0.026
+767	bvh.micro.Freya 0.3	learning	flat	normal			95.58	2	Saguaro	98.45	2.87	97.29	94.94	98.45	96.2	96.28	94.47	0.927	9.014	0.029
+359	lucasslf.Dodger 1.0	learning	flat	shield	1	1	97.13	3	Ogi	100.0	2.87	99.31	98.46	97.99	83.88	98.08	100.0	0.988	0.764	0.012
+355	stelo.Mirror 1.1	learning	flat	normal			92.13	3	Saguaro	95.0	2.87	88.02	75.53	95.0	87.86	69.91	77.63	0.917	14.3	0.106
+736	takeBot.WeavingWiggle 1.1	linear+learning	stat-prone	normal			96.63	3	Saguaro	99.5	2.87	98.16	98.33	99.5	98.65	97.87	97.95	0.969	5.086	0.036
+892	supersample.SuperBoxBot 1.0	head-on	wall-runner	normal			97.14	2	BeepBoop	100.0	2.86	100.0	99.29	99.1	99.94	99.2	98.4	0.992	1.086	0.006
+57	wcsv.Engineer.Engineer 0.5.4	learning	circular-prone	shield	1	1	96.34	2	BeepBoop	99.19	2.85	99.19	97.52	97.8	69.26	71.49	82.32	0.985	0.507	0.015
+935	ICS4U1.Patrick_White_Schrodinger 1.1	linear+learning	oscillator	normal	1	1	96.53	2	Saguaro	99.37	2.84	97.56	97.78	99.37	98.05	97.73	92.58	0.966	5.157	0.03
+1074	braaropolis.Abot 1.0	head-on+learning	stat-prone	normal			96.21	11	ScalarR	99.04	2.83	98.64	97.91	98.0	99.04	97.54	94.91	0.972	4.1	0.033
+711	tvv.nano.Polaris 1.2	learning	stat-prone	normal			95.97	4	ScalarR	98.8	2.83	97.85	97.55	98.7	98.8	98.49	96.13	0.971	4.7	0.054
+1113	zch.David 0.21	learning	rammer	normal			96.9	2	ScalarR	99.71	2.81	99.17	99.14	98.61	99.71	99.01	98.18	0.974	3.8	0.056
+1010	TCMI.nano.Copper 0.2	learning	linear-prone	normal			96.79	2	BeepBoop	99.59	2.8	99.59	98.35	99.42	98.65	96.6	93.53	0.953	5.271	0.018
+989	conscience.Idem 1.0a	linear+learning	flat	normal			96.95	2	ScalarR	99.75	2.8	99.56	98.92	99.7	99.75	96.53	97.38	0.965	4.129	0.016
+518	gu.MicroScoob 1.3	learning	stat-prone	shield	1		96.45	3	Ogi	99.24	2.79	94.05	94.68	95.97	95.03	95.64	99.24	0.913	11.671	0.042
+381	dz.Caedo 1.4	learning	flat	shield	1	1	94.72	3	Ogi	97.5	2.78	96.87	96.53	96.85	90.0	87.49	97.5	0.862	17.657	0.129
+428	suh.nano.RandomPM 1.02	learning	stat-prone	shield	1	1	95.91	5	BeepBoop	98.69	2.78	98.69	93.37	92.94	79.22	95.42	95.51	0.91	7.014	0.011
+1044	xiongan.Xiongan 1.1	linear	stat-prone	normal			96.6	2	BeepBoop	99.38	2.78	99.38	99.28	94.5	98.42	96.84	92.37	0.953	5.75	0.053
+681	robar.nano.Breeze 0.3	learning	flat	normal			88.45	4	BeepBoop	91.23	2.78	91.23	89.98	87.58	88.98	89.72	88.49	0.867	17.221	0.054
+869	projectx.ProjectNano 2.0	mixed	stat-prone	stop-go	1		96.73	2	BeepBoop	99.5	2.77	99.5	97.45	97.79	98.9	96.6	98.4	0.933	9.214	0.033
+552	non.mega.NoName 0.0	learning	flat	normal			85.31	2	BeepBoop	88.06	2.75	88.06	87.15	80.11	86.74	83.03	81.22	0.848	19.207	0.056
+697	kawigi.sbf.Barracuda 1.0	head-on	flat	normal	1		97.26	2	JKHydra	100.0	2.74	99.65	99.01	99.69	99.76	100.0	99.95	0.956	3.979	0.007
+639	casey.Flee 1.0	learning	flat	shield	1	1	95.55	4	BeepBoop	98.29	2.74	98.29	92.91	93.28	89.01	92.16	97.71	0.922	4.971	0.013
+360	slugzilla.SquirmyToad 3.9	learning	stat-prone	shield	1	1	93.26	3	Saguaro	95.99	2.73	95.51	94.9	95.99	81.2	81.5	85.52	0.925	3.443	0.019
+1092	mbh.Mbh 0.1	head-on	rammer	normal			97.05	2	ScalarR	99.73	2.69	99.07	99.3	98.62	99.73	98.58	97.99	0.979	2.686	0.059
+539	agd.Mooserwirt2 2.7	head-on	flat	normal			95.93	2	BeepBoop	98.61	2.68	98.61	95.95	94.7	98.16	97.0	89.86	0.945	6.836	0.042
+83	rz.Aleph 0.34	learning	stat-prone	shield	1	1	97.25	2	BeepBoop	99.93	2.68	99.93	98.96	98.19	75.69	93.33	99.8	0.989	0.643	0.001
+924	eld.Hmm 1.0	mixed	flat	normal			93.76	3	DrussGT	96.43	2.67	95.36	96.43	90.43	96.42	92.48	95.59	0.938	6.8	0.086
+417	jp.Perpy 16.0	mixed	flat	normal	1		85.31	4	BeepBoop	87.97	2.66	87.97	86.54	80.92	86.61	84.02	83.14	0.838	18.329	0.078
+692	casey.Flump 1.0	learning	flat	stop-go			89.28	3	BeepBoop	91.94	2.66	91.94	88.75	87.76	89.43	91.84	86.73	0.858	17.7	0.062
+983	amc.ROBv400 1.0	head-on	linear-prone	normal			97.14	2	ScalarR	99.8	2.66	99.64	98.89	98.06	99.8	99.7	97.63	0.976	3.936	0.042
+114	nz.jdc.micro.HedgehogGF 1.5	mixed	stat-prone	shield	1	1	96.08	2	BeepBoop	98.73	2.65	98.73	97.74	95.52	82.82	85.78	77.33	0.91	5.914	0.03
+605	robar.nano.Scytodes 0.3	learning	stat-prone	normal	1	1	94.89	2	Saguaro	97.52	2.63	96.57	97.11	97.52	94.17	91.69	94.71	0.949	8.243	0.059
+603	wiki.mini.GouldingiHT 1.0	head-on	flat	normal			97.11	2	ScalarR	99.74	2.63	97.89	98.04	98.75	99.74	98.09	90.81	0.946	4.664	0.013
+421	amk.ChumbaWumba 0.3	learning	flat	shield	1	1	97.38	2	JKHydra	100.0	2.62	93.31	95.87	93.68	91.12	100.0	98.15	0.892	4.521	0.005
+846	mld.Infinity 2.2	learning	flat	normal			96.37	3	ScalarR	98.99	2.62	98.89	96.98	96.98	98.99	94.83	87.69	0.971	4.643	0.033
+812	blir.nano.Cabbage R1.0.1	mixed	stat-prone	normal			97.19	2	Saguaro	99.81	2.62	98.85	97.81	99.81	99.57	97.36	97.4	0.955	7.471	0.037
+1058	robin.ScalpBotC 1.0	learning	wall-runner	normal			96.25	2	JKHydra	98.87	2.62	97.63	97.25	96.84	98.68	98.87	95.04	0.963	3.829	0.044
+958	uccc.Dorito 1.12	linear+learning	stat-prone	normal			96.99	3	JKHydra	99.6	2.61	98.97	99.25	98.18	99.38	99.6	97.85	0.964	4.914	0.055
+715	scheronimus.ScheroBot 2.3	linear+learning	stat-prone	normal			97.19	2	BeepBoop	99.79	2.61	99.79	98.53	97.9	99.61	98.31	95.67	0.973	4.121	0.023
+809	scheronimus.NanoScheroBot 1.0	linear+learning	stat-prone	normal			97.34	2	BeepBoop	99.93	2.59	99.93	97.97	99.76	99.65	98.54	81.13	0.978	3.15	0.015
+206	oog.micro.SavantMicro 1.1	learning	flat	shield	1	1	95.62	3	BeepBoop	98.21	2.59	98.21	96.74	96.66	78.71	74.94	94.94	0.738	27.157	0.094
+1128	apc.Caan 1.0	learning	head-on-prone	normal			93.64	4	BeepBoop	96.23	2.59	96.23	94.83	95.27	96.08	93.88	94.33	0.939	9.121	0.064
+818	Legend.Qetro 1.6	learning	head-on-prone	normal	1		97.44	2	Ogi	100.0	2.56	99.27	97.32	99.87	99.33	97.3	100.0	0.986	2.064	0.01
+454	boe.Minerva 0.80	learning	stat-prone	normal			89.53	2	BeepBoop	92.09	2.56	92.09	91.71	87.05	91.75	89.42	88.43	0.897	14.643	0.06
+473	kinsen.melee.Angsaichmophobia 1.8c	learning	flat	normal			90.98	2	BeepBoop	93.53	2.55	93.53	91.24	91.34	90.75	88.11	89.22	0.894	12.643	0.044
+787	Ex.Survival 3.7	learning	flat	normal			96.91	2	Saguaro	99.46	2.55	98.9	98.08	99.46	98.7	96.08	98.64	0.976	2.85	0.011
+565	doka.KillerRabbit 1.0	learning	flat	normal			85.59	2	BeepBoop	88.13	2.54	88.13	85.2	86.69	87.35	86.68	74.22	0.812	21.357	0.057
+676	mb.Beast 0.4.1	linear+learning	stat-prone	normal			97.13	2	Saguaro	99.67	2.54	99.53	98.5	99.67	98.73	96.83	97.15	0.962	4.786	0.025
+915	supersample.SuperWalls 1.0	mixed	stat-prone	normal			96.73	2	BeepBoop	99.26	2.53	99.26	98.26	95.47	98.08	96.33	97.49	0.955	5.521	0.02
+750	kawigi.spare.SpareParts 0.7.6nosnd	head-on	flat	normal			93.78	4	Saguaro	96.3	2.52	95.44	95.34	96.3	95.78	95.96	94.05	0.934	8.193	0.039
+276	nz.jdc.nano.PralDeGuerre 1.2	learning	flat	shield		1	87.29	2	Ogi	89.81	2.52	87.81	81.41	86.63	84.27	80.48	89.81	0.766	26.043	0.078
+821	mmb.Roskilde 0.5	linear	flat	normal			97.06	2	ScalarR	99.57	2.5	99.38	98.68	99.13	99.57	99.21	98.49	0.946	6.043	0.038
+979	suh.nano.CrossC 1.00	mixed	stat-prone	normal			97.21	6	ScalarR	99.71	2.5	99.66	98.72	98.6	99.71	98.74	94.3	0.98	3.171	0.027
+822	hlavko.nano.Ringo 2.0	head-on	stat-prone	normal			97.36	4	ScalarR	99.85	2.49	99.35	97.77	98.41	99.85	98.91	94.59	0.976	2.914	0.011
+412	squidM.SurfinUSA 1.0	linear	flat	normal			97.51	3	BeepBoop	99.98	2.47	99.98	98.83	99.55	99.44	96.23	92.16	0.971	3.257	0.008
+817	maribo.melee.BMV 0.1	linear	flat	normal			97.4	3	BeepBoop	99.85	2.45	99.85	98.4	99.53	99.44	97.61	93.73	0.936	7.379	0.021
+782	ruc.nano.Zealot 0.2	learning	stat-prone	normal			96.06	2	Ogi	98.51	2.45	97.87	97.65	94.77	97.66	97.17	98.51	0.966	4.779	0.021
+1019	tex.Longbot 0.4	learning	stat-prone	normal			95.99	3	Saguaro	98.44	2.45	96.69	95.92	98.44	96.73	96.51	93.45	0.949	6.9	0.03
+316	ahf.r2d2.R2d2 0.86	learning	stat-prone	shield	1	1	96.66	4	Ogi	99.09	2.44	97.33	95.82	98.24	89.24	96.64	99.09	0.927	2.929	0.003
+857	bots.UberBot 1.2c	learning	stat-prone	normal			97.13	4	Saguaro	99.56	2.43	97.98	97.09	99.56	99.07	98.51	96.7	0.976	3.343	0.023
+735	pez.nano.Icarus 0.3	mixed	flat	normal			97.0	2	Saguaro	99.43	2.43	99.05	97.93	99.43	98.38	97.64	96.26	0.971	3.557	0.014
+845	squidM.SquidmanNano 1.0	linear	rammer	normal			96.79	2	BeepBoop	99.22	2.43	99.22	98.6	98.64	98.9	93.97	95.35	0.964	5.779	0.036
+1013	dcs.Eater_of_Worlds_Mini 1.0	head-on	stat-prone	normal			97.45	3	ScalarR	99.87	2.42	99.2	99.11	98.96	99.87	98.33	93.05	0.972	3.557	0.017
+245	kawigi.sbf.FloodMini 1.4	learning	flat	shield	1	1	96.82	3	Ogi	99.24	2.42	98.87	96.73	97.16	85.82	96.91	99.24	0.943	1.886	0.06
+435	labg.Cataclysm 2.05	learning	stat-prone	normal			89.64	2	BeepBoop	92.05	2.41	92.05	88.67	84.86	88.85	87.29	87.24	0.884	15.207	0.072
+946	matt.advanced.Katana 1.0	learning	stat-prone	normal			94.58	3	JKHydra	96.99	2.41	96.02	94.69	92.69	95.04	96.99	95.17	0.948	8.321	0.068
+827	zzx.Gron 1.14	learning	flat	normal			97.19	5	ScalarR	99.58	2.39	99.21	98.03	99.07	99.58	98.62	96.89	0.967	3.643	0.017
+1043	amk.superstrike.SuperStrike 0.3	linear+learning	oscillator	normal			97.03	6	BeepBoop	99.42	2.39	99.42	97.22	97.78	98.78	96.93	97.3	0.97	3.421	0.022
+863	amc.ROBv203 1.0	linear+learning	linear-prone	normal			97.31	4	BeepBoop	99.68	2.37	99.68	98.87	99.59	99.18	99.0	98.15	0.973	4.043	0.022
+622	dummy.micro.Sparrow 2.5	learning	flat	shield	1	1	97.64	3	DrussGT	100.0	2.36	99.81	100.0	95.18	90.31	97.94	100.0	0.986	0.843	0.037
+972	vft.Hrist 1.0	learning	flat	normal			91.53	2	JKHydra	93.87	2.34	93.7	93.31	93.44	93.01	93.87	92.07	0.91	10.521	0.043
+783	timmit.nano.TimCat 0.13	head-on	flat	normal	1		97.37	3	ScalarR	99.71	2.34	99.56	97.25	99.57	99.71	94.42	96.17	0.967	2.857	0.007
+752	romz.robot.Test 0.1.0	learning	stat-prone	normal			89.9	3	BeepBoop	92.23	2.33	92.23	90.76	88.02	92.07	89.72	88.78	0.879	19.371	0.085
+181	ags.polished.PolishedRuby 1	learning	flat	normal			92.55	2	Saguaro	94.86	2.31	89.85	77.69	94.86	90.92	71.7	78.44	0.914	13.714	0.104
+899	suzushin7.nano.Galaxy02 1.01	linear	stat-prone	normal			97.62	2	BeepBoop	99.9	2.28	99.9	98.89	99.5	99.72	98.22	96.99	0.986	2.0	0.014
+729	krillr.mega.Psyche 0.0.3	head-on	flat	normal			97.5	3	ScalarR	99.78	2.28	99.67	98.35	96.23	99.78	98.76	99.2	0.94	5.907	0.018
+933	dans.Cinnamon 1.2	learning	stat-prone	normal			93.47	2	Saguaro	95.75	2.28	95.49	93.7	95.75	95.46	91.76	89.12	0.917	9.057	0.032
+610	pulsar.PulsarNano 0.2.4	mixed	stat-prone	normal			97.56	3	Saguaro	99.83	2.27	99.18	98.27	99.83	97.48	97.17	91.09	0.977	3.421	0.018
+654	erdnis.Rover 0.3	learning	flat	normal			90.46	3	ScalarR	92.73	2.27	90.23	91.69	88.21	92.73	89.91	92.54	0.887	13.114	0.043
+912	EH.nano.NightBird M	linear	stat-prone	normal			97.43	2	BeepBoop	99.69	2.26	99.69	97.96	99.6	99.42	98.12	95.83	0.97	3.821	0.019
+701	kawigi.sbf.FloodMicro 1.5	head-on	flat	normal			97.7	4	ScalarR	99.95	2.25	99.48	98.68	99.19	99.95	99.48	98.3	0.984	1.714	0.005
+562	EH.mini.Panther 0.2	linear	flat	normal			97.73	4	BeepBoop	99.98	2.25	99.98	99.7	97.62	99.81	98.76	97.84	0.981	1.086	0.004
+1093	jgap.JGAP130166 1.0	learning	rammer	normal			97.46	4	JKHydra	99.71	2.25	98.95	98.93	97.88	99.58	99.71	97.94	0.966	4.443	0.054
+954	mn.micro.perceptual.Mimic 1.0.0	learning	flat	normal			94.45	3	Saguaro	96.7	2.25	93.6	85.68	96.7	94.17	77.97	88.49	0.938	9.393	0.073
+662	dft.Calliope 5.6	mixed	stat-prone	normal			94.64	2	BeepBoop	96.88	2.24	96.88	94.51	93.98	94.99	95.35	95.21	0.94	8.821	0.079
+257	wiki.mini.Griffon 0.1	learning	stat-prone	shield	1	1	97.77	2	JKHydra	100.0	2.23	98.31	98.81	98.66	86.45	100.0	99.24	0.957	2.729	0.004
+437	zyx.micro.Ant 1.1	learning	stat-prone	stop-go		1	96.46	3	DrussGT	98.69	2.23	96.42	98.69	97.97	93.34	95.11	91.45	0.924	10.457	0.043
+1158	ep.MyFirstRobot 1.0	head-on	rammer	normal			97.77	3	JKHydra	100.0	2.23	99.95	99.65	99.52	98.63	100.0	98.91	0.984	2.857	0.056
+944	baal.nano.N 1.42	learning	stat-prone	normal	1		97.74	3	BeepBoop	99.96	2.22	99.96	99.46	99.73	98.62	98.57	99.79	0.98	2.75	0.014
+128	stelo.Liblix 0.3.1	learning	flat	stop-go	1		93.69	4	Saguaro	95.9	2.22	81.57	78.94	95.9	76.84	78.49	83.53	0.745	28.236	0.081
+930	acid.Bl4ck 1.0	head-on+learning	stat-prone	normal			96.25	2	BeepBoop	98.45	2.2	98.45	97.33	95.27	98.13	98.1	96.73	0.945	7.229	0.046
+1138	sanja.First 0.1	mixed	flat	normal			97.48	2	JKHydra	99.66	2.18	99.6	98.46	99.02	99.32	99.66	97.87	0.987	1.529	0.018
+728	takeBot.SpinSpiral 1.2	mixed	stat-prone	normal			97.19	4	Saguaro	99.37	2.18	98.11	98.17	99.37	98.9	98.15	98.0	0.972	4.65	0.04
+1098	AD.CodaFirst 1.1	head-on	head-on-prone	normal	1		97.83	2	ScalarR	100.0	2.17	99.94	99.32	99.55	100.0	99.56	94.26	0.992	1.307	0.014
+762	lechu.Lechu 1.1	learning	stat-prone	normal			96.77	3	Saguaro	98.92	2.15	98.63	97.67	98.92	98.6	97.24	95.38	0.968	4.457	0.041
+449	supersample.SuperMercutio 1.0	learning	flat	shield	1	1	95.47	3	Ogi	97.6	2.13	95.8	97.18	96.86	88.14	96.2	97.6	0.889	9.636	0.014
+1078	jsal.Jsalbot 1.0	learning	stat-prone	normal			96.68	2	JKHydra	98.8	2.12	98.08	97.13	98.09	98.78	98.8	97.11	0.971	4.693	0.072
+775	caimano.Furia_Ceca 0.22	head-on	flat	normal			97.7	3	ScalarR	99.81	2.11	98.99	98.28	99.19	99.81	96.27	96.28	0.981	2.171	0.01
+793	suh.nano.AntiGravityL 1.01	learning	stat-prone	shield	1	1	97.91	3	JKHydra	100.0	2.09	99.8	99.92	99.95	99.87	100.0	99.92	0.989	0.264	0.001
+288	tcf.Drifter 29	learning	head-on-prone	shield	1	1	97.81	3	BeepBoop	99.89	2.08	99.89	99.23	97.46	78.08	85.22	99.7	0.986	0.093	0.0
+1073	Heal.TekitokaBot 1.0	learning	head-on-prone	normal			97.53	2	JKHydra	99.61	2.08	98.91	98.78	98.63	99.48	99.61	96.56	0.972	3.421	0.019
+124	rc.yoda.Yoda 1.0.6c.fix	learning	flat	shield	1		96.85	4	Ogi	98.91	2.06	90.01	94.72	95.91	96.52	75.4	98.91	0.782	24.429	0.084
+953	jeremyreeder.Vincent 2011.12.09	mixed	rammer	normal			97.74	4	BeepBoop	99.79	2.05	99.79	98.79	99.4	98.64	95.06	98.41	0.974	4.0	0.021
+1003	el33t.EL33tGangstarr2 2.0	learning	stat-prone	normal			95.14	3	ScalarR	97.19	2.05	96.91	96.76	95.19	97.19	96.99	96.04	0.95	8.0	0.047
+1061	zch.Hirkan 0.11	mixed	wall-runner	normal			97.66	3	ScalarR	99.71	2.05	99.37	98.92	98.62	99.71	99.63	98.84	0.971	3.664	0.026
+865	suh.nano.CornerRL 1.00	learning	wall-runner	normal			95.37	3	BeepBoop	97.38	2.01	97.38	96.26	94.97	97.06	96.02	90.51	0.952	7.257	0.056
+673	banshee.micro.Nexus6 0.3.0	mixed	stat-prone	stop-go			97.55	2	Ogi	99.55	2.0	99.54	98.64	98.17	99.11	96.7	99.55	0.946	7.736	0.03
+219	mladjo.Grrrrr 0.9	learning	flat	shield	1	1	97.43	3	Ogi	99.42	1.99	92.02	88.32	98.65	79.36	90.11	99.42	0.728	21.907	0.059
+909	stordy.StordyBot 1.0	linear	oscillator	normal			97.91	2	BeepBoop	99.88	1.97	99.88	98.0	98.8	99.12	96.95	98.87	0.975	3.186	0.015
+525	mladjo.AIR 0.7	learning	flat	stop-go	1		97.25	3	Ogi	99.21	1.96	89.47	92.99	97.46	87.33	92.58	99.21	0.833	19.657	0.059
+985	amc.ROBv301 1.1	head-on	linear-prone	normal			97.72	2	BeepBoop	99.67	1.95	99.67	99.01	98.9	99.65	98.82	99.35	0.974	4.243	0.039
+679	blir.mini.oops.Splooshlu 2.0	mixed	stat-prone	normal			97.91	3	BeepBoop	99.86	1.95	99.86	98.73	98.31	99.02	98.8	99.7	0.978	3.636	0.041
+1070	omens.CannonfodderNano 1.4	linear+learning	linear-prone	normal			97.38	4	Saguaro	99.32	1.94	98.58	97.86	99.32	98.26	98.11	97.55	0.952	8.293	0.057
+859	ha2.T2 0.2	mixed	stat-prone	normal	1		97.97	3	BeepBoop	99.91	1.94	99.91	97.71	98.67	99.58	98.78	93.47	0.976	3.421	0.016
+883	hapiel.Spiral 0.1	mixed	flat	normal			96.18	3	BeepBoop	98.12	1.94	98.12	96.77	97.48	97.02	96.58	75.32	0.954	6.75	0.059
+1087	jt.SpearmintCT Alpha	learning	wall-runner	normal	1		96.85	3	BeepBoop	98.79	1.94	98.79	97.15	98.76	98.35	96.12	97.3	0.978	3.314	0.019
+919	ejbots.AngryGrandpappy 1.2	unread	sitting	shield		1	97.56	4	BeepBoop	99.5	1.94	99.5	99.06	98.89	98.97	96.06	98.88	0.985	0.914	0.002
+1001	amc.ROBv300 1.1	head-on	linear-prone	normal			97.85	3	ScalarR	99.78	1.93	99.23	99.54	99.3	99.78	99.43	99.37	0.974	4.136	0.036
+691	awesomeness.Elite 1.0	linear+learning	stat-prone	normal			97.68	3	BeepBoop	99.61	1.93	99.61	98.48	99.36	99.13	97.7	96.39	0.961	4.993	0.02
+1036	mme.NikeEnhanced 2.0	head-on	rammer	normal			97.79	3	ScalarR	99.72	1.93	99.71	99.27	98.26	99.72	99.22	97.01	0.969	3.879	0.04
+831	pez.nano.LittleEvilBrother 0.1	head-on	flat	normal			97.98	2	ScalarR	99.91	1.93	99.57	98.31	99.0	99.91	98.34	95.0	0.976	1.886	0.008
+743	strider.Mer 1.1.0	learning	stat-prone	normal			93.84	3	BeepBoop	95.75	1.91	95.75	94.98	94.37	95.68	94.81	95.38	0.939	9.65	0.06
+771	zzx.Ignohis 8.0	mixed	stat-prone	normal			97.84	2	BeepBoop	99.74	1.9	99.74	98.3	99.37	99.07	97.39	97.63	0.967	3.579	0.009
+370	tcf.Repat3 2	learning	stat-prone	shield	1	1	97.99	3	BeepBoop	99.89	1.9	99.89	99.12	98.63	87.03	95.82	94.11	0.978	0.821	0.001
+239	cjm.Chomsky 1.5	learning	circular-prone	shield	1	1	97.4	2	DrussGT	99.29	1.89	98.93	99.29	97.31	90.84	88.26	94.82	0.988	0.714	0.001
+574	whind.Wisdom 0.5.1	learning	flat	stop-go			84.54	4	BeepBoop	86.43	1.89	86.43	81.04	84.53	78.87	76.46	74.74	0.752	26.436	0.059
+550	mladjo.Startko 1.0	learning	stat-prone	shield	1	1	97.77	5	BeepBoop	99.66	1.89	99.66	97.55	98.78	88.63	99.53	99.47	0.964	2.264	0.004
+881	suh.nano.AngularMirrorC 1.00	mixed	stat-prone	normal	1		97.36	2	ScalarR	99.24	1.88	98.52	97.86	97.91	99.24	93.21	91.28	0.961	5.086	0.037
+341	alk.lap.LoudAndProud 2.23	learning	flat	normal			85.41	2	BeepBoop	87.28	1.88	87.28	84.61	80.21	81.78	78.73	76.05	0.769	25.871	0.06
+1063	pa.Improved 1.1	head-on	flat	normal			98.05	4	ScalarR	99.92	1.87	99.83	99.28	99.28	99.92	99.63	86.98	0.987	1.814	0.009
+382	kronenthaler.Basilisk 1.0	linear	flat	normal			98.07	2	BeepBoop	99.94	1.87	99.94	98.28	97.35	99.63	99.18	88.52	0.986	1.921	0.011
+816	ntc.Evader 1.2	linear+learning	stat-prone	normal			98.14	3	JKHydra	100.0	1.86	99.75	98.52	98.24	99.26	100.0	92.2	0.98	3.157	0.025
+758	jep.Terrible 0.4.1	head-on	flat	normal			97.44	2	ScalarR	99.3	1.86	98.66	98.13	98.64	99.3	96.3	97.39	0.977	2.614	0.009
+988	zyx.nano.EscherichiaColi 1.0	learning	stat-prone	normal			92.25	4	ScalarR	94.1	1.85	90.27	93.33	92.78	94.1	92.85	87.6	0.93	10.743	0.055
+934	acid.Null 1.0	learning	head-on-prone	normal			96.0	2	Saguaro	97.85	1.84	96.81	95.88	97.85	97.33	95.88	94.65	0.96	6.186	0.06
+293	reaper.Reaper 1.1	learning	flat	shield	1	1	97.75	2	BeepBoop	99.59	1.84	99.59	98.39	94.83	85.22	95.8	99.33	0.945	5.343	0.023
+1101	goblin.Bender 2.4	head-on	stat-prone	normal			98.01	3	JKHydra	99.85	1.84	99.77	99.56	98.69	99.79	99.85	98.06	0.982	2.914	0.033
+888	lundal.Mark8 2012.09.15	mixed	stat-prone	normal			98.17	4	BeepBoop	100.0	1.83	100.0	98.48	98.76	99.91	96.54	98.69	0.984	2.564	0.029
+433	nat.nano.OcnirpPM 1.0	learning	flat	shield	1	1	97.0	3	BeepBoop	98.83	1.83	98.83	89.7	92.38	75.93	91.04	94.73	0.927	5.257	0.006
+1091	oa.weak.FlyMk1 0.1	linear+learning	linear-prone	normal			97.52	3	JKHydra	99.34	1.82	99.13	98.71	98.77	98.84	99.34	78.63	0.973	3.929	0.025
+156	ab.DengerousRoBatra 1.3	learning	flat	stop-go	1		95.17	4	Saguaro	96.98	1.81	94.62	94.35	96.98	94.69	92.02	92.49	0.817	21.771	0.069
+1212	uccc.Scrapple 1.0	learning	head-on-prone	normal			98.19	6	DrussGT	100.0	1.81	99.97	100.0	99.91	99.97	99.99	97.21	0.979	2.057	0.014
+304	dmh.robocode.robot.BlackDeath 9.2	learning	flat	shield	1	1	97.9	2	Ogi	99.7	1.8	98.66	96.51	98.41	91.62	95.94	99.7	0.974	1.057	0.001
+939	pak.JakeTheTestingRobot .1b	learning	circular-prone	normal			97.43	2	BeepBoop	99.23	1.8	99.23	97.6	99.08	97.76	95.73	97.85	0.97	4.064	0.016
+683	ratosh.Nobo 0.21	learning	stat-prone	normal	1		96.93	2	Saguaro	98.73	1.8	98.51	96.85	98.73	97.82	97.79	97.57	0.977	2.764	0.011
+657	md.Pasta 1.1	learning	flat	normal			89.76	3	BeepBoop	91.53	1.77	91.53	89.48	89.51	89.21	87.94	85.05	0.885	16.457	0.06
+467	And.BasicSurfer FF1.6	mixed	flat	normal			98.04	2	Saguaro	99.8	1.76	99.69	98.45	99.8	99.11	97.94	85.83	0.977	2.064	0.01
+479	axeBots.HataMoto 3.09	learning	flat	normal			88.16	3	BeepBoop	89.91	1.75	89.91	87.64	83.7	88.18	82.24	84.54	0.846	17.707	0.057
+696	rapture.Rapture 2.13	linear+learning	flat	normal			97.66	6	ScalarR	99.4	1.74	99.21	98.26	96.17	99.4	98.4	96.18	0.958	5.914	0.038
+781	mld.Wisdom 1.0	learning	stat-prone	normal	1	1	97.58	3	Saguaro	99.32	1.74	98.86	98.18	99.32	98.6	97.02	99.11	0.979	2.686	0.018
+1181	daemons.DizzyA 1.0	head-on	rammer	normal			98.26	3	ScalarR	100.0	1.74	99.95	99.91	99.72	100.0	99.98	99.0	0.991	1.279	0.024
+1033	dks.MicroDanMK2 1.0	head-on	flat	normal			98.1	2	ScalarR	99.84	1.74	99.58	98.62	98.68	99.84	98.36	97.76	0.977	2.107	0.015
+343	robar.micro.Kirbyi 1.0	learning	oscillator	shield	1	1	95.98	2	BeepBoop	97.7	1.72	97.7	93.87	95.34	83.46	83.29	94.93	0.919	3.986	0.017
+423	kinsen.nano.Charp 1.0	learning	flat	shield		1	96.16	4	BeepBoop	97.87	1.71	97.87	83.97	92.47	76.08	83.47	81.2	0.836	11.336	0.017
+1059	qualidafial.MajorDick 1.0.1	head-on	rammer	normal			98.31	3	JKHydra	100.0	1.69	99.65	99.46	98.22	99.89	100.0	98.65	0.978	3.407	0.038
+1135	blr.Chicken001 0.1	head-on	rammer	normal			98.12	2	ScalarR	99.81	1.69	99.68	99.51	97.45	99.81	99.5	99.26	0.988	2.057	0.072
+968	csp.Eagle 3.30	mixed	wall-runner	normal			96.92	3	ScalarR	98.59	1.67	98.07	97.74	97.85	98.59	95.52	96.51	0.957	5.579	0.069
+871	wit.Chuliath 1.0	linear+learning	flat	normal			97.97	3	Saguaro	99.63	1.66	99.37	98.35	99.63	99.06	98.97	98.16	0.979	2.821	0.014
+640	stelo.PianistNano 1.3	learning	stat-prone	shield	1	1	94.8	2	BeepBoop	96.46	1.66	96.46	94.88	94.9	89.1	82.27	94.29	0.931	3.657	0.004
+252	apv.Aspid 1.7	learning	flat	normal		1	78.6	3	DrussGT	80.25	1.65	79.97	80.25	73.68	80.05	77.01	78.41	0.741	25.964	0.057
+52	tjk.deBroglie rev0108	learning	flat	stop-go			95.14	4	Saguaro	96.78	1.64	75.61	61.21	96.78	66.43	59.72	57.58	0.527	41.093	0.093
+913	jep.nano.Hawkwing 0.4.1	head-on	stat-prone	normal			98.17	2	ScalarR	99.8	1.63	99.64	98.61	98.1	99.8	98.86	94.84	0.974	2.714	0.018
+22	davidalves.Phoenix 1.02	unread	stat-prone	shield	1	1	97.22	4	DrussGT	98.84	1.62	98.67	98.84	79.23	70.66	64.5	82.3	0.992	0.5	0.001
+644	qwaker00.Gandhi 1.2	learning	rammer	normal			96.61	3	BeepBoop	98.23	1.62	98.23	97.58	97.53	98.23	97.09	91.57	0.96	5.857	0.027
+1037	uccc.MilkyWay 1.01	linear+learning	circular-prone	normal			97.66	5	BeepBoop	99.27	1.61	99.27	99.09	99.14	99.11	98.63	99.22	0.979	3.2	0.038
+1076	PSW.Relentless 0.1	head-on	rammer	normal			98.29	3	ScalarR	99.89	1.6	99.32	98.62	96.88	99.89	99.64	98.09	0.985	2.421	0.052
+179	gh.mini.Grimmig 0.3.6	mixed	flat	stop-go			91.32	4	BeepBoop	92.9	1.58	92.9	91.12	91.05	91.73	90.28	87.5	0.885	14.286	0.05
+665	com.cohesiva.robocode.ManOwaR 1.0	learning	flat	normal			95.66	2	ScalarR	97.24	1.58	95.44	94.68	96.1	97.24	96.05	93.0	0.939	8.521	0.041
+138	rh.abs.Xwing 2.1	learning	oscillator	stop-go			93.72	2	Saguaro	95.3	1.58	80.96	75.71	95.3	77.73	74.14	70.56	0.668	30.186	0.073
+163	deo.CloudBot 1.3	learning	flat	stop-go			95.84	3	Ogi	97.4	1.56	96.01	93.99	96.95	95.82	92.73	97.4	0.833	19.65	0.064
+853	rdm.WallRider 0.5c	learning	stat-prone	normal			95.33	17	ScalarR	96.87	1.54	96.02	96.07	94.89	96.87	96.71	93.17	0.94	8.686	0.046
+487	buba.Archivist 0.1	learning	stat-prone	shield	1	1	97.32	3	BeepBoop	98.86	1.54	98.86	98.57	96.14	85.81	89.29	97.3	0.918	4.514	0.006
+760	myl.nano.KomoriNinja 1.1	learning	stat-prone	normal			97.49	2	BeepBoop	99.02	1.53	99.02	97.01	97.77	98.64	95.43	86.96	0.972	3.979	0.025
+626	kinsen.nano.Hoplomachy 1.6	learning	stat-prone	normal			97.32	3	ScalarR	98.85	1.53	98.69	95.5	98.1	98.85	95.56	97.45	0.973	3.729	0.038
+1112	suh.nano.TargetC 1.00	mixed	sitting	normal			98.47	3	JKHydra	100.0	1.53	99.51	99.12	98.75	99.32	100.0	92.15	0.977	3.114	0.021
+952	lmk.ACPFinal 0.2	linear	linear-prone	normal			98.5	2	BeepBoop	100.0	1.5	100.0	98.32	99.5	99.71	99.53	96.73	0.99	1.443	0.009
+756	Legend.BoulderZY 1.4.9	learning	flat	normal			98.0	2	BeepBoop	99.48	1.48	99.48	98.48	97.95	98.2	98.26	92.96	0.976	2.936	0.019
+638	Legend.Biogon 1.5	mixed	flat	normal			98.15	2	BeepBoop	99.61	1.46	99.61	98.29	99.21	99.15	95.02	89.29	0.984	2.007	0.009
+744	myl.micro.Troodon 1.10	learning	stat-prone	normal			98.41	4	BeepBoop	99.86	1.45	99.86	98.33	97.97	99.69	99.28	99.46	0.991	1.136	0.003
+164	theo.QuarkSoup 1.5fga	learning	circular-prone	shield	1	1	98.4	4	Ogi	99.85	1.45	99.02	98.04	99.52	74.08	78.42	99.85	0.926	2.643	0.002
+833	mld.DustBunny 3.8	learning	flat	normal			98.22	3	BeepBoop	99.66	1.44	99.66	98.18	97.94	99.65	98.69	90.46	0.983	1.45	0.009
+439	nat.nano.Ocnirp 1.73	learning	flat	shield	1	1	97.03	3	BeepBoop	98.47	1.44	98.47	90.11	92.73	75.75	88.45	90.73	0.885	7.071	0.011
+645	usa.nano.Nemo 2.0	learning	stat-prone	shield			96.37	2	Saguaro	97.8	1.43	96.13	96.37	97.8	96.69	95.64	91.01	0.94	8.214	0.03
+995	sam.Samspin 1.0	head-on	mixed	normal			98.19	4	BeepBoop	99.62	1.43	99.62	98.49	98.92	99.33	98.4	98.09	0.986	1.771	0.01
+929	takeBot.SpiralCrash 1.0	learning	rammer	normal			96.86	2	Saguaro	98.29	1.43	96.46	96.82	98.29	97.87	96.84	92.53	0.955	7.064	0.07
+663	sam.ChipmunkDuelist 1.0	head-on+learning	stat-prone	normal			94.72	6	DrussGT	96.15	1.43	96.07	96.15	93.88	95.67	95.52	95.37	0.948	7.529	0.04
+687	fcr.First 1.0	linear+learning	stat-prone	normal	1	1	98.47	2	Saguaro	99.9	1.43	98.92	97.21	99.9	98.94	97.93	98.83	0.988	1.857	0.014
+713	ratosh.Wesco 1.4	head-on	flat	normal			98.12	3	ScalarR	99.53	1.41	99.34	98.54	96.02	99.53	99.22	97.99	0.942	5.107	0.014
+724	suh.nano.OscillatorL 1.00	linear	stat-prone	normal	1		98.55	3	BeepBoop	99.96	1.41	99.96	98.33	99.96	99.69	98.87	98.12	0.989	1.514	0.008
+1095	zzx.Serunyr 2.0.2	mixed	head-on-prone	normal			98.24	11	Saguaro	99.65	1.41	99.15	98.11	99.65	98.5	96.13	97.09	0.977	3.314	0.015
+769	pla.Memnoch 0.5	linear+learning	stat-prone	normal			97.85	3	Saguaro	99.26	1.41	97.53	96.42	99.26	97.25	94.54	94.43	0.966	4.457	0.026
+675	KiraNL.SpaceKees 0.1	learning	oscillator	normal			91.27	2	BeepBoop	92.68	1.41	92.68	90.34	85.01	91.7	89.46	87.36	0.883	18.779	0.097
+1186	amk.Punbot.Punbot 0.01	silent	stat-prone	normal			98.35	2	BeepBoop	99.76	1.41	99.76	99.23	98.91	99.44	99.44	98.89	0.986	2.286	0.019
+757	jaw.Mouse 0.11	learning	stat-prone	normal			98.03	4	Saguaro	99.42	1.39	99.09	98.24	99.42	98.31	97.46	97.06	0.968	4.021	0.022
+135	da.NewBGank 1.4	learning	flat	stop-go	1		95.0	2	DrussGT	96.39	1.39	93.5	96.39	93.03	92.99	89.13	84.46	0.734	28.543	0.088
+88	jcs.Decepticon 2.5.3	learning	stat-prone	shield	1	1	98.35	2	BeepBoop	99.74	1.39	99.74	96.2	96.99	80.45	92.73	99.06	0.981	1.143	0.029
+1077	ola.Puffin 1.0	linear+learning	linear-prone	normal			98.37	4	BeepBoop	99.76	1.39	99.76	99.04	97.9	99.38	98.53	82.9	0.97	4.657	0.068
+973	testantiswapgun.AntiSwap 1.0	mixed	stat-prone	normal			97.84	4	ScalarR	99.23	1.39	99.21	98.72	98.81	99.23	98.77	94.32	0.978	3.229	0.038
+162	wiki.BasicGFSurfer 1.02	learning	flat	stop-go	1		95.13	2	Saguaro	96.52	1.39	88.47	84.61	96.52	87.32	88.94	91.28	0.801	22.821	0.067
+940	lunchie.Lunchbox 0.93	mixed	stat-prone	normal			95.06	2	BeepBoop	96.43	1.38	96.43	95.33	94.09	96.3	94.98	87.26	0.935	10.536	0.06
+668	lessonz.robocode.Oz 0.5.0	linear	flat	normal	1		97.99	2	BeepBoop	99.36	1.37	99.36	99.08	99.24	99.01	96.64	98.54	0.971	3.929	0.016
+1094	dvogon.GangBang 1.0	head-on	rammer	normal			98.39	3	ScalarR	99.76	1.37	98.83	99.21	98.07	99.76	99.14	98.53	0.982	2.043	0.022
+921	patson.PatsonTestBot 1.0	mixed	stat-prone	normal			95.37	4	BeepBoop	96.73	1.36	96.73	95.32	92.69	96.58	95.98	92.91	0.924	10.686	0.047
+961	sng.arco.Arco 0.0	head-on	flat	normal			98.55	3	BeepBoop	99.91	1.36	99.91	99.24	99.57	99.89	99.86	97.39	0.977	2.371	0.013
+202	ph.mini.Archer 0.6.6	learning	flat	shield	1	1	98.65	7	Ogi	100.0	1.35	98.86	99.28	97.66	79.58	96.97	100.0	0.958	1.629	0.027
+916	nexus.Two 0.2	mixed	flat	normal			97.55	6	BeepBoop	98.89	1.34	98.89	96.07	97.71	98.55	96.99	95.9	0.977	2.521	0.013
+255	robar.micro.Gladius 1.15	learning	stat-prone	shield		1	98.66	3	JKHydra	100.0	1.34	98.9	94.72	97.73	85.81	100.0	99.39	0.985	0.943	0.002
+1103	hs.SimpleHBot 1.3	learning	mixed	normal			97.43	2	BeepBoop	98.76	1.33	98.76	98.13	98.5	98.65	98.28	96.48	0.988	1.536	0.017
+1015	jeremyreeder.collective.Prophet 5	learning	linear-prone	normal			98.31	3	BeepBoop	99.64	1.33	99.64	98.48	99.12	99.02	98.72	98.49	0.967	3.393	0.014
+1146	rnatest.MendelBot 1.0	learning	head-on-prone	normal			96.59	5	ScalarR	97.91	1.32	96.62	97.85	97.51	97.91	97.81	96.9	0.976	3.25	0.026
+828	ntc.Plains 0.9	head-on	flat	normal			98.55	3	ScalarR	99.87	1.32	99.82	99.03	98.84	99.87	99.28	92.06	0.972	3.243	0.01
+216	jekl.Jekyl .70	learning	stat-prone	shield	1	1	98.56	4	Ogi	99.88	1.32	99.03	97.4	97.81	83.54	94.81	99.88	0.953	3.236	0.007
+927	repositorio.NanoStep 1.0	learning	stat-prone	normal			98.37	2	ScalarR	99.69	1.32	99.64	98.29	99.14	99.69	99.31	94.88	0.981	2.829	0.014
+969	hirataatsushi.Neo 1.6	mixed	head-on-prone	normal			98.13	6	Saguaro	99.45	1.32	98.48	98.72	99.45	99.08	96.98	98.26	0.978	3.171	0.031
+849	vStar.RAFzilla 2.15	learning	stat-prone	normal			98.52	2	Saguaro	99.83	1.31	98.06	98.42	99.83	99.3	97.6	98.98	0.969	4.136	0.027
+446	divineomega.TrialBot 0.003	mixed	flat	normal			87.52	2	BeepBoop	88.8	1.28	88.8	86.81	80.56	86.44	81.24	86.6	0.842	22.257	0.143
+1107	madmath.Cow 0.1.1	learning	stat-prone	normal			97.54	4	JKHydra	98.82	1.28	97.96	97.86	97.21	97.86	98.82	96.98	0.977	3.55	0.029
+1083	FatalFlaw.FatalFlaw 1.0.5	mixed	linear-prone	normal			95.4	3	BeepBoop	96.68	1.28	96.68	96.25	94.53	96.43	96.49	94.5	0.951	8.093	0.077
+1031	discan.mini.Exode 0.25	head-on	stat-prone	normal			98.38	2	ScalarR	99.66	1.28	98.85	98.85	99.05	99.66	98.68	96.41	0.984	2.243	0.014
+226	xander.cat.SamAxe 1.1	learning	flat	stop-go			96.92	3	Saguaro	98.19	1.27	93.92	90.18	98.19	89.93	88.78	88.53	0.859	19.093	0.077
+764	agrach.RobotSlayer 1.0	linear	stat-prone	normal			98.72	3	BeepBoop	99.99	1.27	99.99	99.04	99.53	99.85	99.01	91.01	0.99	1.443	0.009
+1099	abud.ThirdRobo 1.0	head-on+learning	stat-prone	normal			98.53	3	ScalarR	99.8	1.27	98.52	99.21	98.53	99.8	99.19	98.89	0.98	3.007	0.05
+856	cyragia.Bot 1.1	linear	linear-prone	normal			98.46	2	BeepBoop	99.72	1.26	99.72	98.92	99.19	98.81	96.44	98.55	0.988	1.893	0.013
+999	com.timothyveletta.FuzzyBot 1.1	linear+learning	circular-prone	normal	1		98.58	5	BeepBoop	99.83	1.25	99.83	96.43	99.65	99.13	98.24	97.62	0.989	1.714	0.011
+583	mld.LittleBlackBook 1.69e	learning	stat-prone	normal	1		95.7	5	Saguaro	96.94	1.24	96.51	93.72	96.94	96.64	95.03	93.47	0.938	10.657	0.088
+874	djdjdj.NanoSkunk10 1.0	linear	circular-prone	normal			98.4	3	BeepBoop	99.64	1.24	99.64	98.6	99.39	99.51	99.25	97.45	0.981	3.0	0.022
+556	mld.jdc.nano.LittleBlackBook 1.0	learning	stat-prone	normal	1		95.73	2	Saguaro	96.97	1.24	96.48	94.97	96.97	96.41	95.6	94.54	0.94	10.207	0.09
+751	sch.Simone 0.3d	linear+learning	stat-prone	normal			98.02	3	JKHydra	99.26	1.24	99.16	99.03	98.71	99.1	99.26	98.47	0.982	2.75	0.015
+1123	matt.UnderDark4 0.4.00	learning	stat-prone	normal	1		98.39	2	JKHydra	99.63	1.23	98.87	97.6	98.88	98.55	99.63	98.59	0.986	2.264	0.028
+211	metal.small.dna2.MCoolDNA 1.5	learning	flat	shield	1	1	98.77	2	Ogi	100.0	1.23	98.85	96.42	97.48	80.82	99.64	100.0	0.987	0.229	0.002
+1111	kjc.Karaykan 1.0	learning	head-on-prone	normal			95.75	2	JKHydra	96.98	1.23	95.99	95.72	96.0	96.83	96.98	94.65	0.947	8.814	0.068
+848	m3thos.Eva00 1.1	head-on	stat-prone	normal			98.69	2	ScalarR	99.92	1.23	99.85	98.53	98.81	99.92	99.57	96.82	0.993	0.486	0.003
+311	mld.Moebius 2.9.3	learning	linear-prone	shield		1	97.59	2	BeepBoop	98.8	1.21	98.8	95.18	96.04	86.01	94.04	97.6	0.964	2.229	0.004
+499	kneels.nano.Derp 0.2	learning	flat	shield	1	1	95.96	4	BeepBoop	97.16	1.2	97.16	95.36	94.89	84.74	68.82	75.31	0.773	25.25	0.065
+1183	japs.Serenity 1.0	silent	stat-prone	normal			98.81	4	ScalarR	100.0	1.19	99.96	99.86	99.78	100.0	100.0	99.97	0.985	0.0	0.0
+599	mz.AdeptBSB 1.03	linear	stat-prone	normal	1		98.83	2	BeepBoop	100.0	1.17	100.0	98.99	99.88	99.7	94.55	99.76	0.987	1.836	0.008
+1162	sample.RamFire 1.0	silent	rammer	normal			98.86	2	ScalarR	100.0	1.14	99.91	99.5	99.65	100.0	99.85	98.47	0.989	1.614	0.032
+902	jwirde.Gort 2.0	linear	stat-prone	normal			98.54	2	BeepBoop	99.67	1.13	99.67	98.49	99.63	99.38	99.41	97.07	0.989	1.543	0.013
+694	pe.minimelee.SandboxMiniMelee 1.1	learning	flat	shield		1	98.87	2	JKHydra	100.0	1.13	99.89	99.22	98.62	97.92	100.0	100.0	0.978	0.829	0.0
+615	timmit.nano.TimDog 0.33	linear+learning	stat-prone	normal			98.75	2	BeepBoop	99.88	1.13	99.88	98.88	99.59	99.33	98.18	99.62	0.986	1.936	0.009
+1067	oa.weak.BotherBot 0.1	learning	wall-runner	normal			97.83	5	ScalarR	98.96	1.13	98.11	98.06	98.6	98.96	98.58	96.64	0.981	2.714	0.024
+885	slugzilla.OscillateLinear 1.0	linear+learning	head-on-prone	normal	1		98.88	2	BeepBoop	100.0	1.12	100.0	98.81	99.98	99.78	99.95	99.84	0.988	1.786	0.01
+643	tvv.micro.Antares 1.1.1	mixed	stat-prone	normal			98.48	2	Saguaro	99.61	1.12	99.03	98.64	99.61	99.03	98.82	97.68	0.984	2.607	0.027
+897	vishius.Orbiter 1.0	linear	stat-prone	normal	1		98.68	2	BeepBoop	99.79	1.11	99.79	96.64	99.66	97.89	98.58	96.86	0.989	1.714	0.015
+1007	reeder.colin.WallGuy3 1.0	learning	wall-runner	normal			97.6	2	JKHydra	98.71	1.11	97.94	97.72	96.38	98.39	98.71	96.4	0.956	5.579	0.038
+695	wiki.nano.DevilFISH 1.0	linear+learning	stat-prone	normal			98.26	4	Saguaro	99.37	1.11	98.81	98.86	99.37	98.54	90.71	96.38	0.985	2.143	0.012
+1129	rijteam.SmartDodge 1.1	learning	circular-prone	normal			98.5	5	Saguaro	99.6	1.1	98.63	98.66	99.6	99.49	98.48	98.26	0.983	2.686	0.046
+900	t3.Ripper 1.0	learning	stat-prone	normal			98.82	2	Saguaro	99.92	1.1	99.46	98.98	99.92	98.76	97.95	96.83	0.986	2.214	0.017
+766	kms.Royal 0.15M	learning	wall-runner	normal			94.79	3	ScalarR	95.88	1.09	95.6	94.55	90.4	95.88	93.61	94.24	0.933	11.514	0.092
+570	robar.nano.Mosquito 1.1	linear+learning	stat-prone	normal			98.91	2	JKHydra	100.0	1.09	99.78	98.8	99.57	99.05	100.0	97.85	0.983	2.321	0.01
+1156	sample.MyFirstJuniorRobot 1.0	head-on	head-on-prone	normal			98.39	2	BeepBoop	99.46	1.07	99.46	98.91	99.31	99.45	98.5	98.34	0.985	1.486	0.022
+419	qwaker00.Ahchoo 1.6	learning	flat	shield	1	1	98.93	6	Ogi	100.0	1.07	96.18	96.15	99.04	88.66	99.3	100.0	0.902	4.143	0.022
+1018	suh.nano.CrossL 1.00	linear	stat-prone	normal			98.93	2	BeepBoop	99.99	1.06	99.99	99.05	99.97	99.81	98.88	94.99	0.992	1.279	0.01
+1108	quietus.NarrowRadar 0.1	linear	sitting	normal	1		98.84	2	BeepBoop	99.89	1.05	99.89	97.92	99.21	99.48	98.11	97.23	0.981	2.971	0.016
+199	cf.mini.Chiva 1.0	learning	stat-prone	shield	1		90.37	4	JKHydra	91.42	1.05	89.82	91.14	88.85	88.14	91.42	87.36	0.846	15.571	0.086
+1069	GarmBox.Anger 1.0	mixed	rammer	normal			94.93	3	Ogi	95.98	1.05	95.08	95.58	92.89	95.45	95.25	95.98	0.961	6.479	0.05
+266	nz.jdc.nano.NeophytePattern 1.1	learning	flat	shield	1	1	97.41	3	BeepBoop	98.46	1.05	98.46	98.35	93.87	86.68	84.65	90.32	0.803	25.486	0.096
+536	traker.Eraser 1	linear+learning	flat	normal			98.92	2	BeepBoop	99.97	1.05	99.97	99.22	99.53	99.66	99.83	98.51	0.99	1.336	0.007
+1071	acogdev.alpha 0.2	head-on	wall-runner	normal			98.86	5	BeepBoop	99.9	1.04	99.9	99.36	99.59	99.9	98.56	93.93	0.984	2.457	0.03
+914	WidowMakersAtWar.EpicCow 1.0	head-on	stat-prone	normal			98.87	2	ScalarR	99.9	1.03	99.83	99.23	99.42	99.9	99.36	98.09	0.994	0.864	0.006
+560	trab.nano.AinippeNano 1.3	learning	flat	shield	1	1	97.37	5	BeepBoop	98.4	1.03	98.4	95.46	94.94	87.95	87.5	90.6	0.864	19.914	0.079
+1011	fowl3628800.SitAndGo 1.0.0	linear	head-on-prone	normal			98.91	3	BeepBoop	99.94	1.03	99.94	99.01	99.31	99.67	99.46	97.36	0.994	0.893	0.013
+112	kid.Gladiator .7.2	learning	head-on-prone	shield	1	1	98.88	2	BeepBoop	99.91	1.03	99.91	99.67	93.95	82.59	77.05	99.81	0.835	8.314	0.022
+1191	sample.Crazy 1.0	head-on+learning	flat	normal			98.91	2	ScalarR	99.93	1.03	99.77	99.73	99.65	99.93	99.8	98.51	0.987	1.514	0.064
+1120	bzdp.Pansy 2.1	learning	wall-runner	normal			98.59	2	ScalarR	99.61	1.02	99.31	98.82	99.48	99.61	98.24	95.2	0.998	0.286	0.005
+1202	logiblocs.Fire 1.0	learning	sitting	normal			98.39	5	JKHydra	99.41	1.02	99.11	99.16	98.89	99.18	99.41	96.72	0.985	2.4	0.015
+978	DM.Capriite 3.7.2	head-on+learning	flat	normal			98.88	3	ScalarR	99.89	1.01	99.6	99.06	99.2	99.89	97.59	98.94	0.984	2.057	0.008
+380	dz.OthoMini 0.15	learning	flat	normal			81.21	2	BeepBoop	82.22	1.01	82.22	78.24	75.05	80.48	74.74	76.47	0.783	24.157	0.055
+655	vuen.Fractal 0.55	learning	flat	shield	1	1	98.99	3	JKHydra	100.0	1.01	99.22	97.71	96.44	86.98	100.0	98.61	0.99	0.6	0.002
+1055	jp.SineWall 1.0	learning	wall-runner	normal			97.8	2	ScalarR	98.8	1.0	98.69	97.95	96.03	98.8	98.23	97.13	0.973	4.214	0.037
+31	kc.serpent.Hydra 0.21	learning	circular-prone	shield	1	1	98.81	2	Ogi	99.81	1.0	99.66	99.59	94.71	70.13	99.48	99.81	0.998	0.093	0.0
+540	tjk.AFlatNatural 1.0	mixed	oscillator	normal			90.59	2	Ogi	91.58	0.99	91.43	90.73	90.6	89.08	90.82	91.58	0.904	16.214	0.136
+1045	ao.T100 0.9	head-on	stat-prone	normal			99.02	3	JKHydra	100.0	0.98	99.93	99.47	99.21	99.92	100.0	87.04	0.996	0.664	0.014
+290	pez.frankie.Frankie 0.9.6.1	mixed	flat	shield	1		96.07	3	Saguaro	97.05	0.98	83.95	86.41	97.05	78.77	82.78	96.96	0.76	23.2	0.054
+1157	ap.Frederick 1.1	silent	flat	normal			99.03	2	BeepBoop	100.0	0.97	100.0	100.0	99.82	100.0	99.58	100.0	0.995	0.0	0.0
+880	jep.nano.Hotspur 0.1	head-on	stat-prone	normal			99.03	3	ScalarR	100.0	0.97	99.79	98.71	99.59	100.0	99.1	96.42	0.979	2.057	0.009
+789	buba.Buba 0.3	head-on	flat	normal			98.94	4	ScalarR	99.9	0.96	99.42	98.86	99.67	99.9	99.1	98.51	0.96	3.264	0.009
+1012	ntw.Sigsys 1.6	learning	flat	normal			97.17	2	Saguaro	98.13	0.96	97.24	97.31	98.13	97.83	97.05	94.14	0.964	4.743	0.021
+873	cs.Wren 1.0	learning	flat	normal	1		98.97	4	DrussGT	99.93	0.96	99.91	99.93	98.2	99.7	97.96	99.53	0.99	1.314	0.008
+1105	suzushin7.nano.TargetC 1.00	mixed	sitting	normal			98.69	2	BeepBoop	99.64	0.95	99.64	98.84	98.68	99.61	98.73	92.87	0.983	2.629	0.018
+778	bots.UnterExBot 1.0	linear+learning	flat	normal			98.4	5	Saguaro	99.34	0.94	99.03	98.34	99.34	99.15	93.55	98.51	0.986	1.95	0.017
+385	sqTank.waveSurfing.LionWWSVMvoid 0.01	head-on	flat	normal	1		99.0	2	ScalarR	99.93	0.94	99.87	97.96	98.6	99.93	99.63	98.41	0.999	0.15	0.002
+1143	com.blogspot.malinkody.DestrobotMalin 1.0	head-on	stat-prone	normal			99.06	6	ScalarR	99.99	0.93	99.67	99.73	99.65	99.99	98.82	98.47	0.996	0.686	0.024
+928	bbo.TheRoof 1.4.3	learning	wall-runner	normal			96.66	2	ScalarR	97.59	0.93	97.49	96.68	95.68	97.59	97.33	91.7	0.959	5.714	0.038
+1023	matt.UnderDark3 2.4.34	mixed	flat	normal			97.94	3	JKHydra	98.87	0.93	98.36	97.86	97.61	98.22	98.87	97.81	0.979	3.457	0.038
+879	tobe.mini.Charon 0.9	learning	flat	normal			98.87	2	BeepBoop	99.8	0.93	99.8	98.46	98.24	99.75	98.42	98.04	0.983	2.007	0.008
+106	sheldor.micro.EpeeistDC 3.0	learning	flat	stop-go			93.65	3	Saguaro	94.58	0.93	80.97	72.97	94.58	75.54	66.7	73.81	0.718	28.086	0.071
+350	exauge.LemonDrop 1.6.130	learning	flat	shield	1	1	96.97	3	BeepBoop	97.88	0.91	97.88	96.96	96.31	78.62	90.59	97.04	0.97	1.379	0.011
+309	mk.Alpha 0.2.1	learning	flat	shield	1	1	99.09	2	JKHydra	100.0	0.91	99.84	98.82	98.94	92.42	100.0	100.0	0.999	0.086	0.0
+994	robots.Lucky 1.2	learning	stat-prone	normal			97.73	3	BeepBoop	98.64	0.91	98.64	97.28	98.23	98.07	95.96	95.91	0.966	4.836	0.05
+123	slugzilla.Basilite 0.13	unread	stat-prone	shield	1	1	99.09	4	BeepBoop	100.0	0.91	100.0	99.83	99.08	80.81	88.43	88.51	0.99	0.6	0.01
+882	bons.NanoStalker 1.2	learning	stat-prone	normal			97.72	2	ScalarR	98.62	0.9	97.6	98.47	98.22	98.62	96.88	96.84	0.974	3.9	0.021
+971	supersample.SuperTrackFire 1.0	learning	oscillator	normal			96.56	3	Saguaro	97.46	0.9	97.09	96.04	97.46	97.25	94.92	95.04	0.944	6.414	0.019
+339	bvh.mini.Freya 0.55	learning	flat	shield	1	1	99.11	3	JKHydra	100.0	0.89	99.57	99.38	99.19	83.86	100.0	100.0	0.922	3.293	0.004
+922	rus.vv.Dzhigit 1.1	head-on	flat	normal			99.02	3	ScalarR	99.91	0.89	99.6	98.64	99.56	99.91	99.03	98.13	0.974	3.093	0.011
+1065	dittman.BlindSquirl Retired	mixed	linear-prone	normal			97.86	3	BeepBoop	98.74	0.88	98.74	98.05	96.64	98.15	97.68	98.1	0.978	3.529	0.047
+397	nat.nano.OcnirpSNG 1.0b	learning	flat	shield	1	1	98.5	3	BeepBoop	99.38	0.88	99.38	91.19	92.16	79.54	88.7	94.21	0.873	7.7	0.011
+1046	povik.nano.Smilee 0.2.1	learning	oscillator	normal			89.78	2	ScalarR	90.66	0.88	89.73	87.31	89.43	90.66	85.9	85.78	0.885	15.914	0.064
+1038	rus.vv.Snezhok 1.1	learning	stat-prone	normal			97.56	2	ScalarR	98.44	0.88	98.29	97.87	97.46	98.44	95.29	95.28	0.952	5.679	0.035
+962	DM.Chicken 4.0	mixed	linear-prone	normal			99.0	4	Saguaro	99.86	0.86	99.05	98.99	99.86	99.29	99.02	96.87	0.991	1.421	0.016
+1117	sample.Walls 1.0	head-on	wall-runner	normal			99.12	2	ScalarR	99.99	0.86	99.98	99.74	99.79	99.99	99.42	98.4	0.995	0.857	0.018
+1126	suh.nano.TargetL 1.00	linear+learning	sitting	normal			99.04	3	BeepBoop	99.9	0.86	99.9	98.96	99.84	99.68	97.88	98.61	0.988	1.943	0.012
+776	agrach.Dalek 1.0	linear	stat-prone	normal			99.14	2	BeepBoop	99.99	0.85	99.99	98.66	99.56	99.71	98.74	95.93	0.988	1.7	0.01
+633	gh.nano.Grofvuil 0.2	mixed	stat-prone	normal	1		99.02	2	JKHydra	99.86	0.84	99.76	98.45	99.68	98.98	99.86	99.7	0.987	1.921	0.013
+89	rdt.AgentSmith.AgentSmith 0.5	learning	flat	shield	1	1	97.49	5	BeepBoop	98.33	0.84	98.33	97.62	98.05	71.12	71.74	73.34	0.998	0.129	0.001
+1125	etienne72230.Wall_street 1.0	head-on	wall-runner	normal			99.16	3	ScalarR	100.0	0.84	99.89	99.89	99.51	100.0	99.4	99.19	0.987	0.5	0.02
+678	oog.melee.Mercutio 1.0	mixed	flat	normal			97.46	2	ScalarR	98.29	0.83	97.96	97.24	96.04	98.29	97.19	97.85	0.972	3.679	0.038
+774	satan.R0 0.2	learning	stat-prone	normal			91.2	2	BeepBoop	92.03	0.83	92.03	89.38	88.1	90.94	91.06	86.38	0.905	15.343	0.082
+931	jcs.Seth 1.8	learning	flat	normal			98.68	2	BeepBoop	99.5	0.82	99.5	98.4	95.5	98.75	98.51	95.66	0.982	2.736	0.037
+426	tzu.TheArtOfWar 1.2	learning	head-on-prone	shield	1	1	99.19	3	BeepBoop	100.0	0.81	100.0	98.94	98.56	92.0	100.0	100.0	1.0	0.014	0.0
+422	amk.ChumbaMini 0.2	learning	flat	shield	1		91.89	5	Saguaro	92.7	0.81	89.27	89.04	92.7	87.9	84.69	86.97	0.8	22.414	0.058
+784	slugzilla.SNGLinear 1.0	linear	stat-prone	normal	1		99.16	3	BeepBoop	99.96	0.8	99.96	97.86	99.34	99.76	98.07	99.53	0.99	1.571	0.014
+786	blir.micro.blixi.Blixi 1.2	head-on	stat-prone	normal			98.97	2	DrussGT	99.77	0.8	99.68	99.77	99.21	99.55	99.15	96.36	0.989	1.536	0.017
+1106	fire219.CatBot 1.0	head-on+learning	rammer	normal			98.79	3	ScalarR	99.58	0.79	98.97	99.12	98.62	99.58	98.93	97.17	0.988	1.414	0.011
+851	mdouet.BotKicker 2.0	mixed	stat-prone	normal			95.7	3	BeepBoop	96.49	0.79	96.49	94.29	94.12	95.99	93.52	96.24	0.951	6.729	0.033
+383	pe.mini.SandboxMini 1.2	learning	flat	shield	1	1	99.24	3	JKHydra	100.0	0.76	99.83	98.76	96.9	82.79	100.0	100.0	0.908	7.721	0.017
+1152	skm.Ryubot 1.0	head-on	head-on-prone	normal			99.25	4	ScalarR	100.0	0.75	99.89	99.58	99.87	100.0	99.63	99.19	0.999	0.2	0.007
+998	gre.svman4.Leonidas 1.3.2	linear+learning	flat	normal			98.71	2	BeepBoop	99.46	0.75	99.46	98.51	99.15	98.96	97.89	96.8	0.986	1.743	0.017
+878	nexus.One 1.0	head-on+learning	wall-runner	normal			98.67	2	ScalarR	99.42	0.75	99.37	97.09	97.92	99.42	99.09	97.15	0.979	2.114	0.013
+872	disan.Chair 2.2.0	head-on+learning	stat-prone	normal			98.94	3	BeepBoop	99.68	0.74	99.68	98.56	97.24	99.27	98.34	97.67	0.979	3.007	0.024
+1049	sp.AstherNano 1.0	learning	stat-prone	normal			98.54	3	BeepBoop	99.28	0.74	99.28	98.36	98.42	99.07	98.89	97.09	0.981	3.064	0.048
+838	dsw.StaticD 1.0	linear	stat-prone	normal			98.94	2	ScalarR	99.67	0.73	99.63	98.79	99.34	99.67	99.34	98.01	0.985	1.943	0.017
+1014	nic.SnippetBot 1.0	learning	stat-prone	normal			98.79	2	Saguaro	99.52	0.73	99.18	98.7	99.52	99.45	98.77	98.19	0.989	1.814	0.025
+1006	cjk.Merkava 0.1.1	learning	stat-prone	normal			98.75	3	ScalarR	99.48	0.73	99.13	98.51	98.59	99.48	98.51	98.36	0.971	2.629	0.019
+601	radnor.DoctorBob 1.42	linear	stat-prone	normal			99.16	4	Saguaro	99.87	0.71	99.48	99.33	99.87	99.8	99.74	99.34	0.992	1.164	0.01
+303	can.Pookie 1.1	mixed	flat	shield	1		97.29	3	Ogi	98.0	0.71	90.3	97.48	97.04	86.12	97.31	98.0	0.787	24.493	0.06
+154	vic.Locke 0.7.5.5	learning	flat	shield	1	1	99.3	2	Ogi	100.0	0.7	99.77	99.83	98.44	69.53	87.02	100.0	1.0	0.0	0.0
+1160	el.JumpShoot 0.2	head-on	stat-prone	normal			99.27	3	ScalarR	99.97	0.7	99.84	99.65	99.91	99.97	98.67	98.51	0.996	0.571	0.003
+1165	SFS.SamsSecondRobot 1.0	head-on+learning	head-on-prone	normal			99.06	4	ScalarR	99.76	0.7	99.34	99.26	99.54	99.76	99.22	94.23	0.992	1.35	0.021
+175	lucasslf.HariSeldon 0.2.1	learning	stat-prone	shield	1	1	99.08	4	DrussGT	99.78	0.7	99.05	99.78	98.51	79.75	98.37	96.01	0.994	0.336	0.005
+841	slugzilla.OrbitLinear 1.1	learning	wall-runner	shield	1	1	99.3	4	BeepBoop	100.0	0.7	100.0	98.85	99.98	99.73	99.76	100.0	0.996	0.214	0.001
+1139	bk.Shooter 1.0	head-on	head-on-prone	normal			98.75	2	ScalarR	99.43	0.69	99.26	98.86	98.89	99.43	98.45	98.62	0.989	1.786	0.018
+997	rampancy.micro.Epiphron 1.0	head-on+learning	flat	normal			99.03	3	BeepBoop	99.71	0.68	99.71	99.06	97.86	99.28	98.34	98.4	0.99	1.064	0.022
+792	geep.mini.GPBotA 1.0	head-on	stat-prone	normal			99.28	2	ScalarR	99.95	0.67	99.7	99.26	98.85	99.95	99.54	99.2	0.986	1.729	0.014
+905	microtestbotpack.MicroTestBot 1.0	linear+learning	flat	normal			99.15	2	BeepBoop	99.82	0.67	99.82	99.53	98.12	99.74	99.77	95.25	0.989	1.864	0.023
+1027	jaw.KarenCain 0.11	learning	stat-prone	normal			99.2	3	BeepBoop	99.87	0.67	99.87	98.59	99.78	99.65	98.52	98.95	0.991	1.286	0.008
+1024	franzor.Lizt 1.3.1	mixed	flat	normal			99.09	7	ScalarR	99.76	0.67	99.52	98.88	97.37	99.76	99.49	97.75	0.991	0.714	0.02
+1149	reeder.caden.Grover 1.0	head-on	head-on-prone	normal			99.28	2	JKHydra	99.95	0.67	99.93	99.49	99.82	99.83	99.95	96.17	0.998	0.4	0.009
+270	mladjo.GnuKlub 0.1	learning	flat	stop-go			97.9	3	JKHydra	98.56	0.66	95.75	97.08	97.93	95.68	98.56	89.93	0.851	16.214	0.041
+832	robo.PartsBot 1.1	linear+learning	head-on-prone	normal			99.21	4	Saguaro	99.86	0.65	99.77	98.99	99.86	99.55	99.01	96.92	0.993	1.1	0.015
+553	serenity.moonlightBat 1.17	linear+learning	flat	normal			97.72	2	BeepBoop	98.37	0.65	98.37	97.71	95.73	98.3	97.88	96.43	0.953	5.786	0.033
+980	jf.Dodger 1.3	head-on	stat-prone	normal			99.3	4	ScalarR	99.94	0.64	99.61	99.03	99.57	99.94	99.26	89.63	0.994	0.886	0.009
+448	rtk.Tachikoma 1.0	unread	stat-prone	shield	1	1	97.82	5	BeepBoop	98.46	0.64	98.46	93.13	95.63	82.51	82.49	88.16	0.92	2.05	0.007
+1072	suh.nano.MyFirstAdvancedRobot 1.00	head-on	stat-prone	normal			99.27	2	ScalarR	99.9	0.64	99.81	98.95	99.57	99.9	99.19	98.6	0.995	0.793	0.012
+706	ahf.NanoAndrew .4	linear	stat-prone	normal	1		99.37	3	BeepBoop	100.0	0.63	100.0	99.54	99.95	99.78	99.79	99.86	0.992	1.171	0.01
+659	slugzilla.OscillateGF 1.0	learning	head-on-prone	shield	1	1	99.37	3	JKHydra	100.0	0.63	99.91	99.35	98.76	96.09	100.0	99.76	1.0	0.0	0.0
+1161	ag.Gir 0.99	silent	flat	normal			99.16	3	BeepBoop	99.78	0.62	99.78	99.71	98.67	99.05	99.74	97.96	0.998	0.357	0.015
+870	sul.BlueBot 1.0	head-on	stat-prone	normal			99.36	2	ScalarR	99.98	0.62	99.84	99.33	99.94	99.98	99.54	97.63	0.997	0.514	0.005
+305	arthord.KostyaTszyu Beta2	learning	stat-prone	shield	1	1	99.39	3	Ogi	100.0	0.61	99.78	98.31	99.08	81.58	99.45	100.0	0.971	1.014	0.001
+1035	fowl3628800.StopAndGo 1.0.0	linear	head-on-prone	normal			99.4	3	JKHydra	100.0	0.6	99.93	98.63	99.35	99.66	100.0	98.92	0.994	0.893	0.015
+111	stelo.Spread 0.9	learning	flat	stop-go	1		96.62	3	Saguaro	97.22	0.6	82.89	86.51	97.22	75.18	68.75	67.46	0.703	28.879	0.075
+418	apv.NanoLauLectrik 1.0	learning	flat	shield	1	1	97.07	3	BeepBoop	97.64	0.57	97.64	88.94	95.83	83.32	79.72	81.64	0.799	23.371	0.057
+231	pe.SandboxLump 1.52	learning	flat	stop-go			93.31	2	Saguaro	93.87	0.56	87.24	82.14	93.87	85.07	77.7	78.57	0.787	25.414	0.073
+1062	Queens_teamrobot.UltraRazor 1.0	linear	stat-prone	normal			99.36	3	BeepBoop	99.92	0.56	99.92	99.13	99.74	99.87	99.39	97.31	0.99	1.664	0.024
+1179	mym.EdgeStalker 1.0	head-on+learning	circular-prone	normal			99.42	3	ScalarR	99.98	0.56	99.95	99.71	99.69	99.98	99.67	98.7	0.997	0.536	0.024
+122	trm.Wrekt 1.1.6.f	unread	head-on-prone	shield	1	1	98.37	2	BeepBoop	98.93	0.56	98.93	98.44	85.37	77.29	77.41	92.04	0.971	1.293	0.002
+472	DM.Mijit .3	learning	flat	stop-go			95.41	5	JKHydra	95.96	0.55	92.35	91.94	94.73	91.52	95.96	95.57	0.894	14.364	0.063
+1145	jgap.JGAP7247_2 1.0	learning	head-on-prone	normal			96.36	6	BeepBoop	96.89	0.53	96.89	95.86	96.26	96.3	93.64	95.32	0.959	5.964	0.031
+957	myl.nano.Graviton 1.10	head-on	flat	normal			99.33	2	ScalarR	99.86	0.53	99.83	99.1	99.52	99.86	99.48	97.41	0.994	0.814	0.008
+941	bvh.micro.Svadilfari 0.2	mixed	flat	normal			99.12	2	BeepBoop	99.64	0.52	99.64	99.03	99.63	99.46	99.27	93.79	0.978	3.414	0.014
+582	dz.MostlyHarmlessNano 2.1	mixed	stat-prone	stop-go	1		97.08	3	BeepBoop	97.59	0.51	97.59	94.66	96.74	96.16	96.24	96.5	0.93	9.114	0.04
+484	robar.nano.Vespa 0.95	learning	stat-prone	shield	1	1	97.27	2	DrussGT	97.78	0.51	97.4	97.78	96.2	89.35	93.51	97.2	0.909	13.671	0.061
+299	cjm.Charo 1.1	learning	stat-prone	shield	1	1	99.44	4	BeepBoop	99.94	0.5	99.94	99.91	99.05	83.9	98.96	99.26	0.998	0.114	0.0
+1116	ayk.WallHugger 1.0	learning	head-on-prone	normal			99.25	3	BeepBoop	99.75	0.5	99.75	98.82	99.32	98.77	97.35	93.95	0.991	1.35	0.013
+142	ry.VirtualGunExperiment 1.2.0	learning	circular-prone	shield		1	99.18	2	Ogi	99.67	0.49	98.47	95.04	95.96	84.23	95.86	99.67	0.967	1.529	0.007
+1068	suh.nano.CrossH 1.00	head-on	stat-prone	normal			99.51	3	BeepBoop	100.0	0.49	100.0	99.58	99.93	99.99	99.14	97.09	0.998	0.293	0.01
+612	mz.Adept 2.65	learning	stat-prone	shield	1	1	98.87	2	Saguaro	99.36	0.49	98.93	97.82	99.36	96.03	92.68	99.25	0.975	0.571	0.001
+1167	kb.PingPong 1.0	head-on	wall-runner	normal			99.51	3	BeepBoop	100.0	0.49	100.0	99.97	99.96	99.94	99.44	99.2	0.996	0.571	0.01
+745	Gecko.ultimateGeckoBot 1.0	linear+learning	flat	normal			99.11	2	BeepBoop	99.59	0.48	99.59	98.04	99.21	99.2	96.73	95.16	0.988	1.493	0.007
+1032	fowl3628800.ThunderStruck 3.0.0	linear	stat-prone	normal			99.41	4	BeepBoop	99.89	0.48	99.89	98.91	99.32	99.82	99.16	95.23	0.992	1.286	0.015
+218	ak.Fermat 2.0	learning	oscillator	shield	1	1	99.53	2	Ogi	100.0	0.47	99.76	96.64	97.23	83.27	81.15	100.0	0.987	0.8	0.001
+1127	WdV.Lesserbee 0.01	learning	sitting	normal	1		96.69	6	Saguaro	97.16	0.47	97.11	95.45	97.16	96.49	96.52	92.42	0.968	5.143	0.041
+1121	tk.BotOX 0.3	mixed	rammer	normal			98.72	2	JKHydra	99.19	0.47	97.39	98.94	96.39	98.32	99.19	97.79	0.987	2.286	0.028
+650	slugzilla.OscillatePattern 1.0	learning	head-on-prone	shield	1	1	99.08	3	BeepBoop	99.54	0.46	99.54	98.81	99.44	94.24	92.99	97.95	1.0	0.0	0.0
+1034	nzeemin.Izh 0.5	linear+learning	stat-prone	normal			99.35	4	Saguaro	99.81	0.46	99.76	98.79	99.81	99.38	98.19	90.43	0.992	1.1	0.007
+1151	zignd.ZigIndexOutOfRange 1.1	head-on+learning	head-on-prone	normal			99.54	3	ScalarR	100.0	0.46	99.94	99.68	99.8	100.0	99.73	98.5	0.998	0.343	0.005
+1086	jaybot.bots.Oddball 4.0	mixed	stat-prone	normal			99.34	2	Saguaro	99.79	0.45	99.67	99.47	99.79	99.64	98.48	98.9	0.991	1.214	0.051
+210	kcn.unnamed.Unnamed 1.21	learning	flat	shield	1	1	99.55	2	Ogi	100.0	0.45	99.64	99.69	98.27	82.6	96.84	100.0	0.99	0.593	0.001
+1182	sample.Corners 1.0	head-on+learning	wall-runner	normal			99.56	4	BeepBoop	100.0	0.44	100.0	99.66	99.97	98.66	99.77	98.8	0.992	0.529	0.005
+1153	donjezza.Muncho 1.0	head-on	wall-runner	normal			99.43	3	BeepBoop	99.87	0.44	99.87	99.34	99.51	99.7	99.35	98.72	0.99	1.086	0.012
+1081	gimp.GimpBot 0.1	learning	head-on-prone	normal			98.12	4	ScalarR	98.56	0.44	97.95	97.73	97.42	98.56	96.55	95.92	0.978	3.557	0.043
+444	serenity.nonSense 1.39	learning	flat	stop-go			94.91	4	Saguaro	95.35	0.44	92.44	88.73	95.35	93.4	91.8	90.79	0.831	17.293	0.061
+943	zyx.nano.Ant 1.1	head-on	stat-prone	normal			99.25	2	ScalarR	99.69	0.44	99.46	99.43	98.11	99.69	98.51	98.29	0.987	1.771	0.011
+891	Lo_Ian.Gandalf_V4 4.0	linear	linear-prone	normal			99.42	2	BeepBoop	99.86	0.44	99.86	98.82	99.03	99.01	98.55	95.34	0.988	1.836	0.014
+1097	spinnercat.Limit .01	learning	head-on-prone	normal			99.26	4	BeepBoop	99.69	0.43	99.69	98.83	98.92	99.69	97.13	97.3	0.994	0.8	0.007
+240	ph.micro.Pikeman 0.4.5	learning	oscillator	shield	1	1	99.57	3	Ogi	100.0	0.43	99.41	99.85	98.86	85.17	95.35	100.0	0.999	0.064	0.0
+1130	pac.ABC 2.1	linear	stat-prone	normal			99.5	3	BeepBoop	99.92	0.42	99.92	99.3	99.52	99.77	98.9	99.28	0.998	0.407	0.013
+797	suh.nano.StopAndGoL 1.01	linear	stat-prone	normal			99.54	5	BeepBoop	99.95	0.41	99.95	99.44	99.95	99.87	99.69	98.68	0.985	1.079	0.011
+148	oog.micro.Claudius 1.11	learning	wall-runner	shield	1	1	95.11	3	Saguaro	95.52	0.41	94.0	90.79	95.52	78.74	77.33	74.71	0.93	3.407	0.017
+564	ne.Chimera 1.2	mixed	stat-prone	normal			90.56	2	BeepBoop	90.96	0.4	90.96	86.16	86.65	88.48	84.0	90.86	0.865	17.721	0.076
+358	stelo.Randomness 1.1	learning	flat	shield	1		97.18	2	Ogi	97.58	0.4	90.41	93.74	97.22	90.02	92.08	97.58	0.777	14.321	0.036
+898	pl.robocode.Pacyfista 1.0	head-on+learning	stat-prone	normal			99.55	3	ScalarR	99.95	0.4	99.82	99.38	98.37	99.95	99.72	98.11	0.985	1.529	0.011
+627	voidious.perceptual.RetroGirl 1.0.0	head-on+learning	flat	stop-go			96.0	2	BeepBoop	96.39	0.39	96.39	94.82	95.51	96.02	95.33	89.3	0.926	8.95	0.039
+1184	a.FreyaOS 1.0	?	?	normal			99.55	2	Saguaro	99.94	0.39			99.94	99.87	99.64	98.76			
+1155	sample.VelociRobot 1.0	learning	stat-prone	normal			99.0	2	ScalarR	99.38	0.38	99.01	98.68	99.34	99.38	99.31	98.18	0.99	1.571	0.026
+754	fowl3628800.LightningBolt 2.6.0	linear+learning	head-on-prone	normal			99.53	2	BeepBoop	99.91	0.38	99.91	99.46	99.31	99.77	98.56	99.62	0.994	0.929	0.013
+141	kms.Golden 0.10	learning	sitting	shield	1	1	99.62	2	JKHydra	100.0	0.38	86.6	86.62	95.33	82.47	100.0	79.18	0.952	1.979	0.008
+315	oog.nano.Fuatisha 1.1	learning	flat	shield		1	97.99	2	Ogi	98.37	0.38	97.38	89.22	96.21	81.49	75.92	98.37	0.768	28.021	0.087
+372	css.Delitioner 0.11	learning	head-on-prone	shield	1	1	99.56	2	BeepBoop	99.93	0.38	99.93	98.42	94.66	85.99	82.43	99.5	0.965	0.671	0.006
+1110	wit.Deep7 2.0	linear+learning	stat-prone	normal			99.51	3	JKHydra	99.88	0.37	99.84	99.28	99.81	99.79	99.88	94.69	0.994	0.964	0.026
+945	kcn.percept.PerceptBot 2.3	learning	flat	normal			99.42	2	Saguaro	99.79	0.37	99.19	98.71	99.79	98.97	98.13	98.37	0.99	1.436	0.01
+69	simonton.beta.LifelongObsession 0.5.1	learning	flat	shield	1	1	99.36	2	Ogi	99.73	0.37	99.67	98.6	96.6	69.97	96.39	99.73	0.991	0.529	0.009
+243	slugzilla.RandomPattern 1.0	learning	flat	shield	1	1	99.53	2	BeepBoop	99.9	0.37	99.9	99.57	98.69	82.11	91.07	98.59	0.996	0.214	0.001
+1088	techdude.kombat.FlamingKombat 1.5	linear+learning	circular-prone	normal			99.51	2	BeepBoop	99.86	0.35	99.86	99.35	99.51	99.72	99.07	97.98	0.996	0.693	0.014
+903	nammyung.ModelT 0.23	linear	flat	normal			99.56	3	BeepBoop	99.91	0.35	99.91	99.76	98.21	99.9	99.5	99.4	0.996	0.293	0.014
+287	ntc.Cannon 1.12test	learning	flat	stop-go			94.86	2	Saguaro	95.21	0.35	82.88	79.0	95.21	76.67	75.52	77.95	0.783	27.507	0.079
+1180	mc.Messapia 0.1.8	head-on	head-on-prone	normal			99.64	3	BeepBoop	99.99	0.35	99.99	99.84	99.83	99.99	99.65	89.67	0.998	0.314	0.014
+1042	adt.Ar1 2.1	head-on	rammer	normal			99.66	2	ScalarR	100.0	0.34	99.79	99.2	98.25	100.0	99.05	97.68	0.994	0.85	0.005
+215	suh.mega.WaveSurferGF 1.04	learning	flat	stop-go	1		97.09	4	Saguaro	97.44	0.34	92.07	89.69	97.44	90.37	90.58	85.79	0.777	22.214	0.086
+230	pez.gloom.GloomyDark 0.9.2	learning	flat	shield	1	1	99.37	2	Ogi	99.7	0.33	96.94	97.9	97.96	82.54	97.83	99.7	0.978	0.843	0.006
+1005	pak.Dargon 1.0b	head-on	head-on-prone	normal			99.5	3	ScalarR	99.83	0.33	99.54	98.92	99.63	99.83	98.35	97.67	0.986	1.686	0.007
+59	tide.pear.Pear 0.62.1	learning	rammer	shield	1	1	99.1	2	Ogi	99.43	0.33	99.35	99.09	94.7	71.84	97.29	99.43	0.993	0.443	0.001
+1168	donjezza.Jezza 1.0	head-on	flat	normal			99.66	2	ScalarR	99.99	0.33	99.96	99.71	99.18	99.99	99.5	98.14	0.994	1.0	0.024
+1172	gwah.GerryBotMkII 1.5.1	learning	head-on-prone	normal			98.98	2	Saguaro	99.31	0.33	98.97	98.74	99.31	99.16	98.12	93.03	0.989	1.857	0.037
+1199	jgap.JGAP12584 1.0	learning	circular-prone	normal			99.26	2	Saguaro	99.58	0.32	99.11	98.81	99.58	99.05	98.95	98.39	0.994	0.686	0.005
+1104	kanishk.Fr0z3n 1.1	head-on	stat-prone	normal			99.67	2	ScalarR	99.98	0.31	99.92	99.5	99.97	99.98	99.77	97.82	0.999	0.25	0.008
+731	SuperSample.SuperCrazy 1.0	learning	flat	shield	1	1	99.57	5	Ogi	99.88	0.31	99.86	98.23	97.58	91.59	98.18	99.88	1.0	0.0	0.0
+99	jcs.Megatron 1.2	learning	wall-runner	shield	1	1	99.5	4	BeepBoop	99.81	0.31	99.81	97.68	97.98	81.55	87.8	98.3	0.98	1.214	0.004
+1189	is.fon.rs.FonDestroyer3084 1.0	head-on+learning	head-on-prone	normal			99.7	5	ScalarR	100.0	0.3	99.97	99.58	99.87	100.0	99.68	99.13	0.999	0.107	0.013
+436	ha2.T3 0.2	learning	stat-prone	shield	1	1	98.2	4	Ogi	98.49	0.29	98.43	94.4	98.24	92.43	88.66	98.49	0.938	2.014	0.012
+576	brainfade.melee.Dusk 0.44	learning	flat	shield	1	1	99.71	3	Ogi	100.0	0.29	99.26	99.2	97.37	97.49	97.32	100.0	0.983	0.55	0.001
+323	bvh.frg.Friga 0.112dev	learning	flat	shield	1	1	99.72	2	Ogi	100.0	0.28	99.72	98.98	99.32	90.29	98.55	100.0	1.0	0.0	0.0
+529	metal.small.MCool 1.21	learning	flat	shield	1	1	99.72	3	Ogi	100.0	0.28	99.92	99.14	98.78	90.27	99.62	100.0	1.0	0.0	0.0
+56	dft.Cyanide 1.90	learning	stat-prone	shield	1	1	99.72	2	BeepBoop	100.0	0.28	100.0	99.88	99.22	74.86	96.34	100.0	0.977	0.907	0.012
+357	ers.nano.iSuck.ISuckNano 1.0a	learning	stat-prone	shield	1		97.03	2	DrussGT	97.31	0.28	87.84	97.31	95.07	85.04	81.67	97.26	0.789	25.321	0.094
+860	extra.LightSauce 0.01	head-on	stat-prone	normal			99.72	7	BeepBoop	100.0	0.28	100.0	98.78	99.24	99.95	98.94	92.01	0.998	0.321	0.007
+799	banshee.mini.Nexus6 0.2.0	linear	stat-prone	normal			99.7	2	BeepBoop	99.98	0.28	99.98	99.72	99.57	99.9	99.42	99.67	0.989	1.207	0.01
+1154	homerbots.h1 1.0	head-on	head-on-prone	normal	1		99.72	2	Saguaro	100.0	0.28	99.94	98.38	100.0	100.0	100.0	99.52	0.999	0.229	0.004
+1118	aetos.AetosFirstBot 1.0	head-on	rammer	normal			99.7	3	ScalarR	99.97	0.27	99.69	99.33	99.51	99.97	99.61	91.31	0.998	0.364	0.006
+830	vjik.UnViolation 1.1	mixed	stat-prone	stop-go			97.08	5	Saguaro	97.35	0.27	96.76	95.97	97.35	96.86	96.67	94.13	0.928	13.186	0.165
+1137	de.simpleworks.robocode.bots.swiBot 1.1	mixed	stat-prone	normal			99.4	2	ScalarR	99.66	0.26	99.58	99.31	98.73	99.66	99.51	94.41	0.988	2.043	0.058
+1039	bp.Kuma 1.0	head-on	stat-prone	normal			99.73	2	BeepBoop	99.98	0.25	99.98	99.32	99.55	99.97	99.1	98.17	1.0	0.036	0.009
+280	origin.SleepSiphon 1.7b	head-on+learning	stat-prone	shield	1	1	99.69	3	JKHydra	99.93	0.24	99.85	99.9	98.74	95.13	99.93	99.91	0.98	2.514	0.016
+1056	Noran.RandomTargeting 0.02	head-on	stat-prone	normal	1	1	99.76	2	Ogi	100.0	0.24	99.98	99.93	99.57	99.98	99.86	100.0	0.998	0.364	0.006
+1169	fruits.NanoStrawbery 1.3	head-on+learning	head-on-prone	normal			99.09	3	ScalarR	99.33	0.24	99.24	98.98	99.22	99.33	99.04	97.93	0.992	1.343	0.03
+121	ej.ChocolateBar 1.1	learning	stat-prone	shield	1	1	99.77	2	DrussGT	100.0	0.23	99.86	100.0	98.79	77.88	100.0	100.0	1.0	0.0	0.0
+125	jam.mini.Raiko 0.43	learning	stat-prone	shield	1	1	99.77	2	JKHydra	100.0	0.23	99.96	98.8	98.81	78.88	100.0	100.0	0.993	0.0	0.0
+852	kawigi.micro.Shiz 1.1	learning	stat-prone	normal			99.66	2	BeepBoop	99.89	0.23	99.89	99.05	98.67	99.84	98.67	98.72	0.983	1.857	0.006
+333	mnt.SurferBot 0.2.5	learning	oscillator	shield	1	1	99.77	2	JKHydra	100.0	0.23	99.97	99.12	96.19	92.03	100.0	100.0	0.998	0.15	0.0
+571	slugzilla.OrbitGF 1.0	learning	wall-runner	shield	1	1	99.77	2	Ogi	100.0	0.23	99.92	98.74	98.87	95.7	99.53	100.0	0.999	0.071	0.0
+246	slugzilla.RandomGF 1.0	learning	flat	shield	1	1	99.77	2	DrussGT	100.0	0.23	99.93	100.0	99.34	88.33	94.83	100.0	0.996	0.214	0.001
+1159	suh.nano.TargetR 1.00	learning	sitting	normal			96.37	5	ScalarR	96.58	0.21	95.6	96.51	96.2	96.58	96.36	91.73	0.963	6.057	0.042
+409	nz.jdc.nano.NeophyteSRAL 1.3	linear+learning	stat-prone	normal		1	98.07	2	DrussGT	98.28	0.21	97.5	98.28	97.98	98.14	93.32	94.48	0.979	2.979	0.018
+581	slugzilla.OrbitPattern 1.1	learning	wall-runner	shield	1	1	99.76	4	BeepBoop	99.96	0.2	99.96	99.62	99.09	94.0	95.97	97.67	0.998	0.143	0.004
+1192	el.Attackr 0.1	learning	head-on-prone	normal			99.3	3	JKHydra	99.5	0.2	98.8	99.11	97.62	99.03	99.5	95.95	0.994	0.986	0.019
+297	KiraNL.Chupacabra 0.5	learning	flat	shield		1	99.77	2	BeepBoop	99.96	0.19	99.96	96.2	99.34	82.06	89.97	97.16	1.0	0.0	0.003
+685	rz.HawkOnFire 0.1	head-on	stat-prone	normal			99.83	2	ScalarR	100.0	0.17	99.97	98.73	99.61	100.0	98.78	98.69	0.999	0.093	0.0
+264	AIR.iRobot 1.0	learning	flat	shield	1		99.03	2	Ogi	99.2	0.17	88.97	93.18	98.16	88.0	94.95	99.2	0.861	10.85	0.033
+987	eskimo.micro.Echo 0.1	head-on+learning	stat-prone	normal			99.81	2	ScalarR	99.98	0.17	99.92	99.37	98.63	99.98	98.55	98.78	0.996	0.571	0.005
+975	uccc.RingDing 1.12	linear+learning	stat-prone	normal			99.69	2	BeepBoop	99.85	0.16	99.85	99.46	99.75	99.72	99.33	99.81	0.996	0.657	0.008
+1147	ch.rhj.rbc.RHJ1 1.0	linear	linear-prone	normal			99.72	2	BeepBoop	99.88	0.16	99.88	99.33	99.67	99.85	99.74	95.34	0.998	0.429	0.035
+631	deewiant.Anomaly 0.2	mixed	flat	stop-go	1		99.85	3	Ogi	100.0	0.15	99.99	99.82	99.76	99.66	99.93	100.0	0.956	6.129	0.029
+1188	mjhjd.MattHussey1 1.1	silent	stat-prone	normal			99.84	3	ScalarR	99.98	0.14	99.91	99.86	99.71	99.98	99.76	98.99	1.0	0.029	0.001
+1148	reeder.caden.Elmo 1	head-on	head-on-prone	normal			99.86	2	JKHydra	100.0	0.14	99.9	99.33	99.65	99.88	100.0	97.44	0.992	1.329	0.016
+1144	zh.UnderDog 0.0.2	learning	head-on-prone	normal			99.81	2	BeepBoop	99.95	0.14	99.95	99.44	99.79	99.85	99.49	99.44	0.998	0.436	0.007
+73	simonton.mega.SniperFrog 1.0.fix2	learning	stat-prone	shield	1	1	99.87	3	Ogi	100.0	0.13	99.94	99.5	97.16	79.21	96.76	100.0	0.992	0.457	0.002
+195	wiki.mini.Sedan 1.0	learning	flat	shield	1	1	99.87	3	BeepBoop	100.0	0.13	100.0	99.83	95.02	83.04	93.63	100.0	0.997	0.164	0.023
+1115	pbg.NinjaX 1.2	head-on	stat-prone	normal			99.76	4	ScalarR	99.88	0.12	99.87	99.26	99.83	99.88	99.46	98.27	0.993	0.521	0.005
+936	cli.Dancer 1.1	linear	stat-prone	normal			99.81	4	BeepBoop	99.93	0.12	99.93	99.17	99.86	99.83	99.44	95.27	0.997	0.529	0.009
+153	jam.micro.RaikoMicro 1.44	learning	flat	shield	1	1	99.88	4	Ogi	100.0	0.12	99.93	99.67	97.97	78.35	92.88	100.0	0.999	0.071	0.0
+1136	SK.SimpleKiller 1.0	learning	linear-prone	normal			98.39	2	Saguaro	98.5	0.11	97.29	97.05	98.5	98.42	98.37	97.13	0.977	3.657	0.054
+1119	blir.nano.inch.Inchworm 1.0	mixed	stat-prone	normal			99.02	2	ScalarR	99.13	0.11	98.74	98.37	98.79	99.13	97.32	95.12	0.977	3.821	0.029
+1201	nz.A7Ibwenape A7Ibwen1.0	learning	head-on-prone	normal			99.3	3	ScalarR	99.41	0.11	99.35	99.12	99.09	99.41	99.01	95.97	0.987	1.2	0.022
+1178	jcw.ArcherOne 1.0	head-on	head-on-prone	normal			99.77	2	ScalarR	99.87	0.11	99.75	99.39	99.86	99.87	99.62	99.02	0.997	0.571	0.015
+1190	maye.SlashBot 1.0	head-on	head-on-prone	normal			99.89	2	BeepBoop	100.0	0.11	100.0	99.94	99.76	100.0	99.4	99.11	0.995	0.786	0.017
+1174	McS.Spanky_test 0.1a	head-on	stat-prone	normal			99.9	2	JKHydra	100.0	0.1	99.99	99.79	99.87	99.99	100.0	97.76	0.999	0.143	0.011
+1194	paket.MojRobot 1.0	head-on	head-on-prone	normal			99.89	3	BeepBoop	99.99	0.1	99.99	99.64	99.86	99.97	99.45	96.06	1.0	0.0	0.006
+981	fullsail.SweetTea 1.1	head-on	stat-prone	normal			99.9	3	ScalarR	100.0	0.1	99.99	99.36	99.76	100.0	99.72	90.95	0.995	0.043	0.002
+918	e32.Omni 0.06	?	?	normal			97.33	2	BeepBoop	97.42	0.09	97.42	97.09	92.6	96.61	97.06	94.16			
+1210	wiki.SuperSampleBot.SuperSittingDuck 1.0	silent	head-on-prone	normal		1	99.91	2	JKHydra	100.0	0.09	99.88	99.98	99.9	99.99	100.0	100.0	0.998	0.0	0.0
+1122	skm.butterfly 1.0	learning	stat-prone	normal			99.85	3	ScalarR	99.94	0.09	99.9	99.31	99.77	99.94	98.46	94.77	0.991	0.9	0.002
+1131	suh.nano.TargetH 1.00	head-on	sitting	normal			99.91	2	ScalarR	100.0	0.09	99.94	99.74	99.92	100.0	100.0	98.56	0.996	0.114	0.001
+923	germ.TheMind .2	head-on	stat-prone	normal			99.81	2	ScalarR	99.9	0.09	99.89	98.89	98.53	99.9	99.52	94.41	0.994	0.8	0.018
+1166	skm.PateranBotlock2 1.0	head-on	head-on-prone	normal			99.91	2	ScalarR	100.0	0.09	99.93	99.72	99.99	100.0	99.6	98.92	0.999	0.2	0.004
+459	CharlieN.Omega.Omega 1.03	learning	flat	shield	1		96.34	2	Ogi	96.42	0.08	89.74	95.68	94.39	88.94	91.3	96.42	0.852	18.229	0.051
+1171	is.fon.rs.Kamikaza 1.0	head-on	head-on-prone	normal			99.91	4	BeepBoop	99.99	0.08	99.99	99.74	99.96	99.97	99.31	98.11	0.991	0.857	0.013
+398	KiraNL.ChupaLite 0.4	unread	stat-prone	shield	1	1	98.95	12	Saguaro	99.02	0.07	98.99	98.29	99.02	85.58	85.94	98.97	0.98	0.714	0.0
+1175	sample.Tracker 1.0	head-on	rammer	normal	1		99.93	4	ScalarR	100.0	0.07	99.98	99.75	99.82	100.0	98.27	95.41	1.0	0.0	0.009
+79	apv.test.Virus 0.6.1	learning	stat-prone	shield	1	1	99.78	2	BeepBoop	99.85	0.06	99.85	99.82	97.81	73.11	94.42	99.84	0.995	0.293	0.011
+807	WarfaJibril.Jibril_Warfa_Andromeda 1.11	learning	head-on-prone	shield	1	1	99.75	3	BeepBoop	99.81	0.06	99.81	99.56	96.47	95.24	90.63	99.62	0.993	0.457	0.001
+1000	dsekercioglu.shield.ColdBreath 1.0	head-on	sitting	normal			99.94	2	BeepBoop	100.0	0.06	100.0	99.99	99.97	100.0	99.95	95.09	1.0	0.0	0.0
+843	fm.mammillarias 1.3	head-on	stat-prone	normal			99.94	6	BeepBoop	100.0	0.06	100.0	99.04	99.16	99.9	99.68	99.08	1.0	0.0	0.0
+1141	ma.is.fon.rs.RobotA 0.01	head-on	sitting	normal			99.94	2	Saguaro	100.0	0.06	99.97	99.38	100.0	100.0	98.68	95.38	0.999	0.114	0.0
+1196	yabot.YaBot 0.1	head-on	linear-prone	normal			99.92	4	ScalarR	99.97	0.05	99.92	99.81	99.76	99.97	99.55	95.27	0.999	0.086	0.009
+1198	lw.LuthersTest 0.1	head-on	head-on-prone	normal			99.94	2	BeepBoop	99.98	0.05	99.98	99.65	99.93	99.94	99.72	99.23	0.999	0.143	0.007
+241	gh.micro.Grinnik 1.0	learning	flat	shield	1	1	99.53	3	Ogi	99.57	0.04	99.21	97.28	98.0	92.79	99.07	99.57	0.995	0.329	0.001
+1195	hfgrobots.HFG 1.0	head-on	head-on-prone	normal			99.95	3	BeepBoop	99.99	0.04	99.99	99.78	99.86	99.98	99.76	96.04	1.0	0.029	0.002
+1170	sample.MyFirstRobot 1.0	head-on	stat-prone	normal			99.97	2	JKHydra	100.0	0.03	99.99	99.81	99.82	99.97	100.0	91.65	0.999	0.086	0.006
+133	ary.mini.Nimi 1.0	learning	stat-prone	shield	1	1	98.91	3	JKHydra	98.94	0.03	97.75	93.4	96.72	79.43	98.94	96.03	0.895	5.886	0.019
+1193	chickenfuego.UrChicken2 1.0	mixed	stat-prone	normal			99.97	2	ScalarR	100.0	0.03	99.96	99.7	99.82	100.0	99.94	98.96	1.0	0.057	0.007
+543	frag.FragBot 1.0	learning	stat-prone	shield	1	1	99.97	2	JKHydra	100.0	0.03	99.32	98.99	96.86	97.4	100.0	100.0	0.993	0.421	0.002
+967	Noran.BitchingElk 0.054	learning	flat	shield	1	1	99.83	4	DrussGT	99.85	0.02	99.45	99.85	99.25	98.15	98.16	99.51	0.999	0.071	0.001
+1205	davv.DOne b002	silent	head-on-prone	normal			99.9	2	Ogi	99.92	0.02	99.88	99.67	99.78	99.8	99.89	99.92	0.999	0.186	0.018
+1134	wiki.BasicBulletShielder 1.0	head-on	sitting	normal			99.99	3	BeepBoop	100.0	0.01	100.0	100.0	99.99	100.0	100.0	92.55	1.0	0.014	0.001
+1054	amc.ROBv202 1.01	head-on	linear-prone	normal			99.92	2	ScalarR	99.93	0.01	99.86	99.51	99.39	99.93	99.84	98.91	0.995	0.943	0.013
+791	md.November 1.0	learning	flat	stop-go			93.2	6	Saguaro	93.21	0.01	92.94	87.55	93.21	90.6	85.66	87.63	0.884	13.971	0.046
+1052	rsim.micro.uCatcher 0.1	head-on	sitting	normal			99.99	2	BeepBoop	100.0	0.01	100.0	99.96	100.0	100.0	99.98	98.05	1.0	0.0	0.001
+720	xander.cat.Spitfire 1.4	head-on	sitting	normal			99.99	2	DrussGT	100.0	0.01	99.98	100.0	99.87	100.0	99.99	90.59	1.0	0.007	0.001
+591	demetrix.nano.Neutrino 0.27	learning	flat	stop-go	1		92.09	3	BeepBoop	92.1	0.01	92.1	85.83	90.96	89.94	87.24	83.43	0.793	23.371	0.06
+1132	mwj.A1176183 1.0	head-on	wall-runner	normal			99.98	4	ScalarR	99.98	0.0	99.96	99.72	99.78	99.98	99.3	98.89	0.998	0.343	0.002
+1207	ArchAlpha.ArchimedesAlpha 1.0	silent	sitting	normal	1		100.0	3	BeepBoop	100.0	0.0	100.0	100.0	99.81	100.0	100.0	100.0	1.0	0.0	0.0
+440	KiraNL.Cataris 1.0	learning	flat	shield	1	1	98.95	2	Hadur	98.95	0.0	97.39	96.55	97.17	79.07	85.55	96.1	0.785	24.707	0.074
+363	Krabb.krabby.Krabby 1.18b	learning	flat	shield	1	1	98.79	2	Hadur	98.79	0.0	98.72	92.22	88.28	84.57	88.88	96.98	0.918	3.9	0.005
+829	NDH.GuessFactor 1.0	learning	sitting	shield		1	92.81	4	Hadur	92.81	0.0	89.46	86.91	92.74	83.81	87.52	87.14	0.907	4.314	0.019
+1177	RobotMarco.MarcoV 0.1	head-on	head-on-prone	normal			100.0	2	Hadur	100.0	0.0	99.97	99.54	99.75	99.95	99.49	96.32	0.997	0.0	0.003
+289	TJ.Exupery 1.39	learning	flat	shield			93.67	3	Hadur	93.67	0.0	88.15	89.8	89.47	84.8	88.56	88.2	0.841	18.029	0.063
+1206	ad.last.Bottom 1.0	silent	sitting	normal			99.97	2	BeepBoop	99.97	0.0	99.97	99.97	99.88	99.97	99.97	99.97	0.998	0.057	0.019
+589	ajs.Guessit 1.3	learning	stat-prone	stop-go			97.15	2	Hadur	97.15	0.0	96.28	94.55	95.72	95.96	95.78	90.16	0.931	10.021	0.084
+364	apv.LauLectrik 1.2	learning	flat	stop-go	1	1	90.75	3	Hadur	90.75	0.0	86.0	85.44	86.98	81.36	80.05	84.46	0.797	21.907	0.055
+538	apv.NanoLauLectrikTheCannibal 1.1	learning	head-on-prone	shield	1	1	94.22	2	Hadur	94.22	0.0	86.55	92.48	89.64	89.3	86.44	88.3	0.838	15.55	0.072
+45	ar.horizon.Horizon 1.2.2	learning	flat	stop-go	1		96.23	2	Hadur	96.23	0.0	80.26	74.4	91.83	74.24	63.63	67.54	0.625	33.45	0.086
+478	arthord.micro.Apoptygma 0.4	learning	flat	stop-go			93.27	2	Hadur	93.27	0.0	87.81	86.62	90.96	85.18	85.94	86.33	0.834	18.993	0.054
+301	arthord.micro.Muffin 0.6.1	learning	flat	stop-go			92.27	4	Hadur	92.27	0.0	85.57	82.86	92.22	82.16	82.25	78.63	0.77	24.064	0.054
+134	ary.FourWD 1.3d	learning	stat-prone	shield		1	99.48	2	Hadur	99.48	0.0	96.25	94.63	97.35	93.06	98.65	91.56	0.935	2.436	0.015
+646	awl.Locutus 1.5	linear+learning	stat-prone	shield			99.69	3	Hadur	99.69	0.0	95.16	95.53	95.78	92.92	91.41	96.52	0.935	9.886	0.052
+1176	bh.PencilRain 0.01	head-on	circular-prone	normal			99.98	2	ScalarR	99.98	0.0	99.96	99.51	99.8	99.98	99.98	97.2	1.0	0.029	0.004
+165	brainfade.Fallen 0.63	learning	sitting	shield	1	1	97.92	2	Hadur	97.92	0.0	95.98	93.12	96.87	81.56	97.29	92.16	0.812	14.457	0.03
+155	cf.star.Star2 1.23	learning	flat	shield			91.0	2	Hadur	91.0	0.0	87.78	77.93	87.11	85.32	83.75	76.54	0.814	21.307	0.057
+1213	cli.WasteOfAmmo 1.0	learning	sitting	normal	1	1	100.0	3	BeepBoop	100.0	0.0	100.0	99.74	99.9	99.83	99.86	100.0	1.0	0.0	0.0
+1208	com.sociesc.T1000 1.0.0	silent	sitting	normal	1		100.0	2	BeepBoop	100.0	0.0	100.0	100.0	99.93	100.0	100.0	100.0	0.995	0.0	0.0
+1214	conscience.Suicidal 1.1	learning	head-on-prone	normal	1		100.0	2	BeepBoop	100.0	0.0	100.0	100.0	99.89	100.0	100.0	100.0	1.0	0.0	0.0
+273	davidalves.net.DuelistMini 1.1	learning	flat	shield	1	1	100.0	3	Ogi	100.0	0.0	99.54	99.77	98.82	82.88	75.8	100.0	0.977	0.9	0.0
+269	dft.Virgin 1.25	learning	flat	shield	1	1	98.57	3	Hadur	98.57	0.0	96.9	98.4	97.81	77.78	93.79	96.35	0.974	0.621	0.007
+1140	dhn.Immortal 1.0	learning	wall-runner	normal			99.03	2	Hadur	99.03	0.0	98.62	98.61	97.65	98.73	98.14	97.45	0.961	3.864	0.041
+1203	disan.Ghost .01	silent	stat-prone	normal	1		100.0	2	BeepBoop	100.0	0.0	100.0	100.0	100.0	100.0	100.0	100.0	0.997	0.0	0.0
+1200	drd.Dreadknoght 0.9	head-on	head-on-prone	normal			99.99	2	Hadur	99.99	0.0	99.99	99.65	99.78	99.99	99.63	96.98	1.0	0.0	0.0
+1217	eem.awful v1.2	silent	sitting	normal	1		100.0	2	BeepBoop	100.0	0.0	100.0	100.0	99.57	100.0	100.0	100.0	0.993	0.0	0.0
+169	element.Earth 1.1	learning	flat	stop-go	1		97.23	3	Hadur	97.23	0.0	95.8	91.65	94.17	92.64	92.19	85.93	0.735	27.614	0.082
+1102	elvbot.ElverionBot 0.3	head-on	stat-prone	normal			99.98	5	Hadur	99.98	0.0	99.94	99.52	99.96	99.96	99.86	98.26	1.0	0.029	0.001
+349	ers.nano.gokdeniz.Gokdeniz 1.5b	learning	oscillator	shield	1		97.91	7	Hadur	97.91	0.0	83.45	94.44	92.19	80.04	90.89	93.98	0.771	27.886	0.098
+420	ers.nano.lig.LigMA 1.9	learning	flat	shield	1		100.0	2	Hadur	100.0	0.0	98.43	92.79	90.9	95.41	91.6	93.49	0.879	15.529	0.059
+306	ers.nano.nekolh.Nekolh 1.4d	learning	flat	shield	1		95.74	3	Hadur	95.74	0.0	86.22	94.17	89.52	85.67	82.63	93.77	0.81	23.6	0.083
+431	exauge.GateKeeper 1.1.121g	learning	flat	shield	1	1	98.68	3	Hadur	98.68	0.0	98.05	97.75	96.49	78.74	78.44	92.98	0.79	25.143	0.07
+862	extra.Sauce .01	head-on	stat-prone	normal			99.98	3	Hadur	99.98	0.0	99.96	98.17	99.52	99.93	99.32	98.79	0.998	0.271	0.007
+129	florent.small.LittleAngel 1.8	learning	stat-prone	shield	1	1	98.0	3	Hadur	98.0	0.0	94.62	97.39	92.34	78.33	70.48	94.8	0.924	4.679	0.013
+1124	gwah.GBotMarkIV 1.0	head-on	rammer	normal			99.99	2	Hadur	99.99	0.0	99.38	99.42	99.49	99.97	98.67	96.64	0.996	0.671	0.011
+498	ins.MobyNano 0.8	learning	stat-prone	shield	1	1	99.39	2	Hadur	99.39	0.0	97.04	96.14	90.87	84.14	94.67	93.29	0.858	12.136	0.026
+188	jab.avk.ManuelGallegus 0.6	learning	flat	stop-go			97.12	3	Hadur	97.12	0.0	95.85	90.59	96.91	96.14	68.83	81.22	0.78	23.193	0.062
+234	jekl.mini.BlackPearl .91	learning	oscillator	shield	1	1	99.42	3	Hadur	99.42	0.0	97.53	93.75	98.64	84.07	96.0	99.33	0.917	2.143	0.017
+92	jk.micro.Cotillion 0.8	learning	flat	shield	1		99.06	2	Hadur	99.06	0.0	80.17	97.9	97.55	71.74	64.58	68.32	0.676	31.229	0.068
+43	jk.mini.CunobelinDC 1.2	learning	wall-runner	shield	1	1	99.62	2	Hadur	99.62	0.0	96.93	97.6	89.39	78.24	80.98	83.16	0.939	5.35	0.024
+485	jk.precise.EnergyDome 1.8	head-on	sitting	normal			100.0	2	ScalarR	100.0	0.0	99.99	99.97	98.56	100.0	99.97	99.87	1.0	0.0	0.0
+445	kawigi.nano.FunkyChicken 1.1	learning	flat	shield	1	1	97.63	2	Hadur	97.63	0.0	94.54	88.15	90.79	83.72	86.02	94.21	0.843	18.064	0.054
+102	kc.micro.WaveShark 0.5	learning	flat	shield	1		96.76	2	Hadur	96.76	0.0	87.07	73.2	66.88	77.74	78.72	74.27	0.755	25.971	0.061
+432	kinsen.nano.Quarrelet 1.0	learning	flat	shield	1	1	99.22	5	Hadur	99.22	0.0	96.72	91.1	93.95	77.45	79.68	83.9	0.785	21.743	0.053
+625	klein.GottesKrieger 1.1	learning	stat-prone	stop-go			98.45	2	Hadur	98.45	0.0	96.5	94.6	97.23	95.69	93.51	93.74	0.937	8.607	0.026
+1204	logiblocs.SittingDroid 1.0	silent	sitting	normal	1		100.0	2	BeepBoop	100.0	0.0	100.0	100.0	100.0	100.0	100.0	100.0	1.0	0.0	0.0
+100	lucasslf.Wiggins 0.6	learning	stat-prone	shield	1	1	99.17	4	Hadur	99.17	0.0	99.01	97.13	84.68	78.52	80.83	98.68	0.986	0.836	0.011
+167	lxx.ConceptA 0.8	learning	flat	stop-go			97.26	2	Hadur	97.26	0.0	92.9	87.77	90.47	90.43	93.03	89.98	0.843	16.214	0.038
+193	lxx.Emerald 0.6.5	learning	flat	stop-go			99.36	4	Hadur	99.36	0.0	96.96	96.41	99.18	96.86	97.46	95.66	0.937	8.914	0.059
+1150	mae.Mae1 1.1	mixed	circular-prone	normal			99.99	4	Hadur	99.99	0.0	99.6	99.23	99.87	99.9	99.72	98.14	1.0	0.0	0.002
+1220	mn.nano.SkippedTurns 1.1.0	silent	sitting	normal	1		100.0	3	BeepBoop	100.0	0.0	100.0	100.0	99.77	100.0	100.0	100.0	1.0	0.0	0.0
+126	nat.BlackHole 2.0gamma	learning	flat	stop-go			96.78	2	Hadur	96.78	0.0	80.67	74.47	95.91	76.12	64.37	69.62	0.69	29.907	0.069
+704	ntc.Lasers.Lasers 0.9	learning	stat-prone	normal			93.29	3	Hadur	93.29	0.0	93.01	93.23	88.2	91.39	92.49	89.41	0.918	12.771	0.071
+587	oog.melee.Capulet 1.2	learning	flat	stop-go			95.98	3	Hadur	95.98	0.0	93.53	92.03	94.94	91.89	94.82	90.7	0.88	16.293	0.083
+64	ouroboros.Dragon 0.0.3	learning	stat-prone	shield	1	1	99.9	3	Hadur	99.9	0.0	98.52	97.37	88.85	82.48	81.15	99.06	0.967	1.043	0.004
+737	pa3k.Manta 1.20	learning	flat	normal			92.55	2	Hadur	92.55	0.0	91.34	86.63	90.07	88.21	89.05	87.22	0.882	14.086	0.047
+549	pa3k.Quark 1.02	unread	stat-prone	shield		1	97.75	2	Hadur	97.75	0.0	94.59	90.02	91.36	90.52	87.2	94.34	0.974	1.586	0.006
+956	paolord.TheHulk 1.0	head-on	head-on-prone	normal			100.0	2	Hadur	100.0	0.0	99.96	99.44	99.61	99.92	99.55	98.46	0.998	0.307	0.002
+182	penguin.Joker .611wr	learning	flat	stop-go			92.34	4	Hadur	92.34	0.0	87.66	83.76	91.95	88.3	80.6	74.42	0.758	21.907	0.063
+198	pez.micro.Aristocles 0.3.9	learning	flat	stop-go	1		96.75	2	Hadur	96.75	0.0	84.32	87.87	96.46	82.47	88.44	93.07	0.745	25.807	0.068
+145	pez.mini.Tityus 0.9.1	learning	flat	stop-go			91.39	3	Hadur	91.39	0.0	84.91	79.31	90.18	78.94	73.79	76.1	0.732	25.979	0.06
+74	pez.mini2.Pugilist 2.5.15	learning	flat	stop-go			91.12	3	Hadur	91.12	0.0	89.83	73.96	79.31	83.87	78.27	78.98	0.656	22.993	0.073
+569	pkdeken.Paladin 1.0	learning	stat-prone	stop-go		1	99.13	2	Hadur	99.13	0.0	98.25	94.79	98.59	92.6	92.22	97.2	0.931	9.407	0.037
+917	pl.mskiba.Hilton 0.4	head-on+learning	stat-prone	normal	1		100.0	3	Hadur	100.0	0.0	99.95	98.57	99.91	99.98	99.57	98.0	0.999	0.1	0.001
+1163	quietus.Invader 0.1	silent	head-on-prone	normal	1		100.0	2	BeepBoop	100.0	0.0	100.0	100.0	100.0	100.0	100.0	100.0	1.0	0.0	0.0
+740	racso.Crono 1.0	mixed	oscillator	shield	1	1	99.55	2	Hadur	99.55	0.0	98.88	95.93	95.85	91.04	97.82	99.49	0.927	5.807	0.017
+664	rc.RCBot 2.0	learning	stat-prone	shield		1	100.0	2	Hadur	100.0	0.0	99.92	99.9	99.81	97.83	99.57	99.79	1.0	0.0	0.0
+396	robar.nano.BlackWidow 1.3	learning	flat	shield	1	1	99.08	2	Hadur	99.08	0.0	97.72	98.73	95.33	81.83	79.12	78.24	0.761	26.557	0.072
+722	romz.robot.circular.WildRabbit 0.9.6	learning	stat-prone	stop-go			96.28	5	Hadur	96.28	0.0	95.09	94.41	95.54	95.8	94.12	93.53	0.918	12.7	0.067
+519	rsk1.RSK1 4.0	learning	oscillator	shield	1	1	98.53	2	Hadur	98.53	0.0	96.36	96.45	90.46	93.78	90.81	95.84	0.949	2.886	0.008
+1215	ry.Worst 1.0	learning	wall-runner	normal	1		100.0	2	JKHydra	100.0	0.0	99.99	99.67	99.9	99.99	100.0	100.0	1.0	0.0	0.0
+104	rz.Apollon 0.23	learning	head-on-prone	shield		1	99.3	2	Hadur	99.3	0.0	97.11	99.25	93.34	82.49	96.18	83.7	0.967	1.0	0.005
+1197	sample.Fire 1.0	head-on	head-on-prone	normal	1		100.0	2	Saguaro	100.0	0.0	99.99	99.1	100.0	100.0	95.97	92.29	1.0	0.0	0.0
+1209	sample.SittingDuck 1.0	silent	sitting	normal	1		100.0	3	BeepBoop	100.0	0.0	100.0	100.0	99.91	100.0	100.0	100.0	1.0	0.0	0.0
+1142	sample.SpinBot 1.0	mixed	circular-prone	normal			99.98	6	Hadur	99.98	0.0	99.97	99.38	99.85	99.53	99.73	96.86	1.0	0.036	0.002
+1211	sample.Target 1.0	silent	head-on-prone	normal	1		100.0	2	BeepBoop	100.0	0.0	100.0	100.0	100.0	100.0	100.0	100.0	1.0	0.0	0.0
+1164	sample.TrackFire 1.0	head-on	sitting	normal	1		100.0	2	ScalarR	100.0	0.0	99.99	97.73	99.99	100.0	98.65	95.31	1.0	0.0	0.0
+602	satan.White 0.26	learning	stat-prone	shield	1		99.48	3	Hadur	99.48	0.0	94.19	93.75	97.3	89.9	84.07	98.04	0.886	15.843	0.064
+377	sheldor.nano.Feint 1.2.1	learning	flat	shield	1		97.68	2	Hadur	97.68	0.0	85.19	87.15	90.43	79.8	80.1	78.09	0.763	26.014	0.079
+312	sheldor.nano.FoilistNano 3.2	learning	flat	shield	1		94.38	3	Hadur	94.38	0.0	91.51	87.62	92.52	80.97	77.1	83.75	0.76	29.486	0.101
+1216	sheldor.nano.Retreat 1.0	learning	wall-runner	normal	1		100.0	2	BeepBoop	100.0	0.0	100.0	100.0	99.9	100.0	100.0	100.0	1.0	0.0	0.0
+90	slugzilla.Basilisk 3.9	learning	flat	stop-go			93.29	2	Hadur	93.29	0.0	83.25	77.23	91.74	76.86	74.41	77.2	0.681	29.093	0.07
+1185	snowman.Snowman 1.0	silent	head-on-prone	normal			100.0	4	Hadur	100.0	0.0	99.97	99.99	99.92	99.99	99.79	98.87	1.0	0.0	0.0
+1173	spartancompany.Spartan2 1.0	head-on	head-on-prone	normal			100.0	2	Hadur	100.0	0.0	99.91	99.7	99.59	99.8	99.59	97.85	0.994	0.529	0.003
+427	spinnercat.Kitten 1.6	learning	stat-prone	shield	1	1	98.46	3	Hadur	98.46	0.0	98.18	97.45	95.45	80.41	80.2	90.3	0.948	3.529	0.006
+115	stefw.Tigger 0.0.23	learning	circular-prone	shield	1	1	99.28	3	Hadur	99.28	0.0	98.41	98.7	98.07	72.68	95.94	94.71	0.838	8.164	0.01
+132	stelo.Chord 1.0	learning	flat	shield			99.57	2	Hadur	99.57	0.0	96.06	96.74	96.71	96.47	96.39	91.6	0.771	22.536	0.055
+1096	stelo.PatternRobot 1.0	head-on	stat-prone	normal			100.0	3	BeepBoop	100.0	0.0	100.0	99.37	99.97	100.0	99.41	91.32	1.0	0.0	0.0
+1218	suh.nano.Worst 1.02	learning	rammer	normal	1		100.0	3	ScalarR	100.0	0.0	99.99	99.77	99.81	100.0	100.0	100.0	1.0	0.0	0.0
+1219	suzushin7.nano.Galaxy01 1.01	learning	rammer	normal	1		100.0	2	BeepBoop	100.0	0.0	100.0	100.0	99.81	100.0	100.0	100.0	0.997	0.0	0.0
+486	syl.Centipede 0.5	learning	oscillator	shield	1	1	100.0	3	JKHydra	100.0	0.0	99.77	99.99	97.65	90.36	100.0	100.0	0.998	0.114	0.0
+718	techdude.Class2C.Class2C 0.1	mixed	head-on-prone	normal			96.56	2	Hadur	96.56	0.0	92.24	93.91	90.76	90.85	96.0	95.49	0.949	7.136	0.027
+548	timmit.TimmiT 0.22	learning	head-on-prone	shield		1	100.0	3	Ogi	100.0	0.0	99.68	97.72	95.15	94.45	95.77	100.0	0.976	0.943	0.001
+424	timmit.micro.TimXJ 0.22	learning	flat	shield			92.66	3	Hadur	92.66	0.0	86.59	91.31	74.25	83.72	87.33	90.51	0.812	20.507	0.047
+200	voidious.micro.Jen 1.11	learning	flat	shield	1		96.17	2	Hadur	96.17	0.0	87.48	93.03	93.08	84.4	87.65	84.84	0.804	21.086	0.058
+78	wcsv.mega.PowerHouse2 0.2	learning	circular-prone	shield	1	1	98.61	4	Hadur	98.61	0.0	97.9	92.46	97.81	75.96	90.43	92.95	0.993	0.429	0.001
+194	wilson.Chameleon 0.91	learning	head-on-prone	shield	1	1	100.0	2	Hadur	100.0	0.0	96.48	94.91	98.77	81.94	86.88	77.27	0.978	0.821	0.017
+12	xander.cat.XanderCat 12.9	learning	flat	stop-go			87.83	2	Hadur	87.83	0.0	71.82	58.83	83.83	65.01	62.97	55.38	0.568	33.15	0.089
+747	yagami.Tidus 0.11	learning	stat-prone	normal			99.99	2	Hadur	99.99	0.0	99.81	98.96	99.88	99.9	99.65	98.62	1.0	0.007	0.001
+866	yarghard.Y101 1.0	head-on	flat	normal			99.99	2	Hadur	99.99	0.0	99.98	98.05	99.78	99.89	98.56	93.07	0.995	0.679	0.001
