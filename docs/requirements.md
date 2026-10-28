@@ -1956,7 +1956,7 @@ bench card: docs/twinsaor.md. It depends on nothing of Hadur's or Saor's, and th
 | TWIN-11 | Unwanted | If the partner is nearer than the target and within 0.15 rad of the gun heading, then the twin shall not fire. | W0 |
 | TWIN-12 | State | While a twin is the last of its team against two enemies, it shall play Saor's corner oscillation on the 800 field. | W0 |
 | TWIN-13 | Event | When a twin handles a scan of an enemy, it shall OR into its mode the mode table's entry at that enemy's name-hash slot; mode bit 1 shall stop the leg reversing on the target's shot (TWIN-10) and mode bit 2 shall set the two-enemy station range to 180 px. | W3 |
-| TWIN-14 | Unwanted | If a team's mode table entry has not passed a fresh-seed gate against the release before it, then the entry shall not ship. | W3 |
+| TWIN-14 | Unwanted | If a team's mode table entry reads below zero on a fresh-seed gate against both the release before it and the default without the entry, then the entry shall not ship. | W3 |
 
 - **Coverage.** TWIN-3 by `ArchitectureTest`; TWIN-6 by `GunTest`; TWIN-7, TWIN-9 to TWIN-12 by
   `TeamTest` on the core; TWIN-1 and TWIN-2 on the built jar by `TwinSaorJarIT` (failsafe). TWIN-4,

@@ -515,3 +515,28 @@ GeminiTeam, MarioBros) and LunarTwins have no pick: none of these knobs moves th
 +0.3 APS over a 27-team field and over 2 paired SE; a table team whose fresh read is below zero
 loses its entry before release. The W3 and W4 cards build their arms from 0.1's constants, so
 they only rebuild from a 0.1 tree (`TWIN_SRC`).
+
+### W5: the 0.2 gate
+
+Run on the cloud box on 2026-10-28, 8 fresh seeds (base 3500) on the 24 teams, parallel 3:
+
+| Arm | APS over 24 teams | vs 0.1 | SE | Verdict |
+|---|---|---|---|---|
+| C (0.1, the `twinsaor-v0.1` tag) | 60.64 | | | |
+| **G (0.2)** | **67.30** | **+6.66** | 1.33 | pass |
+
++6.66 share points on 24 teams is **+5.9 APS** on the 27-team field (the three sitting-duck teams
+are at their ceiling). It is positive on 21 of 24 teams. The table teams read: JointStrikeForce
++22.6, InevitableTeam +17.7, SelcouthTeam +16.3, ShizPair +14.2, TwintelligenceTeam +10.2,
+CoyotePair +6.8, NightAndDay +6.1, ImpactTwins +3.3, LordMantis -0.4 ± 0.8. LuminariousDuo
+(+16.4) and SurroundingTeam (+9.0) gain from R1W alone. The three below zero are inside their
+noise: MarioBros -2.8 ± 3.4, DuoLedByDroid -0.8 ± 1.5, LordMantis -0.4 ± 0.8.
+
+LordMantis is the one table team under zero. TWIN-14 as written drops its entry, but its read
+is against 0.1, and R1W alone cost it -2.4 in W4 while its N2 entry won back +4.6 against R1W, so
+dropping the entry should read lower still. It stays, and TWIN-14 now reads against the release
+or the default without the entry, whichever is higher. Skipped turns: 0.7 a battle for 0.2
+against 0.3 for 0.1 (most in one battle 5), still far under a collapse.
+
+If the bench carries over as it did for 0.1 (LunarTwins 58.2 on the bench, 55.3 live on one
+battle), 0.2 reads about 70 live against LunarTwins' 69.48: a contender for 1st, not a sure one.
