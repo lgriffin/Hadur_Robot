@@ -551,7 +551,8 @@ the same for team: read each costly team's code, then give it a counter that exp
   top of their entry), NEAR on TroodonPack alone; each team gets the arm only where it pays +3.0
   points with the low end above zero, then the picked table is gated on fresh seeds.
 - **Card** plans/pc-team-path.queue (BENCH-124): bb and mp on 46 teams x 10 seeds from 4900, tn and
-  a bb on TroodonPack x 16 seeds; pick; gate 16 fresh seeds from 5000 at +0.30 APS. About 1,000
-  battles plus 32 per picked team, ~1.2 h on the PC. Results claude/pc-team-path-results.
+  a bb on TroodonPack x 16 seeds; pick; gate 16 fresh seeds from 5000 at +0.30 APS. About 1,900
+  battles (each seed a pair with aa) plus 64 per picked team, ~2.2 h on the PC. Stop rules on
+  every battle step: 20 failures, 30 min stall, 40+ skips a battle over 100 (halt, resumable). Results claude/pc-team-path-results.
 - **Expected:** PATH +0 to +0.4 APS, on the teams where own fire still costs us after MATEFIRE;
   NEAR about +0.08 (one team, ~+4 points over 46).

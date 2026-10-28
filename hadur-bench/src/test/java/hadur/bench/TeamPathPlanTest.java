@@ -45,6 +45,15 @@ class TeamPathPlanTest {
             "a rerun never carries an old table");
         assertFalse(queue.contains("; true"), "a failed step stops the queue");
         assertTrue(queue.contains("open_results_pr.sh claude/pc-team-path-results"));
+        for (String step : List.of("tpbb", "tpmp", "tptn", "tptnbb", "tpgate", "tpgbb")) {
+            int at = queue.indexOf("\n" + step + " ");
+            int next = queue.indexOf("\ntp", at + 1);
+            String block = queue.substring(at, next < 0 ? queue.length() : next);
+            for (String rule : List.of("stop: fails 20", "stop: stall 30m", "stop: skips 40 over 100")) {
+                assertTrue(block.contains(rule), step + " declares " + rule);
+            }
+        }
+        assertTrue(queue.contains("watch: battles=920") && queue.contains("watch: battles=32"), "the page states what a stop leaves unrun");
     }
 
     @Test

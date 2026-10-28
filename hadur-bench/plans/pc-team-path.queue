@@ -14,8 +14,15 @@
 #   tpgate  the picked table (mk) vs aa on the picked teams, 16 fresh seeds (base 5000); tpgbb A/A
 #   tpsum   projected team APS change = sum of the picked teams' gains / 46 (gate: +0.30 with the low
 #           end above zero); only on PASS is the gated table written as the table to ship
-# About 1,000 battles plus 32 per picked team (screens 952), about 1.2 h at 12 workers
-# (sizes itself to the host). Every step resumes where it stopped. The team thread reads
+# Each seed is a pair (the arm and aa), so about 1,900 battles plus 64 per picked team (screens 1,904),
+# about 2.2 h at 12 workers
+# (sizes itself to the host). Every step resumes where it stopped.
+# Stop rules on every battle step (halt; every battle fought is kept and a rerun resumes): 20 failed
+# battles (a broken jar), no battle in 30 minutes (a hung step), or 40+ skipped turns a battle over the
+# last 100 (the PR #331 build-up). A halt at the very start leaves at most the whole card unrun: 1,904
+# screen battles plus the gate's 64 a picked team (about 2.2 h); later, only the rest of that step and
+# the steps after it. There is no early finish on score: the pick is per team, so no arm is futile
+# while any team can still clear +3.0. The team thread reads
 # claude/pc-team-path-results.
 #   ./queue.sh run pc-team-path        (or  .\queue.ps1 run pc-team-path)
 # Run it from master (one bench queue at a time):
@@ -28,18 +35,42 @@ set SCREENS = --report PATH=../docs/bench/local/team-path-mp.md --control PATH=.
 tpprep | git checkout -q master && V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && test -n "$V" && rm -f bisect/hadur2.HadurTeam_"$V"aa.jar bisect/hadur2.HadurTeam_"$V"bb.jar bisect/hadur2.HadurTeam_"$V"mp.jar bisect/hadur2.HadurTeam_"$V"tn.jar bisect/hadur2.HadurTeam_"$V"mk.jar && rm -f ${OUT}/team-path-*.md ${OUT}/team-path-pick.tsv ${OUT}/team-path-locked.java.txt work/team-path-picked.java work/team-path-gate.txt && ./fetch-opponents.sh --set team-census46.txt && bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && bash ./build-ablation.sh tmpath && bash ./build-ablation.sh tmtnear && mkdir -p work && for a in bb mp tn tnbb gate gbb; do sed "s/@V@/$V/g" plans/team-path-$a.args > work/team-path-$a.args || exit 1; done && for j in aa bb mp tn; do test -f bisect/hadur2.HadurTeam_"$V"$j.jar || exit 1; done && mvn -q compile
 tpbb   | mvn -q exec:java "-Dexec.args=@work/team-path-bb.args"
   after: tpprep
+  watch: battles=920
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
 tpmp   | mvn -q exec:java "-Dexec.args=@work/team-path-mp.args"
   after: tpbb
+  watch: battles=920
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
 tptn   | mvn -q exec:java "-Dexec.args=@work/team-path-tn.args"
   after: tpmp
+  watch: battles=32
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
 tptnbb | mvn -q exec:java "-Dexec.args=@work/team-path-tnbb.args"
   after: tptn
+  watch: battles=32
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
 tppick | ${T} pick ${SCREENS} --min-mean 3.0 --low-end 0 --base MATEFIRE,HUNT --shipped ../hadur-core/src/main/java/hadur2/core/melee/TeamModes.java --census team-census46.txt --opponents opponents --out-md ${OUT}/team-path-pick.md --out-tsv ${OUT}/team-path-pick.tsv --out-java work/team-path-picked.java --out-set work/team-path-gate.txt && if [ -s work/team-path-picked.java ]; then TEAM_MODE_LOCKED="$(pwd)/work/team-path-picked.java" bash ./build-ablation.sh tmlock; else echo "nothing picked: no gate"; fi
   after: tptnbb
 tpgate | if [ -s work/team-path-picked.java ]; then mvn -q exec:java "-Dexec.args=@work/team-path-gate.args"; else echo "nothing picked: no gate"; fi
   after: tppick
+  watch:
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
 tpgbb  | if [ -s work/team-path-picked.java ]; then mvn -q exec:java "-Dexec.args=@work/team-path-gbb.args"; else echo "nothing picked: no gate"; fi
   after: tpgate
+  watch:
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
 tpsum  | if [ -s work/team-path-picked.java ]; then ${T} gate --report ${OUT}/team-path-gate.md --control ${OUT}/team-path-gbb.md --set work/team-path-gate.txt --seeds 16 --teams 46 --min-aps 0.3 --out-md ${OUT}/team-path-verdict.md && if grep -q '\*\*PASS\*\*' ${OUT}/team-path-verdict.md; then cp work/team-path-picked.java ${OUT}/team-path-locked.java.txt; else echo "gate failed: no table to ship"; fi; else echo "Neither PATH nor NEAR cleared the screen on any team: no gate, the table stays as shipped." > ${OUT}/team-path-verdict.md; fi
   after: tpgbb
 tppr   | bash tools/open_results_pr.sh claude/pc-team-path-results "Team path check and Troodon 250 px: screen, pick and gate" $(ls ${OUT}/team-path-*.md ${OUT}/team-path-pick.tsv ${OUT}/team-path-locked.java.txt 2>/dev/null)
