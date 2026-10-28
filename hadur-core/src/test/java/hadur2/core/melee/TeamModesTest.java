@@ -61,7 +61,9 @@ class TeamModesTest {
         assertSame(gang, TeamModes.against(t.alive(), table, TeamModes.NONE));
         assertSame(TeamModes.NONE, TeamModes.against(List.of(t.get("x.Other 2.0 (1)")), table, TeamModes.NONE));
         assertEquals(EnumSet.of(TeamModes.Mode.MATEFIRE, TeamModes.Mode.HUNT), TeamModes.DEFAULT);
-        assertTrue(TeamModes.TABLE.isEmpty());
+        // The table names only the teams whose counters passed on fresh seeds (PR #370).
+        assertEquals(java.util.Set.of("gh.nano.GrofGroupMember", "myl.micro.Troodon", "myl.micro.TroodonDroid"),
+            TeamModes.TABLE.keySet());
     }
 
     @Test
