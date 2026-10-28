@@ -1,17 +1,17 @@
 # Queue pc-sanaro-n02: progress
 
-Updated 2026-10-28 21:40:59 PC time (21:40 UTC), runner pid 67444.
+Updated 2026-10-28 21:41:01 PC time (21:41 UTC), runner pid 67444.
 
 - `prep` done, exit 0 in 0 min
 - `live-S0` failed, exit 1 in 0 min
-- `live-S02` pending
-- `live-Q7` pending
-- `live-D10` pending
-- `live-L20` pending
-- `live-T60` pending
-- `live-B800` pending
-- `read-live` pending
-- `pr` pending
+- `live-S02` skipped
+- `live-Q7` skipped
+- `live-D10` skipped
+- `live-L20` skipped
+- `live-T60` skipped
+- `live-B800` skipped
+- `read-live` skipped
+- `pr` skipped
 
 ### live-S0
 
@@ -28,11 +28,19 @@ Stopping now would leave 430 battles unrun; every battle already fought is kept 
 ### Queue log (last lines)
 
 ```
-21:40:35 host lgriffin_home: AMD Ryzen Threadripper PRO 9965WX 24-Cores, 24 cores / 48 threads, 127.2 GB RAM; workers duel 12 team 12 melee 12 (auto); cpu constant 1488498; work D:\code\Hadur_Robot\hadur-bench\work
-21:40:35 start prep
 21:40:37 progress pushed to origin claude/pc-sanaro-n02-progress (every 15 min)
 21:40:56 prep exit=0 in 20 s
 21:40:56 start live-S0
 21:40:56 watching live-S0: 3 stop rule(s)
 21:40:59 live-S0 exit=1 in 3 s
+21:41:01 alert issue: https://github.com/lgriffin/Hadur_Robot/issues/403
+21:41:01 skip live-S02 (after live-S0, which has not finished exit=0)
+21:41:01 skip live-Q7 (after live-S02, which has not finished exit=0)
+21:41:01 skip live-D10 (after live-Q7, which has not finished exit=0)
+21:41:01 skip live-L20 (after live-D10, which has not finished exit=0)
+21:41:01 skip live-T60 (after live-L20, which has not finished exit=0)
+21:41:01 skip live-B800 (after live-T60, which has not finished exit=0)
+21:41:01 skip read-live (after live-B800, which has not finished exit=0)
+21:41:01 skip pr (after read-live, which has not finished exit=0)
+21:41:01 ALLDONE
 ```

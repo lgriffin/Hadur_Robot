@@ -1,6 +1,6 @@
 {
  "plan": "pc-sanaro-n02",
- "updated": 1793223659.6726382,
+ "updated": 1793223661.3637245,
  "steps": {
   "prep": {
    "status": "done",
@@ -15,28 +15,36 @@
    "end": "2026-10-28T21:40:59"
   },
   "live-S02": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after live-S0"
   },
   "live-Q7": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after live-S02"
   },
   "live-D10": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after live-Q7"
   },
   "live-L20": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after live-D10"
   },
   "live-T60": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after live-L20"
   },
   "live-B800": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after live-T60"
   },
   "read-live": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after live-B800"
   },
   "pr": {
-   "status": "pending"
+   "status": "skipped",
+   "reason": "after read-live"
   }
  },
  "watched": [

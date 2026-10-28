@@ -5,3 +5,13 @@
 21:40:56 start live-S0
 21:40:56 watching live-S0: 3 stop rule(s)
 21:40:59 live-S0 exit=1 in 3 s
+21:41:01 alert issue: https://github.com/lgriffin/Hadur_Robot/issues/403
+21:41:01 skip live-S02 (after live-S0, which has not finished exit=0)
+21:41:01 skip live-Q7 (after live-S02, which has not finished exit=0)
+21:41:01 skip live-D10 (after live-Q7, which has not finished exit=0)
+21:41:01 skip live-L20 (after live-D10, which has not finished exit=0)
+21:41:01 skip live-T60 (after live-L20, which has not finished exit=0)
+21:41:01 skip live-B800 (after live-T60, which has not finished exit=0)
+21:41:01 skip read-live (after live-B800, which has not finished exit=0)
+21:41:01 skip pr (after read-live, which has not finished exit=0)
+21:41:01 ALLDONE
