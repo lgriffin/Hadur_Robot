@@ -17,7 +17,7 @@
 
     <properties>
         <!-- The robot's version: the jar is named for it and Deise.properties takes it by filtering. -->
-        <deise.release>0.2</deise.release>
+        <deise.release>0.3</deise.release>
         <!-- MiniMelee's limit, as Robocode's codesize tool counts the shipped jar (DEISE-12). -->
         <deise.codesize.limit>1499</deise.codesize.limit>
         <!-- Rating clients still run Java 8; the shipped classes target it. -->
