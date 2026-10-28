@@ -829,7 +829,7 @@ public final class DuelController {
             for (String r : surfMover.drainAesRecords()) {
                 telemetry.emit("AES," + round + "," + in.time() + "," + r);
             }
-            // ORACLE-1: the views' surfaces the surf recorded this tick (none unless the switch is on).
+            // ORACLE-1: the views' neighbours the surf recorded this tick (none unless the switch is on).
             for (String r : surfMover.drainOracleRecords()) {
                 telemetry.emit("ORC," + round + "," + in.time() + "," + r);
             }

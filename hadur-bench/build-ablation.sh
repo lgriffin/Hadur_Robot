@@ -108,7 +108,7 @@
 #         record with every term of each option's danger, for data/tools/aes_rank.py. Sets only AES_RECORD;
 #         behaviour unchanged (the rating is made without the cutoff, which picks the same option). Suffix ar.
 #   oracle ORACLE-1 (measurement, K0 of the road to king): each wave's first three-option rating also prints an ORC
-#         record with every danger view's surface over the wave, for data/tools/gun_oracle.py. Sets only
+#         record with every danger view's neighbours on the wave, for data/tools/gun_oracle.py. Sets only
 #         ORACLE_RECORD; behaviour unchanged. Suffix or.
 #   surfb  MOVE-25: the stop-point surf (docs/bench/surf-b-rivals-read.md): stop points both ways rated on a smoothed
 #         probability histogram of the same views, 1 / sqrt(4 + t) time weight, two waves, plan kept until the waves or

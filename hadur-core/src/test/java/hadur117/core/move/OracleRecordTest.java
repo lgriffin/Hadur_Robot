@@ -49,37 +49,81 @@ class OracleRecordTest {
 
     @Test
     @Tag("ORACLE-1")
-    @DisplayName("one record per wave, whose surfaces peak where the views' hits are")
-    void recordHoldsTheSurfaces() {
+    @DisplayName("one record per wave, whose neighbours rebuild the views' score the AES record gives each option")
+    void recordRebuildsTheViewScore() {
         MoveController m = world();
         SurfMover surf = new SurfMover(PlanPublishTest.FIELD, PlanPublishTest.PREDICTOR);
         surf.setOracleRecord(true);
+        surf.setAesRecord(true);
         drive(surf, m);
         List<String> first = surf.drainOracleRecords();
+        List<String> aes = surf.drainAesRecords();
         assertEquals(1, first.size());
+        assertEquals(1, aes.size());
         drive(surf, m);
         assertTrue(surf.drainOracleRecords().isEmpty(), "the second rating of the same wave is not recorded");
 
         String[] f = first.get(0).split(",");
         assertEquals("30", f[0], "fire time");
         assertEquals("1", f[2], "a firing wave");
+        double bearing = Double.parseDouble(f[5]);
+        int dir = Integer.parseInt(f[6]);
+        double mea = Double.parseDouble(f[7]);
         int views = Integer.parseInt(f[16]);
-        int samples = Integer.parseInt(f[17]);
         assertEquals(m.viewCount(), views);
-        assertEquals(HitForensics.SAMPLES, samples);
-        assertEquals(18 + views * (OracleRecord.VIEW_HEAD + samples), f.length, "no trailing fields");
+        double[] weight = new double[views];
+        double[][] gf = new double[views][];
+        double[][] scan = new double[views][];
+        int at = 17;
         int on = 0;
         for (int v = 0; v < views; v++) {
-            int at = 18 + v * (OracleRecord.VIEW_HEAD + samples);
-            if (Double.parseDouble(f[at]) != 1) continue;
-            on++;
-            assertTrue(Double.parseDouble(f[at + 2]) > 0, "a view on has scan weight");
-            int peak = 0;
-            for (int g = 1; g < samples; g++) {
-                if (Double.parseDouble(f[at + 3 + g]) > Double.parseDouble(f[at + 3 + peak])) peak = g;
+            boolean isOn = Double.parseDouble(f[at++]) == 1;
+            weight[v] = Double.parseDouble(f[at++]);
+            int count = (int) Double.parseDouble(f[at++]);
+            gf[v] = new double[count];
+            scan[v] = new double[count];
+            for (int k = 0; k < count; k++) {
+                gf[v][k] = Double.parseDouble(f[at++]);
+                scan[v][k] = Double.parseDouble(f[at++]);
+                assertEquals(0.3, gf[v][k], 1e-9, "the neighbours are the hits");
             }
-            assertEquals(0.3, HitForensics.sampleGuessFactor(peak), 0.051, "view " + v + " peaks at its hits");
+            if (isOn) on++;
         }
+        assertEquals(at, f.length, "no trailing fields");
         assertTrue(on > 0, "some view is on");
+
+        String[] a = aes.get(0).split(",");
+        int width = AesRecord.FIXED + 2 * views + 1;
+        int ai = 7;
+        int rebuilt = 0;
+        for (int o = 0; o < 3; o++) {
+            if (a[ai++].equals("0")) continue;
+            ai++;
+            double[] t = new double[width];
+            for (int k = 0; k < width; k++) t[k] = parse(a[ai++]);
+            assertEquals(t[AesRecord.LOW], Double.parseDouble(f[10 + 2 * o]), 1e-5, "the same plan interval");
+            if (t[AesRecord.SHADOWED] != 0 || !Double.isNaN(t[AesRecord.FIXED + 2 * views])) continue;
+            double low = t[AesRecord.LOW];
+            double high = t[AesRecord.HIGH];
+            double centre = (low + high) / 2;
+            double bandwidth = (high - low) / 2;
+            List<double[]> whole = List.of(new double[] {low, high, 1.0});
+            double num = 0;
+            double den = 0;
+            for (int v = 0; v < views; v++) {
+                for (int k = 0; k < gf[v].length; k++) {
+                    double angle = hadur117.core.physics.DiaUtils.normalizeAngle(bearing + gf[v][k] * dir * mea, centre);
+                    num += weight[v] * scan[v][k] * MoveController.kernelMass(angle, bandwidth, whole);
+                    den += weight[v] * scan[v][k];
+                }
+            }
+            assertEquals(t[AesRecord.VIEW_SCORE], num / den, 1e-4 * Math.max(1e-3, num / den), "view score, option " + o);
+            rebuilt++;
+        }
+        assertTrue(rebuilt > 0, "some option was rebuilt");
+    }
+
+    private static double parse(String s) {
+        return s.equals("nan") ? Double.NaN : Double.parseDouble(s);
     }
 }

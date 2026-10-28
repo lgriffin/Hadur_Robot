@@ -124,7 +124,7 @@ final class MoveDesign {
 
     /**
      * ORACLE-1 (measurement, K0 of the road to king): each wave's first three-option rating also
-     * prints an {@code ORC} record with every danger view's surface over the wave, for the offline
+     * prints an {@code ORC} record with every danger view's neighbours on the wave, for the offline
      * enemy-gun oracle ({@code data/tools/gun_oracle.py}). Behaviour unchanged.
      */
     static final boolean ORACLE_RECORD = false;
