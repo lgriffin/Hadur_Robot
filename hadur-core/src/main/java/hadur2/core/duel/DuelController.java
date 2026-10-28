@@ -711,6 +711,8 @@ public final class DuelController {
             }
             enemyGunHeat(in).shot(fireTime, reading.corrected());
             roundEnemyShot = fireTime;
+            // RAM-5: the escape's speed break reads each shot.
+            if (duelOnly(MoveDesign.RAM_BREAK, enemiesTotal)) ramEscape.onEnemyShot(fireTime, myVel, e.distance(), reading.corrected());
             if (folder != null) folder.enemyShot(e.distance(), reading.corrected(), myVel != 0);
             // EW,round,tick,waveId,fireTick,rawDrop,correctedDrop,power,distance: the wave is
             // named by its fire tick, and its power is the corrected drop.
@@ -787,7 +789,7 @@ public final class DuelController {
             }
             if (!planned) {
                 stats.ramEscapeTicks++;
-                ramEscape.move(orders, currentState(in), lastEnemyState);
+                ramEscape.move(orders, currentState(in), lastEnemyState, duelOnly(MoveDesign.RAM_BREAK, enemiesTotal));
             }
         } else if (stopAndGo != null) {
             // POISON-1: stop while the enemy's gun cools, go once it has fired; the waves still teach the views.

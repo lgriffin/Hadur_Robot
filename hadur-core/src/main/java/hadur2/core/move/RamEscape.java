@@ -48,6 +48,12 @@ public final class RamEscape {
     private final MovementPredictor predictor;
     /** The heading chosen last tick, NaN when there is none. */
     private double lastHeading = Double.NaN;
+    /** RAM-5: the speed the escape drives at while a shot aimed at our full speed flies. */
+    static final double BREAK_SPEED = 4.0;
+    /** RAM-5: our speed, in px/tick, from which a shot is taken as aimed at full speed. */
+    static final double FAST = 6.0;
+    /** RAM-5: the last tick of the current speed break, MIN_VALUE when there is none. */
+    private long slowUntil = Long.MIN_VALUE;
 
     /**
      * @param battleField the field, for wall smoothing
@@ -61,6 +67,7 @@ public final class RamEscape {
     /** A new round: no heading carried over. */
     public void initRound() {
         lastHeading = Double.NaN;
+        slowUntil = Long.MIN_VALUE;
     }
 
     /** The heading chosen on the last {@link #move}, NaN before the first. */
@@ -77,9 +84,39 @@ public final class RamEscape {
      * @param enemy the rammer's state this tick (its location, heading and velocity)
      */
     public void move(BotOrders.Builder orders, RobotState me, RobotState enemy) {
+        move(orders, me, enemy, false);
+    }
+
+    /**
+     * RAM-5: as {@link #move(BotOrders.Builder, RobotState, RobotState)}, at {@link #BREAK_SPEED}
+     * while a speed break runs and {@code speedBreak} is on.
+     */
+    public void move(BotOrders.Builder orders, RobotState me, RobotState enemy, boolean speedBreak) {
         double heading = choose(me, enemy);
-        orders.maxVelocity(8.0);
+        orders.maxVelocity(speedBreak && me.time <= slowUntil ? BREAK_SPEED : 8.0);
         DiaUtils.setBackAsFront(orders, me.heading, heading);
+    }
+
+    /**
+     * RAM-5: the rammer fired. A shot that left while we drove at full speed was led for full
+     * speed, so the escape drives slower until it has passed; a shot that left while we were slow
+     * was led for that, so the escape drives at full speed again. Head-on aim misses either way,
+     * since the escape keeps moving.
+     *
+     * @param fireTime the tick the bullet left
+     * @param ourSpeed our speed when the shot was seen, px/tick
+     * @param distance the rammer's distance, px
+     * @param power the shot's power
+     */
+    public void onEnemyShot(long fireTime, double ourSpeed, double distance, double power) {
+        slowUntil = Math.abs(ourSpeed) >= FAST
+            ? fireTime + (long) Math.ceil(distance / Rules.getBulletSpeed(power)) + 1
+            : Long.MIN_VALUE;
+    }
+
+    /** RAM-5: whether a speed break runs on {@code time}. */
+    boolean slowAt(long time) {
+        return time <= slowUntil;
     }
 
     /**

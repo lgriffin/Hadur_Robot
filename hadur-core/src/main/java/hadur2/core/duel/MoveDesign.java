@@ -102,6 +102,15 @@ final class MoveDesign {
     static final boolean RAM_HEAT = false;
 
     /**
+     * RAM-5: while RAM-2's escape drives, a rammer's shot fired at our full speed is met with
+     * {@code RamEscape.BREAK_SPEED} until it has passed, and one fired while we were slow with full
+     * speed, so neither its linear nor its head-on aim finds us. The 2026-10-28 rammer read
+     * (docs/bench/gap-to-2nd.md): against 12 nano rammers a linear aim would hit the escape on 52%
+     * of shots, Saguaro on 35%. Off by default.
+     */
+    static final boolean RAM_BREAK = false;
+
+    /**
      * MOVE-24: in a duel the flattener views stay off (3.15). The top-5 factorial (PR #221) put
      * flattener off at +0.12 +/- 0.10 APS on 1,212 bots, and the release-candidate census (PR #222)
      * put it with swall at +0.34 +/- 0.15. Melee and team are untouched.
