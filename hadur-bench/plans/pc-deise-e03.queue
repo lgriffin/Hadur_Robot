@@ -1,0 +1,66 @@
+# Deise's stage E1b (docs/deise.md section 8): which cut breaks the waves.
+# E1 (pc-deise-e02, PR #378): E0's waves W again +0.44 over Deise 0.2, but the cut-down waves WH
+# (head-on only, weight 1, no hit correction) -3.6, survival 83% to 69%, and every stack on them
+# with it. This card takes one cut at a time off W (WL, WA, WB) and tries the savings that read
+# positive on WH (no across term, no hold) on W itself.
+#   ./queue.sh run pc-deise-e03        (or  .\queue.ps1 run pc-deise-e03)
+# Run it from master:
+#   git checkout master && git pull
+# One bench queue, RoboRumble workers at 0, unpinned, 12 workers. Every step resumes; no step needs
+# a decision. Nothing here touches Hadur or Saor.
+#
+# Arms (deise-arms/arms.txt):
+#   D      Deise 0.2                    MIR   kc.mini.Mirage 0.2 seated
+#   SAOR   Saor 0.2 seated, the control W     waves on (E0/E1's W)
+#   WL     W, head-on line only         WA    W, every wave weight 1
+#   WB     W, no hit correction         WP    W without the across term
+#   WN     W without the hold           WPN   W without both
+#   WF     W + flat push + 200 playouts
+# Live-shaped census: 46 fields x 6 seeds a seat (276 battles, about 30-45 min), about 6.5 h.
+# Reads: each arm against SAOR, field by field. A cut is safe when its arm reads within 0.2 of W;
+# the safe cuts and savings then make the fitted build (stage E2).
+
+set MVN = mvn -q -Drobocode.version=1.11.1 compile exec:java
+set OUT = ../docs/bench/local
+set ARMS = D,MIR,SAOR,W,WL,WA,WB,WP,WN,WPN,WF
+
+prep | (cd .. && mvn -q -DskipTests install -pl deise -am) && cp ../deise/target/hadur117.mini.Deise_0.2.jar opponents/ && curl -fsSLo opponents/hadur117.micro.Saor_0.2.jar https://github.com/lgriffin/Hadur_Robot/releases/download/saor-v0.2/hadur117.micro.Saor_0.2.jar && ./fetch-opponents.sh --set minimelee-field.txt && for f in melee-census-317/f*.txt; do ./fetch-opponents.sh --set "$f" || exit 1; done && DEISE_RUN=e03 bash tools/deise_arms.sh live 6 3300 ${ARMS}
+
+live-D | ${MVN} "-Dexec.args=@work/deise-e03/live-D.args"
+  after: prep
+
+live-MIR | ${MVN} "-Dexec.args=@work/deise-e03/live-MIR.args"
+  after: live-D
+
+live-SAOR | ${MVN} "-Dexec.args=@work/deise-e03/live-SAOR.args"
+  after: live-MIR
+
+live-W | ${MVN} "-Dexec.args=@work/deise-e03/live-W.args"
+  after: live-SAOR
+
+live-WL | ${MVN} "-Dexec.args=@work/deise-e03/live-WL.args"
+  after: live-W
+
+live-WA | ${MVN} "-Dexec.args=@work/deise-e03/live-WA.args"
+  after: live-WL
+
+live-WB | ${MVN} "-Dexec.args=@work/deise-e03/live-WB.args"
+  after: live-WA
+
+live-WP | ${MVN} "-Dexec.args=@work/deise-e03/live-WP.args"
+  after: live-WB
+
+live-WN | ${MVN} "-Dexec.args=@work/deise-e03/live-WN.args"
+  after: live-WP
+
+live-WPN | ${MVN} "-Dexec.args=@work/deise-e03/live-WPN.args"
+  after: live-WN
+
+live-WF | ${MVN} "-Dexec.args=@work/deise-e03/live-WF.args"
+  after: live-WPN
+
+read | python3 tools/saor_arms.py --work-root work/deise-e03 --field live --arms ${ARMS} --control SAOR --only work/deise-e03/live/micro.txt --top5 71.20 --control-live 68.79 --pairings 203 --robot-prefix hadur117.mini.Deise --arms-file deise-arms/arms.txt > ${OUT}/deise-e03-live.md
+  after: live-WF
+
+pr | bash tools/open_results_pr.sh claude/pc-deise-e03-results "Deise stage E1b: which cut breaks the waves" ${OUT}/deise-e03-live.md ${OUT}/deise-e03-live-*.md
+  after: read
