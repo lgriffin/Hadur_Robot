@@ -282,6 +282,8 @@ public final class ShieldMode {
 
     /** The opponent the list was asked about, and the answer. */
     private String decidedFor;
+    /** SHIELD-11, SHIELD-19: this opponent's battle exit, from the shield list. */
+    private double stayDamage = ShieldDesign.STAY_DAMAGE;
     private boolean listed;
     private boolean battleOff;
     private boolean roundOff;
@@ -530,6 +532,7 @@ public final class ShieldMode {
             onTrial = design.trial && !onList;
             listed = onList || onTrial;
             opening = listed && (design.move || list.moves(name));
+            stayDamage = list.stayDamage(name, ShieldDesign.STAY_DAMAGE);
             if (listed) seedAim(list.aimFor(name));
         }
         if (!listed) return;
@@ -676,7 +679,7 @@ public final class ShieldMode {
             leaveBattle(time, "budget");
             return;
         }
-        if (!battleOff && design.stay && budget.taken() > ShieldDesign.STAY_DAMAGE) {
+        if (!battleOff && design.stay && budget.taken() > stayDamage) {
             leaveBattle(time, "damage");
             return;
         }

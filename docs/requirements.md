@@ -1342,6 +1342,7 @@ Nullstride's list with (docs/bench/local/2026-10-12_plan90-pc-read.md).
 | SHIELD-16 | Optional | Where the prior switch is on, the core shall add a fifth head-on base to the shield predictors: the bearing from where the enemy stood on the tick before it fired to where Hadur stood then, turned by the enemy's body turn on the firing tick. | R9 |
 | SHIELD-17 | Optional | Where the move switch is on, or the shield list names the opponent for the opening drive, when a round of shield mode opens, the core shall drive away from the walls and the enemy, each pushing by the inverse square of its distance and the enemy three times a wall, until the enemy's first shot or 5 ticks before the enemy's gun is ready, whichever comes first, and shall then stand still as SHIELD-5 does. | R9 |
 | SHIELD-18 | Optional | When the shield list gives a shipped aim for the opponent (a predictor and its offset), the core shall start that predictor with three exact matches and that offset as its base's learned offset. Where the rec switch is on, at each round's end of shield mode the core shall write the best predictor, its offset, its exact matches, the bullets learned from and the round's opening-drive ticks as an `SP` record. | R9 |
+| SHIELD-19 | Optional | Where the shield list names the opponent with a `shield-exit4:` line, SHIELD-11 shall leave the battle once the enemy's bullets have done more than 400 damage instead of 150; with a `shield-exit0:` line (which wins when both name it), SHIELD-11 shall take no damage exit and SHIELD-6's budget alone shall end the mode. Other opponents shall play as before. | R9 |
 | DODGE-1 | Event-driven | When the duel makes a movement wave while the simple-aim dodge is on, the core shall record on it our position, heading, velocity, last turn and average velocity of the last 10 ticks and the enemy's position and heading, for the wave's tick and the two ticks before, and the wave shall give from them, per tick, where six simple aims send its bullet at its current power (head-on; linear, circular and averaged linear predicted tick by tick with paths stopped 18 px inside the walls; the one-line linear aim of bearing plus lateral velocity over bullet speed; and its arcsine), each aimed from the enemy's position on that tick, with our lateral velocity seen from the enemy and the enemy's body turn to the next tick. | R9 |
 | DODGE-2 | State | While the simple-aim dodge is on for the opponent, the core shall count, across the battle's rounds, the enemy bullets whose heading it learns (a hit on us, a bullet meeting ours) and, per expert, those within 0.002 rad of it; the experts per tick being the six aims, the six with the enemy's body turn to the next tick added, and the one-line linear aim with a divisor learned from the bullets read (running mean decayed by 0.85 a bullet, samples between 4 and 30) with and without that turn. While one expert matches at least 3 of them and at least 60% of those read, the surf's danger for a wave shall be 1 when that expert's bullet falls inside the option's hit range (with a 0.005 rad margin) and 0 otherwise, plus a floor of 0.1 (so the distancing and escape factors still rank the safe options) and 0.05 of the views' score, without the hit-rate term; otherwise the views decide as before. At each round's end it shall write `SD,round,tick,best,bestMatches,read,active`, best being the expert's index (tick lag times 14 plus its place). | R9 |
 | DODGE-3 | State | While in a duel, the simple-aim dodge shall be on against an opponent the table's `shot-dodge:` lines name (matched as the shield list is), or against every opponent with the dodge switch on (off by default); in melee and team, and against any other opponent, it shall be off and the duel play exactly as before. | R9 |
@@ -1618,7 +1619,9 @@ None of these change how the robot plays; TIME-8 and RES-15 only report.
 | BENCH-129 | Event | When a queue step with a `watch:` line runs, the queue runner shall rewrite the plan's progress file every minute with each step's state and, for the watched step, its battles done of the run's size, battles an hour, ETA, failed battles, skipped turns a battle (first and last 100), and each arm's running difference from the pooled control with its 95% interval and the stop rules' z 3 bound, and shall push the progress, without touching the working tree, to the plan's progress branch every `PROGRESS_MINUTES` and at once on a stop. | T7 |
 | BENCH-130 | Event | When a step's pre-declared `stop:` rule trips (fails, dead, skips, stall, aa or futility), the queue runner shall kill that step, log the rule, the battles fought and kept and the battles left unrun; for a halt rule stop the queue with the step resumable, and for a finish rule record the step as done early with its rows so far written as its `arms.tsv`, so the steps after it run. | T7 |
 | BENCH-131 | Event | When a stop rule trips or a watched step fails and the plan sets `ALERT`, the queue runner shall open a GitHub issue assigned to that login carrying the progress file. | T7 |
+| BENCH-132 | Ubiquitous | The bench shall carry the `pc-1v1-ram` card, which builds RAM-5 on (`rambrk`) and SHIELD-19's exits for pc-shield-exit's 7 per-robot picks (`sx4list,sx0list`) beside an aa A/A copy, runs RAM-5 against the 45 rammers and perfect-prediction robots and the exits against the 7 robots at 6 fresh seeds each (from 3600 and 3700), gates RAM-5 at +0.05 APS and the exits at +0.01 APS with the 95% low end above zero, writes every robot's difference with losses, and stops before the results PR if any analysis fails. | T7 |
 | RAM-4 | State | While the rammer-heat switch is on, in a duel, once RAM-2 has confirmed the opponent as a rammer, the surf shall offer MOVE-11's gun-heat wave with MOVE-13's hold off (as heatjit plays) for the rest of the battle, whatever those switches are set to; before the confirmation, and in melee or team, the switches are as their own requirements state. Off by default. | R9 |
+| RAM-5 | State | While the rammer-dodge switch is on, in a duel, while RAM-2's escape drives, each enemy shot read shall be kept with two aims, head-on at our position on the tick before it left and linear along our heading and speed then, and each candidate path the escape plays shall lose 60 px of its closest approach for every kept aim whose bullet would come within 22 px of us on both axes on that path; with the switch off, or in melee or team, the escape chooses as RAM-2 states. Off by default. | R9 |
 
 - **TIME-8.** `Hadur.setupRecord`, printed once in round 0. The PC's round-0 read
   (`docs/bench/local/2026-10-21_round0-skips.md`) found 39 of 4,848 battles disabled at start-up,
@@ -1847,6 +1850,28 @@ A retired requirement keeps its ID; no new requirement reuses it.
   +0.10 APS; the three cloud re-picks (Wolverine stop-and-go, Hikari and Melody stop-and-go shift)
   verified on 6 fresh seeds. Nothing ships until a gate passes; 3.18.1 plays bit for bit.
   Test: `ShieldExitPlanTest`.
+- **SHIELD-19.** The PC card's global exits failed (s4 +0.04 ± 0.09, s0 -0.01 ± 0.10 APS), but its per-robot
+  pick locked 7 robots (2 at 400, 5 with no exit, +0.06 APS in sample). `ShieldList.stayDamage` reads
+  `shield-exit4:` / `shield-exit0:` lines (switch bits beside MOVE-28's and GUN-11's); `ShieldMode` takes the
+  opponent's exit at its first scan. `ShieldTableData.exitLates()` / `exitOffs()` ship empty; build-ablation
+  `sx4list` / `sx0list` fill them from `$SHIELD_EXIT4` / `$SHIELD_EXIT0` (suffixes x4, x0). Tests:
+  `ShieldListTest`, `ShieldDesignTest` (SHIELD-19).
+- **RAM-5.** A cloud read of 12 nano rammers (2 seeds, `local/2026-10-28_cloud-ram-read.md`): Saguaro 82.1% vs
+  Hadur 71.5%, ram damage level, but their bullets hit Hadur on about 58% of shots and Saguaro on 34%. Replaying
+  each shot from the truth log, a linear aim would hit Hadur's escape on 52% and a head-on aim on 16%; against
+  Saguaro both 35%. No mode we have helps (`local/2026-10-28_cloud-ram-screen.md`: no escape 67.5, stop-and-go
+  69.8 / 70.6, simple-aim dodge 72.2, A/A 72.4). A first cut, slowing to 4 px/tick while a shot led for full
+  speed flew, lost 2.6 points (more rams, and head-on aim then hit 49%). RAM-5 instead weighs the escape's
+  candidate paths against the shots in flight: `RamEscape.onEnemyShot` keeps the shot with its head-on and
+  linear aims, `move(..., true)` scores them. `MoveDesign.RAM_BREAK` (off), build-ablation `rambrk` (suffix rk).
+  Test: `RamEscapeTest` (RAM-5).
+  Smoke of RAM-5 (12 rammers x 2 seeds, `local/2026-10-28_cloud-ram-rk.md`): 71.2 -> 78.3 points a robot, 11 of
+  12 up, bullet damage taken 2,200 -> 1,445, linear exposure 51% -> 24%.
+- **BENCH-132.** Card plans/pc-1v1-ram.queue: `panel-ram-318.txt` (the live read's rammer / perfect-prediction
+  group plus every robot named for ramming, 45) x c/aa/rk x 6 seeds, `panel-exit-pick.txt` x c/aa/xp x 6 seeds;
+  gates +0.05 and +0.01 APS. Results branch `claude/pc-1v1-ram-results`. Both steps are watched with halt rules
+  (fails, dead, skips, stall, A/A) and `ALERT`; the ram step also finishes early once rk cannot reach +0.05
+  APS after 30% (at most 567 battles left unrun). Test: `RamPlanTest`.
 
 ## Watching a PC card as it runs (BENCH-128 to BENCH-131)
 

@@ -77,8 +77,22 @@ two to three times on the full card, so the live read's "shield fidelity +0.2 to
 The per-robot pick finds 7 robots worth +0.06 APS in sample; that needs a per-opponent exit line
 and fresh seeds before it counts. The re-pick ships as table entries (this PR).
 
+## Rammers (cloud, 2026-10-28)
+
+12 nano rammers x 2 seeds (`local/2026-10-28_cloud-ram-read.md`): Saguaro 82.1%, Hadur 71.5%. Ram damage is level;
+the gap is their bullets: they hit Hadur on about 58% of shots and Saguaro on 34%. Replaying each shot from the
+truth log, a linear aim would hit Hadur's RAM-2 escape (full speed on a smooth heading) on 52% of shots, Saguaro on
+35%. None of our modes helps (`local/2026-10-28_cloud-ram-screen.md`: no escape 67.5, stop-and-go 69.8 / 70.6,
+simple-aim dodge 72.2, A/A 72.4). A speed break (4 px/tick while a shot led for full speed flies) lost 2.6.
+RAM-5, the escape weighing its paths against the shots in flight (head-on and linear aims), smoked at
+71.2 -> 78.3 (`local/2026-10-28_cloud-ram-rk.md`), 11 of 12 up.
+
 ## Next
 
 Banked toward 3rd: +0.02 of the +0.41 needed. Tailoring left is about +0.1 (per-opponent exit, an
 anti-ram mode, an anti-basic-surfer gun); Saguaro's +0.5 lead on the 383 simple-gun robots needs
 core movement work.
+
+PC card `plans/pc-1v1-ram.queue` (BENCH-132, about 1 h, Leigh starts it): RAM-5 on all 45 rammers and
+perfect-prediction robots, and SHIELD-19's per-opponent exits for the 7 picked robots, both on fresh seeds.
+If the cloud's rammer gain holds at half, it is worth about +0.1 APS.

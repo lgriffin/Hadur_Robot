@@ -1,0 +1,61 @@
+# 1v1 plan to 3rd, tailoring (BENCH-132, docs/bench/gap-to-2nd.md). Leigh starts it:
+#   git checkout master && git pull
+#   .\queue.ps1 run pc-1v1-ram        (or  ./queue.sh run pc-1v1-ram)
+# One bench queue, RoboRumble workers at 0, unpinned, 12 workers, truth log off. Every step resumes;
+# no step needs a decision. About 1 h (810 + 126 battles).
+#
+# Why: against 12 nano rammers Saguaro scores 82% and Hadur 71-72%: their bullets hit Hadur's RAM-2 escape
+# on ~58% of shots (a linear aim would hit it on 52%) and Saguaro on 34%. RAM-5 weighs the escape's
+# candidate paths against the shots in flight (head-on and linear aims). Cloud smoke, 12 rammers x 2 seeds:
+# +7.1 points a robot (71.2 -> 78.3), 11 of 12 up, linear exposure 51% -> 24%. Cloud gains have shrunk
+# 2-3x on the PC before, so this measures it on the whole rammer group on fresh seeds.
+# The second step verifies pc-shield-exit's per-robot exit picks (7 robots, +0.06 APS in sample) as
+# SHIELD-19 table lines on fresh seeds.
+#
+# ram:    45 rammers / perfect-prediction robots x c, aa, rk x 6 seeds = 810 battles. RAM-5 only acts
+#         while RAM-2's escape drives, which needs a confirmed rammer, so the panel is the field's change.
+# exit:   7 picked robots x c, aa, xp x 6 seeds = 126 battles.
+# gate:   rk at +0.05 APS and xp at +0.01 APS, each minus pooled c and aa over its panel / 1,217 pairings,
+#         95% low end above 0, A/A inside its band; per-robot differences with losses for both.
+# Stop rules (docs/bench/watch.md): both steps halt on 30 failed battles, an arm scoring nothing in 8,
+# 40+ skipped turns a battle over the last 200, no battle in 30 minutes, or an A/A outside its z 3 band
+# after 20%; every battle fought is kept and a rerun resumes. The ram step also finishes early once rk
+# cannot reach +0.05 APS at z 3 after 30% (243 of 810 battles): that leaves at most 567 battles (about
+# 35 min) unrun, the gate reads the rows so far and the results PR says it stopped early. The exit step
+# has 7 robots, under the 10 a futility read needs, so it has halt rules only. ALERT opens an issue for
+# Leigh on any stop.
+# Leigh's release rule stands: no 1v1 release until the census projects the target (3rd here).
+
+set P = --parallel 12 --no-truth-log
+set HEAP = --child-heap 2G
+set E = --engine 1.11.1
+set C = --skip-build --skip-fetch --rounds 35 --cpu-constant 1488498 ${HEAP} ${E}
+set OUT = ../docs/bench/local
+set ALERT = lgriffin
+
+prep | git checkout -q master && mkdir -p bisect work && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur2.Hadur_3.18.1.jar bisect/ && bash ./build-ablation.sh aa && bash ./build-ablation.sh rambrk && SHIELD_EXIT4=plans/exit-late.txt SHIELD_EXIT0=plans/exit-off.txt bash ./build-ablation.sh sx4list,sx0list && ./fetch-opponents.sh --set panel-ram-318.txt && ./fetch-opponents.sh --set panel-exit-pick.txt && mvn -q compile
+
+ram | ./bench-top20.sh ${C} ${P} --set panel-ram-318.txt --seeds 6 --seed-base 3600 --arms plans/ram-dodge.arms --out work/ram-dodge --label ram-dodge --shuffle-jobs
+  after: prep
+  watch: field=1217
+  stop: fails 30
+  stop: dead 8
+  stop: skips 40 over 200
+  stop: stall 30m
+  stop: aa after 20%
+  stop: futility rk below 0.05 after 30%
+
+exit | ./bench-top20.sh ${C} ${P} --set panel-exit-pick.txt --seeds 6 --seed-base 3700 --arms plans/exit-pick.arms --out work/exit-pick --label exit-pick --shuffle-jobs
+  after: ram
+  watch: field=1217
+  stop: fails 30
+  stop: dead 8
+  stop: skips 40 over 200
+  stop: stall 30m
+  stop: aa after 20%
+
+gate | python3 ../data/tools/multiarm.py work/ram-dodge/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_ram-dodge.md && python3 tools/shield_s2.py gate work/ram-dodge/arms.tsv --arm rk --panel panel-ram-318.txt --bar 0.05 --out ${OUT}/$(date +%Y-%m-%d)_ram-dodge-gate.md && python3 tools/per_robot.py work/ram-dodge/arms.tsv --arms rk --out ${OUT}/$(date +%Y-%m-%d)_ram-dodge-per-robot.md --out-tsv ${OUT}/ram-dodge-per-robot.tsv && python3 ../data/tools/multiarm.py work/exit-pick/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_exit-pick.md && python3 tools/shield_s2.py gate work/exit-pick/arms.tsv --arm xp --panel panel-exit-pick.txt --bar 0.01 --out ${OUT}/$(date +%Y-%m-%d)_exit-pick-gate.md && python3 tools/per_robot.py work/exit-pick/arms.tsv --arms xp --out ${OUT}/$(date +%Y-%m-%d)_exit-pick-per-robot.md --out-tsv ${OUT}/exit-pick-per-robot.tsv
+  after: exit
+
+pr | bash tools/open_results_pr.sh claude/pc-1v1-ram-results "1v1 plan to 3rd: rammer dodge (RAM-5) and per-opponent shield exits (SHIELD-19)" ${OUT}/*_ram-dodge*.md ${OUT}/*_exit-pick*.md ${OUT}/ram-dodge-per-robot.tsv ${OUT}/exit-pick-per-robot.tsv $(find work/ram-dodge work/exit-pick -maxdepth 1 -name EARLY-STOP.md)
+  after: gate

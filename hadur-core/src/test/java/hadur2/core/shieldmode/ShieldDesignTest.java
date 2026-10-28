@@ -249,6 +249,25 @@ class ShieldDesignTest {
     }
 
     @Test
+    @Tag("SHIELD-19")
+    @DisplayName("a shield-exit4 or shield-exit0 entry keeps stay's mode past 150 damage, for that opponent only")
+    void listedExitKeepsTheMode() {
+        for (String line : new String[] {"shield-exit4: list.Target 1.0", "shield-exit0: list.Target"}) {
+            mode = new ShieldMode(ShieldList.parse(List.of("list.Target", "other.Bot", line)), records::add, 35,
+                ShieldDesign.parse("stay"));
+            scan(1);
+            // Twenty power-3 hits are 320: past 150, inside the budget.
+            for (int i = 0; i < 20; i++) mode.onHitByBullet(10 + i, 3.0, MY_X, MY_Y, Math.PI);
+            assertFalse(mode.battleOff(), line);
+        }
+        mode = new ShieldMode(ShieldList.parse(List.of("list.Target", "other.Bot", "shield-exit4: other.Bot")),
+            records::add, 35, ShieldDesign.parse("stay"));
+        scan(1);
+        for (int i = 0; i < 10; i++) mode.onHitByBullet(10 + i, 3.0, MY_X, MY_Y, Math.PI);
+        assertTrue(mode.battleOff(), "another opponent's entry leaves the 150 exit");
+    }
+
+    @Test
     @Tag("SHIELD-11")
     @DisplayName("3.12 keeps shielding to its 370 budget; stay's 150 does not apply")
     void noStayNo150() {
