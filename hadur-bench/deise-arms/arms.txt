@@ -1,16 +1,21 @@
 # Deise's arms (docs/deise.md). One arm a line:
-#   NAME | what it changes | FILE | sed over deise/src/main/java/.../FILE      a Deise build
-#   NAME | what | @robot name                                                  a seated robot
+#   NAME | what it changes | FILE | sed [| FILE | sed ...]   a Deise build (sed over deise/src/main/java/.../FILE)
+#   NAME | what | @robot name                                a seated robot
 # Built by tools/deise_arms.sh as hadur117.mini.Deise<NAME>. D is Deise's source unchanged.
-# Stage E0 (pc-deise-e01): the design, cut by the cloud smoke (docs/deise.md section 4), against
-# the field's best, and what each part is worth. D: no wave dodging (Move.WAVES = 0).
-D | Deise 0.2: corners while crowded, no wave dodging (the core-driven DeiseLab, which the shipped 1,490-byte class matches order for order) | |
+# Stage E1 (pc-deise-e02): E0 (pc-deise-e01, PR #371) found the seen-shot waves worth +0.48 (arm W),
+# but they cost about 255 bytes in the 1,490-byte class even cut down, and 9 are free. These arms
+# measure the cut-down waves (WH) and what each part that could pay for them is worth on top of
+# WH without the across term (WHP), then the one stack that fits (FIT). Byte costs in the shipped
+# class are in docs/deise.md section 8.
+D | Deise 0.2 (the core-driven DeiseLab, which the shipped 1,490-byte class matches order for order) | |
 MIR | kc.mini.Mirage 0.2 in the seat (1st, 71.30 live) | @kc.mini.Mirage 0.2
-SAOR | hadur117.micro.Saor 0.2 in the seat (2nd, 68.79 live): the control | @hadur117.micro.Saor 0.2
-W | seen-shot waves back on, at full weight | Move.java | s#WAVES = 0;#WAVES = 1;#
-CE | out of the centre while crowded, not to the corners | Move.java | s#others \* Math.hypot(Math.min(px, Gun.FIELD - px), Math.min(py, Gun.FIELD - py)) / 5000#-others * Math.hypot(px - 500, py - 500) / 5000#
-CM | commits to a leg: a new point only when 2x safer or within 50 px of the old | DeiseLab.java | s#y) < 16#y) < 50#; s#best\[2\] < 0.9 \*#best[2] < 0.5 *#
-RK | plays unscanned opponents on by their last heading and speed | DeiseLab.java | s#RECKON = false;#RECKON = true;#
-FL | every opponent pushes the same, whatever its energy | Move.java | s#(50000 + bot\[ENERGY\] \* 500)#80000#
-P200 | 200 playouts an aim, not 64 | DeiseLab.java | s#power, 64, RANDOM#power, 200, RANDOM#
-G1 | learns only scans one tick apart | DeiseLab.java | s#GAP = 8;#GAP = 1;#
+SAOR | hadur117.micro.Saor 0.2 in the seat (68.79 live in MiniMelee): the control | @hadur117.micro.Saor 0.2
+W | seen-shot waves on, as E0's W: both lines, weighed by aim, hits corrected (about 450 B) | Move.java | s#WAVES = 0;#WAVES = 1;#
+WH | waves cut down: head-on line only, every wave weight 1, no hit correction (about 255 B) | Move.java | s#WAVES = 0;#WAVES = 1;#; s#LINES = 2;#LINES = 1;# | DeiseLab.java | s#AIMED = true;#AIMED = false;#; s#HITS = true;#HITS = false;#
+WHP | WH without the across term (DEISE-3, frees 131 B) | Move.java | s#WAVES = 0;#WAVES = 1;#; s#LINES = 2;#LINES = 1;#; s#ACROSS = true;#ACROSS = false;# | DeiseLab.java | s#AIMED = true;#AIMED = false;#; s#HITS = true;#HITS = false;#
+WHPC | WHP without the corners (DEISE-4, frees 47 B) | Move.java | s#WAVES = 0;#WAVES = 1;#; s#LINES = 2;#LINES = 1;#; s#ACROSS = true;#ACROSS = false;#; s#CROWD = 4;#CROWD = 99;# | DeiseLab.java | s#AIMED = true;#AIMED = false;#; s#HITS = true;#HITS = false;#
+WHPK | WHP without the kill cap on power (DEISE-10, frees 39 B) | Move.java | s#WAVES = 0;#WAVES = 1;#; s#LINES = 2;#LINES = 1;#; s#ACROSS = true;#ACROSS = false;# | DeiseLab.java | s#AIMED = true;#AIMED = false;#; s#HITS = true;#HITS = false;# | Gun.java | s#KILL = true;#KILL = false;#
+WHPT | WHP without the thin-row and off-field vote weights (DEISE-8, frees 52 B) | Move.java | s#WAVES = 0;#WAVES = 1;#; s#LINES = 2;#LINES = 1;#; s#ACROSS = true;#ACROSS = false;# | DeiseLab.java | s#AIMED = true;#AIMED = false;#; s#HITS = true;#HITS = false;# | Gun.java | s#WALLS = true;#WALLS = false;#; s#WARM = 8;#WARM = 0;#
+WHPH | WHP without the 10% hold on the destination (DEISE-1, frees 46 B) | Move.java | s#WAVES = 0;#WAVES = 1;#; s#LINES = 2;#LINES = 1;#; s#ACROSS = true;#ACROSS = false;# | DeiseLab.java | s#AIMED = true;#AIMED = false;#; s#HITS = true;#HITS = false;#; s#HOLD = 0.9;#HOLD = 1e9;#
+WHPF | WHP with a flat push (E0 FL, frees 9 B) and 200 playouts (E0 P200, 1 B) | Move.java | s#WAVES = 0;#WAVES = 1;#; s#LINES = 2;#LINES = 1;#; s#ACROSS = true;#ACROSS = false;#; s#(50000 + bot\[ENERGY\] \* 500)#80000# | DeiseLab.java | s#AIMED = true;#AIMED = false;#; s#HITS = true;#HITS = false;#; s#PLAYOUTS = 64;#PLAYOUTS = 200;#
+FIT | the stack that fits 1,499: WHP without corners, kill cap and vote weights, flat push, 200 playouts | Move.java | s#WAVES = 0;#WAVES = 1;#; s#LINES = 2;#LINES = 1;#; s#ACROSS = true;#ACROSS = false;#; s#CROWD = 4;#CROWD = 99;#; s#(50000 + bot\[ENERGY\] \* 500)#80000# | DeiseLab.java | s#AIMED = true;#AIMED = false;#; s#HITS = true;#HITS = false;#; s#PLAYOUTS = 64;#PLAYOUTS = 200;# | Gun.java | s#KILL = true;#KILL = false;#; s#WALLS = true;#WALLS = false;#; s#WARM = 8;#WARM = 0;#

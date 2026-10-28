@@ -165,10 +165,55 @@ class samples rows with `Math.random()` while `DeiseLab` uses its own `Random`, 
 to the bit only while each row holds one successor, as in the test's melees; the thin-row vote
 (DEISE-8) is held by `GunTest` on the core.
 
-Nine bytes are left, so any change that adds behaviour has to pay for itself; the waves' code is
-gone already, and the next candidates are the clamp of the turn index and the 0.1 power floor.
+Nine bytes are left, so any change that adds behaviour has to pay for itself (section 8).
 
-## 8. Uniqueness
+## 8. Stage E1: paying for the waves (card pc-deise-e02)
+
+E0's census (`pc-deise-e01`, PR #371, 46 fields x 6 seeds) read D, Deise 0.2, at 69.90, Mirage
+seated at 72.08 and Saor 0.2 at 69.23 (live 68.79, so the run reads 0.44 high: D's 69.46
+projected against 69.60 live). Against D: W (seen-shot waves) +0.48 ± 0.25, RK and P200 +0.28,
+FL and G1 +0.16, CE +0.11, CM -0.28. Mirage survives 88.3% of the fields to Deise's 83.1%, wins
+54% of rounds to 43% and does a tenth more damage: the gap is survival first.
+
+The waves are the one clear win and the one that does not fit. Byte costs in the shipped class,
+each measured alone on 0.2's 1,490 bytes (ProGuard, `codesize`):
+
+| Change | Bytes |
+|---|---|
+| waves, cut down: head-on line only, every wave weight 1, no hit correction, slots as a ring of 64 | about +260 |
+| waves as E0's W: both lines, weighed by aim, hits corrected | about +450 |
+| dead reckoning (RK) | +94 |
+| 200 playouts (P200) | +1 |
+| drop the across term (DEISE-3) | -131 |
+| drop the corners (DEISE-4) | -47 |
+| drop the 10% hold on the destination (DEISE-1) | -46 |
+| drop the kill cap on power (DEISE-10) | -39 |
+| drop the off-field (31) and thin-row (21) vote weights (DEISE-8) | -52 |
+| flat push (FL) | -9 |
+| drop the field cap on power (DEISE-10) | -14 |
+
+So the waves need about 250 bytes found elsewhere, and RK, at 94 bytes for a noise-sized
+gain, is out. The across term is the biggest saving and the waves model the same thing (who is
+shooting at Deise), so it goes first; the rest must come from parts E0 never measured alone.
+`pc-deise-e02` (`deise-arms/arms.txt`) measures them on the cut-down waves, each a switch in
+the core or `DeiseLab` that is on in 0.2 so the shipped class stays matched (DEISE-16):
+
+| Arm | What |
+|---|---|
+| D, MIR, SAOR | as E0 |
+| W | E0's W again, to confirm +0.48 |
+| WH | the cut-down waves |
+| WHP | WH without the across term |
+| WHPC, WHPK, WHPT, WHPH | WHP without the corners, the kill cap, the vote weights, the hold |
+| WHPF | WHP with a flat push and 200 playouts |
+| FIT | WHP without the corners, kill cap and vote weights, flat push, 200 playouts: about 1,468 bytes |
+
+12 seats, about 7 h on the PC. E1 passes when FIT reads at least D + 0.3 in the same run; it is
+then flattened into the shipped class as 0.3, held to the core by DEISE-16 and measured at or under
+1,499. If FIT fails, the one-change reads say which saving costs the most and the next stack swaps
+it out. Closing the 2.2 to Mirage needs more than the waves: the survival gap is the next stage's.
+
+## 9. Uniqueness
 
 Leigh's rule for Saor holds here: inspired by others, never a copy. Deise's gun is Saor's own
 (the graded vote, the cold circle, the range power), not Mirage's. Its movement is a least-risk
