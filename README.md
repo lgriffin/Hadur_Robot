@@ -381,8 +381,8 @@ low-energy gun its shot, and a rammer detector reading our own movement as their
 
 ## Build and test
 
-Java 17 or later, Maven 3.9. Every robot is compiled for Java 11 so every RoboRumble client can
-load it (REL-1).
+Java 17 or later, Maven 3.9. Hadur is compiled for Java 11 (REL-1) and the size-class siblings for
+Java 8, so every RoboRumble client can load them.
 
 ```sh
 mvn verify                  # all modules: tests, traceability, robot jars
