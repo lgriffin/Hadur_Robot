@@ -48,11 +48,15 @@ initialiser (SANARO-2). Per scan (SANARO-3 to SANARO-8):
 - **Gun.** The line's hedged lead, lateral velocity over 10 + 1.008 ^ d.
 - **Power.** Sanaro's own table (`sanaro/table.py`, `SanaroTableTest`), not NaturalScience's:
   cell (own energy, enemy energy) at own * 128 + enemy holds, in fortieths, the lesser of
-  0.1 + own / 16 (at most 2.5; 3.0 from 120 energy) and the least power that kills the enemy.
+  0.1 + own / 16 (at most 2.5; 3.0 from 120 energy) and the least power that kills the enemy
+  (worked out for one more than its truncated energy, so it kills whatever the int stands for).
   The shot is that times the integer 640 / d, as in NaturalScience: the table at 321-640 px,
   doubled or tripled closer, a 0.1 pot shot beyond. The string is 51,601 cells, so every index
   for own and enemy energy up to 400 is in it (NaturalScience's throws past 160 own energy,
-  doc finding F8). Its constant costs 2 bytes of code however long it is.
+  doc finding F8). Its constant costs 2 bytes of code however long it is. An enemy at 128
+  energy or more reads energy / 128 rows on at its energy mod 128 and draws that remainder's kill shot;
+  a wider stride needs a string over the class file's 65,535-byte constant limit or 2 more bytes.
+  Shots past 640 px ask for power 0, which the engine raises to its 0.1 minimum.
 
 The table is written as octal escapes: a `"` escape is read before the lexer and would end
 the string. ProGuard's peephole pass saves nothing on this class, so the jar is javac's class

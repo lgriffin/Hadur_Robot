@@ -3,9 +3,11 @@
 
 The table is one string constant, which costs Sanaro two bytes of code however long it is
 (SANARO-8). Cell (own energy E, enemy energy e) sits at E * 128 + e, both truncated to ints, for
-own energy 0..400 and enemy energy 0..400 (SANARO-2: an enemy above 127 reads the next row's
-cells, never past the end). A cell holds the power at 321-640 px in fortieths:
-the lesser of Sanaro's base power for its own energy and the least power that kills the enemy.
+own energy 0..400 and enemy energy 0..400 (SANARO-2: never past the end). An enemy at 128 or
+more reads energy // 128 rows on at its energy % 128 and draws that remainder's kill shot, a limit
+of the 128 stride. A cell holds the power at 321-640 px in fortieths:
+the lesser of Sanaro's base power for its own energy and the least power that kills the enemy
+(worked out for one more than its truncated energy).
 SanaroTableTest holds the constant to this formula.
 
   python3 sanaro/table.py            (rewrites sanaro/src/main/java/hadur117/nano/Sanaro.java)
@@ -29,10 +31,11 @@ def base(energy):
 
 
 def kill(enemy):
-    """The least power whose damage exceeds the enemy's energy, with a 0.025 margin, at least 0.1.
-    Damage is 4p up to power 1 and 6p - 2 above it."""
-    p = enemy / 4.0 if enemy < 4 else (enemy + 2) / 6.0
-    return max(0.1, p + 0.025)
+    """The least power whose damage reaches enemy + 1, so it kills any energy the truncated int
+    stands for (enemy up to enemy + 1), at least 0.1. Damage is 4p up to power 1 and 6p - 2 above it."""
+    e = enemy + 1
+    p = e / 4.0 if e <= 4 else (e + 2) / 6.0
+    return max(0.1, p)
 
 
 def cell(i):
