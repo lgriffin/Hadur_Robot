@@ -1,0 +1,77 @@
+# Deise's stage E2 (docs/deise.md section 8): the waves fitted into 1,499 bytes.
+# E1b (pc-deise-e03, PR #388): both wave lines and the aim weight are needed (WL -2.23, WA -0.43
+# against D), the hit correction is not (WB +0.48 to W's +0.59), and the across term and the hold
+# are better gone (WPN +0.83). FIT3 (1,494 B) and FIT3F (1,480 B, no field cap) are that build as
+# one flat class, benched as it would ship (deise-arms/e2/); WPN is E1b's best again, as reference.
+#   ./queue.sh run pc-deise-e04        (or  .\queue.ps1 run pc-deise-e04)
+# Run it from master:
+#   git checkout master && git pull
+# One bench queue, RoboRumble workers at 0, unpinned, 12 workers. Every step resumes; no step needs
+# a decision. Nothing here touches Hadur or Saor.
+#
+# Arms (deise-arms/arms.txt), in this order so the candidates are read early:
+#   D      Deise 0.2                    FIT3  the fitted build, 1,494 B
+#   FIT3F  FIT3 without the field cap   WPN   W without the across term and hold (E1b's best)
+#   MIR    kc.mini.Mirage 0.2 seated    SAOR  Saor 0.2 seated, the control
+# Live-shaped census: 46 fields x 6 seeds a seat (276 battles, about 30-45 min), about 4 h.
+# Reads: each arm against SAOR, field by field. E2 passes when FIT3 or FIT3F reads at least
+# D + 0.4 in this run; the better one is then flattened as Deise 0.3 (DEISE-16, at most 1,499 B).
+# Stop rules on every census step (halt; every battle fought is kept and a rerun resumes): 20 failed
+# battles (a broken jar), no battle in 30 minutes (a hung step), or 40+ skipped turns a battle over
+# the last 100 (the PR #331 build-up). A halt at worst leaves the rest of that seat and the seats
+# after it unrun, at most 1,656 battles (about 4 h). There is no early finish on score: a census
+# seat is one robot, so there is no arm to call futile mid-step.
+
+set MVN = mvn -q -Drobocode.version=1.11.1 compile exec:java
+set OUT = ../docs/bench/local
+set ARMS = D,FIT3,FIT3F,WPN,MIR,SAOR
+
+prep | (cd .. && mvn -q -DskipTests install -pl deise -am) && cp ../deise/target/hadur117.mini.Deise_0.2.jar opponents/ && curl -fsSLo opponents/hadur117.micro.Saor_0.2.jar https://github.com/lgriffin/Hadur_Robot/releases/download/saor-v0.2/hadur117.micro.Saor_0.2.jar && ./fetch-opponents.sh --set minimelee-field.txt && for f in melee-census-317/f*.txt; do ./fetch-opponents.sh --set "$f" || exit 1; done && DEISE_RUN=e04 bash tools/deise_arms.sh live 6 3400 ${ARMS}
+
+live-D | ${MVN} "-Dexec.args=@work/deise-e04/live-D.args"
+  after: prep
+  watch: battles=276
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+live-FIT3 | ${MVN} "-Dexec.args=@work/deise-e04/live-FIT3.args"
+  after: live-D
+  watch: battles=276
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+live-FIT3F | ${MVN} "-Dexec.args=@work/deise-e04/live-FIT3F.args"
+  after: live-FIT3
+  watch: battles=276
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+live-WPN | ${MVN} "-Dexec.args=@work/deise-e04/live-WPN.args"
+  after: live-FIT3F
+  watch: battles=276
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+live-MIR | ${MVN} "-Dexec.args=@work/deise-e04/live-MIR.args"
+  after: live-WPN
+  watch: battles=276
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+live-SAOR | ${MVN} "-Dexec.args=@work/deise-e04/live-SAOR.args"
+  after: live-MIR
+  watch: battles=276
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+read | python3 tools/saor_arms.py --work-root work/deise-e04 --field live --arms ${ARMS} --control SAOR --only work/deise-e04/live/micro.txt --top5 71.20 --control-live 68.79 --pairings 203 --robot-prefix hadur117.mini.Deise --arms-file deise-arms/arms.txt > ${OUT}/deise-e04-live.md
+  after: live-SAOR
+
+pr | bash tools/open_results_pr.sh claude/pc-deise-e04-results "Deise stage E2: the waves fitted into 1,499 bytes" ${OUT}/deise-e04-live.md ${OUT}/deise-e04-live-*.md
+  after: read

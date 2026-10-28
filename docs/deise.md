@@ -243,6 +243,56 @@ when its arm reads within 0.2 of W; the safe cuts and the savings then size the 
 The weight-1 cut is the likely culprit: in a field of nine, most shots are aimed at someone
 else, and at full weight Deise dodges them all.
 
+### E1b's result (PR #388)
+
+| Arm | Census APS | vs D | Survival |
+|---|---|---|---|
+| D | 69.86 ± 0.16 | 0 | |
+| MIR | 72.19 ± 0.15 | +2.33 | |
+| SAOR | 69.14 ± 0.21 | -0.72 | |
+| W | 70.45 ± 0.17 | +0.59 | |
+| WL (head-on only) | 67.63 | -2.23 | 73.9% |
+| WA (every wave weight 1) | 69.43 | -0.43 | |
+| WB (no hit correction) | 70.34 | +0.48 | |
+| WP (no across term) | 70.50 | +0.64 | |
+| WN (no hold) | 70.54 | +0.68 | |
+| WPN (neither) | 70.69 | +0.83 | 83.8% |
+| WF (flat push, 200 playouts) | 70.68 | +0.82 | |
+
+W holds a third time (+0.59). The head-on-only cut is what broke E1's waves (-2.23, survival down
+to 74%); the weight cut costs 0.43 and also stays out; the hit correction is within 0.11 of W and
+goes. The across term and the hold read better gone, and the flat push with 200 playouts is as
+good as either.
+
+### Stage E2: the waves fitted (card pc-deise-e04)
+
+The build E1b points to (W without the hit correction, the across term and the hold, with the
+flat push and 200 playouts) measures 1,719 bytes flattened. Golf, every step measured with
+ProGuard and `codesize`, saves about 140 bytes without changing what it does: the two wave lines as
+one loop, the risk inlined into the ring, wall tests in one helper, angle constants folded, the
+run and scan positions in locals, the wave's firing time from the scan gap, its head-on line from
+the scan bearing, and the move set to the ring's reach (every candidate is that far away). Then
+two cuts E1 measured as harmless on WH, the corners (WHPC +0.03 over WHP) and the kill cap (WHPK
++0.14), about 85 bytes, bring it to 1,494:
+
+| Candidate | Bytes | What |
+|---|---|---|
+| FIT3 | 1,494 | WPN, no hit correction, flat push, 200 playouts, no corners, no kill cap |
+| FIT3F | 1,480 | FIT3 without the field cap on power (never measured alone) |
+
+Two things differ from the core beyond the switches: wave slots are a ring of 64 that overwrites
+the oldest (the core frees spent waves and drops a new one when all 64 are live), and the golf's
+rounding (the angle constants, the move length). Neither is a strategy change, but they are why
+E2 benches the flat classes themselves (`deise-arms/e2/`, arm lines `=FILE` in
+`tools/deise_arms.sh`) rather than core switches: what is measured is what would ship.
+
+`pc-deise-e04` seats D, FIT3, FIT3F, WPN, MIR and SAOR (276 battles each, about 4 h), with the
+candidates early so a look at the progress branch reads them first. Every census step stops
+itself on 20 failed battles, 30 minutes without a battle, or 40 skipped turns a battle over the
+last 100. **E2 passes when FIT3 or FIT3F reads at least D + 0.4**; the better one becomes the
+shipped `Deise.java` as 0.3, the core and `DeiseLab` are matched to it (DEISE-16), and the jar
+gate holds it to 1,499 bytes and one class.
+
 ## 9. Uniqueness
 
 Leigh's rule for Saor holds here: inspired by others, never a copy. Deise's gun is Saor's own
