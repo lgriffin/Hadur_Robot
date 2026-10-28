@@ -34,6 +34,10 @@ class MeleeWidePlanTest {
         for (String a : List.of("aa", "bb", "ogi300")) {
             assertTrue(queue.contains("bash ./build-ablation.sh " + a + " "), a + " is built");
         }
+        assertTrue(queue.contains("rm -rf work/melee-wide-\"$V\"-aa work/melee-wide-\"$V\"-bb work/melee-wide-\"$V\"-ow"),
+            "prep rebuilds the jars, so no battle of an older build survives into the read");
+        assertTrue(queue.contains("echo \"$V\" > work/melee-wide.version") && queue.contains("V=$(cat work/melee-wide.version)"),
+            "the read uses the version prep built, not the pom at read time");
         assertTrue(queue.contains("C=${MELEE_WORKERS}"), "the width is the host's melee width, fixed at prep");
         assertTrue(queue.contains("screen \"$W\"-aa --base2 \"$W\"-bb --arm bb=\"$W\"-bb --arm ow=\"$W\"-ow --census"),
             "bb against aa, ow against both baselines");
