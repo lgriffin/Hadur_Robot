@@ -1,0 +1,70 @@
+# Deise's stage E1 (docs/deise.md section 8): paying for the seen-shot waves.
+# E0 (pc-deise-e01, PR #371) found the waves (arm W) worth +0.48 ± 0.25 on the live-shaped
+# MiniMelee census, but they cost about 260 bytes in the shipped class even cut down, and 0.2 has
+# 9 left. This card measures the cut-down waves and each part that could pay for them, then the
+# one stack that fits (FIT, about 1,468 bytes), beside Deise 0.2, Mirage and Saor 0.2 seated.
+#   ./queue.sh run pc-deise-e02        (or  .\queue.ps1 run pc-deise-e02)
+# Run it from master:
+#   git checkout master && git pull
+# One bench queue, RoboRumble workers at 0, unpinned, 12 workers. Every step resumes; no step needs
+# a decision. Nothing here touches Hadur or Saor.
+#
+# Arms (deise-arms/arms.txt):
+#   D      Deise 0.2                    MIR   kc.mini.Mirage 0.2 seated
+#   SAOR   Saor 0.2 seated, the control W     E0's waves, to confirm +0.48
+#   WH     cut-down waves (head-on only, weight 1, no hit correction)
+#   WHP    WH without the across term   WHPC  WHP without the corners
+#   WHPK   WHP without the kill cap     WHPT  WHP without the vote weights
+#   WHPH   WHP without the hold         WHPF  WHP + flat push + 200 playouts
+#   FIT    the stack that fits 1,499
+# Live-shaped census: 46 fields x 6 seeds a seat (276 battles, about 30-45 min), about 7 h.
+# Reads: each arm against SAOR, field by field. E1 passes when FIT reads at least D + 0.3 in the
+# same run; it is then flattened into the shipped class as Deise 0.3.
+
+set MVN = mvn -q -Drobocode.version=1.11.1 compile exec:java
+set OUT = ../docs/bench/local
+set ARMS = D,MIR,SAOR,W,WH,WHP,WHPC,WHPK,WHPT,WHPH,WHPF,FIT
+
+prep | (cd .. && mvn -q -DskipTests install -pl deise -am) && cp ../deise/target/hadur117.mini.Deise_0.2.jar opponents/ && curl -fsSLo opponents/hadur117.micro.Saor_0.2.jar https://github.com/lgriffin/Hadur_Robot/releases/download/saor-v0.2/hadur117.micro.Saor_0.2.jar && ./fetch-opponents.sh --set minimelee-field.txt && for f in melee-census-317/f*.txt; do ./fetch-opponents.sh --set "$f" || exit 1; done && DEISE_RUN=e02 bash tools/deise_arms.sh live 6 3200 ${ARMS}
+
+live-D | ${MVN} "-Dexec.args=@work/deise-e02/live-D.args"
+  after: prep
+
+live-MIR | ${MVN} "-Dexec.args=@work/deise-e02/live-MIR.args"
+  after: live-D
+
+live-SAOR | ${MVN} "-Dexec.args=@work/deise-e02/live-SAOR.args"
+  after: live-MIR
+
+live-W | ${MVN} "-Dexec.args=@work/deise-e02/live-W.args"
+  after: live-SAOR
+
+live-WH | ${MVN} "-Dexec.args=@work/deise-e02/live-WH.args"
+  after: live-W
+
+live-WHP | ${MVN} "-Dexec.args=@work/deise-e02/live-WHP.args"
+  after: live-WH
+
+live-WHPC | ${MVN} "-Dexec.args=@work/deise-e02/live-WHPC.args"
+  after: live-WHP
+
+live-WHPK | ${MVN} "-Dexec.args=@work/deise-e02/live-WHPK.args"
+  after: live-WHPC
+
+live-WHPT | ${MVN} "-Dexec.args=@work/deise-e02/live-WHPT.args"
+  after: live-WHPK
+
+live-WHPH | ${MVN} "-Dexec.args=@work/deise-e02/live-WHPH.args"
+  after: live-WHPT
+
+live-WHPF | ${MVN} "-Dexec.args=@work/deise-e02/live-WHPF.args"
+  after: live-WHPH
+
+live-FIT | ${MVN} "-Dexec.args=@work/deise-e02/live-FIT.args"
+  after: live-WHPF
+
+read | python3 tools/saor_arms.py --work-root work/deise-e02 --field live --arms ${ARMS} --control SAOR --only work/deise-e02/live/micro.txt --top5 71.20 --control-live 68.79 --pairings 203 --robot-prefix hadur117.mini.Deise --arms-file deise-arms/arms.txt > ${OUT}/deise-e02-live.md
+  after: live-FIT
+
+pr | bash tools/open_results_pr.sh claude/pc-deise-e02-results "Deise stage E1: paying for the waves" ${OUT}/deise-e02-live.md ${OUT}/deise-e02-live-*.md
+  after: read

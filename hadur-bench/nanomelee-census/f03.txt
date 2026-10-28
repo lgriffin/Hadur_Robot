@@ -1,0 +1,10 @@
+# NanoMelee census field f03 (see nanomelee-census.txt)
+d414.nano.Quantum 1.0.0 | nanomelee-1 | d414.nano.Quantum_1.0.0.jar
+sheldor.melee.nano.NaturalScience 1.2.1 | nanomelee-2 | sheldor.melee.nano.NaturalScience_1.2.1.jar
+ratosh.Nobo 0.21 | nanomelee-28 | ratosh.Nobo_0.21.jar
+stelo.PatternRobot 1.0 | nanomelee-53 | stelo.PatternRobot_1.0.jar
+sample.Crazy 1.0 | nanomelee-68 | sample.Crazy_1.0.jar
+repositorio.NanoStep 1.0 | nanomelee-69 | repositorio.NanoStep_1.0.jar
+ahf.NanoAndrew .4 | nanomelee-21 | ahf.NanoAndrew_.4.jar
+kurios.DOSexe .9a | nanomelee-67 | kurios.DOSexe_.9a.jar
+timmit.nano.TimDog 0.33 | nanomelee-32 | timmit.nano.TimDog_0.33.jar

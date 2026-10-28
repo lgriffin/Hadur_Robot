@@ -1,0 +1,10 @@
+# NanoMelee census field f01 (see nanomelee-census.txt)
+d414.nano.Quantum 1.0.0 | nanomelee-1 | d414.nano.Quantum_1.0.0.jar
+sheldor.melee.nano.NaturalScience 1.2.1 | nanomelee-2 | sheldor.melee.nano.NaturalScience_1.2.1.jar
+zyx.nano.Ant 1.1 | nanomelee-37 | zyx.nano.Ant_1.1.jar
+tvv.nano.Polaris 1.2 | nanomelee-34 | tvv.nano.Polaris_1.2.jar
+arthord.MannyPacquiao Beta | nanomelee-78 | arthord.MannyPacquiao_Beta.jar
+arthord.NanoSatanMelee Beta | nanomelee-39 | arthord.NanoSatanMelee_Beta.jar
+ers.nano.hawk.HawkLA 3.0m | nanomelee-51 | ers.nano.hawk.HawkLA_3.0m.jar
+bzdp.Pansy 2.1 | nanomelee-6 | bzdp.Pansy_2.1.jar
+fm.claire 1.7 | nanomelee-35 | fm.claire_1.7.jar

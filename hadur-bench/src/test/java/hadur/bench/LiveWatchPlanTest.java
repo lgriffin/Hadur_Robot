@@ -31,6 +31,8 @@ class LiveWatchPlanTest {
         assertTrue(queue.contains("${W}/profiles"), "the profile TSVs go into the results PR");
         assertTrue(queue.contains("open_results_pr.sh claude/live-watch-${V1}-run${RUN}-results"));
         assertTrue(queue.contains("after: report"));
+        assertTrue(queue.contains("set QUALIFIED = "), "the watch is gated on a qualified PC");
+        assertTrue(queue.contains("watch | { [ \"${QUALIFIED}\" = yes ] ||"), "an unqualified PC never starts the watch");
     }
 
     @Test

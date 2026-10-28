@@ -20,9 +20,8 @@ import robocode.util.Utils;
  * still runs over it as a peephole pass, and the build fails above 749 bytes (SAOR-11).</p>
  *
  * <p>Byte idioms, each mirrored in the core and listed in docs/saor.md: statics over fields;
- * the axis toggles with {@code ^= 1} so it needs no initialiser; the end-game cap is
- * {@code others / 3 + 1.9}; 1024 angle bins wrap with {@code & 1023}; one catch absorbs a
- * full Markov row and an out-of-range state. 0.2 has no collision handler: the ram leg of 0.1
+ * the axis toggles with {@code ^= 1} so it needs no initialiser; 1024 angle bins wrap with
+ * {@code & 1023}; one catch absorbs a full Markov row and an out-of-range state. 0.2 has no collision handler: the ram leg of 0.1
  * (SAOR-9, retired) measured level and its bytes pay for the graded vote (SAOR-7).</p>
  */
 public class Saor extends AdvancedRobot {
@@ -81,8 +80,8 @@ public class Saor extends AdvancedRobot {
             if (getGunHeat() < 1) {
                 setTurnRadarRightRadians(Double.POSITIVE_INFINITY * Math.sin(bearing - getRadarHeadingRadians()));
             }
-            // Power by range, capped at 1.9 below three opponents (SAOR-8); fire only on target (SAOR-10).
-            power = Math.min(getOthers() / 3 + 1.9, Math.log10(getEnergy()) * 325 / (targetDistance = distance));
+            // Power by range (SAOR-17); fire only on target (SAOR-10).
+            power = Math.log10(getEnergy()) * 325 / (targetDistance = distance);
             if (getGunTurnRemaining() == 0) {
                 setFire(power);
             }
@@ -128,10 +127,8 @@ public class Saor extends AdvancedRobot {
                     } while (++k <= 4);
                 } while (++i < 64);
                 setTurnGunRightRadians(Utils.normalRelativeAngle(best * (Math.PI / 512) - getGunHeadingRadians()));
-                if (getGunHeat() < 0.9) {
-                    char[] row;
-                    (row = table[targetState])[row[126]++] = (char) state;
-                }
+                char[] row;
+                (row = table[targetState])[row[126]++] = (char) state;
             } catch (Exception ex) {
             }
             targetState = state;

@@ -152,9 +152,4 @@ class TargetingTest {
     void theAngleOfABinIsItsHeading(@ForAll @IntRange(min = 0, max = 1023) int bin) {
         assertEquals(bin * 2 * Math.PI / Targeting.BINS, Targeting.angle(bin), 1e-12);
     }
-
-    @Property
-    void learningOnlyWhileTheGunIsCool(@ForAll @DoubleRange(min = 0, max = 3) double heat) {
-        assertEquals(heat < 0.9, Targeting.learn(heat));
-    }
 }

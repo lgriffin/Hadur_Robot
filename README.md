@@ -4,8 +4,8 @@
 a 1v1 duelist that remembers each opponent across battles, with a melee brain for
 free-for-alls, a five-robot team entry, and a core that has no idea it is inside Robocode.
 
-**Hadur 3.17 is ranked 7th of 1,220 in the RoboRumble 1v1** (90.91 APS, its best ever), 4th of 48 in the
-TeamRumble (79.39, its best ever) and 16th of 416 in the MeleeRumble (66.40),
+**Hadur 3.18.1 is ranked 4th of 1,220 in the RoboRumble 1v1** (91.34 APS, its best ever), 5th of 48 in the
+TeamRumble (78.56) and 13th of 417 in the MeleeRumble (67.92, its best ever),
 the highest-ranked robot flying the Irish flag. It was designed, written, tested and tuned by Claude agents working
 in a shared project with one human, Leigh Griffin, who set the goals and ran the live
 entries. This page covers what the robot does, how it is built, and how it was built.
@@ -19,6 +19,38 @@ at Waterford Institute of Technology (the `wit` in its name). Building it is how
 learned Java, and it was the original inspiration for everything on this page.
 
 ## Standing
+
+**3.18.1 was released on 2026-10-27.** The live rankings read on 2026-10-28 at 06:42 UTC (1v1, team) and 06:43 UTC (melee):
+
+| Rumble | Entry | Rank | APS | Pairings | Battles |
+|---|---|---|---|---|---|
+| 1v1 | `hadur2.Hadur 3.18.1` | **4th of 1,220** | **91.34** ± 0.22 | 1,219 | 1,365 |
+| Team | `hadur2.HadurTeam 3.18.1` | **5th of 48** | **78.56** ± 0.97 | 47 | 72 |
+| Melee | `hadur2.Hadur 3.18.1` | **13th of 417** | **67.92** ± 0.24 | 416 | 1,224 |
+
+- **What changed.** 3.18.1 is 3.18's code under a new version string. 1v1 plays as 3.17 with a third
+  less garbage (TIME-9); melee gained banked gun memory, the two-left endgame and Ogi's crowd power
+  (MGUN-7, MEND-3, MGUN-13); team plays as 3.17.1 ([3.18 notes](docs/releases/v3.18.md),
+  [3.18.1 notes](docs/releases/v3.18.1.md)).
+- **1v1 up three places to 4th, its first top-5 place and best score ever.** Against the same 1,219
+  opponents it is +0.43 ± 0.25 over 3.17's first pass (90.88), inside the up to +0.4 the 3.18 notes expected from TIME-9. 3rd is
+  Saguaro at 91.75 (+0.41); 5th is ScalarR at 91.26, 0.08 behind. Every battle of this first pass came
+  from one cloud client.
+- **Why 3.18 read 10th first.** 3.18 read 87.73 on code that plays bit for bit as 3.17: 98.6% of its
+  1v1 battles came from the PC's release watch, which scored about 3 points under clean pairings for
+  3.17 too. 3.18.1 restarted the pages with the PC off the live rumble, which stays off until its
+  clients pass a no-upload check (BENCH-125).
+- **Melee up three places to 13th**, its best ever: +1.52 over 3.17's 66.40, beating the census
+  projection of about 67.4. Deise 0.2 is 16th (66.44) and Saor 0.3 19th (65.68).
+- **Team 5th**, level with 3.17.1 on the same play (79.39, then 4th): 78.56 ± 0.97 after 72 battles.
+  ShadowTeam is 4th at 79.11, NightmareTeam 6th at 77.18.
+- **Saor 0.3 is 1st in MicroMelee** (2026-10-27, full first pass): 69.80 ± 0.43, 0.44 ahead of
+  Figment's 69.36 (0.2 was 69.42), 3rd in MiniMelee at 69.20 and 19th in the full MeleeRumble.
+  See [saor/README.md](saor/README.md).
+- **Deise 0.2 is 2nd in MiniMelee** (2026-10-27, full first pass): 69.68 ± 0.39, 1.52 behind
+  kc.mini.Mirage 0.2's 71.20, and 16th in the full MeleeRumble. See [deise/README.md](deise/README.md).
+
+### 3.17 at 7th
 
 **3.17 was released on 2026-10-25.** The live rankings read on 2026-10-25 at 22:57 UTC (1v1), 22:16 UTC (team) and 23:30 UTC (melee):
 
@@ -38,9 +70,6 @@ learned Java, and it was the original inspiration for everything on this page.
   at 79.17, 3rd CombatTeam at 81.85.
 - **Melee up one place to 16th** on unchanged melee code: 66.40 on 3.17's first full pass (1,354 battles),
   +0.10 over 3.15's settled 66.30. Saor 0.1, the MicroMelee entry, is 31st at 63.70.
-- **Saor 0.2 is 1st in MicroMelee** (2026-10-27, first pass, 497 battles): 69.42 ± 0.39, 0.06
-  ahead of Figment's 69.36, 2nd in MiniMelee at 68.79,
-  and 19th in the full MeleeRumble (0.1: 31st). See [saor/README.md](saor/README.md).
 
 ### 3.15 at 8th
 
@@ -146,7 +175,9 @@ by BENCH-5. The saved page is archived in [`data/rumble/`](data/rumble/).
 | 3.13 | 2026-10-14 | 89.50 | 95.9% | 7th (17th melee, 9th team) | SHIELD-8..13: shield against 200 listed robots, holding fire and learning intercepted headings ([live notes](docs/bench/live-3.13.md)) |
 | 3.15 | 2026-10-23 | 89.29 | | 8th (15th melee, 9th team) | SHIELD-14, MOVE-24, the melee gun (MGUN-7) and team shared gun learning (MGUN-8) ([live notes](docs/bench/live-3.15.md)) |
 | 3.16 | 2026-10-24 | 89.25 | 95.3% | 8th (17th melee, 7th team) | Per-opponent mode table v1 and team stage 1 ([live notes](docs/bench/live-3.16.md)) |
-| 3.17 | 2026-10-25 | **90.91** | 99.0% | **7th** (16th melee, 4th team) | Mode table v2 (stop-and-go), shield parts 2 and 3, team step C ([live notes](docs/bench/live-3.17.md)) |
+| 3.17 | 2026-10-25 | 90.91 | 99.0% | 7th (16th melee, 4th team) | Mode table v2 (stop-and-go), shield parts 2 and 3, team step C ([live notes](docs/bench/live-3.17.md)) |
+| 3.18 | 2026-10-27 | 87.73 | | 10th | TIME-9 (a third less garbage, bit for bit), melee MGUN-7, MEND-3 and MGUN-13; first pass came 98.6% from the PC release watch |
+| 3.18.1 | 2026-10-27 | **91.34** | 96.7% | **4th** (13th melee, 5th team) | 3.18's code on a clean page, PC clients off the live rumble ([notes](docs/releases/v3.18.1.md)) |
 
 3.0 and 3.1 both started near 85.7 APS and slid by 5 to 8 points within hours on live
 clients, which the bench could not reproduce. R7's one-JVM session bench and R8 traced it to
@@ -506,11 +537,12 @@ hadur-core/    the brain: a kernel (physics, waves, KNN, memory, the World, the 
 hadur-robot/   the Robocode adapter (hadur2.Hadur, a TeamRobot): events in, orders out,
                profile files; and the team jar hadur2.HadurTeam, five of it.
 hadur-bench/   headless battles, the bench report, and the replay recorder.
-saor/          Saor, a separate MicroMelee robot (hadur117.micro.Saor, 749 bytes;
+saor/          Saor, a separate MicroMelee robot (hadur117.micro.Saor, 723 bytes;
                live standing in saor/README.md);
                see docs/saor.md. Shares nothing with Hadur.
-deise/         Deise, a separate MiniMelee robot (hadur117.mini.Deise), in design
-               (stage E0); see docs/deise.md. Shares nothing with Hadur or Saor.
+deise/         Deise, a separate MiniMelee robot (hadur117.mini.Deise, 1,490 bytes;
+               live standing in deise/README.md); see docs/deise.md. Shares nothing
+               with Hadur or Saor.
 docs/          requirements, architecture, testing, strategy, bench reports, release notes,
                rumble entry.
 data/          the rumble and bench archive: saved rumble pages, parsed tables, bench

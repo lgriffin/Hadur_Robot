@@ -1,16 +1,19 @@
 # Deise's arms (docs/deise.md). One arm a line:
-#   NAME | what it changes | FILE | sed over deise/src/main/java/.../FILE      a Deise build
-#   NAME | what | @robot name                                                  a seated robot
+#   NAME | what it changes | FILE | sed [| FILE | sed ...]   a Deise build (sed over deise/src/main/java/.../FILE)
+#   NAME | what | @robot name                                a seated robot
 # Built by tools/deise_arms.sh as hadur117.mini.Deise<NAME>. D is Deise's source unchanged.
-# Stage E0 (pc-deise-e01): the design, cut by the cloud smoke (docs/deise.md section 4), against
-# the field's best, and what each part is worth. D: no wave dodging (Move.WAVES = 0).
-D | Deise 0.1: corners while crowded, no wave dodging (about 2,300 bytes; E2 fits 1,499) | |
-MIR | kc.mini.Mirage 0.2 in the seat (1st, 71.30 live) | @kc.mini.Mirage 0.2
-SAOR | hadur117.micro.Saor 0.2 in the seat (2nd, 68.79 live): the control | @hadur117.micro.Saor 0.2
-W | seen-shot waves back on, at full weight | Move.java | s#WAVES = 0;#WAVES = 1;#
-CE | out of the centre while crowded, not to the corners | Move.java | s#others \* Math.hypot(Math.min(px, Gun.FIELD - px), Math.min(py, Gun.FIELD - py)) / 5000#-others * Math.hypot(px - 500, py - 500) / 5000#
-CM | commits to a leg: a new point only when 2x safer or within 50 px of the old | Deise.java | s#y) < 16#y) < 50#; s#best\[2\] < 0.9 \*#best[2] < 0.5 *#
-RK | plays unscanned opponents on by their last heading and speed | Deise.java | s#RECKON = false;#RECKON = true;#
-FL | every opponent pushes the same, whatever its energy | Move.java | s#(50000 + bot\[ENERGY\] \* 500)#80000#
-P200 | 200 playouts an aim, not 64 | Deise.java | s#power, 64, RANDOM#power, 200, RANDOM#
-G1 | learns only scans one tick apart | Deise.java | s#GAP = 8;#GAP = 1;#
+# Stage E1b (pc-deise-e03): E1 (pc-deise-e02, PR #378) confirmed E0's W (+0.44 over D) but
+# found the cut-down waves (WH: head-on only, weight 1, no hit correction) fatal, -3.6, survival
+# 83% to 69%. These arms take one cut at a time off W to find which one breaks it, and test the
+# two savings that read positive on WH (no across term, no hold) on W itself.
+D | Deise 0.2 (the core-driven DeiseLab, which the shipped 1,490-byte class matches order for order) | |
+MIR | kc.mini.Mirage 0.2 in the seat (1st, 71.20 live) | @kc.mini.Mirage 0.2
+SAOR | hadur117.micro.Saor 0.2 in the seat (68.79 live in MiniMelee): the control | @hadur117.micro.Saor 0.2
+W | seen-shot waves on: both lines, weighed by aim, hits corrected | Move.java | s#WAVES = 0;#WAVES = 1;#
+WL | W on the head-on line only | Move.java | s#WAVES = 0;#WAVES = 1;#; s#LINES = 2;#LINES = 1;#
+WA | W with every wave at weight 1, not 0.25 from robots unlikely to aim at us | Move.java | s#WAVES = 0;#WAVES = 1;# | DeiseLab.java | s#AIMED = true;#AIMED = false;#
+WB | W without the hit correction: our hits read as their shots | Move.java | s#WAVES = 0;#WAVES = 1;# | DeiseLab.java | s#HITS = true;#HITS = false;#
+WP | W without the across term (DEISE-3, frees 131 B) | Move.java | s#WAVES = 0;#WAVES = 1;#; s#ACROSS = true;#ACROSS = false;#
+WN | W without the 10% hold on the destination (DEISE-1, frees 46 B) | Move.java | s#WAVES = 0;#WAVES = 1;# | DeiseLab.java | s#HOLD = 0.9;#HOLD = 1e9;#
+WPN | W without the across term and the hold | Move.java | s#WAVES = 0;#WAVES = 1;#; s#ACROSS = true;#ACROSS = false;# | DeiseLab.java | s#HOLD = 0.9;#HOLD = 1e9;#
+WF | W with a flat push (frees 9 B) and 200 playouts | Move.java | s#WAVES = 0;#WAVES = 1;#; s#(50000 + bot\[ENERGY\] \* 500)#80000# | DeiseLab.java | s#PLAYOUTS = 64;#PLAYOUTS = 200;#

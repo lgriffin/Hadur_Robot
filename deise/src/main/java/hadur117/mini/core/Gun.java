@@ -22,6 +22,10 @@ public final class Gun {
     /** Battlefield size and the margin a robot's centre keeps from a wall. */
     public static final double FIELD = 1000;
     public static final double MARGIN = 18;
+    /** Whether a playout that leaves the field votes 1 (DEISE-8); false for arm T. */
+    public static final boolean WALLS = true;
+    /** Whether power is capped at what kills the target (DEISE-10); false for arm K. */
+    public static final boolean KILL = true;
 
     private Gun() {
     }
@@ -56,7 +60,7 @@ public final class Gun {
         int[] bins = new int[BINS];
         int best = 0;
         double speed = 20 - 3 * power;
-        double distance = Math.hypot(x - myX, y - myY);
+        double distance = Math.sqrt((x - myX) * (x - myX) + (y - myY) * (y - myY));
         int width = Math.max(1, (int) (Math.atan(18 / distance) * BINS / (2 * Math.PI)));
         for (int i = 0; i < playouts; i++) {
             double px = x;
@@ -66,7 +70,7 @@ public final class Gun {
             int id = state;
             int weight = 100;
             int ticks = 0;
-            while (++ticks * speed < Math.hypot(px - myX, py - myY)) {
+            while (++ticks * speed < Math.sqrt((px - myX) * (px - myX) + (py - myY) * (py - myY))) {
                 int n = table[id][ROW];
                 if (n > 0) {
                     id = table[id][random.nextInt(n)];
@@ -78,7 +82,7 @@ public final class Gun {
                 v = ((id >> 2) & 31) - 8;
                 px += Math.sin(h) * v;
                 py += Math.cos(h) * v;
-                if (Math.min(Math.min(px, py), FIELD - Math.max(px, py)) < MARGIN) {
+                if (WALLS && Math.min(Math.min(px, py), FIELD - Math.max(px, py)) < MARGIN) {
                     weight = 1;
                 }
             }
@@ -100,6 +104,6 @@ public final class Gun {
      */
     public static double power(double energy, double targetEnergy, double distance, int others) {
         return Math.max(0.1, Math.min(Math.min(Math.min(3, others / 3 + 1.9), Math.log10(energy) * 325 / distance),
-            targetEnergy > 4 ? (targetEnergy + 2) / 6 : targetEnergy / 4));
+            !KILL ? 3 : targetEnergy > 4 ? (targetEnergy + 2) / 6 : targetEnergy / 4));
     }
 }

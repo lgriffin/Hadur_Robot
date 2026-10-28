@@ -1,0 +1,115 @@
+# Sanaro's stages N1 and N2 (docs/sanaro.md sections 5 and 6): the spiral, the power band and the
+# flip on the PC, on the NanoMelee census, one on one with each leader, and on the live-shaped
+# census. Sanaro is a new NanoMelee robot (hadur117.nano.Sanaro, sanaro/, 249 bytes), built to
+# outrank d414.nano.Quantum 1.0.0 (1st, 66.60 live) and sheldor.melee.nano.NaturalScience 1.2.1
+# (2nd, 64.88).
+#   ./queue.sh run pc-sanaro-n01        (or  .\queue.ps1 run pc-sanaro-n01)
+# Run it from master:
+#   git checkout master && git pull
+# One bench queue, RoboRumble workers at 0, unpinned, 12 workers. Every step resumes; no step needs
+# a decision. Nothing here touches Hadur, Saor, TwinSaor or Deise.
+#
+# Arms (sanaro-arms/arms.txt):
+#   S06   Sanaro 0.1 as it ships (spiral 0.6)   S0    no spiral, the lineage's straight anti-gravity
+#   S04, S05, S07, S08, S10   the spiral at 0.4 .. 1.0 rad
+#   B800, B1000   S06 with the power band at 800 / 1000 px (no 0.1 pot shots inside it)
+#   FL    S06 with the spiral flipped on each hit (needs about 11 bytes found before it can ship)
+#   QNT, NSC   the two leaders seated (live-shaped census only)
+# 1. NanoMelee census (tools/sanaro_fields.py): 13 fields, both leaders + 7 nanos + the arm,
+#    10 seeds = 130 battles an arm, about 3 min an arm, 10 arms.
+# 2. Duel: one on one with each leader, 20 battles each, about 1 min an arm.
+# 3. Live-shaped census (saor_live.py over melee-census-317, NanoMelee pairings counted):
+#    43 fields x 6 seeds = 258 battles a seat, about 30-45 min a seat, S06, S0, QNT, NSC.
+# About 3.5 h in all.
+# Reads: census and duel against S0; the live census against S06 with the leaders seated.
+# N2 passes when a spiral arm beats NaturalScience in the same census battles by more than its
+# interval (SANARO-10), outsurvives both leaders in more than half of them (SANARO-11), and its
+# live read sits above NSC's; that arm then ships as Sanaro 0.2 if it fits 249.
+
+set MVN = mvn -q -Drobocode.version=1.11.1 compile exec:java
+set OUT = ../docs/bench/local
+set ARMS = S06,S0,S04,S05,S07,S08,S10,B800,B1000,FL
+set LIVE = S06,S0,QNT,NSC
+
+prep | (cd .. && mvn -q -DskipTests install -pl sanaro -am) && cp ../sanaro/target/hadur117.nano.Sanaro_0.1.jar opponents/ && ./fetch-opponents.sh --set nanomelee-field.txt && for f in melee-census-317/f*.txt; do ./fetch-opponents.sh --set "$f" || exit 1; done && SANARO_RUN=n01 bash tools/sanaro_arms.sh census 10 11000 ${ARMS} && SANARO_RUN=n01 bash tools/sanaro_arms.sh duel 20 11500 ${ARMS} && SANARO_RUN=n01 bash tools/sanaro_arms.sh live 6 12000 ${LIVE}
+
+census-S06 | ${MVN} "-Dexec.args=@work/sanaro-n01/census-S06.args"
+  after: prep
+
+census-S0 | ${MVN} "-Dexec.args=@work/sanaro-n01/census-S0.args"
+  after: census-S06
+
+census-S04 | ${MVN} "-Dexec.args=@work/sanaro-n01/census-S04.args"
+  after: census-S0
+
+census-S05 | ${MVN} "-Dexec.args=@work/sanaro-n01/census-S05.args"
+  after: census-S04
+
+census-S07 | ${MVN} "-Dexec.args=@work/sanaro-n01/census-S07.args"
+  after: census-S05
+
+census-S08 | ${MVN} "-Dexec.args=@work/sanaro-n01/census-S08.args"
+  after: census-S07
+
+census-S10 | ${MVN} "-Dexec.args=@work/sanaro-n01/census-S10.args"
+  after: census-S08
+
+census-B800 | ${MVN} "-Dexec.args=@work/sanaro-n01/census-B800.args"
+  after: census-S10
+
+census-B1000 | ${MVN} "-Dexec.args=@work/sanaro-n01/census-B1000.args"
+  after: census-B800
+
+census-FL | ${MVN} "-Dexec.args=@work/sanaro-n01/census-FL.args"
+  after: census-B1000
+
+duel-S06 | ${MVN} "-Dexec.args=@work/sanaro-n01/duel-S06.args"
+  after: census-FL
+
+duel-S0 | ${MVN} "-Dexec.args=@work/sanaro-n01/duel-S0.args"
+  after: duel-S06
+
+duel-S04 | ${MVN} "-Dexec.args=@work/sanaro-n01/duel-S04.args"
+  after: duel-S0
+
+duel-S05 | ${MVN} "-Dexec.args=@work/sanaro-n01/duel-S05.args"
+  after: duel-S04
+
+duel-S07 | ${MVN} "-Dexec.args=@work/sanaro-n01/duel-S07.args"
+  after: duel-S05
+
+duel-S08 | ${MVN} "-Dexec.args=@work/sanaro-n01/duel-S08.args"
+  after: duel-S07
+
+duel-S10 | ${MVN} "-Dexec.args=@work/sanaro-n01/duel-S10.args"
+  after: duel-S08
+
+duel-B800 | ${MVN} "-Dexec.args=@work/sanaro-n01/duel-B800.args"
+  after: duel-S10
+
+duel-B1000 | ${MVN} "-Dexec.args=@work/sanaro-n01/duel-B1000.args"
+  after: duel-B800
+
+duel-FL | ${MVN} "-Dexec.args=@work/sanaro-n01/duel-FL.args"
+  after: duel-B1000
+
+live-S06 | ${MVN} "-Dexec.args=@work/sanaro-n01/live-S06.args"
+  after: duel-FL
+
+live-S0 | ${MVN} "-Dexec.args=@work/sanaro-n01/live-S0.args"
+  after: live-S06
+
+live-QNT | ${MVN} "-Dexec.args=@work/sanaro-n01/live-QNT.args"
+  after: live-S0
+
+live-NSC | ${MVN} "-Dexec.args=@work/sanaro-n01/live-NSC.args"
+  after: live-QNT
+
+read-census | python3 tools/sanaro_read.py --work-root work/sanaro-n01 --arms ${ARMS} --control S0 --only nanomelee-field.txt > ${OUT}/sanaro-n01-census.md
+  after: live-NSC
+
+read-live | python3 tools/sanaro_read.py --work-root work/sanaro-n01 --field live --arms ${LIVE} --control S06 --only work/sanaro-n01/live/micro.txt --live 66.60 > ${OUT}/sanaro-n01-live.md
+  after: read-census
+
+pr | bash tools/open_results_pr.sh claude/pc-sanaro-n01-results "Sanaro stages N1-N2: spiral, band and flip on the NanoMelee census" ${OUT}/sanaro-n01-census.md ${OUT}/sanaro-n01-live.md ${OUT}/sanaro-n01-*-*.md
+  after: read-live

@@ -1,0 +1,43 @@
+# 1v1 gap to 2nd, step 1 and 2 on the PC (BENCH-126, docs/bench/gap-to-2nd.md). Leigh starts it:
+#   git checkout master && git pull
+#   .\queue.ps1 run pc-shield-exit        (or  ./queue.sh run pc-shield-exit)
+# One bench queue, RoboRumble workers at 0, unpinned, 12 workers, truth log off. Every step resumes;
+# no step needs a decision. About 3.5 h (3,312 + 54 battles).
+#
+# Why: the cloud shield read (2026-10-28, 8 robots x 3 seeds) found shield mode leaving the battle at
+# SHIELD-11's 150-damage exit around round 15 against listed robots it mostly beats; the surf then takes
+# 3-5x the damage Saguaro's shield does. Exit at 400 (s4): Pytko +11, BlackIce +10, MatchupWS +11,
+# Komarious +16 points. This card measures it on all 276 listed robots, so no listed robot is left out.
+# The cloud re-pick screen (14 robots x 5 arms x 3 seeds) moved Wolverine, Hikari and Melody from
+# shield to stop-and-go (+8, +12, +7); verify re-measures them on fresh seeds.
+#
+# screen: 276 listed robots x c, aa, s4, s0 x 3 seeds = 3,312 battles.
+# gate:   s4 and s0 each minus pooled c and aa, summed over the panel / 1,217 pairings. PASS at +0.10
+#         APS with the lower end above 0 and the A/A inside its band. Unlisted robots never see the
+#         change, so the panel sum is the field's.
+# pick:   mode_table.py over the same screen (0 battles): the robots s4 or s0 win by 5+ points; and
+#         tools/per_robot.py: every robot's s4 and s0 difference, losses included, in case a
+#         per-opponent exit beats one global value (cloud: +14 on Smoke, Quest, SMG, CopyKat; -7 to
+#         -11 on Pantheist, Toa, MirrorPM). Any analysis error stops the card before the results PR.
+# verify: the 3 re-picked robots x c, aa, rp x 6 fresh seeds = 54 battles, gate bar +0.01.
+# Leigh's release rule stands: no 1v1 release until the census projects the target (3rd here).
+
+set P = --parallel 12 --no-truth-log
+set HEAP = --child-heap 2G
+set E = --engine 1.11.1
+set C = --skip-build --skip-fetch --rounds 35 --cpu-constant 1488498 ${HEAP} ${E}
+set OUT = ../docs/bench/local
+
+prep | git checkout -q master && mkdir -p bisect work && (cd .. && mvn -q -DskipTests package) && cp ../hadur-robot/target/hadur2.Hadur_3.18.1.jar bisect/ && bash ./build-ablation.sh aa && bash ./build-ablation.sh sdmg400 && bash ./build-ablation.sh sdmgoff && SHIELD_DROP=plans/repick-drop.txt STOP_GO=plans/repick-stopgo.txt STOP_GO2=plans/repick-stopgo2.txt bash ./build-ablation.sh slistdrop,sgolist,sgo2list && ./fetch-opponents.sh --set panel-shield-listed-318.txt && ./fetch-opponents.sh --set panel-repick-318.txt && mvn -q compile
+
+screen | ./bench-top20.sh ${C} ${P} --set panel-shield-listed-318.txt --seeds 3 --seed-base 3400 --arms plans/shield-exit.arms --out work/shield-exit --label shield-exit
+  after: prep
+
+verify | ./bench-top20.sh ${C} ${P} --set panel-repick-318.txt --seeds 6 --seed-base 3500 --arms plans/repick-verify.arms --out work/repick-verify --label repick-verify
+  after: screen
+
+gate | python3 ../data/tools/multiarm.py work/shield-exit/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_shield-exit.md && python3 tools/shield_s2.py gate work/shield-exit/arms.tsv --arm s4 --panel panel-shield-listed-318.txt --bar 0.10 --out ${OUT}/$(date +%Y-%m-%d)_shield-exit-s4-gate.md && python3 tools/shield_s2.py gate work/shield-exit/arms.tsv --arm s0 --panel panel-shield-listed-318.txt --bar 0.10 --out ${OUT}/$(date +%Y-%m-%d)_shield-exit-s0-gate.md && python3 ../data/tools/mode_table.py work/shield-exit/arms.tsv --margin 5 --out-tsv ${OUT}/shield-exit-pick.tsv --out ${OUT}/$(date +%Y-%m-%d)_shield-exit-pick.md && python3 tools/per_robot.py work/shield-exit/arms.tsv --arms s4 s0 --out ${OUT}/$(date +%Y-%m-%d)_shield-exit-per-robot.md --out-tsv ${OUT}/shield-exit-per-robot.tsv && python3 ../data/tools/multiarm.py work/repick-verify/arms.tsv --out ${OUT}/$(date +%Y-%m-%d)_repick-verify.md && python3 tools/shield_s2.py gate work/repick-verify/arms.tsv --arm rp --panel panel-repick-318.txt --bar 0.01 --out ${OUT}/$(date +%Y-%m-%d)_repick-gate.md
+  after: verify
+
+pr | bash tools/open_results_pr.sh claude/pc-shield-exit-results "1v1 gap to 2nd: shield exit at 400 / budget only, and three stop-and-go re-picks" ${OUT}/*_shield-exit*.md ${OUT}/*_repick-*.md ${OUT}/shield-exit-per-robot.tsv $(find ${OUT} -maxdepth 1 -name shield-exit-pick.tsv -size +0c)
+  after: gate

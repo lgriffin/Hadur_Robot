@@ -1,0 +1,18 @@
+# Sanaro's arms (docs/sanaro.md, stages N1/N2). One arm a line:
+#   NAME | what it changes | sed over sanaro/src/main/java/hadur117/nano/Sanaro.java (empty: none)
+#   NAME | what | @robot name     a seated robot (live census only)
+# Built by tools/sanaro_arms.sh as hadur117.nano.Sanaro<NAME>, javac only: the screen measures play,
+# SanaroJarIT measures bytes. S06 is Sanaro 0.1 as it ships (spiral 0.6 rad, 249 bytes). The cloud
+# screen (docs/sanaro.md section 4) ran the first build, spiral 1.0, as its base.
+S06 | Sanaro 0.1: the spiral at 0.6 rad (ships, 249 B) |
+S0 | no spiral: straight anti-gravity, the lineage's movement with Sanaro's radar and table (247 B) | s#SPIRAL = 0.6;#SPIRAL = 0;#
+S04 | spiral 0.4 rad (249 B) | s#SPIRAL = 0.6;#SPIRAL = 0.4;#
+S05 | spiral 0.5 rad (249 B) | s#SPIRAL = 0.6;#SPIRAL = 0.5;#
+S07 | spiral 0.7 rad (249 B) | s#SPIRAL = 0.6;#SPIRAL = 0.7;#
+S08 | spiral 0.8 rad (249 B) | s#SPIRAL = 0.6;#SPIRAL = 0.8;#
+S10 | spiral 1.0 rad, the first build (247 B) | s#SPIRAL = 0.6;#SPIRAL = 1.0;#
+B800 | S06 with the power band at 800 px: full table power out to 400 px, pot shots past 800 (249 B) | s#BAND = 640;#BAND = 800;#
+B1000 | S06 with the power band at 1000 px: full table power out to 500 px, pot shots past 1000 (249 B) | s#BAND = 640;#BAND = 1000;#
+FL | S06 with the spiral flipped on each hit taken, between 0 and 0.6 (about 260 B, needs fitting) | s#static double fx, fy;#static double fx, fy, spiral;#; s#+ SPIRAL));#+ spiral));#; s#^    // The wall's push#    public void onHitByBullet(robocode.HitByBulletEvent h) { spiral = SPIRAL - spiral; }\n    // The wall's push#
+QNT | d414.nano.Quantum 1.0.0 in the seat (NanoMelee 1st, 66.60 live) | @d414.nano.Quantum 1.0.0
+NSC | sheldor.melee.nano.NaturalScience 1.2.1 in the seat (NanoMelee 2nd, 64.88 live) | @sheldor.melee.nano.NaturalScience 1.2.1

@@ -140,7 +140,7 @@ public class SaorSteps {
 
     @Then("with {int} energy at {int} px and {int} opponents left the power is {double}")
     public void powerIs(int energy, int d, int others, double expected) {
-        assertEquals(expected, Energy.power(energy, d, others), 1e-9);
+        assertEquals(expected, Energy.power(energy, d), 1e-9);
     }
 
     @Then("the gun fires with {double} gun turn left")

@@ -1,0 +1,10 @@
+# NanoMelee census field f11 (see nanomelee-census.txt)
+d414.nano.Quantum 1.0.0 | nanomelee-1 | d414.nano.Quantum_1.0.0.jar
+sheldor.melee.nano.NaturalScience 1.2.1 | nanomelee-2 | sheldor.melee.nano.NaturalScience_1.2.1.jar
+DBall.NUKE 0.1 | nanomelee-50 | DBall.NUKE_0.1.jar
+mz.NanoGod 2.02 | nanomelee-19 | mz.NanoGod_2.02.jar
+oog.melee.Corsair 1.0 | nanomelee-7 | oog.melee.Corsair_1.0.jar
+sample.Walls 1.0 | nanomelee-61 | sample.Walls_1.0.jar
+zyx.nano.BacillusComma 1.0 | nanomelee-47 | zyx.nano.BacillusComma_1.0.jar
+awesomeness.Elite 1.0 | nanomelee-45 | awesomeness.Elite_1.0.jar
+stelo.PianistNano 1.2 | nanomelee-75 | stelo.PianistNano_1.2.jar

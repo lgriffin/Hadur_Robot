@@ -17,7 +17,7 @@
 
     <properties>
         <!-- The robot's version: the jar is named for it and Saor.properties takes it by filtering. -->
-        <saor.release>0.2</saor.release>
+        <saor.release>0.3</saor.release>
         <!-- MicroMelee's limit, as Robocode's codesize tool counts it (SAOR-11). -->
         <saor.codesize.limit>749</saor.codesize.limit>
         <!-- Rating clients still run Java 8; the shipped class targets it. Tests use 17. -->

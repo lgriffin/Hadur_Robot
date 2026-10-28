@@ -1,0 +1,10 @@
+# NanoMelee census field f02 (see nanomelee-census.txt)
+d414.nano.Quantum 1.0.0 | nanomelee-1 | d414.nano.Quantum_1.0.0.jar
+sheldor.melee.nano.NaturalScience 1.2.1 | nanomelee-2 | sheldor.melee.nano.NaturalScience_1.2.1.jar
+DBall.Anarchy 0.1 | nanomelee-46 | DBall.Anarchy_0.1.jar
+rrh.Iwillfindyou 2.0 | nanomelee-82 | rrh.Iwillfindyou_2.0.jar
+fm.mammillarias 1.3 | nanomelee-41 | fm.mammillarias_1.3.jar
+simonton.nano.MeleeSeed 1.8 | nanomelee-9 | simonton.nano.MeleeSeed_1.8.jar
+stelo.SoJNanoMelee 1.1 | nanomelee-36 | stelo.SoJNanoMelee_1.1.jar
+sample.MyFirstRobot 1.0 | nanomelee-81 | sample.MyFirstRobot_1.0.jar
+mn.nano.perceptual.Impact 1.3.0 | nanomelee-62 | mn.nano.perceptual.Impact_1.3.0.jar
