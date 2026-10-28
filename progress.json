@@ -1,6 +1,6 @@
 {
  "plan": "pc-sanaro-n02",
- "updated": 1793223661.3637245,
+ "updated": 1793223971.0457172,
  "steps": {
   "prep": {
    "status": "done",
@@ -47,49 +47,5 @@
    "reason": "after read-live"
   }
  },
- "watched": [
-  {
-   "step": "live-S0",
-   "started": 1793223656.0994077,
-   "updated": 1793223659.6615498,
-   "elapsed": 3.5621421337127686,
-   "expected": 430,
-   "panel": null,
-   "field": null,
-   "multiarm": false,
-   "arms": [],
-   "aa": null,
-   "warnings": [],
-   "battles": 0,
-   "resumed": 0,
-   "failed": 0,
-   "disables": null,
-   "rate": null,
-   "eta": null,
-   "fraction": 0.0,
-   "last_battle_age": 3.5621421337127686,
-   "rules": [
-    {
-     "rule": "fails 20",
-     "action": "halt",
-     "state": "ok",
-     "detail": "0 failed of 0"
-    },
-    {
-     "rule": "stall 30m",
-     "action": "halt",
-     "state": "ok",
-     "detail": "last battle 0 min ago"
-    },
-    {
-     "rule": "skips 40 over 100",
-     "action": "halt",
-     "state": "waiting",
-     "detail": "0 of 100 battles to read"
-    }
-   ],
-   "skips_mean": null,
-   "skips_last100": null
-  }
- ]
+ "watched": []
 }
