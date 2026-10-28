@@ -1,0 +1,89 @@
+# Sanaro's stage N3 (docs/sanaro.md section 7): the power curve, a small spiral and the band, all
+# on the live-shaped census, the one LiteRumble scores NanoMelee from. pc-sanaro-n01 (PR #393)
+# showed the NanoMelee-only census picks the wrong spiral (0.6 there, 0 here, +0.88 ± 0.45), and
+# that Quantum's edge in the live-shaped field is damage (+14% bullet damage, better mean place)
+# not rounds won. Sanaro 0.1 now ships S0 (no spiral, 247 B).
+#   ./queue.sh run pc-sanaro-n02        (or  .\queue.ps1 run pc-sanaro-n02)
+# Run it from master:
+#   git checkout master && git pull
+# One bench queue, RoboRumble workers at 0, unpinned, 12 workers. Every step resumes; no step needs
+# a decision. Nothing here touches Hadur, Saor, TwinSaor or Deise.
+#
+# Arms (sanaro-arms/arms.txt), each one change on S0; the power arms cost no bytes:
+#   S0    Sanaro 0.1 as it ships (control)     S02   spiral 0.2 rad (249 B)
+#   Q7    Quantum's curve, energy / 7          D10   0.1 + energy / 10
+#   L20   0.1 + energy / 20, at most 2.0       T60   3.0 from 60 energy, not 120
+#   B800  the power band at 800 px
+# Live-shaped census (saor_live.py over melee-census-317, NanoMelee pairings counted): 43 fields x
+# 10 fresh seeds (base 13000) = 430 battles an arm, about 24 min an arm. About 2.8 h in all.
+# Read against S0. N3 passes for an arm whose difference's low end is above zero; the best one
+# ships as Sanaro 0.1's default (bytes allowing). For the bar: n01 seated Quantum at 66.58
+# (live 66.60) and NaturalScience at 65.31 (live 64.88); S0 read 65.17.
+# Stop rules on every census step (docs/bench/watch.md; halt, every battle fought is kept and a
+# rerun resumes): 20 failed battles (a broken jar), no battle in 30 minutes (a hung step), or 40+
+# skipped turns a battle over the last 100 (the PR #331 build-up). A halt at worst leaves the rest
+# of that arm and the arms after it unrun, at most 3,010 battles (about 2.8 h). There is no early
+# finish on score: a census step is one robot, so there is no arm to call futile mid-step. ALERT
+# opens an issue for Leigh on a stop.
+
+set MVN = mvn -q -Drobocode.version=1.11.1 compile exec:java
+set OUT = ../docs/bench/local
+set ALERT = lgriffin
+set ARMS = S0,S02,Q7,D10,L20,T60,B800
+
+prep | (cd .. && mvn -q -DskipTests install -pl sanaro -am) && cp ../sanaro/target/hadur117.nano.Sanaro_0.1.jar opponents/ && ./fetch-opponents.sh --set nanomelee-field.txt && for f in melee-census-317/f*.txt; do ./fetch-opponents.sh --set "$f" || exit 1; done && SANARO_RUN=n02 bash tools/sanaro_arms.sh live 10 13000 ${ARMS}
+
+live-S0 | ${MVN} "-Dexec.args=@work/sanaro-n02/live-S0.args"
+  after: prep
+  watch: battles=430
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+live-S02 | ${MVN} "-Dexec.args=@work/sanaro-n02/live-S02.args"
+  after: live-S0
+  watch: battles=430
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+live-Q7 | ${MVN} "-Dexec.args=@work/sanaro-n02/live-Q7.args"
+  after: live-S02
+  watch: battles=430
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+live-D10 | ${MVN} "-Dexec.args=@work/sanaro-n02/live-D10.args"
+  after: live-Q7
+  watch: battles=430
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+live-L20 | ${MVN} "-Dexec.args=@work/sanaro-n02/live-L20.args"
+  after: live-D10
+  watch: battles=430
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+live-T60 | ${MVN} "-Dexec.args=@work/sanaro-n02/live-T60.args"
+  after: live-L20
+  watch: battles=430
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+live-B800 | ${MVN} "-Dexec.args=@work/sanaro-n02/live-B800.args"
+  after: live-T60
+  watch: battles=430
+  stop: fails 20
+  stop: stall 30m
+  stop: skips 40 over 100
+
+read-live | python3 tools/sanaro_read.py --work-root work/sanaro-n02 --field live --arms ${ARMS} --control S0 --only work/sanaro-n02/live/micro.txt --live 66.60 > ${OUT}/sanaro-n02-live.md
+  after: live-B800
+
+pr | bash tools/open_results_pr.sh claude/pc-sanaro-n02-results "Sanaro stage N3: power curve, spiral and band on the live-shaped census" ${OUT}/sanaro-n02-live.md ${OUT}/sanaro-n02-live-*.md
+  after: read-live

@@ -1,13 +1,13 @@
 # Sanaro
 
 `hadur117.nano.Sanaro` is Hadur's NanoMelee robot, built to outrank d414.nano.Quantum 1.0.0 (1st)
-and sheldor.melee.nano.NaturalScience 1.2.1 (2nd): the DustBunny line's anti-gravity turned 0.6 rad
-off the push so it slides round the robot shooting at it, Quantum's branch-free radar flip, the
+and sheldor.melee.nano.NaturalScience 1.2.1 (2nd): the DustBunny line's anti-gravity (straight
+away: a spiral read best among nanos but costs 0.88 where NanoMelee is scored), Quantum's branch-free radar flip, the
 line's hedged lead, and its own table of bullet power by both robots' energy. The design, the cloud
 screen and the stages are in [docs/sanaro.md](../docs/sanaro.md); the requirements are SANARO-1 to
 SANARO-12 in [docs/requirements.md](../docs/requirements.md).
 
-0.1 is one class of 249 bytes, NanoMelee's limit. Not yet released.
+0.1 is one class of 247 bytes (NanoMelee's limit is 249). Not yet released.
 
 ## Build
 

@@ -10,7 +10,8 @@
 # ARMS, comma-separated, builds only those arms. SANARO_RUN (default arms) names the run: its jars,
 # args and battles go to work/sanaro-$SANARO_RUN and its reports to
 # ../docs/bench/local/sanaro-$SANARO_RUN-<field>-<arm>.md. SANARO_PARALLEL (default 12) is the
-# battles in flight. An arm `NAME | what | @robot name` seats that robot (live census only; in the
+# battles in flight. An arm's fourth field, when there is one, is sanaro/table.py's options: the arm
+# plays that power table (no bytes; the table is a string constant). An arm `NAME | what | @robot name` seats that robot (live census only; in the
 # NanoMelee census the leaders are in every field already).
 set -euo pipefail
 field="$1"; seeds="$2"; base="$3"; only="${4:-}"
@@ -28,8 +29,9 @@ case "$field" in
     live) set_opt=() ;;
     *) echo "sanaro_arms: field is census, duel or live" >&2; exit 2 ;;
 esac
-grep -v '^#' sanaro-arms/arms.txt | while IFS='|' read -r name what expr; do
+grep -v '^#' sanaro-arms/arms.txt | while IFS='|' read -r name what expr table; do
     name=$(echo "$name" | tr -d ' '); expr=$(echo "$expr" | sed 's/^ *//; s/ *$//')
+    table=$(echo "$table" | sed 's/^ *//; s/ *$//')
     [ -n "$name" ] || continue
     if [ -n "$only" ] && ! echo ",$only," | grep -q ",$name,"; then continue; fi
     if [ "${expr#@}" != "$expr" ]; then
@@ -41,8 +43,10 @@ grep -v '^#' sanaro-arms/arms.txt | while IFS='|' read -r name what expr; do
         cls="Sanaro$name"; dir="$out/build/$cls"
         rm -rf "$dir"; mkdir -p "$dir/hadur117/nano"
         sed -e "s/class Sanaro /class $cls /" ${expr:+-e "$expr"} "$src" > "$dir/$cls.java"
-        if [ -n "$expr" ] && cmp -s <(sed "s/class Sanaro /class $cls /" "$src") "$dir/$cls.java"; then
-            echo "sanaro_arms: arm $name's sed changed nothing" >&2; exit 3
+        # shellcheck disable=SC2086
+        [ -z "$table" ] || python3 ../sanaro/table.py $table --src "$dir/$cls.java" > /dev/null
+        if [ -n "$expr$table" ] && cmp -s <(sed "s/class Sanaro /class $cls /" "$src") "$dir/$cls.java"; then
+            echo "sanaro_arms: arm $name changed nothing" >&2; exit 3
         fi
         javac --release 8 -nowarn -cp "$api" -d "$dir" "$dir/$cls.java"
         printf 'robot.classname=hadur117.nano.%s\nrobot.version=%s\nrobot.author.name=lgriffin\nrobocode.version=1.9.3.0\n' \

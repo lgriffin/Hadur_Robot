@@ -1,3 +1,6 @@
+# RAN 2026-10-28 (results PR #393, docs/sanaro.md section 6) on Sanaro 0.1 with spiral 0.6 and the
+# N1/N2 arms, which are in the git history of sanaro-arms/arms.txt; the arms file now holds N3's
+# (pc-sanaro-n02), so rerunning this card needs that file back.
 # Sanaro's stages N1 and N2 (docs/sanaro.md sections 5 and 6): the spiral, the power band and the
 # flip on the PC, on the NanoMelee census, one on one with each leader, and on the live-shaped
 # census. Sanaro is a new NanoMelee robot (hadur117.nano.Sanaro, sanaro/, 249 bytes), built to

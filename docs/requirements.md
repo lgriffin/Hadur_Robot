@@ -2006,13 +2006,15 @@ are E0 to E3 (D is the DrussGT route's letter).
 d414.nano.Quantum and sheldor.melee.nano.NaturalScience in NanoMelee (Leigh, 2026-10-28, from his
 design doc "Nano Melee: Beating NaturalScience & Quantum"). Design, the dissection and the stages:
 docs/sanaro.md. It depends on nothing of Hadur's, Saor's, TwinSaor's or Deise's, and they on
-nothing of it. The design doc's N-1 to N-12 are SANARO-1 to SANARO-12 here.
+nothing of it. The design doc's N-1 to N-12 are SANARO-1 to SANARO-12 here. SANARO-13 is the
+bench's own, added after pc-sanaro-n01 showed the NanoMelee-only census picks against the
+live-shaped one (docs/sanaro.md section 6).
 
 | ID | Pattern | Requirement | Stage |
 |---|---|---|---|
 | SANARO-1 | Unwanted | If Robocode's codesize tool reports more than NanoMelee's 249 bytes for the shipped jar, or more than one class in it, then the build shall fail. | N0 |
 | SANARO-2 | Unwanted | If the class declares a static initialiser, or its power table has no cell at an index the bot can reach for own and enemy energy 0 to 400, then the build shall fail. | N0 |
-| SANARO-3 | Event | When a robot is scanned, the bot shall decay its force field by DECAY (0.9), add a push of 1 over the distance away from that robot's hedged lead position, and turn its body to the field plus the wall push, turned SPIRAL (0.6 rad) further. | N0 |
+| SANARO-3 | Event | When a robot is scanned, the bot shall decay its force field by DECAY (0.9), add a push of 1 over the distance away from that robot's hedged lead position, and turn its body to the field plus the wall push, turned SPIRAL (0 as it ships; 0.6 first) further. | N0 |
 | SANARO-4 | State | While the body turn still to make exceeds AHEAD (120) degrees, the bot shall drive backwards. | N0 |
 | SANARO-5 | Event | When a scanned robot is closer than the target threshold, which creeps out CREEP (25) px every scan, the bot shall take it as the target and snap the threshold to its distance. | N0 |
 | SANARO-6 | Event | When the target is scanned, the bot shall turn its radar by its gun heat less LOCK (0.9) times the radar turn remaining: a sweep while the gun is hot, a flip on the target once it is nearly cool. | N0 |
@@ -2022,11 +2024,12 @@ nothing of it. The design doc's N-1 to N-12 are SANARO-1 to SANARO-12 here.
 | SANARO-10 | Ubiquitous | The NanoMelee census shall run ten NanoMelee robots a battle, both leaders in every battle, and the shipped build shall read an APS above NaturalScience 1.2.1's in the same battles by more than its 95% interval over at least 20 battles. | N2 |
 | SANARO-11 | Ubiquitous | In the same battles the shipped build shall outsurvive both leaders more often than not. | N2 |
 | SANARO-12 | Ubiquitous | One on one with each leader over 35 rounds, the shipped build shall win more than 55% of rounds. | N2 |
+| SANARO-13 | Ubiquitous | A change to the shipped build shall read above the shipped build on the live-shaped census (the MeleeRumble fields that hold a NanoMelee robot, NanoMelee pairings counted) by more than its 95% interval. | N3 |
 
 - **Coverage.** SANARO-1, SANARO-2 (no `<clinit>`) and SANARO-9 by `SanaroJarIT` (failsafe) on the
   shipped jar; SANARO-2 (table reach) and SANARO-8 (cells) by `SanaroTableTest`, which holds the
   table to `sanaro/table.py`'s formula; SANARO-3 to SANARO-8 by `SanaroTest`, scan by scan on a
-  probe subclass. SANARO-10 to SANARO-12 are bench reads (`tools/sanaro_read.py`; fields by
+  probe subclass. SANARO-10 to SANARO-13 are bench reads (`tools/sanaro_read.py`; fields by
   `tools/sanaro_fields.py`, both by `test_sanaro.py`), not build gates.
 
 ## JayLexi and Eveimear, the MiniRumble and MicroRumble 1v1 entries (JAYLEXI-1 to JAYLEXI-10, EVEIMEAR-1 to EVEIMEAR-12)
