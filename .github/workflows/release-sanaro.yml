@@ -1,0 +1,62 @@
+name: release-sanaro
+
+# Sanaro (docs/sanaro.md) ships on its own tags, sanaro-v0.1 and on, apart from Hadur's v*, Saor's
+# saor-v*, TwinSaor's twinsaor-v* and Deise's deise-v* tags. Run by hand with a version: it builds and
+# tests the repo, checks the jar carries that version (the sanaro build fails above NanoMelee's 249
+# bytes, SANARO-1), and publishes a release with the jar, whose asset URL is what the MeleeRumble
+# participants list needs.
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Sanaro version to release, e.g. 0.1 (tags sanaro-v0.1)'
+        required: true
+
+env:
+  TAG: sanaro-v${{ inputs.version }}
+  VERSION: ${{ inputs.version }}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-sanaro-${{ inputs.version }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+      - name: Build and test
+        # The jar and Sanaro.properties take the version from sanaro.release.
+        run: mvn -B verify -Dsanaro.release="${VERSION}"
+      - name: Check the jar name and version match the tag
+        run: |
+          jar="sanaro/target/hadur117.nano.Sanaro_${VERSION}.jar"
+          test -f "$jar" || { echo "missing $jar"; ls sanaro/target/*.jar; exit 1; }
+          unzip -p "$jar" hadur117/nano/Sanaro.properties | grep -qx "robot.version=${VERSION}" \
+            || { echo "robot.version in $jar is not ${VERSION}"; exit 1; }
+          echo "JAR=$jar" >> "$GITHUB_ENV"
+      - name: Check an existing tag points at this commit
+        run: |
+          target=$(git ls-remote --tags origin "refs/tags/${TAG}*" | awk -v t="refs/tags/${TAG}" \
+            '$2 == t "^{}" { peeled = $1 } $2 == t { plain = $1 } END { print (peeled ? peeled : plain) }')
+          if [ -n "$target" ] && [ "$target" != "$GITHUB_SHA" ]; then
+            echo "${TAG} already points at ${target}, not ${GITHUB_SHA}; run the workflow on that commit."
+            exit 1
+          fi
+      - name: Publish the release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ env.TAG }}
+          target_commitish: ${{ github.sha }}
+          name: Sanaro ${{ inputs.version }}
+          files: ${{ env.JAR }}
+          body_path: docs/releases/${{ env.TAG }}.md
+          make_latest: 'false'
