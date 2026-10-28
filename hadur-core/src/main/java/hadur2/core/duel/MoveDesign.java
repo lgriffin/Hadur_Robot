@@ -105,9 +105,9 @@ final class MoveDesign {
      * RAM-5: while RAM-2's escape drives, each path it weighs loses closest approach for every
      * aim (head-on, linear) one of the rammer's shots in flight would hit it with. The 2026-10-28
      * rammer read (docs/bench/gap-to-2nd.md): against 12 nano rammers a linear aim would hit the
-     * escape on 52% of shots, Saguaro on 35%. Off by default.
+     * escape on 52% of shots, Saguaro on 35%. On since pc-1v1-ram (PR #394): +0.11 ± 0.04 APS over 45 rammers.
      */
-    static final boolean RAM_BREAK = false;
+    static final boolean RAM_BREAK = true;
 
     /**
      * MOVE-24: in a duel the flattener views stay off (3.15). The top-5 factorial (PR #221) put
