@@ -420,3 +420,51 @@ If no knob moves the strong four, the next step is a different movement, not a b
 
 Requirements: TWIN-13 (mode table keyed by name hash, mode 0 is 0.1) and TWIN-14 (a table entry
 needs a fresh-seed gate) are stage W3, added when 0.2 is built.
+
+## 10. W3 results and stage W4
+
+W3 ran on the PC as first designed (PR #381): 11 arms on all 27 teams, 10 seeds, 2,970 battles.
+
+| Arm | APS | vs 0.1 | SE |
+|---|---|---|---|
+| C (0.1) | 64.76 | | |
+| A (A/A) | 64.37 | -0.40 | 0.18 |
+| **R1W** (range 160 with one enemy left) | **67.84** | **+3.08** | 0.66 |
+| R2N | 64.23 | -0.53 | 0.80 |
+| FF | 63.96 | -0.81 | 0.43 |
+| NF | 62.39 | -2.37 | 2.08 |
+| R2W | 62.29 | -2.48 | 0.43 |
+| P180 | 62.26 | -2.50 | 1.31 |
+| R1N | 61.61 | -3.15 | 0.49 |
+| LEG | 60.74 | -4.02 | 0.70 |
+| KL | 56.92 | -7.84 | 2.00 |
+
+The A/A arm sat 2.2 SE off the control, so by the reader's rule the run is void. R1W is 7.7 times
+that offset and positive on 21 of 27 teams: LuminariousDuo +13.7 (survival 33% to 71%),
+CoyotePair +9.2, SurroundingTeam +7.2, KomariousTeam +6.4. 0.1's 100 px with one enemy left
+put the last pair at point blank, where the enemy's two-robot fire wins; 160 keeps the twins'
+learning gun in play and gives the surviving enemy more to dodge. W4 confirms it on fresh seeds.
+
+Per team, three knobs swing hard in both directions, the case a table exists for:
+
+- NF (no flip on the target's shot): JointStrikeForce +19.7, InevitableTeam +15.0, ShizPair +12.0,
+  SelcouthTeam +10.5, NightAndDay +8.3, CoyotePair +7.3; GruwelTwins -23.7, OlympusTwins -21.7,
+  TassieDevils -21.1.
+- R2N (range 180 with two enemies): CoyotePair +12.9, MarioBros +4.1, NightAndDay +3.6;
+  Valkiries -9.7.
+- KL (enemy leader first): CoyotePair +9.4, DuoLedByDroid +7.4, TwintelligenceTeam +6.5;
+  TassieDevils -30.2, LunarTwins -27.4.
+
+P180 also wins on four teams (+11 to +12) but never ships (the uniqueness rule).
+
+The upper bound of single-knob picks against 0.1 (best arm with +3.0, at 10 seeds) is about
+138 share points, +5.1 APS. Most of R1W's gain is inside that, so W4 screens the knobs on top of
+R1W, since they may not stack:
+
+- `plans/pc-twin-w4.queue`: C (0.1), W1 (R1W), W1A (A/A), W1NF, W1N2, W1KL on `twinduel-tailor.txt`,
+  16 fresh seeds (base 3300), 2,304 battles, about 1 h on the PC.
+- Reads: W1 against C on the field (confirmed at +1.0 share points and over 2 SE), and the per-team
+  picks against W1 (`tools/twin_pick.py`, W1A as the A/A arm).
+
+0.2 is then R1W as the default plus a mode table of the W4 picks: the NF, R2N and KL bits and the
+key cost about 40 bytes against 10 spare, which the flattening in section 9 pays for.

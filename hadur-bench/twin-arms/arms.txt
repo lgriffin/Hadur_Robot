@@ -16,3 +16,10 @@ KL | kill order: most energy first, the enemy leader and its 30-energy death pen
 NF | no leg flip on the target's shot (TWIN-10 off) | s#return drop > 0.09 && drop < 3.01;#return false;#
 LEG | leg 100 a side (0.1: 60) | s#LEG = 60;#LEG = 100;#
 FF | wider fire hold: the partner within 0.25 rad of the gun, nearer or not (0.1: 0.15 and nearer only); 0.1 put 467 bullets into its own twins over 700 rounds against LunarTwins | s#return Math.hypot(mateX - x, mateY - y) < targetDistance#return targetDistance > 0#; s#HOLD_ARC = 0.15;#HOLD_ARC = 0.25;#
+# W4 (docs/twinsaor.md section 10): W3 found R1W (+3.08 APS on 27 teams) a field-wide winner, so W4 confirms it on
+# fresh seeds and screens the per-team knobs on top of it. W1 is R1W under the name the W4 reads use.
+W1 | range 160 with one enemy left: W3's winner, the W4 base | s#RANGE_ONE = 100;#RANGE_ONE = 160;#
+W1A | W1 again, the A/A check on the W4 reads | s#RANGE_ONE = 100;#RANGE_ONE = 160;#
+W1NF | W1 and no leg flip on the target's shot (W3: +8 to +20 on NightAndDay, ShizPair, SelcouthTeam, JointStrikeForce, InevitableTeam; -21 to -24 on others) | s#RANGE_ONE = 100;#RANGE_ONE = 160;#; s#return drop > 0.09 && drop < 3.01;#return false;#
+W1N2 | W1 and range 180 with two enemies (W3: +12.9 on CoyotePair, +4.1 MarioBros, +3.6 NightAndDay) | s#RANGE_ONE = 100;#RANGE_ONE = 160;#; s#RANGE_TWO = 250;#RANGE_TWO = 180;#
+W1KL | W1 and the enemy leader first (W3: +9.4 CoyotePair, +7.4 DuoLedByDroid, +6.5 TwintelligenceTeam; -10 to -30 elsewhere) | s#RANGE_ONE = 100;#RANGE_ONE = 160;#; s#candidateEnergy <= targetEnergy - SWITCH_MARGIN#candidateEnergy >= targetEnergy + SWITCH_MARGIN#
