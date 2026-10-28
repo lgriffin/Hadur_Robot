@@ -1,0 +1,5 @@
+# watch-smoke (BENCH-129): c is master's Hadur, aa its A/A copy, dz a weak nano (Derp) standing in for an
+# arm that clearly loses, so the futility rule has something to stop.
+c | hadur2.Hadur @V@ | bisect/hadur2.Hadur_@V@.jar
+aa | hadur2.Hadur @V@aa | bisect/hadur2.Hadur_@V@aa.jar
+dz | kneels.nano.Derp 0.2 | opponents/kneels.nano.Derp_0.2.jar

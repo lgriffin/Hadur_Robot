@@ -129,6 +129,7 @@ class ArmsTest {
 
     @Test
     @Tag("BENCH-95")
+    @Tag("BENCH-128")
     @DisplayName("a finished battle's kept row is read back for the same arm, opponent and seed; a failed, foreign or missing one is fought again")
     void resumesOnlyFinishedBattles(@TempDir Path dir) throws IOException {
         Arms.Arm c = new Arms.Arm("c", "hadur2.Hadur 3.14", dir.resolve("a.jar"));
@@ -140,6 +141,12 @@ class ArmsTest {
         assertEquals(null, Arms.resumed(dir, c, o, 1), "no file: fought");
         Files.writeString(dir.resolve(Arms.ROW_FILE), row + "\n");
         assertEquals(row, Arms.resumed(dir, c, o, 1));
+        // BENCH-128: a clean battle's row ends in an empty errors column (a trailing tab), as on the PC.
+        ok.errors = "";
+        String clean = Arms.row(c, o, 1, 3, 2, ok);
+        assertTrue(clean.endsWith("\t"), "an empty errors column ends the row with a tab");
+        Files.writeString(dir.resolve(Arms.ROW_FILE), clean + "\r\n");
+        assertEquals(clean, Arms.resumed(dir, c, o, 1), "a clean battle is read back, not fought again");
         assertEquals(null, Arms.resumed(dir, rc, o, 1), "another arm's row");
         assertEquals(null, Arms.resumed(dir, c, other, 1), "another opponent's row");
         assertEquals(null, Arms.resumed(dir, c, o, 2), "another seed's row");
