@@ -25,23 +25,40 @@ def load_set(path):
     for line in open(path):
         if not line.strip() or line.lstrip().startswith("#"):
             continue
-        name, role, jar = [c.strip() for c in line.split("|")]
+        name, role, jar = [c.strip() for c in line.split("|")][:3]
         rows.append((name, float(role.split(":")[1]), jar[:-4]))
     return rows
 
 
-def shares(run):
-    """{jar stem: [share per battle]} from RUN_DIR/battles/<stem>-<seed>/result.csv."""
+def by_seed(run):
+    """{jar stem: {seed: share}} from RUN_DIR/battles/<stem>-<seed>/result.csv; failed battles left out."""
     out = {}
     for f in glob.glob(os.path.join(run, "battles", "*", "result.csv")):
-        stem = os.path.basename(os.path.dirname(f)).rsplit("-", 1)[0]
+        stem, seed = os.path.basename(os.path.dirname(f)).rsplit("-", 1)
         for r in csv.DictReader(open(f)):
             if r["ok"] != "true":
                 continue
             s, t = float(r["score"]), float(r["theirScore"])
             if s + t > 0:
-                out.setdefault(stem, []).append(100 * s / (s + t))
+                out.setdefault(stem, {})[seed] = 100 * s / (s + t)
     return out
+
+
+def shares(run):
+    """{jar stem: [share per battle]}, in seed order."""
+    return {k: [v[x] for x in sorted(v)] for k, v in by_seed(run).items()}
+
+
+def paired(ours, ref, stem):
+    """Mean and SE of ours - ref on one opponent: per seed where both ran it, else unpaired."""
+    if stem not in ours or stem not in ref:
+        return None
+    seeds = sorted(set(ours[stem]) & set(ref[stem]))
+    if len(seeds) >= 2:
+        return mean_se([ours[stem][x] - ref[stem][x] for x in seeds])
+    mo, so = mean_se(list(ours[stem].values()))
+    mr, sr = mean_se(list(ref[stem].values()))
+    return mo - mr, math.hypot(so, sr)
 
 
 def weighted(rows, value):
@@ -88,20 +105,17 @@ def main():
         print("  raw weighted APS %.2f +- %.2f (SE from seeds only)" % est)
     ref = shares(a.ref) if a.ref else {}
     if a.ref:
-        def diff(s):
-            if s not in ours or s not in ref:
-                return None
-            d = [x - y for x, y in zip(ours[s], ref[s])] if len(ours[s]) == len(ref[s]) else None
-            if d:
-                return mean_se(d)
-            mo, so = mean_se(ours[s])
-            mr, sr = mean_se(ref[s])
-            return mo - mr, math.hypot(so, sr)
-        dif = weighted(rows, diff)
+        ours_seeds, ref_seeds = by_seed(a.run), by_seed(a.ref)
+        dif = weighted(rows, lambda s: paired(ours_seeds, ref_seeds, s))
         refraw = weighted(rows, lambda s: mean_se(ref[s]) if s in ref else None)
-        print("  reference raw weighted APS %.2f (live %s)" % (refraw[0], a.ref_aps))
-        print("  ours - reference %+.2f +- %.2f" % dif)
-        if a.ref_aps is not None:
+        if refraw is None:
+            print("  reference %s has no successful battles on this set: no paired estimate" % a.ref)
+        elif dif is None:
+            print("  no opponent ran in both runs: no paired estimate")
+        else:
+            print("  reference raw weighted APS %.2f (live %s)" % (refraw[0], a.ref_aps))
+            print("  ours - reference %+.2f +- %.2f" % dif)
+        if a.ref_aps is not None and dif is not None and refraw is not None:
             print("  PAIRED ESTIMATE %.2f +- %.2f" % (a.ref_aps + dif[0], dif[1]))
     if a.pairs:
         live = {}

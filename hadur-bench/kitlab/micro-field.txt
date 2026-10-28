@@ -1,50 +1,50 @@
 # kitlab_fields.py: 48 of 515 bots (top 12 by name, 36 rank bands), seed 1
-# role = top:weight or band:weight; the weighted mean of score share estimates APS
-jk.micro.Cotillion 0.8 | top:1 | jk.micro.Cotillion_0.8.jar
-kc.micro.WaveShark 0.5 | top:1 | kc.micro.WaveShark_0.5.jar
-sheldor.micro.Continuation 1.1 | top:1 | sheldor.micro.Continuation_1.1.jar
-sheldor.micro.Epeeist 3.7 | top:1 | sheldor.micro.Epeeist_3.7.jar
-nz.jdc.micro.HedgehogGF 1.5 | top:1 | nz.jdc.micro.HedgehogGF_1.5.jar
-sheldor.micro.EpeeistDC 3.0 | top:1 | sheldor.micro.EpeeistDC_3.0.jar
-kc.micro.Thorn 1.252 | top:1 | kc.micro.Thorn_1.252.jar
-slugzilla.Basilite 0.13 | top:1 | slugzilla.Basilite_0.13.jar
-oog.micro.Claudius 1.11 | top:1 | oog.micro.Claudius_1.11.jar
-ary.micro.Weak 1.2 | top:1 | ary.micro.Weak_1.2.jar
-simonton.micro.WeeklongObsession 3.4.1 | top:1 | simonton.micro.WeeklongObsession_3.4.1.jar
-simonton.micro.GFMicro 1.0 | top:1 | simonton.micro.GFMicro_1.0.jar
-jam.micro.RaikoMicro 1.44 | band:13.9722 | jam.micro.RaikoMicro_1.44.jar
-sheldor.nano.Sabreur 1.1.2 | band:13.9722 | sheldor.nano.Sabreur_1.1.2.jar
-apv.MicroAspid 1.8 | band:13.9722 | apv.MicroAspid_1.8.jar
-ers.nano.iSuck.ISuckNano 1.0a | band:13.9722 | ers.nano.iSuck.ISuckNano_1.0a.jar
-nz.jdc.nano.AralR 1.1 | band:13.9722 | nz.jdc.nano.AralR_1.1.jar
-zyx.micro.Ant 1.1 | band:13.9722 | zyx.micro.Ant_1.1.jar
-lrem.micro.FalseProphet Alpha | band:13.9722 | lrem.micro.FalseProphet_Alpha.jar
-suh.micro.MirrorPM 1.00 | band:13.9722 | suh.micro.MirrorPM_1.00.jar
-sul.Bicephal 1.2 | band:13.9722 | sul.Bicephal_1.2.jar
-oog.melee.Capulet 1.2 | band:13.9722 | oog.melee.Capulet_1.2.jar
-bayen.nano.Squirrel 0.2 | band:13.9722 | bayen.nano.Squirrel_0.2.jar
-banshee.micro.Nexus6 0.3.0 | band:13.9722 | banshee.micro.Nexus6_0.3.0.jar
-kms.Royal 0.15M | band:13.9722 | kms.Royal_0.15M.jar
-scheronimus.ScheroBot 2.3 | band:13.9722 | scheronimus.ScheroBot_2.3.jar
-mahrgell.mahrram 1.3 | band:13.9722 | mahrgell.mahrram_1.3.jar
-stelo.UnfoolableNano 1.0 | band:13.9722 | stelo.UnfoolableNano_1.0.jar
-arthord.MannyPacquiao Delta2 | band:13.9722 | arthord.MannyPacquiao_Delta2.jar
-jaw.Mouse 0.11 | band:13.9722 | jaw.Mouse_0.11.jar
-fm.mammillarias 1.3 | band:13.9722 | fm.mammillarias_1.3.jar
-stranger.nano.TestBot 1.0 | band:13.9722 | stranger.nano.TestBot_1.0.jar
-sgp.SleepingGoat 1.1 | band:13.9722 | sgp.SleepingGoat_1.1.jar
-supersample.SuperBoxBot 1.0 | band:13.9722 | supersample.SuperBoxBot_1.0.jar
-dukie.Ambassador 1.0 | band:13.9722 | dukie.Ambassador_1.0.jar
-arthord.NanoSatanMelee Beta | band:13.9722 | arthord.NanoSatanMelee_Beta.jar
-suh.nano.CrossC 1.00 | band:13.9722 | suh.nano.CrossC_1.00.jar
-jeremyreeder.Bully 1 | band:13.9722 | jeremyreeder.Bully_1.jar
-zch.Hirkan 0.11 | band:13.9722 | zch.Hirkan_0.11.jar
-acogdev.alpha 0.2 | band:13.9722 | acogdev.alpha_0.2.jar
-omens.CannonfodderNano 1.4 | band:13.9722 | omens.CannonfodderNano_1.4.jar
-ayk.WallHugger 1.0 | band:13.9722 | ayk.WallHugger_1.0.jar
-pb.Oscillator 1.0 | band:13.9722 | pb.Oscillator_1.0.jar
-reeder.caden.Elmo 1 | band:13.9722 | reeder.caden.Elmo_1.jar
-sample.RamFire 1.0 | band:13.9722 | sample.RamFire_1.0.jar
-RobotMarco.MarcoV 0.1 | band:13.9722 | RobotMarco.MarcoV_0.1.jar
-lw.LuthersTest 0.1 | band:13.9722 | lw.LuthersTest_0.1.jar
-ad.last.Bottom 1.0 | band:13.9722 | ad.last.Bottom_1.0.jar
+# name | role (top:weight or band:weight) | jar | weight; the weighted mean of score share estimates APS
+jk.micro.Cotillion 0.8 | top:1 | jk.micro.Cotillion_0.8.jar | 1.0000
+kc.micro.WaveShark 0.5 | top:1 | kc.micro.WaveShark_0.5.jar | 1.0000
+sheldor.micro.Continuation 1.1 | top:1 | sheldor.micro.Continuation_1.1.jar | 1.0000
+sheldor.micro.Epeeist 3.7 | top:1 | sheldor.micro.Epeeist_3.7.jar | 1.0000
+nz.jdc.micro.HedgehogGF 1.5 | top:1 | nz.jdc.micro.HedgehogGF_1.5.jar | 1.0000
+sheldor.micro.EpeeistDC 3.0 | top:1 | sheldor.micro.EpeeistDC_3.0.jar | 1.0000
+kc.micro.Thorn 1.252 | top:1 | kc.micro.Thorn_1.252.jar | 1.0000
+slugzilla.Basilite 0.13 | top:1 | slugzilla.Basilite_0.13.jar | 1.0000
+oog.micro.Claudius 1.11 | top:1 | oog.micro.Claudius_1.11.jar | 1.0000
+ary.micro.Weak 1.2 | top:1 | ary.micro.Weak_1.2.jar | 1.0000
+simonton.micro.WeeklongObsession 3.4.1 | top:1 | simonton.micro.WeeklongObsession_3.4.1.jar | 1.0000
+simonton.micro.GFMicro 1.0 | top:1 | simonton.micro.GFMicro_1.0.jar | 1.0000
+jam.micro.RaikoMicro 1.44 | band:13.9722 | jam.micro.RaikoMicro_1.44.jar | 13.9722
+sheldor.nano.Sabreur 1.1.2 | band:13.9722 | sheldor.nano.Sabreur_1.1.2.jar | 13.9722
+apv.MicroAspid 1.8 | band:13.9722 | apv.MicroAspid_1.8.jar | 13.9722
+ers.nano.iSuck.ISuckNano 1.0a | band:13.9722 | ers.nano.iSuck.ISuckNano_1.0a.jar | 13.9722
+nz.jdc.nano.AralR 1.1 | band:13.9722 | nz.jdc.nano.AralR_1.1.jar | 13.9722
+zyx.micro.Ant 1.1 | band:13.9722 | zyx.micro.Ant_1.1.jar | 13.9722
+lrem.micro.FalseProphet Alpha | band:13.9722 | lrem.micro.FalseProphet_Alpha.jar | 13.9722
+suh.micro.MirrorPM 1.00 | band:13.9722 | suh.micro.MirrorPM_1.00.jar | 13.9722
+sul.Bicephal 1.2 | band:13.9722 | sul.Bicephal_1.2.jar | 13.9722
+oog.melee.Capulet 1.2 | band:13.9722 | oog.melee.Capulet_1.2.jar | 13.9722
+bayen.nano.Squirrel 0.2 | band:13.9722 | bayen.nano.Squirrel_0.2.jar | 13.9722
+banshee.micro.Nexus6 0.3.0 | band:13.9722 | banshee.micro.Nexus6_0.3.0.jar | 13.9722
+kms.Royal 0.15M | band:13.9722 | kms.Royal_0.15M.jar | 13.9722
+scheronimus.ScheroBot 2.3 | band:13.9722 | scheronimus.ScheroBot_2.3.jar | 13.9722
+mahrgell.mahrram 1.3 | band:13.9722 | mahrgell.mahrram_1.3.jar | 13.9722
+stelo.UnfoolableNano 1.0 | band:13.9722 | stelo.UnfoolableNano_1.0.jar | 13.9722
+arthord.MannyPacquiao Delta2 | band:13.9722 | arthord.MannyPacquiao_Delta2.jar | 13.9722
+jaw.Mouse 0.11 | band:13.9722 | jaw.Mouse_0.11.jar | 13.9722
+fm.mammillarias 1.3 | band:13.9722 | fm.mammillarias_1.3.jar | 13.9722
+stranger.nano.TestBot 1.0 | band:13.9722 | stranger.nano.TestBot_1.0.jar | 13.9722
+sgp.SleepingGoat 1.1 | band:13.9722 | sgp.SleepingGoat_1.1.jar | 13.9722
+supersample.SuperBoxBot 1.0 | band:13.9722 | supersample.SuperBoxBot_1.0.jar | 13.9722
+dukie.Ambassador 1.0 | band:13.9722 | dukie.Ambassador_1.0.jar | 13.9722
+arthord.NanoSatanMelee Beta | band:13.9722 | arthord.NanoSatanMelee_Beta.jar | 13.9722
+suh.nano.CrossC 1.00 | band:13.9722 | suh.nano.CrossC_1.00.jar | 13.9722
+jeremyreeder.Bully 1 | band:13.9722 | jeremyreeder.Bully_1.jar | 13.9722
+zch.Hirkan 0.11 | band:13.9722 | zch.Hirkan_0.11.jar | 13.9722
+acogdev.alpha 0.2 | band:13.9722 | acogdev.alpha_0.2.jar | 13.9722
+omens.CannonfodderNano 1.4 | band:13.9722 | omens.CannonfodderNano_1.4.jar | 13.9722
+ayk.WallHugger 1.0 | band:13.9722 | ayk.WallHugger_1.0.jar | 13.9722
+pb.Oscillator 1.0 | band:13.9722 | pb.Oscillator_1.0.jar | 13.9722
+reeder.caden.Elmo 1 | band:13.9722 | reeder.caden.Elmo_1.jar | 13.9722
+sample.RamFire 1.0 | band:13.9722 | sample.RamFire_1.0.jar | 13.9722
+RobotMarco.MarcoV 0.1 | band:13.9722 | RobotMarco.MarcoV_0.1.jar | 13.9722
+lw.LuthersTest 0.1 | band:13.9722 | lw.LuthersTest_0.1.jar | 13.9722
+ad.last.Bottom 1.0 | band:13.9722 | ad.last.Bottom_1.0.jar | 13.9722

@@ -169,6 +169,17 @@ class JayLexiTest {
     }
 
     @Test
+    @Tag("JAYLEXI-7")
+    @DisplayName("smoothing still ends when the surf direction is a tie (0) or NaN")
+    void smoothingOnATie() {
+        Point2D.Double p = new Point2D.Double(40, 300);
+        for (double dir : new double[] {0.0, -0.0, Double.NaN}) {
+            double a = JayLexi.smooth(p, -Math.PI / 2, dir);
+            assertTrue(JayLexi.FIELD.contains(JayLexi.project(p, a, JayLexi.STICK)));
+        }
+    }
+
+    @Test
     @Tag("JAYLEXI-8")
     @DisplayName("power is 3 inside 150 px, 2 beyond, a fifteenth of our energy at most, and no more than finishes")
     void power() {

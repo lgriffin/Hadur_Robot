@@ -2067,7 +2067,9 @@ E1 to E6 map onto these as the last column says.
   `EveimearJarIT` (failsafe) on the shipped jars; JAYLEXI-2 to JAYLEXI-8 by `JayLexiTest` and
   EVEIMEAR-2 to EVEIMEAR-8, EVEIMEAR-10 and EVEIMEAR-11 by `EveimearTest`, scan by scan on probe
   subclasses. JAYLEXI-10 and EVEIMEAR-12 are bench reads (`tools/kitlab_read.py`; samples by
-  `tools/kitlab_fields.py`, both by `test_kitlab.py`), not build gates. The plan's per-tick evidence
+  `tools/kitlab_fields.py`, both by `test_kitlab.py`), not build gates. Like Sanaro's rows, these carry the
+  plan's own IDs in the last column, not a stage, so `RequirementsTraceabilityTest` does not track
+  them; the module tests named here are their coverage. The plan's per-tick evidence
   (K5 zero skipped turns, J5 and E6 survival, J1 and J6 on MC2K7 and TCRM) is read from the bench
   report, not gated.
 

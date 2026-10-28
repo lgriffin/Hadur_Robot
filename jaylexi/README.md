@@ -7,7 +7,7 @@ gun segmented on velocity history, lateral speed, walls ahead and distance. The 
 and the results are in [docs/kitlab.md](../docs/kitlab.md); the requirements are JAYLEXI-1 to
 JAYLEXI-10 in [docs/requirements.md](../docs/requirements.md).
 
-0.1 is 1,494 bytes of 1,499 (two classes). Not yet released or submitted.
+0.1 is 1,496 bytes of 1,499 (two classes; 3 spare, as plan K6 asks). Not yet released or submitted.
 
 ## Build
 

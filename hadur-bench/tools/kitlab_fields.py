@@ -3,7 +3,7 @@
 
 A division's APS is the flat mean of a bot's score over every pairing, so a sample that stands for
 the whole division needs the top bots by name (they decide the rank) and the rest drawn evenly
-across the ranking. This writes a bench set file (`name | role | jar`) with:
+across the ranking. This writes a bench set file (`name | role | jar | weight`, the weight column the Java bench reads too) with:
 
   top    the division's first TOP bots, each weight 1;
   band   the rest split into BANDS rank bands, one bot drawn from each (fixed seed), each weight
@@ -72,10 +72,10 @@ def main():
     with open(a.out, "w") as f:
         f.write("# kitlab_fields.py: %d of %d bots (top %d by name, %d rank bands), seed %d\n"
                 % (len(field), size, a.top, a.bands, a.seed))
-        f.write("# role = top:weight or band:weight; the weighted mean of score share estimates APS\n")
+        f.write("# name | role (top:weight or band:weight) | jar | weight; the weighted mean of score share estimates APS\n")
         for n, w in field:
             role = ("top:%g" if w == 1.0 else "band:%.4f") % w
-            f.write("%s | %s | %s\n" % (n, role, jar_name(n)))
+            f.write("%s | %s | %s | %.4f\n" % (n, role, jar_name(n), w))
     if a.urls:
         with open(a.urls, "w") as f:
             for n, _ in field:

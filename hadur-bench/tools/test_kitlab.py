@@ -67,6 +67,29 @@ class ReadTest(unittest.TestCase):
             f.write("ok,score,theirScore\nfalse,0,0\n")
         self.assertEqual({"a.A_1": [50.0]}, kitlab_read.shares(run))
 
+    def test_weight_column_is_read_past(self):
+        with open(self.set, "a") as f:
+            f.write("c.C 1 | band:2.5000 | c.C_1.jar | 2.5000\n")
+        self.assertEqual(("c.C 1", 2.5, "c.C_1"), kitlab_read.load_set(self.set)[-1])
+
+    def test_pairs_by_seed_not_file_order(self):
+        ours, ref = os.path.join(self.root, "ours"), os.path.join(self.root, "ref")
+        battle(ours, "a.A_1", 1, 60, 40)
+        battle(ours, "a.A_1", 2, 80, 20)
+        battle(ours, "a.A_1", 3, 70, 30)
+        battle(ref, "a.A_1", 2, 70, 30)
+        battle(ref, "a.A_1", 3, 60, 40)
+        m, se = kitlab_read.paired(kitlab_read.by_seed(ours), kitlab_read.by_seed(ref), "a.A_1")
+        self.assertAlmostEqual(10.0, m)
+        self.assertAlmostEqual(0.0, se)
+
+    def test_empty_reference_explains_instead_of_crashing(self):
+        ours, ref = os.path.join(self.root, "ours"), os.path.join(self.root, "ref")
+        battle(ours, "a.A_1", 1, 60, 40)
+        os.makedirs(ref)
+        sys.argv = ["kitlab_read.py", self.set, ours, "--ref", ref, "--ref-aps", "87.5"]
+        kitlab_read.main()
+
 
 if __name__ == "__main__":
     unittest.main()

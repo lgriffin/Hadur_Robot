@@ -73,9 +73,10 @@ What the arms say:
   keeps a scan every tick, which the surf wave's source and angle depend on (c).
 - **e is in the module.** g's gun change is level with it and costs 4 bytes, so it stays out.
   The wall smoothing loop turns by the orbit direction, which is the sign of the difference of two
-  dangers: f showed what an exact tie would do (the robot is stopped for the round). A tie needs
-  two predictions with the same danger to the last bit and has not been seen; a guard costs 6
-  bytes, which e does not have.
+  dangers: f showed what an exact tie would do (the robot is stopped for the round). In the module
+  the loop's step takes only the direction's sign (`Math.copySign(0.05, dir)`, 2 bytes, 1,496 in
+  all), so a tie still turns; for directions of 1 and -1 it moves exactly as e did, so e's read
+  stands.
 - **The gun is level with Komarious's**: bullet damage dealt is within a few percent of its on
   almost every opponent. The gap left is movement against learning micros (Jen, Gladius, Blur,
   Intensive, Nexus6) and the top minis.
@@ -111,7 +112,7 @@ What the arms say:
 
 | Bot | Build in the module | Bytes | Paired estimate | Top 5 bar | Plan's gate |
 |---|---|---|---|---|---|
-| JayLexi | e | 1,494 of 1,499 | 86.61 ± 0.55 | 87.40 | 87.7 |
+| JayLexi | e | 1,496 of 1,499 | 86.61 ± 0.55 | 87.40 | 87.7 |
 | Eveimear | c | 722 of 749 | 84.28 ± 0.46 | 85.03 | 85.3 |
 
 Neither meets the plan's submission gate yet. Next, in the order the arms point:

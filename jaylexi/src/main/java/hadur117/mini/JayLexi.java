@@ -170,10 +170,13 @@ public class JayLexi extends AdvancedRobot {
         return new Point2D.Double(p.x + Math.sin(angle) * length, p.y + Math.cos(angle) * length);
     }
 
-    /** Turn the angle away from the wall until a STICK ahead stays inside the field (JAYLEXI-7). */
+    /**
+     * Turn the angle away from the wall until a STICK ahead stays inside the field (JAYLEXI-7). The
+     * step takes only dir's sign, so a tie of the two dangers (dir 0) still turns and ends the loop.
+     */
     static double smooth(Point2D.Double p, double angle, double dir) {
         while (!FIELD.contains(project(p, angle, STICK))) {
-            angle += dir * 0.05;
+            angle += Math.copySign(0.05, dir);
         }
         return angle;
     }
