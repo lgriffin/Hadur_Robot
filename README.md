@@ -38,9 +38,11 @@ learned Java, and it was the original inspiration for everything on this page.
   at 79.17, 3rd CombatTeam at 81.85.
 - **Melee up one place to 16th** on unchanged melee code: 66.40 on 3.17's first full pass (1,354 battles),
   +0.10 over 3.15's settled 66.30. Saor 0.1, the MicroMelee entry, is 31st at 63.70.
-- **Saor 0.2 is 1st in MicroMelee** (2026-10-27, first pass, 497 battles): 69.42 ± 0.39, 0.06
-  ahead of Figment's 69.36, 2nd in MiniMelee at 68.79,
-  and 19th in the full MeleeRumble (0.1: 31st). See [saor/README.md](saor/README.md).
+- **Saor 0.3 is 1st in MicroMelee** (2026-10-27, full first pass): 69.80 ± 0.43, 0.44 ahead of
+  Figment's 69.36 (0.2 was 69.42), 3rd in MiniMelee at 69.20 and 19th in the full MeleeRumble.
+  See [saor/README.md](saor/README.md).
+- **Deise 0.2 is 2nd in MiniMelee** (2026-10-27, full first pass): 69.68 ± 0.39, 1.52 behind
+  kc.mini.Mirage 0.2's 71.20, and 16th in the full MeleeRumble. See [deise/README.md](deise/README.md).
 
 ### 3.15 at 8th
 
@@ -506,11 +508,12 @@ hadur-core/    the brain: a kernel (physics, waves, KNN, memory, the World, the 
 hadur-robot/   the Robocode adapter (hadur2.Hadur, a TeamRobot): events in, orders out,
                profile files; and the team jar hadur2.HadurTeam, five of it.
 hadur-bench/   headless battles, the bench report, and the replay recorder.
-saor/          Saor, a separate MicroMelee robot (hadur117.micro.Saor, 749 bytes;
+saor/          Saor, a separate MicroMelee robot (hadur117.micro.Saor, 723 bytes;
                live standing in saor/README.md);
                see docs/saor.md. Shares nothing with Hadur.
-deise/         Deise, a separate MiniMelee robot (hadur117.mini.Deise), in design
-               (stage E0); see docs/deise.md. Shares nothing with Hadur or Saor.
+deise/         Deise, a separate MiniMelee robot (hadur117.mini.Deise, 1,490 bytes;
+               live standing in deise/README.md); see docs/deise.md. Shares nothing
+               with Hadur or Saor.
 docs/          requirements, architecture, testing, strategy, bench reports, release notes,
                rumble entry.
 data/          the rumble and bench archive: saved rumble pages, parsed tables, bench
