@@ -242,6 +242,11 @@
 #         being rammed). Listed opponents play as shipped. Suffix sy.
 #   sprior SHIELD-16: Saguaro's body-turn base (head-on from the enemy's position on the tick
 #         before it fired, plus its body turn on the firing tick) as a fifth base. Suffix sq.
+#   sdmg400  SHIELD-11's battle exit after 400 enemy bullet damage, not 150 (gap-to-2nd shield read:
+#         listed robots leak ~150 by mid-battle, then the surf takes 3-5x more). Suffix s4.
+#   sdmgoff  SHIELD-11's damage exit never fires (the silent exit and the budget stay). Suffix s0.
+#   slistdrop  the robots named in the file $SHIELD_DROP (one per line, or a pick TSV) leave the shield
+#         list, so Hadur surfs them (the gap-to-2nd re-pick, docs/bench/gap-to-2nd.md). Suffix md.
 #   slistadd  the robots named in the file $SHIELD_ADD (one per line, or a pick TSV) join the shield
 #         list: the shield entries of the 1v1 mode table (docs/plan-shield-quality.md). Suffix mt.
 #   smove  SHIELD-17: Saguaro's moving shield, the opening drive (away from walls and the enemy
@@ -768,6 +773,25 @@ $(cat "$table")"
             edit "$book" "distance(gunTier), profile.leadAware(), profile.shielder());" \
                 "distance(gunTier), profile.leadAware(), false);"
             version="${version}ns" ;;
+        sdmg400)
+            edit "$design" "public static final double STAY_DAMAGE = 150;" "public static final double STAY_DAMAGE = 400;"
+            version="${version}s4" ;;
+        sdmgoff)
+            edit "$design" "public static final double STAY_DAMAGE = 150;" "public static final double STAY_DAMAGE = Double.MAX_VALUE;"
+            version="${version}s0" ;;
+        slistdrop)
+            # Gap to 2nd re-pick: the robots named one per line in $SHIELD_DROP leave ShieldListData.
+            [[ -n "${SHIELD_DROP:-}" && -f "$SHIELD_DROP" ]] || { echo "slistdrop needs SHIELD_DROP=<file>" >&2; exit 2; }
+            python3 -c 'import sys,json
+p,f=sys.argv[1:]
+names=[l.split("\t")[0].strip() for l in open(f) if l.strip() and not l.startswith("#")]
+s=open(p).read()
+for n in names:
+    line="            %s,\n" % json.dumps(n)
+    if s.count(line)!=1: sys.exit("slistdrop: %s is not on the shield list exactly once" % n)
+    s=s.replace(line,"")
+open(p,"w").write(s)' "$listdata" "$SHIELD_DROP" || exit 2
+            version="${version}md" ;;
         slistadd)
             # Mode table v1 (docs/plan-shield-quality.md): the robots named one per line in the file
             # $SHIELD_ADD (a pick TSV's first column; blank lines and # lines skipped) join the shield list.
@@ -892,7 +916,7 @@ print("".join("            %s,\n" % json.dumps(n) for n in dict.fromkeys(lines))
             edit "$src/hadur-core/src/main/java/hadur2/core/melee/MeleeEndgame.java" \
                 "public static final boolean $flag = false;" "public static final boolean $flag = true;"
             version="${version}${suffix}" ;;
-        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, ramheat, flaton, nowall, flt59, flt8, split, wallesc, gungate, hold650, dfac, bhb, hitclr, pkern, keep2, thgun, freegun, nodecay, stacklist, protean, pdw3, pdw8, pc10, phot, repl, pressure, pdown, pwall, pwc, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tlanep, tlaneb, tlook, tram, t6n, t6l, tmsoft, tmgang, tmfin, tmlearn, tmpack, tmscreen, tmpool, tmdis, tmfire, tmnofire, tmrear, tmwaves, tmwk, tmhunt, tmnohunt, tmlines, tmlinesw, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, surfb, aimmix, mimics, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, snull, strim, slistadd, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, e3ring, e3pow, e3far, g24, gcrowd, pfloor, pogi, close200, ogi2, ogie10, ogi300)" >&2; exit 2 ;;
+        *) echo "unknown ablation: $a (aa, bb, nowarm, ram2, mir1, flat, shield-all, nodur, nolearn, fin, fl5, mfire, s50, away, heat, heatjit, ramheat, flaton, nowall, flt59, flt8, split, wallesc, gungate, hold650, dfac, bhb, hitclr, pkern, keep2, thgun, freegun, nodecay, stacklist, protean, pdw3, pdw8, pc10, phot, repl, pressure, pdown, pwall, pwc, silent, swall, nostore, tpost, tfocus, tfence, tshots, tpow, tpowb, mpow, mpowb, mrate, mhold, tk12, tk21, tshare0, tlane0, tlane4, tlaneo, tlanew, tlanep, tlaneb, tlook, tram, t6n, t6l, tmsoft, tmgang, tmfin, tmlearn, tmpack, tmscreen, tmpool, tmdis, tmfire, tmnofire, tmrear, tmwaves, tmwk, tmhunt, tmnohunt, tmlines, tmlinesw, tmtab, tmlock, gtol, gstick, gwhy, gwin, gk, aesrec, surfb, aimmix, mimics, shold, slearn, smode, sstay, sturn, swall, strial, sprior, smove, srec, snull, strim, slistadd, slistdrop, sdmg400, sdmgoff, smovelist, saimlist, sdodge, sdodgelist, sdplan, sdkeep0, sdplanlist, sgo, sgo2, sgolist, sgo2list, hjlist, gslist, e3ring, e3pow, e3far, g24, gcrowd, pfloor, pogi, close200, ogi2, ogie10, ogi300)" >&2; exit 2 ;;
     esac
 done
 

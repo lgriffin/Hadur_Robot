@@ -1829,6 +1829,19 @@ A retired requirement keeps its ID; no new requirement reuses it.
 - **BENCH-123.** `tools/team_modes.py screens`, `pick --counters --low-end`; build-ablation `tmtab`
   takes `$TEAM_MODE_SUFFIX`; card plans/pc-team-counters.queue.
 
+## 1v1 gap to 2nd: shield exit and re-picks (BENCH-126)
+
+- **Why.** Leigh 2026-10-28: 3.18.1 is 4th, 1.28 behind DrussGT; find the opponents to tailor for.
+  The live read (docs/bench/gap-to-2nd.md) puts the largest tailorable pool on shield robots where both
+  rivals score 90-98 and Hadur 70-85. A cloud read on 8 of them shows shield mode leaving the battle at
+  SHIELD-11's 150-damage exit around round 15, after which the surf takes 3-5x Saguaro's damage.
+- **BENCH-126.** build-ablation `sdmg400` (SHIELD-11 exit at 400 damage, suffix s4), `sdmgoff` (no damage
+  exit, SHIELD-6's budget alone, suffix s0), `slistdrop` (`$SHIELD_DROP` robots leave the shield list,
+  suffix md). Card plans/pc-shield-exit.queue: the 276 listed robots x c/aa/s4/s0 x 3 seeds, gates at
+  +0.10 APS; the three cloud re-picks (Wolverine stop-and-go, Hikari and Melody stop-and-go shift)
+  verified on 6 fresh seeds. Nothing ships until a gate passes; 3.18.1 plays bit for bit.
+  Test: `ShieldExitPlanTest`.
+
 ## Saor, a MicroMelee entry (SAOR-1 to SAOR-17, stages U0 to U6)
 
 `hadur117.micro.Saor`, a separate robot in the `saor` module, built from the spec "MicroMelee
