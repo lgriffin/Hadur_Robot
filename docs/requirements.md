@@ -1556,7 +1556,7 @@ gun as it was (docs/bench/melee-gun-3.13.md).
 | MGUN-13 | State | While MGUN-12's conditions hold, the melee gun shall fire power 3 at a target within 200 px and 1.92 beyond, in place of the table, under the same caps. | M7 |
 | MGUN-14 | Optional | Where the `OGI_TWO` switch is on, MGUN-13 shall also apply off a team with two opponents alive, in place of the duel's table. | M7 |
 | MGUN-15 | Optional | Where the `OGI_LOW` switch is on, MGUN-13 shall apply from 10 own energy in place of 20. | M7 |
-| MGUN-16 | Optional | Where the `OGI_WIDE` switch is on, MGUN-13 shall fire power 3 at a target within 300 px in place of 200. | M7 |
+| MGUN-16 | State | While MGUN-13 applies, it shall fire power 3 at a target within 300 px in place of 200. | M7 |
 
 - **MGUN-7.** `FieldGun.MELEE_K` (12) beside `FieldGun.K` (3), chosen by `FieldGun.k()` from
   `onTeam`. More situations spread each opponent over the angles it is likely to reach, so the

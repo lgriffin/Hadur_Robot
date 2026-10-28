@@ -1,3 +1,5 @@
+# RETIRED 2026-10-28 before it ran: Leigh shipped MGUN-16 on in 3.19 on the power2 result alone, so
+# ogi300 no longer applies on master (build-ablation fails safe) and 3.19's live melee page is the read.
 # Melee: confirm power 3 out to 300 px (docs/plan-melee-top5.md, MGUN-16, BENCH-127). 3.18.1 reads
 # 13th in the MeleeRumble at 67.92; 10th (Mirage) is 68.24, +0.32 away. The firepower part 2 card
 # (PR #349) had ow, MGUN-16 (MGUN-13 fires power 3 out to 300 px, not 200), the only arm ahead at
