@@ -36,10 +36,11 @@ rounds. About 1.5 more is in the weaker teams that tie it or beat it: CoyotePair
 50.05, ImpactTwins 52.42, KomariousTeam 53.73, YinYang 54.78, JointStrikeForce 55.54. The
 sitting ducks (97 to 100) and the easy teams (76 to 81) are near their ceiling.
 
-Before release, in the cloud:
+Before release, on the bench:
 
 | Version | Date (UTC) | Where | Result |
 |---|---|---|---|
+| 0.2 | 2026-10-28 | cloud, vs 0.1 on 24 teams, 8 fresh seeds (W5) | +6.66 ± 1.33 share points, about +5.9 APS on the field |
 | 0.1 | 2026-10-27 | cloud, vs LunarTwins 1.4a, 20 x 35 rounds | 58.2% score share, 83.1% rounds won |
 
 Releases are tagged `twinsaor-v<version>` by `.github/workflows/release-twinsaor.yml`, with notes
