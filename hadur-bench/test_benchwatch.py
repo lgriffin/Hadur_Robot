@@ -178,6 +178,15 @@ class SummaryTest(unittest.TestCase):
         self.assertEqual(states, {"fails 3": "TRIPPED", "dead 8": "TRIPPED", "skips 40 over 20": "TRIPPED",
                                   "stall 5m": "ok"})
 
+    def test_rows_from_before_the_step_are_not_new_failures_or_dead_arms(self):
+        rows = self.field(10, 0.0) + [row("s4", "b99 1", 1, 0.5, ok="false") for _ in range(3)]
+        for r in rows:
+            if r["arm"] == "aa":
+                r["score_share"] = "0.0000"
+        s = self.summary(rows, ["fails 3", "dead 8"], started=time.time() + 60)
+        self.assertEqual(s["resumed"], len(rows))
+        self.assertEqual([r["state"] for r in s["rules"]], ["ok", "ok"])
+
     def test_write_arms_tsv_matches_the_bench_header(self):
         rows = self.field(3, 0.0)
         p = self.home / "arms.tsv"
@@ -255,6 +264,25 @@ class RunnerTest(unittest.TestCase):
             benchqueue.main(["--home", str(self.home), "run", "t", "--dry-run"])
         self.assertIn("run  screen (halted)", dry.getvalue())
         self.assertIn("stop: fails 5 -> halt", dry.getvalue())
+
+    def test_continue_early_reruns_the_step_and_its_gate(self):
+        self.plan("set PROGRESS_BRANCH = off\n" + self.screen("c=0,aa=0,s4=-6") +
+                  "  watch: field=1217\n  stop: futility s4 below 0.10 after 30%\n"
+                  f'gate | "{PY}" -c "open(\'gate.txt\',\'a\').write(\'g\')"\n  after: screen\n')
+        self.assertEqual(self.run_queue()[0], 0)
+        self.plan(self.home.joinpath("plans/t.queue").read_text().replace("  stop: futility s4 below 0.10 after 30%\n",
+                  "  stop: futility s4 below 0.10 after 30%\n  timeout: 2s\n"))
+        self.run_queue("--continue-early")
+        log = (self.home / "work-queue-t.log").read_text()
+        self.assertEqual(log.count("start screen"), 2)
+        self.assertIn("would trip", log)
+
+    def test_analysis_commands_with_arms_are_not_watched(self):
+        steps = benchqueue.parse_plan("a | python3 tools/per_robot.py work/x/arms.tsv --arms s4 s0 --out r.md\n"
+                                      "b | ./bench-top20.sh --arms x.arms --out work/x\n")
+        benchqueue.bind_watches(steps, self.home)
+        self.assertIsNone(steps[0].spec)
+        self.assertIsNotNone(steps[1].spec)
 
     def test_no_stop_rules_shows_the_trip_but_runs_on(self):
         self.plan("set PROGRESS_BRANCH = off\n" + self.screen("c=0,aa=0,s4=-6", jobs=40, delay=0.001) +

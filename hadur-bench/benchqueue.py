@@ -403,7 +403,7 @@ class Active:
 def bind_watches(steps, home):
     """Each watched step's benchwatch.Spec, checked against its rules before anything runs."""
     for s in steps:
-        if s.watch is None and re.search(r"(^|\s)--arms\s", s.command):
+        if s.watch is None and "bench-top20.sh" in s.command and re.search(r"(^|\s)--arms\s", s.command):
             s.watch = ""  # every multi-arm step shows its progress; only declared rules stop anything
         if s.watch is None:
             s.spec = None
@@ -434,6 +434,9 @@ class Progress:
         self.last_push = 0.0
         self.last_log = 0.0
         self.pushing = None
+        self.pending = None
+        import threading
+        self.lock = threading.Lock()
         self.warned = set()
 
     def render(self, state, running):
@@ -447,6 +450,8 @@ class Progress:
             extra = f", exit {rec['exit']} in {benchwatch.hours(rec['seconds'])}" if "exit" in rec else ""
             if rec.get("early"):
                 extra += f", STOPPED EARLY: {rec['early']}"
+            if rec.get("halted_by"):
+                extra += f", HALTED by {rec['halted_by']}"
             lines.append(f"- `{s.name}` {st_}{extra}")
         lines.append("")
         summaries = []
@@ -477,16 +482,27 @@ class Progress:
         return md
 
     def _push_async(self, md, js, message):
-        if self.pushing and self.pushing.is_alive():
-            return
-        import threading
         try:
             log_tail = "\n".join(self.paths.log.read_text(encoding="utf-8", errors="replace").splitlines()[-300:]) + "\n"
         except OSError:
             log_tail = ""
         files = {"progress.md": md, "progress.json": json.dumps(js, indent=1, default=str), "queue.log": log_tail}
-        self.pushing = threading.Thread(target=self._push, args=(files, message), daemon=True)
-        self.pushing.start()
+        with self.lock:
+            # A push still running takes this snapshot next, so a stop's page is never dropped.
+            self.pending = (files, message)
+            if self.pushing and self.pushing.is_alive():
+                return
+            import threading
+            self.pushing = threading.Thread(target=self._drain, daemon=True)
+            self.pushing.start()
+
+    def _drain(self):
+        while True:
+            with self.lock:
+                job, self.pending = self.pending, None
+            if job is None:
+                return
+            self._push(*job)
 
     def wait(self, seconds=90):
         if self.pushing:
@@ -538,12 +554,15 @@ class Progress:
             return
         body_file = self.paths.work / f"queue-{self.paths.plan}.alert.md"
         link = f"\n\nLive progress: branch `{self.branch}`, `progress.md`.\n" if self.branch else "\n"
-        body_file.write_text(body + link, encoding="utf-8")
         try:
+            body_file.write_text(body + link, encoding="utf-8")
             r = subprocess.run([gh, "issue", "create", "--title", title, "--body-file", str(body_file),
                                 "--assignee", self.alert], cwd=str(self.paths.home), capture_output=True,
                                text=True, timeout=120)
-            log(self.paths, f"alert issue: {(r.stdout or r.stderr).strip()[:200]}")
+            if r.returncode != 0:
+                log(self.paths, f"alert FAILED (gh exit {r.returncode}): {(r.stderr or r.stdout).strip()[:200]}")
+            else:
+                log(self.paths, f"alert issue: {r.stdout.strip()[:200]}")
         except (OSError, subprocess.SubprocessError) as e:
             log(self.paths, f"alert failed: {e}")
 
@@ -558,6 +577,7 @@ class Runner:
         self.progress = Progress(paths, steps, args)
         self.last_watch = 0.0
         self.halt_code = 0
+        self.progress_error = False
 
     def _on_signal(self, *_):
         self.stop_requested = True
@@ -626,7 +646,7 @@ class Runner:
             return 124, "timeout"
         return None, None
 
-    def end_step(self, act, code, reason, state, status=None, early=None):
+    def end_step(self, act, code, reason, state, status=None, early=None, halted_by=None):
         name = act.step.name
         if reason is None:
             act.job.kill()  # sweep anything the shell left behind
@@ -643,6 +663,8 @@ class Runner:
             "exit": code, "seconds": secs, "end": time.strftime("%Y-%m-%dT%H:%M:%S")}
         if early:
             state["steps"][name]["early"] = early
+        if halted_by:
+            state["steps"][name]["halted_by"] = halted_by
         save_state(self.paths, state)
         if act.spec is not None and code != 0 and status is None and reason != "stopped":
             md = self.progress.write(state, self.running, push=True, message=f"{name} failed")
@@ -681,7 +703,12 @@ class Runner:
             for act in self.running.values():
                 if act.summary:
                     log(self.paths, f"progress {act.step.name}: {one_line(act.summary)}")
-        self.progress.write(state, self.running)
+        try:
+            self.progress.write(state, self.running)
+        except OSError as e:  # the progress page must never stop battles
+            if not self.progress_error:
+                self.progress_error = True
+                log(self.paths, f"progress page not written ({e}); the run goes on")
 
     def trip(self, act, rule, summ, state):
         name = act.step.name
@@ -699,7 +726,7 @@ class Runner:
                 f"{summ['expected'] or '?'} battles; {cost}. arms.tsv holds the battles fought so far.\n", encoding="utf-8")
             self.end_step(act, 0, f"early stop, {rule['rule']}", state, early=why)
         else:
-            self.end_step(act, 75, f"halted, {rule['rule']}", state, status="halted", early=why)
+            self.end_step(act, 75, f"halted, {rule['rule']}", state, status="halted", halted_by=why)
             self.halt_code = 75
         md = self.progress.write(state, self.running, push=True, message=f"STOP {name}: {rule['rule']}")
         verb = "stopped early (finish: gate and PR run on the battles so far)" if rule["action"] == benchwatch.FINISH \
@@ -756,6 +783,18 @@ class Runner:
     def _loop(self, state):
         paths, args = self.paths, self.args
         todo = []
+        # --continue-early: a step a finish rule ended runs on, and every step after it (its gate and
+        # results PR) runs again on the full rows.
+        rerun = set()
+        if args.continue_early:
+            rerun = {s.name for s in self.steps if state["steps"].get(s.name, {}).get("early")}
+            grew = True
+            while grew:
+                grew = False
+                for s in self.steps:
+                    if s.after in rerun and s.name not in rerun:
+                        rerun.add(s.name)
+                        grew = True
         for step in self.steps:
             rec = state["steps"].get(step.name, {})
             if args.only and step.name not in args.only:
@@ -763,7 +802,7 @@ class Runner:
             if step.name in args.skip:
                 log(paths, f"skip {step.name} (--skip)")
                 continue
-            if rec.get("status") == TERMINAL_OK and not (args.continue_early and rec.get("early")):
+            if rec.get("status") == TERMINAL_OK and step.name not in rerun:
                 log(paths, f"skip {step.name} (already exit=0)")
                 continue
             todo.append(step)

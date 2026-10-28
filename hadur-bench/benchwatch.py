@@ -272,13 +272,14 @@ def summarize(spec, rules, step_log, started, now=None):
         rows = read_rows(spec.home / spec.out, since=started) if spec.out else []
         fresh = [r for r in rows if not r["_resumed"]]
         s["battles"], s["resumed"] = len(rows), len(rows) - len(fresh)
-        s["failed"] = sum(1 for r in rows if r["ok"] != "true")
+        # A failed row from before this step started is a battle Bench fights again, not a new failure.
+        s["failed"] = sum(1 for r in fresh if r["ok"] != "true")
         skips = [int(r["skippedTurns"]) for r in fresh if r["ok"] == "true"]
         last_t = max((r["_t"] for r in fresh), default=None)
         recent_t = [r["_t"] for r in fresh if r["_t"] >= now - RATE_WINDOW]
         s["disables"] = sum(int(r["engineDisables"]) for r in fresh)
         s["rows"] = rows
-        _arm_table(spec, rows, s)
+        _arm_table(spec, rows, s, fresh)
     else:
         battles, failed, skips = read_log(step_log)
         s.update(battles=battles, resumed=0, failed=failed, disables=None)
@@ -313,7 +314,7 @@ def summarize(spec, rules, step_log, started, now=None):
     return s
 
 
-def _arm_table(spec, rows, s):
+def _arm_table(spec, rows, s, fresh):
     run = multiarm.Run([{k: v for k, v in r.items() if not k.startswith("_")} for r in rows])
     refs = [a for a in (spec.control, spec.aa) if a in run.share]
     scale = (spec.panel / spec.field) if spec.field and spec.panel else None
@@ -323,7 +324,9 @@ def _arm_table(spec, rows, s):
         level, _, _ = run.level(arm) if arm in run.share else (None, None, 0)
         e = {"arm": arm, "battles": len(rs), "failed": len(rs) - len(ok), "level": level,
              "skips": st.mean(int(r["skippedTurns"]) for r in ok) if ok else None,
-             "scored": sum(1 for r in ok if (_float(r["score_share"]) or 0) > 0), "diff": None}
+             "fresh": sum(1 for r in fresh if r["arm"] == arm),
+             "scored": sum(1 for r in fresh if r["arm"] == arm and r["ok"] == "true"
+                           and (_float(r["score_share"]) or 0) > 0), "diff": None}
         arm_refs = [spec.control] if arm == spec.aa else ([] if arm == spec.control else refs)
         if arm_refs and arm in run.share and all(a in run.share for a in arm_refs):
             d = list(run.diffs(arm, arm_refs).values())
@@ -354,8 +357,11 @@ def evaluate(rule, spec, s):
         if s["failed"] >= rule.n:
             out["state"] = "TRIPPED"
     elif k == "dead":
-        dead = [e for e in s["arms"] if e["battles"] >= rule.n and e["scored"] == 0]
-        out["detail"] = ", ".join(f"arm {e['arm']} scored nothing in {e['battles']} battles" for e in dead) or "every arm scoring"
+        # Fresh battles only: rows read back from before a rebuilt jar are not this run's evidence.
+        dead = [e for e in s["arms"] if e["fresh"] >= rule.n and e["scored"] == 0]
+        out["detail"] = ", ".join(f"arm {e['arm']} scored nothing in {e['fresh']} battles (delete its "
+                                  f"{spec.out}/battles/*-{e['arm']} rows after fixing the jar, or Bench reads them back)"
+                                  for e in dead) or "every arm scoring"
         if dead:
             out["state"] = "TRIPPED"
     elif k == "skips":

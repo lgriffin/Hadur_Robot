@@ -8,15 +8,15 @@ set -euo pipefail
 branch="$1"; title="$2"; shift 2
 [ "$#" -gt 0 ] || { echo "open_results_pr: no reports given" >&2; exit 2; }
 for f in "$@"; do [ -s "$f" ] || { echo "open_results_pr: missing report $f" >&2; exit 2; }; done
+command -v gh >/dev/null || { echo "open_results_pr: gh not installed; reports are in place, open the PR by hand" >&2; exit 3; }
+
+git checkout -B "$branch"
 # BENCH-129: the queue's progress file (every step's state, the watched steps' last read, any early stop)
-# goes first, so the PR says how the run went before the reports say what it found.
+# goes first (copied after the checkout, so a rerun's copy never blocks it), so the PR says how the run went before the reports say what it found.
 if [ -n "${HADUR_BENCH_PROGRESS:-}" ] && [ -s "$HADUR_BENCH_PROGRESS" ]; then
     progress="../docs/bench/local/$(basename "$branch")-progress.md"
     mkdir -p "$(dirname "$progress")" && cp "$HADUR_BENCH_PROGRESS" "$progress" && set -- "$progress" "$@"
 fi
-command -v gh >/dev/null || { echo "open_results_pr: gh not installed; reports are in place, open the PR by hand" >&2; exit 3; }
-
-git checkout -B "$branch"
 git add -- "$@"
 git diff --cached --quiet || git commit -q -m "$title
 
