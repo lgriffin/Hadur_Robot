@@ -1619,6 +1619,7 @@ None of these change how the robot plays; TIME-8 and RES-15 only report.
 | BENCH-129 | Event | When a queue step with a `watch:` line runs, the queue runner shall rewrite the plan's progress file every minute with each step's state and, for the watched step, its battles done of the run's size, battles an hour, ETA, failed battles, skipped turns a battle (first and last 100), and each arm's running difference from the pooled control with its 95% interval and the stop rules' z 3 bound, and shall push the progress, without touching the working tree, to the plan's progress branch every `PROGRESS_MINUTES` and at once on a stop. | T7 |
 | BENCH-130 | Event | When a step's pre-declared `stop:` rule trips (fails, dead, skips, stall, aa or futility), the queue runner shall kill that step, log the rule, the battles fought and kept and the battles left unrun; for a halt rule stop the queue with the step resumable, and for a finish rule record the step as done early with its rows so far written as its `arms.tsv`, so the steps after it run. | T7 |
 | BENCH-131 | Event | When a stop rule trips or a watched step fails and the plan sets `ALERT`, the queue runner shall open a GitHub issue assigned to that login carrying the progress file. | T7 |
+| BENCH-132 | Ubiquitous | The bench shall carry the `pc-1v1-ram` card, which builds RAM-5 on (`rambrk`) and SHIELD-19's exits for pc-shield-exit's 7 per-robot picks (`sx4list,sx0list`) beside an aa A/A copy, runs RAM-5 against the 45 rammers and perfect-prediction robots and the exits against the 7 robots at 6 fresh seeds each (from 3600 and 3700), gates RAM-5 at +0.05 APS and the exits at +0.01 APS with the 95% low end above zero, writes every robot's difference with losses, and stops before the results PR if any analysis fails. | T7 |
 | RAM-4 | State | While the rammer-heat switch is on, in a duel, once RAM-2 has confirmed the opponent as a rammer, the surf shall offer MOVE-11's gun-heat wave with MOVE-13's hold off (as heatjit plays) for the rest of the battle, whatever those switches are set to; before the confirmation, and in melee or team, the switches are as their own requirements state. Off by default. | R9 |
 | RAM-5 | State | While the rammer-dodge switch is on, in a duel, while RAM-2's escape drives, each enemy shot read shall be kept with two aims, head-on at our position on the tick before it left and linear along our heading and speed then, and each candidate path the escape plays shall lose 60 px of its closest approach for every kept aim whose bullet would come within 22 px of us on both axes on that path; with the switch off, or in melee or team, the escape chooses as RAM-2 states. Off by default. | R9 |
 
@@ -1864,6 +1865,11 @@ A retired requirement keeps its ID; no new requirement reuses it.
   candidate paths against the shots in flight: `RamEscape.onEnemyShot` keeps the shot with its head-on and
   linear aims, `move(..., true)` scores them. `MoveDesign.RAM_BREAK` (off), build-ablation `rambrk` (suffix rk).
   Test: `RamEscapeTest` (RAM-5).
+  Smoke of RAM-5 (12 rammers x 2 seeds, `local/2026-10-28_cloud-ram-rk.md`): 71.2 -> 78.3 points a robot, 11 of
+  12 up, bullet damage taken 2,200 -> 1,445, linear exposure 51% -> 24%.
+- **BENCH-132.** Card plans/pc-1v1-ram.queue: `panel-ram-318.txt` (the live read's rammer / perfect-prediction
+  group plus every robot named for ramming, 45) x c/aa/rk x 6 seeds, `panel-exit-pick.txt` x c/aa/xp x 6 seeds;
+  gates +0.05 and +0.01 APS. Results branch `claude/pc-1v1-ram-results`. Test: `RamPlanTest`.
 
 ## Watching a PC card as it runs (BENCH-128 to BENCH-131)
 
