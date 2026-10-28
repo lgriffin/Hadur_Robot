@@ -213,6 +213,36 @@ then flattened into the shipped class as 0.3, held to the core by DEISE-16 and m
 1,499. If FIT fails, the one-change reads say which saving costs the most and the next stack swaps
 it out. Closing the 2.2 to Mirage needs more than the waves: the survival gap is the next stage's.
 
+### E1's result (PR #378)
+
+| Arm | Census APS | vs D | Survival | Rounds won |
+|---|---|---|---|---|
+| D | 70.10 ± 0.16 | 0 | 83.3% | 42.8% |
+| MIR | 72.01 ± 0.15 | +1.91 | 88.0% | 53.9% |
+| W | 70.54 ± 0.16 | +0.44 | 82.6% | 43.9% |
+| WH | 66.49 ± 0.21 | -3.61 | 68.7% | 17.9% |
+| WHP | 66.84 | -3.26 | 70.4% | 19.8% |
+| WHPC / WHPK | 66.87 / 66.98 | -3.2 | 70.4% | 20% |
+| WHPT | 65.90 | -4.20 | 68.4% | 17.6% |
+| WHPH | 67.27 | -2.83 | 71.6% | 22.5% |
+| WHPF | 67.21 | -2.89 | 71.2% | 21.6% |
+| FIT | 65.93 | -4.17 | 68.4% | 18.2% |
+
+W holds (+0.44, against E0's +0.48), but the cut-down waves are fatal: one of their three cuts
+(head-on only, weight 1 for every wave, no hit correction) costs Deise a sixth of its survival,
+and every stack on WH inherits it. On top of WH, dropping the vote weights costs a further 0.9
+(they stay), while dropping the across term (+0.35), the hold (+0.43) and the flat push with 200
+playouts (+0.37) read positive. E1 fails; nothing is flattened.
+
+### Stage E1b: which cut breaks the waves (card pc-deise-e03)
+
+One cut at a time off W: WL (head-on only), WA (every wave weight 1), WB (no hit correction); and
+the savings that read positive on WH, on W itself: WP (no across term), WN (no hold), WPN (both),
+WF (flat push and 200 playouts). D, MIR and SAOR as before; 11 seats, about 6.5 h. A cut is safe
+when its arm reads within 0.2 of W; the safe cuts and the savings then size the fitted build.
+The weight-1 cut is the likely culprit: in a field of nine, most shots are aimed at someone
+else, and at full weight Deise dodges them all.
+
 ## 9. Uniqueness
 
 Leigh's rule for Saor holds here: inspired by others, never a copy. Deise's gun is Saor's own
