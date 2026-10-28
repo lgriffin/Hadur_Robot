@@ -204,10 +204,10 @@ class FieldGunTest {
 
     @Test
     @Tag("MGUN-6")
-    @DisplayName("MGUN-6: on a team every solution carries full power; off a team the table's, through MGUN-13")
+    @DisplayName("MGUN-6: on a team every solution carries full power; off a team the table's, through MGUN-13 (both beyond MGUN-16's 300 px)")
     void teamPowerOnlyOnATeam() {
         scanned("far", 500, 950, 100, 0, 0, 5);
-        scanned("near", 500 + 250, 500, 100, 0, 0, 5);
+        scanned("near", 500 + 340, 500, 100, 0, 0, 5);
         List<FieldGun.Solution> solo = gun.solutions(me, 100, 5, tracker.alive(), 6);
         assertEquals(2, solo.size());
         for (FieldGun.Solution s : solo) {
