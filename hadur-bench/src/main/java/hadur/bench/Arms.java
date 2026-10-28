@@ -96,7 +96,9 @@ final class Arms {
         Path f = dir.resolve(ROW_FILE);
         try {
             if (!Files.isRegularFile(f)) return null;
-            String row = Files.readString(f, StandardCharsets.UTF_8).strip();
+            // Only the line break goes: strip() also took the tab before an empty errors column, the usual
+            // case for a battle that went well, so no clean battle was ever read back (BENCH-128).
+            String row = Files.readString(f, StandardCharsets.UTF_8).replaceAll("[\\r\\n]+$", "");
             String[] c = row.split("\t", -1);
             if (c.length != HEADER.split("\t").length) return null;
             boolean same = c[0].equals(arm.label()) && c[1].equals(arm.robot()) && c[2].equals(o.name)

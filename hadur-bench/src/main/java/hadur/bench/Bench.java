@@ -726,6 +726,9 @@ public final class Bench {
                 });
             }
         }
+        // BENCH-128: --job-order shuffled fights the (opponent, seed) jobs in an order seeded from the seed
+        // base, so a partial run is a random sample of the panel and the queue's watch can read it mid-run.
+        if ("shuffled".equals(opts.get("job-order"))) Collections.shuffle(jobs, new java.util.Random(seedBase * 7_919L + 127));
         List<Path> homes = workerHomes(Math.min(parallel, Math.max(1, jobs.size())));
         workers = homes.size();
         pinCpuConstant(homes);

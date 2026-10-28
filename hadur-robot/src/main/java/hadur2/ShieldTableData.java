@@ -5,7 +5,7 @@ package hadur2;
  * opening drive (SHIELD-17) and its shipped aim (SHIELD-18); and the opponents the duel surf
  * dodges simple aims against (DODGE-3); and the opponents fought with stop-and-go (POISON-2). Every list starts empty, so Hadur plays as before until
  * a bench run has picked entries for it; moves() and aims() hold shield part 2's (PR #256),
- * stopGos() and stopGoShifts() mode table v2's (PR #263).
+ * stopGos() and stopGoShifts() mode table v2's (PR #263), plus the gap-to-2nd re-pick (BENCH-126).
  *
  * <p>{@link #moves()} and {@link #dodges()} name opponents, matched by the rule of {@link ShieldListData}.
  * {@link #aims()} holds one {@code "predictor offset name"} line an opponent: the predictor
@@ -369,6 +369,7 @@ final class ShieldTableData {
             "rcb.Vanessa03 0",
             "romz.robot.circular.WildRabbit 0.9.6",
             "steff.Rebel 2.1",
+            "gg.Wolverine 2.0",
         };
     }
 
@@ -426,6 +427,8 @@ final class ShieldTableData {
             "serenity.serenityFire 1.29",
             "vjik.UnViolation 1.1",
             "voidious.perceptual.RetroGirl 1.0.0",
+            "nat.Hikari dev0001",
+            "bing2.Melody 1.3.1",
         };
     }
 
