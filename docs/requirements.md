@@ -1869,7 +1869,9 @@ A retired requirement keeps its ID; no new requirement reuses it.
   12 up, bullet damage taken 2,200 -> 1,445, linear exposure 51% -> 24%.
 - **BENCH-132.** Card plans/pc-1v1-ram.queue: `panel-ram-318.txt` (the live read's rammer / perfect-prediction
   group plus every robot named for ramming, 45) x c/aa/rk x 6 seeds, `panel-exit-pick.txt` x c/aa/xp x 6 seeds;
-  gates +0.05 and +0.01 APS. Results branch `claude/pc-1v1-ram-results`. Test: `RamPlanTest`.
+  gates +0.05 and +0.01 APS. Results branch `claude/pc-1v1-ram-results`. Both steps are watched with halt rules
+  (fails, dead, skips, stall, A/A) and `ALERT`; the ram step also finishes early once rk cannot reach +0.05
+  APS after 30% (at most 567 battles left unrun). Test: `RamPlanTest`.
 
 ## Watching a PC card as it runs (BENCH-128 to BENCH-131)
 

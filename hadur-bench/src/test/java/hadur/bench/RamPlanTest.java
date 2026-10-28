@@ -77,5 +77,17 @@ class RamPlanTest {
         String gate = queue.substring(queue.indexOf("\ngate | "), queue.indexOf("\n\npr | "));
         assertTrue(!gate.contains(";"), "an analysis error must stop the card before the results PR");
         assertTrue(queue.contains("open_results_pr.sh claude/pc-1v1-ram-results"));
+        // BENCH-129, BENCH-130: watched, with stop rules fixed before the run, and futility only where 10+ robots are read.
+        assertTrue(queue.contains("set ALERT = lgriffin"));
+        String ram = queue.substring(queue.indexOf("\nram | "), queue.indexOf("\n\nexit | "));
+        String exit = queue.substring(queue.indexOf("\nexit | "), queue.indexOf("\n\ngate | "));
+        for (String step : new String[] {ram, exit}) {
+            assertTrue(step.contains("--shuffle-jobs") && step.contains("watch: field=1217"), step);
+            for (String rule : new String[] {"fails 30", "dead 8", "skips 40 over 200", "stall 30m", "aa after 20%"}) {
+                assertTrue(step.contains("stop: " + rule), rule);
+            }
+        }
+        assertTrue(ram.contains("stop: futility rk below 0.05 after 30%"));
+        assertTrue(!exit.contains("futility"), "7 robots are under the 10 a futility read needs");
     }
 }
