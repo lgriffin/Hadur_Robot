@@ -82,7 +82,7 @@ Best live results as of 2026-10-28:
 | [**TwinSaor**](twinsaor/) `hadur117.twin.TwinSaor` | Twin Duel (2v2) | 1,995 B of 1,999 | **1st of 28**, 70.28 ± 0.50 (0.2, 2026-10-28) | [README](twinsaor/README.md) |
 | [**Saor**](saor/) `hadur117.micro.Saor` | MicroMelee | 723 B of 749 | **1st of 157**, 69.80 ± 0.43 (0.3, 2026-10-27) | [README](saor/README.md) |
 | [**Deise**](deise/) `hadur117.mini.Deise` | MiniMelee | 1,494 B of 1,499 | **2nd of 206**, 69.81 ± 0.33 (0.3, 2026-10-28), 1.38 behind kc.mini.Mirage | [README](deise/README.md) |
-| [**Sanaro**](sanaro/) `hadur117.nano.Sanaro` | NanoMelee | 249 B of 249 | 0.1 released 2026-10-28; first pass filling, 2nd of 90 at 65.02 (80 of 89 pairings) | [README](sanaro/README.md) |
+| [**Sanaro**](sanaro/) `hadur117.nano.Sanaro` | NanoMelee | 247 B of 249 | 0.1 released 2026-10-28; first pass filling, 2nd of 90 at 65.02 (80 of 89 pairings) | [README](sanaro/README.md) |
 | [**JayLexi**](jaylexi/) `hadur117.mini.JayLexi` | MiniRumble (1v1) | 1,496 B of 1,499 | Not yet released; benched about 86.6 against 87.4 for 5th | [README](jaylexi/README.md) |
 | [**Eveimear**](eveimear/) `hadur117.micro.Eveimear` | MicroRumble (1v1) | 722 B of 749 | Not yet released; benched about 84.3 against 85.0 for 5th | [README](eveimear/README.md) |
 
