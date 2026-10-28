@@ -441,9 +441,9 @@ W3 ran on the PC as first designed (PR #381): 11 arms on all 27 teams, 10 seeds,
 
 The A/A arm sat 2.2 SE off the control, so by the reader's rule the run is void. R1W is 7.7 times
 that offset and positive on 21 of 27 teams: LuminariousDuo +13.7 (survival 33% to 71%),
-CoyotePair +9.2, SurroundingTeam +7.2, KomariousTeam +6.4. 0.1's 100 px with one enemy left
-put the last pair at point blank, where the enemy's two-robot fire wins; 160 keeps the twins'
-learning gun in play and gives the surviving enemy more to dodge. W4 confirms it on fresh seeds.
+CoyotePair +9.2, SurroundingTeam +7.2, KomariousTeam +6.4. It is a constant, so it costs no
+bytes. Why 100 px loses is not measured yet: the last enemy may out-dodge or out-shoot two twins
+at point blank. W4 confirms R1W on fresh seeds.
 
 Per team, three knobs swing hard in both directions, the case a table exists for:
 
