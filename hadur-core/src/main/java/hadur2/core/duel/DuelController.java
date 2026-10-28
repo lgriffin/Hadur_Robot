@@ -711,8 +711,13 @@ public final class DuelController {
             }
             enemyGunHeat(in).shot(fireTime, reading.corrected());
             roundEnemyShot = fireTime;
-            // RAM-5: the escape's speed break reads each shot.
-            if (duelOnly(MoveDesign.RAM_BREAK, enemiesTotal)) ramEscape.onEnemyShot(fireTime, myVel, e.distance(), reading.corrected());
+            // RAM-5: the escape keeps each shot, aimed at us as we were the tick before it left.
+            if (duelOnly(MoveDesign.RAM_BREAK, enemiesTotal)) {
+                RobotState aimedAt = myStateLog.getState(fireTime - 1);
+                RobotState from = enemyStateLog.getState(fireTime);
+                ramEscape.onEnemyShot(fireTime, from == null ? enemyPos.x : from.location.x,
+                    from == null ? enemyPos.y : from.location.y, reading.corrected(), aimedAt == null ? myState : aimedAt);
+            }
             if (folder != null) folder.enemyShot(e.distance(), reading.corrected(), myVel != 0);
             // EW,round,tick,waveId,fireTick,rawDrop,correctedDrop,power,distance: the wave is
             // named by its fire tick, and its power is the corrected drop.

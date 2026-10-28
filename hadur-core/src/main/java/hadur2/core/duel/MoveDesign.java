@@ -102,11 +102,10 @@ final class MoveDesign {
     static final boolean RAM_HEAT = false;
 
     /**
-     * RAM-5: while RAM-2's escape drives, a rammer's shot fired at our full speed is met with
-     * {@code RamEscape.BREAK_SPEED} until it has passed, and one fired while we were slow with full
-     * speed, so neither its linear nor its head-on aim finds us. The 2026-10-28 rammer read
-     * (docs/bench/gap-to-2nd.md): against 12 nano rammers a linear aim would hit the escape on 52%
-     * of shots, Saguaro on 35%. Off by default.
+     * RAM-5: while RAM-2's escape drives, each path it weighs loses closest approach for every
+     * aim (head-on, linear) one of the rammer's shots in flight would hit it with. The 2026-10-28
+     * rammer read (docs/bench/gap-to-2nd.md): against 12 nano rammers a linear aim would hit the
+     * escape on 52% of shots, Saguaro on 35%. Off by default.
      */
     static final boolean RAM_BREAK = false;
 

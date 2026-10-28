@@ -56,8 +56,8 @@
 #         firing waves are in the air, the surf also dodges the shot it has not fired yet. Suffix hw.
 #   flt59  MOVE-5's flattener threshold 4.5% -> 5.9% (Diamond's). Suffix f5.
 #   flt8  MOVE-5's flattener threshold 4.5% -> 8% (near DrussGT's 8-9%). Suffix f8.
-#   rambrk  RAM-5: RAM-2's escape meets a rammer's shot fired at our full speed with 4 px/tick until it
-#         has passed, and one fired while slow with full speed. Suffix rk.
+#   rambrk  RAM-5: RAM-2's escape weighs its paths against the rammer's shots in flight (head-on and
+#         linear aims). Suffix rk.
 #   heatjit  MOVE-13: the gun-heat wave taken afresh each tick (the first MOVE-11 build): the surf
 #         re-ranks every tick while the enemy's gun is ready and stops and starts. Suffix hj.
 #   wallesc  MOVE-12: the first wave's danger is also multiplied by BeepBoop's escape-angle position term

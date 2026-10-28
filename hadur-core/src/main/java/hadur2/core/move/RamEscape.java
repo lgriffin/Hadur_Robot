@@ -48,12 +48,18 @@ public final class RamEscape {
     private final MovementPredictor predictor;
     /** The heading chosen last tick, NaN when there is none. */
     private double lastHeading = Double.NaN;
-    /** RAM-5: the speed the escape drives at while a shot aimed at our full speed flies. */
-    static final double BREAK_SPEED = 4.0;
-    /** RAM-5: our speed, in px/tick, from which a shot is taken as aimed at full speed. */
-    static final double FAST = 6.0;
-    /** RAM-5: the last tick of the current speed break, MIN_VALUE when there is none. */
-    private long slowUntil = Long.MIN_VALUE;
+    /** RAM-5: a candidate path loses this many px of closest approach for each aim one of the rammer's shots would hit it with. */
+    static final double HIT_COST = 60.0;
+    /** RAM-5: a bullet within this many px of our centre on both axes counts as a hit (half a robot, plus slack). */
+    static final double HIT_BOX = 22.0;
+    /** RAM-5: ticks a candidate is played for the shots: a shot chasing a fleeing robot takes long to reach it. */
+    static final int SHOT_HORIZON = 45;
+    /** RAM-5: the most shots in flight kept. */
+    static final int MAX_SHOTS = 4;
+    /** RAM-5: the rammer's shots in flight, each {fire tick, x, y, speed, head-on angle, linear angle}. */
+    private final java.util.ArrayDeque<double[]> shots = new java.util.ArrayDeque<>();
+    /** RAM-5: whether the escape scores paths against the shots in flight. */
+    private boolean dodge;
 
     /**
      * @param battleField the field, for wall smoothing
@@ -67,7 +73,7 @@ public final class RamEscape {
     /** A new round: no heading carried over. */
     public void initRound() {
         lastHeading = Double.NaN;
-        slowUntil = Long.MIN_VALUE;
+        shots.clear();
     }
 
     /** The heading chosen on the last {@link #move}, NaN before the first. */
@@ -88,35 +94,46 @@ public final class RamEscape {
     }
 
     /**
-     * RAM-5: as {@link #move(BotOrders.Builder, RobotState, RobotState)}, at {@link #BREAK_SPEED}
-     * while a speed break runs and {@code speedBreak} is on.
+     * RAM-5: as {@link #move(BotOrders.Builder, RobotState, RobotState)}; with {@code dodge} on, a
+     * path one of the rammer's shots in flight would hit, aimed head-on or linear, loses
+     * {@link #HIT_COST} px of closest approach for each aim that hits it.
      */
-    public void move(BotOrders.Builder orders, RobotState me, RobotState enemy, boolean speedBreak) {
+    public void move(BotOrders.Builder orders, RobotState me, RobotState enemy, boolean dodge) {
+        this.dodge = dodge;
+        // A shot that has flown past the field's diagonal can hit nothing more.
+        while (!shots.isEmpty() && (me.time - shots.peekFirst()[0]) * shots.peekFirst()[3] > 1000) shots.removeFirst();
         double heading = choose(me, enemy);
-        orders.maxVelocity(speedBreak && me.time <= slowUntil ? BREAK_SPEED : 8.0);
+        orders.maxVelocity(8.0);
         DiaUtils.setBackAsFront(orders, me.heading, heading);
     }
 
     /**
-     * RAM-5: the rammer fired. A shot that left while we drove at full speed was led for full
-     * speed, so the escape drives slower until it has passed; a shot that left while we were slow
-     * was led for that, so the escape drives at full speed again. Head-on aim misses either way,
-     * since the escape keeps moving.
+     * RAM-5: the rammer fired. The shot is kept with the two aims a nano rammer uses: head-on at
+     * where we were, and linear, leading our heading and speed then.
      *
      * @param fireTime the tick the bullet left
-     * @param ourSpeed our speed when the shot was seen, px/tick
-     * @param distance the rammer's distance, px
+     * @param enemyX the rammer's x when it fired
+     * @param enemyY the rammer's y when it fired
      * @param power the shot's power
+     * @param me our state when it fired (or as near as is known)
      */
-    public void onEnemyShot(long fireTime, double ourSpeed, double distance, double power) {
-        slowUntil = Math.abs(ourSpeed) >= FAST
-            ? fireTime + (long) Math.ceil(distance / Rules.getBulletSpeed(power)) + 1
-            : Long.MIN_VALUE;
+    public void onEnemyShot(long fireTime, double enemyX, double enemyY, double power, RobotState me) {
+        double speed = Rules.getBulletSpeed(power);
+        double headOn = Math.atan2(me.location.x - enemyX, me.location.y - enemyY);
+        double tx = me.location.x;
+        double ty = me.location.y;
+        for (int k = 1; k < 100; k++) {
+            tx = DiaUtils.limit(18.0, me.location.x + Math.sin(me.heading) * me.velocity * k, battleField.width - 18.0);
+            ty = DiaUtils.limit(18.0, me.location.y + Math.cos(me.heading) * me.velocity * k, battleField.height - 18.0);
+            if (Point2D.distance(enemyX, enemyY, tx, ty) <= speed * k) break;
+        }
+        if (shots.size() >= MAX_SHOTS) shots.removeFirst();
+        shots.addLast(new double[] {fireTime, enemyX, enemyY, speed, headOn, Math.atan2(tx - enemyX, ty - enemyY)});
     }
 
-    /** RAM-5: whether a speed break runs on {@code time}. */
-    boolean slowAt(long time) {
-        return time <= slowUntil;
+    /** RAM-5: the shots in flight, for tests. */
+    int shotsInFlight() {
+        return shots.size();
     }
 
     /**
@@ -184,7 +201,9 @@ public final class RamEscape {
         double min = Double.POSITIVE_INFINITY;
         double sum = 0;
         double bent = 0;
-        for (int t = 0; t < HORIZON; t++) {
+        int hits = 0;
+        int ticks = dodge && !shots.isEmpty() ? SHOT_HORIZON : HORIZON;
+        for (int t = 0; t < ticks; t++) {
             double go = battleField.wallSmoothing(us.location, raw, orientation, WALL_STICK);
             if (go != raw) bent = 1;
             us = predictor.nextLocation(us, 8.0, go, false);
@@ -195,11 +214,34 @@ public final class RamEscape {
             ev = Math.min(8.0, ev + 1.0);
             ex = DiaUtils.limit(18.0, ex + Math.sin(eh) * ev, battleField.width - 18.0);
             ey = DiaUtils.limit(18.0, ey + Math.cos(eh) * ev, battleField.height - 18.0);
+            if (dodge) hits |= hits(us.location.x, us.location.y, me.time + t + 1);
+            if (t >= HORIZON) continue;
             double d = Point2D.distance(us.location.x, us.location.y, ex, ey);
             min = Math.min(min, d);
             if (min < floor) return null;
             sum += d;
         }
-        return new double[] {min, sum / HORIZON, bent};
+        return new double[] {min - HIT_COST * Integer.bitCount(hits), sum / HORIZON, bent};
+    }
+
+    /**
+     * RAM-5: which of the shots in flight would hit us at {@code (x, y)} on {@code time}, two bits
+     * a shot (head-on, linear).
+     */
+    private int hits(double x, double y, long time) {
+        int bits = 0;
+        int i = 0;
+        for (double[] s : shots) {
+            double flown = (time - s[0]) * s[3];
+            if (flown > 0) {
+                for (int a = 0; a < 2; a++) {
+                    double bx = s[1] + Math.sin(s[4 + a]) * flown;
+                    double by = s[2] + Math.cos(s[4 + a]) * flown;
+                    if (Math.abs(bx - x) < HIT_BOX && Math.abs(by - y) < HIT_BOX) bits |= 1 << (2 * i + a);
+                }
+            }
+            i++;
+        }
+        return bits;
     }
 }

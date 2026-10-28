@@ -1620,6 +1620,7 @@ None of these change how the robot plays; TIME-8 and RES-15 only report.
 | BENCH-130 | Event | When a step's pre-declared `stop:` rule trips (fails, dead, skips, stall, aa or futility), the queue runner shall kill that step, log the rule, the battles fought and kept and the battles left unrun; for a halt rule stop the queue with the step resumable, and for a finish rule record the step as done early with its rows so far written as its `arms.tsv`, so the steps after it run. | T7 |
 | BENCH-131 | Event | When a stop rule trips or a watched step fails and the plan sets `ALERT`, the queue runner shall open a GitHub issue assigned to that login carrying the progress file. | T7 |
 | RAM-4 | State | While the rammer-heat switch is on, in a duel, once RAM-2 has confirmed the opponent as a rammer, the surf shall offer MOVE-11's gun-heat wave with MOVE-13's hold off (as heatjit plays) for the rest of the battle, whatever those switches are set to; before the confirmation, and in melee or team, the switches are as their own requirements state. Off by default. | R9 |
+| RAM-5 | State | While the rammer-dodge switch is on, in a duel, while RAM-2's escape drives, each enemy shot read shall be kept with two aims, head-on at our position on the tick before it left and linear along our heading and speed then, and each candidate path the escape plays shall lose 60 px of its closest approach for every kept aim whose bullet would come within 22 px of us on both axes on that path; with the switch off, or in melee or team, the escape chooses as RAM-2 states. Off by default. | R9 |
 
 - **TIME-8.** `Hadur.setupRecord`, printed once in round 0. The PC's round-0 read
   (`docs/bench/local/2026-10-21_round0-skips.md`) found 39 of 4,848 battles disabled at start-up,
@@ -1854,6 +1855,15 @@ A retired requirement keeps its ID; no new requirement reuses it.
   opponent's exit at its first scan. `ShieldTableData.exitLates()` / `exitOffs()` ship empty; build-ablation
   `sx4list` / `sx0list` fill them from `$SHIELD_EXIT4` / `$SHIELD_EXIT0` (suffixes x4, x0). Tests:
   `ShieldListTest`, `ShieldDesignTest` (SHIELD-19).
+- **RAM-5.** A cloud read of 12 nano rammers (2 seeds, `local/2026-10-28_cloud-ram-read.md`): Saguaro 82.1% vs
+  Hadur 71.5%, ram damage level, but their bullets hit Hadur on about 58% of shots and Saguaro on 34%. Replaying
+  each shot from the truth log, a linear aim would hit Hadur's escape on 52% and a head-on aim on 16%; against
+  Saguaro both 35%. No mode we have helps (`local/2026-10-28_cloud-ram-screen.md`: no escape 67.5, stop-and-go
+  69.8 / 70.6, simple-aim dodge 72.2, A/A 72.4). A first cut, slowing to 4 px/tick while a shot led for full
+  speed flew, lost 2.6 points (more rams, and head-on aim then hit 49%). RAM-5 instead weighs the escape's
+  candidate paths against the shots in flight: `RamEscape.onEnemyShot` keeps the shot with its head-on and
+  linear aims, `move(..., true)` scores them. `MoveDesign.RAM_BREAK` (off), build-ablation `rambrk` (suffix rk).
+  Test: `RamEscapeTest` (RAM-5).
 
 ## Watching a PC card as it runs (BENCH-128 to BENCH-131)
 

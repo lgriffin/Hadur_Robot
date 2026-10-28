@@ -121,4 +121,30 @@ class RamEscapeTest {
         assertTrue(Math.abs(Angles.normalRelativeAngle(h - toRammer)) > Math.PI / 2,
             "heading " + h + " vs bearing to the rammer " + toRammer);
     }
+
+    @Test
+    @Tag("RAM-5")
+    @DisplayName("RAM-5: with the dodge on, the escape leaves the path a linear shot is led at; off, it keeps it")
+    void dodgesTheLinearShot() {
+        // Driving east-north-east at full speed (the plain escape's own pick here), away from a
+        // rammer 100 px west, which fires power 3 led for that line.
+        double ene = 5 * Math.PI / 12;
+        RobotState me = state(400, 300, ene, 8, 100);
+        RobotState rammer = state(300, 300, Math.PI / 2, 8, 100);
+        RamEscape off = new RamEscape(FIELD, PREDICTOR);
+        RamEscape on = new RamEscape(FIELD, PREDICTOR);
+        on.onEnemyShot(99, 300, 300, 3.0, state(400 - 8 * Math.sin(ene), 300 - 8 * Math.cos(ene), ene, 8, 99));
+        assertEquals(1, on.shotsInFlight());
+        BotOrders.Builder a = BotOrders.builder();
+        off.move(a, me, rammer, false);
+        BotOrders.Builder b = BotOrders.builder();
+        on.move(b, me, rammer, true);
+        double plain = off.lastHeading();
+        assertEquals(ene, plain, 1e-9);
+        double dodged = on.lastHeading();
+        // The bullet is led along the plain escape's line, so the dodge turns off it.
+        assertTrue(Math.abs(Angles.normalRelativeAngle(dodged - plain)) > 0.2, plain + " vs " + dodged);
+        on.initRound();
+        assertEquals(0, on.shotsInFlight(), "a new round carries no shot");
+    }
 }
