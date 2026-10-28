@@ -1612,6 +1612,7 @@ None of these change how the robot plays; TIME-8 and RES-15 only report.
 | BENCH-122 | Ubiquitous | The bench shall carry the `pc-melee-power2` card, which builds MGUN-14, MGUN-15 and MGUN-16 each alone and all three together beside an aa baseline and a bb A/A copy, runs each alone on the melee census at 6 seeds after the Ogi card's, and reads it with `tools/melee_s0.py screen --base2` at a 0 bar with the 95% low end above 0 and Hadur's share of the others it outlives no more than 1 point lower. | R9 |
 | BENCH-123 | Ubiquitous | The bench shall carry the `pc-team-counters` card, which builds one table jar per screen of plans/team-counters.tsv (each team's counters, TMODE-20 to TMODE-24, played only against that team), runs each against aa on its teams at 16 seeds from 4600 beside a bb A/A, picks per team the screen at +3.0 points or more with the 95% low end above zero, and gates the picked table on 16 fresh seeds from 4700 at +0.30 APS with the low end above zero; only a passed gate writes that table, as benched, as the table to ship. | T7 |
 | BENCH-125 | Event | When the PC qualification card (`pc-qualify`) runs, it shall set `UPLOAD=NOT` in each named 1v1 client's `roborumble.txt`, run those clients the old way for `HOURS`, put each config back and set the results files aside so no test battle is uploaded, and score each 1v1 battle of the release against the opponent's pairing on a clean page: QUALIFIED within ±0.5 over at least 40 battles, else NOT QUALIFIED. | T7 |
+| BENCH-126 | Ubiquitous | The bench shall carry the `pc-shield-exit` card, which builds SHIELD-11's battle exit at 400 damage (`sdmg400`) and with no damage exit (`sdmgoff`) beside an aa A/A copy, runs them against all robots on the shield list at 3 seeds from 3400 and gates each at +0.10 APS with the 95% low end above zero, writes the per-robot pick and every robot's difference with losses (`tools/per_robot.py`), stops before the results PR if any analysis fails, and verifies the three stop-and-go re-picks (`slistdrop,sgolist,sgo2list`) on 6 fresh seeds from 3500. | T7 |
 | RAM-4 | State | While the rammer-heat switch is on, in a duel, once RAM-2 has confirmed the opponent as a rammer, the surf shall offer MOVE-11's gun-heat wave with MOVE-13's hold off (as heatjit plays) for the rest of the battle, whatever those switches are set to; before the confirmation, and in melee or team, the switches are as their own requirements state. Off by default. | R9 |
 
 - **TIME-8.** `Hadur.setupRecord`, printed once in round 0. The PC's round-0 read
@@ -1828,6 +1829,19 @@ A retired requirement keeps its ID; no new requirement reuses it.
   move; the duel and melee fixtures replay bit for bit.
 - **BENCH-123.** `tools/team_modes.py screens`, `pick --counters --low-end`; build-ablation `tmtab`
   takes `$TEAM_MODE_SUFFIX`; card plans/pc-team-counters.queue.
+
+## 1v1 gap to 2nd: shield exit and re-picks (BENCH-126)
+
+- **Why.** Leigh 2026-10-28: 3.18.1 is 4th, 1.28 behind DrussGT; find the opponents to tailor for.
+  The live read (docs/bench/gap-to-2nd.md) puts the largest tailorable pool on shield robots where both
+  rivals score 90-98 and Hadur 70-85. A cloud read on 8 of them shows shield mode leaving the battle at
+  SHIELD-11's 150-damage exit around round 15, after which the surf takes 3-5x Saguaro's damage.
+- **BENCH-126.** build-ablation `sdmg400` (SHIELD-11 exit at 400 damage, suffix s4), `sdmgoff` (no damage
+  exit, SHIELD-6's budget alone, suffix s0), `slistdrop` (`$SHIELD_DROP` robots leave the shield list,
+  suffix md). Card plans/pc-shield-exit.queue: the 276 listed robots x c/aa/s4/s0 x 3 seeds, gates at
+  +0.10 APS; the three cloud re-picks (Wolverine stop-and-go, Hikari and Melody stop-and-go shift)
+  verified on 6 fresh seeds. Nothing ships until a gate passes; 3.18.1 plays bit for bit.
+  Test: `ShieldExitPlanTest`.
 
 ## Saor, a MicroMelee entry (SAOR-1 to SAOR-17, stages U0 to U6)
 
