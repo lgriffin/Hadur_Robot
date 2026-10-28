@@ -10,6 +10,9 @@ import deise_fields  # noqa: E402
 import sanaro_fields  # noqa: E402
 import sanaro_read  # noqa: E402
 
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "sanaro"))
+import table  # noqa: E402
+
 Q = "d414.nano.Quantum 1.0.0"
 NS = "sheldor.melee.nano.NaturalScience 1.2.1"
 
@@ -89,6 +92,27 @@ class SanaroReadTest(unittest.TestCase):
         text = sanaro_read.render(sanaro_read.read(self.root, ["S10", "S0"], "S0", self.only), "S0", "census")
         self.assertIn("| S10 | 3 | 3 | 70.00", text)
         self.assertIn("| S0 |", text)
+
+
+class SanaroTableArmsTest(unittest.TestCase):
+    def test_the_defaults_are_the_shipped_curve(self):
+        self.assertEqual(table.base(0), 0.1)
+        self.assertEqual(table.base(32), 2.1)
+        self.assertEqual(table.base(119), 2.5)
+        self.assertEqual(table.base(120), 3.0)
+
+    def test_a_power_arm_rewrites_only_the_named_source(self):
+        src = os.path.join(tempfile.mkdtemp(), "SanaroQ7.java")
+        with open(src, "w", encoding="utf-8") as f:
+            f.write('class SanaroQ7 {\n    static final String POWER = "";\n}\n')
+        table.main(["--floor", "0", "--div", "7", "--src", src])
+        with open(src, encoding="utf-8") as f:
+            text = f.read()
+        cells = text.split('"')[1].split("\\")[1:]
+        self.assertEqual(len(cells), 400 * 128 + 401)
+        # own energy 14, enemy 100: 14 / 7 = 2.0, 80 fortieths
+        self.assertEqual(int(cells[14 * 128 + 100], 8), 80)
+        self.assertEqual(text.count("class SanaroQ7"), 1)
 
 
 if __name__ == "__main__":

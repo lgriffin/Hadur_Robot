@@ -32,19 +32,21 @@ min(energy / 7, 2.5) at every range (1.2.2: 3.6 - (d / 8) / energy), a 0.9 decay
 
 ## 2. What Sanaro is
 
-One class, 249 bytes by Robocode's codesize tool (`SanaroJarIT`, SANARO-1), no static
+One class, 247 bytes by Robocode's codesize tool (`SanaroJarIT`, SANARO-1), no static
 initialiser (SANARO-2). Per scan (SANARO-3 to SANARO-8):
 
 - **Movement.** The anti-gravity of the DustBunny, Quantum and NaturalScience line: a field
   decayed by 0.9 a scan, a push of 1 / d away from where each robot is about to be, and a wall
   push 1 / x - 1 / (1000 - x) on each axis; drive ahead 120 less the turn, backwards past it.
-  Sanaro's own part is the **spiral**: the body turns to the field's direction plus SPIRAL, so
-  it slides round the robot shooting at it instead of fleeing it straight (doc findings F1-F3).
+  The body turns to the field's direction plus SPIRAL, so a spiral slides it round the robot
+  shooting at it instead of fleeing it straight (doc findings F1-F3). 0.1 first shipped 0.6 rad,
+  the NanoMelee census's pick; the live-shaped census, the one that is scored, reads no spiral
+  +0.88 over it (section 6), so **0.1 now ships SPIRAL 0**.
 - **Target.** The creeping nearest: the threshold creeps out 25 px a scan and snaps to the
   target's distance.
 - **Radar.** Quantum's branch-free flip, gun heat less LOCK (0.9) times the radar turn left:
   a sweep while the gun is hot, a lock once it is nearly cool. It is 4 bytes cheaper than
-  NaturalScience's branch and pays for the spiral.
+  NaturalScience's branch.
 - **Gun.** The line's hedged lead, lateral velocity over 10 + 1.008 ^ d.
 - **Power.** Sanaro's own table (`sanaro/table.py`, `SanaroTableTest`), not NaturalScience's:
   cell (own energy, enemy energy) at own * 128 + enemy holds, in fortieths, the lesser of
@@ -66,8 +68,8 @@ with its properties and source.
 
 | Build | Bytes | Note |
 |---|---|---|
-| Sanaro 0.1 (spiral 0.6) | 249 | any spiral but 0 or 1 is an `ldc2_w`, 2 bytes more than `dconst_1` |
-| spiral 1.0 or 0 | 247 | |
+| Sanaro 0.1 (no spiral) | 247 | `dconst_0`; the power arms (another table) cost nothing |
+| spiral 0.6 (0.1 as first built) | 249 | any spiral but 0 or 1 is an `ldc2_w`, 2 bytes more than `dconst_1` |
 | fire gate (0.05 rad) | 262 | needs 13 found |
 | flip on hit, table kept | 258-260 | needs 9-11 found |
 
@@ -144,21 +146,83 @@ Reports `docs/bench/local/sanaro-n01-census.md` and `sanaro-n01-live.md` on the 
 battles by more than its interval, outsurvives both leaders in more than half of them, and reads
 above NSC on the live census; it then ships as 0.2 if it fits 249 bytes.
 
-## 6. Stages
+## 6. pc-sanaro-n01 results (stage N2, 2026-10-28, PR #393)
+
+The PC ran all three reads (reports `docs/bench/local/sanaro-n01-*.md` on
+`claude/pc-sanaro-n01-results`).
+
+**NanoMelee census** (130 battles an arm, control S0): the spiral reads as on the cloud, inside
+the noise. S06 +0.33 ± 0.45 over S0 and +0.66 ± 0.56 over NaturalScience in the same battles
+(SANARO-10 not met: the low end is under zero); S05 +0.24, FL +0.26, S04 +0.15; S08 -0.26,
+B800 -0.36, B1000 -0.46, S10 -1.16 ± 0.43. Every arm trails Quantum by 3.1 to 4.7 in the same
+battles and outsurvives it in a fifth of them at best (SANARO-11 not met).
+
+**Duel**: Quantum wins 98-100% of rounds against every arm but B1000 (13.9%). NaturalScience
+loses 95-99% of rounds to every spiral from 0.4 to 0.8, 42% to S0 and 25% to S10. SANARO-12 is
+not met against Quantum.
+
+**Live-shaped census** (43 fields x 6 seeds = 258 battles a seat; NanoMelee pairings counted):
+
+| Seat | APS | vs S06 | rounds won | mean place | score share | bullet damage a battle |
+|---|---|---|---|---|---|---|
+| Quantum 1.0.0 | 66.58 ± 0.27 | +2.36 ± 0.43 | 14.1% | 3.59 | 14.24% | 4,087 |
+| NaturalScience 1.2.1 | 65.31 ± 0.31 | +1.00 ± 0.45 | 16.4% | 3.77 | 13.49% | 3,535 |
+| **S0 (no spiral)** | **65.17 ± 0.30** | **+0.88 ± 0.45** | 16.3% | 3.82 | 13.45% | 3,581 |
+| S06 (0.1 as first built) | 64.27 ± 0.33 | | 14.7% | 4.03 | 13.10% | 3,585 |
+
+The seats calibrate the census: Quantum reads 66.58 against 66.60 live, NaturalScience 65.31
+against 64.88. Read the same way, S0 would sit level with NaturalScience and DustBunny, about
+2nd to 3rd, 1.4 under Quantum.
+
+What it says:
+
+- **The NanoMelee census picked the wrong spiral.** Among nanos only, 0.6 edges S0; in the
+  mixed melee battles that LiteRumble scores NanoMelee from, the spiral drags Sanaro into the
+  big bots and costs 0.88. The live-shaped census decides from here on (SANARO-13).
+- **Quantum's edge is damage, not wins.** It wins fewer rounds than S0 (14.1% against 16.3%)
+  but does 14% more bullet damage and places better on average (3.59 against 3.82). Its power
+  is min(energy / 7, 2.5) at every range; Sanaro's table starts at 0.1 + energy / 16 and the
+  640 / d band cuts it to 0.1 past 640 px. The power table is a string constant, so another
+  curve costs no bytes: that is the next card.
+
+## 7. The next card: pc-sanaro-n02 (stage N3)
+
+`hadur-bench/plans/pc-sanaro-n02.queue`, Leigh starts it from master:
+`.\queue.ps1 run pc-sanaro-n02`. About 2.8 h at 12 workers. Live-shaped census only, 43 fields
+x 10 fresh seeds (base 13000), 430 battles an arm, read against S0 (`sanaro-n02-live.md` on
+`claude/pc-sanaro-n02-results`):
+
+| Arm | Change | Bytes |
+|---|---|---|
+| S0 | 0.1 as it ships (control) | 247 |
+| S02 | spiral 0.2 rad | 249 |
+| Q7 | Quantum's curve: own energy / 7, at most 2.5, 3.0 from 120 | 247 |
+| D10 | 0.1 + own energy / 10, at most 2.5 | 247 |
+| L20 | 0.1 + own energy / 20, at most 2.0 (thriftier) | 247 |
+| T60 | 3.0 from 60 own energy instead of 120 | 247 |
+| B800 | the power band at 800 px | 247 |
+
+A power arm's fourth field in `sanaro-arms/arms.txt` is `sanaro/table.py`'s options
+(`--floor`, `--div`, `--cap`, `--top-at`, `--top-power`, `--src`); `tools/sanaro_arms.sh` writes
+that table into the arm's source. **N3 passes** for an arm whose difference over S0 has its low
+end above zero; the best passing arm becomes 0.1's default, and a second read on fresh seeds
+stacks the winners before the release (N5).
+
+## 8. Stages
 
 | Stage | What | Gate |
 |---|---|---|
 | N0 | the bench: nano field, census and duel suites, arms, read; Sanaro 0.1 built and gated | 249 bytes, tests green |
 | N1 | the cloud screen (section 4) | a spiral beats S0 or the leaders in the same battles |
-| N2 | pc-sanaro-n01 | as section 5 |
-| N3 | find bytes for what N2 picks (gate, flip or a power rule), by hand-written bytecode if javac will not fit | the shipped jar at most 249 |
-| N4 | the Quantum gap: power and one-on-one | beats Quantum's margin in the same battles |
+| N2 | pc-sanaro-n01 (section 6): S0 picked, +0.88 over 0.6 on the live-shaped census | as section 5 |
+| N3 | pc-sanaro-n02 (section 7): the power curve, a small spiral, the band | an arm over S0 on the live-shaped census |
+| N4 | the Quantum gap: stack N3's winners, then the end game one on one (bytes) | the live-shaped census over the seated Quantum's 66.58 |
 | N5 | release `hadur117.nano.Sanaro`, first rumble read after 500 battles | SANARO-10, SANARO-11 on the final jar |
 
-## 7. Uniqueness
+## 9. Uniqueness
 
 Leigh's rule for Saor holds here: inspired by others, never a copy. Sanaro shares the open
 DustBunny line's anti-gravity and lead, which every bot at the top of NanoMelee shares, and
-differs in behaviour where it counts: the spiral, the power table (its own formula, not
+differs in behaviour where it counts: the power table (its own formula, not
 NaturalScience's 4,991-character table), the radar threshold, and no name lock or fire gate.
 The seated leaders are references only and never ship.

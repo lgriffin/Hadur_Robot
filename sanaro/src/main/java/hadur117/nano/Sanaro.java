@@ -6,10 +6,10 @@ import robocode.util.Utils;
 
 /**
  * Sanaro, a NanoMelee robot (docs/sanaro.md): anti-gravity from where each robot is about to be,
- * turned SPIRAL off the field's direction so it circles the robot shooting at it instead of fleeing
- * it straight, with a radar that sweeps while the gun cools and flips on the target once it is
- * nearly ready, a hedged lead and a table of bullet power by both robots' energy. The anti-gravity
- * and the hedge come from the open DustBunny, Quantum and NaturalScience line; the spiral, the
+ * turned SPIRAL off the field's direction (none as it ships: straight away, which reads best where
+ * NanoMelee is scored), with a radar that sweeps while the gun cools and flips on the target once
+ * it is nearly ready, a hedged lead and a table of bullet power by both robots' energy. The
+ * anti-gravity and the hedge come from the open DustBunny, Quantum and NaturalScience line; the
  * table and the radar's threshold are Sanaro's. One class within NanoMelee's 249 bytes (SANARO-1).
  */
 public class Sanaro extends AdvancedRobot {
@@ -18,8 +18,9 @@ public class Sanaro extends AdvancedRobot {
     // Drive: ahead this far less the turn still to make, in degrees; backwards past it (SANARO-4).
     static final double AHEAD = 120;
     // The spiral: the drive's angle off the anti-gravity direction, radians (SANARO-3). 0.6 read
-    // best on the cloud NanoMelee census (docs/sanaro.md section 4).
-    static final double SPIRAL = 0.6;
+    // best on the NanoMelee-only census, but none reads +0.88 over 0.6 on the live-shaped census,
+    // the one LiteRumble scores (pc-sanaro-n01, docs/sanaro.md section 5); 0 is also 2 bytes less.
+    static final double SPIRAL = 0;
     // The hedged lead: lateral velocity over (LEAD + LEAD_GROWTH ^ distance) (SANARO-7).
     static final double LEAD = 10, LEAD_GROWTH = 1.008;
     // Below this gun heat each scan of the target flips the radar (SANARO-6).
