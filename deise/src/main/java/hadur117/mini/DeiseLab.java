@@ -25,6 +25,14 @@ public class DeiseLab extends AdvancedRobot {
     static final int GAP = 8;
     /** Whether unscanned opponents are played on by their last heading and speed: arm RK. */
     static final boolean RECKON = false;
+    /** Playouts an aim (DEISE-7); 200 for arm P200. */
+    static final int PLAYOUTS = 64;
+    /** A point must be this much safer than the destination to replace it (DEISE-1); arm H drops it. */
+    static final double HOLD = 0.9;
+    /** Whether a wave from a robot unlikely to aim at us weighs 0.25, not 1 (DEISE-5); false for arm WH. */
+    static final boolean AIMED = true;
+    /** Whether our hits move the energy a shot drop is measured from (DEISE-5); false for arm WH. */
+    static final boolean HITS = true;
     static final Random RANDOM = new Random();
     static final int[] IDS = new int[1 << 18];
     static int seen;
@@ -70,7 +78,7 @@ public class DeiseLab extends AdvancedRobot {
             // Keep the destination unless the ring holds a point 10% safer (DEISE-1).
             double[] best = Move.best(x, y, Move.reach(targetDistance), bots, waves, time, getOthers());
             if (destination == null || Point2D.distance(destination[0], destination[1], x, y) < 16
-                || best[2] < 0.9 * Move.risk(destination[0], destination[1],
+                || best[2] < HOLD * Move.risk(destination[0], destination[1],
                     Math.atan2(destination[0] - x, destination[1] - y), x, y, bots, waves, time, getOthers())) {
                 destination = best;
             }
@@ -108,7 +116,7 @@ public class DeiseLab extends AdvancedRobot {
             for (int i = 0; i < waves.length; i++) {
                 if (waves[i] == null) {
                     waves[i] = Move.wave(x, y, (time + Math.max(last[0], time - GAP)) / 2, drop, getX(), getY(),
-                        getHeadingRadians(), getVelocity(), Move.aimsAtUs(bot, getX(), getY(), bots) ? 1 : 0.25);
+                        getHeadingRadians(), getVelocity(), !AIMED || Move.aimsAtUs(bot, getX(), getY(), bots) ? 1 : 0.25);
                     break;
                 }
             }
@@ -138,7 +146,7 @@ public class DeiseLab extends AdvancedRobot {
                 setFire(power);
             }
             setTurnGunRightRadians(Utils.normalRelativeAngle(
-                Gun.aim(table, state, x, y, heading, velocity, getX(), getY(), power, 64, RANDOM) - getGunHeadingRadians()));
+                Gun.aim(table, state, x, y, heading, velocity, getX(), getY(), power, PLAYOUTS, RANDOM) - getGunHeadingRadians()));
         }
     }
 
@@ -146,7 +154,7 @@ public class DeiseLab extends AdvancedRobot {
     @Override
     public void onBulletHit(BulletHitEvent e) {
         int id = IDS[e.getName().hashCode() & (IDS.length - 1)] - 1;
-        if (id >= 0) {
+        if (HITS && id >= 0) {
             BASE[id] = e.getEnergy();
         }
     }

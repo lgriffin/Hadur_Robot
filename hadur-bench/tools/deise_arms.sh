@@ -5,7 +5,7 @@
 # the local Maven repository, and the card's prep copies Deise's jar into opponents/).
 #   bash tools/deise_arms.sh live SEEDS SEED_BASE [ARMS]
 # An arm line is `NAME | what | FILE | sed`: FILE (DeiseLab.java, Gun.java or Move.java) takes the
-# sed, empty for the control. An arm `NAME | what | @robot name` seats that robot (its jar from
+# sed, empty for the control; more `| FILE | sed` pairs change more files (stage E1's stacks). An arm `NAME | what | @robot name` seats that robot (its jar from
 # opponents/) instead. Arms are built from the bench adapter DeiseLab over the core, which the
 # shipped one-class Deise is held to (DEISE-16). Each build is javac-only, with its class renamed
 # Deise<NAME> and its core package hadur117.mini.c<name>, so no two arms share a class; the
@@ -22,10 +22,17 @@ release=$(sed -n 's:.*<deise.release>\([0-9.]*\)</deise.release>.*:\1:p' ../deis
 own="hadur117.mini.Deise $release"
 resident="$own | minimelee-deise | hadur117.mini.Deise_$release.jar"
 mkdir -p "$out"
-grep -v '^#' deise-arms/arms.txt | while IFS='|' read -r name what file expr; do
-    name=$(echo "$name" | tr -d ' '); file=$(echo "${file:-}" | sed 's/^ *//; s/ *$//')
-    expr=$(echo "${expr:-}" | sed 's/^ *//; s/ *$//')
+grep -v '^#' deise-arms/arms.txt | while IFS='|' read -r name what rest; do
+    name=$(echo "$name" | tr -d ' ')
     [ -n "$name" ] || continue
+    # FILE | sed pairs: files[p] takes exprs[p].
+    IFS='|' read -r -a parts <<< "${rest:-}"
+    files=(); exprs=()
+    for ((p = 0; p < ${#parts[@]}; p += 2)); do
+        files+=("$(echo "${parts[p]}" | sed 's/^ *//; s/ *$//')")
+        exprs+=("$(echo "${parts[p + 1]:-}" | sed 's/^ *//; s/ *$//')")
+    done
+    file="${files[0]:-}"
     if [ -n "$only" ] && ! echo ",$only," | grep -q ",$name,"; then continue; fi
     seat=deise
     [ "${file#@}" != "$file" ] && seat="${file#@}"
@@ -41,11 +48,13 @@ grep -v '^#' deise-arms/arms.txt | while IFS='|' read -r name what file expr; do
             base_name=$(basename "$f"); to="$dir/src/hadur117/mini/c$lname/$base_name"
             [ "$base_name" = DeiseLab.java ] && to="$dir/src/hadur117/mini/$cls.java"
             sed -e "s/hadur117\\.mini\\.core/hadur117.mini.c$lname/g" -e "s/class DeiseLab /class $cls /" "$f" > "$to"
-            if [ -n "$expr" ] && [ "$base_name" = "$file" ]; then
-                cp "$to" "$to.orig"; sed -i -e "$expr" "$to"
-                cmp -s "$to" "$to.orig" && { echo "deise_arms: arm $name's sed changed nothing in $file" >&2; exit 3; }
-                rm "$to.orig"
-            fi
+            for ((p = 0; p < ${#files[@]}; p++)); do
+                if [ -n "${exprs[p]}" ] && [ "$base_name" = "${files[p]}" ]; then
+                    cp "$to" "$to.orig"; sed -i -e "${exprs[p]}" "$to"
+                    cmp -s "$to" "$to.orig" && { echo "deise_arms: arm $name's sed changed nothing in ${files[p]}" >&2; exit 3; }
+                    rm "$to.orig"
+                fi
+            done
         done
         javac --release 8 -nowarn -cp "$api" -d "$dir/classes" $(find "$dir/src" -name '*.java')
         printf 'robot.classname=hadur117.mini.%s\nrobot.version=%s\nrobot.author.name=lgriffin\nrobocode.version=1.9.3.0\n' \

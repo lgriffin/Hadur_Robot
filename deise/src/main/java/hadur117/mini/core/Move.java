@@ -30,6 +30,10 @@ public final class Move {
      * about 13 APS at full weight and 3 at 0.3 (docs/deise.md section 4). Kept for arm W.
      */
     public static final double WAVES = 0;
+    /** The lines a wave's bullet may fly on, from HEAD_ON: 2 is head-on and linear, 1 head-on only (arm WH). */
+    public static final int LINES = 2;
+    /** Whether the across term counts (DEISE-3); false for arm P, which frees its bytes for the waves. */
+    public static final boolean ACROSS = true;
 
     private Move() {
     }
@@ -69,7 +73,7 @@ public final class Move {
                 // Away from every opponent, harder from strong ones (DEISE-2).
                 r += (50000 + bot[ENERGY] * 500) / sq(px - bot[X], py - bot[Y]);
                 // Across, not along, the line of an opponent likely aiming at us (DEISE-3).
-                if (aimsAtUs(bot, myX, myY, bots)) {
+                if (ACROSS && aimsAtUs(bot, myX, myY, bots)) {
                     r += Math.abs(Math.cos(Math.atan2(bot[X] - px, bot[Y] - py) - heading));
                 }
             }
@@ -124,7 +128,7 @@ public final class Move {
             return 0;
         }
         double d = 0;
-        for (int line = HEAD_ON; line <= LINEAR; line++) {
+        for (int line = HEAD_ON; line < HEAD_ON + LINES; line++) {
             d += 4000 / (800 + sq(px - wave[X] - Math.sin(wave[line]) * reach, py - wave[Y] - Math.cos(wave[line]) * reach));
         }
         return d * wave[WEIGHT];
