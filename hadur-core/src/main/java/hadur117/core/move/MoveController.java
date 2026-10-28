@@ -943,6 +943,58 @@ public class MoveController {
         return sum;
     }
 
+    /**
+     * ORACLE-1 (K0, measurement): each danger view's surface over wave {@code w}, laid out as
+     * the {@link OracleRecord} line carries it: per view, whether it is on with data, its weight in
+     * the danger average, its scan weight (the sum the average divides by), then its point-kernel
+     * density ({@code 2^-|u|}, u in {@link HitForensics#HALF_WIDTH} half-widths, as MOVE-16 rates
+     * a view) at each of the {@link HitForensics#SAMPLES} guess factors in [-1, 1]. No shadows:
+     * this is what each view predicts the enemy fires, not what reaches us. Read-only on the
+     * views: it uses {@link #dangerPercentile}'s cache slot and empties it after, so the surf's
+     * cached neighbours and its choices are untouched.
+     *
+     * @param w the wave
+     * @return {@code viewCount() * (3 + SAMPLES)} numbers
+     */
+    public double[] oracleSurface(Wave w) {
+        int n = views.size();
+        int width = 3 + HitForensics.SAMPLES;
+        double[] out = new double[n * width];
+        double bandwidth = Math.atan(HitForensics.HALF_WIDTH / Math.max(w.targetDistance, HitForensics.HALF_WIDTH));
+        double[] estimate = viewEstimate();
+        try {
+            validateCache(w, FORENSICS_CACHE);
+            for (int i = 0; i < n; i++) {
+                KnnView<TimestampedGuessFactor> view = views.get(i);
+                int at = i * width;
+                out[at + 1] = effectiveWeight(i);
+                if (view.effectiveSize() == 0 || !viewOn(view, estimate)) continue;
+                List<KdTree.Entry<TimestampedGuessFactor>> neighbors =
+                    getNearestNeighbors(view, w, FORENSICS_CACHE);
+                double[] decay = view.getDecayWeights(neighbors);
+                double[] scan = new double[neighbors.size()];
+                double[] angle = new double[neighbors.size()];
+                double scanSum = 0;
+                for (int k = 0; k < scan.length; k++) {
+                    KdTree.Entry<TimestampedGuessFactor> entry = neighbors.get(k);
+                    scan[k] = decay[k]
+                        / Math.sqrt(Math.max(entry.distance, MIN_DISTANCE)) * entry.value.weight();
+                    angle[k] = w.firingAngle(entry.value.guessFactor);
+                    scanSum += scan[k];
+                }
+                out[at] = 1;
+                out[at + 2] = scanSum;
+                for (int g = 0; g < HitForensics.SAMPLES; g++) {
+                    out[at + 3 + g] = kernelSum(w, scan, angle, HitForensics.sampleGuessFactor(g), bandwidth);
+                }
+            }
+        } finally {
+            for (KnnView<TimestampedGuessFactor> view : views) view.cachedNeighbors.remove(FORENSICS_CACHE);
+            cacheOwners.remove(FORENSICS_CACHE);
+        }
+        return out;
+    }
+
     /** MOVE-9: the neighbour-cache key the HF danger reading uses, apart from every surf index. */
     private static final int FORENSICS_CACHE = -1;
 
