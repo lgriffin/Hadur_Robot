@@ -1,10 +1,10 @@
 # Queue pc-sanaro-n02: progress
 
-Updated 2026-10-28 22:31:32 PC time (22:31 UTC), runner pid 54164.
+Updated 2026-10-28 22:41:15 PC time (22:41 UTC), runner pid 54164.
 
 - `prep` done, exit 0 in 0 min
 - `live-S0` done, exit 0 in 28 min
-- `live-S02` running
+- `live-S02` interrupted, exit 130 in 27 min
 - `live-Q7` skipped
 - `live-D10` skipped
 - `live-L20` skipped
@@ -27,21 +27,19 @@ Stopping now would leave 0 battles unrun (about 0 min); every battle already fou
 
 ### live-S02
 
-**204 of 430 battles** (47%), 0 failed. Running 17 min, 725 battles/h, about 19 min left (ends ~22:50 PC time). Last battle 0 min ago.
+**400 of 430 battles** (93%), 0 failed. Running 27 min, 903 battles/h, about 2 min left (ends ~22:43 PC time). Last battle 0 min ago.
 
 | stop rule | on trip | state | now |
 |---|---|---|---|
-| `fails 20` | halt | ok | 0 failed of 204 |
+| `fails 20` | halt | ok | 0 failed of 400 |
 | `stall 30m` | halt | ok | last battle 0 min ago |
 | `skips 40 over 100` | halt | waiting | 0 of 100 battles to read |
 
-Stopping now would leave 226 battles unrun (about 19 min); every battle already fought is kept and a rerun resumes from it.
+Stopping now would leave 30 battles unrun (about 2 min); every battle already fought is kept and a rerun resumes from it.
 
 ### Queue log (last lines)
 
 ```
-21:41:01 skip live-T60 (after live-L20, which has not finished exit=0)
-21:41:01 skip live-B800 (after live-T60, which has not finished exit=0)
 21:41:01 skip read-live (after live-B800, which has not finished exit=0)
 21:41:01 skip pr (after read-live, which has not finished exit=0)
 21:41:01 ALLDONE
@@ -55,4 +53,6 @@ Stopping now would leave 226 battles unrun (about 19 min); every battle already 
 22:14:39 start live-S02
 22:14:39 watching live-S02: 3 stop rule(s)
 22:17:26 progress live-S02: 50/430 (12%) battles, 1081/h, ETA 21 min, 0 failed
+22:41:15 live-S02 exit=130 in 1595 s (stopped)
+22:41:15 stopped; rerun to resume from the interrupted steps
 ```

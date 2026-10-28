@@ -25,3 +25,5 @@
 22:14:39 start live-S02
 22:14:39 watching live-S02: 3 stop rule(s)
 22:17:26 progress live-S02: 50/430 (12%) battles, 1081/h, ETA 21 min, 0 failed
+22:41:15 live-S02 exit=130 in 1595 s (stopped)
+22:41:15 stopped; rerun to resume from the interrupted steps
