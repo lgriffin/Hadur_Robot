@@ -1,0 +1,35 @@
+# Melee: confirm power 3 out to 300 px (docs/plan-melee-top5.md, MGUN-16, BENCH-127). 3.18.1 reads
+# 13th in the MeleeRumble at 67.92; 10th (Mirage) is 68.24, +0.32 away. The firepower part 2 card
+# (PR #349) had ow, MGUN-16 (MGUN-13 fires power 3 out to 300 px, not 200), the only arm ahead at
+# +0.15 +- 0.15: the low end just above 0 on 6 seeds, so it was held back. This card re-runs ow on 8
+# fresh seeds to settle it before it goes on master:
+#   aa      the baseline (master)
+#   bb      its A/A copy
+#   ow      ogi300, MGUN-16: power 3 out to 300 px
+# Each build fights the 46 census fields x 8 fresh seeds alone (3211-3218; 368 battles, 1,104 in
+# all) at the machine's melee width and CPU constant. The read pairs bb with aa (A/A, within +-0.25)
+# and ow with the mean of aa and bb (--base2), battle for battle. Melee only: MGUN-16 acts off a
+# team, with three or more opponents left, so the duel and team play are untouched.
+# Verdict: ow passes when it adds at all, the 95% low end above 0 (--gain 0), with Hadur's share of
+# others outlived no more than 1 point lower and the 1-30 endgame wins no more than 3 points lower.
+# A pass turns MGUN-16 on in master. The card ends in a results PR on claude/pc-melee-wide-results
+# whatever the verdict; the melee thread reads it.
+#   ./queue.sh run pc-melee-wide        (or  .\queue.ps1 run pc-melee-wide)
+# Run it from master, one bench queue at a time:
+#   git checkout master && git pull
+# owprep reads the version from hadur-robot/pom.xml, so a bump cannot point the card at stale
+# jars, and fixes the width in work/, so a resumed card never mixes host profiles.
+
+set OUT = ../docs/bench/local
+
+owprep | git checkout -q master && V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && test -n "$V" && C=${MELEE_WORKERS} && for a in aa bb ow; do rm -f bisect/hadur2.Hadur_"$V"$a.jar; done && bash ./build-ablation.sh aa && bash ./build-ablation.sh bb && bash ./build-ablation.sh ogi300 && mkdir -p work && for a in aa bb ow; do test -f bisect/hadur2.Hadur_"$V"$a.jar && sed -e "s/@V@/$V/g" -e "s/@A@/$a/g" -e "s/@C@/$C/g" plans/melee-wide.args > work/melee-wide-$a.args || exit 1; done && rm -f ${OUT}/melee-wide-*.md && for f in melee-census-317/f*.txt; do ./fetch-opponents.sh --set "$f" || exit 1; done && mvn -q compile
+owaa   | mvn -q exec:java "-Dexec.args=@work/melee-wide-aa.args"
+  after: owprep
+owbb   | mvn -q exec:java "-Dexec.args=@work/melee-wide-bb.args"
+  after: owaa
+owow   | mvn -q exec:java "-Dexec.args=@work/melee-wide-ow.args"
+  after: owbb
+owread | V=$(sed -n 's:.*<robot.release>\(.*\)</robot.release>.*:\1:p' ../hadur-robot/pom.xml) && W=work/melee-wide-"$V" && { python3 tools/melee_s0.py screen "$W"-aa --base2 "$W"-bb --arm bb="$W"-bb --arm ow="$W"-ow --census melee-census-317.txt --seeds 8 --gain 0 --survival-slack 1 --out ${OUT}/melee-wide-read.md --title "Melee power 3 out to 300 px on $V" || true; } && test -s ${OUT}/melee-wide-read.md
+  after: owow
+owpr   | bash tools/open_results_pr.sh claude/pc-melee-wide-results "Melee power 3 out to 300 px (MGUN-16)" ${OUT}/melee-wide-read.md $(ls ${OUT}/melee-wide-aa.md ${OUT}/melee-wide-bb.md ${OUT}/melee-wide-ow.md 2>/dev/null)
+  after: owread
