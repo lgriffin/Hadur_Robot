@@ -59,7 +59,26 @@ positive on the listed field; the PC card measures it on all 276 and also report
 case a per-opponent exit beats one value. Taking the random 12 (+1.3 points) as the
 typical listed robot, s4 would be worth about +0.3 APS over 276 (cloud noise is wide: 0 to +0.5).
 
+## PC result (pc-shield-exit, 2026-10-28 13:44 GMT)
+
+Card `plans/pc-shield-exit.queue` (BENCH-126), results branch `claude/pc-shield-exit-results`: all 276
+listed robots x c/aa/s4/s0 x 3 fresh seeds, then the three re-picks on 6 fresh seeds.
+
+| Arm | APS vs control | Gate | Verdict |
+|---|---:|---:|---|
+| s4 (exit at 400) | +0.04 ± 0.09 | +0.10 | FAIL |
+| s0 (budget only) | -0.01 ± 0.10 | +0.10 | FAIL |
+| A/A | -0.11 ± 0.43 | band | clean |
+| Re-pick (Wolverine, Hikari, Melody) | +0.02 ± 0.00 | +0.01 | PASS |
+
+A later exit helps as often as it hurts (Fenrir +10.5, Robovirus -13), and the cloud's big winners
+shrank on the PC (Komarious +16 to +5): cloud 3-seed per-robot gains on a handful of robots shrink
+two to three times on the full card, so the live read's "shield fidelity +0.2 to +0.3" was not real.
+The per-robot pick finds 7 robots worth +0.06 APS in sample; that needs a per-opponent exit line
+and fresh seeds before it counts. The re-pick ships as table entries (this PR).
+
 ## Next
 
-PC card `plans/pc-shield-exit.queue` (BENCH-126): all 276 listed robots x c/aa/s4/s0 x 3 seeds, gates
-at +0.10 APS, plus the three re-picks on fresh seeds. Leigh starts it.
+Banked toward 3rd: +0.02 of the +0.41 needed. Tailoring left is about +0.1 (per-opponent exit, an
+anti-ram mode, an anti-basic-surfer gun); Saguaro's +0.5 lead on the 383 simple-gun robots needs
+core movement work.
